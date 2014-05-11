@@ -35,7 +35,7 @@ inline bool operator !=(const SBHITINFO &a, const SBHITINFO &b)
 
 class SOUI_EXP CDuiPanel: public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiPanel, "div")
+    SOUI_CLASS_NAME(CDuiPanel, "div")
 
 public:
     CDuiPanel();
@@ -123,15 +123,15 @@ protected:
 	DWORD		m_dwUpdateTime;	//记录调用UpdateDuiWindow的时间
 	DWORD		m_dwUpdateInterval;
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
 		DUIWIN_CUSTOM_ATTRIBUTE("sbskin",OnAttrScrollbarSkin)
 		DUIWIN_INT_ATTRIBUTE("sbarrowsize", m_nSbArrowSize, FALSE)
 		DUIWIN_INT_ATTRIBUTE("sbwid", m_nSbWid, FALSE)
 		DUIWIN_INT_ATTRIBUTE("sbenable", m_wBarEnable, FALSE)
 		DUIWIN_UINT_ATTRIBUTE("updateinterval", m_dwUpdateInterval, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_CREATE(OnCreate)
     MSG_WM_NCPAINT_EX(OnNcPaint)
     MSG_WM_NCCALCSIZE(OnNcCalcSize)
@@ -142,12 +142,12 @@ protected:
     MSG_WM_MOUSEWHEEL(OnMouseWheel)
     MSG_WM_DUITIMER(OnDuiTimer)
 	MSG_WM_SHOWWINDOW(OnShowWindow)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 };
 
 class SOUI_EXP CDuiScrollView : public CDuiPanel
 {
-	DUIOBJ_DECLARE_CLASS_NAME(CDuiScrollView, "scrollview")
+	SOUI_CLASS_NAME(CDuiScrollView, "scrollview")
 public:
 	CDuiScrollView();
 	virtual ~CDuiScrollView() {}
@@ -184,17 +184,17 @@ protected:
 
 	void UpdateScrollBar();
 protected:
-	DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+	SOUO_ATTRIBUTES_BEGIN()
 		DUIWIN_INT_ATTRIBUTE("viewwid", m_szView.cx, FALSE)
 		DUIWIN_INT_ATTRIBUTE("viewhei", m_szView.cy, FALSE)
 		DUIWIN_INT_ATTRIBUTE("origin-x", m_ptOrigin.x, FALSE)
 		DUIWIN_INT_ATTRIBUTE("origin-y", m_ptOrigin.y, FALSE)
-	DUIWIN_DECLARE_ATTRIBUTES_END()
+	SOUI_ATTRIBUTES_END()
 
-	DUIWIN_BEGIN_MSG_MAP()
+	WND_MSG_MAP_BEGIN()
 		MSG_WM_CREATE(OnCreate)
 		MSG_WM_SIZE(OnSize)
-	DUIWIN_END_MSG_MAP()
+	WND_MSG_MAP_END()
 protected:
 	CSize m_szView;
 	CPoint m_ptOrigin;

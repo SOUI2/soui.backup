@@ -14,7 +14,7 @@
 
  class CDuiSkinGif : public CDuiSkinBase
  {
- 	DUIOBJ_DECLARE_CLASS_NAME(CDuiSkinGif, "gif")
+ 	SOUI_CLASS_NAME(CDuiSkinGif, "gif")
  public:
  	CDuiSkinGif():m_nFrames(0),m_iFrame(0),m_pFrameDelay(NULL)
  	{

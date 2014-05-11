@@ -70,7 +70,7 @@ class SOUI_EXP CDuiTreeCtrl
 	: public CDuiScrollView
 	, protected CSTree<LPTVITEM>
 {
-	DUIOBJ_DECLARE_CLASS_NAME(CDuiTreeCtrl, "treectrl")
+	SOUI_CLASS_NAME(CDuiTreeCtrl, "treectrl")
 public:
 	CDuiTreeCtrl();
 
@@ -202,7 +202,7 @@ protected:
 
 	UINT		m_uPopMenuID;
 
-	DUIWIN_DECLARE_ATTRIBUTES_BEGIN()		
+	SOUO_ATTRIBUTES_BEGIN()		
 		DUIWIN_INT_ATTRIBUTE("indent", m_nIndent, TRUE)
 		DUIWIN_INT_ATTRIBUTE("itemhei", m_nItemHei, TRUE)
 		DUIWIN_INT_ATTRIBUTE("itemmargin", m_nItemMargin, TRUE)
@@ -217,9 +217,9 @@ protected:
 		DUIWIN_COLOR_ATTRIBUTE("critemselbg",m_crItemSelBg,FALSE)
 		DUIWIN_COLOR_ATTRIBUTE("critemtext",m_crItemText,FALSE)
 		DUIWIN_COLOR_ATTRIBUTE("critemseltext",m_crItemSelText,FALSE)
-	DUIWIN_DECLARE_ATTRIBUTES_END()
+	SOUI_ATTRIBUTES_END()
 
-	DUIWIN_BEGIN_MSG_MAP()
+	WND_MSG_MAP_BEGIN()
 		MSG_WM_PAINT(OnPaint)
 		MSG_WM_DESTROY(OnDestroy)
 		MSG_WM_LBUTTONDOWN(OnLButtonDown)
@@ -228,7 +228,7 @@ protected:
 		MSG_WM_RBUTTONDOWN(OnRButtonDown);
 		MSG_WM_MOUSEMOVE(OnMouseMove)
 		MSG_WM_MOUSELEAVE(OnMouseLeave)
-	DUIWIN_END_MSG_MAP()
+	WND_MSG_MAP_END()
 };
 
 }//namespace SOUI

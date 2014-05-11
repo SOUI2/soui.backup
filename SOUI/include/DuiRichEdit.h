@@ -222,7 +222,7 @@ class SOUI_EXP CDuiRichEdit :public CDuiPanel
 {
     friend class CDuiTextHost;
 public:
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiRichEdit, "richedit")
+    SOUI_CLASS_NAME(CDuiRichEdit, "richedit")
 
     CDuiRichEdit();
     virtual ~CDuiRichEdit() {}
@@ -326,7 +326,7 @@ protected:
 	void OnEnableDragDrop(BOOL bEnable);
 
 protected:
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_CREATE(OnCreate)
     MSG_WM_DESTROY(OnDestroy)
     MSG_WM_PAINT(OnPaint)
@@ -348,9 +348,9 @@ protected:
     MESSAGE_HANDLER_EX(EM_SETCHARFORMAT,OnSetCharFormat)
     MESSAGE_HANDLER_EX(EM_SETREADONLY,OnSetReadOnly)
     MESSAGE_HANDLER_EX(EM_EXLIMITTEXT,OnSetLimitText)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("style",m_dwStyle,FALSE)
     DUIWIN_INT_ATTRIBUTE("maxbuf",m_cchTextMost,FALSE)
     DUIWIN_INT_ATTRIBUTE("transparent",m_fTransparent,FALSE)
@@ -362,7 +362,7 @@ protected:
     DUIWIN_INT_ATTRIBUTE("vcenter",m_fSingleLineVCenter,FALSE)
     DUIWIN_RECT_ATTRIBUTE("inset",m_rcInsetPixel,FALSE)
     DUIWIN_CUSTOM_ATTRIBUTE("crtext",OnSetTextColor)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
     //////////////////////////////////////////////////////////////////////////
     //	RichEdit Properties
     CHARFORMAT2W m_cfDef;				// Default character format
@@ -392,7 +392,7 @@ protected:
 
 class SOUI_EXP CDuiEdit : public CDuiRichEdit
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiRichEdit, "edit")
+    SOUI_CLASS_NAME(CDuiRichEdit, "edit")
 public:
     CDuiEdit()
     {

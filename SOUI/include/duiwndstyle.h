@@ -14,7 +14,7 @@ namespace SOUI
 
 class SOUI_EXP DuiStyle : public CDuiObject
 {
-    DUIOBJ_DECLARE_CLASS_NAME(DuiStyle, "style")
+    SOUI_CLASS_NAME(DuiStyle, "style")
 
     enum
     {
@@ -62,7 +62,7 @@ protected:
 	UINT m_nTextAlign;
 	UINT m_uAlign,m_uVAlign;
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_STRING_ATTRIBUTE("skin", m_strSkinName, TRUE)
     DUIWIN_STRING_ATTRIBUTE("ncskin", m_strNcSkinName, TRUE)
     DUIWIN_HEX_ATTRIBUTE("textmode", m_nTextAlign, TRUE)
@@ -103,7 +103,7 @@ protected:
     DUIWIN_ENUM_VALUE("arrow", IDC_ARROW)
     DUIWIN_ENUM_END(m_lpCursorName)
     DUIWIN_INT_ATTRIBUTE("dotted",m_bDotted,FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 };
 
 

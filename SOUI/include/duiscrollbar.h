@@ -13,7 +13,7 @@ class SOUI_EXP CDuiScrollBar: public CDuiWindow
 {
 // Construction
 public:
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiScrollBar, "scrollbar")
+    SOUI_CLASS_NAME(CDuiScrollBar, "scrollbar")
     CDuiScrollBar();
 
     virtual ~CDuiScrollBar();
@@ -51,7 +51,7 @@ protected:
     LRESULT NotifySbCode(UINT uCode,int nPos);
 
 protected:
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
     DUIWIN_UINT_ATTRIBUTE("arrowsize", m_uAllowSize, FALSE)
     DUIWIN_INT_ATTRIBUTE("min", m_si.nMin, FALSE)
@@ -59,9 +59,9 @@ protected:
     DUIWIN_INT_ATTRIBUTE("value", m_si.nPos, FALSE)
     DUIWIN_INT_ATTRIBUTE("page", m_si.nPage, FALSE)
     DUIWIN_INT_ATTRIBUTE("vertical", m_bVertical, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
     MSG_WM_LBUTTONUP(OnLButtonUp)
     MSG_WM_MOUSEMOVE(OnMouseMove)
@@ -70,7 +70,7 @@ protected:
     MSG_WM_PAINT(OnPaint)
     MESSAGE_HANDLER_EX(SBM_SETSCROLLINFO,OnSetScrollInfo)
     MESSAGE_HANDLER_EX(SBM_GETSCROLLINFO,OnGetScrollInfo)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 
 protected:
     CDuiSkinBase * m_pSkin;

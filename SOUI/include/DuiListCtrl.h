@@ -51,7 +51,7 @@ namespace SOUI
 	//  CDuiListCtrl
 	class SOUI_EXP CDuiListCtrl : public CDuiPanel
 	{
-		DUIOBJ_DECLARE_CLASS_NAME(CDuiListCtrl, "listctrl")
+		SOUI_CLASS_NAME(CDuiListCtrl, "listctrl")
 
 	public:
 		CDuiListCtrl();
@@ -144,7 +144,7 @@ namespace SOUI
 		CPoint          m_ptOrigin;
 
 	protected:
-		DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+		SOUO_ATTRIBUTES_BEGIN()
 			DUIWIN_INT_ATTRIBUTE("headerHeight", m_nHeaderHeight, FALSE)
 			DUIWIN_INT_ATTRIBUTE("itemHeight", m_nItemHeight, FALSE)
 			DUIWIN_SKIN_ATTRIBUTE("itemskin", m_pItemSkin, TRUE)
@@ -159,15 +159,15 @@ namespace SOUI
 			DUIWIN_INT_ATTRIBUTE("text-x", m_ptText.x, FALSE)
 			DUIWIN_INT_ATTRIBUTE("text-y", m_ptText.y, FALSE)
 			DUIWIN_INT_ATTRIBUTE("hottrack", m_bHotTrack, FALSE)
-		DUIWIN_DECLARE_ATTRIBUTES_END()
+		SOUI_ATTRIBUTES_END()
 
-		DUIWIN_BEGIN_MSG_MAP()
+		WND_MSG_MAP_BEGIN()
 			MSG_WM_PAINT(OnPaint)
 			MSG_WM_DESTROY(OnDestroy)
 			MSG_WM_SIZE(OnSize)
 			MSG_WM_LBUTTONDOWN(OnLButtonDown)
 			MSG_WM_LBUTTONUP(OnLButtonUp)
-		DUIWIN_END_MSG_MAP()
+		WND_MSG_MAP_END()
 	};
 
 }//end of namespace

@@ -2,21 +2,21 @@
 
 // DuiWindow Message Map Define
 // Use WTL Message Map Ex (include atlcrack.h)
-#define DUIWIN_BEGIN_MSG_MAP()                                       \
+#define WND_MSG_MAP_BEGIN()                                       \
 protected:                                                          \
 	virtual BOOL ProcessDuiWndMessage(                              \
 	UINT uMsg, WPARAM wParam,                        \
 	LPARAM lParam, LRESULT& lResult)                            \
 	{
 
-#define DUIWIN_END_MSG_MAP()                                        \
+#define WND_MSG_MAP_END()                                        \
 	if (!IsMsgHandled())                                        \
 	return __super::ProcessDuiWndMessage(                   \
 	uMsg, wParam, lParam, lResult);                     \
 	return TRUE;                                                \
 	}
 
-#define DUIWIN_END_MSG_MAP_BASE()                                    \
+#define WND_MSG_MAP_END_BASE()                                    \
 	return DuiWndProc(uMsg,wParam,lParam,lResult);               \
 	}
 

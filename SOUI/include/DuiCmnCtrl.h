@@ -24,7 +24,7 @@ namespace SOUI
 //
 class SOUI_EXP CDuiSpacing : public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiSpacing, "spacing")
+    SOUI_CLASS_NAME(CDuiSpacing, "spacing")
 
 public:
 
@@ -34,9 +34,9 @@ public:
     }
 
 protected:
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 };
 
 
@@ -48,7 +48,7 @@ protected:
 //
 class SOUI_EXP CDuiStatic : public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiStatic, "text")
+    SOUI_CLASS_NAME(CDuiStatic, "text")
 public:
     CDuiStatic():m_bMultiLines(0),m_nLineInter(5)
     {
@@ -61,10 +61,10 @@ protected:
     int m_bMultiLines;
     int m_nLineInter;
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("multilines", m_bMultiLines, FALSE)
     DUIWIN_INT_ATTRIBUTE("interhei", m_nLineInter, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -74,7 +74,7 @@ protected:
 //
 class SOUI_EXP CDuiLink : public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiLink, "link")
+    SOUI_CLASS_NAME(CDuiLink, "link")
 
 public:
 	CDuiLink()
@@ -92,12 +92,12 @@ protected:
     void OnMouseMove(UINT nFlags,CPoint pt);
     void OnMouseHover(WPARAM wParam, CPoint ptPos);
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
 		MSG_WM_LBUTTONDOWN(OnLButtonDown)
 		MSG_WM_LBUTTONUP(OnLButtonUp)
 		MSG_WM_MOUSEMOVE(OnMouseMove)
 		MSG_WM_MOUSEHOVER(OnMouseHover)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 
     CRect m_rcText;
 };
@@ -112,7 +112,7 @@ class SOUI_EXP CDuiButton : public CDuiWindow
 	, public IAcceleratorTarget
 	, public ITimelineHandler
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiButton, "button")
+    SOUI_CLASS_NAME(CDuiButton, "button")
 public:
     CDuiButton();
 protected:
@@ -157,12 +157,12 @@ protected:
 	BOOL		  m_bAnimate;//动画标志
 	BYTE		  m_byAlphaAni;	//动画状态
 public:
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
 		DUIWIN_CUSTOM_ATTRIBUTE("accel",OnAttrAccel)
 		DUIWIN_INT_ATTRIBUTE("animate", m_bAnimate, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
 		MSG_WM_PAINT(OnPaint)
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
 		MSG_WM_LBUTTONDOWN(OnLButtonDown)
@@ -170,12 +170,12 @@ public:
 		MSG_WM_KEYUP(OnKeyUp)
 		MSG_WM_DESTROY(OnDestroy)
 		MSG_WM_SIZE(OnSize)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 };
 
 class SOUI_EXP CDuiImageBtnWnd : public CDuiButton
 {
-	DUIOBJ_DECLARE_CLASS_NAME(CDuiImageBtnWnd, "imgbtn")
+	SOUI_CLASS_NAME(CDuiImageBtnWnd, "imgbtn")
 public:
 	CDuiImageBtnWnd()
 	{
@@ -191,7 +191,7 @@ public:
 //
 class SOUI_EXP CDuiImageWnd : public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiImageWnd, "img")
+    SOUI_CLASS_NAME(CDuiImageWnd, "img")
 public:
     CDuiImageWnd();
 
@@ -212,20 +212,20 @@ protected:
     CDuiSkinBase *m_pSkin;
     //BOOL m_bCalc;
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, TRUE)
     DUIWIN_INT_ATTRIBUTE("sub", m_nSubImageID, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 };
 
 
 class SOUI_EXP CDuiAnimateImgWnd : public CDuiWindow, public ITimelineHandler
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiAnimateImgWnd, "animateimg")
+    SOUI_CLASS_NAME(CDuiAnimateImgWnd, "animateimg")
 public:
     CDuiAnimateImgWnd();
     virtual ~CDuiAnimateImgWnd() {}
@@ -244,17 +244,17 @@ protected:
 	void OnShowWindow(BOOL bShow, UINT nStatus);
 	void OnDestroy();
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
 		MSG_WM_PAINT(OnPaint)
 		MSG_WM_DESTROY(OnDestroy)
 		MSG_WM_SHOWWINDOW(OnShowWindow)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, TRUE)
     DUIWIN_UINT_ATTRIBUTE("speed", m_nSpeed, FALSE)
     DUIWIN_UINT_ATTRIBUTE("autostart", m_bAutoStart, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
 protected:
     CDuiSkinBase *m_pSkin;
@@ -272,7 +272,7 @@ protected:
 
 class SOUI_EXP CDuiProgress : public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiProgress, "progress")
+    SOUI_CLASS_NAME(CDuiProgress, "progress")
 public:
     CDuiProgress();
 
@@ -301,11 +301,11 @@ protected:
     CDuiSkinBase *m_pSkinBg;
     CDuiSkinBase *m_pSkinPos;
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_SKIN_ATTRIBUTE("bgskin", m_pSkinBg, TRUE)
     DUIWIN_SKIN_ATTRIBUTE("posskin", m_pSkinPos, TRUE)
     DUIWIN_INT_ATTRIBUTE("min", m_nMinValue, FALSE)
@@ -313,7 +313,7 @@ protected:
     DUIWIN_INT_ATTRIBUTE("value", m_nValue, FALSE)
     DUIWIN_UINT_ATTRIBUTE("vertical", m_bVertical, FALSE)
     DUIWIN_UINT_ATTRIBUTE("showpercent", m_bShowPercent, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 };
 
 
@@ -325,7 +325,7 @@ protected:
 //
 class SOUI_EXP CDuiLine : public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiLine, "hr")
+    SOUI_CLASS_NAME(CDuiLine, "hr")
 
 public:
 
@@ -344,7 +344,7 @@ protected:
 		HR_TILT,
 	}m_mode;
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("size", m_nLineSize, FALSE)
     DUIWIN_UINT_ATTRIBUTE("shadow", m_bLineShadow, FALSE)
     DUIWIN_COLOR_ATTRIBUTE("crshadow", m_crShadow, FALSE)
@@ -360,11 +360,11 @@ protected:
     DUIWIN_ENUM_VALUE("dashdot", PS_DASHDOT)         /* _._._._  */
     DUIWIN_ENUM_VALUE("dashdotdot", PS_DASHDOTDOT)   /* _.._.._  */
     DUIWIN_ENUM_END(m_nPenStyle)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -374,7 +374,7 @@ protected:
 //
 class SOUI_EXP CDuiCheckBox : public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiCheckBox, "check")
+    SOUI_CLASS_NAME(CDuiCheckBox, "check")
 
     enum
     {
@@ -416,17 +416,17 @@ protected:
 
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
 		DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
 		DUIWIN_SKIN_ATTRIBUTE("focusskin", m_pFocusSkin, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
 		MSG_WM_PAINT(OnPaint)
 		MSG_WM_LBUTTONDOWN(OnLButtonDown)
 		MSG_WM_LBUTTONUP(OnLButtonUp)
 		MSG_WM_KEYDOWN(OnKeyDown)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -437,7 +437,7 @@ protected:
 //
 class SOUI_EXP CDuiIconWnd : public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiIconWnd, "icon")
+    SOUI_CLASS_NAME(CDuiIconWnd, "icon")
 public:
     CDuiIconWnd();
 
@@ -458,14 +458,14 @@ protected:
     CDuiStringT m_strCurIconName;
     int m_nSize;
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_TSTRING_ATTRIBUTE("src", m_strIconName, FALSE)
     DUIWIN_INT_ATTRIBUTE("size", m_nSize, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -475,7 +475,7 @@ protected:
 //
 class SOUI_EXP CDuiRadioBox : public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiRadioBox, "radio")
+    SOUI_CLASS_NAME(CDuiRadioBox, "radio")
 
     enum
     {
@@ -517,22 +517,22 @@ protected:
 	void OnSetDuiFocus();
 
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
     DUIWIN_SKIN_ATTRIBUTE("focusskin", m_pFocusSkin, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
 	MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 };
 
 
 class SOUI_EXP CDuiToggle : public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiToggle, "togglectrl")
+    SOUI_CLASS_NAME(CDuiToggle, "togglectrl")
 public:
     CDuiToggle();
 
@@ -545,15 +545,15 @@ protected:
 	virtual CSize GetDesiredSize(LPRECT pRcContainer);
 	virtual BOOL NeedRedrawWhenStateChange(){return TRUE;}
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("toggled", m_bToggled, TRUE)
     DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, TRUE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
     MSG_WM_LBUTTONUP(OnLButtonUp)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 protected:
     BOOL m_bToggled;
 	CDuiSkinBase *m_pSkin;
@@ -562,7 +562,7 @@ protected:
 //<group crline1="b8d5e2" crline2="999999">group text</>
 class SOUI_EXP CDuiGroup : public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiGroup, "group")
+    SOUI_CLASS_NAME(CDuiGroup, "group")
 public:
     CDuiGroup();
 
@@ -571,15 +571,15 @@ protected:
     COLORREF m_crLine1,m_crLine2;
     int		 m_nRound;
 public:
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_COLOR_ATTRIBUTE("crline1", m_crLine1, FALSE)
     DUIWIN_COLOR_ATTRIBUTE("crline2", m_crLine2, FALSE)
     DUIWIN_INT_ATTRIBUTE("round",m_nRound,FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 };
 
 }//namespace SOUI

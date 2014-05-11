@@ -96,9 +96,9 @@ public:
     static BOOL ExtentBlt(IDuiImage *pImgDraw,BOOL bTile,HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,int nWidSrc,int nHeiSrc,BYTE byAlpha=0xFF);
     static void FrameDraw(HDC dc, IDuiImage *pImgDraw, const CRect &rcSour,const  CRect &rcDraw, CRect rcMargin, COLORREF crBg, UINT uDrawPart ,BOOL bTile,BYTE byAlpha=0xFF);
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_IMAGE_ATTRIBUTE("src", m_pDuiImg, TRUE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 protected:
 
     virtual void OnAttributeFinish(pugi::xml_node xmlNode)

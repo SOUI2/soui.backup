@@ -69,7 +69,7 @@ namespace SOUI
 	class CDuiCalendar : public CDuiWindow
 	{
 	public:
-		DUIOBJ_DECLARE_CLASS_NAME(CDuiCalendar, "calendar")
+		SOUI_CLASS_NAME(CDuiCalendar, "calendar")
 		CDuiCalendar(WORD iYear, WORD iMonth, WORD iDay);
 		CDuiCalendar();
 
@@ -99,7 +99,7 @@ namespace SOUI
 
 		bool OnTodayClick(CDuiWindow * pSender, LPDUINMHDR pNmhdr);
 
-		DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+		SOUO_ATTRIBUTES_BEGIN()
 			DUIWIN_INT_ATTRIBUTE("titleHeight", m_nTitleHei, FALSE)
 			DUIWIN_INT_ATTRIBUTE("footerHeight", m_nFooterHei, FALSE)
 			DUIWIN_COLOR_ATTRIBUTE("crWeekend", m_crWeekend, FALSE)
@@ -114,14 +114,14 @@ namespace SOUI
 			DUIWIN_TSTRING_ATTRIBUTE("title-5", m_strTitle[4], FALSE)
 			DUIWIN_TSTRING_ATTRIBUTE("title-6", m_strTitle[5], FALSE)
 			DUIWIN_TSTRING_ATTRIBUTE("title-7", m_strTitle[6], FALSE)
-		DUIWIN_DECLARE_ATTRIBUTES_END()
+		SOUI_ATTRIBUTES_END()
 
-		DUIWIN_BEGIN_MSG_MAP()
+		WND_MSG_MAP_BEGIN()
 			MSG_WM_PAINT(OnPaint)
 			MSG_WM_LBUTTONDOWN(OnLButtonDown)
 			MSG_WM_MOUSEMOVE(OnMouseMove)
 			MSG_WM_MOUSELEAVE(OnMouseLeave)
-		DUIWIN_END_MSG_MAP()
+		WND_MSG_MAP_END()
 	protected:
 		int				m_nTitleHei;	//表头高度
 		int				m_nFooterHei;	//表尾高度

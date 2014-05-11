@@ -11,7 +11,7 @@ namespace SOUI
 	{
 		friend class CDuiAxContainerImpl;
 	public:
-		DUIOBJ_DECLARE_CLASS_NAME(CDuiActiveX, "activex")
+		SOUI_CLASS_NAME(CDuiActiveX, "activex")
 		explicit CDuiActiveX();
 		virtual ~CDuiActiveX();
 
@@ -31,20 +31,20 @@ namespace SOUI
 		virtual BOOL IsTabStop(){return TRUE;}
 
 		HRESULT OnAttrClsid(const CDuiStringA & strValue,BOOL bLoading);
-		DUIWIN_BEGIN_MSG_MAP()
+		WND_MSG_MAP_BEGIN()
 			MSG_WM_PAINT(OnPaint)
 			MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
 			MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
 			MSG_WM_CREATE(OnCreate)
 			MSG_WM_SIZE(OnSize)
 			MSG_WM_SHOWWINDOW(OnShowWindow)
-		DUIWIN_END_MSG_MAP()
+		WND_MSG_MAP_END()
 
-		DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+		SOUO_ATTRIBUTES_BEGIN()
 			DUIWIN_CUSTOM_ATTRIBUTE("clsid",OnAttrClsid)
 			DUIWIN_DWORD_ATTRIBUTE("clsctx",m_clsCtx,FALSE)
 			DUIWIN_UINT_ATTRIBUTE("delayinit",m_bDelayInit,FALSE)
-		DUIWIN_DECLARE_ATTRIBUTES_END()
+		SOUI_ATTRIBUTES_END()
 
 		virtual void OnInitActiveXFinished(){}
 
@@ -61,7 +61,7 @@ namespace SOUI
 	class SOUI_EXP CDuiFlashCtrl : public CDuiActiveX
 	{
 	public:
-		DUIOBJ_DECLARE_CLASS_NAME(CDuiFlashCtrl, "flash")
+		SOUI_CLASS_NAME(CDuiFlashCtrl, "flash")
 		CDuiFlashCtrl();
 
 		ShockwaveFlashObjects::IShockwaveFlash* GetFlashInterface()  const
@@ -81,9 +81,9 @@ namespace SOUI
 
 		}
 
-		DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+		SOUO_ATTRIBUTES_BEGIN()
 			DUIWIN_WSTRING_ATTRIBUTE("url",m_strUrl,FALSE)
-		DUIWIN_DECLARE_ATTRIBUTES_END()
+		SOUI_ATTRIBUTES_END()
 
 		CDuiStringW m_strUrl;
 
@@ -94,7 +94,7 @@ namespace SOUI
 	class SOUI_EXP CDuiMediaPlayer :public CDuiActiveX
 	{
 	public:
-		DUIOBJ_DECLARE_CLASS_NAME(CDuiMediaPlayer, "mediaplayer")
+		SOUI_CLASS_NAME(CDuiMediaPlayer, "mediaplayer")
 		CDuiMediaPlayer();
 
 		WMPLib::IWMPPlayer4* GetMediaPlayerInterface()  const
@@ -113,9 +113,9 @@ namespace SOUI
 
 		virtual void OnAxActivate(IUnknown *pUnknwn);
 
-		DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+		SOUO_ATTRIBUTES_BEGIN()
 			DUIWIN_WSTRING_ATTRIBUTE("url",m_strUrl,FALSE)
-		DUIWIN_DECLARE_ATTRIBUTES_END()
+		SOUI_ATTRIBUTES_END()
 
 		CDuiStringW m_strUrl;
 		CDuiComQIPtr<WMPLib::IWMPPlayer4> wmp_;

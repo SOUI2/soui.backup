@@ -9,7 +9,7 @@ class SOUI_EXP CDuiHotKeyCtrl
 	: public CDuiWindow
 	, public CAccelerator
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiHotKeyCtrl, "hotkey")
+    SOUI_CLASS_NAME(CDuiHotKeyCtrl, "hotkey")
 public:
     CDuiHotKeyCtrl(void);
     virtual ~CDuiHotKeyCtrl(void);
@@ -20,12 +20,12 @@ public:
 
     void GetHotKey(WORD & vKey,WORD &wModifers);
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_WORD_ATTRIBUTE("invalidcomb",m_wInvalidComb,FALSE)
     DUIWIN_WORD_ATTRIBUTE("defcombkey",m_wInvalidModifier,FALSE)
     DUIWIN_WORD_ATTRIBUTE("combkey",m_wModifier,FALSE)
     DUIWIN_WORD_ATTRIBUTE("hotkey",m_wVK,FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
 protected:
     virtual UINT OnGetDuiCode()
@@ -57,7 +57,7 @@ protected:
 
 	LRESULT OnWindowPosChanged(LPRECT lpRcContainer);
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_CREATE(OnCreate)
     MSG_WM_PAINT(OnPaint)
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
@@ -68,7 +68,7 @@ protected:
     MSG_WM_SYSKEYDOWN(OnSysKeyDown)
     MSG_WM_SYSKEYUP(OnSysKeyUp)
 	MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
     WORD 	m_wInvalidComb;		//无效的组合键
     WORD 	m_wInvalidModifier; //对无效组合键的替换方案,默认方案
 

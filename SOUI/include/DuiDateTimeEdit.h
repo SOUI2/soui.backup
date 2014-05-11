@@ -12,7 +12,7 @@ namespace SOUI{
 //===========================================================================
 class SOUI_EXP CDuiMaskEdit : public CDuiEdit
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiMaskEdit, "maskedit")
+    SOUI_CLASS_NAME(CDuiMaskEdit, "maskedit")
 
 public:
     CDuiMaskEdit();
@@ -88,19 +88,19 @@ protected:
     CDuiStringT         m_strLiteral;       // Literal format that restricts where the user can enter text.
 
 protected:
-   DUIWIN_BEGIN_MSG_MAP()
+   WND_MSG_MAP_BEGIN()
         MSG_WM_CREATE(OnCreate)
         MSG_WM_CHAR(OnChar)
         MSG_WM_KEYDOWN(OnKeyDown)
         MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-   DUIWIN_END_MSG_MAP()
+   WND_MSG_MAP_END()
 };
 
 //===========================================================================
 //  CDxDateEdit
 class SOUI_EXP CDuiDateEdit : public CDuiMaskEdit
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiDateEdit, "dateedit")
+    SOUI_CLASS_NAME(CDuiDateEdit, "dateedit")
 
 public:
     CDuiDateEdit();
@@ -114,16 +114,16 @@ protected:
     int             OnCreate(LPVOID);
 
 protected:
-   DUIWIN_BEGIN_MSG_MAP()
+   WND_MSG_MAP_BEGIN()
         MSG_WM_CREATE(OnCreate)
-   DUIWIN_END_MSG_MAP()
+   WND_MSG_MAP_END()
 };
 
 //===========================================================================
 //  CDxTimeEdit
 class SOUI_EXP CDuiTimeEdit : public CDuiDateEdit
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiTimeEdit, "timeedit")
+    SOUI_CLASS_NAME(CDuiTimeEdit, "timeedit")
 
 public:
     CDuiTimeEdit();
@@ -146,9 +146,9 @@ protected:
     int             OnCreate(LPVOID);
 
 protected:
-   DUIWIN_BEGIN_MSG_MAP()
+   WND_MSG_MAP_BEGIN()
         MSG_WM_CREATE(OnCreate)
-   DUIWIN_END_MSG_MAP()
+   WND_MSG_MAP_END()
 };
 
 //////////////////////////////////////////////////////////////////////

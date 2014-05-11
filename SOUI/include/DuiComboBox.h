@@ -28,11 +28,11 @@ protected:
 
 	virtual LRESULT DuiNotify(LPDUINMHDR pnms);
 
-	DUIWIN_BEGIN_MSG_MAP()
+	WND_MSG_MAP_BEGIN()
 		MSG_WM_MOUSEHOVER(OnMouseHover)
 		MSG_WM_MOUSELEAVE(OnMouseLeave)
 		MSG_WM_KEYDOWN(OnKeyDown)
-	DUIWIN_END_MSG_MAP()
+	WND_MSG_MAP_END()
 };
 
 class SOUI_EXP CDuiComboBoxBase 
@@ -81,15 +81,15 @@ protected:
 	UINT OnGetDuiCode();
 	BOOL IsTabStop();
 
-	DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+	SOUO_ATTRIBUTES_BEGIN()
 		DUIWIN_INT_ATTRIBUTE("dropdown", m_bDropdown, FALSE)
 		DUIWIN_INT_ATTRIBUTE("dropheight", m_nDropHeight, FALSE)
  		DUIWIN_INT_ATTRIBUTE("cursel", m_iInitSel, FALSE)
 		DUIWIN_SKIN_ATTRIBUTE("btnskin", m_pSkinBtn, FALSE)
 		DUIWIN_INT_ATTRIBUTE("animtime", m_iAnimTime, FALSE)
-	DUIWIN_DECLARE_ATTRIBUTES_END()
+	SOUI_ATTRIBUTES_END()
 
-	DUIWIN_BEGIN_MSG_MAP()
+	WND_MSG_MAP_BEGIN()
 		MSG_WM_PAINT(OnPaint)
 		MSG_WM_LBUTTONDOWN(OnLButtonDown)		
 		MSG_WM_MOUSEMOVE(OnMouseMove)
@@ -97,7 +97,7 @@ protected:
 		MSG_WM_KEYDOWN(OnKeyDown) 
 		MSG_WM_CHAR(OnChar)
 		MSG_WM_DESTROY(OnDestroy)
-	DUIWIN_END_MSG_MAP()
+	WND_MSG_MAP_END()
 
 protected:
 	CDuiStringT GetEditText()
@@ -130,7 +130,7 @@ protected:
 
 class SOUI_EXP CDuiComboBox : public CDuiComboBoxBase
 {
-	DUIOBJ_DECLARE_CLASS_NAME(CDuiComboBox, "combobox")
+	SOUI_CLASS_NAME(CDuiComboBox, "combobox")
 public:
 	CDuiComboBox();
 	virtual ~CDuiComboBox();
@@ -218,7 +218,7 @@ protected:
 
 class SOUI_EXP CDuiComboBoxEx : public CDuiComboBoxBase
 {
-	DUIOBJ_DECLARE_CLASS_NAME(CDuiComboBox, "comboboxex")
+	SOUI_CLASS_NAME(CDuiComboBox, "comboboxex")
 public:
 	CDuiComboBoxEx();
 	virtual ~CDuiComboBoxEx();
@@ -315,10 +315,10 @@ protected:
 
 protected:
 
-	DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+	SOUO_ATTRIBUTES_BEGIN()
 		DUIWIN_UINT_ATTRIBUTE("id_text", m_uTxtID, FALSE)
 		DUIWIN_UINT_ATTRIBUTE("id_icon", m_uIconID, FALSE)
-	DUIWIN_DECLARE_ATTRIBUTES_END()
+	SOUI_ATTRIBUTES_END()
 
 	CDuiListBoxEx *m_pListBox;
 	UINT	m_uTxtID,m_uIconID;

@@ -30,7 +30,7 @@ class SOUI_EXP CDuiListBox :public CDuiScrollView
 {
 public:
 
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiListBox, "listbox")
+    SOUI_CLASS_NAME(CDuiListBox, "listbox")
 
     CDuiListBox();
 
@@ -140,7 +140,7 @@ protected:
 
 public:
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("scrollspeed", m_iScrollSpeed, FALSE)
     DUIWIN_INT_ATTRIBUTE("itemheight", m_nItemHei, FALSE)
     DUIWIN_SKIN_ATTRIBUTE("itemskin", m_pItemSkin, TRUE)
@@ -155,9 +155,9 @@ public:
     DUIWIN_INT_ATTRIBUTE("text-x", m_ptText.x, FALSE)
     DUIWIN_INT_ATTRIBUTE("text-y", m_ptText.y, FALSE)
     DUIWIN_INT_ATTRIBUTE("hottrack",m_bHotTrack,FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
 		MSG_WM_DESTROY(OnDestroy)
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_PAINT(OnPaint)
@@ -168,7 +168,7 @@ public:
 		MSG_WM_KEYDOWN(OnKeyDown)
 		MSG_WM_CHAR(OnChar)
 		MSG_WM_SHOWWINDOW(OnShowWindow)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 };
 
 }//namespace SOUI

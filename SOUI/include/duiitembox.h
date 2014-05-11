@@ -15,7 +15,7 @@ namespace SOUI
 class SOUI_EXP CDuiItemBox
     : public CDuiScrollView
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiItemBox, "itembox")
+    SOUI_CLASS_NAME(CDuiItemBox, "itembox")
 public:
     CDuiItemBox();
     virtual ~CDuiItemBox() {}
@@ -62,16 +62,16 @@ protected:
 
     virtual BOOL LoadChildren(pugi::xml_node xmlNode);
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("itemwid", m_nItemWid, TRUE)
     DUIWIN_INT_ATTRIBUTE("itemhei", m_nItemHei, TRUE)
     DUIWIN_INT_ATTRIBUTE("sepwid", m_nSepWid, TRUE)
     DUIWIN_INT_ATTRIBUTE("sephei", m_nSepHei, TRUE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_SIZE(OnSize)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 
 };
 

@@ -8,7 +8,7 @@
 
 
 // Attribute Declaration
-#define DUIWIN_DECLARE_ATTRIBUTES_BEGIN()                            \
+#define SOUO_ATTRIBUTES_BEGIN()                            \
 public:                                                             \
 	virtual HRESULT SetAttribute(                                   \
 	const CDuiStringA & strAttribName,                                     \
@@ -18,7 +18,7 @@ public:                                                             \
 	HRESULT hRet = E_FAIL;										\
  
 
-#define DUIWIN_DECLARE_ATTRIBUTES_END()                              \
+#define SOUI_ATTRIBUTES_END()                              \
 	return __super::SetAttribute(                       \
 	strAttribName,         \
 	strValue,              \

@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 // DuiObject Class Name Declaration
-#define DUIOBJ_DECLARE_CLASS_NAME(theclass, classname)   \
+#define SOUI_CLASS_NAME(theclass, classname)   \
 public:                                                 \
     static BOOL CheckAndNew(LPCSTR lpszName,void **ppRet)       \
     {                                                   \

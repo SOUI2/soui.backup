@@ -30,7 +30,7 @@ namespace SOUI
 
 	class SOUI_EXP CDuiHeaderCtrl: public CDuiWindow
 	{
-		DUIOBJ_DECLARE_CLASS_NAME(CDuiHeaderCtrl, "header")
+		SOUI_CLASS_NAME(CDuiHeaderCtrl, "header")
 	public:
 		CDuiHeaderCtrl(void);
 		~CDuiHeaderCtrl(void);
@@ -45,13 +45,13 @@ namespace SOUI
 		BOOL DeleteItem(int iItem);
 		void DeleteAllItems();
 
-		DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+		SOUO_ATTRIBUTES_BEGIN()
 			DUIWIN_SKIN_ATTRIBUTE("itemSkin",m_pSkinItem,FALSE)
 			DUIWIN_SKIN_ATTRIBUTE("sortSkin",m_pSkinSort,FALSE)
 			DUIWIN_INT_ATTRIBUTE("fixWidth",m_bFixWidth,FALSE)
 			DUIWIN_INT_ATTRIBUTE("itemSwapEnable",m_bItemSwapEnable,FALSE)
 			DUIWIN_INT_ATTRIBUTE("sortHeader",m_bSortHeader,FALSE)
-		DUIWIN_DECLARE_ATTRIBUTES_END()
+		SOUI_ATTRIBUTES_END()
 	protected:
 		virtual BOOL LoadChildren(pugi::xml_node xmlNode);
 		virtual BOOL OnDuiSetCursor(const CPoint &pt);
@@ -78,14 +78,14 @@ namespace SOUI
 		void OnMouseLeave();
 		void OnDestroy();
 		
-		DUIWIN_BEGIN_MSG_MAP()
+		WND_MSG_MAP_BEGIN()
 			MSG_WM_PAINT(OnPaint)
 			MSG_WM_LBUTTONDOWN(OnLButtonDown)
 			MSG_WM_LBUTTONUP(OnLButtonUp)
 			MSG_WM_MOUSEMOVE(OnMouseMove)
 			MSG_WM_MOUSELEAVE(OnMouseLeave)
 			MSG_WM_DESTROY(OnDestroy)
-		DUIWIN_END_MSG_MAP()
+		WND_MSG_MAP_END()
 
 		CDuiSkinBase *	m_pSkinItem;
 		CDuiSkinBase *	m_pSkinSort;

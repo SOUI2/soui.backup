@@ -15,7 +15,7 @@ namespace SOUI
 
 class SOUI_EXP CDuiTab : public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiTab, "tab")
+    SOUI_CLASS_NAME(CDuiTab, "tab")
 
 public:
     CDuiTab()
@@ -42,9 +42,9 @@ public:
 protected:
 
     CDuiStringT m_strTitle;
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_TSTRING_ATTRIBUTE("title", m_strTitle, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 };
 
 typedef enum tagSLIDEDIR
@@ -59,7 +59,7 @@ class SOUI_EXP CDuiTabCtrl : public CDuiWindow
 {
 	friend class CDuiTabSlider;
 
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiTabCtrl, "tabctrl")
+    SOUI_CLASS_NAME(CDuiTabCtrl, "tabctrl")
 
 protected:
     int m_nHoverTabItem;
@@ -146,16 +146,16 @@ protected:
 
     void OnDestroy();
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
     MSG_WM_DESTROY(OnDestroy)
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
     MSG_WM_MOUSEMOVE(OnMouseMove)
     MSG_WM_MOUSELEAVE(OnMouseLeave)
 	MSG_WM_KEYDOWN(OnKeyDown)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("cursel", m_nCurrentPage, FALSE)
     DUIWIN_INT_ATTRIBUTE("tabwidth", m_nTabWidth, FALSE)
     DUIWIN_INT_ATTRIBUTE("tabheight", m_nTabHeight, FALSE)
@@ -175,7 +175,7 @@ protected:
     DUIWIN_ENUM_VALUE("left", AlignLeft)
     DUIWIN_ENUM_END(m_nTabAlign)
     DUIWIN_INT_ATTRIBUTE("animatesteps",m_nAnimateSteps,FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 };
 
 }//namespace SOUI
