@@ -1,0 +1,29 @@
+﻿<style>
+  <class name="cls_dlg_frame" skin="dlg_frame" font="0000" crtext="FFFFFF" x-margin="0"/>
+
+	<class name="cls_btn_link"    cursor="hand" crhover="0A84D2" />
+	<!--定义文字按钮的样式-->
+	<class name="cls_btn_weblink" cursor="hand" crtext="1e78d5" crhover="1e78d5" hoverfont="0002" />
+
+	<class name="cls_txt_red"     font="0004:宋体"  crtext="FF0000" />
+	<!--定义白色粗体宋体-->
+	<class name="cls_txt_black"   font="0004:宋体"  crtext="000000" />
+	<!--定义黑色粗体宋体-->
+	<class name="cls_txt_white"   font="0004:宋体"  crtext="FFFFFF" />
+	<!--定义白色粗体宋体-->
+	<class name="Arial_txt_white_center"   font="0004:Arial" textmode="25" crtext="FFFFFF" />
+
+	<class name="normalbtn" skin="normalbtn" font="0000" crtext="385e8b" crdisabled="91a7c0" textmode="25" cursor="hand" x-margin="0"/>
+
+	<class name="toptext" textmode="20" />
+	<class name="vcentertext" textmode="24"/>
+	<class name="rightvcentertext" textmode="26"/>
+	<class name="centertext" textmode="25"/>
+	<class name="righttext" textmode="22"/>
+	<class name="Arial_txt_white"   font="0000:Arial" textmode="25" crtext="FCF5F1" />
+	<class name="Arial_txt_gray"   font="0000:Arial" textmode="25" crtext="565656" />
+  
+	<class name="linkimage" cursor="hand"/>
+
+  <class name="cls_edit" x-margin="2" y-margin="2" ncskin="skin_editnc"/>
+</style>

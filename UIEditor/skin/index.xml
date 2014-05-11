@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--XML 资源，name and id:将写入到resource.h中的define,type and file :将写入到rc2的资源定义,layer:窗口定义XML，resbuilder使用它来自动为对应的XML生成控件ID-->
+<resid type="XML" name="IDR_DUI_INIT"  file="xml\init.xml"  />
+<resid type="XML" name="IDR_DUI_MSGBOX"   file="xml\dlg_msgbox.xml"  />
+<resid type="XML" name="IDR_DUI_MAIN_DIALOG"   layer="1" file="xml\dlg_main.xml"/>
+<resid type="XML" name="IDR_DUI_ADDFILE_DIALOG"   layer="1" file="xml\dlg_newfile.xml"/>
+<resid type="XML" name="IDR_DUI_ADDSKIN_DIALOG"   layer="1" file="xml\dlg_newskin.xml"/>
+
+<resid type="IMGX" name="IDP_MAIN_DLG_FRAME"    file="image\dlg_bg_frame.png"  />
+<resid type="IMGX" name="IDP_BTN_WND_CHECKBOX"     file="image\btn_wnd_checkbox.png"/>
+<resid type="IMGX" name="IDP_BTN_WND_RADIO"  file="image\btn_wnd_radio.png"   />
+<resid type="IMGX" name="IDP_FOCUS_CHECK"    file="image\focus_checkbox.png"/>
+<resid type="IMGX" name="IDP_FOCUS_RADIO"    file="image\focus_radio.png"   />
+<resid type="IMGX" name="IDP_BORDER_EDIT"    file="image\img_edit_border.png"   />
+
+
+<resid type="IMGX" name="IDP_BTN_SYS_CLOSE"  file="image\btn_sys_close.png"    />
+<resid type="IMGX" name="IDP_BTN_SYS_MINIMIZE"  file="image\btn_sys_minimize.png" />
+<resid type="IMGX" name="IDP_BTN_SYS_MAXIMIZE"  file="image\btn_sys_maximize.png" />
+<resid type="IMGX" name="IDP_BTN_SYS_RESOTRE"  file="image\btn_sys_restore.png" />
+<resid type="IMGX" name="IDP_SCROLL"   file="image\scrollbar.bmp" />
+
+<resid type="IMGX" name="IDP_SPLIT_VERT"  file="image\split_vert.png" />
+<resid type="IMGX" name="IDP_SPLIT_HORZ"  file="image\split_horz.png" />
+<resid type="IMGX" name="IDP_BTN_YELLOW"  file="image\btn_normal_yellow.png" />
+<resid type="IMGX" name="IDP_TAB_COMMON"  file="image\tab_common.png" />
+
+<resid type="IMGX" name="IDP_DROPBTN"  file="image\dropbtn.png" />
+

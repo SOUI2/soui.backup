@@ -1,0 +1,51 @@
+<skins>
+  <imgframe name="dlg_frame" owner="DUI-DEMO"   src="IDP_MAIN_DLG_FRAME" left="5" right="5" top="40" bottom="40"/>
+  
+	<imglst name="btncheckbox"         src="IDP_BTN_WND_CHECKBOX" subwidth="15"  />
+	<imglst name="btnRadio"            src="IDP_BTN_WND_RADIO" subwidth="15"  />
+  <imglst name="focuscheckbox" src="IDP_FOCUS_CHECK"/>
+  <imglst name="focusRadio" src="IDP_FOCUS_RADIO"/>
+  
+	<imglst name="btn_sys_close"    src="IDP_BTN_SYS_CLOSE" subwidth="38" />
+	<imglst name="btn_sys_minimize" src="IDP_BTN_SYS_MINIMIZE" subwidth="36" />
+  <imglst name="btn_sys_maximize" src="IDP_BTN_SYS_MAXIMIZE" subwidth="36" />
+  <imglst name="btn_sys_restore" src="IDP_BTN_SYS_RESOTRE" subwidth="36" />
+
+  <imglst name="tabskin_default" src="IDP_TAB_COMMON" subwidth="94"/>
+  
+	<button name="normalbtn" border="7D9EBC" bg="FBFCFD" bgup="FEFEFE" 
+			bgdown="C6E2FD" bguphover="FEFEFE" bgdownhover="DBEDFE" 
+			bguppush="C6E2FD" bgdownpush="FEFEFE"/>
+
+  <scrollbar name="sb_common" src="IDP_SCROLL" margin="3"/>
+  <vscrollbar name="sb_vertical" src="IDP_VSCROLLBAR" margin="3"/>
+
+  <imgframe name="skin_editnc" src="IDP_EDIT_BORDER" subwidth="26" left="2" top="2"/>
+  <imgframe name="skin_split_vert" src="IDP_SPLIT_VERT" top="20" bottom="10"/>
+  <imgframe name="skin_split_horz" src="IDP_SPLIT_HORZ" left="20" right="10"/>
+  <imgframe name="comboboxbtn" src="IDP_DROPBTN" subwidth="16"/>
+  <imglst name="icons" src="IDP_ICONS" subwidth="32"/>
+  <imglst name="skin_menuicon" src="IDP_ICONS_SMALL" subwidth="18"/>
+  <imgframe name="skin_menuitem" src="IDP_MENUSKIN" subwidth="100" left="35" right="5"/>
+  <imglst name="skin_menusplit" src="IDP_MENUSPLIT"/>
+  <imgframe name="skin_menubg" src="IDP_MENUBG" left="30" top="5" right="5"/>
+  <imglst name="skin_menucheck" src="IDP_MENUCHECK" subwidth="16"/>
+  <border name="skin_menuborder" src="IDP_MENUBORDER" left="2" top="2" border="2,2,2,2" key="FF00FF" alpha="100"/>
+  <imglst name="skin_webbtn_back" src="IDP_WEBBTN_BACK" subwidth="27"/>
+  <imglst name="skin_webbtn_forward" src="IDP_WEBBTN_FORWARD" subwidth="27"/>
+  <imglst name="skin_webbtn_refresh" src="IDP_WEBBTN_REFRESH" subwidth="27"/>
+  <imglst name="bmpmask" src="IDP_BMPMASK">
+    <imgparam mask="FF00FF"/>
+  </imglst>
+  <gif name="face0" src="IDP_GIF_FACE0"/>  
+  <imglst name="TreeToggle"					src="IDR_TREE_TOGGLE" subwidth="17"/>
+  <imglst name="TreeCheckBox"				src="IDR_TREE_CHECKBOX" subwidth="17"/>
+  <imglst name="TreeIcon"						src="IDR_TREE_ICON" subwidth="16"/> 
+  <imglst name="icon3"							src="IDP_ICON3"  subwidth="15"/>
+
+  <imglst name="slidethumb" src="IDP_SLIDETHUMB" subwidth="18"/>
+  <imgframe name="prog_bar" src="IDP_PROG_BAR" left="3"/>
+  <imgframe name="prog_bg" src="IDP_PROG_BG" left="3"/>
+  <imgframe name="btn_yellow" src="IDP_BTN_YELLOW" left="3" states="4"/>
+
+</skins>
