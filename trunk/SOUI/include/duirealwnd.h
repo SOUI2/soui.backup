@@ -26,7 +26,7 @@ public:
 
 class SOUI_EXP CDuiRealWnd : public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiRealWnd, "realwnd")
+    SOUI_CLASS_NAME(CDuiRealWnd, "realwnd")
 public:
     CDuiRealWnd();
 
@@ -49,13 +49,13 @@ public:
         return m_lpData;
     }
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_TSTRING_ATTRIBUTE("wndclass", m_realwndParam.m_strClassName, FALSE)
     DUIWIN_TSTRING_ATTRIBUTE("wndname", m_realwndParam.m_strWindowName, FALSE)
     DUIWIN_HEX_ATTRIBUTE("style", m_realwndParam.m_dwStyle, FALSE)
     DUIWIN_HEX_ATTRIBUTE("exstyle", m_realwndParam.m_dwExStyle, FALSE)
     DUIWIN_INT_ATTRIBUTE("init",m_bInit,FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 protected:
     virtual BOOL NeedRedrawWhenStateChange();
     virtual BOOL Load(pugi::xml_node xmlNode);
@@ -74,12 +74,12 @@ protected:
     BOOL InitRealWnd();
 
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
     MSG_WM_DESTROY(OnDestroy)
     MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
     MSG_WM_SHOWWINDOW(OnShowWindow)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 
     CDuiRealWndParam	m_realwndParam;
     BOOL	m_bInit;

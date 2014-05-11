@@ -31,7 +31,7 @@ class SOUI_EXP CDuiTreeBox
     , public IDuiItemContainer
     , protected CSTree<CDuiTreeItem *>
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiTreeBox, "treebox")
+    SOUI_CLASS_NAME(CDuiTreeBox, "treebox")
 public:
     CDuiTreeBox();
 
@@ -126,16 +126,16 @@ protected:
 	BOOL m_bItemRedrawDelay;
 	pugi::xml_document m_xmlSwitch;
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
 		DUIWIN_INT_ATTRIBUTE("indent", m_nIndent, TRUE)
 		DUIWIN_INT_ATTRIBUTE("itemhei", m_nItemHei, TRUE)
 		DUIWIN_SKIN_ATTRIBUTE("itemskin", m_pItemSkin, TRUE)
 		DUIWIN_COLOR_ATTRIBUTE("critembg",m_crItemBg,FALSE)
 		DUIWIN_COLOR_ATTRIBUTE("critemselbg",m_crItemSelBg,FALSE)
 		DUIWIN_INT_ATTRIBUTE("itemredrawdelay", m_bItemRedrawDelay, TRUE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
 		MSG_WM_PAINT(OnPaint)
 		MSG_WM_NCCALCSIZE(OnNcCalcSize)
 		MSG_WM_DESTROY(OnDestroy)
@@ -148,7 +148,7 @@ protected:
 		MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
 		MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
 		MESSAGE_HANDLER_EX(WM_IME_CHAR,OnKeyEvent)
-   DUIWIN_END_MSG_MAP()
+   WND_MSG_MAP_END()
 };
 
 }//namespace SOUI

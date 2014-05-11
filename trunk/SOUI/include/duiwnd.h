@@ -104,7 +104,7 @@ class SOUI_EXP CDuiWindow : public CDuiObject
 	, public CDuiEventSet
     , public CDuiRef
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiWindow, "window")
+    SOUI_CLASS_NAME(CDuiWindow, "window")
 	friend class CDuiLayout;
 public:
     CDuiWindow();
@@ -543,7 +543,7 @@ public:
 protected:
     BOOL m_bMsgHandled;
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
 		DUIWIN_SKIN_ATTRIBUTE("skin", m_pBgSkin, TRUE)//直接获得皮肤对象
 		DUIWIN_SKIN_ATTRIBUTE("ncskin", m_pNcSkin, TRUE)//直接获得皮肤对象
 		DUIWIN_STRING_ATTRIBUTE("name",m_strName,FALSE)
@@ -570,7 +570,7 @@ protected:
 			DUIWIN_ENUM_VALUE("rightbottom",POS2_RIGHTBOTTOM)
 		DUIWIN_ENUM_END(m_dlgpos.pos2Type)
 		DUIWIN_INT_ATTRIBUTE("alpha",m_byAlpha,TRUE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
 protected:
 	LRESULT NotifyCommand();
@@ -694,7 +694,7 @@ protected:
     HRESULT OnAttributePosition(const CDuiStringA& strValue, BOOL bLoading);
     HRESULT OnAttributeState(const CDuiStringA& strValue, BOOL bLoading);
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
 		MSG_WM_PAINT(OnPaint)
 		MSG_WM_NCPAINT_EX(OnNcPaint)
@@ -712,6 +712,6 @@ protected:
 		MSG_WM_MOUSEWHEEL(OnMouseWheel)
 		MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
 		MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
-    DUIWIN_END_MSG_MAP_BASE()
+    WND_MSG_MAP_END_BASE()
 };
 }//namespace SOUI

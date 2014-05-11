@@ -35,7 +35,7 @@ enum
 
 class SOUI_EXP CDuiSkinImgList: public CDuiSkinBase
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiSkinImgList, "imglst")
+    SOUI_CLASS_NAME(CDuiSkinImgList, "imglst")
 
 public:
     CDuiSkinImgList();
@@ -82,18 +82,18 @@ protected:
 	CMemDC * m_memdc;	
 	CSize  m_szTarget;
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("subwidth", m_lSubImageWidth, TRUE)
     DUIWIN_INT_ATTRIBUTE("tile", m_bTile, TRUE)
 	DUIWIN_INT_ATTRIBUTE("vertical", m_bVertical, TRUE)
 	DUIWIN_INT_ATTRIBUTE("states",m_nStates,TRUE)
 	DUIWIN_INT_ATTRIBUTE("cache",m_bCache,TRUE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 };
 
 class SOUI_EXP CDuiSkinImgFrame : public CDuiSkinImgList
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiSkinImgFrame, "imgframe")
+    SOUI_CLASS_NAME(CDuiSkinImgFrame, "imgframe")
 
 public:
     CDuiSkinImgFrame();
@@ -118,7 +118,7 @@ protected:
     COLORREF m_crBg;
     UINT m_uDrawPart;
 public:
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_COLOR_ATTRIBUTE("crbg", m_crBg, TRUE)
     DUIWIN_INT_ATTRIBUTE("left", m_rcMargin.left, TRUE)
     DUIWIN_INT_ATTRIBUTE("top", m_rcMargin.top, TRUE)
@@ -143,13 +143,13 @@ public:
 		DUIWIN_ENUM_VALUE("bottomcenter", Frame_Part_BottomCenter)
 		DUIWIN_ENUM_VALUE("bottomright", Frame_Part_BottomRight)
     DUIWIN_ENUM_END(m_uDrawPart)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 };
 
 
 class SOUI_EXP CDuiSkinButton : public CDuiSkinBase
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiSkinButton, "button")
+    SOUI_CLASS_NAME(CDuiSkinButton, "button")
 
 	enum{
 		ST_NORMAL=0,
@@ -175,7 +175,7 @@ protected:
 	COLORREF	m_crUp[4];
 	COLORREF	m_crDown[4];
 public:
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
 		DUIWIN_COLOR_ATTRIBUTE("border", m_crBorder, TRUE)
 		DUIWIN_COLOR_ATTRIBUTE("bgup", m_crUp[ST_NORMAL], TRUE)
 		DUIWIN_COLOR_ATTRIBUTE("bgdown", m_crDown[ST_NORMAL], TRUE)
@@ -185,7 +185,7 @@ public:
 		DUIWIN_COLOR_ATTRIBUTE("bgdownpush", m_crDown[ST_PUSHDOWN], TRUE)
 		DUIWIN_COLOR_ATTRIBUTE("bgupdisable", m_crUp[ST_DISABLE], TRUE)
 		DUIWIN_COLOR_ATTRIBUTE("bgdowndisable", m_crDown[ST_DISABLE], TRUE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 };
 
 class SOUI_EXP CDuiSkinGradation  : public CDuiSkinBase
@@ -196,7 +196,7 @@ class SOUI_EXP CDuiSkinGradation  : public CDuiSkinBase
 		DIR_HORZ,
 	};
 
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiSkinGradation, "gradation")
+    SOUI_CLASS_NAME(CDuiSkinGradation, "gradation")
 public:
     CDuiSkinGradation();
 
@@ -222,14 +222,14 @@ protected:
     COLORREF m_crTo;
     GRA_DIR     m_uDirection;
 public:
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_COLOR_ATTRIBUTE("from", m_crFrom, TRUE)
     DUIWIN_COLOR_ATTRIBUTE("to", m_crTo, TRUE)
     DUIWIN_ENUM_ATTRIBUTE("dir", GRA_DIR, TRUE)
 		DUIWIN_ENUM_VALUE("horz", DIR_HORZ)
 		DUIWIN_ENUM_VALUE("vert", DIR_VERT)
     DUIWIN_ENUM_END(m_uDirection)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 };
 
 enum SBSTATE{
@@ -248,7 +248,7 @@ enum SBSTATE{
 
 class SOUI_EXP CDuiScrollbarSkin : public CDuiSkinImgFrame
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiScrollbarSkin, "scrollbar")
+    SOUI_CLASS_NAME(CDuiScrollbarSkin, "scrollbar")
 
 public:
 
@@ -263,11 +263,11 @@ public:
 		return m_pDuiImg->GetWidth()/9;
 	}
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
 		DUIWIN_INT_ATTRIBUTE("margin",m_nMargin,FALSE)
 		DUIWIN_INT_ATTRIBUTE("hasgripper",m_bHasGripper,FALSE)
 		DUIWIN_INT_ATTRIBUTE("hasinactive",m_bHasInactive,FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 protected:
 	//返回源指定部分在原位图上的位置。
 	CRect GetPartRect(int nSbCode, int nState,BOOL bVertical);
@@ -278,7 +278,7 @@ protected:
 
 class SOUI_EXP CDuiSkinMenuBorder : public CDuiSkinImgFrame
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiSkinMenuBorder, "border")
+    SOUI_CLASS_NAME(CDuiSkinMenuBorder, "border")
 
 public:
 
@@ -292,9 +292,9 @@ public:
         return m_rcBorder;
     }
 public:
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_RECT_ATTRIBUTE("border",m_rcBorder,FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 protected:
     CRect		m_rcBorder;
 };

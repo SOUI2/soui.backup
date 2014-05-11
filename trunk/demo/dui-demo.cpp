@@ -24,13 +24,13 @@
 class  CDuiListBox2 :public CDuiListBoxEx
 {
 public:
-	DUIOBJ_DECLARE_CLASS_NAME(CDuiListBox2, "listboxex")
+	SOUI_CLASS_NAME(CDuiListBox2, "listboxex")
 
 };
 //派生一个只有纵向滚动条皮肤
 class CDuiVScrollBarSkin : public SOUI::CDuiScrollbarSkin
 {
-	DUIOBJ_DECLARE_CLASS_NAME(CDuiVScrollBarSkin, "vscrollbar")
+	SOUI_CLASS_NAME(CDuiVScrollBarSkin, "vscrollbar")
 
 public:
 
@@ -60,9 +60,9 @@ public:
 		if(!m_pDuiImg) return 0;
 		return m_pDuiImg->GetWidth()/(1+m_nStates);//图片分成4 or 5 部分横向排列，第一块是轨道，2,3,4,5分别对应滑块的正常，浮动，下压, Disable状态
 	}
-	DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+	SOUO_ATTRIBUTES_BEGIN()
 		DUIWIN_INT_ATTRIBUTE("states",m_nStates,FALSE)
-		DUIWIN_DECLARE_ATTRIBUTES_END()
+		SOUI_ATTRIBUTES_END()
 protected:
 	//返回源指定部分在原位图上的位置。
 	CRect GetPartRect(int nSbCode, int nState,BOOL bVertical)

@@ -10,17 +10,17 @@ enum SPLITMODE {SM_COL=0,SM_ROW};
 class SOUI_EXP CDuiSplitPane : public CDuiWindow
 {
     friend class CDuiSplitWnd;
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiSplitPane, "splitpane")
+    SOUI_CLASS_NAME(CDuiSplitPane, "splitpane")
 public:
     CDuiSplitPane();
     virtual ~CDuiSplitPane() {}
 
 protected:
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("idealsize", m_nSizeIdeal, TRUE)
     DUIWIN_INT_ATTRIBUTE("minsize", m_nSizeMin, TRUE)
     DUIWIN_INT_ATTRIBUTE("priority", m_nPriority, TRUE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 protected:
     int m_nSizeIdeal;
     int m_nSizeMin;
@@ -30,7 +30,7 @@ protected:
 class SOUI_EXP CDuiSplitWnd :
     public CDuiWindow
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiSplitWnd, "splitwnd")
+    SOUI_CLASS_NAME(CDuiSplitWnd, "splitwnd")
 
 	enum {
 		layout_vert=1,		//纵向布局改变
@@ -81,21 +81,21 @@ protected:
 
     void Relayout(UINT uMode);
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("sepsize", m_nSepSize, TRUE)
     DUIWIN_INT_ATTRIBUTE("adjustable", m_bAdjustable, TRUE)
     DUIWIN_INT_ATTRIBUTE("colmode", m_bColMode, TRUE)
     DUIWIN_SKIN_ATTRIBUTE("skinsep",m_pSkinSep,TRUE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
     MSG_WM_DESTROY(OnDestroy)
     MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
     MSG_WM_LBUTTONUP(OnLButtonUp)
     MSG_WM_MOUSEMOVE(OnMouseMove)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 
 protected:
     CDuiArray<CDuiSplitPane *> m_arrPane;
@@ -110,7 +110,7 @@ protected:
 
 class SOUI_EXP CDuiSplitWnd_Col : public CDuiSplitWnd
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiSplitWnd_Col, "splitcol")
+    SOUI_CLASS_NAME(CDuiSplitWnd_Col, "splitcol")
 public:
     CDuiSplitWnd_Col()
     {
@@ -120,7 +120,7 @@ public:
 
 class SOUI_EXP CDuiSplitWnd_Row : public CDuiSplitWnd
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiSplitWnd_Row, "splitrow")
+    SOUI_CLASS_NAME(CDuiSplitWnd_Row, "splitrow")
 public:
     CDuiSplitWnd_Row()
     {

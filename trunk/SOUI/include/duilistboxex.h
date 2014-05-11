@@ -17,7 +17,7 @@ class SOUI_EXP CDuiListBoxEx :public CDuiScrollView
 {
 public:
 
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiListBoxEx, "listboxex")
+    SOUI_CLASS_NAME(CDuiListBoxEx, "listboxex")
 
     CDuiListBoxEx();
 
@@ -140,7 +140,7 @@ protected:
 	BOOL	m_bVirtual;
 	BOOL	m_bItemRedrawDelay;			//表项重绘时缓冲
 public:
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
 		DUIWIN_INT_ATTRIBUTE("scrollspeed", m_iScrollSpeed, FALSE)
 		DUIWIN_INT_ATTRIBUTE("itemheight", m_nItemHei, FALSE)
 		DUIWIN_INT_ATTRIBUTE("virtual", m_bVirtual, TRUE)
@@ -148,9 +148,9 @@ public:
 		DUIWIN_COLOR_ATTRIBUTE("critembg",m_crItemBg,FALSE)
 		DUIWIN_COLOR_ATTRIBUTE("critemselbg",m_crItemSelBg,FALSE)
 		DUIWIN_INT_ATTRIBUTE("itemredrawdelay", m_bItemRedrawDelay, TRUE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
 		MSG_WM_MOUSEWHEEL(OnMouseWheel)
 		MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
 		MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
@@ -164,7 +164,7 @@ public:
 		MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
 		MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
 		MSG_WM_NCCALCSIZE(OnNcCalcSize)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 };
 
 }//namespace SOUI

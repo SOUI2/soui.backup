@@ -12,7 +12,7 @@ namespace SOUI
 
 class SOUI_EXP CDuiSliderBar : public CDuiProgress
 {
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiSliderBar, "sliderbar")
+    SOUI_CLASS_NAME(CDuiSliderBar, "sliderbar")
 
 public:
     CDuiSliderBar();
@@ -50,17 +50,17 @@ protected:
 	void            OnMouseLeave();
 
 
-    DUIWIN_BEGIN_MSG_MAP()
+    WND_MSG_MAP_BEGIN()
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONUP(OnLButtonUp)
         MSG_WM_MOUSEMOVE(OnMouseMove)
         MSG_WM_MOUSELEAVE(OnMouseLeave)
         MSG_WM_PAINT(OnPaint)
-    DUIWIN_END_MSG_MAP()
+    WND_MSG_MAP_END()
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
 		DUIWIN_SKIN_ATTRIBUTE("thumbskin", m_pSkinThumb, FALSE)
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 };
 
 template<typename T>

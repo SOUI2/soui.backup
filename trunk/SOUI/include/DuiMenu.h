@@ -13,13 +13,13 @@ namespace SOUI
 class CDuiMenuAttr:public CDuiObject
 {
     friend class CDuiMenu;
-    DUIOBJ_DECLARE_CLASS_NAME(CDuiMenuAttr, "menuattribute")
+    SOUI_CLASS_NAME(CDuiMenuAttr, "menuattribute")
 public:
     CDuiMenuAttr();
 
     virtual void OnAttributeFinish(pugi::xml_node xmlNode);
 
-    DUIWIN_DECLARE_ATTRIBUTES_BEGIN()
+    SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_SKIN_ATTRIBUTE("itemskin",m_pItemSkin,FALSE)
     DUIWIN_SKIN_ATTRIBUTE("iconskin",m_pIconSkin,FALSE)
     DUIWIN_SKIN_ATTRIBUTE("sepskin",m_pSepSkin,FALSE)
@@ -34,7 +34,7 @@ public:
     DUIWIN_COLOR_ATTRIBUTE("crtxtsel",m_crTxtSel,FALSE);
     DUIWIN_COLOR_ATTRIBUTE("crtxtgray",m_crTxtGray,FALSE);
 
-    DUIWIN_DECLARE_ATTRIBUTES_END()
+    SOUI_ATTRIBUTES_END()
 protected:
     CDuiSkinBase *m_pItemSkin;	//菜单项皮肤，包含2种状态：正常状态+选中状态
     CDuiSkinBase *m_pIconSkin;	//菜单图标

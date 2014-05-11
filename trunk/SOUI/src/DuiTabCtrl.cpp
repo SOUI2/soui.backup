@@ -5,7 +5,7 @@ namespace SOUI
 {
 	class CDuiTabSlider : public CDuiWindow
 	{
-		DUIOBJ_DECLARE_CLASS_NAME(CDuiTabSlider, "tabslider")
+		SOUI_CLASS_NAME(CDuiTabSlider, "tabslider")
 
 	public:
 		CDuiTabSlider( CDuiTabCtrl *pTabCtrl =NULL) :m_hMemDC(NULL),m_hBmp(NULL)
@@ -93,9 +93,9 @@ namespace SOUI
 
 		HDC m_hMemDC;
 		HBITMAP m_hBmp;
-		DUIWIN_BEGIN_MSG_MAP()
+		WND_MSG_MAP_BEGIN()
 			MSG_WM_PAINT(OnPaint)
-		DUIWIN_END_MSG_MAP()
+		WND_MSG_MAP_END()
 	};
 
 
