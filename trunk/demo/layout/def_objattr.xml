@@ -1,0 +1,12 @@
+<objattr>
+  <button class="normalbtn"/>
+  <check skin="btncheckbox"/>
+  <radio skin="btnRadio"/>
+  <imgbtn class="linkimage"/>
+  <tabctrl tabskin="tabskin_default" crtext="000000" align="top" tabwidth="94" tabheight="38" tabspacing="0" tabpos="10"/>
+  <divex sbskin="sb_common" sbwid="16"/>
+  <edit baseClass="divex" transparent="1"/>
+  <scrollview baseClass="divex"/>
+  <listbox baseClass="divex"/>
+  <treectrl baseClass="divex" toggleskin="TreeToggle" checkskin="TreeCheckBox" critembg="FFFFFF" critemselbg="000088" critemtext="000000" critemseltext="FFFFFF" indent="17" itemmargin="4"/>
+</objattr>
