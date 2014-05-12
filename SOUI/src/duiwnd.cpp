@@ -47,7 +47,7 @@ CDuiWindow::CDuiWindow()
 #endif
 {
 	ClearLayoutState();
-	addEvent(DUINM_COMMAND);
+	addEvent(NM_COMMAND);
 }
 
 CDuiWindow::~CDuiWindow()
@@ -1898,7 +1898,7 @@ LRESULT CDuiWindow::NotifyCommand()
 {
 	DUINMCOMMAND nms;
 	nms.hdr.hDuiWnd=m_hDuiWnd;
-	nms.hdr.code = DUINM_COMMAND;
+	nms.hdr.code = NM_COMMAND;
 	nms.hdr.idFrom = GetCmdID();
 	nms.hdr.pszNameFrom=GetName();
 	nms.uItemData = GetUserData();
@@ -1909,7 +1909,7 @@ LRESULT CDuiWindow::NotifyContextMenu( CPoint pt )
 {
 	DUINMCONTEXTMENU nms;
 	nms.hdr.hDuiWnd=m_hDuiWnd;
-	nms.hdr.code = DUINM_CONTEXTMENU;
+	nms.hdr.code = NM_CONTEXTMENU;
 	nms.hdr.idFrom = GetCmdID();
 	nms.hdr.pszNameFrom=GetName();
 	nms.uItemData = GetUserData();

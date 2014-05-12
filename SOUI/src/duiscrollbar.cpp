@@ -24,7 +24,7 @@ CDuiScrollBar::CDuiScrollBar()
 {
     memset(&m_si,0,sizeof(SCROLLINFO));
     m_si.nTrackPos=-1;
-	addEvent(DUINM_SCROLL);
+	addEvent(NM_SCROLL);
 }
 
 CDuiScrollBar::~CDuiScrollBar()
@@ -378,7 +378,7 @@ LRESULT CDuiScrollBar::OnGetScrollInfo(UINT uMsg, WPARAM wParam, LPARAM lParam)
 LRESULT CDuiScrollBar::NotifySbCode(UINT uCode,int nPos)
 {
     DUINMSCROLL nms;
-    nms.hdr.code=DUINM_SCROLL;
+    nms.hdr.code=NM_SCROLL;
 	nms.hdr.hDuiWnd=m_hDuiWnd;
     nms.hdr.idFrom=GetCmdID();
     nms.hdr.pszNameFrom=GetName();

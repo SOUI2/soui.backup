@@ -38,7 +38,7 @@ void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 LRESULT CComboEdit::DuiNotify( LPDUINMHDR pnms )
 {
 	//转发richedit的txNotify消息
-	if(pnms->code==DUINM_RICHEDIT_NOTIFY)
+	if(pnms->code==NM_RICHEDIT_NOTIFY)
 	{
 		pnms->idFrom=GetOwner()->GetCmdID();
 	}
@@ -62,9 +62,9 @@ CDuiComboBoxBase::CDuiComboBoxBase(void)
 	m_style.SetAttribute("align","left",TRUE);
 	m_style.SetAttribute("valign","middle",TRUE);
 
-	addEvent(DUINM_LBSELCHANGED);
-	addEvent(DUINM_LBSELCHANGING);
-	addEvent(DUINM_RICHEDIT_NOTIFY);
+	addEvent(NM_LBSELCHANGED);
+	addEvent(NM_LBSELCHANGING);
+	addEvent(NM_RICHEDIT_NOTIFY);
 }
 
 CDuiComboBoxBase::~CDuiComboBoxBase(void)
@@ -245,7 +245,7 @@ void CDuiComboBoxBase::OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode)
 		OnSelChanged();
 
 		DUINMHDR nms;
-		nms.code=DUINM_CBSELCHANGE;
+		nms.code=NM_CBSELCHANGE;
 		nms.hDuiWnd=m_hDuiWnd;
 		nms.idFrom=GetCmdID();
 		nms.pszNameFrom=GetName();
@@ -320,7 +320,7 @@ LRESULT CDuiComboBoxBase::DuiNotify( LPDUINMHDR pnms )
 	{
 		DUIASSERT(m_pDropDownWnd);
 		const MSG *pMsg=m_pDropDownWnd->GetCurrentMessage();
-		if(pnms->code==DUINM_LBSELCHANGED)
+		if(pnms->code==NM_LBSELCHANGED)
 		{
 			OnSelChanged();
 			if(pMsg->message != WM_KEYDOWN)

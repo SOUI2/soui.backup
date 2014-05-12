@@ -55,7 +55,7 @@ LRESULT CDuiRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
     if (lRet==0 && rcOldWnd != m_rcWindow)
     {
         DUINMREALWNDCMN nms;
-        nms.hdr.code = DUINM_REALWND_SIZE;
+        nms.hdr.code = NM_REALWND_SIZE;
         nms.hdr.hDuiWnd=m_hDuiWnd;
         nms.hdr.idFrom = GetCmdID();
 		nms.hdr.pszNameFrom=GetName();
@@ -76,7 +76,7 @@ void CDuiRealWnd::OnDestroy()
     if (IsWindow(m_hRealWnd))
     {
         DUINMREALWNDCMN nms;
-        nms.hdr.code = DUINM_REALWND_DESTROY;
+        nms.hdr.code = NM_REALWND_DESTROY;
         nms.hdr.hDuiWnd = m_hDuiWnd;
         nms.hdr.idFrom = GetCmdID();
 		nms.hdr.pszNameFrom=GetName();
@@ -113,7 +113,7 @@ BOOL CDuiRealWnd::InitRealWnd()
     m_realwndParam.m_dwStyle|= WS_CHILD;
 
     DUINMREALWNDCMN nms;
-    nms.hdr.code = DUINM_REALWND_CREATE;
+    nms.hdr.code = NM_REALWND_CREATE;
     nms.hdr.hDuiWnd = m_hDuiWnd;
     nms.hdr.idFrom = GetCmdID();
     nms.hdr.pszNameFrom=GetName();
@@ -132,7 +132,7 @@ BOOL CDuiRealWnd::InitRealWnd()
         }
 
         DUINMREALWNDCMN nms;
-        nms.hdr.code = DUINM_REALWND_INIT;
+        nms.hdr.code = NM_REALWND_INIT;
         nms.hdr.hDuiWnd = m_hDuiWnd;
         nms.hdr.idFrom = GetCmdID();
         nms.hdr.pszNameFrom=GetName();

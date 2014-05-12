@@ -283,7 +283,7 @@ CDuiCalendar::CDuiCalendar()
 
 void CDuiCalendar::Init()
 {
-	addEvent(DUINM_CALENDAR_SELECTDAY);
+	addEvent(NM_CALENDAR_SELECTDAY);
 	m_nTitleHei=TITLE_HEIGHT;
 	m_nFooterHei=FOOTER_HEIGHT;
 	m_crWeekend=RGB(255,0,0);
@@ -466,7 +466,7 @@ void CDuiCalendar::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		DUINMCALENDARSELECTDAY nm;
 		nm.hdr.hDuiWnd=m_hDuiWnd;
-		nm.hdr.code=DUINM_HDSIZECHANGING;
+		nm.hdr.code=NM_HDSIZECHANGING;
 		nm.hdr.idFrom=GetCmdID();
 		nm.hdr.pszNameFrom=GetName();
 		nm.wOldDay=m_iDay;
@@ -512,7 +512,7 @@ BOOL CDuiCalendar::Load( pugi::xml_node xmlNode )
 		if(pBtnToday)
 		{
 			pBtnToday->SetCmdID(100);
-			pBtnToday->subscribeEvent(DUINM_COMMAND,Subscriber(&CDuiCalendar::OnTodayClick,this));
+			pBtnToday->subscribeEvent(NM_COMMAND,Subscriber(&CDuiCalendar::OnTodayClick,this));
 		}
 		CDuiWindow *pLabelToday=FindChildByName("label_today");
 		if(pLabelToday)

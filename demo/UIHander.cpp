@@ -113,16 +113,16 @@ bool Evt_Test2(CDuiWindow * pSender, LPDUINMHDR pNmhdr)
 {
 	pSender->GetUserData();
 // 	CUIHander * p=(CUIHander *)pSender->GetUserData();
-// 	pSender->unsubscribeEvent(DUINM_COMMAND,Subscriber(Evt_Test2));
-// 	pSender->subscribeEvent(DUINM_COMMAND,Subscriber(&CUIHander::Evt_Test,p));
+// 	pSender->unsubscribeEvent(NM_COMMAND,Subscriber(Evt_Test2));
+// 	pSender->subscribeEvent(NM_COMMAND,Subscriber(&CUIHander::Evt_Test,p));
 // 	DuiMessageBox(NULL,_T("这个msgbox是在全局函数中使用event的obsever显示的"),_T("事件测试"),MB_OK|MB_ICONWARNING);
 	return true;
 }
 
 bool CUIHander::Evt_Test(CDuiWindow * pSender, LPDUINMHDR pNmhdr)
 {
-// 	pSender->subscribeEvent(DUINM_COMMAND,Subscriber(Evt_Test2));
-// 	pSender->unsubscribeEvent(DUINM_COMMAND,Subscriber(&CUIHander::Evt_Test,this));
+// 	pSender->subscribeEvent(NM_COMMAND,Subscriber(Evt_Test2));
+// 	pSender->unsubscribeEvent(NM_COMMAND,Subscriber(&CUIHander::Evt_Test,this));
 // 	pSender->SetUserData((ULONG_PTR)this);
 // 	DuiMessageBox(NULL,_T("这个msgbox是在类成员函数中使用event的obsever显示的"),_T("事件测试"),MB_OK|MB_ICONWARNING);
 	return true;
@@ -145,7 +145,7 @@ LRESULT CUIHander::OnInitDialog(HWND hWnd, LPARAM lParam)
 	m_pMainDlg->GetFocusManager()->RegisterAccelerator(SOUI::CAccelerator(VK_RETURN,true),pBtn);//给repsel按钮注册一个热键Ctrl+ENTER。
 #ifdef LUA_TEST
 	CDuiWindow *pTst=m_pMainDlg->FindChildByName("btn_tstevt");
-	DuiSystem::getSingleton().GetScriptModule()->subscribeEvent(pTst,DUINM_COMMAND,"onEvtTstClick");
+	DuiSystem::getSingleton().GetScriptModule()->subscribeEvent(pTst,NM_COMMAND,"onEvtTstClick");
 #endif
 
  	OnBtnInitListClick();
@@ -304,7 +304,7 @@ void CUIHander::OnBtnInitListClick()
 	if(pList)
 	{
 		CDuiWindow *pHeader=pList->GetDuiWindow(GDUI_FIRSTCHILD);
-		pHeader->subscribeEvent(DUINM_HDCLICK,Subscriber(&CUIHander::OnListHeaderClick,this));
+		pHeader->subscribeEvent(NM_HDCLICK,Subscriber(&CUIHander::OnListHeaderClick,this));
 
 		TCHAR szColNames[][20]={_T("name"),_T("sex"),_T("age"),_T("score")};
 		for(int i=0;i<ARRAYSIZE(szColNames);i++)

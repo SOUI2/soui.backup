@@ -36,11 +36,11 @@ CDuiTreeBox::CDuiTreeBox()
 	, m_bItemRedrawDelay(TRUE)
 {
 	m_bTabStop=TRUE;
-	addEvent(DUINM_LBITEMNOTIFY);
-	addEvent(DUINM_ITEMMOUSEEVENT);
-	addEvent(DUINM_GETTBDISPINFO);
-	addEvent(DUINM_TBSELCHANGING);
-	addEvent(DUINM_TBSELCHANGED);
+	addEvent(NM_LBITEMNOTIFY);
+	addEvent(NM_ITEMMOUSEEVENT);
+	addEvent(NM_GETTBDISPINFO);
+	addEvent(NM_TBSELCHANGING);
+	addEvent(NM_TBSELCHANGED);
 }
 
 CDuiTreeBox::~CDuiTreeBox()
@@ -443,7 +443,7 @@ void CDuiTreeBox::DrawItem(CDCHandle & dc, CRect & rc, HSTREEITEM hItem)
 {
     CDuiTreeItem *pItem=CSTree<CDuiTreeItem*>::GetItem(hItem);
     DUINMGETTBDISPINFO nms;
-    nms.hdr.code    = DUINM_GETTBDISPINFO;
+    nms.hdr.code    = NM_GETTBDISPINFO;
     nms.hdr.hDuiWnd = m_hDuiWnd;
     nms.hdr.idFrom  = GetCmdID();
 	nms.hdr.pszNameFrom = GetName();
@@ -514,7 +514,7 @@ void CDuiTreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
     if(m_hHoverItem!=m_hSelItem)
     {
 		DUINMTBSELCHANGING nms2;
-		nms2.hdr.code=DUINM_TBSELCHANGING;
+		nms2.hdr.code=NM_TBSELCHANGING;
 		nms2.hdr.hDuiWnd=m_hDuiWnd;
 		nms2.hdr.idFrom=GetCmdID();
 		nms2.hdr.pszNameFrom=GetName();
@@ -526,7 +526,7 @@ void CDuiTreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
 		if(!nms2.bCancel)
 		{
 			DUINMTBSELCHANGED nms;
-			nms.hdr.code=DUINM_TBSELCHANGED;
+			nms.hdr.code=NM_TBSELCHANGED;
 			nms.hdr.hDuiWnd=m_hDuiWnd;
 			nms.hdr.idFrom=GetCmdID();
 			nms.hdr.pszNameFrom=GetName();
@@ -593,7 +593,7 @@ void CDuiTreeBox::OnLButtonDbClick(UINT nFlags,CPoint pt)
     else
     {
         DUINMITEMMOUSEEVENT nms;
-        nms.hdr.code=DUINM_ITEMMOUSEEVENT;
+        nms.hdr.code=NM_ITEMMOUSEEVENT;
         nms.hdr.hDuiWnd=m_hDuiWnd;
         nms.hdr.idFrom=GetCmdID();
 		nms.hdr.pszNameFrom=GetName();
@@ -648,7 +648,7 @@ void CDuiTreeBox::OnMouseLeave()
 
 LRESULT CDuiTreeBox::DuiNotify(LPDUINMHDR pnms)
 {
-    if(pnms->code==DUINM_LBITEMNOTIFY)
+    if(pnms->code==NM_LBITEMNOTIFY)
     {
         DUINMITEMNOTIFY *pItemNotify=(DUINMITEMNOTIFY*)pnms;
         if(pItemNotify->pOriginHdr->idFrom==IDC_SWITCH)

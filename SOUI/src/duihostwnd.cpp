@@ -627,14 +627,14 @@ void CDuiHostWnd::OnActivate( UINT nState, BOOL bMinimized, HWND wndOther )
 
 LRESULT CDuiHostWnd::OnDuiNotify(LPDUINMHDR pHdr)
 {
-    if(pHdr->code==DUINM_REALWND_CREATE) return (LRESULT)OnRealWndCreate(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
-    else if(pHdr->code==DUINM_REALWND_INIT) return OnRealWndInit(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
-    else if(pHdr->code==DUINM_REALWND_DESTROY)
+    if(pHdr->code==NM_REALWND_CREATE) return (LRESULT)OnRealWndCreate(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
+    else if(pHdr->code==NM_REALWND_INIT) return OnRealWndInit(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
+    else if(pHdr->code==NM_REALWND_DESTROY)
     {
         OnRealWndDestroy(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
         return 0;
     }
-    else if(pHdr->code==DUINM_REALWND_SIZE)
+    else if(pHdr->code==NM_REALWND_SIZE)
     {
         OnRealWndSize(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
         return 0;

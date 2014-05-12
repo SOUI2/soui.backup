@@ -33,11 +33,11 @@ CDuiListBoxEx::CDuiListBoxEx()
 	, m_bItemRedrawDelay(TRUE)
 {
 	m_bTabStop=TRUE;
-	addEvent(DUINM_LBITEMNOTIFY);
-	addEvent(DUINM_ITEMMOUSEEVENT);
-	addEvent(DUINM_GETLBDISPINFO);
-	addEvent(DUINM_LBSELCHANGING);
-	addEvent(DUINM_LBSELCHANGED);
+	addEvent(NM_LBITEMNOTIFY);
+	addEvent(NM_ITEMMOUSEEVENT);
+	addEvent(NM_GETLBDISPINFO);
+	addEvent(NM_LBSELCHANGING);
+	addEvent(NM_LBSELCHANGED);
 }
 
 CDuiListBoxEx::~CDuiListBoxEx()
@@ -366,7 +366,7 @@ void CDuiListBoxEx::OnDrawItem(CDCHandle & dc, CRect & rc, int iItem)
 		DUIASSERT(m_pTemplPanel);
 		DUINMGETLBDISPINFO nms;
 		nms.hdr.hDuiWnd=m_hDuiWnd;
-		nms.hdr.code    = DUINM_GETLBDISPINFO;
+		nms.hdr.code    = NM_GETLBDISPINFO;
 		nms.hdr.idFrom  = GetCmdID();
 		nms.hdr.pszNameFrom= GetName();
 		nms.bHover      = iItem == m_iHoverItem;
@@ -457,7 +457,7 @@ BOOL CDuiListBoxEx::LoadChildren(pugi::xml_node xmlNode)
 void CDuiListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
 {
     DUINMLBSELCHANGE nms;
-	nms.hdr.code=DUINM_LBSELCHANGING;
+	nms.hdr.code=NM_LBSELCHANGING;
 	nms.hdr.hDuiWnd=m_hDuiWnd;
     nms.hdr.idFrom=GetCmdID();
 	nms.hdr.pszNameFrom=GetName();
@@ -493,7 +493,7 @@ void CDuiListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
     }
 
     nms.hdr.idFrom=GetCmdID();
-    nms.hdr.code=DUINM_LBSELCHANGED;
+    nms.hdr.code=NM_LBSELCHANGED;
     DuiNotify((LPDUINMHDR)&nms);
 }
 

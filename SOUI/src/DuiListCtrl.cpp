@@ -61,8 +61,8 @@ BOOL CDuiListCtrl::LoadChildren(pugi::xml_node xmlNode)
 	strPos.Format("0,0,-0,%d",m_nHeaderHeight);
 	m_pHeader->SetAttribute("pos",strPos,TRUE);
 
-	m_pHeader->subscribeEvent(DUINM_HDSIZECHANGING, Subscriber(&CDuiListCtrl::OnHeaderSizeChanging,this));
-    m_pHeader->subscribeEvent(DUINM_HDSWAP, Subscriber(&CDuiListCtrl::OnHeaderSwap,this));
+	m_pHeader->subscribeEvent(NM_HDSIZECHANGING, Subscriber(&CDuiListCtrl::OnHeaderSizeChanging,this));
+    m_pHeader->subscribeEvent(NM_HDSWAP, Subscriber(&CDuiListCtrl::OnHeaderSwap,this));
 
     return TRUE;
 }
@@ -625,7 +625,7 @@ int CDuiListCtrl::GetTopIndex() const
 void CDuiListCtrl::NotifySelChange(int nOldSel, int nNewSel)
 {
     DUINMLBSELCHANGE nms;
-	nms.hdr.code     = DUINM_LBSELCHANGING;
+	nms.hdr.code     = NM_LBSELCHANGING;
     nms.hdr.hDuiWnd = m_hDuiWnd;
     nms.hdr.idFrom   = GetCmdID();
 	nms.hdr.pszNameFrom=GetName();
@@ -644,7 +644,7 @@ void CDuiListCtrl::NotifySelChange(int nOldSel, int nNewSel)
         RedrawItem(m_nSelectItem);
 
     nms.hdr.idFrom = GetCmdID();
-    nms.hdr.code   = DUINM_LBSELCHANGED;
+    nms.hdr.code   = NM_LBSELCHANGED;
     DuiNotify((LPDUINMHDR)&nms);            
 }
 

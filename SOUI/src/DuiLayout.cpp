@@ -139,7 +139,7 @@ namespace SOUI
 				if(dlgpos.Right.pit!=PIT_OFFSET)
 					rcWindow.right=PositionItem2Value(pWnd,dlgpos.Right,lpRcContainer->left,lpRcContainer->right,TRUE);
 				else if(rcWindow.left!=POS_WAIT)
-					rcWindow.right=rcWindow.left+dlgpos.Right.nPos;
+					rcWindow.right=rcWindow.left+(LONG)dlgpos.Right.nPos;
 				else
 					rcWindow.right=POS_WAIT;
 			}
@@ -150,7 +150,7 @@ namespace SOUI
 				if(dlgpos.Bottom.pit!=PIT_OFFSET)
 					rcWindow.bottom=PositionItem2Value(pWnd,dlgpos.Bottom,lpRcContainer->top,lpRcContainer->bottom,FALSE);
 				else if(rcWindow.top!=POS_WAIT)
-					rcWindow.bottom=rcWindow.top+dlgpos.Bottom.nPos;
+					rcWindow.bottom=rcWindow.top+(LONG)dlgpos.Bottom.nPos;
 				else
 					rcWindow.bottom=POS_WAIT;
 			}
