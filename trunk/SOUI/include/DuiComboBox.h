@@ -39,17 +39,14 @@ class SOUI_EXP CDuiComboBoxBase
 	: public CDuiWindow
 	, public IDuiDropDownOwner
 {
+	friend class CComboListBox;
 public:
 	CDuiComboBoxBase(void);
 	virtual ~CDuiComboBoxBase(void);
 
-	virtual int SetCurSel(int iSel) =0;
-
 	virtual int GetCurSel() const =0;
 
 	virtual CDuiStringT GetWindowText() =0;
-
-	virtual LRESULT DuiNotify(LPDUINMHDR pnms);
 
 	void DropDown();
 	void CloseUp();
@@ -58,8 +55,11 @@ protected:
 	//	CDuiDropDownOwner
 	virtual CDuiWindow* GetDropDownOwner();
 	virtual void OnDropDown(CDuiDropDownWnd *pDropDown);
-	virtual void OnCloseUp(CDuiDropDownWnd *pDropDown);
+	virtual void OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode);
+protected:
+	virtual void OnSelChanged() =0;
 
+	virtual LRESULT DuiNotify(LPDUINMHDR pnms);
 protected:
 	//计算弹出窗口位置
 	BOOL CalcPopupRect(int nHeight,CRect & rcPopup);
@@ -135,19 +135,17 @@ public:
 	CDuiComboBox();
 	virtual ~CDuiComboBox();
 
-	int SetCurSel(int iSel)
+	BOOL SetCurSel(int iSel)
 	{
-		m_pListBox->SetCurSel(iSel);
-		int nRet=m_pListBox->GetCurSel();
-		if(m_pEdit)
+		if(m_pListBox->SetCurSel(iSel))
 		{
-			CDuiStringT strText=GetLBText(m_pListBox->GetCurSel());
-			m_pEdit->setMutedState(true);
-			m_pEdit->SetWindowText(DUI_CT2W(strText));
-			m_pEdit->setMutedState(false);
+			OnSelChanged();
+			return TRUE;
 		}
-		NotifyInvalidate();
-		return nRet;
+		else
+		{
+			return FALSE;
+		}
 	}
 
 	int GetCurSel() const
@@ -209,7 +207,9 @@ protected:
 
 	virtual void OnDropDown(CDuiDropDownWnd *pDropDown);
 
-	virtual void OnCloseUp(CDuiDropDownWnd *pDropDown);
+	virtual void OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode);
+
+	virtual void OnSelChanged();
 
 protected:
 
@@ -223,19 +223,16 @@ public:
 	CDuiComboBoxEx();
 	virtual ~CDuiComboBoxEx();
 
-	int SetCurSel(int iSel)
+	BOOL SetCurSel(int iSel)
 	{
-		m_pListBox->SetCurSel(iSel);
-		int nRet=m_pListBox->GetCurSel();
-		if(m_pEdit)
+		if(m_pListBox->SetCurSel(iSel))
 		{
-			CDuiStringT strText=GetLBText(iSel);
-			m_pEdit->setMutedState(true);
-			m_pEdit->SetWindowText(DUI_CT2W(strText));
-			m_pEdit->setMutedState(false);
+			OnSelChanged();
+			return TRUE;
+		}else
+		{
+			return FALSE;
 		}
-		NotifyInvalidate();
-		return nRet;
 	}
 
 	int GetCurSel() const
@@ -306,12 +303,14 @@ public:
 	CDuiListBoxEx * GetListBox(){return m_pListBox;}
 
 protected:
+	virtual void OnSelChanged();
+protected:
 	virtual BOOL CreateListBox(pugi::xml_node xmlNode);
 	virtual int  GetListBoxHeight();
 
 	virtual void OnDropDown(CDuiDropDownWnd *pDropDown);
 
-	virtual void OnCloseUp(CDuiDropDownWnd *pDropDown);
+	virtual void OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode);
 
 protected:
 

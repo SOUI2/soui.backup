@@ -413,7 +413,7 @@ void CDuiListBox::DrawItem(CDCHandle & dc, CRect & rc, int iItem)
 }
 
 
-void CDuiListBox::NotifySelChange( int nOldSel,int nNewSel ,UINT uMsg)
+void CDuiListBox::NotifySelChange( int nOldSel,int nNewSel)
 {
     DUINMLBSELCHANGE nms;
 	nms.hdr.code=DUINM_LBSELCHANGING;
@@ -422,11 +422,10 @@ void CDuiListBox::NotifySelChange( int nOldSel,int nNewSel ,UINT uMsg)
 	nms.hdr.pszNameFrom=GetName();
     nms.nOldSel=nOldSel;
     nms.nNewSel=nNewSel;
-    nms.uMsg=uMsg;
     nms.uHoverID=0;
 
     if(S_OK!=DuiNotify((LPDUINMHDR)&nms)) return ;
-
+	
     m_iSelItem=nNewSel;
     if(nOldSel!=-1)
         RedrawItem(nOldSel);
@@ -477,7 +476,7 @@ void CDuiListBox::OnLButtonUp(UINT nFlags,CPoint pt)
     m_iHoverItem = HitTest(pt);
 
     if(m_iHoverItem!=m_iSelItem)
-        NotifySelChange(m_iSelItem,m_iHoverItem,WM_LBUTTONUP);
+        NotifySelChange(m_iSelItem,m_iHoverItem);
 }
 
 void CDuiListBox::OnLButtonDbClick(UINT nFlags,CPoint pt)
@@ -500,25 +499,23 @@ void CDuiListBox::OnMouseMove(UINT nFlags,CPoint pt)
 void CDuiListBox::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
 {
     int  nNewSelItem = -1;
-    CDuiWindow *pOwner = GetOwner();
-    if (pOwner && (nChar == VK_ESCAPE))
-    {
-        pOwner->DuiSendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
-        return;
-    }
-
+	int iCurSel=m_iSelItem;
+	if(m_bHotTrack && m_iHoverItem!=-1)
+		iCurSel=m_iHoverItem;
     if (nChar == VK_DOWN && m_iSelItem < GetCount() - 1)
-        nNewSelItem = m_iSelItem+1;
+        nNewSelItem = iCurSel+1;
     else if (nChar == VK_UP && m_iSelItem > 0)
-        nNewSelItem = m_iSelItem-1;
-    else if (pOwner && nChar == VK_RETURN)
-        nNewSelItem = m_iSelItem;
+        nNewSelItem = iCurSel-1;
 
     if(nNewSelItem!=-1)
     {
+		int iHover=m_iHoverItem;
+		if(m_bHotTrack)
+			m_iHoverItem=-1;
         EnsureVisible(nNewSelItem);
-        NotifySelChange(m_iSelItem,nNewSelItem,
-                        m_bHotTrack&&nChar!=VK_RETURN ? WM_MOUSEMOVE : WM_LBUTTONUP);
+        NotifySelChange(m_iSelItem,nNewSelItem);
+		if(iHover!=-1 && iHover != m_iSelItem && iHover != nNewSelItem) 
+			RedrawItem(iHover);
     }
 }
 

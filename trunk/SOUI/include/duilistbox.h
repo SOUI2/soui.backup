@@ -93,7 +93,7 @@ protected:
 
     void DrawItem(CDCHandle &dc, CRect &rc, int iItem);
 
-    void NotifySelChange(int nOldSel,int nNewSel,UINT uMsg);
+    void NotifySelChange(int nOldSel,int nNewSel);
 
     UINT OnGetDuiCode();
 
@@ -110,8 +110,6 @@ protected:
     void OnLButtonUp(UINT nFlags,CPoint pt);
 
     void OnMouseMove(UINT nFlags,CPoint pt);
-
-    void OnMouseLeave();
 
     void OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags );
 
