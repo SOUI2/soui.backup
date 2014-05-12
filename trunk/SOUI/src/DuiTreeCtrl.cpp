@@ -990,7 +990,7 @@ void CDuiTreeCtrl::ItemLButtonUp(HSTREEITEM hItem, UINT nFlags,CPoint pt)
 			ModifyChekcBoxState(hItem, 0, DuiWndState_PushDown);
 
 			DUINMCOMMAND nms;
-			nms.hdr.code = DUINM_COMMAND;
+			nms.hdr.code = NM_COMMAND;
 			nms.hdr.hDuiWnd=m_hDuiWnd;
 			nms.hdr.idFrom = GetCmdID();
 			nms.hdr.pszNameFrom=GetName();
@@ -1073,7 +1073,7 @@ void CDuiTreeCtrl::ItemMouseLeave(HSTREEITEM hItem)
 void CDuiTreeCtrl::NotifyParent()
 {
 	DUINMTBSELCHANGED nms;
-	nms.hdr.code=DUINM_TBSELCHANGED;
+	nms.hdr.code=NM_TBSELCHANGED;
 	nms.hdr.hDuiWnd=m_hDuiWnd;
 	nms.hdr.idFrom=GetCmdID();
 	nms.hdr.pszNameFrom=GetName();
@@ -1199,7 +1199,7 @@ void CDuiTreeCtrl::OnLButtonDbClick(UINT nFlags,CPoint pt)
 	{
 		DUINMITEMMOUSEEVENT nms;
 		nms.hdr.hDuiWnd=m_hDuiWnd;
-		nms.hdr.code=DUINM_ITEMMOUSEEVENT;
+		nms.hdr.code=NM_ITEMMOUSEEVENT;
 		nms.hdr.idFrom=GetCmdID();
 		nms.hdr.pszNameFrom=GetName();
 		nms.pItem=NULL;

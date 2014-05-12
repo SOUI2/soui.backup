@@ -14,7 +14,7 @@ CDuiSliderBar::CDuiSliderBar()
     , m_uHtPrev(-1)
 	, m_pSkinThumb(NULL)
 {
-	addEvent(DUINM_SLIDER);
+	addEvent(NM_SLIDER);
 }
 
 CDuiSliderBar::~CDuiSliderBar()
@@ -257,7 +257,7 @@ void CDuiSliderBar::OnMouseLeave()
 LRESULT CDuiSliderBar::NotifySbCode(UINT uCode, int nPos)
 {
     DUINMSLIDER nms;
-    nms.hdr.code     = DUINM_SLIDER;
+    nms.hdr.code     = NM_SLIDER;
 	nms.hdr.hDuiWnd  = m_hDuiWnd;
     nms.hdr.idFrom   = GetCmdID();
     nms.hdr.pszNameFrom= GetName();

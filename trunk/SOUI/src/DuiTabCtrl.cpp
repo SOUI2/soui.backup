@@ -118,10 +118,10 @@ CDuiTabCtrl::CDuiTabCtrl() : m_nCurrentPage(0)
     , m_ptText(-1,-1)
 {
 	m_bTabStop=TRUE;
-	addEvent(DUINM_TAB_SELCHANGING);
-	addEvent(DUINM_TAB_SELCHANGED);
-	addEvent(DUINM_TAB_ITEMHOVER);
-	addEvent(DUINM_TAB_ITEMLEAVE);
+	addEvent(NM_TAB_SELCHANGING);
+	addEvent(NM_TAB_SELCHANGED);
+	addEvent(NM_TAB_ITEMHOVER);
+	addEvent(NM_TAB_ITEMLEAVE);
 }
 
 void CDuiTabCtrl::OnPaint( CDCHandle dc )
@@ -307,7 +307,7 @@ void CDuiTabCtrl::OnMouseMove( UINT nFlags, CPoint point )
             if(nOldHover!=m_nCurrentPage)
                 NotifyInvalidateRect(rcItem);
             DUINMTABITEMLEAVE nms;
-            nms.hdr.code=DUINM_TAB_ITEMLEAVE;
+            nms.hdr.code=NM_TAB_ITEMLEAVE;
             nms.hdr.hDuiWnd=m_hDuiWnd;
             nms.hdr.idFrom=GetCmdID();
 			nms.hdr.pszNameFrom=GetName();
@@ -321,7 +321,7 @@ void CDuiTabCtrl::OnMouseMove( UINT nFlags, CPoint point )
             if(m_nHoverTabItem!=m_nCurrentPage)
                 NotifyInvalidateRect(rcItem);
             DUINMTABITEMHOVER nms;
-            nms.hdr.code = DUINM_TAB_ITEMHOVER;
+            nms.hdr.code = NM_TAB_ITEMHOVER;
             nms.hdr.hDuiWnd=m_hDuiWnd;
             nms.hdr.idFrom = GetCmdID();
 			nms.hdr.pszNameFrom=GetName();
@@ -348,7 +348,7 @@ BOOL CDuiTabCtrl::SetCurSel( int nIndex )
     int nOldPage = m_nCurrentPage;
 
     DUINMTABSELCHANGE nms;
-    nms.hdr.code = DUINM_TAB_SELCHANGING;
+    nms.hdr.code = NM_TAB_SELCHANGING;
     nms.hdr.hDuiWnd=m_hDuiWnd;
     nms.hdr.idFrom = GetCmdID();
 	nms.hdr.pszNameFrom=GetName();
@@ -392,7 +392,7 @@ BOOL CDuiTabCtrl::SetCurSel( int nIndex )
 	}
 
     DUINMTABSELCHANGED nms2;
-    nms2.hdr.code = DUINM_TAB_SELCHANGED;
+    nms2.hdr.code = NM_TAB_SELCHANGED;
     nms2.hdr.hDuiWnd=m_hDuiWnd;
     nms2.hdr.idFrom = GetCmdID();
     nms2.hdr.pszNameFrom=GetName();

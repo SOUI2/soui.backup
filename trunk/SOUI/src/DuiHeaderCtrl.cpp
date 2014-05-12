@@ -18,10 +18,10 @@ namespace SOUI
 		,m_hDragImg(NULL)
 	{
 		m_bClipClient=TRUE;
-		addEvent(DUINM_HDCLICK);
-		addEvent(DUINM_HDSIZECHANGING);
-		addEvent(DUINM_HDSIZECHANGED);
-		addEvent(DUINM_HDSWAP);
+		addEvent(NM_HDCLICK);
+		addEvent(NM_HDSIZECHANGING);
+		addEvent(NM_HDSIZECHANGED);
+		addEvent(NM_HDSWAP);
 	}
 
 	CDuiHeaderCtrl::~CDuiHeaderCtrl(void)
@@ -206,7 +206,7 @@ namespace SOUI
 						//发消息通知宿主表项位置发生变化
 						DUINMHDSWAP	nm;
 						nm.hdr.hDuiWnd=m_hDuiWnd;
-						nm.hdr.code=DUINM_HDSWAP;
+						nm.hdr.code=NM_HDSWAP;
 						nm.hdr.idFrom=GetCmdID();
 						nm.hdr.pszNameFrom=GetName();
 						nm.iOldIndex=LOWORD(m_dwHitTest);
@@ -225,7 +225,7 @@ namespace SOUI
 					RedrawItem(LOWORD(m_dwHitTest));
 					DUINMHDCLICK	nm;
 					nm.hdr.hDuiWnd=m_hDuiWnd;
-					nm.hdr.code=DUINM_HDCLICK;
+					nm.hdr.code=NM_HDCLICK;
 					nm.hdr.idFrom=GetCmdID();
 					nm.hdr.pszNameFrom=GetName();
 					nm.iItem=LOWORD(m_dwHitTest);
@@ -236,7 +236,7 @@ namespace SOUI
 		{//调整表头宽度，发送一个调整完成消息
 			DUINMHDSIZECHANGED	nm;
 			nm.hdr.hDuiWnd=m_hDuiWnd;
-			nm.hdr.code=DUINM_HDSIZECHANGED;
+			nm.hdr.code=NM_HDSIZECHANGED;
 			nm.hdr.idFrom=GetCmdID();
 			nm.hdr.pszNameFrom=GetName();
 			nm.iItem=LOWORD(m_dwHitTest);
@@ -289,7 +289,7 @@ namespace SOUI
 				//发出调节宽度消息
 				DUINMHDSIZECHANGING	nm;
 				nm.hdr.hDuiWnd=m_hDuiWnd;
-				nm.hdr.code=DUINM_HDSIZECHANGING;
+				nm.hdr.code=NM_HDSIZECHANGING;
 				nm.hdr.idFrom=GetCmdID();
 				nm.hdr.pszNameFrom=GetName();
 				nm.nWidth=cxNew;

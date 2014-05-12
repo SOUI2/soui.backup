@@ -416,7 +416,7 @@ void CDuiListBox::DrawItem(CDCHandle & dc, CRect & rc, int iItem)
 void CDuiListBox::NotifySelChange( int nOldSel,int nNewSel)
 {
     DUINMLBSELCHANGE nms;
-	nms.hdr.code=DUINM_LBSELCHANGING;
+	nms.hdr.code=NM_LBSELCHANGING;
     nms.hdr.hDuiWnd=m_hDuiWnd;
     nms.hdr.idFrom=GetCmdID();
 	nms.hdr.pszNameFrom=GetName();
@@ -434,7 +434,7 @@ void CDuiListBox::NotifySelChange( int nOldSel,int nNewSel)
         RedrawItem(m_iSelItem);
 
     nms.hdr.idFrom=GetCmdID();
-    nms.hdr.code=DUINM_LBSELCHANGED;
+    nms.hdr.code=NM_LBSELCHANGED;
     DuiNotify((LPDUINMHDR)&nms);
 }
 

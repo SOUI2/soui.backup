@@ -730,7 +730,7 @@ void CDuiCheckBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
         {
             DUINMCOMMAND nms;
 			nms.hdr.hDuiWnd=m_hDuiWnd;
-            nms.hdr.code = DUINM_COMMAND;
+            nms.hdr.code = NM_COMMAND;
             nms.hdr.idFrom = GetCmdID();
 			nms.hdr.pszNameFrom = GetName();
             nms.uItemData = GetUserData();
