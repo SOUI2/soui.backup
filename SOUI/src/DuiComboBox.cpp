@@ -45,6 +45,7 @@ LRESULT CComboEdit::DuiNotify( LPDUINMHDR pnms )
 	return __super::DuiNotify(pnms);
 }
 
+
 //////////////////////////////////////////////////////////////////////////
 // CDuiComboBox
 CDuiComboBoxBase::CDuiComboBoxBase(void)
@@ -202,39 +203,6 @@ BOOL CDuiComboBoxBase::IsTabStop()
 	return FALSE;
 }
 
-LRESULT CDuiComboBoxBase::DuiNotify(LPDUINMHDR pnms)
-{
-	LRESULT lRet=0;
-	if(pnms->idFrom == IDC_DROPDOWN_LIST)
-	{
-		pnms->idFrom=GetCmdID();
-		pnms->pszNameFrom=m_strName;
-		if(pnms->code==DUINM_LBSELCHANGED)
-		{//select item changed
-			DUINMLBSELCHANGE *pnmclk = (DUINMLBSELCHANGE *)pnms;
-			if(pnmclk->uMsg==WM_LBUTTONUP || pnmclk->uMsg==WM_LBUTTONDOWN)
-			{
-				SetCurSel(pnmclk->nNewSel);
-				CloseUp();
-				if (!m_bDropdown && m_pEdit)
-				{
-					m_pEdit->SetDuiFocus();
-					m_pEdit->SetSel(MAKELONG(0,-1));
-				}
-				lRet=__super::DuiNotify(pnms);
-			}
-		}else
-		{
-			lRet=__super::DuiNotify(pnms);
-		}
-		pnms->idFrom=IDC_DROPDOWN_LIST;
-	}else
-	{
-		lRet=__super::DuiNotify(pnms);
-	}
-	return lRet;
-}
-
 
 CDuiWindow* CDuiComboBoxBase::GetDropDownOwner()
 {
@@ -251,9 +219,16 @@ void CDuiComboBoxBase::OnDropDown( CDuiDropDownWnd *pDropDown )
 	pDropDown->SetCapture();
 }
 
-void CDuiComboBoxBase::OnCloseUp(CDuiDropDownWnd *pDropDown)
+void CDuiComboBoxBase::OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode)
 {
 	ReleaseCapture();
+
+	if (!m_bDropdown && m_pEdit)
+	{
+		m_pEdit->SetDuiFocus();
+		m_pEdit->SetSel(MAKELONG(0,-1));
+	}
+
 	m_dwBtnState = DuiWndState_Normal;
 	m_pDropDownWnd=NULL;
 	CRect rcBtn;
@@ -264,6 +239,19 @@ void CDuiComboBoxBase::OnCloseUp(CDuiDropDownWnd *pDropDown)
 	GetCursorPos(&pt);
 	ScreenToClient(GetContainer()->GetHostHwnd(),&pt);
 	::PostMessage(GetContainer()->GetHostHwnd(),WM_MOUSEMOVE,0,MAKELPARAM(pt.x,pt.y));
+
+	if(uCode==IDOK)
+	{
+		OnSelChanged();
+
+		DUINMHDR nms;
+		nms.code=DUINM_CBSELCHANGE;
+		nms.hDuiWnd=m_hDuiWnd;
+		nms.idFrom=GetCmdID();
+		nms.pszNameFrom=GetName();
+		DuiNotify(&nms);
+	}
+
 }
 
 BOOL CDuiComboBoxBase::CalcPopupRect( int nHeight,CRect & rcPopup )
@@ -316,8 +304,7 @@ void CDuiComboBoxBase::CloseUp()
 {
 	if(m_pDropDownWnd)
 	{
-		m_pDropDownWnd->EndDropDown();
-		m_pDropDownWnd=NULL;
+		m_pDropDownWnd->EndDropDown(IDCANCEL);
 	}
 }
 
@@ -325,6 +312,23 @@ void CDuiComboBoxBase::OnDestroy()
 {
 	CloseUp();
 	__super::OnDestroy();
+}
+
+LRESULT CDuiComboBoxBase::DuiNotify( LPDUINMHDR pnms )
+{
+	if(pnms->idFrom == IDC_DROPDOWN_LIST)
+	{
+		DUIASSERT(m_pDropDownWnd);
+		const MSG *pMsg=m_pDropDownWnd->GetCurrentMessage();
+		if(pnms->code==DUINM_LBSELCHANGED)
+		{
+			OnSelChanged();
+			if(pMsg->message != WM_KEYDOWN)
+				CloseUp();
+			return 0;
+		}
+	}
+	return __super::DuiNotify(pnms);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -401,12 +405,25 @@ void CDuiComboBox::OnDropDown( CDuiDropDownWnd *pDropDown)
 	m_pListBox->EnsureVisible(GetCurSel());
 }
 
-void CDuiComboBox::OnCloseUp( CDuiDropDownWnd *pDropDown )
+void CDuiComboBox::OnCloseUp( CDuiDropDownWnd *pDropDown ,UINT uCode)
 {
 	pDropDown->RemoveChild(m_pListBox);
 	m_pListBox->SetVisible(FALSE);
 	m_pListBox->SetContainer(GetContainer());
-	__super::OnCloseUp(pDropDown);
+	__super::OnCloseUp(pDropDown,uCode);
+}
+
+void CDuiComboBox::OnSelChanged()
+{
+	int nRet=m_pListBox->GetCurSel();
+	if(m_pEdit)
+	{
+		CDuiStringT strText=GetLBText(m_pListBox->GetCurSel());
+		m_pEdit->setMutedState(true);
+		m_pEdit->SetWindowText(DUI_CT2W(strText));
+		m_pEdit->setMutedState(false);
+	}
+	NotifyInvalidate();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -511,13 +528,27 @@ void CDuiComboBoxEx::OnDropDown( CDuiDropDownWnd *pDropDown )
 	m_pListBox->EnsureVisible(GetCurSel());
 }
 
-void CDuiComboBoxEx::OnCloseUp( CDuiDropDownWnd *pDropDown )
+void CDuiComboBoxEx::OnCloseUp( CDuiDropDownWnd *pDropDown ,UINT uCode)
 {
 	pDropDown->RemoveChild(m_pListBox);
 	m_pListBox->SetVisible(FALSE);
 	m_pListBox->SetContainer(GetContainer());
-	__super::OnCloseUp(pDropDown);
+	__super::OnCloseUp(pDropDown,uCode);
 }
+
+void CDuiComboBoxEx::OnSelChanged()
+{
+	int iSel=m_pListBox->GetCurSel();
+	if(m_pEdit)
+	{
+		CDuiStringT strText=GetLBText(iSel);
+		m_pEdit->setMutedState(true);
+		m_pEdit->SetWindowText(DUI_CT2W(strText));
+		m_pEdit->setMutedState(false);
+	}
+	NotifyInvalidate();
+}
+
 
 }//namespace SOUI
 

@@ -12,7 +12,7 @@ namespace SOUI
 	public:
 		virtual CDuiWindow * GetDropDownOwner() =0;
 		virtual void OnDropDown(CDuiDropDownWnd *pDropDown) = 0;
-		virtual void OnCloseUp(CDuiDropDownWnd *pDropDown) = 0;
+		virtual void OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode) = 0;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -24,7 +24,7 @@ namespace SOUI
 		virtual ~CDuiDropDownWnd();
 
 		virtual BOOL Create(LPCRECT lpRect,LPVOID lParam,DWORD dwStyle=WS_POPUP,DWORD dwExStyle=WS_EX_TOOLWINDOW|WS_EX_TOPMOST);
-		void EndDropDown();
+		void EndDropDown(UINT uCode=IDCANCEL);
 	protected:
 		void OnLButtonDown(UINT nFlags, CPoint point);
 		void OnLButtonUp(UINT nFlags, CPoint point);
@@ -40,6 +40,8 @@ namespace SOUI
 	protected:
 		IDuiDropDownOwner* m_pOwner;
 		BOOL				m_bClick;
+		UINT				m_uExitCode;
+
 		BEGIN_MSG_MAP_EX(CDuiDropDownWnd)
 			MSG_WM_LBUTTONDOWN(OnLButtonDown)
 			MSG_WM_LBUTTONUP(OnLButtonUp)

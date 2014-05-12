@@ -32,7 +32,7 @@ public:
 
     int InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData=0);
 
-    void SetCurSel(int iItem);
+    BOOL SetCurSel(int iItem);
 
     void EnsureVisible(int iItem);
 
@@ -94,7 +94,7 @@ protected:
     // Get tooltip Info
     virtual BOOL OnUpdateToolTip(HDUIWND hCurTipHost,HDUIWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
 
-    void NotifySelChange(int nOldSel,int nNewSel,UINT uMsg);
+    void NotifySelChange(int nOldSel,int nNewSel);
 
 	LRESULT OnMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 

@@ -144,11 +144,11 @@ int CDuiListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData/*=0*/)
 	}
 }
 
-void CDuiListBoxEx::SetCurSel(int iItem)
+BOOL CDuiListBoxEx::SetCurSel(int iItem)
 {
-	if(iItem<0 || iItem>=GetItemCount()) return;
+	if(iItem<0 || iItem>=GetItemCount()) return FALSE;
 
-    if(m_iSelItem==iItem) return;
+    if(m_iSelItem==iItem) return FALSE;
 	if(IsVirtual())
 	{
 		int nOldSel=m_iSelItem;
@@ -170,6 +170,7 @@ void CDuiListBoxEx::SetCurSel(int iItem)
 		m_arrItems[m_iSelItem]->ModifyItemState(DuiWndState_Check,0);
 		if(IsVisible(TRUE)) RedrawItem(m_iSelItem);
 	}
+	return TRUE;
 }
 
 void CDuiListBoxEx::EnsureVisible( int iItem )
@@ -453,7 +454,7 @@ BOOL CDuiListBoxEx::LoadChildren(pugi::xml_node xmlNode)
 }
 
 
-void CDuiListBoxEx::NotifySelChange( int nOldSel,int nNewSel ,UINT uMsg)
+void CDuiListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
 {
     DUINMLBSELCHANGE nms;
 	nms.hdr.code=DUINM_LBSELCHANGING;
@@ -462,7 +463,6 @@ void CDuiListBoxEx::NotifySelChange( int nOldSel,int nNewSel ,UINT uMsg)
 	nms.hdr.pszNameFrom=GetName();
     nms.nOldSel=nOldSel;
     nms.nNewSel=nNewSel;
-    nms.uMsg=uMsg;
     nms.uHoverID=0;
     if(nNewSel!=-1)
     {
@@ -562,7 +562,7 @@ void CDuiListBoxEx::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
     if(nNewSelItem!=-1)
     {
         EnsureVisible(nNewSelItem);
-        NotifySelChange(m_iSelItem,nNewSelItem,nChar!=VK_RETURN ? WM_MOUSEMOVE : WM_LBUTTONUP);
+        NotifySelChange(m_iSelItem,nNewSelItem);
     }
 }
 
@@ -634,12 +634,13 @@ BOOL CDuiListBoxEx::OnItemGetRect(CDuiItemPanel *pItem,CRect &rcItem )
 
 LRESULT CDuiListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 {
+	LRESULT lRet=0;
 	CPoint pt(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 	if(m_pCapturedFrame)
 	{
 		CRect rcItem=m_pCapturedFrame->GetItemRect();
 		pt.Offset(-rcItem.TopLeft());
-		return m_pCapturedFrame->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
+		lRet = m_pCapturedFrame->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
 	}
 	else
 	{
@@ -689,11 +690,11 @@ LRESULT CDuiListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 				DUIASSERT(m_pTemplPanel);
 				m_pTemplPanel->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
 			}
-			if(uMsg==WM_LBUTTONDOWN && m_iHoverItem!=m_iSelItem)
-				NotifySelChange(m_iSelItem,m_iHoverItem,WM_LBUTTONDOWN);
 		}
-		return 0;
 	}
+	if(uMsg==WM_LBUTTONUP && m_iHoverItem!=m_iSelItem)
+		NotifySelChange(m_iSelItem,m_iHoverItem);
+	return 0;
 }
 
 LRESULT CDuiListBoxEx::OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )

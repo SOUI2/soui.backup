@@ -622,7 +622,7 @@ int CDuiListCtrl::GetTopIndex() const
     return m_ptOrigin.y / m_nItemHeight;
 }
 
-void CDuiListCtrl::NotifySelChange(int nOldSel, int nNewSel, UINT uMsg)
+void CDuiListCtrl::NotifySelChange(int nOldSel, int nNewSel)
 {
     DUINMLBSELCHANGE nms;
 	nms.hdr.code     = DUINM_LBSELCHANGING;
@@ -631,7 +631,6 @@ void CDuiListCtrl::NotifySelChange(int nOldSel, int nNewSel, UINT uMsg)
 	nms.hdr.pszNameFrom=GetName();
     nms.nOldSel      = nOldSel;
     nms.nNewSel      = nNewSel;
-    nms.uMsg         = uMsg;
     nms.uHoverID     = 0;
 
     if (S_OK != DuiNotify((LPDUINMHDR)&nms))
@@ -676,7 +675,7 @@ void CDuiListCtrl::OnLButtonDown(UINT nFlags, CPoint pt)
     m_nHoverItem = HitTest(pt);
 
     if (m_nHoverItem!=m_nSelectItem && !m_bHotTrack)
-        NotifySelChange(m_nSelectItem, m_nHoverItem, WM_LBUTTONDOWN);
+        NotifySelChange(m_nSelectItem, m_nHoverItem);
 }
 
 void CDuiListCtrl::OnLButtonUp(UINT nFlags, CPoint pt)
@@ -684,7 +683,7 @@ void CDuiListCtrl::OnLButtonUp(UINT nFlags, CPoint pt)
     m_nHoverItem = HitTest(pt);
 
     if (m_bHotTrack || m_nHoverItem!=m_nSelectItem)
-        NotifySelChange(m_nSelectItem, m_nHoverItem, WM_LBUTTONUP);
+        NotifySelChange(m_nSelectItem, m_nHoverItem);
 }
 
 

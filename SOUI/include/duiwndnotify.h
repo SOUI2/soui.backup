@@ -43,6 +43,14 @@ class CDuiWindow;
             return TRUE;                         \
  
 
+// LRESULT OnDuiHandler(LPDUINMHDR pnmh)
+#define DUI_NOTIFY_HANDLER(cd, func) \
+	if(cd == pnmh->code) \
+{ \
+	return func(pnmh); \
+} 
+
+
 // LRESULT OnDuiIDHandler(LPDUINMHDR pnmh)
 #define DUI_NOTIFY_ID_HANDLER(id, cd, func) \
 	if(cd == pnmh->code && id == pnmh->idFrom) \
@@ -247,7 +255,6 @@ typedef struct tagDUINMLBSELCHANGE
     int nNewSel;
     int nOldSel;
     UINT uHoverID;
-    UINT uMsg;
 } DUINMLBSELCHANGE, *LPDUINMLBSELCHANGE;
 
 
@@ -342,6 +349,8 @@ typedef struct tagDUINMCALENDARSELECTDAY
 	WORD   wNewDay;
 } DUINMCALENDARSELECTDAY,*LPDUINMCALENDARSELECTDAY;
 
+
+#define DUINM_CBSELCHANGE 50
 
 //////////////////////////////////////////////////////////////////////////
 //  internal notify message

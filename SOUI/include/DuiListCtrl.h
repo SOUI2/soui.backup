@@ -94,7 +94,7 @@ namespace SOUI
 
 		void            RedrawItem(int nItem);
 
-		void            NotifySelChange(int nOldSel, int nNewSel, UINT uMsg);
+		void            NotifySelChange(int nOldSel, int nNewSel);
 
 		void            OnPaint(CDCHandle dc);
 		void            OnDestroy();

@@ -7,6 +7,7 @@ namespace SOUI
 	CDuiDropDownWnd::CDuiDropDownWnd(IDuiDropDownOwner* pOwner)
 		:m_pOwner(pOwner)
 		,m_bClick(FALSE)
+		,m_uExitCode(IDCANCEL)
 	{
 		MsgFilterRegister(m_pOwner->GetDropDownOwner()->GetContainer()->GetHostHwnd());
 	}
@@ -42,8 +43,7 @@ namespace SOUI
 	void CDuiDropDownWnd::OnLButtonDown( UINT nFlags, CPoint point )
 	{
 		CRect rcWnd;
-		GetWindowRect(&rcWnd);
-		ClientToScreen(&point);
+		GetClientRect(&rcWnd);
 		if(!rcWnd.PtInRect(point))
 		{
 			EndDropDown();
@@ -60,19 +60,27 @@ namespace SOUI
 		{
 			LRESULT lRes=0;
 			HWND hWnd=m_hWnd;
+			CRect rcWnd;
+			GetClientRect(&rcWnd);
 			CDuiHostWnd::ProcessWindowMessage(m_hWnd,WM_LBUTTONUP,nFlags,MAKELPARAM(point.x,point.y),lRes);
-			if(::IsWindow(hWnd)) EndDropDown();//强制关闭弹出窗口
+			if(::IsWindow(hWnd) && !rcWnd.PtInRect(point))
+				EndDropDown();//强制关闭弹出窗口
 		}
 	}
 
 	void CDuiDropDownWnd::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 	{
-		if(nChar==VK_ESCAPE) EndDropDown();
-		else SetMsgHandled(FALSE);
+		if(nChar==VK_RETURN)
+			EndDropDown(IDOK);
+		else if(nChar==VK_ESCAPE)
+			EndDropDown();
+		else 
+			SetMsgHandled(FALSE);
 	}
 
-	void CDuiDropDownWnd::EndDropDown()
+	void CDuiDropDownWnd::EndDropDown(UINT uCode)
 	{
+		m_uExitCode=uCode;
 		HWND hWnd=m_pOwner->GetDropDownOwner()->GetContainer()->GetHostHwnd();
 		DestroyWindow();
 		SetActiveWindow(hWnd);
@@ -80,7 +88,7 @@ namespace SOUI
 
 	void CDuiDropDownWnd::OnDestroy()
 	{
-		m_pOwner->OnCloseUp(this);
+		m_pOwner->OnCloseUp(this,m_uExitCode);
 		SetMsgHandled(FALSE);
 	}
 
