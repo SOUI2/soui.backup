@@ -307,8 +307,6 @@ protected:
 
     void OnSetFont(HFONT font, BOOL bRedraw);
 
-	LRESULT OnImeChar(UINT uMsg,WPARAM wparam,LPARAM lparam);
-
     LRESULT OnSetText(UINT uMsg,WPARAM wparam,LPARAM lparam);
 
     LRESULT OnSetCharFormat(UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -342,7 +340,6 @@ protected:
     MSG_WM_KEYDOWN(OnKeyDown)
     MSG_WM_CHAR(OnChar)
     MSG_WM_SETFONT(OnSetFont)
-	MESSAGE_HANDLER_EX(WM_IME_CHAR,OnImeChar)
     MESSAGE_HANDLER_EX(WM_SETTEXT,OnSetText)
     MESSAGE_HANDLER_EX(EM_SETPARAFORMAT,OnSetParaFormat)
     MESSAGE_HANDLER_EX(EM_SETCHARFORMAT,OnSetCharFormat)
@@ -387,6 +384,9 @@ protected:
     UINT	m_fSingleLineVCenter:1;	// Whether control that is single line will be vertical centered
     UINT	m_fScrollPending	:1; // Whether scroll is activated by richedit or by panelex.
 	UINT	m_fEnableDragDrop	:1;	// 允许在该控件中使用拖放
+
+	BYTE	m_byDbcsLeadByte;
+
     CDuiTextHost	*m_pTxtHost;
 };
 
