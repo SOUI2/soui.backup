@@ -65,7 +65,7 @@ namespace SOUI
 			CDuiHostWnd::ProcessWindowMessage(m_hWnd,WM_LBUTTONUP,nFlags,MAKELPARAM(point.x,point.y),lRes);
 			if(::IsWindow(hWnd) && !rcWnd.PtInRect(point))
 				EndDropDown();//强制关闭弹出窗口
-		}
+		} 
 	}
 
 	void CDuiDropDownWnd::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
