@@ -57,7 +57,7 @@ protected:
 	virtual void OnDropDown(CDuiDropDownWnd *pDropDown);
 	virtual void OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode);
 protected:
-	virtual void OnSelChanged() =0;
+	virtual void OnSelChanged();
 
 	virtual LRESULT DuiNotify(LPDUINMHDR pnms);
 protected:

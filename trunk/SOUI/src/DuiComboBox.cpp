@@ -62,8 +62,7 @@ CDuiComboBoxBase::CDuiComboBoxBase(void)
 	m_style.SetAttribute("align","left",TRUE);
 	m_style.SetAttribute("valign","middle",TRUE);
 
-	addEvent(NM_LBSELCHANGED);
-	addEvent(NM_LBSELCHANGING);
+	addEvent(NM_CBSELCHANGE);
 	addEvent(NM_RICHEDIT_NOTIFY);
 }
 
@@ -243,13 +242,6 @@ void CDuiComboBoxBase::OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode)
 	if(uCode==IDOK)
 	{
 		OnSelChanged();
-
-		DUINMHDR nms;
-		nms.code=NM_CBSELCHANGE;
-		nms.hDuiWnd=m_hDuiWnd;
-		nms.idFrom=GetCmdID();
-		nms.pszNameFrom=GetName();
-		DuiNotify(&nms);
 	}
 
 }
@@ -329,6 +321,16 @@ LRESULT CDuiComboBoxBase::DuiNotify( LPDUINMHDR pnms )
 		}
 	}
 	return __super::DuiNotify(pnms);
+}
+
+void CDuiComboBoxBase::OnSelChanged()
+{
+	DUINMHDR nms;
+	nms.code=NM_CBSELCHANGE;
+	nms.hDuiWnd=m_hDuiWnd;
+	nms.idFrom=GetCmdID();
+	nms.pszNameFrom=GetName();
+	DuiNotify(&nms);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -424,6 +426,7 @@ void CDuiComboBox::OnSelChanged()
 		m_pEdit->setMutedState(false);
 	}
 	NotifyInvalidate();
+	__super::OnSelChanged();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -547,6 +550,7 @@ void CDuiComboBoxEx::OnSelChanged()
 		m_pEdit->setMutedState(false);
 	}
 	NotifyInvalidate();
+	__super::OnSelChanged();
 }
 
 

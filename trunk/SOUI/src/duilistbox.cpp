@@ -543,6 +543,7 @@ void CDuiListBox::OnShowWindow( BOOL bShow, UINT nStatus )
 	{
 		m_iHoverItem=-1;
 	}
+	__super::OnShowWindow(bShow,nStatus);
 }
 
 }//namespace SOUI
