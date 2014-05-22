@@ -95,6 +95,10 @@ namespace SOUI
 		CAutoRefPtr<IBrush> pBr;
 		CreateSolidColorBrush(CDuiColor(0,0,0),&pBr);
 		SelectObject(pBr);
+
+        CAutoRefPtr<IRegion> pRgn;
+        CreateRegion(&pRgn);
+        SelectObject(pRgn);
 	}
 	
 	SRenderTarget_Skia::~SRenderTarget_Skia()
@@ -218,11 +222,22 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::PushClipRegion( IRegion *pRegion )
 	{
+        if(!m_SkCanvas) return S_FALSE;
+        SRegion_Skia * rgn_skia=(SRegion_Skia*)pRegion;
+        SkRegion rgn=m_curRgn->GetRegion();
+        m_rgnStack.push_back(rgn);
+        rgn.op(rgn_skia->GetRegion(),SkRegion::kUnion_Op);
+        m_SkCanvas->setClipRegion(rgn);
 		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::PopClipRegion()
 	{
+        if(!m_SkCanvas) return S_FALSE;
+        if(m_rgnStack.empty()) return S_FALSE;
+        SkRegion rgn=m_rgnStack.back();
+        m_rgnStack.pop_back();
+        m_SkCanvas->setClipRegion(rgn);
 		return S_OK;
 	}
 
@@ -328,6 +343,9 @@ namespace SOUI
 		case OT_BRUSH:
 			pRet=m_curBrush;
 			break;
+        case OT_RGN:
+            pRet=m_curRgn;
+            break;
 		}
 		return pRet;
 	}
@@ -349,6 +367,10 @@ namespace SOUI
 			pRet=m_curBrush;
 			m_curBrush=(SBrush_Skia*)pObj;
 			break;
+        case OT_RGN:
+            pRet=m_curRgn;
+            m_curRgn=(SRegion_Skia*)pObj;
+            break;
 		}
 		if(pRet)
 		{//由调用者调用Release释放该RenderObj
@@ -409,34 +431,48 @@ namespace SOUI
 		return S_OK;
 	}
 
+    SkIRect toSkIRect(LPCRECT pRc)
+    {
+        SkIRect rc={pRc->left,pRc->top,pRc->right,pRc->bottom};
+        return rc;
+    }
+
 	//////////////////////////////////////////////////////////////////////////
-	SRegion_Skia::SRegion_Skia( IRenderFactory_Skia *pRenderFac ):TSkiaRenderObjImpl<IRegion>(pRenderFac)
+	SRegion_Skia::SRegion_Skia( IRenderFactory_Skia *pRenderFac )
+        :TSkiaRenderObjImpl<IRegion>(pRenderFac)
 	{
 
 	}
 
 	void SRegion_Skia::CombineRect( LPCRECT lprect,int nCombineMode )
 	{
-
+        m_rgn.op(toSkIRect(lprect),SkRegion::kUnion_Op);
 	}
 
 	BOOL SRegion_Skia::PtInRegion( POINT pt )
 	{
-		return FALSE;
+        return m_rgn.contains(pt.x,pt.y);
 	}
 
 	BOOL SRegion_Skia::RectInRegion( LPCRECT lprect )
 	{
-		return FALSE;
+        DUIASSERT(lprect);
+        SkIRect rc={lprect->left,lprect->top,lprect->right,lprect->bottom};
+        return m_rgn.contains(rc);
 	}
 
 	void SRegion_Skia::GetRgnBox( LPRECT lprect )
 	{
-
+        DUIASSERT(lprect);
+        SkIRect rc=m_rgn.getBounds();
+        lprect->left=rc.left();
+        lprect->top=rc.top();
+        lprect->right=rc.right();
+        lprect->bottom=rc.bottom();
 	}
 
 	BOOL SRegion_Skia::IsEmpty()
 	{
-		return TRUE;
+        return m_rgn.isEmpty();
 	}
 }
