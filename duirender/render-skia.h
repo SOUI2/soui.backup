@@ -7,6 +7,7 @@
 #include "render-i.h"
 #include "color.h"
 #include "obj-ref-impl.hpp"
+#include <list>
 
 namespace SOUI
 {
@@ -169,8 +170,11 @@ namespace SOUI
 		virtual void GetRgnBox(LPRECT lprect);
 		virtual BOOL IsEmpty();
 
+        SkRegion GetRegion() const {
+            return m_rgn;
+        }
 	protected:
-
+        SkRegion    m_rgn;
 	};
 
 
@@ -246,6 +250,9 @@ namespace SOUI
 		CAutoRefPtr<SBitmap_Skia> m_curBmp;
 		CAutoRefPtr<SPen_Skia> m_curPen;
 		CAutoRefPtr<SBrush_Skia> m_curBrush;
+        CAutoRefPtr<SRegion_Skia> m_curRgn;
+
+        std::list<SkRegion>     m_rgnStack;//stack of clip region
 
 		HDC m_hBindDC;
 		RECT m_rcBind;

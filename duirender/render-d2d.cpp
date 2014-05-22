@@ -415,7 +415,7 @@ namespace SOUI
 
 	HRESULT SRenderTarget_D2D::PushClipRegion( IRegion *pRegion )
 	{
-		SRegion_D2D *pRegionD2D=dynamic_cast<SRegion_D2D*>(pRegion);
+		SRegion_D2D *pRegionD2D=(SRegion_D2D*)pRegion;
 		ASSERT(pRegionD2D);
 		CAutoRefPtr<ID2D1Layer> pLayer;
 		HRESULT hr=m_pD2DRenderTarget->CreateLayer(&pLayer);
