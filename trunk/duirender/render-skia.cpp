@@ -34,6 +34,13 @@ namespace SOUI
 		{ps_dashdotdot,ARRAYSIZE(ps_dashdotdot)},
 	};
 
+
+    SkIRect toSkIRect(LPCRECT pRc)
+    {
+        SkIRect rc={pRc->left,pRc->top,pRc->right,pRc->bottom};
+        return rc;
+    }
+
 	class SGetLineDashEffect
 	{
 	public:
@@ -212,12 +219,15 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::PushClipRect( LPCRECT pRect )
 	{
-		return S_OK;
+        CAutoRefPtr<IRegion> rgn;
+        CreateRegion(&rgn);
+        rgn->CombineRect(pRect,RGN_OR);
+        return PushClipRegion(rgn);
 	}
 
 	HRESULT SRenderTarget_Skia::PopClipRect()
 	{
-		return S_OK;
+		return PopClipRegion();
 	}
 
 	HRESULT SRenderTarget_Skia::PushClipRegion( IRegion *pRegion )
@@ -430,12 +440,6 @@ namespace SOUI
 		m_bitmap.unlockPixels();
 		return S_OK;
 	}
-
-    SkIRect toSkIRect(LPCRECT pRc)
-    {
-        SkIRect rc={pRc->left,pRc->top,pRc->right,pRc->bottom};
-        return rc;
-    }
 
 	//////////////////////////////////////////////////////////////////////////
 	SRegion_Skia::SRegion_Skia( IRenderFactory_Skia *pRenderFac )
