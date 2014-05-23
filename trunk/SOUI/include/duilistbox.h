@@ -14,8 +14,8 @@ namespace SOUI
 
 typedef struct tagLBITEM
 {
-    CDuiStringT		strText;
-    int			nImage;
+    CDuiStringT        strText;
+    int            nImage;
     LPARAM      lParam;
 
     tagLBITEM()
@@ -117,17 +117,17 @@ protected:
 
     void OnDestroy();
 
-	void OnShowWindow(BOOL bShow, UINT nStatus);
+    void OnShowWindow(BOOL bShow, UINT nStatus);
 
 protected:
 
-    CDuiArray<LPLBITEM>	m_arrItems;
+    CDuiArray<LPLBITEM>    m_arrItems;
 
-    int		m_nItemHei;
-    int		m_iSelItem;
-    int		m_iHoverItem;
-    int		m_iScrollSpeed;
-    BOOL	m_bHotTrack;
+    int        m_nItemHei;
+    int        m_iSelItem;
+    int        m_iHoverItem;
+    int        m_iScrollSpeed;
+    BOOL    m_bHotTrack;
 
     CPoint m_ptIcon;
     CPoint m_ptText;
@@ -156,16 +156,16 @@ public:
     SOUI_ATTRIBUTES_END()
 
     WND_MSG_MAP_BEGIN()
-		MSG_WM_DESTROY(OnDestroy)
-		MSG_WM_SIZE(OnSize)
-		MSG_WM_PAINT(OnPaint)
-		MSG_WM_LBUTTONDOWN(OnLButtonDown)
-		MSG_WM_LBUTTONDBLCLK(OnLButtonDbClick)
-		MSG_WM_LBUTTONUP(OnLButtonUp)
-		MSG_WM_MOUSEMOVE(OnMouseMove)
-		MSG_WM_KEYDOWN(OnKeyDown)
-		MSG_WM_CHAR(OnChar)
-		MSG_WM_SHOWWINDOW(OnShowWindow)
+        MSG_WM_DESTROY(OnDestroy)
+        MSG_WM_SIZE(OnSize)
+        MSG_WM_PAINT(OnPaint)
+        MSG_WM_LBUTTONDOWN(OnLButtonDown)
+        MSG_WM_LBUTTONDBLCLK(OnLButtonDbClick)
+        MSG_WM_LBUTTONUP(OnLButtonUp)
+        MSG_WM_MOUSEMOVE(OnMouseMove)
+        MSG_WM_KEYDOWN(OnKeyDown)
+        MSG_WM_CHAR(OnChar)
+        MSG_WM_SHOWWINDOW(OnShowWindow)
     WND_MSG_MAP_END()
 };
 

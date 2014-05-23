@@ -1,9 +1,9 @@
 /***********************************************************************
-	filename: 	DUILogger.h
-	created:	21/2/2004
-	author:		Paul D Turner
+    filename:     DUILogger.h
+    created:    21/2/2004
+    author:        Paul D Turner
 
-	purpose:	Defines interface for the Logger class
+    purpose:    Defines interface for the Logger class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The DUI Development Team
@@ -37,20 +37,20 @@ namespace SOUI
 
 /*!
 \brief
-	Enumeration of logging levels
+    Enumeration of logging levels
 */
 enum LoggingLevel
 {
-    Errors,			//!< Only actual error conditions will be logged.
+    Errors,            //!< Only actual error conditions will be logged.
     Warnings,       //!< Warnings will be logged as well.
-    Standard,		//!< Basic events will be logged (default level).
-    Informative,	//!< Useful tracing (object creations etc) information will be logged.
-    Insane			//!< Mostly everything gets logged (use for heavy tracing only, log WILL be big).
+    Standard,        //!< Basic events will be logged (default level).
+    Informative,    //!< Useful tracing (object creations etc) information will be logged.
+    Insane            //!< Mostly everything gets logged (use for heavy tracing only, log WILL be big).
 };
 
 /*!
 \brief
-	Abstract class that defines the interface of a logger object for the GUI system.
+    Abstract class that defines the interface of a logger object for the GUI system.
     The default implementation of this interface is the DefaultLogger class; if you
     want to perform special logging, derive your own class from Logger and initialize
     a object of that type before you create the DUI::System singleton.
@@ -60,7 +60,7 @@ class SOUI_EXP DuiLogger
 public:
     /*!
     \brief
-    	Constructor for Logger object.
+        Constructor for Logger object.
     */
     DuiLogger(void) ;
 
@@ -72,15 +72,15 @@ public:
 
     /*!
     \brief
-    	Set the level of logging information that will get out to the log file
+        Set the level of logging information that will get out to the log file
 
     \param level
-    	One of the LoggingLevel enumerated values that specified the level of logging information required.
+        One of the LoggingLevel enumerated values that specified the level of logging information required.
 
     \return
-    	Nothing
+        Nothing
     */
-    void	setLoggingLevel(LoggingLevel level)
+    void    setLoggingLevel(LoggingLevel level)
     {
         d_level = level;
     }
@@ -88,12 +88,12 @@ public:
 
     /*!
     \brief
-    	return the current logging level setting
+        return the current logging level setting
 
     \return
-    	One of the LoggingLevel enumerated values specifying the current level of logging
+        One of the LoggingLevel enumerated values specifying the current level of logging
     */
-    LoggingLevel	getLoggingLevel(void) const
+    LoggingLevel    getLoggingLevel(void) const
     {
         return d_level;
     }
@@ -101,27 +101,27 @@ public:
 
     /*!
     \brief
-    	Add an event to the log.
+        Add an event to the log.
 
     \param message
-    	String object containing the message to be added to the event log.
+        String object containing the message to be added to the event log.
 
     \param level
-    	LoggingLevel for this message.  If \a level is greater than the current set logging level, the message is not logged.
+        LoggingLevel for this message.  If \a level is greater than the current set logging level, the message is not logged.
 
     \return
-    	Nothing
+        Nothing
     */
     virtual void logEvent(LPCTSTR, LoggingLevel level = Standard)=0;
 
-	virtual void logEvent2(LPCTSTR pszFormat,...)
-	{
-		TCHAR szBuf[1024+1];
-		va_list args;
-		va_start( args, pszFormat);
-		_vstprintf_s(szBuf,1024,pszFormat,args);
-		logEvent(szBuf);
-	}
+    virtual void logEvent2(LPCTSTR pszFormat,...)
+    {
+        TCHAR szBuf[1024+1];
+        va_list args;
+        va_start( args, pszFormat);
+        _vstprintf_s(szBuf,1024,pszFormat,args);
+        logEvent(szBuf);
+    }
 
     /*!
     \brief
@@ -144,11 +144,11 @@ public:
 
 
 protected:
-    LoggingLevel	d_level;		//!< Holds current logging level
+    LoggingLevel    d_level;        //!< Holds current logging level
 };
 
 
 } // End of  DUI namespace section
 
 
-#endif	// end of guard _DUILogger_h_
+#endif    // end of guard _DUILogger_h_

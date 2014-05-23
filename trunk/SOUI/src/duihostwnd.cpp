@@ -10,7 +10,7 @@
 namespace SOUI
 {
 
-#define TIMER_CARET	1
+#define TIMER_CARET    1
 #define TIMER_NEXTFRAME 2
 
 //////////////////////////////////////////////////////////////////////////
@@ -36,7 +36,7 @@ CDuiHostWnd::CDuiHostWnd( LPCTSTR pszResName /*= NULL*/ )
 , m_pTipCtrl(NULL)
 , m_dummyWnd(this)
 {
-	SetContainer(this);
+    SetContainer(this);
 }
 
 HWND CDuiHostWnd::Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight,LPVOID lpParam)
@@ -55,7 +55,7 @@ HWND CDuiHostWnd::Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWO
 
     if(!m_strXmlLayout.IsEmpty())  Load(m_strXmlLayout);
 
-	if(nWidth==0 || nHeight==0) CenterWindow(hWnd);
+    if(nWidth==0 || nHeight==0) CenterWindow(hWnd);
     return hWnd;
 }
 
@@ -66,107 +66,107 @@ HWND CDuiHostWnd::Create(HWND hWndParent,int x,int y,int nWidth,int nHeight)
 
 BOOL CDuiHostWnd::Load(LPCTSTR pszXmlName)
 {
-	pugi::xml_document xmlDoc;
-	if(!LOADXML(xmlDoc,pszXmlName,DUIRES_XML_TYPE)) return FALSE;
+    pugi::xml_document xmlDoc;
+    if(!LOADXML(xmlDoc,pszXmlName,DUIRES_XML_TYPE)) return FALSE;
 
     return SetXml(xmlDoc.child("SOUI"));
 }
 
 BOOL CDuiHostWnd::SetXml(LPSTR lpszXml,int nLen)
 {
-	pugi::xml_document xmlDoc;
-	if(!xmlDoc.load_buffer(lpszXml,nLen,pugi::parse_default,pugi::encoding_utf8)) return FALSE;
+    pugi::xml_document xmlDoc;
+    if(!xmlDoc.load_buffer(lpszXml,nLen,pugi::parse_default,pugi::encoding_utf8)) return FALSE;
  
-	return SetXml(xmlDoc.child("SOUI"));
+    return SetXml(xmlDoc.child("SOUI"));
 }
 
 BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
 {
-	if(!xmlNode) return FALSE;
+    if(!xmlNode) return FALSE;
 
-	m_dwDlgStyle =CSimpleWnd::GetStyle();
-	m_dwDlgExStyle  = CSimpleWnd::GetExStyle();
+    m_dwDlgStyle =CSimpleWnd::GetStyle();
+    m_dwDlgExStyle  = CSimpleWnd::GetExStyle();
 
-	DuiSendMessage(WM_DESTROY);
-
-
-	CSize szDefault;
-	szDefault.cx = xmlNode.attribute("width").as_int(200);
-	szDefault.cy = xmlNode.attribute("height").as_int(200);
-
-	CDuiStringA strMargin=xmlNode.attribute("margin").value();
-	sscanf(strMargin,"%d,%d,%d,%d",&m_rcNC.left,&m_rcNC.top,&m_rcNC.right,&m_rcNC.bottom);
-	CDuiStringA strMin = xmlNode.attribute("minsize").value();
-	sscanf(strMin,"%d,%d",&m_szMin.cx, &m_szMin.cy);
-
-	m_bTranslucent=xmlNode.attribute("translucent").as_bool(false);
-	m_strName = xmlNode.attribute("name").value();
-
-	CDuiStringT strTitle=DUI_CA2T(xmlNode.attribute("title").value(),CP_UTF8);
-
-	BUILDSTRING(strTitle);
-
-	if(m_bTranslucent)
-	{
-		m_dwDlgExStyle |= WS_EX_LAYERED;
-	}
-
-	if (xmlNode.attribute("appwin").as_bool(false))
-	{
-		m_dwDlgExStyle |= WS_EX_APPWINDOW;
-		m_dwDlgStyle |= WS_SYSMENU;
-	}else if(xmlNode.attribute("toolwindow").as_bool(false))
-	{
-		m_dwDlgExStyle |= WS_EX_TOOLWINDOW;
-	}
+    DuiSendMessage(WM_DESTROY);
 
 
-	m_bResizable = xmlNode.attribute("resize").as_bool(false);
+    CSize szDefault;
+    szDefault.cx = xmlNode.attribute("width").as_int(200);
+    szDefault.cy = xmlNode.attribute("height").as_int(200);
 
-	if (m_bResizable)
-	{
-		m_dwDlgStyle |= WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_THICKFRAME;
-	}
+    CDuiStringA strMargin=xmlNode.attribute("margin").value();
+    sscanf(strMargin,"%d,%d,%d,%d",&m_rcNC.left,&m_rcNC.top,&m_rcNC.right,&m_rcNC.bottom);
+    CDuiStringA strMin = xmlNode.attribute("minsize").value();
+    sscanf(strMin,"%d,%d",&m_szMin.cx, &m_szMin.cy);
 
-	ModifyStyle(0,m_dwDlgStyle);
-	ModifyStyleEx(0,m_dwDlgExStyle);
+    m_bTranslucent=xmlNode.attribute("translucent").as_bool(false);
+    m_strName = xmlNode.attribute("name").value();
 
-	if(m_bTranslucent)
-	{
-		SetWindowLongPtr(GWL_EXSTYLE, GetWindowLongPtr(GWL_EXSTYLE) | WS_EX_LAYERED);
-		m_dummyWnd.Create(_T("dummyLayeredWnd"),WS_POPUP,WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,0,0,10,10,m_hWnd,NULL);
-		m_dummyWnd.SetWindowLongPtr(GWL_EXSTYLE,m_dummyWnd.GetWindowLongPtr(GWL_EXSTYLE) | WS_EX_LAYERED);
-		::SetLayeredWindowAttributes(m_dummyWnd.m_hWnd,0,0,LWA_ALPHA);
-		m_dummyWnd.ShowWindow(SW_SHOWNOACTIVATE);
-	}
+    CDuiStringT strTitle=DUI_CA2T(xmlNode.attribute("title").value(),CP_UTF8);
+
+    BUILDSTRING(strTitle);
+
+    if(m_bTranslucent)
+    {
+        m_dwDlgExStyle |= WS_EX_LAYERED;
+    }
+
+    if (xmlNode.attribute("appwin").as_bool(false))
+    {
+        m_dwDlgExStyle |= WS_EX_APPWINDOW;
+        m_dwDlgStyle |= WS_SYSMENU;
+    }else if(xmlNode.attribute("toolwindow").as_bool(false))
+    {
+        m_dwDlgExStyle |= WS_EX_TOOLWINDOW;
+    }
 
 
-	SetWindowText(strTitle);
+    m_bResizable = xmlNode.attribute("resize").as_bool(false);
 
-	CRect rcClient;
-	GetClientRect(&rcClient);
-	if(rcClient.IsRectEmpty())//APP没有指定窗口大小，使用XML中的值
-	{
-		SetWindowPos(NULL,0,0,szDefault.cx,szDefault.cy,SWP_NOZORDER|SWP_NOMOVE);
-		GetClientRect(&rcClient);
-	}
+    if (m_bResizable)
+    {
+        m_dwDlgStyle |= WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_THICKFRAME;
+    }
 
-	if(!m_strName.IsEmpty())
-	{
-		DuiSystem::getSingleton().GetCurResMgr()->GetSkinPool()->LoadSkins(m_strName);	//load skin only used in the host window
-	}
+    ModifyStyle(0,m_dwDlgStyle);
+    ModifyStyleEx(0,m_dwDlgExStyle);
 
-	CDuiWindow::Load(xmlNode.child("body"));
+    if(m_bTranslucent)
+    {
+        SetWindowLongPtr(GWL_EXSTYLE, GetWindowLongPtr(GWL_EXSTYLE) | WS_EX_LAYERED);
+        m_dummyWnd.Create(_T("dummyLayeredWnd"),WS_POPUP,WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,0,0,10,10,m_hWnd,NULL);
+        m_dummyWnd.SetWindowLongPtr(GWL_EXSTYLE,m_dummyWnd.GetWindowLongPtr(GWL_EXSTYLE) | WS_EX_LAYERED);
+        ::SetLayeredWindowAttributes(m_dummyWnd.m_hWnd,0,0,LWA_ALPHA);
+        m_dummyWnd.ShowWindow(SW_SHOWNOACTIVATE);
+    }
 
-	Move(rcClient);
-	DuiSendMessage(WM_ENABLE,1);
-	DuiSendMessage(WM_SHOWWINDOW,1);
 
-	_Redraw();
+    SetWindowText(strTitle);
 
-	RedrawRegion(CDCHandle(m_memDC),CRgn());
+    CRect rcClient;
+    GetClientRect(&rcClient);
+    if(rcClient.IsRectEmpty())//APP没有指定窗口大小，使用XML中的值
+    {
+        SetWindowPos(NULL,0,0,szDefault.cx,szDefault.cy,SWP_NOZORDER|SWP_NOMOVE);
+        GetClientRect(&rcClient);
+    }
 
-	return TRUE;
+    if(!m_strName.IsEmpty())
+    {
+        DuiSystem::getSingleton().GetCurResMgr()->GetSkinPool()->LoadSkins(m_strName);    //load skin only used in the host window
+    }
+
+    CDuiWindow::Load(xmlNode.child("body"));
+
+    Move(rcClient);
+    DuiSendMessage(WM_ENABLE,1);
+    DuiSendMessage(WM_SHOWWINDOW,1);
+
+    _Redraw();
+
+    RedrawRegion(CDCHandle(m_memDC),CRgn());
+
+    return TRUE;
 }
 
 UINT_PTR CDuiHostWnd::DoModal(HWND hWndParent/* = NULL*/, LPRECT rect /*= NULL*/)
@@ -190,7 +190,7 @@ UINT_PTR CDuiHostWnd::DoModal(HWND hWndParent/* = NULL*/, LPRECT rect /*= NULL*/
 
     CRect rc;
     if(rect) rc=*rect;
-	if(!IsWindow()) Create(hWndParent, rc.left,rc.top,rc.Width(),rc.Height());
+    if(!IsWindow()) Create(hWndParent, rc.left,rc.top,rc.Width(),rc.Height());
     if (!IsWindow())
     {
         ::EnableWindow(hWndParent, TRUE);
@@ -199,14 +199,14 @@ UINT_PTR CDuiHostWnd::DoModal(HWND hWndParent/* = NULL*/, LPRECT rect /*= NULL*/
 
     HWND hWndLastActive = DuiThreadActiveWndMgr::SetActive(m_hWnd);
 
-	if(INITCODE_NOTSHOW!=SendMessage(WM_INITDIALOG, (WPARAM)m_hWnd))
-	{//根据INITDIALOG的返回值还判断是不是将窗口显示出来。返回INITCODE_NOTSHOW时窗口不显示。
-	
-		if(m_dwDlgExStyle&WS_EX_TOOLWINDOW)
-			::ShowWindow(m_hWnd,SW_SHOWNOACTIVATE);
-		else
-			::ShowWindow(m_hWnd,SW_SHOWNORMAL);
-	}
+    if(INITCODE_NOTSHOW!=SendMessage(WM_INITDIALOG, (WPARAM)m_hWnd))
+    {//根据INITDIALOG的返回值还判断是不是将窗口显示出来。返回INITCODE_NOTSHOW时窗口不显示。
+    
+        if(m_dwDlgExStyle&WS_EX_TOOLWINDOW)
+            ::ShowWindow(m_hWnd,SW_SHOWNOACTIVATE);
+        else
+            ::ShowWindow(m_hWnd,SW_SHOWNORMAL);
+    }
 
     _ModalMessageLoop();
 
@@ -306,8 +306,8 @@ void CDuiHostWnd::_Redraw()
 
     if(!m_bTranslucent)
         Invalidate(FALSE);
-	else if(m_dummyWnd.IsWindow()) 
-		m_dummyWnd.Invalidate(FALSE);
+    else if(m_dummyWnd.IsWindow()) 
+        m_dummyWnd.Invalidate(FALSE);
 }
 
 BOOL CDuiHostWnd::_PreTranslateMessage(MSG* pMsg)
@@ -366,9 +366,9 @@ void CDuiHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
         {
             rgnUpdate.Attach(m_rgnInvalidate.Detach());
         }
-		if(m_bCaretActive) DrawCaret(m_ptCaret);//clear old caret 
+        if(m_bCaretActive) DrawCaret(m_ptCaret);//clear old caret 
         RedrawRegion(CDCHandle(m_memDC), rgnUpdate);
-		if(m_bCaretActive) DrawCaret(m_ptCaret);//redraw caret 
+        if(m_bCaretActive) DrawCaret(m_ptCaret);//redraw caret 
         m_memDC.SelectClipRgn(NULL);
 
         m_memDC.SelectFont(hftOld);
@@ -384,7 +384,7 @@ void CDuiHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
 
 void CDuiHostWnd::OnPaint(CDCHandle dc)
 {
-	CPaintDC dc1(m_hWnd);
+    CPaintDC dc1(m_hWnd);
     OnPrint(m_bTranslucent?NULL:dc1.m_hDC, 0);
 }
 
@@ -410,10 +410,10 @@ void CDuiHostWnd::OnDestroy()
             m_pTipCtrl->DestroyWindow();
         delete m_pTipCtrl;
     }
-	if(m_bTranslucent && m_dummyWnd.IsWindow())
-	{
-		m_dummyWnd.DestroyWindow();
-	}
+    if(m_bTranslucent && m_dummyWnd.IsWindow())
+    {
+        m_dummyWnd.DestroyWindow();
+    }
 
     DuiSendMessage(WM_DESTROY);
 
@@ -530,13 +530,13 @@ void CDuiHostWnd::OnDuiTimer( char cTimerID )
 {
     if(cTimerID==TIMER_CARET)
     {
-		DUIASSERT(m_bCaretShowing);
+        DUIASSERT(m_bCaretShowing);
         DrawCaret(m_ptCaret);
-		m_bCaretActive=!m_bCaretActive;
+        m_bCaretActive=!m_bCaretActive;
     }else if(cTimerID==TIMER_NEXTFRAME)
-	{
-		OnNextFrame();
-	}
+    {
+        OnNextFrame();
+    }
 }
 
 void CDuiHostWnd::DrawCaret(CPoint pt)
@@ -545,30 +545,30 @@ void CDuiHostWnd::DrawCaret(CPoint pt)
     GetObject(m_hBmpCaret,sizeof(bm),&bm);
 
     CMemDC dcCaret(m_memDC,m_hBmpCaret);
-	
-	CRect rcCaret(pt,CSize(bm.bmWidth,bm.bmHeight));
-	CRect rcShowCaret;
-	rcShowCaret.IntersectRect(m_rcValidateCaret,rcCaret);
-	
+    
+    CRect rcCaret(pt,CSize(bm.bmWidth,bm.bmHeight));
+    CRect rcShowCaret;
+    rcShowCaret.IntersectRect(m_rcValidateCaret,rcCaret);
+    
 
     ALPHAINFO ai;
     CGdiAlpha::AlphaBackup(m_memDC,rcCaret,ai);
-	m_memDC.BitBlt(rcShowCaret.left,rcShowCaret.top,rcShowCaret.Width(),rcShowCaret.Height(),dcCaret,rcShowCaret.left-pt.x,rcShowCaret.top-pt.y,DSTINVERT);
+    m_memDC.BitBlt(rcShowCaret.left,rcShowCaret.top,rcShowCaret.Width(),rcShowCaret.Height(),dcCaret,rcShowCaret.left-pt.x,rcShowCaret.top-pt.y,DSTINVERT);
     CGdiAlpha::AlphaRestore(m_memDC,ai);
 
-	if(!m_bTranslucent)
-	{
-		InvalidateRect(rcCaret, FALSE);
-	}else
-	{
-		if(m_dummyWnd.IsWindow()) 
-			m_dummyWnd.Invalidate(FALSE);
-	}
+    if(!m_bTranslucent)
+    {
+        InvalidateRect(rcCaret, FALSE);
+    }else
+    {
+        if(m_dummyWnd.IsWindow()) 
+            m_dummyWnd.Invalidate(FALSE);
+    }
 }
 
 LRESULT CDuiHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    DoFrameEvent(uMsg,wParam,lParam);	//将鼠标消息转发到DuiWindow处理
+    DoFrameEvent(uMsg,wParam,lParam);    //将鼠标消息转发到DuiWindow处理
 
     if(m_pTipCtrl && m_pTipCtrl->IsWindow())
     {
@@ -596,18 +596,18 @@ LRESULT CDuiHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 LRESULT CDuiHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	if(uMsg==WM_SYSKEYDOWN || uMsg==WM_SYSKEYUP)
+    if(uMsg==WM_SYSKEYDOWN || uMsg==WM_SYSKEYUP)
     {
         CDuiWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
         if(!pFocus  || !(pFocus->OnGetDuiCode()&DUIC_WANTSYSKEY))
         {
-			SetMsgHandled(FALSE);
+            SetMsgHandled(FALSE);
             return 0;
         }
     }
     LRESULT lRet = DoFrameEvent(uMsg,wParam,lParam);
-	SetMsgHandled(CDuiWindow::IsMsgHandled());
-	return lRet;
+    SetMsgHandled(CDuiWindow::IsMsgHandled());
+    return lRet;
 }
 
 BOOL CDuiHostWnd::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
@@ -619,10 +619,10 @@ BOOL CDuiHostWnd::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 
 void CDuiHostWnd::OnActivate( UINT nState, BOOL bMinimized, HWND wndOther )
 {
-	if(nState==WA_ACTIVE)
-		::SetFocus(m_hWnd);
-	else
-		::SetFocus(NULL);
+    if(nState==WA_ACTIVE)
+        ::SetFocus(m_hWnd);
+    else
+        ::SetFocus(NULL);
 }
 
 LRESULT CDuiHostWnd::OnDuiNotify(LPDUINMHDR pHdr)
@@ -655,16 +655,16 @@ HWND CDuiHostWnd::GetHostHwnd()
 
 HDC CDuiHostWnd::OnGetDuiDC(const CRect & rc,DWORD gdcFlags)
 {
-	m_memDC.SelectFont(DuiFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT));
-	m_memDC.SetBkMode(TRANSPARENT);
-	m_memDC.SetTextColor(0);
+    m_memDC.SelectFont(DuiFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT));
+    m_memDC.SetBkMode(TRANSPARENT);
+    m_memDC.SetTextColor(0);
 
     if(!(gdcFlags & OLEDC_NODRAW))
     {
-		if(m_bCaretActive)
-		{
-			DrawCaret(m_ptCaret);//clear old caret
-		}
+        if(m_bCaretActive)
+        {
+            DrawCaret(m_ptCaret);//clear old caret
+        }
         CRgn rgnRc;
         rgnRc.CreateRectRgnIndirect(&rc);
         m_memDC.SelectClipRgn(rgnRc);
@@ -674,12 +674,12 @@ HDC CDuiHostWnd::OnGetDuiDC(const CRect & rc,DWORD gdcFlags)
 
 void CDuiHostWnd::OnReleaseDuiDC(HDC hdcSour,const CRect &rc,DWORD gdcFlags)
 {
-	m_memDC.SelectClipRgn(NULL);
+    m_memDC.SelectClipRgn(NULL);
     if(gdcFlags & OLEDC_NODRAW) return;
-	if(m_bCaretActive)
-	{
-		DrawCaret(m_ptCaret);//clear old caret
-	}
+    if(m_bCaretActive)
+    {
+        DrawCaret(m_ptCaret);//clear old caret
+    }
     CDCHandle dc=GetDC();
     UpdateHost(dc,rc);
     ReleaseDC(dc);
@@ -687,19 +687,19 @@ void CDuiHostWnd::OnReleaseDuiDC(HDC hdcSour,const CRect &rc,DWORD gdcFlags)
 
 void CDuiHostWnd::UpdateHost(CDCHandle dc, const CRect &rcInvalid )
 {
-	if(m_bTranslucent)
-	{
-		CRect rc;
-		GetWindowRect(&rc);
-		BLENDFUNCTION bf= {AC_SRC_OVER,0,0xFF,AC_SRC_ALPHA};
-		CDCHandle hdcSrc=::GetDC(NULL);
-		UpdateLayeredWindow(hdcSrc,&rc.TopLeft(),&rc.Size(),m_memDC,&CPoint(0,0),0,&bf,ULW_ALPHA);
-		::ReleaseDC(NULL,hdcSrc);
-	}
-	else
-	{
-		dc.BitBlt(rcInvalid.left,rcInvalid.top,rcInvalid.Width(),rcInvalid.Height(),m_memDC,rcInvalid.left,rcInvalid.top,SRCCOPY);
-	}
+    if(m_bTranslucent)
+    {
+        CRect rc;
+        GetWindowRect(&rc);
+        BLENDFUNCTION bf= {AC_SRC_OVER,0,0xFF,AC_SRC_ALPHA};
+        CDCHandle hdcSrc=::GetDC(NULL);
+        UpdateLayeredWindow(hdcSrc,&rc.TopLeft(),&rc.Size(),m_memDC,&CPoint(0,0),0,&bf,ULW_ALPHA);
+        ::ReleaseDC(NULL,hdcSrc);
+    }
+    else
+    {
+        dc.BitBlt(rcInvalid.left,rcInvalid.top,rcInvalid.Width(),rcInvalid.Height(),m_memDC,rcInvalid.left,rcInvalid.top,SRCCOPY);
+    }
 }
 
 void CDuiHostWnd::OnRedraw(const CRect &rc)
@@ -724,10 +724,10 @@ void CDuiHostWnd::OnRedraw(const CRect &rc)
     {
         InvalidateRect(rc, FALSE);
     }else
-	{
-		if(m_dummyWnd.IsWindow()) 
-			m_dummyWnd.Invalidate(FALSE);
-	}
+    {
+        if(m_dummyWnd.IsWindow()) 
+            m_dummyWnd.Invalidate(FALSE);
+    }
 }
 
 BOOL CDuiHostWnd::OnReleaseDuiCapture()
@@ -761,34 +761,34 @@ BOOL CDuiHostWnd::IsTranslucent()
 
 BOOL CDuiHostWnd::DuiCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
 {
-	::CreateCaret(m_hWnd,hBmp,nWidth,nHeight);
-	CDCHandle dc=GetDC();
-	if(m_hBmpCaret)
-	{
-		DeleteObject(m_hBmpCaret);
-		m_hBmpCaret=NULL;
-	}
-	m_hBmpCaret=CreateCompatibleBitmap(dc,nWidth,nHeight);
-	CDCHandle memdc1,memdc2;
-	memdc1.CreateCompatibleDC(dc);
-	memdc1.SelectBitmap(m_hBmpCaret);
-	if(hBmp)
-	{
-		//以拉伸方式创建一个插入符位图
-		memdc2.CreateCompatibleDC(dc);
-		memdc2.SelectBitmap(hBmp);
-		BITMAP bm;
-		GetObject(hBmp,sizeof(bm),&bm);
-		StretchBlt(memdc1,0,0,nWidth,nHeight,memdc2,0,0,bm.bmWidth,bm.bmHeight,SRCCOPY);
-		memdc2.DeleteDC();
-	}
-	else
-	{
-		//创建一个黑色插入符的位图
-		memdc1.FillSolidRect(0,0,nWidth,nHeight,0);
-	}
-	memdc1.DeleteDC();
-	ReleaseDC(dc);
+    ::CreateCaret(m_hWnd,hBmp,nWidth,nHeight);
+    CDCHandle dc=GetDC();
+    if(m_hBmpCaret)
+    {
+        DeleteObject(m_hBmpCaret);
+        m_hBmpCaret=NULL;
+    }
+    m_hBmpCaret=CreateCompatibleBitmap(dc,nWidth,nHeight);
+    CDCHandle memdc1,memdc2;
+    memdc1.CreateCompatibleDC(dc);
+    memdc1.SelectBitmap(m_hBmpCaret);
+    if(hBmp)
+    {
+        //以拉伸方式创建一个插入符位图
+        memdc2.CreateCompatibleDC(dc);
+        memdc2.SelectBitmap(hBmp);
+        BITMAP bm;
+        GetObject(hBmp,sizeof(bm),&bm);
+        StretchBlt(memdc1,0,0,nWidth,nHeight,memdc2,0,0,bm.bmWidth,bm.bmHeight,SRCCOPY);
+        memdc2.DeleteDC();
+    }
+    else
+    {
+        //创建一个黑色插入符的位图
+        memdc1.FillSolidRect(0,0,nWidth,nHeight,0);
+    }
+    memdc1.DeleteDC();
+    ReleaseDC(dc);
     return TRUE;
 }
 
@@ -796,50 +796,50 @@ BOOL CDuiHostWnd::DuiShowCaret( BOOL bShow )
 {
     m_bCaretShowing=bShow;
 
-	if(bShow)
-	{
-		SetDuiTimer(TIMER_CARET,GetCaretBlinkTime());
-		if(!m_bCaretActive)
-		{
-			DrawCaret(m_ptCaret);
-			m_bCaretActive=TRUE;
-		}
-	}
-	else
-	{
-		KillDuiTimer(TIMER_CARET);
-		if(m_bCaretActive)
-		{
-			DrawCaret(m_ptCaret);
-		}
-		m_bCaretActive=FALSE;
-	}
+    if(bShow)
+    {
+        SetDuiTimer(TIMER_CARET,GetCaretBlinkTime());
+        if(!m_bCaretActive)
+        {
+            DrawCaret(m_ptCaret);
+            m_bCaretActive=TRUE;
+        }
+    }
+    else
+    {
+        KillDuiTimer(TIMER_CARET);
+        if(m_bCaretActive)
+        {
+            DrawCaret(m_ptCaret);
+        }
+        m_bCaretActive=FALSE;
+    }
    return TRUE;
 }
 
 BOOL CDuiHostWnd::DuiSetCaretPos( int x,int y )
 {
     if(!SetCaretPos(x,y)) return FALSE;
-	if(m_bCaretShowing && m_bCaretActive)
-	{
-		//clear old caret
-		DrawCaret(m_ptCaret);
-	}
-	m_ptCaret=CPoint(x,y);
-	if(m_bCaretShowing && m_bCaretActive)
-	{
-		//draw new caret
-		DrawCaret(m_ptCaret);
-	}
+    if(m_bCaretShowing && m_bCaretActive)
+    {
+        //clear old caret
+        DrawCaret(m_ptCaret);
+    }
+    m_ptCaret=CPoint(x,y);
+    if(m_bCaretShowing && m_bCaretActive)
+    {
+        //draw new caret
+        DrawCaret(m_ptCaret);
+    }
     return TRUE;
 }
 
 
 BOOL CDuiHostWnd::DuiUpdateWindow()
 {
-	if(m_bTranslucent) UpdateWindow(m_dummyWnd.m_hWnd);
-	else UpdateWindow(m_hWnd);
-	return TRUE;
+    if(m_bTranslucent) UpdateWindow(m_dummyWnd.m_hWnd);
+    else UpdateWindow(m_hWnd);
+    return TRUE;
 }
 
 LRESULT CDuiHostWnd::OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam)
@@ -941,7 +941,7 @@ void CDuiHostWnd::OnClose()
 
 void CDuiHostWnd::OnOK()
 {
-	EndDialog(IDOK);
+    EndDialog(IDOK);
 }
 
 LRESULT CDuiHostWnd::OnMsgFilter(UINT uMsg,WPARAM wParam,LPARAM lParam)
@@ -1012,233 +1012,233 @@ void CDuiHostWnd::OnRealWndSize( CDuiRealWnd *pRealWnd )
 
 void CDuiHostWnd::OnSetFocus( HWND wndOld )
 {
-	DoFrameEvent(WM_SETFOCUS,0,0);
+    DoFrameEvent(WM_SETFOCUS,0,0);
 }
 
 void CDuiHostWnd::OnKillFocus( HWND wndFocus )
 {
-	DoFrameEvent(WM_KILLFOCUS,0,0);
+    DoFrameEvent(WM_KILLFOCUS,0,0);
 }
 
 void CDuiHostWnd::UpdateLayerFromDC(HDC hdc,BYTE byAlpha)
 {
-	DUIASSERT(IsTranslucent());
-	CRect rc;
-	GetWindowRect(&rc);
-	BLENDFUNCTION bf= {AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
-	CDCHandle dc=GetDC();
-	UpdateLayeredWindow(dc,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
-	ReleaseDC(dc);
+    DUIASSERT(IsTranslucent());
+    CRect rc;
+    GetWindowRect(&rc);
+    BLENDFUNCTION bf= {AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
+    CDCHandle dc=GetDC();
+    UpdateLayeredWindow(dc,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
+    ReleaseDC(dc);
 }
 
 BOOL _BitBlt(HDC hDst,HDC hSrc,CRect rcDst,CPoint ptSrc)
 {
-	return BitBlt(hDst,rcDst.left,rcDst.top,rcDst.Width(),rcDst.Height(),hSrc,ptSrc.x,ptSrc.y,SRCCOPY);
+    return BitBlt(hDst,rcDst.left,rcDst.top,rcDst.Width(),rcDst.Height(),hSrc,ptSrc.x,ptSrc.y,SRCCOPY);
 }
 
 BOOL CDuiHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
 {
-	if(!IsTranslucent())
-	{
-		return ::AnimateWindow(m_hWnd,dwTime,dwFlags);
-	}else
-	{
-		CRect rcWnd;//窗口矩形
-		GetClientRect(&rcWnd);
-		CRect rcShow(rcWnd);//动画过程中可见部分
-		HBITMAP hBmp=CGdiAlpha::CreateBitmap32(m_memDC,rcShow.Width(),rcShow.Height(),NULL,0);
-		CMemDC memdc(m_memDC,hBmp);
+    if(!IsTranslucent())
+    {
+        return ::AnimateWindow(m_hWnd,dwTime,dwFlags);
+    }else
+    {
+        CRect rcWnd;//窗口矩形
+        GetClientRect(&rcWnd);
+        CRect rcShow(rcWnd);//动画过程中可见部分
+        HBITMAP hBmp=CGdiAlpha::CreateBitmap32(m_memDC,rcShow.Width(),rcShow.Height(),NULL,0);
+        CMemDC memdc(m_memDC,hBmp);
 
-		memdc.SetBitmapOwner(TRUE); 
+        memdc.SetBitmapOwner(TRUE); 
 
-		int nSteps=dwTime/10;
-		if(dwFlags & AW_HIDE)
-		{
-			if(dwFlags& AW_SLIDE)
-			{
-				LONG  x1 = rcShow.left;
-				LONG  x2 = rcShow.left;
-				LONG  y1 = rcShow.top;
-				LONG  y2 = rcShow.top;
-				LONG * x =&rcShow.left;
-				LONG * y =&rcShow.top;
+        int nSteps=dwTime/10;
+        if(dwFlags & AW_HIDE)
+        {
+            if(dwFlags& AW_SLIDE)
+            {
+                LONG  x1 = rcShow.left;
+                LONG  x2 = rcShow.left;
+                LONG  y1 = rcShow.top;
+                LONG  y2 = rcShow.top;
+                LONG * x =&rcShow.left;
+                LONG * y =&rcShow.top;
 
-				if(dwFlags & AW_HOR_POSITIVE)
-				{//left->right:move left
-					x1=rcShow.left,x2=rcShow.right;
-					x=&rcShow.left;
-				}else if(dwFlags & AW_HOR_NEGATIVE)
-				{//right->left:move right
-					x1=rcShow.right,x2=rcShow.left;
-					x=&rcShow.right;
-				}
-				if(dwFlags & AW_VER_POSITIVE)
-				{//top->bottom
-					y1=rcShow.top,y2=rcShow.bottom;
-					y=&rcShow.top;
-				}else if(dwFlags & AW_VER_NEGATIVE)
-				{//bottom->top
-					y1=rcShow.bottom,y2=rcShow.top;
-					y=&rcShow.bottom;
-				}
-				LONG xStepLen=(x2-x1)/nSteps;
-				LONG yStepLen=(y2-y1)/nSteps;
+                if(dwFlags & AW_HOR_POSITIVE)
+                {//left->right:move left
+                    x1=rcShow.left,x2=rcShow.right;
+                    x=&rcShow.left;
+                }else if(dwFlags & AW_HOR_NEGATIVE)
+                {//right->left:move right
+                    x1=rcShow.right,x2=rcShow.left;
+                    x=&rcShow.right;
+                }
+                if(dwFlags & AW_VER_POSITIVE)
+                {//top->bottom
+                    y1=rcShow.top,y2=rcShow.bottom;
+                    y=&rcShow.top;
+                }else if(dwFlags & AW_VER_NEGATIVE)
+                {//bottom->top
+                    y1=rcShow.bottom,y2=rcShow.top;
+                    y=&rcShow.bottom;
+                }
+                LONG xStepLen=(x2-x1)/nSteps;
+                LONG yStepLen=(y2-y1)/nSteps;
 
-				for(int i=0;i<nSteps;i++)
-				{
-					*x+=xStepLen;
-					*y+=yStepLen;
-					memdc.FillSolidRect(rcWnd,0);
-					CPoint ptAnchor;
-					if(dwFlags & AW_VER_NEGATIVE)
-						ptAnchor.y=rcWnd.bottom-rcShow.Height();
-					if(dwFlags & AW_HOR_NEGATIVE)
-						ptAnchor.x=rcWnd.right-rcShow.Width();
-					_BitBlt(memdc,m_memDC,rcShow,ptAnchor);
-					UpdateLayerFromDC(memdc,0xFF);
-					Sleep(10);
-				}
-				ShowWindow(SW_HIDE);
-				return TRUE;
-			}else if(dwFlags&AW_CENTER)
-			{
-				int xStep=rcShow.Width()/(2*nSteps);
-				int yStep=rcShow.Height()/(2*nSteps);
-				for(int i=0;i<nSteps;i++)
-				{
-					rcShow.DeflateRect(xStep,yStep);
-					memdc.FillSolidRect(rcWnd,0);
-					_BitBlt(memdc,m_memDC,rcShow,rcShow.TopLeft());
-					UpdateLayerFromDC(memdc,0xFF);
-					Sleep(10);
-				}
-				ShowWindow(SW_HIDE);
-				return TRUE;
-			}else if(dwFlags&AW_BLEND)
-			{
-				BYTE byAlpha=255;
-				for(int i=0;i<nSteps;i++)
-				{
-					byAlpha-=255/nSteps;
-					UpdateLayerFromDC(m_memDC,byAlpha);
-					Sleep(10);
-				}
-				ShowWindow(SW_HIDE);
-				return TRUE;
-			}
-			return FALSE;
-		}else
-		{
-			if(!IsWindowVisible())
-			{
-				SetWindowPos(0,0,0,0,0,SWP_SHOWWINDOW|SWP_NOMOVE|SWP_NOZORDER|SWP_NOSIZE);
-			}
-			SetWindowPos(HWND_TOP,0,0,0,0,SWP_NOSIZE|SWP_NOMOVE);
-			if(dwFlags& AW_SLIDE)
-			{
-				LONG  x1 = rcShow.left;
-				LONG  x2 = rcShow.left;
-				LONG  y1 = rcShow.top;
-				LONG  y2 = rcShow.top;
-				LONG * x =&rcShow.left;
-				LONG * y =&rcShow.top;
-				
-				if(dwFlags & AW_HOR_POSITIVE)
-				{//left->right:move right
-					x1=rcShow.left,x2=rcShow.right;
-					rcShow.right=rcShow.left,x=&rcShow.right;
-				}else if(dwFlags & AW_HOR_NEGATIVE)
-				{//right->left:move left
-					x1=rcShow.right,x2=rcShow.left;
-					rcShow.left=rcShow.right,x=&rcShow.left;
-				}
-				if(dwFlags & AW_VER_POSITIVE)
-				{//top->bottom
-					y1=rcShow.top,y2=rcShow.bottom;
-					rcShow.bottom=rcShow.top,y=&rcShow.bottom;
-				}else if(dwFlags & AW_VER_NEGATIVE)
-				{//bottom->top
-					y1=rcShow.bottom,y2=rcShow.top;
-					rcShow.top=rcShow.bottom,y=&rcShow.top;
-				}
-				LONG xStepLen=(x2-x1)/nSteps;
-				LONG yStepLen=(y2-y1)/nSteps;
-				
-				for(int i=0;i<nSteps;i++)
-				{
-					*x+=xStepLen;
-					*y+=yStepLen;
-					memdc.FillSolidRect(rcWnd,0);
-					CPoint ptAnchor;
-					if(dwFlags & AW_VER_POSITIVE)
-						ptAnchor.y=rcWnd.bottom-rcShow.Height();
-					if(dwFlags & AW_HOR_POSITIVE)
-						ptAnchor.x=rcWnd.right-rcShow.Width();
- 					_BitBlt(memdc,m_memDC,rcShow,ptAnchor);
-					UpdateLayerFromDC(memdc,0xFF);
-					Sleep(10);
-				}
-				UpdateLayerFromDC(m_memDC,0xFF);
-				return TRUE;
-			}else if(dwFlags&AW_CENTER)
-			{
-				int xStep=rcShow.Width()/(2*nSteps);
-				int yStep=rcShow.Height()/(2*nSteps);
-				rcShow.left=rcShow.right=(rcShow.left+rcShow.right)/2;
-				rcShow.top=rcShow.bottom=(rcShow.top+rcShow.bottom)/2;
-				for(int i=0;i<nSteps;i++)
-				{
-					rcShow.InflateRect(xStep,yStep);
-					memdc.FillSolidRect(rcWnd,0);
-					_BitBlt(memdc,m_memDC,rcShow,rcShow.TopLeft());
-					UpdateLayerFromDC(memdc,0xFF);
-					Sleep(10);
-				}
-				UpdateLayerFromDC(m_memDC,0xFF);
-				return TRUE;
-			}else if(dwFlags&AW_BLEND)
-			{
-				BYTE byAlpha=0;
-				for(int i=0;i<nSteps;i++)
-				{
-					byAlpha+=255/nSteps;
-					UpdateLayerFromDC(m_memDC,byAlpha);
-					Sleep(10);
-				}
-				UpdateLayerFromDC(m_memDC,255);
-				return TRUE;
-			}
-		}
-		return FALSE;
-	}
+                for(int i=0;i<nSteps;i++)
+                {
+                    *x+=xStepLen;
+                    *y+=yStepLen;
+                    memdc.FillSolidRect(rcWnd,0);
+                    CPoint ptAnchor;
+                    if(dwFlags & AW_VER_NEGATIVE)
+                        ptAnchor.y=rcWnd.bottom-rcShow.Height();
+                    if(dwFlags & AW_HOR_NEGATIVE)
+                        ptAnchor.x=rcWnd.right-rcShow.Width();
+                    _BitBlt(memdc,m_memDC,rcShow,ptAnchor);
+                    UpdateLayerFromDC(memdc,0xFF);
+                    Sleep(10);
+                }
+                ShowWindow(SW_HIDE);
+                return TRUE;
+            }else if(dwFlags&AW_CENTER)
+            {
+                int xStep=rcShow.Width()/(2*nSteps);
+                int yStep=rcShow.Height()/(2*nSteps);
+                for(int i=0;i<nSteps;i++)
+                {
+                    rcShow.DeflateRect(xStep,yStep);
+                    memdc.FillSolidRect(rcWnd,0);
+                    _BitBlt(memdc,m_memDC,rcShow,rcShow.TopLeft());
+                    UpdateLayerFromDC(memdc,0xFF);
+                    Sleep(10);
+                }
+                ShowWindow(SW_HIDE);
+                return TRUE;
+            }else if(dwFlags&AW_BLEND)
+            {
+                BYTE byAlpha=255;
+                for(int i=0;i<nSteps;i++)
+                {
+                    byAlpha-=255/nSteps;
+                    UpdateLayerFromDC(m_memDC,byAlpha);
+                    Sleep(10);
+                }
+                ShowWindow(SW_HIDE);
+                return TRUE;
+            }
+            return FALSE;
+        }else
+        {
+            if(!IsWindowVisible())
+            {
+                SetWindowPos(0,0,0,0,0,SWP_SHOWWINDOW|SWP_NOMOVE|SWP_NOZORDER|SWP_NOSIZE);
+            }
+            SetWindowPos(HWND_TOP,0,0,0,0,SWP_NOSIZE|SWP_NOMOVE);
+            if(dwFlags& AW_SLIDE)
+            {
+                LONG  x1 = rcShow.left;
+                LONG  x2 = rcShow.left;
+                LONG  y1 = rcShow.top;
+                LONG  y2 = rcShow.top;
+                LONG * x =&rcShow.left;
+                LONG * y =&rcShow.top;
+                
+                if(dwFlags & AW_HOR_POSITIVE)
+                {//left->right:move right
+                    x1=rcShow.left,x2=rcShow.right;
+                    rcShow.right=rcShow.left,x=&rcShow.right;
+                }else if(dwFlags & AW_HOR_NEGATIVE)
+                {//right->left:move left
+                    x1=rcShow.right,x2=rcShow.left;
+                    rcShow.left=rcShow.right,x=&rcShow.left;
+                }
+                if(dwFlags & AW_VER_POSITIVE)
+                {//top->bottom
+                    y1=rcShow.top,y2=rcShow.bottom;
+                    rcShow.bottom=rcShow.top,y=&rcShow.bottom;
+                }else if(dwFlags & AW_VER_NEGATIVE)
+                {//bottom->top
+                    y1=rcShow.bottom,y2=rcShow.top;
+                    rcShow.top=rcShow.bottom,y=&rcShow.top;
+                }
+                LONG xStepLen=(x2-x1)/nSteps;
+                LONG yStepLen=(y2-y1)/nSteps;
+                
+                for(int i=0;i<nSteps;i++)
+                {
+                    *x+=xStepLen;
+                    *y+=yStepLen;
+                    memdc.FillSolidRect(rcWnd,0);
+                    CPoint ptAnchor;
+                    if(dwFlags & AW_VER_POSITIVE)
+                        ptAnchor.y=rcWnd.bottom-rcShow.Height();
+                    if(dwFlags & AW_HOR_POSITIVE)
+                        ptAnchor.x=rcWnd.right-rcShow.Width();
+                     _BitBlt(memdc,m_memDC,rcShow,ptAnchor);
+                    UpdateLayerFromDC(memdc,0xFF);
+                    Sleep(10);
+                }
+                UpdateLayerFromDC(m_memDC,0xFF);
+                return TRUE;
+            }else if(dwFlags&AW_CENTER)
+            {
+                int xStep=rcShow.Width()/(2*nSteps);
+                int yStep=rcShow.Height()/(2*nSteps);
+                rcShow.left=rcShow.right=(rcShow.left+rcShow.right)/2;
+                rcShow.top=rcShow.bottom=(rcShow.top+rcShow.bottom)/2;
+                for(int i=0;i<nSteps;i++)
+                {
+                    rcShow.InflateRect(xStep,yStep);
+                    memdc.FillSolidRect(rcWnd,0);
+                    _BitBlt(memdc,m_memDC,rcShow,rcShow.TopLeft());
+                    UpdateLayerFromDC(memdc,0xFF);
+                    Sleep(10);
+                }
+                UpdateLayerFromDC(m_memDC,0xFF);
+                return TRUE;
+            }else if(dwFlags&AW_BLEND)
+            {
+                BYTE byAlpha=0;
+                for(int i=0;i<nSteps;i++)
+                {
+                    byAlpha+=255/nSteps;
+                    UpdateLayerFromDC(m_memDC,byAlpha);
+                    Sleep(10);
+                }
+                UpdateLayerFromDC(m_memDC,255);
+                return TRUE;
+            }
+        }
+        return FALSE;
+    }
 }
 
 void CDuiHostWnd::OnSetCaretValidateRect( LPCRECT lpRect )
 {
-	m_rcValidateCaret=lpRect;
+    m_rcValidateCaret=lpRect;
 }
 
 BOOL CDuiHostWnd::RegisterTimelineHandler( ITimelineHandler *pHandler )
 {
-	BOOL bRet = CDuiFrame::RegisterTimelineHandler(pHandler);
-	if(bRet && m_lstTimelineHandler.GetCount()==1) SetDuiTimer(TIMER_NEXTFRAME,10);
-	return bRet;
+    BOOL bRet = CDuiFrame::RegisterTimelineHandler(pHandler);
+    if(bRet && m_lstTimelineHandler.GetCount()==1) SetDuiTimer(TIMER_NEXTFRAME,10);
+    return bRet;
 }
 
 BOOL CDuiHostWnd::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 {
-	BOOL bRet=CDuiFrame::UnregisterTimelineHandler(pHandler);
-	if(bRet && m_lstTimelineHandler.IsEmpty()) KillDuiTimer(TIMER_NEXTFRAME);
-	return bRet;
+    BOOL bRet=CDuiFrame::UnregisterTimelineHandler(pHandler);
+    if(bRet && m_lstTimelineHandler.IsEmpty()) KillDuiTimer(TIMER_NEXTFRAME);
+    return bRet;
 }
 
 //////////////////////////////////////////////////////////////////////////
-//	CTranslucentHostWnd
+//    CTranslucentHostWnd
 //////////////////////////////////////////////////////////////////////////
 void CTranslucentHostWnd::OnPaint( CDCHandle dc )
 {
-	CPaintDC dc1(m_hWnd);
-	m_pOwner->OnPrint(NULL,1);
+    CPaintDC dc1(m_hWnd);
+    m_pOwner->OnPrint(NULL,1);
 }
 
 }//namespace SOUI

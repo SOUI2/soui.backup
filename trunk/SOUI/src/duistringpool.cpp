@@ -40,22 +40,22 @@ BOOL DuiStringPool::BuildString(CDuiStringT &strContainer)
 
 BOOL DuiStringPool::Init( pugi::xml_node xmlNode )
 {
-	if (strcmp(xmlNode.name(), "string") != 0)
-	{
-		DUIASSERT(FALSE);
-		return FALSE;
-	}
-	UINT uStringID = 0;
+    if (strcmp(xmlNode.name(), "string") != 0)
+    {
+        DUIASSERT(FALSE);
+        return FALSE;
+    }
+    UINT uStringID = 0;
 
-	for (pugi::xml_node xmlStr=xmlNode.child("s"); xmlStr; xmlStr=xmlStr.next_sibling("s"))
-	{
-		uStringID=xmlStr.attribute("id").as_int(-1);
-		if(uStringID==-1) continue;
-		CDuiStringA str=xmlStr.text().get();
-		if(str.IsEmpty()) str=xmlStr.attribute("text").value();
-		AddKeyObject(uStringID,CDuiStringT(DUI_CA2T(str, CP_UTF8)));
-	}
-	return TRUE;
+    for (pugi::xml_node xmlStr=xmlNode.child("s"); xmlStr; xmlStr=xmlStr.next_sibling("s"))
+    {
+        uStringID=xmlStr.attribute("id").as_int(-1);
+        if(uStringID==-1) continue;
+        CDuiStringA str=xmlStr.text().get();
+        if(str.IsEmpty()) str=xmlStr.attribute("text").value();
+        AddKeyObject(uStringID,CDuiStringT(DUI_CA2T(str, CP_UTF8)));
+    }
+    return TRUE;
 }
 
 LPCTSTR DuiStringPool::Get( UINT uID )

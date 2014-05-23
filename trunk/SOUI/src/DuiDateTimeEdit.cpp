@@ -884,7 +884,7 @@ void CDuiMaskEdit::GetMaskState(BOOL bCorrectSelection)
 
 void CDuiMaskEdit::MaskGetSel()
 {
-	DuiSendMessage(EM_GETSEL,(WPARAM)&m_nStartChar,(LPARAM)&m_nEndChar);
+    DuiSendMessage(EM_GETSEL,(WPARAM)&m_nStartChar,(LPARAM)&m_nEndChar);
 }
 
 void CDuiMaskEdit::SetMaskState()
@@ -909,12 +909,12 @@ void CDuiMaskEdit::SetMaskState()
 
 CDuiStringT CDuiMaskEdit::GetWindowText()
 {
-	int nLen=__super::GetWindowTextLength();
-	wchar_t *pszBuf=new wchar_t[nLen+1];
-	__super::GetWindowText(pszBuf,nLen);
-	CDuiStringT strTxt=DUI_CW2T(pszBuf);
-	delete []pszBuf;
-	return strTxt;
+    int nLen=__super::GetWindowTextLength();
+    wchar_t *pszBuf=new wchar_t[nLen+1];
+    __super::GetWindowText(pszBuf,nLen);
+    CDuiStringT strTxt=DUI_CW2T(pszBuf);
+    delete []pszBuf;
+    return strTxt;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -934,8 +934,8 @@ int CDuiDateEdit::OnCreate(LPVOID)
     if (nRet != 0)
         return nRet;
 
-	__time64_t tm=::_time64(NULL);
-	
+    __time64_t tm=::_time64(NULL);
+    
     SetDateTime(tm);
 
     return 0;
@@ -949,10 +949,10 @@ void CDuiDateEdit::SetDateTime(LPCTSTR strDate)
 
 void CDuiDateEdit::SetDateTime( CTime tm )
 {
-	TCHAR szBuf[256];
-	struct tm ttm;
-	_tcsftime(szBuf,256,_T("%Y/%m/%d"),tm.GetLocalTm(&ttm));
-	SetDateTime(szBuf);
+    TCHAR szBuf[256];
+    struct tm ttm;
+    _tcsftime(szBuf,256,_T("%Y/%m/%d"),tm.GetLocalTm(&ttm));
+    SetDateTime(szBuf);
 }
 
 CDuiStringT CDuiDateEdit::GetWindowDateTime()
@@ -1009,7 +1009,7 @@ int CDuiTimeEdit::OnCreate(LPVOID)
     if (nRet != 0)
         return nRet;
 
-	SetDateTime(CTime::GetCurrentTime());
+    SetDateTime(CTime::GetCurrentTime());
 
     return 0;
 }
@@ -1079,7 +1079,7 @@ void CDuiTimeEdit::SetMins(int nMins)
 {
     m_nMins = nMins;
 
-	CDuiStringW strText;
+    CDuiStringW strText;
     strText.Format(L"%02d:%02d", m_nHours, m_nMins);
     SetWindowText(strText);
 }

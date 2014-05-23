@@ -19,13 +19,13 @@ class SOUI_EXP CDuiFrame : public IDuiContainer
 public:
     CDuiFrame(CDuiWindow *pHost);
 
-	virtual BOOL RegisterDragDrop(HDUIWND hDuiWnd,IDropTarget *pDropTarget);
+    virtual BOOL RegisterDragDrop(HDUIWND hDuiWnd,IDropTarget *pDropTarget);
 
-	virtual BOOL RevokeDragDrop(HDUIWND hDuiWnd);
+    virtual BOOL RevokeDragDrop(HDUIWND hDuiWnd);
 
-	IDropTarget * GetDropTarget(){return &m_dropTarget;}
+    IDropTarget * GetDropTarget(){return &m_dropTarget;}
 
-	CFocusManager * GetFocusManager() {return &m_focusMgr;}
+    CFocusManager * GetFocusManager() {return &m_focusMgr;}
 
     virtual LRESULT DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
@@ -41,13 +41,13 @@ public:
 
     virtual HDUIWND GetDuiHover();
 
-	virtual IAcceleratorMgr* GetAcceleratorMgr(){return &m_focusMgr;}
+    virtual IAcceleratorMgr* GetAcceleratorMgr(){return &m_focusMgr;}
 
-	virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler);
+    virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler);
 
-	virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
+    virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
 
-	virtual void OnNextFrame();
+    virtual void OnNextFrame();
 protected:
     virtual void OnFrameMouseMove(UINT uFlag,CPoint pt);
 
@@ -62,20 +62,20 @@ protected:
 
     virtual void OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
-	virtual void OnActivate(UINT nState);
+    virtual void OnActivate(UINT nState);
 
 protected:
     HDUIWND m_hCapture;
     HDUIWND m_hHover;
-    BOOL	m_bNcHover;
+    BOOL    m_bNcHover;
 
-	CFocusManager m_focusMgr;
+    CFocusManager m_focusMgr;
 
-	CDuiFrameDropTarget m_dropTarget;
+    CDuiFrameDropTarget m_dropTarget;
 
-	CDuiWindow	*m_pHost;
+    CDuiWindow    *m_pHost;
 
-	CDuiList<ITimelineHandler*>	m_lstTimelineHandler;
+    CDuiList<ITimelineHandler*>    m_lstTimelineHandler;
 };
 
 }//namespace SOUI

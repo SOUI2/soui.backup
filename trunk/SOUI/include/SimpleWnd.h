@@ -6,34 +6,34 @@
 namespace SOUI
 {
 
-	class CSimpleWndHelper{
-	public:
-		static CSimpleWndHelper* GetInstance();
+    class CSimpleWndHelper{
+    public:
+        static CSimpleWndHelper* GetInstance();
 
-		static BOOL Init(HINSTANCE hInst,LPCTSTR pszClassName);
-		static void Destroy();
+        static BOOL Init(HINSTANCE hInst,LPCTSTR pszClassName);
+        static void Destroy();
 
-		HANDLE GetHeap(){return m_hHeap;}
+        HANDLE GetHeap(){return m_hHeap;}
 
-		void LockSharePtr(void * p);
-		void UnlockSharePtr();
-		void * GetSharePtr(){return m_sharePtr;}
+        void LockSharePtr(void * p);
+        void UnlockSharePtr();
+        void * GetSharePtr(){return m_sharePtr;}
 
-		HINSTANCE GetAppInstance(){return m_hInst;}
-		ATOM GetSimpleWndAtom(){return m_atom;}
-	private:
-		CSimpleWndHelper(HINSTANCE hInst,LPCTSTR pszClassName);
-		~CSimpleWndHelper();
+        HINSTANCE GetAppInstance(){return m_hInst;}
+        ATOM GetSimpleWndAtom(){return m_atom;}
+    private:
+        CSimpleWndHelper(HINSTANCE hInst,LPCTSTR pszClassName);
+        ~CSimpleWndHelper();
 
-		HANDLE				m_hHeap;
-		CRITICAL_SECTION	m_cs;
-		void *				m_sharePtr;
+        HANDLE                m_hHeap;
+        CRITICAL_SECTION    m_cs;
+        void *                m_sharePtr;
 
-		ATOM				m_atom;
-		HINSTANCE			m_hInst;
+        ATOM                m_atom;
+        HINSTANCE            m_hInst;
 
-		static CSimpleWndHelper* s_Instance;
-	};
+        static CSimpleWndHelper* s_Instance;
+    };
 
 #if defined(_M_IX86)
 // 按一字节对齐
@@ -88,27 +88,27 @@ struct tagThunk
 #pragma pack(pop)
 #elif defined(_ARM_)
 #pragma pack(push,4)
-	struct tagThunk // this should come out to 16 bytes
-	{
-		DWORD	m_mov_r0;		// mov	r0, pThis
-		DWORD	m_mov_pc;		// mov	pc, pFunc
-		DWORD	m_pThis;
-		DWORD	m_pFunc;
-		void Init(DWORD_PTR proc, void* pThis)
-		{
-			m_mov_r0 = 0xE59F0000;
-			m_mov_pc = 0xE59FF000;
-			m_pThis = (DWORD)pThis;
-			m_pFunc = (DWORD)proc;
-			// write block from data cache and
-			//  flush from instruction cache
-			FlushInstructionCache(GetCurrentProcess(), this, sizeof(tagThunk));
-		}
-		void* GetCodeAddress()
-		{
-			return this;
-		}
-	};
+    struct tagThunk // this should come out to 16 bytes
+    {
+        DWORD    m_mov_r0;        // mov    r0, pThis
+        DWORD    m_mov_pc;        // mov    pc, pFunc
+        DWORD    m_pThis;
+        DWORD    m_pFunc;
+        void Init(DWORD_PTR proc, void* pThis)
+        {
+            m_mov_r0 = 0xE59F0000;
+            m_mov_pc = 0xE59FF000;
+            m_pThis = (DWORD)pThis;
+            m_pFunc = (DWORD)proc;
+            // write block from data cache and
+            //  flush from instruction cache
+            FlushInstructionCache(GetCurrentProcess(), this, sizeof(tagThunk));
+        }
+        void* GetCodeAddress()
+        {
+            return this;
+        }
+    };
 #pragma pack(pop)
 #else
 #error Only AMD64, ARM and X86 supported
@@ -505,23 +505,23 @@ public:
         return ::ShowWindow(m_hWnd,nCmdShow);
     }
 
-	int SetWindowRgn(HRGN hRgn,BOOL bRedraw=TRUE)
-	{
-		DUIASSERT(::IsWindow(m_hWnd));
-		return ::SetWindowRgn(m_hWnd,hRgn,bRedraw);
-	}
+    int SetWindowRgn(HRGN hRgn,BOOL bRedraw=TRUE)
+    {
+        DUIASSERT(::IsWindow(m_hWnd));
+        return ::SetWindowRgn(m_hWnd,hRgn,bRedraw);
+    }
 
-	BOOL SetLayeredWindowAttributes(COLORREF crKey,BYTE bAlpha,DWORD dwFlags)
-	{
-		DUIASSERT(::IsWindow(m_hWnd));
-		return ::SetLayeredWindowAttributes(m_hWnd,crKey,bAlpha,dwFlags);
-	}
+    BOOL SetLayeredWindowAttributes(COLORREF crKey,BYTE bAlpha,DWORD dwFlags)
+    {
+        DUIASSERT(::IsWindow(m_hWnd));
+        return ::SetLayeredWindowAttributes(m_hWnd,crKey,bAlpha,dwFlags);
+    }
 
-	BOOL UpdateLayeredWindow(HDC hdcDst, POINT *pptDst, SIZE *psize, HDC hdcSrc, POINT *pptSrc,COLORREF crKey, BLENDFUNCTION *pblend,DWORD dwFlags)
-	{
-		DUIASSERT(::IsWindow(m_hWnd));
-		return ::UpdateLayeredWindow(m_hWnd,hdcDst,pptDst,psize,hdcSrc,pptSrc,crKey,pblend,dwFlags);
-	}
+    BOOL UpdateLayeredWindow(HDC hdcDst, POINT *pptDst, SIZE *psize, HDC hdcSrc, POINT *pptSrc,COLORREF crKey, BLENDFUNCTION *pblend,DWORD dwFlags)
+    {
+        DUIASSERT(::IsWindow(m_hWnd));
+        return ::UpdateLayeredWindow(m_hWnd,hdcDst,pptDst,psize,hdcSrc,pptSrc,crKey,pblend,dwFlags);
+    }
 
     LRESULT DefWindowProc()
     {
@@ -536,21 +536,21 @@ public:
     static BOOL DefaultReflectionHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lResult);
 
 public://EXTRACT FROM BEGIN_MSG_MAP_EX and END_MSG_MAP
-	BOOL m_bMsgHandled;
-	/* "handled" management for cracked handlers */ 
-	BOOL IsMsgHandled() const
-	{ 
-		return m_bMsgHandled;
-	}
-	void SetMsgHandled(BOOL bHandled)
-	{ 
-		m_bMsgHandled = bHandled;
-	} 
+    BOOL m_bMsgHandled;
+    /* "handled" management for cracked handlers */ 
+    BOOL IsMsgHandled() const
+    { 
+        return m_bMsgHandled;
+    }
+    void SetMsgHandled(BOOL bHandled)
+    { 
+        m_bMsgHandled = bHandled;
+    } 
 
-	BOOL ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lResult, DWORD dwMsgMapID = 0)
-	{
-		return FALSE;
-	}
+    BOOL ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lResult, DWORD dwMsgMapID = 0)
+    {
+        return FALSE;
+    }
 protected:
     LRESULT DefWindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -570,7 +570,7 @@ protected:
                                             WPARAM wParam, LPARAM lParam);
 
     tagThunk *m_pThunk;
-    WNDPROC	m_pfnSuperWindowProc;
+    WNDPROC    m_pfnSuperWindowProc;
 };
 
 }//namespace SOUI

@@ -6,7 +6,7 @@ namespace SOUI
 
 
 //////////////////////////////////////////////////////////////////////////
-//	DuiThreadActiveWndManager
+//    DuiThreadActiveWndManager
 //////////////////////////////////////////////////////////////////////////
 template<> DuiThreadActiveWndMgr* Singleton<DuiThreadActiveWndMgr>::ms_Singleton = NULL;
 
@@ -45,7 +45,7 @@ void DuiThreadActiveWndMgr::LeavePaintLock()
 HWND DuiThreadActiveWndMgr::_SetActive(HWND hWnd)
 {
     ::EnterCriticalSection(&m_lockMapActive);
-    HWND	hWndLastActive	= _GetActive();
+    HWND    hWndLastActive    = _GetActive();
     SetKeyObject(::GetCurrentThreadId(),hWnd);
     ::LeaveCriticalSection(&m_lockMapActive);
     return hWndLastActive;
@@ -54,7 +54,7 @@ HWND DuiThreadActiveWndMgr::_SetActive(HWND hWnd)
 HWND DuiThreadActiveWndMgr::_GetActive()
 {
     ::EnterCriticalSection(&m_lockMapActive);
-    HWND	hWndAct = NULL;
+    HWND    hWndAct = NULL;
     GetKeyObject(::GetCurrentThreadId(),hWndAct);
     ::LeaveCriticalSection(&m_lockMapActive);
     return hWndAct;

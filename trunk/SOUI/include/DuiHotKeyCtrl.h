@@ -6,8 +6,8 @@ namespace SOUI
 {
 
 class SOUI_EXP CDuiHotKeyCtrl 
-	: public CDuiWindow
-	, public CAccelerator
+    : public CDuiWindow
+    , public CAccelerator
 {
     SOUI_CLASS_NAME(CDuiHotKeyCtrl, "hotkey")
 public:
@@ -55,7 +55,7 @@ protected:
 
     void UpdateCaret();
 
-	LRESULT OnWindowPosChanged(LPRECT lpRcContainer);
+    LRESULT OnWindowPosChanged(LPRECT lpRcContainer);
 
     WND_MSG_MAP_BEGIN()
     MSG_WM_CREATE(OnCreate)
@@ -67,13 +67,13 @@ protected:
     MSG_WM_KEYUP(OnKeyUp)
     MSG_WM_SYSKEYDOWN(OnSysKeyDown)
     MSG_WM_SYSKEYUP(OnSysKeyUp)
-	MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
+    MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
     WND_MSG_MAP_END()
-    WORD 	m_wInvalidComb;		//无效的组合键
-    WORD 	m_wInvalidModifier; //对无效组合键的替换方案,默认方案
+    WORD     m_wInvalidComb;        //无效的组合键
+    WORD     m_wInvalidModifier; //对无效组合键的替换方案,默认方案
 
-    HFONT	m_hTxtFont;
-    BOOL	m_bInSetting;		//正在设置中
+    HFONT    m_hTxtFont;
+    BOOL    m_bInSetting;        //正在设置中
 };
 
 }//namespace SOUI

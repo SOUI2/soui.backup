@@ -295,33 +295,33 @@ int CDuiImgX::GetHeight()
 BOOL CDuiImgX::BitBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,BYTE byAlpha/*=0xFF*/)
 {
     if(IsEmpty()) return FALSE;
-	if(nWid==0 || nHei==0) return TRUE;
+    if(nWid==0 || nHei==0) return TRUE;
 
-	Gdiplus::Graphics graphics(hdc);
-	Gdiplus::ImageAttributes ImgAtt;
-	ImgAtt.SetWrapMode(Gdiplus::WrapModeTileFlipXY);
-	if(byAlpha!=0xFF)
-	{
-		Gdiplus::ColorMatrix ClrMatrix =
-		{
-			1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 0.0f, float(byAlpha)/0xFF, 0.0f,
-			0.0f, 0.0f, 0.0f, 0.0f, 1.0f
-		};
-		ImgAtt.SetColorMatrix(&ClrMatrix);
-	}
+    Gdiplus::Graphics graphics(hdc);
+    Gdiplus::ImageAttributes ImgAtt;
+    ImgAtt.SetWrapMode(Gdiplus::WrapModeTileFlipXY);
+    if(byAlpha!=0xFF)
+    {
+        Gdiplus::ColorMatrix ClrMatrix =
+        {
+            1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, float(byAlpha)/0xFF, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f, 1.0f
+        };
+        ImgAtt.SetColorMatrix(&ClrMatrix);
+    }
 
-	return S_OK==graphics.DrawImage(m_pImg,Gdiplus::Rect(x,y,nWid,nHei),xSrc,ySrc,nWid,nHei,Gdiplus::UnitPixel,&ImgAtt);
+    return S_OK==graphics.DrawImage(m_pImg,Gdiplus::Rect(x,y,nWid,nHei),xSrc,ySrc,nWid,nHei,Gdiplus::UnitPixel,&ImgAtt);
 }
 
 BOOL CDuiImgX::StretchBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,int nWidSrc,int nHeiSrc,BYTE byAlpha/*=0xFF*/)
 {
     if(IsEmpty()) return FALSE;
     Gdiplus::Graphics graphics(hdc);
-	Gdiplus::ImageAttributes ImgAtt;
-	ImgAtt.SetWrapMode(Gdiplus::WrapModeTileFlipXY);
+    Gdiplus::ImageAttributes ImgAtt;
+    ImgAtt.SetWrapMode(Gdiplus::WrapModeTileFlipXY);
     if(byAlpha!=0xFF)
     {
         Gdiplus::ColorMatrix ClrMatrix =
@@ -358,8 +358,8 @@ BOOL CDuiImgX::TileBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,i
         pImgAttr->SetColorMatrix(&ClrMatrix);
     }
 
-	Gdiplus::TextureBrush br(m_pImg,Gdiplus::WrapModeTile,Gdiplus::Rect(xSrc,ySrc,nWidSrc,nHeiSrc));
-	graphics.FillRectangle(&br,Gdiplus::Rect(x,y,nWid,nHei));
+    Gdiplus::TextureBrush br(m_pImg,Gdiplus::WrapModeTile,Gdiplus::Rect(xSrc,ySrc,nWidSrc,nHeiSrc));
+    graphics.FillRectangle(&br,Gdiplus::Rect(x,y,nWid,nHei));
     if(byAlpha!=0xFF)
     {
         delete pImgAttr;
@@ -413,7 +413,7 @@ BOOL CDuiImgX::LoadFromResource( HINSTANCE hInst,LPCTSTR pszType,LPCTSTR pszName
 BOOL CDuiImgX::LoadFromFile( LPCTSTR pszPath )
 {
     assert(m_pImg==NULL);
-	CDuiStringW strPath=DUI_CT2W(pszPath);
+    CDuiStringW strPath=DUI_CT2W(pszPath);
     m_pImg=Gdiplus::Image::FromFile(strPath);
     return m_pImg!=NULL;
 }
@@ -434,7 +434,7 @@ BOOL CDuiImgX::LoadFromMemory( LPVOID pBuf,DWORD dwSize )
 
     pStm->Release();
     ::GlobalUnlock(hMem);
-    // 	GlobalFree(hMem);
+    //     GlobalFree(hMem);
     return m_pImg!=NULL;
 }
 

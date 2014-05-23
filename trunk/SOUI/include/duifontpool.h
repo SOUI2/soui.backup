@@ -35,52 +35,52 @@
 class SOUI_EXP FontKey
 {
 public:
-	FontKey(DWORD _dwStyle,LPCTSTR pszFaceName=NULL)
-	{
-		if(pszFaceName)
-		{
-			_tcscpy_s(strFaceName,LF_FACESIZE,pszFaceName);
-		}
-		else
-		{
-			strFaceName[0]=0;
-		}
-		dwStyle=_dwStyle;
-	}
-	TCHAR	strFaceName[LF_FACESIZE+1];
-	DWORD	 dwStyle;
+    FontKey(DWORD _dwStyle,LPCTSTR pszFaceName=NULL)
+    {
+        if(pszFaceName)
+        {
+            _tcscpy_s(strFaceName,LF_FACESIZE,pszFaceName);
+        }
+        else
+        {
+            strFaceName[0]=0;
+        }
+        dwStyle=_dwStyle;
+    }
+    TCHAR    strFaceName[LF_FACESIZE+1];
+    DWORD     dwStyle;
 };
 
 template<>
 class _COLL_NS::CElementTraits< FontKey > :
-	public _COLL_NS::CElementTraitsBase<FontKey >
+    public _COLL_NS::CElementTraitsBase<FontKey >
 {
 public:
-	static ULONG Hash( INARGTYPE fontKey )
-	{
-		ULONG_PTR uRet=0;
-		CDuiStringT strType=fontKey.strFaceName;
-		strType.MakeLower();
-		for(int i=0; i<strType.GetLength(); i++)
-		{
-			uRet=uRet*68+strType[i];
-		}
+    static ULONG Hash( INARGTYPE fontKey )
+    {
+        ULONG_PTR uRet=0;
+        CDuiStringT strType=fontKey.strFaceName;
+        strType.MakeLower();
+        for(int i=0; i<strType.GetLength(); i++)
+        {
+            uRet=uRet*68+strType[i];
+        }
 
-		return (ULONG)(uRet*10000+(UINT)fontKey.dwStyle+1);
-	}
+        return (ULONG)(uRet*10000+(UINT)fontKey.dwStyle+1);
+    }
 
-	static bool CompareElements( INARGTYPE element1, INARGTYPE element2 )
-	{
-		return _tcsicmp(element1.strFaceName,element2.strFaceName)==0 && element1.dwStyle==element2.dwStyle;
-	}
+    static bool CompareElements( INARGTYPE element1, INARGTYPE element2 )
+    {
+        return _tcsicmp(element1.strFaceName,element2.strFaceName)==0 && element1.dwStyle==element2.dwStyle;
+    }
 
-	static int CompareElementsOrdered( INARGTYPE element1, INARGTYPE element2 )
-	{
-		int nRet=_tcsicmp(element1.strFaceName,element2.strFaceName);
-		if(nRet<0) return -1;
-		if(nRet>0) return 1;
-		return element1.dwStyle-element2.dwStyle;
-	}
+    static int CompareElementsOrdered( INARGTYPE element1, INARGTYPE element2 )
+    {
+        int nRet=_tcsicmp(element1.strFaceName,element2.strFaceName);
+        if(nRet<0) return -1;
+        if(nRet>0) return 1;
+        return element1.dwStyle-element2.dwStyle;
+    }
 };
 
 namespace SOUI

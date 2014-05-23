@@ -7,8 +7,8 @@
 namespace SOUI
 {
 
-#define CX_ICON	16		//支持的图标的宽度
-#define CY_ICON	16		//支持的图标的高度
+#define CX_ICON    16        //支持的图标的宽度
+#define CY_ICON    16        //支持的图标的高度
 
 class CDuiMenuAttr:public CDuiObject
 {
@@ -29,25 +29,25 @@ public:
     DUIWIN_INT_ATTRIBUTE("textmargin",m_nTextMargin,FALSE)
     DUIWIN_SIZE_ATTRIBUTE("iconsize",m_szIcon,FALSE)
     DUIWIN_FONT_ATTRIBUTE("font",m_hFont,FALSE)
-	DUIWIN_FONT2_ATTRIBUTE("font2",m_hFont,FALSE)
+    DUIWIN_FONT2_ATTRIBUTE("font2",m_hFont,FALSE)
     DUIWIN_COLOR_ATTRIBUTE("crtxt",m_crTxtNormal,FALSE);
     DUIWIN_COLOR_ATTRIBUTE("crtxtsel",m_crTxtSel,FALSE);
     DUIWIN_COLOR_ATTRIBUTE("crtxtgray",m_crTxtGray,FALSE);
 
     SOUI_ATTRIBUTES_END()
 protected:
-    CDuiSkinBase *m_pItemSkin;	//菜单项皮肤，包含2种状态：正常状态+选中状态
-    CDuiSkinBase *m_pIconSkin;	//菜单图标
-    CDuiSkinBase *m_pSepSkin;	//分割栏皮肤
-    CDuiSkinBase *m_pCheckSkin;	//选中状态,包含两种状态:勾选+圈选
-    int			  m_nItemHei;	//菜单项高度
-    int			  m_nIconMargin;//图标边缘空间
-    int			  m_nTextMargin;//文本边缘空间
-    COLORREF	  m_crTxtNormal;//正常文本颜色
-    COLORREF	  m_crTxtSel;	//选中文本颜色
-    COLORREF	  m_crTxtGray;	//灰文本颜色
-    CSize		  m_szIcon;		//图标尺寸
-    HFONT		 m_hFont;
+    CDuiSkinBase *m_pItemSkin;    //菜单项皮肤，包含2种状态：正常状态+选中状态
+    CDuiSkinBase *m_pIconSkin;    //菜单图标
+    CDuiSkinBase *m_pSepSkin;    //分割栏皮肤
+    CDuiSkinBase *m_pCheckSkin;    //选中状态,包含两种状态:勾选+圈选
+    int              m_nItemHei;    //菜单项高度
+    int              m_nIconMargin;//图标边缘空间
+    int              m_nTextMargin;//文本边缘空间
+    COLORREF      m_crTxtNormal;//正常文本颜色
+    COLORREF      m_crTxtSel;    //选中文本颜色
+    COLORREF      m_crTxtGray;    //灰文本颜色
+    CSize          m_szIcon;        //图标尺寸
+    HFONT         m_hFont;
 };
 
 struct DuiMenuItemInfo
@@ -178,7 +178,7 @@ protected:
     REFLECT_NOTIFICATIONS_EX()
     END_MSG_MAP()
 
-	HWND m_hMenuOwner;
+    HWND m_hMenuOwner;
 };
 
 
@@ -187,11 +187,11 @@ class SOUI_EXP CDuiMenu
 public:
     CDuiMenu();
     ~CDuiMenu(void);
-	CDuiMenu(const CDuiMenu & src);
+    CDuiMenu(const CDuiMenu & src);
 
     BOOL LoadMenu(LPCTSTR pszResName);
 
-	BOOL LoadMenu(pugi::xml_node xmlMenu);
+    BOOL LoadMenu(pugi::xml_node xmlMenu);
 
     BOOL InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTSTR strText, int iIcon);
 
@@ -208,8 +208,8 @@ protected:
     void BuildMenu(HMENU menuPopup,pugi::xml_node xmlNode);
 
     CDuiArray<DuiMenuItemData *> m_arrDmmi;
-    CDuiMenuAttr	m_menuSkin;
-    CDuiMenu	*	m_pParent;
+    CDuiMenuAttr    m_menuSkin;
+    CDuiMenu    *    m_pParent;
 };
 
 }//namespace SOUI

@@ -43,10 +43,10 @@
 
 
 #if !defined(_DUI_W64)
-#if !defined(__midl) &&	(defined(_X86_)	|| defined(_M_IX86))
-#define	_DUI_W64 __w64
+#if !defined(__midl) &&    (defined(_X86_)    || defined(_M_IX86))
+#define    _DUI_W64 __w64
 #else
-#define	_DUI_W64
+#define    _DUI_W64
 #endif
 #endif
 
@@ -141,7 +141,7 @@ inline HRESULT DuiAdd(T* ptResult, T tLeft, T tRight)
 
 /* generic but compariatively slow version */
 template<typename T>
-inline HRESULT DuiMultiply(T* ptResult,	T tLeft, T tRight)
+inline HRESULT DuiMultiply(T* ptResult,    T tLeft, T tRight)
 {
     /* avoid divide 0 */
     if(tLeft==0)
@@ -157,9 +157,9 @@ inline HRESULT DuiMultiply(T* ptResult,	T tLeft, T tRight)
     return S_OK;
 }
 
-/* fast	version	for	32 bit integers	*/
+/* fast    version    for    32 bit integers    */
 template<>
-inline HRESULT DuiMultiply(int _DUI_W64	*piResult, int _DUI_W64	iLeft, int _DUI_W64 iRight)
+inline HRESULT DuiMultiply(int _DUI_W64    *piResult, int _DUI_W64    iLeft, int _DUI_W64 iRight)
 {
     __int64 i64Result=static_cast<__int64>(iLeft) * static_cast<__int64>(iRight);
     if(i64Result>INT_MAX || i64Result < INT_MIN)
@@ -171,7 +171,7 @@ inline HRESULT DuiMultiply(int _DUI_W64	*piResult, int _DUI_W64	iLeft, int _DUI_
 }
 
 template<>
-inline HRESULT DuiMultiply(unsigned int	_DUI_W64 *piResult, unsigned int _DUI_W64 iLeft, unsigned int _DUI_W64 iRight)
+inline HRESULT DuiMultiply(unsigned int    _DUI_W64 *piResult, unsigned int _DUI_W64 iLeft, unsigned int _DUI_W64 iRight)
 {
     unsigned __int64 i64Result=static_cast<unsigned __int64>(iLeft) * static_cast<unsigned __int64>(iRight);
     if(i64Result>UINT_MAX)
@@ -183,7 +183,7 @@ inline HRESULT DuiMultiply(unsigned int	_DUI_W64 *piResult, unsigned int _DUI_W6
 }
 
 template<>
-inline HRESULT DuiMultiply(long	_DUI_W64 *piResult, long _DUI_W64 iLeft, long _DUI_W64 iRight)
+inline HRESULT DuiMultiply(long    _DUI_W64 *piResult, long _DUI_W64 iLeft, long _DUI_W64 iRight)
 {
     __int64 i64Result=static_cast<__int64>(iLeft) * static_cast<__int64>(iRight);
     if(i64Result>LONG_MAX || i64Result < LONG_MIN)
@@ -234,7 +234,7 @@ inline CDuiPlex* CDuiPlex::Create( CDuiPlex*& pHead, size_t nMax, size_t nElemen
     DUIASSERT( nElementSize > 0 );
 
     size_t nBytes=0;
-    if( 	FAILED(DuiMultiply(&nBytes, nMax, nElementSize)) ||
+    if(     FAILED(DuiMultiply(&nBytes, nMax, nElementSize)) ||
             FAILED(DuiAdd(&nBytes, nBytes, sizeof(CDuiPlex))) )
     {
         return NULL;
@@ -493,11 +493,11 @@ public:
 };
 
 #define _DECLARE_PRIMITIVE_TRAITS( T ) \
-	template<> \
-	class CElementTraits< T > : \
-	public CPrimitiveElementTraits< T > \
-	{ \
-	};
+    template<> \
+    class CElementTraits< T > : \
+    public CPrimitiveElementTraits< T > \
+    { \
+    };
 
 _DECLARE_PRIMITIVE_TRAITS( unsigned char )
 _DECLARE_PRIMITIVE_TRAITS( unsigned short )
@@ -2340,7 +2340,7 @@ bool CDuiMap< K, V, KTraits, VTraits >::InitHashTable( UINT nBins, bool bAllocNo
 
     if( bAllocNow )
     {
-        //hjx			ATLTRY( m_ppBins = new CNode*[nBins] );
+        //hjx            ATLTRY( m_ppBins = new CNode*[nBins] );
         m_ppBins = new CNode*[nBins];
         if( m_ppBins == NULL )
         {
@@ -2651,7 +2651,7 @@ void CDuiMap< K, V, KTraits, VTraits >::Rehash( UINT nBins )
         return;
     }
 
-    //hjx 		ATLTRACE(atlTraceMap, 2, _T("Rehash: %u bins\n"), nBins );
+    //hjx         ATLTRACE(atlTraceMap, 2, _T("Rehash: %u bins\n"), nBins );
 
     if( m_ppBins == NULL )
     {
@@ -2660,7 +2660,7 @@ void CDuiMap< K, V, KTraits, VTraits >::Rehash( UINT nBins )
         return;
     }
 
-    //hjx		ATLTRY(ppBins = new CNode*[nBins]);
+    //hjx        ATLTRY(ppBins = new CNode*[nBins]);
     ppBins = new CNode*[nBins];
     if (ppBins == NULL)
     {

@@ -32,11 +32,11 @@ class SOUI_EXP CDuiSplitWnd :
 {
     SOUI_CLASS_NAME(CDuiSplitWnd, "splitwnd")
 
-	enum {
-		layout_vert=1,		//纵向布局改变
-		layout_horz=2,		//横向布局改变
-		layout_pos=4,		//窗口位置发生改变
-	};
+    enum {
+        layout_vert=1,        //纵向布局改变
+        layout_horz=2,        //横向布局改变
+        layout_pos=4,        //窗口位置发生改变
+    };
     struct PANEORDER
     {
         int idx;
@@ -55,7 +55,7 @@ public:
     BOOL HidePanel(UINT iPane);
 
 protected:
-	virtual void UpdateChildrenPosition(){}//empty
+    virtual void UpdateChildrenPosition(){}//empty
 
     int GetVisiblePanelCount();
 

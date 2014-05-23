@@ -15,10 +15,10 @@ public:                                                 \
     static BOOL CheckAndNew(LPCSTR lpszName,void **ppRet)       \
     {                                                   \
         if (strcmp(GetClassName(), lpszName)  == 0)     \
-		{												\
-			* (theclass**)ppRet=new theclass;			\
-			return TRUE;								\
-		}												\
+        {                                                \
+            * (theclass**)ppRet=new theclass;            \
+            return TRUE;                                \
+        }                                                \
         else                                            \
             return FALSE;                               \
     }                                                   \
@@ -27,12 +27,12 @@ public:                                                 \
     {                                                   \
         return classname;                               \
     }                                                   \
-														\
-	static LPCSTR BaseClassName()						\
-	{													\
-		return __super::GetClassName();					\
-	}													\
-														\
+                                                        \
+    static LPCSTR BaseClassName()                        \
+    {                                                    \
+        return __super::GetClassName();                    \
+    }                                                    \
+                                                        \
     virtual LPCSTR GetObjectClass()                     \
     {                                                   \
         return classname;                               \
@@ -41,7 +41,7 @@ public:                                                 \
     virtual BOOL IsClass(LPCSTR lpszName)               \
     {                                                   \
         if(strcmp(GetClassName(), lpszName)  == 0) return TRUE;  \
-		return __super::IsClass(lpszName);				\
+        return __super::IsClass(lpszName);                \
     }                                                   \
 
 
@@ -59,15 +59,15 @@ public:
     {
     }
 
-	static LPCSTR GetClassName()
-	{
-		return NULL;
-	}
+    static LPCSTR GetClassName()
+    {
+        return NULL;
+    }
 
-	static LPCSTR BaseClassName()
-	{
-		return NULL;
-	}
+    static LPCSTR BaseClassName()
+    {
+        return NULL;
+    }
 
     virtual BOOL IsClass(LPCSTR lpszName)
     {
@@ -75,9 +75,9 @@ public:
     }
 
     virtual LPCSTR GetObjectClass()
-	{
-		return NULL;
-	}
+    {
+        return NULL;
+    }
 
 
     virtual BOOL Load(pugi::xml_node xmlNode);
@@ -99,7 +99,7 @@ public:
     }
     //tolua_end
 protected:
-	virtual void OnAttributeFinish(pugi::xml_node xmlNode) {}
+    virtual void OnAttributeFinish(pugi::xml_node xmlNode) {}
     virtual void OnAttributeChanged(const CDuiStringA & strAttrName,BOOL bLoading,HRESULT hRet) {}
 
 public:
@@ -129,19 +129,19 @@ public:
 
     static COLORREF HexStringToColor(LPCSTR lpszValue)
     {
-		COLORREF cr=RGB(
-			HexStringToULong(lpszValue, 2),
-			HexStringToULong(lpszValue + 2, 2),
-			HexStringToULong(lpszValue + 4, 2)
-			);
-		if(strlen(lpszValue)>6)
-		{
-			cr |= HexStringToULong(lpszValue + 6, 2)<<24;
-		}
-		return cr;
+        COLORREF cr=RGB(
+            HexStringToULong(lpszValue, 2),
+            HexStringToULong(lpszValue + 2, 2),
+            HexStringToULong(lpszValue + 4, 2)
+            );
+        if(strlen(lpszValue)>6)
+        {
+            cr |= HexStringToULong(lpszValue + 6, 2)<<24;
+        }
+        return cr;
     }
 
-#ifdef	_DEBUG
+#ifdef    _DEBUG
     CDuiStringA m_strXml;
 #endif//_DEBUG
 };

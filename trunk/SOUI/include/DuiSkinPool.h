@@ -13,7 +13,7 @@ public:
 
     virtual ~DuiSkinPool();
 
-	BOOL Init(pugi::xml_node xmlNode);
+    BOOL Init(pugi::xml_node xmlNode);
 
     CDuiSkinBase* GetSkin(LPCSTR strSkinName);
 
@@ -24,7 +24,7 @@ public:
 protected:
     static void OnKeyRemoved(const DuiSkinPtr & obj);
 
-	pugi::xml_document m_xmlSkinDesc;
+    pugi::xml_document m_xmlSkinDesc;
 };
 
 }//namespace SOUI

@@ -245,8 +245,8 @@ BOOL CDuiListBox::Load(pugi::xml_node xmlNode)
     if (strChildSrc.IsEmpty())
         return TRUE;
 
-	pugi::xml_document xmlDoc;
-	if(!LOADXML(xmlDoc,strChildSrc,DUIRES_XML_TYPE)) return FALSE;
+    pugi::xml_document xmlDoc;
+    if(!LOADXML(xmlDoc,strChildSrc,DUIRES_XML_TYPE)) return FALSE;
 
     return LoadChildren(xmlDoc.first_child());
 }
@@ -255,8 +255,8 @@ BOOL CDuiListBox::LoadChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return TRUE;
 
-	pugi::xml_node xmlParent=xmlNode.parent();
-	pugi::xml_node xmlItem=xmlParent.child("items");
+    pugi::xml_node xmlParent=xmlNode.parent();
+    pugi::xml_node xmlItem=xmlParent.child("items");
     while(xmlItem)
     {
         LPLBITEM pItemObj = new LBITEM;
@@ -266,15 +266,15 @@ BOOL CDuiListBox::LoadChildren(pugi::xml_node xmlNode)
     }
 
     int nSelItem=xmlParent.attribute("cursel").as_int(-1);
-	SetCurSel(nSelItem);
+    SetCurSel(nSelItem);
 
     return TRUE;
 }
 
 void CDuiListBox::LoadItemAttribute(pugi::xml_node xmlNode, LPLBITEM pItem)
 {
-	pItem->nImage=xmlNode.attribute("img").as_int(pItem->nImage);
-	pItem->lParam=xmlNode.attribute("data").as_uint(pItem->lParam);
+    pItem->nImage=xmlNode.attribute("img").as_int(pItem->nImage);
+    pItem->lParam=xmlNode.attribute("data").as_uint(pItem->lParam);
 
     pItem->strText =  DUI_CA2T(xmlNode.text().get(), CP_UTF8);
     BUILDSTRING(pItem->strText);
@@ -387,7 +387,7 @@ void CDuiListBox::DrawItem(CDCHandle & dc, CRect & rc, int iItem)
             nOffsetX =  m_nItemHei / 6;
 
         if (m_ptIcon.y == -1)
-            nOffsetY = (m_nItemHei - sizeSkin.cy) / 2;	//y 默认居中
+            nOffsetY = (m_nItemHei - sizeSkin.cy) / 2;    //y 默认居中
 
         rcIcon.OffsetRect(rc.left + nOffsetX, rc.top + nOffsetY);
         m_pIconSkin->Draw(dc, rcIcon, pItem->nImage);
@@ -416,16 +416,16 @@ void CDuiListBox::DrawItem(CDCHandle & dc, CRect & rc, int iItem)
 void CDuiListBox::NotifySelChange( int nOldSel,int nNewSel)
 {
     DUINMLBSELCHANGE nms;
-	nms.hdr.code=NM_LBSELCHANGING;
+    nms.hdr.code=NM_LBSELCHANGING;
     nms.hdr.hDuiWnd=m_hDuiWnd;
     nms.hdr.idFrom=GetCmdID();
-	nms.hdr.pszNameFrom=GetName();
+    nms.hdr.pszNameFrom=GetName();
     nms.nOldSel=nOldSel;
     nms.nNewSel=nNewSel;
     nms.uHoverID=0;
 
     if(S_OK!=DuiNotify((LPDUINMHDR)&nms)) return ;
-	
+    
     m_iSelItem=nNewSel;
     if(nOldSel!=-1)
         RedrawItem(nOldSel);
@@ -464,7 +464,7 @@ void CDuiListBox::OnSize(UINT nType,CSize size)
     CSize szView(rcClient.Width(),GetCount()*m_nItemHei);
     if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
     SetViewSize(szView);
-	__super::OnSize(nType,size);
+    __super::OnSize(nType,size);
 }
 
 void CDuiListBox::OnLButtonDown(UINT nFlags,CPoint pt)
@@ -485,23 +485,23 @@ void CDuiListBox::OnLButtonDbClick(UINT nFlags,CPoint pt)
 
 void CDuiListBox::OnMouseMove(UINT nFlags,CPoint pt)
 {
-	int nOldHover=m_iHoverItem;
+    int nOldHover=m_iHoverItem;
     m_iHoverItem = HitTest(pt);
-	
+    
     if(m_bHotTrack && nOldHover!=m_iHoverItem)
-	{
-		if(nOldHover!=-1) RedrawItem(nOldHover);
-		if(m_iHoverItem!=-1) RedrawItem(m_iHoverItem);
-		if(m_iSelItem!=-1) RedrawItem(m_iSelItem);
-	}
+    {
+        if(nOldHover!=-1) RedrawItem(nOldHover);
+        if(m_iHoverItem!=-1) RedrawItem(m_iHoverItem);
+        if(m_iSelItem!=-1) RedrawItem(m_iSelItem);
+    }
 }
 
 void CDuiListBox::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
 {
     int  nNewSelItem = -1;
-	int iCurSel=m_iSelItem;
-	if(m_bHotTrack && m_iHoverItem!=-1)
-		iCurSel=m_iHoverItem;
+    int iCurSel=m_iSelItem;
+    if(m_bHotTrack && m_iHoverItem!=-1)
+        iCurSel=m_iHoverItem;
     if (nChar == VK_DOWN && m_iSelItem < GetCount() - 1)
         nNewSelItem = iCurSel+1;
     else if (nChar == VK_UP && m_iSelItem > 0)
@@ -509,13 +509,13 @@ void CDuiListBox::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
 
     if(nNewSelItem!=-1)
     {
-		int iHover=m_iHoverItem;
-		if(m_bHotTrack)
-			m_iHoverItem=-1;
+        int iHover=m_iHoverItem;
+        if(m_bHotTrack)
+            m_iHoverItem=-1;
         EnsureVisible(nNewSelItem);
         NotifySelChange(m_iSelItem,nNewSelItem);
-		if(iHover!=-1 && iHover != m_iSelItem && iHover != nNewSelItem) 
-			RedrawItem(iHover);
+        if(iHover!=-1 && iHover != m_iSelItem && iHover != nNewSelItem) 
+            RedrawItem(iHover);
     }
 }
 
@@ -539,11 +539,11 @@ void CDuiListBox::OnDestroy()
 
 void CDuiListBox::OnShowWindow( BOOL bShow, UINT nStatus )
 {
-	if(!bShow)
-	{
-		m_iHoverItem=-1;
-	}
-	__super::OnShowWindow(bShow,nStatus);
+    if(!bShow)
+    {
+        m_iHoverItem=-1;
+    }
+    __super::OnShowWindow(bShow,nStatus);
 }
 
 }//namespace SOUI

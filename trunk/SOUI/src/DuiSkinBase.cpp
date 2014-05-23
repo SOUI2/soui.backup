@@ -15,24 +15,24 @@ void CDuiSkinBase::FrameDraw(HDC dc, IDuiImage *pImgDraw, const CRect &rcSour,co
 {
     CRect rcCenter = rcDraw;
 
-	if(rcDraw.IsRectEmpty() || rcSour.IsRectEmpty()) return;
-	//检查边缘范围是否大于填充区域，如果超出则自动缩小连续范围
-	int xOverflow=rcMargin.left+rcMargin.right-rcDraw.Width();
-	if(xOverflow>0)
-	{
-		rcMargin.left-=xOverflow/2;
-		rcMargin.right-=xOverflow/2;
-		if(rcMargin.left<0) {rcMargin.right+=-rcMargin.left;rcMargin.left=0;}
-		else if(rcMargin.right<0) {rcMargin.left+=-rcMargin.right;rcMargin.right=0;}
-	}
-	int yOverflow=rcMargin.top+rcMargin.bottom-rcDraw.Height();
-	if(yOverflow>0)
-	{
-		rcMargin.top-=xOverflow/2;
-		rcMargin.bottom-=xOverflow/2;
-		if(rcMargin.top<0) {rcMargin.bottom+=-rcMargin.top;rcMargin.top=0;}
-		else if(rcMargin.bottom<0) {rcMargin.top+=-rcMargin.bottom;rcMargin.bottom=0;}
-	}
+    if(rcDraw.IsRectEmpty() || rcSour.IsRectEmpty()) return;
+    //检查边缘范围是否大于填充区域，如果超出则自动缩小连续范围
+    int xOverflow=rcMargin.left+rcMargin.right-rcDraw.Width();
+    if(xOverflow>0)
+    {
+        rcMargin.left-=xOverflow/2;
+        rcMargin.right-=xOverflow/2;
+        if(rcMargin.left<0) {rcMargin.right+=-rcMargin.left;rcMargin.left=0;}
+        else if(rcMargin.right<0) {rcMargin.left+=-rcMargin.right;rcMargin.right=0;}
+    }
+    int yOverflow=rcMargin.top+rcMargin.bottom-rcDraw.Height();
+    if(yOverflow>0)
+    {
+        rcMargin.top-=xOverflow/2;
+        rcMargin.bottom-=xOverflow/2;
+        if(rcMargin.top<0) {rcMargin.bottom+=-rcMargin.top;rcMargin.top=0;}
+        else if(rcMargin.bottom<0) {rcMargin.top+=-rcMargin.bottom;rcMargin.bottom=0;}
+    }
 
     DUIASSERT(dc);
     DUIASSERT(!pImgDraw->IsEmpty());
@@ -124,25 +124,25 @@ void CDuiSkinBase::FrameDraw(HDC dc, IDuiImage *pImgDraw, const CRect &rcSour,co
                  );
     }
 
-	if(Frame_Part_MidCenter & uDrawPart && !rcCenter.IsRectEmpty()) 
-	{
-		CRect rcSourMD=rcSour;
-		rcSourMD.DeflateRect(rcMargin.left,rcMargin.top,rcMargin.right,rcMargin.bottom);
-		if (CLR_INVALID != crBg)
-		{//采用纯色填充中间部分
-			CGdiAlpha::FillSolidRect(dc,rcCenter, crBg);
-		}else
-		{
-			ExtentBlt(pImgDraw,bTile,
-				dc,
-				rcCenter.left, rcCenter.top,
-				rcCenter.Width(), rcCenter.Height(),
-				rcSourMD.left, rcSourMD.top,
-				rcSourMD.Width(), rcSourMD.Height(),
-				byAlpha
-				);
-		}
-	}
+    if(Frame_Part_MidCenter & uDrawPart && !rcCenter.IsRectEmpty()) 
+    {
+        CRect rcSourMD=rcSour;
+        rcSourMD.DeflateRect(rcMargin.left,rcMargin.top,rcMargin.right,rcMargin.bottom);
+        if (CLR_INVALID != crBg)
+        {//采用纯色填充中间部分
+            CGdiAlpha::FillSolidRect(dc,rcCenter, crBg);
+        }else
+        {
+            ExtentBlt(pImgDraw,bTile,
+                dc,
+                rcCenter.left, rcCenter.top,
+                rcCenter.Width(), rcCenter.Height(),
+                rcSourMD.left, rcSourMD.top,
+                rcSourMD.Width(), rcSourMD.Height(),
+                byAlpha
+                );
+        }
+    }
 }
 
 

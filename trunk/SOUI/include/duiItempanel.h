@@ -18,8 +18,8 @@ class SOUI_EXP IDuiItemContainer
 {
 public:
     virtual void OnItemSetCapture(CDuiItemPanel *pItem,BOOL bCapture)=NULL;//设置or释放鼠标捕获
-    virtual BOOL OnItemGetRect(CDuiItemPanel *pItem,CRect &rcItem)=NULL;	//获得表项的显示位置
-	virtual BOOL IsItemRedrawDelay()=NULL;									//指示表项的更新方式
+    virtual BOOL OnItemGetRect(CDuiItemPanel *pItem,CRect &rcItem)=NULL;    //获得表项的显示位置
+    virtual BOOL IsItemRedrawDelay()=NULL;                                    //指示表项的更新方式
 };
 
 class SOUI_EXP CDuiItemPanel : public CDuiWindow, public CDuiFrame
@@ -30,7 +30,7 @@ public:
 
     virtual void OnFinalRelease();
 
-	//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
     virtual LRESULT DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
     virtual LRESULT CDuiItemPanel::OnDuiNotify(LPDUINMHDR pHdr);
@@ -56,13 +56,13 @@ public:
 
     virtual BOOL DuiSetCaretPos(int x,int y);
 
-	virtual BOOL DuiUpdateWindow();
+    virtual BOOL DuiUpdateWindow();
 
-	virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler);
+    virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler);
 
-	virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
+    virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
 
-	//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
     virtual void ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove);
 
     virtual HDUIWND DuiGetHWNDFromPoint(POINT ptHitTest, BOOL bOnlyText);
@@ -80,18 +80,18 @@ public:
     LPARAM GetItemData();
 
     BOOL OnUpdateToolTip(HDUIWND hCurTipHost,HDUIWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
-	
-	void OnSetCaretValidateRect(LPCRECT lpRect);
+    
+    void OnSetCaretValidateRect(LPCRECT lpRect);
 
-	LPARAM GetItemIndex(){return m_lpItemIndex;}
-	void SetItemIndex(LPARAM lp){m_lpItemIndex=lp;}
+    LPARAM GetItemIndex(){return m_lpItemIndex;}
+    void SetItemIndex(LPARAM lp){m_lpItemIndex=lp;}
 
 protected:
     CDuiWindow * m_pFrmHost;
     IDuiItemContainer * m_pItemContainer;
     COLORREF m_crBk, m_crSelBk;
-    LPARAM		m_dwData;
-	LPARAM		m_lpItemIndex;
+    LPARAM        m_dwData;
+    LPARAM        m_lpItemIndex;
 };
 
 

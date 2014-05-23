@@ -12,25 +12,25 @@
 namespace SOUI
 {
 
-#define DUISB_NULL	0
-#define DUISB_HORZ	1
-#define DUISB_VERT	2
-#define DUISB_BOTH	(DUISB_HORZ|DUISB_VERT)
-#define TIMER_SBWAIT	1		//启动连续滚动的定时器
-#define TIMER_SBGO	2		//连续滚动的定时器
+#define DUISB_NULL    0
+#define DUISB_HORZ    1
+#define DUISB_VERT    2
+#define DUISB_BOTH    (DUISB_HORZ|DUISB_VERT)
+#define TIMER_SBWAIT    1        //启动连续滚动的定时器
+#define TIMER_SBGO    2        //连续滚动的定时器
 
-#define DEF_UPDATEINTERVAL	20
+#define DEF_UPDATEINTERVAL    20
 
 typedef struct tagSBHITINFO
 {
-	DWORD uSbCode:16;
-	DWORD nState:8;
-	DWORD bVertical:8;
+    DWORD uSbCode:16;
+    DWORD nState:8;
+    DWORD bVertical:8;
 } SBHITINFO,*PSBHITINFO;
 
 inline bool operator !=(const SBHITINFO &a, const SBHITINFO &b)
 {
-	return memcmp(&a,&b,sizeof(SBHITINFO))!=0;
+    return memcmp(&a,&b,sizeof(SBHITINFO))!=0;
 }
 
 class SOUI_EXP CDuiPanel: public CDuiWindow
@@ -55,7 +55,7 @@ public:
 
     BOOL SetScrollRange(BOOL bVertical,int nMinPos,int nMaxPos,BOOL bRedraw);
 
-    BOOL GetScrollRange(BOOL bVertical,	LPINT lpMinPos,	LPINT lpMaxPos);
+    BOOL GetScrollRange(BOOL bVertical,    LPINT lpMinPos,    LPINT lpMaxPos);
 
     BOOL HasScrollBar(BOOL bVertical);
 
@@ -66,7 +66,7 @@ public:
 
 protected:
     CRect GetSbPartRect(BOOL bVertical,UINT uSBCode);
-	CRect GetSbRailwayRect(BOOL bVertical);
+    CRect GetSbRailwayRect(BOOL bVertical);
     CRect GetScrollBarRect(BOOL bVertical);
 
     int OnCreate(LPVOID);
@@ -91,7 +91,7 @@ protected:
 
     void OnDuiTimer(char cTimerID);
 
-	void OnShowWindow(BOOL bShow, UINT nStatus);
+    void OnShowWindow(BOOL bShow, UINT nStatus);
 protected:
     virtual int  GetScrollLineSize(BOOL bVertical)
     {
@@ -103,32 +103,32 @@ protected:
 
     CRect GetSbSlideRectByPos(BOOL bVertical,int nPos);
 
-	void ScrollUpdate();
+    void ScrollUpdate();
 
-	LRESULT OnAttrScrollbarSkin(CDuiStringA strValue,BOOL bLoading);
+    LRESULT OnAttrScrollbarSkin(CDuiStringA strValue,BOOL bLoading);
 
     SCROLLINFO m_siVer,m_siHoz;
     CDuiScrollbarSkin *m_pSkinSb;
-    int			m_nSbArrowSize;
-    int			m_nSbWid;
-    CPoint		m_ptDragSb;
-    BOOL		m_bDragSb;
-    SBHITINFO		m_HitInfo;
-    int			m_nDragPos;
+    int            m_nSbArrowSize;
+    int            m_nSbWid;
+    CPoint        m_ptDragSb;
+    BOOL        m_bDragSb;
+    SBHITINFO        m_HitInfo;
+    int            m_nDragPos;
 
-    CRect		m_rcClient;
-    int			m_wBarVisible;	//滚动条显示信息
-    int			m_wBarEnable;	//滚动条可操作信息
+    CRect        m_rcClient;
+    int            m_wBarVisible;    //滚动条显示信息
+    int            m_wBarEnable;    //滚动条可操作信息
 
-	DWORD		m_dwUpdateTime;	//记录调用UpdateDuiWindow的时间
-	DWORD		m_dwUpdateInterval;
+    DWORD        m_dwUpdateTime;    //记录调用UpdateDuiWindow的时间
+    DWORD        m_dwUpdateInterval;
 
     SOUO_ATTRIBUTES_BEGIN()
-		DUIWIN_CUSTOM_ATTRIBUTE("sbskin",OnAttrScrollbarSkin)
-		DUIWIN_INT_ATTRIBUTE("sbarrowsize", m_nSbArrowSize, FALSE)
-		DUIWIN_INT_ATTRIBUTE("sbwid", m_nSbWid, FALSE)
-		DUIWIN_INT_ATTRIBUTE("sbenable", m_wBarEnable, FALSE)
-		DUIWIN_UINT_ATTRIBUTE("updateinterval", m_dwUpdateInterval, FALSE)
+        DUIWIN_CUSTOM_ATTRIBUTE("sbskin",OnAttrScrollbarSkin)
+        DUIWIN_INT_ATTRIBUTE("sbarrowsize", m_nSbArrowSize, FALSE)
+        DUIWIN_INT_ATTRIBUTE("sbwid", m_nSbWid, FALSE)
+        DUIWIN_INT_ATTRIBUTE("sbenable", m_wBarEnable, FALSE)
+        DUIWIN_UINT_ATTRIBUTE("updateinterval", m_dwUpdateInterval, FALSE)
     SOUI_ATTRIBUTES_END()
 
     WND_MSG_MAP_BEGIN()
@@ -141,63 +141,63 @@ protected:
     MSG_WM_NCMOUSELEAVE(OnNcMouseLeave)
     MSG_WM_MOUSEWHEEL(OnMouseWheel)
     MSG_WM_DUITIMER(OnDuiTimer)
-	MSG_WM_SHOWWINDOW(OnShowWindow)
+    MSG_WM_SHOWWINDOW(OnShowWindow)
     WND_MSG_MAP_END()
 };
 
 class SOUI_EXP CDuiScrollView : public CDuiPanel
 {
-	SOUI_CLASS_NAME(CDuiScrollView, "scrollview")
+    SOUI_CLASS_NAME(CDuiScrollView, "scrollview")
 public:
-	CDuiScrollView();
-	virtual ~CDuiScrollView() {}
+    CDuiScrollView();
+    virtual ~CDuiScrollView() {}
 
-	CSize GetViewSize();
+    CSize GetViewSize();
 
-	void SetViewSize(CSize szView);
+    void SetViewSize(CSize szView);
 
-	CPoint GetViewOrigin();
+    CPoint GetViewOrigin();
 
-	void SetViewOrigin(CPoint pt);
-
-protected:
-	int OnCreate(LPVOID);
-
-	void OnSize(UINT nType,CSize size);
-protected:
-	virtual void OnViewSizeChanged(CSize szOld,CSize szNew){}
-	virtual void OnViewOriginChanged(CPoint ptOld,CPoint ptNew) {
-		UpdateChildrenPosition();
-	}
+    void SetViewOrigin(CPoint pt);
 
 protected:
-	virtual CRect GetChildrenLayoutRect()
-	{
-		CRect rcRet=__super::GetChildrenLayoutRect();
-		rcRet.OffsetRect(-m_ptOrigin);
-		rcRet.right=rcRet.left+m_szView.cx;
-		rcRet.bottom=rcRet.top+m_szView.cy;
-		return rcRet;
-	}
+    int OnCreate(LPVOID);
 
-	virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
-
-	void UpdateScrollBar();
+    void OnSize(UINT nType,CSize size);
 protected:
-	SOUO_ATTRIBUTES_BEGIN()
-		DUIWIN_INT_ATTRIBUTE("viewwid", m_szView.cx, FALSE)
-		DUIWIN_INT_ATTRIBUTE("viewhei", m_szView.cy, FALSE)
-		DUIWIN_INT_ATTRIBUTE("origin-x", m_ptOrigin.x, FALSE)
-		DUIWIN_INT_ATTRIBUTE("origin-y", m_ptOrigin.y, FALSE)
-	SOUI_ATTRIBUTES_END()
+    virtual void OnViewSizeChanged(CSize szOld,CSize szNew){}
+    virtual void OnViewOriginChanged(CPoint ptOld,CPoint ptNew) {
+        UpdateChildrenPosition();
+    }
 
-	WND_MSG_MAP_BEGIN()
-		MSG_WM_CREATE(OnCreate)
-		MSG_WM_SIZE(OnSize)
-	WND_MSG_MAP_END()
 protected:
-	CSize m_szView;
-	CPoint m_ptOrigin;
+    virtual CRect GetChildrenLayoutRect()
+    {
+        CRect rcRet=__super::GetChildrenLayoutRect();
+        rcRet.OffsetRect(-m_ptOrigin);
+        rcRet.right=rcRet.left+m_szView.cx;
+        rcRet.bottom=rcRet.top+m_szView.cy;
+        return rcRet;
+    }
+
+    virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
+
+    void UpdateScrollBar();
+protected:
+    SOUO_ATTRIBUTES_BEGIN()
+        DUIWIN_INT_ATTRIBUTE("viewwid", m_szView.cx, FALSE)
+        DUIWIN_INT_ATTRIBUTE("viewhei", m_szView.cy, FALSE)
+        DUIWIN_INT_ATTRIBUTE("origin-x", m_ptOrigin.x, FALSE)
+        DUIWIN_INT_ATTRIBUTE("origin-y", m_ptOrigin.y, FALSE)
+    SOUI_ATTRIBUTES_END()
+
+    WND_MSG_MAP_BEGIN()
+        MSG_WM_CREATE(OnCreate)
+        MSG_WM_SIZE(OnSize)
+    WND_MSG_MAP_END()
+protected:
+    CSize m_szView;
+    CPoint m_ptOrigin;
 };
 
 }//namespace SOUI

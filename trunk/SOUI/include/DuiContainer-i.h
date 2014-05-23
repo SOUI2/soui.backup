@@ -8,16 +8,16 @@ struct IAcceleratorMgr;
 
 struct ITimelineHandler
 {
-	virtual void OnNextFrame()=NULL;
+    virtual void OnNextFrame()=NULL;
 };
 
 class SOUI_EXP IDuiContainer : public ITimelineHandler
 {
     friend class CDuiWindow;
 public:
-	virtual BOOL RegisterDragDrop(HDUIWND hDuiWnd,IDropTarget *pDropTarget)=NULL;
+    virtual BOOL RegisterDragDrop(HDUIWND hDuiWnd,IDropTarget *pDropTarget)=NULL;
 
-	virtual BOOL RevokeDragDrop(HDUIWND hDuiWnd)=NULL;
+    virtual BOOL RevokeDragDrop(HDUIWND hDuiWnd)=NULL;
 
     virtual LRESULT OnDuiNotify(LPDUINMHDR pHdr)=NULL;
 
@@ -51,13 +51,13 @@ public:
 
     virtual BOOL DuiSetCaretPos(int x,int y)=NULL;
 
-	virtual BOOL DuiUpdateWindow()=NULL;
+    virtual BOOL DuiUpdateWindow()=NULL;
 
-	virtual IAcceleratorMgr* GetAcceleratorMgr()=NULL;
+    virtual IAcceleratorMgr* GetAcceleratorMgr()=NULL;
 
-	virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler)=NULL;
+    virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler)=NULL;
 
-	virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler)=NULL;
+    virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler)=NULL;
 };
 
 

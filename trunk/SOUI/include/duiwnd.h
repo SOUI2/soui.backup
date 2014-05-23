@@ -3,7 +3,7 @@
 // Description: DuiWindow Definition
 //     Creator: Zhang Xiaoxuan
 //     Version: 2009.04.28 - 1.0 - Create
-//				2011.09.01 - 2.0 huang jianxiong
+//                2011.09.01 - 2.0 huang jianxiong
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -23,21 +23,21 @@ namespace SOUI
 {
 
 /////////////////////////////////////////////////////////////////////////
-enum {NormalShow=0,ParentShow=1};	//提供WM_SHOWWINDOW消息识别是父窗口显示还是要显示本窗口
-enum {NormalEnable=0,ParentEnable=1};	//提供WM_ENABLE消息识别是父窗口可用还是直接操作当前窗口
+enum {NormalShow=0,ParentShow=1};    //提供WM_SHOWWINDOW消息识别是父窗口显示还是要显示本窗口
+enum {NormalEnable=0,ParentEnable=1};    //提供WM_ENABLE消息识别是父窗口可用还是直接操作当前窗口
 
 #define DUIC_WANTARROWS     0x0001      /* Control wants arrow keys         */
 #define DUIC_WANTTAB        0x0002      /* Control wants tab keys           */
-#define DUIC_WANTRETURN		0x0004		/* Control wants return keys		*/
+#define DUIC_WANTRETURN        0x0004        /* Control wants return keys        */
 #define DUIC_WANTCHARS      0x0008      /* Want WM_CHAR messages            */
 #define DUIC_WANTALLKEYS    0xFFFF      /* Control wants all keys           */
-#define DUIC_WANTSYSKEY		0x80000000	/* System Key */
+#define DUIC_WANTSYSKEY        0x80000000    /* System Key */
 class SOUI_EXP CDuiTimerID
 {
 public:
-    DWORD	hDuiWnd:24;		//窗口句柄,如果窗口句柄超过24位范围，则不能使用这种方式设置定时器
-    DWORD	uTimerID:7;		//定时器ID，一个窗口最多支持128个定时器。
-    DWORD	bDuiTimer:1;	//区别通用定时器的标志，标志为1时，表示该定时器为DUI定时器
+    DWORD    hDuiWnd:24;        //窗口句柄,如果窗口句柄超过24位范围，则不能使用这种方式设置定时器
+    DWORD    uTimerID:7;        //定时器ID，一个窗口最多支持128个定时器。
+    DWORD    bDuiTimer:1;    //区别通用定时器的标志，标志为1时，表示该定时器为DUI定时器
 
     CDuiTimerID(HDUIWND hWnd,char id)
     {
@@ -56,8 +56,8 @@ public:
     }
 };
 
-#define ICWND_FIRST	((CDuiWindow*)-1)
-#define ICWND_LAST	NULL
+#define ICWND_FIRST    ((CDuiWindow*)-1)
+#define ICWND_LAST    NULL
 
 class SOUI_EXP DuiDCPaint
 {
@@ -101,11 +101,11 @@ typedef enum tagGDUI_CODE
 } GDUI_CODE;
 
 class SOUI_EXP CDuiWindow : public CDuiObject
-	, public CDuiEventSet
+    , public CDuiEventSet
     , public CDuiRef
 {
     SOUI_CLASS_NAME(CDuiWindow, "window")
-	friend class CDuiLayout;
+    friend class CDuiLayout;
 public:
     CDuiWindow();
 
@@ -122,12 +122,12 @@ protected:
     HDUIWND m_hDuiWnd;
     IDuiContainer *m_pContainer;
     CDuiWindow *m_pOwner;
-    CDuiWindow *m_pParent,*m_pFirstChild, *m_pLastChild, *m_pNextSibling,*m_pPrevSibling;	//窗口树结构
-    UINT	m_nChildrenCount;
-    DUIMSG		*m_pCurMsg;
+    CDuiWindow *m_pParent,*m_pFirstChild, *m_pLastChild, *m_pNextSibling,*m_pPrevSibling;    //窗口树结构
+    UINT    m_nChildrenCount;
+    DUIMSG        *m_pCurMsg;
 
     UINT m_uCmdID;
-	CDuiStringA	m_strName;
+    CDuiStringA    m_strName;
 
     CRect m_rcWindow;
 
@@ -135,22 +135,22 @@ protected:
     CDuiStringT m_strInnerText;
     DWORD m_dwState;
     CDuiStringT m_strLinkUrl;
-    BOOL m_bMsgTransparent;		//不处理用户操作标志
-    BOOL m_bVisible;			//可见状态
-	BOOL m_bDisplay;			//隐藏时是否占位，不占位时启动重新布局。
-	BOOL m_bDisable;			//禁用状态
+    BOOL m_bMsgTransparent;        //不处理用户操作标志
+    BOOL m_bVisible;            //可见状态
+    BOOL m_bDisplay;            //隐藏时是否占位，不占位时启动重新布局。
+    BOOL m_bDisable;            //禁用状态
     CDuiStringT m_strToolTipText;
-    int	 m_nSepSpace;	//自动排版的水平空格
+    int     m_nSepSpace;    //自动排版的水平空格
     BOOL m_bClipClient;
-	BOOL m_bTabStop;
-	BYTE m_byAlpha;		//窗口透明度,只进行配置，支持依赖于控件。
+    BOOL m_bTabStop;
+    BYTE m_byAlpha;        //窗口透明度,只进行配置，支持依赖于控件。
 
     CDuiSkinBase * m_pBgSkin;
     CDuiSkinBase * m_pNcSkin;
 
     DUIWND_POSITION m_dlgpos;
 
-    int				m_nMaxWidth;	//自动计算大小时使用
+    int                m_nMaxWidth;    //自动计算大小时使用
     BOOL m_bUpdateLocked;//暂时锁定更新
 #ifdef _DEBUG
     DWORD m_nMainThreadId;
@@ -162,7 +162,7 @@ public:
     // Method Define
 
     // Get align
-    UINT GetTextAlign();	
+    UINT GetTextAlign();    
     // Get position type
     DWORD GetPositionType();
 
@@ -216,10 +216,10 @@ public:
     UINT GetCmdID();
     void SetCmdID(UINT uNewID);
 
-	ULONG_PTR GetUserData();
+    ULONG_PTR GetUserData();
     ULONG_PTR SetUserData(ULONG_PTR uData);
 
-	LPCSTR GetName(){ return m_strName.IsEmpty()?NULL:(LPCSTR)m_strName;}
+    LPCSTR GetName(){ return m_strName.IsEmpty()?NULL:(LPCSTR)m_strName;}
     //************************************
     // Method:    SetDuiTimer
     // Function:  利用窗口定时器来设置一个ID为0-127的DUI定时器
@@ -310,7 +310,7 @@ public:
 
     DuiStyle& GetStyle();
 
-	
+    
     //************************************
     // Method:    FindChildByCmdID, 通过ID查找对应的子窗口
     // Access:    public 
@@ -320,26 +320,26 @@ public:
     //************************************
     CDuiWindow* FindChildByCmdID(UINT uCmdID);
 
-	template<class T>
-	T FindChildByCmdID2(UINT uCmdID)
-	{
-		return dynamic_cast<T>(FindChildByCmdID(uCmdID));
-	}
+    template<class T>
+    T FindChildByCmdID2(UINT uCmdID)
+    {
+        return dynamic_cast<T>(FindChildByCmdID(uCmdID));
+    }
 
-	//************************************
-	// Method:    FindChildByName，通过名字查找子窗口
-	// Access:    public 
-	// Returns:   CDuiWindow*
-	// Qualifier:
-	// Parameter: LPCSTR pszName
-	//************************************
-	CDuiWindow* FindChildByName(LPCSTR pszName);
+    //************************************
+    // Method:    FindChildByName，通过名字查找子窗口
+    // Access:    public 
+    // Returns:   CDuiWindow*
+    // Qualifier:
+    // Parameter: LPCSTR pszName
+    //************************************
+    CDuiWindow* FindChildByName(LPCSTR pszName);
 
-	template<class T>
-	T FindChildByName2(LPCSTR pszName)
-	{
-		return dynamic_cast<T>(FindChildByName(pszName));
-	}
+    template<class T>
+    T FindChildByName2(LPCSTR pszName)
+    {
+        return dynamic_cast<T>(FindChildByName(pszName));
+    }
 
     // 从XML创建子窗口
     // LPCSTR utf8Xml: utf8 编码的XML串
@@ -354,23 +354,23 @@ public:
     BOOL IsUpdateLocked();
     void BringWindowToTop();
 
-	//同类控件自动成组标志,主要是给RadioButton用的。
-	virtual BOOL IsSiblingsAutoGroupped(){return FALSE;}
+    //同类控件自动成组标志,主要是给RadioButton用的。
+    virtual BOOL IsSiblingsAutoGroupped(){return FALSE;}
 public:
     //////////////////////////////////////////////////////////////////////////
     // Virtual functions
-	virtual void OnSetCaretValidateRect(LPCRECT lpRect)
-	{
-		CRect rcClient;
-		GetClient(&rcClient);
-		CRect rcIntersect;
-		rcIntersect.IntersectRect(&rcClient,lpRect);
-		if(GetParent()) GetParent()->OnSetCaretValidateRect(&rcIntersect);
-	}
+    virtual void OnSetCaretValidateRect(LPCRECT lpRect)
+    {
+        CRect rcClient;
+        GetClient(&rcClient);
+        CRect rcIntersect;
+        rcIntersect.IntersectRect(&rcClient,lpRect);
+        if(GetParent()) GetParent()->OnSetCaretValidateRect(&rcIntersect);
+    }
 
     virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState) {}
 
-	virtual BOOL LoadChildren(pugi::xml_node xmlNode);
+    virtual BOOL LoadChildren(pugi::xml_node xmlNode);
     // Create DuiWindow from xml element
     virtual BOOL Load(pugi::xml_node xmlNode);
 
@@ -392,26 +392,26 @@ public:
 
     virtual void OnAttributeChanged(const CDuiStringA & strAttrName,BOOL bLoading,HRESULT hRet);
 
-	//************************************
-	// Method:    UpdateChildrenPosition :更新子窗口位置
-	// FullName:  SOUI::CDuiWindow::UpdateChildrenPosition
-	// Access:    virtual protected 
-	// Returns:   void
-	// Qualifier:
-	//************************************
-	virtual void UpdateChildrenPosition();
+    //************************************
+    // Method:    UpdateChildrenPosition :更新子窗口位置
+    // FullName:  SOUI::CDuiWindow::UpdateChildrenPosition
+    // Access:    virtual protected 
+    // Returns:   void
+    // Qualifier:
+    //************************************
+    virtual void UpdateChildrenPosition();
 
 public:
-	//************************************
-	// Method:    RedrawRegion
-	// Function:  将窗口及子窗口内容绘制到DC
-	// Access:    public 
-	// Returns:   BOOL
-	// Qualifier:
-	// Parameter: CDCHandle & dc
-	// Parameter: CRgn & rgn
-	//************************************
-	BOOL RedrawRegion(CDCHandle& dc, CRgn& rgn);
+    //************************************
+    // Method:    RedrawRegion
+    // Function:  将窗口及子窗口内容绘制到DC
+    // Access:    public 
+    // Returns:   BOOL
+    // Qualifier:
+    // Parameter: CDCHandle & dc
+    // Parameter: CRgn & rgn
+    //************************************
+    BOOL RedrawRegion(CDCHandle& dc, CRgn& rgn);
 
     //************************************
     // Method:    GetDuiDC
@@ -420,7 +420,7 @@ public:
     // Returns:   HDC
     // Parameter: LPRECT pRc - DC范围
     // Parameter: DWORD gdcFlags 同OLEDCFLAGS
-	// Parameter: BOOL bClientDC 限制在client区域
+    // Parameter: BOOL bClientDC 限制在client区域
     // remark: 使用ReleaseDuiDC释放
     //************************************
     HDC GetDuiDC(const LPRECT pRc=NULL,DWORD gdcFlags=0,BOOL bClientDC=TRUE);
@@ -443,7 +443,7 @@ public:
     // Returns:   void
     // Parameter: HDC hdc 目标DC
     // Parameter: LPRECT pRc 目标位置
-    // remark:	目标位置必须在窗口位置内
+    // remark:    目标位置必须在窗口位置内
     //************************************
     void PaintBackground(HDC hdc,LPRECT pRc);
 
@@ -454,7 +454,7 @@ public:
     // Returns:   void
     // Parameter: HDC hdc 目标DC
     // Parameter: LPRECT pRc 目标位置
-    // remark:	目标位置必须在窗口位置内
+    // remark:    目标位置必须在窗口位置内
     //************************************
     void PaintForeground(HDC hdc,LPRECT pRc);
 
@@ -470,24 +470,24 @@ public:
     //************************************
     BOOL AnimateWindow(DWORD dwTime,DWORD dwFlags);
 protected:
-	typedef enum _PRSTATE{
-		PRS_LOOKSTART=0,	//查找开始窗口
-		PRS_DRAWING,		//窗口渲染中
-		PRS_MEETEND			//碰到指定的结束窗口
-	} PRSTATE;
-	static BOOL _PaintRegion(CDCHandle& dc, CRgn& rgn,CDuiWindow *pWndCur,CDuiWindow *pStart,CDuiWindow *pEnd,CDuiWindow::PRSTATE & prState);
+    typedef enum _PRSTATE{
+        PRS_LOOKSTART=0,    //查找开始窗口
+        PRS_DRAWING,        //窗口渲染中
+        PRS_MEETEND            //碰到指定的结束窗口
+    } PRSTATE;
+    static BOOL _PaintRegion(CDCHandle& dc, CRgn& rgn,CDuiWindow *pWndCur,CDuiWindow *pStart,CDuiWindow *pEnd,CDuiWindow::PRSTATE & prState);
 
 
-    CRect		m_rcGetDC;
-    DWORD		m_gdcFlags;
-    int			m_nSaveDC;
+    CRect        m_rcGetDC;
+    DWORD        m_gdcFlags;
+    int            m_nSaveDC;
 public:
     HDUIWND GetDuiCapture();
     HDUIWND SetDuiCapture();
 
     BOOL ReleaseDuiCapture();
     void SetDuiFocus();
-	void KillDuiFocus();
+    void KillDuiFocus();
 
     CDuiWindow *GetCheckedRadioButton();
 
@@ -502,7 +502,7 @@ public:
     BOOL EnableItem(UINT uItemID, BOOL bEnable);
     BOOL IsItemEnable(UINT uItemID, BOOL bCheckParent = FALSE);
 
-    CDuiWindow *GetDuiWindow(int uCode);	
+    CDuiWindow *GetDuiWindow(int uCode);    
 
     //************************************
     // Method:    BeforePaint
@@ -544,88 +544,88 @@ protected:
     BOOL m_bMsgHandled;
 
     SOUO_ATTRIBUTES_BEGIN()
-		DUIWIN_SKIN_ATTRIBUTE("skin", m_pBgSkin, TRUE)//直接获得皮肤对象
-		DUIWIN_SKIN_ATTRIBUTE("ncskin", m_pNcSkin, TRUE)//直接获得皮肤对象
-		DUIWIN_STRING_ATTRIBUTE("name",m_strName,FALSE)
-		DUIWIN_STYLE_ATTRIBUTE("class", m_style, TRUE)	//获得style
-		DUIWIN_CHAIN_ATTRIBUTE(m_style)					//支持对style中的属性定制
-		DUIWIN_INT_ATTRIBUTE("id", m_uCmdID, FALSE)
-		DUIWIN_INT_ATTRIBUTE("data", m_uData, 0 )
-		DUIWIN_CUSTOM_ATTRIBUTE("state", OnAttributeState)
-		DUIWIN_TSTRING_ATTRIBUTE("href", m_strLinkUrl, FALSE)
-		DUIWIN_TSTRING_ATTRIBUTE("tip", m_strToolTipText, FALSE)
-		DUIWIN_CUSTOM_ATTRIBUTE("pos", OnAttributePosition)
-		DUIWIN_INT_ATTRIBUTE("show", m_bVisible,FALSE)
-		DUIWIN_INT_ATTRIBUTE("display", m_bDisplay,FALSE)
-		DUIWIN_INT_ATTRIBUTE("msgtransparent", m_bMsgTransparent, FALSE)
-		DUIWIN_INT_ATTRIBUTE("sep", m_nSepSpace, FALSE)
-		DUIWIN_INT_ATTRIBUTE("maxwidth",m_nMaxWidth,FALSE)
-		DUIWIN_INT_ATTRIBUTE("clipclient",m_bClipClient,FALSE)
-		DUIWIN_INT_ATTRIBUTE("tabstop",m_bTabStop,FALSE)
-		DUIWIN_ENUM_ATTRIBUTE("pos2type",POS2TYPE,FALSE)
-			DUIWIN_ENUM_VALUE("lefttop",POS2_LEFTTOP)
-			DUIWIN_ENUM_VALUE("center",POS2_CENTER)
-			DUIWIN_ENUM_VALUE("righttop",POS2_RIGHTTOP)
-			DUIWIN_ENUM_VALUE("leftbottom",POS2_LEFTBOTTOM)
-			DUIWIN_ENUM_VALUE("rightbottom",POS2_RIGHTBOTTOM)
-		DUIWIN_ENUM_END(m_dlgpos.pos2Type)
-		DUIWIN_INT_ATTRIBUTE("alpha",m_byAlpha,TRUE)
+        DUIWIN_SKIN_ATTRIBUTE("skin", m_pBgSkin, TRUE)//直接获得皮肤对象
+        DUIWIN_SKIN_ATTRIBUTE("ncskin", m_pNcSkin, TRUE)//直接获得皮肤对象
+        DUIWIN_STRING_ATTRIBUTE("name",m_strName,FALSE)
+        DUIWIN_STYLE_ATTRIBUTE("class", m_style, TRUE)    //获得style
+        DUIWIN_CHAIN_ATTRIBUTE(m_style)                    //支持对style中的属性定制
+        DUIWIN_INT_ATTRIBUTE("id", m_uCmdID, FALSE)
+        DUIWIN_INT_ATTRIBUTE("data", m_uData, 0 )
+        DUIWIN_CUSTOM_ATTRIBUTE("state", OnAttributeState)
+        DUIWIN_TSTRING_ATTRIBUTE("href", m_strLinkUrl, FALSE)
+        DUIWIN_TSTRING_ATTRIBUTE("tip", m_strToolTipText, FALSE)
+        DUIWIN_CUSTOM_ATTRIBUTE("pos", OnAttributePosition)
+        DUIWIN_INT_ATTRIBUTE("show", m_bVisible,FALSE)
+        DUIWIN_INT_ATTRIBUTE("display", m_bDisplay,FALSE)
+        DUIWIN_INT_ATTRIBUTE("msgtransparent", m_bMsgTransparent, FALSE)
+        DUIWIN_INT_ATTRIBUTE("sep", m_nSepSpace, FALSE)
+        DUIWIN_INT_ATTRIBUTE("maxwidth",m_nMaxWidth,FALSE)
+        DUIWIN_INT_ATTRIBUTE("clipclient",m_bClipClient,FALSE)
+        DUIWIN_INT_ATTRIBUTE("tabstop",m_bTabStop,FALSE)
+        DUIWIN_ENUM_ATTRIBUTE("pos2type",POS2TYPE,FALSE)
+            DUIWIN_ENUM_VALUE("lefttop",POS2_LEFTTOP)
+            DUIWIN_ENUM_VALUE("center",POS2_CENTER)
+            DUIWIN_ENUM_VALUE("righttop",POS2_RIGHTTOP)
+            DUIWIN_ENUM_VALUE("leftbottom",POS2_LEFTBOTTOM)
+            DUIWIN_ENUM_VALUE("rightbottom",POS2_RIGHTBOTTOM)
+        DUIWIN_ENUM_END(m_dlgpos.pos2Type)
+        DUIWIN_INT_ATTRIBUTE("alpha",m_byAlpha,TRUE)
     SOUI_ATTRIBUTES_END()
 
 protected:
-	LRESULT NotifyCommand();
-	LRESULT NotifyContextMenu(CPoint pt);
+    LRESULT NotifyCommand();
+    LRESULT NotifyContextMenu(CPoint pt);
 
-	//************************************
-	// Method:    GetChildrenLayoutRect :返回子窗口的排版空间
-	// FullName:  SOUI::CDuiWindow::GetChildrenLayoutRect
-	// Access:    virtual protected 
-	// Returns:   CRect
-	// Qualifier:
-	//************************************
-	virtual CRect GetChildrenLayoutRect();
+    //************************************
+    // Method:    GetChildrenLayoutRect :返回子窗口的排版空间
+    // FullName:  SOUI::CDuiWindow::GetChildrenLayoutRect
+    // Access:    virtual protected 
+    // Returns:   CRect
+    // Qualifier:
+    //************************************
+    virtual CRect GetChildrenLayoutRect();
 
-	void ClearLayoutState();
+    void ClearLayoutState();
 
-	//************************************
-	// Method:    GetDesiredSize: 当没有指定窗口大小时，通过如皮肤计算窗口的期望大小
-	// FullName:  SOUI::CDuiWindow::GetDesiredSize
-	// Access:    virtual protected 
-	// Returns:   CSize
-	// Qualifier:
-	// Parameter: LPRECT pRcContainer
-	//************************************
-	virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    //************************************
+    // Method:    GetDesiredSize: 当没有指定窗口大小时，通过如皮肤计算窗口的期望大小
+    // FullName:  SOUI::CDuiWindow::GetDesiredSize
+    // Access:    virtual protected 
+    // Returns:   CSize
+    // Qualifier:
+    // Parameter: LPRECT pRcContainer
+    //************************************
+    virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
-	//************************************
-	// Method:    CalcSize ：计算窗口大小
-	// FullName:  SOUI::CDuiWindow::CalcSize
-	// Access:    protected 
-	// Returns:   CSize
-	// Qualifier:
-	// Parameter: LPRECT pRcContainer
-	//************************************
-	CSize CalcSize(LPRECT pRcContainer);
+    //************************************
+    // Method:    CalcSize ：计算窗口大小
+    // FullName:  SOUI::CDuiWindow::CalcSize
+    // Access:    protected 
+    // Returns:   CSize
+    // Qualifier:
+    // Parameter: LPRECT pRcContainer
+    //************************************
+    CSize CalcSize(LPRECT pRcContainer);
 
-	//************************************
-	// Method:    GetNextVisibleWindow 获得指定窗口的下一个可见窗口
-	// FullName:  SOUI::CDuiWindow::GetNextVisibleWindow
-	// Access:    protected static 
-	// Returns:   CDuiWindow *	:下一个可见窗口
-	// Qualifier:
-	// Parameter: CDuiWindow * pWnd	:参考窗口
-	// Parameter: const CRect &rcDraw:目标矩形
-	//************************************
-	static CDuiWindow *GetNextVisibleWindow(CDuiWindow *pWnd,const CRect &rcDraw);
+    //************************************
+    // Method:    GetNextVisibleWindow 获得指定窗口的下一个可见窗口
+    // FullName:  SOUI::CDuiWindow::GetNextVisibleWindow
+    // Access:    protected static 
+    // Returns:   CDuiWindow *    :下一个可见窗口
+    // Qualifier:
+    // Parameter: CDuiWindow * pWnd    :参考窗口
+    // Parameter: const CRect &rcDraw:目标矩形
+    //************************************
+    static CDuiWindow *GetNextVisibleWindow(CDuiWindow *pWnd,const CRect &rcDraw);
 
     virtual BOOL NeedRedrawWhenStateChange();
-	virtual void GetTextRect(LPRECT pRect);
+    virtual void GetTextRect(LPRECT pRect);
     virtual void DuiDrawText(HDC hdc,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
     virtual void DuiDrawFocus(HDC dc);
 
-	void DuiDrawDefFocusRect(CDCHandle dc,CRect rc);
-	void DrawAniStep(CRect rcFore,CRect rcBack,HDC dcFore,HDC dcBack,CPoint ptAnchor);
-	void DrawAniStep( CRect rcWnd,HDC dcFore,HDC dcBack,BYTE byAlpha);
+    void DuiDrawDefFocusRect(CDCHandle dc,CRect rc);
+    void DrawAniStep(CRect rcFore,CRect rcBack,HDC dcFore,HDC dcBack,CPoint ptAnchor);
+    void DrawAniStep( CRect rcWnd,HDC dcFore,HDC dcBack,BYTE byAlpha);
     //////////////////////////////////////////////////////////////////////////
     // Message Handler
 
@@ -672,13 +672,13 @@ protected:
 
     void OnShowWindow(BOOL bShow, UINT nStatus);
 
-	void OnEnable(BOOL bEnable,UINT nStatus);
+    void OnEnable(BOOL bEnable,UINT nStatus);
 
     void OnLButtonDown(UINT nFlags,CPoint pt);
 
     void OnLButtonUp(UINT nFlags,CPoint pt);
-	
-	void OnRButtonDown(UINT nFlags, CPoint point);
+    
+    void OnRButtonDown(UINT nFlags, CPoint point);
 
     void OnMouseMove(UINT nFlags,CPoint pt) {}
 
@@ -695,23 +695,23 @@ protected:
     HRESULT OnAttributeState(const CDuiStringA& strValue, BOOL bLoading);
 
     WND_MSG_MAP_BEGIN()
-		MSG_WM_ERASEBKGND(OnEraseBkgnd)
-		MSG_WM_PAINT(OnPaint)
-		MSG_WM_NCPAINT_EX(OnNcPaint)
-		MSG_WM_CREATE(OnCreate)
-		MSG_WM_DESTROY(OnDestroy)
-		MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
-		MSG_WM_SHOWWINDOW(OnShowWindow)
-		MSG_WM_ENABLE_EX(OnEnable)
-		MSG_WM_LBUTTONDOWN(OnLButtonDown)
-		MSG_WM_LBUTTONUP(OnLButtonUp)
-		MSG_WM_RBUTTONDOWN(OnRButtonDown)
-		MSG_WM_MOUSEMOVE(OnMouseMove)
-		MSG_WM_MOUSEHOVER(OnMouseHover)
-		MSG_WM_MOUSELEAVE(OnMouseLeave)
-		MSG_WM_MOUSEWHEEL(OnMouseWheel)
-		MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-		MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+        MSG_WM_ERASEBKGND(OnEraseBkgnd)
+        MSG_WM_PAINT(OnPaint)
+        MSG_WM_NCPAINT_EX(OnNcPaint)
+        MSG_WM_CREATE(OnCreate)
+        MSG_WM_DESTROY(OnDestroy)
+        MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
+        MSG_WM_SHOWWINDOW(OnShowWindow)
+        MSG_WM_ENABLE_EX(OnEnable)
+        MSG_WM_LBUTTONDOWN(OnLButtonDown)
+        MSG_WM_LBUTTONUP(OnLButtonUp)
+        MSG_WM_RBUTTONDOWN(OnRButtonDown)
+        MSG_WM_MOUSEMOVE(OnMouseMove)
+        MSG_WM_MOUSEHOVER(OnMouseHover)
+        MSG_WM_MOUSELEAVE(OnMouseLeave)
+        MSG_WM_MOUSEWHEEL(OnMouseWheel)
+        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
+        MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
     WND_MSG_MAP_END_BASE()
 };
 }//namespace SOUI

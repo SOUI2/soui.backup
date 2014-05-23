@@ -10,7 +10,7 @@
 
 namespace DuiEngine
 {
-	class CDuiAxHost;
+    class CDuiAxHost;
 
     class DUI_EXP CDuiAxHostDelegate
     {
@@ -18,7 +18,7 @@ namespace DuiEngine
         virtual HWND GetAxHostWindow() const = 0;
         virtual void OnAxCreate(CDuiAxHost* host) = 0;
         virtual void OnAxInvalidate(CRect& rect) = 0;
-		virtual void OnAxSetCapture(BOOL fCapture) = 0;
+        virtual void OnAxSetCapture(BOOL fCapture) = 0;
         virtual HRESULT QueryService(REFGUID guidService,
             REFIID riid, void** ppvObject) { return E_NOINTERFACE; }
 
@@ -46,7 +46,7 @@ namespace DuiEngine
         void Draw(HDC hdc, CRect& rect);
         LRESULT OnWindowMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
         bool OnSetCursor(CPoint& point);
-		bool IsWindowless(){return windowless_;}
+        bool IsWindowless(){return windowless_;}
         // IUnknown:
         STDMETHOD_(ULONG, AddRef)();
         STDMETHOD_(ULONG, Release)();

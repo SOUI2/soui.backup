@@ -1,9 +1,9 @@
 /***********************************************************************
-	filename: 	DUIDefaultLogger.h
-	created:	25/1/2006
-	author:		Andrew Zabolotny
+    filename:     DUIDefaultLogger.h
+    created:    25/1/2006
+    author:        Andrew Zabolotny
 
-	purpose:	Defines interface for the default Logger implementation
+    purpose:    Defines interface for the default Logger implementation
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2006 Paul D Turner & The DUI Development Team
@@ -39,7 +39,7 @@ namespace SOUI
 
 /*!
 \brief
-	Default implementation for the Logger class.
+    Default implementation for the Logger class.
     If you want to redirect DUI logs to some place other than a text file,
     implement your own Logger implementation and create a object of the
     Logger type before creating the DUI::System singleton.
@@ -49,7 +49,7 @@ class SOUI_EXP DefaultLogger : public DuiLogger
 public:
     /*!
     \brief
-    	Constructor for DefaultLogger object.
+        Constructor for DefaultLogger object.
     */
     DefaultLogger(void);
 
@@ -61,16 +61,16 @@ public:
 
     /*!
     \brief
-    	Add an event to the log.
+        Add an event to the log.
 
     \param message
-    	String object containing the message to be added to the event log.
+        String object containing the message to be added to the event log.
 
     \param level
-    	LoggingLevel for this message.  If \a level is greater than the current set logging level, the message is not logged.
+        LoggingLevel for this message.  If \a level is greater than the current set logging level, the message is not logged.
 
     \return
-    	Nothing
+        Nothing
     */
     virtual void logEvent(LPCTSTR message, LoggingLevel level = Standard);
 
@@ -94,10 +94,10 @@ public:
 
 protected:
 
-	void FlushCaches();
+    void FlushCaches();
 
     /*************************************************************************
-    	Implementation Data
+        Implementation Data
     *************************************************************************/
     FILE * d_pFile;
     struct LOGRECORD
@@ -119,4 +119,4 @@ protected:
 } // End of  SOUI namespace section
 
 
-#endif	// end of guard _DUIDefaultLogger_h_
+#endif    // end of guard _DUIDefaultLogger_h_

@@ -24,7 +24,7 @@ DuiColor::DuiColor()
 
 DuiColor::DuiColor(double h, double l, double s)
 {
-    hue		   = h;
+    hue           = h;
     lightness  = l;
     saturation = s;
 
@@ -51,11 +51,11 @@ DuiColor::DuiColor(COLORREF color)
 
 // lightness  [0..1]
 // saturation [0..1]
-// hue		  [0..360)
+// hue          [0..360)
 void DuiColor::ToHLS(void)
 {
     double mn, mx;
-    int	   major;
+    int       major;
 
     if ( red < green )
     {
@@ -114,7 +114,7 @@ void DuiColor::ToRGB(void)
 {
     // lightness  [0..1]
     // saturation [0..1]
-    // hue		  [0..360)
+    // hue          [0..360)
 
     lightness = max(0, min(1, lightness));
     saturation = max(0, min(1, saturation));

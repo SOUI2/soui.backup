@@ -10,7 +10,7 @@
 namespace SOUI
 {
 
-template<> DuiFontPool* Singleton<DuiFontPool>::ms_Singleton	= 0;
+template<> DuiFontPool* Singleton<DuiFontPool>::ms_Singleton    = 0;
 
 
 DuiFontPool::DuiFontPool()
@@ -51,7 +51,7 @@ void DuiFontPool::SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize)
     _tcscpy_s(m_szDefFontFace,_countof(m_szDefFontFace),lpszFaceName);
     m_lFontSize = -abs(lSize);
 
-	DUIASSERT(GetCount()==1);//初始化前才可以调用该接口
+    DUIASSERT(GetCount()==1);//初始化前才可以调用该接口
 
     HFONT hftOld = GetKeyObject(FontKey(DUIF_DEFAULTFONT));
 
@@ -86,7 +86,7 @@ HFONT DuiFontPool::_CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, cha
     if(chAdding & 0x80) chAdding=-1*(chAdding&~0x80);
     lfNew.lfHeight = _GetFontAbsHeight(lfNew.lfHeight - chAdding);
 
-	lfNew.lfQuality = CLEARTYPE_NATURAL_QUALITY;
+    lfNew.lfQuality = CLEARTYPE_NATURAL_QUALITY;
     HFONT hFont= ::CreateFontIndirect(&lfNew);
     return hFont;
 }

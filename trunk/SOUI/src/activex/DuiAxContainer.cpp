@@ -34,15 +34,15 @@ CDuiAxContainer::~CDuiAxContainer()
 
 BOOL CDuiAxContainer::CreateControl(LPCRECT pRect, REFGUID clsid ,DWORD dwClsCtx /*=CLSCTX_INPROC_SERVER*/)
 {
-	DUIASSERT(m_pAxHostDelegate);
-	HRESULT hr = E_FAIL;
-	CDuiComPtr<IUnknown> pControl;
-	hr = CoCreateInstance(clsid, NULL,dwClsCtx , __uuidof(IUnknown), reinterpret_cast<void**>(&pControl));
-	if ( SUCCEEDED(hr) )
-	{
-		Init(pControl,pRect);
-	}
-	return SUCCEEDED(hr);
+    DUIASSERT(m_pAxHostDelegate);
+    HRESULT hr = E_FAIL;
+    CDuiComPtr<IUnknown> pControl;
+    hr = CoCreateInstance(clsid, NULL,dwClsCtx , __uuidof(IUnknown), reinterpret_cast<void**>(&pControl));
+    if ( SUCCEEDED(hr) )
+    {
+        Init(pControl,pRect);
+    }
+    return SUCCEEDED(hr);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -62,10 +62,10 @@ HRESULT CDuiAxContainer::QueryInterface(REFIID iid, void** object)
         *object = static_cast<IParseDisplayName*>(this);
     } else if (iid == IID_IBindHost) {
         *object = static_cast<IBindHost*>(this);
-	} else if (iid == IID_IServiceProvider) {
-		*object = static_cast<IServiceProvider*>(this);
+    } else if (iid == IID_IServiceProvider) {
+        *object = static_cast<IServiceProvider*>(this);
     } else {
-		hr=	ActiveXSite::QueryInterface2(iid,object);
+        hr=    ActiveXSite::QueryInterface2(iid,object);
     }
     if ( SUCCEEDED(hr) ) {
         static_cast<IUnknown*>(*object)->AddRef();
@@ -143,14 +143,14 @@ static const GUID GUID_IXcpControlHost =
 
 HRESULT CDuiAxContainer::QueryService( REFGUID guidService, REFIID riid, void **ppvObject )
 {
-	HRESULT hr = E_FAIL;
-	if (guidService == IID_IBindHost ||
-		guidService == GUID_IWebBrowserApp ||
-		guidService == GUID_IXcpControlHost)
-	{
-		hr = QueryInterface(riid, ppvObject);
-	}
-	return hr;
+    HRESULT hr = E_FAIL;
+    if (guidService == IID_IBindHost ||
+        guidService == GUID_IWebBrowserApp ||
+        guidService == GUID_IXcpControlHost)
+    {
+        hr = QueryInterface(riid, ppvObject);
+    }
+    return hr;
 }
 
 }//end of namespace SOUI
