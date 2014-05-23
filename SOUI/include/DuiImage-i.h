@@ -24,10 +24,10 @@ public:
     virtual BOOL TileBlt(HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,int nWidSrc,int nHeiSrc,BYTE byAlpha=0xFF)=NULL;
     virtual void SetAttributes(pugi::xml_node xmlNode) {}
 
-	BOOL operator!() const
-	{
-		return IsEmpty();
-	}
+    BOOL operator!() const
+    {
+        return IsEmpty();
+    }
 };
 
 

@@ -3,7 +3,7 @@
 namespace SOUI
 {
 
-#define UM_MSGFILTER	(WM_USER+200)	//wparam: 1-register,0-unregister lparam: CMessageFilter *
+#define UM_MSGFILTER    (WM_USER+200)    //wparam: 1-register,0-unregister lparam: CMessageFilter *
 
 class SOUI_EXP CDuiMessageFilter
 {

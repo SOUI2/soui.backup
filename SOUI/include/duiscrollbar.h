@@ -74,17 +74,17 @@ protected:
 
 protected:
     CDuiSkinBase * m_pSkin;
-    UINT		  m_uAllowSize;
+    UINT          m_uAllowSize;
 
-    SCROLLINFO	m_si;
-    BOOL		m_bDrag;
-    CPoint		m_ptDrag;
-    int			m_nDragPos;
-    UINT		m_uClicked;
-    BOOL		m_bNotify;
-    UINT		m_uHtPrev;
+    SCROLLINFO    m_si;
+    BOOL        m_bDrag;
+    CPoint        m_ptDrag;
+    int            m_nDragPos;
+    UINT        m_uClicked;
+    BOOL        m_bNotify;
+    UINT        m_uHtPrev;
 
-    BOOL		m_bVertical;
+    BOOL        m_bVertical;
 };
 
 }//namespace SOUI

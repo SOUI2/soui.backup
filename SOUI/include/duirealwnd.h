@@ -19,8 +19,8 @@ public:
     ~CDuiRealWndParam();
 
     CDuiStringT m_strClassName,m_strWindowName;
-    DWORD	 m_dwStyle,m_dwExStyle;
-	pugi::xml_document m_xmlParams;
+    DWORD     m_dwStyle,m_dwExStyle;
+    pugi::xml_document m_xmlParams;
 };
 
 
@@ -81,11 +81,11 @@ protected:
     MSG_WM_SHOWWINDOW(OnShowWindow)
     WND_MSG_MAP_END()
 
-    CDuiRealWndParam	m_realwndParam;
-    BOOL	m_bInit;
+    CDuiRealWndParam    m_realwndParam;
+    BOOL    m_bInit;
 
-    HWND	 m_hRealWnd;
-    LPVOID	m_lpData;
+    HWND     m_hRealWnd;
+    LPVOID    m_lpData;
 };
 
 interface SOUI_EXP IDuiRealWndHandler

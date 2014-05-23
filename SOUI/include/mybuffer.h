@@ -86,5 +86,5 @@ private:
     T* m_p;
     unsigned char m_abFixedBuffer[t_nFixedBytes];
     size_t m_nSize;
-    BOOL	m_bExternalBuf;
+    BOOL    m_bExternalBuf;
 };

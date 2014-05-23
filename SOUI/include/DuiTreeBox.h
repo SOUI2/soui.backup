@@ -88,67 +88,67 @@ protected:
 
     void OnLButtonDown(UINT nFlags,CPoint pt);
     void OnLButtonDbClick(UINT nFlags,CPoint pt);
-	LRESULT OnMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
+    LRESULT OnMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
     void OnMouseMove(UINT nFlags,CPoint pt);
     void OnMouseLeave();
 
-	void OnSetDuiFocus();
-	void OnKillDuiFocus();
+    void OnSetDuiFocus();
+    void OnKillDuiFocus();
 
-	LRESULT OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam );
+    LRESULT OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam );
 
     virtual LRESULT DuiNotify(LPDUINMHDR pnms);
     virtual BOOL OnDuiSetCursor(const CPoint &pt);
-	virtual void OnViewOriginChanged( CPoint ptOld,CPoint ptNew );
+    virtual void OnViewOriginChanged( CPoint ptOld,CPoint ptNew );
 
-	virtual UINT OnGetDuiCode()
-	{
-		return DUIC_WANTALLKEYS;
-	}
+    virtual UINT OnGetDuiCode()
+    {
+        return DUIC_WANTALLKEYS;
+    }
 
     BOOL IsAncestor(HSTREEITEM hItem1,HSTREEITEM hItem2);
 protected:
     virtual void OnItemSetCapture(CDuiItemPanel *pItem,BOOL bCapture);
     virtual BOOL OnItemGetRect(CDuiItemPanel *pItem,CRect &rcItem);
-	virtual BOOL IsItemRedrawDelay(){return m_bItemRedrawDelay;}
+    virtual BOOL IsItemRedrawDelay(){return m_bItemRedrawDelay;}
 
-    HSTREEITEM	m_hSelItem;
-    HSTREEITEM	m_hHoverItem;
+    HSTREEITEM    m_hSelItem;
+    HSTREEITEM    m_hHoverItem;
 
-    int			m_nVisibleItems;
+    int            m_nVisibleItems;
 
-    CDuiItemPanel	*	m_pCapturedFrame;
+    CDuiItemPanel    *    m_pCapturedFrame;
 
     int m_nItemHei,m_nIndent;
     COLORREF m_crItemBg,m_crItemSelBg;
     CDuiSkinBase * m_pItemSkin;
-	BOOL m_bItemRedrawDelay;
-	pugi::xml_document m_xmlSwitch;
+    BOOL m_bItemRedrawDelay;
+    pugi::xml_document m_xmlSwitch;
 
     SOUO_ATTRIBUTES_BEGIN()
-		DUIWIN_INT_ATTRIBUTE("indent", m_nIndent, TRUE)
-		DUIWIN_INT_ATTRIBUTE("itemhei", m_nItemHei, TRUE)
-		DUIWIN_SKIN_ATTRIBUTE("itemskin", m_pItemSkin, TRUE)
-		DUIWIN_COLOR_ATTRIBUTE("critembg",m_crItemBg,FALSE)
-		DUIWIN_COLOR_ATTRIBUTE("critemselbg",m_crItemSelBg,FALSE)
-		DUIWIN_INT_ATTRIBUTE("itemredrawdelay", m_bItemRedrawDelay, TRUE)
+        DUIWIN_INT_ATTRIBUTE("indent", m_nIndent, TRUE)
+        DUIWIN_INT_ATTRIBUTE("itemhei", m_nItemHei, TRUE)
+        DUIWIN_SKIN_ATTRIBUTE("itemskin", m_pItemSkin, TRUE)
+        DUIWIN_COLOR_ATTRIBUTE("critembg",m_crItemBg,FALSE)
+        DUIWIN_COLOR_ATTRIBUTE("critemselbg",m_crItemSelBg,FALSE)
+        DUIWIN_INT_ATTRIBUTE("itemredrawdelay", m_bItemRedrawDelay, TRUE)
     SOUI_ATTRIBUTES_END()
 
     WND_MSG_MAP_BEGIN()
-		MSG_WM_PAINT(OnPaint)
-		MSG_WM_NCCALCSIZE(OnNcCalcSize)
-		MSG_WM_DESTROY(OnDestroy)
-		MSG_WM_LBUTTONDOWN(OnLButtonDown)
-		MSG_WM_LBUTTONDBLCLK(OnLButtonDbClick)
-		MSG_WM_MOUSEMOVE(OnMouseMove)
-		MSG_WM_MOUSELEAVE(OnMouseLeave)
-		MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-		MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
-		MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
-		MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
-		MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
-		MESSAGE_HANDLER_EX(WM_IME_CHAR,OnKeyEvent)
+        MSG_WM_PAINT(OnPaint)
+        MSG_WM_NCCALCSIZE(OnNcCalcSize)
+        MSG_WM_DESTROY(OnDestroy)
+        MSG_WM_LBUTTONDOWN(OnLButtonDown)
+        MSG_WM_LBUTTONDBLCLK(OnLButtonDbClick)
+        MSG_WM_MOUSEMOVE(OnMouseMove)
+        MSG_WM_MOUSELEAVE(OnMouseLeave)
+        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
+        MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+        MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
+        MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
+        MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
+        MESSAGE_HANDLER_EX(WM_IME_CHAR,OnKeyEvent)
    WND_MSG_MAP_END()
 };
 

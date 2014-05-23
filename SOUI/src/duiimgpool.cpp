@@ -63,10 +63,10 @@ IDuiImage * DuiImgPool::GetImage(LPCTSTR pszImgName,LPCTSTR pszType)
         {
             AddKeyObject(resid,pImg);
             if(pszType!=NULL)
-			{
-				pImg->AddRef();
-				AddKeyObject(DuiResID(NULL,pszImgName),pImg);//name唯一时保证不使用类型也能找到该图片资源
-			}
+            {
+                pImg->AddRef();
+                AddKeyObject(DuiResID(NULL,pszImgName),pImg);//name唯一时保证不使用类型也能找到该图片资源
+            }
         }
         return pImg;
     }

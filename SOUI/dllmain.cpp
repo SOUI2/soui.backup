@@ -12,7 +12,7 @@ class CSOUIModule : public CAtlDllModuleT< CSOUIModule >
 // DLL Èë¿Úµã
 extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
-	return _AtlModule.DllMain(dwReason, lpReserved); 
+    return _AtlModule.DllMain(dwReason, lpReserved); 
 }
 
 #endif

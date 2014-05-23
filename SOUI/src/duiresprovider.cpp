@@ -18,7 +18,7 @@ DuiResProviderPE::DuiResProviderPE( HINSTANCE hInst)
 
 HBITMAP DuiResProviderPE::LoadBitmap( LPCTSTR strType,LPCTSTR pszResName )
 {
-	return ::LoadBitmap(m_hResInst,pszResName);
+    return ::LoadBitmap(m_hResInst,pszResName);
 }
 
 HICON DuiResProviderPE::LoadIcon( LPCTSTR strType,LPCTSTR pszResName ,int cx/*=0*/,int cy/*=0*/)
@@ -29,7 +29,7 @@ HICON DuiResProviderPE::LoadIcon( LPCTSTR strType,LPCTSTR pszResName ,int cx/*=0
 IDuiImage * DuiResProviderPE::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
 {
     if(!HasResource(strType,pszResName)) return NULL;
-	IDuiImgDecoder *pImgDecoder=GETIMGDECODER();
+    IDuiImgDecoder *pImgDecoder=GETIMGDECODER();
     IDuiImage *pImg=pImgDecoder->CreateDuiImage(strType);
     if(pImg)
     {
@@ -129,7 +129,7 @@ HICON DuiResProviderFiles::LoadIcon( LPCTSTR strType,LPCTSTR pszResName ,int cx/
 IDuiImage * DuiResProviderFiles::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
 {
     if(!HasResource(strType,pszResName)) return NULL;
-	IDuiImgDecoder *pImgDecoder=GETIMGDECODER();
+    IDuiImgDecoder *pImgDecoder=GETIMGDECODER();
     IDuiImage * pImg=pImgDecoder->CreateDuiImage(strType);
     if(pImg)
     {
@@ -195,18 +195,18 @@ BOOL DuiResProviderFiles::Init( LPCTSTR pszPath )
     }
     fclose(f);
 
-	pugi::xml_document xmlDoc;
+    pugi::xml_document xmlDoc;
     CDuiStringT strFileName;
-	if(!xmlDoc.load_buffer(xmlBuf,xmlBuf.size(),pugi::parse_default,pugi::encoding_utf8)) return FALSE;
+    if(!xmlDoc.load_buffer(xmlBuf,xmlBuf.size(),pugi::parse_default,pugi::encoding_utf8)) return FALSE;
 
-	pugi::xml_node xmlNode=xmlDoc.child("resid");
+    pugi::xml_node xmlNode=xmlDoc.child("resid");
     while(xmlNode)
     {
-		DuiResID id(DUI_CA2T(xmlNode.attribute("type").value(),CP_UTF8),DUI_CA2T(xmlNode.attribute("name").value(),CP_UTF8));
-		CDuiStringT strFile=DUI_CA2T(xmlNode.attribute("file").value(),CP_UTF8);
-		if(!m_strPath.IsEmpty()) strFile.Format(_T("%s\\%s"),(LPCTSTR)m_strPath,(LPCTSTR)strFile);
-		m_mapFiles[id]=strFile;
-		xmlNode=xmlNode.next_sibling("resid");
+        DuiResID id(DUI_CA2T(xmlNode.attribute("type").value(),CP_UTF8),DUI_CA2T(xmlNode.attribute("name").value(),CP_UTF8));
+        CDuiStringT strFile=DUI_CA2T(xmlNode.attribute("file").value(),CP_UTF8);
+        if(!m_strPath.IsEmpty()) strFile.Format(_T("%s\\%s"),(LPCTSTR)m_strPath,(LPCTSTR)strFile);
+        m_mapFiles[id]=strFile;
+        xmlNode=xmlNode.next_sibling("resid");
     }
 
     m_strPath=pszPath;

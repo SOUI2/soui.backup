@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //  CDuiSliderBar
-//	Author: Huang Jianxiong
-//	date: 2013/2/17
+//    Author: Huang Jianxiong
+//    date: 2013/2/17
 //////////////////////////////////////////////////////////////////////////
 #pragma once
 
@@ -31,23 +31,23 @@ public:
 protected:
     BOOL            m_bDrag;
     CPoint          m_ptDrag;
-	int				m_nDragValue;
+    int                m_nDragValue;
     int             m_uHtPrev;
 
-	CDuiSkinBase *  m_pSkinThumb;
+    CDuiSkinBase *  m_pSkinThumb;
 
 protected:
-	LRESULT         NotifySbCode(UINT uCode, int nPos);
+    LRESULT         NotifySbCode(UINT uCode, int nPos);
 
-	virtual CSize	GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize    GetDesiredSize(LPRECT pRcContainer);
 
-	CRect           GetPartRect(UINT uSBCode);
+    CRect           GetPartRect(UINT uSBCode);
 
-	void            OnPaint(CDCHandle dc);
-	void            OnLButtonUp(UINT nFlags, CPoint point);
-	void            OnLButtonDown(UINT nFlags, CPoint point);
-	void            OnMouseMove(UINT nFlags, CPoint point);
-	void            OnMouseLeave();
+    void            OnPaint(CDCHandle dc);
+    void            OnLButtonUp(UINT nFlags, CPoint point);
+    void            OnLButtonDown(UINT nFlags, CPoint point);
+    void            OnMouseMove(UINT nFlags, CPoint point);
+    void            OnMouseLeave();
 
 
     WND_MSG_MAP_BEGIN()
@@ -59,16 +59,16 @@ protected:
     WND_MSG_MAP_END()
 
     SOUO_ATTRIBUTES_BEGIN()
-		DUIWIN_SKIN_ATTRIBUTE("thumbskin", m_pSkinThumb, FALSE)
+        DUIWIN_SKIN_ATTRIBUTE("thumbskin", m_pSkinThumb, FALSE)
     SOUI_ATTRIBUTES_END()
 };
 
 template<typename T>
 void DUI_SWAP(T &a,T &b)
 {
-	T t=a;
-	a=b;
-	b=t;
+    T t=a;
+    a=b;
+    b=t;
 }
 
 }

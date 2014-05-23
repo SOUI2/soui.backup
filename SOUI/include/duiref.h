@@ -2,37 +2,37 @@
 
 namespace SOUI
 {
-	class SOUI_EXP CDuiRef
-	{
-	public:
-		CDuiRef():m_nRef(1)
-		{
-		}
+    class SOUI_EXP CDuiRef
+    {
+    public:
+        CDuiRef():m_nRef(1)
+        {
+        }
 
-		~CDuiRef()
-		{
+        ~CDuiRef()
+        {
 
-		}
+        }
 
-		int AddRef()
-		{
-			return ++m_nRef;
-		}
+        int AddRef()
+        {
+            return ++m_nRef;
+        }
 
-		int Release()
-		{
-			int nRet=--m_nRef;
-			if(nRet==0)
-			{
-				OnFinalRelease();
-			}
-			return nRet;
-		}
+        int Release()
+        {
+            int nRet=--m_nRef;
+            if(nRet==0)
+            {
+                OnFinalRelease();
+            }
+            return nRet;
+        }
 
-	protected:
-		virtual void OnFinalRelease()=NULL;
+    protected:
+        virtual void OnFinalRelease()=NULL;
 
-		int m_nRef;
-	};
+        int m_nRef;
+    };
 
 }//namespace SOUI

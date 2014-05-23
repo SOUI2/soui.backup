@@ -13,37 +13,37 @@ class CDuiRichEdit;
 class SOUI_EXP CDuiTextServiceHelper: public Singleton<CDuiTextServiceHelper>
 {
 public:
-	CDuiTextServiceHelper()
-	{
-		m_rich20=LoadLibrary(_T("riched20.dll"));
-		if(m_rich20) m_funCreateTextServices= (PCreateTextServices)GetProcAddress(m_rich20,"CreateTextServices");
-	}
-	~CDuiTextServiceHelper()
-	{
-		if(m_rich20) FreeLibrary(m_rich20);
-		m_funCreateTextServices=NULL;
-	}
-	
+    CDuiTextServiceHelper()
+    {
+        m_rich20=LoadLibrary(_T("riched20.dll"));
+        if(m_rich20) m_funCreateTextServices= (PCreateTextServices)GetProcAddress(m_rich20,"CreateTextServices");
+    }
+    ~CDuiTextServiceHelper()
+    {
+        if(m_rich20) FreeLibrary(m_rich20);
+        m_funCreateTextServices=NULL;
+    }
+    
 
-	HRESULT CreateTextServices( IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk )
-	{
-		if(!m_funCreateTextServices) return E_NOTIMPL;
-		return m_funCreateTextServices(punkOuter,pITextHost,ppUnk);
-	}
+    HRESULT CreateTextServices( IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk )
+    {
+        if(!m_funCreateTextServices) return E_NOTIMPL;
+        return m_funCreateTextServices(punkOuter,pITextHost,ppUnk);
+    }
 
-	static BOOL Init(){
-		if(ms_Singleton) return FALSE;
-		new CDuiTextServiceHelper();
-		return TRUE;
-	}
+    static BOOL Init(){
+        if(ms_Singleton) return FALSE;
+        new CDuiTextServiceHelper();
+        return TRUE;
+    }
 
-	static void Destroy()
-	{
-		if(ms_Singleton) delete ms_Singleton;
-	}
+    static void Destroy()
+    {
+        if(ms_Singleton) delete ms_Singleton;
+    }
 protected:
-	HINSTANCE	m_rich20;	//richedit module
-	PCreateTextServices	m_funCreateTextServices;
+    HINSTANCE    m_rich20;    //richedit module
+    PCreateTextServices    m_funCreateTextServices;
 };
 
 class SOUI_EXP CDuiTextHost : public ITextHost
@@ -60,65 +60,65 @@ public:
         return pserv;
     }
 
-	POINT GetCaretPos(){return m_ptCaret;}
+    POINT GetCaretPos(){return m_ptCaret;}
 protected:
 
     // -----------------------------
-    //	IUnknown interface
+    //    IUnknown interface
     // -----------------------------
     virtual HRESULT _stdcall QueryInterface(REFIID riid, void **ppvObject);
     virtual ULONG _stdcall AddRef(void);
     virtual ULONG _stdcall Release(void);
 
     // -----------------------------
-    //	ITextHost interface
+    //    ITextHost interface
     // -----------------------------
 
     //@cmember Get the DC for the host
-    virtual HDC 		TxGetDC();
+    virtual HDC         TxGetDC();
 
     //@cmember Release the DC gotten from the host
-    virtual INT			TxReleaseDC(HDC hdc);
+    virtual INT            TxReleaseDC(HDC hdc);
 
     //@cmember Show the scroll bar
-    virtual BOOL 		TxShowScrollBar(INT fnBar, BOOL fShow);
+    virtual BOOL         TxShowScrollBar(INT fnBar, BOOL fShow);
 
     //@cmember Enable the scroll bar
-    virtual BOOL 		TxEnableScrollBar (INT fuSBFlags, INT fuArrowflags);
+    virtual BOOL         TxEnableScrollBar (INT fuSBFlags, INT fuArrowflags);
 
     //@cmember Set the scroll range
-    virtual BOOL 		TxSetScrollRange(
+    virtual BOOL         TxSetScrollRange(
         INT fnBar,
         LONG nMinPos,
         INT nMaxPos,
         BOOL fRedraw);
 
     //@cmember Set the scroll position
-    virtual BOOL 		TxSetScrollPos (INT fnBar, INT nPos, BOOL fRedraw);
+    virtual BOOL         TxSetScrollPos (INT fnBar, INT nPos, BOOL fRedraw);
 
     //@cmember InvalidateRect
-    virtual void		TxInvalidateRect(LPCRECT prc, BOOL fMode);
+    virtual void        TxInvalidateRect(LPCRECT prc, BOOL fMode);
 
     //@cmember Send a WM_PAINT to the window
-    virtual void 		TxViewChange(BOOL fUpdate);
+    virtual void         TxViewChange(BOOL fUpdate);
 
     //@cmember Create the caret
-    virtual BOOL		TxCreateCaret(HBITMAP hbmp, INT xWidth, INT yHeight);
+    virtual BOOL        TxCreateCaret(HBITMAP hbmp, INT xWidth, INT yHeight);
 
     //@cmember Show the caret
-    virtual BOOL		TxShowCaret(BOOL fShow);
+    virtual BOOL        TxShowCaret(BOOL fShow);
 
     //@cmember Set the caret position
-    virtual BOOL		TxSetCaretPos(INT x, INT y);
+    virtual BOOL        TxSetCaretPos(INT x, INT y);
 
     //@cmember Create a timer with the specified timeout
-    virtual BOOL 		TxSetTimer(UINT idTimer, UINT uTimeout);
+    virtual BOOL         TxSetTimer(UINT idTimer, UINT uTimeout);
 
     //@cmember Destroy a timer
-    virtual void 		TxKillTimer(UINT idTimer);
+    virtual void         TxKillTimer(UINT idTimer);
 
     //@cmember Scroll the content of the specified window's client area
-    virtual void		TxScrollWindowEx (
+    virtual void        TxScrollWindowEx (
         INT dx,
         INT dy,
         LPCRECT lprcScroll,
@@ -128,86 +128,86 @@ protected:
         UINT fuScroll);
 
     //@cmember Get mouse capture
-    virtual void		TxSetCapture(BOOL fCapture);
+    virtual void        TxSetCapture(BOOL fCapture);
 
     //@cmember Set the focus to the text window
-    virtual void		TxSetFocus();
+    virtual void        TxSetFocus();
 
     //@cmember Establish a new cursor shape
-    virtual void 	TxSetCursor(HCURSOR hcur, BOOL fText);
+    virtual void     TxSetCursor(HCURSOR hcur, BOOL fText);
 
     //@cmember Converts screen coordinates of a specified point to the client coordinates
-    virtual BOOL 		TxScreenToClient (LPPOINT lppt);
+    virtual BOOL         TxScreenToClient (LPPOINT lppt);
 
     //@cmember Converts the client coordinates of a specified point to screen coordinates
-    virtual BOOL		TxClientToScreen (LPPOINT lppt);
+    virtual BOOL        TxClientToScreen (LPPOINT lppt);
 
     //@cmember Request host to activate text services
-    virtual HRESULT		TxActivate( LONG * plOldState );
+    virtual HRESULT        TxActivate( LONG * plOldState );
 
     //@cmember Request host to deactivate text services
-    virtual HRESULT		TxDeactivate( LONG lNewState );
+    virtual HRESULT        TxDeactivate( LONG lNewState );
 
     //@cmember Retrieves the coordinates of a window's client area
-    virtual HRESULT		TxGetClientRect(LPRECT prc);
+    virtual HRESULT        TxGetClientRect(LPRECT prc);
 
     //@cmember Get the view rectangle relative to the inset
-    virtual HRESULT		TxGetViewInset(LPRECT prc);
+    virtual HRESULT        TxGetViewInset(LPRECT prc);
 
     //@cmember Get the default character format for the text
-    virtual HRESULT 	TxGetCharFormat(const CHARFORMATW **ppCF );
+    virtual HRESULT     TxGetCharFormat(const CHARFORMATW **ppCF );
 
     //@cmember Get the default paragraph format for the text
-    virtual HRESULT		TxGetParaFormat(const PARAFORMAT **ppPF);
+    virtual HRESULT        TxGetParaFormat(const PARAFORMAT **ppPF);
 
     //@cmember Get the background color for the window
-    virtual COLORREF	TxGetSysColor(int nIndex);
+    virtual COLORREF    TxGetSysColor(int nIndex);
 
     //@cmember Get the background (either opaque or transparent)
-    virtual HRESULT		TxGetBackStyle(TXTBACKSTYLE *pstyle);
+    virtual HRESULT        TxGetBackStyle(TXTBACKSTYLE *pstyle);
 
     //@cmember Get the maximum length for the text
-    virtual HRESULT		TxGetMaxLength(DWORD *plength);
+    virtual HRESULT        TxGetMaxLength(DWORD *plength);
 
     //@cmember Get the bits representing requested scroll bars for the window
-    virtual HRESULT		TxGetScrollBars(DWORD *pdwScrollBar);
+    virtual HRESULT        TxGetScrollBars(DWORD *pdwScrollBar);
 
     //@cmember Get the character to display for password input
-    virtual HRESULT		TxGetPasswordChar(TCHAR *pch);
+    virtual HRESULT        TxGetPasswordChar(TCHAR *pch);
 
     //@cmember Get the accelerator character
-    virtual HRESULT		TxGetAcceleratorPos(LONG *pcp);
+    virtual HRESULT        TxGetAcceleratorPos(LONG *pcp);
 
     //@cmember Get the native size
-    virtual HRESULT		TxGetExtent(LPSIZEL lpExtent);
+    virtual HRESULT        TxGetExtent(LPSIZEL lpExtent);
 
     //@cmember Notify host that default character format has changed
-    virtual HRESULT 	OnTxCharFormatChange (const CHARFORMATW * pcf);
+    virtual HRESULT     OnTxCharFormatChange (const CHARFORMATW * pcf);
 
     //@cmember Notify host that default paragraph format has changed
-    virtual HRESULT		OnTxParaFormatChange (const PARAFORMAT * ppf);
+    virtual HRESULT        OnTxParaFormatChange (const PARAFORMAT * ppf);
 
     //@cmember Bulk access to bit properties
-    virtual HRESULT		TxGetPropertyBits(DWORD dwMask, DWORD *pdwBits);
+    virtual HRESULT        TxGetPropertyBits(DWORD dwMask, DWORD *pdwBits);
 
     //@cmember Notify host of events
-    virtual HRESULT		TxNotify(DWORD iNotify, void *pv);
+    virtual HRESULT        TxNotify(DWORD iNotify, void *pv);
 
     // Far East Methods for getting the Input Context
     //#ifdef WIN95_IME
-    virtual HIMC		TxImmGetContext();
-    virtual void		TxImmReleaseContext( HIMC himc );
+    virtual HIMC        TxImmGetContext();
+    virtual void        TxImmReleaseContext( HIMC himc );
     //#endif
 
     //@cmember Returns HIMETRIC size of the control bar.
-    virtual HRESULT		TxGetSelectionBarWidth (LONG *plSelBarWidth);
+    virtual HRESULT        TxGetSelectionBarWidth (LONG *plSelBarWidth);
 protected:
-	BOOL m_fUiActive	; // Whether control is inplace active
+    BOOL m_fUiActive    ; // Whether control is inplace active
 
-    ULONG	cRefs;					// Reference Count
-    ITextServices	*pserv;		    // pointer to Text Services object
-    CDuiRichEdit	*m_pDuiRichEdit;// duiwindow for text host
-	POINT				m_ptCaret;
+    ULONG    cRefs;                    // Reference Count
+    ITextServices    *pserv;            // pointer to Text Services object
+    CDuiRichEdit    *m_pDuiRichEdit;// duiwindow for text host
+    POINT                m_ptCaret;
 };
 
 #ifndef LY_PER_INCH
@@ -297,7 +297,7 @@ protected:
 
     void OnLButtonUp(UINT nFlags, CPoint point);
 
-	void OnRButtonDown(UINT nFlags, CPoint point);
+    void OnRButtonDown(UINT nFlags, CPoint point);
 
     void OnMouseMove(UINT nFlags, CPoint point);
 
@@ -321,7 +321,7 @@ protected:
 
     LRESULT OnSetTextColor(const CDuiStringA &  strValue,BOOL bLoading);
 
-	void OnEnableDragDrop(BOOL bEnable);
+    void OnEnableDragDrop(BOOL bEnable);
 
 protected:
     WND_MSG_MAP_BEGIN()
@@ -335,7 +335,7 @@ protected:
     MSG_UM_TIMEREX(OnDuiTimerEx)
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
     MSG_WM_LBUTTONUP(OnLButtonUp)
-	MSG_WM_RBUTTONDOWN(OnRButtonDown)
+    MSG_WM_RBUTTONDOWN(OnRButtonDown)
     MSG_WM_MOUSEMOVE(OnMouseMove)
     MSG_WM_KEYDOWN(OnKeyDown)
     MSG_WM_CHAR(OnChar)
@@ -361,33 +361,33 @@ protected:
     DUIWIN_CUSTOM_ATTRIBUTE("crtext",OnSetTextColor)
     SOUI_ATTRIBUTES_END()
     //////////////////////////////////////////////////////////////////////////
-    //	RichEdit Properties
-    CHARFORMAT2W m_cfDef;				// Default character format
-    PARAFORMAT2	m_pfDef;			    // Default paragraph format
-    DWORD m_cchTextMost;					// Maximize Characters
-    TCHAR m_chPasswordChar;				// Password character
-    LONG		m_lAccelPos;			// Accelerator position
-    SIZEL		m_sizelExtent;			// Extent array
-    CRect		m_rcInset;				// inset margin
-    CRect		m_rcInsetPixel;			// inset margin in pixel
-    TEXTMETRIC	m_tmFont;				//
-    DWORD	m_dwStyle;
-	
-    UINT	m_fEnableAutoWordSel	:1;	// enable Word style auto word selection?
-    UINT	m_fWordWrap			:1;	// Whether control should word wrap
-    UINT	m_fRich				:1;	// Whether control is rich text
-    UINT	m_fSaveSelection		:1;	// Whether to save the selection when inactive
-    UINT	m_fTransparent		:1; // Whether control is transparent
-    UINT	m_fVertical			:1;	// Whether control is layout following vertical
-    UINT	m_fAllowBeep		:1;	// Whether message beep is allowed in the control
-    UINT	m_fWantTab			:1;	// Whether control will deal with tab input
-    UINT	m_fSingleLineVCenter:1;	// Whether control that is single line will be vertical centered
-    UINT	m_fScrollPending	:1; // Whether scroll is activated by richedit or by panelex.
-	UINT	m_fEnableDragDrop	:1;	// 允许在该控件中使用拖放
+    //    RichEdit Properties
+    CHARFORMAT2W m_cfDef;                // Default character format
+    PARAFORMAT2    m_pfDef;                // Default paragraph format
+    DWORD m_cchTextMost;                    // Maximize Characters
+    TCHAR m_chPasswordChar;                // Password character
+    LONG        m_lAccelPos;            // Accelerator position
+    SIZEL        m_sizelExtent;            // Extent array
+    CRect        m_rcInset;                // inset margin
+    CRect        m_rcInsetPixel;            // inset margin in pixel
+    TEXTMETRIC    m_tmFont;                //
+    DWORD    m_dwStyle;
+    
+    UINT    m_fEnableAutoWordSel    :1;    // enable Word style auto word selection?
+    UINT    m_fWordWrap            :1;    // Whether control should word wrap
+    UINT    m_fRich                :1;    // Whether control is rich text
+    UINT    m_fSaveSelection        :1;    // Whether to save the selection when inactive
+    UINT    m_fTransparent        :1; // Whether control is transparent
+    UINT    m_fVertical            :1;    // Whether control is layout following vertical
+    UINT    m_fAllowBeep        :1;    // Whether message beep is allowed in the control
+    UINT    m_fWantTab            :1;    // Whether control will deal with tab input
+    UINT    m_fSingleLineVCenter:1;    // Whether control that is single line will be vertical centered
+    UINT    m_fScrollPending    :1; // Whether scroll is activated by richedit or by panelex.
+    UINT    m_fEnableDragDrop    :1;    // 允许在该控件中使用拖放
 
-	BYTE	m_byDbcsLeadByte;
+    BYTE    m_byDbcsLeadByte;
 
-    CDuiTextHost	*m_pTxtHost;
+    CDuiTextHost    *m_pTxtHost;
 };
 
 class SOUI_EXP CDuiEdit : public CDuiRichEdit

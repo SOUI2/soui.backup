@@ -21,5 +21,5 @@
 #endif // ATLASSUME
 
 #ifndef ATL_NO_VTABLE
-#define ATL_NO_VTABLE	__declspec(novtable)
+#define ATL_NO_VTABLE    __declspec(novtable)
 #endif

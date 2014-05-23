@@ -1,11 +1,11 @@
 // duiScrollBar.h : implementation file
-//	模块:DUI滚动条控件
+//    模块:DUI滚动条控件
 //////////////////////////////////////////////////////////////////////////
 #include "duistd.h"
 #include "duiscrollbar.h"
 
-#define TIMERID_NOTIFY1	1
-#define TIMERID_DELAY1	2
+#define TIMERID_NOTIFY1    1
+#define TIMERID_DELAY1    2
 
 namespace SOUI
 {
@@ -24,7 +24,7 @@ CDuiScrollBar::CDuiScrollBar()
 {
     memset(&m_si,0,sizeof(SCROLLINFO));
     m_si.nTrackPos=-1;
-	addEvent(NM_SCROLL);
+    addEvent(NM_SCROLL);
 }
 
 CDuiScrollBar::~CDuiScrollBar()
@@ -94,7 +94,7 @@ CRect CDuiScrollBar::GetPartRect(UINT uSBCode)
     int nInterHei=nLength-2*m_uAllowSize;
     if(nInterHei<0)
         nInterHei=0;
-    int	nSlideHei=m_si.nPage*nInterHei/(nMax-m_si.nMin+1);
+    int    nSlideHei=m_si.nPage*nInterHei/(nMax-m_si.nMin+1);
     if(nMax==m_si.nMin+m_si.nPage-1)
         nSlideHei=nInterHei;
     if(nSlideHei<THUMB_MINSIZE)
@@ -136,7 +136,7 @@ end:
 
 void CDuiScrollBar::OnAttributeFinish(pugi::xml_node xmlNode)
 {
-	__super::OnAttributeFinish(xmlNode);
+    __super::OnAttributeFinish(xmlNode);
     DUIASSERT(m_pSkin);
     if(m_uAllowSize==-1)
     {
@@ -231,7 +231,7 @@ void CDuiScrollBar::OnMouseMove(UINT nFlags, CPoint point)
     if(m_bDrag)
     {
         int nInterHei=(IsVertical()?m_rcWindow.Height():m_rcWindow.Width())-2*m_uAllowSize;
-        int	nSlideHei=m_si.nPage*nInterHei/(m_si.nMax-m_si.nMin+1);
+        int    nSlideHei=m_si.nPage*nInterHei/(m_si.nMax-m_si.nMin+1);
         if(nSlideHei<THUMB_MINSIZE) nSlideHei=THUMB_MINSIZE;
         if(nInterHei<THUMB_MINSIZE) nSlideHei=0;
         int nEmptyHei=nInterHei-nSlideHei;
@@ -355,7 +355,7 @@ LRESULT CDuiScrollBar::OnSetScrollInfo(UINT uMsg, WPARAM wParam, LPARAM lParam)
     }
     if(m_si.nPos>(m_si.nMax-(int)m_si.nPage+1)) m_si.nPos=(m_si.nMax-m_si.nPage+1);
     if(m_si.nPos<m_si.nMin) m_si.nPos=m_si.nMin;
-    if(bRedraw)	NotifyInvalidate();
+    if(bRedraw)    NotifyInvalidate();
 
     return TRUE;
 }
@@ -379,7 +379,7 @@ LRESULT CDuiScrollBar::NotifySbCode(UINT uCode,int nPos)
 {
     DUINMSCROLL nms;
     nms.hdr.code=NM_SCROLL;
-	nms.hdr.hDuiWnd=m_hDuiWnd;
+    nms.hdr.hDuiWnd=m_hDuiWnd;
     nms.hdr.idFrom=GetCmdID();
     nms.hdr.pszNameFrom=GetName();
     nms.uSbCode=uCode;

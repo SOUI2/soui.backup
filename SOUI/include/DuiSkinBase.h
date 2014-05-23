@@ -37,9 +37,9 @@ public:
 
     virtual void SetImage(IDuiImage *pImg)
     {
-		if(m_pDuiImg) m_pDuiImg->Release();
+        if(m_pDuiImg) m_pDuiImg->Release();
         m_pDuiImg=pImg;
-		if(m_pDuiImg) m_pDuiImg->AddRef();
+        if(m_pDuiImg) m_pDuiImg->AddRef();
     }
 
     IDuiImage * GetImage()
@@ -72,25 +72,25 @@ public:
 
     enum
     {
-		Frame_Part_TopLeft    = 0x00000001UL,
-		Frame_Part_TopCenter  = 0x00000002UL,
+        Frame_Part_TopLeft    = 0x00000001UL,
+        Frame_Part_TopCenter  = 0x00000002UL,
         Frame_Part_TopRight   = 0x00000004UL,
-		Frame_Part_MidLeft    = 0x00000008UL,
-		Frame_Part_MidCenter  = 0x00000010UL,
-		Frame_Part_MidRight   = 0x00000020UL,
-		Frame_Part_BottomLeft = 0x00000040UL,
-		Frame_Part_BottomCenter  = 0x00000080UL,
-		Frame_Part_BottomRight= 0x00000100UL,
-		
-		Frame_Part_Top        = (Frame_Part_TopLeft|Frame_Part_TopCenter|Frame_Part_TopRight),
-		Frame_Part_Mid        = (Frame_Part_MidLeft|Frame_Part_MidCenter|Frame_Part_MidRight),
-		Frame_Part_Bottom     = (Frame_Part_BottomLeft|Frame_Part_BottomCenter|Frame_Part_BottomRight),
-		
-		Frame_Part_Left       = (Frame_Part_TopLeft|Frame_Part_MidLeft|Frame_Part_BottomLeft),
-		Frame_Part_Center     = (Frame_Part_TopCenter|Frame_Part_MidCenter|Frame_Part_BottomCenter),
-		Frame_Part_Right      = (Frame_Part_TopRight|Frame_Part_MidRight|Frame_Part_BottomRight),
-		
-		Frame_Part_All        = 0x0000FFFFUL,
+        Frame_Part_MidLeft    = 0x00000008UL,
+        Frame_Part_MidCenter  = 0x00000010UL,
+        Frame_Part_MidRight   = 0x00000020UL,
+        Frame_Part_BottomLeft = 0x00000040UL,
+        Frame_Part_BottomCenter  = 0x00000080UL,
+        Frame_Part_BottomRight= 0x00000100UL,
+        
+        Frame_Part_Top        = (Frame_Part_TopLeft|Frame_Part_TopCenter|Frame_Part_TopRight),
+        Frame_Part_Mid        = (Frame_Part_MidLeft|Frame_Part_MidCenter|Frame_Part_MidRight),
+        Frame_Part_Bottom     = (Frame_Part_BottomLeft|Frame_Part_BottomCenter|Frame_Part_BottomRight),
+        
+        Frame_Part_Left       = (Frame_Part_TopLeft|Frame_Part_MidLeft|Frame_Part_BottomLeft),
+        Frame_Part_Center     = (Frame_Part_TopCenter|Frame_Part_MidCenter|Frame_Part_BottomCenter),
+        Frame_Part_Right      = (Frame_Part_TopRight|Frame_Part_MidRight|Frame_Part_BottomRight),
+        
+        Frame_Part_All        = 0x0000FFFFUL,
     };
 
     static BOOL ExtentBlt(IDuiImage *pImgDraw,BOOL bTile,HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,int nWidSrc,int nHeiSrc,BYTE byAlpha=0xFF);
@@ -104,12 +104,12 @@ protected:
     virtual void OnAttributeFinish(pugi::xml_node xmlNode)
     {
         //加载图片文件参数，它保存在皮肤的imgparam子节点中
-		pugi::xml_node xmlNode_ImgParam=xmlNode.child("imgparam");
+        pugi::xml_node xmlNode_ImgParam=xmlNode.child("imgparam");
         if(xmlNode_ImgParam) m_pDuiImg->SetAttributes(xmlNode_ImgParam);
     }
 
     IDuiImage *m_pDuiImg;
-    CDuiStringA	m_strOwner;
+    CDuiStringA    m_strOwner;
 };
 
 

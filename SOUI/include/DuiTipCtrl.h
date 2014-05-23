@@ -18,7 +18,7 @@ public:
 
     void ShowTip(BOOL bShow);
 
-    DWORD	m_dwHostID;
+    DWORD    m_dwHostID;
 protected:
     void OnTimer(UINT_PTR idEvent);
     void OnPaint(CDCHandle dc);
@@ -30,12 +30,12 @@ protected:
     END_MSG_MAP()
 
 protected:
-    int			m_nDelay;
-    int			m_nShowSpan;
-    CDuiStringT	m_strTip;
-    BOOL		m_bTextTip;    
-    CRect		m_rcTarget;
-    CFont		m_font;
+    int            m_nDelay;
+    int            m_nShowSpan;
+    CDuiStringT    m_strTip;
+    BOOL        m_bTextTip;    
+    CRect        m_rcTarget;
+    CFont        m_font;
 };
 
 }//namespace SOUI

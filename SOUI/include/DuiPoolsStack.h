@@ -4,28 +4,28 @@
 
 namespace SOUI
 {
-	class SOUI_EXP DuiPoolsStack
-	{
-	public:
-		DuiPoolsStack(void);
-		~DuiPoolsStack(void);
+    class SOUI_EXP DuiPoolsStack
+    {
+    public:
+        DuiPoolsStack(void);
+        ~DuiPoolsStack(void);
 
-		CDuiPools * GetCurResMgr();
+        CDuiPools * GetCurResMgr();
 
-		void Push(CDuiPools * pResMgr);
+        void Push(CDuiPools * pResMgr);
 
-		CDuiPools * Pop();
+        CDuiPools * Pop();
 
-		CDuiPools * CreateResMgr();
+        CDuiPools * CreateResMgr();
 
-		void DestroyResMgr(CDuiPools *pResMgr);
+        void DestroyResMgr(CDuiPools *pResMgr);
 
-		CDuiSkinBase * GetSkin(LPCSTR pszName);
-		BOOL GetStyle(LPCSTR pszName,DuiStyle &style);
-		pugi::xml_node GetObjDefAttr(LPCSTR pszName);
-		void BuildString(CDuiStringT & str);
+        CDuiSkinBase * GetSkin(LPCSTR pszName);
+        BOOL GetStyle(LPCSTR pszName,DuiStyle &style);
+        pugi::xml_node GetObjDefAttr(LPCSTR pszName);
+        void BuildString(CDuiStringT & str);
 
-	protected:
-		CDuiList<CDuiPools*>	m_lstResMgr;
-	};
+    protected:
+        CDuiList<CDuiPools*>    m_lstResMgr;
+    };
 }//end of namespace

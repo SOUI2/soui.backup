@@ -15,7 +15,7 @@ class SOUI_EXP DuiResProviderPE:public IDuiResProvider
 {
 public:
     DuiResProviderPE(HINSTANCE hInst);
-    HBITMAP	LoadBitmap(LPCTSTR strType,LPCTSTR pszResName);
+    HBITMAP    LoadBitmap(LPCTSTR strType,LPCTSTR pszResName);
     HICON   LoadIcon(LPCTSTR strType,LPCTSTR pszResName,int cx=0,int cy=0);
     IDuiImage * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
     size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
@@ -34,7 +34,7 @@ public:
     DuiResProviderFiles();
 
     BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
-    HBITMAP	LoadBitmap(LPCTSTR strType,LPCTSTR pszResName);
+    HBITMAP    LoadBitmap(LPCTSTR strType,LPCTSTR pszResName);
     HICON   LoadIcon(LPCTSTR strType,LPCTSTR pszResName,int cx=0,int cy=0);
     IDuiImage * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
     size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);

@@ -13,7 +13,7 @@ CDuiHotKeyCtrl::CDuiHotKeyCtrl(void)
     m_wInvalidModifier=0;
     m_wInvalidComb=HKCOMB_NONE;
     m_bInSetting=FALSE;
-	m_bTabStop=TRUE;
+    m_bTabStop=TRUE;
 }
 
 CDuiHotKeyCtrl::~CDuiHotKeyCtrl(void)
@@ -90,9 +90,9 @@ void CDuiHotKeyCtrl::OnSetDuiFocus()
     dc.SelectFont(hOldFond);
     ReleaseDC(GetContainer()->GetHostHwnd(),dc);
 
-	CRect rcClient;
-	GetClient(&rcClient);
-	OnSetCaretValidateRect(&rcClient);
+    CRect rcClient;
+    GetClient(&rcClient);
+    OnSetCaretValidateRect(&rcClient);
 
     UpdateCaret();
     GetContainer()->DuiShowCaret(TRUE);
@@ -200,7 +200,7 @@ void CDuiHotKeyCtrl::GetHotKey( WORD & vKey,WORD &wModifers )
 
 LRESULT CDuiHotKeyCtrl::OnWindowPosChanged( LPRECT lpRcContainer )
 {
-	KillDuiFocus();
-	return __super::OnWindowPosChanged(lpRcContainer);
+    KillDuiFocus();
+    return __super::OnWindowPosChanged(lpRcContainer);
 }
 }//namespace SOUI

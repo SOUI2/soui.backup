@@ -14,14 +14,14 @@ public:
     {
     }
 
-	BOOL Init(pugi::xml_node xmlNode);
+    BOOL Init(pugi::xml_node xmlNode);
 
-	pugi::xml_node GetDefAttribute(LPCSTR pszClassName);
+    pugi::xml_node GetDefAttribute(LPCSTR pszClassName);
 protected:
-	pugi::xml_node _GetDefAttribute(LPCSTR pszClassName);
-	void BuildClassAttribute(pugi::xml_node & xmlNode, LPCSTR pszClassName);
+    pugi::xml_node _GetDefAttribute(LPCSTR pszClassName);
+    void BuildClassAttribute(pugi::xml_node & xmlNode, LPCSTR pszClassName);
 
-	pugi::xml_document m_xmlRoot;
+    pugi::xml_document m_xmlRoot;
 };
 
 }//namespace SOUI

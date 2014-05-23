@@ -37,7 +37,7 @@ public:
 
     // lightness  [0..1]
     // saturation [0..1]
-    // hue		  [0..360)
+    // hue          [0..360)
     void ToHLS(void);
 
     void ToRGB(void);

@@ -26,8 +26,8 @@ protected:
 
 protected:
 
-    CRITICAL_SECTION		m_lockMapActive;
-    CRITICAL_SECTION		m_lockRepaint;
+    CRITICAL_SECTION        m_lockMapActive;
+    CRITICAL_SECTION        m_lockRepaint;
 };
 
 }//namespace SOUI

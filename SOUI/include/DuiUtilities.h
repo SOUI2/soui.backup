@@ -4,10 +4,10 @@
 
 namespace SOUI
 {
-	void SOUI_EXP DuiHiMetricToPixel(const SIZEL * lpSizeInHiMetric, LPSIZEL lpSizeInPix);
-	void SOUI_EXP DuiPixelToHiMetric(const SIZEL * lpSizeInPix, LPSIZEL lpSizeInHiMetric);
-	void SOUI_EXP DuiTraceA(LPCSTR pstrFormat, ...);
-	void SOUI_EXP DuiTraceW(LPCWSTR pstrFormat, ...);
+    void SOUI_EXP DuiHiMetricToPixel(const SIZEL * lpSizeInHiMetric, LPSIZEL lpSizeInPix);
+    void SOUI_EXP DuiPixelToHiMetric(const SIZEL * lpSizeInPix, LPSIZEL lpSizeInHiMetric);
+    void SOUI_EXP DuiTraceA(LPCSTR pstrFormat, ...);
+    void SOUI_EXP DuiTraceW(LPCWSTR pstrFormat, ...);
 }//end of namespace SOUI
 
 #ifdef _UNICODE

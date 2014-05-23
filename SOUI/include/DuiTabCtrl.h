@@ -57,7 +57,7 @@ typedef enum tagSLIDEDIR
 
 class SOUI_EXP CDuiTabCtrl : public CDuiWindow
 {
-	friend class CDuiTabSlider;
+    friend class CDuiTabSlider;
 
     SOUI_CLASS_NAME(CDuiTabCtrl, "tabctrl")
 
@@ -85,7 +85,7 @@ protected:
         AlignLeft,
     };
 
-    int	m_nAnimateSteps;
+    int    m_nAnimateSteps;
 public:
 
     CDuiTabCtrl();
@@ -98,7 +98,7 @@ public:
 
     BOOL SetCurSel(int nIndex);
 
-	BOOL SetCurSel(LPCTSTR pszTitle);
+    BOOL SetCurSel(LPCTSTR pszTitle);
 
     BOOL SetItemTitle(int nIndex, LPCTSTR lpszTitle);
 
@@ -120,16 +120,16 @@ public:
 
     void RemoveAllItems(void);
 protected:
-	virtual CRect GetChildrenLayoutRect();
+    virtual CRect GetChildrenLayoutRect();
 
     virtual BOOL GetItemRect(int nIndex, CRect &rcItem);
 
-	virtual void DrawItem(CDCHandle dc,const CRect &rcItem,int iItem,DWORD dwState);
+    virtual void DrawItem(CDCHandle dc,const CRect &rcItem,int iItem,DWORD dwState);
 
-	virtual UINT OnGetDuiCode()
-	{
-		return DUIC_WANTARROWS;
-	}
+    virtual UINT OnGetDuiCode()
+    {
+        return DUIC_WANTARROWS;
+    }
 
     void OnPaint(CDCHandle dc);
 
@@ -142,7 +142,7 @@ protected:
         OnMouseMove(0,CPoint(-1,-1));
     }
 
-	void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+    void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
     void OnDestroy();
 
@@ -152,7 +152,7 @@ protected:
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
     MSG_WM_MOUSEMOVE(OnMouseMove)
     MSG_WM_MOUSELEAVE(OnMouseLeave)
-	MSG_WM_KEYDOWN(OnKeyDown)
+    MSG_WM_KEYDOWN(OnKeyDown)
     WND_MSG_MAP_END()
 
     SOUO_ATTRIBUTES_BEGIN()

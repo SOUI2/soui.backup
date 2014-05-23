@@ -74,7 +74,7 @@ protected:
     void            OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
     void            OnSetDuiFocus();
 
-	CDuiStringT		GetWindowText();
+    CDuiStringT        GetWindowText();
 protected:
     int             m_nStartChar;       // Current position of the first character in the current selection.
     int             m_nEndChar;         // Current position of the first non-selected character past the end of the current selection.
@@ -106,7 +106,7 @@ public:
     CDuiDateEdit();
 
     virtual void    SetDateTime(LPCTSTR strDate);
-	virtual void	SetDateTime(CTime tm);
+    virtual void    SetDateTime(CTime tm);
 
     virtual CDuiStringT GetWindowDateTime();
     virtual BOOL    ProcessMask(TCHAR& nChar, int nEndPos);

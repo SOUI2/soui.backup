@@ -22,7 +22,7 @@ public:
 
     CDuiWindow* InsertItem(LPCWSTR pszXml,int iItem=-1,BOOL bEnsureVisible=FALSE);
 
-	CDuiWindow* InsertItem(pugi::xml_node xmlNode, int iItem=-1,BOOL bEnsureVisible=FALSE);
+    CDuiWindow* InsertItem(pugi::xml_node xmlNode, int iItem=-1,BOOL bEnsureVisible=FALSE);
 
     BOOL RemoveItem(UINT iItem);
 
@@ -53,7 +53,7 @@ protected:
 
     void OnSize(UINT nType, CSize size);
 
-	virtual void UpdateChildrenPosition(){}//leave it empty
+    virtual void UpdateChildrenPosition(){}//leave it empty
 
     void ReLayout();
     virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);

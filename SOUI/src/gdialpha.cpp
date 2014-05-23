@@ -4,7 +4,7 @@
 namespace SOUI
 {
 
-#define  MAX_ALPHABUF	1<<16
+#define  MAX_ALPHABUF    1<<16
 
 BYTE CGdiAlpha::s_byAlphaBack[MAX_ALPHABUF];
 BOOL CGdiAlpha::s_bAlphaEnable=TRUE;
@@ -49,7 +49,7 @@ void CGdiAlpha::ALPHARESTORE(BITMAP *pBitmap,int x,int y,int cx,int cy,LPBYTE lp
             lpBits+=4;
         }
     }
-    if(lpAlpha!=s_byAlphaBack)	free(lpAlpha);
+    if(lpAlpha!=s_byAlphaBack)    free(lpAlpha);
 }
 
 void CGdiAlpha::_swap(int &a,int &b)
@@ -116,16 +116,16 @@ int CGdiAlpha::FillRect(HDC hdc,LPCRECT pRc,HBRUSH hbrh)
 
 BOOL CGdiAlpha::Rectangle(HDC hdc,LPRECT pRc,COLORREF crBorder,HBRUSH hbrh)
 {
-	ALPHAINFO ai;
-	AlphaBackup(hdc,pRc,ai);
-	HPEN hPen=CreatePen(PS_SOLID,1,crBorder);
-	HGDIOBJ hOldPen=SelectObject(hdc,hPen);
-	HGDIOBJ hOldBrh=SelectObject(hdc,hbrh);
-	BOOL bRet=::Rectangle(hdc,pRc->left,pRc->top,pRc->right,pRc->bottom);
-	SelectObject(hdc,hOldPen);
-	SelectObject(hdc,hOldBrh);
-	AlphaRestore(hdc,ai);
-	return bRet;
+    ALPHAINFO ai;
+    AlphaBackup(hdc,pRc,ai);
+    HPEN hPen=CreatePen(PS_SOLID,1,crBorder);
+    HGDIOBJ hOldPen=SelectObject(hdc,hPen);
+    HGDIOBJ hOldBrh=SelectObject(hdc,hbrh);
+    BOOL bRet=::Rectangle(hdc,pRc->left,pRc->top,pRc->right,pRc->bottom);
+    SelectObject(hdc,hOldPen);
+    SelectObject(hdc,hOldBrh);
+    AlphaRestore(hdc,ai);
+    return bRet;
 }
 
 SIZE CGdiAlpha::TextOut(HDC hdc,int x, int y, LPCTSTR pszText,int nCount/*=-1*/)
@@ -162,16 +162,16 @@ int CGdiAlpha::DrawText(HDC hdc,LPCTSTR pszText,int nCount,LPRECT pRect,UINT uFo
 void CGdiAlpha::DrawLine(HDC hdc,int x1,int y1,int x2,int y2,COLORREF cr,UINT style, int iLineSize)
 {
     RECT rcDest;
-	int iLineRadius = iLineSize / 2;
-	int iRemainder = iLineSize % 2;
-    if(x1==x2)	//ÊúÏß
+    int iLineRadius = iLineSize / 2;
+    int iRemainder = iLineSize % 2;
+    if(x1==x2)    //ÊúÏß
     {
-		if(y1>y2) _swap(y1,y2);
+        if(y1>y2) _swap(y1,y2);
         SetRect(&rcDest,x1-iLineRadius,y1,x1+iLineRadius+iRemainder,y2);
     }
     else if(y1==y2)//ºáÏß
     {
-		if(x1>x2) _swap(x1,x2);
+        if(x1>x2) _swap(x1,x2);
         SetRect(&rcDest,x1,y1-iLineRadius,x2,y1+iLineRadius+iRemainder);
     }
     else
@@ -181,21 +181,21 @@ void CGdiAlpha::DrawLine(HDC hdc,int x1,int y1,int x2,int y2,COLORREF cr,UINT st
         SetRect(&rcDest,x1-iLineRadius,y1-iLineRadius,x2+iLineRadius+iRemainder,y2+iLineRadius+iRemainder);
     }
 
-	ALPHAINFO ai;
-	AlphaBackup(hdc,&rcDest,ai);
+    ALPHAINFO ai;
+    AlphaBackup(hdc,&rcDest,ai);
 
-	LOGBRUSH lb;
-	lb.lbStyle = BS_SOLID; 
-	lb.lbColor = cr;
-	lb.lbHatch = 0;
-	HPEN hPen = ExtCreatePen(PS_GEOMETRIC | PS_ENDCAP_FLAT | style, iLineSize, &lb, 0, NULL);
-	HPEN hOld=(HPEN)SelectObject(hdc,hPen);
-	MoveToEx(hdc,x1,y1,NULL);
-	LineTo(hdc,x2,y2);
-	SelectObject(hdc,hOld);
-	DeleteObject(hPen);
+    LOGBRUSH lb;
+    lb.lbStyle = BS_SOLID; 
+    lb.lbColor = cr;
+    lb.lbHatch = 0;
+    HPEN hPen = ExtCreatePen(PS_GEOMETRIC | PS_ENDCAP_FLAT | style, iLineSize, &lb, 0, NULL);
+    HPEN hOld=(HPEN)SelectObject(hdc,hPen);
+    MoveToEx(hdc,x1,y1,NULL);
+    LineTo(hdc,x2,y2);
+    SelectObject(hdc,hOld);
+    DeleteObject(hPen);
 
-	AlphaRestore(hdc,ai);
+    AlphaRestore(hdc,ai);
 
 }
 
@@ -234,26 +234,26 @@ HBITMAP CGdiAlpha::CreateBitmap32(HDC hdc,int nWid,int nHei,LPVOID * ppBits/*=NU
 
 BOOL CGdiAlpha::Bitmap32PreMul( HDC hdc )
 {
-	HBITMAP hBmp=(HBITMAP)GetCurrentObject(hdc,OBJ_BITMAP);
-	DUIASSERT(hBmp);
-	BITMAP  bm;
-	GetObject(hBmp,sizeof(BITMAP),&bm);
+    HBITMAP hBmp=(HBITMAP)GetCurrentObject(hdc,OBJ_BITMAP);
+    DUIASSERT(hBmp);
+    BITMAP  bm;
+    GetObject(hBmp,sizeof(BITMAP),&bm);
 
-	if(bm.bmBitsPixel!=32) return FALSE;
-	
-	LPBYTE pbyLine=(LPBYTE)bm.bmBits;
-	for(int i=0;i<bm.bmWidth;i++)
-	{
-		LPBYTE p=pbyLine;
-		for(int j=0;j<bm.bmHeight;j++)
-		{
-			p[0]=(((WORD)p[1])*p[3])>>8;
-			p[1]=(((WORD)p[1])*p[3])>>8;
-			p[2]=(((WORD)p[1])*p[3])>>8;
-			p+=4;
-		}
-		pbyLine=p;
-	}
-	return TRUE;
+    if(bm.bmBitsPixel!=32) return FALSE;
+    
+    LPBYTE pbyLine=(LPBYTE)bm.bmBits;
+    for(int i=0;i<bm.bmWidth;i++)
+    {
+        LPBYTE p=pbyLine;
+        for(int j=0;j<bm.bmHeight;j++)
+        {
+            p[0]=(((WORD)p[1])*p[3])>>8;
+            p[1]=(((WORD)p[1])*p[3])>>8;
+            p[2]=(((WORD)p[1])*p[3])>>8;
+            p+=4;
+        }
+        pbyLine=p;
+    }
+    return TRUE;
 }
 }//namespace SOUI

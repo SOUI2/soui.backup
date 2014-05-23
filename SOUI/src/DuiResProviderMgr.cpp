@@ -3,13 +3,13 @@
 
 namespace SOUI
 {
-	DuiResProviderMgr::DuiResProviderMgr():m_pResProvider(NULL),m_pDefResProvider(NULL)
-	{
-	}
+    DuiResProviderMgr::DuiResProviderMgr():m_pResProvider(NULL),m_pDefResProvider(NULL)
+    {
+    }
 
-	DuiResProviderMgr::~DuiResProviderMgr(void)
-	{
-	}
+    DuiResProviderMgr::~DuiResProviderMgr(void)
+    {
+    }
 
 
 }

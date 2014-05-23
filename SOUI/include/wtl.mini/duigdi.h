@@ -158,10 +158,10 @@ public:
     CBrushT(HBRUSH hBrush = NULL) : m_hBrush(hBrush)
     { }
 
-	CBrushT(COLORREF cr): m_hBrush(NULL)
-	{
-		CreateSolidBrush(cr);
-	}
+    CBrushT(COLORREF cr): m_hBrush(NULL)
+    {
+        CreateSolidBrush(cr);
+    }
 
     ~CBrushT()
     {

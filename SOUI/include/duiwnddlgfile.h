@@ -23,7 +23,7 @@ public:
         if (!CDuiWindow::Load(xmlNode))
             return FALSE;
 
-        CDuiStringT	strChildSrc=DUI_CA2T(xmlNode.attribute("src").value(),CP_UTF8);
+        CDuiStringT    strChildSrc=DUI_CA2T(xmlNode.attribute("src").value(),CP_UTF8);
 
         if (strChildSrc.IsEmpty())
             return FALSE;
@@ -38,13 +38,13 @@ public:
         strXml.Allocate(dwSize);
         pRes->GetRawBuffer(DUIRES_XML_TYPE,strChildSrc,strXml,dwSize);
 
-		pugi::xml_document xmlDoc;
+        pugi::xml_document xmlDoc;
 
-		if(!xmlDoc.load_buffer_inplace(strXml,strXml.size(),pugi::parse_default,pugi::encoding_utf8))
-		{
-			DUIASSERT(FALSE);
-			return FALSE;
-		}
+        if(!xmlDoc.load_buffer_inplace(strXml,strXml.size(),pugi::parse_default,pugi::encoding_utf8))
+        {
+            DUIASSERT(FALSE);
+            return FALSE;
+        }
 
         return LoadChildren(xmlDoc.first_child());
     }

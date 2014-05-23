@@ -1,13 +1,13 @@
 /*########################################################################
-	Filename: 	MenuWndHook.cpp
-	----------------------------------------------------
-	Remarks:	...
-	----------------------------------------------------
-	Author:		成真
-	Email:		anyou@sina.com
-				anyou@msn.com
-	Created:	7/4/2003 17:38
-				6/20/2012 黄建雄，修改为使用DUI皮肤绘制非客户区边框，支持边框大小配置
+    Filename:     MenuWndHook.cpp
+    ----------------------------------------------------
+    Remarks:    ...
+    ----------------------------------------------------
+    Author:        成真
+    Email:        anyou@sina.com
+                anyou@msn.com
+    Created:    7/4/2003 17:38
+                6/20/2012 黄建雄，修改为使用DUI皮肤绘制非客户区边框，支持边框大小配置
   ########################################################################*/
 
 #include "duistd.h"
@@ -16,7 +16,7 @@
 #include "duiskin.h"
 
 #ifdef _WIN64
-#define GWL_WNDPROC	GWLP_WNDPROC
+#define GWL_WNDPROC    GWLP_WNDPROC
 #endif//_WIN64
 
 namespace SOUI
@@ -25,13 +25,13 @@ namespace SOUI
 const TCHAR CoolMenu_oldProc[] = _T("CoolMenu_oldProc");
 
 
-#define SM_CXMENUBORDER	3		//默认菜单边框大小
+#define SM_CXMENUBORDER    3        //默认菜单边框大小
 
 
 /*########################################################################
-			  ------------------------------------------------
-								class CMenuWndHook
-			  ------------------------------------------------
+              ------------------------------------------------
+                                class CMenuWndHook
+              ------------------------------------------------
   ########################################################################*/
 CDuiMap <HWND,CMenuWndHook*> CMenuWndHook::m_WndMenuMap;
 
@@ -103,9 +103,9 @@ CMenuWndHook* CMenuWndHook::AddWndHook(HWND hwnd)
 }
 
 /*########################################################################
-			  ------------------------------------------------
-								  消息过程
-			  ------------------------------------------------
+              ------------------------------------------------
+                                  消息过程
+              ------------------------------------------------
   ########################################################################*/
 LRESULT CALLBACK CMenuWndHook::WindowHook(int code, WPARAM wParam, LPARAM lParam)
 {
@@ -197,16 +197,16 @@ LRESULT CALLBACK CMenuWndHook::CoolMenuProc(HWND hWnd, UINT uMsg, WPARAM wParam,
         }
     }
     break;
-// 		case WM_WINDOWPOSCHANGED:
-// 			{
-// 				LRESULT lResult = CallWindowProc(oldWndProc, hWnd, uMsg, wParam, lParam);
-// 				if ((pWnd = GetWndHook(hWnd)) != NULL)
-// 				{
-//  					pWnd->SetLayeredAttr();
-// 				}
-// 				return lResult;
-// 			}
-// 			break;
+//         case WM_WINDOWPOSCHANGED:
+//             {
+//                 LRESULT lResult = CallWindowProc(oldWndProc, hWnd, uMsg, wParam, lParam);
+//                 if ((pWnd = GetWndHook(hWnd)) != NULL)
+//                 {
+//                      pWnd->SetLayeredAttr();
+//                 }
+//                 return lResult;
+//             }
+//             break;
     case WM_PRINT:
     {
         LRESULT lResult = CallWindowProc(oldWndProc, hWnd, uMsg, wParam, lParam);
@@ -239,9 +239,9 @@ LRESULT CALLBACK CMenuWndHook::CoolMenuProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 }
 
 /*########################################################################
-			  ------------------------------------------------
-								消息处理函数
-			  ------------------------------------------------
+              ------------------------------------------------
+                                消息处理函数
+              ------------------------------------------------
   ########################################################################*/
 int CMenuWndHook::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {

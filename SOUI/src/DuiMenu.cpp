@@ -54,7 +54,7 @@ void CDuiMenuODWnd::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
     CDCHandle dc(lpDrawItemStruct->hDC);
     CDCHandle dcMem;
     dcMem.CreateCompatibleDC(dc);
-    CBitmap	  bmp=CGdiAlpha::CreateBitmap32(dc,rcItem.Width(),rcItem.Height());
+    CBitmap      bmp=CGdiAlpha::CreateBitmap32(dc,rcItem.Width(),rcItem.Height());
     CBitmapHandle hOldBmp=dcMem.SelectBitmap(bmp);
     dcMem.BitBlt(0,0,rcItem.Width(),rcItem.Height(),dc,rcItem.left,rcItem.top,SRCCOPY);
     rcItem.MoveToXY(0,0);
@@ -70,7 +70,7 @@ void CDuiMenuODWnd::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
         BOOL bChecked = lpDrawItemStruct->itemState & ODS_CHECKED;
         BOOL bRadio = mii.fType&MFT_RADIOCHECK;
 
-        m_pItemSkin->Draw(dcMem,rcItem,bSelected?1:0);	//draw back
+        m_pItemSkin->Draw(dcMem,rcItem,bSelected?1:0);    //draw back
 
         //draw icon
         CRect rcIcon;
@@ -117,7 +117,7 @@ void CDuiMenuODWnd::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
     }
     else  //if(strcmp("sep",pXmlItem->Value())==0)
     {
-        m_pItemSkin->Draw(dcMem,rcItem,0);	//draw back
+        m_pItemSkin->Draw(dcMem,rcItem,0);    //draw back
         if(m_pIconSkin)
         {
             rcItem.left += m_pIconSkin->GetSkinSize().cx+m_nIconMargin*2;
@@ -180,9 +180,9 @@ CDuiMenu::CDuiMenu():m_pParent(NULL),m_hMenu(0)
 
 CDuiMenu::CDuiMenu( const CDuiMenu & src )
 {
-	m_pParent=src.m_pParent;
-	m_hMenu=src.m_hMenu;
-	m_menuSkin=src.m_menuSkin;	
+    m_pParent=src.m_pParent;
+    m_hMenu=src.m_hMenu;
+    m_menuSkin=src.m_menuSkin;    
 }
 
 CDuiMenu::~CDuiMenu(void)
@@ -194,34 +194,34 @@ BOOL CDuiMenu::LoadMenu( LPCTSTR pszResName )
 {
     if(::IsMenu(m_hMenu)) return FALSE;
 
-	pugi::xml_document xmlDoc;
-	if(!LOADXML(xmlDoc,pszResName,DUIRES_XML_TYPE)) return FALSE;
+    pugi::xml_document xmlDoc;
+    if(!LOADXML(xmlDoc,pszResName,DUIRES_XML_TYPE)) return FALSE;
 
-	pugi::xml_node xmlMenu=xmlDoc.child("menu");
+    pugi::xml_node xmlMenu=xmlDoc.child("menu");
     if(!xmlMenu)  return FALSE;
 
-	return LoadMenu(xmlMenu);
+    return LoadMenu(xmlMenu);
 }
 
 
 BOOL CDuiMenu::LoadMenu( pugi::xml_node xmlMenu )
 {
-	m_hMenu=CreatePopupMenu();
-	if(!m_hMenu) return FALSE;
+    m_hMenu=CreatePopupMenu();
+    if(!m_hMenu) return FALSE;
 
-	m_menuSkin.Load(xmlMenu);
-	DUIASSERT(m_menuSkin.m_pItemSkin);
+    m_menuSkin.Load(xmlMenu);
+    DUIASSERT(m_menuSkin.m_pItemSkin);
 
-	BuildMenu(m_hMenu,xmlMenu);
+    BuildMenu(m_hMenu,xmlMenu);
 
-	return TRUE;
+    return TRUE;
 }
 
 CDuiMenu CDuiMenu::GetSubMenu(int nPos)
 {
     HMENU hSubMenu=::GetSubMenu(m_hMenu,nPos);
     CDuiMenu ret;
-	ret.m_pParent=this;
+    ret.m_pParent=this;
     ret.m_hMenu=hSubMenu;
     ret.m_menuSkin=m_menuSkin;
     return ret;
@@ -291,13 +291,13 @@ UINT CDuiMenu::TrackPopupMenu(
     UINT uNewFlags=uFlags|TPM_RETURNCMD;
     UINT uRet=::TrackPopupMenu(m_hMenu,uNewFlags,x,y,0,menuOwner.m_hWnd,prcRect);
     menuOwner.DestroyWindow();
-	if(uRet && !(uFlags&TPM_RETURNCMD)) ::SendMessage(hWnd,WM_COMMAND,uRet,0);
+    if(uRet && !(uFlags&TPM_RETURNCMD)) ::SendMessage(hWnd,WM_COMMAND,uRet,0);
     return uRet;
 }
 
 void CDuiMenu::BuildMenu( HMENU menuPopup,pugi::xml_node xmlNode )
 {
-	pugi::xml_node xmlItem=xmlNode.first_child();
+    pugi::xml_node xmlItem=xmlNode.first_child();
 
     while(xmlItem)
     {
@@ -305,24 +305,24 @@ void CDuiMenu::BuildMenu( HMENU menuPopup,pugi::xml_node xmlNode )
         {
             DuiMenuItemData *pdmmi=new DuiMenuItemData;
             pdmmi->hMenu=menuPopup;
-			pdmmi->itemInfo.iIcon=xmlItem.attribute("icon").as_int(-1);
-			pdmmi->itemInfo.strText=DUI_CA2T(xmlItem.text().get(),CP_UTF8);
+            pdmmi->itemInfo.iIcon=xmlItem.attribute("icon").as_int(-1);
+            pdmmi->itemInfo.strText=DUI_CA2T(xmlItem.text().get(),CP_UTF8);
 
             int nID=xmlItem.attribute("id").as_int(0);
             BOOL bCheck=xmlItem.attribute("check").as_bool(false);
-			BOOL bRadio=xmlItem.attribute("radio").as_bool(false);
-			BOOL bDisable=xmlItem.attribute("disable").as_bool(false);
+            BOOL bRadio=xmlItem.attribute("radio").as_bool(false);
+            BOOL bDisable=xmlItem.attribute("disable").as_bool(false);
 
 
-			pugi::xml_writer_buff writer;
-			xmlItem.print(writer);
-			CDuiStringW str=DUI_CA2W(CDuiStringA(writer.buffer(),writer.size()),CP_UTF8);
+            pugi::xml_writer_buff writer;
+            xmlItem.print(writer);
+            CDuiStringW str=DUI_CA2W(CDuiStringA(writer.buffer(),writer.size()),CP_UTF8);
 
-			pugi::xml_node xmlChild=xmlItem.first_child();
-			while(xmlChild && xmlChild.type()==pugi::node_pcdata) xmlChild=xmlChild.next_sibling();
+            pugi::xml_node xmlChild=xmlItem.first_child();
+            while(xmlChild && xmlChild.type()==pugi::node_pcdata) xmlChild=xmlChild.next_sibling();
 
 
-			if(!xmlChild)
+            if(!xmlChild)
             {
                 pdmmi->nID=nID;
                 UINT uFlag=MF_OWNERDRAW;
@@ -346,7 +346,7 @@ void CDuiMenu::BuildMenu( HMENU menuPopup,pugi::xml_node xmlNode )
         {
             AppendMenu(menuPopup,MF_SEPARATOR|MF_OWNERDRAW,(UINT_PTR)0,(LPCTSTR)NULL);
         }
-		xmlItem=xmlItem.next_sibling();
+        xmlItem=xmlItem.next_sibling();
     }
 }
 
@@ -356,7 +356,7 @@ void CDuiMenu::DestroyMenu()
     {
         if(m_hMenu) ::DestroyMenu(m_hMenu);
         for(UINT i=0; i<m_arrDmmi.GetCount(); i++) 
-			delete m_arrDmmi[i];
+            delete m_arrDmmi[i];
         m_arrDmmi.RemoveAll();
     }
 }

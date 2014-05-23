@@ -3,52 +3,52 @@
 
 namespace SOUI
 {
-	CSimpleWndHelper * CSimpleWndHelper::s_Instance=NULL;
+    CSimpleWndHelper * CSimpleWndHelper::s_Instance=NULL;
 
-	CSimpleWndHelper::CSimpleWndHelper(HINSTANCE hInst,LPCTSTR pszClassName)
-		:m_hInst(hInst)
-		,m_sharePtr(NULL)
-	{
-		InitializeCriticalSection(&m_cs);
-		m_hHeap=HeapCreate(HEAP_CREATE_ENABLE_EXECUTE,0,0);
-		m_atom=CSimpleWnd::RegisterSimpleWnd(hInst,pszClassName);
-	}
+    CSimpleWndHelper::CSimpleWndHelper(HINSTANCE hInst,LPCTSTR pszClassName)
+        :m_hInst(hInst)
+        ,m_sharePtr(NULL)
+    {
+        InitializeCriticalSection(&m_cs);
+        m_hHeap=HeapCreate(HEAP_CREATE_ENABLE_EXECUTE,0,0);
+        m_atom=CSimpleWnd::RegisterSimpleWnd(hInst,pszClassName);
+    }
 
-	CSimpleWndHelper::~CSimpleWndHelper()
-	{
-		if(m_hHeap) HeapDestroy(m_hHeap);
-		DeleteCriticalSection(&m_cs);
-		if(m_atom) UnregisterClass((LPCTSTR)m_atom,m_hInst);
-	}
+    CSimpleWndHelper::~CSimpleWndHelper()
+    {
+        if(m_hHeap) HeapDestroy(m_hHeap);
+        DeleteCriticalSection(&m_cs);
+        if(m_atom) UnregisterClass((LPCTSTR)m_atom,m_hInst);
+    }
 
-	CSimpleWndHelper* CSimpleWndHelper::GetInstance()
-	{
-		return s_Instance;
-	}
+    CSimpleWndHelper* CSimpleWndHelper::GetInstance()
+    {
+        return s_Instance;
+    }
 
-	BOOL CSimpleWndHelper::Init(HINSTANCE hInst,LPCTSTR pszClassName)
-	{
-		if(s_Instance) return FALSE;
-		s_Instance=new CSimpleWndHelper(hInst,pszClassName);
-		return s_Instance!=NULL;
-	}
+    BOOL CSimpleWndHelper::Init(HINSTANCE hInst,LPCTSTR pszClassName)
+    {
+        if(s_Instance) return FALSE;
+        s_Instance=new CSimpleWndHelper(hInst,pszClassName);
+        return s_Instance!=NULL;
+    }
 
-	void CSimpleWndHelper::Destroy()
-	{
-		if(s_Instance) delete s_Instance;
-		s_Instance=NULL;
-	}
+    void CSimpleWndHelper::Destroy()
+    {
+        if(s_Instance) delete s_Instance;
+        s_Instance=NULL;
+    }
 
-	void CSimpleWndHelper::LockSharePtr(void *p)
-	{
-		EnterCriticalSection(&m_cs);
-		m_sharePtr=p;
-	}
+    void CSimpleWndHelper::LockSharePtr(void *p)
+    {
+        EnterCriticalSection(&m_cs);
+        m_sharePtr=p;
+    }
 
-	void CSimpleWndHelper::UnlockSharePtr()
-	{
-		LeaveCriticalSection(&m_cs);
-	}
+    void CSimpleWndHelper::UnlockSharePtr()
+    {
+        LeaveCriticalSection(&m_cs);
+    }
 
 //////////////////////////////////////////////////////////////////////////
 CSimpleWnd::CSimpleWnd(HWND hWnd)
@@ -56,7 +56,7 @@ CSimpleWnd::CSimpleWnd(HWND hWnd)
     ,m_pCurrentMsg(NULL)
     ,m_hWnd(hWnd)
     ,m_pfnSuperWindowProc(::DefWindowProc)
-	,m_pThunk(NULL)
+    ,m_pThunk(NULL)
 {
 }
 
@@ -67,24 +67,24 @@ CSimpleWnd::~CSimpleWnd(void)
 ATOM CSimpleWnd::RegisterSimpleWnd( HINSTANCE hInst,LPCTSTR pszSimpleWndName )
 {
     WNDCLASSEX wcex = {sizeof(WNDCLASSEX),0};
-    wcex.cbSize			= sizeof(WNDCLASSEX);
-    wcex.style			= CS_HREDRAW | CS_VREDRAW |CS_DBLCLKS;
-    wcex.lpfnWndProc	= StartWindowProc; // 第一个处理函数
-    wcex.hInstance		= hInst;
-    wcex.hCursor		= LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszClassName	= pszSimpleWndName;
+    wcex.cbSize            = sizeof(WNDCLASSEX);
+    wcex.style            = CS_HREDRAW | CS_VREDRAW |CS_DBLCLKS;
+    wcex.lpfnWndProc    = StartWindowProc; // 第一个处理函数
+    wcex.hInstance        = hInst;
+    wcex.hCursor        = LoadCursor(NULL, IDC_ARROW);
+    wcex.hbrBackground    = (HBRUSH)(COLOR_WINDOW+1);
+    wcex.lpszClassName    = pszSimpleWndName;
     return ::RegisterClassEx(&wcex);
 }
 
 HWND CSimpleWnd::Create(LPCTSTR lpWindowName, DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight, HWND hWndParent,LPVOID lpParam )
 {
-	CSimpleWndHelper::GetInstance()->LockSharePtr(this);
+    CSimpleWndHelper::GetInstance()->LockSharePtr(this);
 
-	m_pThunk=(tagThunk*)HeapAlloc(CSimpleWndHelper::GetInstance()->GetHeap(),HEAP_ZERO_MEMORY,sizeof(tagThunk));
+    m_pThunk=(tagThunk*)HeapAlloc(CSimpleWndHelper::GetInstance()->GetHeap(),HEAP_ZERO_MEMORY,sizeof(tagThunk));
     // 在::CreateWindow返回之前会去调StarWindowProc函数
     HWND hWnd= ::CreateWindowEx(dwExStyle,(LPCTSTR)CSimpleWndHelper::GetInstance()->GetSimpleWndAtom(), lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, 0, CSimpleWndHelper::GetInstance()->GetAppInstance(), lpParam);
-	CSimpleWndHelper::GetInstance()->UnlockSharePtr(); 
+    CSimpleWndHelper::GetInstance()->UnlockSharePtr(); 
     if(!hWnd)
     {
         HeapFree(CSimpleWndHelper::GetInstance()->GetHeap(),0,m_pThunk);
@@ -169,16 +169,16 @@ BOOL CSimpleWnd::SubclassWindow( HWND hWnd )
 {
     DUIASSERT(::IsWindow(hWnd));
     // Allocate the thunk structure here, where we can fail gracefully.
-	m_pThunk=(tagThunk*)HeapAlloc(CSimpleWndHelper::GetInstance()->GetHeap(),HEAP_ZERO_MEMORY,sizeof(tagThunk));
+    m_pThunk=(tagThunk*)HeapAlloc(CSimpleWndHelper::GetInstance()->GetHeap(),HEAP_ZERO_MEMORY,sizeof(tagThunk));
     m_pThunk->Init((DWORD)WindowProc, this);
     WNDPROC pProc = (WNDPROC)m_pThunk->GetCodeAddress();
     WNDPROC pfnWndProc = (WNDPROC)::SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)pProc);
     if(pfnWndProc == NULL)
-	{
-		HeapFree(CSimpleWndHelper::GetInstance()->GetHeap(),0,m_pThunk);
-		m_pThunk=NULL;
-		return FALSE;
-	}
+    {
+        HeapFree(CSimpleWndHelper::GetInstance()->GetHeap(),0,m_pThunk);
+        m_pThunk=NULL;
+        return FALSE;
+    }
     m_pfnSuperWindowProc = pfnWndProc;
     m_hWnd = hWnd;
     return TRUE;
@@ -244,7 +244,7 @@ LRESULT CSimpleWnd::ReflectNotifications(UINT uMsg, WPARAM wParam, LPARAM lParam
     switch(uMsg)
     {
     case WM_COMMAND:
-        if(lParam != NULL)	// not from a menu
+        if(lParam != NULL)    // not from a menu
             hWndChild = (HWND)lParam;
         break;
     case WM_NOTIFY:
@@ -263,19 +263,19 @@ LRESULT CSimpleWnd::ReflectNotifications(UINT uMsg, WPARAM wParam, LPARAM lParam
         }
         break;
     case WM_DRAWITEM:
-        if(wParam)	// not from a menu
+        if(wParam)    // not from a menu
             hWndChild = ((LPDRAWITEMSTRUCT)lParam)->hwndItem;
         break;
     case WM_MEASUREITEM:
-        if(wParam)	// not from a menu
+        if(wParam)    // not from a menu
             hWndChild = GetDlgItem(m_hWnd,((LPMEASUREITEMSTRUCT)lParam)->CtlID);
         break;
     case WM_COMPAREITEM:
-        if(wParam)	// not from a menu
+        if(wParam)    // not from a menu
             hWndChild =  ((LPCOMPAREITEMSTRUCT)lParam)->hwndItem;
         break;
     case WM_DELETEITEM:
-        if(wParam)	// not from a menu
+        if(wParam)    // not from a menu
             hWndChild =  ((LPDELETEITEMSTRUCT)lParam)->hwndItem;
 
         break;

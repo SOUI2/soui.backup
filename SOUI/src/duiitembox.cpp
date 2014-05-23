@@ -20,8 +20,8 @@ CDuiWindow* CDuiItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsure
 {
     CDuiStringA strXml=DUI_CW2A(pszXml,CP_UTF8);
 
-	pugi::xml_document xmlDoc;
-	if(!xmlDoc.load_buffer((LPCSTR)strXml,strXml.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return NULL;
+    pugi::xml_document xmlDoc;
+    if(!xmlDoc.load_buffer((LPCSTR)strXml,strXml.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return NULL;
 
     CDuiWindow *pChild=m_pFirstChild,*pPrevChild=ICWND_FIRST;
     for(int iChild=0; iChild<iItem || iItem==-1; iChild++)
@@ -49,30 +49,30 @@ CDuiWindow* CDuiItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsure
 
 CDuiWindow* CDuiItemBox::InsertItem(pugi::xml_node xmlNode,int iItem/*=-1*/,BOOL bEnsureVisible/*=FALSE*/)
 {
-	if (!xmlNode) return NULL;	
+    if (!xmlNode) return NULL;    
 
-	CDuiWindow *pChild=m_pFirstChild,*pPrevChild=ICWND_FIRST;
-	for(int iChild=0; iChild<iItem || iItem==-1; iChild++)
-	{
-		if(!pChild) break;
-		pPrevChild=pChild;
-		pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
-	}
+    CDuiWindow *pChild=m_pFirstChild,*pPrevChild=ICWND_FIRST;
+    for(int iChild=0; iChild<iItem || iItem==-1; iChild++)
+    {
+        if(!pChild) break;
+        pPrevChild=pChild;
+        pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
+    }
 
-	CDuiWindow *pPanel=new CDuiWindow;
-	InsertChild(pPanel, pPrevChild);
+    CDuiWindow *pPanel=new CDuiWindow;
+    InsertChild(pPanel, pPrevChild);
 
-	pPanel->LoadChildren(xmlNode);
-	pPanel->SetVisible(TRUE);
-	pPanel->SetFixSize(m_nItemWid,m_nItemHei);
+    pPanel->LoadChildren(xmlNode);
+    pPanel->SetVisible(TRUE);
+    pPanel->SetFixSize(m_nItemWid,m_nItemHei);
 
-	UpdateScroll();
-	ReLayout();
+    UpdateScroll();
+    ReLayout();
 
-	if(bEnsureVisible) EnsureVisible(pPanel);
+    if(bEnsureVisible) EnsureVisible(pPanel);
 
-	NotifyInvalidate();
-	return pPanel;
+    NotifyInvalidate();
+    return pPanel;
 }
 
 BOOL CDuiItemBox::RemoveItem(UINT iItem)
@@ -324,8 +324,8 @@ BOOL CDuiItemBox::LoadChildren(pugi::xml_node xmlNode)
     if(!xmlNode) return FALSE;
     RemoveAllItems();
 
-	pugi::xml_node xmlParent=xmlNode.parent();
-	pugi::xml_node xmlItem=xmlParent.child("item");
+    pugi::xml_node xmlParent=xmlNode.parent();
+    pugi::xml_node xmlItem=xmlParent.child("item");
 
     while(xmlItem)
     {

@@ -1,8 +1,8 @@
 /***********************************************************************
-	filename: 	DUISingleton.h
-	created:	25/8/2012
+    filename:     DUISingleton.h
+    created:    25/8/2012
 
-	purpose:	Singleton Base Class
+    purpose:    Singleton Base Class
 *************************************************************************/
 
 #pragma once

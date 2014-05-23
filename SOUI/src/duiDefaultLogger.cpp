@@ -49,7 +49,7 @@ DefaultLogger::DefaultLogger(void) :
     logEvent(_T("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"));
     logEvent(_T("+                     SOUI - Event log                                   +"));
     logEvent(_T("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"));
-	logEvent2(_T("SOUI::Logger singleton created: (%p)"),static_cast<void*>(this));
+    logEvent2(_T("SOUI::Logger singleton created: (%p)"),static_cast<void*>(this));
 }
 
 /*************************************************************************
@@ -59,8 +59,8 @@ DefaultLogger::~DefaultLogger(void)
 {
     if (d_pFile)
     {
-		FlushCaches();
-		logEvent2(_T("SOUI::Logger singleton destroyed: (%p)"),static_cast<void*>(this));
+        FlushCaches();
+        logEvent2(_T("SOUI::Logger singleton destroyed: (%p)"),static_cast<void*>(this));
         fclose(d_pFile);
     }
 }
@@ -117,12 +117,12 @@ void DefaultLogger::logEvent(LPCTSTR message, LoggingLevel level /* = Standard *
         }
         else if (d_level >= level)
         {
-			if(d_pFile)
-			{
-				// write message
-				fprintf(d_pFile,(LPCSTR)DUI_CT2A(strbuf));
-				fflush(d_pFile);
-			}
+            if(d_pFile)
+            {
+                // write message
+                fprintf(d_pFile,(LPCSTR)DUI_CT2A(strbuf));
+                fflush(d_pFile);
+            }
         }
     }
 }
@@ -136,28 +136,28 @@ void DefaultLogger::setLogFilename(LPCTSTR filename, bool append)
         d_pFile=NULL;
     }
     d_pFile=_tfopen(filename,append?_T("a+"):_T("w"));
-	FlushCaches();
+    FlushCaches();
 }
 
 void DefaultLogger::FlushCaches()
 {
-	if(!d_pFile) return;
-	// write out cached log strings.
-	if (d_caching)
-	{
-		d_caching = false;
+    if(!d_pFile) return;
+    // write out cached log strings.
+    if (d_caching)
+    {
+        d_caching = false;
 
-		for(UINT i=0; i<d_cache.GetCount(); i++)
-		{
-			if (d_level >= d_cache[i].level)
-			{
-				fprintf(d_pFile,(LPCSTR)DUI_CT2A(d_cache[i].msg));
-				fflush(d_pFile);
-			}
-		}
+        for(UINT i=0; i<d_cache.GetCount(); i++)
+        {
+            if (d_level >= d_cache[i].level)
+            {
+                fprintf(d_pFile,(LPCSTR)DUI_CT2A(d_cache[i].msg));
+                fflush(d_pFile);
+            }
+        }
 
-		d_cache.RemoveAll();
-	}
+        d_cache.RemoveAll();
+    }
 }
 
 } // End of  SOUI namespace section

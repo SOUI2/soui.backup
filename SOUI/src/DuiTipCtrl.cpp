@@ -4,10 +4,10 @@
 namespace SOUI
 {
 
-#define TIMERID_DELAY	1
-#define TIMERID_SPAN	2
+#define TIMERID_DELAY    1
+#define TIMERID_SPAN    2
 
-#define MARGIN_TIP		5
+#define MARGIN_TIP        5
 
 CDuiTipCtrl::CDuiTipCtrl(void):m_nDelay(500),m_nShowSpan(5000),m_dwHostID(0)
 {
@@ -68,7 +68,7 @@ void CDuiTipCtrl::UpdateTip(CRect rc, LPCTSTR pszTip,BOOL bText/*=TRUE*/ )
     m_rcTarget=rc;
     m_bTextTip=bText;
     m_strTip=pszTip;
-	m_strTip.Replace(_T("\\n"),_T("\r"));
+    m_strTip.Replace(_T("\\n"),_T("\r"));
     if(IsWindowVisible())
     {
         ShowTip(TRUE);
@@ -97,14 +97,14 @@ void CDuiTipCtrl::ShowTip(BOOL bShow)
         DrawText(hdc,m_strTip,-1,&rcText,DT_CALCRECT|DT_LEFT|DT_WORDBREAK);
         SelectObject(hdc,oldFont);
         ::ReleaseDC(NULL,hdc);
-		CRect rcWnd;
-		GetWindowRect(&rcWnd);
-		rcWnd.right=rcWnd.left+rcText.right+2*MARGIN_TIP;
-		rcWnd.bottom=rcWnd.top+rcText.bottom+2*MARGIN_TIP;
-		int cx = GetSystemMetrics(SM_CXSCREEN); 
-		int cy = GetSystemMetrics(SM_CYSCREEN);
-		if(rcWnd.right>cx) rcWnd.OffsetRect(cx-rcWnd.right,0);
-		if(rcWnd.bottom>cy) rcWnd.OffsetRect(0,cy-rcWnd.bottom);
+        CRect rcWnd;
+        GetWindowRect(&rcWnd);
+        rcWnd.right=rcWnd.left+rcText.right+2*MARGIN_TIP;
+        rcWnd.bottom=rcWnd.top+rcText.bottom+2*MARGIN_TIP;
+        int cx = GetSystemMetrics(SM_CXSCREEN); 
+        int cy = GetSystemMetrics(SM_CYSCREEN);
+        if(rcWnd.right>cx) rcWnd.OffsetRect(cx-rcWnd.right,0);
+        if(rcWnd.bottom>cy) rcWnd.OffsetRect(0,cy-rcWnd.bottom);
         SetWindowPos(HWND_TOPMOST,rcWnd.left,rcWnd.top,rcWnd.Width(),rcWnd.Height(),SWP_NOSENDCHANGING|SWP_SHOWWINDOW|SWP_NOACTIVATE);
     }
 }

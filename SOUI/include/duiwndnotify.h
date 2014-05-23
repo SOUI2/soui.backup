@@ -11,24 +11,24 @@ typedef ULONG_PTR HSTREEITEM;
 #include "DuiDef.h"
 
 #define IDC_RICHVIEW_WIN            2000
-#define UM_DUI_NOTIFY				(WM_USER+100)
+#define UM_DUI_NOTIFY                (WM_USER+100)
 namespace SOUI
 {
 class CDuiWindow;
 
 #define NOTIFY_HANDLER_SOUI(id, func) \
-	if (uMsg == UM_DUI_NOTIFY && wParam == IDC_RICHVIEW_WIN) \
-	{ \
-	SetMsgHandled(TRUE); \
-	lResult = func((LPDUINMHDR)lParam); \
-	if(IsMsgHandled()) \
-	return TRUE; \
-	}
+    if (uMsg == UM_DUI_NOTIFY && wParam == IDC_RICHVIEW_WIN) \
+    { \
+    SetMsgHandled(TRUE); \
+    lResult = func((LPDUINMHDR)lParam); \
+    if(IsMsgHandled()) \
+    return TRUE; \
+    }
 
 #define MSG_SOUI_NOTIFY() NOTIFY_HANDLER_SOUI(IDC_RICHVIEW_WIN,_OnDuiNotify)
 
 #define SOUI_NOTIFY_MAP_BEGIN()                   \
-    LRESULT _OnDuiNotify(LPDUINMHDR pnmh)		\
+    LRESULT _OnDuiNotify(LPDUINMHDR pnmh)        \
     {                                           \
         UINT_PTR  uCode = pnmh->code;           \
  
@@ -45,24 +45,24 @@ class CDuiWindow;
 
 // LRESULT OnDuiHandler(LPDUINMHDR pnmh)
 #define SOUI_NOTIFY_HANDLER(cd, func) \
-	if(cd == pnmh->code) \
+    if(cd == pnmh->code) \
 { \
-	return func(pnmh); \
+    return func(pnmh); \
 } 
 
 
 // LRESULT OnDuiIDHandler(LPDUINMHDR pnmh)
 #define SOUI_NOTIFY_ID_HANDLER(id, cd, func) \
-	if(cd == pnmh->code && id == pnmh->idFrom) \
-	{ \
-		return func(pnmh); \
-	}
+    if(cd == pnmh->code && id == pnmh->idFrom) \
+    { \
+        return func(pnmh); \
+    }
 
 // LRESULT OnDuiNameHandler(LPDUINMHDR pnmh)
 #define SOUI_NOTIFY_NAME_HANDLER(name, cd, func) \
-	if(cd == pnmh->code && pnmh->pszNameFrom!= NULL && strcmp(pnmh->pszNameFrom,name)==0) \
+    if(cd == pnmh->code && pnmh->pszNameFrom!= NULL && strcmp(pnmh->pszNameFrom,name)==0) \
 { \
-	return func(pnmh); \
+    return func(pnmh); \
 }
 
 // void OnDuiIDCommand()
@@ -74,21 +74,21 @@ class CDuiWindow;
     }                                                                       \
  
 // void OnDuiCommand()
-#define SOUI_NOTIFY_ID_COMMAND_RANGE(itemidbegin, itemidend, func)					\
-	if (NM_COMMAND == uCode && itemidbegin <= pnmh->idFrom	\
-		&& itemidend >= pnmh->idFrom )						\
-	{																			\
-		func(pnmh->idFrom);                                   \
-		return TRUE;															\
-	}																			\
+#define SOUI_NOTIFY_ID_COMMAND_RANGE(itemidbegin, itemidend, func)                    \
+    if (NM_COMMAND == uCode && itemidbegin <= pnmh->idFrom    \
+        && itemidend >= pnmh->idFrom )                        \
+    {                                                                            \
+        func(pnmh->idFrom);                                   \
+        return TRUE;                                                            \
+    }                                                                            \
 
 // void OnDuiNameCommand()
 #define SOUI_NOTIFY_NAME_COMMAND(name, func)                                  \
-	if (NM_COMMAND == uCode && pnmh->pszNameFrom!= NULL && strcmp(pnmh->pszNameFrom,name)==0)  \
-	{                                                                       \
-		func();                                                             \
-		return TRUE;                                                        \
-	}                                                                       \
+    if (NM_COMMAND == uCode && pnmh->pszNameFrom!= NULL && strcmp(pnmh->pszNameFrom,name)==0)  \
+    {                                                                       \
+        func();                                                             \
+        return TRUE;                                                        \
+    }                                                                       \
 
 
 // void OnDuiCommand(UINT uItemID)
@@ -103,18 +103,18 @@ class CDuiWindow;
 
 // LRESULT OnDuiContextMenu(CPoint pt)
 #define SOUI_NOTIFY_ID_CONTEXTMENU(id,func)                                      \
-	if (NM_CONTEXTMENU == uCode && pnmh->idFrom==id)                          \
+    if (NM_CONTEXTMENU == uCode && pnmh->idFrom==id)                          \
 {                                                                               \
-	func(((LPDUINMCONTEXTMENU)pnmh)->pt);										\
-	return TRUE;                                                                \
+    func(((LPDUINMCONTEXTMENU)pnmh)->pt);                                        \
+    return TRUE;                                                                \
 }                                                                               \
 
 
 // LRESULT OnDuiContextMenu(CPoint pt)
 #define SOUI_NOTIFY_NAME_CONTEXTMENU(name,func)                                      \
-	if (NM_CONTEXTMENU == uCode && pnmh->pszNameFrom!= NULL && strcmp(pnmh->pszNameFrom,name)==0) \
+    if (NM_CONTEXTMENU == uCode && pnmh->pszNameFrom!= NULL && strcmp(pnmh->pszNameFrom,name)==0) \
 {                                                                               \
-	return func(((LPDUINMCONTEXTMENU)pnmh)->pt);										\
+    return func(((LPDUINMCONTEXTMENU)pnmh)->pt);                                        \
 }                                                                               \
 
 
@@ -130,9 +130,9 @@ typedef struct _DUINMCOMMAND
 #define NM_CONTEXTMENU  2
 typedef struct _DUINMCONTEXTMENU
 {
-	DUINMHDR       hdr;
-	POINT		   pt;
-	ULONG_PTR   uItemData;
+    DUINMHDR       hdr;
+    POINT           pt;
+    ULONG_PTR   uItemData;
 } DUINMCONTEXTMENU, *LPDUINMCONTEXTMENU;
 
 
@@ -171,42 +171,42 @@ typedef struct _DUINMTABSELCHANGED
 
 // void OnDuiTabSelChanged(int nTabItemIDOld, int nTabItemIDNew)
 #define SOUI_NOTIFY_TAB_SELCHANGED(tabid, func)                                        \
-	if (NM_TAB_SELCHANGED == uCode && tabid == ((SOUI::LPDUINMTABSELCHANGE)pnmh)->uTabID) \
+    if (NM_TAB_SELCHANGED == uCode && tabid == ((SOUI::LPDUINMTABSELCHANGE)pnmh)->uTabID) \
 {                                                                               \
-	func(                                                           \
-	((LPDUINMTABSELCHANGE)pnmh)->uTabItemIDOld,                              \
-	((LPDUINMTABSELCHANGE)pnmh)->uTabItemIDNew);                             \
-	return TRUE;                                                                \
+    func(                                                           \
+    ((LPDUINMTABSELCHANGE)pnmh)->uTabItemIDOld,                              \
+    ((LPDUINMTABSELCHANGE)pnmh)->uTabItemIDNew);                             \
+    return TRUE;                                                                \
 }                                                                               \
  
-#define NM_TAB_ITEMHOVER	11
+#define NM_TAB_ITEMHOVER    11
 typedef struct _DUINMTABITEMHOVER
 {
     DUINMHDR       hdr;
     UINT        iItem;
-    CRect		rcItem;
+    CRect        rcItem;
 } DUINMTABITEMHOVER, *LPDUINMTABITEMHOVER;
 
 #define NM_TAB_ITEMLEAVE 12
 typedef DUINMTABITEMHOVER DUINMTABITEMLEAVE, *LPDUINMTABITEMLEAVE;
 
 class CDuiScrollBar;
-#define NM_SCROLL	14
+#define NM_SCROLL    14
 typedef struct tagDUINMSCROLL
 {
     DUINMHDR       hdr;
-    UINT		uSbCode;
-    int			nPos;
-    BOOL		bVertical;
+    UINT        uSbCode;
+    int            nPos;
+    BOOL        bVertical;
     CDuiScrollBar *pScrollBar;
 } DUINMSCROLL,*PDUINMSCROLL;
 
 // void OnDuiScroll(UINT uSbCode,int nPos,SOUI::CDuiScrollBar *pBar)
 #define SOUI_NOTIFY_SCROLL(id, func)                                  \
-	if (NM_SCROLL == uCode && id == pnmh->idFrom)  \
+    if (NM_SCROLL == uCode && id == pnmh->idFrom)  \
 {                                                                       \
-	func(((PDUINMSCROLL)pnmh)->uSbCode,((SOUI::PDUINMSCROLL)pnmh)->nPos,((SOUI::PDUINMSCROLL)pnmh)->pScrollBar);   \
-	return TRUE;                                                        \
+    func(((PDUINMSCROLL)pnmh)->uSbCode,((SOUI::PDUINMSCROLL)pnmh)->nPos,((SOUI::PDUINMSCROLL)pnmh)->pScrollBar);   \
+    return TRUE;                                                        \
 }
 
 class CDuiItemPanel;
@@ -217,20 +217,20 @@ class CDuiItemPanel;
 typedef struct tagDUINMITEMNOTIFY
 {
     DUINMHDR       hdr;
-    LPDUINMHDR		pOriginHdr;	//原始消息
+    LPDUINMHDR        pOriginHdr;    //原始消息
     CDuiItemPanel *pItem;
-    CDuiWindow *	pHostDuiWin;
+    CDuiWindow *    pHostDuiWin;
 } DUINMITEMNOTIFY, *LPDUINMITEMNOTIFY;
 
 
-#define NM_ITEMMOUSEEVENT	16
+#define NM_ITEMMOUSEEVENT    16
 typedef struct tagDUINMITEMMOUSEEVENT
 {
     DUINMHDR       hdr;
-    CDuiItemPanel *	pItem;
-    UINT		uMsg;
-    WPARAM		wParam;
-    LPARAM		lParam;
+    CDuiItemPanel *    pItem;
+    UINT        uMsg;
+    WPARAM        wParam;
+    LPARAM        lParam;
 } DUINMITEMMOUSEEVENT, *LPDUINMITEMMOUSEEVENT;
 
 
@@ -243,12 +243,12 @@ typedef struct tagDUINMGETLBDISPINFO
     int         nListItemID;
     BOOL        bHover;
     BOOL        bSelect;
-    CDuiItemPanel *	pItem;
-    CDuiWindow *	pHostDuiWin;
+    CDuiItemPanel *    pItem;
+    CDuiWindow *    pHostDuiWin;
 } DUINMGETLBDISPINFO, *LPDUINMGETLBDISPINFO;
 
 #define NM_LBSELCHANGING 18
-#define NM_LBSELCHANGED	19
+#define NM_LBSELCHANGED    19
 typedef struct tagDUINMLBSELCHANGE
 {
     DUINMHDR       hdr;
@@ -266,21 +266,21 @@ typedef struct tagDUINMGETTBDISPINFO
     HSTREEITEM  hItem;
     BOOL        bHover;
     BOOL        bSelect;
-    CDuiItemPanel *	pItem;
-    CDuiWindow *	pHostDuiWin;
+    CDuiItemPanel *    pItem;
+    CDuiWindow *    pHostDuiWin;
 } DUINMGETTBDISPINFO, *LPDUINMGETTBDISPINFO;
 
-#define NM_TBSELCHANGING	21
+#define NM_TBSELCHANGING    21
 typedef struct tagDUINMTBSELCHANGING
 {
-	DUINMHDR       hdr;
-	HSTREEITEM hNewSel;
-	HSTREEITEM hOldSel;
-	BOOL		bCancel;
+    DUINMHDR       hdr;
+    HSTREEITEM hNewSel;
+    HSTREEITEM hOldSel;
+    BOOL        bCancel;
 } DUINMTBSELCHANGING, *LPDUINMTBSELCHANGING;
 
 
-#define NM_TBSELCHANGED	22
+#define NM_TBSELCHANGED    22
 typedef struct tagDUINMTBSELCHANGED
 {
     DUINMHDR       hdr;
@@ -289,7 +289,7 @@ typedef struct tagDUINMTBSELCHANGED
 } DUINMTBSELCHANGED, *LPDUINMTBSELCHANGED;
 
 
-#define NM_RICHEDIT_NOTIFY	25
+#define NM_RICHEDIT_NOTIFY    25
 typedef struct tagDUIRICHEDITNOTIFY
 {
     DUINMHDR hdr;
@@ -298,55 +298,55 @@ typedef struct tagDUIRICHEDITNOTIFY
 } DUIRICHEDITNOTIFY,*LPDUIRICHEDITNOTIFY;
 
 class CDuiSliderBar;
-#define NM_SLIDER	30
+#define NM_SLIDER    30
 typedef struct tagDUINMSLIDER
 {
-	DUINMHDR hdr;
-	UINT uSbCode;
-	CDuiSliderBar *pSliderBar;
-	int	 nPos;
-	BOOL bVertical;
+    DUINMHDR hdr;
+    UINT uSbCode;
+    CDuiSliderBar *pSliderBar;
+    int     nPos;
+    BOOL bVertical;
 } DUINMSLIDER,*LPDUINMSLIDER;
 
 //headerctrl
-#define NM_HDCLICK	31	//点击表头
+#define NM_HDCLICK    31    //点击表头
 typedef struct tagDUINMHDCLICK
 {
-	DUINMHDR hdr;
-	int   iItem;
+    DUINMHDR hdr;
+    int   iItem;
 } DUINMHDCLICK,*LPDUINMHDCLICK;
 
-#define NM_HDSIZECHANGING	32	//调整表头宽度中
+#define NM_HDSIZECHANGING    32    //调整表头宽度中
 typedef struct tagDUINMHDSIZECHANGING
 {
-	DUINMHDR hdr;
-	int   iItem;
-	int   nWidth;
+    DUINMHDR hdr;
+    int   iItem;
+    int   nWidth;
 } DUINMHDSIZECHANGING,*LPDUINMHDSIZECHANGING;
 
-#define NM_HDSIZECHANGED	33	//调整表头宽度完成
+#define NM_HDSIZECHANGED    33    //调整表头宽度完成
 typedef struct tagDUINMHDSIZECHANGED
 {
-	DUINMHDR hdr;
-	int   iItem;
-	int   nWidth;
+    DUINMHDR hdr;
+    int   iItem;
+    int   nWidth;
 } DUINMHDSIZECHANGED,*LPDUINMHDSIZECHANGED;
 
-#define NM_HDSWAP	34	//拖动表项调整位置
+#define NM_HDSWAP    34    //拖动表项调整位置
 typedef struct tagDUINMHDSWAP
 {
-	DUINMHDR hdr;
-	int   iOldIndex;
-	int	  iNewIndex;
+    DUINMHDR hdr;
+    int   iOldIndex;
+    int      iNewIndex;
 } DUINMHDSWAP,*LPDUINMHDSWAP;
 
 //calendar
-#define NM_CALENDAR_SELECTDAY	40
+#define NM_CALENDAR_SELECTDAY    40
 typedef struct tagDUINMCALENDARSELECTDAY
 {
-	DUINMHDR hdr;
-	WORD   wOldDay;
-	WORD   wNewDay;
+    DUINMHDR hdr;
+    WORD   wOldDay;
+    WORD   wNewDay;
 } DUINMCALENDARSELECTDAY,*LPDUINMCALENDARSELECTDAY;
 
 
@@ -355,30 +355,30 @@ typedef struct tagDUINMCALENDARSELECTDAY
 //////////////////////////////////////////////////////////////////////////
 //  internal notify message
 
-#define NM_INTERNAL_FIRST	1000
-#define NM_INTERNAL_LAST		2000
+#define NM_INTERNAL_FIRST    1000
+#define NM_INTERNAL_LAST        2000
 
 class CDuiRealWnd;
 
 typedef struct _DUINMREALWNDCMN
 {
     DUINMHDR       hdr;
-	CDuiRealWnd	* pRealWnd;
+    CDuiRealWnd    * pRealWnd;
 } DUINMREALWNDCMN, *LPDUINMREALWNDCMN;
 
 typedef struct _DUINMREALWNDMSGPROC
 {
     DUINMHDR       hdr;
-    HWND		hWnd;
-    UINT		uMsg;
-    WPARAM		wParam;
-    LPARAM		lParam;
-    BOOL		bMsgHandled;
+    HWND        hWnd;
+    UINT        uMsg;
+    WPARAM        wParam;
+    LPARAM        lParam;
+    BOOL        bMsgHandled;
 } DUINMREALWNDMSGPROC;
 
-#define NM_REALWND_CREATE	NM_INTERNAL_FIRST
-#define NM_REALWND_INIT		(NM_INTERNAL_FIRST+1)
-#define NM_REALWND_DESTROY	(NM_INTERNAL_FIRST+2)
-#define NM_REALWND_SIZE	(NM_INTERNAL_FIRST+3)
+#define NM_REALWND_CREATE    NM_INTERNAL_FIRST
+#define NM_REALWND_INIT        (NM_INTERNAL_FIRST+1)
+#define NM_REALWND_DESTROY    (NM_INTERNAL_FIRST+2)
+#define NM_REALWND_SIZE    (NM_INTERNAL_FIRST+3)
 
 }//namespace SOUI

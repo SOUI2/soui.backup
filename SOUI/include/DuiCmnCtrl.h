@@ -3,7 +3,7 @@
 // Description: DuiWindow Common Controls
 //     Creator: Zhang Xiaoxuan
 //     Version: 2009.04.28 - 1.0 - Create
-//				2014.02.05 - 2.0 huang jianxiong
+//                2014.02.05 - 2.0 huang jianxiong
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -53,7 +53,7 @@ public:
     CDuiStatic():m_bMultiLines(0),m_nLineInter(5)
     {
         m_bMsgTransparent=TRUE;
-		m_style.SetAttribute("align","left");
+        m_style.SetAttribute("align","left");
     }
     virtual void DuiDrawText(HDC hdc,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
 
@@ -77,10 +77,10 @@ class SOUI_EXP CDuiLink : public CDuiWindow
     SOUI_CLASS_NAME(CDuiLink, "link")
 
 public:
-	CDuiLink()
-	{
-		m_style.SetAttribute("align","left");
-	}
+    CDuiLink()
+    {
+        m_style.SetAttribute("align","left");
+    }
 
 protected:
     virtual void OnAttributeFinish(pugi::xml_node xmlNode);
@@ -93,10 +93,10 @@ protected:
     void OnMouseHover(WPARAM wParam, CPoint ptPos);
 
     WND_MSG_MAP_BEGIN()
-		MSG_WM_LBUTTONDOWN(OnLButtonDown)
-		MSG_WM_LBUTTONUP(OnLButtonUp)
-		MSG_WM_MOUSEMOVE(OnMouseMove)
-		MSG_WM_MOUSEHOVER(OnMouseHover)
+        MSG_WM_LBUTTONDOWN(OnLButtonDown)
+        MSG_WM_LBUTTONUP(OnLButtonUp)
+        MSG_WM_MOUSEMOVE(OnMouseMove)
+        MSG_WM_MOUSEHOVER(OnMouseHover)
     WND_MSG_MAP_END()
 
     CRect m_rcText;
@@ -109,8 +109,8 @@ protected:
 // Usage: <button id=xx>inner text example</button>
 //
 class SOUI_EXP CDuiButton : public CDuiWindow
-	, public IAcceleratorTarget
-	, public ITimelineHandler
+    , public IAcceleratorTarget
+    , public ITimelineHandler
 {
     SOUI_CLASS_NAME(CDuiButton, "button")
 public:
@@ -127,60 +127,60 @@ protected:
         return DUIC_WANTCHARS;
     }
 
-	virtual bool OnAcceleratorPressed(const CAccelerator& accelerator);
+    virtual bool OnAcceleratorPressed(const CAccelerator& accelerator);
 protected:
-	virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
-	virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState);
-	
-	void OnPaint(CDCHandle dc);
+    virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState);
+    
+    void OnPaint(CDCHandle dc);
 
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
-	void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+    void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 
-	void OnDestroy();
+    void OnDestroy();
 
-	void OnSize(UINT nType, CSize size);
+    void OnSize(UINT nType, CSize size);
 
-	BOOL OnEraseBkgnd(CDCHandle dc){return TRUE;}
+    BOOL OnEraseBkgnd(CDCHandle dc){return TRUE;}
 
-	HRESULT OnAttrAccel(CDuiStringA strAccel,BOOL bLoading);
+    HRESULT OnAttrAccel(CDuiStringA strAccel,BOOL bLoading);
 
 protected:
-	virtual void OnNextFrame();
+    virtual void OnNextFrame();
 
-	void StopCurAnimate();
+    void StopCurAnimate();
 
-	DWORD		  m_accel;
+    DWORD          m_accel;
 
-	BOOL		  m_bAnimate;//动画标志
-	BYTE		  m_byAlphaAni;	//动画状态
+    BOOL          m_bAnimate;//动画标志
+    BYTE          m_byAlphaAni;    //动画状态
 public:
     SOUO_ATTRIBUTES_BEGIN()
-		DUIWIN_CUSTOM_ATTRIBUTE("accel",OnAttrAccel)
-		DUIWIN_INT_ATTRIBUTE("animate", m_bAnimate, FALSE)
+        DUIWIN_CUSTOM_ATTRIBUTE("accel",OnAttrAccel)
+        DUIWIN_INT_ATTRIBUTE("animate", m_bAnimate, FALSE)
     SOUI_ATTRIBUTES_END()
 
     WND_MSG_MAP_BEGIN()
-		MSG_WM_PAINT(OnPaint)
-		MSG_WM_ERASEBKGND(OnEraseBkgnd)
-		MSG_WM_LBUTTONDOWN(OnLButtonDown)
-		MSG_WM_KEYDOWN(OnKeyDown)
-		MSG_WM_KEYUP(OnKeyUp)
-		MSG_WM_DESTROY(OnDestroy)
-		MSG_WM_SIZE(OnSize)
+        MSG_WM_PAINT(OnPaint)
+        MSG_WM_ERASEBKGND(OnEraseBkgnd)
+        MSG_WM_LBUTTONDOWN(OnLButtonDown)
+        MSG_WM_KEYDOWN(OnKeyDown)
+        MSG_WM_KEYUP(OnKeyUp)
+        MSG_WM_DESTROY(OnDestroy)
+        MSG_WM_SIZE(OnSize)
     WND_MSG_MAP_END()
 };
 
 class SOUI_EXP CDuiImageBtnWnd : public CDuiButton
 {
-	SOUI_CLASS_NAME(CDuiImageBtnWnd, "imgbtn")
+    SOUI_CLASS_NAME(CDuiImageBtnWnd, "imgbtn")
 public:
-	CDuiImageBtnWnd()
-	{
-		m_bTabStop=FALSE;
-	}
+    CDuiImageBtnWnd()
+    {
+        m_bTabStop=FALSE;
+    }
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -203,9 +203,9 @@ public:
 
     BOOL SetIcon(int nSubID);
 
-	CDuiSkinBase * GetSkin(){return m_pSkin;}
+    CDuiSkinBase * GetSkin(){return m_pSkin;}
 protected:
-	virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
     BOOL m_bManaged;
     int m_nSubImageID;
@@ -234,20 +234,20 @@ public:
 
     void Stop();
 
-	BOOL IsPlaying(){return m_bPlaying;}
+    BOOL IsPlaying(){return m_bPlaying;}
 protected:
-	virtual CSize GetDesiredSize(LPRECT pRcContainer);
-	virtual void OnNextFrame();
+    virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual void OnNextFrame();
 
-	void OnPaint(CDCHandle dc);
+    void OnPaint(CDCHandle dc);
 
-	void OnShowWindow(BOOL bShow, UINT nStatus);
-	void OnDestroy();
+    void OnShowWindow(BOOL bShow, UINT nStatus);
+    void OnDestroy();
 
     WND_MSG_MAP_BEGIN()
-		MSG_WM_PAINT(OnPaint)
-		MSG_WM_DESTROY(OnDestroy)
-		MSG_WM_SHOWWINDOW(OnShowWindow)
+        MSG_WM_PAINT(OnPaint)
+        MSG_WM_DESTROY(OnDestroy)
+        MSG_WM_SHOWWINDOW(OnShowWindow)
     WND_MSG_MAP_END()
 
     SOUO_ATTRIBUTES_BEGIN()
@@ -258,10 +258,10 @@ protected:
 
 protected:
     CDuiSkinBase *m_pSkin;
-    int			  m_nSpeed;
-    int			  m_iCurFrame;
-    BOOL		  m_bAutoStart;
-	BOOL		  m_bPlaying;
+    int              m_nSpeed;
+    int              m_iCurFrame;
+    BOOL          m_bAutoStart;
+    BOOL          m_bPlaying;
 };
 //////////////////////////////////////////////////////////////////////////
 // Progress Control
@@ -278,25 +278,25 @@ public:
 
     BOOL SetValue(int nValue);
 
-	int GetValue(){return m_nValue;}
+    int GetValue(){return m_nValue;}
 
-	void SetRange(int nMin,int nMax);
+    void SetRange(int nMin,int nMax);
 
-	void GetRange(int *pMin,int *pMax);
+    void GetRange(int *pMin,int *pMax);
 
-	BOOL IsVertical(){return m_bVertical;}
+    BOOL IsVertical(){return m_bVertical;}
 protected:
 
-	virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
-	void OnPaint(CDCHandle dc);
+    void OnPaint(CDCHandle dc);
 
     int m_nMinValue;
     int m_nMaxValue;
     int m_nValue;
 
     BOOL m_bShowPercent;
-	BOOL	m_bVertical;
+    BOOL    m_bVertical;
 
     CDuiSkinBase *m_pSkinBg;
     CDuiSkinBase *m_pSkinPos;
@@ -338,21 +338,21 @@ protected:
     int m_nLineSize;
     BOOL m_bLineShadow;
     COLORREF m_crShadow;
-	enum HRMODE{
-		HR_HORZ=0,
-		HR_VERT,
-		HR_TILT,
-	}m_mode;
+    enum HRMODE{
+        HR_HORZ=0,
+        HR_VERT,
+        HR_TILT,
+    }m_mode;
 
     SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("size", m_nLineSize, FALSE)
     DUIWIN_UINT_ATTRIBUTE("shadow", m_bLineShadow, FALSE)
     DUIWIN_COLOR_ATTRIBUTE("crshadow", m_crShadow, FALSE)
-	DUIWIN_ENUM_ATTRIBUTE("mode", HRMODE, FALSE)
-		DUIWIN_ENUM_VALUE("vertical", HR_VERT)
-		DUIWIN_ENUM_VALUE("horizon", HR_VERT)
-		DUIWIN_ENUM_VALUE("tilt", HR_VERT)
-	DUIWIN_ENUM_END(m_mode)
+    DUIWIN_ENUM_ATTRIBUTE("mode", HRMODE, FALSE)
+        DUIWIN_ENUM_VALUE("vertical", HR_VERT)
+        DUIWIN_ENUM_VALUE("horizon", HR_VERT)
+        DUIWIN_ENUM_VALUE("tilt", HR_VERT)
+    DUIWIN_ENUM_END(m_mode)
     DUIWIN_ENUM_ATTRIBUTE("style", int, FALSE)
     DUIWIN_ENUM_VALUE("solid", PS_SOLID)             // default
     DUIWIN_ENUM_VALUE("dash", PS_DASH)               /* -------  */
@@ -392,11 +392,11 @@ protected:
     CDuiSkinBase *m_pFocusSkin;
 
     UINT _GetDrawState();
-	CRect GetCheckRect();
+    CRect GetCheckRect();
 
-	virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
-	virtual void GetTextRect(LPRECT pRect);
+    virtual void GetTextRect(LPRECT pRect);
 
     virtual BOOL NeedRedrawWhenStateChange()
     {
@@ -417,15 +417,15 @@ protected:
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
     SOUO_ATTRIBUTES_BEGIN()
-		DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
-		DUIWIN_SKIN_ATTRIBUTE("focusskin", m_pFocusSkin, FALSE)
+        DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
+        DUIWIN_SKIN_ATTRIBUTE("focusskin", m_pFocusSkin, FALSE)
     SOUI_ATTRIBUTES_END()
 
     WND_MSG_MAP_BEGIN()
-		MSG_WM_PAINT(OnPaint)
-		MSG_WM_LBUTTONDOWN(OnLButtonDown)
-		MSG_WM_LBUTTONUP(OnLButtonUp)
-		MSG_WM_KEYDOWN(OnKeyDown)
+        MSG_WM_PAINT(OnPaint)
+        MSG_WM_LBUTTONDOWN(OnLButtonDown)
+        MSG_WM_LBUTTONUP(OnLButtonUp)
+        MSG_WM_KEYDOWN(OnKeyDown)
     WND_MSG_MAP_END()
 };
 
@@ -449,7 +449,7 @@ public:
 
     void LoadIconFile( LPCTSTR lpFIleName );
 protected:
-	virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
     void _ReloadIcon();
 
@@ -496,10 +496,10 @@ protected:
     CDuiSkinBase *m_pFocusSkin;
 
     UINT _GetDrawState();
-	CRect GetRadioRect();
-	virtual void GetTextRect(LPRECT pRect);
+    CRect GetRadioRect();
+    virtual void GetTextRect(LPRECT pRect);
 
-	virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
     virtual BOOL NeedRedrawWhenStateChange();
 
@@ -510,11 +510,11 @@ protected:
         return 0;
     }
 
-	virtual BOOL IsSiblingsAutoGroupped() {return TRUE;}
+    virtual BOOL IsSiblingsAutoGroupped() {return TRUE;}
 
     void OnLButtonDown(UINT nFlags, CPoint point);
 
-	void OnSetDuiFocus();
+    void OnSetDuiFocus();
 
 
     SOUO_ATTRIBUTES_BEGIN()
@@ -525,7 +525,7 @@ protected:
     WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
-	MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
+    MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
     WND_MSG_MAP_END()
 };
 
@@ -542,8 +542,8 @@ public:
 protected:
     void OnPaint(CDCHandle dc);
     void OnLButtonUp(UINT nFlags,CPoint pt);
-	virtual CSize GetDesiredSize(LPRECT pRcContainer);
-	virtual BOOL NeedRedrawWhenStateChange(){return TRUE;}
+    virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual BOOL NeedRedrawWhenStateChange(){return TRUE;}
 
     SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("toggled", m_bToggled, TRUE)
@@ -556,7 +556,7 @@ protected:
     WND_MSG_MAP_END()
 protected:
     BOOL m_bToggled;
-	CDuiSkinBase *m_pSkin;
+    CDuiSkinBase *m_pSkin;
 };
 
 //<group crline1="b8d5e2" crline2="999999">group text</>
@@ -569,7 +569,7 @@ public:
 protected:
     void OnPaint(CDCHandle dc);
     COLORREF m_crLine1,m_crLine2;
-    int		 m_nRound;
+    int         m_nRound;
 public:
     SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_COLOR_ATTRIBUTE("crline1", m_crLine1, FALSE)

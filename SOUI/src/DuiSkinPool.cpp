@@ -20,15 +20,15 @@ DuiSkinPool::~DuiSkinPool()
 
 BOOL DuiSkinPool::Init(pugi::xml_node xmlNode)
 {
-	if (strcmp(xmlNode.name(), "skins") != 0)
-	{
-		DUIASSERT(FALSE);
-		return FALSE;
-	}
+    if (strcmp(xmlNode.name(), "skins") != 0)
+    {
+        DUIASSERT(FALSE);
+        return FALSE;
+    }
 
-	m_xmlSkinDesc.append_copy(xmlNode);
-	LoadSkins("");
-	return TRUE;
+    m_xmlSkinDesc.append_copy(xmlNode);
+    LoadSkins("");
+    return TRUE;
 }
 
 int DuiSkinPool::LoadSkins(LPCSTR strOwnerName)
@@ -36,20 +36,20 @@ int DuiSkinPool::LoadSkins(LPCSTR strOwnerName)
     int nLoaded=0;
     CDuiStringA strSkinName, strTypeName;
 
-	pugi::xml_node xmlSkin=m_xmlSkinDesc.child("skins").first_child();
+    pugi::xml_node xmlSkin=m_xmlSkinDesc.child("skins").first_child();
     while(xmlSkin)
     {
         CDuiStringA strOwner= xmlSkin.attribute("owner").value();
         if(strOwner==strOwnerName)
         {
-			strTypeName = xmlSkin.name();
+            strTypeName = xmlSkin.name();
             strSkinName = xmlSkin.attribute("name").value();
 
             if (strSkinName.IsEmpty() || strTypeName.IsEmpty())
                 continue;
 
             DUIASSERT(!HasKey(strSkinName));
-			CDuiSkinBase *pSkin=DuiSystem::getSingleton().CreateSkinByName(strTypeName);
+            CDuiSkinBase *pSkin=DuiSystem::getSingleton().CreateSkinByName(strTypeName);
             if(pSkin)
             {
                 pSkin->Load(xmlSkin);
@@ -62,7 +62,7 @@ int DuiSkinPool::LoadSkins(LPCSTR strOwnerName)
                 DUIRES_ASSERTA(FALSE,"load skin error,type=%s,name=%s",strTypeName,strSkinName);
             }
         }
-		xmlSkin=xmlSkin.next_sibling();
+        xmlSkin=xmlSkin.next_sibling();
     }
 
     return nLoaded;
@@ -92,16 +92,16 @@ int DuiSkinPool::FreeSkins( LPCSTR strOwnerName )
 CDuiSkinBase* DuiSkinPool::GetSkin(LPCSTR strSkinName)
 {
     if(!HasKey(strSkinName))
-	{
-		DUIRES_ASSERTA(FALSE,"GetSkin[%s] Failed!",strSkinName);
-		return NULL;
-	}
+    {
+        DUIRES_ASSERTA(FALSE,"GetSkin[%s] Failed!",strSkinName);
+        return NULL;
+    }
     return GetKeyObject(strSkinName);
 }
 
 void DuiSkinPool::OnKeyRemoved(const DuiSkinPtr & obj )
 {
-	obj->Release();
+    obj->Release();
 }
 
 }//namespace SOUI

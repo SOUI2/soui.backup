@@ -45,47 +45,47 @@ void DuiWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(CDuiSplitWnd_Col::GetClassName(),new TplDuiWindowFactory<CDuiSplitWnd_Col>);
     AddKeyObject(CDuiSplitWnd_Row::GetClassName(),new TplDuiWindowFactory<CDuiSplitWnd_Row>);
     AddKeyObject(CDuiComboBox::GetClassName(),new TplDuiWindowFactory<CDuiComboBox>);
-	AddKeyObject(CDuiComboBoxEx::GetClassName(),new TplDuiWindowFactory<CDuiComboBoxEx>);
+    AddKeyObject(CDuiComboBoxEx::GetClassName(),new TplDuiWindowFactory<CDuiComboBoxEx>);
     AddKeyObject(CDuiHotKeyCtrl::GetClassName(),new TplDuiWindowFactory<CDuiHotKeyCtrl>);
     AddKeyObject(CDuiCaption::GetClassName(),new TplDuiWindowFactory<CDuiCaption>);
     AddKeyObject(CDuiSliderBar::GetClassName(),new TplDuiWindowFactory<CDuiSliderBar>);
- 	AddKeyObject(CDuiActiveX::GetClassName(),new TplDuiWindowFactory<CDuiActiveX>);
- 	AddKeyObject(CDuiFlashCtrl::GetClassName(),new TplDuiWindowFactory<CDuiFlashCtrl>);
- 	AddKeyObject(CDuiMediaPlayer::GetClassName(),new TplDuiWindowFactory<CDuiMediaPlayer>);
-	AddKeyObject(CDuiMaskEdit::GetClassName(),new TplDuiWindowFactory<CDuiMaskEdit>);
-	AddKeyObject(CDuiDateEdit::GetClassName(),new TplDuiWindowFactory<CDuiDateEdit>);
-	AddKeyObject(CDuiTimeEdit::GetClassName(),new TplDuiWindowFactory<CDuiTimeEdit>);
-	AddKeyObject(CDuiCalendar::GetClassName(),new TplDuiWindowFactory<CDuiCalendar>);
-	AddKeyObject(CDuiHeaderCtrl::GetClassName(),new TplDuiWindowFactory<CDuiHeaderCtrl>);
-	AddKeyObject(CDuiListCtrl::GetClassName(),new TplDuiWindowFactory<CDuiListCtrl>);
+     AddKeyObject(CDuiActiveX::GetClassName(),new TplDuiWindowFactory<CDuiActiveX>);
+     AddKeyObject(CDuiFlashCtrl::GetClassName(),new TplDuiWindowFactory<CDuiFlashCtrl>);
+     AddKeyObject(CDuiMediaPlayer::GetClassName(),new TplDuiWindowFactory<CDuiMediaPlayer>);
+    AddKeyObject(CDuiMaskEdit::GetClassName(),new TplDuiWindowFactory<CDuiMaskEdit>);
+    AddKeyObject(CDuiDateEdit::GetClassName(),new TplDuiWindowFactory<CDuiDateEdit>);
+    AddKeyObject(CDuiTimeEdit::GetClassName(),new TplDuiWindowFactory<CDuiTimeEdit>);
+    AddKeyObject(CDuiCalendar::GetClassName(),new TplDuiWindowFactory<CDuiCalendar>);
+    AddKeyObject(CDuiHeaderCtrl::GetClassName(),new TplDuiWindowFactory<CDuiHeaderCtrl>);
+    AddKeyObject(CDuiListCtrl::GetClassName(),new TplDuiWindowFactory<CDuiListCtrl>);
 }
 
 void DuiWindowFactoryMgr::OnWndFactoryRemoved( const CDuiWindowFactoryPtr & obj )
 {
-	delete obj;
+    delete obj;
 }
 
 CDuiWindow * DuiWindowFactoryMgr::CreateWindowByName( LPCSTR pszClassName )
 {
-	if(!HasKey(pszClassName))
-	{
-		DuiTraceA("CreateWindowByName,Warning: no window type:%s in DuiSystem!!",pszClassName);
-		return NULL;
-	}
-	return GetKeyObject(pszClassName)->NewWindow();
+    if(!HasKey(pszClassName))
+    {
+        DuiTraceA("CreateWindowByName,Warning: no window type:%s in DuiSystem!!",pszClassName);
+        return NULL;
+    }
+    return GetKeyObject(pszClassName)->NewWindow();
 }
 
 LPCSTR DuiWindowFactoryMgr::BaseClassNameFromClassName( LPCSTR pszClassName )
 {
-	if(!HasKey(pszClassName))
-	{
-		DuiTraceA("BaseClassNameFromClassName, Warning: no window type:%s in DuiSystem!!",pszClassName);
-		return NULL;
-	}
-	LPCSTR pszBaseClassName=GetKeyObject(pszClassName)->DuiWindowBaseName();
-	if(!pszBaseClassName) return NULL;
-	//注意，baseClassName可能与ClassName相同，为了避免死循环，这里需要判断一下。
-	if(strcmp(pszBaseClassName,pszClassName)==0) return NULL;
-	return pszBaseClassName;
+    if(!HasKey(pszClassName))
+    {
+        DuiTraceA("BaseClassNameFromClassName, Warning: no window type:%s in DuiSystem!!",pszClassName);
+        return NULL;
+    }
+    LPCSTR pszBaseClassName=GetKeyObject(pszClassName)->DuiWindowBaseName();
+    if(!pszBaseClassName) return NULL;
+    //注意，baseClassName可能与ClassName相同，为了避免死循环，这里需要判断一下。
+    if(strcmp(pszBaseClassName,pszClassName)==0) return NULL;
+    return pszBaseClassName;
 }
 }//namesspace SOUI

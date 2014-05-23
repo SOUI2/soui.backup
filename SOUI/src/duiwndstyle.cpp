@@ -15,7 +15,7 @@ namespace SOUI
 
 DuiStyle::DuiStyle()
     : m_uAlign(Align_Center)
-	, m_uVAlign(VAlign_Middle)
+    , m_uVAlign(VAlign_Middle)
     , m_nTextAlign(0)
     , m_crBg(CLR_INVALID)
     , m_crBgHover(CLR_INVALID)
@@ -23,8 +23,8 @@ DuiStyle::DuiStyle()
     , m_crHoverText(CLR_INVALID)
     , m_crDisabledText(RGB(0xA0, 0xA0, 0xA0))
     , m_crPushText(CLR_INVALID)
-	, m_crBorder(CLR_INVALID)
-	, m_crBorderHover(CLR_INVALID)
+    , m_crBorder(CLR_INVALID)
+    , m_crBorderHover(CLR_INVALID)
     , m_ftText(NULL)
     , m_ftHover(NULL)
     , m_ftPush(NULL)
@@ -39,20 +39,20 @@ DuiStyle::DuiStyle()
 
 UINT DuiStyle::GetTextAlign()
 {
-	if(m_nTextAlign) return m_nTextAlign;
-	UINT uRet=0;
-	switch(m_uAlign)
-	{
-	case Align_Center: uRet |= DT_CENTER;break;
-	case Align_Right: uRet|= DT_RIGHT;break;
-	}
-	switch(m_uVAlign)
-	{
-	case VAlign_Middle:uRet |= DT_VCENTER|DT_SINGLELINE;break;
-	case VAlign_Bottom:uRet|= DT_BOTTOM|DT_SINGLELINE;break;
-	}
-	if(m_bDotted) uRet|=DT_END_ELLIPSIS;
-	return uRet;
+    if(m_nTextAlign) return m_nTextAlign;
+    UINT uRet=0;
+    switch(m_uAlign)
+    {
+    case Align_Center: uRet |= DT_CENTER;break;
+    case Align_Right: uRet|= DT_RIGHT;break;
+    }
+    switch(m_uVAlign)
+    {
+    case VAlign_Middle:uRet |= DT_VCENTER|DT_SINGLELINE;break;
+    case VAlign_Bottom:uRet|= DT_BOTTOM|DT_SINGLELINE;break;
+    }
+    if(m_bDotted) uRet|=DT_END_ELLIPSIS;
+    return uRet;
 }
 
 

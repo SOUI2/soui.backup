@@ -15,7 +15,7 @@
 **
 ** File:        AtlActiveXContainer.hpp
 ** Version:     1.1 - Support for windowless keyboard events
-**				1.2 - Reconstructed by hjx 2013-11-05
+**                1.2 - Reconstructed by hjx 2013-11-05
 */
 #ifndef ATLACTIVEXCONTAINER_HPP
 #define ATLACTIVEXCONTAINER_HPP
@@ -31,12 +31,12 @@ namespace SOUI
 
 struct IAxHostDelegate
 {
-	virtual HWND GetAxHostWindow() const = 0;
-	virtual void OnAxActivate(IUnknown *pCtrl) = 0;
-	virtual void OnAxInvalidate(LPCRECT pRect,BOOL bErase) = 0;
-	virtual void OnAxSetCapture(BOOL fCapture) = 0;
-	virtual HRESULT OnAxGetDC(LPCRECT pRect, DWORD grfFlags, HDC *phDC)=0;
-	virtual HRESULT OnAxReleaseDC(HDC hdc)=0;
+    virtual HWND GetAxHostWindow() const = 0;
+    virtual void OnAxActivate(IUnknown *pCtrl) = 0;
+    virtual void OnAxInvalidate(LPCRECT pRect,BOOL bErase) = 0;
+    virtual void OnAxSetCapture(BOOL fCapture) = 0;
+    virtual HRESULT OnAxGetDC(LPCRECT pRect, DWORD grfFlags, HDC *phDC)=0;
+    virtual HRESULT OnAxReleaseDC(HDC hdc)=0;
 };
 
 /**
@@ -53,14 +53,14 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
     public:
     ActiveXSite()
     : m_pAxHostDelegate(NULL)
-	, m_bVisible(true)
+    , m_bVisible(true)
     , m_bInplaceActive(false)
     , m_dwMiscStatus(0)
-	, m_dwOleObjSink(0)
+    , m_dwOleObjSink(0)
     , m_dwViewObjectType(0)
-	, m_grfFlags(0)
-	, m_bCaptured(FALSE)
-	, m_bFocused(FALSE)
+    , m_grfFlags(0)
+    , m_bCaptured(FALSE)
+    , m_bFocused(FALSE)
     {
         memset(&m_rcPos, 0, sizeof(m_rcPos));
     }
@@ -70,28 +70,28 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
         Clear();
     }
 
-	void SetAxHost(IAxHostDelegate *pAxHost)
-	{
-		m_pAxHostDelegate=pAxHost;
-	}
+    void SetAxHost(IAxHostDelegate *pAxHost)
+    {
+        m_pAxHostDelegate=pAxHost;
+    }
 
-	void SetExternalUIHandler(IDocHostUIHandler *pUiHandler)
-	{
-		m_spDocHostUIHandler=pUiHandler;
-	}
+    void SetExternalUIHandler(IDocHostUIHandler *pUiHandler)
+    {
+        m_spDocHostUIHandler=pUiHandler;
+    }
 
     IUnknown* GetActiveXControl()
     {
         return m_spControl;
     }
 
-	void Init(IUnknown* pControl,LPCRECT pRect)
+    void Init(IUnknown* pControl,LPCRECT pRect)
     {
         m_spControl = pControl;
         m_spOleObject = pControl;
         m_spInPlaceObject = pControl;
         m_spOleObjectWindowless = pControl;
-		OnPosRectChange(pRect);
+        OnPosRectChange(pRect);
     }
 
     void Clear()
@@ -115,7 +115,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
             }
             if (m_spOleObject != NULL)
             {
-				m_spOleObject->Unadvise(m_dwOleObjSink);
+                m_spOleObject->Unadvise(m_dwOleObjSink);
                 m_spOleObject->SetClientSite(NULL);
                 m_spOleObject->Close(OLECLOSE_NOSAVE);
                 m_spOleObject.Release();
@@ -126,7 +126,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
 
     HRESULT InitControl(IStream* pStream = NULL)
     {
-		if( m_spControl == 0) return E_NOINTERFACE;
+        if( m_spControl == 0) return E_NOINTERFACE;
         HRESULT hr = E_POINTER;
         CDuiComQIPtr<IPersistStreamInit> spPSI = m_spControl;
         if ( spPSI != NULL )
@@ -157,13 +157,13 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
             if (FAILED(hr)) return hr;
         }
 
-		hr = InitControl(pStream);
-		if ( FAILED(hr) )
-		{
-			if (m_dwMiscStatus & OLEMISC_SETCLIENTSITEFIRST)
-				m_spOleObject->SetClientSite(NULL);
-			return hr;
-		}
+        hr = InitControl(pStream);
+        if ( FAILED(hr) )
+        {
+            if (m_dwMiscStatus & OLEMISC_SETCLIENTSITEFIRST)
+                m_spOleObject->SetClientSite(NULL);
+            return hr;
+        }
 
 
         hr = DoInplaceActivate();
@@ -199,7 +199,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
         }
         else if (m_spOleObject != NULL)
         {
-			HWND hHost=m_pAxHostDelegate->GetAxHostWindow();
+            HWND hHost=m_pAxHostDelegate->GetAxHostWindow();
             hr = m_spOleObject->DoVerb(verb, NULL, static_cast<IOleClientSite*>(this), 0,m_pAxHostDelegate->GetAxHostWindow(), &m_rcPos);
             if (verb == OLEIVERB_INPLACEACTIVATE && SUCCEEDED(hr))
             {
@@ -238,7 +238,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
         LRESULT lResult = 0;
         if (m_bInplaceActive && m_spOleObjectWindowless != NULL)
         {
-			m_spOleObjectWindowless->OnWindowMessage(uMsg, wParam, lParam, &lResult);
+            m_spOleObjectWindowless->OnWindowMessage(uMsg, wParam, lParam, &lResult);
         }
         return lResult;
     }
@@ -259,8 +259,8 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
             *object = static_cast<IOleInPlaceSiteWindowless*>(this);
         } else if (iid == IID_IAdviseSink ) {
             *object = static_cast<IAdviseSink*>(this);
-		} else if( iid == IID_IDocHostUIHandler && m_spDocHostUIHandler){
-			*object = m_spDocHostUIHandler;
+        } else if( iid == IID_IDocHostUIHandler && m_spDocHostUIHandler){
+            *object = m_spDocHostUIHandler;
         } else {
             hr = E_NOINTERFACE;
         }
@@ -276,14 +276,14 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
 
     STDMETHOD(GetMoniker)(DWORD /*dwAssign*/, DWORD dwWhichMoniker, IMoniker** ppmk)
     {
-		return E_NOTIMPL;
+        return E_NOTIMPL;
     }
 
     STDMETHOD(GetContainer)(IOleContainer **ppContainer)
     {
         HRESULT hr = E_POINTER;
         if ( ppContainer != NULL ) {
-			hr = static_cast<T*>(this)->QueryInterface(__uuidof(IOleContainer), reinterpret_cast<void**>(ppContainer));
+            hr = static_cast<T*>(this)->QueryInterface(__uuidof(IOleContainer), reinterpret_cast<void**>(ppContainer));
         }
         return hr;
     }
@@ -297,7 +297,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
             m_bVisible = true;
             if ( m_bInplaceActive )
             {
-				m_pAxHostDelegate->OnAxInvalidate(&m_rcPos,TRUE);
+                m_pAxHostDelegate->OnAxInvalidate(&m_rcPos,TRUE);
                 hr = S_OK;
             }
         }
@@ -365,44 +365,44 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
 
     STDMETHOD(GetCapture)(void)
     {
-		HRESULT hr = m_bCaptured?S_OK:S_FALSE;
+        HRESULT hr = m_bCaptured?S_OK:S_FALSE;
         return hr;
     }
 
     STDMETHOD(SetCapture)(BOOL fCapture)
     {
-		if(fCapture!=m_bCaptured)
-		{
-			m_bCaptured=fCapture;
-			m_pAxHostDelegate->OnAxSetCapture(fCapture);
-		}
-		return S_OK;
+        if(fCapture!=m_bCaptured)
+        {
+            m_bCaptured=fCapture;
+            m_pAxHostDelegate->OnAxSetCapture(fCapture);
+        }
+        return S_OK;
     }
 
     STDMETHOD(GetFocus)(void)
     {
-		return m_bFocused?S_OK: S_FALSE;
+        return m_bFocused?S_OK: S_FALSE;
     }
 
     STDMETHOD(SetFocus)(BOOL fFocus)
     {
-		if(m_bFocused!=fFocus)
-		{
-			m_bFocused=fFocus;
-			InvalidateRect(NULL,true);
-		}
+        if(m_bFocused!=fFocus)
+        {
+            m_bFocused=fFocus;
+            InvalidateRect(NULL,true);
+        }
 
         return S_OK;
     }
 
     STDMETHOD(GetDC)(LPCRECT pRect, DWORD grfFlags, HDC *phDC)
     {
-		return m_pAxHostDelegate->OnAxGetDC(pRect,grfFlags,phDC);
+        return m_pAxHostDelegate->OnAxGetDC(pRect,grfFlags,phDC);
     }
 
     STDMETHOD(ReleaseDC)(HDC hDC)
     {
-		return m_pAxHostDelegate->OnAxReleaseDC(hDC);
+        return m_pAxHostDelegate->OnAxReleaseDC(hDC);
     }
 
     STDMETHOD(InvalidateRect)(LPCRECT pRect, BOOL fErase)
@@ -410,7 +410,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
         // Blindly honor the specified region
         // well behaving control should pass a valid intersect rect or NULL
         if ( pRect == NULL ) pRect = &m_rcPos;
-		m_pAxHostDelegate->OnAxInvalidate(pRect,fErase);
+        m_pAxHostDelegate->OnAxInvalidate(pRect,fErase);
         return S_OK;
     }
 
@@ -431,7 +431,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
 
     STDMETHOD(OnDefWindowMessage)(UINT msg, WPARAM wParam, LPARAM lParam, LRESULT *plResult)
     {
-		*plResult = DefWindowProc(m_pAxHostDelegate->GetAxHostWindow(), msg, wParam, lParam);
+        *plResult = DefWindowProc(m_pAxHostDelegate->GetAxHostWindow(), msg, wParam, lParam);
         return S_OK;
     }
 
@@ -489,7 +489,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
                                LPOLEINPLACEFRAMEINFO lpFrameInfo)
     {
         if (ppFrame) { 
-			*ppFrame=NULL;
+            *ppFrame=NULL;
         }
         if (ppDoc) {
             *ppDoc = NULL;
@@ -536,28 +536,28 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
 
     STDMETHOD(OnPosRectChange)(LPCRECT lprcPosRect)
     {
-		HRESULT hr = E_UNEXPECTED;
-		hr = S_OK;
-		if (lprcPosRect && memcmp(&m_rcPos, lprcPosRect, sizeof(m_rcPos)) != 0 )
-		{
-			if (m_spInPlaceObject != NULL )
-			{
-				memcpy(&m_rcPos, lprcPosRect, sizeof(m_rcPos));
-				hr = m_spInPlaceObject->SetObjectRects(&m_rcPos, &m_rcPos);
-			}
-			if ( SUCCEEDED(hr) )
-			{
-				hr = SetExtent(m_rcPos.right - m_rcPos.left, m_rcPos.bottom - m_rcPos.top);
-			}
-		}
-		return hr;
+        HRESULT hr = E_UNEXPECTED;
+        hr = S_OK;
+        if (lprcPosRect && memcmp(&m_rcPos, lprcPosRect, sizeof(m_rcPos)) != 0 )
+        {
+            if (m_spInPlaceObject != NULL )
+            {
+                memcpy(&m_rcPos, lprcPosRect, sizeof(m_rcPos));
+                hr = m_spInPlaceObject->SetObjectRects(&m_rcPos, &m_rcPos);
+            }
+            if ( SUCCEEDED(hr) )
+            {
+                hr = SetExtent(m_rcPos.right - m_rcPos.left, m_rcPos.bottom - m_rcPos.top);
+            }
+        }
+        return hr;
     }
 
     // IOleWindow
     STDMETHOD(GetWindow)(HWND *phwnd)
     {
-		//
-		*phwnd=m_pAxHostDelegate->GetAxHostWindow();
+        //
+        *phwnd=m_pAxHostDelegate->GetAxHostWindow();
         return S_OK;
     }
 
@@ -609,7 +609,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
     HRESULT DoInplaceActivate()
     {
         HRESULT hr;
-		m_pAxHostDelegate->OnAxActivate(m_spControl);
+        m_pAxHostDelegate->OnAxActivate(m_spControl);
         m_dwViewObjectType = 0;
         hr = m_spOleObject->QueryInterface(__uuidof(IViewObjectEx), reinterpret_cast<void**>(&m_spViewObject));
         if (FAILED(hr))
@@ -627,8 +627,8 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
             if (SUCCEEDED(hr))
                 m_dwViewObjectType = 1;
         }
-		CDuiComQIPtr<IAdviseSink> advise_sink=m_spControl;
-		m_spOleObject->Advise(advise_sink, &m_dwOleObjSink);
+        CDuiComQIPtr<IAdviseSink> advise_sink=m_spControl;
+        m_spOleObject->Advise(advise_sink, &m_dwOleObjSink);
 
         if (m_spViewObject)
             hr=m_spViewObject->SetAdvise(DVASPECT_CONTENT, 0, this);
@@ -642,12 +642,12 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
     private:
     bool                            m_bVisible;
     bool                            m_bInplaceActive;
-	BOOL							m_bFocused;
-	BOOL							m_bCaptured;
+    BOOL                            m_bFocused;
+    BOOL                            m_bCaptured;
     DWORD                           m_dwMiscStatus;
     DWORD                           m_dwViewObjectType;
-	DWORD							m_dwOleObjSink;
-	DWORD							m_grfFlags;
+    DWORD                            m_dwOleObjSink;
+    DWORD                            m_grfFlags;
 
     RECT                            m_rcPos;
     CDuiComPtr<IUnknown>               m_spControl;
@@ -655,8 +655,8 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
     CDuiComQIPtr<IOleObject>           m_spOleObject;
     CDuiComQIPtr<IOleInPlaceObject>    m_spInPlaceObject;
     CDuiComQIPtr<IOleInPlaceObjectWindowless> m_spOleObjectWindowless;
-	CDuiComPtr<IDocHostUIHandler>		m_spDocHostUIHandler;
-	IAxHostDelegate				*	m_pAxHostDelegate;
+    CDuiComPtr<IDocHostUIHandler>        m_spDocHostUIHandler;
+    IAxHostDelegate                *    m_pAxHostDelegate;
 };
 
 
@@ -668,16 +668,16 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
  */
 class DUI_NO_VTABLE CDuiAxContainer :   public IOleContainer,
                                              public IBindHost,
-											 public IServiceProvider,
+                                             public IServiceProvider,
                                              public MinimumIDispatchImpl,
-											 public ActiveXSite<CDuiAxContainer>
+                                             public ActiveXSite<CDuiAxContainer>
 {
     public:
 
     CDuiAxContainer();
     virtual ~CDuiAxContainer();
 
-	BOOL CreateControl(LPCRECT pRect, REFGUID guid, DWORD dwClsCtx=CLSCTX_INPROC_SERVER);
+    BOOL CreateControl(LPCRECT pRect, REFGUID guid, DWORD dwClsCtx=CLSCTX_INPROC_SERVER);
 
     ///////////////////////////////////////////////////////////////////////////
     // IOleContainer
@@ -707,8 +707,8 @@ class DUI_NO_VTABLE CDuiAxContainer :   public IOleContainer,
     STDMETHOD(MonikerBindToObject)(IMoniker* pMk, IBindCtx* pBC,
                                    IBindStatusCallback* pBSC, REFIID riid, void** ppvObj);
 
-	// IServiceProvider
-	STDMETHOD(QueryService)(REFGUID guidService, REFIID riid, void **ppvObject);
+    // IServiceProvider
+    STDMETHOD(QueryService)(REFGUID guidService, REFIID riid, void **ppvObject);
 
     STDMETHOD(QueryInterface)(REFIID iid, void** object);
     virtual ULONG STDMETHODCALLTYPE AddRef();
