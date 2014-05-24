@@ -76,7 +76,7 @@ public:
 //  		m_rt->PushClipRegion(m_rgn);
  		m_rt->DrawBitmap(&rcClient,m_bmp,NULL,128);
  		m_rt->FillRectangle(rcClient.left,rcClient.top,rcClient.right/2,rcClient.bottom);
-  		m_rt->DrawText(_T("ÎÄ×ÖÊä³ö²âÊÔ,ÎÄ×ÖÊä³ö²âÊÔ,ÎÄ×ÖÊä³ö²âÊÔ"),-1,&rcClient,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
+  		m_rt->DrawText(_T("ÎÄ×ÖÊä³ö²âÊÔ,ÎÄ×ÖÊä³ö²âÊÔ,ÎÄ×ÖÊä³ö²âÊÔ"),-1,&rcClient,DT_LEFT|DT_VCENTER|DT_SINGLELINE,128);
 //  		m_rt->PopClipRegion();
   		m_rt->EndDraw();
 		::EndPaint(m_hWnd,&ps);

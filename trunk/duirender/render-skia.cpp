@@ -88,14 +88,9 @@ namespace SOUI
 		:TSkiaRenderObjImpl<IRenderTarget>(pRenderFactory)
 		,m_hBindDC(0)
 		,m_SkCanvas(NULL)
+        ,m_curColor(0xFF000000)//默认黑色
 	{
-		m_SkPaint.setTextEncoding(SkPaint::kUTF16_TextEncoding);
- 		SkTypeface* skface = SkTypeface::CreateFromName("隶书", SkTypeface::kNormal);
-        m_SkPaint.setTypeface(skface);
-		m_SkPaint.setTextSize(30);
-		m_SkPaint.setAntiAlias(true);
-
-		CAutoRefPtr<IPen> pPen=NULL;
+		CAutoRefPtr<IPen> pPen;
 		CreatePen(PS_SOLID,CDuiColor(0,0,0),1,&pPen);
 		SelectObject(pPen);
 
@@ -106,6 +101,13 @@ namespace SOUI
         CAutoRefPtr<IRegion> pRgn;
         CreateRegion(&pRgn);
         SelectObject(pRgn);
+
+        CAutoRefPtr<IFont> pFont;
+        LOGFONT lf={0};
+        lf.lfHeight=20;
+        _tcscpy(lf.lfFaceName,_T("宋体"));
+        CreateFont(lf,&pFont);
+        SelectObject(pFont);
 	}
 	
 	SRenderTarget_Skia::~SRenderTarget_Skia()
@@ -126,7 +128,7 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::CreateFont( const LOGFONT &lf,IFont ** ppFont )
 	{
-		*ppFont = new SFont_Skia(GetRenderFactory_Skia());
+		*ppFont = new SFont_Skia(GetRenderFactory_Skia(),&lf);
 		return S_OK;
 	}
 
@@ -251,12 +253,15 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat )
+	HRESULT SRenderTarget_Skia::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha)
 	{
 		if(cchLen<0) cchLen= _tcslen(pszText);
 		CDuiStringW strW=DUI_CT2W(CDuiStringT(pszText,cchLen));
-		m_SkPaint.setLCDRenderText(true);
-		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,pRc->left,pRc->top+30,m_SkPaint);
+        SkPaint     txtPaint = m_curFont->GetPaint();
+        txtPaint.setColor(m_curColor);
+        txtPaint.setTypeface(m_curFont->GetFont());
+        txtPaint.setAlpha(128);
+		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,pRc->left,pRc->top+30,txtPaint);
 		return S_OK;
 	}
 
@@ -297,11 +302,15 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::TextOut( int x, int y, LPCTSTR lpszString, int nCount )
+	HRESULT SRenderTarget_Skia::TextOut( int x, int y, LPCTSTR lpszString, int nCount,BYTE byAlpha )
 	{
 		if(nCount<0) nCount= _tcslen(lpszString);
 		CDuiStringW strW=DUI_CT2W(lpszString,nCount);
-		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,x,y,m_SkPaint);
+        SkPaint     txtPaint = m_curFont->GetPaint();
+        txtPaint.setColor(m_curColor);
+        txtPaint.setTypeface(m_curFont->GetFont());
+        txtPaint.setAlpha(byAlpha);
+		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,x,y,txtPaint);
 		return S_OK;
 	}
 
@@ -346,6 +355,9 @@ namespace SOUI
         case OT_RGN:
             pRet=m_curRgn;
             break;
+        case OT_FONT:
+            pRet=m_curFont;
+            break;
 		}
 		return pRet;
 	}
@@ -370,6 +382,10 @@ namespace SOUI
         case OT_RGN:
             pRet=m_curRgn;
             m_curRgn=(SRegion_Skia*)pObj;
+            break;
+        case OT_FONT:
+            pRet=m_curFont;
+            m_curFont=(SFont_Skia*)pObj;
             break;
 		}
 		if(pRet)
