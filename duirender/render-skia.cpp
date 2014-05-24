@@ -164,14 +164,11 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::BeginDraw()
 	{
-		if(m_SkCanvas) return S_FALSE;
-		m_SkCanvas = new SkCanvas(m_curBmp->GetBitmap());
 		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::EndDraw()
 	{
-		if(!m_SkCanvas) return S_FALSE;
 		if(m_hBindDC)
 		{//copy image to bind dc
 			SkBitmap bmp=m_curBmp->GetBitmap();
@@ -193,8 +190,6 @@ namespace SOUI
 				bmp.getPixels(),&bmi,DIB_RGB_COLORS);
 			bmp.unlockPixels();
 		}
-		delete m_SkCanvas;
-		m_SkCanvas=NULL;
 		return S_OK;
 	}
 
@@ -214,6 +209,8 @@ namespace SOUI
 		{
 			m_curBmp->Init(this,sz.cx,sz.cy);
 		}
+        if(m_SkCanvas) delete m_SkCanvas;
+        m_SkCanvas = new SkCanvas(m_curBmp->GetBitmap());
 		return S_OK;
 	}
 
@@ -232,7 +229,6 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::PushClipRegion( IRegion *pRegion )
 	{
-        if(!m_SkCanvas) return S_FALSE;
         SRegion_Skia * rgn_skia=(SRegion_Skia*)pRegion;
         SkRegion rgn=m_curRgn->GetRegion();
         m_rgnStack.push_back(rgn);
@@ -243,7 +239,6 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::PopClipRegion()
 	{
-        if(!m_SkCanvas) return S_FALSE;
         if(m_rgnStack.empty()) return S_FALSE;
         SkRegion rgn=m_rgnStack.back();
         m_rgnStack.pop_back();
@@ -258,8 +253,6 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat )
 	{
-		if(!m_SkCanvas) return S_FALSE;
-
 		if(cchLen<0) cchLen= _tcslen(pszText);
 		CDuiStringW strW=DUI_CT2W(CDuiStringT(pszText,cchLen));
 		m_SkPaint.setLCDRenderText(true);
@@ -274,7 +267,6 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::DrawRectangle( int left, int top,int right,int bottom )
 	{
-		if(!m_SkCanvas) return FALSE;
 		SkPaint paint;
 		SkIRect rc={left,top,right,bottom};
 		paint.setColor(m_curPen->GetColor());
@@ -288,7 +280,6 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::FillRectangle( int left, int top,int right,int bottom )
 	{
-		if(!m_SkCanvas) return S_FALSE;
 		SkIRect rc={left,top,right,bottom};
 		SkPaint paint;
 		
@@ -308,7 +299,6 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::TextOut( int x, int y, LPCTSTR lpszString, int nCount )
 	{
-		if(!m_SkCanvas) return S_FALSE;
 		if(nCount<0) nCount= _tcslen(lpszString);
 		CDuiStringW strW=DUI_CT2W(lpszString,nCount);
 		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,x,y,m_SkPaint);
