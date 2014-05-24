@@ -99,14 +99,16 @@ namespace SOUI
 	class SFont_D2D: public TD2DRenderObjImpl<IFont>
 	{
 	public:
-		SFont_D2D(IRenderFactory_D2D * pRenderFac,IDWriteTextFormat *pTextFormat)
-			:TD2DRenderObjImpl<IFont>(pRenderFac),m_pTextFormat(pTextFormat)
+		SFont_D2D(IRenderFactory_D2D * pRenderFac,const LOGFONT & lf)
+			:TD2DRenderObjImpl<IFont>(pRenderFac),m_lf(lf)
 		{
 		}
-
-		IDWriteTextFormat * GetTextFormat(){return m_pTextFormat;}
+        
+        LOGFONT GetLogfont() const{
+            return m_lf;
+        }
 	protected:
-		CAutoRefPtr<IDWriteTextFormat> m_pTextFormat;
+        LOGFONT m_lf;
 	};
 
 	class SBrush_D2D : public TD2DRenderObjImpl<IBrush>
@@ -194,7 +196,7 @@ namespace SOUI
 
 		virtual HRESULT BitBlt(LPRECT pRcDest,IRenderTarget *pRTSour,LPRECT pRcSour,UINT uDef);
 
-		virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat );
+		virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat  ,BYTE byAlpha=0xFF);
 		virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat );
 
 		virtual HRESULT DrawRectangle(int left, int top,int right,int bottom);
@@ -204,7 +206,8 @@ namespace SOUI
 			int x,
 			int y,
 			LPCTSTR lpszString,
-			int nCount);
+			int nCount,
+            BYTE byAlpha=0xFF);
 
 		virtual HRESULT GetTextExtentPoint32(
 			LPCTSTR lpString,
@@ -240,11 +243,13 @@ namespace SOUI
 		}
 
 	protected:
+        HRESULT CreateTextFormat( const LOGFONT & lf ,IDWriteTextFormat ** ppTxtFormat);
 
 		void SetTextFormat(IDWriteTextFormat *pTxtFormat,UINT uFormat);
 		CAutoRefPtr<SFont_D2D> m_curFont;
 		CAutoRefPtr<SBrush_D2D> m_curBrush;
 		CAutoRefPtr<SPen_D2D> m_curPen;
+        CAutoRefPtr<IDWriteTextFormat> m_curTxtFmt;    //与当前字体的TextFormat
 
 		CAutoRefPtr<ID2D1RenderTarget>	m_pD2DRenderTarget;
 	};

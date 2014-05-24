@@ -96,12 +96,26 @@ namespace SOUI
 	class SFont_Skia: public TSkiaRenderObjImpl<IFont>
 	{
 	public:
-		SFont_Skia(IRenderFactory_Skia * pRenderFac)
-			:TSkiaRenderObjImpl<IFont>(pRenderFac)
+		SFont_Skia(IRenderFactory_Skia * pRenderFac,const LOGFONT * plf)
+			:TSkiaRenderObjImpl<IFont>(pRenderFac),m_skFont(NULL)
 		{
+            CDuiStringA strFace=DUI_CT2A(plf->lfFaceName,CP_ACP);
+            BYTE style=SkTypeface::kNormal;
+            if(plf->lfItalic) style |= SkTypeface::kItalic;
+            if(plf->lfWeight == FW_BOLD) style |= SkTypeface::kBold;
+
+            m_skFont=SkTypeface::CreateFromName(strFace,(SkTypeface::Style)style);
+            m_skPaint.setTextSize(plf->lfHeight);
+            m_skPaint.setUnderlineText(plf->lfUnderline);
+            m_skPaint.setTextEncoding(SkPaint::kUTF16_TextEncoding);
+            m_skPaint.setAntiAlias(true);
 		}
 
+        const SkPaint  GetPaint() const {return m_skPaint;}
+        SkTypeface *GetFont()const {return m_skFont;}
 	protected:
+        SkTypeface *m_skFont;   //定义字体
+        SkPaint     m_skPaint;  //定义文字绘制属性
 	};
 
 	class SBrush_Skia : public TSkiaRenderObjImpl<IBrush>
@@ -210,7 +224,7 @@ namespace SOUI
 
 		virtual HRESULT BitBlt(LPRECT pRcDest,IRenderTarget *pRTSour,LPRECT pRcSour,UINT uDef);
 
-		virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat );
+		virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha=0xFF);
 		virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat );
 
 		virtual HRESULT DrawRectangle(int left, int top,int right,int bottom);
@@ -220,7 +234,8 @@ namespace SOUI
 			int x,
 			int y,
 			LPCTSTR lpszString,
-			int nCount);
+			int nCount,
+            BYTE byAlpha =0xFF);
 
 		virtual HRESULT GetTextExtentPoint32(
 			LPCTSTR lpString,
@@ -236,22 +251,23 @@ namespace SOUI
 
 		virtual COLORREF GetTextColor()
 		{
-			return m_SkPaint.getColor();
+			return m_curColor;
 		}
 		virtual COLORREF SetTextColor(COLORREF color)
 		{
-			COLORREF crOld=m_SkPaint.getColor();
- 			m_SkPaint.setColor(color);
+			COLORREF crOld=m_curColor;
+ 			m_curColor=color;
 			return crOld;
 		}
 	protected:
 		SkCanvas *m_SkCanvas;
-		SkPaint	  m_SkPaint;
+        COLORREF            m_curColor;
 		CAutoRefPtr<SBitmap_Skia> m_curBmp;
 		CAutoRefPtr<SPen_Skia> m_curPen;
 		CAutoRefPtr<SBrush_Skia> m_curBrush;
         CAutoRefPtr<SRegion_Skia> m_curRgn;
-
+        CAutoRefPtr<SFont_Skia> m_curFont;
+    
         std::list<SkRegion>     m_rgnStack;//stack of clip region
 
 		HDC m_hBindDC;

@@ -105,13 +105,14 @@ namespace SOUI
 		else txtFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
 	}
 
-	HRESULT SRenderTarget_D2D::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat )
+	HRESULT SRenderTarget_D2D::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat,BYTE byAlpha)
 	{
 		if(cchLen==-1) cchLen=_tcslen(pszText);
 		D2D1_RECT_F rect=D2D1::RectF((float)pRc->left,(float)pRc->top,(float)pRc->right,(float)pRc->bottom);
-		SetTextFormat(m_curFont->GetTextFormat(),uFormat);
+		SetTextFormat(m_curTxtFmt,uFormat);
 		CDuiStringW strW=DUI_CT2W(CDuiStringT(pszText,cchLen));
-		m_pD2DRenderTarget->DrawText(strW,cchLen,m_curFont->GetTextFormat(),rect,m_curPen->GetBrush());
+        m_curPen->GetBrush()->SetOpacity(((float)byAlpha)/255.0f);
+		m_pD2DRenderTarget->DrawText(strW,strW.GetLength(),m_curTxtFmt,rect,m_curPen->GetBrush());
 		return S_OK;
 	}
 
@@ -119,9 +120,9 @@ namespace SOUI
 	{
 		if(cchLen==-1) cchLen=_tcslen(pszText);
 		CDuiStringW strW=DUI_CT2W(CDuiStringT(pszText,cchLen));
-		SetTextFormat(m_curFont->GetTextFormat(),uFormat);
+		SetTextFormat(m_curTxtFmt,uFormat);
 		CAutoRefPtr<IDWriteTextLayout> pLayout;
-		HRESULT hr=GetRenderFactory_D2D()->GetWriteFactory()->CreateTextLayout(strW,cchLen,m_curFont->GetTextFormat(),(float)Rect_Wid(pRc),(float)Rect_Hei(pRc),&pLayout);
+		HRESULT hr=GetRenderFactory_D2D()->GetWriteFactory()->CreateTextLayout(strW,cchLen,m_curTxtFmt,(float)Rect_Wid(pRc),(float)Rect_Hei(pRc),&pLayout);
 		if(SUCCEEDED(hr))
 		{
 			DWRITE_TEXT_METRICS metrics;
@@ -136,10 +137,10 @@ namespace SOUI
 	}
 
 
-	HRESULT SRenderTarget_D2D::TextOut( int x, int y, LPCTSTR lpszString, int nCount )
+	HRESULT SRenderTarget_D2D::TextOut( int x, int y, LPCTSTR lpszString, int nCount  ,BYTE byAlpha)
 	{
 		RECT rc={x,y,x+10000,y+10000};
-		return DrawText(lpszString,nCount,&rc,DT_SINGLELINE);
+		return DrawText(lpszString,nCount,&rc,DT_SINGLELINE,byAlpha);
 	}
 
 	HRESULT SRenderTarget_D2D::GetTextExtentPoint32( LPCTSTR lpString, UINT cbCount, LPSIZE lpSize )
@@ -271,22 +272,8 @@ namespace SOUI
 
 	HRESULT SRenderTarget_D2D::CreateFont( const LOGFONT &lf,IFont ** ppFont )
 	{
-		if(!GetRenderFactory_D2D()->GetWriteFactory()) return FALSE;
-		CAutoRefPtr<IDWriteTextFormat> pTxtFormat=NULL;
-
-		DWRITE_FONT_WEIGHT weight=(DWRITE_FONT_WEIGHT)lf.lfWeight;
-		if(weight==0) weight = DWRITE_FONT_WEIGHT_NORMAL;
-		DWRITE_FONT_STYLE style=DWRITE_FONT_STYLE_NORMAL;
-		if(lf.lfItalic) style=DWRITE_FONT_STYLE_ITALIC;
-
-		HRESULT hr =GetRenderFactory_D2D()->GetWriteFactory()->CreateTextFormat(DUI_CT2W(lf.lfFaceName),NULL,weight,style,DWRITE_FONT_STRETCH_NORMAL,(float)lf.lfHeight,L"",&pTxtFormat);
-		if(SUCCEEDED(hr))
-		{
-			*ppFont = new SFont_D2D(GetRenderFactory_D2D(),pTxtFormat);
-			return (*ppFont)?S_OK:E_OUTOFMEMORY;
-		}
-
-		return FALSE;
+		*ppFont = new SFont_D2D(GetRenderFactory_D2D(),lf);
+		return (*ppFont)?S_OK:E_OUTOFMEMORY;
 	}
 
 	HRESULT SRenderTarget_D2D::CreateSolidColorBrush( COLORREF cr,IBrush ** ppBrush )
@@ -321,7 +308,7 @@ namespace SOUI
 	SRenderTarget_D2D::SRenderTarget_D2D( ID2D1RenderTarget *pRenderTarget,IRenderFactory_D2D* pRenderFactory ) 
 		:m_pD2DRenderTarget(pRenderTarget),TD2DRenderObjImpl<IRenderTarget>(pRenderFactory)
 	{
-		CAutoRefPtr<IBrush> pBrush=NULL;
+        CAutoRefPtr<IBrush> pBrush=NULL;
 		CreateSolidColorBrush(CDuiColor(255,255,255),&pBrush);
 		SelectObject(pBrush);
 
@@ -446,10 +433,16 @@ namespace SOUI
 		CAutoRefPtr<IRenderObj>  pRet;
 		switch(pObj->ObjectType())
 		{
-		case OT_FONT:pRet= m_curFont;m_curFont=dynamic_cast<SFont_D2D*>(pObj);break;
+		case OT_FONT:
+            {
+                pRet= m_curFont;
+                m_curFont=(SFont_D2D*)(pObj);
+                CreateTextFormat(m_curFont->GetLogfont(),&m_curTxtFmt);
+                break;
+            }
 		case OT_BITMAP:break;
-		case OT_BRUSH:pRet= m_curBrush;m_curBrush=dynamic_cast<SBrush_D2D*>(pObj);break;
-		case OT_PEN:pRet= m_curPen;m_curPen=dynamic_cast<SPen_D2D*>(pObj);break;
+		case OT_BRUSH:pRet= m_curBrush;m_curBrush=(SBrush_D2D*)(pObj);break;
+		case OT_PEN:pRet= m_curPen;m_curPen=(SPen_D2D*)(pObj);break;
 		}
 		if(pRet)
 		{//由调用者调用Release释放该RenderObj
@@ -457,6 +450,19 @@ namespace SOUI
 		}
 		return pRet;
 	}
+
+    HRESULT SRenderTarget_D2D::CreateTextFormat( const LOGFONT & lf ,IDWriteTextFormat ** ppTxtFormat)
+    {
+        if(!GetRenderFactory_D2D()->GetWriteFactory()) return S_FALSE;
+
+        DWRITE_FONT_WEIGHT weight=(DWRITE_FONT_WEIGHT)lf.lfWeight;
+        if(weight==0) weight = DWRITE_FONT_WEIGHT_NORMAL;
+        DWRITE_FONT_STYLE style=DWRITE_FONT_STYLE_NORMAL;
+        if(lf.lfItalic) style=DWRITE_FONT_STYLE_ITALIC;
+
+        HRESULT hr =GetRenderFactory_D2D()->GetWriteFactory()->CreateTextFormat(DUI_CT2W(lf.lfFaceName),NULL,weight,style,DWRITE_FONT_STRETCH_NORMAL,(float)lf.lfHeight,L"",ppTxtFormat);
+        return hr;
+    }
 
 	//////////////////////////////////////////////////////////////////////////
 	//	CDuiDirtyRegion_D2D
