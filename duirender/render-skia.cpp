@@ -90,8 +90,8 @@ namespace SOUI
 		,m_SkCanvas(NULL)
 	{
 		m_SkPaint.setTextEncoding(SkPaint::kUTF16_TextEncoding);
-		SkTypeface* skface = SkTypeface::CreateFromName("SimSun", SkTypeface::kNormal);
-		m_SkPaint.setTypeface(skface);
+ 		SkTypeface* skface = SkTypeface::CreateFromName("¡• È", SkTypeface::kNormal);
+        m_SkPaint.setTypeface(skface);
 		m_SkPaint.setTextSize(30);
 		m_SkPaint.setAntiAlias(true);
 
