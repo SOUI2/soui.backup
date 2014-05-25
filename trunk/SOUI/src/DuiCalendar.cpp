@@ -1,5 +1,15 @@
-// DuiCalendar.cpp : implementation file
-//
+/**
+ * Copyright (C) 2014-2050 SOUI团队
+ * All rights reserverd.
+ *
+ * @file       DuiCalendar.cpp
+ * @brief      CCalendarCore以及CDuiCalendar类源文件
+ * @version    v1.0
+ * @author     soui
+ * @date       2014-05-25
+ *
+ * Describe  时间控件相关函数实现
+ */
 #include "duistd.h"
 #include "DuiCalendar.h"
 #include "DuiTime.h"

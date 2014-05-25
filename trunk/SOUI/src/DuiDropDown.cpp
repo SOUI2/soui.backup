@@ -8,7 +8,7 @@
  * @author     soui
  * @date       2014-05-25
  *
- * Describe  此文件主要用于CPerson类相关实现
+ * Describe  此文件主要用于CDuiDropDownWnd类相关实现
  */
 #include "duistd.h"
 #include "DuiDropDown.h"
