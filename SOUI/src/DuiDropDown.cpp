@@ -1,3 +1,15 @@
+/**
+ * Copyright (C) 2014-2050 SOUI团队
+ * All rights reserverd.
+ *
+ * @file       DuiDropDown.cpp
+ * @brief      CDuiDropDownWnd类源文件
+ * @version    v1.0
+ * @author     soui
+ * @date       2014-05-25
+ *
+ * Describe  此文件主要用于CPerson类相关实现
+ */
 #include "duistd.h"
 #include "DuiDropDown.h"
 
