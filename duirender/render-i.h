@@ -126,8 +126,7 @@ struct IRenderTarget: public IObjRef
 //用来创建设备无关资源
 struct IRenderFactory : public IObjRef
 {
-	virtual BOOL CreateHwndRenderTarget(HWND hWnd,SIZE szTarget,IRenderTarget ** ppRenderTarget)=0;
-	virtual BOOL CreateDCRenderTarget(IRenderTarget ** ppRenderTarget)=0;
+	virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei)=0;
 };
 
 }//end of namespace SOUI

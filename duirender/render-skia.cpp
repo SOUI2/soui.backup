@@ -69,14 +69,9 @@ namespace SOUI
 		return FALSE;
 	}
 
-	BOOL SRenderFactory_Skia::CreateHwndRenderTarget( HWND hWnd,SIZE szTarget,IRenderTarget ** ppRenderTarget )
+	BOOL SRenderFactory_Skia::CreateRenderTarget( IRenderTarget ** ppRenderTarget ,int nWid,int nHei)
 	{
-		return FALSE;
-	}
-
-	BOOL SRenderFactory_Skia::CreateDCRenderTarget( IRenderTarget ** ppRenderTarget )
-	{
-		*ppRenderTarget = new SRenderTarget_Skia(this);
+		*ppRenderTarget = new SRenderTarget_Skia(this, nWid, nHei);
 		return TRUE;
 	}
 
@@ -84,12 +79,20 @@ namespace SOUI
 	//////////////////////////////////////////////////////////////////////////
 	// SRenderTarget_Skia
 
-	SRenderTarget_Skia::SRenderTarget_Skia( IRenderFactory_Skia* pRenderFactory )
+	SRenderTarget_Skia::SRenderTarget_Skia( IRenderFactory_Skia* pRenderFactory ,int nWid,int nHei)
 		:TSkiaRenderObjImpl<IRenderTarget>(pRenderFactory)
 		,m_hBindDC(0)
 		,m_SkCanvas(NULL)
         ,m_curColor(0xFF000000)//Ä¬ÈÏºÚÉ«
 	{
+        if(nWid && nHei)
+        {
+            CAutoRefPtr<IBitmap> bmp;
+            CreateBitmap(&bmp);
+            bmp->Init(this,nWid,nHei);
+            SelectObject(bmp);
+        }
+
 		CAutoRefPtr<IPen> pPen;
 		CreatePen(PS_SOLID,CDuiColor(0,0,0),1,&pPen);
 		SelectObject(pPen);
