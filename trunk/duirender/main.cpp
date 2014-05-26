@@ -91,7 +91,7 @@ public:
 
 	int OnCreate(void *)
 	{
-		g_render->CreateDCRenderTarget(&m_rt);
+		g_render->CreateRenderTarget(&m_rt,0,0);
 		m_rt->CreateRegion(&m_rgn);
 
 		CAutoRefPtr<IFont> font;

@@ -27,9 +27,7 @@ namespace SOUI
 			Init();
 		}
 
-
-		virtual BOOL CreateHwndRenderTarget(HWND hWnd,SIZE szTarget,IRenderTarget ** ppRenderTarget);
-		virtual BOOL CreateDCRenderTarget(IRenderTarget ** ppRenderTarget);
+		virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei);
 
 	protected:
 		BOOL Init();
@@ -198,7 +196,7 @@ namespace SOUI
 	class SRenderTarget_Skia: public TSkiaRenderObjImpl<IRenderTarget>
 	{
 	public:
-		SRenderTarget_Skia(IRenderFactory_Skia* pRenderFactory);
+		SRenderTarget_Skia(IRenderFactory_Skia* pRenderFactory,int nWid,int nHei);
 		~SRenderTarget_Skia();
 
 		//只支持创建位图表面
