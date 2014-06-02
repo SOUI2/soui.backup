@@ -273,6 +273,22 @@
 			Name="render-skia"
 			>
 			<File
+				RelativePath=".\drawtext-skia.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\drawtext-skia.h"
+				>
+			</File>
+			<File
 				RelativePath=".\render-skia.cpp"
 				>
 			</File>

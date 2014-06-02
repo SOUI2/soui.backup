@@ -4,6 +4,8 @@
 #include <core\SkShader.h>
 #include <effects\SkDashPathEffect.h>
 
+#include "drawtext-skia.h"
+
 #ifdef _DEBUG
 #pragma comment(lib,"../myskia/lib/vc90/skcore_d.lib")
 #else
@@ -39,6 +41,12 @@ namespace SOUI
     {
         SkIRect rc={pRc->left,pRc->top,pRc->right,pRc->bottom};
         return rc;
+    }
+
+    SkRect toSkRect(LPCRECT pRc)
+    {
+        SkIRect rc={pRc->left,pRc->top,pRc->right,pRc->bottom};
+        return SkRect::MakeFromIRect(rc);
     }
 
 	class SGetLineDashEffect
@@ -263,8 +271,9 @@ namespace SOUI
         SkPaint     txtPaint = m_curFont->GetPaint();
         txtPaint.setColor(m_curColor);
         txtPaint.setTypeface(m_curFont->GetFont());
-        txtPaint.setAlpha(128);
-		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,pRc->left,pRc->top+30,txtPaint);
+        txtPaint.setAlpha(byAlpha);
+//		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,pRc->left,pRc->top+30,txtPaint);
+        DrawText_Skia(m_SkCanvas,strW,strW.GetLength(),toSkRect(pRc),txtPaint,0,0);
 		return S_OK;
 	}
 
