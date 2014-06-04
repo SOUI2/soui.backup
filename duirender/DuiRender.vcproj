@@ -240,14 +240,6 @@
 		<Filter
 			Name="render_d2d"
 			>
-			<File
-				RelativePath=".\render-d2d.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\render-d2d.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="wnd"

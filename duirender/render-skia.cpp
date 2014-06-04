@@ -2,8 +2,8 @@
 #include "render-skia.h"
 
 #include <core\SkShader.h>
+#include <core\SkDevice.h>
 #include <effects\SkDashPathEffect.h>
-
 #include "drawtext-skia.h"
 
 #ifdef _DEBUG
@@ -74,7 +74,7 @@ namespace SOUI
 
 	BOOL SRenderFactory_Skia::Init()
 	{
-		return FALSE;
+		return TRUE;
 	}
 
 	BOOL SRenderFactory_Skia::CreateRenderTarget( IRenderTarget ** ppRenderTarget ,int nWid,int nHei)
@@ -229,38 +229,48 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::PushClipRect( LPCRECT pRect )
 	{
-        CAutoRefPtr<IRegion> rgn;
-        CreateRegion(&rgn);
-        rgn->CombineRect(pRect,RGN_OR);
-        return PushClipRegion(rgn);
+	    m_SkCanvas->save();
+	    m_SkCanvas->clipRect(toSkRect(pRect));
+	    return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::PopClipRect()
 	{
-		return PopClipRegion();
+	    m_SkCanvas->restore();
+		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::PushClipRegion( IRegion *pRegion )
 	{
         SRegion_Skia * rgn_skia=(SRegion_Skia*)pRegion;
-        SkRegion rgn=m_curRgn->GetRegion();
-        m_rgnStack.push_back(rgn);
-        rgn.op(rgn_skia->GetRegion(),SkRegion::kUnion_Op);
-        m_SkCanvas->setClipRegion(rgn);
+        SkRegion rgn=rgn_skia->GetRegion();
+        
+        m_SkCanvas->save();
+        m_SkCanvas->clipRegion(rgn);
+        
 		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::PopClipRegion()
 	{
-        if(m_rgnStack.empty()) return S_FALSE;
-        SkRegion rgn=m_rgnStack.back();
-        m_rgnStack.pop_back();
-        m_SkCanvas->setClipRegion(rgn);
-		return S_OK;
+        m_SkCanvas->restore();
+        return S_OK;
 	}
+
+    HRESULT SRenderTarget_Skia::GetClipRegion( IRegion **ppRegion )
+    {
+        SRegion_Skia *pRgn=new SRegion_Skia(GetRenderFactory_Skia());
+        pRgn->SetRegion(m_SkCanvas->getTotalClip());
+        *ppRegion = pRgn;
+        return S_OK;
+    }
 
 	HRESULT SRenderTarget_Skia::BitBlt( LPRECT pRcDest,IRenderTarget *pRTSour,LPRECT pRcSour,UINT uDef )
 	{
+	    SRenderTarget_Skia *pRTSourSkia=(SRenderTarget_Skia*)pRcSour;
+	    
+	    const SkBitmap & bmpSrc= pRTSourSkia->m_SkCanvas->getDevice()->accessBitmap(true);
+	    m_SkCanvas->drawBitmapRectToRect(bmpSrc,&toSkRect(pRcSour),toSkRect(pRcDest));
 		return S_OK;
 	}
 
@@ -272,13 +282,20 @@ namespace SOUI
         txtPaint.setColor(m_curColor);
         txtPaint.setTypeface(m_curFont->GetFont());
         txtPaint.setAlpha(byAlpha);
-//		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,pRc->left,pRc->top+30,txtPaint);
-        DrawText_Skia(m_SkCanvas,strW,strW.GetLength(),toSkRect(pRc),txtPaint,0,0);
+        DrawText_Skia(m_SkCanvas,strW,strW.GetLength(),toSkRect(pRc),txtPaint,uFormat);
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::MeasureText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat )
+	HRESULT SRenderTarget_Skia::MeasureText( LPCTSTR pszText,int cchLen, SIZE *psz )
 	{
+        SkPaint     txtPaint = m_curFont->GetPaint();
+        txtPaint.setTypeface(m_curFont->GetFont());
+        CDuiStringW strW=DUI_CT2W(CDuiStringT(pszText,cchLen));
+        psz->cx = (int)txtPaint.measureText(strW,strW.GetLength());
+        
+        SkPaint::FontMetrics metrics;
+        txtPaint.getFontMetrics(&metrics);
+        psz->cy = (int)(metrics.fBottom-metrics.fTop);
 		return S_OK;
 	}
 
@@ -326,11 +343,6 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::GetTextExtentPoint32( LPCTSTR lpString, UINT cbCount, LPSIZE lpSize )
-	{
-		return S_OK;
-	}
-
 	HRESULT SRenderTarget_Skia::DrawBitmap( LPRECT pRcDest,IBitmap *pBitmap,LPRECT pRcSour,BYTE byAlpha/*=0xFF*/ )
 	{
 		SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
@@ -364,9 +376,6 @@ namespace SOUI
 		case OT_BRUSH:
 			pRet=m_curBrush;
 			break;
-        case OT_RGN:
-            pRet=m_curRgn;
-            break;
         case OT_FONT:
             pRet=m_curFont;
             break;
@@ -391,10 +400,6 @@ namespace SOUI
 			pRet=m_curBrush;
 			m_curBrush=(SBrush_Skia*)pObj;
 			break;
-        case OT_RGN:
-            pRet=m_curRgn;
-            m_curRgn=(SRegion_Skia*)pObj;
-            break;
         case OT_FONT:
             pRet=m_curFont;
             m_curFont=(SFont_Skia*)pObj;
