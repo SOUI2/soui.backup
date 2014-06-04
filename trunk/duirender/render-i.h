@@ -105,12 +105,11 @@ struct IRenderTarget: public IObjRef
 
 	virtual HRESULT PushClipRegion(IRegion *pRegion)=0;
 	virtual HRESULT PopClipRegion()=0;
+    virtual HRESULT GetClipRegion(IRegion **ppRegion)=0;
 
 	virtual HRESULT DrawText(LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat,BYTE byAlpha =0xFF)=0;
-    virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ) =0;
+    virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz) =0;
     virtual HRESULT TextOut(int x,int y, LPCTSTR lpszString,int nCount,BYTE byAlpha = 0xFF) =0;
-
-    virtual HRESULT GetTextExtentPoint32(LPCTSTR lpString,UINT cbCount,LPSIZE lpSize) =0;
 
 	virtual HRESULT DrawRectangle(int left, int top,int right,int bottom)=0;
 	virtual HRESULT FillRectangle(int left, int top,int right,int bottom)=0;

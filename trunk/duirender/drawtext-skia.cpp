@@ -1,5 +1,9 @@
 #include "drawtext-skia.h"
 
+#define DT_ELLIPSIS (DT_PATH_ELLIPSIS|DT_END_ELLIPSIS|DT_WORD_ELLIPSIS)
+#define CH_ELLIPSIS L"..."
+#define MAX(a,b)    (((a) > (b)) ? (a) : (b))
+
 static size_t breakTextEx(const SkPaint *pPaint, const wchar_t* textD, size_t length, SkScalar maxWidth,
                           SkScalar* measuredWidth) 
 {
@@ -22,280 +26,200 @@ static size_t breakTextEx(const SkPaint *pPaint, const wchar_t* textD, size_t le
     return nLineLen;
 }
 
-#define DT_ELLIPSIS (DT_PATH_ELLIPSIS|DT_END_ELLIPSIS|DT_WORD_ELLIPSIS)
-#define CH_ELLIPSIS L"..."
- 
-class SkTextLayoutEx {
-public:
-    //not support for DT_PREFIXONLY
-    void init(const wchar_t text[], size_t length,SkRect rc, const SkPaint &paint,UINT uFormat)
-    {
-        if(uFormat & DT_NOPREFIX)
-        {
-            fText.setCount(length);
-            memcpy(fText.begin(),text,length*sizeof(wchar_t));
-        }else
-        {
-            fPrefix.deleteAll();
-            SkTDArray<wchar_t> tmp;
-            tmp.setCount(length);
-            memcpy(tmp.begin(),text,length*sizeof(wchar_t));
-            for(int i=0;i<tmp.count();i++)
-            {
-                if(tmp[i]==L'&')
-                {
-                    tmp.remove(i,1);
-                    if(i<tmp.count()-1) fPrefix.push(i);
-                    if(i<tmp.count()-1 && tmp[i+1]==L'&') i++;  //skip the next "&"
-                }
-            }
-            fText.copy(tmp);
-        }
-        
-        fPaint=paint;
-        fBounds=rc;
-        
-        buildLines();   
-    }
-
-    void draw(SkCanvas* canvas)
-    {
-        float  fontHeight,textHeight;
-        SkPaint::FontMetrics metrics;
-        const SkPaint paint=fPaint;
-        
-        paint.getFontMetrics(&metrics);
-        fontHeight = metrics.fDescent-metrics.fAscent;
-        textHeight = fontHeight;
-        
-        float lineSpan = metrics.fBottom-metrics.fTop;
-
-        float  x;
-        switch (paint.getTextAlign()) 
-        {
-        case SkPaint::kCenter_Align:
-            x = SkScalarHalf(maxWidth);
-            break;
-        case SkPaint::kRight_Align:
-            x = fBounds.width()-1;
-            break;
-        default://SkPaint::kLeft_Align:
-            x = 0;
-            break;
-        }
-        x += fBounds.fLeft;
-
-        canvas->save();
-
-        canvas->clipRect(fBounds);
-
-        float height = fBounds.height();
-        float y=fBounds.fTop - metrics.fAscent;
-        if(fFormat & DT_SINGLELINE)
-        {//单行显示
-            if(fFormat & DT_VCENTER) 
-            {
-                y += (height - textHeight)/2.0f;
-            }
-            if(fFormat & DT_ELLIPSIS)
-            {//只支持在行尾增加省略号
-                drawLineWithEndEllipsis(canvas,x,y,0,fText.count(),fontHeight,fBounds.width());
-            }else
-            {
-                drawLine(canvas,x,y,0,fText.count(),fontHeight);
-            }
-        }else
-        {//多行显示
-            int iLine = 0;
-            while(iLine<fLines.count())
-            {
-                if(y + lineSpan + metrics.fAscent >= fBounds.fBottom) 
-                    break;  //the last visible line
-                drawLine(canvas,x,y,fLines[iLine],fLines[iLine+1],fontHeight);
-                y += lineSpan;
-                iLine ++;
-            }
-            if(iLine<fLines.count())
-            {//draw the last visible line
-                int iBegin=fLines[iLine];
-                int iEnd = iLine<(fLines.count()-1)?fLines[iLine+1]:fText.count();
-                if(fFormat & DT_ELLIPSIS)
-                {//只支持在行尾增加省略号
-                    drawLineWithEndEllipsis(canvas,x,y,iBegin,iEnd,fontHeight,fBounds.width());
-                }else
-                {
-                    drawLine(canvas,x,y,iBegin,iEnd,fontHeight);
-                }
-                y += lineSpan;
-            }
-            
-            fBounds.fBottom = fBounds.fTop + y; //获得真实的限制矩形，方便返回大小
-        }
-        canvas->restore();
-    }
-    
-private:
-    SkScalar drawLineWithEndEllipsis(SkCanvas *canvas, SkScalar x, SkScalar y, int iBegin,int iEnd,SkScalar fontHei,SkScalar maxWidth)
-    {
-        SkScalar widReq=fPaint.measureText(fText.begin()+iBegin,(iEnd-iBegin)*size_t(wchar_t));
-        if(widReq<fBounds.width())
-        {
-            return drawLine(canvas,x,y,0,fText.count(),fontHei);
-        }else
-        {
-            SkScalar fEllipsisWid=fPaint.measureText(CH_ELLIPSIS,sizeof(CH_ELLIPSIS)-sizeof(wchar_t));            SkScalar fWid=fEllipsisWid;            int i=0;            const wchar_t *text=fText.begin()+iBegin;
-            while(i<(iEnd-iBegin))            {                fWid += fPaint.measureText(text,sizeof(wchar_t));                if(fWid > maxWidth) break;                i++;            }            drawLine(canvas,x,y,0,i,fontHei);            if((!fFormat & DT_CALCRECT)) canvas->drawText(CH_ELLIPSIS,sizeof(CH_ELLIPSIS)-sizeof(wchar_t),x+fWid-fEllipsisWid,y,fPaint);            return fWid;        }
-    }
-    
-    SkScalar drawLine(SkCanvas *canvas, SkScalar x, SkScalar y, int iBegin,int iEnd,SkScalar fontHei)
-    {
-        const wchar_t *text=fText.begin()+iBegin;
-                
-        if((!fFormat & DT_CALCRECT))
-        {
-            canvas->drawText(text,(iEnd-iBegin)*sizeof(wchar_t),x,y,fPaint);
-            int i=0;
-            while(i<fPrefix.count())
-            {
-                if(fPrefix[i]>=iBegin)
-                    break;
-                i++;
-            }
-            while(i<fPrefix.count() && fPrefix[i]<iEnd)
-            {
-                SkScalar x1 = x + fPaint.measureText(text,(fPrefix[i]-iBegin)*sizeof(wchar_t));
-                SkScalar x2 = x + fPaint.measureText(text,(fPrefix[i]-iBegin+1)*sizeof(wchar_t));
-                canvas->drawLine(x1,y+fontHei,x2,y+fontHei,fPaint); //绘制下划线
-                i++;
-            }
-        }
-        return fPaint.measureText(text,(iEnd-iBegin)*sizeof(wchar_t));
-    }
-    
-    void buildLines()
-    {
-        fLines.deleteAll();
-        if (fBounds.width() <=0) return 0;
-        
-        if(fFormat & DT_SINGLELINE)
-        {
-            fLines.push(0);
-        }else
-        {
-            const wchar_t *text = fText.begin();
-            const wchar_t* stop = fText.begin() + fText.count();
-
-            fLines.push(0);
-            size_t lineHead=0;
-            while(lineHead<fText.count())
-            {
-                fLines.push(lineHead);
-                size_t line_len = breakTextEx(&fPaint,text, stop - text, fBounds.width(),0);
-                text += line_len;
-                lineHead += line_len;
-            };
-        }
-    }
-    
-    SkTDArray<wchar_t> fText;   //文本内容
-    SkTDArray<int>  fPrefix;    //前缀符索引
-    SkTDArray<int> fLines;      //分行索引
-    UINT            fFormat;    //显示标志
-    SkRect          fBounds;    //限制矩形
-    const SkPaint   fPaint;
-};
-
-
-
-int CountLines(const wchar_t *text, int len, const SkPaint& paint, SkScalar width)
-{
-    int   count = 0;
-    const wchar_t* stop = text + len;
-
-    if (width <=0) return 0;
-    do {
-         count += 1;
-         size_t line_len = breakTextEx(&paint,text, stop - text, width,0);
-         text = text + line_len;
-    } while (text < stop);
-    return count;
-}
-
-
-
-void DrawText_Skia(SkCanvas* canvas,const wchar_t *text,int len,SkRect box,const SkPaint& paint,UINT uFormat)
+SkRect DrawText_Skia(SkCanvas* canvas,const wchar_t *text,int len,SkRect box,const SkPaint& paint,UINT uFormat)
 {
 	if(len<0)	len = wcslen(text);
-    if(len == 0) return;
-
-    const wchar_t* textStop = text + len;
-    float maxWidth = box.width();
-	if(maxWidth <= 0) return;
-
-    float  fontHeight,textHeight,height;
-    SkPaint::FontMetrics metrics;
+    SkTextLayoutEx layout;
+    layout.init(text,len,box,paint,uFormat);
     
-    paint.getFontMetrics(&metrics);
+    return layout.draw(canvas);
+}
+
+//////////////////////////////////////////////////////////////////////////
+void SkTextLayoutEx::init( const wchar_t text[], size_t length,SkRect rc, const SkPaint &paint,UINT uFormat )
+{
+    if(uFormat & DT_NOPREFIX)
+    {
+        m_text.setCount(length);
+        memcpy(m_text.begin(),text,length*sizeof(wchar_t));
+    }else
+    {
+        m_prefix.reset();
+        SkTDArray<wchar_t> tmp;
+        tmp.setCount(length);
+        memcpy(tmp.begin(),text,length*sizeof(wchar_t));
+        for(int i=0;i<tmp.count();i++)
+        {
+            if(tmp[i]==L'&')
+            {
+                tmp.remove(i,1);
+                if(i<tmp.count()-1) m_prefix.push(i);
+                if(i<tmp.count()-1 && tmp[i+1]==L'&') i++;  //skip the next "&"
+            }
+        }
+        m_text=tmp;
+    }
+
+    m_paint=&paint;
+    m_rcBound=rc;
+    m_uFormat=uFormat;
+    buildLines();
+}
+
+void SkTextLayoutEx::buildLines()
+{
+    m_lines.reset();
+
+    if(m_uFormat & DT_SINGLELINE)
+    {
+        m_lines.push(0);
+    }else
+    {
+        const wchar_t *text = m_text.begin();
+        const wchar_t* stop = m_text.begin() + m_text.count();
+
+        int lineHead=0;
+        while(lineHead<m_text.count())
+        {
+            m_lines.push(lineHead);
+            size_t line_len = breakTextEx(m_paint,text, stop - text, m_rcBound.width(),0);
+            text += line_len;
+            lineHead += line_len;
+        };
+    }
+}
+
+SkScalar SkTextLayoutEx::drawLine( SkCanvas *canvas, SkScalar x, SkScalar y, int iBegin,int iEnd,SkScalar fontHei )
+{
+    const wchar_t *text=m_text.begin()+iBegin;
+
+    if(!(m_uFormat & DT_CALCRECT))
+    {
+        canvas->drawText(text,(iEnd-iBegin)*sizeof(wchar_t),x,y,*m_paint);
+        int i=0;
+        while(i<m_prefix.count())
+        {
+            if(m_prefix[i]>=iBegin)
+                break;
+            i++;
+        }
+        while(i<m_prefix.count() && m_prefix[i]<iEnd)
+        {
+            SkScalar x1 = x + m_paint->measureText(text,(m_prefix[i]-iBegin)*sizeof(wchar_t));
+            SkScalar x2 = x + m_paint->measureText(text,(m_prefix[i]-iBegin+1)*sizeof(wchar_t));
+            canvas->drawLine(x1,y+1,x2,y+1,*m_paint); //绘制下划线
+            i++;
+        }
+    }
+    return m_paint->measureText(text,(iEnd-iBegin)*sizeof(wchar_t));
+}
+
+SkScalar SkTextLayoutEx::drawLineWithEndEllipsis( SkCanvas *canvas, SkScalar x, SkScalar y, int iBegin,int iEnd,SkScalar fontHei,SkScalar maxWidth )
+{
+    SkScalar widReq=m_paint->measureText(m_text.begin()+iBegin,(iEnd-iBegin)*sizeof(wchar_t));
+    if(widReq<m_rcBound.width())
+    {
+        return drawLine(canvas,x,y,0,m_text.count(),fontHei);
+    }else
+    {
+        SkScalar fEllipsisWid=m_paint->measureText(CH_ELLIPSIS,sizeof(CH_ELLIPSIS)-sizeof(wchar_t));
+
+        SkScalar fWid=fEllipsisWid;
+        int i=0;
+        const wchar_t *text=m_text.begin()+iBegin;
+        while(i<(iEnd-iBegin))
+        {
+            fWid += m_paint->measureText(text+i,sizeof(wchar_t));
+            if(fWid > maxWidth) break;
+            i++;
+        }
+        drawLine(canvas,x,y,0,i,fontHei);
+        if(!(m_uFormat & DT_CALCRECT)) canvas->drawText(CH_ELLIPSIS,sizeof(CH_ELLIPSIS)-sizeof(wchar_t),x+fWid-fEllipsisWid,y,*m_paint);
+        return fWid;
+    }
+}
+
+SkRect SkTextLayoutEx::draw( SkCanvas* canvas )
+{
+    float  fontHeight,textHeight;
+    SkPaint::FontMetrics metrics;
+
+    m_paint->getFontMetrics(&metrics);
     fontHeight = metrics.fDescent-metrics.fAscent;
     textHeight = fontHeight;
-    height = box.height();
+
     float lineSpan = metrics.fBottom-metrics.fTop;
 
+    SkRect rcDraw = m_rcBound;
+
     float  x;
-    switch (paint.getTextAlign()) 
+    switch (m_paint->getTextAlign()) 
     {
     case SkPaint::kCenter_Align:
-        x = SkScalarHalf(maxWidth);
+        x = SkScalarHalf(m_rcBound.width());
         break;
     case SkPaint::kRight_Align:
-        x = maxWidth-1;
+        x = m_rcBound.width();
         break;
     default://SkPaint::kLeft_Align:
         x = 0;
         break;
     }
-    x += box.fLeft;
+    x += m_rcBound.fLeft;
 
     canvas->save();
-    
-    canvas->clipRect(box);
-    
-    float y=box.fTop - metrics.fAscent;
-    if(uFormat & DT_SINGLELINE)
+
+    canvas->clipRect(m_rcBound);
+
+    float height = m_rcBound.height();
+    float y=m_rcBound.fTop - metrics.fAscent;
+    if(m_uFormat & DT_SINGLELINE)
     {//单行显示
-        if(uFormat & DT_VCENTER) 
+        rcDraw.fBottom = rcDraw.fTop + lineSpan;
+        if(m_uFormat & DT_VCENTER) 
         {
             y += (height - textHeight)/2.0f;
         }
-        if(uFormat & DT_WORD_ELLIPSIS)
-        {
-            size_t lenVisible = paint.breakText(text,len*size_t(wchar_t),maxWidth,NULL);
-            if(lenVisible==len)
-            {
-                canvas->drawText(text,len*sizeof(wchar_t),x,y,paint);
-            }else
-            {
-                
-            }
+        if(m_uFormat & DT_ELLIPSIS)
+        {//只支持在行尾增加省略号
+            rcDraw.fRight = rcDraw.fLeft + drawLineWithEndEllipsis(canvas,x,y,0,m_text.count(),fontHeight,m_rcBound.width());
         }else
         {
-            canvas->drawText(text,len*sizeof(wchar_t),x,y,paint);
+            rcDraw.fRight = rcDraw.fLeft + drawLine(canvas,x,y,0,m_text.count(),fontHeight);
         }
     }else
     {//多行显示
-        int nLines=CountLines(text,len,paint,maxWidth);
-        while(text<textStop)
+        SkScalar maxLineWid=0;
+        int iLine = 0;
+        while(iLine<m_lines.count())
         {
-            size_t len = breakTextEx(&paint,text, textStop-text, maxWidth, NULL);
-            if (y + metrics.fDescent + metrics.fLeading > 0)
-            {
-                canvas->drawText(text,len*sizeof(wchar_t), x,y, paint);
-            }
-            text += len;
+            if(y + lineSpan + metrics.fAscent >= m_rcBound.fBottom) 
+                break;  //the last visible line
+            int iBegin=m_lines[iLine];
+            int iEnd = iLine<(m_lines.count()-1)?m_lines[iLine+1]:m_text.count();
+            SkScalar lineWid = drawLine(canvas,x,y,iBegin,iEnd,fontHeight);
+            maxLineWid = MAX(maxLineWid,lineWid);
             y += lineSpan;
-            if (y + metrics.fAscent >= box.fBottom) break;
+            iLine ++;
         }
+        if(iLine<m_lines.count())
+        {//draw the last visible line
+            int iBegin=m_lines[iLine];
+            int iEnd = iLine<(m_lines.count()-1)?m_lines[iLine+1]:m_text.count();
+            SkScalar lineWid;
+            if(m_uFormat & DT_ELLIPSIS)
+            {//只支持在行尾增加省略号
+                lineWid=drawLineWithEndEllipsis(canvas,x,y,iBegin,iEnd,fontHeight,m_rcBound.width());
+            }else
+            {
+                lineWid=drawLine(canvas,x,y,iBegin,iEnd,fontHeight);
+            }
+            maxLineWid = MAX(maxLineWid,lineWid);
+            y += lineSpan;
+        }
+        rcDraw.fRight = rcDraw.fLeft + maxLineWid;
+        rcDraw.fBottom = rcDraw.fTop + y;
     }
     canvas->restore();
+    return rcDraw;
 }
-

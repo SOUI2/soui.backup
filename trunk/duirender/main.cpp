@@ -5,7 +5,7 @@
 #include "SimpleWnd.h"
 #include "duicrack.h"
 
-#include "render-d2d.h"
+// #include "render-d2d.h"
 #include "render-skia.h"
 
 #include "img-decoder.h"
@@ -73,11 +73,12 @@ public:
 		GetClientRect(&rcClient);
 		m_rt->BindDC(hdc,&rcClient);
   		m_rt->BeginDraw();
-//  		m_rt->PushClipRegion(m_rgn);
- 		m_rt->DrawBitmap(&rcClient,m_bmp,NULL,128);
- 		m_rt->FillRectangle(rcClient.left,rcClient.top,rcClient.right/2,rcClient.bottom);
-  		m_rt->DrawText(_T("ÎÄ×ÖÊä³ö²âÊÔ,ÎÄ×ÖÊä³ö²âÊÔ,ÎÄ×ÖÊä³ö²âÊÔ"),-1,&rcClient,DT_LEFT|DT_VCENTER|DT_SINGLELINE,128);
-//  		m_rt->PopClipRegion();
+  		m_rt->PushClipRegion(m_rgn);
+  		m_rt->DrawBitmap(&rcClient,m_bmp,NULL,128);
+  		m_rt->FillRectangle(rcClient.left,rcClient.top,rcClient.right/2,rcClient.bottom);
+  		m_rt->DrawText(_T("ÎÄ×ÖÊä³ö²âÊÔ,\nprefix &test\nÎÄ×ÖÊä³ö²âÊÔ,ÎÄ×ÖÊä³ö²âÊÔ"),-1,&rcClient,DT_NOPREFIX,128);
+  		
+  		m_rt->PopClipRegion();
   		m_rt->EndDraw();
 		::EndPaint(m_hWnd,&ps);
 	}
@@ -180,7 +181,7 @@ int WINAPI WinMain(
 	switch(uRet)
 	{
 	case IDYES:g_render = new SOUI::SRenderFactory_Skia;break;
-	case IDNO:g_render = new SOUI::SRenderFactory_D2D;break;
+// 	case IDNO:g_render = new SOUI::SRenderFactory_D2D;break;
 	}
 	if(g_render)
 	{

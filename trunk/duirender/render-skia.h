@@ -185,6 +185,11 @@ namespace SOUI
         SkRegion GetRegion() const {
             return m_rgn;
         }
+        
+        void SetRegion(const SkRegion & rgn)
+        {
+            m_rgn=rgn;
+        }
 	protected:
         SkRegion    m_rgn;
 	};
@@ -220,10 +225,12 @@ namespace SOUI
 		virtual HRESULT PushClipRegion(IRegion *pRegion);
 		virtual HRESULT PopClipRegion();
 
+        virtual HRESULT GetClipRegion(IRegion **ppRegion);
+        
 		virtual HRESULT BitBlt(LPRECT pRcDest,IRenderTarget *pRTSour,LPRECT pRcSour,UINT uDef);
 
 		virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha=0xFF);
-		virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat );
+		virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz );
 
 		virtual HRESULT DrawRectangle(int left, int top,int right,int bottom);
 		virtual HRESULT FillRectangle(int left, int top,int right,int bottom);
@@ -234,12 +241,6 @@ namespace SOUI
 			LPCTSTR lpszString,
 			int nCount,
             BYTE byAlpha =0xFF);
-
-		virtual HRESULT GetTextExtentPoint32(
-			LPCTSTR lpString,
-			UINT cbCount,
-			LPSIZE lpSize
-			);
 
 		virtual HRESULT DrawBitmap(LPRECT pRcDest,IBitmap *pBitmap,LPRECT pRcSour,BYTE byAlpha=0xFF);
 
@@ -263,10 +264,8 @@ namespace SOUI
 		CAutoRefPtr<SBitmap_Skia> m_curBmp;
 		CAutoRefPtr<SPen_Skia> m_curPen;
 		CAutoRefPtr<SBrush_Skia> m_curBrush;
-        CAutoRefPtr<SRegion_Skia> m_curRgn;
         CAutoRefPtr<SFont_Skia> m_curFont;
     
-        std::list<SkRegion>     m_rgnStack;//stack of clip region
 
 		HDC m_hBindDC;
 		RECT m_rcBind;
