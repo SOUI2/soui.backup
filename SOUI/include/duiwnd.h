@@ -28,10 +28,10 @@ enum {NormalEnable=0,ParentEnable=1};    //提供WM_ENABLE消息识别是父窗口可用还是
 
 #define DUIC_WANTARROWS     0x0001      /* Control wants arrow keys         */
 #define DUIC_WANTTAB        0x0002      /* Control wants tab keys           */
-#define DUIC_WANTRETURN        0x0004        /* Control wants return keys        */
+#define DUIC_WANTRETURN     0x0004      /* Control wants return keys        */
 #define DUIC_WANTCHARS      0x0008      /* Want WM_CHAR messages            */
 #define DUIC_WANTALLKEYS    0xFFFF      /* Control wants all keys           */
-#define DUIC_WANTSYSKEY        0x80000000    /* System Key */
+#define DUIC_WANTSYSKEY     0x80000000    /* System Key */
 class SOUI_EXP CDuiTimerID
 {
 public:
