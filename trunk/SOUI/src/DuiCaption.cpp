@@ -1,3 +1,15 @@
+/**
+ * Copyright (C) 2014-2050 SOUI团队
+ * All rights reserverd.
+ * 
+ * @file       DuiCaption.cpp
+ * @brief      标签控件
+ * @version    v1.0      
+ * @author     soui      
+ * @date       2014-05-28
+ * 
+ * Describe    此类完成日历控件
+ */
 #include "duistd.h"
 #include "DuiCaption.h"
 

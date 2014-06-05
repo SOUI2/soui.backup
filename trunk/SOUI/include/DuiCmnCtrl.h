@@ -1,10 +1,15 @@
-//////////////////////////////////////////////////////////////////////////
-//   File Name: DuiCmnCtrl.h
-// Description: DuiWindow Common Controls
-//     Creator: Zhang Xiaoxuan
-//     Version: 2009.04.28 - 1.0 - Create
-//                2014.02.05 - 2.0 huang jianxiong
-//////////////////////////////////////////////////////////////////////////
+/**
+ * Copyright (C) 2014-2050 SOUI团队
+ * All rights reserverd.
+ * 
+ * @file       DuiCmnCtrl.h
+ * @brief      通用控件
+ * @version    v1.0      
+ * @author     soui      
+ * @date       2014-05-28
+ * 
+ * Describe    此文件中定义了很多通用控件:静态文本，超链接，按钮，单选按钮等
+ */
 
 #pragma once
 #include "duiwnd.h"
@@ -14,24 +19,19 @@
 
 namespace SOUI
 {
-
-
-//////////////////////////////////////////////////////////////////////////
-// Spacing Control
-// Only leave a space
-//
-// Usage: <spacing width=xx />
-//
+/**
+ * @class      CDuiSpacing
+ * @brief      空格控件类
+ * 
+ * Describe    空格控件类
+ * Usage       <spacing width=xx />
+ */
 class SOUI_EXP CDuiSpacing : public CDuiWindow
 {
     SOUI_CLASS_NAME(CDuiSpacing, "spacing")
-
 public:
-
     // Do nothing
-    void OnPaint(CDCHandle dc)
-    {
-    }
+    void OnPaint(CDCHandle dc){}
 
 protected:
     WND_MSG_MAP_BEGIN()
@@ -39,27 +39,44 @@ protected:
     WND_MSG_MAP_END()
 };
 
-
-//////////////////////////////////////////////////////////////////////////
-// Static Control
-//
-// Usage: <text>inner text example</text>
-// 有多行属性时，\n可以强制换行
-//
+/**
+ * @class      CDuiStatic
+ * @brief      静态文本控件类
+ * 
+ * Describe    静态文本控件可支持多行，有多行属性时，\n可以强制换行
+ * Usage       <text>inner text example</text>
+ */
 class SOUI_EXP CDuiStatic : public CDuiWindow
 {
     SOUI_CLASS_NAME(CDuiStatic, "text")
 public:
+    /**
+     * CDuiStatic::CDuiStatic
+     * @brief    构造函数
+     *
+     * Describe  构造函数
+     */
     CDuiStatic():m_bMultiLines(0),m_nLineInter(5)
     {
         m_bMsgTransparent=TRUE;
         m_style.SetAttribute("align","left");
     }
+    /**
+     * CDuiStatic::DuiDrawText
+     * @brief    绘制文本
+     * @param    HDC hdc -- 绘制设备句柄         
+     * @param    LPCTSTR pszBuf -- 文本内容字符串         
+     * @param    int cchText -- 字符串长度         
+     * @param    LPRECT pRect -- 指向矩形结构RECT的指针         
+     * @param    UINT uFormat --  正文的绘制选项         
+     *
+     * Describe  对DrawText封装
+     */    
     virtual void DuiDrawText(HDC hdc,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
 
 protected:
-    int m_bMultiLines;
-    int m_nLineInter;
+    int m_bMultiLines;  /**< 是否开启多行显示 */  
+    int m_nLineInter;   /**< 不详 有待完善 */
 
     SOUO_ATTRIBUTES_BEGIN()
     DUIWIN_INT_ATTRIBUTE("multilines", m_bMultiLines, FALSE)
@@ -67,24 +84,57 @@ protected:
     SOUI_ATTRIBUTES_END()
 };
 
-//////////////////////////////////////////////////////////////////////////
-// Link Control
-// Only For Header Drag Test
-// Usage: <link>inner text example</link>
-//
+/**
+ * @class      CDuiLink
+ * @brief      超链接控件类
+ * 
+ * Describe    Only For Header Drag Test
+ * Usage       <link>inner text example</link>
+ */
 class SOUI_EXP CDuiLink : public CDuiWindow
 {
     SOUI_CLASS_NAME(CDuiLink, "link")
 
 public:
+    /**
+     * CDuiLink::CDuiLink
+     * @brief    构造函数
+     *
+     * Describe  构造函数
+     */
     CDuiLink()
     {
         m_style.SetAttribute("align","left");
     }
 
 protected:
+    /**
+     * CDuiLink::OnAttributeFinish
+     * @brief    解析xml设置属性
+     *
+     * Describe  根据xml文件设置相关属性
+     */
     virtual void OnAttributeFinish(pugi::xml_node xmlNode);
+    /**
+     * CDuiLink::DuiDrawText
+     * @brief    绘制文本
+     * @param    HDC hdc -- 绘制设备句柄         
+     * @param    LPCTSTR pszBuf -- 文本内容字符串         
+     * @param    int cchText -- 字符串长度         
+     * @param    LPRECT pRect -- 指向矩形结构RECT的指针         
+     * @param    UINT uFormat --  正文的绘制选项         
+     *
+     * Describe  对DrawText封装
+     */
     virtual void DuiDrawText(HDC hdc,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
+
+    /**
+     * CDuiLink::OnDuiSetCursor
+     * @brief    设置光标样式和位置
+     * @param    CPoint &pt -- 设置光标位置
+     *
+     * Describe  函数内部会加载光标样式
+     */
     virtual BOOL OnDuiSetCursor(const CPoint &pt);
 
     void OnLButtonDown(UINT nFlags,CPoint pt);
@@ -99,36 +149,67 @@ protected:
         MSG_WM_MOUSEHOVER(OnMouseHover)
     WND_MSG_MAP_END()
 
-    CRect m_rcText;
+    CRect m_rcText;  /**< 文本显示所在位置 */
 };
 
-//////////////////////////////////////////////////////////////////////////
-// Button Control
-// Use id attribute to process click event
-//
-// Usage: <button id=xx>inner text example</button>
-//
+/**
+ * @class      CDuiButton
+ * @brief      按钮控件类
+ * 
+ * Describe    通过属性ID绑定click事件 Use id attribute to process click event
+ * Usage       <button id=xx>inner text example</button>
+ */
 class SOUI_EXP CDuiButton : public CDuiWindow
     , public IAcceleratorTarget
     , public ITimelineHandler
 {
     SOUI_CLASS_NAME(CDuiButton, "button")
 public:
+    /**
+     * CDuiButton::CDuiButton
+     * @brief    构造函数
+     *
+     * Describe  构造函数
+     */
     CDuiButton();
 protected:
-
+    /**
+     * CDuiLink::NeedRedrawWhenStateChange
+     * @brief    状态变化需要重画
+     *
+     * Describe  当按钮状态发生变化时候需要重新绘制 默认返回TRUE
+     */
     virtual BOOL NeedRedrawWhenStateChange()
     {
         return TRUE;
     }
-
+    /**
+     * CDuiLink::OnGetDuiCode
+     * @brief    获得编码
+     *
+     * Describe  返回宏定义DUIC_WANTCHARS代表需要WM_CHAR消息
+     */
     virtual UINT OnGetDuiCode()
     {
         return DUIC_WANTCHARS;
     }
 
+    /**
+     * CDuiLink::OnAcceleratorPressed
+     * @brief    加速键按下
+     * @param    CAccelerator& accelerator -- 加速键相关结构体
+     *
+     * Describe  处理加速键响应消息
+     */
     virtual bool OnAcceleratorPressed(const CAccelerator& accelerator);
 protected:
+    /**
+     * CDuiLink::GetDesiredSize
+     * @brief    获得期望的大小值
+     * @param    LPRECT pRcContainer -- 内容窗体矩形
+     *
+     * Describe  根据内容窗体矩形大小，计算出适合的大小
+     */
     virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
     virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState);
@@ -149,13 +230,11 @@ protected:
 
 protected:
     virtual void OnNextFrame();
-
     void StopCurAnimate();
 
-    DWORD          m_accel;
-
-    BOOL          m_bAnimate;//动画标志
-    BYTE          m_byAlphaAni;    //动画状态
+    DWORD  m_accel;
+    BOOL   m_bAnimate;    /**< 动画标志 */
+    BYTE   m_byAlphaAni;  /**< 动画状态 */
 public:
     SOUO_ATTRIBUTES_BEGIN()
         DUIWIN_CUSTOM_ATTRIBUTE("accel",OnAttrAccel)
