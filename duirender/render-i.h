@@ -113,6 +113,12 @@ struct IRenderTarget: public IObjRef
 
 	virtual HRESULT DrawRectangle(int left, int top,int right,int bottom)=0;
 	virtual HRESULT FillRectangle(int left, int top,int right,int bottom)=0;
+
+    virtual HRESULT DrawRoundRect(LPCRECT pRect,POINT pt)=0;
+    virtual HRESULT FillRoundRect(LPCRECT pRect,POINT pt)=0;
+    
+    virtual HRESULT DrawLines(LPPOINT pPt,size_t nCount) =0;
+
 	virtual HRESULT DrawBitmap(LPRECT pRcDest,IBitmap *pBitmap,LPRECT pRcSour,BYTE byAlpha=0xFF)=0;
 	virtual HRESULT BitBlt(LPRECT pRcDest,IRenderTarget *pRTSour,LPRECT rcSour,UINT uDef)=0;
 

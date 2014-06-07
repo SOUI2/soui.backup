@@ -109,10 +109,6 @@ namespace SOUI
 		CreateSolidColorBrush(CDuiColor(0,0,0),&pBr);
 		SelectObject(pBr);
 
-        CAutoRefPtr<IRegion> pRgn;
-        CreateRegion(&pRgn);
-        SelectObject(pRgn);
-
         CAutoRefPtr<IFont> pFont;
         LOGFONT lf={0};
         lf.lfHeight=20;
@@ -128,7 +124,9 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::CreateCompatibleRenderTarget( SIZE szTarget,IRenderTarget **ppRenderTarget )
 	{
-		return E_NOTIMPL;
+        SRenderTarget_Skia *pRT = new SRenderTarget_Skia(GetRenderFactory_Skia(),szTarget.cx,szTarget.cy);
+        *ppRenderTarget = pRT;
+		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::CreatePen( int iStyle,COLORREF cr,int cWidth,IPen ** ppPen )
@@ -282,6 +280,10 @@ namespace SOUI
         txtPaint.setColor(m_curColor);
         txtPaint.setTypeface(m_curFont->GetFont());
         txtPaint.setAlpha(byAlpha);
+        if(uFormat & DT_CENTER)
+            txtPaint.setTextAlign(SkPaint::kCenter_Align);
+        else if(uFormat & DT_RIGHT)
+            txtPaint.setTextAlign(SkPaint::kRight_Align);
         DrawText_Skia(m_SkCanvas,strW,strW.GetLength(),toSkRect(pRc),txtPaint,uFormat);
 		return S_OK;
 	}
@@ -330,6 +332,57 @@ namespace SOUI
 		m_SkCanvas->drawRect(SkRect::MakeFromIRect(rc),paint);
 		return S_OK;
 	}
+
+    HRESULT SRenderTarget_Skia::DrawRoundRect( LPCRECT pRect,POINT pt )
+    {
+        SkPaint paint;
+        paint.setColor(m_curPen->GetColor());
+        SGetLineDashEffect skDash(m_curPen->GetStyle());
+        paint.setPathEffect(skDash.Get());
+        paint.setStrokeWidth(m_curPen->GetWidth());
+        paint.setStyle(SkPaint::kStroke_Style);
+        m_SkCanvas->drawRoundRect(toSkRect(pRect),pt.x,pt.y,paint);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_Skia::FillRoundRect( LPCRECT pRect,POINT pt )
+    {
+        SkPaint paint;
+
+        if(m_curBrush->IsBitmap())
+        {
+            paint.setFilterBitmap(true);
+            paint.setShader(SkShader::CreateBitmapShader(m_curBrush->GetBitmap(),SkShader::kRepeat_TileMode,SkShader::kRepeat_TileMode))->unref();
+        }else
+        {
+            paint.setFilterBitmap(false);
+            paint.setColor(m_curBrush->GetColor());
+        }
+        paint.setStyle(SkPaint::kFill_Style);
+        m_SkCanvas->drawRoundRect(toSkRect(pRect),pt.x,pt.y,paint);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_Skia::DrawLines(LPPOINT pPt,size_t nCount)
+    {
+        SkPoint *pts=new SkPoint[nCount];
+        for(size_t i=0; i<nCount; i++ )
+        {
+            pts[i].fX = pPt[i].x;
+            pts[i].fY = pPt[i].y;
+        }
+
+        SkPaint paint;
+        paint.setColor(m_curPen->GetColor());
+        SGetLineDashEffect skDash(m_curPen->GetStyle());
+        paint.setPathEffect(skDash.Get());
+        paint.setStrokeWidth(m_curPen->GetWidth());
+        paint.setStyle(SkPaint::kStroke_Style);
+        m_SkCanvas->drawPoints(SkCanvas::kPolygon_PointMode,nCount,pts,paint);
+        delete []pts;
+
+        return S_OK;
+    }
 
 	HRESULT SRenderTarget_Skia::TextOut( int x, int y, LPCTSTR lpszString, int nCount,BYTE byAlpha )
 	{
@@ -412,7 +465,6 @@ namespace SOUI
 		return pRet;
 	}
 
-
 	//////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
 	HRESULT SBitmap_Skia::Init( IRenderTarget *pRT,int nWid,int nHei )
@@ -427,42 +479,32 @@ namespace SOUI
 	{
 		SImgDecoder imgDecoder;
 		if(imgDecoder.DecodeFromFile(DUI_CT2W(pszFileName))==0) return S_FALSE;
-		
-		IWICBitmapSource* convertedBMP = imgDecoder.GetFrame(0);
-		UINT uWid=0,uHei =0;
-		convertedBMP->GetSize(&uWid,&uHei);
-
-		m_bitmap.setConfig(SkBitmap::kARGB_8888_Config, uWid, uHei);
-		m_bitmap.allocPixels();
-
-		m_bitmap.lockPixels();
-		const int stride = m_bitmap.rowBytes();
-		convertedBMP->CopyPixels(NULL, stride, stride * uHei,
-			reinterpret_cast<BYTE*>(m_bitmap.getPixels()));
-		m_bitmap.unlockPixels();
-
-		return S_OK;
+		return ImgFromDecoder(imgDecoder);
 	}
 
 	HRESULT SBitmap_Skia::LoadFromMemory( IRenderTarget *pRT,LPBYTE pBuf,size_t szLen,LPCTSTR pszType )
 	{
 		SImgDecoder imgDecoder;
 		if(imgDecoder.DecodeFromMemory(pBuf,szLen)==0) return S_FALSE;
-
-		IWICBitmapSource* convertedBMP = imgDecoder.GetFrame(0);
-		UINT uWid=0,uHei =0;
-		convertedBMP->GetSize(&uWid,&uHei);
-
-		m_bitmap.setConfig(SkBitmap::kARGB_8888_Config, uWid, uHei);
-		m_bitmap.allocPixels();
-
-		m_bitmap.lockPixels();
-		const int stride = m_bitmap.rowBytes();
-		convertedBMP->CopyPixels(NULL, stride, stride * uHei,
-			reinterpret_cast<BYTE*>(m_bitmap.getPixels()));
-		m_bitmap.unlockPixels();
-		return S_OK;
+        return ImgFromDecoder(imgDecoder);
 	}
+
+    HRESULT SBitmap_Skia::ImgFromDecoder(SImgDecoder &imgDecoder)
+    {
+        IWICBitmapSource* convertedBMP = imgDecoder.GetFrame(0);
+        UINT uWid=0,uHei =0;
+        convertedBMP->GetSize(&uWid,&uHei);
+
+        m_bitmap.setConfig(SkBitmap::kARGB_8888_Config, uWid, uHei);
+        m_bitmap.allocPixels();
+
+        m_bitmap.lockPixels();
+        const int stride = m_bitmap.rowBytes();
+        convertedBMP->CopyPixels(NULL, stride, stride * uHei,
+            reinterpret_cast<BYTE*>(m_bitmap.getPixels()));
+        m_bitmap.unlockPixels();
+        return S_OK;
+    }
 
 	//////////////////////////////////////////////////////////////////////////
 	SRegion_Skia::SRegion_Skia( IRenderFactory_Skia *pRenderFac )
