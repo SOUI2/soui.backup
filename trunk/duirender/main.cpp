@@ -73,12 +73,13 @@ public:
 		GetClientRect(&rcClient);
 		m_rt->BindDC(hdc,&rcClient);
   		m_rt->BeginDraw();
-  		m_rt->PushClipRegion(m_rgn);
-  		m_rt->DrawBitmap(&rcClient,m_bmp,NULL,128);
+//   		m_rt->PushClipRegion(m_rgn);
+ 		m_rt->DrawBitmap(&rcClient,m_bmp,NULL,128);
   		m_rt->FillRectangle(rcClient.left,rcClient.top,rcClient.right/2,rcClient.bottom);
-  		m_rt->DrawText(_T("ÎÄ×ÖÊä³ö²âÊÔ,\nprefix &test\nÎÄ×ÖÊä³ö²âÊÔ,ÎÄ×ÖÊä³ö²âÊÔ"),-1,&rcClient,DT_NOPREFIX,128);
-  		
-  		m_rt->PopClipRegion();
+  		m_rt->DrawText(_T("ÎÄ×ÖÊä³ö²âÊÔ,\nprefix &test\nÎÄ×ÖÊä³ö²âÊÔ,ÎÄ×ÖÊä³ö²âÊÔ"),-1,&rcClient,DT_VCENTER|DT_SINGLELINE|DT_CENTER,128);
+        POINT pt[3]={{10,10},{10,100},{100,100}};
+  		m_rt->DrawLines(pt,3);
+//  		m_rt->PopClipRegion();
   		m_rt->EndDraw();
 		::EndPaint(m_hWnd,&ps);
 	}

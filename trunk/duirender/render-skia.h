@@ -152,6 +152,7 @@ namespace SOUI
 
 	//////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
+    class SImgDecoder;
 	class SBitmap_Skia : public TSkiaRenderObjImpl<IBitmap>
 	{
 	public:
@@ -166,6 +167,7 @@ namespace SOUI
 
 		SkBitmap GetBitmap(){return m_bitmap;}
 	protected:
+        HRESULT ImgFromDecoder(SImgDecoder &imgDecoder);
 
 		SkBitmap m_bitmap;
 	};
@@ -234,6 +236,10 @@ namespace SOUI
 
 		virtual HRESULT DrawRectangle(int left, int top,int right,int bottom);
 		virtual HRESULT FillRectangle(int left, int top,int right,int bottom);
+        
+        virtual HRESULT DrawRoundRect(LPCRECT pRect,POINT pt);
+        virtual HRESULT FillRoundRect(LPCRECT pRect,POINT pt);
+        virtual HRESULT DrawLines(LPPOINT pPt,size_t nCount);
 
 		virtual HRESULT TextOut(
 			int x,
@@ -258,7 +264,7 @@ namespace SOUI
  			m_curColor=color;
 			return crOld;
 		}
-	protected:
+    protected:
 		SkCanvas *m_SkCanvas;
         COLORREF            m_curColor;
 		CAutoRefPtr<SBitmap_Skia> m_curBmp;
