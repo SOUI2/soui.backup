@@ -251,7 +251,7 @@ namespace SOUI
 		virtual HRESULT DrawBitmap(LPRECT pRcDest,IBitmap *pBitmap,LPRECT pRcSour,BYTE byAlpha=0xFF);
 
 		virtual IRenderObj * GetCurrentObject(OBJTYPE uType);
-		virtual IRenderObj * SelectObject(IRenderObj *pObj);
+        virtual HRESULT SelectObject(IRenderObj *pObj,IRenderObj ** ppOldObj = NULL);
 
 
 		virtual COLORREF GetTextColor()

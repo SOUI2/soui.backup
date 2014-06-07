@@ -65,6 +65,11 @@ public:
 	{
 
 	}
+
+    ~CMainWnd()
+    {
+    }
+
 	void OnPaint(HDC hdc)
 	{
 		PAINTSTRUCT ps;
@@ -74,11 +79,35 @@ public:
 		m_rt->BindDC(hdc,&rcClient);
   		m_rt->BeginDraw();
 //   		m_rt->PushClipRegion(m_rgn);
+        RECT rcClip=rcClient;
+        InflateRect(&rcClip,-10,-10);
+        m_rt->PushClipRect(&rcClip);
+
  		m_rt->DrawBitmap(&rcClient,m_bmp,NULL,128);
   		m_rt->FillRectangle(rcClient.left,rcClient.top,rcClient.right/2,rcClient.bottom);
   		m_rt->DrawText(_T("文字输出测试,\nprefix &test\n文字输出测试,文字输出测试"),-1,&rcClient,DT_VCENTER|DT_SINGLELINE|DT_CENTER,128);
         POINT pt[3]={{10,10},{10,100},{100,100}};
   		m_rt->DrawLines(pt,3);
+
+        RECT rc={100,100,200,200};
+        POINT pt2={5,5};
+
+        CAutoRefPtr<IPen> pen,oldPen;
+        m_rt->CreatePen(PS_DASHDOTDOT,CDuiColor(0xFF,0,0,0x55),2,&pen);
+
+        m_rt->SelectObject(pen,(IRenderObj**)&oldPen);
+        m_rt->DrawRoundRect(&rc,pt2);
+        m_rt->SelectObject(oldPen);
+
+        InflateRect(&rc,-2,-2);
+
+        CAutoRefPtr<IBrush> brColor,brOld;
+        m_rt->CreateSolidColorBrush(0xFF0000FF,&brColor);
+        m_rt->SelectObject(brColor,(IRenderObj**)&brOld);
+        m_rt->FillRoundRect(&rc,pt2);
+        m_rt->SelectObject(brOld);
+
+        m_rt->PopClipRect();
 //  		m_rt->PopClipRegion();
   		m_rt->EndDraw();
 		::EndPaint(m_hWnd,&ps);
@@ -102,8 +131,7 @@ public:
 		lf.lfHeight=30;
 		lf.lfItalic=1;
 		m_rt->CreateFont(lf,&font);
-		IRenderObj *oldFont = m_rt->SelectObject(font);
-		if(oldFont) oldFont->Release();
+		m_rt->SelectObject(font);
 
 		m_rt->SetTextColor(CDuiColor(255,0,0));
 		RECT rc1={0,0,100,100};
@@ -126,8 +154,7 @@ public:
 		icon->LoadFromMemory(m_rt,pImgData,szImg,NULL);
 
 		m_rt->CreateBitmapBrush(icon,&m_brIcon);
-		IRenderObj *pOld=m_rt->SelectObject(m_brIcon);
-		pOld->Release();
+		m_rt->SelectObject(m_brIcon);
 
 		return 0;
 	}
@@ -178,12 +205,14 @@ int WINAPI WinMain(
 
 	SOUI::SImgDecoder::InitImgDecoder();
 
-	UINT uRet=MessageBox(GetActiveWindow(),_T("按Yes选择使用Skia渲染，No使用D2D渲染，Cancel退出"),_T("选择渲染模块"),MB_YESNOCANCEL);
-	switch(uRet)
-	{
-	case IDYES:g_render = new SOUI::SRenderFactory_Skia;break;
-// 	case IDNO:g_render = new SOUI::SRenderFactory_D2D;break;
-	}
+    g_render = new SOUI::SRenderFactory_Skia;
+
+// 	UINT uRet=MessageBox(GetActiveWindow(),_T("按Yes选择使用Skia渲染，No使用D2D渲染，Cancel退出"),_T("选择渲染模块"),MB_YESNOCANCEL);
+// 	switch(uRet)
+// 	{
+// 	case IDYES:g_render = new SOUI::SRenderFactory_Skia;break;
+//  	case IDNO:g_render = new SOUI::SRenderFactory_D2D;break;
+// 	}
 	if(g_render)
 	{
 		{//保证wndMain对象中的成员先于render析构

@@ -436,34 +436,35 @@ namespace SOUI
 		return pRet;
 	}
 
-	IRenderObj * SRenderTarget_Skia::SelectObject( IRenderObj *pObj )
-	{
-		CAutoRefPtr<IRenderObj> pRet;
-		switch(pObj->ObjectType())
-		{
-		case OT_BITMAP: 
-			pRet=m_curBmp;
-			m_curBmp=(SBitmap_Skia*)pObj;
-			break;
-		case OT_PEN:
-			pRet=m_curPen;
-			m_curPen=(SPen_Skia*)pObj;
-			break;
-		case OT_BRUSH:
-			pRet=m_curBrush;
-			m_curBrush=(SBrush_Skia*)pObj;
-			break;
+    HRESULT SRenderTarget_Skia::SelectObject( IRenderObj *pObj,IRenderObj ** ppOldObj /*= NULL*/ )
+    {
+        CAutoRefPtr<IRenderObj> pRet;
+        switch(pObj->ObjectType())
+        {
+        case OT_BITMAP: 
+            pRet=m_curBmp;
+            m_curBmp=(SBitmap_Skia*)pObj;
+            break;
+        case OT_PEN:
+            pRet=m_curPen;
+            m_curPen=(SPen_Skia*)pObj;
+            break;
+        case OT_BRUSH:
+            pRet=m_curBrush;
+            m_curBrush=(SBrush_Skia*)pObj;
+            break;
         case OT_FONT:
             pRet=m_curFont;
             m_curFont=(SFont_Skia*)pObj;
             break;
-		}
-		if(pRet)
-		{//由调用者调用Release释放该RenderObj
-			pRet->AddRef();
-		}
-		return pRet;
-	}
+        }
+        if(pRet && ppOldObj)
+        {//由调用者调用Release释放该RenderObj
+            pRet->AddRef();
+            *ppOldObj = pRet;
+        }
+        return S_OK;
+    }
 
 	//////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
