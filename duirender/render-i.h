@@ -123,7 +123,7 @@ struct IRenderTarget: public IObjRef
 	virtual HRESULT BitBlt(LPRECT pRcDest,IRenderTarget *pRTSour,LPRECT rcSour,UINT uDef)=0;
 
 	virtual IRenderObj * GetCurrentObject(OBJTYPE uType) =0;
-	virtual IRenderObj * SelectObject(IRenderObj *pObj) =0;
+	virtual HRESULT SelectObject(IRenderObj *pObj,IRenderObj ** pOldObj = NULL) =0;
 	virtual COLORREF GetTextColor() =0;
 	virtual COLORREF SetTextColor(COLORREF color)=0;
 };
