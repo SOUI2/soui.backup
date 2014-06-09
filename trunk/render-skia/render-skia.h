@@ -1,14 +1,15 @@
 #pragma once
 
-#include "render-i.h"
-#include "color.h"
-#include "obj-ref-impl.hpp"
-#include <list>
+#include <render/render-i.h>
+#include <color.h>
+#include <unknown/obj-ref-impl.hpp>
 
 #include <core\SkCanvas.h>
 #include <core\SkBitmap.h>
 #include <core\SkTypeface.h>
 
+#include <string\tstring.h>
+#include <string\strcpcvt.h>
 namespace SOUI
 {
 	//实现一些和特定系统相关的接口
@@ -103,8 +104,8 @@ namespace SOUI
             if(plf->lfWeight == FW_BOLD) style |= SkTypeface::kBold;
 
             m_skFont=SkTypeface::CreateFromName(strFace,(SkTypeface::Style)style);
-            m_skPaint.setTextSize(plf->lfHeight);
-            m_skPaint.setUnderlineText(plf->lfUnderline);
+            m_skPaint.setTextSize((SkScalar)plf->lfHeight);
+            m_skPaint.setUnderlineText(!!plf->lfUnderline);
             m_skPaint.setTextEncoding(SkPaint::kUTF16_TextEncoding);
             m_skPaint.setAntiAlias(true);
 		}

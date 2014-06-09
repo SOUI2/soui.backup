@@ -47,6 +47,17 @@
 #   define DUIRES_ASSERT    DUIRES_ASSERTA
 #endif//_UNICODE
 
+#include <assert.h>
+#define DUIASSERT(x) assert(x)
+#define DUIASSERT_NE(a,b) DUIASSERT(a!=b)
+
+#ifdef _DUI_DISABLE_NO_VTABLE
+#define DUI_NO_VTABLE
+#else
+#define DUI_NO_VTABLE __declspec(novtable)
+#endif
+
+
 // DuiWindow Handle
 typedef DWORD HDUIWND;
 typedef ULONG_PTR HSTREEITEM;

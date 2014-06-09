@@ -37,8 +37,6 @@
 //export pugixml interface
 #include "../pugixml/pugixml.hpp"
 
-#include "DuiUtilities.h"
-
 #ifdef USING_ATL
     #define _COLL_NS    ATL
     #include <atlbase.h>
@@ -59,21 +57,22 @@
     #define CDuiStringW CAtlStringW
     #define CDuiStringT CAtlString
 
-    #include "wtl.mini/strcpcvt.h"
-
+    #include "../../utilities/include/string/strcpcvt.h"
 #else//ATL_FREE
     #define _WTYPES_NS SOUI
     #define _COLL_NS    SOUI
     #include "wtl.mini/duicrack.h"
     #include "wtl.mini/duimisc.h"
     #include "wtl.mini/duigdi.h"
-    #include "wtl.mini/tstring.h" 
-    #include "wtl.mini/strcpcvt.h"
     #include "wtl.mini/duicoll.h"
     #include "atl.mini/atldef.h"
     #include "atl.mini/duicomcli.h"
-
+    #include "../../utilities/include/string/tstring.h"
+    #include "../../utilities/include/string/strcpcvt.h"
 #endif//USING_ATL
+
+#include "../../utilities/include/trace.h"
+#include "../../utilities/include/utilities.h"
 
 
 #include "DuiAttrCrack.h"
@@ -84,3 +83,11 @@
 
 #pragma comment(lib,"Msimg32.lib")
 #pragma comment(lib,"shlwapi.lib")
+
+#ifdef _USRDLL
+    #ifdef _DEBUG
+        #pragma comment(lib,"utilities_d.lib")
+    #else
+        #pragma comment(lib,"utilities.lib")
+    #endif
+#endif

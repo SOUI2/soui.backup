@@ -3,7 +3,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _CRT_NON_CONFORMING_SWPRINTFS
 
-#include <WINDOWS.H>
 #include <tchar.h>
 #include "resource.h"
 #include <assert.h>
