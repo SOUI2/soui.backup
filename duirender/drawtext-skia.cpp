@@ -114,12 +114,12 @@ SkScalar SkTextLayoutEx::drawLine( SkCanvas *canvas, SkScalar x, SkScalar y, int
     return m_paint->measureText(text,(iEnd-iBegin)*sizeof(wchar_t));
 }
 
-SkScalar SkTextLayoutEx::drawLineWithEndEllipsis( SkCanvas *canvas, SkScalar x, SkScalar y, int iBegin,int iEnd,SkScalar fontHei,SkScalar maxWidth )
+SkScalar SkTextLayoutEx::drawLineEndWithEllipsis( SkCanvas *canvas, SkScalar x, SkScalar y, int iBegin,int iEnd,SkScalar fontHei,SkScalar maxWidth )
 {
     SkScalar widReq=m_paint->measureText(m_text.begin()+iBegin,(iEnd-iBegin)*sizeof(wchar_t));
     if(widReq<m_rcBound.width())
     {
-        return drawLine(canvas,x,y,0,m_text.count(),fontHei);
+        return drawLine(canvas,x,y,iBegin,iEnd,fontHei);
     }else
     {
         SkScalar fEllipsisWid=m_paint->measureText(CH_ELLIPSIS,sizeof(CH_ELLIPSIS)-sizeof(wchar_t));
@@ -182,7 +182,7 @@ SkRect SkTextLayoutEx::draw( SkCanvas* canvas )
         }
         if(m_uFormat & DT_ELLIPSIS)
         {//只支持在行尾增加省略号
-            rcDraw.fRight = rcDraw.fLeft + drawLineWithEndEllipsis(canvas,x,y,0,m_text.count(),fontHeight,m_rcBound.width());
+            rcDraw.fRight = rcDraw.fLeft + drawLineEndWithEllipsis(canvas,x,y,0,m_text.count(),fontHeight,m_rcBound.width());
         }else
         {
             rcDraw.fRight = rcDraw.fLeft + drawLine(canvas,x,y,0,m_text.count(),fontHeight);
@@ -209,7 +209,7 @@ SkRect SkTextLayoutEx::draw( SkCanvas* canvas )
             SkScalar lineWid;
             if(m_uFormat & DT_ELLIPSIS)
             {//只支持在行尾增加省略号
-                lineWid=drawLineWithEndEllipsis(canvas,x,y,iBegin,iEnd,fontHeight,m_rcBound.width());
+                lineWid=drawLineEndWithEllipsis(canvas,x,y,iBegin,iEnd,fontHeight,m_rcBound.width());
             }else
             {
                 lineWid=drawLine(canvas,x,y,iBegin,iEnd,fontHeight);
