@@ -84,7 +84,7 @@
 #pragma comment(lib,"Msimg32.lib")
 #pragma comment(lib,"shlwapi.lib")
 
-#ifdef _USRDLL
+#ifdef DLL_SOUI
     #ifdef _DEBUG
         #pragma comment(lib,"utilities_d.lib")
     #else
