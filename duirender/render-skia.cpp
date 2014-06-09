@@ -93,6 +93,8 @@ namespace SOUI
 		,m_SkCanvas(NULL)
         ,m_curColor(0xFF000000)//Ä¬ÈÏºÚÉ«
 	{
+        m_ptOrg.fX=m_ptOrg.fY=0.0f;
+
         if(nWid && nHei)
         {
             CAutoRefPtr<IBitmap> bmp;
@@ -228,7 +230,9 @@ namespace SOUI
 	HRESULT SRenderTarget_Skia::PushClipRect( LPCRECT pRect )
 	{
 	    m_SkCanvas->save();
-	    m_SkCanvas->clipRect(toSkRect(pRect));
+        SkRect skrc=toSkRect(pRect);
+        skrc.offset(m_ptOrg);
+        m_SkCanvas->clipRect(skrc);
 	    return S_OK;
 	}
 
@@ -268,7 +272,9 @@ namespace SOUI
 	    SRenderTarget_Skia *pRTSourSkia=(SRenderTarget_Skia*)pRcSour;
 	    
 	    const SkBitmap & bmpSrc= pRTSourSkia->m_SkCanvas->getDevice()->accessBitmap(true);
-	    m_SkCanvas->drawBitmapRectToRect(bmpSrc,&toSkRect(pRcSour),toSkRect(pRcDest));
+        SkRect rcDst=toSkRect(pRcDest);
+        rcDst.offset(m_ptOrg);
+	    m_SkCanvas->drawBitmapRectToRect(bmpSrc,&toSkRect(pRcSour),rcDst);
 		return S_OK;
 	}
 
@@ -284,7 +290,10 @@ namespace SOUI
             txtPaint.setTextAlign(SkPaint::kCenter_Align);
         else if(uFormat & DT_RIGHT)
             txtPaint.setTextAlign(SkPaint::kRight_Align);
-        DrawText_Skia(m_SkCanvas,strW,strW.GetLength(),toSkRect(pRc),txtPaint,uFormat);
+
+        SkRect skrc=toSkRect(pRc);
+        skrc.offset(m_ptOrg);
+        DrawText_Skia(m_SkCanvas,strW,strW.GetLength(),skrc,txtPaint,uFormat);
 		return S_OK;
 	}
 
@@ -304,19 +313,21 @@ namespace SOUI
 	HRESULT SRenderTarget_Skia::DrawRectangle( int left, int top,int right,int bottom )
 	{
 		SkPaint paint;
-		SkIRect rc={left,top,right,bottom};
 		paint.setColor(m_curPen->GetColor());
 		SGetLineDashEffect skDash(m_curPen->GetStyle());
  		paint.setPathEffect(skDash.Get());
-		paint.setStrokeWidth(m_curPen->GetWidth());
+		paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
 		paint.setStyle(SkPaint::kStroke_Style);
-		m_SkCanvas->drawRect(SkRect::MakeFromIRect(rc),paint);
+
+        RECT rc={left,top,right,bottom};
+        SkRect skrc=toSkRect(&rc);
+        skrc.offset(m_ptOrg);
+		m_SkCanvas->drawRect(skrc,paint);
 		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::FillRectangle( int left, int top,int right,int bottom )
 	{
-		SkIRect rc={left,top,right,bottom};
 		SkPaint paint;
 		
 		if(m_curBrush->IsBitmap())
@@ -329,7 +340,11 @@ namespace SOUI
 			paint.setColor(m_curBrush->GetColor());
 		}
 		paint.setStyle(SkPaint::kFill_Style);
-		m_SkCanvas->drawRect(SkRect::MakeFromIRect(rc),paint);
+
+        RECT rc={left,top,right,bottom};
+        SkRect skrc=toSkRect(&rc);
+        skrc.offset(m_ptOrg);
+		m_SkCanvas->drawRect(skrc,paint);
 		return S_OK;
 	}
 
@@ -339,9 +354,12 @@ namespace SOUI
         paint.setColor(m_curPen->GetColor());
         SGetLineDashEffect skDash(m_curPen->GetStyle());
         paint.setPathEffect(skDash.Get());
-        paint.setStrokeWidth(m_curPen->GetWidth());
+        paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
         paint.setStyle(SkPaint::kStroke_Style);
-        m_SkCanvas->drawRoundRect(toSkRect(pRect),pt.x,pt.y,paint);
+
+        SkRect skrc=toSkRect(pRect);
+        skrc.offset(m_ptOrg);
+        m_SkCanvas->drawRoundRect(skrc,(SkScalar)pt.x,(SkScalar)pt.y,paint);
         return S_OK;
     }
 
@@ -359,7 +377,11 @@ namespace SOUI
             paint.setColor(m_curBrush->GetColor());
         }
         paint.setStyle(SkPaint::kFill_Style);
-        m_SkCanvas->drawRoundRect(toSkRect(pRect),pt.x,pt.y,paint);
+
+        SkRect skrc=toSkRect(pRect);
+        skrc.offset(m_ptOrg);
+
+        m_SkCanvas->drawRoundRect(skrc,(SkScalar)pt.x,(SkScalar)pt.y,paint);
         return S_OK;
     }
 
@@ -368,15 +390,16 @@ namespace SOUI
         SkPoint *pts=new SkPoint[nCount];
         for(size_t i=0; i<nCount; i++ )
         {
-            pts[i].fX = pPt[i].x;
-            pts[i].fY = pPt[i].y;
+            pts[i].fX = (SkScalar)pPt[i].x;
+            pts[i].fY = (SkScalar)pPt[i].y;
         }
+        SkPoint::Offset(pts,nCount,m_ptOrg);
 
         SkPaint paint;
         paint.setColor(m_curPen->GetColor());
         SGetLineDashEffect skDash(m_curPen->GetStyle());
         paint.setPathEffect(skDash.Get());
-        paint.setStrokeWidth(m_curPen->GetWidth());
+        paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
         paint.setStyle(SkPaint::kStroke_Style);
         m_SkCanvas->drawPoints(SkCanvas::kPolygon_PointMode,nCount,pts,paint);
         delete []pts;
@@ -392,7 +415,7 @@ namespace SOUI
         txtPaint.setColor(m_curColor);
         txtPaint.setTypeface(m_curFont->GetFont());
         txtPaint.setAlpha(byAlpha);
-		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,x,y,txtPaint);
+		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,(SkScalar)x+m_ptOrg.fX,(SkScalar)y+m_ptOrg.fY,txtPaint);
 		return S_OK;
 	}
 
@@ -404,11 +427,10 @@ namespace SOUI
 		RECT rcSour={0,0,bmp.width(),bmp.height()};
 		if(!pRcSour) pRcSour = &rcSour;
 
-		SkIRect rcISrc = {pRcSour->left,pRcSour->top,pRcSour->right,pRcSour->bottom};
-		SkIRect rcIDst = {pRcDest->left,pRcDest->top,pRcDest->right,pRcDest->bottom};
+		SkRect rcSrc = toSkRect(pRcSour);
+		SkRect rcDest= toSkRect(pRcDest);
+        rcDest.offset(m_ptOrg);
 
-		SkRect rcSrc = SkRect::MakeFromIRect(rcISrc);
-		SkRect rcDest= SkRect::MakeFromIRect(rcIDst);
 		SkPaint paint;
 		paint.setAntiAlias(true);
 		m_SkCanvas->drawBitmapRectToRect(bmp,&rcSrc,rcDest,&paint);
@@ -466,7 +488,27 @@ namespace SOUI
         return S_OK;
     }
 
-	//////////////////////////////////////////////////////////////////////////
+    HRESULT SRenderTarget_Skia::OffsetViewportOrg( int xOff, int yOff, LPPOINT lpPoint )
+    {
+        if(lpPoint)
+        {
+            lpPoint->x = (LONG)m_ptOrg.fX;
+            lpPoint->y = (LONG)m_ptOrg.fY;
+        }
+        m_ptOrg.offset((SkScalar)xOff,(SkScalar)yOff);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_Skia::GetViewportOrg( LPPOINT lpPoint )
+    {
+        if(lpPoint)
+        {
+            lpPoint->x = (LONG)m_ptOrg.fX;
+            lpPoint->y = (LONG)m_ptOrg.fY;
+        }
+        return S_OK;
+    }
+    //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
 	HRESULT SBitmap_Skia::Init( IRenderTarget *pRT,int nWid,int nHei )
 	{
@@ -545,4 +587,9 @@ namespace SOUI
 	{
         return m_rgn.isEmpty();
 	}
+
+    void SRegion_Skia::Offset( POINT pt )
+    {
+        m_rgn.translate(pt.x,pt.y);
+    }
 }

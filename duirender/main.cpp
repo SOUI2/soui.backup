@@ -101,11 +101,15 @@ public:
 
         InflateRect(&rc,-2,-2);
 
+        m_rt->OffsetViewportOrg(50,50);
+
         CAutoRefPtr<IBrush> brColor,brOld;
         m_rt->CreateSolidColorBrush(0xFF0000FF,&brColor);
         m_rt->SelectObject(brColor,(IRenderObj**)&brOld);
         m_rt->FillRoundRect(&rc,pt2);
         m_rt->SelectObject(brOld);
+
+        m_rt->OffsetViewportOrg(-50,-50);
 
         m_rt->PopClipRect();
 //  		m_rt->PopClipRegion();

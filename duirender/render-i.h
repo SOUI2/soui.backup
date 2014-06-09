@@ -82,6 +82,7 @@ struct IRegion : public IRenderObj
 	virtual BOOL RectInRegion(LPCRECT lprect)=0;
 	virtual void GetRgnBox(LPRECT lprect)=0;
 	virtual BOOL IsEmpty()=0;
+    virtual void Offset(POINT pt)=0;
 };
 
 //创建设备相关资源
@@ -99,12 +100,16 @@ struct IRenderTarget: public IObjRef
 	virtual HRESULT BeginDraw()=0;
 	virtual HRESULT EndDraw()=0;
 	virtual HRESULT Resize(SIZE sz)=0;
+    
+    virtual HRESULT OffsetViewportOrg(int xOff, int yOff, LPPOINT lpPoint=NULL)=0;
+    virtual HRESULT GetViewportOrg(LPPOINT lpPoint) =0;
 
 	virtual HRESULT PushClipRect(LPCRECT pRect)=0;
 	virtual HRESULT PopClipRect()=0;
 
 	virtual HRESULT PushClipRegion(IRegion *pRegion)=0;
 	virtual HRESULT PopClipRegion()=0;
+
     virtual HRESULT GetClipRegion(IRegion **ppRegion)=0;
 
 	virtual HRESULT DrawText(LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat,BYTE byAlpha =0xFF)=0;
