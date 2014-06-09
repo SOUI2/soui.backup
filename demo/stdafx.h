@@ -57,6 +57,3 @@ using namespace SOUI;
 #endif
 
 
-
-
-
