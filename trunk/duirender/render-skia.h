@@ -183,6 +183,7 @@ namespace SOUI
 		virtual BOOL RectInRegion(LPCRECT lprect);
 		virtual void GetRgnBox(LPRECT lprect);
 		virtual BOOL IsEmpty();
+        virtual void Offset(POINT pt);
 
         SkRegion GetRegion() const {
             return m_rgn;
@@ -220,6 +221,9 @@ namespace SOUI
 		virtual HRESULT BeginDraw();
 		virtual HRESULT EndDraw();
 		virtual HRESULT Resize(SIZE sz);
+
+        virtual HRESULT OffsetViewportOrg(int xOff, int yOff, LPPOINT lpPoint=NULL);
+        virtual HRESULT GetViewportOrg(LPPOINT lpPoint);
 
 		virtual HRESULT PushClipRect(LPCRECT pRect);
 		virtual HRESULT PopClipRect();
@@ -275,5 +279,7 @@ namespace SOUI
 
 		HDC m_hBindDC;
 		RECT m_rcBind;
+
+        SkPoint         m_ptOrg;
 	};
 }
