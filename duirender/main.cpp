@@ -2,6 +2,8 @@
 
 #include <vld.h>
 
+#include <WINDOWS.H>
+
 #include "SimpleWnd.h"
 #include "duicrack.h"
 
@@ -12,7 +14,7 @@
 
 using namespace DuiEngine;
 
-SOUI::IRenderFactory *g_render;
+SOUI::IRenderFactory *g_render=NULL;
 
 HINSTANCE g_hInst;
 
