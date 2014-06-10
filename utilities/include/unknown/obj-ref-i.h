@@ -1,6 +1,10 @@
 #pragma once
 
-struct IObjRef
+#ifndef OR_API
+#define OR_API
+#endif
+
+struct OR_API IObjRef
 {
 	virtual ~IObjRef(){}
 
