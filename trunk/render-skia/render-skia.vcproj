@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="skcore_d.lib utilities_d.lib"
+				AdditionalDependencies="skcore_d.lib utilities_d.lib freetype253_D.lib Usp10.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
-				AdditionalLibraryDirectories="$(OutDir)"
+				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;..\myskia\third_party\freetype\lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -91,7 +91,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)bin"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="2"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -132,12 +132,15 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				AdditionalDependencies="skcore.lib"
-				AdditionalLibraryDirectories="$(OutDir)"
+				Name="VCLinkerTool"
+				AdditionalDependencies="skcore.lib utilities.lib freetype253.lib Usp10.lib"
+				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;..\myskia\third_party\freetype\lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -147,6 +150,9 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
