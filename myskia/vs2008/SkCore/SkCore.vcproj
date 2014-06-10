@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../include/config;../../include/core;../../src/core;../../include/gpu;../../src/gpu;../../include/images;../../include/utils;../../include/utils/win;../../src/utils;../../include/ports;../../include/text;../../include/effects;../../src/sfnt;../../include/pathops;../../src/image;../../src/opts;../../third_party/freetype/include;&quot;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Include&quot;"
+				AdditionalIncludeDirectories="../../include/config;../../include/core;../../src/core;../../include/gpu;../../src/gpu;../../include/images;../../include/utils;../../include/utils/win;../../src/utils;../../include/ports;../../include/text;../../include/effects;../../src/sfnt;../../include/pathops;../../src/image;../../src/opts;../../third_party/freetype/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_LIB;SK_DEBUG;SK_GAMMA_SRGB;SK_GAMMA_APPLY_TO_A8;SK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1;SK_SCALAR_IS_FLOAT;SK_USE_FREETYPE_EMBOLDEN;SK_CAN_USE_FLOAT;SK_SUPPORT_GPU=1;SK_SUPPORT_OPENCL=0;SK_BUILD_FOR_WIN32;_CRT_SECURE_NO_WARNINGS;GR_GL_FUNCTION_TYPE=__stdcall;SK_IGNORE_STDINT_DOT_H;SKIA_IMPLEMENTATION;SK_SUPPORT_LEGACY_LAYERRASTERIZER_API"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -83,7 +83,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)bin"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -107,8 +107,8 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="../../include/config;../../include/core;../../src/core;../../include/gpu;../../src/gpu;../../include/images;../../include/utils;../../include/utils/win;../../src/utils;../../include/ports;../../include/text;../../include/effects;../../src/sfnt;../../include/pathops;../../src/image;../../src/opts;../../third_party/freetype/include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;SKIA_DLL;SK_GAMMA_SRGB;SK_GAMMA_APPLY_TO_A8;SK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1;SK_SCALAR_IS_FLOAT;SK_USE_FREETYPE_EMBOLDEN;SK_CAN_USE_FLOAT;SK_SUPPORT_GPU=1;SK_SUPPORT_OPENCL=0;SK_BUILD_FOR_WIN32;_CRT_SECURE_NO_WARNINGS;GR_GL_FUNCTION_TYPE=__stdcall;SK_IGNORE_STDINT_DOT_H;SKIA_IMPLEMENTATION;SK_SUPPORT_LEGACY_LAYERRASTERIZER_API;"
-				RuntimeLibrary="2"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_LIB;SK_GAMMA_SRGB;SK_GAMMA_APPLY_TO_A8;SK_ALLOW_STATIC_GLOBAL_INITIALIZERS=1;SK_SCALAR_IS_FLOAT;SK_USE_FREETYPE_EMBOLDEN;SK_CAN_USE_FLOAT;SK_SUPPORT_GPU=1;SK_SUPPORT_OPENCL=0;SK_BUILD_FOR_WIN32;_CRT_SECURE_NO_WARNINGS;GR_GL_FUNCTION_TYPE=__stdcall;SK_IGNORE_STDINT_DOT_H;SKIA_IMPLEMENTATION;SK_SUPPORT_LEGACY_LAYERRASTERIZER_API"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -124,22 +124,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="windowscodecs.lib usp10.lib freetype253.lib"
-				OutputFile="$(ProjectName).dll"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../third_party/freetype/lib"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -149,9 +137,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
