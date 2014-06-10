@@ -1,10 +1,16 @@
 #pragma once
 
+#ifndef RENDER_API 
+#define RENDER_API
+#endif
+
+#define OR_API RENDER_API
 
 #include <assert.h>
 #define ASSERT(x) assert(x)
 
 #include <unknown/obj-ref-i.h>
+
 
 namespace SOUI
 {
@@ -28,14 +34,14 @@ namespace SOUI
 	};
 
 
-struct IRenderObj : public IObjRef
+struct RENDER_API IRenderObj : public IObjRef
 {
 	virtual const UINT ObjectType() const = 0;
 	virtual IRenderFactory * GetRenderFactory() const = 0;
 };
 
 
-struct IBrush : public IRenderObj
+struct RENDER_API IBrush : public IRenderObj
 {
 	virtual const UINT ObjectType() const
 	{
@@ -43,7 +49,7 @@ struct IBrush : public IRenderObj
 	}
 };
 
-struct IPen: public IRenderObj
+struct RENDER_API IPen: public IRenderObj
 {
 	virtual const UINT ObjectType() const
 	{
@@ -51,7 +57,7 @@ struct IPen: public IRenderObj
 	}
 };
 
-struct IBitmap: public IRenderObj
+struct RENDER_API IBitmap: public IRenderObj
 {
 	virtual const UINT ObjectType() const
 	{
@@ -60,9 +66,12 @@ struct IBitmap: public IRenderObj
 	virtual HRESULT Init(IRenderTarget *pRT,int nWid,int nHei)=0;
 	virtual HRESULT LoadFromFile(IRenderTarget *pRT,LPCTSTR pszFileName,LPCTSTR pszType)=0;
 	virtual HRESULT LoadFromMemory(IRenderTarget *pRT,LPBYTE pBuf,size_t szLen,LPCTSTR pszType)=0;
+	
+	virtual UINT    Width() =0;
+	virtual UINT    Height() =0;
 };
 
-struct IFont : public IRenderObj
+struct RENDER_API IFont : public IRenderObj
 {
 	virtual const UINT ObjectType() const
 	{
@@ -70,7 +79,7 @@ struct IFont : public IRenderObj
 	}
 };
 
-struct IRegion : public IRenderObj
+struct RENDER_API IRegion : public IRenderObj
 {
 	virtual const UINT ObjectType() const
 	{
@@ -86,7 +95,7 @@ struct IRegion : public IRenderObj
 };
 
 //创建设备相关资源
-struct IRenderTarget: public IObjRef
+struct RENDER_API IRenderTarget: public IObjRef
 {
 	virtual HRESULT CreateCompatibleRenderTarget(SIZE szTarget,IRenderTarget **ppRenderTarget)=0;
 	virtual HRESULT CreatePen(int iStyle,COLORREF cr,int cWidth,IPen ** ppPen)=0;
@@ -131,10 +140,14 @@ struct IRenderTarget: public IObjRef
 	virtual HRESULT SelectObject(IRenderObj *pObj,IRenderObj ** pOldObj = NULL) =0;
 	virtual COLORREF GetTextColor() =0;
 	virtual COLORREF SetTextColor(COLORREF color)=0;
+	
+	//两个兼容GDI操作的接口
+	virtual HDC GetDC(UINT uFlag)=0;
+	virtual void ReleaseDC(HDC hdc) =0;
 };
 
 //用来创建设备无关资源
-struct IRenderFactory : public IObjRef
+struct RENDER_API IRenderFactory : public IObjRef
 {
 	virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei)=0;
 };

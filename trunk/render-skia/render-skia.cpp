@@ -9,13 +9,6 @@
 
 #include "img-decoder.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"../myskia/lib/vc90/skcore_d.lib")
-#else
-#pragma comment(lib,"../myskia/lib/vc90/skcore.lib")
-#endif
-
-
 namespace SOUI
 {
 	//PS_SOLID
@@ -94,6 +87,8 @@ namespace SOUI
 		,m_hBindDC(0)
 		,m_SkCanvas(NULL)
         ,m_curColor(0xFF000000)//Ä¬ÈÏºÚÉ«
+        ,m_hGetDC(0)
+        ,m_uGetDCFlag(0)
 	{
         m_ptOrg.fX=m_ptOrg.fY=0.0f;
 
@@ -154,7 +149,7 @@ namespace SOUI
 	HRESULT SRenderTarget_Skia::CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush )
 	{
 		SBitmap_Skia *pBmpSkia = (SBitmap_Skia*)pBmp;
-		*ppBrush = SBrush_Skia::CreateBitmapBrush(GetRenderFactory_Skia(),pBmpSkia->GetBitmap());
+		*ppBrush = SBrush_Skia::CreateBitmapBrush(GetRenderFactory_Skia(),pBmpSkia->GetSkBitmap());
 		return S_OK;
 	}
 
@@ -186,7 +181,7 @@ namespace SOUI
 	{
 		if(m_hBindDC)
 		{//copy image to bind dc
-			SkBitmap bmp=m_curBmp->GetBitmap();
+			SkBitmap bmp=m_curBmp->GetSkBitmap();
 
 			BITMAPINFO bmi;
 			memset(&bmi, 0, sizeof(bmi));
@@ -225,7 +220,7 @@ namespace SOUI
 			m_curBmp->Init(this,sz.cx,sz.cy);
 		}
         if(m_SkCanvas) delete m_SkCanvas;
-        m_SkCanvas = new SkCanvas(m_curBmp->GetBitmap());
+        m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
 		return S_OK;
 	}
 
@@ -424,7 +419,7 @@ namespace SOUI
 	HRESULT SRenderTarget_Skia::DrawBitmap( LPRECT pRcDest,IBitmap *pBitmap,LPRECT pRcSour,BYTE byAlpha/*=0xFF*/ )
 	{
 		SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
-		SkBitmap bmp=pBmp->GetBitmap();
+		SkBitmap bmp=pBmp->GetSkBitmap();
 
 		RECT rcSour={0,0,bmp.width(),bmp.height()};
 		if(!pRcSour) pRcSour = &rcSour;
@@ -510,13 +505,102 @@ namespace SOUI
         }
         return S_OK;
     }
+
+    HDC SRenderTarget_Skia::GetDC( UINT uFlag )
+    {
+        if(m_hGetDC) return m_hGetDC;
+        
+        HBITMAP bmp=m_curBmp->GetGdiBitmap();
+        HDC hdc_desk = ::GetDC(NULL);
+        m_hGetDC = CreateCompatibleDC(hdc_desk);
+        ::ReleaseDC(NULL,hdc_desk);
+        
+        ::SelectObject(m_hGetDC,bmp);
+        
+        CAutoRefPtr<SRegion_Skia> rgnClip;
+        GetClipRegion((IRegion**)&rgnClip);
+        if(!rgnClip->IsEmpty())
+        {
+            SkRegion skrgn=rgnClip->GetRegion();
+            SkRegion::Iterator it(skrgn);
+            int nCount=0;
+            for(;!it.done();it.next())
+            {
+                nCount++;
+            }
+            it.rewind();
+            
+            int nSize=sizeof(RGNDATAHEADER)+nCount*sizeof(RECT);
+            RGNDATA *rgnData=(RGNDATA*)malloc(nSize);
+            memset(rgnData,0,nSize);
+            rgnData->rdh.dwSize= sizeof(RGNDATAHEADER);
+            rgnData->rdh.iType = RDH_RECTANGLES;
+            rgnData->rdh.nCount=nCount;
+            rgnData->rdh.rcBound.right=m_curBmp->Width();
+            rgnData->rdh.rcBound.bottom=m_curBmp->Height();
+            
+            nCount=0;
+            LPRECT pRc=(LPRECT)rgnData->Buffer;
+            for(;!it.done();it.next())
+            {
+                SkIRect skrc=it.rect();
+                RECT rc = {skrc.fLeft,skrc.fTop,skrc.fRight,skrc.fBottom};
+                pRc[nCount++]= rc;
+            }
+            
+            HRGN hRgn=ExtCreateRegion(NULL,nSize,rgnData);
+            free(rgnData);
+            ::SelectClipRgn(m_hGetDC,hRgn);
+            DeleteObject(hRgn);
+        }
+        ::SetViewportOrgEx(m_hGetDC,(int)m_ptOrg.fX,(int)m_ptOrg.fY,NULL);
+
+        m_uGetDCFlag = uFlag;
+        return m_hGetDC;
+    }
+
+    void SRenderTarget_Skia::ReleaseDC( HDC hdc )
+    {
+        if(hdc == m_hGetDC)
+        {
+            DeleteDC(hdc);
+            m_hGetDC = 0;
+            m_uGetDCFlag =0;
+        }
+    }
+
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
+
+    HBITMAP SBitmap_Skia::CreateBitmap( int nWid,int nHei,void ** ppBits )
+    {
+        BITMAPINFO bmi;
+        memset(&bmi, 0, sizeof(bmi));
+        bmi.bmiHeader.biSize        = sizeof(BITMAPINFOHEADER);
+        bmi.bmiHeader.biWidth       = nWid;
+        bmi.bmiHeader.biHeight      = -nHei; // top-down image 
+        bmi.bmiHeader.biPlanes      = 1;
+        bmi.bmiHeader.biBitCount    = 32;
+        bmi.bmiHeader.biCompression = BI_RGB;
+        bmi.bmiHeader.biSizeImage   = 0;
+
+        HDC hdc=GetDC(NULL);
+        LPVOID pBits=NULL;
+        HBITMAP hBmp=CreateDIBSection(hdc,&bmi,DIB_RGB_COLORS,ppBits,0,0);
+        ReleaseDC(NULL,hdc);
+        return hBmp;
+    }
+
 	HRESULT SBitmap_Skia::Init( IRenderTarget *pRT,int nWid,int nHei )
 	{
+	    if(m_hBmp) DeleteObject(m_hBmp);
 		m_bitmap.reset();
 		m_bitmap.setConfig(SkBitmap::kARGB_8888_Config,nWid,nHei);
-		m_bitmap.allocPixels();
+    		
+		LPVOID pBits=NULL;
+		m_hBmp=CreateBitmap(nWid,nHei,&pBits);
+		if(!m_hBmp) return E_OUTOFMEMORY;
+		m_bitmap.setPixels(pBits);
 		return S_OK;
 	}
 
@@ -540,15 +624,31 @@ namespace SOUI
         UINT uWid=0,uHei =0;
         convertedBMP->GetSize(&uWid,&uHei);
 
+        if(m_hBmp) DeleteObject(m_hBmp);
+        m_bitmap.reset();
         m_bitmap.setConfig(SkBitmap::kARGB_8888_Config, uWid, uHei);
-        m_bitmap.allocPixels();
-
+        void * pBits=NULL;
+        m_hBmp = CreateBitmap(uWid,uHei,&pBits);
+        
+        if(!m_hBmp) return E_OUTOFMEMORY;
+        m_bitmap.setPixels(pBits);
+        
         m_bitmap.lockPixels();
         const int stride = m_bitmap.rowBytes();
         convertedBMP->CopyPixels(NULL, stride, stride * uHei,
             reinterpret_cast<BYTE*>(m_bitmap.getPixels()));
         m_bitmap.unlockPixels();
         return S_OK;
+    }
+
+    UINT SBitmap_Skia::Width()
+    {
+        return m_bitmap.width();
+    }
+
+    UINT SBitmap_Skia::Height()
+    {
+        return m_bitmap.height();
     }
 
 	//////////////////////////////////////////////////////////////////////////

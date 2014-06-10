@@ -1,5 +1,13 @@
 #pragma once
 
+#ifdef RENDERSKIA_EXPORT
+#define RENDERSKIA_API __declspec(dllexport)
+#else
+#define RENDERSKIA_API __declspec(dllimport)
+#endif
+
+#define RENDER_API RENDERSKIA_API
+
 #include <render/render-i.h>
 #include <color.h>
 #include <unknown/obj-ref-impl.hpp>
@@ -10,17 +18,18 @@
 
 #include <string\tstring.h>
 #include <string\strcpcvt.h>
+
 namespace SOUI
 {
 	//实现一些和特定系统相关的接口
-	struct IRenderFactory_Skia : public IRenderFactory
+	struct RENDERSKIA_API IRenderFactory_Skia : public IRenderFactory
 	{
 	};
 
 
 	//////////////////////////////////////////////////////////////////////////
 	// SRenderFactory_Skia
-	class SRenderFactory_Skia : public TObjRefImpl<IRenderFactory_Skia>
+	class RENDERSKIA_API SRenderFactory_Skia : public TObjRefImpl<IRenderFactory_Skia>
 	{
 	public:
 		SRenderFactory_Skia()
@@ -158,7 +167,7 @@ namespace SOUI
 	{
 	public:
 		SBitmap_Skia(IRenderFactory_Skia *pRenderFac)
-			:TSkiaRenderObjImpl<IBitmap>(pRenderFac)
+			:TSkiaRenderObjImpl<IBitmap>(pRenderFac),m_hBmp(0)
 		{
 
 		}
@@ -166,11 +175,18 @@ namespace SOUI
 		virtual HRESULT LoadFromFile(IRenderTarget *pRT,LPCTSTR pszFileName,LPCTSTR pszType);
 		virtual HRESULT LoadFromMemory(IRenderTarget *pRT,LPBYTE pBuf,size_t szLen,LPCTSTR pszType);
 
-		SkBitmap GetBitmap(){return m_bitmap;}
+        virtual UINT Width();
+        virtual UINT Height();
+        
+		SkBitmap GetSkBitmap(){return m_bitmap;}
+		HBITMAP  GetGdiBitmap(){return m_hBmp;}
 	protected:
+	    HBITMAP CreateBitmap(int nWid,int nHei,void ** ppBits);
+	    
         HRESULT ImgFromDecoder(SImgDecoder &imgDecoder);
 
-		SkBitmap m_bitmap;
+		SkBitmap    m_bitmap;   //skia 管理的BITMAP
+		HBITMAP     m_hBmp;     //标准的32位位图，和m_bitmap共享内存
 	};
 
 	//////////////////////////////////////////////////////////////////////////
@@ -264,6 +280,10 @@ namespace SOUI
  			m_curColor=color;
 			return crOld;
 		}
+		
+        virtual HDC GetDC(UINT uFlag);
+        virtual void ReleaseDC(HDC hdc);
+
     protected:
 		SkCanvas *m_SkCanvas;
         COLORREF            m_curColor;
@@ -277,5 +297,8 @@ namespace SOUI
 		RECT m_rcBind;
 
         SkPoint         m_ptOrg;
+        
+        HDC m_hGetDC;
+        UINT m_uGetDCFlag;
 	};
 }

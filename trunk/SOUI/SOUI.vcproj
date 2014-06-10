@@ -1273,10 +1273,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\DuiObjectConfig.h"
-				>
-			</File>
-			<File
 				RelativePath=".\include\DuiPanel.h"
 				>
 			</File>

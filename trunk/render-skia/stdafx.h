@@ -7,7 +7,7 @@
 #include <Windows.h>
 #include <tchar.h>
 
-#include <unknown/obj-ref-i.h>
+// #include <unknown/obj-ref-i.h>
 #include <assert.h>
 
 #define DUIASSERT(x) assert(x)
