@@ -1,5 +1,5 @@
 #include "duistd.h"
-#include "duitabctrl.h"
+#include "control/duitabctrl.h"
 
 namespace SOUI
 {

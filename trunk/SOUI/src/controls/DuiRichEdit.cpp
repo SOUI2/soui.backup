@@ -1,5 +1,5 @@
 #include "duistd.h"
-#include "DuiRichEdit.h"
+#include "control/DuiRichEdit.h"
 #include "DuiSystem.h"
 #include "DuiMenu.h"
 

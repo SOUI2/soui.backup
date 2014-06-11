@@ -2,7 +2,6 @@
 
 #include "duihostwnd.h"
 #include "DuiTipCtrl.h"
-#include "DuiCmnCtrl.h"
 #include "DuiSystem.h"
 #include "mybuffer.h"
 

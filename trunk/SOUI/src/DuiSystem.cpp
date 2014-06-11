@@ -1,7 +1,7 @@
 #include "duistd.h"
 #include "DuiSystem.h"
 #include "SimpleWnd.h"
-#include "DuiRichEdit.h"
+#include "control/DuiRichEdit.h"
 
 #include "duifontpool.h"
 #include "duiimgpool.h"

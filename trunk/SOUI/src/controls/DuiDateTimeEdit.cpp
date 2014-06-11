@@ -1,5 +1,5 @@
 #include "DuiStd.h"
-#include "DuiDateTimeEdit.h"
+#include "control/DuiDateTimeEdit.h"
 
 namespace SOUI{
 

@@ -1,5 +1,5 @@
 #include "duistd.h"
-#include "DuiSplitWnd.h"
+#include "control/DuiSplitWnd.h"
 
 namespace SOUI
 {

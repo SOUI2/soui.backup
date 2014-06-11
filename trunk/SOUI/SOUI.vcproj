@@ -777,7 +777,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiActiveX.cpp"
+				RelativePath=".\src\controls\DuiActiveX.cpp"
 				>
 			</File>
 			<File
@@ -785,15 +785,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiCalendar.cpp"
+				RelativePath=".\src\controls\DuiCalendar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiCaption.cpp"
+				RelativePath=".\src\controls\DuiCaption.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiCmnCtrl.cpp"
+				RelativePath=".\src\controls\DuiCmnCtrl.cpp"
 				>
 			</File>
 			<File
@@ -801,11 +801,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiComboBox.cpp"
+				RelativePath=".\src\controls\DuiComboBox.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiDateTimeEdit.cpp"
+				RelativePath=".\src\controls\DuiDateTimeEdit.cpp"
 				>
 			</File>
 			<File
@@ -813,7 +813,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiDropDown.cpp"
+				RelativePath=".\src\controls\DuiDropDown.cpp"
 				>
 			</File>
 			<File
@@ -829,7 +829,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiHeaderCtrl.cpp"
+				RelativePath=".\src\controls\DuiHeaderCtrl.cpp"
 				>
 			</File>
 			<File
@@ -837,7 +837,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiHotKeyCtrl.cpp"
+				RelativePath=".\src\controls\DuiHotKeyCtrl.cpp"
 				>
 			</File>
 			<File
@@ -849,7 +849,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\duiitembox.cpp"
+				RelativePath=".\src\controls\duiitembox.cpp"
 				>
 			</File>
 			<File
@@ -861,15 +861,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\duilistbox.cpp"
+				RelativePath=".\src\controls\duilistbox.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\duilistboxex.cpp"
+				RelativePath=".\src\controls\duilistboxex.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiListCtrl.cpp"
+				RelativePath=".\src\controls\DuiListCtrl.cpp"
 				>
 			</File>
 			<File
@@ -881,7 +881,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiMessageBox.cpp"
+				RelativePath=".\src\controls\DuiMessageBox.cpp"
 				>
 			</File>
 			<File
@@ -901,7 +901,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\duirealwnd.cpp"
+				RelativePath=".\src\controls\duirealwnd.cpp"
 				>
 			</File>
 			<File
@@ -913,11 +913,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiRichEdit.cpp"
+				RelativePath=".\src\controls\DuiRichEdit.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\duiscrollbar.cpp"
+				RelativePath=".\src\controls\duiscrollbar.cpp"
 				>
 			</File>
 			<File
@@ -929,11 +929,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiSliderBar.cpp"
+				RelativePath=".\src\controls\DuiSliderBar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiSplitWnd.cpp"
+				RelativePath=".\src\controls\DuiSplitWnd.cpp"
 				>
 			</File>
 			<File
@@ -1031,7 +1031,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiTabCtrl.cpp"
+				RelativePath=".\src\controls\DuiTabCtrl.cpp"
 				>
 			</File>
 			<File
@@ -1047,11 +1047,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiTreeBox.cpp"
+				RelativePath=".\src\controls\DuiTreeBox.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiTreeCtrl.cpp"
+				RelativePath=".\src\controls\DuiTreeCtrl.cpp"
 				>
 			</File>
 			<File
@@ -1169,7 +1169,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\DuiActiveX.h"
+				RelativePath=".\include\control\DuiActiveX.h"
 				>
 			</File>
 			<File
@@ -1213,7 +1213,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\DuiDropDown.h"
+				RelativePath=".\include\control\DuiDropDown.h"
 				>
 			</File>
 			<File
@@ -1436,47 +1436,47 @@
 				Name="controls"
 				>
 				<File
-					RelativePath=".\include\DuiCalendar.h"
+					RelativePath=".\include\control\DuiCalendar.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiCaption.h"
+					RelativePath=".\include\control\DuiCaption.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiCmnCtrl.h"
+					RelativePath=".\include\control\DuiCmnCtrl.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiComboBox.h"
+					RelativePath=".\include\control\DuiComboBox.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiDateTimeEdit.h"
+					RelativePath=".\include\control\DuiDateTimeEdit.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiHeaderCtrl.h"
+					RelativePath=".\include\control\DuiHeaderCtrl.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiHotKeyCtrl.h"
+					RelativePath=".\include\control\DuiHotKeyCtrl.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\duiitembox.h"
+					RelativePath=".\include\control\duiitembox.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\duilistbox.h"
+					RelativePath=".\include\control\duilistbox.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\duilistboxex.h"
+					RelativePath=".\include\control\duilistboxex.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiListCtrl.h"
+					RelativePath=".\include\control\DuiListCtrl.h"
 					>
 				</File>
 				<File
@@ -1484,39 +1484,39 @@
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiMessageBox.h"
+					RelativePath=".\include\control\DuiMessageBox.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\duirealwnd.h"
+					RelativePath=".\include\control\duirealwnd.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiRichEdit.h"
+					RelativePath=".\include\control\DuiRichEdit.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\duiscrollbar.h"
+					RelativePath=".\include\control\duiscrollbar.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiSliderBar.h"
+					RelativePath=".\include\control\DuiSliderBar.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiSplitWnd.h"
+					RelativePath=".\include\control\DuiSplitWnd.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiTabCtrl.h"
+					RelativePath=".\include\control\DuiTabCtrl.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiTreeBox.h"
+					RelativePath=".\include\control\DuiTreeBox.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiTreeCtrl.h"
+					RelativePath=".\include\control\DuiTreeCtrl.h"
 					>
 				</File>
 			</Filter>

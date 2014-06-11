@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "duistd.h"
-#include "DuiTreeCtrl.h"
+#include "control/DuiTreeCtrl.h"
 #include "DuiMenu.h"
 
 namespace SOUI{

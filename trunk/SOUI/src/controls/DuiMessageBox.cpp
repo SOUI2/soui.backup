@@ -1,7 +1,7 @@
 #include "duistd.h"
-#include "DuiMessageBox.h"
 #include "DuiSystem.h"
-#include "DuiCmnCtrl.h"
+#include "control/DuiMessageBox.h"
+#include "control/DuiCmnCtrl.h"
 
 namespace SOUI
 {

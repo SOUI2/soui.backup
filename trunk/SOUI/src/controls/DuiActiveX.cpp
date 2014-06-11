@@ -1,7 +1,7 @@
 #include "duistd.h"
 #include "activex/DuiBStr.h"
-#include "activex/DuiAxContainer.h"
-#include "DuiActiveX.h"
+#include "../activex/DuiAxContainer.h"
+#include "control/DuiActiveX.h"
 
 namespace SOUI
 {

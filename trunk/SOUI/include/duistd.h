@@ -79,7 +79,7 @@
 #include "duifontpool.h"
 #include "duiresprovider.h"
 #include "duisystem.h"
-#include "DuiMessageBox.h"
+#include "control/DuiMessageBox.h"
 
 #pragma comment(lib,"Msimg32.lib")
 #pragma comment(lib,"shlwapi.lib")

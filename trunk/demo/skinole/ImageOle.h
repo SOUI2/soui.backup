@@ -2,7 +2,7 @@
 
 #include <richole.h>
 #include <simplewnd.h>
-#include <DuiRichEdit.h>
+#include <control/DuiRichEdit.h>
 
 class CImageOle : public IOleObject, public IViewObject2, public ITimelineHandler
 {
