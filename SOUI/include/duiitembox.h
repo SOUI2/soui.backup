@@ -62,12 +62,12 @@ protected:
 
     virtual BOOL LoadChildren(pugi::xml_node xmlNode);
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_INT_ATTRIBUTE("itemwid", m_nItemWid, TRUE)
-    DUIWIN_INT_ATTRIBUTE("itemhei", m_nItemHei, TRUE)
-    DUIWIN_INT_ATTRIBUTE("sepwid", m_nSepWid, TRUE)
-    DUIWIN_INT_ATTRIBUTE("sephei", m_nSepHei, TRUE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_INT("itemwid", m_nItemWid, TRUE)
+    ATTR_INT("itemhei", m_nItemHei, TRUE)
+    ATTR_INT("sepwid", m_nSepWid, TRUE)
+    ATTR_INT("sephei", m_nSepHei, TRUE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
     MSG_WM_SIZE(OnSize)

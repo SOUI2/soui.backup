@@ -49,13 +49,13 @@ public:
         return m_lpData;
     }
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_TSTRING_ATTRIBUTE("wndclass", m_realwndParam.m_strClassName, FALSE)
-    DUIWIN_TSTRING_ATTRIBUTE("wndname", m_realwndParam.m_strWindowName, FALSE)
-    DUIWIN_HEX_ATTRIBUTE("style", m_realwndParam.m_dwStyle, FALSE)
-    DUIWIN_HEX_ATTRIBUTE("exstyle", m_realwndParam.m_dwExStyle, FALSE)
-    DUIWIN_INT_ATTRIBUTE("init",m_bInit,FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_STRINGT("wndclass", m_realwndParam.m_strClassName, FALSE)
+    ATTR_STRINGT("wndname", m_realwndParam.m_strWindowName, FALSE)
+    ATTR_HEX("style", m_realwndParam.m_dwStyle, FALSE)
+    ATTR_HEX("exstyle", m_realwndParam.m_dwExStyle, FALSE)
+    ATTR_INT("init",m_bInit,FALSE)
+    SOUI_ATTRS_END()
 protected:
     virtual BOOL NeedRedrawWhenStateChange();
     virtual BOOL Load(pugi::xml_node xmlNode);

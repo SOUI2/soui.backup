@@ -42,9 +42,9 @@ public:
 protected:
 
     CDuiStringT m_strTitle;
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_TSTRING_ATTRIBUTE("title", m_strTitle, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_STRINGT("title", m_strTitle, FALSE)
+    SOUI_ATTRS_END()
 };
 
 typedef enum tagSLIDEDIR
@@ -155,27 +155,27 @@ protected:
     MSG_WM_KEYDOWN(OnKeyDown)
     WND_MSG_MAP_END()
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_INT_ATTRIBUTE("cursel", m_nCurrentPage, FALSE)
-    DUIWIN_INT_ATTRIBUTE("tabwidth", m_nTabWidth, FALSE)
-    DUIWIN_INT_ATTRIBUTE("tabheight", m_nTabHeight, FALSE)
-    DUIWIN_INT_ATTRIBUTE("tabpos", m_nTabPos, FALSE)
-    DUIWIN_INT_ATTRIBUTE("framepos", m_nFramePos, FALSE)
-    DUIWIN_INT_ATTRIBUTE("tabspacing", m_nTabSpacing, FALSE)
-    DUIWIN_SKIN_ATTRIBUTE("tabskin", m_pSkinTab, FALSE)
-    DUIWIN_SKIN_ATTRIBUTE("iconskin", m_pSkinIcon, FALSE)
-    DUIWIN_SKIN_ATTRIBUTE("splitterskin", m_pSkinSplitter, FALSE)
-    DUIWIN_SKIN_ATTRIBUTE("frameskin", m_pSkinFrame, FALSE)
-    DUIWIN_INT_ATTRIBUTE("icon-x", m_ptIcon.x, FALSE)
-    DUIWIN_INT_ATTRIBUTE("icon-y", m_ptIcon.y, FALSE)
-    DUIWIN_INT_ATTRIBUTE("text-x", m_ptText.x, FALSE)
-    DUIWIN_INT_ATTRIBUTE("text-y", m_ptText.y, FALSE)
-    DUIWIN_ENUM_ATTRIBUTE("tabalign", int, TRUE)
-    DUIWIN_ENUM_VALUE("top", AlignTop)
-    DUIWIN_ENUM_VALUE("left", AlignLeft)
-    DUIWIN_ENUM_END(m_nTabAlign)
-    DUIWIN_INT_ATTRIBUTE("animatesteps",m_nAnimateSteps,FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_INT("cursel", m_nCurrentPage, FALSE)
+    ATTR_INT("tabwidth", m_nTabWidth, FALSE)
+    ATTR_INT("tabheight", m_nTabHeight, FALSE)
+    ATTR_INT("tabpos", m_nTabPos, FALSE)
+    ATTR_INT("framepos", m_nFramePos, FALSE)
+    ATTR_INT("tabspacing", m_nTabSpacing, FALSE)
+    ATTR_SKIN("tabskin", m_pSkinTab, FALSE)
+    ATTR_SKIN("iconskin", m_pSkinIcon, FALSE)
+    ATTR_SKIN("splitterskin", m_pSkinSplitter, FALSE)
+    ATTR_SKIN("frameskin", m_pSkinFrame, FALSE)
+    ATTR_INT("icon-x", m_ptIcon.x, FALSE)
+    ATTR_INT("icon-y", m_ptIcon.y, FALSE)
+    ATTR_INT("text-x", m_ptText.x, FALSE)
+    ATTR_INT("text-y", m_ptText.y, FALSE)
+    ATTR_ENUM_BEGIN("tabalign", int, TRUE)
+    ATTR_ENUM_VALUE("top", AlignTop)
+    ATTR_ENUM_VALUE("left", AlignLeft)
+    ATTR_ENUM_END(m_nTabAlign)
+    ATTR_INT("animatesteps",m_nAnimateSteps,FALSE)
+    SOUI_ATTRS_END()
 };
 
 }//namespace SOUI

@@ -12,7 +12,7 @@
 namespace SOUI
 {
 
-class SOUI_EXP DuiStyle : public CDuiObject
+class SOUI_EXP DuiStyle : public SObject
 {
     SOUI_CLASS_NAME(DuiStyle, "style")
 
@@ -62,48 +62,48 @@ protected:
     UINT m_nTextAlign;
     UINT m_uAlign,m_uVAlign;
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_STRING_ATTRIBUTE("skin", m_strSkinName, TRUE)
-    DUIWIN_STRING_ATTRIBUTE("ncskin", m_strNcSkinName, TRUE)
-    DUIWIN_HEX_ATTRIBUTE("textmode", m_nTextAlign, TRUE)
+    SOUI_ATTRS_BEGIN()
+    ATTR_STRINGA("skin", m_strSkinName, TRUE)
+    ATTR_STRINGA("ncskin", m_strNcSkinName, TRUE)
+    ATTR_HEX("textmode", m_nTextAlign, TRUE)
 
-    DUIWIN_ENUM_ATTRIBUTE("align", UINT, TRUE)
-    DUIWIN_ENUM_VALUE("left", Align_Left)
-    DUIWIN_ENUM_VALUE("center", Align_Center)
-    DUIWIN_ENUM_VALUE("right", Align_Right)
-    DUIWIN_ENUM_END(m_uAlign)
-    DUIWIN_ENUM_ATTRIBUTE("valign", UINT, TRUE)
-    DUIWIN_ENUM_VALUE("top", VAlign_Top)
-    DUIWIN_ENUM_VALUE("middle", VAlign_Middle)
-    DUIWIN_ENUM_VALUE("bottom", VAlign_Bottom)
-    DUIWIN_ENUM_END(m_uVAlign)
+    ATTR_ENUM_BEGIN("align", UINT, TRUE)
+    ATTR_ENUM_VALUE("left", Align_Left)
+    ATTR_ENUM_VALUE("center", Align_Center)
+    ATTR_ENUM_VALUE("right", Align_Right)
+    ATTR_ENUM_END(m_uAlign)
+    ATTR_ENUM_BEGIN("valign", UINT, TRUE)
+    ATTR_ENUM_VALUE("top", VAlign_Top)
+    ATTR_ENUM_VALUE("middle", VAlign_Middle)
+    ATTR_ENUM_VALUE("bottom", VAlign_Bottom)
+    ATTR_ENUM_END(m_uVAlign)
 
-    DUIWIN_COLOR_ATTRIBUTE("crbg", m_crBg, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("crbghover", m_crBgHover, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("crtext", m_crText, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("crhover", m_crHoverText, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("crpush", m_crPushText, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("crdisabled", m_crDisabledText, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("crborder", m_crBorder, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("crborderhover", m_crBorderHover, TRUE)
+    ATTR_COLOR("crbg", m_crBg, TRUE)
+    ATTR_COLOR("crbghover", m_crBgHover, TRUE)
+    ATTR_COLOR("crtext", m_crText, TRUE)
+    ATTR_COLOR("crhover", m_crHoverText, TRUE)
+    ATTR_COLOR("crpush", m_crPushText, TRUE)
+    ATTR_COLOR("crdisabled", m_crDisabledText, TRUE)
+    ATTR_COLOR("crborder", m_crBorder, TRUE)
+    ATTR_COLOR("crborderhover", m_crBorderHover, TRUE)
 
-    DUIWIN_FONT_ATTRIBUTE("font", m_ftText, TRUE)
-    DUIWIN_FONT_ATTRIBUTE("hoverfont", m_ftHover, TRUE)
-    DUIWIN_FONT_ATTRIBUTE("pushfont", m_ftPush, TRUE)
-    DUIWIN_FONT2_ATTRIBUTE("font2", m_ftText, TRUE)
-    DUIWIN_FONT2_ATTRIBUTE("hoverfont2", m_ftHover, TRUE)
-    DUIWIN_FONT2_ATTRIBUTE("pushfont2", m_ftPush, TRUE)
-    DUIWIN_INT_ATTRIBUTE("x-margin", m_nMarginX, TRUE)
-    DUIWIN_INT_ATTRIBUTE("y-margin", m_nMarginY, TRUE)
-    DUIWIN_INT_ATTRIBUTE("margin", m_nMarginX = m_nMarginY, TRUE) // 这样比较bt，不过.....凑合用吧
-    DUIWIN_INT_ATTRIBUTE("spacing", m_nSpacing, TRUE)
-    DUIWIN_INT_ATTRIBUTE("linespacing", m_nLineSpacing, TRUE)
-    DUIWIN_ENUM_ATTRIBUTE("cursor", LPCTSTR, FALSE)
-    DUIWIN_ENUM_VALUE("hand", IDC_HAND)
-    DUIWIN_ENUM_VALUE("arrow", IDC_ARROW)
-    DUIWIN_ENUM_END(m_lpCursorName)
-    DUIWIN_INT_ATTRIBUTE("dotted",m_bDotted,FALSE)
-    SOUI_ATTRIBUTES_END()
+    ATTR_FONT("font", m_ftText, TRUE)
+    ATTR_FONT("hoverfont", m_ftHover, TRUE)
+    ATTR_FONT("pushfont", m_ftPush, TRUE)
+    ATTR_FONTEX("font2", m_ftText, TRUE)
+    ATTR_FONTEX("hoverfont2", m_ftHover, TRUE)
+    ATTR_FONTEX("pushfont2", m_ftPush, TRUE)
+    ATTR_INT("x-margin", m_nMarginX, TRUE)
+    ATTR_INT("y-margin", m_nMarginY, TRUE)
+    ATTR_INT("margin", m_nMarginX = m_nMarginY, TRUE) // 这样比较bt，不过.....凑合用吧
+    ATTR_INT("spacing", m_nSpacing, TRUE)
+    ATTR_INT("linespacing", m_nLineSpacing, TRUE)
+    ATTR_ENUM_BEGIN("cursor", LPCTSTR, FALSE)
+    ATTR_ENUM_VALUE("hand", IDC_HAND)
+    ATTR_ENUM_VALUE("arrow", IDC_ARROW)
+    ATTR_ENUM_END(m_lpCursorName)
+    ATTR_INT("dotted",m_bDotted,FALSE)
+    SOUI_ATTRS_END()
 };
 
 

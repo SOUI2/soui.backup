@@ -5,7 +5,7 @@ namespace SOUI
 {
 
 
-    BOOL CDuiObject::Load( pugi::xml_node xmlNode )
+    BOOL SObject::Load( pugi::xml_node xmlNode )
     {
         if(!xmlNode) return FALSE;
 #ifdef _DEBUG

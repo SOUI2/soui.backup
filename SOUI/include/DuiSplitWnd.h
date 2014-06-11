@@ -16,11 +16,11 @@ public:
     virtual ~CDuiSplitPane() {}
 
 protected:
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_INT_ATTRIBUTE("idealsize", m_nSizeIdeal, TRUE)
-    DUIWIN_INT_ATTRIBUTE("minsize", m_nSizeMin, TRUE)
-    DUIWIN_INT_ATTRIBUTE("priority", m_nPriority, TRUE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_INT("idealsize", m_nSizeIdeal, TRUE)
+    ATTR_INT("minsize", m_nSizeMin, TRUE)
+    ATTR_INT("priority", m_nPriority, TRUE)
+    SOUI_ATTRS_END()
 protected:
     int m_nSizeIdeal;
     int m_nSizeMin;
@@ -81,12 +81,12 @@ protected:
 
     void Relayout(UINT uMode);
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_INT_ATTRIBUTE("sepsize", m_nSepSize, TRUE)
-    DUIWIN_INT_ATTRIBUTE("adjustable", m_bAdjustable, TRUE)
-    DUIWIN_INT_ATTRIBUTE("colmode", m_bColMode, TRUE)
-    DUIWIN_SKIN_ATTRIBUTE("skinsep",m_pSkinSep,TRUE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_INT("sepsize", m_nSepSize, TRUE)
+    ATTR_INT("adjustable", m_bAdjustable, TRUE)
+    ATTR_INT("colmode", m_bColMode, TRUE)
+    ATTR_SKIN("skinsep",m_pSkinSep,TRUE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)

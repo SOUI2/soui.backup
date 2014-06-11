@@ -140,15 +140,15 @@ protected:
     BOOL    m_bVirtual;
     BOOL    m_bItemRedrawDelay;            //表项重绘时缓冲
 public:
-    SOUO_ATTRIBUTES_BEGIN()
-        DUIWIN_INT_ATTRIBUTE("scrollspeed", m_iScrollSpeed, FALSE)
-        DUIWIN_INT_ATTRIBUTE("itemheight", m_nItemHei, FALSE)
-        DUIWIN_INT_ATTRIBUTE("virtual", m_bVirtual, TRUE)
-        DUIWIN_SKIN_ATTRIBUTE("itemskin", m_pItemSkin, TRUE)
-        DUIWIN_COLOR_ATTRIBUTE("critembg",m_crItemBg,FALSE)
-        DUIWIN_COLOR_ATTRIBUTE("critemselbg",m_crItemSelBg,FALSE)
-        DUIWIN_INT_ATTRIBUTE("itemredrawdelay", m_bItemRedrawDelay, TRUE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+        ATTR_INT("scrollspeed", m_iScrollSpeed, FALSE)
+        ATTR_INT("itemheight", m_nItemHei, FALSE)
+        ATTR_INT("virtual", m_bVirtual, TRUE)
+        ATTR_SKIN("itemskin", m_pItemSkin, TRUE)
+        ATTR_COLOR("critembg",m_crItemBg,FALSE)
+        ATTR_COLOR("critemselbg",m_crItemSelBg,FALSE)
+        ATTR_INT("itemredrawdelay", m_bItemRedrawDelay, TRUE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
         MSG_WM_MOUSEWHEEL(OnMouseWheel)

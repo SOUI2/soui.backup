@@ -51,15 +51,15 @@ protected:
     LRESULT NotifySbCode(UINT uCode,int nPos);
 
 protected:
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
-    DUIWIN_UINT_ATTRIBUTE("arrowsize", m_uAllowSize, FALSE)
-    DUIWIN_INT_ATTRIBUTE("min", m_si.nMin, FALSE)
-    DUIWIN_INT_ATTRIBUTE("max", m_si.nMax, FALSE)
-    DUIWIN_INT_ATTRIBUTE("value", m_si.nPos, FALSE)
-    DUIWIN_INT_ATTRIBUTE("page", m_si.nPage, FALSE)
-    DUIWIN_INT_ATTRIBUTE("vertical", m_bVertical, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_SKIN("skin", m_pSkin, FALSE)
+    ATTR_UINT("arrowsize", m_uAllowSize, FALSE)
+    ATTR_INT("min", m_si.nMin, FALSE)
+    ATTR_INT("max", m_si.nMax, FALSE)
+    ATTR_INT("value", m_si.nPos, FALSE)
+    ATTR_INT("page", m_si.nPage, FALSE)
+    ATTR_INT("vertical", m_bVertical, FALSE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
     MSG_WM_LBUTTONDOWN(OnLButtonDown)

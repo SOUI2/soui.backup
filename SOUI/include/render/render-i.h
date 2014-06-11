@@ -6,9 +6,6 @@
 
 #define OR_API RENDER_API
 
-#include <assert.h>
-#define ASSERT(x) assert(x)
-
 #include <unknown/obj-ref-i.h>
 
 

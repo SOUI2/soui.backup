@@ -82,13 +82,13 @@ protected:
     CMemDC * m_memdc;    
     CSize  m_szTarget;
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_INT_ATTRIBUTE("subwidth", m_lSubImageWidth, TRUE)
-    DUIWIN_INT_ATTRIBUTE("tile", m_bTile, TRUE)
-    DUIWIN_INT_ATTRIBUTE("vertical", m_bVertical, TRUE)
-    DUIWIN_INT_ATTRIBUTE("states",m_nStates,TRUE)
-    DUIWIN_INT_ATTRIBUTE("cache",m_bCache,TRUE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_INT("subwidth", m_lSubImageWidth, TRUE)
+    ATTR_INT("tile", m_bTile, TRUE)
+    ATTR_INT("vertical", m_bVertical, TRUE)
+    ATTR_INT("states",m_nStates,TRUE)
+    ATTR_INT("cache",m_bCache,TRUE)
+    SOUI_ATTRS_END()
 };
 
 class SOUI_EXP CDuiSkinImgFrame : public CDuiSkinImgList
@@ -118,32 +118,32 @@ protected:
     COLORREF m_crBg;
     UINT m_uDrawPart;
 public:
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_COLOR_ATTRIBUTE("crbg", m_crBg, TRUE)
-    DUIWIN_INT_ATTRIBUTE("left", m_rcMargin.left, TRUE)
-    DUIWIN_INT_ATTRIBUTE("top", m_rcMargin.top, TRUE)
-    DUIWIN_INT_ATTRIBUTE("right", m_rcMargin.right, TRUE)
-    DUIWIN_INT_ATTRIBUTE("bottom", m_rcMargin.bottom, TRUE)
-    DUIWIN_HEX_ATTRIBUTE("part2", m_uDrawPart, TRUE)
-    DUIWIN_ENUM_ATTRIBUTE("part", UINT, TRUE)
-        DUIWIN_ENUM_VALUE("all", Frame_Part_All)
-        DUIWIN_ENUM_VALUE("top", Frame_Part_Top)
-        DUIWIN_ENUM_VALUE("middle", Frame_Part_Mid)
-        DUIWIN_ENUM_VALUE("bottom", Frame_Part_Bottom)
-        DUIWIN_ENUM_VALUE("left", Frame_Part_Left)
-        DUIWIN_ENUM_VALUE("center", Frame_Part_Center)
-        DUIWIN_ENUM_VALUE("right", Frame_Part_Right)
-        DUIWIN_ENUM_VALUE("topleft", Frame_Part_TopLeft)
-        DUIWIN_ENUM_VALUE("topcenter", Frame_Part_TopCenter)
-        DUIWIN_ENUM_VALUE("topright", Frame_Part_TopRight)
-        DUIWIN_ENUM_VALUE("midleft", Frame_Part_MidLeft)
-        DUIWIN_ENUM_VALUE("midcenter", Frame_Part_MidCenter)
-        DUIWIN_ENUM_VALUE("midright", Frame_Part_MidRight)
-        DUIWIN_ENUM_VALUE("bottomleft", Frame_Part_BottomLeft)
-        DUIWIN_ENUM_VALUE("bottomcenter", Frame_Part_BottomCenter)
-        DUIWIN_ENUM_VALUE("bottomright", Frame_Part_BottomRight)
-    DUIWIN_ENUM_END(m_uDrawPart)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_COLOR("crbg", m_crBg, TRUE)
+    ATTR_INT("left", m_rcMargin.left, TRUE)
+    ATTR_INT("top", m_rcMargin.top, TRUE)
+    ATTR_INT("right", m_rcMargin.right, TRUE)
+    ATTR_INT("bottom", m_rcMargin.bottom, TRUE)
+    ATTR_HEX("part2", m_uDrawPart, TRUE)
+    ATTR_ENUM_BEGIN("part", UINT, TRUE)
+        ATTR_ENUM_VALUE("all", Frame_Part_All)
+        ATTR_ENUM_VALUE("top", Frame_Part_Top)
+        ATTR_ENUM_VALUE("middle", Frame_Part_Mid)
+        ATTR_ENUM_VALUE("bottom", Frame_Part_Bottom)
+        ATTR_ENUM_VALUE("left", Frame_Part_Left)
+        ATTR_ENUM_VALUE("center", Frame_Part_Center)
+        ATTR_ENUM_VALUE("right", Frame_Part_Right)
+        ATTR_ENUM_VALUE("topleft", Frame_Part_TopLeft)
+        ATTR_ENUM_VALUE("topcenter", Frame_Part_TopCenter)
+        ATTR_ENUM_VALUE("topright", Frame_Part_TopRight)
+        ATTR_ENUM_VALUE("midleft", Frame_Part_MidLeft)
+        ATTR_ENUM_VALUE("midcenter", Frame_Part_MidCenter)
+        ATTR_ENUM_VALUE("midright", Frame_Part_MidRight)
+        ATTR_ENUM_VALUE("bottomleft", Frame_Part_BottomLeft)
+        ATTR_ENUM_VALUE("bottomcenter", Frame_Part_BottomCenter)
+        ATTR_ENUM_VALUE("bottomright", Frame_Part_BottomRight)
+    ATTR_ENUM_END(m_uDrawPart)
+    SOUI_ATTRS_END()
 };
 
 
@@ -175,17 +175,17 @@ protected:
     COLORREF    m_crUp[4];
     COLORREF    m_crDown[4];
 public:
-    SOUO_ATTRIBUTES_BEGIN()
-        DUIWIN_COLOR_ATTRIBUTE("border", m_crBorder, TRUE)
-        DUIWIN_COLOR_ATTRIBUTE("bgup", m_crUp[ST_NORMAL], TRUE)
-        DUIWIN_COLOR_ATTRIBUTE("bgdown", m_crDown[ST_NORMAL], TRUE)
-        DUIWIN_COLOR_ATTRIBUTE("bguphover", m_crUp[ST_HOVER], TRUE)
-        DUIWIN_COLOR_ATTRIBUTE("bgdownhover", m_crDown[ST_HOVER], TRUE)
-        DUIWIN_COLOR_ATTRIBUTE("bguppush", m_crUp[ST_PUSHDOWN], TRUE)
-        DUIWIN_COLOR_ATTRIBUTE("bgdownpush", m_crDown[ST_PUSHDOWN], TRUE)
-        DUIWIN_COLOR_ATTRIBUTE("bgupdisable", m_crUp[ST_DISABLE], TRUE)
-        DUIWIN_COLOR_ATTRIBUTE("bgdowndisable", m_crDown[ST_DISABLE], TRUE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+        ATTR_COLOR("border", m_crBorder, TRUE)
+        ATTR_COLOR("bgup", m_crUp[ST_NORMAL], TRUE)
+        ATTR_COLOR("bgdown", m_crDown[ST_NORMAL], TRUE)
+        ATTR_COLOR("bguphover", m_crUp[ST_HOVER], TRUE)
+        ATTR_COLOR("bgdownhover", m_crDown[ST_HOVER], TRUE)
+        ATTR_COLOR("bguppush", m_crUp[ST_PUSHDOWN], TRUE)
+        ATTR_COLOR("bgdownpush", m_crDown[ST_PUSHDOWN], TRUE)
+        ATTR_COLOR("bgupdisable", m_crUp[ST_DISABLE], TRUE)
+        ATTR_COLOR("bgdowndisable", m_crDown[ST_DISABLE], TRUE)
+    SOUI_ATTRS_END()
 };
 
 class SOUI_EXP CDuiSkinGradation  : public CDuiSkinBase
@@ -222,14 +222,14 @@ protected:
     COLORREF m_crTo;
     GRA_DIR     m_uDirection;
 public:
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_COLOR_ATTRIBUTE("from", m_crFrom, TRUE)
-    DUIWIN_COLOR_ATTRIBUTE("to", m_crTo, TRUE)
-    DUIWIN_ENUM_ATTRIBUTE("dir", GRA_DIR, TRUE)
-        DUIWIN_ENUM_VALUE("horz", DIR_HORZ)
-        DUIWIN_ENUM_VALUE("vert", DIR_VERT)
-    DUIWIN_ENUM_END(m_uDirection)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_COLOR("from", m_crFrom, TRUE)
+    ATTR_COLOR("to", m_crTo, TRUE)
+    ATTR_ENUM_BEGIN("dir", GRA_DIR, TRUE)
+        ATTR_ENUM_VALUE("horz", DIR_HORZ)
+        ATTR_ENUM_VALUE("vert", DIR_VERT)
+    ATTR_ENUM_END(m_uDirection)
+    SOUI_ATTRS_END()
 };
 
 enum SBSTATE{
@@ -263,11 +263,11 @@ public:
         return m_pDuiImg->GetWidth()/9;
     }
 
-    SOUO_ATTRIBUTES_BEGIN()
-        DUIWIN_INT_ATTRIBUTE("margin",m_nMargin,FALSE)
-        DUIWIN_INT_ATTRIBUTE("hasgripper",m_bHasGripper,FALSE)
-        DUIWIN_INT_ATTRIBUTE("hasinactive",m_bHasInactive,FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+        ATTR_INT("margin",m_nMargin,FALSE)
+        ATTR_INT("hasgripper",m_bHasGripper,FALSE)
+        ATTR_INT("hasinactive",m_bHasInactive,FALSE)
+    SOUI_ATTRS_END()
 protected:
     //返回源指定部分在原位图上的位置。
     CRect GetPartRect(int nSbCode, int nState,BOOL bVertical);
@@ -292,9 +292,9 @@ public:
         return m_rcBorder;
     }
 public:
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_RECT_ATTRIBUTE("border",m_rcBorder,FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_RECT("border",m_rcBorder,FALSE)
+    SOUI_ATTRS_END()
 protected:
     CRect        m_rcBorder;
 };

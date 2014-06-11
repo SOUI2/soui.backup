@@ -8,7 +8,7 @@
 namespace SOUI
 {
 
-class SOUI_EXP CDuiSkinBase : public CDuiObject,public CDuiRef
+class SOUI_EXP CDuiSkinBase : public SObject,public CDuiRef
 {
 public:
     CDuiSkinBase():m_pDuiImg(NULL),m_strOwner("")
@@ -96,9 +96,9 @@ public:
     static BOOL ExtentBlt(IDuiImage *pImgDraw,BOOL bTile,HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,int nWidSrc,int nHeiSrc,BYTE byAlpha=0xFF);
     static void FrameDraw(HDC dc, IDuiImage *pImgDraw, const CRect &rcSour,const  CRect &rcDraw, CRect rcMargin, COLORREF crBg, UINT uDrawPart ,BOOL bTile,BYTE byAlpha=0xFF);
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_IMAGE_ATTRIBUTE("src", m_pDuiImg, TRUE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_IMAGE("src", m_pDuiImg, TRUE)
+    SOUI_ATTRS_END()
 protected:
 
     virtual void OnAttributeFinish(pugi::xml_node xmlNode)

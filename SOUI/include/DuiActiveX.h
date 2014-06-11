@@ -40,11 +40,11 @@ namespace SOUI
             MSG_WM_SHOWWINDOW(OnShowWindow)
         WND_MSG_MAP_END()
 
-        SOUO_ATTRIBUTES_BEGIN()
-            DUIWIN_CUSTOM_ATTRIBUTE("clsid",OnAttrClsid)
-            DUIWIN_DWORD_ATTRIBUTE("clsctx",m_clsCtx,FALSE)
-            DUIWIN_UINT_ATTRIBUTE("delayinit",m_bDelayInit,FALSE)
-        SOUI_ATTRIBUTES_END()
+        SOUI_ATTRS_BEGIN()
+            ATTR_CUSTOM("clsid",OnAttrClsid)
+            ATTR_DWORD("clsctx",m_clsCtx,FALSE)
+            ATTR_UINT("delayinit",m_bDelayInit,FALSE)
+        SOUI_ATTRS_END()
 
         virtual void OnInitActiveXFinished(){}
 
@@ -81,9 +81,9 @@ namespace SOUI
 
         }
 
-        SOUO_ATTRIBUTES_BEGIN()
-            DUIWIN_WSTRING_ATTRIBUTE("url",m_strUrl,FALSE)
-        SOUI_ATTRIBUTES_END()
+        SOUI_ATTRS_BEGIN()
+            ATTR_STRINGW("url",m_strUrl,FALSE)
+        SOUI_ATTRS_END()
 
         CDuiStringW m_strUrl;
 
@@ -113,9 +113,9 @@ namespace SOUI
 
         virtual void OnAxActivate(IUnknown *pUnknwn);
 
-        SOUO_ATTRIBUTES_BEGIN()
-            DUIWIN_WSTRING_ATTRIBUTE("url",m_strUrl,FALSE)
-        SOUI_ATTRIBUTES_END()
+        SOUI_ATTRS_BEGIN()
+            ATTR_STRINGW("url",m_strUrl,FALSE)
+        SOUI_ATTRS_END()
 
         CDuiStringW m_strUrl;
         CDuiComQIPtr<WMPLib::IWMPPlayer4> wmp_;

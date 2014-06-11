@@ -31,10 +31,17 @@ public:
 		InterlockedDecrement(&m_cRef);
 		if(m_cRef==0)
 		{
-			delete this;
+			OnFinalRelease();
 		}
 	}
 
+	//! Õ∑≈∂‘œÛ
+	/*!
+	*/
+    virtual void __stdcall OnFinalRelease()
+    {
+        delete this;
+    }
 protected:
 	volatile LONG m_cRef;
 };

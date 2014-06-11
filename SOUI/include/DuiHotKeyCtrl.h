@@ -20,12 +20,12 @@ public:
 
     void GetHotKey(WORD & vKey,WORD &wModifers);
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_WORD_ATTRIBUTE("invalidcomb",m_wInvalidComb,FALSE)
-    DUIWIN_WORD_ATTRIBUTE("defcombkey",m_wInvalidModifier,FALSE)
-    DUIWIN_WORD_ATTRIBUTE("combkey",m_wModifier,FALSE)
-    DUIWIN_WORD_ATTRIBUTE("hotkey",m_wVK,FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_WORD("invalidcomb",m_wInvalidComb,FALSE)
+    ATTR_WORD("defcombkey",m_wInvalidModifier,FALSE)
+    ATTR_WORD("combkey",m_wModifier,FALSE)
+    ATTR_WORD("hotkey",m_wVK,FALSE)
+    SOUI_ATTRS_END()
 
 protected:
     virtual UINT OnGetDuiCode()

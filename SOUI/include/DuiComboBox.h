@@ -81,13 +81,13 @@ protected:
     UINT OnGetDuiCode();
     BOOL IsTabStop();
 
-    SOUO_ATTRIBUTES_BEGIN()
-        DUIWIN_INT_ATTRIBUTE("dropdown", m_bDropdown, FALSE)
-        DUIWIN_INT_ATTRIBUTE("dropheight", m_nDropHeight, FALSE)
-         DUIWIN_INT_ATTRIBUTE("cursel", m_iInitSel, FALSE)
-        DUIWIN_SKIN_ATTRIBUTE("btnskin", m_pSkinBtn, FALSE)
-        DUIWIN_INT_ATTRIBUTE("animtime", m_iAnimTime, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+        ATTR_INT("dropdown", m_bDropdown, FALSE)
+        ATTR_INT("dropheight", m_nDropHeight, FALSE)
+         ATTR_INT("cursel", m_iInitSel, FALSE)
+        ATTR_SKIN("btnskin", m_pSkinBtn, FALSE)
+        ATTR_INT("animtime", m_iAnimTime, FALSE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
         MSG_WM_PAINT(OnPaint)
@@ -314,10 +314,10 @@ protected:
 
 protected:
 
-    SOUO_ATTRIBUTES_BEGIN()
-        DUIWIN_UINT_ATTRIBUTE("id_text", m_uTxtID, FALSE)
-        DUIWIN_UINT_ATTRIBUTE("id_icon", m_uIconID, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+        ATTR_UINT("id_text", m_uTxtID, FALSE)
+        ATTR_UINT("id_icon", m_uIconID, FALSE)
+    SOUI_ATTRS_END()
 
     CDuiListBoxEx *m_pListBox;
     UINT    m_uTxtID,m_uIconID;

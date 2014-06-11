@@ -11,4 +11,6 @@ struct OR_API IObjRef
 	virtual void __stdcall AddRef() = 0;
 
 	virtual void __stdcall Release() = 0;
+	
+	virtual void __stdcall OnFinalRelease() =0;
 };

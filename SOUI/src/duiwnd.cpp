@@ -587,7 +587,7 @@ BOOL CDuiWindow::Load(pugi::xml_node xmlNode)
 
     m_dlgpos.nCount = 0;
     m_dlgpos.uPositionType = 0;
-    CDuiObject::Load(xmlNode);
+    SObject::Load(xmlNode);
 
     //加载style中指定的皮肤属性，由于皮肤有owner属性，而style没有owner属性，因此需要在属性加载完成后查询皮肤名称并加载 hjx:2012.1.15
     if(m_pBgSkin==NULL && !m_style.m_strSkinName.IsEmpty())
