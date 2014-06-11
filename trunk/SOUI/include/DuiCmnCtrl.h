@@ -78,10 +78,10 @@ protected:
     int m_bMultiLines;  /**< 是否开启多行显示 */  
     int m_nLineInter;   /**< 不详 有待完善 */
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_INT_ATTRIBUTE("multilines", m_bMultiLines, FALSE)
-    DUIWIN_INT_ATTRIBUTE("interhei", m_nLineInter, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_INT("multilines", m_bMultiLines, FALSE)
+    ATTR_INT("interhei", m_nLineInter, FALSE)
+    SOUI_ATTRS_END()
 };
 
 /**
@@ -236,10 +236,10 @@ protected:
     BOOL   m_bAnimate;    /**< 动画标志 */
     BYTE   m_byAlphaAni;  /**< 动画状态 */
 public:
-    SOUO_ATTRIBUTES_BEGIN()
-        DUIWIN_CUSTOM_ATTRIBUTE("accel",OnAttrAccel)
-        DUIWIN_INT_ATTRIBUTE("animate", m_bAnimate, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+        ATTR_CUSTOM("accel",OnAttrAccel)
+        ATTR_INT("animate", m_bAnimate, FALSE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
         MSG_WM_PAINT(OnPaint)
@@ -291,10 +291,10 @@ protected:
     CDuiSkinBase *m_pSkin;
     //BOOL m_bCalc;
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, TRUE)
-    DUIWIN_INT_ATTRIBUTE("sub", m_nSubImageID, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_SKIN("skin", m_pSkin, TRUE)
+    ATTR_INT("sub", m_nSubImageID, FALSE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
@@ -329,11 +329,11 @@ protected:
         MSG_WM_SHOWWINDOW(OnShowWindow)
     WND_MSG_MAP_END()
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, TRUE)
-    DUIWIN_UINT_ATTRIBUTE("speed", m_nSpeed, FALSE)
-    DUIWIN_UINT_ATTRIBUTE("autostart", m_bAutoStart, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_SKIN("skin", m_pSkin, TRUE)
+    ATTR_UINT("speed", m_nSpeed, FALSE)
+    ATTR_UINT("autostart", m_bAutoStart, FALSE)
+    SOUI_ATTRS_END()
 
 protected:
     CDuiSkinBase *m_pSkin;
@@ -384,15 +384,15 @@ protected:
     MSG_WM_PAINT(OnPaint)
     WND_MSG_MAP_END()
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_SKIN_ATTRIBUTE("bgskin", m_pSkinBg, TRUE)
-    DUIWIN_SKIN_ATTRIBUTE("posskin", m_pSkinPos, TRUE)
-    DUIWIN_INT_ATTRIBUTE("min", m_nMinValue, FALSE)
-    DUIWIN_INT_ATTRIBUTE("max", m_nMaxValue, FALSE)
-    DUIWIN_INT_ATTRIBUTE("value", m_nValue, FALSE)
-    DUIWIN_UINT_ATTRIBUTE("vertical", m_bVertical, FALSE)
-    DUIWIN_UINT_ATTRIBUTE("showpercent", m_bShowPercent, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_SKIN("bgskin", m_pSkinBg, TRUE)
+    ATTR_SKIN("posskin", m_pSkinPos, TRUE)
+    ATTR_INT("min", m_nMinValue, FALSE)
+    ATTR_INT("max", m_nMaxValue, FALSE)
+    ATTR_INT("value", m_nValue, FALSE)
+    ATTR_UINT("vertical", m_bVertical, FALSE)
+    ATTR_UINT("showpercent", m_bShowPercent, FALSE)
+    SOUI_ATTRS_END()
 };
 
 
@@ -423,23 +423,23 @@ protected:
         HR_TILT,
     }m_mode;
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_INT_ATTRIBUTE("size", m_nLineSize, FALSE)
-    DUIWIN_UINT_ATTRIBUTE("shadow", m_bLineShadow, FALSE)
-    DUIWIN_COLOR_ATTRIBUTE("crshadow", m_crShadow, FALSE)
-    DUIWIN_ENUM_ATTRIBUTE("mode", HRMODE, FALSE)
-        DUIWIN_ENUM_VALUE("vertical", HR_VERT)
-        DUIWIN_ENUM_VALUE("horizon", HR_VERT)
-        DUIWIN_ENUM_VALUE("tilt", HR_VERT)
-    DUIWIN_ENUM_END(m_mode)
-    DUIWIN_ENUM_ATTRIBUTE("style", int, FALSE)
-    DUIWIN_ENUM_VALUE("solid", PS_SOLID)             // default
-    DUIWIN_ENUM_VALUE("dash", PS_DASH)               /* -------  */
-    DUIWIN_ENUM_VALUE("dot", PS_DOT)                 /* .......  */
-    DUIWIN_ENUM_VALUE("dashdot", PS_DASHDOT)         /* _._._._  */
-    DUIWIN_ENUM_VALUE("dashdotdot", PS_DASHDOTDOT)   /* _.._.._  */
-    DUIWIN_ENUM_END(m_nPenStyle)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_INT("size", m_nLineSize, FALSE)
+    ATTR_UINT("shadow", m_bLineShadow, FALSE)
+    ATTR_COLOR("crshadow", m_crShadow, FALSE)
+    ATTR_ENUM_BEGIN("mode", HRMODE, FALSE)
+        ATTR_ENUM_VALUE("vertical", HR_VERT)
+        ATTR_ENUM_VALUE("horizon", HR_VERT)
+        ATTR_ENUM_VALUE("tilt", HR_VERT)
+    ATTR_ENUM_END(m_mode)
+    ATTR_ENUM_BEGIN("style", int, FALSE)
+    ATTR_ENUM_VALUE("solid", PS_SOLID)             // default
+    ATTR_ENUM_VALUE("dash", PS_DASH)               /* -------  */
+    ATTR_ENUM_VALUE("dot", PS_DOT)                 /* .......  */
+    ATTR_ENUM_VALUE("dashdot", PS_DASHDOT)         /* _._._._  */
+    ATTR_ENUM_VALUE("dashdotdot", PS_DASHDOTDOT)   /* _.._.._  */
+    ATTR_ENUM_END(m_nPenStyle)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
@@ -495,10 +495,10 @@ protected:
 
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
-    SOUO_ATTRIBUTES_BEGIN()
-        DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
-        DUIWIN_SKIN_ATTRIBUTE("focusskin", m_pFocusSkin, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+        ATTR_SKIN("skin", m_pSkin, FALSE)
+        ATTR_SKIN("focusskin", m_pFocusSkin, FALSE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
         MSG_WM_PAINT(OnPaint)
@@ -537,10 +537,10 @@ protected:
     CDuiStringT m_strCurIconName;
     int m_nSize;
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_TSTRING_ATTRIBUTE("src", m_strIconName, FALSE)
-    DUIWIN_INT_ATTRIBUTE("size", m_nSize, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_STRINGT("src", m_strIconName, FALSE)
+    ATTR_INT("size", m_nSize, FALSE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
@@ -596,10 +596,10 @@ protected:
     void OnSetDuiFocus();
 
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, FALSE)
-    DUIWIN_SKIN_ATTRIBUTE("focusskin", m_pFocusSkin, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_SKIN("skin", m_pSkin, FALSE)
+    ATTR_SKIN("focusskin", m_pFocusSkin, FALSE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
@@ -624,10 +624,10 @@ protected:
     virtual CSize GetDesiredSize(LPRECT pRcContainer);
     virtual BOOL NeedRedrawWhenStateChange(){return TRUE;}
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_INT_ATTRIBUTE("toggled", m_bToggled, TRUE)
-    DUIWIN_SKIN_ATTRIBUTE("skin", m_pSkin, TRUE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_INT("toggled", m_bToggled, TRUE)
+    ATTR_SKIN("skin", m_pSkin, TRUE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
@@ -650,11 +650,11 @@ protected:
     COLORREF m_crLine1,m_crLine2;
     int         m_nRound;
 public:
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_COLOR_ATTRIBUTE("crline1", m_crLine1, FALSE)
-    DUIWIN_COLOR_ATTRIBUTE("crline2", m_crLine2, FALSE)
-    DUIWIN_INT_ATTRIBUTE("round",m_nRound,FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+    ATTR_COLOR("crline1", m_crLine1, FALSE)
+    ATTR_COLOR("crline2", m_crLine2, FALSE)
+    ATTR_INT("round",m_nRound,FALSE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)

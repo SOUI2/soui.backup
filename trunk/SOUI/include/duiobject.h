@@ -48,14 +48,14 @@ public:                                                 \
 namespace SOUI
 {
 
-class SOUI_EXP CDuiObject
+class SOUI_EXP SObject
 {
 public:
-    CDuiObject()
+    SObject()
     {
     }
 
-    virtual ~CDuiObject()
+    virtual ~SObject()
     {
     }
 

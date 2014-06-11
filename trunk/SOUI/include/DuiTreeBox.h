@@ -126,14 +126,14 @@ protected:
     BOOL m_bItemRedrawDelay;
     pugi::xml_document m_xmlSwitch;
 
-    SOUO_ATTRIBUTES_BEGIN()
-        DUIWIN_INT_ATTRIBUTE("indent", m_nIndent, TRUE)
-        DUIWIN_INT_ATTRIBUTE("itemhei", m_nItemHei, TRUE)
-        DUIWIN_SKIN_ATTRIBUTE("itemskin", m_pItemSkin, TRUE)
-        DUIWIN_COLOR_ATTRIBUTE("critembg",m_crItemBg,FALSE)
-        DUIWIN_COLOR_ATTRIBUTE("critemselbg",m_crItemSelBg,FALSE)
-        DUIWIN_INT_ATTRIBUTE("itemredrawdelay", m_bItemRedrawDelay, TRUE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+        ATTR_INT("indent", m_nIndent, TRUE)
+        ATTR_INT("itemhei", m_nItemHei, TRUE)
+        ATTR_SKIN("itemskin", m_pItemSkin, TRUE)
+        ATTR_COLOR("critembg",m_crItemBg,FALSE)
+        ATTR_COLOR("critemselbg",m_crItemSelBg,FALSE)
+        ATTR_INT("itemredrawdelay", m_bItemRedrawDelay, TRUE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
         MSG_WM_PAINT(OnPaint)

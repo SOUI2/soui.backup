@@ -45,13 +45,13 @@ namespace SOUI
         BOOL DeleteItem(int iItem);
         void DeleteAllItems();
 
-        SOUO_ATTRIBUTES_BEGIN()
-            DUIWIN_SKIN_ATTRIBUTE("itemSkin",m_pSkinItem,FALSE)
-            DUIWIN_SKIN_ATTRIBUTE("sortSkin",m_pSkinSort,FALSE)
-            DUIWIN_INT_ATTRIBUTE("fixWidth",m_bFixWidth,FALSE)
-            DUIWIN_INT_ATTRIBUTE("itemSwapEnable",m_bItemSwapEnable,FALSE)
-            DUIWIN_INT_ATTRIBUTE("sortHeader",m_bSortHeader,FALSE)
-        SOUI_ATTRIBUTES_END()
+        SOUI_ATTRS_BEGIN()
+            ATTR_SKIN("itemSkin",m_pSkinItem,FALSE)
+            ATTR_SKIN("sortSkin",m_pSkinSort,FALSE)
+            ATTR_INT("fixWidth",m_bFixWidth,FALSE)
+            ATTR_INT("itemSwapEnable",m_bItemSwapEnable,FALSE)
+            ATTR_INT("sortHeader",m_bSortHeader,FALSE)
+        SOUI_ATTRS_END()
     protected:
         virtual BOOL LoadChildren(pugi::xml_node xmlNode);
         virtual BOOL OnDuiSetCursor(const CPoint &pt);

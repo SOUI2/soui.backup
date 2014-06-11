@@ -1349,7 +1349,7 @@ void CDuiRichEdit::SetSel(DWORD dwSelection, BOOL bNoScroll)
 
 LRESULT CDuiRichEdit::OnSetTextColor( const CDuiStringA &  strValue,BOOL bLoading )
 {
-    m_style.m_crText=CDuiObject::HexStringToColor(strValue);
+    m_style.m_crText=SObject::HexStringToColor(strValue);
     if(!bLoading)
     {
         SetDefaultTextColor(m_style.m_crText);

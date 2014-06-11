@@ -60,9 +60,9 @@ public:
 		if(!m_pDuiImg) return 0;
 		return m_pDuiImg->GetWidth()/(1+m_nStates);//图片分成4 or 5 部分横向排列，第一块是轨道，2,3,4,5分别对应滑块的正常，浮动，下压, Disable状态
 	}
-	SOUO_ATTRIBUTES_BEGIN()
-		DUIWIN_INT_ATTRIBUTE("states",m_nStates,FALSE)
-		SOUI_ATTRIBUTES_END()
+	SOUI_ATTRS_BEGIN()
+		ATTR_INT("states",m_nStates,FALSE)
+		SOUI_ATTRS_END()
 protected:
 	//返回源指定部分在原位图上的位置。
 	CRect GetPartRect(int nSbCode, int nState,BOOL bVertical)

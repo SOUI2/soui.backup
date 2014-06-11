@@ -10,7 +10,7 @@ namespace SOUI
 #define CX_ICON    16        //支持的图标的宽度
 #define CY_ICON    16        //支持的图标的高度
 
-class CDuiMenuAttr:public CDuiObject
+class CDuiMenuAttr:public SObject
 {
     friend class CDuiMenu;
     SOUI_CLASS_NAME(CDuiMenuAttr, "menuattribute")
@@ -19,22 +19,22 @@ public:
 
     virtual void OnAttributeFinish(pugi::xml_node xmlNode);
 
-    SOUO_ATTRIBUTES_BEGIN()
-    DUIWIN_SKIN_ATTRIBUTE("itemskin",m_pItemSkin,FALSE)
-    DUIWIN_SKIN_ATTRIBUTE("iconskin",m_pIconSkin,FALSE)
-    DUIWIN_SKIN_ATTRIBUTE("sepskin",m_pSepSkin,FALSE)
-    DUIWIN_SKIN_ATTRIBUTE("checkskin",m_pCheckSkin,FALSE)
-    DUIWIN_INT_ATTRIBUTE("itemheight",m_nItemHei,FALSE)
-    DUIWIN_INT_ATTRIBUTE("iconmargin",m_nIconMargin,FALSE)
-    DUIWIN_INT_ATTRIBUTE("textmargin",m_nTextMargin,FALSE)
-    DUIWIN_SIZE_ATTRIBUTE("iconsize",m_szIcon,FALSE)
-    DUIWIN_FONT_ATTRIBUTE("font",m_hFont,FALSE)
-    DUIWIN_FONT2_ATTRIBUTE("font2",m_hFont,FALSE)
-    DUIWIN_COLOR_ATTRIBUTE("crtxt",m_crTxtNormal,FALSE);
-    DUIWIN_COLOR_ATTRIBUTE("crtxtsel",m_crTxtSel,FALSE);
-    DUIWIN_COLOR_ATTRIBUTE("crtxtgray",m_crTxtGray,FALSE);
+    SOUI_ATTRS_BEGIN()
+    ATTR_SKIN("itemskin",m_pItemSkin,FALSE)
+    ATTR_SKIN("iconskin",m_pIconSkin,FALSE)
+    ATTR_SKIN("sepskin",m_pSepSkin,FALSE)
+    ATTR_SKIN("checkskin",m_pCheckSkin,FALSE)
+    ATTR_INT("itemheight",m_nItemHei,FALSE)
+    ATTR_INT("iconmargin",m_nIconMargin,FALSE)
+    ATTR_INT("textmargin",m_nTextMargin,FALSE)
+    ATTR_SIZE("iconsize",m_szIcon,FALSE)
+    ATTR_FONT("font",m_hFont,FALSE)
+    ATTR_FONTEX("font2",m_hFont,FALSE)
+    ATTR_COLOR("crtxt",m_crTxtNormal,FALSE);
+    ATTR_COLOR("crtxtsel",m_crTxtSel,FALSE);
+    ATTR_COLOR("crtxtgray",m_crTxtGray,FALSE);
 
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_END()
 protected:
     CDuiSkinBase *m_pItemSkin;    //菜单项皮肤，包含2种状态：正常状态+选中状态
     CDuiSkinBase *m_pIconSkin;    //菜单图标

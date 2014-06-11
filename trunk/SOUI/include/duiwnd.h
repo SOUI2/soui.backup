@@ -100,7 +100,7 @@ typedef enum tagGDUI_CODE
     GDUI_OWNER,
 } GDUI_CODE;
 
-class SOUI_EXP CDuiWindow : public CDuiObject
+class SOUI_EXP CDuiWindow : public SObject
     , public CDuiEventSet
     , public CDuiRef
 {
@@ -543,34 +543,34 @@ public:
 protected:
     BOOL m_bMsgHandled;
 
-    SOUO_ATTRIBUTES_BEGIN()
-        DUIWIN_SKIN_ATTRIBUTE("skin", m_pBgSkin, TRUE)//直接获得皮肤对象
-        DUIWIN_SKIN_ATTRIBUTE("ncskin", m_pNcSkin, TRUE)//直接获得皮肤对象
-        DUIWIN_STRING_ATTRIBUTE("name",m_strName,FALSE)
-        DUIWIN_STYLE_ATTRIBUTE("class", m_style, TRUE)    //获得style
-        DUIWIN_CHAIN_ATTRIBUTE(m_style)                    //支持对style中的属性定制
-        DUIWIN_INT_ATTRIBUTE("id", m_uCmdID, FALSE)
-        DUIWIN_INT_ATTRIBUTE("data", m_uData, 0 )
-        DUIWIN_CUSTOM_ATTRIBUTE("state", OnAttributeState)
-        DUIWIN_TSTRING_ATTRIBUTE("href", m_strLinkUrl, FALSE)
-        DUIWIN_TSTRING_ATTRIBUTE("tip", m_strToolTipText, FALSE)
-        DUIWIN_CUSTOM_ATTRIBUTE("pos", OnAttributePosition)
-        DUIWIN_INT_ATTRIBUTE("show", m_bVisible,FALSE)
-        DUIWIN_INT_ATTRIBUTE("display", m_bDisplay,FALSE)
-        DUIWIN_INT_ATTRIBUTE("msgtransparent", m_bMsgTransparent, FALSE)
-        DUIWIN_INT_ATTRIBUTE("sep", m_nSepSpace, FALSE)
-        DUIWIN_INT_ATTRIBUTE("maxwidth",m_nMaxWidth,FALSE)
-        DUIWIN_INT_ATTRIBUTE("clipclient",m_bClipClient,FALSE)
-        DUIWIN_INT_ATTRIBUTE("tabstop",m_bTabStop,FALSE)
-        DUIWIN_ENUM_ATTRIBUTE("pos2type",POS2TYPE,FALSE)
-            DUIWIN_ENUM_VALUE("lefttop",POS2_LEFTTOP)
-            DUIWIN_ENUM_VALUE("center",POS2_CENTER)
-            DUIWIN_ENUM_VALUE("righttop",POS2_RIGHTTOP)
-            DUIWIN_ENUM_VALUE("leftbottom",POS2_LEFTBOTTOM)
-            DUIWIN_ENUM_VALUE("rightbottom",POS2_RIGHTBOTTOM)
-        DUIWIN_ENUM_END(m_dlgpos.pos2Type)
-        DUIWIN_INT_ATTRIBUTE("alpha",m_byAlpha,TRUE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+        ATTR_SKIN("skin", m_pBgSkin, TRUE)//直接获得皮肤对象
+        ATTR_SKIN("ncskin", m_pNcSkin, TRUE)//直接获得皮肤对象
+        ATTR_STRINGA("name",m_strName,FALSE)
+        ATTR_STYLE("class", m_style, TRUE)    //获得style
+        ATTR_CHAIN(m_style)                    //支持对style中的属性定制
+        ATTR_INT("id", m_uCmdID, FALSE)
+        ATTR_INT("data", m_uData, 0 )
+        ATTR_CUSTOM("state", OnAttributeState)
+        ATTR_STRINGT("href", m_strLinkUrl, FALSE)
+        ATTR_STRINGT("tip", m_strToolTipText, FALSE)
+        ATTR_CUSTOM("pos", OnAttributePosition)
+        ATTR_INT("show", m_bVisible,FALSE)
+        ATTR_INT("display", m_bDisplay,FALSE)
+        ATTR_INT("msgtransparent", m_bMsgTransparent, FALSE)
+        ATTR_INT("sep", m_nSepSpace, FALSE)
+        ATTR_INT("maxwidth",m_nMaxWidth,FALSE)
+        ATTR_INT("clipclient",m_bClipClient,FALSE)
+        ATTR_INT("tabstop",m_bTabStop,FALSE)
+        ATTR_ENUM_BEGIN("pos2type",POS2TYPE,FALSE)
+            ATTR_ENUM_VALUE("lefttop",POS2_LEFTTOP)
+            ATTR_ENUM_VALUE("center",POS2_CENTER)
+            ATTR_ENUM_VALUE("righttop",POS2_RIGHTTOP)
+            ATTR_ENUM_VALUE("leftbottom",POS2_LEFTBOTTOM)
+            ATTR_ENUM_VALUE("rightbottom",POS2_RIGHTBOTTOM)
+        ATTR_ENUM_END(m_dlgpos.pos2Type)
+        ATTR_INT("alpha",m_byAlpha,TRUE)
+    SOUI_ATTRS_END()
 
 protected:
     LRESULT NotifyCommand();

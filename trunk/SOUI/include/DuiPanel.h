@@ -123,13 +123,13 @@ protected:
     DWORD        m_dwUpdateTime;    //记录调用UpdateDuiWindow的时间
     DWORD        m_dwUpdateInterval;
 
-    SOUO_ATTRIBUTES_BEGIN()
-        DUIWIN_CUSTOM_ATTRIBUTE("sbskin",OnAttrScrollbarSkin)
-        DUIWIN_INT_ATTRIBUTE("sbarrowsize", m_nSbArrowSize, FALSE)
-        DUIWIN_INT_ATTRIBUTE("sbwid", m_nSbWid, FALSE)
-        DUIWIN_INT_ATTRIBUTE("sbenable", m_wBarEnable, FALSE)
-        DUIWIN_UINT_ATTRIBUTE("updateinterval", m_dwUpdateInterval, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+        ATTR_CUSTOM("sbskin",OnAttrScrollbarSkin)
+        ATTR_INT("sbarrowsize", m_nSbArrowSize, FALSE)
+        ATTR_INT("sbwid", m_nSbWid, FALSE)
+        ATTR_INT("sbenable", m_wBarEnable, FALSE)
+        ATTR_UINT("updateinterval", m_dwUpdateInterval, FALSE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
     MSG_WM_CREATE(OnCreate)
@@ -184,12 +184,12 @@ protected:
 
     void UpdateScrollBar();
 protected:
-    SOUO_ATTRIBUTES_BEGIN()
-        DUIWIN_INT_ATTRIBUTE("viewwid", m_szView.cx, FALSE)
-        DUIWIN_INT_ATTRIBUTE("viewhei", m_szView.cy, FALSE)
-        DUIWIN_INT_ATTRIBUTE("origin-x", m_ptOrigin.x, FALSE)
-        DUIWIN_INT_ATTRIBUTE("origin-y", m_ptOrigin.y, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+        ATTR_INT("viewwid", m_szView.cx, FALSE)
+        ATTR_INT("viewhei", m_szView.cy, FALSE)
+        ATTR_INT("origin-x", m_ptOrigin.x, FALSE)
+        ATTR_INT("origin-y", m_ptOrigin.y, FALSE)
+    SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
         MSG_WM_CREATE(OnCreate)

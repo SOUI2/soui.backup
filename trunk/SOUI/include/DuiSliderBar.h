@@ -58,9 +58,9 @@ protected:
         MSG_WM_PAINT(OnPaint)
     WND_MSG_MAP_END()
 
-    SOUO_ATTRIBUTES_BEGIN()
-        DUIWIN_SKIN_ATTRIBUTE("thumbskin", m_pSkinThumb, FALSE)
-    SOUI_ATTRIBUTES_END()
+    SOUI_ATTRS_BEGIN()
+        ATTR_SKIN("thumbskin", m_pSkinThumb, FALSE)
+    SOUI_ATTRS_END()
 };
 
 template<typename T>
