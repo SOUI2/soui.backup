@@ -7,7 +7,7 @@
 
 #pragma  once
 #include "duistd.h"
-#include "duilistbox.h"
+#include "control/duilistbox.h"
 #include "DuiSystem.h"
 #include "mybuffer.h"
 

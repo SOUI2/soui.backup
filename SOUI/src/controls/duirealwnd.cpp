@@ -1,6 +1,6 @@
 #pragma once
 #include "duistd.h"
-#include "duirealwnd.h"
+#include "control/duirealwnd.h"
 
 namespace SOUI
 {

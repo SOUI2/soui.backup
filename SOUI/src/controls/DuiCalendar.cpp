@@ -11,7 +11,7 @@
  * Describe  时间控件相关函数实现
  */
 #include "duistd.h"
-#include "DuiCalendar.h"
+#include "control/DuiCalendar.h"
 #include "DuiTime.h"
 
 #ifdef _DEBUG

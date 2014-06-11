@@ -11,7 +11,7 @@
  * Describe    此类完成日历控件
  */
 #include "duistd.h"
-#include "DuiCaption.h"
+#include "control/DuiCaption.h"
 
 namespace SOUI
 {

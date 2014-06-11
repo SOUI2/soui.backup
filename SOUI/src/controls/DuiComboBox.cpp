@@ -1,5 +1,5 @@
 #include "duistd.h"
-#include "DuiComboBox.h"
+#include "control/DuiComboBox.h"
 
 
 namespace SOUI

@@ -1,5 +1,5 @@
 #include "duistd.h"
-#include "DuiSliderBar.h"
+#include "control/DuiSliderBar.h"
 
 namespace SOUI
 {

@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "duistd.h"
-#include "duiitembox.h"
+#include "control/duiitembox.h"
 
 namespace SOUI
 {

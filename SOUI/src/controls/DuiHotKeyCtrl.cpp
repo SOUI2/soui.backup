@@ -1,5 +1,5 @@
 #include "duistd.h"
-#include "DuiHotKeyCtrl.h"
+#include "control/DuiHotKeyCtrl.h"
 #include <CommCtrl.h>
 
 namespace SOUI

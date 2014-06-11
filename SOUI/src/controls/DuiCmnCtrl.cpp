@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "duistd.h"
-#include "DuiCmnCtrl.h"
+#include "control/DuiCmnCtrl.h"
 
 #include "duiwndnotify.h"
 #include "duisystem.h"

@@ -6,8 +6,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "duistd.h"
-#include "duitreebox.h"
-#include "DuiCmnCtrl.h"
+#include "control/duitreebox.h"
+#include "control/DuiCmnCtrl.h"
 
 namespace SOUI
 {

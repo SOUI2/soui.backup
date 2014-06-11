@@ -1,5 +1,5 @@
 #include "duistd.h"
-#include "DuiHeaderCtrl.h"
+#include "control/DuiHeaderCtrl.h"
 #include "MemDC.h"
 #include "DragWnd.h"
 
