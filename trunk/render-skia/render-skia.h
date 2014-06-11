@@ -1,14 +1,7 @@
 #pragma once
 
-#ifdef RENDERSKIA_EXPORT
-#define RENDERSKIA_API __declspec(dllexport)
-#else
-#define RENDERSKIA_API __declspec(dllimport)
-#endif
+#include "render-api.h"
 
-#define RENDER_API RENDERSKIA_API
-
-#include <render/render-i.h>
 #include <color.h>
 #include <unknown/obj-ref-impl.hpp>
 
@@ -19,32 +12,36 @@
 #include <string\tstring.h>
 #include <string\strcpcvt.h>
 
+#include "img-decoder.h"
+
 namespace SOUI
 {
 	//实现一些和特定系统相关的接口
-	struct RENDERSKIA_API IRenderFactory_Skia : public IRenderFactory
+	struct IRenderFactory_Skia : public IRenderFactory
 	{
 	};
 
 
 	//////////////////////////////////////////////////////////////////////////
 	// SRenderFactory_Skia
-	class RENDERSKIA_API SRenderFactory_Skia : public TObjRefImpl<IRenderFactory_Skia>
+	class SRenderFactory_Skia : public TObjRefImpl<IRenderFactory_Skia>
 	{
 	public:
 		SRenderFactory_Skia()
 		{
-			Init();
+		    SImgDecoder::InitImgDecoder();
 		}
-
+        
+        ~SRenderFactory_Skia()
+        {
+            SImgDecoder::FreeImgDecoder();
+        }
+        
 		virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei);
-
-	protected:
-		BOOL Init();
 
 	};
 
-
+    
 	//////////////////////////////////////////////////////////////////////////
 	// TSkiaRenderObjImpl
 	template<class T>

@@ -67,17 +67,11 @@ namespace SOUI
 	//////////////////////////////////////////////////////////////////////////
 	// SRenderFactory_Skia
 
-	BOOL SRenderFactory_Skia::Init()
-	{
-		return TRUE;
-	}
-
 	BOOL SRenderFactory_Skia::CreateRenderTarget( IRenderTarget ** ppRenderTarget ,int nWid,int nHei)
 	{
 		*ppRenderTarget = new SRenderTarget_Skia(this, nWid, nHei);
 		return TRUE;
 	}
-
 
 	//////////////////////////////////////////////////////////////////////////
 	// SRenderTarget_Skia

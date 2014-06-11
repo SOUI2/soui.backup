@@ -1,19 +1,12 @@
 #pragma once
 
-#ifdef RENDERSKIA_EXPORT
-#define RENDERSKIA_API __declspec(dllexport)
-#else
-#define RENDERSKIA_API __declspec(dllimport)
-#endif
-
-
 #include <wincodec.h>
 #include <unknown/obj-ref-impl.hpp>
 
 namespace SOUI
 {
 
-class RENDERSKIA_API SImgDecoder
+class SImgDecoder
 {
 public:
 	SImgDecoder(void);
