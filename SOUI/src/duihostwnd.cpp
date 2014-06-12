@@ -152,7 +152,7 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
 
     if(!m_strName.IsEmpty())
     {
-        DuiSystem::getSingleton().GetCurResMgr()->GetSkinPool()->LoadSkins(m_strName);    //load skin only used in the host window
+        DuiSystem::getSingleton().LoadSkins(m_strName);    //load skin only used in the host window
     }
 
     CDuiWindow::Load(xmlNode.child("body"));
@@ -425,7 +425,7 @@ void CDuiHostWnd::OnDestroy()
 
     if(!m_strName.IsEmpty())
     {
-        DuiSystem::getSingleton().GetCurResMgr()->GetSkinPool()->FreeSkins(m_strName);
+        DuiSystem::getSingleton().FreeSkins(m_strName);
     }
 }
 

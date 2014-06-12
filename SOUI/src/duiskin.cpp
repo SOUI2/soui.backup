@@ -10,7 +10,7 @@
 #include "duistd.h"
 #include "duiskin.h"
 
-#include "duiimgpool.h"
+#include "res.mgr/duiimgpool.h"
 #include "gdialpha.h"
 #include "DuiSystem.h"
 #include "GradientFillHelper.h"

@@ -12,7 +12,7 @@
 
 #include "duistd.h"
 #include "MenuWndHook.h"
-#include "duiskinpool.h"
+#include "res.mgr/duiskinpool.h"
 #include "duiskin.h"
 
 #ifdef _WIN64

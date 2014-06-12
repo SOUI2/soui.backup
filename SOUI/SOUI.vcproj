@@ -805,6 +805,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\res.mgr\DuiCSS.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\controls\DuiDateTimeEdit.cpp"
 				>
 			</File>
@@ -818,6 +822,10 @@
 			</File>
 			<File
 				RelativePath=".\src\DuiEventSet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\res.mgr\duifontpool.cpp"
 				>
 			</File>
 			<File
@@ -846,6 +854,10 @@
 			</File>
 			<File
 				RelativePath=".\src\DuiImgDecoder_Def.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\res.mgr\duiimgpool.cpp"
 				>
 			</File>
 			<File
@@ -893,11 +905,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiPools.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\DuiPoolsStack.cpp"
+				RelativePath=".\src\res.mgr\DuiPools.cpp"
 				>
 			</File>
 			<File
@@ -905,11 +913,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\duiresprovider.cpp"
+				RelativePath=".\src\res.mgr\duiresprovider.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiResProviderMgr.cpp"
+				RelativePath=".\src\res.mgr\DuiResProviderMgr.cpp"
 				>
 			</File>
 			<File
@@ -926,6 +934,10 @@
 			</File>
 			<File
 				RelativePath=".\src\DuiSkinFactoryMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\res.mgr\DuiSkinPool.cpp"
 				>
 			</File>
 			<File
@@ -1023,7 +1035,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\src\DuiStylePool.cpp"
+				RelativePath=".\src\res.mgr\duistringpool.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\res.mgr\DuiStylePool.cpp"
 				>
 			</File>
 			<File
@@ -1122,27 +1138,7 @@
 				Name="pools"
 				>
 				<File
-					RelativePath=".\src\DuiCSS.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\duifontpool.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\duiimgpool.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\duiskin.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\DuiSkinPool.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\duistringpool.cpp"
 					>
 				</File>
 			</Filter>
@@ -1197,7 +1193,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\DuiCSS.h"
+				RelativePath=".\include\res.mgr\DuiCSS.h"
 				>
 			</File>
 			<File
@@ -1225,6 +1221,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\res.mgr\duifontpool.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\duiframe.h"
 				>
 			</File>
@@ -1246,6 +1246,10 @@
 			</File>
 			<File
 				RelativePath=".\include\DuiImgDecoder_Def.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\duiimgpool.h"
 				>
 			</File>
 			<File
@@ -1277,11 +1281,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\DuiPools.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiPoolsStack.h"
+				RelativePath=".\include\res.mgr\DuiPools.h"
 				>
 			</File>
 			<File
@@ -1293,15 +1293,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\duiresprovider-i.h"
+				RelativePath=".\include\res.mgr\duiresprovider-i.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\duiresprovider.h"
+				RelativePath=".\include\res.mgr\duiresprovider.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\DuiResProviderMgr.h"
+				RelativePath=".\include\res.mgr\DuiResProviderMgr.h"
 				>
 			</File>
 			<File
@@ -1321,11 +1321,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\res.mgr\DuiSkinPool.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\duistd.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\DuiStylePool.h"
+				RelativePath=".\include\res.mgr\duistringpool.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\DuiStylePool.h"
 				>
 			</File>
 			<File
@@ -1524,27 +1532,11 @@
 				Name="singltons"
 				>
 				<File
-					RelativePath=".\include\duifontpool.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\duiimgpool.h"
-					>
-				</File>
-				<File
 					RelativePath=".\include\DUISingleton.h"
 					>
 				</File>
 				<File
 					RelativePath=".\include\DuiSingletonMap.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\DuiSkinPool.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\duistringpool.h"
 					>
 				</File>
 			</Filter>

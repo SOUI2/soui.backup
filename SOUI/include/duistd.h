@@ -76,8 +76,8 @@
 
 
 #include "DuiAttrCrack.h"
-#include "duifontpool.h"
-#include "duiresprovider.h"
+#include "res.mgr/duifontpool.h"
+#include "res.mgr/duiresprovider.h"
 #include "duisystem.h"
 #include "control/DuiMessageBox.h"
 

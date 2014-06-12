@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../soui/include/duiresprovider-i.h"
+#include "../../soui/include/res.mgr/duiresprovider-i.h"
 #include "../../soui/include/DuiImage-i.h"
 
 #include "ZipArchive.h"
