@@ -2,7 +2,7 @@
 
 #include "duiobject.h"
 #include "duiimage-i.h"
-#include "duiimgpool.h"
+#include "res.mgr/duiimgpool.h"
 #include "duiref.h"
 
 namespace SOUI

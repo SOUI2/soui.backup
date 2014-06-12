@@ -3,8 +3,8 @@
 #include "SimpleWnd.h"
 #include "control/DuiRichEdit.h"
 
-#include "duifontpool.h"
-#include "duiimgpool.h"
+#include "res.mgr/duifontpool.h"
+#include "res.mgr/duiimgpool.h"
 #include "DuiThreadActiveWndMgr.h"
 #include "DuiWindowMgr.h"
 
@@ -90,7 +90,7 @@ BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
         DuiFontPool::getSingleton().SetDefaultFont(DUI_CA2T(xmlFont.attribute("face").value(),CP_UTF8),nSize);
     }
 
-    GetCurResMgr()->Init(xmlDoc.first_child());
+    DuiPools::Init(xmlDoc.first_child());
 
     return TRUE;
 }

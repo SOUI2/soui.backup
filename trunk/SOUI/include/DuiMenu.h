@@ -1,7 +1,7 @@
 #pragma once
 
 #include "duiobject.h"
-#include "duiskinpool.h"
+#include "res.mgr/duiskinpool.h"
 #include "SimpleWnd.h"
 
 namespace SOUI

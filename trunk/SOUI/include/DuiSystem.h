@@ -1,20 +1,20 @@
 #pragma once
 #include "duisingleton.h"
 
-#include "DuiPoolsStack.h"
 #include "DuiWndFactoryMgr.h"
 #include "DuiSkinFactoryMgr.h"
 
 #include "DuiLogger.h"
 #include "DuiScriptModule.h"
-#include "DuiResProviderMgr.h"
+#include "res.mgr/DuiResProviderMgr.h"
+#include "res.mgr/DuiPools.h"
 
 #define SOUI_VERSION    _T("0.0.0.1")
 
 #define GETSKIN(p1) DuiSystem::getSingleton().GetSkin(p1)
 #define GETSTYLE(p1,p2) DuiSystem::getSingleton().GetStyle(p1,p2)
 #define BUILDSTRING(p1) DuiSystem::getSingleton().BuildString(p1)
-#define GETCSS(p1) DuiSystem::getSingleton().GetObjDefAttr(p1)
+#define GETCSS(p1) DuiSystem::getSingleton().GetDefAttribute(p1)
 
 #define LOADXML(p1,p2,p3) DuiSystem::getSingleton().LoadXmlDocment(p1,p2,p3)
 #define GETRESPROVIDER    DuiSystem::getSingletonPtr()
@@ -26,7 +26,7 @@ namespace SOUI
 class SOUI_EXP DuiSystem :public Singleton<DuiSystem>
                         ,public DuiWindowFactoryMgr
                         ,public DuiSkinFactoryManager
-                        ,public DuiPoolsStack
+                        ,public DuiPools
                         ,public DuiResProviderMgr
 {
     friend class CSimpleWnd;
