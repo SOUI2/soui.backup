@@ -97,7 +97,7 @@ public:
         POINT pt2={5,5};
 
         CAutoRefPtr<IPen> pen,oldPen;
-        m_rt->CreatePen(PS_DASHDOTDOT,CDuiColor(0xFF,0,0,0x55),2,&pen);
+        m_rt->CreatePen(PS_DASHDOTDOT,CDuiColor(0xFF,0,0,0x55).toCOLORREF(),2,&pen);
 
         m_rt->SelectObject(pen,(IRenderObj**)&oldPen);
         m_rt->DrawRoundRect(&rc,pt2);
@@ -106,6 +106,10 @@ public:
         InflateRect(&rc,-2,-2);
 
         m_rt->OffsetViewportOrg(50,50);
+        
+        RECT rc2={100,230,200,400};
+
+        m_rt->GradientFill(&rc2,FALSE,RGB(255,0,0),RGB(0,0,255),128);
 
         CAutoRefPtr<IBrush> brColor,brOld;
         m_rt->CreateSolidColorBrush(0xFF0000FF,&brColor);
@@ -113,8 +117,8 @@ public:
         m_rt->FillRoundRect(&rc,pt2);
         m_rt->SelectObject(brOld);
         m_rt->OffsetViewportOrg(-50,-50);
-
-
+        
+        
         HDC hdc2=m_rt->GetDC(0);
         TextOut(hdc2,0,0,_T("text at (0,0)"),_tcslen(_T("text at (0,0)")));
         
@@ -147,7 +151,7 @@ public:
 		m_rt->CreateFont(lf,&font);
 		m_rt->SelectObject(font);
 
-		m_rt->SetTextColor(CDuiColor(255,0,0));
+		m_rt->SetTextColor(RGBA(255,0,0,255));
 		RECT rc1={0,0,100,100};
 		RECT rc2={200,200,300,300};
 		RECT rc3={90,90,210,210};

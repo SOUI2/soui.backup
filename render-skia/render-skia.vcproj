@@ -64,6 +64,7 @@
 				AdditionalDependencies="skcore_d.lib utilities_d.lib freetype253_D.lib Usp10.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
 				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;..\myskia\third_party\freetype\lib"
+				GenerateDebugInformation="true"
 			/>
 			<Tool
 				Name="VCALinkTool"

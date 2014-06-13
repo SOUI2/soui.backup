@@ -1,33 +1,63 @@
 #pragma once
 
+#define GetAValue(rgb)      (LOBYTE((rgb)>>24))
+#define RGBA(r,g,b,a)       (RGB(r,g,b)|(a<<24))
+
+//以ARGB格式存储颜色值
 class CDuiColor
 {
 public:
-	static COLORREF RGBA(BYTE r,BYTE g,BYTE b,BYTE a=0xFF)
-	{
-		CDuiColor color(r,g,b,a);
-		return color;
-	}
-
 	CDuiColor(BYTE r,BYTE g,BYTE b,BYTE a=0xFF):a(a),b(b),g(g),r(r)
 	{
 
 	}
 
-	CDuiColor(COLORREF cr)
+	CDuiColor(COLORREF cr,BYTE a)
 	{
-		memcpy(this,&cr,4);
+	    r=GetRValue(cr);
+	    g=GetGValue(cr);
+	    b=GetBValue(cr);
+        this->a = a;
 	}
 
-	operator const COLORREF() const
-	{
-		DWORD cr;
-		memcpy(&cr,this,4);
-		return cr;
-	}
+    CDuiColor(COLORREF cr)
+    {
+        r=GetRValue(cr);
+        g=GetGValue(cr);
+        b=GetBValue(cr);
+        a=GetAValue(cr);
+    }
+  
+    const COLORREF toCOLORREF() const
+    {
+        return RGB(r,g,b)|(a<<24);
+    }
 
-	DWORD b:8;
-	DWORD g:8;
-	DWORD r:8;
-	DWORD a:8;
+    const DWORD toARGB() const
+    {
+        DWORD crRet;
+        memcpy(&crRet,this,4);
+        return crRet;
+    }
+        
+    void setRGB(COLORREF cr)
+    {
+        r=GetRValue(cr);
+        g=GetGValue(cr);
+        b=GetBValue(cr);
+        a=GetAValue(cr);
+    }
+    
+    void setRGB(COLORREF cr,BYTE a)
+    {
+        r=GetRValue(cr);
+        g=GetGValue(cr);
+        b=GetBValue(cr);
+        this->a=a;
+    }
+    
+    DWORD b:8;
+    DWORD g:8;
+    DWORD r:8;
+    DWORD a:8;
 };

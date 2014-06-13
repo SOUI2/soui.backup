@@ -4,10 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkCore", "myskia\vs2008\SkCore\SkCore.vcproj", "{CA37CBA7-D91D-49D4-9DCB-9F2118709260}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render-skia", "render-skia\render-skia.vcproj", "{6C5D6C99-15E9-4EA4-94FC-639B680B685D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{CA37CBA7-D91D-49D4-9DCB-9F2118709260} = {CA37CBA7-D91D-49D4-9DCB-9F2118709260}
-		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81} = {2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utilities", "utilities\utilities.vcproj", "{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}"
 EndProject
