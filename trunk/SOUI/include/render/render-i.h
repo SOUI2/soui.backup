@@ -129,7 +129,8 @@ struct RENDER_API IRenderTarget: public IObjRef
     virtual HRESULT FillRoundRect(LPCRECT pRect,POINT pt)=0;
     
     virtual HRESULT DrawLines(LPPOINT pPt,size_t nCount) =0;
-
+    virtual HRESULT GradientFill(LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha=0xFF)=0;
+    
 	virtual HRESULT DrawBitmap(LPRECT pRcDest,IBitmap *pBitmap,LPRECT pRcSour,BYTE byAlpha=0xFF)=0;
 	virtual HRESULT BitBlt(LPRECT pRcDest,IRenderTarget *pRTSour,LPRECT rcSour,UINT uDef)=0;
 

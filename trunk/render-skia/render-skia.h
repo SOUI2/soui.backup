@@ -253,6 +253,7 @@ namespace SOUI
         virtual HRESULT DrawRoundRect(LPCRECT pRect,POINT pt);
         virtual HRESULT FillRoundRect(LPCRECT pRect,POINT pt);
         virtual HRESULT DrawLines(LPPOINT pPt,size_t nCount);
+        virtual HRESULT GradientFill(LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha=0xFF);
 
 		virtual HRESULT TextOut(
 			int x,
@@ -269,12 +270,13 @@ namespace SOUI
 
 		virtual COLORREF GetTextColor()
 		{
-			return m_curColor;
+			return m_curColor.toCOLORREF();
 		}
+		
 		virtual COLORREF SetTextColor(COLORREF color)
 		{
-			COLORREF crOld=m_curColor;
- 			m_curColor=color;
+			COLORREF crOld=m_curColor.toCOLORREF();
+ 			m_curColor.setRGB(color);
 			return crOld;
 		}
 		
@@ -283,7 +285,7 @@ namespace SOUI
 
     protected:
 		SkCanvas *m_SkCanvas;
-        COLORREF            m_curColor;
+        CDuiColor            m_curColor;
 		CAutoRefPtr<SBitmap_Skia> m_curBmp;
 		CAutoRefPtr<SPen_Skia> m_curPen;
 		CAutoRefPtr<SBrush_Skia> m_curBrush;

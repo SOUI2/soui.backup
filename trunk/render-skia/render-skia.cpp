@@ -3,6 +3,7 @@
 #include <core\SkShader.h>
 #include <core\SkDevice.h>
 #include <effects\SkDashPathEffect.h>
+#include <effects\SkGradientShader.h>
 #include "drawtext-skia.h"
 
 #include "render-skia.h"
@@ -95,11 +96,11 @@ namespace SOUI
         }
 
 		CAutoRefPtr<IPen> pPen;
-		CreatePen(PS_SOLID,CDuiColor(0,0,0),1,&pPen);
+		CreatePen(PS_SOLID,CDuiColor(0,0,0).toCOLORREF(),1,&pPen);
 		SelectObject(pPen);
 
 		CAutoRefPtr<IBrush> pBr;
-		CreateSolidColorBrush(CDuiColor(0,0,0),&pBr);
+		CreateSolidColorBrush(CDuiColor(0,0,0).toCOLORREF(),&pBr);
 		SelectObject(pBr);
 
         CAutoRefPtr<IFont> pFont;
@@ -274,7 +275,7 @@ namespace SOUI
 		if(cchLen<0) cchLen= _tcslen(pszText);
 		CDuiStringW strW=DUI_CT2W(CDuiStringT(pszText,cchLen));
         SkPaint     txtPaint = m_curFont->GetPaint();
-        txtPaint.setColor(m_curColor);
+        txtPaint.setColor(m_curColor.toARGB());
         txtPaint.setTypeface(m_curFont->GetFont());
         txtPaint.setAlpha(byAlpha);
         if(uFormat & DT_CENTER)
@@ -304,7 +305,7 @@ namespace SOUI
 	HRESULT SRenderTarget_Skia::DrawRectangle( int left, int top,int right,int bottom )
 	{
 		SkPaint paint;
-		paint.setColor(m_curPen->GetColor());
+		paint.setColor(CDuiColor(m_curPen->GetColor()).toARGB());
 		SGetLineDashEffect skDash(m_curPen->GetStyle());
  		paint.setPathEffect(skDash.Get());
 		paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
@@ -328,7 +329,7 @@ namespace SOUI
 		}else
 		{
 			paint.setFilterBitmap(false);
-			paint.setColor(m_curBrush->GetColor());
+			paint.setColor(CDuiColor(m_curBrush->GetColor()).toARGB());
 		}
 		paint.setStyle(SkPaint::kFill_Style);
 
@@ -342,7 +343,7 @@ namespace SOUI
     HRESULT SRenderTarget_Skia::DrawRoundRect( LPCRECT pRect,POINT pt )
     {
         SkPaint paint;
-        paint.setColor(m_curPen->GetColor());
+        paint.setColor(CDuiColor(m_curPen->GetColor()).toARGB());
         SGetLineDashEffect skDash(m_curPen->GetStyle());
         paint.setPathEffect(skDash.Get());
         paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
@@ -387,7 +388,7 @@ namespace SOUI
         SkPoint::Offset(pts,nCount,m_ptOrg);
 
         SkPaint paint;
-        paint.setColor(m_curPen->GetColor());
+        paint.setColor(CDuiColor(m_curPen->GetColor()).toARGB());
         SGetLineDashEffect skDash(m_curPen->GetStyle());
         paint.setPathEffect(skDash.Get());
         paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
@@ -403,7 +404,7 @@ namespace SOUI
 		if(nCount<0) nCount= _tcslen(lpszString);
 		CDuiStringW strW=DUI_CT2W(lpszString,nCount);
         SkPaint     txtPaint = m_curFont->GetPaint();
-        txtPaint.setColor(m_curColor);
+        txtPaint.setColor(m_curColor.toARGB());
         txtPaint.setTypeface(m_curFont->GetFont());
         txtPaint.setAlpha(byAlpha);
 		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,(SkScalar)x+m_ptOrg.fX,(SkScalar)y+m_ptOrg.fY,txtPaint);
@@ -561,6 +562,31 @@ namespace SOUI
             m_hGetDC = 0;
             m_uGetDCFlag =0;
         }
+    }
+
+    HRESULT SRenderTarget_Skia::GradientFill( LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha/*=0xFF*/ )
+    {
+        SkPoint pts[2];
+        pts[0].set(pRect->left,pRect->top);
+        pts[1].set(pRect->right,pRect->top);
+        if(bVert)
+        {
+            pts[1].set(pRect->left,pRect->bottom);
+        }else
+        {
+            pts[1].set(pRect->right,pRect->top);
+        }
+        
+        CDuiColor cr1(crBegin,byAlpha);
+        CDuiColor cr2(crEnd,byAlpha);
+        
+        SkColor colors[2] = {cr1.toARGB(),cr2.toARGB()};
+        SkShader *pShader = SkGradientShader::CreateLinear(pts, colors, NULL,2,SkShader::kMirror_TileMode);
+        SkPaint paint;
+        paint.setShader(pShader);
+        pShader->unref();
+        m_SkCanvas->drawRect(toSkRect(pRect),paint);        
+        return S_OK;
     }
 
     //////////////////////////////////////////////////////////////////////////
