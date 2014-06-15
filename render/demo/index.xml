@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--XML 资源，name and id:将写入到resource.h中的define,type and file :将写入到rc2的资源定义,layer:窗口定义XML，resbuilder使用它来自动为对应的XML生成控件ID-->
+<resid type="XML" name="IDR_DUI_INIT" file="layout\init.xml"  />
+<resid type="XML" name="IDR_DUI_MAIN_DIALOG" layer="1" file="layout\dlg_main.xml"  />
+<resid type="XML" name="IDR_MENU_TEST" file="layout\menu_test.xml"  />
+<resid type="XML" name="IDR_DUI_MSGBOX" file="layout\dlg_msgbox.xml"  />
+<resid type="XML" name="xml_page2" layer="1" file="layout\page2.xml"  />
+
+<resid type="IMGX" name="IDP_MAIN_DLG_FRAME"     file="skins\dlg_bg_frame.png"  />
+
+<resid type="IMGX" name="IDP_BTN_WND_CHECKBOX"   file="skins\btn_wnd_checkbox.png"/>
+<resid type="IMGX" name="IDP_BTN_WND_RADIO"  file="skins\btn_wnd_radio.png"   />
+<resid type="IMGX" name="IDP_FOCUS_CHECK"  file="skins\focus_checkbox.png"/>
+<resid type="IMGX" name="IDP_FOCUS_RADIO"  file="skins\focus_radio.png"   />
+
+
+<resid type="ICO" name="IDP_ICO_LOGO"  file="skins\img_logo.ico"    />
+<resid type="IMGX" name="IDP_BTN_SYS_CLOSE"  file="skins\btn_sys_close.png"    />
+<resid type="IMGX" name="IDP_BTN_SYS_MINIMIZE"  file="skins\btn_sys_minimize.png" />
+<resid type="IMGX" name="IDP_BTN_SYS_MAXIMIZE"  file="skins\btn_sys_maximize.png" />
+<resid type="IMGX" name="IDP_BTN_SYS_RESOTRE"  file="skins\btn_sys_restore.png" />
+
+<resid type="IMGX" name="IDP_TAB_COMMON"  file="skins\tab_common.png" />
+<resid type="IMGX" name="IDP_SCROLL"  file="skins\scrollbar.png" />
+<resid type="IMGX" name="IDP_SCROLL2"  file="skins\scrollbar2.png" />
+<resid type="IMGX" name="IDP_EDIT_BORDER"  file="skins\img_edit_border.png" />
+<resid type="IMGX" name="IDP_SPLIT_VERT"  file="skins\split_vert.png" />
+<resid type="IMGX" name="IDP_SPLIT_HORZ"  file="skins\split_horz.png" />
+
+<resid type="IMGX" name="IDP_DROPBTN"  file="skins\dropbtn.png" />
+<resid type="IMGX" name="IDP_ICONS"  file="skins\icon2.png" />
+<resid type="IMGX" name="IDP_ICONS_SMALL"  file="skins\icons.png" />
+
+<resid type="IMGX" name="IDP_MENUSKIN"  file="skins\menuskin.png" />
+<resid type="IMGX" name="IDP_MENUSPLIT"  file="skins\menu_split_horz.png" />
+<resid type="IMGX" name="IDP_MENUBG"  file="skins\img_menu_bg.png" />
+
+<resid type="IMGX" name="IDP_MENUCHECK"  file="skins\check.png" />
+<resid type="IMGX" name="IDP_MENUBORDER"  file="skins\menuborder.png" />
+<resid type="IMGX" name="IDP_WEBBTN_BACK"  file="skins\webbtn_back.png" />
+<resid type="IMGX" name="IDP_WEBBTN_FORWARD"  file="skins\webbtn_forward.png" />
+<resid type="IMGX" name="IDP_WEBBTN_REFRESH"  file="skins\webbtn_refresh.png" />
+
+<resid type="BMP" name="IDP_BMPMASK"  file="skins\solve.bmp" />
+
+<resid type="IMGX" name="IDP_GIF_FACE0"  file="skins\face0.gif" />
+
+<resid type="IMGX" name="IDR_TREE_TOGGLE"			id="500" file="skins\TreeToggle.png"/>
+<resid type="IMGX" name="IDR_TREE_CHECKBOX"		id="501" file="skins\TreeCheckBox.png"/>
+<resid type="IMGX" name="IDR_TREE_ICON"				id="502" file="skins\TreeIcon.png"/>
+<resid type="IMGX" name="IDP_ICON3"						id="503" file="skins\icon3.png"/>
+
+<resid type="IMGX" name="IDP_SLIDETHUMB"						id="505" file="skins\slider.png"/>
+<resid type="IMGX" name="IDP_PROG_BAR"						id="506" file="skins\mini_progress_bar.png"/>
+<resid type="IMGX" name="IDP_PROG_BG"						id="507" file="skins\mini_progress_bg.png"/>
+<resid type="IMGX" name="IDP_BTN_YELLOW"  file="skins\btn_normal_yellow.png" />
+<resid type="IMGX" name="IDP_VSCROLLBAR"  file="skins\vscrollbar.png" />
