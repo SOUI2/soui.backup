@@ -26,20 +26,11 @@ HICON DuiResProviderPE::LoadIcon( LPCTSTR strType,LPCTSTR pszResName ,int cx/*=0
     return (HICON)::LoadImage(m_hResInst, pszResName, IMAGE_ICON, cx, cy, LR_DEFAULTCOLOR);
 }
 
-IDuiImage * DuiResProviderPE::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
+IBitmap * DuiResProviderPE::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
 {
     if(!HasResource(strType,pszResName)) return NULL;
-    IDuiImgDecoder *pImgDecoder=GETIMGDECODER();
-    IDuiImage *pImg=pImgDecoder->CreateDuiImage(strType);
-    if(pImg)
-    {
-        if(!pImg->LoadFromResource(m_hResInst,strType,pszResName))
-        {
-            pImgDecoder->DestoryDuiImage(pImg);
-            pImg=NULL;
-        }
-    }
-    return pImg;
+    
+    return NULL;//todo:hjx
 }
 
 size_t DuiResProviderPE::GetRawBufferSize( LPCTSTR strType,LPCTSTR pszResName )
@@ -98,6 +89,13 @@ HRSRC DuiResProviderPE::MyFindResource( LPCTSTR strType, LPCTSTR pszResName )
     return ::FindResource(m_hResInst, pszResName, strType);
 }
 
+HCURSOR DuiResProviderPE::LoadCursor( LPCTSTR strType,LPCTSTR pszResName )
+{
+    return ::LoadCursor(m_hResInst,pszResName);
+}
+
+
+//////////////////////////////////////////////////////////////////////////
 
 DuiResProviderFiles::DuiResProviderFiles()
 {
@@ -126,21 +124,10 @@ HICON DuiResProviderFiles::LoadIcon( LPCTSTR strType,LPCTSTR pszResName ,int cx/
     return (HICON)::LoadImage(NULL, strPath, IMAGE_ICON, cx, cy, LR_LOADFROMFILE);
 }
 
-IDuiImage * DuiResProviderFiles::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
+IBitmap * DuiResProviderFiles::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
 {
     if(!HasResource(strType,pszResName)) return NULL;
-    IDuiImgDecoder *pImgDecoder=GETIMGDECODER();
-    IDuiImage * pImg=pImgDecoder->CreateDuiImage(strType);
-    if(pImg)
-    {
-        CDuiStringT strPath=GetRes(strType,pszResName);
-        if(!pImg->LoadFromFile(strPath))
-        {
-            pImgDecoder->DestoryDuiImage(pImg);
-            pImg=NULL;
-        }
-    }
-    return pImg;
+    return NULL;//todo:hjx
 }
 
 size_t DuiResProviderFiles::GetRawBufferSize( LPCTSTR strType,LPCTSTR pszResName )
@@ -218,6 +205,11 @@ BOOL DuiResProviderFiles::HasResource( LPCTSTR strType,LPCTSTR pszResName )
     DuiResID resID(strType,pszResName);
     CDuiMap<DuiResID,CDuiStringT>::CPair *p=m_mapFiles.Lookup(resID);
     return (p!=NULL);
+}
+
+HCURSOR DuiResProviderFiles::LoadCursor( LPCTSTR strType,LPCTSTR pszResName )
+{
+    return (HCURSOR)::LoadImage(NULL, pszResName, IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
 }
 
 }//namespace SOUI

@@ -1405,6 +1405,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\render\render-i.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\SimpleWnd.h"
 				>
 			</File>

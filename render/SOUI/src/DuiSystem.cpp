@@ -16,12 +16,13 @@ namespace SOUI
 
 template<> DuiSystem* Singleton<DuiSystem>::ms_Singleton = 0;
 
-DuiSystem::DuiSystem(HINSTANCE hInst,LPCTSTR pszHostClassName/*=_T("DuiHostWnd")*/)
+DuiSystem::DuiSystem(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName/*=_T("DuiHostWnd")*/)
     :m_hInst(hInst)
     ,m_pLogger(NULL)
     ,m_pScriptModule(NULL)
     ,m_pImgDecoder(NULL)
     ,m_pDefImgDecoder(new CDuiImgDecoder_Def)
+    ,m_RenderFactory(pRendFactory)
 {
     createSingletons();
     CSimpleWndHelper::Init(hInst,pszHostClassName);
@@ -41,7 +42,7 @@ void DuiSystem::createSingletons()
     new DuiThreadActiveWndMgr();
     new DuiWindowMgr();
     new CDuiTimerEx();
-    new DuiFontPool();
+    new DuiFontPool(m_RenderFactory);
     new DuiImgPool();
 }
 
@@ -52,22 +53,6 @@ void DuiSystem::destroySingletons()
     delete CDuiTimerEx::getSingletonPtr();
     delete DuiThreadActiveWndMgr::getSingletonPtr();
     delete DuiWindowMgr::getSingletonPtr();
-}
-
-void DuiSystem::logEvent( LPCTSTR message, LoggingLevel level /*= Standard*/ )
-{
-    if(m_pLogger) m_pLogger->logEvent(message,level);
-}
-
-void DuiSystem::logEvent(LoggingLevel level , LPCTSTR pszFormat, ...)
-{
-    if(!m_pLogger) return;
-    TCHAR szBuffer[1025] = { 0 };
-    va_list argList;
-    va_start(argList, pszFormat);
-    ::wvnsprintf(szBuffer,ARRAYSIZE(szBuffer)-1, pszFormat, argList);
-    va_end(argList);
-    m_pLogger->logEvent(szBuffer,level);
 }
 
 BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )

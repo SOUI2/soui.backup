@@ -96,7 +96,6 @@ struct RENDER_API IRenderTarget: public IObjRef
 {
 	virtual HRESULT CreateCompatibleRenderTarget(SIZE szTarget,IRenderTarget **ppRenderTarget)=0;
 	virtual HRESULT CreatePen(int iStyle,COLORREF cr,int cWidth,IPen ** ppPen)=0;
-	virtual HRESULT CreateFont( const LOGFONT &lf,IFont ** ppFont )=0;
 	virtual HRESULT CreateSolidColorBrush(COLORREF cr,IBrush ** ppBrush)=0;
 	virtual HRESULT CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush )=0;
 	virtual HRESULT CreateRegion(IRegion ** ppRegion)=0;
@@ -148,6 +147,7 @@ struct RENDER_API IRenderTarget: public IObjRef
 struct RENDER_API IRenderFactory : public IObjRef
 {
 	virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei)=0;
+    virtual BOOL CreateFont(IFont ** ppFont, const LOGFONT &lf)=0;
 };
 
 }//end of namespace SOUI

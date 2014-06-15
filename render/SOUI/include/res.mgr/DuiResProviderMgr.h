@@ -1,6 +1,8 @@
 #pragma once
 
 #include "duiresprovider-i.h"
+#include "atl.mini/duicomcli.h"
+
 namespace SOUI
 {
     class SOUI_EXP DuiResProviderMgr : public IDuiResProvider
@@ -9,71 +11,56 @@ namespace SOUI
         DuiResProviderMgr(void);
         ~DuiResProviderMgr(void);
         
-        void SetDefResProvider(IDuiResProvider * pDefResProvider)
-        {
-            m_pDefResProvider=pDefResProvider;
-        }
-
-        IDuiResProvider * GetDefResProvider(){return m_pDefResProvider;}
-
-        void SetResProvider(IDuiResProvider * pResProvider)
-        {
-            m_pResProvider=pResProvider;
-        }
-
-        IDuiResProvider * GetResProvider(){return m_pResProvider;}
-
+        void AddResProvider(IDuiResProvider * pResProvider);
+        
+        void RemoveResProvider(IDuiResProvider * pResProvider);
+        
         //////////////////////////////////////////////////////////////////////////
         // DuiResProviderBase
 
         virtual BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName)
         {
-            BOOL bRet=FALSE;
-            if(m_pResProvider) bRet=m_pResProvider->HasResource(strType,pszResName);
-            if(!bRet) bRet= m_pDefResProvider->HasResource(strType,pszResName);
-            return bRet;
+            IDuiResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            if(!pResProvider) return FALSE;
+            return TRUE;
         }
 
         virtual HICON   LoadIcon(LPCTSTR strType,LPCTSTR pszResName,int cx=0,int cy=0)
         {
-            HICON hIcon=0;
-            if(m_pResProvider) hIcon=m_pResProvider->LoadIcon(strType,pszResName,cx,cy);
-            if(!hIcon) hIcon=m_pDefResProvider->LoadIcon(strType,pszResName,cx,cy);
-            return hIcon;
+            IDuiResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            if(!pResProvider) return NULL;
+            return pResProvider->LoadIcon(strType,pszResName,cx,cy);
         }
         virtual HBITMAP    LoadBitmap(LPCTSTR strType,LPCTSTR pszResName)
         {
-            HBITMAP hBmp=0;
-            if(m_pResProvider) hBmp=m_pResProvider->LoadBitmap(strType,pszResName);
-            if(!hBmp) hBmp=m_pDefResProvider->LoadBitmap(strType,pszResName);
-            return hBmp;
+            IDuiResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            if(!pResProvider) return NULL;
+            return pResProvider->LoadBitmap(strType,pszResName);
         }
-        virtual IDuiImage * LoadImage(LPCTSTR strType,LPCTSTR pszResName)
+        virtual IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName)
         {
-            IDuiImage *pImg=0;
-            if(m_pResProvider) pImg=m_pResProvider->LoadImage(strType,pszResName);
-            if(!pImg) pImg=m_pDefResProvider->LoadImage(strType,pszResName);
-            return pImg;
+            IDuiResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            if(!pResProvider) return NULL;
+            return pResProvider->LoadImage(strType,pszResName);
         }
 
         virtual size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName)
         {
-            size_t sz=0;
-            if(m_pResProvider) sz=m_pResProvider->GetRawBufferSize(strType,pszResName);
-            if(!sz) sz=m_pDefResProvider->GetRawBufferSize(strType,pszResName);
-            return sz;
+            IDuiResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            if(!pResProvider) return 0;
+            return pResProvider->GetRawBufferSize(strType,pszResName);
         }
 
         virtual BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size)
         {
-            BOOL bRet=FALSE;
-            if(m_pResProvider) bRet=m_pResProvider->GetRawBuffer(strType,pszResName,pBuf,size);
-            if(!bRet) bRet=m_pDefResProvider->GetRawBuffer(strType,pszResName,pBuf,size);
-            return bRet;
+            IDuiResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            if(!pResProvider) return FALSE;
+            return pResProvider->GetRawBuffer(strType,pszResName,pBuf,size);
         }
 
     protected:
-        IDuiResProvider *m_pDefResProvider;
-        IDuiResProvider *m_pResProvider;
+        IDuiResProvider * GetMatchResProvider(LPCTSTR pszType,LPCTSTR pszResName);
+        
+        CDuiList<IDuiResProvider*> m_lstResProvider;
     };
 }

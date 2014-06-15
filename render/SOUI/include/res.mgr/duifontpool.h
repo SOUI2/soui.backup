@@ -8,7 +8,8 @@
 #pragma once
 
 #include "duisingletonmap.h"
-
+#include "render/render-i.h"
+#include "unknown/obj-ref-impl.hpp"
 
 
 #define DUIF_BOLD        0x0004U
@@ -28,8 +29,6 @@
 
 #define DUIF_DEFAULTFONT         (DUIF_MAKEKEY(FALSE, FALSE, FALSE, 0))
 #define DUIF_BOLDFONT            (DUIF_MAKEKEY(TRUE, FALSE, FALSE, 0))
-
-#define DUIF_GetFont(key)        DuiFontPool::GetFont(key)
 
 
 class SOUI_EXP FontKey
@@ -86,31 +85,34 @@ public:
 namespace SOUI
 {
 
+typedef IFont * IFontPtr;
 
-class SOUI_EXP DuiFontPool :public DuiSingletonMap<DuiFontPool,HFONT,FontKey>
+class SOUI_EXP DuiFontPool :public DuiSingletonMap<DuiFontPool,IFontPtr,FontKey>
 {
 public:
-    DuiFontPool();
+    DuiFontPool(IRenderFactory *pRendFactory);
 
-    HFONT GetFont(WORD uKey,LPCTSTR strFaceName=_T(""));
+    IFontPtr GetFont(WORD uKey,LPCTSTR strFaceName=_T(""));
 
-    HFONT GetFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding = 0,LPCTSTR strFaceName=_T(""));
+    IFontPtr GetFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding = 0,LPCTSTR strFaceName=_T(""));
     void SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize);
 protected:
-    static void OnKeyRemoved(const HFONT & obj)
+    static void OnKeyRemoved(const IFontPtr & obj)
     {
-        DeleteObject(obj);
+        obj->Release();
     }
 
-    HFONT _CreateDefaultGUIFont();
+    IFontPtr _CreateDefaultGUIFont();
 
-    HFONT _CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,CDuiStringT strFaceName=_T(""));
+    IFontPtr _CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,CDuiStringT strFaceName=_T(""));
 
     LONG _GetFontAbsHeight(LONG lSize);
 
     LOGFONT m_lfDefault;
     TCHAR m_szDefFontFace[LF_FACESIZE];
     LONG m_lFontSize;
+
+    CAutoRefPtr<IRenderFactory> m_RenderFactory;
 };
 
 }//namespace SOUI

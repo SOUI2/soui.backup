@@ -57,7 +57,7 @@ public:
         if(m_nStates==0)
         {
             if(m_pDuiImg)
-                m_nStates=m_pDuiImg->GetWidth()/m_lSubImageWidth;
+                m_nStates=m_pDuiImg->Width()/m_lSubImageWidth;
             else
                 m_nStates=1;
         }
@@ -260,7 +260,7 @@ public:
     virtual BOOL HasArrow(){return TRUE;}
     virtual int GetIdealSize(){
         if(!m_pDuiImg) return 0;
-        return m_pDuiImg->GetWidth()/9;
+        return m_pDuiImg->Width()/9;
     }
 
     SOUI_ATTRS_BEGIN()

@@ -45,9 +45,9 @@ public:
     COLORREF m_crPushText;
     COLORREF m_crBorder;
     COLORREF m_crBorderHover;
-    HFONT m_ftText;
-    HFONT m_ftHover;
-    HFONT m_ftPush;
+    IFontPtr m_ftText;
+    IFontPtr m_ftHover;
+    IFontPtr m_ftPush;
     int m_nMarginX;
     int m_nMarginY;
     int m_nSpacing;

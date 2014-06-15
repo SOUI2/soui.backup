@@ -1,5 +1,7 @@
 #pragma once
 #include "duisingleton.h"
+#include "render/render-i.h"
+#include "unknown/obj-ref-impl.hpp"
 
 #include "DuiWndFactoryMgr.h"
 #include "DuiSkinFactoryMgr.h"
@@ -33,7 +35,7 @@ class SOUI_EXP DuiSystem :public Singleton<DuiSystem>
     friend class CDuiMessageBox;    //访问消息框模板
     friend class CDuiRichEdit;    //访问右键菜单资源
 public:
-    DuiSystem(HINSTANCE hInst,LPCTSTR pszHostClassName=_T("DuiHostWnd"));
+    DuiSystem(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName=_T("DuiHostWnd"));
     ~DuiSystem(void);
 
 
@@ -43,17 +45,6 @@ public:
     }
 
     LPCTSTR GetVersion(){return SOUI_VERSION;}
-
-    DuiLogger *SetLogger(DuiLogger *pLogger)
-    {
-        DuiLogger *pRet=m_pLogger;
-        m_pLogger=pLogger;
-        return pRet;
-    }
-    DuiLogger * GetLogger()
-    {
-        return m_pLogger;
-    }
 
     IScriptModule * GetScriptModule()
     {
@@ -71,15 +62,13 @@ public:
         m_pScriptModule=pScriptModule;
     }
 
-    void logEvent(LPCTSTR message, LoggingLevel level = Standard);
-
-    void logEvent(LoggingLevel level , LPCTSTR format, ...);
-
     BOOL Init(LPCTSTR pszName ,LPCTSTR pszType=DUIRES_XML_TYPE);
 
     BOOL SetMsgBoxTemplate(LPCTSTR pszXmlName,LPCTSTR pszType=DUIRES_XML_TYPE);
 
     BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType=DUIRES_XML_TYPE);
+
+    IRenderFactory * GetRenderFactory(){return m_RenderFactory;}
 
 protected:
     pugi::xml_node GetMsgBoxTemplate(){return m_xmlMsgBoxTempl;}
@@ -96,6 +85,8 @@ protected:
 
     pugi::xml_document    m_xmlMsgBoxTempl;
     pugi::xml_document    m_xmlEditMenu;
+
+    CAutoRefPtr<IRenderFactory> m_RenderFactory;
 };
 
 }//namespace SOUI

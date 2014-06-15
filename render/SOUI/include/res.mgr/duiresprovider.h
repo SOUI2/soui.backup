@@ -17,7 +17,8 @@ public:
     DuiResProviderPE(HINSTANCE hInst);
     HBITMAP    LoadBitmap(LPCTSTR strType,LPCTSTR pszResName);
     HICON   LoadIcon(LPCTSTR strType,LPCTSTR pszResName,int cx=0,int cy=0);
-    IDuiImage * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
+    HCURSOR   LoadCursor(LPCTSTR strType,LPCTSTR pszResName);
+    IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
     size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
     BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
     BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
@@ -36,7 +37,8 @@ public:
     BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
     HBITMAP    LoadBitmap(LPCTSTR strType,LPCTSTR pszResName);
     HICON   LoadIcon(LPCTSTR strType,LPCTSTR pszResName,int cx=0,int cy=0);
-    IDuiImage * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
+    HCURSOR LoadCursor(LPCTSTR strType,LPCTSTR pszResName);
+    IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
     size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
     BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
 

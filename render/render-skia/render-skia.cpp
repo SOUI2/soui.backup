@@ -74,6 +74,11 @@ namespace SOUI
 		return TRUE;
 	}
 
+    BOOL SRenderFactory_Skia::CreateFont( IFont ** ppFont , const LOGFONT &lf )
+    {
+        *ppFont = new SFont_Skia(this,&lf);
+        return TRUE;
+    }
 	//////////////////////////////////////////////////////////////////////////
 	// SRenderTarget_Skia
 
@@ -107,7 +112,7 @@ namespace SOUI
         LOGFONT lf={0};
         lf.lfHeight=20;
         _tcscpy(lf.lfFaceName,_T("ËÎÌו"));
-        CreateFont(lf,&pFont);
+        pRenderFactory->CreateFont(&pFont,lf);
         SelectObject(pFont);
 	}
 	
@@ -126,12 +131,6 @@ namespace SOUI
 	HRESULT SRenderTarget_Skia::CreatePen( int iStyle,COLORREF cr,int cWidth,IPen ** ppPen )
 	{
 		*ppPen = new SPen_Skia(GetRenderFactory_Skia(),iStyle,cr,cWidth);
-		return S_OK;
-	}
-
-	HRESULT SRenderTarget_Skia::CreateFont( const LOGFONT &lf,IFont ** ppFont )
-	{
-		*ppFont = new SFont_Skia(GetRenderFactory_Skia(),&lf);
 		return S_OK;
 	}
 

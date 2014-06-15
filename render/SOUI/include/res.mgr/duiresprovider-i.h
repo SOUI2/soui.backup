@@ -2,7 +2,7 @@
 #define _DUIRESPROVIDERBASE_
 #pragma once
 
-#include "DuiImage-i.h"
+#include "../render/render-i.h"
 
 #define DUIRES_XML_TYPE _T("XML")
 #define DUIRES_IMGX_TYPE _T("IMGX")
@@ -69,7 +69,6 @@ public:
 namespace SOUI
 {
 
-
 class SOUI_EXP IDuiResProvider
 {
 public:
@@ -77,9 +76,11 @@ public:
     virtual BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName)=NULL;
     virtual HICON   LoadIcon(LPCTSTR strType,LPCTSTR pszResName,int cx=0,int cy=0)=NULL;
     virtual HBITMAP    LoadBitmap(LPCTSTR strType,LPCTSTR pszResName)=NULL;
-    virtual IDuiImage * LoadImage(LPCTSTR strType,LPCTSTR pszResName)=NULL;
+    virtual HCURSOR LoadCursor(LPCTSTR strType,LPCTSTR pszResName)=NULL;
+    virtual IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName)=NULL;
     virtual size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName)=NULL;
     virtual BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size)=NULL;
 };
+
 }//namespace SOUI
 #endif//_DUIRESPROVIDERBASE_

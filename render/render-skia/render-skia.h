@@ -38,7 +38,7 @@ namespace SOUI
         }
         
 		virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei);
-
+        virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf);
 	};
 
     
@@ -220,7 +220,6 @@ namespace SOUI
 		virtual HRESULT CreateCompatibleRenderTarget(SIZE szTarget,IRenderTarget **ppRenderTarget);
 
 		virtual HRESULT CreatePen(int iStyle,COLORREF cr,int cWidth,IPen ** ppPen);
-		virtual HRESULT CreateFont( const LOGFONT &lf,IFont ** ppFont );
 		virtual HRESULT CreateSolidColorBrush(COLORREF cr,IBrush ** ppBrush);
 		virtual HRESULT CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush );
 		virtual HRESULT CreateRegion(IRegion ** ppRegion);

@@ -35,14 +35,14 @@ public:
     }
 
 
-    virtual void SetImage(IDuiImage *pImg)
+    virtual void SetImage(IBitmap *pImg)
     {
         if(m_pDuiImg) m_pDuiImg->Release();
         m_pDuiImg=pImg;
         if(m_pDuiImg) m_pDuiImg->AddRef();
     }
 
-    IDuiImage * GetImage()
+    IBitmap * GetImage()
     {
         return m_pDuiImg;
     }
@@ -93,8 +93,8 @@ public:
         Frame_Part_All        = 0x0000FFFFUL,
     };
 
-    static BOOL ExtentBlt(IDuiImage *pImgDraw,BOOL bTile,HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,int nWidSrc,int nHeiSrc,BYTE byAlpha=0xFF);
-    static void FrameDraw(HDC dc, IDuiImage *pImgDraw, const CRect &rcSour,const  CRect &rcDraw, CRect rcMargin, COLORREF crBg, UINT uDrawPart ,BOOL bTile,BYTE byAlpha=0xFF);
+    static BOOL ExtentBlt(IBitmap *pImgDraw,BOOL bTile,HDC hdc,int x,int y,int nWid,int nHei,int xSrc,int ySrc,int nWidSrc,int nHeiSrc,BYTE byAlpha=0xFF);
+    static void FrameDraw(HDC dc, IBitmap *pImgDraw, const CRect &rcSour,const  CRect &rcDraw, CRect rcMargin, COLORREF crBg, UINT uDrawPart ,BOOL bTile,BYTE byAlpha=0xFF);
 
     SOUI_ATTRS_BEGIN()
     ATTR_IMAGE("src", m_pDuiImg, TRUE)
@@ -103,12 +103,9 @@ protected:
 
     virtual void OnAttributeFinish(pugi::xml_node xmlNode)
     {
-        //加载图片文件参数，它保存在皮肤的imgparam子节点中
-        pugi::xml_node xmlNode_ImgParam=xmlNode.child("imgparam");
-        if(xmlNode_ImgParam) m_pDuiImg->SetAttributes(xmlNode_ImgParam);
     }
 
-    IDuiImage *m_pDuiImg;
+    IBitmap *m_pDuiImg;
     CDuiStringA    m_strOwner;
 };
 

@@ -6,24 +6,23 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "duiimage-i.h"
 #include "duiresprovider-i.h"
 #include "DuiSingletonMap.h"
 
 namespace SOUI
 {
 
-typedef IDuiImage * CDuiImgBasePtr;
-class SOUI_EXP DuiImgPool:public DuiSingletonMap<DuiImgPool,CDuiImgBasePtr,DuiResID>
+typedef IBitmap * IBitmapPtr;
+class SOUI_EXP DuiImgPool:public DuiSingletonMap<DuiImgPool,IBitmapPtr,DuiResID>
 {
 public:
     DuiImgPool();
     virtual ~DuiImgPool();
 
-    IDuiImage * GetImage(LPCTSTR pszImgName,LPCTSTR pszType=NULL);
+    IBitmap * GetImage(LPCTSTR pszImgName,LPCTSTR pszType=NULL);
 
 protected:
-    static void OnImageRemoved(const CDuiImgBasePtr & obj)
+    static void OnImageRemoved(const IBitmapPtr & obj)
     {
         obj->Release();
     }

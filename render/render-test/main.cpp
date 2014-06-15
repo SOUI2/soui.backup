@@ -148,7 +148,7 @@ public:
 		_tcscpy(lf.lfFaceName,_T("Á¥Êé"));
 		lf.lfHeight=30;
 		lf.lfItalic=1;
-		m_rt->CreateFont(lf,&font);
+		g_render->CreateFont(&font,lf);
 		m_rt->SelectObject(font);
 
 		m_rt->SetTextColor(RGBA(255,0,0,255));
