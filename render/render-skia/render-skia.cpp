@@ -79,7 +79,14 @@ namespace SOUI
         *ppFont = new SFont_Skia(this,&lf);
         return TRUE;
     }
-	//////////////////////////////////////////////////////////////////////////
+
+    BOOL SRenderFactory_Skia::CreateBitmap( IBitmap ** ppBitmap )
+    {
+        *ppBitmap = new SBitmap_Skia(this);
+        return TRUE;
+    }
+
+    //////////////////////////////////////////////////////////////////////////
 	// SRenderTarget_Skia
 
 	SRenderTarget_Skia::SRenderTarget_Skia( IRenderFactory_Skia* pRenderFactory ,int nWid,int nHei)
@@ -95,8 +102,8 @@ namespace SOUI
         if(nWid && nHei)
         {
             CAutoRefPtr<IBitmap> bmp;
-            CreateBitmap(&bmp);
-            bmp->Init(this,nWid,nHei);
+            pRenderFactory->CreateBitmap(&bmp);
+            bmp->Init(nWid,nHei);
             SelectObject(bmp);
         }
 
@@ -153,12 +160,6 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::CreateBitmap( IBitmap ** ppBitmap )
-	{
-		*ppBitmap = new SBitmap_Skia(GetRenderFactory_Skia());
-		return S_OK;
-	}
-
 	HRESULT SRenderTarget_Skia::BindDC( HDC hdc,LPCRECT pSubRect )
 	{
 		m_hBindDC=hdc;
@@ -203,15 +204,15 @@ namespace SOUI
 		if(!m_curBmp)
 		{
 			CAutoRefPtr<IBitmap> pBmp;
-			hr=CreateBitmap(&pBmp);
+			hr=GetRenderFactory_Skia()->CreateBitmap(&pBmp);
 			if(SUCCEEDED(hr))
 			{
-				pBmp->Init(this,sz.cx,sz.cy);
+				pBmp->Init(sz.cx,sz.cy);
 				SelectObject(pBmp);
 			}
 		}else
 		{
-			m_curBmp->Init(this,sz.cx,sz.cy);
+			m_curBmp->Init(sz.cx,sz.cy);
 		}
         if(m_SkCanvas) delete m_SkCanvas;
         m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
@@ -258,7 +259,7 @@ namespace SOUI
         return S_OK;
     }
 
-	HRESULT SRenderTarget_Skia::BitBlt( LPRECT pRcDest,IRenderTarget *pRTSour,LPRECT pRcSour,UINT uDef )
+	HRESULT SRenderTarget_Skia::BitBlt( LPCRECT pRcDest,IRenderTarget *pRTSour,LPCRECT pRcSour)
 	{
 	    SRenderTarget_Skia *pRTSourSkia=(SRenderTarget_Skia*)pRcSour;
 	    
@@ -410,23 +411,62 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::DrawBitmap( LPRECT pRcDest,IBitmap *pBitmap,LPRECT pRcSour,BYTE byAlpha/*=0xFF*/ )
-	{
-		SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
-		SkBitmap bmp=pBmp->GetSkBitmap();
+    HRESULT SRenderTarget_Skia::DrawBitmap( int xDest,int yDest,int nWid,int nHei,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha/*=0xFF*/ )
+    {
+        SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
+        SkBitmap bmp=pBmp->GetSkBitmap();
 
-		RECT rcSour={0,0,bmp.width(),bmp.height()};
-		if(!pRcSour) pRcSour = &rcSour;
+        RECT rcDst={xDest,yDest,xDest+nWid,yDest+nHei};
+        RECT rcSrc={xSrc,ySrc,xSrc+nWid,ySrc+nHei};
 
-		SkRect rcSrc = toSkRect(pRcSour);
-		SkRect rcDest= toSkRect(pRcDest);
+        SkRect skrcDst = toSkRect(&rcDst);
+        SkRect skrcSrc= toSkRect(&rcSrc);
+        skrcDst.offset(m_ptOrg);
+
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        
+        if(byAlpha != 0xFF) paint.setAlpha(byAlpha);
+        m_SkCanvas->drawBitmapRectToRect(bmp,&skrcSrc,skrcDst,&paint);
+        return S_OK;
+    }
+    
+
+    HRESULT SRenderTarget_Skia::DrawBitmapEx( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,EXPEND_MODE expendMode, BYTE byAlpha/*=0xFF*/ )
+    {
+        SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
+        SkBitmap bmp=pBmp->GetSkBitmap();
+
+        RECT rcSour={0,0,bmp.width(),bmp.height()};
+        if(!pRcSrc) pRcSrc = &rcSour;
+        SkRect rcSrc = toSkRect(pRcSrc);
+        SkRect rcDest= toSkRect(pRcDest);
         rcDest.offset(m_ptOrg);
 
-		SkPaint paint;
-		paint.setAntiAlias(true);
-		m_SkCanvas->drawBitmapRectToRect(bmp,&rcSrc,rcDest,&paint);
-		return S_OK;
-	}
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        if(byAlpha != 0xFF) paint.setAlpha(byAlpha);
+
+        if(expendMode == EM_STRETCH)
+        {
+            m_SkCanvas->drawBitmapRectToRect(bmp,&rcSrc,rcDest,&paint);
+        }else
+        {
+            SkBitmap bmpSub;
+            bmp.extractSubset(&bmpSub,toSkIRect(pRcSrc));
+            paint.setShader(SkShader::CreateBitmapShader(bmpSub,SkShader::kRepeat_TileMode,SkShader::kRepeat_TileMode))->unref();
+            m_SkCanvas->drawRect(rcDest,paint);
+        }
+        return S_OK;
+
+    }
+
+
+    HRESULT SRenderTarget_Skia::DrawBitmap9Patch( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,LPCRECT pRcSourMargin,EXPEND_MODE expendMode,BYTE byAlpha/*=0xFF*/ )
+    {
+
+        return S_OK;
+    }
 
 	IRenderObj * SRenderTarget_Skia::GetCurrentObject( OBJTYPE uType )
 	{
@@ -591,7 +631,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
 
-    HBITMAP SBitmap_Skia::CreateBitmap( int nWid,int nHei,void ** ppBits )
+    HBITMAP SBitmap_Skia::CreateGDIBitmap( int nWid,int nHei,void ** ppBits )
     {
         BITMAPINFO bmi;
         memset(&bmi, 0, sizeof(bmi));
@@ -610,27 +650,27 @@ namespace SOUI
         return hBmp;
     }
 
-	HRESULT SBitmap_Skia::Init( IRenderTarget *pRT,int nWid,int nHei )
+	HRESULT SBitmap_Skia::Init( int nWid,int nHei )
 	{
 	    if(m_hBmp) DeleteObject(m_hBmp);
 		m_bitmap.reset();
 		m_bitmap.setConfig(SkBitmap::kARGB_8888_Config,nWid,nHei);
     		
 		LPVOID pBits=NULL;
-		m_hBmp=CreateBitmap(nWid,nHei,&pBits);
+		m_hBmp=CreateGDIBitmap(nWid,nHei,&pBits);
 		if(!m_hBmp) return E_OUTOFMEMORY;
 		m_bitmap.setPixels(pBits);
 		return S_OK;
 	}
 
-	HRESULT SBitmap_Skia::LoadFromFile( IRenderTarget *pRT,LPCTSTR pszFileName,LPCTSTR pszType )
+	HRESULT SBitmap_Skia::LoadFromFile( LPCTSTR pszFileName,LPCTSTR pszType )
 	{
 		SImgDecoder imgDecoder;
 		if(imgDecoder.DecodeFromFile(DUI_CT2W(pszFileName))==0) return S_FALSE;
 		return ImgFromDecoder(imgDecoder);
 	}
 
-	HRESULT SBitmap_Skia::LoadFromMemory( IRenderTarget *pRT,LPBYTE pBuf,size_t szLen,LPCTSTR pszType )
+	HRESULT SBitmap_Skia::LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType )
 	{
 		SImgDecoder imgDecoder;
 		if(imgDecoder.DecodeFromMemory(pBuf,szLen)==0) return S_FALSE;
@@ -647,7 +687,7 @@ namespace SOUI
         m_bitmap.reset();
         m_bitmap.setConfig(SkBitmap::kARGB_8888_Config, uWid, uHei);
         void * pBits=NULL;
-        m_hBmp = CreateBitmap(uWid,uHei,&pBits);
+        m_hBmp = CreateGDIBitmap(uWid,uHei,&pBits);
         
         if(!m_hBmp) return E_OUTOFMEMORY;
         m_bitmap.setPixels(pBits);

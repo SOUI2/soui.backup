@@ -20,6 +20,7 @@
 
 #define LOADXML(p1,p2,p3) DuiSystem::getSingleton().LoadXmlDocment(p1,p2,p3)
 #define GETRESPROVIDER    DuiSystem::getSingletonPtr()
+#define GETRENDERFACTORY DuiSystem::getSingleton().GetRenderFactory()
 #define GETIMGDECODER   DuiSystem::getSingleton().GetImgDecoder
 
 namespace SOUI

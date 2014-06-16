@@ -86,7 +86,7 @@ public:
         InflateRect(&rcClip,-10,-10);
         m_rt->PushClipRect(&rcClip);
 
- 		m_rt->DrawBitmap(&rcClient,m_bmp,NULL,128);
+ 		m_rt->DrawBitmap(0,0,rcClient.right,rcClient.bottom,m_bmp,0,0,128);
   		m_rt->FillRectangle(rcClient.left,rcClient.top,rcClient.right/2,rcClient.bottom);
   		TCHAR *psz=_T("ÎÄ×ÖÊä³ö²âÊÔ,\nprefix &test\nÎÄ×ÖÊä³ö²âÊÔ,ÎÄ×ÖÊä³ö²âÊÔ");
   		m_rt->DrawText(psz,-1,&rcClient,DT_VCENTER|DT_SINGLELINE|DT_CENTER,128);
@@ -162,14 +162,14 @@ public:
 		size_t szImg=0;
 		LPBYTE pImgData=GetResBuf(MAKEINTRESOURCE(IDR_JPG1),_T("JPG"),szImg,g_hInst);
 	
-		m_rt->CreateBitmap(&m_bmp);
-		m_bmp->LoadFromMemory(m_rt,pImgData,szImg,NULL);
+		g_render->CreateBitmap(&m_bmp);
+		m_bmp->LoadFromMemory(pImgData,szImg,NULL);
 
 		//´´½¨Î»Í¼»­Ë¢
 		pImgData = GetResBuf(MAKEINTRESOURCE(IDR_ICON),_T("JPG"),szImg,g_hInst);
 		CAutoRefPtr<IBitmap> icon;
-		m_rt->CreateBitmap(&icon);
-		icon->LoadFromMemory(m_rt,pImgData,szImg,NULL);
+		g_render->CreateBitmap(&icon);
+		icon->LoadFromMemory(pImgData,szImg,NULL);
 
 		m_rt->CreateBitmapBrush(icon,&m_brIcon);
 		m_rt->SelectObject(m_brIcon);

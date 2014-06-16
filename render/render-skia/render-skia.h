@@ -39,6 +39,7 @@ namespace SOUI
         
 		virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei);
         virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf);
+        virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
 	};
 
     
@@ -168,9 +169,9 @@ namespace SOUI
 		{
 
 		}
-		virtual HRESULT Init(IRenderTarget *pRT,int nWid,int nHei);
-		virtual HRESULT LoadFromFile(IRenderTarget *pRT,LPCTSTR pszFileName,LPCTSTR pszType);
-		virtual HRESULT LoadFromMemory(IRenderTarget *pRT,LPBYTE pBuf,size_t szLen,LPCTSTR pszType);
+		virtual HRESULT Init(int nWid,int nHei);
+		virtual HRESULT LoadFromFile(LPCTSTR pszFileName,LPCTSTR pszType);
+		virtual HRESULT LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType);
 
         virtual UINT Width();
         virtual UINT Height();
@@ -178,7 +179,7 @@ namespace SOUI
 		SkBitmap GetSkBitmap(){return m_bitmap;}
 		HBITMAP  GetGdiBitmap(){return m_hBmp;}
 	protected:
-	    HBITMAP CreateBitmap(int nWid,int nHei,void ** ppBits);
+	    HBITMAP CreateGDIBitmap(int nWid,int nHei,void ** ppBits);
 	    
         HRESULT ImgFromDecoder(SImgDecoder &imgDecoder);
 
@@ -223,7 +224,6 @@ namespace SOUI
 		virtual HRESULT CreateSolidColorBrush(COLORREF cr,IBrush ** ppBrush);
 		virtual HRESULT CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush );
 		virtual HRESULT CreateRegion(IRegion ** ppRegion);
-		virtual HRESULT CreateBitmap(IBitmap ** ppBitmap);
 
 		virtual HRESULT BindDC(HDC hdc,LPCRECT pSubRect);
 		virtual HRESULT BeginDraw();
@@ -241,7 +241,7 @@ namespace SOUI
 
         virtual HRESULT GetClipRegion(IRegion **ppRegion);
         
-		virtual HRESULT BitBlt(LPRECT pRcDest,IRenderTarget *pRTSour,LPRECT pRcSour,UINT uDef);
+		virtual HRESULT BitBlt(LPCRECT pRcDest,IRenderTarget *pRTSour,LPCRECT pRcSour);
 
 		virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha=0xFF);
 		virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz );
@@ -261,7 +261,9 @@ namespace SOUI
 			int nCount,
             BYTE byAlpha =0xFF);
 
-		virtual HRESULT DrawBitmap(LPRECT pRcDest,IBitmap *pBitmap,LPRECT pRcSour,BYTE byAlpha=0xFF);
+        virtual HRESULT DrawBitmap(int xDest,int yDest,int nWid,int nHei,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha=0xFF);
+        virtual HRESULT DrawBitmapEx(LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,EXPEND_MODE expendMode, BYTE byAlpha=0xFF);
+        virtual HRESULT DrawBitmap9Patch(LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,LPCRECT pRcSourMargin,EXPEND_MODE expendMode,BYTE byAlpha=0xFF);
 
 		virtual IRenderObj * GetCurrentObject(OBJTYPE uType);
         virtual HRESULT SelectObject(IRenderObj *pObj,IRenderObj ** ppOldObj = NULL);

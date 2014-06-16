@@ -70,16 +70,12 @@ public:
     BOOL IsVertical(){return m_bVertical;}
 protected:
     virtual void OnAttributeFinish(pugi::xml_node xmlNode);
-    virtual void PrepareCache(HDC hdc,CSize & sz);
-    virtual void _Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
 
     LONG m_lSubImageWidth;
     int  m_nStates;
     BOOL m_bTile;
     BOOL m_bVertical;
 
-    BOOL m_bCache;
-    CMemDC * m_memdc;    
     CSize  m_szTarget;
 
     SOUI_ATTRS_BEGIN()
@@ -87,7 +83,6 @@ protected:
     ATTR_INT("tile", m_bTile, TRUE)
     ATTR_INT("vertical", m_bVertical, TRUE)
     ATTR_INT("states",m_nStates,TRUE)
-    ATTR_INT("cache",m_bCache,TRUE)
     SOUI_ATTRS_END()
 };
 
@@ -110,8 +105,9 @@ public:
     COLORREF GetBgColor(){return m_crBg;}
 
     void SetBgColor(COLORREF cr){m_crBg=cr;}
+    
+    virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
 protected:
-    virtual void _Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
     virtual void OnAttributeFinish(pugi::xml_node xmlNode);
 
     CRect m_rcMargin;

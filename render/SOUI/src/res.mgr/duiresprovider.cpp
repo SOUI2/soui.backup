@@ -29,8 +29,26 @@ HICON DuiResProviderPE::LoadIcon( LPCTSTR strType,LPCTSTR pszResName ,int cx/*=0
 IBitmap * DuiResProviderPE::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
 {
     if(!HasResource(strType,pszResName)) return NULL;
+    IBitmap * pImg=NULL;
+    GETRENDERFACTORY->CreateBitmap(&pImg);
     
-    return NULL;//todo:hjx
+    size_t szImgBuf= GetRawBufferSize(strType,pszResName);
+    
+    if(szImgBuf==0) return FALSE;
+
+    CMyBuffer<BYTE> buf;
+    buf.Allocate(szImgBuf);
+    GetRawBuffer(strType,pszResName,buf,szImgBuf);
+    
+    HRESULT hr=pImg->LoadFromMemory(buf,szImgBuf,strType);
+
+    if(!SUCCEEDED(hr))
+    {
+        pImg->Release();
+        pImg=NULL;
+    }
+
+    return pImg;
 }
 
 size_t DuiResProviderPE::GetRawBufferSize( LPCTSTR strType,LPCTSTR pszResName )
@@ -126,8 +144,20 @@ HICON DuiResProviderFiles::LoadIcon( LPCTSTR strType,LPCTSTR pszResName ,int cx/
 
 IBitmap * DuiResProviderFiles::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
 {
-    if(!HasResource(strType,pszResName)) return NULL;
-    return NULL;//todo:hjx
+    CDuiStringT strPath=GetRes(strType,pszResName);
+    if(strPath.IsEmpty()) return NULL;
+
+    IBitmap * pImg=NULL;
+    GETRENDERFACTORY->CreateBitmap(&pImg);
+    
+    HRESULT hr=pImg->LoadFromFile(strPath,strType);
+    if(!SUCCEEDED(hr))
+    {
+        pImg->Release();
+        pImg=NULL;
+    }
+    return pImg;
+    
 }
 
 size_t DuiResProviderFiles::GetRawBufferSize( LPCTSTR strType,LPCTSTR pszResName )
