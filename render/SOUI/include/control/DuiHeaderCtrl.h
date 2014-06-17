@@ -28,7 +28,7 @@ namespace SOUI
     } DUIHDITEM,  *LPDUIHDITEM;
 
 
-    class SOUI_EXP CDuiHeaderCtrl: public CDuiWindow
+    class SOUI_EXP CDuiHeaderCtrl: public SWindow
     {
         SOUI_CLASS_NAME(CDuiHeaderCtrl, "header")
     public:
@@ -87,8 +87,8 @@ namespace SOUI
             MSG_WM_DESTROY(OnDestroy)
         WND_MSG_MAP_END()
 
-        CDuiSkinBase *    m_pSkinItem;
-        CDuiSkinBase *    m_pSkinSort;
+        ISkinObj *    m_pSkinItem;
+        ISkinObj *    m_pSkinSort;
         BOOL            m_bSortHeader;        //表头可以点击排序
         BOOL            m_bFixWidth;        //表项宽度固定开关
         BOOL            m_bItemSwapEnable;//允许拖动调整位置开关

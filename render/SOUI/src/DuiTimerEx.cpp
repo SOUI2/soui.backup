@@ -12,7 +12,7 @@ namespace SOUI
 //////////////////////////////////////////////////////////////////////////
 template<> CDuiTimerEx * Singleton<CDuiTimerEx>::ms_Singleton=0;
 
-BOOL CDuiTimerEx::_SetTimer( HDUIWND hDuiWnd,UINT_PTR uTimerID,UINT nElapse )
+BOOL CDuiTimerEx::_SetTimer( HSWND hDuiWnd,UINT_PTR uTimerID,UINT nElapse )
 {
     _KillTimer(hDuiWnd,uTimerID);
     UINT_PTR idEvent=::SetTimer(NULL,uTimerID,nElapse,_TimerProc);
@@ -22,7 +22,7 @@ BOOL CDuiTimerEx::_SetTimer( HDUIWND hDuiWnd,UINT_PTR uTimerID,UINT nElapse )
     return TRUE;
 }
 
-void CDuiTimerEx::_KillTimer( HDUIWND hDuiWnd,UINT_PTR uTimerID )
+void CDuiTimerEx::_KillTimer( HSWND hDuiWnd,UINT_PTR uTimerID )
 {
     POSITION pos=m_mapNamedObj->GetStartPosition();
     while(pos)
@@ -37,7 +37,7 @@ void CDuiTimerEx::_KillTimer( HDUIWND hDuiWnd,UINT_PTR uTimerID )
     }
 }
 
-void CDuiTimerEx::_KillTimer( HDUIWND hDuiWnd )
+void CDuiTimerEx::_KillTimer( HSWND hDuiWnd )
 {
     POSITION pos=m_mapNamedObj->GetStartPosition();
     while(pos)
@@ -57,7 +57,7 @@ VOID CALLBACK CDuiTimerEx::_TimerProc( HWND hwnd, UINT uMsg, UINT_PTR idEvent, D
     TIMERINFO ti;
     if(getSingleton().GetKeyObject(idEvent,ti))
     {
-        CDuiWindow *pDuiWnd=DuiWindowMgr::GetWindow(ti.hDuiWnd);
+        SWindow *pDuiWnd=DuiWindowMgr::GetWindow(ti.hDuiWnd);
         if(pDuiWnd) pDuiWnd->DuiSendMessage(UM_DUI_TIMEREX,ti.uTimerID);
     }
 }

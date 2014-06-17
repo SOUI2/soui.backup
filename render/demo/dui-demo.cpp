@@ -28,7 +28,7 @@ public:
 
 };
 //派生一个只有纵向滚动条皮肤
-class CDuiVScrollBarSkin : public SOUI::CDuiScrollbarSkin
+class CDuiVScrollBarSkin : public SOUI::SSkinScrollbar
 {
 	SOUI_CLASS_NAME(CDuiVScrollBarSkin, "vscrollbar")
 
@@ -41,7 +41,7 @@ public:
 
 	virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha=0xff)
 	{
-		if(!m_pDuiImg) return;
+		if(!m_pImg) return;
 		int nSbCode=LOWORD(dwState);
 		int nState=LOBYTE(HIWORD(dwState));
 		BOOL bVertical=HIBYTE(HIWORD(dwState));
@@ -50,15 +50,15 @@ public:
 			CRect rcMargin(0,0,0,0);
 			rcMargin.top=m_nMargin,rcMargin.bottom=m_nMargin;
 			CRect rcSour=GetPartRect(nSbCode,nState,bVertical);
-			FrameDraw(dc, m_pDuiImg , rcSour,rcDraw,rcMargin, CLR_INVALID, m_uDrawPart,m_bTile,byAlpha);
+			FrameDraw(dc, m_pImg , rcSour,rcDraw,rcMargin, CLR_INVALID, m_uDrawPart,m_bTile,byAlpha);
 		}
 	}
 
 	//指示滚动条皮肤是否支持显示上下箭头
 	virtual BOOL HasArrow(){return FALSE;}
 	virtual int GetIdealSize(){
-		if(!m_pDuiImg) return 0;
-		return m_pDuiImg->GetWidth()/(1+m_nStates);//图片分成4 or 5 部分横向排列，第一块是轨道，2,3,4,5分别对应滑块的正常，浮动，下压, Disable状态
+		if(!m_pImg) return 0;
+		return m_pImg->GetWidth()/(1+m_nStates);//图片分成4 or 5 部分横向排列，第一块是轨道，2,3,4,5分别对应滑块的正常，浮动，下压, Disable状态
 	}
 	SOUI_ATTRS_BEGIN()
 		ATTR_INT("states",m_nStates,FALSE)

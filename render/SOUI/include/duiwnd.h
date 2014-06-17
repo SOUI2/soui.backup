@@ -32,21 +32,21 @@ enum {NormalEnable=0,ParentEnable=1};    //提供WM_ENABLE消息识别是父窗口可用还是
 #define DUIC_WANTCHARS      0x0008      /* Want WM_CHAR messages            */
 #define DUIC_WANTALLKEYS    0xFFFF      /* Control wants all keys           */
 #define DUIC_WANTSYSKEY     0x80000000    /* System Key */
-class SOUI_EXP CDuiTimerID
+class SOUI_EXP STimerID
 {
 public:
     DWORD    hDuiWnd:24;        //窗口句柄,如果窗口句柄超过24位范围，则不能使用这种方式设置定时器
     DWORD    uTimerID:7;        //定时器ID，一个窗口最多支持128个定时器。
     DWORD    bDuiTimer:1;    //区别通用定时器的标志，标志为1时，表示该定时器为DUI定时器
 
-    CDuiTimerID(HDUIWND hWnd,char id)
+    STimerID(HSWND hWnd,char id)
     {
         DUIASSERT(hWnd<0x00FFFFFF && id>=0);
         bDuiTimer=1;
         hDuiWnd=hWnd;
         uTimerID=id;
     }
-    CDuiTimerID(DWORD dwID)
+    STimerID(DWORD dwID)
     {
         memcpy(this,&dwID,sizeof(DWORD));
     }
@@ -56,7 +56,7 @@ public:
     }
 };
 
-#define ICWND_FIRST    ((CDuiWindow*)-1)
+#define ICWND_FIRST    ((SWindow*)-1)
 #define ICWND_LAST    NULL
 
 class SOUI_EXP DuiDCPaint
@@ -87,7 +87,7 @@ public:
 
 
 //////////////////////////////////////////////////////////////////////////
-// CDuiWindow
+// SWindow
 //////////////////////////////////////////////////////////////////////////
 
 typedef enum tagGDUI_CODE
@@ -100,17 +100,16 @@ typedef enum tagGDUI_CODE
     GDUI_OWNER,
 } GDUI_CODE;
 
-class SOUI_EXP CDuiWindow : public SObject
-    , public CDuiEventSet
-    , public CDuiRef
+class SOUI_EXP SWindow : public SObject
+    , public SEventSet
+    , public TObjRefImpl2<IObjRef,SWindow>
 {
-    SOUI_CLASS_NAME(CDuiWindow, "window")
+    SOUI_CLASS_NAME(SWindow, "window")
     friend class CDuiLayout;
 public:
-    CDuiWindow();
+    SWindow();
 
-    virtual ~CDuiWindow();
-    virtual void OnFinalRelease();
+    virtual ~SWindow();
 
     typedef struct tagDUIMSG
     {
@@ -119,10 +118,10 @@ public:
         LPARAM lParam;
     } DUIMSG,*PDUIMSG;
 protected:
-    HDUIWND m_hDuiWnd;
+    HSWND m_hSWnd;
     IDuiContainer *m_pContainer;
-    CDuiWindow *m_pOwner;
-    CDuiWindow *m_pParent,*m_pFirstChild, *m_pLastChild, *m_pNextSibling,*m_pPrevSibling;    //窗口树结构
+    SWindow *m_pOwner;
+    SWindow *m_pParent,*m_pFirstChild, *m_pLastChild, *m_pNextSibling,*m_pPrevSibling;    //窗口树结构
     UINT    m_nChildrenCount;
     DUIMSG        *m_pCurMsg;
 
@@ -132,7 +131,7 @@ protected:
     CRect m_rcWindow;
 
     DuiStyle m_style;
-    CDuiStringT m_strInnerText;
+    CDuiStringT m_strWndText;
     DWORD m_dwState;
     CDuiStringT m_strLinkUrl;
     BOOL m_bMsgTransparent;        //不处理用户操作标志
@@ -145,12 +144,12 @@ protected:
     BOOL m_bTabStop;
     BYTE m_byAlpha;        //窗口透明度,只进行配置，支持依赖于控件。
 
-    CDuiSkinBase * m_pBgSkin;
-    CDuiSkinBase * m_pNcSkin;
+    ISkinObj * m_pBgSkin;
+    ISkinObj * m_pNcSkin;
 
     DUIWND_POSITION m_dlgpos;
+    int             m_nMaxWidth;    //自动计算大小时使用
 
-    int                m_nMaxWidth;    //自动计算大小时使用
     BOOL m_bUpdateLocked;//暂时锁定更新
 #ifdef _DEBUG
     DWORD m_nMainThreadId;
@@ -204,7 +203,7 @@ public:
     virtual BOOL OnDuiSetCursor(const CPoint &pt);
 
     // Get tooltip Info
-    virtual BOOL OnUpdateToolTip(HDUIWND hCurTipHost,HDUIWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
+    virtual BOOL OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
 
     // Get DuiWindow state
     DWORD GetState(void);
@@ -262,26 +261,26 @@ public:
     //************************************
     void KillDuiTimerEx(UINT_PTR id);
 
-    HDUIWND GetDuiHwnd();
+    HSWND GetDuiHwnd();
 
 
-    CDuiWindow *GetParent();
+    SWindow *GetParent();
 
-    void SetParent(CDuiWindow *pParent);
+    void SetParent(SWindow *pParent);
 
-    CDuiWindow *GetTopLevelParent();
+    SWindow *GetTopLevelParent();
 
-    BOOL DestroyChild(CDuiWindow *pChild);
+    BOOL DestroyChild(SWindow *pChild);
 
     UINT GetChildrenCount();
 
-    CDuiWindow * GetChild(UINT uCmdID);
+    SWindow * GetChild(UINT uCmdID);
 
-    virtual void SetChildContainer(CDuiWindow *pChild);
+    virtual void SetChildContainer(SWindow *pChild);
 
-    void InsertChild(CDuiWindow *pNewChild,CDuiWindow *pInsertAfter=ICWND_LAST);
+    void InsertChild(SWindow *pNewChild,SWindow *pInsertAfter=ICWND_LAST);
 
-    BOOL RemoveChild(CDuiWindow *pChild);
+    BOOL RemoveChild(SWindow *pChild);
 
     BOOL IsChecked();
 
@@ -302,9 +301,9 @@ public:
 
     void SetContainer(IDuiContainer *pContainer);
 
-    void SetOwner(CDuiWindow *pOwner);
+    void SetOwner(SWindow *pOwner);
 
-    CDuiWindow *GetOwner();
+    SWindow *GetOwner();
 
     BOOL IsMsgTransparent();
 
@@ -314,11 +313,11 @@ public:
     //************************************
     // Method:    FindChildByCmdID, 通过ID查找对应的子窗口
     // Access:    public 
-    // Returns:   CDuiWindow*
+    // Returns:   SWindow*
     // Qualifier:
     // Parameter: UINT uCmdID
     //************************************
-    CDuiWindow* FindChildByCmdID(UINT uCmdID);
+    SWindow* FindChildByCmdID(UINT uCmdID);
 
     template<class T>
     T FindChildByCmdID2(UINT uCmdID)
@@ -329,11 +328,11 @@ public:
     //************************************
     // Method:    FindChildByName，通过名字查找子窗口
     // Access:    public 
-    // Returns:   CDuiWindow*
+    // Returns:   SWindow*
     // Qualifier:
     // Parameter: LPCSTR pszName
     //************************************
-    CDuiWindow* FindChildByName(LPCSTR pszName);
+    SWindow* FindChildByName(LPCSTR pszName);
 
     template<class T>
     T FindChildByName2(LPCSTR pszName)
@@ -344,7 +343,7 @@ public:
     // 从XML创建子窗口
     // LPCSTR utf8Xml: utf8 编码的XML串
     // return : 顶层的最后一个窗口
-    CDuiWindow *LoadXmlChildren(LPCSTR utf8Xml);
+    SWindow *LoadXmlChildren(LPCSTR utf8Xml);
 
     void NotifyInvalidate();
     void NotifyInvalidateRect(LPRECT lprect);
@@ -374,7 +373,7 @@ public:
     // Create DuiWindow from xml element
     virtual BOOL Load(pugi::xml_node xmlNode);
 
-    virtual HDUIWND DuiGetHWNDFromPoint(CPoint ptHitTest, BOOL bOnlyText);
+    virtual HSWND DuiGetHWNDFromPoint(CPoint ptHitTest, BOOL bOnlyText);
 
     virtual LRESULT DuiNotify(LPDUINMHDR pnms);
 
@@ -394,7 +393,7 @@ public:
 
     //************************************
     // Method:    UpdateChildrenPosition :更新子窗口位置
-    // FullName:  SOUI::CDuiWindow::UpdateChildrenPosition
+    // FullName:  SOUI::SWindow::UpdateChildrenPosition
     // Access:    virtual protected 
     // Returns:   void
     // Qualifier:
@@ -411,7 +410,7 @@ public:
     // Parameter: CDCHandle & dc
     // Parameter: CRgn & rgn
     //************************************
-    BOOL RedrawRegion(CDCHandle& dc, CRgn& rgn);
+    BOOL RedrawRegion(IRenderTarget *pRT, IRegion *pRgn);
 
     //************************************
     // Method:    GetDuiDC
@@ -423,7 +422,7 @@ public:
     // Parameter: BOOL bClientDC 限制在client区域
     // remark: 使用ReleaseDuiDC释放
     //************************************
-    HDC GetDuiDC(const LPRECT pRc=NULL,DWORD gdcFlags=0,BOOL bClientDC=TRUE);
+    IRenderTarget * GetRenderTarget(const LPRECT pRc=NULL,DWORD gdcFlags=0,BOOL bClientDC=TRUE);
 
 
     //************************************
@@ -434,7 +433,7 @@ public:
     // Parameter: HDC hdc
     // remark:
     //************************************
-    void ReleaseDuiDC(HDC hdc);
+    void ReleaseRenderTarget(IRenderTarget *pRT);
 
     //************************************
     // Method:    PaintBackground
@@ -445,7 +444,7 @@ public:
     // Parameter: LPRECT pRc 目标位置
     // remark:    目标位置必须在窗口位置内
     //************************************
-    void PaintBackground(HDC hdc,LPRECT pRc);
+    void PaintBackground(IRenderTarget *pRT,LPRECT pRc);
 
     //************************************
     // Method:    PaintForeground
@@ -456,7 +455,7 @@ public:
     // Parameter: LPRECT pRc 目标位置
     // remark:    目标位置必须在窗口位置内
     //************************************
-    void PaintForeground(HDC hdc,LPRECT pRc);
+    void PaintForeground(IRenderTarget *pRT,LPRECT pRc);
 
 
     //************************************
@@ -475,23 +474,23 @@ protected:
         PRS_DRAWING,        //窗口渲染中
         PRS_MEETEND            //碰到指定的结束窗口
     } PRSTATE;
-    static BOOL _PaintRegion(CDCHandle& dc, CRgn& rgn,CDuiWindow *pWndCur,CDuiWindow *pStart,CDuiWindow *pEnd,CDuiWindow::PRSTATE & prState);
+    static BOOL _PaintRegion(IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,SWindow *pStart,SWindow *pEnd,SWindow::PRSTATE & prState);
 
 
-    CRect        m_rcGetDC;
+    CRect        m_rcGetRT;
     DWORD        m_gdcFlags;
-    int            m_nSaveDC;
+    BOOL         m_bClipRT;
 public:
-    HDUIWND GetDuiCapture();
-    HDUIWND SetDuiCapture();
+    HSWND GetDuiCapture();
+    HSWND SetDuiCapture();
 
     BOOL ReleaseDuiCapture();
     void SetDuiFocus();
     void KillDuiFocus();
 
-    CDuiWindow *GetCheckedRadioButton();
+    SWindow *GetCheckedRadioButton();
 
-    void CheckRadioButton(CDuiWindow * pRadioBox);
+    void CheckRadioButton(SWindow * pRadioBox);
 
     BOOL SetItemVisible(UINT uItemID, BOOL bVisible);
 
@@ -502,7 +501,7 @@ public:
     BOOL EnableItem(UINT uItemID, BOOL bEnable);
     BOOL IsItemEnable(UINT uItemID, BOOL bCheckParent = FALSE);
 
-    CDuiWindow *GetDuiWindow(int uCode);    
+    SWindow *GetDuiWindow(int uCode);    
 
     //************************************
     // Method:    BeforePaint
@@ -513,7 +512,7 @@ public:
     // Parameter: DuiDCPaint & DuiDC
     // remark:
     //************************************
-    void BeforePaint(CDCHandle &dc, DuiDCPaint &DuiDC);
+    void BeforePaint(IRenderTarget *pRT, DuiDCPaint &DuiDC);
 
     //************************************
     // Method:    AfterPaint
@@ -524,7 +523,7 @@ public:
     // Parameter: DuiDCPaint & DuiDC
     // remark:
     //************************************
-    void AfterPaint(CDCHandle &dc, DuiDCPaint &DuiDC);
+    void AfterPaint(IRenderTarget *pRT, DuiDCPaint &DuiDC);
 
     //************************************
     // Method:    BeforePaintEx
@@ -534,15 +533,157 @@ public:
     // Parameter: CDCHandle & dc
     // remark: 使用前使用SaveDC来保存状态，使用后调用RestoreDC来恢复状态
     //************************************
-    void BeforePaintEx(CDCHandle &dc);
+    void BeforePaintEx(IRenderTarget *pRT);
 
+public:
     BOOL IsMsgHandled() const;
-
     void SetMsgHandled(BOOL bHandled);
-
 protected:
     BOOL m_bMsgHandled;
 
+
+protected:
+    LRESULT NotifyCommand();
+    LRESULT NotifyContextMenu(CPoint pt);
+
+    //************************************
+    // Method:    GetChildrenLayoutRect :返回子窗口的排版空间
+    // FullName:  SOUI::SWindow::GetChildrenLayoutRect
+    // Access:    virtual protected 
+    // Returns:   CRect
+    // Qualifier:
+    //************************************
+    virtual CRect GetChildrenLayoutRect();
+
+    void ClearLayoutState();
+
+    //************************************
+    // Method:    GetDesiredSize: 当没有指定窗口大小时，通过如皮肤计算窗口的期望大小
+    // FullName:  SOUI::SWindow::GetDesiredSize
+    // Access:    virtual protected 
+    // Returns:   CSize
+    // Qualifier:
+    // Parameter: LPRECT pRcContainer
+    //************************************
+    virtual CSize GetDesiredSize(LPRECT pRcContainer);
+
+    //************************************
+    // Method:    CalcSize ：计算窗口大小
+    // FullName:  SOUI::SWindow::CalcSize
+    // Access:    protected 
+    // Returns:   CSize
+    // Qualifier:
+    // Parameter: LPRECT pRcContainer
+    //************************************
+    CSize CalcSize(LPRECT pRcContainer);
+
+    //************************************
+    // Method:    GetNextVisibleWindow 获得指定窗口的下一个可见窗口
+    // FullName:  SOUI::SWindow::GetNextVisibleWindow
+    // Access:    protected static 
+    // Returns:   SWindow *    :下一个可见窗口
+    // Qualifier:
+    // Parameter: SWindow * pWnd    :参考窗口
+    // Parameter: const CRect &rcDraw:目标矩形
+    //************************************
+    static SWindow *GetNextVisibleWindow(SWindow *pWnd,const CRect &rcDraw);
+
+    virtual BOOL NeedRedrawWhenStateChange();
+    virtual void GetTextRect(LPRECT pRect);
+    virtual void DuiDrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
+    virtual void DuiDrawFocus(IRenderTarget *pRT);
+
+    void DuiDrawDefFocusRect(IRenderTarget *pRT,CRect rc);
+    void DrawAniStep(CRect rcFore,CRect rcBack,IRenderTarget *pRTFore,IRenderTarget * pRTBack,CPoint ptAnchor);
+    void DrawAniStep( CRect rcWnd,IRenderTarget *pRTFore,IRenderTarget * pRTBack,BYTE byAlpha);
+    //////////////////////////////////////////////////////////////////////////
+    // Message Handler
+
+    //************************************
+    // Method:    DuiWndProc
+    // Function:  默认的消息处理函数
+    // Access:    virtual public
+    // Returns:   BOOL
+    // Parameter: UINT uMsg
+    // Parameter: WPARAM wParam
+    // Parameter: LPARAM lParam
+    // Parameter: LRESULT & lResult
+    // remark: 在消息映射表中没有处理的消息进入该函数处理
+    //************************************
+    virtual BOOL DuiWndProc(UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResult)
+    {
+        return FALSE;
+    }
+
+    LRESULT OnWindowPosChanged(LPRECT lpRcContainer);
+
+    int OnCreate(LPVOID);
+
+    void OnDestroy();
+
+    // Draw background default
+    BOOL OnEraseBkgnd(IRenderTarget *pRT);
+
+    // Draw inner text default
+    void OnPaint(IRenderTarget *pRT);
+
+
+    //************************************
+    // Method:    OnNcPaint
+    // Function:  draw non-client area
+    // Access:    protected
+    // Returns:   void
+    // Parameter: CDCHandle dc
+    // remark:
+    //************************************
+    void OnNcPaint(IRenderTarget *pRT);
+
+    BOOL OnDefKeyDown(UINT nChar, UINT nFlags);
+
+    void OnShowWindow(BOOL bShow, UINT nStatus);
+
+    void OnEnable(BOOL bEnable,UINT nStatus);
+
+    void OnLButtonDown(UINT nFlags,CPoint pt);
+
+    void OnLButtonUp(UINT nFlags,CPoint pt);
+    
+    void OnRButtonDown(UINT nFlags, CPoint point);
+
+    void OnMouseMove(UINT nFlags,CPoint pt) {}
+
+    void OnMouseHover(WPARAM wParam, CPoint ptPos);
+
+    void OnMouseLeave();
+
+    BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+
+    void OnSetDuiFocus();
+    void OnKillDuiFocus();
+
+    HRESULT OnAttributePosition(const CDuiStringA& strValue, BOOL bLoading);
+    HRESULT OnAttributeState(const CDuiStringA& strValue, BOOL bLoading);
+
+    WND_MSG_MAP_BEGIN()
+        MSG_WM_PAINT_EX(OnPaint)
+        MSG_WM_ERASEBKGND_EX(OnEraseBkgnd)
+        MSG_WM_NCPAINT_EX(OnNcPaint)
+        MSG_WM_CREATE(OnCreate)
+        MSG_WM_DESTROY(OnDestroy)
+        MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
+        MSG_WM_SHOWWINDOW(OnShowWindow)
+        MSG_WM_ENABLE_EX(OnEnable)
+        MSG_WM_LBUTTONDOWN(OnLButtonDown)
+        MSG_WM_LBUTTONUP(OnLButtonUp)
+        MSG_WM_RBUTTONDOWN(OnRButtonDown)
+        MSG_WM_MOUSEMOVE(OnMouseMove)
+        MSG_WM_MOUSEHOVER(OnMouseHover)
+        MSG_WM_MOUSELEAVE(OnMouseLeave)
+        MSG_WM_MOUSEWHEEL(OnMouseWheel)
+        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
+        MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+    WND_MSG_MAP_END_BASE()
+    
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN("skin", m_pBgSkin, TRUE)//直接获得皮肤对象
         ATTR_SKIN("ncskin", m_pNcSkin, TRUE)//直接获得皮肤对象
@@ -572,146 +713,5 @@ protected:
         ATTR_INT("alpha",m_byAlpha,TRUE)
     SOUI_ATTRS_END()
 
-protected:
-    LRESULT NotifyCommand();
-    LRESULT NotifyContextMenu(CPoint pt);
-
-    //************************************
-    // Method:    GetChildrenLayoutRect :返回子窗口的排版空间
-    // FullName:  SOUI::CDuiWindow::GetChildrenLayoutRect
-    // Access:    virtual protected 
-    // Returns:   CRect
-    // Qualifier:
-    //************************************
-    virtual CRect GetChildrenLayoutRect();
-
-    void ClearLayoutState();
-
-    //************************************
-    // Method:    GetDesiredSize: 当没有指定窗口大小时，通过如皮肤计算窗口的期望大小
-    // FullName:  SOUI::CDuiWindow::GetDesiredSize
-    // Access:    virtual protected 
-    // Returns:   CSize
-    // Qualifier:
-    // Parameter: LPRECT pRcContainer
-    //************************************
-    virtual CSize GetDesiredSize(LPRECT pRcContainer);
-
-    //************************************
-    // Method:    CalcSize ：计算窗口大小
-    // FullName:  SOUI::CDuiWindow::CalcSize
-    // Access:    protected 
-    // Returns:   CSize
-    // Qualifier:
-    // Parameter: LPRECT pRcContainer
-    //************************************
-    CSize CalcSize(LPRECT pRcContainer);
-
-    //************************************
-    // Method:    GetNextVisibleWindow 获得指定窗口的下一个可见窗口
-    // FullName:  SOUI::CDuiWindow::GetNextVisibleWindow
-    // Access:    protected static 
-    // Returns:   CDuiWindow *    :下一个可见窗口
-    // Qualifier:
-    // Parameter: CDuiWindow * pWnd    :参考窗口
-    // Parameter: const CRect &rcDraw:目标矩形
-    //************************************
-    static CDuiWindow *GetNextVisibleWindow(CDuiWindow *pWnd,const CRect &rcDraw);
-
-    virtual BOOL NeedRedrawWhenStateChange();
-    virtual void GetTextRect(LPRECT pRect);
-    virtual void DuiDrawText(HDC hdc,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
-    virtual void DuiDrawFocus(HDC dc);
-
-    void DuiDrawDefFocusRect(CDCHandle dc,CRect rc);
-    void DrawAniStep(CRect rcFore,CRect rcBack,HDC dcFore,HDC dcBack,CPoint ptAnchor);
-    void DrawAniStep( CRect rcWnd,HDC dcFore,HDC dcBack,BYTE byAlpha);
-    //////////////////////////////////////////////////////////////////////////
-    // Message Handler
-
-    //************************************
-    // Method:    DuiWndProc
-    // Function:  默认的消息处理函数
-    // Access:    virtual public
-    // Returns:   BOOL
-    // Parameter: UINT uMsg
-    // Parameter: WPARAM wParam
-    // Parameter: LPARAM lParam
-    // Parameter: LRESULT & lResult
-    // remark: 在消息映射表中没有处理的消息进入该函数处理
-    //************************************
-    virtual BOOL DuiWndProc(UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResult)
-    {
-        return FALSE;
-    }
-
-    LRESULT OnWindowPosChanged(LPRECT lpRcContainer);
-
-    int OnCreate(LPVOID);
-
-    void OnDestroy();
-
-    // Draw background default
-    BOOL OnEraseBkgnd(CDCHandle dc);
-
-    // Draw inner text default
-    void OnPaint(CDCHandle dc);
-
-
-    //************************************
-    // Method:    OnNcPaint
-    // Function:  draw non-client area
-    // Access:    protected
-    // Returns:   void
-    // Parameter: CDCHandle dc
-    // remark:
-    //************************************
-    void OnNcPaint(CDCHandle dc);
-
-    BOOL OnDefKeyDown(UINT nChar, UINT nFlags);
-
-    void OnShowWindow(BOOL bShow, UINT nStatus);
-
-    void OnEnable(BOOL bEnable,UINT nStatus);
-
-    void OnLButtonDown(UINT nFlags,CPoint pt);
-
-    void OnLButtonUp(UINT nFlags,CPoint pt);
-    
-    void OnRButtonDown(UINT nFlags, CPoint point);
-
-    void OnMouseMove(UINT nFlags,CPoint pt) {}
-
-    void OnMouseHover(WPARAM wParam, CPoint ptPos);
-
-    void OnMouseLeave();
-
-    BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-
-    void OnSetDuiFocus();
-    void OnKillDuiFocus();
-
-    HRESULT OnAttributePosition(const CDuiStringA& strValue, BOOL bLoading);
-    HRESULT OnAttributeState(const CDuiStringA& strValue, BOOL bLoading);
-
-    WND_MSG_MAP_BEGIN()
-        MSG_WM_ERASEBKGND(OnEraseBkgnd)
-        MSG_WM_PAINT(OnPaint)
-        MSG_WM_NCPAINT_EX(OnNcPaint)
-        MSG_WM_CREATE(OnCreate)
-        MSG_WM_DESTROY(OnDestroy)
-        MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
-        MSG_WM_SHOWWINDOW(OnShowWindow)
-        MSG_WM_ENABLE_EX(OnEnable)
-        MSG_WM_LBUTTONDOWN(OnLButtonDown)
-        MSG_WM_LBUTTONUP(OnLButtonUp)
-        MSG_WM_RBUTTONDOWN(OnRButtonDown)
-        MSG_WM_MOUSEMOVE(OnMouseMove)
-        MSG_WM_MOUSEHOVER(OnMouseHover)
-        MSG_WM_MOUSELEAVE(OnMouseLeave)
-        MSG_WM_MOUSEWHEEL(OnMouseWheel)
-        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-        MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
-    WND_MSG_MAP_END_BASE()
 };
 }//namespace SOUI

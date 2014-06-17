@@ -52,7 +52,7 @@ class CDuiTipCtrl;
 
 class SOUI_EXP CDuiHostWnd
     : public CSimpleWnd
-    , public CDuiWindow
+    , public SWindow
     , public CDuiFrame
     , protected IDuiRealWndHandler
 {
@@ -174,10 +174,10 @@ protected:
     HWND GetHostHwnd();
 
     /*virtual */
-    HDC OnGetDuiDC(const CRect & rc,DWORD gdcFlags);
+    IRenderTarget * OnGetRenderTarget(const CRect & rc,DWORD gdcFlags);
 
     /*virtual */
-    void OnReleaseDuiDC(HDC hdcSour,const CRect &rc,DWORD gdcFlags);
+    void OnReleaseRenderTarget(IRenderTarget * pRT,const CRect &rc,DWORD gdcFlags);
 
     /*virtual */
     void OnRedraw(const CRect &rc);
@@ -186,10 +186,10 @@ protected:
     BOOL OnReleaseDuiCapture();
 
     /*virtual */
-    HDUIWND OnSetDuiCapture(HDUIWND hDuiWnd);
+    HSWND OnSetDuiCapture(HSWND hDuiWnd);
 
     /*virtual */
-    HDUIWND GetDuiCapture();
+    HSWND GetDuiCapture();
 
     /*virtual */
     BOOL IsTranslucent();

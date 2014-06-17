@@ -21,10 +21,10 @@ DuiWindowMgr::~DuiWindowMgr()
 }
 
 // Get DuiWindow pointer from handle
-CDuiWindow* DuiWindowMgr::GetWindow(HDUIWND hDuiWnd)
+SWindow* DuiWindowMgr::GetWindow(HSWND hDuiWnd)
 {
     if(!hDuiWnd) return NULL;
-    CDuiWindow *pRet=NULL;
+    SWindow *pRet=NULL;
     ::EnterCriticalSection(&getSingleton().m_lockWndMap);
 
     getSingleton().GetKeyObject(hDuiWnd,pRet);
@@ -33,12 +33,12 @@ CDuiWindow* DuiWindowMgr::GetWindow(HDUIWND hDuiWnd)
 }
 
 // Specify a handle to a DuiWindow
-HDUIWND DuiWindowMgr::NewWindow(CDuiWindow *pDuiWnd)
+HSWND DuiWindowMgr::NewWindow(SWindow *pDuiWnd)
 {
     DUIASSERT(pDuiWnd);
     ::EnterCriticalSection(&getSingleton().m_lockWndMap);
 
-    HDUIWND hDuiWndNext = ++ getSingleton().m_hNextWnd;
+    HSWND hDuiWndNext = ++ getSingleton().m_hNextWnd;
     getSingleton().AddKeyObject(hDuiWndNext,pDuiWnd);
     ::LeaveCriticalSection(&getSingleton().m_lockWndMap);
 
@@ -46,7 +46,7 @@ HDUIWND DuiWindowMgr::NewWindow(CDuiWindow *pDuiWnd)
 }
 
 // Destroy DuiWindow
-BOOL DuiWindowMgr::DestroyWindow(HDUIWND hDuiWnd)
+BOOL DuiWindowMgr::DestroyWindow(HSWND hDuiWnd)
 {
     ::EnterCriticalSection(&getSingleton().m_lockWndMap);
 

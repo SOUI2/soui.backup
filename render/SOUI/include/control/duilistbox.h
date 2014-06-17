@@ -134,7 +134,7 @@ protected:
 
     COLORREF m_crItemBg, m_crItemBg2, m_crItemSelBg;
     COLORREF m_crText, m_crSelText;
-    CDuiSkinBase *m_pItemSkin, *m_pIconSkin;
+    ISkinObj *m_pItemSkin, *m_pIconSkin;
 
 public:
 

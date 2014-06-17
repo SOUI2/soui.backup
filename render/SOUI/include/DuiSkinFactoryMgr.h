@@ -1,5 +1,5 @@
 #pragma once
-#include "DuiSkinBase.h"
+#include "skinobj-i.h"
 
 namespace SOUI
 {
@@ -8,7 +8,7 @@ namespace SOUI
     {
     public:
         virtual ~CSkinFactory() {}
-        virtual CDuiSkinBase * NewSkin()=NULL;
+        virtual ISkinObj * NewSkin()=NULL;
         virtual const CDuiStringA & GetTypeName()=NULL;
         virtual CSkinFactory * Clone()=NULL;
     };
@@ -21,7 +21,7 @@ namespace SOUI
         {
         }
 
-        virtual CDuiSkinBase * NewSkin()
+        virtual ISkinObj * NewSkin()
         {
             return new T;
         }
@@ -40,10 +40,10 @@ namespace SOUI
     };
 
     typedef CSkinFactory * CSkinFactoryPtr;
-    class SOUI_EXP DuiSkinFactoryManager: public DuiCmnMap<CSkinFactoryPtr,CDuiStringA>
+    class SOUI_EXP DuiSkinFactoryMgr: public DuiCmnMap<CSkinFactoryPtr,CDuiStringA>
     {
     public:
-        DuiSkinFactoryManager()
+        DuiSkinFactoryMgr()
         {
             m_pFunOnKeyRemoved=OnSkinRemoved;
             AddStandardSkin();
@@ -65,7 +65,7 @@ namespace SOUI
             return RemoveKeyObject(strClassName);
         }
 
-        CDuiSkinBase * CreateSkinByName(LPCSTR pszClassName);
+        ISkinObj * CreateSkinByName(LPCSTR pszClassName);
 
     protected:
         static void OnSkinRemoved(const CSkinFactoryPtr & obj);

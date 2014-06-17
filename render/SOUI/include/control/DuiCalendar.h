@@ -222,7 +222,7 @@ namespace SOUI
      * 
      * Describe    此类是日历的核心类 大部分函数都是静态函数
      */
-    class CDuiCalendar : public CDuiWindow
+    class CDuiCalendar : public SWindow
     {
     public:
         SOUI_CLASS_NAME(CDuiCalendar, "calendar")
@@ -401,7 +401,7 @@ namespace SOUI
          *
          * Describe  在日期---天的单击事件
          */            
-        bool OnTodayClick(CDuiWindow * pSender, LPDUINMHDR pNmhdr);
+        bool OnTodayClick(SWindow * pSender, LPDUINMHDR pNmhdr);
 
         SOUI_ATTRS_BEGIN()
             ATTR_INT("titleHeight", m_nTitleHei, FALSE)
@@ -429,8 +429,8 @@ namespace SOUI
     protected:
         int             m_nTitleHei;    /**< 表头高度 */
         int             m_nFooterHei;   /**< 表尾高度 */
-        CDuiSkinBase    *m_pDaySkin;    /**< 日期项皮肤 */
-        CDuiSkinBase    *m_pTitleSkin;  /**< 表头皮肤 */
+        ISkinObj    *m_pDaySkin;    /**< 日期项皮肤 */
+        ISkinObj    *m_pTitleSkin;  /**< 表头皮肤 */
 
         COLORREF        m_crWeekend;    /**< 周末文字颜色 */
         COLORREF        m_crTitleBack;  /**< 表头背景色 */

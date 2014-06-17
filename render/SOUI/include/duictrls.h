@@ -1,3 +1,5 @@
+#pragma once
+/*
 #include "DuiPanel.h"
 #include "control/duitabctrl.h"
 #include "control/DuiCmnCtrl.h"
@@ -19,3 +21,4 @@
 #include "control/DuiHeaderCtrl.h"
 #include "control/DuiListCtrl.h"
 #include "control/DuiActiveX.h"
+*/

@@ -777,23 +777,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiActiveX.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\activex\DuiAxContainer.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\DuiCalendar.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\DuiCaption.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\DuiCmnCtrl.cpp"
 				>
 			</File>
 			<File
@@ -801,23 +785,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiComboBox.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\res.mgr\DuiCSS.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiDateTimeEdit.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\duiDefaultLogger.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\DuiDropDown.cpp"
 				>
 			</File>
 			<File
@@ -837,31 +809,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiHeaderCtrl.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\duihostwnd.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiHotKeyCtrl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\duiimage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\DuiImgDecoder_Def.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\res.mgr\duiimgpool.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\duiitembox.cpp"
 				>
 			</File>
 			<File
@@ -870,30 +822,6 @@
 			</File>
 			<File
 				RelativePath=".\src\DuiLayout.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\duilistbox.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\duilistboxex.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\DuiListCtrl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\DuiLogger.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\DuiMenu.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\DuiMessageBox.cpp"
 				>
 			</File>
 			<File
@@ -909,10 +837,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\duirealwnd.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\res.mgr\duiresprovider.cpp"
 				>
 			</File>
@@ -921,31 +845,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiRichEdit.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\duiscrollbar.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\DuiSkinBase.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\DuiSkinFactoryMgr.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\res.mgr\DuiSkinPool.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\DuiSliderBar.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\DuiSplitWnd.cpp"
 				>
 			</File>
 			<File
@@ -1047,10 +951,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiTabCtrl.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\DuiThreadActiveWndMgr.cpp"
 				>
 			</File>
@@ -1060,14 +960,6 @@
 			</File>
 			<File
 				RelativePath=".\src\DuiTipCtrl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\DuiTreeBox.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\DuiTreeCtrl.cpp"
 				>
 			</File>
 			<File
@@ -1237,18 +1129,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\DuiImage-i.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\duiimage.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiImgDecoder_Def.h"
-				>
-			</File>
-			<File
 				RelativePath=".\include\res.mgr\duiimgpool.h"
 				>
 			</File>
@@ -1258,10 +1138,6 @@
 			</File>
 			<File
 				RelativePath=".\include\DuiLayout.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiLogger.h"
 				>
 			</File>
 			<File
@@ -1310,10 +1186,6 @@
 			</File>
 			<File
 				RelativePath=".\include\duiskin.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiSkinBase.h"
 				>
 			</File>
 			<File
@@ -1410,6 +1282,10 @@
 			</File>
 			<File
 				RelativePath=".\include\SimpleWnd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\skinobj-i.h"
 				>
 			</File>
 			<File

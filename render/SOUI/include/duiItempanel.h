@@ -22,10 +22,10 @@ public:
     virtual BOOL IsItemRedrawDelay()=NULL;                                    //指示表项的更新方式
 };
 
-class SOUI_EXP CDuiItemPanel : public CDuiWindow, public CDuiFrame
+class SOUI_EXP CDuiItemPanel : public SWindow, public CDuiFrame
 {
 public:
-    CDuiItemPanel(CDuiWindow *pFrameHost,pugi::xml_node xmlNode,IDuiItemContainer *pItemContainer=NULL);
+    CDuiItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IDuiItemContainer *pItemContainer=NULL);
     virtual ~CDuiItemPanel() {}
 
     virtual void OnFinalRelease();
@@ -37,15 +37,15 @@ public:
 
     virtual CRect GetContainerRect();
 
-    virtual HDC OnGetDuiDC(const CRect & rc ,DWORD gdcFlags);
+    virtual HDC OnGetRenderTarget(const CRect & rc ,DWORD gdcFlags);
 
-    virtual void OnReleaseDuiDC(HDC hdc,const CRect &rc,DWORD gdcFlags);
+    virtual void OnReleaseRenderTarget(HDC hdc,const CRect &rc,DWORD gdcFlags);
 
     virtual void OnRedraw(const CRect &rc);
 
     virtual BOOL OnReleaseDuiCapture();
 
-    virtual HDUIWND OnSetDuiCapture(HDUIWND hDuiWNd);
+    virtual HSWND OnSetDuiCapture(HSWND hDuiWNd);
     virtual HWND GetHostHwnd();
 
     virtual BOOL IsTranslucent();
@@ -65,11 +65,11 @@ public:
     //////////////////////////////////////////////////////////////////////////
     virtual void ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove);
 
-    virtual HDUIWND DuiGetHWNDFromPoint(POINT ptHitTest, BOOL bOnlyText);
+    virtual HSWND DuiGetHWNDFromPoint(POINT ptHitTest, BOOL bOnlyText);
 
     virtual void Draw(CDCHandle dc,const CRect & rc);
 
-    virtual void SetSkin(CDuiSkinBase *pSkin);
+    virtual void SetSkin(ISkinObj *pSkin);
     virtual void SetColor(COLORREF crBk,COLORREF crSelBk);
 
     virtual BOOL NeedRedrawWhenStateChange();
@@ -79,7 +79,7 @@ public:
     void SetItemData(LPARAM dwData);
     LPARAM GetItemData();
 
-    BOOL OnUpdateToolTip(HDUIWND hCurTipHost,HDUIWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
+    BOOL OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
     
     void OnSetCaretValidateRect(LPCRECT lpRect);
 
@@ -87,7 +87,7 @@ public:
     void SetItemIndex(LPARAM lp){m_lpItemIndex=lp;}
 
 protected:
-    CDuiWindow * m_pFrmHost;
+    SWindow * m_pFrmHost;
     IDuiItemContainer * m_pItemContainer;
     COLORREF m_crBk, m_crSelBk;
     LPARAM        m_dwData;

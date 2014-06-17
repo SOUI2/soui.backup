@@ -54,11 +54,11 @@ namespace SOUI
         CDuiArray<SlotFunctorBase *> m_evtSlots;
     };
 
-    class SOUI_EXP CDuiEventSet
+    class SOUI_EXP SEventSet
     {
     public:
-        CDuiEventSet(void);
-        virtual ~CDuiEventSet(void);
+        SEventSet(void);
+        virtual ~SEventSet(void);
 
         /*!
         \brief

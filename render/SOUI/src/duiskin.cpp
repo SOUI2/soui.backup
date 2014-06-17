@@ -10,84 +10,67 @@
 #include "duistd.h"
 #include "duiskin.h"
 
-#include "res.mgr/duiimgpool.h"
-#include "gdialpha.h"
-#include "DuiSystem.h"
-#include "GradientFillHelper.h"
-
 namespace SOUI
 {
 
-
-CDuiSkinImgList::CDuiSkinImgList()
-:m_lSubImageWidth(0)
-,m_nStates(1)
+//////////////////////////////////////////////////////////////////////////
+// CDuiSkinImgList
+SSkinImgList::SSkinImgList()
+:m_nStates(1)
 ,m_bTile(FALSE)
 ,m_bVertical(FALSE)
+,m_pImg(NULL)
 {
 
 }
 
-CDuiSkinImgList::~CDuiSkinImgList()
+SSkinImgList::~SSkinImgList()
 {
+    if(m_pImg) m_pImg->Release();
 }
 
-
-void CDuiSkinImgList::Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha)
-{
-    if(m_pDuiImg)
-    {
-        SIZE sz=GetSkinSize();
-        if(m_bVertical)
-            ExtentBlt(m_pDuiImg,m_bTile,dc,rcDraw.left,rcDraw.top,rcDraw.Width(),rcDraw.Height(),0,dwState*sz.cy,sz.cx,sz.cy,byAlpha);
-        else
-            ExtentBlt(m_pDuiImg,m_bTile,dc,rcDraw.left,rcDraw.top,rcDraw.Width(),rcDraw.Height(),dwState*sz.cx,0,sz.cx,sz.cy,byAlpha);
-    }
-}
-
-
-SIZE CDuiSkinImgList::GetSkinSize()
+SIZE SSkinImgList::GetSkinSize()
 {
     SIZE ret = {0, 0};
-    if(m_pDuiImg) m_pDuiImg->GetImageSize(ret);
+    if(m_pImg) ret=m_pImg->Size();
     if(m_bVertical) ret.cy/=m_nStates;
     else ret.cx/=m_nStates;
     return ret;
 }
 
-BOOL CDuiSkinImgList::IgnoreState()
+BOOL SSkinImgList::IgnoreState()
 {
     return GetStates()==1;
 }
 
-int CDuiSkinImgList::GetStates()
+int SSkinImgList::GetStates()
 {
     return m_nStates;
 }
 
-void CDuiSkinImgList::OnAttributeFinish(pugi::xml_node xmlNode )
+void SSkinImgList::Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha)
 {
-    __super::OnAttributeFinish(xmlNode);
-
-    DUIASSERT(m_pDuiImg);
-    if(m_nStates==1 && 0 != m_lSubImageWidth)
-    {
-        //定义了子图宽度，没有定义子图数量
-        m_nStates=m_pDuiImg->Width()/m_lSubImageWidth;
-        m_bVertical=FALSE;
-    }
+    if(!m_pImg) return;
+    SIZE sz=GetSkinSize();
+    RECT rcSrc={0,0,sz.cx,sz.cy};
+    if(m_bVertical) 
+        OffsetRect(&rcSrc,0, dwState * sz.cy);
+    else
+        OffsetRect(&rcSrc, dwState * sz.cx, 0);
+    pRT->DrawBitmapEx(rcDraw,m_pImg,&rcSrc,m_bTile?EM_TILE:EM_STRETCH,byAlpha);
 }
 
-CDuiSkinImgFrame::CDuiSkinImgFrame()
-    : m_crBg(CLR_INVALID)
-    , m_uDrawPart(Frame_Part_All)
-    , m_rcMargin(0,0,-1,-1)
+
+//////////////////////////////////////////////////////////////////////////
+//  CDuiSkinImgFrame
+SSkinImgFrame::SSkinImgFrame()
+    : m_rcMargin(0,0,0,0)
 {
 }
 
-void CDuiSkinImgFrame::Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha)
+void SSkinImgFrame::Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha)
 {
-    if(!m_pDuiImg) return;
+    if(!m_pImg) return;
     SIZE sz=GetSkinSize();
     CPoint pt;
     if(IsVertical())
@@ -95,30 +78,12 @@ void CDuiSkinImgFrame::Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha)
     else
         pt.x=sz.cx*dwState;
     CRect rcSour(pt,sz);
-    FrameDraw(dc, m_pDuiImg , rcSour,rcDraw, m_rcMargin, m_crBg, m_uDrawPart,m_bTile,byAlpha);
+    pRT->DrawBitmap9Patch(rcDraw,m_pImg,&rcSour,&m_rcMargin,m_bTile?EM_TILE:EM_STRETCH,byAlpha);
 }
 
-void CDuiSkinImgFrame::OnAttributeFinish(pugi::xml_node xmlNode)
-{
-    __super::OnAttributeFinish(xmlNode);
-    SIZE szSkin=GetSkinSize();
-    if(m_rcMargin.right==-1)
-    {
-        if(szSkin.cx>m_rcMargin.left*2)
-            m_rcMargin.right=m_rcMargin.left;
-        else
-            m_rcMargin.right=0;
-    }
-    if(m_rcMargin.bottom==-1)
-    {
-        if(szSkin.cy>m_rcMargin.top*2)
-            m_rcMargin.bottom=m_rcMargin.top;
-        else
-            m_rcMargin.bottom=0;
-    }
-}
-
-CDuiSkinButton::CDuiSkinButton()
+//////////////////////////////////////////////////////////////////////////
+// CDuiSkinButton
+SSkinButton::SSkinButton()
     : m_crBorder(RGB(0x70, 0x70, 0x70))
 {
     m_crUp[0]=(RGB(0xEE, 0xEE, 0xEE));
@@ -131,46 +96,31 @@ CDuiSkinButton::CDuiSkinButton()
     m_crDown[3]=(RGB(0x80, 0x80, 0x80));
 }
 
-#define MAKECOLORALPHA(cr,alpha) ((cr&0x00ffffff)|(alpha<<24))
-
-void CDuiSkinButton::Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha)
+void SSkinButton::Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha)
 {
+    CRect rcDraw = *prcDraw;
+    
     rcDraw.DeflateRect(1, 1);
-    GradientFillRectV(
-        dc, rcDraw,m_crUp[dwState],m_crDown[dwState],
-        byAlpha
-        );
+    pRT->GradientFill(rcDraw,TRUE,m_crUp[dwState],m_crDown[dwState],byAlpha);
 
-    CPen penFrame;
-    penFrame.CreatePen(
-        PS_SOLID,
-        1,
-        m_crBorder
-    );
-
-    HPEN hpenOld = (HPEN)SelectObject(dc,penFrame);
-    HBRUSH hbshOld = NULL, hbshNull = (HBRUSH)::GetStockObject(NULL_BRUSH);
-
-    hbshOld = (HBRUSH)SelectObject(dc,hbshNull);
-
-    rcDraw.DeflateRect(-1, -1);
-    CGdiAlpha::RoundRect(dc,rcDraw,CPoint(2,2));
-
-    SelectObject(dc,hbshOld);
-    SelectObject(dc,hpenOld);
+    CAutoRefPtr<IPen> pPen,pOldPen;
+    pRT->CreatePen(PS_SOLID,m_crBorder,1,&pPen);
+    pRT->SelectObject(pPen,(IRenderObj**)&pOldPen);
+    pRT->DrawRoundRect(prcDraw,CPoint(2,2));
+    pRT->SelectObject(pOldPen);
 }
 
-BOOL CDuiSkinButton::IgnoreState()
+BOOL SSkinButton::IgnoreState()
 {
     return FALSE;
 }
 
-int CDuiSkinButton::GetStates()
+int SSkinButton::GetStates()
 {
     return 4;
 }
 
-void CDuiSkinButton::SetColors( COLORREF crUp[4],COLORREF crDown[4],COLORREF crBorder )
+void SSkinButton::SetColors( COLORREF crUp[4],COLORREF crDown[4],COLORREF crBorder )
 {
     memcpy(m_crUp,crUp,4*sizeof(COLORREF));
     memcpy(m_crDown,crDown,4*sizeof(COLORREF));
@@ -178,32 +128,27 @@ void CDuiSkinButton::SetColors( COLORREF crUp[4],COLORREF crDown[4],COLORREF crB
 }
 
 //////////////////////////////////////////////////////////////////////////
-CDuiSkinGradation::CDuiSkinGradation()
-    : m_uDirection(DIR_HORZ)
+// CDuiSkinGradation
+SSkinGradation::SSkinGradation()
+    : m_bVert(TRUE)
     , m_crFrom(CLR_INVALID)
     , m_crTo(CLR_INVALID)
 {
 }
 
-void CDuiSkinGradation::Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha)
+void SSkinGradation::Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha)
 {
-    if (DIR_HORZ == m_uDirection)
-    {
-        GradientFillRectH(dc, rcDraw, m_crFrom,m_crTo,byAlpha);
-    }
-    else
-    {
-        GradientFillRectV(dc, rcDraw, m_crFrom,m_crTo,byAlpha);
-    }
+    pRT->GradientFill(prcDraw,m_bVert,m_crFrom,m_crTo,byAlpha);
 }
 
-
-CDuiScrollbarSkin::CDuiScrollbarSkin():m_nMargin(0),m_bHasGripper(FALSE),m_bHasInactive(FALSE)
+//////////////////////////////////////////////////////////////////////////
+// CDuiScrollbarSkin
+SSkinScrollbar::SSkinScrollbar():m_nMargin(0),m_bHasGripper(FALSE),m_bHasInactive(FALSE)
 {
     
 }
 
-CRect CDuiScrollbarSkin::GetPartRect(int nSbCode, int nState,BOOL bVertical)
+CRect SSkinScrollbar::GetPartRect(int nSbCode, int nState,BOOL bVertical)
 {
     CSize sz=GetSkinSize();
     CSize szFrame(sz.cx/9,sz.cx/9);
@@ -246,9 +191,9 @@ CRect CDuiScrollbarSkin::GetPartRect(int nSbCode, int nState,BOOL bVertical)
     }
 }
 
-void CDuiScrollbarSkin::Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha)
+void SSkinScrollbar::Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha)
 {
-    if(!m_pDuiImg) return;
+    if(!m_pImg) return;
     int nSbCode=LOWORD(dwState);
     int nState=LOBYTE(HIWORD(dwState));
     BOOL bVertical=HIBYTE(HIWORD(dwState));
@@ -259,16 +204,19 @@ void CDuiScrollbarSkin::Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha)
         rcMargin.left=m_nMargin,rcMargin.right=m_nMargin;
 
     CRect rcSour=GetPartRect(nSbCode,nState,bVertical);
-    FrameDraw(dc, m_pDuiImg , rcSour,rcDraw,rcMargin, CLR_INVALID, m_uDrawPart,m_bTile,byAlpha);
-
+    
+    pRT->DrawBitmap9Patch(prcDraw,m_pImg,&rcSour,&rcMargin,m_bTile?EM_TILE:EM_STRETCH,byAlpha);
+    
     if(nSbCode==SB_THUMBTRACK && m_bHasGripper)
     {
         rcSour=GetPartRect(SB_THUMBGRIPPER,0,bVertical);
+        CRect rcDraw=*prcDraw;
+        
         if (bVertical)
             rcDraw.top+=(rcDraw.Height()-rcSour.Height())/2,rcDraw.bottom=rcDraw.top+rcSour.Height();
         else
             rcDraw.left+=(rcDraw.Width()-rcSour.Width())/2,rcDraw.right=rcDraw.left+rcSour.Width();
-        FrameDraw(dc, m_pDuiImg , rcSour,rcDraw,rcMargin, CLR_INVALID, m_uDrawPart,m_bTile,byAlpha);
+        pRT->DrawBitmap9Patch(&rcDraw,m_pImg,&rcSour,&rcMargin,m_bTile?EM_TILE:EM_STRETCH,byAlpha);
     }
 }
 

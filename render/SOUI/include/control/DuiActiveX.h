@@ -7,7 +7,7 @@
 namespace SOUI
 {
 
-    class SOUI_EXP CDuiActiveX : public CDuiWindow
+    class SOUI_EXP CDuiActiveX : public SWindow
     {
         friend class CDuiAxContainerImpl;
     public:

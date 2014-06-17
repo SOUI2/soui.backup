@@ -13,11 +13,11 @@ struct ITimelineHandler
 
 class SOUI_EXP IDuiContainer : public ITimelineHandler
 {
-    friend class CDuiWindow;
+    friend class SWindow;
 public:
-    virtual BOOL RegisterDragDrop(HDUIWND hDuiWnd,IDropTarget *pDropTarget)=NULL;
+    virtual BOOL RegisterDragDrop(HSWND hDuiWnd,IDropTarget *pDropTarget)=NULL;
 
-    virtual BOOL RevokeDragDrop(HDUIWND hDuiWnd)=NULL;
+    virtual BOOL RevokeDragDrop(HSWND hDuiWnd)=NULL;
 
     virtual LRESULT OnDuiNotify(LPDUINMHDR pHdr)=NULL;
 
@@ -27,23 +27,23 @@ public:
 
     virtual CRect GetContainerRect()=NULL;
 
-    virtual HDC OnGetDuiDC(const CRect & rc,DWORD gdcFlags)=NULL;
+    virtual IRenderTarget * OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)=NULL;
 
-    virtual void OnReleaseDuiDC(HDC hdc,const CRect &rc,DWORD gdcFlags)=NULL;
+    virtual void OnReleaseRenderTarget(IRenderTarget *pRT,const CRect &rc,DWORD gdcFlags)=NULL;
 
     virtual void OnRedraw(const CRect &rc)=NULL;
 
-    virtual HDUIWND OnGetDuiCapture()=NULL;
+    virtual HSWND OnGetDuiCapture()=NULL;
 
     virtual BOOL OnReleaseDuiCapture()=NULL;
 
-    virtual HDUIWND OnSetDuiCapture(HDUIWND hDuiWnd)=NULL;
+    virtual HSWND OnSetDuiCapture(HSWND hDuiWnd)=NULL;
 
-    virtual void OnSetDuiFocus(HDUIWND hDuiWnd)=NULL;
+    virtual void OnSetDuiFocus(HSWND hDuiWnd)=NULL;
 
-    virtual HDUIWND GetDuiHover()=NULL;
+    virtual HSWND GetDuiHover()=NULL;
 
-    virtual HDUIWND GetDuiFocus()=NULL;
+    virtual HSWND GetDuiFocus()=NULL;
 
     virtual BOOL DuiCreateCaret(HBITMAP hBmp,int nWidth,int nHeight)=NULL;
 

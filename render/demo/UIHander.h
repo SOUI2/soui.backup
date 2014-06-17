@@ -17,7 +17,7 @@ public:
 	CUIHander(CMainDlg *pMainDlg);
 	~CUIHander(void);
 	
-	bool Evt_Test(CDuiWindow * pSender, LPDUINMHDR pNmhdr);
+	bool Evt_Test(SWindow * pSender, LPDUINMHDR pNmhdr);
 
 protected:
 	LRESULT OnInitDialog(HWND hWnd, LPARAM lParam);
@@ -48,7 +48,7 @@ protected:
 
 	void OnBtnInitListClick();
 
-	bool OnListHeaderClick(CDuiWindow * pSender, LPDUINMHDR pNmhdr);
+	bool OnListHeaderClick(SWindow * pSender, LPDUINMHDR pNmhdr);
 	
 	void OnHideTestClick();
 

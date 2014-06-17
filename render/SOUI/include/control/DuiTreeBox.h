@@ -17,7 +17,7 @@ namespace SOUI
 class SOUI_EXP CDuiTreeItem : public CDuiItemPanel
 {
 public:
-    CDuiTreeItem(CDuiWindow *pFrameHost);
+    CDuiTreeItem(SWindow *pFrameHost);
 
     BOOL m_bCollapsed;
     BOOL m_bVisible;
@@ -122,7 +122,7 @@ protected:
 
     int m_nItemHei,m_nIndent;
     COLORREF m_crItemBg,m_crItemSelBg;
-    CDuiSkinBase * m_pItemSkin;
+    ISkinObj * m_pItemSkin;
     BOOL m_bItemRedrawDelay;
     pugi::xml_document m_xmlSwitch;
 

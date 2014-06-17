@@ -7,7 +7,7 @@ namespace SOUI
 enum SPLITMODE {SM_COL=0,SM_ROW};
 
 
-class SOUI_EXP CDuiSplitPane : public CDuiWindow
+class SOUI_EXP CDuiSplitPane : public SWindow
 {
     friend class CDuiSplitWnd;
     SOUI_CLASS_NAME(CDuiSplitPane, "splitpane")
@@ -28,7 +28,7 @@ protected:
 };
 
 class SOUI_EXP CDuiSplitWnd :
-    public CDuiWindow
+    public SWindow
 {
     SOUI_CLASS_NAME(CDuiSplitWnd, "splitwnd")
 
@@ -91,7 +91,7 @@ protected:
     WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
     MSG_WM_DESTROY(OnDestroy)
-    MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
+    MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
     MSG_WM_LBUTTONUP(OnLButtonUp)
     MSG_WM_MOUSEMOVE(OnMouseMove)
@@ -99,7 +99,7 @@ protected:
 
 protected:
     CDuiArray<CDuiSplitPane *> m_arrPane;
-    CDuiSkinBase *m_pSkinSep;
+    ISkinObj *m_pSkinSep;
     int m_nSepSize;
     BOOL m_bAdjustable;
     BOOL m_bColMode;

@@ -9,7 +9,6 @@
 #include "DuiWindowMgr.h"
 
 #include "mybuffer.h"
-#include "DuiImgDecoder_Def.h"
 
 namespace SOUI
 {
@@ -18,10 +17,7 @@ template<> DuiSystem* Singleton<DuiSystem>::ms_Singleton = 0;
 
 DuiSystem::DuiSystem(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName/*=_T("DuiHostWnd")*/)
     :m_hInst(hInst)
-    ,m_pLogger(NULL)
     ,m_pScriptModule(NULL)
-    ,m_pImgDecoder(NULL)
-    ,m_pDefImgDecoder(new CDuiImgDecoder_Def)
     ,m_RenderFactory(pRendFactory)
 {
     createSingletons();
@@ -34,7 +30,6 @@ DuiSystem::~DuiSystem(void)
     destroySingletons();
     CSimpleWndHelper::Destroy();
     CDuiTextServiceHelper::Destroy();
-    delete m_pDefImgDecoder;
 }
 
 void DuiSystem::createSingletons()

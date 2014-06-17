@@ -38,9 +38,9 @@ public:
 
     int GetCurSel();
 
-    int GetItemObjIndex(CDuiWindow *pItemObj);
+    int GetItemObjIndex(SWindow *pItemObj);
 
-    CDuiWindow * GetItemPanel(int iItem);
+    SWindow * GetItemPanel(int iItem);
 
     LPARAM GetItemData(int iItem);
 
@@ -92,7 +92,7 @@ protected:
 
     virtual BOOL LoadChildren(pugi::xml_node xmlNode);
     // Get tooltip Info
-    virtual BOOL OnUpdateToolTip(HDUIWND hCurTipHost,HDUIWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
+    virtual BOOL OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
 
     void NotifySelChange(int nOldSel,int nNewSel);
 
@@ -134,7 +134,7 @@ protected:
     int        m_nItems;                    //虚拟列表中记录列表项
     pugi::xml_document m_xmlTempl;        ////列表模板XML
     CDuiItemPanel    *    m_pCapturedFrame;
-    CDuiSkinBase * m_pItemSkin;
+    ISkinObj * m_pItemSkin;
     COLORREF m_crItemBg,m_crItemSelBg;
     int        m_nItemHei;
     BOOL    m_bVirtual;

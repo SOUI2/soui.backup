@@ -155,7 +155,7 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
         DuiSystem::getSingleton().LoadSkins(m_strName);    //load skin only used in the host window
     }
 
-    CDuiWindow::Load(xmlNode.child("body"));
+    SWindow::Load(xmlNode.child("body"));
 
     Move(rcClient);
     DuiSendMessage(WM_ENABLE,1);
@@ -504,10 +504,10 @@ BOOL CDuiHostWnd::OnSetCursor(HWND hwnd, UINT nHitTest, UINT message)
 
 void CDuiHostWnd::OnTimer(UINT_PTR idEvent)
 {
-    CDuiTimerID duiTimerID((DWORD)idEvent);
+    STimerID duiTimerID((DWORD)idEvent);
     if(duiTimerID.bDuiTimer)
     {
-        CDuiWindow *pDuiWnd=DuiWindowMgr::GetWindow((HDUIWND)duiTimerID.hDuiWnd);
+        SWindow *pDuiWnd=DuiWindowMgr::GetWindow((HSWND)duiTimerID.hDuiWnd);
         if(pDuiWnd)
         {
             if(pDuiWnd==this) OnDuiTimer(duiTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
@@ -571,14 +571,14 @@ LRESULT CDuiHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     if(m_pTipCtrl && m_pTipCtrl->IsWindow())
     {
-        CDuiWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
+        SWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
         if(!pHover || pHover->IsDisabled(TRUE))
         {
             m_pTipCtrl->ShowTip(FALSE);
         }
         else
         {
-            HDUIWND hNewTipHost=0;
+            HSWND hNewTipHost=0;
             CRect rcTip;
             CDuiStringT strTip;
             BOOL bUpdate=pHover->OnUpdateToolTip(m_pTipCtrl->m_dwHostID,hNewTipHost,rcTip,strTip);
@@ -597,7 +597,7 @@ LRESULT CDuiHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     if(uMsg==WM_SYSKEYDOWN || uMsg==WM_SYSKEYUP)
     {
-        CDuiWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
+        SWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
         if(!pFocus  || !(pFocus->OnGetDuiCode()&DUIC_WANTSYSKEY))
         {
             SetMsgHandled(FALSE);
@@ -605,7 +605,7 @@ LRESULT CDuiHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
         }
     }
     LRESULT lRet = DoFrameEvent(uMsg,wParam,lParam);
-    SetMsgHandled(CDuiWindow::IsMsgHandled());
+    SetMsgHandled(SWindow::IsMsgHandled());
     return lRet;
 }
 
@@ -652,36 +652,37 @@ HWND CDuiHostWnd::GetHostHwnd()
     return m_hWnd;
 }
 
-HDC CDuiHostWnd::OnGetDuiDC(const CRect & rc,DWORD gdcFlags)
+IRenderTarget * CDuiHostWnd::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
 {
-    m_memDC.SelectFont(DuiFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT));
-    m_memDC.SetBkMode(TRANSPARENT);
-    m_memDC.SetTextColor(0);
-
-    if(!(gdcFlags & OLEDC_NODRAW))
-    {
-        if(m_bCaretActive)
-        {
-            DrawCaret(m_ptCaret);//clear old caret
-        }
-        CRgn rgnRc;
-        rgnRc.CreateRectRgnIndirect(&rc);
-        m_memDC.SelectClipRgn(rgnRc);
-    }
-    return m_memDC;
+    return NULL;
+//     m_memDC.SelectFont(DuiFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT));
+//     m_memDC.SetBkMode(TRANSPARENT);
+//     m_memDC.SetTextColor(0);
+// 
+//     if(!(gdcFlags & OLEDC_NODRAW))
+//     {
+//         if(m_bCaretActive)
+//         {
+//             DrawCaret(m_ptCaret);//clear old caret
+//         }
+//         CRgn rgnRc;
+//         rgnRc.CreateRectRgnIndirect(&rc);
+//         m_memDC.SelectClipRgn(rgnRc);
+//     }
+//     return m_memDC;
 }
 
-void CDuiHostWnd::OnReleaseDuiDC(HDC hdcSour,const CRect &rc,DWORD gdcFlags)
+void CDuiHostWnd::OnReleaseRenderTarget(IRenderTarget * pRT,const CRect &rc,DWORD gdcFlags)
 {
-    m_memDC.SelectClipRgn(NULL);
-    if(gdcFlags & OLEDC_NODRAW) return;
-    if(m_bCaretActive)
-    {
-        DrawCaret(m_ptCaret);//clear old caret
-    }
-    CDCHandle dc=GetDC();
-    UpdateHost(dc,rc);
-    ReleaseDC(dc);
+//     m_memDC.SelectClipRgn(NULL);
+//     if(gdcFlags & OLEDC_NODRAW) return;
+//     if(m_bCaretActive)
+//     {
+//         DrawCaret(m_ptCaret);//clear old caret
+//     }
+//     CDCHandle dc=GetDC();
+//     UpdateHost(dc,rc);
+//     ReleaseDC(dc);
 }
 
 void CDuiHostWnd::UpdateHost(CDCHandle dc, const CRect &rcInvalid )
@@ -740,13 +741,13 @@ BOOL CDuiHostWnd::OnReleaseDuiCapture()
     return TRUE;
 }
 
-HDUIWND CDuiHostWnd::OnSetDuiCapture(HDUIWND hDuiWnd)
+HSWND CDuiHostWnd::OnSetDuiCapture(HSWND hDuiWnd)
 {
     SetCapture();
     return __super::OnSetDuiCapture(hDuiWnd);
 }
 
-HDUIWND CDuiHostWnd::GetDuiCapture()
+HSWND CDuiHostWnd::GetDuiCapture()
 {
     if(GetCapture()!=m_hWnd) return NULL;
     return __super::OnGetDuiCapture();

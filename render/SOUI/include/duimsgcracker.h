@@ -1,7 +1,5 @@
 #pragma once
 
-// DuiWindow Message Map Define
-// Use WTL Message Map Ex (include atlcrack.h)
 #define WND_MSG_MAP_BEGIN()                                       \
 protected:                                                          \
     virtual BOOL ProcessDuiWndMessage(                              \
@@ -21,7 +19,7 @@ protected:                                                          \
     }
 
 
-#define MSG_WM_DUIWINPOSCHANGED(func) \
+#define MSG_WM_WINPOSCHANGED_EX(func) \
     if (uMsg == WM_WINDOWPOSCHANGED) \
 { \
     SetMsgHandled(TRUE); \
@@ -30,13 +28,33 @@ protected:                                                          \
     return TRUE; \
 }
 
+// BOOL OnEraseBkgnd(IRenderTarget * pRT)
+#define MSG_WM_ERASEBKGND_EX(func) \
+    if (uMsg == WM_ERASEBKGND) \
+    { \
+    SetMsgHandled(TRUE); \
+    lResult = (LRESULT)func((IRenderTarget *)wParam); \
+    if(IsMsgHandled()) \
+    return TRUE; \
+    }
 
-// void OnNcPaint(CDCHandle dc)
+// void OnPaint(IRenderTarget * pRT)
+#define MSG_WM_PAINT_EX(func) \
+    if (uMsg == WM_PAINT) \
+    { \
+    SetMsgHandled(TRUE); \
+    func((IRenderTarget *)wParam); \
+    lResult = 0; \
+    if(IsMsgHandled()) \
+    return TRUE; \
+    }
+
+// void OnNcPaint(IRenderTarget * pRT)
 #define MSG_WM_NCPAINT_EX(func) \
     if (uMsg == WM_NCPAINT) \
 { \
     SetMsgHandled(TRUE); \
-    func((HDC)wParam); \
+    func((IRenderTarget *)wParam); \
     lResult = 0; \
     if(IsMsgHandled()) \
     return TRUE; \

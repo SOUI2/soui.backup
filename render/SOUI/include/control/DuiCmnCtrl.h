@@ -26,7 +26,7 @@ namespace SOUI
  * Describe    空格控件类
  * Usage       <spacing width=xx />
  */
-class SOUI_EXP CDuiSpacing : public CDuiWindow
+class SOUI_EXP CDuiSpacing : public SWindow
 {
     SOUI_CLASS_NAME(CDuiSpacing, "spacing")
 public:
@@ -46,7 +46,7 @@ protected:
  * Describe    静态文本控件可支持多行，有多行属性时，\n可以强制换行
  * Usage       <text>inner text example</text>
  */
-class SOUI_EXP CDuiStatic : public CDuiWindow
+class SOUI_EXP CDuiStatic : public SWindow
 {
     SOUI_CLASS_NAME(CDuiStatic, "text")
 public:
@@ -91,7 +91,7 @@ protected:
  * Describe    Only For Header Drag Test
  * Usage       <link>inner text example</link>
  */
-class SOUI_EXP CDuiLink : public CDuiWindow
+class SOUI_EXP CDuiLink : public SWindow
 {
     SOUI_CLASS_NAME(CDuiLink, "link")
 
@@ -160,7 +160,7 @@ protected:
  * Describe    通过属性ID绑定click事件 Use id attribute to process click event
  * Usage       <button id=xx>inner text example</button>
  */
-class SOUI_EXP CDuiButton : public CDuiWindow
+class SOUI_EXP CDuiButton : public SWindow
     , public IAcceleratorTarget
     , public ITimelineHandler
 {
@@ -293,7 +293,7 @@ public:
  * Describe    Image Control 图片控件类
  * Usage       Usage: <img skin="skin" sub="0"/>
  */
-class SOUI_EXP CDuiImageWnd : public CDuiWindow
+class SOUI_EXP CDuiImageWnd : public SWindow
 {
     SOUI_CLASS_NAME(CDuiImageWnd, "img")
 public:
@@ -322,7 +322,7 @@ public:
      *
      * Describe  设置皮肤
      */
-    BOOL SetSkin(CDuiSkinBase *pSkin,int nSubID=0);
+    BOOL SetSkin(ISkinObj *pSkin,int nSubID=0);
     /**
      * CDuiImageWnd::SetIcon
      * @param    int nSubID -- 资源ID
@@ -340,7 +340,7 @@ public:
      *
      * Describe  获取资源
      */
-    CDuiSkinBase * GetSkin(){return m_pSkin;}
+    ISkinObj * GetSkin(){return m_pSkin;}
 protected:
     /**
      * CDuiImageWnd::GetDesiredSize
@@ -354,7 +354,7 @@ protected:
 
     BOOL m_bManaged;  /**< 暂时不详 */
     int m_nSubImageID;  /**< 资源图片ID */
-    CDuiSkinBase *m_pSkin;  /**< 资源对象 */
+    ISkinObj *m_pSkin;  /**< 资源对象 */
     //BOOL m_bCalc;
 
     SOUI_ATTRS_BEGIN()
@@ -373,7 +373,7 @@ protected:
  * 
  * Describe    此窗口支持动画效果
  */
-class SOUI_EXP CDuiAnimateImgWnd : public CDuiWindow, public ITimelineHandler
+class SOUI_EXP CDuiAnimateImgWnd : public SWindow, public ITimelineHandler
 {
     SOUI_CLASS_NAME(CDuiAnimateImgWnd, "animateimg")
 public:    
@@ -446,7 +446,7 @@ protected:
     SOUI_ATTRS_END()
 
 protected:
-    CDuiSkinBase *m_pSkin;        /**< 暂时不祥 */
+    ISkinObj *m_pSkin;        /**< 暂时不祥 */
     int           m_nSpeed;       /**< 速度 */
     int           m_iCurFrame;    /**< 当前帧 */
     BOOL          m_bAutoStart;   /**< 是否自动启动 */
@@ -460,7 +460,7 @@ protected:
  * Describe    进度条类
  * Usage: <progress bgskin=xx posskin=xx min=0 max=100 value=10,showpercent=0/>
  */
-class SOUI_EXP CDuiProgress : public CDuiWindow
+class SOUI_EXP CDuiProgress : public SWindow
 {
     SOUI_CLASS_NAME(CDuiProgress, "progress")
 public:
@@ -536,8 +536,8 @@ protected:
     BOOL m_bShowPercent; /**< 是否显示百分比 */
     BOOL m_bVertical;    /**< 是否竖直状态 */
 
-    CDuiSkinBase *m_pSkinBg;   /**< 暂时不详 */
-    CDuiSkinBase *m_pSkinPos;  /**< 暂时不详 */
+    ISkinObj *m_pSkinBg;   /**< 暂时不详 */
+    ISkinObj *m_pSkinPos;  /**< 暂时不详 */
 
     WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
@@ -561,7 +561,7 @@ protected:
  * Describe    线条控件
  * Usage: <hr style=solid size=1 crbg=.../>
  */
-class SOUI_EXP CDuiLine : public CDuiWindow
+class SOUI_EXP CDuiLine : public SWindow
 {
     SOUI_CLASS_NAME(CDuiLine, "hr")
 
@@ -617,7 +617,7 @@ protected:
  * Describe    复选框控件
  * Usage: <check state=4>This is a check-box</check>
  */
-class SOUI_EXP CDuiCheckBox : public CDuiWindow
+class SOUI_EXP CDuiCheckBox : public SWindow
 {
     SOUI_CLASS_NAME(CDuiCheckBox, "check")
 
@@ -638,8 +638,8 @@ public:
     void OnPaint(CDCHandle dc);
 protected:
 
-    CDuiSkinBase *m_pSkin;   /**< 暂时不详 */
-    CDuiSkinBase *m_pFocusSkin; /**< 暂时不详 */
+    ISkinObj *m_pSkin;   /**< 暂时不详 */
+    ISkinObj *m_pFocusSkin; /**< 暂时不详 */
     /**
      * CDuiCheckBox::_GetDrawState
      * @brief    获得复选框状态
@@ -731,7 +731,7 @@ protected:
  * Describe    图标控件 Use src attribute specify a resource id
  * Usage: <icon src=xx size="16"/>
  */
-class SOUI_EXP CDuiIconWnd : public CDuiWindow
+class SOUI_EXP CDuiIconWnd : public SWindow
 {
     SOUI_CLASS_NAME(CDuiIconWnd, "icon")
 public:    
@@ -803,7 +803,7 @@ protected:
  * Describe    单选框控件
  * Usage: <radio state=1>This is a check-box</radio>
  */
-class SOUI_EXP CDuiRadioBox : public CDuiWindow
+class SOUI_EXP CDuiRadioBox : public SWindow
 {
     SOUI_CLASS_NAME(CDuiRadioBox, "radio")
 
@@ -827,8 +827,8 @@ public:
 protected:
 
     // CDuiRadioBoxTheme m_theme;
-    CDuiSkinBase *m_pSkin;  /**< 皮肤资源 */
-    CDuiSkinBase *m_pFocusSkin; /**< 焦点皮肤资源 */
+    ISkinObj *m_pSkin;  /**< 皮肤资源 */
+    ISkinObj *m_pFocusSkin; /**< 焦点皮肤资源 */
     /**
      * CDuiRadioBox::CDuiRadioBox
      * @brief    构造函数
@@ -918,7 +918,7 @@ protected:
  * 
  * Describe    Toggle控件
  */
-class SOUI_EXP CDuiToggle : public CDuiWindow
+class SOUI_EXP CDuiToggle : public SWindow
 {
     SOUI_CLASS_NAME(CDuiToggle, "togglectrl")
 public:
@@ -964,7 +964,7 @@ protected:
     WND_MSG_MAP_END()
 protected:
     BOOL m_bToggled;
-    CDuiSkinBase *m_pSkin;
+    ISkinObj *m_pSkin;
 };
 
 /**
@@ -974,7 +974,7 @@ protected:
  * Describe    组控件
  * Usage       <group crline1="b8d5e2" crline2="999999">group text</>
  */
-class SOUI_EXP CDuiGroup : public CDuiWindow
+class SOUI_EXP CDuiGroup : public SWindow
 {
     SOUI_CLASS_NAME(CDuiGroup, "group")
 public:

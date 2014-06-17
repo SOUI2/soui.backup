@@ -23,7 +23,7 @@ namespace SOUI
  * Describe    标签类 只需要继承此类即可
  */
 class CDuiCaption :
-    public CDuiWindow
+    public SWindow
 {
     SOUI_CLASS_NAME(CDuiCaption, "caption")
 public:

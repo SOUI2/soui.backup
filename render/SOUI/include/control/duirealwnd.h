@@ -24,7 +24,7 @@ public:
 };
 
 
-class SOUI_EXP CDuiRealWnd : public CDuiWindow
+class SOUI_EXP CDuiRealWnd : public SWindow
 {
     SOUI_CLASS_NAME(CDuiRealWnd, "realwnd")
 public:
@@ -77,7 +77,7 @@ protected:
     WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
     MSG_WM_DESTROY(OnDestroy)
-    MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
+    MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
     MSG_WM_SHOWWINDOW(OnShowWindow)
     WND_MSG_MAP_END()
 

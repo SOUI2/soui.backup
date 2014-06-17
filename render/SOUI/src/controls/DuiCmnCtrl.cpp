@@ -336,7 +336,7 @@ void CDuiImageWnd::OnPaint(CDCHandle dc)
         m_pSkin->Draw(dc, m_rcWindow, m_nSubImageID,m_byAlpha);
 }
 
-BOOL CDuiImageWnd::SetSkin(CDuiSkinBase *pSkin,int nSubID/*=0*/)
+BOOL CDuiImageWnd::SetSkin(ISkinObj *pSkin,int nSubID/*=0*/)
 {
     if(IsVisible(TRUE)) NotifyInvalidate();
     if(m_bManaged && m_pSkin)

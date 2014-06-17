@@ -14,7 +14,8 @@ DuiWindowFactoryMgr::DuiWindowFactoryMgr(void)
 
 void DuiWindowFactoryMgr::AddStandardWindowFactory()
 {
-    AddKeyObject(CDuiWindow::GetClassName(),new TplDuiWindowFactory<CDuiWindow>);
+    AddKeyObject(SWindow::GetClassName(),new TplDuiWindowFactory<SWindow>);
+    /*
     AddKeyObject(CDuiPanel::GetClassName(),new TplDuiWindowFactory<CDuiPanel>);
     AddKeyObject(CDuiScrollView::GetClassName(),new TplDuiWindowFactory<CDuiScrollView>);
     AddKeyObject(CDuiStatic::GetClassName(),new TplDuiWindowFactory<CDuiStatic>);
@@ -49,23 +50,24 @@ void DuiWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(CDuiHotKeyCtrl::GetClassName(),new TplDuiWindowFactory<CDuiHotKeyCtrl>);
     AddKeyObject(CDuiCaption::GetClassName(),new TplDuiWindowFactory<CDuiCaption>);
     AddKeyObject(CDuiSliderBar::GetClassName(),new TplDuiWindowFactory<CDuiSliderBar>);
-     AddKeyObject(CDuiActiveX::GetClassName(),new TplDuiWindowFactory<CDuiActiveX>);
-     AddKeyObject(CDuiFlashCtrl::GetClassName(),new TplDuiWindowFactory<CDuiFlashCtrl>);
-     AddKeyObject(CDuiMediaPlayer::GetClassName(),new TplDuiWindowFactory<CDuiMediaPlayer>);
+    AddKeyObject(CDuiActiveX::GetClassName(),new TplDuiWindowFactory<CDuiActiveX>);
+    AddKeyObject(CDuiFlashCtrl::GetClassName(),new TplDuiWindowFactory<CDuiFlashCtrl>);
+    AddKeyObject(CDuiMediaPlayer::GetClassName(),new TplDuiWindowFactory<CDuiMediaPlayer>);
     AddKeyObject(CDuiMaskEdit::GetClassName(),new TplDuiWindowFactory<CDuiMaskEdit>);
     AddKeyObject(CDuiDateEdit::GetClassName(),new TplDuiWindowFactory<CDuiDateEdit>);
     AddKeyObject(CDuiTimeEdit::GetClassName(),new TplDuiWindowFactory<CDuiTimeEdit>);
     AddKeyObject(CDuiCalendar::GetClassName(),new TplDuiWindowFactory<CDuiCalendar>);
     AddKeyObject(CDuiHeaderCtrl::GetClassName(),new TplDuiWindowFactory<CDuiHeaderCtrl>);
     AddKeyObject(CDuiListCtrl::GetClassName(),new TplDuiWindowFactory<CDuiListCtrl>);
+    //*/
 }
 
-void DuiWindowFactoryMgr::OnWndFactoryRemoved( const CDuiWindowFactoryPtr & obj )
+void DuiWindowFactoryMgr::OnWndFactoryRemoved( const SWindowFactoryPtr & obj )
 {
     delete obj;
 }
 
-CDuiWindow * DuiWindowFactoryMgr::CreateWindowByName( LPCSTR pszClassName )
+SWindow * DuiWindowFactoryMgr::CreateWindowByName( LPCSTR pszClassName )
 {
     if(!HasKey(pszClassName))
     {

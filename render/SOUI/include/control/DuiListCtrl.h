@@ -99,9 +99,9 @@ namespace SOUI
         void            OnPaint(CDCHandle dc);
         void            OnDestroy();
 
-        bool            OnHeaderClick(CDuiWindow* pSender, LPDUINMHDR pNmhdr);
-        bool            OnHeaderSizeChanging(CDuiWindow* pSender, LPDUINMHDR pNmhdr);
-        bool            OnHeaderSwap(CDuiWindow* pSender, LPDUINMHDR pNmhdr);
+        bool            OnHeaderClick(SWindow* pSender, LPDUINMHDR pNmhdr);
+        bool            OnHeaderSizeChanging(SWindow* pSender, LPDUINMHDR pNmhdr);
+        bool            OnHeaderSwap(SWindow* pSender, LPDUINMHDR pNmhdr);
 
         virtual BOOL    OnScroll(BOOL bVertical,UINT uCode,int nPos);
         virtual void    OnLButtonDown(UINT nFlags, CPoint pt);
@@ -133,8 +133,8 @@ namespace SOUI
         COLORREF        m_crText;
         COLORREF        m_crSelText;
 
-        CDuiSkinBase*    m_pItemSkin;
-        CDuiSkinBase*    m_pIconSkin;
+        ISkinObj*    m_pItemSkin;
+        ISkinObj*    m_pIconSkin;
 
     protected:
         typedef CDuiArray<DXLVITEM> ArrLvItem;

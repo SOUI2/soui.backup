@@ -14,7 +14,7 @@ typedef ULONG_PTR HSTREEITEM;
 #define UM_DUI_NOTIFY                (WM_USER+100)
 namespace SOUI
 {
-class CDuiWindow;
+class SWindow;
 
 #define NOTIFY_HANDLER_SOUI(id, func) \
     if (uMsg == UM_DUI_NOTIFY && wParam == IDC_RICHVIEW_WIN) \
@@ -219,7 +219,7 @@ typedef struct tagDUINMITEMNOTIFY
     DUINMHDR       hdr;
     LPDUINMHDR        pOriginHdr;    //原始消息
     CDuiItemPanel *pItem;
-    CDuiWindow *    pHostDuiWin;
+    SWindow *    pHostDuiWin;
 } DUINMITEMNOTIFY, *LPDUINMITEMNOTIFY;
 
 
@@ -244,7 +244,7 @@ typedef struct tagDUINMGETLBDISPINFO
     BOOL        bHover;
     BOOL        bSelect;
     CDuiItemPanel *    pItem;
-    CDuiWindow *    pHostDuiWin;
+    SWindow *    pHostDuiWin;
 } DUINMGETLBDISPINFO, *LPDUINMGETLBDISPINFO;
 
 #define NM_LBSELCHANGING 18
@@ -267,7 +267,7 @@ typedef struct tagDUINMGETTBDISPINFO
     BOOL        bHover;
     BOOL        bSelect;
     CDuiItemPanel *    pItem;
-    CDuiWindow *    pHostDuiWin;
+    SWindow *    pHostDuiWin;
 } DUINMGETTBDISPINFO, *LPDUINMGETTBDISPINFO;
 
 #define NM_TBSELCHANGING    21

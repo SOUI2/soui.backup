@@ -33,7 +33,7 @@ inline bool operator !=(const SBHITINFO &a, const SBHITINFO &b)
     return memcmp(&a,&b,sizeof(SBHITINFO))!=0;
 }
 
-class SOUI_EXP CDuiPanel: public CDuiWindow
+class SOUI_EXP CDuiPanel: public SWindow
 {
     SOUI_CLASS_NAME(CDuiPanel, "div")
 
@@ -71,7 +71,7 @@ protected:
 
     int OnCreate(LPVOID);
 
-    void OnNcPaint(CDCHandle dc);
+    void OnNcPaint(IRenderTarget *pRT);
 
     virtual BOOL OnDuiNcHitTest(CPoint pt);
 
@@ -108,7 +108,7 @@ protected:
     LRESULT OnAttrScrollbarSkin(CDuiStringA strValue,BOOL bLoading);
 
     SCROLLINFO m_siVer,m_siHoz;
-    CDuiScrollbarSkin *m_pSkinSb;
+    SSkinScrollbar *m_pSkinSb;
     int            m_nSbArrowSize;
     int            m_nSbWid;
     CPoint        m_ptDragSb;
@@ -132,16 +132,16 @@ protected:
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-    MSG_WM_CREATE(OnCreate)
-    MSG_WM_NCPAINT_EX(OnNcPaint)
-    MSG_WM_NCCALCSIZE(OnNcCalcSize)
-    MSG_WM_NCLBUTTONDOWN(OnNcLButtonDown)
-    MSG_WM_NCLBUTTONUP(OnNcLButtonUp)
-    MSG_WM_NCMOUSEMOVE(OnNcMouseMove)
-    MSG_WM_NCMOUSELEAVE(OnNcMouseLeave)
-    MSG_WM_MOUSEWHEEL(OnMouseWheel)
-    MSG_WM_DUITIMER(OnDuiTimer)
-    MSG_WM_SHOWWINDOW(OnShowWindow)
+        MSG_WM_CREATE(OnCreate)
+        MSG_WM_NCPAINT_EX(OnNcPaint)
+        MSG_WM_NCCALCSIZE(OnNcCalcSize)
+        MSG_WM_NCLBUTTONDOWN(OnNcLButtonDown)
+        MSG_WM_NCLBUTTONUP(OnNcLButtonUp)
+        MSG_WM_NCMOUSEMOVE(OnNcMouseMove)
+        MSG_WM_NCMOUSELEAVE(OnNcMouseLeave)
+        MSG_WM_MOUSEWHEEL(OnMouseWheel)
+        MSG_WM_DUITIMER(OnDuiTimer)
+        MSG_WM_SHOWWINDOW(OnShowWindow)
     WND_MSG_MAP_END()
 };
 

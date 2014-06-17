@@ -17,7 +17,7 @@ namespace SOUI
 {
 
 
-CDuiItemPanel::CDuiItemPanel(CDuiWindow *pFrameHost,pugi::xml_node xmlNode,IDuiItemContainer *pItemContainer)
+CDuiItemPanel::CDuiItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IDuiItemContainer *pItemContainer)
     :CDuiFrame(this)
     ,m_pFrmHost(pFrameHost)
     ,m_pItemContainer(pItemContainer)
@@ -84,7 +84,7 @@ LRESULT CDuiItemPanel::OnDuiNotify(LPDUINMHDR pHdr)
     nmsItem.hdr.idFrom=m_pFrmHost->GetCmdID();
     nmsItem.hdr.pszNameFrom=m_pFrmHost->GetName();
     nmsItem.pItem=this;
-    nmsItem.pHostDuiWin=(CDuiWindow*)m_pFrmHost;
+    nmsItem.pHostDuiWin=(SWindow*)m_pFrmHost;
     nmsItem.pOriginHdr=pHdr;
     return m_pFrmHost->DuiNotify((LPDUINMHDR)&nmsItem);
 }
@@ -96,12 +96,12 @@ CRect CDuiItemPanel::GetContainerRect()
     return rcItem;
 }
 
-HDC CDuiItemPanel::OnGetDuiDC(const CRect & rc,DWORD gdcFlags)
+HDC CDuiItemPanel::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
 {
     CRect rcItem=GetItemRect();
     CRect rcInvalid=rc;
     rcInvalid.OffsetRect(rcItem.TopLeft());
-    HDC hdc=m_pFrmHost->GetDuiDC(rcInvalid,gdcFlags);
+    HDC hdc=m_pFrmHost->GetRenderTarget(rcInvalid,gdcFlags);
     if(gdcFlags & OLEDC_PAINTBKGND)
     {//调用frmhost的GetDuiDC时，不会绘制frmHost的背景。注意此外只画背景，不画前景,因为itempanel就是前景
         m_pFrmHost->DuiSendMessage(WM_ERASEBKGND, (WPARAM)hdc);
@@ -110,11 +110,11 @@ HDC CDuiItemPanel::OnGetDuiDC(const CRect & rc,DWORD gdcFlags)
     return hdc;
 }
 
-void CDuiItemPanel::OnReleaseDuiDC(HDC hdc,const CRect &rc,DWORD gdcFlags)
+void CDuiItemPanel::OnReleaseRenderTarget(HDC hdc,const CRect &rc,DWORD gdcFlags)
 {
     CRect rcItem=GetItemRect();
     OffsetViewportOrgEx(hdc,-rcItem.left,-rcItem.top,NULL);
-    m_pFrmHost->ReleaseDuiDC(hdc);
+    m_pFrmHost->ReleaseRenderTarget(hdc);
 }
 
 void CDuiItemPanel::OnRedraw(const CRect &rc)
@@ -132,11 +132,11 @@ void CDuiItemPanel::OnRedraw(const CRect &rc)
             m_pFrmHost->NotifyInvalidateRect(rc2);
         }else
         {
-            CDCHandle dc=OnGetDuiDC(rc,OLEDC_PAINTBKGND);
+            CDCHandle dc=OnGetRenderTarget(rc,OLEDC_PAINTBKGND);
             CRgn rgn;
             rgn.CreateRectRgnIndirect(&rc);
             RedrawRegion(dc,rgn);
-            OnReleaseDuiDC(dc,rc,OLEDC_PAINTBKGND);
+            OnReleaseRenderTarget(dc,rc,OLEDC_PAINTBKGND);
         }
     }
 }
@@ -148,7 +148,7 @@ BOOL CDuiItemPanel::OnReleaseDuiCapture()
     return TRUE;
 }
 
-HDUIWND CDuiItemPanel::OnSetDuiCapture(HDUIWND hDuiWNd)
+HSWND CDuiItemPanel::OnSetDuiCapture(HSWND hDuiWNd)
 {
     m_pItemContainer->OnItemSetCapture(this,TRUE);
     return __super::OnSetDuiCapture(hDuiWNd);
@@ -191,10 +191,10 @@ void CDuiItemPanel::ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove)
     ModifyState(dwStateAdd,dwStateRemove,FALSE);
 }
 
-HDUIWND CDuiItemPanel::DuiGetHWNDFromPoint(POINT ptHitTest, BOOL bOnlyText)
+HSWND CDuiItemPanel::DuiGetHWNDFromPoint(POINT ptHitTest, BOOL bOnlyText)
 {
-    HDUIWND hRet=__super::DuiGetHWNDFromPoint(ptHitTest,bOnlyText);
-    if(hRet==m_hDuiWnd) hRet=NULL;
+    HSWND hRet=__super::DuiGetHWNDFromPoint(ptHitTest,bOnlyText);
+    if(hRet==m_hSWnd) hRet=NULL;
     return hRet;
 }
 
@@ -209,7 +209,7 @@ void CDuiItemPanel::Draw(CDCHandle dc,const CRect & rc)
     dc.OffsetViewportOrg(-rc.left,-rc.top);
 }
 
-void CDuiItemPanel::SetSkin(CDuiSkinBase *pSkin)
+void CDuiItemPanel::SetSkin(ISkinObj *pSkin)
 {
     m_pBgSkin=pSkin;
 }
@@ -246,12 +246,12 @@ LPARAM CDuiItemPanel::GetItemData()
     return m_dwData;
 }
 
-BOOL CDuiItemPanel::OnUpdateToolTip( HDUIWND hCurTipHost,HDUIWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip )
+BOOL CDuiItemPanel::OnUpdateToolTip( HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip )
 {
     if(hCurTipHost==m_hHover) return FALSE;
-    if(m_hHover==m_hDuiWnd) return FALSE;
+    if(m_hHover==m_hSWnd) return FALSE;
 
-    CDuiWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
+    SWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
     if(!pHover || pHover->IsDisabled(TRUE))
     {
         hNewTipHost=NULL;

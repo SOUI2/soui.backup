@@ -1,11 +1,11 @@
 #pragma once
 #include "DuiSingletonMap.h"
-#include "DuiSkinBase.h"
+#include "skinobj-i.h"
 
 namespace SOUI
 {
 
-typedef CDuiSkinBase * DuiSkinPtr;
+typedef ISkinObj * DuiSkinPtr;
 class SOUI_EXP DuiSkinPool :public DuiCmnMap<DuiSkinPtr,CDuiStringA>
 {
 public:
@@ -15,7 +15,7 @@ public:
 
     BOOL Init(pugi::xml_node xmlNode);
 
-    CDuiSkinBase* GetSkin(LPCSTR strSkinName);
+    ISkinObj* GetSkin(LPCSTR strSkinName);
 
     int LoadSkins(LPCSTR  pszOwnerName);
 

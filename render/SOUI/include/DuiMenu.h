@@ -36,10 +36,10 @@ public:
 
     SOUI_ATTRS_END()
 protected:
-    CDuiSkinBase *m_pItemSkin;    //菜单项皮肤，包含2种状态：正常状态+选中状态
-    CDuiSkinBase *m_pIconSkin;    //菜单图标
-    CDuiSkinBase *m_pSepSkin;    //分割栏皮肤
-    CDuiSkinBase *m_pCheckSkin;    //选中状态,包含两种状态:勾选+圈选
+    ISkinObj *m_pItemSkin;    //菜单项皮肤，包含2种状态：正常状态+选中状态
+    ISkinObj *m_pIconSkin;    //菜单图标
+    ISkinObj *m_pSepSkin;    //分割栏皮肤
+    ISkinObj *m_pCheckSkin;    //选中状态,包含两种状态:勾选+圈选
     int              m_nItemHei;    //菜单项高度
     int              m_nIconMargin;//图标边缘空间
     int              m_nTextMargin;//文本边缘空间

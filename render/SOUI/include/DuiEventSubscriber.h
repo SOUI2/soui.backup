@@ -2,7 +2,7 @@
 // Start of SOUI namespace section
 namespace SOUI
 {
-    class CDuiWindow;
+    class SWindow;
 
 /*!
 \brief
@@ -23,7 +23,7 @@ public:
     /*************************************************************************
         Construction
     *************************************************************************/
-    EventArgs(LPDUINMHDR pnms,CDuiWindow *pSender) 
+    EventArgs(LPDUINMHDR pnms,SWindow *pSender) 
         : handled(0)
         , m_pnms(pnms)
         , m_pSender(pSender)
@@ -32,7 +32,7 @@ public:
 
     LPDUINMHDR m_pnms;
 
-    CDuiWindow *m_pSender;
+    SWindow *m_pSender;
     /*************************************************************************
         Data members
     *************************************************************************/
@@ -51,7 +51,7 @@ class SOUI_EXP SlotFunctorBase
 {
 public:
     virtual ~SlotFunctorBase() {};
-    virtual bool operator()(CDuiWindow * pSender,LPDUINMHDR pNmhdr) = 0;
+    virtual bool operator()(SWindow * pSender,LPDUINMHDR pNmhdr) = 0;
     virtual SlotFunctorBase* Clone() const =0;
     virtual bool Equal(const SlotFunctorBase & sour)const  =0;
     virtual UINT GetSlotType() const  =0;
@@ -65,13 +65,13 @@ class SOUI_EXP FreeFunctionSlot : public SlotFunctorBase
 {
 public:
     //! Slot function type.
-    typedef bool (SlotFunction)(CDuiWindow * ,LPDUINMHDR );
+    typedef bool (SlotFunction)(SWindow * ,LPDUINMHDR );
 
     FreeFunctionSlot(SlotFunction* func) :
         d_function(func)
     {}
 
-    virtual bool operator()(CDuiWindow * pSender,LPDUINMHDR pNmhdr)
+    virtual bool operator()(SWindow * pSender,LPDUINMHDR pNmhdr)
     {
         return d_function(pSender,pNmhdr);
     }
@@ -105,14 +105,14 @@ class MemberFunctionSlot : public SlotFunctorBase
 {
 public:
     //! Member function slot type.
-    typedef bool(T::*MemberFunctionType)(CDuiWindow * ,LPDUINMHDR );
+    typedef bool(T::*MemberFunctionType)(SWindow * ,LPDUINMHDR );
 
     MemberFunctionSlot(MemberFunctionType func, T* obj) :
         d_function(func),
         d_object(obj)
     {}
 
-    virtual bool operator()(CDuiWindow * pSender,LPDUINMHDR pNmhdr)
+    virtual bool operator()(SWindow * pSender,LPDUINMHDR pNmhdr)
     {
         return (d_object->*d_function)(pSender,pNmhdr);
     }
@@ -138,12 +138,12 @@ private:
 };
 
 template <class T>
-MemberFunctionSlot<T> Subscriber( bool (T::* pFn)(CDuiWindow * ,LPDUINMHDR ), T* pObject)
+MemberFunctionSlot<T> Subscriber( bool (T::* pFn)(SWindow * ,LPDUINMHDR ), T* pObject)
 {
     return MemberFunctionSlot<T>(pFn,pObject);
 }
 
-inline FreeFunctionSlot Subscriber(bool (*pFn)(CDuiWindow * ,LPDUINMHDR ))
+inline FreeFunctionSlot Subscriber(bool (*pFn)(SWindow * ,LPDUINMHDR ))
 {
     return FreeFunctionSlot(pFn); 
 }

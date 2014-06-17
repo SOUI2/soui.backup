@@ -9,7 +9,7 @@ namespace SOUI
 
 /////////////////////////////////////////////////////////////////////////////
 // CDuiScrollBar
-class SOUI_EXP CDuiScrollBar: public CDuiWindow
+class SOUI_EXP CDuiScrollBar: public SWindow
 {
 // Construction
 public:
@@ -73,7 +73,7 @@ protected:
     WND_MSG_MAP_END()
 
 protected:
-    CDuiSkinBase * m_pSkin;
+    ISkinObj * m_pSkin;
     UINT          m_uAllowSize;
 
     SCROLLINFO    m_si;

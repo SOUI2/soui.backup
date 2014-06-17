@@ -6,7 +6,6 @@
 #include "DuiWndFactoryMgr.h"
 #include "DuiSkinFactoryMgr.h"
 
-#include "DuiLogger.h"
 #include "DuiScriptModule.h"
 #include "res.mgr/DuiResProviderMgr.h"
 #include "res.mgr/DuiPools.h"
@@ -21,16 +20,15 @@
 #define LOADXML(p1,p2,p3) DuiSystem::getSingleton().LoadXmlDocment(p1,p2,p3)
 #define GETRESPROVIDER    DuiSystem::getSingletonPtr()
 #define GETRENDERFACTORY DuiSystem::getSingleton().GetRenderFactory()
-#define GETIMGDECODER   DuiSystem::getSingleton().GetImgDecoder
 
 namespace SOUI
 {
 
 class SOUI_EXP DuiSystem :public Singleton<DuiSystem>
                         ,public DuiWindowFactoryMgr
-                        ,public DuiSkinFactoryManager
-                        ,public DuiPools
+                        ,public DuiSkinFactoryMgr
                         ,public DuiResProviderMgr
+                        ,public DuiPools
 {
     friend class CSimpleWnd;
     friend class CDuiMessageBox;    //访问消息框模板
@@ -50,12 +48,6 @@ public:
     IScriptModule * GetScriptModule()
     {
         return m_pScriptModule;
-    }
-
-    IDuiImgDecoder * GetImgDecoder(){return m_pImgDecoder?m_pImgDecoder:m_pDefImgDecoder;}
-    
-    void SetImgDecoder(IDuiImgDecoder *pImgDecoder){
-        m_pDefImgDecoder=pImgDecoder;
     }
 
     void SetScriptModule(IScriptModule *pScriptModule)
@@ -79,10 +71,7 @@ protected:
     void destroySingletons();
 
     IScriptModule        * m_pScriptModule;
-    DuiLogger * m_pLogger;
     HINSTANCE m_hInst;
-    IDuiImgDecoder        * m_pDefImgDecoder;
-    IDuiImgDecoder        * m_pImgDecoder;
 
     pugi::xml_document    m_xmlMsgBoxTempl;
     pugi::xml_document    m_xmlEditMenu;

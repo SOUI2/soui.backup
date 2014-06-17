@@ -87,7 +87,7 @@ namespace SOUI
         }
     };
 
-    class CDuiWindow;
+    class SWindow;
     class CDuiLayout
     {
     public:
@@ -95,7 +95,7 @@ namespace SOUI
 
         //************************************
         // Method:    PositionItem2Point ：将一个position_item解释为绝对坐标
-        // FullName:  SOUI::CDuiWindow::PositionItem2Point
+        // FullName:  SOUI::SWindow::PositionItem2Point
         // Access:    protected 
         // Returns:   CPoint
         // Qualifier:
@@ -104,11 +104,11 @@ namespace SOUI
         // Parameter: int nMax 父窗口的范围
         // Parameter: BOOL bX 计算X坐标
         //************************************
-        static int PositionItem2Value(CDuiWindow *pWnd,const DUIDLG_POSITION_ITEM &pos,int nMin, int nMax,BOOL bX);
+        static int PositionItem2Value(SWindow *pWnd,const DUIDLG_POSITION_ITEM &pos,int nMin, int nMax,BOOL bX);
 
         //************************************
         // Method:    ParsePosition :解析一个坐标定义到position_item,增加对百分比的支持
-        // FullName:  SOUI::CDuiWindow::ParsePosition
+        // FullName:  SOUI::SWindow::ParsePosition
         // Access:    protected 
         // Returns:   LPCSTR
         // Qualifier:
@@ -120,15 +120,15 @@ namespace SOUI
 
         //************************************
         // Method:    CalcPosition:计算窗口坐标
-        // FullName:  SOUI::CDuiWindow::CalcPosition
+        // FullName:  SOUI::SWindow::CalcPosition
         // Access:    protected 
         // Returns:   int
         // Qualifier:
         // Parameter: LPRECT prcContainer
         //************************************
-        static int CalcPosition(CDuiWindow *pWnd,LPRECT prcContainer,const DUIWND_POSITION & dlgpos,CRect &rcWindow);
+        static int CalcPosition(SWindow *pWnd,LPRECT prcContainer,const DUIWND_POSITION & dlgpos,CRect &rcWindow);
 
 
-        static BOOL CalcChildrenPosition(CDuiWindow *pWnd,CDuiList<CDuiWindow*> *pListChildren);
+        static BOOL CalcChildrenPosition(SWindow *pWnd,CDuiList<SWindow*> *pListChildren);
     };
 }

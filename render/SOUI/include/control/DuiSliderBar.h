@@ -34,7 +34,7 @@ protected:
     int                m_nDragValue;
     int             m_uHtPrev;
 
-    CDuiSkinBase *  m_pSkinThumb;
+    ISkinObj *  m_pSkinThumb;
 
 protected:
     LRESULT         NotifySbCode(UINT uCode, int nPos);

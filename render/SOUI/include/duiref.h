@@ -1,5 +1,11 @@
 #pragma once
 
+// #define OR_API  SOUI_EXP
+
+#include "unknown/obj-ref-i.h"
+#include "unknown/obj-ref-impl.hpp"
+
+
 namespace SOUI
 {
     class SOUI_EXP CDuiRef

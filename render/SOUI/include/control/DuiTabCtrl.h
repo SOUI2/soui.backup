@@ -13,7 +13,7 @@
 namespace SOUI
 {
 
-class SOUI_EXP CDuiTab : public CDuiWindow
+class SOUI_EXP CDuiTab : public SWindow
 {
     SOUI_CLASS_NAME(CDuiTab, "tab")
 
@@ -55,7 +55,7 @@ typedef enum tagSLIDEDIR
     SD_BOTTOMTOP,
 } SLIDEDIR;
 
-class SOUI_EXP CDuiTabCtrl : public CDuiWindow
+class SOUI_EXP CDuiTabCtrl : public SWindow
 {
     friend class CDuiTabSlider;
 
@@ -69,10 +69,10 @@ protected:
     int m_nTabHeight;
     int m_nTabPos;
     int m_nFramePos;
-    CDuiSkinBase *m_pSkinTab;
-    CDuiSkinBase *m_pSkinIcon;
-    CDuiSkinBase *m_pSkinSplitter;
-    CDuiSkinBase *m_pSkinFrame;
+    ISkinObj *m_pSkinTab;
+    ISkinObj *m_pSkinIcon;
+    ISkinObj *m_pSkinSplitter;
+    ISkinObj *m_pSkinFrame;
     CPoint m_ptIcon;
     CPoint m_ptText;
     int m_nTabAlign;

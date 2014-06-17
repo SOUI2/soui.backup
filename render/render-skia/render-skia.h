@@ -40,6 +40,7 @@ namespace SOUI
 		virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei);
         virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf);
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
+        virtual BOOL CreateRegion(IRegion **ppRgn);
 	};
 
     
@@ -175,6 +176,7 @@ namespace SOUI
 
         virtual UINT Width();
         virtual UINT Height();
+        virtual SIZE Size();
         
 		SkBitmap GetSkBitmap(){return m_bitmap;}
 		HBITMAP  GetGdiBitmap(){return m_hBmp;}
@@ -203,6 +205,8 @@ namespace SOUI
         SkRegion GetRegion() const;
         
         void SetRegion(const SkRegion & rgn);
+        
+        static SkRegion::Op RGNMODE2SkRgnOP(UINT mode);
 	protected:
         SkRegion    m_rgn;
 	};
@@ -223,7 +227,6 @@ namespace SOUI
 		virtual HRESULT CreatePen(int iStyle,COLORREF cr,int cWidth,IPen ** ppPen);
 		virtual HRESULT CreateSolidColorBrush(COLORREF cr,IBrush ** ppBrush);
 		virtual HRESULT CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush );
-		virtual HRESULT CreateRegion(IRegion ** ppRegion);
 
 		virtual HRESULT BindDC(HDC hdc,LPCRECT pSubRect);
 		virtual HRESULT BeginDraw();
@@ -233,21 +236,22 @@ namespace SOUI
         virtual HRESULT OffsetViewportOrg(int xOff, int yOff, LPPOINT lpPoint=NULL);
         virtual HRESULT GetViewportOrg(LPPOINT lpPoint);
 
-		virtual HRESULT PushClipRect(LPCRECT pRect);
+		virtual HRESULT PushClipRect(LPCRECT pRect,UINT mode=RGN_AND);
 		virtual HRESULT PopClipRect();
 
-		virtual HRESULT PushClipRegion(IRegion *pRegion);
+		virtual HRESULT PushClipRegion(IRegion *pRegion,UINT mode=RGN_AND);
 		virtual HRESULT PopClipRegion();
 
         virtual HRESULT GetClipRegion(IRegion **ppRegion);
         
-		virtual HRESULT BitBlt(LPCRECT pRcDest,IRenderTarget *pRTSour,LPCRECT pRcSour);
+		virtual HRESULT BitBlt(LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop=SRCCOPY);
 
 		virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha=0xFF);
 		virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz );
 
-		virtual HRESULT DrawRectangle(int left, int top,int right,int bottom);
-		virtual HRESULT FillRectangle(int left, int top,int right,int bottom);
+		virtual HRESULT DrawRectangle(LPRECT pRect);
+		virtual HRESULT FillRectangle(LPRECT pRect);
+        virtual HRESULT FillSolidRect(LPCRECT pRect,COLORREF cr);
         
         virtual HRESULT DrawRoundRect(LPCRECT pRect,POINT pt);
         virtual HRESULT FillRoundRect(LPCRECT pRect,POINT pt);

@@ -7,11 +7,11 @@ namespace SOUI{
     class CDuiFrameDropTarget : public IDropTarget
     {
     public:
-        CDuiFrameDropTarget(CDuiWindow * pFrame);
+        CDuiFrameDropTarget(SWindow * pFrame);
         ~CDuiFrameDropTarget(void);
 
-        BOOL RegisterDragDrop(HDUIWND hDuiWnd,IDropTarget *pDropTarget);
-        BOOL RevokeDragDrop(HDUIWND hDuiWnd);
+        BOOL RegisterDragDrop(HSWND hDuiWnd,IDropTarget *pDropTarget);
+        BOOL RevokeDragDrop(HSWND hDuiWnd);
 
 
         //////////////////////////////////////////////////////////////////////////
@@ -49,13 +49,13 @@ namespace SOUI{
     protected:
         POINT PointL2FrameClient(const POINTL & pt);
 
-        CDuiWindow *m_pDuiFrame;
+        SWindow *m_pDuiFrame;
 
-        typedef CDuiMap<HDUIWND,IDropTarget *> DTMAP;
+        typedef CDuiMap<HSWND,IDropTarget *> DTMAP;
         DTMAP m_mapDropTarget;
 
         IDataObject *m_pDataObj;
-        HDUIWND         m_hDuiHover;
+        HSWND         m_hDuiHover;
     };
 
 }
