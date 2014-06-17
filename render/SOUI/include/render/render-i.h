@@ -93,8 +93,9 @@ struct RENDER_API IRegion : public IRenderObj
 
 enum EXPEND_MODE
 {
-    EM_STRETCH=0,   // 拉伸
-    EM_TILE,        // 平铺
+    EM_NULL=0,      //不扩大
+    EM_STRETCH,     //拉伸
+    EM_TILE,        //平铺
 };
 
 //创建设备相关资源

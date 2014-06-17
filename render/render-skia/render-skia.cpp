@@ -434,6 +434,9 @@ namespace SOUI
 
     HRESULT SRenderTarget_Skia::DrawBitmapEx( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,EXPEND_MODE expendMode, BYTE byAlpha/*=0xFF*/ )
     {
+        if(expendMode == EM_NULL)
+            return DrawBitmap(pRcDest->left,pRcDest->top,pRcSrc->right-pRcSrc->left, pRcSrc->bottom-pRcSrc->top,pBitmap,pRcSrc->left,pRcSrc->top,byAlpha);
+            
         SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
         SkBitmap bmp=pBmp->GetSkBitmap();
 
@@ -464,7 +467,72 @@ namespace SOUI
 
     HRESULT SRenderTarget_Skia::DrawBitmap9Patch( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,LPCRECT pRcSourMargin,EXPEND_MODE expendMode,BYTE byAlpha/*=0xFF*/ )
     {
-
+        int xDest[4] = {pRcDest->left,pRcDest->left+pRcSourMargin->left,pRcDest->right-pRcSourMargin->right,pRcDest->right};
+        int xSrc[4] = {pRcSrc->left,pRcSrc->left+pRcSourMargin->left,pRcSrc->right-pRcSourMargin->right,pRcSrc->right};
+        int yDest[4] = {pRcDest->top,pRcDest->top+pRcSourMargin->top,pRcDest->bottom-pRcSourMargin->bottom,pRcDest->bottom};
+        int ySrc[4] = {pRcSrc->top,pRcSrc->top+pRcSourMargin->top,pRcSrc->bottom-pRcSourMargin->bottom,pRcSrc->bottom};
+        
+        //首先保证九宫分割正常
+        if(!(xSrc[0] <= xSrc[1] && xSrc[1] <= xSrc[2] && xSrc[2] <= xSrc[3])) return S_FALSE;
+        if(!(ySrc[0] <= ySrc[1] && ySrc[1] <= ySrc[2] && xSrc[2] <= ySrc[3])) return S_FALSE;
+        
+        //调整目标位置
+        int nDestWid=pRcDest->right-pRcDest->left;
+        int nDestHei=pRcDest->bottom-pRcDest->top;
+        
+        if((pRcSourMargin->left + pRcSourMargin->right) > nDestWid)
+        {//边缘宽度大于目标宽度的处理
+            if(pRcSourMargin->left >= nDestWid)
+            {//只绘制左边部分
+                xSrc[1] = xSrc[2] = xSrc[3] = xSrc[0]+nDestWid;
+                xDest[1] = xDest[2] = xDest[3] = xDest[0]+nDestWid;
+            }else if(pRcSourMargin->right >= nDestWid)
+            {//只绘制右边部分
+                xSrc[0] = xSrc[1] = xSrc[2] = xSrc[3]-nDestWid;
+                xDest[0] = xDest[1] = xDest[2] = xDest[3]-nDestWid;
+            }else
+            {//先绘制左边部分，剩余的用右边填充
+                xSrc[2] = nDestWid-xSrc[1];
+                xDest[2] = nDestWid-xDest[1];
+            }
+        }
+        
+        if(pRcSourMargin->top + pRcSourMargin->bottom > nDestHei)
+        {
+            if(pRcSourMargin->top >= nDestHei)
+            {//只绘制上边部分
+                ySrc[1] = ySrc[2] = ySrc[3] = ySrc[0]+nDestHei;
+                yDest[1] = yDest[2] = yDest[3] = yDest[0]+nDestHei;
+            }else if(pRcSourMargin->bottom >= nDestHei)
+            {//只绘制下边部分
+                ySrc[0] = ySrc[1] = ySrc[2] = ySrc[3]-nDestHei;
+                yDest[0] = yDest[1] = yDest[2] = yDest[3]-nDestHei;
+            }else
+            {//先绘制左边部分，剩余的用右边填充
+                ySrc[2] = nDestHei-ySrc[1];
+                yDest[2] = nDestHei-yDest[1];
+            }
+        }
+        
+        //定义绘制模式
+        EXPEND_MODE mode[3][3]={
+        {EM_NULL,expendMode,EM_NULL},
+        {expendMode,expendMode,expendMode},
+        {EM_NULL,expendMode,EM_NULL}
+        };
+        
+        for(int y=0;y<3;y++)
+        {
+            if(ySrc[y] == ySrc[y+1]) continue;
+            for(int x=0;x<3;x++)
+            {
+                if(xSrc[x] == xSrc[x+1]) continue;
+                RECT rcSrc = {xSrc[x],ySrc[y],xSrc[x+1],ySrc[y+1]};
+                RECT rcDest ={xDest[x],yDest[y],xDest[x+1],yDest[y+1]};
+                DrawBitmapEx(&rcDest,pBitmap,&rcSrc,mode[y][x],byAlpha);
+            }
+        }
+        
         return S_OK;
     }
 

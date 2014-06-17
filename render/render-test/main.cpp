@@ -105,26 +105,48 @@ public:
 
         InflateRect(&rc,-2,-2);
 
-        m_rt->OffsetViewportOrg(50,50);
-        
-        RECT rc2={100,230,200,400};
+        //viewport origin test
+        {
+            m_rt->OffsetViewportOrg(50,50);
 
-        m_rt->GradientFill(&rc2,FALSE,RGB(255,0,0),RGB(0,0,255),128);
+            RECT rc2={100,230,200,400};
 
-        CAutoRefPtr<IBrush> brColor,brOld;
-        m_rt->CreateSolidColorBrush(0xFF0000FF,&brColor);
-        m_rt->SelectObject(brColor,(IRenderObj**)&brOld);
-        m_rt->FillRoundRect(&rc,pt2);
-        m_rt->SelectObject(brOld);
-        m_rt->OffsetViewportOrg(-50,-50);
+            m_rt->GradientFill(&rc2,FALSE,RGB(255,0,0),RGB(0,0,255),128);
+
+            CAutoRefPtr<IBrush> brColor,brOld;
+            m_rt->CreateSolidColorBrush(0xFF0000FF,&brColor);
+            m_rt->SelectObject(brColor,(IRenderObj**)&brOld);
+            m_rt->FillRoundRect(&rc,pt2);
+            m_rt->SelectObject(brOld);
+            m_rt->OffsetViewportOrg(-50,-50);
+        }
         
+
+        //gdi test        
+        {
+            HDC hdc2=m_rt->GetDC(0);
+            TextOut(hdc2,0,0,_T("text at (0,0)"),_tcslen(_T("text at (0,0)")));
+            TextOut(hdc2,100,100,_T("text at (100,100)"),_tcslen(_T("text at (100,100)")));
+            m_rt->ReleaseDC(hdc2);
+        }
         
-        HDC hdc2=m_rt->GetDC(0);
-        TextOut(hdc2,0,0,_T("text at (0,0)"),_tcslen(_T("text at (0,0)")));
-        
-        TextOut(hdc2,100,100,_T("text at (100,100)"),_tcslen(_T("text at (100,100)")));
-        m_rt->ReleaseDC(hdc2);
-        
+        //draw9patch test
+        {
+            RECT rcSrc={0,0,13,85};
+            RECT rcMargin={5,5,5,55};
+            
+            RECT rcDest={300,10,500,250};
+            
+            RECT rcMargin2={5,0,5,0};
+            m_rt->DrawBitmap9Patch(&rcDest,m_bmp9Patch,&rcSrc,&rcMargin2,EM_TILE,0xcc);
+            OffsetRect(&rcDest,0,rcDest.bottom-rcDest.top +5);
+            rcDest.right=rcDest.left+100;
+            rcDest.bottom=rcDest.top+100;
+            m_rt->DrawBitmap9Patch(&rcDest,m_bmp9Patch,&rcSrc,&rcMargin,EM_STRETCH,0xcc);
+            OffsetRect(&rcDest,0,rcDest.bottom-rcDest.top+5);
+            rcDest.bottom=rcDest.top+50;
+            m_rt->DrawBitmap9Patch(&rcDest,m_bmp9Patch,&rcSrc,&rcMargin,EM_STRETCH,0xcc);
+        }
         m_rt->PopClipRect();
 //  		m_rt->PopClipRegion();
   		m_rt->EndDraw();
@@ -174,6 +196,9 @@ public:
 		m_rt->CreateBitmapBrush(icon,&m_brIcon);
 		m_rt->SelectObject(m_brIcon);
 
+        g_render->CreateBitmap(&m_bmp9Patch);
+        pImgData = GetResBuf(MAKEINTRESOURCE(IDB_PNG1),_T("PNG"),szImg,g_hInst);
+        m_bmp9Patch->LoadFromMemory(pImgData,szImg,NULL);
 		return 0;
 	}
 
@@ -202,6 +227,7 @@ protected:
 	CAutoRefPtr<IBitmap> m_bmp;
 	CAutoRefPtr<IRegion> m_rgn;
 	CAutoRefPtr<IBrush>  m_brIcon;
+    CAutoRefPtr<IBitmap> m_bmp9Patch;
 };
 
 
