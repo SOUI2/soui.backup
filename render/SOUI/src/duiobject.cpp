@@ -22,11 +22,18 @@ namespace SOUI
         {
             //优先处理"class"属性
             pugi::xml_attribute attrClass=defAttr.attribute("class");
-            if(attrClass) SetAttribute(attrClass.name(), attrClass.value(), TRUE);
+            if(attrClass)
+            {
+                defAttr.remove_attribute("class");
+                SetAttribute(attrClass.name(), attrClass.value(), TRUE);
+            }
             for (pugi::xml_attribute attr = defAttr.first_attribute(); attr; attr = attr.next_attribute())
             {
-                if(strcmp(attr.name(),"class")==0) continue;
                 SetAttribute(attr.name(), attr.value(), TRUE);
+            }
+            if(attrClass)
+            {
+                defAttr.prepend_copy(attrClass);
             }
         }
 
@@ -34,11 +41,18 @@ namespace SOUI
 
         //优先处理"class"属性
         pugi::xml_attribute attrClass=xmlNode.attribute("class");
-        if(attrClass) SetAttribute(attrClass.name(), attrClass.value(), TRUE);
+        if(attrClass)
+        {
+            SetAttribute(attrClass.name(), attrClass.value(), TRUE);
+            xmlNode.remove_attribute(attrClass);
+        }
         for (pugi::xml_attribute attr = xmlNode.first_attribute(); attr; attr = attr.next_attribute())
         {
-            if(strcmp(attr.name(),"class")==0) continue;
             SetAttribute(attr.name(), attr.value(), TRUE);
+        }
+        if(attrClass)
+        {
+            xmlNode.prepend_copy(attrClass);
         }
         OnAttributeFinish(xmlNode);
         return TRUE;

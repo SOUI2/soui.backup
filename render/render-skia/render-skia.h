@@ -201,7 +201,8 @@ namespace SOUI
 		virtual void GetRgnBox(LPRECT lprect);
 		virtual BOOL IsEmpty();
         virtual void Offset(POINT pt);
-
+        virtual void Clear();
+        
         SkRegion GetRegion() const;
         
         void SetRegion(const SkRegion & rgn);
@@ -265,7 +266,7 @@ namespace SOUI
 			int nCount,
             BYTE byAlpha =0xFF);
 
-        virtual HRESULT DrawBitmap(int xDest,int yDest,int nWid,int nHei,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha=0xFF);
+        virtual HRESULT DrawBitmap(LPCRECT pRcDest,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha=0xFF);
         virtual HRESULT DrawBitmapEx(LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,EXPEND_MODE expendMode, BYTE byAlpha=0xFF);
         virtual HRESULT DrawBitmap9Patch(LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,LPCRECT pRcSourMargin,EXPEND_MODE expendMode,BYTE byAlpha=0xFF);
 

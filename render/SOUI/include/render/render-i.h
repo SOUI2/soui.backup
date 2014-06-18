@@ -90,6 +90,7 @@ struct RENDER_API IRegion : public IRenderObj
 	virtual void GetRgnBox(LPRECT lprect)=0;
 	virtual BOOL IsEmpty()=0;
     virtual void Offset(POINT pt)=0;
+    virtual void Clear()=0;
 };
 
 enum EXPEND_MODE
@@ -136,7 +137,7 @@ struct RENDER_API IRenderTarget: public IObjRef
     virtual HRESULT DrawLines(LPPOINT pPt,size_t nCount) =0;
     virtual HRESULT GradientFill(LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha=0xFF)=0;
     
-    virtual HRESULT DrawBitmap(int xDest,int yDest,int nWid,int nHei,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha=0xFF)=0;
+    virtual HRESULT DrawBitmap(LPCRECT pRcDest,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha=0xFF)=0;
     virtual HRESULT DrawBitmapEx(LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,EXPEND_MODE expendMode, BYTE byAlpha=0xFF)=0;
     virtual HRESULT DrawBitmap9Patch(LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,LPCRECT pRcSourMargin,EXPEND_MODE expendMode,BYTE byAlpha=0xFF) =0;
 	virtual HRESULT BitBlt(LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop=SRCCOPY)=0;

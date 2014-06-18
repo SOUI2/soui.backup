@@ -7,7 +7,7 @@ namespace SOUI
 
 typedef struct tagTIMERINFO
 {
-    HSWND hDuiWnd;
+    HSWND hSWnd;
     UINT_PTR uTimerID;
 } TIMERINFO;
 

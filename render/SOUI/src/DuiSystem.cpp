@@ -1,7 +1,7 @@
 #include "duistd.h"
 #include "DuiSystem.h"
 #include "SimpleWnd.h"
-#include "control/DuiRichEdit.h"
+// #include "control/DuiRichEdit.h"
 
 #include "res.mgr/duifontpool.h"
 #include "res.mgr/duiimgpool.h"
@@ -9,6 +9,7 @@
 #include "DuiWindowMgr.h"
 
 #include "mybuffer.h"
+#include "DuiTimerEx.h"
 
 namespace SOUI
 {
@@ -22,14 +23,14 @@ DuiSystem::DuiSystem(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHos
 {
     createSingletons();
     CSimpleWndHelper::Init(hInst,pszHostClassName);
-    CDuiTextServiceHelper::Init();
+//     CDuiTextServiceHelper::Init();
 }
 
 DuiSystem::~DuiSystem(void)
 {
     destroySingletons();
     CSimpleWndHelper::Destroy();
-    CDuiTextServiceHelper::Destroy();
+//     CDuiTextServiceHelper::Destroy();
 }
 
 void DuiSystem::createSingletons()

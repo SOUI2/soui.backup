@@ -8,23 +8,16 @@
 
 #pragma once
 
-#include "MemDC.h"
 #include "duimsgfilter.h"
 #include "DuiThreadActiveWndMgr.h"
 
-#include "duipanel.h"
 #include "duiframe.h"
-#include "duirealwnd.h"
+#include "control/duirealwnd.h"
 
 #include "SimpleWnd.h"
 #include "DuiFrameDropTarget.h"
 
 #pragma warning(disable: 4996)
-///////////////////////////////////////////////////////////////////////////////
-// Classes in this file:
-//
-// CDuiHostWnd
-//////////////////////////////////////////////////////////////////////////
 
 #define INITCODE_NOTSHOW    100
 
@@ -95,7 +88,8 @@ protected:
 
     BOOL m_bTranslucent;    //窗口的半透明属性
     BOOL m_bCaretShowing;    //当前有插入符正在显示
-    HBITMAP m_hBmpCaret;    //半透明窗口中的模拟插入符
+    CAutoRefPtr<IBitmap>    m_bmpCaret; //半透明窗口中的模拟插入符
+    SIZE                    m_szCaret;  //插入符大小
     BOOL m_bCaretActive;    //模拟插入符正在显示标志
     CPoint m_ptCaret;        //插入符位置
     CRect    m_rcValidateCaret;//可以显示插入符的位置
@@ -105,10 +99,9 @@ protected:
 
     CDuiTipCtrl    * m_pTipCtrl;
 
-    CRgn m_rgnInvalidate;
-
-    CMemDC    m_memDC;
-
+    CAutoRefPtr<IRegion>    m_rgnInvalidate;
+    CAutoRefPtr<IRenderTarget> m_memRT;
+    
 protected:
     virtual BOOL OnIdle(int nCount);
 
@@ -211,7 +204,8 @@ protected:
 
     /*virtual */
     BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
-//////////////////////////////////////////////////////////////////////////
+    
+    //////////////////////////////////////////////////////////////////////////
     // IDuiRealWndHandler
     virtual HWND OnRealWndCreate(CDuiRealWnd *pRealWnd);
     virtual BOOL OnRealWndInit(CDuiRealWnd *pRealWnd);
@@ -237,7 +231,7 @@ protected:
     void OnSetCaretValidateRect( LPCRECT lpRect );
 
     void UpdateHost(CDCHandle dc,const CRect &rc);
-    void UpdateLayerFromDC(HDC hdc,BYTE byAlpha);
+    void UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha);
 protected:
 
     SOUI_NOTIFY_MAP_BEGIN()
@@ -246,35 +240,34 @@ protected:
     SOUI_NOTIFY_MAP_END()    
 
     BEGIN_MSG_MAP_EX(CDuiHostWnd)
-    MSG_WM_SIZE(OnSize)
-    MSG_WM_PRINT(OnPrint)
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_CREATE(OnCreate)
-    MSG_WM_DESTROY(OnDestroy)
-    MSG_WM_ERASEBKGND(OnEraseBkgnd)
-    MSG_WM_MOUSELEAVE(OnMouseLeave)
-    MSG_WM_MOUSEMOVE(OnMouseMove)
-    MSG_WM_LBUTTONDBLCLK(OnLButtonDblClk)
-    MSG_WM_LBUTTONDOWN(OnLButtonDown)
-    MSG_WM_MOUSEWHEEL(OnMouseWheel)
-    MSG_WM_ACTIVATE(OnActivate)
-    MSG_WM_SETFOCUS(OnSetFocus)
-    MSG_WM_KILLFOCUS(OnKillFocus)
-    MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST, WM_MOUSELAST, OnMouseEvent)
-    MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST, WM_KEYLAST, OnKeyEvent)
-    MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
-    MESSAGE_HANDLER_EX(WM_IME_CHAR, OnKeyEvent)
-
-    MSG_WM_SETCURSOR(OnSetCursor)
-    MSG_WM_TIMER(OnTimer)
-    MSG_WM_NCACTIVATE(OnNcActivate)
-    MSG_WM_NCCALCSIZE(OnNcCalcSize)
-    MSG_WM_NCHITTEST(OnWndNcHitTest)
-    MSG_WM_GETMINMAXINFO(OnGetMinMaxInfo)
-    MESSAGE_HANDLER_EX(UM_MSGFILTER,OnMsgFilter)
-    MSG_WM_CLOSE(OnClose)
-    MSG_SOUI_NOTIFY()
-    REFLECT_NOTIFY_CODE(NM_CUSTOMDRAW)
+        MSG_WM_SIZE(OnSize)
+        MSG_WM_PRINT(OnPrint)
+        MSG_WM_PAINT(OnPaint)
+        MSG_WM_CREATE(OnCreate)
+        MSG_WM_DESTROY(OnDestroy)
+        MSG_WM_ERASEBKGND(OnEraseBkgnd)
+        MSG_WM_MOUSELEAVE(OnMouseLeave)
+        MSG_WM_MOUSEMOVE(OnMouseMove)
+        MSG_WM_LBUTTONDBLCLK(OnLButtonDblClk)
+        MSG_WM_LBUTTONDOWN(OnLButtonDown)
+        MSG_WM_MOUSEWHEEL(OnMouseWheel)
+        MSG_WM_ACTIVATE(OnActivate)
+        MSG_WM_SETFOCUS(OnSetFocus)
+        MSG_WM_KILLFOCUS(OnKillFocus)
+        MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST, WM_MOUSELAST, OnMouseEvent)
+        MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST, WM_KEYLAST, OnKeyEvent)
+        MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
+        MESSAGE_HANDLER_EX(WM_IME_CHAR, OnKeyEvent)
+        MSG_WM_SETCURSOR(OnSetCursor)
+        MSG_WM_TIMER(OnTimer)
+        MSG_WM_NCACTIVATE(OnNcActivate)
+        MSG_WM_NCCALCSIZE(OnNcCalcSize)
+        MSG_WM_NCHITTEST(OnWndNcHitTest)
+        MSG_WM_GETMINMAXINFO(OnGetMinMaxInfo)
+        MESSAGE_HANDLER_EX(UM_MSGFILTER,OnMsgFilter)
+        MSG_WM_CLOSE(OnClose)
+        MSG_SOUI_NOTIFY()
+        REFLECT_NOTIFY_CODE(NM_CUSTOMDRAW)
     END_MSG_MAP()
 };
 

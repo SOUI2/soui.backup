@@ -169,14 +169,6 @@
 			Name="render-skia"
 			>
 			<File
-				RelativePath=".\bitblt-rop2-skia.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\bitblt-rop2-skia.h"
-				>
-			</File>
-			<File
 				RelativePath=".\drawtext-skia.cpp"
 				>
 				<FileConfiguration

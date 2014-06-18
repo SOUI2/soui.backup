@@ -221,9 +221,10 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::PushClipRect( LPCRECT pRect ,UINT mode/*=RGN_AND*/)
 	{
-	    m_SkCanvas->save();
         SkRect skrc=toSkRect(pRect);
         skrc.offset(m_ptOrg);
+        
+        m_SkCanvas->save();
         m_SkCanvas->clipRect(skrc,SRegion_Skia::RGNMODE2SkRgnOP(mode));
 	    return S_OK;
 	}
@@ -261,6 +262,8 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::BitBlt( LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop/*=SRCCOPY*/)
 	{
+	    if(dwRop != SRCCOPY) return E_NOTIMPL;
+	    
 	    SRenderTarget_Skia *pRTSourSkia=(SRenderTarget_Skia*)pRTSour;
 	    
 	    const SkBitmap & bmpSrc= pRTSourSkia->m_SkCanvas->getDevice()->accessBitmap(true);
@@ -268,14 +271,7 @@ namespace SOUI
         rcDst.offset(m_ptOrg);
         RECT rc={xSrc,ySrc,xSrc+pRcDest->right-pRcDest->left,ySrc+pRcDest->bottom-pRcDest->top};
         SkRect rcSrc=toSkRect(&rc);
-        SkPaint paint;
-        SkXfermode mode=SkXfermode::kSrcOver_Mode;
-        switch(dwRop)
-        {
-            case SRCAND: mode = SkXfermode::kSrcOver_Mode;break;
-        }
-        paint.setXfermodeMode(mode);
-	    m_SkCanvas->drawBitmapRectToRect(bmpSrc,&rcSrc,rcDst,&paint);
+	    m_SkCanvas->drawBitmapRectToRect(bmpSrc,&rcSrc,rcDst);
 		return S_OK;
 	}
 
@@ -418,15 +414,14 @@ namespace SOUI
 		return S_OK;
 	}
 
-    HRESULT SRenderTarget_Skia::DrawBitmap( int xDest,int yDest,int nWid,int nHei,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha/*=0xFF*/ )
+    HRESULT SRenderTarget_Skia::DrawBitmap(LPCRECT pRcDest,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha/*=0xFF*/ )
     {
         SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
         SkBitmap bmp=pBmp->GetSkBitmap();
 
-        RECT rcDst={xDest,yDest,xDest+nWid,yDest+nHei};
-        RECT rcSrc={xSrc,ySrc,xSrc+nWid,ySrc+nHei};
+        RECT rcSrc={xSrc,ySrc,xSrc+pRcDest->right-pRcDest->left,ySrc+pRcDest->bottom-pRcDest->top};
 
-        SkRect skrcDst = toSkRect(&rcDst);
+        SkRect skrcDst = toSkRect(pRcDest);
         SkRect skrcSrc= toSkRect(&rcSrc);
         skrcDst.offset(m_ptOrg);
 
@@ -442,7 +437,7 @@ namespace SOUI
     HRESULT SRenderTarget_Skia::DrawBitmapEx( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,EXPEND_MODE expendMode, BYTE byAlpha/*=0xFF*/ )
     {
         if(expendMode == EM_NULL)
-            return DrawBitmap(pRcDest->left,pRcDest->top,pRcSrc->right-pRcSrc->left, pRcSrc->bottom-pRcSrc->top,pBitmap,pRcSrc->left,pRcSrc->top,byAlpha);
+            return DrawBitmap(pRcDest,pBitmap,pRcSrc->left,pRcSrc->top,byAlpha);
             
         SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
         SkBitmap bmp=pBmp->GetSkBitmap();
@@ -681,14 +676,14 @@ namespace SOUI
     HRESULT SRenderTarget_Skia::GradientFill( LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha/*=0xFF*/ )
     {
         SkPoint pts[2];
-        pts[0].set(pRect->left,pRect->top);
-        pts[1].set(pRect->right,pRect->top);
+        pts[0].set((SkScalar)pRect->left,(SkScalar)pRect->top);
+        pts[1].set((SkScalar)pRect->right,(SkScalar)pRect->top);
         if(bVert)
         {
-            pts[1].set(pRect->left,pRect->bottom);
+            pts[1].set((SkScalar)pRect->left,(SkScalar)pRect->bottom);
         }else
         {
-            pts[1].set(pRect->right,pRect->top);
+            pts[1].set((SkScalar)pRect->right,(SkScalar)pRect->top);
         }
         
         CDuiColor cr1(crBegin,byAlpha);
@@ -870,6 +865,11 @@ namespace SOUI
         default:DUIASSERT(FALSE);break;
         }
         return op;
+    }
+
+    void SRegion_Skia::Clear()
+    {
+        m_rgn.setEmpty();
     }
 
 }

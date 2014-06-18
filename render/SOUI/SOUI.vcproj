@@ -95,7 +95,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(OutDir)\$(ProjectName)_d.lib ..\lib\"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -257,7 +257,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(OutDir)\$(ProjectName).lib ..\lib\"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -789,10 +789,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\duiDefaultLogger.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\DuiEventSet.cpp"
 				>
 			</File>
@@ -817,10 +813,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\duiItempanel.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\DuiLayout.cpp"
 				>
 			</File>
@@ -829,11 +821,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiPanel.cpp"
+				RelativePath=".\src\res.mgr\DuiPools.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\res.mgr\DuiPools.cpp"
+				RelativePath=".\src\controls\duirealwnd.cpp"
 				>
 			</File>
 			<File
@@ -987,15 +979,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\GradientFillHelper.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\MemDC.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\MenuWndHook.cpp"
 				>
 			</File>
 			<File
@@ -1053,6 +1037,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\color.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\DragWnd.h"
 				>
 			</File>
@@ -1094,10 +1082,6 @@
 			</File>
 			<File
 				RelativePath=".\include\DuiDef.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiDefaultLogger.h"
 				>
 			</File>
 			<File

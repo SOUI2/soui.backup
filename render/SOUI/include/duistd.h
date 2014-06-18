@@ -82,7 +82,7 @@
 #include "res.mgr/duifontpool.h"
 #include "res.mgr/duiresprovider.h"
 #include "duisystem.h"
-#include "control/DuiMessageBox.h"
+//#include "control/DuiMessageBox.h"
 
 
 #pragma comment(lib,"Msimg32.lib")

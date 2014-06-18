@@ -7,7 +7,6 @@
 
 #pragma  once
 
-#include "duipanel.h"
 #include "DuiFrameDropTarget.h"
 #include "FocusManager.h"
 
