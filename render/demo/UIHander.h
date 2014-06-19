@@ -1,7 +1,5 @@
 #pragma once
 
-#include "DuiMenu.h" 
-
 class CMainDlg;
 
 class CUIHander

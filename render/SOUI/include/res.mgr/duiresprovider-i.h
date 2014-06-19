@@ -4,10 +4,11 @@
 
 #include "../render/render-i.h"
 
-#define DUIRES_XML_TYPE _T("XML")
-#define DUIRES_IMGX_TYPE _T("IMGX")
-#define DUIRES_BMP_TYPE _T("BMP")
-#define DUIRES_ICON_TYPE _T("ICO")
+#define SRT_XML _T("XML")
+#define SRT_IMGX _T("IMGX")
+#define SRT_BMP _T("BMP")
+#define SRT_ICON _T("ICO")
+#define SRT_CURSOR _T("CURSOR")
 
 #define INDEX_XML    _T("index.xml")        //文件夹资源的文件映射表索引表文件名
 
@@ -69,18 +70,39 @@ public:
 namespace SOUI
 {
 
-class SOUI_EXP IDuiResProvider
+class SOUI_EXP IResProvider
 {
 public:
-    virtual ~IDuiResProvider(){}
-    virtual BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName)=NULL;
-    virtual HICON   LoadIcon(LPCTSTR strType,LPCTSTR pszResName,int cx=0,int cy=0)=NULL;
-    virtual HBITMAP    LoadBitmap(LPCTSTR strType,LPCTSTR pszResName)=NULL;
-    virtual HCURSOR LoadCursor(LPCTSTR strType,LPCTSTR pszResName)=NULL;
-    virtual IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName)=NULL;
-    virtual size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName)=NULL;
-    virtual BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size)=NULL;
+    virtual ~IResProvider(){}
+    virtual BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName)=0;
+    virtual HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0)=0;
+    virtual HBITMAP    LoadBitmap(LPCTSTR pszResName)=0;
+    virtual HCURSOR LoadCursor(LPCTSTR pszResName)=0;
+    virtual IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName)=0;
+    virtual size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName)=0;
+    virtual BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size)=0;
+
+    //没有指定图片类型时默认从这些类别中查找
+    virtual LPCTSTR FindImageType(LPCTSTR pszImgName)
+    {
+        //图片类型
+        LPCTSTR IMGTYPES[]=
+        {
+            _T("IMGX"),
+            _T("PNG"),
+            _T("JPG"),
+            _T("GIF"),
+            _T("TGA"),
+            _T("TIFF"),
+        };
+        for(int i=0;i< ARRAYSIZE(IMGTYPES);i++)
+        {
+            if(HasResource(IMGTYPES[i],pszImgName)) return IMGTYPES[i];
+        }
+        return NULL;
+    }
 };
+
 
 }//namespace SOUI
 #endif//_DUIRESPROVIDERBASE_

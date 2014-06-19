@@ -5,62 +5,84 @@
 
 namespace SOUI
 {
-    class SOUI_EXP DuiResProviderMgr : public IDuiResProvider
+    class SOUI_EXP DuiResProviderMgr : public IResProvider
     {
     public:
         DuiResProviderMgr(void);
         ~DuiResProviderMgr(void);
         
-        void AddResProvider(IDuiResProvider * pResProvider);
+        void AddResProvider(IResProvider * pResProvider);
         
-        void RemoveResProvider(IDuiResProvider * pResProvider);
+        void RemoveResProvider(IResProvider * pResProvider);
         
         //////////////////////////////////////////////////////////////////////////
         // DuiResProviderBase
 
         virtual BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName)
         {
-            IDuiResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
             if(!pResProvider) return FALSE;
             return TRUE;
         }
 
-        virtual HICON   LoadIcon(LPCTSTR strType,LPCTSTR pszResName,int cx=0,int cy=0)
+        virtual HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0)
         {
-            IDuiResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            IResProvider *pResProvider=GetMatchResProvider(SRT_ICON,pszResName);
             if(!pResProvider) return NULL;
-            return pResProvider->LoadIcon(strType,pszResName,cx,cy);
+            return pResProvider->LoadIcon(pszResName,cx,cy);
         }
-        virtual HBITMAP    LoadBitmap(LPCTSTR strType,LPCTSTR pszResName)
+
+        virtual HCURSOR LoadCursor(LPCTSTR pszResName)
         {
-            IDuiResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            IResProvider *pResProvider=GetMatchResProvider(SRT_CURSOR,pszResName);
             if(!pResProvider) return NULL;
-            return pResProvider->LoadBitmap(strType,pszResName);
+            return pResProvider->LoadCursor(pszResName);
+        }
+
+        virtual HBITMAP    LoadBitmap(LPCTSTR pszResName)
+        {
+            IResProvider *pResProvider=GetMatchResProvider(SRT_BMP,pszResName);
+            if(!pResProvider) return NULL;
+            return pResProvider->LoadBitmap(pszResName);
         }
         virtual IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName)
         {
-            IDuiResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            if(!strType) strType = FindImageType(pszResName);
+            if(!strType) return NULL;
+            IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
             if(!pResProvider) return NULL;
             return pResProvider->LoadImage(strType,pszResName);
         }
 
         virtual size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName)
         {
-            IDuiResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
             if(!pResProvider) return 0;
             return pResProvider->GetRawBufferSize(strType,pszResName);
         }
 
         virtual BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size)
         {
-            IDuiResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
             if(!pResProvider) return FALSE;
             return pResProvider->GetRawBuffer(strType,pszResName,pBuf,size);
         }
 
-    protected:
-        IDuiResProvider * GetMatchResProvider(LPCTSTR pszType,LPCTSTR pszResName);
+        virtual LPCTSTR FindImageType(LPCTSTR pszImgName)
+        {
+            POSITION pos=m_lstResProvider.GetHeadPosition();
+            while(pos)
+            {
+                IResProvider* pResProvider=m_lstResProvider.GetNext(pos);
+                LPCTSTR pszType=pResProvider->FindImageType(pszImgName);
+                if(pszType) return pszType;
+            }
+            return NULL;
+        }
         
-        CDuiList<IDuiResProvider*> m_lstResProvider;
+    protected:
+        IResProvider * GetMatchResProvider(LPCTSTR pszType,LPCTSTR pszResName);
+        
+        CDuiList<IResProvider*> m_lstResProvider;
     };
 }

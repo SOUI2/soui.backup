@@ -65,7 +65,7 @@ HWND CDuiHostWnd::Create(HWND hWndParent,int x,int y,int nWidth,int nHeight)
 BOOL CDuiHostWnd::Load(LPCTSTR pszXmlName)
 {
     pugi::xml_document xmlDoc;
-    if(!LOADXML(xmlDoc,pszXmlName,DUIRES_XML_TYPE)) return FALSE;
+    if(!LOADXML(xmlDoc,pszXmlName,SRT_XML)) return FALSE;
 
     return SetXml(xmlDoc.child("SOUI"));
 }

@@ -13,13 +13,13 @@
 
 CMainDlg::CMainDlg() : CDuiHostWnd(_T("IDR_DUI_MAIN_DIALOG"))
 {
-	m_pUiHandler = new CUIHander(this);
+// 	m_pUiHandler = new CUIHander(this);
 	m_bLayoutInited=FALSE;
 } 
 
 CMainDlg::~CMainDlg()
 {
-	delete m_pUiHandler; 
+// 	delete m_pUiHandler; 
 }
 
 int CMainDlg::OnCreate( LPCREATESTRUCT lpCreateStruct )
@@ -34,7 +34,7 @@ void CMainDlg::OnShowWindow( BOOL bShow, UINT nStatus )
 {
 	if(bShow)
 	{
-		AnimateHostWindow(200,AW_CENTER);
+// 		AnimateHostWindow(200,AW_CENTER);
 	}
 }
 

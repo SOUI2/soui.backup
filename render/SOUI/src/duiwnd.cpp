@@ -532,11 +532,11 @@ BOOL SWindow::LoadChildren(pugi::xml_node xmlNode)
         SWindow *pChild = DuiSystem::getSingleton().CreateWindowByName(xmlChild.name());
         if(!pChild)
         {//在窗口布局中支持include标签
-            if(stricmp(xmlChild.name(),"include")==0)
+            if(_stricmp(xmlChild.name(),"include")==0)
             {
                 pugi::xml_document xmlDoc;
                 CDuiStringT strName=DUI_CA2T(xmlChild.attribute("src").value(),CP_UTF8);
-                if(LOADXML(xmlDoc,strName,DUIRES_XML_TYPE))
+                if(LOADXML(xmlDoc,strName,SRT_XML))
                 {
                     LoadChildren(xmlDoc.first_child());
                 }else

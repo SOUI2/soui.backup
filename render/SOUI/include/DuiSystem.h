@@ -55,11 +55,11 @@ public:
         m_pScriptModule=pScriptModule;
     }
 
-    BOOL Init(LPCTSTR pszName ,LPCTSTR pszType=DUIRES_XML_TYPE);
+    BOOL Init(LPCTSTR pszName ,LPCTSTR pszType=SRT_XML);
 
-    BOOL SetMsgBoxTemplate(LPCTSTR pszXmlName,LPCTSTR pszType=DUIRES_XML_TYPE);
+    BOOL SetMsgBoxTemplate(LPCTSTR pszXmlName,LPCTSTR pszType=SRT_XML);
 
-    BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType=DUIRES_XML_TYPE);
+    BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType=SRT_XML);
 
     IRenderFactory * GetRenderFactory(){return m_RenderFactory;}
 

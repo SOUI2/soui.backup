@@ -2,23 +2,13 @@
 //
 
 #include "stdafx.h"
-#include "menuwndhook.h"
 #include "DuiSystem.h" 
-#include "DuiDefaultLogger.h"
-
-#include "DuiSkinGif.h"	//应用层定义的皮肤对象
-
-//从ZIP文件加载皮肤模块
-#if !defined(_WIN64)
-#include "zipskin/DuiResProviderZip.h"
-#endif
 
 #ifdef _DEBUG
 #include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
 #endif
 
 #include "MainDlg.h"
-#include "ResModeSelDlg.h"
 
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
@@ -26,9 +16,18 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	HRESULT hRes = OleInitialize(NULL);
 	DUIASSERT(SUCCEEDED(hRes));
 
+#ifdef _DEBUG
+    HMODULE hRenderSkia = LoadLibrary(_T("render-skia_d.dll"));
+#else
+    HMODULE hRenderSkia = LoadLibrary(_T("render-skia.dll"));
+#endif
+    typedef BOOL (*fnCreateRenderFactory)(SOUI::IRenderFactory **);
+    fnCreateRenderFactory fun = (fnCreateRenderFactory)GetProcAddress(hRenderSkia,"CreateRenderFactory");
 
-	
-	DuiSystem *pDuiSystem=new DuiSystem(hInstance);
+    CAutoRefPtr<SOUI::IRenderFactory> pRenderFactory;
+    fun(&pRenderFactory);
+
+	DuiSystem *pDuiSystem=new DuiSystem(pRenderFactory,hInstance);
 
 
 	TCHAR szCurrentDir[MAX_PATH]; memset( szCurrentDir, 0, sizeof(szCurrentDir) );
@@ -43,6 +42,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         DUIASSERT(0);
         return 1;
     }
+    
+    pDuiSystem->AddResProvider(pResFiles);
 
 	BOOL bOK=pDuiSystem->Init(_T("IDR_DUI_INIT")); //初始化DUI系统,原来的系统初始化方式依然可以使用。
 	pDuiSystem->SetMsgBoxTemplate(_T("IDR_DUI_MSGBOX"));
@@ -55,10 +56,13 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	}
 
 
-	delete pDuiSystem->GetDefResProvider();
 
 	delete pDuiSystem;
-
+    
+    delete pResFiles;
+    
+    pRenderFactory=NULL;
+    
 	OleUninitialize();
 	return nRet;
 }

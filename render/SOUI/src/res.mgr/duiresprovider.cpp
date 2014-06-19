@@ -10,20 +10,26 @@
 namespace SOUI
 {
 
+
 DuiResProviderPE::DuiResProviderPE( HINSTANCE hInst)
     : m_hResInst(hInst)
 {
 
 }
 
-HBITMAP DuiResProviderPE::LoadBitmap( LPCTSTR strType,LPCTSTR pszResName )
+HBITMAP DuiResProviderPE::LoadBitmap(LPCTSTR pszResName )
 {
     return ::LoadBitmap(m_hResInst,pszResName);
 }
 
-HICON DuiResProviderPE::LoadIcon( LPCTSTR strType,LPCTSTR pszResName ,int cx/*=0*/,int cy/*=0*/)
+HICON DuiResProviderPE::LoadIcon(LPCTSTR pszResName ,int cx/*=0*/,int cy/*=0*/)
 {
     return (HICON)::LoadImage(m_hResInst, pszResName, IMAGE_ICON, cx, cy, LR_DEFAULTCOLOR);
+}
+
+HCURSOR DuiResProviderPE::LoadCursor(LPCTSTR pszResName )
+{
+    return ::LoadCursor(m_hResInst,pszResName);
 }
 
 IBitmap * DuiResProviderPE::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
@@ -101,16 +107,12 @@ BOOL DuiResProviderPE::HasResource( LPCTSTR strType,LPCTSTR pszResName )
 
 HRSRC DuiResProviderPE::MyFindResource( LPCTSTR strType, LPCTSTR pszResName )
 {
-    if(_tcsicmp(strType,DUIRES_BMP_TYPE)==0) strType=MAKEINTRESOURCE(2);//RT_BITMAP;
-    else if(_tcsicmp(strType,DUIRES_ICON_TYPE)==0) strType=MAKEINTRESOURCE(3);//RT_ICON;
+    if(_tcsicmp(strType,SRT_BMP)==0) strType=MAKEINTRESOURCE(2);//RT_BITMAP;
+    else if(_tcsicmp(strType,SRT_ICON)==0) strType=MAKEINTRESOURCE(3);//RT_ICON;
 
     return ::FindResource(m_hResInst, pszResName, strType);
 }
 
-HCURSOR DuiResProviderPE::LoadCursor( LPCTSTR strType,LPCTSTR pszResName )
-{
-    return ::LoadCursor(m_hResInst,pszResName);
-}
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -128,18 +130,23 @@ CDuiStringT DuiResProviderFiles::GetRes( LPCTSTR strType,LPCTSTR pszResName )
     return strRet;
 }
 
-HBITMAP DuiResProviderFiles::LoadBitmap( LPCTSTR strType,LPCTSTR pszResName )
+HBITMAP DuiResProviderFiles::LoadBitmap(LPCTSTR pszResName )
 {
-    CDuiStringT strPath=GetRes(strType,pszResName);
+    CDuiStringT strPath=GetRes(SRT_BMP,pszResName);
     if(strPath.IsEmpty()) return NULL;
     return (HBITMAP)::LoadImage(NULL, strPath, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
 }
 
-HICON DuiResProviderFiles::LoadIcon( LPCTSTR strType,LPCTSTR pszResName ,int cx/*=0*/,int cy/*=0*/)
+HICON DuiResProviderFiles::LoadIcon(LPCTSTR pszResName ,int cx/*=0*/,int cy/*=0*/)
 {
-    CDuiStringT strPath=GetRes(strType,pszResName);
+    CDuiStringT strPath=GetRes(SRT_ICON,pszResName);
     if(strPath.IsEmpty()) return NULL;
     return (HICON)::LoadImage(NULL, strPath, IMAGE_ICON, cx, cy, LR_LOADFROMFILE);
+}
+
+HCURSOR DuiResProviderFiles::LoadCursor(LPCTSTR pszResName )
+{
+    return (HCURSOR)::LoadImage(NULL, pszResName, IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
 }
 
 IBitmap * DuiResProviderFiles::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
@@ -237,9 +244,5 @@ BOOL DuiResProviderFiles::HasResource( LPCTSTR strType,LPCTSTR pszResName )
     return (p!=NULL);
 }
 
-HCURSOR DuiResProviderFiles::LoadCursor( LPCTSTR strType,LPCTSTR pszResName )
-{
-    return (HCURSOR)::LoadImage(NULL, pszResName, IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
-}
 
 }//namespace SOUI

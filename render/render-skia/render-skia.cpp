@@ -107,10 +107,8 @@ namespace SOUI
 
         if(nWid && nHei)
         {
-            CAutoRefPtr<IBitmap> bmp;
-            pRenderFactory->CreateBitmap(&bmp);
-            bmp->Init(nWid,nHei);
-            SelectObject(bmp);
+            SIZE sz={nWid,nHei};
+            Resize(sz);
         }
 
 		CAutoRefPtr<IPen> pPen;
@@ -290,7 +288,14 @@ namespace SOUI
 
         SkRect skrc=toSkRect(pRc);
         skrc.offset(m_ptOrg);
-        DrawText_Skia(m_SkCanvas,strW,strW.GetLength(),skrc,txtPaint,uFormat);
+        skrc=DrawText_Skia(m_SkCanvas,strW,strW.GetLength(),skrc,txtPaint,uFormat);
+        if(uFormat & DT_CALCRECT)
+        {
+            pRc->left=(int)skrc.fLeft;
+            pRc->top=(int)skrc.fTop;
+            pRc->right=(int)skrc.fRight;
+            pRc->bottom=(int)skrc.fBottom;
+        }
 		return S_OK;
 	}
 

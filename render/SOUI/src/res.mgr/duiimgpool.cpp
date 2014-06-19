@@ -29,6 +29,10 @@ DuiImgPool::~DuiImgPool()
 
 IBitmap * DuiImgPool::GetImage(LPCTSTR pszImgName,LPCTSTR pszType)
 {
+    IResProvider * pResProvider=GETRESPROVIDER;
+    if(!pszType) pszType=pResProvider->FindImageType(pszImgName);
+    if(!pszType) return NULL;
+    
     DuiResID resid(pszType,pszImgName);
     if(HasKey(resid))
     {
@@ -36,18 +40,10 @@ IBitmap * DuiImgPool::GetImage(LPCTSTR pszImgName,LPCTSTR pszType)
     }
     else
     {
-        IDuiResProvider * pResProvider=GETRESPROVIDER;
-        DUIASSERT(pResProvider);
         IBitmap *pImg=pResProvider->LoadImage(pszType,pszImgName);
-
         if(pImg)
         {
             AddKeyObject(resid,pImg);
-            if(pszType!=NULL)
-            {
-                pImg->AddRef();
-                AddKeyObject(DuiResID(NULL,pszImgName),pImg);//name唯一时保证不使用类型也能找到该图片资源
-            }
         }
         return pImg;
     }

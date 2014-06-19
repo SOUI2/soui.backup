@@ -430,7 +430,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\soui\include"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;DLL_SOUI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -457,7 +457,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\lib;..\bin"
+				AdditionalLibraryDirectories="..\bin"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -971,10 +971,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ResModeSelDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -1057,10 +1053,6 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\UIHander.cpp"
-				>
 			</File>
 		</Filter>
 		<Filter
@@ -1249,58 +1241,10 @@
 		<Filter
 			Name="skinole"
 			>
-			<File
-				RelativePath=".\DuiSkinGif.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DuiSkinGif.h"
-				>
-			</File>
-			<File
-				RelativePath=".\skinole\ImageOle.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\skinole\ImageOle.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="zipskin"
 			>
-			<File
-				RelativePath=".\zipskin\DuiResProviderZip.cpp"
-				>
-				<FileConfiguration
-					Name="Debug_Dll|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\zipskin\DuiResProviderZip.h"
-				>
-			</File>
-			<File
-				RelativePath=".\zipskin\zipArchive.cpp"
-				>
-				<FileConfiguration
-					Name="Debug_Dll|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\zipskin\ZipArchive.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="wtlhelper"

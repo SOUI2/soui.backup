@@ -14,7 +14,7 @@
 namespace RENDER_SKIA
 {
 
-extern "C" RENDERSKIA_API SOUI::IRenderFactory * CreateRenderFactory();
+extern "C" RENDERSKIA_API BOOL CreateRenderFactory(SOUI::IRenderFactory ** ppRenderFactory);
 
 }
 
