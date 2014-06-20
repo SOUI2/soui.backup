@@ -49,7 +49,7 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     //  CDuiListCtrl
-    class SOUI_EXP CDuiListCtrl : public CDuiPanel
+    class SOUI_EXP CDuiListCtrl : public SPanel
     {
         SOUI_CLASS_NAME(CDuiListCtrl, "listctrl")
 

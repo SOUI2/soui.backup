@@ -3,12 +3,12 @@
  * All rights reserverd.
  * 
  * @file       DuiCaption.h
- * @brief      标签控件
+ * @brief      标题栏控件
  * @version    v1.0      
  * @author     soui      
  * @date       2014-05-28
  * 
- * Describe    此类完成日历控件
+ * Describe    此类完成标题栏控件
  */
 
 #pragma once
@@ -22,10 +22,10 @@ namespace SOUI
  * 
  * Describe    标签类 只需要继承此类即可
  */
-class CDuiCaption :
+class SCaption :
     public SWindow
 {
-    SOUI_CLASS_NAME(CDuiCaption, "caption")
+    SOUI_CLASS_NAME(SCaption, "caption")
 public:
     /**
      * CDuiCaption::CDuiCaption
@@ -33,14 +33,14 @@ public:
      *
      * Describe  CDuiCaption类的构造函数
      */ 
-    CDuiCaption(void);
+    SCaption(void);
     /**
      * CDuiCaption::~CDuiCaption
      * @brief    析构函数
      *
      * Describe  ~CDuiCaption类的构造函数
      */     
-    virtual ~CDuiCaption(void);
+    virtual ~SCaption(void);
 
 protected:
     /**

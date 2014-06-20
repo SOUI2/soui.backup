@@ -113,6 +113,7 @@ public:
 	//what is needed, however, take the address of the p member explicitly.
 	T** operator&() throw()
 	{
+	    DUIASSERT(p==NULL);
 		return &p;
 	}
 	bool operator!() const throw()

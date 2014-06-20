@@ -481,7 +481,7 @@ namespace SOUI
         
         //首先保证九宫分割正常
         if(!(xSrc[0] <= xSrc[1] && xSrc[1] <= xSrc[2] && xSrc[2] <= xSrc[3])) return S_FALSE;
-        if(!(ySrc[0] <= ySrc[1] && ySrc[1] <= ySrc[2] && xSrc[2] <= ySrc[3])) return S_FALSE;
+        if(!(ySrc[0] <= ySrc[1] && ySrc[1] <= ySrc[2] && ySrc[2] <= ySrc[3])) return S_FALSE;
         
         //调整目标位置
         int nDestWid=pRcDest->right-pRcDest->left;
@@ -823,8 +823,7 @@ namespace SOUI
 	BOOL SRegion_Skia::RectInRegion( LPCRECT lprect )
 	{
         DUIASSERT(lprect);
-        SkIRect rc={lprect->left,lprect->top,lprect->right,lprect->bottom};
-        return m_rgn.contains(rc);
+        return m_rgn.intersects(toSkIRect(lprect));
 	}
 
 	void SRegion_Skia::GetRgnBox( LPRECT lprect )

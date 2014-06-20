@@ -207,10 +207,10 @@ protected:
     
     //////////////////////////////////////////////////////////////////////////
     // IDuiRealWndHandler
-    virtual HWND OnRealWndCreate(CDuiRealWnd *pRealWnd);
-    virtual BOOL OnRealWndInit(CDuiRealWnd *pRealWnd);
-    virtual void OnRealWndDestroy(CDuiRealWnd *pRealWnd);
-    virtual void OnRealWndSize(CDuiRealWnd *pRealWnd);
+    virtual HWND OnRealWndCreate(SRealWnd *pRealWnd);
+    virtual BOOL OnRealWndInit(SRealWnd *pRealWnd);
+    virtual void OnRealWndDestroy(SRealWnd *pRealWnd);
+    virtual void OnRealWndSize(SRealWnd *pRealWnd);
 
     LRESULT OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam);
 

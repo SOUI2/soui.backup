@@ -12,7 +12,7 @@
 namespace SOUI
 {
 
-class SOUI_EXP CDuiListBoxEx :public CDuiScrollView
+class SOUI_EXP CDuiListBoxEx :public SScrollView
     ,public IDuiItemContainer
 {
 public:

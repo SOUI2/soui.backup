@@ -33,13 +33,13 @@ inline bool operator !=(const SBHITINFO &a, const SBHITINFO &b)
     return memcmp(&a,&b,sizeof(SBHITINFO))!=0;
 }
 
-class SOUI_EXP CDuiPanel: public SWindow
+class SOUI_EXP SPanel: public SWindow
 {
-    SOUI_CLASS_NAME(CDuiPanel, "div")
+    SOUI_CLASS_NAME(SPanel, "div")
 
 public:
-    CDuiPanel();
-    virtual ~CDuiPanel() {}
+    SPanel();
+    virtual ~SPanel() {}
 
     BOOL ShowScrollBar(int wBar, BOOL bShow);
 
@@ -145,12 +145,12 @@ protected:
     WND_MSG_MAP_END()
 };
 
-class SOUI_EXP CDuiScrollView : public CDuiPanel
+class SOUI_EXP SScrollView : public SPanel
 {
-    SOUI_CLASS_NAME(CDuiScrollView, "scrollview")
+    SOUI_CLASS_NAME(SScrollView, "scrollview")
 public:
-    CDuiScrollView();
-    virtual ~CDuiScrollView() {}
+    SScrollView();
+    virtual ~SScrollView() {}
 
     CSize GetViewSize();
 

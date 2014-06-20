@@ -9,7 +9,7 @@
 namespace SOUI
 {
 
-CDuiPanel::CDuiPanel()
+SPanel::SPanel()
     :m_nSbArrowSize(-1)
     ,m_nSbWid(-1)
     ,m_pSkinSb(NULL)
@@ -26,7 +26,7 @@ CDuiPanel::CDuiPanel()
 
 }
 
-BOOL CDuiPanel::ShowScrollBar( int wBar, BOOL bShow )
+BOOL SPanel::ShowScrollBar( int wBar, BOOL bShow )
 {
     if(bShow) m_wBarVisible|=wBar;
     else m_wBarVisible&=~wBar;
@@ -36,7 +36,7 @@ BOOL CDuiPanel::ShowScrollBar( int wBar, BOOL bShow )
 }
 
 
-BOOL CDuiPanel::EnableScrollBar( int wBar,BOOL bEnable )
+BOOL SPanel::EnableScrollBar( int wBar,BOOL bEnable )
 {
     if(bEnable) m_wBarEnable|=wBar;
     else m_wBarEnable&=~wBar;
@@ -54,12 +54,12 @@ BOOL CDuiPanel::EnableScrollBar( int wBar,BOOL bEnable )
 }
 
 
-BOOL CDuiPanel::IsScrollBarEnable( BOOL bVertical )
+BOOL SPanel::IsScrollBarEnable( BOOL bVertical )
 {
     return m_wBarEnable&(bVertical?DUISB_VERT:DUISB_HORZ);
 }
 
-void CDuiPanel::SetScrollInfo(SCROLLINFO si,BOOL bVertical)
+void SPanel::SetScrollInfo(SCROLLINFO si,BOOL bVertical)
 {
     SCROLLINFO *psi=bVertical?(&m_siVer):(&m_siHoz);
     if(si.fMask & SIF_RANGE)
@@ -78,7 +78,7 @@ void CDuiPanel::SetScrollInfo(SCROLLINFO si,BOOL bVertical)
     }
 }
 
-BOOL CDuiPanel::SetScrollPos(BOOL bVertical, int nNewPos,BOOL bRedraw)
+BOOL SPanel::SetScrollPos(BOOL bVertical, int nNewPos,BOOL bRedraw)
 {
     SCROLLINFO *psi=bVertical?(&m_siVer):(&m_siHoz);
 
@@ -97,13 +97,13 @@ BOOL CDuiPanel::SetScrollPos(BOOL bVertical, int nNewPos,BOOL bRedraw)
     return TRUE;
 }
 
-int CDuiPanel::GetScrollPos(BOOL bVertical)
+int SPanel::GetScrollPos(BOOL bVertical)
 {
     return bVertical?m_siVer.nPos:m_siHoz.nPos;
 }
 
 
-BOOL CDuiPanel::SetScrollRange( BOOL bVertical,int nMinPos,int nMaxPos,BOOL bRedraw )
+BOOL SPanel::SetScrollRange( BOOL bVertical,int nMinPos,int nMaxPos,BOOL bRedraw )
 {
     SCROLLINFO *psi=bVertical?(&m_siVer):(&m_siHoz);
     psi->nMin=nMinPos;
@@ -120,7 +120,7 @@ BOOL CDuiPanel::SetScrollRange( BOOL bVertical,int nMinPos,int nMaxPos,BOOL bRed
     return TRUE;
 }
 
-BOOL CDuiPanel::GetScrollRange( BOOL bVertical, LPINT lpMinPos, LPINT lpMaxPos )
+BOOL SPanel::GetScrollRange( BOOL bVertical, LPINT lpMinPos, LPINT lpMaxPos )
 {
     SCROLLINFO *psi=bVertical?(&m_siVer):(&m_siHoz);
     if(lpMaxPos) *lpMaxPos=psi->nMax;
@@ -128,13 +128,13 @@ BOOL CDuiPanel::GetScrollRange( BOOL bVertical, LPINT lpMinPos, LPINT lpMaxPos )
     return TRUE;
 }
 
-BOOL CDuiPanel::HasScrollBar(BOOL bVertical)
+BOOL SPanel::HasScrollBar(BOOL bVertical)
 {
     return m_wBarVisible&(bVertical?DUISB_VERT:DUISB_HORZ);
 }
 
 
-CRect CDuiPanel::GetSbPartRect(BOOL bVertical,UINT uSBCode)
+CRect SPanel::GetSbPartRect(BOOL bVertical,UINT uSBCode)
 {
     DUIASSERT(m_pSkinSb);
     CRect rcSb=GetScrollBarRect(bVertical);
@@ -192,7 +192,7 @@ end:
     return rcRet;
 }
 
-CRect CDuiPanel::GetSbRailwayRect( BOOL bVertical )
+CRect SPanel::GetSbRailwayRect( BOOL bVertical )
 {
     DUIASSERT(m_pSkinSb);
     CRect rcSb=GetScrollBarRect(bVertical);
@@ -208,7 +208,7 @@ CRect CDuiPanel::GetSbRailwayRect( BOOL bVertical )
     return rcSb;
 }
 
-CRect CDuiPanel::GetScrollBarRect(BOOL bVertical)
+CRect SPanel::GetScrollBarRect(BOOL bVertical)
 {
     CRect rcSb;
     if(!HasScrollBar(bVertical)) return rcSb;
@@ -237,7 +237,7 @@ CRect CDuiPanel::GetScrollBarRect(BOOL bVertical)
     return rcSb;
 }
 
-SBHITINFO CDuiPanel::HitTest(CPoint pt)
+SBHITINFO SPanel::HitTest(CPoint pt)
 {
     SBHITINFO hi= {-1,0,0};
     CRect rcSbVer=GetScrollBarRect(TRUE);
@@ -256,7 +256,7 @@ SBHITINFO CDuiPanel::HitTest(CPoint pt)
 
 }
 
-int CDuiPanel::OnCreate(LPVOID)
+int SPanel::OnCreate(LPVOID)
 {
     int nRet=__super::OnCreate(NULL);
 
@@ -270,34 +270,40 @@ int CDuiPanel::OnCreate(LPVOID)
     return 0;
 }
 
-void CDuiPanel::OnNcPaint(IRenderTarget *pRT)
+#include "color.h"
+
+void SPanel::OnNcPaint(IRenderTarget *pRT)
 {
     __super::OnNcPaint(pRT);
     CRect rcDest;
     //绘制滚动条
     if(HasScrollBar(TRUE))
     {
+        rcDest=GetScrollBarRect(TRUE);
+        pRT->FillSolidRect(&rcDest,RGBA(0xFF,0,0,0xFF));
         int nState=(IsDisabled(TRUE) || !IsScrollBarEnable(TRUE))?SBST_DISABLE:SBST_INACTIVE;
         rcDest=GetSbPartRect(TRUE,SB_LINEUP);
-        m_pSkinSb->Draw(dc,rcDest,MAKESBSTATE(SB_LINEUP,nState,TRUE));
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_LINEUP,nState,TRUE));
         rcDest=GetSbRailwayRect(TRUE);
-        m_pSkinSb->Draw(dc,rcDest,MAKESBSTATE(SB_PAGEUP,nState,TRUE));
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_PAGEUP,nState,TRUE));
         rcDest=GetSbPartRect(TRUE,SB_THUMBTRACK);
-        m_pSkinSb->Draw(dc,rcDest,MAKESBSTATE(SB_THUMBTRACK,nState,TRUE));
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_THUMBTRACK,nState,TRUE));
         rcDest=GetSbPartRect(TRUE,SB_LINEDOWN);
-        m_pSkinSb->Draw(dc,rcDest,MAKESBSTATE(SB_LINEDOWN,nState,TRUE));
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_LINEDOWN,nState,TRUE));
     }
     if(HasScrollBar(FALSE))
     {
-        int nState=(IsDisabled(TRUE) || !IsScrollBarEnable(FALSE))?SBST_DISABLE:SBST_INACTIVE;
+        rcDest=GetScrollBarRect(FALSE);
+        pRT->FillSolidRect(&rcDest,RGBA(0xFF,0,0,0xFF));
+int nState=(IsDisabled(TRUE) || !IsScrollBarEnable(FALSE))?SBST_DISABLE:SBST_INACTIVE;
         rcDest=GetSbPartRect(FALSE,SB_LINEUP);
-        m_pSkinSb->Draw(dc,rcDest,MAKESBSTATE(SB_LINEUP,nState,FALSE));
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_LINEUP,nState,FALSE));
         rcDest=GetSbRailwayRect(FALSE);
-        m_pSkinSb->Draw(dc,rcDest,MAKESBSTATE(SB_PAGEUP,nState,FALSE));
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_PAGEUP,nState,FALSE));
         rcDest=GetSbPartRect(FALSE,SB_THUMBTRACK);
-        m_pSkinSb->Draw(dc,rcDest,MAKESBSTATE(SB_THUMBTRACK,nState,FALSE));
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_THUMBTRACK,nState,FALSE));
         rcDest=GetSbPartRect(FALSE,SB_LINEDOWN);
-        m_pSkinSb->Draw(dc,rcDest,MAKESBSTATE(SB_LINEDOWN,nState,FALSE));
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_LINEDOWN,nState,FALSE));
     }
 
     if(HasScrollBar(TRUE) && HasScrollBar(FALSE))
@@ -306,11 +312,11 @@ void CDuiPanel::OnNcPaint(IRenderTarget *pRT)
         __super::GetClient(&rcDest);
         rcDest.left=rcDest.right-m_nSbWid;
         rcDest.top=rcDest.bottom-m_nSbWid;
-        m_pSkinSb->Draw(dc,rcDest,SB_CORNOR);
+        m_pSkinSb->Draw(pRT,rcDest,SB_CORNOR);
     }
 }
 
-void CDuiPanel::GetClient(LPRECT pRect)
+void SPanel::GetClient(LPRECT pRect)
 {
     pRect->left=m_rcClient.left;
     pRect->right=m_rcClient.right;
@@ -318,13 +324,13 @@ void CDuiPanel::GetClient(LPRECT pRect)
     pRect->bottom=m_rcClient.bottom;
 }
 
-BOOL CDuiPanel::OnDuiNcHitTest(CPoint pt)
+BOOL SPanel::OnDuiNcHitTest(CPoint pt)
 {
     if(m_bDragSb) return TRUE;
     return !m_rcClient.PtInRect(pt);
 }
 
-void CDuiPanel::OnNcLButtonDown(UINT nFlags, CPoint point)
+void SPanel::OnNcLButtonDown(UINT nFlags, CPoint point)
 {
     m_HitInfo=HitTest(point);
     if(m_HitInfo.uSbCode!=WORD(-1) && IsScrollBarEnable(m_HitInfo.bVertical))
@@ -335,9 +341,9 @@ void CDuiPanel::OnNcLButtonDown(UINT nFlags, CPoint point)
             if(m_HitInfo.uSbCode==SB_LINEUP || m_HitInfo.uSbCode== SB_LINEDOWN)
             {
                 CRect rc=GetSbPartRect(m_HitInfo.bVertical,m_HitInfo.uSbCode);
-                HDC hdc=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
-                m_pSkinSb->Draw(hdc,rc,MAKESBSTATE(m_HitInfo.uSbCode,SBST_PUSHDOWN,m_HitInfo.bVertical));
-                ReleaseRenderTarget(hdc);
+                CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
+                m_pSkinSb->Draw(pRT,rc,MAKESBSTATE(m_HitInfo.uSbCode,SBST_PUSHDOWN,m_HitInfo.bVertical));
+                ReleaseRenderTarget(pRT);
             }
             OnScroll(m_HitInfo.bVertical,m_HitInfo.uSbCode,m_HitInfo.bVertical?m_siVer.nPos:m_siHoz.nPos);
             SetDuiTimer(TIMER_SBWAIT,500);
@@ -350,14 +356,14 @@ void CDuiPanel::OnNcLButtonDown(UINT nFlags, CPoint point)
             m_dwUpdateTime=GetTickCount()-m_dwUpdateInterval;//让第一次滚动消息能够即时刷新
 
             CRect rcSlide=GetSbPartRect(m_HitInfo.bVertical,SB_THUMBTRACK);
-            HDC hdc=GetRenderTarget(&rcSlide,OLEDC_PAINTBKGND,FALSE);
-            m_pSkinSb->Draw(hdc,rcSlide,MAKESBSTATE(SB_THUMBTRACK,SBST_PUSHDOWN,m_HitInfo.bVertical));
-            ReleaseRenderTarget(hdc);
+            CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rcSlide,OLEDC_PAINTBKGND,FALSE);
+            m_pSkinSb->Draw(pRT,rcSlide,MAKESBSTATE(SB_THUMBTRACK,SBST_PUSHDOWN,m_HitInfo.bVertical));
+            ReleaseRenderTarget(pRT);
         }
     }
 }
 
-void CDuiPanel::OnNcLButtonUp(UINT nFlags,CPoint pt)
+void SPanel::OnNcLButtonUp(UINT nFlags,CPoint pt)
 {
     ReleaseDuiCapture();
     if(m_bDragSb)
@@ -369,21 +375,21 @@ void CDuiPanel::OnNcLButtonUp(UINT nFlags,CPoint pt)
         CRect rcRail=GetScrollBarRect(m_HitInfo.bVertical);
         if(m_HitInfo.bVertical) rcRail.DeflateRect(0,m_nSbArrowSize);
         else rcRail.DeflateRect(m_nSbArrowSize,0);
-        HDC hdc=GetRenderTarget(&rcRail,OLEDC_PAINTBKGND,FALSE);
-        m_pSkinSb->Draw(hdc,rcRail,MAKESBSTATE(SB_PAGEDOWN,SBST_NORMAL,m_HitInfo.bVertical));
+        CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rcRail,OLEDC_PAINTBKGND,FALSE);
+        m_pSkinSb->Draw(pRT,rcRail,MAKESBSTATE(SB_PAGEDOWN,SBST_NORMAL,m_HitInfo.bVertical));
         psi->nTrackPos=-1;
         CRect rcSlide=GetSbPartRect(m_HitInfo.bVertical,SB_THUMBTRACK);
-        m_pSkinSb->Draw(hdc,rcSlide,MAKESBSTATE(SB_THUMBTRACK,SBST_NORMAL,m_HitInfo.bVertical));
-        ReleaseRenderTarget(hdc);
+        m_pSkinSb->Draw(pRT,rcSlide,MAKESBSTATE(SB_THUMBTRACK,SBST_NORMAL,m_HitInfo.bVertical));
+        ReleaseRenderTarget(pRT);
     }
     else if(m_HitInfo.uSbCode!=WORD(-1) && IsScrollBarEnable(m_HitInfo.bVertical))
     {
         if(m_HitInfo.uSbCode==SB_LINEUP||m_HitInfo.uSbCode==SB_LINEDOWN)
         {
             CRect rc=GetSbPartRect(m_HitInfo.bVertical,m_HitInfo.uSbCode);
-            HDC hdc=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
-            m_pSkinSb->Draw(hdc,rc,MAKESBSTATE(m_HitInfo.uSbCode,SBST_NORMAL,m_HitInfo.bVertical));
-            ReleaseRenderTarget(hdc);
+            CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
+            m_pSkinSb->Draw(pRT,rc,MAKESBSTATE(m_HitInfo.uSbCode,SBST_NORMAL,m_HitInfo.bVertical));
+            ReleaseRenderTarget(pRT);
         }
     }
     KillDuiTimer(TIMER_SBWAIT);
@@ -392,7 +398,7 @@ void CDuiPanel::OnNcLButtonUp(UINT nFlags,CPoint pt)
     OnNcMouseMove(nFlags,pt);
 }
 
-void CDuiPanel::OnNcMouseMove(UINT nFlags, CPoint point)
+void SPanel::OnNcMouseMove(UINT nFlags, CPoint point)
 {
     if(m_bDragSb)
     {
@@ -439,10 +445,10 @@ void CDuiPanel::OnNcMouseMove(UINT nFlags, CPoint point)
             rcSlide.OffsetRect(nDragLen,0);
         }
 
-        HDC hdc=GetRenderTarget(&rcRail,OLEDC_PAINTBKGND,FALSE);
-        m_pSkinSb->Draw(hdc,rcRail,MAKESBSTATE(SB_PAGEUP,SBST_NORMAL,m_HitInfo.bVertical));
-        m_pSkinSb->Draw(hdc,rcSlide,MAKESBSTATE(SB_THUMBTRACK,SBST_PUSHDOWN,m_HitInfo.bVertical));
-        ReleaseRenderTarget(hdc);
+        CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rcRail,OLEDC_PAINTBKGND,FALSE);
+        m_pSkinSb->Draw(pRT,rcRail,MAKESBSTATE(SB_PAGEUP,SBST_NORMAL,m_HitInfo.bVertical));
+        m_pSkinSb->Draw(pRT,rcSlide,MAKESBSTATE(SB_THUMBTRACK,SBST_PUSHDOWN,m_HitInfo.bVertical));
+        ReleaseRenderTarget(pRT);
 
         if(nNewTrackPos!=psi->nTrackPos)
         {
@@ -466,30 +472,30 @@ void CDuiPanel::OnNcMouseMove(UINT nFlags, CPoint point)
                 if(IsScrollBarEnable(uHit.bVertical))
                 {
                     CRect rc=GetScrollBarRect(uHit.bVertical);
-                    HDC hdc=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
+                    CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
                     if(uHit.uSbCode!=SB_LINEUP) 
                     {
                         rc=GetSbPartRect(uHit.bVertical,SB_LINEUP);
-                        m_pSkinSb->Draw(hdc,rc,MAKESBSTATE(SB_LINEUP,SBST_NORMAL,uHit.bVertical));
+                        m_pSkinSb->Draw(pRT,rc,MAKESBSTATE(SB_LINEUP,SBST_NORMAL,uHit.bVertical));
                     }
                     rc=GetSbRailwayRect(uHit.bVertical);
-                    m_pSkinSb->Draw(hdc,rc,MAKESBSTATE(SB_PAGEUP,SBST_NORMAL,uHit.bVertical));
+                    m_pSkinSb->Draw(pRT,rc,MAKESBSTATE(SB_PAGEUP,SBST_NORMAL,uHit.bVertical));
                     if(uHit.uSbCode!=SB_LINEDOWN)
                     {
                         rc=GetSbPartRect(uHit.bVertical,SB_LINEDOWN);
-                        m_pSkinSb->Draw(hdc,rc,MAKESBSTATE(SB_LINEDOWN,SBST_NORMAL,uHit.bVertical));
+                        m_pSkinSb->Draw(pRT,rc,MAKESBSTATE(SB_LINEDOWN,SBST_NORMAL,uHit.bVertical));
                     }
                     if(uHit.uSbCode!=SB_THUMBTRACK)
                     {
                         rc=GetSbPartRect(uHit.bVertical,SB_THUMBTRACK);
-                        m_pSkinSb->Draw(hdc,rc,MAKESBSTATE(SB_THUMBTRACK,SBST_NORMAL,uHit.bVertical));
+                        m_pSkinSb->Draw(pRT,rc,MAKESBSTATE(SB_THUMBTRACK,SBST_NORMAL,uHit.bVertical));
                     }
                     if(uHit.uSbCode!=SB_PAGEUP && uHit.uSbCode!=SB_PAGEDOWN)
                     {
                         rc=GetSbPartRect(uHit.bVertical,uHit.uSbCode);
-                        m_pSkinSb->Draw(hdc,rc,MAKESBSTATE(uHit.uSbCode,SBST_HOVER,uHit.bVertical));
+                        m_pSkinSb->Draw(pRT,rc,MAKESBSTATE(uHit.uSbCode,SBST_HOVER,uHit.bVertical));
                     }
-                    ReleaseRenderTarget(hdc);
+                    ReleaseRenderTarget(pRT);
                 }
             }else
             {//鼠标在当前滚动条内移动
@@ -498,17 +504,17 @@ void CDuiPanel::OnNcMouseMove(UINT nFlags, CPoint point)
                     if(uHitOrig.uSbCode==SB_LINEUP || uHitOrig.uSbCode==SB_LINEDOWN)
                     {
                         CRect rc=GetSbPartRect(uHitOrig.bVertical,uHitOrig.uSbCode);
-                        HDC hdc=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
-                        m_pSkinSb->Draw(hdc,rc,MAKESBSTATE(uHitOrig.uSbCode,SBST_NORMAL,uHitOrig.bVertical));
-                        ReleaseRenderTarget(hdc);
+                        CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
+                        m_pSkinSb->Draw(pRT,rc,MAKESBSTATE(uHitOrig.uSbCode,SBST_NORMAL,uHitOrig.bVertical));
+                        ReleaseRenderTarget(pRT);
                     }else if(uHitOrig.uSbCode==SB_THUMBTRACK)
                     {//需要先画轨道，再画拖动条,以处理拖动条可能出现的半透明
                         CRect rc=GetSbRailwayRect(uHitOrig.bVertical);
-                        HDC hdc=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
-                        m_pSkinSb->Draw(hdc,rc,MAKESBSTATE(SB_PAGEUP,SBST_NORMAL,uHitOrig.bVertical));
+                        CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
+                        m_pSkinSb->Draw(pRT,rc,MAKESBSTATE(SB_PAGEUP,SBST_NORMAL,uHitOrig.bVertical));
                         rc=GetSbPartRect(uHitOrig.bVertical,SB_THUMBTRACK);
-                        m_pSkinSb->Draw(hdc,rc,MAKESBSTATE(SB_THUMBTRACK,SBST_NORMAL,uHitOrig.bVertical));
-                        ReleaseRenderTarget(hdc);
+                        m_pSkinSb->Draw(pRT,rc,MAKESBSTATE(SB_THUMBTRACK,SBST_NORMAL,uHitOrig.bVertical));
+                        ReleaseRenderTarget(pRT);
                     }
                 }
                 if(uHit.uSbCode!=WORD(-1) && IsScrollBarEnable(uHit.bVertical))
@@ -516,17 +522,17 @@ void CDuiPanel::OnNcMouseMove(UINT nFlags, CPoint point)
                     if(uHit.uSbCode==SB_LINEUP || uHit.uSbCode==SB_LINEDOWN)
                     {
                         CRect rc=GetSbPartRect(uHit.bVertical,uHit.uSbCode);
-                        HDC hdc=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
-                        m_pSkinSb->Draw(hdc,rc,MAKESBSTATE(uHit.uSbCode,SBST_HOVER,uHit.bVertical));
-                        ReleaseRenderTarget(hdc);
+                        CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
+                        m_pSkinSb->Draw(pRT,rc,MAKESBSTATE(uHit.uSbCode,SBST_HOVER,uHit.bVertical));
+                        ReleaseRenderTarget(pRT);
                     }else if(uHit.uSbCode==SB_THUMBTRACK)
                     {//需要先画轨道，再画拖动条,以处理拖动条可能出现的半透明
                         CRect rc=GetSbRailwayRect(uHit.bVertical);
-                        HDC hdc=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
-                        m_pSkinSb->Draw(hdc,rc,MAKESBSTATE(SB_PAGEUP,SBST_NORMAL,uHit.bVertical));
+                        CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rc,OLEDC_PAINTBKGND,FALSE);
+                        m_pSkinSb->Draw(pRT,rc,MAKESBSTATE(SB_PAGEUP,SBST_NORMAL,uHit.bVertical));
                         rc=GetSbPartRect(uHit.bVertical,SB_THUMBTRACK);
-                        m_pSkinSb->Draw(hdc,rc,MAKESBSTATE(SB_THUMBTRACK,SBST_HOVER,uHit.bVertical));
-                        ReleaseRenderTarget(hdc);
+                        m_pSkinSb->Draw(pRT,rc,MAKESBSTATE(SB_THUMBTRACK,SBST_HOVER,uHit.bVertical));
+                        ReleaseRenderTarget(pRT);
                     }
                 }
             }
@@ -536,7 +542,7 @@ void CDuiPanel::OnNcMouseMove(UINT nFlags, CPoint point)
     }
 }
 
-void CDuiPanel::OnNcMouseLeave()
+void SPanel::OnNcMouseLeave()
 {
     if(m_bDragSb || m_HitInfo.uSbCode==WORD(-1)) return;
 
@@ -545,22 +551,22 @@ void CDuiPanel::OnNcMouseLeave()
     if(IsScrollBarEnable(m_HitInfo.bVertical))
     {
         CRect rcSb=GetScrollBarRect(m_HitInfo.bVertical);
-        HDC hdc=GetRenderTarget(&rcSb,OLEDC_PAINTBKGND,FALSE);
-         CRect rcDest=GetSbPartRect(m_HitInfo.bVertical,SB_LINEUP);
-          m_pSkinSb->Draw(hdc,rcDest,MAKESBSTATE(SB_LINEUP,SBST_INACTIVE,m_HitInfo.bVertical));
-         rcDest=GetSbRailwayRect(m_HitInfo.bVertical);
-         m_pSkinSb->Draw(hdc,rcDest,MAKESBSTATE(SB_PAGEUP,SBST_INACTIVE,m_HitInfo.bVertical));
-         rcDest=GetSbPartRect(m_HitInfo.bVertical,SB_THUMBTRACK);
-          m_pSkinSb->Draw(hdc,rcDest,MAKESBSTATE(SB_THUMBTRACK,SBST_INACTIVE,m_HitInfo.bVertical));
-         rcDest=GetSbPartRect(m_HitInfo.bVertical,SB_LINEDOWN);
-          m_pSkinSb->Draw(hdc,rcDest,MAKESBSTATE(SB_LINEDOWN,SBST_INACTIVE,m_HitInfo.bVertical));
-        ReleaseRenderTarget(hdc);
+        CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rcSb,OLEDC_PAINTBKGND,FALSE);
+        CRect rcDest=GetSbPartRect(m_HitInfo.bVertical,SB_LINEUP);
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_LINEUP,SBST_INACTIVE,m_HitInfo.bVertical));
+        rcDest=GetSbRailwayRect(m_HitInfo.bVertical);
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_PAGEUP,SBST_INACTIVE,m_HitInfo.bVertical));
+        rcDest=GetSbPartRect(m_HitInfo.bVertical,SB_THUMBTRACK);
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_THUMBTRACK,SBST_INACTIVE,m_HitInfo.bVertical));
+        rcDest=GetSbPartRect(m_HitInfo.bVertical,SB_LINEDOWN);
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_LINEDOWN,SBST_INACTIVE,m_HitInfo.bVertical));
+        ReleaseRenderTarget(pRT);
     }
     m_HitInfo=uHit;
 }
 
 //滚动条显示或者隐藏时发送该消息
-LRESULT CDuiPanel::OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam)
+LRESULT SPanel::OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam)
 {
     __super::GetClient(&m_rcClient);
 
@@ -570,7 +576,7 @@ LRESULT CDuiPanel::OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam)
     return 0;
 }
 
-BOOL CDuiPanel::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+BOOL SPanel::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
     zDelta/=WHEEL_DELTA;
     if(zDelta>0)
@@ -589,7 +595,7 @@ BOOL CDuiPanel::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 }
 
 
-BOOL CDuiPanel::OnScroll(BOOL bVertical,UINT uCode,int nPos)
+BOOL SPanel::OnScroll(BOOL bVertical,UINT uCode,int nPos)
 {
     SCROLLINFO *psi=bVertical?(&m_siVer):(&m_siHoz);
     int nNewPos=psi->nPos;
@@ -628,18 +634,18 @@ BOOL CDuiPanel::OnScroll(BOOL bVertical,UINT uCode,int nPos)
             CRect rcRail=GetScrollBarRect(bVertical);
             if(bVertical) rcRail.DeflateRect(0,m_nSbArrowSize);
             else rcRail.DeflateRect(m_nSbArrowSize,0);
-            HDC hdc=GetRenderTarget(&rcRail,OLEDC_PAINTBKGND,FALSE);
-            m_pSkinSb->Draw(hdc,rcRail,MAKESBSTATE(SB_PAGEDOWN,SBST_NORMAL,bVertical));
+            CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rcRail,OLEDC_PAINTBKGND,FALSE);
+            m_pSkinSb->Draw(pRT,rcRail,MAKESBSTATE(SB_PAGEDOWN,SBST_NORMAL,bVertical));
             psi->nTrackPos=-1;
             CRect rcSlide=GetSbPartRect(bVertical,SB_THUMBTRACK);
-            m_pSkinSb->Draw(hdc,rcSlide,MAKESBSTATE(SB_THUMBTRACK,SBST_NORMAL,bVertical));
-            ReleaseRenderTarget(hdc);
+            m_pSkinSb->Draw(pRT,rcSlide,MAKESBSTATE(SB_THUMBTRACK,SBST_NORMAL,bVertical));
+            ReleaseRenderTarget(pRT);
         }
     }
     return TRUE;
 }
 
-int CDuiPanel::GetSbSlideLength(BOOL bVertical)
+int SPanel::GetSbSlideLength(BOOL bVertical)
 {
     SCROLLINFO *psi=bVertical?(&m_siVer):(&m_siHoz);
     CRect rcSb=GetScrollBarRect(bVertical);
@@ -652,7 +658,7 @@ int CDuiPanel::GetSbSlideLength(BOOL bVertical)
     return nSlideHei;
 }
 
-CRect CDuiPanel::GetSbSlideRectByPos(BOOL bVertical,int nPos)
+CRect SPanel::GetSbSlideRectByPos(BOOL bVertical,int nPos)
 {
     SCROLLINFO *psi=bVertical?(&m_siVer):(&m_siHoz);
     int nOldPos=psi->nTrackPos;
@@ -662,7 +668,7 @@ CRect CDuiPanel::GetSbSlideRectByPos(BOOL bVertical,int nPos)
     return rcRet;
 }
 
-void CDuiPanel::OnDuiTimer( char cTimerID )
+void SPanel::OnDuiTimer( char cTimerID )
 {
     if(cTimerID==TIMER_SBWAIT)
     {
@@ -679,7 +685,7 @@ void CDuiPanel::OnDuiTimer( char cTimerID )
     }
 }
 
-void CDuiPanel::ScrollUpdate()
+void SPanel::ScrollUpdate()
 {
     DWORD dwTime=GetTickCount();
     if(dwTime-m_dwUpdateTime>=m_dwUpdateInterval)
@@ -689,7 +695,7 @@ void CDuiPanel::ScrollUpdate()
     }
 }
 
-void CDuiPanel::OnShowWindow( BOOL bShow, UINT nStatus )
+void SPanel::OnShowWindow( BOOL bShow, UINT nStatus )
 {
     if(!bShow && m_bDragSb)
     {//隐藏窗口时正有可能正在拖动滚动条，需要处理一下。
@@ -698,7 +704,7 @@ void CDuiPanel::OnShowWindow( BOOL bShow, UINT nStatus )
     __super::OnShowWindow(bShow,nStatus);
 }
 
-LRESULT CDuiPanel::OnAttrScrollbarSkin( CDuiStringA strValue,BOOL bLoading )
+LRESULT SPanel::OnAttrScrollbarSkin( CDuiStringA strValue,BOOL bLoading )
 {
     ISkinObj *pSbSkin=GETSKIN(strValue);
     DUIASSERT(pSbSkin);
@@ -709,14 +715,14 @@ LRESULT CDuiPanel::OnAttrScrollbarSkin( CDuiStringA strValue,BOOL bLoading )
 
 
 //////////////////////////////////////////////////////////////////////////
-CDuiScrollView::CDuiScrollView()
+SScrollView::SScrollView()
 :m_szView(-1,-1)
 ,m_ptOrigin(0,0)
 {
     m_bClipClient=TRUE;
 }
 
-int CDuiScrollView::OnCreate( LPVOID )
+int SScrollView::OnCreate( LPVOID )
 {
     int nRet=__super::OnCreate(NULL);
     if(nRet!=0) return nRet;
@@ -726,13 +732,13 @@ int CDuiScrollView::OnCreate( LPVOID )
     return 0;
 }
 
-void CDuiScrollView::OnSize(UINT nType,CSize size)
+void SScrollView::OnSize(UINT nType,CSize size)
 {
     UpdateScrollBar();
 }
 
 
-void CDuiScrollView::SetViewOrigin(CPoint pt)
+void SScrollView::SetViewOrigin(CPoint pt)
 {
     if(m_ptOrigin==pt) return;
     CPoint ptOld=m_ptOrigin;
@@ -741,13 +747,13 @@ void CDuiScrollView::SetViewOrigin(CPoint pt)
     NotifyInvalidate();
 }
 
-CPoint CDuiScrollView::GetViewOrigin()
+CPoint SScrollView::GetViewOrigin()
 {
     return m_ptOrigin;
 }
 
 
-void CDuiScrollView::SetViewSize(CSize szView)
+void SScrollView::SetViewSize(CSize szView)
 {
     if(szView==m_szView) return;
 
@@ -757,12 +763,12 @@ void CDuiScrollView::SetViewSize(CSize szView)
     OnViewSizeChanged(oldViewSize,szView);
 }
 
-CSize CDuiScrollView::GetViewSize()
+CSize SScrollView::GetViewSize()
 {
     return m_szView;
 }
 
-void CDuiScrollView::UpdateScrollBar()
+void SScrollView::UpdateScrollBar()
 {
     CRect rcClient;
     SWindow::GetClient(&rcClient);
@@ -834,7 +840,7 @@ void CDuiScrollView::UpdateScrollBar()
     NotifyInvalidate();
 }
 
-BOOL CDuiScrollView::OnScroll(BOOL bVertical,UINT uCode,int nPos)
+BOOL SScrollView::OnScroll(BOOL bVertical,UINT uCode,int nPos)
 {
     BOOL bRet=__super::OnScroll(bVertical,uCode,nPos);
     if(bRet)

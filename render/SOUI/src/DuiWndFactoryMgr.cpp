@@ -15,20 +15,21 @@ DuiWindowFactoryMgr::DuiWindowFactoryMgr(void)
 void DuiWindowFactoryMgr::AddStandardWindowFactory()
 {
     AddKeyObject(SWindow::GetClassName(),new TplDuiWindowFactory<SWindow>);
+    AddKeyObject(SPanel::GetClassName(),new TplDuiWindowFactory<SPanel>);
+    AddKeyObject(SScrollView::GetClassName(),new TplDuiWindowFactory<SScrollView>);
+    AddKeyObject(SRealWnd::GetClassName(),new TplDuiWindowFactory<SRealWnd>);
+    AddKeyObject(SCaption::GetClassName(),new TplDuiWindowFactory<SCaption>);
+    AddKeyObject(STabCtrl::GetClassName(),new TplDuiWindowFactory<STabCtrl>);
     /*
-    AddKeyObject(CDuiPanel::GetClassName(),new TplDuiWindowFactory<CDuiPanel>);
-    AddKeyObject(CDuiScrollView::GetClassName(),new TplDuiWindowFactory<CDuiScrollView>);
     AddKeyObject(CDuiStatic::GetClassName(),new TplDuiWindowFactory<CDuiStatic>);
     AddKeyObject(CDuiButton::GetClassName(),new TplDuiWindowFactory<CDuiButton>);
     AddKeyObject(CDuiSpacing::GetClassName(),new TplDuiWindowFactory<CDuiSpacing>);
     AddKeyObject(CDuiImageWnd::GetClassName(),new TplDuiWindowFactory<CDuiImageWnd>);
     AddKeyObject(CDuiProgress::GetClassName(),new TplDuiWindowFactory<CDuiProgress>);
     AddKeyObject(CDuiImageBtnWnd::GetClassName(),new TplDuiWindowFactory<CDuiImageBtnWnd>);
-    AddKeyObject(CDuiRealWnd::GetClassName(),new TplDuiWindowFactory<CDuiRealWnd>);
     AddKeyObject(CDuiLine::GetClassName(),new TplDuiWindowFactory<CDuiLine>);
     AddKeyObject(CDuiCheckBox::GetClassName(),new TplDuiWindowFactory<CDuiCheckBox>);
     AddKeyObject(CDuiIconWnd::GetClassName(),new TplDuiWindowFactory<CDuiIconWnd>);
-    AddKeyObject(CDuiTabCtrl::GetClassName(),new TplDuiWindowFactory<CDuiTabCtrl>);
     AddKeyObject(CDuiRadioBox::GetClassName(),new TplDuiWindowFactory<CDuiRadioBox>);
     AddKeyObject(CDuiLink::GetClassName(),new TplDuiWindowFactory<CDuiLink>);
     AddKeyObject(CDuiGroup::GetClassName(),new TplDuiWindowFactory<CDuiGroup>);
@@ -48,7 +49,6 @@ void DuiWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(CDuiComboBox::GetClassName(),new TplDuiWindowFactory<CDuiComboBox>);
     AddKeyObject(CDuiComboBoxEx::GetClassName(),new TplDuiWindowFactory<CDuiComboBoxEx>);
     AddKeyObject(CDuiHotKeyCtrl::GetClassName(),new TplDuiWindowFactory<CDuiHotKeyCtrl>);
-    AddKeyObject(CDuiCaption::GetClassName(),new TplDuiWindowFactory<CDuiCaption>);
     AddKeyObject(CDuiSliderBar::GetClassName(),new TplDuiWindowFactory<CDuiSliderBar>);
     AddKeyObject(CDuiActiveX::GetClassName(),new TplDuiWindowFactory<CDuiActiveX>);
     AddKeyObject(CDuiFlashCtrl::GetClassName(),new TplDuiWindowFactory<CDuiFlashCtrl>);

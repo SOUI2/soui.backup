@@ -358,12 +358,12 @@ typedef struct tagDUINMCALENDARSELECTDAY
 #define NM_INTERNAL_FIRST    1000
 #define NM_INTERNAL_LAST        2000
 
-class CDuiRealWnd;
+class SRealWnd;
 
 typedef struct _DUINMREALWNDCMN
 {
     DUINMHDR       hdr;
-    CDuiRealWnd    * pRealWnd;
+    SRealWnd    * pRealWnd;
 } DUINMREALWNDCMN, *LPDUINMREALWNDCMN;
 
 typedef struct _DUINMREALWNDMSGPROC

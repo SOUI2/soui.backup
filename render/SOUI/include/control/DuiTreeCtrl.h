@@ -67,7 +67,7 @@ typedef struct tagTVITEM {
 
 
 class SOUI_EXP CDuiTreeCtrl
-    : public CDuiScrollView
+    : public SScrollView
     , protected CSTree<LPTVITEM>
 {
     SOUI_CLASS_NAME(CDuiTreeCtrl, "treectrl")

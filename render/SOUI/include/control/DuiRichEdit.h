@@ -218,7 +218,7 @@ protected:
 #define HIMETRIC_PER_INCH 2540
 #endif
 
-class SOUI_EXP CDuiRichEdit :public CDuiPanel
+class SOUI_EXP CDuiRichEdit :public SPanel
 {
     friend class CDuiTextHost;
 public:

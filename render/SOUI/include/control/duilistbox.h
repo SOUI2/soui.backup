@@ -26,7 +26,7 @@ typedef struct tagLBITEM
 
 } LBITEM, *LPLBITEM;
 
-class SOUI_EXP CDuiListBox :public CDuiScrollView
+class SOUI_EXP CDuiListBox :public SScrollView
 {
 public:
 

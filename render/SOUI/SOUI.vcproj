@@ -781,6 +781,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\controls\DuiCaption.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\duicolor.cpp"
 				>
 			</File>
@@ -818,6 +822,10 @@
 			</File>
 			<File
 				RelativePath=".\src\duiobject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\DuiPanel.cpp"
 				>
 			</File>
 			<File
@@ -940,6 +948,10 @@
 			</File>
 			<File
 				RelativePath=".\src\DuiSystem.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\controls\DuiTabCtrl.cpp"
 				>
 			</File>
 			<File

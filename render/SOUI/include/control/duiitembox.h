@@ -13,7 +13,7 @@ namespace SOUI
 {
 
 class SOUI_EXP CDuiItemBox
-    : public CDuiScrollView
+    : public SScrollView
 {
     SOUI_CLASS_NAME(CDuiItemBox, "itembox")
 public:

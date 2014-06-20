@@ -341,29 +341,30 @@ void CDuiHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
         m_memRT->SelectObject(defFont,(IRenderObj**)&oldFont);
         m_memRT->SetTextColor(RGBA(0,0,0,0xFF));
 
+        //m_rgnInvalidate有可能在RedrawRegion时被修改，必须生成一个临时的区域对象
+        CAutoRefPtr<IRegion> pRgnUpdate=m_rgnInvalidate;
+        m_rgnInvalidate=NULL;
+        GETRENDERFACTORY->CreateRegion(&m_rgnInvalidate);
+
         CRect rcInvalid=m_rcWindow;
-        if (!m_rgnInvalidate->IsEmpty())
+        if (!pRgnUpdate->IsEmpty())
         {
-            m_memRT->PushClipRegion(m_rgnInvalidate,RGN_COPY);
-            m_rgnInvalidate->GetRgnBox(&rcInvalid);
+            m_memRT->PushClipRegion(pRgnUpdate,RGN_COPY);
+            pRgnUpdate->GetRgnBox(&rcInvalid);
         }else
         {
             m_memRT->PushClipRect(&rcInvalid,RGN_COPY);
         }
         m_memRT->FillSolidRect(&rcInvalid,RGBA(0,0,0,0));//清除残留的alpha值
 
-        //m_rgnInvalidate有可能在RedrawRegion时被修改，必须生成一个临时的区域对象
-        CAutoRefPtr<IRegion> pRgnUpdate=m_rgnInvalidate;
-        GETRENDERFACTORY->CreateRegion(&m_rgnInvalidate);
-
         if(m_bCaretActive) DrawCaret(m_ptCaret);//clear old caret 
         RedrawRegion(m_memRT, pRgnUpdate);
         if(m_bCaretActive) DrawCaret(m_ptCaret);//redraw caret 
         
-        if(m_rgnInvalidate->IsEmpty())
-            m_memRT->PopClipRect();
-        else
+        if(!pRgnUpdate->IsEmpty())
             m_memRT->PopClipRegion();
+        else
+            m_memRT->PopClipRect();
         
         m_memRT->SelectObject(oldFont);
 
@@ -939,7 +940,7 @@ LRESULT CDuiHostWnd::OnMsgFilter(UINT uMsg,WPARAM wParam,LPARAM lParam)
 
 //////////////////////////////////////////////////////////////////////////
 // IDuiRealWnd
-HWND CDuiHostWnd::OnRealWndCreate(CDuiRealWnd *pRealWnd)
+HWND CDuiHostWnd::OnRealWndCreate(SRealWnd *pRealWnd)
 {
     CRect rcWindow;
     UINT uCmdID=pRealWnd->GetCmdID();
@@ -951,12 +952,12 @@ HWND CDuiHostWnd::OnRealWndCreate(CDuiRealWnd *pRealWnd)
                           m_hWnd,(HMENU)(ULONG_PTR)uCmdID,0,NULL);
 }
 
-BOOL CDuiHostWnd::OnRealWndInit( CDuiRealWnd *pRealWnd )
+BOOL CDuiHostWnd::OnRealWndInit( SRealWnd *pRealWnd )
 {
     return FALSE;
 }
 
-void CDuiHostWnd::OnRealWndDestroy(CDuiRealWnd *pRealWnd)
+void CDuiHostWnd::OnRealWndDestroy(SRealWnd *pRealWnd)
 {
     if(::IsWindow(pRealWnd->GetRealHwnd(FALSE)))
     {
@@ -970,7 +971,7 @@ void CDuiHostWnd::OnRealWndDestroy(CDuiRealWnd *pRealWnd)
 }
 
 
-void CDuiHostWnd::OnRealWndSize( CDuiRealWnd *pRealWnd )
+void CDuiHostWnd::OnRealWndSize( SRealWnd *pRealWnd )
 {
     if(::IsWindow(pRealWnd->GetRealHwnd(FALSE)))
     {

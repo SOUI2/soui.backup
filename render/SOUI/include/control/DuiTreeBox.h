@@ -27,7 +27,7 @@ public:
 };
 
 class SOUI_EXP CDuiTreeBox
-    : public CDuiScrollView
+    : public SScrollView
     , public IDuiItemContainer
     , protected CSTree<CDuiTreeItem *>
 {
