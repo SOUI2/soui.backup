@@ -269,6 +269,7 @@ namespace SOUI
         rcDst.offset(m_ptOrg);
         RECT rc={xSrc,ySrc,xSrc+pRcDest->right-pRcDest->left,ySrc+pRcDest->bottom-pRcDest->top};
         SkRect rcSrc=toSkRect(&rc);
+        rcSrc.offset(pRTSourSkia->m_ptOrg);
 	    m_SkCanvas->drawBitmapRectToRect(bmpSrc,&rcSrc,rcDst);
 		return S_OK;
 	}

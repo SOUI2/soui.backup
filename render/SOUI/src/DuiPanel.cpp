@@ -270,8 +270,6 @@ int SPanel::OnCreate(LPVOID)
     return 0;
 }
 
-#include "color.h"
-
 void SPanel::OnNcPaint(IRenderTarget *pRT)
 {
     __super::OnNcPaint(pRT);
@@ -279,8 +277,6 @@ void SPanel::OnNcPaint(IRenderTarget *pRT)
     //»æÖÆ¹ö¶¯Ìõ
     if(HasScrollBar(TRUE))
     {
-        rcDest=GetScrollBarRect(TRUE);
-        pRT->FillSolidRect(&rcDest,RGBA(0xFF,0,0,0xFF));
         int nState=(IsDisabled(TRUE) || !IsScrollBarEnable(TRUE))?SBST_DISABLE:SBST_INACTIVE;
         rcDest=GetSbPartRect(TRUE,SB_LINEUP);
         m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_LINEUP,nState,TRUE));
@@ -293,9 +289,7 @@ void SPanel::OnNcPaint(IRenderTarget *pRT)
     }
     if(HasScrollBar(FALSE))
     {
-        rcDest=GetScrollBarRect(FALSE);
-        pRT->FillSolidRect(&rcDest,RGBA(0xFF,0,0,0xFF));
-int nState=(IsDisabled(TRUE) || !IsScrollBarEnable(FALSE))?SBST_DISABLE:SBST_INACTIVE;
+        int nState=(IsDisabled(TRUE) || !IsScrollBarEnable(FALSE))?SBST_DISABLE:SBST_INACTIVE;
         rcDest=GetSbPartRect(FALSE,SB_LINEUP);
         m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_LINEUP,nState,FALSE));
         rcDest=GetSbRailwayRect(FALSE);
