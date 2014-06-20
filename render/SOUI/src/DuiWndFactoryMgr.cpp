@@ -20,6 +20,9 @@ void DuiWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(SRealWnd::GetClassName(),new TplDuiWindowFactory<SRealWnd>);
     AddKeyObject(SCaption::GetClassName(),new TplDuiWindowFactory<SCaption>);
     AddKeyObject(STabCtrl::GetClassName(),new TplDuiWindowFactory<STabCtrl>);
+    AddKeyObject(SActiveX::GetClassName(),new TplDuiWindowFactory<SActiveX>);
+    AddKeyObject(SFlashCtrl::GetClassName(),new TplDuiWindowFactory<SFlashCtrl>);
+    AddKeyObject(SMediaPlayer::GetClassName(),new TplDuiWindowFactory<SMediaPlayer>);
     /*
     AddKeyObject(CDuiStatic::GetClassName(),new TplDuiWindowFactory<CDuiStatic>);
     AddKeyObject(CDuiButton::GetClassName(),new TplDuiWindowFactory<CDuiButton>);
@@ -50,9 +53,6 @@ void DuiWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(CDuiComboBoxEx::GetClassName(),new TplDuiWindowFactory<CDuiComboBoxEx>);
     AddKeyObject(CDuiHotKeyCtrl::GetClassName(),new TplDuiWindowFactory<CDuiHotKeyCtrl>);
     AddKeyObject(CDuiSliderBar::GetClassName(),new TplDuiWindowFactory<CDuiSliderBar>);
-    AddKeyObject(CDuiActiveX::GetClassName(),new TplDuiWindowFactory<CDuiActiveX>);
-    AddKeyObject(CDuiFlashCtrl::GetClassName(),new TplDuiWindowFactory<CDuiFlashCtrl>);
-    AddKeyObject(CDuiMediaPlayer::GetClassName(),new TplDuiWindowFactory<CDuiMediaPlayer>);
     AddKeyObject(CDuiMaskEdit::GetClassName(),new TplDuiWindowFactory<CDuiMaskEdit>);
     AddKeyObject(CDuiDateEdit::GetClassName(),new TplDuiWindowFactory<CDuiDateEdit>);
     AddKeyObject(CDuiTimeEdit::GetClassName(),new TplDuiWindowFactory<CDuiTimeEdit>);

@@ -7,13 +7,13 @@
 namespace SOUI
 {
 
-    class SOUI_EXP CDuiActiveX : public SWindow
+    class SOUI_EXP SActiveX : public SWindow
     {
         friend class CDuiAxContainerImpl;
     public:
-        SOUI_CLASS_NAME(CDuiActiveX, "activex")
-        explicit CDuiActiveX();
-        virtual ~CDuiActiveX();
+        SOUI_CLASS_NAME(SActiveX, "activex")
+        explicit SActiveX();
+        virtual ~SActiveX();
 
         IUnknown * GetIUnknow();
     protected:
@@ -21,7 +21,7 @@ namespace SOUI
 
         int OnCreate(LPVOID);
         void OnSize(UINT nType, CSize size);
-        void OnPaint(CDCHandle dc);
+        void OnPaint(IRenderTarget *pRT);
         LRESULT OnMouseEvent(UINT uMsg,WPARAM wp,LPARAM lp);
         LRESULT OnKeyEvent(UINT uMsg,WPARAM wp,LPARAM lp);
         void OnShowWindow(BOOL bShow, UINT nStatus);
@@ -32,7 +32,7 @@ namespace SOUI
 
         HRESULT OnAttrClsid(const CDuiStringA & strValue,BOOL bLoading);
         WND_MSG_MAP_BEGIN()
-            MSG_WM_PAINT(OnPaint)
+            MSG_WM_PAINT_EX(OnPaint)
             MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
             MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
             MSG_WM_CREATE(OnCreate)
@@ -58,11 +58,11 @@ namespace SOUI
         BOOL        m_bDelayInit;
     };
 
-    class SOUI_EXP CDuiFlashCtrl : public CDuiActiveX
+    class SOUI_EXP SFlashCtrl : public SActiveX
     {
     public:
-        SOUI_CLASS_NAME(CDuiFlashCtrl, "flash")
-        CDuiFlashCtrl();
+        SOUI_CLASS_NAME(SFlashCtrl, "flash")
+        SFlashCtrl();
 
         ShockwaveFlashObjects::IShockwaveFlash* GetFlashInterface()  const
         {
@@ -91,11 +91,11 @@ namespace SOUI
     };
 
 
-    class SOUI_EXP CDuiMediaPlayer :public CDuiActiveX
+    class SOUI_EXP SMediaPlayer :public SActiveX
     {
     public:
-        SOUI_CLASS_NAME(CDuiMediaPlayer, "mediaplayer")
-        CDuiMediaPlayer();
+        SOUI_CLASS_NAME(SMediaPlayer, "mediaplayer")
+        SMediaPlayer();
 
         WMPLib::IWMPPlayer4* GetMediaPlayerInterface()  const
         {

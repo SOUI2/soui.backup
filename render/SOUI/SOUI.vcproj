@@ -777,6 +777,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\controls\DuiActiveX.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\activex\DuiAxContainer.cpp"
 				>
 			</File>

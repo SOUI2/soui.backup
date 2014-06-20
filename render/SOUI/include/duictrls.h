@@ -3,6 +3,7 @@
 #include "control/DuiCaption.h"
 #include "control/duirealwnd.h"
 #include "control/duitabctrl.h"
+#include "control/DuiActiveX.h"
 /*
 #include "control/DuiCmnCtrl.h"
 #include "control/duiscrollbar.h"
@@ -20,5 +21,4 @@
 #include "control/DuiCalendar.h"
 #include "control/DuiHeaderCtrl.h"
 #include "control/DuiListCtrl.h"
-#include "control/DuiActiveX.h"
 */
