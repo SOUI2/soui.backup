@@ -789,6 +789,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\controls\DuiCmnCtrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\duicolor.cpp"
 				>
 			</File>

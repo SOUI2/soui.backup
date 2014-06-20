@@ -306,6 +306,22 @@ public:                                                             \
         }                                                           \
         else                                                        \
  
+#define ATTR_ICON(attribname, varname, allredraw)        \
+    if (attribname == strAttribName)                            \
+        {                                                       \
+        CDuiStringT strValueT=DUI_CA2T(strValue,CP_UTF8);        \
+        int nPos=strValueT.ReverseFind(':');\
+        if(nPos!=-1)\
+        {\
+        int cx=0;                                                \
+        ::StrToIntExA(strValue,STIF_DEFAULT,&cx);            \
+        varname = GETRESPROVIDER->LoadIcon(strValueT,cx,cx);        \
+        hRet = allredraw ? S_OK : S_FALSE;                      \
+        }else\
+        varname = GETRESPROVIDER->LoadIcon(strValueT);        \
+        hRet = allredraw ? S_OK : S_FALSE;                      \
+        }                                                           \
+        else                                                        \
 
 
 #endif//DUIATTRCRACK_H

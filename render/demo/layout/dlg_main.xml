@@ -10,6 +10,9 @@
           <scrollview id="1150" pos="10,0,-10,-10" viewwid="900" viewhei="5000">
           </scrollview>
         </tab>
+        <tab title="flash">
+          <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://swf.sc.chinaz.com//Files/DownLoad/flash2/201401/flash2524.swf" delayinit="1"/>
+        </tab>
       </tabctrl>
     </window>
   </body>

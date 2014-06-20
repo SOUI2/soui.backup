@@ -274,7 +274,7 @@ public:
             }
             if(m_uIconID!=0)
             {
-                CDuiImageWnd *pIcon=pWnd->FindChildByCmdID2<CDuiImageWnd*>(m_uIconID);
+                SImageWnd *pIcon=pWnd->FindChildByCmdID2<SImageWnd*>(m_uIconID);
                 if(pIcon) pIcon->SetIcon(iIcon);
             }
         }

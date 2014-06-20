@@ -13,31 +13,11 @@
 
 #pragma once
 #include "duiwnd.h"
-#include "DuiPanel.h"
 #include "duiwndnotify.h"
 #include "Accelerator.h"
 
 namespace SOUI
 {
-/**
- * @class      CDuiSpacing
- * @brief      空格控件类
- * 
- * Describe    空格控件类
- * Usage       <spacing width=xx />
- */
-class SOUI_EXP CDuiSpacing : public SWindow
-{
-    SOUI_CLASS_NAME(CDuiSpacing, "spacing")
-public:
-    // Do nothing
-    void OnPaint(CDCHandle dc){}
-
-protected:
-    WND_MSG_MAP_BEGIN()
-    MSG_WM_PAINT(OnPaint)
-    WND_MSG_MAP_END()
-};
 
 /**
  * @class      CDuiStatic
@@ -46,9 +26,9 @@ protected:
  * Describe    静态文本控件可支持多行，有多行属性时，\n可以强制换行
  * Usage       <text>inner text example</text>
  */
-class SOUI_EXP CDuiStatic : public SWindow
+class SOUI_EXP SStatic : public SWindow
 {
-    SOUI_CLASS_NAME(CDuiStatic, "text")
+    SOUI_CLASS_NAME(SStatic, "text")
 public:
     /**
      * CDuiStatic::CDuiStatic
@@ -56,7 +36,7 @@ public:
      *
      * Describe  构造函数
      */
-    CDuiStatic():m_bMultiLines(0),m_nLineInter(5)
+    SStatic():m_bMultiLines(0),m_nLineInter(5)
     {
         m_bMsgTransparent=TRUE;
         m_style.SetAttribute("align","left");
@@ -64,7 +44,7 @@ public:
     /**
      * CDuiStatic::DuiDrawText
      * @brief    绘制文本
-     * @param    HDC hdc -- 绘制设备句柄         
+     * @param    IRenderTarget *pRT -- 绘制设备句柄         
      * @param    LPCTSTR pszBuf -- 文本内容字符串         
      * @param    int cchText -- 字符串长度         
      * @param    LPRECT pRect -- 指向矩形结构RECT的指针         
@@ -72,15 +52,15 @@ public:
      *
      * Describe  对DrawText封装
      */    
-    virtual void DuiDrawText(HDC hdc,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
+    virtual void DuiDrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
 
 protected:
     int m_bMultiLines;  /**< 是否开启多行显示 */  
     int m_nLineInter;   /**< 不详 有待完善 */
 
     SOUI_ATTRS_BEGIN()
-    ATTR_INT("multilines", m_bMultiLines, FALSE)
-    ATTR_INT("interhei", m_nLineInter, FALSE)
+        ATTR_INT("multilines", m_bMultiLines, FALSE)
+        ATTR_INT("interhei", m_nLineInter, FALSE)
     SOUI_ATTRS_END()
 };
 
@@ -91,9 +71,9 @@ protected:
  * Describe    Only For Header Drag Test
  * Usage       <link>inner text example</link>
  */
-class SOUI_EXP CDuiLink : public SWindow
+class SOUI_EXP SLink : public SWindow
 {
-    SOUI_CLASS_NAME(CDuiLink, "link")
+    SOUI_CLASS_NAME(SLink, "link")
 
 public:
     /**
@@ -102,7 +82,7 @@ public:
      *
      * Describe  构造函数
      */
-    CDuiLink()
+    SLink()
     {
         m_style.SetAttribute("align","left");
     }
@@ -118,7 +98,7 @@ protected:
     /**
      * CDuiLink::DuiDrawText
      * @brief    绘制文本
-     * @param    HDC hdc -- 绘制设备句柄         
+     * @param    IRenderTarget *pRT -- 绘制设备句柄         
      * @param    LPCTSTR pszBuf -- 文本内容字符串         
      * @param    int cchText -- 字符串长度         
      * @param    LPRECT pRect -- 指向矩形结构RECT的指针         
@@ -126,7 +106,7 @@ protected:
      *
      * Describe  对DrawText封装
      */
-    virtual void DuiDrawText(HDC hdc,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
+    virtual void DuiDrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
 
     /**
      * CDuiLink::OnDuiSetCursor
@@ -160,22 +140,22 @@ protected:
  * Describe    通过属性ID绑定click事件 Use id attribute to process click event
  * Usage       <button id=xx>inner text example</button>
  */
-class SOUI_EXP CDuiButton : public SWindow
+class SOUI_EXP SButton : public SWindow
     , public IAcceleratorTarget
     , public ITimelineHandler
 {
-    SOUI_CLASS_NAME(CDuiButton, "button")
+    SOUI_CLASS_NAME(SButton, "button")
 public:
     /**
-     * CDuiButton::CDuiButton
+     * SButton::SButton
      * @brief    构造函数
      *
      * Describe  构造函数
      */
-    CDuiButton();
+    SButton();
 protected:
     /**
-     * CDuiLink::NeedRedrawWhenStateChange
+     * SButton::NeedRedrawWhenStateChange
      * @brief    状态变化需要重画
      * @return   返回值BOOL 成功--TRUE 失败--FALSE
      *
@@ -186,7 +166,7 @@ protected:
         return TRUE;
     }
     /**
-     * CDuiLink::OnGetDuiCode
+     * SButton::OnGetDuiCode
      * @brief    获得编码
      *
      * Describe  返回宏定义DUIC_WANTCHARS代表需要WM_CHAR消息
@@ -197,7 +177,7 @@ protected:
     }
 
     /**
-     * CDuiLink::OnAcceleratorPressed
+     * SButton::OnAcceleratorPressed
      * @brief    加速键按下
      * @param    CAccelerator& accelerator -- 加速键相关结构体
      * @return   返回值BOOL 成功--TRUE 失败--FALSE
@@ -207,7 +187,7 @@ protected:
     virtual bool OnAcceleratorPressed(const CAccelerator& accelerator);
 protected:
     /**
-     * CDuiLink::GetDesiredSize
+     * SButton::GetDesiredSize
      * @brief    获得期望的大小值
      * @param    LPRECT pRcContainer -- 内容窗体矩形
      *
@@ -216,7 +196,7 @@ protected:
     virtual CSize GetDesiredSize(LPRECT pRcContainer);
     
     /**
-     * CDuiLink::OnStateChanged
+     * SButton::OnStateChanged
      * @brief    状态改变处理函数
      * @param    DWORD dwOldState -- 旧状态
      * @param    DWORD dwNewState -- 新状态
@@ -225,7 +205,7 @@ protected:
      */
     virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState);
     
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget *pRT);
 
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
@@ -260,7 +240,7 @@ public:
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-        MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_ERASEBKGND(OnEraseBkgnd)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_KEYDOWN(OnKeyDown)
@@ -271,16 +251,16 @@ public:
 };
 
 /**
- * @class      CDuiImageBtnWnd
+ * @class      SImageButton
  * @brief      图片按钮类
  * 
- * Describe    图片按钮类，继承CDuiButton
+ * Describe    图片按钮类，继承SButton
  */
-class SOUI_EXP CDuiImageBtnWnd : public CDuiButton
+class SOUI_EXP SImageButton : public SButton
 {
-    SOUI_CLASS_NAME(CDuiImageBtnWnd, "imgbtn")
+    SOUI_CLASS_NAME(SImageButton, "imgbtn")
 public:
-    CDuiImageBtnWnd()
+    SImageButton()
     {
         m_bTabStop=FALSE;
     }
@@ -293,36 +273,38 @@ public:
  * Describe    Image Control 图片控件类
  * Usage       Usage: <img skin="skin" sub="0"/>
  */
-class SOUI_EXP CDuiImageWnd : public SWindow
+class SOUI_EXP SImageWnd : public SWindow
 {
-    SOUI_CLASS_NAME(CDuiImageWnd, "img")
+    SOUI_CLASS_NAME(SImageWnd, "img")
 public:
     /**
-     * CDuiImageWnd::CDuiImageWnd
+     * SImageWnd::SImageWnd
      * @brief    构造函数
      *
      * Describe  构造函数
      */
-    CDuiImageWnd();
+    SImageWnd();
+    
     /**
-     * CDuiImageWnd::~CDuiImageWnd
+     * SImageWnd::~SImageWnd
      * @brief    析构函数
      *
      * Describe  析构函数
      */
-    virtual ~CDuiImageWnd();
+    virtual ~SImageWnd();
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget *pRT);
     /**
-     * CDuiImageWnd::SetSkin
-     * @param    CDuiSkinBase *pSkin -- 资源
-     * @param    int nSubID -- 资源ID
+     * SImageWnd::SetSkin
+     * @param    ISkinObj *pSkin -- 资源
+     * @param    int iFrame -- 皮肤中的帧号
+     * @param    BOOL bAutoFree -- 资源ID
      * @brief    设置皮肤
      * @return   返回值BOOL 成功--TRUE 失败--FALSE
      *
      * Describe  设置皮肤
      */
-    BOOL SetSkin(ISkinObj *pSkin,int nSubID=0);
+    BOOL SetSkin(ISkinObj *pSkin,int iFrame=0,BOOL bAutoFree=TRUE);
     /**
      * CDuiImageWnd::SetIcon
      * @param    int nSubID -- 资源ID
@@ -353,55 +335,54 @@ protected:
     virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
     BOOL m_bManaged;  /**< 暂时不详 */
-    int m_nSubImageID;  /**< 资源图片ID */
+    int m_iFrame;  /**< 资源图片ID */
     ISkinObj *m_pSkin;  /**< 资源对象 */
-    //BOOL m_bCalc;
 
     SOUI_ATTRS_BEGIN()
-    ATTR_SKIN("skin", m_pSkin, TRUE)
-    ATTR_INT("sub", m_nSubImageID, FALSE)
+        ATTR_SKIN("skin", m_pSkin, TRUE)
+        ATTR_INT("iframe", m_iFrame, FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-    MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
     WND_MSG_MAP_END()
 };
 
 /**
- * @class      CDuiAnimateImgWnd
+ * @class      SAnimateImgWnd
  * @brief      动画图片窗口
  * 
  * Describe    此窗口支持动画效果
  */
-class SOUI_EXP CDuiAnimateImgWnd : public SWindow, public ITimelineHandler
+class SOUI_EXP SAnimateImgWnd : public SWindow, public ITimelineHandler
 {
-    SOUI_CLASS_NAME(CDuiAnimateImgWnd, "animateimg")
+    SOUI_CLASS_NAME(SAnimateImgWnd, "animateimg")
 public:    
     /**
-     * CDuiAnimateImgWnd::CDuiImageWnd
+     * SAnimateImgWnd::SAnimateImgWnd
      * @brief    构造函数
      *
      * Describe  构造函数
      */
-    CDuiAnimateImgWnd();
+    SAnimateImgWnd();
 
     /**
-     * CDuiAnimateImgWnd::~CDuiAnimateImgWnd
+     * SAnimateImgWnd::~SAnimateImgWnd
      * @brief    析构函数
      *
      * Describe  析构函数
      */    
-    virtual ~CDuiAnimateImgWnd() {}
+    virtual ~SAnimateImgWnd() {}
 
     /**
-     * CDuiAnimateImgWnd::Start
+     * SAnimateImgWnd::Start
      * @brief    启动动画
      *
      * Describe  启动动画
      */  
     void Start();
     /**
-     * CDuiAnimateImgWnd::Stop
+     * SAnimateImgWnd::Stop
      * @brief    停止动画
      *
      * Describe  停止动画
@@ -409,7 +390,7 @@ public:
     void Stop();
 
     /**
-     * CDuiAnimateImgWnd::IsPlaying
+     * SAnimateImgWnd::IsPlaying
      * @brief    判断动画运行状态
      * @return   返回值是动画状态 TRUE -- 运行中
      *
@@ -418,7 +399,7 @@ public:
     BOOL IsPlaying(){return m_bPlaying;}
 protected:
     /**
-     * CDuiAnimateImgWnd::GetDesiredSize
+     * SAnimateImgWnd::GetDesiredSize
      * @brief    获取预期大小
      * @param    LPRECT pRcContainer  --  内容矩形框 
      * @return   返回值 CSize对象 
@@ -428,21 +409,21 @@ protected:
     virtual CSize GetDesiredSize(LPRECT pRcContainer);
     virtual void OnNextFrame();
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget *pRT);
 
     void OnShowWindow(BOOL bShow, UINT nStatus);
     void OnDestroy();
 
     WND_MSG_MAP_BEGIN()
-        MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_DESTROY(OnDestroy)
         MSG_WM_SHOWWINDOW(OnShowWindow)
     WND_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
-    ATTR_SKIN("skin", m_pSkin, TRUE)
-    ATTR_UINT("speed", m_nSpeed, FALSE)
-    ATTR_UINT("autostart", m_bAutoStart, FALSE)
+        ATTR_SKIN("skin", m_pSkin, TRUE)
+        ATTR_UINT("speed", m_nSpeed, FALSE)
+        ATTR_UINT("autostart", m_bAutoStart, FALSE)
     SOUI_ATTRS_END()
 
 protected:
@@ -454,26 +435,26 @@ protected:
 };
 
 /**
- * @class      CDuiProgress
+ * @class      SProgress
  * @brief      进度条类
  * 
  * Describe    进度条类
  * Usage: <progress bgskin=xx posskin=xx min=0 max=100 value=10,showpercent=0/>
  */
-class SOUI_EXP CDuiProgress : public SWindow
+class SOUI_EXP SProgress : public SWindow
 {
-    SOUI_CLASS_NAME(CDuiProgress, "progress")
+    SOUI_CLASS_NAME(SProgress, "progress")
 public:
     /**
-     * CDuiProgress::CDuiProgress
+     * SProgress::SProgress
      * @brief    构造函数
      *
      * Describe  构造函数
      */
-    CDuiProgress();
+    SProgress();
 
     /**
-     * CDuiProgress::SetValue
+     * SProgress::SetValue
      * @brief    设置进度条进度值
      * @param    int nValue  --  进度值 
      * @return   返回值是 TRUE -- 设置成功
@@ -482,7 +463,7 @@ public:
      */  
     BOOL SetValue(int nValue);
     /**
-     * CDuiProgress::GetValue
+     * SProgress::GetValue
      * @brief    获取进度值
      * @return   返回值是int 
      *
@@ -491,7 +472,7 @@ public:
     int GetValue(){return m_nValue;}
 
     /**
-     * CDuiProgress::SetRange
+     * SProgress::SetRange
      * @param    int nMin  --  进度最小值 
      * @param    int nMax  --  进度最大值      
      * @brief    设置进度值最小大值
@@ -500,7 +481,7 @@ public:
      */  
     void SetRange(int nMin,int nMax);
     /**
-     * CDuiProgress::GetRange
+     * SProgress::GetRange
      * @param    int nMin  --  进度最小值 
      * @param    int nMax  --  进度最大值      
      * @brief    获取进度值最小大值
@@ -509,7 +490,7 @@ public:
      */  
     void GetRange(int *pMin,int *pMax);
     /**
-     * CDuiProgress::IsVertical
+     * SProgress::IsVertical
      * @brief    判断进度条是否为竖直状态
      * @return   返回值是 TRUE -- 竖直状态
      *
@@ -518,7 +499,7 @@ public:
     BOOL IsVertical(){return m_bVertical;}
 protected:
     /**
-     * CDuiProgress::GetDesiredSize
+     * SProgress::GetDesiredSize
      * @brief    获取预期大小
      * @param    LPRECT pRcContainer  --  内容矩形框 
      * @return   返回值 CSize对象 
@@ -527,7 +508,7 @@ protected:
      */
     virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget *pRT);
 
     int m_nMinValue; /**< 进度最小值 */
     int m_nMaxValue; /**< 进度最大值 */
@@ -536,51 +517,49 @@ protected:
     BOOL m_bShowPercent; /**< 是否显示百分比 */
     BOOL m_bVertical;    /**< 是否竖直状态 */
 
-    ISkinObj *m_pSkinBg;   /**< 暂时不详 */
-    ISkinObj *m_pSkinPos;  /**< 暂时不详 */
+    ISkinObj *m_pSkinBg;   /**< 背景资源 */
+    ISkinObj *m_pSkinPos;  /**< 前景资源 */
 
     WND_MSG_MAP_BEGIN()
-    MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
     WND_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
-    ATTR_SKIN("bgskin", m_pSkinBg, TRUE)
-    ATTR_SKIN("posskin", m_pSkinPos, TRUE)
-    ATTR_INT("min", m_nMinValue, FALSE)
-    ATTR_INT("max", m_nMaxValue, FALSE)
-    ATTR_INT("value", m_nValue, FALSE)
-    ATTR_UINT("vertical", m_bVertical, FALSE)
-    ATTR_UINT("showpercent", m_bShowPercent, FALSE)
+        ATTR_SKIN("bgskin", m_pSkinBg, TRUE)
+        ATTR_SKIN("posskin", m_pSkinPos, TRUE)
+        ATTR_INT("min", m_nMinValue, FALSE)
+        ATTR_INT("max", m_nMaxValue, FALSE)
+        ATTR_INT("value", m_nValue, FALSE)
+        ATTR_UINT("vertical", m_bVertical, FALSE)
+        ATTR_UINT("showpercent", m_bShowPercent, FALSE)
     SOUI_ATTRS_END()
 };
 
 /**
- * @class      CDuiLine
+ * @class      SLine
  * @brief      线条控件
  * 
  * Describe    线条控件
- * Usage: <hr style=solid size=1 crbg=.../>
+ * Usage: <hr style=solid size=1 mode="vert" linestyle="dash"/>
  */
-class SOUI_EXP CDuiLine : public SWindow
+class SOUI_EXP SLine : public SWindow
 {
-    SOUI_CLASS_NAME(CDuiLine, "hr")
+    SOUI_CLASS_NAME(SLine, "hr")
 
 public:
     /**
-     * CDuiLine::CDuiLine
+     * SLine::SLine
      * @brief    构造函数
      *
      * Describe  构造函数
      */
-    CDuiLine();
+    SLine();
 
-    // Do nothing
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget *pRT);
 protected:
-    int m_nPenStyle;
+    int m_nLineStyle;
     int m_nLineSize;
-    BOOL m_bLineShadow;
-    COLORREF m_crShadow;
+    
     enum HRMODE{
         HR_HORZ=0,
         HR_VERT,
@@ -588,38 +567,36 @@ protected:
     }m_mode;
 
     SOUI_ATTRS_BEGIN()
-    ATTR_INT("size", m_nLineSize, FALSE)
-    ATTR_UINT("shadow", m_bLineShadow, FALSE)
-    ATTR_COLOR("crshadow", m_crShadow, FALSE)
-    ATTR_ENUM_BEGIN("mode", HRMODE, FALSE)
-        ATTR_ENUM_VALUE("vertical", HR_VERT)
-        ATTR_ENUM_VALUE("horizon", HR_VERT)
-        ATTR_ENUM_VALUE("tilt", HR_VERT)
-    ATTR_ENUM_END(m_mode)
-    ATTR_ENUM_BEGIN("style", int, FALSE)
-    ATTR_ENUM_VALUE("solid", PS_SOLID)             // default
-    ATTR_ENUM_VALUE("dash", PS_DASH)               /* -------  */
-    ATTR_ENUM_VALUE("dot", PS_DOT)                 /* .......  */
-    ATTR_ENUM_VALUE("dashdot", PS_DASHDOT)         /* _._._._  */
-    ATTR_ENUM_VALUE("dashdotdot", PS_DASHDOTDOT)   /* _.._.._  */
-    ATTR_ENUM_END(m_nPenStyle)
+        ATTR_INT("size", m_nLineSize, FALSE)
+        ATTR_ENUM_BEGIN("mode", HRMODE, FALSE)
+            ATTR_ENUM_VALUE("vertical", HR_VERT)
+            ATTR_ENUM_VALUE("horizontal", HR_HORZ)
+            ATTR_ENUM_VALUE("tilt", HR_TILT)
+        ATTR_ENUM_END(m_mode)
+        ATTR_ENUM_BEGIN("linestyle", int, FALSE)
+            ATTR_ENUM_VALUE("solid", PS_SOLID)             // default
+            ATTR_ENUM_VALUE("dash", PS_DASH)               /* -------  */
+            ATTR_ENUM_VALUE("dot", PS_DOT)                 /* .......  */
+            ATTR_ENUM_VALUE("dashdot", PS_DASHDOT)         /* _._._._  */
+            ATTR_ENUM_VALUE("dashdotdot", PS_DASHDOTDOT)   /* _.._.._  */
+        ATTR_ENUM_END(m_nLineStyle)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-    MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
     WND_MSG_MAP_END()
 };
 
 /**
- * @class      CDuiCheckBox
+ * @class      SCheckBox
  * @brief      复选框控件
  * 
  * Describe    复选框控件
  * Usage: <check state=4>This is a check-box</check>
  */
-class SOUI_EXP CDuiCheckBox : public SWindow
+class SOUI_EXP SCheckBox : public SWindow
 {
-    SOUI_CLASS_NAME(CDuiCheckBox, "check")
+    SOUI_CLASS_NAME(SCheckBox, "check")
 
     enum
     {
@@ -628,20 +605,20 @@ class SOUI_EXP CDuiCheckBox : public SWindow
 
 public:
     /**
-     * CDuiCheckBox::CDuiCheckBox
+     * SCheckBox::SCheckBox
      * @brief    构造函数
      *
      * Describe  构造函数
      */
-    CDuiCheckBox();
+    SCheckBox();
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget *pRT);
 protected:
 
-    ISkinObj *m_pSkin;   /**< 暂时不详 */
-    ISkinObj *m_pFocusSkin; /**< 暂时不详 */
+    ISkinObj *m_pSkin;   /**< 状态图片资源 */
+    ISkinObj *m_pFocusSkin; /**< 焦点状态资源 */
     /**
-     * CDuiCheckBox::_GetDrawState
+     * SCheckBox::_GetDrawState
      * @brief    获得复选框状态
      * @return   返回状态值
      *
@@ -649,7 +626,7 @@ protected:
      */
     UINT _GetDrawState();
     /**
-     * CDuiCheckBox::GetCheckRect
+     * SCheckBox::GetCheckRect
      * @brief    获得复选框矩形
      * @return   返回值CRect矩形框
      *
@@ -657,7 +634,7 @@ protected:
      */
     CRect GetCheckRect();
     /**
-     * CDuiCheckBox::GetDesiredSize
+     * SCheckBox::GetDesiredSize
      * @brief    获取预期大小
      * @param    LPRECT pRcContainer  --  内容矩形框 
      * @return   返回值 CSize对象 
@@ -666,7 +643,7 @@ protected:
      */
     virtual CSize GetDesiredSize(LPRECT pRcContainer);
     /**
-     * CDuiCheckBox::GetTextRect
+     * SCheckBox::GetTextRect
      * @brief    获取文本大小
      * @param    LPRECT pRect  --  内容矩形框 
      *
@@ -674,7 +651,7 @@ protected:
      */
     virtual void GetTextRect(LPRECT pRect);
     /**
-     * CDuiCheckBox::NeedRedrawWhenStateChange
+     * SCheckBox::NeedRedrawWhenStateChange
      * @brief    判断状态改变是否需要重画
      * @return   返回值 BOOL 
      *
@@ -686,7 +663,7 @@ protected:
     }
 
     /**
-     * CDuiCheckBox::OnGetDuiCode
+     * SCheckBox::OnGetDuiCode
      * @brief    返回对应消息码
      * @return   返回值 UINT 
      *
@@ -697,13 +674,13 @@ protected:
         return DUIC_WANTCHARS;
     }
     /**
-     * CDuiCheckBox::DuiDrawFocus
+     * SCheckBox::DuiDrawFocus
      * @brief    绘制获取焦点
-     * @param    HDC dc  --  设备句柄
+     * @param    IRenderTarget *pRT  --  设备句柄
      *
      * Describe  返回对应消息码
      */
-    virtual void DuiDrawFocus(HDC dc);
+    virtual void DuiDrawFocus(IRenderTarget *pRT);
 
     void OnLButtonDown(UINT nFlags, CPoint point);
 
@@ -717,7 +694,7 @@ protected:
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-        MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONUP(OnLButtonUp)
         MSG_WM_KEYDOWN(OnKeyDown)
@@ -725,87 +702,59 @@ protected:
 };
 
 /**
- * @class      CDuiIconWnd
+ * @class      SIconWnd
  * @brief      图标控件
  * 
- * Describe    图标控件 Use src attribute specify a resource id
- * Usage: <icon src=xx size="16"/>
+ * Describe    图标控件
+ * Usage: <icon src="icon:16" />
  */
-class SOUI_EXP CDuiIconWnd : public SWindow
+class SOUI_EXP SIconWnd : public SWindow
 {
-    SOUI_CLASS_NAME(CDuiIconWnd, "icon")
+    SOUI_CLASS_NAME(SIconWnd, "icon")
 public:    
     /**
-     * CDuiIconWnd::CDuiIconWnd
+     * SIconWnd::SIconWnd
      * @brief    构造函数
      *
      * Describe  构造函数
      */
-    CDuiIconWnd();
-    /**
-     * CDuiIconWnd::Load
-     * @brief    加载资源
-     * @param    pugi::xml_node xmlNode  --  资源配置文件
-     * @return   返回值BOOL 
-     *
-     * Describe  加载图标资源
-     */
-    virtual BOOL Load(pugi::xml_node xmlNode);
+    SIconWnd();
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget *pRT);
     /**
-     * CDuiIconWnd::AttachIcon
+     * SIconWnd::AttachIcon
      * @brief    附加图标资源
      * @param    HICON hIcon -- 图标资源句柄
      * @return   返回值 HICON 
      *
      * Describe  附加图标资源
      */
-    HICON AttachIcon(HICON hIcon);
-    /**
-     * CDuiIconWnd::LoadIconFile
-     * @brief    加载资源
-     * @param    LPCTSTR lpFIleName -- 资源文件
-     *
-     * Describe  通过文件加载图标
-     */
-    void LoadIconFile( LPCTSTR lpFIleName );
+    void SetIcon(HICON hIcon);
 protected:
     virtual CSize GetDesiredSize(LPRECT pRcContainer);
-    /**
-     * CDuiIconWnd::_ReloadIcon
-     * @brief    重新加载图标资源
-     *
-     * Describe  重新加载图标资源
-     */
-    void _ReloadIcon();
 
     HICON m_theIcon; /**< 图标资源句柄 */
-    CDuiStringT m_strIconName; /**< 图标资源名称 */
-    CDuiStringT m_strCurIconName; /**< 当前图标资源名称 */
-    int m_nSize; /**< 暂时不祥 */
 
     SOUI_ATTRS_BEGIN()
-    ATTR_STRINGT("src", m_strIconName, FALSE)
-    ATTR_INT("size", m_nSize, FALSE)
+        ATTR_ICON("src", m_theIcon, FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-    MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
     WND_MSG_MAP_END()
 };
 
 
 /**
- * @class      CDuiRadioBox
+ * @class      SRadioBox
  * @brief      单选框控件
  * 
  * Describe    单选框控件
  * Usage: <radio state=1>This is a check-box</radio>
  */
-class SOUI_EXP CDuiRadioBox : public SWindow
+class SOUI_EXP SRadioBox : public SWindow
 {
-    SOUI_CLASS_NAME(CDuiRadioBox, "radio")
+    SOUI_CLASS_NAME(SRadioBox, "radio")
 
     enum
     {
@@ -814,15 +763,15 @@ class SOUI_EXP CDuiRadioBox : public SWindow
 
 public:
     /**
-     * CDuiRadioBox::CDuiRadioBox
+     * SRadioBox::SRadioBox
      * @brief    构造函数
      *
      * Describe  构造函数
      */
-    CDuiRadioBox();
+    SRadioBox();
 
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget *pRT);
 
 protected:
 
@@ -830,21 +779,21 @@ protected:
     ISkinObj *m_pSkin;  /**< 皮肤资源 */
     ISkinObj *m_pFocusSkin; /**< 焦点皮肤资源 */
     /**
-     * CDuiRadioBox::CDuiRadioBox
+     * SRadioBox::SRadioBox
      * @brief    构造函数
      *
      * Describe  构造函数
      */
     UINT _GetDrawState(); 
     /**
-     * CDuiRadioBox::CDuiRadioBox
+     * SRadioBox::SRadioBox
      * @brief    构造函数
      *
      * Describe  构造函数
      */
     CRect GetRadioRect();
     /**
-     * CDuiRadioBox::GetTextRect
+     * SRadioBox::GetTextRect
      * @brief    获得文本大小
      * @param    LPRECT pRect -- 文本大小Rect
      *
@@ -852,7 +801,7 @@ protected:
      */
     virtual void GetTextRect(LPRECT pRect);
     /**
-     * CDuiRadioBox::GetDesiredSize
+     * SRadioBox::GetDesiredSize
      * @brief    获取预期大小值
      * @param    LPRECT pRcContainer -- 内容窗口Rect
      *
@@ -860,7 +809,7 @@ protected:
      */
     virtual CSize GetDesiredSize(LPRECT pRcContainer);
     /**
-     * CDuiRadioBox::NeedRedrawWhenStateChange
+     * SRadioBox::NeedRedrawWhenStateChange
      * @brief    当状态改变时候是否需要重绘
      * @return   返回BOOL
      *
@@ -868,15 +817,15 @@ protected:
      */
     virtual BOOL NeedRedrawWhenStateChange();
     /**
-     * CDuiRadioBox::DuiDrawFocus
+     * SRadioBox::DuiDrawFocus
      * @brief    绘制焦点样式
-     * @param    HDC dc -- 绘制设备
+     * @param    IRenderTarget *pRT -- 绘制设备
      *
      * Describe  当获得焦点时候需要绘制
      */
-    virtual void DuiDrawFocus(HDC dc);
+    virtual void DuiDrawFocus(IRenderTarget *pRT);
     /**
-     * CDuiRadioBox::OnGetDuiCode
+     * SRadioBox::OnGetDuiCode
      * @brief    获取消息编码
      * @return   返回编码值
      *
@@ -887,7 +836,7 @@ protected:
         return 0;
     }
     /**
-     * CDuiRadioBox::IsSiblingsAutoGroupped
+     * SRadioBox::IsSiblingsAutoGroupped
      * @brief    是否自动添加到同一组
      * @return   返回BOOL 
      *
@@ -901,37 +850,37 @@ protected:
 
 
     SOUI_ATTRS_BEGIN()
-    ATTR_SKIN("skin", m_pSkin, FALSE)
-    ATTR_SKIN("focusskin", m_pFocusSkin, FALSE)
+        ATTR_SKIN("skin", m_pSkin, FALSE)
+        ATTR_SKIN("focusskin", m_pFocusSkin, FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_LBUTTONDOWN(OnLButtonDown)
-    MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
+        MSG_WM_PAINT_EX(OnPaint)
+        MSG_WM_LBUTTONDOWN(OnLButtonDown)
+        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
     WND_MSG_MAP_END()
 };
 
 /**
- * @class      CDuiToggle
+ * @class      SToggle
  * @brief      Toggle控件
  * 
  * Describe    Toggle控件
  */
-class SOUI_EXP CDuiToggle : public SWindow
+class SOUI_EXP SToggle : public SWindow
 {
-    SOUI_CLASS_NAME(CDuiToggle, "togglectrl")
+    SOUI_CLASS_NAME(SToggle, "toggle")
 public:
     
     /**
-     * CDuiToggle::CDuiToggle
+     * SToggle::SToggle
      * @brief    构造函数
      *
      * Describe  构造函数
      */
-    CDuiToggle();
+    SToggle();
     /**
-     * CDuiToggle::SetToggle
+     * SToggle::SetToggle
      * @brief    设置Toggle属性
      * @param    BOOL bToggle -- 是否启用Toggle特效         
      * @param    BOOL bUpdate -- 是否更新 默认值TRUE
@@ -940,7 +889,7 @@ public:
      */
     void SetToggle(BOOL bToggle,BOOL bUpdate=TRUE);
     /**
-     * CDuiToggle::GetToggle
+     * SToggle::GetToggle
      * @brief    获取Toggle属性
      * @return   返回值BOOL        
      *
@@ -948,19 +897,19 @@ public:
      */
     BOOL GetToggle();
 protected:
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget *pRT);
     void OnLButtonUp(UINT nFlags,CPoint pt);
     virtual CSize GetDesiredSize(LPRECT pRcContainer);
     virtual BOOL NeedRedrawWhenStateChange(){return TRUE;}
 
     SOUI_ATTRS_BEGIN()
-    ATTR_INT("toggled", m_bToggled, TRUE)
-    ATTR_SKIN("skin", m_pSkin, TRUE)
+        ATTR_INT("toggled", m_bToggled, TRUE)
+        ATTR_SKIN("skin", m_pSkin, TRUE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_LBUTTONUP(OnLButtonUp)
+        MSG_WM_PAINT_EX(OnPaint)
+        MSG_WM_LBUTTONUP(OnLButtonUp)
     WND_MSG_MAP_END()
 protected:
     BOOL m_bToggled;
@@ -968,31 +917,32 @@ protected:
 };
 
 /**
- * @class      CDuiGroup
+ * @class      SGroup
  * @brief      组控件
  * 
  * Describe    组控件
  * Usage       <group crline1="b8d5e2" crline2="999999">group text</>
  */
-class SOUI_EXP CDuiGroup : public SWindow
+class SOUI_EXP SGroup : public SWindow
 {
-    SOUI_CLASS_NAME(CDuiGroup, "group")
+    SOUI_CLASS_NAME(SGroup, "group")
 public:
-    CDuiGroup();
+    SGroup();
 
 protected:
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget *pRT);
+    
     COLORREF m_crLine1,m_crLine2; /**< 颜色 */
     int         m_nRound; /**< 暂时不详 */
 public:
     SOUI_ATTRS_BEGIN()
-    ATTR_COLOR("crline1", m_crLine1, FALSE)
-    ATTR_COLOR("crline2", m_crLine2, FALSE)
-    ATTR_INT("round",m_nRound,FALSE)
+        ATTR_COLOR("crline1", m_crLine1, FALSE)
+        ATTR_COLOR("crline2", m_crLine2, FALSE)
+        ATTR_INT("round",m_nRound,FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-    MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
     WND_MSG_MAP_END()
 };
 

@@ -10,7 +10,7 @@
 namespace SOUI
 {
 
-class SOUI_EXP CDuiSliderBar : public CDuiProgress
+class SOUI_EXP CDuiSliderBar : public SProgress
 {
     SOUI_CLASS_NAME(CDuiSliderBar, "sliderbar")
 

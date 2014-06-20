@@ -420,6 +420,14 @@ namespace SOUI
 		return S_OK;
 	}
 
+    HRESULT SRenderTarget_Skia::DrawIconEx( int xLeft, int yTop, HICON hIcon, int cxWidth,int cyWidth,UINT diFlags )
+    {
+        HDC hdc=GetDC(0);
+        BOOL bRet=::DrawIconEx(hdc,xLeft,yTop,hIcon,cxWidth,cyWidth,0,NULL,diFlags);
+        ReleaseDC(hdc);
+        return bRet?S_OK:S_FALSE;
+    }
+
     HRESULT SRenderTarget_Skia::DrawBitmap(LPCRECT pRcDest,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha/*=0xFF*/ )
     {
         SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;

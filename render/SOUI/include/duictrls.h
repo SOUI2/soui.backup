@@ -1,11 +1,11 @@
 #pragma once
 #include "DuiPanel.h"
+#include "control/DuiCmnCtrl.h"
 #include "control/DuiCaption.h"
 #include "control/duirealwnd.h"
 #include "control/duitabctrl.h"
 #include "control/DuiActiveX.h"
 /*
-#include "control/DuiCmnCtrl.h"
 #include "control/duiscrollbar.h"
 #include "control/duilistbox.h"
 #include "control/duilistboxex.h"
