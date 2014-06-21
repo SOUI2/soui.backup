@@ -27,21 +27,21 @@ namespace SOUI
 
         virtual HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0)
         {
-            IResProvider *pResProvider=GetMatchResProvider(SRT_ICON,pszResName);
+            IResProvider *pResProvider=GetMatchResProvider(_T("ICON"),pszResName);
             if(!pResProvider) return NULL;
             return pResProvider->LoadIcon(pszResName,cx,cy);
         }
 
         virtual HCURSOR LoadCursor(LPCTSTR pszResName)
         {
-            IResProvider *pResProvider=GetMatchResProvider(SRT_CURSOR,pszResName);
+            IResProvider *pResProvider=GetMatchResProvider(_T("CURSOR"),pszResName);
             if(!pResProvider) return NULL;
             return pResProvider->LoadCursor(pszResName);
         }
 
         virtual HBITMAP    LoadBitmap(LPCTSTR pszResName)
         {
-            IResProvider *pResProvider=GetMatchResProvider(SRT_BMP,pszResName);
+            IResProvider *pResProvider=GetMatchResProvider(_T("BITMAP"),pszResName);
             if(!pResProvider) return NULL;
             return pResProvider->LoadBitmap(pszResName);
         }

@@ -35,7 +35,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
 	*lpInsertPos = _T('\0');   
 
-    _tcscat( szCurrentDir, _T("\\..\\demo") );
+    _tcscat( szCurrentDir, _T("\\..\\demo\\skin") );
     DuiResProviderFiles *pResFiles=new DuiResProviderFiles;
     if(!pResFiles->Init(szCurrentDir))
     {

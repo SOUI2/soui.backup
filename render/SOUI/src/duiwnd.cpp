@@ -536,7 +536,7 @@ BOOL SWindow::LoadChildren(pugi::xml_node xmlNode)
             {
                 pugi::xml_document xmlDoc;
                 CDuiStringT strName=DUI_CA2T(xmlChild.attribute("src").value(),CP_UTF8);
-                if(LOADXML(xmlDoc,strName,SRT_XML))
+                if(LOADXML(xmlDoc,strName,RT_LAYOUT))
                 {
                     LoadChildren(xmlDoc.first_child());
                 }else
@@ -567,6 +567,8 @@ BOOL SWindow::Load(pugi::xml_node xmlNode)
         m_strWndText = DUI_CA2T(xmlNode.text().get(), CP_UTF8);
         if (!m_strWndText.IsEmpty())
         {
+            m_strWndText.TrimRight(0x0a).TrimLeft(0x0a);
+            m_strWndText.TrimRight(0x0d).TrimLeft(0x0d);
             m_strWndText.TrimRight(0x20).TrimLeft(0x20);
             if (!m_strWndText.IsEmpty()) BUILDSTRING(m_strWndText);
         }

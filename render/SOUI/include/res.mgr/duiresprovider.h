@@ -28,6 +28,8 @@ protected:
     HINSTANCE m_hResInst;
 };
 
+
+#define UISKIN_INDEX    _T("uiskin.idx")        //文件夹资源的文件映射表索引表文件名
 class SOUI_EXP DuiResProviderFiles:public IResProvider
 {
 public:

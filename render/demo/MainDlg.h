@@ -76,7 +76,7 @@ protected:
 // 		CHAIN_MSG_MAP(CWHRoundRectFrameHelper<CMainDlg>) //需要圆角窗口时启用
 		MSG_WM_CREATE(OnCreate)
 		MSG_WM_CLOSE(OnClose)
-// 		MSG_WM_SIZE(OnSize)
+		MSG_WM_SIZE(OnSize)
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_SHOWWINDOW(OnShowWindow)
 		MSG_SOUI_NOTIFY()

@@ -12,12 +12,12 @@
 namespace SOUI
 {
 
-class SOUI_EXP DuiStringPool :public DuiCmnMap<CDuiStringT,UINT>
+class SOUI_EXP DuiStringPool :public DuiCmnMap<CDuiStringT,CDuiStringT>
 {
 public:
     BOOL BuildString(CDuiStringT &strContainer);
     BOOL Init(pugi::xml_node xmlNode);
-    LPCTSTR Get(UINT uID);
+    LPCTSTR Get(const CDuiStringT & strName);
 protected:
     CDuiStringT    m_strTmp;
 };

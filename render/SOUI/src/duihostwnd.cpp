@@ -65,9 +65,9 @@ HWND CDuiHostWnd::Create(HWND hWndParent,int x,int y,int nWidth,int nHeight)
 BOOL CDuiHostWnd::Load(LPCTSTR pszXmlName)
 {
     pugi::xml_document xmlDoc;
-    if(!LOADXML(xmlDoc,pszXmlName,SRT_XML)) return FALSE;
+    if(!LOADXML(xmlDoc,pszXmlName,RT_LAYOUT)) return FALSE;
 
-    return SetXml(xmlDoc.child("SOUI"));
+    return SetXml(xmlDoc.child("UIFRAME"));
 }
 
 BOOL CDuiHostWnd::SetXml(LPSTR lpszXml,int nLen)
@@ -75,7 +75,7 @@ BOOL CDuiHostWnd::SetXml(LPSTR lpszXml,int nLen)
     pugi::xml_document xmlDoc;
     if(!xmlDoc.load_buffer(lpszXml,nLen,pugi::parse_default,pugi::encoding_utf8)) return FALSE;
  
-    return SetXml(xmlDoc.child("SOUI"));
+    return SetXml(xmlDoc.child("UIFRAME"));
 }
 
 BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
@@ -132,7 +132,7 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
     if(m_bTranslucent)
     {
         SetWindowLongPtr(GWL_EXSTYLE, GetWindowLongPtr(GWL_EXSTYLE) | WS_EX_LAYERED);
-        m_dummyWnd.Create(_T("dummyLayeredWnd"),WS_POPUP,WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,0,0,10,10,m_hWnd,NULL);
+        m_dummyWnd.Create(_T("SOUI_DUMMY_WND"),WS_POPUP,WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,0,0,10,10,m_hWnd,NULL);
         m_dummyWnd.SetWindowLongPtr(GWL_EXSTYLE,m_dummyWnd.GetWindowLongPtr(GWL_EXSTYLE) | WS_EX_LAYERED);
         ::SetLayeredWindowAttributes(m_dummyWnd.m_hWnd,0,0,LWA_ALPHA);
         m_dummyWnd.ShowWindow(SW_SHOWNOACTIVATE);
@@ -153,12 +153,8 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
     {
         DuiSystem::getSingleton().LoadSkins(m_strName);    //load skin only used in the host window
     }
-
-    SWindow::Load(xmlNode.child("body"));
-
-    Move(rcClient);
-    DuiSendMessage(WM_ENABLE,1);
-    DuiSendMessage(WM_SHOWWINDOW,1);
+    LoadChildren(xmlNode.first_child());
+    OnWindowPosChanged(NULL);
 
     _Redraw();
 

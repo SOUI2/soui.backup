@@ -22,7 +22,6 @@
 
 
 #include "resource.h"	//APP×ÊÔ´
-#include "duires/winres.h"	//¿Ø¼þID
 
 #include "../zlib/zconf.h"
 #include "../zlib/zlib.h"

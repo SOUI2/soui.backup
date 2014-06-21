@@ -4,14 +4,6 @@
 
 #include "../render/render-i.h"
 
-#define SRT_XML _T("XML")
-#define SRT_IMGX _T("IMGX")
-#define SRT_BMP _T("BMP")
-#define SRT_ICON _T("ICO")
-#define SRT_CURSOR _T("CURSOR")
-
-#define INDEX_XML    _T("index.xml")        //文件夹资源的文件映射表索引表文件名
-
 #define MAX_RES_TYPE        10            //资源类型预定义，最大长度不超过10
 #define MAX_RES_NAME        100            //注意：给资源令名时，最大长度不要超过MAX_RES_NAME
 

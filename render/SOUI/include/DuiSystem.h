@@ -21,6 +21,10 @@
 #define GETRESPROVIDER    DuiSystem::getSingletonPtr()
 #define GETRENDERFACTORY DuiSystem::getSingleton().GetRenderFactory()
 
+#define RT_UIDEF _T("UIDEF")
+#define RT_LAYOUT _T("LAYOUT")
+#define RT_XML _T("XML")
+
 namespace SOUI
 {
 
@@ -55,11 +59,11 @@ public:
         m_pScriptModule=pScriptModule;
     }
 
-    BOOL Init(LPCTSTR pszName ,LPCTSTR pszType=SRT_XML);
+    BOOL Init(LPCTSTR pszName ,LPCTSTR pszType=RT_UIDEF);
 
-    BOOL SetMsgBoxTemplate(LPCTSTR pszXmlName,LPCTSTR pszType=SRT_XML);
+    BOOL SetMsgBoxTemplate(LPCTSTR pszXmlName,LPCTSTR pszType=RT_LAYOUT);
 
-    BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType=SRT_XML);
+    BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType);
 
     IRenderFactory * GetRenderFactory(){return m_RenderFactory;}
 

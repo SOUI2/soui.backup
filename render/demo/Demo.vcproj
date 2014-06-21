@@ -1080,10 +1080,6 @@
 			Name="duires"
 			>
 			<File
-				RelativePath=".\duires\winres.h"
-				>
-			</File>
-			<File
 				RelativePath=".\duires\winres.rc2"
 				>
 				<FileConfiguration
@@ -1170,10 +1166,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\index.xml"
-				>
-			</File>
-			<File
 				RelativePath=".\layout\init.xml"
 				>
 			</File>
@@ -1226,10 +1218,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\duires\name2id.xml"
-				>
-			</File>
-			<File
 				RelativePath=".\duires\resmode.zip"
 				>
 			</File>
@@ -1263,6 +1251,20 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\skin\uiskin.idx"
+			>
+			<FileConfiguration
+				Name="Debug_Dll|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="build ui resource"
+					CommandLine="..\tools\uiresbuilder -p skin -i $(InputPath) -r duires\winres.rc2"
+					Outputs="duires\winres.rc2"
+				/>
+			</FileConfiguration>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

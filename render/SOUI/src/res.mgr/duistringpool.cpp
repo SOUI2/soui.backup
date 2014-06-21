@@ -19,19 +19,17 @@ BOOL DuiStringPool::BuildString(CDuiStringT &strContainer)
     BOOL bRet=FALSE;
     int nSubStringStart=-1;
     int nSubStringEnd=0;
-    while ((nSubStringStart = strContainer.Find(_T("%str"), nSubStringEnd))!=-1)
+    while ((nSubStringStart = strContainer.Find(_T("%"), nSubStringEnd))!=-1)
     {
-        nSubStringEnd = strContainer.Find(_T('%'), nSubStringStart + 4);
+        nSubStringEnd = strContainer.Find(_T('%'), nSubStringStart + 1);
         if(nSubStringEnd==-1)
             break;
-        nSubStringEnd++;
-        int nID = ::StrToInt((LPCTSTR)strContainer + nSubStringStart + 4);
-        if (0 >= nID)
-            break;
-        CDuiStringT strNewSub=GetKeyObject((UINT)nID);
+        CDuiStringT strName=strContainer.Mid(nSubStringStart+1,nSubStringEnd-nSubStringStart-1);
+
+        CDuiStringT strNewSub=GetKeyObject(strName);
         strContainer = strContainer.Left(nSubStringStart)
                        + strNewSub
-                       + strContainer.Mid(nSubStringEnd);
+                       + strContainer.Mid(nSubStringEnd+1);
         nSubStringEnd+=strNewSub.GetLength()-(nSubStringEnd-nSubStringStart);
         bRet=TRUE;
     }
@@ -47,23 +45,21 @@ BOOL DuiStringPool::Init( pugi::xml_node xmlNode )
     }
     UINT uStringID = 0;
 
-    for (pugi::xml_node xmlStr=xmlNode.child("s"); xmlStr; xmlStr=xmlStr.next_sibling("s"))
+    for (pugi::xml_node xmlStr=xmlNode.first_child(); xmlStr; xmlStr=xmlStr.next_sibling())
     {
-        uStringID=xmlStr.attribute("id").as_int(-1);
-        if(uStringID==-1) continue;
-        CDuiStringA str=xmlStr.text().get();
-        if(str.IsEmpty()) str=xmlStr.attribute("text").value();
-        AddKeyObject(uStringID,CDuiStringT(DUI_CA2T(str, CP_UTF8)));
+        CDuiStringT strName=DUI_CA2T(xmlStr.name(),CP_UTF8);
+        CDuiStringT str=DUI_CA2T(xmlStr.attribute("value").value(),CP_UTF8);
+        AddKeyObject(strName,str);
     }
     return TRUE;
 }
 
-LPCTSTR DuiStringPool::Get( UINT uID )
+LPCTSTR DuiStringPool::Get(const CDuiStringT & strName)
 {
     m_strTmp=_T("");
-    if(HasKey(uID))
+    if(HasKey(strName))
     {
-        m_strTmp=GetKeyObject(uID);
+        m_strTmp=GetKeyObject(strName);
         BuildString(m_strTmp);
     }
     return m_strTmp;
