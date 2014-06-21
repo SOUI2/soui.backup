@@ -36,7 +36,7 @@ public:
     SSkinImgList();
     virtual ~SSkinImgList();
 
-    virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha);
+    virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha=0xFF);
 
     virtual SIZE GetSkinSize();
 
@@ -92,7 +92,7 @@ public:
 
     CRect GetMargin(){return m_rcMargin;}
 
-    virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha);
+    virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha=0xFF);
 protected:
     CRect m_rcMargin;
 
@@ -121,7 +121,7 @@ class SOUI_EXP SSkinButton : public ISkinObj
 public:
     SSkinButton();
 
-    virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha);
+    virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha=0xFF);
 
     virtual BOOL IgnoreState();
 
@@ -156,7 +156,7 @@ class SOUI_EXP SSkinGradation  : public ISkinObj
 public:
     SSkinGradation();
 
-    virtual void Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha);
+    virtual void Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha=0xFF);
     
     void SetColorFrom(COLORREF crFrom)
     {
@@ -210,7 +210,7 @@ public:
 
     SSkinScrollbar();
 
-    virtual void Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha=0xff);
+    virtual void Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha=0xFF);
 
     //指示滚动条皮肤是否支持显示上下箭头
     virtual BOOL HasArrow(){return TRUE;}
