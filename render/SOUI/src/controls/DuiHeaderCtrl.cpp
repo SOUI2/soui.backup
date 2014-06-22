@@ -71,7 +71,7 @@ namespace SOUI
 
     void CDuiHeaderCtrl::OnPaint( CDCHandle dc )
     {
-        DuiDCPaint duiDC;
+        SPainter duiDC;
         BeforePaint(dc,duiDC);
         CRect rcClient;
         GetClient(&rcClient);
@@ -159,7 +159,7 @@ namespace SOUI
     {
         CRect rcItem=GetItemRect(iItem);
         CDCHandle dc=GetDuiDC(rcItem,OLEDC_PAINTBKGND);
-        DuiDCPaint duiDC;
+        SPainter duiDC;
         BeforePaint(dc,duiDC);
         DrawItem(dc,rcItem,m_arrItems.GetData()+iItem);
         AfterPaint(dc,duiDC);
@@ -417,7 +417,7 @@ namespace SOUI
         CRect rcClient;
         GetClient(&rcClient);
         CDCHandle dc=GetDuiDC(rcClient,OLEDC_PAINTBKGND);
-        DuiDCPaint duidc;
+        SPainter duidc;
         BeforePaint(dc,duidc);
         CRect rcItem(rcClient.left,rcClient.top,rcClient.left,rcClient.bottom);
         int iDragTo=LOWORD(dwDragTo);

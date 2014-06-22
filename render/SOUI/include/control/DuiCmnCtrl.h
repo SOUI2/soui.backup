@@ -719,6 +719,7 @@ public:
      * Describe  ¹¹Ôìº¯Êý
      */
     SIconWnd();
+    virtual ~SIconWnd();
 
     void OnPaint(IRenderTarget *pRT);
     /**

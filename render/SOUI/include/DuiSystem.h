@@ -35,7 +35,6 @@ class SOUI_EXP DuiSystem :public Singleton<DuiSystem>
                         ,public DuiPools
 {
     friend class CSimpleWnd;
-    friend class CDuiMessageBox;    //访问消息框模板
     friend class CDuiRichEdit;    //访问右键菜单资源
 public:
     DuiSystem(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName=_T("DuiHostWnd"));
@@ -68,7 +67,6 @@ public:
     IRenderFactory * GetRenderFactory(){return m_RenderFactory;}
 
 protected:
-    pugi::xml_node GetMsgBoxTemplate(){return m_xmlMsgBoxTempl;}
     pugi::xml_node GetEditMenuTemplate(){return m_xmlEditMenu;}
 
     void createSingletons();
@@ -77,7 +75,6 @@ protected:
     IScriptModule        * m_pScriptModule;
     HINSTANCE m_hInst;
 
-    pugi::xml_document    m_xmlMsgBoxTempl;
     pugi::xml_document    m_xmlEditMenu;
 
     CAutoRefPtr<IRenderFactory> m_RenderFactory;

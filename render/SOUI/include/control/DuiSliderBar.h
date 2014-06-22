@@ -10,13 +10,13 @@
 namespace SOUI
 {
 
-class SOUI_EXP CDuiSliderBar : public SProgress
+class SOUI_EXP SSliderBar : public SProgress
 {
-    SOUI_CLASS_NAME(CDuiSliderBar, "sliderbar")
+    SOUI_CLASS_NAME(SSliderBar, "sliderbar")
 
 public:
-    CDuiSliderBar();
-    ~CDuiSliderBar();
+    SSliderBar();
+    ~SSliderBar();
 
     enum
     {
@@ -43,7 +43,7 @@ protected:
 
     CRect           GetPartRect(UINT uSBCode);
 
-    void            OnPaint(CDCHandle dc);
+    void            OnPaint(IRenderTarget * pRT);
     void            OnLButtonUp(UINT nFlags, CPoint point);
     void            OnLButtonDown(UINT nFlags, CPoint point);
     void            OnMouseMove(UINT nFlags, CPoint point);
@@ -55,7 +55,7 @@ protected:
         MSG_WM_LBUTTONUP(OnLButtonUp)
         MSG_WM_MOUSEMOVE(OnMouseMove)
         MSG_WM_MOUSELEAVE(OnMouseLeave)
-        MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
     WND_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()

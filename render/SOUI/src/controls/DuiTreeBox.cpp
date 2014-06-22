@@ -428,7 +428,7 @@ void CDuiTreeBox::RedrawItem(HSTREEITEM hItem)
         rcItem.OffsetRect(m_rcClient.TopLeft());
 
         CDCHandle dc=GetDuiDC(&rcItem,OLEDC_PAINTBKGND);
-        DuiDCPaint duiDC;
+        SPainter duiDC;
         BeforePaint(dc,duiDC);
 
         DuiSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)dc);
@@ -462,7 +462,7 @@ void CDuiTreeBox::OnPaint(CDCHandle dc)
 {
     if(IsUpdateLocked()) return;
 
-    DuiDCPaint duiDC;
+    SPainter duiDC;
     BeforePaint(dc,duiDC);
 
     int iFirstVisible=m_ptOrigin.y/m_nItemHei;

@@ -124,7 +124,7 @@ STabCtrl::STabCtrl() : m_nCurrentPage(0)
 
 void STabCtrl::OnPaint(IRenderTarget *pRT)
 {
-    DuiDCPaint duiDC;
+    SPainter duiDC;
     BeforePaint(pRT,duiDC);
     CRect rcTabs;
     CRect rcItem,rcItemPrev;

@@ -295,7 +295,7 @@ void CDuiListBoxEx::RedrawItem(int iItem)
     if(rcInter.IsRectEmpty()) return;
 
     CDCHandle dc=GetDuiDC(&rcItem,OLEDC_PAINTBKGND);
-    DuiDCPaint duiDC;
+    SPainter duiDC;
     BeforePaint(dc,duiDC);
 
     DuiSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)dc);
@@ -330,7 +330,7 @@ int CDuiListBoxEx::GetScrollLineSize(BOOL bVertical)
 
 void CDuiListBoxEx::OnPaint(CDCHandle dc)
 {
-    DuiDCPaint duiDC;
+    SPainter duiDC;
     BeforePaint(dc,duiDC);
 
     int iFirstVisible=m_ptOrigin.y/m_nItemHei;

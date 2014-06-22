@@ -113,7 +113,7 @@ void CDuiComboBoxBase::GetTextRect( LPRECT pRect )
 
 void CDuiComboBoxBase::OnPaint( CDCHandle dc )
 {
-    DuiDCPaint DuiDC;
+    SPainter DuiDC;
 
     BeforePaint(dc, DuiDC);
     if(GetCurSel() != -1 && m_pEdit==NULL)

@@ -503,14 +503,16 @@ CSize SProgress::GetDesiredSize(LPRECT pRcContainer)
 
 void SProgress::OnPaint(IRenderTarget *pRT)
 {
-    DuiDCPaint DuiDC;
+    SPainter DuiDC;
 
     BeforePaint(pRT, DuiDC);
 
     DUIASSERT(m_pSkinBg && m_pSkinPos);
     
-    m_pSkinBg->Draw(pRT, DuiDC.rcClient, DuiWndState_Normal,m_byAlpha);
-    CRect rcValue=DuiDC.rcClient;
+    CRect rcClient;
+    GetClient(&rcClient);
+    m_pSkinBg->Draw(pRT, rcClient, DuiWndState_Normal,m_byAlpha);
+    CRect rcValue=rcClient;
 
     if(IsVertical())
     {
@@ -735,6 +737,10 @@ SIconWnd::SIconWnd():m_theIcon(0)
 
 }
 
+SIconWnd::~SIconWnd()
+{
+    if(m_theIcon) DeleteObject(m_theIcon);
+}
 
 void SIconWnd::OnPaint(IRenderTarget *pRT)
 {
@@ -757,6 +763,7 @@ CSize SIconWnd::GetDesiredSize(LPRECT pRcContainer)
 
 void SIconWnd::SetIcon(HICON hIcon)
 {
+    if(m_theIcon) DeleteObject(m_theIcon);
     m_theIcon = hIcon;
     NotifyInvalidate();
 }
@@ -928,7 +935,7 @@ SGroup::SGroup():m_nRound(GROUP_ROUNDCORNOR),m_crLine1(RGB(0xF0,0xF0,0xF0)),m_cr
 void SGroup::OnPaint(IRenderTarget *pRT)
 {
 
-    DuiDCPaint DuiDC;
+    SPainter DuiDC;
 
     BeforePaint(pRT, DuiDC);
 

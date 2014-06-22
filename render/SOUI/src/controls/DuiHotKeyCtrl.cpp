@@ -29,7 +29,7 @@ int CDuiHotKeyCtrl::OnCreate( LPVOID )
     if(nRet!=0) return nRet;
     CDCHandle dc=GetDuiDC(NULL,OLEDC_NODRAW);
     DUIASSERT(dc);
-    DuiDCPaint duidc;
+    SPainter duidc;
     BeforePaint(dc,duidc);
 
     LOGFONT lf;
@@ -50,7 +50,7 @@ void CDuiHotKeyCtrl::OnLButtonDown( UINT nFlags,CPoint pt )
 
 void CDuiHotKeyCtrl::OnPaint( CDCHandle dc )
 {
-    DuiDCPaint duiDC;
+    SPainter duiDC;
     BeforePaint(dc,duiDC);
     CRect rcClient;
     GetClient(&rcClient);

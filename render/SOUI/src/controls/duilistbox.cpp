@@ -323,7 +323,7 @@ void CDuiListBox::RedrawItem(int iItem)
         rcItem.OffsetRect(0,m_nItemHei*iItem-m_ptOrigin.y);
         rcItem.OffsetRect(rcClient.TopLeft());
         CDCHandle dc=GetDuiDC(&rcItem,OLEDC_PAINTBKGND);
-        DuiDCPaint duiDC;
+        SPainter duiDC;
         BeforePaint(dc,duiDC);
 
         DuiSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)dc);
@@ -440,7 +440,7 @@ void CDuiListBox::NotifySelChange( int nOldSel,int nNewSel)
 
 void CDuiListBox::OnPaint(CDCHandle dc)
 {
-    DuiDCPaint duiDC;
+    SPainter duiDC;
     BeforePaint(dc,duiDC);
 
     int iFirstVisible = GetTopIndex();

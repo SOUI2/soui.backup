@@ -59,29 +59,16 @@ public:
 #define ICWND_FIRST    ((SWindow*)-1)
 #define ICWND_LAST    NULL
 
-class SOUI_EXP DuiDCPaint
+class SOUI_EXP SPainter
 {
 public:
-    DuiDCPaint()
-        : bDuiModeChanged(FALSE)
-        , nOldDuiMode(OPAQUE)
-        , bFontChanged(FALSE)
-        , hftOld(NULL)
-        , bTextColorChanged(FALSE)
-        , crOld(CLR_INVALID)
-        , bBgColorChanged(FALSE)
-        , crOldBg(CLR_INVALID)
+    SPainter()
+        : crOld(CLR_INVALID)
     {
     }
-    BOOL     bDuiModeChanged;
-    int      nOldDuiMode;
-    BOOL     bFontChanged;
-    HFONT    hftOld;
-    BOOL     bTextColorChanged;
-    COLORREF crOld;
-    BOOL     bBgColorChanged;
-    COLORREF crOldBg;
-    CRect    rcClient;
+
+    CAutoRefPtr<IFont> pOldPen;
+    COLORREF          crOld;
 };
 
 
@@ -509,10 +496,10 @@ public:
     // Access:    public
     // Returns:   void
     // Parameter: CDCHandle & dc
-    // Parameter: DuiDCPaint & DuiDC
+    // Parameter: SPainter & DuiDC
     // remark:
     //************************************
-    void BeforePaint(IRenderTarget *pRT, DuiDCPaint &DuiDC);
+    void BeforePaint(IRenderTarget *pRT, SPainter &painter);
 
     //************************************
     // Method:    AfterPaint
@@ -520,10 +507,10 @@ public:
     // Access:    public
     // Returns:   void
     // Parameter: CDCHandle & dc
-    // Parameter: DuiDCPaint & DuiDC
+    // Parameter: SPainter & DuiDC
     // remark:
     //************************************
-    void AfterPaint(IRenderTarget *pRT, DuiDCPaint &DuiDC);
+    void AfterPaint(IRenderTarget *pRT, SPainter &painter);
 
     //************************************
     // Method:    BeforePaintEx

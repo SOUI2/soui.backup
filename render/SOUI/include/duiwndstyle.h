@@ -38,16 +38,10 @@ public:
 
 
     COLORREF m_crBg;
-    COLORREF m_crBgHover;
-    COLORREF m_crText;
-    COLORREF m_crHoverText;
-    COLORREF m_crDisabledText;
-    COLORREF m_crPushText;
     COLORREF m_crBorder;
-    COLORREF m_crBorderHover;
-    IFontPtr m_ftText;
-    IFontPtr m_ftHover;
-    IFontPtr m_ftPush;
+    COLORREF m_crText[4];
+    IFontPtr m_ftText[4];
+
     int m_nMarginX;
     int m_nMarginY;
     int m_nSpacing;
@@ -58,6 +52,7 @@ public:
     CDuiStringA m_strSkinName,m_strNcSkinName;
 
     UINT GetTextAlign();
+    int GetStates();
 protected:
     UINT m_nTextAlign;
     UINT m_uAlign,m_uVAlign;
@@ -79,20 +74,22 @@ protected:
         ATTR_ENUM_END(m_uVAlign)
 
         ATTR_COLOR("crbg", m_crBg, TRUE)
-        ATTR_COLOR("crbghover", m_crBgHover, TRUE)
-        ATTR_COLOR("crtext", m_crText, TRUE)
-        ATTR_COLOR("crhover", m_crHoverText, TRUE)
-        ATTR_COLOR("crpush", m_crPushText, TRUE)
-        ATTR_COLOR("crdisabled", m_crDisabledText, TRUE)
         ATTR_COLOR("crborder", m_crBorder, TRUE)
-        ATTR_COLOR("crborderhover", m_crBorderHover, TRUE)
 
-        ATTR_FONT("font", m_ftText, TRUE)
-        ATTR_FONT("hoverfont", m_ftHover, TRUE)
-        ATTR_FONT("pushfont", m_ftPush, TRUE)
-        ATTR_FONTEX("font2", m_ftText, TRUE)
-        ATTR_FONTEX("hoverfont2", m_ftHover, TRUE)
-        ATTR_FONTEX("pushfont2", m_ftPush, TRUE)
+        ATTR_FONT("font", m_ftText[0], TRUE)
+        ATTR_FONTEX("font2", m_ftText[0], TRUE)
+        ATTR_FONT("font.hover", m_ftText[1], TRUE)
+        ATTR_FONTEX("font2.hover", m_ftText[1], TRUE)
+        ATTR_FONT("font.push", m_ftText[2], TRUE)
+        ATTR_FONTEX("font2.push", m_ftText[2], TRUE)
+        ATTR_FONT("font.disable", m_ftText[3], TRUE)
+        ATTR_FONTEX("font2.disable", m_ftText[3], TRUE)
+
+        ATTR_COLOR("crtext", m_crText[0], TRUE)
+        ATTR_COLOR("crtext.hover", m_crText[1], TRUE)
+        ATTR_COLOR("crtext.push", m_crText[2], TRUE)
+        ATTR_COLOR("crtext.disable", m_crText[3], TRUE)
+
         ATTR_INT("x-margin", m_nMarginX, TRUE)
         ATTR_INT("y-margin", m_nMarginY, TRUE)
         ATTR_INT("margin", m_nMarginX = m_nMarginY, TRUE) // 这样比较bt，不过.....凑合用吧

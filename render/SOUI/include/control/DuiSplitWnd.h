@@ -9,7 +9,7 @@ enum SPLITMODE {SM_COL=0,SM_ROW};
 
 class SOUI_EXP CDuiSplitPane : public SWindow
 {
-    friend class CDuiSplitWnd;
+    friend class SSplitWnd;
     SOUI_CLASS_NAME(CDuiSplitPane, "splitpane")
 public:
     CDuiSplitPane();
@@ -27,10 +27,10 @@ protected:
     int m_nPriority;
 };
 
-class SOUI_EXP CDuiSplitWnd :
+class SOUI_EXP SSplitWnd :
     public SWindow
 {
-    SOUI_CLASS_NAME(CDuiSplitWnd, "splitwnd")
+    SOUI_CLASS_NAME(SSplitWnd, "splitwnd")
 
     enum {
         layout_vert=1,        //纵向布局改变
@@ -43,8 +43,8 @@ class SOUI_EXP CDuiSplitWnd :
         CDuiSplitPane *pPane;
     };
 public:
-    CDuiSplitWnd(void);
-    virtual ~CDuiSplitWnd(void);
+    SSplitWnd(void);
+    virtual ~SSplitWnd(void);
 
     BOOL SetPaneInfo(UINT iPane,int nIdealSize,int nMinSize,int nPriority);
 
@@ -67,7 +67,7 @@ protected:
 
     void OnDestroy();
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget * pRT);
 
     LRESULT OnWindowPosChanged(LPRECT lpWndPos);
 
@@ -82,19 +82,19 @@ protected:
     void Relayout(UINT uMode);
 
     SOUI_ATTRS_BEGIN()
-    ATTR_INT("sepsize", m_nSepSize, TRUE)
-    ATTR_INT("adjustable", m_bAdjustable, TRUE)
-    ATTR_INT("colmode", m_bColMode, TRUE)
-    ATTR_SKIN("skinsep",m_pSkinSep,TRUE)
+        ATTR_INT("sepsize", m_nSepSize, TRUE)
+        ATTR_INT("adjustable", m_bAdjustable, TRUE)
+        ATTR_INT("colmode", m_bColMode, TRUE)
+        ATTR_SKIN("skinsep",m_pSkinSep,TRUE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_DESTROY(OnDestroy)
-    MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
-    MSG_WM_LBUTTONDOWN(OnLButtonDown)
-    MSG_WM_LBUTTONUP(OnLButtonUp)
-    MSG_WM_MOUSEMOVE(OnMouseMove)
+        MSG_WM_PAINT_EX(OnPaint)
+        MSG_WM_DESTROY(OnDestroy)
+        MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
+        MSG_WM_LBUTTONDOWN(OnLButtonDown)
+        MSG_WM_LBUTTONUP(OnLButtonUp)
+        MSG_WM_MOUSEMOVE(OnMouseMove)
     WND_MSG_MAP_END()
 
 protected:
@@ -108,21 +108,21 @@ protected:
     CPoint m_ptClick;
 };
 
-class SOUI_EXP CDuiSplitWnd_Col : public CDuiSplitWnd
+class SOUI_EXP SSplitWnd_Col : public SSplitWnd
 {
-    SOUI_CLASS_NAME(CDuiSplitWnd_Col, "splitcol")
+    SOUI_CLASS_NAME(SSplitWnd_Col, "splitcol")
 public:
-    CDuiSplitWnd_Col()
+    SSplitWnd_Col()
     {
         m_bColMode=TRUE;
     }
 };
 
-class SOUI_EXP CDuiSplitWnd_Row : public CDuiSplitWnd
+class SOUI_EXP SSplitWnd_Row : public SSplitWnd
 {
-    SOUI_CLASS_NAME(CDuiSplitWnd_Row, "splitrow")
+    SOUI_CLASS_NAME(SSplitWnd_Row, "splitrow")
 public:
-    CDuiSplitWnd_Row()
+    SSplitWnd_Row()
     {
         m_bColMode=FALSE;
     }

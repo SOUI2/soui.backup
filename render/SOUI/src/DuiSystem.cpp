@@ -10,7 +10,7 @@
 
 #include "mybuffer.h"
 #include "DuiTimerEx.h"
-
+#include "control/duimessagebox.h"
 namespace SOUI
 {
 
@@ -81,14 +81,10 @@ BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType)
 
 BOOL DuiSystem::SetMsgBoxTemplate( LPCTSTR pszXmlName,LPCTSTR pszType)
 {
-    if(!LOADXML(m_xmlMsgBoxTempl,pszXmlName,pszType)) goto format_error;
-    if(!m_xmlMsgBoxTempl.child("SOUI").attribute("frame_size").value()[0]) goto format_error;
-    if(!m_xmlMsgBoxTempl.child("SOUI").attribute("minsize").value()[0]) goto format_error;
-
-    return TRUE;
-format_error:
-    m_xmlMsgBoxTempl.reset();
-    return FALSE;
+    pugi::xml_document xmlDoc;
+    if(!LOADXML(xmlDoc,pszXmlName,pszType)) return FALSE;
+    pugi::xml_node uiRoot=xmlDoc.child("UIFRAME");   
+    return SMessageBoxImpl::SetMsgTemplate(uiRoot);
 }
 
 BOOL DuiSystem::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )

@@ -704,8 +704,7 @@ BOOL SWindow::NeedRedrawWhenStateChange()
     {
         return TRUE;
     }
-
-    return (CLR_INVALID != m_style.m_crHoverText) || (NULL != m_style.m_ftHover) || (CLR_INVALID != m_style.m_crBgHover);
+    return m_style.GetStates()>1;
 }
 
 BOOL SWindow::RedrawRegion(IRenderTarget *pRT, IRegion *pRgn)
@@ -850,11 +849,6 @@ BOOL SWindow::OnEraseBkgnd(IRenderTarget *pRT)
     {
         COLORREF crBg = m_style.m_crBg;
 
-        if (DuiWndState_Hover == (GetState() & DuiWndState_Hover) && CLR_INVALID != m_style.m_crBgHover)
-        {
-            crBg = m_style.m_crBgHover;
-        }
-
         if (CLR_INVALID != crBg)
         {
             pRT->FillSolidRect(&rcClient,crBg);
@@ -881,89 +875,38 @@ BOOL SWindow::OnEraseBkgnd(IRenderTarget *pRT)
     return TRUE;
 }
 
-void SWindow::BeforePaint(IRenderTarget *pRT, DuiDCPaint &DuiDC)
+void SWindow::BeforePaint(IRenderTarget *pRT, SPainter &painter)
 {
-/*
-    HFONT hftDraw = NULL;
-    COLORREF crDraw = CLR_INVALID;
-
-    GetClient(DuiDC.rcClient);
-
-    if (m_pBgSkin)
-    {
-        DuiDC.bDuiModeChanged = TRUE;
-        DuiDC.nOldDuiMode = dc.SetBkMode(TRANSPARENT);
-    }
-    if (CLR_INVALID != m_style.m_crBg)
-    {
-        DuiDC.bBgColorChanged = TRUE;
-        DuiDC.crOldBg = dc.SetBkColor(m_style.m_crBg);
-    }
-
-    if (m_style.m_ftText)
-        hftDraw = m_style.m_ftText;
-
-    if (m_style.m_crText != CLR_INVALID)
-        crDraw = m_style.m_crText;
-
-    if (IsDisabled(TRUE))
-    {
-        if (m_style.m_crDisabledText != CLR_INVALID)
-            crDraw = m_style.m_crDisabledText;
-    }
-    else if (DuiWndState_Hover == (GetState() & DuiWndState_Hover))
-    {
-        if (m_style.m_ftHover)
-            hftDraw = m_style.m_ftHover;
-
-        if (m_style.m_crHoverText != CLR_INVALID)
-            crDraw = m_style.m_crHoverText;
-    }
-
-    if (hftDraw)
-    {
-        DuiDC.bFontChanged = TRUE;
-        DuiDC.hftOld = dc.SelectFont(hftDraw);
-    }
-
-    if (crDraw != CLR_INVALID)
-    {
-        DuiDC.bTextColorChanged = TRUE;
-        DuiDC.crOld = dc.SetTextColor(crDraw);
-    }
-    */
-    //todo:hjx
+    IFontPtr pFont = m_style.m_ftText[IIF_STATE4(m_dwState,0,1,2,3)];
+    if(pFont) 
+        pRT->SelectObject(pFont,(IRenderObj**)&painter.pOldPen);
+    
+    COLORREF crTxt = m_style.m_crText[IIF_STATE4(m_dwState,0,1,2,3)];
+    if(crTxt != CLR_INVALID)
+        painter.crOld = pRT->SetTextColor(crTxt);
 }
 
 void SWindow::BeforePaintEx(IRenderTarget *pRT)
 {
-//     SWindow *pParent=GetParent();
-//     if(pParent) pParent->BeforePaintEx(dc);
-//     DuiDCPaint DuiDC;
-//     BeforePaint(dc,DuiDC);
+    SWindow *pParent=GetParent();
+    if(pParent) pParent->BeforePaintEx(pRT);
+    SPainter painter;
+    BeforePaint(pRT,painter);
+    //todo:hjx
 }
 
-void SWindow::AfterPaint(IRenderTarget *pRT, DuiDCPaint &DuiDC)
+void SWindow::AfterPaint(IRenderTarget *pRT, SPainter &painter)
 {
-//     if (DuiDC.bFontChanged)
-//         dc.SelectFont(DuiDC.hftOld);
-// 
-//     if (DuiDC.bTextColorChanged)
-//         dc.SetTextColor(DuiDC.crOld);
-// 
-//     if (DuiDC.bDuiModeChanged)
-//         dc.SetBkMode(DuiDC.nOldDuiMode);
-// 
-//     if (DuiDC.bBgColorChanged)
-//         dc.SetBkColor(DuiDC.crOldBg);
+    if(painter.pOldPen) pRT->SelectObject(painter.pOldPen);
+    if(painter.crOld!=CLR_INVALID) pRT->SetTextColor(painter.crOld);
 }
 
 // Draw inner text default and focus rect
 void SWindow::OnPaint(IRenderTarget *pRT)
 {
-//     DuiDCPaint DuiDC;
-// 
-//     BeforePaint(dc, DuiDC);
+    SPainter painter;
+
+    BeforePaint(pRT, painter);
 
     CRect rcText;
     GetTextRect(rcText);
@@ -975,8 +918,7 @@ void SWindow::OnPaint(IRenderTarget *pRT)
         DuiDrawFocus(pRT);
     }
 
-//     AfterPaint(dc, DuiDC);
-
+    AfterPaint(pRT, painter);
 }
 
 void SWindow::OnNcPaint(IRenderTarget *pRT)
@@ -1002,10 +944,6 @@ void SWindow::OnNcPaint(IRenderTarget *pRT)
         else
         {
             COLORREF crBg = m_style.m_crBorder;
-            if (DuiWndState_Hover == (GetState() & DuiWndState_Hover) && CLR_INVALID != m_style.m_crBgHover)
-            {
-                crBg = m_style.m_crBorderHover;
-            }
             if (CLR_INVALID != crBg)
             {
                 pRT->FillSolidRect(&m_rcWindow,crBg);
@@ -1577,7 +1515,7 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
             pWndCur->DuiSendMessage(WM_PAINT, (WPARAM)pRT);
         }
 
-        DuiDCPaint DuiDC;
+        SPainter DuiDC;
 
 //        pWndCur->BeforePaint(dc, DuiDC);    //让子窗口继承父窗口的属性
 

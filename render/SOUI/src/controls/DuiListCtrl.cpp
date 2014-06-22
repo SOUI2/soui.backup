@@ -442,7 +442,7 @@ void CDuiListCtrl::RedrawItem(int nItem)
         CDCHandle dc = GetDuiDC(&rcDC, OLEDC_PAINTBKGND);
         DuiSendMessage(WM_ERASEBKGND, (WPARAM)(HDC)dc);
 
-        DuiDCPaint dxDC;
+        SPainter dxDC;
         BeforePaint(dc, dxDC);
 
         DrawItem(dc, rcItem, nItem);
@@ -476,7 +476,7 @@ BOOL CDuiListCtrl::SortItems(
 
 void CDuiListCtrl::OnPaint(CDCHandle dc)
 {
-    DuiDCPaint dxDC;
+    SPainter dxDC;
     BeforePaint(dc, dxDC);
 
     CRect rcList = GetListRect();

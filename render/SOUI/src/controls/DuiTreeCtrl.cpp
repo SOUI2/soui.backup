@@ -798,7 +798,7 @@ void CDuiTreeCtrl::RedrawItem(HSTREEITEM hItem)
         if (rcItem.right > rcClient.right) rcItem.right = rcClient.right;
 
         CDCHandle dc=GetDuiDC(&rcItem,OLEDC_PAINTBKGND);
-        DuiDCPaint duiDC;
+        SPainter duiDC;
         BeforePaint(dc,duiDC);
 
         DuiSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)dc);
@@ -1112,7 +1112,7 @@ void CDuiTreeCtrl::OnPaint(CDCHandle dc)
     if(IsUpdateLocked()) return;
 
     CRect rcClient;
-    DuiDCPaint duiDC;
+    SPainter duiDC;
     BeforePaint(dc,duiDC);
 
     GetClient(rcClient);

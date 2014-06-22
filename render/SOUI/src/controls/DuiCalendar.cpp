@@ -379,7 +379,7 @@ void CDuiCalendar::RedrawDay(WORD iDay )
 {
     CRect rcDay=GetDayRect(iDay);
     CDCHandle dc=GetDuiDC(&rcDay,OLEDC_PAINTBKGND);
-    DuiDCPaint duiDC;
+    SPainter duiDC;
     BeforePaint(dc,duiDC);
     DrawDay(dc,rcDay,iDay);
     AfterPaint(dc,duiDC);
@@ -388,7 +388,7 @@ void CDuiCalendar::RedrawDay(WORD iDay )
 
 void CDuiCalendar::OnPaint(CDCHandle dc) 
 {
-    DuiDCPaint duidc;
+    SPainter duidc;
     BeforePaint(dc,duidc);
     DrawTitle(dc);
     DrawDate(dc);

@@ -51,18 +51,15 @@
     <imglist name="skin_webbtn_back" src="IDP_WEBBTN_BACK" subwidth="27"/>
     <imglist name="skin_webbtn_forward" src="IDP_WEBBTN_FORWARD" subwidth="27"/>
     <imglist name="skin_webbtn_refresh" src="IDP_WEBBTN_REFRESH" subwidth="27"/>
-    <imglist name="bmpmask" src="IDP_BMPMASK">
-      <imgparam mask="FF00FF"/>
-    </imglist>
     <imglist name="TreeToggle"					src="IDR_TREE_TOGGLE" subwidth="17"/>
     <imglist name="TreeCheckBox"				src="IDR_TREE_CHECKBOX" subwidth="17"/>
     <imglist name="TreeIcon"						src="IDR_TREE_ICON" subwidth="16"/>
     <imglist name="icon3"							src="IDP_ICON3"  subwidth="15"/>
 
-    <imglist name="slidethumb" src="IDP_SLIDETHUMB" subwidth="18"/>
-    <imgframe name="prog_bar" src="IDP_PROG_BAR" left="3"/>
-    <imgframe name="prog_bg" src="IDP_PROG_BG" left="5"/>
-    <imgframe name="btn_yellow" src="IDP_BTN_YELLOW" left="3" states="4"/>
+    <imglist name="slidethumb" src="IDP_SLIDETHUMB" states="4"/>
+    <imgframe name="prog_bar" src="IDP_PROG_BAR" x="3"/>
+    <imgframe name="prog_bg" src="IDP_PROG_BG" x="5"/>
+    <imgframe name="btn_yellow" src="IDP_BTN_YELLOW" x="3" states="4"/>
 
   </skins>
 

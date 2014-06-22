@@ -297,13 +297,13 @@ typedef struct tagDUIRICHEDITNOTIFY
     LPVOID pv;
 } DUIRICHEDITNOTIFY,*LPDUIRICHEDITNOTIFY;
 
-class CDuiSliderBar;
+class SSliderBar;
 #define NM_SLIDER    30
 typedef struct tagDUINMSLIDER
 {
     DUINMHDR hdr;
     UINT uSbCode;
-    CDuiSliderBar *pSliderBar;
+    SSliderBar *pSliderBar;
     int     nPos;
     BOOL bVertical;
 } DUINMSLIDER,*LPDUINMSLIDER;

@@ -829,6 +829,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\controls\DuiMessageBox.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\duiobject.cpp"
 				>
 			</File>
@@ -858,6 +862,14 @@
 			</File>
 			<File
 				RelativePath=".\src\res.mgr\DuiSkinPool.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\controls\DuiSliderBar.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\controls\DuiSplitWnd.cpp"
 				>
 			</File>
 			<File
