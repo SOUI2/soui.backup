@@ -29,21 +29,24 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
 	DuiSystem *pDuiSystem=new DuiSystem(pRenderFactory,hInstance);
 
-
-	TCHAR szCurrentDir[MAX_PATH]; memset( szCurrentDir, 0, sizeof(szCurrentDir) );
-	GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
-	LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
-	*lpInsertPos = _T('\0');   
-
+#if 1
+    TCHAR szCurrentDir[MAX_PATH]; memset( szCurrentDir, 0, sizeof(szCurrentDir) );
+    GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
+    LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
+    *lpInsertPos = _T('\0');   
     _tcscat( szCurrentDir, _T("\\..\\demo\\skin") );
-    DuiResProviderFiles *pResFiles=new DuiResProviderFiles;
-    if(!pResFiles->Init(szCurrentDir))
+
+    DuiResProviderFiles *pResProvider=new DuiResProviderFiles;
+    if(!pResProvider->Init(szCurrentDir))
     {
         DUIASSERT(0);
         return 1;
     }
+#else
+    DuiResProviderPE *pResProvider = new DuiResProviderPE(hInstance);
+#endif
     
-    pDuiSystem->AddResProvider(pResFiles);
+    pDuiSystem->AddResProvider(pResProvider);
 
 	BOOL bOK=pDuiSystem->Init(_T("IDR_DUI_INIT")); //初始化DUI系统,原来的系统初始化方式依然可以使用。
 	pDuiSystem->SetMsgBoxTemplate(_T("IDR_DUI_MSGBOX"));
@@ -59,7 +62,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
 	delete pDuiSystem;
     
-    delete pResFiles;
+    delete pResProvider;
     
     pRenderFactory=NULL;
     

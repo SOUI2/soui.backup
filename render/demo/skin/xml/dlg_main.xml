@@ -18,6 +18,9 @@
       <tab title="flash">
         <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://swf.sc.chinaz.com//Files/DownLoad/flash2/201401/flash2524.swf" delayinit="1"/>
       </tab>
+      <tab title="include">
+        <include src="xml_page2"/>
+      </tab>
     </tabctrl>
   </window>
 </UIFRAME>
