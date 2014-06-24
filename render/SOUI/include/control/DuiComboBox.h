@@ -200,7 +200,7 @@ public:
         return strText;
     }
 
-    CDuiListBox * GetListBox(){return m_pListBox;}
+    SListBox * GetListBox(){return m_pListBox;}
 protected:
     virtual BOOL CreateListBox(pugi::xml_node xmlNode);
     virtual int  GetListBoxHeight();
@@ -213,7 +213,7 @@ protected:
 
 protected:
 
-    CDuiListBox *m_pListBox;
+    SListBox *m_pListBox;
 };
 
 class SOUI_EXP CDuiComboBoxEx : public CDuiComboBoxBase

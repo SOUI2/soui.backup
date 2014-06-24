@@ -18,7 +18,7 @@ namespace SOUI
 {
 
 
-CDuiListBox::CDuiListBox()
+SListBox::SListBox()
     : m_nItemHei(20)
     , m_iScrollSpeed(-1)
     , m_iSelItem(-1)
@@ -36,21 +36,21 @@ CDuiListBox::CDuiListBox()
 {
 }
 
-CDuiListBox::~CDuiListBox()
+SListBox::~SListBox()
 {
 }
 
-int CDuiListBox::GetCount() const
+int SListBox::GetCount() const
 {
     return m_arrItems.GetCount();
 }
 
-int CDuiListBox::GetCurSel() const
+int SListBox::GetCurSel() const
 {
     return m_iSelItem;
 }
 
-BOOL CDuiListBox::SetCurSel(int nIndex)
+BOOL SListBox::SetCurSel(int nIndex)
 {
     if(m_iSelItem == nIndex) return 0;
 
@@ -70,12 +70,12 @@ BOOL CDuiListBox::SetCurSel(int nIndex)
     return TRUE;
 }
 
-int CDuiListBox::GetTopIndex() const
+int SListBox::GetTopIndex() const
 {
     return m_ptOrigin.y / m_nItemHei;
 }
 
-BOOL CDuiListBox::SetTopIndex(int nIndex)
+BOOL SListBox::SetTopIndex(int nIndex)
 {
     if (nIndex < 0 || nIndex >= GetCount())
         return FALSE;
@@ -84,7 +84,7 @@ BOOL CDuiListBox::SetTopIndex(int nIndex)
     return TRUE;
 }
 
-LPARAM CDuiListBox::GetItemData(int nIndex) const
+LPARAM SListBox::GetItemData(int nIndex) const
 {
     if (nIndex < 0 || nIndex >= GetCount())
         return 0;
@@ -92,7 +92,7 @@ LPARAM CDuiListBox::GetItemData(int nIndex) const
     return m_arrItems[nIndex]->lParam;
 }
 
-BOOL CDuiListBox::SetItemData(int nIndex, LPARAM lParam)
+BOOL SListBox::SetItemData(int nIndex, LPARAM lParam)
 {
     if (nIndex < 0 || nIndex >= GetCount())
         return FALSE;
@@ -101,7 +101,7 @@ BOOL CDuiListBox::SetItemData(int nIndex, LPARAM lParam)
     return TRUE;
 }
 
-int CDuiListBox::GetText(int nIndex, LPTSTR lpszBuffer) const
+int SListBox::GetText(int nIndex, LPTSTR lpszBuffer) const
 {
     int nRet = GetTextLen(nIndex);
 
@@ -111,7 +111,7 @@ int CDuiListBox::GetText(int nIndex, LPTSTR lpszBuffer) const
     return nRet;
 }
 
-int CDuiListBox::GetText(int nIndex, CDuiStringT& strText) const
+int SListBox::GetText(int nIndex, CDuiStringT& strText) const
 {
     int nRet = GetTextLen(nIndex);
 
@@ -121,7 +121,7 @@ int CDuiListBox::GetText(int nIndex, CDuiStringT& strText) const
     return nRet;
 }
 
-int CDuiListBox::GetTextLen(int nIndex) const
+int SListBox::GetTextLen(int nIndex) const
 {
     if (nIndex < 0 || nIndex >= GetCount())
         return LB_ERR;
@@ -129,12 +129,12 @@ int CDuiListBox::GetTextLen(int nIndex) const
     return m_arrItems[nIndex]->strText.GetLength();
 }
 
-int CDuiListBox::GetItemHeight(int nIndex) const
+int SListBox::GetItemHeight(int nIndex) const
 {
     return m_nItemHei;
 }
 
-BOOL CDuiListBox::SetItemHeight(int nIndex, int cyItemHeight)
+BOOL SListBox::SetItemHeight(int nIndex, int cyItemHeight)
 {
     if (cyItemHeight < 0 || nIndex < 0 || nIndex >= GetCount())
         return FALSE;
@@ -143,7 +143,7 @@ BOOL CDuiListBox::SetItemHeight(int nIndex, int cyItemHeight)
     return TRUE;
 }
 
-void CDuiListBox::DeleteAll()
+void SListBox::DeleteAll()
 {
     for(int i=0; i < GetCount(); i++)
     {
@@ -159,7 +159,7 @@ void CDuiListBox::DeleteAll()
     NotifyInvalidate();
 }
 
-BOOL CDuiListBox::DeleteString(int nIndex)
+BOOL SListBox::DeleteString(int nIndex)
 {
     if(nIndex<0 || nIndex>=GetCount()) return FALSE;
 
@@ -174,7 +174,7 @@ BOOL CDuiListBox::DeleteString(int nIndex)
     else if(m_iHoverItem>nIndex) m_iHoverItem--;
 
     CRect rcClient;
-    CDuiWindow::GetClient(&rcClient);
+    SWindow::GetClient(&rcClient);
     CSize szView(rcClient.Width(),GetCount()*m_nItemHei);
     if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
     SetViewSize(szView);
@@ -182,12 +182,12 @@ BOOL CDuiListBox::DeleteString(int nIndex)
     return TRUE;
 }
 
-int CDuiListBox::AddString(LPCTSTR lpszItem, int nImage, LPARAM lParam)
+int SListBox::AddString(LPCTSTR lpszItem, int nImage, LPARAM lParam)
 {
     return InsertString(-1, lpszItem, nImage,  lParam);
 }
 
-int CDuiListBox::InsertString(int nIndex, LPCTSTR lpszItem, int nImage,  LPARAM lParam)
+int SListBox::InsertString(int nIndex, LPCTSTR lpszItem, int nImage,  LPARAM lParam)
 {
     DUIASSERT(lpszItem);
 
@@ -199,7 +199,7 @@ int CDuiListBox::InsertString(int nIndex, LPCTSTR lpszItem, int nImage,  LPARAM 
     return InsertItem(nIndex, pItem);
 }
 
-void CDuiListBox::EnsureVisible(int nIndex)
+void SListBox::EnsureVisible(int nIndex)
 {
     if(nIndex < 0 || nIndex >= GetCount()) return;
 
@@ -219,7 +219,7 @@ void CDuiListBox::EnsureVisible(int nIndex)
 }
 
 //自动修改pt的位置为相对当前项的偏移量
-int CDuiListBox::HitTest(CPoint &pt)
+int SListBox::HitTest(CPoint &pt)
 {
     CRect rcClient;
     GetClient(&rcClient);
@@ -236,22 +236,7 @@ int CDuiListBox::HitTest(CPoint &pt)
     return nRet;
 }
 
-BOOL CDuiListBox::Load(pugi::xml_node xmlNode)
-{
-    __super::Load(xmlNode);
-
-    CDuiStringT strChildSrc = DUI_CA2T(xmlNode.attribute("itemsrc").value(),CP_UTF8);
-
-    if (strChildSrc.IsEmpty())
-        return TRUE;
-
-    pugi::xml_document xmlDoc;
-    if(!LOADXML(xmlDoc,strChildSrc,DUIRES_XML_TYPE)) return FALSE;
-
-    return LoadChildren(xmlDoc.first_child());
-}
-
-BOOL CDuiListBox::LoadChildren(pugi::xml_node xmlNode)
+BOOL SListBox::LoadChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return TRUE;
 
@@ -271,7 +256,7 @@ BOOL CDuiListBox::LoadChildren(pugi::xml_node xmlNode)
     return TRUE;
 }
 
-void CDuiListBox::LoadItemAttribute(pugi::xml_node xmlNode, LPLBITEM pItem)
+void SListBox::LoadItemAttribute(pugi::xml_node xmlNode, LPLBITEM pItem)
 {
     pItem->nImage=xmlNode.attribute("img").as_int(pItem->nImage);
     pItem->lParam=xmlNode.attribute("data").as_uint(pItem->lParam);
@@ -280,7 +265,7 @@ void CDuiListBox::LoadItemAttribute(pugi::xml_node xmlNode, LPLBITEM pItem)
     BUILDSTRING(pItem->strText);
 }
 
-int CDuiListBox::InsertItem(int nIndex, LPLBITEM pItem)
+int SListBox::InsertItem(int nIndex, LPLBITEM pItem)
 {
     DUIASSERT(pItem);
 
@@ -295,7 +280,7 @@ int CDuiListBox::InsertItem(int nIndex, LPLBITEM pItem)
     if(m_iHoverItem >= nIndex) m_iHoverItem++;
 
     CRect rcClient;
-    CDuiWindow::GetClient(&rcClient);
+    SWindow::GetClient(&rcClient);
     CSize szView(rcClient.Width(),GetCount()*m_nItemHei);
     if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
     SetViewSize(szView);
@@ -303,12 +288,12 @@ int CDuiListBox::InsertItem(int nIndex, LPLBITEM pItem)
     return nIndex;
 }
 
-int CDuiListBox::GetScrollLineSize(BOOL bVertical)
+int SListBox::GetScrollLineSize(BOOL bVertical)
 {
     return m_iScrollSpeed >0 ? m_iScrollSpeed : m_nItemHei;
 }
 
-void CDuiListBox::RedrawItem(int iItem)
+void SListBox::RedrawItem(int iItem)
 {
     if(!IsVisible(TRUE)) return;
 
@@ -322,19 +307,19 @@ void CDuiListBox::RedrawItem(int iItem)
         CRect rcItem(0,0,rcClient.Width(),m_nItemHei);
         rcItem.OffsetRect(0,m_nItemHei*iItem-m_ptOrigin.y);
         rcItem.OffsetRect(rcClient.TopLeft());
-        CDCHandle dc=GetDuiDC(&rcItem,OLEDC_PAINTBKGND);
-        SPainter duiDC;
-        BeforePaint(dc,duiDC);
+        IRenderTarget *pRT=GetRenderTarget(&rcItem,OLEDC_PAINTBKGND);
+        SPainter painter;
+        BeforePaint(pRT,painter);
 
-        DuiSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)dc);
-        DrawItem(dc,rcItem,iItem);
+        DuiSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
+        DrawItem(pRT,rcItem,iItem);
 
-        AfterPaint(dc,duiDC);
-        ReleaseDuiDC(dc);
+        AfterPaint(pRT,painter);
+        ReleaseRenderTarget(pRT);
     }
 }
 
-void CDuiListBox::DrawItem(CDCHandle & dc, CRect & rc, int iItem)
+void SListBox::DrawItem(IRenderTarget * pRT, CRect & rc, int iItem)
 {
     if (iItem < 0 || iItem >= GetCount()) return;
 
@@ -367,14 +352,14 @@ void CDuiListBox::DrawItem(CDCHandle & dc, CRect & rc, int iItem)
 
     //绘制背景
     if (m_pItemSkin != NULL)
-        m_pItemSkin->Draw(dc, rc, nBgImg);
+        m_pItemSkin->Draw(pRT, rc, nBgImg);
     else if (CLR_INVALID != crItemBg)
-        CGdiAlpha::FillSolidRect(dc, rc, crItemBg);
+        pRT->FillSolidRect( rc, crItemBg);
 
     if (CLR_INVALID != crText)
     {
         bTextColorChanged = TRUE;
-        crOldText = dc.SetTextColor(crText);
+        crOldText = pRT->SetTextColor(crText);
     }
 
     if (pItem->nImage != -1 && m_pIconSkin)
@@ -390,7 +375,7 @@ void CDuiListBox::DrawItem(CDCHandle & dc, CRect & rc, int iItem)
             nOffsetY = (m_nItemHei - sizeSkin.cy) / 2;    //y 默认居中
 
         rcIcon.OffsetRect(rc.left + nOffsetX, rc.top + nOffsetY);
-        m_pIconSkin->Draw(dc, rcIcon, pItem->nImage);
+        m_pIconSkin->Draw(pRT, rcIcon, pItem->nImage);
     }
 
     UINT align = DT_SINGLELINE;
@@ -406,18 +391,18 @@ void CDuiListBox::DrawItem(CDCHandle & dc, CRect & rc, int iItem)
     else
         rcText.top = rc.top + m_ptText.y;
 
-    CGdiAlpha::DrawText(dc, pItem->strText,-1,rcText,align);
+    pRT->DrawText(pItem->strText,-1,rcText,align);
 
     if (bTextColorChanged)
-        dc.SetTextColor(crOldText);
+        pRT->SetTextColor(crOldText);
 }
 
 
-void CDuiListBox::NotifySelChange( int nOldSel,int nNewSel)
+void SListBox::NotifySelChange( int nOldSel,int nNewSel)
 {
     DUINMLBSELCHANGE nms;
     nms.hdr.code=NM_LBSELCHANGING;
-    nms.hdr.hDuiWnd=m_hDuiWnd;
+    nms.hdr.hDuiWnd=m_hSWnd;
     nms.hdr.idFrom=GetCmdID();
     nms.hdr.pszNameFrom=GetName();
     nms.nOldSel=nOldSel;
@@ -438,10 +423,10 @@ void CDuiListBox::NotifySelChange( int nOldSel,int nNewSel)
     DuiNotify((LPDUINMHDR)&nms);
 }
 
-void CDuiListBox::OnPaint(CDCHandle dc)
+void SListBox::OnPaint(IRenderTarget * pRT)
 {
-    SPainter duiDC;
-    BeforePaint(dc,duiDC);
+    SPainter painter;
+    BeforePaint(pRT,painter);
 
     int iFirstVisible = GetTopIndex();
     int nPageItems = (m_rcClient.Height()+m_nItemHei-1)/m_nItemHei+1;
@@ -451,27 +436,27 @@ void CDuiListBox::OnPaint(CDCHandle dc)
         CRect rcItem(0,0,m_rcClient.Width(),m_nItemHei);
         rcItem.OffsetRect(0,m_nItemHei*iItem-m_ptOrigin.y);
         rcItem.OffsetRect(m_rcClient.TopLeft());
-        DrawItem(dc,rcItem,iItem);
+        DrawItem(pRT,rcItem,iItem);
     }
 
-    AfterPaint(dc,duiDC);
+    AfterPaint(pRT,painter);
 }
 
-void CDuiListBox::OnSize(UINT nType,CSize size)
+void SListBox::OnSize(UINT nType,CSize size)
 {
     CRect rcClient;
-    CDuiWindow::GetClient(&rcClient);
+    SWindow::GetClient(&rcClient);
     CSize szView(rcClient.Width(),GetCount()*m_nItemHei);
     if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
     SetViewSize(szView);
     __super::OnSize(nType,size);
 }
 
-void CDuiListBox::OnLButtonDown(UINT nFlags,CPoint pt)
+void SListBox::OnLButtonDown(UINT nFlags,CPoint pt)
 {
 }
 
-void CDuiListBox::OnLButtonUp(UINT nFlags,CPoint pt)
+void SListBox::OnLButtonUp(UINT nFlags,CPoint pt)
 {
     m_iHoverItem = HitTest(pt);
 
@@ -479,11 +464,11 @@ void CDuiListBox::OnLButtonUp(UINT nFlags,CPoint pt)
         NotifySelChange(m_iSelItem,m_iHoverItem);
 }
 
-void CDuiListBox::OnLButtonDbClick(UINT nFlags,CPoint pt)
+void SListBox::OnLButtonDbClick(UINT nFlags,CPoint pt)
 {
 }
 
-void CDuiListBox::OnMouseMove(UINT nFlags,CPoint pt)
+void SListBox::OnMouseMove(UINT nFlags,CPoint pt)
 {
     int nOldHover=m_iHoverItem;
     m_iHoverItem = HitTest(pt);
@@ -496,7 +481,7 @@ void CDuiListBox::OnMouseMove(UINT nFlags,CPoint pt)
     }
 }
 
-void CDuiListBox::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
+void SListBox::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
 {
     int  nNewSelItem = -1;
     int iCurSel=m_iSelItem;
@@ -519,25 +504,25 @@ void CDuiListBox::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
     }
 }
 
-void CDuiListBox::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+void SListBox::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-    CDuiWindow *pOwner = GetOwner();
+    SWindow *pOwner = GetOwner();
     if (pOwner)
         pOwner->DuiSendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
 }
 
-UINT CDuiListBox::OnGetDuiCode()
+UINT SListBox::OnGetDuiCode()
 {
     return DUIC_WANTALLKEYS;
 }
 
-void CDuiListBox::OnDestroy()
+void SListBox::OnDestroy()
 {
     DeleteAll();
     __super::OnDestroy();
 }
 
-void CDuiListBox::OnShowWindow( BOOL bShow, UINT nStatus )
+void SListBox::OnShowWindow( BOOL bShow, UINT nStatus )
 {
     if(!bShow)
     {

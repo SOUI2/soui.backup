@@ -837,6 +837,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\controls\duilistbox.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\controls\DuiListCtrl.cpp"
 				>
 			</File>

@@ -44,8 +44,8 @@ void DuiWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(SHeaderCtrl::GetClassName(),new TplDuiWindowFactory<SHeaderCtrl>);
     AddKeyObject(SListCtrl::GetClassName(),new TplDuiWindowFactory<SListCtrl>);
     AddKeyObject(SCalendar::GetClassName(),new TplDuiWindowFactory<SCalendar>);
+    AddKeyObject(SListBox::GetClassName(),new TplDuiWindowFactory<SListBox>);
     /*
-    AddKeyObject(CDuiListBox::GetClassName(),new TplDuiWindowFactory<CDuiListBox>);
     AddKeyObject(CDuiListBoxEx::GetClassName(),new TplDuiWindowFactory<CDuiListBoxEx>);
     AddKeyObject(CDuiItemBox::GetClassName(),new TplDuiWindowFactory<CDuiItemBox>);
     AddKeyObject(CDuiToggle::GetClassName(),new TplDuiWindowFactory<CDuiToggle>);
