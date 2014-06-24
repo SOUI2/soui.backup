@@ -508,8 +508,9 @@ namespace SOUI
                 xDest[0] = xDest[1] = xDest[2] = xDest[3]-nDestWid;
             }else
             {//先绘制左边部分，剩余的用右边填充
-                xSrc[2] = nDestWid-xSrc[1];
-                xDest[2] = nDestWid-xDest[1];
+                int nRemain=xDest[3]-xDest[1];
+                xSrc[2] = xSrc[3]-nRemain;
+                xDest[2] = xDest[3]-nRemain;
             }
         }
         
@@ -525,8 +526,9 @@ namespace SOUI
                 yDest[0] = yDest[1] = yDest[2] = yDest[3]-nDestHei;
             }else
             {//先绘制左边部分，剩余的用右边填充
-                ySrc[2] = nDestHei-ySrc[1];
-                yDest[2] = nDestHei-yDest[1];
+                int nRemain=yDest[3]-yDest[1];
+                ySrc[2] = ySrc[3]-nRemain;
+                yDest[2] = yDest[3]-nRemain;
             }
         }
         
