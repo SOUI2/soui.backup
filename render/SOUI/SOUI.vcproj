@@ -785,6 +785,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\controls\DuiCalendar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\controls\DuiCaption.cpp"
 				>
 			</File>
@@ -817,6 +821,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\controls\DuiHeaderCtrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\duihostwnd.cpp"
 				>
 			</File>
@@ -826,6 +834,10 @@
 			</File>
 			<File
 				RelativePath=".\src\DuiLayout.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\controls\DuiListCtrl.cpp"
 				>
 			</File>
 			<File

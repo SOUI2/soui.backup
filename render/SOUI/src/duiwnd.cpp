@@ -447,7 +447,7 @@ void SWindow::SetCheck(BOOL bCheck)
 
 BOOL SWindow::NeedRedrawParent()
 {
-    return (GetContainer()->IsTranslucent() || !m_pBgSkin || (m_style.m_crBg == CLR_INVALID));
+    return (GetContainer()->IsTranslucent() || !m_pBgSkin || (m_style.m_crBg == CR_INVALID));
 }
 
 
@@ -849,7 +849,7 @@ BOOL SWindow::OnEraseBkgnd(IRenderTarget *pRT)
     {
         COLORREF crBg = m_style.m_crBg;
 
-        if (CLR_INVALID != crBg)
+        if (CR_INVALID != crBg)
         {
             pRT->FillSolidRect(&rcClient,crBg);
         }
@@ -882,7 +882,7 @@ void SWindow::BeforePaint(IRenderTarget *pRT, SPainter &painter)
         pRT->SelectObject(pFont,(IRenderObj**)&painter.pOldPen);
     
     COLORREF crTxt = m_style.m_crText[IIF_STATE4(m_dwState,0,1,2,3)];
-    if(crTxt != CLR_INVALID)
+    if(crTxt != CR_INVALID)
         painter.crOld = pRT->SetTextColor(crTxt);
 }
 
@@ -898,7 +898,7 @@ void SWindow::BeforePaintEx(IRenderTarget *pRT)
 void SWindow::AfterPaint(IRenderTarget *pRT, SPainter &painter)
 {
     if(painter.pOldPen) pRT->SelectObject(painter.pOldPen);
-    if(painter.crOld!=CLR_INVALID) pRT->SetTextColor(painter.crOld);
+    if(painter.crOld!=CR_INVALID) pRT->SetTextColor(painter.crOld);
 }
 
 // Draw inner text default and focus rect
@@ -944,7 +944,7 @@ void SWindow::OnNcPaint(IRenderTarget *pRT)
         else
         {
             COLORREF crBg = m_style.m_crBorder;
-            if (CLR_INVALID != crBg)
+            if (CR_INVALID != crBg)
             {
                 pRT->FillSolidRect(&m_rcWindow,crBg);
             }

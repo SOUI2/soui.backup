@@ -292,7 +292,7 @@ namespace SOUI
 
     protected:
 		SkCanvas *m_SkCanvas;
-        CDuiColor            m_curColor;
+        SColor            m_curColor;
 		CAutoRefPtr<SBitmap_Skia> m_curBmp;
 		CAutoRefPtr<SPen_Skia> m_curPen;
 		CAutoRefPtr<SBrush_Skia> m_curBrush;

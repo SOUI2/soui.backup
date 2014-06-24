@@ -9,6 +9,9 @@
 #include "control/DuiSplitWnd.h"
 #include "control/DuiTreeCtrl.h"
 #include "control/duiscrollbar.h"
+#include "control/DuiHeaderCtrl.h"
+#include "control/DuiListCtrl.h"
+#include "control/DuiCalendar.h"
 /*
 #include "control/duilistbox.h"
 #include "control/duilistboxex.h"
@@ -18,7 +21,4 @@
 #include "control/DuiComboBox.h"
 #include "control/DuiHotKeyCtrl.h"
 #include "control/DuiDateTimeEdit.h"
-#include "control/DuiCalendar.h"
-#include "control/DuiHeaderCtrl.h"
-#include "control/DuiListCtrl.h"
 */

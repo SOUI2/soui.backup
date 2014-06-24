@@ -34,6 +34,7 @@
 
 #include "duidef.h"
 
+#include "color.h"
 //export pugixml interface
 #include "../pugixml/pugixml.hpp"
 

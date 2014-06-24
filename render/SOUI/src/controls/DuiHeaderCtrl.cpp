@@ -1,13 +1,12 @@
 #include "duistd.h"
 #include "control/DuiHeaderCtrl.h"
-#include "MemDC.h"
 #include "DragWnd.h"
 
 namespace SOUI
 {
 #define CX_HDITEM_MARGIN    4
 
-    CDuiHeaderCtrl::CDuiHeaderCtrl(void)
+    SHeaderCtrl::SHeaderCtrl(void)
         :m_bFixWidth(FALSE)
         ,m_bItemSwapEnable(TRUE)
         ,m_bSortHeader(TRUE)
@@ -24,11 +23,11 @@ namespace SOUI
         addEvent(NM_HDSWAP);
     }
 
-    CDuiHeaderCtrl::~CDuiHeaderCtrl(void)
+    SHeaderCtrl::~SHeaderCtrl(void)
     {
     }
 
-    int CDuiHeaderCtrl::InsertItem( int iItem,LPCTSTR pszText,int nWidth, DUIHDSORTFLAG stFlag,LPARAM lParam )
+    int SHeaderCtrl::InsertItem( int iItem,LPCTSTR pszText,int nWidth, DUIHDSORTFLAG stFlag,LPARAM lParam )
     {
         DUIASSERT(pszText);
         DUIASSERT(nWidth>=0);
@@ -54,7 +53,7 @@ namespace SOUI
         return iItem;
     }
 
-    BOOL CDuiHeaderCtrl::GetItem( int iItem,DUIHDITEM *pItem )
+    BOOL SHeaderCtrl::GetItem( int iItem,DUIHDITEM *pItem )
     {
         if((UINT)iItem>=m_arrItems.GetCount()) return FALSE;
         if(pItem->mask & DUIHDI_TEXT)
@@ -69,10 +68,10 @@ namespace SOUI
         return TRUE;
     }
 
-    void CDuiHeaderCtrl::OnPaint( CDCHandle dc )
+    void SHeaderCtrl::OnPaint(IRenderTarget * pRT )
     {
-        SPainter duiDC;
-        BeforePaint(dc,duiDC);
+        SPainter painter;
+        BeforePaint(pRT,painter);
         CRect rcClient;
         GetClient(&rcClient);
         CRect rcItem(rcClient.left,rcClient.top,rcClient.left,rcClient.bottom);
@@ -80,22 +79,22 @@ namespace SOUI
         {
             rcItem.left=rcItem.right;
             rcItem.right=rcItem.left+m_arrItems[i].cx;
-            DrawItem(dc,rcItem,m_arrItems.GetData()+i);
+            DrawItem(pRT,rcItem,m_arrItems.GetData()+i);
             if(rcItem.right>=rcClient.right) break;
         }
         if(rcItem.right<rcClient.right)
         {
             rcItem.left=rcItem.right;
             rcItem.right=rcClient.right;
-            m_pSkinItem->Draw(dc,rcItem,0);
+            m_pSkinItem->Draw(pRT,rcItem,0);
         }
-        AfterPaint(dc,duiDC);
+        AfterPaint(pRT,painter);
     }
 
-    void CDuiHeaderCtrl::DrawItem( CDCHandle dc,CRect rcItem,const LPDUIHDITEM pItem )
+    void SHeaderCtrl::DrawItem(IRenderTarget * pRT,CRect rcItem,const LPDUIHDITEM pItem )
     {
-        if(m_pSkinItem) m_pSkinItem->Draw(dc,rcItem,pItem->state);
-        CGdiAlpha::DrawText(dc,pItem->pszText,pItem->cchTextMax,rcItem,m_style.GetTextAlign());
+        if(m_pSkinItem) m_pSkinItem->Draw(pRT,rcItem,pItem->state);
+        pRT->DrawText(pItem->pszText,pItem->cchTextMax,rcItem,m_style.GetTextAlign());
         if(pItem->stFlag==ST_NULL || !m_pSkinSort) return;
         CSize szSort=m_pSkinSort->GetSkinSize();
         CPoint ptSort;
@@ -106,10 +105,10 @@ namespace SOUI
         else
             ptSort.x=rcItem.right-szSort.cx-2;
 
-        m_pSkinSort->Draw(dc,CRect(ptSort,szSort),pItem->stFlag==ST_UP?0:1);
+        m_pSkinSort->Draw(pRT,CRect(ptSort,szSort),pItem->stFlag==ST_UP?0:1);
     }
 
-    BOOL CDuiHeaderCtrl::DeleteItem( int iItem )
+    BOOL SHeaderCtrl::DeleteItem( int iItem )
     {
         if(iItem<0 || (UINT)iItem>=m_arrItems.GetCount()) return FALSE;
 
@@ -126,7 +125,7 @@ namespace SOUI
         return TRUE;
     }
 
-    void CDuiHeaderCtrl::DeleteAllItems()
+    void SHeaderCtrl::DeleteAllItems()
     {
         for(UINT i=0;i<m_arrItems.GetCount();i++)
         {
@@ -136,13 +135,13 @@ namespace SOUI
         NotifyInvalidate();
     }
 
-    void CDuiHeaderCtrl::OnDestroy()
+    void SHeaderCtrl::OnDestroy()
     {
         DeleteAllItems();
         __super::OnDestroy();
     }
 
-    CRect CDuiHeaderCtrl::GetItemRect( UINT iItem )
+    CRect SHeaderCtrl::GetItemRect( UINT iItem )
     {
         CRect    rcClient;
         GetClient(&rcClient);
@@ -155,18 +154,18 @@ namespace SOUI
         return rcItem;
     }
 
-    void CDuiHeaderCtrl::RedrawItem( int iItem )
+    void SHeaderCtrl::RedrawItem( int iItem )
     {
         CRect rcItem=GetItemRect(iItem);
-        CDCHandle dc=GetDuiDC(rcItem,OLEDC_PAINTBKGND);
-        SPainter duiDC;
-        BeforePaint(dc,duiDC);
-        DrawItem(dc,rcItem,m_arrItems.GetData()+iItem);
-        AfterPaint(dc,duiDC);
-        ReleaseDuiDC(dc);
+        IRenderTarget *pRT=GetRenderTarget(rcItem,OLEDC_PAINTBKGND);
+        SPainter painter;
+        BeforePaint(pRT,painter);
+        DrawItem(pRT,rcItem,m_arrItems.GetData()+iItem);
+        AfterPaint(pRT,painter);
+        ReleaseRenderTarget(pRT);
     }
 
-    void CDuiHeaderCtrl::OnLButtonDown( UINT nFlags,CPoint pt )
+    void SHeaderCtrl::OnLButtonDown( UINT nFlags,CPoint pt )
     {
         SetDuiCapture();
         m_ptClick=pt;
@@ -184,7 +183,7 @@ namespace SOUI
         }
     }
 
-    void CDuiHeaderCtrl::OnLButtonUp( UINT nFlags,CPoint pt )
+    void SHeaderCtrl::OnLButtonUp( UINT nFlags,CPoint pt )
     {
         if(IsItemHover(m_dwHitTest))
         {
@@ -205,7 +204,7 @@ namespace SOUI
                         m_arrItems.InsertAt(LOWORD(m_dwDragTo),t);
                         //发消息通知宿主表项位置发生变化
                         DUINMHDSWAP    nm;
-                        nm.hdr.hDuiWnd=m_hDuiWnd;
+                        nm.hdr.hDuiWnd=m_hSWnd;
                         nm.hdr.code=NM_HDSWAP;
                         nm.hdr.idFrom=GetCmdID();
                         nm.hdr.pszNameFrom=GetName();
@@ -224,7 +223,7 @@ namespace SOUI
                     m_arrItems[LOWORD(m_dwHitTest)].state=1;//hover
                     RedrawItem(LOWORD(m_dwHitTest));
                     DUINMHDCLICK    nm;
-                    nm.hdr.hDuiWnd=m_hDuiWnd;
+                    nm.hdr.hDuiWnd=m_hSWnd;
                     nm.hdr.code=NM_HDCLICK;
                     nm.hdr.idFrom=GetCmdID();
                     nm.hdr.pszNameFrom=GetName();
@@ -235,7 +234,7 @@ namespace SOUI
         }else if(m_dwHitTest!=-1)
         {//调整表头宽度，发送一个调整完成消息
             DUINMHDSIZECHANGED    nm;
-            nm.hdr.hDuiWnd=m_hDuiWnd;
+            nm.hdr.hDuiWnd=m_hSWnd;
             nm.hdr.code=NM_HDSIZECHANGED;
             nm.hdr.idFrom=GetCmdID();
             nm.hdr.pszNameFrom=GetName();
@@ -247,7 +246,7 @@ namespace SOUI
         ReleaseDuiCapture();
     }
 
-    void CDuiHeaderCtrl::OnMouseMove( UINT nFlags,CPoint pt )
+    void SHeaderCtrl::OnMouseMove( UINT nFlags,CPoint pt )
     {
         if(m_bDragging || nFlags&MK_LBUTTON)
         {
@@ -288,7 +287,7 @@ namespace SOUI
                 GetContainer()->DuiUpdateWindow();//立即更新窗口
                 //发出调节宽度消息
                 DUINMHDSIZECHANGING    nm;
-                nm.hdr.hDuiWnd=m_hDuiWnd;
+                nm.hdr.hDuiWnd=m_hSWnd;
                 nm.hdr.code=NM_HDSIZECHANGING;
                 nm.hdr.idFrom=GetCmdID();
                 nm.hdr.pszNameFrom=GetName();
@@ -321,7 +320,7 @@ namespace SOUI
         
     }
 
-    void CDuiHeaderCtrl::OnMouseLeave()
+    void SHeaderCtrl::OnMouseLeave()
     {
         if(!m_bDragging)
         {
@@ -334,7 +333,7 @@ namespace SOUI
         }
     }
 
-    BOOL CDuiHeaderCtrl::LoadChildren( pugi::xml_node xmlNode )
+    BOOL SHeaderCtrl::LoadChildren( pugi::xml_node xmlNode )
     {
         if(!xmlNode || strcmp(xmlNode.name(),"items")!=0)
             return TRUE;
@@ -357,7 +356,7 @@ namespace SOUI
         return TRUE;
     }
 
-    BOOL CDuiHeaderCtrl::OnDuiSetCursor( const CPoint &pt )
+    BOOL SHeaderCtrl::OnDuiSetCursor( const CPoint &pt )
     {
         if(m_bFixWidth) return FALSE;
         DWORD dwHit=HitTest(pt);
@@ -366,7 +365,7 @@ namespace SOUI
         return TRUE;
     }
 
-    DWORD CDuiHeaderCtrl::HitTest( CPoint pt )
+    DWORD SHeaderCtrl::HitTest( CPoint pt )
     {
         CRect    rcClient;
         GetClient(&rcClient);
@@ -395,30 +394,37 @@ namespace SOUI
         return -1;
     }
 
-    HBITMAP CDuiHeaderCtrl::CreateDragImage( UINT iItem )
+    HBITMAP SHeaderCtrl::CreateDragImage( UINT iItem )
     {
         if(iItem>=m_arrItems.GetCount()) return NULL;
         CRect rcClient;
         GetClient(rcClient);
         CRect rcItem(0,0,m_arrItems[iItem].cx,rcClient.Height());
         
-        CDCHandle dc=GetDuiDC(NULL,OLEDC_NODRAW);
-        CMemDC memdc(dc,rcItem);
-        CDCHandle hmemdc=memdc;
-        BeforePaintEx(hmemdc);
-        DrawItem(hmemdc,rcItem,m_arrItems.GetData()+iItem);
-        HBITMAP hItemBmp=memdc.SelectBitmap(NULL);
-        ReleaseDuiDC(dc);
-        return hItemBmp;
+        CAutoRefPtr<IRenderTarget> pRT;
+        GETRENDERFACTORY->CreateRenderTarget(&pRT,rcItem.Width(),rcItem.Height());
+        BeforePaintEx(pRT);
+        DrawItem(pRT,rcItem,m_arrItems.GetData()+iItem);
+        
+        HBITMAP hBmp=CreateBitmap(rcItem.Width(),rcItem.Height(),1,32,NULL);
+        HDC hdc=GetDC(NULL);
+        HDC hMemDC=CreateCompatibleDC(hdc);
+        ::SelectObject(hMemDC,hBmp);
+        HDC hdcSrc=pRT->GetDC(0);
+        ::BitBlt(hMemDC,0,0,rcItem.Width(),rcItem.Height(),hdcSrc,0,0,SRCCOPY);
+        pRT->ReleaseDC(hdcSrc);
+        DeleteDC(hMemDC);
+        ReleaseDC(NULL,hdc);
+        return hBmp;
     }
 
-    void CDuiHeaderCtrl::DrawDraggingState(DWORD dwDragTo)
+    void SHeaderCtrl::DrawDraggingState(DWORD dwDragTo)
     {
         CRect rcClient;
         GetClient(&rcClient);
-        CDCHandle dc=GetDuiDC(rcClient,OLEDC_PAINTBKGND);
-        SPainter duidc;
-        BeforePaint(dc,duidc);
+        IRenderTarget *pRT=GetRenderTarget(rcClient,OLEDC_PAINTBKGND);
+        SPainter painter;
+        BeforePaint(pRT,painter);
         CRect rcItem(rcClient.left,rcClient.top,rcClient.left,rcClient.bottom);
         int iDragTo=LOWORD(dwDragTo);
         int iDragFrom=LOWORD(m_dwHitTest);
@@ -430,19 +436,19 @@ namespace SOUI
         }
         items.InsertAt(iDragTo,iDragFrom);
         
-        m_pSkinItem->Draw(dc,rcClient,0);
+        m_pSkinItem->Draw(pRT,rcClient,0);
         for(UINT i=0;i<items.GetCount();i++)
         {
             rcItem.left=rcItem.right;
             rcItem.right=rcItem.left+m_arrItems[items[i]].cx;
             if(items[i]!=iDragFrom)
-                DrawItem(dc,rcItem,m_arrItems.GetData()+items[i]);
+                DrawItem(pRT,rcItem,m_arrItems.GetData()+items[i]);
         }
-        AfterPaint(dc,duidc);
-        ReleaseDuiDC(dc);
+        AfterPaint(pRT,painter);
+        ReleaseRenderTarget(pRT);
     }
 
-    int CDuiHeaderCtrl::GetTotalWidth()
+    int SHeaderCtrl::GetTotalWidth()
     {
         int nRet=0;
         for(UINT i=0;i<m_arrItems.GetCount();i++)
@@ -450,7 +456,7 @@ namespace SOUI
         return nRet;
     }
 
-    int CDuiHeaderCtrl::GetItemWidth( int iItem )
+    int SHeaderCtrl::GetItemWidth( int iItem )
     {
         if(iItem<0 || (UINT)iItem>= m_arrItems.GetCount()) return -1;
         return m_arrItems[iItem].cx;

@@ -15,8 +15,8 @@ DuiStyle::DuiStyle()
     : m_uAlign(Align_Center)
     , m_uVAlign(VAlign_Middle)
     , m_nTextAlign(0)
-    , m_crBg(CLR_INVALID)
-    , m_crBorder(CLR_INVALID)
+    , m_crBg(CR_INVALID)
+    , m_crBorder(CR_INVALID)
     , m_nMarginX(0)
     , m_nMarginY(0)
     , m_nSpacing(0)
@@ -27,7 +27,7 @@ DuiStyle::DuiStyle()
     for(int i=0; i<4; i++)
     {
         m_ftText[i]=NULL;
-        m_crText[i]=CLR_INVALID;
+        m_crText[i]=CR_INVALID;
     }
 }
 
@@ -55,7 +55,7 @@ int DuiStyle::GetStates()
     for(int i=1;i<4;i++)
     {
         if(m_ftText[i]!=NULL) fonts++;
-        if(m_crText[i]!=CLR_INVALID) colors++;
+        if(m_crText[i]!=CR_INVALID) colors++;
     }
     return max(fonts,colors);
 }

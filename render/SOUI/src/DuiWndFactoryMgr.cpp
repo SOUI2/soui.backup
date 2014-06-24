@@ -41,6 +41,9 @@ void DuiWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(SSliderBar::GetClassName(),new TplDuiWindowFactory<SSliderBar>);
     AddKeyObject(STreeCtrl::GetClassName(),new TplDuiWindowFactory<STreeCtrl>);
     AddKeyObject(SScrollBar::GetClassName(),new TplDuiWindowFactory<SScrollBar>);
+    AddKeyObject(SHeaderCtrl::GetClassName(),new TplDuiWindowFactory<SHeaderCtrl>);
+    AddKeyObject(SListCtrl::GetClassName(),new TplDuiWindowFactory<SListCtrl>);
+    AddKeyObject(SCalendar::GetClassName(),new TplDuiWindowFactory<SCalendar>);
     /*
     AddKeyObject(CDuiListBox::GetClassName(),new TplDuiWindowFactory<CDuiListBox>);
     AddKeyObject(CDuiListBoxEx::GetClassName(),new TplDuiWindowFactory<CDuiListBoxEx>);
@@ -55,9 +58,6 @@ void DuiWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(CDuiMaskEdit::GetClassName(),new TplDuiWindowFactory<CDuiMaskEdit>);
     AddKeyObject(CDuiDateEdit::GetClassName(),new TplDuiWindowFactory<CDuiDateEdit>);
     AddKeyObject(CDuiTimeEdit::GetClassName(),new TplDuiWindowFactory<CDuiTimeEdit>);
-    AddKeyObject(CDuiCalendar::GetClassName(),new TplDuiWindowFactory<CDuiCalendar>);
-    AddKeyObject(CDuiHeaderCtrl::GetClassName(),new TplDuiWindowFactory<CDuiHeaderCtrl>);
-    AddKeyObject(CDuiListCtrl::GetClassName(),new TplDuiWindowFactory<CDuiListCtrl>);
     //*/
 }
 

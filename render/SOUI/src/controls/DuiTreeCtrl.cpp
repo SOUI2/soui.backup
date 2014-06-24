@@ -781,10 +781,10 @@ void STreeCtrl::DrawItem(IRenderTarget *pRT, CRect & rc, HSTREEITEM hItem)
     {
         if (m_pItemSelSkin != NULL)
             m_pItemSelSkin->Draw(pRT, rcItemBg, 0);
-        else if (CLR_INVALID != m_crItemSelBg)
+        else if (CR_INVALID != m_crItemSelBg)
             pRT->FillSolidRect(rcItemBg, m_crItemSelBg);
 
-        if (CLR_INVALID != m_crItemSelText)
+        if (CR_INVALID != m_crItemSelText)
         {
             bTextColorChanged = TRUE;
             crOldText = pRT->SetTextColor(m_crItemSelText);
@@ -792,7 +792,7 @@ void STreeCtrl::DrawItem(IRenderTarget *pRT, CRect & rc, HSTREEITEM hItem)
     }
     else
     {
-        if (CLR_INVALID != m_crItemText)
+        if (CR_INVALID != m_crItemText)
         {
             bTextColorChanged = TRUE;
             crOldText = pRT->SetTextColor(m_crItemText);

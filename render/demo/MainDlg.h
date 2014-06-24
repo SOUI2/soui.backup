@@ -46,17 +46,15 @@ public:
 		}
 	}
 
-	BOOL OnInitDialog(HWND hWnd,LPARAM lp)
-	{
-		m_bLayoutInited=TRUE;
-		SetMsgHandled(FALSE);
-		return FALSE;
-	}
-
 	int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	void OnShowWindow(BOOL bShow, UINT nStatus);
 
 protected:
+    void InitListCtrl();
+    bool OnListHeaderClick( SWindow * pSender, LPDUINMHDR pNmhdr );
+    
+    LRESULT OnInitDialog(HWND hWnd, LPARAM lParam);
+    void OnDestory();
 
 	LRESULT OnEditMenu(CPoint pt)
 	{
@@ -75,16 +73,16 @@ protected:
 	BEGIN_MSG_MAP_EX(CMainDlg)
 // 		CHAIN_MSG_MAP(CWHRoundRectFrameHelper<CMainDlg>) //需要圆角窗口时启用
 		MSG_WM_CREATE(OnCreate)
+        MSG_WM_INITDIALOG(OnInitDialog)
+        MSG_WM_DESTROY(OnDestory)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_SIZE(OnSize)
-		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_SHOWWINDOW(OnShowWindow)
 		MSG_SOUI_NOTIFY()
 // 		CHAIN_MSG_MAP_MEMBER((*m_pUiHandler))
 		CHAIN_MSG_MAP(CDuiHostWnd)
 		REFLECT_NOTIFICATIONS_EX()
 	END_MSG_MAP()
-
 private:
 	BOOL			m_bLayoutInited;
 	int				m_iStep;

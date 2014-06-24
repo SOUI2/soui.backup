@@ -63,7 +63,7 @@ class SOUI_EXP SPainter
 {
 public:
     SPainter()
-        : crOld(CLR_INVALID)
+        : crOld(CR_INVALID)
     {
     }
 

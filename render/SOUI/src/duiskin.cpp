@@ -131,8 +131,8 @@ void SSkinButton::SetColors( COLORREF crUp[4],COLORREF crDown[4],COLORREF crBord
 // CDuiSkinGradation
 SSkinGradation::SSkinGradation()
     : m_bVert(TRUE)
-    , m_crFrom(CLR_INVALID)
-    , m_crTo(CLR_INVALID)
+    , m_crFrom(CR_INVALID)
+    , m_crTo(CR_INVALID)
 {
 }
 

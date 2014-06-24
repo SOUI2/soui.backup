@@ -98,7 +98,7 @@ namespace SOUI
 	SRenderTarget_Skia::SRenderTarget_Skia( IRenderFactory_Skia* pRenderFactory ,int nWid,int nHei)
 		:TSkiaRenderObjImpl<IRenderTarget>(pRenderFactory)
 		,m_hBindDC(0)
-		,m_SkCanvas(NULL)
+		,m_SkCanvas(new SkCanvas)
         ,m_curColor(0xFF000000)//Ä¬ÈÏºÚÉ«
         ,m_hGetDC(0)
         ,m_uGetDCFlag(0)
@@ -112,11 +112,11 @@ namespace SOUI
         }
 
 		CAutoRefPtr<IPen> pPen;
-		CreatePen(PS_SOLID,CDuiColor(0,0,0).toCOLORREF(),1,&pPen);
+		CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&pPen);
 		SelectObject(pPen);
 
 		CAutoRefPtr<IBrush> pBr;
-		CreateSolidColorBrush(CDuiColor(0,0,0).toCOLORREF(),&pBr);
+		CreateSolidColorBrush(SColor(0,0,0).toCOLORREF(),&pBr);
 		SelectObject(pBr);
 
         CAutoRefPtr<IFont> pFont;
@@ -212,7 +212,7 @@ namespace SOUI
 		{
 			m_curBmp->Init(sz.cx,sz.cy);
 		}
-        if(m_SkCanvas) delete m_SkCanvas;
+        delete m_SkCanvas;
         m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
 		return S_OK;
 	}
@@ -260,18 +260,24 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::BitBlt( LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop/*=SRCCOPY*/)
 	{
-	    if(dwRop != SRCCOPY) return E_NOTIMPL;
-	    
-	    SRenderTarget_Skia *pRTSourSkia=(SRenderTarget_Skia*)pRTSour;
-	    
-	    const SkBitmap & bmpSrc= pRTSourSkia->m_SkCanvas->getDevice()->accessBitmap(true);
-        SkRect rcDst=toSkRect(pRcDest);
-        rcDst.offset(m_ptOrg);
-        RECT rc={xSrc,ySrc,xSrc+pRcDest->right-pRcDest->left,ySrc+pRcDest->bottom-pRcDest->top};
-        SkRect rcSrc=toSkRect(&rc);
-        rcSrc.offset(pRTSourSkia->m_ptOrg);
-	    m_SkCanvas->drawBitmapRectToRect(bmpSrc,&rcSrc,rcDst);
-		return S_OK;
+	    HDC hdcSrc=pRTSour->GetDC(0);
+	    HDC hdcDst=GetDC(0);
+	    ::BitBlt(hdcDst,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,hdcSrc,xSrc,ySrc,dwRop);
+	    ReleaseDC(hdcDst);
+	    pRTSour->ReleaseDC(hdcSrc);
+	    return S_OK;
+// 	    if(dwRop != SRCCOPY) return E_NOTIMPL;
+// 	    
+// 	    SRenderTarget_Skia *pRTSourSkia=(SRenderTarget_Skia*)pRTSour;
+// 	    
+// 	    const SkBitmap & bmpSrc= pRTSourSkia->m_SkCanvas->getDevice()->accessBitmap(true);
+//         SkRect rcDst=toSkRect(pRcDest);
+//         rcDst.offset(m_ptOrg);
+//         RECT rc={xSrc,ySrc,xSrc+pRcDest->right-pRcDest->left,ySrc+pRcDest->bottom-pRcDest->top};
+//         SkRect rcSrc=toSkRect(&rc);
+//         rcSrc.offset(pRTSourSkia->m_ptOrg);
+// 	    m_SkCanvas->drawBitmapRectToRect(bmpSrc,&rcSrc,rcDst);
+// 		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha)
@@ -316,7 +322,7 @@ namespace SOUI
 	HRESULT SRenderTarget_Skia::DrawRectangle(LPRECT pRect)
 	{
 		SkPaint paint;
-		paint.setColor(CDuiColor(m_curPen->GetColor()).toARGB());
+		paint.setColor(SColor(m_curPen->GetColor()).toARGB());
 		SGetLineDashEffect skDash(m_curPen->GetStyle());
  		paint.setPathEffect(skDash.Get());
 		paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
@@ -339,7 +345,7 @@ namespace SOUI
 		}else
 		{
 			paint.setFilterBitmap(false);
-			paint.setColor(CDuiColor(m_curBrush->GetColor()).toARGB());
+			paint.setColor(SColor(m_curBrush->GetColor()).toARGB());
 		}
 		paint.setStyle(SkPaint::kFill_Style);
 
@@ -352,7 +358,7 @@ namespace SOUI
     HRESULT SRenderTarget_Skia::DrawRoundRect( LPCRECT pRect,POINT pt )
     {
         SkPaint paint;
-        paint.setColor(CDuiColor(m_curPen->GetColor()).toARGB());
+        paint.setColor(SColor(m_curPen->GetColor()).toARGB());
         SGetLineDashEffect skDash(m_curPen->GetStyle());
         paint.setPathEffect(skDash.Get());
         paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
@@ -397,7 +403,7 @@ namespace SOUI
         SkPoint::Offset(pts,nCount,m_ptOrg);
 
         SkPaint paint;
-        paint.setColor(CDuiColor(m_curPen->GetColor()).toARGB());
+        paint.setColor(SColor(m_curPen->GetColor()).toARGB());
         SGetLineDashEffect skDash(m_curPen->GetStyle());
         paint.setPathEffect(skDash.Get());
         paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
@@ -702,8 +708,8 @@ namespace SOUI
             pts[1].set((SkScalar)pRect->right,(SkScalar)pRect->top);
         }
         
-        CDuiColor cr1(crBegin,byAlpha);
-        CDuiColor cr2(crEnd,byAlpha);
+        SColor cr1(crBegin,byAlpha);
+        SColor cr2(crEnd,byAlpha);
         
         SkColor colors[2] = {cr1.toARGB(),cr2.toARGB()};
         SkShader *pShader = SkGradientShader::CreateLinear(pts, colors, NULL,2,SkShader::kMirror_TileMode);
@@ -718,7 +724,7 @@ namespace SOUI
     {
         SkPaint paint;
         paint.setStyle(SkPaint::kFill_Style);
-        paint.setColor(CDuiColor(cr).toARGB());
+        paint.setColor(SColor(cr).toARGB());
 
         SkRect skrc=toSkRect(pRect);
         skrc.offset(m_ptOrg);

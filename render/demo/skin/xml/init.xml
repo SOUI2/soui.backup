@@ -51,9 +51,9 @@
     <imglist name="skin_webbtn_back" src="IDP_WEBBTN_BACK" subwidth="27"/>
     <imglist name="skin_webbtn_forward" src="IDP_WEBBTN_FORWARD" subwidth="27"/>
     <imglist name="skin_webbtn_refresh" src="IDP_WEBBTN_REFRESH" subwidth="27"/>
-    <imglist name="TreeToggle"					src="IDR_TREE_TOGGLE" subwidth="17"/>
-    <imglist name="TreeCheckBox"				src="IDR_TREE_CHECKBOX" subwidth="17"/>
-    <imglist name="TreeIcon"						src="IDR_TREE_ICON" subwidth="16"/>
+    <imglist name="TreeToggle"					src="IDR_TREE_TOGGLE" states="6"/>
+    <imglist name="TreeCheckBox"				src="IDR_TREE_CHECKBOX" states="9"/>
+    <imglist name="TreeIcon"						src="IDR_TREE_ICON" states="3"/>
     <imglist name="icon3"							src="IDP_ICON3"  subwidth="15"/>
 
     <imglist name="slidethumb" src="IDP_SLIDETHUMB" states="4"/>
