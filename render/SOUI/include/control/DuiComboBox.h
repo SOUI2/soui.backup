@@ -14,7 +14,7 @@ namespace SOUI
 
 class CDuiComboBoxBase;
 
-class CComboEdit:public CDuiEdit
+class CComboEdit:public SEdit
 {
 public:
     CComboEdit(CDuiComboBoxBase *pOwner);
@@ -117,7 +117,7 @@ protected:
         }
     }
 
-    CDuiRichEdit *m_pEdit;
+    SRichEdit *m_pEdit;
     ISkinObj *m_pSkinBtn;
     DWORD          m_dwBtnState;
     

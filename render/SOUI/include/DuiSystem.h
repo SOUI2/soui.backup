@@ -35,7 +35,7 @@ class SOUI_EXP DuiSystem :public Singleton<DuiSystem>
                         ,public DuiPools
 {
     friend class CSimpleWnd;
-    friend class CDuiRichEdit;    //访问右键菜单资源
+    friend class SRichEdit;    //访问右键菜单资源
 public:
     DuiSystem(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName=_T("DuiHostWnd"));
     ~DuiSystem(void);

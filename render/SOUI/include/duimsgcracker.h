@@ -60,6 +60,17 @@ protected:                                                          \
     return TRUE; \
 }
 
+// void OnSetFont(IFont *pFont, BOOL bRedraw)
+#define MSG_WM_SETFONT_EX(func) \
+    if (uMsg == WM_SETFONT) \
+    { \
+    SetMsgHandled(TRUE); \
+    func((IFont*)wParam, (BOOL)LOWORD(lParam)); \
+    lResult = 0; \
+    if(IsMsgHandled()) \
+    return TRUE; \
+    }
+
 // void OnSetDuiFocus()
 #define MSG_WM_SETFOCUS_EX(func) \
     if (uMsg == WM_SETFOCUS) \

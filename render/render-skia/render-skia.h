@@ -106,23 +106,36 @@ namespace SOUI
 		SFont_Skia(IRenderFactory_Skia * pRenderFac,const LOGFONT * plf)
 			:TSkiaRenderObjImpl<IFont>(pRenderFac),m_skFont(NULL)
 		{
+		    memcpy(&m_lf,plf,sizeof(LOGFONT));
             CDuiStringA strFace=DUI_CT2A(plf->lfFaceName,CP_ACP);
             BYTE style=SkTypeface::kNormal;
             if(plf->lfItalic) style |= SkTypeface::kItalic;
             if(plf->lfWeight == FW_BOLD) style |= SkTypeface::kBold;
 
             m_skFont=SkTypeface::CreateFromName(strFace,(SkTypeface::Style)style);
+            
             m_skPaint.setTextSize((SkScalar)plf->lfHeight);
             m_skPaint.setUnderlineText(!!plf->lfUnderline);
             m_skPaint.setTextEncoding(SkPaint::kUTF16_TextEncoding);
             m_skPaint.setAntiAlias(true);
 		}
+        virtual const LOGFONT * LogFont() const {return &m_lf;}
 
+        virtual LPCTSTR FamilyName()
+        {
+            return m_lf.lfFaceName;
+        }
+        virtual int TextSize(){return m_lf.lfHeight;}
+        virtual BOOL IsBold(){ return m_lf.lfWeight == FW_BOLD;}
+        virtual BOOL IsUnderline(){return m_lf.lfUnderline;}
+        virtual BOOL IsItalic(){return m_lf.lfItalic;}
+        
         const SkPaint  GetPaint() const {return m_skPaint;}
         SkTypeface *GetFont()const {return m_skFont;}
 	protected:
         SkTypeface *m_skFont;   //定义字体
         SkPaint     m_skPaint;  //定义文字绘制属性
+        LOGFONT     m_lf;
 	};
 
 	class SBrush_Skia : public TSkiaRenderObjImpl<IBrush>
@@ -244,6 +257,7 @@ namespace SOUI
 		virtual HRESULT PopClipRegion();
 
         virtual HRESULT GetClipRegion(IRegion **ppRegion);
+        virtual HRESULT GetClipBound(LPRECT prcBound);
         
 		virtual HRESULT BitBlt(LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop=SRCCOPY);
 

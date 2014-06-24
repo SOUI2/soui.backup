@@ -258,6 +258,18 @@ namespace SOUI
         return S_OK;
     }
 
+    HRESULT SRenderTarget_Skia::GetClipBound(LPRECT prcBound)
+    {
+        SkRect skrc;
+        m_SkCanvas->getClipBounds(&skrc);
+        prcBound->left=(LONG)skrc.fLeft;
+        prcBound->top=(LONG)skrc.fTop;
+        prcBound->right=(LONG)skrc.fRight;
+        prcBound->bottom=(LONG)skrc.fBottom;
+        return S_OK;
+    }
+
+
 	HRESULT SRenderTarget_Skia::BitBlt( LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop/*=SRCCOPY*/)
 	{
 	    HDC hdcSrc=pRTSour->GetDC(0);
@@ -311,7 +323,7 @@ namespace SOUI
         SkPaint     txtPaint = m_curFont->GetPaint();
         txtPaint.setTypeface(m_curFont->GetFont());
         CDuiStringW strW=DUI_CT2W(CDuiStringT(pszText,cchLen));
-        psz->cx = (int)txtPaint.measureText(strW,strW.GetLength());
+        psz->cx = (int)txtPaint.measureText(strW,strW.GetLength()*sizeof(wchar_t));
         
         SkPaint::FontMetrics metrics;
         txtPaint.getFontMetrics(&metrics);
@@ -892,5 +904,7 @@ namespace SOUI
     {
         m_rgn.setEmpty();
     }
+
+
 
 }

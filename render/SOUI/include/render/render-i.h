@@ -75,6 +75,12 @@ struct RENDER_API IFont : public IRenderObj
 	{
 		return OT_FONT;
 	}
+    virtual const LOGFONT * LogFont() const =0;
+    virtual LPCTSTR FamilyName()=0;
+    virtual int TextSize()=0;
+	virtual BOOL IsBold()=0;
+	virtual BOOL IsUnderline()=0;
+	virtual BOOL IsItalic()=0;
 };
 
 struct RENDER_API IRegion : public IRenderObj
@@ -123,6 +129,7 @@ struct RENDER_API IRenderTarget: public IObjRef
 	virtual HRESULT PopClipRegion()=0;
 
     virtual HRESULT GetClipRegion(IRegion **ppRegion)=0;
+    virtual HRESULT GetClipBound(LPRECT prcBound)=0;
 
 	virtual HRESULT DrawText(LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat,BYTE byAlpha =0xFF)=0;
     virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz) =0;

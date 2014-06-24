@@ -873,6 +873,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\controls\DuiRichEdit.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\controls\duiscrollbar.cpp"
 				>
 			</File>

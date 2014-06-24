@@ -10,7 +10,7 @@ namespace SOUI{
 //     CDuiMaskEdit is a CXTPEdit derived class. It allows text masking to be
 //     applied to the control to format it for special editing restrictions.
 //===========================================================================
-class SOUI_EXP CDuiMaskEdit : public CDuiEdit
+class SOUI_EXP CDuiMaskEdit : public SEdit
 {
     SOUI_CLASS_NAME(CDuiMaskEdit, "maskedit")
 
