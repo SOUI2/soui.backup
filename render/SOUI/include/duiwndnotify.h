@@ -190,7 +190,7 @@ typedef struct _DUINMTABITEMHOVER
 #define NM_TAB_ITEMLEAVE 12
 typedef DUINMTABITEMHOVER DUINMTABITEMLEAVE, *LPDUINMTABITEMLEAVE;
 
-class CDuiScrollBar;
+class SScrollBar;
 #define NM_SCROLL    14
 typedef struct tagDUINMSCROLL
 {
@@ -198,7 +198,7 @@ typedef struct tagDUINMSCROLL
     UINT        uSbCode;
     int            nPos;
     BOOL        bVertical;
-    CDuiScrollBar *pScrollBar;
+    SScrollBar *pScrollBar;
 } DUINMSCROLL,*PDUINMSCROLL;
 
 // void OnDuiScroll(UINT uSbCode,int nPos,SOUI::CDuiScrollBar *pBar)

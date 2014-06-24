@@ -20,20 +20,19 @@ public:
     virtual void OnAttributeFinish(pugi::xml_node xmlNode);
 
     SOUI_ATTRS_BEGIN()
-    ATTR_SKIN("itemskin",m_pItemSkin,FALSE)
-    ATTR_SKIN("iconskin",m_pIconSkin,FALSE)
-    ATTR_SKIN("sepskin",m_pSepSkin,FALSE)
-    ATTR_SKIN("checkskin",m_pCheckSkin,FALSE)
-    ATTR_INT("itemheight",m_nItemHei,FALSE)
-    ATTR_INT("iconmargin",m_nIconMargin,FALSE)
-    ATTR_INT("textmargin",m_nTextMargin,FALSE)
-    ATTR_SIZE("iconsize",m_szIcon,FALSE)
-    ATTR_FONT("font",m_hFont,FALSE)
-    ATTR_FONTEX("font2",m_hFont,FALSE)
-    ATTR_COLOR("crtxt",m_crTxtNormal,FALSE);
-    ATTR_COLOR("crtxtsel",m_crTxtSel,FALSE);
-    ATTR_COLOR("crtxtgray",m_crTxtGray,FALSE);
-
+        ATTR_SKIN("itemskin",m_pItemSkin,FALSE)
+        ATTR_SKIN("iconskin",m_pIconSkin,FALSE)
+        ATTR_SKIN("sepskin",m_pSepSkin,FALSE)
+        ATTR_SKIN("checkskin",m_pCheckSkin,FALSE)
+        ATTR_INT("itemheight",m_nItemHei,FALSE)
+        ATTR_INT("iconmargin",m_nIconMargin,FALSE)
+        ATTR_INT("textmargin",m_nTextMargin,FALSE)
+        ATTR_SIZE("iconsize",m_szIcon,FALSE)
+        ATTR_FONT("font",m_hFont,FALSE)
+        ATTR_FONTEX("font2",m_hFont,FALSE)
+        ATTR_COLOR("crtxt",m_crTxtNormal,FALSE);
+        ATTR_COLOR("crtxtsel",m_crTxtSel,FALSE);
+        ATTR_COLOR("crtxtgray",m_crTxtGray,FALSE);
     SOUI_ATTRS_END()
 protected:
     ISkinObj *m_pItemSkin;    //菜单项皮肤，包含2种状态：正常状态+选中状态
@@ -47,7 +46,7 @@ protected:
     COLORREF      m_crTxtSel;    //选中文本颜色
     COLORREF      m_crTxtGray;    //灰文本颜色
     CSize          m_szIcon;        //图标尺寸
-    HFONT         m_hFont;
+    CAutoRefPtr<IFont>  m_hFont;
 };
 
 struct DuiMenuItemInfo

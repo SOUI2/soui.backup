@@ -7,13 +7,13 @@
 #include "control/DuiActiveX.h"
 #include "control/DuiSliderBar.h"
 #include "control/DuiSplitWnd.h"
-/*
+#include "control/DuiTreeCtrl.h"
 #include "control/duiscrollbar.h"
+/*
 #include "control/duilistbox.h"
 #include "control/duilistboxex.h"
 #include "control/duiitembox.h"
 #include "control/duitreebox.h"
-#include "control/DuiTreeCtrl.h"
 #include "control/DuiRichEdit.h"
 #include "control/DuiComboBox.h"
 #include "control/DuiHotKeyCtrl.h"

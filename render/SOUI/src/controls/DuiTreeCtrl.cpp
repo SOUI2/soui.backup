@@ -7,11 +7,10 @@
 
 #include "duistd.h"
 #include "control/DuiTreeCtrl.h"
-#include "DuiMenu.h"
 
 namespace SOUI{
 
-CDuiTreeCtrl::CDuiTreeCtrl()
+STreeCtrl::STreeCtrl()
 : m_nItemHei(20)
 , m_nIndent(16)
 , m_nItemMargin(4)
@@ -39,24 +38,24 @@ CDuiTreeCtrl::CDuiTreeCtrl()
     m_bClipClient = TRUE;
 }
 
-CDuiTreeCtrl::~CDuiTreeCtrl()
+STreeCtrl::~STreeCtrl()
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-HSTREEITEM CDuiTreeCtrl::InsertItem(LPCTSTR lpszItem, HSTREEITEM hParent, HSTREEITEM hInsertAfter)
+HSTREEITEM STreeCtrl::InsertItem(LPCTSTR lpszItem, HSTREEITEM hParent, HSTREEITEM hInsertAfter)
 {
     return InsertItem(lpszItem, -1, -1, NULL,  hParent, hInsertAfter);
 }
 
-HSTREEITEM CDuiTreeCtrl::InsertItem(LPCTSTR lpszItem, int nImage,
+HSTREEITEM STreeCtrl::InsertItem(LPCTSTR lpszItem, int nImage,
         int nSelectedImage, HSTREEITEM hParent, HSTREEITEM hInsertAfter)
 {
     return InsertItem(lpszItem, nImage, nSelectedImage, NULL,  hParent, hInsertAfter);
 }
 
-HSTREEITEM CDuiTreeCtrl::InsertItem(LPCTSTR lpszItem, int nImage,
+HSTREEITEM STreeCtrl::InsertItem(LPCTSTR lpszItem, int nImage,
     int nSelectedImage, LPARAM lParam,
     HSTREEITEM hParent, HSTREEITEM hInsertAfter)
 {
@@ -70,7 +69,7 @@ HSTREEITEM CDuiTreeCtrl::InsertItem(LPCTSTR lpszItem, int nImage,
     return InsertItem(pItemObj, hParent, hInsertAfter, TRUE);
 }
 
-BOOL CDuiTreeCtrl::RemoveItem(HSTREEITEM hItem)
+BOOL STreeCtrl::RemoveItem(HSTREEITEM hItem)
 {    
     if(!hItem) return FALSE;
     HSTREEITEM hParent=GetParentItem(hItem);
@@ -128,7 +127,7 @@ BOOL CDuiTreeCtrl::RemoveItem(HSTREEITEM hItem)
     return TRUE;
 }
 
-void CDuiTreeCtrl::RemoveAllItems()
+void STreeCtrl::RemoveAllItems()
 {
     DeleteAllItems();
     m_nVisibleItems=0;
@@ -140,37 +139,37 @@ void CDuiTreeCtrl::RemoveAllItems()
     SetViewOrigin(CPoint(0,0));
 }
 
-HSTREEITEM CDuiTreeCtrl::GetRootItem()
+HSTREEITEM STreeCtrl::GetRootItem()
 {
     return GetChildItem(STVI_ROOT);
 }
 
-HSTREEITEM CDuiTreeCtrl::GetNextSiblingItem(HSTREEITEM hItem)
+HSTREEITEM STreeCtrl::GetNextSiblingItem(HSTREEITEM hItem)
 {
     return CSTree<LPTVITEM>::GetNextSiblingItem(hItem);
 }
 
-HSTREEITEM CDuiTreeCtrl::GetPrevSiblingItem(HSTREEITEM hItem)
+HSTREEITEM STreeCtrl::GetPrevSiblingItem(HSTREEITEM hItem)
 {
     return CSTree<LPTVITEM>::GetPrevSiblingItem(hItem);
 }
 
-HSTREEITEM CDuiTreeCtrl::GetChildItem(HSTREEITEM hItem,BOOL bFirst/* =TRUE*/)
+HSTREEITEM STreeCtrl::GetChildItem(HSTREEITEM hItem,BOOL bFirst/* =TRUE*/)
 {
     return CSTree<LPTVITEM>::GetChildItem(hItem,bFirst);
 }
 
-HSTREEITEM CDuiTreeCtrl::GetParentItem(HSTREEITEM hItem)
+HSTREEITEM STreeCtrl::GetParentItem(HSTREEITEM hItem)
 {
     return CSTree<LPTVITEM>::GetParentItem(hItem);
 }
 
-HSTREEITEM CDuiTreeCtrl::GetSelectedItem()
+HSTREEITEM STreeCtrl::GetSelectedItem()
 {
     return m_hSelItem;
 }
 
-BOOL CDuiTreeCtrl::GetItemText(HSTREEITEM hItem, CDuiStringT& strText) const
+BOOL STreeCtrl::GetItemText(HSTREEITEM hItem, CDuiStringT& strText) const
 {
     if (hItem)
     {
@@ -184,7 +183,7 @@ BOOL CDuiTreeCtrl::GetItemText(HSTREEITEM hItem, CDuiStringT& strText) const
     return FALSE;
 }
 
-BOOL CDuiTreeCtrl::SetItemText(HSTREEITEM hItem, LPCTSTR lpszItem)
+BOOL STreeCtrl::SetItemText(HSTREEITEM hItem, LPCTSTR lpszItem)
 {
     if (hItem)
     {
@@ -198,7 +197,7 @@ BOOL CDuiTreeCtrl::SetItemText(HSTREEITEM hItem, LPCTSTR lpszItem)
     return FALSE;
 }
 
-BOOL CDuiTreeCtrl::GetItemImage(HSTREEITEM hItem, int& nImage, int& nSelectedImage) const
+BOOL STreeCtrl::GetItemImage(HSTREEITEM hItem, int& nImage, int& nSelectedImage) const
 {
     if (hItem)
     {
@@ -213,7 +212,7 @@ BOOL CDuiTreeCtrl::GetItemImage(HSTREEITEM hItem, int& nImage, int& nSelectedIma
     return FALSE;
 }
 
-LPARAM CDuiTreeCtrl::GetItemData(HSTREEITEM hItem) const
+LPARAM STreeCtrl::GetItemData(HSTREEITEM hItem) const
 {
     if (hItem)
     {
@@ -224,7 +223,7 @@ LPARAM CDuiTreeCtrl::GetItemData(HSTREEITEM hItem) const
     return 0;
 }
 
-BOOL CDuiTreeCtrl::SetItemData(HSTREEITEM hItem, LPARAM lParam)
+BOOL STreeCtrl::SetItemData(HSTREEITEM hItem, LPARAM lParam)
 {
     if (hItem)
     {
@@ -238,14 +237,14 @@ BOOL CDuiTreeCtrl::SetItemData(HSTREEITEM hItem, LPARAM lParam)
     return FALSE;
 }
 
-BOOL CDuiTreeCtrl::ItemHasChildren(HSTREEITEM hItem) 
+BOOL STreeCtrl::ItemHasChildren(HSTREEITEM hItem) 
 {
     if (!hItem) return FALSE;
 
     return  GetChildItem(hItem)!=NULL;
 }
 
-BOOL CDuiTreeCtrl::GetCheckState(HSTREEITEM hItem) const
+BOOL STreeCtrl::GetCheckState(HSTREEITEM hItem) const
 {
     if (!m_bCheckBox) return FALSE;
 
@@ -256,7 +255,7 @@ BOOL CDuiTreeCtrl::GetCheckState(HSTREEITEM hItem) const
     return FALSE;
 }
 
-BOOL CDuiTreeCtrl::SetCheckState(HSTREEITEM hItem, BOOL bCheck)
+BOOL STreeCtrl::SetCheckState(HSTREEITEM hItem, BOOL bCheck)
 {
     if (!m_bCheckBox) return FALSE;
 
@@ -277,7 +276,7 @@ BOOL CDuiTreeCtrl::SetCheckState(HSTREEITEM hItem, BOOL bCheck)
     return TRUE;
 }
 
-BOOL CDuiTreeCtrl::Expand(HSTREEITEM hItem , UINT nCode)
+BOOL STreeCtrl::Expand(HSTREEITEM hItem , UINT nCode)
 {
     BOOL bRet=FALSE;
     if(CSTree<LPTVITEM>::GetChildItem(hItem))
@@ -312,7 +311,7 @@ BOOL CDuiTreeCtrl::Expand(HSTREEITEM hItem , UINT nCode)
     return bRet;
 }
 
-BOOL CDuiTreeCtrl::EnsureVisible(HSTREEITEM hItem)
+BOOL STreeCtrl::EnsureVisible(HSTREEITEM hItem)
 {
     LPTVITEM pItem=GetItem(hItem);
     if(!pItem->bVisible)
@@ -337,19 +336,19 @@ BOOL CDuiTreeCtrl::EnsureVisible(HSTREEITEM hItem)
     return TRUE;
 }
 
-void CDuiTreeCtrl::PageUp()
+void STreeCtrl::PageUp()
 {
     OnScroll(TRUE,SB_PAGEUP,0);
 }
 
-void CDuiTreeCtrl::PageDown()
+void STreeCtrl::PageDown()
 {
     OnScroll(TRUE,SB_PAGEDOWN,0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOL CDuiTreeCtrl::LoadChildren(pugi::xml_node xmlNode)
+BOOL STreeCtrl::LoadChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return FALSE;
 
@@ -364,7 +363,7 @@ BOOL CDuiTreeCtrl::LoadChildren(pugi::xml_node xmlNode)
     return TRUE;
 }
 
-void CDuiTreeCtrl::LoadBranch(HSTREEITEM hParent,pugi::xml_node xmlItem)
+void STreeCtrl::LoadBranch(HSTREEITEM hParent,pugi::xml_node xmlItem)
 {
     while(xmlItem)
     {
@@ -377,7 +376,7 @@ void CDuiTreeCtrl::LoadBranch(HSTREEITEM hParent,pugi::xml_node xmlItem)
     }
 }
 
-void CDuiTreeCtrl::LoadItemAttribute(pugi::xml_node xmlItem, LPTVITEM pItem)
+void STreeCtrl::LoadItemAttribute(pugi::xml_node xmlItem, LPTVITEM pItem)
 {
     for (pugi::xml_attribute attr=xmlItem.first_attribute(); attr; attr=attr.next_attribute())
     {
@@ -392,7 +391,7 @@ void CDuiTreeCtrl::LoadItemAttribute(pugi::xml_node xmlItem, LPTVITEM pItem)
     }
 }
 
-HSTREEITEM CDuiTreeCtrl::InsertItem(LPTVITEM pItemObj,HSTREEITEM hParent,HSTREEITEM hInsertAfter,BOOL bEnsureVisible)
+HSTREEITEM STreeCtrl::InsertItem(LPTVITEM pItemObj,HSTREEITEM hParent,HSTREEITEM hInsertAfter,BOOL bEnsureVisible)
 {
     DUIASSERT(pItemObj);
 
@@ -437,7 +436,7 @@ HSTREEITEM CDuiTreeCtrl::InsertItem(LPTVITEM pItemObj,HSTREEITEM hParent,HSTREEI
     return hRet;
 }
 
-HSTREEITEM CDuiTreeCtrl::InsertItem(pugi::xml_node xmlItem,HSTREEITEM hParent/*=STVI_ROOT*/, HSTREEITEM hInsertAfter/*=STVI_LAST*/,BOOL bEnsureVisible/*=FALSE*/)
+HSTREEITEM STreeCtrl::InsertItem(pugi::xml_node xmlItem,HSTREEITEM hParent/*=STVI_ROOT*/, HSTREEITEM hInsertAfter/*=STVI_LAST*/,BOOL bEnsureVisible/*=FALSE*/)
 {
     LPTVITEM pItemObj = new TVITEM();
 
@@ -445,12 +444,12 @@ HSTREEITEM CDuiTreeCtrl::InsertItem(pugi::xml_node xmlItem,HSTREEITEM hParent/*=
     return InsertItem(pItemObj, hParent, hInsertAfter, bEnsureVisible);
 }
 
-int CDuiTreeCtrl::GetScrollLineSize(BOOL bVertical)
+int STreeCtrl::GetScrollLineSize(BOOL bVertical)
 {
     return m_nItemHei;
 }
 
-BOOL CDuiTreeCtrl::IsAncestor(HSTREEITEM hItem1,HSTREEITEM hItem2)
+BOOL STreeCtrl::IsAncestor(HSTREEITEM hItem1,HSTREEITEM hItem2)
 {
     while(hItem2)
     {
@@ -460,7 +459,7 @@ BOOL CDuiTreeCtrl::IsAncestor(HSTREEITEM hItem1,HSTREEITEM hItem2)
     return FALSE;
 }
 
-void CDuiTreeCtrl::SetChildrenVisible(HSTREEITEM hItem,BOOL bVisible)
+void STreeCtrl::SetChildrenVisible(HSTREEITEM hItem,BOOL bVisible)
 {
     HSTREEITEM hChild=GetChildItem(hItem);
     while(hChild)
@@ -473,7 +472,7 @@ void CDuiTreeCtrl::SetChildrenVisible(HSTREEITEM hItem,BOOL bVisible)
     }
 }
 
-void CDuiTreeCtrl::SetChildrenState(HSTREEITEM hItem, int nCheckValue)
+void STreeCtrl::SetChildrenState(HSTREEITEM hItem, int nCheckValue)
 {
     HSTREEITEM hChildItem = CSTree<LPTVITEM>::GetChildItem(hItem);
     while(hChildItem)
@@ -486,7 +485,7 @@ void CDuiTreeCtrl::SetChildrenState(HSTREEITEM hItem, int nCheckValue)
 }
 
 //子孙结点状态一致返回TRUE, 否则返回FALSE
-BOOL CDuiTreeCtrl::CheckChildrenState(HSTREEITEM hItem, BOOL bCheck)
+BOOL STreeCtrl::CheckChildrenState(HSTREEITEM hItem, BOOL bCheck)
 {
     HSTREEITEM hChildItem = CSTree<LPTVITEM>::GetChildItem(hItem);
     while(hChildItem)
@@ -507,7 +506,7 @@ BOOL CDuiTreeCtrl::CheckChildrenState(HSTREEITEM hItem, BOOL bCheck)
     return TRUE;
 }
 
-void CDuiTreeCtrl::CheckState(HSTREEITEM hItem, BOOL bCheck, BOOL bCheckChild)
+void STreeCtrl::CheckState(HSTREEITEM hItem, BOOL bCheck, BOOL bCheckChild)
 {        
     if(hItem)
     {
@@ -527,7 +526,7 @@ void CDuiTreeCtrl::CheckState(HSTREEITEM hItem, BOOL bCheck, BOOL bCheckChild)
     }        
 }
 
-void CDuiTreeCtrl::ItemLayout()
+void STreeCtrl::ItemLayout()
 {
     int nOffset = 0;
     CSize sizeSkin;
@@ -577,65 +576,21 @@ void CDuiTreeCtrl::ItemLayout()
     m_nItemOffset = nOffset;
 }
 
-void CDuiTreeCtrl::CalaItemWidth(LPTVITEM pItem)
+void STreeCtrl::CalaItemWidth(LPTVITEM pItem)
 {
-    int nTextWidth = 0;
-    CSize sizeSkin;
-    CDCHandle dcDesktop = ::GetDC(::GetDesktopWindow());
-    CDC dcTest;
-    HFONT hftOld = NULL, hftTest = NULL;
-    CRect rcTest;
-
-    dcTest.CreateCompatibleDC(dcDesktop);
-
-    HMONITOR hMonitor = ::MonitorFromWindow(GetContainer()->GetHostHwnd(), MONITOR_DEFAULTTONULL);
-    if (hMonitor)
-    {
-        MONITORINFO mi = {sizeof(MONITORINFO)};
-        ::GetMonitorInfo(hMonitor, &mi);
-        rcTest = mi.rcWork;
-    }
-    else
-        GetClientRect(GetContainer()->GetHostHwnd(), rcTest);
-
-    if (m_style.m_ftText)
-        hftTest = m_style.m_ftText;
-    else
-    {
-        CDuiWindow* pWnd = this;
-
-        while (pWnd = pWnd->GetParent())
-        {
-            DuiStyle& style = pWnd->GetStyle();
-            if (style.m_ftText)
-            {
-                hftTest = style.m_ftText;
-                break;
-            }
-        }
-    }
+    CAutoRefPtr<IRenderTarget> pRT;
+    GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
+    BeforePaintEx(pRT);
     
-    if (NULL == hftTest)
-        hftTest = DuiFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT);
-
-    hftOld = dcTest.SelectFont(hftTest);
-
     int nTestDrawMode = GetTextAlign() & ~(DT_CENTER | DT_RIGHT | DT_VCENTER | DT_BOTTOM);
 
-    DuiDrawText(dcTest,pItem->strText, pItem->strText.GetLength(), rcTest, nTestDrawMode | DT_CALCRECT);
+    CRect rcTest;
+    DuiDrawText(pRT,pItem->strText, pItem->strText.GetLength(), rcTest, nTestDrawMode | DT_CALCRECT);
 
-    nTextWidth = rcTest.Width();
-
-    dcTest.SelectFont(hftOld);
-    ::ReleaseDC(::GetDesktopWindow(), dcDesktop);
-
-    pItem->nItemWidth = nTextWidth + m_nItemOffset + 2*m_nItemMargin;
-
-    if (m_nItemOffset > 0)
-        pItem->nItemWidth += m_nItemMargin;    
+    pItem->nItemWidth = rcTest.Width() + m_nItemOffset + 2*m_nItemMargin;
 }
 
-int CDuiTreeCtrl::GetMaxItemWidth(HSTREEITEM hItem)
+int STreeCtrl::GetMaxItemWidth(HSTREEITEM hItem)
 {
     int nItemWidth = 0, nChildrenWidth = 0;
 
@@ -658,7 +613,7 @@ int CDuiTreeCtrl::GetMaxItemWidth(HSTREEITEM hItem)
     return nItemWidth;
 }
 
-int  CDuiTreeCtrl::GetMaxItemWidth()
+int  STreeCtrl::GetMaxItemWidth()
 {
     int nItemWidth = 0;
     m_nMaxItemWidth = 0;
@@ -675,7 +630,7 @@ int  CDuiTreeCtrl::GetMaxItemWidth()
     return m_nMaxItemWidth;
 }
 
-int CDuiTreeCtrl::GetItemShowIndex(HSTREEITEM hItemObj)
+int STreeCtrl::GetItemShowIndex(HSTREEITEM hItemObj)
 {
     int iVisible=-1;
     HSTREEITEM hItem=GetNextItem(STVI_ROOT);
@@ -701,7 +656,7 @@ int CDuiTreeCtrl::GetItemShowIndex(HSTREEITEM hItemObj)
     return -1;
 }
 
-BOOL CDuiTreeCtrl::GetItemRect( LPTVITEM pItemObj,CRect &rcItem )
+BOOL STreeCtrl::GetItemRect( LPTVITEM pItemObj,CRect &rcItem )
 {
     if(pItemObj->bVisible==FALSE) return FALSE;
 
@@ -739,7 +694,7 @@ BOOL CDuiTreeCtrl::GetItemRect( LPTVITEM pItemObj,CRect &rcItem )
 }
 
 //自动修改pt的位置为相对当前项的偏移量
-HSTREEITEM CDuiTreeCtrl::HitTest(CPoint &pt)
+HSTREEITEM STreeCtrl::HitTest(CPoint &pt)
 {
     CRect rcClient;
     GetClient(&rcClient);
@@ -778,7 +733,7 @@ HSTREEITEM CDuiTreeCtrl::HitTest(CPoint &pt)
     return hRet;
 }
 
-void CDuiTreeCtrl::RedrawItem(HSTREEITEM hItem)
+void STreeCtrl::RedrawItem(HSTREEITEM hItem)
 {
     if(!IsVisible(TRUE)) return;
     CRect rcClient;
@@ -797,27 +752,27 @@ void CDuiTreeCtrl::RedrawItem(HSTREEITEM hItem)
         if (rcItem.bottom > rcClient.bottom) rcItem.bottom = rcClient.bottom;
         if (rcItem.right > rcClient.right) rcItem.right = rcClient.right;
 
-        CDCHandle dc=GetDuiDC(&rcItem,OLEDC_PAINTBKGND);
-        SPainter duiDC;
-        BeforePaint(dc,duiDC);
+        CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rcItem,OLEDC_PAINTBKGND);
+        SPainter painter;
+        BeforePaint(pRT,painter);
 
-        DuiSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)dc);
+        DuiSendMessage(WM_ERASEBKGND,(WPARAM)(void*)pRT);
 
-        DrawItem(dc,rcItem,hItem);
+        DrawItem(pRT,rcItem,hItem);
 
-        AfterPaint(dc,duiDC);
-        ReleaseDuiDC(dc);
+        AfterPaint(pRT,painter);
+        ReleaseRenderTarget(pRT);
     }
 }
 
-void CDuiTreeCtrl::DrawItem(CDCHandle & dc, CRect & rc, HSTREEITEM hItem)
+void STreeCtrl::DrawItem(IRenderTarget *pRT, CRect & rc, HSTREEITEM hItem)
 {    
     BOOL     bTextColorChanged = FALSE;;
     COLORREF crOldText;
     CRect rcItemBg;
     LPTVITEM pItem=CSTree<LPTVITEM>::GetItem(hItem);
 
-    dc.OffsetViewportOrg(rc.left,rc.top);
+    pRT->OffsetViewportOrg(rc.left,rc.top);
 
     rcItemBg.SetRect( m_nItemOffset + m_nItemMargin, 0, pItem->nItemWidth, m_nItemHei);
 
@@ -825,14 +780,14 @@ void CDuiTreeCtrl::DrawItem(CDCHandle & dc, CRect & rc, HSTREEITEM hItem)
     if (hItem == m_hSelItem)
     {
         if (m_pItemSelSkin != NULL)
-            m_pItemSelSkin->Draw(dc, rcItemBg, 0);
+            m_pItemSelSkin->Draw(pRT, rcItemBg, 0);
         else if (CLR_INVALID != m_crItemSelBg)
-            CGdiAlpha::FillSolidRect(dc, rcItemBg, m_crItemSelBg);
+            pRT->FillSolidRect(rcItemBg, m_crItemSelBg);
 
         if (CLR_INVALID != m_crItemSelText)
         {
             bTextColorChanged = TRUE;
-            crOldText = dc.SetTextColor(m_crItemSelText);
+            crOldText = pRT->SetTextColor(m_crItemSelText);
         }
     }
     else
@@ -840,7 +795,7 @@ void CDuiTreeCtrl::DrawItem(CDCHandle & dc, CRect & rc, HSTREEITEM hItem)
         if (CLR_INVALID != m_crItemText)
         {
             bTextColorChanged = TRUE;
-            crOldText = dc.SetTextColor(m_crItemText);
+            crOldText = pRT->SetTextColor(m_crItemText);
         }
     }
 
@@ -849,7 +804,7 @@ void CDuiTreeCtrl::DrawItem(CDCHandle & dc, CRect & rc, HSTREEITEM hItem)
     {
         int nImage = IIF_STATE3(pItem->dwToggleState, 0, 1, 2);
         if (!pItem->bCollapsed) nImage += 3;
-        m_pToggleSkin->Draw(dc, m_rcToggle, nImage);
+        m_pToggleSkin->Draw(pRT, m_rcToggle, nImage);
     }
     
     if (DuiTVIMask_CheckBox == (m_uItemMask & DuiTVIMask_CheckBox))
@@ -859,29 +814,29 @@ void CDuiTreeCtrl::DrawItem(CDCHandle & dc, CRect & rc, HSTREEITEM hItem)
             nImage += 3;
         else if (pItem->nCheckBoxValue == DuiTVICheckBox_PartChecked)
             nImage += 6;
-        m_pCheckSkin->Draw(dc, m_rcCheckBox, nImage);
+        m_pCheckSkin->Draw(pRT, m_rcCheckBox, nImage);
     }
     
     if (DuiTVIMask_Icon == (m_uItemMask & DuiTVIMask_Icon) &&
         (pItem->nSelectedImage != -1 || pItem->nImage != -1))
     {
         if (pItem->nSelectedImage != -1 && hItem == m_hSelItem)
-            m_pIconSkin->Draw(dc, m_rcIcon, pItem->nSelectedImage);
+            m_pIconSkin->Draw(pRT, m_rcIcon, pItem->nSelectedImage);
         else 
-            m_pIconSkin->Draw(dc, m_rcIcon, pItem->nImage);        
+            m_pIconSkin->Draw(pRT, m_rcIcon, pItem->nImage);        
     }
         
     UINT align=DT_VCENTER|DT_SINGLELINE;
     rcItemBg.OffsetRect(m_nItemMargin, 0);
-    CGdiAlpha::DrawText(dc, pItem->strText,-1,rcItemBg,align);    
+    pRT->DrawText(pItem->strText,-1,rcItemBg,align);    
 
     if (bTextColorChanged)
-        dc.SetTextColor(crOldText);
+        pRT->SetTextColor(crOldText);
 
-    dc.OffsetViewportOrg(-rc.left,-rc.top);
+    pRT->OffsetViewportOrg(-rc.left,-rc.top);
 }
 
-int CDuiTreeCtrl::ItemHitTest(HSTREEITEM hItem,CPoint &pt) const
+int STreeCtrl::ItemHitTest(HSTREEITEM hItem,CPoint &pt) const
 {
     LPTVITEM pItem = CSTree<LPTVITEM>::GetItem(hItem);
     int nHitTestBtn = DuiTVIBtn_None;
@@ -898,7 +853,7 @@ int CDuiTreeCtrl::ItemHitTest(HSTREEITEM hItem,CPoint &pt) const
 }
 
 
-void CDuiTreeCtrl::ModifyToggleState(HSTREEITEM hItem, DWORD dwStateAdd, DWORD dwStateRemove)
+void STreeCtrl::ModifyToggleState(HSTREEITEM hItem, DWORD dwStateAdd, DWORD dwStateRemove)
 {
     LPTVITEM pItem = CSTree<LPTVITEM>::GetItem(hItem);
 
@@ -913,7 +868,7 @@ void CDuiTreeCtrl::ModifyToggleState(HSTREEITEM hItem, DWORD dwStateAdd, DWORD d
     }
 }
 
-void CDuiTreeCtrl::ModifyChekcBoxState(HSTREEITEM hItem, DWORD dwStateAdd, DWORD dwStateRemove)
+void STreeCtrl::ModifyChekcBoxState(HSTREEITEM hItem, DWORD dwStateAdd, DWORD dwStateRemove)
 {
     LPTVITEM pItem = CSTree<LPTVITEM>::GetItem(hItem);
 
@@ -928,7 +883,7 @@ void CDuiTreeCtrl::ModifyChekcBoxState(HSTREEITEM hItem, DWORD dwStateAdd, DWORD
     }
 }
 
-void CDuiTreeCtrl::ItemLButtonDown(HSTREEITEM hItem, UINT nFlags,CPoint pt)
+void STreeCtrl::ItemLButtonDown(HSTREEITEM hItem, UINT nFlags,CPoint pt)
 {
     int nHitTestBtn = ItemHitTest(hItem, pt);    
     LPTVITEM pItem = CSTree<LPTVITEM>::GetItem(hItem);    
@@ -972,7 +927,7 @@ void CDuiTreeCtrl::ItemLButtonDown(HSTREEITEM hItem, UINT nFlags,CPoint pt)
     }
 }
 
-void CDuiTreeCtrl::ItemLButtonUp(HSTREEITEM hItem, UINT nFlags,CPoint pt)
+void STreeCtrl::ItemLButtonUp(HSTREEITEM hItem, UINT nFlags,CPoint pt)
 {
     LPTVITEM pItem = CSTree<LPTVITEM>::GetItem(hItem);
 
@@ -991,7 +946,7 @@ void CDuiTreeCtrl::ItemLButtonUp(HSTREEITEM hItem, UINT nFlags,CPoint pt)
 
             DUINMCOMMAND nms;
             nms.hdr.code = NM_COMMAND;
-            nms.hdr.hDuiWnd=m_hDuiWnd;
+            nms.hdr.hDuiWnd=m_hSWnd;
             nms.hdr.idFrom = GetCmdID();
             nms.hdr.pszNameFrom=GetName();
             nms.uItemData = hItem; 
@@ -1002,14 +957,14 @@ void CDuiTreeCtrl::ItemLButtonUp(HSTREEITEM hItem, UINT nFlags,CPoint pt)
     }
 }
 
-void CDuiTreeCtrl::ItemLButtonDbClick(HSTREEITEM hItem, UINT nFlags,CPoint pt)
+void STreeCtrl::ItemLButtonDbClick(HSTREEITEM hItem, UINT nFlags,CPoint pt)
 {
     int nHitTestBtn = ItemHitTest(hItem, pt);
     if (nHitTestBtn == DuiTVIBtn_CheckBox)
         ItemLButtonDown(hItem, nFlags, pt);
 }
 
-void CDuiTreeCtrl::ItemMouseMove(HSTREEITEM hItem, UINT nFlags,CPoint pt)
+void STreeCtrl::ItemMouseMove(HSTREEITEM hItem, UINT nFlags,CPoint pt)
 {
     LPTVITEM pItem = CSTree<LPTVITEM>::GetItem(hItem);
 
@@ -1048,7 +1003,7 @@ void CDuiTreeCtrl::ItemMouseMove(HSTREEITEM hItem, UINT nFlags,CPoint pt)
     }
 }
 
-void CDuiTreeCtrl::ItemMouseLeave(HSTREEITEM hItem)
+void STreeCtrl::ItemMouseLeave(HSTREEITEM hItem)
 {
     LPTVITEM pItem = CSTree<LPTVITEM>::GetItem(hItem);
 
@@ -1070,11 +1025,11 @@ void CDuiTreeCtrl::ItemMouseLeave(HSTREEITEM hItem)
     }
 }
 
-void CDuiTreeCtrl::NotifyParent()
+void STreeCtrl::NotifyParent()
 {
     DUINMTBSELCHANGED nms;
     nms.hdr.code=NM_TBSELCHANGED;
-    nms.hdr.hDuiWnd=m_hDuiWnd;
+    nms.hdr.hDuiWnd=m_hSWnd;
     nms.hdr.idFrom=GetCmdID();
     nms.hdr.pszNameFrom=GetName();
     nms.hOldSel=m_hSelItem;
@@ -1097,23 +1052,18 @@ void CDuiTreeCtrl::NotifyParent()
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOL CDuiTreeCtrl::RedrawRegion(CDCHandle& dc, CRgn& rgn)
-{
-    return __super::RedrawRegion(dc, rgn);
-}
-
-void CDuiTreeCtrl::OnDestroy()
+void STreeCtrl::OnDestroy()
 {
     DeleteAllItems();
 }
 
-void CDuiTreeCtrl::OnPaint(CDCHandle dc)
+void STreeCtrl::OnPaint(IRenderTarget *pRT)
 {
     if(IsUpdateLocked()) return;
 
     CRect rcClient;
-    SPainter duiDC;
-    BeforePaint(dc,duiDC);
+    SPainter painter;
+    BeforePaint(pRT,painter);
 
     GetClient(rcClient);
     int iFirstVisible=m_ptOrigin.y/m_nItemHei;
@@ -1131,7 +1081,7 @@ void CDuiTreeCtrl::OnPaint(CDCHandle dc)
             CRect rcItem(m_nIndent*pItem->nLevel,0,m_nIndent*pItem->nLevel+pItem->nItemWidth,m_nItemHei);
             rcItem.OffsetRect(rcClient.left-m_ptOrigin.x,
                 rcClient.top-m_ptOrigin.y+iVisible*m_nItemHei);
-            DrawItem(dc,rcItem,hItem);
+            DrawItem(pRT,rcItem,hItem);
         }
         if(pItem->bCollapsed)
         {//跳过被折叠的项
@@ -1144,10 +1094,10 @@ void CDuiTreeCtrl::OnPaint(CDCHandle dc)
         }
         hItem=CSTree<LPTVITEM>::GetNextItem(hItem);
     }
-    AfterPaint(dc,duiDC);
+    AfterPaint(pRT,painter);
 }
 
-void CDuiTreeCtrl::OnLButtonDown(UINT nFlags,CPoint pt)
+void STreeCtrl::OnLButtonDown(UINT nFlags,CPoint pt)
 {
     m_hHoverItem=HitTest(pt);
 
@@ -1162,7 +1112,7 @@ void CDuiTreeCtrl::OnLButtonDown(UINT nFlags,CPoint pt)
     }
 }
 
-void CDuiTreeCtrl::OnRButtonDown(UINT nFlags, CPoint pt)
+void STreeCtrl::OnRButtonDown(UINT nFlags, CPoint pt)
 {
     if (!m_bRightClickSel)
         return;
@@ -1173,7 +1123,7 @@ void CDuiTreeCtrl::OnRButtonDown(UINT nFlags, CPoint pt)
         NotifyParent();
 }
 
-void CDuiTreeCtrl::OnLButtonUp(UINT nFlags,CPoint pt)
+void STreeCtrl::OnLButtonUp(UINT nFlags,CPoint pt)
 {
     m_hHoverItem=HitTest(pt);
 
@@ -1188,7 +1138,7 @@ void CDuiTreeCtrl::OnLButtonUp(UINT nFlags,CPoint pt)
         ItemLButtonUp(m_hHoverItem, nFlags, pt);
 }
 
-void CDuiTreeCtrl::OnLButtonDbClick(UINT nFlags,CPoint pt)
+void STreeCtrl::OnLButtonDbClick(UINT nFlags,CPoint pt)
 {    
     m_hHoverItem=HitTest(pt);
     if(m_hHoverItem)
@@ -1198,7 +1148,7 @@ void CDuiTreeCtrl::OnLButtonDbClick(UINT nFlags,CPoint pt)
     }else
     {
         DUINMITEMMOUSEEVENT nms;
-        nms.hdr.hDuiWnd=m_hDuiWnd;
+        nms.hdr.hDuiWnd=m_hSWnd;
         nms.hdr.code=NM_ITEMMOUSEEVENT;
         nms.hdr.idFrom=GetCmdID();
         nms.hdr.pszNameFrom=GetName();
@@ -1210,7 +1160,7 @@ void CDuiTreeCtrl::OnLButtonDbClick(UINT nFlags,CPoint pt)
     }
 }
 
-void CDuiTreeCtrl::OnMouseMove(UINT nFlags,CPoint pt)
+void STreeCtrl::OnMouseMove(UINT nFlags,CPoint pt)
 {
     HSTREEITEM hHitTest=HitTest(pt);
     
@@ -1225,7 +1175,7 @@ void CDuiTreeCtrl::OnMouseMove(UINT nFlags,CPoint pt)
         ItemMouseMove(m_hHoverItem, nFlags, pt);
 }
 
-void CDuiTreeCtrl::OnMouseLeave()
+void STreeCtrl::OnMouseLeave()
 {
     if(m_hHoverItem)
     {

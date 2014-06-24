@@ -20,7 +20,7 @@ namespace SOUI
 {
 
 /**
- * @class      CDuiStatic
+ * @class      SStatic
  * @brief      静态文本控件类
  * 
  * Describe    静态文本控件可支持多行，有多行属性时，\n可以强制换行
@@ -31,7 +31,7 @@ class SOUI_EXP SStatic : public SWindow
     SOUI_CLASS_NAME(SStatic, "text")
 public:
     /**
-     * CDuiStatic::CDuiStatic
+     * SStatic::SStatic
      * @brief    构造函数
      *
      * Describe  构造函数
@@ -42,7 +42,7 @@ public:
         m_style.SetAttribute("align","left");
     }
     /**
-     * CDuiStatic::DuiDrawText
+     * SStatic::DuiDrawText
      * @brief    绘制文本
      * @param    IRenderTarget *pRT -- 绘制设备句柄         
      * @param    LPCTSTR pszBuf -- 文本内容字符串         
@@ -65,7 +65,7 @@ protected:
 };
 
 /**
- * @class      CDuiLink
+ * @class      SLink
  * @brief      超链接控件类
  * 
  * Describe    Only For Header Drag Test
@@ -77,7 +77,7 @@ class SOUI_EXP SLink : public SWindow
 
 public:
     /**
-     * CDuiLink::CDuiLink
+     * SLink::SLink
      * @brief    构造函数
      *
      * Describe  构造函数
@@ -89,14 +89,14 @@ public:
 
 protected:
     /**
-     * CDuiLink::OnAttributeFinish
+     * SLink::OnAttributeFinish
      * @brief    解析xml设置属性
      *
      * Describe  根据xml文件设置相关属性
      */
     virtual void OnAttributeFinish(pugi::xml_node xmlNode);
     /**
-     * CDuiLink::DuiDrawText
+     * SLink::DuiDrawText
      * @brief    绘制文本
      * @param    IRenderTarget *pRT -- 绘制设备句柄         
      * @param    LPCTSTR pszBuf -- 文本内容字符串         
@@ -109,7 +109,7 @@ protected:
     virtual void DuiDrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
 
     /**
-     * CDuiLink::OnDuiSetCursor
+     * SLink::OnDuiSetCursor
      * @brief    设置光标样式和位置
      * @param    CPoint &pt -- 设置光标位置
      * @return   返回值BOOL 成功--TRUE 失败--FALSE
@@ -134,7 +134,7 @@ protected:
 };
 
 /**
- * @class      CDuiButton
+ * @class      SButton
  * @brief      按钮控件类
  * 
  * Describe    通过属性ID绑定click事件 Use id attribute to process click event
@@ -223,7 +223,7 @@ protected:
     virtual void OnNextFrame();
     
     /**
-     * CDuiLink::StopCurAnimate
+     * SLink::StopCurAnimate
      * @brief    停止动画
      *
      * Describe  停止动画
@@ -267,7 +267,7 @@ public:
 };
 
 /**
- * @class      CDuiImageWnd
+ * @class      SImageWnd
  * @brief      图片控件类
  * 
  * Describe    Image Control 图片控件类
@@ -306,7 +306,7 @@ public:
      */
     BOOL SetSkin(ISkinObj *pSkin,int iFrame=0,BOOL bAutoFree=TRUE);
     /**
-     * CDuiImageWnd::SetIcon
+     * SImageWnd::SetIcon
      * @param    int nSubID -- 资源ID
      * @brief    设置图标
      * @return   返回值BOOL 成功--TRUE 失败--FALSE
@@ -316,7 +316,7 @@ public:
     BOOL SetIcon(int nSubID);
 
     /**
-     * CDuiImageWnd::GetSkin
+     * SImageWnd::GetSkin
      * @brief    获取资源
      * @return   返回值CDuiSkinBase指针
      *
@@ -325,7 +325,7 @@ public:
     ISkinObj * GetSkin(){return m_pSkin;}
 protected:
     /**
-     * CDuiImageWnd::GetDesiredSize
+     * SImageWnd::GetDesiredSize
      * @brief    获取预期大小
      * @param    LPRECT pRcContainer  --  内容矩形框 
      * @return   返回值 CSize对象 

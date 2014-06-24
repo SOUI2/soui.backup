@@ -857,6 +857,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\controls\duiscrollbar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\DuiSkinFactoryMgr.cpp"
 				>
 			</File>
@@ -984,6 +988,10 @@
 			</File>
 			<File
 				RelativePath=".\src\DuiTipCtrl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\controls\DuiTreeCtrl.cpp"
 				>
 			</File>
 			<File
