@@ -638,7 +638,7 @@ namespace SOUI
     {
         if(m_hGetDC) return m_hGetDC;
         
-        HBITMAP bmp=m_curBmp?m_curBmp->GetGdiBitmap():NULL;
+        HBITMAP bmp=m_curBmp->GetGdiBitmap();
         HDC hdc_desk = ::GetDC(NULL);
         m_hGetDC = CreateCompatibleDC(hdc_desk);
         ::ReleaseDC(NULL,hdc_desk);
