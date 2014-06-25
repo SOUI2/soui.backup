@@ -12,13 +12,13 @@
 #include <string\tstring.h>
 #include <string\strcpcvt.h>
 
-#include "img-decoder.h"
 
 namespace SOUI
 {
 	//实现一些和特定系统相关的接口
 	struct IRenderFactory_Skia : public IRenderFactory
 	{
+        virtual IImgDecoderFactory * GetImgDecoderFactory()=0;
 	};
 
 
@@ -27,20 +27,22 @@ namespace SOUI
 	class SRenderFactory_Skia : public TObjRefImpl<IRenderFactory_Skia>
 	{
 	public:
-		SRenderFactory_Skia()
+		SRenderFactory_Skia(IImgDecoderFactory *pImgDecoderFactory):m_imgDecoderFactory(pImgDecoderFactory)
 		{
-		    SImgDecoder::InitImgDecoder();
 		}
         
         ~SRenderFactory_Skia()
         {
-            SImgDecoder::FreeImgDecoder();
         }
         
 		virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei);
         virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf);
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
         virtual BOOL CreateRegion(IRegion **ppRgn);
+        
+        IImgDecoderFactory * GetImgDecoderFactory(){return m_imgDecoderFactory;}
+    protected:
+        CAutoRefPtr<IImgDecoderFactory> m_imgDecoderFactory;
 	};
 
     
@@ -174,7 +176,7 @@ namespace SOUI
 
 	//////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
-    class SImgDecoder;
+    class SImgDecoder_WIC;
 	class SBitmap_Skia : public TSkiaRenderObjImpl<IBitmap>
 	{
 	public:
@@ -196,7 +198,7 @@ namespace SOUI
 	protected:
 	    HBITMAP CreateGDIBitmap(int nWid,int nHei,void ** ppBits);
 	    
-        HRESULT ImgFromDecoder(SImgDecoder &imgDecoder);
+        HRESULT ImgFromDecoder(IImgDecoder *imgDecoder);
 
 		SkBitmap    m_bitmap;   //skia 管理的BITMAP
 		HBITMAP     m_hBmp;     //标准的32位位图，和m_bitmap共享内存

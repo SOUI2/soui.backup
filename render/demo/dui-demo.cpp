@@ -17,16 +17,23 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	DUIASSERT(SUCCEEDED(hRes));
 
 #ifdef _DEBUG
+    HMODULE hImgDecoder = LoadLibrary(_T("imgdecoder-wic_d.dll"));
     HMODULE hRenderSkia = LoadLibrary(_T("render-skia_d.dll"));
 #else
+    HMODULE hImgDecoder = LoadLibrary(_T("imgdecoder-wic.dll"));
     HMODULE hRenderSkia = LoadLibrary(_T("render-skia.dll"));
 #endif
-    typedef BOOL (*fnCreateRenderFactory)(SOUI::IRenderFactory **);
-    fnCreateRenderFactory fun = (fnCreateRenderFactory)GetProcAddress(hRenderSkia,"CreateRenderFactory");
-
+    typedef BOOL (*fnCreateImgDecoderFactory)(SOUI::IImgDecoderFactory**);
+    fnCreateImgDecoderFactory funImg = (fnCreateImgDecoderFactory)GetProcAddress(hImgDecoder,"CreateImgDecoderFactory");
+    CAutoRefPtr<SOUI::IImgDecoderFactory> pImgDecoderFactory;
+    funImg(&pImgDecoderFactory);
+    
+    typedef BOOL (*fnCreateRenderFactory)(SOUI::IRenderFactory **,SOUI::IImgDecoderFactory *);
+    fnCreateRenderFactory funRender = (fnCreateRenderFactory)GetProcAddress(hRenderSkia,"CreateRenderFactory");
     CAutoRefPtr<SOUI::IRenderFactory> pRenderFactory;
-    fun(&pRenderFactory);
-
+    funRender(&pRenderFactory,pImgDecoderFactory);
+    pImgDecoderFactory=NULL;
+    
 	DuiSystem *pDuiSystem=new DuiSystem(pRenderFactory,hInstance);
 
 #if 1

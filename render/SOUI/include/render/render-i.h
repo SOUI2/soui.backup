@@ -4,7 +4,9 @@
 #define RENDER_API
 #endif
 
+#ifndef OR_API
 #define OR_API RENDER_API
+#endif
 
 #include <unknown/obj-ref-i.h>
 

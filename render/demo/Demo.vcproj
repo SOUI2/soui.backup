@@ -618,7 +618,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="..\soui\include"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;DLL_SOUI"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
@@ -1260,7 +1260,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="build ui resource"
-					CommandLine="..\tools\uiresbuilder -p skin -i $(InputPath) -r duires\winres.rc2"
+					CommandLine="..\tools\uiresbuilder -p skin -i $(InputPath) -r duires\winres.rc2&#x0D;&#x0A;"
 					Outputs="duires\winres.rc2"
 				/>
 			</FileConfiguration>

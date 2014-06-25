@@ -207,7 +207,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories=".\include"
+				AdditionalIncludeDirectories=".\include;..\utilities\include;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_USRDLL;SOUI_EXPORTS;DLL_SOUI"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
@@ -1342,6 +1342,10 @@
 			</File>
 			<File
 				RelativePath=".\include\GradientFillHelper.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\render\imgdecoder-i.h"
 				>
 			</File>
 			<File

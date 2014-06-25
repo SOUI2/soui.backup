@@ -78,6 +78,8 @@
 
 #define RENDER_API SOUI_EXP
 #include "render/render-i.h"
+#define IMGDECODER_API SOUI_EXP
+#include "render/imgdecoder-i.h"
 
 #include "DuiAttrCrack.h"
 #include "res.mgr/duifontpool.h"

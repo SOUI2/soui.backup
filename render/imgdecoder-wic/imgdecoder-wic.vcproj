@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="render-skia"
-	ProjectGUID="{6C5D6C99-15E9-4EA4-94FC-639B680B685D}"
-	RootNamespace="renderskia"
+	Name="imgdecoder-wic"
+	ProjectGUID="{84C8473F-682C-4AFF-82C4-2E5C7FDE9A4C}"
+	RootNamespace="imgdecoderwic"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -41,8 +41,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\utilities\include;..\soui\include;..\utilities\include;..\myskia\include\;..\myskia\include\config;..\myskia\include\core"
-				PreprocessorDefinitions="WIN32;_DEBUG;_USRDLL;RENDERSKIA_EXPORT"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;IMGDECODERWIC_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -61,10 +61,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="skcore_d.lib utilities_d.lib freetype253_D.lib Usp10.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;..\myskia\third_party\freetype\lib"
+				LinkIncremental="2"
 				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -113,14 +114,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
+				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\utilities\include;..\soui\include;..\utilities\include;..\myskia\include\;..\myskia\include\config;..\myskia\include\core"
-				PreprocessorDefinitions="WIN32;NDEBUG;_USRDLL;RENDERSKIA_EXPORT"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;IMGDECODERWIC_EXPORTS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
-				BrowseInformation="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -135,9 +135,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="skcore.lib utilities.lib freetype253.lib Usp10.lib"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;..\myskia\third_party\freetype\lib"
-				GenerateDebugInformation="false"
+				LinkIncremental="1"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -166,10 +169,12 @@
 	</References>
 	<Files>
 		<Filter
-			Name="render-skia"
+			Name="Source Files"
+			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\drawtext-skia.cpp"
+				RelativePath=".\dllmain.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -177,6 +182,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"
+						CompileAsManaged="0"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -185,60 +191,61 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"
+						CompileAsManaged="0"
 					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\drawtext-skia.h"
+				RelativePath=".\imgdecoder-wic.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\render-skia.cpp"
+				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						ShowIncludes="false"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
 			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
 			<File
-				RelativePath=".\render-skia.h"
+				RelativePath=".\imgdecoder-wic.h"
+				>
+			</File>
+			<File
+				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\targetver.h"
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\render-api.cpp"
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
-		</File>
+		</Filter>
 		<File
-			RelativePath=".\render-api.h"
-			>
-		</File>
-		<File
-			RelativePath=".\stdafx.cpp"
-			>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					UsePrecompiledHeader="1"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					UsePrecompiledHeader="1"
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\stdafx.h"
+			RelativePath=".\ReadMe.txt"
 			>
 		</File>
 	</Files>

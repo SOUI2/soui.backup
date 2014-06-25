@@ -1,6 +1,11 @@
 //IObjRef的实现类
 #pragma  once
 
+#ifndef ASSERT
+#include <assert.h>
+#define ASSERT(x) assert(x);
+#endif
+
 namespace SOUI
 {
 
@@ -113,7 +118,7 @@ public:
 	//what is needed, however, take the address of the p member explicitly.
 	T** operator&() throw()
 	{
-	    DUIASSERT(p==NULL);
+	    ASSERT(p==NULL);
 		return &p;
 	}
 	bool operator!() const throw()

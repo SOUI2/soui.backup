@@ -8,8 +8,6 @@
 
 #include "render-skia.h"
 
-#include "img-decoder.h"
-
 namespace SOUI
 {
 	//PS_SOLID
@@ -771,23 +769,23 @@ namespace SOUI
 
 	HRESULT SBitmap_Skia::LoadFromFile( LPCTSTR pszFileName,LPCTSTR pszType )
 	{
-		SImgDecoder imgDecoder;
-		if(imgDecoder.DecodeFromFile(DUI_CT2W(pszFileName))==0) return S_FALSE;
+	    CAutoRefPtr<IImgDecoder> imgDecoder=GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgDecoder();
+		if(imgDecoder->DecodeFromFile(DUI_CT2W(pszFileName))==0) return S_FALSE;
 		return ImgFromDecoder(imgDecoder);
 	}
 
 	HRESULT SBitmap_Skia::LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType )
 	{
-		SImgDecoder imgDecoder;
-		if(imgDecoder.DecodeFromMemory(pBuf,szLen)==0) return S_FALSE;
+        CAutoRefPtr<IImgDecoder> imgDecoder=GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgDecoder();
+		if(imgDecoder->DecodeFromMemory(pBuf,szLen)==0) return S_FALSE;
         return ImgFromDecoder(imgDecoder);
 	}
 
-    HRESULT SBitmap_Skia::ImgFromDecoder(SImgDecoder &imgDecoder)
+    HRESULT SBitmap_Skia::ImgFromDecoder(IImgDecoder *imgDecoder)
     {
-        IWICBitmapSource* convertedBMP = imgDecoder.GetFrame(0);
+        IImgFrame *pFrame=imgDecoder->GetFrame(0);
         UINT uWid=0,uHei =0;
-        convertedBMP->GetSize(&uWid,&uHei);
+        pFrame->GetSize(&uWid,&uHei);
 
         if(m_hBmp) DeleteObject(m_hBmp);
         m_bitmap.reset();
@@ -800,7 +798,7 @@ namespace SOUI
         
         m_bitmap.lockPixels();
         const int stride = m_bitmap.rowBytes();
-        convertedBMP->CopyPixels(NULL, stride, stride * uHei,
+        pFrame->CopyPixels(NULL, stride, stride * uHei,
             reinterpret_cast<BYTE*>(m_bitmap.getPixels()));
         m_bitmap.unlockPixels();
         return S_OK;
