@@ -1,7 +1,7 @@
 #include "duistd.h"
 #include "control/DuiRichEdit.h"
 #include "DuiSystem.h"
-//#include "DuiMenu.h"
+#include "DuiMenu.h"
 
 #pragma comment(lib,"imm32.lib")
 
@@ -1088,14 +1088,13 @@ enum{
 
 void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
 {
-/*
     if(NotifyContextMenu(point)) return;//用户自己响应右键
     SetDuiFocus();
     //弹出默认编辑窗菜单
     pugi::xml_node xmlMenu=DuiSystem::getSingleton().GetEditMenuTemplate().first_child();
     if(xmlMenu)
     {
-        CDuiMenu menu;
+        SMenu menu;
         if(menu.LoadMenu(xmlMenu))
         {
             CRect rcCantainer=GetContainer()->GetContainerRect();
@@ -1139,7 +1138,6 @@ void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
         }
 
     }
-    */
 }
 
 void SRichEdit::OnMouseMove( UINT nFlags, CPoint point )

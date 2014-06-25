@@ -42,15 +42,15 @@
     <imgframe name="skin_split_horz" src="IDP_SPLIT_HORZ" left="20" right="10"/>
     <imgframe name="comboboxbtn" src="IDP_DROPBTN" states="3"/>
     <imglist name="icons" src="IDP_ICONS" states="6"/>
-    <imglist name="skin_menuicon" src="IDP_ICONS_SMALL" subwidth="18"/>
-    <imgframe name="skin_menuitem" src="IDP_MENUSKIN" subwidth="100" left="35" right="5"/>
+    <imglist name="skin_menuicon" src="IDP_ICONS_SMALL" states="12"/>
+    <imgframe name="skin_menuitem" src="IDP_MENUSKIN" states="2" left="35" right="5"/>
     <imglist name="skin_menusplit" src="IDP_MENUSPLIT"/>
     <imgframe name="skin_menubg" src="IDP_MENUBG" left="30" top="5" right="5"/>
     <imglist name="skin_menucheck" src="IDP_MENUCHECK" subwidth="16"/>
     <border name="skin_menuborder" src="IDP_MENUBORDER" left="2" top="2" border="2,2,2,2" key="FF00FF" alpha="100"/>
-    <imglist name="skin_webbtn_back" src="IDP_WEBBTN_BACK" subwidth="27"/>
-    <imglist name="skin_webbtn_forward" src="IDP_WEBBTN_FORWARD" subwidth="27"/>
-    <imglist name="skin_webbtn_refresh" src="IDP_WEBBTN_REFRESH" subwidth="27"/>
+    <imglist name="skin_webbtn_back" src="IDP_WEBBTN_BACK" states="4"/>
+    <imglist name="skin_webbtn_forward" src="IDP_WEBBTN_FORWARD" states="4"/>
+    <imglist name="skin_webbtn_refresh" src="IDP_WEBBTN_REFRESH" states="4"/>
     <imglist name="TreeToggle"					src="IDR_TREE_TOGGLE" states="6"/>
     <imglist name="TreeCheckBox"				src="IDR_TREE_CHECKBOX" states="9"/>
     <imglist name="TreeIcon"						src="IDR_TREE_ICON" states="3"/>

@@ -869,6 +869,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\DuiMenu.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\controls\DuiMessageBox.cpp"
 				>
 			</File>
@@ -1068,6 +1072,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MemDC.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MenuWndHook.cpp"
 				>
 			</File>
 			<File

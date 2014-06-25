@@ -298,8 +298,13 @@ void CMenuWndHook::OnPrint(CDCHandle dc)
     rcClient.OffsetRect(-rcWnd.TopLeft());
     dc.ExcludeClipRect(rcClient);
     rcWnd.MoveToXY(0,0);
-
-    pBorderSkin->Draw(dc,rcWnd,0,0xFF);
+    
+    CAutoRefPtr<IRenderTarget> pRT;
+    GETRENDERFACTORY->CreateRenderTarget(&pRT,rcWnd.Width(),rcWnd.Height());
+    pBorderSkin->Draw(pRT,rcWnd,0,0xFF);
+    HDC hmemdc=pRT->GetDC(0);
+    dc.BitBlt(0,0,rcWnd.Width(),rcWnd.Height(),hmemdc,0,0,SRCCOPY);
+    pRT->ReleaseDC(hmemdc);
 }
 
 void CMenuWndHook::OnNcDestroy()

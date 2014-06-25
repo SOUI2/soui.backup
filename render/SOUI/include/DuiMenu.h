@@ -10,12 +10,12 @@ namespace SOUI
 #define CX_ICON    16        //支持的图标的宽度
 #define CY_ICON    16        //支持的图标的高度
 
-class CDuiMenuAttr:public SObject
+class SMenuAttr:public SObject
 {
-    friend class CDuiMenu;
-    SOUI_CLASS_NAME(CDuiMenuAttr, "menuattribute")
+    friend class SMenu;
+    SOUI_CLASS_NAME(SMenuAttr, "menuattr")
 public:
-    CDuiMenuAttr();
+    SMenuAttr();
 
     virtual void OnAttributeFinish(pugi::xml_node xmlNode);
 
@@ -49,26 +49,24 @@ protected:
     CAutoRefPtr<IFont>  m_hFont;
 };
 
-struct DuiMenuItemInfo
+struct SMenuItemInfo
 {
     int iIcon;
     CDuiStringT strText;
 };
-struct DuiMenuItemData
+struct SMenuItemData
 {
     HMENU hMenu;
     UINT_PTR nID;
-    DuiMenuItemInfo itemInfo;
+    SMenuItemInfo itemInfo;
 };
 
-typedef DuiMenuItemData * PDuiMenuItemData;
-
 template <class T>
-class CDuiOwnerDraw
+class SOwnerDraw
 {
 public:
     // Message map and handlers
-    BEGIN_MSG_MAP_EX(CDuiOwnerDraw< T >)
+    BEGIN_MSG_MAP_EX(SOwnerDraw< T >)
     MESSAGE_HANDLER(WM_DRAWITEM, OnDrawItem)
     MESSAGE_HANDLER(WM_MEASUREITEM, OnMeasureItem)
     MESSAGE_HANDLER(WM_COMPAREITEM, OnCompareItem)
@@ -151,13 +149,13 @@ public:
     }
 };
 
-class CDuiMenuODWnd : public CSimpleWnd
-    ,public CDuiOwnerDraw<CDuiMenuODWnd>
-    ,public CDuiMenuAttr
+class SMenuODWnd : public CSimpleWnd
+    ,public SOwnerDraw<SMenuODWnd>
+    ,public SMenuAttr
 {
-    friend class CDuiOwnerDraw<CDuiMenuODWnd>;
+    friend class SOwnerDraw<SMenuODWnd>;
 public:
-    CDuiMenuODWnd(HWND hMenuOwner);
+    SMenuODWnd(HWND hMenuOwner);
 
 protected:
     void OnInitMenu(HMENU menu);
@@ -169,11 +167,11 @@ protected:
 
     void OnMenuSelect(UINT nItemID, UINT nFlags, HMENU menu);
 
-    BEGIN_MSG_MAP_EX(CDuiMenuODWnd)
+    BEGIN_MSG_MAP_EX(SMenuODWnd)
     MSG_WM_INITMENU(OnInitMenu)
     MSG_WM_INITMENUPOPUP(OnInitMenuPopup)
     MSG_WM_MENUSELECT(OnMenuSelect)
-    CHAIN_MSG_MAP(CDuiOwnerDraw<CDuiMenuODWnd>)
+    CHAIN_MSG_MAP(SOwnerDraw<SMenuODWnd>)
     REFLECT_NOTIFICATIONS_EX()
     END_MSG_MAP()
 
@@ -181,14 +179,14 @@ protected:
 };
 
 
-class SOUI_EXP CDuiMenu
+class SOUI_EXP SMenu
 {
 public:
-    CDuiMenu();
-    ~CDuiMenu(void);
-    CDuiMenu(const CDuiMenu & src);
+    SMenu();
+    ~SMenu(void);
+    SMenu(const SMenu & src);
 
-    BOOL LoadMenu(LPCTSTR pszResName);
+    BOOL LoadMenu(LPCTSTR pszResName ,LPCTSTR pszType);
 
     BOOL LoadMenu(pugi::xml_node xmlMenu);
 
@@ -198,7 +196,7 @@ public:
 
     void DestroyMenu();
 
-    CDuiMenu GetSubMenu(int nPos);
+    SMenu GetSubMenu(int nPos);
 
     HMENU m_hMenu;
 
@@ -206,9 +204,9 @@ protected:
 
     void BuildMenu(HMENU menuPopup,pugi::xml_node xmlNode);
 
-    CDuiArray<DuiMenuItemData *> m_arrDmmi;
-    CDuiMenuAttr    m_menuSkin;
-    CDuiMenu    *    m_pParent;
+    CDuiArray<SMenuItemData *> m_arrDmmi;
+    SMenuAttr    m_menuSkin;
+    SMenu    *    m_pParent;
 };
 
 }//namespace SOUI
