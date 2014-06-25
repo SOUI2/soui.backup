@@ -54,7 +54,7 @@
     <imglist name="TreeToggle"					src="IDR_TREE_TOGGLE" states="6"/>
     <imglist name="TreeCheckBox"				src="IDR_TREE_CHECKBOX" states="9"/>
     <imglist name="TreeIcon"						src="IDR_TREE_ICON" states="3"/>
-    <imglist name="icon3"							src="IDP_ICON3"  subwidth="15"/>
+    <imglist name="icon3"							src="IDP_ICON3"  states="12"/>
 
     <imglist name="slidethumb" src="IDP_SLIDETHUMB" states="4"/>
     <imgframe name="prog_bar" src="IDP_PROG_BAR" x="3"/>
