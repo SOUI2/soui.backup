@@ -6,12 +6,12 @@ namespace SOUI
 struct IAcceleratorMgr;
 
 
-struct ITimelineHandler
+struct SOUI_EXP ITimelineHandler
 {
     virtual void OnNextFrame()=NULL;
 };
 
-class SOUI_EXP IDuiContainer : public ITimelineHandler
+class SOUI_EXP ISwndContainer : public ITimelineHandler
 {
     friend class SWindow;
 public:
@@ -19,7 +19,7 @@ public:
 
     virtual BOOL RevokeDragDrop(HSWND hDuiWnd)=NULL;
 
-    virtual LRESULT OnDuiNotify(LPDUINMHDR pHdr)=NULL;
+    virtual LRESULT OnDuiNotify(LPSNMHDR pHdr)=NULL;
 
     virtual HWND GetHostHwnd()=NULL;
 

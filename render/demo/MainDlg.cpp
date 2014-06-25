@@ -103,7 +103,7 @@ int funCmpare(void* pCtx,const void *p1,const void *p2)
     }
 }
 
-bool CMainDlg::OnListHeaderClick( SWindow * pSender, LPDUINMHDR pNmhdr )
+bool CMainDlg::OnListHeaderClick( SWindow * pSender, LPSNMHDR pNmhdr )
 {
     SHeaderCtrl *pHeader=(SHeaderCtrl*)pSender;
     LPDUINMHDCLICK pClick=(LPDUINMHDCLICK)pNmhdr;

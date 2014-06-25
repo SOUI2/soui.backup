@@ -26,7 +26,7 @@ protected:
 
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
-    virtual LRESULT DuiNotify(LPDUINMHDR pnms);
+    virtual LRESULT DuiNotify(LPSNMHDR pnms);
 
     WND_MSG_MAP_BEGIN()
         MSG_WM_MOUSEHOVER(OnMouseHover)
@@ -59,7 +59,7 @@ protected:
 protected:
     virtual void OnSelChanged();
 
-    virtual LRESULT DuiNotify(LPDUINMHDR pnms);
+    virtual LRESULT DuiNotify(LPSNMHDR pnms);
 protected:
     //计算弹出窗口位置
     BOOL CalcPopupRect(int nHeight,CRect & rcPopup);

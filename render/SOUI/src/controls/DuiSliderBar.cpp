@@ -266,7 +266,7 @@ LRESULT SSliderBar::NotifySbCode(UINT uCode, int nPos)
     nms.nPos         = nPos;
     nms.bVertical    = IsVertical();
 
-    return DuiNotify((LPDUINMHDR)&nms);
+    return DuiNotify((LPSNMHDR)&nms);
 }
 
 CSize SSliderBar::GetDesiredSize(LPRECT pRcContainer)

@@ -70,13 +70,13 @@ LRESULT SItemPanel::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
         nms.uMsg=uMsg;
         nms.wParam=wParam;
         nms.lParam=lParam;
-        m_pFrmHost->DuiNotify((LPDUINMHDR)&nms);
+        m_pFrmHost->DuiNotify((LPSNMHDR)&nms);
     }
     Release();
     return lRet;
 }
 
-LRESULT SItemPanel::OnDuiNotify(LPDUINMHDR pHdr)
+LRESULT SItemPanel::OnDuiNotify(LPSNMHDR pHdr)
 {
     DUINMITEMNOTIFY nmsItem;
     nmsItem.hdr.code=NM_LBITEMNOTIFY;
@@ -86,7 +86,7 @@ LRESULT SItemPanel::OnDuiNotify(LPDUINMHDR pHdr)
     nmsItem.pItem=this;
     nmsItem.pHostDuiWin=(SWindow*)m_pFrmHost;
     nmsItem.pOriginHdr=pHdr;
-    return m_pFrmHost->DuiNotify((LPDUINMHDR)&nmsItem);
+    return m_pFrmHost->DuiNotify((LPSNMHDR)&nmsItem);
 }
 
 CRect SItemPanel::GetContainerRect()

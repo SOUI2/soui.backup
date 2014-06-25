@@ -292,7 +292,7 @@ BOOL CDuiFrame::RegisterTimelineHandler( ITimelineHandler *pHandler )
     POSITION pos=m_lstTimelineHandler.Find(pHandler);
     if(pos) return FALSE;
     m_lstTimelineHandler.AddTail(pHandler);
-    CDuiRef *pRef=dynamic_cast<CDuiRef*>(pHandler);
+    IObjRef *pRef=dynamic_cast<IObjRef*>(pHandler);
     if(pRef) pRef->AddRef();
     return TRUE;
 }
@@ -302,7 +302,7 @@ BOOL CDuiFrame::UnregisterTimelineHandler( ITimelineHandler *pHandler )
     POSITION pos=m_lstTimelineHandler.Find(pHandler);
     if(!pos) return FALSE;
     m_lstTimelineHandler.RemoveAt(pos);
-    CDuiRef *pRef=dynamic_cast<CDuiRef*>(pHandler);
+    IObjRef *pRef=dynamic_cast<IObjRef*>(pHandler);
     if(pRef) pRef->Release();
     return TRUE;
 }

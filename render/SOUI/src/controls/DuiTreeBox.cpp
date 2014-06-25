@@ -453,7 +453,7 @@ void STreeBox::DrawItem(IRenderTarget * pRT, CRect & rc, HSTREEITEM hItem)
     nms.pItem = pItem;
     nms.pHostDuiWin   = this;
     LockUpdate();
-    GetContainer()->OnDuiNotify((LPDUINMHDR)&nms);
+    GetContainer()->OnDuiNotify((LPSNMHDR)&nms);
     UnlockUpdate();
     pItem->Draw(pRT,rc);
 }
@@ -521,7 +521,7 @@ void STreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
         nms2.hOldSel=m_hSelItem;
         nms2.hNewSel=m_hHoverItem;
         nms2.bCancel=FALSE;
-        DuiNotify((LPDUINMHDR)&nms2);
+        DuiNotify((LPSNMHDR)&nms2);
 
         if(!nms2.bCancel)
         {
@@ -545,7 +545,7 @@ void STreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
                 CSTree<STreeItem*>::GetItem(m_hSelItem)->ModifyItemState(DuiWndState_Check,0);
                 RedrawItem(m_hSelItem);
             }
-            DuiNotify((LPDUINMHDR)&nms);
+            DuiNotify((LPSNMHDR)&nms);
         }
     }
     if(m_hHoverItem)
@@ -601,7 +601,7 @@ void STreeBox::OnLButtonDbClick(UINT nFlags,CPoint pt)
         nms.uMsg=WM_LBUTTONDBLCLK;
         nms.wParam=nFlags;
         nms.lParam=MAKELPARAM(pt.x,pt.y);
-        DuiNotify((LPDUINMHDR)&nms);
+        DuiNotify((LPSNMHDR)&nms);
     }
 
 }
@@ -646,7 +646,7 @@ void STreeBox::OnMouseLeave()
     }
 }
 
-LRESULT STreeBox::DuiNotify(LPDUINMHDR pnms)
+LRESULT STreeBox::DuiNotify(LPSNMHDR pnms)
 {
     if(pnms->code==NM_LBITEMNOTIFY)
     {

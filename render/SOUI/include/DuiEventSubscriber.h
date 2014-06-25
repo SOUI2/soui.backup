@@ -23,14 +23,14 @@ public:
     /*************************************************************************
         Construction
     *************************************************************************/
-    EventArgs(LPDUINMHDR pnms,SWindow *pSender) 
+    EventArgs(LPSNMHDR pnms,SWindow *pSender) 
         : handled(0)
         , m_pnms(pnms)
         , m_pSender(pSender)
     {}
     virtual ~EventArgs(void) {}
 
-    LPDUINMHDR m_pnms;
+    LPSNMHDR m_pnms;
 
     SWindow *m_pSender;
     /*************************************************************************
@@ -51,7 +51,7 @@ class SOUI_EXP SlotFunctorBase
 {
 public:
     virtual ~SlotFunctorBase() {};
-    virtual bool operator()(SWindow * pSender,LPDUINMHDR pNmhdr) = 0;
+    virtual bool operator()(SWindow * pSender,LPSNMHDR pNmhdr) = 0;
     virtual SlotFunctorBase* Clone() const =0;
     virtual bool Equal(const SlotFunctorBase & sour)const  =0;
     virtual UINT GetSlotType() const  =0;
@@ -65,13 +65,13 @@ class SOUI_EXP FreeFunctionSlot : public SlotFunctorBase
 {
 public:
     //! Slot function type.
-    typedef bool (SlotFunction)(SWindow * ,LPDUINMHDR );
+    typedef bool (SlotFunction)(SWindow * ,LPSNMHDR );
 
     FreeFunctionSlot(SlotFunction* func) :
         d_function(func)
     {}
 
-    virtual bool operator()(SWindow * pSender,LPDUINMHDR pNmhdr)
+    virtual bool operator()(SWindow * pSender,LPSNMHDR pNmhdr)
     {
         return d_function(pSender,pNmhdr);
     }
@@ -105,14 +105,14 @@ class MemberFunctionSlot : public SlotFunctorBase
 {
 public:
     //! Member function slot type.
-    typedef bool(T::*MemberFunctionType)(SWindow * ,LPDUINMHDR );
+    typedef bool(T::*MemberFunctionType)(SWindow * ,LPSNMHDR );
 
     MemberFunctionSlot(MemberFunctionType func, T* obj) :
         d_function(func),
         d_object(obj)
     {}
 
-    virtual bool operator()(SWindow * pSender,LPDUINMHDR pNmhdr)
+    virtual bool operator()(SWindow * pSender,LPSNMHDR pNmhdr)
     {
         return (d_object->*d_function)(pSender,pNmhdr);
     }
@@ -138,12 +138,12 @@ private:
 };
 
 template <class T>
-MemberFunctionSlot<T> Subscriber( bool (T::* pFn)(SWindow * ,LPDUINMHDR ), T* pObject)
+MemberFunctionSlot<T> Subscriber( bool (T::* pFn)(SWindow * ,LPSNMHDR ), T* pObject)
 {
     return MemberFunctionSlot<T>(pFn,pObject);
 }
 
-inline FreeFunctionSlot Subscriber(bool (*pFn)(SWindow * ,LPDUINMHDR ))
+inline FreeFunctionSlot Subscriber(bool (*pFn)(SWindow * ,LPSNMHDR ))
 {
     return FreeFunctionSlot(pFn); 
 }

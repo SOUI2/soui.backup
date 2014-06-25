@@ -456,12 +456,12 @@ LPCTSTR SWindow::GetLinkUrl()
     return m_strLinkUrl;
 }
 
-IDuiContainer *SWindow::GetContainer()
+ISwndContainer *SWindow::GetContainer()
 {
     return m_pContainer;
 }
 
-void SWindow::SetContainer(IDuiContainer *pContainer)
+void SWindow::SetContainer(ISwndContainer *pContainer)
 {
     m_pContainer=pContainer;
     SWindow *pChild=m_pFirstChild;
@@ -789,7 +789,7 @@ void SWindow::BringWindowToTop()
     pParent->InsertChild(this);
 }
 
-LRESULT SWindow::DuiNotify(LPDUINMHDR pnms)
+LRESULT SWindow::DuiNotify(LPSNMHDR pnms)
 {
     EventArgs args(pnms,this);
     FireEvent(pnms->code,args);
@@ -1815,7 +1815,7 @@ LRESULT SWindow::NotifyCommand()
     nms.hdr.idFrom = GetCmdID();
     nms.hdr.pszNameFrom=GetName();
     nms.uItemData = GetUserData();
-    return DuiNotify((LPDUINMHDR)&nms);
+    return DuiNotify((LPSNMHDR)&nms);
 }
 
 LRESULT SWindow::NotifyContextMenu( CPoint pt )
@@ -1827,7 +1827,7 @@ LRESULT SWindow::NotifyContextMenu( CPoint pt )
     nms.hdr.pszNameFrom=GetName();
     nms.uItemData = GetUserData();
     nms.pt=pt;
-    return DuiNotify((LPDUINMHDR)&nms);
+    return DuiNotify((LPSNMHDR)&nms);
 }
 
 }//namespace SOUI

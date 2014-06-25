@@ -13,7 +13,7 @@
 namespace SOUI
 {
 
-class SOUI_EXP CDuiFrame : public IDuiContainer
+class SOUI_EXP CDuiFrame : public ISwndContainer
 {
 public:
     CDuiFrame(SWindow *pHost);

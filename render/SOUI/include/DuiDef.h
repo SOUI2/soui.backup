@@ -68,4 +68,4 @@ typedef struct _DUINMHDR
     UINT    code;            //消息类型
     LPCSTR    pszNameFrom;    //消息源的name
     UINT    idFrom;            //消息源的id
-}DUINMHDR, *LPDUINMHDR;
+}DUINMHDR, *LPSNMHDR;

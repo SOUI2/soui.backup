@@ -158,7 +158,7 @@ protected:
     // CDuiContainer
 
     /*virtual */
-    LRESULT OnDuiNotify(LPDUINMHDR pHdr);
+    LRESULT OnDuiNotify(LPSNMHDR pHdr);
 
     /*virtual */
     CRect GetContainerRect();

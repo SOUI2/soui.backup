@@ -35,7 +35,7 @@ void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     SetMsgHandled(FALSE);
 }
 
-LRESULT CComboEdit::DuiNotify( LPDUINMHDR pnms )
+LRESULT CComboEdit::DuiNotify( LPSNMHDR pnms )
 {
     //转发richedit的txNotify消息
     if(pnms->code==NM_RICHEDIT_NOTIFY)
@@ -306,7 +306,7 @@ void CDuiComboBoxBase::OnDestroy()
     __super::OnDestroy();
 }
 
-LRESULT CDuiComboBoxBase::DuiNotify( LPDUINMHDR pnms )
+LRESULT CDuiComboBoxBase::DuiNotify( LPSNMHDR pnms )
 {
     if(pnms->idFrom == IDC_DROPDOWN_LIST)
     {

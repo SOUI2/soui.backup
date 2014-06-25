@@ -847,7 +847,7 @@ HRESULT SRichEdit::OnTxNotify( DWORD iNotify,LPVOID pv )
     nms.hdr.pszNameFrom=GetName();
     nms.iNotify=iNotify;
     nms.pv=pv;
-    return DuiNotify((LPDUINMHDR)&nms);
+    return DuiNotify((LPSNMHDR)&nms);
 }
 //////////////////////////////////////////////////////////////////////////
 //    richedit interfaces

@@ -724,7 +724,7 @@ void SCheckBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
             nms.hdr.idFrom = GetCmdID();
             nms.hdr.pszNameFrom = GetName();
             nms.uItemData = GetUserData();
-            DuiNotify((LPDUINMHDR)&nms);
+            DuiNotify((LPSNMHDR)&nms);
         }
     }
 }

@@ -11,16 +11,17 @@ typedef ULONG_PTR HSTREEITEM;
 #include "DuiDef.h"
 
 #define IDC_RICHVIEW_WIN            2000
-#define UM_DUI_NOTIFY                (WM_USER+100)
+#define UM_SWND_NOTIFY                (WM_USER+100)
+
 namespace SOUI
 {
 class SWindow;
 
 #define NOTIFY_HANDLER_SOUI(id, func) \
-    if (uMsg == UM_DUI_NOTIFY && wParam == IDC_RICHVIEW_WIN) \
+    if (uMsg == UM_SWND_NOTIFY && wParam == IDC_RICHVIEW_WIN) \
     { \
     SetMsgHandled(TRUE); \
-    lResult = func((LPDUINMHDR)lParam); \
+    lResult = func((LPSNMHDR)lParam); \
     if(IsMsgHandled()) \
     return TRUE; \
     }
@@ -28,7 +29,7 @@ class SWindow;
 #define MSG_SOUI_NOTIFY() NOTIFY_HANDLER_SOUI(IDC_RICHVIEW_WIN,_OnDuiNotify)
 
 #define SOUI_NOTIFY_MAP_BEGIN()                   \
-    LRESULT _OnDuiNotify(LPDUINMHDR pnmh)        \
+    LRESULT _OnDuiNotify(LPSNMHDR pnmh)        \
     {                                           \
         UINT_PTR  uCode = pnmh->code;           \
  
@@ -43,7 +44,7 @@ class SWindow;
             return TRUE;                         \
  
 
-// LRESULT OnDuiHandler(LPDUINMHDR pnmh)
+// LRESULT OnDuiHandler(LPSNMHDR pnmh)
 #define SOUI_NOTIFY_HANDLER(cd, func) \
     if(cd == pnmh->code) \
 { \
@@ -51,14 +52,14 @@ class SWindow;
 } 
 
 
-// LRESULT OnDuiIDHandler(LPDUINMHDR pnmh)
+// LRESULT OnDuiIDHandler(LPSNMHDR pnmh)
 #define SOUI_NOTIFY_ID_HANDLER(id, cd, func) \
     if(cd == pnmh->code && id == pnmh->idFrom) \
     { \
         return func(pnmh); \
     }
 
-// LRESULT OnDuiNameHandler(LPDUINMHDR pnmh)
+// LRESULT OnDuiNameHandler(LPSNMHDR pnmh)
 #define SOUI_NOTIFY_NAME_HANDLER(name, cd, func) \
     if(cd == pnmh->code && pnmh->pszNameFrom!= NULL && strcmp(pnmh->pszNameFrom,name)==0) \
 { \
@@ -217,7 +218,7 @@ class SItemPanel;
 typedef struct tagDUINMITEMNOTIFY
 {
     DUINMHDR       hdr;
-    LPDUINMHDR        pOriginHdr;    //原始消息
+    LPSNMHDR        pOriginHdr;    //原始消息
     SItemPanel *pItem;
     SWindow *    pHostDuiWin;
 } DUINMITEMNOTIFY, *LPDUINMITEMNOTIFY;

@@ -484,7 +484,7 @@ void SCalendar::OnLButtonDown(UINT nFlags, CPoint point)
 
         m_iDay = day;
         NotifyInvalidate();
-        DuiNotify((LPDUINMHDR)&nm);
+        DuiNotify((LPSNMHDR)&nm);
     }
 }
 
@@ -536,7 +536,7 @@ BOOL SCalendar::Load( pugi::xml_node xmlNode )
     return bLoad;
 }
 
-bool SCalendar::OnTodayClick( SWindow * pSender, LPDUINMHDR pNmhdr )
+bool SCalendar::OnTodayClick( SWindow * pSender, LPSNMHDR pNmhdr )
 {
     CTime today=CTime::GetCurrentTime();
     SetDate(today.GetYear(),today.GetMonth(),today.GetDay());

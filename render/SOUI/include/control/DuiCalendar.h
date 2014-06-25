@@ -401,7 +401,7 @@ namespace SOUI
          *
          * Describe  在日期---天的单击事件
          */            
-        bool OnTodayClick(SWindow * pSender, LPDUINMHDR pNmhdr);
+        bool OnTodayClick(SWindow * pSender, LPSNMHDR pNmhdr);
 
         SOUI_ATTRS_BEGIN()
             ATTR_INT("titleHeight", m_nTitleHei, FALSE)

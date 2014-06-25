@@ -60,7 +60,7 @@ public:
         - true if the event was handled.
         - false if the event was not handled.
     */
-    virtual    bool    executeScriptedEventHandler(LPCSTR handler_name, SWindow *pSender, LPDUINMHDR pNmhdr)=0;
+    virtual    bool    executeScriptedEventHandler(LPCSTR handler_name, SWindow *pSender, LPSNMHDR pNmhdr)=0;
 
 
     /*!

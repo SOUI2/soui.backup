@@ -14,7 +14,6 @@
 
 #include "duiwndnotify.h"
 #include "gdialpha.h"
-#include "duiref.h"
 #include "DuiEventSet.h"
 #include <OCIdl.h>
 #include "DuiLayout.h"
@@ -106,7 +105,7 @@ public:
     } DUIMSG,*PDUIMSG;
 protected:
     HSWND m_hSWnd;
-    IDuiContainer *m_pContainer;
+    ISwndContainer *m_pContainer;
     SWindow *m_pOwner;
     SWindow *m_pParent,*m_pFirstChild, *m_pLastChild, *m_pNextSibling,*m_pPrevSibling;    //´°¿ÚÊ÷½á¹¹
     UINT    m_nChildrenCount;
@@ -284,9 +283,9 @@ public:
 
     LPCTSTR GetLinkUrl();
 
-    IDuiContainer *GetContainer();
+    ISwndContainer *GetContainer();
 
-    void SetContainer(IDuiContainer *pContainer);
+    void SetContainer(ISwndContainer *pContainer);
 
     void SetOwner(SWindow *pOwner);
 
@@ -362,7 +361,7 @@ public:
 
     virtual HSWND DuiGetHWNDFromPoint(CPoint ptHitTest, BOOL bOnlyText);
 
-    virtual LRESULT DuiNotify(LPDUINMHDR pnms);
+    virtual LRESULT DuiNotify(LPSNMHDR pnms);
 
     virtual UINT OnGetDuiCode();
 

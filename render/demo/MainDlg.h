@@ -51,7 +51,7 @@ public:
 
 protected:
     void InitListCtrl();
-    bool OnListHeaderClick( SWindow * pSender, LPDUINMHDR pNmhdr );
+    bool OnListHeaderClick( SWindow * pSender, LPSNMHDR pNmhdr );
     
     LRESULT OnInitDialog(HWND hWnd, LPARAM lParam);
     void OnDestory();

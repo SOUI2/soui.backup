@@ -309,7 +309,7 @@ void STabCtrl::OnMouseMove( UINT nFlags, CPoint point )
             nms.hdr.pszNameFrom=GetName();
             nms.iItem=nOldHover;
             nms.rcItem=rcItem;
-            DuiNotify((LPDUINMHDR)&nms);
+            DuiNotify((LPSNMHDR)&nms);
         }
         if(m_nHoverTabItem!=-1)
         {
@@ -323,7 +323,7 @@ void STabCtrl::OnMouseMove( UINT nFlags, CPoint point )
             nms.hdr.pszNameFrom=GetName();
             nms.iItem = m_nHoverTabItem;
             nms.rcItem = rcItem;
-            DuiNotify((LPDUINMHDR)&nms);
+            DuiNotify((LPSNMHDR)&nms);
         }
     }
 }
@@ -352,7 +352,7 @@ BOOL STabCtrl::SetCurSel( int nIndex )
     nms.uTabItemIDOld = nOldPage;
     nms.bCancel = FALSE;
 
-    LRESULT lRet = DuiNotify((LPDUINMHDR)&nms);
+    LRESULT lRet = DuiNotify((LPSNMHDR)&nms);
 
     if (nms.bCancel)
         return FALSE;
@@ -414,7 +414,7 @@ BOOL STabCtrl::SetCurSel( int nIndex )
 
         delete pTabSlider;
     }
-    DuiNotify((LPDUINMHDR)&nms2);
+    DuiNotify((LPSNMHDR)&nms2);
     if(IsVisible(TRUE))
     {
         NotifyInvalidate();
