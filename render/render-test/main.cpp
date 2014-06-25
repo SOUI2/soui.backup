@@ -86,8 +86,10 @@ public:
         InflateRect(&rcClip,-10,-10);
         m_rt->PushClipRect(&rcClip);
 
- 		m_rt->DrawBitmap(0,0,rcClient.right,rcClient.bottom,m_bmp,0,0,128);
-  		m_rt->FillRectangle(rcClient.left,rcClient.top,rcClient.right/2,rcClient.bottom);
+ 		m_rt->DrawBitmap(&rcClient,m_bmp,0,0,128);
+ 		RECT rcBrush=rcClient;
+ 		rcBrush.right/=2;
+  		m_rt->FillRectangle(&rcBrush);
   		TCHAR *psz=_T("ÎÄ×ÖÊä³ö²âÊÔ,\nprefix &test\nÎÄ×ÖÊä³ö²âÊÔ,ÎÄ×ÖÊä³ö²âÊÔ");
   		m_rt->DrawText(psz,-1,&rcClient,DT_VCENTER|DT_SINGLELINE|DT_CENTER,128);
         POINT pt[3]={{10,10},{10,100},{100,100}};
@@ -97,7 +99,7 @@ public:
         POINT pt2={5,5};
 
         CAutoRefPtr<IPen> pen,oldPen;
-        m_rt->CreatePen(PS_DASHDOTDOT,CDuiColor(0xFF,0,0,0x55).toCOLORREF(),2,&pen);
+        m_rt->CreatePen(PS_DASHDOTDOT,SColor(0xFF,0,0,0x55).toCOLORREF(),2,&pen);
 
         m_rt->SelectObject(pen,(IRenderObj**)&oldPen);
         m_rt->DrawRoundRect(&rc,pt2);
@@ -163,7 +165,7 @@ public:
 	int OnCreate(void *)
 	{
 		g_render->CreateRenderTarget(&m_rt,0,0);
-		m_rt->CreateRegion(&m_rgn);
+		g_render->CreateRegion(&m_rgn);
 
 		CAutoRefPtr<IFont> font;
 		LOGFONT lf={0};
@@ -256,12 +258,12 @@ int WINAPI WinMain(
 #else
     HMODULE hRenderSkia = LoadLibrary(_T("render-skia.dll"));
 #endif
-    typedef SOUI::IRenderFactory * (*fnCreateRenderFactory)();
+    typedef  BOOL (*fnCreateRenderFactory)(SOUI::IRenderFactory **ppRenderFactory);
     fnCreateRenderFactory fun = (fnCreateRenderFactory)GetProcAddress(hRenderSkia,"CreateRenderFactory");
     
-    g_render = fun();
+    fun(&g_render);
 #else
-    g_render = RENDER_SKIA::CreateRenderFactory();
+    RENDER_SKIA::CreateRenderFactory(&g_render);
 #endif
 
 	if(g_render)
