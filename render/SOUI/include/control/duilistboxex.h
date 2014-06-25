@@ -13,7 +13,7 @@ namespace SOUI
 {
 
 class SOUI_EXP CDuiListBoxEx :public SScrollView
-    ,public IDuiItemContainer
+    ,public IItemContainer
 {
 public:
 
@@ -73,8 +73,8 @@ public:
 
     BOOL IsVirtual(){return m_bVirtual;}
 protected:
-    virtual void OnItemSetCapture(CDuiItemPanel *pItem,BOOL bCapture);
-    virtual BOOL OnItemGetRect(CDuiItemPanel *pItem,CRect &rcItem);
+    virtual void OnItemSetCapture(SItemPanel *pItem,BOOL bCapture);
+    virtual BOOL OnItemGetRect(SItemPanel *pItem,CRect &rcItem);
     virtual BOOL IsItemRedrawDelay(){return m_bItemRedrawDelay;}
 protected:
     void UpdatePanelsIndex(UINT nFirst=0,UINT nLast=-1);
@@ -124,16 +124,16 @@ protected:
 
     void Relayout();
 protected:
-    CDuiArray<CDuiItemPanel *> m_arrItems;
+    CDuiArray<SItemPanel *> m_arrItems;
 
     int        m_iSelItem;
     int        m_iHoverItem;
     int        m_iScrollSpeed;
 
-    CDuiItemPanel    * m_pTemplPanel;    //虚拟列表使用的DUI模板
+    SItemPanel    * m_pTemplPanel;    //虚拟列表使用的DUI模板
     int        m_nItems;                    //虚拟列表中记录列表项
     pugi::xml_document m_xmlTempl;        ////列表模板XML
-    CDuiItemPanel    *    m_pCapturedFrame;
+    SItemPanel    *    m_pCapturedFrame;
     ISkinObj * m_pItemSkin;
     COLORREF m_crItemBg,m_crItemSelBg;
     int        m_nItemHei;

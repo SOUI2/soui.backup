@@ -209,7 +209,7 @@ typedef struct tagDUINMSCROLL
     return TRUE;                                                        \
 }
 
-class CDuiItemPanel;
+class SItemPanel;
 
 // Item Click Notify
 #define NM_LBITEMNOTIFY     15
@@ -218,7 +218,7 @@ typedef struct tagDUINMITEMNOTIFY
 {
     DUINMHDR       hdr;
     LPDUINMHDR        pOriginHdr;    //原始消息
-    CDuiItemPanel *pItem;
+    SItemPanel *pItem;
     SWindow *    pHostDuiWin;
 } DUINMITEMNOTIFY, *LPDUINMITEMNOTIFY;
 
@@ -227,7 +227,7 @@ typedef struct tagDUINMITEMNOTIFY
 typedef struct tagDUINMITEMMOUSEEVENT
 {
     DUINMHDR       hdr;
-    CDuiItemPanel *    pItem;
+    SItemPanel *    pItem;
     UINT        uMsg;
     WPARAM        wParam;
     LPARAM        lParam;
@@ -243,7 +243,7 @@ typedef struct tagDUINMGETLBDISPINFO
     int         nListItemID;
     BOOL        bHover;
     BOOL        bSelect;
-    CDuiItemPanel *    pItem;
+    SItemPanel *    pItem;
     SWindow *    pHostDuiWin;
 } DUINMGETLBDISPINFO, *LPDUINMGETLBDISPINFO;
 
@@ -266,7 +266,7 @@ typedef struct tagDUINMGETTBDISPINFO
     HSTREEITEM  hItem;
     BOOL        bHover;
     BOOL        bSelect;
-    CDuiItemPanel *    pItem;
+    SItemPanel *    pItem;
     SWindow *    pHostDuiWin;
 } DUINMGETTBDISPINFO, *LPDUINMGETTBDISPINFO;
 

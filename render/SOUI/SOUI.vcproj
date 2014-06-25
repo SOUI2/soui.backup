@@ -841,6 +841,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\duiItempanel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\DuiLayout.cpp"
 				>
 			</File>
@@ -1016,6 +1020,10 @@
 			</File>
 			<File
 				RelativePath=".\src\DuiTipCtrl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\controls\DuiTreeBox.cpp"
 				>
 			</File>
 			<File

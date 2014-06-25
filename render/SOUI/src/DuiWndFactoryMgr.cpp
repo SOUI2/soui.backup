@@ -52,10 +52,10 @@ void DuiWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(SMaskEdit::GetClassName(),new TplDuiWindowFactory<SMaskEdit>);
     AddKeyObject(SDateEdit::GetClassName(),new TplDuiWindowFactory<SDateEdit>);
     AddKeyObject(STimeEdit::GetClassName(),new TplDuiWindowFactory<STimeEdit>);
+    AddKeyObject(STreeBox::GetClassName(),new TplDuiWindowFactory<STreeBox>);
     /*
     AddKeyObject(CDuiListBoxEx::GetClassName(),new TplDuiWindowFactory<CDuiListBoxEx>);
     AddKeyObject(CDuiItemBox::GetClassName(),new TplDuiWindowFactory<CDuiItemBox>);
-    AddKeyObject(CDuiTreeBox::GetClassName(),new TplDuiWindowFactory<CDuiTreeBox>);
     AddKeyObject(CDuiComboBox::GetClassName(),new TplDuiWindowFactory<CDuiComboBox>);
     AddKeyObject(CDuiComboBoxEx::GetClassName(),new TplDuiWindowFactory<CDuiComboBoxEx>);
     //*/

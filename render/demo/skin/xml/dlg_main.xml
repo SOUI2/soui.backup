@@ -27,6 +27,42 @@
       <tab title="edit">
         <edit pos="50,100,150,150">scroll edit</edit>
       </tab>
+      <tab title="treebox">
+        <treebox pos="0,0,-0,-0" name="mytree" itemhei="30" critembg="FFFFFF" critemselbg="000088" indent="10">
+          <item>
+            <text pos="10,0,100,-0" valign="middle" align="center" crtext="ff0000">red test</text>
+            <text>normal text</text>
+            <edit pos="[5,0,]-5,20">test edit</edit>
+            <button class="normalbtn" pos="300,3,-10,-3">button</button>
+            <item>
+              <text pos="10,5" crtext="ff0000">red test</text>
+              <text>normal text</text>
+              <button class="normalbtn" pos="300,3,-10,-3">button</button>
+            </item>
+            <item>
+              <text pos="10,5" crtext="ff0000">red test</text>
+              <text>normal text</text>
+              <button class="normalbtn" pos="300,3,-10,-3">button</button>
+              <item>
+                <text pos="10,5" crtext="ff0000">red test</text>
+                <text>normal text</text>
+                <button class="normalbtn" pos="300,3,-10,-3">button</button>
+                <item>
+                  <text pos="10,5" crtext="ff0000">red test</text>
+                  <text>normal text</text>
+                  <button class="normalbtn" pos="300,3,-10,-3">button</button>
+                </item>
+              </item>
+            </item>
+            <item>
+              <text pos="10,5" crtext="ff0000">red test</text>
+              <text>normal text</text>
+              <button class="normalbtn" pos="300,3,-10,-3">button</button>
+            </item>
+          </item>
+        </treebox>
+      </tab>
+
       <tab title="miscellaneous">
         <animateimg name="ani_test" pos="20,100" skin="icons"/>
         <img id="1139" pos="300,200,400,300" skin="icons" tip="img tip" msgtransparent="0"/>

@@ -17,7 +17,7 @@ namespace SOUI
 {
 
 
-CDuiItemPanel::CDuiItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IDuiItemContainer *pItemContainer)
+SItemPanel::SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer *pItemContainer)
     :CDuiFrame(this)
     ,m_pFrmHost(pFrameHost)
     ,m_pItemContainer(pItemContainer)
@@ -27,20 +27,20 @@ CDuiItemPanel::CDuiItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IDuiItem
     ,m_lpItemIndex(-1)
 {
     DUIASSERT(m_pFrmHost);
-    if(!m_pItemContainer) m_pItemContainer=dynamic_cast<IDuiItemContainer*>(m_pFrmHost);
+    if(!m_pItemContainer) m_pItemContainer=dynamic_cast<IItemContainer*>(m_pFrmHost);
     DUIASSERT(m_pItemContainer);
     SetContainer(this);
     if(xmlNode) Load(xmlNode);
 }
 
-void CDuiItemPanel::OnFinalRelease()
+void SItemPanel::OnFinalRelease()
 {
     AddRef();//防止重复进入该函数
     DuiSendMessage(WM_DESTROY);
     __super::OnFinalRelease();
 }
 
-LRESULT CDuiItemPanel::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
+LRESULT SItemPanel::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
     AddRef();
 
@@ -76,7 +76,7 @@ LRESULT CDuiItemPanel::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     return lRet;
 }
 
-LRESULT CDuiItemPanel::OnDuiNotify(LPDUINMHDR pHdr)
+LRESULT SItemPanel::OnDuiNotify(LPDUINMHDR pHdr)
 {
     DUINMITEMNOTIFY nmsItem;
     nmsItem.hdr.code=NM_LBITEMNOTIFY;
@@ -89,35 +89,35 @@ LRESULT CDuiItemPanel::OnDuiNotify(LPDUINMHDR pHdr)
     return m_pFrmHost->DuiNotify((LPDUINMHDR)&nmsItem);
 }
 
-CRect CDuiItemPanel::GetContainerRect()
+CRect SItemPanel::GetContainerRect()
 {
     CRect rcItem;
     m_pItemContainer->OnItemGetRect(this,rcItem);
     return rcItem;
 }
 
-HDC CDuiItemPanel::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
+IRenderTarget * SItemPanel::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
 {
     CRect rcItem=GetItemRect();
     CRect rcInvalid=rc;
     rcInvalid.OffsetRect(rcItem.TopLeft());
-    HDC hdc=m_pFrmHost->GetRenderTarget(rcInvalid,gdcFlags);
+    IRenderTarget *pRT=m_pFrmHost->GetRenderTarget(rcInvalid,gdcFlags);
     if(gdcFlags & OLEDC_PAINTBKGND)
     {//调用frmhost的GetDuiDC时，不会绘制frmHost的背景。注意此外只画背景，不画前景,因为itempanel就是前景
-        m_pFrmHost->DuiSendMessage(WM_ERASEBKGND, (WPARAM)hdc);
+        m_pFrmHost->DuiSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
     }
-    OffsetViewportOrgEx(hdc,rcItem.left,rcItem.top,NULL);
-    return hdc;
+    pRT->OffsetViewportOrg(rcItem.left,rcItem.top);
+    return pRT;
 }
 
-void CDuiItemPanel::OnReleaseRenderTarget(HDC hdc,const CRect &rc,DWORD gdcFlags)
+void SItemPanel::OnReleaseRenderTarget(IRenderTarget *pRT,const CRect &rc,DWORD gdcFlags)
 {
     CRect rcItem=GetItemRect();
-    OffsetViewportOrgEx(hdc,-rcItem.left,-rcItem.top,NULL);
-    m_pFrmHost->ReleaseRenderTarget(hdc);
+    pRT->OffsetViewportOrg(-rcItem.left,-rcItem.top);
+    m_pFrmHost->ReleaseRenderTarget(pRT);
 }
 
-void CDuiItemPanel::OnRedraw(const CRect &rc)
+void SItemPanel::OnRedraw(const CRect &rc)
 {
     if(m_pFrmHost->IsUpdateLocked()) return;
 
@@ -132,121 +132,123 @@ void CDuiItemPanel::OnRedraw(const CRect &rc)
             m_pFrmHost->NotifyInvalidateRect(rc2);
         }else
         {
-            CDCHandle dc=OnGetRenderTarget(rc,OLEDC_PAINTBKGND);
-            CRgn rgn;
-            rgn.CreateRectRgnIndirect(&rc);
-            RedrawRegion(dc,rgn);
-            OnReleaseRenderTarget(dc,rc,OLEDC_PAINTBKGND);
+            IRenderTarget *pRT=OnGetRenderTarget(rc,OLEDC_PAINTBKGND);
+            CAutoRefPtr<IRegion> rgn;
+            GETRENDERFACTORY->CreateRegion(&rgn);
+            rgn->CombineRect(&rc,RGN_COPY);
+            RedrawRegion(pRT,rgn);
+            OnReleaseRenderTarget(pRT,rc,OLEDC_PAINTBKGND);
         }
     }
 }
 
-BOOL CDuiItemPanel::OnReleaseDuiCapture()
+BOOL SItemPanel::OnReleaseDuiCapture()
 {
     if(!__super::OnReleaseDuiCapture()) return FALSE;
     m_pItemContainer->OnItemSetCapture(this,FALSE);
     return TRUE;
 }
 
-HSWND CDuiItemPanel::OnSetDuiCapture(HSWND hDuiWNd)
+HSWND SItemPanel::OnSetDuiCapture(HSWND hDuiWNd)
 {
     m_pItemContainer->OnItemSetCapture(this,TRUE);
     return __super::OnSetDuiCapture(hDuiWNd);
 }
 
-HWND CDuiItemPanel::GetHostHwnd()
+HWND SItemPanel::GetHostHwnd()
 {
     return m_pFrmHost->GetContainer()->GetHostHwnd();
 }
 
-BOOL CDuiItemPanel::IsTranslucent()
+BOOL SItemPanel::IsTranslucent()
 {
     return m_pFrmHost->GetContainer()->IsTranslucent();
 }
 
-BOOL CDuiItemPanel::DuiCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
+BOOL SItemPanel::DuiCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
 {
     return m_pFrmHost->GetContainer()->DuiCreateCaret(hBmp,nWidth,nHeight);
 }
 
-BOOL CDuiItemPanel::DuiShowCaret( BOOL bShow )
+BOOL SItemPanel::DuiShowCaret( BOOL bShow )
 {
     return m_pFrmHost->GetContainer()->DuiShowCaret(bShow);
 }
 
-BOOL CDuiItemPanel::DuiSetCaretPos( int x,int y )
+BOOL SItemPanel::DuiSetCaretPos( int x,int y )
 {
     CRect rcItem=GetItemRect();
     x+=rcItem.left,y+=rcItem.top;
     return m_pFrmHost->GetContainer()->DuiSetCaretPos(x,y);
 }
 
-BOOL CDuiItemPanel::DuiUpdateWindow()
+BOOL SItemPanel::DuiUpdateWindow()
 {
     return m_pFrmHost->GetContainer()->DuiUpdateWindow();
 }
 
-void CDuiItemPanel::ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove)
+void SItemPanel::ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove)
 {
     ModifyState(dwStateAdd,dwStateRemove,FALSE);
 }
 
-HSWND CDuiItemPanel::DuiGetHWNDFromPoint(POINT ptHitTest, BOOL bOnlyText)
+HSWND SItemPanel::DuiGetHWNDFromPoint(POINT ptHitTest, BOOL bOnlyText)
 {
     HSWND hRet=__super::DuiGetHWNDFromPoint(ptHitTest,bOnlyText);
     if(hRet==m_hSWnd) hRet=NULL;
     return hRet;
 }
 
-void CDuiItemPanel::Draw(CDCHandle dc,const CRect & rc)
+void SItemPanel::Draw(IRenderTarget *pRT,const CRect & rc)
 {
-    CRgn rgnNull;
     if((m_dwState & DuiWndState_Check) && m_crSelBk != CLR_INVALID) SetBkColor(m_crSelBk);
     else SetBkColor(m_crBk);
 
-    dc.OffsetViewportOrg(rc.left,rc.top);
-    RedrawRegion(dc,rgnNull);
-    dc.OffsetViewportOrg(-rc.left,-rc.top);
+    pRT->OffsetViewportOrg(rc.left,rc.top);
+    CAutoRefPtr<IRegion> rgn;
+    GETRENDERFACTORY->CreateRegion(&rgn);
+    RedrawRegion(pRT,rgn);
+    pRT->OffsetViewportOrg(-rc.left,-rc.top);
 }
 
-void CDuiItemPanel::SetSkin(ISkinObj *pSkin)
+void SItemPanel::SetSkin(ISkinObj *pSkin)
 {
     m_pBgSkin=pSkin;
 }
 
-void CDuiItemPanel::SetColor(COLORREF crBk,COLORREF crSelBk)
+void SItemPanel::SetColor(COLORREF crBk,COLORREF crSelBk)
 {
     m_crBk=crBk;
     m_crSelBk=crSelBk;
 }
 
-BOOL CDuiItemPanel::NeedRedrawWhenStateChange()
+BOOL SItemPanel::NeedRedrawWhenStateChange()
 {
     return TRUE;
 }
 
-CRect CDuiItemPanel::GetItemRect()
+CRect SItemPanel::GetItemRect()
 {
     CRect rcItem;
     m_pItemContainer->OnItemGetRect(this,rcItem);
     return rcItem;
 }
-void CDuiItemPanel::SetItemCapture(BOOL bCapture)
+void SItemPanel::SetItemCapture(BOOL bCapture)
 {
     m_pItemContainer->OnItemSetCapture(this,bCapture);
 }
 
-void CDuiItemPanel::SetItemData(LPARAM dwData)
+void SItemPanel::SetItemData(LPARAM dwData)
 {
     m_dwData=dwData;
 }
 
-LPARAM CDuiItemPanel::GetItemData()
+LPARAM SItemPanel::GetItemData()
 {
     return m_dwData;
 }
 
-BOOL CDuiItemPanel::OnUpdateToolTip( HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip )
+BOOL SItemPanel::OnUpdateToolTip( HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip )
 {
     if(hCurTipHost==m_hHover) return FALSE;
     if(m_hHover==m_hSWnd) return FALSE;
@@ -266,7 +268,7 @@ BOOL CDuiItemPanel::OnUpdateToolTip( HSWND hCurTipHost,HSWND &hNewTipHost,CRect 
     return bRet;
 }
 
-void CDuiItemPanel::OnSetCaretValidateRect( LPCRECT lpRect )
+void SItemPanel::OnSetCaretValidateRect( LPCRECT lpRect )
 {
     CRect rcClient;
     GetClient(&rcClient);
@@ -277,14 +279,14 @@ void CDuiItemPanel::OnSetCaretValidateRect( LPCRECT lpRect )
     m_pFrmHost->OnSetCaretValidateRect(&rcIntersect);
 }
 
-BOOL CDuiItemPanel::RegisterTimelineHandler( ITimelineHandler *pHandler )
+BOOL SItemPanel::RegisterTimelineHandler( ITimelineHandler *pHandler )
 {
     BOOL bRet=CDuiFrame::RegisterTimelineHandler(pHandler);
     if(bRet && m_lstTimelineHandler.GetCount()==1) m_pFrmHost->GetContainer()->RegisterTimelineHandler(this);
     return bRet;
 }
 
-BOOL CDuiItemPanel::UnregisterTimelineHandler( ITimelineHandler *pHandler )
+BOOL SItemPanel::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 {
     BOOL bRet=CDuiFrame::UnregisterTimelineHandler(pHandler);
     if(bRet && m_lstTimelineHandler.IsEmpty()) m_pFrmHost->GetContainer()->UnregisterTimelineHandler(this);

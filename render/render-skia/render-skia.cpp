@@ -98,18 +98,12 @@ namespace SOUI
 	SRenderTarget_Skia::SRenderTarget_Skia( IRenderFactory_Skia* pRenderFactory ,int nWid,int nHei)
 		:TSkiaRenderObjImpl<IRenderTarget>(pRenderFactory)
 		,m_hBindDC(0)
-		,m_SkCanvas(new SkCanvas)
+		,m_SkCanvas(NULL)
         ,m_curColor(0xFF000000)//Ä¬ÈÏºÚÉ«
         ,m_hGetDC(0)
         ,m_uGetDCFlag(0)
 	{
         m_ptOrg.fX=m_ptOrg.fY=0.0f;
-
-        if(nWid && nHei)
-        {
-            SIZE sz={nWid,nHei};
-            Resize(sz);
-        }
 
 		CAutoRefPtr<IPen> pPen;
 		CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&pPen);
@@ -125,6 +119,13 @@ namespace SOUI
         _tcscpy(lf.lfFaceName,_T("ËÎÌå"));
         pRenderFactory->CreateFont(&pFont,lf);
         SelectObject(pFont);
+
+        CAutoRefPtr<IBitmap> pBmp;
+        GetRenderFactory_Skia()->CreateBitmap(&pBmp);
+        pBmp->Init(nWid,nHei);
+        SelectObject(pBmp);
+        
+        m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
 	}
 	
 	SRenderTarget_Skia::~SRenderTarget_Skia()
@@ -198,20 +199,7 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::Resize( SIZE sz )
 	{
-		HRESULT hr=S_FALSE;
-		if(!m_curBmp)
-		{
-			CAutoRefPtr<IBitmap> pBmp;
-			hr=GetRenderFactory_Skia()->CreateBitmap(&pBmp);
-			if(SUCCEEDED(hr))
-			{
-				pBmp->Init(sz.cx,sz.cy);
-				SelectObject(pBmp);
-			}
-		}else
-		{
-			m_curBmp->Init(sz.cx,sz.cy);
-		}
+    	m_curBmp->Init(sz.cx,sz.cy);
         delete m_SkCanvas;
         m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
 		return S_OK;
@@ -295,6 +283,8 @@ namespace SOUI
 	HRESULT SRenderTarget_Skia::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha)
 	{
 		if(cchLen<0) cchLen= _tcslen(pszText);
+		if(cchLen==0) return S_FALSE;
+		
 		CDuiStringW strW=DUI_CT2W(CDuiStringT(pszText,cchLen));
         SkPaint     txtPaint = m_curFont->GetPaint();
         txtPaint.setColor(m_curColor.toARGB());
@@ -648,7 +638,7 @@ namespace SOUI
     {
         if(m_hGetDC) return m_hGetDC;
         
-        HBITMAP bmp=m_curBmp->GetGdiBitmap();
+        HBITMAP bmp=m_curBmp?m_curBmp->GetGdiBitmap():NULL;
         HDC hdc_desk = ::GetDC(NULL);
         m_hGetDC = CreateCompatibleDC(hdc_desk);
         ::ReleaseDC(NULL,hdc_desk);

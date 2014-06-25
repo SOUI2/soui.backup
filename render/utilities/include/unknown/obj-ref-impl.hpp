@@ -18,7 +18,7 @@ public:
 	//!添加引用
 	/*!
 	*/
-	virtual void __stdcall AddRef()
+	virtual void AddRef()
 	{
 		InterlockedIncrement(&m_cRef);
 	}
@@ -26,7 +26,7 @@ public:
 	//!释放引用
 	/*!
 	*/
-	virtual void __stdcall Release()
+	virtual void Release()
 	{
 		InterlockedDecrement(&m_cRef);
 		if(m_cRef==0)
@@ -38,7 +38,7 @@ public:
 	//!释放对象
 	/*!
 	*/
-    virtual void __stdcall OnFinalRelease()
+    virtual void OnFinalRelease()
     {
         delete this;
     }
@@ -50,7 +50,7 @@ template<class T,class T2>
 class TObjRefImpl2 :  public TObjRefImpl<T>
 {
 public:
-    virtual void __stdcall OnFinalRelease()
+    virtual void OnFinalRelease()
     {
         delete static_cast<T2*>(this);
     }
