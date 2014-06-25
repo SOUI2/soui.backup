@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-// CDuiWindow Handle Manager
+// SWindow Handle Manager
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -8,9 +8,9 @@
 namespace SOUI
 {
 
-class CDuiWindow;
+class SWindow;
 
-class SOUI_EXP DuiWindowMgr :public DuiSingletonMap<DuiWindowMgr,CDuiWindow*,HDUIWND>
+class SOUI_EXP DuiWindowMgr :public DuiSingletonMap<DuiWindowMgr,SWindow*,HSWND>
 {
 public:
 
@@ -19,18 +19,18 @@ public:
     ~DuiWindowMgr();
 
     // Get DuiWindow pointer from handle
-    static CDuiWindow* GetWindow(HDUIWND hDuiWnd);
+    static SWindow* GetWindow(HSWND hDuiWnd);
 
     // Specify a handle to a DuiWindow
-    static HDUIWND NewWindow(CDuiWindow *pDuiWnd);
+    static HSWND NewWindow(SWindow *pDuiWnd);
 
     // Destroy DuiWindow
-    static BOOL DestroyWindow(HDUIWND hDuiWnd);
+    static BOOL DestroyWindow(HSWND hDuiWnd);
 protected:
 
     CRITICAL_SECTION m_lockWndMap;
 
-    HDUIWND m_hNextWnd;
+    HSWND m_hNextWnd;
 };
 
 }//namespace SOUI

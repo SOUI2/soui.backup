@@ -54,6 +54,13 @@ END
 
 IDR_JPG1                JPG                     "res\\sampleImage.jpg"
 IDR_ICON                JPG                     "res\\icon.jpg"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+IDB_PNG1                PNG                     "res\\dlg_bg_frame.png"
 #endif    // Chinese (P.R.C.) resources
 /////////////////////////////////////////////////////////////////////////////
 

@@ -252,9 +252,9 @@ int CMenuWndHook::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CMenuWndHook::OnWindowPosChanging(WINDOWPOS *pWindowPos)
 {
     if(m_strSkinName.IsEmpty()) return;
-    CDuiSkinBase *pSkin=GETSKIN(m_strSkinName);
+    ISkinObj *pSkin=GETSKIN(m_strSkinName);
     if(!pSkin) return;
-    CDuiSkinMenuBorder *pBorderSkin=static_cast<CDuiSkinMenuBorder*>(pSkin);
+    SSkinMenuBorder *pBorderSkin=static_cast<SSkinMenuBorder*>(pSkin);
     if(!pBorderSkin) return;
     pWindowPos->cx += pBorderSkin->GetMarginRect().left+pBorderSkin->GetMarginRect().right-SM_CXMENUBORDER*2;
     pWindowPos->cy -= pBorderSkin->GetMarginRect().top+pBorderSkin->GetMarginRect().bottom-SM_CXMENUBORDER*2;
@@ -263,9 +263,9 @@ void CMenuWndHook::OnWindowPosChanging(WINDOWPOS *pWindowPos)
 void CMenuWndHook::OnNcCalcsize(BOOL bValidCalc,NCCALCSIZE_PARAMS* lpncsp)
 {
     if(m_strSkinName.IsEmpty()) return;
-    CDuiSkinBase *pSkin=GETSKIN(m_strSkinName);
+    ISkinObj *pSkin=GETSKIN(m_strSkinName);
     if(!pSkin) return;
-    CDuiSkinMenuBorder *pBorderSkin=static_cast<CDuiSkinMenuBorder*>(pSkin);
+    SSkinMenuBorder *pBorderSkin=static_cast<SSkinMenuBorder*>(pSkin);
     if(!pBorderSkin) return;
 
     lpncsp->rgrc[0].left=lpncsp->lppos->x+pBorderSkin->GetMarginRect().left;
@@ -284,9 +284,9 @@ void CMenuWndHook::OnNcPaint()
 void CMenuWndHook::OnPrint(CDCHandle dc)
 {
     if(m_strSkinName.IsEmpty()) return;
-    CDuiSkinBase *pSkin=GETSKIN(m_strSkinName);
+    ISkinObj *pSkin=GETSKIN(m_strSkinName);
     if(!pSkin) return;
-    CDuiSkinMenuBorder *pBorderSkin=static_cast<CDuiSkinMenuBorder*>(pSkin);
+    SSkinMenuBorder *pBorderSkin=static_cast<SSkinMenuBorder*>(pSkin);
     if(!pBorderSkin) return;
 
     CRect rcClient;
@@ -298,8 +298,13 @@ void CMenuWndHook::OnPrint(CDCHandle dc)
     rcClient.OffsetRect(-rcWnd.TopLeft());
     dc.ExcludeClipRect(rcClient);
     rcWnd.MoveToXY(0,0);
-
-    pBorderSkin->Draw(dc,rcWnd,0,0xFF);
+    
+    CAutoRefPtr<IRenderTarget> pRT;
+    GETRENDERFACTORY->CreateRenderTarget(&pRT,rcWnd.Width(),rcWnd.Height());
+    pBorderSkin->Draw(pRT,rcWnd,0,0xFF);
+    HDC hmemdc=pRT->GetDC(0);
+    dc.BitBlt(0,0,rcWnd.Width(),rcWnd.Height(),hmemdc,0,0,SRCCOPY);
+    pRT->ReleaseDC(hmemdc);
 }
 
 void CMenuWndHook::OnNcDestroy()

@@ -14,7 +14,7 @@ namespace SOUI
 
 class CDuiComboBoxBase;
 
-class CComboEdit:public CDuiEdit
+class CComboEdit:public SEdit
 {
 public:
     CComboEdit(CDuiComboBoxBase *pOwner);
@@ -26,7 +26,7 @@ protected:
 
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
-    virtual LRESULT DuiNotify(LPDUINMHDR pnms);
+    virtual LRESULT DuiNotify(LPSNMHDR pnms);
 
     WND_MSG_MAP_BEGIN()
         MSG_WM_MOUSEHOVER(OnMouseHover)
@@ -36,7 +36,7 @@ protected:
 };
 
 class SOUI_EXP CDuiComboBoxBase 
-    : public CDuiWindow
+    : public SWindow
     , public IDuiDropDownOwner
 {
     friend class CComboListBox;
@@ -53,13 +53,13 @@ public:
 protected:
     //////////////////////////////////////////////////////////////////////////
     //    CDuiDropDownOwner
-    virtual CDuiWindow* GetDropDownOwner();
+    virtual SWindow* GetDropDownOwner();
     virtual void OnDropDown(CDuiDropDownWnd *pDropDown);
     virtual void OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode);
 protected:
     virtual void OnSelChanged();
 
-    virtual LRESULT DuiNotify(LPDUINMHDR pnms);
+    virtual LRESULT DuiNotify(LPSNMHDR pnms);
 protected:
     //计算弹出窗口位置
     BOOL CalcPopupRect(int nHeight,CRect & rcPopup);
@@ -70,7 +70,7 @@ protected:
     virtual BOOL LoadChildren(pugi::xml_node xmlNode);    
     virtual void GetTextRect(LPRECT pRect);
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget * pRT);
     void OnLButtonDown(UINT nFlags,CPoint pt);
     void OnMouseMove(UINT nFlags,CPoint pt);
     void OnMouseLeave();
@@ -90,7 +90,7 @@ protected:
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-        MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)        
         MSG_WM_MOUSEMOVE(OnMouseMove)
         MSG_WM_MOUSELEAVE(OnMouseLeave)
@@ -117,8 +117,8 @@ protected:
         }
     }
 
-    CDuiRichEdit *m_pEdit;
-    CDuiSkinBase *m_pSkinBtn;
+    SRichEdit *m_pEdit;
+    ISkinObj *m_pSkinBtn;
     DWORD          m_dwBtnState;
     
     BOOL m_bDropdown;
@@ -128,12 +128,12 @@ protected:
     CDuiDropDownWnd *m_pDropDownWnd;
 };
 
-class SOUI_EXP CDuiComboBox : public CDuiComboBoxBase
+class SOUI_EXP SComboBox : public CDuiComboBoxBase
 {
-    SOUI_CLASS_NAME(CDuiComboBox, "combobox")
+    SOUI_CLASS_NAME(SComboBox, "combobox")
 public:
-    CDuiComboBox();
-    virtual ~CDuiComboBox();
+    SComboBox();
+    virtual ~SComboBox();
 
     BOOL SetCurSel(int iSel)
     {
@@ -200,7 +200,7 @@ public:
         return strText;
     }
 
-    CDuiListBox * GetListBox(){return m_pListBox;}
+    SListBox * GetListBox(){return m_pListBox;}
 protected:
     virtual BOOL CreateListBox(pugi::xml_node xmlNode);
     virtual int  GetListBoxHeight();
@@ -213,15 +213,15 @@ protected:
 
 protected:
 
-    CDuiListBox *m_pListBox;
+    SListBox *m_pListBox;
 };
 
-class SOUI_EXP CDuiComboBoxEx : public CDuiComboBoxBase
+class SOUI_EXP SComboBoxEx : public CDuiComboBoxBase
 {
-    SOUI_CLASS_NAME(CDuiComboBox, "comboboxex")
+    SOUI_CLASS_NAME(SComboBox, "comboboxex")
 public:
-    CDuiComboBoxEx();
-    virtual ~CDuiComboBoxEx();
+    SComboBoxEx();
+    virtual ~SComboBoxEx();
 
     BOOL SetCurSel(int iSel)
     {
@@ -266,15 +266,15 @@ public:
         int iInserted= m_pListBox->InsertItem(iPos,NULL,lParam);
         if(iInserted!=-1)
         {
-            CDuiWindow *pWnd=m_pListBox->GetItemPanel(iInserted);
+            SWindow *pWnd=m_pListBox->GetItemPanel(iInserted);
             if(m_uTxtID!=0)
             {
-                CDuiWindow *pText=pWnd->FindChildByCmdID(m_uTxtID);
+                SWindow *pText=pWnd->FindChildByCmdID(m_uTxtID);
                 if(pText) pText->SetInnerText(pszText);
             }
             if(m_uIconID!=0)
             {
-                CDuiImageWnd *pIcon=pWnd->FindChildByCmdID2<CDuiImageWnd*>(m_uIconID);
+                SImageWnd *pIcon=pWnd->FindChildByCmdID2<SImageWnd*>(m_uIconID);
                 if(pIcon) pIcon->SetIcon(iIcon);
             }
         }
@@ -294,13 +294,13 @@ public:
     CDuiStringT GetLBText(int iItem)
     {
         if(m_uTxtID == 0 || iItem<0 || iItem>= GetCount()) return _T("");
-        CDuiWindow *pItem=m_pListBox->GetItemPanel(iItem);
-        CDuiWindow *pText=pItem->FindChildByCmdID(m_uTxtID);
+        SWindow *pItem=m_pListBox->GetItemPanel(iItem);
+        SWindow *pText=pItem->FindChildByCmdID(m_uTxtID);
         if(!pText) return _T("");
         return pText->GetInnerText();
     }
 
-    CDuiListBoxEx * GetListBox(){return m_pListBox;}
+    SListBoxEx * GetListBox(){return m_pListBox;}
 
 protected:
     virtual void OnSelChanged();
@@ -319,7 +319,7 @@ protected:
         ATTR_UINT("id_icon", m_uIconID, FALSE)
     SOUI_ATTRS_END()
 
-    CDuiListBoxEx *m_pListBox;
+    SListBoxEx *m_pListBox;
     UINT    m_uTxtID,m_uIconID;
 };
 

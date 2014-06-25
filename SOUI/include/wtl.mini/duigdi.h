@@ -3000,8 +3000,8 @@ public:
         DUIASSERT(m_hDC != NULL);
 
         COLORREF clrOld = ::SetBkColor(m_hDC, clr);
-        DUIASSERT(clrOld != CLR_INVALID);
-        if(clrOld != CLR_INVALID)
+        DUIASSERT(clrOld != CR_INVALID);
+        if(clrOld != CR_INVALID)
         {
             ::ExtTextOut(m_hDC, 0, 0, ETO_OPAQUE, lpRect, NULL, 0, NULL);
             ::SetBkColor(m_hDC, clrOld);

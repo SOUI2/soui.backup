@@ -34,6 +34,7 @@
 
 #include "duidef.h"
 
+#include "color.h"
 //export pugixml interface
 #include "../pugixml/pugixml.hpp"
 
@@ -75,11 +76,17 @@
 #include "../../utilities/include/utilities.h"
 
 
+#define RENDER_API SOUI_EXP
+#include "render/render-i.h"
+#define IMGDECODER_API SOUI_EXP
+#include "render/imgdecoder-i.h"
+
 #include "DuiAttrCrack.h"
 #include "res.mgr/duifontpool.h"
 #include "res.mgr/duiresprovider.h"
 #include "duisystem.h"
-#include "control/DuiMessageBox.h"
+//#include "control/DuiMessageBox.h"
+
 
 #pragma comment(lib,"Msimg32.lib")
 #pragma comment(lib,"shlwapi.lib")

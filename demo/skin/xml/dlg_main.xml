@@ -1,0 +1,118 @@
+﻿<UIFRAME name="dlg_main" title="SOUI-DEMO version:%ver%" width="600" height="400" appwin="1" margin="20,5,5,5"  resize="1" translucent="0">
+  <window pos="0,0,-0,-0" class="cls_dlg_frame">
+    <caption pos="0,0,-0,30">
+      <text pos="11,9" class="cls_txt_red">SOUI-DEMO version:%ver%</text>
+      <imgbtn id="1" skin="btn_sys_close"    pos="-45,0" tip="close" animate="1"/>
+      <imgbtn id="2" skin="btn_sys_maximize"  pos="-83,0" animate="1" />
+      <imgbtn id="3" name="按钮_恢复" skin="btn_sys_restore"  pos="-83,0" show="0" animate="1" />
+      <imgbtn id="5" name="btn_minimize" skin="btn_sys_minimize" pos="-121,0" animate="1" />
+    </caption>
+    <tabctrl pos="5,30,-5,-5" cursel="0" tabstop="0" inset="10,0,3,0">
+      <tab title="page1">
+        <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30">
+          <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+          </header>
+        </listctrl>
+      </tab>
+      <tab title="scroll view">
+        <scrollview id="1150" pos="10,0,-10,-10" viewwid="900" viewhei="5000">
+        </scrollview>
+      </tab>
+      <tab title="flash">
+        <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://swf.sc.chinaz.com//Files/DownLoad/flash2/201401/flash2524.swf" delayinit="1"/>
+      </tab>
+      <tab title="include">
+        <include src="xml_page2"/>
+      </tab>
+      <tab title="edit">
+        <edit pos="50,100,150,150">scroll edit</edit>
+      </tab>
+      <tab title="treebox">
+        <treebox pos="0,0,-0,-0" name="mytree" itemhei="30" critembg="FFFFFF" critemselbg="000088" indent="10">
+          <item>
+            <text pos="10,0,100,-0" valign="middle" align="center" crtext="ff0000">red test</text>
+            <text>normal text</text>
+            <edit pos="[5,0,]-5,20">test edit</edit>
+            <button class="normalbtn" pos="300,3,-10,-3">button</button>
+            <item>
+              <text pos="10,5" crtext="ff0000">red test</text>
+              <text>normal text</text>
+              <button class="normalbtn" pos="300,3,-10,-3">button</button>
+            </item>
+            <item>
+              <text pos="10,5" crtext="ff0000">red test</text>
+              <text>normal text</text>
+              <button class="normalbtn" pos="300,3,-10,-3">button</button>
+              <item>
+                <text pos="10,5" crtext="ff0000">red test</text>
+                <text>normal text</text>
+                <button class="normalbtn" pos="300,3,-10,-3">button</button>
+                <item>
+                  <text pos="10,5" crtext="ff0000">red test</text>
+                  <text>normal text</text>
+                  <button class="normalbtn" pos="300,3,-10,-3">button</button>
+                </item>
+              </item>
+            </item>
+            <item>
+              <text pos="10,5" crtext="ff0000">red test</text>
+              <text>normal text</text>
+              <button class="normalbtn" pos="300,3,-10,-3">button</button>
+            </item>
+          </item>
+        </treebox>
+      </tab>
+
+      <tab title="miscellaneous">
+        <animateimg name="ani_test" pos="20,100" skin="icons"/>
+        <img id="1139" pos="300,200,400,300" skin="icons" tip="img tip" msgtransparent="0"/>
+        <check id="1300" pos="40,20" crtext="ff0000" state="4">test1</check>
+        <check id="1301" pos="40,70">test2</check>
+        <window pos="0,90,-0,-0" >
+          <radio id="1303" pos="10,10">radio1</radio>
+          <radio id="1304" pos="110,10">radio2</radio>
+          <radio id="1305" pos="10,60">radio3</radio>
+          <radio id="1306" pos="110,60">radio4</radio>
+        </window>
+        <img skin="icons" name="testimg" fun="todo:layout"/>
+        <button id="1360" class="normalbtn" pos="10,200,150,230" accel="ctrl+alt+num 8" animate="1">dui menu</button>
+        <hotkey id="1340" pos="350,20,450,45" class="cls_edit"/>
+        <hotkey name="ctrl_hk2" pos="460,20,560,45" class="cls_edit"/>
+        <progress name="IDC_PROGTEST" pos="200,100,-10,115" bgskin="prog_bg" posskin="prog_bar" value="20" min="0" max="100" showpercent="1"/>
+        <sliderbar name="IDC_SLIDERTEST" show="0" pos="%20.5,130" alpha="200" width="200" bgskin="prog_bg" posskin="prog_bar" thumbskin="slidethumb" value="20" min="0" max="100"/>
+
+        <link id="1380" pos="10,250" maxwidth="100" class="cls_btn_weblink" dotted="1" href="www.yy.com">link</link>
+        <button name="btn_tstevt" pos="300,300,400,330" class="normalbtn">test event</button>
+      </tab>
+      <tab title="link">
+        <calendar pos="0,0,-0,-0" name="mp_test" daySkin="btn_yellow" footerHeight="30">
+          <text name="label_today" pos="10,-20"/>
+          <imgbtn name="btn_today" pos="-50,-25,-5,-0" skin="btn_yellow"/>
+        </calendar>
+      </tab>
+      <tab id="119" title="duitreectrl">
+        <treectrl pos="10,0,-10,-10"  name="mytree1" itemhei="30" iconskin="TreeIcon" checkbox="1">
+          <item text="组织机构" img="0" selimg="1">
+            <item text="市场部" img="0" selimg="1">
+              <item text="南一区" img="2"/>
+              <item text="北二区" img="2"/>
+              <item text="西三区" img="2">
+                <item text="第一分队" img="0" selimg="1">
+                  <item text="张三组" img="2"/>
+                  <item text="李四组" img="2"/>
+                  <item text="王五组" img="2"/>
+                </item>
+              </item>
+            </item>
+            <item text="宣传部" img="0" selimg="1">
+              <item text="南一区" img="2"/>
+              <item text="北二区" img="2"/>
+              <item text="西三区" img="2"/>
+            </item>
+          </item>
+        </treectrl>
+      </tab>
+
+    </tabctrl>
+  </window>
+</UIFRAME>

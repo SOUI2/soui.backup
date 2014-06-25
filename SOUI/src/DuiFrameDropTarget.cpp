@@ -3,7 +3,7 @@
 #include "duiframe.h"
 
 namespace SOUI{
-    CDuiFrameDropTarget::CDuiFrameDropTarget(CDuiWindow * pFrame)
+    CDuiFrameDropTarget::CDuiFrameDropTarget(SWindow * pFrame)
         :m_pDuiFrame(pFrame)
         ,m_pDataObj(NULL)
         ,m_hDuiHover(0)
@@ -21,7 +21,7 @@ namespace SOUI{
         }
     }
 
-    BOOL CDuiFrameDropTarget::RegisterDragDrop( HDUIWND hDuiWnd,IDropTarget *pDropTarget )
+    BOOL CDuiFrameDropTarget::RegisterDragDrop( HSWND hDuiWnd,IDropTarget *pDropTarget )
     {
         if(m_mapDropTarget.Lookup(hDuiWnd)) return FALSE;
         m_mapDropTarget[hDuiWnd]=pDropTarget;
@@ -29,7 +29,7 @@ namespace SOUI{
         return TRUE;
     }
 
-    BOOL CDuiFrameDropTarget::RevokeDragDrop( HDUIWND hDuiWnd )
+    BOOL CDuiFrameDropTarget::RevokeDragDrop( HSWND hDuiWnd )
     {
         DTMAP::CPair *pPair=m_mapDropTarget.Lookup(hDuiWnd);
         if(!pPair) return FALSE;
@@ -58,7 +58,7 @@ namespace SOUI{
 
     HRESULT STDMETHODCALLTYPE CDuiFrameDropTarget::DragOver( /* [in] */ DWORD grfKeyState, /* [in] */ POINTL pt, /* [out][in] */ __RPC__inout DWORD *pdwEffect )
     {
-        HDUIWND hDuiHover=m_pDuiFrame->DuiGetHWNDFromPoint(PointL2FrameClient(pt),FALSE);
+        HSWND hDuiHover=m_pDuiFrame->DuiGetHWNDFromPoint(PointL2FrameClient(pt),FALSE);
         DUIASSERT(hDuiHover);
         *pdwEffect=DROPEFFECT_NONE;
         if(hDuiHover != m_hDuiHover)

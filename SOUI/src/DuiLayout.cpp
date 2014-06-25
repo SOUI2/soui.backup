@@ -37,7 +37,7 @@ namespace SOUI
 
 
 
-    int CDuiLayout::PositionItem2Value(CDuiWindow *pWnd, const DUIDLG_POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX)
+    int CDuiLayout::PositionItem2Value(SWindow *pWnd, const DUIDLG_POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX)
     {
         int nRet=0;
         int nWid=nMax-nMin;
@@ -59,7 +59,7 @@ namespace SOUI
             break;
         case PIT_PREVSIBLING:
             {
-                CDuiWindow *pRefWnd=pWnd->GetDuiWindow(GDUI_PREVSIBLING);
+                SWindow *pRefWnd=pWnd->GetDuiWindow(GDUI_PREVSIBLING);
                 if(!pRefWnd) pRefWnd=pWnd->GetDuiWindow(GDUI_PARENT);
                 if(pRefWnd)
                 {//需要确定参考窗口是否完成布局
@@ -83,7 +83,7 @@ namespace SOUI
             break;
         case PIT_NEXTSIBLING:
             {
-                CDuiWindow *pRefWnd=pWnd->GetDuiWindow(GDUI_NEXTSIBLING);
+                SWindow *pRefWnd=pWnd->GetDuiWindow(GDUI_NEXTSIBLING);
                 if(!pRefWnd) pRefWnd=pWnd->GetDuiWindow(GDUI_PARENT);
                 if(pRefWnd)
                 {//需要确定参考窗口是否完成布局
@@ -110,7 +110,7 @@ namespace SOUI
         return nRet;
 
     }
-    int CDuiLayout::CalcPosition(CDuiWindow *pWnd, LPRECT lpRcContainer,const DUIWND_POSITION & dlgpos,CRect &rcWindow )
+    int CDuiLayout::CalcPosition(SWindow *pWnd, LPRECT lpRcContainer,const DUIWND_POSITION & dlgpos,CRect &rcWindow )
     {
         int nRet=0;
 
@@ -193,7 +193,7 @@ namespace SOUI
                 }
             }else //if(dlgpos.nCount==0)
             {//自动排版
-                CDuiWindow *pSibling=pWnd->GetDuiWindow(GDUI_PREVSIBLING);
+                SWindow *pSibling=pWnd->GetDuiWindow(GDUI_PREVSIBLING);
                 if(!pSibling)
                 {
                     pt.x=lpRcContainer->left;
@@ -221,7 +221,7 @@ namespace SOUI
         return nRet;
     }
 
-    BOOL CDuiLayout::CalcChildrenPosition(CDuiWindow *pWnd,CDuiList<CDuiWindow*> *pListChildren)
+    BOOL CDuiLayout::CalcChildrenPosition(SWindow *pWnd,CDuiList<SWindow*> *pListChildren)
     {
         CRect rcContainer=pWnd->GetChildrenLayoutRect();
         POSITION pos=pListChildren->GetHeadPosition();
@@ -229,7 +229,7 @@ namespace SOUI
         while(pos)
         {
             POSITION posOld=pos;
-            CDuiWindow *pChild=pListChildren->GetNext(pos);
+            SWindow *pChild=pListChildren->GetNext(pos);
             if(0==pChild->DuiSendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer))
                 pListChildren->RemoveAt(posOld);
         }

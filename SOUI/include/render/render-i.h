@@ -4,7 +4,9 @@
 #define RENDER_API
 #endif
 
+#ifndef OR_API
 #define OR_API RENDER_API
+#endif
 
 #include <unknown/obj-ref-i.h>
 
@@ -60,12 +62,13 @@ struct RENDER_API IBitmap: public IRenderObj
 	{
 		return OT_BITMAP;
 	}
-	virtual HRESULT Init(IRenderTarget *pRT,int nWid,int nHei)=0;
-	virtual HRESULT LoadFromFile(IRenderTarget *pRT,LPCTSTR pszFileName,LPCTSTR pszType)=0;
-	virtual HRESULT LoadFromMemory(IRenderTarget *pRT,LPBYTE pBuf,size_t szLen,LPCTSTR pszType)=0;
+	virtual HRESULT Init(int nWid,int nHei)=0;
+	virtual HRESULT LoadFromFile(LPCTSTR pszFileName,LPCTSTR pszType)=0;
+	virtual HRESULT LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType)=0;
 	
 	virtual UINT    Width() =0;
 	virtual UINT    Height() =0;
+	virtual SIZE    Size() =0;
 };
 
 struct RENDER_API IFont : public IRenderObj
@@ -74,6 +77,12 @@ struct RENDER_API IFont : public IRenderObj
 	{
 		return OT_FONT;
 	}
+    virtual const LOGFONT * LogFont() const =0;
+    virtual LPCTSTR FamilyName()=0;
+    virtual int TextSize()=0;
+	virtual BOOL IsBold()=0;
+	virtual BOOL IsUnderline()=0;
+	virtual BOOL IsItalic()=0;
 };
 
 struct RENDER_API IRegion : public IRenderObj
@@ -89,6 +98,14 @@ struct RENDER_API IRegion : public IRenderObj
 	virtual void GetRgnBox(LPRECT lprect)=0;
 	virtual BOOL IsEmpty()=0;
     virtual void Offset(POINT pt)=0;
+    virtual void Clear()=0;
+};
+
+enum EXPEND_MODE
+{
+    EM_NULL=0,      //不扩大
+    EM_STRETCH,     //拉伸
+    EM_TILE,        //平铺
 };
 
 //创建设备相关资源
@@ -96,11 +113,8 @@ struct RENDER_API IRenderTarget: public IObjRef
 {
 	virtual HRESULT CreateCompatibleRenderTarget(SIZE szTarget,IRenderTarget **ppRenderTarget)=0;
 	virtual HRESULT CreatePen(int iStyle,COLORREF cr,int cWidth,IPen ** ppPen)=0;
-	virtual HRESULT CreateFont( const LOGFONT &lf,IFont ** ppFont )=0;
 	virtual HRESULT CreateSolidColorBrush(COLORREF cr,IBrush ** ppBrush)=0;
 	virtual HRESULT CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush )=0;
-	virtual HRESULT CreateRegion(IRegion ** ppRegion)=0;
-	virtual HRESULT CreateBitmap(IBitmap ** ppBitmap)=0;
 
 	virtual HRESULT BindDC(HDC,LPCRECT)=0;
 	virtual HRESULT BeginDraw()=0;
@@ -110,29 +124,33 @@ struct RENDER_API IRenderTarget: public IObjRef
     virtual HRESULT OffsetViewportOrg(int xOff, int yOff, LPPOINT lpPoint=NULL)=0;
     virtual HRESULT GetViewportOrg(LPPOINT lpPoint) =0;
 
-	virtual HRESULT PushClipRect(LPCRECT pRect)=0;
+	virtual HRESULT PushClipRect(LPCRECT pRect,UINT mode=RGN_AND)=0;
 	virtual HRESULT PopClipRect()=0;
 
-	virtual HRESULT PushClipRegion(IRegion *pRegion)=0;
+	virtual HRESULT PushClipRegion(IRegion *pRegion,UINT mode=RGN_AND)=0;
 	virtual HRESULT PopClipRegion()=0;
 
     virtual HRESULT GetClipRegion(IRegion **ppRegion)=0;
+    virtual HRESULT GetClipBound(LPRECT prcBound)=0;
 
 	virtual HRESULT DrawText(LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat,BYTE byAlpha =0xFF)=0;
     virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz) =0;
     virtual HRESULT TextOut(int x,int y, LPCTSTR lpszString,int nCount,BYTE byAlpha = 0xFF) =0;
 
-	virtual HRESULT DrawRectangle(int left, int top,int right,int bottom)=0;
-	virtual HRESULT FillRectangle(int left, int top,int right,int bottom)=0;
-
+	virtual HRESULT DrawRectangle(LPRECT pRect)=0;
+	virtual HRESULT FillRectangle(LPRECT pRect)=0;
+    virtual HRESULT FillSolidRect(LPCRECT pRect,COLORREF cr)=0;
     virtual HRESULT DrawRoundRect(LPCRECT pRect,POINT pt)=0;
     virtual HRESULT FillRoundRect(LPCRECT pRect,POINT pt)=0;
     
     virtual HRESULT DrawLines(LPPOINT pPt,size_t nCount) =0;
     virtual HRESULT GradientFill(LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha=0xFF)=0;
     
-	virtual HRESULT DrawBitmap(LPRECT pRcDest,IBitmap *pBitmap,LPRECT pRcSour,BYTE byAlpha=0xFF)=0;
-	virtual HRESULT BitBlt(LPRECT pRcDest,IRenderTarget *pRTSour,LPRECT rcSour,UINT uDef)=0;
+    virtual HRESULT DrawIconEx(int xLeft, int yTop, HICON hIcon, int cxWidth,int cyWidth,UINT diFlags)=0;
+    virtual HRESULT DrawBitmap(LPCRECT pRcDest,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha=0xFF)=0;
+    virtual HRESULT DrawBitmapEx(LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,EXPEND_MODE expendMode, BYTE byAlpha=0xFF)=0;
+    virtual HRESULT DrawBitmap9Patch(LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,LPCRECT pRcSourMargin,EXPEND_MODE expendMode,BYTE byAlpha=0xFF) =0;
+	virtual HRESULT BitBlt(LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop=SRCCOPY)=0;
 
 	virtual IRenderObj * GetCurrentObject(OBJTYPE uType) =0;
 	virtual HRESULT SelectObject(IRenderObj *pObj,IRenderObj ** pOldObj = NULL) =0;
@@ -148,6 +166,9 @@ struct RENDER_API IRenderTarget: public IObjRef
 struct RENDER_API IRenderFactory : public IObjRef
 {
 	virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei)=0;
+    virtual BOOL CreateFont(IFont ** ppFont, const LOGFONT &lf)=0;
+    virtual BOOL CreateBitmap(IBitmap ** ppBitmap)=0;
+    virtual BOOL CreateRegion(IRegion **ppRgn)=0;
 };
 
 }//end of namespace SOUI

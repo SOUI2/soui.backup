@@ -7,21 +7,22 @@
 
 #pragma  once
 
+#include "DuiPanel.h"
 #include "duiitempanel.h"
 
 namespace SOUI
 {
 
-class SOUI_EXP CDuiListBoxEx :public CDuiScrollView
-    ,public IDuiItemContainer
+class SOUI_EXP SListBoxEx :public SScrollView
+    ,public IItemContainer
 {
 public:
 
-    SOUI_CLASS_NAME(CDuiListBoxEx, "listboxex")
+    SOUI_CLASS_NAME(SListBoxEx, "listboxex")
 
-    CDuiListBoxEx();
+    SListBoxEx();
 
-    virtual ~CDuiListBoxEx();
+    virtual ~SListBoxEx();
 
 
     void DeleteAllItems(BOOL bUpdate=TRUE);
@@ -38,9 +39,9 @@ public:
 
     int GetCurSel();
 
-    int GetItemObjIndex(CDuiWindow *pItemObj);
+    int GetItemObjIndex(SWindow *pItemObj);
 
-    CDuiWindow * GetItemPanel(int iItem);
+    SWindow * GetItemPanel(int iItem);
 
     LPARAM GetItemData(int iItem);
 
@@ -69,12 +70,10 @@ public:
     //自动修改pt的位置为相对当前项的偏移量
     int HitTest(CPoint &pt);
 
-    virtual BOOL Load(pugi::xml_node xmlNode);
-
     BOOL IsVirtual(){return m_bVirtual;}
 protected:
-    virtual void OnItemSetCapture(CDuiItemPanel *pItem,BOOL bCapture);
-    virtual BOOL OnItemGetRect(CDuiItemPanel *pItem,CRect &rcItem);
+    virtual void OnItemSetCapture(SItemPanel *pItem,BOOL bCapture);
+    virtual BOOL OnItemGetRect(SItemPanel *pItem,CRect &rcItem);
     virtual BOOL IsItemRedrawDelay(){return m_bItemRedrawDelay;}
 protected:
     void UpdatePanelsIndex(UINT nFirst=0,UINT nLast=-1);
@@ -84,15 +83,15 @@ protected:
 
     virtual int GetScrollLineSize(BOOL bVertical);
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget * pRT);
 
     void OnSize(UINT nType, CSize size);
 
-    virtual void OnDrawItem(CDCHandle & dc, CRect & rc, int iItem);
+    virtual void OnDrawItem(IRenderTarget *pRT, CRect & rc, int iItem);
 
     virtual BOOL LoadChildren(pugi::xml_node xmlNode);
     // Get tooltip Info
-    virtual BOOL OnUpdateToolTip(HDUIWND hCurTipHost,HDUIWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
+    virtual BOOL OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
 
     void NotifySelChange(int nOldSel,int nNewSel);
 
@@ -124,17 +123,17 @@ protected:
 
     void Relayout();
 protected:
-    CDuiArray<CDuiItemPanel *> m_arrItems;
+    CDuiArray<SItemPanel *> m_arrItems;
 
     int        m_iSelItem;
     int        m_iHoverItem;
     int        m_iScrollSpeed;
 
-    CDuiItemPanel    * m_pTemplPanel;    //虚拟列表使用的DUI模板
+    SItemPanel    * m_pTemplPanel;    //虚拟列表使用的DUI模板
     int        m_nItems;                    //虚拟列表中记录列表项
     pugi::xml_document m_xmlTempl;        ////列表模板XML
-    CDuiItemPanel    *    m_pCapturedFrame;
-    CDuiSkinBase * m_pItemSkin;
+    SItemPanel    *    m_pCapturedFrame;
+    ISkinObj * m_pItemSkin;
     COLORREF m_crItemBg,m_crItemSelBg;
     int        m_nItemHei;
     BOOL    m_bVirtual;
@@ -157,7 +156,7 @@ public:
         MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
         MESSAGE_HANDLER_EX(WM_IME_CHAR,OnKeyEvent)
         MSG_WM_DESTROY(OnDestroy)
-        MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_MOUSELEAVE(OnMouseLeave)
         MSG_WM_KEYDOWN(OnKeyDown)
         MSG_WM_CHAR(OnChar)

@@ -13,17 +13,18 @@ namespace SOUI
 template<> DuiFontPool* Singleton<DuiFontPool>::ms_Singleton    = 0;
 
 
-DuiFontPool::DuiFontPool()
-    :  m_lFontSize(-11)
+DuiFontPool::DuiFontPool(IRenderFactory *pRendFactory)
+    : m_lFontSize(-11)
+    , m_RenderFactory(pRendFactory)
 {
     _tcscpy(m_szDefFontFace,_T("Tahoma"));
     m_pFunOnKeyRemoved=OnKeyRemoved;
     SetKeyObject(FontKey(DUIF_DEFAULTFONT),_CreateDefaultGUIFont());
 }
 
-HFONT DuiFontPool::GetFont(WORD uKey,LPCTSTR strFaceName)
+IFontPtr DuiFontPool::GetFont(WORD uKey,LPCTSTR strFaceName)
 {
-    HFONT hftRet=0;
+    IFontPtr hftRet=0;
     FontKey key(uKey,strFaceName);
     if(HasKey(key))
     {
@@ -37,11 +38,10 @@ HFONT DuiFontPool::GetFont(WORD uKey,LPCTSTR strFaceName)
 
         AddKeyObject(key,hftRet);
     }
-    DUIASSERT(GetObjectType(hftRet)==OBJ_FONT);
     return hftRet;
 }
 
-HFONT DuiFontPool::GetFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding /*= 0*/,LPCTSTR strFaceName/*=""*/)
+IFontPtr DuiFontPool::GetFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding /*= 0*/,LPCTSTR strFaceName/*=""*/)
 {
     return GetFont(DUIF_MAKEKEY(bBold, bUnderline, bItalic, chAdding),strFaceName);
 }
@@ -53,14 +53,12 @@ void DuiFontPool::SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize)
 
     DUIASSERT(GetCount()==1);//初始化前才可以调用该接口
 
-    HFONT hftOld = GetKeyObject(FontKey(DUIF_DEFAULTFONT));
+    CAutoRefPtr<IFont> hftOld = GetKeyObject(FontKey(DUIF_DEFAULTFONT));
 
     SetKeyObject(FontKey(DUIF_DEFAULTFONT),_CreateDefaultGUIFont());
-
-    ::DeleteObject(hftOld);
 }
 
-HFONT DuiFontPool::_CreateDefaultGUIFont()
+IFontPtr DuiFontPool::_CreateDefaultGUIFont()
 {
     ::GetObjectA(::GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &m_lfDefault);
 
@@ -68,11 +66,16 @@ HFONT DuiFontPool::_CreateDefaultGUIFont()
     _tcscpy_s(m_lfDefault.lfFaceName,_countof(m_lfDefault.lfFaceName),  m_szDefFontFace);
 
     m_lfDefault.lfQuality = ANTIALIASED_QUALITY;
+    
+    DUIASSERT(m_RenderFactory);
 
-    return ::CreateFontIndirect(&m_lfDefault);
+    IFontPtr pFont=NULL;
+    m_RenderFactory->CreateFont(&pFont,m_lfDefault);
+
+    return pFont;
 }
 
-HFONT DuiFontPool::_CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,CDuiStringT strFaceName/*=""*/)
+IFontPtr DuiFontPool::_CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,CDuiStringT strFaceName/*=""*/)
 {
     LOGFONT lfNew;
 
@@ -87,13 +90,17 @@ HFONT DuiFontPool::_CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, cha
     lfNew.lfHeight = _GetFontAbsHeight(lfNew.lfHeight - chAdding);
 
     lfNew.lfQuality = CLEARTYPE_NATURAL_QUALITY;
-    HFONT hFont= ::CreateFontIndirect(&lfNew);
-    return hFont;
+
+    IFontPtr pFont=NULL;
+    DUIASSERT(m_RenderFactory);
+    m_RenderFactory->CreateFont(&pFont,lfNew);
+
+    return pFont;
 }
 
 LONG DuiFontPool::_GetFontAbsHeight(LONG lSize)
 {
-    return lSize;
+    return lSize<0? (-lSize):lSize;
 }
 
 }//namespace SOUI

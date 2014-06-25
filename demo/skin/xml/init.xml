@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="宋体" size="12"/>
+
+  <editmenu itemskin="skin_menuitem" iconskin="skin_menuicon" itemheight="26" sepskin="skin_menusplit" iconmargin="4" textmargin="8" bgskin="skin_menubg">
+    <item id="1" icon="0">剪切</item>
+    <item id="2" icon="1">复制</item>
+    <item id="3" icon="2">粘贴</item>
+    <item id="4" icon="3">删除</item>
+    <sep/>
+    <item id="5">全选</item>
+  </editmenu>
+  
+  <string>
+    <ver value="1.0"/>
+  </string>
+  
+  <skins>
+    <imgframe name="dlg_frame"  src="IDP_MAIN_DLG_FRAME" left="5" right="5" top="40" bottom="40"/>
+
+    <imglist name="btncheckbox"         src="IDP_BTN_WND_CHECKBOX" states="8"  />
+    <imglist name="btnRadio"            src="IDP_BTN_WND_RADIO" states="8" />
+    <imglist name="focuscheckbox" src="IDP_FOCUS_CHECK"/>
+    <imglist name="focusRadio" src="IDP_FOCUS_RADIO"/>
+
+    <imglist name="btn_sys_close"    src="IDP_BTN_SYS_CLOSE" states="3" />
+    <imglist name="btn_sys_minimize" src="IDP_BTN_SYS_MINIMIZE" states="3" />
+    <imglist name="btn_sys_maximize" src="IDP_BTN_SYS_MAXIMIZE" states="3" />
+    <imglist name="btn_sys_restore" src="IDP_BTN_SYS_RESOTRE" states="3" />
+
+    <imglist name="tabskin_default" src="IDP_TAB_COMMON" states="3"/>
+
+    <button name="normalbtn" border="7D9EBC" bg="FBFCFD" bgup="FEFEFE"
+        bgdown="C6E2FD" bguphover="FEFEFE" bgdownhover="DBEDFE"
+        bguppush="C6E2FD" bgdownpush="FEFEFE"/>
+
+    <scrollbar name="sb_common" src="IDP_SCROLL" margin="3" hasgripper="0"/>
+    <scrollbar name="sb_test" src="IDP_SCROLL2" margin="3" hasgripper="0" hasinactive="1"/>
+
+    <imgframe name="skin_editnc" src="IDP_EDIT_BORDER" states="2" left="2" top="2"/>
+    <imgframe name="skin_split_vert" src="IDP_SPLIT_VERT" top="20" bottom="10"/>
+    <imgframe name="skin_split_horz" src="IDP_SPLIT_HORZ" left="20" right="10"/>
+    <imgframe name="comboboxbtn" src="IDP_DROPBTN" states="3"/>
+    <imglist name="icons" src="IDP_ICONS" states="6"/>
+    <imglist name="skin_menuicon" src="IDP_ICONS_SMALL" states="12"/>
+    <imgframe name="skin_menuitem" src="IDP_MENUSKIN" states="2" left="35" right="5"/>
+    <imglist name="skin_menusplit" src="IDP_MENUSPLIT"/>
+    <imgframe name="skin_menubg" src="IDP_MENUBG" left="30" top="5" right="5"/>
+    <imglist name="skin_menucheck" src="IDP_MENUCHECK" subwidth="16"/>
+    <border name="skin_menuborder" src="IDP_MENUBORDER" left="2" top="2" border="2,2,2,2" key="FF00FF" alpha="100"/>
+    <imglist name="skin_webbtn_back" src="IDP_WEBBTN_BACK" states="4"/>
+    <imglist name="skin_webbtn_forward" src="IDP_WEBBTN_FORWARD" states="4"/>
+    <imglist name="skin_webbtn_refresh" src="IDP_WEBBTN_REFRESH" states="4"/>
+    <imglist name="TreeToggle"					src="IDR_TREE_TOGGLE" states="6"/>
+    <imglist name="TreeCheckBox"				src="IDR_TREE_CHECKBOX" states="9"/>
+    <imglist name="TreeIcon"						src="IDR_TREE_ICON" states="3"/>
+    <imglist name="icon3"							src="IDP_ICON3"  states="12"/>
+
+    <imglist name="slidethumb" src="IDP_SLIDETHUMB" states="4"/>
+    <imgframe name="prog_bar" src="IDP_PROG_BAR" x="3"/>
+    <imgframe name="prog_bg" src="IDP_PROG_BG" x="5"/>
+    <imgframe name="btn_yellow" src="IDP_BTN_YELLOW" x="3" states="4"/>
+
+  </skins>
+
+  <style>
+    <class name="cls_dlg_frame" skin="dlg_frame" font="0000" crtext="FFFFFF" x-margin="0"/>
+
+    <class name="cls_btn_link"    cursor="hand" crhover="0A84D2" />
+    <!--定义文字按钮的样式-->
+    <class name="cls_btn_weblink" cursor="hand" crtext="1e78d5" crhover="1e78d5" hoverfont="0002" />
+
+    <class name="cls_txt_red"     font="0004:宋体"  crtext="FF0000" />
+    <!--定义白色粗体宋体-->
+    <class name="cls_txt_black"   font="0004:宋体"  crtext="000000" />
+    <!--定义黑色粗体宋体-->
+    <class name="cls_txt_white"   font="0004:宋体"  crtext="FFFFFF" />
+    <!--定义白色粗体宋体-->
+    <class name="Arial_txt_white_center"   font="0004:Arial" textmode="25" crtext="FFFFFF" />
+
+    <class name="normalbtn" skin="normalbtn" font="0000" crtext="385e8b" crdisabled="91a7c0" textmode="25" cursor="hand" x-margin="0"/>
+
+    <class name="toptext" textmode="20" />
+    <class name="vcentertext" textmode="24"/>
+    <class name="rightvcentertext" textmode="26"/>
+    <class name="centertext" textmode="25"/>
+    <class name="righttext" textmode="22"/>
+    <class name="Arial_txt_white"   font="0000:Arial" textmode="25" crtext="FCF5F1" />
+    <class name="Arial_txt_gray"   font="0000:Arial" textmode="25" crtext="565656" />
+
+    <class name="linkimage" cursor="hand"/>
+
+    <class name="cls_edit" x-margin="2" y-margin="2" ncskin="skin_editnc"/>
+  </style>
+
+  <objattr>
+    <button class="normalbtn"/>
+    <check skin="btncheckbox"/>
+    <radio skin="btnRadio"/>
+    <imgbtn class="linkimage"/>
+    <tabctrl tabskin="tabskin_default" crtext="000000" align="top" tabwidth="70" tabheight="38" tabspacing="0" tabpos="10" dotted="1"/>
+    <div sbskin="sb_common" sbwid="16"/>
+    <edit transparent="1" x-margin="2" y-margin="2" ncskin="skin_editnc"/>
+    <treectrl toggleskin="TreeToggle" checkskin="TreeCheckBox" critembg="FFFFFF" critemselbg="000088" critemtext="000000" critemseltext="FFFFFF" indent="17" itemmargin="4"/>
+  </objattr>
+</UIDEF>

@@ -22,7 +22,6 @@
 
 
 #include "resource.h"	//APP×ÊÔ´
-#include "duires/winres.h"	//¿Ø¼þID
 
 #include "../zlib/zconf.h"
 #include "../zlib/zlib.h"
@@ -32,7 +31,7 @@ using namespace SOUI;
 #ifdef _DEBUG
 
 #if !defined(_WIN64)
-#pragma comment(lib,"zlib_d.lib")
+// #pragma comment(lib,"zlib_d.lib")
 #endif
 
 	#ifdef USING_ATL
@@ -45,7 +44,7 @@ using namespace SOUI;
 #else
 
 #if !defined(_WIN64)
-#pragma comment(lib,"zlib.lib")
+// #pragma comment(lib,"zlib.lib")
 #endif
 
 	#ifdef DLL_SOUI

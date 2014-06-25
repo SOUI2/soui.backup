@@ -24,13 +24,13 @@ public:
 };
 
 
-class SOUI_EXP CDuiRealWnd : public CDuiWindow
+class SOUI_EXP SRealWnd : public SWindow
 {
-    SOUI_CLASS_NAME(CDuiRealWnd, "realwnd")
+    SOUI_CLASS_NAME(SRealWnd, "realwnd")
 public:
-    CDuiRealWnd();
+    SRealWnd();
 
-    virtual ~CDuiRealWnd();
+    virtual ~SRealWnd();
 
 
     const HWND GetRealHwnd(BOOL bAutoCreate=TRUE);
@@ -77,7 +77,7 @@ protected:
     WND_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
     MSG_WM_DESTROY(OnDestroy)
-    MSG_WM_DUIWINPOSCHANGED(OnWindowPosChanged)
+    MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
     MSG_WM_SHOWWINDOW(OnShowWindow)
     WND_MSG_MAP_END()
 
@@ -90,10 +90,10 @@ protected:
 
 interface SOUI_EXP IDuiRealWndHandler
 {
-    virtual HWND OnRealWndCreate(CDuiRealWnd *pRealWnd)=NULL;
-    virtual BOOL OnRealWndInit(CDuiRealWnd *pRealWnd)=NULL;
-    virtual void OnRealWndDestroy(CDuiRealWnd *pRealWnd)=NULL;
-    virtual void OnRealWndSize(CDuiRealWnd *pRealWnd)=NULL;
+    virtual HWND OnRealWndCreate(SRealWnd *pRealWnd)=NULL;
+    virtual BOOL OnRealWndInit(SRealWnd *pRealWnd)=NULL;
+    virtual void OnRealWndDestroy(SRealWnd *pRealWnd)=NULL;
+    virtual void OnRealWndSize(SRealWnd *pRealWnd)=NULL;
 };
 
 }//namespace SOUI

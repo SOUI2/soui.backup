@@ -274,7 +274,7 @@ void CCalendarCore::FormatLunarDay(WORD  iDay, TCHAR *pBuffer)
 //    CCalendar
 //////////////////////////////////////////////////////////////////////////
 
-CDuiCalendar::CDuiCalendar(WORD iYear, WORD iMonth, WORD iDay)
+SCalendar::SCalendar(WORD iYear, WORD iMonth, WORD iDay)
 {
     Init();
    if(!SetDate(iYear, iMonth, iDay))
@@ -284,14 +284,14 @@ CDuiCalendar::CDuiCalendar(WORD iYear, WORD iMonth, WORD iDay)
    }
 }
 
-CDuiCalendar::CDuiCalendar()
+SCalendar::SCalendar()
 {
     Init();
     CTime tm=CTime::GetCurrentTime();
     SetDate(tm.GetYear(),tm.GetMonth(),tm.GetDay());
 }
 
-void CDuiCalendar::Init()
+void SCalendar::Init()
 {
     addEvent(NM_CALENDAR_SELECTDAY);
     m_nTitleHei=TITLE_HEIGHT;
@@ -311,7 +311,7 @@ void CDuiCalendar::Init()
 
 /////////////////////////////////////////////////////////////////////////////
 // CCalendar message handlers
-void CDuiCalendar::DrawTitle(CDCHandle &dc)
+void SCalendar::DrawTitle(IRenderTarget *pRT)
 {
    CRect rect ;
    GetClient(&rect);
@@ -319,29 +319,29 @@ void CDuiCalendar::DrawTitle(CDCHandle &dc)
    rect.bottom = rect.top + m_nTitleHei;
 
    if(m_pTitleSkin)
-       m_pTitleSkin->Draw(dc,rect,0);
+       m_pTitleSkin->Draw(pRT,rect,0);
    else
-       CGdiAlpha::FillRect(dc,&rect, CBrush((HBRUSH)::GetStockObject(m_crTitleBack)));
+       pRT->FillSolidRect(&rect,m_crTitleBack);
 
    int nWid=rect.Width()/7;
    CRect rcItem=rect;
    rcItem.right=rcItem.left+nWid;
 
-   COLORREF crTxt=dc.GetTextColor();
+   COLORREF crTxt=pRT->GetTextColor();
    for(int i=0; i <7; i++)
    {
        if(i==0 || i==6 )
-           dc.SetTextColor(m_crWeekend);
+           pRT->SetTextColor(m_crWeekend);
        else
-           dc.SetTextColor(crTxt);
+           pRT->SetTextColor(crTxt);
 
-       CGdiAlpha::DrawText(dc,m_strTitle[i],m_strTitle[i].GetLength(),rcItem,DT_SINGLELINE|DT_VCENTER|DT_CENTER);
+       pRT->DrawText(m_strTitle[i],m_strTitle[i].GetLength(),rcItem,DT_SINGLELINE|DT_VCENTER|DT_CENTER);
        rcItem.OffsetRect(nWid,0);
    }
-   dc.SetTextColor(crTxt);
+   pRT->SetTextColor(crTxt);
 }
 
-void CDuiCalendar::DrawDate(CDCHandle &dc)
+void SCalendar::DrawDate(IRenderTarget *pRT)
 {
 
     int days=CCalendarCore::MonthDays(m_iYear, m_iMonth);
@@ -349,60 +349,60 @@ void CDuiCalendar::DrawDate(CDCHandle &dc)
     for(int i=1;i<=days;i++)
     {
         CRect rcDay=GetDayRect(i);
-        DrawDay(dc,rcDay,i);
+        DrawDay(pRT,rcDay,i);
     }
 }
 
 
-void CDuiCalendar::DrawDay( CDCHandle &dc,CRect & rcDay,WORD iDay )
+void SCalendar::DrawDay( IRenderTarget *pRT,CRect & rcDay,WORD iDay )
 {
     TCHAR text[3];
     _stprintf(text, _T("%2d"), iDay);
-    COLORREF crTxt=dc.GetTextColor();
+    COLORREF crTxt=pRT->GetTextColor();
     if(iDay==m_iDay)
     {
-        if(m_pDaySkin) m_pDaySkin->Draw(dc,rcDay,2);
-        else CGdiAlpha::FillSolidRect(dc,rcDay,m_crDayBack);
-        dc.SetTextColor(m_crDay);
+        if(m_pDaySkin) m_pDaySkin->Draw(pRT,rcDay,2);
+        else pRT->FillSolidRect(rcDay,m_crDayBack);
+        pRT->SetTextColor(m_crDay);
     }else
     {
-        if(m_pDaySkin) m_pDaySkin->Draw(dc,rcDay,iDay==m_iHoverDay?1:0);
+        if(m_pDaySkin) m_pDaySkin->Draw(pRT,rcDay,iDay==m_iHoverDay?1:0);
         int iweekday=CCalendarCore::WeekDay(m_iYear,m_iMonth,iDay);
         if(iweekday==0 || iweekday==6)
-            dc.SetTextColor(m_crWeekend);
+            pRT->SetTextColor(m_crWeekend);
     }
-    CGdiAlpha::DrawText(dc,text,-1,rcDay,DT_SINGLELINE|DT_VCENTER|DT_CENTER);
-    dc.SetTextColor(crTxt);
+    pRT->DrawText(text,-1,rcDay,DT_SINGLELINE|DT_VCENTER|DT_CENTER);
+    pRT->SetTextColor(crTxt);
 }
 
-void CDuiCalendar::RedrawDay(WORD iDay )
+void SCalendar::RedrawDay(WORD iDay )
 {
     CRect rcDay=GetDayRect(iDay);
-    CDCHandle dc=GetDuiDC(&rcDay,OLEDC_PAINTBKGND);
-    DuiDCPaint duiDC;
-    BeforePaint(dc,duiDC);
-    DrawDay(dc,rcDay,iDay);
-    AfterPaint(dc,duiDC);
-    ReleaseDuiDC(dc);
+    IRenderTarget * pRT=GetRenderTarget(&rcDay,OLEDC_PAINTBKGND);
+    SPainter painter;
+    BeforePaint(pRT,painter);
+    DrawDay(pRT,rcDay,iDay);
+    AfterPaint(pRT,painter);
+    ReleaseRenderTarget(pRT);
 }
 
-void CDuiCalendar::OnPaint(CDCHandle dc) 
+void SCalendar::OnPaint(IRenderTarget * pRT) 
 {
-    DuiDCPaint duidc;
-    BeforePaint(dc,duidc);
-    DrawTitle(dc);
-    DrawDate(dc);
-    AfterPaint(dc,duidc);
+    SPainter duidc;
+    BeforePaint(pRT,duidc);
+    DrawTitle(pRT);
+    DrawDate(pRT);
+    AfterPaint(pRT,duidc);
 }
 
-void CDuiCalendar::GetDate(WORD &iYear, WORD &iMonth, WORD &iDay) 
+void SCalendar::GetDate(WORD &iYear, WORD &iMonth, WORD &iDay) 
 {
     iYear  = m_iYear;
     iMonth = m_iMonth;
     iDay   = m_iDay;
 }
 
-BOOL CDuiCalendar::SetDate(WORD iYear, WORD iMonth, WORD iDay)
+BOOL SCalendar::SetDate(WORD iYear, WORD iMonth, WORD iDay)
 {
   if(iYear < START_YEAR || iYear > END_YEAR || iMonth <1 || iMonth >12)
         return FALSE;
@@ -419,7 +419,7 @@ BOOL CDuiCalendar::SetDate(WORD iYear, WORD iMonth, WORD iDay)
 } 
 
 
-CRect CDuiCalendar::GetDayRect( WORD iDay )
+CRect SCalendar::GetDayRect( WORD iDay )
 {
     CRect rcClient;
     GetClient(&rcClient);
@@ -439,7 +439,7 @@ CRect CDuiCalendar::GetDayRect( WORD iDay )
     return rc;
 }
 
-WORD CDuiCalendar::HitTest(CPoint pt)
+WORD SCalendar::HitTest(CPoint pt)
 {
     CRect rcClient;
     GetClient(&rcClient);
@@ -468,14 +468,14 @@ WORD CDuiCalendar::HitTest(CPoint pt)
     return iRow *7 + iCol + 1 - startcol ;
 }
 
-void CDuiCalendar::OnLButtonDown(UINT nFlags, CPoint point) 
+void SCalendar::OnLButtonDown(UINT nFlags, CPoint point) 
 {
     __super::OnLButtonDown(nFlags,point);
     WORD day = HitTest(point);
     if(day !=0 && day != m_iDay)
     {
         DUINMCALENDARSELECTDAY nm;
-        nm.hdr.hDuiWnd=m_hDuiWnd;
+        nm.hdr.hDuiWnd=m_hSWnd;
         nm.hdr.code=NM_HDSIZECHANGING;
         nm.hdr.idFrom=GetCmdID();
         nm.hdr.pszNameFrom=GetName();
@@ -484,11 +484,11 @@ void CDuiCalendar::OnLButtonDown(UINT nFlags, CPoint point)
 
         m_iDay = day;
         NotifyInvalidate();
-        DuiNotify((LPDUINMHDR)&nm);
+        DuiNotify((LPSNMHDR)&nm);
     }
 }
 
-void CDuiCalendar::OnMouseMove( UINT nFlags,CPoint pt )
+void SCalendar::OnMouseMove( UINT nFlags,CPoint pt )
 {
     int iDay=HitTest(pt);
     if(iDay!=m_iHoverDay)
@@ -503,7 +503,7 @@ void CDuiCalendar::OnMouseMove( UINT nFlags,CPoint pt )
     }
 }
 
-void CDuiCalendar::OnMouseLeave()
+void SCalendar::OnMouseLeave()
 {
     if(m_iHoverDay!=0)
     {
@@ -513,18 +513,18 @@ void CDuiCalendar::OnMouseLeave()
     }
 }
 
-BOOL CDuiCalendar::Load( pugi::xml_node xmlNode )
+BOOL SCalendar::Load( pugi::xml_node xmlNode )
 {
     BOOL bLoad=__super::Load(xmlNode);
     if(bLoad)
     {
-        CDuiWindow *pBtnToday=FindChildByName("btn_today");
+        SWindow *pBtnToday=FindChildByName("btn_today");
         if(pBtnToday)
         {
             pBtnToday->SetCmdID(100);
-            pBtnToday->subscribeEvent(NM_COMMAND,Subscriber(&CDuiCalendar::OnTodayClick,this));
+            pBtnToday->subscribeEvent(NM_COMMAND,Subscriber(&SCalendar::OnTodayClick,this));
         }
-        CDuiWindow *pLabelToday=FindChildByName("label_today");
+        SWindow *pLabelToday=FindChildByName("label_today");
         if(pLabelToday)
         {
             CTime today=CTime::GetCurrentTime();
@@ -536,7 +536,7 @@ BOOL CDuiCalendar::Load( pugi::xml_node xmlNode )
     return bLoad;
 }
 
-bool CDuiCalendar::OnTodayClick( CDuiWindow * pSender, LPDUINMHDR pNmhdr )
+bool SCalendar::OnTodayClick( SWindow * pSender, LPSNMHDR pNmhdr )
 {
     CTime today=CTime::GetCurrentTime();
     SetDate(today.GetYear(),today.GetMonth(),today.GetDay());

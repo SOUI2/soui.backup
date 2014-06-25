@@ -14,10 +14,10 @@
 namespace SOUI
 {
 
-class SOUI_EXP CDuiTreeItem : public CDuiItemPanel
+class SOUI_EXP STreeItem : public SItemPanel
 {
 public:
-    CDuiTreeItem(CDuiWindow *pFrameHost);
+    STreeItem(SWindow *pFrameHost);
 
     BOOL m_bCollapsed;
     BOOL m_bVisible;
@@ -26,19 +26,19 @@ public:
     HSTREEITEM m_hItem;
 };
 
-class SOUI_EXP CDuiTreeBox
-    : public CDuiScrollView
-    , public IDuiItemContainer
-    , protected CSTree<CDuiTreeItem *>
+class SOUI_EXP STreeBox
+    : public SScrollView
+    , public IItemContainer
+    , protected CSTree<STreeItem *>
 {
-    SOUI_CLASS_NAME(CDuiTreeBox, "treebox")
+    SOUI_CLASS_NAME(STreeBox, "treebox")
 public:
-    CDuiTreeBox();
+    STreeBox();
 
-    virtual ~CDuiTreeBox();
+    virtual ~STreeBox();
 
     HSTREEITEM InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM hParent=STVI_ROOT, HSTREEITEM hInsertAfter=STVI_LAST,BOOL bEnsureVisible=FALSE);
-    CDuiTreeItem* InsertItem(LPCWSTR pszXml,DWORD dwData,HSTREEITEM hParent=STVI_ROOT, HSTREEITEM hInsertAfter=STVI_LAST,BOOL bEnsureVisible=FALSE);
+    STreeItem* InsertItem(LPCWSTR pszXml,DWORD dwData,HSTREEITEM hParent=STVI_ROOT, HSTREEITEM hInsertAfter=STVI_LAST,BOOL bEnsureVisible=FALSE);
 
     BOOL RemoveItem(HSTREEITEM hItem);
 
@@ -62,14 +62,14 @@ public:
     //自动修改pt的位置为相对当前项的偏移量
     HSTREEITEM HitTest(CPoint &pt);
 
-    CDuiTreeItem * GetItemPanel(HSTREEITEM hItem)
+    STreeItem * GetItemPanel(HSTREEITEM hItem)
     {
         return GetItem(hItem);
     }
 protected:
     void SetChildrenVisible(HSTREEITEM hItem,BOOL bVisible);
 
-    virtual void OnNodeFree(CDuiTreeItem * & pItem);
+    virtual void OnNodeFree(STreeItem * & pItem);
 
     virtual int GetScrollLineSize(BOOL bVertical);
 
@@ -83,8 +83,8 @@ protected:
 
     void RedrawItem(HSTREEITEM hItem);
 
-    void DrawItem(CDCHandle & dc, CRect & rc, HSTREEITEM hItem);
-    void OnPaint(CDCHandle dc);
+    void DrawItem(IRenderTarget *pRT, CRect & rc, HSTREEITEM hItem);
+    void OnPaint(IRenderTarget *pRT);
 
     void OnLButtonDown(UINT nFlags,CPoint pt);
     void OnLButtonDbClick(UINT nFlags,CPoint pt);
@@ -98,7 +98,7 @@ protected:
 
     LRESULT OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam );
 
-    virtual LRESULT DuiNotify(LPDUINMHDR pnms);
+    virtual LRESULT DuiNotify(LPSNMHDR pnms);
     virtual BOOL OnDuiSetCursor(const CPoint &pt);
     virtual void OnViewOriginChanged( CPoint ptOld,CPoint ptNew );
 
@@ -109,8 +109,8 @@ protected:
 
     BOOL IsAncestor(HSTREEITEM hItem1,HSTREEITEM hItem2);
 protected:
-    virtual void OnItemSetCapture(CDuiItemPanel *pItem,BOOL bCapture);
-    virtual BOOL OnItemGetRect(CDuiItemPanel *pItem,CRect &rcItem);
+    virtual void OnItemSetCapture(SItemPanel *pItem,BOOL bCapture);
+    virtual BOOL OnItemGetRect(SItemPanel *pItem,CRect &rcItem);
     virtual BOOL IsItemRedrawDelay(){return m_bItemRedrawDelay;}
 
     HSTREEITEM    m_hSelItem;
@@ -118,11 +118,11 @@ protected:
 
     int            m_nVisibleItems;
 
-    CDuiItemPanel    *    m_pCapturedFrame;
+    SItemPanel    *    m_pCapturedFrame;
 
     int m_nItemHei,m_nIndent;
     COLORREF m_crItemBg,m_crItemSelBg;
-    CDuiSkinBase * m_pItemSkin;
+    ISkinObj * m_pItemSkin;
     BOOL m_bItemRedrawDelay;
     pugi::xml_document m_xmlSwitch;
 
@@ -136,7 +136,7 @@ protected:
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-        MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_NCCALCSIZE(OnNcCalcSize)
         MSG_WM_DESTROY(OnDestroy)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)

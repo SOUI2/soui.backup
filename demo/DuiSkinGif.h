@@ -12,7 +12,7 @@
 #include "../soui/include/DuiSkinBase.h"
 #include "../soui/include/duiimage.h"
 
- class CDuiSkinGif : public CDuiSkinBase
+ class CDuiSkinGif : public ISkinObj
  {
  	SOUI_CLASS_NAME(CDuiSkinGif, "gif")
  public:

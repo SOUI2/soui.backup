@@ -4,22 +4,22 @@
 
 namespace SOUI
 {
-    class CDuiWindow;
+    class SWindow;
 
-class CDuiWindowFactory
+class SWindowFactory
 {
 public:
-    virtual ~CDuiWindowFactory() {}
-    virtual CDuiWindow* NewWindow() = 0;
+    virtual ~SWindowFactory() {}
+    virtual SWindow* NewWindow() = 0;
     virtual LPCSTR DuiWindowBaseName()=0;
 
     virtual const CDuiStringA & getWindowType()=0;
 
-    virtual CDuiWindowFactory* Clone() const =0;
+    virtual SWindowFactory* Clone() const =0;
 };
 
 template <typename T>
-class TplDuiWindowFactory : public CDuiWindowFactory
+class TplDuiWindowFactory : public SWindowFactory
 {
 public:
     //! Default constructor.
@@ -32,7 +32,7 @@ public:
     LPCSTR DuiWindowBaseName(){return T::BaseClassName();}
 
     // Implement WindowFactory interface
-    CDuiWindow* NewWindow()
+    SWindow* NewWindow()
     {
         return new T;
     }
@@ -42,7 +42,7 @@ public:
         return m_strTypeName;
     }
 
-    virtual CDuiWindowFactory* Clone() const 
+    virtual SWindowFactory* Clone() const 
     {
         return new TplDuiWindowFactory();
     }
@@ -52,9 +52,9 @@ protected:
 
 
 
-typedef CDuiWindowFactory* CDuiWindowFactoryPtr;
+typedef SWindowFactory* SWindowFactoryPtr;
 class SOUI_EXP DuiWindowFactoryMgr :
-    public DuiCmnMap<CDuiWindowFactoryPtr,CDuiStringA>
+    public DuiCmnMap<SWindowFactoryPtr,CDuiStringA>
 {
 public:
     DuiWindowFactoryMgr(void);
@@ -65,10 +65,10 @@ public:
     // Access:    public
     // Returns:   bool
     // Qualifier:
-    // Parameter: CDuiWindowFactory * pWndFactory:窗口工厂指针
+    // Parameter: SWindowFactory * pWndFactory:窗口工厂指针
     // Parameter: bool bReplace:强制替换原有工厂标志
     //************************************
-    bool RegisterWndFactory(CDuiWindowFactory & wndFactory,bool bReplace=false)
+    bool RegisterWndFactory(SWindowFactory & wndFactory,bool bReplace=false)
     {
         if(HasKey(wndFactory.getWindowType()))
         {
@@ -85,18 +85,18 @@ public:
     // Access:    public
     // Returns:   bool
     // Qualifier:
-    // Parameter: CDuiWindowFactory * pWndFactory
+    // Parameter: SWindowFactory * pWndFactory
     //************************************
     bool UnregisterWndFactory(const CDuiStringA & strClassType)
     {
         return  RemoveKeyObject(strClassType);
     }
 
-    CDuiWindow *CreateWindowByName(LPCSTR pszClassName);
+    SWindow *CreateWindowByName(LPCSTR pszClassName);
 
     LPCSTR BaseClassNameFromClassName(LPCSTR pszClassName);
 protected:
-    static void OnWndFactoryRemoved(const CDuiWindowFactoryPtr & obj);
+    static void OnWndFactoryRemoved(const SWindowFactoryPtr & obj);
 
     void AddStandardWindowFactory();
 };

@@ -14,7 +14,7 @@ CDuiSplitPane::CDuiSplitPane():m_nPriority(0),m_nSizeIdeal(20),m_nSizeMin(0)
 
 
 //////////////////////////////////////////////////////////////////////////
-CDuiSplitWnd::CDuiSplitWnd(void)
+SSplitWnd::SSplitWnd(void)
     :m_bColMode(TRUE)
     ,m_bAdjustable(TRUE)
     ,m_nSepSize(DEF_SEPSIZE)
@@ -23,12 +23,12 @@ CDuiSplitWnd::CDuiSplitWnd(void)
 {
 }
 
-CDuiSplitWnd::~CDuiSplitWnd(void)
+SSplitWnd::~SSplitWnd(void)
 {
 }
 
 
-BOOL CDuiSplitWnd::SetPaneInfo( UINT iPane,int nIdealSize,int nMinSize,int nPriority )
+BOOL SSplitWnd::SetPaneInfo( UINT iPane,int nIdealSize,int nMinSize,int nPriority )
 {
     if(iPane>m_arrPane.GetCount()-1) return FALSE;
     if(nIdealSize!=-1) m_arrPane[iPane]->m_nSizeIdeal=nIdealSize;
@@ -38,7 +38,7 @@ BOOL CDuiSplitWnd::SetPaneInfo( UINT iPane,int nIdealSize,int nMinSize,int nPrio
     return TRUE;
 }
 
-BOOL CDuiSplitWnd::GetPaneInfo( UINT iPane,int *pnIdealSize,int *pnMinSize,int *pnPriority )
+BOOL SSplitWnd::GetPaneInfo( UINT iPane,int *pnIdealSize,int *pnMinSize,int *pnPriority )
 {
     if(iPane>m_arrPane.GetCount()-1) return FALSE;
     if(pnIdealSize) *pnIdealSize=m_arrPane[iPane]->m_nSizeIdeal;
@@ -47,7 +47,7 @@ BOOL CDuiSplitWnd::GetPaneInfo( UINT iPane,int *pnIdealSize,int *pnMinSize,int *
     return TRUE;
 }
 
-BOOL CDuiSplitWnd::ShowPanel(UINT iPane)
+BOOL SSplitWnd::ShowPanel(UINT iPane)
 {
     if (iPane < 0 || iPane >= m_arrPane.GetCount()) return FALSE;
 
@@ -57,7 +57,7 @@ BOOL CDuiSplitWnd::ShowPanel(UINT iPane)
     return TRUE;
 }
 
-BOOL CDuiSplitWnd::HidePanel(UINT iPane)
+BOOL SSplitWnd::HidePanel(UINT iPane)
 {
     if (iPane < 0 || iPane >= m_arrPane.GetCount()) return FALSE;
 
@@ -67,7 +67,7 @@ BOOL CDuiSplitWnd::HidePanel(UINT iPane)
     return TRUE;
 }
 
-int CDuiSplitWnd::GetVisiblePanelCount()
+int SSplitWnd::GetVisiblePanelCount()
 {
     int nCount = 0;
     for(UINT i=0; i<m_arrPane.GetCount(); i++)
@@ -78,7 +78,7 @@ int CDuiSplitWnd::GetVisiblePanelCount()
     return nCount;
 }
 
-int CDuiSplitWnd::GetNextVisiblePanel(UINT iPanel)
+int SSplitWnd::GetNextVisiblePanel(UINT iPanel)
 {
     if (iPanel + 1 >=  m_arrPane.GetCount())
         return -1;
@@ -91,7 +91,7 @@ int CDuiSplitWnd::GetNextVisiblePanel(UINT iPanel)
     return -1;
 }
 
-BOOL CDuiSplitWnd::LoadChildren( pugi::xml_node xmlNode )
+BOOL SSplitWnd::LoadChildren( pugi::xml_node xmlNode )
 {
     if(!xmlNode) return FALSE;
     pugi::xml_node xmlParent=xmlNode.parent();
@@ -112,7 +112,7 @@ BOOL CDuiSplitWnd::LoadChildren( pugi::xml_node xmlNode )
 }
 
 
-BOOL CDuiSplitWnd::OnDuiSetCursor(const CPoint &pt)
+BOOL SSplitWnd::OnDuiSetCursor(const CPoint &pt)
 {
     if (!m_bAdjustable) return FALSE;
 
@@ -120,7 +120,7 @@ BOOL CDuiSplitWnd::OnDuiSetCursor(const CPoint &pt)
     return TRUE;
 }
 
-void CDuiSplitWnd::OnDestroy()
+void SSplitWnd::OnDestroy()
 {
     __super::OnDestroy();
     for(UINT i=0; i<m_arrPane.GetCount(); i++)
@@ -130,7 +130,7 @@ void CDuiSplitWnd::OnDestroy()
     m_arrPane.RemoveAll();
 }
 
-void CDuiSplitWnd::OnPaint( CDCHandle dc )
+void SSplitWnd::OnPaint( IRenderTarget * pRT )
 {
     CRect rcClient;
     GetClient(&rcClient);
@@ -153,19 +153,19 @@ void CDuiSplitWnd::OnPaint( CDCHandle dc )
             RB+=m_bColMode?rcPane.Width():rcPane.Height();
             LT=RB;
             RB+=m_nSepSize;
-            m_pSkinSep->Draw(dc,rcSep,0);
+            m_pSkinSep->Draw(pRT,rcSep,0);
         }
     }
 }
 
-int CDuiSplitWnd::FunComp( const void * p1,const void * p2 )
+int SSplitWnd::FunComp( const void * p1,const void * p2 )
 {
     const PANEORDER *pPane1=(PANEORDER*)p1;
     const PANEORDER *pPane2=(PANEORDER*)p2;
     return pPane1->pPane->m_nPriority-pPane2->pPane->m_nPriority;
 }
 
-LRESULT CDuiSplitWnd::OnWindowPosChanged( LPRECT lpWndPos )
+LRESULT SSplitWnd::OnWindowPosChanged( LPRECT lpWndPos )
 {
     CRect rcWnd=m_rcWindow;
     LRESULT lRet=__super::OnWindowPosChanged(lpWndPos);
@@ -180,7 +180,7 @@ LRESULT CDuiSplitWnd::OnWindowPosChanged( LPRECT lpWndPos )
     return lRet;
 }
 
-void CDuiSplitWnd::OnLButtonDown( UINT nFlags,CPoint pt )
+void SSplitWnd::OnLButtonDown( UINT nFlags,CPoint pt )
 {
     __super::OnLButtonDown(nFlags,pt);
 
@@ -213,13 +213,13 @@ void CDuiSplitWnd::OnLButtonDown( UINT nFlags,CPoint pt )
     m_ptClick=pt;
 }
 
-void CDuiSplitWnd::OnLButtonUp( UINT nFlags,CPoint pt )
+void SSplitWnd::OnLButtonUp( UINT nFlags,CPoint pt )
 {
     m_iDragBeam=-1;
     __super::OnLButtonUp(nFlags,pt);
 }
 
-void CDuiSplitWnd::OnMouseMove( UINT nFlags,CPoint pt )
+void SSplitWnd::OnMouseMove( UINT nFlags,CPoint pt )
 {
     if(-1==m_iDragBeam) return;
 
@@ -299,7 +299,7 @@ void CDuiSplitWnd::OnMouseMove( UINT nFlags,CPoint pt )
     m_ptClick=pt;
 }
 
-void CDuiSplitWnd::Relayout(UINT uMode)
+void SSplitWnd::Relayout(UINT uMode)
 {
     CRect rcClient;
     GetClient(&rcClient);

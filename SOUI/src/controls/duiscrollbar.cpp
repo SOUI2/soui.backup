@@ -13,7 +13,7 @@ namespace SOUI
 
 /////////////////////////////////////////////////////////////////////////////
 // CDuiScrollBar
-CDuiScrollBar::CDuiScrollBar()
+SScrollBar::SScrollBar()
     : m_pSkin(NULL)
     , m_bDrag(FALSE)
     , m_uClicked(-1)
@@ -27,15 +27,15 @@ CDuiScrollBar::CDuiScrollBar()
     addEvent(NM_SCROLL);
 }
 
-CDuiScrollBar::~CDuiScrollBar()
+SScrollBar::~SScrollBar()
 {
 }
 
-BOOL CDuiScrollBar::IsVertical()
+BOOL SScrollBar::IsVertical()
 {
     return m_bVertical;
 }
-UINT CDuiScrollBar::HitTest(CPoint pt)
+UINT SScrollBar::HitTest(CPoint pt)
 {
     CRect rc;
     rc=GetPartRect(SB_LINEUP);
@@ -51,7 +51,7 @@ UINT CDuiScrollBar::HitTest(CPoint pt)
 
     return -1;
 }
-int CDuiScrollBar::SetPos(int nPos)
+int SScrollBar::SetPos(int nPos)
 {
     if(nPos>(m_si.nMax-(int)m_si.nPage+1)) nPos=(m_si.nMax-m_si.nPage+1);
     if(nPos<m_si.nMin) nPos=m_si.nMin;
@@ -64,10 +64,10 @@ int CDuiScrollBar::SetPos(int nPos)
             CRect rcNewThumb=GetPartRect(SB_THUMBTRACK);
             CRect rcUnion;
             rcUnion.UnionRect(&rcOldThumb,&rcNewThumb);
-            HDC hdc=GetDuiDC(&rcUnion,OLEDC_PAINTBKGND);
-            m_pSkin->Draw(hdc,rcUnion,MAKESBSTATE(SB_PAGEDOWN,SBST_NORMAL,IsVertical()));
-            m_pSkin->Draw(hdc,rcNewThumb,MAKESBSTATE(SB_THUMBTRACK,SBST_NORMAL,IsVertical()));
-            ReleaseDuiDC(hdc);
+            IRenderTarget *pRT=GetRenderTarget(&rcUnion,OLEDC_PAINTBKGND);
+            m_pSkin->Draw(pRT,rcUnion,MAKESBSTATE(SB_PAGEDOWN,SBST_NORMAL,IsVertical()));
+            m_pSkin->Draw(pRT,rcNewThumb,MAKESBSTATE(SB_THUMBTRACK,SBST_NORMAL,IsVertical()));
+            ReleaseRenderTarget(pRT);
             m_si.nTrackPos=-1;
         }
         m_si.nPos=nPos;
@@ -75,13 +75,13 @@ int CDuiScrollBar::SetPos(int nPos)
     return m_si.nPos;
 }
 
-int CDuiScrollBar::GetPos()
+int SScrollBar::GetPos()
 {
     return m_si.nPos;
 }
 
 // Generated message map functions
-CRect CDuiScrollBar::GetPartRect(UINT uSBCode)
+CRect SScrollBar::GetPartRect(UINT uSBCode)
 {
     DUIASSERT(m_pSkin);
     int nTrackPos=m_si.nTrackPos;
@@ -134,7 +134,7 @@ end:
     return rcRet;
 }
 
-void CDuiScrollBar::OnAttributeFinish(pugi::xml_node xmlNode)
+void SScrollBar::OnAttributeFinish(pugi::xml_node xmlNode)
 {
     __super::OnAttributeFinish(xmlNode);
     DUIASSERT(m_pSkin);
@@ -144,25 +144,25 @@ void CDuiScrollBar::OnAttributeFinish(pugi::xml_node xmlNode)
     }
 }
 
-void CDuiScrollBar::OnPaint(CDCHandle dc)
+void SScrollBar::OnPaint(IRenderTarget * pRT)
 {
     if(!m_pSkin) return;
 
     int nState=IsDisabled(TRUE)?3:0;
     CRect rcDest;
     rcDest=GetPartRect(SB_LINEUP);
-    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_LINEUP,nState,m_bVertical),m_byAlpha);
+    m_pSkin->Draw(pRT,rcDest,MAKESBSTATE(SB_LINEUP,nState,m_bVertical),m_byAlpha);
     rcDest=GetPartRect(SB_PAGEUP);
-    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_PAGEUP,nState,m_bVertical),m_byAlpha);
+    m_pSkin->Draw(pRT,rcDest,MAKESBSTATE(SB_PAGEUP,nState,m_bVertical),m_byAlpha);
     rcDest=GetPartRect(SB_THUMBTRACK);
-    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_THUMBTRACK,nState,m_bVertical),m_byAlpha);
+    m_pSkin->Draw(pRT,rcDest,MAKESBSTATE(SB_THUMBTRACK,nState,m_bVertical),m_byAlpha);
     rcDest=GetPartRect(SB_PAGEDOWN);
-    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_PAGEDOWN,nState,m_bVertical),m_byAlpha);
+    m_pSkin->Draw(pRT,rcDest,MAKESBSTATE(SB_PAGEDOWN,nState,m_bVertical),m_byAlpha);
     rcDest=GetPartRect(SB_LINEDOWN);
-    m_pSkin->Draw(dc,rcDest,MAKESBSTATE(SB_LINEDOWN,nState,m_bVertical),m_byAlpha);
+    m_pSkin->Draw(pRT,rcDest,MAKESBSTATE(SB_LINEDOWN,nState,m_bVertical),m_byAlpha);
 }
 
-void CDuiScrollBar::OnLButtonUp(UINT nFlags, CPoint point)
+void SScrollBar::OnLButtonUp(UINT nFlags, CPoint point)
 {
     ReleaseDuiCapture();
     if(m_bDrag)
@@ -187,15 +187,15 @@ void CDuiScrollBar::OnLButtonUp(UINT nFlags, CPoint point)
         if(m_uClicked==SB_LINEUP||m_uClicked==SB_LINEDOWN)
         {
             CRect rc=GetPartRect(m_uClicked);
-            HDC hdc=GetDuiDC(&rc,OLEDC_PAINTBKGND);
-            m_pSkin->Draw(hdc,rc,MAKESBSTATE(m_uClicked,SBST_NORMAL,m_bVertical),m_byAlpha);
-            ReleaseDuiDC(hdc);
+            IRenderTarget *pRT=GetRenderTarget(&rc,OLEDC_PAINTBKGND);
+            m_pSkin->Draw(pRT,rc,MAKESBSTATE(m_uClicked,SBST_NORMAL,m_bVertical),m_byAlpha);
+            ReleaseRenderTarget(pRT);
         }
         m_uClicked=-1;
     }
 }
 
-void CDuiScrollBar::OnLButtonDown(UINT nFlags, CPoint point)
+void SScrollBar::OnLButtonDown(UINT nFlags, CPoint point)
 {
     SetDuiCapture();
     UINT uHit=HitTest(point);
@@ -213,9 +213,9 @@ void CDuiScrollBar::OnLButtonDown(UINT nFlags, CPoint point)
         if(uHit==SB_LINEUP || uHit== SB_LINEDOWN)
         {
             CRect rc=GetPartRect(uHit);
-            HDC hdc=GetDuiDC(&rc,OLEDC_PAINTBKGND);
-            m_pSkin->Draw(hdc,rc,MAKESBSTATE(uHit,SBST_PUSHDOWN,m_bVertical),m_byAlpha);
-            ReleaseDuiDC(hdc);
+            IRenderTarget *pRT=GetRenderTarget(&rc,OLEDC_PAINTBKGND);
+            m_pSkin->Draw(pRT,rc,MAKESBSTATE(uHit,SBST_PUSHDOWN,m_bVertical),m_byAlpha);
+            ReleaseRenderTarget(pRT);
             NotifySbCode(uHit,m_si.nPos);
         }
         else if(uHit == SB_PAGEUP || uHit == SB_PAGEDOWN)
@@ -226,7 +226,7 @@ void CDuiScrollBar::OnLButtonDown(UINT nFlags, CPoint point)
 }
 
 
-void CDuiScrollBar::OnMouseMove(UINT nFlags, CPoint point)
+void SScrollBar::OnMouseMove(UINT nFlags, CPoint point)
 {
     if(m_bDrag)
     {
@@ -253,12 +253,12 @@ void CDuiScrollBar::OnMouseMove(UINT nFlags, CPoint point)
             CRect rcThumb=GetPartRect(SB_THUMBTRACK);
             CRect rcUnion;
             rcUnion.UnionRect(rcOldThumb,rcThumb);
-            HDC hdc=GetDuiDC(&rcUnion,OLEDC_PAINTBKGND);
+            IRenderTarget *pRT=GetRenderTarget(&rcUnion,OLEDC_PAINTBKGND);
 
-            m_pSkin->Draw(hdc,rcUnion,MAKESBSTATE(SB_PAGEUP,SBST_NORMAL,m_bVertical),m_byAlpha);
-            m_pSkin->Draw(hdc,rcThumb,MAKESBSTATE(SB_THUMBTRACK,SBST_HOVER,m_bVertical),m_byAlpha);
+            m_pSkin->Draw(pRT,rcUnion,MAKESBSTATE(SB_PAGEUP,SBST_NORMAL,m_bVertical),m_byAlpha);
+            m_pSkin->Draw(pRT,rcThumb,MAKESBSTATE(SB_THUMBTRACK,SBST_HOVER,m_bVertical),m_byAlpha);
 
-            ReleaseDuiDC(hdc);
+            ReleaseRenderTarget(pRT);
             NotifySbCode(SB_THUMBTRACK,m_si.nTrackPos);
         }
     }
@@ -270,23 +270,23 @@ void CDuiScrollBar::OnMouseMove(UINT nFlags, CPoint point)
             if(m_uHtPrev!=-1)
             {
                 CRect rc=GetPartRect(m_uHtPrev);
-                HDC hdc=GetDuiDC(&rc,OLEDC_PAINTBKGND);
-                m_pSkin->Draw(hdc,rc,MAKESBSTATE(m_uHtPrev,SBST_NORMAL,m_bVertical),m_byAlpha);
-                ReleaseDuiDC(hdc);
+                IRenderTarget *pRT=GetRenderTarget(&rc,OLEDC_PAINTBKGND);
+                m_pSkin->Draw(pRT,rc,MAKESBSTATE(m_uHtPrev,SBST_NORMAL,m_bVertical),m_byAlpha);
+                ReleaseRenderTarget(pRT);
             }
             if(uHit!=-1)
             {
                 CRect rc=GetPartRect(uHit);
-                HDC hdc=GetDuiDC(&rc,OLEDC_PAINTBKGND);
-                m_pSkin->Draw(hdc,rc,MAKESBSTATE(uHit,SBST_HOVER,m_bVertical),m_byAlpha);
-                ReleaseDuiDC(hdc);
+                IRenderTarget *pRT=GetRenderTarget(&rc,OLEDC_PAINTBKGND);
+                m_pSkin->Draw(pRT,rc,MAKESBSTATE(uHit,SBST_HOVER,m_bVertical),m_byAlpha);
+                ReleaseRenderTarget(pRT);
             }
             m_uHtPrev=uHit;
         }
     }
 }
 
-void CDuiScrollBar::OnTimer(char nIDEvent)
+void SScrollBar::OnTimer(char nIDEvent)
 {
     // TODO: Add your message handler code here and/or call default
     if(nIDEvent==TIMERID_NOTIFY1)
@@ -330,7 +330,7 @@ void CDuiScrollBar::OnTimer(char nIDEvent)
     }
 }
 
-void CDuiScrollBar::OnMouseLeave()
+void SScrollBar::OnMouseLeave()
 {
     if(!m_bDrag)
     {
@@ -342,7 +342,7 @@ void CDuiScrollBar::OnMouseLeave()
 }
 
 
-LRESULT CDuiScrollBar::OnSetScrollInfo(UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT SScrollBar::OnSetScrollInfo(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     BOOL bRedraw=wParam!=0;
     LPSCROLLINFO lpScrollInfo=(LPSCROLLINFO)lParam;
@@ -360,7 +360,7 @@ LRESULT CDuiScrollBar::OnSetScrollInfo(UINT uMsg, WPARAM wParam, LPARAM lParam)
     return TRUE;
 }
 
-LRESULT CDuiScrollBar::OnGetScrollInfo(UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT SScrollBar::OnGetScrollInfo(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     LPSCROLLINFO lpScrollInfo=(LPSCROLLINFO)lParam;
     int nMask=lpScrollInfo->fMask;
@@ -375,18 +375,18 @@ LRESULT CDuiScrollBar::OnGetScrollInfo(UINT uMsg, WPARAM wParam, LPARAM lParam)
     return TRUE;
 }
 
-LRESULT CDuiScrollBar::NotifySbCode(UINT uCode,int nPos)
+LRESULT SScrollBar::NotifySbCode(UINT uCode,int nPos)
 {
     DUINMSCROLL nms;
     nms.hdr.code=NM_SCROLL;
-    nms.hdr.hDuiWnd=m_hDuiWnd;
+    nms.hdr.hDuiWnd=m_hSWnd;
     nms.hdr.idFrom=GetCmdID();
     nms.hdr.pszNameFrom=GetName();
     nms.uSbCode=uCode;
     nms.pScrollBar=this;
     nms.nPos=nPos;
     nms.bVertical=IsVertical();
-    return DuiNotify((LPDUINMHDR)&nms);
+    return DuiNotify((LPSNMHDR)&nms);
 }
 
 }//namespace SOUI

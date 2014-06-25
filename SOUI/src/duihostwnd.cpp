@@ -4,7 +4,7 @@
 #include "DuiTipCtrl.h"
 #include "DuiSystem.h"
 #include "mybuffer.h"
-
+#include "color.h"
 
 namespace SOUI
 {
@@ -26,7 +26,6 @@ CDuiHostWnd::CDuiHostWnd( LPCTSTR pszResName /*= NULL*/ )
 , m_dwDlgExStyle(0)
 , m_bTranslucent(FALSE)
 , m_bCaretShowing(FALSE)
-, m_hBmpCaret(NULL)
 , m_bCaretActive(FALSE)
 , m_bNeedRepaint(FALSE)
 , m_bNeedAllRepaint(TRUE)
@@ -66,9 +65,9 @@ HWND CDuiHostWnd::Create(HWND hWndParent,int x,int y,int nWidth,int nHeight)
 BOOL CDuiHostWnd::Load(LPCTSTR pszXmlName)
 {
     pugi::xml_document xmlDoc;
-    if(!LOADXML(xmlDoc,pszXmlName,DUIRES_XML_TYPE)) return FALSE;
+    if(!LOADXML(xmlDoc,pszXmlName,RT_LAYOUT)) return FALSE;
 
-    return SetXml(xmlDoc.child("SOUI"));
+    return SetXml(xmlDoc.child("UIFRAME"));
 }
 
 BOOL CDuiHostWnd::SetXml(LPSTR lpszXml,int nLen)
@@ -76,7 +75,7 @@ BOOL CDuiHostWnd::SetXml(LPSTR lpszXml,int nLen)
     pugi::xml_document xmlDoc;
     if(!xmlDoc.load_buffer(lpszXml,nLen,pugi::parse_default,pugi::encoding_utf8)) return FALSE;
  
-    return SetXml(xmlDoc.child("SOUI"));
+    return SetXml(xmlDoc.child("UIFRAME"));
 }
 
 BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
@@ -133,7 +132,7 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
     if(m_bTranslucent)
     {
         SetWindowLongPtr(GWL_EXSTYLE, GetWindowLongPtr(GWL_EXSTYLE) | WS_EX_LAYERED);
-        m_dummyWnd.Create(_T("dummyLayeredWnd"),WS_POPUP,WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,0,0,10,10,m_hWnd,NULL);
+        m_dummyWnd.Create(_T("SOUI_DUMMY_WND"),WS_POPUP,WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,0,0,10,10,m_hWnd,NULL);
         m_dummyWnd.SetWindowLongPtr(GWL_EXSTYLE,m_dummyWnd.GetWindowLongPtr(GWL_EXSTYLE) | WS_EX_LAYERED);
         ::SetLayeredWindowAttributes(m_dummyWnd.m_hWnd,0,0,LWA_ALPHA);
         m_dummyWnd.ShowWindow(SW_SHOWNOACTIVATE);
@@ -154,16 +153,12 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
     {
         DuiSystem::getSingleton().LoadSkins(m_strName);    //load skin only used in the host window
     }
-
-    CDuiWindow::Load(xmlNode.child("body"));
-
-    Move(rcClient);
-    DuiSendMessage(WM_ENABLE,1);
-    DuiSendMessage(WM_SHOWWINDOW,1);
+    LoadChildren(xmlNode.first_child());
+    OnWindowPosChanged(NULL);
 
     _Redraw();
 
-    RedrawRegion(CDCHandle(m_memDC),CRgn());
+    RedrawRegion(m_memRT,m_rgnInvalidate);
 
     return TRUE;
 }
@@ -300,8 +295,7 @@ void CDuiHostWnd::_Redraw()
 {
     m_bNeedAllRepaint = TRUE;
     m_bNeedRepaint = TRUE;
-    if (!m_rgnInvalidate.IsNull())
-        m_rgnInvalidate.DeleteObject();
+    m_rgnInvalidate->Clear();
 
     if(!m_bTranslucent)
         Invalidate(FALSE);
@@ -329,9 +323,7 @@ void CDuiHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
     if((m_bTranslucent && !uFlags) && !m_bNeedAllRepaint && !m_bNeedRepaint) return;
     if (m_bNeedAllRepaint)
     {
-        if (!m_rgnInvalidate.IsNull())
-            m_rgnInvalidate.DeleteObject();
-
+        m_rgnInvalidate->Clear();
         m_bNeedAllRepaint = FALSE;
         m_bNeedRepaint=TRUE;
     }
@@ -340,37 +332,37 @@ void CDuiHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
     if (m_bNeedRepaint)
     {
         DuiThreadActiveWndMgr::EnterPaintLock();
-
-        HFONT hftOld = m_memDC.SelectFont(DuiFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT));
-
-        m_memDC.SetBkMode(TRANSPARENT);
-        m_memDC.SetTextColor(0);
-
-        CRect rcInvalid=m_rcWindow;
-        if (!m_rgnInvalidate.IsNull())
-        {
-            m_memDC.SelectClipRgn(m_rgnInvalidate);
-            m_rgnInvalidate.GetRgnBox(&rcInvalid);
-        }
-        else
-        {
-            m_memDC.SelectClipRgn(NULL);
-        }
-
-        m_memDC.FillSolidRect(&rcInvalid,0);//清除残留的alpha值
+        CAutoRefPtr<IFont> defFont,oldFont;
+        defFont = DuiFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT);
+        m_memRT->SelectObject(defFont,(IRenderObj**)&oldFont);
+        m_memRT->SetTextColor(RGBA(0,0,0,0xFF));
 
         //m_rgnInvalidate有可能在RedrawRegion时被修改，必须生成一个临时的区域对象
-        CRgn rgnUpdate;
-        if(m_rgnInvalidate)
-        {
-            rgnUpdate.Attach(m_rgnInvalidate.Detach());
-        }
-        if(m_bCaretActive) DrawCaret(m_ptCaret);//clear old caret 
-        RedrawRegion(CDCHandle(m_memDC), rgnUpdate);
-        if(m_bCaretActive) DrawCaret(m_ptCaret);//redraw caret 
-        m_memDC.SelectClipRgn(NULL);
+        CAutoRefPtr<IRegion> pRgnUpdate=m_rgnInvalidate;
+        m_rgnInvalidate=NULL;
+        GETRENDERFACTORY->CreateRegion(&m_rgnInvalidate);
 
-        m_memDC.SelectFont(hftOld);
+        CRect rcInvalid=m_rcWindow;
+        if (!pRgnUpdate->IsEmpty())
+        {
+            m_memRT->PushClipRegion(pRgnUpdate,RGN_COPY);
+            pRgnUpdate->GetRgnBox(&rcInvalid);
+        }else
+        {
+            m_memRT->PushClipRect(&rcInvalid,RGN_COPY);
+        }
+        m_memRT->FillSolidRect(&rcInvalid,RGBA(0,0,0,0));//清除残留的alpha值
+
+        if(m_bCaretActive) DrawCaret(m_ptCaret);//clear old caret 
+        RedrawRegion(m_memRT, pRgnUpdate);
+        if(m_bCaretActive) DrawCaret(m_ptCaret);//redraw caret 
+        
+        if(!pRgnUpdate->IsEmpty())
+            m_memRT->PopClipRegion();
+        else
+            m_memRT->PopClipRect();
+        
+        m_memRT->SelectObject(oldFont);
 
         m_bNeedRepaint = FALSE;
         DuiThreadActiveWndMgr::LeavePaintLock();
@@ -395,9 +387,8 @@ BOOL CDuiHostWnd::OnEraseBkgnd(CDCHandle dc)
 
 int CDuiHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
-    CDCHandle dc=::GetDC(NULL);
-    m_memDC.CreateCompatibleDC(dc);
-    ::ReleaseDC(NULL,dc);
+    GETRENDERFACTORY->CreateRenderTarget(&m_memRT,0,0);
+    GETRENDERFACTORY->CreateRegion(&m_rgnInvalidate);
     return 0;
 }
 
@@ -416,13 +407,6 @@ void CDuiHostWnd::OnDestroy()
 
     DuiSendMessage(WM_DESTROY);
 
-    if(::GetCurrentObject(m_memDC,OBJ_BITMAP))
-    {
-        HBITMAP hBmp=m_memDC.SelectBitmap(NULL);
-        DeleteObject(hBmp);
-    }
-    m_memDC.DeleteDC();
-
     if(!m_strName.IsEmpty())
     {
         DuiSystem::getSingleton().FreeSkins(m_strName);
@@ -435,17 +419,8 @@ void CDuiHostWnd::OnSize(UINT nType, CSize size)
 
     if (size.cx==0 || size.cy==0)
         return;
-
-    if(m_memDC.HasBitmap())
-    {
-        HBITMAP hBmp=m_memDC.SelectBitmap(NULL);
-        DeleteObject(hBmp);
-    }
-
-
-    CDCHandle dcDesk=::GetDC(NULL);
-    m_memDC.SelectBitmap(CGdiAlpha::CreateBitmap32(dcDesk,size.cx,size.cy));
-    ::ReleaseDC(NULL,dcDesk);
+    
+    m_memRT->Resize(size);
 
     CRect rcClient;
     GetClientRect(rcClient);
@@ -504,10 +479,10 @@ BOOL CDuiHostWnd::OnSetCursor(HWND hwnd, UINT nHitTest, UINT message)
 
 void CDuiHostWnd::OnTimer(UINT_PTR idEvent)
 {
-    CDuiTimerID duiTimerID((DWORD)idEvent);
+    STimerID duiTimerID((DWORD)idEvent);
     if(duiTimerID.bDuiTimer)
     {
-        CDuiWindow *pDuiWnd=DuiWindowMgr::GetWindow((HDUIWND)duiTimerID.hDuiWnd);
+        SWindow *pDuiWnd=DuiWindowMgr::GetWindow((HSWND)duiTimerID.hDuiWnd);
         if(pDuiWnd)
         {
             if(pDuiWnd==this) OnDuiTimer(duiTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
@@ -540,21 +515,16 @@ void CDuiHostWnd::OnDuiTimer( char cTimerID )
 
 void CDuiHostWnd::DrawCaret(CPoint pt)
 {
-    BITMAP bm;
-    GetObject(m_hBmpCaret,sizeof(bm),&bm);
+    CAutoRefPtr<IRenderTarget> pRTCaret;
+    GETRENDERFACTORY->CreateRenderTarget(&pRTCaret,0,0);
+    pRTCaret->SelectObject(m_bmpCaret);
 
-    CMemDC dcCaret(m_memDC,m_hBmpCaret);
-    
-    CRect rcCaret(pt,CSize(bm.bmWidth,bm.bmHeight));
+    CRect rcCaret(pt,m_szCaret);
     CRect rcShowCaret;
     rcShowCaret.IntersectRect(m_rcValidateCaret,rcCaret);
     
-
-    ALPHAINFO ai;
-    CGdiAlpha::AlphaBackup(m_memDC,rcCaret,ai);
-    m_memDC.BitBlt(rcShowCaret.left,rcShowCaret.top,rcShowCaret.Width(),rcShowCaret.Height(),dcCaret,rcShowCaret.left-pt.x,rcShowCaret.top-pt.y,DSTINVERT);
-    CGdiAlpha::AlphaRestore(m_memDC,ai);
-
+    m_memRT->BitBlt(&rcShowCaret,pRTCaret,rcShowCaret.left-pt.x,rcShowCaret.top-pt.y,DSTINVERT);
+    
     if(!m_bTranslucent)
     {
         InvalidateRect(rcCaret, FALSE);
@@ -571,14 +541,14 @@ LRESULT CDuiHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     if(m_pTipCtrl && m_pTipCtrl->IsWindow())
     {
-        CDuiWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
+        SWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
         if(!pHover || pHover->IsDisabled(TRUE))
         {
             m_pTipCtrl->ShowTip(FALSE);
         }
         else
         {
-            HDUIWND hNewTipHost=0;
+            HSWND hNewTipHost=0;
             CRect rcTip;
             CDuiStringT strTip;
             BOOL bUpdate=pHover->OnUpdateToolTip(m_pTipCtrl->m_dwHostID,hNewTipHost,rcTip,strTip);
@@ -597,7 +567,7 @@ LRESULT CDuiHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     if(uMsg==WM_SYSKEYDOWN || uMsg==WM_SYSKEYUP)
     {
-        CDuiWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
+        SWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
         if(!pFocus  || !(pFocus->OnGetDuiCode()&DUIC_WANTSYSKEY))
         {
             SetMsgHandled(FALSE);
@@ -605,7 +575,7 @@ LRESULT CDuiHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
         }
     }
     LRESULT lRet = DoFrameEvent(uMsg,wParam,lParam);
-    SetMsgHandled(CDuiWindow::IsMsgHandled());
+    SetMsgHandled(SWindow::IsMsgHandled());
     return lRet;
 }
 
@@ -624,7 +594,7 @@ void CDuiHostWnd::OnActivate( UINT nState, BOOL bMinimized, HWND wndOther )
         ::SetFocus(NULL);
 }
 
-LRESULT CDuiHostWnd::OnDuiNotify(LPDUINMHDR pHdr)
+LRESULT CDuiHostWnd::OnDuiNotify(LPSNMHDR pHdr)
 {
     if(pHdr->code==NM_REALWND_CREATE) return (LRESULT)OnRealWndCreate(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
     else if(pHdr->code==NM_REALWND_INIT) return OnRealWndInit(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
@@ -639,7 +609,7 @@ LRESULT CDuiHostWnd::OnDuiNotify(LPDUINMHDR pHdr)
         return 0;
     }
 
-    return SendMessage(UM_DUI_NOTIFY,IDC_RICHVIEW_WIN,(LPARAM)pHdr);
+    return SendMessage(UM_SWND_NOTIFY,IDC_RICHVIEW_WIN,(LPARAM)pHdr);
 }
 
 CRect CDuiHostWnd::GetContainerRect()
@@ -652,11 +622,14 @@ HWND CDuiHostWnd::GetHostHwnd()
     return m_hWnd;
 }
 
-HDC CDuiHostWnd::OnGetDuiDC(const CRect & rc,DWORD gdcFlags)
+IRenderTarget * CDuiHostWnd::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
 {
-    m_memDC.SelectFont(DuiFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT));
-    m_memDC.SetBkMode(TRANSPARENT);
-    m_memDC.SetTextColor(0);
+    IRenderTarget *pRT=NULL;
+    GETRENDERFACTORY->CreateRenderTarget(&pRT,rc.Width(),rc.Height());
+    pRT->OffsetViewportOrg(-rc.left,-rc.top);
+    
+    pRT->SelectObject(DuiFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT));
+    pRT->SetTextColor(RGBA(0,0,0,0xFF));
 
     if(!(gdcFlags & OLEDC_NODRAW))
     {
@@ -664,59 +637,52 @@ HDC CDuiHostWnd::OnGetDuiDC(const CRect & rc,DWORD gdcFlags)
         {
             DrawCaret(m_ptCaret);//clear old caret
         }
-        CRgn rgnRc;
-        rgnRc.CreateRectRgnIndirect(&rc);
-        m_memDC.SelectClipRgn(rgnRc);
+        pRT->BitBlt(&rc,m_memRT,rc.left,rc.top,SRCCOPY);
     }
-    return m_memDC;
+    return pRT;
 }
 
-void CDuiHostWnd::OnReleaseDuiDC(HDC hdcSour,const CRect &rc,DWORD gdcFlags)
+void CDuiHostWnd::OnReleaseRenderTarget(IRenderTarget * pRT,const CRect &rc,DWORD gdcFlags)
 {
-    m_memDC.SelectClipRgn(NULL);
-    if(gdcFlags & OLEDC_NODRAW) return;
-    if(m_bCaretActive)
+    if(!(gdcFlags & OLEDC_NODRAW))
     {
-        DrawCaret(m_ptCaret);//clear old caret
+        m_memRT->BitBlt(&rc,pRT,rc.left,rc.top,SRCCOPY);
+        if(m_bCaretActive)
+        {
+            DrawCaret(m_ptCaret);//clear old caret
+        }
+        CDCHandle dc=GetDC();
+        UpdateHost(dc,rc);
+        ReleaseDC(dc);
     }
-    CDCHandle dc=GetDC();
-    UpdateHost(dc,rc);
-    ReleaseDC(dc);
+    pRT->Release();
 }
 
 void CDuiHostWnd::UpdateHost(CDCHandle dc, const CRect &rcInvalid )
 {
+    HDC hdc=m_memRT->GetDC(0);
     if(m_bTranslucent)
     {
         CRect rc;
         GetWindowRect(&rc);
         BLENDFUNCTION bf= {AC_SRC_OVER,0,0xFF,AC_SRC_ALPHA};
         CDCHandle hdcSrc=::GetDC(NULL);
-        UpdateLayeredWindow(hdcSrc,&rc.TopLeft(),&rc.Size(),m_memDC,&CPoint(0,0),0,&bf,ULW_ALPHA);
+        UpdateLayeredWindow(hdcSrc,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
         ::ReleaseDC(NULL,hdcSrc);
     }
     else
     {
-        dc.BitBlt(rcInvalid.left,rcInvalid.top,rcInvalid.Width(),rcInvalid.Height(),m_memDC,rcInvalid.left,rcInvalid.top,SRCCOPY);
+        dc.BitBlt(rcInvalid.left,rcInvalid.top,rcInvalid.Width(),rcInvalid.Height(),hdc,rcInvalid.left,rcInvalid.top,SRCCOPY);
     }
+    m_memRT->ReleaseDC(hdc);
 }
 
 void CDuiHostWnd::OnRedraw(const CRect &rc)
 {
     if(!IsWindow()) return;
-
-    if (m_rgnInvalidate.IsNull())
-    {
-        m_rgnInvalidate.CreateRectRgnIndirect(rc);
-    }
-    else
-    {
-        CRgn rgnInvalidate;
-
-        rgnInvalidate.CreateRectRgnIndirect(rc);
-
-        m_rgnInvalidate.CombineRgn(rgnInvalidate, RGN_OR);
-    }
+    
+    m_rgnInvalidate->CombineRect(&rc,RGN_OR);
+    
     m_bNeedRepaint = TRUE;
 
     if(!m_bTranslucent)
@@ -740,13 +706,13 @@ BOOL CDuiHostWnd::OnReleaseDuiCapture()
     return TRUE;
 }
 
-HDUIWND CDuiHostWnd::OnSetDuiCapture(HDUIWND hDuiWnd)
+HSWND CDuiHostWnd::OnSetDuiCapture(HSWND hDuiWnd)
 {
     SetCapture();
     return __super::OnSetDuiCapture(hDuiWnd);
 }
 
-HDUIWND CDuiHostWnd::GetDuiCapture()
+HSWND CDuiHostWnd::GetDuiCapture()
 {
     if(GetCapture()!=m_hWnd) return NULL;
     return __super::OnGetDuiCapture();
@@ -761,33 +727,35 @@ BOOL CDuiHostWnd::IsTranslucent()
 BOOL CDuiHostWnd::DuiCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
 {
     ::CreateCaret(m_hWnd,hBmp,nWidth,nHeight);
-    CDCHandle dc=GetDC();
-    if(m_hBmpCaret)
+    if(m_bmpCaret)
     {
-        DeleteObject(m_hBmpCaret);
-        m_hBmpCaret=NULL;
+        m_bmpCaret=NULL;
     }
-    m_hBmpCaret=CreateCompatibleBitmap(dc,nWidth,nHeight);
-    CDCHandle memdc1,memdc2;
-    memdc1.CreateCompatibleDC(dc);
-    memdc1.SelectBitmap(m_hBmpCaret);
+    
+    CAutoRefPtr<IRenderTarget> pRT;
+    GETRENDERFACTORY->CreateRenderTarget(&pRT,nWidth,nHeight);
+    m_bmpCaret = (IBitmap*) pRT->GetCurrentObject(OT_BITMAP);
+    m_szCaret.cx=nWidth;
+    m_szCaret.cy=nHeight;
+        
     if(hBmp)
     {
         //以拉伸方式创建一个插入符位图
-        memdc2.CreateCompatibleDC(dc);
-        memdc2.SelectBitmap(hBmp);
+        HDC hdc=pRT->GetDC(0);
+        HDC hdc2=CreateCompatibleDC(hdc);
+        SelectObject(hdc2,hBmp);
+        
         BITMAP bm;
         GetObject(hBmp,sizeof(bm),&bm);
-        StretchBlt(memdc1,0,0,nWidth,nHeight,memdc2,0,0,bm.bmWidth,bm.bmHeight,SRCCOPY);
-        memdc2.DeleteDC();
+        StretchBlt(hdc,0,0,nWidth,nHeight,hdc2,0,0,bm.bmWidth,bm.bmHeight,SRCCOPY);
+        DeleteDC(hdc2);
+        pRT->ReleaseDC(hdc);
     }
     else
     {
         //创建一个黑色插入符的位图
-        memdc1.FillSolidRect(0,0,nWidth,nHeight,0);
+        pRT->FillSolidRect(&CRect(0,0,nWidth,nHeight),RGBA(0,0,0,0xFF));
     }
-    memdc1.DeleteDC();
-    ReleaseDC(dc);
     return TRUE;
 }
 
@@ -968,7 +936,7 @@ LRESULT CDuiHostWnd::OnMsgFilter(UINT uMsg,WPARAM wParam,LPARAM lParam)
 
 //////////////////////////////////////////////////////////////////////////
 // IDuiRealWnd
-HWND CDuiHostWnd::OnRealWndCreate(CDuiRealWnd *pRealWnd)
+HWND CDuiHostWnd::OnRealWndCreate(SRealWnd *pRealWnd)
 {
     CRect rcWindow;
     UINT uCmdID=pRealWnd->GetCmdID();
@@ -980,12 +948,12 @@ HWND CDuiHostWnd::OnRealWndCreate(CDuiRealWnd *pRealWnd)
                           m_hWnd,(HMENU)(ULONG_PTR)uCmdID,0,NULL);
 }
 
-BOOL CDuiHostWnd::OnRealWndInit( CDuiRealWnd *pRealWnd )
+BOOL CDuiHostWnd::OnRealWndInit( SRealWnd *pRealWnd )
 {
     return FALSE;
 }
 
-void CDuiHostWnd::OnRealWndDestroy(CDuiRealWnd *pRealWnd)
+void CDuiHostWnd::OnRealWndDestroy(SRealWnd *pRealWnd)
 {
     if(::IsWindow(pRealWnd->GetRealHwnd(FALSE)))
     {
@@ -999,7 +967,7 @@ void CDuiHostWnd::OnRealWndDestroy(CDuiRealWnd *pRealWnd)
 }
 
 
-void CDuiHostWnd::OnRealWndSize( CDuiRealWnd *pRealWnd )
+void CDuiHostWnd::OnRealWndSize( SRealWnd *pRealWnd )
 {
     if(::IsWindow(pRealWnd->GetRealHwnd(FALSE)))
     {
@@ -1019,20 +987,22 @@ void CDuiHostWnd::OnKillFocus( HWND wndFocus )
     DoFrameEvent(WM_KILLFOCUS,0,0);
 }
 
-void CDuiHostWnd::UpdateLayerFromDC(HDC hdc,BYTE byAlpha)
+void CDuiHostWnd::UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha)
 {
     DUIASSERT(IsTranslucent());
+    HDC hdc=pRT->GetDC(0);
     CRect rc;
     GetWindowRect(&rc);
     BLENDFUNCTION bf= {AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
     CDCHandle dc=GetDC();
     UpdateLayeredWindow(dc,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
     ReleaseDC(dc);
+    pRT->ReleaseDC(hdc);
 }
 
-BOOL _BitBlt(HDC hDst,HDC hSrc,CRect rcDst,CPoint ptSrc)
+BOOL _BitBlt(IRenderTarget *pRTDst,IRenderTarget * pRTSrc,CRect rcDst,CPoint ptSrc)
 {
-    return BitBlt(hDst,rcDst.left,rcDst.top,rcDst.Width(),rcDst.Height(),hSrc,ptSrc.x,ptSrc.y,SRCCOPY);
+    return S_OK == pRTDst->BitBlt(&rcDst,pRTSrc,ptSrc.x,ptSrc.y,SRCCOPY);
 }
 
 BOOL CDuiHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
@@ -1045,10 +1015,9 @@ BOOL CDuiHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
         CRect rcWnd;//窗口矩形
         GetClientRect(&rcWnd);
         CRect rcShow(rcWnd);//动画过程中可见部分
-        HBITMAP hBmp=CGdiAlpha::CreateBitmap32(m_memDC,rcShow.Width(),rcShow.Height(),NULL,0);
-        CMemDC memdc(m_memDC,hBmp);
-
-        memdc.SetBitmapOwner(TRUE); 
+        
+        CAutoRefPtr<IRenderTarget> pRT;
+        GETRENDERFACTORY->CreateRenderTarget(&pRT,rcShow.Width(),rcShow.Height());
 
         int nSteps=dwTime/10;
         if(dwFlags & AW_HIDE)
@@ -1087,14 +1056,14 @@ BOOL CDuiHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 {
                     *x+=xStepLen;
                     *y+=yStepLen;
-                    memdc.FillSolidRect(rcWnd,0);
+                    pRT->FillSolidRect(rcWnd,RGBA(0,0,0,0));
                     CPoint ptAnchor;
                     if(dwFlags & AW_VER_NEGATIVE)
                         ptAnchor.y=rcWnd.bottom-rcShow.Height();
                     if(dwFlags & AW_HOR_NEGATIVE)
                         ptAnchor.x=rcWnd.right-rcShow.Width();
-                    _BitBlt(memdc,m_memDC,rcShow,ptAnchor);
-                    UpdateLayerFromDC(memdc,0xFF);
+                    _BitBlt(pRT,m_memRT,rcShow,ptAnchor);
+                    UpdateLayerFromRenderTarget(m_memRT,0xFF);
                     Sleep(10);
                 }
                 ShowWindow(SW_HIDE);
@@ -1106,9 +1075,9 @@ BOOL CDuiHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 for(int i=0;i<nSteps;i++)
                 {
                     rcShow.DeflateRect(xStep,yStep);
-                    memdc.FillSolidRect(rcWnd,0);
-                    _BitBlt(memdc,m_memDC,rcShow,rcShow.TopLeft());
-                    UpdateLayerFromDC(memdc,0xFF);
+                    pRT->FillSolidRect(rcWnd,RGBA(0,0,0,0));
+                    _BitBlt(pRT,m_memRT,rcShow,rcShow.TopLeft());
+                    UpdateLayerFromRenderTarget(m_memRT,0xFF);
                     Sleep(10);
                 }
                 ShowWindow(SW_HIDE);
@@ -1119,7 +1088,7 @@ BOOL CDuiHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 for(int i=0;i<nSteps;i++)
                 {
                     byAlpha-=255/nSteps;
-                    UpdateLayerFromDC(m_memDC,byAlpha);
+                    UpdateLayerFromRenderTarget(m_memRT,byAlpha);
                     Sleep(10);
                 }
                 ShowWindow(SW_HIDE);
@@ -1167,17 +1136,17 @@ BOOL CDuiHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 {
                     *x+=xStepLen;
                     *y+=yStepLen;
-                    memdc.FillSolidRect(rcWnd,0);
+                    pRT->FillSolidRect(rcWnd,RGBA(0,0,0,0));
                     CPoint ptAnchor;
                     if(dwFlags & AW_VER_POSITIVE)
                         ptAnchor.y=rcWnd.bottom-rcShow.Height();
                     if(dwFlags & AW_HOR_POSITIVE)
                         ptAnchor.x=rcWnd.right-rcShow.Width();
-                     _BitBlt(memdc,m_memDC,rcShow,ptAnchor);
-                    UpdateLayerFromDC(memdc,0xFF);
+                     _BitBlt(pRT,m_memRT,rcShow,ptAnchor);
+                    UpdateLayerFromRenderTarget(m_memRT,0xFF);
                     Sleep(10);
                 }
-                UpdateLayerFromDC(m_memDC,0xFF);
+                UpdateLayerFromRenderTarget(m_memRT,0xFF);
                 return TRUE;
             }else if(dwFlags&AW_CENTER)
             {
@@ -1188,12 +1157,12 @@ BOOL CDuiHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 for(int i=0;i<nSteps;i++)
                 {
                     rcShow.InflateRect(xStep,yStep);
-                    memdc.FillSolidRect(rcWnd,0);
-                    _BitBlt(memdc,m_memDC,rcShow,rcShow.TopLeft());
-                    UpdateLayerFromDC(memdc,0xFF);
+                    pRT->FillSolidRect(rcWnd,RGBA(0,0,0,0));
+                    _BitBlt(pRT,m_memRT,rcShow,rcShow.TopLeft());
+                    UpdateLayerFromRenderTarget(pRT,0xFF);
                     Sleep(10);
                 }
-                UpdateLayerFromDC(m_memDC,0xFF);
+                UpdateLayerFromRenderTarget(m_memRT,0xFF);
                 return TRUE;
             }else if(dwFlags&AW_BLEND)
             {
@@ -1201,10 +1170,10 @@ BOOL CDuiHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 for(int i=0;i<nSteps;i++)
                 {
                     byAlpha+=255/nSteps;
-                    UpdateLayerFromDC(m_memDC,byAlpha);
+                    UpdateLayerFromRenderTarget(m_memRT,byAlpha);
                     Sleep(10);
                 }
-                UpdateLayerFromDC(m_memDC,255);
+                UpdateLayerFromRenderTarget(m_memRT,255);
                 return TRUE;
             }
         }

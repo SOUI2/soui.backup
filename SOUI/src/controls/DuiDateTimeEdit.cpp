@@ -6,7 +6,7 @@ namespace SOUI{
 /////////////////////////////////////////////////////////////////////////////
 // CDxMaskEdit
 /////////////////////////////////////////////////////////////////////////////
-CDuiMaskEdit::CDuiMaskEdit()
+SMaskEdit::SMaskEdit()
     : m_nStartChar(0)
     , m_nEndChar(0)
     , m_bOverType(FALSE)
@@ -20,37 +20,37 @@ CDuiMaskEdit::CDuiMaskEdit()
 {
 }
 
-void CDuiMaskEdit::SetUseMask(BOOL bUseMask)
+void SMaskEdit::SetUseMask(BOOL bUseMask)
 {
     m_bUseMask = bUseMask;
 }
 
-BOOL CDuiMaskEdit::CanUseMask() const
+BOOL SMaskEdit::CanUseMask() const
 {
     return m_bUseMask && ((m_dwStyle & ES_READONLY) == 0) && !m_strMask.IsEmpty();
 }
 
-void CDuiMaskEdit::SetOverType(BOOL bOverType)
+void SMaskEdit::SetOverType(BOOL bOverType)
 {
     m_bOverType = bOverType;
 }
 
-BOOL CDuiMaskEdit::CanOverType() const
+BOOL SMaskEdit::CanOverType() const
 {
     return m_bOverType;
 }
 
-BOOL CDuiMaskEdit::PosInRange(int nPos) const
+BOOL SMaskEdit::PosInRange(int nPos) const
 {
     return ((nPos >= 0) && (nPos < m_strLiteral.GetLength()));
 }
 
-TCHAR CDuiMaskEdit::GetPromptChar() const
+TCHAR SMaskEdit::GetPromptChar() const
 {
     return m_chPrompt;
 }
 
-CDuiStringT CDuiMaskEdit::GetPromptString(int nLength) const
+CDuiStringT SMaskEdit::GetPromptString(int nLength) const
 {
     CDuiStringT strPrompt;
 
@@ -60,7 +60,7 @@ CDuiStringT CDuiMaskEdit::GetPromptString(int nLength) const
     return strPrompt;
 }
 
-void CDuiMaskEdit::SetPromptChar(TCHAR ch, BOOL bAutoReplace)
+void SMaskEdit::SetPromptChar(TCHAR ch, BOOL bAutoReplace)
 {
     if (m_chPrompt == ch)
         return;
@@ -81,7 +81,7 @@ void CDuiMaskEdit::SetPromptChar(TCHAR ch, BOOL bAutoReplace)
     m_chPrompt = ch;
 }
 
-BOOL CDuiMaskEdit::MaskCut()
+BOOL SMaskEdit::MaskCut()
 {
     //if (!CanUseMask())
     //    return (BOOL)DefWindowProc(WM_CUT, 0, 0);
@@ -92,7 +92,7 @@ BOOL CDuiMaskEdit::MaskCut()
     return TRUE;
 }
 
-BOOL CDuiMaskEdit::MaskCopy()
+BOOL SMaskEdit::MaskCopy()
 {
     //if (!CanUseMask())
     //    return (BOOL)DefWindowProc(WM_COPY, 0, 0);
@@ -105,7 +105,7 @@ BOOL CDuiMaskEdit::MaskCopy()
     return TRUE;
 }
 
-void CDuiMaskEdit::MaskReplaceSel(LPCTSTR lpszNewText)
+void SMaskEdit::MaskReplaceSel(LPCTSTR lpszNewText)
 {
     DUIASSERT(CanUseMask());
 
@@ -138,7 +138,7 @@ void CDuiMaskEdit::MaskReplaceSel(LPCTSTR lpszNewText)
     m_nStartChar = m_nEndChar = x;
 }
 
-BOOL CDuiMaskEdit::MaskPaste()
+BOOL SMaskEdit::MaskPaste()
 {
     //if (!CanUseMask())
     //    return (BOOL)DefWindowProc(WM_PASTE, 0, 0);
@@ -169,7 +169,7 @@ BOOL CDuiMaskEdit::MaskPaste()
     return TRUE;
 }
 
-void CDuiMaskEdit::MaskDeleteSel()
+void SMaskEdit::MaskDeleteSel()
 {
     if (m_nStartChar == m_nEndChar)
         return;
@@ -180,7 +180,7 @@ void CDuiMaskEdit::MaskDeleteSel()
     m_nEndChar = m_nStartChar;
 }
 
-BOOL CDuiMaskEdit::MaskClear()
+BOOL SMaskEdit::MaskClear()
 {
     //if (!CanUseMask())
     //    return (BOOL)DefWindowProc(WM_CLEAR, 0, 0);
@@ -194,7 +194,7 @@ BOOL CDuiMaskEdit::MaskClear()
     return TRUE;
 }
 
-void CDuiMaskEdit::MaskSelectAll()
+void SMaskEdit::MaskSelectAll()
 {
     if (!CanUseMask())
     {
@@ -208,12 +208,12 @@ void CDuiMaskEdit::MaskSelectAll()
     }
 }
 
-BOOL CDuiMaskEdit::IsModified() const
+BOOL SMaskEdit::IsModified() const
 {
     return m_bModified;
 }
 
-void CDuiMaskEdit::SetMaskedText(LPCTSTR lpszMaskedText, int nPos, BOOL bUpdateWindow)
+void SMaskEdit::SetMaskedText(LPCTSTR lpszMaskedText, int nPos, BOOL bUpdateWindow)
 {
     int nMaskedTextLength = (int)_tcslen(lpszMaskedText);
 
@@ -245,7 +245,7 @@ void CDuiMaskEdit::SetMaskedText(LPCTSTR lpszMaskedText, int nPos, BOOL bUpdateW
     }
 }
 
-BOOL CDuiMaskEdit::SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lpszDefault)
+BOOL SMaskEdit::SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lpszDefault)
 {
     DUIASSERT(lpszMask);
     DUIASSERT(lpszLiteral);
@@ -283,7 +283,7 @@ BOOL CDuiMaskEdit::SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lp
     return TRUE;
 }
 
-TCHAR CDuiMaskEdit::ConvertUnicodeAlpha(TCHAR nChar, BOOL bUpperCase) const
+TCHAR SMaskEdit::ConvertUnicodeAlpha(TCHAR nChar, BOOL bUpperCase) const
 {
     CDuiStringT strTemp(nChar);
     if (bUpperCase)
@@ -294,7 +294,7 @@ TCHAR CDuiMaskEdit::ConvertUnicodeAlpha(TCHAR nChar, BOOL bUpperCase) const
     return strTemp[0];
 }
 
-BOOL CDuiMaskEdit::CheckChar(TCHAR& nChar, int nPos)
+BOOL SMaskEdit::CheckChar(TCHAR& nChar, int nPos)
 {
     // do not use mask
     if (!CanUseMask())
@@ -314,7 +314,7 @@ BOOL CDuiMaskEdit::CheckChar(TCHAR& nChar, int nPos)
     return ProcessMask(nChar, nPos);
 }
 
-BOOL CDuiMaskEdit::ProcessMask(TCHAR& nChar, int nEndPos)
+BOOL SMaskEdit::ProcessMask(TCHAR& nChar, int nEndPos)
 {
     DUIASSERT(nEndPos < m_strMask.GetLength());
     if (nEndPos < 0 || nEndPos >= m_strMask.GetLength())
@@ -438,7 +438,7 @@ BOOL CDxMaskEdit::PreTranslateMessage(MSG* pMsg)
 }
 #endif
 
-void CDuiMaskEdit::DeleteCharAt(int nPos)
+void SMaskEdit::DeleteCharAt(int nPos)
 {
     DUIASSERT(PosInRange(nPos));
 
@@ -450,7 +450,7 @@ void CDuiMaskEdit::DeleteCharAt(int nPos)
     SetMaskedText(strMaskedText, nPos, FALSE);
 }
 
-void CDuiMaskEdit::InsertCharAt(int nPos, TCHAR nChar)
+void SMaskEdit::InsertCharAt(int nPos, TCHAR nChar)
 {
     DUIASSERT(PosInRange(nPos));
 
@@ -462,7 +462,7 @@ void CDuiMaskEdit::InsertCharAt(int nPos, TCHAR nChar)
     SetMaskedText(strMaskedText, nPos, FALSE);
 }
 
-BOOL CDuiMaskEdit::CopyToClipboard(const CDuiStringT& strText)
+BOOL SMaskEdit::CopyToClipboard(const CDuiStringT& strText)
 {
     if (!OpenClipboard(NULL))
         return FALSE;
@@ -495,7 +495,7 @@ BOOL CDuiMaskEdit::CopyToClipboard(const CDuiStringT& strText)
     return TRUE;
 }
 
-CDuiStringT CDuiMaskEdit::GetMaskedText(int nStartPos, int nEndPos) const
+CDuiStringT SMaskEdit::GetMaskedText(int nStartPos, int nEndPos) const
 {
     if (nEndPos == -1)
         nEndPos = m_strWindowText.GetLength();
@@ -515,7 +515,7 @@ CDuiStringT CDuiMaskEdit::GetMaskedText(int nStartPos, int nEndPos) const
     return strBuffer;
 }
 
-void CDuiMaskEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+void SMaskEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     if (!CanUseMask())
     {
@@ -662,7 +662,7 @@ void CDuiMaskEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     __super::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
-void CDuiMaskEdit::ProcessChar(TCHAR nChar)
+void SMaskEdit::ProcessChar(TCHAR nChar)
 {
     int nLen = m_strLiteral.GetLength();
 
@@ -698,7 +698,7 @@ void CDuiMaskEdit::ProcessChar(TCHAR nChar)
     m_nEndChar = m_nStartChar;
 }
 
-int CDuiMaskEdit::OnCreate(LPVOID)
+int SMaskEdit::OnCreate(LPVOID)
 {
     int nRet = __super::OnCreate(NULL);
     if (nRet != 0)
@@ -707,7 +707,7 @@ int CDuiMaskEdit::OnCreate(LPVOID)
     return 0;
 }
 
-void CDuiMaskEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+void SMaskEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     if (!CanUseMask())
     {
@@ -750,7 +750,7 @@ void CDuiMaskEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     }
 }
 
-void CDuiMaskEdit::OnSetDuiFocus()
+void SMaskEdit::OnSetDuiFocus()
 {
     __super::OnSetDuiFocus();
 
@@ -767,7 +767,7 @@ void CDuiMaskEdit::OnSetDuiFocus()
 }
 
 // Some goodies
-BOOL CDuiMaskEdit::CorrectPosition(int& nPos, BOOL bForward)
+BOOL SMaskEdit::CorrectPosition(int& nPos, BOOL bForward)
 {
     int nLen = m_strLiteral.GetLength();
 
@@ -806,12 +806,12 @@ BOOL CDuiMaskEdit::CorrectPosition(int& nPos, BOOL bForward)
     return FALSE;
 }
 
-BOOL CDuiMaskEdit::IsPrintChar(TCHAR nChar)
+BOOL SMaskEdit::IsPrintChar(TCHAR nChar)
 {
     return _istprint(nChar) || IsAlphaChar(nChar);
 }
 
-BOOL CDuiMaskEdit::IsAlphaChar(TCHAR nChar)
+BOOL SMaskEdit::IsAlphaChar(TCHAR nChar)
 {
     if (_istalpha(nChar))
         return TRUE;
@@ -825,27 +825,27 @@ BOOL CDuiMaskEdit::IsAlphaChar(TCHAR nChar)
     return FALSE;
 }
 
-void CDuiMaskEdit::NotifyPosNotInRange()
+void SMaskEdit::NotifyPosNotInRange()
 {
     ::MessageBeep((UINT)-1);
 }
 
-void CDuiMaskEdit::NotifyInvalidCharacter(TCHAR /*nChar*/, TCHAR /*chMask*/)
+void SMaskEdit::NotifyInvalidCharacter(TCHAR /*nChar*/, TCHAR /*chMask*/)
 {
     ::MessageBeep((UINT)-1);
 }
 
-BOOL CDuiMaskEdit::IsPromptPos(int nPos) const
+BOOL SMaskEdit::IsPromptPos(int nPos) const
 {
     return IsPromptPos(m_strLiteral, nPos);
 }
 
-BOOL CDuiMaskEdit::IsPromptPos(const CDuiStringT& strLiteral, int nPos) const
+BOOL SMaskEdit::IsPromptPos(const CDuiStringT& strLiteral, int nPos) const
 {
     return (nPos >= 0 && nPos < strLiteral.GetLength()) && (strLiteral[nPos] == m_chPrompt);
 }
 
-void CDuiMaskEdit::CorrectWindowText()
+void SMaskEdit::CorrectWindowText()
 {
     int nLiteralLength = m_strLiteral.GetLength();
     int nWindowTextLength = m_strWindowText.GetLength();
@@ -860,7 +860,7 @@ void CDuiMaskEdit::CorrectWindowText()
     }
 }
 
-void CDuiMaskEdit::GetMaskState(BOOL bCorrectSelection)
+void SMaskEdit::GetMaskState(BOOL bCorrectSelection)
 {
     DUIASSERT(m_bUseMask);
 
@@ -882,12 +882,12 @@ void CDuiMaskEdit::GetMaskState(BOOL bCorrectSelection)
     }
 }
 
-void CDuiMaskEdit::MaskGetSel()
+void SMaskEdit::MaskGetSel()
 {
     DuiSendMessage(EM_GETSEL,(WPARAM)&m_nStartChar,(LPARAM)&m_nEndChar);
 }
 
-void CDuiMaskEdit::SetMaskState()
+void SMaskEdit::SetMaskState()
 {
     DUIASSERT(m_bUseMask);
 
@@ -907,7 +907,7 @@ void CDuiMaskEdit::SetMaskState()
     GetContainer()->DuiShowCaret(TRUE);
 }
 
-CDuiStringT CDuiMaskEdit::GetWindowText()
+CDuiStringT SMaskEdit::GetWindowText()
 {
     int nLen=__super::GetWindowTextLength();
     wchar_t *pszBuf=new wchar_t[nLen+1];
@@ -920,7 +920,7 @@ CDuiStringT CDuiMaskEdit::GetWindowText()
 /////////////////////////////////////////////////////////////////////////////
 // CDxDateEdit class
 /////////////////////////////////////////////////////////////////////////////
-CDuiDateEdit::CDuiDateEdit()
+SDateEdit::SDateEdit()
 {
     m_bUseMask   = true;
     m_strMask    = _T("0000/00/00");
@@ -928,7 +928,7 @@ CDuiDateEdit::CDuiDateEdit()
     m_strDefault = _T("0000/00/00");
 }
 
-int CDuiDateEdit::OnCreate(LPVOID)
+int SDateEdit::OnCreate(LPVOID)
 {
     int nRet = __super::OnCreate(NULL);
     if (nRet != 0)
@@ -941,13 +941,13 @@ int CDuiDateEdit::OnCreate(LPVOID)
     return 0;
 }
 
-void CDuiDateEdit::SetDateTime(LPCTSTR strDate)
+void SDateEdit::SetDateTime(LPCTSTR strDate)
 {
     m_strWindowText = m_strDefault = strDate;
     SetWindowText(DUI_CT2W(strDate));
 }
 
-void CDuiDateEdit::SetDateTime( CTime tm )
+void SDateEdit::SetDateTime( CTime tm )
 {
     TCHAR szBuf[256];
     struct tm ttm;
@@ -955,13 +955,13 @@ void CDuiDateEdit::SetDateTime( CTime tm )
     SetDateTime(szBuf);
 }
 
-CDuiStringT CDuiDateEdit::GetWindowDateTime()
+CDuiStringT SDateEdit::GetWindowDateTime()
 {
     CDuiStringT strText = GetWindowText();
     return strText;
 }
 
-BOOL CDuiDateEdit::ProcessMask(TCHAR& nChar, int nEndPos)
+BOOL SDateEdit::ProcessMask(TCHAR& nChar, int nEndPos)
 {
     // check the key against the mask
     if (m_strMask[nEndPos] == _T('0') && _istdigit((TCHAR)nChar))
@@ -992,7 +992,7 @@ BOOL CDuiDateEdit::ProcessMask(TCHAR& nChar, int nEndPos)
 // CDxTimeEdit class
 /////////////////////////////////////////////////////////////////////////////
 
-CDuiTimeEdit::CDuiTimeEdit()
+STimeEdit::STimeEdit()
 {
     m_bMilitary  = false;
     m_bUseMask   = true;
@@ -1003,7 +1003,7 @@ CDuiTimeEdit::CDuiTimeEdit()
     m_nMins      = 0;
 }
 
-int CDuiTimeEdit::OnCreate(LPVOID)
+int STimeEdit::OnCreate(LPVOID)
 {
     int nRet = __super::OnCreate(NULL);
     if (nRet != 0)
@@ -1014,7 +1014,7 @@ int CDuiTimeEdit::OnCreate(LPVOID)
     return 0;
 }
 
-BOOL CDuiTimeEdit::ProcessMask(TCHAR& nChar, int nEndPos)
+BOOL STimeEdit::ProcessMask(TCHAR& nChar, int nEndPos)
 {
     // check the key against the mask
     if (m_strMask[nEndPos] == _T('0') && _istdigit(nChar))
@@ -1066,7 +1066,7 @@ BOOL CDuiTimeEdit::ProcessMask(TCHAR& nChar, int nEndPos)
     return FALSE;
 }
 
-void CDuiTimeEdit::SetHours(int nHours)
+void STimeEdit::SetHours(int nHours)
 {
     m_nHours = nHours;
 
@@ -1075,7 +1075,7 @@ void CDuiTimeEdit::SetHours(int nHours)
     SetWindowText(strText);
 }
 
-void CDuiTimeEdit::SetMins(int nMins)
+void STimeEdit::SetMins(int nMins)
 {
     m_nMins = nMins;
 
@@ -1084,7 +1084,7 @@ void CDuiTimeEdit::SetMins(int nMins)
     SetWindowText(strText);
 }
 
-void CDuiTimeEdit::SetTime(int nHours, int nMins)
+void STimeEdit::SetTime(int nHours, int nMins)
 {
     m_nHours = nHours;
     m_nMins = nMins;

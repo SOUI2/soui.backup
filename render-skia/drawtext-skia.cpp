@@ -77,12 +77,14 @@ void SkTextLayoutEx::buildLines()
     {
         const wchar_t *text = m_text.begin();
         const wchar_t* stop = m_text.begin() + m_text.count();
-
+        SkScalar maxWid=m_rcBound.width();
+        if(m_uFormat & DT_CALCRECT && maxWid < 1.0f)
+            maxWid=10000.0f;
         int lineHead=0;
         while(lineHead<m_text.count())
         {
             m_lines.push(lineHead);
-            size_t line_len = breakTextEx(m_paint,text, stop - text, m_rcBound.width(),0);
+            size_t line_len = breakTextEx(m_paint,text, stop - text, maxWid,0);
             text += line_len;
             lineHead += line_len;
         };
@@ -117,7 +119,7 @@ SkScalar SkTextLayoutEx::drawLine( SkCanvas *canvas, SkScalar x, SkScalar y, int
 SkScalar SkTextLayoutEx::drawLineEndWithEllipsis( SkCanvas *canvas, SkScalar x, SkScalar y, int iBegin,int iEnd,SkScalar fontHei,SkScalar maxWidth )
 {
     SkScalar widReq=m_paint->measureText(m_text.begin()+iBegin,(iEnd-iBegin)*sizeof(wchar_t));
-    if(widReq<m_rcBound.width())
+    if(widReq<=m_rcBound.width())
     {
         return drawLine(canvas,x,y,iBegin,iEnd,fontHei);
     }else

@@ -5,22 +5,22 @@
 namespace SOUI
 {
 
-    void DuiSkinFactoryManager::AddStandardSkin()
+    void DuiSkinFactoryMgr::AddStandardSkin()
     {
-        AddKeyObject(CDuiSkinImgList::GetClassName(),new TplSkinFactory<CDuiSkinImgList>);
-        AddKeyObject(CDuiSkinImgFrame::GetClassName(),new TplSkinFactory<CDuiSkinImgFrame>);
-        AddKeyObject(CDuiSkinButton::GetClassName(),new TplSkinFactory<CDuiSkinButton>);
-        AddKeyObject(CDuiSkinGradation::GetClassName(),new TplSkinFactory<CDuiSkinGradation>);
-        AddKeyObject(CDuiScrollbarSkin::GetClassName(),new TplSkinFactory<CDuiScrollbarSkin>);
-        AddKeyObject(CDuiSkinMenuBorder::GetClassName(),new TplSkinFactory<CDuiSkinMenuBorder>);
+        AddKeyObject(SSkinImgList::GetClassName(),new TplSkinFactory<SSkinImgList>);
+        AddKeyObject(SSkinImgFrame::GetClassName(),new TplSkinFactory<SSkinImgFrame>);
+        AddKeyObject(SSkinButton::GetClassName(),new TplSkinFactory<SSkinButton>);
+        AddKeyObject(SSkinGradation::GetClassName(),new TplSkinFactory<SSkinGradation>);
+        AddKeyObject(SSkinScrollbar::GetClassName(),new TplSkinFactory<SSkinScrollbar>);
+        AddKeyObject(SSkinMenuBorder::GetClassName(),new TplSkinFactory<SSkinMenuBorder>);
     }
 
-    void DuiSkinFactoryManager::OnSkinRemoved( const CSkinFactoryPtr & obj )
+    void DuiSkinFactoryMgr::OnSkinRemoved( const CSkinFactoryPtr & obj )
     {
         delete obj;
     }
 
-    CDuiSkinBase * DuiSkinFactoryManager::CreateSkinByName( LPCSTR pszClassName )
+    ISkinObj * DuiSkinFactoryMgr::CreateSkinByName( LPCSTR pszClassName )
     {
         if(!HasKey(pszClassName)) return NULL;
         return GetKeyObject(pszClassName)->NewSkin();
