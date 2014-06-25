@@ -805,6 +805,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\controls\DuiDateTimeEdit.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\DuiEventSet.cpp"
 				>
 			</File>
@@ -826,6 +830,10 @@
 			</File>
 			<File
 				RelativePath=".\src\duihostwnd.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\controls\DuiHotKeyCtrl.cpp"
 				>
 			</File>
 			<File

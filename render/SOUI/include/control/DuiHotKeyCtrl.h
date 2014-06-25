@@ -5,14 +5,14 @@
 namespace SOUI
 {
 
-class SOUI_EXP CDuiHotKeyCtrl 
+class SOUI_EXP SHotKeyCtrl 
     : public SWindow
     , public CAccelerator
 {
-    SOUI_CLASS_NAME(CDuiHotKeyCtrl, "hotkey")
+    SOUI_CLASS_NAME(SHotKeyCtrl, "hotkey")
 public:
-    CDuiHotKeyCtrl(void);
-    virtual ~CDuiHotKeyCtrl(void);
+    SHotKeyCtrl(void);
+    virtual ~SHotKeyCtrl(void);
 
     void SetRule(WORD wInvalidComp,WORD wModifier);
 
@@ -20,12 +20,6 @@ public:
 
     void GetHotKey(WORD & vKey,WORD &wModifers);
 
-    SOUI_ATTRS_BEGIN()
-    ATTR_WORD("invalidcomb",m_wInvalidComb,FALSE)
-    ATTR_WORD("defcombkey",m_wInvalidModifier,FALSE)
-    ATTR_WORD("combkey",m_wModifier,FALSE)
-    ATTR_WORD("hotkey",m_wVK,FALSE)
-    SOUI_ATTRS_END()
 
 protected:
     virtual UINT OnGetDuiCode()
@@ -34,10 +28,10 @@ protected:
     }
 
     int OnCreate(LPVOID);
-
+    
     void OnLButtonDown(UINT nFlags,CPoint pt);
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget *pRT);
 
     void OnSetDuiFocus();
 
@@ -57,23 +51,30 @@ protected:
 
     LRESULT OnWindowPosChanged(LPRECT lpRcContainer);
 
+    SOUI_ATTRS_BEGIN()
+        ATTR_WORD("invalidcomb",m_wInvalidComb,FALSE)
+        ATTR_WORD("defcombkey",m_wInvalidModifier,FALSE)
+        ATTR_WORD("combkey",m_wModifier,FALSE)
+        ATTR_WORD("hotkey",m_wVK,FALSE)
+    SOUI_ATTRS_END()
+
     WND_MSG_MAP_BEGIN()
-    MSG_WM_CREATE(OnCreate)
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_LBUTTONDOWN(OnLButtonDown)
-    MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-    MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
-    MSG_WM_KEYDOWN(OnKeyDown)
-    MSG_WM_KEYUP(OnKeyUp)
-    MSG_WM_SYSKEYDOWN(OnSysKeyDown)
-    MSG_WM_SYSKEYUP(OnSysKeyUp)
-    MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
+        MSG_WM_CREATE(OnCreate)
+        MSG_WM_PAINT_EX(OnPaint)
+        MSG_WM_LBUTTONDOWN(OnLButtonDown)
+        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
+        MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+        MSG_WM_KEYDOWN(OnKeyDown)
+        MSG_WM_KEYUP(OnKeyUp)
+        MSG_WM_SYSKEYDOWN(OnSysKeyDown)
+        MSG_WM_SYSKEYUP(OnSysKeyUp)
+        MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
     WND_MSG_MAP_END()
     WORD     m_wInvalidComb;        //无效的组合键
     WORD     m_wInvalidModifier; //对无效组合键的替换方案,默认方案
 
-    HFONT    m_hTxtFont;
     BOOL    m_bInSetting;        //正在设置中
+    CAutoRefPtr<IFont> m_curFont;//当前字体，用于计算文字大小
 };
 
 }//namespace SOUI

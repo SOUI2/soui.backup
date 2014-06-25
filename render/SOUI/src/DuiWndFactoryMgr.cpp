@@ -30,6 +30,7 @@ void DuiWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(SAnimateImgWnd::GetClassName(),new TplDuiWindowFactory<SAnimateImgWnd>);
     AddKeyObject(SScrollView::GetClassName(),new TplDuiWindowFactory<SScrollView>);
     AddKeyObject(SRealWnd::GetClassName(),new TplDuiWindowFactory<SRealWnd>);
+    AddKeyObject(SToggle::GetClassName(),new TplDuiWindowFactory<SToggle>);
     AddKeyObject(SCaption::GetClassName(),new TplDuiWindowFactory<SCaption>);
     AddKeyObject(STabCtrl::GetClassName(),new TplDuiWindowFactory<STabCtrl>);
     AddKeyObject(SActiveX::GetClassName(),new TplDuiWindowFactory<SActiveX>);
@@ -47,17 +48,16 @@ void DuiWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(SListBox::GetClassName(),new TplDuiWindowFactory<SListBox>);
     AddKeyObject(SRichEdit::GetClassName(),new TplDuiWindowFactory<SRichEdit>);
     AddKeyObject(SEdit::GetClassName(),new TplDuiWindowFactory<SEdit>);
+    AddKeyObject(SHotKeyCtrl::GetClassName(),new TplDuiWindowFactory<SHotKeyCtrl>);
+    AddKeyObject(SMaskEdit::GetClassName(),new TplDuiWindowFactory<SMaskEdit>);
+    AddKeyObject(SDateEdit::GetClassName(),new TplDuiWindowFactory<SDateEdit>);
+    AddKeyObject(STimeEdit::GetClassName(),new TplDuiWindowFactory<STimeEdit>);
     /*
     AddKeyObject(CDuiListBoxEx::GetClassName(),new TplDuiWindowFactory<CDuiListBoxEx>);
     AddKeyObject(CDuiItemBox::GetClassName(),new TplDuiWindowFactory<CDuiItemBox>);
-    AddKeyObject(CDuiToggle::GetClassName(),new TplDuiWindowFactory<CDuiToggle>);
     AddKeyObject(CDuiTreeBox::GetClassName(),new TplDuiWindowFactory<CDuiTreeBox>);
     AddKeyObject(CDuiComboBox::GetClassName(),new TplDuiWindowFactory<CDuiComboBox>);
     AddKeyObject(CDuiComboBoxEx::GetClassName(),new TplDuiWindowFactory<CDuiComboBoxEx>);
-    AddKeyObject(CDuiHotKeyCtrl::GetClassName(),new TplDuiWindowFactory<CDuiHotKeyCtrl>);
-    AddKeyObject(CDuiMaskEdit::GetClassName(),new TplDuiWindowFactory<CDuiMaskEdit>);
-    AddKeyObject(CDuiDateEdit::GetClassName(),new TplDuiWindowFactory<CDuiDateEdit>);
-    AddKeyObject(CDuiTimeEdit::GetClassName(),new TplDuiWindowFactory<CDuiTimeEdit>);
     //*/
 }
 

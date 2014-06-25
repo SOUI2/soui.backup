@@ -10,12 +10,12 @@ namespace SOUI{
 //     CDuiMaskEdit is a CXTPEdit derived class. It allows text masking to be
 //     applied to the control to format it for special editing restrictions.
 //===========================================================================
-class SOUI_EXP CDuiMaskEdit : public SEdit
+class SOUI_EXP SMaskEdit : public SEdit
 {
-    SOUI_CLASS_NAME(CDuiMaskEdit, "maskedit")
+    SOUI_CLASS_NAME(SMaskEdit, "maskedit")
 
 public:
-    CDuiMaskEdit();
+    SMaskEdit();
 
     BOOL            CanUseMask() const;
     void            SetUseMask(BOOL bUseMask);
@@ -98,12 +98,12 @@ protected:
 
 //===========================================================================
 //  CDxDateEdit
-class SOUI_EXP CDuiDateEdit : public CDuiMaskEdit
+class SOUI_EXP SDateEdit : public SMaskEdit
 {
-    SOUI_CLASS_NAME(CDuiDateEdit, "dateedit")
+    SOUI_CLASS_NAME(SDateEdit, "dateedit")
 
 public:
-    CDuiDateEdit();
+    SDateEdit();
 
     virtual void    SetDateTime(LPCTSTR strDate);
     virtual void    SetDateTime(CTime tm);
@@ -121,12 +121,12 @@ protected:
 
 //===========================================================================
 //  CDxTimeEdit
-class SOUI_EXP CDuiTimeEdit : public CDuiDateEdit
+class SOUI_EXP STimeEdit : public SDateEdit
 {
-    SOUI_CLASS_NAME(CDuiTimeEdit, "timeedit")
+    SOUI_CLASS_NAME(STimeEdit, "timeedit")
 
 public:
-    CDuiTimeEdit();
+    STimeEdit();
 
 public:
     virtual void    SetHours(int nHours);
@@ -152,17 +152,17 @@ protected:
 };
 
 //////////////////////////////////////////////////////////////////////
-inline int CDuiTimeEdit::GetHours() const
+inline int STimeEdit::GetHours() const
 {
     return m_nHours;
 }
 
-inline int CDuiTimeEdit::GetMins() const
+inline int STimeEdit::GetMins() const
 {
     return m_nMins;
 }
 
-inline void CDuiTimeEdit::SetMilitary(BOOL bMilitary)
+inline void STimeEdit::SetMilitary(BOOL bMilitary)
 {
     m_bMilitary = bMilitary;
 
