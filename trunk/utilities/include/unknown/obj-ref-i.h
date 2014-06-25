@@ -8,9 +8,9 @@ struct OR_API IObjRef
 {
 	virtual ~IObjRef(){}
 
-	virtual void __stdcall AddRef() = 0;
+	virtual void AddRef() = 0;
 
-	virtual void __stdcall Release() = 0;
+	virtual void Release() = 0;
 	
-	virtual void __stdcall OnFinalRelease() =0;
+	virtual void OnFinalRelease() =0;
 };

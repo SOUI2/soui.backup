@@ -234,7 +234,19 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath=".\res\dlg_bg_frame.png"
+				>
+			</File>
+			<File
+				RelativePath=".\res\icon.jpg"
+				>
+			</File>
+			<File
 				RelativePath=".\render-test.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\res\sampleImage.jpg"
 				>
 			</File>
 		</Filter>

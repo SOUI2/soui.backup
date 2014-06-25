@@ -2,17 +2,18 @@
 
 #define GetAValue(rgb)      (LOBYTE((rgb)>>24))
 #define RGBA(r,g,b,a)       (RGB(r,g,b)|(a<<24))
+#define CR_INVALID          0x00FFFFFF
 
 //以ARGB格式存储颜色值
-class CDuiColor
+class SColor
 {
 public:
-	CDuiColor(BYTE r,BYTE g,BYTE b,BYTE a=0xFF):a(a),b(b),g(g),r(r)
+	SColor(BYTE r,BYTE g,BYTE b,BYTE a=0xFF):a(a),b(b),g(g),r(r)
 	{
 
 	}
 
-	CDuiColor(COLORREF cr,BYTE a)
+	SColor(COLORREF cr,BYTE a)
 	{
 	    r=GetRValue(cr);
 	    g=GetGValue(cr);
@@ -20,7 +21,7 @@ public:
         this->a = a;
 	}
 
-    CDuiColor(COLORREF cr)
+    SColor(COLORREF cr)
     {
         r=GetRValue(cr);
         g=GetGValue(cr);

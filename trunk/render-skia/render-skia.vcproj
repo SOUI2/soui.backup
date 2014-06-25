@@ -209,18 +209,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="img-decoder"
-			>
-			<File
-				RelativePath=".\img-decoder.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\img-decoder.h"
-				>
-			</File>
-		</Filter>
 		<File
 			RelativePath=".\render-api.cpp"
 			>

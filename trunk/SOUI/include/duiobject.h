@@ -137,6 +137,9 @@ public:
         if(strlen(lpszValue)>6)
         {
             cr |= HexStringToULong(lpszValue + 6, 2)<<24;
+        }else
+        {
+            cr |= 0xFF000000;
         }
         return cr;
     }

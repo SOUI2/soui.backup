@@ -109,7 +109,7 @@ CUIHander::~CUIHander(void)
 {
 }
 
-bool Evt_Test2(CDuiWindow * pSender, LPDUINMHDR pNmhdr)
+bool Evt_Test2(SWindow * pSender, LPDUINMHDR pNmhdr)
 {
 	pSender->GetUserData();
 // 	CUIHander * p=(CUIHander *)pSender->GetUserData();
@@ -119,7 +119,7 @@ bool Evt_Test2(CDuiWindow * pSender, LPDUINMHDR pNmhdr)
 	return true;
 }
 
-bool CUIHander::Evt_Test(CDuiWindow * pSender, LPDUINMHDR pNmhdr)
+bool CUIHander::Evt_Test(SWindow * pSender, LPDUINMHDR pNmhdr)
 {
 // 	pSender->subscribeEvent(NM_COMMAND,Subscriber(Evt_Test2));
 // 	pSender->unsubscribeEvent(NM_COMMAND,Subscriber(&CUIHander::Evt_Test,this));
@@ -132,7 +132,7 @@ LRESULT CUIHander::OnInitDialog(HWND hWnd, LPARAM lParam)
 {
 	HRESULT hr=::RegisterDragDrop(hWnd,m_pMainDlg->GetDropTarget());
 
-	CDuiWindow *pSlider=m_pMainDlg->FindChildByName("IDC_SLIDERTEST");
+	SWindow *pSlider=m_pMainDlg->FindChildByName("IDC_SLIDERTEST");
 	m_pMainDlg->RegisterDragDrop(pSlider->GetDuiHwnd(),new CTestDropTarget);
 
 	//初始化虚拟列表
@@ -144,7 +144,7 @@ LRESULT CUIHander::OnInitDialog(HWND hWnd, LPARAM lParam)
 	CDuiButton *pBtn=(CDuiButton *)m_pMainDlg->FindChildByCmdID(IDC_REPSEL);
 	m_pMainDlg->GetFocusManager()->RegisterAccelerator(SOUI::CAccelerator(VK_RETURN,true),pBtn);//给repsel按钮注册一个热键Ctrl+ENTER。
 #ifdef LUA_TEST
-	CDuiWindow *pTst=m_pMainDlg->FindChildByName("btn_tstevt");
+	SWindow *pTst=m_pMainDlg->FindChildByName("btn_tstevt");
 	DuiSystem::getSingleton().GetScriptModule()->subscribeEvent(pTst,NM_COMMAND,"onEvtTstClick");
 #endif
 
@@ -187,10 +187,10 @@ void CUIHander::OnRepEditSel()
 	{
 		for(int i=0;i<5;i++)
 		{
-			CDuiSkinBase *pSkinGif=GETSKIN("face0");
+			ISkinObj *pSkinGif=GETSKIN("face0");
 // 			RichEdit_InsertImage(pEdit,PATH_GIF);//从文件加载 
 			RichEdit_InsertSkin(pEdit,pSkinGif);
-			CDuiSkinBase *pSkin=GETSKIN("bmpmask");
+			ISkinObj *pSkin=GETSKIN("bmpmask");
 			RichEdit_InsertSkin(pEdit,pSkin);
 // 			RichEdit_InsertSkin(pEdit,pSkin);
 // 			RichEdit_InsertSkin(pEdit,pSkin);
@@ -303,7 +303,7 @@ void CUIHander::OnBtnInitListClick()
 	CDuiListCtrl *pList=m_pMainDlg->FindChildByName2<CDuiListCtrl *>("lc_test");
 	if(pList)
 	{
-		CDuiWindow *pHeader=pList->GetDuiWindow(GDUI_FIRSTCHILD);
+		SWindow *pHeader=pList->GetDuiWindow(GDUI_FIRSTCHILD);
 		pHeader->subscribeEvent(NM_HDCLICK,Subscriber(&CUIHander::OnListHeaderClick,this));
 
 		TCHAR szColNames[][20]={_T("name"),_T("sex"),_T("age"),_T("score")};
@@ -355,7 +355,7 @@ int funCmpare(void* pCtx,const void *p1,const void *p2)
 	}
 }
 
-bool CUIHander::OnListHeaderClick( CDuiWindow * pSender, LPDUINMHDR pNmhdr )
+bool CUIHander::OnListHeaderClick( SWindow * pSender, LPDUINMHDR pNmhdr )
 {
 	CDuiHeaderCtrl *pHeader=(CDuiHeaderCtrl*)pSender;
 	LPDUINMHDCLICK pClick=(LPDUINMHDCLICK)pNmhdr;
@@ -370,7 +370,7 @@ bool CUIHander::OnListHeaderClick( CDuiWindow * pSender, LPDUINMHDR pNmhdr )
 
 void CUIHander::OnBtnAniList()
 {
-	CDuiWindow *pList=m_pMainDlg->FindChildByName("lc_test");
+	SWindow *pList=m_pMainDlg->FindChildByName("lc_test");
 	if(pList)
 	{
 		if(pList->IsVisible(TRUE))
@@ -403,7 +403,7 @@ void CUIHander::OnTimer( UINT_PTR uEventID )
 
 void CUIHander::OnHideTestClick()
 {
-	CDuiWindow *pImg=m_pMainDlg->FindChildByName("img_hidetst");
+	SWindow *pImg=m_pMainDlg->FindChildByName("img_hidetst");
 	
 	pImg->SetVisible(!pImg->IsVisible(),TRUE);
 }

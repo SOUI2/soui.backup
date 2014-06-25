@@ -28,12 +28,12 @@ namespace SOUI
     } DUIHDITEM,  *LPDUIHDITEM;
 
 
-    class SOUI_EXP CDuiHeaderCtrl: public CDuiWindow
+    class SOUI_EXP SHeaderCtrl: public SWindow
     {
-        SOUI_CLASS_NAME(CDuiHeaderCtrl, "header")
+        SOUI_CLASS_NAME(SHeaderCtrl, "header")
     public:
-        CDuiHeaderCtrl(void);
-        ~CDuiHeaderCtrl(void);
+        SHeaderCtrl(void);
+        ~SHeaderCtrl(void);
 
         int InsertItem( int iItem,LPCTSTR pszText,int nWidth, DUIHDSORTFLAG stFlag,LPARAM lParam );
         BOOL GetItem(int iItem,DUIHDITEM *pItem);
@@ -56,8 +56,8 @@ namespace SOUI
         virtual BOOL LoadChildren(pugi::xml_node xmlNode);
         virtual BOOL OnDuiSetCursor(const CPoint &pt);
 
-        void OnPaint(CDCHandle dc);
-        virtual void DrawItem(CDCHandle dc,CRect rcItem,const LPDUIHDITEM pItem);
+        void OnPaint(IRenderTarget * pRT);
+        virtual void DrawItem(IRenderTarget * pRT,CRect rcItem,const LPDUIHDITEM pItem);
         CRect    GetItemRect(UINT iItem);
         //鼠标位置分析，返回一个DWORD，LOWORD为前面的项，HIWORD为后面的项，相同时代表在一个项的中间
         DWORD  HitTest(CPoint pt);
@@ -79,7 +79,7 @@ namespace SOUI
         void OnDestroy();
         
         WND_MSG_MAP_BEGIN()
-            MSG_WM_PAINT(OnPaint)
+            MSG_WM_PAINT_EX(OnPaint)
             MSG_WM_LBUTTONDOWN(OnLButtonDown)
             MSG_WM_LBUTTONUP(OnLButtonUp)
             MSG_WM_MOUSEMOVE(OnMouseMove)
@@ -87,8 +87,8 @@ namespace SOUI
             MSG_WM_DESTROY(OnDestroy)
         WND_MSG_MAP_END()
 
-        CDuiSkinBase *    m_pSkinItem;
-        CDuiSkinBase *    m_pSkinSort;
+        ISkinObj *    m_pSkinItem;
+        ISkinObj *    m_pSkinSort;
         BOOL            m_bSortHeader;        //表头可以点击排序
         BOOL            m_bFixWidth;        //表项宽度固定开关
         BOOL            m_bItemSwapEnable;//允许拖动调整位置开关

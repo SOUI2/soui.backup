@@ -15,7 +15,7 @@ namespace SOUI
 #define WM_NCMOUSELAST  WM_NCMBUTTONDBLCLK
 
 
-CDuiFrame::CDuiFrame(CDuiWindow *pHost)
+CDuiFrame::CDuiFrame(SWindow *pHost)
     :m_pHost(pHost)
     ,m_hCapture(NULL)
     ,m_hHover(NULL)
@@ -88,49 +88,49 @@ BOOL CDuiFrame::OnReleaseDuiCapture()
     return TRUE;
 }
 
-HDUIWND CDuiFrame::OnSetDuiCapture(HDUIWND hDuiWnd)
+HSWND CDuiFrame::OnSetDuiCapture(HSWND hDuiWnd)
 {
-    CDuiWindow *pWnd=DuiWindowMgr::GetWindow(hDuiWnd);
+    SWindow *pWnd=DuiWindowMgr::GetWindow(hDuiWnd);
     DUIASSERT(pWnd);
     if(pWnd->IsDisabled(TRUE)) return 0;
 
-    HDUIWND hRet=m_hCapture;
+    HSWND hRet=m_hCapture;
     m_hCapture=hDuiWnd;
     return hRet;
 }
 
-void CDuiFrame::OnSetDuiFocus(HDUIWND hDuiWnd)
+void CDuiFrame::OnSetDuiFocus(HSWND hDuiWnd)
 {
     m_focusMgr.SetFocusedHwnd(hDuiWnd);
 }
 
-HDUIWND CDuiFrame::OnGetDuiCapture()
+HSWND CDuiFrame::OnGetDuiCapture()
 {
     return m_hCapture;
 }
 
-HDUIWND CDuiFrame::GetDuiFocus()
+HSWND CDuiFrame::GetDuiFocus()
 {
     return m_focusMgr.GetFocusedHwnd();
 }
 
-HDUIWND CDuiFrame::GetDuiHover()
+HSWND CDuiFrame::GetDuiHover()
 {
     return m_hHover;
 }
 
 void CDuiFrame::OnFrameMouseMove(UINT uFlag,CPoint pt)
 {
-    CDuiWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
+    SWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
     if(pCapture)
     {
         CRect rc;
         pCapture->GetRect(&rc);
-        CDuiWindow * pHover=rc.PtInRect(pt)?pCapture:NULL;
-        HDUIWND hHover=pHover?pHover->GetDuiHwnd():NULL;
+        SWindow * pHover=rc.PtInRect(pt)?pCapture:NULL;
+        HSWND hHover=pHover?pHover->GetDuiHwnd():NULL;
         if(hHover!=m_hHover)
         {
-            CDuiWindow *pOldHover=DuiWindowMgr::GetWindow(m_hHover);
+            SWindow *pOldHover=DuiWindowMgr::GetWindow(m_hHover);
             m_hHover=hHover;
             if(pOldHover) pOldHover->DuiSendMessage(m_bNcHover?WM_NCMOUSELEAVE:WM_MOUSELEAVE);
             if(pHover)    pHover->DuiSendMessage(m_bNcHover?WM_NCMOUSEHOVER:WM_MOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
@@ -139,11 +139,11 @@ void CDuiFrame::OnFrameMouseMove(UINT uFlag,CPoint pt)
     }
     else
     {
-        HDUIWND hHover=m_pHost->DuiGetHWNDFromPoint(pt,FALSE);
-        CDuiWindow * pHover=DuiWindowMgr::GetWindow(hHover);
+        HSWND hHover=m_pHost->DuiGetHWNDFromPoint(pt,FALSE);
+        SWindow * pHover=DuiWindowMgr::GetWindow(hHover);
         if(m_hHover!=hHover)
         {
-            CDuiWindow *pOldHover=DuiWindowMgr::GetWindow(m_hHover);
+            SWindow *pOldHover=DuiWindowMgr::GetWindow(m_hHover);
             m_hHover=hHover;
             if(pOldHover)
             {
@@ -182,14 +182,14 @@ void CDuiFrame::OnFrameMouseMove(UINT uFlag,CPoint pt)
 
 void CDuiFrame::OnFrameMouseLeave()
 {
-    CDuiWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
+    SWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
     if(pCapture)
     {
         pCapture->DuiSendMessage(WM_MOUSELEAVE);
     }
     else if(m_hHover)
     {
-        CDuiWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
+        SWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
         if(pHover && !pHover->IsDisabled(TRUE))
             pHover->DuiSendMessage(m_bNcHover?WM_NCMOUSELEAVE:WM_MOUSELEAVE);
     }
@@ -199,11 +199,11 @@ void CDuiFrame::OnFrameMouseLeave()
 
 BOOL CDuiFrame::OnFrameSetCursor(const CPoint &pt)
 {
-    CDuiWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
+    SWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
     if(pCapture) return pCapture->OnDuiSetCursor(pt);
     else
     {
-        CDuiWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
+        SWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
         if(pHover && !pHover->IsDisabled(TRUE)) return pHover->OnDuiSetCursor(pt);
     }
     return FALSE;
@@ -211,7 +211,7 @@ BOOL CDuiFrame::OnFrameSetCursor(const CPoint &pt)
 
 void CDuiFrame::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
-    CDuiWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
+    SWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
     if(pCapture)
     {
         if(m_bNcHover && uMsg!=WM_MOUSEWHEEL) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
@@ -222,7 +222,7 @@ void CDuiFrame::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     else
     {
         m_hHover=m_pHost->DuiGetHWNDFromPoint(CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)),FALSE);
-        CDuiWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
+        SWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
         if(pHover  && !pHover->IsDisabled(TRUE))
         {
             BOOL bMsgHandled = FALSE;
@@ -238,7 +238,7 @@ void CDuiFrame::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 
 void CDuiFrame::OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
-    CDuiWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
+    SWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
     if(pFocus)
     {
         BOOL bMsgHandled = FALSE;
@@ -254,7 +254,7 @@ void CDuiFrame::OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     if(m_focusMgr.OnKeyDown(nChar)) return; //首先处理焦点切换
 
-    CDuiWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
+    SWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
     if(pFocus)
     {
         BOOL bMsgHandled=FALSE;
@@ -266,12 +266,12 @@ void CDuiFrame::OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     }
 }
 
-BOOL CDuiFrame::RegisterDragDrop( HDUIWND hDuiWnd,IDropTarget *pDropTarget )
+BOOL CDuiFrame::RegisterDragDrop( HSWND hDuiWnd,IDropTarget *pDropTarget )
 {
     return m_dropTarget.RegisterDragDrop(hDuiWnd,pDropTarget);
 }
 
-BOOL CDuiFrame::RevokeDragDrop( HDUIWND hDuiWnd )
+BOOL CDuiFrame::RevokeDragDrop( HSWND hDuiWnd )
 {
     return m_dropTarget.RevokeDragDrop(hDuiWnd);
 }
@@ -292,7 +292,7 @@ BOOL CDuiFrame::RegisterTimelineHandler( ITimelineHandler *pHandler )
     POSITION pos=m_lstTimelineHandler.Find(pHandler);
     if(pos) return FALSE;
     m_lstTimelineHandler.AddTail(pHandler);
-    CDuiRef *pRef=dynamic_cast<CDuiRef*>(pHandler);
+    IObjRef *pRef=dynamic_cast<IObjRef*>(pHandler);
     if(pRef) pRef->AddRef();
     return TRUE;
 }
@@ -302,7 +302,7 @@ BOOL CDuiFrame::UnregisterTimelineHandler( ITimelineHandler *pHandler )
     POSITION pos=m_lstTimelineHandler.Find(pHandler);
     if(!pos) return FALSE;
     m_lstTimelineHandler.RemoveAt(pos);
-    CDuiRef *pRef=dynamic_cast<CDuiRef*>(pHandler);
+    IObjRef *pRef=dynamic_cast<IObjRef*>(pHandler);
     if(pRef) pRef->Release();
     return TRUE;
 }

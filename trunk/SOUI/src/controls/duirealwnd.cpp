@@ -18,23 +18,23 @@ CDuiRealWndParam::~CDuiRealWndParam()
 }
 
 
-CDuiRealWnd::CDuiRealWnd()
+SRealWnd::SRealWnd()
     :m_bInit(FALSE)
     ,m_lpData(0)
     ,m_hRealWnd(0)
 {
 }
 
-CDuiRealWnd::~CDuiRealWnd()
+SRealWnd::~SRealWnd()
 {
 }
 
-BOOL CDuiRealWnd::NeedRedrawWhenStateChange()
+BOOL SRealWnd::NeedRedrawWhenStateChange()
 {
     return FALSE;
 }
 
-void CDuiRealWnd::ShowRealWindow()
+void SRealWnd::ShowRealWindow()
 {
     if(IsVisible(TRUE) && !IsWindow(m_hRealWnd))
     {
@@ -46,7 +46,7 @@ void CDuiRealWnd::ShowRealWindow()
     }
 }
 
-LRESULT CDuiRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
+LRESULT SRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
 {
     CRect rcOldWnd = m_rcWindow;
 
@@ -56,36 +56,36 @@ LRESULT CDuiRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
     {
         DUINMREALWNDCMN nms;
         nms.hdr.code = NM_REALWND_SIZE;
-        nms.hdr.hDuiWnd=m_hDuiWnd;
+        nms.hdr.hDuiWnd=m_hSWnd;
         nms.hdr.idFrom = GetCmdID();
         nms.hdr.pszNameFrom=GetName();
         nms.pRealWnd=this;
-        DuiNotify((LPDUINMHDR)&nms);
+        DuiNotify((LPSNMHDR)&nms);
     }
     return lRet;
 }
 
-void CDuiRealWnd::OnShowWindow(BOOL bShow, UINT nStatus)
+void SRealWnd::OnShowWindow(BOOL bShow, UINT nStatus)
 {
     __super::OnShowWindow(bShow, nStatus);
     ShowRealWindow();
 }
 
-void CDuiRealWnd::OnDestroy()
+void SRealWnd::OnDestroy()
 {
     if (IsWindow(m_hRealWnd))
     {
         DUINMREALWNDCMN nms;
         nms.hdr.code = NM_REALWND_DESTROY;
-        nms.hdr.hDuiWnd = m_hDuiWnd;
+        nms.hdr.hDuiWnd = m_hSWnd;
         nms.hdr.idFrom = GetCmdID();
         nms.hdr.pszNameFrom=GetName();
         nms.pRealWnd=this;
-        DuiNotify((LPDUINMHDR)&nms);
+        DuiNotify((LPSNMHDR)&nms);
     }
 }
 
-BOOL CDuiRealWnd::Load(pugi::xml_node xmlNode)
+BOOL SRealWnd::Load(pugi::xml_node xmlNode)
 {
     BOOL bRet=__super::Load(xmlNode);
     if(bRet)
@@ -96,7 +96,7 @@ BOOL CDuiRealWnd::Load(pugi::xml_node xmlNode)
     return bRet;
 }
 
-const HWND CDuiRealWnd::GetRealHwnd(BOOL bAutoCreate/*=TRUE*/)
+const HWND SRealWnd::GetRealHwnd(BOOL bAutoCreate/*=TRUE*/)
 {
     if(!bAutoCreate) return m_hRealWnd;
 
@@ -108,17 +108,17 @@ const HWND CDuiRealWnd::GetRealHwnd(BOOL bAutoCreate/*=TRUE*/)
     return m_hRealWnd;
 }
 
-BOOL CDuiRealWnd::InitRealWnd()
+BOOL SRealWnd::InitRealWnd()
 {
     m_realwndParam.m_dwStyle|= WS_CHILD;
 
     DUINMREALWNDCMN nms;
     nms.hdr.code = NM_REALWND_CREATE;
-    nms.hdr.hDuiWnd = m_hDuiWnd;
+    nms.hdr.hDuiWnd = m_hSWnd;
     nms.hdr.idFrom = GetCmdID();
     nms.hdr.pszNameFrom=GetName();
     nms.pRealWnd=this;
-    HWND hWnd =(HWND) DuiNotify((LPDUINMHDR)&nms);
+    HWND hWnd =(HWND) DuiNotify((LPSNMHDR)&nms);
 
     if(::IsWindow(hWnd))
     {
@@ -133,12 +133,12 @@ BOOL CDuiRealWnd::InitRealWnd()
 
         DUINMREALWNDCMN nms;
         nms.hdr.code = NM_REALWND_INIT;
-        nms.hdr.hDuiWnd = m_hDuiWnd;
+        nms.hdr.hDuiWnd = m_hSWnd;
         nms.hdr.idFrom = GetCmdID();
         nms.hdr.pszNameFrom=GetName();
         nms.pRealWnd=this;
 
-        BOOL bFocus=(BOOL)DuiNotify((LPDUINMHDR)&nms);
+        BOOL bFocus=(BOOL)DuiNotify((LPSNMHDR)&nms);
         if(bFocus)
         {
             SetFocus(m_hRealWnd);

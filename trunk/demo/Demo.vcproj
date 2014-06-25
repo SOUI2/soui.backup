@@ -430,7 +430,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\soui\include"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;DLL_SOUI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -457,7 +457,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\lib;..\bin"
+				AdditionalLibraryDirectories="..\bin"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -618,7 +618,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="..\soui\include"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;DLL_SOUI"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
@@ -971,10 +971,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ResModeSelDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -1058,10 +1054,6 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath=".\UIHander.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -1087,10 +1079,6 @@
 		<Filter
 			Name="duires"
 			>
-			<File
-				RelativePath=".\duires\winres.h"
-				>
-			</File>
 			<File
 				RelativePath=".\duires\winres.rc2"
 				>
@@ -1178,10 +1166,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\index.xml"
-				>
-			</File>
-			<File
 				RelativePath=".\layout\init.xml"
 				>
 			</File>
@@ -1234,10 +1218,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\duires\name2id.xml"
-				>
-			</File>
-			<File
 				RelativePath=".\duires\resmode.zip"
 				>
 			</File>
@@ -1249,58 +1229,10 @@
 		<Filter
 			Name="skinole"
 			>
-			<File
-				RelativePath=".\DuiSkinGif.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DuiSkinGif.h"
-				>
-			</File>
-			<File
-				RelativePath=".\skinole\ImageOle.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\skinole\ImageOle.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="zipskin"
 			>
-			<File
-				RelativePath=".\zipskin\DuiResProviderZip.cpp"
-				>
-				<FileConfiguration
-					Name="Debug_Dll|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\zipskin\DuiResProviderZip.h"
-				>
-			</File>
-			<File
-				RelativePath=".\zipskin\zipArchive.cpp"
-				>
-				<FileConfiguration
-					Name="Debug_Dll|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\zipskin\ZipArchive.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="wtlhelper"
@@ -1319,6 +1251,20 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\skin\uiskin.idx"
+			>
+			<FileConfiguration
+				Name="Debug_Dll|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="build ui resource"
+					CommandLine="..\tools\uiresbuilder -p skin -i $(InputPath) -r duires\winres.rc2&#x0D;&#x0A;"
+					Outputs="duires\winres.rc2"
+				/>
+			</FileConfiguration>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

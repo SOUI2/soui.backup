@@ -7,88 +7,74 @@ namespace SOUI
 
 #define EDIT_INSET 2
 
-CDuiHotKeyCtrl::CDuiHotKeyCtrl(void)
+SHotKeyCtrl::SHotKeyCtrl(void)
 {
-    m_hTxtFont=0;
     m_wInvalidModifier=0;
     m_wInvalidComb=HKCOMB_NONE;
     m_bInSetting=FALSE;
     m_bTabStop=TRUE;
 }
 
-CDuiHotKeyCtrl::~CDuiHotKeyCtrl(void)
+SHotKeyCtrl::~SHotKeyCtrl(void)
 {
-    if(m_hTxtFont) DeleteObject(m_hTxtFont);
 }
 
-
-
-int CDuiHotKeyCtrl::OnCreate( LPVOID )
+int SHotKeyCtrl::OnCreate( LPVOID )
 {
     int nRet=__super::OnCreate(NULL);
     if(nRet!=0) return nRet;
-    CDCHandle dc=GetDuiDC(NULL,OLEDC_NODRAW);
-    DUIASSERT(dc);
-    DuiDCPaint duidc;
-    BeforePaint(dc,duidc);
-
-    LOGFONT lf;
-    HFONT hFont=(HFONT)GetCurrentObject(dc,OBJ_FONT);
-    ::GetObject(hFont, sizeof(LOGFONT), &lf);
-    m_hTxtFont=CreateFontIndirect(&lf);
-
-    AfterPaint(dc,duidc);
-    ReleaseDuiDC(dc);
+    
+    CAutoRefPtr<IRenderTarget> pRT;
+    GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
+    BeforePaintEx(pRT);
+    m_curFont=(IFont*)pRT->GetCurrentObject(OT_FONT);
     return 0;
 }
 
-void CDuiHotKeyCtrl::OnLButtonDown( UINT nFlags,CPoint pt )
+void SHotKeyCtrl::OnLButtonDown( UINT nFlags,CPoint pt )
 {
     __super::OnLButtonDown(nFlags,pt);
-    GetContainer()->OnSetDuiFocus(m_hDuiWnd);
+    GetContainer()->OnSetDuiFocus(m_hSWnd);
 }
 
-void CDuiHotKeyCtrl::OnPaint( CDCHandle dc )
+void SHotKeyCtrl::OnPaint( IRenderTarget * pRT )
 {
-    DuiDCPaint duiDC;
-    BeforePaint(dc,duiDC);
+    SPainter painter;
+    BeforePaint(pRT,painter);
     CRect rcClient;
     GetClient(&rcClient);
     rcClient.OffsetRect(EDIT_INSET,0);
-    ALPHAINFO alphaBack;
-    if(GetContainer()->IsTranslucent())
-        CGdiAlpha::AlphaBackup(dc,&rcClient,alphaBack);
     CDuiStringT str=FormatHotkey();
-    DrawText(dc,str,str.GetLength(),&rcClient,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
-    if(GetContainer()->IsTranslucent())
-        CGdiAlpha::AlphaRestore(dc,alphaBack);
-    AfterPaint(dc,duiDC);
+    pRT->DrawText(str,str.GetLength(),&rcClient,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
+    AfterPaint(pRT,painter);
 }
 
-void CDuiHotKeyCtrl::UpdateCaret()
+void SHotKeyCtrl::UpdateCaret()
 {
     CDuiStringT str=FormatHotkey();
-    CDCHandle dc=GetDC(GetContainer()->GetHostHwnd());
-    HFONT hOldFond=dc.SelectFont(m_hTxtFont);
+    IRenderTarget *pRT=GetRenderTarget(NULL,OLEDC_NODRAW);
+    CAutoRefPtr<IFont> oldFont;
+    pRT->SelectObject(m_curFont,(IRenderObj**)&oldFont);
     SIZE szTxt;
-    GetTextExtentPoint(dc,str,str.GetLength(),&szTxt);
-    dc.SelectFont(hOldFond);
-    ReleaseDC(GetContainer()->GetHostHwnd(),dc);
-
+    pRT->MeasureText(str,str.GetLength(),&szTxt);
+    pRT->SelectObject(oldFont);
+    ReleaseRenderTarget(pRT);
+    
     CRect rcClient;
     GetClient(&rcClient);
     GetContainer()->DuiSetCaretPos(rcClient.left+EDIT_INSET+szTxt.cx,rcClient.top+(rcClient.Height()-szTxt.cy)/2);
 }
 
-void CDuiHotKeyCtrl::OnSetDuiFocus()
+void SHotKeyCtrl::OnSetDuiFocus()
 {
-    CDCHandle dc=GetDC(GetContainer()->GetHostHwnd());
-    HFONT hOldFond=dc.SelectFont(m_hTxtFont);
+    IRenderTarget *pRT=GetRenderTarget(NULL,OLEDC_NODRAW);
+    CAutoRefPtr<IFont> oldFont;
+    pRT->SelectObject(m_curFont,(IRenderObj**)&oldFont);
     SIZE szTxt;
-    dc.GetTextExtent(_T("A"),1,&szTxt);
+    pRT->MeasureText(_T("A"),1,&szTxt);
+    pRT->SelectObject(oldFont);
+    ReleaseRenderTarget(pRT);
     GetContainer()->DuiCreateCaret(NULL,1,szTxt.cy);
-    dc.SelectFont(hOldFond);
-    ReleaseDC(GetContainer()->GetHostHwnd(),dc);
 
     CRect rcClient;
     GetClient(&rcClient);
@@ -98,13 +84,13 @@ void CDuiHotKeyCtrl::OnSetDuiFocus()
     GetContainer()->DuiShowCaret(TRUE);
 }
 
-void CDuiHotKeyCtrl::OnKillDuiFocus()
+void SHotKeyCtrl::OnKillDuiFocus()
 {
     GetContainer()->DuiShowCaret(FALSE);
 
 }
 
-void CDuiHotKeyCtrl::UpdateModifier()
+void SHotKeyCtrl::UpdateModifier()
 {
     BOOL bAlt=GetKeyState(VK_MENU)&0x8000;
     BOOL bCtrl=GetKeyState(VK_CONTROL)&0x8000;
@@ -123,7 +109,7 @@ void CDuiHotKeyCtrl::UpdateModifier()
         m_wModifier=m_wInvalidModifier;
 }
 
-void CDuiHotKeyCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
+void SHotKeyCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
     if(!m_bInSetting)
     {
@@ -142,7 +128,7 @@ void CDuiHotKeyCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
     NotifyInvalidate();
 }
 
-void CDuiHotKeyCtrl::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
+void SHotKeyCtrl::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
     if(!m_bInSetting) return;
 
@@ -165,25 +151,25 @@ void CDuiHotKeyCtrl::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
     }
 }
 
-void CDuiHotKeyCtrl::OnSysKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
+void SHotKeyCtrl::OnSysKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
     if(GetKeyState(VK_MENU)&0x8000) OnKeyDown(nChar,nRepCnt,nFlags);
     else SetMsgHandled(FALSE);
 }
 
-void CDuiHotKeyCtrl::OnSysKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+void SHotKeyCtrl::OnSysKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     if(nChar==VK_MENU || GetKeyState(VK_MENU)&0x8000) OnKeyUp(nChar,nRepCnt,nFlags);
     else SetMsgHandled(FALSE);
 }
 
-void CDuiHotKeyCtrl::SetRule( WORD wInvalidComp,WORD wModifier )
+void SHotKeyCtrl::SetRule( WORD wInvalidComp,WORD wModifier )
 {
     m_wInvalidComb=wInvalidComp;
     m_wInvalidModifier=wModifier;
 }
 
-void CDuiHotKeyCtrl::SetHotKey( WORD vKey,WORD wModifiers )
+void SHotKeyCtrl::SetHotKey( WORD vKey,WORD wModifiers )
 {
     m_wVK=vKey;
     m_wModifier=wModifiers;
@@ -192,13 +178,13 @@ void CDuiHotKeyCtrl::SetHotKey( WORD vKey,WORD wModifiers )
     NotifyInvalidate();
 }
 
-void CDuiHotKeyCtrl::GetHotKey( WORD & vKey,WORD &wModifers )
+void SHotKeyCtrl::GetHotKey( WORD & vKey,WORD &wModifers )
 {
     vKey=m_wVK;
     wModifers=m_wModifier;
 }
 
-LRESULT CDuiHotKeyCtrl::OnWindowPosChanged( LPRECT lpRcContainer )
+LRESULT SHotKeyCtrl::OnWindowPosChanged( LPRECT lpRcContainer )
 {
     KillDuiFocus();
     return __super::OnWindowPosChanged(lpRcContainer);

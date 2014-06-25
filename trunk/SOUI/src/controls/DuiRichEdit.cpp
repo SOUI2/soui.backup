@@ -546,7 +546,7 @@ HRESULT CDuiTextHost::TxGetSelectionBarWidth( LONG *plSelBarWidth )
     return S_OK;
 }
 
-BOOL CDuiTextHost::Init(CDuiRichEdit* pDuiRichEdit)
+BOOL CDuiTextHost::Init(SRichEdit* pDuiRichEdit)
 {
     IUnknown *pUnk;
     HRESULT hr;
@@ -567,7 +567,7 @@ BOOL CDuiTextHost::Init(CDuiRichEdit* pDuiRichEdit)
 //////////////////////////////////////////////////////////////////////////
 // dui interface
 
-CDuiRichEdit::CDuiRichEdit()
+SRichEdit::SRichEdit()
     :m_pTxtHost(NULL)
     ,m_fTransparent(0)
     ,m_fRich(1)
@@ -593,7 +593,7 @@ CDuiRichEdit::CDuiRichEdit()
 }
 
 
-LRESULT CDuiRichEdit::OnCreate( LPVOID )
+LRESULT SRichEdit::OnCreate( LPVOID )
 {
     if(0 != __super::OnCreate(NULL)) return 1;
 
@@ -631,7 +631,7 @@ LRESULT CDuiRichEdit::OnCreate( LPVOID )
     return 0;
 }
 
-void CDuiRichEdit::OnDestroy()
+void SRichEdit::OnDestroy()
 {
     OnEnableDragDrop(FALSE);
     __super::OnDestroy();
@@ -645,17 +645,19 @@ void CDuiRichEdit::OnDestroy()
 }
 
 
-void CDuiRichEdit::OnPaint( CDCHandle dc )
+void SRichEdit::OnPaint( IRenderTarget * pRT )
 {
-    int nSaveDC=dc.SaveDC();
     CRect rcClient,rcClip;
     GetClient(&rcClient);
-    dc.GetClipBox(rcClip);
-    rcClip.IntersectRect(rcClient,rcClip);
+    pRT->PushClipRect(&rcClient);
+    pRT->GetClipBound(&rcClip);
+
+    HDC hdc=pRT->GetDC(0);
+    
     ALPHAINFO ai;
     if(GetContainer()->IsTranslucent())
     {
-        CGdiAlpha::AlphaBackup(dc,&rcClient,ai);
+        CGdiAlpha::AlphaBackup(hdc,&rcClient,ai);
     }
 
     RECTL rcL= {rcClient.left,rcClient.top,rcClient.right,rcClient.bottom};
@@ -664,7 +666,7 @@ void CDuiRichEdit::OnPaint( CDCHandle dc )
         /*-1*/0,                        // Lindex
         NULL,                    // Info for drawing optimazation
         NULL,                    // target device information
-        dc,            // Draw device HDC
+        hdc,            // Draw device HDC
         NULL,                        // Target device HDC
         &rcL,            // Bounding client rectangle
         NULL,             // Clipping rectangle for metafiles
@@ -675,12 +677,13 @@ void CDuiRichEdit::OnPaint( CDCHandle dc )
 
     if(GetContainer()->IsTranslucent())
     {
-        CGdiAlpha::AlphaRestore(dc,ai);
+        CGdiAlpha::AlphaRestore(hdc,ai);
     }
-    dc.RestoreDC(nSaveDC);
+    pRT->ReleaseDC(hdc);
+    pRT->PopClipRect();
 }
 
-void CDuiRichEdit::OnSetDuiFocus()
+void SRichEdit::OnSetDuiFocus()
 {
     __super::OnSetDuiFocus();
 
@@ -696,7 +699,7 @@ void CDuiRichEdit::OnSetDuiFocus()
     }
 }
 
-void CDuiRichEdit::OnKillDuiFocus()
+void SRichEdit::OnKillDuiFocus()
 {
     __super::OnKillDuiFocus();
     if(m_pTxtHost)
@@ -708,7 +711,7 @@ void CDuiRichEdit::OnKillDuiFocus()
     }
 }
 
-void CDuiRichEdit::OnDuiTimer( char idEvent )
+void SRichEdit::OnDuiTimer( char idEvent )
 {
     if(idEvent==TIMER_INVALIDATE)
     {
@@ -721,13 +724,13 @@ void CDuiRichEdit::OnDuiTimer( char idEvent )
     }
 }
 
-void CDuiRichEdit::OnDuiTimerEx( UINT_PTR idEvent )
+void SRichEdit::OnDuiTimerEx( UINT_PTR idEvent )
 {
     m_pTxtHost->GetTextService()->TxSendMessage(WM_TIMER,idEvent,0,NULL);
 }
 
 
-BOOL CDuiRichEdit::OnScroll( BOOL bVertical,UINT uCode,int nPos )
+BOOL SRichEdit::OnScroll( BOOL bVertical,UINT uCode,int nPos )
 {
     if(m_fScrollPending) return FALSE;
     LRESULT lresult=-1;
@@ -738,7 +741,7 @@ BOOL CDuiRichEdit::OnScroll( BOOL bVertical,UINT uCode,int nPos )
     return lresult==0;
 }
 
-BOOL CDuiRichEdit::OnDuiSetCursor(const CPoint &pt)
+BOOL SRichEdit::OnDuiSetCursor(const CPoint &pt)
 {
     CRect rcClient;
     GetClient(&rcClient);
@@ -760,7 +763,7 @@ BOOL CDuiRichEdit::OnDuiSetCursor(const CPoint &pt)
     return TRUE;
 }
 
-BOOL CDuiRichEdit::DuiWndProc( UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResult )
+BOOL SRichEdit::DuiWndProc( UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResult )
 {
     if(m_pTxtHost && m_pTxtHost->GetTextService())
     {
@@ -773,46 +776,49 @@ BOOL CDuiRichEdit::DuiWndProc( UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & l
     return __super::DuiWndProc(uMsg,wParam,lParam,lResult);
 }
 
-HRESULT CDuiRichEdit::InitDefaultCharFormat( CHARFORMAT2W* pcf ,HFONT hFont)
+HRESULT SRichEdit::InitDefaultCharFormat( CHARFORMAT2W* pcf ,IFont *pFont)
 {
-    CDCHandle dc=GetDuiDC(NULL,OLEDC_NODRAW);
-    DUIASSERT(dc);
-    BeforePaintEx(dc);
+    CAutoRefPtr<IRenderTarget> pRT;
+    GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
+    DUIASSERT(pRT);
+    BeforePaintEx(pRT);
 
-    LOGFONT lf;
-    if(hFont==NULL) hFont=(HFONT)GetCurrentObject(dc,OBJ_FONT);
-    ::GetObject(hFont, sizeof(LOGFONT), &lf);
-    GetTextMetrics(dc,&m_tmFont);
+    if(pFont==NULL) pFont=(IFont *)pRT->GetCurrentObject(OT_FONT);
+    SIZE szTxt;
+    pRT->MeasureText(_T("A"),1,&szTxt);
+    m_nFontHeight=szTxt.cy;
 
     memset(pcf, 0, sizeof(CHARFORMAT2W));
     pcf->cbSize = sizeof(CHARFORMAT2W);
     pcf->dwMask = CFM_SIZE | CFM_OFFSET | CFM_FACE | CFM_CHARSET | CFM_COLOR | CFM_BOLD | CFM_ITALIC | CFM_UNDERLINE;
 
-    pcf->crTextColor = GetTextColor(dc);
-    LONG yPixPerInch = GetDeviceCaps(dc, LOGPIXELSY);
-    pcf->yHeight = -abs(lf.lfHeight * LY_PER_INCH / yPixPerInch);
+    pcf->crTextColor = pRT->GetTextColor();
+    HDC hdc=GetDC(NULL);
+    LONG yPixPerInch = GetDeviceCaps(hdc, LOGPIXELSY);
+    ReleaseDC(NULL,hdc);
+    const LOGFONT *plf=pFont->LogFont();
+    pcf->yHeight = -abs(pFont->TextSize() * LY_PER_INCH / yPixPerInch);
     pcf->yOffset = 0;
     pcf->dwEffects = 0;
-    if(lf.lfWeight >= FW_BOLD)
+    if(pFont->IsBold())
         pcf->dwEffects |= CFE_BOLD;
-    if(lf.lfItalic)
+    if(pFont->IsItalic())
         pcf->dwEffects |= CFE_ITALIC;
-    if(lf.lfUnderline)
+    if(pFont->IsUnderline())
         pcf->dwEffects |= CFE_UNDERLINE;
-    pcf->bCharSet = lf.lfCharSet;
-    pcf->bPitchAndFamily = lf.lfPitchAndFamily;
+    pcf->bCharSet = plf->lfCharSet;
+    pcf->bPitchAndFamily = plf->lfPitchAndFamily;
 #ifdef _UNICODE
-    _tcscpy(pcf->szFaceName, lf.lfFaceName);
+    _tcscpy(pcf->szFaceName, plf->lfFaceName);
 #else
     //need to thunk pcf->szFaceName to a standard char string.in this case it's easy because our thunk is also our copy
-    MultiByteToWideChar(CP_ACP, 0, lf.lfFaceName, LF_FACESIZE, pcf->szFaceName, LF_FACESIZE) ;
+    MultiByteToWideChar(CP_ACP, 0, plf->lfFaceName, LF_FACESIZE, pcf->szFaceName, LF_FACESIZE) ;
 #endif
 
-    ReleaseDuiDC(dc);
     return S_OK;
 }
 
-HRESULT CDuiRichEdit::InitDefaultParaFormat( PARAFORMAT2* ppf )
+HRESULT SRichEdit::InitDefaultParaFormat( PARAFORMAT2* ppf )
 {
     memset(ppf, 0, sizeof(PARAFORMAT2));
     ppf->cbSize = sizeof(PARAFORMAT2);
@@ -832,56 +838,56 @@ HRESULT CDuiRichEdit::InitDefaultParaFormat( PARAFORMAT2* ppf )
 
 
 
-HRESULT CDuiRichEdit::OnTxNotify( DWORD iNotify,LPVOID pv )
+HRESULT SRichEdit::OnTxNotify( DWORD iNotify,LPVOID pv )
 {
     DUIRICHEDITNOTIFY nms;
     nms.hdr.code=NM_RICHEDIT_NOTIFY;
-    nms.hdr.hDuiWnd=m_hDuiWnd;
+    nms.hdr.hDuiWnd=m_hSWnd;
     nms.hdr.idFrom=GetCmdID();
     nms.hdr.pszNameFrom=GetName();
     nms.iNotify=iNotify;
     nms.pv=pv;
-    return DuiNotify((LPDUINMHDR)&nms);
+    return DuiNotify((LPSNMHDR)&nms);
 }
 //////////////////////////////////////////////////////////////////////////
 //    richedit interfaces
-BOOL CDuiRichEdit::GetWordWrap( void )
+BOOL SRichEdit::GetWordWrap( void )
 {
     return m_fWordWrap;
 }
 
-void CDuiRichEdit::SetWordWrap( BOOL fWordWrap )
+void SRichEdit::SetWordWrap( BOOL fWordWrap )
 {
     m_fWordWrap = fWordWrap;
     m_pTxtHost->GetTextService()->OnTxPropertyBitsChange(TXTBIT_WORDWRAP, fWordWrap ? TXTBIT_WORDWRAP : 0);
 }
 
-BOOL CDuiRichEdit::GetReadOnly()
+BOOL SRichEdit::GetReadOnly()
 {
     return (m_dwStyle & ES_READONLY) != 0;
 }
 
-BOOL CDuiRichEdit::SetReadOnly(BOOL bReadOnly)
+BOOL SRichEdit::SetReadOnly(BOOL bReadOnly)
 {
     return 0 != DuiSendMessage(EM_SETREADONLY, bReadOnly);
 }
 
-LONG CDuiRichEdit::GetLimitText()
+LONG SRichEdit::GetLimitText()
 {
     return m_cchTextMost;
 }
 
-BOOL CDuiRichEdit::SetLimitText(int nLength)
+BOOL SRichEdit::SetLimitText(int nLength)
 {
     return 0 != DuiSendMessage(EM_EXLIMITTEXT, nLength);
 }
 
-WORD CDuiRichEdit::GetDefaultAlign()
+WORD SRichEdit::GetDefaultAlign()
 {
     return m_pfDef.wAlignment;
 }
 
-void CDuiRichEdit::SetDefaultAlign( WORD wNewAlign )
+void SRichEdit::SetDefaultAlign( WORD wNewAlign )
 {
     m_pfDef.wAlignment = wNewAlign;
 
@@ -889,12 +895,12 @@ void CDuiRichEdit::SetDefaultAlign( WORD wNewAlign )
     m_pTxtHost->GetTextService()->OnTxPropertyBitsChange(TXTBIT_PARAFORMATCHANGE, 0);
 }
 
-BOOL CDuiRichEdit::GetRichTextFlag()
+BOOL SRichEdit::GetRichTextFlag()
 {
     return m_fRich;
 }
 
-void CDuiRichEdit::SetRichTextFlag( BOOL fRich )
+void SRichEdit::SetRichTextFlag( BOOL fRich )
 {
     m_fRich = fRich;
 
@@ -902,19 +908,19 @@ void CDuiRichEdit::SetRichTextFlag( BOOL fRich )
             fRich ? TXTBIT_RICHTEXT : 0);
 }
 
-LONG CDuiRichEdit::GetDefaultLeftIndent()
+LONG SRichEdit::GetDefaultLeftIndent()
 {
     return m_pfDef.dxOffset;
 }
 
-void CDuiRichEdit::SetDefaultLeftIndent( LONG lNewIndent )
+void SRichEdit::SetDefaultLeftIndent( LONG lNewIndent )
 {
     m_pfDef.dxOffset = lNewIndent;
 
     m_pTxtHost->GetTextService()->OnTxPropertyBitsChange(TXTBIT_PARAFORMATCHANGE, 0);
 }
 
-BOOL CDuiRichEdit::SetSaveSelection( BOOL fSaveSelection )
+BOOL SRichEdit::SetSaveSelection( BOOL fSaveSelection )
 {
     BOOL fResult = fSaveSelection;
 
@@ -927,7 +933,7 @@ BOOL CDuiRichEdit::SetSaveSelection( BOOL fSaveSelection )
     return fResult;
 }
 
-HRESULT CDuiRichEdit::DefAttributeProc(const CDuiStringA & strAttribName,const CDuiStringA & strValue, BOOL bLoading)
+HRESULT SRichEdit::DefAttributeProc(const CDuiStringA & strAttribName,const CDuiStringA & strValue, BOOL bLoading)
 {
     HRESULT hRet=S_FALSE;
     DWORD dwBit=0,dwMask=0;
@@ -1058,16 +1064,16 @@ HRESULT CDuiRichEdit::DefAttributeProc(const CDuiStringA & strAttribName,const C
     return hRet;
 }
 
-void CDuiRichEdit::OnLButtonDown( UINT nFlags, CPoint point )
+void SRichEdit::OnLButtonDown( UINT nFlags, CPoint point )
 {
-    if(m_hDuiWnd!=GetContainer()->GetDuiFocus())
+    if(m_hSWnd!=GetContainer()->GetDuiFocus())
     {
         SetDuiFocus();
     }
     m_pTxtHost->GetTextService()->TxSendMessage(GetCurDuiMsg()->uMsg,GetCurDuiMsg()->wParam,GetCurDuiMsg()->lParam,NULL);
 }
 
-void CDuiRichEdit::OnLButtonUp( UINT nFlags, CPoint point )
+void SRichEdit::OnLButtonUp( UINT nFlags, CPoint point )
 {
     m_pTxtHost->GetTextService()->TxSendMessage(GetCurDuiMsg()->uMsg,GetCurDuiMsg()->wParam,GetCurDuiMsg()->lParam,NULL);
 }
@@ -1080,7 +1086,7 @@ enum{
     MENU_SELALL,
 };
 
-void CDuiRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
+void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
 {
     if(NotifyContextMenu(point)) return;//用户自己响应右键
     SetDuiFocus();
@@ -1088,7 +1094,7 @@ void CDuiRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
     pugi::xml_node xmlMenu=DuiSystem::getSingleton().GetEditMenuTemplate().first_child();
     if(xmlMenu)
     {
-        CDuiMenu menu;
+        SMenu menu;
         if(menu.LoadMenu(xmlMenu))
         {
             CRect rcCantainer=GetContainer()->GetContainerRect();
@@ -1134,12 +1140,12 @@ void CDuiRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
     }
 }
 
-void CDuiRichEdit::OnMouseMove( UINT nFlags, CPoint point )
+void SRichEdit::OnMouseMove( UINT nFlags, CPoint point )
 {
     m_pTxtHost->GetTextService()->TxSendMessage(GetCurDuiMsg()->uMsg,GetCurDuiMsg()->wParam,GetCurDuiMsg()->lParam,NULL);
 }
 
-void CDuiRichEdit::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
+void SRichEdit::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
     if(nChar==VK_RETURN && !(m_dwStyle&ES_WANTRETURN) && !(GetKeyState(VK_CONTROL)&0x8000))
     {
@@ -1151,7 +1157,7 @@ void CDuiRichEdit::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 
 #define CTRL(_ch) (_ch - 'A' + 1)
 
-void CDuiRichEdit::OnChar( UINT nChar, UINT nRepCnt, UINT nFlags )
+void SRichEdit::OnChar( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
     switch(nChar)
     {
@@ -1191,7 +1197,7 @@ void CDuiRichEdit::OnChar( UINT nChar, UINT nRepCnt, UINT nFlags )
     m_pTxtHost->GetTextService()->TxSendMessage(GetCurDuiMsg()->uMsg,GetCurDuiMsg()->wParam,GetCurDuiMsg()->lParam,NULL);
 }
 
-LRESULT CDuiRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
+LRESULT SRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
 {
     __super::OnNcCalcSize(bCalcValidRects,lParam);
 
@@ -1211,7 +1217,7 @@ LRESULT CDuiRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
         if(!m_fRich && m_fSingleLineVCenter && !(m_dwStyle&ES_MULTILINE))
         {
             m_rcInset.top=
-                m_rcInset.bottom=DYtoHimetricY(m_siVer.nPage-m_tmFont.tmHeight,yPerInch)/2;
+                m_rcInset.bottom=DYtoHimetricY(m_siVer.nPage-m_nFontHeight,yPerInch)/2;
         }
         else
         {
@@ -1219,7 +1225,7 @@ LRESULT CDuiRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
             m_rcInset.bottom=DYtoHimetricY(m_rcInsetPixel.bottom,yPerInch);
         }
         ReleaseDC(GetContainer()->GetHostHwnd(),hdc);
-        BOOL bFocus = GetContainer()->GetDuiFocus()==m_hDuiWnd;
+        BOOL bFocus = GetContainer()->GetDuiFocus()==m_hSWnd;
         if(bFocus) KillDuiFocus();
         m_pTxtHost->GetTextService()->OnTxPropertyBitsChange(TXTBIT_EXTENTCHANGE|TXTBIT_CLIENTRECTCHANGE, TXTBIT_EXTENTCHANGE|TXTBIT_CLIENTRECTCHANGE);
         if(bFocus) SetDuiFocus();
@@ -1227,12 +1233,12 @@ LRESULT CDuiRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
     return 0;
 }
 
-LRESULT CDuiRichEdit::OnSetReadOnly( UINT uMsg, WPARAM wParam, LPARAM lParam )
+LRESULT SRichEdit::OnSetReadOnly( UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
     return SUCCEEDED(SetAttribute("readonly",wParam?"1":"0"));
 }
 
-LRESULT CDuiRichEdit::OnSetLimitText( UINT uMsg, WPARAM wParam, LPARAM lParam )
+LRESULT SRichEdit::OnSetLimitText( UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
     if(wParam==0) m_cchTextMost=cInitTextMax;
     else m_cchTextMost=(DWORD)wParam;
@@ -1240,7 +1246,7 @@ LRESULT CDuiRichEdit::OnSetLimitText( UINT uMsg, WPARAM wParam, LPARAM lParam )
     return 1;
 }
 
-LRESULT CDuiRichEdit::OnSetCharFormat( UINT uMsg, WPARAM wParam, LPARAM lParam )
+LRESULT SRichEdit::OnSetCharFormat( UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
     if(!FValidCF((CHARFORMAT2W *) lParam))
     {
@@ -1257,7 +1263,7 @@ LRESULT CDuiRichEdit::OnSetCharFormat( UINT uMsg, WPARAM wParam, LPARAM lParam )
     return 1;
 }
 
-LRESULT CDuiRichEdit::OnSetParaFormat( UINT uMsg, WPARAM wparam, LPARAM lparam )
+LRESULT SRichEdit::OnSetParaFormat( UINT uMsg, WPARAM wparam, LPARAM lparam )
 {
     if(!FValidPF((PARAFORMAT *) lparam))
     {
@@ -1289,7 +1295,7 @@ LRESULT CDuiRichEdit::OnSetParaFormat( UINT uMsg, WPARAM wparam, LPARAM lparam )
     return 1;
 }
 
-LRESULT CDuiRichEdit::OnSetText(UINT uMsg,WPARAM wparam,LPARAM lparam)
+LRESULT SRichEdit::OnSetText(UINT uMsg,WPARAM wparam,LPARAM lparam)
 {
     // For RichEdit 1.0, the max text length would be reset by a settext so
     // we follow pattern here as well.
@@ -1298,7 +1304,7 @@ LRESULT CDuiRichEdit::OnSetText(UINT uMsg,WPARAM wparam,LPARAM lparam)
 
     if (FAILED(hr)) return 0;
     // Update succeeded.
-    LONG cNewText = lparam?_tcslen((LPCTSTR) lparam):0;
+    ULONG cNewText = lparam?_tcslen((LPCTSTR) lparam):0;
 
     // If the new text is greater than the max set the max to the new
     // text length.
@@ -1309,55 +1315,55 @@ LRESULT CDuiRichEdit::OnSetText(UINT uMsg,WPARAM wparam,LPARAM lparam)
     return 1;
 }
 
-void CDuiRichEdit::OnSetFont( HFONT font, BOOL bRedraw )
+void SRichEdit::OnSetFont( IFont *pFont, BOOL bRedraw )
 {
-    if(SUCCEEDED(InitDefaultCharFormat(&m_cfDef, font)))
+    if(SUCCEEDED(InitDefaultCharFormat(&m_cfDef, pFont)))
     {
         m_pTxtHost->GetTextService()->OnTxPropertyBitsChange(TXTBIT_CHARFORMATCHANGE,
                 TXTBIT_CHARFORMATCHANGE);
     }
 }
 
-BOOL CDuiRichEdit::SetWindowText( LPCWSTR lpszText )
+BOOL SRichEdit::SetWindowText( LPCWSTR lpszText )
 {
     return (BOOL)DuiSendMessage(WM_SETTEXT,0,(LPARAM)lpszText);
 }
 
-int CDuiRichEdit::GetWindowText(LPWSTR lpString,
+int SRichEdit::GetWindowText(LPWSTR lpString,
                                 int nMaxCount
                                )
 {
     return (int)DuiSendMessage(WM_GETTEXT,(WPARAM)nMaxCount,(LPARAM)lpString);
 }
 
-int CDuiRichEdit::GetWindowTextLength()
+int SRichEdit::GetWindowTextLength()
 {
     return (int)DuiSendMessage(WM_GETTEXTLENGTH);
 }
 
-void CDuiRichEdit::ReplaceSel(LPWSTR pszText,BOOL bCanUndo)
+void SRichEdit::ReplaceSel(LPWSTR pszText,BOOL bCanUndo)
 {
     DuiSendMessage(EM_REPLACESEL,(WPARAM)bCanUndo,(LPARAM)pszText);
 }
 
-void CDuiRichEdit::SetSel(DWORD dwSelection, BOOL bNoScroll)
+void SRichEdit::SetSel(DWORD dwSelection, BOOL bNoScroll)
 {
     DuiSendMessage(EM_SETSEL, LOWORD(dwSelection), HIWORD(dwSelection));
     if(!bNoScroll)
         DuiSendMessage(EM_SCROLLCARET, 0, 0L);
 }
 
-LRESULT CDuiRichEdit::OnSetTextColor( const CDuiStringA &  strValue,BOOL bLoading )
+LRESULT SRichEdit::OnSetTextColor( const CDuiStringA &  strValue,BOOL bLoading )
 {
-    m_style.m_crText=SObject::HexStringToColor(strValue);
+    m_style.m_crText[0]=SObject::HexStringToColor(strValue);
     if(!bLoading)
     {
-        SetDefaultTextColor(m_style.m_crText);
+        SetDefaultTextColor(m_style.m_crText[0]);
     }
     return S_OK;
 }
 
-COLORREF CDuiRichEdit::SetDefaultTextColor( COLORREF cr )
+COLORREF SRichEdit::SetDefaultTextColor( COLORREF cr )
 {
     COLORREF crOld=m_cfDef.crTextColor;
     m_cfDef.crTextColor=cr;
@@ -1365,16 +1371,16 @@ COLORREF CDuiRichEdit::SetDefaultTextColor( COLORREF cr )
     return crOld;
 }
 
-void CDuiRichEdit::OnEnableDragDrop( BOOL bEnable )
+void SRichEdit::OnEnableDragDrop( BOOL bEnable )
 {
     if(bEnable)
     {
         CDuiRicheditDropTarget *pDropTarget=new CDuiRicheditDropTarget(m_pTxtHost->GetTextService());
-        GetContainer()->RegisterDragDrop(m_hDuiWnd,pDropTarget);
+        GetContainer()->RegisterDragDrop(m_hSWnd,pDropTarget);
         pDropTarget->Release();
     }else
     {
-        GetContainer()->RevokeDragDrop(m_hDuiWnd);
+        GetContainer()->RevokeDragDrop(m_hSWnd);
     }
 }
 

@@ -9,16 +9,16 @@ namespace SOUI
 {
 //////////////////////////////////////////////////////////////////////////
 //  CDuiListCtrl
-CDuiListCtrl::CDuiListCtrl()
+SListCtrl::SListCtrl()
     : m_nHeaderHeight(20)
     , m_nItemHeight(20)
     , m_pHeader(NULL)
     , m_nSelectItem(-1)
-    , m_crItemBg(RGB(255,255,255))
-    , m_crItemBg2(RGB(226,226,226))
-    , m_crItemSelBg(RGB(140,160,240))
-    , m_crText(RGB(0,0,0))
-    , m_crSelText(RGB(255,255,0))
+    , m_crItemBg(RGBA(255,255,255,255))
+    , m_crItemBg2(RGBA(226,226,226,255))
+    , m_crItemSelBg(RGBA(140,160,240,255))
+    , m_crText(RGBA(0,0,0,255))
+    , m_crSelText(RGBA(255,255,0,255))
     , m_pItemSkin(NULL)
     , m_pIconSkin(NULL)
     , m_ptIcon(-1,-1)
@@ -29,11 +29,11 @@ CDuiListCtrl::CDuiListCtrl()
     m_bClipClient = TRUE;
 }
 
-CDuiListCtrl::~CDuiListCtrl()
+SListCtrl::~SListCtrl()
 {
 }
 
-int CDuiListCtrl::InsertColumn(int nIndex, LPCTSTR pszText, int nWidth, LPARAM lParam)
+int SListCtrl::InsertColumn(int nIndex, LPCTSTR pszText, int nWidth, LPARAM lParam)
 {
     DUIASSERT(m_pHeader);
 
@@ -46,28 +46,28 @@ int CDuiListCtrl::InsertColumn(int nIndex, LPCTSTR pszText, int nWidth, LPARAM l
     return nRet;
 }
 
-BOOL CDuiListCtrl::LoadChildren(pugi::xml_node xmlNode)
+BOOL SListCtrl::LoadChildren(pugi::xml_node xmlNode)
 {
     //  listctrl的子控件只能是一个header控件
-    if (strcmp(xmlNode.name(), CDuiHeaderCtrl::GetClassName()) != 0)
+    if (strcmp(xmlNode.name(), SHeaderCtrl::GetClassName()) != 0)
         return FALSE;
 
     if (!__super::LoadChildren(xmlNode))
         return FALSE;
 
-    m_pHeader = (CDuiHeaderCtrl*)GetDuiWindow(GDUI_FIRSTCHILD);
-    DUIASSERT(m_pHeader->IsClass(CDuiHeaderCtrl::GetClassName()));
+    m_pHeader = (SHeaderCtrl*)GetDuiWindow(GDUI_FIRSTCHILD);
+    DUIASSERT(m_pHeader->IsClass(SHeaderCtrl::GetClassName()));
     CDuiStringA strPos;
     strPos.Format("0,0,-0,%d",m_nHeaderHeight);
     m_pHeader->SetAttribute("pos",strPos,TRUE);
 
-    m_pHeader->subscribeEvent(NM_HDSIZECHANGING, Subscriber(&CDuiListCtrl::OnHeaderSizeChanging,this));
-    m_pHeader->subscribeEvent(NM_HDSWAP, Subscriber(&CDuiListCtrl::OnHeaderSwap,this));
+    m_pHeader->subscribeEvent(NM_HDSIZECHANGING, Subscriber(&SListCtrl::OnHeaderSizeChanging,this));
+    m_pHeader->subscribeEvent(NM_HDSWAP, Subscriber(&SListCtrl::OnHeaderSwap,this));
 
     return TRUE;
 }
 
-int CDuiListCtrl::InsertItem(int nItem, LPCTSTR pszText, int nImage)
+int SListCtrl::InsertItem(int nItem, LPCTSTR pszText, int nImage)
 {
     if(GetColumnCount()==0) return -1;
     if (nItem<0 || nItem>GetItemCount())
@@ -90,7 +90,7 @@ int CDuiListCtrl::InsertItem(int nItem, LPCTSTR pszText, int nImage)
     return nItem;
 }
 
-BOOL CDuiListCtrl::SetItemData(int nItem, DWORD dwData)
+BOOL SListCtrl::SetItemData(int nItem, DWORD dwData)
 {
     if (nItem >= GetItemCount())
         return FALSE;
@@ -100,7 +100,7 @@ BOOL CDuiListCtrl::SetItemData(int nItem, DWORD dwData)
     return TRUE;
 }
 
-DWORD CDuiListCtrl::GetItemData(int nItem)
+DWORD SListCtrl::GetItemData(int nItem)
 {
     if (nItem >= GetItemCount())
         return 0;
@@ -110,7 +110,7 @@ DWORD CDuiListCtrl::GetItemData(int nItem)
     return (DWORD)lvi.dwData;
 }
 
-BOOL CDuiListCtrl::SetSubItem(int nItem, int nSubItem, const DXLVSUBITEM* plv)
+BOOL SListCtrl::SetSubItem(int nItem, int nSubItem, const DXLVSUBITEM* plv)
 {
     if (nItem>=GetItemCount() || nSubItem>=GetColumnCount())
         return FALSE;
@@ -129,7 +129,7 @@ BOOL CDuiListCtrl::SetSubItem(int nItem, int nSubItem, const DXLVSUBITEM* plv)
     return TRUE;
 }
 
-BOOL CDuiListCtrl::GetSubItem(int nItem, int nSubItem, DXLVSUBITEM* plv)
+BOOL SListCtrl::GetSubItem(int nItem, int nSubItem, DXLVSUBITEM* plv)
 {
     if (nItem>=GetItemCount() || nSubItem>=GetColumnCount())
         return FALSE;
@@ -146,7 +146,7 @@ BOOL CDuiListCtrl::GetSubItem(int nItem, int nSubItem, DXLVSUBITEM* plv)
     return TRUE;
 }
 
-BOOL CDuiListCtrl::SetSubItemText(int nItem, int nSubItem, LPCTSTR pszText)
+BOOL SListCtrl::SetSubItemText(int nItem, int nSubItem, LPCTSTR pszText)
 {
     if (nItem < 0 || nItem >= GetItemCount())
         return FALSE;
@@ -168,19 +168,19 @@ BOOL CDuiListCtrl::SetSubItemText(int nItem, int nSubItem, LPCTSTR pszText)
 }
 
 
-int CDuiListCtrl::GetSelectedItem()
+int SListCtrl::GetSelectedItem()
 {
     return m_nSelectItem;
 }
 
-void CDuiListCtrl::SetSelectedItem(int nItem)
+void SListCtrl::SetSelectedItem(int nItem)
 {
     m_nSelectItem = nItem;
 
     NotifyInvalidate();
 }
 
-int CDuiListCtrl::GetItemCount()
+int SListCtrl::GetItemCount()
 {
     if (GetColumnCount() <= 0)
         return 0;
@@ -188,7 +188,7 @@ int CDuiListCtrl::GetItemCount()
     return m_arrItems.GetCount();
 }
 
-BOOL CDuiListCtrl::SetItemCount( int nItems ,int nGrowBy)
+BOOL SListCtrl::SetItemCount( int nItems ,int nGrowBy)
 {
     int nOldCount=GetItemCount();
     if(nItems<nOldCount) return FALSE;
@@ -208,7 +208,7 @@ BOOL CDuiListCtrl::SetItemCount( int nItems ,int nGrowBy)
     return bRet;
 }
 
-CRect CDuiListCtrl::GetListRect()
+CRect SListCtrl::GetListRect()
 {
     CRect rcList;
 
@@ -220,14 +220,14 @@ CRect CDuiListCtrl::GetListRect()
 
 //////////////////////////////////////////////////////////////////////////
 //  更新滚动条
-void CDuiListCtrl::UpdateScrollBar()
+void SListCtrl::UpdateScrollBar()
 {
     CSize szView;
     szView.cx = m_pHeader->GetTotalWidth();
     szView.cy = GetItemCount()*m_nItemHeight;
 
     CRect rcClient;
-    CDuiWindow::GetClient(&rcClient);//不计算滚动条大小
+    SWindow::GetClient(&rcClient);//不计算滚动条大小
     rcClient.top+=m_nHeaderHeight;
 
     CSize size = rcClient.Size();
@@ -310,7 +310,7 @@ void CDuiListCtrl::UpdateScrollBar()
 }
 
 //更新表头位置
-void CDuiListCtrl::UpdateHeaderCtrl()
+void SListCtrl::UpdateHeaderCtrl()
 {
     CRect rcClient;
     GetClient(&rcClient);
@@ -320,7 +320,7 @@ void CDuiListCtrl::UpdateHeaderCtrl()
     if(m_pHeader) m_pHeader->Move(rcHeader);
 }
 
-void CDuiListCtrl::DeleteItem(int nItem)
+void SListCtrl::DeleteItem(int nItem)
 {
     if (nItem>=0 && nItem < GetItemCount())
     {
@@ -337,7 +337,7 @@ void CDuiListCtrl::DeleteItem(int nItem)
     }
 }
 
-void CDuiListCtrl::DeleteColumn( int iCol )
+void SListCtrl::DeleteColumn( int iCol )
 {
     if(m_pHeader->DeleteItem(iCol))
     {
@@ -351,7 +351,7 @@ void CDuiListCtrl::DeleteColumn( int iCol )
     }
 }
 
-void CDuiListCtrl::DeleteAllItems()
+void SListCtrl::DeleteAllItems()
 {
     m_nSelectItem = -1;
     for(int i=0;i<GetItemCount();i++)
@@ -370,7 +370,7 @@ void CDuiListCtrl::DeleteAllItems()
 }
 
 
-CRect CDuiListCtrl::GetItemRect(int nItem, int nSubItem)
+CRect SListCtrl::GetItemRect(int nItem, int nSubItem)
 {
     if (!(nItem>=0 && nItem<GetItemCount() && nSubItem>=0 && nSubItem<GetColumnCount()))
         return CRect();
@@ -406,7 +406,7 @@ CRect CDuiListCtrl::GetItemRect(int nItem, int nSubItem)
 
 //////////////////////////////////////////////////////////////////////////
 //  自动修改pt的位置为相对当前项的偏移量
-int CDuiListCtrl::HitTest(const CPoint& pt)
+int SListCtrl::HitTest(const CPoint& pt)
 {
     CRect rcList = GetListRect();
 
@@ -422,7 +422,7 @@ int CDuiListCtrl::HitTest(const CPoint& pt)
     return nRet;
 }
 
-void CDuiListCtrl::RedrawItem(int nItem)
+void SListCtrl::RedrawItem(int nItem)
 {
     if (!IsVisible(TRUE))
         return;
@@ -439,20 +439,19 @@ void CDuiListCtrl::RedrawItem(int nItem)
         rcItem.OffsetRect(rcList.TopLeft());
         CRect rcDC;
         rcDC.IntersectRect(rcItem,rcList);
-        CDCHandle dc = GetDuiDC(&rcDC, OLEDC_PAINTBKGND);
-        DuiSendMessage(WM_ERASEBKGND, (WPARAM)(HDC)dc);
+        IRenderTarget *pRT = GetRenderTarget(&rcDC, OLEDC_PAINTBKGND);
+        DuiSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
 
-        DuiDCPaint dxDC;
-        BeforePaint(dc, dxDC);
+        SPainter painter;
+        BeforePaint(pRT, painter);
+        DrawItem(pRT, rcItem, nItem);
+        AfterPaint(pRT, painter);
 
-        DrawItem(dc, rcItem, nItem);
-
-        AfterPaint(dc, dxDC);
-        ReleaseDuiDC(dc);
+        ReleaseRenderTarget(pRT);
     }
 }
 
-int CDuiListCtrl::GetCountPerPage(BOOL bPartial)
+int SListCtrl::GetCountPerPage(BOOL bPartial)
 {
     CRect rcClient = GetListRect();
 
@@ -462,7 +461,7 @@ int CDuiListCtrl::GetCountPerPage(BOOL bPartial)
     // round up to nearest item count
     return max(bPartial && divHeight.rem > 0 ? divHeight.quot + 1 : divHeight.quot, 1);
 }
-BOOL CDuiListCtrl::SortItems(
+BOOL SListCtrl::SortItems(
                PFNLVCOMPAREEX pfnCompare,
                void * pContext 
                )
@@ -474,18 +473,15 @@ BOOL CDuiListCtrl::SortItems(
     return TRUE;
 }
 
-void CDuiListCtrl::OnPaint(CDCHandle dc)
+void SListCtrl::OnPaint(IRenderTarget * pRT)
 {
-    DuiDCPaint dxDC;
-    BeforePaint(dc, dxDC);
+    SPainter dxDC;
+    BeforePaint(pRT, dxDC);
 
     CRect rcList = GetListRect();
     int nTopItem = GetTopIndex();
 
-    int nSave=dc.SaveDC();
-    CRgn rgn;
-    rgn.CreateRectRgnIndirect(rcList);
-    dc.SelectClipRgn(rgn,RGN_AND);
+    pRT->PushClipRect(&rcList);
     CRect rcItem(rcList);
 
     rcItem.bottom = rcItem.top;
@@ -494,13 +490,13 @@ void CDuiListCtrl::OnPaint(CDCHandle dc)
     {
         rcItem.bottom = rcItem.top + m_nItemHeight;
 
-        DrawItem(dc, rcItem, nItem);
+        DrawItem(pRT, rcItem, nItem);
     }
-    dc.RestoreDC(nSave);
-    AfterPaint(dc, dxDC);
+    pRT->PopClipRect();
+    AfterPaint(pRT, dxDC);
 }
 
-void CDuiListCtrl::DrawItem(CDCHandle dc, CRect rcItem, int nItem)
+void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
 {
     BOOL bTextColorChanged = FALSE;
     int nBgImg = 0;
@@ -515,33 +511,33 @@ void CDuiListCtrl::DrawItem(CDCHandle dc, CRect rcItem, int nItem)
     {
         if (m_pItemSkin != NULL)
             nBgImg = 2;
-        else if (CLR_INVALID != m_crItemSelBg)
+        else if (CR_INVALID != m_crItemSelBg)
             crItemBg = m_crItemSelBg;
 
-        if (CLR_INVALID != m_crSelText)
+        if (CR_INVALID != m_crSelText)
             crText = m_crSelText;
     }
     else if(nItem % 2)
     {
         if (m_pItemSkin != NULL)
             nBgImg = 1;
-        else if (CLR_INVALID != m_crItemBg2)
+        else if (CR_INVALID != m_crItemBg2)
             crItemBg = m_crItemBg2;
     }
 
     //  绘制背景
     if (m_pItemSkin != NULL)
-        m_pItemSkin->Draw(dc, rcItem, nBgImg);
-    else if (CLR_INVALID != crItemBg)
-        CGdiAlpha::FillSolidRect(dc, rcItem, crItemBg);
+        m_pItemSkin->Draw(pRT, rcItem, nBgImg);
+    else if (CR_INVALID != crItemBg)
+        pRT->FillSolidRect( rcItem, crItemBg);
 
     //  左边加上空白
     rcItem.left += m_nMargin;
 
-    if (CLR_INVALID != crText)
+    if (CR_INVALID != crText)
     {
         bTextColorChanged = TRUE;
-        crOldText = dc.SetTextColor(crText);
+        crOldText = pRT->SetTextColor(crText);
     }
 
     CRect rcCol(rcItem);
@@ -579,7 +575,7 @@ void CDuiListCtrl::DrawItem(CDCHandle dc, CRect rcItem, int nItem)
                 nOffsetY = (m_nItemHeight - sizeSkin.cy) / 2;
 
             rcIcon.OffsetRect(rcCol.left + nOffsetX, rcCol.top + nOffsetY);
-            m_pIconSkin->Draw(dc, rcIcon, subItem.nImage);
+            m_pIconSkin->Draw(pRT, rcIcon, subItem.nImage);
         }
 
         UINT align = DT_SINGLELINE;
@@ -595,21 +591,21 @@ void CDuiListCtrl::DrawItem(CDCHandle dc, CRect rcItem, int nItem)
         else
             rcText.top = rcCol.top + m_ptText.y;
 
-        CGdiAlpha::DrawText(dc, subItem.strText, subItem.cchTextMax, rcText, align);
+        pRT->DrawText(subItem.strText, subItem.cchTextMax, rcText, align);
     }
 
     if (bTextColorChanged)
-        dc.SetTextColor(crOldText);
+        pRT->SetTextColor(crOldText);
 }
 
-void CDuiListCtrl::OnDestroy()
+void SListCtrl::OnDestroy()
 {
     DeleteAllItems();
 
     __super::OnDestroy();
 }
 
-int CDuiListCtrl::GetColumnCount()
+int SListCtrl::GetColumnCount()
 {
     if (!m_pHeader)
         return 0;
@@ -617,23 +613,23 @@ int CDuiListCtrl::GetColumnCount()
     return m_pHeader->GetItemCount();
 }
 
-int CDuiListCtrl::GetTopIndex() const
+int SListCtrl::GetTopIndex() const
 {
     return m_ptOrigin.y / m_nItemHeight;
 }
 
-void CDuiListCtrl::NotifySelChange(int nOldSel, int nNewSel)
+void SListCtrl::NotifySelChange(int nOldSel, int nNewSel)
 {
     DUINMLBSELCHANGE nms;
     nms.hdr.code     = NM_LBSELCHANGING;
-    nms.hdr.hDuiWnd = m_hDuiWnd;
+    nms.hdr.hDuiWnd = m_hSWnd;
     nms.hdr.idFrom   = GetCmdID();
     nms.hdr.pszNameFrom=GetName();
     nms.nOldSel      = nOldSel;
     nms.nNewSel      = nNewSel;
     nms.uHoverID     = 0;
 
-    if (S_OK != DuiNotify((LPDUINMHDR)&nms))
+    if (S_OK != DuiNotify((LPSNMHDR)&nms))
         return;
 
     m_nSelectItem = nNewSel;
@@ -645,10 +641,10 @@ void CDuiListCtrl::NotifySelChange(int nOldSel, int nNewSel)
 
     nms.hdr.idFrom = GetCmdID();
     nms.hdr.code   = NM_LBSELCHANGED;
-    DuiNotify((LPDUINMHDR)&nms);            
+    DuiNotify((LPSNMHDR)&nms);            
 }
 
-BOOL CDuiListCtrl::OnScroll(BOOL bVertical, UINT uCode, int nPos)
+BOOL SListCtrl::OnScroll(BOOL bVertical, UINT uCode, int nPos)
 {
     BOOL bRet = __super::OnScroll(bVertical, uCode, nPos);
 
@@ -670,7 +666,7 @@ BOOL CDuiListCtrl::OnScroll(BOOL bVertical, UINT uCode, int nPos)
     return bRet;
 }
 
-void CDuiListCtrl::OnLButtonDown(UINT nFlags, CPoint pt)
+void SListCtrl::OnLButtonDown(UINT nFlags, CPoint pt)
 {
     m_nHoverItem = HitTest(pt);
 
@@ -678,7 +674,7 @@ void CDuiListCtrl::OnLButtonDown(UINT nFlags, CPoint pt)
         NotifySelChange(m_nSelectItem, m_nHoverItem);
 }
 
-void CDuiListCtrl::OnLButtonUp(UINT nFlags, CPoint pt)
+void SListCtrl::OnLButtonUp(UINT nFlags, CPoint pt)
 {
     m_nHoverItem = HitTest(pt);
 
@@ -687,24 +683,24 @@ void CDuiListCtrl::OnLButtonUp(UINT nFlags, CPoint pt)
 }
 
 
-void CDuiListCtrl::UpdateChildrenPosition()
+void SListCtrl::UpdateChildrenPosition()
 {
     __super::UpdateChildrenPosition();
     UpdateHeaderCtrl();
 }
 
-void CDuiListCtrl::OnSize(UINT nType, CSize size)
+void SListCtrl::OnSize(UINT nType, CSize size)
 {
     UpdateScrollBar();
     UpdateHeaderCtrl();
 }
 
-bool CDuiListCtrl::OnHeaderClick(CDuiWindow* pSender, LPDUINMHDR pNmhdr)
+bool SListCtrl::OnHeaderClick(SWindow* pSender, LPSNMHDR pNmhdr)
 {
     return true;
 }
 
-bool CDuiListCtrl::OnHeaderSizeChanging(CDuiWindow* pSender, LPDUINMHDR pNmhdr)
+bool SListCtrl::OnHeaderSizeChanging(SWindow* pSender, LPSNMHDR pNmhdr)
 {
     UpdateScrollBar();
     NotifyInvalidateRect(GetListRect());
@@ -712,7 +708,7 @@ bool CDuiListCtrl::OnHeaderSizeChanging(CDuiWindow* pSender, LPDUINMHDR pNmhdr)
     return true;
 }
 
-bool CDuiListCtrl::OnHeaderSwap(CDuiWindow* pSender, LPDUINMHDR pNmhdr)
+bool SListCtrl::OnHeaderSwap(SWindow* pSender, LPSNMHDR pNmhdr)
 {
     NotifyInvalidateRect(GetListRect());
 

@@ -11,16 +11,17 @@ typedef ULONG_PTR HSTREEITEM;
 #include "DuiDef.h"
 
 #define IDC_RICHVIEW_WIN            2000
-#define UM_DUI_NOTIFY                (WM_USER+100)
+#define UM_SWND_NOTIFY                (WM_USER+100)
+
 namespace SOUI
 {
-class CDuiWindow;
+class SWindow;
 
 #define NOTIFY_HANDLER_SOUI(id, func) \
-    if (uMsg == UM_DUI_NOTIFY && wParam == IDC_RICHVIEW_WIN) \
+    if (uMsg == UM_SWND_NOTIFY && wParam == IDC_RICHVIEW_WIN) \
     { \
     SetMsgHandled(TRUE); \
-    lResult = func((LPDUINMHDR)lParam); \
+    lResult = func((LPSNMHDR)lParam); \
     if(IsMsgHandled()) \
     return TRUE; \
     }
@@ -28,7 +29,7 @@ class CDuiWindow;
 #define MSG_SOUI_NOTIFY() NOTIFY_HANDLER_SOUI(IDC_RICHVIEW_WIN,_OnDuiNotify)
 
 #define SOUI_NOTIFY_MAP_BEGIN()                   \
-    LRESULT _OnDuiNotify(LPDUINMHDR pnmh)        \
+    LRESULT _OnDuiNotify(LPSNMHDR pnmh)        \
     {                                           \
         UINT_PTR  uCode = pnmh->code;           \
  
@@ -43,7 +44,7 @@ class CDuiWindow;
             return TRUE;                         \
  
 
-// LRESULT OnDuiHandler(LPDUINMHDR pnmh)
+// LRESULT OnDuiHandler(LPSNMHDR pnmh)
 #define SOUI_NOTIFY_HANDLER(cd, func) \
     if(cd == pnmh->code) \
 { \
@@ -51,14 +52,14 @@ class CDuiWindow;
 } 
 
 
-// LRESULT OnDuiIDHandler(LPDUINMHDR pnmh)
+// LRESULT OnDuiIDHandler(LPSNMHDR pnmh)
 #define SOUI_NOTIFY_ID_HANDLER(id, cd, func) \
     if(cd == pnmh->code && id == pnmh->idFrom) \
     { \
         return func(pnmh); \
     }
 
-// LRESULT OnDuiNameHandler(LPDUINMHDR pnmh)
+// LRESULT OnDuiNameHandler(LPSNMHDR pnmh)
 #define SOUI_NOTIFY_NAME_HANDLER(name, cd, func) \
     if(cd == pnmh->code && pnmh->pszNameFrom!= NULL && strcmp(pnmh->pszNameFrom,name)==0) \
 { \
@@ -190,7 +191,7 @@ typedef struct _DUINMTABITEMHOVER
 #define NM_TAB_ITEMLEAVE 12
 typedef DUINMTABITEMHOVER DUINMTABITEMLEAVE, *LPDUINMTABITEMLEAVE;
 
-class CDuiScrollBar;
+class SScrollBar;
 #define NM_SCROLL    14
 typedef struct tagDUINMSCROLL
 {
@@ -198,7 +199,7 @@ typedef struct tagDUINMSCROLL
     UINT        uSbCode;
     int            nPos;
     BOOL        bVertical;
-    CDuiScrollBar *pScrollBar;
+    SScrollBar *pScrollBar;
 } DUINMSCROLL,*PDUINMSCROLL;
 
 // void OnDuiScroll(UINT uSbCode,int nPos,SOUI::CDuiScrollBar *pBar)
@@ -209,7 +210,7 @@ typedef struct tagDUINMSCROLL
     return TRUE;                                                        \
 }
 
-class CDuiItemPanel;
+class SItemPanel;
 
 // Item Click Notify
 #define NM_LBITEMNOTIFY     15
@@ -217,9 +218,9 @@ class CDuiItemPanel;
 typedef struct tagDUINMITEMNOTIFY
 {
     DUINMHDR       hdr;
-    LPDUINMHDR        pOriginHdr;    //原始消息
-    CDuiItemPanel *pItem;
-    CDuiWindow *    pHostDuiWin;
+    LPSNMHDR        pOriginHdr;    //原始消息
+    SItemPanel *pItem;
+    SWindow *    pHostDuiWin;
 } DUINMITEMNOTIFY, *LPDUINMITEMNOTIFY;
 
 
@@ -227,7 +228,7 @@ typedef struct tagDUINMITEMNOTIFY
 typedef struct tagDUINMITEMMOUSEEVENT
 {
     DUINMHDR       hdr;
-    CDuiItemPanel *    pItem;
+    SItemPanel *    pItem;
     UINT        uMsg;
     WPARAM        wParam;
     LPARAM        lParam;
@@ -243,8 +244,8 @@ typedef struct tagDUINMGETLBDISPINFO
     int         nListItemID;
     BOOL        bHover;
     BOOL        bSelect;
-    CDuiItemPanel *    pItem;
-    CDuiWindow *    pHostDuiWin;
+    SItemPanel *    pItem;
+    SWindow *    pHostDuiWin;
 } DUINMGETLBDISPINFO, *LPDUINMGETLBDISPINFO;
 
 #define NM_LBSELCHANGING 18
@@ -266,8 +267,8 @@ typedef struct tagDUINMGETTBDISPINFO
     HSTREEITEM  hItem;
     BOOL        bHover;
     BOOL        bSelect;
-    CDuiItemPanel *    pItem;
-    CDuiWindow *    pHostDuiWin;
+    SItemPanel *    pItem;
+    SWindow *    pHostDuiWin;
 } DUINMGETTBDISPINFO, *LPDUINMGETTBDISPINFO;
 
 #define NM_TBSELCHANGING    21
@@ -297,13 +298,13 @@ typedef struct tagDUIRICHEDITNOTIFY
     LPVOID pv;
 } DUIRICHEDITNOTIFY,*LPDUIRICHEDITNOTIFY;
 
-class CDuiSliderBar;
+class SSliderBar;
 #define NM_SLIDER    30
 typedef struct tagDUINMSLIDER
 {
     DUINMHDR hdr;
     UINT uSbCode;
-    CDuiSliderBar *pSliderBar;
+    SSliderBar *pSliderBar;
     int     nPos;
     BOOL bVertical;
 } DUINMSLIDER,*LPDUINMSLIDER;
@@ -358,12 +359,12 @@ typedef struct tagDUINMCALENDARSELECTDAY
 #define NM_INTERNAL_FIRST    1000
 #define NM_INTERNAL_LAST        2000
 
-class CDuiRealWnd;
+class SRealWnd;
 
 typedef struct _DUINMREALWNDCMN
 {
     DUINMHDR       hdr;
-    CDuiRealWnd    * pRealWnd;
+    SRealWnd    * pRealWnd;
 } DUINMREALWNDCMN, *LPDUINMREALWNDCMN;
 
 typedef struct _DUINMREALWNDMSGPROC

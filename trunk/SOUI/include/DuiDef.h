@@ -59,13 +59,13 @@
 
 
 // DuiWindow Handle
-typedef DWORD HDUIWND;
+typedef DWORD HSWND;
 typedef ULONG_PTR HSTREEITEM;
 
 typedef struct _DUINMHDR
 {
-    HDUIWND    hDuiWnd;        //消息源窗口
+    HSWND    hDuiWnd;        //消息源窗口
     UINT    code;            //消息类型
     LPCSTR    pszNameFrom;    //消息源的name
     UINT    idFrom;            //消息源的id
-}DUINMHDR, *LPDUINMHDR;
+}DUINMHDR, *LPSNMHDR;

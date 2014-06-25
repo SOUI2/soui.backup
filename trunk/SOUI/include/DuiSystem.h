@@ -1,10 +1,11 @@
 #pragma once
 #include "duisingleton.h"
+#include "render/render-i.h"
+#include "unknown/obj-ref-impl.hpp"
 
 #include "DuiWndFactoryMgr.h"
 #include "DuiSkinFactoryMgr.h"
 
-#include "DuiLogger.h"
 #include "DuiScriptModule.h"
 #include "res.mgr/DuiResProviderMgr.h"
 #include "res.mgr/DuiPools.h"
@@ -18,22 +19,25 @@
 
 #define LOADXML(p1,p2,p3) DuiSystem::getSingleton().LoadXmlDocment(p1,p2,p3)
 #define GETRESPROVIDER    DuiSystem::getSingletonPtr()
-#define GETIMGDECODER   DuiSystem::getSingleton().GetImgDecoder
+#define GETRENDERFACTORY DuiSystem::getSingleton().GetRenderFactory()
+
+#define RT_UIDEF _T("UIDEF")
+#define RT_LAYOUT _T("LAYOUT")
+#define RT_XML _T("XML")
 
 namespace SOUI
 {
 
 class SOUI_EXP DuiSystem :public Singleton<DuiSystem>
                         ,public DuiWindowFactoryMgr
-                        ,public DuiSkinFactoryManager
-                        ,public DuiPools
+                        ,public DuiSkinFactoryMgr
                         ,public DuiResProviderMgr
+                        ,public DuiPools
 {
     friend class CSimpleWnd;
-    friend class CDuiMessageBox;    //访问消息框模板
-    friend class CDuiRichEdit;    //访问右键菜单资源
+    friend class SRichEdit;    //访问右键菜单资源
 public:
-    DuiSystem(HINSTANCE hInst,LPCTSTR pszHostClassName=_T("DuiHostWnd"));
+    DuiSystem(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName=_T("DuiHostWnd"));
     ~DuiSystem(void);
 
 
@@ -44,26 +48,9 @@ public:
 
     LPCTSTR GetVersion(){return SOUI_VERSION;}
 
-    DuiLogger *SetLogger(DuiLogger *pLogger)
-    {
-        DuiLogger *pRet=m_pLogger;
-        m_pLogger=pLogger;
-        return pRet;
-    }
-    DuiLogger * GetLogger()
-    {
-        return m_pLogger;
-    }
-
     IScriptModule * GetScriptModule()
     {
         return m_pScriptModule;
-    }
-
-    IDuiImgDecoder * GetImgDecoder(){return m_pImgDecoder?m_pImgDecoder:m_pDefImgDecoder;}
-    
-    void SetImgDecoder(IDuiImgDecoder *pImgDecoder){
-        m_pDefImgDecoder=pImgDecoder;
     }
 
     void SetScriptModule(IScriptModule *pScriptModule)
@@ -71,31 +58,26 @@ public:
         m_pScriptModule=pScriptModule;
     }
 
-    void logEvent(LPCTSTR message, LoggingLevel level = Standard);
+    BOOL Init(LPCTSTR pszName ,LPCTSTR pszType=RT_UIDEF);
 
-    void logEvent(LoggingLevel level , LPCTSTR format, ...);
+    BOOL SetMsgBoxTemplate(LPCTSTR pszXmlName,LPCTSTR pszType=RT_LAYOUT);
 
-    BOOL Init(LPCTSTR pszName ,LPCTSTR pszType=DUIRES_XML_TYPE);
+    BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType);
 
-    BOOL SetMsgBoxTemplate(LPCTSTR pszXmlName,LPCTSTR pszType=DUIRES_XML_TYPE);
-
-    BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType=DUIRES_XML_TYPE);
+    IRenderFactory * GetRenderFactory(){return m_RenderFactory;}
 
 protected:
-    pugi::xml_node GetMsgBoxTemplate(){return m_xmlMsgBoxTempl;}
     pugi::xml_node GetEditMenuTemplate(){return m_xmlEditMenu;}
 
     void createSingletons();
     void destroySingletons();
 
     IScriptModule        * m_pScriptModule;
-    DuiLogger * m_pLogger;
     HINSTANCE m_hInst;
-    IDuiImgDecoder        * m_pDefImgDecoder;
-    IDuiImgDecoder        * m_pImgDecoder;
 
-    pugi::xml_document    m_xmlMsgBoxTempl;
     pugi::xml_document    m_xmlEditMenu;
+
+    CAutoRefPtr<IRenderFactory> m_RenderFactory;
 };
 
 }//namespace SOUI

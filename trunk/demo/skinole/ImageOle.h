@@ -55,7 +55,7 @@ public:
 
 	void OnNextFrame();
 
-	void SetDuiSkinObj(CDuiSkinBase *pSkin);
+	void SetDuiSkinObj(ISkinObj *pSkin);
 
 protected:
 	BOOL GetOleRect(LPRECT prc);
@@ -66,11 +66,11 @@ protected:
 
 	CDuiRichEdit *m_pRichedit;
 
-	SOUI::CDuiSkinBase *m_pSkin;
+	SOUI::ISkinObj *m_pSkin;
 	int		m_iFrame;
 	int		m_nTimePass;	//过去的时间
 	int		m_nTimeDelay;	//一个动画帧需要的时间
 };
 
-BOOL RichEdit_InsertSkin(CDuiRichEdit *pRicheditCtrl, CDuiSkinBase *pSkin);
+BOOL RichEdit_InsertSkin(CDuiRichEdit *pRicheditCtrl, ISkinObj *pSkin);
 BOOL RichEdit_InsertImage(CDuiRichEdit *pRicheditCtrl, LPCTSTR lpszFileName);

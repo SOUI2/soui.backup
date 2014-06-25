@@ -11,13 +11,14 @@ namespace SOUI
 {
 
 
-class SOUI_EXP DuiResProviderPE:public IDuiResProvider
+class SOUI_EXP DuiResProviderPE:public IResProvider
 {
 public:
     DuiResProviderPE(HINSTANCE hInst);
-    HBITMAP    LoadBitmap(LPCTSTR strType,LPCTSTR pszResName);
-    HICON   LoadIcon(LPCTSTR strType,LPCTSTR pszResName,int cx=0,int cy=0);
-    IDuiImage * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
+    HBITMAP    LoadBitmap(LPCTSTR pszResName);
+    HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0);
+    HCURSOR   LoadCursor(LPCTSTR pszResName);
+    IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
     size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
     BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
     BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
@@ -27,16 +28,19 @@ protected:
     HINSTANCE m_hResInst;
 };
 
-class SOUI_EXP DuiResProviderFiles:public IDuiResProvider
+
+#define UISKIN_INDEX    _T("uiskin.idx")        //文件夹资源的文件映射表索引表文件名
+class SOUI_EXP DuiResProviderFiles:public IResProvider
 {
 public:
 
     DuiResProviderFiles();
 
     BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
-    HBITMAP    LoadBitmap(LPCTSTR strType,LPCTSTR pszResName);
-    HICON   LoadIcon(LPCTSTR strType,LPCTSTR pszResName,int cx=0,int cy=0);
-    IDuiImage * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
+    HBITMAP    LoadBitmap(LPCTSTR pszResName);
+    HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0);
+    HCURSOR LoadCursor(LPCTSTR pszResName);
+    IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
     size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
     BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
 

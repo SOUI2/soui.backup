@@ -26,17 +26,15 @@ typedef struct tagLBITEM
 
 } LBITEM, *LPLBITEM;
 
-class SOUI_EXP CDuiListBox :public CDuiScrollView
+class SOUI_EXP SListBox :public SScrollView
 {
 public:
 
-    SOUI_CLASS_NAME(CDuiListBox, "listbox")
+    SOUI_CLASS_NAME(SListBox, "listbox")
 
-    CDuiListBox();
+    SListBox();
 
-    virtual ~CDuiListBox();
-
-    virtual BOOL Load(pugi::xml_node xmlNode);
+    virtual ~SListBox();
 
     int GetCount() const;
 
@@ -91,7 +89,7 @@ protected:
 
     virtual int GetScrollLineSize(BOOL bVertical);
 
-    void DrawItem(CDCHandle &dc, CRect &rc, int iItem);
+    void DrawItem(IRenderTarget *pRT, CRect &rc, int iItem);
 
     void NotifySelChange(int nOldSel,int nNewSel);
 
@@ -101,7 +99,7 @@ protected:
 
     void OnSize(UINT nType,CSize size);
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget *pRT);
 
     void OnLButtonDown(UINT nFlags,CPoint pt);
 
@@ -134,7 +132,7 @@ protected:
 
     COLORREF m_crItemBg, m_crItemBg2, m_crItemSelBg;
     COLORREF m_crText, m_crSelText;
-    CDuiSkinBase *m_pItemSkin, *m_pIconSkin;
+    ISkinObj *m_pItemSkin, *m_pIconSkin;
 
 public:
 
@@ -158,7 +156,7 @@ public:
     WND_MSG_MAP_BEGIN()
         MSG_WM_DESTROY(OnDestroy)
         MSG_WM_SIZE(OnSize)
-        MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONDBLCLK(OnLButtonDbClick)
         MSG_WM_LBUTTONUP(OnLButtonUp)

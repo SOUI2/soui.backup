@@ -9,7 +9,7 @@ namespace SOUI
 
 //////////////////////////////////////////////////////////////////////////
 //  CDuiSliderBar
-CDuiSliderBar::CDuiSliderBar()
+SSliderBar::SSliderBar()
     : m_bDrag(FALSE)
     , m_uHtPrev(-1)
     , m_pSkinThumb(NULL)
@@ -17,11 +17,11 @@ CDuiSliderBar::CDuiSliderBar()
     addEvent(NM_SLIDER);
 }
 
-CDuiSliderBar::~CDuiSliderBar()
+SSliderBar::~SSliderBar()
 {
 }
 
-int CDuiSliderBar::HitTest(CPoint pt)
+int SSliderBar::HitTest(CPoint pt)
 {
     CRect rc;
 
@@ -41,7 +41,7 @@ int CDuiSliderBar::HitTest(CPoint pt)
 }
 
 
-CRect CDuiSliderBar::GetPartRect(UINT uSBCode)
+CRect SSliderBar::GetPartRect(UINT uSBCode)
 {
     DUIASSERT(m_pSkinThumb);
 
@@ -133,31 +133,31 @@ CRect CDuiSliderBar::GetPartRect(UINT uSBCode)
     return rcRet;
 }
 
-void CDuiSliderBar::OnPaint(CDCHandle dc)
+void SSliderBar::OnPaint(IRenderTarget * pRT)
 {
     DUIASSERT(m_pSkinThumb && m_pSkinBg && m_pSkinPos);
 
-    DuiDCPaint dxDC;
+    SPainter painter;
 
-    BeforePaint(dc, dxDC);
+    BeforePaint(pRT, painter);
 
     CRect rcRail=GetPartRect(SC_RAIL);
-    m_pSkinBg->Draw(dc,rcRail,0);
+    m_pSkinBg->Draw(pRT,rcRail,0);
     if(m_nValue!=m_nMinValue)
     {
         CRect rcSel=GetPartRect(SC_SELECT);
-        m_pSkinPos->Draw(dc,rcSel,0,m_byAlpha);
+        m_pSkinPos->Draw(pRT,rcSel,0,m_byAlpha);
     }
     CRect rcThumb = GetPartRect(SC_THUMB);
     int nState=0;//normal
     if(m_bDrag) nState=1;//pushback
     else if(m_uHtPrev==SC_THUMB) nState=2;//hover
-    m_pSkinThumb->Draw(dc, rcThumb, nState,m_byAlpha);
+    m_pSkinThumb->Draw(pRT, rcThumb, nState,m_byAlpha);
 
-    AfterPaint(dc, dxDC);
+    AfterPaint(pRT, painter);
 }
 
-void CDuiSliderBar::OnLButtonUp(UINT nFlags, CPoint point)
+void SSliderBar::OnLButtonUp(UINT nFlags, CPoint point)
 {
     ReleaseDuiCapture();
 
@@ -165,14 +165,14 @@ void CDuiSliderBar::OnLButtonUp(UINT nFlags, CPoint point)
     {
         m_bDrag   = FALSE;
         CRect rcThumb = GetPartRect(SC_THUMB);
-        HDC   hdc     = GetDuiDC(&rcThumb, OLEDC_PAINTBKGND);
-        m_pSkinThumb->Draw(hdc, rcThumb, IIF_STATE4(DuiWndState_Hover, 0, 1, 2, 3), m_byAlpha);
-        ReleaseDuiDC(hdc);
+        IRenderTarget *pRT  = GetRenderTarget(&rcThumb, OLEDC_PAINTBKGND);
+        m_pSkinThumb->Draw(pRT, rcThumb, IIF_STATE4(DuiWndState_Hover, 0, 1, 2, 3), m_byAlpha);
+        ReleaseRenderTarget(pRT);
     }
     OnMouseMove(nFlags,point);
 }
 
-void CDuiSliderBar::OnLButtonDown(UINT nFlags, CPoint point) 
+void SSliderBar::OnLButtonDown(UINT nFlags, CPoint point) 
 {
     SetDuiCapture();
 
@@ -202,7 +202,7 @@ void CDuiSliderBar::OnLButtonDown(UINT nFlags, CPoint point)
     }
 }
 
-void CDuiSliderBar::OnMouseMove(UINT nFlags, CPoint point) 
+void SSliderBar::OnMouseMove(UINT nFlags, CPoint point) 
 {
     if (m_bDrag)
     {
@@ -234,31 +234,31 @@ void CDuiSliderBar::OnMouseMove(UINT nFlags, CPoint point)
         if (uHit != m_uHtPrev && (m_uHtPrev==SC_THUMB || uHit==SC_THUMB))
         {
             CRect rcThumb = GetPartRect(SC_THUMB);
-            HDC   hdc     = GetDuiDC(&rcThumb, OLEDC_PAINTBKGND);
-            m_pSkinThumb->Draw(hdc, rcThumb, IIF_STATE4(uHit==SC_THUMB?DuiWndState_Hover:DuiWndState_Normal, 0, 1, 2, 3), m_byAlpha);
-            ReleaseDuiDC(hdc);
+            IRenderTarget  * pRT  = GetRenderTarget(&rcThumb, OLEDC_PAINTBKGND);
+            m_pSkinThumb->Draw(pRT, rcThumb, IIF_STATE4(uHit==SC_THUMB?DuiWndState_Hover:DuiWndState_Normal, 0, 1, 2, 3), m_byAlpha);
+            ReleaseRenderTarget(pRT);
             m_uHtPrev = uHit;
         }
     }
 }
 
-void CDuiSliderBar::OnMouseLeave()
+void SSliderBar::OnMouseLeave()
 {
     if (!m_bDrag && m_uHtPrev==SC_THUMB)
     {
         CRect rcThumb = GetPartRect(SC_THUMB);
-        HDC   hdc     = GetDuiDC(&rcThumb, OLEDC_PAINTBKGND);
-        m_pSkinThumb->Draw(hdc, rcThumb, IIF_STATE4(DuiWndState_Normal, 0, 1, 2, 3), m_byAlpha);
-        ReleaseDuiDC(hdc);
+        IRenderTarget  * pRT  = GetRenderTarget(&rcThumb, OLEDC_PAINTBKGND);
+        m_pSkinThumb->Draw(pRT, rcThumb, IIF_STATE4(DuiWndState_Normal, 0, 1, 2, 3), m_byAlpha);
+        ReleaseRenderTarget(pRT);
         m_uHtPrev=-1;
     }
 }
 
-LRESULT CDuiSliderBar::NotifySbCode(UINT uCode, int nPos)
+LRESULT SSliderBar::NotifySbCode(UINT uCode, int nPos)
 {
     DUINMSLIDER nms;
     nms.hdr.code     = NM_SLIDER;
-    nms.hdr.hDuiWnd  = m_hDuiWnd;
+    nms.hdr.hDuiWnd  = m_hSWnd;
     nms.hdr.idFrom   = GetCmdID();
     nms.hdr.pszNameFrom= GetName();
     nms.uSbCode      = uCode;
@@ -266,10 +266,10 @@ LRESULT CDuiSliderBar::NotifySbCode(UINT uCode, int nPos)
     nms.nPos         = nPos;
     nms.bVertical    = IsVertical();
 
-    return DuiNotify((LPDUINMHDR)&nms);
+    return DuiNotify((LPSNMHDR)&nms);
 }
 
-CSize CDuiSliderBar::GetDesiredSize(LPRECT pRcContainer)
+CSize SSliderBar::GetDesiredSize(LPRECT pRcContainer)
 {
     DUIASSERT(m_pSkinBg && m_pSkinThumb);
     CSize szRet;

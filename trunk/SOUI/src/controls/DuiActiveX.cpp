@@ -9,7 +9,7 @@ namespace SOUI
     class CDuiAxContainerImpl : public CDuiAxContainer,public IAxHostDelegate
     {
     public:
-        CDuiAxContainerImpl(CDuiActiveX *pOwner):m_pOwner(pOwner)
+        CDuiAxContainerImpl(SActiveX *pOwner):m_pOwner(pOwner)
         {
             SetAxHost(this);
         }
@@ -42,23 +42,19 @@ namespace SOUI
         virtual HRESULT OnAxGetDC(LPCRECT pRect, DWORD grfFlags, HDC *phDC)
         {
             return S_FALSE;
-            *phDC=m_pOwner->GetDuiDC((const LPRECT)pRect,grfFlags);
-            return S_OK;
         }
 
         virtual HRESULT OnAxReleaseDC(HDC hdc)
         {
             return S_FALSE;
-            m_pOwner->ReleaseDuiDC(hdc);
-            return S_OK;
         }
 
-        CDuiActiveX *m_pOwner;
+        SActiveX *m_pOwner;
     };
 
 //////////////////////////////////////////////////////////////////////////
 
-    CDuiActiveX::CDuiActiveX() 
+    SActiveX::SActiveX() 
         : m_axContainer(new CDuiAxContainerImpl(this))
         ,m_clsid(CLSID_NULL)
         ,m_clsCtx(CLSCTX_ALL)
@@ -66,12 +62,12 @@ namespace SOUI
     {
     }
 
-    CDuiActiveX::~CDuiActiveX() {
+    SActiveX::~SActiveX() {
         delete m_axContainer;
     }
 
 
-    BOOL CDuiActiveX::InitActiveX()
+    BOOL SActiveX::InitActiveX()
     {
         BOOL bRet=m_axContainer->CreateControl(m_rcWindow,m_clsid,m_clsCtx);
         if(bRet)
@@ -83,12 +79,14 @@ namespace SOUI
         return bRet;
     }
 
-    void CDuiActiveX::OnPaint(CDCHandle dc)
+    void SActiveX::OnPaint(IRenderTarget *pRT)
     {
-        m_axContainer->Draw(dc, m_rcWindow);
+        HDC hdc=pRT->GetDC(0);
+        m_axContainer->Draw(hdc, m_rcWindow);
+        pRT->ReleaseDC(hdc);
     }
 
-    int CDuiActiveX::OnCreate( LPVOID )
+    int SActiveX::OnCreate( LPVOID )
     {
         if(IsEqualCLSID(m_clsid,CLSID_NULL)) return 0;
 
@@ -96,7 +94,7 @@ namespace SOUI
         return 0;
     }
 
-    void CDuiActiveX::OnSize( UINT nType, CSize size )
+    void SActiveX::OnSize( UINT nType, CSize size )
     {
         if(m_axContainer->GetActiveXControl())
         {
@@ -104,7 +102,7 @@ namespace SOUI
         }
     }
 
-    void CDuiActiveX::OnShowWindow( BOOL bShow, UINT nStatus )
+    void SActiveX::OnShowWindow( BOOL bShow, UINT nStatus )
     {
         __super::OnShowWindow(bShow, nStatus);
 
@@ -117,20 +115,20 @@ namespace SOUI
         SetActiveXVisible(bShow);
     }
 
-    LRESULT CDuiActiveX::OnMouseEvent( UINT uMsg,WPARAM wp,LPARAM lp )
+    LRESULT SActiveX::OnMouseEvent( UINT uMsg,WPARAM wp,LPARAM lp )
     {
         if(!m_axContainer->GetActiveXControl()) return 0;
         if(uMsg==WM_LBUTTONDOWN) SetDuiFocus();
         return m_axContainer->OnWindowMessage(uMsg, wp, lp);
     }
 
-    LRESULT CDuiActiveX::OnKeyEvent( UINT uMsg,WPARAM wp,LPARAM lp )
+    LRESULT SActiveX::OnKeyEvent( UINT uMsg,WPARAM wp,LPARAM lp )
     {
         if(!m_axContainer->GetActiveXControl()) return 0;
         return m_axContainer->OnWindowMessage(uMsg, wp, lp);
     }
 
-    HRESULT CDuiActiveX::OnAttrClsid(const CDuiStringA & strValue,BOOL bLoading)
+    HRESULT SActiveX::OnAttrClsid(const CDuiStringA & strValue,BOOL bLoading)
     {
         CDuiStringW strValueW=DUI_CA2W(strValue,CP_UTF8);
 
@@ -145,7 +143,7 @@ namespace SOUI
         return S_OK;
     }
 
-    void CDuiActiveX::SetActiveXVisible( BOOL bVisible )
+    void SActiveX::SetActiveXVisible( BOOL bVisible )
     {
         if(m_axContainer->GetActiveXControl())
         {
@@ -166,30 +164,30 @@ namespace SOUI
         }
     }
 
-    IUnknown * CDuiActiveX::GetIUnknow()
+    IUnknown * SActiveX::GetIUnknow()
     {
         if(!m_axContainer) return NULL;
         return m_axContainer->GetActiveXControl();
     }
 
-    void CDuiActiveX::SetExternalUIHandler( IDocHostUIHandler *pUiHandler )
+    void SActiveX::SetExternalUIHandler( IDocHostUIHandler *pUiHandler )
     {
         if(m_axContainer) m_axContainer->SetExternalUIHandler(pUiHandler);
     }
     //////////////////////////////////////////////////////////////////////////
-    CDuiFlashCtrl::CDuiFlashCtrl()
+    SFlashCtrl::SFlashCtrl()
     {
         m_clsid=__uuidof(ShockwaveFlashObjects::ShockwaveFlash);
     }
 
     //////////////////////////////////////////////////////////////////////////
 
-    CDuiMediaPlayer::CDuiMediaPlayer()
+    SMediaPlayer::SMediaPlayer()
     {
         m_clsid=__uuidof(WMPLib::WindowsMediaPlayer);
     }
 
-    void CDuiMediaPlayer::OnAxActivate(IUnknown *pUnknwn)
+    void SMediaPlayer::OnAxActivate(IUnknown *pUnknwn)
     {
         wmp_=pUnknwn;
         if(wmp_)
@@ -198,7 +196,7 @@ namespace SOUI
         }
     }
 
-    bool CDuiMediaPlayer::Play( LPCWSTR pszUrl )
+    bool SMediaPlayer::Play( LPCWSTR pszUrl )
     {
         if(!wmp_)
         {

@@ -18,7 +18,7 @@ namespace SOUI
 {
 
 
-CDuiListBoxEx::CDuiListBoxEx()
+SListBoxEx::SListBoxEx()
     : m_nItemHei(20)
     , m_iScrollSpeed(-1)
     , m_iSelItem(-1)
@@ -40,12 +40,12 @@ CDuiListBoxEx::CDuiListBoxEx()
     addEvent(NM_LBSELCHANGED);
 }
 
-CDuiListBoxEx::~CDuiListBoxEx()
+SListBoxEx::~SListBoxEx()
 {
 }
 
 
-void CDuiListBoxEx::DeleteAllItems(BOOL bUpdate/*=TRUE*/)
+void SListBoxEx::DeleteAllItems(BOOL bUpdate/*=TRUE*/)
 {
     if(IsVirtual())
     {
@@ -68,7 +68,7 @@ void CDuiListBoxEx::DeleteAllItems(BOOL bUpdate/*=TRUE*/)
     if(bUpdate) NotifyInvalidate();
 }
 
-void CDuiListBoxEx::DeleteItem(int iItem)
+void SListBoxEx::DeleteItem(int iItem)
 {
     if(IsVirtual()) return;
 
@@ -90,17 +90,17 @@ void CDuiListBoxEx::DeleteItem(int iItem)
     UpdatePanelsIndex(iItem,-1);
 
     CRect rcClient;
-    CDuiWindow::GetClient(&rcClient);
+    SWindow::GetClient(&rcClient);
     CSize szView(rcClient.Width(),GetItemCount()*m_nItemHei);
     if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
     SetViewSize(szView);
 }
 
-int CDuiListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData/*=0*/)
+int SListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData/*=0*/)
 {
     if(IsVirtual()) return -1;
 
-    CDuiItemPanel *pItemObj=new CDuiItemPanel(this,xmlNode,this);
+    SItemPanel *pItemObj=new SItemPanel(this,xmlNode,this);
 
     if(iItem==-1 || iItem>=GetItemCount())
     {
@@ -119,7 +119,7 @@ int CDuiListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData/*=0*
     UpdatePanelsIndex(iItem,-1);
 
     CRect rcClient;
-    CDuiWindow::GetClient(&rcClient);
+    SWindow::GetClient(&rcClient);
     CSize szView(rcClient.Width(),GetItemCount()*m_nItemHei);
     if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
     SetViewSize(szView);
@@ -127,7 +127,7 @@ int CDuiListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData/*=0*
     return iItem;
 }
 
-int CDuiListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData/*=0*/)
+int SListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData/*=0*/)
 {
     if(IsVirtual()) return -1;
 
@@ -144,7 +144,7 @@ int CDuiListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData/*=0*/)
     }
 }
 
-BOOL CDuiListBoxEx::SetCurSel(int iItem)
+BOOL SListBoxEx::SetCurSel(int iItem)
 {
     if(iItem<0 || iItem>=GetItemCount()) return FALSE;
 
@@ -173,7 +173,7 @@ BOOL CDuiListBoxEx::SetCurSel(int iItem)
     return TRUE;
 }
 
-void CDuiListBoxEx::EnsureVisible( int iItem )
+void SListBoxEx::EnsureVisible( int iItem )
 {
     if(iItem<0 || iItem>=GetItemCount()) return;
     int iFirstVisible=(m_ptOrigin.y + m_nItemHei -1) / m_nItemHei;
@@ -190,20 +190,20 @@ void CDuiListBoxEx::EnsureVisible( int iItem )
     }
 }
 
-int CDuiListBoxEx::GetCurSel()
+int SListBoxEx::GetCurSel()
 {
     return m_iSelItem;
 }
 
-int CDuiListBoxEx::GetItemObjIndex(CDuiWindow *pItemObj)
+int SListBoxEx::GetItemObjIndex(SWindow *pItemObj)
 {
-    CDuiItemPanel * pItemPanel= dynamic_cast<CDuiItemPanel *>(pItemObj);
+    SItemPanel * pItemPanel= dynamic_cast<SItemPanel *>(pItemObj);
     if (NULL == pItemPanel) return -1;
     return (int)pItemPanel->GetItemIndex();
 }
 
 
-CDuiWindow * CDuiListBoxEx::GetItemPanel(int iItem)
+SWindow * SListBoxEx::GetItemPanel(int iItem)
 {
     if(iItem<0 || iItem>= GetItemCount()) return NULL;
     if(m_pTemplPanel) return m_pTemplPanel;
@@ -211,21 +211,21 @@ CDuiWindow * CDuiListBoxEx::GetItemPanel(int iItem)
 }
 
 
-LPARAM CDuiListBoxEx::GetItemData(int iItem)
+LPARAM SListBoxEx::GetItemData(int iItem)
 {
     DUIASSERT(iItem>=0 || iItem< GetItemCount());
     if(m_pTemplPanel) return 0;
     return m_arrItems[iItem]->GetItemData();
 }
 
-void CDuiListBoxEx::SetItemData( int iItem,LPARAM lParam )
+void SListBoxEx::SetItemData( int iItem,LPARAM lParam )
 {
     DUIASSERT(iItem>=0 || iItem< GetItemCount());
     m_arrItems[iItem]->SetItemData(lParam);
 }
 
 
-BOOL CDuiListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
+BOOL SListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
 {
     if(m_arrItems.GetCount()!=0) return FALSE;
     if(pszXmlTemplate)
@@ -240,7 +240,7 @@ BOOL CDuiListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
                 m_pTemplPanel->DuiSendMessage(WM_DESTROY);
                 m_pTemplPanel->Release();
             }
-            m_pTemplPanel=new CDuiItemPanel(this,xmlDoc,this);
+            m_pTemplPanel=new SItemPanel(this,xmlDoc,this);
             if(m_pItemSkin) m_pTemplPanel->SetSkin(m_pItemSkin);
         }else
         {
@@ -254,7 +254,7 @@ BOOL CDuiListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
         DUIASSERT(m_pTemplPanel);
         m_nItems=nItems;
         CRect rcClient;
-        CDuiWindow::GetClient(&rcClient);
+        SWindow::GetClient(&rcClient);
         CSize szView(rcClient.Width(),GetItemCount()*m_nItemHei);
         if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
         SetViewSize(szView);
@@ -276,7 +276,7 @@ BOOL CDuiListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
 
 }
 
-int CDuiListBoxEx::GetItemCount()
+int SListBoxEx::GetItemCount()
 {
     if(IsVirtual()) 
         return m_nItems;
@@ -284,7 +284,7 @@ int CDuiListBoxEx::GetItemCount()
         return m_arrItems.GetCount();
 }
 
-void CDuiListBoxEx::RedrawItem(int iItem)
+void SListBoxEx::RedrawItem(int iItem)
 {
     if(!IsVisible(TRUE)) return;
     CRect rcClient;
@@ -294,19 +294,19 @@ void CDuiListBoxEx::RedrawItem(int iItem)
     rcInter.IntersectRect(&rcClient,&rcItem);
     if(rcInter.IsRectEmpty()) return;
 
-    CDCHandle dc=GetDuiDC(&rcItem,OLEDC_PAINTBKGND);
-    DuiDCPaint duiDC;
-    BeforePaint(dc,duiDC);
+    IRenderTarget * pRT=GetRenderTarget(&rcItem,OLEDC_PAINTBKGND);
+    SPainter painter;
+    BeforePaint(pRT,painter);
 
-    DuiSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)dc);
-    OnDrawItem(dc,rcItem,iItem);
+    DuiSendMessage(WM_ERASEBKGND,(WPARAM)pRT);
+    OnDrawItem(pRT,rcItem,iItem);
 
-    AfterPaint(dc,duiDC);
-    ReleaseDuiDC(dc);
+    AfterPaint(pRT,painter);
+    ReleaseRenderTarget(pRT);
 }
 
 //自动修改pt的位置为相对当前项的偏移量
-int CDuiListBoxEx::HitTest(CPoint &pt)
+int SListBoxEx::HitTest(CPoint &pt)
 {
     CRect rcClient;
     GetClient(&rcClient);
@@ -323,21 +323,24 @@ int CDuiListBoxEx::HitTest(CPoint &pt)
     return nRet;
 }
 
-int CDuiListBoxEx::GetScrollLineSize(BOOL bVertical)
+int SListBoxEx::GetScrollLineSize(BOOL bVertical)
 {
     return m_iScrollSpeed >0 ? m_iScrollSpeed : m_nItemHei;
 }
 
-void CDuiListBoxEx::OnPaint(CDCHandle dc)
+void SListBoxEx::OnPaint(IRenderTarget * pRT)
 {
-    DuiDCPaint duiDC;
-    BeforePaint(dc,duiDC);
+    SPainter duiDC;
+    BeforePaint(pRT,duiDC);
 
+    CRect rcClient;
+    GetClient(&rcClient);
+    pRT->PushClipRect(&rcClient,RGN_AND);
     int iFirstVisible=m_ptOrigin.y/m_nItemHei;
     int nPageItems=(m_rcClient.Height()+m_nItemHei-1)/m_nItemHei+1;
 
     CRect rcClip,rcInter;
-    int nClip=dc.GetClipBox(&rcClip);
+    pRT->GetClipBound(&rcClip);
 
     for(int iItem = iFirstVisible; iItem<GetItemCount() && iItem <iFirstVisible+nPageItems; iItem++)
     {
@@ -345,27 +348,27 @@ void CDuiListBoxEx::OnPaint(CDCHandle dc)
         rcItem.OffsetRect(0,m_nItemHei*iItem-m_ptOrigin.y);
         rcItem.OffsetRect(m_rcClient.TopLeft());
         rcInter.IntersectRect(&rcClip,&rcItem);
-        if(nClip==NULLREGION || !rcInter.IsRectEmpty())
-            OnDrawItem(dc,rcItem,iItem);
+        if(!rcInter.IsRectEmpty())
+            OnDrawItem(pRT,rcItem,iItem);
     }
-
-    AfterPaint(dc,duiDC);
+    pRT->PopClipRect();
+    AfterPaint(pRT,duiDC);
 }
 
 
-void CDuiListBoxEx::OnSize( UINT nType, CSize size )
+void SListBoxEx::OnSize( UINT nType, CSize size )
 {
     __super::OnSize(nType,size);
     Relayout();
 }
 
-void CDuiListBoxEx::OnDrawItem(CDCHandle & dc, CRect & rc, int iItem)
+void SListBoxEx::OnDrawItem(IRenderTarget *pRT, CRect & rc, int iItem)
 {
     if(IsVirtual())
     {//虚拟列表，由APP控制显示
         DUIASSERT(m_pTemplPanel);
         DUINMGETLBDISPINFO nms;
-        nms.hdr.hDuiWnd=m_hDuiWnd;
+        nms.hdr.hDuiWnd =m_hSWnd;
         nms.hdr.code    = NM_GETLBDISPINFO;
         nms.hdr.idFrom  = GetCmdID();
         nms.hdr.pszNameFrom= GetName();
@@ -390,33 +393,16 @@ void CDuiListBoxEx::OnDrawItem(CDCHandle & dc, CRect & rc, int iItem)
         m_pTemplPanel->UnlockUpdate();
 
         LockUpdate();
-        GetContainer()->OnDuiNotify((LPDUINMHDR)&nms);
+        GetContainer()->OnDuiNotify((LPSNMHDR)&nms);
         UnlockUpdate();
-        m_pTemplPanel->Draw(dc,rc);
+        m_pTemplPanel->Draw(pRT,rc);
     }else
     {
-        m_arrItems[iItem]->Draw(dc,rc);
+        m_arrItems[iItem]->Draw(pRT,rc);
     }
 }
 
-BOOL CDuiListBoxEx::Load(pugi::xml_node xmlNode)
-{
-    if (!__super::Load(xmlNode))
-        return FALSE;
-
-    CDuiStringT strSrcName= DUI_CA2T(xmlNode.attribute("itemsrc").value(),CP_UTF8);
-
-    if (strSrcName.IsEmpty())
-        return TRUE;
-
-    pugi::xml_document xmlDoc;
-    if(!LOADXML(xmlDoc,strSrcName,DUIRES_XML_TYPE))
-        return FALSE;
-
-    return LoadChildren(xmlDoc);
-}
-
-BOOL CDuiListBoxEx::LoadChildren(pugi::xml_node xmlNode)
+BOOL SListBoxEx::LoadChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return TRUE;
 
@@ -447,18 +433,18 @@ BOOL CDuiListBoxEx::LoadChildren(pugi::xml_node xmlNode)
     }else
     {//虚拟列表
         DUIASSERT(xmlTempl);
-        m_pTemplPanel=new CDuiItemPanel(this,xmlTempl,this);
+        m_pTemplPanel=new SItemPanel(this,xmlTempl,this);
         if(m_pItemSkin) m_pTemplPanel->SetSkin(m_pItemSkin);
         return TRUE;
     }
 }
 
 
-void CDuiListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
+void SListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
 {
     DUINMLBSELCHANGE nms;
     nms.hdr.code=NM_LBSELCHANGING;
-    nms.hdr.hDuiWnd=m_hDuiWnd;
+    nms.hdr.hDuiWnd=m_hSWnd;
     nms.hdr.idFrom=GetCmdID();
     nms.hdr.pszNameFrom=GetName();
     nms.nOldSel=nOldSel;
@@ -469,16 +455,16 @@ void CDuiListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
         if(IsVirtual())
         {
             DUIASSERT(m_pTemplPanel);
-            CDuiWindow *pHover=DuiWindowMgr::GetWindow(m_pTemplPanel->GetDuiHover());
+            SWindow *pHover=DuiWindowMgr::GetWindow(m_pTemplPanel->GetDuiHover());
             if(pHover) nms.uHoverID=pHover->GetCmdID();
         }else
         {
-            CDuiWindow *pHover=DuiWindowMgr::GetWindow(m_arrItems[nNewSel]->GetDuiHover());
+            SWindow *pHover=DuiWindowMgr::GetWindow(m_arrItems[nNewSel]->GetDuiHover());
             if(pHover) nms.uHoverID=pHover->GetCmdID();
         }
     }
 
-    if(S_OK!=DuiNotify((LPDUINMHDR)&nms)) return ;
+    if(S_OK!=DuiNotify((LPSNMHDR)&nms)) return ;
 
     m_iSelItem=nNewSel;
     if(nOldSel!=-1)
@@ -494,10 +480,10 @@ void CDuiListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
 
     nms.hdr.idFrom=GetCmdID();
     nms.hdr.code=NM_LBSELCHANGED;
-    DuiNotify((LPDUINMHDR)&nms);
+    DuiNotify((LPSNMHDR)&nms);
 }
 
-void CDuiListBoxEx::OnMouseLeave()
+void SListBoxEx::OnMouseLeave()
 {
     __super::OnMouseLeave();
     if(m_iHoverItem!=-1)
@@ -515,7 +501,7 @@ void CDuiListBoxEx::OnMouseLeave()
     }
 }
 
-BOOL CDuiListBoxEx::OnDuiSetCursor(const CPoint &pt)
+BOOL SListBoxEx::OnDuiSetCursor(const CPoint &pt)
 {
     BOOL bRet=FALSE;
     if(m_pCapturedFrame)
@@ -542,10 +528,10 @@ BOOL CDuiListBoxEx::OnDuiSetCursor(const CPoint &pt)
     return bRet;
 }
 
-void CDuiListBoxEx::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
+void SListBoxEx::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
 {
     int  nNewSelItem = -1;
-    CDuiWindow *pOwner = GetOwner();
+    SWindow *pOwner = GetOwner();
     if (pOwner && (nChar == VK_ESCAPE))
     {
         pOwner->DuiSendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
@@ -566,19 +552,19 @@ void CDuiListBoxEx::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
     }
 }
 
-void CDuiListBoxEx::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+void SListBoxEx::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-    CDuiWindow *pOwner = GetOwner();
+    SWindow *pOwner = GetOwner();
     if (pOwner)
         pOwner->DuiSendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
 }
 
-UINT CDuiListBoxEx::OnGetDuiCode()
+UINT SListBoxEx::OnGetDuiCode()
 {
     return DUIC_WANTALLKEYS;
 }
 
-void CDuiListBoxEx::OnDestroy()
+void SListBoxEx::OnDestroy()
 {
     DeleteAllItems(FALSE);
     if(IsVirtual())
@@ -591,7 +577,7 @@ void CDuiListBoxEx::OnDestroy()
     __super::OnDestroy();
 }
 
-BOOL CDuiListBoxEx::OnUpdateToolTip(HDUIWND hCurTipHost,HDUIWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip)
+BOOL SListBoxEx::OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip)
 {
     if(m_iHoverItem==-1)
         return __super::OnUpdateToolTip(hCurTipHost,hNewTipHost,rcTip,strTip);
@@ -601,7 +587,7 @@ BOOL CDuiListBoxEx::OnUpdateToolTip(HDUIWND hCurTipHost,HDUIWND &hNewTipHost,CRe
         return m_arrItems[m_iHoverItem]->OnUpdateToolTip(hCurTipHost,hNewTipHost,rcTip,strTip);
 }
 
-void CDuiListBoxEx::OnItemSetCapture(CDuiItemPanel *pItem,BOOL bCapture )
+void SListBoxEx::OnItemSetCapture(SItemPanel *pItem,BOOL bCapture )
 {
     if(bCapture)
     {
@@ -616,7 +602,7 @@ void CDuiListBoxEx::OnItemSetCapture(CDuiItemPanel *pItem,BOOL bCapture )
 }
 
 
-CRect CDuiListBoxEx::GetItemRect( int iItem )
+CRect SListBoxEx::GetItemRect( int iItem )
 {
     CRect rcClient;
     GetClient(&rcClient);
@@ -625,14 +611,14 @@ CRect CDuiListBoxEx::GetItemRect( int iItem )
     return rcRet;
 }
 
-BOOL CDuiListBoxEx::OnItemGetRect(CDuiItemPanel *pItem,CRect &rcItem )
+BOOL SListBoxEx::OnItemGetRect(SItemPanel *pItem,CRect &rcItem )
 {
     int iItem=pItem->GetItemIndex();
     rcItem=GetItemRect(iItem);
     return TRUE;
 }
 
-LRESULT CDuiListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
+LRESULT SListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 {
     LRESULT lRet=0;
     CPoint pt(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
@@ -697,7 +683,7 @@ LRESULT CDuiListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
     return 0;
 }
 
-LRESULT CDuiListBoxEx::OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
+LRESULT SListBoxEx::OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 {
     LRESULT lRet=0;
     if(m_pCapturedFrame)
@@ -723,8 +709,8 @@ LRESULT CDuiListBoxEx::OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
     return lRet;
 }
 
-//同步在CDuiItemPanel中的index属性，在执行了插入，删除等操作后使用
-void CDuiListBoxEx::UpdatePanelsIndex(UINT nFirst,UINT nLast)
+//同步在SItemPanel中的index属性，在执行了插入，删除等操作后使用
+void SListBoxEx::UpdatePanelsIndex(UINT nFirst,UINT nLast)
 {
     if(IsVirtual()) return;
     for(UINT i=nFirst;i<m_arrItems.GetCount() && i<nLast;i++)
@@ -733,7 +719,7 @@ void CDuiListBoxEx::UpdatePanelsIndex(UINT nFirst,UINT nLast)
     }
 }
 
-void CDuiListBoxEx::OnSetDuiFocus()
+void SListBoxEx::OnSetDuiFocus()
 {
     __super::OnSetDuiFocus();
     if(IsVirtual())
@@ -745,7 +731,7 @@ void CDuiListBoxEx::OnSetDuiFocus()
     }
 }
 
-void CDuiListBoxEx::OnKillDuiFocus()
+void SListBoxEx::OnKillDuiFocus()
 {
     __super::OnKillDuiFocus();
     if(IsVirtual())
@@ -758,14 +744,14 @@ void CDuiListBoxEx::OnKillDuiFocus()
     if(m_iSelItem!=-1) RedrawItem(m_iSelItem);
 }
 
-LRESULT CDuiListBoxEx::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
+LRESULT SListBoxEx::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
 {
     LRESULT lRet=__super::OnNcCalcSize(bCalcValidRects,lParam);
     Relayout();
     return lRet;
 }
 
-void CDuiListBoxEx::Relayout()
+void SListBoxEx::Relayout()
 {
     if(IsVirtual())
     {
@@ -780,16 +766,16 @@ void CDuiListBoxEx::Relayout()
 
 }
 
-void CDuiListBoxEx::OnViewOriginChanged( CPoint ptOld,CPoint ptNew )
+void SListBoxEx::OnViewOriginChanged( CPoint ptOld,CPoint ptNew )
 {
-    if(m_iSelItem!=-1 && GetContainer()->GetDuiFocus()==m_hDuiWnd)
+    if(m_iSelItem!=-1 && GetContainer()->GetDuiFocus()==m_hSWnd)
     {//这里需要重新设置一下选中行的焦点状态来更新光标位置
         m_arrItems[m_iSelItem]->DoFrameEvent(WM_KILLFOCUS,0,0);
         m_arrItems[m_iSelItem]->DoFrameEvent(WM_SETFOCUS,0,0);
     }
 }
 
-BOOL CDuiListBoxEx::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
+BOOL SListBoxEx::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
 {
     return __super::OnMouseWheel(nFlags,zDelta,pt);
 }

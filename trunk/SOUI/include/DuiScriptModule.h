@@ -12,7 +12,7 @@
 // Start of SOUI namespace section
 namespace SOUI
 {
-    class CDuiWindow;
+    class SWindow;
 /*!
 \brief
     Abstract interface required for all scripting support modules to be used with
@@ -50,8 +50,8 @@ public:
     \param handler_name
         String object holding the name of the scripted handler function.
 
-    \param CDuiWindow *pSender
-        CDuiWindow based object that should be passed, by any appropriate means, to the scripted function.
+    \param SWindow *pSender
+        SWindow based object that should be passed, by any appropriate means, to the scripted function.
 
     \param LPDUINMHDR pNmhdr
         notify message 
@@ -60,7 +60,7 @@ public:
         - true if the event was handled.
         - false if the event was not handled.
     */
-    virtual    bool    executeScriptedEventHandler(LPCSTR handler_name, CDuiWindow *pSender, LPDUINMHDR pNmhdr)=0;
+    virtual    bool    executeScriptedEventHandler(LPCSTR handler_name, SWindow *pSender, LPSNMHDR pNmhdr)=0;
 
 
     /*!
@@ -102,8 +102,8 @@ public:
 
     \return 
     */
-    virtual bool subscribeEvent(CDuiWindow* target, UINT uEvent, LPCSTR subscriber_name) = 0;
-    virtual bool unsubscribeEvent(CDuiWindow* target, UINT uEvent, LPCSTR subscriber_name ) = 0;
+    virtual bool subscribeEvent(SWindow* target, UINT uEvent, LPCSTR subscriber_name) = 0;
+    virtual bool unsubscribeEvent(SWindow* target, UINT uEvent, LPCSTR subscriber_name ) = 0;
 
 };
 

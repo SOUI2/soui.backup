@@ -5,9 +5,10 @@
 
 namespace RENDER_SKIA
 {
-    SOUI::IRenderFactory * CreateRenderFactory()
+    BOOL CreateRenderFactory(SOUI::IRenderFactory ** ppRenderFactory,SOUI::IImgDecoderFactory *pImgDecoderFactory)
     {
-        return new SOUI::SRenderFactory_Skia();
+        *ppRenderFactory = new SOUI::SRenderFactory_Skia(pImgDecoderFactory);
+        return TRUE;
     }
     
 }

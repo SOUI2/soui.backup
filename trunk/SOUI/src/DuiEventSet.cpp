@@ -36,16 +36,16 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     // CDuiEventSet
-    CDuiEventSet::CDuiEventSet(void):m_bMuted(FALSE)
+    SEventSet::SEventSet(void):m_bMuted(FALSE)
     {
     }
 
-    CDuiEventSet::~CDuiEventSet(void)
+    SEventSet::~SEventSet(void)
     {
         removeAllEvents();
     }
 
-    CDuiEvent * CDuiEventSet::GetEventObject(const DWORD dwEventID )
+    CDuiEvent * SEventSet::GetEventObject(const DWORD dwEventID )
     {
         for(UINT i=0;i<m_evtArr.GetCount();i++)
         {
@@ -54,7 +54,7 @@ namespace SOUI
         return NULL;
     }
 
-    void CDuiEventSet::FireEvent( const DWORD dwEventID, EventArgs& args )
+    void SEventSet::FireEvent( const DWORD dwEventID, EventArgs& args )
     {
         // find event object
         CDuiEvent* ev = GetEventObject(dwEventID);
@@ -66,7 +66,7 @@ namespace SOUI
         }
     }
 
-    void CDuiEventSet::addEvent( const DWORD dwEventID )
+    void SEventSet::addEvent( const DWORD dwEventID )
     {
         if(!isEventPresent(dwEventID))
         {
@@ -74,7 +74,7 @@ namespace SOUI
         }
     }
 
-    void CDuiEventSet::removeEvent( const DWORD dwEventID )
+    void SEventSet::removeEvent( const DWORD dwEventID )
     {
         for(UINT i=0;i<m_evtArr.GetCount();i++)
         {
@@ -87,12 +87,12 @@ namespace SOUI
         }
     }
 
-    bool CDuiEventSet::isEventPresent( const DWORD dwEventID )
+    bool SEventSet::isEventPresent( const DWORD dwEventID )
     {
         return GetEventObject(dwEventID)!=NULL;
     }
 
-    void CDuiEventSet::removeAllEvents( void )
+    void SEventSet::removeAllEvents( void )
     {
         for(UINT i=0;i<m_evtArr.GetCount();i++)
         {
@@ -101,13 +101,13 @@ namespace SOUI
         m_evtArr.RemoveAll();
     }
 
-    bool CDuiEventSet::subscribeEvent( const DWORD dwEventID, const SlotFunctorBase & subscriber )
+    bool SEventSet::subscribeEvent( const DWORD dwEventID, const SlotFunctorBase & subscriber )
     {
         if(!isEventPresent(dwEventID)) return false;
         return GetEventObject(dwEventID)->subscribe(subscriber);
     }
 
-    bool CDuiEventSet::unsubscribeEvent( const DWORD dwEventID, const SlotFunctorBase & subscriber )
+    bool SEventSet::unsubscribeEvent( const DWORD dwEventID, const SlotFunctorBase & subscriber )
     {
         if(!isEventPresent(dwEventID)) return false;
         return GetEventObject(dwEventID)->unsubscribe(subscriber);

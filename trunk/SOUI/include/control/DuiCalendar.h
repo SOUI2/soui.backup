@@ -222,10 +222,10 @@ namespace SOUI
      * 
      * Describe    此类是日历的核心类 大部分函数都是静态函数
      */
-    class CDuiCalendar : public CDuiWindow
+    class SCalendar : public SWindow
     {
     public:
-        SOUI_CLASS_NAME(CDuiCalendar, "calendar")
+        SOUI_CLASS_NAME(SCalendar, "calendar")
         
         /**
          * CCalendarCore::CDuiCalendar
@@ -236,7 +236,7 @@ namespace SOUI
          *
          * Describe  构造函数
          */
-        CDuiCalendar(WORD iYear, WORD iMonth, WORD iDay);
+        SCalendar(WORD iYear, WORD iMonth, WORD iDay);
 
         /**
          * CDuiCalendar::CDuiCalendar
@@ -244,7 +244,7 @@ namespace SOUI
          *
          * Describe  构造函数
          */
-        CDuiCalendar();
+        SCalendar();
 
     public:
         /**
@@ -305,11 +305,11 @@ namespace SOUI
         /**
          * CDuiCalendar::OnPaint
          * @brief    绘画消息
-         * @param    CDCHandle dc -- 绘制设备句柄
+         * @param    IRenderTarget *pRT -- 绘制设备句柄
          *
          * Describe  此函数是消息响应函数
          */
-        void OnPaint(CDCHandle dc);
+        void OnPaint(IRenderTarget *pRT);
         
         /**
          * CDuiCalendar::OnLButtonDown
@@ -362,29 +362,29 @@ namespace SOUI
         /**
          * CDuiCalendar::DrawTitle
          * @brief    绘制标题
-         * @param    CDCHandle dc -- 绘制设备句柄         
+         * @param    IRenderTarget *pRT -- 绘制设备句柄         
          *
          * Describe  返回只是该日期所在的坐标，采用CRect表示
          */    
-        void DrawTitle(CDCHandle &dc);
+        void DrawTitle(IRenderTarget *pRT);
         
         /**
          * CDuiCalendar::DrawDate
          * @brief    绘制日期
-         * @param    CDCHandle dc -- 绘制设备句柄         
+         * @param    IRenderTarget *pRT -- 绘制设备句柄         
          *
          * Describe  绘制日期
          */            
-        void DrawDate(CDCHandle &dc);
+        void DrawDate(IRenderTarget *pRT);
 
         /**
          * CDuiCalendar::DrawDay
          * @brief    绘制日期--天
-         * @param    CDCHandle dc -- 绘制设备句柄         
+         * @param    IRenderTarget *pRT -- 绘制设备句柄         
          *
          * Describe  绘制日期--天
          */    
-        void DrawDay(CDCHandle &dc,CRect & rcDay,WORD iDay );
+        void DrawDay(IRenderTarget *pRT,CRect & rcDay,WORD iDay );
         
         /**
          * CDuiCalendar::RedrawDay
@@ -401,7 +401,7 @@ namespace SOUI
          *
          * Describe  在日期---天的单击事件
          */            
-        bool OnTodayClick(CDuiWindow * pSender, LPDUINMHDR pNmhdr);
+        bool OnTodayClick(SWindow * pSender, LPSNMHDR pNmhdr);
 
         SOUI_ATTRS_BEGIN()
             ATTR_INT("titleHeight", m_nTitleHei, FALSE)
@@ -421,7 +421,7 @@ namespace SOUI
         SOUI_ATTRS_END()
 
         WND_MSG_MAP_BEGIN()
-            MSG_WM_PAINT(OnPaint)
+            MSG_WM_PAINT_EX(OnPaint)
             MSG_WM_LBUTTONDOWN(OnLButtonDown)
             MSG_WM_MOUSEMOVE(OnMouseMove)
             MSG_WM_MOUSELEAVE(OnMouseLeave)
@@ -429,8 +429,8 @@ namespace SOUI
     protected:
         int             m_nTitleHei;    /**< 表头高度 */
         int             m_nFooterHei;   /**< 表尾高度 */
-        CDuiSkinBase    *m_pDaySkin;    /**< 日期项皮肤 */
-        CDuiSkinBase    *m_pTitleSkin;  /**< 表头皮肤 */
+        ISkinObj    *m_pDaySkin;    /**< 日期项皮肤 */
+        ISkinObj    *m_pTitleSkin;  /**< 表头皮肤 */
 
         COLORREF        m_crWeekend;    /**< 周末文字颜色 */
         COLORREF        m_crTitleBack;  /**< 表头背景色 */

@@ -1,6 +1,11 @@
 //IObjRef的实现类
 #pragma  once
 
+#ifndef ASSERT
+#include <assert.h>
+#define ASSERT(x) assert(x);
+#endif
+
 namespace SOUI
 {
 
@@ -18,7 +23,7 @@ public:
 	//!添加引用
 	/*!
 	*/
-	virtual void __stdcall AddRef()
+	virtual void AddRef()
 	{
 		InterlockedIncrement(&m_cRef);
 	}
@@ -26,7 +31,7 @@ public:
 	//!释放引用
 	/*!
 	*/
-	virtual void __stdcall Release()
+	virtual void Release()
 	{
 		InterlockedDecrement(&m_cRef);
 		if(m_cRef==0)
@@ -38,7 +43,7 @@ public:
 	//!释放对象
 	/*!
 	*/
-    virtual void __stdcall OnFinalRelease()
+    virtual void OnFinalRelease()
     {
         delete this;
     }
@@ -46,6 +51,15 @@ protected:
 	volatile LONG m_cRef;
 };
 
+template<class T,class T2>
+class TObjRefImpl2 :  public TObjRefImpl<T>
+{
+public:
+    virtual void OnFinalRelease()
+    {
+        delete static_cast<T2*>(this);
+    }
+};
 
 //CAutoRefPtr provides the basis for all other smart pointers
 template <class T>
@@ -104,6 +118,7 @@ public:
 	//what is needed, however, take the address of the p member explicitly.
 	T** operator&() throw()
 	{
+	    ASSERT(p==NULL);
 		return &p;
 	}
 	bool operator!() const throw()

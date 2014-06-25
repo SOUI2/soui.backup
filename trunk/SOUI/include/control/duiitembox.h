@@ -13,22 +13,22 @@ namespace SOUI
 {
 
 class SOUI_EXP CDuiItemBox
-    : public CDuiScrollView
+    : public SScrollView
 {
     SOUI_CLASS_NAME(CDuiItemBox, "itembox")
 public:
     CDuiItemBox();
     virtual ~CDuiItemBox() {}
 
-    CDuiWindow* InsertItem(LPCWSTR pszXml,int iItem=-1,BOOL bEnsureVisible=FALSE);
+    SWindow* InsertItem(LPCWSTR pszXml,int iItem=-1,BOOL bEnsureVisible=FALSE);
 
-    CDuiWindow* InsertItem(pugi::xml_node xmlNode, int iItem=-1,BOOL bEnsureVisible=FALSE);
+    SWindow* InsertItem(pugi::xml_node xmlNode, int iItem=-1,BOOL bEnsureVisible=FALSE);
 
     BOOL RemoveItem(UINT iItem);
 
-    BOOL RemoveItem(CDuiWindow * pChild);
+    BOOL RemoveItem(SWindow * pChild);
 
-    BOOL SetNewPosition(CDuiWindow * pChild, DWORD nPos, BOOL bEnsureVisible = TRUE);
+    BOOL SetNewPosition(SWindow * pChild, DWORD nPos, BOOL bEnsureVisible = TRUE);
 
     void RemoveAllItems();
 
@@ -38,9 +38,9 @@ public:
 
     void PageDown();
 
-    void EnsureVisible(CDuiWindow *pItem);
+    void EnsureVisible(SWindow *pItem);
 
-    int GetItemPos(CDuiWindow * lpCurItem);
+    int GetItemPos(SWindow * lpCurItem);
 
 protected:
     int m_nItemWid,m_nItemHei;
@@ -49,7 +49,7 @@ protected:
     void UpdateScroll();
     CRect GetItemRect(int iItem);
 
-    void BringWindowAfter(CDuiWindow * pChild, CDuiWindow * pInsertAfter);
+    void BringWindowAfter(SWindow * pChild, SWindow * pInsertAfter);
 
     void OnSize(UINT nType, CSize size);
 

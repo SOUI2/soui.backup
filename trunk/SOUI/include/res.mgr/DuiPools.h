@@ -17,7 +17,7 @@ namespace SOUI
         ~DuiPools(void);
 
     public:
-        void Init(LPCTSTR pszInitXml,LPCTSTR pszResType=DUIRES_XML_TYPE);
+        void Init(LPCTSTR pszInitXml,LPCTSTR pszResType);
         
         void Init(pugi::xml_node xmlNode);
 

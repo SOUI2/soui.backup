@@ -1,14 +1,7 @@
-//////////////////////////////////////////////////////////////////////////
-//   File Name: DuiSkinPool
-// Description: DuiWindow Skin Definition
-//     Creator: ZhangXiaoxuan
-//     Version: 2009.4.22 - 1.0 - Create
-//                2012.8.18   1.1   huangjianxiong
-//////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "duiskinbase.h"
-#include "MemDC.h"
+#include "skinobj-i.h"
+#include "res.mgr/duiimgpool.h"
 
 namespace SOUI
 {
@@ -33,34 +26,36 @@ enum
 #define IIF_STATE4(the_state, normal_value, hover_value, pushdown_value, disable_value) \
     (((the_state) & DuiWndState_Disable) ? (disable_value) : IIF_STATE3(the_state, normal_value, hover_value, pushdown_value))
 
-class SOUI_EXP CDuiSkinImgList: public CDuiSkinBase
+
+//////////////////////////////////////////////////////////////////////////
+class SOUI_EXP SSkinImgList: public ISkinObj
 {
-    SOUI_CLASS_NAME(CDuiSkinImgList, "imglst")
+    SOUI_CLASS_NAME(SSkinImgList, "imglist")
 
 public:
-    CDuiSkinImgList();
-    virtual ~CDuiSkinImgList();
+    SSkinImgList();
+    virtual ~SSkinImgList();
 
-    virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
+    virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha=0xFF);
 
     virtual SIZE GetSkinSize();
 
     virtual BOOL IgnoreState();
     
-    int GetStates();
-
+    virtual int GetStates();
     void    SetStates(int nStates){m_nStates=nStates;}
 
-    virtual void SetWidth(LONG width) {
-        m_lSubImageWidth=width;
-        m_bVertical=FALSE;
-        if(m_nStates==0)
-        {
-            if(m_pDuiImg)
-                m_nStates=m_pDuiImg->GetWidth()/m_lSubImageWidth;
-            else
-                m_nStates=1;
-        }
+
+    void SetImage(IBitmap *pImg)
+    {
+        if(m_pImg) m_pImg->Release();
+        m_pImg=pImg;
+        if(m_pImg) m_pImg->AddRef();
+    }
+
+    IBitmap * GetImage()
+    {
+        return m_pImg;
     }
 
     void SetTile(BOOL bTile){m_bTile=bTile;}
@@ -68,88 +63,53 @@ public:
 
     void SetVertical(BOOL bVertical){m_bVertical=bVertical;}
     BOOL IsVertical(){return m_bVertical;}
+    
+    
 protected:
-    virtual void OnAttributeFinish(pugi::xml_node xmlNode);
-    virtual void PrepareCache(HDC hdc,CSize & sz);
-    virtual void _Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
-
-    LONG m_lSubImageWidth;
+    IBitmap *m_pImg;
     int  m_nStates;
     BOOL m_bTile;
     BOOL m_bVertical;
 
-    BOOL m_bCache;
-    CMemDC * m_memdc;    
-    CSize  m_szTarget;
-
     SOUI_ATTRS_BEGIN()
-    ATTR_INT("subwidth", m_lSubImageWidth, TRUE)
-    ATTR_INT("tile", m_bTile, TRUE)
-    ATTR_INT("vertical", m_bVertical, TRUE)
-    ATTR_INT("states",m_nStates,TRUE)
-    ATTR_INT("cache",m_bCache,TRUE)
+        ATTR_IMAGE("src", m_pImg, TRUE)
+        ATTR_INT("tile", m_bTile, TRUE)
+        ATTR_INT("vertical", m_bVertical, TRUE)
+        ATTR_INT("states",m_nStates,TRUE)
     SOUI_ATTRS_END()
 };
 
-class SOUI_EXP CDuiSkinImgFrame : public CDuiSkinImgList
+//////////////////////////////////////////////////////////////////////////
+class SOUI_EXP SSkinImgFrame : public SSkinImgList
 {
-    SOUI_CLASS_NAME(CDuiSkinImgFrame, "imgframe")
+    SOUI_CLASS_NAME(SSkinImgFrame, "imgframe")
 
 public:
-    CDuiSkinImgFrame();
+    SSkinImgFrame();
 
 
     void SetMargin(const CRect rcMargin){m_rcMargin=rcMargin;}
 
     CRect GetMargin(){return m_rcMargin;}
 
-    UINT  GetDrawPart() {return m_uDrawPart;}
-
-    void SetDrawPart(UINT uDrawPart){m_uDrawPart=uDrawPart;}
-
-    COLORREF GetBgColor(){return m_crBg;}
-
-    void SetBgColor(COLORREF cr){m_crBg=cr;}
+    virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha=0xFF);
 protected:
-    virtual void _Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
-    virtual void OnAttributeFinish(pugi::xml_node xmlNode);
-
     CRect m_rcMargin;
-    COLORREF m_crBg;
-    UINT m_uDrawPart;
-public:
+
     SOUI_ATTRS_BEGIN()
-    ATTR_COLOR("crbg", m_crBg, TRUE)
-    ATTR_INT("left", m_rcMargin.left, TRUE)
-    ATTR_INT("top", m_rcMargin.top, TRUE)
-    ATTR_INT("right", m_rcMargin.right, TRUE)
-    ATTR_INT("bottom", m_rcMargin.bottom, TRUE)
-    ATTR_HEX("part2", m_uDrawPart, TRUE)
-    ATTR_ENUM_BEGIN("part", UINT, TRUE)
-        ATTR_ENUM_VALUE("all", Frame_Part_All)
-        ATTR_ENUM_VALUE("top", Frame_Part_Top)
-        ATTR_ENUM_VALUE("middle", Frame_Part_Mid)
-        ATTR_ENUM_VALUE("bottom", Frame_Part_Bottom)
-        ATTR_ENUM_VALUE("left", Frame_Part_Left)
-        ATTR_ENUM_VALUE("center", Frame_Part_Center)
-        ATTR_ENUM_VALUE("right", Frame_Part_Right)
-        ATTR_ENUM_VALUE("topleft", Frame_Part_TopLeft)
-        ATTR_ENUM_VALUE("topcenter", Frame_Part_TopCenter)
-        ATTR_ENUM_VALUE("topright", Frame_Part_TopRight)
-        ATTR_ENUM_VALUE("midleft", Frame_Part_MidLeft)
-        ATTR_ENUM_VALUE("midcenter", Frame_Part_MidCenter)
-        ATTR_ENUM_VALUE("midright", Frame_Part_MidRight)
-        ATTR_ENUM_VALUE("bottomleft", Frame_Part_BottomLeft)
-        ATTR_ENUM_VALUE("bottomcenter", Frame_Part_BottomCenter)
-        ATTR_ENUM_VALUE("bottomright", Frame_Part_BottomRight)
-    ATTR_ENUM_END(m_uDrawPart)
+        ATTR_INT("left", m_rcMargin.left, TRUE)
+        ATTR_INT("top", m_rcMargin.top, TRUE)
+        ATTR_INT("right", m_rcMargin.right, TRUE)
+        ATTR_INT("bottom", m_rcMargin.bottom, TRUE)
+        ATTR_INT("x", m_rcMargin.left=m_rcMargin.right, TRUE)
+        ATTR_INT("y", m_rcMargin.top=m_rcMargin.bottom, TRUE)
     SOUI_ATTRS_END()
 };
 
-
-class SOUI_EXP CDuiSkinButton : public CDuiSkinBase
+//////////////////////////////////////////////////////////////////////////
+class SOUI_EXP SSkinButton : public ISkinObj
 {
-    SOUI_CLASS_NAME(CDuiSkinButton, "button")
+    SOUI_CLASS_NAME(SSkinButton, "button")
 
     enum{
         ST_NORMAL=0,
@@ -159,9 +119,9 @@ class SOUI_EXP CDuiSkinButton : public CDuiSkinBase
     };
 
 public:
-    CDuiSkinButton();
+    SSkinButton();
 
-    virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
+    virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha=0xFF);
 
     virtual BOOL IgnoreState();
 
@@ -188,19 +148,15 @@ public:
     SOUI_ATTRS_END()
 };
 
-class SOUI_EXP CDuiSkinGradation  : public CDuiSkinBase
+//////////////////////////////////////////////////////////////////////////
+
+class SOUI_EXP SSkinGradation  : public ISkinObj
 {
-    enum GRA_DIR
-    {
-        DIR_VERT=0,
-        DIR_HORZ,
-    };
-
-    SOUI_CLASS_NAME(CDuiSkinGradation, "gradation")
+    SOUI_CLASS_NAME(SSkinGradation, "gradation")
 public:
-    CDuiSkinGradation();
+    SSkinGradation();
 
-    virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha);
+    virtual void Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha=0xFF);
     
     void SetColorFrom(COLORREF crFrom)
     {
@@ -214,24 +170,24 @@ public:
 
     void SetVertical(BOOL bVertical)
     {
-        m_uDirection=bVertical?DIR_VERT:DIR_HORZ;
+        m_bVert=bVertical;
     }
 
 protected:
     COLORREF m_crFrom;
     COLORREF m_crTo;
-    GRA_DIR     m_uDirection;
-public:
+    BOOL m_bVert;
+
     SOUI_ATTRS_BEGIN()
-    ATTR_COLOR("from", m_crFrom, TRUE)
-    ATTR_COLOR("to", m_crTo, TRUE)
-    ATTR_ENUM_BEGIN("dir", GRA_DIR, TRUE)
-        ATTR_ENUM_VALUE("horz", DIR_HORZ)
-        ATTR_ENUM_VALUE("vert", DIR_VERT)
-    ATTR_ENUM_END(m_uDirection)
+        ATTR_COLOR("crFrom", m_crFrom, TRUE)
+        ATTR_COLOR("crTo", m_crTo, TRUE)
+        ATTR_INT("vert", m_bVert, TRUE)
     SOUI_ATTRS_END()
 };
 
+
+//////////////////////////////////////////////////////////////////////////
+//
 enum SBSTATE{
     SBST_NORMAL=0,    //正常状态
     SBST_HOVER,        //hover状态
@@ -246,43 +202,45 @@ enum SBSTATE{
 
 #define THUMB_MINSIZE    18
 
-class SOUI_EXP CDuiScrollbarSkin : public CDuiSkinImgFrame
+class SOUI_EXP SSkinScrollbar : public SSkinImgList
 {
-    SOUI_CLASS_NAME(CDuiScrollbarSkin, "scrollbar")
+    SOUI_CLASS_NAME(SSkinScrollbar, "scrollbar")
 
 public:
 
-    CDuiScrollbarSkin();
+    SSkinScrollbar();
 
-    virtual void Draw(HDC dc, CRect rcDraw, DWORD dwState,BYTE byAlpha=0xff);
+    virtual void Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha=0xFF);
 
     //指示滚动条皮肤是否支持显示上下箭头
     virtual BOOL HasArrow(){return TRUE;}
+    
     virtual int GetIdealSize(){
-        if(!m_pDuiImg) return 0;
-        return m_pDuiImg->GetWidth()/9;
+        if(!m_pImg) return 0;
+        return m_pImg->Width()/9;
     }
 
-    SOUI_ATTRS_BEGIN()
-        ATTR_INT("margin",m_nMargin,FALSE)
-        ATTR_INT("hasgripper",m_bHasGripper,FALSE)
-        ATTR_INT("hasinactive",m_bHasInactive,FALSE)
-    SOUI_ATTRS_END()
 protected:
     //返回源指定部分在原位图上的位置。
     CRect GetPartRect(int nSbCode, int nState,BOOL bVertical);
     int            m_nMargin;
     BOOL        m_bHasGripper;
     BOOL        m_bHasInactive;//有失活状态的箭头时，滚动条皮肤有必须有5行，否则可以是3行或者4行
+
+    SOUI_ATTRS_BEGIN()
+        ATTR_INT("margin",m_nMargin,FALSE)
+        ATTR_INT("hasgripper",m_bHasGripper,FALSE)
+        ATTR_INT("hasinactive",m_bHasInactive,FALSE)
+    SOUI_ATTRS_END()
 };
 
-class SOUI_EXP CDuiSkinMenuBorder : public CDuiSkinImgFrame
+class SOUI_EXP SSkinMenuBorder : public SSkinImgFrame
 {
-    SOUI_CLASS_NAME(CDuiSkinMenuBorder, "border")
+    SOUI_CLASS_NAME(SSkinMenuBorder, "border")
 
 public:
 
-    CDuiSkinMenuBorder():m_rcBorder(1,1,1,1)
+    SSkinMenuBorder():m_rcBorder(1,1,1,1)
     {
 
     }
@@ -291,12 +249,12 @@ public:
     {
         return m_rcBorder;
     }
-public:
-    SOUI_ATTRS_BEGIN()
-    ATTR_RECT("border",m_rcBorder,FALSE)
-    SOUI_ATTRS_END()
 protected:
     CRect        m_rcBorder;
+
+    SOUI_ATTRS_BEGIN()
+        ATTR_RECT("border",m_rcBorder,FALSE)
+    SOUI_ATTRS_END()
 };
 
 }//namespace SOUI

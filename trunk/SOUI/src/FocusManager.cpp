@@ -8,13 +8,13 @@
 namespace SOUI
 {
 
-    FocusSearch::FocusSearch( CDuiWindow * root, bool cycle )
+    FocusSearch::FocusSearch( SWindow * root, bool cycle )
         : root_(root),cycle_(cycle)
     {
 
     }
 
-    CDuiWindow* FocusSearch::FindNextFocusableView( CDuiWindow* starting_view, bool reverse, bool check_starting_view )
+    SWindow* FocusSearch::FindNextFocusableView( SWindow* starting_view, bool reverse, bool check_starting_view )
     {
         if(root_->GetChildrenCount()==0) return NULL;
 
@@ -31,8 +31,8 @@ namespace SOUI
             check_starting_view=true;
         }
 
-        CDuiWindow *pRet=NULL;
-        CDuiWindow *pStartGroupOwner=NULL;
+        SWindow *pRet=NULL;
+        SWindow *pStartGroupOwner=NULL;
         if(starting_view && starting_view->IsSiblingsAutoGroupped()) 
             pStartGroupOwner=starting_view->GetParent();
 
@@ -61,13 +61,13 @@ namespace SOUI
     //   FindNextFocusableViewImpl on that view).
     // - if the view has no right sibling, go up the parents until you find a parent
     //   with a right sibling and start the search from there.
-    CDuiWindow* FocusSearch::FindNextFocusableViewImpl( CDuiWindow* starting_view, bool check_starting_view, bool can_go_up, bool can_go_down , CDuiWindow * pSkipGroupOwner)
+    SWindow* FocusSearch::FindNextFocusableViewImpl( SWindow* starting_view, bool check_starting_view, bool can_go_up, bool can_go_down , SWindow * pSkipGroupOwner)
     {
         if(check_starting_view)
         {
             if(IsViewFocusableCandidate(starting_view, pSkipGroupOwner))
             {
-                CDuiWindow* v = FindSelectedViewForGroup(starting_view);
+                SWindow* v = FindSelectedViewForGroup(starting_view);
                 // The selected view might not be focusable (if it is disabled for
                 // example).
                 if(IsFocusable(v))
@@ -81,10 +81,10 @@ namespace SOUI
         // First let's try the left child.
         if(can_go_down)
         {
-            CDuiWindow *pChild=starting_view->GetDuiWindow(GDUI_FIRSTCHILD);
+            SWindow *pChild=starting_view->GetDuiWindow(GDUI_FIRSTCHILD);
             if(pChild)
             {
-                CDuiWindow* v = FindNextFocusableViewImpl(
+                SWindow* v = FindNextFocusableViewImpl(
                     pChild,
                     true, false, true, pSkipGroupOwner);
                 if(v )
@@ -95,10 +95,10 @@ namespace SOUI
         }
 
         // Then try the right sibling.
-        CDuiWindow* sibling = starting_view->GetDuiWindow(GDUI_NEXTSIBLING);
+        SWindow* sibling = starting_view->GetDuiWindow(GDUI_NEXTSIBLING);
         if(sibling)
         {
-            CDuiWindow* v = FindNextFocusableViewImpl(sibling,
+            SWindow* v = FindNextFocusableViewImpl(sibling,
                 true, false, true, pSkipGroupOwner);
             if(v )
             {
@@ -109,7 +109,7 @@ namespace SOUI
         // Then go up to the parent sibling.
         if(can_go_up)
         {
-            CDuiWindow* parent = starting_view->GetParent();
+            SWindow* parent = starting_view->GetParent();
             while(parent)
             {
                 sibling = parent->GetDuiWindow(GDUI_NEXTSIBLING);
@@ -133,21 +133,21 @@ namespace SOUI
     // - start the search on the left sibling.
     // - if there are no left sibling, start the search on the parent (without going
     //   down).
-    CDuiWindow* FocusSearch::FindPreviousFocusableViewImpl( CDuiWindow* starting_view, bool check_starting_view, bool can_go_up, bool can_go_down, CDuiWindow * pSkipGroupOwner )
+    SWindow* FocusSearch::FindPreviousFocusableViewImpl( SWindow* starting_view, bool check_starting_view, bool can_go_up, bool can_go_down, SWindow * pSkipGroupOwner )
     {
         if(can_go_down)
         {//find the last focusable window
-            CDuiWindow *pChild=starting_view->GetDuiWindow(GDUI_LASTCHILD);
+            SWindow *pChild=starting_view->GetDuiWindow(GDUI_LASTCHILD);
             if(pChild)
             {
-                CDuiWindow *pRet=FindPreviousFocusableViewImpl(pChild,true,false,true,pSkipGroupOwner);
+                SWindow *pRet=FindPreviousFocusableViewImpl(pChild,true,false,true,pSkipGroupOwner);
                 if(pRet) return pRet;
             }
         }
 
         if(check_starting_view && IsViewFocusableCandidate(starting_view,pSkipGroupOwner))
         {
-            CDuiWindow* v = FindSelectedViewForGroup(starting_view);
+            SWindow* v = FindSelectedViewForGroup(starting_view);
             // The selected view might not be focusable (if it is disabled for example).
             if(IsFocusable(v))
             {
@@ -155,39 +155,39 @@ namespace SOUI
             }
         }
 
-        CDuiWindow *pPrevSibling=starting_view->GetDuiWindow(GDUI_PREVSIBLING);
+        SWindow *pPrevSibling=starting_view->GetDuiWindow(GDUI_PREVSIBLING);
         if(pPrevSibling)
         {
             return FindPreviousFocusableViewImpl(pPrevSibling,true,true,true,pSkipGroupOwner);
         }
         if(can_go_up)
         {
-            CDuiWindow *pParent=starting_view->GetDuiWindow(GDUI_PARENT);
+            SWindow *pParent=starting_view->GetDuiWindow(GDUI_PARENT);
             if(pParent) return FindPreviousFocusableViewImpl(pParent,true,true,false,pSkipGroupOwner);
         }
 
         return NULL;
     }
 
-    bool FocusSearch::IsViewFocusableCandidate( CDuiWindow* v,CDuiWindow *pGroupOwner )
+    bool FocusSearch::IsViewFocusableCandidate( SWindow* v,SWindow *pGroupOwner )
     {
         if(! IsFocusable(v) ) return false;
         if(pGroupOwner && v->IsSiblingsAutoGroupped() && v->GetParent()==pGroupOwner) return false;
         return true;
     }
 
-    bool FocusSearch::IsFocusable( CDuiWindow* view )
+    bool FocusSearch::IsFocusable( SWindow* view )
     {
         if(!view) return false;
         return view->IsTabStop() && view->IsVisible(TRUE) && !view->IsDisabled(TRUE);
     }
 
-    CDuiWindow* FocusSearch::FindSelectedViewForGroup( CDuiWindow* view )
+    SWindow* FocusSearch::FindSelectedViewForGroup( SWindow* view )
     {
         if(!view->IsSiblingsAutoGroupped()) return view;
         if(view->IsChecked()) return view;
-        CDuiWindow *pParent=view->GetParent();
-        CDuiWindow *pSibling=pParent->GetDuiWindow(GDUI_FIRSTCHILD);
+        SWindow *pParent=view->GetParent();
+        SWindow *pSibling=pParent->GetDuiWindow(GDUI_FIRSTCHILD);
         while(pSibling)
         {
             if(pSibling->IsSiblingsAutoGroupped())
@@ -200,7 +200,7 @@ namespace SOUI
     }
 
     //////////////////////////////////////////////////////////////////////////
-    CFocusManager::CFocusManager(CDuiWindow *pOwner):m_pOwner(pOwner)
+    CFocusManager::CFocusManager(SWindow *pOwner):m_pOwner(pOwner)
     {
     }
 
@@ -211,7 +211,7 @@ namespace SOUI
     BOOL CFocusManager::IsTabTraversalKey( UINT vKey )
     {
         if(vKey!=VK_TAB) return FALSE;
-        CDuiWindow *pFocus=DuiWindowMgr::GetWindow(focused_view_);
+        SWindow *pFocus=DuiWindowMgr::GetWindow(focused_view_);
         if(pFocus && pFocus->OnGetDuiCode()&DUIC_WANTTAB) return FALSE;
         if(GetKeyState(VK_CONTROL)&0x8000) return FALSE;
         else return TRUE;
@@ -227,11 +227,11 @@ namespace SOUI
         }
 
         // Intercept arrow key messages to switch between grouped views.
-        CDuiWindow *pFocusWnd=DuiWindowMgr::GetWindow(focused_view_);
+        SWindow *pFocusWnd=DuiWindowMgr::GetWindow(focused_view_);
         if(pFocusWnd && pFocusWnd->IsSiblingsAutoGroupped() && (vKey==VK_LEFT || vKey==VK_RIGHT || vKey==VK_UP || vKey==VK_DOWN))
         {
             UINT ucode= (vKey == VK_RIGHT || vKey == VK_DOWN)?GDUI_NEXTSIBLING:GDUI_PREVSIBLING;
-            CDuiWindow *pNext=pFocusWnd->GetDuiWindow(ucode);
+            SWindow *pNext=pFocusWnd->GetDuiWindow(ucode);
             while(pNext)
             {
                 if(pNext->IsSiblingsAutoGroupped())
@@ -272,22 +272,22 @@ namespace SOUI
     {
         // Let's revalidate the focused view.
         ValidateFocusedView();
-        CDuiWindow *pFocus=DuiWindowMgr::GetWindow(focused_view_);
-        CDuiWindow *pDuiWnd=GetNextFocusableView(pFocus,reverse,true);
+        SWindow *pFocus=DuiWindowMgr::GetWindow(focused_view_);
+        SWindow *pDuiWnd=GetNextFocusableView(pFocus,reverse,true);
         if(pDuiWnd)
         {
             SetFocusedHwndWithReason(pDuiWnd->GetDuiHwnd(),kReasonFocusTraversal);
         }
     }
 
-    CDuiWindow * CFocusManager::GetNextFocusableView( CDuiWindow* original_starting_view, bool bReverse, bool bLoop )
+    SWindow * CFocusManager::GetNextFocusableView( SWindow* original_starting_view, bool bReverse, bool bLoop )
     {
         
         FocusSearch fs(m_pOwner,bLoop);
         return fs.FindNextFocusableView(original_starting_view,bReverse,false);
     }
 
-    void CFocusManager::SetFocusedHwndWithReason( HDUIWND hDuiWnd, FocusChangeReason reason )
+    void CFocusManager::SetFocusedHwndWithReason( HSWND hDuiWnd, FocusChangeReason reason )
     {
         if(hDuiWnd == focused_view_)
         {
@@ -298,8 +298,8 @@ namespace SOUI
         // Update the reason for the focus change (since this is checked by
         // some listeners), then notify all listeners.
         focus_change_reason_ = reason;
-        CDuiWindow *pOldFocus=DuiWindowMgr::GetWindow(focused_view_);
-        CDuiWindow *pNewFocus=DuiWindowMgr::GetWindow(hDuiWnd);
+        SWindow *pOldFocus=DuiWindowMgr::GetWindow(focused_view_);
+        SWindow *pNewFocus=DuiWindowMgr::GetWindow(hDuiWnd);
         if(pOldFocus)
         {
             pOldFocus->DuiSendMessage(WM_KILLFOCUS,(WPARAM)pNewFocus);
@@ -318,7 +318,7 @@ namespace SOUI
     {
         if(focused_view_)
         {
-            CDuiWindow *pFocus=DuiWindowMgr::GetWindow(focused_view_);
+            SWindow *pFocus=DuiWindowMgr::GetWindow(focused_view_);
             if(pFocus)
             {
                 pFocus=pFocus->GetTopLevelParent();
@@ -343,7 +343,7 @@ namespace SOUI
         ValidateFocusedView();
         focused_backup_ = focused_view_;
         focused_view_=0;
-        CDuiWindow *pWnd=DuiWindowMgr::GetWindow(focused_backup_);
+        SWindow *pWnd=DuiWindowMgr::GetWindow(focused_backup_);
 
         if(pWnd)
         {
@@ -353,7 +353,7 @@ namespace SOUI
 
     void CFocusManager::RestoreFocusedView()
     {
-        CDuiWindow *pWnd=DuiWindowMgr::GetWindow(focused_backup_);
+        SWindow *pWnd=DuiWindowMgr::GetWindow(focused_backup_);
         if(pWnd && !pWnd->IsDisabled(TRUE))
         {
             focused_view_=focused_backup_;

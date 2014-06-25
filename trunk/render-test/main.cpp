@@ -86,8 +86,10 @@ public:
         InflateRect(&rcClip,-10,-10);
         m_rt->PushClipRect(&rcClip);
 
- 		m_rt->DrawBitmap(&rcClient,m_bmp,NULL,128);
-  		m_rt->FillRectangle(rcClient.left,rcClient.top,rcClient.right/2,rcClient.bottom);
+ 		m_rt->DrawBitmap(&rcClient,m_bmp,0,0,128);
+ 		RECT rcBrush=rcClient;
+ 		rcBrush.right/=2;
+  		m_rt->FillRectangle(&rcBrush);
   		TCHAR *psz=_T("ÎÄ×ÖÊä³ö²âÊÔ,\nprefix &test\nÎÄ×ÖÊä³ö²âÊÔ,ÎÄ×ÖÊä³ö²âÊÔ");
   		m_rt->DrawText(psz,-1,&rcClient,DT_VCENTER|DT_SINGLELINE|DT_CENTER,128);
         POINT pt[3]={{10,10},{10,100},{100,100}};
@@ -97,7 +99,7 @@ public:
         POINT pt2={5,5};
 
         CAutoRefPtr<IPen> pen,oldPen;
-        m_rt->CreatePen(PS_DASHDOTDOT,CDuiColor(0xFF,0,0,0x55).toCOLORREF(),2,&pen);
+        m_rt->CreatePen(PS_DASHDOTDOT,SColor(0xFF,0,0,0x55).toCOLORREF(),2,&pen);
 
         m_rt->SelectObject(pen,(IRenderObj**)&oldPen);
         m_rt->DrawRoundRect(&rc,pt2);
@@ -105,26 +107,48 @@ public:
 
         InflateRect(&rc,-2,-2);
 
-        m_rt->OffsetViewportOrg(50,50);
-        
-        RECT rc2={100,230,200,400};
+        //viewport origin test
+        {
+            m_rt->OffsetViewportOrg(50,50);
 
-        m_rt->GradientFill(&rc2,FALSE,RGB(255,0,0),RGB(0,0,255),128);
+            RECT rc2={100,230,200,400};
 
-        CAutoRefPtr<IBrush> brColor,brOld;
-        m_rt->CreateSolidColorBrush(0xFF0000FF,&brColor);
-        m_rt->SelectObject(brColor,(IRenderObj**)&brOld);
-        m_rt->FillRoundRect(&rc,pt2);
-        m_rt->SelectObject(brOld);
-        m_rt->OffsetViewportOrg(-50,-50);
+            m_rt->GradientFill(&rc2,FALSE,RGB(255,0,0),RGB(0,0,255),128);
+
+            CAutoRefPtr<IBrush> brColor,brOld;
+            m_rt->CreateSolidColorBrush(0xFF0000FF,&brColor);
+            m_rt->SelectObject(brColor,(IRenderObj**)&brOld);
+            m_rt->FillRoundRect(&rc,pt2);
+            m_rt->SelectObject(brOld);
+            m_rt->OffsetViewportOrg(-50,-50);
+        }
         
+
+        //gdi test        
+        {
+            HDC hdc2=m_rt->GetDC(0);
+            TextOut(hdc2,0,0,_T("text at (0,0)"),_tcslen(_T("text at (0,0)")));
+            TextOut(hdc2,100,100,_T("text at (100,100)"),_tcslen(_T("text at (100,100)")));
+            m_rt->ReleaseDC(hdc2);
+        }
         
-        HDC hdc2=m_rt->GetDC(0);
-        TextOut(hdc2,0,0,_T("text at (0,0)"),_tcslen(_T("text at (0,0)")));
-        
-        TextOut(hdc2,100,100,_T("text at (100,100)"),_tcslen(_T("text at (100,100)")));
-        m_rt->ReleaseDC(hdc2);
-        
+        //draw9patch test
+        {
+            RECT rcSrc={0,0,13,85};
+            RECT rcMargin={5,5,5,55};
+            
+            RECT rcDest={300,10,500,250};
+            
+            RECT rcMargin2={5,0,5,0};
+            m_rt->DrawBitmap9Patch(&rcDest,m_bmp9Patch,&rcSrc,&rcMargin2,EM_TILE,0xcc);
+            OffsetRect(&rcDest,0,rcDest.bottom-rcDest.top +5);
+            rcDest.right=rcDest.left+100;
+            rcDest.bottom=rcDest.top+100;
+            m_rt->DrawBitmap9Patch(&rcDest,m_bmp9Patch,&rcSrc,&rcMargin,EM_STRETCH,0xcc);
+            OffsetRect(&rcDest,0,rcDest.bottom-rcDest.top+5);
+            rcDest.bottom=rcDest.top+50;
+            m_rt->DrawBitmap9Patch(&rcDest,m_bmp9Patch,&rcSrc,&rcMargin,EM_STRETCH,0xcc);
+        }
         m_rt->PopClipRect();
 //  		m_rt->PopClipRegion();
   		m_rt->EndDraw();
@@ -141,14 +165,14 @@ public:
 	int OnCreate(void *)
 	{
 		g_render->CreateRenderTarget(&m_rt,0,0);
-		m_rt->CreateRegion(&m_rgn);
+		g_render->CreateRegion(&m_rgn);
 
 		CAutoRefPtr<IFont> font;
 		LOGFONT lf={0};
 		_tcscpy(lf.lfFaceName,_T("Á¥Êé"));
 		lf.lfHeight=30;
 		lf.lfItalic=1;
-		m_rt->CreateFont(lf,&font);
+		g_render->CreateFont(&font,lf);
 		m_rt->SelectObject(font);
 
 		m_rt->SetTextColor(RGBA(255,0,0,255));
@@ -162,18 +186,21 @@ public:
 		size_t szImg=0;
 		LPBYTE pImgData=GetResBuf(MAKEINTRESOURCE(IDR_JPG1),_T("JPG"),szImg,g_hInst);
 	
-		m_rt->CreateBitmap(&m_bmp);
-		m_bmp->LoadFromMemory(m_rt,pImgData,szImg,NULL);
+		g_render->CreateBitmap(&m_bmp);
+		m_bmp->LoadFromMemory(pImgData,szImg,NULL);
 
 		//´´½¨Î»Í¼»­Ë¢
 		pImgData = GetResBuf(MAKEINTRESOURCE(IDR_ICON),_T("JPG"),szImg,g_hInst);
 		CAutoRefPtr<IBitmap> icon;
-		m_rt->CreateBitmap(&icon);
-		icon->LoadFromMemory(m_rt,pImgData,szImg,NULL);
+		g_render->CreateBitmap(&icon);
+		icon->LoadFromMemory(pImgData,szImg,NULL);
 
 		m_rt->CreateBitmapBrush(icon,&m_brIcon);
 		m_rt->SelectObject(m_brIcon);
 
+        g_render->CreateBitmap(&m_bmp9Patch);
+        pImgData = GetResBuf(MAKEINTRESOURCE(IDB_PNG1),_T("PNG"),szImg,g_hInst);
+        m_bmp9Patch->LoadFromMemory(pImgData,szImg,NULL);
 		return 0;
 	}
 
@@ -202,6 +229,7 @@ protected:
 	CAutoRefPtr<IBitmap> m_bmp;
 	CAutoRefPtr<IRegion> m_rgn;
 	CAutoRefPtr<IBrush>  m_brIcon;
+    CAutoRefPtr<IBitmap> m_bmp9Patch;
 };
 
 
@@ -230,12 +258,12 @@ int WINAPI WinMain(
 #else
     HMODULE hRenderSkia = LoadLibrary(_T("render-skia.dll"));
 #endif
-    typedef SOUI::IRenderFactory * (*fnCreateRenderFactory)();
+    typedef  BOOL (*fnCreateRenderFactory)(SOUI::IRenderFactory **ppRenderFactory);
     fnCreateRenderFactory fun = (fnCreateRenderFactory)GetProcAddress(hRenderSkia,"CreateRenderFactory");
     
-    g_render = fun();
+    fun(&g_render);
 #else
-    g_render = RENDER_SKIA::CreateRenderFactory();
+    RENDER_SKIA::CreateRenderFactory(&g_render);
 #endif
 
 	if(g_render)

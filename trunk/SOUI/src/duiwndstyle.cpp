@@ -7,8 +7,6 @@
 
 #include "duistd.h"
 #include "duiwndstyle.h"
-#include "DuiSystem.h"
-#include "mybuffer.h"
 
 namespace SOUI
 {
@@ -17,17 +15,8 @@ DuiStyle::DuiStyle()
     : m_uAlign(Align_Center)
     , m_uVAlign(VAlign_Middle)
     , m_nTextAlign(0)
-    , m_crBg(CLR_INVALID)
-    , m_crBgHover(CLR_INVALID)
-    , m_crText(CLR_INVALID)
-    , m_crHoverText(CLR_INVALID)
-    , m_crDisabledText(RGB(0xA0, 0xA0, 0xA0))
-    , m_crPushText(CLR_INVALID)
-    , m_crBorder(CLR_INVALID)
-    , m_crBorderHover(CLR_INVALID)
-    , m_ftText(NULL)
-    , m_ftHover(NULL)
-    , m_ftPush(NULL)
+    , m_crBg(CR_INVALID)
+    , m_crBorder(CR_INVALID)
     , m_nMarginX(0)
     , m_nMarginY(0)
     , m_nSpacing(0)
@@ -35,6 +24,11 @@ DuiStyle::DuiStyle()
     , m_lpCursorName(IDC_ARROW)
     , m_bDotted(FALSE)
 {
+    for(int i=0; i<4; i++)
+    {
+        m_ftText[i]=NULL;
+        m_crText[i]=CR_INVALID;
+    }
 }
 
 UINT DuiStyle::GetTextAlign()
@@ -55,5 +49,15 @@ UINT DuiStyle::GetTextAlign()
     return uRet;
 }
 
+int DuiStyle::GetStates()
+{
+    int fonts=1,colors=1;
+    for(int i=1;i<4;i++)
+    {
+        if(m_ftText[i]!=NULL) fonts++;
+        if(m_crText[i]!=CR_INVALID) colors++;
+    }
+    return max(fonts,colors);
+}
 
 }//namespace SOUI

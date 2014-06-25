@@ -3,24 +3,20 @@
 
 namespace SOUI
 {
-    class CDuiTabSlider : public CDuiWindow
+    class CDuiTabSlider : public SWindow
     {
         SOUI_CLASS_NAME(CDuiTabSlider, "tabslider")
 
     public:
-        CDuiTabSlider( CDuiTabCtrl *pTabCtrl =NULL) :m_hMemDC(NULL),m_hBmp(NULL)
+        CDuiTabSlider( STabCtrl *pTabCtrl =NULL)
         {
             if(pTabCtrl)
             {
                 CRect rcPage=pTabCtrl->GetChildrenLayoutRect();
-                CDCHandle dcPage=pTabCtrl->GetDuiDC(&rcPage,OLEDC_NODRAW);
-                m_hMemDC=CreateCompatibleDC(dcPage);
-                m_hBmp=CGdiAlpha::CreateBitmap32(dcPage,rcPage.Width()*2,rcPage.Height());
-                ::SelectObject(m_hMemDC,m_hBmp);
-                pTabCtrl->ReleaseDuiDC(dcPage);
                 pTabCtrl->InsertChild(this);
                 Move(rcPage);
                 SetVisible(FALSE);
+                GETRENDERFACTORY->CreateRenderTarget(&m_memRT,rcPage.Width()*2,rcPage.Height());
             }
         }
 
@@ -29,10 +25,6 @@ namespace SOUI
             if(GetParent())
             {
                 GetParent()->RemoveChild(this);
-                if(m_hMemDC)    DeleteDC(m_hMemDC);
-                if(m_hBmp)    DeleteObject(m_hBmp);
-                m_hMemDC=NULL;
-                m_hBmp=NULL;
             }
         }
 
@@ -45,31 +37,31 @@ namespace SOUI
             BringWindowToTop();
             for(int i=0; i<nSteps; i++)
             {
-                CDCHandle dcPage=GetDuiDC(NULL,OLEDC_OFFSCREEN);
+                CAutoRefPtr<IRenderTarget> pRTPage=GetRenderTarget(NULL,OLEDC_OFFSCREEN);
                 switch(sd)
                 {
                 case SD_LEFTRIGHT:
-                    BitBlt(dcPage,rcPage.left,rcPage.top,rcPage.Width()*(i+1)/nSteps,rcPage.Height(),m_hMemDC,rcPage.Width()+rcPage.Width()*(nSteps-i-1)/nSteps,0,SRCCOPY);
-                    BitBlt(dcPage,rcPage.left+rcPage.Width()*(i+1)/nSteps,rcPage.top,rcPage.Width()*(nSteps-i-1)/nSteps,rcPage.Height(),m_hMemDC,0,0,SRCCOPY);
+                    BitBlt(pRTPage,rcPage.left,rcPage.top,rcPage.Width()*(i+1)/nSteps,rcPage.Height(),m_memRT,rcPage.Width()+rcPage.Width()*(nSteps-i-1)/nSteps,0,SRCCOPY);
+                    BitBlt(pRTPage,rcPage.left+rcPage.Width()*(i+1)/nSteps,rcPage.top,rcPage.Width()*(nSteps-i-1)/nSteps,rcPage.Height(),m_memRT,0,0,SRCCOPY);
                     break;
                 case SD_RIGHTLEFT:
-                    BitBlt(dcPage,rcPage.left,rcPage.top,rcPage.Width(),rcPage.Height(),m_hMemDC,rcPage.Width()*(i+1)/nSteps,0,SRCCOPY);
+                    BitBlt(pRTPage,rcPage.left,rcPage.top,rcPage.Width(),rcPage.Height(),m_memRT,rcPage.Width()*(i+1)/nSteps,0,SRCCOPY);
                     break;
                 case SD_TOPBOTTOM:
-                    BitBlt(dcPage,rcPage.left,rcPage.top+rcPage.Height()*(nSteps-i-1)/nSteps,rcPage.Width(),rcPage.Height()*(i+1)/nSteps,
-                        m_hMemDC,rcPage.Width(),0,SRCCOPY);//new
-                    BitBlt(dcPage,rcPage.left,rcPage.top,rcPage.Width(),rcPage.Height()*(nSteps-i-1)/nSteps,
-                        m_hMemDC,0,rcPage.Height()*(i+1)/nSteps,SRCCOPY);//old
+                    BitBlt(pRTPage,rcPage.left,rcPage.top+rcPage.Height()*(nSteps-i-1)/nSteps,rcPage.Width(),rcPage.Height()*(i+1)/nSteps,
+                        m_memRT,rcPage.Width(),0,SRCCOPY);//new
+                    BitBlt(pRTPage,rcPage.left,rcPage.top,rcPage.Width(),rcPage.Height()*(nSteps-i-1)/nSteps,
+                        m_memRT,0,rcPage.Height()*(i+1)/nSteps,SRCCOPY);//old
                     break;
                 case SD_BOTTOMTOP:
-                    BitBlt(dcPage,rcPage.left,rcPage.top,rcPage.Width(),rcPage.Height()*(i+1)/nSteps,
-                        m_hMemDC,rcPage.Width(),rcPage.Height()*(nSteps-i-1)/nSteps,SRCCOPY);//new
-                    BitBlt(dcPage,rcPage.left,rcPage.top+rcPage.Height()*(i+1)/nSteps,rcPage.Width(),rcPage.Height()*(nSteps-i-1)/nSteps,
-                        m_hMemDC,0,0,SRCCOPY);//old
+                    BitBlt(pRTPage,rcPage.left,rcPage.top,rcPage.Width(),rcPage.Height()*(i+1)/nSteps,
+                        m_memRT,rcPage.Width(),rcPage.Height()*(nSteps-i-1)/nSteps,SRCCOPY);//new
+                    BitBlt(pRTPage,rcPage.left,rcPage.top+rcPage.Height()*(i+1)/nSteps,rcPage.Width(),rcPage.Height()*(nSteps-i-1)/nSteps,
+                        m_memRT,0,0,SRCCOPY);//old
                     break;
                 }
-                PaintForeground(dcPage,&rcPage);
-                ReleaseDuiDC(dcPage);
+                PaintForeground(pRTPage,&rcPage);
+                ReleaseRenderTarget(pRTPage);
                 Sleep(10);
             }
 
@@ -80,21 +72,27 @@ namespace SOUI
         {
             CRect rcPage;
             GetRect(&rcPage);
-            CDCHandle dcPage=GetDuiDC(&rcPage,OLEDC_NODRAW);
-            PaintBackground(dcPage,&rcPage);
-            BitBlt(m_hMemDC,bPage1?0:rcPage.Width(),0,rcPage.Width(),rcPage.Height(),dcPage,rcPage.left,rcPage.top,SRCCOPY);
-            ReleaseDuiDC(dcPage);
+            CAutoRefPtr<IRenderTarget> pRTPage=GetRenderTarget(&rcPage,OLEDC_NODRAW);
+            PaintBackground(pRTPage,&rcPage);
+            BitBlt(m_memRT,bPage1?0:rcPage.Width(),0,rcPage.Width(),rcPage.Height(),pRTPage,rcPage.left,rcPage.top,SRCCOPY);
+            ReleaseRenderTarget(pRTPage);
         }
     protected:
 
-        void OnPaint(CDCHandle dc)
+        void OnPaint(IRenderTarget *pRT)
         {
         }
-
-        HDC m_hMemDC;
-        HBITMAP m_hBmp;
+        
+        void BitBlt(IRenderTarget *pRTDest,int xDest,int yDest,int nWid,int nHei,IRenderTarget *pRTSrc,int xSrc,int ySrc,DWORD rop)
+        {
+            CRect rcDest(xDest,yDest,xDest+nWid,yDest+nHei);
+            pRTDest->BitBlt(&rcDest,pRTSrc,xSrc,ySrc,rop);
+        }
+        
+        CAutoRefPtr<IRenderTarget> m_memRT;
+        
         WND_MSG_MAP_BEGIN()
-            MSG_WM_PAINT(OnPaint)
+            MSG_WM_PAINT_EX(OnPaint)
         WND_MSG_MAP_END()
     };
 
@@ -102,7 +100,7 @@ namespace SOUI
 //////////////////////////////////////////////////////////////////////////
 // CDuiTabCtrl
 
-CDuiTabCtrl::CDuiTabCtrl() : m_nCurrentPage(0)
+STabCtrl::STabCtrl() : m_nCurrentPage(0)
     , m_pSkinTab(NULL)
     , m_pSkinIcon(NULL)
     , m_pSkinSplitter(NULL)
@@ -124,17 +122,15 @@ CDuiTabCtrl::CDuiTabCtrl() : m_nCurrentPage(0)
     addEvent(NM_TAB_ITEMLEAVE);
 }
 
-void CDuiTabCtrl::OnPaint( CDCHandle dc )
+void STabCtrl::OnPaint(IRenderTarget *pRT)
 {
-    DuiDCPaint duiDC;
-    BeforePaint(dc,duiDC);
+    SPainter duiDC;
+    BeforePaint(pRT,duiDC);
     CRect rcTabs;
     CRect rcItem,rcItemPrev;
     CRect rcSplit;
     DWORD dwState;
-    int nSaveDC=dc.SaveDC();
-    CRgn rgnDraw;
-
+    
     GetClient(&rcTabs);
     if(m_nTabAlign==AlignLeft)
         rcTabs.right=rcTabs.left+m_nTabWidth;
@@ -145,8 +141,7 @@ void CDuiTabCtrl::OnPaint( CDCHandle dc )
     {
         CRect rcFrame;
         GetClient(rcFrame);
-        rgnDraw.CreateRectRgnIndirect(&rcFrame);
-        dc.SelectClipRgn(rgnDraw,RGN_AND);
+        pRT->PushClipRect(&rcFrame,RGN_AND);
 
         switch (m_nTabAlign)
         {
@@ -157,12 +152,11 @@ void CDuiTabCtrl::OnPaint( CDCHandle dc )
             rcFrame.left += m_nTabWidth + m_nFramePos;
             break;
         }
-        m_pSkinFrame->Draw(dc, rcFrame, DuiWndState_Normal);
+        m_pSkinFrame->Draw(pRT, rcFrame, DuiWndState_Normal);
     }
     else
     {
-        rgnDraw.CreateRectRgnIndirect(&rcTabs);
-        dc.SelectClipRgn(rgnDraw,RGN_AND);
+        pRT->PushClipRect(&rcTabs,RGN_AND);
     }
 
     for(int i=0; i<GetItemCount(); i++)
@@ -187,24 +181,26 @@ void CDuiTabCtrl::OnPaint( CDCHandle dc )
 
         if(!rcSplit.IsRectEmpty() && m_pSkinSplitter)
         {
-            m_pSkinSplitter->Draw(dc,rcSplit,0);
+            m_pSkinSplitter->Draw(pRT,rcSplit,0);
         }
-        DrawItem(dc,rcItem,i,dwState);
+        DrawItem(pRT,rcItem,i,dwState);
         rcItemPrev=rcItem;
     }
-    dc.RestoreDC(nSaveDC);
     
-    if(GetContainer()->GetDuiFocus()==m_hDuiWnd && IsTabStop())
+    if(GetContainer()->GetDuiFocus()==m_hSWnd && IsTabStop())
     {
         CRect rc;
         GetItemRect(m_nCurrentPage,rc);
         rc.DeflateRect(2,2);
-        DuiDrawDefFocusRect(dc,&rc);
+        DuiDrawDefFocusRect(pRT,&rc);
     }
-    AfterPaint(dc,duiDC);
+    
+    pRT->PopClipRect();
+
+    AfterPaint(pRT,duiDC);
 }
 
-CRect CDuiTabCtrl::GetChildrenLayoutRect()
+CRect STabCtrl::GetChildrenLayoutRect()
 {
     CRect rcRet=__super::GetChildrenLayoutRect();
     if(m_nTabAlign==AlignLeft)
@@ -214,7 +210,7 @@ CRect CDuiTabCtrl::GetChildrenLayoutRect()
     return rcRet;
 }
 
-void CDuiTabCtrl::OnLButtonDown( UINT nFlags, CPoint point )
+void STabCtrl::OnLButtonDown( UINT nFlags, CPoint point )
 {
     CRect rcItem;
     BOOL bClickMove = TRUE;
@@ -242,7 +238,7 @@ void CDuiTabCtrl::OnLButtonDown( UINT nFlags, CPoint point )
     }
 }
 
-BOOL CDuiTabCtrl::RemoveItem( int nIndex , int nSelPage/*=0*/)
+BOOL STabCtrl::RemoveItem( int nIndex , int nSelPage/*=0*/)
 {
     CDuiTab * pTab = GetItem(nIndex);
 
@@ -271,7 +267,7 @@ BOOL CDuiTabCtrl::RemoveItem( int nIndex , int nSelPage/*=0*/)
     return TRUE;
 }
 
-void CDuiTabCtrl::RemoveAllItems( void )
+void STabCtrl::RemoveAllItems( void )
 {
     for (int i = GetItemCount()-1; i >= 0; i--)
     {
@@ -282,7 +278,7 @@ void CDuiTabCtrl::RemoveAllItems( void )
     NotifyInvalidate();
 }
 
-void CDuiTabCtrl::OnMouseMove( UINT nFlags, CPoint point )
+void STabCtrl::OnMouseMove( UINT nFlags, CPoint point )
 {
     CRect rcItem;
     int nOldHover=m_nHoverTabItem;
@@ -308,12 +304,12 @@ void CDuiTabCtrl::OnMouseMove( UINT nFlags, CPoint point )
                 NotifyInvalidateRect(rcItem);
             DUINMTABITEMLEAVE nms;
             nms.hdr.code=NM_TAB_ITEMLEAVE;
-            nms.hdr.hDuiWnd=m_hDuiWnd;
+            nms.hdr.hDuiWnd=m_hSWnd;
             nms.hdr.idFrom=GetCmdID();
             nms.hdr.pszNameFrom=GetName();
             nms.iItem=nOldHover;
             nms.rcItem=rcItem;
-            DuiNotify((LPDUINMHDR)&nms);
+            DuiNotify((LPSNMHDR)&nms);
         }
         if(m_nHoverTabItem!=-1)
         {
@@ -322,17 +318,17 @@ void CDuiTabCtrl::OnMouseMove( UINT nFlags, CPoint point )
                 NotifyInvalidateRect(rcItem);
             DUINMTABITEMHOVER nms;
             nms.hdr.code = NM_TAB_ITEMHOVER;
-            nms.hdr.hDuiWnd=m_hDuiWnd;
+            nms.hdr.hDuiWnd=m_hSWnd;
             nms.hdr.idFrom = GetCmdID();
             nms.hdr.pszNameFrom=GetName();
             nms.iItem = m_nHoverTabItem;
             nms.rcItem = rcItem;
-            DuiNotify((LPDUINMHDR)&nms);
+            DuiNotify((LPSNMHDR)&nms);
         }
     }
 }
 
-void CDuiTabCtrl::OnDestroy()
+void STabCtrl::OnDestroy()
 {
     for(int i=GetItemCount()-1; i>=0; i--)
     {
@@ -342,21 +338,21 @@ void CDuiTabCtrl::OnDestroy()
 }
 
 
-BOOL CDuiTabCtrl::SetCurSel( int nIndex )
+BOOL STabCtrl::SetCurSel( int nIndex )
 {
     if( nIndex < 0 || nIndex> GetItemCount()-1 || (m_nCurrentPage == nIndex)) return FALSE;
     int nOldPage = m_nCurrentPage;
 
     DUINMTABSELCHANGE nms;
     nms.hdr.code = NM_TAB_SELCHANGING;
-    nms.hdr.hDuiWnd=m_hDuiWnd;
+    nms.hdr.hDuiWnd=m_hSWnd;
     nms.hdr.idFrom = GetCmdID();
     nms.hdr.pszNameFrom=GetName();
     nms.uTabItemIDNew = nIndex;
     nms.uTabItemIDOld = nOldPage;
     nms.bCancel = FALSE;
 
-    LRESULT lRet = DuiNotify((LPDUINMHDR)&nms);
+    LRESULT lRet = DuiNotify((LPSNMHDR)&nms);
 
     if (nms.bCancel)
         return FALSE;
@@ -393,7 +389,7 @@ BOOL CDuiTabCtrl::SetCurSel( int nIndex )
 
     DUINMTABSELCHANGED nms2;
     nms2.hdr.code = NM_TAB_SELCHANGED;
-    nms2.hdr.hDuiWnd=m_hDuiWnd;
+    nms2.hdr.hDuiWnd=m_hSWnd;
     nms2.hdr.idFrom = GetCmdID();
     nms2.hdr.pszNameFrom=GetName();
     nms2.uTabItemIDNew = nIndex;
@@ -418,7 +414,7 @@ BOOL CDuiTabCtrl::SetCurSel( int nIndex )
 
         delete pTabSlider;
     }
-    DuiNotify((LPDUINMHDR)&nms2);
+    DuiNotify((LPSNMHDR)&nms2);
     if(IsVisible(TRUE))
     {
         NotifyInvalidate();
@@ -427,7 +423,7 @@ BOOL CDuiTabCtrl::SetCurSel( int nIndex )
     return TRUE;
 }
 
-BOOL CDuiTabCtrl::SetCurSel( LPCTSTR pszTitle )
+BOOL STabCtrl::SetCurSel( LPCTSTR pszTitle )
 {
     for(UINT i=0;i<m_lstPages.GetCount();i++)
     {
@@ -437,7 +433,7 @@ BOOL CDuiTabCtrl::SetCurSel( LPCTSTR pszTitle )
     return FALSE;
 }
 
-BOOL CDuiTabCtrl::SetItemTitle( int nIndex, LPCTSTR lpszTitle )
+BOOL STabCtrl::SetItemTitle( int nIndex, LPCTSTR lpszTitle )
 {
     CDuiTab* pTab = GetItem(nIndex);
     if (pTab)
@@ -457,7 +453,7 @@ BOOL CDuiTabCtrl::SetItemTitle( int nIndex, LPCTSTR lpszTitle )
     return FALSE;
 }
 
-BOOL CDuiTabCtrl::LoadChildren( pugi::xml_node xmlNode )
+BOOL STabCtrl::LoadChildren( pugi::xml_node xmlNode )
 {
     for ( pugi::xml_node xmlChild = xmlNode; xmlChild; xmlChild = xmlChild.next_sibling())
     {
@@ -475,7 +471,7 @@ BOOL CDuiTabCtrl::LoadChildren( pugi::xml_node xmlNode )
     return TRUE;
 }
 
-BOOL CDuiTabCtrl::InsertItem( LPCWSTR lpContent ,int iInsert/*=-1*/)
+BOOL STabCtrl::InsertItem( LPCWSTR lpContent ,int iInsert/*=-1*/)
 {
     CDuiStringA utf8_xml=DUI_CW2A(lpContent,CP_UTF8);
     pugi::xml_document xmlDoc;
@@ -486,7 +482,7 @@ BOOL CDuiTabCtrl::InsertItem( LPCWSTR lpContent ,int iInsert/*=-1*/)
     return InsertItem(xmlTab,iInsert)!=-1;
 }
 
-int CDuiTabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoading/*=FALSE*/ )
+int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoading/*=FALSE*/ )
 {
     CDuiTab *pChild=NULL;
     if (!CDuiTab::CheckAndNew(xmlNode.name(),(void**)&pChild)) return -1;
@@ -511,7 +507,7 @@ int CDuiTabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoa
     return iInsert;
 }
 
-BOOL CDuiTabCtrl::GetItemRect( int nIndex, CRect &rcItem )
+BOOL STabCtrl::GetItemRect( int nIndex, CRect &rcItem )
 {
     if (nIndex < 0 || nIndex >= (int)GetItemCount())
         return FALSE;
@@ -543,28 +539,28 @@ BOOL CDuiTabCtrl::GetItemRect( int nIndex, CRect &rcItem )
     return TRUE;
 }
 
-CDuiTab* CDuiTabCtrl::GetItem( int nIndex )
+CDuiTab* STabCtrl::GetItem( int nIndex )
 {
     if(nIndex<0 || nIndex>=GetItemCount()) return NULL;
     return m_lstPages[nIndex];
 }
 
-void CDuiTabCtrl::DrawItem( CDCHandle dc,const CRect &rcItem,int iItem,DWORD dwState )
+void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD dwState )
 {
     if(m_pSkinTab)
-        m_pSkinTab->Draw(dc,rcItem,IIF_STATE3(dwState,DuiWndState_Normal,DuiWndState_Hover,DuiWndState_PushDown),m_byAlpha);
+        m_pSkinTab->Draw(pRT,rcItem,IIF_STATE3(dwState,DuiWndState_Normal,DuiWndState_Hover,DuiWndState_PushDown),m_byAlpha);
 
     CRect rcIcon(m_ptIcon+rcItem.TopLeft(),CSize(0,0));
     if(m_pSkinIcon)
     {
         rcIcon.right=rcIcon.left+m_pSkinIcon->GetSkinSize().cx;
         rcIcon.bottom=rcIcon.top+m_pSkinIcon->GetSkinSize().cy;
-        m_pSkinIcon->Draw(dc,rcIcon,iItem);
+        m_pSkinIcon->Draw(pRT,rcIcon,iItem);
     }
 
     if(m_ptText.x!=-1 && m_ptText.y!=-1)
     {
-        CGdiAlpha::TextOut(dc,rcItem.left+m_ptText.x,rcItem.top+m_ptText.y,GetItem(iItem)->GetTitle());
+        pRT->TextOut(rcItem.left+m_ptText.x,rcItem.top+m_ptText.y,GetItem(iItem)->GetTitle(),-1,m_byAlpha);
     }
     else
     {
@@ -582,11 +578,11 @@ void CDuiTabCtrl::DrawItem( CDCHandle dc,const CRect &rcItem,int iItem,DWORD dwS
             align=alignStyle&(DT_VCENTER|DT_BOTTOM|DT_SINGLELINE|DT_END_ELLIPSIS);
         }
         
-        CGdiAlpha::DrawText(dc,GetItem(iItem)->GetTitle(),-1,&rcText,align);
+        pRT->DrawText(GetItem(iItem)->GetTitle(),-1,&rcText,align,m_byAlpha);
     }
 }
 
-void CDuiTabCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
+void STabCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
     if(nChar==VK_LEFT || nChar==VK_UP)
     {

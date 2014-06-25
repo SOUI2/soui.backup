@@ -6,14 +6,27 @@
 namespace SOUI
 {
 
+    pugi::xml_document SMessageBoxImpl::s_xmlMsgTemplate;
 
-    int CDuiMessageBox::MessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType )
+
+    BOOL SMessageBoxImpl::SetMsgTemplate( pugi::xml_node uiRoot )
     {
-        pugi::xml_node xmlTempl=DuiSystem::getSingleton().GetMsgBoxTemplate().child("SOUI");
-        if(!xmlTempl) return ::MessageBox(hWnd,lpText,lpCaption,uType);
+        if(strcmp(uiRoot.name(),"UIFRAME")!=0 ) return FALSE;
+        if(!uiRoot.attribute("frame_size").value()[0]) return FALSE;
+        if(!uiRoot.attribute("minsize").value()[0]) return FALSE;
+
+        s_xmlMsgTemplate.reset();
+        s_xmlMsgTemplate.append_copy(uiRoot);
+        return TRUE;
+    }
+
+    int SMessageBoxImpl::MessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType )
+    {
+        if(!s_xmlMsgTemplate) return ::MessageBox(hWnd,lpText,lpCaption,uType);
 
         Create(NULL,NULL,WS_POPUPWINDOW,0,0,0,10,10,NULL);
-        SetXml(xmlTempl);
+        pugi::xml_node uiRoot=s_xmlMsgTemplate.child("UIFRAME");
+        SetXml(uiRoot);
 
 
         switch(uType&0x0F)
@@ -22,9 +35,9 @@ namespace SOUI
             {
                 FindChildByName(NAME_MSGBOX_BTN1PANEL)->SetVisible(FALSE);
                 FindChildByName(NAME_MSGBOX_BTN2PANEL)->SetVisible(FALSE);
-                CDuiWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN3PANEL);
+                SWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN3PANEL);
                 pBtnPanel->SetVisible(TRUE);
-                CDuiWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
+                SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
                 pBtn->SetInnerText(_T("中止"));pBtn->SetCmdID(IDABORT);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
                 pBtn->SetInnerText(_T("重试"));pBtn->SetCmdID(IDRETRY);
@@ -36,9 +49,9 @@ namespace SOUI
             {
                 FindChildByName(NAME_MSGBOX_BTN1PANEL)->SetVisible(FALSE);
                 FindChildByName(NAME_MSGBOX_BTN2PANEL)->SetVisible(FALSE);
-                CDuiWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN3PANEL);
+                SWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN3PANEL);
                 pBtnPanel->SetVisible(TRUE);
-                CDuiWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
+                SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
                 pBtn->SetInnerText(_T("是"));pBtn->SetCmdID(IDYES);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
                 pBtn->SetInnerText(_T("否"));pBtn->SetCmdID(IDNO);
@@ -51,10 +64,10 @@ namespace SOUI
                 FindChildByName(NAME_MSGBOX_BTN1PANEL)->SetVisible(FALSE);
                 FindChildByName(NAME_MSGBOX_BTN3PANEL)->SetVisible(FALSE);
 
-                CDuiWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN2PANEL);
+                SWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN2PANEL);
                 pBtnPanel->SetVisible(TRUE);
 
-                CDuiWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
+                SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
                 pBtn->SetInnerText(_T("确定"));    pBtn->SetCmdID(IDOK);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
                 pBtn->SetInnerText(_T("取消"));    pBtn->SetCmdID(IDCANCEL);
@@ -65,10 +78,10 @@ namespace SOUI
                 FindChildByName(NAME_MSGBOX_BTN1PANEL)->SetVisible(FALSE);
                 FindChildByName(NAME_MSGBOX_BTN3PANEL)->SetVisible(FALSE);
 
-                CDuiWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN2PANEL);
+                SWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN2PANEL);
                 pBtnPanel->SetVisible(TRUE);
 
-                CDuiWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
+                SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
                 pBtn->SetInnerText(_T("是"));    pBtn->SetCmdID(IDYES);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
                 pBtn->SetInnerText(_T("否"));    pBtn->SetCmdID(IDNO);
@@ -79,10 +92,10 @@ namespace SOUI
                 FindChildByName(NAME_MSGBOX_BTN1PANEL)->SetVisible(FALSE);
                 FindChildByName(NAME_MSGBOX_BTN3PANEL)->SetVisible(FALSE);
 
-                CDuiWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN2PANEL);
+                SWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN2PANEL);
                 pBtnPanel->SetVisible(TRUE);
 
-                CDuiWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
+                SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
                 pBtn->SetInnerText(_T("重试"));    pBtn->SetCmdID(IDRETRY);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
                 pBtn->SetInnerText(_T("取消"));    pBtn->SetCmdID(IDCANCEL);
@@ -93,9 +106,9 @@ namespace SOUI
                 FindChildByName(NAME_MSGBOX_BTN2PANEL)->SetVisible(FALSE);
                 FindChildByName(NAME_MSGBOX_BTN3PANEL)->SetVisible(FALSE);
 
-                CDuiWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN1PANEL);
+                SWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN1PANEL);
                 pBtnPanel->SetVisible(TRUE);
-                CDuiWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
+                SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
                 pBtn->SetInnerText(_T("确定"));    pBtn->SetCmdID(IDOK);
             }
             break;
@@ -103,18 +116,18 @@ namespace SOUI
             DUIASSERT(FALSE);
             break;
         }
-        const char *pszFrameAttr=xmlTempl.attribute("frame_size").value();
+        const char *pszFrameAttr=uiRoot.attribute("frame_size").value();
         CRect rcFrame;
         sscanf(pszFrameAttr,"%d,%d,%d,%d",&rcFrame.left,&rcFrame.top,&rcFrame.right,&rcFrame.bottom);
         CSize szMin;
-        const char *pszMinAttr=xmlTempl.attribute("minsize").value();
+        const char *pszMinAttr=uiRoot.attribute("minsize").value();
         sscanf(pszMinAttr,"%d,%d",&szMin.cx,&szMin.cy);
 
-        CDuiWindow * pTitle= FindChildByName(NAME_MSGBOX_TITLE);
+        SWindow * pTitle= FindChildByName(NAME_MSGBOX_TITLE);
         DUIASSERT(pTitle);
         pTitle->SetInnerText(lpCaption?lpCaption:_T("提示"));
 
-        CDuiWindow * pMsg= FindChildByName(NAME_MSGBOX_TEXT);
+        SWindow * pMsg= FindChildByName(NAME_MSGBOX_TEXT);
         DUIASSERT(pMsg);
         pMsg->SetInnerText(lpText);
 
@@ -133,31 +146,32 @@ namespace SOUI
         return DoModal(hWnd);
     }
 
-    BOOL CDuiMessageBox::SetIcon( UINT uType )
+    BOOL SMessageBoxImpl::SetIcon( UINT uType )
     {
-        CDuiIconWnd *pIcon=(CDuiIconWnd *)FindChildByName(NAME_MSGBOX_ICON);
+        SIconWnd *pIcon=(SIconWnd *)FindChildByName(NAME_MSGBOX_ICON);
         if(!pIcon) return FALSE;
         switch(uType&0xF0)
         {
         case MB_ICONEXCLAMATION:
-            pIcon->AttachIcon(LoadIcon(NULL,IDI_EXCLAMATION));
+            pIcon->SetIcon(LoadIcon(NULL,IDI_EXCLAMATION));
             break;
         case MB_ICONINFORMATION:
-            pIcon->AttachIcon(LoadIcon(NULL,IDI_INFORMATION));
+            pIcon->SetIcon(LoadIcon(NULL,IDI_INFORMATION));
             break;
         case MB_ICONQUESTION:
-            pIcon->AttachIcon(LoadIcon(NULL,IDI_QUESTION));
+            pIcon->SetIcon(LoadIcon(NULL,IDI_QUESTION));
             break;
         case MB_ICONHAND:
-            pIcon->AttachIcon(LoadIcon(NULL,IDI_HAND));
+            pIcon->SetIcon(LoadIcon(NULL,IDI_HAND));
             break;
         }
         return TRUE;
     }
 
-    int DuiMessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType )
+
+    int SMessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType )
     {
-        CDuiMessageBox duiMsgBox;
+        SMessageBoxImpl duiMsgBox;
         return duiMsgBox.MessageBox(hWnd,lpText,lpCaption,uType);
     }
 

@@ -7,21 +7,20 @@
 
 #pragma  once
 
-#include "duipanel.h"
 #include "DuiFrameDropTarget.h"
 #include "FocusManager.h"
 
 namespace SOUI
 {
 
-class SOUI_EXP CDuiFrame : public IDuiContainer
+class SOUI_EXP CDuiFrame : public ISwndContainer
 {
 public:
-    CDuiFrame(CDuiWindow *pHost);
+    CDuiFrame(SWindow *pHost);
 
-    virtual BOOL RegisterDragDrop(HDUIWND hDuiWnd,IDropTarget *pDropTarget);
+    virtual BOOL RegisterDragDrop(HSWND hDuiWnd,IDropTarget *pDropTarget);
 
-    virtual BOOL RevokeDragDrop(HDUIWND hDuiWnd);
+    virtual BOOL RevokeDragDrop(HSWND hDuiWnd);
 
     IDropTarget * GetDropTarget(){return &m_dropTarget;}
 
@@ -32,14 +31,14 @@ public:
 
     virtual BOOL OnReleaseDuiCapture();
 
-    virtual HDUIWND OnSetDuiCapture(HDUIWND hDuiWnd);
-    virtual void OnSetDuiFocus(HDUIWND hDuiWnd);
+    virtual HSWND OnSetDuiCapture(HSWND hDuiWnd);
+    virtual void OnSetDuiFocus(HSWND hDuiWnd);
 
-    virtual HDUIWND OnGetDuiCapture();
+    virtual HSWND OnGetDuiCapture();
 
-    virtual HDUIWND GetDuiFocus();
+    virtual HSWND GetDuiFocus();
 
-    virtual HDUIWND GetDuiHover();
+    virtual HSWND GetDuiHover();
 
     virtual IAcceleratorMgr* GetAcceleratorMgr(){return &m_focusMgr;}
 
@@ -65,15 +64,15 @@ protected:
     virtual void OnActivate(UINT nState);
 
 protected:
-    HDUIWND m_hCapture;
-    HDUIWND m_hHover;
+    HSWND m_hCapture;
+    HSWND m_hHover;
     BOOL    m_bNcHover;
 
     CFocusManager m_focusMgr;
 
     CDuiFrameDropTarget m_dropTarget;
 
-    CDuiWindow    *m_pHost;
+    SWindow    *m_pHost;
 
     CDuiList<ITimelineHandler*>    m_lstTimelineHandler;
 };

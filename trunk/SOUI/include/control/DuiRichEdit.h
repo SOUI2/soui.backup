@@ -8,7 +8,7 @@
 namespace SOUI
 {
 
-class CDuiRichEdit;
+class SRichEdit;
 
 class SOUI_EXP CDuiTextServiceHelper: public Singleton<CDuiTextServiceHelper>
 {
@@ -48,12 +48,12 @@ protected:
 
 class SOUI_EXP CDuiTextHost : public ITextHost
 {
-    friend class CDuiRichEdit;
+    friend class SRichEdit;
 public:
     CDuiTextHost(void);
     ~CDuiTextHost(void);
 
-    BOOL Init(CDuiRichEdit* pDuiRichEdit);
+    BOOL Init(SRichEdit* pDuiRichEdit);
 
     ITextServices * GetTextService()
     {
@@ -206,7 +206,7 @@ protected:
 
     ULONG    cRefs;                    // Reference Count
     ITextServices    *pserv;            // pointer to Text Services object
-    CDuiRichEdit    *m_pDuiRichEdit;// duiwindow for text host
+    SRichEdit    *m_pDuiRichEdit;// duiwindow for text host
     POINT                m_ptCaret;
 };
 
@@ -218,14 +218,14 @@ protected:
 #define HIMETRIC_PER_INCH 2540
 #endif
 
-class SOUI_EXP CDuiRichEdit :public CDuiPanel
+class SOUI_EXP SRichEdit :public SPanel
 {
     friend class CDuiTextHost;
 public:
-    SOUI_CLASS_NAME(CDuiRichEdit, "richedit")
+    SOUI_CLASS_NAME(SRichEdit, "richedit")
 
-    CDuiRichEdit();
-    virtual ~CDuiRichEdit() {}
+    SRichEdit();
+    virtual ~SRichEdit() {}
 
 public://richedit interface
     int GetWindowText(LPWSTR lpString, int nMaxCount );
@@ -261,7 +261,7 @@ protected:
 
     void OnDestroy();
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget * pRT);
 
     void OnSetDuiFocus();
 
@@ -285,7 +285,7 @@ protected:
 
     virtual BOOL DuiWndProc(UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResult);
 
-    HRESULT InitDefaultCharFormat(CHARFORMAT2W* pcf,HFONT hFont=NULL);
+    HRESULT InitDefaultCharFormat(CHARFORMAT2W* pcf,IFont *pFont=NULL);
 
     HRESULT InitDefaultParaFormat(PARAFORMAT2* ppf);
 
@@ -305,7 +305,7 @@ protected:
 
     void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 
-    void OnSetFont(HFONT font, BOOL bRedraw);
+    void OnSetFont(IFont * font, BOOL bRedraw);
 
     LRESULT OnSetText(UINT uMsg,WPARAM wparam,LPARAM lparam);
 
@@ -325,40 +325,40 @@ protected:
 
 protected:
     WND_MSG_MAP_BEGIN()
-    MSG_WM_CREATE(OnCreate)
-    MSG_WM_DESTROY(OnDestroy)
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_NCCALCSIZE(OnNcCalcSize)
-    MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-    MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
-    MSG_WM_DUITIMER(OnDuiTimer)
-    MSG_UM_TIMEREX(OnDuiTimerEx)
-    MSG_WM_LBUTTONDOWN(OnLButtonDown)
-    MSG_WM_LBUTTONUP(OnLButtonUp)
-    MSG_WM_RBUTTONDOWN(OnRButtonDown)
-    MSG_WM_MOUSEMOVE(OnMouseMove)
-    MSG_WM_KEYDOWN(OnKeyDown)
-    MSG_WM_CHAR(OnChar)
-    MSG_WM_SETFONT(OnSetFont)
-    MESSAGE_HANDLER_EX(WM_SETTEXT,OnSetText)
-    MESSAGE_HANDLER_EX(EM_SETPARAFORMAT,OnSetParaFormat)
-    MESSAGE_HANDLER_EX(EM_SETCHARFORMAT,OnSetCharFormat)
-    MESSAGE_HANDLER_EX(EM_SETREADONLY,OnSetReadOnly)
-    MESSAGE_HANDLER_EX(EM_EXLIMITTEXT,OnSetLimitText)
+        MSG_WM_CREATE(OnCreate)
+        MSG_WM_DESTROY(OnDestroy)
+        MSG_WM_PAINT_EX(OnPaint)
+        MSG_WM_NCCALCSIZE(OnNcCalcSize)
+        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
+        MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+        MSG_WM_DUITIMER(OnDuiTimer)
+        MSG_UM_TIMEREX(OnDuiTimerEx)
+        MSG_WM_LBUTTONDOWN(OnLButtonDown)
+        MSG_WM_LBUTTONUP(OnLButtonUp)
+        MSG_WM_RBUTTONDOWN(OnRButtonDown)
+        MSG_WM_MOUSEMOVE(OnMouseMove)
+        MSG_WM_KEYDOWN(OnKeyDown)
+        MSG_WM_CHAR(OnChar)
+        MSG_WM_SETFONT_EX(OnSetFont)
+        MESSAGE_HANDLER_EX(WM_SETTEXT,OnSetText)
+        MESSAGE_HANDLER_EX(EM_SETPARAFORMAT,OnSetParaFormat)
+        MESSAGE_HANDLER_EX(EM_SETCHARFORMAT,OnSetCharFormat)
+        MESSAGE_HANDLER_EX(EM_SETREADONLY,OnSetReadOnly)
+        MESSAGE_HANDLER_EX(EM_EXLIMITTEXT,OnSetLimitText)
     WND_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
-    ATTR_INT("style",m_dwStyle,FALSE)
-    ATTR_INT("maxbuf",m_cchTextMost,FALSE)
-    ATTR_INT("transparent",m_fTransparent,FALSE)
-    ATTR_INT("rich",m_fRich,FALSE)
-    ATTR_INT("vertical",m_fVertical,FALSE)
-    ATTR_INT("wordwrap",m_fWordWrap,FALSE)
-    ATTR_INT("allowbeep",m_fAllowBeep,FALSE)
-    ATTR_INT("autowordsel",m_fEnableAutoWordSel,FALSE)
-    ATTR_INT("vcenter",m_fSingleLineVCenter,FALSE)
-    ATTR_RECT("inset",m_rcInsetPixel,FALSE)
-    ATTR_CUSTOM("crtext",OnSetTextColor)
+        ATTR_INT("style",m_dwStyle,FALSE)
+        ATTR_INT("maxbuf",m_cchTextMost,FALSE)
+        ATTR_INT("transparent",m_fTransparent,FALSE)
+        ATTR_INT("rich",m_fRich,FALSE)
+        ATTR_INT("vertical",m_fVertical,FALSE)
+        ATTR_INT("wordwrap",m_fWordWrap,FALSE)
+        ATTR_INT("allowbeep",m_fAllowBeep,FALSE)
+        ATTR_INT("autowordsel",m_fEnableAutoWordSel,FALSE)
+        ATTR_INT("vcenter",m_fSingleLineVCenter,FALSE)
+        ATTR_RECT("inset",m_rcInsetPixel,FALSE)
+        ATTR_CUSTOM("crtext",OnSetTextColor)
     SOUI_ATTRS_END()
     //////////////////////////////////////////////////////////////////////////
     //    RichEdit Properties
@@ -370,7 +370,7 @@ protected:
     SIZEL        m_sizelExtent;            // Extent array
     CRect        m_rcInset;                // inset margin
     CRect        m_rcInsetPixel;            // inset margin in pixel
-    TEXTMETRIC    m_tmFont;                //
+    int          m_nFontHeight;             //文字输出高度
     DWORD    m_dwStyle;
     
     UINT    m_fEnableAutoWordSel    :1;    // enable Word style auto word selection?
@@ -390,14 +390,14 @@ protected:
     CDuiTextHost    *m_pTxtHost;
 };
 
-class SOUI_EXP CDuiEdit : public CDuiRichEdit
+class SOUI_EXP SEdit : public SRichEdit
 {
-    SOUI_CLASS_NAME(CDuiRichEdit, "edit")
+    SOUI_CLASS_NAME(SRichEdit, "edit")
 public:
-    CDuiEdit()
+    SEdit()
     {
         m_fRich=0;
     }
-    virtual ~CDuiEdit() {}
+    virtual ~SEdit() {}
 };
 }//namespace SOUI

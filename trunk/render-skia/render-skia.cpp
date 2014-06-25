@@ -8,8 +8,6 @@
 
 #include "render-skia.h"
 
-#include "img-decoder.h"
-
 namespace SOUI
 {
 	//PS_SOLID
@@ -74,7 +72,25 @@ namespace SOUI
 		return TRUE;
 	}
 
-	//////////////////////////////////////////////////////////////////////////
+    BOOL SRenderFactory_Skia::CreateFont( IFont ** ppFont , const LOGFONT &lf )
+    {
+        *ppFont = new SFont_Skia(this,&lf);
+        return TRUE;
+    }
+
+    BOOL SRenderFactory_Skia::CreateBitmap( IBitmap ** ppBitmap )
+    {
+        *ppBitmap = new SBitmap_Skia(this);
+        return TRUE;
+    }
+
+    BOOL SRenderFactory_Skia::CreateRegion( IRegion **ppRgn )
+    {
+        *ppRgn = new SRegion_Skia(this);
+        return TRUE;
+    }
+
+    //////////////////////////////////////////////////////////////////////////
 	// SRenderTarget_Skia
 
 	SRenderTarget_Skia::SRenderTarget_Skia( IRenderFactory_Skia* pRenderFactory ,int nWid,int nHei)
@@ -87,28 +103,27 @@ namespace SOUI
 	{
         m_ptOrg.fX=m_ptOrg.fY=0.0f;
 
-        if(nWid && nHei)
-        {
-            CAutoRefPtr<IBitmap> bmp;
-            CreateBitmap(&bmp);
-            bmp->Init(this,nWid,nHei);
-            SelectObject(bmp);
-        }
-
 		CAutoRefPtr<IPen> pPen;
-		CreatePen(PS_SOLID,CDuiColor(0,0,0).toCOLORREF(),1,&pPen);
+		CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&pPen);
 		SelectObject(pPen);
 
 		CAutoRefPtr<IBrush> pBr;
-		CreateSolidColorBrush(CDuiColor(0,0,0).toCOLORREF(),&pBr);
+		CreateSolidColorBrush(SColor(0,0,0).toCOLORREF(),&pBr);
 		SelectObject(pBr);
 
         CAutoRefPtr<IFont> pFont;
         LOGFONT lf={0};
         lf.lfHeight=20;
         _tcscpy(lf.lfFaceName,_T("宋体"));
-        CreateFont(lf,&pFont);
+        pRenderFactory->CreateFont(&pFont,lf);
         SelectObject(pFont);
+
+        CAutoRefPtr<IBitmap> pBmp;
+        GetRenderFactory_Skia()->CreateBitmap(&pBmp);
+        pBmp->Init(nWid,nHei);
+        SelectObject(pBmp);
+        
+        m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
 	}
 	
 	SRenderTarget_Skia::~SRenderTarget_Skia()
@@ -129,12 +144,6 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::CreateFont( const LOGFONT &lf,IFont ** ppFont )
-	{
-		*ppFont = new SFont_Skia(GetRenderFactory_Skia(),&lf);
-		return S_OK;
-	}
-
 	HRESULT SRenderTarget_Skia::CreateSolidColorBrush( COLORREF cr,IBrush ** ppBrush )
 	{
 		*ppBrush = SBrush_Skia::CreateSolidBrush(GetRenderFactory_Skia(),cr);
@@ -145,18 +154,6 @@ namespace SOUI
 	{
 		SBitmap_Skia *pBmpSkia = (SBitmap_Skia*)pBmp;
 		*ppBrush = SBrush_Skia::CreateBitmapBrush(GetRenderFactory_Skia(),pBmpSkia->GetSkBitmap());
-		return S_OK;
-	}
-
-	HRESULT SRenderTarget_Skia::CreateRegion( IRegion ** ppRegion )
-	{
-		*ppRegion = new SRegion_Skia(GetRenderFactory_Skia());
-		return S_OK;
-	}
-
-	HRESULT SRenderTarget_Skia::CreateBitmap( IBitmap ** ppBitmap )
-	{
-		*ppBitmap = new SBitmap_Skia(GetRenderFactory_Skia());
 		return S_OK;
 	}
 
@@ -200,31 +197,19 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::Resize( SIZE sz )
 	{
-		HRESULT hr=S_FALSE;
-		if(!m_curBmp)
-		{
-			CAutoRefPtr<IBitmap> pBmp;
-			hr=CreateBitmap(&pBmp);
-			if(SUCCEEDED(hr))
-			{
-				pBmp->Init(this,sz.cx,sz.cy);
-				SelectObject(pBmp);
-			}
-		}else
-		{
-			m_curBmp->Init(this,sz.cx,sz.cy);
-		}
-        if(m_SkCanvas) delete m_SkCanvas;
+    	m_curBmp->Init(sz.cx,sz.cy);
+        delete m_SkCanvas;
         m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::PushClipRect( LPCRECT pRect )
+	HRESULT SRenderTarget_Skia::PushClipRect( LPCRECT pRect ,UINT mode/*=RGN_AND*/)
 	{
-	    m_SkCanvas->save();
         SkRect skrc=toSkRect(pRect);
         skrc.offset(m_ptOrg);
-        m_SkCanvas->clipRect(skrc);
+        
+        m_SkCanvas->save();
+        m_SkCanvas->clipRect(skrc,SRegion_Skia::RGNMODE2SkRgnOP(mode));
 	    return S_OK;
 	}
 
@@ -234,13 +219,13 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::PushClipRegion( IRegion *pRegion )
+	HRESULT SRenderTarget_Skia::PushClipRegion( IRegion *pRegion ,UINT mode/*=RGN_AND*/)
 	{
         SRegion_Skia * rgn_skia=(SRegion_Skia*)pRegion;
         SkRegion rgn=rgn_skia->GetRegion();
         
         m_SkCanvas->save();
-        m_SkCanvas->clipRegion(rgn);
+        m_SkCanvas->clipRegion(rgn,SRegion_Skia::RGNMODE2SkRgnOP(mode));
         
 		return S_OK;
 	}
@@ -259,20 +244,45 @@ namespace SOUI
         return S_OK;
     }
 
-	HRESULT SRenderTarget_Skia::BitBlt( LPRECT pRcDest,IRenderTarget *pRTSour,LPRECT pRcSour,UINT uDef )
+    HRESULT SRenderTarget_Skia::GetClipBound(LPRECT prcBound)
+    {
+        SkRect skrc;
+        m_SkCanvas->getClipBounds(&skrc);
+        prcBound->left=(LONG)skrc.fLeft;
+        prcBound->top=(LONG)skrc.fTop;
+        prcBound->right=(LONG)skrc.fRight;
+        prcBound->bottom=(LONG)skrc.fBottom;
+        return S_OK;
+    }
+
+
+	HRESULT SRenderTarget_Skia::BitBlt( LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop/*=SRCCOPY*/)
 	{
-	    SRenderTarget_Skia *pRTSourSkia=(SRenderTarget_Skia*)pRcSour;
-	    
-	    const SkBitmap & bmpSrc= pRTSourSkia->m_SkCanvas->getDevice()->accessBitmap(true);
-        SkRect rcDst=toSkRect(pRcDest);
-        rcDst.offset(m_ptOrg);
-	    m_SkCanvas->drawBitmapRectToRect(bmpSrc,&toSkRect(pRcSour),rcDst);
-		return S_OK;
+	    HDC hdcSrc=pRTSour->GetDC(0);
+	    HDC hdcDst=GetDC(0);
+	    ::BitBlt(hdcDst,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,hdcSrc,xSrc,ySrc,dwRop);
+	    ReleaseDC(hdcDst);
+	    pRTSour->ReleaseDC(hdcSrc);
+	    return S_OK;
+// 	    if(dwRop != SRCCOPY) return E_NOTIMPL;
+// 	    
+// 	    SRenderTarget_Skia *pRTSourSkia=(SRenderTarget_Skia*)pRTSour;
+// 	    
+// 	    const SkBitmap & bmpSrc= pRTSourSkia->m_SkCanvas->getDevice()->accessBitmap(true);
+//         SkRect rcDst=toSkRect(pRcDest);
+//         rcDst.offset(m_ptOrg);
+//         RECT rc={xSrc,ySrc,xSrc+pRcDest->right-pRcDest->left,ySrc+pRcDest->bottom-pRcDest->top};
+//         SkRect rcSrc=toSkRect(&rc);
+//         rcSrc.offset(pRTSourSkia->m_ptOrg);
+// 	    m_SkCanvas->drawBitmapRectToRect(bmpSrc,&rcSrc,rcDst);
+// 		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha)
 	{
 		if(cchLen<0) cchLen= _tcslen(pszText);
+		if(cchLen==0) return S_FALSE;
+		
 		CDuiStringW strW=DUI_CT2W(CDuiStringT(pszText,cchLen));
         SkPaint     txtPaint = m_curFont->GetPaint();
         txtPaint.setColor(m_curColor.toARGB());
@@ -285,7 +295,14 @@ namespace SOUI
 
         SkRect skrc=toSkRect(pRc);
         skrc.offset(m_ptOrg);
-        DrawText_Skia(m_SkCanvas,strW,strW.GetLength(),skrc,txtPaint,uFormat);
+        skrc=DrawText_Skia(m_SkCanvas,strW,strW.GetLength(),skrc,txtPaint,uFormat);
+        if(uFormat & DT_CALCRECT)
+        {
+            pRc->left=(int)skrc.fLeft;
+            pRc->top=(int)skrc.fTop;
+            pRc->right=(int)skrc.fRight;
+            pRc->bottom=(int)skrc.fBottom;
+        }
 		return S_OK;
 	}
 
@@ -294,7 +311,7 @@ namespace SOUI
         SkPaint     txtPaint = m_curFont->GetPaint();
         txtPaint.setTypeface(m_curFont->GetFont());
         CDuiStringW strW=DUI_CT2W(CDuiStringT(pszText,cchLen));
-        psz->cx = (int)txtPaint.measureText(strW,strW.GetLength());
+        psz->cx = (int)txtPaint.measureText(strW,strW.GetLength()*sizeof(wchar_t));
         
         SkPaint::FontMetrics metrics;
         txtPaint.getFontMetrics(&metrics);
@@ -302,23 +319,22 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::DrawRectangle( int left, int top,int right,int bottom )
+	HRESULT SRenderTarget_Skia::DrawRectangle(LPRECT pRect)
 	{
 		SkPaint paint;
-		paint.setColor(CDuiColor(m_curPen->GetColor()).toARGB());
+		paint.setColor(SColor(m_curPen->GetColor()).toARGB());
 		SGetLineDashEffect skDash(m_curPen->GetStyle());
  		paint.setPathEffect(skDash.Get());
 		paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
 		paint.setStyle(SkPaint::kStroke_Style);
 
-        RECT rc={left,top,right,bottom};
-        SkRect skrc=toSkRect(&rc);
+        SkRect skrc=toSkRect(pRect);
         skrc.offset(m_ptOrg);
 		m_SkCanvas->drawRect(skrc,paint);
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::FillRectangle( int left, int top,int right,int bottom )
+	HRESULT SRenderTarget_Skia::FillRectangle(LPRECT pRect)
 	{
 		SkPaint paint;
 		
@@ -329,12 +345,11 @@ namespace SOUI
 		}else
 		{
 			paint.setFilterBitmap(false);
-			paint.setColor(CDuiColor(m_curBrush->GetColor()).toARGB());
+			paint.setColor(SColor(m_curBrush->GetColor()).toARGB());
 		}
 		paint.setStyle(SkPaint::kFill_Style);
 
-        RECT rc={left,top,right,bottom};
-        SkRect skrc=toSkRect(&rc);
+        SkRect skrc=toSkRect(pRect);
         skrc.offset(m_ptOrg);
 		m_SkCanvas->drawRect(skrc,paint);
 		return S_OK;
@@ -343,7 +358,7 @@ namespace SOUI
     HRESULT SRenderTarget_Skia::DrawRoundRect( LPCRECT pRect,POINT pt )
     {
         SkPaint paint;
-        paint.setColor(CDuiColor(m_curPen->GetColor()).toARGB());
+        paint.setColor(SColor(m_curPen->GetColor()).toARGB());
         SGetLineDashEffect skDash(m_curPen->GetStyle());
         paint.setPathEffect(skDash.Get());
         paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
@@ -388,7 +403,7 @@ namespace SOUI
         SkPoint::Offset(pts,nCount,m_ptOrg);
 
         SkPaint paint;
-        paint.setColor(CDuiColor(m_curPen->GetColor()).toARGB());
+        paint.setColor(SColor(m_curPen->GetColor()).toARGB());
         SGetLineDashEffect skDash(m_curPen->GetStyle());
         paint.setPathEffect(skDash.Get());
         paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
@@ -411,23 +426,139 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::DrawBitmap( LPRECT pRcDest,IBitmap *pBitmap,LPRECT pRcSour,BYTE byAlpha/*=0xFF*/ )
-	{
-		SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
-		SkBitmap bmp=pBmp->GetSkBitmap();
+    HRESULT SRenderTarget_Skia::DrawIconEx( int xLeft, int yTop, HICON hIcon, int cxWidth,int cyWidth,UINT diFlags )
+    {
+        HDC hdc=GetDC(0);
+        BOOL bRet=::DrawIconEx(hdc,xLeft,yTop,hIcon,cxWidth,cyWidth,0,NULL,diFlags);
+        ReleaseDC(hdc);
+        return bRet?S_OK:S_FALSE;
+    }
 
-		RECT rcSour={0,0,bmp.width(),bmp.height()};
-		if(!pRcSour) pRcSour = &rcSour;
+    HRESULT SRenderTarget_Skia::DrawBitmap(LPCRECT pRcDest,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha/*=0xFF*/ )
+    {
+        SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
+        SkBitmap bmp=pBmp->GetSkBitmap();
 
-		SkRect rcSrc = toSkRect(pRcSour);
-		SkRect rcDest= toSkRect(pRcDest);
+        RECT rcSrc={xSrc,ySrc,xSrc+pRcDest->right-pRcDest->left,ySrc+pRcDest->bottom-pRcDest->top};
+
+        SkRect skrcDst = toSkRect(pRcDest);
+        SkRect skrcSrc= toSkRect(&rcSrc);
+        skrcDst.offset(m_ptOrg);
+
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        
+        if(byAlpha != 0xFF) paint.setAlpha(byAlpha);
+        m_SkCanvas->drawBitmapRectToRect(bmp,&skrcSrc,skrcDst,&paint);
+        return S_OK;
+    }
+    
+
+    HRESULT SRenderTarget_Skia::DrawBitmapEx( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,EXPEND_MODE expendMode, BYTE byAlpha/*=0xFF*/ )
+    {
+        if(expendMode == EM_NULL)
+            return DrawBitmap(pRcDest,pBitmap,pRcSrc->left,pRcSrc->top,byAlpha);
+            
+        SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
+        SkBitmap bmp=pBmp->GetSkBitmap();
+
+        RECT rcSour={0,0,bmp.width(),bmp.height()};
+        if(!pRcSrc) pRcSrc = &rcSour;
+        SkRect rcSrc = toSkRect(pRcSrc);
+        SkRect rcDest= toSkRect(pRcDest);
         rcDest.offset(m_ptOrg);
 
-		SkPaint paint;
-		paint.setAntiAlias(true);
-		m_SkCanvas->drawBitmapRectToRect(bmp,&rcSrc,rcDest,&paint);
-		return S_OK;
-	}
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        if(byAlpha != 0xFF) paint.setAlpha(byAlpha);
+
+        if(expendMode == EM_STRETCH)
+        {
+            m_SkCanvas->drawBitmapRectToRect(bmp,&rcSrc,rcDest,&paint);
+        }else
+        {
+            SkBitmap bmpSub;
+            bmp.extractSubset(&bmpSub,toSkIRect(pRcSrc));
+            paint.setShader(SkShader::CreateBitmapShader(bmpSub,SkShader::kRepeat_TileMode,SkShader::kRepeat_TileMode))->unref();
+            m_SkCanvas->drawRect(rcDest,paint);
+        }
+        return S_OK;
+
+    }
+
+
+    HRESULT SRenderTarget_Skia::DrawBitmap9Patch( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,LPCRECT pRcSourMargin,EXPEND_MODE expendMode,BYTE byAlpha/*=0xFF*/ )
+    {
+        int xDest[4] = {pRcDest->left,pRcDest->left+pRcSourMargin->left,pRcDest->right-pRcSourMargin->right,pRcDest->right};
+        int xSrc[4] = {pRcSrc->left,pRcSrc->left+pRcSourMargin->left,pRcSrc->right-pRcSourMargin->right,pRcSrc->right};
+        int yDest[4] = {pRcDest->top,pRcDest->top+pRcSourMargin->top,pRcDest->bottom-pRcSourMargin->bottom,pRcDest->bottom};
+        int ySrc[4] = {pRcSrc->top,pRcSrc->top+pRcSourMargin->top,pRcSrc->bottom-pRcSourMargin->bottom,pRcSrc->bottom};
+        
+        //首先保证九宫分割正常
+        if(!(xSrc[0] <= xSrc[1] && xSrc[1] <= xSrc[2] && xSrc[2] <= xSrc[3])) return S_FALSE;
+        if(!(ySrc[0] <= ySrc[1] && ySrc[1] <= ySrc[2] && ySrc[2] <= ySrc[3])) return S_FALSE;
+        
+        //调整目标位置
+        int nDestWid=pRcDest->right-pRcDest->left;
+        int nDestHei=pRcDest->bottom-pRcDest->top;
+        
+        if((pRcSourMargin->left + pRcSourMargin->right) > nDestWid)
+        {//边缘宽度大于目标宽度的处理
+            if(pRcSourMargin->left >= nDestWid)
+            {//只绘制左边部分
+                xSrc[1] = xSrc[2] = xSrc[3] = xSrc[0]+nDestWid;
+                xDest[1] = xDest[2] = xDest[3] = xDest[0]+nDestWid;
+            }else if(pRcSourMargin->right >= nDestWid)
+            {//只绘制右边部分
+                xSrc[0] = xSrc[1] = xSrc[2] = xSrc[3]-nDestWid;
+                xDest[0] = xDest[1] = xDest[2] = xDest[3]-nDestWid;
+            }else
+            {//先绘制左边部分，剩余的用右边填充
+                int nRemain=xDest[3]-xDest[1];
+                xSrc[2] = xSrc[3]-nRemain;
+                xDest[2] = xDest[3]-nRemain;
+            }
+        }
+        
+        if(pRcSourMargin->top + pRcSourMargin->bottom > nDestHei)
+        {
+            if(pRcSourMargin->top >= nDestHei)
+            {//只绘制上边部分
+                ySrc[1] = ySrc[2] = ySrc[3] = ySrc[0]+nDestHei;
+                yDest[1] = yDest[2] = yDest[3] = yDest[0]+nDestHei;
+            }else if(pRcSourMargin->bottom >= nDestHei)
+            {//只绘制下边部分
+                ySrc[0] = ySrc[1] = ySrc[2] = ySrc[3]-nDestHei;
+                yDest[0] = yDest[1] = yDest[2] = yDest[3]-nDestHei;
+            }else
+            {//先绘制左边部分，剩余的用右边填充
+                int nRemain=yDest[3]-yDest[1];
+                ySrc[2] = ySrc[3]-nRemain;
+                yDest[2] = yDest[3]-nRemain;
+            }
+        }
+        
+        //定义绘制模式
+        EXPEND_MODE mode[3][3]={
+        {EM_NULL,expendMode,EM_NULL},
+        {expendMode,expendMode,expendMode},
+        {EM_NULL,expendMode,EM_NULL}
+        };
+        
+        for(int y=0;y<3;y++)
+        {
+            if(ySrc[y] == ySrc[y+1]) continue;
+            for(int x=0;x<3;x++)
+            {
+                if(xSrc[x] == xSrc[x+1]) continue;
+                RECT rcSrc = {xSrc[x],ySrc[y],xSrc[x+1],ySrc[y+1]};
+                RECT rcDest ={xDest[x],yDest[y],xDest[x+1],yDest[y+1]};
+                DrawBitmapEx(&rcDest,pBitmap,&rcSrc,mode[y][x],byAlpha);
+            }
+        }
+        
+        return S_OK;
+    }
 
 	IRenderObj * SRenderTarget_Skia::GetCurrentObject( OBJTYPE uType )
 	{
@@ -567,18 +698,18 @@ namespace SOUI
     HRESULT SRenderTarget_Skia::GradientFill( LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha/*=0xFF*/ )
     {
         SkPoint pts[2];
-        pts[0].set(pRect->left,pRect->top);
-        pts[1].set(pRect->right,pRect->top);
+        pts[0].set((SkScalar)pRect->left,(SkScalar)pRect->top);
+        pts[1].set((SkScalar)pRect->right,(SkScalar)pRect->top);
         if(bVert)
         {
-            pts[1].set(pRect->left,pRect->bottom);
+            pts[1].set((SkScalar)pRect->left,(SkScalar)pRect->bottom);
         }else
         {
-            pts[1].set(pRect->right,pRect->top);
+            pts[1].set((SkScalar)pRect->right,(SkScalar)pRect->top);
         }
         
-        CDuiColor cr1(crBegin,byAlpha);
-        CDuiColor cr2(crEnd,byAlpha);
+        SColor cr1(crBegin,byAlpha);
+        SColor cr2(crEnd,byAlpha);
         
         SkColor colors[2] = {cr1.toARGB(),cr2.toARGB()};
         SkShader *pShader = SkGradientShader::CreateLinear(pts, colors, NULL,2,SkShader::kMirror_TileMode);
@@ -589,10 +720,22 @@ namespace SOUI
         return S_OK;
     }
 
+    HRESULT SRenderTarget_Skia::FillSolidRect( LPCRECT pRect,COLORREF cr )
+    {
+        SkPaint paint;
+        paint.setStyle(SkPaint::kFill_Style);
+        paint.setColor(SColor(cr).toARGB());
+
+        SkRect skrc=toSkRect(pRect);
+        skrc.offset(m_ptOrg);
+        m_SkCanvas->drawRect(skrc,paint);
+        return S_OK;    
+    }
+
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
 
-    HBITMAP SBitmap_Skia::CreateBitmap( int nWid,int nHei,void ** ppBits )
+    HBITMAP SBitmap_Skia::CreateGDIBitmap( int nWid,int nHei,void ** ppBits )
     {
         BITMAPINFO bmi;
         memset(&bmi, 0, sizeof(bmi));
@@ -611,51 +754,51 @@ namespace SOUI
         return hBmp;
     }
 
-	HRESULT SBitmap_Skia::Init( IRenderTarget *pRT,int nWid,int nHei )
+	HRESULT SBitmap_Skia::Init( int nWid,int nHei )
 	{
 	    if(m_hBmp) DeleteObject(m_hBmp);
 		m_bitmap.reset();
 		m_bitmap.setConfig(SkBitmap::kARGB_8888_Config,nWid,nHei);
     		
 		LPVOID pBits=NULL;
-		m_hBmp=CreateBitmap(nWid,nHei,&pBits);
+		m_hBmp=CreateGDIBitmap(nWid,nHei,&pBits);
 		if(!m_hBmp) return E_OUTOFMEMORY;
 		m_bitmap.setPixels(pBits);
 		return S_OK;
 	}
 
-	HRESULT SBitmap_Skia::LoadFromFile( IRenderTarget *pRT,LPCTSTR pszFileName,LPCTSTR pszType )
+	HRESULT SBitmap_Skia::LoadFromFile( LPCTSTR pszFileName,LPCTSTR pszType )
 	{
-		SImgDecoder imgDecoder;
-		if(imgDecoder.DecodeFromFile(DUI_CT2W(pszFileName))==0) return S_FALSE;
+	    CAutoRefPtr<IImgDecoder> imgDecoder=GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgDecoder();
+		if(imgDecoder->DecodeFromFile(DUI_CT2W(pszFileName))==0) return S_FALSE;
 		return ImgFromDecoder(imgDecoder);
 	}
 
-	HRESULT SBitmap_Skia::LoadFromMemory( IRenderTarget *pRT,LPBYTE pBuf,size_t szLen,LPCTSTR pszType )
+	HRESULT SBitmap_Skia::LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType )
 	{
-		SImgDecoder imgDecoder;
-		if(imgDecoder.DecodeFromMemory(pBuf,szLen)==0) return S_FALSE;
+        CAutoRefPtr<IImgDecoder> imgDecoder=GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgDecoder();
+		if(imgDecoder->DecodeFromMemory(pBuf,szLen)==0) return S_FALSE;
         return ImgFromDecoder(imgDecoder);
 	}
 
-    HRESULT SBitmap_Skia::ImgFromDecoder(SImgDecoder &imgDecoder)
+    HRESULT SBitmap_Skia::ImgFromDecoder(IImgDecoder *imgDecoder)
     {
-        IWICBitmapSource* convertedBMP = imgDecoder.GetFrame(0);
+        IImgFrame *pFrame=imgDecoder->GetFrame(0);
         UINT uWid=0,uHei =0;
-        convertedBMP->GetSize(&uWid,&uHei);
+        pFrame->GetSize(&uWid,&uHei);
 
         if(m_hBmp) DeleteObject(m_hBmp);
         m_bitmap.reset();
         m_bitmap.setConfig(SkBitmap::kARGB_8888_Config, uWid, uHei);
         void * pBits=NULL;
-        m_hBmp = CreateBitmap(uWid,uHei,&pBits);
+        m_hBmp = CreateGDIBitmap(uWid,uHei,&pBits);
         
         if(!m_hBmp) return E_OUTOFMEMORY;
         m_bitmap.setPixels(pBits);
         
         m_bitmap.lockPixels();
         const int stride = m_bitmap.rowBytes();
-        convertedBMP->CopyPixels(NULL, stride, stride * uHei,
+        pFrame->CopyPixels(NULL, stride, stride * uHei,
             reinterpret_cast<BYTE*>(m_bitmap.getPixels()));
         m_bitmap.unlockPixels();
         return S_OK;
@@ -671,6 +814,12 @@ namespace SOUI
         return m_bitmap.height();
     }
 
+    SIZE SBitmap_Skia::Size()
+    {
+        SIZE sz={m_bitmap.width(),m_bitmap.height()};
+        return sz;
+    }
+
 	//////////////////////////////////////////////////////////////////////////
 	SRegion_Skia::SRegion_Skia( IRenderFactory_Skia *pRenderFac )
         :TSkiaRenderObjImpl<IRegion>(pRenderFac)
@@ -680,7 +829,7 @@ namespace SOUI
 
 	void SRegion_Skia::CombineRect( LPCRECT lprect,int nCombineMode )
 	{
-        m_rgn.op(toSkIRect(lprect),SkRegion::kUnion_Op);
+        m_rgn.op(toSkIRect(lprect),RGNMODE2SkRgnOP(nCombineMode));
 	}
 
 	BOOL SRegion_Skia::PtInRegion( POINT pt )
@@ -691,8 +840,7 @@ namespace SOUI
 	BOOL SRegion_Skia::RectInRegion( LPCRECT lprect )
 	{
         DUIASSERT(lprect);
-        SkIRect rc={lprect->left,lprect->top,lprect->right,lprect->bottom};
-        return m_rgn.contains(rc);
+        return m_rgn.intersects(toSkIRect(lprect));
 	}
 
 	void SRegion_Skia::GetRgnBox( LPRECT lprect )
@@ -724,5 +872,27 @@ namespace SOUI
     {
         m_rgn=rgn;
     }
+
+    SkRegion::Op SRegion_Skia::RGNMODE2SkRgnOP( UINT mode )
+    {
+        SkRegion::Op op;
+        switch(mode)
+        {
+        case RGN_COPY: op = SkRegion::kReplace_Op;break;
+        case RGN_AND: op = SkRegion::kIntersect_Op;break;
+        case RGN_OR: op = SkRegion::kUnion_Op;break;
+        case RGN_DIFF: op = SkRegion::kDifference_Op;break;
+        case RGN_XOR: op = SkRegion::kXOR_Op;break;
+        default:DUIASSERT(FALSE);break;
+        }
+        return op;
+    }
+
+    void SRegion_Skia::Clear()
+    {
+        m_rgn.setEmpty();
+    }
+
+
 
 }

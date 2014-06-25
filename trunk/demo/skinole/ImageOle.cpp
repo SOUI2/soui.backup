@@ -277,7 +277,7 @@ HRESULT WINAPI CImageOle::GetExtent(DWORD dwDrawAspect, LONG lindex, DVTARGETDEV
 }
 
 
-void CImageOle::SetDuiSkinObj( CDuiSkinBase *pSkin )
+void CImageOle::SetDuiSkinObj( ISkinObj *pSkin )
 {
 	if(m_pSkin)
 	{
@@ -374,7 +374,7 @@ void CImageOle::OnNextFrame()
 	}
 }
 
-BOOL RichEdit_InsertSkin(CDuiRichEdit *pRicheditCtrl, CDuiSkinBase *pSkin)
+BOOL RichEdit_InsertSkin(CDuiRichEdit *pRicheditCtrl, ISkinObj *pSkin)
 {
 	IRichEditOle *pRichEditOle=NULL;
 	LRESULT lRes=pRicheditCtrl->DuiSendMessage(EM_GETOLEINTERFACE,0,(LPARAM)&pRichEditOle);

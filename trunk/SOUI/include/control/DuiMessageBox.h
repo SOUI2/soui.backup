@@ -24,11 +24,12 @@ namespace SOUI
     #define NAME_MSGBOX_BTN3            "button3rd"    //第3个按钮ID
 
     //msgbox的消息处理对象，如果需要更加个性化的msgbox，可以派生该类。
-    class SOUI_EXP CDuiMessageBox:public CDuiHostWnd
+    class SOUI_EXP SMessageBoxImpl:public CDuiHostWnd
     {
     public:
         int MessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType );
 
+        static BOOL SetMsgTemplate(pugi::xml_node xmlNode);
     protected:
         //可以重载该方法来显示自定义的图标
         virtual BOOL SetIcon(UINT uType);
@@ -38,19 +39,22 @@ namespace SOUI
             EndDialog(uID);
         }
 
+        static pugi::xml_document s_xmlMsgTemplate;
 
         SOUI_NOTIFY_MAP_BEGIN()
             SOUI_NOTIFY_ID_COMMAND_RANGE(IDOK,IDNO, OnBtnClick)
         SOUI_NOTIFY_MAP_END()    
 
-        BEGIN_MSG_MAP_EX(CDuiMessageBox)
+        BEGIN_MSG_MAP_EX(SMessageBoxImpl)
             MSG_SOUI_NOTIFY()
             CHAIN_MSG_MAP(CDuiHostWnd)
             REFLECT_NOTIFICATIONS_EX()
         END_MSG_MAP()
+
+
     };
 
-    int SOUI_EXP DuiMessageBox(HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType);
+    int SOUI_EXP SMessageBox(HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType);
 
 }//end of namespace 
 

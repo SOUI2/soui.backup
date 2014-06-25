@@ -9,19 +9,17 @@
 #include "DuiWindowMgr.h"
 
 #include "mybuffer.h"
-#include "DuiImgDecoder_Def.h"
-
+#include "DuiTimerEx.h"
+#include "control/duimessagebox.h"
 namespace SOUI
 {
 
 template<> DuiSystem* Singleton<DuiSystem>::ms_Singleton = 0;
 
-DuiSystem::DuiSystem(HINSTANCE hInst,LPCTSTR pszHostClassName/*=_T("DuiHostWnd")*/)
+DuiSystem::DuiSystem(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName/*=_T("DuiHostWnd")*/)
     :m_hInst(hInst)
-    ,m_pLogger(NULL)
     ,m_pScriptModule(NULL)
-    ,m_pImgDecoder(NULL)
-    ,m_pDefImgDecoder(new CDuiImgDecoder_Def)
+    ,m_RenderFactory(pRendFactory)
 {
     createSingletons();
     CSimpleWndHelper::Init(hInst,pszHostClassName);
@@ -33,7 +31,6 @@ DuiSystem::~DuiSystem(void)
     destroySingletons();
     CSimpleWndHelper::Destroy();
     CDuiTextServiceHelper::Destroy();
-    delete m_pDefImgDecoder;
 }
 
 void DuiSystem::createSingletons()
@@ -41,7 +38,7 @@ void DuiSystem::createSingletons()
     new DuiThreadActiveWndMgr();
     new DuiWindowMgr();
     new CDuiTimerEx();
-    new DuiFontPool();
+    new DuiFontPool(m_RenderFactory);
     new DuiImgPool();
 }
 
@@ -54,28 +51,15 @@ void DuiSystem::destroySingletons()
     delete DuiWindowMgr::getSingletonPtr();
 }
 
-void DuiSystem::logEvent( LPCTSTR message, LoggingLevel level /*= Standard*/ )
-{
-    if(m_pLogger) m_pLogger->logEvent(message,level);
-}
-
-void DuiSystem::logEvent(LoggingLevel level , LPCTSTR pszFormat, ...)
-{
-    if(!m_pLogger) return;
-    TCHAR szBuffer[1025] = { 0 };
-    va_list argList;
-    va_start(argList, pszFormat);
-    ::wvnsprintf(szBuffer,ARRAYSIZE(szBuffer)-1, pszFormat, argList);
-    va_end(argList);
-    m_pLogger->logEvent(szBuffer,level);
-}
-
-BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
+BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType)
 {
     pugi::xml_document xmlDoc;
     if(!LOADXML(xmlDoc,pszName,pszType)) return FALSE;
+    pugi::xml_node root=xmlDoc.child("UIDEF");
+    if(!root) return FALSE;
+
     //init edit menu
-    pugi::xml_node xmlMenu=xmlDoc.first_child().child("editmenu");
+    pugi::xml_node xmlMenu=root.child("editmenu");
     if(xmlMenu)
     {
         m_xmlEditMenu.append_copy(xmlMenu);
@@ -83,28 +67,24 @@ BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
 
     //set default font
     pugi::xml_node xmlFont;
-    xmlFont=xmlDoc.first_child().child("font");
+    xmlFont=root.child("font");
     if(xmlFont)
     {
         int nSize=xmlFont.attribute("size").as_int(12);
         DuiFontPool::getSingleton().SetDefaultFont(DUI_CA2T(xmlFont.attribute("face").value(),CP_UTF8),nSize);
     }
 
-    DuiPools::Init(xmlDoc.first_child());
+    DuiPools::Init(root);
 
     return TRUE;
 }
 
-BOOL DuiSystem::SetMsgBoxTemplate( LPCTSTR pszXmlName,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
+BOOL DuiSystem::SetMsgBoxTemplate( LPCTSTR pszXmlName,LPCTSTR pszType)
 {
-    if(!LOADXML(m_xmlMsgBoxTempl,pszXmlName,pszType)) goto format_error;
-    if(!m_xmlMsgBoxTempl.child("SOUI").attribute("frame_size").value()[0]) goto format_error;
-    if(!m_xmlMsgBoxTempl.child("SOUI").attribute("minsize").value()[0]) goto format_error;
-
-    return TRUE;
-format_error:
-    m_xmlMsgBoxTempl.reset();
-    return FALSE;
+    pugi::xml_document xmlDoc;
+    if(!LOADXML(xmlDoc,pszXmlName,pszType)) return FALSE;
+    pugi::xml_node uiRoot=xmlDoc.child("UIFRAME");   
+    return SMessageBoxImpl::SetMsgTemplate(uiRoot);
 }
 
 BOOL DuiSystem::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )

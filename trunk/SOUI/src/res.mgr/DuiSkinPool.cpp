@@ -49,7 +49,7 @@ int DuiSkinPool::LoadSkins(LPCSTR strOwnerName)
                 continue;
 
             DUIASSERT(!HasKey(strSkinName));
-            CDuiSkinBase *pSkin=DuiSystem::getSingleton().CreateSkinByName(strTypeName);
+            ISkinObj *pSkin=DuiSystem::getSingleton().CreateSkinByName(strTypeName);
             if(pSkin)
             {
                 pSkin->Load(xmlSkin);
@@ -89,7 +89,7 @@ int DuiSkinPool::FreeSkins( LPCSTR strOwnerName )
     return nFreed;
 }
 
-CDuiSkinBase* DuiSkinPool::GetSkin(LPCSTR strSkinName)
+ISkinObj* DuiSkinPool::GetSkin(LPCSTR strSkinName)
 {
     if(!HasKey(strSkinName))
     {

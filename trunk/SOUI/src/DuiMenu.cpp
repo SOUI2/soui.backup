@@ -7,7 +7,7 @@
 namespace SOUI
 {
 
-CDuiMenuAttr::CDuiMenuAttr()
+SMenuAttr::SMenuAttr()
     :m_pItemSkin(NULL)
     ,m_pIconSkin(NULL)
     ,m_pSepSkin(NULL)
@@ -23,7 +23,7 @@ CDuiMenuAttr::CDuiMenuAttr()
     m_crTxtGray=GetSysColor(COLOR_GRAYTEXT);
 }
 
-void CDuiMenuAttr::OnAttributeFinish( pugi::xml_node xmlNode )
+void SMenuAttr::OnAttributeFinish( pugi::xml_node xmlNode )
 {
     DUIASSERT(m_pItemSkin);
     if(m_nItemHei==0) m_nItemHei=m_pItemSkin->GetSkinSize().cy;
@@ -31,33 +31,30 @@ void CDuiMenuAttr::OnAttributeFinish( pugi::xml_node xmlNode )
 }
 //////////////////////////////////////////////////////////////////////////
 
-CDuiMenuODWnd::CDuiMenuODWnd(HWND hMenuOwner):m_hMenuOwner(hMenuOwner)
+SMenuODWnd::SMenuODWnd(HWND hMenuOwner):m_hMenuOwner(hMenuOwner)
 {
 
 }
 
-void CDuiMenuODWnd::OnInitMenu( HMENU menu )
+void SMenuODWnd::OnInitMenu( HMENU menu )
 {
     ::SendMessage(m_hMenuOwner,WM_INITMENU,(WPARAM)menu,0);
 }
 
-void CDuiMenuODWnd::OnInitMenuPopup( HMENU menuPopup, UINT nIndex, BOOL bSysMenu )
+void SMenuODWnd::OnInitMenuPopup( HMENU menuPopup, UINT nIndex, BOOL bSysMenu )
 {
     ::SendMessage(m_hMenuOwner,WM_INITMENUPOPUP,(WPARAM)menuPopup,MAKELPARAM(nIndex,bSysMenu));
 }
 
-void CDuiMenuODWnd::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
+void SMenuODWnd::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
 {
     CRect rcItem=lpDrawItemStruct->rcItem;
-    DuiMenuItemData *pdmmi=(DuiMenuItemData*)lpDrawItemStruct->itemData;
+    rcItem.MoveToXY(0,0);
+    SMenuItemData *pdmmi=(SMenuItemData*)lpDrawItemStruct->itemData;
 
     CDCHandle dc(lpDrawItemStruct->hDC);
-    CDCHandle dcMem;
-    dcMem.CreateCompatibleDC(dc);
-    CBitmap      bmp=CGdiAlpha::CreateBitmap32(dc,rcItem.Width(),rcItem.Height());
-    CBitmapHandle hOldBmp=dcMem.SelectBitmap(bmp);
-    dcMem.BitBlt(0,0,rcItem.Width(),rcItem.Height(),dc,rcItem.left,rcItem.top,SRCCOPY);
-    rcItem.MoveToXY(0,0);
+    CAutoRefPtr<IRenderTarget> pRT;
+    GETRENDERFACTORY->CreateRenderTarget(&pRT,rcItem.Width(),rcItem.Height());
 
     if(pdmmi)
     {
@@ -70,7 +67,7 @@ void CDuiMenuODWnd::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
         BOOL bChecked = lpDrawItemStruct->itemState & ODS_CHECKED;
         BOOL bRadio = mii.fType&MFT_RADIOCHECK;
 
-        m_pItemSkin->Draw(dcMem,rcItem,bSelected?1:0);    //draw back
+        m_pItemSkin->Draw(pRT,rcItem,bSelected?1:0);    //draw back
 
         //draw icon
         CRect rcIcon;
@@ -82,81 +79,88 @@ void CDuiMenuODWnd::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
         {
             if(m_pCheckSkin)
             {
-                if(bRadio) m_pCheckSkin->Draw(dcMem,rcIcon,1);
-                else m_pCheckSkin->Draw(dcMem,rcIcon,0);
+                if(bRadio) m_pCheckSkin->Draw(pRT,rcIcon,1);
+                else m_pCheckSkin->Draw(pRT,rcIcon,0);
             }
         }
         else if(pdmmi->itemInfo.iIcon!=-1 && m_pIconSkin)
         {
-            m_pIconSkin->Draw(dcMem,rcIcon,pdmmi->itemInfo.iIcon);
+            m_pIconSkin->Draw(pRT,rcIcon,pdmmi->itemInfo.iIcon);
         }
         rcItem.left=rcIcon.right+m_nIconMargin;
 
         //draw text
         CRect rcTxt=rcItem;
         rcTxt.DeflateRect(m_nTextMargin,0);
-        dcMem.SetBkMode(TRANSPARENT);
 
-        COLORREF crOld=dcMem.SetTextColor(bDisabled?m_crTxtGray:(bSelected?m_crTxtSel:m_crTxtNormal));
+        COLORREF crOld=pRT->SetTextColor(bDisabled?m_crTxtGray:(bSelected?m_crTxtSel:m_crTxtNormal));
 
 
-        HFONT hOldFont=0;
-        hOldFont=dcMem.SelectFont(m_hFont);
-        dcMem.DrawText(pdmmi->itemInfo.strText,pdmmi->itemInfo.strText.GetLength(),&rcTxt,DT_SINGLELINE|DT_VCENTER|DT_LEFT);
-        dcMem.SelectFont(hOldFont);
+        CAutoRefPtr<IFont> oldFont;
+        pRT->SelectObject(m_hFont,(IRenderObj**)&oldFont);
+        pRT->DrawText(pdmmi->itemInfo.strText,pdmmi->itemInfo.strText.GetLength(),&rcTxt,DT_SINGLELINE|DT_VCENTER|DT_LEFT);
+        pRT->SelectObject(oldFont);
 
-        dcMem.SetTextColor(crOld);
+        pRT->SetTextColor(crOld);
 
         if(bSelected && m_pItemSkin->GetStates()>2)
         {
             //draw select mask
             CRect rcItem=lpDrawItemStruct->rcItem;
             rcItem.MoveToXY(0,0);
-            m_pItemSkin->Draw(dcMem,rcItem,2);
+            m_pItemSkin->Draw(pRT,rcItem,2);
         }
     }
     else  //if(strcmp("sep",pXmlItem->Value())==0)
     {
-        m_pItemSkin->Draw(dcMem,rcItem,0);    //draw back
+        m_pItemSkin->Draw(pRT,rcItem,0);    //draw back
         if(m_pIconSkin)
         {
             rcItem.left += m_pIconSkin->GetSkinSize().cx+m_nIconMargin*2;
         }
 
         if(m_pSepSkin)
-            m_pSepSkin->Draw(dcMem,&rcItem,0);
+            m_pSepSkin->Draw(pRT,&rcItem,0);
         else
         {
-            CGdiAlpha::DrawLine(dcMem, rcItem.left, rcItem.top, rcItem.right, rcItem.top, RGB(196,196,196), PS_SOLID);
-            CGdiAlpha::DrawLine(dcMem, rcItem.left, rcItem.top+1, rcItem.right, rcItem.top+1, RGB(255,255,255), PS_SOLID);
+            CAutoRefPtr<IPen> pen1,pen2,oldPen;
+            pRT->CreatePen(PS_SOLID,1,RGBA(196,196,196,255),&pen1);
+            pRT->CreatePen(PS_SOLID,1,RGBA(255,255,255,255),&pen2);
+            pRT->SelectObject(pen1,(IRenderObj**)&oldPen);
+            POINT pts[2]={{rcItem.left,rcItem.top},{rcItem.right,rcItem.top}};
+            pRT->DrawLines(pts,2);
+            pRT->SelectObject(pen2);
+            pts[0].y++,pts[1].y++;
+            pRT->DrawLines(pts,2);
+            pRT->SelectObject(oldPen);
         }
     }
     rcItem=lpDrawItemStruct->rcItem;
-    dc.BitBlt(rcItem.left,rcItem.top,rcItem.Width(),rcItem.Height(),dcMem,0,0,SRCCOPY);
-    dcMem.SelectBitmap(hOldBmp);
-    dcMem.DeleteDC();
-    bmp.DeleteObject();
+    
+    HDC hmemdc=pRT->GetDC(0);
+    dc.BitBlt(rcItem.left,rcItem.top,rcItem.Width(),rcItem.Height(),hmemdc,0,0,SRCCOPY);
+    pRT->ReleaseDC(hmemdc);
 }
 
-void CDuiMenuODWnd::MeasureItem( LPMEASUREITEMSTRUCT lpMeasureItemStruct )
+void SMenuODWnd::MeasureItem( LPMEASUREITEMSTRUCT lpMeasureItemStruct )
 {
     if(lpMeasureItemStruct->CtlType != ODT_MENU) return;
 
-    DuiMenuItemData *pdmmi=(DuiMenuItemData*)lpMeasureItemStruct->itemData;
+    SMenuItemData *pdmmi=(SMenuItemData*)lpMeasureItemStruct->itemData;
     if(pdmmi)
     {
         //menu item
         lpMeasureItemStruct->itemHeight = m_nItemHei;
         lpMeasureItemStruct->itemWidth = m_szIcon.cx+m_nIconMargin*2;
 
-        CDCHandle dc=::GetDC(NULL);
-        HFONT hOldFont=0;
-        hOldFont=dc.SelectFont(m_hFont);
+        CAutoRefPtr<IRenderTarget> pRT;
+        GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
+        CAutoRefPtr<IFont> oldFont;
+        pRT->SelectObject(m_hFont,(IRenderObj**)&oldFont);
         SIZE szTxt;
-        dc.GetTextExtent(pdmmi->itemInfo.strText,pdmmi->itemInfo.strText.GetLength(),&szTxt);
+        pRT->MeasureText(pdmmi->itemInfo.strText,pdmmi->itemInfo.strText.GetLength(),&szTxt);
         lpMeasureItemStruct->itemWidth += szTxt.cx+m_nTextMargin*2;
-        dc.SelectFont(hOldFont);
-        ::ReleaseDC(NULL,dc);
+        pRT->SelectObject(oldFont);
     }
     else
     {
@@ -167,35 +171,35 @@ void CDuiMenuODWnd::MeasureItem( LPMEASUREITEMSTRUCT lpMeasureItemStruct )
 
 }
 
-void CDuiMenuODWnd::OnMenuSelect( UINT nItemID, UINT nFlags, HMENU menu )
+void SMenuODWnd::OnMenuSelect( UINT nItemID, UINT nFlags, HMENU menu )
 {
     ::SendMessage(m_hMenuOwner,WM_MENUSELECT,MAKEWPARAM(nItemID,nFlags),(LPARAM)menu);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-CDuiMenu::CDuiMenu():m_pParent(NULL),m_hMenu(0)
+SMenu::SMenu():m_pParent(NULL),m_hMenu(0)
 {
 }
 
-CDuiMenu::CDuiMenu( const CDuiMenu & src )
+SMenu::SMenu( const SMenu & src )
 {
     m_pParent=src.m_pParent;
     m_hMenu=src.m_hMenu;
     m_menuSkin=src.m_menuSkin;    
 }
 
-CDuiMenu::~CDuiMenu(void)
+SMenu::~SMenu(void)
 {
     DestroyMenu();
 }
 
-BOOL CDuiMenu::LoadMenu( LPCTSTR pszResName )
+BOOL SMenu::LoadMenu( LPCTSTR pszResName ,LPCTSTR pszType)
 {
     if(::IsMenu(m_hMenu)) return FALSE;
 
     pugi::xml_document xmlDoc;
-    if(!LOADXML(xmlDoc,pszResName,DUIRES_XML_TYPE)) return FALSE;
+    if(!LOADXML(xmlDoc,pszResName,pszType)) return FALSE;
 
     pugi::xml_node xmlMenu=xmlDoc.child("menu");
     if(!xmlMenu)  return FALSE;
@@ -204,7 +208,7 @@ BOOL CDuiMenu::LoadMenu( LPCTSTR pszResName )
 }
 
 
-BOOL CDuiMenu::LoadMenu( pugi::xml_node xmlMenu )
+BOOL SMenu::LoadMenu( pugi::xml_node xmlMenu )
 {
     m_hMenu=CreatePopupMenu();
     if(!m_hMenu) return FALSE;
@@ -217,17 +221,17 @@ BOOL CDuiMenu::LoadMenu( pugi::xml_node xmlMenu )
     return TRUE;
 }
 
-CDuiMenu CDuiMenu::GetSubMenu(int nPos)
+SMenu SMenu::GetSubMenu(int nPos)
 {
     HMENU hSubMenu=::GetSubMenu(m_hMenu,nPos);
-    CDuiMenu ret;
+    SMenu ret;
     ret.m_pParent=this;
     ret.m_hMenu=hSubMenu;
     ret.m_menuSkin=m_menuSkin;
     return ret;
 }
 
-BOOL CDuiMenu::InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTSTR strText, int iIcon)
+BOOL SMenu::InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTSTR strText, int iIcon)
 {
     nFlags|=MF_OWNERDRAW;
     if(nFlags&MF_SEPARATOR)
@@ -235,7 +239,7 @@ BOOL CDuiMenu::InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTS
         return ::InsertMenu(m_hMenu,nPosition,nFlags,(UINT_PTR)0,(LPCTSTR)NULL);
     }
 
-    DuiMenuItemData *pMenuData=new DuiMenuItemData;
+    SMenuItemData *pMenuData=new SMenuItemData;
     pMenuData->hMenu=m_hMenu;
     pMenuData->itemInfo.iIcon=iIcon;
     pMenuData->itemInfo.strText=strText;
@@ -243,7 +247,7 @@ BOOL CDuiMenu::InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTS
     if(nFlags&MF_POPUP)
     {
         //插入子菜单，
-        CDuiMenu *pSubMenu=(CDuiMenu*)(LPVOID)nIDNewItem;
+        SMenu *pSubMenu=(SMenu*)(LPVOID)nIDNewItem;
         DUIASSERT(pSubMenu->m_pParent==NULL);
         pMenuData->nID=(UINT_PTR)pSubMenu->m_hMenu;
     }
@@ -258,7 +262,7 @@ BOOL CDuiMenu::InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTS
         return FALSE;
     }
 
-    CDuiMenu *pRootMenu=this;
+    SMenu *pRootMenu=this;
     while(pRootMenu->m_pParent) pRootMenu=pRootMenu->m_pParent;
     //将分配的内存放到根菜单的内存节点列表中
     pRootMenu->m_arrDmmi.Add(pMenuData);
@@ -266,7 +270,7 @@ BOOL CDuiMenu::InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTS
     if(nFlags&MF_POPUP)
     {
         //对子菜单还需要做数据迁移处理
-        CDuiMenu *pSubMenu=(CDuiMenu*)(LPVOID)nIDNewItem;
+        SMenu *pSubMenu=(SMenu*)(LPVOID)nIDNewItem;
         for(UINT i=0; i<pSubMenu->m_arrDmmi.GetCount(); i++)
             pRootMenu->m_arrDmmi.Add(pSubMenu->m_arrDmmi[i]);
         pSubMenu->m_arrDmmi.RemoveAll();
@@ -275,7 +279,7 @@ BOOL CDuiMenu::InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTS
     return TRUE;
 }
 
-UINT CDuiMenu::TrackPopupMenu(
+UINT SMenu::TrackPopupMenu(
     UINT uFlags,
     int x,
     int y,
@@ -285,8 +289,8 @@ UINT CDuiMenu::TrackPopupMenu(
 {
     DUIASSERT(IsMenu(m_hMenu));
 
-    CDuiMenuODWnd menuOwner(hWnd);
-    *(static_cast<CDuiMenuAttr*>(&menuOwner))=m_menuSkin;
+    SMenuODWnd menuOwner(hWnd);
+    *(static_cast<SMenuAttr*>(&menuOwner))=m_menuSkin;
     menuOwner.Create(NULL,WS_POPUP,WS_EX_NOACTIVATE,0,0,0,0,NULL,NULL);
     UINT uNewFlags=uFlags|TPM_RETURNCMD;
     UINT uRet=::TrackPopupMenu(m_hMenu,uNewFlags,x,y,0,menuOwner.m_hWnd,prcRect);
@@ -295,7 +299,7 @@ UINT CDuiMenu::TrackPopupMenu(
     return uRet;
 }
 
-void CDuiMenu::BuildMenu( HMENU menuPopup,pugi::xml_node xmlNode )
+void SMenu::BuildMenu( HMENU menuPopup,pugi::xml_node xmlNode )
 {
     pugi::xml_node xmlItem=xmlNode.first_child();
 
@@ -303,7 +307,7 @@ void CDuiMenu::BuildMenu( HMENU menuPopup,pugi::xml_node xmlNode )
     {
         if(strcmp("item",xmlItem.name())==0)
         {
-            DuiMenuItemData *pdmmi=new DuiMenuItemData;
+            SMenuItemData *pdmmi=new SMenuItemData;
             pdmmi->hMenu=menuPopup;
             pdmmi->itemInfo.iIcon=xmlItem.attribute("icon").as_int(-1);
             pdmmi->itemInfo.strText=DUI_CA2T(xmlItem.text().get(),CP_UTF8);
@@ -350,7 +354,7 @@ void CDuiMenu::BuildMenu( HMENU menuPopup,pugi::xml_node xmlNode )
     }
 }
 
-void CDuiMenu::DestroyMenu()
+void SMenu::DestroyMenu()
 {
     if(!m_pParent)
     {

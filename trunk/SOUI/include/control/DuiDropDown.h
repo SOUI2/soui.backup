@@ -32,7 +32,7 @@ namespace SOUI
          *
          * Describe  此函数是纯虚函数  
          */
-        virtual CDuiWindow * GetDropDownOwner() =0;
+        virtual SWindow * GetDropDownOwner() =0;
         
         /**
          * IDuiDropDownOwner::OnDropDown

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "duiwnd.h"
 #include "DuiPanel.h"
 #include "DuiHeaderCtrl.h"
 
@@ -49,13 +48,13 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     //  CDuiListCtrl
-    class SOUI_EXP CDuiListCtrl : public CDuiPanel
+    class SOUI_EXP SListCtrl : public SPanel
     {
-        SOUI_CLASS_NAME(CDuiListCtrl, "listctrl")
+        SOUI_CLASS_NAME(SListCtrl, "listctrl")
 
     public:
-        CDuiListCtrl();
-        virtual ~CDuiListCtrl();
+        SListCtrl();
+        virtual ~SListCtrl();
 
         int             InsertColumn(int nIndex, LPCTSTR pszText, int nWidth, LPARAM lParam=0);
         int             InsertItem(int nItem, LPCTSTR pszText, int nImage=-1);
@@ -90,18 +89,18 @@ namespace SOUI
         int             GetTopIndex() const;
 
         CRect           GetItemRect(int nItem, int nSubItem=0);
-        virtual void    DrawItem(CDCHandle dc, CRect rcItem, int nItem);
+        virtual void    DrawItem(IRenderTarget *pRT, CRect rcItem, int nItem);
 
         void            RedrawItem(int nItem);
 
         void            NotifySelChange(int nOldSel, int nNewSel);
 
-        void            OnPaint(CDCHandle dc);
+        void            OnPaint(IRenderTarget *pRT);
         void            OnDestroy();
 
-        bool            OnHeaderClick(CDuiWindow* pSender, LPDUINMHDR pNmhdr);
-        bool            OnHeaderSizeChanging(CDuiWindow* pSender, LPDUINMHDR pNmhdr);
-        bool            OnHeaderSwap(CDuiWindow* pSender, LPDUINMHDR pNmhdr);
+        bool            OnHeaderClick(SWindow* pSender, LPSNMHDR pNmhdr);
+        bool            OnHeaderSizeChanging(SWindow* pSender, LPSNMHDR pNmhdr);
+        bool            OnHeaderSwap(SWindow* pSender, LPSNMHDR pNmhdr);
 
         virtual BOOL    OnScroll(BOOL bVertical,UINT uCode,int nPos);
         virtual void    OnLButtonDown(UINT nFlags, CPoint pt);
@@ -133,13 +132,13 @@ namespace SOUI
         COLORREF        m_crText;
         COLORREF        m_crSelText;
 
-        CDuiSkinBase*    m_pItemSkin;
-        CDuiSkinBase*    m_pIconSkin;
+        ISkinObj*    m_pItemSkin;
+        ISkinObj*    m_pIconSkin;
 
     protected:
         typedef CDuiArray<DXLVITEM> ArrLvItem;
 
-        CDuiHeaderCtrl*  m_pHeader;
+        SHeaderCtrl*  m_pHeader;
         ArrLvItem       m_arrItems;
         CPoint          m_ptOrigin;
 
@@ -162,7 +161,7 @@ namespace SOUI
         SOUI_ATTRS_END()
 
         WND_MSG_MAP_BEGIN()
-            MSG_WM_PAINT(OnPaint)
+            MSG_WM_PAINT_EX(OnPaint)
             MSG_WM_DESTROY(OnDestroy)
             MSG_WM_SIZE(OnSize)
             MSG_WM_LBUTTONDOWN(OnLButtonDown)

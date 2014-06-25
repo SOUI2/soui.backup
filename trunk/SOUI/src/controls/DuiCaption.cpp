@@ -8,7 +8,7 @@
  * @author     soui      
  * @date       2014-05-28
  * 
- * Describe    此类完成日历控件
+ * Describe    此类完成标题栏控件
  */
 #include "duistd.h"
 #include "control/DuiCaption.h"
@@ -16,22 +16,22 @@
 namespace SOUI
 {
 
-CDuiCaption::CDuiCaption(void)
+SCaption::SCaption(void)
 {
 }
 
-CDuiCaption::~CDuiCaption(void)
+SCaption::~SCaption(void)
 {
 }
 
-void CDuiCaption::OnLButtonDown( UINT nFlags, CPoint point )
+void SCaption::OnLButtonDown( UINT nFlags, CPoint point )
 {
     HWND hHost=GetContainer()->GetHostHwnd();
     if (WS_MAXIMIZE == (GetWindowLong(hHost,GWL_STYLE) & WS_MAXIMIZE)) return;
     ::SendMessage(hHost,WM_SYSCOMMAND, SC_MOVE | HTCAPTION,0);
 }
 
-void CDuiCaption::OnLButtonDblClk( UINT nFlags, CPoint point )
+void SCaption::OnLButtonDblClk( UINT nFlags, CPoint point )
 {
     HWND hHost=GetContainer()->GetHostHwnd();
 

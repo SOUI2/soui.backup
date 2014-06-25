@@ -66,15 +66,15 @@ typedef struct tagTVITEM {
 } TVITEM, *LPTVITEM;
 
 
-class SOUI_EXP CDuiTreeCtrl
-    : public CDuiScrollView
+class SOUI_EXP STreeCtrl
+    : public SScrollView
     , protected CSTree<LPTVITEM>
 {
-    SOUI_CLASS_NAME(CDuiTreeCtrl, "treectrl")
+    SOUI_CLASS_NAME(STreeCtrl, "treectrl")
 public:
-    CDuiTreeCtrl();
+    STreeCtrl();
 
-    virtual ~CDuiTreeCtrl();
+    virtual ~STreeCtrl();
     
     HSTREEITEM InsertItem(LPCTSTR lpszItem, HSTREEITEM hParent=STVI_ROOT, HSTREEITEM hInsertAfter=STVI_LAST);
     HSTREEITEM InsertItem(LPCTSTR lpszItem, int nImage,
@@ -110,8 +110,6 @@ public:
     void PageUp();
     void PageDown();
 
-    BOOL RedrawRegion(CDCHandle& dc, CRgn& rgn);
-
 protected:
 
     virtual BOOL LoadChildren(pugi::xml_node xmlNode);
@@ -141,7 +139,7 @@ protected:
     HSTREEITEM HitTest(CPoint &pt);        
 
     void RedrawItem(HSTREEITEM hItem);
-    virtual void DrawItem(CDCHandle & dc, CRect & rc, HSTREEITEM hItem);
+    virtual void DrawItem(IRenderTarget *pRT, CRect & rc, HSTREEITEM hItem);
 
     int ItemHitTest(HSTREEITEM hItem,CPoint &pt) const;
     void ModifyToggleState(HSTREEITEM hItem, DWORD dwStateAdd, DWORD dwStateRemove);
@@ -160,7 +158,7 @@ protected:
 
     void OnDestroy();
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget *pRT);
 
     void OnLButtonDown(UINT nFlags,CPoint pt);
     void OnLButtonUp(UINT nFlags,CPoint pt);
@@ -195,8 +193,8 @@ protected:
     int            m_nItemHei,m_nIndent, m_nItemMargin;
     BOOL        m_bCheckBox;
     BOOL        m_bRightClickSel;
-    CDuiSkinBase * m_pItemBgSkin, * m_pItemSelSkin;
-    CDuiSkinBase * m_pIconSkin, * m_pToggleSkin, * m_pCheckSkin;
+    ISkinObj * m_pItemBgSkin, * m_pItemSelSkin;
+    ISkinObj * m_pIconSkin, * m_pToggleSkin, * m_pCheckSkin;
     COLORREF m_crItemBg,m_crItemSelBg;
     COLORREF m_crItemText,m_crItemSelText;
 
@@ -220,7 +218,7 @@ protected:
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-        MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_DESTROY(OnDestroy)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONDBLCLK(OnLButtonDbClick)

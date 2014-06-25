@@ -57,7 +57,7 @@ namespace SOUI
         // - |accessibility_mode| should be true if full keyboard accessibility is
         //   needed and you  want to check IsAccessibilityFocusableInRootView(),
         //   rather than IsFocusableInRootView().
-        FocusSearch(CDuiWindow * root, bool cycle);
+        FocusSearch(SWindow * root, bool cycle);
         virtual ~FocusSearch() {}
 
         // Finds the next view that should be focused and returns it. If a
@@ -82,44 +82,44 @@ namespace SOUI
         // - |focus_traversable_view| is set to the view associated with the
         //   FocusTraversable set in the previous parameter (it is used as the
         //   starting view when looking for the next focusable view).
-        CDuiWindow* FindNextFocusableView(CDuiWindow* starting_view,
+        SWindow* FindNextFocusableView(SWindow* starting_view,
             bool reverse,
             bool check_starting_view);
 
     private:
         // Convenience method that returns true if a view is focusable and does not
         // belong to the specified group.
-        bool IsViewFocusableCandidate(CDuiWindow* v,CDuiWindow *pGroupOwner);
+        bool IsViewFocusableCandidate(SWindow* v,SWindow *pGroupOwner);
 
         // Convenience method; returns true if a view is not NULL and is focusable
         // (checking IsAccessibilityFocusableInRootView() if accessibility_mode_ is
         // true).
-        bool IsFocusable(CDuiWindow* view);
+        bool IsFocusable(SWindow* view);
 
         // Returns the view selected for the group of the selected view. If the view
         // does not belong to a group or if no view is selected in the group, the
         // specified view is returned.
-        CDuiWindow* FindSelectedViewForGroup(CDuiWindow* view);
+        SWindow* FindSelectedViewForGroup(SWindow* view);
 
         // Returns the next focusable view or view containing a FocusTraversable
         // (NULL if none was found), starting at the starting_view.
         // |check_starting_view|, |can_go_up| and |can_go_down| controls the
         // traversal of the views hierarchy. |skip_group_id| specifies a group_id,
         // -1 means no group. All views from a group are traversed in one pass.
-        CDuiWindow* FindNextFocusableViewImpl(CDuiWindow* starting_view,
+        SWindow* FindNextFocusableViewImpl(SWindow* starting_view,
             bool check_starting_view,
             bool can_go_up,
             bool can_go_down, 
-            CDuiWindow * pSkipGroupOwner);
+            SWindow * pSkipGroupOwner);
 
         // Same as FindNextFocusableViewImpl but returns the previous focusable view.
-        CDuiWindow* FindPreviousFocusableViewImpl(CDuiWindow* starting_view,
+        SWindow* FindPreviousFocusableViewImpl(SWindow* starting_view,
             bool check_starting_view,
             bool can_go_up,
             bool can_go_down,
-            CDuiWindow * pSkipGroupOwner);
+            SWindow * pSkipGroupOwner);
 
-        CDuiWindow* root_;
+        SWindow* root_;
         bool cycle_;
     };
 
@@ -142,7 +142,7 @@ namespace SOUI
             kReasonDirectFocusChange
         };
 
-        CFocusManager(CDuiWindow *pOwner);
+        CFocusManager(SWindow *pOwner);
         ~CFocusManager(void);
 
         BOOL IsTabTraversalKey(UINT vKey);
@@ -154,13 +154,13 @@ namespace SOUI
         // Low-level methods to force the focus to change (and optionally provide
         // a reason). If the focus change should only happen if the view is
         // currenty focusable, enabled, and visible, call view->RequestFocus().
-        void SetFocusedHwndWithReason(HDUIWND hDuiWnd, FocusChangeReason reason);
-        void SetFocusedHwnd(HDUIWND hDuiWnd)
+        void SetFocusedHwndWithReason(HSWND hDuiWnd, FocusChangeReason reason);
+        void SetFocusedHwnd(HSWND hDuiWnd)
         {
             SetFocusedHwndWithReason(hDuiWnd, kReasonDirectFocusChange);
         }
 
-        HDUIWND GetFocusedHwnd(){return focused_view_;}
+        HSWND GetFocusedHwnd(){return focused_view_;}
 
         // Stores and restores the focused view. Used when the window becomes
         // active/inactive.
@@ -199,7 +199,7 @@ namespace SOUI
         bool ProcessAccelerator(const CAccelerator& accelerator);
     private:
         // Returns the next focusable view.
-        CDuiWindow * GetNextFocusableView(CDuiWindow* pWndStarting, bool bReverse, bool bLoop);
+        SWindow * GetNextFocusableView(SWindow* pWndStarting, bool bReverse, bool bLoop);
 
         // Clears the focused view. The window associated with the top root view gets
         // the native focus (so we still get keyboard events).
@@ -210,15 +210,15 @@ namespace SOUI
         void ValidateFocusedView();
     private:
         // The view that currently is focused.
-        HDUIWND  focused_view_;
+        HSWND  focused_view_;
 
-        HDUIWND  focused_backup_;
+        HSWND  focused_backup_;
 
         bool is_changing_focus_;
 
         FocusChangeReason focus_change_reason_;
 
-        CDuiWindow *m_pOwner;
+        SWindow *m_pOwner;
 
         typedef CDuiList<IAcceleratorTarget*> AcceleratorTargetList;
         typedef CDuiMap<CAccelerator, AcceleratorTargetList> AcceleratorMap;
