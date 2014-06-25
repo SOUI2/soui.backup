@@ -15,12 +15,12 @@
 #include "control/DuiRichEdit.h"
 #include "control/DuiHotKeyCtrl.h"
 #include "control/duitreebox.h"
+#include "control/duilistboxex.h"
+#include "control/DuiComboBox.h"
 
 
 #include "control/DuiCalendar.h"
 #include "control/DuiDateTimeEdit.h"
 /*
-#include "control/duilistboxex.h"
 #include "control/duiitembox.h"
-#include "control/DuiComboBox.h"
 */

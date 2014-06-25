@@ -7,21 +7,22 @@
 
 #pragma  once
 
+#include "DuiPanel.h"
 #include "duiitempanel.h"
 
 namespace SOUI
 {
 
-class SOUI_EXP CDuiListBoxEx :public SScrollView
+class SOUI_EXP SListBoxEx :public SScrollView
     ,public IItemContainer
 {
 public:
 
-    SOUI_CLASS_NAME(CDuiListBoxEx, "listboxex")
+    SOUI_CLASS_NAME(SListBoxEx, "listboxex")
 
-    CDuiListBoxEx();
+    SListBoxEx();
 
-    virtual ~CDuiListBoxEx();
+    virtual ~SListBoxEx();
 
 
     void DeleteAllItems(BOOL bUpdate=TRUE);
@@ -69,8 +70,6 @@ public:
     //自动修改pt的位置为相对当前项的偏移量
     int HitTest(CPoint &pt);
 
-    virtual BOOL Load(pugi::xml_node xmlNode);
-
     BOOL IsVirtual(){return m_bVirtual;}
 protected:
     virtual void OnItemSetCapture(SItemPanel *pItem,BOOL bCapture);
@@ -84,11 +83,11 @@ protected:
 
     virtual int GetScrollLineSize(BOOL bVertical);
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget * pRT);
 
     void OnSize(UINT nType, CSize size);
 
-    virtual void OnDrawItem(CDCHandle & dc, CRect & rc, int iItem);
+    virtual void OnDrawItem(IRenderTarget *pRT, CRect & rc, int iItem);
 
     virtual BOOL LoadChildren(pugi::xml_node xmlNode);
     // Get tooltip Info
@@ -157,7 +156,7 @@ public:
         MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
         MESSAGE_HANDLER_EX(WM_IME_CHAR,OnKeyEvent)
         MSG_WM_DESTROY(OnDestroy)
-        MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_MOUSELEAVE(OnMouseLeave)
         MSG_WM_KEYDOWN(OnKeyDown)
         MSG_WM_CHAR(OnChar)

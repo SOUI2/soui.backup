@@ -801,11 +801,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\controls\DuiComboBox.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\res.mgr\DuiCSS.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\controls\DuiDateTimeEdit.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\controls\DuiDropDown.cpp"
 				>
 			</File>
 			<File
@@ -850,6 +858,10 @@
 			</File>
 			<File
 				RelativePath=".\src\controls\duilistbox.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\controls\duilistboxex.cpp"
 				>
 			</File>
 			<File

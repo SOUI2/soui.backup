@@ -44,20 +44,21 @@ void DuiWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(SScrollBar::GetClassName(),new TplDuiWindowFactory<SScrollBar>);
     AddKeyObject(SHeaderCtrl::GetClassName(),new TplDuiWindowFactory<SHeaderCtrl>);
     AddKeyObject(SListCtrl::GetClassName(),new TplDuiWindowFactory<SListCtrl>);
-    AddKeyObject(SCalendar::GetClassName(),new TplDuiWindowFactory<SCalendar>);
     AddKeyObject(SListBox::GetClassName(),new TplDuiWindowFactory<SListBox>);
     AddKeyObject(SRichEdit::GetClassName(),new TplDuiWindowFactory<SRichEdit>);
     AddKeyObject(SEdit::GetClassName(),new TplDuiWindowFactory<SEdit>);
     AddKeyObject(SHotKeyCtrl::GetClassName(),new TplDuiWindowFactory<SHotKeyCtrl>);
+    AddKeyObject(STreeBox::GetClassName(),new TplDuiWindowFactory<STreeBox>);
+    AddKeyObject(SListBoxEx::GetClassName(),new TplDuiWindowFactory<SListBoxEx>);
+    AddKeyObject(SComboBox::GetClassName(),new TplDuiWindowFactory<SComboBox>);
+    AddKeyObject(SComboBoxEx::GetClassName(),new TplDuiWindowFactory<SComboBoxEx>);
+    
+    AddKeyObject(SCalendar::GetClassName(),new TplDuiWindowFactory<SCalendar>);
     AddKeyObject(SMaskEdit::GetClassName(),new TplDuiWindowFactory<SMaskEdit>);
     AddKeyObject(SDateEdit::GetClassName(),new TplDuiWindowFactory<SDateEdit>);
     AddKeyObject(STimeEdit::GetClassName(),new TplDuiWindowFactory<STimeEdit>);
-    AddKeyObject(STreeBox::GetClassName(),new TplDuiWindowFactory<STreeBox>);
     /*
-    AddKeyObject(CDuiListBoxEx::GetClassName(),new TplDuiWindowFactory<CDuiListBoxEx>);
     AddKeyObject(CDuiItemBox::GetClassName(),new TplDuiWindowFactory<CDuiItemBox>);
-    AddKeyObject(CDuiComboBox::GetClassName(),new TplDuiWindowFactory<CDuiComboBox>);
-    AddKeyObject(CDuiComboBoxEx::GetClassName(),new TplDuiWindowFactory<CDuiComboBoxEx>);
     //*/
 }
 

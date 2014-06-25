@@ -70,7 +70,7 @@ protected:
     virtual BOOL LoadChildren(pugi::xml_node xmlNode);    
     virtual void GetTextRect(LPRECT pRect);
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(IRenderTarget * pRT);
     void OnLButtonDown(UINT nFlags,CPoint pt);
     void OnMouseMove(UINT nFlags,CPoint pt);
     void OnMouseLeave();
@@ -90,7 +90,7 @@ protected:
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
-        MSG_WM_PAINT(OnPaint)
+        MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)        
         MSG_WM_MOUSEMOVE(OnMouseMove)
         MSG_WM_MOUSELEAVE(OnMouseLeave)
@@ -128,12 +128,12 @@ protected:
     CDuiDropDownWnd *m_pDropDownWnd;
 };
 
-class SOUI_EXP CDuiComboBox : public CDuiComboBoxBase
+class SOUI_EXP SComboBox : public CDuiComboBoxBase
 {
-    SOUI_CLASS_NAME(CDuiComboBox, "combobox")
+    SOUI_CLASS_NAME(SComboBox, "combobox")
 public:
-    CDuiComboBox();
-    virtual ~CDuiComboBox();
+    SComboBox();
+    virtual ~SComboBox();
 
     BOOL SetCurSel(int iSel)
     {
@@ -216,12 +216,12 @@ protected:
     SListBox *m_pListBox;
 };
 
-class SOUI_EXP CDuiComboBoxEx : public CDuiComboBoxBase
+class SOUI_EXP SComboBoxEx : public CDuiComboBoxBase
 {
-    SOUI_CLASS_NAME(CDuiComboBox, "comboboxex")
+    SOUI_CLASS_NAME(SComboBox, "comboboxex")
 public:
-    CDuiComboBoxEx();
-    virtual ~CDuiComboBoxEx();
+    SComboBoxEx();
+    virtual ~SComboBoxEx();
 
     BOOL SetCurSel(int iSel)
     {
@@ -300,7 +300,7 @@ public:
         return pText->GetInnerText();
     }
 
-    CDuiListBoxEx * GetListBox(){return m_pListBox;}
+    SListBoxEx * GetListBox(){return m_pListBox;}
 
 protected:
     virtual void OnSelChanged();
@@ -319,7 +319,7 @@ protected:
         ATTR_UINT("id_icon", m_uIconID, FALSE)
     SOUI_ATTRS_END()
 
-    CDuiListBoxEx *m_pListBox;
+    SListBoxEx *m_pListBox;
     UINT    m_uTxtID,m_uIconID;
 };
 

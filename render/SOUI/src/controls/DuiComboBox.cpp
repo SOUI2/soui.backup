@@ -25,7 +25,7 @@ void CComboEdit::OnMouseLeave()
 
 void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-    CDuiWindow *pOwner = GetOwner();
+    SWindow *pOwner = GetOwner();
     if (pOwner && (nChar == VK_DOWN || nChar == VK_ESCAPE))
     {
         pOwner->DuiSendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
@@ -111,27 +111,27 @@ void CDuiComboBoxBase::GetTextRect( LPRECT pRect )
     pRect->right-=szBtn.cx;
 }
 
-void CDuiComboBoxBase::OnPaint( CDCHandle dc )
+void CDuiComboBoxBase::OnPaint(IRenderTarget * pRT )
 {
-    SPainter DuiDC;
+    SPainter painter;
 
-    BeforePaint(dc, DuiDC);
+    BeforePaint(pRT, painter);
     if(GetCurSel() != -1 && m_pEdit==NULL)
     {
         CRect rcText;
         GetTextRect(rcText);
         CDuiStringT strText=GetWindowText();
-        DuiDrawText(dc,strText, strText.GetLength(), rcText, GetTextAlign());
+        DuiDrawText(pRT,strText, strText.GetLength(), rcText, GetTextAlign());
     }
     //draw focus rect
-    if(GetContainer()->GetDuiFocus()==m_hDuiWnd)
+    if(GetContainer()->GetDuiFocus()==m_hSWnd)
     {
-        DuiDrawFocus(dc);
+        DuiDrawFocus(pRT);
     }
-    AfterPaint(dc, DuiDC);
+    AfterPaint(pRT, painter);
     CRect rcBtn;
     GetDropBtnRect(&rcBtn);
-    m_pSkinBtn->Draw(dc,rcBtn,IIF_STATE3(m_dwBtnState,DuiWndState_Normal,DuiWndState_Hover,DuiWndState_PushDown));
+    m_pSkinBtn->Draw(pRT,rcBtn,IIF_STATE3(m_dwBtnState,DuiWndState_Normal,DuiWndState_Hover,DuiWndState_PushDown));
 }
 
 void CDuiComboBoxBase::OnLButtonDown( UINT nFlags,CPoint pt )
@@ -203,7 +203,7 @@ BOOL CDuiComboBoxBase::IsTabStop()
 }
 
 
-CDuiWindow* CDuiComboBoxBase::GetDropDownOwner()
+SWindow* CDuiComboBoxBase::GetDropDownOwner()
 {
     return this;
 }
@@ -327,20 +327,20 @@ void CDuiComboBoxBase::OnSelChanged()
 {
     DUINMHDR nms;
     nms.code=NM_CBSELCHANGE;
-    nms.hDuiWnd=m_hDuiWnd;
+    nms.hDuiWnd=m_hSWnd;
     nms.idFrom=GetCmdID();
     nms.pszNameFrom=GetName();
     DuiNotify(&nms);
 }
 
 //////////////////////////////////////////////////////////////////////////
-CDuiComboBox::CDuiComboBox()
+SComboBox::SComboBox()
 :m_pListBox(NULL)
 {
 
 }
 
-CDuiComboBox::~CDuiComboBox()
+SComboBox::~SComboBox()
 {
     if(m_pListBox)
     {
@@ -349,11 +349,11 @@ CDuiComboBox::~CDuiComboBox()
     }
 }
 
-BOOL CDuiComboBox::CreateListBox( pugi::xml_node xmlNode )
+BOOL SComboBox::CreateListBox( pugi::xml_node xmlNode )
 {
     DUIASSERT(xmlNode);
     //创建列表控件
-    m_pListBox=new CDuiListBox;
+    m_pListBox=new SListBox;
     m_pListBox->SetContainer(GetContainer());
 
     m_pListBox->Load(xmlNode.parent().child("liststyle"));
@@ -385,7 +385,7 @@ BOOL CDuiComboBox::CreateListBox( pugi::xml_node xmlNode )
     return TRUE;
 }
 
-int CDuiComboBox::GetListBoxHeight()
+int SComboBox::GetListBoxHeight()
 {
     int nDropHeight=m_nDropHeight;
     if(GetCount()) 
@@ -396,7 +396,7 @@ int CDuiComboBox::GetListBoxHeight()
     return nDropHeight;    
 }
 
-void CDuiComboBox::OnDropDown( CDuiDropDownWnd *pDropDown)
+void SComboBox::OnDropDown( CDuiDropDownWnd *pDropDown)
 {
     __super::OnDropDown(pDropDown);
     pDropDown->InsertChild(m_pListBox);
@@ -407,7 +407,7 @@ void CDuiComboBox::OnDropDown( CDuiDropDownWnd *pDropDown)
     m_pListBox->EnsureVisible(GetCurSel());
 }
 
-void CDuiComboBox::OnCloseUp( CDuiDropDownWnd *pDropDown ,UINT uCode)
+void SComboBox::OnCloseUp( CDuiDropDownWnd *pDropDown ,UINT uCode)
 {
     pDropDown->RemoveChild(m_pListBox);
     m_pListBox->SetVisible(FALSE);
@@ -415,7 +415,7 @@ void CDuiComboBox::OnCloseUp( CDuiDropDownWnd *pDropDown ,UINT uCode)
     __super::OnCloseUp(pDropDown,uCode);
 }
 
-void CDuiComboBox::OnSelChanged()
+void SComboBox::OnSelChanged()
 {
     int nRet=m_pListBox->GetCurSel();
     if(m_pEdit)
@@ -431,12 +431,12 @@ void CDuiComboBox::OnSelChanged()
 
 //////////////////////////////////////////////////////////////////////////
 
-CDuiComboBoxEx::CDuiComboBoxEx():m_uTxtID(0),m_uIconID(0),m_pListBox(NULL)
+SComboBoxEx::SComboBoxEx():m_uTxtID(0),m_uIconID(0),m_pListBox(NULL)
 {
 
 }
 
-CDuiComboBoxEx::~CDuiComboBoxEx()
+SComboBoxEx::~SComboBoxEx()
 {
     if(m_pListBox)
     {
@@ -445,11 +445,11 @@ CDuiComboBoxEx::~CDuiComboBoxEx()
     }
 }
 
-BOOL CDuiComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
+BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
 {
     DUIASSERT(xmlNode);
     //创建列表控件
-    m_pListBox=new CDuiListBoxEx;
+    m_pListBox=new SListBoxEx;
     m_pListBox->SetContainer(GetContainer());
 
     m_pListBox->Load(xmlNode.parent().child("liststyle"));
@@ -478,10 +478,10 @@ BOOL CDuiComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
         {
             LPARAM lParam=xmlNode_Item.attribute("data").as_int(0);
             m_pListBox->SetItemData(iItem,lParam);
-            CDuiWindow *pWnd=m_pListBox->GetItemPanel(iItem);
+            SWindow *pWnd=m_pListBox->GetItemPanel(iItem);
             if(m_uTxtID!=0)
             {
-                CDuiWindow *pText=pWnd->FindChildByCmdID(m_uTxtID);
+                SWindow *pText=pWnd->FindChildByCmdID(m_uTxtID);
                 if(pText)
                 {
                     CDuiStringT strText=DUI_CA2T(xmlNode_Item.attribute("text").value(),CP_UTF8);
@@ -490,7 +490,7 @@ BOOL CDuiComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
             }
             if(m_uIconID!=0)
             {
-                CDuiImageWnd * pImg = pWnd->FindChildByCmdID2<CDuiImageWnd *>(m_uIconID);
+                SImageWnd * pImg = pWnd->FindChildByCmdID2<SImageWnd *>(m_uIconID);
                 if(pImg) 
                 {
                     int iIcon=xmlNode_Item.attribute("icon").as_int(0);
@@ -509,7 +509,7 @@ BOOL CDuiComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
     return TRUE;
 }
 
-int CDuiComboBoxEx::GetListBoxHeight()
+int SComboBoxEx::GetListBoxHeight()
 {
     int nDropHeight=m_nDropHeight;
     if(GetCount()) 
@@ -520,7 +520,7 @@ int CDuiComboBoxEx::GetListBoxHeight()
     return nDropHeight;    
 }
 
-void CDuiComboBoxEx::OnDropDown( CDuiDropDownWnd *pDropDown )
+void SComboBoxEx::OnDropDown( CDuiDropDownWnd *pDropDown )
 {
     __super::OnDropDown(pDropDown);
     pDropDown->InsertChild(m_pListBox);
@@ -531,7 +531,7 @@ void CDuiComboBoxEx::OnDropDown( CDuiDropDownWnd *pDropDown )
     m_pListBox->EnsureVisible(GetCurSel());
 }
 
-void CDuiComboBoxEx::OnCloseUp( CDuiDropDownWnd *pDropDown ,UINT uCode)
+void SComboBoxEx::OnCloseUp( CDuiDropDownWnd *pDropDown ,UINT uCode)
 {
     pDropDown->RemoveChild(m_pListBox);
     m_pListBox->SetVisible(FALSE);
@@ -539,7 +539,7 @@ void CDuiComboBoxEx::OnCloseUp( CDuiDropDownWnd *pDropDown ,UINT uCode)
     __super::OnCloseUp(pDropDown,uCode);
 }
 
-void CDuiComboBoxEx::OnSelChanged()
+void SComboBoxEx::OnSelChanged()
 {
     int iSel=m_pListBox->GetCurSel();
     if(m_pEdit)
