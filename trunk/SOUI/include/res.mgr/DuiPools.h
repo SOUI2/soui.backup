@@ -14,7 +14,7 @@ namespace SOUI
     {
     public:
         DuiPools();
-        ~DuiPools(void);
+        virtual ~DuiPools(void);
 
     public:
         void Init(LPCTSTR pszInitXml,LPCTSTR pszResType);

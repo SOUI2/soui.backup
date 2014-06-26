@@ -66,14 +66,16 @@ namespace SOUI
 
     HRESULT SBitmap_GDI::LoadFromFile( LPCTSTR pszFileName,LPCTSTR pszType )
     {
-        CAutoRefPtr<IImgDecoder> imgDecoder=GetRenderFactory_GDI()->GetImgDecoderFactory()->CreateImgDecoder();
+        CAutoRefPtr<IImgDecoder> imgDecoder;
+        GetRenderFactory_GDI()->GetImgDecoderFactory()->CreateImgDecoder(&imgDecoder);
         if(imgDecoder->DecodeFromFile(DUI_CT2W(pszFileName))==0) return S_FALSE;
         return ImgFromDecoder(imgDecoder);
     }
 
     HRESULT SBitmap_GDI::LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType )
     {
-        CAutoRefPtr<IImgDecoder> imgDecoder=GetRenderFactory_GDI()->GetImgDecoderFactory()->CreateImgDecoder();
+        CAutoRefPtr<IImgDecoder> imgDecoder;
+        GetRenderFactory_GDI()->GetImgDecoderFactory()->CreateImgDecoder(&imgDecoder);
         if(imgDecoder->DecodeFromMemory(pBuf,szLen)==0) return S_FALSE;
         return ImgFromDecoder(imgDecoder);
     }

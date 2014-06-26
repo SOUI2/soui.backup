@@ -35,15 +35,15 @@ public:
 	{
 		SetMsgHandled(FALSE);
 		if(!m_bLayoutInited) return;
-		if(nType==SIZE_MAXIMIZED)
-		{
-			FindChildByCmdID(3)->SetVisible(TRUE);
-			FindChildByCmdID(2)->SetVisible(FALSE);
-		}else if(nType==SIZE_RESTORED)
-		{
-			FindChildByCmdID(3)->SetVisible(FALSE);
-			FindChildByCmdID(2)->SetVisible(TRUE);
-		}
+// 		if(nType==SIZE_MAXIMIZED)
+// 		{
+// 			FindChildByCmdID(3)->SetVisible(TRUE);
+// 			FindChildByCmdID(2)->SetVisible(FALSE);
+// 		}else if(nType==SIZE_RESTORED)
+// 		{
+// 			FindChildByCmdID(3)->SetVisible(FALSE);
+// 			FindChildByCmdID(2)->SetVisible(TRUE);
+// 		}
 	}
 
 	int OnCreate(LPCREATESTRUCT lpCreateStruct);

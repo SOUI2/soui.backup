@@ -33,6 +33,6 @@ namespace SOUI
 
     struct IMGDECODER_API IImgDecoderFactory : public IObjRef
     {
-        virtual IImgDecoder * CreateImgDecoder() = 0;
+        virtual BOOL CreateImgDecoder(IImgDecoder **ppImgDecoder)=0;
     };
 }

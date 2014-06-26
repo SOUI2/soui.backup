@@ -147,16 +147,16 @@ namespace SOUI
         if(s_wicImgFactory) s_wicImgFactory = NULL;
     }
 
-    IImgDecoder * SImgDecoderFactory::CreateImgDecoder()
+    BOOL SImgDecoderFactory::CreateImgDecoder(IImgDecoder ** ppImgDecoder)
     {
-        return new SImgDecoder_WIC;
+        *ppImgDecoder = new SImgDecoder_WIC;
+        return TRUE;
     }
     
     //////////////////////////////////////////////////////////////////////////
     BOOL CreateImgDecoderFactory( IImgDecoderFactory **pImgDecoderFactory )
     {
         *pImgDecoderFactory = new SImgDecoderFactory;
-		new int[300];
         return TRUE;
     }
 
