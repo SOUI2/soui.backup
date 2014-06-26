@@ -55,7 +55,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\soui\include;..\utilities\include"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;;..\myskia\include\;..\myskia\include\config;..\myskia\include\core"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

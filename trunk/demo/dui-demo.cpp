@@ -11,24 +11,24 @@
 #include "MainDlg.h"
 
 #ifndef DLL_SOUI
-#include "../render-gdi/render-api.h"
+#include "../render-skia/render-skia.h"
 #include "../imgdecoder-wic/imgdecoder-wic.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"utilities_d.lib")
-#pragma comment(lib,"render-gdi_d.lib")
+#pragma comment(lib,"render-skia_d.lib")
 #pragma comment(lib,"imgdecoder-wic_d.lib")
+#pragma comment(lib,"skcore_d.lib")
 #else
 #pragma comment(lib,"utilities.lib")
-#pragma comment(lib,"render-gdi.lib")
+#pragma comment(lib,"render-skia.lib")
 #pragma comment(lib,"imgdecoder-wic.lib")
+#pragma comment(lib,"skcore.lib")
 #endif
 #endif
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
-// 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-
 	HRESULT hRes = OleInitialize(NULL);
 	DUIASSERT(SUCCEEDED(hRes));
 
@@ -38,10 +38,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 #ifndef _LIB
 #ifdef _DEBUG
     HMODULE hImgDecoder = LoadLibrary(_T("imgdecoder-wic_d.dll"));
-    HMODULE hRender = LoadLibrary(_T("render-gdi_d.dll"));
+    HMODULE hRender = LoadLibrary(_T("render-skia_d.dll"));
 #else
     HMODULE hImgDecoder = LoadLibrary(_T("imgdecoder-wic.dll"));
-    HMODULE hRender = LoadLibrary(_T("render-gdi.dll"));
+    HMODULE hRender = LoadLibrary(_T("render-skia.dll"));
 #endif
     typedef BOOL (*fnCreateImgDecoderFactory)(SOUI::IImgDecoderFactory**);
     fnCreateImgDecoderFactory funImg = (fnCreateImgDecoderFactory)GetProcAddress(hImgDecoder,"CreateImgDecoderFactory");
@@ -52,7 +52,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     funRender(&pRenderFactory,pImgDecoderFactory);
 #else
     SOUI::CreateImgDecoderFactory(&pImgDecoderFactory);
-    RENDER_GDI::CreateRenderFactory(&pRenderFactory,pImgDecoderFactory);
+    RENDER_SKIA::CreateRenderFactory(&pRenderFactory,pImgDecoderFactory);
 #endif
     
 	DuiSystem *pDuiSystem=new DuiSystem(pRenderFactory,hInstance);
