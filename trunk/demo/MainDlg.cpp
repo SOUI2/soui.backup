@@ -119,10 +119,13 @@ bool CMainDlg::OnListHeaderClick( SWindow * pSender, LPSNMHDR pNmhdr )
 void CMainDlg::OnDestory()
 {
     SListCtrl *pList=FindChildByName2<SListCtrl*>("lc_test");
-    for(int i=0;i<pList->GetItemCount();i++)
+    if(pList)
     {
-        student *pst=(student*) pList->GetItemData(i);
-        delete pst;
+        for(int i=0;i<pList->GetItemCount();i++)
+        {
+            student *pst=(student*) pList->GetItemData(i);
+            delete pst;
+        }
     }
     SetMsgHandled(FALSE); 
 }

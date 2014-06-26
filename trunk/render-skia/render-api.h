@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef RENDERSKIA_EXPORT
+#ifdef RENDERSKIA_EXPORTS
 #define RENDERSKIA_API __declspec(dllexport)
 #else
 #define RENDERSKIA_API __declspec(dllimport)

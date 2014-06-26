@@ -158,7 +158,7 @@ struct RENDER_API IRenderTarget: public IObjRef
 	virtual COLORREF SetTextColor(COLORREF color)=0;
 	
 	//两个兼容GDI操作的接口
-	virtual HDC GetDC(UINT uFlag)=0;
+	virtual HDC GetDC(UINT uFlag=0)=0;
 	virtual void ReleaseDC(HDC hdc) =0;
 };
 
