@@ -163,7 +163,7 @@ namespace SOUI
 
     void SRegion_GDI::SetRegion( const HRGN  rgn )
     {
-        m_hRgn=rgn;
+        ::CombineRgn(m_hRgn,rgn,NULL,RGN_COPY);
     }
 
     void SRegion_GDI::Clear()
@@ -237,7 +237,7 @@ namespace SOUI
     HRESULT SRenderTarget_GDI::CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush )
     {
         SBitmap_GDI *pBmpSkia = (SBitmap_GDI*)pBmp;
-        *ppBrush = SBrush_GDI::CreateBitmapBrush(GetRenderFactory_GDI(),pBmpSkia->GetGdiBitmap());
+        *ppBrush = SBrush_GDI::CreateBitmapBrush(GetRenderFactory_GDI(),pBmpSkia->GetBitmap());
         return S_OK;
     }
 
@@ -268,7 +268,7 @@ namespace SOUI
         HBITMAP hBmp=CreateCompatibleBitmap(m_hdc,0,0);
         ::SelectObject(m_hdc,hBmp);
         m_curBmp->Init(sz.cx,sz.cy);
-        ::SelectObject(m_hdc,m_curBmp->GetGdiBitmap());
+        ::SelectObject(m_hdc,m_curBmp->GetBitmap());
         ::DeleteObject(hBmp);
         return S_OK;
     }
@@ -280,6 +280,7 @@ namespace SOUI
         HRGN hRgn=::CreateRectRgnIndirect(pRect);
         ::SaveDC(m_hdc);
         ::ExtSelectClipRgn(m_hdc,hRgn,mode);
+        ::DeleteObject(hRgn);
         return S_OK;
     }
 
@@ -292,12 +293,12 @@ namespace SOUI
     HRESULT SRenderTarget_GDI::PushClipRegion( IRegion *pRegion ,UINT mode/*=RGN_AND*/)
     {
         SRegion_GDI *pRgnGDI=(SRegion_GDI*)pRegion;
-        HRGN hRgn=CreateRectRgn(0,0,0,0);
+        HRGN hRgn=::CreateRectRgn(0,0,0,0);
         ::CombineRgn(hRgn,pRgnGDI->GetRegion(),NULL,RGN_COPY);
         ::OffsetRgn(hRgn,m_ptOrg.x,m_ptOrg.y);
         ::SaveDC(m_hdc);
         ::ExtSelectClipRgn(m_hdc,hRgn,mode);
-        DeleteObject(hRgn);
+        ::DeleteObject(hRgn);
         return S_OK;
     }
 
@@ -310,9 +311,7 @@ namespace SOUI
     HRESULT SRenderTarget_GDI::GetClipRegion( IRegion **ppRegion )
     {
         SRegion_GDI *pRgn=new SRegion_GDI(GetRenderFactory_GDI());
-        HRGN hRgn=CreateRectRgn(0,0,0,0);
-        ::GetClipRgn(m_hdc,hRgn);
-        pRgn->SetRegion(hRgn);
+        ::GetClipRgn(m_hdc,pRgn->GetRegion());
         *ppRegion = pRgn;
         return S_OK;
     }
@@ -403,7 +402,7 @@ namespace SOUI
     HRESULT SRenderTarget_GDI::DrawBitmap(LPCRECT pRcDest,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha/*=0xFF*/ )
     {
         SBitmap_GDI *pBmp = (SBitmap_GDI*)pBitmap;
-        HBITMAP bmp=pBmp->GetGdiBitmap();
+        HBITMAP bmp=pBmp->GetBitmap();
         HDC hmemdc=CreateCompatibleDC(m_hdc);
         ::SelectObject(hmemdc,bmp);
         ::BitBlt(m_hdc,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,
@@ -420,7 +419,7 @@ namespace SOUI
             return DrawBitmap(pRcDest,pBitmap,pRcSrc->left,pRcSrc->top,byAlpha);
 
         SBitmap_GDI *pBmp = (SBitmap_GDI*)pBitmap;
-        HBITMAP bmp=pBmp->GetGdiBitmap();
+        HBITMAP bmp=pBmp->GetBitmap();
         HDC hmemdc=CreateCompatibleDC(m_hdc);
         ::SelectObject(hmemdc,bmp);
 
@@ -556,7 +555,7 @@ namespace SOUI
         case OT_BITMAP: 
             pRet=m_curBmp;
             m_curBmp=(SBitmap_GDI*)pObj;
-            ::SelectObject(m_hdc,m_curBmp->GetGdiBitmap());
+            ::SelectObject(m_hdc,m_curBmp->GetBitmap());
             break;
         case OT_PEN:
             pRet=m_curPen;
