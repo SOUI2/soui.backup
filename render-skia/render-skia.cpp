@@ -756,9 +756,9 @@ namespace SOUI
 
 	HRESULT SBitmap_Skia::Init( int nWid,int nHei )
 	{
-	    if(m_hBmp) DeleteObject(m_hBmp);
 		m_bitmap.reset();
 		m_bitmap.setConfig(SkBitmap::kARGB_8888_Config,nWid,nHei);
+        if(m_hBmp) DeleteObject(m_hBmp);
     		
 		LPVOID pBits=NULL;
 		m_hBmp=CreateGDIBitmap(nWid,nHei,&pBits);
