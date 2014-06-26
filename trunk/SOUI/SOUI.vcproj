@@ -49,7 +49,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_USRDLL;SOUI_EXPORTS;DLL_SOUI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="duistd.h"
 				BrowseInformation="1"
@@ -368,10 +368,10 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\include;..\utilities\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="duistd.h"
@@ -392,7 +392,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\$(ProjectName)_static_d.lib"
+				OutputFile="$(OutDir)\$(ProjectName)_static_d.lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
