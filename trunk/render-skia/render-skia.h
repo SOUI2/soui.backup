@@ -185,6 +185,12 @@ namespace SOUI
 		{
 
 		}
+        ~SBitmap_Skia()
+        {
+            m_bitmap.reset();
+            if(m_hBmp) DeleteObject(m_hBmp);
+        }
+
 		virtual HRESULT Init(int nWid,int nHei);
 		virtual HRESULT LoadFromFile(LPCTSTR pszFileName,LPCTSTR pszType);
 		virtual HRESULT LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType);

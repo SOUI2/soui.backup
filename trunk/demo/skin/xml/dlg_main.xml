@@ -1,6 +1,5 @@
 ﻿<UIFRAME name="dlg_main" title="SOUI-DEMO version:%ver%" width="600" height="400" appwin="1" margin="20,5,5,5"  resize="1" translucent="0">
   <window pos="0,0,-0,-0" class="cls_dlg_frame">
-    <!--
     <caption pos="0,0,-0,30">
       <text pos="11,9" class="cls_txt_red">SOUI-DEMO version:%ver%</text>
       <imgbtn id="1" skin="btn_sys_close"    pos="-45,0" tip="close" animate="1"/>
@@ -8,6 +7,7 @@
       <imgbtn id="3" name="按钮_恢复" skin="btn_sys_restore"  pos="-83,0" show="0" animate="1" />
       <imgbtn id="5" name="btn_minimize" skin="btn_sys_minimize" pos="-121,0" animate="1" />
     </caption>
+    <!--
     -->
   </window>
 </UIFRAME>
