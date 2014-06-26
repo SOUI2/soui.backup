@@ -71,7 +71,7 @@ namespace SOUI
         SImgDecoderFactory();
         ~SImgDecoderFactory();
         
-        virtual IImgDecoder * CreateImgDecoder();
+        virtual BOOL CreateImgDecoder(IImgDecoder **ppImgDecoder);
     protected:
         static CAutoRefPtr<IWICImagingFactory> s_wicImgFactory;
     };

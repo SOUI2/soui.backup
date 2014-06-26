@@ -172,6 +172,10 @@ namespace SOUI
         {
             m_sz.cx=m_sz.cy=0;
         }
+        virtual ~SBitmap_GDI()
+        {
+            if(m_hBmp) DeleteObject(m_hBmp);
+        }
         virtual HRESULT Init(int nWid,int nHei);
         virtual HRESULT LoadFromFile(LPCTSTR pszFileName,LPCTSTR pszType);
         virtual HRESULT LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType);
