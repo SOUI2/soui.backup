@@ -5,7 +5,7 @@
 #include "DuiSystem.h" 
 
 #ifdef _DEBUG
-#include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
+//#include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
 #endif
 
 #include "MainDlg.h"
@@ -18,10 +18,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
 #ifdef _DEBUG
     HMODULE hImgDecoder = LoadLibrary(_T("imgdecoder-wic_d.dll"));
-    HMODULE hRenderSkia = LoadLibrary(_T("render-skia_d.dll"));
+    HMODULE hRender = LoadLibrary(_T("render-gdi_d.dll"));
 #else
     HMODULE hImgDecoder = LoadLibrary(_T("imgdecoder-wic.dll"));
-    HMODULE hRenderSkia = LoadLibrary(_T("render-skia.dll"));
+    HMODULE hRender = LoadLibrary(_T("render-gdi.dll"));
 #endif
     typedef BOOL (*fnCreateImgDecoderFactory)(SOUI::IImgDecoderFactory**);
     fnCreateImgDecoderFactory funImg = (fnCreateImgDecoderFactory)GetProcAddress(hImgDecoder,"CreateImgDecoderFactory");
@@ -29,7 +29,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     funImg(&pImgDecoderFactory);
     
     typedef BOOL (*fnCreateRenderFactory)(SOUI::IRenderFactory **,SOUI::IImgDecoderFactory *);
-    fnCreateRenderFactory funRender = (fnCreateRenderFactory)GetProcAddress(hRenderSkia,"CreateRenderFactory");
+    fnCreateRenderFactory funRender = (fnCreateRenderFactory)GetProcAddress(hRender,"CreateRenderFactory");
     CAutoRefPtr<SOUI::IRenderFactory> pRenderFactory;
     funRender(&pRenderFactory,pImgDecoderFactory);
     pImgDecoderFactory=NULL;

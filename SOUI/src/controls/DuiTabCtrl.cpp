@@ -459,11 +459,16 @@ BOOL STabCtrl::LoadChildren( pugi::xml_node xmlNode )
     {
         InsertItem(xmlChild,-1,TRUE);
     }
-
+    
     if(m_nCurrentPage==-1 || m_nCurrentPage>=(int)m_lstPages.GetCount())
     {
         m_nCurrentPage=0;
     }
+    if(m_lstPages.GetCount()==0)
+    {
+        m_nCurrentPage=-1;
+    }
+    
     if(m_nCurrentPage!=-1)
     {
         GetItem(m_nCurrentPage)->DuiSendMessage(WM_SHOWWINDOW,TRUE);
