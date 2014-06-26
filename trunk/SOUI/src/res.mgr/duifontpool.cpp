@@ -53,8 +53,8 @@ void DuiFontPool::SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize)
 
     DUIASSERT(GetCount()==1);//初始化前才可以调用该接口
 
-    CAutoRefPtr<IFont> hftOld = GetKeyObject(FontKey(DUIF_DEFAULTFONT));
-
+    RemoveKeyObject(FontKey(DUIF_DEFAULTFONT));
+    
     SetKeyObject(FontKey(DUIF_DEFAULTFONT),_CreateDefaultGUIFont());
 }
 

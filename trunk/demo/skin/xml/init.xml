@@ -17,7 +17,6 @@
   
   <skins>
     <imgframe name="dlg_frame"  src="IDP_MAIN_DLG_FRAME" left="5" right="5" top="40" bottom="40"/>
-<!--
     <imglist name="btncheckbox"         src="IDP_BTN_WND_CHECKBOX" states="8"  />
     <imglist name="btnRadio"            src="IDP_BTN_WND_RADIO" states="8" />
     <imglist name="focuscheckbox" src="IDP_FOCUS_CHECK"/>
@@ -60,7 +59,6 @@
     <imgframe name="prog_bar" src="IDP_PROG_BAR" x="3"/>
     <imgframe name="prog_bg" src="IDP_PROG_BG" x="5"/>
     <imgframe name="btn_yellow" src="IDP_BTN_YELLOW" x="3" states="4"/>
--->
   </skins>
 
   <style>
