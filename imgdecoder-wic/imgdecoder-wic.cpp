@@ -156,6 +156,7 @@ namespace SOUI
     BOOL CreateImgDecoderFactory( IImgDecoderFactory **pImgDecoderFactory )
     {
         *pImgDecoderFactory = new SImgDecoderFactory;
+		new int[300];
         return TRUE;
     }
 

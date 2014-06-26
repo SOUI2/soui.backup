@@ -4,10 +4,15 @@
 // that uses this DLL. This way any other project whose source files include this file see 
 // IMGDECODERWIC_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
+
+#ifndef _LIB
 #ifdef IMGDECODERWIC_EXPORTS
 #define IMGDECODERWIC_API __declspec(dllexport)
 #else
 #define IMGDECODERWIC_API __declspec(dllimport)
+#endif
+#else
+#define IMGDECODERWIC_API
 #endif
 
 #include <wincodec.h>
