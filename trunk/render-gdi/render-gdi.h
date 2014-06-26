@@ -81,6 +81,10 @@ namespace SOUI
         {
             m_hPen = ::CreatePen(iStyle,cWidth,cr);
         }
+        ~SPen_GDI()
+        {
+            DeleteObject(m_hPen);
+        }
 
         int GetWidth(){return m_nWidth;}
 
@@ -113,6 +117,11 @@ namespace SOUI
             memcpy(&m_lf,plf,sizeof(LOGFONT));
             m_hFont=CreateFontIndirect(&m_lf);
         }
+        ~SFont_GDI()
+        {
+            DeleteObject(m_hFont);
+        }
+
         virtual const LOGFONT * LogFont() const {return &m_lf;}
 
         virtual LPCTSTR FamilyName()
@@ -157,6 +166,10 @@ namespace SOUI
         {
             m_hBrush = ::CreatePatternBrush(hBmp);
         }
+        ~SBrush_GDI()
+        {
+            DeleteObject(m_hBrush);
+        }
         HBRUSH   m_hBrush;
         BOOL	 m_fBmp;
     };
@@ -184,7 +197,7 @@ namespace SOUI
         virtual UINT Height();
         virtual SIZE Size();
 
-        HBITMAP  GetGdiBitmap(){return m_hBmp;}
+        HBITMAP  GetBitmap(){return m_hBmp;}
     protected:
         HBITMAP CreateGDIBitmap(int nWid,int nHei,void ** ppBits);
 
@@ -199,6 +212,10 @@ namespace SOUI
     {
     public:
         SRegion_GDI(IRenderFactory_GDI *pRenderFac);
+        ~SRegion_GDI(){
+            DeleteObject(m_hRgn);
+        }
+
         virtual void CombineRect(LPCRECT lprect,int nCombineMode);
         virtual BOOL PtInRegion(POINT pt);
         virtual BOOL RectInRegion(LPCRECT lprect);
