@@ -50,7 +50,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     typedef BOOL (*fnCreateRenderFactory)(SOUI::IRenderFactory **,SOUI::IImgDecoderFactory *);
     fnCreateRenderFactory funRender = (fnCreateRenderFactory)GetProcAddress(hRender,"CreateRenderFactory");
     funRender(&pRenderFactory,pImgDecoderFactory);
-    pImgDecoderFactory=NULL;
 #else
     SOUI::CreateImgDecoderFactory(&pImgDecoderFactory);
     RENDER_GDI::CreateRenderFactory(&pRenderFactory,pImgDecoderFactory);
@@ -94,6 +93,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     delete pResProvider;
     
     pRenderFactory=NULL;
+    pImgDecoderFactory=NULL;
     
 	OleUninitialize();
 	return nRet;
