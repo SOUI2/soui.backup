@@ -104,7 +104,7 @@ protected:
  */
 class SOUI_EXP CDuiComboBoxBase 
     : public SWindow
-    , public IDuiDropDownOwner
+    , public ISDropDownOwner
 {
     friend class CComboListBox;
 public:
@@ -170,21 +170,21 @@ protected:
     /**
      * CDuiComboBoxBase::OnDropDown
      * @brief    下拉事件
-     * @param     CDuiDropDownWnd *pDropDown -- 下拉窗口指针
+     * @param     SDropDownWnd *pDropDown -- 下拉窗口指针
      *
      * Describe  下拉事件
      */
-    virtual void OnDropDown(CDuiDropDownWnd *pDropDown);
+    virtual void OnDropDown(SDropDownWnd *pDropDown);
 
     /**
      * CDuiComboBoxBase::OnCloseUp
      * @brief    下拉事件
-     * @param     CDuiDropDownWnd *pDropDown -- 下拉窗口指针
+     * @param     SDropDownWnd *pDropDown -- 下拉窗口指针
      * @param     UINT uCode -- 消息码
      *
      * Describe  下拉关闭
      */
-    virtual void OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode);
+    virtual void OnCloseUp(SDropDownWnd *pDropDown,UINT uCode);
 protected:
     /**
      * CDuiComboBoxBase::OnSelChanged
@@ -393,7 +393,7 @@ protected:
     int  m_nDropHeight;      /**< 下拉框高度 */
     int  m_iAnimTime;        /**< 动画时间   */
     int  m_iInitSel;         /**< 默认选中索引 */
-    CDuiDropDownWnd *m_pDropDownWnd;  /**< DropDown指针 */
+    SDropDownWnd *m_pDropDownWnd;  /**< DropDown指针 */
 };
 
 /**
@@ -589,21 +589,21 @@ protected:
     /**
      * SComboBox::OnDropDown
      * @brief    下拉列表事件
-     * @param    CDuiDropDownWnd *pDropDown -- 下拉列表指针
+     * @param    SDropDownWnd *pDropDown -- 下拉列表指针
      *
      * Describe  下拉列表事件
      */
-    virtual void OnDropDown(CDuiDropDownWnd *pDropDown);
+    virtual void OnDropDown(SDropDownWnd *pDropDown);
 
     /**
      * SComboBox::OnCloseUp
      * @brief    下拉列表关闭事件
-     * @param    CDuiDropDownWnd *pDropDown -- 下拉列表指针
+     * @param    SDropDownWnd *pDropDown -- 下拉列表指针
      * @param    UINT uCode -- 消息码
      *
      * Describe  获取下拉列表指针
      */
-    virtual void OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode);
+    virtual void OnCloseUp(SDropDownWnd *pDropDown,UINT uCode);
     
     /**
      * SComboBox::OnSelChanged
@@ -820,21 +820,21 @@ protected:
     /**
      * SComboBoxEx::OnDropDown
      * @brief    下拉列表事件
-     * @param    CDuiDropDownWnd *pDropDown -- 下拉列表指针
+     * @param    SDropDownWnd *pDropDown -- 下拉列表指针
      *
      * Describe  下拉列表事件
      */
-    virtual void OnDropDown(CDuiDropDownWnd *pDropDown);
+    virtual void OnDropDown(SDropDownWnd *pDropDown);
 
     /**
      * SComboBox::OnCloseUp
      * @brief    下拉列表关闭事件
-     * @param    CDuiDropDownWnd *pDropDown -- 下拉列表指针
+     * @param    SDropDownWnd *pDropDown -- 下拉列表指针
      * @param    UINT uCode -- 消息码
      *
      * Describe  获取下拉列表指针
      */
-    virtual void OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode);
+    virtual void OnCloseUp(SDropDownWnd *pDropDown,UINT uCode);
 
 protected:
 

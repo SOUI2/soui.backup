@@ -16,14 +16,14 @@
 namespace SOUI
 {
 
-    class CDuiDropDownWnd;
+    class SDropDownWnd;
     /**
      * @class      IDuiDropDownOwner
      * @brief      IDuiDropDownOwner接口类
      * 
      * Describe    下拉窗口接口类 里面只定义一些虚函数
      */
-    class SOUI_EXP IDuiDropDownOwner
+    class SOUI_EXP ISDropDownOwner
     {
     public:
         /**
@@ -40,7 +40,7 @@ namespace SOUI
          *
          * Describe  此函数是纯虚函数
          */        
-        virtual void OnDropDown(CDuiDropDownWnd *pDropDown) = 0;
+        virtual void OnDropDown(SDropDownWnd *pDropDown) = 0;
         
         /**
          * IDuiDropDownOwner::OnCloseUp
@@ -48,38 +48,38 @@ namespace SOUI
          *
          * Describe  此函数是纯虚函数  
          */
-        virtual void OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode) = 0;
+        virtual void OnCloseUp(SDropDownWnd *pDropDown,UINT uCode) = 0;
     };
 
     /**
-     * @class      CDuiDropDownWnd
+     * @class      SDropDownWnd
      * @brief      下拉窗口类
      * 
      * Describe    下拉窗口类 只需要继承此类即可
      */
-    class SOUI_EXP CDuiDropDownWnd : public CDuiHostWnd , public CDuiMessageFilter
+    class SOUI_EXP SDropDownWnd : public CDuiHostWnd , public CDuiMessageFilter
     {
     public:
     
         /**
-         * CDuiDropDownWnd::CDuiDropDownWnd
+         * SDropDownWnd::SDropDownWnd
          * @brief    构造函数
          * @param    IDuiDropDownOwner* pOwner -- 所属者指针
          *
          * Describe  CDuiDropDownWnd类的构造函数
          */        
-        CDuiDropDownWnd(IDuiDropDownOwner* pOwner);
+        SDropDownWnd(ISDropDownOwner* pOwner);
 
         /**
-         * CDuiDropDownWnd::~CDuiDropDownWnd
+         * SDropDownWnd::~SDropDownWnd
          * @brief    析构函数
          *
          * Describe  CDuiDropDownWnd类的析构函数
          */        
-        virtual ~CDuiDropDownWnd();
+        virtual ~SDropDownWnd();
 
         /**
-         * CDuiDropDownWnd::Create
+         * SDropDownWnd::Create
          * @brief    下拉窗口创建函数
          * @param     LPCRECT lpRect -- 下拉窗口大小
          * @param     LPVOID lParam -- 与下拉窗口关联的数据
@@ -91,7 +91,7 @@ namespace SOUI
         virtual BOOL Create(LPCRECT lpRect,LPVOID lParam,DWORD dwStyle=WS_POPUP,DWORD dwExStyle=WS_EX_TOOLWINDOW|WS_EX_TOPMOST);
 
         /**
-         * CDuiDropDownWnd::EndDropDown
+         * SDropDownWnd::EndDropDown
          * @brief    下拉窗口销毁
          * @param    UINT uCode -- 消息码 默认是IDCANCEL
          * 
@@ -100,7 +100,7 @@ namespace SOUI
         void EndDropDown(UINT uCode=IDCANCEL);
     protected:
         /**
-         * CDuiDropDownWnd::OnLButtonDown
+         * SDropDownWnd::OnLButtonDown
          * @brief    下拉窗口鼠标左键按下事件
          * @param    UINT nFlags -- 标志
          * @param    CPoint point -- 鼠标坐标
@@ -110,7 +110,7 @@ namespace SOUI
         void OnLButtonDown(UINT nFlags, CPoint point);
 
         /**
-         * CDuiDropDownWnd::OnLButtonDown
+         * SDropDownWnd::OnLButtonDown
          * @brief    下拉窗口鼠标左键抬起事件
          * @param    UINT nFlags -- 标志
          * @param    CPoint point -- 鼠标坐标
@@ -120,7 +120,7 @@ namespace SOUI
         void OnLButtonUp(UINT nFlags, CPoint point);
 
         /**
-         * CDuiDropDownWnd::OnKeyDown
+         * SDropDownWnd::OnKeyDown
          * @brief    键盘按下事件
          * @param    UINT nChar -- 按键对应的码值 
          * @param    UINT nRepCnt -- 重复次数
@@ -131,7 +131,7 @@ namespace SOUI
         void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
         /**
-         * CDuiDropDownWnd::OnKillFocus
+         * SDropDownWnd::OnKillFocus
          * @brief    下拉窗口失去焦点消息响应函数
          * @param    HWND wndFocus -- 获得焦点窗口句柄
          * 
@@ -140,7 +140,7 @@ namespace SOUI
         void OnKillFocus(HWND wndFocus);
 
         /**
-         * CDuiDropDownWnd::OnDestroy
+         * SDropDownWnd::OnDestroy
          * @brief    下拉窗口销毁
          * 
          * Describe  此函数是用于销毁下拉窗口
@@ -148,7 +148,7 @@ namespace SOUI
         void OnDestroy();
 
         /**
-         * CDuiDropDownWnd::OnActivateApp
+         * SDropDownWnd::OnActivateApp
          * @brief    下拉窗口激活或者停止
          * @param    BOOL bActive  -- 窗口激活标志
          * @param    DWORD dwThreadID -- 线程ID
@@ -158,8 +158,8 @@ namespace SOUI
         void OnActivateApp(BOOL bActive, DWORD dwThreadID);
 
         /**
-         * CDuiDropDownWnd::OnMouseActivate
-         * @brief    下拉窗口销毁
+         * SDropDownWnd::OnMouseActivate
+         * @brief    鼠标点击窗口使窗口活动
          * @param    HWND wndTopLevel  -- 顶级窗口
          * @param    UINT nHitTest -- 指定命中测试区号
          * @param    UINT message -- 鼠标消息码
@@ -168,21 +168,34 @@ namespace SOUI
          *           详细说明，请查看MSDN
          */        
         int OnMouseActivate(HWND wndTopLevel, UINT nHitTest, UINT message);
+        
+         /**
+         * SDropDownWnd::OnActivate
+         * @brief    下拉窗口销毁
+         * @param    UINT nState  -- 激活类型
+         * @param    BOOL bMinimized -- 最小化标志
+         * @param    HWND wndOther -- 原活动窗口
+         * 
+         * Describe  
+         *           详细说明，请查看MSDN
+         */        
+       void OnActivate(UINT nState, BOOL bMinimized, HWND wndOther){}//中断消息处理，防止设置焦点
 
         virtual void OnFinalMessage(HWND);
         
         virtual BOOL PreTranslateMessage(MSG* pMsg);
     protected:
-        IDuiDropDownOwner* m_pOwner; /**< 窗口所属者 */
+        ISDropDownOwner* m_pOwner; /**< 窗口所属者 */
         BOOL                m_bClick; /**< 单击状态 */
         UINT                m_uExitCode; /**< 退出消息码 */
 
-        BEGIN_MSG_MAP_EX(CDuiDropDownWnd)
+        BEGIN_MSG_MAP_EX(SDropDownWnd)
             MSG_WM_LBUTTONDOWN(OnLButtonDown)
             MSG_WM_LBUTTONUP(OnLButtonUp)
             MSG_WM_KEYDOWN(OnKeyDown);
             MSG_WM_KILLFOCUS(OnKillFocus)
             MSG_WM_DESTROY(OnDestroy)
+            MSG_WM_ACTIVATE(OnActivate)
             MSG_WM_ACTIVATEAPP(OnActivateApp)
             MSG_WM_MOUSEACTIVATE(OnMouseActivate)
             CHAIN_MSG_MAP(CDuiHostWnd)

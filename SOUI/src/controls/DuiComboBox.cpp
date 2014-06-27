@@ -209,7 +209,7 @@ SWindow* CDuiComboBoxBase::GetDropDownOwner()
 }
 
 
-void CDuiComboBoxBase::OnDropDown( CDuiDropDownWnd *pDropDown )
+void CDuiComboBoxBase::OnDropDown( SDropDownWnd *pDropDown )
 {
     m_dwBtnState=DuiWndState_PushDown;
     CRect rcBtn;
@@ -218,7 +218,7 @@ void CDuiComboBoxBase::OnDropDown( CDuiDropDownWnd *pDropDown )
     pDropDown->SetCapture();
 }
 
-void CDuiComboBoxBase::OnCloseUp(CDuiDropDownWnd *pDropDown,UINT uCode)
+void CDuiComboBoxBase::OnCloseUp(SDropDownWnd *pDropDown,UINT uCode)
 {
     ReleaseCapture();
 
@@ -284,7 +284,7 @@ void CDuiComboBoxBase::DropDown()
 
     if(!m_pDropDownWnd)
     {
-        m_pDropDownWnd = new CDuiDropDownWnd(this);
+        m_pDropDownWnd = new SDropDownWnd(this);
         CRect rcPopup;
         BOOL bDown=CalcPopupRect(GetListBoxHeight(),rcPopup);
         m_pDropDownWnd->Create(rcPopup,0);
@@ -396,7 +396,7 @@ int SComboBox::GetListBoxHeight()
     return nDropHeight;    
 }
 
-void SComboBox::OnDropDown( CDuiDropDownWnd *pDropDown)
+void SComboBox::OnDropDown( SDropDownWnd *pDropDown)
 {
     __super::OnDropDown(pDropDown);
     pDropDown->InsertChild(m_pListBox);
@@ -407,7 +407,7 @@ void SComboBox::OnDropDown( CDuiDropDownWnd *pDropDown)
     m_pListBox->EnsureVisible(GetCurSel());
 }
 
-void SComboBox::OnCloseUp( CDuiDropDownWnd *pDropDown ,UINT uCode)
+void SComboBox::OnCloseUp( SDropDownWnd *pDropDown ,UINT uCode)
 {
     pDropDown->RemoveChild(m_pListBox);
     m_pListBox->SetVisible(FALSE);
@@ -520,7 +520,7 @@ int SComboBoxEx::GetListBoxHeight()
     return nDropHeight;    
 }
 
-void SComboBoxEx::OnDropDown( CDuiDropDownWnd *pDropDown )
+void SComboBoxEx::OnDropDown( SDropDownWnd *pDropDown )
 {
     __super::OnDropDown(pDropDown);
     pDropDown->InsertChild(m_pListBox);
@@ -531,7 +531,7 @@ void SComboBoxEx::OnDropDown( CDuiDropDownWnd *pDropDown )
     m_pListBox->EnsureVisible(GetCurSel());
 }
 
-void SComboBoxEx::OnCloseUp( CDuiDropDownWnd *pDropDown ,UINT uCode)
+void SComboBoxEx::OnCloseUp( SDropDownWnd *pDropDown ,UINT uCode)
 {
     pDropDown->RemoveChild(m_pListBox);
     m_pListBox->SetVisible(FALSE);
