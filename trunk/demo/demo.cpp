@@ -59,7 +59,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     funRender(&pRenderFactory,pImgDecoderFactory);
 #else
     SOUI::CreateImgDecoderFactory_WIC(&pImgDecoderFactory,TRUE);
-    CreateRenderFactory_GDI(&pRenderFactory,pImgDecoderFactory);
+    CreateRenderFactory_Skia(&pRenderFactory,pImgDecoderFactory);
 #endif
     
 	DuiSystem *pDuiSystem=new DuiSystem(pRenderFactory,hInstance);
