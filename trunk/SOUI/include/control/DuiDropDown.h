@@ -179,7 +179,7 @@ namespace SOUI
          * Describe  
          *           详细说明，请查看MSDN
          */        
-       void OnActivate(UINT nState, BOOL bMinimized, HWND wndOther){}//中断消息处理，防止设置焦点
+        void OnActivate(UINT nState, BOOL bMinimized, HWND wndOther){}//中断消息处理，防止设置焦点
 
         virtual void OnFinalMessage(HWND);
         

@@ -16,10 +16,5 @@
 #include <render/imgdecoder-i.h>
 
 
-namespace RENDER_SKIA
-{
-
-extern "C" RENDERSKIA_API BOOL CreateRenderFactory(SOUI::IRenderFactory ** ppRenderFactory,SOUI::IImgDecoderFactory *pImgDecoderFactory);
-
-}
+extern "C" RENDERSKIA_API BOOL CreateRenderFactory_Skia(SOUI::IRenderFactory ** ppRenderFactory,SOUI::IImgDecoderFactory *pImgDecoderFactory);
 

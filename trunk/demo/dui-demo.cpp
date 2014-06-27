@@ -11,19 +11,26 @@
 #include "MainDlg.h"
 
 #ifndef DLL_SOUI
-#include "../render-skia/render-skia.h"
+#include "../render-skia/render-api.h"
+#include "../render-gdi/render-api.h"
 #include "../imgdecoder-wic/imgdecoder-wic.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"utilities_d.lib")
 #pragma comment(lib,"render-skia_d.lib")
+#pragma comment(lib,"render-gdi_d.lib")
 #pragma comment(lib,"imgdecoder-wic_d.lib")
 #pragma comment(lib,"skcore_d.lib")
+#pragma comment(lib,"../myskia/third_party/freetype/lib/freetype253_D.lib")
+#pragma comment(lib,"usp10.lib")
 #else
 #pragma comment(lib,"utilities.lib")
 #pragma comment(lib,"render-skia.lib")
+#pragma comment(lib,"render-gdi.lib")
 #pragma comment(lib,"imgdecoder-wic.lib")
 #pragma comment(lib,"skcore.lib")
+#pragma comment(lib,"../myskia/third_party/freetype/lib/freetype253.lib")
+#pragma comment(lib,"usp10.lib")
 #endif
 #endif
 
@@ -48,11 +55,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     funImg(&pImgDecoderFactory,TRUE);
     
     typedef BOOL (*fnCreateRenderFactory)(SOUI::IRenderFactory **,SOUI::IImgDecoderFactory *);
-    fnCreateRenderFactory funRender = (fnCreateRenderFactory)GetProcAddress(hRender,"CreateRenderFactory");
+    fnCreateRenderFactory funRender = (fnCreateRenderFactory)GetProcAddress(hRender,"CreateRenderFactory_Skia");
     funRender(&pRenderFactory,pImgDecoderFactory);
 #else
     SOUI::CreateImgDecoderFactory_WIC(&pImgDecoderFactory,TRUE);
-    RENDER_SKIA::CreateRenderFactory(&pRenderFactory,pImgDecoderFactory);
+    CreateRenderFactory_GDI(&pRenderFactory,pImgDecoderFactory);
 #endif
     
 	DuiSystem *pDuiSystem=new DuiSystem(pRenderFactory,hInstance);
