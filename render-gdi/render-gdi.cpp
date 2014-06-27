@@ -335,7 +335,7 @@ namespace SOUI
 
     HRESULT SRenderTarget_GDI::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha)
     {
-        COLORREF crOld=::SetTextColor(m_hdc,m_curColor.toCOLORREF());
+        COLORREF crOld=::SetTextColor(m_hdc,m_curColor.toCOLORREF()&0x00ffffff);
         ::DrawText(m_hdc,pszText,cchLen,pRc,uFormat);
         ::SetTextColor(m_hdc,crOld);
         return S_OK;
@@ -387,7 +387,7 @@ namespace SOUI
 
     HRESULT SRenderTarget_GDI::TextOut( int x, int y, LPCTSTR lpszString, int nCount,BYTE byAlpha )
     {
-        COLORREF crOld=::SetTextColor(m_hdc,m_curColor.toCOLORREF());
+        COLORREF crOld=::SetTextColor(m_hdc,m_curColor.toCOLORREF()&0x00ffffff);
         ::TextOut(m_hdc,x,y,lpszString,nCount);
         ::SetTextColor(m_hdc,crOld);
         return S_OK;
@@ -641,7 +641,7 @@ namespace SOUI
 
     HRESULT SRenderTarget_GDI::FillSolidRect( LPCRECT pRect,COLORREF cr )
     {
-        HBRUSH hbr=::CreateSolidBrush(cr);
+        HBRUSH hbr=::CreateSolidBrush(cr&0x00FFFFFF);
         ::FillRect(m_hdc,pRect,hbr);
         ::DeleteObject(hbr);
         return S_OK;    

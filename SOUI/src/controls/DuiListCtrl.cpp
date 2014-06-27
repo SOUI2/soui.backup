@@ -477,10 +477,8 @@ void SListCtrl::OnPaint(IRenderTarget * pRT)
 {
     SPainter dxDC;
     BeforePaint(pRT, dxDC);
-
     CRect rcList = GetListRect();
     int nTopItem = GetTopIndex();
-
     pRT->PushClipRect(&rcList);
     CRect rcItem(rcList);
 

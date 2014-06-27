@@ -963,7 +963,7 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
-				RelativePath=".\dui-demo.cpp"
+				RelativePath=".\demo.cpp"
 				>
 			</File>
 			<File
@@ -1182,7 +1182,7 @@
 			Name="resource files"
 			>
 			<File
-				RelativePath=".\dui-demo.rc"
+				RelativePath=".\demo.rc"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
