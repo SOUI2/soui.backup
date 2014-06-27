@@ -43,15 +43,15 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     HMODULE hImgDecoder = LoadLibrary(_T("imgdecoder-wic.dll"));
     HMODULE hRender = LoadLibrary(_T("render-skia.dll"));
 #endif
-    typedef BOOL (*fnCreateImgDecoderFactory)(SOUI::IImgDecoderFactory**);
-    fnCreateImgDecoderFactory funImg = (fnCreateImgDecoderFactory)GetProcAddress(hImgDecoder,"CreateImgDecoderFactory");
-    funImg(&pImgDecoderFactory);
+    typedef BOOL (*fnCreateImgDecoderFactory)(SOUI::IImgDecoderFactory**,BOOL);
+    fnCreateImgDecoderFactory funImg = (fnCreateImgDecoderFactory)GetProcAddress(hImgDecoder,"CreateImgDecoderFactory_WIC");
+    funImg(&pImgDecoderFactory,TRUE);
     
     typedef BOOL (*fnCreateRenderFactory)(SOUI::IRenderFactory **,SOUI::IImgDecoderFactory *);
     fnCreateRenderFactory funRender = (fnCreateRenderFactory)GetProcAddress(hRender,"CreateRenderFactory");
     funRender(&pRenderFactory,pImgDecoderFactory);
 #else
-    SOUI::CreateImgDecoderFactory(&pImgDecoderFactory);
+    SOUI::CreateImgDecoderFactory_WIC(&pImgDecoderFactory,TRUE);
     RENDER_SKIA::CreateRenderFactory(&pRenderFactory,pImgDecoderFactory);
 #endif
     
