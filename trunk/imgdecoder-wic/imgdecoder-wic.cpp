@@ -46,7 +46,10 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
 
-    SImgDecoder_WIC::SImgDecoder_WIC(void):m_pImgArray(NULL),m_uImgCount(0)
+    SImgDecoder_WIC::SImgDecoder_WIC(BOOL bPremultiplied)
+    :m_pImgArray(NULL)
+    ,m_uImgCount(0)
+    ,m_bPremultiplied(bPremultiplied)
     {
     }
 
@@ -120,7 +123,7 @@ namespace SOUI
             if(SUCCEEDED(pDecoder->GetFrame(i,&frame)))
             {
                 converter->Initialize(frame,
-                    GUID_WICPixelFormat32bppPBGRA,
+                    m_bPremultiplied?GUID_WICPixelFormat32bppPBGRA:GUID_WICPixelFormat32bppBGRA,
                     WICBitmapDitherTypeNone,NULL,
                     0.f,WICBitmapPaletteTypeCustom);
                 CAutoRefPtr<IWICBitmapSource> bmp;
@@ -134,7 +137,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     CAutoRefPtr<IWICImagingFactory> SImgDecoderFactory::s_wicImgFactory;
 
-    SImgDecoderFactory::SImgDecoderFactory()
+    SImgDecoderFactory::SImgDecoderFactory(BOOL bPremultiplied):m_bPremultplied(bPremultiplied)
     {
         HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,NULL,
             CLSCTX_INPROC_SERVER,IID_PPV_ARGS(&s_wicImgFactory));
@@ -149,14 +152,14 @@ namespace SOUI
 
     BOOL SImgDecoderFactory::CreateImgDecoder(IImgDecoder ** ppImgDecoder)
     {
-        *ppImgDecoder = new SImgDecoder_WIC;
+        *ppImgDecoder = new SImgDecoder_WIC(m_bPremultplied);
         return TRUE;
     }
     
     //////////////////////////////////////////////////////////////////////////
-    BOOL CreateImgDecoderFactory( IImgDecoderFactory **pImgDecoderFactory )
+    BOOL CreateImgDecoderFactory_WIC( IImgDecoderFactory **pImgDecoderFactory ,BOOL bPremultplied)
     {
-        *pImgDecoderFactory = new SImgDecoderFactory;
+        *pImgDecoderFactory = new SImgDecoderFactory(bPremultplied);
         return TRUE;
     }
 

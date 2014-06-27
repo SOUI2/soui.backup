@@ -405,8 +405,11 @@ namespace SOUI
         HBITMAP bmp=pBmp->GetBitmap();
         HDC hmemdc=CreateCompatibleDC(m_hdc);
         ::SelectObject(hmemdc,bmp);
-        ::BitBlt(m_hdc,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,
-                hmemdc,xSrc,ySrc,SRCCOPY);
+        BLENDFUNCTION bf={ AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
+        int nWid=pRcDest->right-pRcDest->left;
+        int nHei=pRcDest->bottom-pRcDest->top;
+        AlphaBlend(m_hdc,pRcDest->left,pRcDest->top,nWid,nHei,
+                   hmemdc,xSrc,ySrc,nWid,nHei,bf);
         DeleteDC(hmemdc);
         
         return S_OK;
@@ -423,29 +426,27 @@ namespace SOUI
         HDC hmemdc=CreateCompatibleDC(m_hdc);
         ::SelectObject(hmemdc,bmp);
 
+        BLENDFUNCTION bf={ AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
         if(expendMode == EM_STRETCH)
         {
-            ::StretchBlt(m_hdc,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,
-                hmemdc,pRcSrc->left,pRcSrc->top,pRcSrc->right-pRcSrc->left,pRcSrc->bottom-pRcSrc->top,SRCCOPY);
+            AlphaBlend(m_hdc,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,
+                hmemdc,pRcSrc->left,pRcSrc->top,pRcSrc->right-pRcSrc->left,pRcSrc->bottom-pRcSrc->top,bf);
         }else
         {
+            ::SaveDC(m_hdc);
+            ::IntersectClipRect(m_hdc,pRcDest->left,pRcDest->top,pRcDest->right,pRcDest->bottom);
             int nWid=pRcSrc->right-pRcSrc->left;
             int nHei=pRcSrc->bottom-pRcSrc->top;
-            HBITMAP hBmp2=CreateCompatibleBitmap(m_hdc,nWid,nHei);
-            HDC hmemdc2=CreateCompatibleDC(m_hdc);
-            ::SelectObject(hmemdc2,hBmp2);
-            ::BitBlt(hmemdc2,0,0,nWid,nHei,hmemdc,pRcSrc->left,pRcSrc->top,SRCCOPY);
-            DeleteDC(hmemdc2);
-            
-            HBRUSH hbr=CreatePatternBrush(hBmp2);
-            HGDIOBJ oldBr=::SelectObject(m_hdc,hbr);
-            HGDIOBJ oldPen=::SelectObject(m_hdc,GetStockObject(NULL_PEN));
-            ::Rectangle(m_hdc,pRcDest->left,pRcDest->top,pRcDest->right,pRcDest->bottom);
-            ::SelectObject(m_hdc,oldBr);
-            ::SelectObject(m_hdc,oldPen);
-            
-            ::DeleteObject(hbr);
-            ::DeleteObject(hBmp2);
+            for(int y=pRcDest->top ;y<pRcDest->bottom;y+=nHei)
+            {
+                for(int x=pRcDest->left; x<pRcDest->right; x+=nWid)
+                {
+                    AlphaBlend(m_hdc,x,y,nWid,nHei,
+                        hmemdc,pRcSrc->left,pRcSrc->top,nWid,nHei,
+                        bf);                    
+                }
+            }
+            ::RestoreDC(m_hdc,-1);
         }
         DeleteDC(hmemdc);
         return S_OK;
@@ -618,7 +619,23 @@ namespace SOUI
 
     HRESULT SRenderTarget_GDI::GradientFill( LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha/*=0xFF*/ )
     {
-        GradientFillRect(m_hdc,pRect,crBegin,crEnd,bVert,byAlpha);
+        if(byAlpha!=0xFF)
+        {
+            int nWid=pRect->right-pRect->left;
+            int nHei=pRect->bottom-pRect->top;
+            RECT rc={0,0,nWid,nHei};
+            HBITMAP hbmp=CreateCompatibleBitmap(m_hdc,nWid,nHei);
+            HDC hmemdc=CreateCompatibleDC(m_hdc);
+            ::SelectObject(hmemdc,hbmp);
+            GradientFillRect(hmemdc,&rc,crBegin,crEnd,bVert);
+            BLENDFUNCTION bf={AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA };
+            AlphaBlend(m_hdc,pRect->left,pRect->top,nWid,nHei,hmemdc,0,0,nWid,nHei,bf);
+            DeleteDC(hmemdc);
+            DeleteObject(hbmp);
+        }else
+        {
+            GradientFillRect(m_hdc,pRect,crBegin,crEnd,bVert);
+        }
         return S_OK;
     }
 
