@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\utilities\include;..\soui\include;..\utilities\include;..\myskia\include\;..\myskia\include\config;..\myskia\include\core"
+				AdditionalIncludeDirectories="..\utilities\include;..\soui\include;..\myskia\include\;..\myskia\include\config;..\myskia\include\core;..\myskia"
 				PreprocessorDefinitions="WIN32;_DEBUG;_USRDLL;RENDERSKIA_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

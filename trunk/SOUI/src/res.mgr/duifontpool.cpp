@@ -62,7 +62,7 @@ IFontPtr DuiFontPool::_CreateDefaultGUIFont()
 {
     ::GetObjectA(::GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &m_lfDefault);
 
-    m_lfDefault.lfHeight = _GetFontAbsHeight(m_lFontSize);
+    m_lfDefault.lfHeight = -_GetFontAbsHeight(m_lFontSize);
     _tcscpy_s(m_lfDefault.lfFaceName,_countof(m_lfDefault.lfFaceName),  m_szDefFontFace);
 
     m_lfDefault.lfQuality = ANTIALIASED_QUALITY;
@@ -86,8 +86,7 @@ IFontPtr DuiFontPool::_CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, 
     lfNew.lfUnderline   = (FALSE != bUnderline);
     lfNew.lfItalic      = (FALSE != bItalic);
 
-    if(chAdding & 0x80) chAdding=-1*(chAdding&~0x80);
-    lfNew.lfHeight = _GetFontAbsHeight(lfNew.lfHeight - chAdding);
+    lfNew.lfHeight = -_GetFontAbsHeight(lfNew.lfHeight - chAdding);//lfNew.lfHeight应该为负值
 
     lfNew.lfQuality = CLEARTYPE_NATURAL_QUALITY;
 

@@ -65,7 +65,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	DuiSystem *pDuiSystem=new DuiSystem(pRenderFactory,hInstance);
 
 #if 1
-    TCHAR szCurrentDir[MAX_PATH]; memset( szCurrentDir, 0, sizeof(szCurrentDir) );
+    TCHAR szCurrentDir[MAX_PATH]={0};
     GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
     LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
     *lpInsertPos = _T('\0');   

@@ -4,8 +4,9 @@
 #include <core\SkDevice.h>
 #include <effects\SkDashPathEffect.h>
 #include <effects\SkGradientShader.h>
-#include "drawtext-skia.h"
+#include <gdialpha.h>
 
+#include "drawtext-skia.h"
 #include "render-skia.h"
 
 namespace SOUI
@@ -254,28 +255,32 @@ namespace SOUI
         prcBound->bottom=(LONG)skrc.fBottom;
         return S_OK;
     }
-
-
+    
 	HRESULT SRenderTarget_Skia::BitBlt( LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop/*=SRCCOPY*/)
 	{
-	    HDC hdcSrc=pRTSour->GetDC(0);
-	    HDC hdcDst=GetDC(0);
-	    ::BitBlt(hdcDst,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,hdcSrc,xSrc,ySrc,dwRop);
-	    ReleaseDC(hdcDst);
-	    pRTSour->ReleaseDC(hdcSrc);
-	    return S_OK;
-// 	    if(dwRop != SRCCOPY) return E_NOTIMPL;
-// 	    
-// 	    SRenderTarget_Skia *pRTSourSkia=(SRenderTarget_Skia*)pRTSour;
-// 	    
-// 	    const SkBitmap & bmpSrc= pRTSourSkia->m_SkCanvas->getDevice()->accessBitmap(true);
-//         SkRect rcDst=toSkRect(pRcDest);
-//         rcDst.offset(m_ptOrg);
-//         RECT rc={xSrc,ySrc,xSrc+pRcDest->right-pRcDest->left,ySrc+pRcDest->bottom-pRcDest->top};
-//         SkRect rcSrc=toSkRect(&rc);
-//         rcSrc.offset(pRTSourSkia->m_ptOrg);
-// 	    m_SkCanvas->drawBitmapRectToRect(bmpSrc,&rcSrc,rcDst);
-// 		return S_OK;
+        if(dwRop == SRCCOPY)
+        {
+            SRenderTarget_Skia *pRTSourSkia=(SRenderTarget_Skia*)pRTSour;
+
+            const SkBitmap & bmpSrc= pRTSourSkia->m_SkCanvas->getDevice()->accessBitmap(true);
+            SkRect rcDst=toSkRect(pRcDest);
+            rcDst.offset(m_ptOrg);
+            RECT rc={xSrc,ySrc,xSrc+pRcDest->right-pRcDest->left,ySrc+pRcDest->bottom-pRcDest->top};
+            SkRect rcSrc=toSkRect(&rc);
+            rcSrc.offset(pRTSourSkia->m_ptOrg);
+            m_SkCanvas->drawBitmapRectToRect(bmpSrc,&rcSrc,rcDst);
+        }else
+        {
+            HDC hdcSrc=pRTSour->GetDC(0);
+            HDC hdcDst=GetDC(0);
+            ALPHAINFO ai;
+            CGdiAlpha::AlphaBackup(hdcDst,pRcDest,ai);
+            ::BitBlt(hdcDst,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,hdcSrc,xSrc,ySrc,dwRop);
+            CGdiAlpha::AlphaRestore(hdcDst,ai);
+            ReleaseDC(hdcDst);
+            pRTSour->ReleaseDC(hdcSrc);
+        }
+		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha)
