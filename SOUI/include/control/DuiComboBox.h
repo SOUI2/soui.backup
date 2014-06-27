@@ -387,6 +387,7 @@ protected:
 
     SRichEdit *m_pEdit;      /**< SRichEdit指针 */
     DWORD     m_dwBtnState;  /**< 按钮状态      */
+    ISkinObj *m_pSkinBtn;    /**< 按钮资源      */
     
     BOOL m_bDropdown;        /**< 是否按下   */
     int  m_nDropHeight;      /**< 下拉框高度 */
