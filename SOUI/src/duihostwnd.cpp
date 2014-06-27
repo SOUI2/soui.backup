@@ -522,7 +522,7 @@ void CDuiHostWnd::DrawCaret(CPoint pt)
     CRect rcShowCaret;
     rcShowCaret.IntersectRect(m_rcValidateCaret,rcCaret);
     
-    m_memRT->BitBlt(&rcShowCaret,pRTCaret,rcShowCaret.left-pt.x,rcShowCaret.top-pt.y,DSTINVERT);
+    m_memRT->BitBlt(&rcShowCaret,pRTCaret,rcShowCaret.left-pt.x,rcShowCaret.top-pt.y,SRCINVERT);
     
     if(!m_bTranslucent)
     {
@@ -725,6 +725,7 @@ BOOL CDuiHostWnd::IsTranslucent()
 
 BOOL CDuiHostWnd::DuiCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
 {
+    nWidth+=3;
     ::CreateCaret(m_hWnd,hBmp,nWidth,nHeight);
     if(m_bmpCaret)
     {
