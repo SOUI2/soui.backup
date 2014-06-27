@@ -3,12 +3,8 @@
 
 #include "render-gdi.h"
 
-namespace RENDER_GDI
+BOOL CreateRenderFactory_GDI(SOUI::IRenderFactory ** ppRenderFactory,SOUI::IImgDecoderFactory *pImgDecoderFactory)
 {
-    BOOL CreateRenderFactory(SOUI::IRenderFactory ** ppRenderFactory,SOUI::IImgDecoderFactory *pImgDecoderFactory)
-    {
-        *ppRenderFactory = new SOUI::SRenderFactory_GDI(pImgDecoderFactory);
-        return TRUE;
-    }
-    
+    *ppRenderFactory = new SOUI::SRenderFactory_GDI(pImgDecoderFactory);
+    return TRUE;
 }

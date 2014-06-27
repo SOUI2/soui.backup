@@ -3,12 +3,8 @@
 
 #include "render-skia.h"
 
-namespace RENDER_SKIA
+BOOL CreateRenderFactory_Skia(SOUI::IRenderFactory ** ppRenderFactory,SOUI::IImgDecoderFactory *pImgDecoderFactory)
 {
-    BOOL CreateRenderFactory(SOUI::IRenderFactory ** ppRenderFactory,SOUI::IImgDecoderFactory *pImgDecoderFactory)
-    {
-        *ppRenderFactory = new SOUI::SRenderFactory_Skia(pImgDecoderFactory);
-        return TRUE;
-    }
-    
+    *ppRenderFactory = new SOUI::SRenderFactory_Skia(pImgDecoderFactory);
+    return TRUE;
 }

@@ -563,15 +563,13 @@ BOOL SWindow::Load(pugi::xml_node xmlNode)
         return FALSE;
     }
 
+    m_strWndText = DUI_CA2T(xmlNode.text().get(), CP_UTF8);
+    if (!m_strWndText.IsEmpty())
     {
-        m_strWndText = DUI_CA2T(xmlNode.text().get(), CP_UTF8);
-        if (!m_strWndText.IsEmpty())
-        {
-            m_strWndText.TrimRight(0x0a).TrimLeft(0x0a);
-            m_strWndText.TrimRight(0x0d).TrimLeft(0x0d);
-            m_strWndText.TrimRight(0x20).TrimLeft(0x20);
-            if (!m_strWndText.IsEmpty()) BUILDSTRING(m_strWndText);
-        }
+        m_strWndText.TrimRight(0x0a).TrimLeft(0x0a);
+        m_strWndText.TrimRight(0x0d).TrimLeft(0x0d);
+        m_strWndText.TrimRight(0x20).TrimLeft(0x20);
+        if (!m_strWndText.IsEmpty()) BUILDSTRING(m_strWndText);
     }
 
     m_dlgpos.nCount = 0;

@@ -15,11 +15,5 @@
 #include <render/render-i.h>
 #include <render/imgdecoder-i.h>
 
-
-namespace RENDER_GDI
-{
-
-extern "C" RENDERGDI_API BOOL CreateRenderFactory(SOUI::IRenderFactory ** ppRenderFactory,SOUI::IImgDecoderFactory *pImgDecoderFactory);
-
-}
+extern "C" RENDERGDI_API BOOL CreateRenderFactory_GDI(SOUI::IRenderFactory ** ppRenderFactory,SOUI::IImgDecoderFactory *pImgDecoderFactory);
 
