@@ -54,13 +54,14 @@ namespace SOUI
         }
         virtual UINT GetFrameCount(){return m_uImgCount;}
     protected:
-        SImgDecoder_WIC(void);
+        SImgDecoder_WIC(BOOL bPremultiplied);
         ~SImgDecoder_WIC(void);
         
         int _DoDecode(IWICBitmapDecoder * pDecoder);
 
         SImgFrame_WIC *     m_pImgArray;
         UINT					  m_uImgCount;
+        BOOL m_bPremultiplied;
 
     };
 
@@ -68,13 +69,14 @@ namespace SOUI
     {
     friend class SImgDecoder_WIC;
     public:
-        SImgDecoderFactory();
+        SImgDecoderFactory(BOOL bPremultiplied);
         ~SImgDecoderFactory();
         
         virtual BOOL CreateImgDecoder(IImgDecoder **ppImgDecoder);
     protected:
         static CAutoRefPtr<IWICImagingFactory> s_wicImgFactory;
+        BOOL    m_bPremultplied;
     };
     
-    extern "C" IMGDECODERWIC_API BOOL CreateImgDecoderFactory(IImgDecoderFactory **pImgDecoderFactory);
+    extern "C" IMGDECODERWIC_API BOOL CreateImgDecoderFactory_WIC(IImgDecoderFactory **pImgDecoderFactory,BOOL bPremultplied);
 }//end of namespace SOUI

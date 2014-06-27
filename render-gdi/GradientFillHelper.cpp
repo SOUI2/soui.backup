@@ -6,7 +6,7 @@
 namespace SOUI
 {
 
-void GradientFillRect(HDC hdc, const RECT *rcFill, COLORREF cr1, COLORREF cr2,BOOL bVert,BYTE byAlpha)
+void GradientFillRect(HDC hdc, const RECT *rcFill, COLORREF cr1, COLORREF cr2,BOOL bVert)
 {
 	HDC hdc1=hdc;
 
@@ -29,14 +29,14 @@ void GradientFillRect(HDC hdc, const RECT *rcFill, COLORREF cr1, COLORREF cr2,BO
 	GradientFill(hdc1,vert,2,&gRect,1,bVert?GRADIENT_FILL_RECT_V:GRADIENT_FILL_RECT_H);
 }
 
-void GradientFillRectH(HDC hdc, const RECT *rcFill, COLORREF crLeft, COLORREF crRight,BYTE byAlpha)
+void GradientFillRectH(HDC hdc, const RECT *rcFill, COLORREF crLeft, COLORREF crRight)
 {
-    GradientFillRect(hdc, rcFill, crLeft,crRight,FALSE,byAlpha);
+    GradientFillRect(hdc, rcFill, crLeft,crRight,FALSE);
 }
 
-void GradientFillRectV( HDC hdc,const RECT *rcFill, COLORREF crTop, COLORREF crBottom,BYTE byAlpha )
+void GradientFillRectV( HDC hdc,const RECT *rcFill, COLORREF crTop, COLORREF crBottom)
 {
-	GradientFillRect(hdc, rcFill, crTop,crBottom,TRUE,byAlpha);
+	GradientFillRect(hdc, rcFill, crTop,crBottom,TRUE);
 }
 
 }//namespace DuiEngine
