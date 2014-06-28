@@ -10,8 +10,6 @@
 #define RENDERSKIA_API
 #endif
 
-#define RENDER_API RENDERSKIA_API
-
 #include <render/render-i.h>
 #include <render/imgdecoder-i.h>
 

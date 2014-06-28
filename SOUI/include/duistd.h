@@ -10,6 +10,8 @@
 #define SOUI_EXP
 #endif
 
+#define OR_API SOUI_EXP
+
 // Change these values to use different versions
 #define WINVER        0x0500
 #define _WIN32_WINNT    0x0501
@@ -76,9 +78,7 @@
 #include "../../utilities/include/utilities.h"
 
 
-#define RENDER_API SOUI_EXP
 #include "render/render-i.h"
-#define IMGDECODER_API SOUI_EXP
 #include "render/imgdecoder-i.h"
 
 #include "DuiAttrCrack.h"
