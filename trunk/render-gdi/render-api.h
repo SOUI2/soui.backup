@@ -10,8 +10,6 @@
 #define RENDERGDI_API
 #endif
 
-#define RENDER_API RENDERGDI_API
-
 #include <render/render-i.h>
 #include <render/imgdecoder-i.h>
 

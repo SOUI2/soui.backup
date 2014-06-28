@@ -1,13 +1,5 @@
 #pragma once
 
-#ifndef RENDER_API 
-#define RENDER_API
-#endif
-
-#ifndef OR_API
-#define OR_API RENDER_API
-#endif
-
 #include <unknown/obj-ref-i.h>
 
 
@@ -33,14 +25,14 @@ namespace SOUI
 	};
 
 
-struct RENDER_API IRenderObj : public IObjRef
+struct IRenderObj : public IObjRef
 {
 	virtual const UINT ObjectType() const = 0;
 	virtual IRenderFactory * GetRenderFactory() const = 0;
 };
 
 
-struct RENDER_API IBrush : public IRenderObj
+struct IBrush : public IRenderObj
 {
 	virtual const UINT ObjectType() const
 	{
@@ -48,7 +40,7 @@ struct RENDER_API IBrush : public IRenderObj
 	}
 };
 
-struct RENDER_API IPen: public IRenderObj
+struct IPen: public IRenderObj
 {
 	virtual const UINT ObjectType() const
 	{
@@ -56,7 +48,7 @@ struct RENDER_API IPen: public IRenderObj
 	}
 };
 
-struct RENDER_API IBitmap: public IRenderObj
+struct IBitmap: public IRenderObj
 {
 	virtual const UINT ObjectType() const
 	{
@@ -71,7 +63,7 @@ struct RENDER_API IBitmap: public IRenderObj
 	virtual SIZE    Size() =0;
 };
 
-struct RENDER_API IFont : public IRenderObj
+struct IFont : public IRenderObj
 {
 	virtual const UINT ObjectType() const
 	{
@@ -85,7 +77,7 @@ struct RENDER_API IFont : public IRenderObj
 	virtual BOOL IsItalic()=0;
 };
 
-struct RENDER_API IRegion : public IRenderObj
+struct IRegion : public IRenderObj
 {
 	virtual const UINT ObjectType() const
 	{
@@ -109,7 +101,7 @@ enum EXPEND_MODE
 };
 
 //创建设备相关资源
-struct RENDER_API IRenderTarget: public IObjRef
+struct IRenderTarget: public IObjRef
 {
 	virtual HRESULT CreateCompatibleRenderTarget(SIZE szTarget,IRenderTarget **ppRenderTarget)=0;
 	virtual HRESULT CreatePen(int iStyle,COLORREF cr,int cWidth,IPen ** ppPen)=0;
@@ -163,7 +155,7 @@ struct RENDER_API IRenderTarget: public IObjRef
 };
 
 //用来创建设备无关资源
-struct RENDER_API IRenderFactory : public IObjRef
+struct IRenderFactory : public IObjRef
 {
 	virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei)=0;
     virtual BOOL CreateFont(IFont ** ppFont, const LOGFONT &lf)=0;
