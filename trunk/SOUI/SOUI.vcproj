@@ -1067,10 +1067,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\gdialpha.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\MemDC.cpp"
 				>
 			</File>
