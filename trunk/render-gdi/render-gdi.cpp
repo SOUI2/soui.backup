@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "render-gdi.h"
 #include "GradientFillHelper.h"
+#include <gdialpha.h>
 
 namespace SOUI
 {
@@ -336,7 +337,17 @@ namespace SOUI
     HRESULT SRenderTarget_GDI::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha)
     {
         COLORREF crOld=::SetTextColor(m_hdc,m_curColor.toCOLORREF()&0x00ffffff);
+        ALPHAINFO ai;
+        if(!(uFormat&DT_CALCRECT))
+        {
+            ::DrawText(m_hdc,pszText,cchLen,pRc,uFormat|DT_CALCRECT);
+            CGdiAlpha::AlphaBackup(m_hdc,pRc,ai);
+        }
         ::DrawText(m_hdc,pszText,cchLen,pRc,uFormat);
+        if(!(uFormat&DT_CALCRECT))
+        {
+            CGdiAlpha::AlphaRestore(m_hdc,ai);
+        }
         ::SetTextColor(m_hdc,crOld);
         return S_OK;
     }
@@ -388,7 +399,13 @@ namespace SOUI
     HRESULT SRenderTarget_GDI::TextOut( int x, int y, LPCTSTR lpszString, int nCount,BYTE byAlpha )
     {
         COLORREF crOld=::SetTextColor(m_hdc,m_curColor.toCOLORREF()&0x00ffffff);
+        SIZE sz;
+        MeasureText(lpszString,nCount,&sz);
+        RECT rc={x,y,x+sz.cx,y+sz.cy};
+        ALPHAINFO ai;
+        CGdiAlpha::AlphaBackup(m_hdc,&rc,ai);
         ::TextOut(m_hdc,x,y,lpszString,nCount);
+        CGdiAlpha::AlphaRestore(m_hdc,ai);
         ::SetTextColor(m_hdc,crOld);
         return S_OK;
     }
@@ -642,7 +659,10 @@ namespace SOUI
     HRESULT SRenderTarget_GDI::FillSolidRect( LPCRECT pRect,COLORREF cr )
     {
         HBRUSH hbr=::CreateSolidBrush(cr&0x00FFFFFF);
+        ALPHAINFO ai;
+        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
         ::FillRect(m_hdc,pRect,hbr);
+        CGdiAlpha::AlphaRestore(m_hdc,ai);
         ::DeleteObject(hbr);
         return S_OK;    
     }
