@@ -680,7 +680,7 @@ void SRichEdit::OnPaint( IRenderTarget * pRT )
         CGdiAlpha::AlphaRestore(hdc,ai);
     }
     pRT->ReleaseDC(hdc);
-    pRT->PopClipRect();
+    pRT->PopClip();
 }
 
 void SRichEdit::OnSetDuiFocus()

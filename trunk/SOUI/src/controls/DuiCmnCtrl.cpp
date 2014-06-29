@@ -989,7 +989,7 @@ void SGroup::OnPaint(IRenderTarget *pRT)
     if(!m_strWndText.IsEmpty())
     {
         pRT->DrawText(m_strWndText, m_strWndText.GetLength(), rcText, DT_SINGLELINE|DT_VCENTER);
-        pRT->PopClipRect();
+        pRT->PopClip();
     }
 
     AfterPaint(pRT, DuiDC);

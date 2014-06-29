@@ -490,7 +490,7 @@ void SListCtrl::OnPaint(IRenderTarget * pRT)
 
         DrawItem(pRT, rcItem, nItem);
     }
-    pRT->PopClipRect();
+    pRT->PopClip();
     AfterPaint(pRT, dxDC);
 }
 

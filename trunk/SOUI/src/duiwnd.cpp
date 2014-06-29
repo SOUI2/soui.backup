@@ -928,7 +928,8 @@ void SWindow::OnNcPaint(IRenderTarget *pRT)
 
         CRect rcClient;
         SWindow::GetClient(&rcClient);
-        pRT->PushClipRect(&rcClient,RGN_DIFF);
+        pRT->SaveClip(NULL);
+        pRT->ExcludeClipRect(&rcClient);
 
         if(bGetRT) PaintBackground(pRT,&m_rcWindow);
 
@@ -948,7 +949,7 @@ void SWindow::OnNcPaint(IRenderTarget *pRT)
             }
         }
         if(bGetRT) PaintForeground(pRT,&m_rcWindow);
-        pRT->PopClipRect();
+        pRT->PopClip();
         if(bGetRT) ReleaseRenderTarget(pRT);
     }
 }
@@ -1274,7 +1275,7 @@ void SWindow::ReleaseRenderTarget(IRenderTarget *pRT)
     if(m_gdcFlags & OLEDC_PAINTBKGND) //画了背景，自动画前景
         PaintForeground(pRT,&m_rcGetRT);
     if(m_bClipRT)
-        pRT->PopClipRect();
+        pRT->PopClip();
     GetContainer()->OnReleaseRenderTarget(pRT,m_rcGetRT,m_gdcFlags);
     m_bClipRT=FALSE;
     m_gdcFlags=-1;
@@ -1472,7 +1473,7 @@ void SWindow::PaintBackground(IRenderTarget *pRT,LPRECT pRc )
     pRT->FillSolidRect(&rcDraw,0);//清除残留的alpha值
     PRSTATE prState=PRS_LOOKSTART;
     _PaintRegion(pRT,pRgn,pTopWnd,pTopWnd,this,prState);
-    pRT->PopClipRect();
+    pRT->PopClip();
 }
 
 BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,SWindow *pStart,SWindow *pEnd,SWindow::PRSTATE & prState )
@@ -1530,7 +1531,7 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
 //        pWndCur->AfterPaint(dc, DuiDC);
         if(prsBack == PRS_DRAWING && pWndCur->IsClipClient())
         {
-            pRT->PopClipRect();
+            pRT->PopClip();
         }
     }
     if(prsBack == PRS_DRAWING) 
@@ -1554,7 +1555,7 @@ void SWindow::PaintForeground( IRenderTarget *pRT,LPRECT pRc )
         pRgn->CombineRect(&rcDraw,RGN_COPY);
         pRT->PushClipRect(&rcDraw);
         _PaintRegion(pRT,pRgn,this,pStart,NULL,prState);
-        pRT->PopClipRect();
+        pRT->PopClip();
     }
 }
 

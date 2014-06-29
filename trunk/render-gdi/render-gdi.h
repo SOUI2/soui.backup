@@ -257,10 +257,14 @@ namespace SOUI
         virtual HRESULT GetViewportOrg(LPPOINT lpPoint);
 
         virtual HRESULT PushClipRect(LPCRECT pRect,UINT mode=RGN_AND);
-        virtual HRESULT PopClipRect();
-
         virtual HRESULT PushClipRegion(IRegion *pRegion,UINT mode=RGN_AND);
-        virtual HRESULT PopClipRegion();
+        virtual HRESULT PopClip();
+
+        virtual HRESULT ExcludeClipRect(LPCRECT pRc);
+        virtual HRESULT IntersectClipRect(LPCRECT pRc);
+
+        virtual HRESULT SaveClip(int *pnState);
+        virtual HRESULT RestoreClip(int nState=-1);
 
         virtual HRESULT GetClipRegion(IRegion **ppRegion);
         virtual HRESULT GetClipBound(LPRECT prcBound);

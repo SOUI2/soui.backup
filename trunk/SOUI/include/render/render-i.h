@@ -117,10 +117,14 @@ struct IRenderTarget: public IObjRef
     virtual HRESULT GetViewportOrg(LPPOINT lpPoint) =0;
 
 	virtual HRESULT PushClipRect(LPCRECT pRect,UINT mode=RGN_AND)=0;
-	virtual HRESULT PopClipRect()=0;
-
 	virtual HRESULT PushClipRegion(IRegion *pRegion,UINT mode=RGN_AND)=0;
-	virtual HRESULT PopClipRegion()=0;
+    virtual HRESULT PopClip()=0;
+
+    virtual HRESULT ExcludeClipRect(LPCRECT pRc)=0;
+    virtual HRESULT IntersectClipRect(LPCRECT pRc)=0;
+
+    virtual HRESULT SaveClip(int *pnState)=0;
+    virtual HRESULT RestoreClip(int nState=-1)=0;
 
     virtual HRESULT GetClipRegion(IRegion **ppRegion)=0;
     virtual HRESULT GetClipBound(LPRECT prcBound)=0;
