@@ -345,11 +345,11 @@ namespace SOUI
 
     HRESULT SRenderTarget_GDI::BitBlt( LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop/*=SRCCOPY*/)
     {
-        HDC hdcSrc=pRTSour->GetDC(0);
-        HDC hdcDst=GetDC(0);
-        ::BitBlt(hdcDst,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,hdcSrc,xSrc,ySrc,dwRop);
-        ReleaseDC(hdcDst);
-        pRTSour->ReleaseDC(hdcSrc);
+        ALPHAINFO ai;
+        CGdiAlpha::AlphaBackup(m_hdc,pRcDest,ai);
+        SRenderTarget_GDI *pRTSrc_GDI=(SRenderTarget_GDI*)pRTSour;
+        ::BitBlt(m_hdc,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,pRTSrc_GDI->m_hdc,xSrc,ySrc,dwRop);
+        CGdiAlpha::AlphaRestore(m_hdc,ai);
         return S_OK;
     }
 
