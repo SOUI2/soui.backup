@@ -357,10 +357,7 @@ void CDuiHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
         RedrawRegion(m_memRT, pRgnUpdate);
         if(m_bCaretActive) DrawCaret(m_ptCaret);//redraw caret 
         
-        if(!pRgnUpdate->IsEmpty())
-            m_memRT->PopClipRegion();
-        else
-            m_memRT->PopClipRect();
+        m_memRT->PopClip();
         
         m_memRT->SelectObject(oldFont);
 

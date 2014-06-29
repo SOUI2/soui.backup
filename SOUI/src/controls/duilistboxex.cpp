@@ -351,7 +351,7 @@ void SListBoxEx::OnPaint(IRenderTarget * pRT)
         if(!rcInter.IsRectEmpty())
             OnDrawItem(pRT,rcItem,iItem);
     }
-    pRT->PopClipRect();
+    pRT->PopClip();
     AfterPaint(pRT,duiDC);
 }
 

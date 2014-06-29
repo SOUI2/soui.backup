@@ -195,7 +195,7 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
         DuiDrawDefFocusRect(pRT,&rc);
     }
     
-    pRT->PopClipRect();
+    pRT->PopClip();
 
     AfterPaint(pRT,duiDC);
 }

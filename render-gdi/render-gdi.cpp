@@ -278,16 +278,41 @@ namespace SOUI
     {
         RECT rc=*pRect;
         ::OffsetRect(&rc,m_ptOrg.x,m_ptOrg.y);
-        HRGN hRgn=::CreateRectRgnIndirect(pRect);
+        HRGN hRgn=::CreateRectRgnIndirect(&rc);
         ::SaveDC(m_hdc);
         ::ExtSelectClipRgn(m_hdc,hRgn,mode);
         ::DeleteObject(hRgn);
         return S_OK;
     }
 
-    HRESULT SRenderTarget_GDI::PopClipRect()
+    HRESULT SRenderTarget_GDI::PopClip()
     {
         ::RestoreDC(m_hdc,-1);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_GDI::ExcludeClipRect( LPCRECT pRc )
+    {
+        ::ExcludeClipRect(m_hdc,pRc->left,pRc->top,pRc->right,pRc->bottom);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_GDI::IntersectClipRect( LPCRECT pRc )
+    {
+        ::IntersectClipRect(m_hdc,pRc->left,pRc->top,pRc->right,pRc->bottom);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_GDI::SaveClip( int *pnState )
+    {
+        int nState=::SaveDC(m_hdc);
+        if(pnState) *pnState=nState;
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_GDI::RestoreClip( int nState/*=-1*/ )
+    {
+        ::RestoreDC(m_hdc,nState);
         return S_OK;
     }
 
@@ -300,12 +325,6 @@ namespace SOUI
         ::SaveDC(m_hdc);
         ::ExtSelectClipRgn(m_hdc,hRgn,mode);
         ::DeleteObject(hRgn);
-        return S_OK;
-    }
-
-    HRESULT SRenderTarget_GDI::PopClipRegion()
-    {
-        ::RestoreDC(m_hdc,-1);
         return S_OK;
     }
 
@@ -360,39 +379,62 @@ namespace SOUI
 
     HRESULT SRenderTarget_GDI::DrawRectangle(LPRECT pRect)
     {
+        ALPHAINFO ai;
+        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
         HGDIOBJ oldBr=::SelectObject(m_hdc,GetStockObject(NULL_BRUSH));
         ::Rectangle(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom);
+        CGdiAlpha::AlphaRestore(m_hdc,ai);
         ::SelectObject(m_hdc,oldBr);
         return S_OK;
     }
 
     HRESULT SRenderTarget_GDI::FillRectangle(LPRECT pRect)
     {
+        ALPHAINFO ai;
+        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
         HGDIOBJ oldPen=::SelectObject(m_hdc,GetStockObject(NULL_PEN));
         ::Rectangle(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom);
+        CGdiAlpha::AlphaRestore(m_hdc,ai);
         ::SelectObject(m_hdc,oldPen);
         return S_OK;
     }
 
     HRESULT SRenderTarget_GDI::DrawRoundRect( LPCRECT pRect,POINT pt )
     {
+        ALPHAINFO ai;
+        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
         HGDIOBJ oldBr=::SelectObject(m_hdc,GetStockObject(NULL_BRUSH));
         ::RoundRect(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom,pt.x,pt.y);
+        CGdiAlpha::AlphaRestore(m_hdc,ai);
         ::SelectObject(m_hdc,oldBr);
         return S_OK;
     }
 
     HRESULT SRenderTarget_GDI::FillRoundRect( LPCRECT pRect,POINT pt )
     {
+        ALPHAINFO ai;
+        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
         HGDIOBJ oldPen=::SelectObject(m_hdc,GetStockObject(NULL_PEN));
         ::RoundRect(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom,pt.x,pt.y);
+        CGdiAlpha::AlphaRestore(m_hdc,ai);
         ::SelectObject(m_hdc,oldPen);
         return S_OK;
     }
 
     HRESULT SRenderTarget_GDI::DrawLines(LPPOINT pPt,size_t nCount)
     {
+        RECT rc={100000,100000,0,0};
+        for(size_t i=0;i<nCount;i++)
+        {
+            if(pPt[i].x<rc.left) rc.left=pPt[i].x;
+            if(pPt[i].x>rc.right) rc.right=pPt[i].x;
+            if(pPt[i].y<rc.top) rc.top=pPt[i].y;
+            if(pPt[i].y>rc.bottom) rc.bottom=pPt[i].y;
+        }
+        ALPHAINFO ai;
+        CGdiAlpha::AlphaBackup(m_hdc,&rc,ai);
         ::Polyline(m_hdc,pPt,nCount);
+        CGdiAlpha::AlphaRestore(m_hdc,ai);
         return S_OK;
     }
 

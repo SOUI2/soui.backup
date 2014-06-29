@@ -214,12 +214,6 @@ namespace SOUI
 	    return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::PopClipRect()
-	{
-	    m_SkCanvas->restore();
-		return S_OK;
-	}
-
 	HRESULT SRenderTarget_Skia::PushClipRegion( IRegion *pRegion ,UINT mode/*=RGN_AND*/)
 	{
         SRegion_Skia * rgn_skia=(SRegion_Skia*)pRegion;
@@ -231,11 +225,36 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::PopClipRegion()
-	{
+    HRESULT SRenderTarget_Skia::PopClip()
+    {
         m_SkCanvas->restore();
         return S_OK;
-	}
+    }
+
+    HRESULT SRenderTarget_Skia::ExcludeClipRect( LPCRECT pRc )
+    {
+        m_SkCanvas->clipRect(toSkRect(pRc),SkRegion::kDifference_Op);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_Skia::IntersectClipRect( LPCRECT pRc )
+    {
+        m_SkCanvas->clipRect(toSkRect(pRc),SkRegion::kIntersect_Op);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_Skia::SaveClip( int *pnState )
+    {
+        int nState=m_SkCanvas->save();
+        if(pnState) *pnState=nState;
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_Skia::RestoreClip( int nState/*=-1*/ )
+    {
+        m_SkCanvas->restoreToCount(nState);
+        return S_OK;
+    }
 
     HRESULT SRenderTarget_Skia::GetClipRegion( IRegion **ppRegion )
     {
