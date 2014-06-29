@@ -233,13 +233,27 @@ namespace SOUI
 
     HRESULT SRenderTarget_Skia::ExcludeClipRect( LPCRECT pRc )
     {
-        m_SkCanvas->clipRect(toSkRect(pRc),SkRegion::kDifference_Op);
+        SkRect skrc=toSkRect(pRc);
+        skrc.offset(m_ptOrg);
+        if(m_SkCanvas->isClipEmpty())
+        {
+            SkRect rcAll={0.0f,0.0f,(SkScalar)m_curBmp->Width(),(SkScalar)m_curBmp->Height()};
+            m_SkCanvas->clipRect(rcAll,SkRegion::kReplace_Op);
+        }
+        m_SkCanvas->clipRect(skrc,SkRegion::kDifference_Op);
         return S_OK;
     }
 
     HRESULT SRenderTarget_Skia::IntersectClipRect( LPCRECT pRc )
     {
-        m_SkCanvas->clipRect(toSkRect(pRc),SkRegion::kIntersect_Op);
+        SkRect skrc=toSkRect(pRc);
+        skrc.offset(m_ptOrg);
+        if(m_SkCanvas->isClipEmpty())
+        {
+            SkRect rcAll={0.0f,0.0f,(SkScalar)m_curBmp->Width(),(SkScalar)m_curBmp->Height()};
+            m_SkCanvas->clipRect(rcAll,SkRegion::kReplace_Op);
+        }
+        m_SkCanvas->clipRect(skrc,SkRegion::kIntersect_Op);
         return S_OK;
     }
 

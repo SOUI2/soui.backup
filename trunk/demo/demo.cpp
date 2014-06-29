@@ -21,17 +21,17 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     
 #ifdef _DEBUG
     HMODULE hImgDecoder = LoadLibrary(_T("imgdecoder-wic_d.dll"));
-    HMODULE hRender = LoadLibrary(_T("render-gdi_d.dll"));
+    HMODULE hRender = LoadLibrary(_T("render-skia_d.dll"));
 #else
     HMODULE hImgDecoder = LoadLibrary(_T("imgdecoder-wic.dll"));
-    HMODULE hRender = LoadLibrary(_T("render-gdi.dll"));
+    HMODULE hRender = LoadLibrary(_T("render-skia.dll"));
 #endif
     typedef BOOL (*fnCreateImgDecoderFactory)(SOUI::IImgDecoderFactory**,BOOL);
     fnCreateImgDecoderFactory funImg = (fnCreateImgDecoderFactory)GetProcAddress(hImgDecoder,"CreateImgDecoderFactory_WIC");
     funImg(&pImgDecoderFactory,TRUE);
     
     typedef BOOL (*fnCreateRenderFactory)(SOUI::IRenderFactory **,SOUI::IImgDecoderFactory *);
-    fnCreateRenderFactory funRender = (fnCreateRenderFactory)GetProcAddress(hRender,"CreateRenderFactory_GDI");
+    fnCreateRenderFactory funRender = (fnCreateRenderFactory)GetProcAddress(hRender,"CreateRenderFactory_Skia");
     funRender(&pRenderFactory,pImgDecoderFactory);
     
 	DuiSystem *pDuiSystem=new DuiSystem(pRenderFactory,hInstance);
