@@ -89,7 +89,7 @@ protected:
 
     virtual void OnDrawItem(IRenderTarget *pRT, CRect & rc, int iItem);
 
-    virtual BOOL LoadChildren(pugi::xml_node xmlNode);
+    virtual BOOL CreateChildren(pugi::xml_node xmlNode);
     // Get tooltip Info
     virtual BOOL OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
 
@@ -107,7 +107,7 @@ protected:
 
     void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 
-    UINT OnGetDuiCode();
+    UINT OnGetDlgCode();
 
     virtual BOOL OnDuiSetCursor(const CPoint &pt);
 

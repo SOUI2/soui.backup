@@ -153,7 +153,7 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
     {
         DuiSystem::getSingleton().LoadSkins(m_strName);    //load skin only used in the host window
     }
-    LoadChildren(xmlNode.first_child());
+    CreateChildren(xmlNode.first_child());
     OnWindowPosChanged(NULL);
 
     _Redraw();
@@ -564,7 +564,7 @@ LRESULT CDuiHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
     if(uMsg==WM_SYSKEYDOWN || uMsg==WM_SYSKEYUP)
     {
         SWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
-        if(!pFocus  || !(pFocus->OnGetDuiCode()&DUIC_WANTSYSKEY))
+        if(!pFocus  || !(pFocus->OnGetDlgCode()&DUIC_WANTSYSKEY))
         {
             SetMsgHandled(FALSE);
             return 0;

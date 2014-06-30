@@ -192,9 +192,9 @@ void SItemPanel::ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove)
     ModifyState(dwStateAdd,dwStateRemove,FALSE);
 }
 
-HSWND SItemPanel::DuiGetHWNDFromPoint(POINT ptHitTest, BOOL bOnlyText)
+HSWND SItemPanel::HswndFromPoint(POINT ptHitTest, BOOL bOnlyText)
 {
-    HSWND hRet=__super::DuiGetHWNDFromPoint(ptHitTest,bOnlyText);
+    HSWND hRet=__super::HswndFromPoint(ptHitTest,bOnlyText);
     if(hRet==m_hSWnd) hRet=NULL;
     return hRet;
 }

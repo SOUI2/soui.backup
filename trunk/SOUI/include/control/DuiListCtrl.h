@@ -80,7 +80,7 @@ namespace SOUI
         void            DeleteColumn(int iCol);
         void            DeleteAllItems();
 
-        virtual BOOL    LoadChildren(pugi::xml_node xmlNode);
+        virtual BOOL    CreateChildren(pugi::xml_node xmlNode);
 
         int             HitTest(const CPoint& pt);
 

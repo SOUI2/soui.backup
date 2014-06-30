@@ -139,7 +139,7 @@ void CDuiFrame::OnFrameMouseMove(UINT uFlag,CPoint pt)
     }
     else
     {
-        HSWND hHover=m_pHost->DuiGetHWNDFromPoint(pt,FALSE);
+        HSWND hHover=m_pHost->HswndFromPoint(pt,FALSE);
         SWindow * pHover=DuiWindowMgr::GetWindow(hHover);
         if(m_hHover!=hHover)
         {
@@ -152,14 +152,14 @@ void CDuiFrame::OnFrameMouseMove(UINT uFlag,CPoint pt)
             }
             if(pHover && !pHover->IsDisabled(TRUE))
             {
-                m_bNcHover=pHover->OnDuiNcHitTest(pt);
+                m_bNcHover=pHover->OnNcHitTest(pt);
                 if(m_bNcHover) pHover->DuiSendMessage(WM_NCMOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
                 pHover->DuiSendMessage(WM_MOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
             }
         }
         else if(pHover && !pHover->IsDisabled(TRUE))
         {
-            BOOL bNcHover=pHover->OnDuiNcHitTest(pt);
+            BOOL bNcHover=pHover->OnNcHitTest(pt);
             if(bNcHover!=m_bNcHover)
             {
                 m_bNcHover=bNcHover;
@@ -221,7 +221,7 @@ void CDuiFrame::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     }
     else
     {
-        m_hHover=m_pHost->DuiGetHWNDFromPoint(CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)),FALSE);
+        m_hHover=m_pHost->HswndFromPoint(CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)),FALSE);
         SWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
         if(pHover  && !pHover->IsDisabled(TRUE))
         {

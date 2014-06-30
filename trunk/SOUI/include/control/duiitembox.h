@@ -60,7 +60,7 @@ protected:
 
     virtual int GetScrollLineSize(BOOL bVertical);
 
-    virtual BOOL LoadChildren(pugi::xml_node xmlNode);
+    virtual BOOL CreateChildren(pugi::xml_node xmlNode);
 
     SOUI_ATTRS_BEGIN()
     ATTR_INT(L"itemwid", m_nItemWid, TRUE)

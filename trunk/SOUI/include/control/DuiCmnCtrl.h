@@ -171,7 +171,7 @@ protected:
      *
      * Describe  返回宏定义DUIC_WANTCHARS代表需要WM_CHAR消息
      */
-    virtual UINT OnGetDuiCode()
+    virtual UINT OnGetDlgCode()
     {
         return DUIC_WANTCHARS;
     }
@@ -669,7 +669,7 @@ protected:
      *
      * Describe  返回对应消息码
      */
-    virtual UINT OnGetDuiCode()
+    virtual UINT OnGetDlgCode()
     {
         return DUIC_WANTCHARS;
     }
@@ -832,7 +832,7 @@ protected:
      *
      * Describe  获取消息编码
      */
-    virtual UINT OnGetDuiCode()
+    virtual UINT OnGetDlgCode()
     {
         return 0;
     }

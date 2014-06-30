@@ -271,7 +271,7 @@ protected:
 
     void OnDuiTimerEx(UINT_PTR idEvent);
 
-    virtual UINT OnGetDuiCode()
+    virtual UINT OnGetDlgCode()
     {
         UINT uRet=DUIC_WANTCHARS|DUIC_WANTARROWS;
         if(m_fWantTab) uRet |= DLGC_WANTTAB;

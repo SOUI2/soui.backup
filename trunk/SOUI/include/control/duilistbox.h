@@ -82,7 +82,7 @@ public:
 
 protected:
 
-    virtual BOOL LoadChildren(pugi::xml_node xmlNode);
+    virtual BOOL CreateChildren(pugi::xml_node xmlNode);
     void LoadItemAttribute(pugi::xml_node xmlNode, LPLBITEM pItem);
 
     int InsertItem(int nIndex, LPLBITEM pItem);
@@ -93,7 +93,7 @@ protected:
 
     void NotifySelChange(int nOldSel,int nNewSel);
 
-    UINT OnGetDuiCode();
+    UINT OnGetDlgCode();
 
 protected:
 

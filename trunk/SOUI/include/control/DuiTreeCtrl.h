@@ -112,7 +112,7 @@ public:
 
 protected:
 
-    virtual BOOL LoadChildren(pugi::xml_node xmlNode);
+    virtual BOOL CreateChildren(pugi::xml_node xmlNode);
     virtual void LoadBranch(HSTREEITEM hParent,pugi::xml_node xmlNode);
     virtual void LoadItemAttribute(pugi::xml_node xmlNode, LPTVITEM pItem);
 

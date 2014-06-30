@@ -402,7 +402,7 @@ void SListBoxEx::OnDrawItem(IRenderTarget *pRT, CRect & rc, int iItem)
     }
 }
 
-BOOL SListBoxEx::LoadChildren(pugi::xml_node xmlNode)
+BOOL SListBoxEx::CreateChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return TRUE;
 
@@ -556,7 +556,7 @@ void SListBoxEx::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
         pOwner->DuiSendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
 }
 
-UINT SListBoxEx::OnGetDuiCode()
+UINT SListBoxEx::OnGetDlgCode()
 {
     return DUIC_WANTALLKEYS;
 }

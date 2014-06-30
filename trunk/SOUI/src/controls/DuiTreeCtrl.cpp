@@ -348,7 +348,7 @@ void STreeCtrl::PageDown()
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOL STreeCtrl::LoadChildren(pugi::xml_node xmlNode)
+BOOL STreeCtrl::CreateChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return FALSE;
 

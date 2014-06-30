@@ -26,7 +26,7 @@ namespace SOUI
         LRESULT OnKeyEvent(UINT uMsg,WPARAM wp,LPARAM lp);
         void OnShowWindow(BOOL bShow, UINT nStatus);
 
-        virtual UINT OnGetDuiCode(){return DUIC_WANTALLKEYS;}
+        virtual UINT OnGetDlgCode(){return DUIC_WANTALLKEYS;}
 
         virtual BOOL IsTabStop(){return TRUE;}
 

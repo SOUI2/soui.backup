@@ -212,7 +212,7 @@ namespace SOUI
     {
         if(vKey!=VK_TAB) return FALSE;
         SWindow *pFocus=DuiWindowMgr::GetWindow(focused_view_);
-        if(pFocus && pFocus->OnGetDuiCode()&DUIC_WANTTAB) return FALSE;
+        if(pFocus && pFocus->OnGetDlgCode()&DUIC_WANTTAB) return FALSE;
         if(GetKeyState(VK_CONTROL)&0x8000) return FALSE;
         else return TRUE;
     }
