@@ -59,7 +59,7 @@ protected:
 	END_MSG_MAP()
 
 	SOUI_NOTIFY_MAP_BEGIN()
-		SOUI_NOTIFY_NAME_COMMAND("btn_hidetst",OnHideTestClick)
+		SOUI_NOTIFY_NAME_COMMAND(L"btn_hidetst",OnHideTestClick)
 	SOUI_NOTIFY_MAP_END()	
 private:
 	CMainDlg * m_pMainDlg; 

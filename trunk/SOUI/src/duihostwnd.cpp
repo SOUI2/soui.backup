@@ -98,7 +98,6 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
     swscanf(strMin,L"%d,%d",&m_szMin.cx, &m_szMin.cy);
 
     m_bTranslucent=xmlNode.attribute(L"translucent").as_bool(false);
-    m_strName = xmlNode.attribute(L"name").value();
 
     SStringT strTitle=DUI_CW2T(xmlNode.attribute(L"title").value());
 

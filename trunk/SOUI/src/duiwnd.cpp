@@ -507,14 +507,14 @@ SWindow* SWindow::FindChildByCmdID(UINT uCmdID)
     return NULL;
 }
 
-SWindow* SWindow::FindChildByName( LPCSTR pszName )
+SWindow* SWindow::FindChildByName( LPCWSTR pszName )
 {
     if(!pszName) return NULL;
 
     SWindow *pChild = m_pFirstChild;
     while(pChild)
     {
-        if (!pChild->m_strName.IsEmpty() && strcmp(pChild->m_strName, pszName)==0)
+        if (!pChild->m_strName.IsEmpty() && wcscmp(pChild->m_strName, pszName)==0)
             return pChild;
         SWindow *pChildFind=pChild->FindChildByName(pszName);
         if(pChildFind) return pChildFind;
