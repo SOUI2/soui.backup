@@ -90,7 +90,7 @@ class SOUI_EXP SWindow : public SObject
     , public SEventSet
     , public TObjRefImpl2<IObjRef,SWindow>
 {
-    SOUI_CLASS_NAME(SWindow, "window")
+    SOUI_CLASS_NAME(SWindow, L"window")
     friend class CDuiLayout;
 public:
     SWindow();
@@ -112,19 +112,19 @@ protected:
     DUIMSG        *m_pCurMsg;
 
     UINT m_uCmdID;
-    CDuiStringA    m_strName;
+    SStringA    m_strName;
 
     CRect m_rcWindow;
 
     DuiStyle m_style;
-    CDuiStringT m_strWndText;
+    SStringT m_strWndText;
     DWORD m_dwState;
-    CDuiStringT m_strLinkUrl;
+    SStringT m_strLinkUrl;
     BOOL m_bMsgTransparent;        //不处理用户操作标志
     BOOL m_bVisible;            //可见状态
     BOOL m_bDisplay;            //隐藏时是否占位，不占位时启动重新布局。
     BOOL m_bDisable;            //禁用状态
-    CDuiStringT m_strToolTipText;
+    SStringT m_strToolTipText;
     int     m_nSepSpace;    //自动排版的水平空格
     BOOL m_bClipClient;
     BOOL m_bTabStop;
@@ -189,7 +189,7 @@ public:
     virtual BOOL OnDuiSetCursor(const CPoint &pt);
 
     // Get tooltip Info
-    virtual BOOL OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
+    virtual BOOL OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
 
     // Get DuiWindow state
     DWORD GetState(void);
@@ -375,7 +375,7 @@ public:
         return m_bClipClient;
     }
 
-    virtual void OnAttributeChanged(const CDuiStringA & strAttrName,BOOL bLoading,HRESULT hRet);
+    virtual void OnAttributeChanged(const SStringW & strAttrName,BOOL bLoading,HRESULT hRet);
 
     //************************************
     // Method:    UpdateChildrenPosition :更新子窗口位置
@@ -647,8 +647,8 @@ protected:
     void OnSetDuiFocus();
     void OnKillDuiFocus();
 
-    HRESULT OnAttributePosition(const CDuiStringA& strValue, BOOL bLoading);
-    HRESULT OnAttributeState(const CDuiStringA& strValue, BOOL bLoading);
+    HRESULT OnAttributePosition(const SStringW& strValue, BOOL bLoading);
+    HRESULT OnAttributeState(const SStringW& strValue, BOOL bLoading);
 
     WND_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
@@ -671,32 +671,32 @@ protected:
     WND_MSG_MAP_END_BASE()
     
     SOUI_ATTRS_BEGIN()
-        ATTR_SKIN("skin", m_pBgSkin, TRUE)//直接获得皮肤对象
-        ATTR_SKIN("ncskin", m_pNcSkin, TRUE)//直接获得皮肤对象
-        ATTR_STRINGA("name",m_strName,FALSE)
-        ATTR_STYLE("class", m_style, TRUE)    //获得style
+        ATTR_SKIN(L"skin", m_pBgSkin, TRUE)//直接获得皮肤对象
+        ATTR_SKIN(L"ncskin", m_pNcSkin, TRUE)//直接获得皮肤对象
+        ATTR_STRINGA(L"name",m_strName,FALSE)
+        ATTR_STYLE(L"class", m_style, TRUE)    //获得style
         ATTR_CHAIN(m_style)                    //支持对style中的属性定制
-        ATTR_INT("id", m_uCmdID, FALSE)
-        ATTR_INT("data", m_uData, 0 )
-        ATTR_CUSTOM("state", OnAttributeState)
-        ATTR_STRINGT("href", m_strLinkUrl, FALSE)
-        ATTR_STRINGT("tip", m_strToolTipText, FALSE)
-        ATTR_CUSTOM("pos", OnAttributePosition)
-        ATTR_INT("show", m_bVisible,FALSE)
-        ATTR_INT("display", m_bDisplay,FALSE)
-        ATTR_INT("msgtransparent", m_bMsgTransparent, FALSE)
-        ATTR_INT("sep", m_nSepSpace, FALSE)
-        ATTR_INT("maxwidth",m_nMaxWidth,FALSE)
-        ATTR_INT("clipclient",m_bClipClient,FALSE)
-        ATTR_INT("tabstop",m_bTabStop,FALSE)
-        ATTR_ENUM_BEGIN("pos2type",POS2TYPE,FALSE)
-            ATTR_ENUM_VALUE("lefttop",POS2_LEFTTOP)
-            ATTR_ENUM_VALUE("center",POS2_CENTER)
-            ATTR_ENUM_VALUE("righttop",POS2_RIGHTTOP)
-            ATTR_ENUM_VALUE("leftbottom",POS2_LEFTBOTTOM)
-            ATTR_ENUM_VALUE("rightbottom",POS2_RIGHTBOTTOM)
+        ATTR_INT(L"id", m_uCmdID, FALSE)
+        ATTR_INT(L"data", m_uData, 0 )
+        ATTR_CUSTOM(L"state", OnAttributeState)
+        ATTR_STRINGT(L"href", m_strLinkUrl, FALSE)
+        ATTR_STRINGT(L"tip", m_strToolTipText, FALSE)
+        ATTR_CUSTOM(L"pos", OnAttributePosition)
+        ATTR_INT(L"show", m_bVisible,FALSE)
+        ATTR_INT(L"display", m_bDisplay,FALSE)
+        ATTR_INT(L"msgtransparent", m_bMsgTransparent, FALSE)
+        ATTR_INT(L"sep", m_nSepSpace, FALSE)
+        ATTR_INT(L"maxwidth",m_nMaxWidth,FALSE)
+        ATTR_INT(L"clipclient",m_bClipClient,FALSE)
+        ATTR_INT(L"tabstop",m_bTabStop,FALSE)
+        ATTR_ENUM_BEGIN(L"pos2type",POS2TYPE,FALSE)
+            ATTR_ENUM_VALUE(L"lefttop",POS2_LEFTTOP)
+            ATTR_ENUM_VALUE(L"center",POS2_CENTER)
+            ATTR_ENUM_VALUE(L"righttop",POS2_RIGHTTOP)
+            ATTR_ENUM_VALUE(L"leftbottom",POS2_LEFTBOTTOM)
+            ATTR_ENUM_VALUE(L"rightbottom",POS2_RIGHTBOTTOM)
         ATTR_ENUM_END(m_dlgpos.pos2Type)
-        ATTR_INT("alpha",m_byAlpha,TRUE)
+        ATTR_INT(L"alpha",m_byAlpha,TRUE)
     SOUI_ATTRS_END()
 
 };

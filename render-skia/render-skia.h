@@ -109,7 +109,7 @@ namespace SOUI
 			:TSkiaRenderObjImpl<IFont>(pRenderFac),m_skFont(NULL)
 		{
 		    memcpy(&m_lf,plf,sizeof(LOGFONT));
-            CDuiStringA strFace=DUI_CT2A(plf->lfFaceName,CP_ACP);
+            SStringA strFace=DUI_CT2A(plf->lfFaceName,CP_ACP);
             BYTE style=SkTypeface::kNormal;
             if(plf->lfItalic) style |= SkTypeface::kItalic;
             if(plf->lfWeight == FW_BOLD) style |= SkTypeface::kBold;

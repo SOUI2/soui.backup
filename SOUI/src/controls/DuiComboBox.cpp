@@ -49,7 +49,7 @@ LRESULT CComboEdit::DuiNotify( LPSNMHDR pnms )
 //////////////////////////////////////////////////////////////////////////
 // CDuiComboBox
 CDuiComboBoxBase::CDuiComboBoxBase(void)
-:m_pSkinBtn(GETSKIN("comboboxbtn"))
+:m_pSkinBtn(GETSKIN(L"comboboxbtn"))
 ,m_pEdit(NULL)
 ,m_bDropdown(TRUE)
 ,m_nDropHeight(200)
@@ -59,8 +59,8 @@ CDuiComboBoxBase::CDuiComboBoxBase(void)
 ,m_iInitSel(-1)
 {
     m_bTabStop=TRUE;
-    m_style.SetAttribute("align","left",TRUE);
-    m_style.SetAttribute("valign","middle",TRUE);
+    m_style.SetAttribute(L"align",L"left",TRUE);
+    m_style.SetAttribute(L"valign",L"middle",TRUE);
 
     addEvent(NM_CBSELCHANGE);
     addEvent(NM_RICHEDIT_NOTIFY);
@@ -82,14 +82,14 @@ BOOL CDuiComboBoxBase::LoadChildren( pugi::xml_node xmlNode )
         SIZE szBtn=m_pSkinBtn->GetSkinSize();
         m_pEdit=new CComboEdit(this);
         InsertChild(m_pEdit);
-        pugi::xml_node xmlEditStyle=xmlParent.child("editstyle");
+        pugi::xml_node xmlEditStyle=xmlParent.child(L"editstyle");
         if(xmlEditStyle)
             m_pEdit->Load(xmlEditStyle);
         else
             m_pEdit->DuiSendMessage(WM_CREATE);
-        CDuiStringA strPos;
-        strPos.Format("0,0,-%d,-0",szBtn.cx);
-        m_pEdit->SetAttribute("pos",strPos,TRUE);
+        SStringW strPos;
+        strPos.Format(L"0,0,-%d,-0",szBtn.cx);
+        m_pEdit->SetAttribute(L"pos",strPos,TRUE);
         m_pEdit->SetCmdID(IDC_CB_EDIT);
 
     }
@@ -120,7 +120,7 @@ void CDuiComboBoxBase::OnPaint(IRenderTarget * pRT )
     {
         CRect rcText;
         GetTextRect(rcText);
-        CDuiStringT strText=GetWindowText();
+        SStringT strText=GetWindowText();
         DuiDrawText(pRT,strText, strText.GetLength(), rcText, GetTextAlign());
     }
     //draw focus rect
@@ -356,25 +356,24 @@ BOOL SComboBox::CreateListBox( pugi::xml_node xmlNode )
     m_pListBox=new SListBox;
     m_pListBox->SetContainer(GetContainer());
 
-    m_pListBox->Load(xmlNode.parent().child("liststyle"));
-    m_pListBox->SetAttribute("virtual","0");
-    m_pListBox->SetAttribute("pos", "0,0,-0,-0", TRUE);
-    m_pListBox->SetAttribute("hottrack","1",TRUE);
+    m_pListBox->Load(xmlNode.parent().child(L"liststyle"));
+    m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
+    m_pListBox->SetAttribute(L"hottrack",L"1",TRUE);
     m_pListBox->SetOwner(this);    //chain notify message to combobox
     m_pListBox->SetCmdID(IDC_DROPDOWN_LIST);
 
     //初始化列表数据
-    pugi::xml_node xmlNode_Items=xmlNode.parent().child("items");
+    pugi::xml_node xmlNode_Items=xmlNode.parent().child(L"items");
     if(xmlNode_Items)
     {
-        pugi::xml_node xmlNode_Item=xmlNode_Items.child("item");
+        pugi::xml_node xmlNode_Item=xmlNode_Items.child(L"item");
         while(xmlNode_Item)
         {
-            CDuiStringT strText=DUI_CA2T(xmlNode_Item.attribute("text").value(),CP_UTF8);
-            int iIcon=xmlNode_Item.attribute("icon").as_int(0);
-            LPARAM lParam=xmlNode_Item.attribute("data").as_int(0);
+            SStringT strText=DUI_CW2T(xmlNode_Item.attribute(L"text").value());
+            int iIcon=xmlNode_Item.attribute(L"icon").as_int(0);
+            LPARAM lParam=xmlNode_Item.attribute(L"data").as_int(0);
             m_pListBox->AddString(strText,iIcon,lParam);
-            xmlNode_Item=xmlNode_Item.next_sibling("item");
+            xmlNode_Item=xmlNode_Item.next_sibling(L"item");
         }
     }
 
@@ -420,7 +419,7 @@ void SComboBox::OnSelChanged()
     int nRet=m_pListBox->GetCurSel();
     if(m_pEdit)
     {
-        CDuiStringT strText=GetLBText(m_pListBox->GetCurSel());
+        SStringT strText=GetLBText(m_pListBox->GetCurSel());
         m_pEdit->setMutedState(true);
         m_pEdit->SetWindowText(DUI_CT2W(strText));
         m_pEdit->setMutedState(false);
@@ -452,31 +451,30 @@ BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
     m_pListBox=new SListBoxEx;
     m_pListBox->SetContainer(GetContainer());
 
-    m_pListBox->Load(xmlNode.parent().child("liststyle"));
-    m_pListBox->SetAttribute("virtual","0");
-    m_pListBox->SetAttribute("pos", "0,0,-0,-0", TRUE);
-    m_pListBox->SetAttribute("hottrack","1",TRUE);
+    m_pListBox->Load(xmlNode.parent().child(L"liststyle"));
+    m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
+    m_pListBox->SetAttribute(L"hottrack",L"1",TRUE);
     m_pListBox->SetOwner(this);    //chain notify message to combobox
     m_pListBox->SetCmdID(IDC_DROPDOWN_LIST);
 
     //初始化列表数据
-    pugi::xml_node xmlNode_Items=xmlNode.parent().child("items");
+    pugi::xml_node xmlNode_Items=xmlNode.parent().child(L"items");
     if(xmlNode_Items)
     {
         int nItems=0;
-        pugi::xml_node xmlNode_Item=xmlNode_Items.child("item");
+        pugi::xml_node xmlNode_Item=xmlNode_Items.child(L"item");
         while(xmlNode_Item)
         {
             nItems++;
-            xmlNode_Item=xmlNode_Item.next_sibling("item");
+            xmlNode_Item=xmlNode_Item.next_sibling(L"item");
         }
 
         m_pListBox->SetItemCount(nItems);
         int iItem=0;
-        xmlNode_Item=xmlNode_Items.child("item");
+        xmlNode_Item=xmlNode_Items.child(L"item");
         while(xmlNode_Item)
         {
-            LPARAM lParam=xmlNode_Item.attribute("data").as_int(0);
+            LPARAM lParam=xmlNode_Item.attribute(L"data").as_int(0);
             m_pListBox->SetItemData(iItem,lParam);
             SWindow *pWnd=m_pListBox->GetItemPanel(iItem);
             if(m_uTxtID!=0)
@@ -484,7 +482,7 @@ BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
                 SWindow *pText=pWnd->FindChildByCmdID(m_uTxtID);
                 if(pText)
                 {
-                    CDuiStringT strText=DUI_CA2T(xmlNode_Item.attribute("text").value(),CP_UTF8);
+                    SStringT strText=DUI_CW2T(xmlNode_Item.attribute(L"text").value());
                     pText->SetInnerText(strText);
                 }
             }
@@ -493,12 +491,12 @@ BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
                 SImageWnd * pImg = pWnd->FindChildByCmdID2<SImageWnd *>(m_uIconID);
                 if(pImg) 
                 {
-                    int iIcon=xmlNode_Item.attribute("icon").as_int(0);
+                    int iIcon=xmlNode_Item.attribute(L"icon").as_int(0);
                     pImg->SetIcon(iIcon);
                 }
             }
             iItem++;
-            xmlNode_Item=xmlNode_Item.next_sibling("item");
+            xmlNode_Item=xmlNode_Item.next_sibling(L"item");
         }
     }
 
@@ -544,7 +542,7 @@ void SComboBoxEx::OnSelChanged()
     int iSel=m_pListBox->GetCurSel();
     if(m_pEdit)
     {
-        CDuiStringT strText=GetLBText(iSel);
+        SStringT strText=GetLBText(iSel);
         m_pEdit->setMutedState(true);
         m_pEdit->SetWindowText(DUI_CT2W(strText));
         m_pEdit->setMutedState(false);

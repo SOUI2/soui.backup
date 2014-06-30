@@ -20,10 +20,10 @@ namespace SOUI
     {
     }
 
-    CDuiStringT CAccelerator::FormatHotkey()
+    SStringT CAccelerator::FormatHotkey()
     {
         if(m_wModifier==0 && m_wVK==0) return _T("нч");
-        CDuiStringT str;
+        SStringT str;
         if(m_wModifier == HOTKEYF_ALT) str=_T("Alt+");
         if(m_wModifier == HOTKEYF_CONTROL) str=_T("Ctrl+");
         if(m_wModifier == HOTKEYF_SHIFT) str=_T("Shift+");
@@ -35,9 +35,9 @@ namespace SOUI
         return str;
     }
 
-    CDuiStringT CAccelerator::GetKeyName( WORD vk )
+    SStringT CAccelerator::GetKeyName( WORD vk )
     {
-        CDuiStringT str;
+        SStringT str;
         switch(vk)
         {
         case VK_ESCAPE:

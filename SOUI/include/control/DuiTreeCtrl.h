@@ -31,7 +31,7 @@ enum {
 };
 
 typedef struct tagTVITEM {    
-    CDuiStringT        strText;
+    SStringT        strText;
     int            nImage;
     int            nSelectedImage;
     LPARAM      lParam;    
@@ -70,7 +70,7 @@ class SOUI_EXP STreeCtrl
     : public SScrollView
     , protected CSTree<LPTVITEM>
 {
-    SOUI_CLASS_NAME(STreeCtrl, "treectrl")
+    SOUI_CLASS_NAME(STreeCtrl, L"treectrl")
 public:
     STreeCtrl();
 
@@ -93,7 +93,7 @@ public:
     HSTREEITEM GetParentItem(HSTREEITEM hItem);
     HSTREEITEM GetSelectedItem();
 
-    BOOL GetItemText(HSTREEITEM hItem, CDuiStringT& strText) const;
+    BOOL GetItemText(HSTREEITEM hItem, SStringT& strText) const;
     BOOL SetItemText(HSTREEITEM hItem, LPCTSTR lpszItem);
     BOOL GetItemImage(HSTREEITEM hItem, int& nImage, int& nSelectedImage) const;
     BOOL SetItemImage(HSTREEITEM hItem, int nImage, int nSelectedImage);
@@ -201,20 +201,20 @@ protected:
     UINT        m_uPopMenuID;
 
     SOUI_ATTRS_BEGIN()        
-        ATTR_INT("indent", m_nIndent, TRUE)
-        ATTR_INT("itemhei", m_nItemHei, TRUE)
-        ATTR_INT("itemmargin", m_nItemMargin, TRUE)
-        ATTR_INT("checkbox", m_bCheckBox, TRUE)
-        ATTR_INT("rightclicksel", m_bRightClickSel, TRUE)
-        ATTR_SKIN("itembgskin", m_pItemBgSkin, TRUE)
-        ATTR_SKIN("itemselskin", m_pItemSelSkin, TRUE)
-        ATTR_SKIN("toggleskin", m_pToggleSkin, TRUE)            
-        ATTR_SKIN("iconskin", m_pIconSkin, TRUE)
-        ATTR_SKIN("checkskin", m_pCheckSkin, TRUE)
-        ATTR_COLOR("critembg",m_crItemBg,FALSE)
-        ATTR_COLOR("critemselbg",m_crItemSelBg,FALSE)
-        ATTR_COLOR("critemtext",m_crItemText,FALSE)
-        ATTR_COLOR("critemseltext",m_crItemSelText,FALSE)
+        ATTR_INT(L"indent", m_nIndent, TRUE)
+        ATTR_INT(L"itemhei", m_nItemHei, TRUE)
+        ATTR_INT(L"itemmargin", m_nItemMargin, TRUE)
+        ATTR_INT(L"checkbox", m_bCheckBox, TRUE)
+        ATTR_INT(L"rightclicksel", m_bRightClickSel, TRUE)
+        ATTR_SKIN(L"itembgskin", m_pItemBgSkin, TRUE)
+        ATTR_SKIN(L"itemselskin", m_pItemSelSkin, TRUE)
+        ATTR_SKIN(L"toggleskin", m_pToggleSkin, TRUE)            
+        ATTR_SKIN(L"iconskin", m_pIconSkin, TRUE)
+        ATTR_SKIN(L"checkskin", m_pCheckSkin, TRUE)
+        ATTR_COLOR(L"critembg",m_crItemBg,FALSE)
+        ATTR_COLOR(L"critemselbg",m_crItemSelBg,FALSE)
+        ATTR_COLOR(L"critemtext",m_crItemText,FALSE)
+        ATTR_COLOR(L"critemseltext",m_crItemSelText,FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()

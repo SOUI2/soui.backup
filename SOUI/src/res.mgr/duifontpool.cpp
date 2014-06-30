@@ -75,7 +75,7 @@ IFontPtr DuiFontPool::_CreateDefaultGUIFont()
     return pFont;
 }
 
-IFontPtr DuiFontPool::_CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,CDuiStringT strFaceName/*=""*/)
+IFontPtr DuiFontPool::_CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,SStringT strFaceName/*=""*/)
 {
     LOGFONT lfNew;
 

@@ -83,6 +83,6 @@ namespace SOUI
     protected:
         IResProvider * GetMatchResProvider(LPCTSTR pszType,LPCTSTR pszResName);
         
-        CDuiList<IResProvider*> m_lstResProvider;
+        SList<IResProvider*> m_lstResProvider;
     };
 }

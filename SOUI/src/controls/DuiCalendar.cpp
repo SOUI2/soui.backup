@@ -528,7 +528,7 @@ BOOL SCalendar::Load( pugi::xml_node xmlNode )
         if(pLabelToday)
         {
             CTime today=CTime::GetCurrentTime();
-            CDuiStringT str;
+            SStringT str;
             str.Format(_T("%04d-%02d-%02d"),today.GetYear(),today.GetMonth(),today.GetDay());
             pLabelToday->SetInnerText(str);
         }

@@ -4,7 +4,7 @@
 namespace SOUI
 {
 
-class SOUI_EXP DuiCSS :public DuiCmnMap<pugi::xml_node,CDuiStringA>
+class SOUI_EXP DuiCSS :public DuiCmnMap<pugi::xml_node,SStringW>
 {
 public:
     DuiCSS()
@@ -16,10 +16,10 @@ public:
 
     BOOL Init(pugi::xml_node xmlNode);
 
-    pugi::xml_node GetDefAttribute(LPCSTR pszClassName);
+    pugi::xml_node GetDefAttribute(LPCWSTR pszClassName);
 protected:
-    pugi::xml_node _GetDefAttribute(LPCSTR pszClassName);
-    void BuildClassAttribute(pugi::xml_node & xmlNode, LPCSTR pszClassName);
+    pugi::xml_node _GetDefAttribute(LPCWSTR pszClassName);
+    void BuildClassAttribute(pugi::xml_node & xmlNode, LPCWSTR pszClassName);
 
     pugi::xml_document m_xmlRoot;
 };

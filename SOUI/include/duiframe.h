@@ -74,7 +74,7 @@ protected:
 
     SWindow    *m_pHost;
 
-    CDuiList<ITimelineHandler*>    m_lstTimelineHandler;
+    SList<ITimelineHandler*>    m_lstTimelineHandler;
 };
 
 }//namespace SOUI

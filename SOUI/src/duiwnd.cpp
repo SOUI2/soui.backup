@@ -121,7 +121,7 @@ LPCTSTR SWindow::GetInnerText()
 }
 
 // Get tooltip text
-BOOL SWindow::OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip)
+BOOL SWindow::OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,SStringT &strTip)
 {
     if(m_hSWnd==hCurTipHost) return FALSE;
     hNewTipHost=m_hSWnd;
@@ -532,10 +532,10 @@ BOOL SWindow::LoadChildren(pugi::xml_node xmlNode)
         SWindow *pChild = DuiSystem::getSingleton().CreateWindowByName(xmlChild.name());
         if(!pChild)
         {//在窗口布局中支持include标签
-            if(_stricmp(xmlChild.name(),"include")==0)
+            if(_wcsicmp(xmlChild.name(),L"include")==0)
             {
                 pugi::xml_document xmlDoc;
-                CDuiStringT strName=DUI_CA2T(xmlChild.attribute("src").value(),CP_UTF8);
+                SStringT strName=DUI_CW2T(xmlChild.attribute(L"src").value());
                 if(LOADXML(xmlDoc,strName,RT_LAYOUT))
                 {
                     LoadChildren(xmlDoc.first_child());
@@ -563,7 +563,7 @@ BOOL SWindow::Load(pugi::xml_node xmlNode)
         return FALSE;
     }
 
-    m_strWndText = DUI_CA2T(xmlNode.text().get(), CP_UTF8);
+    m_strWndText = DUI_CW2T(xmlNode.text().get());
     if (!m_strWndText.IsEmpty())
     {
         m_strWndText.TrimRight(0x0a).TrimLeft(0x0a);
@@ -587,10 +587,10 @@ BOOL SWindow::Load(pugi::xml_node xmlNode)
 
     if (4 != m_dlgpos.nCount)
     {
-        CDuiStringA strValue = xmlNode.attribute("width").value();
-        int nValue =atoi(strValue);
+        SStringW strValue = xmlNode.attribute(L"width").value();
+        int nValue =_wtoi(strValue);
 
-        if (0 == nValue && "full" == strValue && 0 == m_dlgpos.nCount)
+        if (0 == nValue && L"full" == strValue && 0 == m_dlgpos.nCount)
         {
             m_rcWindow.right = 0;
             m_dlgpos.uPositionType = (m_dlgpos.uPositionType & ~SizeX_Mask) | SizeX_FitParent;
@@ -610,9 +610,9 @@ BOOL SWindow::Load(pugi::xml_node xmlNode)
             }
         }
 
-        strValue = xmlNode.attribute("height").value();
-        nValue =atoi(strValue);
-        if (0 == nValue && "full" == strValue)
+        strValue = xmlNode.attribute(L"height").value();
+        nValue =_wtoi(strValue);
+        if (0 == nValue && L"full" == strValue)
         {
             m_rcWindow.bottom = 0;
             m_dlgpos.uPositionType = (m_dlgpos.uPositionType & ~SizeY_Mask) | SizeY_FitParent;
@@ -711,11 +711,11 @@ BOOL SWindow::RedrawRegion(IRenderTarget *pRT, IRegion *pRgn)
     return _PaintRegion(pRT,pRgn,this,this,NULL,prState);
 }
 
-void SWindow::OnAttributeChanged( const CDuiStringA & strAttrName,BOOL bLoading,HRESULT hRet )
+void SWindow::OnAttributeChanged( const SStringW & strAttrName,BOOL bLoading,HRESULT hRet )
 {
     if(!bLoading && hRet==S_OK)
     {
-        if(strAttrName=="pos")
+        if(strAttrName==L"pos")
         {
             //位置改变时需要重新计算位置，并更新
             NotifyInvalidate();
@@ -1172,10 +1172,10 @@ BOOL SWindow::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
     return bRet;
 }
 
-HRESULT SWindow::OnAttributeState( const CDuiStringA& strValue, BOOL bLoading )
+HRESULT SWindow::OnAttributeState( const SStringW& strValue, BOOL bLoading )
 {
     int nState=0;
-    ::StrToIntExA(strValue,STIF_SUPPORT_HEX,&nState);
+    ::StrToIntExW(strValue,STIF_SUPPORT_HEX,&nState);
     m_dwState=nState;
     if(m_dwState & DuiWndState_Invisible) m_bVisible=FALSE;
     if(m_dwState & DuiWndState_Disable) m_bDisable=TRUE;
@@ -1183,7 +1183,7 @@ HRESULT SWindow::OnAttributeState( const CDuiStringA& strValue, BOOL bLoading )
 }
 
 
-HRESULT SWindow::OnAttributePosition(const CDuiStringA& strValue, BOOL bLoading)
+HRESULT SWindow::OnAttributePosition(const SStringW& strValue, BOOL bLoading)
 {
     if (strValue.IsEmpty()) return E_FAIL;
 
@@ -1210,7 +1210,7 @@ void SWindow::ClearLayoutState()
 
 void SWindow::UpdateChildrenPosition()
 {
-    CDuiList<SWindow*> lstWnd;
+    SList<SWindow*> lstWnd;
     SWindow *pChild=GetDuiWindow(GDUI_FIRSTCHILD);
     while(pChild)
     {
@@ -1314,7 +1314,7 @@ SWindow *SWindow::GetCheckedRadioButton()
     SWindow *pChild=m_pFirstChild;
     while(pChild)
     {
-        if(pChild->IsClass("radio") && pChild->IsChecked())
+        if(pChild->IsClass(L"radio") && pChild->IsChecked())
         {
             return pChild;
         }

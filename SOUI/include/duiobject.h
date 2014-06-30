@@ -12,9 +12,9 @@
 // DuiObject Class Name Declaration
 #define SOUI_CLASS_NAME(theclass, classname)   \
 public:                                                 \
-    static BOOL CheckAndNew(LPCSTR lpszName,void **ppRet)       \
+    static BOOL CheckAndNew(LPCWSTR lpszName,void **ppRet)       \
     {                                                   \
-        if (strcmp(GetClassName(), lpszName)  == 0)     \
+        if (wcscmp(GetClassName(), lpszName)  == 0)     \
         {                                                \
             * (theclass**)ppRet=new theclass;            \
             return TRUE;                                \
@@ -23,24 +23,24 @@ public:                                                 \
             return FALSE;                               \
     }                                                   \
                                                         \
-    static LPCSTR GetClassName()                        \
+    static LPCWSTR GetClassName()                        \
     {                                                   \
         return classname;                               \
     }                                                   \
                                                         \
-    static LPCSTR BaseClassName()                        \
+    static LPCWSTR BaseClassName()                        \
     {                                                    \
         return __super::GetClassName();                    \
     }                                                    \
                                                         \
-    virtual LPCSTR GetObjectClass()                     \
+    virtual LPCWSTR GetObjectClass()                     \
     {                                                   \
         return classname;                               \
     }                                                   \
                                                         \
-    virtual BOOL IsClass(LPCSTR lpszName)               \
+    virtual BOOL IsClass(LPCWSTR lpszName)               \
     {                                                   \
-        if(strcmp(GetClassName(), lpszName)  == 0) return TRUE;  \
+        if(wcscmp(GetClassName(), lpszName)  == 0) return TRUE;  \
         return __super::IsClass(lpszName);                \
     }                                                   \
 
@@ -59,22 +59,22 @@ public:
     {
     }
 
-    static LPCSTR GetClassName()
+    static LPCWSTR GetClassName()
     {
         return NULL;
     }
 
-    static LPCSTR BaseClassName()
+    static LPCWSTR BaseClassName()
     {
         return NULL;
     }
 
-    virtual BOOL IsClass(LPCSTR lpszName)
+    virtual BOOL IsClass(LPCWSTR lpszName)
     {
         return FALSE;
     }
 
-    virtual LPCSTR GetObjectClass()
+    virtual LPCWSTR GetObjectClass()
     {
         return NULL;
     }
@@ -82,41 +82,40 @@ public:
 
     virtual BOOL Load(pugi::xml_node xmlNode);
 
-    virtual HRESULT SetAttribute(const CDuiStringA &  strAttribName, const CDuiStringA &  strValue, BOOL bLoading)
+    virtual HRESULT SetAttribute(const SStringA &  strAttribName, const SStringA &  strValue, BOOL bLoading)
+    {
+        return DefAttributeProc(DUI_CA2W(strAttribName),DUI_CA2W(strValue),bLoading);
+    }
+
+    virtual HRESULT SetAttribute(const SStringW &  strAttribName, const SStringW &  strValue, BOOL bLoading)
     {
         return DefAttributeProc(strAttribName,strValue,bLoading);
     }
 
-    virtual HRESULT SetAttributeW(const CDuiStringA &  strAttribName, const CDuiStringW &  strValue, BOOL bLoading)
-    {
-        CDuiStringA strValueUTF8=DUI_CW2A(strValue,CP_UTF8);
-        return SetAttribute(strAttribName,strValueUTF8,bLoading);
-    }
-
-    virtual HRESULT DefAttributeProc(const CDuiStringA & strAttribName,const CDuiStringA & strValue, BOOL bLoading)
+    virtual HRESULT DefAttributeProc(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading)
     {
         return E_FAIL;
     }
     //tolua_end
 protected:
     virtual void OnAttributeFinish(pugi::xml_node xmlNode) {}
-    virtual void OnAttributeChanged(const CDuiStringA & strAttrName,BOOL bLoading,HRESULT hRet) {}
+    virtual void OnAttributeChanged(const SStringW & strAttrName,BOOL bLoading,HRESULT hRet) {}
 
 public:
-    static ULONG HexStringToULong(LPCSTR lpszValue, int nSize = -1)
+    static ULONG HexStringToULong(LPCWSTR lpszValue, int nSize = -1)
     {
-        LPCSTR pchValue = lpszValue;
+        LPCWSTR pchValue = lpszValue;
         ULONG ulValue = 0;
         while (*pchValue && nSize != 0)
         {
             ulValue <<= 4;
 
-            if ('a' <= *pchValue && 'f' >= *pchValue)
-                ulValue |= (*pchValue - 'a' + 10);
-            else if ('A' <= *pchValue && 'F' >= *pchValue)
-                ulValue |= (*pchValue - 'A' + 10);
-            else if ('0' <= *pchValue && '9' >= *pchValue)
-                ulValue |= (*pchValue - '0');
+            if ('a' <= *pchValue && L'f' >= *pchValue)
+                ulValue |= (*pchValue - L'a' + 10);
+            else if ('A' <= *pchValue && L'F' >= *pchValue)
+                ulValue |= (*pchValue - L'A' + 10);
+            else if ('0' <= *pchValue && L'9' >= *pchValue)
+                ulValue |= (*pchValue - L'0');
             else
                 return 0;
 
@@ -127,14 +126,14 @@ public:
         return ulValue;
     }
 
-    static COLORREF HexStringToColor(LPCSTR lpszValue)
+    static COLORREF HexStringToColor(LPCWSTR lpszValue)
     {
         COLORREF cr=RGB(
             HexStringToULong(lpszValue, 2),
             HexStringToULong(lpszValue + 2, 2),
             HexStringToULong(lpszValue + 4, 2)
             );
-        if(strlen(lpszValue)>6)
+        if(wcslen(lpszValue)>6)
         {
             cr |= HexStringToULong(lpszValue + 6, 2)<<24;
         }else
@@ -145,7 +144,7 @@ public:
     }
 
 #ifdef    _DEBUG
-    CDuiStringA m_strXml;
+    SStringW m_strXml;
 #endif//_DEBUG
 };
 

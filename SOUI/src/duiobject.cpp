@@ -11,8 +11,8 @@ namespace SOUI
 #ifdef _DEBUG
         {
             pugi::xml_writer_buff writer;
-            xmlNode.print(writer);
-            m_strXml=DUI_CA2A(CDuiStringA(writer.buffer(),writer.size()),CP_UTF8);
+            xmlNode.print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
+            m_strXml=SStringW(writer.buffer(),writer.size());
         }
 #endif
 
@@ -21,10 +21,10 @@ namespace SOUI
         if(defAttr)
         {
             //优先处理"class"属性
-            pugi::xml_attribute attrClass=defAttr.attribute("class");
+            pugi::xml_attribute attrClass=defAttr.attribute(L"class");
             if(attrClass)
             {
-                defAttr.remove_attribute("class");
+                defAttr.remove_attribute(L"class");
                 SetAttribute(attrClass.name(), attrClass.value(), TRUE);
             }
             for (pugi::xml_attribute attr = defAttr.first_attribute(); attr; attr = attr.next_attribute())
@@ -40,7 +40,7 @@ namespace SOUI
         //设置当前对象的属性
 
         //优先处理"class"属性
-        pugi::xml_attribute attrClass=xmlNode.attribute("class");
+        pugi::xml_attribute attrClass=xmlNode.attribute(L"class");
         if(attrClass)
         {
             SetAttribute(attrClass.name(), attrClass.value(), TRUE);

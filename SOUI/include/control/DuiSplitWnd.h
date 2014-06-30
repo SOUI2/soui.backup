@@ -7,19 +7,18 @@ namespace SOUI
 enum SPLITMODE {SM_COL=0,SM_ROW};
 
 
-class SOUI_EXP CDuiSplitPane : public SWindow
+class SOUI_EXP SSplitPane : public SWindow
 {
     friend class SSplitWnd;
-    SOUI_CLASS_NAME(CDuiSplitPane, "splitpane")
+    SOUI_CLASS_NAME(SSplitPane, L"splitpane")
 public:
-    CDuiSplitPane();
-    virtual ~CDuiSplitPane() {}
+    SSplitPane();
+    virtual ~SSplitPane() {}
 
-protected:
     SOUI_ATTRS_BEGIN()
-    ATTR_INT("idealsize", m_nSizeIdeal, TRUE)
-    ATTR_INT("minsize", m_nSizeMin, TRUE)
-    ATTR_INT("priority", m_nPriority, TRUE)
+        ATTR_INT(L"idealsize", m_nSizeIdeal, TRUE)
+        ATTR_INT(L"minsize", m_nSizeMin, TRUE)
+        ATTR_INT(L"priority", m_nPriority, TRUE)
     SOUI_ATTRS_END()
 protected:
     int m_nSizeIdeal;
@@ -30,7 +29,7 @@ protected:
 class SOUI_EXP SSplitWnd :
     public SWindow
 {
-    SOUI_CLASS_NAME(SSplitWnd, "splitwnd")
+    SOUI_CLASS_NAME(SSplitWnd, L"splitwnd")
 
     enum {
         layout_vert=1,        //纵向布局改变
@@ -40,7 +39,7 @@ class SOUI_EXP SSplitWnd :
     struct PANEORDER
     {
         int idx;
-        CDuiSplitPane *pPane;
+        SSplitPane *pPane;
     };
 public:
     SSplitWnd(void);
@@ -82,10 +81,10 @@ protected:
     void Relayout(UINT uMode);
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT("sepsize", m_nSepSize, TRUE)
-        ATTR_INT("adjustable", m_bAdjustable, TRUE)
-        ATTR_INT("colmode", m_bColMode, TRUE)
-        ATTR_SKIN("skinsep",m_pSkinSep,TRUE)
+        ATTR_INT(L"sepsize", m_nSepSize, TRUE)
+        ATTR_INT(L"adjustable", m_bAdjustable, TRUE)
+        ATTR_INT(L"colmode", m_bColMode, TRUE)
+        ATTR_SKIN(L"skinsep",m_pSkinSep,TRUE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
@@ -98,7 +97,7 @@ protected:
     WND_MSG_MAP_END()
 
 protected:
-    CDuiArray<CDuiSplitPane *> m_arrPane;
+    SArray<SSplitPane *> m_arrPane;
     ISkinObj *m_pSkinSep;
     int m_nSepSize;
     BOOL m_bAdjustable;
@@ -110,7 +109,7 @@ protected:
 
 class SOUI_EXP SSplitWnd_Col : public SSplitWnd
 {
-    SOUI_CLASS_NAME(SSplitWnd_Col, "splitcol")
+    SOUI_CLASS_NAME(SSplitWnd_Col, L"splitcol")
 public:
     SSplitWnd_Col()
     {
@@ -120,7 +119,7 @@ public:
 
 class SOUI_EXP SSplitWnd_Row : public SSplitWnd
 {
-    SOUI_CLASS_NAME(SSplitWnd_Row, "splitrow")
+    SOUI_CLASS_NAME(SSplitWnd_Row, L"splitrow")
 public:
     SSplitWnd_Row()
     {

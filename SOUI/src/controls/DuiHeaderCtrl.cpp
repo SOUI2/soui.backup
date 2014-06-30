@@ -335,23 +335,23 @@ namespace SOUI
 
     BOOL SHeaderCtrl::LoadChildren( pugi::xml_node xmlNode )
     {
-        if(!xmlNode || strcmp(xmlNode.name(),"items")!=0)
+        if(!xmlNode || wcscmp(xmlNode.name(),L"items")!=0)
             return TRUE;
-        pugi::xml_node xmlItem=xmlNode.child("item");
+        pugi::xml_node xmlItem=xmlNode.child(L"item");
         int iOrder=0;
         while(xmlItem)
         {
             DUIHDITEM item={0};
             item.mask=0xFFFFFFFF;
             item.iOrder=iOrder++;
-            CDuiStringT strTxt=DUI_CA2T(xmlItem.text().get(),CP_UTF8);
+            SStringT strTxt=DUI_CW2T(xmlItem.text().get());
             item.pszText=_tcsdup(strTxt);
             item.cchTextMax=strTxt.GetLength();
-            item.cx=xmlItem.attribute("width").as_int(50);
-            item.lParam=xmlItem.attribute("userata").as_uint(0);
-            item.stFlag=(DUIHDSORTFLAG)xmlItem.attribute("sortFlag").as_uint(ST_NULL);
+            item.cx=xmlItem.attribute(L"width").as_int(50);
+            item.lParam=xmlItem.attribute(L"userata").as_uint(0);
+            item.stFlag=(DUIHDSORTFLAG)xmlItem.attribute(L"sortFlag").as_uint(ST_NULL);
             m_arrItems.InsertAt(m_arrItems.GetCount(),item);
-            xmlItem=xmlItem.next_sibling("item");
+            xmlItem=xmlItem.next_sibling(L"item");
         }
         return TRUE;
     }
@@ -429,7 +429,7 @@ namespace SOUI
         int iDragTo=LOWORD(dwDragTo);
         int iDragFrom=LOWORD(m_dwHitTest);
 
-        CDuiArray<UINT> items;
+        SArray<UINT> items;
         for(UINT i=0;i<m_arrItems.GetCount();i++)
         {
             if(i!=iDragFrom) items.Add(i);

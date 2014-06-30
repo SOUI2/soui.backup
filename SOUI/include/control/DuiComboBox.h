@@ -140,7 +140,7 @@ public:
      *
      * Describe  获取当前选中索引
      */
-    virtual CDuiStringT GetWindowText() =0;
+    virtual SStringT GetWindowText() =0;
 
     /**
      * CDuiComboBoxBase::DropDown
@@ -343,11 +343,11 @@ protected:
     BOOL IsTabStop();
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT("dropdown", m_bDropdown, FALSE)
-        ATTR_INT("dropheight", m_nDropHeight, FALSE)
-         ATTR_INT("cursel", m_iInitSel, FALSE)
-        ATTR_SKIN("btnskin", m_pSkinBtn, FALSE)
-        ATTR_INT("animtime", m_iAnimTime, FALSE)
+        ATTR_INT(L"dropdown", m_bDropdown, FALSE)
+        ATTR_INT(L"dropheight", m_nDropHeight, FALSE)
+         ATTR_INT(L"cursel", m_iInitSel, FALSE)
+        ATTR_SKIN(L"btnskin", m_pSkinBtn, FALSE)
+        ATTR_INT(L"animtime", m_iAnimTime, FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
@@ -367,7 +367,7 @@ protected:
      * 
      * Describe  获取编辑框内容
      */  
-    CDuiStringT GetEditText()
+    SStringT GetEditText()
     {
         if(!m_bDropdown)
         {
@@ -375,13 +375,13 @@ protected:
             wchar_t *pszBuf=new wchar_t[nLen+1];
             m_pEdit->GetWindowText(pszBuf,nLen);
             pszBuf[nLen]=0;
-            CDuiStringT str=DUI_CW2T(pszBuf);
+            SStringT str=DUI_CW2T(pszBuf);
             delete pszBuf;
             return str;
         }
         else
         {
-            return CDuiStringT();
+            return SStringT();
         }
     }
 
@@ -404,7 +404,7 @@ protected:
  */
 class SOUI_EXP SComboBox : public CDuiComboBoxBase
 {
-    SOUI_CLASS_NAME(SComboBox, "combobox")
+    SOUI_CLASS_NAME(SComboBox, L"combobox")
 public:
     /**
      * SComboBox::SComboBox
@@ -472,7 +472,7 @@ public:
      *
      * Describe  获取文本位置
      */
-    CDuiStringT GetWindowText()
+    SStringT GetWindowText()
     {
         if(!m_bDropdown)
         {
@@ -552,9 +552,9 @@ public:
      *
      * Describe  获取文本
      */
-    CDuiStringT GetLBText(int iItem)
+    SStringT GetLBText(int iItem)
     {
-        CDuiStringT strText;
+        SStringT strText;
         m_pListBox->GetText(iItem,strText);
         return strText;
     }
@@ -620,7 +620,7 @@ protected:
 
 class SOUI_EXP SComboBoxEx : public CDuiComboBoxBase
 {
-    SOUI_CLASS_NAME(SComboBox, "comboboxex")
+    SOUI_CLASS_NAME(SComboBoxEx, L"comboboxex")
 public:
     /**
      * SComboBoxEx::SComboBoxEx
@@ -687,7 +687,7 @@ public:
      *
      * Describe  获取文本位置
      */
-    CDuiStringT GetWindowText()
+    SStringT GetWindowText()
     {
         if(!m_bDropdown) return GetEditText();
         return GetLBText(m_pListBox->GetCurSel());
@@ -778,7 +778,7 @@ public:
      *
      * Describe  获取文本
      */
-    CDuiStringT GetLBText(int iItem)
+    SStringT GetLBText(int iItem)
     {
         if(m_uTxtID == 0 || iItem<0 || iItem>= GetCount()) return _T("");
         SWindow *pItem=m_pListBox->GetItemPanel(iItem);
@@ -839,8 +839,8 @@ protected:
 protected:
 
     SOUI_ATTRS_BEGIN()
-        ATTR_UINT("id_text", m_uTxtID, FALSE)
-        ATTR_UINT("id_icon", m_uIconID, FALSE)
+        ATTR_UINT(L"id_text", m_uTxtID, FALSE)
+        ATTR_UINT(L"id_icon", m_uIconID, FALSE)
     SOUI_ATTRS_END()
 
     SListBoxEx *m_pListBox;  /**< SListBox指针 */

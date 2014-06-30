@@ -169,7 +169,7 @@ HSTREEITEM STreeCtrl::GetSelectedItem()
     return m_hSelItem;
 }
 
-BOOL STreeCtrl::GetItemText(HSTREEITEM hItem, CDuiStringT& strText) const
+BOOL STreeCtrl::GetItemText(HSTREEITEM hItem, SStringT& strText) const
 {
     if (hItem)
     {
@@ -356,7 +356,7 @@ BOOL STreeCtrl::LoadChildren(pugi::xml_node xmlNode)
     ItemLayout();
 
     pugi::xml_node xmlParent=xmlNode.parent();
-    pugi::xml_node xmlItem=xmlParent.child("item");
+    pugi::xml_node xmlItem=xmlParent.child(L"item");
 
     if(xmlItem) LoadBranch(STVI_ROOT,xmlItem);
 
@@ -369,10 +369,10 @@ void STreeCtrl::LoadBranch(HSTREEITEM hParent,pugi::xml_node xmlItem)
     {
         HSTREEITEM hItem=InsertItem(xmlItem,hParent);
 
-        pugi::xml_node xmlChild=xmlItem.child("item");
+        pugi::xml_node xmlChild=xmlItem.child(L"item");
         if(xmlChild) LoadBranch(hItem,xmlChild);
 
-        xmlItem=xmlItem.next_sibling("item");
+        xmlItem=xmlItem.next_sibling(L"item");
     }
 }
 
@@ -380,13 +380,13 @@ void STreeCtrl::LoadItemAttribute(pugi::xml_node xmlItem, LPTVITEM pItem)
 {
     for (pugi::xml_attribute attr=xmlItem.first_attribute(); attr; attr=attr.next_attribute())
     {
-        if ( !_stricmp(attr.name(), "text"))
-            pItem->strText = DUI_CA2T(attr.value(), CP_UTF8); 
-        else if ( !_stricmp(attr.name(), "img"))
+        if ( !_wcsicmp(attr.name(), L"text"))
+            pItem->strText = DUI_CW2T(attr.value()); 
+        else if ( !_wcsicmp(attr.name(), L"img"))
             pItem->nImage = attr.as_int(0);
-        else if ( !_stricmp(attr.name(), "selimg"))
+        else if ( !_wcsicmp(attr.name(), L"selimg"))
             pItem->nSelectedImage = attr.as_int(0);
-        else if ( !_stricmp(attr.name(), "data"))
+        else if ( !_wcsicmp(attr.name(), L"data"))
             pItem->lParam = attr.as_uint(0);
     }
 }

@@ -11,7 +11,7 @@ namespace SOUI
     {
         friend class CDuiAxContainerImpl;
     public:
-        SOUI_CLASS_NAME(SActiveX, "activex")
+        SOUI_CLASS_NAME(SActiveX, L"activex")
         explicit SActiveX();
         virtual ~SActiveX();
 
@@ -30,7 +30,7 @@ namespace SOUI
 
         virtual BOOL IsTabStop(){return TRUE;}
 
-        HRESULT OnAttrClsid(const CDuiStringA & strValue,BOOL bLoading);
+        HRESULT OnAttrClsid(const SStringW & strValue,BOOL bLoading);
         WND_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
             MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
@@ -41,9 +41,9 @@ namespace SOUI
         WND_MSG_MAP_END()
 
         SOUI_ATTRS_BEGIN()
-            ATTR_CUSTOM("clsid",OnAttrClsid)
-            ATTR_DWORD("clsctx",m_clsCtx,FALSE)
-            ATTR_UINT("delayinit",m_bDelayInit,FALSE)
+            ATTR_CUSTOM(L"clsid",OnAttrClsid)
+            ATTR_DWORD(L"clsctx",m_clsCtx,FALSE)
+            ATTR_UINT(L"delayinit",m_bDelayInit,FALSE)
         SOUI_ATTRS_END()
 
         virtual void OnInitActiveXFinished(){}
@@ -61,7 +61,7 @@ namespace SOUI
     class SOUI_EXP SFlashCtrl : public SActiveX
     {
     public:
-        SOUI_CLASS_NAME(SFlashCtrl, "flash")
+        SOUI_CLASS_NAME(SFlashCtrl, L"flash")
         SFlashCtrl();
 
         ShockwaveFlashObjects::IShockwaveFlash* GetFlashInterface()  const
@@ -82,10 +82,10 @@ namespace SOUI
         }
 
         SOUI_ATTRS_BEGIN()
-            ATTR_STRINGW("url",m_strUrl,FALSE)
+            ATTR_STRINGW(L"url",m_strUrl,FALSE)
         SOUI_ATTRS_END()
 
-        CDuiStringW m_strUrl;
+        SStringW m_strUrl;
 
         CDuiComQIPtr<ShockwaveFlashObjects::IShockwaveFlash> flash_;
     };
@@ -94,7 +94,7 @@ namespace SOUI
     class SOUI_EXP SMediaPlayer :public SActiveX
     {
     public:
-        SOUI_CLASS_NAME(SMediaPlayer, "mediaplayer")
+        SOUI_CLASS_NAME(SMediaPlayer, L"mediaplayer")
         SMediaPlayer();
 
         WMPLib::IWMPPlayer4* GetMediaPlayerInterface()  const
@@ -114,10 +114,10 @@ namespace SOUI
         virtual void OnAxActivate(IUnknown *pUnknwn);
 
         SOUI_ATTRS_BEGIN()
-            ATTR_STRINGW("url",m_strUrl,FALSE)
+            ATTR_STRINGW(L"url",m_strUrl,FALSE)
         SOUI_ATTRS_END()
 
-        CDuiStringW m_strUrl;
+        SStringW m_strUrl;
         CDuiComQIPtr<WMPLib::IWMPPlayer4> wmp_;
     };
 

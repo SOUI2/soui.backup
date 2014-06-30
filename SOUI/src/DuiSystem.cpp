@@ -55,11 +55,11 @@ BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType)
 {
     pugi::xml_document xmlDoc;
     if(!LOADXML(xmlDoc,pszName,pszType)) return FALSE;
-    pugi::xml_node root=xmlDoc.child("UIDEF");
+    pugi::xml_node root=xmlDoc.child(L"UIDEF");
     if(!root) return FALSE;
 
     //init edit menu
-    pugi::xml_node xmlMenu=root.child("editmenu");
+    pugi::xml_node xmlMenu=root.child(L"editmenu");
     if(xmlMenu)
     {
         m_xmlEditMenu.append_copy(xmlMenu);
@@ -67,11 +67,11 @@ BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType)
 
     //set default font
     pugi::xml_node xmlFont;
-    xmlFont=root.child("font");
+    xmlFont=root.child(L"font");
     if(xmlFont)
     {
-        int nSize=xmlFont.attribute("size").as_int(12);
-        DuiFontPool::getSingleton().SetDefaultFont(DUI_CA2T(xmlFont.attribute("face").value(),CP_UTF8),nSize);
+        int nSize=xmlFont.attribute(L"size").as_int(12);
+        DuiFontPool::getSingleton().SetDefaultFont(DUI_CW2T(xmlFont.attribute(L"face").value()),nSize);
     }
 
     DuiPools::Init(root);
@@ -83,7 +83,7 @@ BOOL DuiSystem::SetMsgBoxTemplate( LPCTSTR pszXmlName,LPCTSTR pszType)
 {
     pugi::xml_document xmlDoc;
     if(!LOADXML(xmlDoc,pszXmlName,pszType)) return FALSE;
-    pugi::xml_node uiRoot=xmlDoc.child("UIFRAME");   
+    pugi::xml_node uiRoot=xmlDoc.child(L"UIFRAME");   
     return SMessageBoxImpl::SetMsgTemplate(uiRoot);
 }
 
@@ -98,7 +98,7 @@ BOOL DuiSystem::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,
     GETRESPROVIDER->GetRawBuffer(pszType,pszXmlName,strXml,dwSize);
 
     pugi::xml_parse_result result= xmlDoc.load_buffer(strXml,strXml.size(),pugi::parse_default,pugi::encoding_utf8);
-    DUIRES_ASSERTA(result,"parse xml error! xmlName=%s,desc=%s,offset=%d",pszXmlName,result.description(),result.offset);
+    DUIRES_ASSERTW(result,L"parse xml error! xmlName=%s,desc=%s,offset=%d",pszXmlName,result.description(),result.offset);
     return result;
 
 }

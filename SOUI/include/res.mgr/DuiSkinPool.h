@@ -6,7 +6,7 @@ namespace SOUI
 {
 
 typedef ISkinObj * DuiSkinPtr;
-class SOUI_EXP DuiSkinPool :public DuiCmnMap<DuiSkinPtr,CDuiStringA>
+class SOUI_EXP DuiSkinPool :public DuiCmnMap<DuiSkinPtr,SStringW>
 {
 public:
     DuiSkinPool();
@@ -15,11 +15,11 @@ public:
 
     BOOL Init(pugi::xml_node xmlNode);
 
-    ISkinObj* GetSkin(LPCSTR strSkinName);
+    ISkinObj* GetSkin(LPCWSTR strSkinName);
 
-    int LoadSkins(LPCSTR  pszOwnerName);
+    int LoadSkins(LPCWSTR  pszOwnerName);
 
-    int FreeSkins(LPCSTR  pszOwnerName);
+    int FreeSkins(LPCWSTR  pszOwnerName);
 
 protected:
     static void OnKeyRemoved(const DuiSkinPtr & obj);

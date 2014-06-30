@@ -53,12 +53,12 @@
     #define CDuiComQIPtr    CComQIPtr
 
     #include "wtl.mini/duicrack.h"
-    #define CDuiArray    CAtlArray
-    #define CDuiList    CAtlList
-    #define CDuiMap        CAtlMap
-    #define CDuiStringA    CAtlStringA
-    #define CDuiStringW CAtlStringW
-    #define CDuiStringT CAtlString
+    #define SArray    CAtlArray
+    #define SList    CAtlList
+    #define SMap        CAtlMap
+    #define SStringA    CAtlStringA
+    #define SStringW CAtlStringW
+    #define SStringT CAtlString
 
     #include "../../utilities/include/string/strcpcvt.h"
 #else//ATL_FREE

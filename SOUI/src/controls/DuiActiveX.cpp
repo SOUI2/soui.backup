@@ -128,12 +128,10 @@ namespace SOUI
         return m_axContainer->OnWindowMessage(uMsg, wp, lp);
     }
 
-    HRESULT SActiveX::OnAttrClsid(const CDuiStringA & strValue,BOOL bLoading)
+    HRESULT SActiveX::OnAttrClsid(const SStringW & strValue,BOOL bLoading)
     {
-        CDuiStringW strValueW=DUI_CA2W(strValue,CP_UTF8);
-
         OLECHAR szCLSID[100] = { 0 };
-        wcscpy(szCLSID,strValueW);
+        wcscpy(szCLSID,strValue);
 
         HRESULT hr=E_FAIL;
         if( szCLSID[0] == L'{' ) hr=::CLSIDFromString(szCLSID, &m_clsid);

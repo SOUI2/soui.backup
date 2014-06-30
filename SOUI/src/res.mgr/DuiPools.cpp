@@ -24,24 +24,24 @@ namespace SOUI
     void DuiPools::Init( pugi::xml_node xmlNode )
     {
         //load string table
-        pugi::xml_node xmlStr=xmlNode.child("string");
+        pugi::xml_node xmlStr=xmlNode.child(L"string");
         if(xmlStr)
         {
             DuiStringPool::Init(xmlStr);
         }
         //load style table
-        pugi::xml_node xmlStyle=xmlNode.child("style");
+        pugi::xml_node xmlStyle=xmlNode.child(L"style");
         if(xmlStyle)
         {
             DuiStylePool::Init(xmlStyle);
         }
         //load skin
-        pugi::xml_node xmlSkin=xmlNode.child("skins");
+        pugi::xml_node xmlSkin=xmlNode.child(L"skins");
         if(xmlSkin)
         {
             DuiSkinPool::Init(xmlSkin);
         }
-        pugi::xml_node xmlObjAttr=xmlNode.child("objattr");
+        pugi::xml_node xmlObjAttr=xmlNode.child(L"objattr");
         //load objattr
         if(xmlObjAttr)
         {

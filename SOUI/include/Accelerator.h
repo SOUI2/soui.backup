@@ -10,9 +10,9 @@ namespace SOUI
         CAccelerator(UINT vKey=0,bool bCtrl=false,bool bAlt=false,bool bShift=false);
         ~CAccelerator(void);
 
-        CDuiStringT GetKeyName(WORD vk);
+        SStringT GetKeyName(WORD vk);
 
-        CDuiStringT FormatHotkey();
+        SStringT FormatHotkey();
 
         WORD GetModifier() const {return m_wModifier;}
         WORD GetKey() const {return m_wVK;}

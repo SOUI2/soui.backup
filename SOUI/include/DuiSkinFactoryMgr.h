@@ -9,7 +9,7 @@ namespace SOUI
     public:
         virtual ~CSkinFactory() {}
         virtual ISkinObj * NewSkin()=NULL;
-        virtual const CDuiStringA & GetTypeName()=NULL;
+        virtual const SStringW & GetTypeName()=NULL;
         virtual CSkinFactory * Clone()=NULL;
     };
 
@@ -26,7 +26,7 @@ namespace SOUI
             return new T;
         }
 
-        virtual const CDuiStringA & GetTypeName()
+        virtual const SStringW & GetTypeName()
         {
             return m_strTypeName;
         }
@@ -36,11 +36,11 @@ namespace SOUI
             return new TplSkinFactory<T>;
         }
     protected:
-        CDuiStringA m_strTypeName;
+        SStringW m_strTypeName;
     };
 
     typedef CSkinFactory * CSkinFactoryPtr;
-    class SOUI_EXP DuiSkinFactoryMgr: public DuiCmnMap<CSkinFactoryPtr,CDuiStringA>
+    class SOUI_EXP DuiSkinFactoryMgr: public DuiCmnMap<CSkinFactoryPtr,SStringW>
     {
     public:
         DuiSkinFactoryMgr()
@@ -60,12 +60,12 @@ namespace SOUI
             return true;
         }
 
-        bool UnregisterSkinFactory(const CDuiStringA & strClassName)
+        bool UnregisterSkinFactory(const SStringW & strClassName)
         {
             return RemoveKeyObject(strClassName);
         }
 
-        ISkinObj * CreateSkinByName(LPCSTR pszClassName);
+        ISkinObj * CreateSkinByName(LPCWSTR pszClassName);
 
     protected:
         static void OnSkinRemoved(const CSkinFactoryPtr & obj);

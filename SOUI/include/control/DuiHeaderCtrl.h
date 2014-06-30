@@ -30,7 +30,7 @@ namespace SOUI
 
     class SOUI_EXP SHeaderCtrl: public SWindow
     {
-        SOUI_CLASS_NAME(SHeaderCtrl, "header")
+        SOUI_CLASS_NAME(SHeaderCtrl, L"header")
     public:
         SHeaderCtrl(void);
         ~SHeaderCtrl(void);
@@ -46,11 +46,11 @@ namespace SOUI
         void DeleteAllItems();
 
         SOUI_ATTRS_BEGIN()
-            ATTR_SKIN("itemSkin",m_pSkinItem,FALSE)
-            ATTR_SKIN("sortSkin",m_pSkinSort,FALSE)
-            ATTR_INT("fixWidth",m_bFixWidth,FALSE)
-            ATTR_INT("itemSwapEnable",m_bItemSwapEnable,FALSE)
-            ATTR_INT("sortHeader",m_bSortHeader,FALSE)
+            ATTR_SKIN(L"itemSkin",m_pSkinItem,FALSE)
+            ATTR_SKIN(L"sortSkin",m_pSkinSort,FALSE)
+            ATTR_INT(L"fixWidth",m_bFixWidth,FALSE)
+            ATTR_INT(L"itemSwapEnable",m_bItemSwapEnable,FALSE)
+            ATTR_INT(L"sortHeader",m_bSortHeader,FALSE)
         SOUI_ATTRS_END()
     protected:
         virtual BOOL LoadChildren(pugi::xml_node xmlNode);
@@ -100,6 +100,6 @@ namespace SOUI
         DWORD            m_dwDragTo;
         
         int                m_nAdjItemOldWidth;//保存被拖动项的原始宽度
-        CDuiArray<DUIHDITEM> m_arrItems;
+        SArray<DUIHDITEM> m_arrItems;
     };
 }//end of namespace SOUI

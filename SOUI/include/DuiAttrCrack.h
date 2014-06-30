@@ -11,8 +11,8 @@
 #define SOUI_ATTRS_BEGIN()                            \
 public:                                                             \
     virtual HRESULT SetAttribute(                                   \
-    const CDuiStringA & strAttribName,                                     \
-    const CDuiStringA &  strValue,                                          \
+    const SStringW & strAttribName,                                     \
+    const SStringW &  strValue,                                          \
     BOOL     bLoading=FALSE)                                    \
     {                                                               \
     HRESULT hRet = E_FAIL;                                        \
@@ -47,7 +47,7 @@ public:                                                             \
     if (attribname == strAttribName)                            \
         {                                                           \
         int nRet=0;                                                \
-        ::StrToIntExA(strValue,STIF_SUPPORT_HEX,&nRet);            \
+        ::StrToIntExW(strValue,STIF_SUPPORT_HEX,&nRet);            \
         varname=nRet;                                            \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
@@ -57,7 +57,7 @@ public:                                                             \
 #define ATTR_RECT(attribname, varname, allredraw)         \
     if (attribname == strAttribName)                            \
         {                                                           \
-        sscanf(strValue,"%d,%d,%d,%d",&varname.left,&varname.top,&varname.right,&varname.bottom);\
+        swscanf(strValue,L"%d,%d,%d,%d",&varname.left,&varname.top,&varname.right,&varname.bottom);\
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -67,7 +67,7 @@ public:                                                             \
 #define ATTR_SIZE(attribname, varname, allredraw)         \
     if (attribname == strAttribName)                            \
         {                                                           \
-        sscanf(strValue,"%d,%d",&varname.cx,&varname.cy);\
+        swscanf(strValue,L"%d,%d",&varname.cx,&varname.cy);\
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -76,7 +76,7 @@ public:                                                             \
 #define ATTR_POINT(attribname, varname, allredraw)         \
     if (attribname == strAttribName)                            \
         {                                                           \
-        sscanf(strValue,"%d,%d",&varname.x,&varname.y);\
+        swscanf(strValue,L"%d,%d",&varname.x,&varname.y);\
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -86,7 +86,7 @@ public:                                                             \
 #define ATTR_FLOAT(attribname, varname, allredraw)         \
     if (attribname == strAttribName)                            \
         {                                                           \
-        sscanf(strValue,"%f",&varname);                        \
+        swscanf(strValue,L"%f",&varname);                        \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -96,7 +96,7 @@ public:                                                             \
     if (attribname == strAttribName)                            \
         {                                                           \
         int nRet=0;                                                \
-        ::StrToIntExA(strValue,STIF_SUPPORT_HEX,&nRet);            \
+        ::StrToIntExW(strValue,STIF_SUPPORT_HEX,&nRet);            \
         varname = (UINT)nRet;                                    \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
@@ -107,7 +107,7 @@ public:                                                             \
     if (attribname == strAttribName)                            \
         {                                                           \
         int nRet=0;                                                \
-        ::StrToIntExA(strValue,STIF_SUPPORT_HEX,&nRet);            \
+        ::StrToIntExW(strValue,STIF_SUPPORT_HEX,&nRet);            \
         varname = (DWORD)nRet;                                    \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
@@ -118,7 +118,7 @@ public:                                                             \
     if (attribname == strAttribName)                            \
         {                                                           \
         int nRet=0;                                                \
-        ::StrToIntExA(strValue,STIF_SUPPORT_HEX,&nRet);            \
+        ::StrToIntExW(strValue,STIF_SUPPORT_HEX,&nRet);            \
         varname = (WORD)nRet;                                    \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
@@ -130,7 +130,7 @@ public:                                                             \
     if (attribname == strAttribName)                            \
         {                                                           \
         int nRet=0;                                                \
-        ::StrToInt(strValue,&nRet);                                \
+        ::StrToIntW(strValue,&nRet);                                \
         if(nRet) varname|=maskbit;                                \
             else     varname &=~(maskbit);                            \
             hRet = allredraw ? S_OK : S_FALSE;                        \
@@ -142,7 +142,7 @@ public:                                                             \
 #define ATTR_STRINGA(attribname, varname, allredraw)      \
     if (attribname == strAttribName)                            \
         {                                                           \
-        varname = strValue;                                     \
+        varname = DUI_CW2A(strValue);                                     \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -151,7 +151,7 @@ public:                                                             \
 #define ATTR_STRINGW(attribname, varname, allredraw)      \
     if (attribname == strAttribName)                            \
         {                                                           \
-        varname = DUI_CA2W(strValue, CP_UTF8);;                                     \
+        varname = strValue;;                                     \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -161,7 +161,7 @@ public:                                                             \
 #define ATTR_STRINGT(attribname, varname, allredraw)     \
     if (attribname == strAttribName)                            \
         {                                                           \
-        varname = DUI_CA2T(strValue, CP_UTF8);                      \
+        varname = DUI_CW2T(strValue);                      \
         BUILDSTRING(varname);                        \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
@@ -189,12 +189,12 @@ public:                                                             \
 #define ATTR_FONT(attribname, varname, allredraw)        \
     if (attribname == strAttribName)                            \
         {                                                           \
-        int nPos=strValue.ReverseFind(':');\
+        int nPos=strValue.ReverseFind(L':');\
         if(nPos!=-1)\
             {\
             DWORD dwValue = SObject::HexStringToULong(strValue,nPos);  \
-            CDuiStringA strFace=strValue.Right(strValue.GetLength()-nPos-1);\
-            CDuiStringT strFaceT=DUI_CA2T(strFace,CP_UTF8);\
+            SStringW strFace=strValue.Right(strValue.GetLength()-nPos-1);\
+            SStringT strFaceT=DUI_CW2T(strFace);\
             varname = DuiFontPool::getSingleton().GetFont(LOWORD(dwValue),strFaceT);    \
             }else\
             {\
@@ -211,9 +211,9 @@ public:                                                             \
     if (attribname == strAttribName)                                    \
     {                                                                    \
         BOOL bBold=0,bItalic=0,bUnderline=0;                            \
-        CDuiStringT strFace;                                            \
+        SStringT strFace;                                            \
         char  nAdding=0;                                                \
-        CDuiStringT attr=DUI_CA2T(strValue,CP_UTF8);                    \
+        SStringT attr=DUI_CW2T(strValue);                    \
         attr.MakeLower();                                                \
         int nPosBegin=attr.Find(_T("facename:"));                        \
         if(nPosBegin!=-1)                                                \
@@ -291,11 +291,11 @@ public:                                                             \
 #define ATTR_IMAGE(attribname, varname, allredraw)        \
     if (attribname == strAttribName)                            \
         {                                                       \
-        CDuiStringT strValueT=DUI_CA2T(strValue,CP_UTF8);        \
-        int nPos=strValueT.ReverseFind(':');\
+        SStringT strValueT=DUI_CW2T(strValue);        \
+        int nPos=strValueT.ReverseFind(_T(':'));\
         if(nPos!=-1)\
         {\
-            CDuiStringT strType=strValueT.Right(strValue.GetLength()-nPos-1);\
+            SStringT strType=strValueT.Right(strValue.GetLength()-nPos-1);\
             varname = DuiImgPool::getSingleton().GetImage(strValueT.Left(nPos),strType);        \
             if(varname) varname->AddRef();    \
             hRet = allredraw ? S_OK : S_FALSE;                      \
@@ -309,12 +309,12 @@ public:                                                             \
 #define ATTR_ICON(attribname, varname, allredraw)        \
     if (attribname == strAttribName)                            \
         {                                                       \
-        CDuiStringT strValueT=DUI_CA2T(strValue,CP_UTF8);        \
-        int nPos=strValueT.ReverseFind(':');\
+        SStringT strValueT=DUI_CW2T(strValue);        \
+        int nPos=strValueT.ReverseFind(_T(':'));\
         if(nPos!=-1)\
         {\
         int cx=0;                                                \
-        ::StrToIntExA(strValue,STIF_DEFAULT,&cx);            \
+        ::StrToIntExW(strValue,STIF_DEFAULT,&cx);            \
         varname = GETRESPROVIDER->LoadIcon(strValueT,cx,cx);        \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }else\

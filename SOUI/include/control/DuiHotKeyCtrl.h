@@ -9,7 +9,7 @@ class SOUI_EXP SHotKeyCtrl
     : public SWindow
     , public CAccelerator
 {
-    SOUI_CLASS_NAME(SHotKeyCtrl, "hotkey")
+    SOUI_CLASS_NAME(SHotKeyCtrl, L"hotkey")
 public:
     SHotKeyCtrl(void);
     virtual ~SHotKeyCtrl(void);
@@ -52,10 +52,10 @@ protected:
     LRESULT OnWindowPosChanged(LPRECT lpRcContainer);
 
     SOUI_ATTRS_BEGIN()
-        ATTR_WORD("invalidcomb",m_wInvalidComb,FALSE)
-        ATTR_WORD("defcombkey",m_wInvalidModifier,FALSE)
-        ATTR_WORD("combkey",m_wModifier,FALSE)
-        ATTR_WORD("hotkey",m_wVK,FALSE)
+        ATTR_WORD(L"invalidcomb",m_wInvalidComb,FALSE)
+        ATTR_WORD(L"defcombkey",m_wInvalidModifier,FALSE)
+        ATTR_WORD(L"combkey",m_wModifier,FALSE)
+        ATTR_WORD(L"hotkey",m_wVK,FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()

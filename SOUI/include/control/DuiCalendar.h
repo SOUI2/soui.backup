@@ -225,7 +225,7 @@ namespace SOUI
     class SCalendar : public SWindow
     {
     public:
-        SOUI_CLASS_NAME(SCalendar, "calendar")
+        SOUI_CLASS_NAME(SCalendar, L"calendar")
         
         /**
          * CCalendarCore::CDuiCalendar
@@ -404,20 +404,20 @@ namespace SOUI
         bool OnTodayClick(SWindow * pSender, LPSNMHDR pNmhdr);
 
         SOUI_ATTRS_BEGIN()
-            ATTR_INT("titleHeight", m_nTitleHei, FALSE)
-            ATTR_INT("footerHeight", m_nFooterHei, FALSE)
-            ATTR_COLOR("crWeekend", m_crWeekend, FALSE)
-            ATTR_COLOR("crTitleBack", m_crTitleBack, FALSE)
-            ATTR_COLOR("crDay", m_crDay, FALSE)
-            ATTR_SKIN("daySkin", m_pDaySkin, FALSE)
-            ATTR_SKIN("titleSkin", m_pTitleSkin, FALSE)
-            ATTR_STRINGT("title-1", m_strTitle[0], FALSE)
-            ATTR_STRINGT("title-2", m_strTitle[1], FALSE)
-            ATTR_STRINGT("title-3", m_strTitle[2], FALSE)
-            ATTR_STRINGT("title-4", m_strTitle[3], FALSE)
-            ATTR_STRINGT("title-5", m_strTitle[4], FALSE)
-            ATTR_STRINGT("title-6", m_strTitle[5], FALSE)
-            ATTR_STRINGT("title-7", m_strTitle[6], FALSE)
+            ATTR_INT(L"titleHeight", m_nTitleHei, FALSE)
+            ATTR_INT(L"footerHeight", m_nFooterHei, FALSE)
+            ATTR_COLOR(L"crWeekend", m_crWeekend, FALSE)
+            ATTR_COLOR(L"crTitleBack", m_crTitleBack, FALSE)
+            ATTR_COLOR(L"crDay", m_crDay, FALSE)
+            ATTR_SKIN(L"daySkin", m_pDaySkin, FALSE)
+            ATTR_SKIN(L"titleSkin", m_pTitleSkin, FALSE)
+            ATTR_STRINGT(L"title-1", m_strTitle[0], FALSE)
+            ATTR_STRINGT(L"title-2", m_strTitle[1], FALSE)
+            ATTR_STRINGT(L"title-3", m_strTitle[2], FALSE)
+            ATTR_STRINGT(L"title-4", m_strTitle[3], FALSE)
+            ATTR_STRINGT(L"title-5", m_strTitle[4], FALSE)
+            ATTR_STRINGT(L"title-6", m_strTitle[5], FALSE)
+            ATTR_STRINGT(L"title-7", m_strTitle[6], FALSE)
         SOUI_ATTRS_END()
 
         WND_MSG_MAP_BEGIN()
@@ -436,7 +436,7 @@ namespace SOUI
         COLORREF        m_crTitleBack;  /**< 表头背景色 */
         COLORREF        m_crDay;        /**< 选中日期颜色 */
         COLORREF        m_crDayBack;    /**< 选中日期背景颜色 */
-        CDuiStringT     m_strTitle[7];  /**< 表头文本 */
+        SStringT     m_strTitle[7];  /**< 表头文本 */
 
         WORD    m_iYear, m_iMonth, m_iDay; /**< 年月日 */
         int        m_iHoverDay;

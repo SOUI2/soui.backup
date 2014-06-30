@@ -44,14 +44,14 @@ void SHotKeyCtrl::OnPaint( IRenderTarget * pRT )
     CRect rcClient;
     GetClient(&rcClient);
     rcClient.OffsetRect(EDIT_INSET,0);
-    CDuiStringT str=FormatHotkey();
+    SStringT str=FormatHotkey();
     pRT->DrawText(str,str.GetLength(),&rcClient,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
     AfterPaint(pRT,painter);
 }
 
 void SHotKeyCtrl::UpdateCaret()
 {
-    CDuiStringT str=FormatHotkey();
+    SStringT str=FormatHotkey();
     IRenderTarget *pRT=GetRenderTarget(NULL,OLEDC_NODRAW);
     CAutoRefPtr<IFont> oldFont;
     pRT->SelectObject(m_curFont,(IRenderObj**)&oldFont);
@@ -117,7 +117,7 @@ void SHotKeyCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
         m_wVK=0;
         m_wModifier=m_wInvalidModifier;
     }
-    CDuiStringT strKey=GetKeyName(nChar);
+    SStringT strKey=GetKeyName(nChar);
     if(!strKey.IsEmpty())
     {
         //

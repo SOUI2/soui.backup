@@ -3,13 +3,13 @@
 namespace SOUI
 {
 
-template<class TObj,class TKey=CDuiStringA>
+template<class TObj,class TKey=SStringA>
 class DuiCmnMap
 {
 public:
     DuiCmnMap(void (*funOnKeyRemoved)(const TObj &)=NULL):m_pFunOnKeyRemoved(funOnKeyRemoved)
     {
-        m_mapNamedObj=new CDuiMap<TKey,TObj>;
+        m_mapNamedObj=new SMap<TKey,TObj>;
     }
     virtual ~DuiCmnMap()
     {
@@ -58,7 +58,7 @@ public:
             POSITION pos=m_mapNamedObj->GetStartPosition();
             while(pos)
             {
-                CDuiMap<TKey,TObj>::CPair *p=m_mapNamedObj->GetNext(pos);
+                SMap<TKey,TObj>::CPair *p=m_mapNamedObj->GetNext(pos);
                 m_pFunOnKeyRemoved(p->m_value);
             }
         }
@@ -71,10 +71,10 @@ public:
 protected:
     void (*m_pFunOnKeyRemoved)(const TObj &obj);
 
-    CDuiMap<TKey,TObj> *m_mapNamedObj;
+    SMap<TKey,TObj> *m_mapNamedObj;
 };
 
-template<class TClass,class TObj,class TKey=CDuiStringA>
+template<class TClass,class TObj,class TKey=SStringA>
 class DuiSingletonMap :public Singleton<TClass>, public DuiCmnMap<TObj,TKey>
 {
 };

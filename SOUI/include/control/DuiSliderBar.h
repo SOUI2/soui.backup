@@ -12,7 +12,7 @@ namespace SOUI
 
 class SOUI_EXP SSliderBar : public SProgress
 {
-    SOUI_CLASS_NAME(SSliderBar, "sliderbar")
+    SOUI_CLASS_NAME(SSliderBar, L"sliderbar")
 
 public:
     SSliderBar();
@@ -59,7 +59,7 @@ protected:
     WND_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
-        ATTR_SKIN("thumbskin", m_pSkinThumb, FALSE)
+        ATTR_SKIN(L"thumbskin", m_pSkinThumb, FALSE)
     SOUI_ATTRS_END()
 };
 

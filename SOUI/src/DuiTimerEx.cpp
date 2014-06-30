@@ -27,7 +27,7 @@ void CDuiTimerEx::_KillTimer( HSWND hDuiWnd,UINT_PTR uTimerID )
     POSITION pos=m_mapNamedObj->GetStartPosition();
     while(pos)
     {
-        CDuiMap<UINT_PTR,TIMERINFO>::CPair *p=m_mapNamedObj->GetNext(pos);
+        SMap<UINT_PTR,TIMERINFO>::CPair *p=m_mapNamedObj->GetNext(pos);
         if(p->m_value.hSWnd==hDuiWnd && p->m_value.uTimerID==uTimerID)
         {
             ::KillTimer(NULL,p->m_key);
@@ -42,7 +42,7 @@ void CDuiTimerEx::_KillTimer( HSWND hDuiWnd )
     POSITION pos=m_mapNamedObj->GetStartPosition();
     while(pos)
     {
-        CDuiMap<UINT_PTR,TIMERINFO>::CPair *p=m_mapNamedObj->GetNext(pos);
+        SMap<UINT_PTR,TIMERINFO>::CPair *p=m_mapNamedObj->GetNext(pos);
         if(p->m_value.hSWnd==hDuiWnd)
         {
             ::KillTimer(NULL,p->m_key);

@@ -134,7 +134,7 @@ int SListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData/*=0*/)
     if(!pszXml && !m_xmlTempl) return -1;
     if(pszXml)
     {
-        CDuiStringA strUtf8=DUI_CW2A(pszXml,CP_UTF8);
+        SStringA strUtf8=DUI_CW2A(pszXml,CP_UTF8);
         pugi::xml_document xmlDoc;
         if(!xmlDoc.load_buffer((LPCSTR)strUtf8,strUtf8.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return -1;
         return InsertItem(iItem,xmlDoc.first_child(),dwData);
@@ -230,7 +230,7 @@ BOOL SListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
     if(m_arrItems.GetCount()!=0) return FALSE;
     if(pszXmlTemplate)
     {
-        CDuiStringA strUtf8=DUI_CT2A(pszXmlTemplate,CP_UTF8);
+        SStringA strUtf8=DUI_CT2A(pszXmlTemplate,CP_UTF8);
         pugi::xml_document xmlDoc;
         if(!xmlDoc.load_buffer((LPCSTR)strUtf8,strUtf8.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return FALSE;
         if(IsVirtual())
@@ -407,8 +407,8 @@ BOOL SListBoxEx::LoadChildren(pugi::xml_node xmlNode)
     if(!xmlNode) return TRUE;
 
     pugi::xml_node xmlParent=xmlNode.parent();
-    pugi::xml_node xmlTempl=xmlParent.child("template");
-    pugi::xml_node xmlItems=xmlParent.child("items");
+    pugi::xml_node xmlTempl=xmlParent.child(L"template");
+    pugi::xml_node xmlItems=xmlParent.child(L"items");
 
     if(!IsVirtual())
     {//∆’Õ®¡–±Ì
@@ -416,17 +416,14 @@ BOOL SListBoxEx::LoadChildren(pugi::xml_node xmlNode)
 
         if(xmlItems)
         {
-            pugi::xml_node xmlItem=xmlItems.first_child();
+            pugi::xml_node xmlItem=xmlItems.child(L"item");
             while(xmlItem)
             {
-                if(strcmp(xmlItem.name(),"dlg")==0 || strcmp(xmlItem.name(),"item")==0)
-                {
-                    int dwData=xmlItem.attribute("itemdata").as_int(0);
-                    InsertItem(-1,xmlItem,dwData);
-                }
-                xmlItem=xmlItem.next_sibling();
+                int dwData=xmlItem.attribute(L"itemdata").as_int(0);
+                InsertItem(-1,xmlItem,dwData);
+                xmlItem=xmlItem.next_sibling(L"item");
             }
-            SetCurSel(xmlItems.attribute("cursel").as_int(-1));
+            SetCurSel(xmlItems.attribute(L"cursel").as_int(-1));
         }
 
         return TRUE;
@@ -577,7 +574,7 @@ void SListBoxEx::OnDestroy()
     __super::OnDestroy();
 }
 
-BOOL SListBoxEx::OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip)
+BOOL SListBoxEx::OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,SStringT &strTip)
 {
     if(m_iHoverItem==-1)
         return __super::OnUpdateToolTip(hCurTipHost,hNewTipHost,rcTip,strTip);

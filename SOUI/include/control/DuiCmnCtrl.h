@@ -28,7 +28,7 @@ namespace SOUI
  */
 class SOUI_EXP SStatic : public SWindow
 {
-    SOUI_CLASS_NAME(SStatic, "text")
+    SOUI_CLASS_NAME(SStatic, L"text")
 public:
     /**
      * SStatic::SStatic
@@ -39,7 +39,7 @@ public:
     SStatic():m_bMultiLines(0),m_nLineInter(5)
     {
         m_bMsgTransparent=TRUE;
-        m_style.SetAttribute("align","left");
+        m_style.SetAttribute(L"align",L"left");
     }
     /**
      * SStatic::DuiDrawText
@@ -59,8 +59,8 @@ protected:
     int m_nLineInter;   /**< 不详 有待完善 */
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT("multilines", m_bMultiLines, FALSE)
-        ATTR_INT("interhei", m_nLineInter, FALSE)
+        ATTR_INT(L"multilines", m_bMultiLines, FALSE)
+        ATTR_INT(L"interhei", m_nLineInter, FALSE)
     SOUI_ATTRS_END()
 };
 
@@ -73,7 +73,7 @@ protected:
  */
 class SOUI_EXP SLink : public SWindow
 {
-    SOUI_CLASS_NAME(SLink, "link")
+    SOUI_CLASS_NAME(SLink, L"link")
 
 public:
     /**
@@ -84,7 +84,7 @@ public:
      */
     SLink()
     {
-        m_style.SetAttribute("align","left");
+        m_style.SetAttribute(L"align",L"left");
     }
 
 protected:
@@ -144,7 +144,7 @@ class SOUI_EXP SButton : public SWindow
     , public IAcceleratorTarget
     , public ITimelineHandler
 {
-    SOUI_CLASS_NAME(SButton, "button")
+    SOUI_CLASS_NAME(SButton, L"button")
 public:
     /**
      * SButton::SButton
@@ -217,7 +217,7 @@ protected:
 
     BOOL OnEraseBkgnd(CDCHandle dc){return TRUE;}
 
-    HRESULT OnAttrAccel(CDuiStringA strAccel,BOOL bLoading);
+    HRESULT OnAttrAccel(SStringW strAccel,BOOL bLoading);
 
 protected:
     virtual void OnNextFrame();
@@ -235,8 +235,8 @@ protected:
     BYTE   m_byAlphaAni;  /**< 动画状态 */
 public:
     SOUI_ATTRS_BEGIN()
-        ATTR_CUSTOM("accel",OnAttrAccel)
-        ATTR_INT("animate", m_bAnimate, FALSE)
+        ATTR_CUSTOM(L"accel",OnAttrAccel)
+        ATTR_INT(L"animate", m_bAnimate, FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
@@ -258,7 +258,7 @@ public:
  */
 class SOUI_EXP SImageButton : public SButton
 {
-    SOUI_CLASS_NAME(SImageButton, "imgbtn")
+    SOUI_CLASS_NAME(SImageButton, L"imgbtn")
 public:
     SImageButton()
     {
@@ -275,7 +275,7 @@ public:
  */
 class SOUI_EXP SImageWnd : public SWindow
 {
-    SOUI_CLASS_NAME(SImageWnd, "img")
+    SOUI_CLASS_NAME(SImageWnd, L"img")
 public:
     /**
      * SImageWnd::SImageWnd
@@ -339,8 +339,8 @@ protected:
     ISkinObj *m_pSkin;  /**< 资源对象 */
 
     SOUI_ATTRS_BEGIN()
-        ATTR_SKIN("skin", m_pSkin, TRUE)
-        ATTR_INT("iframe", m_iFrame, FALSE)
+        ATTR_SKIN(L"skin", m_pSkin, TRUE)
+        ATTR_INT(L"iframe", m_iFrame, FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
@@ -356,7 +356,7 @@ protected:
  */
 class SOUI_EXP SAnimateImgWnd : public SWindow, public ITimelineHandler
 {
-    SOUI_CLASS_NAME(SAnimateImgWnd, "animateimg")
+    SOUI_CLASS_NAME(SAnimateImgWnd, L"animateimg")
 public:    
     /**
      * SAnimateImgWnd::SAnimateImgWnd
@@ -421,9 +421,9 @@ protected:
     WND_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
-        ATTR_SKIN("skin", m_pSkin, TRUE)
-        ATTR_UINT("speed", m_nSpeed, FALSE)
-        ATTR_UINT("autostart", m_bAutoStart, FALSE)
+        ATTR_SKIN(L"skin", m_pSkin, TRUE)
+        ATTR_UINT(L"speed", m_nSpeed, FALSE)
+        ATTR_UINT(L"autostart", m_bAutoStart, FALSE)
     SOUI_ATTRS_END()
 
 protected:
@@ -443,7 +443,7 @@ protected:
  */
 class SOUI_EXP SProgress : public SWindow
 {
-    SOUI_CLASS_NAME(SProgress, "progress")
+    SOUI_CLASS_NAME(SProgress, L"progress")
 public:
     /**
      * SProgress::SProgress
@@ -525,13 +525,13 @@ protected:
     WND_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
-        ATTR_SKIN("bgskin", m_pSkinBg, TRUE)
-        ATTR_SKIN("posskin", m_pSkinPos, TRUE)
-        ATTR_INT("min", m_nMinValue, FALSE)
-        ATTR_INT("max", m_nMaxValue, FALSE)
-        ATTR_INT("value", m_nValue, FALSE)
-        ATTR_UINT("vertical", m_bVertical, FALSE)
-        ATTR_UINT("showpercent", m_bShowPercent, FALSE)
+        ATTR_SKIN(L"bgskin", m_pSkinBg, TRUE)
+        ATTR_SKIN(L"posskin", m_pSkinPos, TRUE)
+        ATTR_INT(L"min", m_nMinValue, FALSE)
+        ATTR_INT(L"max", m_nMaxValue, FALSE)
+        ATTR_INT(L"value", m_nValue, FALSE)
+        ATTR_UINT(L"vertical", m_bVertical, FALSE)
+        ATTR_UINT(L"showpercent", m_bShowPercent, FALSE)
     SOUI_ATTRS_END()
 };
 
@@ -544,7 +544,7 @@ protected:
  */
 class SOUI_EXP SLine : public SWindow
 {
-    SOUI_CLASS_NAME(SLine, "hr")
+    SOUI_CLASS_NAME(SLine, L"hr")
 
 public:
     /**
@@ -567,18 +567,18 @@ protected:
     }m_mode;
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT("size", m_nLineSize, FALSE)
-        ATTR_ENUM_BEGIN("mode", HRMODE, FALSE)
-            ATTR_ENUM_VALUE("vertical", HR_VERT)
-            ATTR_ENUM_VALUE("horizontal", HR_HORZ)
-            ATTR_ENUM_VALUE("tilt", HR_TILT)
+        ATTR_INT(L"size", m_nLineSize, FALSE)
+        ATTR_ENUM_BEGIN(L"mode", HRMODE, FALSE)
+            ATTR_ENUM_VALUE(L"vertical", HR_VERT)
+            ATTR_ENUM_VALUE(L"horizontal", HR_HORZ)
+            ATTR_ENUM_VALUE(L"tilt", HR_TILT)
         ATTR_ENUM_END(m_mode)
-        ATTR_ENUM_BEGIN("linestyle", int, FALSE)
-            ATTR_ENUM_VALUE("solid", PS_SOLID)             // default
-            ATTR_ENUM_VALUE("dash", PS_DASH)               /* -------  */
-            ATTR_ENUM_VALUE("dot", PS_DOT)                 /* .......  */
-            ATTR_ENUM_VALUE("dashdot", PS_DASHDOT)         /* _._._._  */
-            ATTR_ENUM_VALUE("dashdotdot", PS_DASHDOTDOT)   /* _.._.._  */
+        ATTR_ENUM_BEGIN(L"linestyle", int, FALSE)
+            ATTR_ENUM_VALUE(L"solid", PS_SOLID)             // default
+            ATTR_ENUM_VALUE(L"dash", PS_DASH)               /* -------  */
+            ATTR_ENUM_VALUE(L"dot", PS_DOT)                 /* .......  */
+            ATTR_ENUM_VALUE(L"dashdot", PS_DASHDOT)         /* _._._._  */
+            ATTR_ENUM_VALUE(L"dashdotdot", PS_DASHDOTDOT)   /* _.._.._  */
         ATTR_ENUM_END(m_nLineStyle)
     SOUI_ATTRS_END()
 
@@ -596,7 +596,7 @@ protected:
  */
 class SOUI_EXP SCheckBox : public SWindow
 {
-    SOUI_CLASS_NAME(SCheckBox, "check")
+    SOUI_CLASS_NAME(SCheckBox, L"check")
 
     enum
     {
@@ -689,8 +689,8 @@ protected:
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
     SOUI_ATTRS_BEGIN()
-        ATTR_SKIN("skin", m_pSkin, FALSE)
-        ATTR_SKIN("focusskin", m_pFocusSkin, FALSE)
+        ATTR_SKIN(L"skin", m_pSkin, FALSE)
+        ATTR_SKIN(L"focusskin", m_pFocusSkin, FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
@@ -710,7 +710,7 @@ protected:
  */
 class SOUI_EXP SIconWnd : public SWindow
 {
-    SOUI_CLASS_NAME(SIconWnd, "icon")
+    SOUI_CLASS_NAME(SIconWnd, L"icon")
 public:    
     /**
      * SIconWnd::SIconWnd
@@ -737,7 +737,7 @@ protected:
     HICON m_theIcon; /**< 图标资源句柄 */
 
     SOUI_ATTRS_BEGIN()
-        ATTR_ICON("src", m_theIcon, FALSE)
+        ATTR_ICON(L"src", m_theIcon, FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
@@ -755,7 +755,7 @@ protected:
  */
 class SOUI_EXP SRadioBox : public SWindow
 {
-    SOUI_CLASS_NAME(SRadioBox, "radio")
+    SOUI_CLASS_NAME(SRadioBox, L"radio")
 
     enum
     {
@@ -851,8 +851,8 @@ protected:
 
 
     SOUI_ATTRS_BEGIN()
-        ATTR_SKIN("skin", m_pSkin, FALSE)
-        ATTR_SKIN("focusskin", m_pFocusSkin, FALSE)
+        ATTR_SKIN(L"skin", m_pSkin, FALSE)
+        ATTR_SKIN(L"focusskin", m_pFocusSkin, FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
@@ -870,7 +870,7 @@ protected:
  */
 class SOUI_EXP SToggle : public SWindow
 {
-    SOUI_CLASS_NAME(SToggle, "toggle")
+    SOUI_CLASS_NAME(SToggle, L"toogle")
 public:
     
     /**
@@ -904,8 +904,8 @@ protected:
     virtual BOOL NeedRedrawWhenStateChange(){return TRUE;}
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT("toggled", m_bToggled, TRUE)
-        ATTR_SKIN("skin", m_pSkin, TRUE)
+        ATTR_INT(L"toggled", m_bToggled, TRUE)
+        ATTR_SKIN(L"skin", m_pSkin, TRUE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
@@ -926,7 +926,7 @@ protected:
  */
 class SOUI_EXP SGroup : public SWindow
 {
-    SOUI_CLASS_NAME(SGroup, "group")
+    SOUI_CLASS_NAME(SGroup, L"group")
 public:
     SGroup();
 
@@ -937,9 +937,9 @@ protected:
     int         m_nRound; /**< 暂时不详 */
 public:
     SOUI_ATTRS_BEGIN()
-        ATTR_COLOR("crline1", m_crLine1, FALSE)
-        ATTR_COLOR("crline2", m_crLine2, FALSE)
-        ATTR_INT("round",m_nRound,FALSE)
+        ATTR_COLOR(L"crline1", m_crLine1, FALSE)
+        ATTR_COLOR(L"crline2", m_crLine2, FALSE)
+        ATTR_INT(L"round",m_nRound,FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()

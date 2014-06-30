@@ -18,7 +18,7 @@ class SOUI_EXP SListBoxEx :public SScrollView
 {
 public:
 
-    SOUI_CLASS_NAME(SListBoxEx, "listboxex")
+    SOUI_CLASS_NAME(SListBoxEx, L"listboxex")
 
     SListBoxEx();
 
@@ -91,7 +91,7 @@ protected:
 
     virtual BOOL LoadChildren(pugi::xml_node xmlNode);
     // Get tooltip Info
-    virtual BOOL OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip);
+    virtual BOOL OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
 
     void NotifySelChange(int nOldSel,int nNewSel);
 
@@ -123,7 +123,7 @@ protected:
 
     void Relayout();
 protected:
-    CDuiArray<SItemPanel *> m_arrItems;
+    SArray<SItemPanel *> m_arrItems;
 
     int        m_iSelItem;
     int        m_iHoverItem;
@@ -140,13 +140,13 @@ protected:
     BOOL    m_bItemRedrawDelay;            //表项重绘时缓冲
 public:
     SOUI_ATTRS_BEGIN()
-        ATTR_INT("scrollspeed", m_iScrollSpeed, FALSE)
-        ATTR_INT("itemheight", m_nItemHei, FALSE)
-        ATTR_INT("virtual", m_bVirtual, TRUE)
-        ATTR_SKIN("itemskin", m_pItemSkin, TRUE)
-        ATTR_COLOR("critembg",m_crItemBg,FALSE)
-        ATTR_COLOR("critemselbg",m_crItemSelBg,FALSE)
-        ATTR_INT("itemredrawdelay", m_bItemRedrawDelay, TRUE)
+        ATTR_INT(L"scrollspeed", m_iScrollSpeed, FALSE)
+        ATTR_INT(L"itemheight", m_nItemHei, FALSE)
+        ATTR_INT(L"virtual", m_bVirtual, TRUE)
+        ATTR_SKIN(L"itemskin", m_pItemSkin, TRUE)
+        ATTR_COLOR(L"critembg",m_crItemBg,FALSE)
+        ATTR_COLOR(L"critemselbg",m_crItemSelBg,FALSE)
+        ATTR_INT(L"itemredrawdelay", m_bItemRedrawDelay, TRUE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()

@@ -931,14 +931,14 @@ BOOL SRichEdit::SetSaveSelection( BOOL fSaveSelection )
     return fResult;
 }
 
-HRESULT SRichEdit::DefAttributeProc(const CDuiStringA & strAttribName,const CDuiStringA & strValue, BOOL bLoading)
+HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading)
 {
     HRESULT hRet=S_FALSE;
     DWORD dwBit=0,dwMask=0;
     //hscrollbar
-    if(strAttribName=="hscrollbar")
+    if(strAttribName==L"hscrollbar")
     {
-        if(strValue=="0")
+        if(strValue==L"0")
             m_dwStyle&=~WS_HSCROLL;
         else
             m_dwStyle|=WS_HSCROLL;
@@ -946,9 +946,9 @@ HRESULT SRichEdit::DefAttributeProc(const CDuiStringA & strAttribName,const CDui
         dwMask|=TXTBIT_SCROLLBARCHANGE;
     }
     //vscrollbar
-    else if(strAttribName=="vscrollbar")
+    else if(strAttribName==L"vscrollbar")
     {
-        if(strValue=="0")
+        if(strValue==L"0")
             m_dwStyle&=~WS_VSCROLL;
         else
             m_dwStyle|=WS_VSCROLL;
@@ -956,9 +956,9 @@ HRESULT SRichEdit::DefAttributeProc(const CDuiStringA & strAttribName,const CDui
         dwMask|=TXTBIT_SCROLLBARCHANGE;
     }
     //auto hscroll
-    else if(strAttribName=="autohscroll")
+    else if(strAttribName==L"autohscroll")
     {
-        if(strValue=="0")
+        if(strValue==L"0")
             m_dwStyle&=~ES_AUTOHSCROLL;
         else
             m_dwStyle|=ES_AUTOHSCROLL;
@@ -966,9 +966,9 @@ HRESULT SRichEdit::DefAttributeProc(const CDuiStringA & strAttribName,const CDui
         dwMask|=TXTBIT_SCROLLBARCHANGE;
     }
     //auto hscroll
-    else if(strAttribName=="autovscroll")
+    else if(strAttribName==L"autovscroll")
     {
-        if(strValue=="0")
+        if(strValue==L"0")
             m_dwStyle&=~ES_AUTOVSCROLL;
         else
             m_dwStyle|=ES_AUTOVSCROLL;
@@ -976,18 +976,18 @@ HRESULT SRichEdit::DefAttributeProc(const CDuiStringA & strAttribName,const CDui
         dwMask|=TXTBIT_SCROLLBARCHANGE;
     }
     //multilines
-    else if(strAttribName=="multilines" && strValue!="0")
+    else if(strAttribName==L"multilines" && strValue!=L"0")
     {
-        if(strValue=="0")
+        if(strValue==L"0")
             m_dwStyle&=~ES_MULTILINE;
         else
             m_dwStyle|=ES_MULTILINE,dwBit|=TXTBIT_MULTILINE;
         dwMask|=TXTBIT_MULTILINE;
     }
     //readonly
-    else if(strAttribName=="readonly")
+    else if(strAttribName==L"readonly")
     {
-        if(strValue=="0")
+        if(strValue==L"0")
             m_dwStyle&=~ES_READONLY;
         else
             m_dwStyle|=ES_READONLY,dwBit|=TXTBIT_READONLY;
@@ -998,47 +998,47 @@ HRESULT SRichEdit::DefAttributeProc(const CDuiStringA & strAttribName,const CDui
         }
     }
     //want return
-    else if(strAttribName=="wantreturn")
+    else if(strAttribName==L"wantreturn")
     {
-        if(strValue=="0")
+        if(strValue==L"0")
             m_dwStyle&=~ES_WANTRETURN;
         else
             m_dwStyle|=ES_WANTRETURN;
     }
     //password
-    else if(strAttribName=="password")
+    else if(strAttribName==L"password")
     {
-        if(strValue=="0")
+        if(strValue==L"0")
             m_dwStyle&=~ES_PASSWORD;
         else
             m_dwStyle|=ES_PASSWORD,dwBit|=TXTBIT_USEPASSWORD;
         dwMask|=TXTBIT_USEPASSWORD;
     }
     //number
-    else if(strAttribName=="number")
+    else if(strAttribName==L"number")
     {
-        if(strValue=="0")
+        if(strValue==L"0")
             m_dwStyle&=~ES_NUMBER;
         else
             m_dwStyle|=ES_NUMBER;
     }
     //password char
-    else if(strAttribName=="passwordchar")
+    else if(strAttribName==L"passwordchar")
     {
-        CDuiStringT strValueT=DUI_CA2T(strValue,CP_UTF8);
+        SStringT strValueT=DUI_CW2T(strValue);
         m_chPasswordChar=strValueT[0];
     }
     //align
-    else if(strAttribName=="align")
+    else if(strAttribName==L"align")
     {
-        if(strValue=="center") m_dwStyle|=ES_CENTER;
-        else if(strValue=="right") m_dwStyle|=ES_RIGHT;
+        if(strValue==L"center") m_dwStyle|=ES_CENTER;
+        else if(strValue==L"right") m_dwStyle|=ES_RIGHT;
         else m_dwStyle|=ES_LEFT;
     }
     //enabledragdrop
-    else if(strAttribName=="enabledragdrop")
+    else if(strAttribName==L"enabledragdrop")
     {
-        if(strValue=="0")
+        if(strValue==L"0")
         {
             m_fEnableDragDrop=FALSE;
         }else
@@ -1233,7 +1233,7 @@ LRESULT SRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
 
 LRESULT SRichEdit::OnSetReadOnly( UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
-    return SUCCEEDED(SetAttribute("readonly",wParam?"1":"0"));
+    return SUCCEEDED(SetAttribute(L"readonly",wParam?L"1":L"0"));
 }
 
 LRESULT SRichEdit::OnSetLimitText( UINT uMsg, WPARAM wParam, LPARAM lParam )
@@ -1351,7 +1351,7 @@ void SRichEdit::SetSel(DWORD dwSelection, BOOL bNoScroll)
         DuiSendMessage(EM_SCROLLCARET, 0, 0L);
 }
 
-LRESULT SRichEdit::OnSetTextColor( const CDuiStringA &  strValue,BOOL bLoading )
+LRESULT SRichEdit::OnSetTextColor( const SStringW &  strValue,BOOL bLoading )
 {
     m_style.m_crText[0]=SObject::HexStringToColor(strValue);
     if(!bLoading)

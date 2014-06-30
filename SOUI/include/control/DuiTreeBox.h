@@ -31,7 +31,7 @@ class SOUI_EXP STreeBox
     , public IItemContainer
     , protected CSTree<STreeItem *>
 {
-    SOUI_CLASS_NAME(STreeBox, "treebox")
+    SOUI_CLASS_NAME(STreeBox, L"treebox")
 public:
     STreeBox();
 
@@ -127,12 +127,12 @@ protected:
     pugi::xml_document m_xmlSwitch;
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT("indent", m_nIndent, TRUE)
-        ATTR_INT("itemhei", m_nItemHei, TRUE)
-        ATTR_SKIN("itemskin", m_pItemSkin, TRUE)
-        ATTR_COLOR("critembg",m_crItemBg,FALSE)
-        ATTR_COLOR("critemselbg",m_crItemSelBg,FALSE)
-        ATTR_INT("itemredrawdelay", m_bItemRedrawDelay, TRUE)
+        ATTR_INT(L"indent", m_nIndent, TRUE)
+        ATTR_INT(L"itemhei", m_nItemHei, TRUE)
+        ATTR_SKIN(L"itemskin", m_pItemSkin, TRUE)
+        ATTR_COLOR(L"critembg",m_crItemBg,FALSE)
+        ATTR_COLOR(L"critemselbg",m_crItemSelBg,FALSE)
+        ATTR_INT(L"itemredrawdelay", m_bItemRedrawDelay, TRUE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()

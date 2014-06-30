@@ -1345,13 +1345,13 @@ namespace SOUI
     EXPIMP_TEMPLATE template class UTILITIES_API  TStringT<char, char_traits>;
     EXPIMP_TEMPLATE template class UTILITIES_API  TStringT<wchar_t, wchar_traits>;
 
-    typedef TStringT<char, char_traits>        CDuiStringA;
-    typedef TStringT<wchar_t, wchar_traits>     CDuiStringW;
+    typedef TStringT<char, char_traits>        SStringA;
+    typedef TStringT<wchar_t, wchar_traits>     SStringW;
 
 #ifdef _UNICODE
-    typedef CDuiStringW                        CDuiStringT;
+    typedef SStringW                        SStringT;
 #else
-    typedef CDuiStringA                        CDuiStringT;
+    typedef SStringA                        SStringT;
 #endif
 
 
@@ -1404,14 +1404,14 @@ namespace SOUI
     class CElementTraits;
 
     template<>
-    class CElementTraits< CDuiStringA > :
-        public CDuiStringElementTraits< CDuiStringA >
+    class CElementTraits< SStringA > :
+        public CDuiStringElementTraits< SStringA >
     {
     };
 
     template<>
-    class CElementTraits< CDuiStringW > :
-        public CDuiStringElementTraits< CDuiStringW >
+    class CElementTraits< SStringW > :
+        public CDuiStringElementTraits< SStringW >
     {
     };
 

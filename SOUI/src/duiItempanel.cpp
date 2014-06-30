@@ -248,7 +248,7 @@ LPARAM SItemPanel::GetItemData()
     return m_dwData;
 }
 
-BOOL SItemPanel::OnUpdateToolTip( HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,CDuiStringT &strTip )
+BOOL SItemPanel::OnUpdateToolTip( HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,SStringT &strTip )
 {
     if(hCurTipHost==m_hHover) return FALSE;
     if(m_hHover==m_hSWnd) return FALSE;

@@ -51,7 +51,7 @@ namespace SOUI
         int findSlotFunctor(const SlotFunctorBase& slot);
 
         DWORD    m_dwEventID;
-        CDuiArray<SlotFunctorBase *> m_evtSlots;
+        SArray<SlotFunctorBase *> m_evtSlots;
     };
 
     class SOUI_EXP SEventSet
@@ -157,7 +157,7 @@ namespace SOUI
 
     protected:
         CDuiEvent * GetEventObject(const DWORD dwEventID);
-        CDuiArray<CDuiEvent *> m_evtArr;
+        SArray<CDuiEvent *> m_evtArr;
         bool                    m_bMuted;
     };
 

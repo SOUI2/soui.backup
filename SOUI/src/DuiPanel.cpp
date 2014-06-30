@@ -261,7 +261,7 @@ int SPanel::OnCreate(LPVOID)
     int nRet=__super::OnCreate(NULL);
 
     if(nRet!=0) return nRet;
-    if(!m_pSkinSb) m_pSkinSb=dynamic_cast<SSkinScrollbar*>(GETSKIN("sb_common"));
+    if(!m_pSkinSb) m_pSkinSb=dynamic_cast<SSkinScrollbar*>(GETSKIN(L"sb_common"));
     DUIASSERT(m_pSkinSb);
     if(m_nSbWid==-1) m_nSbWid=m_pSkinSb->GetIdealSize();
     if(!m_pSkinSb->HasArrow()) m_nSbArrowSize=0;
@@ -698,7 +698,7 @@ void SPanel::OnShowWindow( BOOL bShow, UINT nStatus )
     __super::OnShowWindow(bShow,nStatus);
 }
 
-LRESULT SPanel::OnAttrScrollbarSkin( CDuiStringA strValue,BOOL bLoading )
+LRESULT SPanel::OnAttrScrollbarSkin( SStringW strValue,BOOL bLoading )
 {
     ISkinObj *pSbSkin=GETSKIN(strValue);
     DUIASSERT(pSbSkin);

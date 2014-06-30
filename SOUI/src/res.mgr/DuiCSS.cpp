@@ -9,7 +9,7 @@ namespace SOUI
 
 BOOL DuiCSS::Init( pugi::xml_node xmlNode )
 {
-    if (strcmp(xmlNode.name(), "objattr") != 0)
+    if (wcscmp(xmlNode.name(), L"objattr") != 0)
     {
         DUIASSERT(FALSE);
         return FALSE;
@@ -17,7 +17,7 @@ BOOL DuiCSS::Init( pugi::xml_node xmlNode )
 
     m_xmlRoot.append_copy(xmlNode);
 
-    pugi::xml_node xmlObjAttr=m_xmlRoot.child("objattr").first_child();
+    pugi::xml_node xmlObjAttr=m_xmlRoot.child(L"objattr").first_child();
     while(xmlObjAttr)
     {
         AddKeyObject(xmlObjAttr.name(),xmlObjAttr);
@@ -27,16 +27,16 @@ BOOL DuiCSS::Init( pugi::xml_node xmlNode )
     POSITION pos=m_mapNamedObj->GetStartPosition();
     while(pos)
     {
-        CDuiMap<CDuiStringA,pugi::xml_node>::CPair *p=m_mapNamedObj->GetNext(pos);
+        SMap<SStringW,pugi::xml_node>::CPair *p=m_mapNamedObj->GetNext(pos);
         BuildClassAttribute(p->m_value,p->m_key);
     }
 
     return TRUE;
 }
 
-void DuiCSS::BuildClassAttribute( pugi::xml_node & xmlNode, LPCSTR pszClassName)
+void DuiCSS::BuildClassAttribute( pugi::xml_node & xmlNode, LPCWSTR pszClassName)
 {
-    LPCSTR pszBaseClassName=DuiSystem::getSingleton().BaseClassNameFromClassName(pszClassName);
+    LPCWSTR pszBaseClassName=DuiSystem::getSingleton().BaseClassNameFromClassName(pszClassName);
     if(!pszBaseClassName) return;
 
     if(HasKey(pszBaseClassName))
@@ -53,7 +53,7 @@ void DuiCSS::BuildClassAttribute( pugi::xml_node & xmlNode, LPCSTR pszClassName)
     BuildClassAttribute(xmlNode,pszBaseClassName);
 }
 
-pugi::xml_node DuiCSS::GetDefAttribute(LPCSTR pszClassName )
+pugi::xml_node DuiCSS::GetDefAttribute(LPCWSTR pszClassName )
 {
     DUIASSERT(pszClassName);
     if(!static_cast<DuiWindowFactoryMgr*>(DuiSystem::getSingletonPtr())->HasKey(pszClassName))
@@ -61,11 +61,11 @@ pugi::xml_node DuiCSS::GetDefAttribute(LPCSTR pszClassName )
     return _GetDefAttribute(pszClassName);
 }
 
-pugi::xml_node DuiCSS::_GetDefAttribute(LPCSTR pszClassName )
+pugi::xml_node DuiCSS::_GetDefAttribute(LPCWSTR pszClassName )
 {
     if(!HasKey(pszClassName))
     {
-        LPCSTR pszBaseClassName=DuiSystem::getSingleton().BaseClassNameFromClassName(pszClassName);
+        LPCWSTR pszBaseClassName=DuiSystem::getSingleton().BaseClassNameFromClassName(pszClassName);
         if(!pszBaseClassName) return pugi::xml_node();
         return _GetDefAttribute(pszBaseClassName);
     }else

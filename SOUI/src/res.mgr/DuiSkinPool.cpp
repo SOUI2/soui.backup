@@ -20,30 +20,30 @@ DuiSkinPool::~DuiSkinPool()
 
 BOOL DuiSkinPool::Init(pugi::xml_node xmlNode)
 {
-    if (strcmp(xmlNode.name(), "skins") != 0)
+    if (wcscmp(xmlNode.name(), L"skins") != 0)
     {
         DUIASSERT(FALSE);
         return FALSE;
     }
 
     m_xmlSkinDesc.append_copy(xmlNode);
-    LoadSkins("");
+    LoadSkins(L"");
     return TRUE;
 }
 
-int DuiSkinPool::LoadSkins(LPCSTR strOwnerName)
+int DuiSkinPool::LoadSkins(LPCWSTR strOwnerName)
 {
     int nLoaded=0;
-    CDuiStringA strSkinName, strTypeName;
+    SStringW strSkinName, strTypeName;
 
-    pugi::xml_node xmlSkin=m_xmlSkinDesc.child("skins").first_child();
+    pugi::xml_node xmlSkin=m_xmlSkinDesc.child(L"skins").first_child();
     while(xmlSkin)
     {
-        CDuiStringA strOwner= xmlSkin.attribute("owner").value();
+        SStringW strOwner= xmlSkin.attribute(L"owner").value();
         if(strOwner==strOwnerName)
         {
             strTypeName = xmlSkin.name();
-            strSkinName = xmlSkin.attribute("name").value();
+            strSkinName = xmlSkin.attribute(L"name").value();
 
             if (strSkinName.IsEmpty() || strTypeName.IsEmpty())
                 continue;
@@ -59,7 +59,7 @@ int DuiSkinPool::LoadSkins(LPCSTR strOwnerName)
             }
             else
             {
-                DUIRES_ASSERTA(FALSE,"load skin error,type=%s,name=%s",strTypeName,strSkinName);
+                DUIRES_ASSERTW(FALSE,L"load skin error,type=%s,name=%s",strTypeName,strSkinName);
             }
         }
         xmlSkin=xmlSkin.next_sibling();
@@ -69,16 +69,16 @@ int DuiSkinPool::LoadSkins(LPCSTR strOwnerName)
 }
 
 
-int DuiSkinPool::FreeSkins( LPCSTR strOwnerName )
+int DuiSkinPool::FreeSkins( LPCWSTR strOwnerName )
 {
-    if(!strOwnerName || strlen(strOwnerName)==0) return 0;
+    if(!strOwnerName || wcslen(strOwnerName)==0) return 0;
 
     int nFreed=0;
 
     POSITION pos=m_mapNamedObj->GetStartPosition();
     while(pos)
     {
-        CDuiMap<CDuiStringA,DuiSkinPtr>::CPair *p=m_mapNamedObj->GetNext(pos);
+        SMap<SStringW,DuiSkinPtr>::CPair *p=m_mapNamedObj->GetNext(pos);
         if(p->m_value->GetOwner()==strOwnerName)
         {
             OnKeyRemoved(p->m_value);
@@ -89,7 +89,7 @@ int DuiSkinPool::FreeSkins( LPCSTR strOwnerName )
     return nFreed;
 }
 
-ISkinObj* DuiSkinPool::GetSkin(LPCSTR strSkinName)
+ISkinObj* DuiSkinPool::GetSkin(LPCWSTR strSkinName)
 {
     if(!HasKey(strSkinName))
     {

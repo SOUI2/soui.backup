@@ -51,7 +51,7 @@ namespace SOUI{
 
         SWindow *m_pDuiFrame;
 
-        typedef CDuiMap<HSWND,IDropTarget *> DTMAP;
+        typedef SMap<HSWND,IDropTarget *> DTMAP;
         DTMAP m_mapDropTarget;
 
         IDataObject *m_pDataObj;

@@ -12,7 +12,7 @@ namespace SOUI{
 //===========================================================================
 class SOUI_EXP SMaskEdit : public SEdit
 {
-    SOUI_CLASS_NAME(SMaskEdit, "maskedit")
+    SOUI_CLASS_NAME(SMaskEdit, L"maskedit")
 
 public:
     SMaskEdit();
@@ -26,7 +26,7 @@ public:
     BOOL            PosInRange(int nPos) const;
 
     TCHAR           GetPromptChar() const;
-    CDuiStringT         GetPromptString(int nLength) const;
+    SStringT         GetPromptString(int nLength) const;
     void            SetPromptChar(TCHAR ch, BOOL bAutoReplace = TRUE);
 
     BOOL            MaskCut();
@@ -46,17 +46,17 @@ public:
     void            DeleteCharAt(int nPos);
     void            InsertCharAt(int nPos, TCHAR nChar);
 
-    CDuiStringT         GetMaskedText(int nStartPos = 0, int nEndPos = -1) const;
+    SStringT         GetMaskedText(int nStartPos = 0, int nEndPos = -1) const;
 
     void            GetMaskState(BOOL bCorrectSelection = TRUE);
     void            SetMaskState();
 
     void            MaskGetSel();
 
-    BOOL            CopyToClipboard(const CDuiStringT& strText);
+    BOOL            CopyToClipboard(const SStringT& strText);
 
     BOOL            IsPromptPos(int nPos) const;
-    BOOL            IsPromptPos(const CDuiStringT& strLiteral, int nPos) const;
+    BOOL            IsPromptPos(const SStringT& strLiteral, int nPos) const;
 
     BOOL            CorrectPosition(int& nPos, BOOL bForward = TRUE);
 
@@ -74,7 +74,7 @@ protected:
     void            OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
     void            OnSetDuiFocus();
 
-    CDuiStringT        GetWindowText();
+    SStringT        GetWindowText();
 protected:
     int             m_nStartChar;       // Current position of the first character in the current selection.
     int             m_nEndChar;         // Current position of the first non-selected character past the end of the current selection.
@@ -82,10 +82,10 @@ protected:
     BOOL            m_bOverType;        // TRUE to over type the text, set with VK_INSERT key press.
     BOOL            m_bModified;        // TRUE if mask edit has been modified.
     TCHAR           m_chPrompt;         // Prompt character used to identify the text entry.
-    CDuiStringT         m_strMask;          // Buffer that holds the actual edit mask value.
-    CDuiStringT         m_strDefault;       // Contains the edit controls default display text.
-    CDuiStringT         m_strWindowText;    // Buffer that holds the actual edit text.
-    CDuiStringT         m_strLiteral;       // Literal format that restricts where the user can enter text.
+    SStringT         m_strMask;          // Buffer that holds the actual edit mask value.
+    SStringT         m_strDefault;       // Contains the edit controls default display text.
+    SStringT         m_strWindowText;    // Buffer that holds the actual edit text.
+    SStringT         m_strLiteral;       // Literal format that restricts where the user can enter text.
 
 protected:
    WND_MSG_MAP_BEGIN()
@@ -100,7 +100,7 @@ protected:
 //  CDxDateEdit
 class SOUI_EXP SDateEdit : public SMaskEdit
 {
-    SOUI_CLASS_NAME(SDateEdit, "dateedit")
+    SOUI_CLASS_NAME(SDateEdit, L"dateedit")
 
 public:
     SDateEdit();
@@ -108,7 +108,7 @@ public:
     virtual void    SetDateTime(LPCTSTR strDate);
     virtual void    SetDateTime(CTime tm);
 
-    virtual CDuiStringT GetWindowDateTime();
+    virtual SStringT GetWindowDateTime();
     virtual BOOL    ProcessMask(TCHAR& nChar, int nEndPos);
 protected:
     int             OnCreate(LPVOID);
@@ -123,7 +123,7 @@ protected:
 //  CDxTimeEdit
 class SOUI_EXP STimeEdit : public SDateEdit
 {
-    SOUI_CLASS_NAME(STimeEdit, "timeedit")
+    SOUI_CLASS_NAME(STimeEdit, L"timeedit")
 
 public:
     STimeEdit();

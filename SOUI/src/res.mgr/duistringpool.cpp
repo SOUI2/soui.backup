@@ -14,7 +14,7 @@ namespace SOUI
 {
 
 
-BOOL DuiStringPool::BuildString(CDuiStringT &strContainer)
+BOOL DuiStringPool::BuildString(SStringT &strContainer)
 {
     BOOL bRet=FALSE;
     int nSubStringStart=-1;
@@ -24,9 +24,9 @@ BOOL DuiStringPool::BuildString(CDuiStringT &strContainer)
         nSubStringEnd = strContainer.Find(_T('%'), nSubStringStart + 1);
         if(nSubStringEnd==-1)
             break;
-        CDuiStringT strName=strContainer.Mid(nSubStringStart+1,nSubStringEnd-nSubStringStart-1);
+        SStringT strName=strContainer.Mid(nSubStringStart+1,nSubStringEnd-nSubStringStart-1);
 
-        CDuiStringT strNewSub=GetKeyObject(strName);
+        SStringT strNewSub=GetKeyObject(strName);
         strContainer = strContainer.Left(nSubStringStart)
                        + strNewSub
                        + strContainer.Mid(nSubStringEnd+1);
@@ -38,7 +38,7 @@ BOOL DuiStringPool::BuildString(CDuiStringT &strContainer)
 
 BOOL DuiStringPool::Init( pugi::xml_node xmlNode )
 {
-    if (strcmp(xmlNode.name(), "string") != 0)
+    if (wcscmp(xmlNode.name(), L"string") != 0)
     {
         DUIASSERT(FALSE);
         return FALSE;
@@ -47,14 +47,14 @@ BOOL DuiStringPool::Init( pugi::xml_node xmlNode )
 
     for (pugi::xml_node xmlStr=xmlNode.first_child(); xmlStr; xmlStr=xmlStr.next_sibling())
     {
-        CDuiStringT strName=DUI_CA2T(xmlStr.name(),CP_UTF8);
-        CDuiStringT str=DUI_CA2T(xmlStr.attribute("value").value(),CP_UTF8);
+        SStringT strName=DUI_CW2T(xmlStr.name());
+        SStringT str=DUI_CW2T(xmlStr.attribute(L"value").value());
         AddKeyObject(strName,str);
     }
     return TRUE;
 }
 
-LPCTSTR DuiStringPool::Get(const CDuiStringT & strName)
+LPCTSTR DuiStringPool::Get(const SStringT & strName)
 {
     m_strTmp=_T("");
     if(HasKey(strName))

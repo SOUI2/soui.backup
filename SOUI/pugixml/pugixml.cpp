@@ -3668,9 +3668,10 @@ namespace pugi
 
 	PUGI__FN void xml_writer_buff::write( const void* data, size_t size )
 	{
+	    size /= sizeof(char_t);
 		if(m_nSize+size<MAX_XML_CHARBUF)
 		{
-			memcpy(m_szBuf+m_nSize,data,size);
+			memcpy(m_szBuf+m_nSize,data,size*sizeof(char_t));
 			m_nSize+=size;
 			m_szBuf[m_nSize]=0;
 		}

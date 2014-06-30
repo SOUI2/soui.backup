@@ -94,7 +94,7 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
 STreeItem* STreeBox::InsertItem(LPCWSTR pszXml,DWORD dwData,HSTREEITEM hParent/*=STVI_ROOT*/, HSTREEITEM hInsertAfter/*=STVI_LAST*/,BOOL bEnsureVisible/*=FALSE*/)
 {
     pugi::xml_document xmlDoc;
-    CDuiStringA strXml=DUI_CW2A(pszXml,CP_UTF8);;
+    SStringA strXml=DUI_CW2A(pszXml,CP_UTF8);;
 
     if(!xmlDoc.load_buffer((LPCSTR)strXml,strXml.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return NULL;
 
@@ -344,13 +344,13 @@ BOOL STreeBox::LoadChildren(pugi::xml_node xmlNode)
     if(!xmlNode) return FALSE;
 
     pugi::xml_node xmlParent=xmlNode.parent();
-    pugi::xml_node xmlSwitch=xmlParent.child("switch");
+    pugi::xml_node xmlSwitch=xmlParent.child(L"switch");
 
     if(xmlSwitch)   m_xmlSwitch.append_copy(xmlSwitch);
 
     RemoveAllItems();
 
-    pugi::xml_node xmlItem=xmlParent.child("item");
+    pugi::xml_node xmlItem=xmlParent.child(L"item");
     if(xmlItem) LoadBranch(STVI_ROOT,xmlItem);
 
     return TRUE;
@@ -360,13 +360,13 @@ void STreeBox::LoadBranch(HSTREEITEM hParent,pugi::xml_node xmlItem)
 {
     while(xmlItem)
     {
-        int dwData=xmlItem.attribute("itemdata").as_int(0);
+        int dwData=xmlItem.attribute(L"itemdata").as_int(0);
         HSTREEITEM hItem=InsertItem(xmlItem,dwData,hParent);
 
-        pugi::xml_node xmlChild=xmlItem.child("item");
+        pugi::xml_node xmlChild=xmlItem.child(L"item");
         if(xmlChild) LoadBranch(hItem,xmlChild);
 
-        xmlItem=xmlItem.next_sibling("item");
+        xmlItem=xmlItem.next_sibling(L"item");
     }
 }
 
