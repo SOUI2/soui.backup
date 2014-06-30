@@ -74,12 +74,12 @@ namespace SOUI
     class SPen_GDI : public TSkiaRenderObjImpl<IPen>
     {
     public:
-        SPen_GDI(IRenderFactory_GDI * pRenderFac,int iStyle=PS_SOLID,COLORREF cr=0xFF000000,int cWidth=1)
+        SPen_GDI(IRenderFactory_GDI * pRenderFac,int iStyle=PS_SOLID,COLORREF cr=0,int cWidth=1)
             :TSkiaRenderObjImpl<IPen>(pRenderFac)
-            ,m_nWidth(cWidth),m_style(iStyle),m_cr(cr)
+            ,m_nWidth(cWidth),m_style(iStyle),m_cr(cr&0x00FFFFFF)
             ,m_hPen(NULL)
         {
-            m_hPen = ::CreatePen(iStyle,cWidth,cr);
+            m_hPen = ::CreatePen(m_style,m_nWidth,m_cr);
         }
         ~SPen_GDI()
         {
@@ -94,7 +94,7 @@ namespace SOUI
 
         COLORREF GetColor(){return m_cr;}
 
-        void SetColor(COLORREF cr){m_cr = cr;}
+        void SetColor(COLORREF cr){m_cr = cr&0x00FFFFFF;}
         
         HPEN GetPen(){return m_hPen;}
     protected:
@@ -159,7 +159,7 @@ namespace SOUI
         SBrush_GDI(IRenderFactory_GDI * pRenderFac,COLORREF cr)
             :TSkiaRenderObjImpl<IBrush>(pRenderFac),m_fBmp(FALSE)
         {
-            m_hBrush = ::CreateSolidBrush(cr);
+            m_hBrush = ::CreateSolidBrush(cr&0x00ffffff);
         }
         SBrush_GDI(IRenderFactory_GDI * pRenderFac,HBITMAP hBmp)
             :TSkiaRenderObjImpl<IBrush>(pRenderFac),m_fBmp(TRUE)
