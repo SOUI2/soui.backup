@@ -357,9 +357,11 @@ namespace SOUI
     {
         COLORREF crOld=::SetTextColor(m_hdc,m_curColor.toCOLORREF()&0x00ffffff);
         ALPHAINFO ai;
-        if(!(uFormat&DT_CALCRECT))
+        if(uFormat&DT_CALCRECT)
         {
             ::DrawText(m_hdc,pszText,cchLen,pRc,uFormat|DT_CALCRECT);
+        }else
+        {
             CGdiAlpha::AlphaBackup(m_hdc,pRc,ai);
         }
         ::DrawText(m_hdc,pszText,cchLen,pRc,uFormat);
