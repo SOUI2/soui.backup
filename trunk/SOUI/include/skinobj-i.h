@@ -1,6 +1,6 @@
 #pragma once
 
-#include "duiobject.h"
+#include "sobject.h"
 #include "unknown/obj-ref-i.h"
 #include "unknown/obj-ref-impl.hpp"
 

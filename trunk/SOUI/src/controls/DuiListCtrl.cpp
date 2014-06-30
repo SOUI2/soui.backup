@@ -35,7 +35,7 @@ SListCtrl::~SListCtrl()
 
 int SListCtrl::InsertColumn(int nIndex, LPCTSTR pszText, int nWidth, LPARAM lParam)
 {
-    DUIASSERT(m_pHeader);
+    ASSERT(m_pHeader);
 
     int nRet = m_pHeader->InsertItem(nIndex, pszText, nWidth, ST_NULL, lParam);
     for(int i=0;i<GetItemCount();i++)
@@ -56,7 +56,7 @@ BOOL SListCtrl::LoadChildren(pugi::xml_node xmlNode)
         return FALSE;
 
     m_pHeader = (SHeaderCtrl*)GetDuiWindow(GDUI_FIRSTCHILD);
-    DUIASSERT(m_pHeader->IsClass(SHeaderCtrl::GetClassName()));
+    ASSERT(m_pHeader->IsClass(SHeaderCtrl::GetClassName()));
     SStringW strPos;
     strPos.Format(L"0,0,-0,%d",m_nHeaderHeight);
     m_pHeader->SetAttribute(L"pos",strPos,TRUE);

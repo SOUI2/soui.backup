@@ -58,7 +58,7 @@ public:
 
     HWND Create(HWND hWndParent,int x,int y,int nWidth,int nHeight);
     HWND Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight, LPVOID lpParam);
-    BOOL Load(LPCTSTR pszXmlName);
+    BOOL InitFromXml(LPCTSTR pszXmlName);
 
     BOOL SetXml(LPSTR lpszXml,int nLen);
 

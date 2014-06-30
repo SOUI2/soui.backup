@@ -85,9 +85,9 @@ void SRealWnd::OnDestroy()
     }
 }
 
-BOOL SRealWnd::Load(pugi::xml_node xmlNode)
+BOOL SRealWnd::InitFromXml(pugi::xml_node xmlNode)
 {
-    BOOL bRet=__super::Load(xmlNode);
+    BOOL bRet=__super::InitFromXml(xmlNode);
     if(bRet)
     {
         m_realwndParam.m_xmlParams.append_copy(xmlNode.child(L"params"));

@@ -25,19 +25,19 @@ public:
 
     T* operator ->() const
     {
-        DUIASSERT(m_p != NULL);
+        ASSERT(m_p != NULL);
         return m_p;
     }
 
     const T & operator[] (int i) const
     {
-        DUIASSERT(m_p != NULL);
+        ASSERT(m_p != NULL);
         return m_p[i];
     }
 
     T & operator[] (int i)
     {
-        DUIASSERT(m_p != NULL);
+        ASSERT(m_p != NULL);
         return m_p[i];
     }
 
@@ -51,13 +51,13 @@ public:
 
     T* Allocate(size_t nElements)
     {
-        DUIASSERT(nElements <= (SIZE_MAX / sizeof(T))-1);
+        ASSERT(nElements <= (SIZE_MAX / sizeof(T))-1);
         return AllocateBytes(nElements * sizeof(T));
     }
 
     T* AllocateBytes(size_t nBytes)
     {
-        DUIASSERT(m_p == NULL);
+        ASSERT(m_p == NULL);
         if(nBytes >= t_nFixedBytes)
             m_p = static_cast<T*>(malloc(nBytes+1));
         else

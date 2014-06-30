@@ -8,7 +8,8 @@
 #define UTILITIES_API
 #endif
 
+#ifndef ASSERT
 #include <assert.h>
-
-#define DUIASSERT(x) assert(x)
-#define DUIASSERT_NE(a,b) DUIASSERT(a!=b)
+#define ASSERT(x) assert(x)
+#define ASSERT_NE(a,b) ASSERT(a!=b)
+#endif

@@ -22,7 +22,7 @@ BOOL DuiSkinPool::Init(pugi::xml_node xmlNode)
 {
     if (wcscmp(xmlNode.name(), L"skins") != 0)
     {
-        DUIASSERT(FALSE);
+        ASSERT(FALSE);
         return FALSE;
     }
 
@@ -48,11 +48,11 @@ int DuiSkinPool::LoadSkins(LPCWSTR strOwnerName)
             if (strSkinName.IsEmpty() || strTypeName.IsEmpty())
                 continue;
 
-            DUIASSERT(!HasKey(strSkinName));
+            ASSERT(!HasKey(strSkinName));
             ISkinObj *pSkin=DuiSystem::getSingleton().CreateSkinByName(strTypeName);
             if(pSkin)
             {
-                pSkin->Load(xmlSkin);
+                pSkin->InitFromXml(xmlSkin);
                 pSkin->SetOwner(strOwnerName);
                 AddKeyObject(strSkinName,pSkin);
                 nLoaded++;

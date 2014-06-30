@@ -40,7 +40,7 @@ public:
 
     STimerID(HSWND hWnd,char id)
     {
-        DUIASSERT(hWnd<0x00FFFFFF && id>=0);
+        ASSERT(hWnd<0x00FFFFFF && id>=0);
         bDuiTimer=1;
         hDuiWnd=hWnd;
         uTimerID=id;
@@ -357,7 +357,7 @@ public:
 
     virtual BOOL LoadChildren(pugi::xml_node xmlNode);
     // Create DuiWindow from xml element
-    virtual BOOL Load(pugi::xml_node xmlNode);
+    virtual BOOL InitFromXml(pugi::xml_node xmlNode);
 
     virtual HSWND DuiGetHWNDFromPoint(CPoint ptHitTest, BOOL bOnlyText);
 

@@ -7,7 +7,7 @@
 
 #pragma once
 #include "duistd.h"
-#include "duiobject.h"
+#include "sobject.h"
 #include "res.mgr/duiimgpool.h"
 #include "res.mgr/duiresprovider.h"
 #include "DuiSystem.h"

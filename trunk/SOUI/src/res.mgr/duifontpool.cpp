@@ -51,7 +51,7 @@ void DuiFontPool::SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize)
     _tcscpy_s(m_szDefFontFace,_countof(m_szDefFontFace),lpszFaceName);
     m_lFontSize = -abs(lSize);
 
-    DUIASSERT(GetCount()==1);//初始化前才可以调用该接口
+    ASSERT(GetCount()==1);//初始化前才可以调用该接口
 
     RemoveKeyObject(FontKey(DUIF_DEFAULTFONT));
     
@@ -67,7 +67,7 @@ IFontPtr DuiFontPool::_CreateDefaultGUIFont()
 
     m_lfDefault.lfQuality = ANTIALIASED_QUALITY;
     
-    DUIASSERT(m_RenderFactory);
+    ASSERT(m_RenderFactory);
 
     IFontPtr pFont=NULL;
     m_RenderFactory->CreateFont(&pFont,m_lfDefault);
@@ -91,7 +91,7 @@ IFontPtr DuiFontPool::_CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, 
     lfNew.lfQuality = CLEARTYPE_NATURAL_QUALITY;
 
     IFontPtr pFont=NULL;
-    DUIASSERT(m_RenderFactory);
+    ASSERT(m_RenderFactory);
     m_RenderFactory->CreateFont(&pFont,lfNew);
 
     return pFont;

@@ -189,7 +189,7 @@ int SListBox::AddString(LPCTSTR lpszItem, int nImage, LPARAM lParam)
 
 int SListBox::InsertString(int nIndex, LPCTSTR lpszItem, int nImage,  LPARAM lParam)
 {
-    DUIASSERT(lpszItem);
+    ASSERT(lpszItem);
 
     LPLBITEM pItem = new LBITEM;
     pItem->strText = lpszItem;
@@ -267,7 +267,7 @@ void SListBox::LoadItemAttribute(pugi::xml_node xmlNode, LPLBITEM pItem)
 
 int SListBox::InsertItem(int nIndex, LPLBITEM pItem)
 {
-    DUIASSERT(pItem);
+    ASSERT(pItem);
 
     if(nIndex==-1 || nIndex>=GetCount())
     {

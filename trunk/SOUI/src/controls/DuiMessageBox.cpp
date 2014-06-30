@@ -113,7 +113,7 @@ namespace SOUI
             }
             break;
         default:
-            DUIASSERT(FALSE);
+            ASSERT(FALSE);
             break;
         }
         const wchar_t *pszFrameAttr=uiRoot.attribute(L"frame_size").value();
@@ -124,11 +124,11 @@ namespace SOUI
         swscanf(pszMinAttr,L"%d,%d",&szMin.cx,&szMin.cy);
 
         SWindow * pTitle= FindChildByName(NAME_MSGBOX_TITLE);
-        DUIASSERT(pTitle);
+        ASSERT(pTitle);
         pTitle->SetInnerText(lpCaption?lpCaption:_T("ÌבÊ¾"));
 
         SWindow * pMsg= FindChildByName(NAME_MSGBOX_TEXT);
-        DUIASSERT(pMsg);
+        ASSERT(pMsg);
         pMsg->SetInnerText(lpText);
 
         SetIcon(uType);

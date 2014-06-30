@@ -113,7 +113,7 @@ LRESULT CALLBACK CSimpleWnd::WindowProc( HWND hWnd, UINT uMsg, WPARAM wParam, LP
     LRESULT lRes;
     BOOL bRet = pThis->ProcessWindowMessage(pThis->m_hWnd, uMsg, wParam, lParam, lRes, 0);
     // restore saved value for the current message
-    DUIASSERT(pThis->m_pCurrentMsg == &msg);
+    ASSERT(pThis->m_pCurrentMsg == &msg);
 
     // do the default processing if message was not handled
     if(!bRet)
@@ -167,7 +167,7 @@ LRESULT CALLBACK CSimpleWnd::StartWindowProc( HWND hWnd, UINT uMsg, WPARAM wPara
 
 BOOL CSimpleWnd::SubclassWindow( HWND hWnd )
 {
-    DUIASSERT(::IsWindow(hWnd));
+    ASSERT(::IsWindow(hWnd));
     // Allocate the thunk structure here, where we can fail gracefully.
     m_pThunk=(tagThunk*)HeapAlloc(CSimpleWndHelper::GetInstance()->GetHeap(),HEAP_ZERO_MEMORY,sizeof(tagThunk));
     m_pThunk->Init((DWORD)WindowProc, this);
@@ -187,7 +187,7 @@ BOOL CSimpleWnd::SubclassWindow( HWND hWnd )
 
 HWND CSimpleWnd::UnsubclassWindow( BOOL bForce /*= FALSE*/ )
 {
-    DUIASSERT(m_hWnd != NULL);
+    ASSERT(m_hWnd != NULL);
 
     WNDPROC pOurProc = (WNDPROC)m_pThunk->GetCodeAddress();
     WNDPROC pActiveProc = (WNDPROC)::GetWindowLongPtr(m_hWnd, GWLP_WNDPROC);
@@ -304,7 +304,7 @@ LRESULT CSimpleWnd::ReflectNotifications(UINT uMsg, WPARAM wParam, LPARAM lParam
         return 1;
     }
 
-    DUIASSERT(::IsWindow(hWndChild));
+    ASSERT(::IsWindow(hWndChild));
     return ::SendMessage(hWndChild, OCM__BASE + uMsg, wParam, lParam);
 }
 

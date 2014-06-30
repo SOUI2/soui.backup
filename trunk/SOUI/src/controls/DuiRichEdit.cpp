@@ -17,13 +17,13 @@ namespace SOUI
             :nRef(1)
             ,pserv(pTxtSvr)
         {
-            DUIASSERT(pserv);
+            ASSERT(pserv);
             pserv->AddRef();
         }
 
         ~CDuiRicheditDropTarget()
         {
-            DUIASSERT(pserv);
+            ASSERT(pserv);
             pserv->Release();
         }
 
@@ -778,7 +778,7 @@ HRESULT SRichEdit::InitDefaultCharFormat( CHARFORMAT2W* pcf ,IFont *pFont)
 {
     CAutoRefPtr<IRenderTarget> pRT;
     GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
-    DUIASSERT(pRT);
+    ASSERT(pRT);
     BeforePaintEx(pRT);
 
     if(pFont==NULL) pFont=(IFont *)pRT->GetCurrentObject(OT_FONT);
@@ -1353,7 +1353,7 @@ void SRichEdit::SetSel(DWORD dwSelection, BOOL bNoScroll)
 
 LRESULT SRichEdit::OnSetTextColor( const SStringW &  strValue,BOOL bLoading )
 {
-    m_style.m_crText[0]=SObject::HexStringToColor(strValue);
+    m_style.m_crText[0]=HexStringToColor(strValue);
     if(!bLoading)
     {
         SetDefaultTextColor(m_style.m_crText[0]);

@@ -40,7 +40,7 @@ BOOL DuiStringPool::Init( pugi::xml_node xmlNode )
 {
     if (wcscmp(xmlNode.name(), L"string") != 0)
     {
-        DUIASSERT(FALSE);
+        ASSERT(FALSE);
         return FALSE;
     }
     UINT uStringID = 0;

@@ -94,7 +94,7 @@ protected:
      *
      * Describe  根据xml文件设置相关属性
      */
-    virtual void OnAttributeFinish(pugi::xml_node xmlNode);
+    virtual void OnInitFinished(pugi::xml_node xmlNode);
     /**
      * SLink::DuiDrawText
      * @brief    绘制文本

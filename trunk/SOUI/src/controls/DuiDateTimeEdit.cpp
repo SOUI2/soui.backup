@@ -107,7 +107,7 @@ BOOL SMaskEdit::MaskCopy()
 
 void SMaskEdit::MaskReplaceSel(LPCTSTR lpszNewText)
 {
-    DUIASSERT(CanUseMask());
+    ASSERT(CanUseMask());
 
     if (m_nStartChar != m_nEndChar)
         MaskDeleteSel();
@@ -247,14 +247,14 @@ void SMaskEdit::SetMaskedText(LPCTSTR lpszMaskedText, int nPos, BOOL bUpdateWind
 
 BOOL SMaskEdit::SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lpszDefault)
 {
-    DUIASSERT(lpszMask);
-    DUIASSERT(lpszLiteral);
+    ASSERT(lpszMask);
+    ASSERT(lpszLiteral);
 
     // initialize the mask for the control.
     m_strMask    = lpszMask;
     m_strLiteral = lpszLiteral;
 
-    DUIASSERT(m_strMask.GetLength() == m_strLiteral.GetLength());
+    ASSERT(m_strMask.GetLength() == m_strLiteral.GetLength());
 
     if (m_strMask.GetLength() != m_strLiteral.GetLength())
         return FALSE;
@@ -274,7 +274,7 @@ BOOL SMaskEdit::SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lpszD
         }
     }
 
-    DUIASSERT(m_strWindowText.GetLength() == m_strLiteral.GetLength());
+    ASSERT(m_strWindowText.GetLength() == m_strLiteral.GetLength());
 
     // set the window text for the control.
     m_bModified = FALSE;
@@ -316,7 +316,7 @@ BOOL SMaskEdit::CheckChar(TCHAR& nChar, int nPos)
 
 BOOL SMaskEdit::ProcessMask(TCHAR& nChar, int nEndPos)
 {
-    DUIASSERT(nEndPos < m_strMask.GetLength());
+    ASSERT(nEndPos < m_strMask.GetLength());
     if (nEndPos < 0 || nEndPos >= m_strMask.GetLength())
         return FALSE;
 
@@ -440,7 +440,7 @@ BOOL CDxMaskEdit::PreTranslateMessage(MSG* pMsg)
 
 void SMaskEdit::DeleteCharAt(int nPos)
 {
-    DUIASSERT(PosInRange(nPos));
+    ASSERT(PosInRange(nPos));
 
     if (!PosInRange(nPos))
         return;
@@ -452,7 +452,7 @@ void SMaskEdit::DeleteCharAt(int nPos)
 
 void SMaskEdit::InsertCharAt(int nPos, TCHAR nChar)
 {
-    DUIASSERT(PosInRange(nPos));
+    ASSERT(PosInRange(nPos));
 
     if (!PosInRange(nPos))
         return;
@@ -677,7 +677,7 @@ void SMaskEdit::ProcessChar(TCHAR nChar)
         MaskDeleteSel();
     }
 
-    DUIASSERT(m_nStartChar == m_nEndChar);
+    ASSERT(m_nStartChar == m_nEndChar);
 
     CorrectPosition(m_nStartChar);
 
@@ -862,13 +862,13 @@ void SMaskEdit::CorrectWindowText()
 
 void SMaskEdit::GetMaskState(BOOL bCorrectSelection)
 {
-    DUIASSERT(m_bUseMask);
+    ASSERT(m_bUseMask);
 
     MaskGetSel();
     m_strWindowText = GetWindowText();
 
-    DUIASSERT(m_strDefault.GetLength() == m_strLiteral.GetLength());
-    DUIASSERT(m_strMask.GetLength() == m_strLiteral.GetLength());
+    ASSERT(m_strDefault.GetLength() == m_strLiteral.GetLength());
+    ASSERT(m_strMask.GetLength() == m_strLiteral.GetLength());
 
     CorrectWindowText();
 
@@ -889,7 +889,7 @@ void SMaskEdit::MaskGetSel()
 
 void SMaskEdit::SetMaskState()
 {
-    DUIASSERT(m_bUseMask);
+    ASSERT(m_bUseMask);
 
     SStringT strWindowText = GetWindowText();
 

@@ -347,7 +347,7 @@ namespace SOUI
          *
          * Describe  通过加载xml来构造窗口
          */
-        virtual BOOL Load(pugi::xml_node xmlNode);
+        virtual BOOL InitFromXml(pugi::xml_node xmlNode);
     protected:
         /**
          * CDuiCalendar::GetDayRect

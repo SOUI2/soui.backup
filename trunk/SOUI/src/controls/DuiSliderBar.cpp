@@ -43,7 +43,7 @@ int SSliderBar::HitTest(CPoint pt)
 
 CRect SSliderBar::GetPartRect(UINT uSBCode)
 {
-    DUIASSERT(m_pSkinThumb);
+    ASSERT(m_pSkinThumb);
 
     CRect rcClient;
     GetClient(&rcClient);
@@ -135,7 +135,7 @@ CRect SSliderBar::GetPartRect(UINT uSBCode)
 
 void SSliderBar::OnPaint(IRenderTarget * pRT)
 {
-    DUIASSERT(m_pSkinThumb && m_pSkinBg && m_pSkinPos);
+    ASSERT(m_pSkinThumb && m_pSkinBg && m_pSkinPos);
 
     SPainter painter;
 
@@ -271,7 +271,7 @@ LRESULT SSliderBar::NotifySbCode(UINT uCode, int nPos)
 
 CSize SSliderBar::GetDesiredSize(LPRECT pRcContainer)
 {
-    DUIASSERT(m_pSkinBg && m_pSkinThumb);
+    ASSERT(m_pSkinBg && m_pSkinThumb);
     CSize szRet;
     SIZE sizeBg = m_pSkinBg->GetSkinSize();
     SIZE sizeThumb= m_pSkinThumb->GetSkinSize();

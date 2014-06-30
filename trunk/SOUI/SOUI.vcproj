@@ -877,10 +877,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\duiobject.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\DuiPanel.cpp"
 				>
 			</File>
@@ -1094,6 +1090,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\src\sobject.cpp"
+				>
+			</File>
 			<Filter
 				Name="activex"
 				>
@@ -1222,10 +1222,6 @@
 			</File>
 			<File
 				RelativePath=".\include\duimsgfilter.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\duiobject.h"
 				>
 			</File>
 			<File
@@ -1366,6 +1362,10 @@
 			</File>
 			<File
 				RelativePath=".\include\skinobj-i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\sobject.h"
 				>
 			</File>
 			<File

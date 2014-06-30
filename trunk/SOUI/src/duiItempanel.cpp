@@ -26,11 +26,11 @@ SItemPanel::SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer
     ,m_crSelBk(RGB(0,0,128))
     ,m_lpItemIndex(-1)
 {
-    DUIASSERT(m_pFrmHost);
+    ASSERT(m_pFrmHost);
     if(!m_pItemContainer) m_pItemContainer=dynamic_cast<IItemContainer*>(m_pFrmHost);
-    DUIASSERT(m_pItemContainer);
+    ASSERT(m_pItemContainer);
     SetContainer(this);
-    if(xmlNode) Load(xmlNode);
+    if(xmlNode) InitFromXml(xmlNode);
 }
 
 void SItemPanel::OnFinalRelease()

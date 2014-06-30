@@ -11,7 +11,7 @@ BOOL DuiCSS::Init( pugi::xml_node xmlNode )
 {
     if (wcscmp(xmlNode.name(), L"objattr") != 0)
     {
-        DUIASSERT(FALSE);
+        ASSERT(FALSE);
         return FALSE;
     }
 
@@ -55,7 +55,7 @@ void DuiCSS::BuildClassAttribute( pugi::xml_node & xmlNode, LPCWSTR pszClassName
 
 pugi::xml_node DuiCSS::GetDefAttribute(LPCWSTR pszClassName )
 {
-    DUIASSERT(pszClassName);
+    ASSERT(pszClassName);
     if(!static_cast<DuiWindowFactoryMgr*>(DuiSystem::getSingletonPtr())->HasKey(pszClassName))
         return pugi::xml_node();//节点是窗口时才有默认属性
     return _GetDefAttribute(pszClassName);

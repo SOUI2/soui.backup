@@ -10,7 +10,7 @@ namespace SOUI
 
         if(pszPos[0]==POSFLAG_DEFSIZE && bFirst2Pos)
         {//如果在前面两个坐标中定义size，自动忽略
-            DUIASSERT(FALSE);
+            ASSERT(FALSE);
             pszPos++;
         }
         if(pszPos[0]==POSFLAG_REFCENTER) pos.pit=PIT_CENTER,pszPos++;
@@ -117,7 +117,7 @@ namespace SOUI
         CRect rcContainer;
         if(!lpRcContainer)
         {
-            DUIASSERT(pWnd->GetParent());
+            ASSERT(pWnd->GetParent());
             rcContainer=pWnd->GetParent()->GetChildrenLayoutRect();
             lpRcContainer=&rcContainer;
         }
@@ -237,7 +237,7 @@ namespace SOUI
             return TRUE;
         if(nChildrenCount == pListChildren->GetCount())
         {//窗口布局依赖死锁
-            DUIASSERT(FALSE);
+            ASSERT(FALSE);
             return FALSE;
         }else
         {

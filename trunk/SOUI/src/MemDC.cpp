@@ -23,7 +23,7 @@ CMemDC::CMemDC( HDC hdc,HBITMAP hBmp)
     ,m_bHasBitmap(TRUE)
 {
     CreateCompatibleDC(hdc);
-    DUIASSERT(m_hDC != NULL);
+    ASSERT(m_hDC != NULL);
     if(hBmp)
         m_hOldBmp=__super::SelectBitmap(hBmp);
     else
@@ -38,7 +38,7 @@ CMemDC::~CMemDC(void)
 
 HBITMAP CMemDC::SelectBitmap( HBITMAP hBmp )
 {
-    DUIASSERT(m_hDC);
+    ASSERT(m_hDC);
     if(hBmp)
     {
         m_hOldBmp=__super::SelectBitmap(hBmp);
