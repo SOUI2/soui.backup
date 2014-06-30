@@ -236,7 +236,7 @@ int SListBox::HitTest(CPoint &pt)
     return nRet;
 }
 
-BOOL SListBox::LoadChildren(pugi::xml_node xmlNode)
+BOOL SListBox::CreateChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return TRUE;
 
@@ -511,7 +511,7 @@ void SListBox::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
         pOwner->DuiSendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
 }
 
-UINT SListBox::OnGetDuiCode()
+UINT SListBox::OnGetDlgCode()
 {
     return DUIC_WANTALLKEYS;
 }

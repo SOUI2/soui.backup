@@ -22,7 +22,7 @@ public:
 
 
 protected:
-    virtual UINT OnGetDuiCode()
+    virtual UINT OnGetDlgCode()
     {
         return (DUIC_WANTALLKEYS|DUIC_WANTSYSKEY) & (~DUIC_WANTTAB);
     }

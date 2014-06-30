@@ -318,7 +318,7 @@ void SPanel::GetClient(LPRECT pRect)
     pRect->bottom=m_rcClient.bottom;
 }
 
-BOOL SPanel::OnDuiNcHitTest(CPoint pt)
+BOOL SPanel::OnNcHitTest(CPoint pt)
 {
     if(m_bDragSb) return TRUE;
     return !m_rcClient.PtInRect(pt);

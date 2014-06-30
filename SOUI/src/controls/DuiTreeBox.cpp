@@ -339,7 +339,7 @@ int STreeBox::GetScrollLineSize(BOOL bVertical)
     return m_nItemHei;
 }
 
-BOOL STreeBox::LoadChildren(pugi::xml_node xmlNode)
+BOOL STreeBox::CreateChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return FALSE;
 

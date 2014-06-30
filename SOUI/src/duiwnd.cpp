@@ -524,7 +524,7 @@ SWindow* SWindow::FindChildByName( LPCSTR pszName )
     return NULL;
 }
 
-BOOL SWindow::LoadChildren(pugi::xml_node xmlNode)
+BOOL SWindow::CreateChildren(pugi::xml_node xmlNode)
 {
     for (pugi::xml_node xmlChild=xmlNode; xmlChild; xmlChild=xmlChild.next_sibling())
     {
@@ -538,7 +538,7 @@ BOOL SWindow::LoadChildren(pugi::xml_node xmlNode)
                 SStringT strName=DUI_CW2T(xmlChild.attribute(L"src").value());
                 if(LOADXML(xmlDoc,strName,RT_LAYOUT))
                 {
-                    LoadChildren(xmlDoc.first_child());
+                    CreateChildren(xmlDoc.first_child());
                 }else
                 {
                     ASSERT(FALSE);
@@ -639,16 +639,16 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
         if(m_pParent)    m_pParent->DestroyChild(this);
         return FALSE;
     }
-    LoadChildren(xmlNode.first_child());
+    CreateChildren(xmlNode.first_child());
     return TRUE;
 }
 
-SWindow * SWindow::LoadXmlChildren(LPCSTR utf8Xml)
+SWindow * SWindow::LoadXmlChildren(LPCWSTR pszXml)
 {
     pugi::xml_document xmlDoc;
-    if(!xmlDoc.load_buffer(utf8Xml,strlen(utf8Xml),pugi::parse_default,pugi::encoding_utf8)) return NULL;
+    if(!xmlDoc.load_buffer(pszXml,wcslen(pszXml),pugi::parse_default,pugi::encoding_utf16)) return NULL;
     SWindow * pLastChild=m_pLastChild;//保存当前的最后一个子窗口
-    BOOL bLoaded=LoadChildren(xmlDoc.first_child());
+    BOOL bLoaded=CreateChildren(xmlDoc.first_child());
     if(!bLoaded) return NULL;
 
       CRect rcContainer=GetChildrenLayoutRect();
@@ -661,14 +661,14 @@ SWindow * SWindow::LoadXmlChildren(LPCSTR utf8Xml)
       {
           pNewChild->DuiSendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
           pNewChild->DuiSendMessage(WM_SHOWWINDOW,IsVisible(TRUE),ParentShow);
-        pNewChild->NotifyInvalidate();
+          pNewChild->NotifyInvalidate();
           pNewChild=pNewChild->GetDuiWindow(GDUI_NEXTSIBLING);
       }
     return m_pLastChild;
 }
 
 // Hittest children
-HSWND SWindow::DuiGetHWNDFromPoint(CPoint ptHitTest, BOOL bOnlyText)
+HSWND SWindow::HswndFromPoint(CPoint ptHitTest, BOOL bOnlyText)
 {
     if (!m_rcWindow.PtInRect(ptHitTest)) return NULL;
 
@@ -685,7 +685,7 @@ HSWND SWindow::DuiGetHWNDFromPoint(CPoint ptHitTest, BOOL bOnlyText)
     {
         if (pChild->IsVisible(TRUE) && !pChild->IsMsgTransparent())
         {
-            hDuiWndChild = pChild->DuiGetHWNDFromPoint(ptHitTest, bOnlyText);
+            hDuiWndChild = pChild->HswndFromPoint(ptHitTest, bOnlyText);
 
             if (hDuiWndChild) return hDuiWndChild;
         }
@@ -1027,7 +1027,7 @@ void SWindow::DuiDrawDefFocusRect(IRenderTarget *pRT,CRect rcFocus )
     pRT->SelectObject(oldPen);
 }
 
-UINT SWindow::OnGetDuiCode()
+UINT SWindow::OnGetDlgCode()
 {
     return 0;
 }
@@ -1415,7 +1415,7 @@ BOOL SWindow::IsItemEnable(UINT uItemID, BOOL bCheckParent /*= FALSE*/)
     return FALSE;
 }
 
-BOOL SWindow::OnDuiNcHitTest(CPoint pt)
+BOOL SWindow::OnNcHitTest(CPoint pt)
 {
     return FALSE;
 }

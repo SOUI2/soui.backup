@@ -102,7 +102,7 @@ public:
 
     BOOL SetItemTitle(int nIndex, LPCTSTR lpszTitle);
 
-    BOOL LoadChildren(pugi::xml_node xmlNode);
+    BOOL CreateChildren(pugi::xml_node xmlNode);
 
     BOOL InsertItem(LPCWSTR lpContent,int iInsert=-1);
 
@@ -126,7 +126,7 @@ protected:
 
     virtual void DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD dwState);
 
-    virtual UINT OnGetDuiCode()
+    virtual UINT OnGetDlgCode()
     {
         return DUIC_WANTARROWS;
     }

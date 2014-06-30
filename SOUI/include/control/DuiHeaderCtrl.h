@@ -53,7 +53,7 @@ namespace SOUI
             ATTR_INT(L"sortHeader",m_bSortHeader,FALSE)
         SOUI_ATTRS_END()
     protected:
-        virtual BOOL LoadChildren(pugi::xml_node xmlNode);
+        virtual BOOL CreateChildren(pugi::xml_node xmlNode);
         virtual BOOL OnDuiSetCursor(const CPoint &pt);
 
         void OnPaint(IRenderTarget * pRT);

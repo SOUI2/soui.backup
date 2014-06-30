@@ -71,7 +71,7 @@ CDuiComboBoxBase::~CDuiComboBoxBase(void)
 }
 
 
-BOOL CDuiComboBoxBase::LoadChildren( pugi::xml_node xmlNode )
+BOOL CDuiComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
 {
     pugi::xml_node xmlParent = xmlNode.parent();
 
@@ -190,7 +190,7 @@ void CDuiComboBoxBase::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     }
 }
 
-UINT CDuiComboBoxBase::OnGetDuiCode()
+UINT CDuiComboBoxBase::OnGetDlgCode()
 {        
     return DUIC_WANTARROWS;
 }

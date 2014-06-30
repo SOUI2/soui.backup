@@ -333,7 +333,7 @@ namespace SOUI
         }
     }
 
-    BOOL SHeaderCtrl::LoadChildren( pugi::xml_node xmlNode )
+    BOOL SHeaderCtrl::CreateChildren( pugi::xml_node xmlNode )
     {
         if(!xmlNode || wcscmp(xmlNode.name(),L"items")!=0)
             return TRUE;

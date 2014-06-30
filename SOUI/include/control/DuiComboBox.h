@@ -251,7 +251,7 @@ protected:
      *
      * Describe  加载子项
      */
-    virtual BOOL LoadChildren(pugi::xml_node xmlNode);    
+    virtual BOOL CreateChildren(pugi::xml_node xmlNode);    
     /**
      * CDuiComboBoxBase::GetTextRect
      * @brief    获取文本位置
@@ -332,7 +332,7 @@ protected:
      * 
      * Describe  获取消息码
      */  
-    UINT OnGetDuiCode();
+    UINT OnGetDlgCode();
     
     /**
      * CDuiComboBoxBase::IsTabStop

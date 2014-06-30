@@ -91,7 +91,7 @@ int SSplitWnd::GetNextVisiblePanel(UINT iPanel)
     return -1;
 }
 
-BOOL SSplitWnd::LoadChildren( pugi::xml_node xmlNode )
+BOOL SSplitWnd::CreateChildren( pugi::xml_node xmlNode )
 {
     if(!xmlNode) return FALSE;
     pugi::xml_node xmlParent=xmlNode.parent();

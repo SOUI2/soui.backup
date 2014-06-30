@@ -327,9 +327,9 @@ public:
     }
 
     // 从XML创建子窗口
-    // LPCSTR utf8Xml: utf8 编码的XML串
+    // LPCWSTR pszXml: utf16编码的XML串
     // return : 顶层的最后一个窗口
-    SWindow *LoadXmlChildren(LPCSTR utf8Xml);
+    SWindow *LoadXmlChildren(LPCWSTR pszXml);
 
     void NotifyInvalidate();
     void NotifyInvalidateRect(LPRECT lprect);
@@ -355,20 +355,19 @@ public:
 
     virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState) {}
 
-    virtual BOOL LoadChildren(pugi::xml_node xmlNode);
-    // Create DuiWindow from xml element
+    virtual BOOL CreateChildren(pugi::xml_node xmlNode);
+    // Create SWindow from xml element
     virtual BOOL InitFromXml(pugi::xml_node xmlNode);
 
-    virtual HSWND DuiGetHWNDFromPoint(CPoint ptHitTest, BOOL bOnlyText);
+    virtual HSWND HswndFromPoint(CPoint ptHitTest, BOOL bOnlyText);
 
     virtual LRESULT DuiNotify(LPSNMHDR pnms);
 
-    virtual UINT OnGetDuiCode();
+    virtual UINT OnGetDlgCode();
 
     virtual BOOL IsTabStop();
 
-    virtual BOOL OnDuiNcHitTest(CPoint pt);
-
+    virtual BOOL OnNcHitTest(CPoint pt);
 
     virtual BOOL IsClipClient()
     {

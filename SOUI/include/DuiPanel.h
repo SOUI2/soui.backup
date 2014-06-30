@@ -73,7 +73,7 @@ protected:
 
     void OnNcPaint(IRenderTarget *pRT);
 
-    virtual BOOL OnDuiNcHitTest(CPoint pt);
+    virtual BOOL OnNcHitTest(CPoint pt);
 
     void OnNcLButtonDown(UINT nFlags, CPoint point);
 

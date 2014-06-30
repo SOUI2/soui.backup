@@ -73,7 +73,7 @@ protected:
 
     virtual int GetScrollLineSize(BOOL bVertical);
 
-    virtual BOOL LoadChildren(pugi::xml_node xmlNode);
+    virtual BOOL CreateChildren(pugi::xml_node xmlNode);
 
     void LoadBranch(HSTREEITEM hParent,pugi::xml_node xmlNode);
 
@@ -102,7 +102,7 @@ protected:
     virtual BOOL OnDuiSetCursor(const CPoint &pt);
     virtual void OnViewOriginChanged( CPoint ptOld,CPoint ptNew );
 
-    virtual UINT OnGetDuiCode()
+    virtual UINT OnGetDlgCode()
     {
         return DUIC_WANTALLKEYS;
     }
