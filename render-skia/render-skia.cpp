@@ -9,6 +9,7 @@
 #include "drawtext-skia.h"
 #include "render-skia.h"
 
+#include "trace.h"
 namespace SOUI
 {
 	//PS_SOLID
@@ -309,7 +310,7 @@ namespace SOUI
             ALPHAINFO ai;
             CGdiAlpha::AlphaBackup(hdcDst,pRcDest,ai);
             ::BitBlt(hdcDst,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,hdcSrc,xSrc,ySrc,dwRop);
-            CGdiAlpha::AlphaRestore(hdcDst,ai);
+            CGdiAlpha::AlphaRestore(ai);
             ReleaseDC(hdcDst);
             pRTSour->ReleaseDC(hdcSrc);
         }
@@ -669,12 +670,12 @@ namespace SOUI
         }
         return S_OK;
     }
-
     HDC SRenderTarget_Skia::GetDC( UINT uFlag )
     {
         if(m_hGetDC) return m_hGetDC;
         
         HBITMAP bmp=m_curBmp->GetGdiBitmap();
+        ASSERT(bmp);
         HDC hdc_desk = ::GetDC(NULL);
         m_hGetDC = CreateCompatibleDC(hdc_desk);
         ::ReleaseDC(NULL,hdc_desk);

@@ -349,7 +349,7 @@ namespace SOUI
         CGdiAlpha::AlphaBackup(m_hdc,pRcDest,ai);
         SRenderTarget_GDI *pRTSrc_GDI=(SRenderTarget_GDI*)pRTSour;
         ::BitBlt(m_hdc,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,pRTSrc_GDI->m_hdc,xSrc,ySrc,dwRop);
-        CGdiAlpha::AlphaRestore(m_hdc,ai);
+        CGdiAlpha::AlphaRestore(ai);
         return S_OK;
     }
 
@@ -367,7 +367,7 @@ namespace SOUI
         ::DrawText(m_hdc,pszText,cchLen,pRc,uFormat);
         if(!(uFormat&DT_CALCRECT))
         {
-            CGdiAlpha::AlphaRestore(m_hdc,ai);
+            CGdiAlpha::AlphaRestore(ai);
         }
         ::SetTextColor(m_hdc,crOld);
         return S_OK;
@@ -385,7 +385,7 @@ namespace SOUI
         CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
         HGDIOBJ oldBr=::SelectObject(m_hdc,GetStockObject(NULL_BRUSH));
         ::Rectangle(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom);
-        CGdiAlpha::AlphaRestore(m_hdc,ai);
+        CGdiAlpha::AlphaRestore(ai);
         ::SelectObject(m_hdc,oldBr);
         return S_OK;
     }
@@ -396,7 +396,7 @@ namespace SOUI
         CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
         HGDIOBJ oldPen=::SelectObject(m_hdc,GetStockObject(NULL_PEN));
         ::Rectangle(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom);
-        CGdiAlpha::AlphaRestore(m_hdc,ai);
+        CGdiAlpha::AlphaRestore(ai);
         ::SelectObject(m_hdc,oldPen);
         return S_OK;
     }
@@ -407,7 +407,7 @@ namespace SOUI
         CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
         HGDIOBJ oldBr=::SelectObject(m_hdc,GetStockObject(NULL_BRUSH));
         ::RoundRect(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom,pt.x,pt.y);
-        CGdiAlpha::AlphaRestore(m_hdc,ai);
+        CGdiAlpha::AlphaRestore(ai);
         ::SelectObject(m_hdc,oldBr);
         return S_OK;
     }
@@ -418,7 +418,7 @@ namespace SOUI
         CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
         HGDIOBJ oldPen=::SelectObject(m_hdc,GetStockObject(NULL_PEN));
         ::RoundRect(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom,pt.x,pt.y);
-        CGdiAlpha::AlphaRestore(m_hdc,ai);
+        CGdiAlpha::AlphaRestore(ai);
         ::SelectObject(m_hdc,oldPen);
         return S_OK;
     }
@@ -436,7 +436,7 @@ namespace SOUI
         ALPHAINFO ai;
         CGdiAlpha::AlphaBackup(m_hdc,&rc,ai);
         ::Polyline(m_hdc,pPt,nCount);
-        CGdiAlpha::AlphaRestore(m_hdc,ai);
+        CGdiAlpha::AlphaRestore(ai);
         return S_OK;
     }
 
@@ -449,7 +449,7 @@ namespace SOUI
         ALPHAINFO ai;
         CGdiAlpha::AlphaBackup(m_hdc,&rc,ai);
         ::TextOut(m_hdc,x,y,lpszString,nCount);
-        CGdiAlpha::AlphaRestore(m_hdc,ai);
+        CGdiAlpha::AlphaRestore(ai);
         ::SetTextColor(m_hdc,crOld);
         return S_OK;
     }
@@ -706,7 +706,7 @@ namespace SOUI
         ALPHAINFO ai;
         CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
         ::FillRect(m_hdc,pRect,hbr);
-        CGdiAlpha::AlphaRestore(m_hdc,ai);
+        CGdiAlpha::AlphaRestore(ai);
         ::DeleteObject(hbr);
         return S_OK;    
     }

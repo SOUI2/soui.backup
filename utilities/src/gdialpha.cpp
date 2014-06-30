@@ -11,8 +11,6 @@ BYTE CGdiAlpha::s_byAlphaBack[MAX_ALPHABUF];
 
 LPBYTE CGdiAlpha::ALPHABACKUP(BITMAP *pBitmap,int x,int y,int cx,int cy)
 {
-    if(pBitmap->bmBitsPixel != 32) return NULL;
-    
     LPBYTE lpAlpha=s_byAlphaBack;
     if(x+cx>=pBitmap->bmWidth) cx=pBitmap->bmWidth-x;
     if(y+cy>=pBitmap->bmHeight) cy=pBitmap->bmHeight-y;
@@ -39,8 +37,6 @@ LPBYTE CGdiAlpha::ALPHABACKUP(BITMAP *pBitmap,int x,int y,int cx,int cy)
 //恢复位图的Alpha通道
 void CGdiAlpha::ALPHARESTORE(BITMAP *pBitmap,int x,int y,int cx,int cy,LPBYTE lpAlpha)
 {
-    if(pBitmap->bmBitsPixel != 32) return;
-    
     if(x+cx>=pBitmap->bmWidth) cx=pBitmap->bmWidth-x;
     if(y+cy>=pBitmap->bmHeight) cy=pBitmap->bmHeight-y;
     if(cx<0 || cy<0) return;
@@ -63,31 +59,26 @@ void CGdiAlpha::ALPHARESTORE(BITMAP *pBitmap,int x,int y,int cx,int cy,LPBYTE lp
 
 BOOL CGdiAlpha::AlphaBackup(HDC hdc,LPCRECT pRect,ALPHAINFO &alphaInfo)
 {
+    alphaInfo.lpBuf=NULL;
     HBITMAP hBmp=(HBITMAP)GetCurrentObject(hdc,OBJ_BITMAP);
     DUIASSERT(hBmp);
-    BITMAP  bm;
-    GetObject(hBmp,sizeof(BITMAP),&bm);
+    GetObject(hBmp,sizeof(BITMAP),&alphaInfo.bm);
 
-    if(bm.bmBitsPixel!=32) return FALSE;
+    if(alphaInfo.bm.bmBitsPixel!=32) return FALSE;
     alphaInfo.rc=*pRect;
     POINT pt;
     GetViewportOrgEx(hdc,&pt);
-    RECT rcImg= {0,0,bm.bmWidth,bm.bmHeight};
+    RECT rcImg= {0,0,alphaInfo.bm.bmWidth,alphaInfo.bm.bmHeight};
     OffsetRect(&alphaInfo.rc,pt.x,pt.y);
     IntersectRect(&alphaInfo.rc,&alphaInfo.rc,&rcImg);
-    alphaInfo.lpBuf=ALPHABACKUP(&bm,alphaInfo.rc.left,alphaInfo.rc.top,alphaInfo.rc.right - alphaInfo.rc.left, alphaInfo.rc.bottom - alphaInfo.rc.top);
+    alphaInfo.lpBuf=ALPHABACKUP(&alphaInfo.bm,alphaInfo.rc.left,alphaInfo.rc.top,alphaInfo.rc.right - alphaInfo.rc.left, alphaInfo.rc.bottom - alphaInfo.rc.top);
     return TRUE;
 }
 
-void CGdiAlpha::AlphaRestore(HDC hdc,const ALPHAINFO &alphaInfo)
+void CGdiAlpha::AlphaRestore(ALPHAINFO &alphaInfo)
 {
     if(!alphaInfo.lpBuf) return;
-    HBITMAP hBmp=(HBITMAP)GetCurrentObject(hdc,OBJ_BITMAP);
-    DUIASSERT(hBmp);
-    BITMAP  bm;
-    GetObject(hBmp,sizeof(BITMAP),&bm);
-    DUIASSERT(bm.bmBitsPixel==32);
-    ALPHARESTORE(&bm,alphaInfo.rc.left,alphaInfo.rc.top,alphaInfo.rc.right - alphaInfo.rc.left, alphaInfo.rc.bottom - alphaInfo.rc.top,alphaInfo.lpBuf);
+    ALPHARESTORE(&alphaInfo.bm,alphaInfo.rc.left,alphaInfo.rc.top,alphaInfo.rc.right - alphaInfo.rc.left, alphaInfo.rc.bottom - alphaInfo.rc.top,alphaInfo.lpBuf);
 }
 
 }//namespace SOUI

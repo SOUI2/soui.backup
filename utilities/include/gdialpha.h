@@ -9,6 +9,7 @@ namespace SOUI
 
 typedef struct tagALPHAINFO
 {
+    BITMAP bm;
     LPBYTE lpBuf;
     RECT    rc;
     tagALPHAINFO()
@@ -30,7 +31,7 @@ public:
 
     static BOOL AlphaBackup(HDC hdc,LPCRECT pRect,ALPHAINFO &alphaInfo);
 
-    static void AlphaRestore(HDC hdc,const ALPHAINFO &alphaInfo);
+    static void AlphaRestore(ALPHAINFO &alphaInfo);
 };
 
 }//namespace SOUI

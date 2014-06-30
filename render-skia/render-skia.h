@@ -199,7 +199,7 @@ namespace SOUI
         virtual UINT Height();
         virtual SIZE Size();
         
-		SkBitmap GetSkBitmap(){return m_bitmap;}
+		SkBitmap & GetSkBitmap(){return m_bitmap;}
 		HBITMAP  GetGdiBitmap(){return m_hBmp;}
 	protected:
 	    HBITMAP CreateGDIBitmap(int nWid,int nHei,void ** ppBits);
