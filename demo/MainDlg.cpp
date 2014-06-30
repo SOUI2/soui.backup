@@ -48,7 +48,7 @@ struct student{
 //init listctrl
 void CMainDlg::InitListCtrl()
 {
-    SListCtrl *pList=FindChildByName2<SListCtrl *>("lc_test");
+    SListCtrl *pList=FindChildByName2<SListCtrl *>(L"lc_test");
     if(pList)
     {
         SWindow *pHeader=pList->GetDuiWindow(GDUI_FIRSTCHILD);
@@ -107,7 +107,7 @@ bool CMainDlg::OnListHeaderClick( SWindow * pSender, LPSNMHDR pNmhdr )
 {
     SHeaderCtrl *pHeader=(SHeaderCtrl*)pSender;
     LPDUINMHDCLICK pClick=(LPDUINMHDCLICK)pNmhdr;
-    SListCtrl *pList=FindChildByName2<SListCtrl*>("lc_test");
+    SListCtrl *pList=FindChildByName2<SListCtrl*>(L"lc_test");
 
     DUIHDITEM hditem;
     hditem.mask=DUIHDI_ORDER;
@@ -118,7 +118,7 @@ bool CMainDlg::OnListHeaderClick( SWindow * pSender, LPSNMHDR pNmhdr )
 
 void CMainDlg::OnDestory()
 {
-    SListCtrl *pList=FindChildByName2<SListCtrl*>("lc_test");
+    SListCtrl *pList=FindChildByName2<SListCtrl*>(L"lc_test");
     if(pList)
     {
         for(int i=0;i<pList->GetItemCount();i++)

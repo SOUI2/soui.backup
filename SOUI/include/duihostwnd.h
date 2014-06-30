@@ -78,7 +78,6 @@ protected:
     // Tracking flag
     BOOL m_bTrackFlag;
 
-    SStringW m_strName;    //窗口的name属性，与skin的owner对应
     CRect m_rcNC;
 
     DWORD m_dwDlgStyle;

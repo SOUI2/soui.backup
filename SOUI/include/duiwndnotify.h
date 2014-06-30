@@ -61,7 +61,7 @@ class SWindow;
 
 // LRESULT OnDuiNameHandler(LPSNMHDR pnmh)
 #define SOUI_NOTIFY_NAME_HANDLER(name, cd, func) \
-    if(cd == pnmh->code && pnmh->pszNameFrom!= NULL && strcmp(pnmh->pszNameFrom,name)==0) \
+    if(cd == pnmh->code && pnmh->pszNameFrom!= NULL && wcscmp(pnmh->pszNameFrom,name)==0) \
 { \
     return func(pnmh); \
 }
@@ -85,7 +85,7 @@ class SWindow;
 
 // void OnDuiNameCommand()
 #define SOUI_NOTIFY_NAME_COMMAND(name, func)                                  \
-    if (NM_COMMAND == uCode && pnmh->pszNameFrom!= NULL && strcmp(pnmh->pszNameFrom,name)==0)  \
+    if (NM_COMMAND == uCode && pnmh->pszNameFrom!= NULL && wcscmp(pnmh->pszNameFrom,name)==0)  \
     {                                                                       \
         func();                                                             \
         return TRUE;                                                        \
@@ -113,7 +113,7 @@ class SWindow;
 
 // LRESULT OnDuiContextMenu(CPoint pt)
 #define SOUI_NOTIFY_NAME_CONTEXTMENU(name,func)                                      \
-    if (NM_CONTEXTMENU == uCode && pnmh->pszNameFrom!= NULL && strcmp(pnmh->pszNameFrom,name)==0) \
+    if (NM_CONTEXTMENU == uCode && pnmh->pszNameFrom!= NULL && wcscmp(pnmh->pszNameFrom,name)==0) \
 {                                                                               \
     return func(((LPDUINMCONTEXTMENU)pnmh)->pt);                                        \
 }                                                                               \

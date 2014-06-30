@@ -518,13 +518,13 @@ BOOL SCalendar::InitFromXml( pugi::xml_node xmlNode )
     BOOL bLoad=__super::InitFromXml(xmlNode);
     if(bLoad)
     {
-        SWindow *pBtnToday=FindChildByName("btn_today");
+        SWindow *pBtnToday=FindChildByName(L"btn_today");
         if(pBtnToday)
         {
             pBtnToday->SetCmdID(100);
             pBtnToday->subscribeEvent(NM_COMMAND,Subscriber(&SCalendar::OnTodayClick,this));
         }
-        SWindow *pLabelToday=FindChildByName("label_today");
+        SWindow *pLabelToday=FindChildByName(L"label_today");
         if(pLabelToday)
         {
             CTime today=CTime::GetCurrentTime();

@@ -66,6 +66,6 @@ typedef struct _DUINMHDR
 {
     HSWND    hDuiWnd;        //消息源窗口
     UINT    code;            //消息类型
-    LPCSTR    pszNameFrom;    //消息源的name
+    LPCWSTR    pszNameFrom;    //消息源的name
     UINT    idFrom;            //消息源的id
 }DUINMHDR, *LPSNMHDR;

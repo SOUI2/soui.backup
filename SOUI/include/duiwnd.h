@@ -132,7 +132,7 @@ protected:
     SWNDMSG        *m_pCurMsg;
 
     UINT m_uCmdID;
-    SStringA    m_strName;
+    SStringW    m_strName;
 
     CRect m_rcWindow;
 
@@ -224,7 +224,6 @@ public:
     ULONG_PTR GetUserData();
     ULONG_PTR SetUserData(ULONG_PTR uData);
 
-    LPCSTR GetName(){ return m_strName.IsEmpty()?NULL:(LPCSTR)m_strName;}
     //************************************
     // Method:    SetDuiTimer
     // Function:  利用窗口定时器来设置一个ID为0-127的DUI定时器
@@ -338,10 +337,10 @@ public:
     // Qualifier:
     // Parameter: LPCSTR pszName
     //************************************
-    SWindow* FindChildByName(LPCSTR pszName);
+    SWindow* FindChildByName(LPCWSTR pszName);
 
     template<class T>
-    T FindChildByName2(LPCSTR pszName)
+    T FindChildByName2(LPCWSTR pszName)
     {
         return dynamic_cast<T>(FindChildByName(pszName));
     }
@@ -685,7 +684,6 @@ protected:
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"skin", m_pBgSkin, TRUE)//直接获得皮肤对象
         ATTR_SKIN(L"ncskin", m_pNcSkin, TRUE)//直接获得皮肤对象
-        ATTR_STRINGA(L"name",m_strName,FALSE)
         ATTR_STYLE(L"class", m_style, TRUE)    //获得style
         ATTR_CHAIN(m_style)                    //支持对style中的属性定制
         ATTR_INT(L"id", m_uCmdID, FALSE)
