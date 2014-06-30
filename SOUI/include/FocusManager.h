@@ -32,7 +32,7 @@ namespace SOUI
     template<class T>
     void CopyDuiList(SList<T> &sour,SList<T> &dest)
     {
-        DUIASSERT(dest.IsEmpty());
+        ASSERT(dest.IsEmpty());
         POSITION pos=sour.GetHeadPosition();
         while(pos)
         {

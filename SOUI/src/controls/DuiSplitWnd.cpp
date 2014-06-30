@@ -95,13 +95,13 @@ BOOL SSplitWnd::LoadChildren( pugi::xml_node xmlNode )
 {
     if(!xmlNode) return FALSE;
     pugi::xml_node xmlParent=xmlNode.parent();
-    DUIASSERT(xmlParent);
+    ASSERT(xmlParent);
     pugi::xml_node xmlPane=xmlParent.child(L"pane");
     while(xmlPane)
     {
         SSplitPane *pPane=new SSplitPane();
         InsertChild(pPane);
-        if(pPane->Load(xmlPane))
+        if(pPane->InitFromXml(xmlPane))
         {
             pPane->AddRef();
             m_arrPane.Add(pPane);

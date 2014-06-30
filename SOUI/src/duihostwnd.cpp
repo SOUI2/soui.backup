@@ -51,7 +51,7 @@ HWND CDuiHostWnd::Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWO
 
     SetContainer(this);
 
-    if(!m_strXmlLayout.IsEmpty())  Load(m_strXmlLayout);
+    if(!m_strXmlLayout.IsEmpty())  InitFromXml(m_strXmlLayout);
 
     if(nWidth==0 || nHeight==0) CenterWindow(hWnd);
     return hWnd;
@@ -62,7 +62,7 @@ HWND CDuiHostWnd::Create(HWND hWndParent,int x,int y,int nWidth,int nHeight)
     return Create(hWndParent, NULL,WS_POPUP | WS_CLIPCHILDREN | WS_TABSTOP,0,x,y,nWidth,nHeight,0);
 }
 
-BOOL CDuiHostWnd::Load(LPCTSTR pszXmlName)
+BOOL CDuiHostWnd::InitFromXml(LPCTSTR pszXmlName)
 {
     pugi::xml_document xmlDoc;
     if(!LOADXML(xmlDoc,pszXmlName,RT_LAYOUT)) return FALSE;
@@ -500,7 +500,7 @@ void CDuiHostWnd::OnDuiTimer( char cTimerID )
 {
     if(cTimerID==TIMER_CARET)
     {
-        DUIASSERT(m_bCaretShowing);
+        ASSERT(m_bCaretShowing);
         DrawCaret(m_ptCaret);
         m_bCaretActive=!m_bCaretActive;
     }else if(cTimerID==TIMER_NEXTFRAME)
@@ -985,7 +985,7 @@ void CDuiHostWnd::OnKillFocus( HWND wndFocus )
 
 void CDuiHostWnd::UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha)
 {
-    DUIASSERT(IsTranslucent());
+    ASSERT(IsTranslucent());
     HDC hdc=pRT->GetDC(0);
     CRect rc;
     GetWindowRect(&rc);

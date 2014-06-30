@@ -213,14 +213,14 @@ SWindow * SListBoxEx::GetItemPanel(int iItem)
 
 LPARAM SListBoxEx::GetItemData(int iItem)
 {
-    DUIASSERT(iItem>=0 || iItem< GetItemCount());
+    ASSERT(iItem>=0 || iItem< GetItemCount());
     if(m_pTemplPanel) return 0;
     return m_arrItems[iItem]->GetItemData();
 }
 
 void SListBoxEx::SetItemData( int iItem,LPARAM lParam )
 {
-    DUIASSERT(iItem>=0 || iItem< GetItemCount());
+    ASSERT(iItem>=0 || iItem< GetItemCount());
     m_arrItems[iItem]->SetItemData(lParam);
 }
 
@@ -251,7 +251,7 @@ BOOL SListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
     }
     if(IsVirtual())
     {
-        DUIASSERT(m_pTemplPanel);
+        ASSERT(m_pTemplPanel);
         m_nItems=nItems;
         CRect rcClient;
         SWindow::GetClient(&rcClient);
@@ -366,7 +366,7 @@ void SListBoxEx::OnDrawItem(IRenderTarget *pRT, CRect & rc, int iItem)
 {
     if(IsVirtual())
     {//虚拟列表，由APP控制显示
-        DUIASSERT(m_pTemplPanel);
+        ASSERT(m_pTemplPanel);
         DUINMGETLBDISPINFO nms;
         nms.hdr.hDuiWnd =m_hSWnd;
         nms.hdr.code    = NM_GETLBDISPINFO;
@@ -429,7 +429,7 @@ BOOL SListBoxEx::LoadChildren(pugi::xml_node xmlNode)
         return TRUE;
     }else
     {//虚拟列表
-        DUIASSERT(xmlTempl);
+        ASSERT(xmlTempl);
         m_pTemplPanel=new SItemPanel(this,xmlTempl,this);
         if(m_pItemSkin) m_pTemplPanel->SetSkin(m_pItemSkin);
         return TRUE;
@@ -451,7 +451,7 @@ void SListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
     {
         if(IsVirtual())
         {
-            DUIASSERT(m_pTemplPanel);
+            ASSERT(m_pTemplPanel);
             SWindow *pHover=DuiWindowMgr::GetWindow(m_pTemplPanel->GetDuiHover());
             if(pHover) nms.uHoverID=pHover->GetCmdID();
         }else
@@ -489,7 +489,7 @@ void SListBoxEx::OnMouseLeave()
         m_iHoverItem=-1;
         if(IsVirtual())
         {
-            DUIASSERT(m_pTemplPanel);
+            ASSERT(m_pTemplPanel);
             RedrawItem(nOldHover);
             m_pTemplPanel->DoFrameEvent(WM_MOUSELEAVE,0,0);
         }
@@ -511,7 +511,7 @@ BOOL SListBoxEx::OnDuiSetCursor(const CPoint &pt)
         CRect rcItem=GetItemRect(m_iHoverItem);
         if(IsVirtual())
         {
-            DUIASSERT(m_pTemplPanel);
+            ASSERT(m_pTemplPanel);
             bRet=m_pTemplPanel->DoFrameEvent(WM_SETCURSOR,0,MAKELPARAM(pt.x-rcItem.left,pt.y-rcItem.top))!=0;
         }else
         {
@@ -566,7 +566,7 @@ void SListBoxEx::OnDestroy()
     DeleteAllItems(FALSE);
     if(IsVirtual())
     {
-        DUIASSERT(m_pTemplPanel);
+        ASSERT(m_pTemplPanel);
         m_pTemplPanel->DuiSendMessage(WM_DESTROY);
         m_pTemplPanel->Release();
         m_pTemplPanel=NULL;
@@ -642,7 +642,7 @@ LRESULT SListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
                     m_arrItems[nOldHover]->DoFrameEvent(WM_MOUSELEAVE,0,0);
                 }else
                 {
-                    DUIASSERT(m_pTemplPanel);
+                    ASSERT(m_pTemplPanel);
                     m_pTemplPanel->DoFrameEvent(WM_MOUSELEAVE,0,0);
                 }
             }
@@ -654,7 +654,7 @@ LRESULT SListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
                     m_arrItems[m_iHoverItem]->DoFrameEvent(WM_MOUSEHOVER,wParam,MAKELPARAM(pt.x,pt.y));
                 }else
                 {
-                    DUIASSERT(m_pTemplPanel);
+                    ASSERT(m_pTemplPanel);
                     m_pTemplPanel->DoFrameEvent(WM_MOUSEHOVER,wParam,MAKELPARAM(pt.x,pt.y));
                 }
             }
@@ -670,7 +670,7 @@ LRESULT SListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
                 m_arrItems[m_iHoverItem]->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
             }else
             {
-                DUIASSERT(m_pTemplPanel);
+                ASSERT(m_pTemplPanel);
                 m_pTemplPanel->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
             }
         }
@@ -752,7 +752,7 @@ void SListBoxEx::Relayout()
 {
     if(IsVirtual())
     {
-        DUIASSERT(m_pTemplPanel);
+        ASSERT(m_pTemplPanel);
         m_pTemplPanel->Move(CRect(0,0,m_rcClient.Width(),m_nItemHei));
     }
     else

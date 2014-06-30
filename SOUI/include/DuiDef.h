@@ -48,8 +48,8 @@
 #endif//_UNICODE
 
 #include <assert.h>
-#define DUIASSERT(x) assert(x)
-#define DUIASSERT_NE(a,b) DUIASSERT(a!=b)
+#define ASSERT(x) assert(x)
+#define ASSERT_NE(a,b) ASSERT(a!=b)
 
 #ifdef _DUI_DISABLE_NO_VTABLE
 #define DUI_NO_VTABLE

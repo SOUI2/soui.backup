@@ -29,8 +29,8 @@ namespace SOUI
 
     int SHeaderCtrl::InsertItem( int iItem,LPCTSTR pszText,int nWidth, DUIHDSORTFLAG stFlag,LPARAM lParam )
     {
-        DUIASSERT(pszText);
-        DUIASSERT(nWidth>=0);
+        ASSERT(pszText);
+        ASSERT(nWidth>=0);
         if(iItem==-1) iItem=m_arrItems.GetCount();
         DUIHDITEM item;
         item.mask=0xFFFFFFFF;

@@ -75,7 +75,7 @@ BOOL CDuiComboBoxBase::LoadChildren( pugi::xml_node xmlNode )
 {
     pugi::xml_node xmlParent = xmlNode.parent();
 
-    DUIASSERT(m_pSkinBtn);
+    ASSERT(m_pSkinBtn);
     //创建edit对象
     if(!m_bDropdown)
     {
@@ -84,7 +84,7 @@ BOOL CDuiComboBoxBase::LoadChildren( pugi::xml_node xmlNode )
         InsertChild(m_pEdit);
         pugi::xml_node xmlEditStyle=xmlParent.child(L"editstyle");
         if(xmlEditStyle)
-            m_pEdit->Load(xmlEditStyle);
+            m_pEdit->InitFromXml(xmlEditStyle);
         else
             m_pEdit->DuiSendMessage(WM_CREATE);
         SStringW strPos;
@@ -310,7 +310,7 @@ LRESULT CDuiComboBoxBase::DuiNotify( LPSNMHDR pnms )
 {
     if(pnms->idFrom == IDC_DROPDOWN_LIST)
     {
-        DUIASSERT(m_pDropDownWnd);
+        ASSERT(m_pDropDownWnd);
         const MSG *pMsg=m_pDropDownWnd->GetCurrentMessage();
         if(pnms->code==NM_LBSELCHANGED)
         {
@@ -351,12 +351,12 @@ SComboBox::~SComboBox()
 
 BOOL SComboBox::CreateListBox( pugi::xml_node xmlNode )
 {
-    DUIASSERT(xmlNode);
+    ASSERT(xmlNode);
     //创建列表控件
     m_pListBox=new SListBox;
     m_pListBox->SetContainer(GetContainer());
 
-    m_pListBox->Load(xmlNode.parent().child(L"liststyle"));
+    m_pListBox->InitFromXml(xmlNode.parent().child(L"liststyle"));
     m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
     m_pListBox->SetAttribute(L"hottrack",L"1",TRUE);
     m_pListBox->SetOwner(this);    //chain notify message to combobox
@@ -446,12 +446,12 @@ SComboBoxEx::~SComboBoxEx()
 
 BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
 {
-    DUIASSERT(xmlNode);
+    ASSERT(xmlNode);
     //创建列表控件
     m_pListBox=new SListBoxEx;
     m_pListBox->SetContainer(GetContainer());
 
-    m_pListBox->Load(xmlNode.parent().child(L"liststyle"));
+    m_pListBox->InitFromXml(xmlNode.parent().child(L"liststyle"));
     m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
     m_pListBox->SetAttribute(L"hottrack",L"1",TRUE);
     m_pListBox->SetOwner(this);    //chain notify message to combobox

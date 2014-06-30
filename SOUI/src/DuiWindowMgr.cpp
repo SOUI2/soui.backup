@@ -35,7 +35,7 @@ SWindow* DuiWindowMgr::GetWindow(HSWND hDuiWnd)
 // Specify a handle to a DuiWindow
 HSWND DuiWindowMgr::NewWindow(SWindow *pDuiWnd)
 {
-    DUIASSERT(pDuiWnd);
+    ASSERT(pDuiWnd);
     ::EnterCriticalSection(&getSingleton().m_lockWndMap);
 
     HSWND hDuiWndNext = ++ getSingleton().m_hNextWnd;

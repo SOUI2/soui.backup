@@ -23,9 +23,9 @@ SMenuAttr::SMenuAttr()
     m_crTxtGray=GetSysColor(COLOR_GRAYTEXT);
 }
 
-void SMenuAttr::OnAttributeFinish( pugi::xml_node xmlNode )
+void SMenuAttr::OnInitFinished( pugi::xml_node xmlNode )
 {
-    DUIASSERT(m_pItemSkin);
+    ASSERT(m_pItemSkin);
     if(m_nItemHei==0) m_nItemHei=m_pItemSkin->GetSkinSize().cy;
     if(!m_hFont) m_hFont=DuiFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT);
 }
@@ -213,8 +213,8 @@ BOOL SMenu::LoadMenu( pugi::xml_node xmlMenu )
     m_hMenu=CreatePopupMenu();
     if(!m_hMenu) return FALSE;
 
-    m_menuSkin.Load(xmlMenu);
-    DUIASSERT(m_menuSkin.m_pItemSkin);
+    m_menuSkin.InitFromXml(xmlMenu);
+    ASSERT(m_menuSkin.m_pItemSkin);
 
     BuildMenu(m_hMenu,xmlMenu);
 
@@ -248,7 +248,7 @@ BOOL SMenu::InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTSTR 
     {
         //²åÈë×Ó²Ëµ¥£¬
         SMenu *pSubMenu=(SMenu*)(LPVOID)nIDNewItem;
-        DUIASSERT(pSubMenu->m_pParent==NULL);
+        ASSERT(pSubMenu->m_pParent==NULL);
         pMenuData->nID=(UINT_PTR)pSubMenu->m_hMenu;
     }
     else
@@ -287,7 +287,7 @@ UINT SMenu::TrackPopupMenu(
     LPCRECT prcRect
 )
 {
-    DUIASSERT(IsMenu(m_hMenu));
+    ASSERT(IsMenu(m_hMenu));
 
     SMenuODWnd menuOwner(hWnd);
     *(static_cast<SMenuAttr*>(&menuOwner))=m_menuSkin;

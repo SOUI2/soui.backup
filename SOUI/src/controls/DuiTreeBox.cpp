@@ -51,7 +51,7 @@ STreeBox::~STreeBox()
 HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM hParent/*=STVI_ROOT*/, HSTREEITEM hInsertAfter/*=STVI_LAST*/,BOOL bEnsureVisible/*=FALSE*/)
 {
     STreeItem *pItemObj=new STreeItem(this);
-    pItemObj->Load(xmlNode);
+    pItemObj->InitFromXml(xmlNode);
     pItemObj->m_nLevel=GetItemLevel(hParent)+1;
     pItemObj->m_bCollapsed=FALSE;
     if(hParent!=STVI_ROOT)
@@ -62,7 +62,7 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
         {
             SToggle *pToggle=new SToggle;
             pToggle->SetContainer(pParentItem->GetContainer());
-            pToggle->Load(m_xmlSwitch.first_child());
+            pToggle->InitFromXml(m_xmlSwitch.first_child());
             pParentItem->InsertChild(pToggle);
             pToggle->SetToggle(FALSE,FALSE);
             pToggle->SetCmdID(IDC_SWITCH);
@@ -129,7 +129,7 @@ BOOL STreeBox::RemoveItem(HSTREEITEM hItem)
         STreeItem *pParent=GetItem(hParent);
         pParent->m_bCollapsed=FALSE;
         SWindow *pToggle=pParent->GetChild(IDC_SWITCH);
-        DUIASSERT(pToggle);
+        ASSERT(pToggle);
         pParent->DestroyChild(pToggle);
         if(pParent->m_bVisible) NotifyInvalidateRect(pParent->GetItemRect());
     }
@@ -229,7 +229,7 @@ BOOL STreeBox::Expand(HSTREEITEM hItem , UINT nCode)
             if(m_xmlSwitch.first_child())
             {
                 SToggle *pSwitch=(SToggle*)pItem->GetChild(IDC_SWITCH);
-                DUIASSERT(pSwitch);
+                ASSERT(pSwitch);
                 pSwitch->SetToggle(pItem->m_bCollapsed,FALSE);
             }
             CSize szView(m_rcWindow.Width(),m_nVisibleItems*m_nItemHei);

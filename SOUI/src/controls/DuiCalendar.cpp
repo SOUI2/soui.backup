@@ -513,9 +513,9 @@ void SCalendar::OnMouseLeave()
     }
 }
 
-BOOL SCalendar::Load( pugi::xml_node xmlNode )
+BOOL SCalendar::InitFromXml( pugi::xml_node xmlNode )
 {
-    BOOL bLoad=__super::Load(xmlNode);
+    BOOL bLoad=__super::InitFromXml(xmlNode);
     if(bLoad)
     {
         SWindow *pBtnToday=FindChildByName("btn_today");

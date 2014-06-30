@@ -91,7 +91,7 @@ BOOL CDuiFrame::OnReleaseDuiCapture()
 HSWND CDuiFrame::OnSetDuiCapture(HSWND hDuiWnd)
 {
     SWindow *pWnd=DuiWindowMgr::GetWindow(hDuiWnd);
-    DUIASSERT(pWnd);
+    ASSERT(pWnd);
     if(pWnd->IsDisabled(TRUE)) return 0;
 
     HSWND hRet=m_hCapture;

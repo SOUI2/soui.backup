@@ -1,6 +1,6 @@
 #pragma once
 
-#include "duiobject.h"
+#include "sobject.h"
 #include "res.mgr/duiskinpool.h"
 #include "SimpleWnd.h"
 
@@ -17,7 +17,7 @@ class SMenuAttr:public SObject
 public:
     SMenuAttr();
 
-    virtual void OnAttributeFinish(pugi::xml_node xmlNode);
+    virtual void OnInitFinished(pugi::xml_node xmlNode);
 
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"itemskin",m_pItemSkin,FALSE)
@@ -117,7 +117,7 @@ public:
     void DrawItem(LPDRAWITEMSTRUCT /*lpDrawItemStruct*/)
     {
         // must be implemented
-        DUIASSERT(FALSE);
+        ASSERT(FALSE);
     }
 
     void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)

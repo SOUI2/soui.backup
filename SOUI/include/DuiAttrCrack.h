@@ -171,7 +171,7 @@ public:                                                             \
 #define ATTR_HEX(attribname, varname, allredraw)         \
     if (attribname == strAttribName)                            \
         {                                                           \
-        varname = SObject::HexStringToULong(strValue);        \
+        varname = HexStringToULong(strValue);        \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -180,7 +180,7 @@ public:                                                             \
 #define ATTR_COLOR(attribname, varname, allredraw)       \
     if (attribname == strAttribName)                            \
         {                                                           \
-        varname = SObject::HexStringToColor(strValue);        \
+        varname = HexStringToColor(strValue);        \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -192,13 +192,13 @@ public:                                                             \
         int nPos=strValue.ReverseFind(L':');\
         if(nPos!=-1)\
             {\
-            DWORD dwValue = SObject::HexStringToULong(strValue,nPos);  \
+            DWORD dwValue = HexStringToULong(strValue,nPos);  \
             SStringW strFace=strValue.Right(strValue.GetLength()-nPos-1);\
             SStringT strFaceT=DUI_CW2T(strFace);\
             varname = DuiFontPool::getSingleton().GetFont(LOWORD(dwValue),strFaceT);    \
             }else\
             {\
-            DWORD dwValue = SObject::HexStringToULong(strValue);  \
+            DWORD dwValue = HexStringToULong(strValue);  \
             varname = DuiFontPool::getSingleton().GetFont(LOWORD(dwValue));         \
             }\
             hRet = allredraw ? S_OK : S_FALSE;                      \

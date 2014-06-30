@@ -58,7 +58,7 @@ public:
     SOUI_ATTRS_END()
 protected:
     virtual BOOL NeedRedrawWhenStateChange();
-    virtual BOOL Load(pugi::xml_node xmlNode);
+    virtual BOOL InitFromXml(pugi::xml_node xmlNode);
 
 
     LRESULT OnWindowPosChanged(LPRECT lpWndPos);

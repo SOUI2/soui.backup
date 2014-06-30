@@ -143,7 +143,7 @@ LRESULT CALLBACK CMenuWndHook::WindowHook(int code, WPARAM wParam, LPARAM lParam
             break;
         }
 
-        DUIASSERT(oldWndProc != CoolMenuProc);
+        ASSERT(oldWndProc != CoolMenuProc);
         // 保存到窗口的属性中 ----------------------------------
         if (!SetProp(hWnd, CoolMenu_oldProc, oldWndProc) )
         {

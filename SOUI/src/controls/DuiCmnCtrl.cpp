@@ -116,9 +116,9 @@ void SLink::DuiDrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRe
 }
 
 
-void SLink::OnAttributeFinish( pugi::xml_node xmlNode)
+void SLink::OnInitFinished( pugi::xml_node xmlNode)
 {
-    __super::OnAttributeFinish(xmlNode);
+    __super::OnInitFinished(xmlNode);
     if(m_strToolTipText.IsEmpty()) m_strToolTipText=m_strLinkUrl;
 }
 
@@ -264,7 +264,7 @@ HRESULT SButton::OnAttrAccel( SStringW strAccel,BOOL bLoading )
 
 CSize SButton::GetDesiredSize( LPRECT pRcContainer )
 {
-    DUIASSERT(m_pBgSkin);
+    ASSERT(m_pBgSkin);
     CSize szRet=m_pBgSkin->GetSkinSize();
     if(szRet.cx==0 || szRet.cy==0)
         szRet=__super::GetDesiredSize(pRcContainer);
@@ -356,7 +356,7 @@ BOOL SImageWnd::SetSkin(ISkinObj *pSkin,int iFrame/*=0*/,BOOL bAutoFree/*=TRUE*/
         m_bManaged=FALSE;
     }
 
-    DUIASSERT(GetParent());
+    ASSERT(GetParent());
 
     if(m_dlgpos.nCount==2)
     {
@@ -507,7 +507,7 @@ void SProgress::OnPaint(IRenderTarget *pRT)
 
     BeforePaint(pRT, DuiDC);
 
-    DUIASSERT(m_pSkinBg && m_pSkinPos);
+    ASSERT(m_pSkinBg && m_pSkinPos);
     
     CRect rcClient;
     GetClient(&rcClient);
@@ -548,7 +548,7 @@ BOOL SProgress::SetValue(int dwValue)
 
 void SProgress::SetRange( int nMin,int nMax )
 {
-    DUIASSERT(nMax>nMin);
+    ASSERT(nMax>nMin);
     m_nMaxValue=nMax;
     m_nMinValue=nMin;
     if(m_nValue>m_nMaxValue) m_nValue=m_nMaxValue;
@@ -611,7 +611,7 @@ CRect SCheckBox::GetCheckRect()
 {
     CRect rcClient;
     GetClient(rcClient);
-    DUIASSERT(m_pSkin);
+    ASSERT(m_pSkin);
     CSize szCheck=m_pSkin->GetSkinSize();
     CRect rcCheckBox(rcClient.TopLeft(),szCheck);
     rcCheckBox.OffsetRect(0,(rcClient.Height()-szCheck.cy)/2);
@@ -621,7 +621,7 @@ CRect SCheckBox::GetCheckRect()
 void SCheckBox::GetTextRect( LPRECT pRect )
 {
     GetClient(pRect);
-    DUIASSERT(m_pSkin);
+    ASSERT(m_pSkin);
     CSize szCheck=m_pSkin->GetSkinSize();
     pRect->left+=szCheck.cx+CheckBoxSpacing;    
 }
@@ -647,7 +647,7 @@ void SCheckBox::DuiDrawFocus(IRenderTarget *pRT)
 
 CSize SCheckBox::GetDesiredSize(LPRECT pRcContainer)
 {
-    DUIASSERT(m_pSkin);
+    ASSERT(m_pSkin);
     CSize szCheck=m_pSkin->GetSkinSize();
     CSize szRet=__super::GetDesiredSize(pRcContainer);
     szRet.cx+=szCheck.cx + CheckBoxSpacing;
@@ -786,7 +786,7 @@ CRect SRadioBox::GetRadioRect()
 {
     CRect rcClient;
     GetClient(rcClient);
-    DUIASSERT(m_pSkin);
+    ASSERT(m_pSkin);
     CSize szRadioBox=m_pSkin->GetSkinSize();
     CRect rcRadioBox(rcClient.TopLeft(),szRadioBox);
     rcRadioBox.OffsetRect(0,(rcClient.Height()-szRadioBox.cy)/2);
@@ -797,14 +797,14 @@ CRect SRadioBox::GetRadioRect()
 void SRadioBox::GetTextRect( LPRECT pRect )
 {
     GetClient(pRect);
-    DUIASSERT(m_pSkin);
+    ASSERT(m_pSkin);
     CSize szRadioBox=m_pSkin->GetSkinSize();
     pRect->left+=szRadioBox.cx+RadioBoxSpacing;
 }
 
 void SRadioBox::OnPaint(IRenderTarget *pRT)
 {
-    DUIASSERT(m_pSkin);
+    ASSERT(m_pSkin);
     CRect rcRadioBox=GetRadioRect();
     m_pSkin->Draw(pRT, rcRadioBox, _GetDrawState());
     __super::OnPaint(pRT);
@@ -904,7 +904,7 @@ BOOL SToggle::GetToggle()
 
 void SToggle::OnPaint(IRenderTarget *pRT)
 {
-    DUIASSERT(m_pSkin);
+    ASSERT(m_pSkin);
     DWORD nState=0;
     if(GetState()&DuiWndState_Hover) nState=2;
     else if(GetState()&DuiWndState_Check) nState=3;

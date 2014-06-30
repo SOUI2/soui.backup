@@ -84,7 +84,7 @@ void SWindow::SetBkColor(COLORREF cr)
 // Get DuiWindow rect(position in container)
 void SWindow::GetRect(LPRECT prect)
 {
-    DUIASSERT(prect);
+    ASSERT(prect);
     prect->left     = m_rcWindow.left;
     prect->top      = m_rcWindow.top;
     if(m_bDisplay || m_bVisible)
@@ -100,7 +100,7 @@ void SWindow::GetRect(LPRECT prect)
 
 void SWindow::GetClient(LPRECT pRect)
 {
-    DUIASSERT(pRect);
+    ASSERT(pRect);
     *pRect=m_rcWindow;
     pRect->left+=m_style.m_nMarginX;
     pRect->right-=m_style.m_nMarginX;
@@ -152,7 +152,7 @@ VOID SWindow::TestMainThread()
 
     BOOL bOK = (m_nMainThreadId == dwCurThreadID); // 当前线程和构造对象时的线程一致
 
-    DUIASSERT(bOK);
+    ASSERT(bOK);
 #endif
 }
 
@@ -193,7 +193,7 @@ LRESULT SWindow::DuiSendMessage(UINT Msg, WPARAM wParam /*= 0*/, LPARAM lParam /
 //
 void SWindow::Move(LPRECT prect)
 {
-    DUIASSERT(prect);
+    ASSERT(prect);
     TestMainThread();
 
     if(m_rcWindow.EqualRect(prect)) return;
@@ -380,10 +380,10 @@ void SWindow::InsertChild(SWindow *pNewChild,SWindow *pInsertAfter/*=ICWND_LAST*
     else
     {
         //insert window at middle
-        DUIASSERT(pInsertAfter->m_pParent == this);
-        DUIASSERT(m_pFirstChild && m_pLastChild);
+        ASSERT(pInsertAfter->m_pParent == this);
+        ASSERT(m_pFirstChild && m_pLastChild);
         SWindow *pNext=pInsertAfter->m_pNextSibling;
-        DUIASSERT(pNext);
+        ASSERT(pNext);
         pInsertAfter->m_pNextSibling=pNewChild;
         pNewChild->m_pPrevSibling=pInsertAfter;
         pNewChild->m_pNextSibling=pNext;
@@ -541,7 +541,7 @@ BOOL SWindow::LoadChildren(pugi::xml_node xmlNode)
                     LoadChildren(xmlDoc.first_child());
                 }else
                 {
-                    DUIASSERT(FALSE);
+                    ASSERT(FALSE);
                 }
 
             }
@@ -549,15 +549,15 @@ BOOL SWindow::LoadChildren(pugi::xml_node xmlNode)
         }
 
         InsertChild(pChild);
-        pChild->Load(xmlChild);
+        pChild->InitFromXml(xmlChild);
     }
     return TRUE;
 }
 
 // Create DuiWindow from xml element
-BOOL SWindow::Load(pugi::xml_node xmlNode)
+BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
 {
-    DUIASSERT(m_pContainer);
+    ASSERT(m_pContainer);
     if (!xmlNode)
     {
         return FALSE;
@@ -574,7 +574,7 @@ BOOL SWindow::Load(pugi::xml_node xmlNode)
 
     m_dlgpos.nCount = 0;
     m_dlgpos.uPositionType = 0;
-    SObject::Load(xmlNode);
+    SObject::InitFromXml(xmlNode);
 
     //加载style中指定的皮肤属性，由于皮肤有owner属性，而style没有owner属性，因此需要在属性加载完成后查询皮肤名称并加载 hjx:2012.1.15
     if(m_pBgSkin==NULL && !m_style.m_strSkinName.IsEmpty())
@@ -979,7 +979,7 @@ CSize SWindow::CalcSize(LPRECT pRcContainer)
 
 CSize SWindow::GetDesiredSize(LPRECT pRcContainer)
 {
-    DUIASSERT((m_dlgpos.uPositionType & SizeX_FitContent) || (m_dlgpos.uPositionType & SizeY_FitContent));
+    ASSERT((m_dlgpos.uPositionType & SizeX_FitContent) || (m_dlgpos.uPositionType & SizeY_FitContent));
 
 
     int nTestDrawMode = GetTextAlign() & ~(DT_CENTER | DT_RIGHT | DT_VCENTER | DT_BOTTOM);
@@ -1234,7 +1234,7 @@ void SWindow::OnKillDuiFocus()
 
 IRenderTarget * SWindow::GetRenderTarget(const LPRECT pRc/*=NULL*/,DWORD gdcFlags/*=0*/,BOOL bClientDC/*=TRUE*/)
 {
-    DUIASSERT(m_gdcFlags==-1);
+    ASSERT(m_gdcFlags==-1);
     if(bClientDC)
         GetClient(&m_rcGetRT);
     else

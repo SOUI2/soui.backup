@@ -15,11 +15,11 @@ namespace SOUI
     // Load style-pool from xml tree
     BOOL DuiStylePool::Init(pugi::xml_node xmlStyleRoot)
     {
-        DUIASSERT(xmlStyleRoot);
+        ASSERT(xmlStyleRoot);
 
         if (wcscmp(xmlStyleRoot.name(), L"style") != 0)
         {
-            DUIASSERT(FALSE);
+            ASSERT(FALSE);
             return FALSE;
         }
 
@@ -31,7 +31,7 @@ namespace SOUI
             if (!lpszClassName)
                 continue;
 
-            GetKeyObject(lpszClassName).Load(xmlChild);
+            GetKeyObject(lpszClassName).InitFromXml(xmlChild);
         }
         return TRUE;
     }

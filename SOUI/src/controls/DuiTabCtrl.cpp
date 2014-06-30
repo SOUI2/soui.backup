@@ -496,7 +496,7 @@ int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoadin
 
     m_lstPages.InsertAt(iInsert,pChild);
 
-    pChild->Load(xmlNode);
+    pChild->InitFromXml(xmlNode);
     pChild->SetPositionType(SizeX_FitParent|SizeY_FitParent);
 
     if(!bLoading && m_nCurrentPage>=iInsert) m_nCurrentPage++;

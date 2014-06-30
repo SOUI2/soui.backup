@@ -15,7 +15,7 @@
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
 	HRESULT hRes = OleInitialize(NULL);
-	DUIASSERT(SUCCEEDED(hRes));
+	ASSERT(SUCCEEDED(hRes));
 
     CAutoRefPtr<SOUI::IImgDecoderFactory> pImgDecoderFactory;
     CAutoRefPtr<SOUI::IRenderFactory> pRenderFactory;
@@ -60,7 +60,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     DuiResProviderFiles *pResProvider=new DuiResProviderFiles;
     if(!pResProvider->Init(szCurrentDir))
     {
-        DUIASSERT(0);
+        ASSERT(0);
         return 1;
     }
 #else

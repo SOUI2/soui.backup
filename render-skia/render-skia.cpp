@@ -880,13 +880,13 @@ namespace SOUI
 
 	BOOL SRegion_Skia::RectInRegion( LPCRECT lprect )
 	{
-        DUIASSERT(lprect);
+        ASSERT(lprect);
         return m_rgn.intersects(toSkIRect(lprect));
 	}
 
 	void SRegion_Skia::GetRgnBox( LPRECT lprect )
 	{
-        DUIASSERT(lprect);
+        ASSERT(lprect);
         SkIRect rc=m_rgn.getBounds();
         lprect->left=rc.left();
         lprect->top=rc.top();
@@ -924,7 +924,7 @@ namespace SOUI
         case RGN_OR: op = SkRegion::kUnion_Op;break;
         case RGN_DIFF: op = SkRegion::kDifference_Op;break;
         case RGN_XOR: op = SkRegion::kXOR_Op;break;
-        default:DUIASSERT(FALSE);break;
+        default:ASSERT(FALSE);break;
         }
         return op;
     }
