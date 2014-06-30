@@ -70,7 +70,26 @@ public:
     COLORREF          crOld;
 };
 
+class SOUI_EXP SMsgHandleState
+{
+public:
+    SMsgHandleState():m_bMsgHandled(FALSE)
+    {
 
+    }
+
+    BOOL IsMsgHandled() const
+    {
+        return m_bMsgHandled;
+    }
+
+    void SetMsgHandled(BOOL bHandled)
+    {
+        m_bMsgHandled = bHandled;
+    }
+
+    BOOL m_bMsgHandled;
+};
 
 //////////////////////////////////////////////////////////////////////////
 // SWindow
@@ -87,6 +106,7 @@ typedef enum tagGDUI_CODE
 } GDUI_CODE;
 
 class SOUI_EXP SWindow : public SObject
+    , public SMsgHandleState
     , public SEventSet
     , public TObjRefImpl2<IObjRef,SWindow>
 {
@@ -97,19 +117,19 @@ public:
 
     virtual ~SWindow();
 
-    typedef struct tagDUIMSG
+    typedef struct tagSWNDMSG
     {
         UINT uMsg;
         WPARAM wParam;
         LPARAM lParam;
-    } DUIMSG,*PDUIMSG;
+    } SWNDMSG,*PSWNDMSG;
 protected:
     HSWND m_hSWnd;
     ISwndContainer *m_pContainer;
     SWindow *m_pOwner;
     SWindow *m_pParent,*m_pFirstChild, *m_pLastChild, *m_pNextSibling,*m_pPrevSibling;    //窗口树结构
     UINT    m_nChildrenCount;
-    DUIMSG        *m_pCurMsg;
+    SWNDMSG        *m_pCurMsg;
 
     UINT m_uCmdID;
     SStringA    m_strName;
@@ -175,7 +195,7 @@ public:
     // Send a message to DuiWindow
     LRESULT DuiSendMessage(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0,BOOL *pbMsgHandled=NULL);
 
-    PDUIMSG GetCurDuiMsg()
+    PSWNDMSG GetCurDuiMsg()
     {
         return m_pCurMsg;
     }
@@ -519,13 +539,6 @@ public:
     // remark: 使用前使用SaveDC来保存状态，使用后调用RestoreDC来恢复状态
     //************************************
     void BeforePaintEx(IRenderTarget *pRT);
-
-public:
-    BOOL IsMsgHandled() const;
-    void SetMsgHandled(BOOL bHandled);
-protected:
-    BOOL m_bMsgHandled;
-
 
 protected:
     LRESULT NotifyCommand();

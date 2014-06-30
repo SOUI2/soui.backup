@@ -14,7 +14,6 @@ SWindow::SWindow()
     , m_pContainer(NULL)
     , m_pParent(NULL),m_pFirstChild(NULL),m_pLastChild(NULL),m_pNextSibling(NULL),m_pPrevSibling(NULL)
     , m_nChildrenCount(0)
-    , m_bMsgHandled(FALSE)
     , m_uCmdID(NULL)
     , m_dwState(DuiWndState_Normal)
     , m_bMsgTransparent(FALSE)
@@ -170,8 +169,8 @@ LRESULT SWindow::DuiSendMessage(UINT Msg, WPARAM wParam /*= 0*/, LPARAM lParam /
         TestMainThread();
     }
     AddRef();
-    DUIMSG msgCur= {Msg,wParam,lParam};
-    DUIMSG *pOldMsg=m_pCurMsg;
+    SWNDMSG msgCur= {Msg,wParam,lParam};
+    SWNDMSG *pOldMsg=m_pCurMsg;
     m_pCurMsg=&msgCur;
 
     BOOL bOldMsgHandle=IsMsgHandled();//备分上一个消息的处理状态
@@ -1419,17 +1418,6 @@ BOOL SWindow::OnNcHitTest(CPoint pt)
 {
     return FALSE;
 }
-
-BOOL SWindow::IsMsgHandled() const
-{
-    return m_bMsgHandled;
-}
-
-void SWindow::SetMsgHandled(BOOL bHandled)
-{
-    m_bMsgHandled = bHandled;
-}
-
 
 SWindow * SWindow::GetDuiWindow(int uCode)
 {
