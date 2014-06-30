@@ -653,13 +653,11 @@ void SRichEdit::OnPaint( IRenderTarget * pRT )
     pRT->GetClipBound(&rcClip);
 
     HDC hdc=pRT->GetDC(0);
-    HBITMAP hBmp=(HBITMAP)::GetCurrentObject(hdc,OBJ_BITMAP);
     ALPHAINFO ai;
     if(GetContainer()->IsTranslucent())
     {
         CGdiAlpha::AlphaBackup(hdc,&rcClient,ai);
     }
-
     RECTL rcL= {rcClient.left,rcClient.top,rcClient.right,rcClient.bottom};
     m_pTxtHost->GetTextService()->TxDraw(
         DVASPECT_CONTENT,          // Draw Aspect
