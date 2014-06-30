@@ -653,7 +653,7 @@ void SRichEdit::OnPaint( IRenderTarget * pRT )
     pRT->GetClipBound(&rcClip);
 
     HDC hdc=pRT->GetDC(0);
-    
+    HBITMAP hBmp=(HBITMAP)::GetCurrentObject(hdc,OBJ_BITMAP);
     ALPHAINFO ai;
     if(GetContainer()->IsTranslucent())
     {
@@ -677,7 +677,7 @@ void SRichEdit::OnPaint( IRenderTarget * pRT )
 
     if(GetContainer()->IsTranslucent())
     {
-        CGdiAlpha::AlphaRestore(hdc,ai);
+        CGdiAlpha::AlphaRestore(ai);
     }
     pRT->ReleaseDC(hdc);
     pRT->PopClip();
