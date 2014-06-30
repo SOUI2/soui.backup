@@ -11,9 +11,9 @@ namespace SOUI
 
     BOOL SMessageBoxImpl::SetMsgTemplate( pugi::xml_node uiRoot )
     {
-        if(strcmp(uiRoot.name(),"UIFRAME")!=0 ) return FALSE;
-        if(!uiRoot.attribute("frame_size").value()[0]) return FALSE;
-        if(!uiRoot.attribute("minsize").value()[0]) return FALSE;
+        if(wcscmp(uiRoot.name(),L"UIFRAME")!=0 ) return FALSE;
+        if(!uiRoot.attribute(L"frame_size").value()[0]) return FALSE;
+        if(!uiRoot.attribute(L"minsize").value()[0]) return FALSE;
 
         s_xmlMsgTemplate.reset();
         s_xmlMsgTemplate.append_copy(uiRoot);
@@ -25,7 +25,7 @@ namespace SOUI
         if(!s_xmlMsgTemplate) return ::MessageBox(hWnd,lpText,lpCaption,uType);
 
         Create(NULL,NULL,WS_POPUPWINDOW,0,0,0,10,10,NULL);
-        pugi::xml_node uiRoot=s_xmlMsgTemplate.child("UIFRAME");
+        pugi::xml_node uiRoot=s_xmlMsgTemplate.child(L"UIFRAME");
         SetXml(uiRoot);
 
 
@@ -116,12 +116,12 @@ namespace SOUI
             DUIASSERT(FALSE);
             break;
         }
-        const char *pszFrameAttr=uiRoot.attribute("frame_size").value();
+        const wchar_t *pszFrameAttr=uiRoot.attribute(L"frame_size").value();
         CRect rcFrame;
-        sscanf(pszFrameAttr,"%d,%d,%d,%d",&rcFrame.left,&rcFrame.top,&rcFrame.right,&rcFrame.bottom);
+        swscanf(pszFrameAttr,L"%d,%d,%d,%d",&rcFrame.left,&rcFrame.top,&rcFrame.right,&rcFrame.bottom);
         CSize szMin;
-        const char *pszMinAttr=uiRoot.attribute("minsize").value();
-        sscanf(pszMinAttr,"%d,%d",&szMin.cx,&szMin.cy);
+        const wchar_t *pszMinAttr=uiRoot.attribute(L"minsize").value();
+        swscanf(pszMinAttr,L"%d,%d",&szMin.cx,&szMin.cy);
 
         SWindow * pTitle= FindChildByName(NAME_MSGBOX_TITLE);
         DUIASSERT(pTitle);

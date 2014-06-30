@@ -4,7 +4,7 @@
 
 namespace SOUI
 {
-    LPCSTR CDuiLayout::ParsePosition(const char * pszPos,BOOL bFirst2Pos,DUIDLG_POSITION_ITEM &pos)
+    LPCWSTR CDuiLayout::ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,DUIDLG_POSITION_ITEM &pos)
     {
         if(!pszPos) return NULL;
 
@@ -21,16 +21,16 @@ namespace SOUI
         else pos.pit=PIT_NORMAL;
 
         pos.bMinus=FALSE;
-        if(pszPos[0]=='-')
+        if(pszPos[0]==L'-')
         {
             pszPos++;
             if(pos.pit != PIT_PERCENT)//百分比值时，不允许使用负值，直接忽略
                 pos.bMinus=TRUE;
         }
 
-        pos.nPos=(float)atof(pszPos);
+        pos.nPos=(float)_wtof(pszPos);
 
-        const char *pNext=strchr(pszPos,',');
+        const wchar_t *pNext=wcschr(pszPos,L',');
         if(pNext) pNext++;
         return pNext;
     }
@@ -221,7 +221,7 @@ namespace SOUI
         return nRet;
     }
 
-    BOOL CDuiLayout::CalcChildrenPosition(SWindow *pWnd,CDuiList<SWindow*> *pListChildren)
+    BOOL CDuiLayout::CalcChildrenPosition(SWindow *pWnd,SList<SWindow*> *pListChildren)
     {
         CRect rcContainer=pWnd->GetChildrenLayoutRect();
         POSITION pos=pListChildren->GetHeadPosition();
@@ -245,7 +245,7 @@ namespace SOUI
         }
     }
 
-    void CDuiLayout::StrPos2DuiWndPos( LPCSTR pszValue,DUIWND_POSITION &dlgpos )
+    void CDuiLayout::StrPos2DuiWndPos( LPCWSTR pszValue,DUIWND_POSITION &dlgpos )
     {
         dlgpos.uPositionType &= ~Pos_Float;
 

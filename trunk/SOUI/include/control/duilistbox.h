@@ -14,7 +14,7 @@ namespace SOUI
 
 typedef struct tagLBITEM
 {
-    CDuiStringT        strText;
+    SStringT        strText;
     int            nImage;
     LPARAM      lParam;
 
@@ -30,7 +30,7 @@ class SOUI_EXP SListBox :public SScrollView
 {
 public:
 
-    SOUI_CLASS_NAME(SListBox, "listbox")
+    SOUI_CLASS_NAME(SListBox, L"listbox")
 
     SListBox();
 
@@ -57,7 +57,7 @@ public:
 
     int GetText(int nIndex, LPTSTR lpszBuffer) const;
 
-    int GetText(int nIndex, CDuiStringT& strText) const;
+    int GetText(int nIndex, SStringT& strText) const;
 
     int GetTextLen(int nIndex) const;
 
@@ -119,7 +119,7 @@ protected:
 
 protected:
 
-    CDuiArray<LPLBITEM>    m_arrItems;
+    SArray<LPLBITEM>    m_arrItems;
 
     int        m_nItemHei;
     int        m_iSelItem;
@@ -137,20 +137,20 @@ protected:
 public:
 
     SOUI_ATTRS_BEGIN()
-    ATTR_INT("scrollspeed", m_iScrollSpeed, FALSE)
-    ATTR_INT("itemheight", m_nItemHei, FALSE)
-    ATTR_SKIN("itemskin", m_pItemSkin, TRUE)
-    ATTR_SKIN("iconskin", m_pIconSkin, TRUE)
-    ATTR_COLOR("critembg",m_crItemBg,FALSE)
-    ATTR_COLOR("critembg2", m_crItemBg2, FALSE)
-    ATTR_COLOR("critemselbg",m_crItemSelBg,FALSE)
-    ATTR_COLOR("crtext",m_crText,FALSE)
-    ATTR_COLOR("crseltext",m_crSelText,FALSE)
-    ATTR_INT("icon-x", m_ptIcon.x, FALSE)
-    ATTR_INT("icon-y", m_ptIcon.y, FALSE)
-    ATTR_INT("text-x", m_ptText.x, FALSE)
-    ATTR_INT("text-y", m_ptText.y, FALSE)
-    ATTR_INT("hottrack",m_bHotTrack,FALSE)
+    ATTR_INT(L"scrollspeed", m_iScrollSpeed, FALSE)
+    ATTR_INT(L"itemheight", m_nItemHei, FALSE)
+    ATTR_SKIN(L"itemskin", m_pItemSkin, TRUE)
+    ATTR_SKIN(L"iconskin", m_pIconSkin, TRUE)
+    ATTR_COLOR(L"critembg",m_crItemBg,FALSE)
+    ATTR_COLOR(L"critembg2", m_crItemBg2, FALSE)
+    ATTR_COLOR(L"critemselbg",m_crItemSelBg,FALSE)
+    ATTR_COLOR(L"crtext",m_crText,FALSE)
+    ATTR_COLOR(L"crseltext",m_crSelText,FALSE)
+    ATTR_INT(L"icon-x", m_ptIcon.x, FALSE)
+    ATTR_INT(L"icon-y", m_ptIcon.y, FALSE)
+    ATTR_INT(L"text-x", m_ptText.x, FALSE)
+    ATTR_INT(L"text-y", m_ptText.y, FALSE)
+    ATTR_INT(L"hottrack",m_bHotTrack,FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()

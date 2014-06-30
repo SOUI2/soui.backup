@@ -13,26 +13,26 @@ namespace SOUI
 class SMenuAttr:public SObject
 {
     friend class SMenu;
-    SOUI_CLASS_NAME(SMenuAttr, "menuattr")
+    SOUI_CLASS_NAME(SMenuAttr, L"menuattr")
 public:
     SMenuAttr();
 
     virtual void OnAttributeFinish(pugi::xml_node xmlNode);
 
     SOUI_ATTRS_BEGIN()
-        ATTR_SKIN("itemskin",m_pItemSkin,FALSE)
-        ATTR_SKIN("iconskin",m_pIconSkin,FALSE)
-        ATTR_SKIN("sepskin",m_pSepSkin,FALSE)
-        ATTR_SKIN("checkskin",m_pCheckSkin,FALSE)
-        ATTR_INT("itemheight",m_nItemHei,FALSE)
-        ATTR_INT("iconmargin",m_nIconMargin,FALSE)
-        ATTR_INT("textmargin",m_nTextMargin,FALSE)
-        ATTR_SIZE("iconsize",m_szIcon,FALSE)
-        ATTR_FONT("font",m_hFont,FALSE)
-        ATTR_FONTEX("font2",m_hFont,FALSE)
-        ATTR_COLOR("crtxt",m_crTxtNormal,FALSE);
-        ATTR_COLOR("crtxtsel",m_crTxtSel,FALSE);
-        ATTR_COLOR("crtxtgray",m_crTxtGray,FALSE);
+        ATTR_SKIN(L"itemskin",m_pItemSkin,FALSE)
+        ATTR_SKIN(L"iconskin",m_pIconSkin,FALSE)
+        ATTR_SKIN(L"sepskin",m_pSepSkin,FALSE)
+        ATTR_SKIN(L"checkskin",m_pCheckSkin,FALSE)
+        ATTR_INT(L"itemheight",m_nItemHei,FALSE)
+        ATTR_INT(L"iconmargin",m_nIconMargin,FALSE)
+        ATTR_INT(L"textmargin",m_nTextMargin,FALSE)
+        ATTR_SIZE(L"iconsize",m_szIcon,FALSE)
+        ATTR_FONT(L"font",m_hFont,FALSE)
+        ATTR_FONTEX(L"font2",m_hFont,FALSE)
+        ATTR_COLOR(L"crtxt",m_crTxtNormal,FALSE);
+        ATTR_COLOR(L"crtxtsel",m_crTxtSel,FALSE);
+        ATTR_COLOR(L"crtxtgray",m_crTxtGray,FALSE);
     SOUI_ATTRS_END()
 protected:
     ISkinObj *m_pItemSkin;    //菜单项皮肤，包含2种状态：正常状态+选中状态
@@ -52,7 +52,7 @@ protected:
 struct SMenuItemInfo
 {
     int iIcon;
-    CDuiStringT strText;
+    SStringT strText;
 };
 struct SMenuItemData
 {
@@ -204,7 +204,7 @@ protected:
 
     void BuildMenu(HMENU menuPopup,pugi::xml_node xmlNode);
 
-    CDuiArray<SMenuItemData *> m_arrDmmi;
+    SArray<SMenuItemData *> m_arrDmmi;
     SMenuAttr    m_menuSkin;
     SMenu    *    m_pParent;
 };

@@ -18,7 +18,7 @@ public:
     CDuiRealWndParam();
     ~CDuiRealWndParam();
 
-    CDuiStringT m_strClassName,m_strWindowName;
+    SStringT m_strClassName,m_strWindowName;
     DWORD     m_dwStyle,m_dwExStyle;
     pugi::xml_document m_xmlParams;
 };
@@ -26,7 +26,7 @@ public:
 
 class SOUI_EXP SRealWnd : public SWindow
 {
-    SOUI_CLASS_NAME(SRealWnd, "realwnd")
+    SOUI_CLASS_NAME(SRealWnd, L"realwnd")
 public:
     SRealWnd();
 
@@ -50,11 +50,11 @@ public:
     }
 
     SOUI_ATTRS_BEGIN()
-    ATTR_STRINGT("wndclass", m_realwndParam.m_strClassName, FALSE)
-    ATTR_STRINGT("wndname", m_realwndParam.m_strWindowName, FALSE)
-    ATTR_HEX("style", m_realwndParam.m_dwStyle, FALSE)
-    ATTR_HEX("exstyle", m_realwndParam.m_dwExStyle, FALSE)
-    ATTR_INT("init",m_bInit,FALSE)
+    ATTR_STRINGT(L"wndclass", m_realwndParam.m_strClassName, FALSE)
+    ATTR_STRINGT(L"wndname", m_realwndParam.m_strWindowName, FALSE)
+    ATTR_HEX(L"style", m_realwndParam.m_dwStyle, FALSE)
+    ATTR_HEX(L"exstyle", m_realwndParam.m_dwExStyle, FALSE)
+    ATTR_INT(L"init",m_bInit,FALSE)
     SOUI_ATTRS_END()
 protected:
     virtual BOOL NeedRedrawWhenStateChange();

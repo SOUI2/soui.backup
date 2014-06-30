@@ -35,7 +35,7 @@ inline bool operator !=(const SBHITINFO &a, const SBHITINFO &b)
 
 class SOUI_EXP SPanel: public SWindow
 {
-    SOUI_CLASS_NAME(SPanel, "div")
+    SOUI_CLASS_NAME(SPanel, L"div")
 
 public:
     SPanel();
@@ -105,7 +105,7 @@ protected:
 
     void ScrollUpdate();
 
-    LRESULT OnAttrScrollbarSkin(CDuiStringA strValue,BOOL bLoading);
+    LRESULT OnAttrScrollbarSkin(SStringW strValue,BOOL bLoading);
 
     SCROLLINFO m_siVer,m_siHoz;
     SSkinScrollbar *m_pSkinSb;
@@ -124,11 +124,11 @@ protected:
     DWORD        m_dwUpdateInterval;
 
     SOUI_ATTRS_BEGIN()
-        ATTR_CUSTOM("sbskin",OnAttrScrollbarSkin)
-        ATTR_INT("sbarrowsize", m_nSbArrowSize, FALSE)
-        ATTR_INT("sbwid", m_nSbWid, FALSE)
-        ATTR_INT("sbenable", m_wBarEnable, FALSE)
-        ATTR_UINT("updateinterval", m_dwUpdateInterval, FALSE)
+        ATTR_CUSTOM(L"sbskin",OnAttrScrollbarSkin)
+        ATTR_INT(L"sbarrowsize", m_nSbArrowSize, FALSE)
+        ATTR_INT(L"sbwid", m_nSbWid, FALSE)
+        ATTR_INT(L"sbenable", m_wBarEnable, FALSE)
+        ATTR_UINT(L"updateinterval", m_dwUpdateInterval, FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()
@@ -147,7 +147,7 @@ protected:
 
 class SOUI_EXP SScrollView : public SPanel
 {
-    SOUI_CLASS_NAME(SScrollView, "scrollview")
+    SOUI_CLASS_NAME(SScrollView, L"scrollview")
 public:
     SScrollView();
     virtual ~SScrollView() {}
@@ -185,10 +185,10 @@ protected:
     void UpdateScrollBar();
 protected:
     SOUI_ATTRS_BEGIN()
-        ATTR_INT("viewwid", m_szView.cx, FALSE)
-        ATTR_INT("viewhei", m_szView.cy, FALSE)
-        ATTR_INT("origin-x", m_ptOrigin.x, FALSE)
-        ATTR_INT("origin-y", m_ptOrigin.y, FALSE)
+        ATTR_INT(L"viewwid", m_szView.cx, FALSE)
+        ATTR_INT(L"viewhei", m_szView.cy, FALSE)
+        ATTR_INT(L"origin-x", m_ptOrigin.x, FALSE)
+        ATTR_INT(L"origin-y", m_ptOrigin.y, FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()

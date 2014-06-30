@@ -32,7 +32,7 @@ namespace SOUI
         int        nIndent;
     } DXLVSUBITEM;
 
-    typedef CDuiArray<DXLVSUBITEM>   ArrSubItem;
+    typedef SArray<DXLVSUBITEM>   ArrSubItem;
 
     typedef struct _DXLVITEM
     {
@@ -50,7 +50,7 @@ namespace SOUI
     //  CDuiListCtrl
     class SOUI_EXP SListCtrl : public SPanel
     {
-        SOUI_CLASS_NAME(SListCtrl, "listctrl")
+        SOUI_CLASS_NAME(SListCtrl, L"listctrl")
 
     public:
         SListCtrl();
@@ -136,7 +136,7 @@ namespace SOUI
         ISkinObj*    m_pIconSkin;
 
     protected:
-        typedef CDuiArray<DXLVITEM> ArrLvItem;
+        typedef SArray<DXLVITEM> ArrLvItem;
 
         SHeaderCtrl*  m_pHeader;
         ArrLvItem       m_arrItems;
@@ -144,20 +144,20 @@ namespace SOUI
 
     protected:
         SOUI_ATTRS_BEGIN()
-            ATTR_INT("headerHeight", m_nHeaderHeight, FALSE)
-            ATTR_INT("itemHeight", m_nItemHeight, FALSE)
-            ATTR_SKIN("itemskin", m_pItemSkin, TRUE)
-            ATTR_SKIN("iconskin", m_pIconSkin, TRUE)
-            ATTR_COLOR("critembg", m_crItemBg, FALSE)
-            ATTR_COLOR("critembg2", m_crItemBg2, FALSE)
-            ATTR_COLOR("critemselbg", m_crItemSelBg, FALSE)
-            ATTR_COLOR("crtext", m_crText, FALSE)
-            ATTR_COLOR("crseltext", m_crSelText, FALSE)
-            ATTR_INT("icon-x", m_ptIcon.x, FALSE)
-            ATTR_INT("icon-y", m_ptIcon.y, FALSE)
-            ATTR_INT("text-x", m_ptText.x, FALSE)
-            ATTR_INT("text-y", m_ptText.y, FALSE)
-            ATTR_INT("hottrack", m_bHotTrack, FALSE)
+            ATTR_INT(L"headerHeight", m_nHeaderHeight, FALSE)
+            ATTR_INT(L"itemHeight", m_nItemHeight, FALSE)
+            ATTR_SKIN(L"itemskin", m_pItemSkin, TRUE)
+            ATTR_SKIN(L"iconskin", m_pIconSkin, TRUE)
+            ATTR_COLOR(L"critembg", m_crItemBg, FALSE)
+            ATTR_COLOR(L"critembg2", m_crItemBg2, FALSE)
+            ATTR_COLOR(L"critemselbg", m_crItemSelBg, FALSE)
+            ATTR_COLOR(L"crtext", m_crText, FALSE)
+            ATTR_COLOR(L"crseltext", m_crSelText, FALSE)
+            ATTR_INT(L"icon-x", m_ptIcon.x, FALSE)
+            ATTR_INT(L"icon-y", m_ptIcon.y, FALSE)
+            ATTR_INT(L"text-x", m_ptText.x, FALSE)
+            ATTR_INT(L"text-y", m_ptText.y, FALSE)
+            ATTR_INT(L"hottrack", m_bHotTrack, FALSE)
         SOUI_ATTRS_END()
 
         WND_MSG_MAP_BEGIN()

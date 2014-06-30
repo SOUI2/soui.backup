@@ -111,7 +111,7 @@ int SListBox::GetText(int nIndex, LPTSTR lpszBuffer) const
     return nRet;
 }
 
-int SListBox::GetText(int nIndex, CDuiStringT& strText) const
+int SListBox::GetText(int nIndex, SStringT& strText) const
 {
     int nRet = GetTextLen(nIndex);
 
@@ -241,7 +241,7 @@ BOOL SListBox::LoadChildren(pugi::xml_node xmlNode)
     if(!xmlNode) return TRUE;
 
     pugi::xml_node xmlParent=xmlNode.parent();
-    pugi::xml_node xmlItem=xmlParent.child("items");
+    pugi::xml_node xmlItem=xmlParent.child(L"items");
     while(xmlItem)
     {
         LPLBITEM pItemObj = new LBITEM;
@@ -250,7 +250,7 @@ BOOL SListBox::LoadChildren(pugi::xml_node xmlNode)
         xmlItem = xmlItem.next_sibling();
     }
 
-    int nSelItem=xmlParent.attribute("cursel").as_int(-1);
+    int nSelItem=xmlParent.attribute(L"cursel").as_int(-1);
     SetCurSel(nSelItem);
 
     return TRUE;
@@ -258,10 +258,10 @@ BOOL SListBox::LoadChildren(pugi::xml_node xmlNode)
 
 void SListBox::LoadItemAttribute(pugi::xml_node xmlNode, LPLBITEM pItem)
 {
-    pItem->nImage=xmlNode.attribute("img").as_int(pItem->nImage);
-    pItem->lParam=xmlNode.attribute("data").as_uint(pItem->lParam);
+    pItem->nImage=xmlNode.attribute(L"img").as_int(pItem->nImage);
+    pItem->lParam=xmlNode.attribute(L"data").as_uint(pItem->lParam);
 
-    pItem->strText =  DUI_CA2T(xmlNode.text().get(), CP_UTF8);
+    pItem->strText =  DUI_CW2T(xmlNode.text().get());
     BUILDSTRING(pItem->strText);
 }
 

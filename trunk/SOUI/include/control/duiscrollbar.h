@@ -13,7 +13,7 @@ class SOUI_EXP SScrollBar: public SWindow
 {
 // Construction
 public:
-    SOUI_CLASS_NAME(SScrollBar, "scrollbar")
+    SOUI_CLASS_NAME(SScrollBar, L"scrollbar")
     SScrollBar();
 
     virtual ~SScrollBar();
@@ -52,13 +52,13 @@ protected:
 
 protected:
     SOUI_ATTRS_BEGIN()
-        ATTR_SKIN("skin", m_pSkin, FALSE)
-        ATTR_UINT("arrowsize", m_uAllowSize, FALSE)
-        ATTR_INT("min", m_si.nMin, FALSE)
-        ATTR_INT("max", m_si.nMax, FALSE)
-        ATTR_INT("value", m_si.nPos, FALSE)
-        ATTR_INT("page", m_si.nPage, FALSE)
-        ATTR_INT("vertical", m_bVertical, FALSE)
+        ATTR_SKIN(L"skin", m_pSkin, FALSE)
+        ATTR_UINT(L"arrowsize", m_uAllowSize, FALSE)
+        ATTR_INT(L"min", m_si.nMin, FALSE)
+        ATTR_INT(L"max", m_si.nMax, FALSE)
+        ATTR_INT(L"value", m_si.nPos, FALSE)
+        ATTR_INT(L"page", m_si.nPage, FALSE)
+        ATTR_INT(L"vertical", m_bVertical, FALSE)
     SOUI_ATTRS_END()
 
     WND_MSG_MAP_BEGIN()

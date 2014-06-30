@@ -91,7 +91,7 @@ namespace SOUI
     class CDuiLayout
     {
     public:
-        static void StrPos2DuiWndPos(LPCSTR pszPos,DUIWND_POSITION &dlgpos);
+        static void StrPos2DuiWndPos(LPCWSTR pszPos,DUIWND_POSITION &dlgpos);
 
         //************************************
         // Method:    PositionItem2Point ：将一个position_item解释为绝对坐标
@@ -112,11 +112,11 @@ namespace SOUI
         // Access:    protected 
         // Returns:   LPCSTR
         // Qualifier:
-        // Parameter: const char * pszPos
+        // Parameter: LPCWSTR pszPos
         // Parameter: BOOL bFirst2Pos:TRUE-计算pos的前面两个值
         // Parameter: DUIDLG_POSITION_ITEM & pos
         //************************************
-        static LPCSTR ParsePosition(const char * pszPos,BOOL bFirst2Pos,DUIDLG_POSITION_ITEM &pos);
+        static LPCWSTR ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,DUIDLG_POSITION_ITEM &pos);
 
         //************************************
         // Method:    CalcPosition:计算窗口坐标
@@ -129,6 +129,6 @@ namespace SOUI
         static int CalcPosition(SWindow *pWnd,LPRECT prcContainer,const DUIWND_POSITION & dlgpos,CRect &rcWindow);
 
 
-        static BOOL CalcChildrenPosition(SWindow *pWnd,CDuiList<SWindow*> *pListChildren);
+        static BOOL CalcChildrenPosition(SWindow *pWnd,SList<SWindow*> *pListChildren);
     };
 }

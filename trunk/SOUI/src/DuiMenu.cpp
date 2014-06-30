@@ -201,7 +201,7 @@ BOOL SMenu::LoadMenu( LPCTSTR pszResName ,LPCTSTR pszType)
     pugi::xml_document xmlDoc;
     if(!LOADXML(xmlDoc,pszResName,pszType)) return FALSE;
 
-    pugi::xml_node xmlMenu=xmlDoc.child("menu");
+    pugi::xml_node xmlMenu=xmlDoc.child(L"menu");
     if(!xmlMenu)  return FALSE;
 
     return LoadMenu(xmlMenu);
@@ -305,22 +305,22 @@ void SMenu::BuildMenu( HMENU menuPopup,pugi::xml_node xmlNode )
 
     while(xmlItem)
     {
-        if(strcmp("item",xmlItem.name())==0)
+        if(wcscmp(L"item",xmlItem.name())==0)
         {
             SMenuItemData *pdmmi=new SMenuItemData;
             pdmmi->hMenu=menuPopup;
-            pdmmi->itemInfo.iIcon=xmlItem.attribute("icon").as_int(-1);
-            pdmmi->itemInfo.strText=DUI_CA2T(xmlItem.text().get(),CP_UTF8);
+            pdmmi->itemInfo.iIcon=xmlItem.attribute(L"icon").as_int(-1);
+            pdmmi->itemInfo.strText=DUI_CW2T(xmlItem.text().get());
 
-            int nID=xmlItem.attribute("id").as_int(0);
-            BOOL bCheck=xmlItem.attribute("check").as_bool(false);
-            BOOL bRadio=xmlItem.attribute("radio").as_bool(false);
-            BOOL bDisable=xmlItem.attribute("disable").as_bool(false);
+            int nID=xmlItem.attribute(L"id").as_int(0);
+            BOOL bCheck=xmlItem.attribute(L"check").as_bool(false);
+            BOOL bRadio=xmlItem.attribute(L"radio").as_bool(false);
+            BOOL bDisable=xmlItem.attribute(L"disable").as_bool(false);
 
 
             pugi::xml_writer_buff writer;
-            xmlItem.print(writer);
-            CDuiStringW str=DUI_CA2W(CDuiStringA(writer.buffer(),writer.size()),CP_UTF8);
+            xmlItem.print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
+            SStringW str(writer.buffer(),writer.size());
 
             pugi::xml_node xmlChild=xmlItem.first_child();
             while(xmlChild && xmlChild.type()==pugi::node_pcdata) xmlChild=xmlChild.next_sibling();
@@ -346,7 +346,7 @@ void SMenu::BuildMenu( HMENU menuPopup,pugi::xml_node xmlNode )
             }
             m_arrDmmi.Add(pdmmi);
         }
-        else if(strcmp("sep",xmlItem.name())==0)
+        else if(wcscmp(L"sep",xmlItem.name())==0)
         {
             AppendMenu(menuPopup,MF_SEPARATOR|MF_OWNERDRAW,(UINT_PTR)0,(LPCTSTR)NULL);
         }

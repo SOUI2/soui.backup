@@ -58,7 +58,7 @@ public:
     static ULONG Hash( INARGTYPE fontKey )
     {
         ULONG_PTR uRet=0;
-        CDuiStringT strType=fontKey.strFaceName;
+        SStringT strType=fontKey.strFaceName;
         strType.MakeLower();
         for(int i=0; i<strType.GetLength(); i++)
         {
@@ -104,7 +104,7 @@ protected:
 
     IFontPtr _CreateDefaultGUIFont();
 
-    IFontPtr _CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,CDuiStringT strFaceName=_T(""));
+    IFontPtr _CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,SStringT strFaceName=_T(""));
 
     LONG _GetFontAbsHeight(LONG lSize);
 

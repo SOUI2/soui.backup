@@ -20,7 +20,7 @@ namespace SOUI
         delete obj;
     }
 
-    ISkinObj * DuiSkinFactoryMgr::CreateSkinByName( LPCSTR pszClassName )
+    ISkinObj * DuiSkinFactoryMgr::CreateSkinByName( LPCWSTR pszClassName )
     {
         if(!HasKey(pszClassName)) return NULL;
         return GetKeyObject(pszClassName)->NewSkin();

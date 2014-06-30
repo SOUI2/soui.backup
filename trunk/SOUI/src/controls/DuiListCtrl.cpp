@@ -49,7 +49,7 @@ int SListCtrl::InsertColumn(int nIndex, LPCTSTR pszText, int nWidth, LPARAM lPar
 BOOL SListCtrl::LoadChildren(pugi::xml_node xmlNode)
 {
     //  listctrl的子控件只能是一个header控件
-    if (strcmp(xmlNode.name(), SHeaderCtrl::GetClassName()) != 0)
+    if (wcscmp(xmlNode.name(), SHeaderCtrl::GetClassName()) != 0)
         return FALSE;
 
     if (!__super::LoadChildren(xmlNode))
@@ -57,9 +57,9 @@ BOOL SListCtrl::LoadChildren(pugi::xml_node xmlNode)
 
     m_pHeader = (SHeaderCtrl*)GetDuiWindow(GDUI_FIRSTCHILD);
     DUIASSERT(m_pHeader->IsClass(SHeaderCtrl::GetClassName()));
-    CDuiStringA strPos;
-    strPos.Format("0,0,-0,%d",m_nHeaderHeight);
-    m_pHeader->SetAttribute("pos",strPos,TRUE);
+    SStringW strPos;
+    strPos.Format(L"0,0,-0,%d",m_nHeaderHeight);
+    m_pHeader->SetAttribute(L"pos",strPos,TRUE);
 
     m_pHeader->subscribeEvent(NM_HDSIZECHANGING, Subscriber(&SListCtrl::OnHeaderSizeChanging,this));
     m_pHeader->subscribeEvent(NM_HDSWAP, Subscriber(&SListCtrl::OnHeaderSwap,this));

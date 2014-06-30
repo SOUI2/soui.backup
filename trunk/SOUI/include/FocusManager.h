@@ -30,7 +30,7 @@ namespace SOUI
 
 
     template<class T>
-    void CopyDuiList(CDuiList<T> &sour,CDuiList<T> &dest)
+    void CopyDuiList(SList<T> &sour,SList<T> &dest)
     {
         DUIASSERT(dest.IsEmpty());
         POSITION pos=sour.GetHeadPosition();
@@ -220,8 +220,8 @@ namespace SOUI
 
         SWindow *m_pOwner;
 
-        typedef CDuiList<IAcceleratorTarget*> AcceleratorTargetList;
-        typedef CDuiMap<CAccelerator, AcceleratorTargetList> AcceleratorMap;
+        typedef SList<IAcceleratorTarget*> AcceleratorTargetList;
+        typedef SMap<CAccelerator, AcceleratorTargetList> AcceleratorMap;
         AcceleratorMap accelerators_;
 
     };

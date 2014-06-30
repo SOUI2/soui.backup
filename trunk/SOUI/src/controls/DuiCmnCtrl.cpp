@@ -249,9 +249,9 @@ void SButton::OnDestroy()
     __super::OnDestroy();
 }
 
-HRESULT SButton::OnAttrAccel( CDuiStringA strAccel,BOOL bLoading )
+HRESULT SButton::OnAttrAccel( SStringW strAccel,BOOL bLoading )
 {
-    CDuiStringT strAccelT=DUI_CA2T(strAccel,CP_UTF8);
+    SStringT strAccelT=DUI_CW2T(strAccel);
     m_accel=CAccelerator::TranslateAccelKey(strAccelT);
     if(m_accel)
     {
@@ -530,7 +530,7 @@ void SProgress::OnPaint(IRenderTarget *pRT)
 
     if (m_bShowPercent && !IsVertical())
     {
-        CDuiStringT strPercent;
+        SStringT strPercent;
         strPercent.Format(_T("%d%%"), (int)((m_nValue-m_nMinValue) * 100/(m_nMaxValue-m_nMinValue)));
         pRT->DrawText(strPercent, strPercent.GetLength(), m_rcWindow, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
     }
@@ -600,8 +600,8 @@ void SLine::OnPaint(IRenderTarget *pRT)
 //
 
 SCheckBox::SCheckBox()
-    : m_pSkin(GETSKIN("btncheckbox"))
-    , m_pFocusSkin(GETSKIN("focuscheckbox"))
+    : m_pSkin(GETSKIN(L"btncheckbox"))
+    , m_pFocusSkin(GETSKIN(L"focuscheckbox"))
 {
     m_bTabStop=TRUE;
 }
@@ -775,8 +775,8 @@ void SIconWnd::SetIcon(HICON hIcon)
 //
 
 SRadioBox::SRadioBox()
-    : m_pSkin(GETSKIN("btnRadio"))
-    , m_pFocusSkin(GETSKIN("focusRadio"))
+    : m_pSkin(GETSKIN(L"btnRadio"))
+    , m_pFocusSkin(GETSKIN(L"focusRadio"))
 {
     m_bTabStop=TRUE;
 }

@@ -122,32 +122,32 @@ DuiResProviderFiles::DuiResProviderFiles()
 {
 }
 
-CDuiStringT DuiResProviderFiles::GetRes( LPCTSTR strType,LPCTSTR pszResName )
+SStringT DuiResProviderFiles::GetRes( LPCTSTR strType,LPCTSTR pszResName )
 {
     DuiResID resID(strType,pszResName);
-    CDuiMap<DuiResID,CDuiStringT>::CPair *p=m_mapFiles.Lookup(resID);
+    SMap<DuiResID,SStringT>::CPair *p=m_mapFiles.Lookup(resID);
     if(!p) return _T("");
-    CDuiStringT strRet=m_strPath+_T("\\")+p->m_value;
+    SStringT strRet=m_strPath+_T("\\")+p->m_value;
     return strRet;
 }
 
 HBITMAP DuiResProviderFiles::LoadBitmap(LPCTSTR pszResName )
 {
-    CDuiStringT strPath=GetRes(_T("BITMAP"),pszResName);
+    SStringT strPath=GetRes(_T("BITMAP"),pszResName);
     if(strPath.IsEmpty()) return NULL;
     return (HBITMAP)::LoadImage(NULL, strPath, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
 }
 
 HICON DuiResProviderFiles::LoadIcon(LPCTSTR pszResName ,int cx/*=0*/,int cy/*=0*/)
 {
-    CDuiStringT strPath=GetRes(_T("ICON"),pszResName);
+    SStringT strPath=GetRes(_T("ICON"),pszResName);
     if(strPath.IsEmpty()) return NULL;
     return (HICON)::LoadImage(NULL, strPath, IMAGE_ICON, cx, cy, LR_LOADFROMFILE);
 }
 
 HCURSOR DuiResProviderFiles::LoadCursor(LPCTSTR pszResName )
 {
-    CDuiStringT strPath=GetRes(_T("CURSOR"),pszResName);
+    SStringT strPath=GetRes(_T("CURSOR"),pszResName);
     if(!strPath.IsEmpty())
     {
         return (HCURSOR)::LoadImage(NULL, pszResName, IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
@@ -159,7 +159,7 @@ HCURSOR DuiResProviderFiles::LoadCursor(LPCTSTR pszResName )
 
 IBitmap * DuiResProviderFiles::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
 {
-    CDuiStringT strPath=GetRes(strType,pszResName);
+    SStringT strPath=GetRes(strType,pszResName);
     if(strPath.IsEmpty()) return NULL;
 
     IBitmap * pImg=NULL;
@@ -177,7 +177,7 @@ IBitmap * DuiResProviderFiles::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
 
 size_t DuiResProviderFiles::GetRawBufferSize( LPCTSTR strType,LPCTSTR pszResName )
 {
-    CDuiStringT strPath=GetRes(strType,pszResName);
+    SStringT strPath=GetRes(strType,pszResName);
     if(strPath.IsEmpty()) return 0;
     WIN32_FIND_DATA wfd;
     HANDLE hf=FindFirstFile(strPath,&wfd);
@@ -188,7 +188,7 @@ size_t DuiResProviderFiles::GetRawBufferSize( LPCTSTR strType,LPCTSTR pszResName
 
 BOOL DuiResProviderFiles::GetRawBuffer( LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size )
 {
-    CDuiStringT strPath=GetRes(strType,pszResName);
+    SStringT strPath=GetRes(strType,pszResName);
     if(strPath.IsEmpty()) return FALSE;
     FILE *f=_tfopen(strPath,_T("rb"));
     if(!f) return FALSE;
@@ -207,28 +207,28 @@ BOOL DuiResProviderFiles::GetRawBuffer( LPCTSTR strType,LPCTSTR pszResName,LPVOI
 
 BOOL DuiResProviderFiles::Init( LPCTSTR pszPath )
 {
-    CDuiStringT strPathIndex=pszPath;
+    SStringT strPathIndex=pszPath;
     strPathIndex+=_T("\\");
     strPathIndex+=UISKIN_INDEX;
 
     pugi::xml_document xmlDoc;
-    CDuiStringT strFileName;
+    SStringT strFileName;
     if(!xmlDoc.load_file(strPathIndex,pugi::parse_default,pugi::encoding_utf8)) return FALSE;
 
-    pugi::xml_node xmlResource=xmlDoc.child("resource");
+    pugi::xml_node xmlResource=xmlDoc.child(L"resource");
     if(!xmlResource) return FALSE;
     pugi::xml_node xmlType=xmlResource.first_child();
     while(xmlType)
     {
-        CDuiStringT strType=DUI_CA2T(xmlType.name(),CP_UTF8);
-        pugi::xml_node xmlFile=xmlType.child("file");
+        SStringT strType=DUI_CW2T(xmlType.name());
+        pugi::xml_node xmlFile=xmlType.child(L"file");
         while(xmlFile)
         {
-            DuiResID id(strType,DUI_CA2T(xmlFile.attribute("name").value(),CP_UTF8));
-            CDuiStringT strFile=DUI_CA2T(xmlFile.attribute("path").value(),CP_UTF8);
+            DuiResID id(strType,DUI_CW2T(xmlFile.attribute(L"name").value()));
+            SStringT strFile=DUI_CW2T(xmlFile.attribute(L"path").value());
             if(!m_strPath.IsEmpty()) strFile.Format(_T("%s\\%s"),(LPCTSTR)m_strPath,(LPCTSTR)strFile);
             m_mapFiles[id]=strFile;
-            xmlFile=xmlFile.next_sibling("file");
+            xmlFile=xmlFile.next_sibling(L"file");
         }
         xmlType=xmlType.next_sibling();
     }
@@ -240,7 +240,7 @@ BOOL DuiResProviderFiles::Init( LPCTSTR pszPath )
 BOOL DuiResProviderFiles::HasResource( LPCTSTR strType,LPCTSTR pszResName )
 {
     DuiResID resID(strType,pszResName);
-    CDuiMap<DuiResID,CDuiStringT>::CPair *p=m_mapFiles.Lookup(resID);
+    SMap<DuiResID,SStringT>::CPair *p=m_mapFiles.Lookup(resID);
     return (p!=NULL);
 }
 

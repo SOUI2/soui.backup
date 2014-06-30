@@ -7,27 +7,27 @@
       <imgbtn id="3" name="按钮_恢复" skin="btn_sys_restore"  pos="-83,0" show="0" animate="1" />
       <imgbtn id="5" name="btn_minimize" skin="btn_sys_minimize" pos="-121,0" animate="1" />
     </caption>
-    <tabctrl pos="5,30,-5,-5" cursel="0" tabstop="0" inset="10,0,3,0">
-      <tab title="page1">
+    <tabctrl pos="5,30,-5,-5" cursel="0" tabstop="0" inset="10,0,3,0" animatesteps="10">
+      <page title="page1">
         <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30">
           <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
           </header>
         </listctrl>
-      </tab>
-      <tab title="scroll view">
+      </page>
+      <page title="scroll view">
         <scrollview id="1150" pos="10,0,-10,-10" viewwid="900" viewhei="5000">
         </scrollview>
-      </tab>
-      <tab title="flash">
+      </page>
+      <page title="flash">
         <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://swf.sc.chinaz.com//Files/DownLoad/flash2/201401/flash2524.swf" delayinit="1"/>
-      </tab>
-      <tab title="include">
+      </page>
+      <page title="include">
         <include src="xml_page2"/>
-      </tab>
-      <tab title="edit">
+      </page>
+      <page title="edit">
         <edit pos="50,100,150,150">scroll edit</edit>
-      </tab>
-      <tab title="treebox">
+      </page>
+      <page title="treebox">
         <treebox pos="0,0,-0,-0" name="mytree" itemhei="30" critembg="FFFFFF" critemselbg="000088" indent="10">
           <item>
             <text pos="10,0,100,-0" valign="middle" align="center" crtext="ff0000">red test</text>
@@ -61,9 +61,9 @@
             </item>
           </item>
         </treebox>
-      </tab>
+      </page>
 
-      <tab title="miscellaneous">
+      <page title="miscellaneous">
         <animateimg name="ani_test" pos="20,100" skin="icons"/>
         <img id="1139" pos="300,200,400,300" skin="icons" tip="img tip" msgtransparent="0"/>
         <check id="1300" pos="40,20" crtext="ff0000" state="4">test1</check>
@@ -82,14 +82,14 @@
 
         <link id="1380" pos="10,250" maxwidth="100" class="cls_btn_weblink" dotted="1" href="www.yy.com">link</link>
         <button name="btn_tstevt" pos="300,300,400,330" class="normalbtn">test event</button>
-      </tab>
-      <tab title="link">
+      </page>
+      <page title="link">
         <calendar pos="0,0,-0,-0" name="mp_test" daySkin="btn_yellow" footerHeight="30">
           <text name="label_today" pos="10,-20"/>
           <imgbtn name="btn_today" pos="-50,-25,-5,-0" skin="btn_yellow"/>
         </calendar>
-      </tab>
-      <tab id="119" title="duitreectrl">
+      </page>
+      <page id="119" title="duitreectrl">
         <treectrl pos="10,0,-10,-10"  name="mytree1" itemhei="30" iconskin="TreeIcon" checkbox="1">
           <item text="组织机构" img="0" selimg="1">
             <item text="市场部" img="0" selimg="1">
@@ -110,7 +110,7 @@
             </item>
           </item>
         </treectrl>
-      </tab>
+      </page>
 
     </tabctrl>
   </window>

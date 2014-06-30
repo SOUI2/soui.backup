@@ -46,10 +46,10 @@ public:
 
     BOOL Init(LPCTSTR pszPath);
 protected:
-    CDuiStringT GetRes( LPCTSTR strType,LPCTSTR pszResName );
+    SStringT GetRes( LPCTSTR strType,LPCTSTR pszResName );
 
-    CDuiStringT m_strPath;
-    CDuiMap<DuiResID,CDuiStringT> m_mapFiles;
+    SStringT m_strPath;
+    SMap<DuiResID,SStringT> m_mapFiles;
 };
 
 }//namespace SOUI

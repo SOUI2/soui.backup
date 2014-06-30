@@ -33,10 +33,10 @@ const TCHAR CoolMenu_oldProc[] = _T("CoolMenu_oldProc");
                                 class CMenuWndHook
               ------------------------------------------------
   ########################################################################*/
-CDuiMap <HWND,CMenuWndHook*> CMenuWndHook::m_WndMenuMap;
+SMap <HWND,CMenuWndHook*> CMenuWndHook::m_WndMenuMap;
 
 HHOOK CMenuWndHook::m_hMenuHook = NULL;
-CDuiStringA CMenuWndHook::m_strSkinName = "";
+SStringW CMenuWndHook::m_strSkinName;
 
 CMenuWndHook::CMenuWndHook (HWND hWnd)
     : m_hWnd(hWnd)
@@ -55,7 +55,7 @@ CMenuWndHook::~CMenuWndHook ()
     m_WndMenuMap.RemoveKey(m_hWnd);
 }
 
-void CMenuWndHook::InstallHook(HINSTANCE hInst,LPCSTR pszSkinName)
+void CMenuWndHook::InstallHook(HINSTANCE hInst,LPCWSTR pszSkinName)
 {
     if (m_hMenuHook == NULL )
     {
@@ -70,7 +70,7 @@ void CMenuWndHook::UnInstallHook()
     POSITION pos= m_WndMenuMap.GetStartPosition();
     while(pos)
     {
-        CDuiMap<HWND,CMenuWndHook*>::CPair *p=m_WndMenuMap.GetNext(pos);
+        SMap<HWND,CMenuWndHook*>::CPair *p=m_WndMenuMap.GetNext(pos);
         delete p->m_value;
     }
     m_WndMenuMap.RemoveAll();
@@ -84,7 +84,7 @@ void CMenuWndHook::UnInstallHook()
 CMenuWndHook* CMenuWndHook::GetWndHook(HWND hwnd)
 {
 
-    CDuiMap<HWND,CMenuWndHook*>::CPair *p=m_WndMenuMap.Lookup(hwnd);
+    SMap<HWND,CMenuWndHook*>::CPair *p=m_WndMenuMap.Lookup(hwnd);
     if(!p) return NULL;
     return p->m_value;
 }

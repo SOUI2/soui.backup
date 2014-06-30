@@ -50,9 +50,9 @@ TCHAR SMaskEdit::GetPromptChar() const
     return m_chPrompt;
 }
 
-CDuiStringT SMaskEdit::GetPromptString(int nLength) const
+SStringT SMaskEdit::GetPromptString(int nLength) const
 {
-    CDuiStringT strPrompt;
+    SStringT strPrompt;
 
     while (nLength--)
         strPrompt += m_chPrompt;
@@ -99,7 +99,7 @@ BOOL SMaskEdit::MaskCopy()
 
     GetMaskState();
 
-    CDuiStringT strMaskedText = GetMaskedText(m_nStartChar, m_nEndChar);
+    SStringT strMaskedText = GetMaskedText(m_nStartChar, m_nEndChar);
     CopyToClipboard(strMaskedText);
 
     return TRUE;
@@ -174,7 +174,7 @@ void SMaskEdit::MaskDeleteSel()
     if (m_nStartChar == m_nEndChar)
         return;
 
-    CDuiStringT strMaskedText = GetMaskedText(m_nEndChar);
+    SStringT strMaskedText = GetMaskedText(m_nEndChar);
     SetMaskedText(strMaskedText, m_nStartChar, FALSE);
 
     m_nEndChar = m_nStartChar;
@@ -285,7 +285,7 @@ BOOL SMaskEdit::SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lpszD
 
 TCHAR SMaskEdit::ConvertUnicodeAlpha(TCHAR nChar, BOOL bUpperCase) const
 {
-    CDuiStringT strTemp(nChar);
+    SStringT strTemp(nChar);
     if (bUpperCase)
         strTemp.MakeUpper();
     else
@@ -445,7 +445,7 @@ void SMaskEdit::DeleteCharAt(int nPos)
     if (!PosInRange(nPos))
         return;
 
-    CDuiStringT strMaskedText = GetMaskedText(nPos + 1) + m_chPrompt;
+    SStringT strMaskedText = GetMaskedText(nPos + 1) + m_chPrompt;
 
     SetMaskedText(strMaskedText, nPos, FALSE);
 }
@@ -457,12 +457,12 @@ void SMaskEdit::InsertCharAt(int nPos, TCHAR nChar)
     if (!PosInRange(nPos))
         return;
 
-    CDuiStringT strMaskedText = CDuiStringT(nChar) + GetMaskedText(nPos);
+    SStringT strMaskedText = SStringT(nChar) + GetMaskedText(nPos);
 
     SetMaskedText(strMaskedText, nPos, FALSE);
 }
 
-BOOL SMaskEdit::CopyToClipboard(const CDuiStringT& strText)
+BOOL SMaskEdit::CopyToClipboard(const SStringT& strText)
 {
     if (!OpenClipboard(NULL))
         return FALSE;
@@ -495,14 +495,14 @@ BOOL SMaskEdit::CopyToClipboard(const CDuiStringT& strText)
     return TRUE;
 }
 
-CDuiStringT SMaskEdit::GetMaskedText(int nStartPos, int nEndPos) const
+SStringT SMaskEdit::GetMaskedText(int nStartPos, int nEndPos) const
 {
     if (nEndPos == -1)
         nEndPos = m_strWindowText.GetLength();
     else
         nEndPos = min(nEndPos, m_strWindowText.GetLength());
 
-    CDuiStringT strBuffer;
+    SStringT strBuffer;
 
     for (int i = nStartPos; i < nEndPos; ++i)
     {
@@ -840,7 +840,7 @@ BOOL SMaskEdit::IsPromptPos(int nPos) const
     return IsPromptPos(m_strLiteral, nPos);
 }
 
-BOOL SMaskEdit::IsPromptPos(const CDuiStringT& strLiteral, int nPos) const
+BOOL SMaskEdit::IsPromptPos(const SStringT& strLiteral, int nPos) const
 {
     return (nPos >= 0 && nPos < strLiteral.GetLength()) && (strLiteral[nPos] == m_chPrompt);
 }
@@ -891,7 +891,7 @@ void SMaskEdit::SetMaskState()
 {
     DUIASSERT(m_bUseMask);
 
-    CDuiStringT strWindowText = GetWindowText();
+    SStringT strWindowText = GetWindowText();
 
     CorrectWindowText();
     GetContainer()->DuiShowCaret(FALSE);
@@ -907,12 +907,12 @@ void SMaskEdit::SetMaskState()
     GetContainer()->DuiShowCaret(TRUE);
 }
 
-CDuiStringT SMaskEdit::GetWindowText()
+SStringT SMaskEdit::GetWindowText()
 {
     int nLen=__super::GetWindowTextLength();
     wchar_t *pszBuf=new wchar_t[nLen+1];
     __super::GetWindowText(pszBuf,nLen);
-    CDuiStringT strTxt=DUI_CW2T(pszBuf);
+    SStringT strTxt=DUI_CW2T(pszBuf);
     delete []pszBuf;
     return strTxt;
 }
@@ -955,9 +955,9 @@ void SDateEdit::SetDateTime( CTime tm )
     SetDateTime(szBuf);
 }
 
-CDuiStringT SDateEdit::GetWindowDateTime()
+SStringT SDateEdit::GetWindowDateTime()
 {
-    CDuiStringT strText = GetWindowText();
+    SStringT strText = GetWindowText();
     return strText;
 }
 
@@ -1070,7 +1070,7 @@ void STimeEdit::SetHours(int nHours)
 {
     m_nHours = nHours;
 
-    CDuiStringW strText;
+    SStringW strText;
     strText.Format(L"%02d:%02d", m_nHours, m_nMins);
     SetWindowText(strText);
 }
@@ -1079,7 +1079,7 @@ void STimeEdit::SetMins(int nMins)
 {
     m_nMins = nMins;
 
-    CDuiStringW strText;
+    SStringW strText;
     strText.Format(L"%02d:%02d", m_nHours, m_nMins);
     SetWindowText(strText);
 }
@@ -1089,7 +1089,7 @@ void STimeEdit::SetTime(int nHours, int nMins)
     m_nHours = nHours;
     m_nMins = nMins;
 
-    CDuiStringW strText;
+    SStringW strText;
     strText.Format(L"%02d:%02d", m_nHours, m_nMins);
     SetWindowText(strText);
 }

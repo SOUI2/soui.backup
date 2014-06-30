@@ -25,7 +25,7 @@ namespace SOUI
 class SCaption :
     public SWindow
 {
-    SOUI_CLASS_NAME(SCaption, "caption")
+    SOUI_CLASS_NAME(SCaption, L"caption")
 public:
     /**
      * CDuiCaption::CDuiCaption

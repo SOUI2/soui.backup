@@ -67,7 +67,7 @@ BOOL CDuiHostWnd::Load(LPCTSTR pszXmlName)
     pugi::xml_document xmlDoc;
     if(!LOADXML(xmlDoc,pszXmlName,RT_LAYOUT)) return FALSE;
 
-    return SetXml(xmlDoc.child("UIFRAME"));
+    return SetXml(xmlDoc.child(L"UIFRAME"));
 }
 
 BOOL CDuiHostWnd::SetXml(LPSTR lpszXml,int nLen)
@@ -75,7 +75,7 @@ BOOL CDuiHostWnd::SetXml(LPSTR lpszXml,int nLen)
     pugi::xml_document xmlDoc;
     if(!xmlDoc.load_buffer(lpszXml,nLen,pugi::parse_default,pugi::encoding_utf8)) return FALSE;
  
-    return SetXml(xmlDoc.child("UIFRAME"));
+    return SetXml(xmlDoc.child(L"UIFRAME"));
 }
 
 BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
@@ -89,18 +89,18 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
 
 
     CSize szDefault;
-    szDefault.cx = xmlNode.attribute("width").as_int(200);
-    szDefault.cy = xmlNode.attribute("height").as_int(200);
+    szDefault.cx = xmlNode.attribute(L"width").as_int(200);
+    szDefault.cy = xmlNode.attribute(L"height").as_int(200);
 
-    CDuiStringA strMargin=xmlNode.attribute("margin").value();
-    sscanf(strMargin,"%d,%d,%d,%d",&m_rcNC.left,&m_rcNC.top,&m_rcNC.right,&m_rcNC.bottom);
-    CDuiStringA strMin = xmlNode.attribute("minsize").value();
-    sscanf(strMin,"%d,%d",&m_szMin.cx, &m_szMin.cy);
+    SStringW strMargin=xmlNode.attribute(L"margin").value();
+    swscanf(strMargin,L"%d,%d,%d,%d",&m_rcNC.left,&m_rcNC.top,&m_rcNC.right,&m_rcNC.bottom);
+    SStringW strMin = xmlNode.attribute(L"minsize").value();
+    swscanf(strMin,L"%d,%d",&m_szMin.cx, &m_szMin.cy);
 
-    m_bTranslucent=xmlNode.attribute("translucent").as_bool(false);
-    m_strName = xmlNode.attribute("name").value();
+    m_bTranslucent=xmlNode.attribute(L"translucent").as_bool(false);
+    m_strName = xmlNode.attribute(L"name").value();
 
-    CDuiStringT strTitle=DUI_CA2T(xmlNode.attribute("title").value(),CP_UTF8);
+    SStringT strTitle=DUI_CW2T(xmlNode.attribute(L"title").value());
 
     BUILDSTRING(strTitle);
 
@@ -109,17 +109,17 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
         m_dwDlgExStyle |= WS_EX_LAYERED;
     }
 
-    if (xmlNode.attribute("appwin").as_bool(false))
+    if (xmlNode.attribute(L"appwin").as_bool(false))
     {
         m_dwDlgExStyle |= WS_EX_APPWINDOW;
         m_dwDlgStyle |= WS_SYSMENU;
-    }else if(xmlNode.attribute("toolwindow").as_bool(false))
+    }else if(xmlNode.attribute(L"toolwindow").as_bool(false))
     {
         m_dwDlgExStyle |= WS_EX_TOOLWINDOW;
     }
 
 
-    m_bResizable = xmlNode.attribute("resize").as_bool(false);
+    m_bResizable = xmlNode.attribute(L"resize").as_bool(false);
 
     if (m_bResizable)
     {
@@ -546,7 +546,7 @@ LRESULT CDuiHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             HSWND hNewTipHost=0;
             CRect rcTip;
-            CDuiStringT strTip;
+            SStringT strTip;
             BOOL bUpdate=pHover->OnUpdateToolTip(m_pTipCtrl->m_dwHostID,hNewTipHost,rcTip,strTip);
             if(bUpdate)
             {

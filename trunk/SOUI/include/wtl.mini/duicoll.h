@@ -519,14 +519,14 @@ _DECLARE_PRIMITIVE_TRAITS( wchar_t )
 _DECLARE_PRIMITIVE_TRAITS( void* )
 
 template< typename E, class ETraits = CElementTraits< E > >
-class CDuiArray
+class SArray
 {
 public:
     typedef typename ETraits::INARGTYPE INARGTYPE;
     typedef typename ETraits::OUTARGTYPE OUTARGTYPE;
 
 public:
-    CDuiArray() throw();
+    SArray() throw();
 
     size_t GetCount() const throw();
     bool IsEmpty() const throw();
@@ -547,14 +547,14 @@ public:
     size_t Add();
     // Add an element to the end of the array
     size_t Add( INARGTYPE element );
-    size_t Append( const CDuiArray< E, ETraits >& aSrc );
-    void Copy( const CDuiArray< E, ETraits >& aSrc );
+    size_t Append( const SArray< E, ETraits >& aSrc );
+    void Copy( const SArray< E, ETraits >& aSrc );
 
     const E& operator[]( size_t iElement ) const;
     E& operator[]( size_t iElement );
 
     void InsertAt( size_t iElement, INARGTYPE element, size_t nCount = 1 );
-    void InsertArrayAt( size_t iStart, const CDuiArray< E, ETraits >* paNew );
+    void InsertArrayAt( size_t iStart, const SArray< E, ETraits >* paNew );
     void RemoveAt( size_t iElement, size_t nCount = 1 );
 
 #ifdef _DEBUG
@@ -576,30 +576,30 @@ private:
     static void CallDestructors( E* pElements, size_t nElements ) throw();
 
 public:
-    ~CDuiArray() throw();
+    ~SArray() throw();
 
 };
 
 template< typename E, class ETraits >
-inline size_t CDuiArray< E, ETraits >::GetCount() const throw()
+inline size_t SArray< E, ETraits >::GetCount() const throw()
 {
     return( m_nSize );
 }
 
 template< typename E, class ETraits >
-inline bool CDuiArray< E, ETraits >::IsEmpty() const throw()
+inline bool SArray< E, ETraits >::IsEmpty() const throw()
 {
     return( m_nSize == 0 );
 }
 
 template< typename E, class ETraits >
-inline void CDuiArray< E, ETraits >::RemoveAll() throw()
+inline void SArray< E, ETraits >::RemoveAll() throw()
 {
     SetCount( 0, -1 );
 }
 
 template< typename E, class ETraits >
-inline const E& CDuiArray< E, ETraits >::GetAt( size_t iElement ) const
+inline const E& SArray< E, ETraits >::GetAt( size_t iElement ) const
 {
     DUIASSERT( iElement < m_nSize );
     if(iElement >= m_nSize)
@@ -609,7 +609,7 @@ inline const E& CDuiArray< E, ETraits >::GetAt( size_t iElement ) const
 }
 
 template< typename E, class ETraits >
-inline void CDuiArray< E, ETraits >::SetAt( size_t iElement, INARGTYPE element )
+inline void SArray< E, ETraits >::SetAt( size_t iElement, INARGTYPE element )
 {
     DUIASSERT( iElement < m_nSize );
     if(iElement >= m_nSize)
@@ -619,7 +619,7 @@ inline void CDuiArray< E, ETraits >::SetAt( size_t iElement, INARGTYPE element )
 }
 
 template< typename E, class ETraits >
-inline E& CDuiArray< E, ETraits >::GetAt( size_t iElement )
+inline E& SArray< E, ETraits >::GetAt( size_t iElement )
 {
     DUIASSERT( iElement < m_nSize );
     if(iElement >= m_nSize)
@@ -629,19 +629,19 @@ inline E& CDuiArray< E, ETraits >::GetAt( size_t iElement )
 }
 
 template< typename E, class ETraits >
-inline const E* CDuiArray< E, ETraits >::GetData() const throw()
+inline const E* SArray< E, ETraits >::GetData() const throw()
 {
     return( m_pData );
 }
 
 template< typename E, class ETraits >
-inline E* CDuiArray< E, ETraits >::GetData() throw()
+inline E* SArray< E, ETraits >::GetData() throw()
 {
     return( m_pData );
 }
 
 template< typename E, class ETraits >
-inline size_t CDuiArray< E, ETraits >::Add()
+inline size_t SArray< E, ETraits >::Add()
 {
     size_t iElement;
 
@@ -659,7 +659,7 @@ inline size_t CDuiArray< E, ETraits >::Add()
 #undef new
 
 template< typename E, class ETraits >
-inline size_t CDuiArray< E, ETraits >::Add( INARGTYPE element )
+inline size_t SArray< E, ETraits >::Add( INARGTYPE element )
 {
     size_t iElement;
 
@@ -681,7 +681,7 @@ inline size_t CDuiArray< E, ETraits >::Add( INARGTYPE element )
 #pragma pop_macro("new")
 
 template< typename E, class ETraits >
-inline const E& CDuiArray< E, ETraits >::operator[]( size_t iElement ) const
+inline const E& SArray< E, ETraits >::operator[]( size_t iElement ) const
 {
     DUIASSERT( iElement < m_nSize );
     if(iElement >= m_nSize)
@@ -691,7 +691,7 @@ inline const E& CDuiArray< E, ETraits >::operator[]( size_t iElement ) const
 }
 
 template< typename E, class ETraits >
-inline E& CDuiArray< E, ETraits >::operator[]( size_t iElement )
+inline E& SArray< E, ETraits >::operator[]( size_t iElement )
 {
     DUIASSERT( iElement < m_nSize );
     if(iElement >= m_nSize)
@@ -701,7 +701,7 @@ inline E& CDuiArray< E, ETraits >::operator[]( size_t iElement )
 }
 
 template< typename E, class ETraits >
-CDuiArray< E, ETraits >::CDuiArray()  throw():
+SArray< E, ETraits >::SArray()  throw():
     m_pData( NULL ),
     m_nSize( 0 ),
     m_nMaxSize( 0 ),
@@ -710,7 +710,7 @@ CDuiArray< E, ETraits >::CDuiArray()  throw():
 }
 
 template< typename E, class ETraits >
-CDuiArray< E, ETraits >::~CDuiArray() throw()
+SArray< E, ETraits >::~SArray() throw()
 {
     if( m_pData != NULL )
     {
@@ -720,7 +720,7 @@ CDuiArray< E, ETraits >::~CDuiArray() throw()
 }
 
 template< typename E, class ETraits >
-bool CDuiArray< E, ETraits >::GrowBuffer( size_t nNewSize )
+bool SArray< E, ETraits >::GrowBuffer( size_t nNewSize )
 {
     if( nNewSize > m_nMaxSize )
     {
@@ -775,7 +775,7 @@ bool CDuiArray< E, ETraits >::GrowBuffer( size_t nNewSize )
 }
 
 template< typename E, class ETraits >
-bool CDuiArray< E, ETraits >::SetCount( size_t nNewSize, int nGrowBy )
+bool SArray< E, ETraits >::SetCount( size_t nNewSize, int nGrowBy )
 {
     DUIASSERT_VALID(this);
 
@@ -832,7 +832,7 @@ bool CDuiArray< E, ETraits >::SetCount( size_t nNewSize, int nGrowBy )
 }
 
 template< typename E, class ETraits >
-size_t CDuiArray< E, ETraits >::Append( const CDuiArray< E, ETraits >& aSrc )
+size_t SArray< E, ETraits >::Append( const SArray< E, ETraits >& aSrc )
 {
     DUIASSERT_VALID(this);
     DUIASSERT( this != &aSrc );   // cannot append to itself
@@ -850,7 +850,7 @@ size_t CDuiArray< E, ETraits >::Append( const CDuiArray< E, ETraits >& aSrc )
 }
 
 template< typename E, class ETraits >
-void CDuiArray< E, ETraits >::Copy( const CDuiArray< E, ETraits >& aSrc )
+void SArray< E, ETraits >::Copy( const SArray< E, ETraits >& aSrc )
 {
     DUIASSERT_VALID(this);
     DUIASSERT( this != &aSrc );   // cannot append to itself
@@ -865,7 +865,7 @@ void CDuiArray< E, ETraits >::Copy( const CDuiArray< E, ETraits >& aSrc )
 }
 
 template< typename E, class ETraits >
-void CDuiArray< E, ETraits >::FreeExtra() throw()
+void SArray< E, ETraits >::FreeExtra() throw()
 {
     DUIASSERT_VALID(this);
 
@@ -896,7 +896,7 @@ void CDuiArray< E, ETraits >::FreeExtra() throw()
 }
 
 template< typename E, class ETraits >
-void CDuiArray< E, ETraits >::SetAtGrow( size_t iElement, INARGTYPE element )
+void SArray< E, ETraits >::SetAtGrow( size_t iElement, INARGTYPE element )
 {
     DUIASSERT_VALID(this);
     size_t nOldSize;
@@ -925,7 +925,7 @@ void CDuiArray< E, ETraits >::SetAtGrow( size_t iElement, INARGTYPE element )
 }
 
 template< typename E, class ETraits >
-void CDuiArray< E, ETraits >::InsertAt( size_t iElement, INARGTYPE element, size_t nElements /*=1*/)
+void SArray< E, ETraits >::InsertAt( size_t iElement, INARGTYPE element, size_t nElements /*=1*/)
 {
     DUIASSERT_VALID(this);
     DUIASSERT( nElements > 0 );     // zero size not allowed
@@ -976,7 +976,7 @@ void CDuiArray< E, ETraits >::InsertAt( size_t iElement, INARGTYPE element, size
 }
 
 template< typename E, class ETraits >
-void CDuiArray< E, ETraits >::RemoveAt( size_t iElement, size_t nElements )
+void SArray< E, ETraits >::RemoveAt( size_t iElement, size_t nElements )
 {
     DUIASSERT_VALID(this);
     DUIASSERT( (iElement+nElements) <= m_nSize );
@@ -997,8 +997,8 @@ void CDuiArray< E, ETraits >::RemoveAt( size_t iElement, size_t nElements )
 }
 
 template< typename E, class ETraits >
-void CDuiArray< E, ETraits >::InsertArrayAt( size_t iStartElement,
-        const CDuiArray< E, ETraits >* paNew )
+void SArray< E, ETraits >::InsertArrayAt( size_t iStartElement,
+        const SArray< E, ETraits >* paNew )
 {
     DUIASSERT_VALID( this );
     DUIENSURE( paNew != NULL );
@@ -1016,7 +1016,7 @@ void CDuiArray< E, ETraits >::InsertArrayAt( size_t iStartElement,
 
 #ifdef _DEBUG
 template< typename E, class ETraits >
-void CDuiArray< E, ETraits >::AssertValid() const
+void SArray< E, ETraits >::AssertValid() const
 {
     if( m_pData == NULL )
     {
@@ -1035,7 +1035,7 @@ void CDuiArray< E, ETraits >::AssertValid() const
 #undef new
 
 template< typename E, class ETraits >
-void CDuiArray< E, ETraits >::CallConstructors( E* pElements, size_t nElements )
+void SArray< E, ETraits >::CallConstructors( E* pElements, size_t nElements )
 {
     size_t iElement = 0;
 
@@ -1060,7 +1060,7 @@ void CDuiArray< E, ETraits >::CallConstructors( E* pElements, size_t nElements )
 #pragma pop_macro("new")
 
 template< typename E, class ETraits >
-void CDuiArray< E, ETraits >::CallDestructors( E* pElements, size_t nElements ) throw()
+void SArray< E, ETraits >::CallDestructors( E* pElements, size_t nElements ) throw()
 {
     (void)pElements;
 
@@ -1072,7 +1072,7 @@ void CDuiArray< E, ETraits >::CallDestructors( E* pElements, size_t nElements ) 
 
 
 template< typename E, class ETraits = CElementTraits< E > >
-class CDuiList
+class SList
 {
 public:
     typedef typename ETraits::INARGTYPE INARGTYPE;
@@ -1103,7 +1103,7 @@ private:
     };
 
 public:
-    CDuiList( UINT nBlockSize = 10 ) throw();
+    SList( UINT nBlockSize = 10 ) throw();
 
     size_t GetCount() const throw();
     bool IsEmpty() const throw();
@@ -1120,10 +1120,10 @@ public:
 
     POSITION AddHead();
     POSITION AddHead( INARGTYPE element );
-    void AddHeadList( const CDuiList< E, ETraits >* plNew );
+    void AddHeadList( const SList< E, ETraits >* plNew );
     POSITION AddTail();
     POSITION AddTail( INARGTYPE element );
-    void AddTailList( const CDuiList< E, ETraits >* plNew );
+    void AddTailList( const SList< E, ETraits >* plNew );
 
     void RemoveAll() throw();
 
@@ -1169,68 +1169,68 @@ private:
     void FreeNode( CNode* pNode ) throw();
 
 public:
-    ~CDuiList() throw();
+    ~SList() throw();
 
 private:
     // Private to prevent use
-    CDuiList( const CDuiList& ) throw();
-    CDuiList& operator=( const CDuiList& ) throw();
+    SList( const SList& ) throw();
+    SList& operator=( const SList& ) throw();
 };
 
 template< typename E, class ETraits >
-inline size_t CDuiList< E, ETraits >::GetCount() const throw()
+inline size_t SList< E, ETraits >::GetCount() const throw()
 {
     return( m_nElements );
 }
 
 template< typename E, class ETraits >
-inline bool CDuiList< E, ETraits >::IsEmpty() const throw()
+inline bool SList< E, ETraits >::IsEmpty() const throw()
 {
     return( m_nElements == 0 );
 }
 
 template< typename E, class ETraits >
-inline E& CDuiList< E, ETraits >::GetHead()
+inline E& SList< E, ETraits >::GetHead()
 {
     DUIENSURE( m_pHead != NULL );
     return( m_pHead->m_element );
 }
 
 template< typename E, class ETraits >
-inline const E& CDuiList< E, ETraits >::GetHead() const
+inline const E& SList< E, ETraits >::GetHead() const
 {
     DUIENSURE( m_pHead != NULL );
     return( m_pHead->m_element );
 }
 
 template< typename E, class ETraits >
-inline E& CDuiList< E, ETraits >::GetTail()
+inline E& SList< E, ETraits >::GetTail()
 {
     DUIENSURE( m_pTail != NULL );
     return( m_pTail->m_element );
 }
 
 template< typename E, class ETraits >
-inline const E& CDuiList< E, ETraits >::GetTail() const
+inline const E& SList< E, ETraits >::GetTail() const
 {
     DUIENSURE( m_pTail != NULL );
     return( m_pTail->m_element );
 }
 
 template< typename E, class ETraits >
-inline POSITION CDuiList< E, ETraits >::GetHeadPosition() const throw()
+inline POSITION SList< E, ETraits >::GetHeadPosition() const throw()
 {
     return( POSITION( m_pHead ) );
 }
 
 template< typename E, class ETraits >
-inline POSITION CDuiList< E, ETraits >::GetTailPosition() const throw()
+inline POSITION SList< E, ETraits >::GetTailPosition() const throw()
 {
     return( POSITION( m_pTail ) );
 }
 
 template< typename E, class ETraits >
-inline E& CDuiList< E, ETraits >::GetNext( POSITION& pos )
+inline E& SList< E, ETraits >::GetNext( POSITION& pos )
 {
     CNode* pNode;
 
@@ -1242,7 +1242,7 @@ inline E& CDuiList< E, ETraits >::GetNext( POSITION& pos )
 }
 
 template< typename E, class ETraits >
-inline const E& CDuiList< E, ETraits >::GetNext( POSITION& pos ) const
+inline const E& SList< E, ETraits >::GetNext( POSITION& pos ) const
 {
     CNode* pNode;
 
@@ -1254,7 +1254,7 @@ inline const E& CDuiList< E, ETraits >::GetNext( POSITION& pos ) const
 }
 
 template< typename E, class ETraits >
-inline E& CDuiList< E, ETraits >::GetPrev( POSITION& pos )
+inline E& SList< E, ETraits >::GetPrev( POSITION& pos )
 {
     CNode* pNode;
 
@@ -1266,7 +1266,7 @@ inline E& CDuiList< E, ETraits >::GetPrev( POSITION& pos )
 }
 
 template< typename E, class ETraits >
-inline const E& CDuiList< E, ETraits >::GetPrev( POSITION& pos ) const throw()
+inline const E& SList< E, ETraits >::GetPrev( POSITION& pos ) const throw()
 {
     CNode* pNode;
 
@@ -1278,7 +1278,7 @@ inline const E& CDuiList< E, ETraits >::GetPrev( POSITION& pos ) const throw()
 }
 
 template< typename E, class ETraits >
-inline E& CDuiList< E, ETraits >::GetAt( POSITION pos )
+inline E& SList< E, ETraits >::GetAt( POSITION pos )
 {
     DUIENSURE( pos != NULL );
     CNode* pNode = (CNode*)pos;
@@ -1286,7 +1286,7 @@ inline E& CDuiList< E, ETraits >::GetAt( POSITION pos )
 }
 
 template< typename E, class ETraits >
-inline const E& CDuiList< E, ETraits >::GetAt( POSITION pos ) const
+inline const E& SList< E, ETraits >::GetAt( POSITION pos ) const
 {
     DUIENSURE( pos != NULL );
     CNode* pNode = (CNode*)pos;
@@ -1294,7 +1294,7 @@ inline const E& CDuiList< E, ETraits >::GetAt( POSITION pos ) const
 }
 
 template< typename E, class ETraits >
-inline void CDuiList< E, ETraits >::SetAt( POSITION pos, INARGTYPE element )
+inline void SList< E, ETraits >::SetAt( POSITION pos, INARGTYPE element )
 {
     DUIENSURE( pos != NULL );
     CNode* pNode = (CNode*)pos;
@@ -1302,7 +1302,7 @@ inline void CDuiList< E, ETraits >::SetAt( POSITION pos, INARGTYPE element )
 }
 
 template< typename E, class ETraits >
-CDuiList< E, ETraits >::CDuiList( UINT nBlockSize ) throw() :
+SList< E, ETraits >::SList( UINT nBlockSize ) throw() :
     m_nElements( 0 ),
     m_pHead( NULL ),
     m_pTail( NULL ),
@@ -1314,7 +1314,7 @@ CDuiList< E, ETraits >::CDuiList( UINT nBlockSize ) throw() :
 }
 
 template< typename E, class ETraits >
-void CDuiList< E, ETraits >::RemoveAll()
+void SList< E, ETraits >::RemoveAll()
 {
     while( m_nElements > 0 )
     {
@@ -1338,7 +1338,7 @@ void CDuiList< E, ETraits >::RemoveAll()
 }
 
 template< typename E, class ETraits >
-CDuiList< E, ETraits >::~CDuiList() throw()
+SList< E, ETraits >::~SList() throw()
 {
     RemoveAll();
     DUIASSUME( m_nElements == 0 );
@@ -1348,7 +1348,7 @@ CDuiList< E, ETraits >::~CDuiList() throw()
 #undef new
 
 template< typename E, class ETraits >
-void CDuiList< E, ETraits >::GetFreeNode()
+void SList< E, ETraits >::GetFreeNode()
 {
     if( m_pFree == NULL )
     {
@@ -1373,7 +1373,7 @@ void CDuiList< E, ETraits >::GetFreeNode()
 }
 
 template< typename E, class ETraits >
-typename CDuiList< E, ETraits >::CNode* CDuiList< E, ETraits >::NewNode( CNode* pPrev, CNode* pNext )
+typename SList< E, ETraits >::CNode* SList< E, ETraits >::NewNode( CNode* pPrev, CNode* pNext )
 {
     GetFreeNode();
 
@@ -1392,7 +1392,7 @@ typename CDuiList< E, ETraits >::CNode* CDuiList< E, ETraits >::NewNode( CNode* 
 }
 
 template< typename E, class ETraits >
-typename CDuiList< E, ETraits >::CNode* CDuiList< E, ETraits >::NewNode( INARGTYPE element, CNode* pPrev,
+typename SList< E, ETraits >::CNode* SList< E, ETraits >::NewNode( INARGTYPE element, CNode* pPrev,
         CNode* pNext )
 {
     GetFreeNode();
@@ -1414,7 +1414,7 @@ typename CDuiList< E, ETraits >::CNode* CDuiList< E, ETraits >::NewNode( INARGTY
 #pragma pop_macro("new")
 
 template< typename E, class ETraits >
-void CDuiList< E, ETraits >::FreeNode( CNode* pNode ) throw()
+void SList< E, ETraits >::FreeNode( CNode* pNode ) throw()
 {
     pNode->~CNode();
     pNode->m_pNext = m_pFree;
@@ -1428,7 +1428,7 @@ void CDuiList< E, ETraits >::FreeNode( CNode* pNode ) throw()
 }
 
 template< typename E, class ETraits >
-POSITION CDuiList< E, ETraits >::AddHead()
+POSITION SList< E, ETraits >::AddHead()
 {
     CNode* pNode = NewNode( NULL, m_pHead );
     if( m_pHead != NULL )
@@ -1445,7 +1445,7 @@ POSITION CDuiList< E, ETraits >::AddHead()
 }
 
 template< typename E, class ETraits >
-POSITION CDuiList< E, ETraits >::AddHead( INARGTYPE element )
+POSITION SList< E, ETraits >::AddHead( INARGTYPE element )
 {
     CNode* pNode;
 
@@ -1465,7 +1465,7 @@ POSITION CDuiList< E, ETraits >::AddHead( INARGTYPE element )
 }
 
 template< typename E, class ETraits >
-POSITION CDuiList< E, ETraits >::AddTail()
+POSITION SList< E, ETraits >::AddTail()
 {
     CNode* pNode = NewNode( m_pTail, NULL );
     if( m_pTail != NULL )
@@ -1482,7 +1482,7 @@ POSITION CDuiList< E, ETraits >::AddTail()
 }
 
 template< typename E, class ETraits >
-POSITION CDuiList< E, ETraits >::AddTail( INARGTYPE element )
+POSITION SList< E, ETraits >::AddTail( INARGTYPE element )
 {
     CNode* pNode;
 
@@ -1502,7 +1502,7 @@ POSITION CDuiList< E, ETraits >::AddTail( INARGTYPE element )
 }
 
 template< typename E, class ETraits >
-void CDuiList< E, ETraits >::AddHeadList( const CDuiList< E, ETraits >* plNew )
+void SList< E, ETraits >::AddHeadList( const SList< E, ETraits >* plNew )
 {
     DUIENSURE( plNew != NULL );
 
@@ -1515,7 +1515,7 @@ void CDuiList< E, ETraits >::AddHeadList( const CDuiList< E, ETraits >* plNew )
 }
 
 template< typename E, class ETraits >
-void CDuiList< E, ETraits >::AddTailList( const CDuiList< E, ETraits >* plNew )
+void SList< E, ETraits >::AddTailList( const SList< E, ETraits >* plNew )
 {
     DUIENSURE( plNew != NULL );
 
@@ -1528,7 +1528,7 @@ void CDuiList< E, ETraits >::AddTailList( const CDuiList< E, ETraits >* plNew )
 }
 
 template< typename E, class ETraits >
-E CDuiList< E, ETraits >::RemoveHead()
+E SList< E, ETraits >::RemoveHead()
 {
     DUIENSURE( m_pHead != NULL );
 
@@ -1550,7 +1550,7 @@ E CDuiList< E, ETraits >::RemoveHead()
 }
 
 template< typename E, class ETraits >
-void CDuiList< E, ETraits >::RemoveHeadNoReturn()
+void SList< E, ETraits >::RemoveHeadNoReturn()
 {
     DUIENSURE( m_pHead != NULL );
 
@@ -1569,7 +1569,7 @@ void CDuiList< E, ETraits >::RemoveHeadNoReturn()
 }
 
 template< typename E, class ETraits >
-E CDuiList< E, ETraits >::RemoveTail()
+E SList< E, ETraits >::RemoveTail()
 {
     DUIENSURE( m_pTail != NULL );
 
@@ -1592,7 +1592,7 @@ E CDuiList< E, ETraits >::RemoveTail()
 }
 
 template< typename E, class ETraits >
-void CDuiList< E, ETraits >::RemoveTailNoReturn()
+void SList< E, ETraits >::RemoveTailNoReturn()
 {
     DUIENSURE( m_pTail != NULL );
 
@@ -1611,7 +1611,7 @@ void CDuiList< E, ETraits >::RemoveTailNoReturn()
 }
 
 template< typename E, class ETraits >
-POSITION CDuiList< E, ETraits >::InsertBefore( POSITION pos, INARGTYPE element )
+POSITION SList< E, ETraits >::InsertBefore( POSITION pos, INARGTYPE element )
 {
     DUIASSERT_VALID(this);
 
@@ -1638,7 +1638,7 @@ POSITION CDuiList< E, ETraits >::InsertBefore( POSITION pos, INARGTYPE element )
 }
 
 template< typename E, class ETraits >
-POSITION CDuiList< E, ETraits >::InsertAfter( POSITION pos, INARGTYPE element )
+POSITION SList< E, ETraits >::InsertAfter( POSITION pos, INARGTYPE element )
 {
     DUIASSERT_VALID(this);
 
@@ -1665,7 +1665,7 @@ POSITION CDuiList< E, ETraits >::InsertAfter( POSITION pos, INARGTYPE element )
 }
 
 template< typename E, class ETraits >
-void CDuiList< E, ETraits >::RemoveAt( POSITION pos )
+void SList< E, ETraits >::RemoveAt( POSITION pos )
 {
     DUIASSERT_VALID(this);
     DUIENSURE( pos != NULL );
@@ -1695,7 +1695,7 @@ void CDuiList< E, ETraits >::RemoveAt( POSITION pos )
 }
 
 template< typename E, class ETraits >
-POSITION CDuiList< E, ETraits >::FindIndex( size_t iElement ) const throw()
+POSITION SList< E, ETraits >::FindIndex( size_t iElement ) const throw()
 {
     DUIASSERT_VALID(this);
 
@@ -1715,7 +1715,7 @@ POSITION CDuiList< E, ETraits >::FindIndex( size_t iElement ) const throw()
 }
 
 template< typename E, class ETraits >
-void CDuiList< E, ETraits >::MoveToHead( POSITION pos )
+void SList< E, ETraits >::MoveToHead( POSITION pos )
 {
     DUIENSURE( pos != NULL );
 
@@ -1747,7 +1747,7 @@ void CDuiList< E, ETraits >::MoveToHead( POSITION pos )
 }
 
 template< typename E, class ETraits >
-void CDuiList< E, ETraits >::MoveToTail( POSITION pos )
+void SList< E, ETraits >::MoveToTail( POSITION pos )
 {
     DUIENSURE( pos != NULL );
     CNode* pNode = static_cast< CNode* >( pos );
@@ -1777,7 +1777,7 @@ void CDuiList< E, ETraits >::MoveToTail( POSITION pos )
 }
 
 template< typename E, class ETraits >
-void CDuiList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 ) throw()
+void SList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 ) throw()
 {
     DUIASSERT( pos1 != NULL );
     DUIASSERT( pos2 != NULL );
@@ -1876,7 +1876,7 @@ void CDuiList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 ) throw(
 }
 
 template< typename E, class ETraits >
-POSITION CDuiList< E, ETraits >::Find( INARGTYPE element, POSITION posStartAfter ) const throw()
+POSITION SList< E, ETraits >::Find( INARGTYPE element, POSITION posStartAfter ) const throw()
 {
     DUIASSERT_VALID(this);
 
@@ -1902,7 +1902,7 @@ POSITION CDuiList< E, ETraits >::Find( INARGTYPE element, POSITION posStartAfter
 
 #ifdef _DEBUG
 template< typename E, class ETraits >
-void CDuiList< E, ETraits >::AssertValid() const
+void SList< E, ETraits >::AssertValid() const
 {
     if( IsEmpty() )
     {
@@ -1920,7 +1920,7 @@ void CDuiList< E, ETraits >::AssertValid() const
 #endif
 
 template< typename K, typename V, class KTraits = CElementTraits< K >, class VTraits = CElementTraits< V > >
-class CDuiMap
+class SMap
 {
 public:
     typedef typename KTraits::INARGTYPE KINARGTYPE;
@@ -1965,7 +1965,7 @@ private:
     };
 
 public:
-    CDuiMap( UINT nBins = 17, float fOptimalLoad = 0.75f,
+    SMap( UINT nBins = 17, float fOptimalLoad = 0.75f,
              float fLoThreshold = 0.25f, float fHiThreshold = 2.25f, UINT nBlockSize = 10 ) throw();
 
     size_t GetCount() const throw();
@@ -2037,29 +2037,29 @@ private:
     void UpdateRehashThresholds() throw();
 
 public:
-    ~CDuiMap() throw();
+    ~SMap() throw();
 
 private:
     // Private to prevent use
-    CDuiMap( const CDuiMap& ) throw();
-    CDuiMap& operator=( const CDuiMap& ) throw();
+    SMap( const SMap& ) throw();
+    SMap& operator=( const SMap& ) throw();
 };
 
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline size_t CDuiMap< K, V, KTraits, VTraits >::GetCount() const throw()
+inline size_t SMap< K, V, KTraits, VTraits >::GetCount() const throw()
 {
     return( m_nElements );
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline bool CDuiMap< K, V, KTraits, VTraits >::IsEmpty() const throw()
+inline bool SMap< K, V, KTraits, VTraits >::IsEmpty() const throw()
 {
     return( m_nElements == 0 );
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline V& CDuiMap< K, V, KTraits, VTraits >::operator[]( KINARGTYPE key ) throw(...)
+inline V& SMap< K, V, KTraits, VTraits >::operator[]( KINARGTYPE key ) throw(...)
 {
     CNode* pNode;
     UINT iBin;
@@ -2076,13 +2076,13 @@ inline V& CDuiMap< K, V, KTraits, VTraits >::operator[]( KINARGTYPE key ) throw(
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline UINT CDuiMap< K, V, KTraits, VTraits >::GetHashTableSize() const throw()
+inline UINT SMap< K, V, KTraits, VTraits >::GetHashTableSize() const throw()
 {
     return( m_nBins );
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline void CDuiMap< K, V, KTraits, VTraits >::GetAt( POSITION pos, KOUTARGTYPE key, VOUTARGTYPE value ) const
+inline void SMap< K, V, KTraits, VTraits >::GetAt( POSITION pos, KOUTARGTYPE key, VOUTARGTYPE value ) const
 {
     DUIENSURE( pos != NULL );
 
@@ -2093,7 +2093,7 @@ inline void CDuiMap< K, V, KTraits, VTraits >::GetAt( POSITION pos, KOUTARGTYPE 
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline typename CDuiMap< K, V, KTraits, VTraits >::CPair* CDuiMap< K, V, KTraits, VTraits >::GetAt( POSITION pos ) throw()
+inline typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetAt( POSITION pos ) throw()
 {
     DUIASSERT( pos != NULL );
 
@@ -2101,7 +2101,7 @@ inline typename CDuiMap< K, V, KTraits, VTraits >::CPair* CDuiMap< K, V, KTraits
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline const typename CDuiMap< K, V, KTraits, VTraits >::CPair* CDuiMap< K, V, KTraits, VTraits >::GetAt( POSITION pos ) const throw()
+inline const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetAt( POSITION pos ) const throw()
 {
     DUIASSERT( pos != NULL );
 
@@ -2109,7 +2109,7 @@ inline const typename CDuiMap< K, V, KTraits, VTraits >::CPair* CDuiMap< K, V, K
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline const K& CDuiMap< K, V, KTraits, VTraits >::GetKeyAt( POSITION pos ) const
+inline const K& SMap< K, V, KTraits, VTraits >::GetKeyAt( POSITION pos ) const
 {
     DUIENSURE( pos != NULL );
 
@@ -2119,7 +2119,7 @@ inline const K& CDuiMap< K, V, KTraits, VTraits >::GetKeyAt( POSITION pos ) cons
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline const V& CDuiMap< K, V, KTraits, VTraits >::GetValueAt( POSITION pos ) const
+inline const V& SMap< K, V, KTraits, VTraits >::GetValueAt( POSITION pos ) const
 {
     DUIENSURE( pos != NULL );
 
@@ -2129,7 +2129,7 @@ inline const V& CDuiMap< K, V, KTraits, VTraits >::GetValueAt( POSITION pos ) co
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline V& CDuiMap< K, V, KTraits, VTraits >::GetValueAt( POSITION pos )
+inline V& SMap< K, V, KTraits, VTraits >::GetValueAt( POSITION pos )
 {
     DUIENSURE( pos != NULL );
 
@@ -2139,26 +2139,26 @@ inline V& CDuiMap< K, V, KTraits, VTraits >::GetValueAt( POSITION pos )
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline void CDuiMap< K, V, KTraits, VTraits >::DisableAutoRehash() throw()
+inline void SMap< K, V, KTraits, VTraits >::DisableAutoRehash() throw()
 {
     m_nLockCount++;
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline void CDuiMap< K, V, KTraits, VTraits >::EnableAutoRehash() throw()
+inline void SMap< K, V, KTraits, VTraits >::EnableAutoRehash() throw()
 {
     DUIASSUME( m_nLockCount > 0 );
     m_nLockCount--;
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline bool CDuiMap< K, V, KTraits, VTraits >::IsLocked() const throw()
+inline bool SMap< K, V, KTraits, VTraits >::IsLocked() const throw()
 {
     return( m_nLockCount != 0 );
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-UINT CDuiMap< K, V, KTraits, VTraits >::PickSize( size_t nElements ) const throw()
+UINT SMap< K, V, KTraits, VTraits >::PickSize( size_t nElements ) const throw()
 {
     // List of primes such that s_anPrimes[i] is the smallest prime greater than 2^(5+i/3)
     static const UINT s_anPrimes[] =
@@ -2192,7 +2192,7 @@ UINT CDuiMap< K, V, KTraits, VTraits >::PickSize( size_t nElements ) const throw
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-typename CDuiMap< K, V, KTraits, VTraits >::CNode* CDuiMap< K, V, KTraits, VTraits >::CreateNode(
+typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::CreateNode(
     KINARGTYPE key, UINT iBin, UINT nHash ) throw(...)
 {
     CNode* pNode;
@@ -2214,7 +2214,7 @@ typename CDuiMap< K, V, KTraits, VTraits >::CNode* CDuiMap< K, V, KTraits, VTrai
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-POSITION CDuiMap< K, V, KTraits, VTraits >::GetStartPosition() const throw()
+POSITION SMap< K, V, KTraits, VTraits >::GetStartPosition() const throw()
 {
     if( IsEmpty() )
     {
@@ -2234,7 +2234,7 @@ POSITION CDuiMap< K, V, KTraits, VTraits >::GetStartPosition() const throw()
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-POSITION CDuiMap< K, V, KTraits, VTraits >::SetAt( KINARGTYPE key, VINARGTYPE value )
+POSITION SMap< K, V, KTraits, VTraits >::SetAt( KINARGTYPE key, VINARGTYPE value )
 {
     CNode* pNode;
     UINT iBin;
@@ -2263,7 +2263,7 @@ POSITION CDuiMap< K, V, KTraits, VTraits >::SetAt( KINARGTYPE key, VINARGTYPE va
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void CDuiMap< K, V, KTraits, VTraits >::SetValueAt( POSITION pos, VINARGTYPE value )
+void SMap< K, V, KTraits, VTraits >::SetValueAt( POSITION pos, VINARGTYPE value )
 {
     DUIASSERT( pos != NULL );
 
@@ -2273,7 +2273,7 @@ void CDuiMap< K, V, KTraits, VTraits >::SetValueAt( POSITION pos, VINARGTYPE val
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-CDuiMap< K, V, KTraits, VTraits >::CDuiMap( UINT nBins, float fOptimalLoad,
+SMap< K, V, KTraits, VTraits >::SMap( UINT nBins, float fOptimalLoad,
         float fLoThreshold, float fHiThreshold, UINT nBlockSize ) throw() :
     m_ppBins( NULL ),
     m_nBins( nBins ),
@@ -2295,7 +2295,7 @@ CDuiMap< K, V, KTraits, VTraits >::CDuiMap( UINT nBins, float fOptimalLoad,
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void CDuiMap< K, V, KTraits, VTraits >::SetOptimalLoad( float fOptimalLoad, float fLoThreshold,
+void SMap< K, V, KTraits, VTraits >::SetOptimalLoad( float fOptimalLoad, float fLoThreshold,
         float fHiThreshold, bool bRehashNow )
 {
     DUIASSERT( fOptimalLoad > 0 );
@@ -2316,7 +2316,7 @@ void CDuiMap< K, V, KTraits, VTraits >::SetOptimalLoad( float fOptimalLoad, floa
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void CDuiMap< K, V, KTraits, VTraits >::UpdateRehashThresholds() throw()
+void SMap< K, V, KTraits, VTraits >::UpdateRehashThresholds() throw()
 {
     m_nHiRehashThreshold = size_t( m_fHiThreshold*m_nBins );
     m_nLoRehashThreshold = size_t( m_fLoThreshold*m_nBins );
@@ -2327,7 +2327,7 @@ void CDuiMap< K, V, KTraits, VTraits >::UpdateRehashThresholds() throw()
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-bool CDuiMap< K, V, KTraits, VTraits >::InitHashTable( UINT nBins, bool bAllocNow )
+bool SMap< K, V, KTraits, VTraits >::InitHashTable( UINT nBins, bool bAllocNow )
 {
     DUIASSUME( m_nElements == 0 );
     DUIASSERT( nBins > 0 );
@@ -2358,7 +2358,7 @@ bool CDuiMap< K, V, KTraits, VTraits >::InitHashTable( UINT nBins, bool bAllocNo
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void CDuiMap< K, V, KTraits, VTraits >::RemoveAll()
+void SMap< K, V, KTraits, VTraits >::RemoveAll()
 {
     DisableAutoRehash();
     if( m_ppBins != NULL )
@@ -2393,7 +2393,7 @@ void CDuiMap< K, V, KTraits, VTraits >::RemoveAll()
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-CDuiMap< K, V, KTraits, VTraits >::~CDuiMap() throw()
+SMap< K, V, KTraits, VTraits >::~SMap() throw()
 {
     _DUITRY
     {
@@ -2409,7 +2409,7 @@ CDuiMap< K, V, KTraits, VTraits >::~CDuiMap() throw()
 #undef new
 
 template< typename K, typename V, class KTraits, class VTraits >
-typename CDuiMap< K, V, KTraits, VTraits >::CNode* CDuiMap< K, V, KTraits, VTraits >::NewNode(
+typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::NewNode(
     KINARGTYPE key, UINT iBin, UINT nHash )
 {
     CNode* pNewNode;
@@ -2463,7 +2463,7 @@ typename CDuiMap< K, V, KTraits, VTraits >::CNode* CDuiMap< K, V, KTraits, VTrai
 #pragma pop_macro("new")
 
 template< typename K, typename V, class KTraits, class VTraits >
-void CDuiMap< K, V, KTraits, VTraits >::FreeNode( CNode* pNode )
+void SMap< K, V, KTraits, VTraits >::FreeNode( CNode* pNode )
 {
     DUIENSURE( pNode != NULL );
 
@@ -2486,7 +2486,7 @@ void CDuiMap< K, V, KTraits, VTraits >::FreeNode( CNode* pNode )
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void CDuiMap< K, V, KTraits, VTraits >::FreePlexes() throw()
+void SMap< K, V, KTraits, VTraits >::FreePlexes() throw()
 {
     m_pFree = NULL;
     if( m_pBlocks != NULL )
@@ -2497,7 +2497,7 @@ void CDuiMap< K, V, KTraits, VTraits >::FreePlexes() throw()
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-typename CDuiMap< K, V, KTraits, VTraits >::CNode* CDuiMap< K, V, KTraits, VTraits >::GetNode(
+typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::GetNode(
     KINARGTYPE key, UINT& iBin, UINT& nHash, CNode*& pPrev ) const throw()
 {
     CNode* pFollow;
@@ -2526,7 +2526,7 @@ typename CDuiMap< K, V, KTraits, VTraits >::CNode* CDuiMap< K, V, KTraits, VTrai
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-bool CDuiMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key, VOUTARGTYPE value ) const
+bool SMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key, VOUTARGTYPE value ) const
 {
     UINT iBin;
     UINT nHash;
@@ -2545,7 +2545,7 @@ bool CDuiMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key, VOUTARGTYPE valu
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-const typename CDuiMap< K, V, KTraits, VTraits >::CPair* CDuiMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key ) const throw()
+const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key ) const throw()
 {
     UINT iBin;
     UINT nHash;
@@ -2558,7 +2558,7 @@ const typename CDuiMap< K, V, KTraits, VTraits >::CPair* CDuiMap< K, V, KTraits,
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-typename CDuiMap< K, V, KTraits, VTraits >::CPair* CDuiMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key ) throw()
+typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key ) throw()
 {
     UINT iBin;
     UINT nHash;
@@ -2571,7 +2571,7 @@ typename CDuiMap< K, V, KTraits, VTraits >::CPair* CDuiMap< K, V, KTraits, VTrai
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-bool CDuiMap< K, V, KTraits, VTraits >::RemoveKey( KINARGTYPE key ) throw()
+bool SMap< K, V, KTraits, VTraits >::RemoveKey( KINARGTYPE key ) throw()
 {
     CNode* pNode;
     UINT iBin;
@@ -2591,7 +2591,7 @@ bool CDuiMap< K, V, KTraits, VTraits >::RemoveKey( KINARGTYPE key ) throw()
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void CDuiMap< K, V, KTraits, VTraits >::RemoveNode( CNode* pNode, CNode* pPrev )
+void SMap< K, V, KTraits, VTraits >::RemoveNode( CNode* pNode, CNode* pPrev )
 {
     DUIENSURE( pNode != NULL );
 
@@ -2611,7 +2611,7 @@ void CDuiMap< K, V, KTraits, VTraits >::RemoveNode( CNode* pNode, CNode* pPrev )
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void CDuiMap< K, V, KTraits, VTraits >::RemoveAtPos( POSITION pos )
+void SMap< K, V, KTraits, VTraits >::RemoveAtPos( POSITION pos )
 {
     DUIENSURE( pos != NULL );
 
@@ -2637,7 +2637,7 @@ void CDuiMap< K, V, KTraits, VTraits >::RemoveAtPos( POSITION pos )
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void CDuiMap< K, V, KTraits, VTraits >::Rehash( UINT nBins )
+void SMap< K, V, KTraits, VTraits >::Rehash( UINT nBins )
 {
     CNode** ppBins = NULL;
 
@@ -2699,7 +2699,7 @@ void CDuiMap< K, V, KTraits, VTraits >::Rehash( UINT nBins )
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void CDuiMap< K, V, KTraits, VTraits >::GetNextAssoc( POSITION& pos, KOUTARGTYPE key,
+void SMap< K, V, KTraits, VTraits >::GetNextAssoc( POSITION& pos, KOUTARGTYPE key,
         VOUTARGTYPE value ) const
 {
     CNode* pNode;
@@ -2717,7 +2717,7 @@ void CDuiMap< K, V, KTraits, VTraits >::GetNextAssoc( POSITION& pos, KOUTARGTYPE
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-const typename CDuiMap< K, V, KTraits, VTraits >::CPair* CDuiMap< K, V, KTraits, VTraits >::GetNext( POSITION& pos ) const throw()
+const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetNext( POSITION& pos ) const throw()
 {
     CNode* pNode;
     CNode* pNext;
@@ -2734,7 +2734,7 @@ const typename CDuiMap< K, V, KTraits, VTraits >::CPair* CDuiMap< K, V, KTraits,
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-typename CDuiMap< K, V, KTraits, VTraits >::CPair* CDuiMap< K, V, KTraits, VTraits >::GetNext(
+typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetNext(
     POSITION& pos ) throw()
 {
     DUIASSUME( m_ppBins != NULL );
@@ -2749,7 +2749,7 @@ typename CDuiMap< K, V, KTraits, VTraits >::CPair* CDuiMap< K, V, KTraits, VTrai
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-const K& CDuiMap< K, V, KTraits, VTraits >::GetNextKey( POSITION& pos ) const
+const K& SMap< K, V, KTraits, VTraits >::GetNextKey( POSITION& pos ) const
 {
     CNode* pNode;
     CNode* pNext;
@@ -2766,7 +2766,7 @@ const K& CDuiMap< K, V, KTraits, VTraits >::GetNextKey( POSITION& pos ) const
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-const V& CDuiMap< K, V, KTraits, VTraits >::GetNextValue( POSITION& pos ) const
+const V& SMap< K, V, KTraits, VTraits >::GetNextValue( POSITION& pos ) const
 {
     CNode* pNode;
     CNode* pNext;
@@ -2783,7 +2783,7 @@ const V& CDuiMap< K, V, KTraits, VTraits >::GetNextValue( POSITION& pos ) const
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-V& CDuiMap< K, V, KTraits, VTraits >::GetNextValue( POSITION& pos )
+V& SMap< K, V, KTraits, VTraits >::GetNextValue( POSITION& pos )
 {
     CNode* pNode;
     CNode* pNext;
@@ -2800,7 +2800,7 @@ V& CDuiMap< K, V, KTraits, VTraits >::GetNextValue( POSITION& pos )
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-typename CDuiMap< K, V, KTraits, VTraits >::CNode* CDuiMap< K, V, KTraits, VTraits >::FindNextNode( CNode* pNode ) const throw()
+typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::FindNextNode( CNode* pNode ) const throw()
 {
     CNode* pNext;
 
@@ -2836,7 +2836,7 @@ typename CDuiMap< K, V, KTraits, VTraits >::CNode* CDuiMap< K, V, KTraits, VTrai
 
 #ifdef _DEBUG
 template< typename K, typename V, class KTraits, class VTraits >
-void CDuiMap< K, V, KTraits, VTraits >::AssertValid() const
+void SMap< K, V, KTraits, VTraits >::AssertValid() const
 {
     DUIASSUME( m_nBins > 0 );
     // non-empty map should have hash table

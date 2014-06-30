@@ -257,7 +257,7 @@ namespace pugi
 	{
 	public:
 		xml_writer_buff():m_nSize(0){
-			m_szBuf=new char[MAX_XML_CHARBUF+1];
+			m_szBuf=new char_t[MAX_XML_CHARBUF+1];
 			m_szBuf[0]=0;
 		}
 
@@ -268,10 +268,10 @@ namespace pugi
 
 		virtual void write(const void* data, size_t size);
 
-		const char * buffer(){return m_szBuf;}
+		const char_t * buffer(){return m_szBuf;}
 		int	size(){return m_nSize;}
 	protected:
-		char *m_szBuf;
+		char_t *m_szBuf;
 		int	 m_nSize;
 	};
 

@@ -13,13 +13,13 @@ namespace SOUI
     class UTILITIES_API CDuiStrCpCvt
     {
     public:
-        static CDuiStringA CvtW2A(const CDuiStringW & str,unsigned int cp=CP_ACP);
+        static SStringA CvtW2A(const SStringW & str,unsigned int cp=CP_ACP);
 
-        static CDuiStringW CvtA2W(const CDuiStringA & str,unsigned int cp=CP_ACP,unsigned int cp2=0);
+        static SStringW CvtA2W(const SStringA & str,unsigned int cp=CP_ACP,unsigned int cp2=0);
 
-        static CDuiStringA CvtA2A(const CDuiStringA & str,unsigned int cpFrom=CP_UTF8,unsigned int cpTo=CP_ACP);
+        static SStringA CvtA2A(const SStringA & str,unsigned int cpFrom=CP_UTF8,unsigned int cpTo=CP_ACP);
 
-        static CDuiStringW CvtW2W(const CDuiStringW &str,unsigned int cp=CP_ACP);
+        static SStringW CvtW2W(const SStringW &str,unsigned int cp=CP_ACP);
 
     };
 

@@ -90,7 +90,7 @@ BOOL SRealWnd::Load(pugi::xml_node xmlNode)
     BOOL bRet=__super::Load(xmlNode);
     if(bRet)
     {
-        m_realwndParam.m_xmlParams.append_copy(xmlNode.child("params"));
+        m_realwndParam.m_xmlParams.append_copy(xmlNode.child(L"params"));
         if(m_bInit) InitRealWnd();
     }
     return bRet;

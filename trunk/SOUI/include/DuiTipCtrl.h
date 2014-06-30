@@ -32,7 +32,7 @@ protected:
 protected:
     int            m_nDelay;
     int            m_nShowSpan;
-    CDuiStringT    m_strTip;
+    SStringT    m_strTip;
     BOOL        m_bTextTip;    
     CRect        m_rcTarget;
     CFont        m_font;

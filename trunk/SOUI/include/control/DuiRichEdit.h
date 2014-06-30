@@ -222,7 +222,7 @@ class SOUI_EXP SRichEdit :public SPanel
 {
     friend class CDuiTextHost;
 public:
-    SOUI_CLASS_NAME(SRichEdit, "richedit")
+    SOUI_CLASS_NAME(SRichEdit, L"richedit")
 
     SRichEdit();
     virtual ~SRichEdit() {}
@@ -291,7 +291,7 @@ protected:
 
     HRESULT OnTxNotify(DWORD iNotify,LPVOID pv);
 
-    virtual HRESULT DefAttributeProc(const CDuiStringA & strAttribName,const CDuiStringA & strValue, BOOL bLoading);
+    virtual HRESULT DefAttributeProc(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading);
 
     void OnLButtonDown(UINT nFlags, CPoint point);
 
@@ -319,7 +319,7 @@ protected:
 
     LRESULT OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam);
 
-    LRESULT OnSetTextColor(const CDuiStringA &  strValue,BOOL bLoading);
+    LRESULT OnSetTextColor(const SStringW &  strValue,BOOL bLoading);
 
     void OnEnableDragDrop(BOOL bEnable);
 
@@ -348,17 +348,17 @@ protected:
     WND_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT("style",m_dwStyle,FALSE)
-        ATTR_INT("maxbuf",m_cchTextMost,FALSE)
-        ATTR_INT("transparent",m_fTransparent,FALSE)
-        ATTR_INT("rich",m_fRich,FALSE)
-        ATTR_INT("vertical",m_fVertical,FALSE)
-        ATTR_INT("wordwrap",m_fWordWrap,FALSE)
-        ATTR_INT("allowbeep",m_fAllowBeep,FALSE)
-        ATTR_INT("autowordsel",m_fEnableAutoWordSel,FALSE)
-        ATTR_INT("vcenter",m_fSingleLineVCenter,FALSE)
-        ATTR_RECT("inset",m_rcInsetPixel,FALSE)
-        ATTR_CUSTOM("crtext",OnSetTextColor)
+        ATTR_INT(L"style",m_dwStyle,FALSE)
+        ATTR_INT(L"maxbuf",m_cchTextMost,FALSE)
+        ATTR_INT(L"transparent",m_fTransparent,FALSE)
+        ATTR_INT(L"rich",m_fRich,FALSE)
+        ATTR_INT(L"vertical",m_fVertical,FALSE)
+        ATTR_INT(L"wordwrap",m_fWordWrap,FALSE)
+        ATTR_INT(L"allowbeep",m_fAllowBeep,FALSE)
+        ATTR_INT(L"autowordsel",m_fEnableAutoWordSel,FALSE)
+        ATTR_INT(L"vcenter",m_fSingleLineVCenter,FALSE)
+        ATTR_RECT(L"inset",m_rcInsetPixel,FALSE)
+        ATTR_CUSTOM(L"crtext",OnSetTextColor)
     SOUI_ATTRS_END()
     //////////////////////////////////////////////////////////////////////////
     //    RichEdit Properties
@@ -392,7 +392,7 @@ protected:
 
 class SOUI_EXP SEdit : public SRichEdit
 {
-    SOUI_CLASS_NAME(SRichEdit, "edit")
+    SOUI_CLASS_NAME(SEdit, L"edit")
 public:
     SEdit()
     {

@@ -11,9 +11,9 @@ class SWindowFactory
 public:
     virtual ~SWindowFactory() {}
     virtual SWindow* NewWindow() = 0;
-    virtual LPCSTR DuiWindowBaseName()=0;
+    virtual LPCWSTR DuiWindowBaseName()=0;
 
-    virtual const CDuiStringA & getWindowType()=0;
+    virtual const SStringW & getWindowType()=0;
 
     virtual SWindowFactory* Clone() const =0;
 };
@@ -27,9 +27,9 @@ public:
     {
     }
 
-    LPCSTR DuiWindowName(){return T::GetClassName();}
+    LPCWSTR DuiWindowName(){return T::GetClassName();}
 
-    LPCSTR DuiWindowBaseName(){return T::BaseClassName();}
+    LPCWSTR DuiWindowBaseName(){return T::BaseClassName();}
 
     // Implement WindowFactory interface
     SWindow* NewWindow()
@@ -37,7 +37,7 @@ public:
         return new T;
     }
 
-    virtual const CDuiStringA & getWindowType()
+    virtual const SStringW & getWindowType()
     {
         return m_strTypeName;
     }
@@ -47,14 +47,14 @@ public:
         return new TplDuiWindowFactory();
     }
 protected:
-    CDuiStringA m_strTypeName;
+    SStringW m_strTypeName;
 };
 
 
 
 typedef SWindowFactory* SWindowFactoryPtr;
 class SOUI_EXP DuiWindowFactoryMgr :
-    public DuiCmnMap<SWindowFactoryPtr,CDuiStringA>
+    public DuiCmnMap<SWindowFactoryPtr,SStringW>
 {
 public:
     DuiWindowFactoryMgr(void);
@@ -87,14 +87,14 @@ public:
     // Qualifier:
     // Parameter: SWindowFactory * pWndFactory
     //************************************
-    bool UnregisterWndFactory(const CDuiStringA & strClassType)
+    bool UnregisterWndFactory(const SStringW & strClassType)
     {
         return  RemoveKeyObject(strClassType);
     }
 
-    SWindow *CreateWindowByName(LPCSTR pszClassName);
+    SWindow *CreateWindowByName(LPCWSTR pszClassName);
 
-    LPCSTR BaseClassNameFromClassName(LPCSTR pszClassName);
+    LPCWSTR BaseClassNameFromClassName(LPCWSTR pszClassName);
 protected:
     static void OnWndFactoryRemoved(const SWindowFactoryPtr & obj);
 

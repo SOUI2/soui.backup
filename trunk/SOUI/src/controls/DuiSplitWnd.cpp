@@ -7,7 +7,7 @@ namespace SOUI
 #define DEF_SEPSIZE    5
 
 
-CDuiSplitPane::CDuiSplitPane():m_nPriority(0),m_nSizeIdeal(20),m_nSizeMin(0)
+SSplitPane::SSplitPane():m_nPriority(0),m_nSizeIdeal(20),m_nSizeMin(0)
 {
 
 }
@@ -96,17 +96,17 @@ BOOL SSplitWnd::LoadChildren( pugi::xml_node xmlNode )
     if(!xmlNode) return FALSE;
     pugi::xml_node xmlParent=xmlNode.parent();
     DUIASSERT(xmlParent);
-    pugi::xml_node xmlPane=xmlParent.child("pane");
+    pugi::xml_node xmlPane=xmlParent.child(L"pane");
     while(xmlPane)
     {
-        CDuiSplitPane *pPane=new CDuiSplitPane();
+        SSplitPane *pPane=new SSplitPane();
         InsertChild(pPane);
         if(pPane->Load(xmlPane))
         {
             pPane->AddRef();
             m_arrPane.Add(pPane);
         }
-        xmlPane=xmlPane.next_sibling("pane");
+        xmlPane=xmlPane.next_sibling(L"pane");
     }
     return TRUE;
 }

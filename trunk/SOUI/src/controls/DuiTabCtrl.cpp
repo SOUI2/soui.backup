@@ -3,12 +3,12 @@
 
 namespace SOUI
 {
-    class CDuiTabSlider : public SWindow
+    class STabSlider : public SWindow
     {
-        SOUI_CLASS_NAME(CDuiTabSlider, "tabslider")
+        SOUI_CLASS_NAME(STabSlider, L"tabslider")
 
     public:
-        CDuiTabSlider( STabCtrl *pTabCtrl =NULL)
+        STabSlider( STabCtrl *pTabCtrl =NULL)
         {
             if(pTabCtrl)
             {
@@ -20,7 +20,7 @@ namespace SOUI
             }
         }
 
-        virtual ~CDuiTabSlider()
+        virtual ~STabSlider()
         {
             if(GetParent())
             {
@@ -240,7 +240,7 @@ void STabCtrl::OnLButtonDown( UINT nFlags, CPoint point )
 
 BOOL STabCtrl::RemoveItem( int nIndex , int nSelPage/*=0*/)
 {
-    CDuiTab * pTab = GetItem(nIndex);
+    STabPage * pTab = GetItem(nIndex);
 
     DestroyChild(pTab);
     m_lstPages.RemoveAt(nIndex);
@@ -271,7 +271,7 @@ void STabCtrl::RemoveAllItems( void )
 {
     for (int i = GetItemCount()-1; i >= 0; i--)
     {
-        CDuiTab * pTab = GetItem(i);
+        STabPage * pTab = GetItem(i);
         DestroyChild(pTab);
         m_lstPages.RemoveAt(i);
     }
@@ -357,7 +357,7 @@ BOOL STabCtrl::SetCurSel( int nIndex )
     if (nms.bCancel)
         return FALSE;
 
-    CDuiTab *pTab=GetItem(nIndex);
+    STabPage *pTab=GetItem(nIndex);
 
     CRect rcItem;
 
@@ -366,11 +366,11 @@ BOOL STabCtrl::SetCurSel( int nIndex )
     GetItemRect(nIndex, rcItem);
     NotifyInvalidateRect(rcItem);
 
-    CDuiTabSlider *pTabSlider=NULL;
+    STabSlider *pTabSlider=NULL;
 
     if(m_nAnimateSteps && IsVisible(TRUE) && nOldPage!=-1)
     {
-        pTabSlider=new CDuiTabSlider(this);
+        pTabSlider=new STabSlider(this);
         pTabSlider->InitPage(TRUE);
     }
 
@@ -435,7 +435,7 @@ BOOL STabCtrl::SetCurSel( LPCTSTR pszTitle )
 
 BOOL STabCtrl::SetItemTitle( int nIndex, LPCTSTR lpszTitle )
 {
-    CDuiTab* pTab = GetItem(nIndex);
+    STabPage* pTab = GetItem(nIndex);
     if (pTab)
     {
         pTab->SetTitle(lpszTitle);
@@ -478,19 +478,18 @@ BOOL STabCtrl::LoadChildren( pugi::xml_node xmlNode )
 
 BOOL STabCtrl::InsertItem( LPCWSTR lpContent ,int iInsert/*=-1*/)
 {
-    CDuiStringA utf8_xml=DUI_CW2A(lpContent,CP_UTF8);
     pugi::xml_document xmlDoc;
-    if(!xmlDoc.load_buffer(utf8_xml,utf8_xml.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return FALSE;
+    if(!xmlDoc.load_buffer(lpContent,wcslen(lpContent),pugi::parse_default,pugi::encoding_utf16)) return FALSE;
 
-    pugi::xml_node xmlTab=xmlDoc.child("tab");
+    pugi::xml_node xmlTab=xmlDoc.child(L"page");
 
     return InsertItem(xmlTab,iInsert)!=-1;
 }
 
 int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoading/*=FALSE*/ )
 {
-    CDuiTab *pChild=NULL;
-    if (!CDuiTab::CheckAndNew(xmlNode.name(),(void**)&pChild)) return -1;
+    STabPage *pChild=NULL;
+    if (!STabPage::CheckAndNew(xmlNode.name(),(void**)&pChild)) return -1;
 
     if(iInsert==-1) iInsert=m_lstPages.GetCount();
     InsertChild(pChild);
@@ -544,7 +543,7 @@ BOOL STabCtrl::GetItemRect( int nIndex, CRect &rcItem )
     return TRUE;
 }
 
-CDuiTab* STabCtrl::GetItem( int nIndex )
+STabPage* STabCtrl::GetItem( int nIndex )
 {
     if(nIndex<0 || nIndex>=GetItemCount()) return NULL;
     return m_lstPages[nIndex];

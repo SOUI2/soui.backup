@@ -72,13 +72,13 @@ public:
 protected:
     UINT m_uRetCode;
     BOOL m_bExitModalLoop;
-    CDuiStringT m_strXmlLayout;
+    SStringT m_strXmlLayout;
     int m_nIdleCount;
 
     // Tracking flag
     BOOL m_bTrackFlag;
 
-    CDuiStringA m_strName;    //窗口的name属性，与skin的owner对应
+    SStringW m_strName;    //窗口的name属性，与skin的owner对应
     CRect m_rcNC;
 
     DWORD m_dwDlgStyle;
@@ -111,7 +111,7 @@ protected:
 
     virtual BOOL _PreTranslateMessage(MSG* pMsg);
 
-    CDuiArray<CDuiMessageFilter*> m_aMsgFilter;
+    SArray<CDuiMessageFilter*> m_aMsgFilter;
 
 private:
     CTranslucentHostWnd            m_dummyWnd;    //半透明窗口使用的一个响应WM_PAINT消息的窗口

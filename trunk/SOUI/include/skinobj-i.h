@@ -10,19 +10,19 @@ namespace SOUI
 class SOUI_EXP ISkinObj : public SObject,public TObjRefImpl2<IObjRef,ISkinObj>
 {
 public:
-    ISkinObj():m_strOwner("")
+    ISkinObj()
     {
     }
     virtual ~ISkinObj()
     {
     }
 
-    void SetOwner(CDuiStringA strOwner)
+    void SetOwner(SStringW strOwner)
     {
         m_strOwner=strOwner;
     }
 
-    CDuiStringA GetOwner()
+    SStringW GetOwner()
     {
         return m_strOwner;
     }
@@ -46,7 +46,7 @@ public:
         return 1;
     }
 protected:
-    CDuiStringA	m_strOwner;
+    SStringW	m_strOwner;
 };
 
 

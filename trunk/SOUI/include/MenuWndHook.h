@@ -25,7 +25,7 @@ class SOUI_EXP CMenuWndHook
 public:
     CMenuWndHook(HWND hWnd);
     ~CMenuWndHook();
-    static void InstallHook(HINSTANCE hInst,LPCSTR pszSkinName=NULL);
+    static void InstallHook(HINSTANCE hInst,LPCWSTR pszSkinName=NULL);
     static void UnInstallHook();
 
 // ÏûÏ¢ ----------------------------------------------------------
@@ -50,9 +50,9 @@ public:
 protected:
     HWND m_hWnd;
 
-    static CDuiMap<HWND, CMenuWndHook*> m_WndMenuMap;
+    static SMap<HWND, CMenuWndHook*> m_WndMenuMap;
     static HHOOK m_hMenuHook;
-    static CDuiStringA    m_strSkinName;
+    static SStringW    m_strSkinName;
 };
 
 }//namespace SOUI
