@@ -200,11 +200,11 @@ void CDuiFrame::OnFrameMouseLeave()
 BOOL CDuiFrame::OnFrameSetCursor(const CPoint &pt)
 {
     SWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
-    if(pCapture) return pCapture->OnDuiSetCursor(pt);
+    if(pCapture) return pCapture->OnSetCursor(pt);
     else
     {
         SWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
-        if(pHover && !pHover->IsDisabled(TRUE)) return pHover->OnDuiSetCursor(pt);
+        if(pHover && !pHover->IsDisabled(TRUE)) return pHover->OnSetCursor(pt);
     }
     return FALSE;
 }

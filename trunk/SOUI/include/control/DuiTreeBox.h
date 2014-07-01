@@ -99,7 +99,7 @@ protected:
     LRESULT OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam );
 
     virtual LRESULT DuiNotify(LPSNMHDR pnms);
-    virtual BOOL OnDuiSetCursor(const CPoint &pt);
+    virtual BOOL OnSetCursor(const CPoint &pt);
     virtual void OnViewOriginChanged( CPoint ptOld,CPoint ptNew );
 
     virtual UINT OnGetDlgCode()

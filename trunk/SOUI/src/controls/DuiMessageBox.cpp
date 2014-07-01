@@ -38,11 +38,11 @@ namespace SOUI
                 SWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN3PANEL);
                 pBtnPanel->SetVisible(TRUE);
                 SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
-                pBtn->SetInnerText(_T("中止"));pBtn->SetID(IDABORT);
+                pBtn->SetWindowText(_T("中止"));pBtn->SetID(IDABORT);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
-                pBtn->SetInnerText(_T("重试"));pBtn->SetID(IDRETRY);
+                pBtn->SetWindowText(_T("重试"));pBtn->SetID(IDRETRY);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN3);
-                pBtn->SetInnerText(_T("忽略"));pBtn->SetID(IDIGNORE);
+                pBtn->SetWindowText(_T("忽略"));pBtn->SetID(IDIGNORE);
             }
             break;
         case MB_YESNOCANCEL:
@@ -52,11 +52,11 @@ namespace SOUI
                 SWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN3PANEL);
                 pBtnPanel->SetVisible(TRUE);
                 SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
-                pBtn->SetInnerText(_T("是"));pBtn->SetID(IDYES);
+                pBtn->SetWindowText(_T("是"));pBtn->SetID(IDYES);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
-                pBtn->SetInnerText(_T("否"));pBtn->SetID(IDNO);
+                pBtn->SetWindowText(_T("否"));pBtn->SetID(IDNO);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN3);
-                pBtn->SetInnerText(_T("取消"));pBtn->SetID(IDCANCEL);
+                pBtn->SetWindowText(_T("取消"));pBtn->SetID(IDCANCEL);
             }
             break;
         case MB_OKCANCEL:
@@ -68,9 +68,9 @@ namespace SOUI
                 pBtnPanel->SetVisible(TRUE);
 
                 SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
-                pBtn->SetInnerText(_T("确定"));    pBtn->SetID(IDOK);
+                pBtn->SetWindowText(_T("确定"));    pBtn->SetID(IDOK);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
-                pBtn->SetInnerText(_T("取消"));    pBtn->SetID(IDCANCEL);
+                pBtn->SetWindowText(_T("取消"));    pBtn->SetID(IDCANCEL);
             }
             break;
         case MB_YESNO:
@@ -82,9 +82,9 @@ namespace SOUI
                 pBtnPanel->SetVisible(TRUE);
 
                 SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
-                pBtn->SetInnerText(_T("是"));    pBtn->SetID(IDYES);
+                pBtn->SetWindowText(_T("是"));    pBtn->SetID(IDYES);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
-                pBtn->SetInnerText(_T("否"));    pBtn->SetID(IDNO);
+                pBtn->SetWindowText(_T("否"));    pBtn->SetID(IDNO);
             }
             break;
         case MB_RETRYCANCEL:
@@ -96,9 +96,9 @@ namespace SOUI
                 pBtnPanel->SetVisible(TRUE);
 
                 SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
-                pBtn->SetInnerText(_T("重试"));    pBtn->SetID(IDRETRY);
+                pBtn->SetWindowText(_T("重试"));    pBtn->SetID(IDRETRY);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
-                pBtn->SetInnerText(_T("取消"));    pBtn->SetID(IDCANCEL);
+                pBtn->SetWindowText(_T("取消"));    pBtn->SetID(IDCANCEL);
             }
             break;
         case MB_OK:
@@ -109,7 +109,7 @@ namespace SOUI
                 SWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN1PANEL);
                 pBtnPanel->SetVisible(TRUE);
                 SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
-                pBtn->SetInnerText(_T("确定"));    pBtn->SetID(IDOK);
+                pBtn->SetWindowText(_T("确定"));    pBtn->SetID(IDOK);
             }
             break;
         default:
@@ -125,11 +125,11 @@ namespace SOUI
 
         SWindow * pTitle= FindChildByName(NAME_MSGBOX_TITLE);
         ASSERT(pTitle);
-        pTitle->SetInnerText(lpCaption?lpCaption:_T("提示"));
+        pTitle->SetWindowText(lpCaption?lpCaption:_T("提示"));
 
         SWindow * pMsg= FindChildByName(NAME_MSGBOX_TEXT);
         ASSERT(pMsg);
-        pMsg->SetInnerText(lpText);
+        pMsg->SetWindowText(lpText);
 
         SetIcon(uType);
 

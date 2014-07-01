@@ -907,16 +907,6 @@ void SMaskEdit::SetMaskState()
     GetContainer()->DuiShowCaret(TRUE);
 }
 
-SStringT SMaskEdit::GetWindowText()
-{
-    int nLen=__super::GetWindowTextLength();
-    wchar_t *pszBuf=new wchar_t[nLen+1];
-    __super::GetWindowText(pszBuf,nLen);
-    SStringT strTxt=DUI_CW2T(pszBuf);
-    delete []pszBuf;
-    return strTxt;
-}
-
 /////////////////////////////////////////////////////////////////////////////
 // CDxDateEdit class
 /////////////////////////////////////////////////////////////////////////////

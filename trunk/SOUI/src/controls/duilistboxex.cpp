@@ -498,7 +498,7 @@ void SListBoxEx::OnMouseLeave()
     }
 }
 
-BOOL SListBoxEx::OnDuiSetCursor(const CPoint &pt)
+BOOL SListBoxEx::OnSetCursor(const CPoint &pt)
 {
     BOOL bRet=FALSE;
     if(m_pCapturedFrame)
@@ -520,7 +520,7 @@ BOOL SListBoxEx::OnDuiSetCursor(const CPoint &pt)
     }
     if(!bRet)
     {
-        bRet=__super::OnDuiSetCursor(pt);
+        bRet=__super::OnSetCursor(pt);
     }
     return bRet;
 }

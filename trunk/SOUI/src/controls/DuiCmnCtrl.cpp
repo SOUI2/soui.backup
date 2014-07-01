@@ -122,7 +122,7 @@ void SLink::OnInitFinished( pugi::xml_node xmlNode)
     if(m_strToolTipText.IsEmpty()) m_strToolTipText=m_strLinkUrl;
 }
 
-BOOL SLink::OnDuiSetCursor(const CPoint &pt)
+BOOL SLink::OnSetCursor(const CPoint &pt)
 {
     if(!m_rcText.PtInRect(pt)) return FALSE;
     HCURSOR hCur = ::LoadCursor(NULL, m_style.m_lpCursorName);
@@ -940,7 +940,7 @@ void SGroup::OnPaint(IRenderTarget *pRT)
     BeforePaint(pRT, DuiDC);
 
     CSize szFnt;
-    pRT->MeasureText(m_strWndText, m_strWndText.GetLength(),&szFnt);
+    pRT->MeasureText(m_strText, m_strText.GetLength(),&szFnt);
 
     CRect rcText=m_rcWindow;
     rcText.left+=GROUP_HEADER,rcText.right-=GROUP_HEADER;
@@ -960,7 +960,7 @@ void SGroup::OnPaint(IRenderTarget *pRT)
     }
 
     
-    if(!m_strWndText.IsEmpty())
+    if(!m_strText.IsEmpty())
     {
         CRect rcClip=rcText;
         rcClip.InflateRect(5,5,5,5);
@@ -970,7 +970,7 @@ void SGroup::OnPaint(IRenderTarget *pRT)
     {
         CRect rcGroupBox = m_rcWindow;
 
-        if(!m_strWndText.IsEmpty()) rcGroupBox.top+=szFnt.cy/2;
+        if(!m_strText.IsEmpty()) rcGroupBox.top+=szFnt.cy/2;
         rcGroupBox.DeflateRect(1,1,1,0);
         
         CAutoRefPtr<IPen> pen1,pen2,oldPen;
@@ -986,9 +986,9 @@ void SGroup::OnPaint(IRenderTarget *pRT)
         pRT->SelectObject(oldPen);
     }
 
-    if(!m_strWndText.IsEmpty())
+    if(!m_strText.IsEmpty())
     {
-        pRT->DrawText(m_strWndText, m_strWndText.GetLength(), rcText, DT_SINGLELINE|DT_VCENTER);
+        pRT->DrawText(m_strText, m_strText.GetLength(), rcText, DT_SINGLELINE|DT_VCENTER);
         pRT->PopClip();
     }
 

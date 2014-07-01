@@ -483,7 +483,7 @@ BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
                 if(pText)
                 {
                     SStringT strText=DUI_CW2T(xmlNode_Item.attribute(L"text").value());
-                    pText->SetInnerText(strText);
+                    pText->SetWindowText(strText);
                 }
             }
             if(m_uIconID!=0)

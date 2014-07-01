@@ -62,7 +62,7 @@ protected:
 
     virtual BOOL CreateChildren(pugi::xml_node xmlNode);
 
-    virtual BOOL OnDuiSetCursor(const CPoint &pt);
+    virtual BOOL OnSetCursor(const CPoint &pt);
 
     void OnDestroy();
 

@@ -530,7 +530,7 @@ BOOL SCalendar::InitFromXml( pugi::xml_node xmlNode )
             CTime today=CTime::GetCurrentTime();
             SStringT str;
             str.Format(_T("%04d-%02d-%02d"),today.GetYear(),today.GetMonth(),today.GetDay());
-            pLabelToday->SetInnerText(str);
+            pLabelToday->SetWindowText(str);
         }
     }
     return bLoad;

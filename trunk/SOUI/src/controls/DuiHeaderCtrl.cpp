@@ -356,7 +356,7 @@ namespace SOUI
         return TRUE;
     }
 
-    BOOL SHeaderCtrl::OnDuiSetCursor( const CPoint &pt )
+    BOOL SHeaderCtrl::OnSetCursor( const CPoint &pt )
     {
         if(m_bFixWidth) return FALSE;
         DWORD dwHit=HitTest(pt);

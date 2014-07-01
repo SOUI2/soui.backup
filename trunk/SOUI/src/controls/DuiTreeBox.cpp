@@ -661,7 +661,7 @@ LRESULT STreeBox::DuiNotify(LPSNMHDR pnms)
     return __super::DuiNotify(pnms);
 }
 
-BOOL STreeBox::OnDuiSetCursor(const CPoint &pt)
+BOOL STreeBox::OnSetCursor(const CPoint &pt)
 {
     BOOL bRet=FALSE;
     if(m_pCapturedFrame)
@@ -676,7 +676,7 @@ BOOL STreeBox::OnDuiSetCursor(const CPoint &pt)
     }
     if(!bRet)
     {
-        bRet=__super::OnDuiSetCursor(pt);
+        bRet=__super::OnSetCursor(pt);
     }
     return bRet;
 }
