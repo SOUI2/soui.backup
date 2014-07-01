@@ -206,7 +206,7 @@ namespace SOUI
                         DUINMHDSWAP    nm;
                         nm.hdr.hDuiWnd=m_hSWnd;
                         nm.hdr.code=NM_HDSWAP;
-                        nm.hdr.idFrom=GetCmdID();
+                        nm.hdr.idFrom=GetID();
                         nm.hdr.pszNameFrom=GetName();
                         nm.iOldIndex=LOWORD(m_dwHitTest);
                         nm.iNewIndex=nPos;
@@ -225,7 +225,7 @@ namespace SOUI
                     DUINMHDCLICK    nm;
                     nm.hdr.hDuiWnd=m_hSWnd;
                     nm.hdr.code=NM_HDCLICK;
-                    nm.hdr.idFrom=GetCmdID();
+                    nm.hdr.idFrom=GetID();
                     nm.hdr.pszNameFrom=GetName();
                     nm.iItem=LOWORD(m_dwHitTest);
                     DuiNotify((LPSNMHDR)&nm);
@@ -236,7 +236,7 @@ namespace SOUI
             DUINMHDSIZECHANGED    nm;
             nm.hdr.hDuiWnd=m_hSWnd;
             nm.hdr.code=NM_HDSIZECHANGED;
-            nm.hdr.idFrom=GetCmdID();
+            nm.hdr.idFrom=GetID();
             nm.hdr.pszNameFrom=GetName();
             nm.iItem=LOWORD(m_dwHitTest);
             nm.nWidth=m_arrItems[nm.iItem].cx;
@@ -289,7 +289,7 @@ namespace SOUI
                 DUINMHDSIZECHANGING    nm;
                 nm.hdr.hDuiWnd=m_hSWnd;
                 nm.hdr.code=NM_HDSIZECHANGING;
-                nm.hdr.idFrom=GetCmdID();
+                nm.hdr.idFrom=GetID();
                 nm.hdr.pszNameFrom=GetName();
                 nm.nWidth=cxNew;
                 DuiNotify((LPSNMHDR)&nm);

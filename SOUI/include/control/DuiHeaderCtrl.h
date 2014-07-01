@@ -78,14 +78,14 @@ namespace SOUI
         void OnMouseLeave();
         void OnDestroy();
         
-        WND_MSG_MAP_BEGIN()
+        SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
             MSG_WM_LBUTTONDOWN(OnLButtonDown)
             MSG_WM_LBUTTONUP(OnLButtonUp)
             MSG_WM_MOUSEMOVE(OnMouseMove)
             MSG_WM_MOUSELEAVE(OnMouseLeave)
             MSG_WM_DESTROY(OnDestroy)
-        WND_MSG_MAP_END()
+        SOUI_MSG_MAP_END()
 
         ISkinObj *    m_pSkinItem;
         ISkinObj *    m_pSkinSort;

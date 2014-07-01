@@ -26,7 +26,7 @@ namespace SOUI
 
         Create(NULL,NULL,WS_POPUPWINDOW,0,0,0,10,10,NULL);
         pugi::xml_node uiRoot=s_xmlMsgTemplate.child(L"UIFRAME");
-        SetXml(uiRoot);
+        InitFromXml(uiRoot);
 
 
         switch(uType&0x0F)
@@ -38,11 +38,11 @@ namespace SOUI
                 SWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN3PANEL);
                 pBtnPanel->SetVisible(TRUE);
                 SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
-                pBtn->SetInnerText(_T("中止"));pBtn->SetCmdID(IDABORT);
+                pBtn->SetInnerText(_T("中止"));pBtn->SetID(IDABORT);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
-                pBtn->SetInnerText(_T("重试"));pBtn->SetCmdID(IDRETRY);
+                pBtn->SetInnerText(_T("重试"));pBtn->SetID(IDRETRY);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN3);
-                pBtn->SetInnerText(_T("忽略"));pBtn->SetCmdID(IDIGNORE);
+                pBtn->SetInnerText(_T("忽略"));pBtn->SetID(IDIGNORE);
             }
             break;
         case MB_YESNOCANCEL:
@@ -52,11 +52,11 @@ namespace SOUI
                 SWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN3PANEL);
                 pBtnPanel->SetVisible(TRUE);
                 SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
-                pBtn->SetInnerText(_T("是"));pBtn->SetCmdID(IDYES);
+                pBtn->SetInnerText(_T("是"));pBtn->SetID(IDYES);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
-                pBtn->SetInnerText(_T("否"));pBtn->SetCmdID(IDNO);
+                pBtn->SetInnerText(_T("否"));pBtn->SetID(IDNO);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN3);
-                pBtn->SetInnerText(_T("取消"));pBtn->SetCmdID(IDCANCEL);
+                pBtn->SetInnerText(_T("取消"));pBtn->SetID(IDCANCEL);
             }
             break;
         case MB_OKCANCEL:
@@ -68,9 +68,9 @@ namespace SOUI
                 pBtnPanel->SetVisible(TRUE);
 
                 SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
-                pBtn->SetInnerText(_T("确定"));    pBtn->SetCmdID(IDOK);
+                pBtn->SetInnerText(_T("确定"));    pBtn->SetID(IDOK);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
-                pBtn->SetInnerText(_T("取消"));    pBtn->SetCmdID(IDCANCEL);
+                pBtn->SetInnerText(_T("取消"));    pBtn->SetID(IDCANCEL);
             }
             break;
         case MB_YESNO:
@@ -82,9 +82,9 @@ namespace SOUI
                 pBtnPanel->SetVisible(TRUE);
 
                 SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
-                pBtn->SetInnerText(_T("是"));    pBtn->SetCmdID(IDYES);
+                pBtn->SetInnerText(_T("是"));    pBtn->SetID(IDYES);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
-                pBtn->SetInnerText(_T("否"));    pBtn->SetCmdID(IDNO);
+                pBtn->SetInnerText(_T("否"));    pBtn->SetID(IDNO);
             }
             break;
         case MB_RETRYCANCEL:
@@ -96,9 +96,9 @@ namespace SOUI
                 pBtnPanel->SetVisible(TRUE);
 
                 SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
-                pBtn->SetInnerText(_T("重试"));    pBtn->SetCmdID(IDRETRY);
+                pBtn->SetInnerText(_T("重试"));    pBtn->SetID(IDRETRY);
                 pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN2);
-                pBtn->SetInnerText(_T("取消"));    pBtn->SetCmdID(IDCANCEL);
+                pBtn->SetInnerText(_T("取消"));    pBtn->SetID(IDCANCEL);
             }
             break;
         case MB_OK:
@@ -109,7 +109,7 @@ namespace SOUI
                 SWindow *pBtnPanel=FindChildByName(NAME_MSGBOX_BTN1PANEL);
                 pBtnPanel->SetVisible(TRUE);
                 SWindow *pBtn=pBtnPanel->FindChildByName(NAME_MSGBOX_BTN1);
-                pBtn->SetInnerText(_T("确定"));    pBtn->SetCmdID(IDOK);
+                pBtn->SetInnerText(_T("确定"));    pBtn->SetID(IDOK);
             }
             break;
         default:

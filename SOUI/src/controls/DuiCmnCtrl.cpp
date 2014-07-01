@@ -716,12 +716,12 @@ void SCheckBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
         else
             ModifyState(DuiWndState_Check, 0,TRUE);
 
-        if (GetCmdID())
+        if (GetID())
         {
             DUINMCOMMAND nms;
             nms.hdr.hDuiWnd=m_hSWnd;
             nms.hdr.code = NM_COMMAND;
-            nms.hdr.idFrom = GetCmdID();
+            nms.hdr.idFrom = GetID();
             nms.hdr.pszNameFrom = GetName();
             nms.uItemData = GetUserData();
             DuiNotify((LPSNMHDR)&nms);

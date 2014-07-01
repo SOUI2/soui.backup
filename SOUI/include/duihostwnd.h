@@ -15,6 +15,7 @@
 #include "control/duirealwnd.h"
 
 #include "SimpleWnd.h"
+#include "rootwnd.h"
 #include "DuiFrameDropTarget.h"
 
 #pragma warning(disable: 4996)
@@ -25,16 +26,16 @@ namespace SOUI
 {
 
     class CDuiHostWnd;
-    class CTranslucentHostWnd : public CSimpleWnd
+    class CDummyWnd : public CSimpleWnd
     {
     public:
-        CTranslucentHostWnd(CDuiHostWnd* pOwner):m_pOwner(pOwner)
+        CDummyWnd(CDuiHostWnd* pOwner):m_pOwner(pOwner)
         {
         }
 
         void OnPaint(CDCHandle dc);
 
-        BEGIN_MSG_MAP_EX(CTranslucentHostWnd)
+        BEGIN_MSG_MAP_EX(CDummyWnd)
             MSG_WM_PAINT(OnPaint)
         END_MSG_MAP()
     private:
@@ -45,11 +46,11 @@ class CDuiTipCtrl;
 
 class SOUI_EXP CDuiHostWnd
     : public CSimpleWnd
-    , public SWindow
     , public CDuiFrame
+    , public SRootWindow
     , protected IDuiRealWndHandler
 {
-    friend class CTranslucentHostWnd;
+    friend class CDummyWnd;
 public:
     CDuiHostWnd(LPCTSTR pszResName = NULL);
     virtual ~CDuiHostWnd() {}
@@ -58,11 +59,11 @@ public:
 
     HWND Create(HWND hWndParent,int x,int y,int nWidth,int nHeight);
     HWND Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight, LPVOID lpParam);
-    BOOL InitFromXml(LPCTSTR pszXmlName);
 
-    BOOL SetXml(LPSTR lpszXml,int nLen);
+    BOOL SetXml(LPCTSTR pszXmlName);
 
-    BOOL SetXml(pugi::xml_node xmlNode);
+    BOOL SetXml(LPCWSTR lpszXml,int nLen);
+
 
     UINT_PTR DoModal(HWND hWndParent = NULL, LPRECT rect = NULL);
 
@@ -70,6 +71,8 @@ public:
 
     virtual void EndDialog(UINT uRetCode);
 protected:
+    BOOL InitFromXml(pugi::xml_node xmlNode);
+    
     UINT m_uRetCode;
     BOOL m_bExitModalLoop;
     SStringT m_strXmlLayout;
@@ -78,14 +81,7 @@ protected:
     // Tracking flag
     BOOL m_bTrackFlag;
 
-    CRect m_rcNC;
 
-    DWORD m_dwDlgStyle;
-    DWORD m_dwDlgExStyle;
-    BOOL m_bResizable;
-    CSize m_szMin;
-
-    BOOL m_bTranslucent;    //窗口的半透明属性
     BOOL m_bCaretShowing;    //当前有插入符正在显示
     CAutoRefPtr<IBitmap>    m_bmpCaret; //半透明窗口中的模拟插入符
     SIZE                    m_szCaret;  //插入符大小
@@ -113,7 +109,7 @@ protected:
     SArray<CDuiMessageFilter*> m_aMsgFilter;
 
 private:
-    CTranslucentHostWnd            m_dummyWnd;    //半透明窗口使用的一个响应WM_PAINT消息的窗口
+    CDummyWnd            m_dummyWnd;    //半透明窗口使用的一个响应WM_PAINT消息的窗口
 protected:
     //////////////////////////////////////////////////////////////////////////
     // Message handler

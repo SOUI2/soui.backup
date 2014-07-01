@@ -259,7 +259,7 @@ LRESULT SSliderBar::NotifySbCode(UINT uCode, int nPos)
     DUINMSLIDER nms;
     nms.hdr.code     = NM_SLIDER;
     nms.hdr.hDuiWnd  = m_hSWnd;
-    nms.hdr.idFrom   = GetCmdID();
+    nms.hdr.idFrom   = GetID();
     nms.hdr.pszNameFrom= GetName();
     nms.uSbCode      = uCode;
     nms.pSliderBar   = this;

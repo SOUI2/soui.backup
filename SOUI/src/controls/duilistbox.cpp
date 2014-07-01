@@ -403,7 +403,7 @@ void SListBox::NotifySelChange( int nOldSel,int nNewSel)
     DUINMLBSELCHANGE nms;
     nms.hdr.code=NM_LBSELCHANGING;
     nms.hdr.hDuiWnd=m_hSWnd;
-    nms.hdr.idFrom=GetCmdID();
+    nms.hdr.idFrom=GetID();
     nms.hdr.pszNameFrom=GetName();
     nms.nOldSel=nOldSel;
     nms.nNewSel=nNewSel;
@@ -418,7 +418,7 @@ void SListBox::NotifySelChange( int nOldSel,int nNewSel)
     if(m_iSelItem!=-1)
         RedrawItem(m_iSelItem);
 
-    nms.hdr.idFrom=GetCmdID();
+    nms.hdr.idFrom=GetID();
     nms.hdr.code=NM_LBSELCHANGED;
     DuiNotify((LPSNMHDR)&nms);
 }

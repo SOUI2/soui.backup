@@ -149,7 +149,7 @@ public:
         ATTR_INT(L"itemredrawdelay", m_bItemRedrawDelay, TRUE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_MOUSEWHEEL(OnMouseWheel)
         MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
         MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
@@ -164,7 +164,7 @@ public:
         MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
         MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
         MSG_WM_NCCALCSIZE(OnNcCalcSize)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 };
 
 }//namespace SOUI

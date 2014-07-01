@@ -22,15 +22,10 @@ CDuiHostWnd::CDuiHostWnd( LPCTSTR pszResName /*= NULL*/ )
 , m_nIdleCount(0)
 , m_bExitModalLoop(FALSE)
 , m_bTrackFlag(FALSE)
-, m_dwDlgStyle(0)
-, m_dwDlgExStyle(0)
-, m_bTranslucent(FALSE)
 , m_bCaretShowing(FALSE)
 , m_bCaretActive(FALSE)
 , m_bNeedRepaint(FALSE)
 , m_bNeedAllRepaint(TRUE)
-, m_bResizable(FALSE)
-, m_szMin(200, 200)
 , m_pTipCtrl(NULL)
 , m_dummyWnd(this)
 {
@@ -51,7 +46,7 @@ HWND CDuiHostWnd::Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWO
 
     SetContainer(this);
 
-    if(!m_strXmlLayout.IsEmpty())  InitFromXml(m_strXmlLayout);
+    if(!m_strXmlLayout.IsEmpty())  SetXml(m_strXmlLayout);
 
     if(nWidth==0 || nHeight==0) CenterWindow(hWnd);
     return hWnd;
@@ -62,71 +57,54 @@ HWND CDuiHostWnd::Create(HWND hWndParent,int x,int y,int nWidth,int nHeight)
     return Create(hWndParent, NULL,WS_POPUP | WS_CLIPCHILDREN | WS_TABSTOP,0,x,y,nWidth,nHeight,0);
 }
 
-BOOL CDuiHostWnd::InitFromXml(LPCTSTR pszXmlName)
+BOOL CDuiHostWnd::SetXml(LPCTSTR pszXmlName)
 {
     pugi::xml_document xmlDoc;
     if(!LOADXML(xmlDoc,pszXmlName,RT_LAYOUT)) return FALSE;
 
-    return SetXml(xmlDoc.child(L"UIFRAME"));
+    return InitFromXml(xmlDoc.child(L"UIFRAME"));
 }
 
-BOOL CDuiHostWnd::SetXml(LPSTR lpszXml,int nLen)
+BOOL CDuiHostWnd::SetXml(LPCWSTR lpszXml,int nLen)
 {
     pugi::xml_document xmlDoc;
-    if(!xmlDoc.load_buffer(lpszXml,nLen,pugi::parse_default,pugi::encoding_utf8)) return FALSE;
+    if(!xmlDoc.load_buffer(lpszXml,nLen,pugi::parse_default,pugi::encoding_utf16)) return FALSE;
  
-    return SetXml(xmlDoc.child(L"UIFRAME"));
+    return InitFromXml(xmlDoc.child(L"UIFRAME"));
 }
 
-BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
+BOOL CDuiHostWnd::InitFromXml(pugi::xml_node xmlNode )
 {
     if(!xmlNode) return FALSE;
 
-    m_dwDlgStyle =CSimpleWnd::GetStyle();
-    m_dwDlgExStyle  = CSimpleWnd::GetExStyle();
-
-    DuiSendMessage(WM_DESTROY);
-
-
-    CSize szDefault;
-    szDefault.cx = xmlNode.attribute(L"width").as_int(200);
-    szDefault.cy = xmlNode.attribute(L"height").as_int(200);
-
-    SStringW strMargin=xmlNode.attribute(L"margin").value();
-    swscanf(strMargin,L"%d,%d,%d,%d",&m_rcNC.left,&m_rcNC.top,&m_rcNC.right,&m_rcNC.bottom);
-    SStringW strMin = xmlNode.attribute(L"minsize").value();
-    swscanf(strMin,L"%d,%d",&m_szMin.cx, &m_szMin.cy);
-
-    m_bTranslucent=xmlNode.attribute(L"translucent").as_bool(false);
-
-    SStringT strTitle=DUI_CW2T(xmlNode.attribute(L"title").value());
-
-    BUILDSTRING(strTitle);
-
-    if(m_bTranslucent)
-    {
-        m_dwDlgExStyle |= WS_EX_LAYERED;
-    }
-
-    if (xmlNode.attribute(L"appwin").as_bool(false))
-    {
-        m_dwDlgExStyle |= WS_EX_APPWINDOW;
-        m_dwDlgStyle |= WS_SYSMENU;
-    }else if(xmlNode.attribute(L"toolwindow").as_bool(false))
-    {
-        m_dwDlgExStyle |= WS_EX_TOOLWINDOW;
-    }
-
-
-    m_bResizable = xmlNode.attribute(L"resize").as_bool(false);
-
+    DWORD dwStyle =CSimpleWnd::GetStyle();
+    DWORD dwExStyle  = CSimpleWnd::GetExStyle();
+    
+    if(!SRootWindow::InitFromXml(xmlNode)) return FALSE;
+    
     if (m_bResizable)
     {
-        m_dwDlgStyle |= WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_THICKFRAME;
+        dwStyle |= WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_THICKFRAME;
     }
-
-    ModifyStyle(0,m_dwDlgStyle);
-    ModifyStyleEx(0,m_dwDlgExStyle);
+    if(m_bAppWnd)
+    {
+        dwStyle |= WS_SYSMENU;
+        dwExStyle |= WS_EX_APPWINDOW;
+    }else if(m_bToolWnd)
+    {
+        dwExStyle |= WS_EX_TOOLWINDOW;
+    }
+    if(m_bTranslucent)
+    {
+        dwExStyle |= WS_EX_LAYERED;
+    }
+    
+    if(m_dwStyle!=0) dwStyle=m_dwStyle;
+    if(m_dwExStyle != 0) dwExStyle =m_dwExStyle;
+    
+    ModifyStyle(0,dwStyle);
+    ModifyStyleEx(0,dwExStyle);
+    CSimpleWnd::SetWindowTextW(m_strTitle);
 
     if(m_bTranslucent)
     {
@@ -138,22 +116,16 @@ BOOL CDuiHostWnd::SetXml(pugi::xml_node xmlNode )
     }
 
 
-    SetWindowText(strTitle);
-
     CRect rcClient;
     GetClientRect(&rcClient);
     if(rcClient.IsRectEmpty())//APP没有指定窗口大小，使用XML中的值
     {
-        SetWindowPos(NULL,0,0,szDefault.cx,szDefault.cy,SWP_NOZORDER|SWP_NOMOVE);
-        GetClientRect(&rcClient);
-    }
-
-    if(!m_strName.IsEmpty())
+        SetWindowPos(NULL,0,0,m_szInit.cx,m_szInit.cy,SWP_NOZORDER|SWP_NOMOVE);
+    }else
     {
-        DuiSystem::getSingleton().LoadSkins(m_strName);    //load skin only used in the host window
+        Move(&rcClient);
+        OnWindowPosChanged(NULL);
     }
-    CreateChildren(xmlNode.first_child());
-    OnWindowPosChanged(NULL);
 
     _Redraw();
 
@@ -195,7 +167,7 @@ UINT_PTR CDuiHostWnd::DoModal(HWND hWndParent/* = NULL*/, LPRECT rect /*= NULL*/
     if(INITCODE_NOTSHOW!=SendMessage(WM_INITDIALOG, (WPARAM)m_hWnd))
     {//根据INITDIALOG的返回值还判断是不是将窗口显示出来。返回INITCODE_NOTSHOW时窗口不显示。
     
-        if(m_dwDlgExStyle&WS_EX_TOOLWINDOW)
+        if(GetExStyle()&WS_EX_TOOLWINDOW)
             ::ShowWindow(m_hWnd,SW_SHOWNOACTIVATE);
         else
             ::ShowWindow(m_hWnd,SW_SHOWNORMAL);
@@ -860,35 +832,35 @@ UINT CDuiHostWnd::OnWndNcHitTest(CPoint point)
     if (m_bResizable)
     {
         ScreenToClient(&point);
-        if (point.x > m_rcWindow.right - m_rcNC.right)
+        if (point.x > m_rcWindow.right - m_rcMargin.right)
         {
-            if (point.y > m_rcWindow.bottom - m_rcNC.bottom)
+            if (point.y > m_rcWindow.bottom - m_rcMargin.bottom)
             {
                 return HTBOTTOMRIGHT;
             }
-            else if (point.y < m_rcNC.top)
+            else if (point.y < m_rcMargin.top)
             {
                 return HTTOPRIGHT;
             }
             return HTRIGHT;
         }
-        else if (point.x < m_rcNC.left)
+        else if (point.x < m_rcMargin.left)
         {
-            if (point.y > m_rcWindow.bottom - m_rcNC.bottom)
+            if (point.y > m_rcWindow.bottom - m_rcMargin.bottom)
             {
                 return HTBOTTOMLEFT;
             }
-            else if (point.y < m_rcNC.top)
+            else if (point.y < m_rcMargin.top)
             {
                 return HTTOPLEFT;
             }
             return HTLEFT;
         }
-        else if (point.y > m_rcWindow.bottom - m_rcNC.bottom)
+        else if (point.y > m_rcWindow.bottom - m_rcMargin.bottom)
         {
             return HTBOTTOM;
         }
-        else if (point.y < m_rcNC.top)
+        else if (point.y < m_rcMargin.top)
         {
             return HTTOP;
         }
@@ -934,7 +906,7 @@ LRESULT CDuiHostWnd::OnMsgFilter(UINT uMsg,WPARAM wParam,LPARAM lParam)
 HWND CDuiHostWnd::OnRealWndCreate(SRealWnd *pRealWnd)
 {
     CRect rcWindow;
-    UINT uCmdID=pRealWnd->GetCmdID();
+    UINT uCmdID=pRealWnd->GetID();
     pRealWnd->GetRect(&rcWindow);
 
     const CDuiRealWndParam & paramRealWnd=pRealWnd->GetRealWndParam();
@@ -1198,7 +1170,7 @@ BOOL CDuiHostWnd::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 //////////////////////////////////////////////////////////////////////////
 //    CTranslucentHostWnd
 //////////////////////////////////////////////////////////////////////////
-void CTranslucentHostWnd::OnPaint( CDCHandle dc )
+void CDummyWnd::OnPaint( CDCHandle dc )
 {
     CPaintDC dc1(m_hWnd);
     m_pOwner->OnPrint(NULL,1);

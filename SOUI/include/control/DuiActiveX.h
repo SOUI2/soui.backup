@@ -31,14 +31,14 @@ namespace SOUI
         virtual BOOL IsTabStop(){return TRUE;}
 
         HRESULT OnAttrClsid(const SStringW & strValue,BOOL bLoading);
-        WND_MSG_MAP_BEGIN()
+        SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
             MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
             MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
             MSG_WM_CREATE(OnCreate)
             MSG_WM_SIZE(OnSize)
             MSG_WM_SHOWWINDOW(OnShowWindow)
-        WND_MSG_MAP_END()
+        SOUI_MSG_MAP_END()
 
         SOUI_ATTRS_BEGIN()
             ATTR_CUSTOM(L"clsid",OnAttrClsid)

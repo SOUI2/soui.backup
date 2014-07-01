@@ -40,7 +40,7 @@ LRESULT CComboEdit::DuiNotify( LPSNMHDR pnms )
     //转发richedit的txNotify消息
     if(pnms->code==NM_RICHEDIT_NOTIFY)
     {
-        pnms->idFrom=GetOwner()->GetCmdID();
+        pnms->idFrom=GetOwner()->GetID();
     }
     return __super::DuiNotify(pnms);
 }
@@ -90,7 +90,7 @@ BOOL CDuiComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
         SStringW strPos;
         strPos.Format(L"0,0,-%d,-0",szBtn.cx);
         m_pEdit->SetAttribute(L"pos",strPos,TRUE);
-        m_pEdit->SetCmdID(IDC_CB_EDIT);
+        m_pEdit->SetID(IDC_CB_EDIT);
 
     }
     return CreateListBox(xmlNode);
@@ -183,7 +183,7 @@ void CDuiComboBoxBase::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     if (!m_bDropdown)
     {
-        CComboEdit *pEdit = static_cast<CComboEdit *>(FindChildByCmdID(IDC_CB_EDIT));
+        CComboEdit *pEdit = static_cast<CComboEdit *>(FindChildByID(IDC_CB_EDIT));
         if (pEdit)
             pEdit->DuiSendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
         return;
@@ -328,7 +328,7 @@ void CDuiComboBoxBase::OnSelChanged()
     DUINMHDR nms;
     nms.code=NM_CBSELCHANGE;
     nms.hDuiWnd=m_hSWnd;
-    nms.idFrom=GetCmdID();
+    nms.idFrom=GetID();
     nms.pszNameFrom=GetName();
     DuiNotify(&nms);
 }
@@ -360,7 +360,7 @@ BOOL SComboBox::CreateListBox( pugi::xml_node xmlNode )
     m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
     m_pListBox->SetAttribute(L"hottrack",L"1",TRUE);
     m_pListBox->SetOwner(this);    //chain notify message to combobox
-    m_pListBox->SetCmdID(IDC_DROPDOWN_LIST);
+    m_pListBox->SetID(IDC_DROPDOWN_LIST);
 
     //初始化列表数据
     pugi::xml_node xmlNode_Items=xmlNode.parent().child(L"items");
@@ -455,7 +455,7 @@ BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
     m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
     m_pListBox->SetAttribute(L"hottrack",L"1",TRUE);
     m_pListBox->SetOwner(this);    //chain notify message to combobox
-    m_pListBox->SetCmdID(IDC_DROPDOWN_LIST);
+    m_pListBox->SetID(IDC_DROPDOWN_LIST);
 
     //初始化列表数据
     pugi::xml_node xmlNode_Items=xmlNode.parent().child(L"items");
@@ -479,7 +479,7 @@ BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
             SWindow *pWnd=m_pListBox->GetItemPanel(iItem);
             if(m_uTxtID!=0)
             {
-                SWindow *pText=pWnd->FindChildByCmdID(m_uTxtID);
+                SWindow *pText=pWnd->FindChildByID(m_uTxtID);
                 if(pText)
                 {
                     SStringT strText=DUI_CW2T(xmlNode_Item.attribute(L"text").value());
@@ -488,7 +488,7 @@ BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
             }
             if(m_uIconID!=0)
             {
-                SImageWnd * pImg = pWnd->FindChildByCmdID2<SImageWnd *>(m_uIconID);
+                SImageWnd * pImg = pWnd->FindChildByID2<SImageWnd>(m_uIconID);
                 if(pImg) 
                 {
                     int iIcon=xmlNode_Item.attribute(L"icon").as_int(0);

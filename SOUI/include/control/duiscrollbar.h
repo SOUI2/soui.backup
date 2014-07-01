@@ -61,7 +61,7 @@ protected:
         ATTR_INT(L"vertical", m_bVertical, FALSE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONUP(OnLButtonUp)
         MSG_WM_MOUSEMOVE(OnMouseMove)
@@ -70,7 +70,7 @@ protected:
         MSG_WM_PAINT_EX(OnPaint)
         MESSAGE_HANDLER_EX(SBM_SETSCROLLINFO,OnSetScrollInfo)
         MESSAGE_HANDLER_EX(SBM_GETSCROLLINFO,OnGetScrollInfo)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 
 protected:
     ISkinObj * m_pSkin;

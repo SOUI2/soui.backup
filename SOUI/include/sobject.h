@@ -48,7 +48,7 @@ namespace SOUI
 class SOUI_EXP SObject
 {
 public:
-    SObject():m_nID(0)
+    SObject()
     {
     }
 
@@ -90,22 +90,9 @@ public:
 
     virtual HRESULT DefAttributeProc(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading)
     {
-        if(strAttribName == L"name")
-        {
-            m_strName=strValue;
-            return S_OK;
-        }else if(strAttribName==L"id")
-        {
-            m_nID=::StrToIntW(strValue);
-        }
         return E_FAIL;
     }
 
-    LPCWSTR GetName(){return m_strName;}
-    void SetName(LPCWSTR pszName){m_strName=pszName;}
-
-    int GetID(){return m_nID;}
-    void SetID(int nID){m_nID=nID;}
 protected:
     virtual void OnInitFinished(pugi::xml_node xmlNode) {}
     virtual void OnAttributeChanged(const SStringW & strAttrName,BOOL bLoading,HRESULT hRet) {}
@@ -113,8 +100,6 @@ protected:
 #ifdef    _DEBUG
     SStringW m_strXml;
 #endif//_DEBUG
-    SStringW m_strName;
-    int     m_nID;
 };
 
 }//namespace SOUI

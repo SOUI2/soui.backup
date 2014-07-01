@@ -370,7 +370,7 @@ void SListBoxEx::OnDrawItem(IRenderTarget *pRT, CRect & rc, int iItem)
         DUINMGETLBDISPINFO nms;
         nms.hdr.hDuiWnd =m_hSWnd;
         nms.hdr.code    = NM_GETLBDISPINFO;
-        nms.hdr.idFrom  = GetCmdID();
+        nms.hdr.idFrom  = GetID();
         nms.hdr.pszNameFrom= GetName();
         nms.bHover      = iItem == m_iHoverItem;
         nms.bSelect     = iItem == m_iSelItem;
@@ -442,7 +442,7 @@ void SListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
     DUINMLBSELCHANGE nms;
     nms.hdr.code=NM_LBSELCHANGING;
     nms.hdr.hDuiWnd=m_hSWnd;
-    nms.hdr.idFrom=GetCmdID();
+    nms.hdr.idFrom=GetID();
     nms.hdr.pszNameFrom=GetName();
     nms.nOldSel=nOldSel;
     nms.nNewSel=nNewSel;
@@ -453,11 +453,11 @@ void SListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
         {
             ASSERT(m_pTemplPanel);
             SWindow *pHover=DuiWindowMgr::GetWindow(m_pTemplPanel->GetDuiHover());
-            if(pHover) nms.uHoverID=pHover->GetCmdID();
+            if(pHover) nms.uHoverID=pHover->GetID();
         }else
         {
             SWindow *pHover=DuiWindowMgr::GetWindow(m_arrItems[nNewSel]->GetDuiHover());
-            if(pHover) nms.uHoverID=pHover->GetCmdID();
+            if(pHover) nms.uHoverID=pHover->GetID();
         }
     }
 
@@ -475,7 +475,7 @@ void SListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
         RedrawItem(m_iSelItem);
     }
 
-    nms.hdr.idFrom=GetCmdID();
+    nms.hdr.idFrom=GetID();
     nms.hdr.code=NM_LBSELCHANGED;
     DuiNotify((LPSNMHDR)&nms);
 }

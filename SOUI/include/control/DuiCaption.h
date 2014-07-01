@@ -62,9 +62,9 @@ protected:
      */    
     void OnLButtonDblClk(UINT nFlags, CPoint point);
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
     MSG_WM_LBUTTONDOWN(OnLButtonDown)
     MSG_WM_LBUTTONDBLCLK(OnLButtonDblClk)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 };
 }

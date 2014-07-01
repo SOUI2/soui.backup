@@ -50,13 +50,13 @@ protected:
     void            OnMouseLeave();
 
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONUP(OnLButtonUp)
         MSG_WM_MOUSEMOVE(OnMouseMove)
         MSG_WM_MOUSELEAVE(OnMouseLeave)
         MSG_WM_PAINT_EX(OnPaint)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"thumbskin", m_pSkinThumb, FALSE)

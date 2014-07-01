@@ -69,9 +69,9 @@ protected:
     ATTR_INT(L"sephei", m_nSepHei, TRUE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
     MSG_WM_SIZE(OnSize)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 
 };
 

@@ -88,12 +88,12 @@ protected:
     SStringT         m_strLiteral;       // Literal format that restricts where the user can enter text.
 
 protected:
-   WND_MSG_MAP_BEGIN()
+   SOUI_MSG_MAP_BEGIN()
         MSG_WM_CREATE(OnCreate)
         MSG_WM_CHAR(OnChar)
         MSG_WM_KEYDOWN(OnKeyDown)
         MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-   WND_MSG_MAP_END()
+   SOUI_MSG_MAP_END()
 };
 
 //===========================================================================
@@ -114,9 +114,9 @@ protected:
     int             OnCreate(LPVOID);
 
 protected:
-   WND_MSG_MAP_BEGIN()
+   SOUI_MSG_MAP_BEGIN()
         MSG_WM_CREATE(OnCreate)
-   WND_MSG_MAP_END()
+   SOUI_MSG_MAP_END()
 };
 
 //===========================================================================
@@ -146,9 +146,9 @@ protected:
     int             OnCreate(LPVOID);
 
 protected:
-   WND_MSG_MAP_BEGIN()
+   SOUI_MSG_MAP_BEGIN()
         MSG_WM_CREATE(OnCreate)
-   WND_MSG_MAP_END()
+   SOUI_MSG_MAP_END()
 };
 
 //////////////////////////////////////////////////////////////////////

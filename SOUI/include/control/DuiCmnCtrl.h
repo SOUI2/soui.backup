@@ -123,12 +123,12 @@ protected:
     void OnMouseMove(UINT nFlags,CPoint pt);
     void OnMouseHover(WPARAM wParam, CPoint ptPos);
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONUP(OnLButtonUp)
         MSG_WM_MOUSEMOVE(OnMouseMove)
         MSG_WM_MOUSEHOVER(OnMouseHover)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 
     CRect m_rcText;  /**< 文本显示所在位置 */
 };
@@ -239,7 +239,7 @@ public:
         ATTR_INT(L"animate", m_bAnimate, FALSE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_ERASEBKGND(OnEraseBkgnd)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
@@ -247,7 +247,7 @@ public:
         MSG_WM_KEYUP(OnKeyUp)
         MSG_WM_DESTROY(OnDestroy)
         MSG_WM_SIZE(OnSize)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 };
 
 /**
@@ -343,9 +343,9 @@ protected:
         ATTR_INT(L"iframe", m_iFrame, FALSE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 };
 
 /**
@@ -414,11 +414,11 @@ protected:
     void OnShowWindow(BOOL bShow, UINT nStatus);
     void OnDestroy();
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_DESTROY(OnDestroy)
         MSG_WM_SHOWWINDOW(OnShowWindow)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"skin", m_pSkin, TRUE)
@@ -520,9 +520,9 @@ protected:
     ISkinObj *m_pSkinBg;   /**< 背景资源 */
     ISkinObj *m_pSkinPos;  /**< 前景资源 */
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"bgskin", m_pSkinBg, TRUE)
@@ -582,9 +582,9 @@ protected:
         ATTR_ENUM_END(m_nLineStyle)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 };
 
 /**
@@ -693,12 +693,12 @@ protected:
         ATTR_SKIN(L"focusskin", m_pFocusSkin, FALSE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONUP(OnLButtonUp)
         MSG_WM_KEYDOWN(OnKeyDown)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 };
 
 /**
@@ -740,9 +740,9 @@ protected:
         ATTR_ICON(L"src", m_theIcon, FALSE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 };
 
 
@@ -855,11 +855,11 @@ protected:
         ATTR_SKIN(L"focusskin", m_pFocusSkin, FALSE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 };
 
 /**
@@ -908,10 +908,10 @@ protected:
         ATTR_SKIN(L"skin", m_pSkin, TRUE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_LBUTTONUP(OnLButtonUp)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 protected:
     BOOL m_bToggled;
     ISkinObj *m_pSkin;
@@ -942,9 +942,9 @@ public:
         ATTR_INT(L"round",m_nRound,FALSE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 };
 
 }//namespace SOUI

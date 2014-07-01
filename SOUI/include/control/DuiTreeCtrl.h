@@ -217,7 +217,7 @@ protected:
         ATTR_COLOR(L"critemseltext",m_crItemSelText,FALSE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_DESTROY(OnDestroy)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
@@ -226,7 +226,7 @@ protected:
         MSG_WM_RBUTTONDOWN(OnRButtonDown);
         MSG_WM_MOUSEMOVE(OnMouseMove)
         MSG_WM_MOUSELEAVE(OnMouseLeave)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 };
 
 }//namespace SOUI

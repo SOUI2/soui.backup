@@ -324,7 +324,7 @@ protected:
     void OnEnableDragDrop(BOOL bEnable);
 
 protected:
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_CREATE(OnCreate)
         MSG_WM_DESTROY(OnDestroy)
         MSG_WM_PAINT_EX(OnPaint)
@@ -345,7 +345,7 @@ protected:
         MESSAGE_HANDLER_EX(EM_SETCHARFORMAT,OnSetCharFormat)
         MESSAGE_HANDLER_EX(EM_SETREADONLY,OnSetReadOnly)
         MESSAGE_HANDLER_EX(EM_EXLIMITTEXT,OnSetLimitText)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
         ATTR_INT(L"style",m_dwStyle,FALSE)

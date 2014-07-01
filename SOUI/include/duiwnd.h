@@ -131,10 +131,10 @@ protected:
     UINT    m_nChildrenCount;
     SWNDMSG        *m_pCurMsg;
 
-    UINT m_uCmdID;
-    SStringW    m_strName;
-
     CRect m_rcWindow;
+
+    SStringW m_strName;
+    int     m_nID;
 
     DuiStyle m_style;
     SStringT m_strWndText;
@@ -217,10 +217,6 @@ public:
     // Modify DuiWindow state
     DWORD ModifyState(DWORD dwStateAdd, DWORD dwStateRemove,BOOL bUpdate=FALSE);
 
-    // Get Command ID
-    UINT GetCmdID();
-    void SetCmdID(UINT uNewID);
-
     ULONG_PTR GetUserData();
     ULONG_PTR SetUserData(ULONG_PTR uData);
 
@@ -279,7 +275,7 @@ public:
 
     UINT GetChildrenCount();
 
-    SWindow * GetChild(UINT uCmdID);
+    SWindow * GetChild(int nID);
 
     virtual void SetChildContainer(SWindow *pChild);
 
@@ -314,6 +310,11 @@ public:
 
     DuiStyle& GetStyle();
 
+    LPCWSTR GetName(){return m_strName;}
+    void SetName(LPCWSTR pszName){m_strName=pszName;}
+
+    int GetID(){return m_nID;}
+    void SetID(int nID){m_nID=nID;}
     
     //************************************
     // Method:    FindChildByCmdID, 通过ID查找对应的子窗口
@@ -322,12 +323,14 @@ public:
     // Qualifier:
     // Parameter: UINT uCmdID
     //************************************
-    SWindow* FindChildByCmdID(UINT uCmdID);
+    SWindow* FindChildByID(int nID);
 
     template<class T>
-    T FindChildByCmdID2(UINT uCmdID)
+    T* FindChildByID2(int nID)
     {
-        return dynamic_cast<T>(FindChildByCmdID(uCmdID));
+        T* pRet= dynamic_cast<T *>(FindChildByID(nID));
+        ASSERT(pRet);
+        return pRet;
     }
 
     //************************************
@@ -340,9 +343,11 @@ public:
     SWindow* FindChildByName(LPCWSTR pszName);
 
     template<class T>
-    T FindChildByName2(LPCWSTR pszName)
+    T* FindChildByName2(LPCWSTR pszName)
     {
-        return dynamic_cast<T>(FindChildByName(pszName));
+        T* pRet= dynamic_cast<T*>(FindChildByName(pszName));
+        ASSERT(pRet);
+        return pRet;
     }
 
     // 从XML创建子窗口
@@ -661,7 +666,7 @@ protected:
     HRESULT OnAttributePosition(const SStringW& strValue, BOOL bLoading);
     HRESULT OnAttributeState(const SStringW& strValue, BOOL bLoading);
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_ERASEBKGND_EX(OnEraseBkgnd)
         MSG_WM_NCPAINT_EX(OnNcPaint)
@@ -682,11 +687,12 @@ protected:
     WND_MSG_MAP_END_BASE()
     
     SOUI_ATTRS_BEGIN()
+        ATTR_INT(L"id",m_nID,FALSE)
+        ATTR_STRINGW(L"name",m_strName,FALSE)
         ATTR_SKIN(L"skin", m_pBgSkin, TRUE)//直接获得皮肤对象
         ATTR_SKIN(L"ncskin", m_pNcSkin, TRUE)//直接获得皮肤对象
         ATTR_STYLE(L"class", m_style, TRUE)    //获得style
         ATTR_CHAIN(m_style)                    //支持对style中的属性定制
-        ATTR_INT(L"id", m_uCmdID, FALSE)
         ATTR_INT(L"data", m_uData, 0 )
         ATTR_CUSTOM(L"state", OnAttributeState)
         ATTR_STRINGT(L"href", m_strLinkUrl, FALSE)

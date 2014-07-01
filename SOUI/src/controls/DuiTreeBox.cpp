@@ -65,7 +65,7 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
             pToggle->InitFromXml(m_xmlSwitch.first_child());
             pParentItem->InsertChild(pToggle);
             pToggle->SetToggle(FALSE,FALSE);
-            pToggle->SetCmdID(IDC_SWITCH);
+            pToggle->SetID(IDC_SWITCH);
             pToggle->DuiSendMessage(WM_WINDOWPOSCHANGED);
         }
     }
@@ -445,7 +445,7 @@ void STreeBox::DrawItem(IRenderTarget * pRT, CRect & rc, HSTREEITEM hItem)
     DUINMGETTBDISPINFO nms;
     nms.hdr.code    = NM_GETTBDISPINFO;
     nms.hdr.hDuiWnd = m_hSWnd;
-    nms.hdr.idFrom  = GetCmdID();
+    nms.hdr.idFrom  = GetID();
     nms.hdr.pszNameFrom = GetName();
     nms.bHover      = hItem==m_hHoverItem;
     nms.bSelect     = hItem == m_hSelItem;
@@ -516,7 +516,7 @@ void STreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
         DUINMTBSELCHANGING nms2;
         nms2.hdr.code=NM_TBSELCHANGING;
         nms2.hdr.hDuiWnd=m_hSWnd;
-        nms2.hdr.idFrom=GetCmdID();
+        nms2.hdr.idFrom=GetID();
         nms2.hdr.pszNameFrom=GetName();
         nms2.hOldSel=m_hSelItem;
         nms2.hNewSel=m_hHoverItem;
@@ -528,7 +528,7 @@ void STreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
             DUINMTBSELCHANGED nms;
             nms.hdr.code=NM_TBSELCHANGED;
             nms.hdr.hDuiWnd=m_hSWnd;
-            nms.hdr.idFrom=GetCmdID();
+            nms.hdr.idFrom=GetID();
             nms.hdr.pszNameFrom=GetName();
             nms.hOldSel=m_hSelItem;
             nms.hNewSel=m_hHoverItem;
@@ -595,7 +595,7 @@ void STreeBox::OnLButtonDbClick(UINT nFlags,CPoint pt)
         DUINMITEMMOUSEEVENT nms;
         nms.hdr.code=NM_ITEMMOUSEEVENT;
         nms.hdr.hDuiWnd=m_hSWnd;
-        nms.hdr.idFrom=GetCmdID();
+        nms.hdr.idFrom=GetID();
         nms.hdr.pszNameFrom=GetName();
         nms.pItem=NULL;
         nms.uMsg=WM_LBUTTONDBLCLK;
