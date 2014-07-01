@@ -124,8 +124,6 @@ namespace SOUI
         CPoint          m_ptIcon;
         CPoint          m_ptText;
 
-        int             m_nMargin;
-
         COLORREF        m_crItemBg;
         COLORREF        m_crItemBg2;
         COLORREF        m_crItemSelBg;

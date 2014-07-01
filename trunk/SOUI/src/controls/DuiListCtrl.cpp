@@ -5,6 +5,7 @@
 
 #pragma warning(disable : 4267 4018)
 
+#define ITEM_MARGIN 4
 namespace SOUI
 {
 //////////////////////////////////////////////////////////////////////////
@@ -24,7 +25,6 @@ SListCtrl::SListCtrl()
     , m_ptIcon(-1,-1)
     , m_ptText(-1,-1)
     , m_bHotTrack(FALSE)
-    , m_nMargin(4)
 {
     m_bClipClient = TRUE;
 }
@@ -538,7 +538,7 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
         pRT->FillSolidRect( rcItem, crItemBg);
 
     //  ×ó±ß¼ÓÉÏ¿Õ°×
-    rcItem.left += m_nMargin;
+    rcItem.left += ITEM_MARGIN;
 
     if (CR_INVALID != crText)
     {
