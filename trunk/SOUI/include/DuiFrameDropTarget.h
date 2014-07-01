@@ -10,8 +10,8 @@ namespace SOUI{
         CDuiFrameDropTarget(SWindow * pFrame);
         ~CDuiFrameDropTarget(void);
 
-        BOOL RegisterDragDrop(HSWND hDuiWnd,IDropTarget *pDropTarget);
-        BOOL RevokeDragDrop(HSWND hDuiWnd);
+        BOOL RegisterDragDrop(SWND hDuiWnd,IDropTarget *pDropTarget);
+        BOOL RevokeDragDrop(SWND hDuiWnd);
 
 
         //////////////////////////////////////////////////////////////////////////
@@ -51,11 +51,11 @@ namespace SOUI{
 
         SWindow *m_pDuiFrame;
 
-        typedef SMap<HSWND,IDropTarget *> DTMAP;
+        typedef SMap<SWND,IDropTarget *> DTMAP;
         DTMAP m_mapDropTarget;
 
         IDataObject *m_pDataObj;
-        HSWND         m_hDuiHover;
+        SWND         m_hDuiHover;
     };
 
 }

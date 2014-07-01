@@ -120,7 +120,7 @@ SStringT SWindow::GetWindowText()
 }
 
 // Get tooltip text
-BOOL SWindow::OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,SStringT &strTip)
+BOOL SWindow::OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip)
 {
     if(m_hSWnd==hCurTipHost) return FALSE;
     hNewTipHost=m_hSWnd;
@@ -273,7 +273,7 @@ void SWindow::KillDuiTimerEx( UINT_PTR id )
     CDuiTimerEx::KillTimer(m_hSWnd,id);
 }
 
-HSWND SWindow::GetDuiHwnd()
+SWND SWindow::GetSwnd()
 {
     return m_hSWnd;
 }
@@ -513,7 +513,7 @@ SWindow* SWindow::FindChildByName( LPCWSTR pszName )
 
 BOOL SWindow::CreateChildren(pugi::xml_node xmlNode)
 {
-    for (pugi::xml_node xmlChild=xmlNode; xmlChild; xmlChild=xmlChild.next_sibling())
+    for (pugi::xml_node xmlChild=xmlNode.first_child(); xmlChild; xmlChild=xmlChild.next_sibling())
     {
         if(xmlChild.type() != pugi::node_element) continue;
         SWindow *pChild = DuiSystem::getSingleton().CreateWindowByName(xmlChild.name());
@@ -525,7 +525,7 @@ BOOL SWindow::CreateChildren(pugi::xml_node xmlNode)
                 SStringT strName=DUI_CW2T(xmlChild.attribute(L"src").value());
                 if(LOADXML(xmlDoc,strName,RT_LAYOUT))
                 {
-                    CreateChildren(xmlDoc.first_child());
+                    CreateChildren(xmlDoc);
                 }else
                 {
                     ASSERT(FALSE);
@@ -626,36 +626,23 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
         if(m_pParent)    m_pParent->DestroyChild(this);
         return FALSE;
     }
-    CreateChildren(xmlNode.first_child());
+    CreateChildren(xmlNode);
     return TRUE;
 }
 
-SWindow * SWindow::LoadXmlChildren(LPCWSTR pszXml)
+SWindow * SWindow::CreateChildren(LPCWSTR pszXml)
 {
     pugi::xml_document xmlDoc;
     if(!xmlDoc.load_buffer(pszXml,wcslen(pszXml),pugi::parse_default,pugi::encoding_utf16)) return NULL;
     SWindow * pLastChild=m_pLastChild;//保存当前的最后一个子窗口
-    BOOL bLoaded=CreateChildren(xmlDoc.first_child());
+    BOOL bLoaded=CreateChildren(xmlDoc);
     if(!bLoaded) return NULL;
-
-      CRect rcContainer=GetChildrenLayoutRect();
-  
-    SWindow *pNewChild=NULL;
-    if(pLastChild) pNewChild=pLastChild->GetDuiWindow(GDUI_NEXTSIBLING);
-    else pNewChild=m_pFirstChild;
-
-      while(pNewChild)
-      {
-          pNewChild->DuiSendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
-          pNewChild->DuiSendMessage(WM_SHOWWINDOW,IsVisible(TRUE),ParentShow);
-          pNewChild->NotifyInvalidate();
-          pNewChild=pNewChild->GetDuiWindow(GDUI_NEXTSIBLING);
-      }
+    OnWindowPosChanged(NULL);
     return m_pLastChild;
 }
 
 // Hittest children
-HSWND SWindow::HswndFromPoint(CPoint ptHitTest, BOOL bOnlyText)
+SWND SWindow::HswndFromPoint(CPoint ptHitTest, BOOL bOnlyText)
 {
     if (!m_rcWindow.PtInRect(ptHitTest)) return NULL;
 
@@ -665,7 +652,7 @@ HSWND SWindow::HswndFromPoint(CPoint ptHitTest, BOOL bOnlyText)
     if(!rcClient.PtInRect(ptHitTest))
         return m_hSWnd;    //只在鼠标位于客户区时，才继续搜索子窗口
     
-    HSWND hDuiWndChild = NULL;
+    SWND hDuiWndChild = NULL;
 
     SWindow *pChild=m_pLastChild;
     while(pChild)
@@ -696,27 +683,6 @@ BOOL SWindow::RedrawRegion(IRenderTarget *pRT, IRegion *pRgn)
 {
     PRSTATE prState=PRS_LOOKSTART;
     return _PaintRegion(pRT,pRgn,this,this,NULL,prState);
-}
-
-void SWindow::OnAttributeChanged( const SStringW & strAttrName,BOOL bLoading,HRESULT hRet )
-{
-    if(!bLoading && hRet==S_OK)
-    {
-        if(strAttrName==L"pos")
-        {
-            //位置改变时需要重新计算位置，并更新
-            NotifyInvalidate();
-            if(GetParent())
-            {
-                OnWindowPosChanged(NULL);
-                NotifyInvalidate();
-            }
-        }
-        else
-        {
-            NotifyInvalidate();
-        }
-    }
 }
 
 void SWindow::NotifyInvalidate()
@@ -1170,13 +1136,14 @@ HRESULT SWindow::OnAttributeState( const SStringW& strValue, BOOL bLoading )
 }
 
 
-HRESULT SWindow::OnAttributePosition(const SStringW& strValue, BOOL bLoading)
+HRESULT SWindow::OnAttrPos(const SStringW& strValue, BOOL bLoading)
 {
     if (strValue.IsEmpty()) return E_FAIL;
-
+    if(!bLoading) NotifyInvalidateRect(m_rcWindow);
     ClearLayoutState();
     CDuiLayout::StrPos2DuiWndPos(strValue,m_dlgpos);
-    return bLoading?S_FALSE:S_OK;
+    if(!bLoading) OnWindowPosChanged(NULL);
+    return S_FALSE;
 }
 
 
@@ -1268,12 +1235,12 @@ void SWindow::ReleaseRenderTarget(IRenderTarget *pRT)
     m_gdcFlags=-1;
 }
 
-HSWND SWindow::GetDuiCapture()
+SWND SWindow::GetDuiCapture()
 {
     return GetContainer()->OnGetDuiCapture();
 }
 
-HSWND SWindow::SetDuiCapture()
+SWND SWindow::SetDuiCapture()
 {
     return GetContainer()->OnSetDuiCapture(m_hSWnd);
 }

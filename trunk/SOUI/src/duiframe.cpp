@@ -88,33 +88,33 @@ BOOL CDuiFrame::OnReleaseDuiCapture()
     return TRUE;
 }
 
-HSWND CDuiFrame::OnSetDuiCapture(HSWND hDuiWnd)
+SWND CDuiFrame::OnSetDuiCapture(SWND hDuiWnd)
 {
     SWindow *pWnd=DuiWindowMgr::GetWindow(hDuiWnd);
     ASSERT(pWnd);
     if(pWnd->IsDisabled(TRUE)) return 0;
 
-    HSWND hRet=m_hCapture;
+    SWND hRet=m_hCapture;
     m_hCapture=hDuiWnd;
     return hRet;
 }
 
-void CDuiFrame::OnSetDuiFocus(HSWND hDuiWnd)
+void CDuiFrame::OnSetDuiFocus(SWND hDuiWnd)
 {
     m_focusMgr.SetFocusedHwnd(hDuiWnd);
 }
 
-HSWND CDuiFrame::OnGetDuiCapture()
+SWND CDuiFrame::OnGetDuiCapture()
 {
     return m_hCapture;
 }
 
-HSWND CDuiFrame::GetDuiFocus()
+SWND CDuiFrame::GetDuiFocus()
 {
     return m_focusMgr.GetFocusedHwnd();
 }
 
-HSWND CDuiFrame::GetDuiHover()
+SWND CDuiFrame::GetDuiHover()
 {
     return m_hHover;
 }
@@ -127,7 +127,7 @@ void CDuiFrame::OnFrameMouseMove(UINT uFlag,CPoint pt)
         CRect rc;
         pCapture->GetRect(&rc);
         SWindow * pHover=rc.PtInRect(pt)?pCapture:NULL;
-        HSWND hHover=pHover?pHover->GetDuiHwnd():NULL;
+        SWND hHover=pHover?pHover->GetSwnd():NULL;
         if(hHover!=m_hHover)
         {
             SWindow *pOldHover=DuiWindowMgr::GetWindow(m_hHover);
@@ -139,7 +139,7 @@ void CDuiFrame::OnFrameMouseMove(UINT uFlag,CPoint pt)
     }
     else
     {
-        HSWND hHover=m_pHost->HswndFromPoint(pt,FALSE);
+        SWND hHover=m_pHost->HswndFromPoint(pt,FALSE);
         SWindow * pHover=DuiWindowMgr::GetWindow(hHover);
         if(m_hHover!=hHover)
         {
@@ -266,12 +266,12 @@ void CDuiFrame::OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     }
 }
 
-BOOL CDuiFrame::RegisterDragDrop( HSWND hDuiWnd,IDropTarget *pDropTarget )
+BOOL CDuiFrame::RegisterDragDrop( SWND hDuiWnd,IDropTarget *pDropTarget )
 {
     return m_dropTarget.RegisterDragDrop(hDuiWnd,pDropTarget);
 }
 
-BOOL CDuiFrame::RevokeDragDrop( HSWND hDuiWnd )
+BOOL CDuiFrame::RevokeDragDrop( SWND hDuiWnd )
 {
     return m_dropTarget.RevokeDragDrop(hDuiWnd);
 }

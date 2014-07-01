@@ -73,8 +73,6 @@ CDuiComboBoxBase::~CDuiComboBoxBase(void)
 
 BOOL CDuiComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
 {
-    pugi::xml_node xmlParent = xmlNode.parent();
-
     ASSERT(m_pSkinBtn);
     //创建edit对象
     if(!m_bDropdown)
@@ -82,7 +80,7 @@ BOOL CDuiComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
         SIZE szBtn=m_pSkinBtn->GetSkinSize();
         m_pEdit=new CComboEdit(this);
         InsertChild(m_pEdit);
-        pugi::xml_node xmlEditStyle=xmlParent.child(L"editstyle");
+        pugi::xml_node xmlEditStyle=xmlNode.child(L"editstyle");
         if(xmlEditStyle)
             m_pEdit->InitFromXml(xmlEditStyle);
         else
@@ -356,7 +354,7 @@ BOOL SComboBox::CreateListBox( pugi::xml_node xmlNode )
     m_pListBox=new SListBox;
     m_pListBox->SetContainer(GetContainer());
 
-    m_pListBox->InitFromXml(xmlNode.parent().child(L"liststyle"));
+    m_pListBox->InitFromXml(xmlNode.child(L"liststyle"));
     m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
     m_pListBox->SetAttribute(L"hottrack",L"1",TRUE);
     m_pListBox->SetOwner(this);    //chain notify message to combobox

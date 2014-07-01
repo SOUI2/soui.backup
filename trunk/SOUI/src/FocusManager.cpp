@@ -236,7 +236,7 @@ namespace SOUI
             {
                 if(pNext->IsSiblingsAutoGroupped())
                 {
-                    SetFocusedHwndWithReason(pNext->GetDuiHwnd(),kReasonFocusTraversal);
+                    SetFocusedHwndWithReason(pNext->GetSwnd(),kReasonFocusTraversal);
                     break;
                 }
                 pNext=pNext->GetDuiWindow(ucode);
@@ -248,7 +248,7 @@ namespace SOUI
                 {
                     if(pNext->IsSiblingsAutoGroupped())
                     {
-                        SetFocusedHwndWithReason(pNext->GetDuiHwnd(),kReasonFocusTraversal);
+                        SetFocusedHwndWithReason(pNext->GetSwnd(),kReasonFocusTraversal);
                         break;
                     }
                     pNext=pNext->GetDuiWindow(ucode);
@@ -276,7 +276,7 @@ namespace SOUI
         SWindow *pDuiWnd=GetNextFocusableView(pFocus,reverse,true);
         if(pDuiWnd)
         {
-            SetFocusedHwndWithReason(pDuiWnd->GetDuiHwnd(),kReasonFocusTraversal);
+            SetFocusedHwndWithReason(pDuiWnd->GetSwnd(),kReasonFocusTraversal);
         }
     }
 
@@ -287,7 +287,7 @@ namespace SOUI
         return fs.FindNextFocusableView(original_starting_view,bReverse,false);
     }
 
-    void CFocusManager::SetFocusedHwndWithReason( HSWND hDuiWnd, FocusChangeReason reason )
+    void CFocusManager::SetFocusedHwndWithReason( SWND hDuiWnd, FocusChangeReason reason )
     {
         if(hDuiWnd == focused_view_)
         {

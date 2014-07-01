@@ -449,7 +449,7 @@ void CDuiHostWnd::OnTimer(UINT_PTR idEvent)
     STimerID duiTimerID((DWORD)idEvent);
     if(duiTimerID.bDuiTimer)
     {
-        SWindow *pDuiWnd=DuiWindowMgr::GetWindow((HSWND)duiTimerID.hDuiWnd);
+        SWindow *pDuiWnd=DuiWindowMgr::GetWindow((SWND)duiTimerID.hDuiWnd);
         if(pDuiWnd)
         {
             if(pDuiWnd==this) OnDuiTimer(duiTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
@@ -515,7 +515,7 @@ LRESULT CDuiHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
         }
         else
         {
-            HSWND hNewTipHost=0;
+            SWND hNewTipHost=0;
             CRect rcTip;
             SStringT strTip;
             BOOL bUpdate=pHover->OnUpdateToolTip(m_pTipCtrl->m_dwHostID,hNewTipHost,rcTip,strTip);
@@ -673,13 +673,13 @@ BOOL CDuiHostWnd::OnReleaseDuiCapture()
     return TRUE;
 }
 
-HSWND CDuiHostWnd::OnSetDuiCapture(HSWND hDuiWnd)
+SWND CDuiHostWnd::OnSetDuiCapture(SWND hDuiWnd)
 {
     SetCapture();
     return __super::OnSetDuiCapture(hDuiWnd);
 }
 
-HSWND CDuiHostWnd::GetDuiCapture()
+SWND CDuiHostWnd::GetDuiCapture()
 {
     if(GetCapture()!=m_hWnd) return NULL;
     return __super::OnGetDuiCapture();

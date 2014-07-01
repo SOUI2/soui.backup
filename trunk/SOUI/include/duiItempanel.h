@@ -45,7 +45,7 @@ public:
 
     virtual BOOL OnReleaseDuiCapture();
 
-    virtual HSWND OnSetDuiCapture(HSWND hDuiWNd);
+    virtual SWND OnSetDuiCapture(SWND hDuiWNd);
     virtual HWND GetHostHwnd();
 
     virtual BOOL IsTranslucent();
@@ -65,7 +65,7 @@ public:
     //////////////////////////////////////////////////////////////////////////
     virtual void ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove);
 
-    virtual HSWND HswndFromPoint(POINT ptHitTest, BOOL bOnlyText);
+    virtual SWND HswndFromPoint(POINT ptHitTest, BOOL bOnlyText);
 
     virtual void Draw(IRenderTarget *pRT,const CRect & rc);
 
@@ -79,7 +79,7 @@ public:
     void SetItemData(LPARAM dwData);
     LPARAM GetItemData();
 
-    BOOL OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
+    BOOL OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
     
     void OnSetCaretValidateRect(LPCRECT lpRect);
 

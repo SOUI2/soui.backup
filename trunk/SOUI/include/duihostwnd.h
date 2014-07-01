@@ -174,10 +174,10 @@ protected:
     BOOL OnReleaseDuiCapture();
 
     /*virtual */
-    HSWND OnSetDuiCapture(HSWND hDuiWnd);
+    SWND OnSetDuiCapture(SWND hDuiWnd);
 
     /*virtual */
-    HSWND GetDuiCapture();
+    SWND GetDuiCapture();
 
     /*virtual */
     BOOL IsTranslucent();

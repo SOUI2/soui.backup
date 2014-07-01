@@ -18,9 +18,9 @@ class SOUI_EXP CDuiFrame : public ISwndContainer
 public:
     CDuiFrame(SWindow *pHost);
 
-    virtual BOOL RegisterDragDrop(HSWND hDuiWnd,IDropTarget *pDropTarget);
+    virtual BOOL RegisterDragDrop(SWND hDuiWnd,IDropTarget *pDropTarget);
 
-    virtual BOOL RevokeDragDrop(HSWND hDuiWnd);
+    virtual BOOL RevokeDragDrop(SWND hDuiWnd);
 
     IDropTarget * GetDropTarget(){return &m_dropTarget;}
 
@@ -31,14 +31,14 @@ public:
 
     virtual BOOL OnReleaseDuiCapture();
 
-    virtual HSWND OnSetDuiCapture(HSWND hDuiWnd);
-    virtual void OnSetDuiFocus(HSWND hDuiWnd);
+    virtual SWND OnSetDuiCapture(SWND hDuiWnd);
+    virtual void OnSetDuiFocus(SWND hDuiWnd);
 
-    virtual HSWND OnGetDuiCapture();
+    virtual SWND OnGetDuiCapture();
 
-    virtual HSWND GetDuiFocus();
+    virtual SWND GetDuiFocus();
 
-    virtual HSWND GetDuiHover();
+    virtual SWND GetDuiHover();
 
     virtual IAcceleratorMgr* GetAcceleratorMgr(){return &m_focusMgr;}
 
@@ -64,8 +64,8 @@ protected:
     virtual void OnActivate(UINT nState);
 
 protected:
-    HSWND m_hCapture;
-    HSWND m_hHover;
+    SWND m_hCapture;
+    SWND m_hHover;
     BOOL    m_bNcHover;
 
     CFocusManager m_focusMgr;

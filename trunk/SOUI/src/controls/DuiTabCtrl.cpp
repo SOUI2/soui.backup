@@ -455,7 +455,7 @@ BOOL STabCtrl::SetItemTitle( int nIndex, LPCTSTR lpszTitle )
 
 BOOL STabCtrl::CreateChildren( pugi::xml_node xmlNode )
 {
-    for ( pugi::xml_node xmlChild = xmlNode; xmlChild; xmlChild = xmlChild.next_sibling())
+    for ( pugi::xml_node xmlChild = xmlNode.first_child(); xmlChild; xmlChild = xmlChild.next_sibling())
     {
         InsertItem(xmlChild,-1,TRUE);
     }

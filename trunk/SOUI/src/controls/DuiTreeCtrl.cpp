@@ -355,8 +355,7 @@ BOOL STreeCtrl::CreateChildren(pugi::xml_node xmlNode)
     RemoveAllItems();
     ItemLayout();
 
-    pugi::xml_node xmlParent=xmlNode.parent();
-    pugi::xml_node xmlItem=xmlParent.child(L"item");
+    pugi::xml_node xmlItem=xmlNode.child(L"item");
 
     if(xmlItem) LoadBranch(STVI_ROOT,xmlItem);
 

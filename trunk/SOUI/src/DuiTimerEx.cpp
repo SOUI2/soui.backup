@@ -12,7 +12,7 @@ namespace SOUI
 //////////////////////////////////////////////////////////////////////////
 template<> CDuiTimerEx * Singleton<CDuiTimerEx>::ms_Singleton=0;
 
-BOOL CDuiTimerEx::_SetTimer( HSWND hDuiWnd,UINT_PTR uTimerID,UINT nElapse )
+BOOL CDuiTimerEx::_SetTimer( SWND hDuiWnd,UINT_PTR uTimerID,UINT nElapse )
 {
     _KillTimer(hDuiWnd,uTimerID);
     UINT_PTR idEvent=::SetTimer(NULL,uTimerID,nElapse,_TimerProc);
@@ -22,7 +22,7 @@ BOOL CDuiTimerEx::_SetTimer( HSWND hDuiWnd,UINT_PTR uTimerID,UINT nElapse )
     return TRUE;
 }
 
-void CDuiTimerEx::_KillTimer( HSWND hDuiWnd,UINT_PTR uTimerID )
+void CDuiTimerEx::_KillTimer( SWND hDuiWnd,UINT_PTR uTimerID )
 {
     POSITION pos=m_mapNamedObj->GetStartPosition();
     while(pos)
@@ -37,7 +37,7 @@ void CDuiTimerEx::_KillTimer( HSWND hDuiWnd,UINT_PTR uTimerID )
     }
 }
 
-void CDuiTimerEx::_KillTimer( HSWND hDuiWnd )
+void CDuiTimerEx::_KillTimer( SWND hDuiWnd )
 {
     POSITION pos=m_mapNamedObj->GetStartPosition();
     while(pos)

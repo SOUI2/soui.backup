@@ -406,9 +406,8 @@ BOOL SListBoxEx::CreateChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return TRUE;
 
-    pugi::xml_node xmlParent=xmlNode.parent();
-    pugi::xml_node xmlTempl=xmlParent.child(L"template");
-    pugi::xml_node xmlItems=xmlParent.child(L"items");
+    pugi::xml_node xmlTempl=xmlNode.child(L"template");
+    pugi::xml_node xmlItems=xmlNode.child(L"items");
 
     if(!IsVirtual())
     {//∆’Õ®¡–±Ì
@@ -574,7 +573,7 @@ void SListBoxEx::OnDestroy()
     __super::OnDestroy();
 }
 
-BOOL SListBoxEx::OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,SStringT &strTip)
+BOOL SListBoxEx::OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip)
 {
     if(m_iHoverItem==-1)
         return __super::OnUpdateToolTip(hCurTipHost,hNewTipHost,rcTip,strTip);

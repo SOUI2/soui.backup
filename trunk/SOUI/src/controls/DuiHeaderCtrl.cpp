@@ -335,9 +335,9 @@ namespace SOUI
 
     BOOL SHeaderCtrl::CreateChildren( pugi::xml_node xmlNode )
     {
-        if(!xmlNode || wcscmp(xmlNode.name(),L"items")!=0)
-            return TRUE;
-        pugi::xml_node xmlItem=xmlNode.child(L"item");
+        pugi::xml_node xmlItems=xmlNode.child(L"items");
+        if(!xmlItems) return FALSE;
+        pugi::xml_node xmlItem=xmlItems.child(L"item");
         int iOrder=0;
         while(xmlItem)
         {

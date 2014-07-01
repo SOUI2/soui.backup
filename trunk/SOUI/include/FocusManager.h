@@ -154,13 +154,13 @@ namespace SOUI
         // Low-level methods to force the focus to change (and optionally provide
         // a reason). If the focus change should only happen if the view is
         // currenty focusable, enabled, and visible, call view->RequestFocus().
-        void SetFocusedHwndWithReason(HSWND hDuiWnd, FocusChangeReason reason);
-        void SetFocusedHwnd(HSWND hDuiWnd)
+        void SetFocusedHwndWithReason(SWND hDuiWnd, FocusChangeReason reason);
+        void SetFocusedHwnd(SWND hDuiWnd)
         {
             SetFocusedHwndWithReason(hDuiWnd, kReasonDirectFocusChange);
         }
 
-        HSWND GetFocusedHwnd(){return focused_view_;}
+        SWND GetFocusedHwnd(){return focused_view_;}
 
         // Stores and restores the focused view. Used when the window becomes
         // active/inactive.
@@ -210,9 +210,9 @@ namespace SOUI
         void ValidateFocusedView();
     private:
         // The view that currently is focused.
-        HSWND  focused_view_;
+        SWND  focused_view_;
 
-        HSWND  focused_backup_;
+        SWND  focused_backup_;
 
         bool is_changing_focus_;
 

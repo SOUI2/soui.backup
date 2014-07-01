@@ -49,14 +49,22 @@ int SListCtrl::InsertColumn(int nIndex, LPCTSTR pszText, int nWidth, LPARAM lPar
 BOOL SListCtrl::CreateChildren(pugi::xml_node xmlNode)
 {
     //  listctrl的子控件只能是一个header控件
-    if (wcscmp(xmlNode.name(), SHeaderCtrl::GetClassName()) != 0)
-        return FALSE;
-
     if (!__super::CreateChildren(xmlNode))
         return FALSE;
-
-    m_pHeader = (SHeaderCtrl*)GetDuiWindow(GDUI_FIRSTCHILD);
-    ASSERT(m_pHeader->IsClass(SHeaderCtrl::GetClassName()));
+    m_pHeader=NULL;
+    
+    SWindow *pChild=GetDuiWindow(GDUI_FIRSTCHILD);
+    while(pChild)
+    {
+        if(pChild->IsClass(SHeaderCtrl::GetClassName()))
+        {
+            m_pHeader=(SHeaderCtrl*)pChild;
+            break;
+        }
+        pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
+    }
+    if(!m_pHeader) return FALSE;
+        
     SStringW strPos;
     strPos.Format(L"0,0,-0,%d",m_nHeaderHeight);
     m_pHeader->SetAttribute(L"pos",strPos,TRUE);
