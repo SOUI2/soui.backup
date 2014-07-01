@@ -829,10 +829,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiFrameDropTarget.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\controls\DuiHeaderCtrl.cpp"
 				>
 			</File>
@@ -1075,6 +1071,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\SDropTargetDispatcher.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SimpleWnd.cpp"
 				>
 				<FileConfiguration
@@ -1198,10 +1198,6 @@
 			</File>
 			<File
 				RelativePath=".\include\duiframe.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiFrameDropTarget.h"
 				>
 			</File>
 			<File
@@ -1362,6 +1358,10 @@
 			</File>
 			<File
 				RelativePath=".\include\rootwnd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\SDropTargetDispatcher.h"
 				>
 			</File>
 			<File
