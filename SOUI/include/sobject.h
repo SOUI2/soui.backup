@@ -95,7 +95,6 @@ public:
 
 protected:
     virtual void OnInitFinished(pugi::xml_node xmlNode) {}
-    virtual void OnAttributeChanged(const SStringW & strAttrName,BOOL bLoading,HRESULT hRet) {}
 
 #ifdef    _DEBUG
     SStringW m_strXml;

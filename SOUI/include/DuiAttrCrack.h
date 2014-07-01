@@ -24,12 +24,11 @@ public:                                                             \
     strValue,              \
     bLoading               \
     );                     \
-    OnAttributeChanged(strAttribName,bLoading,hRet);        \
     return hRet;                                                \
     }                                                               \
 
 #define SOUI_ATTRS_QUIT()                              \
-    OnAttributeChanged(strAttribName,bLoading,hRet);        \
+        hRet=E_FAIL;                                    \
     return hRet;                                                \
     }                                                           \
  

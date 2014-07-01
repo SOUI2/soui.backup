@@ -63,7 +63,7 @@ LRESULT SItemPanel::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     {
         DUINMITEMMOUSEEVENT nms;
         nms.hdr.code=NM_ITEMMOUSEEVENT;
-        nms.hdr.hDuiWnd=m_pFrmHost->GetDuiHwnd();
+        nms.hdr.hDuiWnd=m_pFrmHost->GetSwnd();
         nms.hdr.idFrom=m_pFrmHost->GetID();
         nms.hdr.pszNameFrom= m_pFrmHost->GetName();
         nms.pItem=this;
@@ -80,7 +80,7 @@ LRESULT SItemPanel::OnDuiNotify(LPSNMHDR pHdr)
 {
     DUINMITEMNOTIFY nmsItem;
     nmsItem.hdr.code=NM_LBITEMNOTIFY;
-    nmsItem.hdr.hDuiWnd=m_pFrmHost->GetDuiHwnd();
+    nmsItem.hdr.hDuiWnd=m_pFrmHost->GetSwnd();
     nmsItem.hdr.idFrom=m_pFrmHost->GetID();
     nmsItem.hdr.pszNameFrom=m_pFrmHost->GetName();
     nmsItem.pItem=this;
@@ -149,7 +149,7 @@ BOOL SItemPanel::OnReleaseDuiCapture()
     return TRUE;
 }
 
-HSWND SItemPanel::OnSetDuiCapture(HSWND hDuiWNd)
+SWND SItemPanel::OnSetDuiCapture(SWND hDuiWNd)
 {
     m_pItemContainer->OnItemSetCapture(this,TRUE);
     return __super::OnSetDuiCapture(hDuiWNd);
@@ -192,9 +192,9 @@ void SItemPanel::ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove)
     ModifyState(dwStateAdd,dwStateRemove,FALSE);
 }
 
-HSWND SItemPanel::HswndFromPoint(POINT ptHitTest, BOOL bOnlyText)
+SWND SItemPanel::HswndFromPoint(POINT ptHitTest, BOOL bOnlyText)
 {
-    HSWND hRet=__super::HswndFromPoint(ptHitTest,bOnlyText);
+    SWND hRet=__super::HswndFromPoint(ptHitTest,bOnlyText);
     if(hRet==m_hSWnd) hRet=NULL;
     return hRet;
 }
@@ -248,7 +248,7 @@ LPARAM SItemPanel::GetItemData()
     return m_dwData;
 }
 
-BOOL SItemPanel::OnUpdateToolTip( HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,SStringT &strTip )
+BOOL SItemPanel::OnUpdateToolTip( SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip )
 {
     if(hCurTipHost==m_hHover) return FALSE;
     if(m_hHover==m_hSWnd) return FALSE;

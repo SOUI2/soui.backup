@@ -15,9 +15,9 @@ class SOUI_EXP ISwndContainer : public ITimelineHandler
 {
     friend class SWindow;
 public:
-    virtual BOOL RegisterDragDrop(HSWND hDuiWnd,IDropTarget *pDropTarget)=NULL;
+    virtual BOOL RegisterDragDrop(SWND hDuiWnd,IDropTarget *pDropTarget)=NULL;
 
-    virtual BOOL RevokeDragDrop(HSWND hDuiWnd)=NULL;
+    virtual BOOL RevokeDragDrop(SWND hDuiWnd)=NULL;
 
     virtual LRESULT OnDuiNotify(LPSNMHDR pHdr)=NULL;
 
@@ -33,17 +33,17 @@ public:
 
     virtual void OnRedraw(const CRect &rc)=NULL;
 
-    virtual HSWND OnGetDuiCapture()=NULL;
+    virtual SWND OnGetDuiCapture()=NULL;
 
     virtual BOOL OnReleaseDuiCapture()=NULL;
 
-    virtual HSWND OnSetDuiCapture(HSWND hDuiWnd)=NULL;
+    virtual SWND OnSetDuiCapture(SWND hDuiWnd)=NULL;
 
-    virtual void OnSetDuiFocus(HSWND hDuiWnd)=NULL;
+    virtual void OnSetDuiFocus(SWND hDuiWnd)=NULL;
 
-    virtual HSWND GetDuiHover()=NULL;
+    virtual SWND GetDuiHover()=NULL;
 
-    virtual HSWND GetDuiFocus()=NULL;
+    virtual SWND GetDuiFocus()=NULL;
 
     virtual BOOL DuiCreateCaret(HBITMAP hBmp,int nWidth,int nHeight)=NULL;
 

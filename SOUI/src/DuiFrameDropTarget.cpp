@@ -21,7 +21,7 @@ namespace SOUI{
         }
     }
 
-    BOOL CDuiFrameDropTarget::RegisterDragDrop( HSWND hDuiWnd,IDropTarget *pDropTarget )
+    BOOL CDuiFrameDropTarget::RegisterDragDrop( SWND hDuiWnd,IDropTarget *pDropTarget )
     {
         if(m_mapDropTarget.Lookup(hDuiWnd)) return FALSE;
         m_mapDropTarget[hDuiWnd]=pDropTarget;
@@ -29,7 +29,7 @@ namespace SOUI{
         return TRUE;
     }
 
-    BOOL CDuiFrameDropTarget::RevokeDragDrop( HSWND hDuiWnd )
+    BOOL CDuiFrameDropTarget::RevokeDragDrop( SWND hDuiWnd )
     {
         DTMAP::CPair *pPair=m_mapDropTarget.Lookup(hDuiWnd);
         if(!pPair) return FALSE;
@@ -58,7 +58,7 @@ namespace SOUI{
 
     HRESULT STDMETHODCALLTYPE CDuiFrameDropTarget::DragOver( /* [in] */ DWORD grfKeyState, /* [in] */ POINTL pt, /* [out][in] */ __RPC__inout DWORD *pdwEffect )
     {
-        HSWND hDuiHover=m_pDuiFrame->HswndFromPoint(PointL2FrameClient(pt),FALSE);
+        SWND hDuiHover=m_pDuiFrame->HswndFromPoint(PointL2FrameClient(pt),FALSE);
         ASSERT(hDuiHover);
         *pdwEffect=DROPEFFECT_NONE;
         if(hDuiHover != m_hDuiHover)

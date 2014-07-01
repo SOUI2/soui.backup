@@ -240,8 +240,7 @@ BOOL SListBox::CreateChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return TRUE;
 
-    pugi::xml_node xmlParent=xmlNode.parent();
-    pugi::xml_node xmlItem=xmlParent.child(L"items");
+    pugi::xml_node xmlItem=xmlNode.child(L"items");
     while(xmlItem)
     {
         LPLBITEM pItemObj = new LBITEM;
@@ -250,7 +249,7 @@ BOOL SListBox::CreateChildren(pugi::xml_node xmlNode)
         xmlItem = xmlItem.next_sibling();
     }
 
-    int nSelItem=xmlParent.attribute(L"cursel").as_int(-1);
+    int nSelItem=xmlNode.attribute(L"cursel").as_int(-1);
     SetCurSel(nSelItem);
 
     return TRUE;

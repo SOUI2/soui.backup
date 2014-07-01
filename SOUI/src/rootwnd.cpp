@@ -53,7 +53,7 @@ namespace SOUI
             DuiSystem::getSingleton().LoadSkins(m_strName);    //load skin only used in the host window
         }
         SObject::InitFromXml(xmlNode);
-        return CreateChildren(xmlNode.first_child());
+        return CreateChildren(xmlNode);
     }
 
 }

@@ -91,7 +91,7 @@ protected:
 
     virtual BOOL CreateChildren(pugi::xml_node xmlNode);
     // Get tooltip Info
-    virtual BOOL OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
+    virtual BOOL OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
 
     void NotifySelChange(int nOldSel,int nNewSel);
 

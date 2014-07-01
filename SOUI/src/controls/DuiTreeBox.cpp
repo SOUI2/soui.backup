@@ -343,14 +343,13 @@ BOOL STreeBox::CreateChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return FALSE;
 
-    pugi::xml_node xmlParent=xmlNode.parent();
-    pugi::xml_node xmlSwitch=xmlParent.child(L"switch");
+    pugi::xml_node xmlSwitch=xmlNode.child(L"switch");
 
     if(xmlSwitch)   m_xmlSwitch.append_copy(xmlSwitch);
 
     RemoveAllItems();
 
-    pugi::xml_node xmlItem=xmlParent.child(L"item");
+    pugi::xml_node xmlItem=xmlNode.child(L"item");
     if(xmlItem) LoadBranch(STVI_ROOT,xmlItem);
 
     return TRUE;

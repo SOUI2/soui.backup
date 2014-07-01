@@ -10,7 +10,7 @@ namespace SOUI
 
 class SWindow;
 
-class SOUI_EXP DuiWindowMgr :public DuiSingletonMap<DuiWindowMgr,SWindow*,HSWND>
+class SOUI_EXP DuiWindowMgr :public DuiSingletonMap<DuiWindowMgr,SWindow*,SWND>
 {
 public:
 
@@ -19,18 +19,18 @@ public:
     ~DuiWindowMgr();
 
     // Get DuiWindow pointer from handle
-    static SWindow* GetWindow(HSWND hDuiWnd);
+    static SWindow* GetWindow(SWND hDuiWnd);
 
     // Specify a handle to a DuiWindow
-    static HSWND NewWindow(SWindow *pDuiWnd);
+    static SWND NewWindow(SWindow *pDuiWnd);
 
     // Destroy DuiWindow
-    static BOOL DestroyWindow(HSWND hDuiWnd);
+    static BOOL DestroyWindow(SWND hDuiWnd);
 protected:
 
     CRITICAL_SECTION m_lockWndMap;
 
-    HSWND m_hNextWnd;
+    SWND m_hNextWnd;
 };
 
 }//namespace SOUI

@@ -38,7 +38,7 @@ public:
     DWORD    uTimerID:7;        //定时器ID，一个窗口最多支持128个定时器。
     DWORD    bDuiTimer:1;    //区别通用定时器的标志，标志为1时，表示该定时器为DUI定时器
 
-    STimerID(HSWND hWnd,char id)
+    STimerID(SWND hWnd,char id)
     {
         ASSERT(hWnd<0x00FFFFFF && id>=0);
         bDuiTimer=1;
@@ -124,7 +124,7 @@ public:
         LPARAM lParam;
     } SWNDMSG,*PSWNDMSG;
 protected:
-    HSWND m_hSWnd;
+    SWND m_hSWnd;
     ISwndContainer *m_pContainer;
     SWindow *m_pOwner;
     SWindow *m_pParent,*m_pFirstChild, *m_pLastChild, *m_pNextSibling,*m_pPrevSibling;    //窗口树结构
@@ -177,7 +177,7 @@ public:
     void SetFixSize(int nWid,int nHei);
     void SetBkColor(COLORREF cr);
 
-    // Get DuiWindow rect(position in container)
+    // Get SWindow rect(position in container)
     void GetRect(LPRECT prect);
 
     virtual void GetClient(LPRECT pRect);
@@ -185,8 +185,6 @@ public:
     void GetDlgPosition(DUIWND_POSITION *pPos);
     // Get inner text
     SStringT GetWindowText();
-
-
     // Set inner text
     BOOL SetWindowText(LPCTSTR lpszText);
 
@@ -209,7 +207,7 @@ public:
     virtual BOOL OnSetCursor(const CPoint &pt);
 
     // Get tooltip Info
-    virtual BOOL OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
+    virtual BOOL OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
 
     // Get DuiWindow state
     DWORD GetState(void);
@@ -262,7 +260,7 @@ public:
     //************************************
     void KillDuiTimerEx(UINT_PTR id);
 
-    HSWND GetDuiHwnd();
+    SWND GetSwnd();
 
 
     SWindow *GetParent();
@@ -353,7 +351,7 @@ public:
     // 从XML创建子窗口
     // LPCWSTR pszXml: utf16编码的XML串
     // return : 顶层的最后一个窗口
-    SWindow *LoadXmlChildren(LPCWSTR pszXml);
+    SWindow *CreateChildren(LPCWSTR pszXml);
 
     void NotifyInvalidate();
     void NotifyInvalidateRect(LPRECT lprect);
@@ -383,7 +381,7 @@ public:
     // Create SWindow from xml element
     virtual BOOL InitFromXml(pugi::xml_node xmlNode);
 
-    virtual HSWND HswndFromPoint(CPoint ptHitTest, BOOL bOnlyText);
+    virtual SWND HswndFromPoint(CPoint ptHitTest, BOOL bOnlyText);
 
     virtual LRESULT DuiNotify(LPSNMHDR pnms);
 
@@ -398,7 +396,6 @@ public:
         return m_bClipClient;
     }
 
-    virtual void OnAttributeChanged(const SStringW & strAttrName,BOOL bLoading,HRESULT hRet);
 
     //************************************
     // Method:    UpdateChildrenPosition :更新子窗口位置
@@ -490,8 +487,8 @@ protected:
     DWORD        m_gdcFlags;
     BOOL         m_bClipRT;
 public:
-    HSWND GetDuiCapture();
-    HSWND SetDuiCapture();
+    SWND GetDuiCapture();
+    SWND SetDuiCapture();
 
     BOOL ReleaseDuiCapture();
     void SetDuiFocus();
@@ -663,7 +660,7 @@ protected:
     void OnSetDuiFocus();
     void OnKillDuiFocus();
 
-    HRESULT OnAttributePosition(const SStringW& strValue, BOOL bLoading);
+    HRESULT OnAttrPos(const SStringW& strValue, BOOL bLoading);
     HRESULT OnAttributeState(const SStringW& strValue, BOOL bLoading);
 
     SOUI_MSG_MAP_BEGIN()
@@ -697,7 +694,7 @@ protected:
         ATTR_CUSTOM(L"state", OnAttributeState)
         ATTR_STRINGT(L"href", m_strLinkUrl, FALSE)
         ATTR_STRINGT(L"tip", m_strToolTipText, FALSE)
-        ATTR_CUSTOM(L"pos", OnAttributePosition)
+        ATTR_CUSTOM(L"pos", OnAttrPos)
         ATTR_INT(L"show", m_bVisible,FALSE)
         ATTR_INT(L"display", m_bDisplay,FALSE)
         ATTR_INT(L"msgtransparent", m_bMsgTransparent, FALSE)
