@@ -22,7 +22,7 @@ public:
     virtual BOOL IsItemRedrawDelay()=NULL;                                    //指示表项的更新方式
 };
 
-class SOUI_EXP SItemPanel : public SWindow, public CSwndContainer
+class SOUI_EXP SItemPanel : public SWindow, public SwndContainerImpl
 {
 public:
     SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer *pItemContainer=NULL);

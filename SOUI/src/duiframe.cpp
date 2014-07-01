@@ -15,7 +15,7 @@ namespace SOUI
 #define WM_NCMOUSELAST  WM_NCMBUTTONDBLCLK
 
 
-CSwndContainer::CSwndContainer(SWindow *pHost)
+SwndContainerImpl::SwndContainerImpl(SWindow *pHost)
     :m_pHost(pHost)
     ,m_hCapture(NULL)
     ,m_hHover(NULL)
@@ -25,7 +25,7 @@ CSwndContainer::CSwndContainer(SWindow *pHost)
 {
 }
 
-LRESULT CSwndContainer::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
+LRESULT SwndContainerImpl::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
     LRESULT lRet=0;
     m_pHost->AddRef();
@@ -82,13 +82,13 @@ LRESULT CSwndContainer::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 }
 
 
-BOOL CSwndContainer::OnReleaseSwndCapture()
+BOOL SwndContainerImpl::OnReleaseSwndCapture()
 {
     m_hCapture=NULL;
     return TRUE;
 }
 
-SWND CSwndContainer::OnSetSwndCapture(SWND hDuiWnd)
+SWND SwndContainerImpl::OnSetSwndCapture(SWND hDuiWnd)
 {
     SWindow *pWnd=DuiWindowMgr::GetWindow(hDuiWnd);
     ASSERT(pWnd);
@@ -99,27 +99,27 @@ SWND CSwndContainer::OnSetSwndCapture(SWND hDuiWnd)
     return hRet;
 }
 
-void CSwndContainer::OnSetSwndFocus(SWND hDuiWnd)
+void SwndContainerImpl::OnSetSwndFocus(SWND hDuiWnd)
 {
     m_focusMgr.SetFocusedHwnd(hDuiWnd);
 }
 
-SWND CSwndContainer::OnGetSwndCapture()
+SWND SwndContainerImpl::OnGetSwndCapture()
 {
     return m_hCapture;
 }
 
-SWND CSwndContainer::SwndGetFocus()
+SWND SwndContainerImpl::SwndGetFocus()
 {
     return m_focusMgr.GetFocusedHwnd();
 }
 
-SWND CSwndContainer::SwndGetHover()
+SWND SwndContainerImpl::SwndGetHover()
 {
     return m_hHover;
 }
 
-void CSwndContainer::OnFrameMouseMove(UINT uFlag,CPoint pt)
+void SwndContainerImpl::OnFrameMouseMove(UINT uFlag,CPoint pt)
 {
     SWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
     if(pCapture)
@@ -180,7 +180,7 @@ void CSwndContainer::OnFrameMouseMove(UINT uFlag,CPoint pt)
     }
 }
 
-void CSwndContainer::OnFrameMouseLeave()
+void SwndContainerImpl::OnFrameMouseLeave()
 {
     SWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
     if(pCapture)
@@ -197,7 +197,7 @@ void CSwndContainer::OnFrameMouseLeave()
 }
 
 
-BOOL CSwndContainer::OnFrameSetCursor(const CPoint &pt)
+BOOL SwndContainerImpl::OnFrameSetCursor(const CPoint &pt)
 {
     SWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
     if(pCapture) return pCapture->OnSetCursor(pt);
@@ -209,7 +209,7 @@ BOOL CSwndContainer::OnFrameSetCursor(const CPoint &pt)
     return FALSE;
 }
 
-void CSwndContainer::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
+void SwndContainerImpl::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
     SWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
     if(pCapture)
@@ -236,7 +236,7 @@ void CSwndContainer::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     }
 }
 
-void CSwndContainer::OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
+void SwndContainerImpl::OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
     SWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
     if(pFocus)
@@ -250,7 +250,7 @@ void CSwndContainer::OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     }
 }
 
-void CSwndContainer::OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+void SwndContainerImpl::OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     if(m_focusMgr.OnKeyDown(nChar)) return; //首先处理焦点切换
 
@@ -266,17 +266,17 @@ void CSwndContainer::OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     }
 }
 
-BOOL CSwndContainer::RegisterDragDrop( SWND hDuiWnd,IDropTarget *pDropTarget )
+BOOL SwndContainerImpl::RegisterDragDrop( SWND hDuiWnd,IDropTarget *pDropTarget )
 {
     return m_dropTarget.RegisterDragDrop(hDuiWnd,pDropTarget);
 }
 
-BOOL CSwndContainer::RevokeDragDrop( SWND hDuiWnd )
+BOOL SwndContainerImpl::RevokeDragDrop( SWND hDuiWnd )
 {
     return m_dropTarget.RevokeDragDrop(hDuiWnd);
 }
 
-void CSwndContainer::OnActivate( UINT nState )
+void SwndContainerImpl::OnActivate( UINT nState )
 {
     if(nState==WA_INACTIVE)
     {
@@ -287,7 +287,7 @@ void CSwndContainer::OnActivate( UINT nState )
     }
 }
 
-BOOL CSwndContainer::RegisterTimelineHandler( ITimelineHandler *pHandler )
+BOOL SwndContainerImpl::RegisterTimelineHandler( ITimelineHandler *pHandler )
 {
     POSITION pos=m_lstTimelineHandler.Find(pHandler);
     if(pos) return FALSE;
@@ -297,7 +297,7 @@ BOOL CSwndContainer::RegisterTimelineHandler( ITimelineHandler *pHandler )
     return TRUE;
 }
 
-BOOL CSwndContainer::UnregisterTimelineHandler( ITimelineHandler *pHandler )
+BOOL SwndContainerImpl::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 {
     POSITION pos=m_lstTimelineHandler.Find(pHandler);
     if(!pos) return FALSE;
@@ -307,7 +307,7 @@ BOOL CSwndContainer::UnregisterTimelineHandler( ITimelineHandler *pHandler )
     return TRUE;
 }
 
-void CSwndContainer::OnNextFrame()
+void SwndContainerImpl::OnNextFrame()
 {
     POSITION pos=m_lstTimelineHandler.GetHeadPosition();
     while(pos)

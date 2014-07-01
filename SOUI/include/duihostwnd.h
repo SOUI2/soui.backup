@@ -46,7 +46,7 @@ class CDuiTipCtrl;
 
 class SOUI_EXP CDuiHostWnd
     : public CSimpleWnd
-    , public CSwndContainer
+    , public SwndContainerImpl
     , public SRootWindow
     , protected IDuiRealWndHandler
 {

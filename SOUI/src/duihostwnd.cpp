@@ -16,7 +16,7 @@ namespace SOUI
 // CDuiHostWnd
 //////////////////////////////////////////////////////////////////////////
 CDuiHostWnd::CDuiHostWnd( LPCTSTR pszResName /*= NULL*/ )
-: CSwndContainer(this)
+: SwndContainerImpl(this)
 , m_strXmlLayout(pszResName)
 , m_uRetCode(0)
 , m_nIdleCount(0)
@@ -1149,14 +1149,14 @@ void CDuiHostWnd::OnSetCaretValidateRect( LPCRECT lpRect )
 
 BOOL CDuiHostWnd::RegisterTimelineHandler( ITimelineHandler *pHandler )
 {
-    BOOL bRet = CSwndContainer::RegisterTimelineHandler(pHandler);
+    BOOL bRet = SwndContainerImpl::RegisterTimelineHandler(pHandler);
     if(bRet && m_lstTimelineHandler.GetCount()==1) SetDuiTimer(TIMER_NEXTFRAME,10);
     return bRet;
 }
 
 BOOL CDuiHostWnd::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 {
-    BOOL bRet=CSwndContainer::UnregisterTimelineHandler(pHandler);
+    BOOL bRet=SwndContainerImpl::UnregisterTimelineHandler(pHandler);
     if(bRet && m_lstTimelineHandler.IsEmpty()) KillDuiTimer(TIMER_NEXTFRAME);
     return bRet;
 }

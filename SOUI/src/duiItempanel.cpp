@@ -18,7 +18,7 @@ namespace SOUI
 
 
 SItemPanel::SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer *pItemContainer)
-    :CSwndContainer(this)
+    :SwndContainerImpl(this)
     ,m_pFrmHost(pFrameHost)
     ,m_pItemContainer(pItemContainer)
     ,m_dwData(0)
@@ -281,14 +281,14 @@ void SItemPanel::OnSetCaretValidateRect( LPCRECT lpRect )
 
 BOOL SItemPanel::RegisterTimelineHandler( ITimelineHandler *pHandler )
 {
-    BOOL bRet=CSwndContainer::RegisterTimelineHandler(pHandler);
+    BOOL bRet=SwndContainerImpl::RegisterTimelineHandler(pHandler);
     if(bRet && m_lstTimelineHandler.GetCount()==1) m_pFrmHost->GetContainer()->RegisterTimelineHandler(this);
     return bRet;
 }
 
 BOOL SItemPanel::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 {
-    BOOL bRet=CSwndContainer::UnregisterTimelineHandler(pHandler);
+    BOOL bRet=SwndContainerImpl::UnregisterTimelineHandler(pHandler);
     if(bRet && m_lstTimelineHandler.IsEmpty()) m_pFrmHost->GetContainer()->UnregisterTimelineHandler(this);
     return bRet;
 }
