@@ -5,14 +5,14 @@ namespace SOUI
 {
     //////////////////////////////////////////////////////////////////////////
     // CDuiEvent
-    bool CDuiEvent::subscribe( const SlotFunctorBase& slot )
+    bool SEvent::subscribe( const SlotFunctorBase& slot )
     {
         if(findSlotFunctor(slot) != -1) return false;
         m_evtSlots.Add(slot.Clone());
         return true;
     }
 
-    bool CDuiEvent::unsubscribe( const SlotFunctorBase& slot )
+    bool SEvent::unsubscribe( const SlotFunctorBase& slot )
     {
         int idx=findSlotFunctor(slot);
         if(idx==-1) return false;
@@ -22,7 +22,7 @@ namespace SOUI
         return true;
     }
 
-    int CDuiEvent::findSlotFunctor( const SlotFunctorBase& slot )
+    int SEvent::findSlotFunctor( const SlotFunctorBase& slot )
     {
         for(UINT i=0;i<m_evtSlots.GetCount();i++)
         {
@@ -45,7 +45,7 @@ namespace SOUI
         removeAllEvents();
     }
 
-    CDuiEvent * SEventSet::GetEventObject(const DWORD dwEventID )
+    SEvent * SEventSet::GetEventObject(const DWORD dwEventID )
     {
         for(UINT i=0;i<m_evtArr.GetCount();i++)
         {
@@ -57,7 +57,7 @@ namespace SOUI
     void SEventSet::FireEvent( const DWORD dwEventID, EventArgs& args )
     {
         // find event object
-        CDuiEvent* ev = GetEventObject(dwEventID);
+        SEvent* ev = GetEventObject(dwEventID);
 
         // fire the event if present and set is not muted
         if ((ev != 0) && !m_bMuted)
@@ -70,7 +70,7 @@ namespace SOUI
     {
         if(!isEventPresent(dwEventID))
         {
-            m_evtArr.Add(new CDuiEvent(dwEventID));
+            m_evtArr.Add(new SEvent(dwEventID));
         }
     }
 
