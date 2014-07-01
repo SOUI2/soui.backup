@@ -22,7 +22,7 @@ public:
     virtual BOOL IsItemRedrawDelay()=NULL;                                    //指示表项的更新方式
 };
 
-class SOUI_EXP SItemPanel : public SWindow, public CDuiFrame
+class SOUI_EXP SItemPanel : public SWindow, public CSwndContainer
 {
 public:
     SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer *pItemContainer=NULL);
@@ -43,20 +43,20 @@ public:
 
     virtual void OnRedraw(const CRect &rc);
 
-    virtual BOOL OnReleaseDuiCapture();
+    virtual BOOL OnReleaseSwndCapture();
 
-    virtual SWND OnSetDuiCapture(SWND hDuiWNd);
+    virtual SWND OnSetSwndCapture(SWND hDuiWNd);
     virtual HWND GetHostHwnd();
 
     virtual BOOL IsTranslucent();
 
-    virtual BOOL DuiCreateCaret(HBITMAP hBmp,int nWidth,int nHeight);
+    virtual BOOL SwndCreateCaret(HBITMAP hBmp,int nWidth,int nHeight);
 
-    virtual BOOL DuiShowCaret(BOOL bShow);
+    virtual BOOL SwndShowCaret(BOOL bShow);
 
-    virtual BOOL DuiSetCaretPos(int x,int y);
+    virtual BOOL SwndSetCaretPos(int x,int y);
 
-    virtual BOOL DuiUpdateWindow();
+    virtual BOOL SwndUpdateWindow();
 
     virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler);
 

@@ -16,7 +16,7 @@ namespace SOUI
 // CDuiHostWnd
 //////////////////////////////////////////////////////////////////////////
 CDuiHostWnd::CDuiHostWnd( LPCTSTR pszResName /*= NULL*/ )
-: CDuiFrame(this)
+: CSwndContainer(this)
 , m_strXmlLayout(pszResName)
 , m_uRetCode(0)
 , m_nIdleCount(0)
@@ -662,9 +662,9 @@ void CDuiHostWnd::OnRedraw(const CRect &rc)
     }
 }
 
-BOOL CDuiHostWnd::OnReleaseDuiCapture()
+BOOL CDuiHostWnd::OnReleaseSwndCapture()
 {
-    if(!__super::OnReleaseDuiCapture()) return FALSE;
+    if(!__super::OnReleaseSwndCapture()) return FALSE;
     ReleaseCapture();
     CPoint pt;
     GetCursorPos(&pt);
@@ -673,16 +673,10 @@ BOOL CDuiHostWnd::OnReleaseDuiCapture()
     return TRUE;
 }
 
-SWND CDuiHostWnd::OnSetDuiCapture(SWND hDuiWnd)
+SWND CDuiHostWnd::OnSetSwndCapture(SWND hDuiWnd)
 {
     SetCapture();
-    return __super::OnSetDuiCapture(hDuiWnd);
-}
-
-SWND CDuiHostWnd::GetDuiCapture()
-{
-    if(GetCapture()!=m_hWnd) return NULL;
-    return __super::OnGetDuiCapture();
+    return __super::OnSetSwndCapture(hDuiWnd);
 }
 
 BOOL CDuiHostWnd::IsTranslucent()
@@ -691,7 +685,7 @@ BOOL CDuiHostWnd::IsTranslucent()
 }
 
 
-BOOL CDuiHostWnd::DuiCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
+BOOL CDuiHostWnd::SwndCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
 {
     ::CreateCaret(m_hWnd,hBmp,nWidth,nHeight);
     if(m_bmpCaret)
@@ -726,7 +720,7 @@ BOOL CDuiHostWnd::DuiCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
     return TRUE;
 }
 
-BOOL CDuiHostWnd::DuiShowCaret( BOOL bShow )
+BOOL CDuiHostWnd::SwndShowCaret( BOOL bShow )
 {
     m_bCaretShowing=bShow;
 
@@ -751,7 +745,7 @@ BOOL CDuiHostWnd::DuiShowCaret( BOOL bShow )
    return TRUE;
 }
 
-BOOL CDuiHostWnd::DuiSetCaretPos( int x,int y )
+BOOL CDuiHostWnd::SwndSetCaretPos( int x,int y )
 {
     if(!SetCaretPos(x,y)) return FALSE;
     if(m_bCaretShowing && m_bCaretActive)
@@ -769,7 +763,7 @@ BOOL CDuiHostWnd::DuiSetCaretPos( int x,int y )
 }
 
 
-BOOL CDuiHostWnd::DuiUpdateWindow()
+BOOL CDuiHostWnd::SwndUpdateWindow()
 {
     if(m_bTranslucent) UpdateWindow(m_dummyWnd.m_hWnd);
     else UpdateWindow(m_hWnd);
@@ -1155,14 +1149,14 @@ void CDuiHostWnd::OnSetCaretValidateRect( LPCRECT lpRect )
 
 BOOL CDuiHostWnd::RegisterTimelineHandler( ITimelineHandler *pHandler )
 {
-    BOOL bRet = CDuiFrame::RegisterTimelineHandler(pHandler);
+    BOOL bRet = CSwndContainer::RegisterTimelineHandler(pHandler);
     if(bRet && m_lstTimelineHandler.GetCount()==1) SetDuiTimer(TIMER_NEXTFRAME,10);
     return bRet;
 }
 
 BOOL CDuiHostWnd::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 {
-    BOOL bRet=CDuiFrame::UnregisterTimelineHandler(pHandler);
+    BOOL bRet=CSwndContainer::UnregisterTimelineHandler(pHandler);
     if(bRet && m_lstTimelineHandler.IsEmpty()) KillDuiTimer(TIMER_NEXTFRAME);
     return bRet;
 }

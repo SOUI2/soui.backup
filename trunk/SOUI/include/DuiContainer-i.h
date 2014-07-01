@@ -33,25 +33,25 @@ public:
 
     virtual void OnRedraw(const CRect &rc)=NULL;
 
-    virtual SWND OnGetDuiCapture()=NULL;
+    virtual SWND OnGetSwndCapture()=NULL;
 
-    virtual BOOL OnReleaseDuiCapture()=NULL;
+    virtual BOOL OnReleaseSwndCapture()=NULL;
 
-    virtual SWND OnSetDuiCapture(SWND hDuiWnd)=NULL;
+    virtual SWND OnSetSwndCapture(SWND hDuiWnd)=NULL;
 
-    virtual void OnSetDuiFocus(SWND hDuiWnd)=NULL;
+    virtual void OnSetSwndFocus(SWND hDuiWnd)=NULL;
 
-    virtual SWND GetDuiHover()=NULL;
+    virtual SWND SwndGetHover()=NULL;
 
-    virtual SWND GetDuiFocus()=NULL;
+    virtual SWND SwndGetFocus()=NULL;
 
-    virtual BOOL DuiCreateCaret(HBITMAP hBmp,int nWidth,int nHeight)=NULL;
+    virtual BOOL SwndCreateCaret(HBITMAP hBmp,int nWidth,int nHeight)=NULL;
 
-    virtual BOOL DuiShowCaret(BOOL bShow)=NULL;
+    virtual BOOL SwndShowCaret(BOOL bShow)=NULL;
 
-    virtual BOOL DuiSetCaretPos(int x,int y)=NULL;
+    virtual BOOL SwndSetCaretPos(int x,int y)=NULL;
 
-    virtual BOOL DuiUpdateWindow()=NULL;
+    virtual BOOL SwndUpdateWindow()=NULL;
 
     virtual IAcceleratorMgr* GetAcceleratorMgr()=NULL;
 

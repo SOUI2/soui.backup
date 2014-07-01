@@ -34,7 +34,7 @@ int SHotKeyCtrl::OnCreate( LPVOID )
 void SHotKeyCtrl::OnLButtonDown( UINT nFlags,CPoint pt )
 {
     __super::OnLButtonDown(nFlags,pt);
-    GetContainer()->OnSetDuiFocus(m_hSWnd);
+    GetContainer()->OnSetSwndFocus(m_hSWnd);
 }
 
 void SHotKeyCtrl::OnPaint( IRenderTarget * pRT )
@@ -62,7 +62,7 @@ void SHotKeyCtrl::UpdateCaret()
     
     CRect rcClient;
     GetClient(&rcClient);
-    GetContainer()->DuiSetCaretPos(rcClient.left+EDIT_INSET+szTxt.cx,rcClient.top+(rcClient.Height()-szTxt.cy)/2);
+    GetContainer()->SwndSetCaretPos(rcClient.left+EDIT_INSET+szTxt.cx,rcClient.top+(rcClient.Height()-szTxt.cy)/2);
 }
 
 void SHotKeyCtrl::OnSetDuiFocus()
@@ -74,19 +74,19 @@ void SHotKeyCtrl::OnSetDuiFocus()
     pRT->MeasureText(_T("A"),1,&szTxt);
     pRT->SelectObject(oldFont);
     ReleaseRenderTarget(pRT);
-    GetContainer()->DuiCreateCaret(NULL,1,szTxt.cy);
+    GetContainer()->SwndCreateCaret(NULL,1,szTxt.cy);
 
     CRect rcClient;
     GetClient(&rcClient);
     OnSetCaretValidateRect(&rcClient);
 
     UpdateCaret();
-    GetContainer()->DuiShowCaret(TRUE);
+    GetContainer()->SwndShowCaret(TRUE);
 }
 
 void SHotKeyCtrl::OnKillDuiFocus()
 {
-    GetContainer()->DuiShowCaret(FALSE);
+    GetContainer()->SwndShowCaret(FALSE);
 
 }
 

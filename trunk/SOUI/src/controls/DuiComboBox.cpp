@@ -122,7 +122,7 @@ void CDuiComboBoxBase::OnPaint(IRenderTarget * pRT )
         DuiDrawText(pRT,strText, strText.GetLength(), rcText, GetTextAlign());
     }
     //draw focus rect
-    if(GetContainer()->GetDuiFocus()==m_hSWnd)
+    if(GetContainer()->SwndGetFocus()==m_hSWnd)
     {
         DuiDrawFocus(pRT);
     }

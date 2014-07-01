@@ -864,7 +864,7 @@ void SWindow::OnPaint(IRenderTarget *pRT)
     DuiDrawText(pRT,m_strText, m_strText.GetLength(), rcText, GetTextAlign());
 
     //draw focus rect
-    if(GetContainer()->GetDuiFocus()==m_hSWnd)
+    if(GetContainer()->SwndGetFocus()==m_hSWnd)
     {
         DuiDrawFocus(pRT);
     }
@@ -1027,9 +1027,9 @@ void SWindow::OnShowWindow(BOOL bShow, UINT nStatus)
         pChild->DuiSendMessage(WM_SHOWWINDOW,bShow,ParentShow);
         pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
     }
-    if(!IsVisible(TRUE) && m_hSWnd == GetContainer()->GetDuiFocus())
+    if(!IsVisible(TRUE) && m_hSWnd == GetContainer()->SwndGetFocus())
     {
-        GetContainer()->OnSetDuiFocus(NULL);
+        GetContainer()->OnSetSwndFocus(NULL);
     }
 
     if(!m_bDisplay)
@@ -1066,9 +1066,9 @@ void SWindow::OnEnable( BOOL bEnable,UINT nStatus )
         pChild->DuiSendMessage(WM_ENABLE,bEnable,ParentEnable);
         pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
     }
-    if(IsDisabled(TRUE) && m_hSWnd == GetContainer()->GetDuiFocus())
+    if(IsDisabled(TRUE) && m_hSWnd == GetContainer()->SwndGetFocus())
     {
-        GetContainer()->OnSetDuiFocus(NULL);
+        GetContainer()->OnSetSwndFocus(NULL);
     }
 }
 
@@ -1237,29 +1237,29 @@ void SWindow::ReleaseRenderTarget(IRenderTarget *pRT)
 
 SWND SWindow::GetDuiCapture()
 {
-    return GetContainer()->OnGetDuiCapture();
+    return GetContainer()->OnGetSwndCapture();
 }
 
 SWND SWindow::SetDuiCapture()
 {
-    return GetContainer()->OnSetDuiCapture(m_hSWnd);
+    return GetContainer()->OnSetSwndCapture(m_hSWnd);
 }
 
 BOOL SWindow::ReleaseDuiCapture()
 {
-    return GetContainer()->OnReleaseDuiCapture();
+    return GetContainer()->OnReleaseSwndCapture();
 }
 
 void SWindow::SetDuiFocus()
 {
-    GetContainer()->OnSetDuiFocus(m_hSWnd);
+    GetContainer()->OnSetSwndFocus(m_hSWnd);
 }
 
 void SWindow::KillDuiFocus()
 {
-    if(GetContainer()->GetDuiFocus()==m_hSWnd)
+    if(GetContainer()->SwndGetFocus()==m_hSWnd)
     {
-        GetContainer()->OnSetDuiFocus(NULL);
+        GetContainer()->OnSetSwndFocus(NULL);
     }
 }
 

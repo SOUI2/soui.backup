@@ -13,10 +13,10 @@
 namespace SOUI
 {
 
-class SOUI_EXP CDuiFrame : public ISwndContainer
+class SOUI_EXP CSwndContainer : public ISwndContainer
 {
 public:
-    CDuiFrame(SWindow *pHost);
+    CSwndContainer(SWindow *pHost);
 
     virtual BOOL RegisterDragDrop(SWND hDuiWnd,IDropTarget *pDropTarget);
 
@@ -28,17 +28,16 @@ public:
 
     virtual LRESULT DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
+    virtual BOOL OnReleaseSwndCapture();
 
-    virtual BOOL OnReleaseDuiCapture();
+    virtual SWND OnSetSwndCapture(SWND hDuiWnd);
+    virtual void OnSetSwndFocus(SWND hDuiWnd);
 
-    virtual SWND OnSetDuiCapture(SWND hDuiWnd);
-    virtual void OnSetDuiFocus(SWND hDuiWnd);
+    virtual SWND OnGetSwndCapture();
 
-    virtual SWND OnGetDuiCapture();
+    virtual SWND SwndGetFocus();
 
-    virtual SWND GetDuiFocus();
-
-    virtual SWND GetDuiHover();
+    virtual SWND SwndGetHover();
 
     virtual IAcceleratorMgr* GetAcceleratorMgr(){return &m_focusMgr;}
 

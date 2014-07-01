@@ -284,7 +284,7 @@ namespace SOUI
                 if(cxNew<0) cxNew=0;
                 m_arrItems[LOWORD(m_dwHitTest)].cx=cxNew;
                 NotifyInvalidate();
-                GetContainer()->DuiUpdateWindow();//立即更新窗口
+                GetContainer()->SwndUpdateWindow();//立即更新窗口
                 //发出调节宽度消息
                 DUINMHDSIZECHANGING    nm;
                 nm.hdr.hDuiWnd=m_hSWnd;
