@@ -22,7 +22,7 @@ SItemPanel::SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer
     ,m_pFrmHost(pFrameHost)
     ,m_pItemContainer(pItemContainer)
     ,m_dwData(0)
-    ,m_crBk(CLR_INVALID)
+    ,m_crBk(CR_INVALID)
     ,m_crSelBk(RGB(0,0,128))
     ,m_lpItemIndex(-1)
 {
@@ -36,7 +36,7 @@ SItemPanel::SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer
 void SItemPanel::OnFinalRelease()
 {
     AddRef();//防止重复进入该函数
-    DuiSendMessage(WM_DESTROY);
+    SendMessage(WM_DESTROY);
     __super::OnFinalRelease();
 }
 
@@ -104,7 +104,7 @@ IRenderTarget * SItemPanel::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
     IRenderTarget *pRT=m_pFrmHost->GetRenderTarget(rcInvalid,gdcFlags);
     if(gdcFlags & OLEDC_PAINTBKGND)
     {//调用frmhost的GetDuiDC时，不会绘制frmHost的背景。注意此外只画背景，不画前景,因为itempanel就是前景
-        m_pFrmHost->DuiSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
+        m_pFrmHost->SendMessage(WM_ERASEBKGND, (WPARAM)pRT);
     }
     pRT->OffsetViewportOrg(rcItem.left,rcItem.top);
     return pRT;
@@ -201,8 +201,8 @@ SWND SItemPanel::HswndFromPoint(POINT ptHitTest, BOOL bOnlyText)
 
 void SItemPanel::Draw(IRenderTarget *pRT,const CRect & rc)
 {
-    if((m_dwState & DuiWndState_Check) && m_crSelBk != CLR_INVALID) SetBkColor(m_crSelBk);
-    else SetBkColor(m_crBk);
+    if((m_dwState & DuiWndState_Check) && m_crSelBk != CR_INVALID) m_style.m_crBg=m_crSelBk;
+    else m_style.m_crBg=m_crBk;
 
     pRT->OffsetViewportOrg(rc.left,rc.top);
     CAutoRefPtr<IRegion> rgn;

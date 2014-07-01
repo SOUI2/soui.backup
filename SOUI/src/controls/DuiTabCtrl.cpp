@@ -192,7 +192,7 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
         CRect rc;
         GetItemRect(m_nCurrentPage,rc);
         rc.DeflateRect(2,2);
-        DuiDrawDefFocusRect(pRT,&rc);
+        DrawDefFocusRect(pRT,&rc);
     }
     
     pRT->PopClip();
@@ -234,7 +234,7 @@ void STabCtrl::OnLButtonDown( UINT nFlags, CPoint point )
         __super::OnLButtonDown(nFlags,point);
     }else
     {
-        SetDuiFocus();
+        SetFocus();
     }
 }
 
@@ -377,14 +377,14 @@ BOOL STabCtrl::SetCurSel( int nIndex )
     if(nOldPage!=-1)
     {
         pTab = GetItem(nOldPage);
-        if( pTab) pTab->DuiSendMessage(WM_SHOWWINDOW,FALSE);
+        if( pTab) pTab->SendMessage(WM_SHOWWINDOW,FALSE);
     }
 
     m_nCurrentPage = nIndex;
     if(nIndex!=-1)
     {
         pTab = GetItem(m_nCurrentPage);
-        if( pTab) pTab->DuiSendMessage(WM_SHOWWINDOW,TRUE);
+        if( pTab) pTab->SendMessage(WM_SHOWWINDOW,TRUE);
     }
 
     DUINMTABSELCHANGED nms2;
@@ -471,7 +471,7 @@ BOOL STabCtrl::CreateChildren( pugi::xml_node xmlNode )
     
     if(m_nCurrentPage!=-1)
     {
-        GetItem(m_nCurrentPage)->DuiSendMessage(WM_SHOWWINDOW,TRUE);
+        GetItem(m_nCurrentPage)->SendMessage(WM_SHOWWINDOW,TRUE);
     }
     return TRUE;
 }
@@ -504,7 +504,7 @@ int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoadin
     if(!bLoading)
     {
         CRect rcContainer=GetChildrenLayoutRect();
-        pChild->DuiSendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
+        pChild->SendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
         NotifyInvalidate();
     }
 

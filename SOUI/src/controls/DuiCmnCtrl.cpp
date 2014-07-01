@@ -15,11 +15,11 @@ namespace SOUI
 //////////////////////////////////////////////////////////////////////////
 // Static Control
 //
-void SStatic::DuiDrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat)
+void SStatic::DrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat)
 {
     if(!m_bMultiLines)
     {
-        __super::DuiDrawText(pRT,pszBuf,cchText,pRect,uFormat);
+        __super::DrawText(pRT,pszBuf,cchText,pRect,uFormat);
     }
     else
     {
@@ -75,7 +75,7 @@ void SStatic::DuiDrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT p
 // Only For Header Drag Test
 // Usage: <link>inner text example</link>
 //
-void SLink::DuiDrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat)
+void SLink::DrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat)
 {
     if(!(uFormat&DT_CALCRECT))
     {
@@ -112,7 +112,7 @@ void SLink::DuiDrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRe
             m_rcText.bottom=m_rcText.top+rc.Height();
         }
     }
-    __super::DuiDrawText(pRT,pszBuf,cchText,pRect,uFormat);
+    __super::DrawText(pRT,pszBuf,cchText,pRect,uFormat);
 }
 
 
@@ -140,7 +140,7 @@ void SLink::OnLButtonUp( UINT nFlags,CPoint pt )
 {
     if(!m_rcText.PtInRect(pt))
     {
-        ReleaseDuiCapture();
+        ReleaseCapture();
         return;
     }
     __super::OnLButtonUp(nFlags,pt);
@@ -275,7 +275,7 @@ void SButton::OnStateChanged( DWORD dwOldState,DWORD dwNewState )
 {
     StopCurAnimate();
 
-    if(GetDuiCapture()==m_hSWnd)    //点击中
+    if(GetCapture()==m_hSWnd)    //点击中
         return;
 
     if(m_bAnimate &&
@@ -361,7 +361,7 @@ BOOL SImageWnd::SetSkin(ISkinObj *pSkin,int iFrame/*=0*/,BOOL bAutoFree/*=TRUE*/
     if(m_dlgpos.nCount==2)
     {
         //重新计算坐标
-        DuiSendMessage(WM_WINDOWPOSCHANGED);
+        SendMessage(WM_WINDOWPOSCHANGED);
     }
     if(IsVisible(TRUE)) NotifyInvalidate();
     return TRUE;
@@ -633,7 +633,7 @@ void SCheckBox::OnPaint(IRenderTarget *pRT)
     __super::OnPaint(pRT);
 }
 
-void SCheckBox::DuiDrawFocus(IRenderTarget *pRT)
+void SCheckBox::DrawFocus(IRenderTarget *pRT)
 {
     if(m_pFocusSkin)
     {
@@ -641,7 +641,7 @@ void SCheckBox::DuiDrawFocus(IRenderTarget *pRT)
         m_pFocusSkin->Draw(pRT,rcCheckBox,0);
     }else
     {
-        __super::DuiDrawFocus(pRT);
+        __super::DrawFocus(pRT);
     }
 }
 
@@ -694,7 +694,7 @@ UINT SCheckBox::_GetDrawState()
 
 void SCheckBox::OnLButtonDown(UINT nFlags, CPoint point)
 {
-    SetDuiFocus();
+    SetFocus();
     __super::OnLButtonDown(nFlags,point);
 }
 
@@ -810,7 +810,7 @@ void SRadioBox::OnPaint(IRenderTarget *pRT)
     __super::OnPaint(pRT);
 }
 
-void SRadioBox::DuiDrawFocus(IRenderTarget *pRT)
+void SRadioBox::DrawFocus(IRenderTarget *pRT)
 {
     if(m_pFocusSkin)
     {
@@ -818,7 +818,7 @@ void SRadioBox::DuiDrawFocus(IRenderTarget *pRT)
         m_pFocusSkin->Draw(pRT,rcCheckBox,0);
     }else
     {
-        __super::DuiDrawFocus(pRT);
+        __super::DrawFocus(pRT);
     }
 }
 
@@ -873,7 +873,7 @@ BOOL SRadioBox::NeedRedrawWhenStateChange()
 
 void SRadioBox::OnLButtonDown(UINT nFlags, CPoint point)
 {
-    SetDuiFocus();
+    SetFocus();
     __super::OnLButtonDown(nFlags,point);
 }
 

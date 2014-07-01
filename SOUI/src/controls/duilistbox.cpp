@@ -23,11 +23,11 @@ SListBox::SListBox()
     , m_iScrollSpeed(-1)
     , m_iSelItem(-1)
     , m_iHoverItem(-1)
-    , m_crItemBg(CLR_INVALID)
-    , m_crItemBg2(CLR_INVALID)
-    , m_crItemSelBg(CLR_INVALID)
-    , m_crText(CLR_INVALID)
-    , m_crSelText(CLR_INVALID)
+    , m_crItemBg(CR_INVALID)
+    , m_crItemBg2(CR_INVALID)
+    , m_crItemSelBg(CR_INVALID)
+    , m_crText(CR_INVALID)
+    , m_crSelText(CR_INVALID)
     , m_pItemSkin(NULL)
     , m_pIconSkin(NULL)
     , m_ptIcon(-1,-1)
@@ -310,7 +310,7 @@ void SListBox::RedrawItem(int iItem)
         SPainter painter;
         BeforePaint(pRT,painter);
 
-        DuiSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
+        SendMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
         DrawItem(pRT,rcItem,iItem);
 
         AfterPaint(pRT,painter);
@@ -334,7 +334,7 @@ void SListBox::DrawItem(IRenderTarget * pRT, CRect & rc, int iItem)
     {
         if (m_pItemSkin != NULL)
             nBgImg = 1;
-        else if (CLR_INVALID != m_crItemBg2)
+        else if (CR_INVALID != m_crItemBg2)
             crItemBg = m_crItemBg2;
     }
 
@@ -342,20 +342,20 @@ void SListBox::DrawItem(IRenderTarget * pRT, CRect & rc, int iItem)
     {
         if (m_pItemSkin != NULL)
             nBgImg = 2;
-        else if (CLR_INVALID != m_crItemSelBg)
+        else if (CR_INVALID != m_crItemSelBg)
             crItemBg = m_crItemSelBg;
 
-        if (CLR_INVALID != m_crSelText)
+        if (CR_INVALID != m_crSelText)
             crText = m_crSelText;
     }
 
     //»æÖÆ±³¾°
     if (m_pItemSkin != NULL)
         m_pItemSkin->Draw(pRT, rc, nBgImg);
-    else if (CLR_INVALID != crItemBg)
+    else if (CR_INVALID != crItemBg)
         pRT->FillSolidRect( rc, crItemBg);
 
-    if (CLR_INVALID != crText)
+    if (CR_INVALID != crText)
     {
         bTextColorChanged = TRUE;
         crOldText = pRT->SetTextColor(crText);
@@ -507,7 +507,7 @@ void SListBox::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     SWindow *pOwner = GetOwner();
     if (pOwner)
-        pOwner->DuiSendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
+        pOwner->SendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
 }
 
 UINT SListBox::OnGetDlgCode()

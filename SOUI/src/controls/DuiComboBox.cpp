@@ -14,13 +14,13 @@ CComboEdit::CComboEdit( CDuiComboBoxBase *pOwner )
 void CComboEdit::OnMouseHover( WPARAM wParam, CPoint ptPos )
 {
     __super::OnMouseHover(wParam,ptPos);
-    GetOwner()->DuiSendMessage(WM_MOUSEHOVER,wParam,MAKELPARAM(ptPos.x,ptPos.y));
+    GetOwner()->SendMessage(WM_MOUSEHOVER,wParam,MAKELPARAM(ptPos.x,ptPos.y));
 }
 
 void CComboEdit::OnMouseLeave()
 {
     __super::OnMouseLeave();
-    GetOwner()->DuiSendMessage(WM_MOUSELEAVE);
+    GetOwner()->SendMessage(WM_MOUSELEAVE);
 }
 
 void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -28,7 +28,7 @@ void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     SWindow *pOwner = GetOwner();
     if (pOwner && (nChar == VK_DOWN || nChar == VK_ESCAPE))
     {
-        pOwner->DuiSendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
+        pOwner->SendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
         return;
     }
 
@@ -84,7 +84,7 @@ BOOL CDuiComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
         if(xmlEditStyle)
             m_pEdit->InitFromXml(xmlEditStyle);
         else
-            m_pEdit->DuiSendMessage(WM_CREATE);
+            m_pEdit->SendMessage(WM_CREATE);
         SStringW strPos;
         strPos.Format(L"0,0,-%d,-0",szBtn.cx);
         m_pEdit->SetAttribute(L"pos",strPos,TRUE);
@@ -119,12 +119,12 @@ void CDuiComboBoxBase::OnPaint(IRenderTarget * pRT )
         CRect rcText;
         GetTextRect(rcText);
         SStringT strText=GetWindowText();
-        DuiDrawText(pRT,strText, strText.GetLength(), rcText, GetTextAlign());
+        DrawText(pRT,strText, strText.GetLength(), rcText, GetTextAlign());
     }
     //draw focus rect
     if(GetContainer()->SwndGetFocus()==m_hSWnd)
     {
-        DuiDrawFocus(pRT);
+        DrawFocus(pRT);
     }
     AfterPaint(pRT, painter);
     CRect rcBtn;
@@ -134,7 +134,7 @@ void CDuiComboBoxBase::OnPaint(IRenderTarget * pRT )
 
 void CDuiComboBoxBase::OnLButtonDown( UINT nFlags,CPoint pt )
 {
-    SetDuiFocus();
+    SetFocus();
     DropDown();
 }
 
@@ -183,7 +183,7 @@ void CDuiComboBoxBase::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     {
         CComboEdit *pEdit = static_cast<CComboEdit *>(FindChildByID(IDC_CB_EDIT));
         if (pEdit)
-            pEdit->DuiSendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
+            pEdit->SendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
         return;
     }
 }
@@ -213,16 +213,14 @@ void CDuiComboBoxBase::OnDropDown( SDropDownWnd *pDropDown )
     CRect rcBtn;
     GetDropBtnRect(&rcBtn);
     NotifyInvalidateRect(rcBtn);
-    pDropDown->SetCapture();
+    ((CSimpleWnd*)pDropDown)->SetCapture();
 }
 
 void CDuiComboBoxBase::OnCloseUp(SDropDownWnd *pDropDown,UINT uCode)
 {
-    ReleaseCapture();
-
     if (!m_bDropdown && m_pEdit)
     {
-        m_pEdit->SetDuiFocus();
+        m_pEdit->SetFocus();
         m_pEdit->SetSel(MAKELONG(0,-1));
     }
 
@@ -342,7 +340,7 @@ SComboBox::~SComboBox()
 {
     if(m_pListBox)
     {
-        m_pListBox->DuiSendMessage(WM_DESTROY);
+        m_pListBox->SendMessage(WM_DESTROY);
         delete m_pListBox;
     }
 }
@@ -400,7 +398,7 @@ void SComboBox::OnDropDown( SDropDownWnd *pDropDown)
     pDropDown->UpdateChildrenPosition();
 
     m_pListBox->SetVisible(TRUE);
-    m_pListBox->SetDuiFocus();
+    m_pListBox->SetFocus();
     m_pListBox->EnsureVisible(GetCurSel());
 }
 
@@ -437,7 +435,7 @@ SComboBoxEx::~SComboBoxEx()
 {
     if(m_pListBox)
     {
-        m_pListBox->DuiSendMessage(WM_DESTROY);
+        m_pListBox->SendMessage(WM_DESTROY);
         delete m_pListBox;
     }
 }
@@ -523,7 +521,7 @@ void SComboBoxEx::OnDropDown( SDropDownWnd *pDropDown )
     pDropDown->UpdateChildrenPosition();
 
     m_pListBox->SetVisible(TRUE);
-    m_pListBox->SetDuiFocus();
+    m_pListBox->SetFocus();
     m_pListBox->EnsureVisible(GetCurSel());
 }
 

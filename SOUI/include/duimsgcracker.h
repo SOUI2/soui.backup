@@ -15,7 +15,7 @@ protected:                                                          \
     }
 
 #define WND_MSG_MAP_END_BASE()                                    \
-    return DuiWndProc(uMsg,wParam,lParam,lResult);               \
+    return SwndProc(uMsg,wParam,lParam,lResult);               \
     }
 
 

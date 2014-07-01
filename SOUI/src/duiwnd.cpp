@@ -68,18 +68,6 @@ void SWindow::SetPositionType(DWORD dwPosType, DWORD dwMask /*= 0xFFFFFFFF*/)
     m_dlgpos.uPositionType = (m_dlgpos.uPositionType & ~dwMask) | (dwPosType & dwMask);
 }
 
-void SWindow::SetFixSize(int nWid,int nHei)
-{
-    m_dlgpos.uPositionType = (m_dlgpos.uPositionType & ~SizeX_Mask) | SizeX_Specify|SizeY_Specify;
-    m_dlgpos.uSpecifyWidth = nWid;
-    m_dlgpos.uSpecifyHeight = nHei;
-}
-
-void SWindow::SetBkColor(COLORREF cr)
-{
-    m_style.m_crBg=cr;
-}
-
 // Get DuiWindow rect(position in container)
 void SWindow::GetRect(LPRECT prect)
 {
@@ -156,7 +144,7 @@ void SWindow::TestMainThread()
 
 
 // Send a message to DuiWindow
-LRESULT SWindow::DuiSendMessage(UINT Msg, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/,BOOL *pbMsgHandled/*=NULL*/)
+LRESULT SWindow::SendMessage(UINT Msg, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/,BOOL *pbMsgHandled/*=NULL*/)
 {
     LRESULT lResult = 0;
 
@@ -313,7 +301,7 @@ BOOL SWindow::DestroyChild(SWindow *pChild)
 {
     if(this != pChild->GetParent()) return FALSE;
     pChild->NotifyInvalidate();
-    pChild->DuiSendMessage(WM_DESTROY);
+    pChild->SendMessage(WM_DESTROY);
     RemoveChild(pChild);
     pChild->Release();
     return TRUE;
@@ -414,13 +402,13 @@ BOOL SWindow::IsVisible(BOOL bCheckParent /*= FALSE*/)
 void SWindow::SetVisible(BOOL bVisible,BOOL bUpdate/*=FALSE*/)
 {
     if(bUpdate) NotifyInvalidateRect(m_rcWindow);
-    DuiSendMessage(WM_SHOWWINDOW,bVisible);
+    SendMessage(WM_SHOWWINDOW,bVisible);
     if(bUpdate) NotifyInvalidateRect(m_rcWindow);
 }
 
 void SWindow::EnableWindow( BOOL bEnable,BOOL bUpdate)
 {
-    DuiSendMessage(WM_ENABLE,bEnable);
+    SendMessage(WM_ENABLE,bEnable);
     if(bUpdate) NotifyInvalidateRect(m_rcWindow);
 }
 
@@ -621,7 +609,7 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
 
     }
 
-    if(0!=DuiSendMessage(WM_CREATE))
+    if(0!=SendMessage(WM_CREATE))
     {
         if(m_pParent)    m_pParent->DestroyChild(this);
         return FALSE;
@@ -759,11 +747,11 @@ LRESULT SWindow::OnWindowPosChanged(LPRECT lpRcContainer)
     }
     if(lRet==0)
     {
-        DuiSendMessage(WM_NCCALCSIZE);//计算非客户区大小
+        SendMessage(WM_NCCALCSIZE);//计算非客户区大小
 
         CRect rcClient;
         GetClient(&rcClient);
-        DuiSendMessage(WM_SIZE,0,MAKELPARAM(rcClient.Width(),rcClient.Height()));
+        SendMessage(WM_SIZE,0,MAKELPARAM(rcClient.Width(),rcClient.Height()));
 
         UpdateChildrenPosition();
     }
@@ -782,7 +770,7 @@ void SWindow::OnDestroy()
     while (pChild)
     {
         SWindow *pNextChild=pChild->m_pNextSibling;
-        pChild->DuiSendMessage(WM_DESTROY);
+        pChild->SendMessage(WM_DESTROY);
         pChild->Release();
 
         pChild=pNextChild;
@@ -861,12 +849,12 @@ void SWindow::OnPaint(IRenderTarget *pRT)
 
     CRect rcText;
     GetTextRect(rcText);
-    DuiDrawText(pRT,m_strText, m_strText.GetLength(), rcText, GetTextAlign());
+    DrawText(pRT,m_strText, m_strText.GetLength(), rcText, GetTextAlign());
 
     //draw focus rect
     if(GetContainer()->SwndGetFocus()==m_hSWnd)
     {
-        DuiDrawFocus(pRT);
+        DrawFocus(pRT);
     }
 
     AfterPaint(pRT, painter);
@@ -947,7 +935,7 @@ CSize SWindow::GetDesiredSize(LPRECT pRcContainer)
     CAutoRefPtr<IRenderTarget> pRT;
     GETRENDERFACTORY->CreateRenderTarget(&pRT,1,1);
     BeforePaintEx(pRT);
-    DuiDrawText(pRT,m_strText, m_strText.GetLength(), rcTest, nTestDrawMode | DT_CALCRECT);
+    DrawText(pRT,m_strText, m_strText.GetLength(), rcTest, nTestDrawMode | DT_CALCRECT);
 
     return rcTest.Size();
 }
@@ -957,20 +945,20 @@ void SWindow::GetTextRect( LPRECT pRect )
     GetClient(pRect);
 }
 
-void SWindow::DuiDrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat)
+void SWindow::DrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat)
 {
     pRT->DrawText(pszBuf,cchText,pRect,uFormat,m_byAlpha);
 }
 
-void SWindow::DuiDrawFocus(IRenderTarget *pRT)
+void SWindow::DrawFocus(IRenderTarget *pRT)
 {
     CRect rcFocus;
     GetTextRect(&rcFocus);
-    if(IsTabStop())    DuiDrawDefFocusRect(pRT,rcFocus);
+    if(IsTabStop())    DrawDefFocusRect(pRT,rcFocus);
 }
 
 
-void SWindow::DuiDrawDefFocusRect(IRenderTarget *pRT,CRect rcFocus )
+void SWindow::DrawDefFocusRect(IRenderTarget *pRT,CRect rcFocus )
 {
     rcFocus.DeflateRect(2,2);
     CAutoRefPtr<IPen> pPen,oldPen;
@@ -1024,8 +1012,8 @@ void SWindow::OnShowWindow(BOOL bShow, UINT nStatus)
     SWindow *pChild=m_pFirstChild;
     while(pChild)
     {
-        pChild->DuiSendMessage(WM_SHOWWINDOW,bShow,ParentShow);
-        pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
+        pChild->SendMessage(WM_SHOWWINDOW,bShow,ParentShow);
+        pChild=pChild->GetWindow(GDUI_NEXTSIBLING);
     }
     if(!IsVisible(TRUE) && m_hSWnd == GetContainer()->SwndGetFocus())
     {
@@ -1063,8 +1051,8 @@ void SWindow::OnEnable( BOOL bEnable,UINT nStatus )
     SWindow *pChild=m_pFirstChild;
     while(pChild)
     {
-        pChild->DuiSendMessage(WM_ENABLE,bEnable,ParentEnable);
-        pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
+        pChild->SendMessage(WM_ENABLE,bEnable,ParentEnable);
+        pChild=pChild->GetWindow(GDUI_NEXTSIBLING);
     }
     if(IsDisabled(TRUE) && m_hSWnd == GetContainer()->SwndGetFocus())
     {
@@ -1074,14 +1062,14 @@ void SWindow::OnEnable( BOOL bEnable,UINT nStatus )
 
 void SWindow::OnLButtonDown(UINT nFlags,CPoint pt)
 {
-    if(m_bTabStop) SetDuiFocus();
-    SetDuiCapture();
+    if(m_bTabStop) SetFocus();
+    SetCapture();
     ModifyState(DuiWndState_PushDown, 0,TRUE);
 }
 
 void SWindow::OnLButtonUp(UINT nFlags,CPoint pt)
 {
-    ReleaseDuiCapture();
+    ReleaseCapture();
     if(!m_rcWindow.PtInRect(pt)) return;
 
     ModifyState(0, DuiWndState_PushDown,TRUE);
@@ -1104,7 +1092,7 @@ void SWindow::OnRButtonDown( UINT nFlags, CPoint point )
 
 void SWindow::OnMouseHover(WPARAM wParam, CPoint ptPos)
 {
-    if(GetDuiCapture()==m_hSWnd)
+    if(GetCapture()==m_hSWnd)
         ModifyState(DuiWndState_PushDown,0,FALSE);
     ModifyState(DuiWndState_Hover, 0,TRUE);
     OnNcPaint(0);
@@ -1112,7 +1100,7 @@ void SWindow::OnMouseHover(WPARAM wParam, CPoint ptPos)
 
 void SWindow::OnMouseLeave()
 {
-    if(GetDuiCapture()==m_hSWnd)
+    if(GetCapture()==m_hSWnd)
         ModifyState(0,DuiWndState_PushDown,FALSE);
     ModifyState(0,DuiWndState_Hover,TRUE);
     OnNcPaint(0);
@@ -1121,7 +1109,7 @@ void SWindow::OnMouseLeave()
 BOOL SWindow::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
     BOOL bRet=FALSE;
-    if(m_pParent) bRet=(BOOL)m_pParent->DuiSendMessage(WM_MOUSEWHEEL,MAKEWPARAM(nFlags,zDelta),MAKELPARAM(pt.x,pt.y));
+    if(m_pParent) bRet=(BOOL)m_pParent->SendMessage(WM_MOUSEWHEEL,MAKEWPARAM(nFlags,zDelta),MAKELPARAM(pt.x,pt.y));
     return bRet;
 }
 
@@ -1165,12 +1153,12 @@ void SWindow::ClearLayoutState()
 void SWindow::UpdateChildrenPosition()
 {
     SList<SWindow*> lstWnd;
-    SWindow *pChild=GetDuiWindow(GDUI_FIRSTCHILD);
+    SWindow *pChild=GetWindow(GDUI_FIRSTCHILD);
     while(pChild)
     {
         pChild->ClearLayoutState();
         lstWnd.AddTail(pChild);
-        pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
+        pChild=pChild->GetWindow(GDUI_NEXTSIBLING);
     }
     CDuiLayout::CalcChildrenPosition(this,&lstWnd);
     NotifyInvalidate();
@@ -1235,27 +1223,27 @@ void SWindow::ReleaseRenderTarget(IRenderTarget *pRT)
     m_gdcFlags=-1;
 }
 
-SWND SWindow::GetDuiCapture()
+SWND SWindow::GetCapture()
 {
     return GetContainer()->OnGetSwndCapture();
 }
 
-SWND SWindow::SetDuiCapture()
+SWND SWindow::SetCapture()
 {
     return GetContainer()->OnSetSwndCapture(m_hSWnd);
 }
 
-BOOL SWindow::ReleaseDuiCapture()
+BOOL SWindow::ReleaseCapture()
 {
     return GetContainer()->OnReleaseSwndCapture();
 }
 
-void SWindow::SetDuiFocus()
+void SWindow::SetFocus()
 {
     GetContainer()->OnSetSwndFocus(m_hSWnd);
 }
 
-void SWindow::KillDuiFocus()
+void SWindow::KillFocus()
 {
     if(GetContainer()->SwndGetFocus()==m_hSWnd)
     {
@@ -1374,7 +1362,7 @@ BOOL SWindow::OnNcHitTest(CPoint pt)
     return FALSE;
 }
 
-SWindow * SWindow::GetDuiWindow(int uCode)
+SWindow * SWindow::GetWindow(int uCode)
 {
     SWindow *pRet=NULL;
     switch(uCode)
@@ -1453,22 +1441,22 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
             {
                 pRT->PushClipRect(&rcClient);
             }
-            pWndCur->DuiSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
-            pWndCur->DuiSendMessage(WM_PAINT, (WPARAM)pRT);
+            pWndCur->SendMessage(WM_ERASEBKGND, (WPARAM)pRT);
+            pWndCur->SendMessage(WM_PAINT, (WPARAM)pRT);
         }
 
         SPainter DuiDC;
 
 //        pWndCur->BeforePaint(dc, DuiDC);    //让子窗口继承父窗口的属性
 
-        SWindow *pChild=pWndCur->GetDuiWindow(GDUI_FIRSTCHILD);
+        SWindow *pChild=pWndCur->GetWindow(GDUI_FIRSTCHILD);
         while(pChild)
         {
             if(pChild==pEnd) break;
             _PaintRegion(pRT,pRgn,pChild,pStart,pEnd,prState);
             if(prState == PRS_MEETEND)
                 break;
-            pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
+            pChild=pChild->GetWindow(GDUI_NEXTSIBLING);
         }
 
 //        pWndCur->AfterPaint(dc, DuiDC);
@@ -1478,7 +1466,7 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
         }
     }
     if(prsBack == PRS_DRAWING) 
-        pWndCur->DuiSendMessage(WM_NCPAINT, (WPARAM)pRT);//ncpaint should be placed in tail of paint link
+        pWndCur->SendMessage(WM_NCPAINT, (WPARAM)pRT);//ncpaint should be placed in tail of paint link
 
     return prState==PRS_DRAWING || prState == PRS_MEETEND;
 }
@@ -1506,7 +1494,7 @@ void SWindow::PaintForeground( IRenderTarget *pRT,LPRECT pRc )
 SWindow * SWindow::GetNextVisibleWindow( SWindow *pWnd ,const CRect &rcDraw)
 {
     if(!pWnd) return NULL;
-    SWindow *pNextSibling=pWnd->GetDuiWindow(GDUI_NEXTSIBLING);
+    SWindow *pNextSibling=pWnd->GetWindow(GDUI_NEXTSIBLING);
     if(pNextSibling && pNextSibling->IsVisible(TRUE) && !(pNextSibling->m_rcWindow & rcDraw).IsRectEmpty())
         return pNextSibling;
     else if (pNextSibling)    return GetNextVisibleWindow(pNextSibling,rcDraw);

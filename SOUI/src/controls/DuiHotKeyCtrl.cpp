@@ -186,7 +186,7 @@ void SHotKeyCtrl::GetHotKey( WORD & vKey,WORD &wModifers )
 
 LRESULT SHotKeyCtrl::OnWindowPosChanged( LPRECT lpRcContainer )
 {
-    KillDuiFocus();
+    KillFocus();
     return __super::OnWindowPosChanged(lpRcContainer);
 }
 }//namespace SOUI

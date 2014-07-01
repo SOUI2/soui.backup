@@ -27,7 +27,7 @@ SListBoxEx::SListBoxEx()
     , m_pTemplPanel(NULL)
     , m_nItems(0)
     , m_pItemSkin(NULL)
-    , m_crItemBg(CLR_INVALID)
+    , m_crItemBg(CR_INVALID)
     , m_crItemSelBg(RGB(0,0,128))
     , m_bVirtual(FALSE)
     , m_bItemRedrawDelay(TRUE)
@@ -62,7 +62,7 @@ void SListBoxEx::DeleteAllItems(BOOL bUpdate/*=TRUE*/)
     m_iSelItem=-1;
     m_iHoverItem=-1;
     m_pCapturedFrame=NULL;
-    ReleaseDuiCapture();
+    ReleaseCapture();
 
     SetViewSize(CSize(0,0));
     if(bUpdate) NotifyInvalidate();
@@ -76,7 +76,7 @@ void SListBoxEx::DeleteItem(int iItem)
     if(m_pCapturedFrame == m_arrItems[iItem])
     {
         m_pCapturedFrame=NULL;
-        ReleaseDuiCapture();
+        ReleaseCapture();
     }
 
     m_arrItems[iItem]->Release();
@@ -237,7 +237,7 @@ BOOL SListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
         {
             if(m_pTemplPanel)
             {
-                m_pTemplPanel->DuiSendMessage(WM_DESTROY);
+                m_pTemplPanel->SendMessage(WM_DESTROY);
                 m_pTemplPanel->Release();
             }
             m_pTemplPanel=new SItemPanel(this,xmlDoc,this);
@@ -298,7 +298,7 @@ void SListBoxEx::RedrawItem(int iItem)
     SPainter painter;
     BeforePaint(pRT,painter);
 
-    DuiSendMessage(WM_ERASEBKGND,(WPARAM)pRT);
+    SendMessage(WM_ERASEBKGND,(WPARAM)pRT);
     OnDrawItem(pRT,rcItem,iItem);
 
     AfterPaint(pRT,painter);
@@ -530,7 +530,7 @@ void SListBoxEx::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
     SWindow *pOwner = GetOwner();
     if (pOwner && (nChar == VK_ESCAPE))
     {
-        pOwner->DuiSendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
+        pOwner->SendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
         return;
     }
 
@@ -552,7 +552,7 @@ void SListBoxEx::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     SWindow *pOwner = GetOwner();
     if (pOwner)
-        pOwner->DuiSendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
+        pOwner->SendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
 }
 
 UINT SListBoxEx::OnGetDlgCode()
@@ -566,7 +566,7 @@ void SListBoxEx::OnDestroy()
     if(IsVirtual())
     {
         ASSERT(m_pTemplPanel);
-        m_pTemplPanel->DuiSendMessage(WM_DESTROY);
+        m_pTemplPanel->SendMessage(WM_DESTROY);
         m_pTemplPanel->Release();
         m_pTemplPanel=NULL;
     }
@@ -587,12 +587,12 @@ void SListBoxEx::OnItemSetCapture(SItemPanel *pItem,BOOL bCapture )
 {
     if(bCapture)
     {
-        SetDuiCapture();
+        SetCapture();
         m_pCapturedFrame=pItem;
     }
     else if(pItem==m_pCapturedFrame)
     {
-        ReleaseDuiCapture();
+        ReleaseCapture();
         m_pCapturedFrame=NULL;
     }
 }
@@ -627,7 +627,7 @@ LRESULT SListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
     else
     {
         if(m_bTabStop && (uMsg==WM_LBUTTONDOWN || uMsg== WM_RBUTTONDOWN || uMsg==WM_LBUTTONDBLCLK))
-            SetDuiFocus();
+            SetFocus();
         int iHover=HitTest(pt);
         if(iHover!=m_iHoverItem)
         {

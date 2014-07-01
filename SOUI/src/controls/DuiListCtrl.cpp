@@ -53,7 +53,7 @@ BOOL SListCtrl::CreateChildren(pugi::xml_node xmlNode)
         return FALSE;
     m_pHeader=NULL;
     
-    SWindow *pChild=GetDuiWindow(GDUI_FIRSTCHILD);
+    SWindow *pChild=GetWindow(GDUI_FIRSTCHILD);
     while(pChild)
     {
         if(pChild->IsClass(SHeaderCtrl::GetClassName()))
@@ -61,7 +61,7 @@ BOOL SListCtrl::CreateChildren(pugi::xml_node xmlNode)
             m_pHeader=(SHeaderCtrl*)pChild;
             break;
         }
-        pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
+        pChild=pChild->GetWindow(GDUI_NEXTSIBLING);
     }
     if(!m_pHeader) return FALSE;
         
@@ -301,7 +301,7 @@ void SListCtrl::UpdateScrollBar()
     SetScrollPos(FALSE, m_siHoz.nPos, TRUE);
 
     //  重新计算客户区及非客户区
-    DuiSendMessage(WM_NCCALCSIZE);
+    SendMessage(WM_NCCALCSIZE);
 
     //  根据需要调整原点位置
     if (HasScrollBar(FALSE) && m_ptOrigin.x+m_siHoz.nPage>szView.cx)
@@ -448,7 +448,7 @@ void SListCtrl::RedrawItem(int nItem)
         CRect rcDC;
         rcDC.IntersectRect(rcItem,rcList);
         IRenderTarget *pRT = GetRenderTarget(&rcDC, OLEDC_PAINTBKGND);
-        DuiSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
+        SendMessage(WM_ERASEBKGND, (WPARAM)pRT);
 
         SPainter painter;
         BeforePaint(pRT, painter);

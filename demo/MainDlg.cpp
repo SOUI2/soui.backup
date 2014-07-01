@@ -51,7 +51,7 @@ void CMainDlg::InitListCtrl()
     SListCtrl *pList=FindChildByName2<SListCtrl>(L"lc_test");
     if(pList)
     {
-        SWindow *pHeader=pList->GetDuiWindow(GDUI_FIRSTCHILD);
+        SWindow *pHeader=pList->GetWindow(GDUI_FIRSTCHILD);
         pHeader->subscribeEvent(NM_HDCLICK,Subscriber(&CMainDlg::OnListHeaderClick,this));
 
         TCHAR szColNames[][20]={_T("name"),_T("sex"),_T("age"),_T("score")};

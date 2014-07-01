@@ -56,6 +56,8 @@ public:
     virtual ~CDuiHostWnd() {}
 
 public:
+    SRootWindow * GetRoot(){return this;}
+    CSimpleWnd * GetNative(){return this;}
 
     HWND Create(HWND hWndParent,int x,int y,int nWidth,int nHeight);
     HWND Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight, LPVOID lpParam);
