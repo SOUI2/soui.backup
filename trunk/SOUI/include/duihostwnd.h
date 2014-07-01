@@ -16,7 +16,7 @@
 
 #include "SimpleWnd.h"
 #include "rootwnd.h"
-#include "DuiFrameDropTarget.h"
+#include "SDropTargetDispatcher.h"
 
 #pragma warning(disable: 4996)
 

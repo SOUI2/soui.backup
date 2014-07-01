@@ -7,7 +7,7 @@
 
 #pragma  once
 
-#include "DuiFrameDropTarget.h"
+#include "SDropTargetDispatcher.h"
 #include "FocusManager.h"
 
 namespace SOUI
@@ -69,7 +69,7 @@ protected:
 
     CFocusManager m_focusMgr;
 
-    CDuiFrameDropTarget m_dropTarget;
+    SDropTargetDispatcher m_dropTarget;
 
     SWindow    *m_pHost;
 
