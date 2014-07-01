@@ -18,7 +18,7 @@ namespace SOUI
 
 
 SItemPanel::SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer *pItemContainer)
-    :CDuiFrame(this)
+    :CSwndContainer(this)
     ,m_pFrmHost(pFrameHost)
     ,m_pItemContainer(pItemContainer)
     ,m_dwData(0)
@@ -142,17 +142,17 @@ void SItemPanel::OnRedraw(const CRect &rc)
     }
 }
 
-BOOL SItemPanel::OnReleaseDuiCapture()
+BOOL SItemPanel::OnReleaseSwndCapture()
 {
-    if(!__super::OnReleaseDuiCapture()) return FALSE;
+    if(!__super::OnReleaseSwndCapture()) return FALSE;
     m_pItemContainer->OnItemSetCapture(this,FALSE);
     return TRUE;
 }
 
-SWND SItemPanel::OnSetDuiCapture(SWND hDuiWNd)
+SWND SItemPanel::OnSetSwndCapture(SWND hDuiWNd)
 {
     m_pItemContainer->OnItemSetCapture(this,TRUE);
-    return __super::OnSetDuiCapture(hDuiWNd);
+    return __super::OnSetSwndCapture(hDuiWNd);
 }
 
 HWND SItemPanel::GetHostHwnd()
@@ -165,26 +165,26 @@ BOOL SItemPanel::IsTranslucent()
     return m_pFrmHost->GetContainer()->IsTranslucent();
 }
 
-BOOL SItemPanel::DuiCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
+BOOL SItemPanel::SwndCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
 {
-    return m_pFrmHost->GetContainer()->DuiCreateCaret(hBmp,nWidth,nHeight);
+    return m_pFrmHost->GetContainer()->SwndCreateCaret(hBmp,nWidth,nHeight);
 }
 
-BOOL SItemPanel::DuiShowCaret( BOOL bShow )
+BOOL SItemPanel::SwndShowCaret( BOOL bShow )
 {
-    return m_pFrmHost->GetContainer()->DuiShowCaret(bShow);
+    return m_pFrmHost->GetContainer()->SwndShowCaret(bShow);
 }
 
-BOOL SItemPanel::DuiSetCaretPos( int x,int y )
+BOOL SItemPanel::SwndSetCaretPos( int x,int y )
 {
     CRect rcItem=GetItemRect();
     x+=rcItem.left,y+=rcItem.top;
-    return m_pFrmHost->GetContainer()->DuiSetCaretPos(x,y);
+    return m_pFrmHost->GetContainer()->SwndSetCaretPos(x,y);
 }
 
-BOOL SItemPanel::DuiUpdateWindow()
+BOOL SItemPanel::SwndUpdateWindow()
 {
-    return m_pFrmHost->GetContainer()->DuiUpdateWindow();
+    return m_pFrmHost->GetContainer()->SwndUpdateWindow();
 }
 
 void SItemPanel::ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove)
@@ -281,14 +281,14 @@ void SItemPanel::OnSetCaretValidateRect( LPCRECT lpRect )
 
 BOOL SItemPanel::RegisterTimelineHandler( ITimelineHandler *pHandler )
 {
-    BOOL bRet=CDuiFrame::RegisterTimelineHandler(pHandler);
+    BOOL bRet=CSwndContainer::RegisterTimelineHandler(pHandler);
     if(bRet && m_lstTimelineHandler.GetCount()==1) m_pFrmHost->GetContainer()->RegisterTimelineHandler(this);
     return bRet;
 }
 
 BOOL SItemPanel::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 {
-    BOOL bRet=CDuiFrame::UnregisterTimelineHandler(pHandler);
+    BOOL bRet=CSwndContainer::UnregisterTimelineHandler(pHandler);
     if(bRet && m_lstTimelineHandler.IsEmpty()) m_pFrmHost->GetContainer()->UnregisterTimelineHandler(this);
     return bRet;
 }

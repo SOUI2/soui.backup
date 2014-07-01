@@ -187,7 +187,7 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
         rcItemPrev=rcItem;
     }
     
-    if(GetContainer()->GetDuiFocus()==m_hSWnd && IsTabStop())
+    if(GetContainer()->SwndGetFocus()==m_hSWnd && IsTabStop())
     {
         CRect rc;
         GetItemRect(m_nCurrentPage,rc);

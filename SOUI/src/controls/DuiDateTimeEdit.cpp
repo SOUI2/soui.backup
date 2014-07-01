@@ -894,7 +894,7 @@ void SMaskEdit::SetMaskState()
     SStringT strWindowText = GetWindowText();
 
     CorrectWindowText();
-    GetContainer()->DuiShowCaret(FALSE);
+    GetContainer()->SwndShowCaret(FALSE);
 
     if (strWindowText != m_strWindowText)
     {
@@ -904,7 +904,7 @@ void SMaskEdit::SetMaskState()
     }
 
     SetSel(MAKELONG(m_nStartChar, m_nEndChar), FALSE);
-    GetContainer()->DuiShowCaret(TRUE);
+    GetContainer()->SwndShowCaret(TRUE);
 }
 
 /////////////////////////////////////////////////////////////////////////////

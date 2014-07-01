@@ -306,18 +306,18 @@ BOOL CDuiTextHost::TxSetTimer( UINT idTimer, UINT uTimeout )
 BOOL CDuiTextHost::TxSetCaretPos( INT x, INT y )
 {
     m_ptCaret.x=x,m_ptCaret.y=y;
-    return m_pDuiRichEdit->GetContainer()->DuiSetCaretPos(x,y);
+    return m_pDuiRichEdit->GetContainer()->SwndSetCaretPos(x,y);
 }
 
 BOOL CDuiTextHost::TxShowCaret( BOOL fShow )
 {
     if(fShow && !m_fUiActive) return FALSE;
-    return m_pDuiRichEdit->GetContainer()->DuiShowCaret(fShow);
+    return m_pDuiRichEdit->GetContainer()->SwndShowCaret(fShow);
 }
 
 BOOL CDuiTextHost::TxCreateCaret( HBITMAP hbmp, INT xWidth, INT yHeight )
 {
-    return m_pDuiRichEdit->GetContainer()->DuiCreateCaret(hbmp,xWidth,yHeight);
+    return m_pDuiRichEdit->GetContainer()->SwndCreateCaret(hbmp,xWidth,yHeight);
 }
 
 HDC CDuiTextHost::TxGetDC()
@@ -404,7 +404,7 @@ void CDuiTextHost::TxViewChange( BOOL fUpdate )
 {
     if(fUpdate)
     {
-        m_pDuiRichEdit->GetContainer()->DuiUpdateWindow();
+        m_pDuiRichEdit->GetContainer()->SwndUpdateWindow();
     }
 }
 
@@ -1064,7 +1064,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
 
 void SRichEdit::OnLButtonDown( UINT nFlags, CPoint point )
 {
-    if(m_hSWnd!=GetContainer()->GetDuiFocus())
+    if(m_hSWnd!=GetContainer()->SwndGetFocus())
     {
         SetDuiFocus();
     }
@@ -1223,7 +1223,7 @@ LRESULT SRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
             m_rcInset.bottom=DYtoHimetricY(m_rcInsetPixel.bottom,yPerInch);
         }
         ReleaseDC(GetContainer()->GetHostHwnd(),hdc);
-        BOOL bFocus = GetContainer()->GetDuiFocus()==m_hSWnd;
+        BOOL bFocus = GetContainer()->SwndGetFocus()==m_hSWnd;
         if(bFocus) KillDuiFocus();
         m_pTxtHost->GetTextService()->OnTxPropertyBitsChange(TXTBIT_EXTENTCHANGE|TXTBIT_CLIENTRECTCHANGE, TXTBIT_EXTENTCHANGE|TXTBIT_CLIENTRECTCHANGE);
         if(bFocus) SetDuiFocus();

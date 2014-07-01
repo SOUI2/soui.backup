@@ -451,11 +451,11 @@ void SListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
         if(IsVirtual())
         {
             ASSERT(m_pTemplPanel);
-            SWindow *pHover=DuiWindowMgr::GetWindow(m_pTemplPanel->GetDuiHover());
+            SWindow *pHover=DuiWindowMgr::GetWindow(m_pTemplPanel->SwndGetHover());
             if(pHover) nms.uHoverID=pHover->GetID();
         }else
         {
-            SWindow *pHover=DuiWindowMgr::GetWindow(m_arrItems[nNewSel]->GetDuiHover());
+            SWindow *pHover=DuiWindowMgr::GetWindow(m_arrItems[nNewSel]->SwndGetHover());
             if(pHover) nms.uHoverID=pHover->GetID();
         }
     }
@@ -764,7 +764,7 @@ void SListBoxEx::Relayout()
 
 void SListBoxEx::OnViewOriginChanged( CPoint ptOld,CPoint ptNew )
 {
-    if(m_iSelItem!=-1 && GetContainer()->GetDuiFocus()==m_hSWnd)
+    if(m_iSelItem!=-1 && GetContainer()->SwndGetFocus()==m_hSWnd)
     {//这里需要重新设置一下选中行的焦点状态来更新光标位置
         m_arrItems[m_iSelItem]->DoFrameEvent(WM_KILLFOCUS,0,0);
         m_arrItems[m_iSelItem]->DoFrameEvent(WM_SETFOCUS,0,0);

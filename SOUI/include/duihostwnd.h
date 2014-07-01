@@ -46,7 +46,7 @@ class CDuiTipCtrl;
 
 class SOUI_EXP CDuiHostWnd
     : public CSimpleWnd
-    , public CDuiFrame
+    , public CSwndContainer
     , public SRootWindow
     , protected IDuiRealWndHandler
 {
@@ -171,28 +171,25 @@ protected:
     void OnRedraw(const CRect &rc);
 
     /*virtual */
-    BOOL OnReleaseDuiCapture();
+    BOOL OnReleaseSwndCapture();
 
     /*virtual */
-    SWND OnSetDuiCapture(SWND hDuiWnd);
-
-    /*virtual */
-    SWND GetDuiCapture();
+    SWND OnSetSwndCapture(SWND hDuiWnd);
 
     /*virtual */
     BOOL IsTranslucent();
 
     /*virtual */
-    BOOL DuiCreateCaret(HBITMAP hBmp,int nWidth,int nHeight);
+    BOOL SwndCreateCaret(HBITMAP hBmp,int nWidth,int nHeight);
 
     /*virtual */
-    BOOL DuiShowCaret(BOOL bShow);
+    BOOL SwndShowCaret(BOOL bShow);
 
     /*virtual */
-    BOOL DuiSetCaretPos(int x,int y);
+    BOOL SwndSetCaretPos(int x,int y);
 
     /*virtual */
-    BOOL DuiUpdateWindow();
+    BOOL SwndUpdateWindow();
 
     /*virtual */
     BOOL RegisterTimelineHandler(ITimelineHandler *pHandler);

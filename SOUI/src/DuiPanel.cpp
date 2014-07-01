@@ -684,7 +684,7 @@ void SPanel::ScrollUpdate()
     DWORD dwTime=GetTickCount();
     if(dwTime-m_dwUpdateTime>=m_dwUpdateInterval)
     {
-        GetContainer()->DuiUpdateWindow();
+        GetContainer()->SwndUpdateWindow();
         m_dwUpdateTime=dwTime;
     }
 }
