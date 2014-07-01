@@ -109,7 +109,7 @@ protected:
 
     UINT OnGetDlgCode();
 
-    virtual BOOL OnDuiSetCursor(const CPoint &pt);
+    virtual BOOL OnSetCursor(const CPoint &pt);
 
     virtual void OnViewOriginChanged(CPoint ptOld,CPoint ptNew);
 

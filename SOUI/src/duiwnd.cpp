@@ -114,9 +114,9 @@ void SWindow::GetDlgPosition(DUIWND_POSITION *pPos)
 }
 
 // Get inner text
-LPCTSTR SWindow::GetInnerText()
+SStringT SWindow::GetWindowText()
 {
-    return m_strWndText;
+    return m_strText;
 }
 
 // Get tooltip text
@@ -129,20 +129,19 @@ BOOL SWindow::OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,
     return TRUE;
 }
 
-// Set inner text
-HRESULT SWindow::SetInnerText(LPCTSTR lpszText)
+BOOL SWindow::SetWindowText(LPCTSTR lpszText)
 {
-    m_strWndText = lpszText;
+    m_strText = lpszText;
     if(IsVisible(TRUE)) NotifyInvalidate();
     if ((m_dlgpos.uPositionType & (SizeX_FitContent | SizeY_FitContent)) && (4 != m_dlgpos.nCount))
     {
         OnWindowPosChanged(NULL);
         if(IsVisible(TRUE)) NotifyInvalidate();
     }
-    return S_OK;
+    return TRUE;
 }
 
-VOID SWindow::TestMainThread()
+void SWindow::TestMainThread()
 {
 #ifdef DEBUG
     // 当你看到这个东西的时候，我不幸的告诉你，你的其他线程在刷界面
@@ -211,7 +210,7 @@ void SWindow::Move(int x,int y, int cx/*=-1*/,int cy/*=-1*/)
 }
 
 // Set current cursor, when hover
-BOOL SWindow::OnDuiSetCursor(const CPoint &pt)
+BOOL SWindow::OnSetCursor(const CPoint &pt)
 {
     HCURSOR hCur = ::LoadCursor(NULL, m_style.m_lpCursorName);
     ::SetCursor(hCur);
@@ -551,13 +550,13 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
         return FALSE;
     }
 
-    m_strWndText = DUI_CW2T(xmlNode.text().get());
-    if (!m_strWndText.IsEmpty())
+    m_strText = DUI_CW2T(xmlNode.text().get());
+    if (!m_strText.IsEmpty())
     {
-        m_strWndText.TrimRight(0x0a).TrimLeft(0x0a);
-        m_strWndText.TrimRight(0x0d).TrimLeft(0x0d);
-        m_strWndText.TrimRight(0x20).TrimLeft(0x20);
-        if (!m_strWndText.IsEmpty()) BUILDSTRING(m_strWndText);
+        m_strText.TrimRight(0x0a).TrimLeft(0x0a);
+        m_strText.TrimRight(0x0d).TrimLeft(0x0d);
+        m_strText.TrimRight(0x20).TrimLeft(0x20);
+        if (!m_strText.IsEmpty()) BUILDSTRING(m_strText);
     }
 
     m_dlgpos.nCount = 0;
@@ -896,7 +895,7 @@ void SWindow::OnPaint(IRenderTarget *pRT)
 
     CRect rcText;
     GetTextRect(rcText);
-    DuiDrawText(pRT,m_strWndText, m_strWndText.GetLength(), rcText, GetTextAlign());
+    DuiDrawText(pRT,m_strText, m_strText.GetLength(), rcText, GetTextAlign());
 
     //draw focus rect
     if(GetContainer()->GetDuiFocus()==m_hSWnd)
@@ -982,7 +981,7 @@ CSize SWindow::GetDesiredSize(LPRECT pRcContainer)
     CAutoRefPtr<IRenderTarget> pRT;
     GETRENDERFACTORY->CreateRenderTarget(&pRT,1,1);
     BeforePaintEx(pRT);
-    DuiDrawText(pRT,m_strWndText, m_strWndText.GetLength(), rcTest, nTestDrawMode | DT_CALCRECT);
+    DuiDrawText(pRT,m_strText, m_strText.GetLength(), rcTest, nTestDrawMode | DT_CALCRECT);
 
     return rcTest.Size();
 }

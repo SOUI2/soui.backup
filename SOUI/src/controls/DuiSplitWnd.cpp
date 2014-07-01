@@ -112,7 +112,7 @@ BOOL SSplitWnd::CreateChildren( pugi::xml_node xmlNode )
 }
 
 
-BOOL SSplitWnd::OnDuiSetCursor(const CPoint &pt)
+BOOL SSplitWnd::OnSetCursor(const CPoint &pt)
 {
     if (!m_bAdjustable) return FALSE;
 

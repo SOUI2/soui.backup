@@ -137,7 +137,7 @@ protected:
     int     m_nID;
 
     DuiStyle m_style;
-    SStringT m_strWndText;
+    SStringT m_strText;
     DWORD m_dwState;
     SStringT m_strLinkUrl;
     BOOL m_bMsgTransparent;        //不处理用户操作标志
@@ -184,13 +184,13 @@ public:
 
     void GetDlgPosition(DUIWND_POSITION *pPos);
     // Get inner text
-    LPCTSTR GetInnerText();
+    SStringT GetWindowText();
 
 
     // Set inner text
-    HRESULT SetInnerText(LPCTSTR lpszText);
+    BOOL SetWindowText(LPCTSTR lpszText);
 
-    VOID TestMainThread();
+    void TestMainThread();
 
     // Send a message to DuiWindow
     LRESULT DuiSendMessage(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0,BOOL *pbMsgHandled=NULL);
@@ -206,7 +206,7 @@ public:
     void Move(int x,int y, int cx=-1,int cy=-1);
 
     // Set current cursor, when hover
-    virtual BOOL OnDuiSetCursor(const CPoint &pt);
+    virtual BOOL OnSetCursor(const CPoint &pt);
 
     // Get tooltip Info
     virtual BOOL OnUpdateToolTip(HSWND hCurTipHost,HSWND &hNewTipHost,CRect &rcTip,SStringT &strTip);

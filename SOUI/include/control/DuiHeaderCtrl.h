@@ -54,7 +54,7 @@ namespace SOUI
         SOUI_ATTRS_END()
     protected:
         virtual BOOL CreateChildren(pugi::xml_node xmlNode);
-        virtual BOOL OnDuiSetCursor(const CPoint &pt);
+        virtual BOOL OnSetCursor(const CPoint &pt);
 
         void OnPaint(IRenderTarget * pRT);
         virtual void DrawItem(IRenderTarget * pRT,CRect rcItem,const LPDUIHDITEM pItem);

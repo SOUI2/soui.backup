@@ -624,7 +624,7 @@ LRESULT SRichEdit::OnCreate( LPVOID )
     dw &= ~IMF_AUTOFONT;
     DuiSendMessage(EM_SETLANGOPTIONS, 0, dw);
 
-    SetWindowText(DUI_CT2W(GetInnerText()));
+    SetWindowText(DUI_CT2W(SWindow::GetWindowText()));
 
     //register droptarget
     OnEnableDragDrop( !(m_dwStyle&ES_READONLY) & m_fEnableDragDrop);
@@ -739,7 +739,7 @@ BOOL SRichEdit::OnScroll( BOOL bVertical,UINT uCode,int nPos )
     return lresult==0;
 }
 
-BOOL SRichEdit::OnDuiSetCursor(const CPoint &pt)
+BOOL SRichEdit::OnSetCursor(const CPoint &pt)
 {
     CRect rcClient;
     GetClient(&rcClient);
@@ -1327,11 +1327,14 @@ BOOL SRichEdit::SetWindowText( LPCWSTR lpszText )
     return (BOOL)DuiSendMessage(WM_SETTEXT,0,(LPARAM)lpszText);
 }
 
-int SRichEdit::GetWindowText(LPWSTR lpString,
-                                int nMaxCount
-                               )
+SStringW SRichEdit::GetWindowText()
 {
-    return (int)DuiSendMessage(WM_GETTEXT,(WPARAM)nMaxCount,(LPARAM)lpString);
+    SStringW strRet;
+    int nLen=DuiSendMessage(WM_GETTEXTLENGTH);
+    wchar_t *pBuf=strRet.GetBufferSetLength(nLen);
+    DuiSendMessage(WM_GETTEXT,(WPARAM)nLen,(LPARAM)pBuf);
+    strRet.ReleaseBuffer();
+    return strRet;
 }
 
 int SRichEdit::GetWindowTextLength()

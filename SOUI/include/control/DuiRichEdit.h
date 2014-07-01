@@ -228,7 +228,7 @@ public:
     virtual ~SRichEdit() {}
 
 public://richedit interface
-    int GetWindowText(LPWSTR lpString, int nMaxCount );
+    SStringT GetWindowText();
     int GetWindowTextLength();
     BOOL SetWindowText(LPCWSTR lpszText);
     void SetSel(DWORD dwSelection, BOOL bNoScroll = FALSE);
@@ -281,7 +281,7 @@ protected:
 
     virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
 
-    virtual BOOL OnDuiSetCursor(const CPoint &pt);
+    virtual BOOL OnSetCursor(const CPoint &pt);
 
     virtual BOOL DuiWndProc(UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResult);
 

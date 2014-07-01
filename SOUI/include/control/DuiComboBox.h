@@ -371,13 +371,7 @@ protected:
     {
         if(!m_bDropdown)
         {
-            int nLen=m_pEdit->GetWindowTextLength();
-            wchar_t *pszBuf=new wchar_t[nLen+1];
-            m_pEdit->GetWindowText(pszBuf,nLen);
-            pszBuf[nLen]=0;
-            SStringT str=DUI_CW2T(pszBuf);
-            delete pszBuf;
-            return str;
+            return m_pEdit->GetWindowText();
         }
         else
         {
@@ -738,7 +732,7 @@ public:
             if(m_uTxtID!=0)
             {
                 SWindow *pText=pWnd->FindChildByID(m_uTxtID);
-                if(pText) pText->SetInnerText(pszText);
+                if(pText) pText->SetWindowText(pszText);
             }
             if(m_uIconID!=0)
             {
@@ -784,7 +778,7 @@ public:
         SWindow *pItem=m_pListBox->GetItemPanel(iItem);
         SWindow *pText=pItem->FindChildByID(m_uTxtID);
         if(!pText) return _T("");
-        return pText->GetInnerText();
+        return pText->GetWindowText();
     }
 
     SListBoxEx * GetListBox(){return m_pListBox;}

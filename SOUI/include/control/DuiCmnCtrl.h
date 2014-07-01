@@ -116,7 +116,7 @@ protected:
      *
      * Describe  函数内部会加载光标样式
      */
-    virtual BOOL OnDuiSetCursor(const CPoint &pt);
+    virtual BOOL OnSetCursor(const CPoint &pt);
 
     void OnLButtonDown(UINT nFlags,CPoint pt);
     void OnLButtonUp(UINT nFlags,CPoint pt);
