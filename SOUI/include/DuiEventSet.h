@@ -6,15 +6,15 @@
 namespace SOUI
 {
 
-    class CDuiEvent
+    class SEvent
     {
     public:
-        CDuiEvent(DWORD dwEventID):m_dwEventID(dwEventID)
+        SEvent(DWORD dwEventID):m_dwEventID(dwEventID)
         {
 
         }
 
-        ~CDuiEvent()
+        ~SEvent()
         {
             for(UINT i=0;i<m_evtSlots.GetCount();i++)
             {
@@ -156,8 +156,8 @@ namespace SOUI
     }
 
     protected:
-        CDuiEvent * GetEventObject(const DWORD dwEventID);
-        SArray<CDuiEvent *> m_evtArr;
+        SEvent * GetEventObject(const DWORD dwEventID);
+        SArray<SEvent *> m_evtArr;
         bool                    m_bMuted;
     };
 
