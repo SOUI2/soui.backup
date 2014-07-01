@@ -420,12 +420,12 @@ namespace SOUI
             ATTR_STRINGT(L"title-7", m_strTitle[6], FALSE)
         SOUI_ATTRS_END()
 
-        WND_MSG_MAP_BEGIN()
+        SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
             MSG_WM_LBUTTONDOWN(OnLButtonDown)
             MSG_WM_MOUSEMOVE(OnMouseMove)
             MSG_WM_MOUSELEAVE(OnMouseLeave)
-        WND_MSG_MAP_END()
+        SOUI_MSG_MAP_END()
     protected:
         int             m_nTitleHei;    /**< 表头高度 */
         int             m_nFooterHei;   /**< 表尾高度 */

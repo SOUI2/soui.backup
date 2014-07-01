@@ -9,7 +9,7 @@ public:
 
 	void OnOK()
 	{
-		m_nMode=((STabCtrl*)FindChildByCmdID(200))->GetCurSel();
+		m_nMode=((STabCtrl*)FindChildByID(200))->GetCurSel();
 		EndDialog(IDOK);
 	}
 

@@ -58,7 +58,7 @@ protected:
         ATTR_WORD(L"hotkey",m_wVK,FALSE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_CREATE(OnCreate)
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
@@ -69,7 +69,7 @@ protected:
         MSG_WM_SYSKEYDOWN(OnSysKeyDown)
         MSG_WM_SYSKEYUP(OnSysKeyUp)
         MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
     WORD     m_wInvalidComb;        //无效的组合键
     WORD     m_wInvalidModifier; //对无效组合键的替换方案,默认方案
 

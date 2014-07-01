@@ -89,11 +89,11 @@ protected:
      */   
     virtual LRESULT DuiNotify(LPSNMHDR pnms);
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_MOUSEHOVER(OnMouseHover)
         MSG_WM_MOUSELEAVE(OnMouseLeave)
         MSG_WM_KEYDOWN(OnKeyDown)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 };
 
 /**
@@ -350,7 +350,7 @@ protected:
         ATTR_INT(L"animtime", m_iAnimTime, FALSE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)        
         MSG_WM_MOUSEMOVE(OnMouseMove)
@@ -358,7 +358,7 @@ protected:
         MSG_WM_KEYDOWN(OnKeyDown) 
         MSG_WM_CHAR(OnChar)
         MSG_WM_DESTROY(OnDestroy)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 
 protected:
     /**
@@ -737,12 +737,12 @@ public:
             SWindow *pWnd=m_pListBox->GetItemPanel(iInserted);
             if(m_uTxtID!=0)
             {
-                SWindow *pText=pWnd->FindChildByCmdID(m_uTxtID);
+                SWindow *pText=pWnd->FindChildByID(m_uTxtID);
                 if(pText) pText->SetInnerText(pszText);
             }
             if(m_uIconID!=0)
             {
-                SImageWnd *pIcon=pWnd->FindChildByCmdID2<SImageWnd*>(m_uIconID);
+                SImageWnd *pIcon=pWnd->FindChildByID2<SImageWnd>(m_uIconID);
                 if(pIcon) pIcon->SetIcon(iIcon);
             }
         }
@@ -782,7 +782,7 @@ public:
     {
         if(m_uTxtID == 0 || iItem<0 || iItem>= GetCount()) return _T("");
         SWindow *pItem=m_pListBox->GetItemPanel(iItem);
-        SWindow *pText=pItem->FindChildByCmdID(m_uTxtID);
+        SWindow *pText=pItem->FindChildByID(m_uTxtID);
         if(!pText) return _T("");
         return pText->GetInnerText();
     }

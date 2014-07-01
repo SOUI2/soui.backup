@@ -1,13 +1,13 @@
 #pragma once
 
-#define WND_MSG_MAP_BEGIN()                                       \
+#define SOUI_MSG_MAP_BEGIN()                                       \
 protected:                                                          \
     virtual BOOL ProcessDuiWndMessage(                              \
     UINT uMsg, WPARAM wParam,                        \
     LPARAM lParam, LRESULT& lResult)                            \
     {
 
-#define WND_MSG_MAP_END()                                        \
+#define SOUI_MSG_MAP_END()                                        \
     if (!IsMsgHandled())                                        \
     return __super::ProcessDuiWndMessage(                   \
     uMsg, wParam, lParam, lResult);                     \

@@ -11,10 +11,10 @@ namespace SOUI
 
 SWindow::SWindow()
     : m_hSWnd(DuiWindowMgr::NewWindow(this))
+    , m_nID(0)
     , m_pContainer(NULL)
     , m_pParent(NULL),m_pFirstChild(NULL),m_pLastChild(NULL),m_pNextSibling(NULL),m_pPrevSibling(NULL)
     , m_nChildrenCount(0)
-    , m_uCmdID(NULL)
     , m_dwState(DuiWndState_Normal)
     , m_bMsgTransparent(FALSE)
     , m_bVisible(TRUE)
@@ -239,17 +239,6 @@ DWORD SWindow::ModifyState(DWORD dwStateAdd, DWORD dwStateRemove,BOOL bUpdate/*=
     return dwOldState;
 }
 
-// Get Command ID
-UINT SWindow::GetCmdID()
-{
-    return m_uCmdID;
-}
-
-void SWindow::SetCmdID(UINT uNewID)
-{
-    m_uCmdID=uNewID;
-}
-
 ULONG_PTR SWindow::GetUserData()
 {
     return m_uData;
@@ -336,12 +325,12 @@ UINT SWindow::GetChildrenCount()
     return m_nChildrenCount;
 }
 
-SWindow * SWindow::GetChild(UINT uCmdID)
+SWindow * SWindow::GetChild(int nID)
 {
     SWindow *pChild=m_pFirstChild;
     while(pChild)
     {
-        if(pChild->GetCmdID()==uCmdID) return pChild;
+        if(pChild->GetID()==nID) return pChild;
         pChild=pChild->m_pNextSibling;
     }
     return NULL;
@@ -493,14 +482,14 @@ DuiStyle& SWindow::GetStyle()
 }
 
 
-SWindow* SWindow::FindChildByCmdID(UINT uCmdID)
+SWindow* SWindow::FindChildByID(int id)
 {
     SWindow *pChild = m_pFirstChild;
     while(pChild)
     {
-        if (pChild->GetCmdID() == uCmdID)
+        if (pChild->GetID() == id)
             return pChild;
-        SWindow *pChildFind=pChild->FindChildByCmdID(uCmdID);
+        SWindow *pChildFind=pChild->FindChildByID(id);
         if(pChildFind) return pChildFind;
         pChild=pChild->m_pNextSibling;
     }
@@ -1137,7 +1126,7 @@ void SWindow::OnLButtonUp(UINT nFlags,CPoint pt)
     {
         ::ShellExecute(NULL, _T("open"), lpszUrl, NULL, NULL, SW_SHOWNORMAL);
     }
-    else if (GetCmdID() || GetName())
+    else if (GetID() || GetName())
     {
         NotifyCommand();
     }
@@ -1336,7 +1325,7 @@ void SWindow::CheckRadioButton(SWindow * pRadioBox)
 
 BOOL SWindow::SetItemVisible(UINT uItemID, BOOL bVisible)
 {
-    SWindow *pWnd = FindChildByCmdID(uItemID);
+    SWindow *pWnd = FindChildByID(uItemID);
 
     if (pWnd)
     {
@@ -1349,7 +1338,7 @@ BOOL SWindow::SetItemVisible(UINT uItemID, BOOL bVisible)
 
 BOOL SWindow::IsItemVisible(UINT uItemID, BOOL bCheckParent /*= FALSE*/)
 {
-    SWindow *pWnd = FindChildByCmdID(uItemID);
+    SWindow *pWnd = FindChildByID(uItemID);
 
     if (pWnd)
         return pWnd->IsVisible(bCheckParent);
@@ -1359,7 +1348,7 @@ BOOL SWindow::IsItemVisible(UINT uItemID, BOOL bCheckParent /*= FALSE*/)
 
 BOOL SWindow::GetItemCheck(UINT uItemID)
 {
-    SWindow *pWnd = FindChildByCmdID(uItemID);
+    SWindow *pWnd = FindChildByID(uItemID);
 
     if (pWnd)
         return pWnd->IsChecked();
@@ -1369,7 +1358,7 @@ BOOL SWindow::GetItemCheck(UINT uItemID)
 
 BOOL SWindow::SetItemCheck(UINT uItemID, BOOL bCheck)
 {
-    SWindow *pWnd = FindChildByCmdID(uItemID);
+    SWindow *pWnd = FindChildByID(uItemID);
 
     if (pWnd)
     {
@@ -1388,7 +1377,7 @@ BOOL SWindow::SetItemCheck(UINT uItemID, BOOL bCheck)
 
 BOOL SWindow::EnableItem(UINT uItemID, BOOL bEnable)
 {
-    SWindow *pWnd = FindChildByCmdID(uItemID);
+    SWindow *pWnd = FindChildByID(uItemID);
 
     if (pWnd)
     {
@@ -1406,7 +1395,7 @@ BOOL SWindow::EnableItem(UINT uItemID, BOOL bEnable)
 
 BOOL SWindow::IsItemEnable(UINT uItemID, BOOL bCheckParent /*= FALSE*/)
 {
-    SWindow *pWnd = FindChildByCmdID(uItemID);
+    SWindow *pWnd = FindChildByID(uItemID);
 
     if (pWnd)
         return !pWnd->IsDisabled(bCheckParent);
@@ -1799,7 +1788,7 @@ LRESULT SWindow::NotifyCommand()
     DUINMCOMMAND nms;
     nms.hdr.hDuiWnd=m_hSWnd;
     nms.hdr.code = NM_COMMAND;
-    nms.hdr.idFrom = GetCmdID();
+    nms.hdr.idFrom = GetID();
     nms.hdr.pszNameFrom=GetName();
     nms.uItemData = GetUserData();
     return DuiNotify((LPSNMHDR)&nms);
@@ -1810,7 +1799,7 @@ LRESULT SWindow::NotifyContextMenu( CPoint pt )
     DUINMCONTEXTMENU nms;
     nms.hdr.hDuiWnd=m_hSWnd;
     nms.hdr.code = NM_CONTEXTMENU;
-    nms.hdr.idFrom = GetCmdID();
+    nms.hdr.idFrom = GetID();
     nms.hdr.pszNameFrom=GetName();
     nms.uItemData = GetUserData();
     nms.pt=pt;

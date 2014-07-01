@@ -131,7 +131,7 @@ protected:
         ATTR_UINT(L"updateinterval", m_dwUpdateInterval, FALSE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_CREATE(OnCreate)
         MSG_WM_NCPAINT_EX(OnNcPaint)
         MSG_WM_NCCALCSIZE(OnNcCalcSize)
@@ -142,7 +142,7 @@ protected:
         MSG_WM_MOUSEWHEEL(OnMouseWheel)
         MSG_WM_DUITIMER(OnDuiTimer)
         MSG_WM_SHOWWINDOW(OnShowWindow)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 };
 
 class SOUI_EXP SScrollView : public SPanel
@@ -191,10 +191,10 @@ protected:
         ATTR_INT(L"origin-y", m_ptOrigin.y, FALSE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_CREATE(OnCreate)
         MSG_WM_SIZE(OnSize)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 protected:
     CSize m_szView;
     CPoint m_ptOrigin;

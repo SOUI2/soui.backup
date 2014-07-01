@@ -27,6 +27,11 @@ public:                                                             \
     OnAttributeChanged(strAttribName,bLoading,hRet);        \
     return hRet;                                                \
     }                                                               \
+
+#define SOUI_ATTRS_QUIT()                              \
+    OnAttributeChanged(strAttribName,bLoading,hRet);        \
+    return hRet;                                                \
+    }                                                           \
  
 #define ATTR_CHAIN(varname)                               \
     if (SUCCEEDED(hRet = varname.SetAttribute(strAttribName, strValue, bLoading)))   \

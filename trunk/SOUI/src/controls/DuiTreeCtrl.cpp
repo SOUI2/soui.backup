@@ -947,7 +947,7 @@ void STreeCtrl::ItemLButtonUp(HSTREEITEM hItem, UINT nFlags,CPoint pt)
             DUINMCOMMAND nms;
             nms.hdr.code = NM_COMMAND;
             nms.hdr.hDuiWnd=m_hSWnd;
-            nms.hdr.idFrom = GetCmdID();
+            nms.hdr.idFrom = GetID();
             nms.hdr.pszNameFrom=GetName();
             nms.uItemData = hItem; 
             DuiNotify((LPSNMHDR)&nms);
@@ -1030,7 +1030,7 @@ void STreeCtrl::NotifyParent()
     DUINMTBSELCHANGED nms;
     nms.hdr.code=NM_TBSELCHANGED;
     nms.hdr.hDuiWnd=m_hSWnd;
-    nms.hdr.idFrom=GetCmdID();
+    nms.hdr.idFrom=GetID();
     nms.hdr.pszNameFrom=GetName();
     nms.hOldSel=m_hSelItem;
     nms.hNewSel=m_hHoverItem;
@@ -1150,7 +1150,7 @@ void STreeCtrl::OnLButtonDbClick(UINT nFlags,CPoint pt)
         DUINMITEMMOUSEEVENT nms;
         nms.hdr.hDuiWnd=m_hSWnd;
         nms.hdr.code=NM_ITEMMOUSEEVENT;
-        nms.hdr.idFrom=GetCmdID();
+        nms.hdr.idFrom=GetID();
         nms.hdr.pszNameFrom=GetName();
         nms.pItem=NULL;
         nms.uMsg=WM_LBUTTONDBLCLK;

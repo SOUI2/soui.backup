@@ -64,7 +64,7 @@ LRESULT SItemPanel::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
         DUINMITEMMOUSEEVENT nms;
         nms.hdr.code=NM_ITEMMOUSEEVENT;
         nms.hdr.hDuiWnd=m_pFrmHost->GetDuiHwnd();
-        nms.hdr.idFrom=m_pFrmHost->GetCmdID();
+        nms.hdr.idFrom=m_pFrmHost->GetID();
         nms.hdr.pszNameFrom= m_pFrmHost->GetName();
         nms.pItem=this;
         nms.uMsg=uMsg;
@@ -81,7 +81,7 @@ LRESULT SItemPanel::OnDuiNotify(LPSNMHDR pHdr)
     DUINMITEMNOTIFY nmsItem;
     nmsItem.hdr.code=NM_LBITEMNOTIFY;
     nmsItem.hdr.hDuiWnd=m_pFrmHost->GetDuiHwnd();
-    nmsItem.hdr.idFrom=m_pFrmHost->GetCmdID();
+    nmsItem.hdr.idFrom=m_pFrmHost->GetID();
     nmsItem.hdr.pszNameFrom=m_pFrmHost->GetName();
     nmsItem.pItem=this;
     nmsItem.pHostDuiWin=(SWindow*)m_pFrmHost;

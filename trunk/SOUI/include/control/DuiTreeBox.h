@@ -135,7 +135,7 @@ protected:
         ATTR_INT(L"itemredrawdelay", m_bItemRedrawDelay, TRUE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_NCCALCSIZE(OnNcCalcSize)
         MSG_WM_DESTROY(OnDestroy)
@@ -149,7 +149,7 @@ protected:
         MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
         MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
         MESSAGE_HANDLER_EX(WM_IME_CHAR,OnKeyEvent)
-   WND_MSG_MAP_END()
+   SOUI_MSG_MAP_END()
 };
 
 }//namespace SOUI

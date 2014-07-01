@@ -477,7 +477,7 @@ void SCalendar::OnLButtonDown(UINT nFlags, CPoint point)
         DUINMCALENDARSELECTDAY nm;
         nm.hdr.hDuiWnd=m_hSWnd;
         nm.hdr.code=NM_HDSIZECHANGING;
-        nm.hdr.idFrom=GetCmdID();
+        nm.hdr.idFrom=GetID();
         nm.hdr.pszNameFrom=GetName();
         nm.wOldDay=m_iDay;
         nm.wNewDay=day;
@@ -521,7 +521,7 @@ BOOL SCalendar::InitFromXml( pugi::xml_node xmlNode )
         SWindow *pBtnToday=FindChildByName(L"btn_today");
         if(pBtnToday)
         {
-            pBtnToday->SetCmdID(100);
+            pBtnToday->SetID(100);
             pBtnToday->subscribeEvent(NM_COMMAND,Subscriber(&SCalendar::OnTodayClick,this));
         }
         SWindow *pLabelToday=FindChildByName(L"label_today");

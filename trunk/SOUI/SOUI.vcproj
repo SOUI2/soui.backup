@@ -1071,6 +1071,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\rootwnd.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SimpleWnd.cpp"
 				>
 				<FileConfiguration
@@ -1354,6 +1358,10 @@
 			</File>
 			<File
 				RelativePath=".\include\render\render-i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\rootwnd.h"
 				>
 			</File>
 			<File

@@ -153,7 +153,7 @@ public:
     ATTR_INT(L"hottrack",m_bHotTrack,FALSE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_DESTROY(OnDestroy)
         MSG_WM_SIZE(OnSize)
         MSG_WM_PAINT_EX(OnPaint)
@@ -164,7 +164,7 @@ public:
         MSG_WM_KEYDOWN(OnKeyDown)
         MSG_WM_CHAR(OnChar)
         MSG_WM_SHOWWINDOW(OnShowWindow)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 };
 
 }//namespace SOUI

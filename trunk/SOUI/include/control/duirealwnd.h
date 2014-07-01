@@ -74,12 +74,12 @@ protected:
     BOOL InitRealWnd();
 
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
     MSG_WM_DESTROY(OnDestroy)
     MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
     MSG_WM_SHOWWINDOW(OnShowWindow)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 
     CDuiRealWndParam    m_realwndParam;
     BOOL    m_bInit;

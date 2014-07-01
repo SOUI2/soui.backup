@@ -841,7 +841,7 @@ HRESULT SRichEdit::OnTxNotify( DWORD iNotify,LPVOID pv )
     DUIRICHEDITNOTIFY nms;
     nms.hdr.code=NM_RICHEDIT_NOTIFY;
     nms.hdr.hDuiWnd=m_hSWnd;
-    nms.hdr.idFrom=GetCmdID();
+    nms.hdr.idFrom=GetID();
     nms.hdr.pszNameFrom=GetName();
     nms.iNotify=iNotify;
     nms.pv=pv;

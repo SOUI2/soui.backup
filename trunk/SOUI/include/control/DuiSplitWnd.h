@@ -87,14 +87,14 @@ protected:
         ATTR_SKIN(L"skinsep",m_pSkinSep,TRUE)
     SOUI_ATTRS_END()
 
-    WND_MSG_MAP_BEGIN()
+    SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_DESTROY(OnDestroy)
         MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONUP(OnLButtonUp)
         MSG_WM_MOUSEMOVE(OnMouseMove)
-    WND_MSG_MAP_END()
+    SOUI_MSG_MAP_END()
 
 protected:
     SArray<SSplitPane *> m_arrPane;

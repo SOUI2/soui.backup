@@ -57,7 +57,7 @@ LRESULT SRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
         DUINMREALWNDCMN nms;
         nms.hdr.code = NM_REALWND_SIZE;
         nms.hdr.hDuiWnd=m_hSWnd;
-        nms.hdr.idFrom = GetCmdID();
+        nms.hdr.idFrom = GetID();
         nms.hdr.pszNameFrom=GetName();
         nms.pRealWnd=this;
         DuiNotify((LPSNMHDR)&nms);
@@ -78,7 +78,7 @@ void SRealWnd::OnDestroy()
         DUINMREALWNDCMN nms;
         nms.hdr.code = NM_REALWND_DESTROY;
         nms.hdr.hDuiWnd = m_hSWnd;
-        nms.hdr.idFrom = GetCmdID();
+        nms.hdr.idFrom = GetID();
         nms.hdr.pszNameFrom=GetName();
         nms.pRealWnd=this;
         DuiNotify((LPSNMHDR)&nms);
@@ -115,7 +115,7 @@ BOOL SRealWnd::InitRealWnd()
     DUINMREALWNDCMN nms;
     nms.hdr.code = NM_REALWND_CREATE;
     nms.hdr.hDuiWnd = m_hSWnd;
-    nms.hdr.idFrom = GetCmdID();
+    nms.hdr.idFrom = GetID();
     nms.hdr.pszNameFrom=GetName();
     nms.pRealWnd=this;
     HWND hWnd =(HWND) DuiNotify((LPSNMHDR)&nms);
@@ -134,7 +134,7 @@ BOOL SRealWnd::InitRealWnd()
         DUINMREALWNDCMN nms;
         nms.hdr.code = NM_REALWND_INIT;
         nms.hdr.hDuiWnd = m_hSWnd;
-        nms.hdr.idFrom = GetCmdID();
+        nms.hdr.idFrom = GetID();
         nms.hdr.pszNameFrom=GetName();
         nms.pRealWnd=this;
 

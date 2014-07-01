@@ -160,13 +160,13 @@ namespace SOUI
             ATTR_INT(L"hottrack", m_bHotTrack, FALSE)
         SOUI_ATTRS_END()
 
-        WND_MSG_MAP_BEGIN()
+        SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
             MSG_WM_DESTROY(OnDestroy)
             MSG_WM_SIZE(OnSize)
             MSG_WM_LBUTTONDOWN(OnLButtonDown)
             MSG_WM_LBUTTONUP(OnLButtonUp)
-        WND_MSG_MAP_END()
+        SOUI_MSG_MAP_END()
     };
 
 }//end of namespace
