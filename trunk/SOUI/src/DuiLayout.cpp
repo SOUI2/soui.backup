@@ -4,7 +4,7 @@
 
 namespace SOUI
 {
-    LPCWSTR CDuiLayout::ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,DUIDLG_POSITION_ITEM &pos)
+    LPCWSTR SLayout::ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,DUIDLG_POSITION_ITEM &pos)
     {
         if(!pszPos) return NULL;
 
@@ -37,7 +37,7 @@ namespace SOUI
 
 
 
-    int CDuiLayout::PositionItem2Value(SWindow *pWnd, const DUIDLG_POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX)
+    int SLayout::PositionItem2Value(SWindow *pWnd, const DUIDLG_POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX)
     {
         int nRet=0;
         int nWid=nMax-nMin;
@@ -110,7 +110,7 @@ namespace SOUI
         return nRet;
 
     }
-    int CDuiLayout::CalcPosition(SWindow *pWnd, LPRECT lpRcContainer,const DUIWND_POSITION & dlgpos,CRect &rcWindow )
+    int SLayout::CalcPosition(SWindow *pWnd, LPRECT lpRcContainer,const DUIWND_POSITION & dlgpos,CRect &rcWindow )
     {
         int nRet=0;
 
@@ -221,7 +221,7 @@ namespace SOUI
         return nRet;
     }
 
-    BOOL CDuiLayout::CalcChildrenPosition(SWindow *pWnd,SList<SWindow*> *pListChildren)
+    BOOL SLayout::CalcChildrenPosition(SWindow *pWnd,SList<SWindow*> *pListChildren)
     {
         CRect rcContainer=pWnd->GetChildrenLayoutRect();
         POSITION pos=pListChildren->GetHeadPosition();
@@ -245,7 +245,7 @@ namespace SOUI
         }
     }
 
-    void CDuiLayout::StrPos2DuiWndPos( LPCWSTR pszValue,DUIWND_POSITION &dlgpos )
+    void SLayout::StrPos2DuiWndPos( LPCWSTR pszValue,DUIWND_POSITION &dlgpos )
     {
         dlgpos.uPositionType &= ~Pos_Float;
 

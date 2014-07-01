@@ -743,7 +743,7 @@ LRESULT SWindow::OnWindowPosChanged(LPRECT lpRcContainer)
     LRESULT lRet=0;
     if(!(m_dlgpos.uPositionType & Pos_Float))    
     {//窗口不是使用Move直接指定的坐标,计算出窗口位置
-        lRet=CDuiLayout::CalcPosition(this,lpRcContainer,m_dlgpos,m_rcWindow);
+        lRet=SLayout::CalcPosition(this,lpRcContainer,m_dlgpos,m_rcWindow);
     }
     if(lRet==0)
     {
@@ -1129,7 +1129,7 @@ HRESULT SWindow::OnAttrPos(const SStringW& strValue, BOOL bLoading)
     if (strValue.IsEmpty()) return E_FAIL;
     if(!bLoading) NotifyInvalidateRect(m_rcWindow);
     ClearLayoutState();
-    CDuiLayout::StrPos2DuiWndPos(strValue,m_dlgpos);
+    SLayout::StrPos2DuiWndPos(strValue,m_dlgpos);
     if(!bLoading) OnWindowPosChanged(NULL);
     return S_FALSE;
 }
@@ -1160,7 +1160,7 @@ void SWindow::UpdateChildrenPosition()
         lstWnd.AddTail(pChild);
         pChild=pChild->GetWindow(GDUI_NEXTSIBLING);
     }
-    CDuiLayout::CalcChildrenPosition(this,&lstWnd);
+    SLayout::CalcChildrenPosition(this,&lstWnd);
     NotifyInvalidate();
 }
 

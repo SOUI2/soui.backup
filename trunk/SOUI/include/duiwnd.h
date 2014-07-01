@@ -111,7 +111,7 @@ class SOUI_EXP SWindow : public SObject
     , public TObjRefImpl2<IObjRef,SWindow>
 {
     SOUI_CLASS_NAME(SWindow, L"window")
-    friend class CDuiLayout;
+    friend class SLayout;
 public:
     SWindow();
 

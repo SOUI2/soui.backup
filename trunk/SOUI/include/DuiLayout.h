@@ -88,7 +88,7 @@ namespace SOUI
     };
 
     class SWindow;
-    class CDuiLayout
+    class SLayout
     {
     public:
         static void StrPos2DuiWndPos(LPCWSTR pszPos,DUIWND_POSITION &dlgpos);
