@@ -13,10 +13,10 @@
 namespace SOUI
 {
 
-class SOUI_EXP CSwndContainer : public ISwndContainer
+class SOUI_EXP SwndContainerImpl : public ISwndContainer
 {
 public:
-    CSwndContainer(SWindow *pHost);
+    SwndContainerImpl(SWindow *pHost);
 
     virtual BOOL RegisterDragDrop(SWND hDuiWnd,IDropTarget *pDropTarget);
 
