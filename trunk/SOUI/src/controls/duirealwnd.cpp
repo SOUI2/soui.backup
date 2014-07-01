@@ -141,7 +141,7 @@ BOOL SRealWnd::InitRealWnd()
         BOOL bFocus=(BOOL)DuiNotify((LPSNMHDR)&nms);
         if(bFocus)
         {
-            SetFocus(m_hRealWnd);
+            ::SetFocus(m_hRealWnd);
         }
         return TRUE;
     }

@@ -164,7 +164,7 @@ void SScrollBar::OnPaint(IRenderTarget * pRT)
 
 void SScrollBar::OnLButtonUp(UINT nFlags, CPoint point)
 {
-    ReleaseDuiCapture();
+    ReleaseCapture();
     if(m_bDrag)
     {
         m_bDrag=FALSE;
@@ -197,7 +197,7 @@ void SScrollBar::OnLButtonUp(UINT nFlags, CPoint point)
 
 void SScrollBar::OnLButtonDown(UINT nFlags, CPoint point)
 {
-    SetDuiCapture();
+    SetCapture();
     UINT uHit=HitTest(point);
     if(uHit==SB_THUMBTRACK)
     {

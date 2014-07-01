@@ -277,15 +277,15 @@ void CDuiTextHost::TxSetCursor( HCURSOR hcur, BOOL fText )
 
 void CDuiTextHost::TxSetFocus()
 {
-    m_pDuiRichEdit->SetDuiFocus();
+    m_pDuiRichEdit->SetFocus();
 }
 
 void CDuiTextHost::TxSetCapture( BOOL fCapture )
 {
     if(fCapture)
-        m_pDuiRichEdit->SetDuiCapture();
+        m_pDuiRichEdit->SetCapture();
     else
-        m_pDuiRichEdit->ReleaseDuiCapture();
+        m_pDuiRichEdit->ReleaseCapture();
 }
 
 void CDuiTextHost::TxScrollWindowEx( INT dx, INT dy, LPCRECT lprcScroll, LPCRECT lprcClip, HRGN hrgnUpdate, LPRECT lprcUpdate, UINT fuScroll )
@@ -609,7 +609,7 @@ LRESULT SRichEdit::OnCreate( LPVOID )
         return 1;
     }
 
-    if(!m_fTransparent && m_style.m_crBg==CLR_INVALID && !m_pBgSkin) 
+    if(!m_fTransparent && m_style.m_crBg==CR_INVALID && !m_pBgSkin) 
         m_style.m_crBg=0xFFFFFF; 
     //inplace activate
     m_pTxtHost->GetTextService()->OnTxInPlaceActivate(NULL);
@@ -619,10 +619,10 @@ LRESULT SRichEdit::OnCreate( LPVOID )
     m_pTxtHost->GetTextService()->TxSendMessage(WM_KILLFOCUS, 0, 0, 0);
 
     // set IME
-    DWORD dw = DuiSendMessage(EM_GETLANGOPTIONS);
+    DWORD dw = SendMessage(EM_GETLANGOPTIONS);
     dw |= IMF_AUTOKEYBOARD | IMF_DUALFONT;
     dw &= ~IMF_AUTOFONT;
-    DuiSendMessage(EM_SETLANGOPTIONS, 0, dw);
+    SendMessage(EM_SETLANGOPTIONS, 0, dw);
 
     SetWindowText(DUI_CT2W(SWindow::GetWindowText()));
 
@@ -761,7 +761,7 @@ BOOL SRichEdit::OnSetCursor(const CPoint &pt)
     return TRUE;
 }
 
-BOOL SRichEdit::DuiWndProc( UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResult )
+BOOL SRichEdit::SwndProc( UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResult )
 {
     if(m_pTxtHost && m_pTxtHost->GetTextService())
     {
@@ -771,7 +771,7 @@ BOOL SRichEdit::DuiWndProc( UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lRes
             return TRUE;
         }
     }
-    return __super::DuiWndProc(uMsg,wParam,lParam,lResult);
+    return __super::SwndProc(uMsg,wParam,lParam,lResult);
 }
 
 HRESULT SRichEdit::InitDefaultCharFormat( CHARFORMAT2W* pcf ,IFont *pFont)
@@ -867,7 +867,7 @@ BOOL SRichEdit::GetReadOnly()
 
 BOOL SRichEdit::SetReadOnly(BOOL bReadOnly)
 {
-    return 0 != DuiSendMessage(EM_SETREADONLY, bReadOnly);
+    return 0 != SendMessage(EM_SETREADONLY, bReadOnly);
 }
 
 LONG SRichEdit::GetLimitText()
@@ -877,7 +877,7 @@ LONG SRichEdit::GetLimitText()
 
 BOOL SRichEdit::SetLimitText(int nLength)
 {
-    return 0 != DuiSendMessage(EM_EXLIMITTEXT, nLength);
+    return 0 != SendMessage(EM_EXLIMITTEXT, nLength);
 }
 
 WORD SRichEdit::GetDefaultAlign()
@@ -1066,7 +1066,7 @@ void SRichEdit::OnLButtonDown( UINT nFlags, CPoint point )
 {
     if(m_hSWnd!=GetContainer()->SwndGetFocus())
     {
-        SetDuiFocus();
+        SetFocus();
     }
     m_pTxtHost->GetTextService()->TxSendMessage(GetCurDuiMsg()->uMsg,GetCurDuiMsg()->wParam,GetCurDuiMsg()->lParam,NULL);
 }
@@ -1087,7 +1087,7 @@ enum{
 void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
 {
     if(NotifyContextMenu(point)) return;//用户自己响应右键
-    SetDuiFocus();
+    SetFocus();
     //弹出默认编辑窗菜单
     pugi::xml_node xmlMenu=DuiSystem::getSingleton().GetEditMenuTemplate().first_child();
     if(xmlMenu)
@@ -1099,11 +1099,11 @@ void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
             point.Offset(rcCantainer.TopLeft());
             HWND hHost=GetContainer()->GetHostHwnd();
             ::ClientToScreen(hHost,&point);
-            BOOL canPaste=DuiSendMessage(EM_CANPASTE,0);
+            BOOL canPaste=SendMessage(EM_CANPASTE,0);
             DWORD dwStart=0,dwEnd=0;
-            DuiSendMessage(EM_GETSEL,(WPARAM)&dwStart,(LPARAM)&dwEnd);
+            SendMessage(EM_GETSEL,(WPARAM)&dwStart,(LPARAM)&dwEnd);
             BOOL hasSel=dwStart<dwEnd;
-            UINT uLen=DuiSendMessage(WM_GETTEXTLENGTH ,0,0);
+            UINT uLen=SendMessage(WM_GETTEXTLENGTH ,0,0);
             BOOL bReadOnly=m_dwStyle&ES_READONLY;
             EnableMenuItem(menu.m_hMenu,MENU_CUT,MF_BYCOMMAND|((hasSel&&(!bReadOnly))?0:MF_GRAYED));
             EnableMenuItem(menu.m_hMenu,MENU_COPY,MF_BYCOMMAND|(hasSel?0:MF_GRAYED));
@@ -1115,19 +1115,19 @@ void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
             switch(uCmd)
             {
             case MENU_CUT:
-                DuiSendMessage(WM_CUT);
+                SendMessage(WM_CUT);
                 break;
             case MENU_COPY:
-                DuiSendMessage(WM_COPY);
+                SendMessage(WM_COPY);
                 break;
             case MENU_PASTE:
-                DuiSendMessage(WM_PASTE);
+                SendMessage(WM_PASTE);
                 break;
             case MENU_DEL:
-                DuiSendMessage(EM_REPLACESEL,0,(LPARAM)_T(""));
+                SendMessage(EM_REPLACESEL,0,(LPARAM)_T(""));
                 break;
             case MENU_SELALL:
-                DuiSendMessage(EM_SETSEL,0,-1);
+                SendMessage(EM_SETSEL,0,-1);
                 break;
             default:
                 break;
@@ -1224,9 +1224,9 @@ LRESULT SRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
         }
         ReleaseDC(GetContainer()->GetHostHwnd(),hdc);
         BOOL bFocus = GetContainer()->SwndGetFocus()==m_hSWnd;
-        if(bFocus) KillDuiFocus();
+        if(bFocus) KillFocus();
         m_pTxtHost->GetTextService()->OnTxPropertyBitsChange(TXTBIT_EXTENTCHANGE|TXTBIT_CLIENTRECTCHANGE, TXTBIT_EXTENTCHANGE|TXTBIT_CLIENTRECTCHANGE);
-        if(bFocus) SetDuiFocus();
+        if(bFocus) SetFocus();
     }
     return 0;
 }
@@ -1324,34 +1324,34 @@ void SRichEdit::OnSetFont( IFont *pFont, BOOL bRedraw )
 
 BOOL SRichEdit::SetWindowText( LPCWSTR lpszText )
 {
-    return (BOOL)DuiSendMessage(WM_SETTEXT,0,(LPARAM)lpszText);
+    return (BOOL)SendMessage(WM_SETTEXT,0,(LPARAM)lpszText);
 }
 
 SStringW SRichEdit::GetWindowText()
 {
     SStringW strRet;
-    int nLen=DuiSendMessage(WM_GETTEXTLENGTH);
+    int nLen=SendMessage(WM_GETTEXTLENGTH);
     wchar_t *pBuf=strRet.GetBufferSetLength(nLen);
-    DuiSendMessage(WM_GETTEXT,(WPARAM)nLen,(LPARAM)pBuf);
+    SendMessage(WM_GETTEXT,(WPARAM)nLen,(LPARAM)pBuf);
     strRet.ReleaseBuffer();
     return strRet;
 }
 
 int SRichEdit::GetWindowTextLength()
 {
-    return (int)DuiSendMessage(WM_GETTEXTLENGTH);
+    return (int)SendMessage(WM_GETTEXTLENGTH);
 }
 
 void SRichEdit::ReplaceSel(LPWSTR pszText,BOOL bCanUndo)
 {
-    DuiSendMessage(EM_REPLACESEL,(WPARAM)bCanUndo,(LPARAM)pszText);
+    SendMessage(EM_REPLACESEL,(WPARAM)bCanUndo,(LPARAM)pszText);
 }
 
 void SRichEdit::SetSel(DWORD dwSelection, BOOL bNoScroll)
 {
-    DuiSendMessage(EM_SETSEL, LOWORD(dwSelection), HIWORD(dwSelection));
+    SendMessage(EM_SETSEL, LOWORD(dwSelection), HIWORD(dwSelection));
     if(!bNoScroll)
-        DuiSendMessage(EM_SCROLLCARET, 0, 0L);
+        SendMessage(EM_SCROLLCARET, 0, 0L);
 }
 
 LRESULT SRichEdit::OnSetTextColor( const SStringW &  strValue,BOOL bLoading )

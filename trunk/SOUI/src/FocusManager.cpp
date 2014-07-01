@@ -22,11 +22,11 @@ namespace SOUI
         {
             if(reverse)
             {
-                starting_view=root_->GetDuiWindow(GDUI_LASTCHILD);
-                while(starting_view->GetChildrenCount()) starting_view=starting_view->GetDuiWindow(GDUI_LASTCHILD);
+                starting_view=root_->GetWindow(GDUI_LASTCHILD);
+                while(starting_view->GetChildrenCount()) starting_view=starting_view->GetWindow(GDUI_LASTCHILD);
             }else
             {
-                starting_view=root_->GetDuiWindow(GDUI_FIRSTCHILD);
+                starting_view=root_->GetWindow(GDUI_FIRSTCHILD);
             }
             check_starting_view=true;
         }
@@ -81,7 +81,7 @@ namespace SOUI
         // First let's try the left child.
         if(can_go_down)
         {
-            SWindow *pChild=starting_view->GetDuiWindow(GDUI_FIRSTCHILD);
+            SWindow *pChild=starting_view->GetWindow(GDUI_FIRSTCHILD);
             if(pChild)
             {
                 SWindow* v = FindNextFocusableViewImpl(
@@ -95,7 +95,7 @@ namespace SOUI
         }
 
         // Then try the right sibling.
-        SWindow* sibling = starting_view->GetDuiWindow(GDUI_NEXTSIBLING);
+        SWindow* sibling = starting_view->GetWindow(GDUI_NEXTSIBLING);
         if(sibling)
         {
             SWindow* v = FindNextFocusableViewImpl(sibling,
@@ -112,7 +112,7 @@ namespace SOUI
             SWindow* parent = starting_view->GetParent();
             while(parent)
             {
-                sibling = parent->GetDuiWindow(GDUI_NEXTSIBLING);
+                sibling = parent->GetWindow(GDUI_NEXTSIBLING);
                 if(sibling)
                 {
                     return FindNextFocusableViewImpl(sibling,
@@ -137,7 +137,7 @@ namespace SOUI
     {
         if(can_go_down)
         {//find the last focusable window
-            SWindow *pChild=starting_view->GetDuiWindow(GDUI_LASTCHILD);
+            SWindow *pChild=starting_view->GetWindow(GDUI_LASTCHILD);
             if(pChild)
             {
                 SWindow *pRet=FindPreviousFocusableViewImpl(pChild,true,false,true,pSkipGroupOwner);
@@ -155,14 +155,14 @@ namespace SOUI
             }
         }
 
-        SWindow *pPrevSibling=starting_view->GetDuiWindow(GDUI_PREVSIBLING);
+        SWindow *pPrevSibling=starting_view->GetWindow(GDUI_PREVSIBLING);
         if(pPrevSibling)
         {
             return FindPreviousFocusableViewImpl(pPrevSibling,true,true,true,pSkipGroupOwner);
         }
         if(can_go_up)
         {
-            SWindow *pParent=starting_view->GetDuiWindow(GDUI_PARENT);
+            SWindow *pParent=starting_view->GetWindow(GDUI_PARENT);
             if(pParent) return FindPreviousFocusableViewImpl(pParent,true,true,false,pSkipGroupOwner);
         }
 
@@ -187,14 +187,14 @@ namespace SOUI
         if(!view->IsSiblingsAutoGroupped()) return view;
         if(view->IsChecked()) return view;
         SWindow *pParent=view->GetParent();
-        SWindow *pSibling=pParent->GetDuiWindow(GDUI_FIRSTCHILD);
+        SWindow *pSibling=pParent->GetWindow(GDUI_FIRSTCHILD);
         while(pSibling)
         {
             if(pSibling->IsSiblingsAutoGroupped())
             {
                 if(pSibling->IsChecked()) return pSibling;
             }
-            pSibling=pSibling->GetDuiWindow(GDUI_NEXTSIBLING);
+            pSibling=pSibling->GetWindow(GDUI_NEXTSIBLING);
         }
         return view;
     }
@@ -231,7 +231,7 @@ namespace SOUI
         if(pFocusWnd && pFocusWnd->IsSiblingsAutoGroupped() && (vKey==VK_LEFT || vKey==VK_RIGHT || vKey==VK_UP || vKey==VK_DOWN))
         {
             UINT ucode= (vKey == VK_RIGHT || vKey == VK_DOWN)?GDUI_NEXTSIBLING:GDUI_PREVSIBLING;
-            SWindow *pNext=pFocusWnd->GetDuiWindow(ucode);
+            SWindow *pNext=pFocusWnd->GetWindow(ucode);
             while(pNext)
             {
                 if(pNext->IsSiblingsAutoGroupped())
@@ -239,11 +239,11 @@ namespace SOUI
                     SetFocusedHwndWithReason(pNext->GetSwnd(),kReasonFocusTraversal);
                     break;
                 }
-                pNext=pNext->GetDuiWindow(ucode);
+                pNext=pNext->GetWindow(ucode);
             }
             if(!pNext)
             {
-                pNext=pFocusWnd->GetParent()->GetDuiWindow(ucode==GDUI_NEXTSIBLING? GDUI_FIRSTCHILD : GDUI_LASTCHILD);
+                pNext=pFocusWnd->GetParent()->GetWindow(ucode==GDUI_NEXTSIBLING? GDUI_FIRSTCHILD : GDUI_LASTCHILD);
                 while(pNext)
                 {
                     if(pNext->IsSiblingsAutoGroupped())
@@ -251,7 +251,7 @@ namespace SOUI
                         SetFocusedHwndWithReason(pNext->GetSwnd(),kReasonFocusTraversal);
                         break;
                     }
-                    pNext=pNext->GetDuiWindow(ucode);
+                    pNext=pNext->GetWindow(ucode);
                 }
             }
             return TRUE;
@@ -302,11 +302,11 @@ namespace SOUI
         SWindow *pNewFocus=DuiWindowMgr::GetWindow(hDuiWnd);
         if(pOldFocus)
         {
-            pOldFocus->DuiSendMessage(WM_KILLFOCUS,(WPARAM)pNewFocus);
+            pOldFocus->SendMessage(WM_KILLFOCUS,(WPARAM)pNewFocus);
         }
         if(pNewFocus && !pNewFocus->IsDisabled(TRUE))
         {
-            pNewFocus->DuiSendMessage(WM_SETFOCUS,(WPARAM)pOldFocus);
+            pNewFocus->SendMessage(WM_SETFOCUS,(WPARAM)pOldFocus);
             focused_view_ = hDuiWnd;
         }else
         {
@@ -347,7 +347,7 @@ namespace SOUI
 
         if(pWnd)
         {
-            pWnd->DuiSendMessage(WM_KILLFOCUS);
+            pWnd->SendMessage(WM_KILLFOCUS);
         }
     }
 
@@ -357,7 +357,7 @@ namespace SOUI
         if(pWnd && !pWnd->IsDisabled(TRUE))
         {
             focused_view_=focused_backup_;
-            pWnd->DuiSendMessage(WM_SETFOCUS);
+            pWnd->SendMessage(WM_SETFOCUS);
         }
         focused_backup_=0;
     }

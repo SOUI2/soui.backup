@@ -44,7 +44,7 @@ namespace SOUI
 
     BOOL SRootWindow::InitFromXml( pugi::xml_node xmlNode )
     {
-        SWindow::DuiSendMessage(WM_DESTROY);
+        SWindow::SendMessage(WM_DESTROY);
         
         m_strName=xmlNode.attribute(L"name").value();
         if(!m_strName.IsEmpty())

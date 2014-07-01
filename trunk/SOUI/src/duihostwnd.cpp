@@ -164,7 +164,7 @@ UINT_PTR CDuiHostWnd::DoModal(HWND hWndParent/* = NULL*/, LPRECT rect /*= NULL*/
 
     HWND hWndLastActive = DuiThreadActiveWndMgr::SetActive(m_hWnd);
 
-    if(INITCODE_NOTSHOW!=SendMessage(WM_INITDIALOG, (WPARAM)m_hWnd))
+    if(INITCODE_NOTSHOW!=CSimpleWnd::SendMessage(WM_INITDIALOG, (WPARAM)m_hWnd))
     {//根据INITDIALOG的返回值还判断是不是将窗口显示出来。返回INITCODE_NOTSHOW时窗口不显示。
     
         if(GetExStyle()&WS_EX_TOOLWINDOW)
@@ -362,6 +362,8 @@ int CDuiHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 void CDuiHostWnd::OnDestroy()
 {
+    SWindow::SendMessage(WM_DESTROY);
+
     if(m_pTipCtrl)
     {
         if (m_pTipCtrl->IsWindow())
@@ -371,13 +373,6 @@ void CDuiHostWnd::OnDestroy()
     if(m_bTranslucent && m_dummyWnd.IsWindow())
     {
         m_dummyWnd.DestroyWindow();
-    }
-
-    DuiSendMessage(WM_DESTROY);
-
-    if(!m_strName.IsEmpty())
-    {
-        DuiSystem::getSingleton().FreeSkins(m_strName);
     }
 }
 
@@ -453,7 +448,7 @@ void CDuiHostWnd::OnTimer(UINT_PTR idEvent)
         if(pDuiWnd)
         {
             if(pDuiWnd==this) OnDuiTimer(duiTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
-            else pDuiWnd->DuiSendMessage(WM_TIMER,duiTimerID.uTimerID,0);
+            else pDuiWnd->SendMessage(WM_TIMER,duiTimerID.uTimerID,0);
         }
         else
         {
@@ -576,7 +571,7 @@ LRESULT CDuiHostWnd::OnDuiNotify(LPSNMHDR pHdr)
         return 0;
     }
 
-    return SendMessage(UM_SWND_NOTIFY,IDC_RICHVIEW_WIN,(LPARAM)pHdr);
+    return CSimpleWnd::SendMessage(UM_SWND_NOTIFY,IDC_RICHVIEW_WIN,(LPARAM)pHdr);
 }
 
 CRect CDuiHostWnd::GetContainerRect()
@@ -665,7 +660,7 @@ void CDuiHostWnd::OnRedraw(const CRect &rc)
 BOOL CDuiHostWnd::OnReleaseSwndCapture()
 {
     if(!__super::OnReleaseSwndCapture()) return FALSE;
-    ReleaseCapture();
+    ::ReleaseCapture();
     CPoint pt;
     GetCursorPos(&pt);
     ScreenToClient(&pt);
@@ -675,7 +670,7 @@ BOOL CDuiHostWnd::OnReleaseSwndCapture()
 
 SWND CDuiHostWnd::OnSetSwndCapture(SWND hDuiWnd)
 {
-    SetCapture();
+    CSimpleWnd::SetCapture();
     return __super::OnSetSwndCapture(hDuiWnd);
 }
 

@@ -20,30 +20,30 @@ public:
 	}
 	void OnMaximize()
 	{
-		SendMessage(WM_SYSCOMMAND,SC_MAXIMIZE);
+		GetNative()->SendMessage(WM_SYSCOMMAND,SC_MAXIMIZE);
 	}
 	void OnRestore()
 	{
-		SendMessage(WM_SYSCOMMAND,SC_RESTORE);
+		GetNative()->SendMessage(WM_SYSCOMMAND,SC_RESTORE);
 	}
 	void OnMinimize()
 	{
-		SendMessage(WM_SYSCOMMAND,SC_MINIMIZE);
+		GetNative()->SendMessage(WM_SYSCOMMAND,SC_MINIMIZE);
 	}
 
 	void OnSize(UINT nType, CSize size)
 	{
 		SetMsgHandled(FALSE);
 		if(!m_bLayoutInited) return;
-// 		if(nType==SIZE_MAXIMIZED)
-// 		{
-// 			FindChildByCmdID(3)->SetVisible(TRUE);
-// 			FindChildByCmdID(2)->SetVisible(FALSE);
-// 		}else if(nType==SIZE_RESTORED)
-// 		{
-// 			FindChildByCmdID(3)->SetVisible(FALSE);
-// 			FindChildByCmdID(2)->SetVisible(TRUE);
-// 		}
+		if(nType==SIZE_MAXIMIZED)
+		{
+			FindChildByID(3)->SetVisible(TRUE);
+			FindChildByID(2)->SetVisible(FALSE);
+		}else if(nType==SIZE_RESTORED)
+		{
+			FindChildByID(3)->SetVisible(FALSE);
+			FindChildByID(2)->SetVisible(TRUE);
+		}
 	}
 
 	int OnCreate(LPCREATESTRUCT lpCreateStruct);

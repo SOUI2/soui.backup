@@ -30,7 +30,7 @@ BOOL SPanel::ShowScrollBar( int wBar, BOOL bShow )
 {
     if(bShow) m_wBarVisible|=wBar;
     else m_wBarVisible&=~wBar;
-    DuiSendMessage(WM_NCCALCSIZE);
+    SendMessage(WM_NCCALCSIZE);
     NotifyInvalidate();
     return TRUE;
 }
@@ -329,7 +329,7 @@ void SPanel::OnNcLButtonDown(UINT nFlags, CPoint point)
     m_HitInfo=HitTest(point);
     if(m_HitInfo.uSbCode!=WORD(-1) && IsScrollBarEnable(m_HitInfo.bVertical))
     {
-        SetDuiCapture();
+        SetCapture();
         if(m_HitInfo.uSbCode!=SB_THUMBTRACK)
         {
             if(m_HitInfo.uSbCode==SB_LINEUP || m_HitInfo.uSbCode== SB_LINEDOWN)
@@ -359,7 +359,7 @@ void SPanel::OnNcLButtonDown(UINT nFlags, CPoint point)
 
 void SPanel::OnNcLButtonUp(UINT nFlags,CPoint pt)
 {
-    ReleaseDuiCapture();
+    ReleaseCapture();
     if(m_bDragSb)
     {
         m_bDragSb=FALSE;
@@ -829,7 +829,7 @@ void SScrollView::UpdateScrollBar()
     SetScrollPos(TRUE,m_siVer.nPos,TRUE);
     SetScrollPos(FALSE,m_siHoz.nPos,TRUE);
 
-    DuiSendMessage(WM_NCCALCSIZE);
+    SendMessage(WM_NCCALCSIZE);
 
     NotifyInvalidate();
 }

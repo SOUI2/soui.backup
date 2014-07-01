@@ -59,8 +59,8 @@ namespace SOUI
             break;
         case PIT_PREVSIBLING:
             {
-                SWindow *pRefWnd=pWnd->GetDuiWindow(GDUI_PREVSIBLING);
-                if(!pRefWnd) pRefWnd=pWnd->GetDuiWindow(GDUI_PARENT);
+                SWindow *pRefWnd=pWnd->GetWindow(GDUI_PREVSIBLING);
+                if(!pRefWnd) pRefWnd=pWnd->GetWindow(GDUI_PARENT);
                 if(pRefWnd)
                 {//需要确定参考窗口是否完成布局
                     CRect rcRef;
@@ -83,8 +83,8 @@ namespace SOUI
             break;
         case PIT_NEXTSIBLING:
             {
-                SWindow *pRefWnd=pWnd->GetDuiWindow(GDUI_NEXTSIBLING);
-                if(!pRefWnd) pRefWnd=pWnd->GetDuiWindow(GDUI_PARENT);
+                SWindow *pRefWnd=pWnd->GetWindow(GDUI_NEXTSIBLING);
+                if(!pRefWnd) pRefWnd=pWnd->GetWindow(GDUI_PARENT);
                 if(pRefWnd)
                 {//需要确定参考窗口是否完成布局
                     CRect rcRef;
@@ -193,7 +193,7 @@ namespace SOUI
                 }
             }else //if(dlgpos.nCount==0)
             {//自动排版
-                SWindow *pSibling=pWnd->GetDuiWindow(GDUI_PREVSIBLING);
+                SWindow *pSibling=pWnd->GetWindow(GDUI_PREVSIBLING);
                 if(!pSibling)
                 {
                     pt.x=lpRcContainer->left;
@@ -230,7 +230,7 @@ namespace SOUI
         {
             POSITION posOld=pos;
             SWindow *pChild=pListChildren->GetNext(pos);
-            if(0==pChild->DuiSendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer))
+            if(0==pChild->SendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer))
                 pListChildren->RemoveAt(posOld);
         }
         if(0==pListChildren->GetCount())

@@ -38,9 +38,9 @@ void SCaption::OnLButtonDblClk( UINT nFlags, CPoint point )
     if (GetWindowLong(hHost,GWL_STYLE) & WS_THICKFRAME)
     {
         if (WS_MAXIMIZE == (GetWindowLong(hHost,GWL_STYLE) & WS_MAXIMIZE))
-            SendMessage(hHost,WM_SYSCOMMAND, SC_RESTORE | HTCAPTION,0);
+            ::SendMessage(hHost,WM_SYSCOMMAND, SC_RESTORE | HTCAPTION,0);
         else
-            SendMessage(hHost,WM_SYSCOMMAND, SC_MAXIMIZE | HTCAPTION,0);
+            ::SendMessage(hHost,WM_SYSCOMMAND, SC_MAXIMIZE | HTCAPTION,0);
     }
 }
 

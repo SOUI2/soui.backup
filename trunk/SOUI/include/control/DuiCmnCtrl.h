@@ -52,7 +52,7 @@ public:
      *
      * Describe  对DrawText封装
      */    
-    virtual void DuiDrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
+    virtual void DrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
 
 protected:
     int m_bMultiLines;  /**< 是否开启多行显示 */  
@@ -106,7 +106,7 @@ protected:
      *
      * Describe  对DrawText封装
      */
-    virtual void DuiDrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
+    virtual void DrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
 
     /**
      * SLink::OnDuiSetCursor
@@ -680,7 +680,7 @@ protected:
      *
      * Describe  返回对应消息码
      */
-    virtual void DuiDrawFocus(IRenderTarget *pRT);
+    virtual void DrawFocus(IRenderTarget *pRT);
 
     void OnLButtonDown(UINT nFlags, CPoint point);
 
@@ -824,7 +824,7 @@ protected:
      *
      * Describe  当获得焦点时候需要绘制
      */
-    virtual void DuiDrawFocus(IRenderTarget *pRT);
+    virtual void DrawFocus(IRenderTarget *pRT);
     /**
      * SRadioBox::OnGetDuiCode
      * @brief    获取消息编码

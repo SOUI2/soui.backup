@@ -29,7 +29,7 @@ STreeBox::STreeBox()
     , m_hSelItem(NULL)
     , m_hHoverItem(NULL)
     , m_pCapturedFrame(NULL)
-    , m_crItemBg(CLR_INVALID)
+    , m_crItemBg(CR_INVALID)
     , m_crItemSelBg(RGB(0,0,128))
     , m_pItemSkin(NULL)
     , m_nVisibleItems(0)
@@ -66,7 +66,7 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
             pParentItem->InsertChild(pToggle);
             pToggle->SetToggle(FALSE,FALSE);
             pToggle->SetID(IDC_SWITCH);
-            pToggle->DuiSendMessage(WM_WINDOWPOSCHANGED);
+            pToggle->SendMessage(WM_WINDOWPOSCHANGED);
         }
     }
     pItemObj->SetItemData(dwData);
@@ -154,7 +154,7 @@ void STreeBox::RemoveAllItems()
     m_hSelItem=0;
     m_hHoverItem=0;
     m_pCapturedFrame=NULL;
-    ReleaseDuiCapture();
+    ReleaseCapture();
     SetViewSize(CSize(0,0));
 }
 
@@ -328,7 +328,7 @@ void STreeBox::OnNodeFree(STreeItem * & pItem)
     if(m_pCapturedFrame==pItem)
     {
         m_pCapturedFrame=NULL;
-        ReleaseDuiCapture();
+        ReleaseCapture();
     }
     pItem->Release();
 }
@@ -430,7 +430,7 @@ void STreeBox::RedrawItem(HSTREEITEM hItem)
         SPainter painter;
         BeforePaint(pRT,painter);
 
-        DuiSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
+        SendMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
         DrawItem(pRT,rcItem,hItem);
 
         AfterPaint(pRT,painter);
@@ -497,7 +497,7 @@ void STreeBox::OnPaint(IRenderTarget *pRT)
 
 void STreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
 {
-    if(m_bTabStop) SetDuiFocus();
+    if(m_bTabStop) SetFocus();
     if(m_pCapturedFrame)
     {
         CRect rcItem=m_pCapturedFrame->GetItemRect();
@@ -696,11 +696,11 @@ void STreeBox::OnItemSetCapture( SItemPanel *pItem,BOOL bCapture )
     if(bCapture)
     {
         m_pCapturedFrame=pItem;
-        SetDuiCapture();
+        SetCapture();
     }
     else if(pItem==m_pCapturedFrame)
     {
-        ReleaseDuiCapture();
+        ReleaseCapture();
         m_pCapturedFrame=NULL;
     }
 }

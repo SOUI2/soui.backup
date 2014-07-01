@@ -283,7 +283,7 @@ protected:
 
     virtual BOOL OnSetCursor(const CPoint &pt);
 
-    virtual BOOL DuiWndProc(UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResult);
+    virtual BOOL SwndProc(UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResult);
 
     HRESULT InitDefaultCharFormat(CHARFORMAT2W* pcf,IFont *pFont=NULL);
 

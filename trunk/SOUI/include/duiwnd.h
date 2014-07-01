@@ -174,9 +174,6 @@ public:
     // Set position type
     void SetPositionType(DWORD dwPosType, DWORD dwMask = 0xFFFFFFFF);
 
-    void SetFixSize(int nWid,int nHei);
-    void SetBkColor(COLORREF cr);
-
     // Get SWindow rect(position in container)
     void GetRect(LPRECT prect);
 
@@ -191,7 +188,7 @@ public:
     void TestMainThread();
 
     // Send a message to DuiWindow
-    LRESULT DuiSendMessage(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0,BOOL *pbMsgHandled=NULL);
+    LRESULT SendMessage(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0,BOOL *pbMsgHandled=NULL);
 
     PSWNDMSG GetCurDuiMsg()
     {
@@ -487,12 +484,12 @@ protected:
     DWORD        m_gdcFlags;
     BOOL         m_bClipRT;
 public:
-    SWND GetDuiCapture();
-    SWND SetDuiCapture();
+    SWND GetCapture();
+    SWND SetCapture();
 
-    BOOL ReleaseDuiCapture();
-    void SetDuiFocus();
-    void KillDuiFocus();
+    BOOL ReleaseCapture();
+    void SetFocus();
+    void KillFocus();
 
     SWindow *GetCheckedRadioButton();
 
@@ -507,7 +504,7 @@ public:
     BOOL EnableItem(UINT uItemID, BOOL bEnable);
     BOOL IsItemEnable(UINT uItemID, BOOL bCheckParent = FALSE);
 
-    SWindow *GetDuiWindow(int uCode);    
+    SWindow *GetWindow(int uCode);    
 
     //************************************
     // Method:    BeforePaint
@@ -589,17 +586,17 @@ protected:
 
     virtual BOOL NeedRedrawWhenStateChange();
     virtual void GetTextRect(LPRECT pRect);
-    virtual void DuiDrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
-    virtual void DuiDrawFocus(IRenderTarget *pRT);
+    virtual void DrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
+    virtual void DrawFocus(IRenderTarget *pRT);
 
-    void DuiDrawDefFocusRect(IRenderTarget *pRT,CRect rc);
+    void DrawDefFocusRect(IRenderTarget *pRT,CRect rc);
     void DrawAniStep(CRect rcFore,CRect rcBack,IRenderTarget *pRTFore,IRenderTarget * pRTBack,CPoint ptAnchor);
     void DrawAniStep( CRect rcWnd,IRenderTarget *pRTFore,IRenderTarget * pRTBack,BYTE byAlpha);
     //////////////////////////////////////////////////////////////////////////
     // Message Handler
 
     //************************************
-    // Method:    DuiWndProc
+    // Method:    SwndProc
     // Function:  默认的消息处理函数
     // Access:    virtual public
     // Returns:   BOOL
@@ -609,7 +606,7 @@ protected:
     // Parameter: LRESULT & lResult
     // remark: 在消息映射表中没有处理的消息进入该函数处理
     //************************************
-    virtual BOOL DuiWndProc(UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResult)
+    virtual BOOL SwndProc(UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResult)
     {
         return FALSE;
     }

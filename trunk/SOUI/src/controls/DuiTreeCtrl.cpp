@@ -584,7 +584,7 @@ void STreeCtrl::CalaItemWidth(LPTVITEM pItem)
     int nTestDrawMode = GetTextAlign() & ~(DT_CENTER | DT_RIGHT | DT_VCENTER | DT_BOTTOM);
 
     CRect rcTest;
-    DuiDrawText(pRT,pItem->strText, pItem->strText.GetLength(), rcTest, nTestDrawMode | DT_CALCRECT);
+    DrawText(pRT,pItem->strText, pItem->strText.GetLength(), rcTest, nTestDrawMode | DT_CALCRECT);
 
     pItem->nItemWidth = rcTest.Width() + m_nItemOffset + 2*m_nItemMargin;
 }
@@ -755,7 +755,7 @@ void STreeCtrl::RedrawItem(HSTREEITEM hItem)
         SPainter painter;
         BeforePaint(pRT,painter);
 
-        DuiSendMessage(WM_ERASEBKGND,(WPARAM)(void*)pRT);
+        SendMessage(WM_ERASEBKGND,(WPARAM)(void*)pRT);
 
         DrawItem(pRT,rcItem,hItem);
 

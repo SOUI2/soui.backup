@@ -108,13 +108,13 @@ namespace SOUI
     {
         if(pMsg->message==WM_ACTIVATEAPP)
         {
-            SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
+            CSimpleWnd::SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
             return FALSE;
         }
         if(!(pMsg->message>=WM_KEYFIRST && pMsg->message<=WM_KEYLAST) && pMsg->message!=WM_MOUSEWHEEL) return FALSE;
         if(!_PreTranslateMessage(pMsg))
         {
-            SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
+            CSimpleWnd::SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
         }
         return TRUE;
     }

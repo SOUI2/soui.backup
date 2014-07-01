@@ -159,7 +159,7 @@ void SSliderBar::OnPaint(IRenderTarget * pRT)
 
 void SSliderBar::OnLButtonUp(UINT nFlags, CPoint point)
 {
-    ReleaseDuiCapture();
+    ReleaseCapture();
 
     if (m_bDrag)
     {
@@ -174,7 +174,7 @@ void SSliderBar::OnLButtonUp(UINT nFlags, CPoint point)
 
 void SSliderBar::OnLButtonDown(UINT nFlags, CPoint point) 
 {
-    SetDuiCapture();
+    SetCapture();
 
     UINT uHit = HitTest(point);
     if (uHit == SC_THUMB)

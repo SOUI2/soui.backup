@@ -167,7 +167,7 @@ namespace SOUI
 
     void SHeaderCtrl::OnLButtonDown( UINT nFlags,CPoint pt )
     {
-        SetDuiCapture();
+        SetCapture();
         m_ptClick=pt;
         m_dwHitTest=HitTest(pt);
         if(IsItemHover(m_dwHitTest))
@@ -243,7 +243,7 @@ namespace SOUI
             DuiNotify((LPSNMHDR)&nm);
         }
         m_bDragging=FALSE;
-        ReleaseDuiCapture();
+        ReleaseCapture();
     }
 
     void SHeaderCtrl::OnMouseMove( UINT nFlags,CPoint pt )

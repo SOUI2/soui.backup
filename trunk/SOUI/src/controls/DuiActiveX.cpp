@@ -32,10 +32,10 @@ namespace SOUI
         {
             if(fCapture)
             {
-                m_pOwner->SetDuiCapture();
+                m_pOwner->SetCapture();
             }else
             {
-                m_pOwner->ReleaseDuiCapture();
+                m_pOwner->ReleaseCapture();
             }
         }
         
@@ -118,7 +118,7 @@ namespace SOUI
     LRESULT SActiveX::OnMouseEvent( UINT uMsg,WPARAM wp,LPARAM lp )
     {
         if(!m_axContainer->GetActiveXControl()) return 0;
-        if(uMsg==WM_LBUTTONDOWN) SetDuiFocus();
+        if(uMsg==WM_LBUTTONDOWN) SetFocus();
         return m_axContainer->OnWindowMessage(uMsg, wp, lp);
     }
 
