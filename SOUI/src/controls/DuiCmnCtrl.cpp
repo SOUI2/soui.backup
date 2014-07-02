@@ -884,6 +884,23 @@ void SRadioBox::OnSetDuiFocus()
     NotifyInvalidate();
 }
 
+SWindow * SRadioBox::GetSelectedSiblingInGroup()
+{
+    SWindow *pParent=GetParent();
+    ASSERT(pParent);
+    SWindow *pSibling=pParent->GetWindow(GDUI_FIRSTCHILD);
+    while(pSibling)
+    {
+        if(pSibling->IsClass(GetClassName()))
+        {
+            SRadioBox * pRadio=(SRadioBox*)pSibling;
+            if(pRadio->IsChecked()) return pRadio;
+        }
+        pSibling=pSibling->GetWindow(GDUI_NEXTSIBLING);
+    }
+    return this;
+}
+
 //////////////////////////////////////////////////////////////////////////
 // CDuiToggle
 SToggle::SToggle():m_bToggled(FALSE),m_pSkin(NULL)

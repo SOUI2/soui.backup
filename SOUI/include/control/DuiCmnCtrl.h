@@ -844,7 +844,17 @@ protected:
      * Describe  相同名称的单选按钮是否自动添加到同一组中
      */
     virtual BOOL IsSiblingsAutoGroupped() {return TRUE;}
-
+    
+    
+    /**
+     * SRadioBox::GetSelectedSiblingInGroup
+     * @brief    获取一个group中有选中状态的兄弟
+     * @return   返回选中状态的兄弟窗口指针
+     *
+     * Describe  没有选中状态兄弟时返回this
+     */
+    virtual SWindow * GetSelectedSiblingInGroup();
+    
     void OnLButtonDown(UINT nFlags, CPoint point);
 
     void OnSetDuiFocus();

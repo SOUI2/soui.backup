@@ -57,7 +57,7 @@ VOID CALLBACK STimerEx::_TimerProc( HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWOR
     TIMERINFO ti;
     if(getSingleton().GetKeyObject(idEvent,ti))
     {
-        SWindow *pSwnd=DuiWindowMgr::GetWindow(ti.Swnd);
+        SWindow *pSwnd=SWindowMgr::GetWindow(ti.Swnd);
         if(pSwnd) pSwnd->SendMessage(UM_DUI_TIMEREX,ti.uTimerID);
     }
 }

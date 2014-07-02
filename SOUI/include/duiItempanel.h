@@ -65,7 +65,7 @@ public:
     //////////////////////////////////////////////////////////////////////////
     virtual void ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove);
 
-    virtual SWND HswndFromPoint(POINT ptHitTest, BOOL bOnlyText);
+    virtual SWND SwndFromPoint(POINT ptHitTest, BOOL bOnlyText);
 
     virtual void Draw(IRenderTarget *pRT,const CRect & rc);
 

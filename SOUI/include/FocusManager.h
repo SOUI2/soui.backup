@@ -30,7 +30,7 @@ namespace SOUI
 
 
     template<class T>
-    void CopyDuiList(SList<T> &sour,SList<T> &dest)
+    void CopyList(SList<T> &sour,SList<T> &dest)
     {
         ASSERT(dest.IsEmpty());
         POSITION pos=sour.GetHeadPosition();
@@ -95,11 +95,6 @@ namespace SOUI
         // (checking IsAccessibilityFocusableInRootView() if accessibility_mode_ is
         // true).
         bool IsFocusable(SWindow* view);
-
-        // Returns the view selected for the group of the selected view. If the view
-        // does not belong to a group or if no view is selected in the group, the
-        // specified view is returned.
-        SWindow* FindSelectedViewForGroup(SWindow* view);
 
         // Returns the next focusable view or view containing a FocusTraversable
         // (NULL if none was found), starting at the starting_view.
