@@ -72,7 +72,7 @@ protected:
     int             OnCreate(LPVOID);
     void            OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
     void            OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-    void            OnSetDuiFocus();
+    void            OnSetFocus();
 
 protected:
     int             m_nStartChar;       // Current position of the first character in the current selection.
@@ -91,7 +91,7 @@ protected:
         MSG_WM_CREATE(OnCreate)
         MSG_WM_CHAR(OnChar)
         MSG_WM_KEYDOWN(OnKeyDown)
-        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
+        MSG_WM_SETFOCUS_EX(OnSetFocus)
    SOUI_MSG_MAP_END()
 };
 

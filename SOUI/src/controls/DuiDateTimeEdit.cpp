@@ -750,9 +750,9 @@ void SMaskEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     }
 }
 
-void SMaskEdit::OnSetDuiFocus()
+void SMaskEdit::OnSetFocus()
 {
-    __super::OnSetDuiFocus();
+    __super::OnSetFocus();
 
     if (!CanUseMask())
     {

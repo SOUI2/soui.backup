@@ -60,4 +60,16 @@ int DuiStyle::GetStates()
     return max(fonts,colors);
 }
 
+COLORREF DuiStyle::GetTextColor( int iState )
+{
+    if(m_crText[iState]==CR_INVALID) iState=0;
+    return m_crText[iState];
+}
+
+IFontPtr DuiStyle::GetTextFont( int iState )
+{
+    if(!m_ftText[iState]) iState=0;
+    return m_ftText[iState];
+}
+
 }//namespace SOUI

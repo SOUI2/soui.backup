@@ -149,9 +149,9 @@ protected:
     BOOL m_bTabStop;
     BYTE m_byAlpha;        //窗口透明度,只进行配置，支持依赖于控件。
 
-    ISkinObj * m_pBgSkin;
-    ISkinObj * m_pNcSkin;
-
+    ISkinObj * m_pBgSkin;   //背景skin
+    ISkinObj * m_pNcSkin;   //非客户区skin
+    
     DUIWND_POSITION m_dlgpos;
     int             m_nMaxWidth;    //自动计算大小时使用
 
@@ -478,6 +478,9 @@ protected:
     CRect        m_rcGetRT;
     DWORD        m_gdcFlags;
     BOOL         m_bClipRT;
+    //备分GetRenderTarget时RT中的字体及颜色
+    CAutoRefPtr<IRenderObj> m_oldFont;
+    COLORREF     m_oldColor;
 public:
     SWND GetCapture();
     SWND SetCapture();
@@ -649,11 +652,11 @@ protected:
 
     BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 
-    void OnSetDuiFocus();
-    void OnKillDuiFocus();
+    void OnSetFocus();
+    void OnKillFocus();
 
     HRESULT OnAttrPos(const SStringW& strValue, BOOL bLoading);
-    HRESULT OnAttributeState(const SStringW& strValue, BOOL bLoading);
+    HRESULT OnAttrState(const SStringW& strValue, BOOL bLoading);
 
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
@@ -671,8 +674,8 @@ protected:
         MSG_WM_MOUSEHOVER(OnMouseHover)
         MSG_WM_MOUSELEAVE(OnMouseLeave)
         MSG_WM_MOUSEWHEEL(OnMouseWheel)
-        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-        MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+        MSG_WM_SETFOCUS_EX(OnSetFocus)
+        MSG_WM_KILLFOCUS_EX(OnKillFocus)
     WND_MSG_MAP_END_BASE()
     
     SOUI_ATTRS_BEGIN()
@@ -683,7 +686,7 @@ protected:
         ATTR_STYLE(L"class", m_style, TRUE)    //获得style
         ATTR_CHAIN(m_style)                    //支持对style中的属性定制
         ATTR_INT(L"data", m_uData, 0 )
-        ATTR_CUSTOM(L"state", OnAttributeState)
+        ATTR_CUSTOM(L"state", OnAttrState)
         ATTR_STRINGT(L"href", m_strLinkUrl, FALSE)
         ATTR_STRINGT(L"tip", m_strToolTipText, FALSE)
         ATTR_CUSTOM(L"pos", OnAttrPos)

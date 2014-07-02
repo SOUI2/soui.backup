@@ -39,8 +39,6 @@ public:
 
     COLORREF m_crBg;
     COLORREF m_crBorder;
-    COLORREF m_crText[4];
-    IFontPtr m_ftText[4];
 
     int m_nMarginX;
     int m_nMarginY;
@@ -53,9 +51,14 @@ public:
 
     UINT GetTextAlign();
     int GetStates();
+    COLORREF GetTextColor(int iState);
+    IFontPtr GetTextFont(int iState);
+    void SetTextColor(int iState,COLORREF cr){m_crText[iState]=cr;}
 protected:
     UINT m_nTextAlign;
     UINT m_uAlign,m_uVAlign;
+    COLORREF m_crText[4];
+    IFontPtr m_ftText[4];
 
     SOUI_ATTRS_BEGIN()
         ATTR_STRINGW(L"skin", m_strSkinName, TRUE)

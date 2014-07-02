@@ -715,9 +715,9 @@ void SListBoxEx::UpdatePanelsIndex(UINT nFirst,UINT nLast)
     }
 }
 
-void SListBoxEx::OnSetDuiFocus()
+void SListBoxEx::OnSetFocus()
 {
-    __super::OnSetDuiFocus();
+    __super::OnSetFocus();
     if(IsVirtual())
     {
         m_pTemplPanel->DoFrameEvent(WM_SETFOCUS,0,0);
@@ -727,9 +727,9 @@ void SListBoxEx::OnSetDuiFocus()
     }
 }
 
-void SListBoxEx::OnKillDuiFocus()
+void SListBoxEx::OnKillFocus()
 {
-    __super::OnKillDuiFocus();
+    __super::OnKillFocus();
     if(IsVirtual())
     {
         m_pTemplPanel->DoFrameEvent(WM_KILLFOCUS,0,0);

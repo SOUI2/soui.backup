@@ -743,15 +743,15 @@ BOOL STreeBox::OnItemGetRect( SItemPanel *pItem,CRect &rcItem )
 }
 
 
-void STreeBox::OnSetDuiFocus()
+void STreeBox::OnSetFocus()
 {
-    __super::OnSetDuiFocus();
+    __super::OnSetFocus();
     if(m_hSelItem) CSTree<STreeItem*>::GetItem(m_hSelItem)->DoFrameEvent(WM_SETFOCUS,0,0);
 }
 
-void STreeBox::OnKillDuiFocus()
+void STreeBox::OnKillFocus()
 {
-    __super::OnKillDuiFocus();
+    __super::OnKillFocus();
     if(m_hSelItem) CSTree<STreeItem*>::GetItem(m_hSelItem)->DoFrameEvent(WM_KILLFOCUS,0,0);
 }
 

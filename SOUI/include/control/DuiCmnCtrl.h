@@ -857,7 +857,7 @@ protected:
     
     void OnLButtonDown(UINT nFlags, CPoint point);
 
-    void OnSetDuiFocus();
+    void OnSetFocus();
 
 
     SOUI_ATTRS_BEGIN()
@@ -868,7 +868,7 @@ protected:
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
-        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
+        MSG_WM_SETFOCUS_EX(OnSetFocus)
     SOUI_MSG_MAP_END()
 };
 
