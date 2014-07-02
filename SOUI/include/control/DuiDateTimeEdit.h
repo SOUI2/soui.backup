@@ -1,3 +1,16 @@
+/**
+ * Copyright (C) 2014-2050 SOUI团队
+ * All rights reserverd.
+ * 
+ * @file       DuiCmnCtrl.h
+ * @brief      通用控件
+ * @version    v1.0      
+ * @author     soui      
+ * @date       2014-06-27
+ * 
+ * Describe    时间控件
+ */
+
 #pragma once
 
 #include "DuiRichEdit.h"
@@ -10,20 +23,91 @@ namespace SOUI{
 //     CDuiMaskEdit is a CXTPEdit derived class. It allows text masking to be
 //     applied to the control to format it for special editing restrictions.
 //===========================================================================
+/**
+ * @class      SMaskEdit
+ * @brief      隐码输入框
+ * 
+ * Describe    隐码输入框  主要用于固定输入格式
+ */
 class SOUI_EXP SMaskEdit : public SEdit
 {
     SOUI_CLASS_NAME(SMaskEdit, L"maskedit")
 
 public:
+    /**
+     * SMaskEdit::SMaskEdit
+     * @brief    构造函数
+     *
+     * Describe  构造函数
+     */
     SMaskEdit();
+    /**
+     * SMaskEdit::CanUseMask
+     * @brief    是否启用mask功能
+     * @return   返回BOOL
+     * 
+     * Describe  是否启用mask功能
+     */
+    BOOL CanUseMask() const;
+    /**
+     * SMaskEdit::SetUseMask
+     * @brief    设置mask功能
+     * @param    BOOL bUseMask  -- TRUE FALSE
+     * 
+     * Describe  设置mask功能
+     */
+    void SetUseMask(BOOL bUseMask);
+    /**
+     * SMaskEdit::CanOverType
+     * @brief    是否启用改写功能
+     * @param    返回BOOL
+     * 
+     * Describe  是否启用改写功能
+     */
+    BOOL CanOverType() const;
 
-    BOOL            CanUseMask() const;
-    void            SetUseMask(BOOL bUseMask);
+    /**
+     * SMaskEdit::SetOverType
+     * @brief    设置改写功能
+     * @param    BOOL bOverType  -- TRUE FALSE     
+     * 
+     * Describe  设置改写功能
+     */    
+    void SetOverType(BOOL bOverType);
 
-    BOOL            CanOverType() const;
-    void            SetOverType(BOOL bOverType);
+    /**
+     * SMaskEdit::PosInRange
+     * @brief    是否启用mask功能
+     * @param    返回BOOL
+     * 
+     * Describe  是否启用mask功能
+     */
+    BOOL PosInRange(int nPos) const;
 
-    BOOL            PosInRange(int nPos) const;
+    /**
+     * SMaskEdit::CanUseMask
+     * @brief    是否启用mask功能
+     * @param    返回BOOL
+     * 
+     * Describe  是否启用mask功能
+     */
+    TCHAR GetPromptChar() const;
+    /**
+     * SMaskEdit::CanUseMask
+     * @brief    是否启用mask功能
+     * @param    返回BOOL
+     * 
+     * Describe  是否启用mask功能
+     */    
+    CDuiStringT GetPromptString(int nLength) const;
+    /**
+     * SMaskEdit::CanUseMask
+     * @brief    是否启用mask功能
+     * @param    返回BOOL
+     * 
+     * Describe  是否启用mask功能
+     */  
+    void  SetPromptChar(TCHAR ch, BOOL bAutoReplace = TRUE);
 
     TCHAR           GetPromptChar() const;
     SStringT         GetPromptString(int nLength) const;
@@ -69,11 +153,46 @@ public:
     void            ProcessChar(TCHAR nChar);
 
 protected:
-    int             OnCreate(LPVOID);
-    void            OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-    void            OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-    void            OnSetFocus();
-
+  
+    /**
+     * SMaskEdit::OnCreate
+     * @brief    创建消息响应函数
+     * @param    LPVOID
+     * @return   返回值int
+     *
+     * Describe  此函数是消息响应函数
+     */
+    int  OnCreate(LPVOID);
+  
+    /**
+     * SMaskEdit::OnChar
+     * @brief    字符消息
+     * @param    UINT nChar -- 按键对应的码值 
+     * @param    UINT nRepCnt -- 重复次数
+     * @param    UINT nFlags -- 标志
+     * 
+     * Describe  此函数是消息响应函数
+     */ 
+    void  OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+  
+    /**
+     * SMaskEdit::OnKeyDown
+     * @brief    键盘按下事件
+     * @param    UINT nChar -- 按键对应的码值 
+     * @param    UINT nRepCnt -- 重复次数
+     * @param    UINT nFlags -- 标志
+     * 
+     * Describe  此函数是消息响应函数
+     */ 
+    void  OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+  
+    /**
+     * SMaskEdit::OnSetDuiFocus
+     * @brief    设置焦点
+     * 
+     * Describe  此函数是消息响应函数
+     */
+    void  OnSetDuiFocus();
 protected:
     int             m_nStartChar;       // Current position of the first character in the current selection.
     int             m_nEndChar;         // Current position of the first non-selected character past the end of the current selection.
@@ -95,22 +214,61 @@ protected:
    SOUI_MSG_MAP_END()
 };
 
-//===========================================================================
-//  CDxDateEdit
+/**
+ * @class      SDateEdit
+ * @brief      日期编辑框
+ * 
+ * Describe    日期编辑框
+ */
 class SOUI_EXP SDateEdit : public SMaskEdit
 {
     SOUI_CLASS_NAME(SDateEdit, L"dateedit")
 
 public:
+      
+    /**
+     * SDateEdit::SDateEdit
+     * @brief    构造函数
+     *
+     * Describe  构造函数
+     */
     SDateEdit();
-
-    virtual void    SetDateTime(LPCTSTR strDate);
-    virtual void    SetDateTime(CTime tm);
-
+    /**
+     * SDateEdit::SetDateTime
+     * @brief    设置日期
+     * @param    LPCTSTR strDate -- 日期字符串
+     *
+     * Describe  设置日期
+     */
+    virtual void SetDateTime(LPCTSTR strDate);
+    /**
+     * SDateEdit::SetDateTime
+     * @brief    设置日期
+     * @param    CTime tm -- 日期类对象
+     *
+     * Describe  设置日期
+     */
+    virtual void SetDateTime(CTime tm);
+    
+    /**
+     * SDateEdit::GetWindowDateTime
+     * @brief    获取系统时间
+     * @return   CDuiStringT 返回字符串    
+     *
+     * Describe  获取系统时间
+     */
     virtual SStringT GetWindowDateTime();
+       
     virtual BOOL    ProcessMask(TCHAR& nChar, int nEndPos);
 protected:
-    int             OnCreate(LPVOID);
+    /**
+     * SDateEdit::OnCreate
+     * @brief    消息响应函数
+     * @return   int    
+     *
+     * Describe  消息响应函数
+     */
+    int OnCreate(LPVOID);
 
 protected:
    SOUI_MSG_MAP_BEGIN()
@@ -120,28 +278,85 @@ protected:
 
 //===========================================================================
 //  CDxTimeEdit
+/**
+ * @class      STimeEdit
+ * @brief      时间编辑框
+ * 
+ * Describe    时间编辑框
+ */
 class SOUI_EXP STimeEdit : public SDateEdit
 {
     SOUI_CLASS_NAME(STimeEdit, L"timeedit")
 
 public:
+    /**
+     * STimeEdit::STimeEdit
+     * @brief    构造函数
+     *
+     * Describe  构造函数
+     */
     STimeEdit();
 
 public:
+    
+    /**
+     * SDateEdit::SetHours
+     * @brief    设置小时
+     *
+     * Describe  设置小时
+     */
     virtual void    SetHours(int nHours);
+    /**
+     * SDateEdit::SetMins
+     * @brief    设置分钟
+     *
+     * Describe  设置分钟
+     */
     virtual void    SetMins(int nMins);
+    /**
+     * SDateEdit::SetTime
+     * @brief    设置时间
+     * @param    int nHours -- 小时
+     * @param    int nMins  -- 分钟
+     *
+     * Describe  设置时间
+     */
     virtual void    SetTime(int nHours, int nMins);
+    /**
+     * SDateEdit::GetHours
+     * @brief    获取小时
+     * @return   返回int
+     *
+     * Describe  获取小时
+     */
+
     int             GetHours() const;
+    /**
+     * SDateEdit::GetMins
+     * @brief    获取分钟
+     * @return   返回int
+     *
+     * Describe  设置分钟
+     */
+
     int             GetMins() const;
+
     virtual BOOL    ProcessMask(TCHAR& nChar, int nEndPos);
     void            SetMilitary(BOOL bMilitary = TRUE);
 
 protected:
-    int             m_nHours;
-    int             m_nMins;
-    BOOL            m_bMilitary;
+    int             m_nHours;  /**< 小时 */
+    int             m_nMins;   /**< 分钟 */
+    BOOL            m_bMilitary; /**<  */
 
 protected:
+    /**
+     * STimeEdit::OnCreate
+     * @brief    消息响应函数
+     * @return   int    
+     *
+     * Describe  消息响应函数
+     */
     int             OnCreate(LPVOID);
 
 protected:
