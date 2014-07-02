@@ -189,7 +189,7 @@ public:
     // Send a message to DuiWindow
     LRESULT SendMessage(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0,BOOL *pbMsgHandled=NULL);
 
-    PSWNDMSG GetCurDuiMsg()
+    PSWNDMSG GetCurMsg()
     {
         return m_pCurMsg;
     }
@@ -208,7 +208,7 @@ public:
     // Get DuiWindow state
     DWORD GetState(void);
 
-    // Modify DuiWindow state
+    // Modify SWindow state
     DWORD ModifyState(DWORD dwStateAdd, DWORD dwStateRemove,BOOL bUpdate=FALSE);
 
     ULONG_PTR GetUserData();
@@ -236,7 +236,7 @@ public:
     void KillTimer(char id);
 
     //************************************
-    // Method:    SetDuiTimerEx
+    // Method:    SetTimerEx
     // Function:  利用函数定时器来模拟一个兼容窗口定时器
     // Access:    public
     // Returns:   BOOL
@@ -247,7 +247,7 @@ public:
     BOOL SetTimerEx(UINT_PTR id,UINT uElapse);
 
     //************************************
-    // Method:    KillDuiTimerEx
+    // Method:    KillTimerEx
     // Function:  删除一个SetDuiTimerEx设置的定时器
     // Access:    public
     // Returns:   void
