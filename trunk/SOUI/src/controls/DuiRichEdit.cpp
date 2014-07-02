@@ -295,12 +295,12 @@ void CDuiTextHost::TxScrollWindowEx( INT dx, INT dy, LPCRECT lprcScroll, LPCRECT
 
 void CDuiTextHost::TxKillTimer( UINT idTimer )
 {
-    m_pDuiRichEdit->KillDuiTimerEx(idTimer);
+    m_pDuiRichEdit->KillTimerEx(idTimer);
 }
 
 BOOL CDuiTextHost::TxSetTimer( UINT idTimer, UINT uTimeout )
 {
-    return m_pDuiRichEdit->SetDuiTimerEx(idTimer,uTimeout);
+    return m_pDuiRichEdit->SetTimerEx(idTimer,uTimeout);
 }
 
 BOOL CDuiTextHost::TxSetCaretPos( INT x, INT y )
@@ -345,7 +345,7 @@ BOOL CDuiTextHost::TxShowScrollBar( INT fnBar, BOOL fShow )
         wBar=DUISB_HORZ;
         break;
     }
-    m_pDuiRichEdit->SetDuiTimer(TIMER_INVALIDATE,40);//todo:
+    m_pDuiRichEdit->SetTimer(TIMER_INVALIDATE,40);//todo:
     return m_pDuiRichEdit->ShowScrollBar(wBar,fShow);
 }
 
@@ -714,7 +714,7 @@ void SRichEdit::OnDuiTimer( char idEvent )
     if(idEvent==TIMER_INVALIDATE)
     {
         NotifyInvalidate();
-        KillDuiTimer(idEvent);
+        KillTimer(idEvent);
     }
     else
     {

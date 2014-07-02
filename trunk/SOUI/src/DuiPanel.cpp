@@ -340,7 +340,7 @@ void SPanel::OnNcLButtonDown(UINT nFlags, CPoint point)
                 ReleaseRenderTarget(pRT);
             }
             OnScroll(m_HitInfo.bVertical,m_HitInfo.uSbCode,m_HitInfo.bVertical?m_siVer.nPos:m_siHoz.nPos);
-            SetDuiTimer(TIMER_SBWAIT,500);
+            SetTimer(TIMER_SBWAIT,500);
         }
         else
         {
@@ -386,8 +386,8 @@ void SPanel::OnNcLButtonUp(UINT nFlags,CPoint pt)
             ReleaseRenderTarget(pRT);
         }
     }
-    KillDuiTimer(TIMER_SBWAIT);
-    KillDuiTimer(TIMER_SBGO);
+    KillTimer(TIMER_SBWAIT);
+    KillTimer(TIMER_SBGO);
     m_HitInfo.uSbCode=-1;
     OnNcMouseMove(nFlags,pt);
 }
@@ -666,8 +666,8 @@ void SPanel::OnDuiTimer( char cTimerID )
 {
     if(cTimerID==TIMER_SBWAIT)
     {
-        KillDuiTimer(cTimerID);
-        SetDuiTimer(TIMER_SBGO,50);
+        KillTimer(cTimerID);
+        SetTimer(TIMER_SBGO,50);
         OnDuiTimer(TIMER_SBGO);
     }
     else if(cTimerID==TIMER_SBGO)

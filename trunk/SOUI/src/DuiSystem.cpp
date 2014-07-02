@@ -37,7 +37,7 @@ void DuiSystem::createSingletons()
 {
     new DuiThreadActiveWndMgr();
     new DuiWindowMgr();
-    new CDuiTimerEx();
+    new STimerEx();
     new DuiFontPool(m_RenderFactory);
     new DuiImgPool();
 }
@@ -46,7 +46,7 @@ void DuiSystem::destroySingletons()
 {
     delete DuiImgPool::getSingletonPtr();
     delete DuiFontPool::getSingletonPtr();
-    delete CDuiTimerEx::getSingletonPtr();
+    delete STimerEx::getSingletonPtr();
     delete DuiThreadActiveWndMgr::getSingletonPtr();
     delete DuiWindowMgr::getSingletonPtr();
 }
