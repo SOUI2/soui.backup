@@ -99,7 +99,7 @@ public:
      * 
      * Describe  是否启用mask功能
      */    
-    CDuiStringT GetPromptString(int nLength) const;
+    SStringT GetPromptString(int nLength) const;
     /**
      * SMaskEdit::CanUseMask
      * @brief    是否启用mask功能
@@ -109,9 +109,6 @@ public:
      */  
     void  SetPromptChar(TCHAR ch, BOOL bAutoReplace = TRUE);
 
-    TCHAR           GetPromptChar() const;
-    SStringT         GetPromptString(int nLength) const;
-    void            SetPromptChar(TCHAR ch, BOOL bAutoReplace = TRUE);
 
     BOOL            MaskCut();
     BOOL            MaskCopy();
@@ -192,7 +189,7 @@ protected:
      * 
      * Describe  此函数是消息响应函数
      */
-    void  OnSetDuiFocus();
+    void  OnSetFocus();
 protected:
     int             m_nStartChar;       // Current position of the first character in the current selection.
     int             m_nEndChar;         // Current position of the first non-selected character past the end of the current selection.
@@ -253,7 +250,7 @@ public:
     /**
      * SDateEdit::GetWindowDateTime
      * @brief    获取系统时间
-     * @return   CDuiStringT 返回字符串    
+     * @return   SStringT 返回字符串    
      *
      * Describe  获取系统时间
      */

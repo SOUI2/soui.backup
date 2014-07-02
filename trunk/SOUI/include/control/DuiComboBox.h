@@ -136,7 +136,7 @@ public:
     /**
      * CDuiComboBoxBase::GetWindowText
      * @brief    获取窗口标题
-     * @return   返回CDuiStringT
+     * @return   返回SStringT
      *
      * Describe  获取当前选中索引
      */
