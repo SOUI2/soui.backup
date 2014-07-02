@@ -1068,12 +1068,12 @@ void SRichEdit::OnLButtonDown( UINT nFlags, CPoint point )
     {
         SetFocus();
     }
-    m_pTxtHost->GetTextService()->TxSendMessage(GetCurDuiMsg()->uMsg,GetCurDuiMsg()->wParam,GetCurDuiMsg()->lParam,NULL);
+    m_pTxtHost->GetTextService()->TxSendMessage(GetCurMsg()->uMsg,GetCurMsg()->wParam,GetCurMsg()->lParam,NULL);
 }
 
 void SRichEdit::OnLButtonUp( UINT nFlags, CPoint point )
 {
-    m_pTxtHost->GetTextService()->TxSendMessage(GetCurDuiMsg()->uMsg,GetCurDuiMsg()->wParam,GetCurDuiMsg()->lParam,NULL);
+    m_pTxtHost->GetTextService()->TxSendMessage(GetCurMsg()->uMsg,GetCurMsg()->wParam,GetCurMsg()->lParam,NULL);
 }
 
 enum{
@@ -1140,7 +1140,7 @@ void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
 
 void SRichEdit::OnMouseMove( UINT nFlags, CPoint point )
 {
-    m_pTxtHost->GetTextService()->TxSendMessage(GetCurDuiMsg()->uMsg,GetCurDuiMsg()->wParam,GetCurDuiMsg()->lParam,NULL);
+    m_pTxtHost->GetTextService()->TxSendMessage(GetCurMsg()->uMsg,GetCurMsg()->wParam,GetCurMsg()->lParam,NULL);
 }
 
 void SRichEdit::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
@@ -1150,7 +1150,7 @@ void SRichEdit::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
         SetMsgHandled(FALSE);
         return;
     }
-    m_pTxtHost->GetTextService()->TxSendMessage(GetCurDuiMsg()->uMsg,GetCurDuiMsg()->wParam,GetCurDuiMsg()->lParam,NULL);
+    m_pTxtHost->GetTextService()->TxSendMessage(GetCurMsg()->uMsg,GetCurMsg()->wParam,GetCurMsg()->lParam,NULL);
 }
 
 #define CTRL(_ch) (_ch - 'A' + 1)
@@ -1192,7 +1192,7 @@ void SRichEdit::OnChar( UINT nChar, UINT nRepCnt, UINT nFlags )
 #endif//_UNICODE
         break;
     }
-    m_pTxtHost->GetTextService()->TxSendMessage(GetCurDuiMsg()->uMsg,GetCurDuiMsg()->wParam,GetCurDuiMsg()->lParam,NULL);
+    m_pTxtHost->GetTextService()->TxSendMessage(GetCurMsg()->uMsg,GetCurMsg()->wParam,GetCurMsg()->lParam,NULL);
 }
 
 LRESULT SRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
