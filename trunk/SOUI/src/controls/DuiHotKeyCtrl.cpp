@@ -65,7 +65,7 @@ void SHotKeyCtrl::UpdateCaret()
     GetContainer()->SwndSetCaretPos(rcClient.left+EDIT_INSET+szTxt.cx,rcClient.top+(rcClient.Height()-szTxt.cy)/2);
 }
 
-void SHotKeyCtrl::OnSetDuiFocus()
+void SHotKeyCtrl::OnSetFocus()
 {
     IRenderTarget *pRT=GetRenderTarget(NULL,OLEDC_NODRAW);
     CAutoRefPtr<IFont> oldFont;
@@ -84,7 +84,7 @@ void SHotKeyCtrl::OnSetDuiFocus()
     GetContainer()->SwndShowCaret(TRUE);
 }
 
-void SHotKeyCtrl::OnKillDuiFocus()
+void SHotKeyCtrl::OnKillFocus()
 {
     GetContainer()->SwndShowCaret(FALSE);
 

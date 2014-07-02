@@ -71,7 +71,7 @@ protected:                                                          \
     return TRUE; \
     }
 
-// void OnSetDuiFocus()
+// void OnSetFocus()
 #define MSG_WM_SETFOCUS_EX(func) \
     if (uMsg == WM_SETFOCUS) \
 { \

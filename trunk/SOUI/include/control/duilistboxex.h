@@ -115,9 +115,9 @@ protected:
 
     void OnDestroy();
 
-    void OnSetDuiFocus();
+    void OnSetFocus();
 
-    void OnKillDuiFocus();
+    void OnKillFocus();
 
     LRESULT OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam);
 
@@ -161,8 +161,8 @@ public:
         MSG_WM_KEYDOWN(OnKeyDown)
         MSG_WM_CHAR(OnChar)
         MSG_WM_SIZE(OnSize)
-        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-        MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+        MSG_WM_SETFOCUS_EX(OnSetFocus)
+        MSG_WM_KILLFOCUS_EX(OnKillFocus)
         MSG_WM_NCCALCSIZE(OnNcCalcSize)
     SOUI_MSG_MAP_END()
 };

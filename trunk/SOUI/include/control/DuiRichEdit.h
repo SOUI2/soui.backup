@@ -263,9 +263,9 @@ protected:
 
     void OnPaint(IRenderTarget * pRT);
 
-    void OnSetDuiFocus();
+    void OnSetFocus();
 
-    void OnKillDuiFocus();
+    void OnKillFocus();
 
     void OnDuiTimer(char idEvent);
 
@@ -329,8 +329,8 @@ protected:
         MSG_WM_DESTROY(OnDestroy)
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_NCCALCSIZE(OnNcCalcSize)
-        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-        MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+        MSG_WM_SETFOCUS_EX(OnSetFocus)
+        MSG_WM_KILLFOCUS_EX(OnKillFocus)
         MSG_WM_DUITIMER(OnDuiTimer)
         MSG_UM_TIMEREX(OnDuiTimerEx)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)

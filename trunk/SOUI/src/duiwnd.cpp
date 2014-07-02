@@ -884,11 +884,11 @@ BOOL SWindow::OnEraseBkgnd(IRenderTarget *pRT)
 
 void SWindow::BeforePaint(IRenderTarget *pRT, SPainter &painter)
 {
-    IFontPtr pFont = m_style.m_ftText[IIF_STATE4(m_dwState,0,1,2,3)];
+    IFontPtr pFont = m_style.GetTextFont(IIF_STATE4(m_dwState,0,1,2,3));
     if(pFont) 
         pRT->SelectObject(pFont,(IRenderObj**)&painter.pOldPen);
     
-    COLORREF crTxt = m_style.m_crText[IIF_STATE4(m_dwState,0,1,2,3)];
+    COLORREF crTxt = m_style.GetTextColor(IIF_STATE4(m_dwState,0,1,2,3));
     if(crTxt != CR_INVALID)
         painter.crOld = pRT->SetTextColor(crTxt);
 }
@@ -1181,7 +1181,7 @@ BOOL SWindow::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
     return bRet;
 }
 
-HRESULT SWindow::OnAttributeState( const SStringW& strValue, BOOL bLoading )
+HRESULT SWindow::OnAttrState( const SStringW& strValue, BOOL bLoading )
 {
     int nState=0;
     ::StrToIntExW(strValue,STIF_SUPPORT_HEX,&nState);
@@ -1232,12 +1232,12 @@ void SWindow::UpdateChildrenPosition()
     NotifyInvalidate();
 }
 
-void SWindow::OnSetDuiFocus()
+void SWindow::OnSetFocus()
 {
     NotifyInvalidateRect(m_rcWindow);
 }
 
-void SWindow::OnKillDuiFocus()
+void SWindow::OnKillFocus()
 {
     NotifyInvalidateRect(m_rcWindow);
 }
@@ -1249,7 +1249,8 @@ IRenderTarget * SWindow::GetRenderTarget(const LPRECT pRc/*=NULL*/,DWORD gdcFlag
         GetClient(&m_rcGetRT);
     else
         m_rcGetRT=m_rcWindow;
-
+    
+    
     if(gdcFlags!=OLEDC_NODRAW)
     {//将DC限制在父窗口的可见区域
         SWindow *pParent=GetParent();
@@ -1276,7 +1277,24 @@ IRenderTarget * SWindow::GetRenderTarget(const LPRECT pRc/*=NULL*/,DWORD gdcFlag
     }
     if(gdcFlags&OLEDC_PAINTBKGND)
         PaintBackground(pRT,&m_rcGetRT);
-
+        
+    m_oldFont=pRT->GetCurrentObject(OT_FONT);
+    m_oldColor=pRT->GetTextColor();
+    //获得父窗口列表
+    SList<SWindow*> lstParent;
+    SWindow *pParent=GetParent();
+    while(pParent)
+    {
+        lstParent.AddHead(pParent);
+        pParent=pParent->GetParent();
+    }
+    POSITION pos=lstParent.GetHeadPosition();
+    while(pos)
+    {
+        SWindow *pWnd=lstParent.GetNext(pos);
+        SPainter painter;
+        pWnd->BeforePaint(pRT,painter);
+    }
     return pRT;
 }
 
@@ -1286,7 +1304,14 @@ void SWindow::ReleaseRenderTarget(IRenderTarget *pRT)
         PaintForeground(pRT,&m_rcGetRT);
     if(m_bClipRT)
         pRT->PopClip();
+    
+    pRT->SelectObject(m_oldFont);
+    pRT->SetTextColor(m_oldColor);
+    m_oldFont=NULL;
+    m_oldColor=CR_INVALID;
+    
     GetContainer()->OnReleaseRenderTarget(pRT,m_rcGetRT,m_gdcFlags);
+    
     m_bClipRT=FALSE;
     m_gdcFlags=-1;
 }

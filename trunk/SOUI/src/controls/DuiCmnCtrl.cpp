@@ -877,7 +877,7 @@ void SRadioBox::OnLButtonDown(UINT nFlags, CPoint point)
     __super::OnLButtonDown(nFlags,point);
 }
 
-void SRadioBox::OnSetDuiFocus()
+void SRadioBox::OnSetFocus()
 {
     SWindow *pParent=GetParent();
     pParent->CheckRadioButton(this);

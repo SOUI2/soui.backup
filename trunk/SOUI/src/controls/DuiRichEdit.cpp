@@ -681,9 +681,9 @@ void SRichEdit::OnPaint( IRenderTarget * pRT )
     pRT->PopClip();
 }
 
-void SRichEdit::OnSetDuiFocus()
+void SRichEdit::OnSetFocus()
 {
-    __super::OnSetDuiFocus();
+    __super::OnSetFocus();
 
     CRect rcClient;
     GetClient(&rcClient);
@@ -697,9 +697,9 @@ void SRichEdit::OnSetDuiFocus()
     }
 }
 
-void SRichEdit::OnKillDuiFocus()
+void SRichEdit::OnKillFocus()
 {
-    __super::OnKillDuiFocus();
+    __super::OnKillFocus();
     if(m_pTxtHost)
     {
         m_pTxtHost->m_fUiActive=FALSE;
@@ -1356,10 +1356,10 @@ void SRichEdit::SetSel(DWORD dwSelection, BOOL bNoScroll)
 
 LRESULT SRichEdit::OnSetTextColor( const SStringW &  strValue,BOOL bLoading )
 {
-    m_style.m_crText[0]=HexStringToColor(strValue);
+    m_style.SetTextColor(0,HexStringToColor(strValue));
     if(!bLoading)
     {
-        SetDefaultTextColor(m_style.m_crText[0]);
+        SetDefaultTextColor(m_style.GetTextColor(0));
     }
     return S_OK;
 }

@@ -124,8 +124,9 @@ STabCtrl::STabCtrl() : m_nCurrentPage(0)
 
 void STabCtrl::OnPaint(IRenderTarget *pRT)
 {
-    SPainter duiDC;
-    BeforePaint(pRT,duiDC);
+    SPainter painter;
+    BeforePaint(pRT,painter);
+    
     CRect rcTabs;
     CRect rcItem,rcItemPrev;
     CRect rcSplit;
@@ -197,7 +198,7 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
     
     pRT->PopClip();
 
-    AfterPaint(pRT,duiDC);
+    AfterPaint(pRT,painter);
 }
 
 CRect STabCtrl::GetChildrenLayoutRect()

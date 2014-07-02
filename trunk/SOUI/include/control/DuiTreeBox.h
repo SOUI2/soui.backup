@@ -93,8 +93,8 @@ protected:
     void OnMouseMove(UINT nFlags,CPoint pt);
     void OnMouseLeave();
 
-    void OnSetDuiFocus();
-    void OnKillDuiFocus();
+    void OnSetFocus();
+    void OnKillFocus();
 
     LRESULT OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam );
 
@@ -143,8 +143,8 @@ protected:
         MSG_WM_LBUTTONDBLCLK(OnLButtonDbClick)
         MSG_WM_MOUSEMOVE(OnMouseMove)
         MSG_WM_MOUSELEAVE(OnMouseLeave)
-        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-        MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+        MSG_WM_SETFOCUS_EX(OnSetFocus)
+        MSG_WM_KILLFOCUS_EX(OnKillFocus)
         MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
         MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
         MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)

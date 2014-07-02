@@ -33,9 +33,9 @@ protected:
 
     void OnPaint(IRenderTarget *pRT);
 
-    void OnSetDuiFocus();
+    void OnSetFocus();
 
-    void OnKillDuiFocus();
+    void OnKillFocus();
 
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
@@ -62,8 +62,8 @@ protected:
         MSG_WM_CREATE(OnCreate)
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
-        MSG_WM_SETFOCUS_EX(OnSetDuiFocus)
-        MSG_WM_KILLFOCUS_EX(OnKillDuiFocus)
+        MSG_WM_SETFOCUS_EX(OnSetFocus)
+        MSG_WM_KILLFOCUS_EX(OnKillFocus)
         MSG_WM_KEYDOWN(OnKeyDown)
         MSG_WM_KEYUP(OnKeyUp)
         MSG_WM_SYSKEYDOWN(OnSysKeyDown)
