@@ -90,7 +90,7 @@ BOOL SwndContainerImpl::OnReleaseSwndCapture()
 
 SWND SwndContainerImpl::OnSetSwndCapture(SWND hDuiWnd)
 {
-    SWindow *pWnd=DuiWindowMgr::GetWindow(hDuiWnd);
+    SWindow *pWnd=SWindowMgr::GetWindow(hDuiWnd);
     ASSERT(pWnd);
     if(pWnd->IsDisabled(TRUE)) return 0;
 
@@ -121,7 +121,7 @@ SWND SwndContainerImpl::SwndGetHover()
 
 void SwndContainerImpl::OnFrameMouseMove(UINT uFlag,CPoint pt)
 {
-    SWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
+    SWindow *pCapture=SWindowMgr::GetWindow(m_hCapture);
     if(pCapture)
     {
         CRect rc;
@@ -130,7 +130,7 @@ void SwndContainerImpl::OnFrameMouseMove(UINT uFlag,CPoint pt)
         SWND hHover=pHover?pHover->GetSwnd():NULL;
         if(hHover!=m_hHover)
         {
-            SWindow *pOldHover=DuiWindowMgr::GetWindow(m_hHover);
+            SWindow *pOldHover=SWindowMgr::GetWindow(m_hHover);
             m_hHover=hHover;
             if(pOldHover) pOldHover->SendMessage(m_bNcHover?WM_NCMOUSELEAVE:WM_MOUSELEAVE);
             if(pHover)    pHover->SendMessage(m_bNcHover?WM_NCMOUSEHOVER:WM_MOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
@@ -139,11 +139,11 @@ void SwndContainerImpl::OnFrameMouseMove(UINT uFlag,CPoint pt)
     }
     else
     {
-        SWND hHover=m_pHost->HswndFromPoint(pt,FALSE);
-        SWindow * pHover=DuiWindowMgr::GetWindow(hHover);
+        SWND hHover=m_pHost->SwndFromPoint(pt,FALSE);
+        SWindow * pHover=SWindowMgr::GetWindow(hHover);
         if(m_hHover!=hHover)
         {
-            SWindow *pOldHover=DuiWindowMgr::GetWindow(m_hHover);
+            SWindow *pOldHover=SWindowMgr::GetWindow(m_hHover);
             m_hHover=hHover;
             if(pOldHover)
             {
@@ -182,14 +182,14 @@ void SwndContainerImpl::OnFrameMouseMove(UINT uFlag,CPoint pt)
 
 void SwndContainerImpl::OnFrameMouseLeave()
 {
-    SWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
+    SWindow *pCapture=SWindowMgr::GetWindow(m_hCapture);
     if(pCapture)
     {
         pCapture->SendMessage(WM_MOUSELEAVE);
     }
     else if(m_hHover)
     {
-        SWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
+        SWindow *pHover=SWindowMgr::GetWindow(m_hHover);
         if(pHover && !pHover->IsDisabled(TRUE))
             pHover->SendMessage(m_bNcHover?WM_NCMOUSELEAVE:WM_MOUSELEAVE);
     }
@@ -199,11 +199,11 @@ void SwndContainerImpl::OnFrameMouseLeave()
 
 BOOL SwndContainerImpl::OnFrameSetCursor(const CPoint &pt)
 {
-    SWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
+    SWindow *pCapture=SWindowMgr::GetWindow(m_hCapture);
     if(pCapture) return pCapture->OnSetCursor(pt);
     else
     {
-        SWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
+        SWindow *pHover=SWindowMgr::GetWindow(m_hHover);
         if(pHover && !pHover->IsDisabled(TRUE)) return pHover->OnSetCursor(pt);
     }
     return FALSE;
@@ -211,7 +211,7 @@ BOOL SwndContainerImpl::OnFrameSetCursor(const CPoint &pt)
 
 void SwndContainerImpl::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
-    SWindow *pCapture=DuiWindowMgr::GetWindow(m_hCapture);
+    SWindow *pCapture=SWindowMgr::GetWindow(m_hCapture);
     if(pCapture)
     {
         if(m_bNcHover && uMsg!=WM_MOUSEWHEEL) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
@@ -221,8 +221,8 @@ void SwndContainerImpl::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     }
     else
     {
-        m_hHover=m_pHost->HswndFromPoint(CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)),FALSE);
-        SWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
+        m_hHover=m_pHost->SwndFromPoint(CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)),FALSE);
+        SWindow *pHover=SWindowMgr::GetWindow(m_hHover);
         if(pHover  && !pHover->IsDisabled(TRUE))
         {
             BOOL bMsgHandled = FALSE;
@@ -238,7 +238,7 @@ void SwndContainerImpl::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 
 void SwndContainerImpl::OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
-    SWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
+    SWindow *pFocus=SWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
     if(pFocus)
     {
         BOOL bMsgHandled = FALSE;
@@ -254,7 +254,7 @@ void SwndContainerImpl::OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     if(m_focusMgr.OnKeyDown(nChar)) return; //首先处理焦点切换
 
-    SWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
+    SWindow *pFocus=SWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
     if(pFocus)
     {
         BOOL bMsgHandled=FALSE;

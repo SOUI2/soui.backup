@@ -444,7 +444,7 @@ void CDuiHostWnd::OnTimer(UINT_PTR idEvent)
     STimerID sTimerID((DWORD)idEvent);
     if(sTimerID.bDuiTimer)
     {
-        SWindow *pDuiWnd=DuiWindowMgr::GetWindow((SWND)sTimerID.Swnd);
+        SWindow *pDuiWnd=SWindowMgr::GetWindow((SWND)sTimerID.Swnd);
         if(pDuiWnd)
         {
             if(pDuiWnd==this) OnSwndTimer(sTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
@@ -503,7 +503,7 @@ LRESULT CDuiHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     if(m_pTipCtrl && m_pTipCtrl->IsWindow())
     {
-        SWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
+        SWindow *pHover=SWindowMgr::GetWindow(m_hHover);
         if(!pHover || pHover->IsDisabled(TRUE))
         {
             m_pTipCtrl->ShowTip(FALSE);
@@ -529,7 +529,7 @@ LRESULT CDuiHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     if(uMsg==WM_SYSKEYDOWN || uMsg==WM_SYSKEYUP)
     {
-        SWindow *pFocus=DuiWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
+        SWindow *pFocus=SWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
         if(!pFocus  || !(pFocus->OnGetDlgCode()&DUIC_WANTSYSKEY))
         {
             SetMsgHandled(FALSE);

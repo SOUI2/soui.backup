@@ -6,22 +6,22 @@ namespace SOUI
 {
 
 //////////////////////////////////////////////////////////////////////////
-template<> DuiWindowMgr* Singleton<DuiWindowMgr>::ms_Singleton=0;
+template<> SWindowMgr* Singleton<SWindowMgr>::ms_Singleton=0;
 
 
-DuiWindowMgr::DuiWindowMgr()
+SWindowMgr::SWindowMgr()
     : m_hNextWnd(NULL)
 {
     ::InitializeCriticalSection(&m_lockWndMap);
 }
 
-DuiWindowMgr::~DuiWindowMgr()
+SWindowMgr::~SWindowMgr()
 {
     ::DeleteCriticalSection(&m_lockWndMap);
 }
 
 // Get DuiWindow pointer from handle
-SWindow* DuiWindowMgr::GetWindow(SWND hDuiWnd)
+SWindow* SWindowMgr::GetWindow(SWND hDuiWnd)
 {
     if(!hDuiWnd) return NULL;
     SWindow *pRet=NULL;
@@ -33,7 +33,7 @@ SWindow* DuiWindowMgr::GetWindow(SWND hDuiWnd)
 }
 
 // Specify a handle to a DuiWindow
-SWND DuiWindowMgr::NewWindow(SWindow *pDuiWnd)
+SWND SWindowMgr::NewWindow(SWindow *pDuiWnd)
 {
     ASSERT(pDuiWnd);
     ::EnterCriticalSection(&getSingleton().m_lockWndMap);
@@ -46,7 +46,7 @@ SWND DuiWindowMgr::NewWindow(SWindow *pDuiWnd)
 }
 
 // Destroy DuiWindow
-BOOL DuiWindowMgr::DestroyWindow(SWND hDuiWnd)
+BOOL SWindowMgr::DestroyWindow(SWND hDuiWnd)
 {
     ::EnterCriticalSection(&getSingleton().m_lockWndMap);
 

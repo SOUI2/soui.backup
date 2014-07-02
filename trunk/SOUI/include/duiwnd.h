@@ -360,6 +360,10 @@ public:
 public:
     //同类控件自动成组标志,主要是给RadioButton用的。
     virtual BOOL IsSiblingsAutoGroupped(){return FALSE;}
+    
+    //获得在一个group中选中状态的窗口，不是group中的窗口时即为当前窗口
+    virtual SWindow * GetSelectedSiblingInGroup(){return this;}
+    
     //////////////////////////////////////////////////////////////////////////
     // Virtual functions
     virtual void OnSetCaretValidateRect(LPCRECT lpRect)
@@ -377,7 +381,7 @@ public:
     // Create SWindow from xml element
     virtual BOOL InitFromXml(pugi::xml_node xmlNode);
 
-    virtual SWND HswndFromPoint(CPoint ptHitTest, BOOL bOnlyText);
+    virtual SWND SwndFromPoint(CPoint ptHitTest, BOOL bOnlyText);
 
     virtual LRESULT DuiNotify(LPSNMHDR pnms);
 
@@ -471,22 +475,14 @@ public:
     //************************************
     BOOL AnimateWindow(DWORD dwTime,DWORD dwFlags);
 protected:
-    typedef enum _PRSTATE{
-        PRS_LOOKSTART=0,    //查找开始窗口
-        PRS_DRAWING,        //窗口渲染中
-        PRS_MEETEND            //碰到指定的结束窗口
-    } PRSTATE;
-    static BOOL _PaintRegion(IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,SWindow *pStart,SWindow *pEnd,SWindow::PRSTATE & prState);
-
-
     CRect        m_rcGetRT;
     DWORD        m_gdcFlags;
     BOOL         m_bClipRT;
 public:
     SWND GetCapture();
     SWND SetCapture();
-
     BOOL ReleaseCapture();
+    
     void SetFocus();
     void KillFocus();
 

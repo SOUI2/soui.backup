@@ -36,7 +36,7 @@ DuiSystem::~DuiSystem(void)
 void DuiSystem::createSingletons()
 {
     new DuiThreadActiveWndMgr();
-    new DuiWindowMgr();
+    new SWindowMgr();
     new STimerEx();
     new DuiFontPool(m_RenderFactory);
     new DuiImgPool();
@@ -48,7 +48,7 @@ void DuiSystem::destroySingletons()
     delete DuiFontPool::getSingletonPtr();
     delete STimerEx::getSingletonPtr();
     delete DuiThreadActiveWndMgr::getSingletonPtr();
-    delete DuiWindowMgr::getSingletonPtr();
+    delete SWindowMgr::getSingletonPtr();
 }
 
 BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType)

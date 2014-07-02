@@ -67,7 +67,7 @@ namespace SOUI
         {
             if(IsViewFocusableCandidate(starting_view, pSkipGroupOwner))
             {
-                SWindow* v = FindSelectedViewForGroup(starting_view);
+                SWindow* v = starting_view->GetSelectedSiblingInGroup();
                 // The selected view might not be focusable (if it is disabled for
                 // example).
                 if(IsFocusable(v))
@@ -147,7 +147,7 @@ namespace SOUI
 
         if(check_starting_view && IsViewFocusableCandidate(starting_view,pSkipGroupOwner))
         {
-            SWindow* v = FindSelectedViewForGroup(starting_view);
+            SWindow* v = starting_view->GetSelectedSiblingInGroup();
             // The selected view might not be focusable (if it is disabled for example).
             if(IsFocusable(v))
             {
@@ -182,23 +182,6 @@ namespace SOUI
         return view->IsTabStop() && view->IsVisible(TRUE) && !view->IsDisabled(TRUE);
     }
 
-    SWindow* FocusSearch::FindSelectedViewForGroup( SWindow* view )
-    {
-        if(!view->IsSiblingsAutoGroupped()) return view;
-        if(view->IsChecked()) return view;
-        SWindow *pParent=view->GetParent();
-        SWindow *pSibling=pParent->GetWindow(GDUI_FIRSTCHILD);
-        while(pSibling)
-        {
-            if(pSibling->IsSiblingsAutoGroupped())
-            {
-                if(pSibling->IsChecked()) return pSibling;
-            }
-            pSibling=pSibling->GetWindow(GDUI_NEXTSIBLING);
-        }
-        return view;
-    }
-
     //////////////////////////////////////////////////////////////////////////
     CFocusManager::CFocusManager(SWindow *pOwner):m_pOwner(pOwner)
     {
@@ -211,7 +194,7 @@ namespace SOUI
     BOOL CFocusManager::IsTabTraversalKey( UINT vKey )
     {
         if(vKey!=VK_TAB) return FALSE;
-        SWindow *pFocus=DuiWindowMgr::GetWindow(focused_view_);
+        SWindow *pFocus=SWindowMgr::GetWindow(focused_view_);
         if(pFocus && pFocus->OnGetDlgCode()&DUIC_WANTTAB) return FALSE;
         if(GetKeyState(VK_CONTROL)&0x8000) return FALSE;
         else return TRUE;
@@ -227,7 +210,7 @@ namespace SOUI
         }
 
         // Intercept arrow key messages to switch between grouped views.
-        SWindow *pFocusWnd=DuiWindowMgr::GetWindow(focused_view_);
+        SWindow *pFocusWnd=SWindowMgr::GetWindow(focused_view_);
         if(pFocusWnd && pFocusWnd->IsSiblingsAutoGroupped() && (vKey==VK_LEFT || vKey==VK_RIGHT || vKey==VK_UP || vKey==VK_DOWN))
         {
             UINT ucode= (vKey == VK_RIGHT || vKey == VK_DOWN)?GDUI_NEXTSIBLING:GDUI_PREVSIBLING;
@@ -272,7 +255,7 @@ namespace SOUI
     {
         // Let's revalidate the focused view.
         ValidateFocusedView();
-        SWindow *pFocus=DuiWindowMgr::GetWindow(focused_view_);
+        SWindow *pFocus=SWindowMgr::GetWindow(focused_view_);
         SWindow *pDuiWnd=GetNextFocusableView(pFocus,reverse,true);
         if(pDuiWnd)
         {
@@ -298,8 +281,8 @@ namespace SOUI
         // Update the reason for the focus change (since this is checked by
         // some listeners), then notify all listeners.
         focus_change_reason_ = reason;
-        SWindow *pOldFocus=DuiWindowMgr::GetWindow(focused_view_);
-        SWindow *pNewFocus=DuiWindowMgr::GetWindow(hDuiWnd);
+        SWindow *pOldFocus=SWindowMgr::GetWindow(focused_view_);
+        SWindow *pNewFocus=SWindowMgr::GetWindow(hDuiWnd);
         if(pOldFocus)
         {
             pOldFocus->SendMessage(WM_KILLFOCUS,(WPARAM)pNewFocus);
@@ -318,7 +301,7 @@ namespace SOUI
     {
         if(focused_view_)
         {
-            SWindow *pFocus=DuiWindowMgr::GetWindow(focused_view_);
+            SWindow *pFocus=SWindowMgr::GetWindow(focused_view_);
             if(pFocus)
             {
                 pFocus=pFocus->GetTopLevelParent();
@@ -343,7 +326,7 @@ namespace SOUI
         ValidateFocusedView();
         focused_backup_ = focused_view_;
         focused_view_=0;
-        SWindow *pWnd=DuiWindowMgr::GetWindow(focused_backup_);
+        SWindow *pWnd=SWindowMgr::GetWindow(focused_backup_);
 
         if(pWnd)
         {
@@ -353,7 +336,7 @@ namespace SOUI
 
     void CFocusManager::RestoreFocusedView()
     {
-        SWindow *pWnd=DuiWindowMgr::GetWindow(focused_backup_);
+        SWindow *pWnd=SWindowMgr::GetWindow(focused_backup_);
         if(pWnd && !pWnd->IsDisabled(TRUE))
         {
             focused_view_=focused_backup_;
@@ -395,7 +378,7 @@ namespace SOUI
         // We have to copy the target list here, because an AcceleratorPressed
         // event handler may modify the list.
         AcceleratorTargetList targets;
-        CopyDuiList(accelerators_[accelerator],targets);
+        CopyList(accelerators_[accelerator],targets);
         
         POSITION pos=targets.GetHeadPosition();
 

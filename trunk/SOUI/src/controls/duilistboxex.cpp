@@ -451,11 +451,11 @@ void SListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
         if(IsVirtual())
         {
             ASSERT(m_pTemplPanel);
-            SWindow *pHover=DuiWindowMgr::GetWindow(m_pTemplPanel->SwndGetHover());
+            SWindow *pHover=SWindowMgr::GetWindow(m_pTemplPanel->SwndGetHover());
             if(pHover) nms.uHoverID=pHover->GetID();
         }else
         {
-            SWindow *pHover=DuiWindowMgr::GetWindow(m_arrItems[nNewSel]->SwndGetHover());
+            SWindow *pHover=SWindowMgr::GetWindow(m_arrItems[nNewSel]->SwndGetHover());
             if(pHover) nms.uHoverID=pHover->GetID();
         }
     }

@@ -10,13 +10,13 @@ namespace SOUI
 
 class SWindow;
 
-class SOUI_EXP DuiWindowMgr :public DuiSingletonMap<DuiWindowMgr,SWindow*,SWND>
+class SOUI_EXP SWindowMgr :public DuiSingletonMap<SWindowMgr,SWindow*,SWND>
 {
 public:
 
-    DuiWindowMgr();
+    SWindowMgr();
 
-    ~DuiWindowMgr();
+    ~SWindowMgr();
 
     // Get DuiWindow pointer from handle
     static SWindow* GetWindow(SWND hDuiWnd);

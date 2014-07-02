@@ -4,13 +4,84 @@
 
 namespace SOUI
 {
+    typedef enum _PRSTATE{
+        PRS_LOOKSTART=0,    //查找开始窗口
+        PRS_DRAWING,        //窗口渲染中
+        PRS_MEETEND            //碰到指定的结束窗口
+    } PRSTATE;
 
+    BOOL _PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,SWindow *pStart,SWindow *pEnd,PRSTATE & prState )
+    {
+        RECT rcWnd;
+        pWndCur->GetRect(&rcWnd);
+        if (!pWndCur->IsVisible(TRUE) || (!pRgn->IsEmpty() && !pRgn->RectInRegion(&rcWnd)))
+        {
+            return FALSE;
+        }
+        if(prState == PRS_DRAWING && pWndCur == pEnd)
+        {
+            prState=PRS_MEETEND;
+        }
+
+        if(prState == PRS_MEETEND)
+        {
+            return FALSE;
+        }
+
+        if(prState == PRS_LOOKSTART && pWndCur==pStart)
+        {
+            prState=PRS_DRAWING;//开始进行绘制
+        }
+
+        PRSTATE prsBack=prState;    //保存当前的绘制状态,在递归结束后根据这个状态来判断是否需要绘制非客户区
+
+        CRect rcClient;
+        pWndCur->GetClient(&rcClient);
+        if(pRgn->IsEmpty() || pRgn->RectInRegion(rcClient))
+        {//重绘客户区
+            CRgn rgnOldClip;
+            if(prsBack == PRS_DRAWING)
+            {
+                if(pWndCur->IsClipClient())
+                {
+                    pRT->PushClipRect(&rcClient);
+                }
+                pWndCur->SendMessage(WM_ERASEBKGND, (WPARAM)pRT);
+                pWndCur->SendMessage(WM_PAINT, (WPARAM)pRT);
+            }
+
+            SPainter painter;
+
+            pWndCur->BeforePaint(pRT, painter);    //让子窗口继承父窗口的属性
+
+            SWindow *pChild=pWndCur->GetWindow(GDUI_FIRSTCHILD);
+            while(pChild)
+            {
+                if(pChild==pEnd) break;
+                _PaintRegion(pRT,pRgn,pChild,pStart,pEnd,prState);
+                if(prState == PRS_MEETEND)
+                    break;
+                pChild=pChild->GetWindow(GDUI_NEXTSIBLING);
+            }
+
+            pWndCur->AfterPaint(pRT, painter);
+            if(prsBack == PRS_DRAWING && pWndCur->IsClipClient())
+            {
+                pRT->PopClip();
+            }
+        }
+        if(prsBack == PRS_DRAWING) 
+            pWndCur->SendMessage(WM_NCPAINT, (WPARAM)pRT);//ncpaint should be placed in tail of paint link
+
+        return prState==PRS_DRAWING || prState == PRS_MEETEND;
+    }
+    
 //////////////////////////////////////////////////////////////////////////
 // SWindow Implement
 //////////////////////////////////////////////////////////////////////////
 
 SWindow::SWindow()
-    : m_hSWnd(DuiWindowMgr::NewWindow(this))
+    : m_hSWnd(SWindowMgr::NewWindow(this))
     , m_nID(0)
     , m_pContainer(NULL)
     , m_pParent(NULL),m_pFirstChild(NULL),m_pLastChild(NULL),m_pNextSibling(NULL),m_pPrevSibling(NULL)
@@ -43,12 +114,9 @@ SWindow::SWindow()
 
 SWindow::~SWindow()
 {
-    DuiWindowMgr::DestroyWindow(m_hSWnd);
+    SWindowMgr::DestroyWindow(m_hSWnd);
 }
 
-
-//////////////////////////////////////////////////////////////////////////
-// Method Define
 
 // Get align
 UINT SWindow::GetTextAlign()
@@ -630,7 +698,7 @@ SWindow * SWindow::CreateChildren(LPCWSTR pszXml)
 }
 
 // Hittest children
-SWND SWindow::HswndFromPoint(CPoint ptHitTest, BOOL bOnlyText)
+SWND SWindow::SwndFromPoint(CPoint ptHitTest, BOOL bOnlyText)
 {
     if (!m_rcWindow.PtInRect(ptHitTest)) return NULL;
 
@@ -647,7 +715,7 @@ SWND SWindow::HswndFromPoint(CPoint ptHitTest, BOOL bOnlyText)
     {
         if (pChild->IsVisible(TRUE) && !pChild->IsMsgTransparent())
         {
-            hDuiWndChild = pChild->HswndFromPoint(ptHitTest, bOnlyText);
+            hDuiWndChild = pChild->SwndFromPoint(ptHitTest, bOnlyText);
 
             if (hDuiWndChild) return hDuiWndChild;
         }
@@ -1405,70 +1473,6 @@ void SWindow::PaintBackground(IRenderTarget *pRT,LPRECT pRc )
     PRSTATE prState=PRS_LOOKSTART;
     _PaintRegion(pRT,pRgn,pTopWnd,pTopWnd,this,prState);
     pRT->PopClip();
-}
-
-BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,SWindow *pStart,SWindow *pEnd,SWindow::PRSTATE & prState )
-{
-    if (!pWndCur->IsVisible(TRUE) || (!pRgn->IsEmpty() && !pRgn->RectInRegion(&pWndCur->m_rcWindow)))
-    {
-        return FALSE;
-    }
-    if(prState == PRS_DRAWING && pWndCur == pEnd)
-    {
-        prState=PRS_MEETEND;
-    }
-
-    if(prState == PRS_MEETEND)
-    {
-        return FALSE;
-    }
-
-    if(prState == PRS_LOOKSTART && pWndCur==pStart)
-    {
-        prState=PRS_DRAWING;//开始进行绘制
-    }
-
-    PRSTATE prsBack=prState;    //保存当前的绘制状态,在递归结束后根据这个状态来判断是否需要绘制非客户区
-
-    CRect rcClient;
-    pWndCur->GetClient(&rcClient);
-    if(pRgn->IsEmpty() || pRgn->RectInRegion(rcClient))
-    {//重绘客户区
-        CRgn rgnOldClip;
-        if(prsBack == PRS_DRAWING)
-        {
-            if(pWndCur->IsClipClient())
-            {
-                pRT->PushClipRect(&rcClient);
-            }
-            pWndCur->SendMessage(WM_ERASEBKGND, (WPARAM)pRT);
-            pWndCur->SendMessage(WM_PAINT, (WPARAM)pRT);
-        }
-
-        SPainter DuiDC;
-
-//        pWndCur->BeforePaint(dc, DuiDC);    //让子窗口继承父窗口的属性
-
-        SWindow *pChild=pWndCur->GetWindow(GDUI_FIRSTCHILD);
-        while(pChild)
-        {
-            if(pChild==pEnd) break;
-            _PaintRegion(pRT,pRgn,pChild,pStart,pEnd,prState);
-            if(prState == PRS_MEETEND)
-                break;
-            pChild=pChild->GetWindow(GDUI_NEXTSIBLING);
-        }
-
-//        pWndCur->AfterPaint(dc, DuiDC);
-        if(prsBack == PRS_DRAWING && pWndCur->IsClipClient())
-        {
-            pRT->PopClip();
-        }
-    }
-    if(prsBack == PRS_DRAWING) 
-        pWndCur->SendMessage(WM_NCPAINT, (WPARAM)pRT);//ncpaint should be placed in tail of paint link
-
-    return prState==PRS_DRAWING || prState == PRS_MEETEND;
 }
 
 void SWindow::PaintForeground( IRenderTarget *pRT,LPRECT pRc )

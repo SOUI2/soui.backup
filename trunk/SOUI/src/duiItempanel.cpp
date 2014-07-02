@@ -192,9 +192,9 @@ void SItemPanel::ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove)
     ModifyState(dwStateAdd,dwStateRemove,FALSE);
 }
 
-SWND SItemPanel::HswndFromPoint(POINT ptHitTest, BOOL bOnlyText)
+SWND SItemPanel::SwndFromPoint(POINT ptHitTest, BOOL bOnlyText)
 {
-    SWND hRet=__super::HswndFromPoint(ptHitTest,bOnlyText);
+    SWND hRet=__super::SwndFromPoint(ptHitTest,bOnlyText);
     if(hRet==m_hSWnd) hRet=NULL;
     return hRet;
 }
@@ -253,7 +253,7 @@ BOOL SItemPanel::OnUpdateToolTip( SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTi
     if(hCurTipHost==m_hHover) return FALSE;
     if(m_hHover==m_hSWnd) return FALSE;
 
-    SWindow *pHover=DuiWindowMgr::GetWindow(m_hHover);
+    SWindow *pHover=SWindowMgr::GetWindow(m_hHover);
     if(!pHover || pHover->IsDisabled(TRUE))
     {
         hNewTipHost=NULL;
