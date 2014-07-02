@@ -177,12 +177,12 @@ void SScrollBar::OnLButtonUp(UINT nFlags, CPoint point)
     {
         if(m_bNotify)
         {
-            KillDuiTimer(TIMERID_NOTIFY1);
+            KillTimer(TIMERID_NOTIFY1);
             m_bNotify=FALSE;
         }
         else
         {
-            KillDuiTimer(TIMERID_DELAY1);
+            KillTimer(TIMERID_DELAY1);
         }
         if(m_uClicked==SB_LINEUP||m_uClicked==SB_LINEDOWN)
         {
@@ -298,14 +298,14 @@ void SScrollBar::OnTimer(char nIDEvent)
         case SB_LINEUP:
             if(m_si.nPos==m_si.nMin)
             {
-                KillDuiTimer(TIMERID_NOTIFY1);
+                KillTimer(TIMERID_NOTIFY1);
                 break;
             }
             break;
         case SB_LINEDOWN:
             if(m_si.nPos==m_si.nMax)
             {
-                KillDuiTimer(TIMERID_NOTIFY1);
+                KillTimer(TIMERID_NOTIFY1);
                 break;
             }
             break;
@@ -318,7 +318,7 @@ void SScrollBar::OnTimer(char nIDEvent)
             CRect rc=GetPartRect(SB_THUMBTRACK);
             if(rc.PtInRect(pt))
             {
-                KillDuiTimer(TIMERID_NOTIFY1);
+                KillTimer(TIMERID_NOTIFY1);
                 break;
             }
         }

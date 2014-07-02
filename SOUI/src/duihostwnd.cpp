@@ -441,19 +441,19 @@ BOOL CDuiHostWnd::OnSetCursor(HWND hwnd, UINT nHitTest, UINT message)
 
 void CDuiHostWnd::OnTimer(UINT_PTR idEvent)
 {
-    STimerID duiTimerID((DWORD)idEvent);
-    if(duiTimerID.bDuiTimer)
+    STimerID sTimerID((DWORD)idEvent);
+    if(sTimerID.bDuiTimer)
     {
-        SWindow *pDuiWnd=DuiWindowMgr::GetWindow((SWND)duiTimerID.hDuiWnd);
+        SWindow *pDuiWnd=DuiWindowMgr::GetWindow((SWND)sTimerID.Swnd);
         if(pDuiWnd)
         {
-            if(pDuiWnd==this) OnDuiTimer(duiTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
-            else pDuiWnd->SendMessage(WM_TIMER,duiTimerID.uTimerID,0);
+            if(pDuiWnd==this) OnSwndTimer(sTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
+            else pDuiWnd->SendMessage(WM_TIMER,sTimerID.uTimerID,0);
         }
         else
         {
             //窗口已经删除，自动清除该窗口的定时器
-            KillTimer(idEvent);
+            ::KillTimer(m_hWnd,idEvent);
         }
     }
     else
@@ -462,7 +462,7 @@ void CDuiHostWnd::OnTimer(UINT_PTR idEvent)
     }
 }
 
-void CDuiHostWnd::OnDuiTimer( char cTimerID )
+void CDuiHostWnd::OnSwndTimer( char cTimerID )
 {
     if(cTimerID==TIMER_CARET)
     {
@@ -721,7 +721,7 @@ BOOL CDuiHostWnd::SwndShowCaret( BOOL bShow )
 
     if(bShow)
     {
-        SetDuiTimer(TIMER_CARET,GetCaretBlinkTime());
+        SWindow::SetTimer(TIMER_CARET,GetCaretBlinkTime());
         if(!m_bCaretActive)
         {
             DrawCaret(m_ptCaret);
@@ -730,7 +730,7 @@ BOOL CDuiHostWnd::SwndShowCaret( BOOL bShow )
     }
     else
     {
-        KillDuiTimer(TIMER_CARET);
+        SWindow::KillTimer(TIMER_CARET);
         if(m_bCaretActive)
         {
             DrawCaret(m_ptCaret);
@@ -1145,14 +1145,14 @@ void CDuiHostWnd::OnSetCaretValidateRect( LPCRECT lpRect )
 BOOL CDuiHostWnd::RegisterTimelineHandler( ITimelineHandler *pHandler )
 {
     BOOL bRet = SwndContainerImpl::RegisterTimelineHandler(pHandler);
-    if(bRet && m_lstTimelineHandler.GetCount()==1) SetDuiTimer(TIMER_NEXTFRAME,10);
+    if(bRet && m_lstTimelineHandler.GetCount()==1) SWindow::SetTimer(TIMER_NEXTFRAME,10);
     return bRet;
 }
 
 BOOL CDuiHostWnd::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 {
     BOOL bRet=SwndContainerImpl::UnregisterTimelineHandler(pHandler);
-    if(bRet && m_lstTimelineHandler.IsEmpty()) KillDuiTimer(TIMER_NEXTFRAME);
+    if(bRet && m_lstTimelineHandler.IsEmpty()) SWindow::KillTimer(TIMER_NEXTFRAME);
     return bRet;
 }
 

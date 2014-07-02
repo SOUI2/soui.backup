@@ -238,27 +238,27 @@ ULONG_PTR SWindow::SetUserData(ULONG_PTR uData)
     return uOld;
 }
 
-BOOL SWindow::SetDuiTimer(char id,UINT uElapse)
+BOOL SWindow::SetTimer(char id,UINT uElapse)
 {
     STimerID timerID(m_hSWnd,id);
     return ::SetTimer(GetContainer()->GetHostHwnd(),DWORD(timerID),uElapse,NULL);
 }
 
-void SWindow::KillDuiTimer(char id)
+void SWindow::KillTimer(char id)
 {
     STimerID timerID(m_hSWnd,id);
     ::KillTimer(GetContainer()->GetHostHwnd(),DWORD(timerID));
 }
 
 
-BOOL SWindow::SetDuiTimerEx( UINT_PTR id,UINT uElapse )
+BOOL SWindow::SetTimerEx( UINT_PTR id,UINT uElapse )
 {
-    return CDuiTimerEx::SetTimer(m_hSWnd,id,uElapse);
+    return STimerEx::SetTimer(m_hSWnd,id,uElapse);
 }
 
-void SWindow::KillDuiTimerEx( UINT_PTR id )
+void SWindow::KillTimerEx( UINT_PTR id )
 {
-    CDuiTimerEx::KillTimer(m_hSWnd,id);
+    STimerEx::KillTimer(m_hSWnd,id);
 }
 
 SWND SWindow::GetSwnd()

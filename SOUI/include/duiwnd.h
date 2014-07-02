@@ -34,7 +34,7 @@ enum {NormalEnable=0,ParentEnable=1};    //提供WM_ENABLE消息识别是父窗口可用还是
 class SOUI_EXP STimerID
 {
 public:
-    DWORD    hDuiWnd:24;        //窗口句柄,如果窗口句柄超过24位范围，则不能使用这种方式设置定时器
+    DWORD    Swnd:24;        //窗口句柄,如果窗口句柄超过24位范围，则不能使用这种方式设置定时器
     DWORD    uTimerID:7;        //定时器ID，一个窗口最多支持128个定时器。
     DWORD    bDuiTimer:1;    //区别通用定时器的标志，标志为1时，表示该定时器为DUI定时器
 
@@ -42,7 +42,7 @@ public:
     {
         ASSERT(hWnd<0x00FFFFFF && id>=0);
         bDuiTimer=1;
-        hDuiWnd=hWnd;
+        Swnd=hWnd;
         uTimerID=id;
     }
     STimerID(DWORD dwID)
@@ -61,8 +61,7 @@ public:
 class SOUI_EXP SPainter
 {
 public:
-    SPainter()
-        : crOld(CR_INVALID)
+    SPainter(): crOld(CR_INVALID)
     {
     }
 
@@ -216,7 +215,7 @@ public:
     ULONG_PTR SetUserData(ULONG_PTR uData);
 
     //************************************
-    // Method:    SetDuiTimer
+    // Method:    SetTimer
     // Function:  利用窗口定时器来设置一个ID为0-127的DUI定时器
     // Access:    public
     // Returns:   BOOL
@@ -224,17 +223,17 @@ public:
     // Parameter: UINT uElapse
     // remark:
     //************************************
-    BOOL SetDuiTimer(char id,UINT uElapse);
+    BOOL SetTimer(char id,UINT uElapse);
 
     //************************************
-    // Method:    KillDuiTimer
-    // Function:  删除一个DUI定时器
+    // Method:    KillTimer
+    // Function:  删除一个SWND定时器
     // Access:    public
     // Returns:   void
     // Parameter: char id
     // remark:
     //************************************
-    void KillDuiTimer(char id);
+    void KillTimer(char id);
 
     //************************************
     // Method:    SetDuiTimerEx
@@ -245,7 +244,7 @@ public:
     // Parameter: UINT uElapse
     // remark: 能够使用SetDuiTimer时尽量不用SetDuiTimerEx，在Kill时效率会比较低
     //************************************
-    BOOL SetDuiTimerEx(UINT_PTR id,UINT uElapse);
+    BOOL SetTimerEx(UINT_PTR id,UINT uElapse);
 
     //************************************
     // Method:    KillDuiTimerEx
@@ -255,7 +254,7 @@ public:
     // Parameter: UINT_PTR id
     // remark: 需要枚举定时器列表
     //************************************
-    void KillDuiTimerEx(UINT_PTR id);
+    void KillTimerEx(UINT_PTR id);
 
     SWND GetSwnd();
 
@@ -358,9 +357,9 @@ public:
     BOOL IsUpdateLocked();
     void BringWindowToTop();
 
+public:
     //同类控件自动成组标志,主要是给RadioButton用的。
     virtual BOOL IsSiblingsAutoGroupped(){return FALSE;}
-public:
     //////////////////////////////////////////////////////////////////////////
     // Virtual functions
     virtual void OnSetCaretValidateRect(LPCRECT lpRect)

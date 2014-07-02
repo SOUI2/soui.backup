@@ -7,12 +7,12 @@ namespace SOUI
 
 typedef struct tagTIMERINFO
 {
-    SWND hSWnd;
+    SWND Swnd;
     UINT_PTR uTimerID;
 } TIMERINFO;
 
 
-class SOUI_EXP CDuiTimerEx:public DuiSingletonMap<CDuiTimerEx,TIMERINFO,UINT_PTR>
+class SOUI_EXP STimerEx:public DuiSingletonMap<STimerEx,TIMERINFO,UINT_PTR>
 {
 public:
     static BOOL SetTimer(SWND hDuiWnd,UINT_PTR uTimerID,UINT nElapse)

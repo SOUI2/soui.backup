@@ -139,7 +139,7 @@ protected:
 
     void OnTimer(UINT_PTR idEvent);
 
-    void OnDuiTimer(char cTimerID);
+    void OnSwndTimer(char cTimerID);
 
     void DrawCaret(CPoint pt);
 

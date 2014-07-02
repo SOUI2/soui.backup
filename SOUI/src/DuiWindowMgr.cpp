@@ -51,7 +51,7 @@ BOOL DuiWindowMgr::DestroyWindow(SWND hDuiWnd)
     ::EnterCriticalSection(&getSingleton().m_lockWndMap);
 
     BOOL bRet=getSingleton().RemoveKeyObject(hDuiWnd);
-    CDuiTimerEx::KillTimer(hDuiWnd);
+    STimerEx::KillTimer(hDuiWnd);
 
     ::LeaveCriticalSection(&getSingleton().m_lockWndMap);
 
