@@ -8,7 +8,6 @@
 #include <duistd.h>
 #include <duihostwnd.h>
 #include <duictrls.h>
-#include <duiwndnotify.h>
 #include <res.mgr/DuiCSS.h>
 
 #if defined(DLL_SOUI) && defined(_DEBUG) && !defined(_WIN64)

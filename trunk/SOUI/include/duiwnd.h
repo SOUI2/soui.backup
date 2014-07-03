@@ -12,9 +12,10 @@
 #include "DuiContainer-i.h"
 #include "duimsgcracker.h"
 
-#include "duiwndnotify.h"
 #include "gdialpha.h"
-#include "DuiEventSet.h"
+#include "event/EventSubscriber.h"
+#include "event/events.h"
+#include "event/EventSet.h"
 #include <OCIdl.h>
 #include "DuiLayout.h"
 
@@ -106,7 +107,6 @@ typedef enum tagGDUI_CODE
 
 class SOUI_EXP SWindow : public SObject
     , public SMsgHandleState
-    , public SEventSet
     , public TObjRefImpl2<IObjRef,SWindow>
 {
     SOUI_CLASS_NAME(SWindow, L"window")
@@ -123,6 +123,8 @@ public:
         LPARAM lParam;
     } SWNDMSG,*PSWNDMSG;
 protected:
+    SEventSet   m_evtSet;
+
     SWND m_hSWnd;
     ISwndContainer *m_pContainer;
     SWindow *m_pOwner;
@@ -164,7 +166,6 @@ public:
 
     //////////////////////////////////////////////////////////////////////////
     // Method Define
-
     // Get align
     UINT GetTextAlign();    
     // Get position type
@@ -383,8 +384,28 @@ public:
 
     virtual SWND SwndFromPoint(CPoint ptHitTest, BOOL bOnlyText);
 
-    virtual LRESULT DuiNotify(LPSNMHDR pnms);
+    virtual BOOL FireEvent(EventArgs &evt);
+    
+    bool subscribeEvent(const DWORD dwEventID, const SlotFunctorBase & subscriber)
+    {
+        return m_evtSet.subscribeEvent(dwEventID,subscriber);
+    }
 
+    bool unsubscribeEvent( const DWORD dwEventID, const SlotFunctorBase & subscriber )
+    {
+        return m_evtSet.unsubscribeEvent(dwEventID,subscriber);
+    }
+    
+    bool isEventMuted(void) const
+    {
+        return m_evtSet.isMuted();
+    }
+
+    void    setEventMute(bool bMute)
+    {
+        return m_evtSet.setMutedState(bMute);
+    }
+    
     virtual UINT OnGetDlgCode();
 
     virtual BOOL IsTabStop();
@@ -537,8 +558,8 @@ public:
     void BeforePaintEx(IRenderTarget *pRT);
 
 protected:
-    LRESULT NotifyCommand();
-    LRESULT NotifyContextMenu(CPoint pt);
+    BOOL FireCommand();
+    BOOL FireCtxMenu(CPoint pt);
 
     //************************************
     // Method:    GetChildrenLayoutRect :返回子窗口的排版空间

@@ -9,7 +9,7 @@ namespace SOUI
 
     class SOUI_EXP SActiveX : public SWindow
     {
-        friend class CDuiAxContainerImpl;
+        friend class SAxContainerImpl;
     public:
         SOUI_CLASS_NAME(SActiveX, L"activex")
         explicit SActiveX();
@@ -52,7 +52,7 @@ namespace SOUI
         void SetActiveXVisible(BOOL bVisible);
         void SetExternalUIHandler(IDocHostUIHandler *pUiHandler);
     protected:
-        CDuiAxContainerImpl * m_axContainer;
+        SAxContainerImpl * m_axContainer;
         CLSID    m_clsid;
         DWORD    m_clsCtx;
         BOOL        m_bDelayInit;

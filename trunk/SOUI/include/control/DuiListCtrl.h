@@ -98,9 +98,9 @@ namespace SOUI
         void            OnPaint(IRenderTarget *pRT);
         void            OnDestroy();
 
-        bool            OnHeaderClick(SWindow* pSender, LPSNMHDR pNmhdr);
-        bool            OnHeaderSizeChanging(SWindow* pSender, LPSNMHDR pNmhdr);
-        bool            OnHeaderSwap(SWindow* pSender, LPSNMHDR pNmhdr);
+        bool            OnHeaderClick(EventArgs *pEvt);
+        bool            OnHeaderSizeChanging(EventArgs *pEvt);
+        bool            OnHeaderSwap(EventArgs *pEvt);
 
         virtual BOOL    OnScroll(BOOL bVertical,UINT uCode,int nPos);
         virtual void    OnLButtonDown(UINT nFlags, CPoint pt);

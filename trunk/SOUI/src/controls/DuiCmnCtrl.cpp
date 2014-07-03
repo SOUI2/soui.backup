@@ -5,7 +5,6 @@
 #include "duistd.h"
 #include "control/DuiCmnCtrl.h"
 
-#include "duiwndnotify.h"
 #include <vsstyle.h>
 
 namespace SOUI
@@ -224,7 +223,7 @@ void SButton::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
     if(nChar==VK_SPACE || nChar==VK_RETURN)
     {
         ModifyState(0,DuiWndState_PushDown,TRUE);
-        NotifyCommand();
+        FireCommand();
     }else
     {
         SetMsgHandled(FALSE);
@@ -234,7 +233,7 @@ void SButton::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
 bool SButton::OnAcceleratorPressed( const CAccelerator& accelerator )
 {
     if(IsDisabled(TRUE)) return false;
-    NotifyCommand();
+    FireCommand();
     return true;
 }
 
@@ -716,16 +715,7 @@ void SCheckBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
         else
             ModifyState(DuiWndState_Check, 0,TRUE);
 
-        if (GetID())
-        {
-            DUINMCOMMAND nms;
-            nms.hdr.hDuiWnd=m_hSWnd;
-            nms.hdr.code = NM_COMMAND;
-            nms.hdr.idFrom = GetID();
-            nms.hdr.pszNameFrom = GetName();
-            nms.uItemData = GetUserData();
-            DuiNotify((LPSNMHDR)&nms);
-        }
+        FireCommand();
     }
 }
 

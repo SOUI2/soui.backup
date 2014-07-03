@@ -1,5 +1,5 @@
 #include "duistd.h"
-#include "DuiEventSet.h"
+#include <event/EventSet.h>
 
 namespace SOUI
 {
@@ -54,10 +54,10 @@ namespace SOUI
         return NULL;
     }
 
-    void SEventSet::FireEvent( const DWORD dwEventID, EventArgs& args )
+    void SEventSet::FireEvent(EventArgs& args )
     {
         // find event object
-        SEvent* ev = GetEventObject(dwEventID);
+        SEvent* ev = GetEventObject(args.GetEventID());
 
         // fire the event if present and set is not muted
         if ((ev != 0) && !m_bMuted)

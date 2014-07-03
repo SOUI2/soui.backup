@@ -6,10 +6,10 @@
 namespace SOUI
 {
 //////////////////////////////////////////////////////////////////////////
-    class CDuiAxContainerImpl : public CDuiAxContainer,public IAxHostDelegate
+    class SAxContainerImpl : public SAxContainer,public IAxHostDelegate
     {
     public:
-        CDuiAxContainerImpl(SActiveX *pOwner):m_pOwner(pOwner)
+        SAxContainerImpl(SActiveX *pOwner):m_pOwner(pOwner)
         {
             SetAxHost(this);
         }
@@ -55,7 +55,7 @@ namespace SOUI
 //////////////////////////////////////////////////////////////////////////
 
     SActiveX::SActiveX() 
-        : m_axContainer(new CDuiAxContainerImpl(this))
+        : m_axContainer(new SAxContainerImpl(this))
         ,m_clsid(CLSID_NULL)
         ,m_clsCtx(CLSCTX_ALL)
         ,m_bDelayInit(FALSE)

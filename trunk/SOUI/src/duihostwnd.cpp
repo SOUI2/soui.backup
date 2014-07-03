@@ -556,22 +556,40 @@ void CDuiHostWnd::OnActivate( UINT nState, BOOL bMinimized, HWND wndOther )
         ::SetFocus(NULL);
 }
 
-LRESULT CDuiHostWnd::OnDuiNotify(LPSNMHDR pHdr)
+BOOL CDuiHostWnd::OnFireEvent(EventArgs &evt)
 {
-    if(pHdr->code==NM_REALWND_CREATE) return (LRESULT)OnRealWndCreate(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
-    else if(pHdr->code==NM_REALWND_INIT) return OnRealWndInit(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
-    else if(pHdr->code==NM_REALWND_DESTROY)
+    BOOL bRet=FALSE;
+    if(evt.GetEventID()>=EVT_INTERNAL_FIRST && evt.GetEventID()<=EVT_INTERNAL_LAST)
     {
-        OnRealWndDestroy(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
-        return 0;
-    }
-    else if(pHdr->code==NM_REALWND_SIZE)
+        bRet=TRUE;
+        switch(evt.GetEventID())
+        {
+        case EVT_REALWND_CREATE:
+            {
+                EventRealWndCreate * pEvt = (EventRealWndCreate *)&evt;
+                pEvt->hWndCreated = OnRealWndCreate((SRealWnd*)pEvt->sender);
+            }
+            break;
+        case EVT_REALWND_INIT:
+            {
+                EventRealWndInit * pEvt = (EventRealWndInit *)&evt;
+                pEvt->bSetFocus=OnRealWndInit((SRealWnd*)pEvt->sender);
+            }
+            break;
+        case EVT_REALWND_DESTROY:
+            OnRealWndDestroy((SRealWnd*)evt.sender);
+            break;
+        case EVT_REALWND_SIZE:
+            OnRealWndSize((SRealWnd*)evt.sender);
+            break;
+        default:
+            bRet=FALSE;
+        }
+    }else
     {
-        OnRealWndSize(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
-        return 0;
+        bRet=_HandleEvent(&evt);
     }
-
-    return CSimpleWnd::SendMessage(UM_SWND_NOTIFY,IDC_RICHVIEW_WIN,(LPARAM)pHdr);
+    return bRet;
 }
 
 CRect CDuiHostWnd::GetContainerRect()
