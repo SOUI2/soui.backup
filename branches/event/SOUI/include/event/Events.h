@@ -134,10 +134,11 @@ public:
 class EventCtxMenu : public EventArgs
 {
 public:
-    EventCtxMenu(SWindow *pWnd):EventArgs(pWnd){}
+    EventCtxMenu(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
     enum{EventID=EVT_CTXMENU};
     virtual UINT GetEventID(){return EventID;}
     POINT           pt;
+    BOOL            bCancel;
 };
 
 

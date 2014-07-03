@@ -71,11 +71,12 @@
     }                                                                       \
 
  
-// void OnContextMenu(CPoint pt)
+// BOOL OnContextMenu(CPoint pt)
 #define EVENT_ID_CONTEXTMENU(id,func)                                      \
     if (EVT_CTXMENU == uCode && pEvt->idFrom==id)                          \
-{                                                                               \
-    func(((SOUI::EventCtxMenu*)pEvt)->pt);                                        \
+{                                                                          \
+    SOUI::EventCtxMenu* pEvtCtxMenu = (SOUI::EventCtxMenu*)pEvt;           \
+    pEvtCtxMenu->bCancel=func(pEvtCtxMenu->pt);                            \
     return TRUE;                                                                \
 }                                                                               \
 
@@ -84,7 +85,8 @@
 #define EVENT_NAME_CONTEXTMENU(name,func)                                      \
     if (EVT_CTXMENU == uCode && pEvt->nameFrom!= NULL && wcscmp(pEvt->nameFrom,name)==0) \
 {                                                                               \
-    func(((SOUI::EventCtxMenu*)pEvt)->pt);                                        \
+    SOUI::EventCtxMenu* pEvtCtxMenu = (SOUI::EventCtxMenu*)pEvt;           \
+    pEvtCtxMenu->bCancel=func(pEvtCtxMenu->pt);                            \
     return TRUE;                                                                \
 }                                                                               \
 

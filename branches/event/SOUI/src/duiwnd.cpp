@@ -1765,17 +1765,18 @@ BOOL SWindow::AnimateWindow(DWORD dwTime,DWORD dwFlags )
     }
 }
 
-LRESULT SWindow::FireCommand()
+BOOL SWindow::FireCommand()
 {
     EventCmd evt(this);
     return FireEvent(evt);
 }
 
-LRESULT SWindow::FireCtxMenu( CPoint pt )
+BOOL SWindow::FireCtxMenu( CPoint pt )
 {
     EventCtxMenu evt(this);
     evt.pt=pt;
-    return  FireEvent(evt);
+    FireEvent(evt);
+    return evt.bCancel;
 }
 
 }//namespace SOUI

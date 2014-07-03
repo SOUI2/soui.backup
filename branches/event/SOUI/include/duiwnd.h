@@ -558,8 +558,8 @@ public:
     void BeforePaintEx(IRenderTarget *pRT);
 
 protected:
-    LRESULT FireCommand();
-    LRESULT FireCtxMenu(CPoint pt);
+    BOOL FireCommand();
+    BOOL FireCtxMenu(CPoint pt);
 
     //************************************
     // Method:    GetChildrenLayoutRect :返回子窗口的排版空间
