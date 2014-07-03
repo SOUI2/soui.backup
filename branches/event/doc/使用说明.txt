@@ -1,0 +1,30 @@
+DuiEngine开发指南
+DuiEngine是一个基于金山Bkwin修改的新的界面库，下面对使用它做一个简单说明。
+首先当然应该获得最新版本的duiengine，可以用SVN从http://duiengine.googlecode.com/svn/trunk/获取。
+开发前先看dui-demo。
+下面从向导开始如何一步步生成使用duiengine的应用。
+1、使用空的工程作为模板，自己使用文本编辑器替换文件名之类。
+2、设置好对duiengine的依赖，在不熟悉的情况下建议将工程放到与duiengine同级的目录，这样直接编译就能运行看到效果。
+3、根据界面要求修改skin\xml\dlg_main.xml。
+FAQ：
+1、如何增加一个图片资源？
+DUIEngine支持各种图片格式，包含位图，GIF，PNG，JPG等，也支持ICO。
+为了在程序中使用图片，打开工程中的index.xml(在skin过滤器下），可以看到如<resid type="IMGX" id_name="IDP_SCROLL"  id="104"  file="skin\image\scrollbar.bmp" />这样的记录。type可以有4种:ICO,XML,BMP,IMGX,能够使用gdi+加载的图片都可以使用IMGX这个类型，当然位图也可以指定为IMGX类型。id_name是在程序中可以引用该图片的宏定义，id这图片的ID，file为图片所在位置，相对于当前工程。程序在编译时自动修改winres.h文件，增加#define IDP_SCROLL 104这样的宏定义。
+在index.xml中定义好资源以后，还需要在def_skin.xml中定义如何使用该图片。duiengine为每一个图片定义一人图片描述(skin，不包含icon)，图片描述指定该图片被哪一种皮肤类型使用，皮肤类型主要有button，imgframe,scrollbar,gif等，其中最常用的是imgframe或者其它的派生版本，它支持指定子图大小(subwidth)，九宫格位置，中间拉伸or平铺等行为。每一个skin对象有一个属性“name”。
+第三步需要在窗口布局中指定合适的控件来使用该skin对象。不同的控件引用skin对象的属性不一样，具体参考控件代码的属性部分。通常有skin这一属性，如imgbtn控件。如此只要在imgbtn中指定skin为之前设定的name即可。具体参考范例中的imgbtn的使用。
+2、如何定义一个窗口布局？
+duiengine使用XML来描述窗口布局。窗口布局XML以layer为根节点，在layer中可以指定窗口大小，属性等。接着一层就是body节点，该节点没有属性。body下层就是控件布局。根据XML节点的父子关系，每个控件都可以指定子控件。定义好一个布局后，在程序中添加一个派生自CDuiHostWnd的类如CXXXDlg，在构造函数中指定使用的XML资源ID。如此CXXXDlg显示时就是新的窗口布局。
+3、如何增加一个控件？
+duiengine支持大部分常用控件，如button,imgbtn,richedit,combobox等。在窗口布局中适当的位置添加即可。
+4、如何指定控件坐标？
+duiengine统一使用相对坐标。在控件中指定属性pos="x1,y1,x2,y2"即可。所有坐标相对于父窗口。X为正代表相对于父窗口左边偏移，负代表相对于父窗口的右边偏移。相应的Y也一样，如pos="0,0,-0,-0"代表占有全部父窗口。除了可以指定相对于父窗口的边以外，还可以指定相对于父窗口的中心点。如pos="|-50,|-50,|50,|50"指定控件在父窗口中心，宽度及高度均为100象素。
+5、dui-demo是怎么编译资源的？
+请保持duires文件夹中的内容不变。dui-demo使用一个命令行工具自动改写duires文件夹中的winres.h,winres.rc2,name2id.xml这三个文件。命令行如："..\tool\residbuilder -y -i skin\index.xml -r .\duires\winres.rc2 -n .\duires\name2id.xml -h .\duires\winres.h"，参见工程预生成事件的设定。同时在程序资源的include中指定资源包含代码：
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "duires\winres.rc2" //DUI资源
+#endif
+如此在编译程序中的资源时就同时将dui需要的资源编译好了。
+6、控件如何响应？
+在窗口布局中指定控件的name及id（id可选，不指定时，编译资源时自动生成并添加到name2id.xml中），在控件相应的宏映射中使用DUIEngine支持的宏根据指定的name(or id)来响应。不同的控件事件需要不同的宏来响应。

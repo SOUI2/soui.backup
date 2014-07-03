@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkCore", "SkCore\SkCore.vcproj", "{CA37CBA7-D91D-49D4-9DCB-9F2118709260}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkiaDemo", "SkiaDemo\SkiaDemo.vcproj", "{10A60B54-6F42-4452-84E1-80EC53E932C0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CA37CBA7-D91D-49D4-9DCB-9F2118709260} = {CA37CBA7-D91D-49D4-9DCB-9F2118709260}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA37CBA7-D91D-49D4-9DCB-9F2118709260}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CA37CBA7-D91D-49D4-9DCB-9F2118709260}.Debug|Win32.Build.0 = Debug|Win32
+		{CA37CBA7-D91D-49D4-9DCB-9F2118709260}.Release|Win32.ActiveCfg = Release|Win32
+		{CA37CBA7-D91D-49D4-9DCB-9F2118709260}.Release|Win32.Build.0 = Release|Win32
+		{10A60B54-6F42-4452-84E1-80EC53E932C0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{10A60B54-6F42-4452-84E1-80EC53E932C0}.Debug|Win32.Build.0 = Debug|Win32
+		{10A60B54-6F42-4452-84E1-80EC53E932C0}.Release|Win32.ActiveCfg = Release|Win32
+		{10A60B54-6F42-4452-84E1-80EC53E932C0}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
