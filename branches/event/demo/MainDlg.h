@@ -51,15 +51,15 @@ public:
 
 protected:
     void InitListCtrl();
-    bool OnListHeaderClick( SWindow * pSender, LPSNMHDR pNmhdr );
+    bool OnListHeaderClick(EventArgs *pEvt);
     
     LRESULT OnInitDialog(HWND hWnd, LPARAM lParam);
     void OnDestory();
 
-	LRESULT OnEditMenu(CPoint pt)
+	BOOL OnEditMenu(CPoint pt)
 	{
 		//ÑÝÊ¾ÆÁ±Îedit_1140µÄÓÒ¼ü²Ëµ¥
-		return 1;
+		return TRUE;
 	}
 
 	EVENT_MAP_BEGIN()

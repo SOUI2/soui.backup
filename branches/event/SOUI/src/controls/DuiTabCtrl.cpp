@@ -293,6 +293,19 @@ void STabCtrl::OnMouseMove( UINT nFlags, CPoint point )
             break;
         }
     }
+    if (m_nHoverTabItem != nOldHover)
+    {
+        if(nOldHover!=-1 && nOldHover!=m_nCurrentPage)
+        {
+            GetItemRect(nOldHover, rcItem);
+            InvalidateRect(rcItem);
+        }
+        if(m_nHoverTabItem!=-1 && m_nHoverTabItem != m_nCurrentPage)
+        {
+            GetItemRect(m_nHoverTabItem, rcItem);
+            InvalidateRect(rcItem);
+        }
+    }
 }
 
 void STabCtrl::OnDestroy()
