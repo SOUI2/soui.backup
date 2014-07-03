@@ -290,7 +290,7 @@ void CDuiTextHost::TxSetCapture( BOOL fCapture )
 
 void CDuiTextHost::TxScrollWindowEx( INT dx, INT dy, LPCRECT lprcScroll, LPCRECT lprcClip, HRGN hrgnUpdate, LPRECT lprcUpdate, UINT fuScroll )
 {
-    m_pDuiRichEdit->NotifyInvalidate();
+    m_pDuiRichEdit->Invalidate();
 }
 
 void CDuiTextHost::TxKillTimer( UINT idTimer )
@@ -392,11 +392,11 @@ void CDuiTextHost::TxInvalidateRect( LPCRECT prc, BOOL fMode )
 {
     if(prc)
     {
-        m_pDuiRichEdit->NotifyInvalidateRect(prc);
+        m_pDuiRichEdit->InvalidateRect(prc);
     }
     else
     {
-        m_pDuiRichEdit->NotifyInvalidate();
+        m_pDuiRichEdit->Invalidate();
     }
 }
 
@@ -713,7 +713,7 @@ void SRichEdit::OnDuiTimer( char idEvent )
 {
     if(idEvent==TIMER_INVALIDATE)
     {
-        NotifyInvalidate();
+        Invalidate();
         KillTimer(idEvent);
     }
     else

@@ -483,7 +483,7 @@ void SCalendar::OnLButtonDown(UINT nFlags, CPoint point)
         nm.wNewDay=day;
 
         m_iDay = day;
-        NotifyInvalidate();
+        Invalidate();
         DuiNotify((LPSNMHDR)&nm);
     }
 }
@@ -540,7 +540,7 @@ bool SCalendar::OnTodayClick( SWindow * pSender, LPSNMHDR pNmhdr )
 {
     CTime today=CTime::GetCurrentTime();
     SetDate(today.GetYear(),today.GetMonth(),today.GetDay());
-    NotifyInvalidate();
+    Invalidate();
     return true;
 }
 

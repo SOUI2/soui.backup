@@ -53,7 +53,7 @@ BOOL SSplitWnd::ShowPanel(UINT iPane)
 
     m_arrPane[iPane]->SetVisible(TRUE);
     Relayout(m_bColMode?layout_vert:layout_horz);
-    NotifyInvalidate();
+    Invalidate();
     return TRUE;
 }
 
@@ -63,7 +63,7 @@ BOOL SSplitWnd::HidePanel(UINT iPane)
 
     m_arrPane[iPane]->SetVisible(FALSE);
     Relayout(m_bColMode?layout_vert:layout_horz);
-    NotifyInvalidate();
+    Invalidate();
     return TRUE;
 }
 
@@ -293,7 +293,7 @@ void SSplitWnd::OnMouseMove( UINT nFlags,CPoint pt )
         m_arrPane[m_iDragBeam+1]->m_nSizeIdeal=m_bColMode?rcPane2.Width():rcPane2.Height();
     }
     UnlockUpdate();
-    NotifyInvalidate();
+    Invalidate();
     m_ptClick=pt;
 }
 

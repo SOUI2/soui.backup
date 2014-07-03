@@ -125,7 +125,7 @@ void SHotKeyCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
     }
     UpdateModifier();
     UpdateCaret();
-    NotifyInvalidate();
+    Invalidate();
 }
 
 void SHotKeyCtrl::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
@@ -141,13 +141,13 @@ void SHotKeyCtrl::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
         m_bInSetting=FALSE;
         UpdateModifier();
         UpdateCaret();
-        NotifyInvalidate();
+        Invalidate();
     }
     else if(nChar==VK_SHIFT || nChar==VK_MENU || nChar== VK_CONTROL)
     {
         UpdateModifier();
         UpdateCaret();
-        NotifyInvalidate();
+        Invalidate();
     }
 }
 
@@ -175,7 +175,7 @@ void SHotKeyCtrl::SetHotKey( WORD vKey,WORD wModifiers )
     m_wModifier=wModifiers;
     UpdateModifier();
     UpdateCaret();
-    NotifyInvalidate();
+    Invalidate();
 }
 
 void SHotKeyCtrl::GetHotKey( WORD & vKey,WORD &wModifers )

@@ -65,7 +65,7 @@ void SListBoxEx::DeleteAllItems(BOOL bUpdate/*=TRUE*/)
     ReleaseCapture();
 
     SetViewSize(CSize(0,0));
-    if(bUpdate) NotifyInvalidate();
+    if(bUpdate) Invalidate();
 }
 
 void SListBoxEx::DeleteItem(int iItem)
@@ -260,7 +260,7 @@ BOOL SListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
         SetViewSize(szView);
         GetClient(&rcClient);
         m_pTemplPanel->Move(0,0,rcClient.Width(),m_nItemHei);
-        NotifyInvalidate();
+        Invalidate();
         return TRUE;
     }else if(m_xmlTempl)
     {

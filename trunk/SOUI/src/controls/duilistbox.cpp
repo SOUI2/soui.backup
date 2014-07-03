@@ -156,7 +156,7 @@ void SListBox::DeleteAll()
     m_iHoverItem=-1;
 
     SetViewSize(CSize(0,0));
-    NotifyInvalidate();
+    Invalidate();
 }
 
 BOOL SListBox::DeleteString(int nIndex)

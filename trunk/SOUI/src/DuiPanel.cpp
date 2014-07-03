@@ -31,7 +31,7 @@ BOOL SPanel::ShowScrollBar( int wBar, BOOL bShow )
     if(bShow) m_wBarVisible|=wBar;
     else m_wBarVisible&=~wBar;
     SendMessage(WM_NCCALCSIZE);
-    NotifyInvalidate();
+    Invalidate();
     return TRUE;
 }
 
@@ -43,12 +43,12 @@ BOOL SPanel::EnableScrollBar( int wBar,BOOL bEnable )
     if(wBar & DUISB_VERT)
     {
         CRect rcSb=GetScrollBarRect(TRUE);
-        NotifyInvalidateRect(rcSb);
+        InvalidateRect(rcSb);
     }
     if(wBar & DUISB_HORZ)
     {
         CRect rcSb=GetScrollBarRect(FALSE);
-        NotifyInvalidateRect(rcSb);
+        InvalidateRect(rcSb);
     }
     return TRUE;
 }
@@ -91,7 +91,7 @@ BOOL SPanel::SetScrollPos(BOOL bVertical, int nNewPos,BOOL bRedraw)
     if(bRedraw)
     {
         CRect rcSb=GetScrollBarRect(bVertical);
-        NotifyInvalidateRect(rcSb);
+        InvalidateRect(rcSb);
     }
     OnScroll(bVertical,SB_THUMBPOSITION,nNewPos);
     return TRUE;
@@ -115,7 +115,7 @@ BOOL SPanel::SetScrollRange( BOOL bVertical,int nMinPos,int nMaxPos,BOOL bRedraw
     if(bRedraw)
     {
         CRect rcSb=GetScrollBarRect(bVertical);
-        NotifyInvalidateRect(rcSb);
+        InvalidateRect(rcSb);
     }
     return TRUE;
 }
@@ -738,7 +738,7 @@ void SScrollView::SetViewOrigin(CPoint pt)
     CPoint ptOld=m_ptOrigin;
     m_ptOrigin=pt;
     OnViewOriginChanged(ptOld,pt);
-    NotifyInvalidate();
+    Invalidate();
 }
 
 CPoint SScrollView::GetViewOrigin()
@@ -831,7 +831,7 @@ void SScrollView::UpdateScrollBar()
 
     SendMessage(WM_NCCALCSIZE);
 
-    NotifyInvalidate();
+    Invalidate();
 }
 
 BOOL SScrollView::OnScroll(BOOL bVertical,UINT uCode,int nPos)

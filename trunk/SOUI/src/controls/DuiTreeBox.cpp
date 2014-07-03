@@ -84,7 +84,7 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
         CSize szView(m_rcWindow.Width(),m_nVisibleItems*m_nItemHei);
         if(szView.cy>m_rcWindow.Height()) szView.cx-=m_nSbWid;
         SetViewSize(szView);
-        NotifyInvalidate();
+        Invalidate();
     }
 
     if(bEnsureVisible) EnsureVisible(hRet);
@@ -131,7 +131,7 @@ BOOL STreeBox::RemoveItem(HSTREEITEM hItem)
         SWindow *pToggle=pParent->GetChild(IDC_SWITCH);
         ASSERT(pToggle);
         pParent->DestroyChild(pToggle);
-        if(pParent->m_bVisible) NotifyInvalidateRect(pParent->GetItemRect());
+        if(pParent->m_bVisible) InvalidateRect(pParent->GetItemRect());
     }
 
 
@@ -142,7 +142,7 @@ BOOL STreeBox::RemoveItem(HSTREEITEM hItem)
         CSize szView(m_rcWindow.Width(),m_nVisibleItems*m_nItemHei);
         if(szView.cy>m_rcWindow.Height()) szView.cx-=m_nSbWid;
         SetViewSize(szView);
-        NotifyInvalidate();
+        Invalidate();
     }
     return TRUE;
 }
@@ -235,7 +235,7 @@ BOOL STreeBox::Expand(HSTREEITEM hItem , UINT nCode)
             CSize szView(m_rcWindow.Width(),m_nVisibleItems*m_nItemHei);
             if(szView.cy>m_rcWindow.Height()) szView.cx-=m_nSbWid;
             SetViewSize(szView);
-            NotifyInvalidate();
+            Invalidate();
         }
     }
     return bRet;
@@ -379,7 +379,7 @@ LRESULT STreeBox::OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam)
         pItem->Move(CRect(0,0,m_rcClient.Width()-pItem->m_nLevel*m_nIndent,m_nItemHei));
         hItem=GetNextItem(hItem);
     }
-    NotifyInvalidate();
+    Invalidate();
     return 0;
 }
 

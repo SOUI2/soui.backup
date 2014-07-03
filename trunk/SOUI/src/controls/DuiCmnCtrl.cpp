@@ -303,7 +303,7 @@ void SButton::OnNextFrame()
 {
     m_byAlphaAni+=25;
     if(m_byAlphaAni==0xFF) StopCurAnimate();
-    NotifyInvalidate();
+    Invalidate();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -337,7 +337,7 @@ void SImageWnd::OnPaint(IRenderTarget *pRT)
 
 BOOL SImageWnd::SetSkin(ISkinObj *pSkin,int iFrame/*=0*/,BOOL bAutoFree/*=TRUE*/)
 {
-    if(IsVisible(TRUE)) NotifyInvalidate();
+    if(IsVisible(TRUE)) Invalidate();
     if(m_bManaged && m_pSkin)
     {
         m_pSkin->Release();
@@ -363,7 +363,7 @@ BOOL SImageWnd::SetSkin(ISkinObj *pSkin,int iFrame/*=0*/,BOOL bAutoFree/*=TRUE*/
         //重新计算坐标
         SendMessage(WM_WINDOWPOSCHANGED);
     }
-    if(IsVisible(TRUE)) NotifyInvalidate();
+    if(IsVisible(TRUE)) Invalidate();
     return TRUE;
 }
 
@@ -454,7 +454,7 @@ void SAnimateImgWnd::OnNextFrame()
             int nStates=m_pSkin->GetStates();
             m_iCurFrame++;
             m_iCurFrame%=nStates;
-            NotifyInvalidate();
+            Invalidate();
         }
         nFrame++;
     }
@@ -542,7 +542,7 @@ BOOL SProgress::SetValue(int dwValue)
     if(dwValue<m_nMinValue || dwValue>m_nMaxValue) return FALSE;
     m_nValue=dwValue;
     
-    NotifyInvalidate();
+    Invalidate();
     return TRUE;
 }
 
@@ -553,7 +553,7 @@ void SProgress::SetRange( int nMin,int nMax )
     m_nMinValue=nMin;
     if(m_nValue>m_nMaxValue) m_nValue=m_nMaxValue;
     if(m_nValue<nMin) m_nValue=m_nMinValue;
-    NotifyInvalidate();
+    Invalidate();
 }
 
 void SProgress::GetRange( int *pMin,int *pMax )
@@ -765,7 +765,7 @@ void SIconWnd::SetIcon(HICON hIcon)
 {
     if(m_theIcon) DeleteObject(m_theIcon);
     m_theIcon = hIcon;
-    NotifyInvalidate();
+    Invalidate();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -881,7 +881,7 @@ void SRadioBox::OnSetFocus()
 {
     SWindow *pParent=GetParent();
     pParent->CheckRadioButton(this);
-    NotifyInvalidate();
+    Invalidate();
 }
 
 SWindow * SRadioBox::GetSelectedSiblingInGroup()
@@ -911,7 +911,7 @@ SToggle::SToggle():m_bToggled(FALSE),m_pSkin(NULL)
 void SToggle::SetToggle(BOOL bToggle,BOOL bUpdate/*=TRUE*/)
 {
     m_bToggled=bToggle;
-    if(bUpdate) NotifyInvalidate();
+    if(bUpdate) Invalidate();
 }
 
 BOOL SToggle::GetToggle()

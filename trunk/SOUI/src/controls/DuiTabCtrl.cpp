@@ -263,7 +263,7 @@ BOOL STabCtrl::RemoveItem( int nIndex , int nSelPage/*=0*/)
         else
             rcTitle.bottom = rcTitle.top + (m_nTabHeight+m_nFramePos);
         
-        NotifyInvalidateRect(rcTitle);
+        InvalidateRect(rcTitle);
     }
     return TRUE;
 }
@@ -276,7 +276,7 @@ void STabCtrl::RemoveAllItems( void )
         DestroyChild(pTab);
         m_lstPages.RemoveAt(i);
     }
-    NotifyInvalidate();
+    Invalidate();
 }
 
 void STabCtrl::OnMouseMove( UINT nFlags, CPoint point )
@@ -302,7 +302,7 @@ void STabCtrl::OnMouseMove( UINT nFlags, CPoint point )
         {
             GetItemRect(nOldHover, rcItem);
             if(nOldHover!=m_nCurrentPage)
-                NotifyInvalidateRect(rcItem);
+                InvalidateRect(rcItem);
             DUINMTABITEMLEAVE nms;
             nms.hdr.code=NM_TAB_ITEMLEAVE;
             nms.hdr.hDuiWnd=m_hSWnd;
@@ -316,7 +316,7 @@ void STabCtrl::OnMouseMove( UINT nFlags, CPoint point )
         {
             GetItemRect(m_nHoverTabItem, rcItem);
             if(m_nHoverTabItem!=m_nCurrentPage)
-                NotifyInvalidateRect(rcItem);
+                InvalidateRect(rcItem);
             DUINMTABITEMHOVER nms;
             nms.hdr.code = NM_TAB_ITEMHOVER;
             nms.hdr.hDuiWnd=m_hSWnd;
@@ -363,9 +363,9 @@ BOOL STabCtrl::SetCurSel( int nIndex )
     CRect rcItem;
 
     GetItemRect(m_nCurrentPage, rcItem);
-    NotifyInvalidateRect(rcItem);
+    InvalidateRect(rcItem);
     GetItemRect(nIndex, rcItem);
-    NotifyInvalidateRect(rcItem);
+    InvalidateRect(rcItem);
 
     STabSlider *pTabSlider=NULL;
 
@@ -418,7 +418,7 @@ BOOL STabCtrl::SetCurSel( int nIndex )
     DuiNotify((LPSNMHDR)&nms2);
     if(IsVisible(TRUE))
     {
-        NotifyInvalidate();
+        Invalidate();
     }
 
     return TRUE;
@@ -447,7 +447,7 @@ BOOL STabCtrl::SetItemTitle( int nIndex, LPCTSTR lpszTitle )
             rcTabs.right=rcTabs.left+m_nTabWidth;
         else
             rcTabs.bottom=rcTabs.top+m_nTabHeight;
-        NotifyInvalidateRect(rcTabs);
+        InvalidateRect(rcTabs);
         return TRUE;
     }
 
@@ -506,7 +506,7 @@ int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoadin
     {
         CRect rcContainer=GetChildrenLayoutRect();
         pChild->SendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
-        NotifyInvalidate();
+        Invalidate();
     }
 
     return iInsert;

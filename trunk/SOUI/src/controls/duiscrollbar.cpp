@@ -355,7 +355,7 @@ LRESULT SScrollBar::OnSetScrollInfo(UINT uMsg, WPARAM wParam, LPARAM lParam)
     }
     if(m_si.nPos>(m_si.nMax-(int)m_si.nPage+1)) m_si.nPos=(m_si.nMax-m_si.nPage+1);
     if(m_si.nPos<m_si.nMin) m_si.nPos=m_si.nMin;
-    if(bRedraw)    NotifyInvalidate();
+    if(bRedraw)    Invalidate();
 
     return TRUE;
 }
