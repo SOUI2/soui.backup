@@ -14,7 +14,7 @@
 
 #include "duiwndnotify.h"
 #include "gdialpha.h"
-#include "DuiEventSet.h"
+#include "event/EventSet.h"
 #include <OCIdl.h>
 #include "DuiLayout.h"
 

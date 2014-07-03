@@ -7,7 +7,7 @@
 *************************************************************************/
 #pragma once
 
-#include "DuiEventSubscriber.h"
+#include "event/EventSubscriber.h"
 
 // Start of SOUI namespace section
 namespace SOUI

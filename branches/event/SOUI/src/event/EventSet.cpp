@@ -1,5 +1,5 @@
 #include "duistd.h"
-#include "DuiEventSet.h"
+#include <event/EventSet.h>
 
 namespace SOUI
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "wtl.mini/duicoll.h"
-#include "DuiEventSubscriber.h"
+#include "EventSubscriber.h"
 
 namespace SOUI
 {
