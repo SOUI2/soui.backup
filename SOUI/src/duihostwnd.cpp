@@ -269,7 +269,7 @@ void CDuiHostWnd::_Redraw()
     m_rgnInvalidate->Clear();
 
     if(!m_bTranslucent)
-        Invalidate(FALSE);
+        CSimpleWnd::Invalidate(FALSE);
     else if(m_dummyWnd.IsWindow()) 
         m_dummyWnd.Invalidate(FALSE);
 }
@@ -489,7 +489,7 @@ void CDuiHostWnd::DrawCaret(CPoint pt)
     
     if(!m_bTranslucent)
     {
-        InvalidateRect(rcCaret, FALSE);
+        CSimpleWnd::InvalidateRect(rcCaret, FALSE);
     }else
     {
         if(m_dummyWnd.IsWindow()) 
@@ -649,7 +649,7 @@ void CDuiHostWnd::OnRedraw(const CRect &rc)
 
     if(!m_bTranslucent)
     {
-        InvalidateRect(rc, FALSE);
+        CSimpleWnd::InvalidateRect(rc, FALSE);
     }else
     {
         if(m_dummyWnd.IsWindow()) 

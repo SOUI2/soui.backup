@@ -148,11 +148,11 @@ void CDuiComboBoxBase::OnMouseMove( UINT nFlags,CPoint pt )
     if(rcBtn.PtInRect(pt))
     {
         m_dwBtnState=DuiWndState_Hover;
-        NotifyInvalidateRect(rcBtn);
+        InvalidateRect(rcBtn);
     }else if(m_dwBtnState==DuiWndState_Hover)
     {
         m_dwBtnState=DuiWndState_Normal;
-        NotifyInvalidateRect(rcBtn);
+        InvalidateRect(rcBtn);
     }
 }
 
@@ -167,7 +167,7 @@ void CDuiComboBoxBase::OnMouseLeave()
         m_dwBtnState=DuiWndState_Normal;
         CRect rcBtn;
         GetDropBtnRect(&rcBtn);
-        NotifyInvalidateRect(rcBtn);
+        InvalidateRect(rcBtn);
     }
 }
 
@@ -212,7 +212,7 @@ void CDuiComboBoxBase::OnDropDown( SDropDownWnd *pDropDown )
     m_dwBtnState=DuiWndState_PushDown;
     CRect rcBtn;
     GetDropBtnRect(&rcBtn);
-    NotifyInvalidateRect(rcBtn);
+    InvalidateRect(rcBtn);
     ((CSimpleWnd*)pDropDown)->SetCapture();
 }
 
@@ -228,7 +228,7 @@ void CDuiComboBoxBase::OnCloseUp(SDropDownWnd *pDropDown,UINT uCode)
     m_pDropDownWnd=NULL;
     CRect rcBtn;
     GetDropBtnRect(&rcBtn);
-    NotifyInvalidateRect(rcBtn);
+    InvalidateRect(rcBtn);
     ModifyState(0,DuiWndState_Hover,TRUE);
     CPoint pt;
     GetCursorPos(&pt);
@@ -420,7 +420,7 @@ void SComboBox::OnSelChanged()
         m_pEdit->SetWindowText(DUI_CT2W(strText));
         m_pEdit->setMutedState(false);
     }
-    NotifyInvalidate();
+    Invalidate();
     __super::OnSelChanged();
 }
 
@@ -543,7 +543,7 @@ void SComboBoxEx::OnSelChanged()
         m_pEdit->SetWindowText(DUI_CT2W(strText));
         m_pEdit->setMutedState(false);
     }
-    NotifyInvalidate();
+    Invalidate();
     __super::OnSelChanged();
 }
 

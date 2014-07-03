@@ -224,7 +224,7 @@ void SSliderBar::OnMouseMove(UINT nFlags, CPoint point)
         if(nNewTrackPos!=m_nValue)
         {
             m_nValue=nNewTrackPos;
-            NotifyInvalidate();
+            Invalidate();
             NotifySbCode(SC_THUMB,m_nValue);
         }
     }

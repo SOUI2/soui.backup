@@ -349,9 +349,9 @@ public:
     // return : 顶层的最后一个窗口
     SWindow *CreateChildren(LPCWSTR pszXml);
 
-    void NotifyInvalidate();
-    void NotifyInvalidateRect(LPRECT lprect);
-    void NotifyInvalidateRect(const CRect& rect);
+    void Invalidate();
+    void InvalidateRect(LPRECT lprect);
+    void InvalidateRect(const CRect& rect);
     void LockUpdate();
     void UnlockUpdate();
     BOOL IsUpdateLocked();

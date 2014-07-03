@@ -188,11 +188,11 @@ BOOL SWindow::OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SS
 BOOL SWindow::SetWindowText(LPCTSTR lpszText)
 {
     m_strText = lpszText;
-    if(IsVisible(TRUE)) NotifyInvalidate();
+    if(IsVisible(TRUE)) Invalidate();
     if ((m_dlgpos.uPositionType & (SizeX_FitContent | SizeY_FitContent)) && (4 != m_dlgpos.nCount))
     {
         OnWindowPosChanged(NULL);
-        if(IsVisible(TRUE)) NotifyInvalidate();
+        if(IsVisible(TRUE)) Invalidate();
     }
     return TRUE;
 }
@@ -290,7 +290,7 @@ DWORD SWindow::ModifyState(DWORD dwStateAdd, DWORD dwStateRemove,BOOL bUpdate/*=
     m_dwState |= dwStateAdd;
 
     OnStateChanged(dwOldState,m_dwState);
-    if(bUpdate && NeedRedrawWhenStateChange()) NotifyInvalidateRect(m_rcWindow);
+    if(bUpdate && NeedRedrawWhenStateChange()) InvalidateRect(m_rcWindow);
     return dwOldState;
 }
 
@@ -368,7 +368,7 @@ void SWindow::SetParent(SWindow *pParent)
 BOOL SWindow::DestroyChild(SWindow *pChild)
 {
     if(this != pChild->GetParent()) return FALSE;
-    pChild->NotifyInvalidate();
+    pChild->Invalidate();
     pChild->SendMessage(WM_DESTROY);
     RemoveChild(pChild);
     pChild->Release();
@@ -469,15 +469,15 @@ BOOL SWindow::IsVisible(BOOL bCheckParent /*= FALSE*/)
 //因为NotifyInvalidateRect只有窗口可见时再通知刷新，这里在窗口可见状态改变前后都执行一次通知。
 void SWindow::SetVisible(BOOL bVisible,BOOL bUpdate/*=FALSE*/)
 {
-    if(bUpdate) NotifyInvalidateRect(m_rcWindow);
+    if(bUpdate) InvalidateRect(m_rcWindow);
     SendMessage(WM_SHOWWINDOW,bVisible);
-    if(bUpdate) NotifyInvalidateRect(m_rcWindow);
+    if(bUpdate) InvalidateRect(m_rcWindow);
 }
 
 void SWindow::EnableWindow( BOOL bEnable,BOOL bUpdate)
 {
     SendMessage(WM_ENABLE,bEnable);
-    if(bUpdate) NotifyInvalidateRect(m_rcWindow);
+    if(bUpdate) InvalidateRect(m_rcWindow);
 }
 
 void SWindow::SetCheck(BOOL bCheck)
@@ -741,23 +741,23 @@ BOOL SWindow::RedrawRegion(IRenderTarget *pRT, IRegion *pRgn)
     return _PaintRegion(pRT,pRgn,this,this,NULL,prState);
 }
 
-void SWindow::NotifyInvalidate()
+void SWindow::Invalidate()
 {
     CRect rcClient;
     GetClient(&rcClient);
-    NotifyInvalidateRect(rcClient);
+    InvalidateRect(rcClient);
 }
 
-void SWindow::NotifyInvalidateRect(LPRECT lprect)
+void SWindow::InvalidateRect(LPRECT lprect)
 {
     if (lprect)
     {
         CRect rect = *lprect;
-        NotifyInvalidateRect(rect);
+        InvalidateRect(rect);
     }
 }
 
-void SWindow::NotifyInvalidateRect(const CRect& rect)
+void SWindow::InvalidateRect(const CRect& rect)
 {
     if(!IsVisible(TRUE)) return ;
     BOOL bUpdateLocked=FALSE;
@@ -1195,7 +1195,7 @@ HRESULT SWindow::OnAttrState( const SStringW& strValue, BOOL bLoading )
 HRESULT SWindow::OnAttrPos(const SStringW& strValue, BOOL bLoading)
 {
     if (strValue.IsEmpty()) return E_FAIL;
-    if(!bLoading) NotifyInvalidateRect(m_rcWindow);
+    if(!bLoading) InvalidateRect(m_rcWindow);
     ClearLayoutState();
     SLayout::StrPos2DuiWndPos(strValue,m_dlgpos);
     if(!bLoading) OnWindowPosChanged(NULL);
@@ -1229,17 +1229,17 @@ void SWindow::UpdateChildrenPosition()
         pChild=pChild->GetWindow(GDUI_NEXTSIBLING);
     }
     SLayout::CalcChildrenPosition(this,&lstWnd);
-    NotifyInvalidate();
+    Invalidate();
 }
 
 void SWindow::OnSetFocus()
 {
-    NotifyInvalidateRect(m_rcWindow);
+    InvalidateRect(m_rcWindow);
 }
 
 void SWindow::OnKillFocus()
 {
-    NotifyInvalidateRect(m_rcWindow);
+    InvalidateRect(m_rcWindow);
 }
 
 IRenderTarget * SWindow::GetRenderTarget(const LPRECT pRc/*=NULL*/,DWORD gdcFlags/*=0*/,BOOL bClientDC/*=TRUE*/)
@@ -1414,7 +1414,7 @@ BOOL SWindow::SetItemCheck(UINT uItemID, BOOL bCheck)
         else
             pWnd->ModifyState(0, DuiWndState_Check);
 
-        pWnd->NotifyInvalidateRect(pWnd->m_rcWindow);
+        pWnd->InvalidateRect(pWnd->m_rcWindow);
 
         return TRUE;
     }
@@ -1433,7 +1433,7 @@ BOOL SWindow::EnableItem(UINT uItemID, BOOL bEnable)
         else
             pWnd->ModifyState(DuiWndState_Disable, DuiWndState_Hover);
 
-        pWnd->NotifyInvalidateRect(pWnd->m_rcWindow);
+        pWnd->InvalidateRect(pWnd->m_rcWindow);
         return TRUE;
     }
 

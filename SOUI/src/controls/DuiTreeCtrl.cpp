@@ -122,7 +122,7 @@ BOOL STreeCtrl::RemoveItem(HSTREEITEM hItem)
 
         CSize szView(m_nMaxItemWidth,m_nVisibleItems*m_nItemHei);
         SetViewSize(szView);
-        NotifyInvalidate();
+        Invalidate();
     }
     return TRUE;
 }
@@ -271,7 +271,7 @@ BOOL STreeCtrl::SetCheckState(HSTREEITEM hItem, BOOL bCheck)
     //¼ì²é¸¸½áµã×´Ì¬
     CheckState(GetParentItem(hItem), bCheck);
 
-    NotifyInvalidate();
+    Invalidate();
 
     return TRUE;
 }
@@ -305,7 +305,7 @@ BOOL STreeCtrl::Expand(HSTREEITEM hItem , UINT nCode)
             GetMaxItemWidth();
             CSize szView(m_nMaxItemWidth,m_nVisibleItems*m_nItemHei);
             SetViewSize(szView);
-            NotifyInvalidate();
+            Invalidate();
         }
     }
     return bRet;
@@ -428,7 +428,7 @@ HSTREEITEM STreeCtrl::InsertItem(LPTVITEM pItemObj,HSTREEITEM hParent,HSTREEITEM
 
         CSize szView(m_nMaxItemWidth, m_nVisibleItems*m_nItemHei);
         SetViewSize(szView);
-        NotifyInvalidate();
+        Invalidate();
     }
 
     if(bEnsureVisible) EnsureVisible(hRet);
@@ -863,7 +863,7 @@ void STreeCtrl::ModifyToggleState(HSTREEITEM hItem, DWORD dwStateAdd, DWORD dwSt
     if (GetItemRect(pItem, rcItem))
     {        
         rcUpdate.OffsetRect(rcItem.left, rcItem.top);
-        NotifyInvalidateRect(rcUpdate);
+        InvalidateRect(rcUpdate);
     }
 }
 
@@ -878,7 +878,7 @@ void STreeCtrl::ModifyChekcBoxState(HSTREEITEM hItem, DWORD dwStateAdd, DWORD dw
     if (GetItemRect(pItem, rcItem))
     {
         rcUpdate.OffsetRect(rcItem.left, rcItem.top);
-        NotifyInvalidateRect(rcUpdate);
+        InvalidateRect(rcUpdate);
     }
 }
 

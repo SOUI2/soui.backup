@@ -25,7 +25,7 @@ namespace SOUI
 
         virtual void OnAxInvalidate(LPCRECT pRect,BOOL bErase)
         {
-            m_pOwner->NotifyInvalidateRect(pRect);
+            m_pOwner->InvalidateRect(pRect);
         }
 
         virtual void OnAxSetCapture(BOOL fCapture)

@@ -49,7 +49,7 @@ namespace SOUI
             if(m_arrItems[i].iOrder>=iItem)
                 m_arrItems[i].iOrder++;
         }
-        NotifyInvalidate();
+        Invalidate();
         return iItem;
     }
 
@@ -121,7 +121,7 @@ namespace SOUI
             if(m_arrItems[i].iOrder>iOrder)
                 m_arrItems[i].iOrder--;
         }
-        NotifyInvalidate();
+        Invalidate();
         return TRUE;
     }
 
@@ -132,7 +132,7 @@ namespace SOUI
             if(m_arrItems[i].pszText) free(m_arrItems[i].pszText);
         }
         m_arrItems.RemoveAll();
-        NotifyInvalidate();
+        Invalidate();
     }
 
     void SHeaderCtrl::OnDestroy()
@@ -214,7 +214,7 @@ namespace SOUI
                     }
                     m_dwHitTest=HitTest(pt);
                     m_dwDragTo=-1;
-                    NotifyInvalidate();
+                    Invalidate();
                 }
             }else
             {//点击表头项
@@ -283,7 +283,7 @@ namespace SOUI
                 int cxNew=m_nAdjItemOldWidth+pt.x-m_ptClick.x;
                 if(cxNew<0) cxNew=0;
                 m_arrItems[LOWORD(m_dwHitTest)].cx=cxNew;
-                NotifyInvalidate();
+                Invalidate();
                 GetContainer()->SwndUpdateWindow();//立即更新窗口
                 //发出调节宽度消息
                 DUINMHDSIZECHANGING    nm;

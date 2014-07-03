@@ -129,7 +129,7 @@ void SItemPanel::OnRedraw(const CRect &rc)
             CRect rc2(rc);
             rc2.OffsetRect(rcItem.TopLeft());
             rc2.IntersectRect(rc2,rcItem);
-            m_pFrmHost->NotifyInvalidateRect(rc2);
+            m_pFrmHost->InvalidateRect(rc2);
         }else
         {
             IRenderTarget *pRT=OnGetRenderTarget(rc,OLEDC_PAINTBKGND);

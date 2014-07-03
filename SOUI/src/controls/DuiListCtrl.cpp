@@ -171,7 +171,7 @@ BOOL SListCtrl::SetSubItemText(int nItem, int nSubItem, LPCTSTR pszText)
     lvi.cchTextMax= _tcslen(pszText);
     
     CRect rcItem=GetItemRect(nItem,nSubItem);
-    NotifyInvalidateRect(rcItem);
+    InvalidateRect(rcItem);
     return TRUE;
 }
 
@@ -185,7 +185,7 @@ void SListCtrl::SetSelectedItem(int nItem)
 {
     m_nSelectItem = nItem;
 
-    NotifyInvalidate();
+    Invalidate();
 }
 
 int SListCtrl::GetItemCount()
@@ -314,7 +314,7 @@ void SListCtrl::UpdateScrollBar()
         m_ptOrigin.y = szView.cy-m_siVer.nPage;
     }
 
-    NotifyInvalidate();
+    Invalidate();
 }
 
 //更新表头位置
@@ -477,7 +477,7 @@ BOOL SListCtrl::SortItems(
     qsort_s(m_arrItems.GetData(),m_arrItems.GetCount(),sizeof(DXLVITEM),pfnCompare,pContext);
     m_nSelectItem=-1;
     m_nHoverItem=-1;
-    NotifyInvalidateRect(GetListRect());
+    InvalidateRect(GetListRect());
     return TRUE;
 }
 
@@ -665,7 +665,7 @@ BOOL SListCtrl::OnScroll(BOOL bVertical, UINT uCode, int nPos)
         UpdateHeaderCtrl();
     }
 
-    NotifyInvalidate();
+    Invalidate();
     if (uCode==SB_THUMBTRACK)
         ScrollUpdate();
 
@@ -709,14 +709,14 @@ bool SListCtrl::OnHeaderClick(SWindow* pSender, LPSNMHDR pNmhdr)
 bool SListCtrl::OnHeaderSizeChanging(SWindow* pSender, LPSNMHDR pNmhdr)
 {
     UpdateScrollBar();
-    NotifyInvalidateRect(GetListRect());
+    InvalidateRect(GetListRect());
 
     return true;
 }
 
 bool SListCtrl::OnHeaderSwap(SWindow* pSender, LPSNMHDR pNmhdr)
 {
-    NotifyInvalidateRect(GetListRect());
+    InvalidateRect(GetListRect());
 
     return true;
 }
