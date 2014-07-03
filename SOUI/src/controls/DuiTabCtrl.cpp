@@ -116,10 +116,8 @@ STabCtrl::STabCtrl() : m_nCurrentPage(0)
     , m_ptText(-1,-1)
 {
     m_bTabStop=TRUE;
-    addEvent(NM_TAB_SELCHANGING);
-    addEvent(NM_TAB_SELCHANGED);
-    addEvent(NM_TAB_ITEMHOVER);
-    addEvent(NM_TAB_ITEMLEAVE);
+    m_evtSet.addEvent(EventTabSelChanging::EventID);
+    m_evtSet.addEvent(EventTabSelChanged::EventID);
 }
 
 void STabCtrl::OnPaint(IRenderTarget *pRT)
@@ -295,36 +293,17 @@ void STabCtrl::OnMouseMove( UINT nFlags, CPoint point )
             break;
         }
     }
-
     if (m_nHoverTabItem != nOldHover)
     {
-        if(nOldHover!=-1)
+        if(nOldHover!=-1 && nOldHover!=m_nCurrentPage)
         {
             GetItemRect(nOldHover, rcItem);
-            if(nOldHover!=m_nCurrentPage)
-                InvalidateRect(rcItem);
-            DUINMTABITEMLEAVE nms;
-            nms.hdr.code=NM_TAB_ITEMLEAVE;
-            nms.hdr.hDuiWnd=m_hSWnd;
-            nms.hdr.idFrom=GetID();
-            nms.hdr.pszNameFrom=GetName();
-            nms.iItem=nOldHover;
-            nms.rcItem=rcItem;
-            DuiNotify((LPSNMHDR)&nms);
+            InvalidateRect(rcItem);
         }
-        if(m_nHoverTabItem!=-1)
+        if(m_nHoverTabItem!=-1 && m_nHoverTabItem != m_nCurrentPage)
         {
             GetItemRect(m_nHoverTabItem, rcItem);
-            if(m_nHoverTabItem!=m_nCurrentPage)
-                InvalidateRect(rcItem);
-            DUINMTABITEMHOVER nms;
-            nms.hdr.code = NM_TAB_ITEMHOVER;
-            nms.hdr.hDuiWnd=m_hSWnd;
-            nms.hdr.idFrom = GetID();
-            nms.hdr.pszNameFrom=GetName();
-            nms.iItem = m_nHoverTabItem;
-            nms.rcItem = rcItem;
-            DuiNotify((LPSNMHDR)&nms);
+            InvalidateRect(rcItem);
         }
     }
 }
@@ -343,19 +322,14 @@ BOOL STabCtrl::SetCurSel( int nIndex )
 {
     if( nIndex < 0 || nIndex> GetItemCount()-1 || (m_nCurrentPage == nIndex)) return FALSE;
     int nOldPage = m_nCurrentPage;
+    
+    EventTabSelChanging evt(this);
+    evt.uOldSel=nOldPage;
+    evt.uNewSel=nIndex;
 
-    DUINMTABSELCHANGE nms;
-    nms.hdr.code = NM_TAB_SELCHANGING;
-    nms.hdr.hDuiWnd=m_hSWnd;
-    nms.hdr.idFrom = GetID();
-    nms.hdr.pszNameFrom=GetName();
-    nms.uTabItemIDNew = nIndex;
-    nms.uTabItemIDOld = nOldPage;
-    nms.bCancel = FALSE;
+    FireEvent(evt);
 
-    LRESULT lRet = DuiNotify((LPSNMHDR)&nms);
-
-    if (nms.bCancel)
+    if (evt.bCancel)
         return FALSE;
 
     STabPage *pTab=GetItem(nIndex);
@@ -387,14 +361,10 @@ BOOL STabCtrl::SetCurSel( int nIndex )
         pTab = GetItem(m_nCurrentPage);
         if( pTab) pTab->SendMessage(WM_SHOWWINDOW,TRUE);
     }
-
-    DUINMTABSELCHANGED nms2;
-    nms2.hdr.code = NM_TAB_SELCHANGED;
-    nms2.hdr.hDuiWnd=m_hSWnd;
-    nms2.hdr.idFrom = GetID();
-    nms2.hdr.pszNameFrom=GetName();
-    nms2.uTabItemIDNew = nIndex;
-    nms2.uTabItemIDOld = nOldPage;
+    
+    EventTabSelChanged evt2(this);
+    evt2.uNewSel=nIndex;
+    evt2.uOldSel=nOldPage;
 
     if(pTabSlider)
     {
@@ -415,7 +385,8 @@ BOOL STabCtrl::SetCurSel( int nIndex )
 
         delete pTabSlider;
     }
-    DuiNotify((LPSNMHDR)&nms2);
+    FireEvent(evt2);
+    
     if(IsVisible(TRUE))
     {
         Invalidate();

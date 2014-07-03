@@ -13,7 +13,6 @@
 
 #pragma once
 #include "duiwnd.h"
-#include "duiwndnotify.h"
 #include "Accelerator.h"
 
 namespace SOUI

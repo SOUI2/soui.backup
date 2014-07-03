@@ -51,16 +51,15 @@ protected:
 	void OnHideTestClick();
 
 	BEGIN_MSG_MAP_EX(CUIHander)
-		MSG_SOUI_NOTIFY()
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_DESTROY(OnDestory)
 		MSG_WM_COMMAND(OnCommand)
 		MSG_WM_TIMER(OnTimer)
 	END_MSG_MAP()
 
-	SOUI_NOTIFY_MAP_BEGIN()
-		SOUI_NOTIFY_NAME_COMMAND(L"btn_hidetst",OnHideTestClick)
-	SOUI_NOTIFY_MAP_END()	
+	EVENT_MAP_BEGIN()
+		EVENT_NAME_COMMAND(L"btn_hidetst",OnHideTestClick)
+	EVENT_MAP_END()	
 private:
 	CMainDlg * m_pMainDlg; 
 };

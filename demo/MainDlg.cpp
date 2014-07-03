@@ -52,7 +52,7 @@ void CMainDlg::InitListCtrl()
     if(pList)
     {
         SWindow *pHeader=pList->GetWindow(GDUI_FIRSTCHILD);
-        pHeader->subscribeEvent(NM_HDCLICK,Subscriber(&CMainDlg::OnListHeaderClick,this));
+        pHeader->subscribeEvent(EVT_HEADER_CLICK,Subscriber(&CMainDlg::OnListHeaderClick,this));
 
         TCHAR szColNames[][20]={_T("name"),_T("sex"),_T("age"),_T("score")};
         for(int i=0;i<ARRAYSIZE(szColNames);i++)
@@ -103,15 +103,15 @@ int funCmpare(void* pCtx,const void *p1,const void *p2)
     }
 }
 
-bool CMainDlg::OnListHeaderClick( SWindow * pSender, LPSNMHDR pNmhdr )
+bool CMainDlg::OnListHeaderClick(EventArgs *pEvtBase)
 {
-    SHeaderCtrl *pHeader=(SHeaderCtrl*)pSender;
-    LPDUINMHDCLICK pClick=(LPDUINMHDCLICK)pNmhdr;
+    EventHeaderClick *pEvt =(EventHeaderClick*)pEvtBase;
+    SHeaderCtrl *pHeader=(SHeaderCtrl*)pEvt->sender;
     SListCtrl *pList=FindChildByName2<SListCtrl>(L"lc_test");
 
     DUIHDITEM hditem;
     hditem.mask=DUIHDI_ORDER;
-    pHeader->GetItem(pClick->iItem,&hditem);
+    pHeader->GetItem(pEvt->iItem,&hditem);
     pList->SortItems(funCmpare,&hditem.iOrder);
     return true;
 }

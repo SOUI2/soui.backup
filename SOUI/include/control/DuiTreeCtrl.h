@@ -152,7 +152,7 @@ protected:
     void ItemMouseMove(HSTREEITEM hItem, UINT nFlags,CPoint pt);
     void ItemMouseLeave(HSTREEITEM hItem);
 
-    void NotifyParent();
+    BOOL NotifyParent();
     
 protected:
 
