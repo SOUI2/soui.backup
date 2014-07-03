@@ -19,7 +19,7 @@ public:
 
     virtual BOOL RevokeDragDrop(SWND swnd)=NULL;
 
-    virtual LRESULT OnFireEvent(EventArgs &evt)=NULL;
+    virtual BOOL OnFireEvent(EventArgs &evt)=NULL;
 
     virtual HWND GetHostHwnd()=NULL;
 

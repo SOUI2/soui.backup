@@ -619,7 +619,7 @@ void STreeBox::OnMouseLeave()
     }
 }
 
-LRESULT STreeBox::FireEvent(EventArgs &evt)
+BOOL STreeBox::FireEvent(EventArgs &evt)
 {
     if(evt.GetEventID()==EventOfPanel::EventID)
     {
@@ -629,7 +629,7 @@ LRESULT STreeBox::FireEvent(EventArgs &evt)
             STreeItem *pItem=dynamic_cast<STreeItem*> (pEvt->pPanel);
             ASSERT(pItem);
             Expand(pItem->m_hItem,TVE_TOGGLE);
-            return 0;
+            return TRUE;
         }
     }
     return __super::FireEvent(evt);

@@ -796,10 +796,10 @@ void SWindow::BringWindowToTop()
     pParent->InsertChild(this);
 }
 
-LRESULT SWindow::FireEvent(EventArgs &evt)
+BOOL SWindow::FireEvent(EventArgs &evt)
 {
     m_evtSet.FireEvent(evt);
-    if(evt.handled != 0) return 0;
+    if(evt.handled != 0) return TRUE;
 
     if(GetOwner()) return GetOwner()->FireEvent(evt);
     return GetContainer()->OnFireEvent(evt);

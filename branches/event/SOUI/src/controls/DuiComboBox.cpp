@@ -35,7 +35,7 @@ void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     SetMsgHandled(FALSE);
 }
 
-LRESULT CComboEdit::FireEvent(EventArgs & evt)
+BOOL CComboEdit::FireEvent(EventArgs & evt)
 {
     if(evt.GetEventID()==EVT_RE_NOTIFY)
     {//转发richedit的txNotify消息
@@ -302,7 +302,7 @@ void CDuiComboBoxBase::OnDestroy()
     __super::OnDestroy();
 }
 
-LRESULT CDuiComboBoxBase::FireEvent(EventArgs &evt)
+BOOL CDuiComboBoxBase::FireEvent(EventArgs &evt)
 {
     if(evt.idFrom == IDC_DROPDOWN_LIST)
     {
@@ -313,7 +313,7 @@ LRESULT CDuiComboBoxBase::FireEvent(EventArgs &evt)
             OnSelChanged();
             if(pMsg->message != WM_KEYDOWN)
                 CloseUp();
-            return 0;
+            return TRUE;
         }
     }
     return __super::FireEvent(evt);

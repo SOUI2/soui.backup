@@ -384,7 +384,7 @@ public:
 
     virtual SWND SwndFromPoint(CPoint ptHitTest, BOOL bOnlyText);
 
-    virtual LRESULT FireEvent(EventArgs &evt);
+    virtual BOOL FireEvent(EventArgs &evt);
     
     bool subscribeEvent(const DWORD dwEventID, const SlotFunctorBase & subscriber)
     {
