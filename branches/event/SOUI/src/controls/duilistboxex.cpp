@@ -24,8 +24,6 @@ SListBoxEx::SListBoxEx()
     , m_iSelItem(-1)
     , m_iHoverItem(-1)
     , m_pCapturedFrame(NULL)
-    , m_pTemplPanel(NULL)
-    , m_nItems(0)
     , m_pItemSkin(NULL)
     , m_crItemBg(CR_INVALID)
     , m_crItemSelBg(RGB(0,0,128))
@@ -33,11 +31,10 @@ SListBoxEx::SListBoxEx()
     , m_bItemRedrawDelay(TRUE)
 {
     m_bTabStop=TRUE;
-    addEvent(NM_LBITEMNOTIFY);
-    addEvent(NM_ITEMMOUSEEVENT);
-    addEvent(NM_GETLBDISPINFO);
-    addEvent(NM_LBSELCHANGING);
-    addEvent(NM_LBSELCHANGED);
+    m_evtSet.addEvent(EventOfPanel::EventID);
+    m_evtSet.addEvent(EventLBGetDispInfo::EventID);
+    m_evtSet.addEvent(EventLBSelChanging::EventID);
+    m_evtSet.addEvent(EventLBSelChanged::EventID);
 }
 
 SListBoxEx::~SListBoxEx()
@@ -47,18 +44,11 @@ SListBoxEx::~SListBoxEx()
 
 void SListBoxEx::DeleteAllItems(BOOL bUpdate/*=TRUE*/)
 {
-    if(IsVirtual())
+    for(int i=0; i<GetItemCount(); i++)
     {
-        m_nItems=0;
+        m_arrItems[i]->Release();
     }
-    else
-    {
-        for(int i=0; i<GetItemCount(); i++)
-        {
-            m_arrItems[i]->Release();
-        }
-        m_arrItems.RemoveAll();
-    }
+    m_arrItems.RemoveAll();
     m_iSelItem=-1;
     m_iHoverItem=-1;
     m_pCapturedFrame=NULL;
@@ -70,8 +60,6 @@ void SListBoxEx::DeleteAllItems(BOOL bUpdate/*=TRUE*/)
 
 void SListBoxEx::DeleteItem(int iItem)
 {
-    if(IsVirtual()) return;
-
     if(iItem<0 || iItem>=GetItemCount()) return;
     if(m_pCapturedFrame == m_arrItems[iItem])
     {
@@ -98,8 +86,6 @@ void SListBoxEx::DeleteItem(int iItem)
 
 int SListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData/*=0*/)
 {
-    if(IsVirtual()) return -1;
-
     SItemPanel *pItemObj=new SItemPanel(this,xmlNode,this);
 
     if(iItem==-1 || iItem>=GetItemCount())
@@ -129,8 +115,6 @@ int SListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData/*=0*/)
 
 int SListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData/*=0*/)
 {
-    if(IsVirtual()) return -1;
-
     if(!pszXml && !m_xmlTempl) return -1;
     if(pszXml)
     {
@@ -149,27 +133,15 @@ BOOL SListBoxEx::SetCurSel(int iItem)
     if(iItem<0 || iItem>=GetItemCount()) return FALSE;
 
     if(m_iSelItem==iItem) return FALSE;
-    if(IsVirtual())
+    int nOldSel=m_iSelItem;
+    m_iSelItem=iItem;
+    if(nOldSel!=-1)
     {
-        int nOldSel=m_iSelItem;
-        m_iSelItem=iItem;
-        if(IsVisible(TRUE))
-        {
-            if(nOldSel!=-1) RedrawItem(nOldSel);
-            RedrawItem(m_iSelItem);
-        }
-    }else
-    {
-        int nOldSel=m_iSelItem;
-        m_iSelItem=iItem;
-        if(nOldSel!=-1)
-        {
-            m_arrItems[nOldSel]->ModifyItemState(0,DuiWndState_Check);
-            if(IsVisible(TRUE)) RedrawItem(nOldSel);
-        }
-        m_arrItems[m_iSelItem]->ModifyItemState(DuiWndState_Check,0);
-        if(IsVisible(TRUE)) RedrawItem(m_iSelItem);
+        m_arrItems[nOldSel]->ModifyItemState(0,DuiWndState_Check);
+        if(IsVisible(TRUE)) RedrawItem(nOldSel);
     }
+    m_arrItems[m_iSelItem]->ModifyItemState(DuiWndState_Check,0);
+    if(IsVisible(TRUE)) RedrawItem(m_iSelItem);
     return TRUE;
 }
 
@@ -206,15 +178,13 @@ int SListBoxEx::GetItemObjIndex(SWindow *pItemObj)
 SWindow * SListBoxEx::GetItemPanel(int iItem)
 {
     if(iItem<0 || iItem>= GetItemCount()) return NULL;
-    if(m_pTemplPanel) return m_pTemplPanel;
-    else return m_arrItems[iItem];
+    return m_arrItems[iItem];
 }
 
 
 LPARAM SListBoxEx::GetItemData(int iItem)
 {
     ASSERT(iItem>=0 || iItem< GetItemCount());
-    if(m_pTemplPanel) return 0;
     return m_arrItems[iItem]->GetItemData();
 }
 
@@ -233,36 +203,9 @@ BOOL SListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
         SStringA strUtf8=DUI_CT2A(pszXmlTemplate,CP_UTF8);
         pugi::xml_document xmlDoc;
         if(!xmlDoc.load_buffer((LPCSTR)strUtf8,strUtf8.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return FALSE;
-        if(IsVirtual())
-        {
-            if(m_pTemplPanel)
-            {
-                m_pTemplPanel->SendMessage(WM_DESTROY);
-                m_pTemplPanel->Release();
-            }
-            m_pTemplPanel=new SItemPanel(this,xmlDoc,this);
-            if(m_pItemSkin) m_pTemplPanel->SetSkin(m_pItemSkin);
-        }else
-        {
-            if(m_pTemplPanel) delete m_pTemplPanel;
-            m_xmlTempl.append_copy(xmlDoc.first_child());
-        }
-
+        m_xmlTempl.append_copy(xmlDoc.first_child());
     }
-    if(IsVirtual())
-    {
-        ASSERT(m_pTemplPanel);
-        m_nItems=nItems;
-        CRect rcClient;
-        SWindow::GetClient(&rcClient);
-        CSize szView(rcClient.Width(),GetItemCount()*m_nItemHei);
-        if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
-        SetViewSize(szView);
-        GetClient(&rcClient);
-        m_pTemplPanel->Move(0,0,rcClient.Width(),m_nItemHei);
-        Invalidate();
-        return TRUE;
-    }else if(m_xmlTempl)
+    if(m_xmlTempl)
     {
         for(int i=0;i<nItems;i++)
         {
@@ -278,10 +221,7 @@ BOOL SListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
 
 int SListBoxEx::GetItemCount()
 {
-    if(IsVirtual()) 
-        return m_nItems;
-    else
-        return m_arrItems.GetCount();
+    return m_arrItems.GetCount();
 }
 
 void SListBoxEx::RedrawItem(int iItem)
@@ -364,42 +304,13 @@ void SListBoxEx::OnSize( UINT nType, CSize size )
 
 void SListBoxEx::OnDrawItem(IRenderTarget *pRT, CRect & rc, int iItem)
 {
-    if(IsVirtual())
-    {//虚拟列表，由APP控制显示
-        ASSERT(m_pTemplPanel);
-        DUINMGETLBDISPINFO nms;
-        nms.hdr.hDuiWnd =m_hSWnd;
-        nms.hdr.code    = NM_GETLBDISPINFO;
-        nms.hdr.idFrom  = GetID();
-        nms.hdr.pszNameFrom= GetName();
-        nms.bHover      = iItem == m_iHoverItem;
-        nms.bSelect     = iItem == m_iSelItem;
-        nms.nListItemID = iItem;
-        nms.pItem = m_pTemplPanel;
-        nms.pHostDuiWin   = this;
-
-        m_pTemplPanel->LockUpdate();
-
-        m_pTemplPanel->SetItemIndex(iItem);
-
-        if(!nms.bSelect) m_pTemplPanel->GetFocusManager()->StoreFocusedView();
-        else m_pTemplPanel->GetFocusManager()->RestoreFocusedView();
-
-        DWORD dwState=0;
-        if(nms.bHover) dwState|=DuiWndState_Hover;
-        if(nms.bSelect) dwState|=DuiWndState_PushDown;
-        m_pTemplPanel->ModifyItemState(dwState,-1);
-
-        m_pTemplPanel->UnlockUpdate();
-
-        LockUpdate();
-        GetContainer()->OnFireEvent((LPSNMHDR)&nms);
-        UnlockUpdate();
-        m_pTemplPanel->Draw(pRT,rc);
-    }else
-    {
-        m_arrItems[iItem]->Draw(pRT,rc);
-    }
+    EventLBGetDispInfo evt(this);
+    evt.bHover=iItem == m_iHoverItem;
+    evt.bSel =iItem == m_iSelItem;
+    evt.pItem = m_arrItems[iItem];
+    evt.iItem = iItem;
+    FireEvent(evt);
+    m_arrItems[iItem]->Draw(pRT,rc);
 }
 
 BOOL SListBoxEx::CreateChildren(pugi::xml_node xmlNode)
@@ -409,74 +320,50 @@ BOOL SListBoxEx::CreateChildren(pugi::xml_node xmlNode)
     pugi::xml_node xmlTempl=xmlNode.child(L"template");
     pugi::xml_node xmlItems=xmlNode.child(L"items");
 
-    if(!IsVirtual())
-    {//普通列表
-        if(xmlTempl) m_xmlTempl.append_copy(xmlTempl);
+    if(xmlTempl) m_xmlTempl.append_copy(xmlTempl);
 
-        if(xmlItems)
+    if(xmlItems)
+    {
+        pugi::xml_node xmlItem=xmlItems.child(L"item");
+        while(xmlItem)
         {
-            pugi::xml_node xmlItem=xmlItems.child(L"item");
-            while(xmlItem)
-            {
-                int dwData=xmlItem.attribute(L"itemdata").as_int(0);
-                InsertItem(-1,xmlItem,dwData);
-                xmlItem=xmlItem.next_sibling(L"item");
-            }
-            SetCurSel(xmlItems.attribute(L"cursel").as_int(-1));
+            int dwData=xmlItem.attribute(L"itemdata").as_int(0);
+            InsertItem(-1,xmlItem,dwData);
+            xmlItem=xmlItem.next_sibling(L"item");
         }
-
-        return TRUE;
-    }else
-    {//虚拟列表
-        ASSERT(xmlTempl);
-        m_pTemplPanel=new SItemPanel(this,xmlTempl,this);
-        if(m_pItemSkin) m_pTemplPanel->SetSkin(m_pItemSkin);
-        return TRUE;
+        SetCurSel(xmlItems.attribute(L"cursel").as_int(-1));
     }
+
+    return TRUE;
 }
 
 
 void SListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
 {
-    DUINMLBSELCHANGE nms;
-    nms.hdr.code=NM_LBSELCHANGING;
-    nms.hdr.hDuiWnd=m_hSWnd;
-    nms.hdr.idFrom=GetID();
-    nms.hdr.pszNameFrom=GetName();
-    nms.nOldSel=nOldSel;
-    nms.nNewSel=nNewSel;
-    nms.uHoverID=0;
-    if(nNewSel!=-1)
-    {
-        if(IsVirtual())
-        {
-            ASSERT(m_pTemplPanel);
-            SWindow *pHover=SWindowMgr::GetWindow(m_pTemplPanel->SwndGetHover());
-            if(pHover) nms.uHoverID=pHover->GetID();
-        }else
-        {
-            SWindow *pHover=SWindowMgr::GetWindow(m_arrItems[nNewSel]->SwndGetHover());
-            if(pHover) nms.uHoverID=pHover->GetID();
-        }
-    }
-
-    if(S_OK!=FireEvent((LPSNMHDR)&nms)) return ;
+    EventLBSelChanging evt1(this);
+    
+    evt1.nOldSel=nOldSel;
+    evt1.nNewSel=nNewSel;
+    FireEvent(evt1);
+    
+    if(evt1.bCancel) return ;
 
     m_iSelItem=nNewSel;
     if(nOldSel!=-1)
     {
-        if(!m_pTemplPanel) m_arrItems[nOldSel]->ModifyItemState(0,DuiWndState_Check);
+        m_arrItems[nOldSel]->ModifyItemState(0,DuiWndState_Check);
         RedrawItem(nOldSel);
     }
     if(m_iSelItem!=-1)
     {
-        if(!m_pTemplPanel) m_arrItems[m_iSelItem]->ModifyItemState(DuiWndState_Check,0);
+        m_arrItems[m_iSelItem]->ModifyItemState(DuiWndState_Check,0);
         RedrawItem(m_iSelItem);
     }
-
-    nms.hdr.idFrom=GetID();
-    nms.hdr.code=NM_LBSELCHANGED;
-    FireEvent((LPSNMHDR)&nms);
+    
+    EventLBSelChanged evt2(this);
+    evt2.nOldSel=nOldSel;
+    evt2.nNewSel=nNewSel;
+    FireEvent(evt2);
 }
 
 void SListBoxEx::OnMouseLeave()
@@ -486,14 +373,7 @@ void SListBoxEx::OnMouseLeave()
     {
         int nOldHover=m_iHoverItem;
         m_iHoverItem=-1;
-        if(IsVirtual())
-        {
-            ASSERT(m_pTemplPanel);
-            RedrawItem(nOldHover);
-            m_pTemplPanel->DoFrameEvent(WM_MOUSELEAVE,0,0);
-        }
-        else
-            m_arrItems[nOldHover]->DoFrameEvent(WM_MOUSELEAVE,0,0);
+        m_arrItems[nOldHover]->DoFrameEvent(WM_MOUSELEAVE,0,0);
     }
 }
 
@@ -508,14 +388,7 @@ BOOL SListBoxEx::OnSetCursor(const CPoint &pt)
     else if(m_iHoverItem!=-1)
     {
         CRect rcItem=GetItemRect(m_iHoverItem);
-        if(IsVirtual())
-        {
-            ASSERT(m_pTemplPanel);
-            bRet=m_pTemplPanel->DoFrameEvent(WM_SETCURSOR,0,MAKELPARAM(pt.x-rcItem.left,pt.y-rcItem.top))!=0;
-        }else
-        {
-            bRet=m_arrItems[m_iHoverItem]->DoFrameEvent(WM_SETCURSOR,0,MAKELPARAM(pt.x-rcItem.left,pt.y-rcItem.top))!=0;
-        }
+        bRet=m_arrItems[m_iHoverItem]->DoFrameEvent(WM_SETCURSOR,0,MAKELPARAM(pt.x-rcItem.left,pt.y-rcItem.top))!=0;
     }
     if(!bRet)
     {
@@ -563,13 +436,6 @@ UINT SListBoxEx::OnGetDlgCode()
 void SListBoxEx::OnDestroy()
 {
     DeleteAllItems(FALSE);
-    if(IsVirtual())
-    {
-        ASSERT(m_pTemplPanel);
-        m_pTemplPanel->SendMessage(WM_DESTROY);
-        m_pTemplPanel->Release();
-        m_pTemplPanel=NULL;
-    }
     __super::OnDestroy();
 }
 
@@ -577,10 +443,7 @@ BOOL SListBoxEx::OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip
 {
     if(m_iHoverItem==-1)
         return __super::OnUpdateToolTip(hCurTipHost,hNewTipHost,rcTip,strTip);
-    else if(IsVirtual())
-        return m_pTemplPanel->OnUpdateToolTip(hCurTipHost,hNewTipHost,rcTip,strTip);
-    else
-        return m_arrItems[m_iHoverItem]->OnUpdateToolTip(hCurTipHost,hNewTipHost,rcTip,strTip);
+    return m_arrItems[m_iHoverItem]->OnUpdateToolTip(hCurTipHost,hNewTipHost,rcTip,strTip);
 }
 
 void SListBoxEx::OnItemSetCapture(SItemPanel *pItem,BOOL bCapture )
@@ -636,42 +499,21 @@ LRESULT SListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
             if(nOldHover!=-1)
             {
                 RedrawItem(nOldHover);
-                if(!IsVirtual())
-                {
-                    m_arrItems[nOldHover]->DoFrameEvent(WM_MOUSELEAVE,0,0);
-                }else
-                {
-                    ASSERT(m_pTemplPanel);
-                    m_pTemplPanel->DoFrameEvent(WM_MOUSELEAVE,0,0);
-                }
+                m_arrItems[nOldHover]->DoFrameEvent(WM_MOUSELEAVE,0,0);
             }
             if(m_iHoverItem!=-1)
             {
                 RedrawItem(m_iHoverItem);
-                if(!IsVirtual())
-                {
-                    m_arrItems[m_iHoverItem]->DoFrameEvent(WM_MOUSEHOVER,wParam,MAKELPARAM(pt.x,pt.y));
-                }else
-                {
-                    ASSERT(m_pTemplPanel);
-                    m_pTemplPanel->DoFrameEvent(WM_MOUSEHOVER,wParam,MAKELPARAM(pt.x,pt.y));
-                }
+                m_arrItems[m_iHoverItem]->DoFrameEvent(WM_MOUSEHOVER,wParam,MAKELPARAM(pt.x,pt.y));
             }
         }
-        if(uMsg==WM_LBUTTONDOWN && m_iSelItem!=-1 && m_iSelItem != m_iHoverItem && !IsVirtual())
+        if(uMsg==WM_LBUTTONDOWN && m_iSelItem!=-1 && m_iSelItem != m_iHoverItem )
         {//选择一个新行的时候原有行失去焦点
             m_arrItems[m_iSelItem]->GetFocusManager()->SetFocusedHwnd(0);
         }
         if(m_iHoverItem!=-1)
         {
-            if(!IsVirtual())
-            {
-                m_arrItems[m_iHoverItem]->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
-            }else
-            {
-                ASSERT(m_pTemplPanel);
-                m_pTemplPanel->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
-            }
+            m_arrItems[m_iHoverItem]->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
         }
     }
     if(uMsg==WM_LBUTTONUP && m_iHoverItem!=m_iSelItem)
@@ -689,15 +531,8 @@ LRESULT SListBoxEx::OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
     }
     else if(m_iSelItem!=-1)
     {
-        if(!IsVirtual())
-        {
-            lRet=m_arrItems[m_iSelItem]->DoFrameEvent(uMsg,wParam,lParam);
-            SetMsgHandled(m_arrItems[m_iSelItem]->IsMsgHandled());
-        }else
-        {
-            m_pTemplPanel->DoFrameEvent(uMsg,wParam,lParam);
-            SetMsgHandled(m_pTemplPanel->IsMsgHandled());
-        }
+        lRet=m_arrItems[m_iSelItem]->DoFrameEvent(uMsg,wParam,lParam);
+        SetMsgHandled(m_arrItems[m_iSelItem]->IsMsgHandled());
     }else
     {
         SetMsgHandled(FALSE);
@@ -708,7 +543,6 @@ LRESULT SListBoxEx::OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 //同步在SItemPanel中的index属性，在执行了插入，删除等操作后使用
 void SListBoxEx::UpdatePanelsIndex(UINT nFirst,UINT nLast)
 {
-    if(IsVirtual()) return;
     for(UINT i=nFirst;i<m_arrItems.GetCount() && i<nLast;i++)
     {
         m_arrItems[i]->SetItemIndex(i);
@@ -718,25 +552,13 @@ void SListBoxEx::UpdatePanelsIndex(UINT nFirst,UINT nLast)
 void SListBoxEx::OnSetFocus()
 {
     __super::OnSetFocus();
-    if(IsVirtual())
-    {
-        m_pTemplPanel->DoFrameEvent(WM_SETFOCUS,0,0);
-    }else
-    {
-        if(m_iSelItem!=-1) m_arrItems[m_iSelItem]->DoFrameEvent(WM_SETFOCUS,0,0);
-    }
+    if(m_iSelItem!=-1) m_arrItems[m_iSelItem]->DoFrameEvent(WM_SETFOCUS,0,0);
 }
 
 void SListBoxEx::OnKillFocus()
 {
     __super::OnKillFocus();
-    if(IsVirtual())
-    {
-        m_pTemplPanel->DoFrameEvent(WM_KILLFOCUS,0,0);
-    }else
-    {
-        if(m_iSelItem!=-1) m_arrItems[m_iSelItem]->DoFrameEvent(WM_KILLFOCUS,0,0);
-    }
+    if(m_iSelItem!=-1) m_arrItems[m_iSelItem]->DoFrameEvent(WM_KILLFOCUS,0,0);
     if(m_iSelItem!=-1) RedrawItem(m_iSelItem);
 }
 
@@ -749,17 +571,8 @@ LRESULT SListBoxEx::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
 
 void SListBoxEx::Relayout()
 {
-    if(IsVirtual())
-    {
-        ASSERT(m_pTemplPanel);
-        m_pTemplPanel->Move(CRect(0,0,m_rcClient.Width(),m_nItemHei));
-    }
-    else
-    {
-        for(int i=0; i<GetItemCount(); i++)
-            m_arrItems[i]->Move(CRect(0,0,m_rcClient.Width(),m_nItemHei));
-    }
-
+    for(int i=0; i<GetItemCount(); i++)
+        m_arrItems[i]->Move(CRect(0,0,m_rcClient.Width(),m_nItemHei));
 }
 
 void SListBoxEx::OnViewOriginChanged( CPoint ptOld,CPoint ptNew )

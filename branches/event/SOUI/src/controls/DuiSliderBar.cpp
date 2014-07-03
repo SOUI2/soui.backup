@@ -14,7 +14,7 @@ SSliderBar::SSliderBar()
     , m_uHtPrev(-1)
     , m_pSkinThumb(NULL)
 {
-    addEvent(NM_SLIDER);
+    m_evtSet.addEvent(EventSliderPos::EventID);
 }
 
 SSliderBar::~SSliderBar()
@@ -197,7 +197,7 @@ void SSliderBar::OnLButtonDown(UINT nFlags, CPoint point)
                 nValue= (point.x-rcRail.left)*(m_nMaxValue-m_nMinValue+1)/rcRail.Width();
             }
             SetValue(nValue);
-            NotifySbCode(SC_THUMB,m_nValue);
+            NotifyPos(SC_THUMB,m_nValue);
         }
     }
 }
@@ -225,7 +225,7 @@ void SSliderBar::OnMouseMove(UINT nFlags, CPoint point)
         {
             m_nValue=nNewTrackPos;
             Invalidate();
-            NotifySbCode(SC_THUMB,m_nValue);
+            NotifyPos(SC_THUMB,m_nValue);
         }
     }
     else
@@ -254,19 +254,12 @@ void SSliderBar::OnMouseLeave()
     }
 }
 
-LRESULT SSliderBar::NotifySbCode(UINT uCode, int nPos)
+LRESULT SSliderBar::NotifyPos(UINT uCode, int nPos)
 {
-    DUINMSLIDER nms;
-    nms.hdr.code     = NM_SLIDER;
-    nms.hdr.hDuiWnd  = m_hSWnd;
-    nms.hdr.idFrom   = GetID();
-    nms.hdr.pszNameFrom= GetName();
-    nms.uSbCode      = uCode;
-    nms.pSliderBar   = this;
-    nms.nPos         = nPos;
-    nms.bVertical    = IsVertical();
+    EventSliderPos evt(this);
+    evt.nPos = nPos;
 
-    return FireEvent((LPSNMHDR)&nms);
+    return FireEvent(evt);
 }
 
 CSize SSliderBar::GetDesiredSize(LPRECT pRcContainer)

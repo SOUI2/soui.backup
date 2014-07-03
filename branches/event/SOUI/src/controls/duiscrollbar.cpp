@@ -24,7 +24,7 @@ SScrollBar::SScrollBar()
 {
     memset(&m_si,0,sizeof(SCROLLINFO));
     m_si.nTrackPos=-1;
-    addEvent(NM_SCROLL);
+    m_evtSet.addEvent(EventScroll::EventID);
 }
 
 SScrollBar::~SScrollBar()
@@ -377,16 +377,11 @@ LRESULT SScrollBar::OnGetScrollInfo(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 LRESULT SScrollBar::NotifySbCode(UINT uCode,int nPos)
 {
-    DUINMSCROLL nms;
-    nms.hdr.code=NM_SCROLL;
-    nms.hdr.hDuiWnd=m_hSWnd;
-    nms.hdr.idFrom=GetID();
-    nms.hdr.pszNameFrom=GetName();
-    nms.uSbCode=uCode;
-    nms.pScrollBar=this;
-    nms.nPos=nPos;
-    nms.bVertical=IsVertical();
-    return FireEvent((LPSNMHDR)&nms);
+    EventScroll evt(this);
+    evt.uSbCode=uCode;
+    evt.nPos=nPos;
+    evt.bVertical=IsVertical();
+    return FireEvent(evt);
 }
 
 }//namespace SOUI

@@ -36,11 +36,9 @@ STreeBox::STreeBox()
     , m_bItemRedrawDelay(TRUE)
 {
     m_bTabStop=TRUE;
-    addEvent(NM_LBITEMNOTIFY);
-    addEvent(NM_ITEMMOUSEEVENT);
-    addEvent(NM_GETTBDISPINFO);
-    addEvent(NM_TBSELCHANGING);
-    addEvent(NM_TBSELCHANGED);
+    m_evtSet.addEvent(EventTBGetDispInfo::EventID);
+    m_evtSet.addEvent(EventTBSelChanging::EventID);
+    m_evtSet.addEvent(EventTBSelChanged::EventID);
 }
 
 STreeBox::~STreeBox()
@@ -441,19 +439,17 @@ void STreeBox::RedrawItem(HSTREEITEM hItem)
 void STreeBox::DrawItem(IRenderTarget * pRT, CRect & rc, HSTREEITEM hItem)
 {
     STreeItem *pItem=CSTree<STreeItem*>::GetItem(hItem);
-    DUINMGETTBDISPINFO nms;
-    nms.hdr.code    = NM_GETTBDISPINFO;
-    nms.hdr.hDuiWnd = m_hSWnd;
-    nms.hdr.idFrom  = GetID();
-    nms.hdr.pszNameFrom = GetName();
-    nms.bHover      = hItem==m_hHoverItem;
-    nms.bSelect     = hItem == m_hSelItem;
-    nms.hItem = hItem;
-    nms.pItem = pItem;
-    nms.pHostDuiWin   = this;
+    
+    EventTBGetDispInfo evt(this);
+    evt.bSel = hItem == m_hSelItem;
+    evt.bHover =hItem==m_hHoverItem;
+    evt.pItemWnd = pItem;
+    evt.hItem = hItem;
+
     LockUpdate();
-    GetContainer()->OnFireEvent((LPSNMHDR)&nms);
+    GetContainer()->OnFireEvent(evt);
     UnlockUpdate();
+    
     pItem->Draw(pRT,rc);
 }
 
@@ -512,25 +508,17 @@ void STreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
 
     if(m_hHoverItem!=m_hSelItem)
     {
-        DUINMTBSELCHANGING nms2;
-        nms2.hdr.code=NM_TBSELCHANGING;
-        nms2.hdr.hDuiWnd=m_hSWnd;
-        nms2.hdr.idFrom=GetID();
-        nms2.hdr.pszNameFrom=GetName();
-        nms2.hOldSel=m_hSelItem;
-        nms2.hNewSel=m_hHoverItem;
-        nms2.bCancel=FALSE;
-        FireEvent((LPSNMHDR)&nms2);
+        EventTBSelChanging evt1(this);
+        evt1.hOldSel=m_hSelItem;
+        evt1.hNewSel=m_hHoverItem;
+        evt1.bCancel=FALSE;
+        FireEvent(evt1);
 
-        if(!nms2.bCancel)
+        if(!evt1.bCancel)
         {
-            DUINMTBSELCHANGED nms;
-            nms.hdr.code=NM_TBSELCHANGED;
-            nms.hdr.hDuiWnd=m_hSWnd;
-            nms.hdr.idFrom=GetID();
-            nms.hdr.pszNameFrom=GetName();
-            nms.hOldSel=m_hSelItem;
-            nms.hNewSel=m_hHoverItem;
+            EventTBSelChanged evt2(this);
+            evt2.hOldSel=m_hSelItem;
+            evt2.hNewSel=m_hHoverItem;
 
             if(m_hSelItem)
             {
@@ -544,7 +532,7 @@ void STreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
                 CSTree<STreeItem*>::GetItem(m_hSelItem)->ModifyItemState(DuiWndState_Check,0);
                 RedrawItem(m_hSelItem);
             }
-            FireEvent((LPSNMHDR)&nms);
+            FireEvent(evt2);
         }
     }
     if(m_hHoverItem)
@@ -589,20 +577,6 @@ void STreeBox::OnLButtonDbClick(UINT nFlags,CPoint pt)
         Expand(m_hHoverItem,TVE_TOGGLE);
         CSTree<STreeItem*>::GetItem(m_hHoverItem)->DoFrameEvent(WM_LBUTTONDBLCLK,nFlags,MAKELPARAM(pt.x,pt.y));
     }
-    else
-    {
-        DUINMITEMMOUSEEVENT nms;
-        nms.hdr.code=NM_ITEMMOUSEEVENT;
-        nms.hdr.hDuiWnd=m_hSWnd;
-        nms.hdr.idFrom=GetID();
-        nms.hdr.pszNameFrom=GetName();
-        nms.pItem=NULL;
-        nms.uMsg=WM_LBUTTONDBLCLK;
-        nms.wParam=nFlags;
-        nms.lParam=MAKELPARAM(pt.x,pt.y);
-        FireEvent((LPSNMHDR)&nms);
-    }
-
 }
 
 void STreeBox::OnMouseMove(UINT nFlags,CPoint pt)
@@ -645,19 +619,20 @@ void STreeBox::OnMouseLeave()
     }
 }
 
-LRESULT STreeBox::FireEvent(LPSNMHDR pnms)
+LRESULT STreeBox::FireEvent(EventArgs &evt)
 {
-    if(pnms->code==NM_LBITEMNOTIFY)
+    if(evt.GetEventID()==EventOfPanel::EventID)
     {
-        DUINMITEMNOTIFY *pItemNotify=(DUINMITEMNOTIFY*)pnms;
-        if(pItemNotify->pOriginHdr->idFrom==IDC_SWITCH)
+        EventOfPanel *pEvt = (EventOfPanel *)&evt;
+        if(pEvt->pOrgEvt->idFrom == IDC_SWITCH)
         {
-            STreeItem *pItem=dynamic_cast<STreeItem*> (pItemNotify->pItem);
+            STreeItem *pItem=dynamic_cast<STreeItem*> (pEvt->pPanel);
+            ASSERT(pItem);
             Expand(pItem->m_hItem,TVE_TOGGLE);
             return 0;
         }
     }
-    return __super::DuiNotify(pnms);
+    return __super::FireEvent(evt);
 }
 
 BOOL STreeBox::OnSetCursor(const CPoint &pt)

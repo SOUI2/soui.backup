@@ -17,10 +17,10 @@ namespace SOUI
         ,m_hDragImg(NULL)
     {
         m_bClipClient=TRUE;
-        addEvent(NM_HDCLICK);
-        addEvent(NM_HDSIZECHANGING);
-        addEvent(NM_HDSIZECHANGED);
-        addEvent(NM_HDSWAP);
+        m_evtSet.addEvent(EventHeaderClick::EventID);
+        m_evtSet.addEvent(EventHeaderItemChanged::EventID);
+        m_evtSet.addEvent(EventHeaderItemChanging::EventID);
+        m_evtSet.addEvent(EventHeaderItemSwap::EventID);
     }
 
     SHeaderCtrl::~SHeaderCtrl(void)
@@ -203,14 +203,10 @@ namespace SOUI
                         if(nPos>LOWORD(m_dwHitTest)) nPos--;//要考虑将自己移除的影响
                         m_arrItems.InsertAt(LOWORD(m_dwDragTo),t);
                         //发消息通知宿主表项位置发生变化
-                        DUINMHDSWAP    nm;
-                        nm.hdr.hDuiWnd=m_hSWnd;
-                        nm.hdr.code=NM_HDSWAP;
-                        nm.hdr.idFrom=GetID();
-                        nm.hdr.pszNameFrom=GetName();
-                        nm.iOldIndex=LOWORD(m_dwHitTest);
-                        nm.iNewIndex=nPos;
-                        FireEvent((LPSNMHDR)&nm);
+                        EventHeaderItemSwap evt(this);
+                        evt.iOldIndex=LOWORD(m_dwHitTest);
+                        evt.iNewIndex=nPos;
+                        FireEvent(evt);
                     }
                     m_dwHitTest=HitTest(pt);
                     m_dwDragTo=-1;
@@ -222,25 +218,17 @@ namespace SOUI
                 {
                     m_arrItems[LOWORD(m_dwHitTest)].state=1;//hover
                     RedrawItem(LOWORD(m_dwHitTest));
-                    DUINMHDCLICK    nm;
-                    nm.hdr.hDuiWnd=m_hSWnd;
-                    nm.hdr.code=NM_HDCLICK;
-                    nm.hdr.idFrom=GetID();
-                    nm.hdr.pszNameFrom=GetName();
-                    nm.iItem=LOWORD(m_dwHitTest);
-                    FireEvent((LPSNMHDR)&nm);
+                    EventHeaderClick evt(this);
+                    evt.iItem=LOWORD(m_dwHitTest);
+                    FireEvent(evt);
                 }
             }
         }else if(m_dwHitTest!=-1)
         {//调整表头宽度，发送一个调整完成消息
-            DUINMHDSIZECHANGED    nm;
-            nm.hdr.hDuiWnd=m_hSWnd;
-            nm.hdr.code=NM_HDSIZECHANGED;
-            nm.hdr.idFrom=GetID();
-            nm.hdr.pszNameFrom=GetName();
-            nm.iItem=LOWORD(m_dwHitTest);
-            nm.nWidth=m_arrItems[nm.iItem].cx;
-            FireEvent((LPSNMHDR)&nm);
+            EventHeaderItemChanged evt(this);
+            evt.iItem=LOWORD(m_dwHitTest);
+            evt.nWidth=m_arrItems[evt.iItem].cx;
+            FireEvent(evt);
         }
         m_bDragging=FALSE;
         ReleaseCapture();
@@ -286,13 +274,9 @@ namespace SOUI
                 Invalidate();
                 GetContainer()->SwndUpdateWindow();//立即更新窗口
                 //发出调节宽度消息
-                DUINMHDSIZECHANGING    nm;
-                nm.hdr.hDuiWnd=m_hSWnd;
-                nm.hdr.code=NM_HDSIZECHANGING;
-                nm.hdr.idFrom=GetID();
-                nm.hdr.pszNameFrom=GetName();
-                nm.nWidth=cxNew;
-                FireEvent((LPSNMHDR)&nm);
+                EventHeaderItemChanging evt(this);
+                evt.nWidth=cxNew;
+                FireEvent(evt);
             }
         }else
         {

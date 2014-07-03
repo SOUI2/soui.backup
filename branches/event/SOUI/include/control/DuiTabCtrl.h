@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include "duiwndnotify.h"
 #include "duiwnd.h"
 
 namespace SOUI

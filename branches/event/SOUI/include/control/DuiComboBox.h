@@ -81,13 +81,13 @@ protected:
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
     /**
-     * CComboEdit::DuiNotify
+     * CComboEdit::FireEvent
      * @brief    通知消息
-     * @param    LPSNMHDR pnms -- 暂无 
+     * @param    EventArgs & evt -- 事件对象 
      * 
      * Describe  此函数是消息响应函数
      */   
-    virtual LRESULT FireEvent(LPSNMHDR pnms);
+    virtual LRESULT FireEvent(EventArgs & evt);
 
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_MOUSEHOVER(OnMouseHover)
@@ -195,13 +195,13 @@ protected:
     virtual void OnSelChanged();
 
     /**
-     * CDuiComboBoxBase::DuiNotify
+     * CDuiComboBoxBase::FireEvent
      * @brief    通知消息
-     * @param    LPSNMHDR pnms -- 暂无 
+     * @param    EventArgs &evt -- 事件对象 
      * 
      * Describe  此函数是消息响应函数
      */ 
-    virtual LRESULT FireEvent(LPSNMHDR pnms);
+    virtual LRESULT FireEvent(EventArgs &evt);
     
 protected:
 

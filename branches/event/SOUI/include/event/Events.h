@@ -23,10 +23,8 @@ public:
     /*************************************************************************
         Construction
     *************************************************************************/
-    EventArgs(SWindow *pSender) 
-        : handled(0)
-        , sender(pSender)
-    {}
+    EventArgs(SWindow *pSender);
+    
     virtual ~EventArgs(void) {}
     virtual UINT GetEventID()= 0;
     
@@ -36,40 +34,94 @@ public:
     //! handlers should increment this if they handled the event.
     UINT handled;
     
+    int  idFrom;
+    LPCWSTR nameFrom;
+    
     SWindow *sender;
+};
+
+class EventCmnArgs : public EventArgs
+{
+public:
+    EventCmnArgs(SWindow *pSender,UINT uEvtID):EventArgs(pSender),uID(uEvtID)
+    {
+    
+    }
+    virtual UINT GetEventID(){return uID;}
+
+protected:
+    UINT uID;
 };
 
 enum SOUI_EVENTS
 {
-    EVT_CMD=100,
+    EVT_INTERNAL_FIRST=10,
+    EVT_REALWND_CREATE,
+    EVT_REALWND_INIT,
+    EVT_REALWND_DESTROY,
+    EVT_REALWND_SIZE,
+
+    EVT_INTERNAL_LAST=1000,
+    
+    EVT_CMD=10000,
     EVT_CTXMENU,
     EVT_SCROLL,
-    EVT_OFEVENT,
+    EVT_OFEVENT,    //消息二次包装
+    EVT_OFPANEL,    //一个itemPanel中的消息的二次包装
     
-    EVT_TAB_SELCHANGING,
+    EVT_TAB_SELCHANGING=11000,
     EVT_TAB_SELCHANGED,
     
-    EVT_LB_GETDISPINFO,
+    EVT_LB_GETDISPINFO=12000,
     EVT_LB_SELCHANGING,
     EVT_LB_SELCHANGED,
     
-    EVT_TB_GETDISPINFO,
+    EVT_LC_SELCHANGING=13000,
+    EVT_LC_SELCHANGED,
+    
+    EVT_TB_GETDISPINFO=14000,    
     EVT_TB_SELCHANGING,
     EVT_TB_SELCHANGED,
     
-    EVT_RE_NOTIFY,
+    EVT_TC_SELCHANGING=15000,
+    EVT_TC_SELCHANGED,
+    EVT_TC_EXPAND,
+    EVT_TC_CHECKSTATE,
     
-    EVT_SLIDER_POS,
+    EVT_RE_NOTIFY=16000,
     
-    EVT_HEADER_CLICK,
+    EVT_SLIDER_POS=17000,
+    
+    EVT_HEADER_CLICK=18000,
     EVT_HEADER_ITEMCHANGING,
     EVT_HEADER_ITEMCHANGED,
     EVT_HEADER_ITEMSWAP,
 
-    EVT_CB_SELCHANGE,
+    EVT_CB_SELCHANGE=19000,
     
-    EVT_CALENDAR_SELDAY,
+    EVT_CALENDAR_SELDAY=20000,
+    
+    EVT_EXTERNAL_BEGIN=10000000,
 };
+
+class EventRealWndCreate : public EventArgs
+{
+public:
+    EventRealWndCreate(SWindow *pWnd):EventArgs(pWnd),hWndCreated(NULL){}
+    enum{EventID=EVT_REALWND_CREATE};
+    virtual UINT GetEventID(){return EventID;}
+    HWND hWndCreated;   //创建出来的窗口句柄
+};
+
+class EventRealWndInit : public EventArgs
+{
+public:
+    EventRealWndInit(SWindow *pWnd):EventArgs(pWnd),bSetFocus(FALSE){}
+    enum{EventID=EVT_REALWND_INIT};
+    virtual UINT GetEventID(){return EventID;}
+    BOOL bSetFocus;
+};
+
 
 class EventCmd : public EventArgs
 {
@@ -103,16 +155,31 @@ public:
 class EventOfEvent : public EventArgs
 {
 public:
-    EventOfEvent(SWindow *pWnd):EventArgs(pWnd){}
+    EventOfEvent(SWindow *pWnd,EventArgs *_pOrgEvt)
+    :EventArgs(pWnd)
+    ,pOrgEvt(_pOrgEvt)
+    {}
     enum{EventID=EVT_OFEVENT};
     virtual UINT GetEventID(){return EventID;}
+    EventArgs * pOrgEvt;
+};
+
+class SItemPanel;
+class EventOfPanel : public EventArgs
+{
+public:
+    EventOfPanel(SItemPanel *_pPanel,EventArgs *_pOrgEvt);
+    enum{EventID=EVT_OFEVENT};
+    virtual UINT GetEventID(){return EventID;}
+    
+    SItemPanel *pPanel;
     EventArgs * pOrgEvt;
 };
 
 class EventTabSelChanging : public EventArgs
 {
 public:
-    EventTabSelChanging(SWindow *pWnd):EventArgs(pWnd){}
+    EventTabSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
     enum{EventID=EVT_TAB_SELCHANGING};
     virtual UINT GetEventID(){return EventID;}
     UINT        uOldSel;
@@ -138,7 +205,8 @@ public:
     virtual UINT GetEventID(){return EventID;}
     int  iItem;
     SWindow * pItem;
-    UINT uState;
+    BOOL bSel;
+    BOOL bHover;
 };
 
 class EventLBSelChanging : public EventArgs
@@ -170,13 +238,14 @@ public:
     virtual UINT GetEventID(){return EventID;}
     HSTREEITEM  hItem;
     SWindow     *pItemWnd;
-    UINT        uState;
+    BOOL        bSel;
+    BOOL        bHover;
 };
 
 class EventTBSelChanging: public EventArgs
 {
 public:
-    EventTBSelChanging(SWindow *pWnd):EventArgs(pWnd){}
+    EventTBSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
     enum{EventID=EVT_TB_SELCHANGING};
     virtual UINT GetEventID(){return EventID;}
     HSTREEITEM hNewSel;
@@ -256,12 +325,33 @@ public:
     int      iNewIndex;
 };
 
-class EventCBSelChnage : public EventArgs
+class EventCBSelChange : public EventArgs
 {
 public:
-    EventCBSelChnage(SWindow *pWnd):EventArgs(pWnd){}
+    EventCBSelChange(SWindow *pWnd):EventArgs(pWnd){}
     enum{EventID=EVT_CB_SELCHANGE};
     virtual UINT GetEventID(){return EventID;}
+};
+
+class EventLCSelChanging : public EventArgs
+{
+public:
+    EventLCSelChanging(SWindow *pWnd):EventArgs(pWnd){}
+    enum{EventID=EVT_LC_SELCHANGING};
+    virtual UINT GetEventID(){return EventID;}
+    int nNewSel;
+    int nOldSel;
+    BOOL bCancel;
+};
+
+class EventLCSelChanged : public EventArgs
+{
+public:
+    EventLCSelChanged(SWindow *pWnd):EventArgs(pWnd){}
+    enum{EventID=EVT_LC_SELCHANGED};
+    virtual UINT GetEventID(){return EventID;}
+    int nNewSel;
+    int nOldSel;
 };
 
 class EventCalendarSelDay : public EventArgs
@@ -274,5 +364,46 @@ public:
     WORD   wNewDay;
 };
 
+
+class EventTCSelChanging : public EventArgs
+{
+public:
+    EventTCSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
+    enum{EventID=EVT_TC_SELCHANGING};
+    virtual UINT GetEventID(){return EventID;}
+    HSTREEITEM hOldSel;
+    HSTREEITEM hNewSel;
+    BOOL bCancel;
+};
+
+class EventTCSelChanged : public EventArgs
+{
+public:
+    EventTCSelChanged(SWindow *pWnd):EventArgs(pWnd){}
+    enum{EventID=EVT_TC_SELCHANGED};
+    virtual UINT GetEventID(){return EventID;}
+    HSTREEITEM hOldSel;
+    HSTREEITEM hNewSel;
+};
+
+class EventTCCheckState : public EventArgs
+{
+public:
+    EventTCCheckState(SWindow *pWnd):EventArgs(pWnd){}
+    enum{EventID=EVT_TC_CHECKSTATE};
+    virtual UINT GetEventID(){return EventID;}
+    HSTREEITEM  hItem;
+    UINT        uCheckState;
+};
+
+class EventTCExpand : public EventArgs
+{
+public:
+    EventTCExpand(SWindow *pWnd):EventArgs(pWnd){}
+    enum{EventID=EVT_TC_EXPAND};
+    virtual UINT GetEventID(){return EventID;}
+    HSTREEITEM  hItem;
+    BOOL bCollapsed;
+};
 
 } // End of  CEGUI namespace section

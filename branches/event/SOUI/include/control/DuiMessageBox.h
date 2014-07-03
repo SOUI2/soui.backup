@@ -41,17 +41,15 @@ namespace SOUI
 
         static pugi::xml_document s_xmlMsgTemplate;
 
-        SOUI_NOTIFY_MAP_BEGIN()
-            SOUI_NOTIFY_ID_COMMAND_RANGE(IDOK,IDNO, OnBtnClick)
-        SOUI_NOTIFY_MAP_END()    
+//         SOUI_NOTIFY_MAP_BEGIN()
+//             SOUI_NOTIFY_ID_COMMAND_RANGE(IDOK,IDNO, OnBtnClick)
+//         SOUI_NOTIFY_MAP_END()    
 
         BEGIN_MSG_MAP_EX(SMessageBoxImpl)
-            MSG_SOUI_NOTIFY()
+//             MSG_SOUI_NOTIFY()
             CHAIN_MSG_MAP(CDuiHostWnd)
             REFLECT_NOTIFICATIONS_EX()
         END_MSG_MAP()
-
-
     };
 
     int SOUI_EXP SMessageBox(HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType);

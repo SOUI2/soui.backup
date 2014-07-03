@@ -556,6 +556,12 @@ void CDuiHostWnd::OnActivate( UINT nState, BOOL bMinimized, HWND wndOther )
         ::SetFocus(NULL);
 }
 
+LRESULT CDuiHostWnd::OnFireEvent(EventArgs &evt)
+{
+    return 0;
+}
+
+/*
 LRESULT CDuiHostWnd::OnDuiNotify(LPSNMHDR pHdr)
 {
     if(pHdr->code==NM_REALWND_CREATE) return (LRESULT)OnRealWndCreate(((LPDUINMREALWNDCMN)pHdr)->pRealWnd);
@@ -573,6 +579,7 @@ LRESULT CDuiHostWnd::OnDuiNotify(LPSNMHDR pHdr)
 
     return CSimpleWnd::SendMessage(UM_SWND_NOTIFY,IDC_RICHVIEW_WIN,(LPARAM)pHdr);
 }
+*/
 
 CRect CDuiHostWnd::GetContainerRect()
 {

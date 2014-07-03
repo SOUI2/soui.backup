@@ -37,7 +37,7 @@ protected:
     ISkinObj *  m_pSkinThumb;
 
 protected:
-    LRESULT         NotifySbCode(UINT uCode, int nPos);
+    LRESULT         NotifyPos(UINT uCode, int nPos);
 
     virtual CSize    GetDesiredSize(LPRECT pRcContainer);
 

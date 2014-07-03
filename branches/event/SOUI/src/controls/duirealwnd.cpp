@@ -54,13 +54,8 @@ LRESULT SRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
 
     if (lRet==0 && rcOldWnd != m_rcWindow)
     {
-        DUINMREALWNDCMN nms;
-        nms.hdr.code = NM_REALWND_SIZE;
-        nms.hdr.hDuiWnd=m_hSWnd;
-        nms.hdr.idFrom = GetID();
-        nms.hdr.pszNameFrom=GetName();
-        nms.pRealWnd=this;
-        FireEvent((LPSNMHDR)&nms);
+        EventCmnArgs evt(this,EVT_REALWND_SIZE);
+        FireEvent(evt);
     }
     return lRet;
 }
@@ -75,13 +70,8 @@ void SRealWnd::OnDestroy()
 {
     if (IsWindow(m_hRealWnd))
     {
-        DUINMREALWNDCMN nms;
-        nms.hdr.code = NM_REALWND_DESTROY;
-        nms.hdr.hDuiWnd = m_hSWnd;
-        nms.hdr.idFrom = GetID();
-        nms.hdr.pszNameFrom=GetName();
-        nms.pRealWnd=this;
-        FireEvent((LPSNMHDR)&nms);
+        EventCmnArgs evt(this,EVT_REALWND_DESTROY);
+        FireEvent(evt);
     }
 }
 
@@ -112,17 +102,12 @@ BOOL SRealWnd::InitRealWnd()
 {
     m_realwndParam.m_dwStyle|= WS_CHILD;
 
-    DUINMREALWNDCMN nms;
-    nms.hdr.code = NM_REALWND_CREATE;
-    nms.hdr.hDuiWnd = m_hSWnd;
-    nms.hdr.idFrom = GetID();
-    nms.hdr.pszNameFrom=GetName();
-    nms.pRealWnd=this;
-    HWND hWnd =(HWND) FireEvent((LPSNMHDR)&nms);
+    EventRealWndCreate evt(this);
+    FireEvent(evt);
 
-    if(::IsWindow(hWnd))
+    if(::IsWindow(evt.hWndCreated))
     {
-        m_hRealWnd=hWnd;
+        m_hRealWnd=evt.hWndCreated;
         if(!m_bInit)
         {
             //如果不是在加载的时候创建窗口，则需要自动调整窗口位置
@@ -130,16 +115,10 @@ BOOL SRealWnd::InitRealWnd()
             GetClient(&rcClient);
             SetWindowPos(m_hRealWnd,0,rcClient.left,rcClient.top,rcClient.Width(),rcClient.Height(),SWP_NOZORDER);
         }
-
-        DUINMREALWNDCMN nms;
-        nms.hdr.code = NM_REALWND_INIT;
-        nms.hdr.hDuiWnd = m_hSWnd;
-        nms.hdr.idFrom = GetID();
-        nms.hdr.pszNameFrom=GetName();
-        nms.pRealWnd=this;
-
-        BOOL bFocus=(BOOL)FireEvent((LPSNMHDR)&nms);
-        if(bFocus)
+        
+        EventRealWndInit evt(this);
+        FireEvent(evt);        
+        if(evt.bSetFocus)
         {
             ::SetFocus(m_hRealWnd);
         }

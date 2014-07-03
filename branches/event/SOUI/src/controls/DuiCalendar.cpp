@@ -293,7 +293,7 @@ SCalendar::SCalendar()
 
 void SCalendar::Init()
 {
-    addEvent(NM_CALENDAR_SELECTDAY);
+    m_evtSet.addEvent(EventCalendarSelDay::EventID);
     m_nTitleHei=TITLE_HEIGHT;
     m_nFooterHei=FOOTER_HEIGHT;
     m_crWeekend=RGB(255,0,0);
@@ -474,18 +474,14 @@ void SCalendar::OnLButtonDown(UINT nFlags, CPoint point)
     WORD day = HitTest(point);
     if(day !=0 && day != m_iDay)
     {
-        DUINMCALENDARSELECTDAY nm;
-        nm.hdr.hDuiWnd=m_hSWnd;
-        nm.hdr.code=NM_HDSIZECHANGING;
-        nm.hdr.idFrom=GetID();
-        nm.hdr.pszNameFrom=GetName();
-        nm.wOldDay=m_iDay;
-        nm.wNewDay=day;
+        EventCalendarSelDay evt(this);
+        evt.wOldDay=m_iDay;
+        evt.wNewDay=day;
 
-        m_iDay = day;
-        Invalidate();
-        FireEvent((LPSNMHDR)&nm);
+        FireEvent(evt);
     }
+    m_iDay = day;
+    Invalidate();
 }
 
 void SCalendar::OnMouseMove( UINT nFlags,CPoint pt )
@@ -522,7 +518,7 @@ BOOL SCalendar::InitFromXml( pugi::xml_node xmlNode )
         if(pBtnToday)
         {
             pBtnToday->SetID(100);
-            pBtnToday->subscribeEvent(NM_COMMAND,Subscriber(&SCalendar::OnTodayClick,this));
+            pBtnToday->subscribeEvent(EventCmd::EventID,Subscriber(&SCalendar::OnTodayClick,this));
         }
         SWindow *pLabelToday=FindChildByName(L"label_today");
         if(pLabelToday)

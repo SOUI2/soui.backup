@@ -589,7 +589,7 @@ SRichEdit::SRichEdit()
 {
     m_bTabStop=TRUE;
     m_sizelExtent.cx=m_sizelExtent.cy=0;
-    addEvent(NM_RICHEDIT_NOTIFY);
+    m_evtSet.addEvent(EventRENotify::EventID);
 }
 
 
@@ -838,14 +838,10 @@ HRESULT SRichEdit::InitDefaultParaFormat( PARAFORMAT2* ppf )
 
 HRESULT SRichEdit::OnTxNotify( DWORD iNotify,LPVOID pv )
 {
-    DUIRICHEDITNOTIFY nms;
-    nms.hdr.code=NM_RICHEDIT_NOTIFY;
-    nms.hdr.hDuiWnd=m_hSWnd;
-    nms.hdr.idFrom=GetID();
-    nms.hdr.pszNameFrom=GetName();
-    nms.iNotify=iNotify;
-    nms.pv=pv;
-    return FireEvent((LPSNMHDR)&nms);
+    EventRENotify evt(this);
+    evt.iNotify=iNotify;
+    evt.pv=pv;
+    return FireEvent(evt);
 }
 //////////////////////////////////////////////////////////////////////////
 //    richedit interfaces

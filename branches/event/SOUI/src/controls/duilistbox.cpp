@@ -34,6 +34,9 @@ SListBox::SListBox()
     , m_ptText(-1,-1)
     , m_bHotTrack(FALSE)
 {
+    m_evtSet.addEvent(EventLBSelChanging::EventID);
+    m_evtSet.addEvent(EventLBSelChanged::EventID);
+    m_evtSet.addEvent(EventLBGetDispInfo::EventID);
 }
 
 SListBox::~SListBox()
@@ -399,27 +402,24 @@ void SListBox::DrawItem(IRenderTarget * pRT, CRect & rc, int iItem)
 
 void SListBox::NotifySelChange( int nOldSel,int nNewSel)
 {
-    DUINMLBSELCHANGE nms;
-    nms.hdr.code=NM_LBSELCHANGING;
-    nms.hdr.hDuiWnd=m_hSWnd;
-    nms.hdr.idFrom=GetID();
-    nms.hdr.pszNameFrom=GetName();
-    nms.nOldSel=nOldSel;
-    nms.nNewSel=nNewSel;
-    nms.uHoverID=0;
+    EventLBSelChanging evt1(this);
+    evt1.nOldSel=nOldSel;
+    evt1.nNewSel=nNewSel;
 
-    if(S_OK!=FireEvent((LPSNMHDR)&nms)) return ;
-    
+    FireEvent(evt1);
+    if(evt1.bCancel) return;
+       
     m_iSelItem=nNewSel;
     if(nOldSel!=-1)
         RedrawItem(nOldSel);
 
     if(m_iSelItem!=-1)
         RedrawItem(m_iSelItem);
-
-    nms.hdr.idFrom=GetID();
-    nms.hdr.code=NM_LBSELCHANGED;
-    FireEvent((LPSNMHDR)&nms);
+    
+    EventLBSelChanged evt2(this);
+    evt2.nOldSel=nOldSel;
+    evt2.nNewSel=nNewSel;
+    FireEvent(evt2);
 }
 
 void SListBox::OnPaint(IRenderTarget * pRT)

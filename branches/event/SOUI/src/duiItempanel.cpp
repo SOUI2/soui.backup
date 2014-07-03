@@ -9,8 +9,6 @@
 #include "duistd.h"
 #include "duiItempanel.h"
 
-#include "duiwndnotify.h"
-
 #pragma warning(disable:4018)
 
 namespace SOUI
@@ -59,34 +57,14 @@ LRESULT SItemPanel::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 
     SetMsgHandled(FALSE);
     LRESULT lRet=__super::DoFrameEvent(uMsg,wParam,lParam);
-    if(IsMsgHandled())
-    {
-        DUINMITEMMOUSEEVENT nms;
-        nms.hdr.code=NM_ITEMMOUSEEVENT;
-        nms.hdr.hDuiWnd=m_pFrmHost->GetSwnd();
-        nms.hdr.idFrom=m_pFrmHost->GetID();
-        nms.hdr.pszNameFrom= m_pFrmHost->GetName();
-        nms.pItem=this;
-        nms.uMsg=uMsg;
-        nms.wParam=wParam;
-        nms.lParam=lParam;
-        m_pFrmHost->FireEvent((LPSNMHDR)&nms);
-    }
     Release();
     return lRet;
 }
 
-LRESULT SItemPanel::OnFireEvent(LPSNMHDR pHdr)
+LRESULT SItemPanel::OnFireEvent(EventArgs &evt)
 {
-    DUINMITEMNOTIFY nmsItem;
-    nmsItem.hdr.code=NM_LBITEMNOTIFY;
-    nmsItem.hdr.hDuiWnd=m_pFrmHost->GetSwnd();
-    nmsItem.hdr.idFrom=m_pFrmHost->GetID();
-    nmsItem.hdr.pszNameFrom=m_pFrmHost->GetName();
-    nmsItem.pItem=this;
-    nmsItem.pHostDuiWin=(SWindow*)m_pFrmHost;
-    nmsItem.pOriginHdr=pHdr;
-    return m_pFrmHost->FireEvent((LPSNMHDR)&nmsItem);
+    EventOfPanel evt2(this,&evt);
+    return m_pFrmHost->FireEvent(evt2);
 }
 
 CRect SItemPanel::GetContainerRect()

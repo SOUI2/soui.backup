@@ -666,16 +666,16 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
 /**
  * ActiveXContainerImpl
  */
-class DUI_NO_VTABLE CDuiAxContainer :   public IOleContainer,
+class DUI_NO_VTABLE SAxContainer :   public IOleContainer,
                                              public IBindHost,
                                              public IServiceProvider,
                                              public MinimumIDispatchImpl,
-                                             public ActiveXSite<CDuiAxContainer>
+                                             public ActiveXSite<SAxContainer>
 {
     public:
 
-    CDuiAxContainer();
-    virtual ~CDuiAxContainer();
+    SAxContainer();
+    virtual ~SAxContainer();
 
     BOOL CreateControl(LPCRECT pRect, REFGUID guid, DWORD dwClsCtx=CLSCTX_INPROC_SERVER);
 

@@ -36,6 +36,10 @@ STreeCtrl::STreeCtrl()
 , m_nItemPushDownBtn(DuiTVIBtn_None)
 {
     m_bClipClient = TRUE;
+    m_evtSet.addEvent(EventTCSelChanging::EventID);
+    m_evtSet.addEvent(EventTCSelChanged::EventID);
+    m_evtSet.addEvent(EventTCCheckState::EventID);
+    m_evtSet.addEvent(EventTCExpand::EventID);
 }
 
 STreeCtrl::~STreeCtrl()
@@ -302,6 +306,11 @@ BOOL STreeCtrl::Expand(HSTREEITEM hItem , UINT nCode)
         }
         if(bRet)
         {
+            EventTCExpand evt(this);
+            evt.hItem=hItem;
+            evt.bCollapsed=pItem->bCollapsed;
+            FireEvent(evt);
+            
             GetMaxItemWidth();
             CSize szView(m_nMaxItemWidth,m_nVisibleItems*m_nItemHei);
             SetViewSize(szView);
@@ -942,14 +951,10 @@ void STreeCtrl::ItemLButtonUp(HSTREEITEM hItem, UINT nFlags,CPoint pt)
             DuiWndState_PushDown == (pItem->dwCheckBoxState & DuiWndState_PushDown))
         {
             ModifyChekcBoxState(hItem, 0, DuiWndState_PushDown);
-
-            DUINMCOMMAND nms;
-            nms.hdr.code = NM_COMMAND;
-            nms.hdr.hDuiWnd=m_hSWnd;
-            nms.hdr.idFrom = GetID();
-            nms.hdr.pszNameFrom=GetName();
-            nms.uItemData = hItem; 
-            FireEvent((LPSNMHDR)&nms);
+            EventTCCheckState evt(this);
+            evt.hItem=hItem;
+            evt.uCheckState = pItem->dwCheckBoxState;
+            FireEvent(evt);
         }
 
         m_nItemPushDownBtn = DuiTVIBtn_None;
@@ -1024,15 +1029,18 @@ void STreeCtrl::ItemMouseLeave(HSTREEITEM hItem)
     }
 }
 
-void STreeCtrl::NotifyParent()
+BOOL STreeCtrl::NotifyParent()
 {
-    DUINMTBSELCHANGED nms;
-    nms.hdr.code=NM_TBSELCHANGED;
-    nms.hdr.hDuiWnd=m_hSWnd;
-    nms.hdr.idFrom=GetID();
-    nms.hdr.pszNameFrom=GetName();
-    nms.hOldSel=m_hSelItem;
-    nms.hNewSel=m_hHoverItem;
+    EventTCSelChanging evt1(this);
+    evt1.hOldSel=m_hSelItem;
+    evt1.hNewSel=m_hHoverItem;
+    
+    FireEvent(evt1);
+    if(evt1.bCancel) return FALSE;
+    
+    EventTCSelChanged evt(this);
+    evt.hOldSel=m_hSelItem;
+    evt.hNewSel=m_hHoverItem;
 
     if(m_hSelItem)
     {
@@ -1044,9 +1052,10 @@ void STreeCtrl::NotifyParent()
         m_hSelItem = m_hHoverItem;
 
     if(m_hSelItem)
-    RedrawItem(m_hSelItem);
+        RedrawItem(m_hSelItem);
 
-    FireEvent((LPSNMHDR)&nms);
+    FireEvent(evt);
+    return TRUE;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1144,18 +1153,6 @@ void STreeCtrl::OnLButtonDbClick(UINT nFlags,CPoint pt)
     {
         Expand(m_hHoverItem,TVE_TOGGLE);
         ItemLButtonDbClick(m_hHoverItem, nFlags, pt);
-    }else
-    {
-        DUINMITEMMOUSEEVENT nms;
-        nms.hdr.hDuiWnd=m_hSWnd;
-        nms.hdr.code=NM_ITEMMOUSEEVENT;
-        nms.hdr.idFrom=GetID();
-        nms.hdr.pszNameFrom=GetName();
-        nms.pItem=NULL;
-        nms.uMsg=WM_LBUTTONDBLCLK;
-        nms.wParam=nFlags;
-        nms.lParam=MAKELPARAM(pt.x,pt.y);
-        FireEvent((LPSNMHDR)&nms);
     }
 }
 

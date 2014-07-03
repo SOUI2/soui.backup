@@ -1051,6 +1051,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\event\Events.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\event\EventSet.cpp"
 				>
 			</File>
@@ -1306,10 +1310,6 @@
 			</File>
 			<File
 				RelativePath=".\include\DuiWndFactoryMgr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\duiwndnotify.h"
 				>
 			</File>
 			<File

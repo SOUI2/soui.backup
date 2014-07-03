@@ -23,16 +23,16 @@
 namespace SOUI
 {
 
-CDuiAxContainer::CDuiAxContainer()
+SAxContainer::SAxContainer()
 : m_lRefCnt(1)
 {
 }
 
-CDuiAxContainer::~CDuiAxContainer()
+SAxContainer::~SAxContainer()
 {
 }
 
-BOOL CDuiAxContainer::CreateControl(LPCRECT pRect, REFGUID clsid ,DWORD dwClsCtx /*=CLSCTX_INPROC_SERVER*/)
+BOOL SAxContainer::CreateControl(LPCRECT pRect, REFGUID clsid ,DWORD dwClsCtx /*=CLSCTX_INPROC_SERVER*/)
 {
     ASSERT(m_pAxHostDelegate);
     HRESULT hr = E_FAIL;
@@ -47,7 +47,7 @@ BOOL CDuiAxContainer::CreateControl(LPCRECT pRect, REFGUID clsid ,DWORD dwClsCtx
 
 ///////////////////////////////////////////////////////////////////////////////
 // IUnknown
-HRESULT CDuiAxContainer::QueryInterface(REFIID iid, void** object)
+HRESULT SAxContainer::QueryInterface(REFIID iid, void** object)
 {
     HRESULT hr = S_OK;
     *object = NULL;
@@ -73,12 +73,12 @@ HRESULT CDuiAxContainer::QueryInterface(REFIID iid, void** object)
     return hr;
 }
 
-ULONG STDMETHODCALLTYPE CDuiAxContainer::AddRef()
+ULONG STDMETHODCALLTYPE SAxContainer::AddRef()
 {
     return ::InterlockedIncrement(&m_lRefCnt);
 }
 
-ULONG STDMETHODCALLTYPE CDuiAxContainer::Release()
+ULONG STDMETHODCALLTYPE SAxContainer::Release()
 {
     // We don't destroy object when it reaches 0
     return ::InterlockedDecrement(&m_lRefCnt);
@@ -87,7 +87,7 @@ ULONG STDMETHODCALLTYPE CDuiAxContainer::Release()
 
 ///////////////////////////////////////////////////////////////////////////////
 // IBindHost
-HRESULT CDuiAxContainer::CreateMoniker(LPOLESTR szName, IBindCtx* /*pBC*/,
+HRESULT SAxContainer::CreateMoniker(LPOLESTR szName, IBindCtx* /*pBC*/,
                          IMoniker** ppmk, DWORD /*dwReserved*/)
 {
     HRESULT hr;
@@ -100,7 +100,7 @@ HRESULT CDuiAxContainer::CreateMoniker(LPOLESTR szName, IBindCtx* /*pBC*/,
     return hr;
 }
 
-HRESULT CDuiAxContainer::MonikerBindToStorage(IMoniker *pMk, IBindCtx *pBC,
+HRESULT SAxContainer::MonikerBindToStorage(IMoniker *pMk, IBindCtx *pBC,
                                 IBindStatusCallback *pBSC, REFIID riid, void **ppvObj)
 {
     HRESULT hr = E_FAIL;
@@ -127,7 +127,7 @@ HRESULT CDuiAxContainer::MonikerBindToStorage(IMoniker *pMk, IBindCtx *pBC,
     return hr;
 }
 
-HRESULT CDuiAxContainer::MonikerBindToObject(IMoniker* /*pMk*/, IBindCtx* /*pBC*/,
+HRESULT SAxContainer::MonikerBindToObject(IMoniker* /*pMk*/, IBindCtx* /*pBC*/,
                                IBindStatusCallback* /*pBSC*/, REFIID /*riid*/, void** /*ppvObj*/)
 {
     ATLTRACENOTIMPL(_T("ActiveXContainerImpl::MonikerBindToObject\n"));
@@ -141,7 +141,7 @@ static const GUID GUID_IWebBrowserApp =
 static const GUID GUID_IXcpControlHost = 
 { 0x1B36028E, 0xB491, 0x4BB2, { 0x85, 0x84, 0x8A, 0x9E, 0x0A, 0x67, 0x7D, 0x6E } };
 
-HRESULT CDuiAxContainer::QueryService( REFGUID guidService, REFIID riid, void **ppvObject )
+HRESULT SAxContainer::QueryService( REFGUID guidService, REFIID riid, void **ppvObject )
 {
     HRESULT hr = E_FAIL;
     if (guidService == IID_IBindHost ||

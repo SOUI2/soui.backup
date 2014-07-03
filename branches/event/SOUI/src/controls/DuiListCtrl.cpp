@@ -1,7 +1,6 @@
 #include "duistd.h"
 
 #include "control/DuiListCtrl.h"
-#include "DuiWndNotify.h"
 
 #pragma warning(disable : 4267 4018)
 
@@ -27,6 +26,8 @@ SListCtrl::SListCtrl()
     , m_bHotTrack(FALSE)
 {
     m_bClipClient = TRUE;
+    m_evtSet.addEvent(EventLCSelChanging::EventID);
+    m_evtSet.addEvent(EventLCSelChanged::EventID);
 }
 
 SListCtrl::~SListCtrl()
@@ -69,8 +70,8 @@ BOOL SListCtrl::CreateChildren(pugi::xml_node xmlNode)
     strPos.Format(L"0,0,-0,%d",m_nHeaderHeight);
     m_pHeader->SetAttribute(L"pos",strPos,TRUE);
 
-    m_pHeader->subscribeEvent(NM_HDSIZECHANGING, Subscriber(&SListCtrl::OnHeaderSizeChanging,this));
-    m_pHeader->subscribeEvent(NM_HDSWAP, Subscriber(&SListCtrl::OnHeaderSwap,this));
+    m_pHeader->subscribeEvent(EventHeaderItemChanging::EventID, Subscriber(&SListCtrl::OnHeaderSizeChanging,this));
+    m_pHeader->subscribeEvent(EventHeaderItemSwap::EventID, Subscriber(&SListCtrl::OnHeaderSwap,this));
 
     return TRUE;
 }
@@ -626,17 +627,12 @@ int SListCtrl::GetTopIndex() const
 
 void SListCtrl::NotifySelChange(int nOldSel, int nNewSel)
 {
-    DUINMLBSELCHANGE nms;
-    nms.hdr.code     = NM_LBSELCHANGING;
-    nms.hdr.hDuiWnd = m_hSWnd;
-    nms.hdr.idFrom   = GetID();
-    nms.hdr.pszNameFrom=GetName();
-    nms.nOldSel      = nOldSel;
-    nms.nNewSel      = nNewSel;
-    nms.uHoverID     = 0;
+    EventLCSelChanging evt1(this);
+    evt1.nOldSel=nOldSel;
+    evt1.nNewSel=nNewSel;
 
-    if (S_OK != FireEvent((LPSNMHDR)&nms))
-        return;
+    FireEvent(evt1);
+    if(evt1.bCancel) return;
 
     m_nSelectItem = nNewSel;
     if (nOldSel != -1)
@@ -645,9 +641,10 @@ void SListCtrl::NotifySelChange(int nOldSel, int nNewSel)
     if (m_nSelectItem != -1)
         RedrawItem(m_nSelectItem);
 
-    nms.hdr.idFrom = GetID();
-    nms.hdr.code   = NM_LBSELCHANGED;
-    FireEvent((LPSNMHDR)&nms);            
+    EventLCSelChanged evt2(this);
+    evt2.nOldSel=nOldSel;
+    evt2.nNewSel=nNewSel;
+    FireEvent(evt2);
 }
 
 BOOL SListCtrl::OnScroll(BOOL bVertical, UINT uCode, int nPos)

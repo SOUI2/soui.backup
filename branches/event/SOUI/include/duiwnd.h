@@ -12,8 +12,9 @@
 #include "DuiContainer-i.h"
 #include "duimsgcracker.h"
 
-#include "duiwndnotify.h"
 #include "gdialpha.h"
+#include "event/EventSubscriber.h"
+#include "event/events.h"
 #include "event/EventSet.h"
 #include <OCIdl.h>
 #include "DuiLayout.h"
@@ -165,7 +166,6 @@ public:
 
     //////////////////////////////////////////////////////////////////////////
     // Method Define
-
     // Get align
     UINT GetTextAlign();    
     // Get position type
@@ -385,7 +385,27 @@ public:
     virtual SWND SwndFromPoint(CPoint ptHitTest, BOOL bOnlyText);
 
     virtual LRESULT FireEvent(EventArgs &evt);
+    
+    bool subscribeEvent(const DWORD dwEventID, const SlotFunctorBase & subscriber)
+    {
+        return m_evtSet.subscribeEvent(dwEventID,subscriber);
+    }
 
+    bool unsubscribeEvent( const DWORD dwEventID, const SlotFunctorBase & subscriber )
+    {
+        return m_evtSet.unsubscribeEvent(dwEventID,subscriber);
+    }
+    
+    bool isEventMuted(void) const
+    {
+        return m_evtSet.isMuted();
+    }
+
+    void    setEventMute(bool bMute)
+    {
+        return m_evtSet.setMutedState(bMute);
+    }
+    
     virtual UINT OnGetDlgCode();
 
     virtual BOOL IsTabStop();

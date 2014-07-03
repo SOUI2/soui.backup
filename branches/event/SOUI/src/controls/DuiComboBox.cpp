@@ -35,14 +35,14 @@ void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     SetMsgHandled(FALSE);
 }
 
-LRESULT CComboEdit::FireEvent( LPSNMHDR pnms )
+LRESULT CComboEdit::FireEvent(EventArgs & evt)
 {
-    //转发richedit的txNotify消息
-    if(pnms->code==NM_RICHEDIT_NOTIFY)
-    {
-        pnms->idFrom=GetOwner()->GetID();
+    if(evt.GetEventID()==EVT_RE_NOTIFY)
+    {//转发richedit的txNotify消息
+        evt.idFrom=GetOwner()->GetID();
+        evt.nameFrom=GetOwner()->GetName();
     }
-    return __super::FireEvent(pnms);
+    return __super::FireEvent(evt);
 }
 
 
@@ -62,8 +62,8 @@ CDuiComboBoxBase::CDuiComboBoxBase(void)
     m_style.SetAttribute(L"align",L"left",TRUE);
     m_style.SetAttribute(L"valign",L"middle",TRUE);
 
-    addEvent(NM_CBSELCHANGE);
-    addEvent(NM_RICHEDIT_NOTIFY);
+    m_evtSet.addEvent(EventCBSelChange::EventID);
+    m_evtSet.addEvent(EventRENotify::EventID);
 }
 
 CDuiComboBoxBase::~CDuiComboBoxBase(void)
@@ -302,13 +302,13 @@ void CDuiComboBoxBase::OnDestroy()
     __super::OnDestroy();
 }
 
-LRESULT CDuiComboBoxBase::FireEvent( LPSNMHDR pnms )
+LRESULT CDuiComboBoxBase::FireEvent(EventArgs &evt)
 {
-    if(pnms->idFrom == IDC_DROPDOWN_LIST)
+    if(evt.idFrom == IDC_DROPDOWN_LIST)
     {
         ASSERT(m_pDropDownWnd);
         const MSG *pMsg=m_pDropDownWnd->GetCurrentMessage();
-        if(pnms->code==NM_LBSELCHANGED)
+        if(evt.GetEventID()==EventLBSelChanged::EventID)
         {
             OnSelChanged();
             if(pMsg->message != WM_KEYDOWN)
@@ -316,17 +316,13 @@ LRESULT CDuiComboBoxBase::FireEvent( LPSNMHDR pnms )
             return 0;
         }
     }
-    return __super::DuiNotify(pnms);
+    return __super::FireEvent(evt);
 }
 
 void CDuiComboBoxBase::OnSelChanged()
 {
-    DUINMHDR nms;
-    nms.code=NM_CBSELCHANGE;
-    nms.hDuiWnd=m_hSWnd;
-    nms.idFrom=GetID();
-    nms.pszNameFrom=GetName();
-    FireEvent(&nms);
+    EventCBSelChange evt(this);
+    FireEvent(evt);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -416,9 +412,9 @@ void SComboBox::OnSelChanged()
     if(m_pEdit)
     {
         SStringT strText=GetLBText(m_pListBox->GetCurSel());
-        m_pEdit->setMutedState(true);
+        m_pEdit->setEventMute(true);
         m_pEdit->SetWindowText(DUI_CT2W(strText));
-        m_pEdit->setMutedState(false);
+        m_pEdit->setEventMute(false);
     }
     Invalidate();
     __super::OnSelChanged();
@@ -539,9 +535,9 @@ void SComboBoxEx::OnSelChanged()
     if(m_pEdit)
     {
         SStringT strText=GetLBText(iSel);
-        m_pEdit->setMutedState(true);
+        m_pEdit->setEventMute(true);
         m_pEdit->SetWindowText(DUI_CT2W(strText));
-        m_pEdit->setMutedState(false);
+        m_pEdit->setEventMute(false);
     }
     Invalidate();
     __super::OnSelChanged();

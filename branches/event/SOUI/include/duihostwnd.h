@@ -155,7 +155,7 @@ protected:
     // CDuiContainer
 
     /*virtual */
-    LRESULT OnDuiNotify(LPSNMHDR pHdr);
+    LRESULT OnFireEvent(EventArgs &evt);
 
     /*virtual */
     CRect GetContainerRect();
@@ -228,10 +228,10 @@ protected:
     void UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha);
 protected:
 
-    SOUI_NOTIFY_MAP_BEGIN()
-        SOUI_NOTIFY_ID_COMMAND(IDOK, OnOK)
-        SOUI_NOTIFY_ID_COMMAND(IDCANCEL, OnClose)
-    SOUI_NOTIFY_MAP_END()    
+//     SOUI_NOTIFY_MAP_BEGIN()
+//         SOUI_NOTIFY_ID_COMMAND(IDOK, OnOK)
+//         SOUI_NOTIFY_ID_COMMAND(IDCANCEL, OnClose)
+//     SOUI_NOTIFY_MAP_END()    
 
     BEGIN_MSG_MAP_EX(CDuiHostWnd)
         MSG_WM_SIZE(OnSize)
@@ -260,7 +260,7 @@ protected:
         MSG_WM_GETMINMAXINFO(OnGetMinMaxInfo)
         MESSAGE_HANDLER_EX(UM_MSGFILTER,OnMsgFilter)
         MSG_WM_CLOSE(OnClose)
-        MSG_SOUI_NOTIFY()
+//         MSG_SOUI_NOTIFY()
         REFLECT_NOTIFY_CODE(NM_CUSTOMDRAW)
     END_MSG_MAP()
 };

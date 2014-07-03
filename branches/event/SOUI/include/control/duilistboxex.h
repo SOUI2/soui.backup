@@ -70,7 +70,6 @@ public:
     //自动修改pt的位置为相对当前项的偏移量
     int HitTest(CPoint &pt);
 
-    BOOL IsVirtual(){return m_bVirtual;}
 protected:
     virtual void OnItemSetCapture(SItemPanel *pItem,BOOL bCapture);
     virtual BOOL OnItemGetRect(SItemPanel *pItem,CRect &rcItem);
@@ -129,8 +128,6 @@ protected:
     int        m_iHoverItem;
     int        m_iScrollSpeed;
 
-    SItemPanel    * m_pTemplPanel;    //虚拟列表使用的DUI模板
-    int        m_nItems;                    //虚拟列表中记录列表项
     pugi::xml_document m_xmlTempl;        ////列表模板XML
     SItemPanel    *    m_pCapturedFrame;
     ISkinObj * m_pItemSkin;
