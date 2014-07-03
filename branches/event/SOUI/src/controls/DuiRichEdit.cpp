@@ -845,7 +845,7 @@ HRESULT SRichEdit::OnTxNotify( DWORD iNotify,LPVOID pv )
     nms.hdr.pszNameFrom=GetName();
     nms.iNotify=iNotify;
     nms.pv=pv;
-    return DuiNotify((LPSNMHDR)&nms);
+    return FireEvent((LPSNMHDR)&nms);
 }
 //////////////////////////////////////////////////////////////////////////
 //    richedit interfaces
@@ -1086,7 +1086,7 @@ enum{
 
 void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
 {
-    if(NotifyContextMenu(point)) return;//用户自己响应右键
+    if(FireCtxMenu(point)) return;//用户自己响应右键
     SetFocus();
     //弹出默认编辑窗菜单
     pugi::xml_node xmlMenu=DuiSystem::getSingleton().GetEditMenuTemplate().first_child();

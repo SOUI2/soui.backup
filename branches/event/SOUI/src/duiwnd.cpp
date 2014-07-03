@@ -109,7 +109,7 @@ SWindow::SWindow()
 #endif
 {
     ClearLayoutState();
-    addEvent(NM_COMMAND);
+    m_evtSet.addEvent(EventCmd::EventID);
 }
 
 SWindow::~SWindow()
@@ -796,14 +796,13 @@ void SWindow::BringWindowToTop()
     pParent->InsertChild(this);
 }
 
-LRESULT SWindow::DuiNotify(LPSNMHDR pnms)
+LRESULT SWindow::FireEvent(EventArgs &evt)
 {
-    EventArgs args(pnms,this);
-    FireEvent(pnms->code,args);
-    if(args.handled != 0) return 0;
+    m_evtSet.FireEvent(evt);
+    if(evt.handled != 0) return 0;
 
-    if(GetOwner()) return GetOwner()->DuiNotify(pnms);
-    return GetContainer()->OnDuiNotify(pnms);
+    if(GetOwner()) return GetOwner()->FireEvent(evt);
+    return GetContainer()->OnFireEvent(evt);
 }
 
 LRESULT SWindow::OnWindowPosChanged(LPRECT lpRcContainer)
@@ -1149,13 +1148,13 @@ void SWindow::OnLButtonUp(UINT nFlags,CPoint pt)
     }
     else if (GetID() || GetName())
     {
-        NotifyCommand();
+        FireCommand();
     }
 }
 
 void SWindow::OnRButtonDown( UINT nFlags, CPoint point )
 {
-    NotifyContextMenu(point);
+    FireCtxMenu(point);
 }
 
 void SWindow::OnMouseHover(WPARAM wParam, CPoint ptPos)
@@ -1766,27 +1765,17 @@ BOOL SWindow::AnimateWindow(DWORD dwTime,DWORD dwFlags )
     }
 }
 
-LRESULT SWindow::NotifyCommand()
+LRESULT SWindow::FireCommand()
 {
-    DUINMCOMMAND nms;
-    nms.hdr.hDuiWnd=m_hSWnd;
-    nms.hdr.code = NM_COMMAND;
-    nms.hdr.idFrom = GetID();
-    nms.hdr.pszNameFrom=GetName();
-    nms.uItemData = GetUserData();
-    return DuiNotify((LPSNMHDR)&nms);
+    EventCmd evt(this);
+    return FireEvent(evt);
 }
 
-LRESULT SWindow::NotifyContextMenu( CPoint pt )
+LRESULT SWindow::FireCtxMenu( CPoint pt )
 {
-    DUINMCONTEXTMENU nms;
-    nms.hdr.hDuiWnd=m_hSWnd;
-    nms.hdr.code = NM_CONTEXTMENU;
-    nms.hdr.idFrom = GetID();
-    nms.hdr.pszNameFrom=GetName();
-    nms.uItemData = GetUserData();
-    nms.pt=pt;
-    return DuiNotify((LPSNMHDR)&nms);
+    EventCtxMenu evt(this);
+    evt.pt=pt;
+    return  FireEvent(evt);
 }
 
 }//namespace SOUI

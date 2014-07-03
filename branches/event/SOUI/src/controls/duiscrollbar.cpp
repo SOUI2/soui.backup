@@ -386,7 +386,7 @@ LRESULT SScrollBar::NotifySbCode(UINT uCode,int nPos)
     nms.pScrollBar=this;
     nms.nPos=nPos;
     nms.bVertical=IsVertical();
-    return DuiNotify((LPSNMHDR)&nms);
+    return FireEvent((LPSNMHDR)&nms);
 }
 
 }//namespace SOUI

@@ -295,38 +295,6 @@ void STabCtrl::OnMouseMove( UINT nFlags, CPoint point )
             break;
         }
     }
-
-    if (m_nHoverTabItem != nOldHover)
-    {
-        if(nOldHover!=-1)
-        {
-            GetItemRect(nOldHover, rcItem);
-            if(nOldHover!=m_nCurrentPage)
-                InvalidateRect(rcItem);
-            DUINMTABITEMLEAVE nms;
-            nms.hdr.code=NM_TAB_ITEMLEAVE;
-            nms.hdr.hDuiWnd=m_hSWnd;
-            nms.hdr.idFrom=GetID();
-            nms.hdr.pszNameFrom=GetName();
-            nms.iItem=nOldHover;
-            nms.rcItem=rcItem;
-            DuiNotify((LPSNMHDR)&nms);
-        }
-        if(m_nHoverTabItem!=-1)
-        {
-            GetItemRect(m_nHoverTabItem, rcItem);
-            if(m_nHoverTabItem!=m_nCurrentPage)
-                InvalidateRect(rcItem);
-            DUINMTABITEMHOVER nms;
-            nms.hdr.code = NM_TAB_ITEMHOVER;
-            nms.hdr.hDuiWnd=m_hSWnd;
-            nms.hdr.idFrom = GetID();
-            nms.hdr.pszNameFrom=GetName();
-            nms.iItem = m_nHoverTabItem;
-            nms.rcItem = rcItem;
-            DuiNotify((LPSNMHDR)&nms);
-        }
-    }
 }
 
 void STabCtrl::OnDestroy()
@@ -353,7 +321,7 @@ BOOL STabCtrl::SetCurSel( int nIndex )
     nms.uTabItemIDOld = nOldPage;
     nms.bCancel = FALSE;
 
-    LRESULT lRet = DuiNotify((LPSNMHDR)&nms);
+    LRESULT lRet = FireEvent((LPSNMHDR)&nms);
 
     if (nms.bCancel)
         return FALSE;
@@ -415,7 +383,7 @@ BOOL STabCtrl::SetCurSel( int nIndex )
 
         delete pTabSlider;
     }
-    DuiNotify((LPSNMHDR)&nms2);
+    FireEvent((LPSNMHDR)&nms2);
     if(IsVisible(TRUE))
     {
         Invalidate();

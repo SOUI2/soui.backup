@@ -98,7 +98,7 @@ protected:
 
     LRESULT OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam );
 
-    virtual LRESULT DuiNotify(LPSNMHDR pnms);
+    virtual LRESULT FireEvent(LPSNMHDR pnms);
     virtual BOOL OnSetCursor(const CPoint &pt);
     virtual void OnViewOriginChanged( CPoint ptOld,CPoint ptNew );
 

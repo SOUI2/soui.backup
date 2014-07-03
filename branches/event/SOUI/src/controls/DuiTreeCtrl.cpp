@@ -949,7 +949,7 @@ void STreeCtrl::ItemLButtonUp(HSTREEITEM hItem, UINT nFlags,CPoint pt)
             nms.hdr.idFrom = GetID();
             nms.hdr.pszNameFrom=GetName();
             nms.uItemData = hItem; 
-            DuiNotify((LPSNMHDR)&nms);
+            FireEvent((LPSNMHDR)&nms);
         }
 
         m_nItemPushDownBtn = DuiTVIBtn_None;
@@ -1046,7 +1046,7 @@ void STreeCtrl::NotifyParent()
     if(m_hSelItem)
     RedrawItem(m_hSelItem);
 
-    DuiNotify((LPSNMHDR)&nms);
+    FireEvent((LPSNMHDR)&nms);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1155,7 +1155,7 @@ void STreeCtrl::OnLButtonDbClick(UINT nFlags,CPoint pt)
         nms.uMsg=WM_LBUTTONDBLCLK;
         nms.wParam=nFlags;
         nms.lParam=MAKELPARAM(pt.x,pt.y);
-        DuiNotify((LPSNMHDR)&nms);
+        FireEvent((LPSNMHDR)&nms);
     }
 }
 

@@ -35,14 +35,14 @@ void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     SetMsgHandled(FALSE);
 }
 
-LRESULT CComboEdit::DuiNotify( LPSNMHDR pnms )
+LRESULT CComboEdit::FireEvent( LPSNMHDR pnms )
 {
     //转发richedit的txNotify消息
     if(pnms->code==NM_RICHEDIT_NOTIFY)
     {
         pnms->idFrom=GetOwner()->GetID();
     }
-    return __super::DuiNotify(pnms);
+    return __super::FireEvent(pnms);
 }
 
 
@@ -302,7 +302,7 @@ void CDuiComboBoxBase::OnDestroy()
     __super::OnDestroy();
 }
 
-LRESULT CDuiComboBoxBase::DuiNotify( LPSNMHDR pnms )
+LRESULT CDuiComboBoxBase::FireEvent( LPSNMHDR pnms )
 {
     if(pnms->idFrom == IDC_DROPDOWN_LIST)
     {
@@ -326,7 +326,7 @@ void CDuiComboBoxBase::OnSelChanged()
     nms.hDuiWnd=m_hSWnd;
     nms.idFrom=GetID();
     nms.pszNameFrom=GetName();
-    DuiNotify(&nms);
+    FireEvent(&nms);
 }
 
 //////////////////////////////////////////////////////////////////////////

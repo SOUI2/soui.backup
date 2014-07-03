@@ -393,7 +393,7 @@ void SListBoxEx::OnDrawItem(IRenderTarget *pRT, CRect & rc, int iItem)
         m_pTemplPanel->UnlockUpdate();
 
         LockUpdate();
-        GetContainer()->OnDuiNotify((LPSNMHDR)&nms);
+        GetContainer()->OnFireEvent((LPSNMHDR)&nms);
         UnlockUpdate();
         m_pTemplPanel->Draw(pRT,rc);
     }else
@@ -460,7 +460,7 @@ void SListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
         }
     }
 
-    if(S_OK!=DuiNotify((LPSNMHDR)&nms)) return ;
+    if(S_OK!=FireEvent((LPSNMHDR)&nms)) return ;
 
     m_iSelItem=nNewSel;
     if(nOldSel!=-1)
@@ -476,7 +476,7 @@ void SListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
 
     nms.hdr.idFrom=GetID();
     nms.hdr.code=NM_LBSELCHANGED;
-    DuiNotify((LPSNMHDR)&nms);
+    FireEvent((LPSNMHDR)&nms);
 }
 
 void SListBoxEx::OnMouseLeave()

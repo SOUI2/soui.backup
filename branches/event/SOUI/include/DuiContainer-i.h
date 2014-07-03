@@ -15,11 +15,11 @@ class SOUI_EXP ISwndContainer : public ITimelineHandler
 {
     friend class SWindow;
 public:
-    virtual BOOL RegisterDragDrop(SWND hDuiWnd,IDropTarget *pDropTarget)=NULL;
+    virtual BOOL RegisterDragDrop(SWND swnd,IDropTarget *pDropTarget)=NULL;
 
-    virtual BOOL RevokeDragDrop(SWND hDuiWnd)=NULL;
+    virtual BOOL RevokeDragDrop(SWND swnd)=NULL;
 
-    virtual LRESULT OnDuiNotify(LPSNMHDR pHdr)=NULL;
+    virtual LRESULT OnFireEvent(EventArgs &evt)=NULL;
 
     virtual HWND GetHostHwnd()=NULL;
 

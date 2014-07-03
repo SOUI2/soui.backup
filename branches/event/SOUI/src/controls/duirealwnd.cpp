@@ -60,7 +60,7 @@ LRESULT SRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
         nms.hdr.idFrom = GetID();
         nms.hdr.pszNameFrom=GetName();
         nms.pRealWnd=this;
-        DuiNotify((LPSNMHDR)&nms);
+        FireEvent((LPSNMHDR)&nms);
     }
     return lRet;
 }
@@ -81,7 +81,7 @@ void SRealWnd::OnDestroy()
         nms.hdr.idFrom = GetID();
         nms.hdr.pszNameFrom=GetName();
         nms.pRealWnd=this;
-        DuiNotify((LPSNMHDR)&nms);
+        FireEvent((LPSNMHDR)&nms);
     }
 }
 
@@ -118,7 +118,7 @@ BOOL SRealWnd::InitRealWnd()
     nms.hdr.idFrom = GetID();
     nms.hdr.pszNameFrom=GetName();
     nms.pRealWnd=this;
-    HWND hWnd =(HWND) DuiNotify((LPSNMHDR)&nms);
+    HWND hWnd =(HWND) FireEvent((LPSNMHDR)&nms);
 
     if(::IsWindow(hWnd))
     {
@@ -138,7 +138,7 @@ BOOL SRealWnd::InitRealWnd()
         nms.hdr.pszNameFrom=GetName();
         nms.pRealWnd=this;
 
-        BOOL bFocus=(BOOL)DuiNotify((LPSNMHDR)&nms);
+        BOOL bFocus=(BOOL)FireEvent((LPSNMHDR)&nms);
         if(bFocus)
         {
             ::SetFocus(m_hRealWnd);

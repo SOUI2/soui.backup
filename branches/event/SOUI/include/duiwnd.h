@@ -106,7 +106,6 @@ typedef enum tagGDUI_CODE
 
 class SOUI_EXP SWindow : public SObject
     , public SMsgHandleState
-    , public SEventSet
     , public TObjRefImpl2<IObjRef,SWindow>
 {
     SOUI_CLASS_NAME(SWindow, L"window")
@@ -123,6 +122,8 @@ public:
         LPARAM lParam;
     } SWNDMSG,*PSWNDMSG;
 protected:
+    SEventSet   m_evtSet;
+
     SWND m_hSWnd;
     ISwndContainer *m_pContainer;
     SWindow *m_pOwner;
@@ -383,7 +384,7 @@ public:
 
     virtual SWND SwndFromPoint(CPoint ptHitTest, BOOL bOnlyText);
 
-    virtual LRESULT DuiNotify(LPSNMHDR pnms);
+    virtual LRESULT FireEvent(EventArgs &evt);
 
     virtual UINT OnGetDlgCode();
 
@@ -537,8 +538,8 @@ public:
     void BeforePaintEx(IRenderTarget *pRT);
 
 protected:
-    LRESULT NotifyCommand();
-    LRESULT NotifyContextMenu(CPoint pt);
+    LRESULT FireCommand();
+    LRESULT FireCtxMenu(CPoint pt);
 
     //************************************
     // Method:    GetChildrenLayoutRect :返回子窗口的排版空间

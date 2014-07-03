@@ -118,7 +118,7 @@ class SWindow;
     return func(((LPDUINMCONTEXTMENU)pnmh)->pt);                                        \
 }                                                                               \
 
-
+/*
 // Command Notify
 #define NM_COMMAND  1
 typedef struct _DUINMCOMMAND
@@ -352,7 +352,7 @@ typedef struct tagDUINMCALENDARSELECTDAY
 
 
 #define NM_CBSELCHANGE 50
-
+*/
 //////////////////////////////////////////////////////////////////////////
 //  internal notify message
 

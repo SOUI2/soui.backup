@@ -33,7 +33,7 @@ public:
     //////////////////////////////////////////////////////////////////////////
     virtual LRESULT DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
-    virtual LRESULT OnDuiNotify(LPSNMHDR pHdr);
+    virtual LRESULT OnFireEvent(LPSNMHDR pHdr);
 
     virtual CRect GetContainerRect();
 

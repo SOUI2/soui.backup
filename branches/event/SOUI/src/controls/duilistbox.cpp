@@ -408,7 +408,7 @@ void SListBox::NotifySelChange( int nOldSel,int nNewSel)
     nms.nNewSel=nNewSel;
     nms.uHoverID=0;
 
-    if(S_OK!=DuiNotify((LPSNMHDR)&nms)) return ;
+    if(S_OK!=FireEvent((LPSNMHDR)&nms)) return ;
     
     m_iSelItem=nNewSel;
     if(nOldSel!=-1)
@@ -419,7 +419,7 @@ void SListBox::NotifySelChange( int nOldSel,int nNewSel)
 
     nms.hdr.idFrom=GetID();
     nms.hdr.code=NM_LBSELCHANGED;
-    DuiNotify((LPSNMHDR)&nms);
+    FireEvent((LPSNMHDR)&nms);
 }
 
 void SListBox::OnPaint(IRenderTarget * pRT)

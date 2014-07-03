@@ -87,7 +87,7 @@ protected:
      * 
      * Describe  此函数是消息响应函数
      */   
-    virtual LRESULT DuiNotify(LPSNMHDR pnms);
+    virtual LRESULT FireEvent(LPSNMHDR pnms);
 
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_MOUSEHOVER(OnMouseHover)
@@ -201,7 +201,7 @@ protected:
      * 
      * Describe  此函数是消息响应函数
      */ 
-    virtual LRESULT DuiNotify(LPSNMHDR pnms);
+    virtual LRESULT FireEvent(LPSNMHDR pnms);
     
 protected:
 

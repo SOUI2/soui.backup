@@ -1317,6 +1317,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\event\Events.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\event\EventSet.h"
 				>
 			</File>

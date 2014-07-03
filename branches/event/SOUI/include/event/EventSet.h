@@ -43,7 +43,7 @@ namespace SOUI
         {
             // execute all subscribers, updating the 'handled' state as we go
             for (UINT i=0; i<m_evtSlots.GetCount(); i++)
-                if ((*m_evtSlots[i])(args.m_pSender,args.m_pnms))
+                if ((*m_evtSlots[i])(&args))
                     ++args.handled;
         }
 
@@ -123,7 +123,7 @@ namespace SOUI
 
         bool unsubscribeEvent( const DWORD dwEventID, const SlotFunctorBase & subscriber );
 
-        void FireEvent(const DWORD dwEventID, EventArgs& args);
+        void FireEvent(EventArgs& args);
 
             /*!
     \brief

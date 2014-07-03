@@ -210,7 +210,7 @@ namespace SOUI
                         nm.hdr.pszNameFrom=GetName();
                         nm.iOldIndex=LOWORD(m_dwHitTest);
                         nm.iNewIndex=nPos;
-                        DuiNotify((LPSNMHDR)&nm);
+                        FireEvent((LPSNMHDR)&nm);
                     }
                     m_dwHitTest=HitTest(pt);
                     m_dwDragTo=-1;
@@ -228,7 +228,7 @@ namespace SOUI
                     nm.hdr.idFrom=GetID();
                     nm.hdr.pszNameFrom=GetName();
                     nm.iItem=LOWORD(m_dwHitTest);
-                    DuiNotify((LPSNMHDR)&nm);
+                    FireEvent((LPSNMHDR)&nm);
                 }
             }
         }else if(m_dwHitTest!=-1)
@@ -240,7 +240,7 @@ namespace SOUI
             nm.hdr.pszNameFrom=GetName();
             nm.iItem=LOWORD(m_dwHitTest);
             nm.nWidth=m_arrItems[nm.iItem].cx;
-            DuiNotify((LPSNMHDR)&nm);
+            FireEvent((LPSNMHDR)&nm);
         }
         m_bDragging=FALSE;
         ReleaseCapture();
@@ -292,7 +292,7 @@ namespace SOUI
                 nm.hdr.idFrom=GetID();
                 nm.hdr.pszNameFrom=GetName();
                 nm.nWidth=cxNew;
-                DuiNotify((LPSNMHDR)&nm);
+                FireEvent((LPSNMHDR)&nm);
             }
         }else
         {

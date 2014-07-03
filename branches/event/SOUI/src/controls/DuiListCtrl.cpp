@@ -635,7 +635,7 @@ void SListCtrl::NotifySelChange(int nOldSel, int nNewSel)
     nms.nNewSel      = nNewSel;
     nms.uHoverID     = 0;
 
-    if (S_OK != DuiNotify((LPSNMHDR)&nms))
+    if (S_OK != FireEvent((LPSNMHDR)&nms))
         return;
 
     m_nSelectItem = nNewSel;
@@ -647,7 +647,7 @@ void SListCtrl::NotifySelChange(int nOldSel, int nNewSel)
 
     nms.hdr.idFrom = GetID();
     nms.hdr.code   = NM_LBSELCHANGED;
-    DuiNotify((LPSNMHDR)&nms);            
+    FireEvent((LPSNMHDR)&nms);            
 }
 
 BOOL SListCtrl::OnScroll(BOOL bVertical, UINT uCode, int nPos)
@@ -701,12 +701,12 @@ void SListCtrl::OnSize(UINT nType, CSize size)
     UpdateHeaderCtrl();
 }
 
-bool SListCtrl::OnHeaderClick(SWindow* pSender, LPSNMHDR pNmhdr)
+bool SListCtrl::OnHeaderClick(EventArgs *pEvt)
 {
     return true;
 }
 
-bool SListCtrl::OnHeaderSizeChanging(SWindow* pSender, LPSNMHDR pNmhdr)
+bool SListCtrl::OnHeaderSizeChanging(EventArgs *pEvt)
 {
     UpdateScrollBar();
     InvalidateRect(GetListRect());
@@ -714,7 +714,7 @@ bool SListCtrl::OnHeaderSizeChanging(SWindow* pSender, LPSNMHDR pNmhdr)
     return true;
 }
 
-bool SListCtrl::OnHeaderSwap(SWindow* pSender, LPSNMHDR pNmhdr)
+bool SListCtrl::OnHeaderSwap(EventArgs *pEvt)
 {
     InvalidateRect(GetListRect());
 
