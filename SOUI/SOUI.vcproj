@@ -829,10 +829,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\duihostwnd.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\controls\DuiHotKeyCtrl.cpp"
 				>
 			</File>
@@ -1079,6 +1075,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\SHostDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\shostwnd.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\SimpleWnd.cpp"
 				>
 				<FileConfiguration
@@ -1197,10 +1201,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\duihostwnd.h"
-				>
-			</File>
-			<File
 				RelativePath=".\include\res.mgr\duiimgpool.h"
 				>
 			</File>
@@ -1214,10 +1214,6 @@
 			</File>
 			<File
 				RelativePath=".\include\duimsgcracker.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\duimsgfilter.h"
 				>
 			</File>
 			<File
@@ -1373,11 +1369,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\SHostDialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\shostwnd.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\SimpleWnd.h"
 				>
 			</File>
 			<File
 				RelativePath=".\include\skinobj-i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\smsgloop.h"
 				>
 			</File>
 			<File

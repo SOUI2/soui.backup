@@ -20,7 +20,7 @@ namespace SOUI
         return TRUE;
     }
 
-    int SMessageBoxImpl::MessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType )
+    INT_PTR SMessageBoxImpl::MessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType )
     {
         if(!s_xmlMsgTemplate) return ::MessageBox(hWnd,lpText,lpCaption,uType);
 

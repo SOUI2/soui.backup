@@ -5,11 +5,11 @@
 
 namespace SOUI
 {
-    class SOUI_EXP DuiResProviderMgr : public IResProvider
+    class SOUI_EXP SResProviderMgr : public IResProvider
     {
     public:
-        DuiResProviderMgr(void);
-        ~DuiResProviderMgr(void);
+        SResProviderMgr(void);
+        ~SResProviderMgr(void);
         
         void AddResProvider(IResProvider * pResProvider);
         

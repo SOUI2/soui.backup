@@ -9,6 +9,7 @@ namespace SOUI
 {
 
     template<> CDuiTextServiceHelper * Singleton<CDuiTextServiceHelper>::ms_Singleton=0;
+    template<> SRicheditMenuDef * Singleton<SRicheditMenuDef>::ms_Singleton=0;
 
     class CDuiRicheditDropTarget : public IDropTarget
     {
@@ -1085,7 +1086,7 @@ void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
     if(FireCtxMenu(point)) return;//用户自己响应右键
     SetFocus();
     //弹出默认编辑窗菜单
-    pugi::xml_node xmlMenu=DuiSystem::getSingleton().GetEditMenuTemplate().first_child();
+    pugi::xml_node xmlMenu=SRicheditMenuDef::getSingleton().GetMenuXml();
     if(xmlMenu)
     {
         SMenu menu;

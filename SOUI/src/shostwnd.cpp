@@ -1,6 +1,6 @@
 #include "duistd.h"
 
-#include "duihostwnd.h"
+#include "shostwnd.h"
 #include "DuiTipCtrl.h"
 #include "DuiSystem.h"
 #include "mybuffer.h"
@@ -15,12 +15,9 @@ namespace SOUI
 //////////////////////////////////////////////////////////////////////////
 // CDuiHostWnd
 //////////////////////////////////////////////////////////////////////////
-CDuiHostWnd::CDuiHostWnd( LPCTSTR pszResName /*= NULL*/ )
+SHostWnd::SHostWnd( LPCTSTR pszResName /*= NULL*/ )
 : SwndContainerImpl(this)
 , m_strXmlLayout(pszResName)
-, m_uRetCode(0)
-, m_nIdleCount(0)
-, m_bExitModalLoop(FALSE)
 , m_bTrackFlag(FALSE)
 , m_bCaretShowing(FALSE)
 , m_bCaretActive(FALSE)
@@ -32,7 +29,11 @@ CDuiHostWnd::CDuiHostWnd( LPCTSTR pszResName /*= NULL*/ )
     SetContainer(this);
 }
 
-HWND CDuiHostWnd::Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight,LPVOID lpParam)
+SHostWnd::~SHostWnd()
+{
+}
+
+HWND SHostWnd::Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight,LPVOID lpParam)
 {
     if (NULL != m_hWnd)
         return m_hWnd;
@@ -52,12 +53,12 @@ HWND CDuiHostWnd::Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWO
     return hWnd;
 }
 
-HWND CDuiHostWnd::Create(HWND hWndParent,int x,int y,int nWidth,int nHeight)
+HWND SHostWnd::Create(HWND hWndParent,int x,int y,int nWidth,int nHeight)
 {
     return Create(hWndParent, NULL,WS_POPUP | WS_CLIPCHILDREN | WS_TABSTOP,0,x,y,nWidth,nHeight,0);
 }
 
-BOOL CDuiHostWnd::SetXml(LPCTSTR pszXmlName)
+BOOL SHostWnd::SetXml(LPCTSTR pszXmlName)
 {
     pugi::xml_document xmlDoc;
     if(!LOADXML(xmlDoc,pszXmlName,RT_LAYOUT)) return FALSE;
@@ -65,7 +66,7 @@ BOOL CDuiHostWnd::SetXml(LPCTSTR pszXmlName)
     return InitFromXml(xmlDoc.child(L"UIFRAME"));
 }
 
-BOOL CDuiHostWnd::SetXml(LPCWSTR lpszXml,int nLen)
+BOOL SHostWnd::SetXml(LPCWSTR lpszXml,int nLen)
 {
     pugi::xml_document xmlDoc;
     if(!xmlDoc.load_buffer(lpszXml,nLen,pugi::parse_default,pugi::encoding_utf16)) return FALSE;
@@ -73,7 +74,7 @@ BOOL CDuiHostWnd::SetXml(LPCWSTR lpszXml,int nLen)
     return InitFromXml(xmlDoc.child(L"UIFRAME"));
 }
 
-BOOL CDuiHostWnd::InitFromXml(pugi::xml_node xmlNode )
+BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
 {
     if(!xmlNode) return FALSE;
 
@@ -134,135 +135,7 @@ BOOL CDuiHostWnd::InitFromXml(pugi::xml_node xmlNode )
     return TRUE;
 }
 
-UINT_PTR CDuiHostWnd::DoModal(HWND hWndParent/* = NULL*/, LPRECT rect /*= NULL*/)
-{
-    BOOL bEnableParent = FALSE;
-
-    if (NULL == hWndParent)
-    {
-        hWndParent = DuiThreadActiveWndMgr::GetActive();
-        if (NULL == hWndParent)
-            hWndParent = ::GetActiveWindow();
-    }
-
-    if (hWndParent && hWndParent != ::GetDesktopWindow() && ::IsWindowEnabled(hWndParent))
-    {
-        ::EnableWindow(hWndParent, FALSE);
-        bEnableParent = TRUE;
-    }
-
-    m_bExitModalLoop = FALSE;
-
-    CRect rc;
-    if(rect) rc=*rect;
-    if(!IsWindow()) Create(hWndParent, rc.left,rc.top,rc.Width(),rc.Height());
-    if (!IsWindow())
-    {
-        ::EnableWindow(hWndParent, TRUE);
-        return 0;
-    }
-
-    HWND hWndLastActive = DuiThreadActiveWndMgr::SetActive(m_hWnd);
-
-    if(INITCODE_NOTSHOW!=CSimpleWnd::SendMessage(WM_INITDIALOG, (WPARAM)m_hWnd))
-    {//根据INITDIALOG的返回值还判断是不是将窗口显示出来。返回INITCODE_NOTSHOW时窗口不显示。
-    
-        if(GetExStyle()&WS_EX_TOOLWINDOW)
-            ::ShowWindow(m_hWnd,SW_SHOWNOACTIVATE);
-        else
-            ::ShowWindow(m_hWnd,SW_SHOWNORMAL);
-    }
-
-    _ModalMessageLoop();
-
-    m_bExitModalLoop = FALSE;
-
-    // From MFC
-    // hide the window before enabling the parent, etc.
-
-    if ( IsWindow() )
-    {
-        SetWindowPos(
-            NULL, 0, 0, 0, 0,
-            SWP_HIDEWINDOW | SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
-    }
-
-    if (bEnableParent)
-    {
-        ::EnableWindow(hWndParent, TRUE);
-    }
-
-    if (hWndParent != NULL && ::GetActiveWindow() == m_hWnd)
-        ::SetActiveWindow(hWndParent);
-
-    DuiThreadActiveWndMgr::SetActive(hWndLastActive);
-
-    if ( IsWindow() )
-        DestroyWindow();
-
-    return m_uRetCode;
-}
-
-
-void CDuiHostWnd::EndDialog(UINT uRetCode)
-{
-    m_uRetCode = uRetCode;
-
-    m_bExitModalLoop = TRUE;
-
-    // DestroyWindow里面直接Send了WM_DESTROY，所以不会跑到DoModal的消息循环里，所以有了下面那行代码
-    // DestroyWindow();
-
-    // 这句非常重要，可以让DoModal消息循环再跑一次，防止卡死在GetMessage，泪奔~~~~~~~
-    ::PostThreadMessage(::GetCurrentThreadId(), WM_NULL, 0, 0);
-}
-
-
-BOOL CDuiHostWnd::OnIdle(int nCount)
-{
-    return FALSE;
-}
-
-void CDuiHostWnd::_ModalMessageLoop()
-{
-    BOOL bRet;
-    MSG msg;
-
-    for(;;)
-    {
-        if (::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE))
-        {
-            if (WM_QUIT == msg.message)
-                break;
-        }
-        else
-        {
-            OnIdle(m_nIdleCount++);
-        }
-
-        if (m_bExitModalLoop || NULL == m_hWnd || !::IsWindow(m_hWnd))
-            break;
-
-        bRet = ::GetMessage(&msg, NULL, 0, 0);
-
-        if (bRet == -1)
-        {
-            continue;   // error, don't process
-        }
-        else if (!bRet)
-        {
-            break;   // WM_QUIT, exit message loop
-        }
-        if (!_PreTranslateMessage(&msg))
-        {
-            ::TranslateMessage(&msg);
-            ::DispatchMessage(&msg);
-        }
-    }
-}
-
-
-void CDuiHostWnd::_Redraw()
+void SHostWnd::_Redraw()
 {
     m_bNeedAllRepaint = TRUE;
     m_bNeedRepaint = TRUE;
@@ -274,22 +147,7 @@ void CDuiHostWnd::_Redraw()
         m_dummyWnd.Invalidate(FALSE);
 }
 
-BOOL CDuiHostWnd::_PreTranslateMessage(MSG* pMsg)
-{
-    if(m_pTipCtrl  && m_pTipCtrl->IsWindow()) m_pTipCtrl->RelayEvent(pMsg);
-
-    // loop backwards
-    for(int i = m_aMsgFilter.GetCount() - 1; i >= 0; i--)
-    {
-        CDuiMessageFilter* pMessageFilter = m_aMsgFilter[i];
-        if(pMessageFilter != NULL && pMessageFilter->PreTranslateMessage(pMsg))
-            return TRUE;
-    }
-    return FALSE;   // not translated
-}
-
-
-void CDuiHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
+void SHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
 {
     if((m_bTranslucent && !uFlags) && !m_bNeedAllRepaint && !m_bNeedRepaint) return;
     if (m_bNeedAllRepaint)
@@ -302,7 +160,7 @@ void CDuiHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
 
     if (m_bNeedRepaint)
     {
-        DuiThreadActiveWndMgr::EnterPaintLock();
+        SThreadActiveWndMgr::EnterPaintLock();
         CAutoRefPtr<IFont> defFont,oldFont;
         defFont = DuiFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT);
         m_memRT->SelectObject(defFont,(IRenderObj**)&oldFont);
@@ -333,7 +191,7 @@ void CDuiHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
         m_memRT->SelectObject(oldFont);
 
         m_bNeedRepaint = FALSE;
-        DuiThreadActiveWndMgr::LeavePaintLock();
+        SThreadActiveWndMgr::LeavePaintLock();
     }
 
     CRect rc;
@@ -341,26 +199,26 @@ void CDuiHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
     UpdateHost(dc,rc);
 }
 
-void CDuiHostWnd::OnPaint(CDCHandle dc)
+void SHostWnd::OnPaint(CDCHandle dc)
 {
     CPaintDC dc1(m_hWnd);
     OnPrint(m_bTranslucent?NULL:dc1.m_hDC, 0);
 }
 
-BOOL CDuiHostWnd::OnEraseBkgnd(CDCHandle dc)
+BOOL SHostWnd::OnEraseBkgnd(CDCHandle dc)
 {
     return TRUE;
 }
 
 
-int CDuiHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
+int SHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
     GETRENDERFACTORY->CreateRenderTarget(&m_memRT,0,0);
     GETRENDERFACTORY->CreateRegion(&m_rgnInvalidate);
     return 0;
 }
 
-void CDuiHostWnd::OnDestroy()
+void SHostWnd::OnDestroy()
 {
     SWindow::SendMessage(WM_DESTROY);
 
@@ -376,7 +234,7 @@ void CDuiHostWnd::OnDestroy()
     }
 }
 
-void CDuiHostWnd::OnSize(UINT nType, CSize size)
+void SHostWnd::OnSize(UINT nType, CSize size)
 {
     if(IsIconic()) return;
 
@@ -395,7 +253,7 @@ void CDuiHostWnd::OnSize(UINT nType, CSize size)
     SetMsgHandled(FALSE);//交给其它处理器继续处理
 }
 
-void CDuiHostWnd::OnMouseMove(UINT nFlags, CPoint point)
+void SHostWnd::OnMouseMove(UINT nFlags, CPoint point)
 {
     if (!m_bTrackFlag)
     {
@@ -410,23 +268,23 @@ void CDuiHostWnd::OnMouseMove(UINT nFlags, CPoint point)
     OnMouseEvent(WM_MOUSEMOVE,nFlags,MAKELPARAM(point.x,point.y));
 }
 
-void CDuiHostWnd::OnMouseLeave()
+void SHostWnd::OnMouseLeave()
 {
     m_bTrackFlag = FALSE;
     DoFrameEvent(WM_MOUSELEAVE,0,0);
 }
 
-void CDuiHostWnd::OnLButtonDown(UINT nFlags, CPoint point)
+void SHostWnd::OnLButtonDown(UINT nFlags, CPoint point)
 {
     DoFrameEvent(WM_LBUTTONDOWN,nFlags,MAKELPARAM(point.x,point.y));
 }
 
-void CDuiHostWnd::OnLButtonDblClk(UINT nFlags, CPoint point)
+void SHostWnd::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
     DoFrameEvent(WM_LBUTTONDBLCLK,nFlags,MAKELPARAM(point.x,point.y));
 }
 
-BOOL CDuiHostWnd::OnSetCursor(HWND hwnd, UINT nHitTest, UINT message)
+BOOL SHostWnd::OnSetCursor(HWND hwnd, UINT nHitTest, UINT message)
 {
     if(hwnd!=m_hWnd) return FALSE;
     if(nHitTest==HTCLIENT)
@@ -439,7 +297,7 @@ BOOL CDuiHostWnd::OnSetCursor(HWND hwnd, UINT nHitTest, UINT message)
     return DefWindowProc()!=0;
 }
 
-void CDuiHostWnd::OnTimer(UINT_PTR idEvent)
+void SHostWnd::OnTimer(UINT_PTR idEvent)
 {
     STimerID sTimerID((DWORD)idEvent);
     if(sTimerID.bDuiTimer)
@@ -462,7 +320,7 @@ void CDuiHostWnd::OnTimer(UINT_PTR idEvent)
     }
 }
 
-void CDuiHostWnd::OnSwndTimer( char cTimerID )
+void SHostWnd::OnSwndTimer( char cTimerID )
 {
     if(cTimerID==TIMER_CARET)
     {
@@ -475,7 +333,7 @@ void CDuiHostWnd::OnSwndTimer( char cTimerID )
     }
 }
 
-void CDuiHostWnd::DrawCaret(CPoint pt)
+void SHostWnd::DrawCaret(CPoint pt)
 {
     CAutoRefPtr<IRenderTarget> pRTCaret;
     GETRENDERFACTORY->CreateRenderTarget(&pRTCaret,0,0);
@@ -497,7 +355,7 @@ void CDuiHostWnd::DrawCaret(CPoint pt)
     }
 }
 
-LRESULT CDuiHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT SHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     DoFrameEvent(uMsg,wParam,lParam);    //将鼠标消息转发到DuiWindow处理
 
@@ -525,7 +383,7 @@ LRESULT CDuiHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-LRESULT CDuiHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT SHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     if(uMsg==WM_SYSKEYDOWN || uMsg==WM_SYSKEYUP)
     {
@@ -541,14 +399,14 @@ LRESULT CDuiHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
     return lRet;
 }
 
-BOOL CDuiHostWnd::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+BOOL SHostWnd::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
     ScreenToClient(&pt);
     return DoFrameEvent(WM_MOUSEWHEEL,MAKEWPARAM(nFlags,zDelta),MAKELPARAM(pt.x,pt.y))!=0;
 }
 
 
-void CDuiHostWnd::OnActivate( UINT nState, BOOL bMinimized, HWND wndOther )
+void SHostWnd::OnActivate( UINT nState, BOOL bMinimized, HWND wndOther )
 {
     if(nState==WA_ACTIVE)
         ::SetFocus(m_hWnd);
@@ -556,7 +414,7 @@ void CDuiHostWnd::OnActivate( UINT nState, BOOL bMinimized, HWND wndOther )
         ::SetFocus(NULL);
 }
 
-BOOL CDuiHostWnd::OnFireEvent(EventArgs &evt)
+BOOL SHostWnd::OnFireEvent(EventArgs &evt)
 {
     BOOL bRet=FALSE;
     if(evt.GetEventID()>=EVT_INTERNAL_FIRST && evt.GetEventID()<=EVT_INTERNAL_LAST)
@@ -592,17 +450,17 @@ BOOL CDuiHostWnd::OnFireEvent(EventArgs &evt)
     return bRet;
 }
 
-CRect CDuiHostWnd::GetContainerRect()
+CRect SHostWnd::GetContainerRect()
 {
     return m_rcWindow;
 }
 
-HWND CDuiHostWnd::GetHostHwnd()
+HWND SHostWnd::GetHostHwnd()
 {
     return m_hWnd;
 }
 
-IRenderTarget * CDuiHostWnd::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
+IRenderTarget * SHostWnd::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
 {
     IRenderTarget *pRT=NULL;
     GETRENDERFACTORY->CreateRenderTarget(&pRT,rc.Width(),rc.Height());
@@ -622,7 +480,7 @@ IRenderTarget * CDuiHostWnd::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
     return pRT;
 }
 
-void CDuiHostWnd::OnReleaseRenderTarget(IRenderTarget * pRT,const CRect &rc,DWORD gdcFlags)
+void SHostWnd::OnReleaseRenderTarget(IRenderTarget * pRT,const CRect &rc,DWORD gdcFlags)
 {
     if(!(gdcFlags & OLEDC_NODRAW))
     {
@@ -638,7 +496,7 @@ void CDuiHostWnd::OnReleaseRenderTarget(IRenderTarget * pRT,const CRect &rc,DWOR
     pRT->Release();
 }
 
-void CDuiHostWnd::UpdateHost(CDCHandle dc, const CRect &rcInvalid )
+void SHostWnd::UpdateHost(CDCHandle dc, const CRect &rcInvalid )
 {
     HDC hdc=m_memRT->GetDC(0);
     if(m_bTranslucent)
@@ -657,7 +515,7 @@ void CDuiHostWnd::UpdateHost(CDCHandle dc, const CRect &rcInvalid )
     m_memRT->ReleaseDC(hdc);
 }
 
-void CDuiHostWnd::OnRedraw(const CRect &rc)
+void SHostWnd::OnRedraw(const CRect &rc)
 {
     if(!IsWindow()) return;
     
@@ -675,7 +533,7 @@ void CDuiHostWnd::OnRedraw(const CRect &rc)
     }
 }
 
-BOOL CDuiHostWnd::OnReleaseSwndCapture()
+BOOL SHostWnd::OnReleaseSwndCapture()
 {
     if(!__super::OnReleaseSwndCapture()) return FALSE;
     ::ReleaseCapture();
@@ -686,19 +544,19 @@ BOOL CDuiHostWnd::OnReleaseSwndCapture()
     return TRUE;
 }
 
-SWND CDuiHostWnd::OnSetSwndCapture(SWND hDuiWnd)
+SWND SHostWnd::OnSetSwndCapture(SWND hDuiWnd)
 {
     CSimpleWnd::SetCapture();
     return __super::OnSetSwndCapture(hDuiWnd);
 }
 
-BOOL CDuiHostWnd::IsTranslucent()
+BOOL SHostWnd::IsTranslucent()
 {
     return m_bTranslucent;
 }
 
 
-BOOL CDuiHostWnd::SwndCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
+BOOL SHostWnd::SwndCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
 {
     ::CreateCaret(m_hWnd,hBmp,nWidth,nHeight);
     if(m_bmpCaret)
@@ -733,7 +591,7 @@ BOOL CDuiHostWnd::SwndCreateCaret( HBITMAP hBmp,int nWidth,int nHeight )
     return TRUE;
 }
 
-BOOL CDuiHostWnd::SwndShowCaret( BOOL bShow )
+BOOL SHostWnd::SwndShowCaret( BOOL bShow )
 {
     m_bCaretShowing=bShow;
 
@@ -758,7 +616,7 @@ BOOL CDuiHostWnd::SwndShowCaret( BOOL bShow )
    return TRUE;
 }
 
-BOOL CDuiHostWnd::SwndSetCaretPos( int x,int y )
+BOOL SHostWnd::SwndSetCaretPos( int x,int y )
 {
     if(!SetCaretPos(x,y)) return FALSE;
     if(m_bCaretShowing && m_bCaretActive)
@@ -776,14 +634,14 @@ BOOL CDuiHostWnd::SwndSetCaretPos( int x,int y )
 }
 
 
-BOOL CDuiHostWnd::SwndUpdateWindow()
+BOOL SHostWnd::SwndUpdateWindow()
 {
     if(m_bTranslucent) UpdateWindow(m_dummyWnd.m_hWnd);
     else UpdateWindow(m_hWnd);
     return TRUE;
 }
 
-LRESULT CDuiHostWnd::OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam)
+LRESULT SHostWnd::OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam)
 {
     if (bCalcValidRects && (CSimpleWnd::GetStyle() & WS_POPUP))
     {
@@ -809,7 +667,7 @@ LRESULT CDuiHostWnd::OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam)
     return 0;
 }
 
-void CDuiHostWnd::OnGetMinMaxInfo(LPMINMAXINFO lpMMI)
+void SHostWnd::OnGetMinMaxInfo(LPMINMAXINFO lpMMI)
 {
     HMONITOR hMonitor = ::MonitorFromWindow(m_hWnd, MONITOR_DEFAULTTONULL);
 
@@ -829,12 +687,12 @@ void CDuiHostWnd::OnGetMinMaxInfo(LPMINMAXINFO lpMMI)
     }
 }
 
-BOOL CDuiHostWnd::OnNcActivate(BOOL bActive)
+BOOL SHostWnd::OnNcActivate(BOOL bActive)
 {
     return TRUE;
 }
 
-UINT CDuiHostWnd::OnWndNcHitTest(CPoint point)
+UINT SHostWnd::OnWndNcHitTest(CPoint point)
 {
     if (m_bResizable)
     {
@@ -875,42 +733,14 @@ UINT CDuiHostWnd::OnWndNcHitTest(CPoint point)
     return HTCLIENT;
 }
 
-void CDuiHostWnd::OnClose()
+void SHostWnd::OnClose()
 {
-    EndDialog(IDCANCEL);
-}
-
-void CDuiHostWnd::OnOK()
-{
-    EndDialog(IDOK);
-}
-
-LRESULT CDuiHostWnd::OnMsgFilter(UINT uMsg,WPARAM wParam,LPARAM lParam)
-{
-    CDuiMessageFilter *pMsgFilter=(CDuiMessageFilter*)lParam;
-    if(wParam)
-    {
-        m_aMsgFilter.Add(pMsgFilter);
-    }
-    else
-    {
-        UINT i = 0;
-        while(i < m_aMsgFilter.GetCount())
-        {
-            if(m_aMsgFilter.GetAt(i) == pMsgFilter)
-            {
-                m_aMsgFilter.RemoveAt(i);
-                break;
-            }
-            i++;
-        }
-    }
-    return 0;
+    CSimpleWnd::PostMessage(WM_QUIT);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // IDuiRealWnd
-HWND CDuiHostWnd::OnRealWndCreate(SRealWnd *pRealWnd)
+HWND SHostWnd::OnRealWndCreate(SRealWnd *pRealWnd)
 {
     CRect rcWindow;
     UINT uCmdID=pRealWnd->GetID();
@@ -922,12 +752,12 @@ HWND CDuiHostWnd::OnRealWndCreate(SRealWnd *pRealWnd)
                           m_hWnd,(HMENU)(ULONG_PTR)uCmdID,0,NULL);
 }
 
-BOOL CDuiHostWnd::OnRealWndInit( SRealWnd *pRealWnd )
+BOOL SHostWnd::OnRealWndInit( SRealWnd *pRealWnd )
 {
     return FALSE;
 }
 
-void CDuiHostWnd::OnRealWndDestroy(SRealWnd *pRealWnd)
+void SHostWnd::OnRealWndDestroy(SRealWnd *pRealWnd)
 {
     if(::IsWindow(pRealWnd->GetRealHwnd(FALSE)))
     {
@@ -941,7 +771,7 @@ void CDuiHostWnd::OnRealWndDestroy(SRealWnd *pRealWnd)
 }
 
 
-void CDuiHostWnd::OnRealWndSize( SRealWnd *pRealWnd )
+void SHostWnd::OnRealWndSize( SRealWnd *pRealWnd )
 {
     if(::IsWindow(pRealWnd->GetRealHwnd(FALSE)))
     {
@@ -951,17 +781,17 @@ void CDuiHostWnd::OnRealWndSize( SRealWnd *pRealWnd )
     }
 }
 
-void CDuiHostWnd::OnSetFocus( HWND wndOld )
+void SHostWnd::OnSetFocus( HWND wndOld )
 {
     DoFrameEvent(WM_SETFOCUS,0,0);
 }
 
-void CDuiHostWnd::OnKillFocus( HWND wndFocus )
+void SHostWnd::OnKillFocus( HWND wndFocus )
 {
     DoFrameEvent(WM_KILLFOCUS,0,0);
 }
 
-void CDuiHostWnd::UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha)
+void SHostWnd::UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha)
 {
     ASSERT(IsTranslucent());
     HDC hdc=pRT->GetDC(0);
@@ -979,7 +809,7 @@ BOOL _BitBlt(IRenderTarget *pRTDst,IRenderTarget * pRTSrc,CRect rcDst,CPoint ptS
     return S_OK == pRTDst->BitBlt(&rcDst,pRTSrc,ptSrc.x,ptSrc.y,SRCCOPY);
 }
 
-BOOL CDuiHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
+BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
 {
     if(!IsTranslucent())
     {
@@ -1155,19 +985,19 @@ BOOL CDuiHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
     }
 }
 
-void CDuiHostWnd::OnSetCaretValidateRect( LPCRECT lpRect )
+void SHostWnd::OnSetCaretValidateRect( LPCRECT lpRect )
 {
     m_rcValidateCaret=lpRect;
 }
 
-BOOL CDuiHostWnd::RegisterTimelineHandler( ITimelineHandler *pHandler )
+BOOL SHostWnd::RegisterTimelineHandler( ITimelineHandler *pHandler )
 {
     BOOL bRet = SwndContainerImpl::RegisterTimelineHandler(pHandler);
     if(bRet && m_lstTimelineHandler.GetCount()==1) SWindow::SetTimer(TIMER_NEXTFRAME,10);
     return bRet;
 }
 
-BOOL CDuiHostWnd::UnregisterTimelineHandler( ITimelineHandler *pHandler )
+BOOL SHostWnd::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 {
     BOOL bRet=SwndContainerImpl::UnregisterTimelineHandler(pHandler);
     if(bRet && m_lstTimelineHandler.IsEmpty()) SWindow::KillTimer(TIMER_NEXTFRAME);

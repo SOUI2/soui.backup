@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "duimsgfilter.h"
 #include "DuiThreadActiveWndMgr.h"
 
 #include "duiframe.h"
@@ -26,11 +25,11 @@
 namespace SOUI
 {
 
-    class CDuiHostWnd;
+    class SHostWnd;
     class CDummyWnd : public CSimpleWnd
     {
     public:
-        CDummyWnd(CDuiHostWnd* pOwner):m_pOwner(pOwner)
+        CDummyWnd(SHostWnd* pOwner):m_pOwner(pOwner)
         {
         }
 
@@ -40,12 +39,12 @@ namespace SOUI
             MSG_WM_PAINT(OnPaint)
         END_MSG_MAP()
     private:
-        CDuiHostWnd *m_pOwner;
+        SHostWnd *m_pOwner;
     };
 
 class CDuiTipCtrl;
 
-class SOUI_EXP CDuiHostWnd
+class SOUI_EXP SHostWnd
     : public CSimpleWnd
     , public SwndContainerImpl
     , public SRootWindow
@@ -53,8 +52,8 @@ class SOUI_EXP CDuiHostWnd
 {
     friend class CDummyWnd;
 public:
-    CDuiHostWnd(LPCTSTR pszResName = NULL);
-    virtual ~CDuiHostWnd() {}
+    SHostWnd(LPCTSTR pszResName = NULL);
+    virtual ~SHostWnd();
 
 public:
     SRootWindow * GetRoot(){return this;}
@@ -67,19 +66,14 @@ public:
 
     BOOL SetXml(LPCWSTR lpszXml,int nLen);
 
-
-    UINT_PTR DoModal(HWND hWndParent = NULL, LPRECT rect = NULL);
-
     BOOL AnimateHostWindow(DWORD dwTime,DWORD dwFlags);
-
-    virtual void EndDialog(UINT uRetCode);
 protected:
     BOOL InitFromXml(pugi::xml_node xmlNode);
+    void _Redraw();
     
-    UINT m_uRetCode;
-    BOOL m_bExitModalLoop;
+    CDummyWnd            m_dummyWnd;    //半透明窗口使用的一个响应WM_PAINT消息的窗口
+    
     SStringT m_strXmlLayout;
-    int m_nIdleCount;
 
     // Tracking flag
     BOOL m_bTrackFlag;
@@ -100,19 +94,7 @@ protected:
     CAutoRefPtr<IRegion>    m_rgnInvalidate;
     CAutoRefPtr<IRenderTarget> m_memRT;
     
-protected:
-    virtual BOOL OnIdle(int nCount);
-
-    void _ModalMessageLoop();
-
-    void _Redraw();
-
-    virtual BOOL _PreTranslateMessage(MSG* pMsg);
-
-    SArray<CDuiMessageFilter*> m_aMsgFilter;
-
-private:
-    CDummyWnd            m_dummyWnd;    //半透明窗口使用的一个响应WM_PAINT消息的窗口
+    
 protected:
     //////////////////////////////////////////////////////////////////////////
     // Message handler
@@ -206,7 +188,7 @@ protected:
     virtual BOOL OnRealWndInit(SRealWnd *pRealWnd);
     virtual void OnRealWndDestroy(SRealWnd *pRealWnd);
     virtual void OnRealWndSize(SRealWnd *pRealWnd);
-
+    
     LRESULT OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam);
 
     void OnGetMinMaxInfo(LPMINMAXINFO lpMMI);
@@ -219,21 +201,15 @@ protected:
     void OnKillFocus(HWND wndFocus);
 
     void OnClose();
-    void OnOK();
-
-    LRESULT OnMsgFilter(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
     void OnSetCaretValidateRect( LPCRECT lpRect );
 
     void UpdateHost(CDCHandle dc,const CRect &rc);
     void UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha);
 protected:
-    EVENT_MAP_BEGIN()
-        EVENT_ID_COMMAND(IDOK,OnOK)
-        EVENT_ID_COMMAND(IDCANCEL,OnClose)
-    EVENT_MAP_END()
+    virtual BOOL _HandleEvent(SOUI::EventArgs *pEvt){return FALSE;}
 
-    BEGIN_MSG_MAP_EX(CDuiHostWnd)
+    BEGIN_MSG_MAP_EX(SHostWnd)
         MSG_WM_SIZE(OnSize)
         MSG_WM_PRINT(OnPrint)
         MSG_WM_PAINT(OnPaint)
@@ -258,7 +234,6 @@ protected:
         MSG_WM_NCCALCSIZE(OnNcCalcSize)
         MSG_WM_NCHITTEST(OnWndNcHitTest)
         MSG_WM_GETMINMAXINFO(OnGetMinMaxInfo)
-        MESSAGE_HANDLER_EX(UM_MSGFILTER,OnMsgFilter)
         MSG_WM_CLOSE(OnClose)
         REFLECT_NOTIFY_CODE(NM_CUSTOMDRAW)
     END_MSG_MAP()

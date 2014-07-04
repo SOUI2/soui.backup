@@ -8,7 +8,7 @@
 *********************************************************************/
 #pragma once
 
-#include "duihostwnd.h"
+#include "shostdialog.h"
 
 namespace SOUI
 {
@@ -24,17 +24,19 @@ namespace SOUI
     #define NAME_MSGBOX_BTN3            L"button3rd"    //第3个按钮ID
 
     //msgbox的消息处理对象，如果需要更加个性化的msgbox，可以派生该类。
-    class SOUI_EXP SMessageBoxImpl:public CDuiHostWnd
+    class SOUI_EXP SMessageBoxImpl:public SHostDialog
     {
     public:
-        int MessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType );
+        SMessageBoxImpl():SHostDialog(NULL){}
+        
+        INT_PTR MessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType );
 
         static BOOL SetMsgTemplate(pugi::xml_node xmlNode);
     protected:
         //可以重载该方法来显示自定义的图标
         virtual BOOL SetIcon(UINT uType);
 
-        void OnBtnClick(UINT uID)
+        void OnBtnClick(int uID)
         {
             EndDialog(uID);
         }
@@ -46,7 +48,7 @@ namespace SOUI
         EVENT_MAP_END()
 
         BEGIN_MSG_MAP_EX(SMessageBoxImpl)
-            CHAIN_MSG_MAP(CDuiHostWnd)
+            CHAIN_MSG_MAP(SHostWnd)
             REFLECT_NOTIFICATIONS_EX()
         END_MSG_MAP()
     };

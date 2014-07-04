@@ -49,7 +49,7 @@ int DuiSkinPool::LoadSkins(LPCWSTR strOwnerName)
                 continue;
 
             ASSERT(!HasKey(strSkinName));
-            ISkinObj *pSkin=DuiSystem::getSingleton().CreateSkinByName(strTypeName);
+            ISkinObj *pSkin=SApplication::getSingleton().CreateSkinByName(strTypeName);
             if(pSkin)
             {
                 pSkin->InitFromXml(xmlSkin);

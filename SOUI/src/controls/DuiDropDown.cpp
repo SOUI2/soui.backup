@@ -21,12 +21,12 @@ namespace SOUI
         ,m_bClick(FALSE)
         ,m_uExitCode(IDCANCEL)
     {
-        MsgFilterRegister(m_pOwner->GetDropDownOwner()->GetContainer()->GetHostHwnd());
+        SApplication::getSingleton().GetMessageLoop()->AddMessageFilter(this);
     }
 
     SDropDownWnd::~SDropDownWnd()
     {
-        MsgFilterUnregister(m_pOwner->GetDropDownOwner()->GetContainer()->GetHostHwnd());
+        SApplication::getSingleton().GetMessageLoop()->RemoveMessageFilter(this);
     }
 
     void SDropDownWnd::OnFinalMessage(HWND hWnd)
@@ -74,7 +74,7 @@ namespace SOUI
             HWND hWnd=m_hWnd;
             CRect rcWnd;
             GetClientRect(&rcWnd);
-            CDuiHostWnd::ProcessWindowMessage(m_hWnd,WM_LBUTTONUP,nFlags,MAKELPARAM(point.x,point.y),lRes);
+            SHostWnd::ProcessWindowMessage(m_hWnd,WM_LBUTTONUP,nFlags,MAKELPARAM(point.x,point.y),lRes);
             if(::IsWindow(hWnd) && !rcWnd.PtInRect(point))
                 EndDropDown();//强制关闭弹出窗口
         } 
@@ -112,10 +112,7 @@ namespace SOUI
             return FALSE;
         }
         if(!(pMsg->message>=WM_KEYFIRST && pMsg->message<=WM_KEYLAST) && pMsg->message!=WM_MOUSEWHEEL) return FALSE;
-        if(!_PreTranslateMessage(pMsg))
-        {
-            CSimpleWnd::SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
-        }
+        CSimpleWnd::SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
         return TRUE;
     }
 

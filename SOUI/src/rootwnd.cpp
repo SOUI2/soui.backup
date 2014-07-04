@@ -37,7 +37,7 @@ namespace SOUI
         __super::OnDestroy();
         if(!m_strName.IsEmpty())
         {
-            DuiSystem::getSingleton().FreeSkins(m_strName);    //free skin only used in the host window
+            SApplication::getSingleton().FreeSkins(m_strName);    //free skin only used in the host window
         }
         Cleanup();
     }
@@ -50,7 +50,7 @@ namespace SOUI
         if(!m_strName.IsEmpty())
         {
             xmlNode.remove_attribute(L"name");
-            DuiSystem::getSingleton().LoadSkins(m_strName);    //load skin only used in the host window
+            SApplication::getSingleton().LoadSkins(m_strName);    //load skin only used in the host window
         }
         SObject::InitFromXml(xmlNode);
         return CreateChildren(xmlNode);
