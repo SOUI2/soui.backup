@@ -6,7 +6,7 @@
 // #include "UIHander.h"
 #include "wtlhelper/whwindow.h"
 
-class CMainDlg : public SHostWnd
+class CMainDlg : public SHostDialog
 // 	,public CWHRoundRectFrameHelper<CMainDlg>	//需要圆角窗口时启用
 {
 public:
@@ -45,7 +45,11 @@ public:
 			FindChildByID(2)->SetVisible(TRUE);
 		}
 	}
-
+    void OnBtnMsgBox()
+    {
+        SMessageBox(NULL,L"this is a message box",L"haha",MB_OK|MB_ICONEXCLAMATION);
+    }
+    
 	int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	void OnShowWindow(BOOL bShow, UINT nStatus);
 
@@ -61,6 +65,7 @@ protected:
 		//演示屏蔽edit_1140的右键菜单
 		return TRUE;
 	}
+	
 
 	EVENT_MAP_BEGIN()
 		EVENT_ID_COMMAND(1, OnClose)
@@ -68,6 +73,7 @@ protected:
 		EVENT_ID_COMMAND(3, OnRestore)
 		EVENT_ID_COMMAND(5, OnMinimize)
 		EVENT_NAME_CONTEXTMENU(L"edit_1140",OnEditMenu)
+		EVENT_NAME_COMMAND(L"btn_msgbox",OnBtnMsgBox)
 	EVENT_MAP_END()	
 
 	BEGIN_MSG_MAP_EX(CMainDlg)

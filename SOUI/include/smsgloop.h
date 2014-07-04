@@ -86,7 +86,7 @@ namespace SOUI
         virtual BOOL PreTranslateMessage(MSG* pMsg)
         {
             // loop backwards
-            for(size_t i = m_aMsgFilter.GetCount() - 1; i >= 0; i--)
+            for(int i = (int)m_aMsgFilter.GetCount() - 1; i >= 0; i--)
             {
                 SMessageFilter* pMessageFilter = m_aMsgFilter[i];
                 if(pMessageFilter != NULL && pMessageFilter->PreTranslateMessage(pMsg))
