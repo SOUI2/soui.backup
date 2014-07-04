@@ -1,6 +1,6 @@
 // dllmain.cpp : DllMain 的实现。
 
-#include "duistd.h"
+#include "souistd.h"
 
 #if defined(USING_ATL) && defined(DLL_SOUI)
 //只有使用ATL的动态库版本才需要DllMain

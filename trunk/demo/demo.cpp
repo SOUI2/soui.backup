@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "DuiSystem.h" 
+#include "SApp.h" 
 
 #ifdef _DEBUG
 #include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
@@ -57,14 +57,14 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     *lpInsertPos = _T('\0');   
     _tcscat( szCurrentDir, _T("\\..\\demo\\skin") );
 
-    DuiResProviderFiles *pResProvider=new DuiResProviderFiles;
+    SResProviderFiles *pResProvider=new SResProviderFiles;
     if(!pResProvider->Init(szCurrentDir))
     {
         ASSERT(0);
         return 1;
     }
 #else
-    DuiResProviderPE *pResProvider = new DuiResProviderPE(hInstance);
+    SResProviderPE *pResProvider = new SResProviderPE(hInstance);
 #endif
     
     theApp->AddResProvider(pResProvider);

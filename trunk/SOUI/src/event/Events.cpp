@@ -1,7 +1,7 @@
-#include "duistd.h"
+#include "souistd.h"
 
-#include "duiwnd.h"
-#include "duiItempanel.h"
+#include "core/SWnd.h"
+#include "core/SItempanel.h"
 #include "event/events.h"
 
 namespace SOUI

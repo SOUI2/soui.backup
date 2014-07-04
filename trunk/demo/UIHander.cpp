@@ -119,7 +119,7 @@ bool Evt_Test2(SWindow * pSender, LPDUINMHDR pNmhdr)
 	return true;
 }
 
-bool CUIHander::Evt_Test(SWindow * pSender, LPDUINMHDR pNmhdr)
+bool CUIHander::Evt_Test(EventArgs *pEvt)
 {
 // 	pSender->subscribeEvent(NM_COMMAND,Subscriber(Evt_Test2));
 // 	pSender->unsubscribeEvent(NM_COMMAND,Subscriber(&CUIHander::Evt_Test,this));
@@ -199,7 +199,7 @@ void CUIHander::OnRepEditSel()
 
 }
 
-LRESULT CUIHander::OnEditNotify( LPDUINMHDR pNHdr )
+LRESULT CUIHander::OnEditNotify( EventArgs *pEvt )
 {
 	LPDUIRICHEDITNOTIFY pEditNotify=(LPDUIRICHEDITNOTIFY)pNHdr;
 	if(pEditNotify->iNotify==EN_CHANGE)
@@ -209,14 +209,14 @@ LRESULT CUIHander::OnEditNotify( LPDUINMHDR pNHdr )
 }
 
 //演示阻止combobox继续发送selchanged消息。
-LRESULT CUIHander::OnComboListSelChanging( LPDUINMHDR pNHdr )
+LRESULT CUIHander::OnComboListSelChanging( EventArgs *pEvt )
 {
 	LPDUINMLBSELCHANGE pLbSelChange=(LPDUINMLBSELCHANGE)pNHdr;
 	return pLbSelChange->uHoverID==3?S_FALSE:S_OK;//点击删除按钮时下拉窗口不关闭
 }
   
 //演示combobox选择改变的事件响应
-LRESULT CUIHander::OnComboListSelChanged( LPDUINMHDR pNHdr )
+LRESULT CUIHander::OnComboListSelChanged( EventArgs *pEvt )
 {
 	LPDUINMLBSELCHANGE pLbSelChange=(LPDUINMLBSELCHANGE)pNHdr;
 	CDuiComboBox *pCombobox=(CDuiComboBox*)m_pMainDlg->FindChildByCmdID(1310);
@@ -224,7 +224,7 @@ LRESULT CUIHander::OnComboListSelChanged( LPDUINMHDR pNHdr )
 }
 
 //演示响应combobox选项中按钮事件的响应
-LRESULT CUIHander::OnComboListItemNotify( LPDUINMHDR pNHdr )
+LRESULT CUIHander::OnComboListItemNotify( EventArgs *pEvt )
 {
 	LPDUINMITEMNOTIFY pItemNHdr=(LPDUINMITEMNOTIFY)pNHdr;
 	if(pItemNHdr->pOriginHdr->idFrom==3) 
@@ -280,14 +280,14 @@ void CUIHander::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 }
 
 //演示列表中的按钮控件的响应
-LRESULT CUIHander::OnListBtnClick( LPDUINMHDR pNHdr )
+LRESULT CUIHander::OnListBtnClick( EventArgs *pEvt )
 {
 	DUINMITEMNOTIFY *pNHdrEx=(DUINMITEMNOTIFY*)pNHdr;
 
 	return S_OK;
 }
 
-LRESULT CUIHander::OnListPredraw( LPDUINMHDR pNHdr )
+LRESULT CUIHander::OnListPredraw( EventArgs *pEvt )
 {
 	LPDUINMGETLBDISPINFO lpNHdrEx=(LPDUINMGETLBDISPINFO)pNHdr;
 	CDuiStringT str;

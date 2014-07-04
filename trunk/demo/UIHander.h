@@ -15,7 +15,7 @@ public:
 	CUIHander(CMainDlg *pMainDlg);
 	~CUIHander(void);
 	
-	bool Evt_Test(SWindow * pSender, LPSNMHDR pNmhdr);
+	bool Evt_Test(EventArgs *pEvt);
 
 protected:
 	LRESULT OnInitDialog(HWND hWnd, LPARAM lParam);
@@ -30,23 +30,23 @@ protected:
 
 	void OnTimer(UINT_PTR uEventID);
 
-	LRESULT OnEditNotify(LPSNMHDR pNHdr);
+	LRESULT OnEditNotify(EventArgs *pEvt);
 
-	LRESULT OnComboListSelChanging( LPSNMHDR pNHdr );
+	LRESULT OnComboListSelChanging(EventArgs *pEvt);
 
-	LRESULT OnComboListSelChanged(LPSNMHDR pNHdr);
+	LRESULT OnComboListSelChanged(EventArgs *pEvt);
 
-	LRESULT OnComboListItemNotify(LPSNMHDR pNHdr);
+	LRESULT OnComboListItemNotify(EventArgs *pEvt);
 
-	LRESULT OnListPredraw(LPSNMHDR pNHdr);
+	LRESULT OnListPredraw(EventArgs *pEvt);
 
 	void OnCommand(UINT uNotifyCode, int nID, HWND wndCtl);
 
-	LRESULT OnListBtnClick(LPSNMHDR pNHdr);
+	LRESULT OnListBtnClick(EventArgs *pEvt);
 
 	void OnBtnInitListClick();
 
-	bool OnListHeaderClick(SWindow * pSender, LPSNMHDR pNmhdr);
+	bool OnListHeaderClick(EventArgs *pEvt);
 	
 	void OnHideTestClick();
 

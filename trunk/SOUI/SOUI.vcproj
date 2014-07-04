@@ -51,7 +51,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="duistd.h"
+				PrecompiledHeaderThrough="souistd.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
@@ -212,7 +212,7 @@
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="duistd.h"
+				PrecompiledHeaderThrough="souistd.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
@@ -374,7 +374,7 @@
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="duistd.h"
+				PrecompiledHeaderThrough="souistd.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
@@ -514,7 +514,7 @@
 				RuntimeLibrary="0"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="duistd.h"
+				PrecompiledHeaderThrough="souistd.h"
 				BrowseInformation="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
@@ -651,7 +651,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="duistd.h"
+				PrecompiledHeaderThrough="souistd.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
@@ -769,147 +769,151 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\src\Accelerator.cpp"
+				RelativePath=".\src\core\Accelerator.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DragWnd.cpp"
+				RelativePath=".\src\helper\DragWnd.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiActiveX.cpp"
+				RelativePath=".\src\event\Events.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\activex\DuiAxContainer.cpp"
+				RelativePath=".\src\event\EventSet.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiCalendar.cpp"
+				RelativePath=".\src\core\FocusManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiCaption.cpp"
+				RelativePath=".\src\helper\MemDC.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiCmnCtrl.cpp"
+				RelativePath=".\src\helper\MenuWndHook.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\duicolor.cpp"
+				RelativePath=".\src\controls\SActiveX.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiComboBox.cpp"
+				RelativePath=".\src\SApp.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\res.mgr\DuiCSS.cpp"
+				RelativePath=".\src\activex\SAxContainer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiDateTimeEdit.cpp"
+				RelativePath=".\src\controls\SCalendar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiDropDown.cpp"
+				RelativePath=".\src\controls\SCaption.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\res.mgr\duifontpool.cpp"
+				RelativePath=".\src\controls\SCmnCtrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\duiframe.cpp"
+				RelativePath=".\src\controls\SComboBox.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiHeaderCtrl.cpp"
+				RelativePath=".\src\controls\SDateTimeEdit.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiHotKeyCtrl.cpp"
+				RelativePath=".\src\controls\SDropDown.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\res.mgr\duiimgpool.cpp"
+				RelativePath=".\src\core\SDropTargetDispatcher.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\duiItempanel.cpp"
+				RelativePath=".\src\res.mgr\SFontPool.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiLayout.cpp"
+				RelativePath=".\src\controls\SHeaderCtrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\duilistbox.cpp"
+				RelativePath=".\src\core\SHostDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\duilistboxex.cpp"
+				RelativePath=".\src\core\shostwnd.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiListCtrl.cpp"
+				RelativePath=".\src\controls\SHotKeyCtrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiMenu.cpp"
+				RelativePath=".\src\res.mgr\SImgPool.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiMessageBox.cpp"
+				RelativePath=".\src\core\SimpleWnd.cpp"
+				>
+				<FileConfiguration
+					Name="Debug_Dll|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="2"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug_Dll|x64"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="2"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\src\core\SItemPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiPanel.cpp"
+				RelativePath=".\src\controls\SListbox.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\res.mgr\DuiPools.cpp"
+				RelativePath=".\src\controls\SListboxex.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\duirealwnd.cpp"
+				RelativePath=".\src\controls\SListCtrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\res.mgr\duiresprovider.cpp"
+				RelativePath=".\src\helper\SMenu.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\res.mgr\DuiResProviderMgr.cpp"
+				RelativePath=".\src\controls\SMessageBox.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiRichEdit.cpp"
+				RelativePath=".\src\res.mgr\SObjDefAttr.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\duiscrollbar.cpp"
+				RelativePath=".\src\core\SObject.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiSkinFactoryMgr.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\res.mgr\DuiSkinPool.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\DuiSliderBar.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\controls\DuiSplitWnd.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\duistd.cpp"
+				RelativePath=".\src\souistd.cpp"
 				>
 				<FileConfiguration
 					Name="Debug_Dll|Win32"
@@ -917,6 +921,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough="souistd.h"
 						ShowIncludes="false"
 					/>
 				</FileConfiguration>
@@ -934,6 +939,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough="souistd.h"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -950,6 +956,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough="souistd.h"
 						ShowIncludes="false"
 					/>
 				</FileConfiguration>
@@ -967,6 +974,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough="souistd.h"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -983,6 +991,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough="souistd.h"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -995,122 +1004,114 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\src\res.mgr\duistringpool.cpp"
+				RelativePath=".\src\core\SPanel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\res.mgr\DuiStylePool.cpp"
+				RelativePath=".\src\res.mgr\SPools.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiSystem.cpp"
+				RelativePath=".\src\controls\SRealWnd.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiTabCtrl.cpp"
+				RelativePath=".\src\res.mgr\SResProvider.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiThreadActiveWndMgr.cpp"
+				RelativePath=".\src\res.mgr\SResProviderMgr.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiTimerEx.cpp"
+				RelativePath=".\src\controls\SRichEdit.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiTipCtrl.cpp"
+				RelativePath=".\src\core\SRootWnd.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiTreeBox.cpp"
+				RelativePath=".\src\controls\SScrollbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\controls\DuiTreeCtrl.cpp"
+				RelativePath=".\src\core\SSkinFactoryMgr.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiWindowMgr.cpp"
+				RelativePath=".\src\res.mgr\SSkinPool.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\duiwnd.cpp"
+				RelativePath=".\src\controls\SSliderBar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\DuiWndFactoryMgr.cpp"
+				RelativePath=".\src\controls\SSplitWnd.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\duiwndstyle.cpp"
+				RelativePath=".\src\res.mgr\SStringPool.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\event\Events.cpp"
+				RelativePath=".\src\res.mgr\SStylePool.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\event\EventSet.cpp"
+				RelativePath=".\src\controls\STabCtrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\FocusManager.cpp"
+				RelativePath=".\src\core\SThreadActiveWndMgr.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\MemDC.cpp"
+				RelativePath=".\src\helper\STimerEx.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\MenuWndHook.cpp"
+				RelativePath=".\src\core\STipCtrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\rootwnd.cpp"
+				RelativePath=".\src\controls\STreeBox.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\SDropTargetDispatcher.cpp"
+				RelativePath=".\src\controls\STreeCtrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\SHostDialog.cpp"
+				RelativePath=".\src\core\SWindowMgr.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\shostwnd.cpp"
+				RelativePath=".\src\core\Swnd.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\SimpleWnd.cpp"
+				RelativePath=".\src\core\SwndContainerImpl.cpp"
 				>
-				<FileConfiguration
-					Name="Debug_Dll|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="2"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug_Dll|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="2"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\src\sobject.cpp"
+				RelativePath=".\src\core\SWndFactoryMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\core\SwndLayout.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\core\SwndStyle.cpp"
 				>
 			</File>
 			<Filter
 				Name="activex"
 				>
 				<File
-					RelativePath=".\src\activex\DuiBStr.cpp"
+					RelativePath=".\src\activex\SBStr.cpp"
 					>
 				</File>
 			</Filter>
@@ -1118,7 +1119,7 @@
 				Name="pools"
 				>
 				<File
-					RelativePath=".\src\duiskin.cpp"
+					RelativePath=".\src\core\SSkin.cpp"
 					>
 				</File>
 			</Filter>
@@ -1129,7 +1130,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\include\Accelerator.h"
+				RelativePath=".\include\core\Accelerator.h"
 				>
 			</File>
 			<File
@@ -1137,91 +1138,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\auto_reset.h"
+				RelativePath=".\include\helper\auto_reset.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\color.h"
+				RelativePath=".\include\helper\color.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\DragWnd.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\control\DuiActiveX.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiAttrCrack.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\activex\DuiAxContainer.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\activex\DuiAxUtil.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\duicolor.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\atl.mini\duicomcli.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiContainer-i.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\res.mgr\DuiCSS.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\duictrls.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiDef.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\control\DuiDropDown.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\res.mgr\duifontpool.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\duiframe.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\res.mgr\duiimgpool.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\duiItempanel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiLayout.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\duimsgcracker.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiPanel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\res.mgr\DuiPools.h"
+				RelativePath=".\include\helper\DragWnd.h"
 				>
 			</File>
 			<File
@@ -1229,87 +1154,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\duires.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\res.mgr\duiresprovider-i.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\res.mgr\duiresprovider.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\res.mgr\DuiResProviderMgr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiScriptModule.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\duiskin.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiSkinFactoryMgr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\res.mgr\DuiSkinPool.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\duistd.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\res.mgr\duistringpool.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\res.mgr\DuiStylePool.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiSystem.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiThreadActiveWndMgr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiTime.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiTimerEx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiTipCtrl.h"
-				>
-			</File>
-			<File
 				RelativePath=".\include\DuiUtilities.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiWindowMgr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\duiwnd.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\DuiWndFactoryMgr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\duiwndstyle.h"
 				>
 			</File>
 			<File
@@ -1329,7 +1174,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\FocusManager.h"
+				RelativePath=".\include\core\FocusManager.h"
 				>
 			</File>
 			<File
@@ -1345,15 +1190,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\MemDC.h"
+				RelativePath=".\include\helper\MemDC.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\MenuWndHook.h"
+				RelativePath=".\include\helper\MenuWndHook.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\mybuffer.h"
+				RelativePath=".\include\core\mybuffer.h"
 				>
 			</File>
 			<File
@@ -1361,58 +1206,206 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\rootwnd.h"
+				RelativePath=".\include\control\SActiveX.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\SDropTargetDispatcher.h"
+				RelativePath=".\include\SApp.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\SHostDialog.h"
+				RelativePath=".\include\helper\SAttrCracker.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\shostwnd.h"
+				RelativePath=".\src\activex\SAxContainer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\SimpleWnd.h"
+				RelativePath=".\src\activex\SAxUtil.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\skinobj-i.h"
+				RelativePath=".\include\atl.mini\SComCli.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\smsgloop.h"
+				RelativePath=".\include\core\SDefine.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\sobject.h"
+				RelativePath=".\include\control\SDropDown.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\stree.hpp"
+				RelativePath=".\include\core\SDropTargetDispatcher.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\SFontPool.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SHostDialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SHostWnd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\SImgPool.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SimpleWnd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SItemPanel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SMsgLoop.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\SObjDefAttr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\Sobject.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\control\SouiCtrls.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\souistd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SPanel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\SPools.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\SResProvider-i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\SResProvider.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\SResProviderMgr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SRootWnd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SScriptModule-i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SSkin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SSkinFactoryMgr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SSkinobj-i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\SSkinPool.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\SStringPool.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\SStylePool.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SThreadActiveWndMgr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\helper\STime.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\helper\STimerEx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\helper\STipCtrl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\control\stree.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SWindowMgr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\Swnd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SwndContainer-i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SwndContainerImpl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SwndFactoryMgr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SwndLayout.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\helper\SwndMsgCracker.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SwndStyle.h"
 				>
 			</File>
 			<Filter
 				Name="wtl.mini"
 				>
 				<File
-					RelativePath=".\include\wtl.mini\duicoll.h"
+					RelativePath=".\include\wtl.mini\msgcrack.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\wtl.mini\duicrack.h"
+					RelativePath=".\include\wtl.mini\souicoll.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\wtl.mini\duigdi.h"
+					RelativePath=".\include\wtl.mini\souigdi.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\wtl.mini\duimisc.h"
+					RelativePath=".\include\wtl.mini\souimisc.h"
 					>
 				</File>
 			</Filter>
@@ -1420,7 +1413,7 @@
 				Name="activex"
 				>
 				<File
-					RelativePath=".\include\activex\DuiBStr.h"
+					RelativePath=".\include\activex\SBStr.h"
 					>
 				</File>
 			</Filter>
@@ -1428,87 +1421,87 @@
 				Name="controls"
 				>
 				<File
-					RelativePath=".\include\control\DuiCalendar.h"
+					RelativePath=".\include\control\SCalendar.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiCaption.h"
+					RelativePath=".\include\control\SCaption.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiCmnCtrl.h"
+					RelativePath=".\include\control\SCmnCtrl.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiComboBox.h"
+					RelativePath=".\include\control\SComboBox.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiDateTimeEdit.h"
+					RelativePath=".\include\control\SDateTimeEdit.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiHeaderCtrl.h"
+					RelativePath=".\include\control\SHeaderCtrl.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiHotKeyCtrl.h"
+					RelativePath=".\include\control\SHotKeyCtrl.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\duiitembox.h"
+					RelativePath=".\include\control\SItembox.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\duilistbox.h"
+					RelativePath=".\include\control\SListbox.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\duilistboxex.h"
+					RelativePath=".\include\control\SListboxex.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiListCtrl.h"
+					RelativePath=".\include\control\SListCtrl.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiMenu.h"
+					RelativePath=".\include\helper\SMenu.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiMessageBox.h"
+					RelativePath=".\include\control\SMessageBox.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\duirealwnd.h"
+					RelativePath=".\include\control\SRealWnd.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiRichEdit.h"
+					RelativePath=".\include\control\SRichEdit.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\duiscrollbar.h"
+					RelativePath=".\include\control\SScrollbar.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiSliderBar.h"
+					RelativePath=".\include\control\SSliderBar.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiSplitWnd.h"
+					RelativePath=".\include\control\SSplitWnd.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiTabCtrl.h"
+					RelativePath=".\include\control\STabCtrl.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiTreeBox.h"
+					RelativePath=".\include\control\STreeBox.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\control\DuiTreeCtrl.h"
+					RelativePath=".\include\control\STreeCtrl.h"
 					>
 				</File>
 			</Filter>
@@ -1516,11 +1509,11 @@
 				Name="singltons"
 				>
 				<File
-					RelativePath=".\include\DUISingleton.h"
+					RelativePath=".\include\core\SSingleton.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\DuiSingletonMap.h"
+					RelativePath=".\include\core\SSingletonMap.h"
 					>
 				</File>
 			</Filter>
