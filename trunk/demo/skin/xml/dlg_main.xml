@@ -74,6 +74,7 @@
           <radio id="1306" pos="110,60">radio4</radio>
         </window>
         <button id="1360" class="normalbtn" pos="10,200,150,230" accel="ctrl+alt+num 8" animate="1">dui menu</button>
+        <button name="btn_msgbox" class="normalbtn" width="100" height="30" accel="ctrl+alt+num 9" animate="1">show msg box</button>
         <hotkey id="1340" pos="350,20,450,45" class="cls_edit"/>
         <hotkey name="ctrl_hk2" pos="460,20,560,45" class="cls_edit"/>
         <progress name="IDC_PROGTEST" pos="200,100,-10,115" bgskin="prog_bg" posskin="prog_bar" value="20" min="0" max="100" showpercent="1"/>

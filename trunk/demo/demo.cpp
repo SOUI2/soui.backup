@@ -48,7 +48,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     
     funRender(&pRenderFactory,pImgDecoderFactory);
     
-	SApplication *pDuiSystem=new SApplication(pRenderFactory,hInstance);
+	SApplication *theApp=new SApplication(pRenderFactory,hInstance);
 
 #if 1
     TCHAR szCurrentDir[MAX_PATH]={0};
@@ -67,10 +67,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     DuiResProviderPE *pResProvider = new DuiResProviderPE(hInstance);
 #endif
     
-    pDuiSystem->AddResProvider(pResProvider);
+    theApp->AddResProvider(pResProvider);
 
-	BOOL bOK=pDuiSystem->Init(_T("IDR_DUI_INIT")); //初始化DUI系统,原来的系统初始化方式依然可以使用。
-	pDuiSystem->SetMsgBoxTemplate(_T("IDR_DUI_MSGBOX"));
+	BOOL bOK=theApp->Init(_T("IDR_DUI_INIT")); //初始化DUI系统,原来的系统初始化方式依然可以使用。
+	theApp->SetMsgBoxTemplate(_T("IDR_DUI_MSGBOX"));
 
 	int nRet = 0; 
 	// BLOCK: Run application
@@ -81,7 +81,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
 
 
-	delete pDuiSystem;
+	delete theApp;
     
     delete pResProvider;
     

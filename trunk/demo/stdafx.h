@@ -6,7 +6,8 @@
 #pragma once
 
 #include <duistd.h>
-#include <duihostwnd.h>
+#include <SHostDialog.h>
+#include <control/DuiMessageBox.h>
 #include <duictrls.h>
 #include <res.mgr/DuiCSS.h>
 
