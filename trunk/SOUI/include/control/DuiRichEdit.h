@@ -13,18 +13,6 @@ class SRichEdit;
 class SOUI_EXP CDuiTextServiceHelper: public Singleton<CDuiTextServiceHelper>
 {
 public:
-    CDuiTextServiceHelper()
-    {
-        m_rich20=LoadLibrary(_T("riched20.dll"));
-        if(m_rich20) m_funCreateTextServices= (PCreateTextServices)GetProcAddress(m_rich20,"CreateTextServices");
-    }
-    ~CDuiTextServiceHelper()
-    {
-        if(m_rich20) FreeLibrary(m_rich20);
-        m_funCreateTextServices=NULL;
-    }
-    
-
     HRESULT CreateTextServices( IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk )
     {
         if(!m_funCreateTextServices) return E_NOTIMPL;
@@ -42,8 +30,47 @@ public:
         if(ms_Singleton) delete ms_Singleton;
     }
 protected:
+    CDuiTextServiceHelper()
+    {
+        m_rich20=LoadLibrary(_T("riched20.dll"));
+        if(m_rich20) m_funCreateTextServices= (PCreateTextServices)GetProcAddress(m_rich20,"CreateTextServices");
+    }
+    ~CDuiTextServiceHelper()
+    {
+        if(m_rich20) FreeLibrary(m_rich20);
+        m_funCreateTextServices=NULL;
+    }
+    
     HINSTANCE    m_rich20;    //richedit module
     PCreateTextServices    m_funCreateTextServices;
+};
+
+class SOUI_EXP SRicheditMenuDef : public Singleton<SRicheditMenuDef>
+{
+public:
+    static BOOL Init(){
+        if(ms_Singleton) return FALSE;
+        new SRicheditMenuDef();
+        return TRUE;
+    }
+
+    static void Destroy()
+    {
+        if(ms_Singleton) delete ms_Singleton;
+    }
+    
+    void SetMenuXml(pugi::xml_node xmlMenu)
+    {
+        m_xmlMenu.reset();
+        m_xmlMenu.append_copy(xmlMenu);
+    }
+    
+    pugi::xml_node GetMenuXml()
+    {
+        return m_xmlMenu.first_child();
+    }
+protected:
+    pugi::xml_document  m_xmlMenu;
 };
 
 class SOUI_EXP CDuiTextHost : public ITextHost

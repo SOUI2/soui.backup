@@ -4,15 +4,15 @@
 
 namespace SOUI
 {
-    DuiPools::DuiPools()
+    SPools::SPools()
     {
     }
 
-    DuiPools::~DuiPools(void)
+    SPools::~SPools(void)
     {
     }
 
-    void DuiPools::Init( LPCTSTR pszInitXml ,LPCTSTR pszResType)
+    void SPools::Init( LPCTSTR pszInitXml ,LPCTSTR pszResType)
     {
         pugi::xml_document xmlDoc;
         if(LOADXML(xmlDoc,pszInitXml,pszResType))
@@ -21,7 +21,7 @@ namespace SOUI
         }
     }
 
-    void DuiPools::Init( pugi::xml_node xmlNode )
+    void SPools::Init( pugi::xml_node xmlNode )
     {
         //load string table
         pugi::xml_node xmlStr=xmlNode.child(L"string");
@@ -49,7 +49,7 @@ namespace SOUI
         }
     }
 
-    void DuiPools::Clear()
+    void SPools::Clear()
     {
         DuiStringPool::RemoveAll();
         DuiStylePool::RemoveAll();

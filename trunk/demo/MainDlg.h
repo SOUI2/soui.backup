@@ -6,7 +6,7 @@
 // #include "UIHander.h"
 #include "wtlhelper/whwindow.h"
 
-class CMainDlg : public CDuiHostWnd
+class CMainDlg : public SHostWnd
 // 	,public CWHRoundRectFrameHelper<CMainDlg>	//需要圆角窗口时启用
 {
 public:
@@ -79,7 +79,7 @@ protected:
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_SHOWWINDOW(OnShowWindow)
 // 		CHAIN_MSG_MAP_MEMBER((*m_pUiHandler))
-		CHAIN_MSG_MAP(CDuiHostWnd)
+		CHAIN_MSG_MAP(SHostWnd)
 		REFLECT_NOTIFICATIONS_EX()
 	END_MSG_MAP()
 private:

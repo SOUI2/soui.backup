@@ -5,7 +5,7 @@
 namespace SOUI
 {
 
-    void DuiSkinFactoryMgr::AddStandardSkin()
+    void SSkinFactoryMgr::AddStandardSkin()
     {
         AddKeyObject(SSkinImgList::GetClassName(),new TplSkinFactory<SSkinImgList>);
         AddKeyObject(SSkinImgFrame::GetClassName(),new TplSkinFactory<SSkinImgFrame>);
@@ -15,12 +15,12 @@ namespace SOUI
         AddKeyObject(SSkinMenuBorder::GetClassName(),new TplSkinFactory<SSkinMenuBorder>);
     }
 
-    void DuiSkinFactoryMgr::OnSkinRemoved( const CSkinFactoryPtr & obj )
+    void SSkinFactoryMgr::OnSkinRemoved( const CSkinFactoryPtr & obj )
     {
         delete obj;
     }
 
-    ISkinObj * DuiSkinFactoryMgr::CreateSkinByName( LPCWSTR pszClassName )
+    ISkinObj * SSkinFactoryMgr::CreateSkinByName( LPCWSTR pszClassName )
     {
         if(!HasKey(pszClassName)) return NULL;
         return GetKeyObject(pszClassName)->NewSkin();

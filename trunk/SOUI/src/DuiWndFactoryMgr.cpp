@@ -6,13 +6,13 @@
 namespace SOUI
 {
 
-DuiWindowFactoryMgr::DuiWindowFactoryMgr(void)
+SWindowFactoryMgr::SWindowFactoryMgr(void)
 {
     m_pFunOnKeyRemoved=OnWndFactoryRemoved;
     AddStandardWindowFactory();
 }
 
-void DuiWindowFactoryMgr::AddStandardWindowFactory()
+void SWindowFactoryMgr::AddStandardWindowFactory()
 {
     AddKeyObject(SWindow::GetClassName(),new TplDuiWindowFactory<SWindow>);
     AddKeyObject(SPanel::GetClassName(),new TplDuiWindowFactory<SPanel>);
@@ -62,12 +62,12 @@ void DuiWindowFactoryMgr::AddStandardWindowFactory()
     //*/
 }
 
-void DuiWindowFactoryMgr::OnWndFactoryRemoved( const SWindowFactoryPtr & obj )
+void SWindowFactoryMgr::OnWndFactoryRemoved( const SWindowFactoryPtr & obj )
 {
     delete obj;
 }
 
-SWindow * DuiWindowFactoryMgr::CreateWindowByName( LPCWSTR pszClassName )
+SWindow * SWindowFactoryMgr::CreateWindowByName( LPCWSTR pszClassName )
 {
     if(!HasKey(pszClassName))
     {
@@ -77,7 +77,7 @@ SWindow * DuiWindowFactoryMgr::CreateWindowByName( LPCWSTR pszClassName )
     return GetKeyObject(pszClassName)->NewWindow();
 }
 
-LPCWSTR DuiWindowFactoryMgr::BaseClassNameFromClassName( LPCWSTR pszClassName )
+LPCWSTR SWindowFactoryMgr::BaseClassNameFromClassName( LPCWSTR pszClassName )
 {
     if(!HasKey(pszClassName))
     {

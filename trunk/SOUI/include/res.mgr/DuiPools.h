@@ -7,14 +7,14 @@
 
 namespace SOUI
 {
-    class SOUI_EXP DuiPools : public DuiSkinPool
+    class SOUI_EXP SPools : public DuiSkinPool
                             , public DuiStringPool
                             , public DuiCSS
                             , public DuiStylePool
     {
     public:
-        DuiPools();
-        virtual ~DuiPools(void);
+        SPools();
+        virtual ~SPools(void);
 
     public:
         void Init(LPCTSTR pszInitXml,LPCTSTR pszResType);

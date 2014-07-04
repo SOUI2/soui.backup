@@ -14,9 +14,9 @@
 namespace SOUI
 {
 
-template<> DuiSystem* Singleton<DuiSystem>::ms_Singleton = 0;
+template<> SApplication* Singleton<SApplication>::ms_Singleton = 0;
 
-DuiSystem::DuiSystem(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName/*=_T("DuiHostWnd")*/)
+SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName/*=_T("DuiHostWnd")*/)
     :m_hInst(hInst)
     ,m_pScriptModule(NULL)
     ,m_RenderFactory(pRendFactory)
@@ -24,34 +24,37 @@ DuiSystem::DuiSystem(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHos
     createSingletons();
     CSimpleWndHelper::Init(hInst,pszHostClassName);
     CDuiTextServiceHelper::Init();
+    SRicheditMenuDef::Init();
+    m_lstMsgLoop.AddTail(&m_msgLoop);
 }
 
-DuiSystem::~DuiSystem(void)
+SApplication::~SApplication(void)
 {
     destroySingletons();
     CSimpleWndHelper::Destroy();
     CDuiTextServiceHelper::Destroy();
+    SRicheditMenuDef::Destroy();
 }
 
-void DuiSystem::createSingletons()
+void SApplication::createSingletons()
 {
-    new DuiThreadActiveWndMgr();
+    new SThreadActiveWndMgr();
     new SWindowMgr();
     new STimerEx();
     new DuiFontPool(m_RenderFactory);
     new DuiImgPool();
 }
 
-void DuiSystem::destroySingletons()
+void SApplication::destroySingletons()
 {
     delete DuiImgPool::getSingletonPtr();
     delete DuiFontPool::getSingletonPtr();
     delete STimerEx::getSingletonPtr();
-    delete DuiThreadActiveWndMgr::getSingletonPtr();
+    delete SThreadActiveWndMgr::getSingletonPtr();
     delete SWindowMgr::getSingletonPtr();
 }
 
-BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType)
+BOOL SApplication::Init( LPCTSTR pszName ,LPCTSTR pszType)
 {
     pugi::xml_document xmlDoc;
     if(!LOADXML(xmlDoc,pszName,pszType)) return FALSE;
@@ -62,7 +65,7 @@ BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType)
     pugi::xml_node xmlMenu=root.child(L"editmenu");
     if(xmlMenu)
     {
-        m_xmlEditMenu.append_copy(xmlMenu);
+        SRicheditMenuDef::getSingleton().SetMenuXml(xmlMenu);
     }
 
     //set default font
@@ -74,12 +77,12 @@ BOOL DuiSystem::Init( LPCTSTR pszName ,LPCTSTR pszType)
         DuiFontPool::getSingleton().SetDefaultFont(DUI_CW2T(xmlFont.attribute(L"face").value()),nSize);
     }
 
-    DuiPools::Init(root);
+    SPools::Init(root);
 
     return TRUE;
 }
 
-BOOL DuiSystem::SetMsgBoxTemplate( LPCTSTR pszXmlName,LPCTSTR pszType)
+BOOL SApplication::SetMsgBoxTemplate( LPCTSTR pszXmlName,LPCTSTR pszType)
 {
     pugi::xml_document xmlDoc;
     if(!LOADXML(xmlDoc,pszXmlName,pszType)) return FALSE;
@@ -87,7 +90,7 @@ BOOL DuiSystem::SetMsgBoxTemplate( LPCTSTR pszXmlName,LPCTSTR pszType)
     return SMessageBoxImpl::SetMsgTemplate(uiRoot);
 }
 
-BOOL DuiSystem::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
+BOOL SApplication::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
 {
 
     DWORD dwSize=GETRESPROVIDER->GetRawBufferSize(pszType,pszXmlName);
@@ -102,5 +105,6 @@ BOOL DuiSystem::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,
     return result;
 
 }
+
 
 }//namespace SOUI

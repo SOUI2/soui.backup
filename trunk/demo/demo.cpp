@@ -48,7 +48,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     
     funRender(&pRenderFactory,pImgDecoderFactory);
     
-	DuiSystem *pDuiSystem=new DuiSystem(pRenderFactory,hInstance);
+	SApplication *pDuiSystem=new SApplication(pRenderFactory,hInstance);
 
 #if 1
     TCHAR szCurrentDir[MAX_PATH]={0};

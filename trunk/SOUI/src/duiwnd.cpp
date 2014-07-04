@@ -572,7 +572,7 @@ BOOL SWindow::CreateChildren(pugi::xml_node xmlNode)
     for (pugi::xml_node xmlChild=xmlNode.first_child(); xmlChild; xmlChild=xmlChild.next_sibling())
     {
         if(xmlChild.type() != pugi::node_element) continue;
-        SWindow *pChild = DuiSystem::getSingleton().CreateWindowByName(xmlChild.name());
+        SWindow *pChild = SApplication::getSingleton().CreateWindowByName(xmlChild.name());
         if(!pChild)
         {//在窗口布局中支持include标签
             if(_wcsicmp(xmlChild.name(),L"include")==0)

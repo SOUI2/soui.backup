@@ -36,7 +36,7 @@ BOOL DuiCSS::Init( pugi::xml_node xmlNode )
 
 void DuiCSS::BuildClassAttribute( pugi::xml_node & xmlNode, LPCWSTR pszClassName)
 {
-    LPCWSTR pszBaseClassName=DuiSystem::getSingleton().BaseClassNameFromClassName(pszClassName);
+    LPCWSTR pszBaseClassName=SApplication::getSingleton().BaseClassNameFromClassName(pszClassName);
     if(!pszBaseClassName) return;
 
     if(HasKey(pszBaseClassName))
@@ -56,7 +56,7 @@ void DuiCSS::BuildClassAttribute( pugi::xml_node & xmlNode, LPCWSTR pszClassName
 pugi::xml_node DuiCSS::GetDefAttribute(LPCWSTR pszClassName )
 {
     ASSERT(pszClassName);
-    if(!static_cast<DuiWindowFactoryMgr*>(DuiSystem::getSingletonPtr())->HasKey(pszClassName))
+    if(!static_cast<SWindowFactoryMgr*>(SApplication::getSingletonPtr())->HasKey(pszClassName))
         return pugi::xml_node();//节点是窗口时才有默认属性
     return _GetDefAttribute(pszClassName);
 }
@@ -65,7 +65,7 @@ pugi::xml_node DuiCSS::_GetDefAttribute(LPCWSTR pszClassName )
 {
     if(!HasKey(pszClassName))
     {
-        LPCWSTR pszBaseClassName=DuiSystem::getSingleton().BaseClassNameFromClassName(pszClassName);
+        LPCWSTR pszBaseClassName=SApplication::getSingleton().BaseClassNameFromClassName(pszClassName);
         if(!pszBaseClassName) return pugi::xml_node();
         return _GetDefAttribute(pszBaseClassName);
     }else

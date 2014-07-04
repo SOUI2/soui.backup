@@ -1,7 +1,7 @@
 #pragma once
 
 class CResModeSelDlg :
-	public CDuiHostWnd
+	public SHostWnd
 {
 public:
 	CResModeSelDlg(void);
@@ -23,7 +23,7 @@ public:
 		MSG_WM_CREATE(OnCreate)
 		MSG_WM_CLOSE(OnClose)
 		MSG_SOUI_NOTIFY()
-		CHAIN_MSG_MAP(CDuiHostWnd)
+		CHAIN_MSG_MAP(SHostWnd)
 		REFLECT_NOTIFICATIONS_EX()
 	END_MSG_MAP()
 };

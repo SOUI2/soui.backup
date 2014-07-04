@@ -5,12 +5,12 @@
 namespace SOUI
 {
 
-class SOUI_EXP DuiThreadActiveWndMgr: public DuiSingletonMap<DuiThreadActiveWndMgr,HWND,DWORD>
+class SOUI_EXP SThreadActiveWndMgr: public DuiSingletonMap<SThreadActiveWndMgr,HWND,DWORD>
 {
 public:
-    DuiThreadActiveWndMgr();
+    SThreadActiveWndMgr();
 
-    virtual ~DuiThreadActiveWndMgr();
+    virtual ~SThreadActiveWndMgr();
 
     static HWND SetActive(HWND hWnd);
 

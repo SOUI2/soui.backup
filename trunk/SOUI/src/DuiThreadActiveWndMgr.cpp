@@ -8,41 +8,41 @@ namespace SOUI
 //////////////////////////////////////////////////////////////////////////
 //    DuiThreadActiveWndManager
 //////////////////////////////////////////////////////////////////////////
-template<> DuiThreadActiveWndMgr* Singleton<DuiThreadActiveWndMgr>::ms_Singleton = NULL;
+template<> SThreadActiveWndMgr* Singleton<SThreadActiveWndMgr>::ms_Singleton = NULL;
 
-DuiThreadActiveWndMgr::DuiThreadActiveWndMgr()
+SThreadActiveWndMgr::SThreadActiveWndMgr()
 {
     ::InitializeCriticalSection(&m_lockRepaint);
     ::InitializeCriticalSection(&m_lockMapActive);
 }
 
-DuiThreadActiveWndMgr::~DuiThreadActiveWndMgr()
+SThreadActiveWndMgr::~SThreadActiveWndMgr()
 {
     ::DeleteCriticalSection(&m_lockRepaint);
     ::DeleteCriticalSection(&m_lockMapActive);
 }
 
-HWND DuiThreadActiveWndMgr::SetActive(HWND hWnd)
+HWND SThreadActiveWndMgr::SetActive(HWND hWnd)
 {
     return getSingleton()._SetActive(hWnd);
 }
 
-HWND DuiThreadActiveWndMgr::GetActive()
+HWND SThreadActiveWndMgr::GetActive()
 {
     return getSingleton()._GetActive();
 }
 
-void DuiThreadActiveWndMgr::EnterPaintLock()
+void SThreadActiveWndMgr::EnterPaintLock()
 {
     ::EnterCriticalSection(&getSingleton().m_lockRepaint);
 }
 
-void DuiThreadActiveWndMgr::LeavePaintLock()
+void SThreadActiveWndMgr::LeavePaintLock()
 {
     ::LeaveCriticalSection(&getSingleton().m_lockRepaint);
 }
 
-HWND DuiThreadActiveWndMgr::_SetActive(HWND hWnd)
+HWND SThreadActiveWndMgr::_SetActive(HWND hWnd)
 {
     ::EnterCriticalSection(&m_lockMapActive);
     HWND    hWndLastActive    = _GetActive();
@@ -51,7 +51,7 @@ HWND DuiThreadActiveWndMgr::_SetActive(HWND hWnd)
     return hWndLastActive;
 }
 
-HWND DuiThreadActiveWndMgr::_GetActive()
+HWND SThreadActiveWndMgr::_GetActive()
 {
     ::EnterCriticalSection(&m_lockMapActive);
     HWND    hWndAct = NULL;

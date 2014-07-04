@@ -53,11 +53,11 @@ protected:
 
 
 typedef SWindowFactory* SWindowFactoryPtr;
-class SOUI_EXP DuiWindowFactoryMgr :
+class SOUI_EXP SWindowFactoryMgr :
     public DuiCmnMap<SWindowFactoryPtr,SStringW>
 {
 public:
-    DuiWindowFactoryMgr(void);
+    SWindowFactoryMgr(void);
 
     //************************************
     // Method:    RegisterFactory,注册APP自定义的窗口类

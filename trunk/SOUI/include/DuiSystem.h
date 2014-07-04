@@ -3,6 +3,7 @@
 #include "render/render-i.h"
 #include "unknown/obj-ref-impl.hpp"
 
+#include "smsgloop.h"
 #include "DuiWndFactoryMgr.h"
 #include "DuiSkinFactoryMgr.h"
 
@@ -12,14 +13,14 @@
 
 #define SOUI_VERSION    _T("0.0.0.1")
 
-#define GETSKIN(p1) DuiSystem::getSingleton().GetSkin(p1)
-#define GETSTYLE(p1,p2) DuiSystem::getSingleton().GetStyle(p1,p2)
-#define BUILDSTRING(p1) DuiSystem::getSingleton().BuildString(p1)
-#define GETCSS(p1) DuiSystem::getSingleton().GetDefAttribute(p1)
+#define GETSKIN(p1) SApplication::getSingleton().GetSkin(p1)
+#define GETSTYLE(p1,p2) SApplication::getSingleton().GetStyle(p1,p2)
+#define BUILDSTRING(p1) SApplication::getSingleton().BuildString(p1)
+#define GETCSS(p1) SApplication::getSingleton().GetDefAttribute(p1)
 
-#define LOADXML(p1,p2,p3) DuiSystem::getSingleton().LoadXmlDocment(p1,p2,p3)
-#define GETRESPROVIDER    DuiSystem::getSingletonPtr()
-#define GETRENDERFACTORY DuiSystem::getSingleton().GetRenderFactory()
+#define LOADXML(p1,p2,p3) SApplication::getSingleton().LoadXmlDocment(p1,p2,p3)
+#define GETRESPROVIDER    SApplication::getSingletonPtr()
+#define GETRENDERFACTORY SApplication::getSingleton().GetRenderFactory()
 
 #define RT_UIDEF _T("UIDEF")
 #define RT_LAYOUT _T("LAYOUT")
@@ -28,17 +29,16 @@
 namespace SOUI
 {
 
-class SOUI_EXP DuiSystem :public Singleton<DuiSystem>
-                        ,public DuiWindowFactoryMgr
-                        ,public DuiSkinFactoryMgr
-                        ,public DuiResProviderMgr
-                        ,public DuiPools
+class SOUI_EXP SApplication :public Singleton<SApplication>
+                        ,public SWindowFactoryMgr
+                        ,public SSkinFactoryMgr
+                        ,public SResProviderMgr
+                        ,public SPools
 {
     friend class CSimpleWnd;
-    friend class SRichEdit;    //访问右键菜单资源
 public:
-    DuiSystem(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName=_T("DuiHostWnd"));
-    ~DuiSystem(void);
+    SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName=_T("SOUIHOST"));
+    ~SApplication(void);
 
 
     HINSTANCE GetInstance()
@@ -66,17 +66,26 @@ public:
 
     IRenderFactory * GetRenderFactory(){return m_RenderFactory;}
 
+    SMessageLoop  * GetMessageLoop(){return m_lstMsgLoop.GetTail();}
+    
+    void PushMessageLoop(SMessageLoop* pMsgLoop)
+    {
+        m_lstMsgLoop.AddTail(pMsgLoop);
+    }
+    
+    SMessageLoop * PopMessageLoop()
+    {
+        return m_lstMsgLoop.RemoveTail();
+    }
 protected:
-    pugi::xml_node GetEditMenuTemplate(){return m_xmlEditMenu;}
-
     void createSingletons();
     void destroySingletons();
 
     IScriptModule        * m_pScriptModule;
     HINSTANCE m_hInst;
-
-    pugi::xml_document    m_xmlEditMenu;
-
+    
+    SList<SMessageLoop*> m_lstMsgLoop;
+    SMessageLoop         m_msgLoop;
     CAutoRefPtr<IRenderFactory> m_RenderFactory;
 };
 

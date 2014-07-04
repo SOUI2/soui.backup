@@ -1,7 +1,7 @@
 #pragma once
 
 #define EVENT_MAP_BEGIN()                   \
-    BOOL _HandleEvent(SOUI::EventArgs *pEvt)        \
+    virtual BOOL _HandleEvent(SOUI::EventArgs *pEvt)        \
     {                                           \
         UINT      uCode = pEvt->GetEventID();   \
  

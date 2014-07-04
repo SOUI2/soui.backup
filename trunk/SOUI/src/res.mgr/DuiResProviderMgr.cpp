@@ -3,15 +3,15 @@
 
 namespace SOUI
 {
-    DuiResProviderMgr::DuiResProviderMgr()
+    SResProviderMgr::SResProviderMgr()
     {
     }
 
-    DuiResProviderMgr::~DuiResProviderMgr(void)
+    SResProviderMgr::~SResProviderMgr(void)
     {
     }
 
-    IResProvider * DuiResProviderMgr::GetMatchResProvider( LPCTSTR pszType,LPCTSTR pszResName )
+    IResProvider * SResProviderMgr::GetMatchResProvider( LPCTSTR pszType,LPCTSTR pszResName )
     {
         POSITION pos=m_lstResProvider.GetHeadPosition();
         while(pos)
@@ -22,12 +22,12 @@ namespace SOUI
         return NULL;
     }
    
-    void DuiResProviderMgr::AddResProvider( IResProvider * pResProvider )
+    void SResProviderMgr::AddResProvider( IResProvider * pResProvider )
     {
         m_lstResProvider.AddHead(pResProvider);
     }
 
-    void DuiResProviderMgr::RemoveResProvider( IResProvider * pResProvider )
+    void SResProviderMgr::RemoveResProvider( IResProvider * pResProvider )
     {
         POSITION pos=m_lstResProvider.Find(pResProvider);
         if(pos)  m_lstResProvider.RemoveAt(pos);

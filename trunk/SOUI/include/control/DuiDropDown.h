@@ -11,7 +11,7 @@
  * Describe    此类是下拉窗口的父类 只需要派生该类即可
  */
 #pragma once
-#include "duihostwnd.h"
+#include "shostwnd.h"
 
 namespace SOUI
 {
@@ -57,7 +57,7 @@ namespace SOUI
      * 
      * Describe    下拉窗口类 只需要继承此类即可
      */
-    class SOUI_EXP SDropDownWnd : public CDuiHostWnd , public CDuiMessageFilter
+    class SOUI_EXP SDropDownWnd : public SHostWnd, public SMessageFilter
     {
     public:
     
@@ -99,6 +99,8 @@ namespace SOUI
          */
         void EndDropDown(UINT uCode=IDCANCEL);
     protected:
+        virtual BOOL PreTranslateMessage(MSG* pMsg);
+
         /**
          * SDropDownWnd::OnLButtonDown
          * @brief    下拉窗口鼠标左键按下事件
@@ -183,7 +185,6 @@ namespace SOUI
 
         virtual void OnFinalMessage(HWND);
         
-        virtual BOOL PreTranslateMessage(MSG* pMsg);
     protected:
         ISDropDownOwner* m_pOwner; /**< 窗口所属者 */
         BOOL                m_bClick; /**< 单击状态 */
@@ -198,7 +199,7 @@ namespace SOUI
             MSG_WM_ACTIVATE(OnActivate)
             MSG_WM_ACTIVATEAPP(OnActivateApp)
             MSG_WM_MOUSEACTIVATE(OnMouseActivate)
-            CHAIN_MSG_MAP(CDuiHostWnd)
+            CHAIN_MSG_MAP(SHostWnd)
         END_MSG_MAP()
     };
 

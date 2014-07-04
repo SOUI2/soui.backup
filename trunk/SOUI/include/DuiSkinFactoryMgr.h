@@ -40,10 +40,10 @@ namespace SOUI
     };
 
     typedef CSkinFactory * CSkinFactoryPtr;
-    class SOUI_EXP DuiSkinFactoryMgr: public DuiCmnMap<CSkinFactoryPtr,SStringW>
+    class SOUI_EXP SSkinFactoryMgr: public DuiCmnMap<CSkinFactoryPtr,SStringW>
     {
     public:
-        DuiSkinFactoryMgr()
+        SSkinFactoryMgr()
         {
             m_pFunOnKeyRemoved=OnSkinRemoved;
             AddStandardSkin();
