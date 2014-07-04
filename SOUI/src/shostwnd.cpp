@@ -42,7 +42,7 @@ HWND SHostWnd::Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWORD 
     if(!hWnd) return NULL;
 
     //tooltip
-    m_pTipCtrl=new CDuiTipCtrl;
+    m_pTipCtrl=new STipCtrl;
     m_pTipCtrl->Create(m_hWnd);
 
     SetContainer(this);

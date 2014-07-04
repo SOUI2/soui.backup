@@ -57,7 +57,7 @@ namespace SOUI
      * 
      * Describe    下拉窗口类 只需要继承此类即可
      */
-    class SOUI_EXP SDropDownWnd : public SHostWnd, public SMessageFilter
+    class SOUI_EXP SDropDownWnd : public SHostWnd, public IMessageFilter
     {
     public:
     
