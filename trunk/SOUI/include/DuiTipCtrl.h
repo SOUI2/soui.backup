@@ -1,14 +1,16 @@
 #pragma once
 #include "SimpleWnd.h"
+#include "smsgloop.h"
 
 namespace SOUI
 {
 
-class CDuiTipCtrl : public CSimpleWnd
+    class STipCtrl : public CSimpleWnd 
+                      , public IMessageFilter
 {
 public:
-    CDuiTipCtrl(void);
-    virtual ~CDuiTipCtrl(void);
+    STipCtrl(void);
+    virtual ~STipCtrl(void);
 
     BOOL Create(HWND hOwner);
 
@@ -20,13 +22,15 @@ public:
 
     DWORD    m_dwHostID;
 protected:
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+
     void OnTimer(UINT_PTR idEvent);
     void OnPaint(CDCHandle dc);
 
-    BEGIN_MSG_MAP_EX(CDuiTipCtrl)
-    MSG_WM_PAINT(OnPaint)
-    MSG_WM_TIMER(OnTimer)
-    REFLECT_NOTIFICATIONS_EX()
+    BEGIN_MSG_MAP_EX(STipCtrl)
+        MSG_WM_PAINT(OnPaint)
+        MSG_WM_TIMER(OnTimer)
+        REFLECT_NOTIFICATIONS_EX()
     END_MSG_MAP()
 
 protected:

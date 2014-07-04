@@ -9,16 +9,18 @@ namespace SOUI
 
 #define MARGIN_TIP        5
 
-CDuiTipCtrl::CDuiTipCtrl(void):m_nDelay(500),m_nShowSpan(5000),m_dwHostID(0)
+STipCtrl::STipCtrl(void):m_nDelay(500),m_nShowSpan(5000),m_dwHostID(0)
 {
+    SApplication::getSingleton().GetMessageLoop()->AddMessageFilter(this);
 }
 
-CDuiTipCtrl::~CDuiTipCtrl(void)
+STipCtrl::~STipCtrl(void)
 {
+    SApplication::getSingleton().GetMessageLoop()->RemoveMessageFilter(this);
     if(m_font) m_font.DeleteObject();
 }
 
-BOOL CDuiTipCtrl::Create( HWND hOwner )
+BOOL STipCtrl::Create( HWND hOwner )
 {
     HWND hWnd=__super::Create(NULL,WS_POPUP,WS_EX_TOOLWINDOW|WS_EX_TOPMOST|WS_EX_NOACTIVATE,0,0,0,0,hOwner,NULL);
     if(!hWnd) return FALSE;
@@ -32,7 +34,7 @@ BOOL CDuiTipCtrl::Create( HWND hOwner )
     return TRUE;
 }
 
-void CDuiTipCtrl::RelayEvent( const MSG *pMsg )
+void STipCtrl::RelayEvent( const MSG *pMsg )
 {
     switch(pMsg->message)
     {
@@ -63,7 +65,7 @@ void CDuiTipCtrl::RelayEvent( const MSG *pMsg )
     }
 }
 
-void CDuiTipCtrl::UpdateTip(CRect rc, LPCTSTR pszTip,BOOL bText/*=TRUE*/ )
+void STipCtrl::UpdateTip(CRect rc, LPCTSTR pszTip,BOOL bText/*=TRUE*/ )
 {
     m_rcTarget=rc;
     m_bTextTip=bText;
@@ -75,12 +77,12 @@ void CDuiTipCtrl::UpdateTip(CRect rc, LPCTSTR pszTip,BOOL bText/*=TRUE*/ )
     }
 }
 
-void CDuiTipCtrl::SetDelayTime( DWORD dwType,UINT iTime )
+void STipCtrl::SetDelayTime( DWORD dwType,UINT iTime )
 {
 
 }
 
-void CDuiTipCtrl::ShowTip(BOOL bShow)
+void STipCtrl::ShowTip(BOOL bShow)
 {
     if(!bShow)
     {
@@ -109,7 +111,7 @@ void CDuiTipCtrl::ShowTip(BOOL bShow)
     }
 }
 
-void CDuiTipCtrl::OnTimer( UINT_PTR idEvent )
+void STipCtrl::OnTimer( UINT_PTR idEvent )
 {
     switch(idEvent)
     {
@@ -125,7 +127,7 @@ void CDuiTipCtrl::OnTimer( UINT_PTR idEvent )
     }
 }
 
-void CDuiTipCtrl::OnPaint( CDCHandle dc )
+void STipCtrl::OnPaint( CDCHandle dc )
 {
     CPaintDC dcPaint(m_hWnd);
     CRect rc;
@@ -142,4 +144,9 @@ void CDuiTipCtrl::OnPaint( CDCHandle dc )
     dcPaint.SelectFont(hOldFont);
 }
 
+BOOL STipCtrl::PreTranslateMessage( MSG* pMsg )
+{
+    if(IsWindow()) RelayEvent(pMsg);
+    return FALSE;
+}
 }//namespace SOUI

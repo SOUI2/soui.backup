@@ -22,46 +22,44 @@ namespace SOUI
         return FALSE;
     }
     
-    class SOUI_EXP SMessageFilter
+    struct IMessageFilter
     {
-    public:
         virtual BOOL PreTranslateMessage(MSG* pMsg) = 0;
     };
 
     ///////////////////////////////////////////////////////////////////////////////
     // CIdleHandler - Interface for idle processing
 
-    class SOUI_EXP SIdleHandler
+    struct IIdleHandler
     {
-    public:
         virtual BOOL OnIdle() = 0;
     };
 
     class SOUI_EXP SMessageLoop
     {
     public:
-        SArray<SMessageFilter*> m_aMsgFilter;
-        SArray<SIdleHandler*> m_aIdleHandler;
+        SArray<IMessageFilter*> m_aMsgFilter;
+        SArray<IIdleHandler*> m_aIdleHandler;
         MSG m_msg;
 
         // Message filter operations
-        BOOL AddMessageFilter(SMessageFilter* pMessageFilter)
+        BOOL AddMessageFilter(IMessageFilter* pMessageFilter)
         {
             return m_aMsgFilter.Add(pMessageFilter);
         }
 
-        BOOL RemoveMessageFilter(SMessageFilter* pMessageFilter)
+        BOOL RemoveMessageFilter(IMessageFilter* pMessageFilter)
         {
             return RemoveElementFromArray(m_aMsgFilter,pMessageFilter);
         }
 
         // Idle handler operations
-        BOOL AddIdleHandler(SIdleHandler* pIdleHandler)
+        BOOL AddIdleHandler(IIdleHandler* pIdleHandler)
         {
             return m_aIdleHandler.Add(pIdleHandler);
         }
 
-        BOOL RemoveIdleHandler(SIdleHandler* pIdleHandler)
+        BOOL RemoveIdleHandler(IIdleHandler* pIdleHandler)
         {
             return RemoveElementFromArray(m_aIdleHandler,pIdleHandler);
         }
@@ -88,7 +86,7 @@ namespace SOUI
             // loop backwards
             for(int i = (int)m_aMsgFilter.GetCount() - 1; i >= 0; i--)
             {
-                SMessageFilter* pMessageFilter = m_aMsgFilter[i];
+                IMessageFilter* pMessageFilter = m_aMsgFilter[i];
                 if(pMessageFilter != NULL && pMessageFilter->PreTranslateMessage(pMsg))
                     return TRUE;
             }
@@ -100,7 +98,7 @@ namespace SOUI
         {
             for(size_t i = 0; i < m_aIdleHandler.GetCount(); i++)
             {
-                SIdleHandler* pIdleHandler = m_aIdleHandler[i];
+                IIdleHandler* pIdleHandler = m_aIdleHandler[i];
                 if(pIdleHandler != NULL)
                     pIdleHandler->OnIdle();
             }

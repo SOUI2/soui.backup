@@ -42,7 +42,7 @@ namespace SOUI
         SHostWnd *m_pOwner;
     };
 
-class CDuiTipCtrl;
+class STipCtrl;
 
 class SOUI_EXP SHostWnd
     : public CSimpleWnd
@@ -89,7 +89,7 @@ protected:
     BOOL m_bNeedRepaint;
     BOOL m_bNeedAllRepaint;
 
-    CDuiTipCtrl    * m_pTipCtrl;
+    STipCtrl    * m_pTipCtrl;
 
     CAutoRefPtr<IRegion>    m_rgnInvalidate;
     CAutoRefPtr<IRenderTarget> m_memRT;
