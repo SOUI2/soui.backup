@@ -5,11 +5,11 @@
 
 #pragma once
 
-#include <duistd.h>
-#include <SHostDialog.h>
-#include <control/DuiMessageBox.h>
-#include <duictrls.h>
-#include <res.mgr/DuiCSS.h>
+#include <souistd.h>
+#include <core/SHostDialog.h>
+#include <control/SMessageBox.h>
+#include <control/souictrls.h>
+#include <res.mgr/sobjdefattr.h>
 
 #if defined(DLL_SOUI) && defined(_DEBUG) && !defined(_WIN64)
 // #define LUA_TEST 
