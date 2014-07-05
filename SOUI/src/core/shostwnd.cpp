@@ -33,12 +33,12 @@ SHostWnd::~SHostWnd()
 {
 }
 
-HWND SHostWnd::Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight,LPVOID lpParam)
+HWND SHostWnd::Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight)
 {
     if (NULL != m_hWnd)
         return m_hWnd;
 
-    HWND hWnd = CSimpleWnd::Create(lpWindowName,dwStyle,dwExStyle, x,y,nWidth,nHeight,hWndParent,lpParam);
+    HWND hWnd = CSimpleWnd::Create(L"HOSTWND",dwStyle,dwExStyle, x,y,nWidth,nHeight,hWndParent,NULL);
     if(!hWnd) return NULL;
 
     //tooltip
@@ -55,7 +55,7 @@ HWND SHostWnd::Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWORD 
 
 HWND SHostWnd::Create(HWND hWndParent,int x,int y,int nWidth,int nHeight)
 {
-    return Create(hWndParent, NULL,WS_POPUP | WS_CLIPCHILDREN | WS_TABSTOP,0,x,y,nWidth,nHeight,0);
+    return Create(hWndParent, WS_POPUP | WS_CLIPCHILDREN | WS_TABSTOP,0,x,y,nWidth,nHeight);
 }
 
 BOOL SHostWnd::SetXml(LPCTSTR pszXmlName)
@@ -227,7 +227,7 @@ int SHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 void SHostWnd::OnDestroy()
 {
-    SWindow::SendMessage(WM_DESTROY);
+    SWindow::SendSwndMessage(WM_DESTROY);
 
     if(m_pTipCtrl)
     {
@@ -314,7 +314,7 @@ void SHostWnd::OnTimer(UINT_PTR idEvent)
         if(pDuiWnd)
         {
             if(pDuiWnd==this) OnSwndTimer(sTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
-            else pDuiWnd->SendMessage(WM_TIMER,sTimerID.uTimerID,0);
+            else pDuiWnd->SendSwndMessage(WM_TIMER,sTimerID.uTimerID,0);
         }
         else
         {
@@ -741,10 +741,6 @@ UINT SHostWnd::OnWndNcHitTest(CPoint point)
     return HTCLIENT;
 }
 
-void SHostWnd::OnClose()
-{
-    CSimpleWnd::PostMessage(WM_QUIT);
-}
 
 //////////////////////////////////////////////////////////////////////////
 // IDuiRealWnd

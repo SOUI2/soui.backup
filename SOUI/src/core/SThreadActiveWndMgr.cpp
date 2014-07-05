@@ -47,6 +47,7 @@ HWND SThreadActiveWndMgr::_SetActive(HWND hWnd)
     ::EnterCriticalSection(&m_lockMapActive);
     HWND    hWndLastActive    = _GetActive();
     SetKeyObject(::GetCurrentThreadId(),hWnd);
+    ::SetActiveWindow(hWnd);
     ::LeaveCriticalSection(&m_lockMapActive);
     return hWndLastActive;
 }

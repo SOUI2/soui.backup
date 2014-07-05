@@ -764,7 +764,7 @@ void STreeCtrl::RedrawItem(HSTREEITEM hItem)
         SPainter painter;
         BeforePaint(pRT,painter);
 
-        SendMessage(WM_ERASEBKGND,(WPARAM)(void*)pRT);
+        SendSwndMessage(WM_ERASEBKGND,(WPARAM)(void*)pRT);
 
         DrawItem(pRT,rcItem,hItem);
 

@@ -352,14 +352,14 @@ BOOL STabCtrl::SetCurSel( int nIndex )
     if(nOldPage!=-1)
     {
         pTab = GetItem(nOldPage);
-        if( pTab) pTab->SendMessage(WM_SHOWWINDOW,FALSE);
+        if( pTab) pTab->SendSwndMessage(WM_SHOWWINDOW,FALSE);
     }
 
     m_nCurrentPage = nIndex;
     if(nIndex!=-1)
     {
         pTab = GetItem(m_nCurrentPage);
-        if( pTab) pTab->SendMessage(WM_SHOWWINDOW,TRUE);
+        if( pTab) pTab->SendSwndMessage(WM_SHOWWINDOW,TRUE);
     }
     
     EventTabSelChanged evt2(this);
@@ -443,7 +443,7 @@ BOOL STabCtrl::CreateChildren( pugi::xml_node xmlNode )
     
     if(m_nCurrentPage!=-1)
     {
-        GetItem(m_nCurrentPage)->SendMessage(WM_SHOWWINDOW,TRUE);
+        GetItem(m_nCurrentPage)->SendSwndMessage(WM_SHOWWINDOW,TRUE);
     }
     return TRUE;
 }
@@ -476,7 +476,7 @@ int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoadin
     if(!bLoading)
     {
         CRect rcContainer=GetChildrenLayoutRect();
-        pChild->SendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
+        pChild->SendSwndMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
         Invalidate();
     }
 

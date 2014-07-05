@@ -64,7 +64,7 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
             pParentItem->InsertChild(pToggle);
             pToggle->SetToggle(FALSE,FALSE);
             pToggle->SetID(IDC_SWITCH);
-            pToggle->SendMessage(WM_WINDOWPOSCHANGED);
+            pToggle->SendSwndMessage(WM_WINDOWPOSCHANGED);
         }
     }
     pItemObj->SetItemData(dwData);
@@ -428,7 +428,7 @@ void STreeBox::RedrawItem(HSTREEITEM hItem)
         SPainter painter;
         BeforePaint(pRT,painter);
 
-        SendMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
+        SendSwndMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
         DrawItem(pRT,rcItem,hItem);
 
         AfterPaint(pRT,painter);

@@ -360,7 +360,7 @@ BOOL SImageWnd::SetSkin(ISkinObj *pSkin,int iFrame/*=0*/,BOOL bAutoFree/*=TRUE*/
     if(m_dlgpos.nCount==2)
     {
         //重新计算坐标
-        SendMessage(WM_WINDOWPOSCHANGED);
+        SendSwndMessage(WM_WINDOWPOSCHANGED);
     }
     if(IsVisible(TRUE)) Invalidate();
     return TRUE;

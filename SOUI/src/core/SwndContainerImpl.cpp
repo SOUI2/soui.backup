@@ -132,10 +132,10 @@ void SwndContainerImpl::OnFrameMouseMove(UINT uFlag,CPoint pt)
         {
             SWindow *pOldHover=SWindowMgr::GetWindow(m_hHover);
             m_hHover=hHover;
-            if(pOldHover) pOldHover->SendMessage(m_bNcHover?WM_NCMOUSELEAVE:WM_MOUSELEAVE);
-            if(pHover)    pHover->SendMessage(m_bNcHover?WM_NCMOUSEHOVER:WM_MOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
+            if(pOldHover) pOldHover->SendSwndMessage(m_bNcHover?WM_NCMOUSELEAVE:WM_MOUSELEAVE);
+            if(pHover)    pHover->SendSwndMessage(m_bNcHover?WM_NCMOUSEHOVER:WM_MOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
         }
-        pCapture->SendMessage(m_bNcHover?WM_NCMOUSEMOVE:WM_MOUSEMOVE,uFlag,MAKELPARAM(pt.x,pt.y));
+        pCapture->SendSwndMessage(m_bNcHover?WM_NCMOUSEMOVE:WM_MOUSEMOVE,uFlag,MAKELPARAM(pt.x,pt.y));
     }
     else
     {
@@ -147,14 +147,14 @@ void SwndContainerImpl::OnFrameMouseMove(UINT uFlag,CPoint pt)
             m_hHover=hHover;
             if(pOldHover)
             {
-                if(m_bNcHover) pOldHover->SendMessage(WM_NCMOUSELEAVE);
-                pOldHover->SendMessage(WM_MOUSELEAVE);
+                if(m_bNcHover) pOldHover->SendSwndMessage(WM_NCMOUSELEAVE);
+                pOldHover->SendSwndMessage(WM_MOUSELEAVE);
             }
             if(pHover && !pHover->IsDisabled(TRUE))
             {
                 m_bNcHover=pHover->OnNcHitTest(pt);
-                if(m_bNcHover) pHover->SendMessage(WM_NCMOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
-                pHover->SendMessage(WM_MOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
+                if(m_bNcHover) pHover->SendSwndMessage(WM_NCMOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
+                pHover->SendSwndMessage(WM_MOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
             }
         }
         else if(pHover && !pHover->IsDisabled(TRUE))
@@ -165,18 +165,18 @@ void SwndContainerImpl::OnFrameMouseMove(UINT uFlag,CPoint pt)
                 m_bNcHover=bNcHover;
                 if(m_bNcHover)
                 {
-                    pHover->SendMessage(WM_MOUSELEAVE);
-                    pHover->SendMessage(WM_NCMOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
+                    pHover->SendSwndMessage(WM_MOUSELEAVE);
+                    pHover->SendSwndMessage(WM_NCMOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
                 }
                 else
                 {
-                    pHover->SendMessage(WM_NCMOUSELEAVE);
-                    pHover->SendMessage(WM_MOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
+                    pHover->SendSwndMessage(WM_NCMOUSELEAVE);
+                    pHover->SendSwndMessage(WM_MOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
                 }
             }
         }
         if(pHover && !pHover->IsDisabled(TRUE))
-            pHover->SendMessage(m_bNcHover?WM_NCMOUSEMOVE:WM_MOUSEMOVE,uFlag,MAKELPARAM(pt.x,pt.y));
+            pHover->SendSwndMessage(m_bNcHover?WM_NCMOUSEMOVE:WM_MOUSEMOVE,uFlag,MAKELPARAM(pt.x,pt.y));
     }
 }
 
@@ -185,13 +185,13 @@ void SwndContainerImpl::OnFrameMouseLeave()
     SWindow *pCapture=SWindowMgr::GetWindow(m_hCapture);
     if(pCapture)
     {
-        pCapture->SendMessage(WM_MOUSELEAVE);
+        pCapture->SendSwndMessage(WM_MOUSELEAVE);
     }
     else if(m_hHover)
     {
         SWindow *pHover=SWindowMgr::GetWindow(m_hHover);
         if(pHover && !pHover->IsDisabled(TRUE))
-            pHover->SendMessage(m_bNcHover?WM_NCMOUSELEAVE:WM_MOUSELEAVE);
+            pHover->SendSwndMessage(m_bNcHover?WM_NCMOUSELEAVE:WM_MOUSELEAVE);
     }
     m_hHover=NULL;
 }
@@ -216,7 +216,7 @@ void SwndContainerImpl::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     {
         if(m_bNcHover && uMsg!=WM_MOUSEWHEEL) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
         BOOL bMsgHandled = FALSE;
-        pCapture->SendMessage(uMsg,wParam,lParam,&bMsgHandled);
+        pCapture->SendSwndMessage(uMsg,wParam,lParam,&bMsgHandled);
         m_pHost->SetMsgHandled(bMsgHandled);
     }
     else
@@ -227,7 +227,7 @@ void SwndContainerImpl::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
         {
             BOOL bMsgHandled = FALSE;
             if(m_bNcHover && uMsg!=WM_MOUSEWHEEL) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
-            pHover->SendMessage(uMsg,wParam,lParam,&bMsgHandled);
+            pHover->SendSwndMessage(uMsg,wParam,lParam,&bMsgHandled);
             m_pHost->SetMsgHandled(bMsgHandled);
         }else
         {
@@ -242,7 +242,7 @@ void SwndContainerImpl::OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     if(pFocus)
     {
         BOOL bMsgHandled = FALSE;
-        pFocus->SendMessage(uMsg,wParam,lParam,&bMsgHandled);
+        pFocus->SendSwndMessage(uMsg,wParam,lParam,&bMsgHandled);
         m_pHost->SetMsgHandled(bMsgHandled);
     }else
     {
@@ -258,7 +258,7 @@ void SwndContainerImpl::OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     if(pFocus)
     {
         BOOL bMsgHandled=FALSE;
-        pFocus->SendMessage(WM_KEYDOWN,nChar,MAKELPARAM(nRepCnt,nFlags),&bMsgHandled);
+        pFocus->SendSwndMessage(WM_KEYDOWN,nChar,MAKELPARAM(nRepCnt,nFlags),&bMsgHandled);
         m_pHost->SetMsgHandled(bMsgHandled);
     }else
     {

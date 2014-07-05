@@ -189,7 +189,7 @@ public:
     void TestMainThread();
 
     // Send a message to DuiWindow
-    LRESULT SendMessage(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0,BOOL *pbMsgHandled=NULL);
+    LRESULT SendSwndMessage(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0,BOOL *pbMsgHandled=NULL);
 
     PSWNDMSG GetCurMsg()
     {

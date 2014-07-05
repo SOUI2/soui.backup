@@ -76,7 +76,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	// BLOCK: Run application
 	{
 		CMainDlg dlgMain;  
-		nRet = dlgMain.DoModal();  
+//         dlgMain.Create(GetActiveWindow(),0,0,800,600);
+//         dlgMain.GetNative()->SendMessage(WM_INITDIALOG);
+//         dlgMain.ShowWindow(SW_SHOWNORMAL);
+//         nRet=theApp->Run(dlgMain.m_hWnd);
+ 		nRet = dlgMain.DoModal();  
 	}
 
 

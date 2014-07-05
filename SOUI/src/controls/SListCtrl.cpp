@@ -302,7 +302,7 @@ void SListCtrl::UpdateScrollBar()
     SetScrollPos(FALSE, m_siHoz.nPos, TRUE);
 
     //  重新计算客户区及非客户区
-    SendMessage(WM_NCCALCSIZE);
+    SendSwndMessage(WM_NCCALCSIZE);
 
     //  根据需要调整原点位置
     if (HasScrollBar(FALSE) && m_ptOrigin.x+m_siHoz.nPage>szView.cx)
@@ -449,7 +449,7 @@ void SListCtrl::RedrawItem(int nItem)
         CRect rcDC;
         rcDC.IntersectRect(rcItem,rcList);
         IRenderTarget *pRT = GetRenderTarget(&rcDC, OLEDC_PAINTBKGND);
-        SendMessage(WM_ERASEBKGND, (WPARAM)pRT);
+        SendSwndMessage(WM_ERASEBKGND, (WPARAM)pRT);
 
         SPainter painter;
         BeforePaint(pRT, painter);

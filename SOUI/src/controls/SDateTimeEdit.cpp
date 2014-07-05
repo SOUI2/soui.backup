@@ -884,7 +884,7 @@ void SMaskEdit::GetMaskState(BOOL bCorrectSelection)
 
 void SMaskEdit::MaskGetSel()
 {
-    SendMessage(EM_GETSEL,(WPARAM)&m_nStartChar,(LPARAM)&m_nEndChar);
+    SendSwndMessage(EM_GETSEL,(WPARAM)&m_nStartChar,(LPARAM)&m_nEndChar);
 }
 
 void SMaskEdit::SetMaskState()

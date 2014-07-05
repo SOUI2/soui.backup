@@ -230,7 +230,7 @@ namespace SOUI
         {
             POSITION posOld=pos;
             SWindow *pChild=pListChildren->GetNext(pos);
-            if(0==pChild->SendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer))
+            if(0==pChild->SendSwndMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer))
                 pListChildren->RemoveAt(posOld);
         }
         if(0==pListChildren->GetCount())
