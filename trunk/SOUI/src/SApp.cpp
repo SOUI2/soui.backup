@@ -107,5 +107,13 @@ BOOL SApplication::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlNam
 
 }
 
+int SApplication::Run( HWND hMainWnd )
+{
+    SThreadActiveWndMgr::SetActive(hMainWnd);
+    int nRet=m_msgLoop.Run();
+    SThreadActiveWndMgr::SetActive(NULL);
+    if(::IsWindow(hMainWnd)) DestroyWindow(hMainWnd);
+    return nRet;
+}
 
 }//namespace SOUI

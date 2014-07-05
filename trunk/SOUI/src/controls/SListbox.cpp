@@ -313,7 +313,7 @@ void SListBox::RedrawItem(int iItem)
         SPainter painter;
         BeforePaint(pRT,painter);
 
-        SendMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
+        SendSwndMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
         DrawItem(pRT,rcItem,iItem);
 
         AfterPaint(pRT,painter);
@@ -507,7 +507,7 @@ void SListBox::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     SWindow *pOwner = GetOwner();
     if (pOwner)
-        pOwner->SendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
+        pOwner->SendSwndMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
 }
 
 UINT SListBox::OnGetDlgCode()

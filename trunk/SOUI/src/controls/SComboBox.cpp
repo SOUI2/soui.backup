@@ -14,13 +14,13 @@ CComboEdit::CComboEdit( CDuiComboBoxBase *pOwner )
 void CComboEdit::OnMouseHover( WPARAM wParam, CPoint ptPos )
 {
     __super::OnMouseHover(wParam,ptPos);
-    GetOwner()->SendMessage(WM_MOUSEHOVER,wParam,MAKELPARAM(ptPos.x,ptPos.y));
+    GetOwner()->SendSwndMessage(WM_MOUSEHOVER,wParam,MAKELPARAM(ptPos.x,ptPos.y));
 }
 
 void CComboEdit::OnMouseLeave()
 {
     __super::OnMouseLeave();
-    GetOwner()->SendMessage(WM_MOUSELEAVE);
+    GetOwner()->SendSwndMessage(WM_MOUSELEAVE);
 }
 
 void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -28,7 +28,7 @@ void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     SWindow *pOwner = GetOwner();
     if (pOwner && (nChar == VK_DOWN || nChar == VK_ESCAPE))
     {
-        pOwner->SendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
+        pOwner->SendSwndMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
         return;
     }
 
@@ -84,7 +84,7 @@ BOOL CDuiComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
         if(xmlEditStyle)
             m_pEdit->InitFromXml(xmlEditStyle);
         else
-            m_pEdit->SendMessage(WM_CREATE);
+            m_pEdit->SendSwndMessage(WM_CREATE);
         SStringW strPos;
         strPos.Format(L"0,0,-%d,-0",szBtn.cx);
         m_pEdit->SetAttribute(L"pos",strPos,TRUE);
@@ -183,7 +183,7 @@ void CDuiComboBoxBase::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     {
         CComboEdit *pEdit = static_cast<CComboEdit *>(FindChildByID(IDC_CB_EDIT));
         if (pEdit)
-            pEdit->SendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
+            pEdit->SendSwndMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
         return;
     }
 }
@@ -336,7 +336,7 @@ SComboBox::~SComboBox()
 {
     if(m_pListBox)
     {
-        m_pListBox->SendMessage(WM_DESTROY);
+        m_pListBox->SendSwndMessage(WM_DESTROY);
         delete m_pListBox;
     }
 }
@@ -431,7 +431,7 @@ SComboBoxEx::~SComboBoxEx()
 {
     if(m_pListBox)
     {
-        m_pListBox->SendMessage(WM_DESTROY);
+        m_pListBox->SendSwndMessage(WM_DESTROY);
         delete m_pListBox;
     }
 }

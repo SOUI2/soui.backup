@@ -46,8 +46,8 @@ namespace SOUI
                 {
                     pRT->PushClipRect(&rcClient);
                 }
-                pWndCur->SendMessage(WM_ERASEBKGND, (WPARAM)pRT);
-                pWndCur->SendMessage(WM_PAINT, (WPARAM)pRT);
+                pWndCur->SendSwndMessage(WM_ERASEBKGND, (WPARAM)pRT);
+                pWndCur->SendSwndMessage(WM_PAINT, (WPARAM)pRT);
             }
 
             SPainter painter;
@@ -71,7 +71,7 @@ namespace SOUI
             }
         }
         if(prsBack == PRS_DRAWING) 
-            pWndCur->SendMessage(WM_NCPAINT, (WPARAM)pRT);//ncpaint should be placed in tail of paint link
+            pWndCur->SendSwndMessage(WM_NCPAINT, (WPARAM)pRT);//ncpaint should be placed in tail of paint link
 
         return prState==PRS_DRAWING || prState == PRS_MEETEND;
     }
@@ -212,7 +212,7 @@ void SWindow::TestMainThread()
 
 
 // Send a message to DuiWindow
-LRESULT SWindow::SendMessage(UINT Msg, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/,BOOL *pbMsgHandled/*=NULL*/)
+LRESULT SWindow::SendSwndMessage(UINT Msg, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/,BOOL *pbMsgHandled/*=NULL*/)
 {
     LRESULT lResult = 0;
 
@@ -369,7 +369,7 @@ BOOL SWindow::DestroyChild(SWindow *pChild)
 {
     if(this != pChild->GetParent()) return FALSE;
     pChild->Invalidate();
-    pChild->SendMessage(WM_DESTROY);
+    pChild->SendSwndMessage(WM_DESTROY);
     RemoveChild(pChild);
     pChild->Release();
     return TRUE;
@@ -470,13 +470,13 @@ BOOL SWindow::IsVisible(BOOL bCheckParent /*= FALSE*/)
 void SWindow::SetVisible(BOOL bVisible,BOOL bUpdate/*=FALSE*/)
 {
     if(bUpdate) InvalidateRect(m_rcWindow);
-    SendMessage(WM_SHOWWINDOW,bVisible);
+    SendSwndMessage(WM_SHOWWINDOW,bVisible);
     if(bUpdate) InvalidateRect(m_rcWindow);
 }
 
 void SWindow::EnableWindow( BOOL bEnable,BOOL bUpdate)
 {
-    SendMessage(WM_ENABLE,bEnable);
+    SendSwndMessage(WM_ENABLE,bEnable);
     if(bUpdate) InvalidateRect(m_rcWindow);
 }
 
@@ -677,7 +677,7 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
 
     }
 
-    if(0!=SendMessage(WM_CREATE))
+    if(0!=SendSwndMessage(WM_CREATE))
     {
         if(m_pParent)    m_pParent->DestroyChild(this);
         return FALSE;
@@ -814,11 +814,11 @@ LRESULT SWindow::OnWindowPosChanged(LPRECT lpRcContainer)
     }
     if(lRet==0)
     {
-        SendMessage(WM_NCCALCSIZE);//计算非客户区大小
+        SendSwndMessage(WM_NCCALCSIZE);//计算非客户区大小
 
         CRect rcClient;
         GetClient(&rcClient);
-        SendMessage(WM_SIZE,0,MAKELPARAM(rcClient.Width(),rcClient.Height()));
+        SendSwndMessage(WM_SIZE,0,MAKELPARAM(rcClient.Width(),rcClient.Height()));
 
         UpdateChildrenPosition();
     }
@@ -837,7 +837,7 @@ void SWindow::OnDestroy()
     while (pChild)
     {
         SWindow *pNextChild=pChild->m_pNextSibling;
-        pChild->SendMessage(WM_DESTROY);
+        pChild->SendSwndMessage(WM_DESTROY);
         pChild->Release();
 
         pChild=pNextChild;
@@ -1079,7 +1079,7 @@ void SWindow::OnShowWindow(BOOL bShow, UINT nStatus)
     SWindow *pChild=m_pFirstChild;
     while(pChild)
     {
-        pChild->SendMessage(WM_SHOWWINDOW,bShow,ParentShow);
+        pChild->SendSwndMessage(WM_SHOWWINDOW,bShow,ParentShow);
         pChild=pChild->GetWindow(GDUI_NEXTSIBLING);
     }
     if(!IsVisible(TRUE) && m_hSWnd == GetContainer()->SwndGetFocus())
@@ -1118,7 +1118,7 @@ void SWindow::OnEnable( BOOL bEnable,UINT nStatus )
     SWindow *pChild=m_pFirstChild;
     while(pChild)
     {
-        pChild->SendMessage(WM_ENABLE,bEnable,ParentEnable);
+        pChild->SendSwndMessage(WM_ENABLE,bEnable,ParentEnable);
         pChild=pChild->GetWindow(GDUI_NEXTSIBLING);
     }
     if(IsDisabled(TRUE) && m_hSWnd == GetContainer()->SwndGetFocus())
@@ -1176,7 +1176,7 @@ void SWindow::OnMouseLeave()
 BOOL SWindow::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
     BOOL bRet=FALSE;
-    if(m_pParent) bRet=(BOOL)m_pParent->SendMessage(WM_MOUSEWHEEL,MAKEWPARAM(nFlags,zDelta),MAKELPARAM(pt.x,pt.y));
+    if(m_pParent) bRet=(BOOL)m_pParent->SendSwndMessage(WM_MOUSEWHEEL,MAKEWPARAM(nFlags,zDelta),MAKELPARAM(pt.x,pt.y));
     return bRet;
 }
 

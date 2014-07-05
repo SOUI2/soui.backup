@@ -16,7 +16,7 @@ public:
 	void OnClose()
 	{
 		AnimateHostWindow(200,AW_CENTER|AW_HIDE);
-		EndDialog(IDCANCEL);
+        PostMessage(WM_QUIT);
 	}
 	void OnMaximize()
 	{

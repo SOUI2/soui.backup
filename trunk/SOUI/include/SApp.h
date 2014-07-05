@@ -77,6 +77,8 @@ public:
     {
         return m_lstMsgLoop.RemoveTail();
     }
+
+    int Run(HWND hMainWnd);
 protected:
     void createSingletons();
     void destroySingletons();

@@ -620,10 +620,10 @@ LRESULT SRichEdit::OnCreate( LPVOID )
     m_pTxtHost->GetTextService()->TxSendMessage(WM_KILLFOCUS, 0, 0, 0);
 
     // set IME
-    DWORD dw = SendMessage(EM_GETLANGOPTIONS);
+    DWORD dw = SendSwndMessage(EM_GETLANGOPTIONS);
     dw |= IMF_AUTOKEYBOARD | IMF_DUALFONT;
     dw &= ~IMF_AUTOFONT;
-    SendMessage(EM_SETLANGOPTIONS, 0, dw);
+    SendSwndMessage(EM_SETLANGOPTIONS, 0, dw);
 
     SetWindowText(DUI_CT2W(SWindow::GetWindowText()));
 
@@ -864,7 +864,7 @@ BOOL SRichEdit::GetReadOnly()
 
 BOOL SRichEdit::SetReadOnly(BOOL bReadOnly)
 {
-    return 0 != SendMessage(EM_SETREADONLY, bReadOnly);
+    return 0 != SendSwndMessage(EM_SETREADONLY, bReadOnly);
 }
 
 LONG SRichEdit::GetLimitText()
@@ -874,7 +874,7 @@ LONG SRichEdit::GetLimitText()
 
 BOOL SRichEdit::SetLimitText(int nLength)
 {
-    return 0 != SendMessage(EM_EXLIMITTEXT, nLength);
+    return 0 != SendSwndMessage(EM_EXLIMITTEXT, nLength);
 }
 
 WORD SRichEdit::GetDefaultAlign()
@@ -1096,11 +1096,11 @@ void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
             point.Offset(rcCantainer.TopLeft());
             HWND hHost=GetContainer()->GetHostHwnd();
             ::ClientToScreen(hHost,&point);
-            BOOL canPaste=SendMessage(EM_CANPASTE,0);
+            BOOL canPaste=SendSwndMessage(EM_CANPASTE,0);
             DWORD dwStart=0,dwEnd=0;
-            SendMessage(EM_GETSEL,(WPARAM)&dwStart,(LPARAM)&dwEnd);
+            SendSwndMessage(EM_GETSEL,(WPARAM)&dwStart,(LPARAM)&dwEnd);
             BOOL hasSel=dwStart<dwEnd;
-            UINT uLen=SendMessage(WM_GETTEXTLENGTH ,0,0);
+            UINT uLen=SendSwndMessage(WM_GETTEXTLENGTH ,0,0);
             BOOL bReadOnly=m_dwStyle&ES_READONLY;
             EnableMenuItem(menu.m_hMenu,MENU_CUT,MF_BYCOMMAND|((hasSel&&(!bReadOnly))?0:MF_GRAYED));
             EnableMenuItem(menu.m_hMenu,MENU_COPY,MF_BYCOMMAND|(hasSel?0:MF_GRAYED));
@@ -1112,19 +1112,19 @@ void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
             switch(uCmd)
             {
             case MENU_CUT:
-                SendMessage(WM_CUT);
+                SendSwndMessage(WM_CUT);
                 break;
             case MENU_COPY:
-                SendMessage(WM_COPY);
+                SendSwndMessage(WM_COPY);
                 break;
             case MENU_PASTE:
-                SendMessage(WM_PASTE);
+                SendSwndMessage(WM_PASTE);
                 break;
             case MENU_DEL:
-                SendMessage(EM_REPLACESEL,0,(LPARAM)_T(""));
+                SendSwndMessage(EM_REPLACESEL,0,(LPARAM)_T(""));
                 break;
             case MENU_SELALL:
-                SendMessage(EM_SETSEL,0,-1);
+                SendSwndMessage(EM_SETSEL,0,-1);
                 break;
             default:
                 break;
@@ -1321,34 +1321,34 @@ void SRichEdit::OnSetFont( IFont *pFont, BOOL bRedraw )
 
 BOOL SRichEdit::SetWindowText( LPCWSTR lpszText )
 {
-    return (BOOL)SendMessage(WM_SETTEXT,0,(LPARAM)lpszText);
+    return (BOOL)SendSwndMessage(WM_SETTEXT,0,(LPARAM)lpszText);
 }
 
 SStringW SRichEdit::GetWindowText()
 {
     SStringW strRet;
-    int nLen=SendMessage(WM_GETTEXTLENGTH);
+    int nLen=SendSwndMessage(WM_GETTEXTLENGTH);
     wchar_t *pBuf=strRet.GetBufferSetLength(nLen);
-    SendMessage(WM_GETTEXT,(WPARAM)nLen,(LPARAM)pBuf);
+    SendSwndMessage(WM_GETTEXT,(WPARAM)nLen,(LPARAM)pBuf);
     strRet.ReleaseBuffer();
     return strRet;
 }
 
 int SRichEdit::GetWindowTextLength()
 {
-    return (int)SendMessage(WM_GETTEXTLENGTH);
+    return (int)SendSwndMessage(WM_GETTEXTLENGTH);
 }
 
 void SRichEdit::ReplaceSel(LPWSTR pszText,BOOL bCanUndo)
 {
-    SendMessage(EM_REPLACESEL,(WPARAM)bCanUndo,(LPARAM)pszText);
+    SendSwndMessage(EM_REPLACESEL,(WPARAM)bCanUndo,(LPARAM)pszText);
 }
 
 void SRichEdit::SetSel(DWORD dwSelection, BOOL bNoScroll)
 {
-    SendMessage(EM_SETSEL, LOWORD(dwSelection), HIWORD(dwSelection));
+    SendSwndMessage(EM_SETSEL, LOWORD(dwSelection), HIWORD(dwSelection));
     if(!bNoScroll)
-        SendMessage(EM_SCROLLCARET, 0, 0L);
+        SendSwndMessage(EM_SCROLLCARET, 0, 0L);
 }
 
 LRESULT SRichEdit::OnSetTextColor( const SStringW &  strValue,BOOL bLoading )

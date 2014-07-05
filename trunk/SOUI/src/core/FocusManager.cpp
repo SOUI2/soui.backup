@@ -285,11 +285,11 @@ namespace SOUI
         SWindow *pNewFocus=SWindowMgr::GetWindow(hDuiWnd);
         if(pOldFocus)
         {
-            pOldFocus->SendMessage(WM_KILLFOCUS,(WPARAM)pNewFocus);
+            pOldFocus->SendSwndMessage(WM_KILLFOCUS,(WPARAM)pNewFocus);
         }
         if(pNewFocus && !pNewFocus->IsDisabled(TRUE))
         {
-            pNewFocus->SendMessage(WM_SETFOCUS,(WPARAM)pOldFocus);
+            pNewFocus->SendSwndMessage(WM_SETFOCUS,(WPARAM)pOldFocus);
             focused_view_ = hDuiWnd;
         }else
         {
@@ -330,7 +330,7 @@ namespace SOUI
 
         if(pWnd)
         {
-            pWnd->SendMessage(WM_KILLFOCUS);
+            pWnd->SendSwndMessage(WM_KILLFOCUS);
         }
     }
 
@@ -340,7 +340,7 @@ namespace SOUI
         if(pWnd && !pWnd->IsDisabled(TRUE))
         {
             focused_view_=focused_backup_;
-            pWnd->SendMessage(WM_SETFOCUS);
+            pWnd->SendSwndMessage(WM_SETFOCUS);
         }
         focused_backup_=0;
     }

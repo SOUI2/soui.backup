@@ -23,8 +23,9 @@ namespace SOUI
     INT_PTR SMessageBoxImpl::MessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType )
     {
         if(!s_xmlMsgTemplate) return ::MessageBox(hWnd,lpText,lpCaption,uType);
-
-        Create(NULL,NULL,WS_POPUPWINDOW,0,0,0,10,10,NULL);
+        
+        if(!hWnd) hWnd=GetActiveWindow();
+        Create(hWnd,WS_POPUPWINDOW,0,0,0,10,10);
         pugi::xml_node uiRoot=s_xmlMsgTemplate.child(L"SOUI");
         InitFromXml(uiRoot);
 

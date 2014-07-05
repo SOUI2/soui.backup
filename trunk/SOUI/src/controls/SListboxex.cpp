@@ -238,7 +238,7 @@ void SListBoxEx::RedrawItem(int iItem)
     SPainter painter;
     BeforePaint(pRT,painter);
 
-    SendMessage(WM_ERASEBKGND,(WPARAM)pRT);
+    SendSwndMessage(WM_ERASEBKGND,(WPARAM)pRT);
     OnDrawItem(pRT,rcItem,iItem);
 
     AfterPaint(pRT,painter);
@@ -403,7 +403,7 @@ void SListBoxEx::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
     SWindow *pOwner = GetOwner();
     if (pOwner && (nChar == VK_ESCAPE))
     {
-        pOwner->SendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
+        pOwner->SendSwndMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
         return;
     }
 
@@ -425,7 +425,7 @@ void SListBoxEx::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     SWindow *pOwner = GetOwner();
     if (pOwner)
-        pOwner->SendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
+        pOwner->SendSwndMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
 }
 
 UINT SListBoxEx::OnGetDlgCode()

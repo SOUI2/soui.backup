@@ -120,7 +120,7 @@ public:
     CSimpleWnd * GetNative(){return this;}
 
     HWND Create(HWND hWndParent,int x,int y,int nWidth,int nHeight);
-    HWND Create(HWND hWndParent,LPCTSTR lpWindowName, DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight, LPVOID lpParam);
+    HWND Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight);
 
     BOOL SetXml(LPCTSTR pszXmlName);
 
@@ -249,19 +249,17 @@ protected:
     virtual BOOL OnRealWndInit(SRealWnd *pRealWnd);
     virtual void OnRealWndDestroy(SRealWnd *pRealWnd);
     virtual void OnRealWndSize(SRealWnd *pRealWnd);
-    
+ 
     LRESULT OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam);
 
     void OnGetMinMaxInfo(LPMINMAXINFO lpMMI);
 
     BOOL OnNcActivate(BOOL bActive);
-
+    
     UINT OnWndNcHitTest(CPoint point);
 
     void OnSetFocus(HWND wndOld);
     void OnKillFocus(HWND wndFocus);
-
-    void OnClose();
 
     void OnSetCaretValidateRect( LPCRECT lpRect );
 
@@ -295,7 +293,6 @@ protected:
         MSG_WM_NCCALCSIZE(OnNcCalcSize)
         MSG_WM_NCHITTEST(OnWndNcHitTest)
         MSG_WM_GETMINMAXINFO(OnGetMinMaxInfo)
-        MSG_WM_CLOSE(OnClose)
         REFLECT_NOTIFY_CODE(NM_CUSTOMDRAW)
     END_MSG_MAP()
 };

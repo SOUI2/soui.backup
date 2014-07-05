@@ -30,7 +30,7 @@ BOOL SPanel::ShowScrollBar( int wBar, BOOL bShow )
 {
     if(bShow) m_wBarVisible|=wBar;
     else m_wBarVisible&=~wBar;
-    SendMessage(WM_NCCALCSIZE);
+    SendSwndMessage(WM_NCCALCSIZE);
     Invalidate();
     return TRUE;
 }
@@ -829,7 +829,7 @@ void SScrollView::UpdateScrollBar()
     SetScrollPos(TRUE,m_siVer.nPos,TRUE);
     SetScrollPos(FALSE,m_siHoz.nPos,TRUE);
 
-    SendMessage(WM_NCCALCSIZE);
+    SendSwndMessage(WM_NCCALCSIZE);
 
     Invalidate();
 }

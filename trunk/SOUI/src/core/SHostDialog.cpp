@@ -18,9 +18,8 @@ namespace SOUI
         if(!hParent)
         {
             hParent = SThreadActiveWndMgr::GetActive();
-            if (!hParent)  hParent = ::GetActiveWindow();
         }
-
+               
         BOOL bEnableParent = FALSE;
         if (hParent && hParent != ::GetDesktopWindow() && ::IsWindowEnabled(hParent))
         {
@@ -42,6 +41,7 @@ namespace SOUI
             ::ShowWindow(m_hWnd,SW_SHOWNOACTIVATE);
         else
             ::ShowWindow(m_hWnd,SW_SHOWNORMAL);
+        
 
         Run();
 
@@ -59,9 +59,6 @@ namespace SOUI
         {
             ::EnableWindow(hParent, TRUE);
         }
-
-        if (hParent != NULL && ::GetActiveWindow() == m_hWnd)
-            ::SetActiveWindow(hParent);
 
         SThreadActiveWndMgr::SetActive(hWndLastActive);
 
