@@ -14,7 +14,6 @@
 #include "control/Srealwnd.h"
 
 #include "SimpleWnd.h"
-#include "SRootWnd.h"
 #include "SDropTargetDispatcher.h"
 #include "event/eventcrack.h"
 
@@ -26,20 +25,81 @@ namespace SOUI
 {
 
     class SHostWnd;
-    class CDummyWnd : public CSimpleWnd
+    class SDummyWnd : public CSimpleWnd
     {
     public:
-        CDummyWnd(SHostWnd* pOwner):m_pOwner(pOwner)
+        SDummyWnd(SHostWnd* pOwner):m_pOwner(pOwner)
         {
         }
 
         void OnPaint(CDCHandle dc);
 
-        BEGIN_MSG_MAP_EX(CDummyWnd)
+        BEGIN_MSG_MAP_EX(SDummyWnd)
             MSG_WM_PAINT(OnPaint)
         END_MSG_MAP()
     private:
         SHostWnd *m_pOwner;
+    };
+
+    class SHostWndAttr : public SObject
+    {
+        SOUI_CLASS_NAME(SWindow, L"hostwndattr")
+    public:
+        SHostWndAttr(void)
+            : m_bResizable(FALSE)
+            , m_bTranslucent(FALSE)
+            , m_bAppWnd(FALSE)
+            , m_bToolWnd(FALSE)
+            , m_szMin(200, 200)
+            , m_szInit(640,480)
+            , m_dwStyle(0)
+            , m_dwExStyle(0)
+        {
+
+        }
+
+        void FreeOwnedSkins()
+        {
+            if(!m_strName.IsEmpty()) 
+                SApplication::getSingleton().FreeSkins(m_strName);    //load skin only used in the host window
+        }
+
+        void LoadOwnedSkins()
+        {
+            if(!m_strName.IsEmpty()) 
+                SApplication::getSingleton().LoadSkins(m_strName);    //load skin only used in the host window
+        }
+
+        SOUI_ATTRS_BEGIN()
+            ATTR_STRINGW(L"name",m_strName,FALSE)
+            ATTR_STRINGW(L"title",m_strTitle,FALSE)
+            ATTR_SIZE(L"size",m_szInit,FALSE)
+            ATTR_INT(L"width",m_szInit.cx,FALSE)
+            ATTR_INT(L"height",m_szInit.cy,FALSE)
+            ATTR_RECT(L"margin",m_rcMargin,FALSE)
+            ATTR_SIZE(L"minsize",m_szMin,FALSE)
+            ATTR_DWORD(L"wndstyle",m_dwStyle,FALSE)
+            ATTR_DWORD(L"wndstyleex",m_dwExStyle,FALSE)
+            ATTR_INT(L"resizable",m_bResizable,FALSE)
+            ATTR_INT(L"translucent",m_bTranslucent,FALSE)
+            ATTR_INT(L"appwnd",m_bAppWnd,FALSE)
+            ATTR_INT(L"toolwindow",m_bToolWnd,FALSE)
+        SOUI_ATTRS_END()
+
+        CRect m_rcMargin;
+        CSize m_szMin;
+        CSize m_szInit;
+
+        BOOL m_bResizable;
+        BOOL m_bAppWnd;
+        BOOL m_bToolWnd;
+        BOOL m_bTranslucent;    //窗口的半透明属性
+
+        DWORD m_dwStyle;
+        DWORD m_dwExStyle;
+
+        SStringW m_strName;
+        SStringW m_strTitle;
     };
 
 class STipCtrl;
@@ -47,16 +107,16 @@ class STipCtrl;
 class SOUI_EXP SHostWnd
     : public CSimpleWnd
     , public SwndContainerImpl
-    , public SRootWindow
+    , public SWindow
     , protected IDuiRealWndHandler
 {
-    friend class CDummyWnd;
+    friend class SDummyWnd;
 public:
     SHostWnd(LPCTSTR pszResName = NULL);
     virtual ~SHostWnd();
 
 public:
-    SRootWindow * GetRoot(){return this;}
+    SWindow * GetRoot(){return this;}
     CSimpleWnd * GetNative(){return this;}
 
     HWND Create(HWND hWndParent,int x,int y,int nWidth,int nHeight);
@@ -71,8 +131,9 @@ protected:
     BOOL InitFromXml(pugi::xml_node xmlNode);
     void _Redraw();
     
-    CDummyWnd            m_dummyWnd;    //半透明窗口使用的一个响应WM_PAINT消息的窗口
-    
+    SDummyWnd            m_dummyWnd;    //半透明窗口使用的一个响应WM_PAINT消息的窗口
+    SHostWndAttr         m_hostAttr;
+
     SStringT m_strXmlLayout;
 
     // Tracking flag

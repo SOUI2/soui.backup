@@ -1028,10 +1028,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\core\SRootWnd.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\controls\SScrollbar.cpp"
 				>
 			</File>
@@ -1303,10 +1299,6 @@
 			</File>
 			<File
 				RelativePath=".\include\res.mgr\SResProviderMgr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\core\SRootWnd.h"
 				>
 			</File>
 			<File

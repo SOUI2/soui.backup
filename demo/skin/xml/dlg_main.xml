@@ -1,5 +1,5 @@
-﻿<UIFRAME name="dlg_main" title="SOUI-DEMO version:%ver%" width="600" height="400" appwin="1" margin="20,5,5,5"  resizable="1" translucent="1">
-  <window pos="0,0,-0,-0" class="cls_dlg_frame">
+﻿<SOUI name="dlg_main" title="SOUI-DEMO version:%ver%" width="600" height="400" appwin="1" margin="20,5,5,5"  resizable="1" translucent="1">
+  <root class="cls_dlg_frame">
     <caption pos="0,0,-0,30">
       <text pos="11,9" class="cls_txt_red">SOUI-DEMO version:%ver%</text>
       <imgbtn id="1" skin="btn_sys_close"    pos="-45,0" tip="close" animate="1"/>
@@ -113,5 +113,5 @@
       </page>
 
     </tabctrl>
-  </window>
-</UIFRAME>
+  </root>
+</SOUI>

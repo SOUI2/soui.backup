@@ -87,7 +87,7 @@ BOOL SApplication::SetMsgBoxTemplate( LPCTSTR pszXmlName,LPCTSTR pszType)
 {
     pugi::xml_document xmlDoc;
     if(!LOADXML(xmlDoc,pszXmlName,pszType)) return FALSE;
-    pugi::xml_node uiRoot=xmlDoc.child(L"UIFRAME");   
+    pugi::xml_node uiRoot=xmlDoc.child(L"SOUI");   
     return SMessageBoxImpl::SetMsgTemplate(uiRoot);
 }
 

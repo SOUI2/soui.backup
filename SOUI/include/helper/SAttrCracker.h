@@ -27,10 +27,6 @@ public:                                                             \
     return hRet;                                                \
     }                                                               \
 
-#define SOUI_ATTRS_QUIT()                              \
-        hRet=E_FAIL;                                    \
-    return hRet;                                                \
-    }                                                           \
  
 #define ATTR_CHAIN(varname)                               \
     if (SUCCEEDED(hRet = varname.SetAttribute(strAttribName, strValue, bLoading)))   \
