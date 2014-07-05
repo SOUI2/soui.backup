@@ -63,7 +63,7 @@ BOOL SHostWnd::SetXml(LPCTSTR pszXmlName)
     pugi::xml_document xmlDoc;
     if(!LOADXML(xmlDoc,pszXmlName,RT_LAYOUT)) return FALSE;
 
-    return InitFromXml(xmlDoc.child(L"UIFRAME"));
+    return InitFromXml(xmlDoc.child(L"SOUI"));
 }
 
 BOOL SHostWnd::SetXml(LPCWSTR lpszXml,int nLen)
@@ -71,43 +71,48 @@ BOOL SHostWnd::SetXml(LPCWSTR lpszXml,int nLen)
     pugi::xml_document xmlDoc;
     if(!xmlDoc.load_buffer(lpszXml,nLen,pugi::parse_default,pugi::encoding_utf16)) return FALSE;
  
-    return InitFromXml(xmlDoc.child(L"UIFRAME"));
+    return InitFromXml(xmlDoc.child(L"SOUI"));
 }
 
 BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
 {
     if(!xmlNode) return FALSE;
+    
+    m_hostAttr.FreeOwnedSkins();
 
     DWORD dwStyle =CSimpleWnd::GetStyle();
     DWORD dwExStyle  = CSimpleWnd::GetExStyle();
     
-    if(!SRootWindow::InitFromXml(xmlNode)) return FALSE;
-    
-    if (m_bResizable)
+    SHostWndAttr hostAttr;
+    hostAttr.InitFromXml(xmlNode);
+    m_hostAttr=hostAttr;
+    m_hostAttr.LoadOwnedSkins();
+
+    if (m_hostAttr.m_bResizable)
     {
         dwStyle |= WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_THICKFRAME;
     }
-    if(m_bAppWnd)
+    if(m_hostAttr.m_bAppWnd)
     {
         dwStyle |= WS_SYSMENU;
         dwExStyle |= WS_EX_APPWINDOW;
-    }else if(m_bToolWnd)
+    }else if(m_hostAttr.m_bToolWnd)
     {
         dwExStyle |= WS_EX_TOOLWINDOW;
     }
-    if(m_bTranslucent)
+    if(m_hostAttr.m_bTranslucent)
     {
         dwExStyle |= WS_EX_LAYERED;
     }
     
-    if(m_dwStyle!=0) dwStyle=m_dwStyle;
-    if(m_dwExStyle != 0) dwExStyle =m_dwExStyle;
+    if(m_hostAttr.m_dwStyle!=0) dwStyle=m_hostAttr.m_dwStyle;
+    if(m_hostAttr.m_dwExStyle != 0) dwExStyle =m_hostAttr.m_dwExStyle;
     
     ModifyStyle(0,dwStyle);
     ModifyStyleEx(0,dwExStyle);
-    CSimpleWnd::SetWindowTextW(m_strTitle);
-
-    if(m_bTranslucent)
+    CSimpleWnd::SetWindowTextW(m_hostAttr.m_strTitle);
+    
+    if(m_hostAttr.m_bTranslucent)
     {
         SetWindowLongPtr(GWL_EXSTYLE, GetWindowLongPtr(GWL_EXSTYLE) | WS_EX_LAYERED);
         m_dummyWnd.Create(_T("SOUI_DUMMY_WND"),WS_POPUP,WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE,0,0,10,10,m_hWnd,NULL);
@@ -115,13 +120,15 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
         ::SetLayeredWindowAttributes(m_dummyWnd.m_hWnd,0,0,LWA_ALPHA);
         m_dummyWnd.ShowWindow(SW_SHOWNOACTIVATE);
     }
+    
 
+    SWindow::InitFromXml(xmlNode.child(L"root"));
 
     CRect rcClient;
     GetClientRect(&rcClient);
     if(rcClient.IsRectEmpty())//APP没有指定窗口大小，使用XML中的值
     {
-        SetWindowPos(NULL,0,0,m_szInit.cx,m_szInit.cy,SWP_NOZORDER|SWP_NOMOVE);
+        SetWindowPos(NULL,0,0,m_hostAttr.m_szInit.cx,m_hostAttr.m_szInit.cy,SWP_NOZORDER|SWP_NOMOVE);
     }else
     {
         Move(&rcClient);
@@ -141,7 +148,7 @@ void SHostWnd::_Redraw()
     m_bNeedRepaint = TRUE;
     m_rgnInvalidate->Clear();
 
-    if(!m_bTranslucent)
+    if(!m_hostAttr.m_bTranslucent)
         CSimpleWnd::Invalidate(FALSE);
     else if(m_dummyWnd.IsWindow()) 
         m_dummyWnd.Invalidate(FALSE);
@@ -149,7 +156,7 @@ void SHostWnd::_Redraw()
 
 void SHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
 {
-    if((m_bTranslucent && !uFlags) && !m_bNeedAllRepaint && !m_bNeedRepaint) return;
+    if((m_hostAttr.m_bTranslucent && !uFlags) && !m_bNeedAllRepaint && !m_bNeedRepaint) return;
     if (m_bNeedAllRepaint)
     {
         m_rgnInvalidate->Clear();
@@ -202,7 +209,7 @@ void SHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
 void SHostWnd::OnPaint(CDCHandle dc)
 {
     CPaintDC dc1(m_hWnd);
-    OnPrint(m_bTranslucent?NULL:dc1.m_hDC, 0);
+    OnPrint(m_hostAttr.m_bTranslucent?NULL:dc1.m_hDC, 0);
 }
 
 BOOL SHostWnd::OnEraseBkgnd(CDCHandle dc)
@@ -228,10 +235,11 @@ void SHostWnd::OnDestroy()
             m_pTipCtrl->DestroyWindow();
         delete m_pTipCtrl;
     }
-    if(m_bTranslucent && m_dummyWnd.IsWindow())
+    if(m_hostAttr.m_bTranslucent && m_dummyWnd.IsWindow())
     {
         m_dummyWnd.DestroyWindow();
     }
+    m_hostAttr.FreeOwnedSkins();
 }
 
 void SHostWnd::OnSize(UINT nType, CSize size)
@@ -345,7 +353,7 @@ void SHostWnd::DrawCaret(CPoint pt)
     
     m_memRT->BitBlt(&rcShowCaret,pRTCaret,rcShowCaret.left-pt.x,rcShowCaret.top-pt.y,DSTINVERT);
     
-    if(!m_bTranslucent)
+    if(!m_hostAttr.m_bTranslucent)
     {
         CSimpleWnd::InvalidateRect(rcCaret, FALSE);
     }else
@@ -499,7 +507,7 @@ void SHostWnd::OnReleaseRenderTarget(IRenderTarget * pRT,const CRect &rc,DWORD g
 void SHostWnd::UpdateHost(CDCHandle dc, const CRect &rcInvalid )
 {
     HDC hdc=m_memRT->GetDC(0);
-    if(m_bTranslucent)
+    if(m_hostAttr.m_bTranslucent)
     {
         CRect rc;
         GetWindowRect(&rc);
@@ -523,7 +531,7 @@ void SHostWnd::OnRedraw(const CRect &rc)
     
     m_bNeedRepaint = TRUE;
 
-    if(!m_bTranslucent)
+    if(!m_hostAttr.m_bTranslucent)
     {
         CSimpleWnd::InvalidateRect(rc, FALSE);
     }else
@@ -552,7 +560,7 @@ SWND SHostWnd::OnSetSwndCapture(SWND hDuiWnd)
 
 BOOL SHostWnd::IsTranslucent()
 {
-    return m_bTranslucent;
+    return m_hostAttr.m_bTranslucent;
 }
 
 
@@ -636,7 +644,7 @@ BOOL SHostWnd::SwndSetCaretPos( int x,int y )
 
 BOOL SHostWnd::SwndUpdateWindow()
 {
-    if(m_bTranslucent) UpdateWindow(m_dummyWnd.m_hWnd);
+    if(m_hostAttr.m_bTranslucent) UpdateWindow(m_dummyWnd.m_hWnd);
     else UpdateWindow(m_hWnd);
     return TRUE;
 }
@@ -683,7 +691,7 @@ void SHostWnd::OnGetMinMaxInfo(LPMINMAXINFO lpMMI)
         lpMMI->ptMaxSize.y = abs(rcWork.Height()) + 2;
         lpMMI->ptMaxTrackSize.x = abs(rcWork.Width()) + 2;
         lpMMI->ptMaxTrackSize.y = abs(rcWork.Height()) + 2;
-        lpMMI->ptMinTrackSize = CPoint(m_szMin.cx, m_szMin.cy);
+        lpMMI->ptMinTrackSize = CPoint(m_hostAttr.m_szMin.cx, m_hostAttr.m_szMin.cy);
     }
 }
 
@@ -694,38 +702,38 @@ BOOL SHostWnd::OnNcActivate(BOOL bActive)
 
 UINT SHostWnd::OnWndNcHitTest(CPoint point)
 {
-    if (m_bResizable)
+    if (m_hostAttr.m_bResizable)
     {
         ScreenToClient(&point);
-        if (point.x > m_rcWindow.right - m_rcMargin.right)
+        if (point.x > m_rcWindow.right - m_hostAttr.m_rcMargin.right)
         {
-            if (point.y > m_rcWindow.bottom - m_rcMargin.bottom)
+            if (point.y > m_rcWindow.bottom - m_hostAttr.m_rcMargin.bottom)
             {
                 return HTBOTTOMRIGHT;
             }
-            else if (point.y < m_rcMargin.top)
+            else if (point.y < m_hostAttr.m_rcMargin.top)
             {
                 return HTTOPRIGHT;
             }
             return HTRIGHT;
         }
-        else if (point.x < m_rcMargin.left)
+        else if (point.x < m_hostAttr.m_rcMargin.left)
         {
-            if (point.y > m_rcWindow.bottom - m_rcMargin.bottom)
+            if (point.y > m_rcWindow.bottom - m_hostAttr.m_rcMargin.bottom)
             {
                 return HTBOTTOMLEFT;
             }
-            else if (point.y < m_rcMargin.top)
+            else if (point.y < m_hostAttr.m_rcMargin.top)
             {
                 return HTTOPLEFT;
             }
             return HTLEFT;
         }
-        else if (point.y > m_rcWindow.bottom - m_rcMargin.bottom)
+        else if (point.y > m_rcWindow.bottom - m_hostAttr.m_rcMargin.bottom)
         {
             return HTBOTTOM;
         }
-        else if (point.y < m_rcMargin.top)
+        else if (point.y < m_hostAttr.m_rcMargin.top)
         {
             return HTTOP;
         }
@@ -1007,7 +1015,7 @@ BOOL SHostWnd::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 //////////////////////////////////////////////////////////////////////////
 //    CTranslucentHostWnd
 //////////////////////////////////////////////////////////////////////////
-void CDummyWnd::OnPaint( CDCHandle dc )
+void SDummyWnd::OnPaint( CDCHandle dc )
 {
     CPaintDC dc1(m_hWnd);
     m_pOwner->OnPrint(NULL,1);

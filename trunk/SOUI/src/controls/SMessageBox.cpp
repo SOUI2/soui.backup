@@ -11,7 +11,7 @@ namespace SOUI
 
     BOOL SMessageBoxImpl::SetMsgTemplate( pugi::xml_node uiRoot )
     {
-        if(wcscmp(uiRoot.name(),L"UIFRAME")!=0 ) return FALSE;
+        if(wcscmp(uiRoot.name(),L"SOUI")!=0 ) return FALSE;
         if(!uiRoot.attribute(L"frame_size").value()[0]) return FALSE;
         if(!uiRoot.attribute(L"minsize").value()[0]) return FALSE;
 
@@ -25,7 +25,7 @@ namespace SOUI
         if(!s_xmlMsgTemplate) return ::MessageBox(hWnd,lpText,lpCaption,uType);
 
         Create(NULL,NULL,WS_POPUPWINDOW,0,0,0,10,10,NULL);
-        pugi::xml_node uiRoot=s_xmlMsgTemplate.child(L"UIFRAME");
+        pugi::xml_node uiRoot=s_xmlMsgTemplate.child(L"SOUI");
         InitFromXml(uiRoot);
 
 
