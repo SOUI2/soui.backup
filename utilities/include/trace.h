@@ -9,7 +9,7 @@ namespace SOUI
 }//end of namespace SOUI
 
 #ifdef _UNICODE
-#define DUITRACE SOUI::DuiTraceW
+#define STRACE SOUI::DuiTraceW
 #else
-#define DUITRACE SOUI::DuiTraceA
+#define STRACE SOUI::DuiTraceA
 #endif

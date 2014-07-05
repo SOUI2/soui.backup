@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////////////////////
 // Xml Attributes Declaration Map
 
-#ifndef DUIATTRCRACK_H
-#define DUIATTRCRACK_H
+#ifndef _SATTRCRACK_H
+#define _SATTRCRACK_H
 
 #pragma  once
 
@@ -142,7 +142,7 @@ public:                                                             \
 #define ATTR_STRINGA(attribname, varname, allredraw)      \
     if (attribname == strAttribName)                            \
         {                                                           \
-        varname = DUI_CW2A(strValue);                                     \
+        varname = S_CW2A(strValue);                                     \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -161,7 +161,7 @@ public:                                                             \
 #define ATTR_STRINGT(attribname, varname, allredraw)     \
     if (attribname == strAttribName)                            \
         {                                                           \
-        varname = DUI_CW2T(strValue);                      \
+        varname = S_CW2T(strValue);                      \
         BUILDSTRING(varname);                        \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
@@ -194,7 +194,7 @@ public:                                                             \
             {\
             DWORD dwValue = HexStringToULong(strValue,nPos);  \
             SStringW strFace=strValue.Right(strValue.GetLength()-nPos-1);\
-            SStringT strFaceT=DUI_CW2T(strFace);\
+            SStringT strFaceT=S_CW2T(strFace);\
             varname = SFontPool::getSingleton().GetFont(LOWORD(dwValue),strFaceT);    \
             }else\
             {\
@@ -213,7 +213,7 @@ public:                                                             \
         BOOL bBold=0,bItalic=0,bUnderline=0;                            \
         SStringT strFace;                                            \
         char  nAdding=0;                                                \
-        SStringT attr=DUI_CW2T(strValue);                    \
+        SStringT attr=S_CW2T(strValue);                    \
         attr.MakeLower();                                                \
         int nPosBegin=attr.Find(_T("facename:"));                        \
         if(nPosBegin!=-1)                                                \
@@ -269,7 +269,7 @@ public:                                                             \
         }                                                           \
         else                                                        \
  
-// DuiStyle From StringA Key
+// SwndStyle From StringA Key
 #define ATTR_STYLE(attribname, varname, allredraw)       \
     if (attribname == strAttribName)                            \
         {                                                           \
@@ -278,7 +278,7 @@ public:                                                             \
         }                                                           \
         else                                                        \
  
-// DuiSkinPool From StringA Key
+// SSkinPool From StringA Key
 #define ATTR_SKIN(attribname, varname, allredraw)        \
     if (attribname == strAttribName)                            \
         {                                                           \
@@ -291,7 +291,7 @@ public:                                                             \
 #define ATTR_IMAGE(attribname, varname, allredraw)        \
     if (attribname == strAttribName)                            \
         {                                                       \
-        SStringT strValueT=DUI_CW2T(strValue);        \
+        SStringT strValueT=S_CW2T(strValue);        \
         int nPos=strValueT.ReverseFind(_T(':'));\
         if(nPos!=-1)\
         {\
@@ -309,7 +309,7 @@ public:                                                             \
 #define ATTR_ICON(attribname, varname, allredraw)        \
     if (attribname == strAttribName)                            \
         {                                                       \
-        SStringT strValueT=DUI_CW2T(strValue);        \
+        SStringT strValueT=S_CW2T(strValue);        \
         int nPos=strValueT.ReverseFind(_T(':'));\
         if(nPos!=-1)\
         {\
@@ -324,4 +324,4 @@ public:                                                             \
         else                                                        \
 
 
-#endif//DUIATTRCRACK_H
+#endif//_SATTRCRACK_H

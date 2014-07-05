@@ -20,38 +20,38 @@ SWindowMgr::~SWindowMgr()
     ::DeleteCriticalSection(&m_lockWndMap);
 }
 
-// Get DuiWindow pointer from handle
-SWindow* SWindowMgr::GetWindow(SWND hDuiWnd)
+// Get SWindow pointer from handle
+SWindow* SWindowMgr::GetWindow(SWND swnd)
 {
-    if(!hDuiWnd) return NULL;
+    if(!swnd) return NULL;
     SWindow *pRet=NULL;
     ::EnterCriticalSection(&getSingleton().m_lockWndMap);
 
-    getSingleton().GetKeyObject(hDuiWnd,pRet);
+    getSingleton().GetKeyObject(swnd,pRet);
     ::LeaveCriticalSection(&getSingleton().m_lockWndMap);
     return pRet;
 }
 
-// Specify a handle to a DuiWindow
-SWND SWindowMgr::NewWindow(SWindow *pDuiWnd)
+// Specify a handle to a SWindow
+SWND SWindowMgr::NewWindow(SWindow *pSwnd)
 {
-    ASSERT(pDuiWnd);
+    ASSERT(pSwnd);
     ::EnterCriticalSection(&getSingleton().m_lockWndMap);
 
-    SWND hDuiWndNext = ++ getSingleton().m_hNextWnd;
-    getSingleton().AddKeyObject(hDuiWndNext,pDuiWnd);
+    SWND swndNext = ++ getSingleton().m_hNextWnd;
+    getSingleton().AddKeyObject(swndNext,pSwnd);
     ::LeaveCriticalSection(&getSingleton().m_lockWndMap);
 
-    return hDuiWndNext;
+    return swndNext;
 }
 
 // Destroy DuiWindow
-BOOL SWindowMgr::DestroyWindow(SWND hDuiWnd)
+BOOL SWindowMgr::DestroyWindow(SWND swnd)
 {
     ::EnterCriticalSection(&getSingleton().m_lockWndMap);
 
-    BOOL bRet=getSingleton().RemoveKeyObject(hDuiWnd);
-    STimerEx::KillTimer(hDuiWnd);
+    BOOL bRet=getSingleton().RemoveKeyObject(swnd);
+    STimer2::KillTimer(swnd);
 
     ::LeaveCriticalSection(&getSingleton().m_lockWndMap);
 

@@ -15,7 +15,7 @@ SPanel::SPanel()
     ,m_pSkinSb(NULL)
     ,m_bDragSb(FALSE)
     ,m_wBarVisible(0)
-    ,m_wBarEnable(DUISB_BOTH)
+    ,m_wBarEnable(SSB_BOTH)
     ,m_dwUpdateInterval(DEF_UPDATEINTERVAL)
 {
     memset(&m_siHoz,0,sizeof(SCROLLINFO));
@@ -40,12 +40,12 @@ BOOL SPanel::EnableScrollBar( int wBar,BOOL bEnable )
 {
     if(bEnable) m_wBarEnable|=wBar;
     else m_wBarEnable&=~wBar;
-    if(wBar & DUISB_VERT)
+    if(wBar & SSB_VERT)
     {
         CRect rcSb=GetScrollBarRect(TRUE);
         InvalidateRect(rcSb);
     }
-    if(wBar & DUISB_HORZ)
+    if(wBar & SSB_HORZ)
     {
         CRect rcSb=GetScrollBarRect(FALSE);
         InvalidateRect(rcSb);
@@ -56,7 +56,7 @@ BOOL SPanel::EnableScrollBar( int wBar,BOOL bEnable )
 
 BOOL SPanel::IsScrollBarEnable( BOOL bVertical )
 {
-    return m_wBarEnable&(bVertical?DUISB_VERT:DUISB_HORZ);
+    return m_wBarEnable&(bVertical?SSB_VERT:SSB_HORZ);
 }
 
 void SPanel::SetScrollInfo(SCROLLINFO si,BOOL bVertical)
@@ -130,7 +130,7 @@ BOOL SPanel::GetScrollRange( BOOL bVertical, LPINT lpMinPos, LPINT lpMaxPos )
 
 BOOL SPanel::HasScrollBar(BOOL bVertical)
 {
-    return m_wBarVisible&(bVertical?DUISB_VERT:DUISB_HORZ);
+    return m_wBarVisible&(bVertical?SSB_VERT:SSB_HORZ);
 }
 
 
@@ -662,13 +662,13 @@ CRect SPanel::GetSbSlideRectByPos(BOOL bVertical,int nPos)
     return rcRet;
 }
 
-void SPanel::OnDuiTimer( char cTimerID )
+void SPanel::OnTimer( char cTimerID )
 {
     if(cTimerID==TIMER_SBWAIT)
     {
         KillTimer(cTimerID);
         SetTimer(TIMER_SBGO,50);
-        OnDuiTimer(TIMER_SBGO);
+        OnTimer(TIMER_SBGO);
     }
     else if(cTimerID==TIMER_SBGO)
     {
@@ -768,12 +768,12 @@ void SScrollView::UpdateScrollBar()
     SWindow::GetClient(&rcClient);
 
     CSize size=rcClient.Size();
-    m_wBarVisible=DUISB_NULL;    //关闭滚动条
+    m_wBarVisible=SSB_NULL;    //关闭滚动条
 
     if(size.cy<m_szView.cy || (size.cy<m_szView.cy+m_nSbWid && size.cx<m_szView.cx))
     {
         //需要纵向滚动条
-        m_wBarVisible|=DUISB_VERT;
+        m_wBarVisible|=SSB_VERT;
         m_siVer.nMin=0;
         m_siVer.nMax=m_szView.cy-1;
         m_siVer.nPage=size.cy;
@@ -781,7 +781,7 @@ void SScrollView::UpdateScrollBar()
         if(size.cx<m_szView.cx+m_nSbWid)
         {
             //需要横向滚动条
-            m_wBarVisible |= DUISB_HORZ;
+            m_wBarVisible |= SSB_HORZ;
             m_siVer.nPage=size.cy-m_nSbWid > 0 ? size.cy-m_nSbWid : 0;
 
             m_siHoz.nMin=0;
@@ -810,7 +810,7 @@ void SScrollView::UpdateScrollBar()
         if(size.cx<m_szView.cx)
         {
             //需要横向滚动条
-            m_wBarVisible|=DUISB_HORZ;
+            m_wBarVisible|=SSB_HORZ;
             m_siHoz.nMin=0;
             m_siHoz.nMax=m_szView.cx-1;
             m_siHoz.nPage=size.cx;

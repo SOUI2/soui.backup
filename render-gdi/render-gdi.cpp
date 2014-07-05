@@ -69,7 +69,7 @@ namespace SOUI
     {
         CAutoRefPtr<IImgDecoder> imgDecoder;
         GetRenderFactory_GDI()->GetImgDecoderFactory()->CreateImgDecoder(&imgDecoder);
-        if(imgDecoder->DecodeFromFile(DUI_CT2W(pszFileName))==0) return S_FALSE;
+        if(imgDecoder->DecodeFromFile(S_CT2W(pszFileName))==0) return S_FALSE;
         return ImgFromDecoder(imgDecoder);
     }
 

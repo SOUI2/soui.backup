@@ -2,7 +2,7 @@
  * Copyright (C) 2014-2050 SOUI团队
  * All rights reserverd.
  * 
- * @file       DuiHotKeyCtrl.h
+ * @file       SHotKeyCtrl.h
  * @brief      热键控件
  * @version    v1.0      
  * @author     soui      
@@ -83,7 +83,7 @@ namespace SOUI
        */  
       virtual UINT OnGetDlgCode()
       {
-          return (DUIC_WANTALLKEYS|DUIC_WANTSYSKEY) & (~DUIC_WANTTAB);
+          return (SC_WANTALLKEYS|SC_WANTSYSKEY) & (~SC_WANTTAB);
       }
       /**
        * SHotKeyCtrl::OnCreate

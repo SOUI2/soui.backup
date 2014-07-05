@@ -1,8 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: CDuiListBoxEx
-// Description: A DuiWindow Based ListBox Control. Can contain control as an item
-//     Creator: Huang Jianxiong
-//     Version: 2011.8.27 - 1.0 - Create
+//  Class Name: SListBoxEx
 //////////////////////////////////////////////////////////////////////////
 
 #pragma  once
@@ -49,7 +46,7 @@ public:
 
     //************************************
     // Method:    SetItemCount
-    // FullName:  SOUI::CDuiListBoxEx::SetItemCount
+    // FullName:  SOUI::SListBoxEx::SetItemCount
     // Access:    public 
     // Returns:   BOOL
     // Qualifier:

@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: DuiImgPool
+//  Class Name: SImgPool
 // Description: Image Pool
 //     Creator: Huang jianxiong
 //     Version: 2012.8.30 - 1.0 - Create

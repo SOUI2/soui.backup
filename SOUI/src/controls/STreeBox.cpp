@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: CDuiTreeCtrl
-// Description: CDuiTreeCtrl
+//  Class Name: STreeCtrl
+// Description: STreeCtrl
 //     Creator: huangjianxiong
 //     Version: 2011.10.14 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
@@ -92,7 +92,7 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
 STreeItem* STreeBox::InsertItem(LPCWSTR pszXml,DWORD dwData,HSTREEITEM hParent/*=STVI_ROOT*/, HSTREEITEM hInsertAfter/*=STVI_LAST*/,BOOL bEnsureVisible/*=FALSE*/)
 {
     pugi::xml_document xmlDoc;
-    SStringA strXml=DUI_CW2A(pszXml,CP_UTF8);;
+    SStringA strXml=S_CW2A(pszXml,CP_UTF8);;
 
     if(!xmlDoc.load_buffer((LPCSTR)strXml,strXml.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return NULL;
 
@@ -523,13 +523,13 @@ void STreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
             if(m_hSelItem)
             {
                 CSTree<STreeItem*>::GetItem(m_hSelItem)->GetFocusManager()->SetFocusedHwnd(0);
-                CSTree<STreeItem*>::GetItem(m_hSelItem)->ModifyItemState(0,DuiWndState_Check);
+                CSTree<STreeItem*>::GetItem(m_hSelItem)->ModifyItemState(0,WndState_Check);
                 RedrawItem(m_hSelItem);
             }
             m_hSelItem=m_hHoverItem;
             if(m_hSelItem)
             {
-                CSTree<STreeItem*>::GetItem(m_hSelItem)->ModifyItemState(DuiWndState_Check,0);
+                CSTree<STreeItem*>::GetItem(m_hSelItem)->ModifyItemState(WndState_Check,0);
                 RedrawItem(m_hSelItem);
             }
             FireEvent(evt2);

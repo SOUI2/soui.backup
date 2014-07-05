@@ -17,34 +17,34 @@ namespace SOUI
 {
 
 /**
- * @class      CDuiItemBox
+ * @class      SItemBox
  * @brief      ItemBox
  * 
  * Describe    ItemBox
  */
-class SOUI_EXP CDuiItemBox
+class SOUI_EXP SItemBox
     : public SScrollView
 {
-    SOUI_CLASS_NAME(CDuiItemBox, L"itembox")
+    SOUI_CLASS_NAME(SItemBox, L"itembox")
 public:
     /**
-     * CDuiItemBox::CDuiItemBox
+     * SItemBox::SItemBox
      * @brief    构造函数
      *
      * Describe  构造函数  
      */
-    CDuiItemBox();
+    SItemBox();
 
     /**
-     * CDuiItemBox::~CDuiItemBox
+     * SItemBox::~SItemBox
      * @brief    析构函数
      *
      * Describe  析构函数  
      */
-    virtual ~CDuiItemBox() {}
+    virtual ~SItemBox() {}
     
     /**
-     * CDuiItemBox::InsertItem
+     * SItemBox::InsertItem
      * @brief    插入新项
      * @param    LPCWSTR pszXml -- xml配置文件
      * @param    int iItem -- 索引
@@ -56,7 +56,7 @@ public:
     SWindow* InsertItem(LPCWSTR pszXml,int iItem=-1,BOOL bEnsureVisible=FALSE);
 
     /**
-     * CDuiItemBox::InsertItem
+     * SItemBox::InsertItem
      * @brief    插入新项
      * @param    LPCWSTR pszXml -- xml配置文件
      * @param    int iItem -- 索引
@@ -68,7 +68,7 @@ public:
     SWindow* InsertItem(pugi::xml_node xmlNode, int iItem=-1,BOOL bEnsureVisible=FALSE);
 
     /**
-     * CDuiItemBox::RemoveItem
+     * SItemBox::RemoveItem
      * @brief    删除项
      * @param    UINT iItem -- 索引
      * @return   返回BOOL
@@ -78,7 +78,7 @@ public:
     BOOL RemoveItem(UINT iItem);
 
     /**
-     * CDuiItemBox::RemoveItem
+     * SItemBox::RemoveItem
      * @brief    删除项
      * @param    SWindow * pChild -- 窗口节点
      * @return   返回BOOL
@@ -88,7 +88,7 @@ public:
     BOOL RemoveItem(SWindow * pChild);
 
     /**
-     * CDuiItemBox::SetNewPosition
+     * SItemBox::SetNewPosition
      * @brief    析构函数
      * @param    SWindow * pChild -- 节点
      * @param    DWORD nPos -- 位置
@@ -100,7 +100,7 @@ public:
     BOOL SetNewPosition(SWindow * pChild, DWORD nPos, BOOL bEnsureVisible = TRUE);
 
     /**
-     * CDuiItemBox::RemoveAllItems
+     * SItemBox::RemoveAllItems
      * @brief    删除所有
      *
      * Describe  删除所有  
@@ -108,7 +108,7 @@ public:
     void RemoveAllItems();
 
     /**
-     * CDuiItemBox::GetItemCount
+     * SItemBox::GetItemCount
      * @brief    获取项个数
      * @return   UINT
      *
@@ -117,7 +117,7 @@ public:
     UINT GetItemCount();
 
     /**
-     * CDuiItemBox::PageUp
+     * SItemBox::PageUp
      * @brief    上一页
      *
      * Describe  上一页  
@@ -125,7 +125,7 @@ public:
     void PageUp();
 
     /**
-     * CDuiItemBox::PageDown
+     * SItemBox::PageDown
      * @brief    下一页
      *
      * Describe  下一页  
@@ -133,7 +133,7 @@ public:
     void PageDown();
 
     /**
-     * CDuiItemBox::EnsureVisible
+     * SItemBox::EnsureVisible
      * @brief    设置显示
      * @param    SWindow *pItem  -- 某项指针
      *
@@ -142,7 +142,7 @@ public:
     void EnsureVisible(SWindow *pItem);
 
     /**
-     * CDuiItemBox::GetItemPos
+     * SItemBox::GetItemPos
      * @brief    获取某项得索引
      * @return   返回int
      *
@@ -157,7 +157,7 @@ protected:
     int m_nSepHei;  /**< */
 
     /**
-     * CDuiItemBox::UpdateScroll
+     * SItemBox::UpdateScroll
      * @brief    更新滚动条
      *
      * Describe  更新滚动条  
@@ -165,7 +165,7 @@ protected:
     void UpdateScroll();
 
     /**
-     * CDuiItemBox::GetItemRect
+     * SItemBox::GetItemRect
      * @brief    获取某项位置
      * @param    int iItem -- 某项索引
      * @return   返回int
@@ -176,7 +176,7 @@ protected:
     CRect GetItemRect(int iItem);
 
     /**
-     * CDuiItemBox::BringWindowAfter
+     * SItemBox::BringWindowAfter
      * @brief    插入新节点
      * @param    SWindow * pChild -- 新节点
      * @param    SWindow * pInsertAfter -- 位置节点
@@ -186,7 +186,7 @@ protected:
     void BringWindowAfter(SWindow * pChild, SWindow * pInsertAfter);
 
     /**
-     * CDuiItemBox::OnSize
+     * SItemBox::OnSize
      * @brief    消息响应函数
      * @param    UINT nType --
      * @param    CSize size -- 
@@ -196,7 +196,7 @@ protected:
     void OnSize(UINT nType, CSize size);
 
     /**
-     * CDuiItemBox::UpdateChildrenPosition
+     * SItemBox::UpdateChildrenPosition
      * @brief    更新子节点位置
      *
      * Describe  更新子节点位置  
@@ -204,7 +204,7 @@ protected:
     virtual void UpdateChildrenPosition(){}//leave it empty
 
     /**
-     * CDuiItemBox::ReLayout
+     * SItemBox::ReLayout
      * @brief    重新布局
      *
      * Describe  重新布局  
@@ -212,7 +212,7 @@ protected:
     void ReLayout();
 
     /**
-     * CDuiItemBox::OnScroll
+     * SItemBox::OnScroll
      * @brief    滚动事件
      * @param    BOOL bVertical -- 是否是竖直
      * @param    UINT uCode -- 消息码
@@ -224,7 +224,7 @@ protected:
     virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
 
     /**
-     * CDuiItemBox::GetScrollLineSize
+     * SItemBox::GetScrollLineSize
      * @brief    获取滚动条大小
      * @param    BOOL bVertical -- 是否是竖直方向
      * @retur    返回int
@@ -234,7 +234,7 @@ protected:
     virtual int GetScrollLineSize(BOOL bVertical);
 
     /**
-     * CDuiItemBox::CreateChildren
+     * SItemBox::CreateChildren
      * @brief    创建新项
      * @param    pugi::xml_node xmlNode
      * @return   返回BOOL
@@ -244,14 +244,14 @@ protected:
     virtual BOOL CreateChildren(pugi::xml_node xmlNode);
 
     SOUI_ATTRS_BEGIN()
-    ATTR_INT(L"itemwid", m_nItemWid, TRUE)
-    ATTR_INT(L"itemhei", m_nItemHei, TRUE)
-    ATTR_INT(L"sepwid", m_nSepWid, TRUE)
-    ATTR_INT(L"sephei", m_nSepHei, TRUE)
+        ATTR_INT(L"itemwid", m_nItemWid, TRUE)
+        ATTR_INT(L"itemhei", m_nItemHei, TRUE)
+        ATTR_INT(L"sepwid", m_nSepWid, TRUE)
+        ATTR_INT(L"sephei", m_nSepHei, TRUE)
     SOUI_ATTRS_END()
 
     SOUI_MSG_MAP_BEGIN()
-    MSG_WM_SIZE(OnSize)
+        MSG_WM_SIZE(OnSize)
     SOUI_MSG_MAP_END()
 
 };

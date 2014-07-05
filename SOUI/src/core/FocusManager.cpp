@@ -22,11 +22,11 @@ namespace SOUI
         {
             if(reverse)
             {
-                starting_view=root_->GetWindow(GDUI_LASTCHILD);
-                while(starting_view->GetChildrenCount()) starting_view=starting_view->GetWindow(GDUI_LASTCHILD);
+                starting_view=root_->GetWindow(GSW_LASTCHILD);
+                while(starting_view->GetChildrenCount()) starting_view=starting_view->GetWindow(GSW_LASTCHILD);
             }else
             {
-                starting_view=root_->GetWindow(GDUI_FIRSTCHILD);
+                starting_view=root_->GetWindow(GSW_FIRSTCHILD);
             }
             check_starting_view=true;
         }
@@ -81,7 +81,7 @@ namespace SOUI
         // First let's try the left child.
         if(can_go_down)
         {
-            SWindow *pChild=starting_view->GetWindow(GDUI_FIRSTCHILD);
+            SWindow *pChild=starting_view->GetWindow(GSW_FIRSTCHILD);
             if(pChild)
             {
                 SWindow* v = FindNextFocusableViewImpl(
@@ -95,7 +95,7 @@ namespace SOUI
         }
 
         // Then try the right sibling.
-        SWindow* sibling = starting_view->GetWindow(GDUI_NEXTSIBLING);
+        SWindow* sibling = starting_view->GetWindow(GSW_NEXTSIBLING);
         if(sibling)
         {
             SWindow* v = FindNextFocusableViewImpl(sibling,
@@ -112,7 +112,7 @@ namespace SOUI
             SWindow* parent = starting_view->GetParent();
             while(parent)
             {
-                sibling = parent->GetWindow(GDUI_NEXTSIBLING);
+                sibling = parent->GetWindow(GSW_NEXTSIBLING);
                 if(sibling)
                 {
                     return FindNextFocusableViewImpl(sibling,
@@ -137,7 +137,7 @@ namespace SOUI
     {
         if(can_go_down)
         {//find the last focusable window
-            SWindow *pChild=starting_view->GetWindow(GDUI_LASTCHILD);
+            SWindow *pChild=starting_view->GetWindow(GSW_LASTCHILD);
             if(pChild)
             {
                 SWindow *pRet=FindPreviousFocusableViewImpl(pChild,true,false,true,pSkipGroupOwner);
@@ -155,14 +155,14 @@ namespace SOUI
             }
         }
 
-        SWindow *pPrevSibling=starting_view->GetWindow(GDUI_PREVSIBLING);
+        SWindow *pPrevSibling=starting_view->GetWindow(GSW_PREVSIBLING);
         if(pPrevSibling)
         {
             return FindPreviousFocusableViewImpl(pPrevSibling,true,true,true,pSkipGroupOwner);
         }
         if(can_go_up)
         {
-            SWindow *pParent=starting_view->GetWindow(GDUI_PARENT);
+            SWindow *pParent=starting_view->GetWindow(GSW_PARENT);
             if(pParent) return FindPreviousFocusableViewImpl(pParent,true,true,false,pSkipGroupOwner);
         }
 
@@ -195,7 +195,7 @@ namespace SOUI
     {
         if(vKey!=VK_TAB) return FALSE;
         SWindow *pFocus=SWindowMgr::GetWindow(focused_view_);
-        if(pFocus && pFocus->OnGetDlgCode()&DUIC_WANTTAB) return FALSE;
+        if(pFocus && pFocus->OnGetDlgCode()&SC_WANTTAB) return FALSE;
         if(GetKeyState(VK_CONTROL)&0x8000) return FALSE;
         else return TRUE;
     }
@@ -213,7 +213,7 @@ namespace SOUI
         SWindow *pFocusWnd=SWindowMgr::GetWindow(focused_view_);
         if(pFocusWnd && pFocusWnd->IsSiblingsAutoGroupped() && (vKey==VK_LEFT || vKey==VK_RIGHT || vKey==VK_UP || vKey==VK_DOWN))
         {
-            UINT ucode= (vKey == VK_RIGHT || vKey == VK_DOWN)?GDUI_NEXTSIBLING:GDUI_PREVSIBLING;
+            UINT ucode= (vKey == VK_RIGHT || vKey == VK_DOWN)?GSW_NEXTSIBLING:GSW_PREVSIBLING;
             SWindow *pNext=pFocusWnd->GetWindow(ucode);
             while(pNext)
             {
@@ -226,7 +226,7 @@ namespace SOUI
             }
             if(!pNext)
             {
-                pNext=pFocusWnd->GetParent()->GetWindow(ucode==GDUI_NEXTSIBLING? GDUI_FIRSTCHILD : GDUI_LASTCHILD);
+                pNext=pFocusWnd->GetParent()->GetWindow(ucode==GSW_NEXTSIBLING? GSW_FIRSTCHILD : GSW_LASTCHILD);
                 while(pNext)
                 {
                     if(pNext->IsSiblingsAutoGroupped())
@@ -256,10 +256,10 @@ namespace SOUI
         // Let's revalidate the focused view.
         ValidateFocusedView();
         SWindow *pFocus=SWindowMgr::GetWindow(focused_view_);
-        SWindow *pDuiWnd=GetNextFocusableView(pFocus,reverse,true);
-        if(pDuiWnd)
+        SWindow *pSwnd=GetNextFocusableView(pFocus,reverse,true);
+        if(pSwnd)
         {
-            SetFocusedHwndWithReason(pDuiWnd->GetSwnd(),kReasonFocusTraversal);
+            SetFocusedHwndWithReason(pSwnd->GetSwnd(),kReasonFocusTraversal);
         }
     }
 
@@ -270,9 +270,9 @@ namespace SOUI
         return fs.FindNextFocusableView(original_starting_view,bReverse,false);
     }
 
-    void CFocusManager::SetFocusedHwndWithReason( SWND hDuiWnd, FocusChangeReason reason )
+    void CFocusManager::SetFocusedHwndWithReason( SWND swnd, FocusChangeReason reason )
     {
-        if(hDuiWnd == focused_view_)
+        if(swnd == focused_view_)
         {
             return;
         }
@@ -282,7 +282,7 @@ namespace SOUI
         // some listeners), then notify all listeners.
         focus_change_reason_ = reason;
         SWindow *pOldFocus=SWindowMgr::GetWindow(focused_view_);
-        SWindow *pNewFocus=SWindowMgr::GetWindow(hDuiWnd);
+        SWindow *pNewFocus=SWindowMgr::GetWindow(swnd);
         if(pOldFocus)
         {
             pOldFocus->SendSwndMessage(WM_KILLFOCUS,(WPARAM)pNewFocus);
@@ -290,7 +290,7 @@ namespace SOUI
         if(pNewFocus && !pNewFocus->IsDisabled(TRUE))
         {
             pNewFocus->SendSwndMessage(WM_SETFOCUS,(WPARAM)pOldFocus);
-            focused_view_ = hDuiWnd;
+            focused_view_ = swnd;
         }else
         {
             focused_view_=0;

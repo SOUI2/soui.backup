@@ -48,10 +48,10 @@
     #include <atlstr.h>
     #include <atlcoll.h>
     #include <atlcomcli.h>
-    #define CDuiComPtr    CComPtr
-    #define CDuiComQIPtr    CComQIPtr
+    #define SComPtr    CComPtr
+    #define SComQIPtr    CComQIPtr
 
-    #include "wtl.mini/duicrack.h"
+    #include "wtl.mini/msgcrack.h"
     #define SArray    CAtlArray
     #define SList    CAtlList
     #define SMap        CAtlMap

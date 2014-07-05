@@ -217,7 +217,7 @@ public:
             if(dwStyle & WS_CHILD)
                 hWndCenter = ::GetParent(m_hWnd);
             else
-                hWndCenter = ::GetWindow(m_hWnd, GW_OWNER);
+                hWndCenter = ::GetWindow(m_hWnd, GSW_OWNER);
         }
 
         // get coordinates of the window relative to its parent

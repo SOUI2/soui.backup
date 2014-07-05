@@ -278,7 +278,7 @@ BOOL SMaskEdit::SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lpszD
 
     // set the window text for the control.
     m_bModified = FALSE;
-    SetWindowText(DUI_CT2W(m_strWindowText));
+    SetWindowText(S_CT2W(m_strWindowText));
 
     return TRUE;
 }
@@ -898,7 +898,7 @@ void SMaskEdit::SetMaskState()
 
     if (strWindowText != m_strWindowText)
     {
-        SetWindowText(DUI_CT2W(m_strWindowText));
+        SetWindowText(S_CT2W(m_strWindowText));
 
         m_bModified = TRUE;
     }
@@ -934,7 +934,7 @@ int SDateEdit::OnCreate(LPVOID)
 void SDateEdit::SetDateTime(LPCTSTR strDate)
 {
     m_strWindowText = m_strDefault = strDate;
-    SetWindowText(DUI_CT2W(strDate));
+    SetWindowText(S_CT2W(strDate));
 }
 
 void SDateEdit::SetDateTime( CTime tm )

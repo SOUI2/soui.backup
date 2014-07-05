@@ -6,14 +6,14 @@ namespace SOUI
 {
 
 
-CDuiRealWndParam::CDuiRealWndParam()
+SRealWndParam::SRealWndParam()
     :m_dwStyle(WS_CHILD)
     ,m_dwExStyle(0)
 {
 
 }
 
-CDuiRealWndParam::~CDuiRealWndParam()
+SRealWndParam::~SRealWndParam()
 {
 }
 

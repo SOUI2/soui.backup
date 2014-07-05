@@ -80,7 +80,7 @@ public:
 
     virtual HRESULT SetAttribute(const SStringA &  strAttribName, const SStringA &  strValue, BOOL bLoading)
     {
-        return DefAttributeProc(DUI_CA2W(strAttribName),DUI_CA2W(strValue),bLoading);
+        return DefAttributeProc(S_CA2W(strAttribName),S_CA2W(strValue),bLoading);
     }
 
     virtual HRESULT SetAttribute(const SStringW &  strAttribName, const SStringW &  strValue, BOOL bLoading)

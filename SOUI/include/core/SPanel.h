@@ -1,8 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
 //   File Name: SPanel.h
-// Description: CDuiPanel Definition, Virtual Container of DuiWindows
-//     Creator: Zhang Xiaoxuan
-//     Version: 2009.04.28 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -12,10 +9,10 @@
 namespace SOUI
 {
 
-#define DUISB_NULL    0
-#define DUISB_HORZ    1
-#define DUISB_VERT    2
-#define DUISB_BOTH    (DUISB_HORZ|DUISB_VERT)
+#define SSB_NULL    0
+#define SSB_HORZ    1
+#define SSB_VERT    2
+#define SSB_BOTH    (SSB_HORZ|SSB_VERT)
 #define TIMER_SBWAIT    1        //启动连续滚动的定时器
 #define TIMER_SBGO    2        //连续滚动的定时器
 
@@ -89,7 +86,7 @@ protected:
 
     BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 
-    void OnDuiTimer(char cTimerID);
+    void OnTimer(char cTimerID);
 
     void OnShowWindow(BOOL bShow, UINT nStatus);
 protected:
@@ -120,7 +117,7 @@ protected:
     int            m_wBarVisible;    //滚动条显示信息
     int            m_wBarEnable;    //滚动条可操作信息
 
-    DWORD        m_dwUpdateTime;    //记录调用UpdateDuiWindow的时间
+    DWORD        m_dwUpdateTime;    //记录调用UpdateSWindow的时间
     DWORD        m_dwUpdateInterval;
 
     SOUI_ATTRS_BEGIN()
@@ -140,7 +137,7 @@ protected:
         MSG_WM_NCMOUSEMOVE(OnNcMouseMove)
         MSG_WM_NCMOUSELEAVE(OnNcMouseLeave)
         MSG_WM_MOUSEWHEEL(OnMouseWheel)
-        MSG_WM_DUITIMER(OnDuiTimer)
+        MSG_WM_TIMER_EX(OnTimer)
         MSG_WM_SHOWWINDOW(OnShowWindow)
     SOUI_MSG_MAP_END()
 };

@@ -30,31 +30,31 @@
 #define ASSERT(expr) __noop;
 #endif // ATLASSERT
 
-#define DUIThrow(expr) __noop;
-#define DUIASSERT_VALID(x) __noop;
+#define SThrow(expr) __noop;
+#define SASSERT_VALID(x) __noop;
 
-#ifndef DUIASSUME
-#define DUIASSUME(expr) do { ASSERT(expr); __analysis_assume(!!(expr)); } while(0)
+#ifndef SASSUME
+#define SASSUME(expr) do { ASSERT(expr); __analysis_assume(!!(expr)); } while(0)
 #endif // ATLASSUME
 
-#ifndef DUIENSURE
-#define DUIENSURE(expr) __noop;
+#ifndef SENSURE
+#define SENSURE(expr) __noop;
 #endif // ATLENSURE
 
 
-#if !defined(_DUI_W64)
+#if !defined(_W64)
 #if !defined(__midl) &&    (defined(_X86_)    || defined(_M_IX86))
-#define    _DUI_W64 __w64
+#define    _W64 __w64
 #else
-#define    _DUI_W64
+#define    _W64
 #endif
 #endif
 
 
-#ifndef _DUITRY
-#define _DUITRY try
+#ifndef _STRY
+#define _STRY try
 #endif
-#define _DUICATCHALL() __pragma(warning(push)) __pragma(warning(disable: 4571)) catch( ... ) __pragma(warning(pop))
+#define _SCATCHALL() __pragma(warning(push)) __pragma(warning(disable: 4571)) catch( ... ) __pragma(warning(pop))
 
 //copy from <new.h>
 #ifndef __PLACEMENT_NEW_INLINE
@@ -77,10 +77,10 @@ struct __POSITION
 typedef __POSITION* POSITION;
 
 template<typename T>
-class DuiLimits;
+class SLimits;
 
 template<>
-class DuiLimits<int _DUI_W64>
+class SLimits<int _W64>
 {
 public:
     static const int _Min=INT_MIN;
@@ -88,7 +88,7 @@ public:
 };
 
 template<>
-class DuiLimits<unsigned int _DUI_W64>
+class SLimits<unsigned int _W64>
 {
 public:
     static const unsigned int _Min=0;
@@ -96,7 +96,7 @@ public:
 };
 
 template<>
-class DuiLimits<long _DUI_W64>
+class SLimits<long _W64>
 {
 public:
     static const long _Min=LONG_MIN;
@@ -104,7 +104,7 @@ public:
 };
 
 template<>
-class DuiLimits<unsigned long _DUI_W64>
+class SLimits<unsigned long _W64>
 {
 public:
     static const unsigned long _Min=0;
@@ -112,7 +112,7 @@ public:
 };
 
 template<>
-class DuiLimits<long long>
+class SLimits<long long>
 {
 public:
     static const long long _Min=LLONG_MIN;
@@ -120,7 +120,7 @@ public:
 };
 
 template<>
-class DuiLimits<unsigned long long>
+class SLimits<unsigned long long>
 {
 public:
     static const unsigned long long _Min=0;
@@ -129,9 +129,9 @@ public:
 
 /* generic version */
 template<typename T>
-inline HRESULT DuiAdd(T* ptResult, T tLeft, T tRight)
+inline HRESULT SAdd(T* ptResult, T tLeft, T tRight)
 {
-    if(DuiLimits<T>::_Max-tLeft < tRight)
+    if(SLimits<T>::_Max-tLeft < tRight)
     {
         return E_INVALIDARG;
     }
@@ -141,7 +141,7 @@ inline HRESULT DuiAdd(T* ptResult, T tLeft, T tRight)
 
 /* generic but compariatively slow version */
 template<typename T>
-inline HRESULT DuiMultiply(T* ptResult,    T tLeft, T tRight)
+inline HRESULT SMultiply(T* ptResult,    T tLeft, T tRight)
 {
     /* avoid divide 0 */
     if(tLeft==0)
@@ -149,7 +149,7 @@ inline HRESULT DuiMultiply(T* ptResult,    T tLeft, T tRight)
         *ptResult=0;
         return S_OK;
     }
-    if(DuiLimits<T>::_Max/tLeft < tRight)
+    if(SLimits<T>::_Max/tLeft < tRight)
     {
         return E_INVALIDARG;
     }
@@ -159,56 +159,56 @@ inline HRESULT DuiMultiply(T* ptResult,    T tLeft, T tRight)
 
 /* fast    version    for    32 bit integers    */
 template<>
-inline HRESULT DuiMultiply(int _DUI_W64    *piResult, int _DUI_W64    iLeft, int _DUI_W64 iRight)
+inline HRESULT SMultiply(int _W64    *piResult, int _W64    iLeft, int _W64 iRight)
 {
     __int64 i64Result=static_cast<__int64>(iLeft) * static_cast<__int64>(iRight);
     if(i64Result>INT_MAX || i64Result < INT_MIN)
     {
         return E_INVALIDARG;
     }
-    *piResult=static_cast<int _DUI_W64>(i64Result);
+    *piResult=static_cast<int _W64>(i64Result);
     return S_OK;
 }
 
 template<>
-inline HRESULT DuiMultiply(unsigned int    _DUI_W64 *piResult, unsigned int _DUI_W64 iLeft, unsigned int _DUI_W64 iRight)
+inline HRESULT SMultiply(unsigned int    _W64 *piResult, unsigned int _W64 iLeft, unsigned int _W64 iRight)
 {
     unsigned __int64 i64Result=static_cast<unsigned __int64>(iLeft) * static_cast<unsigned __int64>(iRight);
     if(i64Result>UINT_MAX)
     {
         return E_INVALIDARG;
     }
-    *piResult=static_cast<unsigned int _DUI_W64>(i64Result);
+    *piResult=static_cast<unsigned int _W64>(i64Result);
     return S_OK;
 }
 
 template<>
-inline HRESULT DuiMultiply(long    _DUI_W64 *piResult, long _DUI_W64 iLeft, long _DUI_W64 iRight)
+inline HRESULT SMultiply(long    _W64 *piResult, long _W64 iLeft, long _W64 iRight)
 {
     __int64 i64Result=static_cast<__int64>(iLeft) * static_cast<__int64>(iRight);
     if(i64Result>LONG_MAX || i64Result < LONG_MIN)
     {
         return E_INVALIDARG;
     }
-    *piResult=static_cast<long _DUI_W64>(i64Result);
+    *piResult=static_cast<long _W64>(i64Result);
     return S_OK;
 }
 
 template<>
-inline HRESULT DuiMultiply(unsigned long _DUI_W64 *piResult, unsigned long _DUI_W64 iLeft, unsigned long _DUI_W64 iRight)
+inline HRESULT SMultiply(unsigned long _W64 *piResult, unsigned long _W64 iLeft, unsigned long _W64 iRight)
 {
     unsigned __int64 i64Result=static_cast<unsigned __int64>(iLeft) * static_cast<unsigned __int64>(iRight);
     if(i64Result>ULONG_MAX)
     {
         return E_INVALIDARG;
     }
-    *piResult=static_cast<unsigned long _DUI_W64>(i64Result);
+    *piResult=static_cast<unsigned long _W64>(i64Result);
     return S_OK;
 }
 
-struct CDuiPlex     // warning variable length structure
+struct SPlex     // warning variable length structure
 {
-    CDuiPlex* pNext;
+    SPlex* pNext;
 #if (_AFX_PACKING >= 8)
     DWORD dwReserved[1];    // align on 8 byte boundary
 #endif
@@ -219,27 +219,27 @@ struct CDuiPlex     // warning variable length structure
         return this+1;
     }
 
-    static CDuiPlex* Create(CDuiPlex*& head, size_t nMax, size_t cbElement);
+    static SPlex* Create(SPlex*& head, size_t nMax, size_t cbElement);
     // like 'calloc' but no zero fill
     // may throw memory exceptions
 
     void FreeDataChain();       // free this one and links
 };
 
-inline CDuiPlex* CDuiPlex::Create( CDuiPlex*& pHead, size_t nMax, size_t nElementSize )
+inline SPlex* SPlex::Create( SPlex*& pHead, size_t nMax, size_t nElementSize )
 {
-    CDuiPlex* pPlex;
+    SPlex* pPlex;
 
     ASSERT( nMax > 0 );
     ASSERT( nElementSize > 0 );
 
     size_t nBytes=0;
-    if(     FAILED(DuiMultiply(&nBytes, nMax, nElementSize)) ||
-            FAILED(DuiAdd(&nBytes, nBytes, sizeof(CDuiPlex))) )
+    if(     FAILED(SMultiply(&nBytes, nMax, nElementSize)) ||
+            FAILED(SAdd(&nBytes, nBytes, sizeof(SPlex))) )
     {
         return NULL;
     }
-    pPlex = static_cast< CDuiPlex* >( malloc( nBytes ) );
+    pPlex = static_cast< SPlex* >( malloc( nBytes ) );
     if( pPlex == NULL )
     {
         return( NULL );
@@ -251,14 +251,14 @@ inline CDuiPlex* CDuiPlex::Create( CDuiPlex*& pHead, size_t nMax, size_t nElemen
     return( pPlex );
 }
 
-inline void CDuiPlex::FreeDataChain()
+inline void SPlex::FreeDataChain()
 {
-    CDuiPlex* pPlex;
+    SPlex* pPlex;
 
     pPlex = this;
     while( pPlex != NULL )
     {
-        CDuiPlex* pNext;
+        SPlex* pNext;
 
         pNext = pPlex->pNext;
         free( pPlex );
@@ -415,7 +415,7 @@ public:
 };
 
 template< typename T, class CharTraits = CDefaultCharTraits<T::XCHAR> >
-class CDuiStringElementTraitsI :
+class SStringElementTraitsI :
     public CElementTraitsBase< T >
 {
 public:
@@ -428,7 +428,7 @@ public:
 
         const T::XCHAR* pch = str;
 
-        DUIENSURE( pch != NULL );
+        SENSURE( pch != NULL );
 
         while( *pch != 0 )
         {
@@ -461,7 +461,7 @@ public:
 
         const T::XCHAR* pch = str;
 
-        DUIENSURE( pch != NULL );
+        SENSURE( pch != NULL );
 
         while( *pch != 0 )
         {
@@ -603,7 +603,7 @@ inline const E& SArray< E, ETraits >::GetAt( size_t iElement ) const
 {
     ASSERT( iElement < m_nSize );
     if(iElement >= m_nSize)
-        DUIThrow(E_INVALIDARG);
+        SThrow(E_INVALIDARG);
 
     return( m_pData[iElement] );
 }
@@ -613,7 +613,7 @@ inline void SArray< E, ETraits >::SetAt( size_t iElement, INARGTYPE element )
 {
     ASSERT( iElement < m_nSize );
     if(iElement >= m_nSize)
-        DUIThrow(E_INVALIDARG);
+        SThrow(E_INVALIDARG);
 
     m_pData[iElement] = element;
 }
@@ -623,7 +623,7 @@ inline E& SArray< E, ETraits >::GetAt( size_t iElement )
 {
     ASSERT( iElement < m_nSize );
     if(iElement >= m_nSize)
-        DUIThrow(E_INVALIDARG);
+        SThrow(E_INVALIDARG);
 
     return( m_pData[iElement] );
 }
@@ -649,7 +649,7 @@ inline size_t SArray< E, ETraits >::Add()
     bool bSuccess=SetCount( m_nSize+1 );
     if( !bSuccess )
     {
-        DUIThrow( E_OUTOFMEMORY );
+        SThrow( E_OUTOFMEMORY );
     }
 
     return( iElement );
@@ -669,7 +669,7 @@ inline size_t SArray< E, ETraits >::Add( INARGTYPE element )
         bool bSuccess = GrowBuffer( iElement+1 );
         if( !bSuccess )
         {
-            DUIThrow( E_OUTOFMEMORY );
+            SThrow( E_OUTOFMEMORY );
         }
     }
     ::new( m_pData+iElement ) E( element );
@@ -685,7 +685,7 @@ inline const E& SArray< E, ETraits >::operator[]( size_t iElement ) const
 {
     ASSERT( iElement < m_nSize );
     if(iElement >= m_nSize)
-        DUIThrow(E_INVALIDARG);
+        SThrow(E_INVALIDARG);
 
     return( m_pData[iElement] );
 }
@@ -695,7 +695,7 @@ inline E& SArray< E, ETraits >::operator[]( size_t iElement )
 {
     ASSERT( iElement < m_nSize );
     if(iElement >= m_nSize)
-        DUIThrow(E_INVALIDARG);
+        SThrow(E_INVALIDARG);
 
     return( m_pData[iElement] );
 }
@@ -777,7 +777,7 @@ bool SArray< E, ETraits >::GrowBuffer( size_t nNewSize )
 template< typename E, class ETraits >
 bool SArray< E, ETraits >::SetCount( size_t nNewSize, int nGrowBy )
 {
-    DUIASSERT_VALID(this);
+    SASSERT_VALID(this);
 
     if( nGrowBy != -1 )
     {
@@ -834,14 +834,14 @@ bool SArray< E, ETraits >::SetCount( size_t nNewSize, int nGrowBy )
 template< typename E, class ETraits >
 size_t SArray< E, ETraits >::Append( const SArray< E, ETraits >& aSrc )
 {
-    DUIASSERT_VALID(this);
+    SASSERT_VALID(this);
     ASSERT( this != &aSrc );   // cannot append to itself
 
     size_t nOldSize = m_nSize;
     bool bSuccess=SetCount( m_nSize+aSrc.m_nSize );
     if( !bSuccess )
     {
-        DUIThrow( E_OUTOFMEMORY );
+        SThrow( E_OUTOFMEMORY );
     }
 
     ETraits::CopyElements( m_pData+nOldSize, aSrc.m_pData, aSrc.m_nSize );
@@ -852,13 +852,13 @@ size_t SArray< E, ETraits >::Append( const SArray< E, ETraits >& aSrc )
 template< typename E, class ETraits >
 void SArray< E, ETraits >::Copy( const SArray< E, ETraits >& aSrc )
 {
-    DUIASSERT_VALID(this);
+    SASSERT_VALID(this);
     ASSERT( this != &aSrc );   // cannot append to itself
 
     bool bSuccess=SetCount( aSrc.m_nSize );
     if( !bSuccess )
     {
-        DUIThrow( E_OUTOFMEMORY );
+        SThrow( E_OUTOFMEMORY );
     }
 
     ETraits::CopyElements( m_pData, aSrc.m_pData, aSrc.m_nSize );
@@ -867,13 +867,13 @@ void SArray< E, ETraits >::Copy( const SArray< E, ETraits >& aSrc )
 template< typename E, class ETraits >
 void SArray< E, ETraits >::FreeExtra() throw()
 {
-    DUIASSERT_VALID(this);
+    SASSERT_VALID(this);
 
     if( m_nSize != m_nMaxSize )
     {
         // shrink to desired size
 #ifdef SIZE_T_MAX
-        DUIASSUME( m_nSize <= (SIZE_T_MAX/sizeof( E )) ); // no overflow
+        SASSUME( m_nSize <= (SIZE_T_MAX/sizeof( E )) ); // no overflow
 #endif
         E* pNewData = NULL;
         if( m_nSize != 0 )
@@ -898,7 +898,7 @@ void SArray< E, ETraits >::FreeExtra() throw()
 template< typename E, class ETraits >
 void SArray< E, ETraits >::SetAtGrow( size_t iElement, INARGTYPE element )
 {
-    DUIASSERT_VALID(this);
+    SASSERT_VALID(this);
     size_t nOldSize;
 
     nOldSize = m_nSize;
@@ -907,15 +907,15 @@ void SArray< E, ETraits >::SetAtGrow( size_t iElement, INARGTYPE element )
         bool bSuccess=SetCount( iElement+1, -1 );
         if( !bSuccess )
         {
-            DUIThrow( E_OUTOFMEMORY );
+            SThrow( E_OUTOFMEMORY );
         }
     }
 
-    _DUITRY
+    _STRY
     {
         m_pData[iElement] = element;
     }
-    _DUICATCHALL()
+    _SCATCHALL()
     {
         if( m_nSize != nOldSize )
         {
@@ -927,7 +927,7 @@ void SArray< E, ETraits >::SetAtGrow( size_t iElement, INARGTYPE element )
 template< typename E, class ETraits >
 void SArray< E, ETraits >::InsertAt( size_t iElement, INARGTYPE element, size_t nElements /*=1*/)
 {
-    DUIASSERT_VALID(this);
+    SASSERT_VALID(this);
     ASSERT( nElements > 0 );     // zero size not allowed
 
     if( iElement >= m_nSize )
@@ -936,7 +936,7 @@ void SArray< E, ETraits >::InsertAt( size_t iElement, INARGTYPE element, size_t 
         bool bSuccess=SetCount( iElement+nElements, -1 );   // grow so nIndex is valid
         if( !bSuccess )
         {
-            DUIThrow( E_OUTOFMEMORY );
+            SThrow( E_OUTOFMEMORY );
         }
     }
     else
@@ -946,7 +946,7 @@ void SArray< E, ETraits >::InsertAt( size_t iElement, INARGTYPE element, size_t 
         bool bSuccess=SetCount( m_nSize+nElements, -1 );  // grow it to new size
         if( !bSuccess )
         {
-            DUIThrow( E_OUTOFMEMORY );
+            SThrow( E_OUTOFMEMORY );
         }
         // destroy intial data before copying over it
         CallDestructors( m_pData+nOldSize, nElements );
@@ -954,12 +954,12 @@ void SArray< E, ETraits >::InsertAt( size_t iElement, INARGTYPE element, size_t 
         ETraits::RelocateElements( m_pData+(iElement+nElements), m_pData+iElement,
                                    nOldSize-iElement );
 
-        _DUITRY
+        _STRY
         {
             // re-init slots we copied from
             CallConstructors( m_pData+iElement, nElements );
         }
-        _DUICATCHALL()
+        _SCATCHALL()
         {
             ETraits::RelocateElements( m_pData+iElement, m_pData+(iElement+nElements),
                                        nOldSize-iElement );
@@ -978,12 +978,12 @@ void SArray< E, ETraits >::InsertAt( size_t iElement, INARGTYPE element, size_t 
 template< typename E, class ETraits >
 void SArray< E, ETraits >::RemoveAt( size_t iElement, size_t nElements )
 {
-    DUIASSERT_VALID(this);
+    SASSERT_VALID(this);
     ASSERT( (iElement+nElements) <= m_nSize );
 
     size_t newCount = iElement+nElements;
     if ((newCount < iElement) || (newCount < nElements) || (newCount > m_nSize))
-        DUIThrow(E_INVALIDARG);
+        SThrow(E_INVALIDARG);
 
     // just remove a range
     size_t nMoveCount = m_nSize-(newCount);
@@ -1000,9 +1000,9 @@ template< typename E, class ETraits >
 void SArray< E, ETraits >::InsertArrayAt( size_t iStartElement,
         const SArray< E, ETraits >* paNew )
 {
-    DUIASSERT_VALID( this );
-    DUIENSURE( paNew != NULL );
-    DUIASSERT_VALID( paNew );
+    SASSERT_VALID( this );
+    SENSURE( paNew != NULL );
+    SASSERT_VALID( paNew );
 
     if( paNew->GetCount() > 0 )
     {
@@ -1020,13 +1020,12 @@ void SArray< E, ETraits >::AssertValid() const
 {
     if( m_pData == NULL )
     {
-        DUIASSUME( m_nSize == 0 );
-        DUIASSUME( m_nMaxSize == 0 );
+        SASSUME( m_nSize == 0 );
+        SASSUME( m_nMaxSize == 0 );
     }
     else
     {
-        DUIASSUME( m_nSize <= m_nMaxSize );
-//         DUIASSERT( AtlIsValidAddress( m_pData, m_nMaxSize * sizeof( E ) ) );
+        SASSUME( m_nSize <= m_nMaxSize );
     }
 }
 #endif
@@ -1039,14 +1038,14 @@ void SArray< E, ETraits >::CallConstructors( E* pElements, size_t nElements )
 {
     size_t iElement = 0;
 
-    _DUITRY
+    _STRY
     {
         for( iElement = 0; iElement < nElements; iElement++ )
         {
             ::new( pElements+iElement ) E;
         }
     }
-    _DUICATCHALL()
+    _SCATCHALL()
     {
         while( iElement > 0 )
         {
@@ -1158,7 +1157,7 @@ private:
     CNode* m_pHead;
     CNode* m_pTail;
     size_t m_nElements;
-    CDuiPlex* m_pBlocks;
+    SPlex* m_pBlocks;
     CNode* m_pFree;
     UINT m_nBlockSize;
 
@@ -1192,28 +1191,28 @@ inline bool SList< E, ETraits >::IsEmpty() const throw()
 template< typename E, class ETraits >
 inline E& SList< E, ETraits >::GetHead()
 {
-    DUIENSURE( m_pHead != NULL );
+    SENSURE( m_pHead != NULL );
     return( m_pHead->m_element );
 }
 
 template< typename E, class ETraits >
 inline const E& SList< E, ETraits >::GetHead() const
 {
-    DUIENSURE( m_pHead != NULL );
+    SENSURE( m_pHead != NULL );
     return( m_pHead->m_element );
 }
 
 template< typename E, class ETraits >
 inline E& SList< E, ETraits >::GetTail()
 {
-    DUIENSURE( m_pTail != NULL );
+    SENSURE( m_pTail != NULL );
     return( m_pTail->m_element );
 }
 
 template< typename E, class ETraits >
 inline const E& SList< E, ETraits >::GetTail() const
 {
-    DUIENSURE( m_pTail != NULL );
+    SENSURE( m_pTail != NULL );
     return( m_pTail->m_element );
 }
 
@@ -1234,7 +1233,7 @@ inline E& SList< E, ETraits >::GetNext( POSITION& pos )
 {
     CNode* pNode;
 
-    DUIENSURE( pos != NULL );
+    SENSURE( pos != NULL );
     pNode = (CNode*)pos;
     pos = POSITION( pNode->m_pNext );
 
@@ -1246,7 +1245,7 @@ inline const E& SList< E, ETraits >::GetNext( POSITION& pos ) const
 {
     CNode* pNode;
 
-    DUIENSURE( pos != NULL );
+    SENSURE( pos != NULL );
     pNode = (CNode*)pos;
     pos = POSITION( pNode->m_pNext );
 
@@ -1258,7 +1257,7 @@ inline E& SList< E, ETraits >::GetPrev( POSITION& pos )
 {
     CNode* pNode;
 
-    DUIENSURE( pos != NULL );
+    SENSURE( pos != NULL );
     pNode = (CNode*)pos;
     pos = POSITION( pNode->m_pPrev );
 
@@ -1280,7 +1279,7 @@ inline const E& SList< E, ETraits >::GetPrev( POSITION& pos ) const throw()
 template< typename E, class ETraits >
 inline E& SList< E, ETraits >::GetAt( POSITION pos )
 {
-    DUIENSURE( pos != NULL );
+    SENSURE( pos != NULL );
     CNode* pNode = (CNode*)pos;
     return( pNode->m_element );
 }
@@ -1288,7 +1287,7 @@ inline E& SList< E, ETraits >::GetAt( POSITION pos )
 template< typename E, class ETraits >
 inline const E& SList< E, ETraits >::GetAt( POSITION pos ) const
 {
-    DUIENSURE( pos != NULL );
+    SENSURE( pos != NULL );
     CNode* pNode = (CNode*)pos;
     return( pNode->m_element );
 }
@@ -1296,7 +1295,7 @@ inline const E& SList< E, ETraits >::GetAt( POSITION pos ) const
 template< typename E, class ETraits >
 inline void SList< E, ETraits >::SetAt( POSITION pos, INARGTYPE element )
 {
-    DUIENSURE( pos != NULL );
+    SENSURE( pos != NULL );
     CNode* pNode = (CNode*)pos;
     pNode->m_element = element;
 }
@@ -1319,13 +1318,13 @@ void SList< E, ETraits >::RemoveAll()
     while( m_nElements > 0 )
     {
         CNode* pKill = m_pHead;
-        DUIENSURE( pKill != NULL );
+        SENSURE( pKill != NULL );
 
         m_pHead = m_pHead->m_pNext;
         FreeNode( pKill );
     }
 
-    DUIASSUME( m_nElements == 0 );
+    SASSUME( m_nElements == 0 );
     m_pHead = NULL;
     m_pTail = NULL;
     m_pFree = NULL;
@@ -1341,7 +1340,7 @@ template< typename E, class ETraits >
 SList< E, ETraits >::~SList() throw()
 {
     RemoveAll();
-    DUIASSUME( m_nElements == 0 );
+    SASSUME( m_nElements == 0 );
 }
 
 #pragma push_macro("new")
@@ -1352,13 +1351,13 @@ void SList< E, ETraits >::GetFreeNode()
 {
     if( m_pFree == NULL )
     {
-        CDuiPlex* pPlex;
+        SPlex* pPlex;
         CNode* pNode;
 
-        pPlex = CDuiPlex::Create( m_pBlocks, m_nBlockSize, sizeof( CNode ) );
+        pPlex = SPlex::Create( m_pBlocks, m_nBlockSize, sizeof( CNode ) );
         if( pPlex == NULL )
         {
-            DUIThrow( E_OUTOFMEMORY );
+            SThrow( E_OUTOFMEMORY );
         }
         pNode = (CNode*)pPlex->data();
         pNode += m_nBlockSize-1;
@@ -1369,7 +1368,7 @@ void SList< E, ETraits >::GetFreeNode()
             pNode--;
         }
     }
-    DUIASSUME( m_pFree != NULL );
+    SASSUME( m_pFree != NULL );
 }
 
 template< typename E, class ETraits >
@@ -1386,7 +1385,7 @@ typename SList< E, ETraits >::CNode* SList< E, ETraits >::NewNode( CNode* pPrev,
     pNewNode->m_pPrev = pPrev;
     pNewNode->m_pNext = pNext;
     m_nElements++;
-    DUIASSUME( m_nElements > 0 );
+    SASSUME( m_nElements > 0 );
 
     return( pNewNode );
 }
@@ -1406,7 +1405,7 @@ typename SList< E, ETraits >::CNode* SList< E, ETraits >::NewNode( INARGTYPE ele
     pNewNode->m_pPrev = pPrev;
     pNewNode->m_pNext = pNext;
     m_nElements++;
-    DUIASSUME( m_nElements > 0 );
+    SASSUME( m_nElements > 0 );
 
     return( pNewNode );
 }
@@ -1419,7 +1418,7 @@ void SList< E, ETraits >::FreeNode( CNode* pNode ) throw()
     pNode->~CNode();
     pNode->m_pNext = m_pFree;
     m_pFree = pNode;
-    DUIASSUME( m_nElements > 0 );
+    SASSUME( m_nElements > 0 );
     m_nElements--;
     if( m_nElements == 0 )
     {
@@ -1504,7 +1503,7 @@ POSITION SList< E, ETraits >::AddTail( INARGTYPE element )
 template< typename E, class ETraits >
 void SList< E, ETraits >::AddHeadList( const SList< E, ETraits >* plNew )
 {
-    DUIENSURE( plNew != NULL );
+    SENSURE( plNew != NULL );
 
     POSITION pos = plNew->GetTailPosition();
     while( pos != NULL )
@@ -1517,7 +1516,7 @@ void SList< E, ETraits >::AddHeadList( const SList< E, ETraits >* plNew )
 template< typename E, class ETraits >
 void SList< E, ETraits >::AddTailList( const SList< E, ETraits >* plNew )
 {
-    DUIENSURE( plNew != NULL );
+    SENSURE( plNew != NULL );
 
     POSITION pos = plNew->GetHeadPosition();
     while( pos != NULL )
@@ -1530,7 +1529,7 @@ void SList< E, ETraits >::AddTailList( const SList< E, ETraits >* plNew )
 template< typename E, class ETraits >
 E SList< E, ETraits >::RemoveHead()
 {
-    DUIENSURE( m_pHead != NULL );
+    SENSURE( m_pHead != NULL );
 
     CNode* pNode = m_pHead;
     E element( pNode->m_element );
@@ -1552,7 +1551,7 @@ E SList< E, ETraits >::RemoveHead()
 template< typename E, class ETraits >
 void SList< E, ETraits >::RemoveHeadNoReturn()
 {
-    DUIENSURE( m_pHead != NULL );
+    SENSURE( m_pHead != NULL );
 
     CNode* pNode = m_pHead;
 
@@ -1571,7 +1570,7 @@ void SList< E, ETraits >::RemoveHeadNoReturn()
 template< typename E, class ETraits >
 E SList< E, ETraits >::RemoveTail()
 {
-    DUIENSURE( m_pTail != NULL );
+    SENSURE( m_pTail != NULL );
 
     CNode* pNode = m_pTail;
 
@@ -1594,7 +1593,7 @@ E SList< E, ETraits >::RemoveTail()
 template< typename E, class ETraits >
 void SList< E, ETraits >::RemoveTailNoReturn()
 {
-    DUIENSURE( m_pTail != NULL );
+    SENSURE( m_pTail != NULL );
 
     CNode* pNode = m_pTail;
 
@@ -1613,7 +1612,7 @@ void SList< E, ETraits >::RemoveTailNoReturn()
 template< typename E, class ETraits >
 POSITION SList< E, ETraits >::InsertBefore( POSITION pos, INARGTYPE element )
 {
-    DUIASSERT_VALID(this);
+    SASSERT_VALID(this);
 
     if( pos == NULL )
         return AddHead( element ); // insert before nothing -> head of the list
@@ -1624,7 +1623,6 @@ POSITION SList< E, ETraits >::InsertBefore( POSITION pos, INARGTYPE element )
 
     if( pOldNode->m_pPrev != NULL )
     {
-//         DUIASSERT(AtlIsValidAddress(pOldNode->m_pPrev, sizeof(CNode)));
         pOldNode->m_pPrev->m_pNext = pNewNode;
     }
     else
@@ -1640,7 +1638,7 @@ POSITION SList< E, ETraits >::InsertBefore( POSITION pos, INARGTYPE element )
 template< typename E, class ETraits >
 POSITION SList< E, ETraits >::InsertAfter( POSITION pos, INARGTYPE element )
 {
-    DUIASSERT_VALID(this);
+    SASSERT_VALID(this);
 
     if( pos == NULL )
         return AddTail( element ); // insert after nothing -> tail of the list
@@ -1651,7 +1649,6 @@ POSITION SList< E, ETraits >::InsertAfter( POSITION pos, INARGTYPE element )
 
     if( pOldNode->m_pNext != NULL )
     {
-//         DUIASSERT(AtlIsValidAddress(pOldNode->m_pNext, sizeof(CNode)));
         pOldNode->m_pNext->m_pPrev = pNewNode;
     }
     else
@@ -1667,8 +1664,8 @@ POSITION SList< E, ETraits >::InsertAfter( POSITION pos, INARGTYPE element )
 template< typename E, class ETraits >
 void SList< E, ETraits >::RemoveAt( POSITION pos )
 {
-    DUIASSERT_VALID(this);
-    DUIENSURE( pos != NULL );
+    SASSERT_VALID(this);
+    SENSURE( pos != NULL );
 
     CNode* pOldNode = (CNode*)pos;
 
@@ -1679,7 +1676,6 @@ void SList< E, ETraits >::RemoveAt( POSITION pos )
     }
     else
     {
-//         DUIASSERT( AtlIsValidAddress( pOldNode->m_pPrev, sizeof(CNode) ));
         pOldNode->m_pPrev->m_pNext = pOldNode->m_pNext;
     }
     if( pOldNode == m_pTail )
@@ -1688,7 +1684,6 @@ void SList< E, ETraits >::RemoveAt( POSITION pos )
     }
     else
     {
-//         DUIASSERT( AtlIsValidAddress( pOldNode->m_pNext, sizeof(CNode) ));
         pOldNode->m_pNext->m_pPrev = pOldNode->m_pPrev;
     }
     FreeNode( pOldNode );
@@ -1697,7 +1692,7 @@ void SList< E, ETraits >::RemoveAt( POSITION pos )
 template< typename E, class ETraits >
 POSITION SList< E, ETraits >::FindIndex( size_t iElement ) const throw()
 {
-    DUIASSERT_VALID(this);
+    SASSERT_VALID(this);
 
     if( iElement >= m_nElements )
         return NULL;  // went too far
@@ -1717,7 +1712,7 @@ POSITION SList< E, ETraits >::FindIndex( size_t iElement ) const throw()
 template< typename E, class ETraits >
 void SList< E, ETraits >::MoveToHead( POSITION pos )
 {
-    DUIENSURE( pos != NULL );
+    SENSURE( pos != NULL );
 
     CNode* pNode = static_cast< CNode* >( pos );
 
@@ -1749,7 +1744,7 @@ void SList< E, ETraits >::MoveToHead( POSITION pos )
 template< typename E, class ETraits >
 void SList< E, ETraits >::MoveToTail( POSITION pos )
 {
-    DUIENSURE( pos != NULL );
+    SENSURE( pos != NULL );
     CNode* pNode = static_cast< CNode* >( pos );
 
     if( pNode == m_pTail )
@@ -1760,7 +1755,7 @@ void SList< E, ETraits >::MoveToTail( POSITION pos )
 
     if( pNode->m_pPrev == NULL )
     {
-        DUIENSURE( pNode == m_pHead );
+        SENSURE( pNode == m_pHead );
         m_pHead = pNode->m_pNext;
     }
     else
@@ -1807,7 +1802,7 @@ void SList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 ) throw()
         }
         else
         {
-            DUIASSUME( m_pHead == pNode1 );
+            SASSUME( m_pHead == pNode1 );
             m_pHead = pNode2;
         }
         pNode1->m_pNext = pNode2->m_pNext;
@@ -1817,7 +1812,7 @@ void SList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 ) throw()
         }
         else
         {
-            DUIASSUME( m_pTail == pNode2 );
+            SASSUME( m_pTail == pNode2 );
             m_pTail = pNode1;
         }
         pNode2->m_pNext = pNode1;
@@ -1842,7 +1837,7 @@ void SList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 ) throw()
         }
         else
         {
-            DUIASSUME( m_pTail == pNode2 );
+            SASSUME( m_pTail == pNode2 );
             m_pTail = pNode1;
         }
         if( pNode1->m_pPrev != NULL )
@@ -1851,7 +1846,7 @@ void SList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 ) throw()
         }
         else
         {
-            DUIASSUME( m_pHead == pNode2 );
+            SASSUME( m_pHead == pNode2 );
             m_pHead = pNode1;
         }
         if( pNode2->m_pNext != NULL )
@@ -1860,7 +1855,7 @@ void SList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 ) throw()
         }
         else
         {
-            DUIASSUME( m_pTail == pNode1 );
+            SASSUME( m_pTail == pNode1 );
             m_pTail = pNode2;
         }
         if( pNode2->m_pPrev != NULL )
@@ -1869,7 +1864,7 @@ void SList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 ) throw()
         }
         else
         {
-            DUIASSUME( m_pHead == pNode1 );
+            SASSUME( m_pHead == pNode1 );
             m_pHead = pNode2;
         }
     }
@@ -1878,7 +1873,7 @@ void SList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 ) throw()
 template< typename E, class ETraits >
 POSITION SList< E, ETraits >::Find( INARGTYPE element, POSITION posStartAfter ) const throw()
 {
-    DUIASSERT_VALID(this);
+    SASSERT_VALID(this);
 
     CNode* pNode = (CNode*)posStartAfter;
     if( pNode == NULL )
@@ -1887,7 +1882,6 @@ POSITION SList< E, ETraits >::Find( INARGTYPE element, POSITION posStartAfter ) 
     }
     else
     {
-//         DUIASSERT(AtlIsValidAddress(pNode, sizeof(CNode)));
         pNode = pNode->m_pNext;  // start after the one specified
     }
 
@@ -1907,14 +1901,12 @@ void SList< E, ETraits >::AssertValid() const
     if( IsEmpty() )
     {
         // empty list
-        DUIASSUME(m_pHead == NULL);
-        DUIASSUME(m_pTail == NULL);
+        SASSUME(m_pHead == NULL);
+        SASSUME(m_pTail == NULL);
     }
     else
     {
         // non-empty list
-//         DUIASSERT(AtlIsValidAddress(m_pHead, sizeof(CNode)));
-//         DUIASSERT(AtlIsValidAddress(m_pTail, sizeof(CNode)));
     }
 }
 #endif
@@ -2021,7 +2013,7 @@ private:
     size_t m_nLoRehashThreshold;
     ULONG m_nLockCount;
     UINT m_nBlockSize;
-    CDuiPlex* m_pBlocks;
+    SPlex* m_pBlocks;
     CNode* m_pFree;
 
 private:
@@ -2084,7 +2076,7 @@ inline UINT SMap< K, V, KTraits, VTraits >::GetHashTableSize() const throw()
 template< typename K, typename V, class KTraits, class VTraits >
 inline void SMap< K, V, KTraits, VTraits >::GetAt( POSITION pos, KOUTARGTYPE key, VOUTARGTYPE value ) const
 {
-    DUIENSURE( pos != NULL );
+    SENSURE( pos != NULL );
 
     CNode* pNode = static_cast< CNode* >( pos );
 
@@ -2111,7 +2103,7 @@ inline const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits
 template< typename K, typename V, class KTraits, class VTraits >
 inline const K& SMap< K, V, KTraits, VTraits >::GetKeyAt( POSITION pos ) const
 {
-    DUIENSURE( pos != NULL );
+    SENSURE( pos != NULL );
 
     CNode* pNode = (CNode*)pos;
 
@@ -2121,7 +2113,7 @@ inline const K& SMap< K, V, KTraits, VTraits >::GetKeyAt( POSITION pos ) const
 template< typename K, typename V, class KTraits, class VTraits >
 inline const V& SMap< K, V, KTraits, VTraits >::GetValueAt( POSITION pos ) const
 {
-    DUIENSURE( pos != NULL );
+    SENSURE( pos != NULL );
 
     CNode* pNode = (CNode*)pos;
 
@@ -2131,7 +2123,7 @@ inline const V& SMap< K, V, KTraits, VTraits >::GetValueAt( POSITION pos ) const
 template< typename K, typename V, class KTraits, class VTraits >
 inline V& SMap< K, V, KTraits, VTraits >::GetValueAt( POSITION pos )
 {
-    DUIENSURE( pos != NULL );
+    SENSURE( pos != NULL );
 
     CNode* pNode = (CNode*)pos;
 
@@ -2147,7 +2139,7 @@ inline void SMap< K, V, KTraits, VTraits >::DisableAutoRehash() throw()
 template< typename K, typename V, class KTraits, class VTraits >
 inline void SMap< K, V, KTraits, VTraits >::EnableAutoRehash() throw()
 {
-    DUIASSUME( m_nLockCount > 0 );
+    SASSUME( m_nLockCount > 0 );
     m_nLockCount--;
 }
 
@@ -2204,7 +2196,7 @@ typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::
         bSuccess = InitHashTable( m_nBins );
         if( !bSuccess )
         {
-            DUIThrow( E_OUTOFMEMORY );
+            SThrow( E_OUTOFMEMORY );
         }
     }
 
@@ -2245,11 +2237,11 @@ POSITION SMap< K, V, KTraits, VTraits >::SetAt( KINARGTYPE key, VINARGTYPE value
     if( pNode == NULL )
     {
         pNode = CreateNode( key, iBin, nHash );
-        _DUITRY
+        _STRY
         {
             pNode->m_value = value;
         }
-        _DUICATCHALL()
+        _SCATCHALL()
         {
             RemoveAtPos( POSITION( pNode ) );
         }
@@ -2329,7 +2321,7 @@ void SMap< K, V, KTraits, VTraits >::UpdateRehashThresholds() throw()
 template< typename K, typename V, class KTraits, class VTraits >
 bool SMap< K, V, KTraits, VTraits >::InitHashTable( UINT nBins, bool bAllocNow )
 {
-    DUIASSUME( m_nElements == 0 );
+    SASSUME( m_nElements == 0 );
     ASSERT( nBins > 0 );
 
     if( m_ppBins != NULL )
@@ -2347,7 +2339,7 @@ bool SMap< K, V, KTraits, VTraits >::InitHashTable( UINT nBins, bool bAllocNow )
             return false;
         }
 
-        DUIENSURE( UINT_MAX / sizeof( CNode* ) >= nBins );
+        SENSURE( UINT_MAX / sizeof( CNode* ) >= nBins );
         memset( m_ppBins, 0, sizeof( CNode* )*nBins );
     }
     m_nBins = nBins;
@@ -2395,11 +2387,11 @@ void SMap< K, V, KTraits, VTraits >::RemoveAll()
 template< typename K, typename V, class KTraits, class VTraits >
 SMap< K, V, KTraits, VTraits >::~SMap() throw()
 {
-    _DUITRY
+    _STRY
     {
         RemoveAll();
     }
-    _DUICATCHALL()
+    _SCATCHALL()
     {
         ASSERT(false);
     }
@@ -2416,13 +2408,13 @@ typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::
 
     if( m_pFree == NULL )
     {
-        CDuiPlex* pPlex;
+        SPlex* pPlex;
         CNode* pNode;
 
-        pPlex = CDuiPlex::Create( m_pBlocks, m_nBlockSize, sizeof( CNode ) );
+        pPlex = SPlex::Create( m_pBlocks, m_nBlockSize, sizeof( CNode ) );
         if( pPlex == NULL )
         {
-            DUIThrow( E_OUTOFMEMORY );
+            SThrow( E_OUTOFMEMORY );
         }
         pNode = (CNode*)pPlex->data();
         pNode += m_nBlockSize-1;
@@ -2433,15 +2425,15 @@ typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::
             pNode--;
         }
     }
-    DUIENSURE(m_pFree != NULL );
+    SENSURE(m_pFree != NULL );
     pNewNode = m_pFree;
     m_pFree = pNewNode->m_pNext;
 
-    _DUITRY
+    _STRY
     {
         ::new( pNewNode ) CNode( key, nHash );
     }
-    _DUICATCHALL()
+    _SCATCHALL()
     {
         pNewNode->m_pNext = m_pFree;
         m_pFree = pNewNode;
@@ -2465,13 +2457,13 @@ typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::
 template< typename K, typename V, class KTraits, class VTraits >
 void SMap< K, V, KTraits, VTraits >::FreeNode( CNode* pNode )
 {
-    DUIENSURE( pNode != NULL );
+    SENSURE( pNode != NULL );
 
     pNode->~CNode();
     pNode->m_pNext = m_pFree;
     m_pFree = pNode;
 
-    DUIASSUME( m_nElements > 0 );
+    SASSUME( m_nElements > 0 );
     m_nElements--;
 
     if( (m_nElements < m_nLoRehashThreshold) && !IsLocked() )
@@ -2593,13 +2585,13 @@ bool SMap< K, V, KTraits, VTraits >::RemoveKey( KINARGTYPE key ) throw()
 template< typename K, typename V, class KTraits, class VTraits >
 void SMap< K, V, KTraits, VTraits >::RemoveNode( CNode* pNode, CNode* pPrev )
 {
-    DUIENSURE( pNode != NULL );
+    SENSURE( pNode != NULL );
 
     UINT iBin = pNode->GetHash() % m_nBins;
 
     if( pPrev == NULL )
     {
-        DUIASSUME( m_ppBins[iBin] == pNode );
+        SASSUME( m_ppBins[iBin] == pNode );
         m_ppBins[iBin] = pNode->m_pNext;
     }
     else
@@ -2613,13 +2605,13 @@ void SMap< K, V, KTraits, VTraits >::RemoveNode( CNode* pNode, CNode* pPrev )
 template< typename K, typename V, class KTraits, class VTraits >
 void SMap< K, V, KTraits, VTraits >::RemoveAtPos( POSITION pos )
 {
-    DUIENSURE( pos != NULL );
+    SENSURE( pos != NULL );
 
     CNode* pNode = static_cast< CNode* >( pos );
     CNode* pPrev = NULL;
     UINT iBin = pNode->GetHash() % m_nBins;
 
-    DUIASSUME( m_ppBins[iBin] != NULL );
+    SASSUME( m_ppBins[iBin] != NULL );
     if( pNode == m_ppBins[iBin] )
     {
         pPrev = NULL;
@@ -2664,10 +2656,10 @@ void SMap< K, V, KTraits, VTraits >::Rehash( UINT nBins )
     ppBins = new CNode*[nBins];
     if (ppBins == NULL)
     {
-        DUIThrow( E_OUTOFMEMORY );
+        SThrow( E_OUTOFMEMORY );
     }
 
-    DUIENSURE( UINT_MAX / sizeof( CNode* ) >= nBins );
+    SENSURE( UINT_MAX / sizeof( CNode* ) >= nBins );
     memset( ppBins, 0, nBins*sizeof( CNode* ) );
 
     // Nothing gets copied.  We just rewire the old nodes
@@ -2705,8 +2697,8 @@ void SMap< K, V, KTraits, VTraits >::GetNextAssoc( POSITION& pos, KOUTARGTYPE ke
     CNode* pNode;
     CNode* pNext;
 
-    DUIASSUME( m_ppBins != NULL );
-    DUIENSURE( pos != NULL );
+    SASSUME( m_ppBins != NULL );
+    SENSURE( pos != NULL );
 
     pNode = (CNode*)pos;
     pNext = FindNextNode( pNode );
@@ -2722,7 +2714,7 @@ const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTrai
     CNode* pNode;
     CNode* pNext;
 
-    DUIASSUME( m_ppBins != NULL );
+    SASSUME( m_ppBins != NULL );
     ASSERT( pos != NULL );
 
     pNode = (CNode*)pos;
@@ -2737,7 +2729,7 @@ template< typename K, typename V, class KTraits, class VTraits >
 typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetNext(
     POSITION& pos ) throw()
 {
-    DUIASSUME( m_ppBins != NULL );
+    SASSUME( m_ppBins != NULL );
     ASSERT( pos != NULL );
 
     CNode* pNode = static_cast< CNode* >( pos );
@@ -2754,8 +2746,8 @@ const K& SMap< K, V, KTraits, VTraits >::GetNextKey( POSITION& pos ) const
     CNode* pNode;
     CNode* pNext;
 
-    DUIASSUME( m_ppBins != NULL );
-    DUIENSURE( pos != NULL );
+    SASSUME( m_ppBins != NULL );
+    SENSURE( pos != NULL );
 
     pNode = (CNode*)pos;
     pNext = FindNextNode( pNode );
@@ -2771,8 +2763,8 @@ const V& SMap< K, V, KTraits, VTraits >::GetNextValue( POSITION& pos ) const
     CNode* pNode;
     CNode* pNext;
 
-    DUIASSUME( m_ppBins != NULL );
-    DUIENSURE( pos != NULL );
+    SASSUME( m_ppBins != NULL );
+    SENSURE( pos != NULL );
 
     pNode = (CNode*)pos;
     pNext = FindNextNode( pNode );
@@ -2788,8 +2780,8 @@ V& SMap< K, V, KTraits, VTraits >::GetNextValue( POSITION& pos )
     CNode* pNode;
     CNode* pNext;
 
-    DUIASSUME( m_ppBins != NULL );
-    DUIENSURE( pos != NULL );
+    SASSUME( m_ppBins != NULL );
+    SENSURE( pos != NULL );
 
     pNode = (CNode*)pos;
     pNext = FindNextNode( pNode );
@@ -2838,7 +2830,7 @@ typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::
 template< typename K, typename V, class KTraits, class VTraits >
 void SMap< K, V, KTraits, VTraits >::AssertValid() const
 {
-    DUIASSUME( m_nBins > 0 );
+    SASSUME( m_nBins > 0 );
     // non-empty map should have hash table
     ASSERT( IsEmpty() || (m_ppBins != NULL) );
 }

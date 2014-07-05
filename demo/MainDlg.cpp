@@ -51,7 +51,7 @@ void CMainDlg::InitListCtrl()
     SListCtrl *pList=FindChildByName2<SListCtrl>(L"lc_test");
     if(pList)
     {
-        SWindow *pHeader=pList->GetWindow(GDUI_FIRSTCHILD);
+        SWindow *pHeader=pList->GetWindow(GSW_FIRSTCHILD);
         pHeader->subscribeEvent(EVT_HEADER_CLICK,Subscriber(&CMainDlg::OnListHeaderClick,this));
 
         TCHAR szColNames[][20]={_T("name"),_T("sex"),_T("age"),_T("score")};
@@ -109,8 +109,8 @@ bool CMainDlg::OnListHeaderClick(EventArgs *pEvtBase)
     SHeaderCtrl *pHeader=(SHeaderCtrl*)pEvt->sender;
     SListCtrl *pList=FindChildByName2<SListCtrl>(L"lc_test");
 
-    DUIHDITEM hditem;
-    hditem.mask=DUIHDI_ORDER;
+    SHDITEM hditem;
+    hditem.mask=SHDI_ORDER;
     pHeader->GetItem(pEvt->iItem,&hditem);
     pList->SortItems(funCmpare,&hditem.iOrder);
     return true;

@@ -2,14 +2,14 @@
 
 #define SOUI_MSG_MAP_BEGIN()                                       \
 protected:                                                          \
-    virtual BOOL ProcessDuiWndMessage(                              \
+    virtual BOOL ProcessSwndMessage(                              \
     UINT uMsg, WPARAM wParam,                        \
     LPARAM lParam, LRESULT& lResult)                            \
     {
 
 #define SOUI_MSG_MAP_END()                                        \
     if (!IsMsgHandled())                                        \
-    return __super::ProcessDuiWndMessage(                   \
+    return __super::ProcessSwndMessage(                   \
     uMsg, wParam, lParam, lResult);                     \
     return TRUE;                                                \
     }
@@ -116,8 +116,8 @@ protected:                                                          \
 }
 
 
-// void OnDuiTimer(char cTimerID)
-#define MSG_WM_DUITIMER(func) \
+// void OnTimer(char cTimerID)
+#define MSG_WM_TIMER_EX(func) \
     if (uMsg == WM_TIMER) \
 { \
     SetMsgHandled(TRUE); \
@@ -127,10 +127,10 @@ protected:                                                          \
     return TRUE; \
 }
 
-#define UM_DUI_TIMEREX    (WM_USER+5432)    //定义一个与HWND定时器兼容的DUI定时器
+#define WM_TIMER2    (WM_USER+5432)    //定义一个与HWND定时器兼容的SOUI定时器
 
-#define MSG_UM_TIMEREX(func) \
-    if (uMsg == UM_DUI_TIMEREX) \
+#define MSG_WM_TIMER2(func) \
+    if (uMsg == WM_TIMER2) \
 { \
     SetMsgHandled(TRUE); \
     func(wParam); \

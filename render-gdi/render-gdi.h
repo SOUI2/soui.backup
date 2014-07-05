@@ -4,11 +4,11 @@
 
 #include "render-api.h"
 
-#include <color.h>
+#include <helper/color.h>
 #include <unknown/obj-ref-impl.hpp>
 
-#include <string\tstring.h>
-#include <string\strcpcvt.h>
+#include <string/tstring.h>
+#include <string/strcpcvt.h>
 
 
 namespace SOUI

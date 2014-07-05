@@ -7,9 +7,9 @@ namespace SOUI
 {
 
     enum{
-        DUI_LVIF_TEXT=0x01,
-        DUI_LVIF_IMAGE=0x02,
-        DUI_LVIF_INDENT=0x04,
+        S_LVIF_TEXT=0x01,
+        S_LVIF_IMAGE=0x02,
+        S_LVIF_INDENT=0x04,
     };
 
     typedef int (__cdecl  *PFNLVCOMPAREEX)(void *, const void *, const void *);//使用快速排序算法中的比较函数,参考qsort_s
@@ -47,7 +47,7 @@ namespace SOUI
     } DXLVITEM;
 
     //////////////////////////////////////////////////////////////////////////
-    //  CDuiListCtrl
+    //  SListCtrl
     class SOUI_EXP SListCtrl : public SPanel
     {
         SOUI_CLASS_NAME(SListCtrl, L"listctrl")

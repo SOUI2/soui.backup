@@ -2,7 +2,7 @@
  * Copyright (C) 2014-2050 SOUI团队
  * All rights reserverd.
  * 
- * @file       DuiCaption.h
+ * @file       SCaption.h
  * @brief      标题栏控件
  * @version    v1.0      
  * @author     soui      
@@ -17,7 +17,7 @@
 namespace SOUI
 {
 /**
- * @class      CDuiCaption
+ * @class      CSCaption
  * @brief      标签类
  * 
  * Describe    标签类 只需要继承此类即可
@@ -28,23 +28,23 @@ class SCaption :
     SOUI_CLASS_NAME(SCaption, L"caption")
 public:
     /**
-     * CDuiCaption::CDuiCaption
+     * CSCaption::CSCaption
      * @brief    构造函数
      *
-     * Describe  CDuiCaption类的构造函数
+     * Describe  CSCaption类的构造函数
      */ 
     SCaption(void);
     /**
-     * CDuiCaption::~CDuiCaption
+     * CSCaption::~CSCaption
      * @brief    析构函数
      *
-     * Describe  ~CDuiCaption类的构造函数
+     * Describe  ~CSCaption类的构造函数
      */     
     virtual ~SCaption(void);
 
 protected:
     /**
-     * CDuiCaption::OnLButtonDown
+     * CSCaption::OnLButtonDown
      * @brief    左键按下事件
      * @param    UINT nFlags -- 标志
      * @param    CPoint point -- 鼠标坐标
@@ -53,7 +53,7 @@ protected:
      */
     void OnLButtonDown(UINT nFlags, CPoint point);
     /**
-     * CDuiCaption::OnLButtonDblClk
+     * CSCaption::OnLButtonDblClk
      * @brief    左键双击事件
      * @param    UINT nFlags -- 标志
      * @param    CPoint point -- 鼠标坐标

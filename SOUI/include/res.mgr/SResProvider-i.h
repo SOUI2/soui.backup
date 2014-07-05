@@ -1,5 +1,5 @@
-#ifndef _DUIRESPROVIDERBASE_
-#define _DUIRESPROVIDERBASE_
+#ifndef _SRESPROVIDERBASE_
+#define _SRESPROVIDERBASE_
 #pragma once
 
 #include "../render/render-i.h"
@@ -97,4 +97,4 @@ public:
 
 
 }//namespace SOUI
-#endif//_DUIRESPROVIDERBASE_
+#endif//_SRESPROVIDERBASE_

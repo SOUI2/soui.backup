@@ -9,14 +9,10 @@
 // the terms of this license. You must not remove this notice, or
 // any other, from this software.
 
-#ifndef __DUIGDI_H__
-#define __DUIGDI_H__
+#ifndef __SOUIGDI_H__
+#define __SOUIGDI_H__
 
 #pragma once
-
-#ifndef _DUI_STACK_ALLOC_THRESHOLD
-#define _DUI_STACK_ALLOC_THRESHOLD   512
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // Classes in this file:
@@ -3211,4 +3207,4 @@ public:
 
 }; // namespace SOUI
 
-#endif // __DUIGDI_H__
+#endif // __SOUIGDI_H__

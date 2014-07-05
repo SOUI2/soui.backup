@@ -10,7 +10,7 @@ namespace SOUI
 
 class SRichEdit;
 
-class SOUI_EXP CDuiTextServiceHelper: public SSingleton<CDuiTextServiceHelper>
+class SOUI_EXP STextServiceHelper: public SSingleton<STextServiceHelper>
 {
 public:
     HRESULT CreateTextServices( IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk )
@@ -21,7 +21,7 @@ public:
 
     static BOOL Init(){
         if(ms_Singleton) return FALSE;
-        new CDuiTextServiceHelper();
+        new STextServiceHelper();
         return TRUE;
     }
 
@@ -30,12 +30,12 @@ public:
         if(ms_Singleton) delete ms_Singleton;
     }
 protected:
-    CDuiTextServiceHelper()
+    STextServiceHelper()
     {
         m_rich20=LoadLibrary(_T("riched20.dll"));
         if(m_rich20) m_funCreateTextServices= (PCreateTextServices)GetProcAddress(m_rich20,"CreateTextServices");
     }
-    ~CDuiTextServiceHelper()
+    ~STextServiceHelper()
     {
         if(m_rich20) FreeLibrary(m_rich20);
         m_funCreateTextServices=NULL;
@@ -73,14 +73,14 @@ protected:
     pugi::xml_document  m_xmlMenu;
 };
 
-class SOUI_EXP CDuiTextHost : public ITextHost
+class SOUI_EXP STextHost : public ITextHost
 {
     friend class SRichEdit;
 public:
-    CDuiTextHost(void);
-    ~CDuiTextHost(void);
+    STextHost(void);
+    ~STextHost(void);
 
-    BOOL Init(SRichEdit* pDuiRichEdit);
+    BOOL Init(SRichEdit* pRichEdit);
 
     ITextServices * GetTextService()
     {
@@ -233,7 +233,7 @@ protected:
 
     ULONG    cRefs;                    // Reference Count
     ITextServices    *pserv;            // pointer to Text Services object
-    SRichEdit    *m_pDuiRichEdit;// duiwindow for text host
+    SRichEdit    *m_pRichEdit;// swindow for text host
     POINT                m_ptCaret;
 };
 
@@ -247,7 +247,7 @@ protected:
 
 class SOUI_EXP SRichEdit :public SPanel
 {
-    friend class CDuiTextHost;
+    friend class STextHost;
 public:
     SOUI_CLASS_NAME(SRichEdit, L"richedit")
 
@@ -294,15 +294,15 @@ protected:
 
     void OnKillFocus();
 
-    void OnDuiTimer(char idEvent);
+    void OnTimer(char idEvent);
 
-    void OnDuiTimerEx(UINT_PTR idEvent);
+    void OnTimer2(UINT_PTR idEvent);
 
     virtual UINT OnGetDlgCode()
     {
-        UINT uRet=DUIC_WANTCHARS|DUIC_WANTARROWS;
+        UINT uRet=SC_WANTCHARS|SC_WANTARROWS;
         if(m_fWantTab) uRet |= DLGC_WANTTAB;
-        if(m_dwStyle&ES_WANTRETURN) uRet |= DUIC_WANTRETURN;
+        if(m_dwStyle&ES_WANTRETURN) uRet |= SC_WANTRETURN;
         return uRet;
     }
 
@@ -358,8 +358,8 @@ protected:
         MSG_WM_NCCALCSIZE(OnNcCalcSize)
         MSG_WM_SETFOCUS_EX(OnSetFocus)
         MSG_WM_KILLFOCUS_EX(OnKillFocus)
-        MSG_WM_DUITIMER(OnDuiTimer)
-        MSG_UM_TIMEREX(OnDuiTimerEx)
+        MSG_WM_TIMER_EX(OnTimer)
+        MSG_WM_TIMER2(OnTimer2)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONUP(OnLButtonUp)
         MSG_WM_RBUTTONDOWN(OnRButtonDown)
@@ -414,7 +414,7 @@ protected:
 
     BYTE    m_byDbcsLeadByte;
 
-    CDuiTextHost    *m_pTxtHost;
+    STextHost    *m_pTxtHost;
 };
 
 class SOUI_EXP SEdit : public SRichEdit

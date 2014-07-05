@@ -36,7 +36,7 @@ BOOL SAxContainer::CreateControl(LPCRECT pRect, REFGUID clsid ,DWORD dwClsCtx /*
 {
     ASSERT(m_pAxHostDelegate);
     HRESULT hr = E_FAIL;
-    CDuiComPtr<IUnknown> pControl;
+    SComPtr<IUnknown> pControl;
     hr = CoCreateInstance(clsid, NULL,dwClsCtx , __uuidof(IUnknown), reinterpret_cast<void**>(&pControl));
     if ( SUCCEEDED(hr) )
     {
@@ -104,7 +104,7 @@ HRESULT SAxContainer::MonikerBindToStorage(IMoniker *pMk, IBindCtx *pBC,
                                 IBindStatusCallback *pBSC, REFIID riid, void **ppvObj)
 {
     HRESULT hr = E_FAIL;
-    CDuiComPtr<IBindCtx> pBCCtx = pBC;
+    SComPtr<IBindCtx> pBCCtx = pBC;
     if (pBCCtx == NULL)
     {
         // creates it if not present

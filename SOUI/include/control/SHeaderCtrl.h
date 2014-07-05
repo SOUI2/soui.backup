@@ -2,7 +2,7 @@
  * Copyright (C) 2014-2050 SOUI团队
  * All rights reserverd.
  * 
- * @file       DuiHeaderCtrl.h
+ * @file       SHeaderCtrl.h
  * @brief      
  * @version    v1.0      
  * @author     soui      
@@ -16,40 +16,40 @@
 #include "wtl.mini/souicoll.h"
 namespace SOUI
 {
-  #define DUIHDI_WIDTH               0x0001
-  #define DUIHDI_TEXT                0x0002
-  #define DUIHDI_SORTFLAG            0x0004
-  #define DUIHDI_LPARAM              0x0008
-  #define DUIHDI_ORDER               0x0010
+  #define SHDI_WIDTH               0x0001
+  #define SHDI_TEXT                0x0002
+  #define SHDI_SORTFLAG            0x0004
+  #define SHDI_LPARAM              0x0008
+  #define SHDI_ORDER               0x0010
 
   /**
-   * @enum      _DUIHDSORTFLAG
+   * @enum      _SHDSORTFLAG
    * @brief     排序标志 
    * 
    * Describe   排序标志
    */
-  typedef enum _DUIHDSORTFLAG{
+  typedef enum _SHDSORTFLAG{
     ST_NULL=0,
     ST_UP,
     ST_DOWN,
-  }DUIHDSORTFLAG;
+  }SHDSORTFLAG;
 
   /**
-   * @struct    _DUIHDITEM
+   * @struct    _SHDITEM
    * @brief     列表头项 
    * 
    * Describe   列表头项
    */
-  typedef struct _DUIHDITEM {
+  typedef struct _SHDITEM {
     UINT    mask; 
     int     cx; 
     LPTSTR  pszText; 
     int     cchTextMax; 
-    DUIHDSORTFLAG stFlag;
+    SHDSORTFLAG stFlag;
     LPARAM  lParam; 
     UINT   state;
     int        iOrder;
-  } DUIHDITEM,  *LPDUIHDITEM;
+  } SHDITEM,  *LPSHDITEM;
 
 
   class SOUI_EXP SHeaderCtrl: public SWindow
@@ -77,23 +77,23 @@ namespace SOUI
        * @param    int iItem --  新项索引
        * @param    LPCTSTR pszText  --  新项标题
        * @param    int nWidth  -- 宽度
-       * @param    DUIHDSORTFLAG stFlag -- 排序标志
+       * @param    SHDSORTFLAG stFlag -- 排序标志
        * @param    LPARAM lParam -- 附加参数
        * @return   返回int 
        *
        * Describe  插入新项  
        */      
-      int InsertItem(int iItem,LPCTSTR pszText,int nWidth, DUIHDSORTFLAG stFlag,LPARAM lParam );
+      int InsertItem(int iItem,LPCTSTR pszText,int nWidth, SHDSORTFLAG stFlag,LPARAM lParam );
       /**
        * SHeaderCtrl::GetItem
        * @brief    获得新项
        * @param    int iItem  --  索引
-       * @param    DUIHDITEM *pItem  -- 返回列表项结构
+       * @param    SHDITEM *pItem  -- 返回列表项结构
        * @return   返回BOOL 
        *
        * Describe  获得新项  
        */      
-      BOOL GetItem(int iItem,DUIHDITEM *pItem);
+      BOOL GetItem(int iItem,SHDITEM *pItem);
 
       /**
        * SHeaderCtrl::GetItemCount
@@ -179,11 +179,11 @@ namespace SOUI
        * @brief    绘画
        * @param    IRenderTarget * pRT  --  渲染目标
        * @param    CRect rcItem  --  目标区域
-       * @param    const LPDUIHDITEM pItem  --  列表头
+       * @param    const LPSHDITEM pItem  --  列表头
        *
        * Describe  绘画  
        */            
-      virtual void DrawItem(IRenderTarget * pRT,CRect rcItem,const LPDUIHDITEM pItem);
+      virtual void DrawItem(IRenderTarget * pRT,CRect rcItem,const LPSHDITEM pItem);
 
       /**
        * SHeaderCtrl::GetItemRect
@@ -309,6 +309,6 @@ namespace SOUI
       DWORD           m_dwHitTest; /**<  */
       DWORD           m_dwDragTo;  /**<  */    
       int             m_nAdjItemOldWidth;  /**< 保存被拖动项的原始宽度 */
-      SArray<DUIHDITEM> m_arrItems; /**<  */
+      SArray<SHDITEM> m_arrItems; /**<  */
   };
 }//end of namespace SOUI

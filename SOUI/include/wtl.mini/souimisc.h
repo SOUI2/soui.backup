@@ -9,8 +9,8 @@
 // the terms of this license. You must not remove this notice, or
 // any other, from this software.
 
-#ifndef __DUIMISC_H__
-#define __DUIMISC_H__
+#ifndef __SOUIMISC_H__
+#define __SOUIMISC_H__
 
 #pragma once
 
@@ -699,4 +699,4 @@ inline void operator /=(SIZE & s, Num n)
 
 }; // namespace SOUI
 
-#endif // __DUIMISC_H__
+#endif // __SOUIMISC_H__

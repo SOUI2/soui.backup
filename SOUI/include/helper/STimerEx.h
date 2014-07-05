@@ -12,29 +12,29 @@ typedef struct tagTIMERINFO
 } TIMERINFO;
 
 
-class SOUI_EXP STimerEx:public SSingletonMap<STimerEx,TIMERINFO,UINT_PTR>
+class SOUI_EXP STimer2:public SSingletonMap<STimer2,TIMERINFO,UINT_PTR>
 {
 public:
-    static BOOL SetTimer(SWND hDuiWnd,UINT_PTR uTimerID,UINT nElapse)
+    static BOOL SetTimer(SWND swnd,UINT_PTR uTimerID,UINT nElapse)
     {
-        return getSingleton()._SetTimer(hDuiWnd,uTimerID,nElapse);
+        return getSingleton()._SetTimer(swnd,uTimerID,nElapse);
     }
 
-    static void KillTimer(SWND hDuiWnd,UINT_PTR uTimerID)
+    static void KillTimer(SWND swnd,UINT_PTR uTimerID)
     {
-        getSingleton()._KillTimer(hDuiWnd,uTimerID);
+        getSingleton()._KillTimer(swnd,uTimerID);
     }
 
-    static void KillTimer(SWND hDuiWnd)
+    static void KillTimer(SWND swnd)
     {
-        getSingleton()._KillTimer(hDuiWnd);
+        getSingleton()._KillTimer(swnd);
     }
 protected:
-    BOOL _SetTimer(SWND hDuiWnd,UINT_PTR uTimerID,UINT nElapse);
+    BOOL _SetTimer(SWND swnd,UINT_PTR uTimerID,UINT nElapse);
 
-    void _KillTimer(SWND hDuiWnd,UINT_PTR uTimerID);
+    void _KillTimer(SWND swnd,UINT_PTR uTimerID);
 
-    void _KillTimer(SWND hDuiWnd);
+    void _KillTimer(SWND swnd);
 
     static VOID CALLBACK _TimerProc(HWND hwnd,
                                     UINT uMsg,

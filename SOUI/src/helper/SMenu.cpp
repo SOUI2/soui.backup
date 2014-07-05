@@ -27,7 +27,7 @@ void SMenuAttr::OnInitFinished( pugi::xml_node xmlNode )
 {
     ASSERT(m_pItemSkin);
     if(m_nItemHei==0) m_nItemHei=m_pItemSkin->GetSkinSize().cy;
-    if(!m_hFont) m_hFont=SFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT);
+    if(!m_hFont) m_hFont=SFontPool::getSingleton().GetFont(FF_DEFAULTFONT);
 }
 //////////////////////////////////////////////////////////////////////////
 
@@ -310,7 +310,7 @@ void SMenu::BuildMenu( HMENU menuPopup,pugi::xml_node xmlNode )
             SMenuItemData *pdmmi=new SMenuItemData;
             pdmmi->hMenu=menuPopup;
             pdmmi->itemInfo.iIcon=xmlItem.attribute(L"icon").as_int(-1);
-            pdmmi->itemInfo.strText=DUI_CW2T(xmlItem.text().get());
+            pdmmi->itemInfo.strText=S_CW2T(xmlItem.text().get());
 
             int nID=xmlItem.attribute(L"id").as_int(0);
             BOOL bCheck=xmlItem.attribute(L"check").as_bool(false);

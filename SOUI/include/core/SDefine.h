@@ -26,38 +26,38 @@
 
 #ifdef _DEBUG
 #include <crtdbg.h>
-#   define DUIRES_ASSERTW(expr, format, ...) \
+#   define SRES_ASSERTW(expr, format, ...) \
     (void) ((!!(expr)) || \
     (1 != _CrtDbgReportW(_CRT_ASSERT, _CRT_WIDE(__FILE__), __LINE__, NULL, format, __VA_ARGS__)) || \
     (_CrtDbgBreak(), 0))
 
-#   define DUIRES_ASSERTA(expr, format, ...) \
+#   define SRES_ASSERTA(expr, format, ...) \
     (void) ((!!(expr)) || \
     (1 != _CrtDbgReport(_CRT_ASSERT, __FILE__, __LINE__, NULL, format, __VA_ARGS__)) || \
     (_CrtDbgBreak(), 0))
 
 #else
-#   define DUIRES_ASSERTW
-#    define DUIRES_ASSERTA
+#   define SRES_ASSERTW
+#    define SRES_ASSERTA
 #endif
 
 #ifdef _UNICODE 
-#   define DUIRES_ASSERT    DUIRES_ASSERTW
+#   define SRES_ASSERT    SRES_ASSERTW
 #else
-#   define DUIRES_ASSERT    DUIRES_ASSERTA
+#   define SRES_ASSERT    SRES_ASSERTA
 #endif//_UNICODE
 
 #include <assert.h>
 #define ASSERT(x) assert(x)
 #define ASSERT_NE(a,b) ASSERT(a!=b)
 
-#ifdef _DUI_DISABLE_NO_VTABLE
-#define DUI_NO_VTABLE
+#ifdef _DISABLE_NO_VTABLE
+#define S_NO_VTABLE
 #else
-#define DUI_NO_VTABLE __declspec(novtable)
+#define S_NO_VTABLE __declspec(novtable)
 #endif
 
 
-// DuiWindow Handle
+// SWindow Handle
 typedef DWORD SWND;
 typedef ULONG_PTR HSTREEITEM;

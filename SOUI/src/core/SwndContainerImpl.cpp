@@ -1,8 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: CDuiFrame
-// Description: A DuiWindow Frame.
-//     Creator: Huang Jianxiong
-//     Version: 2011.9.1 - 1.0 - Create
+//  Class Name: SwndContainerImpl
 //////////////////////////////////////////////////////////////////////////
 #include "souistd.h"
 #include "core/SwndContainerImpl.h"
@@ -88,20 +85,20 @@ BOOL SwndContainerImpl::OnReleaseSwndCapture()
     return TRUE;
 }
 
-SWND SwndContainerImpl::OnSetSwndCapture(SWND hDuiWnd)
+SWND SwndContainerImpl::OnSetSwndCapture(SWND swnd)
 {
-    SWindow *pWnd=SWindowMgr::GetWindow(hDuiWnd);
+    SWindow *pWnd=SWindowMgr::GetWindow(swnd);
     ASSERT(pWnd);
     if(pWnd->IsDisabled(TRUE)) return 0;
 
     SWND hRet=m_hCapture;
-    m_hCapture=hDuiWnd;
+    m_hCapture=swnd;
     return hRet;
 }
 
-void SwndContainerImpl::OnSetSwndFocus(SWND hDuiWnd)
+void SwndContainerImpl::OnSetSwndFocus(SWND swnd)
 {
-    m_focusMgr.SetFocusedHwnd(hDuiWnd);
+    m_focusMgr.SetFocusedHwnd(swnd);
 }
 
 SWND SwndContainerImpl::OnGetSwndCapture()
@@ -266,14 +263,14 @@ void SwndContainerImpl::OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     }
 }
 
-BOOL SwndContainerImpl::RegisterDragDrop( SWND hDuiWnd,IDropTarget *pDropTarget )
+BOOL SwndContainerImpl::RegisterDragDrop( SWND swnd,IDropTarget *pDropTarget )
 {
-    return m_dropTarget.RegisterDragDrop(hDuiWnd,pDropTarget);
+    return m_dropTarget.RegisterDragDrop(swnd,pDropTarget);
 }
 
-BOOL SwndContainerImpl::RevokeDragDrop( SWND hDuiWnd )
+BOOL SwndContainerImpl::RevokeDragDrop( SWND swnd )
 {
-    return m_dropTarget.RevokeDragDrop(hDuiWnd);
+    return m_dropTarget.RevokeDragDrop(swnd);
 }
 
 void SwndContainerImpl::OnActivate( UINT nState )

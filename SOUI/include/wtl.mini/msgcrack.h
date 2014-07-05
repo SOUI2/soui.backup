@@ -9,8 +9,8 @@
 // the terms of this license. You must not remove this notice, or
 // any other, from this software.
 
-#ifndef __DUICRACK_H__
-#define __DUICRACK_H__
+#ifndef __HWNDMSGCRACK_H__
+#define __HWNDMSGCRACK_H__
 
 #pragma once
 
@@ -2438,4 +2438,4 @@ public: \
     }
 
 
-#endif // __DUICRACK_H__
+#endif // __HWNDMSGCRACK_H__

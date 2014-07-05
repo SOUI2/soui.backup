@@ -1,6 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: CDuiTreeCtrl
-// Description: CDuiTreeCtrl
+//  Class Name: STreeCtrl
 //     Creator: huangjianxiong
 //     Version: 2011.10.14 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
@@ -104,7 +103,7 @@ protected:
 
     virtual UINT OnGetDlgCode()
     {
-        return DUIC_WANTALLKEYS;
+        return SC_WANTALLKEYS;
     }
 
     BOOL IsAncestor(HSTREEITEM hItem1,HSTREEITEM hItem2);

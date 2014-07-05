@@ -2,7 +2,7 @@
  * Copyright (C) 2014-2050 SOUI团队
  * All rights reserverd.
  * 
- * @file       DuiCmnCtrl.h
+ * @file       SCmnCtrl.h
  * @brief      通用控件
  * @version    v1.0      
  * @author     soui      
@@ -24,7 +24,7 @@ namespace SOUI
 #define IDC_CB_EDIT          -100
 #define IDC_DROPDOWN_LIST    -200
 
-class CDuiComboBoxBase;
+class SComboBoxBase;
 
 
 /**
@@ -38,12 +38,12 @@ class CComboEdit:public SEdit
 public:
     /**
      * CComboEdit::CComboEdit
-     * @param    CDuiComboBoxBase *pOwner  -- 暂无       
+     * @param    SComboBoxBase *pOwner  -- 暂无       
      * @brief    构造函数
      *
      * Describe  构造函数
      */
-    CComboEdit(CDuiComboBoxBase *pOwner);
+    CComboEdit(SComboBoxBase *pOwner);
     
     /**
      * CComboEdit::~CComboEdit
@@ -102,30 +102,29 @@ protected:
  * 
  * Describe    可输入下拉列表
  */
-class SOUI_EXP CDuiComboBoxBase 
+class SOUI_EXP SComboBoxBase 
     : public SWindow
     , public ISDropDownOwner
 {
-    friend class CComboListBox;
 public:
     
     /**
-     * CDuiComboBoxBase::CDuiComboBoxBase
+     * SComboBoxBase::SComboBoxBase
      * @brief    构造函数
      *
      * Describe  构造函数
      */
-    CDuiComboBoxBase(void);
+    SComboBoxBase(void);
     
     /**
-     * CDuiComboBoxBase::~CDuiComboBoxBase
+     * SComboBoxBase::~SComboBoxBase
      * @brief    析构函数
      *
      * Describe  析构函数
      */
-    virtual ~CDuiComboBoxBase(void);
+    virtual ~SComboBoxBase(void);
     /**
-     * CDuiComboBoxBase::GetCurSel
+     * SComboBoxBase::GetCurSel
      * @brief    获取选中值索引
      * @return   返回int  
      *
@@ -134,7 +133,7 @@ public:
     virtual int GetCurSel() const =0;
 
     /**
-     * CDuiComboBoxBase::GetWindowText
+     * SComboBoxBase::GetWindowText
      * @brief    获取窗口标题
      * @return   返回SStringT
      *
@@ -143,7 +142,7 @@ public:
     virtual SStringT GetWindowText() =0;
 
     /**
-     * CDuiComboBoxBase::DropDown
+     * SComboBoxBase::DropDown
      * @brief    下拉事件
      *
      * Describe  下拉事件
@@ -151,7 +150,7 @@ public:
     void DropDown();
     
     /**
-     * CDuiComboBoxBase::CloseUp
+     * SComboBoxBase::CloseUp
      * @brief    下拉关闭
      *
      * Describe  下拉关闭
@@ -159,7 +158,7 @@ public:
     void CloseUp();
 protected:
     /**
-     * CDuiComboBoxBase::GetDropDownOwner
+     * SComboBoxBase::GetDropDownOwner
      * @brief    获取owner
      * @return   SWindow
      *
@@ -168,7 +167,7 @@ protected:
     virtual SWindow* GetDropDownOwner();
 
     /**
-     * CDuiComboBoxBase::OnDropDown
+     * SComboBoxBase::OnDropDown
      * @brief    下拉事件
      * @param     SDropDownWnd *pDropDown -- 下拉窗口指针
      *
@@ -177,7 +176,7 @@ protected:
     virtual void OnDropDown(SDropDownWnd *pDropDown);
 
     /**
-     * CDuiComboBoxBase::OnCloseUp
+     * SComboBoxBase::OnCloseUp
      * @brief    下拉事件
      * @param     SDropDownWnd *pDropDown -- 下拉窗口指针
      * @param     UINT uCode -- 消息码
@@ -187,7 +186,7 @@ protected:
     virtual void OnCloseUp(SDropDownWnd *pDropDown,UINT uCode);
 protected:
     /**
-     * CDuiComboBoxBase::OnSelChanged
+     * SComboBoxBase::OnSelChanged
      * @brief    下拉窗口改变事件
      *
      * Describe  下拉关闭
@@ -195,7 +194,7 @@ protected:
     virtual void OnSelChanged();
 
     /**
-     * CDuiComboBoxBase::FireEvent
+     * SComboBoxBase::FireEvent
      * @brief    通知消息
      * @param    EventArgs &evt -- 事件对象 
      * 
@@ -206,7 +205,7 @@ protected:
 protected:
 
     /**
-     * CDuiComboBoxBase::CalcPopupRect
+     * SComboBoxBase::CalcPopupRect
      * @brief    计算弹出窗口位置
      * @param    int nHeight -- 下拉窗口高度
      * @param    CRect & rcPopup -- 保存弹出窗口Rect
@@ -217,7 +216,7 @@ protected:
     BOOL CalcPopupRect(int nHeight,CRect & rcPopup);
     
     /**
-     * CDuiComboBoxBase::CreateListBox
+     * SComboBoxBase::CreateListBox
      * @brief    创建下拉列表
      * @param    pugi::xml_node xmlNode  -- xml对象
      * @return   BOOL  TRUE -- 成功  FALSE -- 失败
@@ -227,7 +226,7 @@ protected:
     virtual BOOL CreateListBox(pugi::xml_node xmlNode)=0;
     
     /**
-     * CDuiComboBoxBase::GetListBoxHeight
+     * SComboBoxBase::GetListBoxHeight
      * @brief    获取下拉列表高度
      * @return   返回int 高度
      *
@@ -236,7 +235,7 @@ protected:
     virtual int  GetListBoxHeight()=0;
 
     /**
-     * CDuiComboBoxBase::GetDropBtnRect
+     * SComboBoxBase::GetDropBtnRect
      * @brief    获取下拉列表按钮位置
      * @param    LPRECT prc -- 按钮Rect
      *
@@ -244,7 +243,7 @@ protected:
      */        
     void GetDropBtnRect(LPRECT prc);
     /**
-     * CDuiComboBoxBase::LoadChildren
+     * SComboBoxBase::LoadChildren
      * @brief    加载子项
      * @param    pugi::xml_node xmlNode  -- xml文件
      * @return   返回BOOL  TRUE -- 成功 FALSE -- 失败
@@ -253,7 +252,7 @@ protected:
      */
     virtual BOOL CreateChildren(pugi::xml_node xmlNode);    
     /**
-     * CDuiComboBoxBase::GetTextRect
+     * SComboBoxBase::GetTextRect
      * @brief    获取文本位置
      * @param    LPRECT pRect -- 文本位置
      *
@@ -261,7 +260,7 @@ protected:
      */
     virtual void GetTextRect(LPRECT pRect);
     /**
-     * CDuiComboBoxBase::OnPaint
+     * SComboBoxBase::OnPaint
      * @brief    绘制消息
      * @param    IRenderTarget * pRT -- 暂无
      * 
@@ -270,7 +269,7 @@ protected:
     void OnPaint(IRenderTarget * pRT);
     
     /**
-     * CDuiComboBoxBase::OnLButtonDown
+     * SComboBoxBase::OnLButtonDown
      * @brief    左键按下事件
      * @param    UINT nFlags -- 标志
      * @param    CPoint point -- 鼠标坐标
@@ -280,7 +279,7 @@ protected:
     void OnLButtonDown(UINT nFlags,CPoint pt);
 
     /**
-     * CDuiComboBoxBase::OnMouseMove
+     * SComboBoxBase::OnMouseMove
      * @brief    键盘鼠标移动事件
      * @param    UINT nFlags -- 标志
      * @param    CPoint point -- 鼠标坐标
@@ -290,7 +289,7 @@ protected:
     void OnMouseMove(UINT nFlags,CPoint pt);
 
     /**
-     * CDuiComboBoxBase::OnMouseLeave
+     * SComboBoxBase::OnMouseLeave
      * @brief    键盘鼠标移动事件
      * 
      * Describe  此函数是消息响应函数
@@ -298,7 +297,7 @@ protected:
     void OnMouseLeave();
 
     /**
-     * CDuiComboBoxBase::OnKeyDown
+     * SComboBoxBase::OnKeyDown
      * @brief    键盘按下事件
      * @param    UINT nChar -- 按键对应的码值 
      * @param    UINT nRepCnt -- 重复次数
@@ -309,7 +308,7 @@ protected:
     void OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags );
 
     /**
-     * CDuiComboBoxBase::OnChar
+     * SComboBoxBase::OnChar
      * @brief    字符消息
      * @param    UINT nChar -- 按键对应的码值 
      * @param    UINT nRepCnt -- 重复次数
@@ -320,14 +319,14 @@ protected:
     void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 
     /**
-     * CDuiComboBoxBase::OnDestroy
+     * SComboBoxBase::OnDestroy
      * @brief    下拉窗口销毁
      * 
      * Describe  此函数是用于销毁下拉窗口
      */  
     void OnDestroy();
     /**
-     * CDuiComboBoxBase::OnGetDuiCode
+     * SComboBoxBase::OnGetDlgCode
      * @brief    获取消息码
      * 
      * Describe  获取消息码
@@ -335,7 +334,7 @@ protected:
     UINT OnGetDlgCode();
     
     /**
-     * CDuiComboBoxBase::IsTabStop
+     * SComboBoxBase::IsTabStop
      * @brief    是否禁止TAB键
      * 
      * Describe  是否禁止TAB键
@@ -362,7 +361,7 @@ protected:
 
 protected:
     /**
-     * CDuiComboBoxBase::GetEditText
+     * SComboBoxBase::GetEditText
      * @brief    获取编辑框内容
      * 
      * Describe  获取编辑框内容
@@ -396,7 +395,7 @@ protected:
  * 
  * Describe    可输入下拉列表
  */
-class SOUI_EXP SComboBox : public CDuiComboBoxBase
+class SOUI_EXP SComboBox : public SComboBoxBase
 {
     SOUI_CLASS_NAME(SComboBox, L"combobox")
 public:
@@ -612,7 +611,7 @@ protected:
     SListBox *m_pListBox;  /**< SListBox指针 */
 };
 
-class SOUI_EXP SComboBoxEx : public CDuiComboBoxBase
+class SOUI_EXP SComboBoxEx : public SComboBoxBase
 {
     SOUI_CLASS_NAME(SComboBoxEx, L"comboboxex")
 public:

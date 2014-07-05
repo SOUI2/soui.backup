@@ -1,6 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: CDuiItemPanel
-// Description: A Framework wrapping frame to be used in a duiwindow.
+//  Class Name: SItemPanel
 //     Creator: Huang Jianxiong
 //     Version: 2011.10.20 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
@@ -47,10 +46,10 @@ LRESULT SItemPanel::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
         switch(uMsg)
         {
         case WM_MOUSEHOVER: 
-            ModifyState(DuiWndState_Hover,0,TRUE);
+            ModifyState(WndState_Hover,0,TRUE);
             break;
         case WM_MOUSELEAVE: 
-            ModifyState(0,DuiWndState_Hover,TRUE);
+            ModifyState(0,WndState_Hover,TRUE);
             break;
         }
     }
@@ -81,7 +80,7 @@ IRenderTarget * SItemPanel::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
     rcInvalid.OffsetRect(rcItem.TopLeft());
     IRenderTarget *pRT=m_pFrmHost->GetRenderTarget(rcInvalid,gdcFlags);
     if(gdcFlags & OLEDC_PAINTBKGND)
-    {//调用frmhost的GetDuiDC时，不会绘制frmHost的背景。注意此外只画背景，不画前景,因为itempanel就是前景
+    {//调用frmhost的GetRenderTarget时，不会绘制frmHost的背景。注意此外只画背景，不画前景,因为itempanel就是前景
         m_pFrmHost->SendSwndMessage(WM_ERASEBKGND, (WPARAM)pRT);
     }
     pRT->OffsetViewportOrg(rcItem.left,rcItem.top);
@@ -127,10 +126,10 @@ BOOL SItemPanel::OnReleaseSwndCapture()
     return TRUE;
 }
 
-SWND SItemPanel::OnSetSwndCapture(SWND hDuiWNd)
+SWND SItemPanel::OnSetSwndCapture(SWND swnd)
 {
     m_pItemContainer->OnItemSetCapture(this,TRUE);
-    return __super::OnSetSwndCapture(hDuiWNd);
+    return __super::OnSetSwndCapture(swnd);
 }
 
 HWND SItemPanel::GetHostHwnd()
@@ -179,7 +178,7 @@ SWND SItemPanel::SwndFromPoint(POINT ptHitTest, BOOL bOnlyText)
 
 void SItemPanel::Draw(IRenderTarget *pRT,const CRect & rc)
 {
-    if((m_dwState & DuiWndState_Check) && m_crSelBk != CR_INVALID) m_style.m_crBg=m_crSelBk;
+    if((m_dwState & WndState_Check) && m_crSelBk != CR_INVALID) m_style.m_crBg=m_crSelBk;
     else m_style.m_crBg=m_crBk;
 
     pRT->OffsetViewportOrg(rc.left,rc.top);

@@ -1,8 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: DUIFontPool
-// Description: Font Pool
-//     Creator: ZhangXiaoxuan
-//     Version: 2009.4.22 - 1.0 - Change stl::map to CAtlMap
+//  Class Name: SFontPool
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -12,23 +9,23 @@
 #include "unknown/obj-ref-impl.hpp"
 
 
-#define DUIF_BOLD        0x0004U
-#define DUIF_UNDERLINE   0x0002U
-#define DUIF_ITALIC      0x0001U
+#define FF_BOLD        0x0004U
+#define FF_UNDERLINE   0x0002U
+#define FF_ITALIC      0x0001U
 
-#define DUIF_MAKEKEY(bold, underline, italic, adding) \
+#define FF_MAKEKEY(bold, underline, italic, adding) \
     (WORD)((adding << 8) \
-    | (bold ? DUIF_BOLD : 0) \
-    | (underline ? DUIF_UNDERLINE : 0) \
-    | (italic ? DUIF_ITALIC : 0))
+    | (bold ? FF_BOLD : 0) \
+    | (underline ? FF_UNDERLINE : 0) \
+    | (italic ? FF_ITALIC : 0))
 
-#define DUIF_ISBOLD(key)         ((key & DUIF_BOLD) == DUIF_BOLD)
-#define DUIF_ISUNDERLINE(key)    ((key & DUIF_UNDERLINE) == DUIF_UNDERLINE)
-#define DUIF_ISITALIC(key)       ((key & DUIF_ITALIC) == DUIF_ITALIC)
-#define DUIF_GETADDING(key)      (key >> 8)
+#define FF_ISBOLD(key)         ((key & FF_BOLD) == FF_BOLD)
+#define FF_ISUNDERLINE(key)    ((key & FF_UNDERLINE) == FF_UNDERLINE)
+#define FF_ISITALIC(key)       ((key & FF_ITALIC) == FF_ITALIC)
+#define FF_GETADDING(key)      (key >> 8)
 
-#define DUIF_DEFAULTFONT         (DUIF_MAKEKEY(FALSE, FALSE, FALSE, 0))
-#define DUIF_BOLDFONT            (DUIF_MAKEKEY(TRUE, FALSE, FALSE, 0))
+#define FF_DEFAULTFONT         (FF_MAKEKEY(FALSE, FALSE, FALSE, 0))
+#define FF_BOLDFONT            (FF_MAKEKEY(TRUE, FALSE, FALSE, 0))
 
 
 class SOUI_EXP FontKey

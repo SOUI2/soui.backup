@@ -12,7 +12,7 @@ namespace SOUI
 
 
 /////////////////////////////////////////////////////////////////////////////
-// CDuiScrollBar
+// SScrollBar
 SScrollBar::SScrollBar()
     : m_pSkin(NULL)
     , m_bDrag(FALSE)

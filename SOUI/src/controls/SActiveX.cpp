@@ -145,7 +145,7 @@ namespace SOUI
     {
         if(m_axContainer->GetActiveXControl())
         {
-            CDuiComQIPtr<IOleWindow> ole_window=m_axContainer->GetActiveXControl();
+            SComQIPtr<IOleWindow> ole_window=m_axContainer->GetActiveXControl();
             if(!ole_window)
             {
                 return ;
@@ -202,7 +202,7 @@ namespace SOUI
         }
 
         wmp_->close();
-        wmp_->put_URL(CDuiBStr(pszUrl));
+        wmp_->put_URL(sbstr(pszUrl));
         return true;
     }
 

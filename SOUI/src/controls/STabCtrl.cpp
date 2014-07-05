@@ -98,7 +98,7 @@ namespace SOUI
 
 
 //////////////////////////////////////////////////////////////////////////
-// CDuiTabCtrl
+// STabCtrl
 
 STabCtrl::STabCtrl() : m_nCurrentPage(0)
     , m_pSkinTab(NULL)
@@ -151,7 +151,7 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
             rcFrame.left += m_nTabWidth + m_nFramePos;
             break;
         }
-        m_pSkinFrame->Draw(pRT, rcFrame, DuiWndState_Normal);
+        m_pSkinFrame->Draw(pRT, rcFrame, WndState_Normal);
     }
     else
     {
@@ -160,9 +160,9 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
 
     for(int i=0; i<GetItemCount(); i++)
     {
-        dwState=DuiWndState_Normal;
-        if(i == m_nCurrentPage) dwState=DuiWndState_PushDown;
-        else if(i== m_nHoverTabItem) dwState=DuiWndState_Hover;
+        dwState=WndState_Normal;
+        if(i == m_nCurrentPage) dwState=WndState_PushDown;
+        else if(i== m_nHoverTabItem) dwState=WndState_Hover;
 
         GetItemRect(i,rcItem);
         if(i>0)
@@ -524,7 +524,7 @@ STabPage* STabCtrl::GetItem( int nIndex )
 void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD dwState )
 {
     if(m_pSkinTab)
-        m_pSkinTab->Draw(pRT,rcItem,IIF_STATE3(dwState,DuiWndState_Normal,DuiWndState_Hover,DuiWndState_PushDown),m_byAlpha);
+        m_pSkinTab->Draw(pRT,rcItem,IIF_STATE3(dwState,WndState_Normal,WndState_Hover,WndState_PushDown),m_byAlpha);
 
     CRect rcIcon(m_ptIcon+rcItem.TopLeft(),CSize(0,0));
     if(m_pSkinIcon)

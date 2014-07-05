@@ -1,9 +1,6 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: CDuiHostWnd
-//    Description: Real Container of DuiWindow
-//     Creator: ZhangXiaoxuan
-//     Version: 2010.3.12 - 1.0 - Create
-//                2011.6.18    1.1   huangjianxiong
+//  Class Name: SHostWnd
+//    Description: Real Container of SWindow
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -108,7 +105,7 @@ class SOUI_EXP SHostWnd
     : public CSimpleWnd
     , public SwndContainerImpl
     , public SWindow
-    , protected IDuiRealWndHandler
+    , protected IRealWndHandler
 {
     friend class SDummyWnd;
 public:
@@ -196,7 +193,7 @@ protected:
     void OnActivate(UINT nState, BOOL bMinimized, HWND wndOther);
 
     //////////////////////////////////////////////////////////////////////////
-    // CDuiContainer
+    // IContainer
 
     /*virtual */
     BOOL OnFireEvent(EventArgs &evt);
@@ -220,7 +217,7 @@ protected:
     BOOL OnReleaseSwndCapture();
 
     /*virtual */
-    SWND OnSetSwndCapture(SWND hDuiWnd);
+    SWND OnSetSwndCapture(SWND swnd);
 
     /*virtual */
     BOOL IsTranslucent();
@@ -244,7 +241,7 @@ protected:
     BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
     
     //////////////////////////////////////////////////////////////////////////
-    // IDuiRealWndHandler
+    // IRealWndHandler
     virtual HWND OnRealWndCreate(SRealWnd *pRealWnd);
     virtual BOOL OnRealWndInit(SRealWnd *pRealWnd);
     virtual void OnRealWndDestroy(SRealWnd *pRealWnd);

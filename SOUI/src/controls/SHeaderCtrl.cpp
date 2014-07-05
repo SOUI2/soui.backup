@@ -27,12 +27,12 @@ namespace SOUI
     {
     }
 
-    int SHeaderCtrl::InsertItem( int iItem,LPCTSTR pszText,int nWidth, DUIHDSORTFLAG stFlag,LPARAM lParam )
+    int SHeaderCtrl::InsertItem( int iItem,LPCTSTR pszText,int nWidth, SHDSORTFLAG stFlag,LPARAM lParam )
     {
         ASSERT(pszText);
         ASSERT(nWidth>=0);
         if(iItem==-1) iItem=m_arrItems.GetCount();
-        DUIHDITEM item;
+        SHDITEM item;
         item.mask=0xFFFFFFFF;
         item.cx=nWidth;
         item.pszText=_tcsdup(pszText);
@@ -53,18 +53,18 @@ namespace SOUI
         return iItem;
     }
 
-    BOOL SHeaderCtrl::GetItem( int iItem,DUIHDITEM *pItem )
+    BOOL SHeaderCtrl::GetItem( int iItem,SHDITEM *pItem )
     {
         if((UINT)iItem>=m_arrItems.GetCount()) return FALSE;
-        if(pItem->mask & DUIHDI_TEXT)
+        if(pItem->mask & SHDI_TEXT)
         {
              if(pItem->cchTextMax<m_arrItems[iItem].cchTextMax) return FALSE;
              _tcscpy(pItem->pszText,m_arrItems[iItem].pszText);
         }
-        if(pItem->mask & DUIHDI_WIDTH) pItem->cx=m_arrItems[iItem].cx;
-        if(pItem->mask & DUIHDI_LPARAM) pItem->lParam=m_arrItems[iItem].lParam;
-        if(pItem->mask & DUIHDI_SORTFLAG) pItem->stFlag=m_arrItems[iItem].stFlag;
-        if(pItem->mask & DUIHDI_ORDER) pItem->iOrder=m_arrItems[iItem].iOrder;
+        if(pItem->mask & SHDI_WIDTH) pItem->cx=m_arrItems[iItem].cx;
+        if(pItem->mask & SHDI_LPARAM) pItem->lParam=m_arrItems[iItem].lParam;
+        if(pItem->mask & SHDI_SORTFLAG) pItem->stFlag=m_arrItems[iItem].stFlag;
+        if(pItem->mask & SHDI_ORDER) pItem->iOrder=m_arrItems[iItem].iOrder;
         return TRUE;
     }
 
@@ -91,7 +91,7 @@ namespace SOUI
         AfterPaint(pRT,painter);
     }
 
-    void SHeaderCtrl::DrawItem(IRenderTarget * pRT,CRect rcItem,const LPDUIHDITEM pItem )
+    void SHeaderCtrl::DrawItem(IRenderTarget * pRT,CRect rcItem,const LPSHDITEM pItem )
     {
         if(m_pSkinItem) m_pSkinItem->Draw(pRT,rcItem,pItem->state);
         pRT->DrawText(pItem->pszText,pItem->cchTextMax,rcItem,m_style.GetTextAlign());
@@ -197,7 +197,7 @@ namespace SOUI
 
                     if(m_dwDragTo!=m_dwHitTest && IsItemHover(m_dwDragTo))
                     {
-                        DUIHDITEM t=m_arrItems[LOWORD(m_dwHitTest)];
+                        SHDITEM t=m_arrItems[LOWORD(m_dwHitTest)];
                         m_arrItems.RemoveAt(LOWORD(m_dwHitTest));
                         int nPos=LOWORD(m_dwDragTo);
                         if(nPos>LOWORD(m_dwHitTest)) nPos--;//要考虑将自己移除的影响
@@ -261,7 +261,7 @@ namespace SOUI
                     if(IsItemHover(dwDragTo) && m_dwDragTo!=dwDragTo)
                     {
                         m_dwDragTo=dwDragTo;
-                        DUITRACE(_T("\n!!! dragto %d"),LOWORD(dwDragTo));
+                        STRACE(_T("\n!!! dragto %d"),LOWORD(dwDragTo));
                         DrawDraggingState(dwDragTo);
                     }
                     CDragWnd::DragMove(pt2);
@@ -325,15 +325,15 @@ namespace SOUI
         int iOrder=0;
         while(xmlItem)
         {
-            DUIHDITEM item={0};
+            SHDITEM item={0};
             item.mask=0xFFFFFFFF;
             item.iOrder=iOrder++;
-            SStringT strTxt=DUI_CW2T(xmlItem.text().get());
+            SStringT strTxt=S_CW2T(xmlItem.text().get());
             item.pszText=_tcsdup(strTxt);
             item.cchTextMax=strTxt.GetLength();
             item.cx=xmlItem.attribute(L"width").as_int(50);
             item.lParam=xmlItem.attribute(L"userata").as_uint(0);
-            item.stFlag=(DUIHDSORTFLAG)xmlItem.attribute(L"sortFlag").as_uint(ST_NULL);
+            item.stFlag=(SHDSORTFLAG)xmlItem.attribute(L"sortFlag").as_uint(ST_NULL);
             m_arrItems.InsertAt(m_arrItems.GetCount(),item);
             xmlItem=xmlItem.next_sibling(L"item");
         }

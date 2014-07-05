@@ -43,7 +43,7 @@ struct IAxHostDelegate
  * ActiveXSite class
  */
 template<class T>
-class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
+class S_NO_VTABLE ActiveXSite :   public IOleClientSite,
                                     public IOleControlSite,
                                     public IOleInPlaceSiteWindowless,
                                     public IAdviseSink
@@ -128,7 +128,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
     {
         if( m_spControl == 0) return E_NOINTERFACE;
         HRESULT hr = E_POINTER;
-        CDuiComQIPtr<IPersistStreamInit> spPSI = m_spControl;
+        SComQIPtr<IPersistStreamInit> spPSI = m_spControl;
         if ( spPSI != NULL )
         {
             if ( pStream != NULL )
@@ -138,7 +138,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
         }
         else if (pStream)
         {
-            CDuiComQIPtr<IPersistStream> spPS(m_spOleObject);
+            SComQIPtr<IPersistStream> spPS(m_spOleObject);
             if (spPS)
                 hr = spPS->Load(pStream);
         }
@@ -227,7 +227,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
     HRESULT FireAmbientPropertyChange(DISPID dispChanged)
     {
         HRESULT hr = S_OK;
-        CDuiComQIPtr<IOleControl, &__uuidof(IOleControl)> spOleControl(m_spControl);
+        SComQIPtr<IOleControl, &__uuidof(IOleControl)> spOleControl(m_spControl);
         if (spOleControl != NULL)
             hr = spOleControl->OnAmbientPropertyChange(dispChanged);
         return hr;
@@ -596,10 +596,10 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
         {
             SIZEL pxsize = { width, height };
             SIZEL hmsize = { 0 };
-            DuiPixelToHiMetric(&pxsize, &hmsize);
+            SPixelToHiMetric(&pxsize, &hmsize);
             hr = m_spOleObject->SetExtent(DVASPECT_CONTENT, &hmsize);
             hr = m_spOleObject->GetExtent(DVASPECT_CONTENT, &hmsize);
-            DuiHiMetricToPixel(&hmsize, &pxsize);
+            SHiMetricToPixel(&hmsize, &pxsize);
             m_rcPos.right = m_rcPos.left + pxsize.cx;
             m_rcPos.bottom = m_rcPos.top + pxsize.cy;
         }
@@ -627,7 +627,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
             if (SUCCEEDED(hr))
                 m_dwViewObjectType = 1;
         }
-        CDuiComQIPtr<IAdviseSink> advise_sink=m_spControl;
+        SComQIPtr<IAdviseSink> advise_sink=m_spControl;
         m_spOleObject->Advise(advise_sink, &m_dwOleObjSink);
 
         if (m_spViewObject)
@@ -650,12 +650,12 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
     DWORD                            m_grfFlags;
 
     RECT                            m_rcPos;
-    CDuiComPtr<IUnknown>               m_spControl;
-    CDuiComPtr<IViewObjectEx>          m_spViewObject;
-    CDuiComQIPtr<IOleObject>           m_spOleObject;
-    CDuiComQIPtr<IOleInPlaceObject>    m_spInPlaceObject;
-    CDuiComQIPtr<IOleInPlaceObjectWindowless> m_spOleObjectWindowless;
-    CDuiComPtr<IDocHostUIHandler>        m_spDocHostUIHandler;
+    SComPtr<IUnknown>               m_spControl;
+    SComPtr<IViewObjectEx>          m_spViewObject;
+    SComQIPtr<IOleObject>           m_spOleObject;
+    SComQIPtr<IOleInPlaceObject>    m_spInPlaceObject;
+    SComQIPtr<IOleInPlaceObjectWindowless> m_spOleObjectWindowless;
+    SComPtr<IDocHostUIHandler>        m_spDocHostUIHandler;
     IAxHostDelegate                *    m_pAxHostDelegate;
 };
 
@@ -666,7 +666,7 @@ class DUI_NO_VTABLE ActiveXSite :   public IOleClientSite,
 /**
  * ActiveXContainerImpl
  */
-class DUI_NO_VTABLE SAxContainer :   public IOleContainer,
+class S_NO_VTABLE SAxContainer :   public IOleContainer,
                                              public IBindHost,
                                              public IServiceProvider,
                                              public MinimumIDispatchImpl,

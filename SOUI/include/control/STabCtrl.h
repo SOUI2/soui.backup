@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//   File Name: duitabctrl.h
+//   File Name: stabctrl.h
 // Description: Tab Control
 //     Creator: Huang Jianxiong
 //     Version: 2011.12.2 - 1.1 - Create
@@ -20,7 +20,7 @@ public:
     STabPage()
     {
         m_bVisible = FALSE;
-        m_dwState = DuiWndState_Invisible;
+        m_dwState = WndState_Invisible;
         m_dlgpos.uPositionType = SizeX_FitParent|SizeY_FitParent;
     }
 
@@ -127,7 +127,7 @@ protected:
 
     virtual UINT OnGetDlgCode()
     {
-        return DUIC_WANTARROWS;
+        return SC_WANTARROWS;
     }
 
     void OnPaint(IRenderTarget *pRT);

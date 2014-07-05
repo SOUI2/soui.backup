@@ -1,7 +1,7 @@
 /********************************************************************
     created:    2013/02/19
     created:    19:2:2013   10:11
-    filename:     DuiMessageBox.h
+    filename:     SMessageBox.h
     author:        Huang Jianxiong
     
     purpose:    Ä£ÄâÒ»¸öMessageBox
