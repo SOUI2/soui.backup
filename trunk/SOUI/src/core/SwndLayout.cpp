@@ -59,8 +59,8 @@ namespace SOUI
             break;
         case PIT_PREVSIBLING:
             {
-                SWindow *pRefWnd=pWnd->GetWindow(GDUI_PREVSIBLING);
-                if(!pRefWnd) pRefWnd=pWnd->GetWindow(GDUI_PARENT);
+                SWindow *pRefWnd=pWnd->GetWindow(GSW_PREVSIBLING);
+                if(!pRefWnd) pRefWnd=pWnd->GetWindow(GSW_PARENT);
                 if(pRefWnd)
                 {//需要确定参考窗口是否完成布局
                     CRect rcRef;
@@ -83,8 +83,8 @@ namespace SOUI
             break;
         case PIT_NEXTSIBLING:
             {
-                SWindow *pRefWnd=pWnd->GetWindow(GDUI_NEXTSIBLING);
-                if(!pRefWnd) pRefWnd=pWnd->GetWindow(GDUI_PARENT);
+                SWindow *pRefWnd=pWnd->GetWindow(GSW_NEXTSIBLING);
+                if(!pRefWnd) pRefWnd=pWnd->GetWindow(GSW_PARENT);
                 if(pRefWnd)
                 {//需要确定参考窗口是否完成布局
                     CRect rcRef;
@@ -193,7 +193,7 @@ namespace SOUI
                 }
             }else //if(dlgpos.nCount==0)
             {//自动排版
-                SWindow *pSibling=pWnd->GetWindow(GDUI_PREVSIBLING);
+                SWindow *pSibling=pWnd->GetWindow(GSW_PREVSIBLING);
                 if(!pSibling)
                 {
                     pt.x=lpRcContainer->left;
@@ -245,7 +245,7 @@ namespace SOUI
         }
     }
 
-    void SwndLayout::StrPos2DuiWndPos( LPCWSTR pszValue,SWND_POSITION &dlgpos )
+    void SwndLayout::StrPos2SwndPos( LPCWSTR pszValue,SWND_POSITION &dlgpos )
     {
         dlgpos.uPositionType &= ~Pos_Float;
 

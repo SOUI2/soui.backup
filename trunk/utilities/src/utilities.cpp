@@ -7,7 +7,7 @@ namespace SOUI
 #define MAP_PIX_TO_LOGHIM(x,ppli)   MulDiv(HIMETRIC_PER_INCH, (x), (ppli))
 #define MAP_LOGHIM_TO_PIX(x,ppli)   MulDiv((ppli), (x), HIMETRIC_PER_INCH)
 
-    void DuiHiMetricToPixel(const SIZEL * lpSizeInHiMetric, LPSIZEL lpSizeInPix)
+    void SHiMetricToPixel(const SIZEL * lpSizeInHiMetric, LPSIZEL lpSizeInPix)
     {
         int nPixelsPerInchX;    // Pixels per logical inch along width
         int nPixelsPerInchY;    // Pixels per logical inch along height
@@ -21,7 +21,7 @@ namespace SOUI
         lpSizeInPix->cy = MAP_LOGHIM_TO_PIX(lpSizeInHiMetric->cy, nPixelsPerInchY);
     }
 
-    void DuiPixelToHiMetric(const SIZEL * lpSizeInPix, LPSIZEL lpSizeInHiMetric)
+    void SPixelToHiMetric(const SIZEL * lpSizeInPix, LPSIZEL lpSizeInHiMetric)
     {
         int nPixelsPerInchX;    // Pixels per logical inch along width
         int nPixelsPerInchY;    // Pixels per logical inch along height

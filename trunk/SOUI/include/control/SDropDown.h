@@ -2,7 +2,7 @@
  * Copyright (C) 2014-2050 SOUI团队
  * All rights reserverd.
  * 
- * @file       DuiDropDown.h
+ * @file       SDropDown.h
  * @brief      一个通用的下拉窗口模块
  * @version    v1.0      
  * @author     soui      
@@ -18,8 +18,8 @@ namespace SOUI
 
     class SDropDownWnd;
     /**
-     * @class      IDuiDropDownOwner
-     * @brief      IDuiDropDownOwner接口类
+     * @class      ISDropDownOwner
+     * @brief      ISDropDownOwner接口类
      * 
      * Describe    下拉窗口接口类 里面只定义一些虚函数
      */
@@ -27,7 +27,7 @@ namespace SOUI
     {
     public:
         /**
-         * IDuiDropDownOwner::GetDropDownOwner
+         * ISDropDownOwner::GetDropDownOwner
          * @brief    获得下拉窗口所属者
          *
          * Describe  此函数是纯虚函数  
@@ -35,7 +35,7 @@ namespace SOUI
         virtual SWindow * GetDropDownOwner() =0;
         
         /**
-         * IDuiDropDownOwner::OnDropDown
+         * ISDropDownOwner::OnDropDown
          * @brief    下拉窗口发生DropDown,触发此函数
          *
          * Describe  此函数是纯虚函数
@@ -43,7 +43,7 @@ namespace SOUI
         virtual void OnDropDown(SDropDownWnd *pDropDown) = 0;
         
         /**
-         * IDuiDropDownOwner::OnCloseUp
+         * ISDropDownOwner::OnCloseUp
          * @brief    下拉窗口发生CloseUp,触发此函数
          *
          * Describe  此函数是纯虚函数  
@@ -64,9 +64,9 @@ namespace SOUI
         /**
          * SDropDownWnd::SDropDownWnd
          * @brief    构造函数
-         * @param    IDuiDropDownOwner* pOwner -- 所属者指针
+         * @param    ISDropDownOwner* pOwner -- 所属者指针
          *
-         * Describe  CDuiDropDownWnd类的构造函数
+         * Describe  SDropDownWnd类的构造函数
          */        
         SDropDownWnd(ISDropDownOwner* pOwner);
 
@@ -74,7 +74,7 @@ namespace SOUI
          * SDropDownWnd::~SDropDownWnd
          * @brief    析构函数
          *
-         * Describe  CDuiDropDownWnd类的析构函数
+         * Describe  SDropDownWnd类的析构函数
          */        
         virtual ~SDropDownWnd();
 

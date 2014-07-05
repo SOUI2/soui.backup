@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: DUIFontPool
+//  Class Name: SFontPool
 // Description: Font Pool
 //////////////////////////////////////////////////////////////////////////
 
@@ -19,7 +19,7 @@ SFontPool::SFontPool(IRenderFactory *pRendFactory)
 {
     _tcscpy(m_szDefFontFace,_T("Tahoma"));
     m_pFunOnKeyRemoved=OnKeyRemoved;
-    SetKeyObject(FontKey(DUIF_DEFAULTFONT),_CreateDefaultGUIFont());
+    SetKeyObject(FontKey(FF_DEFAULTFONT),_CreateDefaultGUIFont());
 }
 
 IFontPtr SFontPool::GetFont(WORD uKey,LPCTSTR strFaceName)
@@ -33,7 +33,7 @@ IFontPtr SFontPool::GetFont(WORD uKey,LPCTSTR strFaceName)
     else
     {
         hftRet = _CreateNewFont(
-                     DUIF_ISBOLD(uKey), DUIF_ISUNDERLINE(uKey), DUIF_ISITALIC(uKey), DUIF_GETADDING(uKey),strFaceName
+                     FF_ISBOLD(uKey), FF_ISUNDERLINE(uKey), FF_ISITALIC(uKey), FF_GETADDING(uKey),strFaceName
                  );
 
         AddKeyObject(key,hftRet);
@@ -43,7 +43,7 @@ IFontPtr SFontPool::GetFont(WORD uKey,LPCTSTR strFaceName)
 
 IFontPtr SFontPool::GetFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding /*= 0*/,LPCTSTR strFaceName/*=""*/)
 {
-    return GetFont(DUIF_MAKEKEY(bBold, bUnderline, bItalic, chAdding),strFaceName);
+    return GetFont(FF_MAKEKEY(bBold, bUnderline, bItalic, chAdding),strFaceName);
 }
 
 void SFontPool::SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize)
@@ -53,9 +53,9 @@ void SFontPool::SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize)
 
     ASSERT(GetCount()==1);//初始化前才可以调用该接口
 
-    RemoveKeyObject(FontKey(DUIF_DEFAULTFONT));
+    RemoveKeyObject(FontKey(FF_DEFAULTFONT));
     
-    SetKeyObject(FontKey(DUIF_DEFAULTFONT),_CreateDefaultGUIFont());
+    SetKeyObject(FontKey(FF_DEFAULTFONT),_CreateDefaultGUIFont());
 }
 
 IFontPtr SFontPool::_CreateDefaultGUIFont()

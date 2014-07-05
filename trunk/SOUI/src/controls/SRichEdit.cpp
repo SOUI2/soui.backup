@@ -8,13 +8,13 @@
 namespace SOUI
 {
 
-    template<> CDuiTextServiceHelper * SSingleton<CDuiTextServiceHelper>::ms_Singleton=0;
+    template<> STextServiceHelper * SSingleton<STextServiceHelper>::ms_Singleton=0;
     template<> SRicheditMenuDef * SSingleton<SRicheditMenuDef>::ms_Singleton=0;
 
-    class CDuiRicheditDropTarget : public IDropTarget
+    class SRicheditDropTarget : public IDropTarget
     {
     public:
-        CDuiRicheditDropTarget(ITextServices *pTxtSvr)
+        SRicheditDropTarget(ITextServices *pTxtSvr)
             :nRef(1)
             ,pserv(pTxtSvr)
         {
@@ -22,7 +22,7 @@ namespace SOUI
             pserv->AddRef();
         }
 
-        ~CDuiRicheditDropTarget()
+        ~SRicheditDropTarget()
         {
             ASSERT(pserv);
             pserv->Release();
@@ -173,21 +173,21 @@ LONG HimetricYtoDY(LONG yHimetric, LONG yPerInch)
     return (LONG) MulDiv(yHimetric, yPerInch, HIMETRIC_PER_INCH);
 }
 
-CDuiTextHost::CDuiTextHost(void)
-    :m_pDuiRichEdit(NULL)
+STextHost::STextHost(void)
+    :m_pRichEdit(NULL)
     ,cRefs(0)
     ,m_fUiActive(FALSE)
 {
 }
 
-CDuiTextHost::~CDuiTextHost(void)
+STextHost::~STextHost(void)
 {
     pserv->Release();
 }
 
 //////////////////////////////////////////////////////////////////////////
 // IUnknown
-HRESULT _stdcall CDuiTextHost::QueryInterface( REFIID riid, void **ppvObject )
+HRESULT _stdcall STextHost::QueryInterface( REFIID riid, void **ppvObject )
 {
     HRESULT hr = E_NOINTERFACE;
     *ppvObject = NULL;
@@ -203,12 +203,12 @@ HRESULT _stdcall CDuiTextHost::QueryInterface( REFIID riid, void **ppvObject )
     return hr;
 }
 
-ULONG _stdcall CDuiTextHost::AddRef( void )
+ULONG _stdcall STextHost::AddRef( void )
 {
     return ++cRefs;
 }
 
-ULONG _stdcall CDuiTextHost::Release( void )
+ULONG _stdcall STextHost::Release( void )
 {
     ULONG c_Refs = --cRefs;
 
@@ -223,297 +223,297 @@ ULONG _stdcall CDuiTextHost::Release( void )
 
 //////////////////////////////////////////////////////////////////////////
 // ITextHost
-HRESULT CDuiTextHost::TxGetViewInset( LPRECT prc )
+HRESULT STextHost::TxGetViewInset( LPRECT prc )
 {
-    *prc=m_pDuiRichEdit->m_rcInset;
+    *prc=m_pRichEdit->m_rcInset;
     return S_OK;
 }
 
-HRESULT CDuiTextHost::TxGetCharFormat( const CHARFORMATW **ppCF )
+HRESULT STextHost::TxGetCharFormat( const CHARFORMATW **ppCF )
 {
-    *ppCF=&m_pDuiRichEdit->m_cfDef;
+    *ppCF=&m_pRichEdit->m_cfDef;
     return S_OK;
 }
 
 
-HRESULT CDuiTextHost::TxGetParaFormat( const PARAFORMAT **ppPF )
+HRESULT STextHost::TxGetParaFormat( const PARAFORMAT **ppPF )
 {
-    *ppPF=&m_pDuiRichEdit->m_pfDef;
+    *ppPF=&m_pRichEdit->m_pfDef;
     return S_OK;
 }
 
-HRESULT CDuiTextHost::TxGetClientRect( LPRECT prc )
+HRESULT STextHost::TxGetClientRect( LPRECT prc )
 {
-    m_pDuiRichEdit->GetClient(prc);
+    m_pRichEdit->GetClient(prc);
     return S_OK;
 }
 
-HRESULT CDuiTextHost::TxDeactivate( LONG lNewState )
+HRESULT STextHost::TxDeactivate( LONG lNewState )
 {
     m_fUiActive=FALSE;
     return S_OK;
 }
 
-HRESULT CDuiTextHost::TxActivate( LONG * plOldState )
+HRESULT STextHost::TxActivate( LONG * plOldState )
 {
     *plOldState = m_fUiActive;
     m_fUiActive=TRUE;
     return S_OK;
 }
 
-BOOL CDuiTextHost::TxClientToScreen( LPPOINT lppt )
+BOOL STextHost::TxClientToScreen( LPPOINT lppt )
 {
-    return ::ClientToScreen(m_pDuiRichEdit->GetContainer()->GetHostHwnd(),lppt);
+    return ::ClientToScreen(m_pRichEdit->GetContainer()->GetHostHwnd(),lppt);
 }
 
-BOOL CDuiTextHost::TxScreenToClient( LPPOINT lppt )
+BOOL STextHost::TxScreenToClient( LPPOINT lppt )
 {
-    return ::ScreenToClient(m_pDuiRichEdit->GetContainer()->GetHostHwnd(),lppt);
+    return ::ScreenToClient(m_pRichEdit->GetContainer()->GetHostHwnd(),lppt);
 }
 
-void CDuiTextHost::TxSetCursor( HCURSOR hcur, BOOL fText )
+void STextHost::TxSetCursor( HCURSOR hcur, BOOL fText )
 {
     ::SetCursor(hcur);
 }
 
-void CDuiTextHost::TxSetFocus()
+void STextHost::TxSetFocus()
 {
-    m_pDuiRichEdit->SetFocus();
+    m_pRichEdit->SetFocus();
 }
 
-void CDuiTextHost::TxSetCapture( BOOL fCapture )
+void STextHost::TxSetCapture( BOOL fCapture )
 {
     if(fCapture)
-        m_pDuiRichEdit->SetCapture();
+        m_pRichEdit->SetCapture();
     else
-        m_pDuiRichEdit->ReleaseCapture();
+        m_pRichEdit->ReleaseCapture();
 }
 
-void CDuiTextHost::TxScrollWindowEx( INT dx, INT dy, LPCRECT lprcScroll, LPCRECT lprcClip, HRGN hrgnUpdate, LPRECT lprcUpdate, UINT fuScroll )
+void STextHost::TxScrollWindowEx( INT dx, INT dy, LPCRECT lprcScroll, LPCRECT lprcClip, HRGN hrgnUpdate, LPRECT lprcUpdate, UINT fuScroll )
 {
-    m_pDuiRichEdit->Invalidate();
+    m_pRichEdit->Invalidate();
 }
 
-void CDuiTextHost::TxKillTimer( UINT idTimer )
+void STextHost::TxKillTimer( UINT idTimer )
 {
-    m_pDuiRichEdit->KillTimerEx(idTimer);
+    m_pRichEdit->KillTimer2(idTimer);
 }
 
-BOOL CDuiTextHost::TxSetTimer( UINT idTimer, UINT uTimeout )
+BOOL STextHost::TxSetTimer( UINT idTimer, UINT uTimeout )
 {
-    return m_pDuiRichEdit->SetTimerEx(idTimer,uTimeout);
+    return m_pRichEdit->SetTimer2(idTimer,uTimeout);
 }
 
-BOOL CDuiTextHost::TxSetCaretPos( INT x, INT y )
+BOOL STextHost::TxSetCaretPos( INT x, INT y )
 {
     m_ptCaret.x=x,m_ptCaret.y=y;
-    return m_pDuiRichEdit->GetContainer()->SwndSetCaretPos(x,y);
+    return m_pRichEdit->GetContainer()->SwndSetCaretPos(x,y);
 }
 
-BOOL CDuiTextHost::TxShowCaret( BOOL fShow )
+BOOL STextHost::TxShowCaret( BOOL fShow )
 {
     if(fShow && !m_fUiActive) return FALSE;
-    return m_pDuiRichEdit->GetContainer()->SwndShowCaret(fShow);
+    return m_pRichEdit->GetContainer()->SwndShowCaret(fShow);
 }
 
-BOOL CDuiTextHost::TxCreateCaret( HBITMAP hbmp, INT xWidth, INT yHeight )
+BOOL STextHost::TxCreateCaret( HBITMAP hbmp, INT xWidth, INT yHeight )
 {
-    return m_pDuiRichEdit->GetContainer()->SwndCreateCaret(hbmp,xWidth,yHeight);
+    return m_pRichEdit->GetContainer()->SwndCreateCaret(hbmp,xWidth,yHeight);
 }
 
-HDC CDuiTextHost::TxGetDC()
+HDC STextHost::TxGetDC()
 {
     return ::GetDC(NULL);
 }
 
-INT CDuiTextHost::TxReleaseDC( HDC hdc )
+INT STextHost::TxReleaseDC( HDC hdc )
 {
     return ::ReleaseDC(NULL,hdc);
 }
 
-BOOL CDuiTextHost::TxShowScrollBar( INT fnBar, BOOL fShow )
+BOOL STextHost::TxShowScrollBar( INT fnBar, BOOL fShow )
 {
     int wBar=0;
     switch(fnBar)
     {
-    case SB_BOTH:
-        wBar=DUISB_BOTH;
+    case SSB_BOTH:
+        wBar=SSB_BOTH;
         break;
-    case SB_VERT:
-        wBar=DUISB_VERT;
+    case SSB_VERT:
+        wBar=SSB_VERT;
         break;
-    case SB_HORZ:
-        wBar=DUISB_HORZ;
+    case SSB_HORZ:
+        wBar=SSB_HORZ;
         break;
     }
-    m_pDuiRichEdit->SetTimer(TIMER_INVALIDATE,40);//todo:
-    return m_pDuiRichEdit->ShowScrollBar(wBar,fShow);
+    m_pRichEdit->SetTimer(TIMER_INVALIDATE,40);//todo:
+    return m_pRichEdit->ShowScrollBar(wBar,fShow);
 }
 
-BOOL CDuiTextHost::TxEnableScrollBar( INT fuSBFlags, INT fuArrowflags )
+BOOL STextHost::TxEnableScrollBar( INT fuSBFlags, INT fuArrowflags )
 {
     int wBar=0;
     switch(fuSBFlags)
     {
-    case SB_BOTH:
-        wBar=DUISB_BOTH;
+    case SSB_BOTH:
+        wBar=SSB_BOTH;
         break;
-    case SB_VERT:
-        wBar=DUISB_VERT;
+    case SSB_VERT:
+        wBar=SSB_VERT;
         break;
-    case SB_HORZ:
-        wBar=DUISB_HORZ;
+    case SSB_HORZ:
+        wBar=SSB_HORZ;
         break;
     }
-    return m_pDuiRichEdit->EnableScrollBar(wBar,fuArrowflags==ESB_ENABLE_BOTH);
+    return m_pRichEdit->EnableScrollBar(wBar,fuArrowflags==ESB_ENABLE_BOTH);
 }
 
-BOOL CDuiTextHost::TxSetScrollRange( INT fnBar, LONG nMinPos, INT nMaxPos, BOOL fRedraw )
+BOOL STextHost::TxSetScrollRange( INT fnBar, LONG nMinPos, INT nMaxPos, BOOL fRedraw )
 {
-    if(fnBar==SB_HORZ)
-        return m_pDuiRichEdit->SetScrollRange(FALSE,nMinPos,nMaxPos,fRedraw);
+    if(fnBar==SSB_HORZ)
+        return m_pRichEdit->SetScrollRange(FALSE,nMinPos,nMaxPos,fRedraw);
     else
-        return m_pDuiRichEdit->SetScrollRange(TRUE,nMinPos,nMaxPos,fRedraw);
+        return m_pRichEdit->SetScrollRange(TRUE,nMinPos,nMaxPos,fRedraw);
 }
 
-BOOL CDuiTextHost::TxSetScrollPos( INT fnBar, INT nPos, BOOL fRedraw )
+BOOL STextHost::TxSetScrollPos( INT fnBar, INT nPos, BOOL fRedraw )
 {
     BOOL bRet=FALSE;
-    if(m_pDuiRichEdit->m_fScrollPending) return TRUE;
-    m_pDuiRichEdit->m_fScrollPending=TRUE;
-    if(fnBar==SB_HORZ)
-        bRet= m_pDuiRichEdit->SetScrollPos(FALSE,nPos,fRedraw);
+    if(m_pRichEdit->m_fScrollPending) return TRUE;
+    m_pRichEdit->m_fScrollPending=TRUE;
+    if(fnBar==SSB_HORZ)
+        bRet= m_pRichEdit->SetScrollPos(FALSE,nPos,fRedraw);
     else
-        bRet= m_pDuiRichEdit->SetScrollPos(TRUE,nPos,fRedraw);
-    m_pDuiRichEdit->m_fScrollPending=FALSE;
+        bRet= m_pRichEdit->SetScrollPos(TRUE,nPos,fRedraw);
+    m_pRichEdit->m_fScrollPending=FALSE;
     return bRet;
 }
 
-void CDuiTextHost::TxInvalidateRect( LPCRECT prc, BOOL fMode )
+void STextHost::TxInvalidateRect( LPCRECT prc, BOOL fMode )
 {
     if(prc)
     {
-        m_pDuiRichEdit->InvalidateRect(prc);
+        m_pRichEdit->InvalidateRect(prc);
     }
     else
     {
-        m_pDuiRichEdit->Invalidate();
+        m_pRichEdit->Invalidate();
     }
 }
 
-void CDuiTextHost::TxViewChange( BOOL fUpdate )
+void STextHost::TxViewChange( BOOL fUpdate )
 {
     if(fUpdate)
     {
-        m_pDuiRichEdit->GetContainer()->SwndUpdateWindow();
+        m_pRichEdit->GetContainer()->SwndUpdateWindow();
     }
 }
 
-COLORREF CDuiTextHost::TxGetSysColor( int nIndex )
+COLORREF STextHost::TxGetSysColor( int nIndex )
 {
     return ::GetSysColor(nIndex);
 }
 
-HRESULT CDuiTextHost::TxGetBackStyle( TXTBACKSTYLE *pstyle )
+HRESULT STextHost::TxGetBackStyle( TXTBACKSTYLE *pstyle )
 {
     *pstyle=TXTBACK_TRANSPARENT;
-    //*pstyle = m_pDuiRichEdit->m_fTransparent ?TXTBACK_TRANSPARENT: TXTBACK_OPAQUE;
+    //*pstyle = m_pRichEdit->m_fTransparent ?TXTBACK_TRANSPARENT: TXTBACK_OPAQUE;
     return S_OK;
 }
 
-HRESULT CDuiTextHost::TxGetMaxLength( DWORD *plength )
+HRESULT STextHost::TxGetMaxLength( DWORD *plength )
 {
-    *plength = m_pDuiRichEdit->m_cchTextMost;
+    *plength = m_pRichEdit->m_cchTextMost;
     return S_OK;
 }
 
-HRESULT CDuiTextHost::TxGetScrollBars( DWORD *pdwScrollBar )
+HRESULT STextHost::TxGetScrollBars( DWORD *pdwScrollBar )
 {
-    *pdwScrollBar =  m_pDuiRichEdit->m_dwStyle & (WS_VSCROLL | WS_HSCROLL | ES_AUTOVSCROLL |
+    *pdwScrollBar =  m_pRichEdit->m_dwStyle & (WS_VSCROLL | WS_HSCROLL | ES_AUTOVSCROLL |
                      ES_AUTOHSCROLL | ES_DISABLENOSCROLL);
 
     return S_OK;
 }
 
-HRESULT CDuiTextHost::TxGetPasswordChar( TCHAR *pch )
+HRESULT STextHost::TxGetPasswordChar( TCHAR *pch )
 {
-    *pch=m_pDuiRichEdit->m_chPasswordChar;
+    *pch=m_pRichEdit->m_chPasswordChar;
     return S_OK;
 }
 
-HRESULT CDuiTextHost::TxGetAcceleratorPos( LONG *pcp )
+HRESULT STextHost::TxGetAcceleratorPos( LONG *pcp )
 {
-    *pcp=m_pDuiRichEdit->m_lAccelPos;
+    *pcp=m_pRichEdit->m_lAccelPos;
     return S_OK;
 }
 
-HRESULT CDuiTextHost::TxGetExtent( LPSIZEL lpExtent )
+HRESULT STextHost::TxGetExtent( LPSIZEL lpExtent )
 {
-    *lpExtent=m_pDuiRichEdit->m_sizelExtent;
+    *lpExtent=m_pRichEdit->m_sizelExtent;
     return S_OK;
 }
 
-HRESULT CDuiTextHost::OnTxCharFormatChange( const CHARFORMATW * pcf )
-{
-    return S_OK;
-}
-
-HRESULT CDuiTextHost::OnTxParaFormatChange( const PARAFORMAT * ppf )
+HRESULT STextHost::OnTxCharFormatChange( const CHARFORMATW * pcf )
 {
     return S_OK;
 }
 
-HRESULT CDuiTextHost::TxGetPropertyBits( DWORD dwMask, DWORD *pdwBits )
+HRESULT STextHost::OnTxParaFormatChange( const PARAFORMAT * ppf )
+{
+    return S_OK;
+}
+
+HRESULT STextHost::TxGetPropertyBits( DWORD dwMask, DWORD *pdwBits )
 {
     DWORD dwProperties = 0;
 
-    if (m_pDuiRichEdit->m_fRich)
+    if (m_pRichEdit->m_fRich)
     {
         dwProperties = TXTBIT_RICHTEXT;
     }
 
-    if (m_pDuiRichEdit->m_dwStyle & ES_MULTILINE)
+    if (m_pRichEdit->m_dwStyle & ES_MULTILINE)
     {
         dwProperties |= TXTBIT_MULTILINE;
     }
 
-    if (m_pDuiRichEdit->m_dwStyle & ES_READONLY)
+    if (m_pRichEdit->m_dwStyle & ES_READONLY)
     {
         dwProperties |= TXTBIT_READONLY;
     }
 
 
-    if (m_pDuiRichEdit->m_dwStyle & ES_PASSWORD)
+    if (m_pRichEdit->m_dwStyle & ES_PASSWORD)
     {
         dwProperties |= TXTBIT_USEPASSWORD;
     }
 
-    if (!(m_pDuiRichEdit->m_dwStyle & ES_NOHIDESEL))
+    if (!(m_pRichEdit->m_dwStyle & ES_NOHIDESEL))
     {
         dwProperties |= TXTBIT_HIDESELECTION;
     }
 
-    if (m_pDuiRichEdit->m_fEnableAutoWordSel)
+    if (m_pRichEdit->m_fEnableAutoWordSel)
     {
         dwProperties |= TXTBIT_AUTOWORDSEL;
     }
 
-    if (m_pDuiRichEdit->m_fVertical)
+    if (m_pRichEdit->m_fVertical)
     {
         dwProperties |= TXTBIT_VERTICAL;
     }
 
-    if (m_pDuiRichEdit->m_fWordWrap)
+    if (m_pRichEdit->m_fWordWrap)
     {
         dwProperties |= TXTBIT_WORDWRAP;
     }
 
-    if (m_pDuiRichEdit->m_fAllowBeep)
+    if (m_pRichEdit->m_fAllowBeep)
     {
         dwProperties |= TXTBIT_ALLOWBEEP;
     }
 
-    if (m_pDuiRichEdit->m_fSaveSelection)
+    if (m_pRichEdit->m_fSaveSelection)
     {
         dwProperties |= TXTBIT_SAVESELECTION;
     }
@@ -522,40 +522,40 @@ HRESULT CDuiTextHost::TxGetPropertyBits( DWORD dwMask, DWORD *pdwBits )
     return NOERROR;
 }
 
-HRESULT CDuiTextHost::TxNotify( DWORD iNotify, void *pv )
+HRESULT STextHost::TxNotify( DWORD iNotify, void *pv )
 {
     if(iNotify==EN_REQUESTRESIZE)
     {
         return S_OK;
     }
-    return m_pDuiRichEdit->OnTxNotify(iNotify,pv);
+    return m_pRichEdit->OnTxNotify(iNotify,pv);
 }
 
-HIMC CDuiTextHost::TxImmGetContext()
+HIMC STextHost::TxImmGetContext()
 {
-    return ImmGetContext(m_pDuiRichEdit->GetContainer()->GetHostHwnd());
+    return ImmGetContext(m_pRichEdit->GetContainer()->GetHostHwnd());
 }
 
-void CDuiTextHost::TxImmReleaseContext( HIMC himc )
+void STextHost::TxImmReleaseContext( HIMC himc )
 {
-    ImmReleaseContext(m_pDuiRichEdit->GetContainer()->GetHostHwnd(),himc);
+    ImmReleaseContext(m_pRichEdit->GetContainer()->GetHostHwnd(),himc);
 }
 
-HRESULT CDuiTextHost::TxGetSelectionBarWidth( LONG *plSelBarWidth )
+HRESULT STextHost::TxGetSelectionBarWidth( LONG *plSelBarWidth )
 {
     *plSelBarWidth=0;
     return S_OK;
 }
 
-BOOL CDuiTextHost::Init(SRichEdit* pDuiRichEdit)
+BOOL STextHost::Init(SRichEdit* pRichEdit)
 {
     IUnknown *pUnk;
     HRESULT hr;
 
-    m_pDuiRichEdit=pDuiRichEdit;
+    m_pRichEdit=pRichEdit;
 
     // Create Text Services component
-    if(FAILED(CDuiTextServiceHelper::getSingleton().CreateTextServices(NULL, this, &pUnk))) return FALSE;
+    if(FAILED(STextServiceHelper::getSingleton().CreateTextServices(NULL, this, &pUnk))) return FALSE;
 
     hr = pUnk->QueryInterface(IID_ITextServices,(void **)&pserv);
 
@@ -601,7 +601,7 @@ LRESULT SRichEdit::OnCreate( LPVOID )
     InitDefaultCharFormat(&m_cfDef);
     InitDefaultParaFormat(&m_pfDef);
 
-    m_pTxtHost=new CDuiTextHost;
+    m_pTxtHost=new STextHost;
     m_pTxtHost->AddRef();
     if(!m_pTxtHost->Init(this))
     {
@@ -625,7 +625,7 @@ LRESULT SRichEdit::OnCreate( LPVOID )
     dw &= ~IMF_AUTOFONT;
     SendSwndMessage(EM_SETLANGOPTIONS, 0, dw);
 
-    SetWindowText(DUI_CT2W(SWindow::GetWindowText()));
+    SetWindowText(S_CT2W(SWindow::GetWindowText()));
 
     //register droptarget
     OnEnableDragDrop( !(m_dwStyle&ES_READONLY) & m_fEnableDragDrop);
@@ -710,7 +710,7 @@ void SRichEdit::OnKillFocus()
     }
 }
 
-void SRichEdit::OnDuiTimer( char idEvent )
+void SRichEdit::OnTimer( char idEvent )
 {
     if(idEvent==TIMER_INVALIDATE)
     {
@@ -719,11 +719,11 @@ void SRichEdit::OnDuiTimer( char idEvent )
     }
     else
     {
-        __super::OnDuiTimer(idEvent);
+        __super::OnTimer(idEvent);
     }
 }
 
-void SRichEdit::OnDuiTimerEx( UINT_PTR idEvent )
+void SRichEdit::OnTimer2( UINT_PTR idEvent )
 {
     m_pTxtHost->GetTextService()->TxSendMessage(WM_TIMER,idEvent,0,NULL);
 }
@@ -1022,7 +1022,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
     //password char
     else if(strAttribName==L"passwordchar")
     {
-        SStringT strValueT=DUI_CW2T(strValue);
+        SStringT strValueT=S_CW2T(strValue);
         m_chPasswordChar=strValueT[0];
     }
     //align
@@ -1373,7 +1373,7 @@ void SRichEdit::OnEnableDragDrop( BOOL bEnable )
 {
     if(bEnable)
     {
-        CDuiRicheditDropTarget *pDropTarget=new CDuiRicheditDropTarget(m_pTxtHost->GetTextService());
+        SRicheditDropTarget *pDropTarget=new SRicheditDropTarget(m_pTxtHost->GetTextService());
         GetContainer()->RegisterDragDrop(m_hSWnd,pDropTarget);
         pDropTarget->Release();
     }else

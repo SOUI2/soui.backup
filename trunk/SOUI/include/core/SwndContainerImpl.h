@@ -1,8 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: CDuiFrame
-// Description: A DuiWindow Frame.
-//     Creator: Huang Jianxiong
-//     Version: 2011.9.1 - 1.0 - Create
+//  Class Name: SwndContainerImpl
 //////////////////////////////////////////////////////////////////////////
 
 #pragma  once
@@ -18,9 +15,9 @@ class SOUI_EXP SwndContainerImpl : public ISwndContainer
 public:
     SwndContainerImpl(SWindow *pHost);
 
-    virtual BOOL RegisterDragDrop(SWND hDuiWnd,IDropTarget *pDropTarget);
+    virtual BOOL RegisterDragDrop(SWND swnd,IDropTarget *pDropTarget);
 
-    virtual BOOL RevokeDragDrop(SWND hDuiWnd);
+    virtual BOOL RevokeDragDrop(SWND swnd);
 
     IDropTarget * GetDropTarget(){return &m_dropTarget;}
 
@@ -30,8 +27,8 @@ public:
 
     virtual BOOL OnReleaseSwndCapture();
 
-    virtual SWND OnSetSwndCapture(SWND hDuiWnd);
-    virtual void OnSetSwndFocus(SWND hDuiWnd);
+    virtual SWND OnSetSwndCapture(SWND swnd);
+    virtual void OnSetSwndFocus(SWND swnd);
 
     virtual SWND OnGetSwndCapture();
 

@@ -8,7 +8,7 @@ namespace SOUI
 #define TIMERID_DELAY1      2
 
 //////////////////////////////////////////////////////////////////////////
-//  CDuiSliderBar
+//  SSliderBar
 SSliderBar::SSliderBar()
     : m_bDrag(FALSE)
     , m_uHtPrev(-1)
@@ -126,8 +126,8 @@ CRect SSliderBar::GetPartRect(UINT uSBCode)
     if(uSBCode!=SC_THUMB && IsVertical())
     {//将横坐标，纵坐标交换
         
-        DUI_SWAP(rcRet.left,rcRet.top);
-        DUI_SWAP(rcRet.right,rcRet.bottom);
+        _TSWAP(rcRet.left,rcRet.top);
+        _TSWAP(rcRet.right,rcRet.bottom);
     }
     rcRet.OffsetRect(rcClient.TopLeft());
     return rcRet;
@@ -166,7 +166,7 @@ void SSliderBar::OnLButtonUp(UINT nFlags, CPoint point)
         m_bDrag   = FALSE;
         CRect rcThumb = GetPartRect(SC_THUMB);
         IRenderTarget *pRT  = GetRenderTarget(&rcThumb, OLEDC_PAINTBKGND);
-        m_pSkinThumb->Draw(pRT, rcThumb, IIF_STATE4(DuiWndState_Hover, 0, 1, 2, 3), m_byAlpha);
+        m_pSkinThumb->Draw(pRT, rcThumb, IIF_STATE4(WndState_Hover, 0, 1, 2, 3), m_byAlpha);
         ReleaseRenderTarget(pRT);
     }
     OnMouseMove(nFlags,point);
@@ -235,7 +235,7 @@ void SSliderBar::OnMouseMove(UINT nFlags, CPoint point)
         {
             CRect rcThumb = GetPartRect(SC_THUMB);
             IRenderTarget  * pRT  = GetRenderTarget(&rcThumb, OLEDC_PAINTBKGND);
-            m_pSkinThumb->Draw(pRT, rcThumb, IIF_STATE4(uHit==SC_THUMB?DuiWndState_Hover:DuiWndState_Normal, 0, 1, 2, 3), m_byAlpha);
+            m_pSkinThumb->Draw(pRT, rcThumb, IIF_STATE4(uHit==SC_THUMB?WndState_Hover:WndState_Normal, 0, 1, 2, 3), m_byAlpha);
             ReleaseRenderTarget(pRT);
             m_uHtPrev = uHit;
         }
@@ -248,7 +248,7 @@ void SSliderBar::OnMouseLeave()
     {
         CRect rcThumb = GetPartRect(SC_THUMB);
         IRenderTarget  * pRT  = GetRenderTarget(&rcThumb, OLEDC_PAINTBKGND);
-        m_pSkinThumb->Draw(pRT, rcThumb, IIF_STATE4(DuiWndState_Normal, 0, 1, 2, 3), m_byAlpha);
+        m_pSkinThumb->Draw(pRT, rcThumb, IIF_STATE4(WndState_Normal, 0, 1, 2, 3), m_byAlpha);
         ReleaseRenderTarget(pRT);
         m_uHtPrev=-1;
     }

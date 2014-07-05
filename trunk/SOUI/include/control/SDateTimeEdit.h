@@ -2,7 +2,7 @@
  * Copyright (C) 2014-2050 SOUI团队
  * All rights reserverd.
  * 
- * @file       DuiCmnCtrl.h
+ * @file       SDateTimeEdit.h
  * @brief      通用控件
  * @version    v1.0      
  * @author     soui      
@@ -20,7 +20,7 @@ namespace SOUI{
 
 //===========================================================================
 // Summary:
-//     CDuiMaskEdit is a CXTPEdit derived class. It allows text masking to be
+//     SMaskEdit is a CXTPEdit derived class. It allows text masking to be
 //     applied to the control to format it for special editing restrictions.
 //===========================================================================
 /**
@@ -184,7 +184,7 @@ protected:
     void  OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
   
     /**
-     * SMaskEdit::OnSetDuiFocus
+     * SMaskEdit::OnSetFocus
      * @brief    设置焦点
      * 
      * Describe  此函数是消息响应函数

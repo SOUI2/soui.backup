@@ -2,7 +2,7 @@
  * Copyright (C) 2014-2050 SOUI团队
  * All rights reserverd.
  * 
- * @file       DuiCmnCtrl.h
+ * @file       SCmnCtrl.h
  * @brief      通用控件
  * @version    v1.0      
  * @author     soui      
@@ -41,7 +41,7 @@ public:
         m_style.SetAttribute(L"align",L"left");
     }
     /**
-     * SStatic::DuiDrawText
+     * SStatic::SDrawText
      * @brief    绘制文本
      * @param    IRenderTarget *pRT -- 绘制设备句柄         
      * @param    LPCTSTR pszBuf -- 文本内容字符串         
@@ -95,7 +95,7 @@ protected:
      */
     virtual void OnInitFinished(pugi::xml_node xmlNode);
     /**
-     * SLink::DuiDrawText
+     * SLink::SDrawText
      * @brief    绘制文本
      * @param    IRenderTarget *pRT -- 绘制设备句柄         
      * @param    LPCTSTR pszBuf -- 文本内容字符串         
@@ -108,7 +108,7 @@ protected:
     virtual void DrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat);
 
     /**
-     * SLink::OnDuiSetCursor
+     * SLink::OnSetCursor
      * @brief    设置光标样式和位置
      * @param    CPoint &pt -- 设置光标位置
      * @return   返回值BOOL 成功--TRUE 失败--FALSE
@@ -165,14 +165,14 @@ protected:
         return TRUE;
     }
     /**
-     * SButton::OnGetDuiCode
+     * SButton::OnGetDlgCode
      * @brief    获得编码
      *
-     * Describe  返回宏定义DUIC_WANTCHARS代表需要WM_CHAR消息
+     * Describe  返回宏定义SC_WANTCHARS代表需要WM_CHAR消息
      */
     virtual UINT OnGetDlgCode()
     {
-        return DUIC_WANTCHARS;
+        return SC_WANTCHARS;
     }
 
     /**
@@ -317,7 +317,7 @@ public:
     /**
      * SImageWnd::GetSkin
      * @brief    获取资源
-     * @return   返回值CDuiSkinBase指针
+     * @return   返回值ISkinObj指针
      *
      * Describe  获取资源
      */
@@ -662,7 +662,7 @@ protected:
     }
 
     /**
-     * SCheckBox::OnGetDuiCode
+     * SCheckBox::OnGetDlgCode
      * @brief    返回对应消息码
      * @return   返回值 UINT 
      *
@@ -670,10 +670,10 @@ protected:
      */
     virtual UINT OnGetDlgCode()
     {
-        return DUIC_WANTCHARS;
+        return SC_WANTCHARS;
     }
     /**
-     * SCheckBox::DuiDrawFocus
+     * SCheckBox::DrawFocus
      * @brief    绘制获取焦点
      * @param    IRenderTarget *pRT  --  设备句柄
      *
@@ -775,7 +775,6 @@ public:
 
 protected:
 
-    // CDuiRadioBoxTheme m_theme;
     ISkinObj *m_pSkin;  /**< 皮肤资源 */
     ISkinObj *m_pFocusSkin; /**< 焦点皮肤资源 */
     /**
@@ -817,7 +816,7 @@ protected:
      */
     virtual BOOL NeedRedrawWhenStateChange();
     /**
-     * SRadioBox::DuiDrawFocus
+     * SRadioBox::DrawFocus
      * @brief    绘制焦点样式
      * @param    IRenderTarget *pRT -- 绘制设备
      *
@@ -825,7 +824,7 @@ protected:
      */
     virtual void DrawFocus(IRenderTarget *pRT);
     /**
-     * SRadioBox::OnGetDuiCode
+     * SRadioBox::OnGetDlgCode
      * @brief    获取消息编码
      * @return   返回编码值
      *

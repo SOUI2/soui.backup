@@ -21,20 +21,20 @@ namespace SOUI{
         }
     }
 
-    BOOL SDropTargetDispatcher::RegisterDragDrop( SWND hDuiWnd,IDropTarget *pDropTarget )
+    BOOL SDropTargetDispatcher::RegisterDragDrop( SWND swnd,IDropTarget *pDropTarget )
     {
-        if(m_mapDropTarget.Lookup(hDuiWnd)) return FALSE;
-        m_mapDropTarget[hDuiWnd]=pDropTarget;
+        if(m_mapDropTarget.Lookup(swnd)) return FALSE;
+        m_mapDropTarget[swnd]=pDropTarget;
         pDropTarget->AddRef();
         return TRUE;
     }
 
-    BOOL SDropTargetDispatcher::RevokeDragDrop( SWND hDuiWnd )
+    BOOL SDropTargetDispatcher::RevokeDragDrop( SWND swnd )
     {
-        DTMAP::CPair *pPair=m_mapDropTarget.Lookup(hDuiWnd);
+        DTMAP::CPair *pPair=m_mapDropTarget.Lookup(swnd);
         if(!pPair) return FALSE;
         pPair->m_value->Release();
-        m_mapDropTarget.RemoveKey(hDuiWnd);
+        m_mapDropTarget.RemoveKey(swnd);
         return TRUE;
     }
 
@@ -58,15 +58,15 @@ namespace SOUI{
 
     HRESULT STDMETHODCALLTYPE SDropTargetDispatcher::DragOver( /* [in] */ DWORD grfKeyState, /* [in] */ POINTL pt, /* [out][in] */ __RPC__inout DWORD *pdwEffect )
     {
-        SWND hDuiHover=m_pOwner->SwndFromPoint(PointL2FrameClient(pt),FALSE);
-        ASSERT(hDuiHover);
+        SWND hHover=m_pOwner->SwndFromPoint(PointL2FrameClient(pt),FALSE);
+        ASSERT(hHover);
         *pdwEffect=DROPEFFECT_NONE;
-        if(hDuiHover != m_hHover)
+        if(hHover != m_hHover)
         {
             DTMAP::CPair *pPair=m_mapDropTarget.Lookup(m_hHover);
             if(m_hHover && pPair)
                 pPair->m_value->DragLeave();
-            m_hHover=hDuiHover;
+            m_hHover=hHover;
             pPair=m_mapDropTarget.Lookup(m_hHover);
             if(pPair && m_hHover)
                 pPair->m_value->DragEnter(m_pDataObj,grfKeyState,pt,pdwEffect);

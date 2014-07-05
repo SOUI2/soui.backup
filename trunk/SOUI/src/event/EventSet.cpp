@@ -4,7 +4,7 @@
 namespace SOUI
 {
     //////////////////////////////////////////////////////////////////////////
-    // CDuiEvent
+    // SEvent
     bool SEvent::subscribe( const SlotFunctorBase& slot )
     {
         if(findSlotFunctor(slot) != -1) return false;
@@ -35,7 +35,7 @@ namespace SOUI
     }
 
     //////////////////////////////////////////////////////////////////////////
-    // CDuiEventSet
+    // SEventSet
     SEventSet::SEventSet(void):m_bMuted(FALSE)
     {
     }

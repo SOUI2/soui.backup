@@ -13,7 +13,7 @@ namespace SOUI
 #define TIMER_NEXTFRAME 2
 
 //////////////////////////////////////////////////////////////////////////
-// CDuiHostWnd
+// SHostWnd
 //////////////////////////////////////////////////////////////////////////
 SHostWnd::SHostWnd( LPCTSTR pszResName /*= NULL*/ )
 : SwndContainerImpl(this)
@@ -169,7 +169,7 @@ void SHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
     {
         SThreadActiveWndMgr::EnterPaintLock();
         CAutoRefPtr<IFont> defFont,oldFont;
-        defFont = SFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT);
+        defFont = SFontPool::getSingleton().GetFont(FF_DEFAULTFONT);
         m_memRT->SelectObject(defFont,(IRenderObj**)&oldFont);
         m_memRT->SetTextColor(RGBA(0,0,0,0xFF));
 
@@ -308,13 +308,13 @@ BOOL SHostWnd::OnSetCursor(HWND hwnd, UINT nHitTest, UINT message)
 void SHostWnd::OnTimer(UINT_PTR idEvent)
 {
     STimerID sTimerID((DWORD)idEvent);
-    if(sTimerID.bDuiTimer)
+    if(sTimerID.bSwndTimer)
     {
-        SWindow *pDuiWnd=SWindowMgr::GetWindow((SWND)sTimerID.Swnd);
-        if(pDuiWnd)
+        SWindow *pSwnd=SWindowMgr::GetWindow((SWND)sTimerID.Swnd);
+        if(pSwnd)
         {
-            if(pDuiWnd==this) OnSwndTimer(sTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
-            else pDuiWnd->SendSwndMessage(WM_TIMER,sTimerID.uTimerID,0);
+            if(pSwnd==this) OnSwndTimer(sTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
+            else pSwnd->SendSwndMessage(WM_TIMER,sTimerID.uTimerID,0);
         }
         else
         {
@@ -365,7 +365,7 @@ void SHostWnd::DrawCaret(CPoint pt)
 
 LRESULT SHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    DoFrameEvent(uMsg,wParam,lParam);    //将鼠标消息转发到DuiWindow处理
+    DoFrameEvent(uMsg,wParam,lParam);    //将鼠标消息转发到SWindow处理
 
     if(m_pTipCtrl && m_pTipCtrl->IsWindow())
     {
@@ -396,7 +396,7 @@ LRESULT SHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
     if(uMsg==WM_SYSKEYDOWN || uMsg==WM_SYSKEYUP)
     {
         SWindow *pFocus=SWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
-        if(!pFocus  || !(pFocus->OnGetDlgCode()&DUIC_WANTSYSKEY))
+        if(!pFocus  || !(pFocus->OnGetDlgCode()&SC_WANTSYSKEY))
         {
             SetMsgHandled(FALSE);
             return 0;
@@ -474,7 +474,7 @@ IRenderTarget * SHostWnd::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
     GETRENDERFACTORY->CreateRenderTarget(&pRT,rc.Width(),rc.Height());
     pRT->OffsetViewportOrg(-rc.left,-rc.top);
     
-    pRT->SelectObject(SFontPool::getSingleton().GetFont(DUIF_DEFAULTFONT));
+    pRT->SelectObject(SFontPool::getSingleton().GetFont(FF_DEFAULTFONT));
     pRT->SetTextColor(RGBA(0,0,0,0xFF));
 
     if(!(gdcFlags & OLEDC_NODRAW))
@@ -552,10 +552,10 @@ BOOL SHostWnd::OnReleaseSwndCapture()
     return TRUE;
 }
 
-SWND SHostWnd::OnSetSwndCapture(SWND hDuiWnd)
+SWND SHostWnd::OnSetSwndCapture(SWND swnd)
 {
     CSimpleWnd::SetCapture();
-    return __super::OnSetSwndCapture(hDuiWnd);
+    return __super::OnSetSwndCapture(swnd);
 }
 
 BOOL SHostWnd::IsTranslucent()
@@ -743,14 +743,14 @@ UINT SHostWnd::OnWndNcHitTest(CPoint point)
 
 
 //////////////////////////////////////////////////////////////////////////
-// IDuiRealWnd
+// IRealWndHandler
 HWND SHostWnd::OnRealWndCreate(SRealWnd *pRealWnd)
 {
     CRect rcWindow;
     UINT uCmdID=pRealWnd->GetID();
     pRealWnd->GetRect(&rcWindow);
 
-    const CDuiRealWndParam & paramRealWnd=pRealWnd->GetRealWndParam();
+    const SRealWndParam & paramRealWnd=pRealWnd->GetRealWndParam();
     return CreateWindowEx(paramRealWnd.m_dwExStyle,paramRealWnd.m_strClassName,paramRealWnd.m_strWindowName,paramRealWnd.m_dwStyle,
                           rcWindow.left,rcWindow.top,rcWindow.Width(),rcWindow.Height(),
                           m_hWnd,(HMENU)(ULONG_PTR)uCmdID,0,NULL);

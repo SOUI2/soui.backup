@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//   File Name: duistringpool.h
+//   File Name: sstringpool.h
 // Description: String Pool
 //     Creator: Zhang Xiaoxuan
 //     Version: 2009.5.13 - 1.0 - Create
@@ -47,8 +47,8 @@ BOOL SStringPool::Init( pugi::xml_node xmlNode )
 
     for (pugi::xml_node xmlStr=xmlNode.first_child(); xmlStr; xmlStr=xmlStr.next_sibling())
     {
-        SStringT strName=DUI_CW2T(xmlStr.name());
-        SStringT str=DUI_CW2T(xmlStr.attribute(L"value").value());
+        SStringT strName=S_CW2T(xmlStr.name());
+        SStringT str=S_CW2T(xmlStr.attribute(L"value").value());
         AddKeyObject(strName,str);
     }
     return TRUE;

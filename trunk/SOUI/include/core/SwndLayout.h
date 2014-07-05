@@ -91,7 +91,7 @@ namespace SOUI
     class SwndLayout
     {
     public:
-        static void StrPos2DuiWndPos(LPCWSTR pszPos,SWND_POSITION &dlgpos);
+        static void StrPos2SwndPos(LPCWSTR pszPos,SWND_POSITION &dlgpos);
 
         //************************************
         // Method:    PositionItem2Point ：将一个position_item解释为绝对坐标
@@ -99,7 +99,7 @@ namespace SOUI
         // Access:    protected 
         // Returns:   CPoint
         // Qualifier:
-        // Parameter: const DUIDLG_POSITION_ITEM & pos
+        // Parameter: const SWND_POSITION_ITEM & pos
         // Parameter: int nMin 父窗口的范围
         // Parameter: int nMax 父窗口的范围
         // Parameter: BOOL bX 计算X坐标
@@ -114,7 +114,7 @@ namespace SOUI
         // Qualifier:
         // Parameter: LPCWSTR pszPos
         // Parameter: BOOL bFirst2Pos:TRUE-计算pos的前面两个值
-        // Parameter: DUIDLG_POSITION_ITEM & pos
+        // Parameter: SWND_POSITION_ITEM & pos
         //************************************
         static LPCWSTR ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,SWND_POSITION_ITEM &pos);
 

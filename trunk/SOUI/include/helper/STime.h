@@ -1,5 +1,5 @@
-#ifndef DuiTime_h__
-#define DuiTime_h__
+#ifndef STime_h__
+#define STime_h__
 
 #pragma  once
 
@@ -427,4 +427,4 @@ inline CTime CTime::operator+( CTimeSpan span ) const throw()
 }//end of namespace SOUI
 
 
-#endif // DuiTime_h__
+#endif // STime_h__

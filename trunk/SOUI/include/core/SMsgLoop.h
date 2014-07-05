@@ -123,12 +123,12 @@ namespace SOUI
 
                 if(bRet == -1)
                 {
-                    DUITRACE(_T("::GetMessage returned -1 (error)"));
+                    STRACE(_T("::GetMessage returned -1 (error)"));
                     continue;   // error, don't process
                 }
                 else if(!bRet)
                 {
-                    DUITRACE(_T("CMessageLoop::Run - exiting"));
+                    STRACE(_T("SMessageLoop::Run - exiting"));
                     break;   // WM_QUIT, exit message loop
                 }
 

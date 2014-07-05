@@ -118,7 +118,7 @@ int SListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData/*=0*/)
     if(!pszXml && !m_xmlTempl) return -1;
     if(pszXml)
     {
-        SStringA strUtf8=DUI_CW2A(pszXml,CP_UTF8);
+        SStringA strUtf8=S_CW2A(pszXml,CP_UTF8);
         pugi::xml_document xmlDoc;
         if(!xmlDoc.load_buffer((LPCSTR)strUtf8,strUtf8.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return -1;
         return InsertItem(iItem,xmlDoc.first_child(),dwData);
@@ -137,10 +137,10 @@ BOOL SListBoxEx::SetCurSel(int iItem)
     m_iSelItem=iItem;
     if(nOldSel!=-1)
     {
-        m_arrItems[nOldSel]->ModifyItemState(0,DuiWndState_Check);
+        m_arrItems[nOldSel]->ModifyItemState(0,WndState_Check);
         if(IsVisible(TRUE)) RedrawItem(nOldSel);
     }
-    m_arrItems[m_iSelItem]->ModifyItemState(DuiWndState_Check,0);
+    m_arrItems[m_iSelItem]->ModifyItemState(WndState_Check,0);
     if(IsVisible(TRUE)) RedrawItem(m_iSelItem);
     return TRUE;
 }
@@ -200,7 +200,7 @@ BOOL SListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
     if(m_arrItems.GetCount()!=0) return FALSE;
     if(pszXmlTemplate)
     {
-        SStringA strUtf8=DUI_CT2A(pszXmlTemplate,CP_UTF8);
+        SStringA strUtf8=S_CT2A(pszXmlTemplate,CP_UTF8);
         pugi::xml_document xmlDoc;
         if(!xmlDoc.load_buffer((LPCSTR)strUtf8,strUtf8.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return FALSE;
         m_xmlTempl.append_copy(xmlDoc.first_child());
@@ -351,12 +351,12 @@ void SListBoxEx::NotifySelChange( int nOldSel,int nNewSel)
     m_iSelItem=nNewSel;
     if(nOldSel!=-1)
     {
-        m_arrItems[nOldSel]->ModifyItemState(0,DuiWndState_Check);
+        m_arrItems[nOldSel]->ModifyItemState(0,WndState_Check);
         RedrawItem(nOldSel);
     }
     if(m_iSelItem!=-1)
     {
-        m_arrItems[m_iSelItem]->ModifyItemState(DuiWndState_Check,0);
+        m_arrItems[m_iSelItem]->ModifyItemState(WndState_Check,0);
         RedrawItem(m_iSelItem);
     }
     
@@ -430,7 +430,7 @@ void SListBoxEx::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 UINT SListBoxEx::OnGetDlgCode()
 {
-    return DUIC_WANTALLKEYS;
+    return SC_WANTALLKEYS;
 }
 
 void SListBoxEx::OnDestroy()

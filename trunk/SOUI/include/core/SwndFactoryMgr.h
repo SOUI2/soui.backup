@@ -11,7 +11,7 @@ class SWindowFactory
 public:
     virtual ~SWindowFactory() {}
     virtual SWindow* NewWindow() = 0;
-    virtual LPCWSTR DuiWindowBaseName()=0;
+    virtual LPCWSTR SWindowBaseName()=0;
 
     virtual const SStringW & getWindowType()=0;
 
@@ -19,17 +19,17 @@ public:
 };
 
 template <typename T>
-class TplDuiWindowFactory : public SWindowFactory
+class TplSWindowFactory : public SWindowFactory
 {
 public:
     //! Default constructor.
-    TplDuiWindowFactory():m_strTypeName(T::GetClassName())
+    TplSWindowFactory():m_strTypeName(T::GetClassName())
     {
     }
 
-    LPCWSTR DuiWindowName(){return T::GetClassName();}
+//     LPCWSTR DuiWindowName(){return T::GetClassName();}
 
-    LPCWSTR DuiWindowBaseName(){return T::BaseClassName();}
+    LPCWSTR SWindowBaseName(){return T::BaseClassName();}
 
     // Implement WindowFactory interface
     SWindow* NewWindow()
@@ -44,7 +44,7 @@ public:
 
     virtual SWindowFactory* Clone() const 
     {
-        return new TplDuiWindowFactory();
+        return new TplSWindowFactory();
     }
 protected:
     SStringW m_strTypeName;
@@ -61,7 +61,6 @@ public:
 
     //************************************
     // Method:    RegisterFactory,注册APP自定义的窗口类
-    // FullName:  SOUI::DuiWindowFactoryManager::RegisterFactory
     // Access:    public
     // Returns:   bool
     // Qualifier:
@@ -81,7 +80,6 @@ public:
 
     //************************************
     // Method:    UnregisterFactor,反注册APP自定义的窗口类
-    // FullName:  SOUI::DuiWindowFactoryManager::UnregisterFactor
     // Access:    public
     // Returns:   bool
     // Qualifier:

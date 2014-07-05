@@ -9,22 +9,22 @@ namespace SOUI
 // State Define
 enum
 {
-    DuiWndState_Normal       = 0x00000000UL,
-    DuiWndState_Hover        = 0x00000001UL,
-    DuiWndState_PushDown     = 0x00000002UL,
-    DuiWndState_Check        = 0x00000004UL,
-    DuiWndState_Invisible    = 0x00000008UL,
-    DuiWndState_Disable      = 0x00000010UL,
+    WndState_Normal       = 0x00000000UL,
+    WndState_Hover        = 0x00000001UL,
+    WndState_PushDown     = 0x00000002UL,
+    WndState_Check        = 0x00000004UL,
+    WndState_Invisible    = 0x00000008UL,
+    WndState_Disable      = 0x00000010UL,
 };
 
 #define IIF_STATE2(the_state, normal_value, hover_value) \
-    (((the_state) & DuiWndState_Hover) ? (hover_value) : (normal_value))
+    (((the_state) & WndState_Hover) ? (hover_value) : (normal_value))
 
 #define IIF_STATE3(the_state, normal_value, hover_value, pushdown_value) \
-    (((the_state) & DuiWndState_PushDown) ? (pushdown_value) : IIF_STATE2(the_state, normal_value, hover_value))
+    (((the_state) & WndState_PushDown) ? (pushdown_value) : IIF_STATE2(the_state, normal_value, hover_value))
 
 #define IIF_STATE4(the_state, normal_value, hover_value, pushdown_value, disable_value) \
-    (((the_state) & DuiWndState_Disable) ? (disable_value) : IIF_STATE3(the_state, normal_value, hover_value, pushdown_value))
+    (((the_state) & WndState_Disable) ? (disable_value) : IIF_STATE3(the_state, normal_value, hover_value, pushdown_value))
 
 
 //////////////////////////////////////////////////////////////////////////

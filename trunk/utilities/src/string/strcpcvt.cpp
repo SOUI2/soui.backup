@@ -4,12 +4,12 @@
 namespace SOUI
 {
 
-SStringW CDuiStrCpCvt::CvtW2W( const SStringW &str,unsigned int cp/*=CP_ACP*/ )
+SStringW SStrCpCvt::CvtW2W( const SStringW &str,unsigned int cp/*=CP_ACP*/ )
 {
     return str;
 }
 
-SStringA CDuiStrCpCvt::CvtA2A( const SStringA & str,unsigned int cpFrom/*=CP_UTF8*/,unsigned int cpTo/*=CP_ACP*/ )
+SStringA SStrCpCvt::CvtA2A( const SStringA & str,unsigned int cpFrom/*=CP_UTF8*/,unsigned int cpTo/*=CP_ACP*/ )
 {
     if(cpTo==cpFrom)
         return str;
@@ -17,7 +17,7 @@ SStringA CDuiStrCpCvt::CvtA2A( const SStringA & str,unsigned int cpFrom/*=CP_UTF
     return CvtW2A(strw,cpTo);
 }
 
-SStringW CDuiStrCpCvt::CvtA2W( const SStringA & str,unsigned int cp/*=CP_ACP*/,unsigned int cp2/*=0*/ )
+SStringW SStrCpCvt::CvtA2W( const SStringA & str,unsigned int cp/*=CP_ACP*/,unsigned int cp2/*=0*/ )
 {
     UNREFERENCED_PARAMETER(cp2);
     wchar_t szBuf[1024];
@@ -41,7 +41,7 @@ SStringW CDuiStrCpCvt::CvtA2W( const SStringA & str,unsigned int cp/*=CP_ACP*/,u
     return L"";
 }
 
-SStringA CDuiStrCpCvt::CvtW2A( const SStringW & str,unsigned int cp/*=CP_ACP*/ )
+SStringA SStrCpCvt::CvtW2A( const SStringW & str,unsigned int cp/*=CP_ACP*/ )
 {
     char szBuf[1024];
     int nRet=WideCharToMultiByte(cp,0,str,str.GetLength(),szBuf,1024,NULL,NULL);

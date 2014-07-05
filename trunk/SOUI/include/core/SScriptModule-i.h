@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:     DUIScriptModule.h
+    filename:     ScriptModule-i.h
     created:    2/4/2013
     author:        Jiaxiong Huang
 

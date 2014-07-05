@@ -1,6 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: CDuiTreeCtrl
-// Description: CDuiTreeCtrl
+//  Class Name: STreeCtrl
 //     Creator: JinHui
 //     Version: 2012.12.16 - 1.1 - Create
 //////////////////////////////////////////////////////////////////////////
@@ -32,8 +31,8 @@ STreeCtrl::STreeCtrl()
 , m_bRightClickSel(FALSE)
 , m_uItemMask(0)
 , m_nItemOffset(0)
-, m_nItemHoverBtn(DuiTVIBtn_None)
-, m_nItemPushDownBtn(DuiTVIBtn_None)
+, m_nItemHoverBtn(STVIBtn_None)
+, m_nItemPushDownBtn(STVIBtn_None)
 {
     m_bClipClient = TRUE;
     m_evtSet.addEvent(EventTCSelChanging::EventID);
@@ -109,7 +108,7 @@ BOOL STreeCtrl::RemoveItem(HSTREEITEM hItem)
     if(m_bCheckBox && hParent && GetChildItem(hParent))
     {
         //原结点复选框选中，检查父结点是否由半选变不选    
-        if (nCheckBoxValue == DuiTVICheckBox_Checked )
+        if (nCheckBoxValue == STVICheckBox_Checked )
             CheckState(hParent, FALSE);    
         //原结点复选框未选中，检查父结点是否由半选变全选    
         else
@@ -253,7 +252,7 @@ BOOL STreeCtrl::GetCheckState(HSTREEITEM hItem) const
     if (!m_bCheckBox) return FALSE;
 
     LPTVITEM pItem=CSTree<LPTVITEM>::GetItem(hItem);
-    if (pItem->nCheckBoxValue == DuiTVICheckBox_Checked)
+    if (pItem->nCheckBoxValue == STVICheckBox_Checked)
         return TRUE;
 
     return FALSE;
@@ -263,7 +262,7 @@ BOOL STreeCtrl::SetCheckState(HSTREEITEM hItem, BOOL bCheck)
 {
     if (!m_bCheckBox) return FALSE;
 
-    int nCheck = bCheck ? DuiTVICheckBox_Checked : DuiTVICheckBox_UnChecked;   
+    int nCheck = bCheck ? STVICheckBox_Checked : STVICheckBox_UnChecked;   
 
     LPTVITEM pItem=CSTree<LPTVITEM>::GetItem(hItem);
     pItem->nCheckBoxValue = nCheck;
@@ -389,7 +388,7 @@ void STreeCtrl::LoadItemAttribute(pugi::xml_node xmlItem, LPTVITEM pItem)
     for (pugi::xml_attribute attr=xmlItem.first_attribute(); attr; attr=attr.next_attribute())
     {
         if ( !_wcsicmp(attr.name(), L"text"))
-            pItem->strText = DUI_CW2T(attr.value()); 
+            pItem->strText = S_CW2T(attr.value()); 
         else if ( !_wcsicmp(attr.name(), L"img"))
             pItem->nImage = attr.as_int(0);
         else if ( !_wcsicmp(attr.name(), L"selimg"))
@@ -500,7 +499,7 @@ BOOL STreeCtrl::CheckChildrenState(HSTREEITEM hItem, BOOL bCheck)
     {
         LPTVITEM pItem=CSTree<LPTVITEM>::GetItem(hChildItem);
 
-        int nCheckValue = bCheck ? DuiTVICheckBox_Checked : DuiTVICheckBox_UnChecked;
+        int nCheckValue = bCheck ? STVICheckBox_Checked : STVICheckBox_UnChecked;
         //当前结点不一致立即返回
         if (pItem->nCheckBoxValue != nCheckValue) 
             return FALSE;
@@ -522,13 +521,13 @@ void STreeCtrl::CheckState(HSTREEITEM hItem, BOOL bCheck, BOOL bCheckChild)
 
         if (bCheckChild && CheckChildrenState(hItem, bCheck))
         {
-            int nCheckValue = bCheck ? DuiTVICheckBox_Checked : DuiTVICheckBox_UnChecked;
+            int nCheckValue = bCheck ? STVICheckBox_Checked : STVICheckBox_UnChecked;
             pItem->nCheckBoxValue = nCheckValue;
             CheckState(GetParentItem(hItem), bCheck, TRUE);
         }
         else
         {
-            pItem->nCheckBoxValue = DuiTVICheckBox_PartChecked;
+            pItem->nCheckBoxValue = STVICheckBox_PartChecked;
             CheckState(GetParentItem(hItem),bCheck,  FALSE);
         }
     }        
@@ -547,7 +546,7 @@ void STreeCtrl::ItemLayout()
     //计算位置    
     if (m_pToggleSkin)
     {
-        m_uItemMask |= DuiTVIMask_Toggle;
+        m_uItemMask |= STVIMask_Toggle;
         sizeSkin = m_pToggleSkin->GetSkinSize();        
         m_rcToggle.SetRect( 
             nOffset, 
@@ -559,7 +558,7 @@ void STreeCtrl::ItemLayout()
 
     if (m_bCheckBox && m_pCheckSkin)
     {
-        m_uItemMask |= DuiTVIMask_CheckBox;
+        m_uItemMask |= STVIMask_CheckBox;
         sizeSkin = m_pCheckSkin->GetSkinSize();    
         m_rcCheckBox.SetRect( 
             nOffset, 
@@ -571,7 +570,7 @@ void STreeCtrl::ItemLayout()
 
     if (m_pIconSkin)
     {
-        m_uItemMask |= DuiTVIMask_Icon;
+        m_uItemMask |= STVIMask_Icon;
         sizeSkin = m_pIconSkin->GetSkinSize();
         m_rcIcon.SetRect( 
             nOffset, 
@@ -808,24 +807,24 @@ void STreeCtrl::DrawItem(IRenderTarget *pRT, CRect & rc, HSTREEITEM hItem)
     }
 
     if (pItem->bHasChildren &&
-        DuiTVIMask_Toggle == (m_uItemMask & DuiTVIMask_Toggle))
+        STVIMask_Toggle == (m_uItemMask & STVIMask_Toggle))
     {
         int nImage = IIF_STATE3(pItem->dwToggleState, 0, 1, 2);
         if (!pItem->bCollapsed) nImage += 3;
         m_pToggleSkin->Draw(pRT, m_rcToggle, nImage);
     }
     
-    if (DuiTVIMask_CheckBox == (m_uItemMask & DuiTVIMask_CheckBox))
+    if (STVIMask_CheckBox == (m_uItemMask & STVIMask_CheckBox))
     {
         int nImage = IIF_STATE3(pItem->dwCheckBoxState, 0, 1, 2);
-        if (pItem->nCheckBoxValue == DuiTVICheckBox_Checked)
+        if (pItem->nCheckBoxValue == STVICheckBox_Checked)
             nImage += 3;
-        else if (pItem->nCheckBoxValue == DuiTVICheckBox_PartChecked)
+        else if (pItem->nCheckBoxValue == STVICheckBox_PartChecked)
             nImage += 6;
         m_pCheckSkin->Draw(pRT, m_rcCheckBox, nImage);
     }
     
-    if (DuiTVIMask_Icon == (m_uItemMask & DuiTVIMask_Icon) &&
+    if (STVIMask_Icon == (m_uItemMask & STVIMask_Icon) &&
         (pItem->nSelectedImage != -1 || pItem->nImage != -1))
     {
         if (pItem->nSelectedImage != -1 && hItem == m_hSelItem)
@@ -847,15 +846,15 @@ void STreeCtrl::DrawItem(IRenderTarget *pRT, CRect & rc, HSTREEITEM hItem)
 int STreeCtrl::ItemHitTest(HSTREEITEM hItem,CPoint &pt) const
 {
     LPTVITEM pItem = CSTree<LPTVITEM>::GetItem(hItem);
-    int nHitTestBtn = DuiTVIBtn_None;
+    int nHitTestBtn = STVIBtn_None;
 
-    if (DuiTVIMask_Toggle == (m_uItemMask & DuiTVIMask_Toggle)
+    if (STVIMask_Toggle == (m_uItemMask & STVIMask_Toggle)
         && pItem->bHasChildren
         && m_rcToggle.PtInRect(pt))
-        nHitTestBtn = DuiTVIBtn_Toggle;
-    else if (DuiTVIMask_CheckBox == (m_uItemMask & DuiTVIMask_CheckBox)
+        nHitTestBtn = STVIBtn_Toggle;
+    else if (STVIMask_CheckBox == (m_uItemMask & STVIMask_CheckBox)
         && m_rcCheckBox.PtInRect(pt))
-        nHitTestBtn = DuiTVIBtn_CheckBox;
+        nHitTestBtn = STVIBtn_CheckBox;
     
     return nHitTestBtn;
 }
@@ -899,37 +898,37 @@ void STreeCtrl::ItemLButtonDown(HSTREEITEM hItem, UINT nFlags,CPoint pt)
     //清除原有pushdown按钮
     if (m_nItemPushDownBtn != nHitTestBtn)
     {
-        if (m_nItemPushDownBtn == DuiTVIBtn_Toggle && 
-            DuiWndState_PushDown == (pItem->dwToggleState & DuiWndState_PushDown))
+        if (m_nItemPushDownBtn == STVIBtn_Toggle && 
+            WndState_PushDown == (pItem->dwToggleState & WndState_PushDown))
         {
-            ModifyToggleState(hItem, 0, DuiWndState_PushDown);
+            ModifyToggleState(hItem, 0, WndState_PushDown);
         }
 
-        if (m_nItemPushDownBtn == DuiTVIBtn_CheckBox && 
-            DuiWndState_PushDown == (pItem->dwCheckBoxState & DuiWndState_PushDown))
+        if (m_nItemPushDownBtn == STVIBtn_CheckBox && 
+            WndState_PushDown == (pItem->dwCheckBoxState & WndState_PushDown))
         {
-            ModifyChekcBoxState(hItem, 0, DuiWndState_PushDown);
+            ModifyChekcBoxState(hItem, 0, WndState_PushDown);
         }
 
         m_nItemPushDownBtn = nHitTestBtn;
     }
 
     //置新pushdown按钮
-    if (m_nItemPushDownBtn != DuiTVIBtn_None)
+    if (m_nItemPushDownBtn != STVIBtn_None)
     {
-        if (m_nItemPushDownBtn == DuiTVIBtn_Toggle && 
-            DuiWndState_PushDown != (pItem->dwToggleState & DuiWndState_PushDown))
+        if (m_nItemPushDownBtn == STVIBtn_Toggle && 
+            WndState_PushDown != (pItem->dwToggleState & WndState_PushDown))
         {
-            ModifyToggleState(hItem, DuiWndState_PushDown, 0);
+            ModifyToggleState(hItem, WndState_PushDown, 0);
             Expand(pItem->hItem, TVE_TOGGLE);            
         }
 
-        if (m_nItemPushDownBtn == DuiTVIBtn_CheckBox && 
-            DuiWndState_PushDown != (pItem->dwCheckBoxState & DuiWndState_PushDown))
+        if (m_nItemPushDownBtn == STVIBtn_CheckBox && 
+            WndState_PushDown != (pItem->dwCheckBoxState & WndState_PushDown))
         {
             BOOL bCheck = 
-                pItem->nCheckBoxValue == DuiTVICheckBox_Checked ? FALSE : TRUE;
-            ModifyChekcBoxState(hItem, DuiWndState_PushDown, 0);
+                pItem->nCheckBoxValue == STVICheckBox_Checked ? FALSE : TRUE;
+            ModifyChekcBoxState(hItem, WndState_PushDown, 0);
             SetCheckState(pItem->hItem, bCheck);
         }
     }
@@ -939,32 +938,32 @@ void STreeCtrl::ItemLButtonUp(HSTREEITEM hItem, UINT nFlags,CPoint pt)
 {
     LPTVITEM pItem = CSTree<LPTVITEM>::GetItem(hItem);
 
-    if (m_nItemPushDownBtn != DuiTVIBtn_None)
+    if (m_nItemPushDownBtn != STVIBtn_None)
     {
-        if (m_nItemPushDownBtn == DuiTVIBtn_Toggle && 
-            DuiWndState_PushDown == (pItem->dwToggleState & DuiWndState_PushDown))
+        if (m_nItemPushDownBtn == STVIBtn_Toggle && 
+            WndState_PushDown == (pItem->dwToggleState & WndState_PushDown))
         {
-            ModifyToggleState(hItem, 0, DuiWndState_PushDown);
+            ModifyToggleState(hItem, 0, WndState_PushDown);
         }
 
-        if (m_nItemPushDownBtn == DuiTVIBtn_CheckBox && 
-            DuiWndState_PushDown == (pItem->dwCheckBoxState & DuiWndState_PushDown))
+        if (m_nItemPushDownBtn == STVIBtn_CheckBox && 
+            WndState_PushDown == (pItem->dwCheckBoxState & WndState_PushDown))
         {
-            ModifyChekcBoxState(hItem, 0, DuiWndState_PushDown);
+            ModifyChekcBoxState(hItem, 0, WndState_PushDown);
             EventTCCheckState evt(this);
             evt.hItem=hItem;
             evt.uCheckState = pItem->dwCheckBoxState;
             FireEvent(evt);
         }
 
-        m_nItemPushDownBtn = DuiTVIBtn_None;
+        m_nItemPushDownBtn = STVIBtn_None;
     }
 }
 
 void STreeCtrl::ItemLButtonDbClick(HSTREEITEM hItem, UINT nFlags,CPoint pt)
 {
     int nHitTestBtn = ItemHitTest(hItem, pt);
-    if (nHitTestBtn == DuiTVIBtn_CheckBox)
+    if (nHitTestBtn == STVIBtn_CheckBox)
         ItemLButtonDown(hItem, nFlags, pt);
 }
 
@@ -976,33 +975,33 @@ void STreeCtrl::ItemMouseMove(HSTREEITEM hItem, UINT nFlags,CPoint pt)
     
     if (nHitTestBtn != m_nItemHoverBtn)
     {
-        if (m_nItemHoverBtn == DuiTVIBtn_Toggle && 
-            DuiWndState_Hover == (pItem->dwToggleState & DuiWndState_Hover))
+        if (m_nItemHoverBtn == STVIBtn_Toggle && 
+            WndState_Hover == (pItem->dwToggleState & WndState_Hover))
         {
-            ModifyToggleState(hItem, 0, DuiWndState_Hover);
+            ModifyToggleState(hItem, 0, WndState_Hover);
         }
 
-        if (m_nItemHoverBtn == DuiTVIBtn_CheckBox && 
-            DuiWndState_Hover == (pItem->dwCheckBoxState & DuiWndState_Hover))
+        if (m_nItemHoverBtn == STVIBtn_CheckBox && 
+            WndState_Hover == (pItem->dwCheckBoxState & WndState_Hover))
         {
-            ModifyChekcBoxState(hItem, 0, DuiWndState_Hover);
+            ModifyChekcBoxState(hItem, 0, WndState_Hover);
         }
 
         m_nItemHoverBtn = nHitTestBtn;
     }
 
-    if (m_nItemHoverBtn != DuiTVIBtn_None)
+    if (m_nItemHoverBtn != STVIBtn_None)
     {
-        if (m_nItemHoverBtn == DuiTVIBtn_Toggle && 
-            DuiWndState_Hover != (pItem->dwToggleState & DuiWndState_Hover))
+        if (m_nItemHoverBtn == STVIBtn_Toggle && 
+            WndState_Hover != (pItem->dwToggleState & WndState_Hover))
         {
-            ModifyToggleState(hItem, DuiWndState_Hover, 0);
+            ModifyToggleState(hItem, WndState_Hover, 0);
         }
 
-        if (m_nItemHoverBtn == DuiTVIBtn_CheckBox && 
-            DuiWndState_Hover != (pItem->dwCheckBoxState & DuiWndState_Hover))
+        if (m_nItemHoverBtn == STVIBtn_CheckBox && 
+            WndState_Hover != (pItem->dwCheckBoxState & WndState_Hover))
         {
-            ModifyChekcBoxState(hItem, DuiWndState_Hover, 0);
+            ModifyChekcBoxState(hItem, WndState_Hover, 0);
         }
     }
 }
@@ -1011,21 +1010,21 @@ void STreeCtrl::ItemMouseLeave(HSTREEITEM hItem)
 {
     LPTVITEM pItem = CSTree<LPTVITEM>::GetItem(hItem);
 
-    if (m_nItemHoverBtn != DuiTVIBtn_None)
+    if (m_nItemHoverBtn != STVIBtn_None)
     {
-        if (m_nItemHoverBtn == DuiTVIBtn_Toggle &&
-            DuiWndState_Hover == (pItem->dwToggleState & DuiWndState_Hover))
+        if (m_nItemHoverBtn == STVIBtn_Toggle &&
+            WndState_Hover == (pItem->dwToggleState & WndState_Hover))
         {
-            ModifyToggleState(hItem, 0, DuiWndState_Hover);
+            ModifyToggleState(hItem, 0, WndState_Hover);
         }
 
-        if (m_nItemHoverBtn == DuiTVIBtn_CheckBox &&
-            DuiWndState_Hover == (pItem->dwCheckBoxState & DuiWndState_Hover))
+        if (m_nItemHoverBtn == STVIBtn_CheckBox &&
+            WndState_Hover == (pItem->dwCheckBoxState & WndState_Hover))
         {
-            ModifyChekcBoxState(hItem, 0, DuiWndState_Hover);
+            ModifyChekcBoxState(hItem, 0, WndState_Hover);
         }
 
-        m_nItemHoverBtn = DuiTVIBtn_None;
+        m_nItemHoverBtn = STVIBtn_None;
     }
 }
 

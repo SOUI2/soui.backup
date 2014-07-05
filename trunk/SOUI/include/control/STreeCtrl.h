@@ -1,7 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: CDuiTreeCtrl
-// Description: CDuiTreeCtrl
-//     Creator: JinHui
+//  Class Name: STreeCtrl
 //     Version: 2012.12.16 - 1.1 - Create
 //////////////////////////////////////////////////////////////////////////
 
@@ -13,21 +11,21 @@
 namespace SOUI{
 
 enum {
-    DuiTVIMask_Toggle         = 0x00000001UL, 
-    DuiTVIMask_CheckBox         = 0x00000002UL, 
-    DuiTVIMask_Icon             = 0x00000004UL
+    STVIMask_Toggle         = 0x00000001UL, 
+    STVIMask_CheckBox         = 0x00000002UL, 
+    STVIMask_Icon             = 0x00000004UL
 };
 
 enum {
-    DuiTVICheckBox_UnChecked,        //未选中
-    DuiTVICheckBox_Checked,            //选中
-    DuiTVICheckBox_PartChecked        //部分选中
+    STVICheckBox_UnChecked,        //未选中
+    STVICheckBox_Checked,            //选中
+    STVICheckBox_PartChecked        //部分选中
 };
 
 enum {
-    DuiTVIBtn_None,                    
-    DuiTVIBtn_Toggle, 
-    DuiTVIBtn_CheckBox
+    STVIBtn_None,                    
+    STVIBtn_Toggle, 
+    STVIBtn_CheckBox
 };
 
 typedef struct tagTVITEM {    
@@ -57,10 +55,10 @@ typedef struct tagTVITEM {
         bVisible = TRUE;
         bHasChildren = FALSE;
         nLevel = 0;
-        nCheckBoxValue = DuiTVICheckBox_UnChecked;
+        nCheckBoxValue = STVICheckBox_UnChecked;
         nItemWidth = 0;
-        dwToggleState = DuiWndState_Normal;
-        dwCheckBoxState = DuiWndState_Normal;
+        dwToggleState = WndState_Normal;
+        dwCheckBoxState = WndState_Normal;
     }
 
 } TVITEM, *LPTVITEM;

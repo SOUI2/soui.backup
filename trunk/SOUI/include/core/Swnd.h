@@ -1,9 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
 //   File Name: SWnd.h
-// Description: DuiWindow Definition
-//     Creator: Zhang Xiaoxuan
-//     Version: 2009.04.28 - 1.0 - Create
-//                2011.09.01 - 2.0 huang jianxiong
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -27,23 +23,24 @@ namespace SOUI
 enum {NormalShow=0,ParentShow=1};    //提供WM_SHOWWINDOW消息识别是父窗口显示还是要显示本窗口
 enum {NormalEnable=0,ParentEnable=1};    //提供WM_ENABLE消息识别是父窗口可用还是直接操作当前窗口
 
-#define DUIC_WANTARROWS     0x0001      /* Control wants arrow keys         */
-#define DUIC_WANTTAB        0x0002      /* Control wants tab keys           */
-#define DUIC_WANTRETURN     0x0004      /* Control wants return keys        */
-#define DUIC_WANTCHARS      0x0008      /* Want WM_CHAR messages            */
-#define DUIC_WANTALLKEYS    0xFFFF      /* Control wants all keys           */
-#define DUIC_WANTSYSKEY     0x80000000    /* System Key */
+#define SC_WANTARROWS     0x0001      /* Control wants arrow keys         */
+#define SC_WANTTAB        0x0002      /* Control wants tab keys           */
+#define SC_WANTRETURN     0x0004      /* Control wants return keys        */
+#define SC_WANTCHARS      0x0008      /* Want WM_CHAR messages            */
+#define SC_WANTALLKEYS    0xFFFF      /* Control wants all keys           */
+#define SC_WANTSYSKEY     0x80000000    /* System Key */
+
 class SOUI_EXP STimerID
 {
 public:
     DWORD    Swnd:24;        //窗口句柄,如果窗口句柄超过24位范围，则不能使用这种方式设置定时器
     DWORD    uTimerID:7;        //定时器ID，一个窗口最多支持128个定时器。
-    DWORD    bDuiTimer:1;    //区别通用定时器的标志，标志为1时，表示该定时器为DUI定时器
+    DWORD    bSwndTimer:1;    //区别通用定时器的标志，标志为1时，表示该定时器为SWND定时器
 
     STimerID(SWND hWnd,char id)
     {
         ASSERT(hWnd<0x00FFFFFF && id>=0);
-        bDuiTimer=1;
+        bSwndTimer=1;
         Swnd=hWnd;
         uTimerID=id;
     }
@@ -96,15 +93,15 @@ public:
 // SWindow
 //////////////////////////////////////////////////////////////////////////
 
-typedef enum tagGDUI_CODE
+typedef enum tagGW_CODE
 {
-    GDUI_FIRSTCHILD=0,
-    GDUI_LASTCHILD,
-    GDUI_PREVSIBLING,
-    GDUI_NEXTSIBLING,
-    GDUI_PARENT,
-    GDUI_OWNER,
-} GDUI_CODE;
+    GSW_FIRSTCHILD=0,
+    GSW_LASTCHILD,
+    GSW_PREVSIBLING,
+    GSW_NEXTSIBLING,
+    GSW_PARENT,
+    GSW_OWNER,
+} GW_CODE;
 
 class SOUI_EXP SWindow : public SObject
     , public SMsgHandleState
@@ -188,7 +185,7 @@ public:
 
     void TestMainThread();
 
-    // Send a message to DuiWindow
+    // Send a message to SWindow
     LRESULT SendSwndMessage(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0,BOOL *pbMsgHandled=NULL);
 
     PSWNDMSG GetCurMsg()
@@ -196,7 +193,7 @@ public:
         return m_pCurMsg;
     }
 
-    // Move DuiWindow to new place
+    // Move SWindow to new place
     void Move(LPRECT prect);
 
     void Move(int x,int y, int cx=-1,int cy=-1);
@@ -207,7 +204,7 @@ public:
     // Get tooltip Info
     virtual BOOL OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
 
-    // Get DuiWindow state
+    // Get SWindow state
     DWORD GetState(void);
 
     // Modify SWindow state
@@ -218,7 +215,7 @@ public:
 
     //************************************
     // Method:    SetTimer
-    // Function:  利用窗口定时器来设置一个ID为0-127的DUI定时器
+    // Function:  利用窗口定时器来设置一个ID为0-127的SWND定时器
     // Access:    public
     // Returns:   BOOL
     // Parameter: char id
@@ -238,25 +235,25 @@ public:
     void KillTimer(char id);
 
     //************************************
-    // Method:    SetTimerEx
+    // Method:    SetTimer2
     // Function:  利用函数定时器来模拟一个兼容窗口定时器
     // Access:    public
     // Returns:   BOOL
     // Parameter: UINT_PTR id
     // Parameter: UINT uElapse
-    // remark: 能够使用SetDuiTimer时尽量不用SetDuiTimerEx，在Kill时效率会比较低
+    // remark: 能够使用SetTimer时尽量不用SetTimer2，在Kill时效率会比较低
     //************************************
-    BOOL SetTimerEx(UINT_PTR id,UINT uElapse);
+    BOOL SetTimer2(UINT_PTR id,UINT uElapse);
 
     //************************************
-    // Method:    KillTimerEx
-    // Function:  删除一个SetDuiTimerEx设置的定时器
+    // Method:    KillTimer2
+    // Function:  删除一个KillTimer2设置的定时器
     // Access:    public
     // Returns:   void
     // Parameter: UINT_PTR id
     // remark: 需要枚举定时器列表
     //************************************
-    void KillTimerEx(UINT_PTR id);
+    void KillTimer2(UINT_PTR id);
 
     SWND GetSwnd();
 
@@ -441,24 +438,24 @@ public:
     BOOL RedrawRegion(IRenderTarget *pRT, IRegion *pRgn);
 
     //************************************
-    // Method:    GetDuiDC
-    // Function:  获取一个与DUI窗口相适应的内存DC
+    // Method:    GetRenderTarget
+    // Function:  获取一个与SWND窗口相适应的内存DC
     // Access:    public
     // Returns:   HDC
     // Parameter: LPRECT pRc - DC范围
     // Parameter: DWORD gdcFlags 同OLEDCFLAGS
     // Parameter: BOOL bClientDC 限制在client区域
-    // remark: 使用ReleaseDuiDC释放
+    // remark: 使用ReleaseRenderTarget释放
     //************************************
     IRenderTarget * GetRenderTarget(const LPRECT pRc=NULL,DWORD gdcFlags=0,BOOL bClientDC=TRUE);
 
 
     //************************************
-    // Method:    ReleaseDuiDC
-    // Function:  释放由GetDuiDC获取的DC
+    // Method:    ReleaseRenderTarget
+    // Function:  释放由GetRenderTarget获取的RT
     // Access:    public
     // Returns:   void
-    // Parameter: HDC hdc
+    // Parameter: IRenderTarget *pRT
     // remark:
     //************************************
     void ReleaseRenderTarget(IRenderTarget *pRT);
@@ -468,7 +465,7 @@ public:
     // Function:  画窗口的背景内容
     // Access:    public
     // Returns:   void
-    // Parameter: HDC hdc 目标DC
+    // Parameter: IRenderTarget *pRT 目标RT
     // Parameter: LPRECT pRc 目标位置
     // remark:    目标位置必须在窗口位置内
     //************************************
@@ -479,7 +476,7 @@ public:
     // Function:  画窗口的前景内容,不包括当前窗口的子窗口
     // Access:    public
     // Returns:   void
-    // Parameter: HDC hdc 目标DC
+    // Parameter: IRenderTarget *pRT 目标RT
     // Parameter: LPRECT pRc 目标位置
     // remark:    目标位置必须在窗口位置内
     //************************************
@@ -532,7 +529,7 @@ public:
     // Access:    public
     // Returns:   void
     // Parameter: CDCHandle & dc
-    // Parameter: SPainter & DuiDC
+    // Parameter: SPainter & painter
     // remark:
     //************************************
     void BeforePaint(IRenderTarget *pRT, SPainter &painter);
@@ -543,7 +540,7 @@ public:
     // Access:    public
     // Returns:   void
     // Parameter: CDCHandle & dc
-    // Parameter: SPainter & DuiDC
+    // Parameter: SPainter & painter
     // remark:
     //************************************
     void AfterPaint(IRenderTarget *pRT, SPainter &painter);

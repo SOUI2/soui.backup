@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: CDuiListBox
+//  Class Name: SListBox
 // Description: A DuiWindow Based ListBox Control.
 //     Creator: JinHui
 //     Version: 2012.12.18 - 1.0 - Create
@@ -263,7 +263,7 @@ void SListBox::LoadItemAttribute(pugi::xml_node xmlNode, LPLBITEM pItem)
     pItem->nImage=xmlNode.attribute(L"img").as_int(pItem->nImage);
     pItem->lParam=xmlNode.attribute(L"data").as_uint(pItem->lParam);
 
-    pItem->strText =  DUI_CW2T(xmlNode.text().get());
+    pItem->strText =  S_CW2T(xmlNode.text().get());
     BUILDSTRING(pItem->strText);
 }
 
@@ -512,7 +512,7 @@ void SListBox::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 UINT SListBox::OnGetDlgCode()
 {
-    return DUIC_WANTALLKEYS;
+    return SC_WANTALLKEYS;
 }
 
 void SListBox::OnDestroy()

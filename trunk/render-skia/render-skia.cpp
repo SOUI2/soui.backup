@@ -322,7 +322,7 @@ namespace SOUI
 		if(cchLen<0) cchLen= _tcslen(pszText);
 		if(cchLen==0) return S_FALSE;
 		
-		SStringW strW=DUI_CT2W(SStringT(pszText,cchLen));
+		SStringW strW=S_CT2W(SStringT(pszText,cchLen));
         SkPaint     txtPaint = m_curFont->GetPaint();
         txtPaint.setColor(m_curColor.toARGB());
         txtPaint.setTypeface(m_curFont->GetFont());
@@ -349,7 +349,7 @@ namespace SOUI
 	{
         SkPaint     txtPaint = m_curFont->GetPaint();
         txtPaint.setTypeface(m_curFont->GetFont());
-        SStringW strW=DUI_CT2W(SStringT(pszText,cchLen));
+        SStringW strW=S_CT2W(SStringT(pszText,cchLen));
         psz->cx = (int)txtPaint.measureText(strW,strW.GetLength()*sizeof(wchar_t));
         
         SkPaint::FontMetrics metrics;
@@ -456,7 +456,7 @@ namespace SOUI
 	HRESULT SRenderTarget_Skia::TextOut( int x, int y, LPCTSTR lpszString, int nCount,BYTE byAlpha )
 	{
 		if(nCount<0) nCount= _tcslen(lpszString);
-		SStringW strW=DUI_CT2W(lpszString,nCount);
+		SStringW strW=S_CT2W(lpszString,nCount);
         SkPaint     txtPaint = m_curFont->GetPaint();
         txtPaint.setColor(m_curColor.toARGB());
         txtPaint.setTypeface(m_curFont->GetFont());
@@ -810,7 +810,7 @@ namespace SOUI
 	{
 	    CAutoRefPtr<IImgDecoder> imgDecoder;
 	    GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgDecoder(&imgDecoder);
-		if(imgDecoder->DecodeFromFile(DUI_CT2W(pszFileName))==0) return S_FALSE;
+		if(imgDecoder->DecodeFromFile(S_CT2W(pszFileName))==0) return S_FALSE;
 		return ImgFromDecoder(imgDecoder);
 	}
 

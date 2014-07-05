@@ -2,7 +2,7 @@
  * Copyright (C) 2014-2050 SOUI团队
  * All rights reserverd.
  * 
- * @file       DuiCalendar.h
+ * @file       SCalendar.h
  * @brief      日历时间控件
  * @version    v1.0      
  * @author     soui      
@@ -217,7 +217,7 @@ namespace SOUI
     };
 
     /**
-     * @class      CDuiCalendar
+     * @class      SCalendar
      * @brief      日历类
      * 
      * Describe    此类是日历的核心类 大部分函数都是静态函数
@@ -228,7 +228,7 @@ namespace SOUI
         SOUI_CLASS_NAME(SCalendar, L"calendar")
         
         /**
-         * CCalendarCore::CDuiCalendar
+         * CCalendarCore::SCalendar
          * @brief    构造函数
          * @param    WORD iYear -- 年
          * @param    WORD iMonth -- 月
@@ -239,7 +239,7 @@ namespace SOUI
         SCalendar(WORD iYear, WORD iMonth, WORD iDay);
 
         /**
-         * CDuiCalendar::CDuiCalendar
+         * SCalendar::SCalendar
          * @brief    构造函数
          *
          * Describe  构造函数
@@ -248,7 +248,7 @@ namespace SOUI
 
     public:
         /**
-         * CDuiCalendar::GetYear
+         * SCalendar::GetYear
          * @brief    获得年
          *
          * Describe  获得年
@@ -256,7 +256,7 @@ namespace SOUI
         WORD GetYear(){return m_iYear;}
         
         /**
-         * CDuiCalendar::GetMonth
+         * SCalendar::GetMonth
          * @brief    获得月
          *
          * Describe  获得月
@@ -264,7 +264,7 @@ namespace SOUI
         WORD GetMonth(){return m_iMonth;}
 
         /**
-         * CDuiCalendar::GetDay
+         * SCalendar::GetDay
          * @brief    获得天
          *
          * Describe  获得天
@@ -272,7 +272,7 @@ namespace SOUI
         WORD GetDay(){return m_iDay;}
         
         /**
-         * CDuiCalendar::GetDate
+         * SCalendar::GetDate
          * @brief    获得日期
          * @param    WORD iYear -- 年
          * @param    WORD iMonth -- 月
@@ -283,7 +283,7 @@ namespace SOUI
         void GetDate(WORD &iYear, WORD &iMonth, WORD &iDay);
 
         /**
-         * CDuiCalendar::SetDate
+         * SCalendar::SetDate
          * @brief    设置日期
          * @param    WORD iYear -- 年
          * @param    WORD iMonth -- 月
@@ -295,7 +295,7 @@ namespace SOUI
 
     protected:
       /**
-       * CDuiCalendar::Init
+       * SCalendar::Init
        * @brief    初始化函数
        *
        * Describe  初始化函数
@@ -303,7 +303,7 @@ namespace SOUI
         void Init();
 
         /**
-         * CDuiCalendar::OnPaint
+         * SCalendar::OnPaint
          * @brief    绘画消息
          * @param    IRenderTarget *pRT -- 绘制设备句柄
          *
@@ -312,7 +312,7 @@ namespace SOUI
         void OnPaint(IRenderTarget *pRT);
         
         /**
-         * CDuiCalendar::OnLButtonDown
+         * SCalendar::OnLButtonDown
          * @brief    鼠标左键抬起事件
          * @param    UINT nFlags -- 标志
          * @param    CPoint point -- 鼠标坐标
@@ -322,7 +322,7 @@ namespace SOUI
         void OnLButtonDown(UINT nFlags, CPoint point);
         
         /**
-         * CDuiCalendar::OnMouseMove
+         * SCalendar::OnMouseMove
          * @brief    鼠标移动事件
          * @param    UINT nFlags -- 标志
          * @param    CPoint point -- 鼠标坐标
@@ -332,7 +332,7 @@ namespace SOUI
         void OnMouseMove(UINT nFlags,CPoint pt);
         
         /**
-         * CDuiCalendar::OnMouseLeave
+         * SCalendar::OnMouseLeave
          * @brief    鼠标离开事件
          *
          * Describe  此函数是消息响应函数
@@ -341,7 +341,7 @@ namespace SOUI
 
         
         /**
-         * CDuiCalendar::Load
+         * SCalendar::Load
          * @brief    加载xml
          * @param    pugi::xml_node xmlNode -- xml节点    
          *
@@ -350,7 +350,7 @@ namespace SOUI
         virtual BOOL InitFromXml(pugi::xml_node xmlNode);
     protected:
         /**
-         * CDuiCalendar::GetDayRect
+         * SCalendar::GetDayRect
          * @brief    获得日期的坐标
          * @param    WORD iDay  -- 日期         
          *
@@ -360,7 +360,7 @@ namespace SOUI
         WORD HitTest(CPoint  pt);
 
         /**
-         * CDuiCalendar::DrawTitle
+         * SCalendar::DrawTitle
          * @brief    绘制标题
          * @param    IRenderTarget *pRT -- 绘制设备句柄         
          *
@@ -369,7 +369,7 @@ namespace SOUI
         void DrawTitle(IRenderTarget *pRT);
         
         /**
-         * CDuiCalendar::DrawDate
+         * SCalendar::DrawDate
          * @brief    绘制日期
          * @param    IRenderTarget *pRT -- 绘制设备句柄         
          *
@@ -378,7 +378,7 @@ namespace SOUI
         void DrawDate(IRenderTarget *pRT);
 
         /**
-         * CDuiCalendar::DrawDay
+         * SCalendar::DrawDay
          * @brief    绘制日期--天
          * @param    IRenderTarget *pRT -- 绘制设备句柄         
          *
@@ -387,7 +387,7 @@ namespace SOUI
         void DrawDay(IRenderTarget *pRT,CRect & rcDay,WORD iDay );
         
         /**
-         * CDuiCalendar::RedrawDay
+         * SCalendar::RedrawDay
          * @brief    重新绘制日期--天
          * @param    CDCHandle dc -- 绘制设备句柄         
          *
@@ -396,7 +396,7 @@ namespace SOUI
         void RedrawDay(WORD iDay);
 
         /**
-         * CDuiCalendar::OnTodayClick
+         * SCalendar::OnTodayClick
          * @brief    在日期---天的单击事件
          *
          * Describe  在日期---天的单击事件

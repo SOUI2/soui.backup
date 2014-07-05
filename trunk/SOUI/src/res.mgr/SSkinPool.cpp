@@ -7,7 +7,7 @@ namespace SOUI
 {
 
 //////////////////////////////////////////////////////////////////////////
-// DuiSkinPool
+// SSkinPool
 
 SSkinPool::SSkinPool()
 {
@@ -59,7 +59,7 @@ int SSkinPool::LoadSkins(LPCWSTR strOwnerName)
             }
             else
             {
-                DUIRES_ASSERTW(FALSE,L"load skin error,type=%s,name=%s",strTypeName,strSkinName);
+                SRES_ASSERTW(FALSE,L"load skin error,type=%s,name=%s",strTypeName,strSkinName);
             }
         }
         xmlSkin=xmlSkin.next_sibling();
@@ -93,7 +93,7 @@ ISkinObj* SSkinPool::GetSkin(LPCWSTR strSkinName)
 {
     if(!HasKey(strSkinName))
     {
-        DUIRES_ASSERTA(FALSE,"GetSkin[%s] Failed!",strSkinName);
+        SRES_ASSERTA(FALSE,"GetSkin[%s] Failed!",strSkinName);
         return NULL;
     }
     return GetKeyObject(strSkinName);

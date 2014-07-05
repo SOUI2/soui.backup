@@ -16,7 +16,7 @@ namespace SOUI
         void RemoveResProvider(IResProvider * pResProvider);
         
         //////////////////////////////////////////////////////////////////////////
-        // DuiResProviderBase
+        // IResProvider
 
         virtual BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName)
         {

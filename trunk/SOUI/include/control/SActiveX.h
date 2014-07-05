@@ -26,7 +26,7 @@ namespace SOUI
         LRESULT OnKeyEvent(UINT uMsg,WPARAM wp,LPARAM lp);
         void OnShowWindow(BOOL bShow, UINT nStatus);
 
-        virtual UINT OnGetDlgCode(){return DUIC_WANTALLKEYS;}
+        virtual UINT OnGetDlgCode(){return SC_WANTALLKEYS;}
 
         virtual BOOL IsTabStop(){return TRUE;}
 
@@ -87,7 +87,7 @@ namespace SOUI
 
         SStringW m_strUrl;
 
-        CDuiComQIPtr<ShockwaveFlashObjects::IShockwaveFlash> flash_;
+        SComQIPtr<ShockwaveFlashObjects::IShockwaveFlash> flash_;
     };
 
 
@@ -118,7 +118,7 @@ namespace SOUI
         SOUI_ATTRS_END()
 
         SStringW m_strUrl;
-        CDuiComQIPtr<WMPLib::IWMPPlayer4> wmp_;
+        SComQIPtr<WMPLib::IWMPPlayer4> wmp_;
     };
 
 }

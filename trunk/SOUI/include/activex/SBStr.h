@@ -1,6 +1,6 @@
 
-#ifndef __DUIBSTR_H__
-#define __DUIBSTR_H__
+#ifndef __SBSTR_H__
+#define __SBSTR_H__
 
 #pragma once
 
@@ -16,17 +16,17 @@ namespace SOUI
 
         // Manages a BSTR string pointer.
         // The class interface is based on scoped_ptr.
-        class CDuiBStr
+        class sbstr
         {
         public:
-            CDuiBStr() : bstr_(NULL) {}
+            sbstr() : bstr_(NULL) {}
 
             // Constructor to create a new BSTR.
             //
             // NOTE: Do not pass a BSTR to this constructor expecting ownership to
             // be transferred - even though it compiles! ;-)
-            explicit CDuiBStr(const char16* non_bstr);
-            ~CDuiBStr();
+            explicit sbstr(const char16* non_bstr);
+            ~sbstr();
 
             // Give ScopedBstr ownership over an already allocated BSTR or NULL.
             // If you need to allocate a new BSTR instance, use |allocate| instead.
@@ -61,7 +61,7 @@ namespace SOUI
             void SetByteLen(size_t bytes);
 
             // Swap values of two ScopedBstr's.
-            void Swap(CDuiBStr& bstr2);
+            void Swap(sbstr& bstr2);
 
             // Retrieves the pointer address.
             // Used to receive BSTRs as out arguments (and take ownership).
@@ -86,11 +86,11 @@ namespace SOUI
         private:
             // Forbid comparison of ScopedBstr types.  You should never have the same
             // BSTR owned by two different scoped_ptrs.
-            bool operator==(const CDuiBStr& bstr2) const;
-            bool operator!=(const CDuiBStr& bstr2) const;
-            DISALLOW_COPY_AND_ASSIGN(CDuiBStr);
+            bool operator==(const sbstr& bstr2) const;
+            bool operator!=(const sbstr& bstr2) const;
+            DISALLOW_COPY_AND_ASSIGN(sbstr);
         };
 
 } //namespace base
 
-#endif //__DUIBSTR_H__
+#endif //__SBSTR_H__

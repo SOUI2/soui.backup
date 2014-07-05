@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: CDuiItemBox
+//  Class Name: SItemBox
 // Description: Items Container
 //     Creator: huangjianxiong
 //     Version: 2011.7.8 - 1.0 - Create
@@ -11,12 +11,12 @@
 namespace SOUI
 {
 
-CDuiItemBox::CDuiItemBox():m_nItemWid(100),m_nItemHei(100),m_nSepHei(5),m_nSepWid(5)
+SItemBox::SItemBox():m_nItemWid(100),m_nItemHei(100),m_nSepHei(5),m_nSepWid(5)
 {
 
 }
 
-CDuiWindow* CDuiItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsureVisible/*=FALSE*/)
+CDuiWindow* SItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsureVisible/*=FALSE*/)
 {
     CDuiStringA strXml=DUI_CW2A(pszXml,CP_UTF8);
 
@@ -47,7 +47,7 @@ CDuiWindow* CDuiItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsure
     return pPanel;
 }
 
-CDuiWindow* CDuiItemBox::InsertItem(pugi::xml_node xmlNode,int iItem/*=-1*/,BOOL bEnsureVisible/*=FALSE*/)
+CDuiWindow* SItemBox::InsertItem(pugi::xml_node xmlNode,int iItem/*=-1*/,BOOL bEnsureVisible/*=FALSE*/)
 {
     if (!xmlNode) return NULL;    
 
@@ -75,7 +75,7 @@ CDuiWindow* CDuiItemBox::InsertItem(pugi::xml_node xmlNode,int iItem/*=-1*/,BOOL
     return pPanel;
 }
 
-BOOL CDuiItemBox::RemoveItem(UINT iItem)
+BOOL SItemBox::RemoveItem(UINT iItem)
 {
     if(iItem>=GetItemCount()) return FALSE;
     CDuiWindow *pChild=m_pFirstChild;
@@ -92,7 +92,7 @@ BOOL CDuiItemBox::RemoveItem(UINT iItem)
     return TRUE;
 }
 
-BOOL CDuiItemBox::RemoveItem(CDuiWindow * pChild)
+BOOL SItemBox::RemoveItem(CDuiWindow * pChild)
 {
     if (DestroyChild(pChild))
     {
@@ -104,13 +104,13 @@ BOOL CDuiItemBox::RemoveItem(CDuiWindow * pChild)
     return FALSE;
 }
 
-void CDuiItemBox::BringWindowAfter(CDuiWindow * pChild, CDuiWindow * pInsertAfter)
+void SItemBox::BringWindowAfter(CDuiWindow * pChild, CDuiWindow * pInsertAfter)
 {
     RemoveChild(pChild);
     InsertChild(pChild, pInsertAfter);
 }
 
-BOOL CDuiItemBox::SetNewPosition(CDuiWindow * pChild, DWORD nPos, BOOL bEnsureVisible)
+BOOL SItemBox::SetNewPosition(CDuiWindow * pChild, DWORD nPos, BOOL bEnsureVisible)
 {
     if (pChild == NULL)
     {
@@ -169,7 +169,7 @@ BOOL CDuiItemBox::SetNewPosition(CDuiWindow * pChild, DWORD nPos, BOOL bEnsureVi
     return TRUE;
 }
 
-int CDuiItemBox::GetItemPos(CDuiWindow * lpCurItem)
+int SItemBox::GetItemPos(CDuiWindow * lpCurItem)
 {
     if (lpCurItem == NULL)
     {
@@ -186,29 +186,29 @@ int CDuiItemBox::GetItemPos(CDuiWindow * lpCurItem)
     return -1;
 }
 
-void CDuiItemBox::RemoveAllItems()
+void SItemBox::RemoveAllItems()
 {
     CDuiWindow::OnDestroy();
     UpdateScroll();
     NotifyInvalidate();
 }
 
-UINT CDuiItemBox::GetItemCount()
+UINT SItemBox::GetItemCount()
 {
     return GetChildrenCount();
 }
 
-void CDuiItemBox::PageUp()
+void SItemBox::PageUp()
 {
     OnScroll(TRUE,SB_PAGEUP,0);
 }
 
-void CDuiItemBox::PageDown()
+void SItemBox::PageDown()
 {
     OnScroll(TRUE,SB_PAGEDOWN,0);
 }
 
-void CDuiItemBox::EnsureVisible(CDuiWindow *pItem)
+void SItemBox::EnsureVisible(CDuiWindow *pItem)
 {
     if(!HasScrollBar(TRUE)) return;
     DUIASSERT(pItem);
@@ -226,7 +226,7 @@ void CDuiItemBox::EnsureVisible(CDuiWindow *pItem)
     SetScrollPos(TRUE,GetScrollPos(TRUE)+yOffset,TRUE);
 }
 
-void CDuiItemBox::UpdateScroll()
+void SItemBox::UpdateScroll()
 {
     CRect rcClient=m_rcWindow;
 
@@ -255,7 +255,7 @@ void CDuiItemBox::UpdateScroll()
     else SetViewOrigin(CPoint(0,GetScrollPos(TRUE)));
 }
 
-CRect CDuiItemBox::GetItemRect(int iItem)
+CRect SItemBox::GetItemRect(int iItem)
 {
     CRect rcClient=m_rcWindow;
 
@@ -279,7 +279,7 @@ CRect CDuiItemBox::GetItemRect(int iItem)
     return rcItem;
 }
 
-void CDuiItemBox::OnSize(UINT nType, CSize size)
+void SItemBox::OnSize(UINT nType, CSize size)
 {
     if(m_rcWindow.IsRectEmpty()) return;
 
@@ -289,7 +289,7 @@ void CDuiItemBox::OnSize(UINT nType, CSize size)
     ReLayout();
 }
 
-void CDuiItemBox::ReLayout()
+void SItemBox::ReLayout()
 {
     CRect rcItem;
     int iItem=0;
@@ -304,7 +304,7 @@ void CDuiItemBox::ReLayout()
     }
 }
 
-BOOL CDuiItemBox::OnScroll(BOOL bVertical,UINT uCode,int nPos)
+BOOL SItemBox::OnScroll(BOOL bVertical,UINT uCode,int nPos)
 {
     if(!__super::OnScroll(bVertical,uCode,nPos)) return FALSE;
 
@@ -313,13 +313,13 @@ BOOL CDuiItemBox::OnScroll(BOOL bVertical,UINT uCode,int nPos)
     return TRUE;
 }
 
-int CDuiItemBox::GetScrollLineSize(BOOL bVertical)
+int SItemBox::GetScrollLineSize(BOOL bVertical)
 {
     if(bVertical) return m_nItemHei+m_nSepHei;
     else return m_nItemWid+m_nSepWid;
 }
 
-BOOL CDuiItemBox::LoadChildren(pugi::xml_node xmlNode)
+BOOL SItemBox::LoadChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return FALSE;
     RemoveAllItems();

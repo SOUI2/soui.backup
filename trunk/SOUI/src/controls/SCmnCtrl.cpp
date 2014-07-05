@@ -149,11 +149,11 @@ void SLink::OnMouseMove( UINT nFlags,CPoint pt )
 {
     if(!m_rcText.PtInRect(pt))
     {
-        if(m_dwState&DuiWndState_Hover) OnMouseLeave();
+        if(m_dwState&WndState_Hover) OnMouseLeave();
     }
     else
     {
-        if(!(m_dwState&DuiWndState_Hover)) OnMouseHover(nFlags,pt);
+        if(!(m_dwState&WndState_Hover)) OnMouseHover(nFlags,pt);
     }
 }
 
@@ -190,7 +190,7 @@ void SButton::OnPaint(IRenderTarget *pRT)
     else
     {//在动画过程中
         BYTE byNewAlpha=(BYTE)(((UINT)m_byAlphaAni*m_byAlpha)>>8);
-        if(GetState()&DuiWndState_Hover)
+        if(GetState()&WndState_Hover)
         {
             //get hover
             m_pBgSkin->Draw(pRT, rcClient, 0, m_byAlpha);
@@ -211,7 +211,7 @@ void SButton::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     if(nChar==VK_SPACE || nChar==VK_RETURN)
     {
-        ModifyState(DuiWndState_PushDown,0,TRUE);
+        ModifyState(WndState_PushDown,0,TRUE);
     }else
     {
         SetMsgHandled(FALSE);
@@ -222,7 +222,7 @@ void SButton::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
     if(nChar==VK_SPACE || nChar==VK_RETURN)
     {
-        ModifyState(0,DuiWndState_PushDown,TRUE);
+        ModifyState(0,WndState_PushDown,TRUE);
         FireCommand();
     }else
     {
@@ -250,7 +250,7 @@ void SButton::OnDestroy()
 
 HRESULT SButton::OnAttrAccel( SStringW strAccel,BOOL bLoading )
 {
-    SStringT strAccelT=DUI_CW2T(strAccel);
+    SStringT strAccelT=S_CW2T(strAccel);
     m_accel=CAccelerator::TranslateAccelKey(strAccelT);
     if(m_accel)
     {
@@ -278,8 +278,8 @@ void SButton::OnStateChanged( DWORD dwOldState,DWORD dwNewState )
         return;
 
     if(m_bAnimate &&
-        ((dwOldState==DuiWndState_Normal && dwNewState==DuiWndState_Hover)
-        ||(dwOldState==DuiWndState_Hover && dwNewState==DuiWndState_Normal)))
+        ((dwOldState==WndState_Normal && dwNewState==WndState_Hover)
+        ||(dwOldState==WndState_Hover && dwNewState==WndState_Normal)))
     {//启动动画
         m_byAlphaAni=5;
         GetContainer()->RegisterTimelineHandler(this);
@@ -502,15 +502,15 @@ CSize SProgress::GetDesiredSize(LPRECT pRcContainer)
 
 void SProgress::OnPaint(IRenderTarget *pRT)
 {
-    SPainter DuiDC;
+    SPainter painter;
 
-    BeforePaint(pRT, DuiDC);
+    BeforePaint(pRT, painter);
 
     ASSERT(m_pSkinBg && m_pSkinPos);
     
     CRect rcClient;
     GetClient(&rcClient);
-    m_pSkinBg->Draw(pRT, rcClient, DuiWndState_Normal,m_byAlpha);
+    m_pSkinBg->Draw(pRT, rcClient, WndState_Normal,m_byAlpha);
     CRect rcValue=rcClient;
 
     if(IsVertical())
@@ -523,7 +523,7 @@ void SProgress::OnPaint(IRenderTarget *pRT)
     }
     if(m_nValue>m_nMinValue)
     {
-        m_pSkinPos->Draw(pRT, rcValue, DuiWndState_Normal,m_byAlpha);
+        m_pSkinPos->Draw(pRT, rcValue, WndState_Normal,m_byAlpha);
     }
 
 
@@ -533,7 +533,7 @@ void SProgress::OnPaint(IRenderTarget *pRT)
         strPercent.Format(_T("%d%%"), (int)((m_nValue-m_nMinValue) * 100/(m_nMaxValue-m_nMinValue)));
         pRT->DrawText(strPercent, strPercent.GetLength(), m_rcWindow, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
     }
-    AfterPaint(pRT, DuiDC);
+    AfterPaint(pRT, painter);
 }
 
 BOOL SProgress::SetValue(int dwValue)
@@ -662,24 +662,24 @@ UINT SCheckBox::_GetDrawState()
 
     if (m_pSkin)
     {
-        if (dwState & DuiWndState_Check)
+        if (dwState & WndState_Check)
         {
-            if (dwState & DuiWndState_Disable)
+            if (dwState & WndState_Disable)
                 uState = CBS_CHECKEDDISABLED;
-            else if (dwState & DuiWndState_PushDown)
+            else if (dwState & WndState_PushDown)
                 uState = CBS_CHECKEDPRESSED;
-            else if (dwState & DuiWndState_Hover)
+            else if (dwState & WndState_Hover)
                 uState = CBS_CHECKEDHOT;
             else
                 uState = CBS_CHECKEDNORMAL;
         }
         else
         {
-            if (dwState & DuiWndState_Disable)
+            if (dwState & WndState_Disable)
                 uState = CBS_UNCHECKEDDISABLED;
-            else if (dwState & DuiWndState_PushDown)
+            else if (dwState & WndState_PushDown)
                 uState = CBS_UNCHECKEDPRESSED;
-            else if (dwState & DuiWndState_Hover)
+            else if (dwState & WndState_Hover)
                 uState = CBS_UNCHECKEDHOT;
             else
                 uState = CBS_UNCHECKEDNORMAL;
@@ -700,9 +700,9 @@ void SCheckBox::OnLButtonDown(UINT nFlags, CPoint point)
 void SCheckBox::OnLButtonUp(UINT nFlags, CPoint point)
 {
     if (IsChecked())
-        ModifyState(0, DuiWndState_Check,TRUE);
+        ModifyState(0, WndState_Check,TRUE);
     else
-        ModifyState(DuiWndState_Check, 0,TRUE);
+        ModifyState(WndState_Check, 0,TRUE);
     __super::OnLButtonUp(nFlags,point);
 }
 
@@ -711,9 +711,9 @@ void SCheckBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     if(nChar==VK_SPACE)
     {
         if (IsChecked())
-            ModifyState(0, DuiWndState_Check,TRUE);
+            ModifyState(0, WndState_Check,TRUE);
         else
-            ModifyState(DuiWndState_Check, 0,TRUE);
+            ModifyState(WndState_Check, 0,TRUE);
 
         FireCommand();
     }
@@ -828,24 +828,24 @@ UINT SRadioBox::_GetDrawState()
     DWORD dwState = GetState();
     UINT uState = 0;
 
-    if (dwState & DuiWndState_Check)
+    if (dwState & WndState_Check)
     {
-        if (dwState & DuiWndState_Disable)
+        if (dwState & WndState_Disable)
             uState = RBS_CHECKEDDISABLED;
-        else if (dwState & DuiWndState_PushDown)
+        else if (dwState & WndState_PushDown)
             uState = RBS_CHECKEDPRESSED;
-        else if (dwState & DuiWndState_Hover)
+        else if (dwState & WndState_Hover)
             uState = RBS_CHECKEDHOT;
         else
             uState = RBS_CHECKEDNORMAL;
     }
     else
     {
-        if (dwState & DuiWndState_Disable)
+        if (dwState & WndState_Disable)
             uState = RBS_UNCHECKEDDISABLED;
-        else if (dwState & DuiWndState_PushDown)
+        else if (dwState & WndState_PushDown)
             uState = RBS_UNCHECKEDPRESSED;
-        else if (dwState & DuiWndState_Hover)
+        else if (dwState & WndState_Hover)
             uState = RBS_UNCHECKEDHOT;
         else
             uState = RBS_UNCHECKEDNORMAL;
@@ -878,7 +878,7 @@ SWindow * SRadioBox::GetSelectedSiblingInGroup()
 {
     SWindow *pParent=GetParent();
     ASSERT(pParent);
-    SWindow *pSibling=pParent->GetWindow(GDUI_FIRSTCHILD);
+    SWindow *pSibling=pParent->GetWindow(GSW_FIRSTCHILD);
     while(pSibling)
     {
         if(pSibling->IsClass(GetClassName()))
@@ -886,7 +886,7 @@ SWindow * SRadioBox::GetSelectedSiblingInGroup()
             SRadioBox * pRadio=(SRadioBox*)pSibling;
             if(pRadio->IsChecked()) return pRadio;
         }
-        pSibling=pSibling->GetWindow(GDUI_NEXTSIBLING);
+        pSibling=pSibling->GetWindow(GSW_NEXTSIBLING);
     }
     return this;
 }
@@ -913,8 +913,8 @@ void SToggle::OnPaint(IRenderTarget *pRT)
 {
     ASSERT(m_pSkin);
     DWORD nState=0;
-    if(GetState()&DuiWndState_Hover) nState=2;
-    else if(GetState()&DuiWndState_Check) nState=3;
+    if(GetState()&WndState_Hover) nState=2;
+    else if(GetState()&WndState_Check) nState=3;
     if(m_bToggled) nState+=3;
     m_pSkin->Draw(pRT,m_rcWindow,nState);
 }
@@ -942,9 +942,9 @@ SGroup::SGroup():m_nRound(GROUP_ROUNDCORNOR),m_crLine1(RGB(0xF0,0xF0,0xF0)),m_cr
 void SGroup::OnPaint(IRenderTarget *pRT)
 {
 
-    SPainter DuiDC;
+    SPainter painter;
 
-    BeforePaint(pRT, DuiDC);
+    BeforePaint(pRT, painter);
 
     CSize szFnt;
     pRT->MeasureText(m_strText, m_strText.GetLength(),&szFnt);
@@ -999,7 +999,7 @@ void SGroup::OnPaint(IRenderTarget *pRT)
         pRT->PopClip();
     }
 
-    AfterPaint(pRT, DuiDC);
+    AfterPaint(pRT, painter);
 }
 
 }//namespace SOUI

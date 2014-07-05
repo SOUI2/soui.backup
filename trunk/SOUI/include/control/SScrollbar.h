@@ -1,4 +1,4 @@
-// duiScrollBar.h : implementation file
+// SScrollBar.h : implementation file
 //////////////////////////////////////////////////////////////////////////
 #pragma once
 
@@ -8,7 +8,7 @@ namespace SOUI
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// CDuiScrollBar
+// SScrollBar
 class SOUI_EXP SScrollBar: public SWindow
 {
 // Construction
@@ -66,7 +66,7 @@ protected:
         MSG_WM_LBUTTONUP(OnLButtonUp)
         MSG_WM_MOUSEMOVE(OnMouseMove)
         MSG_WM_MOUSELEAVE(OnMouseLeave)
-        MSG_WM_DUITIMER(OnTimer)
+        MSG_WM_TIMER_EX(OnTimer)
         MSG_WM_PAINT_EX(OnPaint)
         MESSAGE_HANDLER_EX(SBM_SETSCROLLINFO,OnSetScrollInfo)
         MESSAGE_HANDLER_EX(SBM_GETSCROLLINFO,OnGetScrollInfo)

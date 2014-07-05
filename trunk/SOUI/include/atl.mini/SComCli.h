@@ -28,7 +28,7 @@ namespace SOUI
 // Smart Pointer helpers
 
 
-inline IUnknown* DuiComPtrAssign(IUnknown** pp, IUnknown* lp)
+inline IUnknown* SComPtrAssign(IUnknown** pp, IUnknown* lp)
 {
     if (pp == NULL)
         return NULL;
@@ -41,7 +41,7 @@ inline IUnknown* DuiComPtrAssign(IUnknown** pp, IUnknown* lp)
     return lp;
 }
 
-inline IUnknown* DuiComQIPtrAssign(IUnknown** pp, IUnknown* lp, REFIID riid)
+inline IUnknown* SComQIPtrAssign(IUnknown** pp, IUnknown* lp, REFIID riid)
 {
     if (pp == NULL)
         return NULL;
@@ -60,30 +60,30 @@ inline IUnknown* DuiComQIPtrAssign(IUnknown** pp, IUnknown* lp, REFIID riid)
 // COM Smart pointers
 
 template <class T>
-class _DuiNoAddRefReleaseOnCComPtr : public T
+class _SNoAddRefReleaseOnCComPtr : public T
 {
     private:
         STDMETHOD_(ULONG, AddRef)()=0;
         STDMETHOD_(ULONG, Release)()=0;
 };
 
-//CComPtrBase provides the basis for all other smart pointers
+//SComPtrBase provides the basis for all other smart pointers
 //The other smartpointers add their own constructors and operators
 template <class T>
-class CDuiComPtrBase
+class SComPtrBase
 {
 protected:
-    CDuiComPtrBase() throw()
+    SComPtrBase() throw()
     {
         p = NULL;
     }
-    CDuiComPtrBase( int nNull) throw()
+    SComPtrBase( int nNull) throw()
     {
         ASSERT(nNull == 0);
         (void)nNull;
         p = NULL;
     }
-    CDuiComPtrBase( T* lp) throw()
+    SComPtrBase( T* lp) throw()
     {
         p = lp;
         if (p != NULL)
@@ -91,7 +91,7 @@ protected:
     }
 public:
     typedef T _PtrClass;
-    ~CDuiComPtrBase() throw()
+    ~SComPtrBase() throw()
     {
         if (p)
             p->Release();
@@ -112,10 +112,10 @@ public:
         ASSERT(p==NULL);
         return &p;
     }
-    _DuiNoAddRefReleaseOnCComPtr<T>* operator->() const throw()
+    _SNoAddRefReleaseOnCComPtr<T>* operator->() const throw()
     {
         ASSERT(p!=NULL);
-        return (_DuiNoAddRefReleaseOnCComPtr<T>*)p;
+        return (_SNoAddRefReleaseOnCComPtr<T>*)p;
     }
     bool operator!() const throw()
     {
@@ -153,8 +153,8 @@ public:
         if (p == NULL || pOther == NULL)
             return false;    // One is NULL the other is not
 
-        CDuiComPtr<IUnknown> punk1;
-        CDuiComPtr<IUnknown> punk2;
+        SComPtr<IUnknown> punk1;
+        SComPtr<IUnknown> punk2;
         p->QueryInterface(__uuidof(IUnknown), (void**)&punk1);
         pOther->QueryInterface(__uuidof(IUnknown), (void**)&punk2);
         return punk1 == punk2;
@@ -207,47 +207,47 @@ public:
 };
 
 template <class T>
-class CDuiComPtr : public CDuiComPtrBase<T>
+class SComPtr : public SComPtrBase<T>
 {
 public:
-    CDuiComPtr() throw()
+    SComPtr() throw()
     {
     }
-    CDuiComPtr(int nNull) throw() :
-        CDuiComPtrBase<T>(nNull)
+    SComPtr(int nNull) throw() :
+        SComPtrBase<T>(nNull)
     {
     }
-    CDuiComPtr(T* lp) throw() :
-        CDuiComPtrBase<T>(lp)
+    SComPtr(T* lp) throw() :
+        SComPtrBase<T>(lp)
 
     {
     }
-    CDuiComPtr( const CDuiComPtr<T>& lp) throw() :
-        CDuiComPtrBase<T>(lp.p)
+    SComPtr( const SComPtr<T>& lp) throw() :
+        SComPtrBase<T>(lp.p)
     {
     }
     T* operator=( T* lp) throw()
     {
         if(*this!=lp)
         {
-            return static_cast<T*>(DuiComPtrAssign((IUnknown**)&p, lp));
+            return static_cast<T*>(SComPtrAssign((IUnknown**)&p, lp));
         }
         return *this;
     }
     template <typename Q>
-    T* operator=( const CDuiComPtr<Q>& lp) throw()
+    T* operator=( const SComPtr<Q>& lp) throw()
     {
         if( !IsEqualObject(lp) )
         {
-            return static_cast<T*>(DuiComQIPtrAssign((IUnknown**)&p, lp, __uuidof(T)));
+            return static_cast<T*>(SComQIPtrAssign((IUnknown**)&p, lp, __uuidof(T)));
         }
         return *this;
     }
-    T* operator=( const CDuiComPtr<T>& lp) throw()
+    T* operator=( const SComPtr<T>& lp) throw()
     {
         if(*this!=lp)
         {
-            return static_cast<T*>(DuiComPtrAssign((IUnknown**)&p, lp));
+            return static_cast<T*>(SComPtrAssign((IUnknown**)&p, lp));
         }
         return *this;
     }
@@ -255,33 +255,33 @@ public:
 
 //specialization for IDispatch
 template <>
-class CDuiComPtr<IDispatch> : public CDuiComPtrBase<IDispatch>
+class SComPtr<IDispatch> : public SComPtrBase<IDispatch>
 {
 public:
-    CDuiComPtr() throw()
+    SComPtr() throw()
     {
     }
-    CDuiComPtr(IDispatch* lp) throw() :
-        CDuiComPtrBase<IDispatch>(lp)
+    SComPtr(IDispatch* lp) throw() :
+        SComPtrBase<IDispatch>(lp)
     {
     }
-    CDuiComPtr(const CDuiComPtr<IDispatch>& lp) throw() :
-        CDuiComPtrBase<IDispatch>(lp.p)
+    SComPtr(const SComPtr<IDispatch>& lp) throw() :
+        SComPtrBase<IDispatch>(lp.p)
     {
     }
     IDispatch* operator=(IDispatch* lp) throw()
     {
         if(*this!=lp)
         {
-            return static_cast<IDispatch*>(DuiComPtrAssign((IUnknown**)&p, lp));
+            return static_cast<IDispatch*>(SComPtrAssign((IUnknown**)&p, lp));
         }
         return *this;
     }
-    IDispatch* operator=(const CDuiComPtr<IDispatch>& lp) throw()
+    IDispatch* operator=(const SComPtr<IDispatch>& lp) throw()
     {
         if(*this!=lp)
         {
-            return static_cast<IDispatch*>(DuiComPtrAssign((IUnknown**)&p, lp.p));
+            return static_cast<IDispatch*>(SComPtrAssign((IUnknown**)&p, lp.p));
         }
         return *this;
     }
@@ -425,21 +425,21 @@ public:
 };
 
 template <class T, const IID* piid = &__uuidof(T)>
-class CDuiComQIPtr : public CDuiComPtr<T>
+class SComQIPtr : public SComPtr<T>
 {
 public:
-    CDuiComQIPtr() throw()
+    SComQIPtr() throw()
     {
     }
-    CDuiComQIPtr( T* lp) throw() :
-        CDuiComPtr<T>(lp)
+    SComQIPtr( T* lp) throw() :
+        SComPtr<T>(lp)
     {
     }
-    CDuiComQIPtr( const CDuiComQIPtr<T,piid>& lp) throw() :
-        CDuiComPtr<T>(lp.p)
+    SComQIPtr( const SComQIPtr<T,piid>& lp) throw() :
+        SComPtr<T>(lp.p)
     {
     }
-    CDuiComQIPtr( IUnknown* lp) throw()
+    SComQIPtr( IUnknown* lp) throw()
     {
         if (lp != NULL)
             lp->QueryInterface(*piid, (void **)&p);
@@ -448,15 +448,15 @@ public:
     {
         if(*this!=lp)
         {
-            return static_cast<T*>(DuiComPtrAssign((IUnknown**)&p, lp));
+            return static_cast<T*>(SComPtrAssign((IUnknown**)&p, lp));
         }
         return *this;
     }
-    T* operator=( const CDuiComQIPtr<T,piid>& lp) throw()
+    T* operator=( const SComQIPtr<T,piid>& lp) throw()
     {
         if(*this!=lp)
         {
-            return static_cast<T*>(DuiComPtrAssign((IUnknown**)&p, lp.p));
+            return static_cast<T*>(SComPtrAssign((IUnknown**)&p, lp.p));
         }
         return *this;
     }
@@ -464,7 +464,7 @@ public:
     {
         if(*this!=lp)
         {
-            return static_cast<T*>(DuiComQIPtrAssign((IUnknown**)&p, lp, *piid));
+            return static_cast<T*>(SComQIPtrAssign((IUnknown**)&p, lp, *piid));
         }
         return *this;
     }
@@ -472,20 +472,20 @@ public:
 
 //Specialization to make it work
 template<>
-class CDuiComQIPtr<IUnknown, &IID_IUnknown> : public CDuiComPtr<IUnknown>
+class SComQIPtr<IUnknown, &IID_IUnknown> : public SComPtr<IUnknown>
 {
 public:
-    CDuiComQIPtr() throw()
+    SComQIPtr() throw()
     {
     }
-    CDuiComQIPtr( IUnknown* lp) throw()
+    SComQIPtr( IUnknown* lp) throw()
     {
         //Actually do a QI to get identity
         if (lp != NULL)
             lp->QueryInterface(__uuidof(IUnknown), (void **)&p);
     }
-    CDuiComQIPtr( const CDuiComQIPtr<IUnknown,&IID_IUnknown>& lp) throw() :
-        CDuiComPtr<IUnknown>(lp.p)
+    SComQIPtr( const SComQIPtr<IUnknown,&IID_IUnknown>& lp) throw() :
+        SComPtr<IUnknown>(lp.p)
     {
     }
     IUnknown* operator=( IUnknown* lp) throw()
@@ -493,22 +493,22 @@ public:
         if(*this!=lp)
         {
             //Actually do a QI to get identity
-            return DuiComQIPtrAssign((IUnknown**)&p, lp, __uuidof(IUnknown));
+            return SComQIPtrAssign((IUnknown**)&p, lp, __uuidof(IUnknown));
         }
         return *this;
     }
 
-    IUnknown* operator=( const CDuiComQIPtr<IUnknown,&IID_IUnknown>& lp) throw()
+    IUnknown* operator=( const SComQIPtr<IUnknown,&IID_IUnknown>& lp) throw()
     {
         if(*this!=lp)
         {
-            return DuiComPtrAssign((IUnknown**)&p, lp.p);
+            return SComPtrAssign((IUnknown**)&p, lp.p);
         }
         return *this;
     }
 };
 
-typedef CDuiComQIPtr<IDispatch, &__uuidof(IDispatch)> CComDispatchDriver;
+typedef SComQIPtr<IDispatch, &__uuidof(IDispatch)> CComDispatchDriver;
 
 }    // namespace SOUI
 #pragma pack(pop)
@@ -516,4 +516,4 @@ typedef CDuiComQIPtr<IDispatch, &__uuidof(IDispatch)> CComDispatchDriver;
 #pragma warning (pop)    
 
 
-#endif    // __DUICOMCLI_H__
+#endif    // __SCOMCLI_H__

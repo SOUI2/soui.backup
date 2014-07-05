@@ -1,9 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//   File Name: DuiSkinPool
-// Description: DuiWindow Skin Definition
-//     Creator: ZhangXiaoxuan
-//     Version: 2009.4.22 - 1.0 - Create
-//                2011.6.18   1.1   huangjianxiong
+//   File Name: SSkinPool
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -14,7 +10,7 @@ namespace SOUI
 {
 
 //////////////////////////////////////////////////////////////////////////
-// CDuiSkinImgList
+// SSkinImgList
 SSkinImgList::SSkinImgList()
 :m_nStates(1)
 ,m_bTile(FALSE)
@@ -62,7 +58,7 @@ void SSkinImgList::Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE b
 
 
 //////////////////////////////////////////////////////////////////////////
-//  CDuiSkinImgFrame
+//  SSkinImgFrame
 SSkinImgFrame::SSkinImgFrame()
     : m_rcMargin(0,0,0,0)
 {
@@ -82,7 +78,7 @@ void SSkinImgFrame::Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE 
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CDuiSkinButton
+// SSkinButton
 SSkinButton::SSkinButton()
     : m_crBorder(RGB(0x70, 0x70, 0x70))
 {
@@ -128,7 +124,7 @@ void SSkinButton::SetColors( COLORREF crUp[4],COLORREF crDown[4],COLORREF crBord
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CDuiSkinGradation
+// SSkinGradation
 SSkinGradation::SSkinGradation()
     : m_bVert(TRUE)
     , m_crFrom(CR_INVALID)
@@ -142,7 +138,7 @@ void SSkinGradation::Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYT
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CDuiScrollbarSkin
+// SScrollbarSkin
 SSkinScrollbar::SSkinScrollbar():m_nMargin(0),m_bHasGripper(FALSE),m_bHasInactive(FALSE)
 {
     

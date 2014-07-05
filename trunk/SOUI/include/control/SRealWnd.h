@@ -12,11 +12,11 @@
 namespace SOUI
 {
 
-class SOUI_EXP CDuiRealWndParam
+class SOUI_EXP SRealWndParam
 {
 public:
-    CDuiRealWndParam();
-    ~CDuiRealWndParam();
+    SRealWndParam();
+    ~SRealWndParam();
 
     SStringT m_strClassName,m_strWindowName;
     DWORD     m_dwStyle,m_dwExStyle;
@@ -35,7 +35,7 @@ public:
 
     const HWND GetRealHwnd(BOOL bAutoCreate=TRUE);
 
-    const CDuiRealWndParam & GetRealWndParam()
+    const SRealWndParam & GetRealWndParam()
     {
         return m_realwndParam;
     }
@@ -81,14 +81,14 @@ protected:
     MSG_WM_SHOWWINDOW(OnShowWindow)
     SOUI_MSG_MAP_END()
 
-    CDuiRealWndParam    m_realwndParam;
+    SRealWndParam    m_realwndParam;
     BOOL    m_bInit;
 
     HWND     m_hRealWnd;
     LPVOID    m_lpData;
 };
 
-interface SOUI_EXP IDuiRealWndHandler
+interface SOUI_EXP IRealWndHandler
 {
     virtual HWND OnRealWndCreate(SRealWnd *pRealWnd)=NULL;
     virtual BOOL OnRealWndInit(SRealWnd *pRealWnd)=NULL;

@@ -17,14 +17,14 @@ namespace SOUI
 
 template<> SApplication* SSingleton<SApplication>::ms_Singleton = 0;
 
-SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName/*=_T("DuiHostWnd")*/)
+SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName)
     :m_hInst(hInst)
     ,m_pScriptModule(NULL)
     ,m_RenderFactory(pRendFactory)
 {
     createSingletons();
     CSimpleWndHelper::Init(hInst,pszHostClassName);
-    CDuiTextServiceHelper::Init();
+    STextServiceHelper::Init();
     SRicheditMenuDef::Init();
     m_lstMsgLoop.AddTail(&m_msgLoop);
 }
@@ -33,7 +33,7 @@ SApplication::~SApplication(void)
 {
     destroySingletons();
     CSimpleWndHelper::Destroy();
-    CDuiTextServiceHelper::Destroy();
+    STextServiceHelper::Destroy();
     SRicheditMenuDef::Destroy();
 }
 
@@ -41,7 +41,7 @@ void SApplication::createSingletons()
 {
     new SThreadActiveWndMgr();
     new SWindowMgr();
-    new STimerEx();
+    new STimer2();
     new SFontPool(m_RenderFactory);
     new SImgPool();
 }
@@ -50,7 +50,7 @@ void SApplication::destroySingletons()
 {
     delete SImgPool::getSingletonPtr();
     delete SFontPool::getSingletonPtr();
-    delete STimerEx::getSingletonPtr();
+    delete STimer2::getSingletonPtr();
     delete SThreadActiveWndMgr::getSingletonPtr();
     delete SWindowMgr::getSingletonPtr();
 }
@@ -75,7 +75,7 @@ BOOL SApplication::Init( LPCTSTR pszName ,LPCTSTR pszType)
     if(xmlFont)
     {
         int nSize=xmlFont.attribute(L"size").as_int(12);
-        SFontPool::getSingleton().SetDefaultFont(DUI_CW2T(xmlFont.attribute(L"face").value()),nSize);
+        SFontPool::getSingleton().SetDefaultFont(S_CW2T(xmlFont.attribute(L"face").value()),nSize);
     }
 
     SPools::Init(root);
@@ -91,7 +91,7 @@ BOOL SApplication::SetMsgBoxTemplate( LPCTSTR pszXmlName,LPCTSTR pszType)
     return SMessageBoxImpl::SetMsgTemplate(uiRoot);
 }
 
-BOOL SApplication::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType/*=DUIRES_XML_TYPE*/ )
+BOOL SApplication::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType )
 {
 
     DWORD dwSize=GETRESPROVIDER->GetRawBufferSize(pszType,pszXmlName);
@@ -102,7 +102,7 @@ BOOL SApplication::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlNam
     GETRESPROVIDER->GetRawBuffer(pszType,pszXmlName,strXml,dwSize);
 
     pugi::xml_parse_result result= xmlDoc.load_buffer(strXml,strXml.size(),pugi::parse_default,pugi::encoding_utf8);
-    DUIRES_ASSERTW(result,L"parse xml error! xmlName=%s,desc=%s,offset=%d",pszXmlName,result.description(),result.offset);
+    SRES_ASSERTW(result,L"parse xml error! xmlName=%s,desc=%s,offset=%d",pszXmlName,result.description(),result.offset);
     return result;
 
 }

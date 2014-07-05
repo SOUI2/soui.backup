@@ -54,7 +54,7 @@ BOOL SListCtrl::CreateChildren(pugi::xml_node xmlNode)
         return FALSE;
     m_pHeader=NULL;
     
-    SWindow *pChild=GetWindow(GDUI_FIRSTCHILD);
+    SWindow *pChild=GetWindow(GSW_FIRSTCHILD);
     while(pChild)
     {
         if(pChild->IsClass(SHeaderCtrl::GetClassName()))
@@ -62,7 +62,7 @@ BOOL SListCtrl::CreateChildren(pugi::xml_node xmlNode)
             m_pHeader=(SHeaderCtrl*)pChild;
             break;
         }
-        pChild=pChild->GetWindow(GDUI_NEXTSIBLING);
+        pChild=pChild->GetWindow(GSW_NEXTSIBLING);
     }
     if(!m_pHeader) return FALSE;
         
@@ -124,15 +124,15 @@ BOOL SListCtrl::SetSubItem(int nItem, int nSubItem, const DXLVSUBITEM* plv)
     if (nItem>=GetItemCount() || nSubItem>=GetColumnCount())
         return FALSE;
     DXLVSUBITEM & lvsi_dst=m_arrItems[nItem].arSubItems->GetAt(nSubItem);
-    if(plv->mask & DUI_LVIF_TEXT)
+    if(plv->mask & S_LVIF_TEXT)
     {
         if(lvsi_dst.strText) free(lvsi_dst.strText);
         lvsi_dst.strText=_tcsdup(plv->strText);
         lvsi_dst.cchTextMax=_tcslen(plv->strText);
     }
-    if(plv->mask&DUI_LVIF_IMAGE)
+    if(plv->mask&S_LVIF_IMAGE)
         lvsi_dst.nImage=plv->nImage;
-    if(plv->mask&DUI_LVIF_INDENT)
+    if(plv->mask&S_LVIF_INDENT)
         lvsi_dst.nIndent=plv->nIndent;
     RedrawItem(nItem);
     return TRUE;
@@ -144,13 +144,13 @@ BOOL SListCtrl::GetSubItem(int nItem, int nSubItem, DXLVSUBITEM* plv)
         return FALSE;
 
     const DXLVSUBITEM & lvsi_src=m_arrItems[nItem].arSubItems->GetAt(nSubItem);
-    if(plv->mask & DUI_LVIF_TEXT)
+    if(plv->mask & S_LVIF_TEXT)
     {
         _tcscpy_s(plv->strText,plv->cchTextMax,lvsi_src.strText);
     }
-    if(plv->mask&DUI_LVIF_IMAGE)
+    if(plv->mask&S_LVIF_IMAGE)
         plv->nImage=lvsi_src.nImage;
-    if(plv->mask&DUI_LVIF_INDENT)
+    if(plv->mask&S_LVIF_INDENT)
         plv->nIndent=lvsi_src.nIndent;
     return TRUE;
 }
@@ -241,12 +241,12 @@ void SListCtrl::UpdateScrollBar()
 
     CSize size = rcClient.Size();
     //  关闭滚动条
-    m_wBarVisible = DUISB_NULL;
+    m_wBarVisible = SSB_NULL;
 
     if (size.cy<szView.cy || (size.cy<szView.cy+m_nSbWid && size.cx<szView.cx))
     {
         //  需要纵向滚动条
-        m_wBarVisible |= DUISB_VERT;
+        m_wBarVisible |= SSB_VERT;
         m_siVer.nMin  = 0;
         m_siVer.nMax  = szView.cy-1;
         m_siVer.nPage = GetCountPerPage(FALSE)*m_nItemHeight;
@@ -254,7 +254,7 @@ void SListCtrl::UpdateScrollBar()
         if (size.cx-m_nSbWid < szView.cx)
         {
             //  需要横向滚动条
-            m_wBarVisible |= DUISB_HORZ;
+            m_wBarVisible |= SSB_HORZ;
 
             m_siHoz.nMin  = 0;
             m_siHoz.nMax  = szView.cx-1;
@@ -282,7 +282,7 @@ void SListCtrl::UpdateScrollBar()
         if (size.cx < szView.cx)
         {
             //  需要横向滚动条
-            m_wBarVisible |= DUISB_HORZ;
+            m_wBarVisible |= SSB_HORZ;
             m_siHoz.nMin  = 0;
             m_siHoz.nMax  = szView.cx-1;
             m_siHoz.nPage = size.cx;
@@ -392,10 +392,10 @@ CRect SListCtrl::GetItemRect(int nItem, int nSubItem)
 
     for (int nCol = 0; nCol < GetColumnCount(); nCol++)
     {
-        DUIHDITEM hdi;
-        memset(&hdi, 0, sizeof(DUIHDITEM));
+        SHDITEM hdi;
+        memset(&hdi, 0, sizeof(SHDITEM));
 
-        hdi.mask = DUIHDI_WIDTH|DUIHDI_ORDER;
+        hdi.mask = SHDI_WIDTH|SHDI_ORDER;
 
         m_pHeader->GetItem(nCol, &hdi);
         rcItem.left  = rcItem.right;
@@ -555,8 +555,8 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
     {
         CRect rcVisiblePart;
 
-        DUIHDITEM hdi;
-        hdi.mask=DUIHDI_WIDTH|DUIHDI_ORDER;
+        SHDITEM hdi;
+        hdi.mask=SHDI_WIDTH|SHDI_ORDER;
         m_pHeader->GetItem(nCol,&hdi);
         rcCol.left=rcCol.right;
         rcCol.right = rcCol.left + hdi.cx;

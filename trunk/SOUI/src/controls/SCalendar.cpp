@@ -2,8 +2,8 @@
  * Copyright (C) 2014-2050 SOUI团队
  * All rights reserverd.
  *
- * @file       DuiCalendar.cpp
- * @brief      CCalendarCore以及CDuiCalendar类源文件
+ * @file       SCalendar.cpp
+ * @brief      SCalendarCore以及SCalendar类源文件
  * @version    v1.0
  * @author     soui
  * @date       2014-05-25
@@ -388,11 +388,11 @@ void SCalendar::RedrawDay(WORD iDay )
 
 void SCalendar::OnPaint(IRenderTarget * pRT) 
 {
-    SPainter duidc;
-    BeforePaint(pRT,duidc);
+    SPainter painter;
+    BeforePaint(pRT,painter);
     DrawTitle(pRT);
     DrawDate(pRT);
-    AfterPaint(pRT,duidc);
+    AfterPaint(pRT,painter);
 }
 
 void SCalendar::GetDate(WORD &iYear, WORD &iMonth, WORD &iDay) 

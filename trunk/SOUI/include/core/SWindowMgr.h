@@ -18,14 +18,14 @@ public:
 
     ~SWindowMgr();
 
-    // Get DuiWindow pointer from handle
-    static SWindow* GetWindow(SWND hDuiWnd);
+    // Get SWindow pointer from handle
+    static SWindow* GetWindow(SWND swnd);
 
-    // Specify a handle to a DuiWindow
-    static SWND NewWindow(SWindow *pDuiWnd);
+    // Specify a handle to a SWindow
+    static SWND NewWindow(SWindow *pWnd);
 
-    // Destroy DuiWindow
-    static BOOL DestroyWindow(SWND hDuiWnd);
+    // Destroy SWindow
+    static BOOL DestroyWindow(SWND swnd);
 protected:
 
     CRITICAL_SECTION m_lockWndMap;

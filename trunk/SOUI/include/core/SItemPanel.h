@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////
-//  Class Name: CDuiItemPanel
-// Description: A Framework wrapping frame to be used in a duiwindow.
+//  Class Name: SItemPanel
+// Description: A Framework wrapping frame to be used in a swindow.
 //     Creator: Huang Jianxiong
 //     Version: 2011.10.20 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
@@ -45,7 +45,7 @@ public:
 
     virtual BOOL OnReleaseSwndCapture();
 
-    virtual SWND OnSetSwndCapture(SWND hDuiWNd);
+    virtual SWND OnSetSwndCapture(SWND swnd);
     virtual HWND GetHostHwnd();
 
     virtual BOOL IsTranslucent();

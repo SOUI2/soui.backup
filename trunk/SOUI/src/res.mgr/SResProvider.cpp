@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-//   File Name: duiresprovider.cpp
+//   File Name: sresprovider.cpp
 // Description: Resource Provider
 //////////////////////////////////////////////////////////////////////////
 #include "souistd.h"
@@ -220,12 +220,12 @@ BOOL SResProviderFiles::Init( LPCTSTR pszPath )
     pugi::xml_node xmlType=xmlResource.first_child();
     while(xmlType)
     {
-        SStringT strType=DUI_CW2T(xmlType.name());
+        SStringT strType=S_CW2T(xmlType.name());
         pugi::xml_node xmlFile=xmlType.child(L"file");
         while(xmlFile)
         {
-            SResID id(strType,DUI_CW2T(xmlFile.attribute(L"name").value()));
-            SStringT strFile=DUI_CW2T(xmlFile.attribute(L"path").value());
+            SResID id(strType,S_CW2T(xmlFile.attribute(L"name").value()));
+            SStringT strFile=S_CW2T(xmlFile.attribute(L"path").value());
             if(!m_strPath.IsEmpty()) strFile.Format(_T("%s\\%s"),(LPCTSTR)m_strPath,(LPCTSTR)strFile);
             m_mapFiles[id]=strFile;
             xmlFile=xmlFile.next_sibling(L"file");

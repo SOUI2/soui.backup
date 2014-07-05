@@ -6,7 +6,7 @@ namespace SOUI
 {
 
 // CComboEdit
-CComboEdit::CComboEdit( CDuiComboBoxBase *pOwner )
+CComboEdit::CComboEdit( SComboBoxBase *pOwner )
 {
     SetOwner(pOwner);
 }
@@ -47,13 +47,13 @@ BOOL CComboEdit::FireEvent(EventArgs & evt)
 
 
 //////////////////////////////////////////////////////////////////////////
-// CDuiComboBox
-CDuiComboBoxBase::CDuiComboBoxBase(void)
+// SComboBoxBase
+SComboBoxBase::SComboBoxBase(void)
 :m_pSkinBtn(GETSKIN(L"comboboxbtn"))
 ,m_pEdit(NULL)
 ,m_bDropdown(TRUE)
 ,m_nDropHeight(200)
-,m_dwBtnState(DuiWndState_Normal)
+,m_dwBtnState(WndState_Normal)
 ,m_iAnimTime(200)
 ,m_pDropDownWnd(NULL)
 ,m_iInitSel(-1)
@@ -66,12 +66,12 @@ CDuiComboBoxBase::CDuiComboBoxBase(void)
     m_evtSet.addEvent(EventRENotify::EventID);
 }
 
-CDuiComboBoxBase::~CDuiComboBoxBase(void)
+SComboBoxBase::~SComboBoxBase(void)
 {
 }
 
 
-BOOL CDuiComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
+BOOL SComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
 {
     ASSERT(m_pSkinBtn);
     //创建edit对象
@@ -95,21 +95,21 @@ BOOL CDuiComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
 }
 
 
-void CDuiComboBoxBase::GetDropBtnRect(LPRECT prc)
+void SComboBoxBase::GetDropBtnRect(LPRECT prc)
 {
     SIZE szBtn=m_pSkinBtn->GetSkinSize();
     GetClient(prc);
     prc->left=prc->right-szBtn.cx;
 }
 
-void CDuiComboBoxBase::GetTextRect( LPRECT pRect )
+void SComboBoxBase::GetTextRect( LPRECT pRect )
 {
     GetClient(pRect);
     SIZE szBtn=m_pSkinBtn->GetSkinSize();
     pRect->right-=szBtn.cx;
 }
 
-void CDuiComboBoxBase::OnPaint(IRenderTarget * pRT )
+void SComboBoxBase::OnPaint(IRenderTarget * pRT )
 {
     SPainter painter;
 
@@ -129,55 +129,55 @@ void CDuiComboBoxBase::OnPaint(IRenderTarget * pRT )
     AfterPaint(pRT, painter);
     CRect rcBtn;
     GetDropBtnRect(&rcBtn);
-    m_pSkinBtn->Draw(pRT,rcBtn,IIF_STATE3(m_dwBtnState,DuiWndState_Normal,DuiWndState_Hover,DuiWndState_PushDown));
+    m_pSkinBtn->Draw(pRT,rcBtn,IIF_STATE3(m_dwBtnState,WndState_Normal,WndState_Hover,WndState_PushDown));
 }
 
-void CDuiComboBoxBase::OnLButtonDown( UINT nFlags,CPoint pt )
+void SComboBoxBase::OnLButtonDown( UINT nFlags,CPoint pt )
 {
     SetFocus();
     DropDown();
 }
 
-void CDuiComboBoxBase::OnMouseMove( UINT nFlags,CPoint pt )
+void SComboBoxBase::OnMouseMove( UINT nFlags,CPoint pt )
 {
-    if(m_dwBtnState==DuiWndState_PushDown) return;
+    if(m_dwBtnState==WndState_PushDown) return;
 
     __super::OnMouseHover(nFlags,pt);
     CRect rcBtn;
     GetDropBtnRect(&rcBtn);
     if(rcBtn.PtInRect(pt))
     {
-        m_dwBtnState=DuiWndState_Hover;
+        m_dwBtnState=WndState_Hover;
         InvalidateRect(rcBtn);
-    }else if(m_dwBtnState==DuiWndState_Hover)
+    }else if(m_dwBtnState==WndState_Hover)
     {
-        m_dwBtnState=DuiWndState_Normal;
+        m_dwBtnState=WndState_Normal;
         InvalidateRect(rcBtn);
     }
 }
 
-void CDuiComboBoxBase::OnMouseLeave()
+void SComboBoxBase::OnMouseLeave()
 {
-    if(m_dwBtnState==DuiWndState_PushDown) return;
+    if(m_dwBtnState==WndState_PushDown) return;
 
-    if(GetState()&DuiWndState_Hover) 
+    if(GetState()&WndState_Hover) 
         __super::OnMouseLeave();
-    if(m_dwBtnState==DuiWndState_Hover)
+    if(m_dwBtnState==WndState_Hover)
     {
-        m_dwBtnState=DuiWndState_Normal;
+        m_dwBtnState=WndState_Normal;
         CRect rcBtn;
         GetDropBtnRect(&rcBtn);
         InvalidateRect(rcBtn);
     }
 }
 
-void CDuiComboBoxBase::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
+void SComboBoxBase::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
 {    
     if ( nChar == VK_DOWN)
         DropDown();
 }
 
-void CDuiComboBoxBase::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+void SComboBoxBase::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     if (!m_bDropdown)
     {
@@ -188,12 +188,12 @@ void CDuiComboBoxBase::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     }
 }
 
-UINT CDuiComboBoxBase::OnGetDlgCode()
+UINT SComboBoxBase::OnGetDlgCode()
 {        
-    return DUIC_WANTARROWS;
+    return SC_WANTARROWS;
 }
 
-BOOL CDuiComboBoxBase::IsTabStop()
+BOOL SComboBoxBase::IsTabStop()
 {
     if (m_bDropdown && m_bTabStop)
         return TRUE;
@@ -201,22 +201,22 @@ BOOL CDuiComboBoxBase::IsTabStop()
 }
 
 
-SWindow* CDuiComboBoxBase::GetDropDownOwner()
+SWindow* SComboBoxBase::GetDropDownOwner()
 {
     return this;
 }
 
 
-void CDuiComboBoxBase::OnDropDown( SDropDownWnd *pDropDown )
+void SComboBoxBase::OnDropDown( SDropDownWnd *pDropDown )
 {
-    m_dwBtnState=DuiWndState_PushDown;
+    m_dwBtnState=WndState_PushDown;
     CRect rcBtn;
     GetDropBtnRect(&rcBtn);
     InvalidateRect(rcBtn);
     ((CSimpleWnd*)pDropDown)->SetCapture();
 }
 
-void CDuiComboBoxBase::OnCloseUp(SDropDownWnd *pDropDown,UINT uCode)
+void SComboBoxBase::OnCloseUp(SDropDownWnd *pDropDown,UINT uCode)
 {
     if (!m_bDropdown && m_pEdit)
     {
@@ -224,12 +224,12 @@ void CDuiComboBoxBase::OnCloseUp(SDropDownWnd *pDropDown,UINT uCode)
         m_pEdit->SetSel(MAKELONG(0,-1));
     }
 
-    m_dwBtnState = DuiWndState_Normal;
+    m_dwBtnState = WndState_Normal;
     m_pDropDownWnd=NULL;
     CRect rcBtn;
     GetDropBtnRect(&rcBtn);
     InvalidateRect(rcBtn);
-    ModifyState(0,DuiWndState_Hover,TRUE);
+    ModifyState(0,WndState_Hover,TRUE);
     CPoint pt;
     GetCursorPos(&pt);
     ScreenToClient(GetContainer()->GetHostHwnd(),&pt);
@@ -242,7 +242,7 @@ void CDuiComboBoxBase::OnCloseUp(SDropDownWnd *pDropDown,UINT uCode)
 
 }
 
-BOOL CDuiComboBoxBase::CalcPopupRect( int nHeight,CRect & rcPopup )
+BOOL SComboBoxBase::CalcPopupRect( int nHeight,CRect & rcPopup )
 {
     CRect rcWnd;
     GetRect(&rcWnd);
@@ -274,9 +274,9 @@ BOOL CDuiComboBoxBase::CalcPopupRect( int nHeight,CRect & rcPopup )
 }
 
 
-void CDuiComboBoxBase::DropDown()
+void SComboBoxBase::DropDown()
 {
-    if(m_dwBtnState==DuiWndState_PushDown) return;
+    if(m_dwBtnState==WndState_PushDown) return;
 
     if(!m_pDropDownWnd)
     {
@@ -288,7 +288,7 @@ void CDuiComboBoxBase::DropDown()
     }
 }
 
-void CDuiComboBoxBase::CloseUp()
+void SComboBoxBase::CloseUp()
 {
     if(m_pDropDownWnd)
     {
@@ -296,13 +296,13 @@ void CDuiComboBoxBase::CloseUp()
     }
 }
 
-void CDuiComboBoxBase::OnDestroy()
+void SComboBoxBase::OnDestroy()
 {
     CloseUp();
     __super::OnDestroy();
 }
 
-BOOL CDuiComboBoxBase::FireEvent(EventArgs &evt)
+BOOL SComboBoxBase::FireEvent(EventArgs &evt)
 {
     if(evt.idFrom == IDC_DROPDOWN_LIST)
     {
@@ -319,7 +319,7 @@ BOOL CDuiComboBoxBase::FireEvent(EventArgs &evt)
     return __super::FireEvent(evt);
 }
 
-void CDuiComboBoxBase::OnSelChanged()
+void SComboBoxBase::OnSelChanged()
 {
     EventCBSelChange evt(this);
     FireEvent(evt);
@@ -361,7 +361,7 @@ BOOL SComboBox::CreateListBox( pugi::xml_node xmlNode )
         pugi::xml_node xmlNode_Item=xmlNode_Items.child(L"item");
         while(xmlNode_Item)
         {
-            SStringT strText=DUI_CW2T(xmlNode_Item.attribute(L"text").value());
+            SStringT strText=S_CW2T(xmlNode_Item.attribute(L"text").value());
             int iIcon=xmlNode_Item.attribute(L"icon").as_int(0);
             LPARAM lParam=xmlNode_Item.attribute(L"data").as_int(0);
             m_pListBox->AddString(strText,iIcon,lParam);
@@ -413,7 +413,7 @@ void SComboBox::OnSelChanged()
     {
         SStringT strText=GetLBText(m_pListBox->GetCurSel());
         m_pEdit->setEventMute(true);
-        m_pEdit->SetWindowText(DUI_CT2W(strText));
+        m_pEdit->SetWindowText(S_CT2W(strText));
         m_pEdit->setEventMute(false);
     }
     Invalidate();
@@ -474,7 +474,7 @@ BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
                 SWindow *pText=pWnd->FindChildByID(m_uTxtID);
                 if(pText)
                 {
-                    SStringT strText=DUI_CW2T(xmlNode_Item.attribute(L"text").value());
+                    SStringT strText=S_CW2T(xmlNode_Item.attribute(L"text").value());
                     pText->SetWindowText(strText);
                 }
             }
@@ -536,7 +536,7 @@ void SComboBoxEx::OnSelChanged()
     {
         SStringT strText=GetLBText(iSel);
         m_pEdit->setEventMute(true);
-        m_pEdit->SetWindowText(DUI_CT2W(strText));
+        m_pEdit->SetWindowText(S_CT2W(strText));
         m_pEdit->setEventMute(false);
     }
     Invalidate();

@@ -10,8 +10,8 @@ namespace SOUI{
         SDropTargetDispatcher(SWindow * pFrame);
         ~SDropTargetDispatcher(void);
 
-        BOOL RegisterDragDrop(SWND hDuiWnd,IDropTarget *pDropTarget);
-        BOOL RevokeDragDrop(SWND hDuiWnd);
+        BOOL RegisterDragDrop(SWND swnd,IDropTarget *pDropTarget);
+        BOOL RevokeDragDrop(SWND swnd);
 
 
         //////////////////////////////////////////////////////////////////////////

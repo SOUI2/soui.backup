@@ -39,9 +39,9 @@ public:
 
     virtual BOOL OnReleaseSwndCapture()=NULL;
 
-    virtual SWND OnSetSwndCapture(SWND hDuiWnd)=NULL;
+    virtual SWND OnSetSwndCapture(SWND swnd)=NULL;
 
-    virtual void OnSetSwndFocus(SWND hDuiWnd)=NULL;
+    virtual void OnSetSwndFocus(SWND swnd)=NULL;
 
     virtual SWND SwndGetHover()=NULL;
 
