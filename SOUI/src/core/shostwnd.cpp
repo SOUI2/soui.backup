@@ -871,7 +871,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                     if(dwFlags & AW_HOR_NEGATIVE)
                         ptAnchor.x=rcWnd.right-rcShow.Width();
                     _BitBlt(pRT,m_memRT,rcShow,ptAnchor);
-                    UpdateLayerFromRenderTarget(m_memRT,0xFF);
+                    UpdateLayerFromRenderTarget(pRT,0xFF);
                     Sleep(10);
                 }
                 ShowWindow(SW_HIDE);
@@ -885,7 +885,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                     rcShow.DeflateRect(xStep,yStep);
                     pRT->FillSolidRect(rcWnd,RGBA(0,0,0,0));
                     _BitBlt(pRT,m_memRT,rcShow,rcShow.TopLeft());
-                    UpdateLayerFromRenderTarget(m_memRT,0xFF);
+                    UpdateLayerFromRenderTarget(pRT,0xFF);
                     Sleep(10);
                 }
                 ShowWindow(SW_HIDE);
@@ -951,7 +951,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                     if(dwFlags & AW_HOR_POSITIVE)
                         ptAnchor.x=rcWnd.right-rcShow.Width();
                      _BitBlt(pRT,m_memRT,rcShow,ptAnchor);
-                    UpdateLayerFromRenderTarget(m_memRT,0xFF);
+                    UpdateLayerFromRenderTarget(pRT,0xFF);
                     Sleep(10);
                 }
                 UpdateLayerFromRenderTarget(m_memRT,0xFF);
