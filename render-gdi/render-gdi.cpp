@@ -711,4 +711,14 @@ namespace SOUI
         return S_OK;    
     }
 
+    HRESULT SRenderTarget_GDI::Clear(COLORREF cr)
+    {
+        cr &= 0x00FFFFFF;
+        RECT rcCanvas={0,0,m_curBmp->Width(),m_curBmp->Height()};
+        HBRUSH hbr=::CreateSolidBrush(cr);
+        ::FillRect(m_hdc,&rcCanvas,hbr);
+        ::DeleteObject(hbr);
+        return S_OK;
+    }
+
 }

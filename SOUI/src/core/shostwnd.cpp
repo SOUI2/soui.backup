@@ -187,7 +187,7 @@ void SHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
         {
             m_memRT->PushClipRect(&rcInvalid,RGN_COPY);
         }
-        m_memRT->FillSolidRect(&rcInvalid,RGBA(0,0,0,0));//清除残留的alpha值
+        m_memRT->Clear();//清除残留的alpha值
 
         if(m_bCaretActive) DrawCaret(m_ptCaret);//clear old caret 
         RedrawRegion(m_memRT, pRgnUpdate);
@@ -807,11 +807,22 @@ void SHostWnd::UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha)
     ReleaseDC(dc);
     pRT->ReleaseDC(hdc);
 }
-
+/*
 BOOL _BitBlt(IRenderTarget *pRTDst,IRenderTarget * pRTSrc,CRect rcDst,CPoint ptSrc)
 {
     return S_OK == pRTDst->BitBlt(&rcDst,pRTSrc,ptSrc.x,ptSrc.y,SRCCOPY);
 }
+*/
+BOOL _BitBlt(IRenderTarget *pRTDst,IRenderTarget * pRTSrc,CRect rcDst,CPoint ptSrc)
+{
+    HDC dcSrc=pRTSrc->GetDC();
+    HDC dcDst=pRTDst->GetDC();
+    ::BitBlt(dcDst,rcDst.left,rcDst.top,rcDst.Width(),rcDst.Height(),dcSrc,ptSrc.x,ptSrc.y,SRCCOPY);
+    pRTDst->ReleaseDC(dcDst);
+    pRTSrc->ReleaseDC(dcSrc);
+    return TRUE;
+}
+
 
 BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
 {
@@ -864,7 +875,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 {
                     *x+=xStepLen;
                     *y+=yStepLen;
-                    pRT->FillSolidRect(rcWnd,RGBA(0,0,0,0));
+                    pRT->Clear();
                     CPoint ptAnchor;
                     if(dwFlags & AW_VER_NEGATIVE)
                         ptAnchor.y=rcWnd.bottom-rcShow.Height();
@@ -883,7 +894,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 for(int i=0;i<nSteps;i++)
                 {
                     rcShow.DeflateRect(xStep,yStep);
-                    pRT->FillSolidRect(rcWnd,RGBA(0,0,0,0));
+                    pRT->Clear();
                     _BitBlt(pRT,m_memRT,rcShow,rcShow.TopLeft());
                     UpdateLayerFromRenderTarget(pRT,0xFF);
                     Sleep(10);
@@ -944,7 +955,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 {
                     *x+=xStepLen;
                     *y+=yStepLen;
-                    pRT->FillSolidRect(rcWnd,RGBA(0,0,0,0));
+                    pRT->Clear();
                     CPoint ptAnchor;
                     if(dwFlags & AW_VER_POSITIVE)
                         ptAnchor.y=rcWnd.bottom-rcShow.Height();
@@ -965,7 +976,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 for(int i=0;i<nSteps;i++)
                 {
                     rcShow.InflateRect(xStep,yStep);
-                    pRT->FillSolidRect(rcWnd,RGBA(0,0,0,0));
+                    pRT->Clear();
                     _BitBlt(pRT,m_memRT,rcShow,rcShow.TopLeft());
                     UpdateLayerFromRenderTarget(pRT,0xFF);
                     Sleep(10);
