@@ -1,13 +1,16 @@
-/********************************************************************
-    created:    2013/02/19
-    created:    19:2:2013   10:11
-    filename:     SMessageBox.h
-    author:        Huang Jianxiong
-    
-    purpose:    模拟一个MessageBox
-*********************************************************************/
+/**
+ * Copyright (C) 2014-2050 SOUI团队
+ * All rights reserverd.
+ * 
+ * @file       SMessageBox.h
+ * @brief      
+ * @version    v1.0      
+ * @author     soui      
+ * @date       2014-07-06
+ * 
+ * Describe     
+ */
 #pragma once
-
 #include "core/shostdialog.h"
 
 namespace SOUI
@@ -23,25 +26,65 @@ namespace SOUI
     #define NAME_MSGBOX_BTN2            L"button2nd"    //第2个按钮ID
     #define NAME_MSGBOX_BTN3            L"button3rd"    //第3个按钮ID
 
-    //msgbox的消息处理对象，如果需要更加个性化的msgbox，可以派生该类。
+    /** 
+     * @class     SMessageBoxImpl
+     * @brief     消息窗口模板
+     *
+     * Describe   msgbox的消息处理对象，如果需要更加个性化的msgbox，可以派生该类。
+     */    
     class SOUI_EXP SMessageBoxImpl:public SHostDialog
     {
     public:
+    /**
+     * SMessageBoxImpl::SMessageBoxImpl
+     * @brief    构造函数
+     *
+     * Describe  构造函数  
+     */
         SMessageBoxImpl():SHostDialog(NULL){}
-        
+    /**
+     * SMessageBoxImpl::MessageBox
+     * @brief    提示框
+     * @param    HWND hWnd -- 窗口句柄
+     * @param    LPCTSTR lpText -- 消息内容
+     * @param    LPCTSTR lpCaption -- 窗口标题
+     * @param    UINT uType -- 窗口类型
+     *
+     * Describe  提示框
+     */        
         INT_PTR MessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType );
-
+    /**
+     * SMessageBoxImpl::SetMsgTemplate
+     * @brief    设置消息模板
+     * @param    pugi::xml_node xmlNode -- xml文件
+     *
+     * Describe  设置消息模板
+     */
         static BOOL SetMsgTemplate(pugi::xml_node xmlNode);
     protected:
-        //可以重载该方法来显示自定义的图标
+    /**
+     * SMessageBoxImpl::SetIcon
+     * @brief    设置图标
+     * @param    UINT uType -- 类型
+     * @return   返回BOOL
+     *
+     * Describe  设置图标 可以重载该方法来显示自定义的图标
+     */ 
         virtual BOOL SetIcon(UINT uType);
 
+    /**
+     * SMessageBoxImpl::OnBtnClick
+     * @brief    按钮响应函数
+     * @param    int uID -- 控件ID
+     *
+     * Describe  消息响应函数
+     */ 
         void OnBtnClick(int uID)
         {
             EndDialog(uID);
         }
 
-        static pugi::xml_document s_xmlMsgTemplate;
+        static pugi::xml_document s_xmlMsgTemplate; /**< 模板 */
 
         EVENT_MAP_BEGIN()
             EVENT_ID_COMMAND_RANGE(IDOK,IDNO, OnBtnClick)

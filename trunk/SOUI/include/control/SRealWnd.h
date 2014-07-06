@@ -1,5 +1,16 @@
-#pragma once
-
+/**
+ * Copyright (C) 2014-2050 SOUI团队
+ * All rights reserverd.
+ * 
+ * @file       SRealWnd.h
+ * @brief      
+ * @version    v1.0      
+ * @author     soui      
+ * @date       2014-07-06
+ * 
+ * Describe     
+ */
+#pragma  once
 #include "core/Swnd.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -12,38 +23,103 @@
 namespace SOUI
 {
 
+/** 
+ * @class     SRealWndParam
+ * @brief     RealWnd窗口参数
+ *
+ * Describe   RealWnd窗口参数
+ */
 class SOUI_EXP SRealWndParam
 {
 public:
+    /**
+     * SRealWndParam::SRealWndParam
+     * @brief    构造函数
+     *
+     * Describe  构造函数  
+     */
     SRealWndParam();
+    /**
+     * SRealWndParam::~SRealWndParam
+     * @brief    析构函数
+     *
+     * Describe  析构函数
+     */
     ~SRealWndParam();
 
-    SStringT m_strClassName,m_strWindowName;
-    DWORD     m_dwStyle,m_dwExStyle;
-    pugi::xml_document m_xmlParams;
+    SStringT m_strClassName;  /**< 类名 */
+    SStringT m_strWindowName; /**< 窗口名 */
+    DWORD     m_dwStyle;   /**< 窗口样式 */
+    DWORD     m_dwExStyle; /**< 窗口扩展样式 */
+    pugi::xml_document m_xmlParams;  /**< 文档 */
 };
 
-
+/** 
+ * @class     SRealWnd
+ * @brief     
+ *
+ * Describe   
+ */
 class SOUI_EXP SRealWnd : public SWindow
 {
     SOUI_CLASS_NAME(SRealWnd, L"realwnd")
 public:
+    /**
+     * SRealWnd::SRealWnd
+     * @brief    构造函数
+     *
+     * Describe  构造函数  
+     */
     SRealWnd();
-
+    /**
+     * SRealWnd::~SRealWnd
+     * @brief    析构函数
+     *
+     * Describe  析构函数  
+     */
     virtual ~SRealWnd();
 
-
+    /**
+     * SRealWnd::GetRealHwnd
+     * @brief    获取窗口句柄
+     * @param    BOOL bAutoCreate -- 自动创建
+     * @return   返回HWND
+     * 
+     * Describe  获取窗口句柄
+     */
     const HWND GetRealHwnd(BOOL bAutoCreate=TRUE);
 
+    /**
+     * SRealWnd::GetRealWndParam
+     * @brief    获取窗口参数
+     * @return   返回SRealWndParam
+     *
+     * Describe  获取窗口参数
+     */
     const SRealWndParam & GetRealWndParam()
     {
         return m_realwndParam;
     }
 
+    /**
+     * SRealWnd::SetData
+     * @brief    获取附加数据
+     * @param    LPVOID lpData -- 附加数据
+     *
+     * Describe  获取附加数据
+     */
     void SetData(LPVOID lpData)
     {
         m_lpData=lpData;
     }
+
+    /**
+     * SRealWnd::GetData
+     * @brief    获取附加数据
+     * @return   返回LPVOID
+     *
+     * Describe  获取附加数据
+     */
     const LPVOID GetData()
     {
         return m_lpData;
@@ -57,22 +133,76 @@ public:
     ATTR_INT(L"init",m_bInit,FALSE)
     SOUI_ATTRS_END()
 protected:
+    /**
+     * SRealWnd::NeedRedrawWhenStateChange
+     * @brief    状态修改后重绘
+     * @return   返回BOOL
+     *
+     * Describe  状态修改后重绘
+     */
     virtual BOOL NeedRedrawWhenStateChange();
+    /**
+     * SRealWnd::InitFromXml
+     * @brief    初始化
+     * @return   返回BOOL
+     *
+     * Describe  初始化
+     */
+
     virtual BOOL InitFromXml(pugi::xml_node xmlNode);
 
-
+    /**
+     * SRealWnd::OnWindowPosChanged
+     * @brief    修改窗口位置
+     * @param    LPRECT lpWndPos -- 位置
+     * @return   返回LRESULT
+     *
+     * Describe  修改窗口位置
+     */
     LRESULT OnWindowPosChanged(LPRECT lpWndPos);
 
+    /**
+     * SRealWnd::OnShowWindow
+     * @brief    窗口显示
+     * @param    BOOL bShow -- 是否显示
+     * @param    UINT nStatus -- 状态
+     *
+     * Describe  窗口显示
+     */
     void OnShowWindow(BOOL bShow, UINT nStatus);
+
+    /**
+     * SRealWnd::OnDestroy
+     * @brief    销毁
+     *
+     * Describe  销毁
+     */
     void OnDestroy();
 
-    // Do nothing
+    /**
+     * SRealWnd::OnPaint
+     * @brief    绘制
+     * @param    CDCHandle dc -- 绘制设备
+     *
+     * Describe  消息响应函数  
+     */
     void OnPaint(CDCHandle dc) {}
 
+    /**
+     * SRealWnd::ShowRealWindow
+     * @brief    显示窗口
+     *
+     * Describe  显示窗口
+     */
     void ShowRealWindow();
 
+    /**
+     * SRealWnd::InitRealWnd
+     * @brief    初始化窗口
+     *
+     * Describe  初始化窗口
+     */
     BOOL InitRealWnd();
-
 
     SOUI_MSG_MAP_BEGIN()
     MSG_WM_PAINT(OnPaint)
@@ -81,18 +211,55 @@ protected:
     MSG_WM_SHOWWINDOW(OnShowWindow)
     SOUI_MSG_MAP_END()
 
-    SRealWndParam    m_realwndParam;
-    BOOL    m_bInit;
+    SRealWndParam    m_realwndParam;  /**< 窗口参数 */
+    BOOL    m_bInit;  /**< 是否初始化 */
 
-    HWND     m_hRealWnd;
-    LPVOID    m_lpData;
+    HWND     m_hRealWnd;  /**< 窗口句柄 */
+    LPVOID    m_lpData;   /**< 附加参数 */
 };
 
+/** 
+ * @interface     IRealWndHandler
+ * @brief     
+ *
+ * Describe   
+ */
 interface SOUI_EXP IRealWndHandler
 {
+    /**
+     * SRealWnd::OnRealWndCreate
+     * @brief    窗口创建
+     * @param    SRealWnd *pRealWnd -- 窗口指针
+     *
+     * Describe  窗口创建
+     */    
     virtual HWND OnRealWndCreate(SRealWnd *pRealWnd)=NULL;
+
+    /**
+     * SRealWnd::OnRealWndInit
+     * @brief    初始化窗口
+     * @param    SRealWnd *pRealWnd -- 窗口指针
+     *
+     * Describe  初始化窗口
+     */
     virtual BOOL OnRealWndInit(SRealWnd *pRealWnd)=NULL;
+
+    /**
+     * SRealWnd::OnRealWndDestroy
+     * @brief    销毁窗口
+     * @param    SRealWnd *pRealWnd -- 窗口指针
+     *
+     * Describe  销毁窗口
+     */
     virtual void OnRealWndDestroy(SRealWnd *pRealWnd)=NULL;
+
+    /**
+     * SRealWnd::OnRealWndSize
+     * @brief    调整窗口大小
+     * @param    SRealWnd *pRealWnd -- 窗口指针
+     *
+     * Describe  调整窗口大小
+     */
     virtual void OnRealWndSize(SRealWnd *pRealWnd)=NULL;
 };
 
