@@ -269,6 +269,8 @@ namespace SOUI
         virtual HRESULT GetClipRegion(IRegion **ppRegion);
         virtual HRESULT GetClipBound(LPRECT prcBound);
 
+        virtual HRESULT Clear(COLORREF cr=0);
+
         virtual HRESULT BitBlt(LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop=SRCCOPY);
 
         virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha=0xFF);

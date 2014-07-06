@@ -129,6 +129,7 @@ struct IRenderTarget: public IObjRef
     virtual HRESULT GetClipRegion(IRegion **ppRegion)=0;
     virtual HRESULT GetClipBound(LPRECT prcBound)=0;
 
+    virtual HRESULT Clear(COLORREF cr=0)=0;
 	virtual HRESULT DrawText(LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat,BYTE byAlpha =0xFF)=0;
     virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz) =0;
     virtual HRESULT TextOut(int x,int y, LPCTSTR lpszString,int nCount,BYTE byAlpha = 0xFF) =0;

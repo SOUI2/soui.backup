@@ -771,6 +771,11 @@ namespace SOUI
         return S_OK;    
     }
 
+    HRESULT SRenderTarget_Skia::Clear(COLORREF cr)
+    {
+        m_SkCanvas->clear(SColor(cr).toARGB());
+        return S_OK;
+    }
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
 
