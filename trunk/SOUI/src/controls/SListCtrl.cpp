@@ -484,8 +484,8 @@ BOOL SListCtrl::SortItems(
 
 void SListCtrl::OnPaint(IRenderTarget * pRT)
 {
-    SPainter dxDC;
-    BeforePaint(pRT, dxDC);
+    SPainter painter;
+    BeforePaint(pRT, painter);
     CRect rcList = GetListRect();
     int nTopItem = GetTopIndex();
     pRT->PushClipRect(&rcList);
@@ -500,7 +500,7 @@ void SListCtrl::OnPaint(IRenderTarget * pRT)
         DrawItem(pRT, rcItem, nItem);
     }
     pRT->PopClip();
-    AfterPaint(pRT, dxDC);
+    AfterPaint(pRT, painter);
 }
 
 void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
