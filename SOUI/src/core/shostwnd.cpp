@@ -187,7 +187,11 @@ void SHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
         {
             m_memRT->PushClipRect(&rcInvalid,RGN_COPY);
         }
-        m_memRT->Clear();//清除残留的alpha值
+        //清除残留的alpha值
+        HDC hdc=m_memRT->GetDC();
+        HBRUSH hbr=::CreateSolidBrush(0);
+        ::FillRect(hdc,&rcInvalid,hbr);
+        m_memRT->ReleaseDC(hdc);
 
         if(m_bCaretActive) DrawCaret(m_ptCaret);//clear old caret 
         RedrawRegion(m_memRT, pRgnUpdate);

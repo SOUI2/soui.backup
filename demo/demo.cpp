@@ -10,7 +10,7 @@
 
 #include "MainDlg.h"
 
-#define RENDER_GDI
+//#define RENDER_GDI
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
