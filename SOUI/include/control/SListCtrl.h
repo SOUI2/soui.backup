@@ -392,7 +392,8 @@ namespace SOUI
      *
      * Describe  消息响应函数 
      */
-        virtual void    OnLButtonDown(UINT nFlags, CPoint pt);
+     void    OnLButtonDown(UINT nFlags, CPoint pt);
+
     /**
      * SListCtrl::OnLButtonUp
      * @brief    左键抬起
@@ -401,7 +402,7 @@ namespace SOUI
      *
      * Describe  消息响应函数 
      */
-        virtual void    OnLButtonUp(UINT nFlags, CPoint pt);
+     void    OnLButtonUp(UINT nFlags, CPoint pt);
     /**
      * SListCtrl::OnSize
      * @brief    消息响应函数
@@ -410,14 +411,14 @@ namespace SOUI
      *
      * Describe  获取某项得索引  
      */
-        virtual void    OnSize(UINT nType, CSize size);
+     void    OnSize(UINT nType, CSize size);
     /**
      * SListCtrl::UpdateChildrenPosition
      * @brief    更新子项位置
      *
      * Describe  更新子项位置
      */
-        virtual void    UpdateChildrenPosition();
+     virtual void    UpdateChildrenPosition();
     /**
      * SListCtrl::GetListRect
      * @brief    获取list位置
@@ -432,14 +433,14 @@ namespace SOUI
      *
      * Describe  更新滚动条
      */
-        void            UpdateScrollBar();
+     void            UpdateScrollBar();
     /**
      * SListCtrl::UpdateHeaderCtrl
      * @brief    更新列表头控件
      *
      * Describe  更新列表头控件
      */
-        void            UpdateHeaderCtrl();
+     void            UpdateHeaderCtrl();
 
     protected:
         int             m_nHeaderHeight;  /**< 列表头高度 */

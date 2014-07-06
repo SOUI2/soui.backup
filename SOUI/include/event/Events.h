@@ -337,7 +337,7 @@ public:
 class EventLCSelChanging : public EventArgs
 {
 public:
-    EventLCSelChanging(SWindow *pWnd):EventArgs(pWnd){}
+    EventLCSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
     enum{EventID=EVT_LC_SELCHANGING};
     virtual UINT GetEventID(){return EventID;}
     int nNewSel;

@@ -34,7 +34,7 @@ void CMainDlg::OnShowWindow( BOOL bShow, UINT nStatus )
 {
 	if(bShow)
 	{
-// 		AnimateHostWindow(200,AW_CENTER);
+ 		AnimateHostWindow(200,AW_CENTER);
 	}
 }
 
