@@ -1025,7 +1025,7 @@ BOOL SHostWnd::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 
 const SStringW & SHostWnd::GetHostName()
 {
-    return m_strName;
+    return m_hostAttr.m_strName;
 }
 
 //////////////////////////////////////////////////////////////////////////
