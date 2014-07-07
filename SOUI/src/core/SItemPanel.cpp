@@ -137,6 +137,11 @@ HWND SItemPanel::GetHostHwnd()
     return m_pFrmHost->GetContainer()->GetHostHwnd();
 }
 
+const SStringW & SItemPanel::GetHostName()
+{
+    return m_pFrmHost->GetContainer()->GetHostName();
+}
+
 BOOL SItemPanel::IsTranslucent()
 {
     return m_pFrmHost->GetContainer()->IsTranslucent();

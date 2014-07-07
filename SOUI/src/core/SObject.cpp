@@ -1,5 +1,6 @@
 #include "souistd.h"
 #include "core/sobject.h"
+#include "res.mgr/SObjDefAttr.h"
 
 namespace SOUI
 {

@@ -9,11 +9,32 @@ using namespace pugi;
 
 namespace SOUI
 {
+    class SStrMap
+    {
+        friend class STranslator;
+    public:
+        SStringW strSource;
+        SStringW strTranslation;
+
+        static int  Compare(const void * e1, const void * e2);
+    };
+
+    class SStrMapEntry
+    {
+        friend class STranslator;
+    public:
+        ~SStrMapEntry();
+        SStringW strCtx;
+        SArray<SStrMap*> m_arrStrMap;
+        static int  Compare(const void * e1, const void * e2);
+    };
+
     int StringCmp(const SStringW &str1,const SStringW &str2)
     {
         if(str1 == str2) return 0;
         else return str1<str2?-1:1;
     }
+
     int SStrMap::Compare( const void * e1, const void * e2)
     {
         SStrMap **p1=(SStrMap**) e1;
@@ -140,6 +161,12 @@ namespace SOUI
         m_ctxStack->AddHead(strCtx);
     }
 
+    void STranslator::PushContext( const SStringA &strCtx )
+    {
+        SStringW strCtxW = S_CA2W(strCtx);
+        PushContext(strCtxW);
+    }
+
     SStringW STranslator::PopContext()
     {
         return m_ctxStack->RemoveHead();
@@ -147,7 +174,7 @@ namespace SOUI
 
     SStringW STranslator::tr(const SStringW & str )
     {
-        if(m_ctxStack->IsEmpty()) return L"";
+        if(m_ctxStack->IsEmpty()) return str;
         SStrMapEntry keyEntry;
         keyEntry.strCtx=m_ctxStack->GetHead();
         SStrMapEntry *pKeyEntry=&keyEntry;
@@ -165,7 +192,14 @@ namespace SOUI
                 if(pMap) return (*pMap)->strTranslation;
             }
         }
-        return L"";
+        return str;
     }
 
+    SStringA STranslator::tr( const SStringA & str )
+    {
+        SStringW strW=S_CA2W(str);
+        SStringW strTr = tr(strW);
+        SStringA strRet=S_CW2A(strTr);
+        return strRet;
+    }
 }

@@ -142,7 +142,9 @@ public:                                                             \
 #define ATTR_STRINGA(attribname, varname, allredraw)      \
     if (attribname == strAttribName)                            \
         {                                                           \
-        varname = S_CW2A(strValue);                                     \
+        SStringW strTmp=strValue;                                   \
+        BUILDSTRING(strTmp);                                    \
+        varname = S_CW2A(strTmp);                              \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -151,7 +153,9 @@ public:                                                             \
 #define ATTR_STRINGW(attribname, varname, allredraw)      \
     if (attribname == strAttribName)                            \
         {                                                           \
-        varname = strValue;;                                     \
+        SStringW strTmp=strValue;                                   \
+        BUILDSTRING(strTmp);                                    \
+        varname = strTmp;                                        \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -161,12 +165,48 @@ public:                                                             \
 #define ATTR_STRINGT(attribname, varname, allredraw)     \
     if (attribname == strAttribName)                            \
         {                                                           \
-        varname = S_CW2T(strValue);                      \
-        BUILDSTRING(varname);                        \
+        SStringW strTmp=strValue;                                   \
+        BUILDSTRING(strTmp);                                    \
+        varname = S_CW2T(strTmp);                               \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
- 
+
+
+// StringA = StringA
+#define ATTR_I18NSTRA(attribname, varname, allredraw)      \
+    if (attribname == strAttribName)                            \
+        {                                                       \
+        SStringW strTmp=tr(strValue);                           \
+        BUILDSTRING(strTmp);                                    \
+        varname = S_CW2A(strTmp);                                     \
+        hRet = allredraw ? S_OK : S_FALSE;                      \
+        }                                                           \
+        else                                                        \
+
+// StringW = StringA
+#define ATTR_I18NSTRW(attribname, varname, allredraw)      \
+    if (attribname == strAttribName)                            \
+        {                                                           \
+        SStringW strTmp=tr(strValue);                          \
+        BUILDSTRING(strTmp);                                \
+        varname = strTmp;                                   \
+        hRet = allredraw ? S_OK : S_FALSE;                      \
+        }                                                           \
+        else                                                        \
+
+
+// StringT = StringA
+#define ATTR_I18NSTRT(attribname, varname, allredraw)     \
+    if (attribname == strAttribName)                            \
+        {                                                           \
+        SStringW strTmp=tr(strValue);                                   \
+        BUILDSTRING(strTmp);                                   \
+        varname=S_CW2T(strTmp);                                \
+        hRet = allredraw ? S_OK : S_FALSE;                      \
+        }                                                           \
+        else                                                        \
+
 // DWORD = %X StringA
 #define ATTR_HEX(attribname, varname, allredraw)         \
     if (attribname == strAttribName)                            \

@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "SAppTranslator.h"
 //////////////////////////////////////////////////////////////////////////
 
 // SObject Class Name Declaration
@@ -93,6 +94,9 @@ public:
         return E_FAIL;
     }
 
+    virtual SStringW tr(const SStringW &strSrc){
+        return TR2(strSrc,L"");
+    }
 protected:
     virtual void OnInitFinished(pugi::xml_node xmlNode) {}
 

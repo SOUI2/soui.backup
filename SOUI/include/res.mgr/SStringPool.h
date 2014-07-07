@@ -9,17 +9,17 @@
 #pragma once
 #include "core/SSingletonMap.h"
 
+#define BUILDSTRING(p1) SStringPool::getSingleton().BuildString(p1)
+
 namespace SOUI
 {
 
-class SOUI_EXP SStringPool :public SCmnMap<SStringT,SStringT>
+class SOUI_EXP SStringPool :public SSingletonMap<SStringPool,SStringW,SStringW>
 {
 public:
-    BOOL BuildString(SStringT &strContainer);
+    BOOL BuildString(SStringW &strContainer);
     BOOL Init(pugi::xml_node xmlNode);
-    LPCTSTR Get(const SStringT & strName);
-protected:
-    SStringT    m_strTmp;
+    SStringW Get(const SStringW & strName);
 };
 
 }//namespace SOUI

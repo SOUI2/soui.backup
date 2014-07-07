@@ -597,6 +597,13 @@ BOOL SWindow::CreateChildren(pugi::xml_node xmlNode)
     return TRUE;
 }
 
+
+SStringW SWindow::tr( const SStringW &strSrc )
+{
+    if(m_strName.IsEmpty()) return TR2(strSrc,GetContainer()->GetHostName());
+    else return TR2(strSrc,m_strName);
+}
+
 // Create SWindow from xml element
 BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
 {

@@ -2,11 +2,13 @@
 #include "core/SSingletonMap.h"
 #include "core/Sskinobj-i.h"
 
+#define GETSKIN(p1) SSkinPool::getSingleton().GetSkin(p1)
+
 namespace SOUI
 {
 
 typedef ISkinObj * SSkinPtr;
-class SOUI_EXP SSkinPool :public SCmnMap<SSkinPtr,SStringW>
+class SOUI_EXP SSkinPool :public SSingletonMap<SSkinPool,SSkinPtr,SStringW>
 {
 public:
     SSkinPool();

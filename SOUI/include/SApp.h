@@ -9,14 +9,8 @@
 
 #include "core/SScriptModule-i.h"
 #include "res.mgr/SResProviderMgr.h"
-#include "res.mgr/SPools.h"
 
 #define SOUI_VERSION    _T("0.0.0.1")
-
-#define GETSKIN(p1) SApplication::getSingleton().GetSkin(p1)
-#define GETSTYLE(p1,p2) SApplication::getSingleton().GetStyle(p1,p2)
-#define BUILDSTRING(p1) SApplication::getSingleton().BuildString(p1)
-#define GETCSS(p1) SApplication::getSingleton().GetDefAttribute(p1)
 
 #define LOADXML(p1,p2,p3) SApplication::getSingleton().LoadXmlDocment(p1,p2,p3)
 #define GETRESPROVIDER    SApplication::getSingletonPtr()
@@ -33,8 +27,6 @@ class SOUI_EXP SApplication :public SSingleton<SApplication>
                         ,public SWindowFactoryMgr
                         ,public SSkinFactoryMgr
                         ,public SResProviderMgr
-                        ,public SPools
-                        ,public STranslator
 {
     friend class CSimpleWnd;
 public:
@@ -66,6 +58,8 @@ public:
     BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType);
 
     IRenderFactory * GetRenderFactory(){return m_RenderFactory;}
+
+    STranslator * GetTranslator();
 
     SMessageLoop  * GetMessageLoop(){return m_lstMsgLoop.GetTail();}
     

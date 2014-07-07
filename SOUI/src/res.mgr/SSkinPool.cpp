@@ -8,6 +8,7 @@ namespace SOUI
 
 //////////////////////////////////////////////////////////////////////////
 // SSkinPool
+    template<> SSkinPool* SSingleton<SSkinPool>::ms_Singleton=0;
 
 SSkinPool::SSkinPool()
 {
