@@ -28,6 +28,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkCore", "myskia\vs2008\SkC
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render-gdi", "render-gdi\render-gdi.vcproj", "{644188F9-379F-467C-B03D-5DE6E0027839}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "translator", "translator\translator.vcproj", "{1C379542-31AE-425B-B358-70B4DB1F5965}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_ATL|Win32 = Debug_ATL|Win32
@@ -157,6 +159,21 @@ Global
 		{644188F9-379F-467C-B03D-5DE6E0027839}.RELEASE|Win32.ActiveCfg = Release_Dll|Win32
 		{644188F9-379F-467C-B03D-5DE6E0027839}.RELEASE|Win32.Build.0 = Release_Dll|Win32
 		{644188F9-379F-467C-B03D-5DE6E0027839}.RELEASE|x64.ActiveCfg = Release_Dll|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.Debug_ATL|Win32.ActiveCfg = Debug|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.Debug_ATL|Win32.Build.0 = Debug|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.Debug_ATL|x64.ActiveCfg = Debug|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.Debug_Dll|Win32.ActiveCfg = Debug|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.Debug_Dll|Win32.Build.0 = Debug|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.Debug_Dll|x64.ActiveCfg = Debug|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.DEBUG|Win32.ActiveCfg = Debug|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.DEBUG|Win32.Build.0 = Debug|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.DEBUG|x64.ActiveCfg = Debug|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.Release_Dll|Win32.ActiveCfg = Release|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.Release_Dll|Win32.Build.0 = Release|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.Release_Dll|x64.ActiveCfg = Release|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.RELEASE|Win32.ActiveCfg = Release|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.RELEASE|Win32.Build.0 = Release|Win32
+		{1C379542-31AE-425B-B358-70B4DB1F5965}.RELEASE|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

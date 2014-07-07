@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\include;..\utilities\include;"
+				AdditionalIncludeDirectories=".\include;..\utilities\include;..\translator\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_USRDLL;SOUI_EXPORTS;DLL_SOUI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -1389,10 +1389,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\include\wtl.mini\souicoll.h"
-					>
-				</File>
-				<File
 					RelativePath=".\include\wtl.mini\souigdi.h"
 					>
 				</File>
@@ -1513,62 +1509,6 @@
 		<Filter
 			Name="pugixml"
 			>
-			<File
-				RelativePath=".\pugixml\pugiconfig.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\pugixml\pugixml.cpp"
-				>
-				<FileConfiguration
-					Name="Debug_Dll|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release_Dll|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DEBUG|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="RELEASE|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug_ATL|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\pugixml\pugixml.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\pugixml\readme.txt"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="dllmain"

@@ -36,8 +36,10 @@
 
 #include "core/SDefine.h"
 #include "helper/color.h"
-//export pugixml interface
-#include "../pugixml/pugixml.hpp"
+
+//import pugixml interface
+#include <pugixml/pugixml.hpp>
+#include <translator.h>
 
 #ifdef USING_ATL
     #define _COLL_NS    ATL
@@ -63,10 +65,10 @@
 #else//ATL_FREE
     #define _WTYPES_NS SOUI
     #define _COLL_NS    SOUI
+    #include "souicoll.h"
     #include "wtl.mini/msgcrack.h"
     #include "wtl.mini/souimisc.h"
     #include "wtl.mini/souigdi.h"
-    #include "wtl.mini/souicoll.h"
     #include "atl.mini/atldef.h"
     #include "atl.mini/scomcli.h"
     #include "../../utilities/include/string/tstring.h"
@@ -90,10 +92,10 @@
 #pragma comment(lib,"Msimg32.lib")
 #pragma comment(lib,"shlwapi.lib")
 
-#ifdef DLL_SOUI
-    #ifdef _DEBUG
-        #pragma comment(lib,"utilities_d.lib")
-    #else
-        #pragma comment(lib,"utilities.lib")
-    #endif
+#ifdef _DEBUG
+#   pragma comment(lib,"utilities_d.lib")
+#   pragma comment(lib,"translator_d.lib")
+#else
+#   pragma comment(lib,"utilities.lib")
+#   pragma comment(lib,"translator.lib")
 #endif

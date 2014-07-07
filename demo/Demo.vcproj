@@ -430,7 +430,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\soui\include;..\utilities\include"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;..\translator\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;DLL_SOUI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -1251,6 +1251,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\translation files\lang_cn.xml"
+			>
+		</File>
 		<File
 			RelativePath=".\skin\uiskin.idx"
 			>

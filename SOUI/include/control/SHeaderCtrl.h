@@ -13,7 +13,6 @@
 #pragma once
 
 #include "core/SWnd.h"
-#include "wtl.mini/souicoll.h"
 namespace SOUI
 {
   #define SHDI_WIDTH               0x0001

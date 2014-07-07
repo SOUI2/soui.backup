@@ -16,7 +16,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 {
 	HRESULT hRes = OleInitialize(NULL);
 	ASSERT(SUCCEEDED(hRes));
-
+    
     CAutoRefPtr<SOUI::IImgDecoderFactory> pImgDecoderFactory;
     CAutoRefPtr<SOUI::IRenderFactory> pRenderFactory;
     
@@ -49,7 +49,22 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     funRender(&pRenderFactory,pImgDecoderFactory);
     
 	SApplication *theApp=new SApplication(pRenderFactory,hInstance);
-
+    
+    pugi::xml_document xmlLang;
+    if(xmlLang.load_file(L"../demo/translation files/lang_cn.xml"))
+    {
+        SLang lang;
+        lang.LoadXML(xmlLang.child(L"language"));
+        theApp->InstallLang(&lang);
+        theApp->PushContext(L"ctx1");
+        SStringW a=theApp->tr(L"message 1");
+        a=theApp->tr(L"message 3");
+        theApp->PushContext(L"ctx3");
+        a=theApp->tr(L"hello 3");
+        theApp->PopContext();
+        a=theApp->tr(L"message 5");
+        theApp->PopContext();
+    }
 #if 1
     TCHAR szCurrentDir[MAX_PATH]={0};
     GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );

@@ -1,5 +1,4 @@
 #pragma once
-#include "wtl.mini\souicoll.h"
 #include "swnd.h"
 
 namespace SOUI{

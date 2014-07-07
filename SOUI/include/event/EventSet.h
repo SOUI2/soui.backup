@@ -1,6 +1,5 @@
 #pragma once
 
-#include "wtl.mini/souicoll.h"
 #include "EventSubscriber.h"
 
 namespace SOUI

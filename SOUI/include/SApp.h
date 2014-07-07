@@ -34,6 +34,7 @@ class SOUI_EXP SApplication :public SSingleton<SApplication>
                         ,public SSkinFactoryMgr
                         ,public SResProviderMgr
                         ,public SPools
+                        ,public STranslator
 {
     friend class CSimpleWnd;
 public:
