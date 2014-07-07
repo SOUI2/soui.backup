@@ -8,8 +8,8 @@
 // See these sources for detailed information regarding the
 // Active Template Library product.
 
-#ifndef __ATLCOLL_H__
-#define __ATLCOLL_H__
+#ifndef __SOUICOLL_H__
+#define __SOUICOLL_H__
 
 #pragma once
 
@@ -2841,4 +2841,4 @@ void SMap< K, V, KTraits, VTraits >::AssertValid() const
 
 #pragma warning(pop)
 
-#endif  // __ATLCOLL_H__
+#endif  // __SOUICOLL_H__

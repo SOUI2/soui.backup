@@ -1,7 +1,5 @@
 #pragma once
 
-#include "wtl.mini/souicoll.h"
-
 #ifndef WM_SYSTIMER
 #define WM_SYSTIMER 0x0118   //(caret blink)
 #endif//WM_SYSTIMER

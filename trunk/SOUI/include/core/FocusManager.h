@@ -1,7 +1,6 @@
 #pragma once
 #include "core/Swnd.h"
 #include "Accelerator.h"
-#include "wtl.mini/souicoll.h"
 
 template<>
 class  _COLL_NS::CElementTraits< SOUI::CAccelerator > : public _COLL_NS::CElementTraitsBase< SOUI::CAccelerator >

@@ -11,6 +11,8 @@
  * Copyright (C) 2003, by Kristen Wegner (kristen@tima.net)
  */
 
+#include "utilities-def.h"
+
 #ifndef HEADER_PUGICONFIG_HPP
 #define HEADER_PUGICONFIG_HPP
 
@@ -26,17 +28,8 @@
 // Uncomment this to disable exceptions
 #define PUGIXML_NO_EXCEPTIONS
 
-#ifdef DLL_SOUI
-# ifdef SOUI_EXPORTS
-#  define PUGIXML_CLASS __declspec(dllexport)
-#  define PUGIXML_API __declspec(dllexport)
-# else
-#  define PUGIXML_CLASS __declspec(dllimport)
-#  define PUGIXML_API __declspec(dllimport)
-# endif // SOUI_EXPORTS
-#else
-#define PUGIXML_CLASS
-#endif
+#define PUGIXML_CLASS UTILITIES_API
+#define PUGIXML_API UTILITIES_API
 
 // Set this to control attributes for public classes/functions, i.e.:
 // #define PUGIXML_API __declspec(dllexport) // to export all public symbols from DLL
