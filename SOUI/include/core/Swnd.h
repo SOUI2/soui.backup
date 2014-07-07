@@ -710,7 +710,7 @@ protected:
         ATTR_INT(L"data", m_uData, 0 )
         ATTR_CUSTOM(L"state", OnAttrState)
         ATTR_STRINGT(L"href", m_strLinkUrl, FALSE)
-        ATTR_STRINGT(L"tip", m_strToolTipText, FALSE)
+        ATTR_I18NSTRT(L"tip", m_strToolTipText, FALSE)  // π”√”Ô—‘∞¸∑≠“Î
         ATTR_CUSTOM(L"pos", OnAttrPos)
         ATTR_INT(L"show", m_bVisible,FALSE)
         ATTR_INT(L"display", m_bDisplay,FALSE)

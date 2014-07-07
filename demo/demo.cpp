@@ -50,20 +50,20 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     
 	SApplication *theApp=new SApplication(pRenderFactory,hInstance);
     
+    SLang lang;
     pugi::xml_document xmlLang;
     if(xmlLang.load_file(L"../demo/translation files/lang_cn.xml"))
     {
-        SLang lang;
         lang.LoadXML(xmlLang.child(L"language"));
         theApp->GetTranslator()->InstallLang(&lang);
-        theApp->GetTranslator()->PushContext(L"ctx1");
-        SStringW a=theApp->GetTranslator()->tr(L"message 1");
-        a=theApp->GetTranslator()->tr(L"message 3");
-        theApp->GetTranslator()->PushContext(L"ctx3");
-        a=theApp->GetTranslator()->tr(L"hello 3");
-        theApp->GetTranslator()->PopContext();
-        a=theApp->GetTranslator()->tr(L"message 5");
-        theApp->GetTranslator()->PopContext();
+//         theApp->GetTranslator()->PushContext(L"ctx1");
+//         SStringW a=theApp->GetTranslator()->tr(L"message 1");
+//         a=theApp->GetTranslator()->tr(L"message 3");
+//         theApp->GetTranslator()->PushContext(L"ctx3");
+//         a=theApp->GetTranslator()->tr(L"hello 3");
+//         theApp->GetTranslator()->PopContext();
+//         a=theApp->GetTranslator()->tr(L"message 5");
+//         theApp->GetTranslator()->PopContext();
     }
 #if 1
     TCHAR szCurrentDir[MAX_PATH]={0};

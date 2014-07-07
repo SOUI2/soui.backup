@@ -174,6 +174,7 @@ namespace SOUI
 
     SStringW STranslator::tr(const SStringW & str )
     {
+        if(str.IsEmpty()) return str;
         if(m_ctxStack->IsEmpty()) return str;
         SStrMapEntry keyEntry;
         keyEntry.strCtx=m_ctxStack->GetHead();

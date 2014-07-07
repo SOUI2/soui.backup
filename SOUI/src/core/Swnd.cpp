@@ -613,7 +613,8 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
         return FALSE;
     }
 
-    m_strText = S_CW2T(xmlNode.text().get());
+    m_strText = S_CW2T(tr(xmlNode.text().get()));   // π”√”Ô—‘∞¸∑≠“Î°£
+
     if (!m_strText.IsEmpty())
     {
         m_strText.TrimRight(0x0a).TrimLeft(0x0a);
