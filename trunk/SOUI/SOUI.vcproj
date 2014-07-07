@@ -805,6 +805,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\core\SAppTranslator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\activex\SAxContainer.cpp"
 				>
 			</File>
@@ -1008,10 +1012,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\res.mgr\SPools.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\controls\SRealWnd.cpp"
 				>
 			</File>
@@ -1210,6 +1210,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\core\SAppTranslator.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\helper\SAttrCracker.h"
 				>
 			</File>
@@ -1283,10 +1287,6 @@
 			</File>
 			<File
 				RelativePath=".\include\core\SPanel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\res.mgr\SPools.h"
 				>
 			</File>
 			<File

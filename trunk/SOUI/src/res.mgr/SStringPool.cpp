@@ -6,27 +6,27 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "souistd.h"
-#include "SApp.h"
 #include "res.mgr/Sstringpool.h"
 #include "core/mybuffer.h"
 
 namespace SOUI
 {
 
+    template<> SStringPool * SSingleton<SStringPool>::ms_Singleton =0;
 
-BOOL SStringPool::BuildString(SStringT &strContainer)
+BOOL SStringPool::BuildString(SStringW &strContainer)
 {
     BOOL bRet=FALSE;
     int nSubStringStart=-1;
     int nSubStringEnd=0;
-    while ((nSubStringStart = strContainer.Find(_T("%"), nSubStringEnd))!=-1)
+    while ((nSubStringStart = strContainer.Find(L"%", nSubStringEnd))!=-1)
     {
-        nSubStringEnd = strContainer.Find(_T('%'), nSubStringStart + 1);
+        nSubStringEnd = strContainer.Find(L"%", nSubStringStart + 1);
         if(nSubStringEnd==-1)
             break;
-        SStringT strName=strContainer.Mid(nSubStringStart+1,nSubStringEnd-nSubStringStart-1);
+        SStringW strName=strContainer.Mid(nSubStringStart+1,nSubStringEnd-nSubStringStart-1);
 
-        SStringT strNewSub=GetKeyObject(strName);
+        SStringW strNewSub=GetKeyObject(strName);
         strContainer = strContainer.Left(nSubStringStart)
                        + strNewSub
                        + strContainer.Mid(nSubStringEnd+1);
@@ -47,22 +47,22 @@ BOOL SStringPool::Init( pugi::xml_node xmlNode )
 
     for (pugi::xml_node xmlStr=xmlNode.first_child(); xmlStr; xmlStr=xmlStr.next_sibling())
     {
-        SStringT strName=S_CW2T(xmlStr.name());
-        SStringT str=S_CW2T(xmlStr.attribute(L"value").value());
+        SStringW strName=xmlStr.name();
+        SStringW str=xmlStr.attribute(L"value").value();
         AddKeyObject(strName,str);
     }
     return TRUE;
 }
 
-LPCTSTR SStringPool::Get(const SStringT & strName)
+SStringW SStringPool::Get(const SStringW & strName)
 {
-    m_strTmp=_T("");
+    SStringW strRet;
     if(HasKey(strName))
     {
-        m_strTmp=GetKeyObject(strName);
-        BuildString(m_strTmp);
+        strRet=GetKeyObject(strName);
+        BuildString(strRet);
     }
-    return m_strTmp;
+    return strRet;
 }
 
 }//namespace SOUI

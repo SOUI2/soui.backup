@@ -1,10 +1,13 @@
 #pragma once
 
 #include "core/SSingletonMap.h"
+
+#define GETCSS(p1) SObjDefAttr::getSingleton().GetDefAttribute(p1)
+
 namespace SOUI
 {
 
-class SOUI_EXP SObjDefAttr :public SCmnMap<pugi::xml_node,SStringW>
+class SOUI_EXP SObjDefAttr :public SSingletonMap<SObjDefAttr,pugi::xml_node,SStringW>
 {
 public:
     SObjDefAttr()

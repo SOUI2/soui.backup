@@ -3,6 +3,7 @@
 
 namespace SOUI
 {
+    template<> SStylePool * SSingleton<SStylePool>::ms_Singleton=0;
 
     // Get style object from pool by class name
     BOOL SStylePool::GetStyle(LPCWSTR lpszName, SwndStyle& style)

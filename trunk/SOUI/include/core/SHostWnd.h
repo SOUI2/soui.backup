@@ -58,13 +58,13 @@ namespace SOUI
         void FreeOwnedSkins()
         {
             if(!m_strName.IsEmpty()) 
-                SApplication::getSingleton().FreeSkins(m_strName);    //load skin only used in the host window
+                SSkinPool::getSingleton().FreeSkins(m_strName);    //load skin only used in the host window
         }
 
         void LoadOwnedSkins()
         {
             if(!m_strName.IsEmpty()) 
-                SApplication::getSingleton().LoadSkins(m_strName);    //load skin only used in the host window
+                SSkinPool::getSingleton().LoadSkins(m_strName);    //load skin only used in the host window
         }
 
         SOUI_ATTRS_BEGIN()
@@ -203,6 +203,9 @@ protected:
 
     /*virtual */
     HWND GetHostHwnd();
+
+    /*virtual */
+    const SStringW & GetHostName();
 
     /*virtual */
     IRenderTarget * OnGetRenderTarget(const CRect & rc,DWORD gdcFlags);

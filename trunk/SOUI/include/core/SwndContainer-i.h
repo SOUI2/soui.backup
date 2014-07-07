@@ -24,6 +24,8 @@ public:
     virtual BOOL OnFireEvent(EventArgs &evt)=NULL;
 
     virtual HWND GetHostHwnd()=NULL;
+    
+    virtual const SStringW & GetHostName()=NULL;
 
     virtual BOOL IsTranslucent()=NULL;
 

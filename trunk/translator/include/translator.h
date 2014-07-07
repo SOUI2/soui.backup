@@ -13,29 +13,13 @@
 
 #include "souicoll.h"
 #include "string/tstring.h"
+#include "string/strcpcvt.h"
 #include "pugixml/pugixml.hpp"
 
 namespace SOUI
 {
-class SStrMap
-{
-friend class STranslator;
-public:
-    SStringW strSource;
-    SStringW strTranslation;
-    
-    static int  Compare(const void * e1, const void * e2);
-};
-
-class SStrMapEntry
-{
-friend class STranslator;
-public:
-    ~SStrMapEntry();
-    SStringW strCtx;
-    SArray<SStrMap*> m_arrStrMap;
-    static int  Compare(const void * e1, const void * e2);
-};
+    class SStrMap;
+    class SStrMapEntry;
 
 class TRANSLATOR_API SLang
 {
@@ -61,9 +45,11 @@ public:
     void UninstallLang(SLang *pLang);
     
     void PushContext(const SStringW &strCtx);
+    void PushContext(const SStringA &strCtx);
     SStringW PopContext();
     
     SStringW tr(const SStringW & str);
+    SStringA tr(const SStringA & str);
 protected:
     SList<SLang*> *m_lstLang;
     SList<SStringW> *m_ctxStack;

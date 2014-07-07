@@ -55,15 +55,15 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     {
         SLang lang;
         lang.LoadXML(xmlLang.child(L"language"));
-        theApp->InstallLang(&lang);
-        theApp->PushContext(L"ctx1");
-        SStringW a=theApp->tr(L"message 1");
-        a=theApp->tr(L"message 3");
-        theApp->PushContext(L"ctx3");
-        a=theApp->tr(L"hello 3");
-        theApp->PopContext();
-        a=theApp->tr(L"message 5");
-        theApp->PopContext();
+        theApp->GetTranslator()->InstallLang(&lang);
+        theApp->GetTranslator()->PushContext(L"ctx1");
+        SStringW a=theApp->GetTranslator()->tr(L"message 1");
+        a=theApp->GetTranslator()->tr(L"message 3");
+        theApp->GetTranslator()->PushContext(L"ctx3");
+        a=theApp->GetTranslator()->tr(L"hello 3");
+        theApp->GetTranslator()->PopContext();
+        a=theApp->GetTranslator()->tr(L"message 5");
+        theApp->GetTranslator()->PopContext();
     }
 #if 1
     TCHAR szCurrentDir[MAX_PATH]={0};

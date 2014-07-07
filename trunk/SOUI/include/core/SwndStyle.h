@@ -4,7 +4,9 @@
 
 #pragma once
 
-#include "sskin.h"
+#include "res.mgr/sstringpool.h"
+#include "res.mgr/SSkinPool.h"
+#include "SSkin.h"
 
 namespace SOUI
 {

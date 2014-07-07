@@ -4,9 +4,14 @@
 #include "core/SWindowMgr.h"
 #include "core/SThreadActiveWndMgr.h"
 #include "core/mybuffer.h"
+#include "core/SAppTranslator.h"
 
 #include "res.mgr/sfontpool.h"
 #include "res.mgr/simgpool.h"
+#include "res.mgr/SStringPool.h"
+#include "res.mgr/SSkinPool.h"
+#include "res.mgr/SStylePool.h"
+#include "res.mgr/SObjDefAttr.h"
 
 #include "helper/STimerEx.h"
 
@@ -39,20 +44,29 @@ SApplication::~SApplication(void)
 
 void SApplication::createSingletons()
 {
+    new SAppTranslator();
     new SThreadActiveWndMgr();
     new SWindowMgr();
     new STimer2();
     new SFontPool(m_RenderFactory);
     new SImgPool();
+    new SStringPool();
+    new SSkinPool();
+    new SStylePool();
+    new SObjDefAttr();
 }
 
 void SApplication::destroySingletons()
 {
+    delete SObjDefAttr::getSingletonPtr();
+    delete SSkinPool::getSingletonPtr();
+    delete SStringPool::getSingletonPtr();
     delete SImgPool::getSingletonPtr();
     delete SFontPool::getSingletonPtr();
     delete STimer2::getSingletonPtr();
     delete SThreadActiveWndMgr::getSingletonPtr();
     delete SWindowMgr::getSingletonPtr();
+    delete SAppTranslator::getSingletonPtr();
 }
 
 BOOL SApplication::Init( LPCTSTR pszName ,LPCTSTR pszType)
@@ -77,9 +91,11 @@ BOOL SApplication::Init( LPCTSTR pszName ,LPCTSTR pszType)
         int nSize=xmlFont.attribute(L"size").as_int(12);
         SFontPool::getSingleton().SetDefaultFont(S_CW2T(xmlFont.attribute(L"face").value()),nSize);
     }
-
-    SPools::Init(root);
-
+    
+    SStringPool::getSingleton().Init(root.child(L"string"));
+    SSkinPool::getSingleton().Init(root.child(L"skins"));
+    SStylePool::getSingleton().Init(root.child(L"style"));
+    SObjDefAttr::getSingleton().Init(root.child(L"objattr"));
     return TRUE;
 }
 
@@ -116,4 +132,8 @@ int SApplication::Run( HWND hMainWnd )
     return nRet;
 }
 
+STranslator * SApplication::GetTranslator()
+{
+    return SAppTranslator::getSingletonPtr();
+}
 }//namespace SOUI

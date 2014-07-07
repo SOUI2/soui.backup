@@ -15,6 +15,7 @@
 #include "event/EventSet.h"
 #include <OCIdl.h>
 #include "SwndLayout.h"
+#include "res.mgr/SStylePool.h"
 
 namespace SOUI
 {
@@ -379,6 +380,8 @@ public:
     virtual BOOL CreateChildren(pugi::xml_node xmlNode);
     // Create SWindow from xml element
     virtual BOOL InitFromXml(pugi::xml_node xmlNode);
+    
+    virtual SStringW tr(const SStringW &strSrc);
 
     virtual SWND SwndFromPoint(CPoint ptHitTest, BOOL bOnlyText);
 
