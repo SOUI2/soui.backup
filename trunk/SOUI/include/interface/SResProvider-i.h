@@ -2,7 +2,7 @@
 #define _SRESPROVIDERBASE_
 #pragma once
 
-#include "../render/render-i.h"
+#include "render-i.h"
 
 #define MAX_RES_TYPE        10            //资源类型预定义，最大长度不超过10
 #define MAX_RES_NAME        100            //注意：给资源令名时，最大长度不要超过MAX_RES_NAME

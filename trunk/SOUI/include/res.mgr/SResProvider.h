@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "sresprovider-i.h"
+#include "interface/SResProvider-i.h"
 
 namespace SOUI
 {

@@ -4,11 +4,18 @@
 #include "stdafx.h"
 #include "../include/translator.h"
 #include <search.h>
+#include <ObjBase.h>
 
 using namespace pugi;
 
 namespace SOUI
 {
+    int StringCmp(const SStringW &str1,const SStringW &str2)
+    {
+        if(str1 == str2) return 0;
+        else return str1<str2?-1:1;
+    }
+
     class SStrMap
     {
         friend class STranslator;
@@ -17,6 +24,7 @@ namespace SOUI
         SStringW strTranslation;
 
         static int  Compare(const void * e1, const void * e2);
+        static int  CompareInSearch(const void * e1, const void * e2);
     };
 
     class SStrMapEntry
@@ -27,13 +35,9 @@ namespace SOUI
         SStringW strCtx;
         SArray<SStrMap*> m_arrStrMap;
         static int  Compare(const void * e1, const void * e2);
+        static int  CompareInSearch(const void * e1, const void * e2);
     };
 
-    int StringCmp(const SStringW &str1,const SStringW &str2)
-    {
-        if(str1 == str2) return 0;
-        else return str1<str2?-1:1;
-    }
 
     int SStrMap::Compare( const void * e1, const void * e2)
     {
@@ -42,12 +46,26 @@ namespace SOUI
         return StringCmp((*p1)->strSource,(*p2)->strSource);
     }
 
+    int SStrMap::CompareInSearch( const void * e1, const void * e2 )
+    {
+        SStringW * pKey=(SStringW *)e1;
+        SStrMap **p2=(SStrMap**) e2;
+        return StringCmp(*pKey,(*p2)->strSource);     
+    }
+
 
     int SStrMapEntry::Compare( const void * e1, const void * e2 )
     {
         SStrMapEntry **p1=(SStrMapEntry**) e1;
         SStrMapEntry **p2=(SStrMapEntry**) e2;
         return StringCmp((*p1)->strCtx,(*p2)->strCtx);
+    }
+    
+    int SStrMapEntry::CompareInSearch( const void * e1, const void * e2 )
+    {
+        SStringW *pKey=(SStringW*) e1;
+        SStrMapEntry **p2=(SStrMapEntry**) e2;
+        return StringCmp(*pKey,(*p2)->strCtx);
     }
 
     SStrMapEntry::~SStrMapEntry()
@@ -70,15 +88,36 @@ namespace SOUI
             delete m_arrEntry->GetAt(i);
         delete m_arrEntry;
     }
-    
-    BOOL SLang::Load( LPCTSTR pszFileName )
+
+    SStringW SLang::name()
     {
-        return FALSE;
+        return m_strLang;
     }
 
-    BOOL SLang::LoadXML( pugi::xml_node xmlLang )
+    GUID SLang::guid()
+    {
+        return m_guid;
+    }
+
+    BOOL SLang::Load( LPVOID pData,UINT uType )
+    {
+        switch(uType)
+        {
+        case LD_XML:
+            return LoadFromXml((*(pugi::xml_node*)pData));
+        }
+        return FALSE;
+    }
+    
+    BOOL SLang::LoadFromXml( pugi::xml_node xmlLang )
     {
         m_strLang=xmlLang.attribute(L"name").value();
+        
+        OLECHAR szIID[100] = { 0 };
+        wcscpy(szIID,xmlLang.attribute(L"guid").value());
+
+        IIDFromString(szIID,&m_guid);
+        
         int ctxCount=0;
         xml_node nodeCtx=xmlLang.child(L"context");
         while(nodeCtx)
@@ -121,86 +160,98 @@ namespace SOUI
         return TRUE;
     }
 
+    BOOL SLang::tr( const SStringW & strSrc,const SStringW & strCtx,SStringW & strRet )
+    {
+        SStrMapEntry** pEntry = (SStrMapEntry**)bsearch(&strCtx,m_arrEntry->GetData(),m_arrEntry->GetCount(),sizeof(SStrMapEntry*),SStrMapEntry::CompareInSearch);
+        if(pEntry)
+        {
+            SStrMap ** pMap=(SStrMap**)bsearch(&strSrc,(*pEntry)->m_arrStrMap.GetData(),(*pEntry)->m_arrStrMap.GetCount(),sizeof(SStrMap*),SStrMap::CompareInSearch);
+            if(pMap)
+            {
+                strRet=(*pMap)->strTranslation;
+                return TRUE;
+            }
+        }
+        return FALSE;
+    }
+
 
     //////////////////////////////////////////////////////////////////////////
     //  STranslator
-    void STranslator::InstallLang( SLang *pLang )
+    BOOL STranslator::InstallLang(ILang *pLang)
     {
+        POSITION pos=m_lstLang->GetHeadPosition();
+        while(pos)
+        {
+            ILang *p=m_lstLang->GetNext(pos);
+            if(IsEqualGUID(pLang->guid(),p->guid()))
+            {
+                return FALSE;
+            }
+        }
         m_lstLang->AddHead(pLang);
+        pLang->AddRef();
+        return TRUE;
     }
 
-    void STranslator::UninstallLang( SLang *pLang )
+    BOOL STranslator::UninstallLang(REFGUID id)
     {
         POSITION pos=m_lstLang->GetHeadPosition();
         while(pos)
         {
             POSITION posBackup=pos;
-            SLang *p=m_lstLang->GetNext(pos);
-            if(p==pLang)
+            ILang *p=m_lstLang->GetNext(pos);
+            if(IsEqualGUID(id,p->guid()))
             {
                 m_lstLang->RemoveAt(posBackup);
-                break;
+                p->Release();
+                return TRUE;
             }
         }
+        return FALSE;
     }
 
     STranslator::STranslator( void )
     {
-        m_lstLang=new SList<SLang*>;
-        m_ctxStack = new SList<SStringW>;
+        m_lstLang=new SList<ILang*>;
     }
 
     STranslator::~STranslator( void )
     {
-        delete m_lstLang;
-        delete m_ctxStack;
-    }
-
-    void STranslator::PushContext( const SStringW &strCtx )
-    {
-        m_ctxStack->AddHead(strCtx);
-    }
-
-    void STranslator::PushContext( const SStringA &strCtx )
-    {
-        SStringW strCtxW = S_CA2W(strCtx);
-        PushContext(strCtxW);
-    }
-
-    SStringW STranslator::PopContext()
-    {
-        return m_ctxStack->RemoveHead();
-    }
-
-    SStringW STranslator::tr(const SStringW & str )
-    {
-        if(str.IsEmpty()) return str;
-        if(m_ctxStack->IsEmpty()) return str;
-        SStrMapEntry keyEntry;
-        keyEntry.strCtx=m_ctxStack->GetHead();
-        SStrMapEntry *pKeyEntry=&keyEntry;
-        SStrMap keyMap;
-        keyMap.strSource=str;
-        SStrMap *pKeyMap=&keyMap;
         POSITION pos=m_lstLang->GetHeadPosition();
         while(pos)
         {
-            SLang *pLang=m_lstLang->GetNext(pos);
-            SStrMapEntry** pEntry = (SStrMapEntry**)bsearch(&pKeyEntry,pLang->m_arrEntry->GetData(),pLang->m_arrEntry->GetCount(),sizeof(SStrMapEntry*),SStrMapEntry::Compare);
-            if(pEntry)
-            {
-                SStrMap ** pMap=(SStrMap**)bsearch(&pKeyMap,(*pEntry)->m_arrStrMap.GetData(),(*pEntry)->m_arrStrMap.GetCount(),sizeof(SStrMap*),SStrMap::Compare);
-                if(pMap) return (*pMap)->strTranslation;
-            }
+            ILang *pLang=m_lstLang->GetNext(pos);
+            pLang->Release();
         }
-        return str;
+        delete m_lstLang;
     }
 
-    SStringA STranslator::tr( const SStringA & str )
+    SStringW STranslator::tr(const SStringW & strSrc,const SStringW & strCtx)
     {
-        SStringW strW=S_CA2W(str);
-        SStringW strTr = tr(strW);
-        SStringA strRet=S_CW2A(strTr);
-        return strRet;
+        if(strSrc.IsEmpty()) return strSrc;
+        SStringW strRet;
+        POSITION pos=m_lstLang->GetHeadPosition();
+        while(pos)
+        {
+            ILang *pLang=m_lstLang->GetNext(pos);
+            if(pLang->tr(strSrc,strCtx,strRet)) return strRet;
+        }
+        return strSrc;
     }
+
+    BOOL STranslator::CreateLang( ILang ** ppLang )
+    {
+        *ppLang = new SLang;
+        return TRUE;
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    //  
+    BOOL CreateTranslator( ITranslator **ppTrans )
+    {
+        *ppTrans = new STranslator;
+        return TRUE;
+    }
+
 }

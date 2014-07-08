@@ -57,4 +57,10 @@ namespace SOUI
         OnInitFinished(xmlNode);
         return TRUE;
     }
+
+    SStringW SObject::tr( const SStringW &strSrc )
+    {
+        return TR(strSrc,L"");
+    }
+
 }//end of namespace

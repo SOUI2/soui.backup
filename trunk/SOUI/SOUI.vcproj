@@ -805,10 +805,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\core\SAppTranslator.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\activex\SAxContainer.cpp"
 				>
 			</File>
@@ -1182,7 +1178,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\render\imgdecoder-i.h"
+				RelativePath=".\include\interface\imgdecoder-i.h"
 				>
 			</File>
 			<File
@@ -1198,7 +1194,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\render\render-i.h"
+				RelativePath=".\include\interface\render-i.h"
 				>
 			</File>
 			<File
@@ -1290,7 +1286,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\res.mgr\SResProvider-i.h"
+				RelativePath=".\include\interface\SResProvider-i.h"
 				>
 			</File>
 			<File
@@ -1302,7 +1298,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\core\SScriptModule-i.h"
+				RelativePath=".\include\interface\SScriptModule-i.h"
 				>
 			</File>
 			<File
@@ -1314,7 +1310,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\core\SSkinobj-i.h"
+				RelativePath=".\include\interface\SSkinobj-i.h"
 				>
 			</File>
 			<File
@@ -1343,6 +1339,10 @@
 			</File>
 			<File
 				RelativePath=".\include\helper\STipCtrl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\interface\STranslator-i.h"
 				>
 			</File>
 			<File

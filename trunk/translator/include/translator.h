@@ -11,49 +11,63 @@
 #endif
 
 
-#include "souicoll.h"
-#include "string/tstring.h"
-#include "string/strcpcvt.h"
-#include "pugixml/pugixml.hpp"
+#include <souicoll.h>
+#include <unknown/obj-ref-impl.hpp>
+#include <string/tstring.h>
+#include <string/strcpcvt.h>
+#include <pugixml/pugixml.hpp>
+#include <interface/STranslator-i.h>
 
 namespace SOUI
 {
     class SStrMap;
     class SStrMapEntry;
-
-class TRANSLATOR_API SLang
+    
+    enum LANGDATA{
+    LD_UNKNOWN=0,
+    LD_XML,
+    LD_COMPILEDFILE,
+    LD_COMPILEDDATA,
+    };
+    
+class SLang : public TObjRefImpl<ILang>
 {
     friend class STranslator;
 public:
     SLang();
     ~SLang();
-    BOOL Load(LPCTSTR pszFileName);
-    BOOL LoadXML(pugi::xml_node xmlLang);
-    SStringW GetLangName(){return m_strLang;}
+   
+    virtual BOOL Load(LPVOID pData,UINT uType);
+    
+    virtual SStringW name();
+    virtual GUID     guid();
+    virtual BOOL tr(const SStringW & strSrc,const SStringW & strCtx,SStringW & strRet);
 protected:
+    BOOL LoadFromXml(pugi::xml_node xmlLang);
+    
     SStringW m_strLang;
+    GUID     m_guid;
     SArray<SStrMapEntry*> * m_arrEntry;
 };
 
-class TRANSLATOR_API STranslator
+class STranslator : public TObjRefImpl<ITranslator>
 {
 public:
     STranslator(void);
     ~STranslator(void);
     
-    void InstallLang(SLang *pLang);
-    void UninstallLang(SLang *pLang);
-    
-    void PushContext(const SStringW &strCtx);
-    void PushContext(const SStringA &strCtx);
-    SStringW PopContext();
-    
-    SStringW tr(const SStringW & str);
-    SStringA tr(const SStringA & str);
+    /*virtual */
+    BOOL CreateLang(ILang ** ppLang);
+    /*virtual */
+    BOOL InstallLang(ILang *pLang);
+    /*virtual */
+    BOOL UninstallLang(REFGUID id);
+    /*virtual */
+    SStringW tr(const SStringW & strSrc,const SStringW & strCtx);
 protected:
-    SList<SLang*> *m_lstLang;
-    SList<SStringW> *m_ctxStack;
+    SList<ILang*> *m_lstLang;
 };
 
+TRANSLATOR_API BOOL CreateTranslator(ITranslator **ppTrans);
 
 }

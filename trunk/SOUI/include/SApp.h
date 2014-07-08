@@ -1,21 +1,25 @@
 #pragma once
 #include "core/ssingleton.h"
-#include "render/render-i.h"
 #include "unknown/obj-ref-impl.hpp"
+#include "interface/render-i.h"
+#include "interface/SScriptModule-i.h"
+#include "interface/STranslator-i.h"
+
+#include "res.mgr/SResProviderMgr.h"
+
 
 #include "core/smsgloop.h"
 #include "core/SWndFactoryMgr.h"
 #include "core/SSkinFactoryMgr.h"
 
-#include "core/SScriptModule-i.h"
-#include "res.mgr/SResProviderMgr.h"
 
 #define SOUI_VERSION    _T("0.0.0.1")
 
 #define LOADXML(p1,p2,p3) SApplication::getSingleton().LoadXmlDocment(p1,p2,p3)
 #define GETRESPROVIDER    SApplication::getSingletonPtr()
 #define GETRENDERFACTORY SApplication::getSingleton().GetRenderFactory()
-
+#define TR(p1,p2)       SApplication::getSingleton().GetTranslator()->tr(p1,p2)
+               
 #define RT_UIDEF _T("UIDEF")
 #define RT_LAYOUT _T("LAYOUT")
 #define RT_XML _T("XML")
@@ -59,8 +63,10 @@ public:
 
     IRenderFactory * GetRenderFactory(){return m_RenderFactory;}
 
-    STranslator * GetTranslator();
-
+    ITranslator * GetTranslator(){return m_Translator;}
+    
+    void SetTranslator(ITranslator * pTrans){m_Translator = pTrans;}
+    
     SMessageLoop  * GetMessageLoop(){return m_lstMsgLoop.GetTail();}
     
     void PushMessageLoop(SMessageLoop* pMsgLoop)
@@ -84,6 +90,7 @@ protected:
     SList<SMessageLoop*> m_lstMsgLoop;
     SMessageLoop         m_msgLoop;
     CAutoRefPtr<IRenderFactory> m_RenderFactory;
+    CAutoRefPtr<ITranslator>    m_Translator;
 };
 
 }//namespace SOUI
