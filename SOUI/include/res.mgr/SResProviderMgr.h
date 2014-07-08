@@ -1,6 +1,6 @@
 #pragma once
 
-#include "sresprovider-i.h"
+#include "interface/sresprovider-i.h"
 #include "atl.mini/scomcli.h"
 
 namespace SOUI

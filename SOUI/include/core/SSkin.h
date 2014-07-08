@@ -1,6 +1,6 @@
 
 #pragma once
-#include "Sskinobj-i.h"
+#include "interface/Sskinobj-i.h"
 #include "res.mgr/SImgPool.h"
 
 namespace SOUI

@@ -39,7 +39,6 @@
 
 //import pugixml interface
 #include <pugixml/pugixml.hpp>
-#include <translator.h>
 
 #ifdef USING_ATL
     #define _COLL_NS    ATL
@@ -79,13 +78,13 @@
 #include "../../utilities/include/utilities.h"
 
 
-#include "render/render-i.h"
-#include "render/imgdecoder-i.h"
+#include "interface/render-i.h"
+#include "interface/imgdecoder-i.h"
 
+#include "SApp.h"
 #include "helper/SAttrCracker.h"
 #include "res.mgr/sfontpool.h"
 #include "res.mgr/sresprovider.h"
-#include "SApp.h"
 #include "control/SMessageBox.h"
 
 

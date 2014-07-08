@@ -1,6 +1,6 @@
 #pragma once
 #include "core/SSingletonMap.h"
-#include "core/Sskinobj-i.h"
+#include "interface/Sskinobj-i.h"
 
 #define GETSKIN(p1) SSkinPool::getSingleton().GetSkin(p1)
 

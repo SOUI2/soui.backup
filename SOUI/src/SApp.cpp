@@ -4,7 +4,6 @@
 #include "core/SWindowMgr.h"
 #include "core/SThreadActiveWndMgr.h"
 #include "core/mybuffer.h"
-#include "core/SAppTranslator.h"
 
 #include "res.mgr/sfontpool.h"
 #include "res.mgr/simgpool.h"
@@ -20,6 +19,18 @@
 namespace SOUI
 {
 
+class SNullTranslator : public TObjRefImpl<ITranslator>
+{
+public:
+    BOOL CreateLang(ILang **pLang){return FALSE;}
+    BOOL InstallLang(ILang * pLang){return FALSE;}
+    BOOL UninstallLang(REFGUID id){return FALSE;}
+    SStringW tr(const SStringW & strSrc,const SStringW & strCtx)
+    {
+        return strSrc;
+    } 
+};
+
 template<> SApplication* SSingleton<SApplication>::ms_Singleton = 0;
 
 SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName)
@@ -32,6 +43,7 @@ SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR 
     STextServiceHelper::Init();
     SRicheditMenuDef::Init();
     m_lstMsgLoop.AddTail(&m_msgLoop);
+    m_Translator = new SNullTranslator;
 }
 
 SApplication::~SApplication(void)
@@ -44,7 +56,6 @@ SApplication::~SApplication(void)
 
 void SApplication::createSingletons()
 {
-    new SAppTranslator();
     new SThreadActiveWndMgr();
     new SWindowMgr();
     new STimer2();
@@ -66,7 +77,6 @@ void SApplication::destroySingletons()
     delete STimer2::getSingletonPtr();
     delete SThreadActiveWndMgr::getSingletonPtr();
     delete SWindowMgr::getSingletonPtr();
-    delete SAppTranslator::getSingletonPtr();
 }
 
 BOOL SApplication::Init( LPCTSTR pszName ,LPCTSTR pszType)
@@ -130,10 +140,5 @@ int SApplication::Run( HWND hMainWnd )
     SThreadActiveWndMgr::SetActive(NULL);
     if(::IsWindow(hMainWnd)) DestroyWindow(hMainWnd);
     return nRet;
-}
-
-STranslator * SApplication::GetTranslator()
-{
-    return SAppTranslator::getSingletonPtr();
 }
 }//namespace SOUI

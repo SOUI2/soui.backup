@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#include "Sresprovider-i.h"
+#include "interface/Sresprovider-i.h"
 #include "core/SSingletonMap.h"
 
 namespace SOUI

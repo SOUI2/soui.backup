@@ -10,8 +10,8 @@
 #define RENDERSKIA_API
 #endif
 
-#include <render/render-i.h>
-#include <render/imgdecoder-i.h>
+#include <interface/render-i.h>
+#include <interface/imgdecoder-i.h>
 
 
 extern "C" RENDERSKIA_API BOOL CreateRenderFactory_Skia(SOUI::IRenderFactory ** ppRenderFactory,SOUI::IImgDecoderFactory *pImgDecoderFactory);
