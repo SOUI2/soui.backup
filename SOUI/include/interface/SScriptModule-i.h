@@ -8,6 +8,7 @@
 #pragma once
 
 #include "event/EventSubscriber.h"
+#include <unknown/obj-ref-i.h>
 
 // Start of SOUI namespace section
 namespace SOUI
@@ -18,9 +19,8 @@ namespace SOUI
     Abstract interface required for all scripting support modules to be used with
     the SOUI system.
 */
-class SOUI_EXP IScriptModule
+struct IScriptModule : public IObjRef
 {
-public:
     virtual void * GetScriptEngine () = 0;
 
     virtual int loadScriptFile(LPCSTR pszScriptFile) = 0;
