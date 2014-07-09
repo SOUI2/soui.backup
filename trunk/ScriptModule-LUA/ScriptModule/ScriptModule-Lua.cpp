@@ -87,17 +87,6 @@ SScriptModule_Lua::~SScriptModule_Lua()
 }
 
 
-int SScriptModule_Lua::loadScriptFile( LPCSTR pszScriptFile )
-{
-	return luaL_loadfile(d_state,pszScriptFile);
-}
-
-
-int SScriptModule_Lua::loadScriptString( LPCSTR pszScriptStr )
-{
-	return luaL_loadstring(d_state,pszScriptStr);
-}
-
 LPCSTR SScriptModule_Lua::getIdentifierString() const
 {
 	return "SOUI.Script.Lua5.1";
@@ -105,7 +94,7 @@ LPCSTR SScriptModule_Lua::getIdentifierString() const
 
 void SScriptModule_Lua::executeScriptFile( LPCSTR pszScriptFile )
 {
- 	luaL_dofile(d_state,pszScriptFile);
+ 	lua_tinker::dofile(d_state,pszScriptFile);
 }
 
 bool SScriptModule_Lua::executeScriptedEventHandler( LPCSTR handler_name, EventArgs *pArg)
@@ -116,7 +105,7 @@ bool SScriptModule_Lua::executeScriptedEventHandler( LPCSTR handler_name, EventA
 
 void SScriptModule_Lua::executeString( LPCSTR str )
 {
-	luaL_dostring(d_state,str);
+	lua_tinker::dostring(d_state,str);
 }
 
 bool SScriptModule_Lua::subscribeEvent(SOUI::SWindow* target, UINT uEvent, LPCSTR subscriber_name )

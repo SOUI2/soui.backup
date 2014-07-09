@@ -90,6 +90,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     {
         funCreateScript funCS = (funCreateScript)GetProcAddress(hScript,"CreateScriptModule_Lua");
         funCS(&pScriptLua);
+        pScriptLua->executeScriptFile("../demo/lua/test.lua");
         theApp->SetScriptModule(pScriptLua);
     }
 #endif//SUPPORT_LUA

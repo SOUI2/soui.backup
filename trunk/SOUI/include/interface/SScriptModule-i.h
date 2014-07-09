@@ -23,10 +23,6 @@ struct IScriptModule : public IObjRef
 {
     virtual void * GetScriptEngine () = 0;
 
-    virtual int loadScriptFile(LPCSTR pszScriptFile) = 0;
-
-    virtual int loadScriptString(LPCSTR pszScriptStr) = 0;
-
     /*************************************************************************
         Abstract interface
     *************************************************************************/
@@ -39,6 +35,18 @@ struct IScriptModule : public IObjRef
         
     */
     virtual    void    executeScriptFile(LPCSTR pszScriptFile)    = 0;
+
+    /*!
+    \brief
+        Execute script code contained in the given String object.
+
+    \param str
+        String object holding the valid script code that should be executed.
+
+    \return
+        Nothing.
+    */
+    virtual void executeString(LPCSTR str) = 0;
 
 
     /*!
@@ -58,20 +66,6 @@ struct IScriptModule : public IObjRef
         - false if the event was not handled.
     */
     virtual    bool    executeScriptedEventHandler(LPCSTR handler_name, EventArgs *pEvt)=0;
-
-
-    /*!
-    \brief
-        Execute script code contained in the given String object.
-
-    \param str
-        String object holding the valid script code that should be executed.
-
-    \return
-        Nothing.
-    */
-    virtual void executeString(LPCSTR str) = 0;
-
 
 
     /*!

@@ -92,7 +92,7 @@ public:
 		DragFinish(hdrop);
 		GlobalUnlock(medium.hGlobal);
 
-		if(success) DuiMessageBox(NULL,filename,NULL,MB_OK);
+		if(success) SMessageBox(NULL,filename,NULL,MB_OK);
 
 		*pdwEffect=DROPEFFECT_LINK;
 		return S_OK;
@@ -109,9 +109,9 @@ CUIHander::~CUIHander(void)
 {
 }
 
-bool Evt_Test2(SWindow * pSender, LPDUINMHDR pNmhdr)
+bool Evt_Test2(EventArgs *pEvt)
 {
-	pSender->GetUserData();
+	pEvt->sender->GetUserData();
 // 	CUIHander * p=(CUIHander *)pSender->GetUserData();
 // 	pSender->unsubscribeEvent(NM_COMMAND,Subscriber(Evt_Test2));
 // 	pSender->subscribeEvent(NM_COMMAND,Subscriber(&CUIHander::Evt_Test,p));
@@ -133,19 +133,19 @@ LRESULT CUIHander::OnInitDialog(HWND hWnd, LPARAM lParam)
 	HRESULT hr=::RegisterDragDrop(hWnd,m_pMainDlg->GetDropTarget());
 
 	SWindow *pSlider=m_pMainDlg->FindChildByName("IDC_SLIDERTEST");
-	m_pMainDlg->RegisterDragDrop(pSlider->GetDuiHwnd(),new CTestDropTarget);
+	m_pMainDlg->RegisterDragDrop(pSlider->GetSwnd(),new CTestDropTarget);
 
 	//初始化虚拟列表
-	CDuiListBoxEx *pList2=(CDuiListBoxEx*)m_pMainDlg->FindChildByName("mylist2");
+	SListBoxEx *pList2=(SListBoxEx*)m_pMainDlg->FindChildByName(L"mylist2");
 	if(pList2)
 	{
 		pList2->SetItemCount(100);
 	}
-	CDuiButton *pBtn=(CDuiButton *)m_pMainDlg->FindChildByCmdID(IDC_REPSEL);
+	SButton *pBtn=(SButton *)m_pMainDlg->FindChildByName(L"IDC_REPSEL");
 	m_pMainDlg->GetFocusManager()->RegisterAccelerator(SOUI::CAccelerator(VK_RETURN,true),pBtn);//给repsel按钮注册一个热键Ctrl+ENTER。
 #ifdef LUA_TEST
 	SWindow *pTst=m_pMainDlg->FindChildByName("btn_tstevt");
-	DuiSystem::getSingleton().GetScriptModule()->subscribeEvent(pTst,NM_COMMAND,"onEvtTstClick");
+	SApplication::getSingleton().GetScriptModule()->subscribeEvent(pTst,EVT_CMD,"onEvtTstClick");
 #endif
 
  	OnBtnInitListClick();
@@ -163,7 +163,7 @@ LRESULT CUIHander::OnInitDialog(HWND hWnd, LPARAM lParam)
 void CUIHander::OnDestory()
 {
 	::RevokeDragDrop(m_pMainDlg->m_hWnd);
-	CDuiListCtrl *pList=m_pMainDlg->FindChildByName2<CDuiListCtrl*>("lc_test");
+	SListCtrl *pList=m_pMainDlg->FindChildByName2<SListCtrl>("lc_test");
 	for(int i=0;i<pList->GetItemCount();i++)
 	{
 		student *pst=(student*) pList->GetItemData(i);
@@ -174,7 +174,7 @@ void CUIHander::OnDestory()
 
 void CUIHander::OnAttrReposition()
 {
-	m_pMainDlg->FindChildByCmdID(测试)->SetAttribute("pos","|-100,|-15,|100,|15");
+	m_pMainDlg->FindChildByID(L"测试")->SetAttribute(L"pos",L"|-100,|-15,|100,|15");
 }
 
 

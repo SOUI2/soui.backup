@@ -6,8 +6,6 @@ BOOL ExpLua_ScriptModule(lua_State *L)
 	{
 		lua_tinker::class_add<IScriptModule>(L,"IScriptModule");
 		lua_tinker::class_def<IScriptModule>(L,"GetScriptEngine",&IScriptModule::GetScriptEngine);
-		lua_tinker::class_def<IScriptModule>(L,"loadScriptFile",&IScriptModule::loadScriptFile);
-		lua_tinker::class_def<IScriptModule>(L,"loadScriptString",&IScriptModule::loadScriptString);
 		lua_tinker::class_def<IScriptModule>(L,"executeScriptFile",&IScriptModule::executeScriptFile);
 		lua_tinker::class_def<IScriptModule>(L,"executeString",&IScriptModule::executeString);
 		lua_tinker::class_def<IScriptModule>(L,"executeScriptedEventHandler",&IScriptModule::executeScriptedEventHandler);

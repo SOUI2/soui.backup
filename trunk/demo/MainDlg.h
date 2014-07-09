@@ -53,6 +53,7 @@ public:
 	int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	void OnShowWindow(BOOL bShow, UINT nStatus);
 
+
 protected:
     void InitListCtrl();
     bool OnListHeaderClick(EventArgs *pEvt);

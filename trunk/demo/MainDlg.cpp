@@ -135,6 +135,12 @@ LRESULT CMainDlg::OnInitDialog( HWND hWnd, LPARAM lParam )
 {
     m_bLayoutInited=TRUE;
     InitListCtrl();
+    
+#ifdef SUPPORT_LUA
+    SWindow *pTst=FindChildByName(L"btn_tstevt");
+    SApplication::getSingleton().GetScriptModule()->subscribeEvent(pTst,EVT_CMD,"onEvtTstClick");
+#endif
+
     return 0;
 }
 
