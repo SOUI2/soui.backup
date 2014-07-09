@@ -39,7 +39,7 @@ public:
     }
 
     SOUI_ATTRS_BEGIN()
-        ATTR_STRINGT(L"title", m_strTitle, FALSE)
+        ATTR_I18NSTRT(L"title", m_strTitle, FALSE)
     SOUI_ATTRS_END()
 protected:
 
