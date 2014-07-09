@@ -69,7 +69,7 @@ BOOL SHostWnd::SetXml(LPCTSTR pszXmlName)
 BOOL SHostWnd::SetXml(LPCWSTR lpszXml,int nLen)
 {
     pugi::xml_document xmlDoc;
-    if(!xmlDoc.load_buffer(lpszXml,nLen,pugi::parse_default,pugi::encoding_utf16)) return FALSE;
+    if(!xmlDoc.load_buffer(lpszXml,nLen*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) return FALSE;
  
     return InitFromXml(xmlDoc.child(L"SOUI"));
 }
