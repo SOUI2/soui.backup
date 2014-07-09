@@ -68,6 +68,6 @@ protected:
     SList<ILang*> *m_lstLang;
 };
 
-TRANSLATOR_API BOOL CreateTranslator(ITranslator **ppTrans);
+extern "C" TRANSLATOR_API BOOL CreateTranslator(ITranslator **ppTrans);
 
 }

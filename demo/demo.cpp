@@ -9,9 +9,12 @@
 #endif
 
 #include "MainDlg.h"
-#include <translator.h>
 
-#define RENDER_GDI
+#define RENDER_GDI      //打开RENDER_GDI时使用render-gdi模块来渲染，否则采用render-skia渲染
+
+#define SUPPORT_LANG    //打开SUPPORT_LANG时，演示多语言支持
+
+#define RES_USINGFILE   //打开RES_USINGFILE从文件中加载资源，否则从PE资源中加载UI资源
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
@@ -51,18 +54,47 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     
 	SApplication *theApp=new SApplication(pRenderFactory,hInstance);
     
+#ifdef SUPPORT_LANG
+    typedef BOOL (*funCreateTranslator)(ITranslator **);
     CAutoRefPtr<ITranslator> trans;
-    CreateTranslator(&trans);
-    theApp->SetTranslator(trans);
-    pugi::xml_document xmlLang;
-    if(xmlLang.load_file(L"../demo/translation files/lang_cn.xml"))
+    #ifdef _DEBUG
+    HMODULE hTrans=LoadLibrary(_T("translator_d.dll"));
+    #else
+    HMODULE hTrans=LoadLibrary(_T("translator.dll"));
+    #endif//_DEBUG
+    if(hTrans)
     {
-        CAutoRefPtr<ILang> langCN;
-        trans->CreateLang(&langCN);
-        langCN->Load(&xmlLang.child(L"language"),LD_XML);
-        trans->InstallLang(langCN);
+        funCreateTranslator funCT = (funCreateTranslator)GetProcAddress(hTrans,"CreateTranslator");
+        funCT(&trans);
+        theApp->SetTranslator(trans);
+        pugi::xml_document xmlLang;
+        if(xmlLang.load_file(L"../demo/translation files/lang_cn.xml"))
+        {
+            CAutoRefPtr<ILang> langCN;
+            trans->CreateLang(&langCN);
+            langCN->Load(&xmlLang.child(L"language"),1);//1=LD_XML
+            trans->InstallLang(langCN);
+        }
     }
-#if 1
+#endif//SUPPORT_LANG
+
+#ifdef SUPPORT_LUA
+    typedef BOOL (*funCreateScript)(IScriptModule **);
+    CAutoRefPtr<IScriptModule> pScriptLua;
+#ifdef _DEBUG
+    HMODULE hScript=LoadLibrary(_T("scriptmodule-lua_d.dll"));
+#else
+    HMODULE hScript=LoadLibrary(_T("scriptmodule-lua.dll"));
+#endif//_DEBUG
+    if(hScript)
+    {
+        funCreateScript funCS = (funCreateScript)GetProcAddress(hScript,"CreateScriptModule_Lua");
+        funCS(&pScriptLua);
+        theApp->SetScriptModule(pScriptLua);
+    }
+#endif//SUPPORT_LUA
+
+#ifdef RES_USINGFILE
     TCHAR szCurrentDir[MAX_PATH]={0};
     GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
     LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
