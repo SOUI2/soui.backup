@@ -12,7 +12,8 @@
 namespace SOUI
 {
 
-template <typename T> class SSingleton
+template <typename T> 
+class SOUI_EXP SSingleton
 {
 protected:
     static    T* ms_Singleton;

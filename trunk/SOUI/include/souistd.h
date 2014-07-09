@@ -1,12 +1,14 @@
 
 #ifdef DLL_SOUI
 # ifdef SOUI_EXPORTS
-# pragma message("dll export")
+# pragma message("soui:dll export")
 #  define SOUI_EXP __declspec(dllexport)
 # else
+# pragma message("soui:dll import")
 #  define SOUI_EXP __declspec(dllimport)
 # endif // SOUI_EXPORTS
 #else
+# pragma message("soui:lib")
 #define SOUI_EXP
 #endif
 
@@ -88,6 +90,8 @@
 #include "helper/SAttrCracker.h"
 #include "res.mgr/sfontpool.h"
 #include "res.mgr/sresprovider.h"
+
+#include "control/souictrls.h"
 #include "control/SMessageBox.h"
 
 
@@ -96,8 +100,6 @@
 
 #ifdef _DEBUG
 #   pragma comment(lib,"utilities_d.lib")
-#   pragma comment(lib,"translator_d.lib")
 #else
 #   pragma comment(lib,"utilities.lib")
-#   pragma comment(lib,"translator.lib")
 #endif
