@@ -118,9 +118,8 @@ int SListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData/*=0*/)
     if(!pszXml && !m_xmlTempl) return -1;
     if(pszXml)
     {
-        SStringA strUtf8=S_CW2A(pszXml,CP_UTF8);
         pugi::xml_document xmlDoc;
-        if(!xmlDoc.load_buffer((LPCSTR)strUtf8,strUtf8.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return -1;
+        if(!xmlDoc.load_buffer(pszXml,wcslen(pszXml)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) return -1;
         return InsertItem(iItem,xmlDoc.first_child(),dwData);
     }else
     {
