@@ -84,7 +84,7 @@ protected:
     void createSingletons();
     void destroySingletons();
 
-    IScriptModule        * m_pScriptModule;
+    CAutoRefPtr<IScriptModule>  m_pScriptModule;
     HINSTANCE m_hInst;
     
     SList<SMessageLoop*> m_lstMsgLoop;

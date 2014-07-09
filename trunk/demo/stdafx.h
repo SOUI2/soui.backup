@@ -5,24 +5,13 @@
 
 #pragma once
 
-#define WINVER        0x0600
-#define _WIN32_WINNT    0x0601
+#define SUPPORT_LUA     //打开SUPPORT_LUA来演示如何在SOUI中和LUA交互。
 
 #include <souistd.h>
 #include <core/SHostDialog.h>
 #include <control/SMessageBox.h>
 #include <control/souictrls.h>
 #include <res.mgr/sobjdefattr.h>
-
-#if defined(DLL_SOUI) && defined(_DEBUG) && !defined(_WIN64)
-// #define LUA_TEST 
-#endif
-
-#ifdef LUA_TEST 
-#include "..\scriptModule\luaScriptModule\luaScriptModule\luaScriptModule.h"
-#pragma comment(lib,"..\\scriptModule\\luaScriptModule\\lib\\luaScriptModule_d.lib")
-#endif
-
 
 #include "resource.h"	//APP资源
 

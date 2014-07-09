@@ -35,7 +35,6 @@ template<> SApplication* SSingleton<SApplication>::ms_Singleton = 0;
 
 SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName)
     :m_hInst(hInst)
-    ,m_pScriptModule(NULL)
     ,m_RenderFactory(pRendFactory)
 {
     createSingletons();
