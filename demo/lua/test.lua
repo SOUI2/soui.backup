@@ -1,4 +1,4 @@
-function onEvtTest2(sender,nmhdr)
+function onEvtTest2(sender)
 	SMessageBox(0,L "onEvtTest2", L "msgbox", 1);
 	return 1;
 end
