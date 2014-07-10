@@ -71,7 +71,7 @@ ATOM CSimpleWnd::RegisterSimpleWnd( HINSTANCE hInst,LPCTSTR pszSimpleWndName )
     wcex.style            = CS_HREDRAW | CS_VREDRAW |CS_DBLCLKS;
     wcex.lpfnWndProc    = StartWindowProc; // 第一个处理函数
     wcex.hInstance        = hInst;
-    wcex.hCursor        = LoadCursor(NULL, IDC_ARROW);
+    wcex.hCursor        = ::LoadCursor(NULL, IDC_ARROW);
     wcex.hbrBackground    = (HBRUSH)(COLOR_WINDOW+1);
     wcex.lpszClassName    = pszSimpleWndName;
     return ::RegisterClassEx(&wcex);

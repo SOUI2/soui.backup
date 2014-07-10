@@ -476,16 +476,33 @@ namespace SOUI
         // string concatenation
         const TStringT& operator+=(const tchar* psz)
         {
-            TStringT strCopy(psz);
-            ConcatInPlace(strCopy.GetData()->nDataLength, strCopy.m_pszData);
-            return *this;
+            return Append(psz);
         }
+        
         const TStringT& operator+=(tchar ch)
+        {
+            return Append(ch);
+        }
+        
+        const TStringT& operator+=(const TStringT& src)
+        {
+            return Append(src);
+        }
+        
+        const TStringT& Append(tchar ch)
         {
             ConcatInPlace(1, &ch);
             return *this;
         }
-        const TStringT& operator+=(const TStringT& src)
+
+        const TStringT& Append(const tchar * psz)
+        {
+            TStringT strCopy(psz);
+            ConcatInPlace(strCopy.GetData()->nDataLength, strCopy.m_pszData);
+            return *this;
+        }
+        
+        const TStringT& Append(const TStringT& src)
         {
             TStringT strCopy(src);
             ConcatInPlace(strCopy.GetData()->nDataLength, strCopy.m_pszData);

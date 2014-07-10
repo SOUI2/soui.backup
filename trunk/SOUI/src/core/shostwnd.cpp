@@ -708,7 +708,7 @@ BOOL SHostWnd::OnNcActivate(BOOL bActive)
 
 UINT SHostWnd::OnWndNcHitTest(CPoint point)
 {
-    if (m_hostAttr.m_bResizable)
+    if (m_hostAttr.m_bResizable && !::IsZoomed(m_hWnd))
     {
         ScreenToClient(&point);
         if (point.x > m_rcWindow.right - m_hostAttr.m_rcMargin.right)

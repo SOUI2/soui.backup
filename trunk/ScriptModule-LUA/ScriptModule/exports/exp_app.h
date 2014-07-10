@@ -15,7 +15,7 @@ BOOL ExpLua_App(lua_State *L)
 		lua_tinker::class_def<SApplication>(L,"SetScriptModule",&SApplication::SetScriptModule);
 		lua_tinker::class_def<SApplication>(L,"GetTranslator",&SApplication::GetTranslator);
         lua_tinker::class_def<SApplication>(L,"SetTranslator",&SApplication::SetTranslator);
-		lua_tinker::def(L,"SApplication_getSingleton",&SApplication::getSingletonPtr);
+		lua_tinker::def(L,"theApp",&SApplication::getSingletonPtr);
 
 		return TRUE;
 	}catch(...)

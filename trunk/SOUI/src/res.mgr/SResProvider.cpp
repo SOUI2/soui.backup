@@ -148,13 +148,8 @@ HICON SResProviderFiles::LoadIcon(LPCTSTR pszResName ,int cx/*=0*/,int cy/*=0*/)
 HCURSOR SResProviderFiles::LoadCursor(LPCTSTR pszResName )
 {
     SStringT strPath=GetRes(_T("CURSOR"),pszResName);
-    if(!strPath.IsEmpty())
-    {
-        return (HCURSOR)::LoadImage(NULL, pszResName, IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
-    }else
-    {//不是文件内的光标资源时，尝试从系统中载入光标
-        return ::LoadCursor(NULL,pszResName);
-    }
+    if(strPath.IsEmpty()) return NULL;
+    return (HCURSOR)::LoadImage(NULL, pszResName, IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
 }
 
 IBitmap * SResProviderFiles::LoadImage( LPCTSTR strType,LPCTSTR pszResName )

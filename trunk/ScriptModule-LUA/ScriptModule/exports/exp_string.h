@@ -40,6 +40,9 @@ BOOL ExpLua_String(lua_State *L)
         lua_tinker::class_def<SStringA>(L,"SetLength",&SStringA::SetLength);
         lua_tinker::class_def<SStringA>(L,"LockBuffer",&SStringA::LockBuffer);
         lua_tinker::class_def<SStringA>(L,"UnlockBuffer",&SStringA::UnlockBuffer);
+        lua_tinker::class_def<SStringA>(L,"AppendChar",(const SStringA & (SStringA::*)(char))&SStringA::Append);
+        lua_tinker::class_def<SStringA>(L,"AppendPsz",(const SStringA & (SStringA::*)(const char *))&SStringA::Append);
+        lua_tinker::class_def<SStringA>(L,"AppendStr",(const SStringA & (SStringA::*)(const SStringA &))&SStringA::Append);
 
 
         lua_tinker::class_add<SStringW>(L,"SStringW");
@@ -78,6 +81,9 @@ BOOL ExpLua_String(lua_State *L)
         lua_tinker::class_def<SStringW>(L,"SetLength",&SStringW::SetLength);
         lua_tinker::class_def<SStringW>(L,"LockBuffer",&SStringW::LockBuffer);
         lua_tinker::class_def<SStringW>(L,"UnlockBuffer",&SStringW::UnlockBuffer);
+        lua_tinker::class_def<SStringW>(L,"AppendChar",(const SStringW & (SStringW::*)(wchar_t))&SStringW::Append);
+        lua_tinker::class_def<SStringW>(L,"AppendPsz",(const SStringW & (SStringW::*)(const wchar_t *))&SStringW::Append);
+        lua_tinker::class_def<SStringW>(L,"AppendStr",(const SStringW & (SStringW::*)(const SStringW &))&SStringW::Append);
 		return TRUE;
 	}catch(...)
 	{
