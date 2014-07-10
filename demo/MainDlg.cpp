@@ -54,7 +54,7 @@ void CMainDlg::InitListCtrl()
         SWindow *pHeader=pList->GetWindow(GSW_FIRSTCHILD);
         pHeader->subscribeEvent(EVT_HEADER_CLICK,Subscriber(&CMainDlg::OnListHeaderClick,this));
 
-        TCHAR szColNames[][20]={_T("name"),_T("sex"),_T("age"),_T("score")};
+        TCHAR szColNames[][20]={_T("name"),_T("gender"),_T("age"),_T("score")};
         for(int i=0;i<ARRAYSIZE(szColNames);i++)
             pList->InsertColumn(i,szColNames[i],50);
         TCHAR szSex[][5]={_T("ÄÐ"),_T("Å®"),_T("ÈËÑý")};
