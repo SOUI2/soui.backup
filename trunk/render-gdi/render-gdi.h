@@ -13,32 +13,26 @@
 
 namespace SOUI
 {
-    //实现一些和特定系统相关的接口
-    struct IRenderFactory_GDI : public IRenderFactory
-    {
-        virtual IImgDecoderFactory * GetImgDecoderFactory()=0;
-    };
-
-
     //////////////////////////////////////////////////////////////////////////
     // SRenderFactory_GDI
-    class SRenderFactory_GDI : public TObjRefImpl<IRenderFactory_GDI>
+    class SRenderFactory_GDI : public TObjRefImpl<IRenderFactory>
     {
     public:
-        SRenderFactory_GDI(IImgDecoderFactory *pImgDecoderFactory):m_imgDecoderFactory(pImgDecoderFactory)
+        SRenderFactory_GDI()
         {
         }
 
         ~SRenderFactory_GDI()
         {
         }
-
+        
+        virtual IImgDecoderFactory * GetImgDecoderFactory(){return m_imgDecoderFactory;}
+        virtual void SetImgDecoderFactory(IImgDecoderFactory *pImgDecoderFac){ m_imgDecoderFactory=pImgDecoderFac;}
         virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei);
         virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf);
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
         virtual BOOL CreateRegion(IRegion **ppRgn);
 
-        IImgDecoderFactory * GetImgDecoderFactory(){return m_imgDecoderFactory;}
     protected:
         CAutoRefPtr<IImgDecoderFactory> m_imgDecoderFactory;
     };
@@ -50,7 +44,7 @@ namespace SOUI
     class TSkiaRenderObjImpl : public TObjRefImpl<T>
     {
     public:
-        TSkiaRenderObjImpl(IRenderFactory_GDI * pRenderFac):m_pRenderFactory(pRenderFac)
+        TSkiaRenderObjImpl(IRenderFactory * pRenderFac):m_pRenderFactory(pRenderFac)
         {
 
         }
@@ -60,12 +54,12 @@ namespace SOUI
             return m_pRenderFactory;
         }
 
-        virtual IRenderFactory_GDI * GetRenderFactory_GDI() const
+        virtual IRenderFactory * GetRenderFactory_GDI() const
         {
             return m_pRenderFactory;
         }
     protected:
-        IRenderFactory_GDI *m_pRenderFactory;
+        IRenderFactory *m_pRenderFactory;
     };
 
 
@@ -74,7 +68,7 @@ namespace SOUI
     class SPen_GDI : public TSkiaRenderObjImpl<IPen>
     {
     public:
-        SPen_GDI(IRenderFactory_GDI * pRenderFac,int iStyle=PS_SOLID,COLORREF cr=0,int cWidth=1)
+        SPen_GDI(IRenderFactory * pRenderFac,int iStyle=PS_SOLID,COLORREF cr=0,int cWidth=1)
             :TSkiaRenderObjImpl<IPen>(pRenderFac)
             ,m_nWidth(cWidth),m_style(iStyle),m_cr(cr&0x00FFFFFF)
             ,m_hPen(NULL)
@@ -111,7 +105,7 @@ namespace SOUI
     class SFont_GDI: public TSkiaRenderObjImpl<IFont>
     {
     public:
-        SFont_GDI(IRenderFactory_GDI * pRenderFac,const LOGFONT * plf)
+        SFont_GDI(IRenderFactory * pRenderFac,const LOGFONT * plf)
             :TSkiaRenderObjImpl<IFont>(pRenderFac),m_hFont(NULL)
         {
             memcpy(&m_lf,plf,sizeof(LOGFONT));
@@ -142,11 +136,11 @@ namespace SOUI
     class SBrush_GDI : public TSkiaRenderObjImpl<IBrush>
     {
     public:
-        static SBrush_GDI * CreateSolidBrush(IRenderFactory_GDI * pRenderFac,COLORREF cr){
+        static SBrush_GDI * CreateSolidBrush(IRenderFactory * pRenderFac,COLORREF cr){
             return new SBrush_GDI(pRenderFac,cr);
         }
 
-        static SBrush_GDI * CreateBitmapBrush(IRenderFactory_GDI * pRenderFac,HBITMAP hBmp)
+        static SBrush_GDI * CreateBitmapBrush(IRenderFactory * pRenderFac,HBITMAP hBmp)
         {
             return new SBrush_GDI(pRenderFac,hBmp);
         }
@@ -156,12 +150,12 @@ namespace SOUI
         
         HBRUSH GetBrush(){return m_hBrush;}
     protected:
-        SBrush_GDI(IRenderFactory_GDI * pRenderFac,COLORREF cr)
+        SBrush_GDI(IRenderFactory * pRenderFac,COLORREF cr)
             :TSkiaRenderObjImpl<IBrush>(pRenderFac),m_fBmp(FALSE)
         {
             m_hBrush = ::CreateSolidBrush(cr&0x00ffffff);
         }
-        SBrush_GDI(IRenderFactory_GDI * pRenderFac,HBITMAP hBmp)
+        SBrush_GDI(IRenderFactory * pRenderFac,HBITMAP hBmp)
             :TSkiaRenderObjImpl<IBrush>(pRenderFac),m_fBmp(TRUE)
         {
             m_hBrush = ::CreatePatternBrush(hBmp);
@@ -180,7 +174,7 @@ namespace SOUI
     class SBitmap_GDI : public TSkiaRenderObjImpl<IBitmap>
     {
     public:
-        SBitmap_GDI(IRenderFactory_GDI *pRenderFac)
+        SBitmap_GDI(IRenderFactory *pRenderFac)
             :TSkiaRenderObjImpl<IBitmap>(pRenderFac),m_hBmp(0)
         {
             m_sz.cx=m_sz.cy=0;
@@ -211,7 +205,7 @@ namespace SOUI
     class SRegion_GDI: public TSkiaRenderObjImpl<IRegion>
     {
     public:
-        SRegion_GDI(IRenderFactory_GDI *pRenderFac);
+        SRegion_GDI(IRenderFactory *pRenderFac);
         ~SRegion_GDI(){
             DeleteObject(m_hRgn);
         }
@@ -238,7 +232,7 @@ namespace SOUI
     class SRenderTarget_GDI: public TSkiaRenderObjImpl<IRenderTarget>
     {
     public:
-        SRenderTarget_GDI(IRenderFactory_GDI* pRenderFactory,int nWid,int nHei);
+        SRenderTarget_GDI(IRenderFactory* pRenderFactory,int nWid,int nHei);
         ~SRenderTarget_GDI();
 
         //只支持创建位图表面

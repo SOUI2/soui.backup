@@ -35,11 +35,16 @@ namespace SOUI
 
     class SOUI_EXP SMessageLoop
     {
+    protected:
+        static SMessageLoop *s_pCurMsgLoop;
+        
     public:
         SArray<IMessageFilter*> m_aMsgFilter;
         SArray<IIdleHandler*> m_aIdleHandler;
         MSG m_msg;
-
+        
+        static SMessageLoop * GetCurMsgLoop(){return s_pCurMsgLoop;}
+        
         // Message filter operations
         BOOL AddMessageFilter(IMessageFilter* pMessageFilter)
         {
@@ -108,7 +113,11 @@ namespace SOUI
             BOOL bDoIdle = TRUE;
             int nIdleCount = 0;
             BOOL bRet;
-
+            
+            SMessageLoop *pOldMsgLoop=s_pCurMsgLoop;
+            
+            s_pCurMsgLoop=this;
+            
             for(;;)
             {
                 while(bDoIdle && !::PeekMessage(&m_msg, NULL, 0, 0, PM_NOREMOVE))
@@ -142,10 +151,14 @@ namespace SOUI
                     nIdleCount = 0;
                 }
             }
-
+            
+            s_pCurMsgLoop = pOldMsgLoop;    //恢复原来的msgloop指针
+            
             return (int)m_msg.wParam;
         }
 
     };
+
+    __declspec(selectany) SMessageLoop* SMessageLoop::s_pCurMsgLoop =0;
 
 }//end of namespace SOUI

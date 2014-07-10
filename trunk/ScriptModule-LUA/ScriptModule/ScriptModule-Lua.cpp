@@ -120,7 +120,7 @@ bool SScriptModule_Lua::unsubscribeEvent(SOUI::SWindow* target, UINT uEvent, LPC
 
 
 //////////////////////////////////////////////////////////////////////////
-BOOL CreateScriptModule_Lua(SOUI:: IScriptModule ** ppScript )
+BOOL SCreateInstance(IObjRef ** ppScript)
 {
     *ppScript= new SScriptModule_Lua;
     return TRUE;

@@ -11,7 +11,7 @@
 #include <dwmapi.h>
 #pragma comment(lib,"dwmapi.lib")
 
-CMainDlg::CMainDlg() : SHostDialog(_T("IDR_DUI_MAIN_DIALOG"))
+CMainDlg::CMainDlg() : SHostWnd(_T("IDR_DUI_MAIN_DIALOG"))
 {
 // 	m_pUiHandler = new CUIHander(this);
 	m_bLayoutInited=FALSE;

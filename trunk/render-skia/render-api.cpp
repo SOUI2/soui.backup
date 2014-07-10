@@ -3,8 +3,8 @@
 
 #include "render-skia.h"
 
-BOOL CreateRenderFactory_Skia(SOUI::IRenderFactory ** ppRenderFactory,SOUI::IImgDecoderFactory *pImgDecoderFactory)
+BOOL SCreateInstance(IObjRef ** ppRenderFactory)
 {
-    *ppRenderFactory = new SOUI::SRenderFactory_Skia(pImgDecoderFactory);
+    *ppRenderFactory = new SOUI::SRenderFactory_Skia;
     return TRUE;
 }

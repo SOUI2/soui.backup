@@ -16,127 +16,144 @@
 
 #define RES_USINGFILE   //打开RES_USINGFILE从文件中加载资源，否则从PE资源中加载UI资源
 
+class SComLoader
+{
+    typedef BOOL (*funSCreateInstance)(IObjRef **);
+public:
+    SComLoader():m_hMod(0),m_funCreateInst(NULL){}
+    ~SComLoader()
+    {
+        if(m_hMod) FreeLibrary(m_hMod);
+    }
+
+    BOOL CreateInstance(LPCTSTR pszDllPath,IObjRef **ppObj)
+    {
+        if(!m_funCreateInst)
+        {
+            m_hMod=LoadLibrary(pszDllPath);
+            if(!m_hMod) return FALSE;
+            m_funCreateInst=(funSCreateInstance)GetProcAddress(m_hMod,"SCreateInstance");
+            if(!m_funCreateInst)
+            {
+                FreeLibrary(m_hMod);
+                return FALSE;
+            }
+        }
+        return m_funCreateInst(ppObj);
+    }
+protected:
+    HMODULE m_hMod;
+    funSCreateInstance m_funCreateInst;
+};
+
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
-	HRESULT hRes = OleInitialize(NULL);
-	ASSERT(SUCCEEDED(hRes));
+    HRESULT hRes = OleInitialize(NULL);
+    ASSERT(SUCCEEDED(hRes));
     
-    CAutoRefPtr<SOUI::IImgDecoderFactory> pImgDecoderFactory;
-    CAutoRefPtr<SOUI::IRenderFactory> pRenderFactory;
+    int nRet = 0; 
+
+    SComLoader imgDecLoader;
+    SComLoader renderLoader;
+    SComLoader transLoader;
+    SComLoader scriptLoader;
     
-#ifdef _DEBUG
-    HMODULE hImgDecoder = LoadLibrary(_T("imgdecoder-wic_d.dll"));
-    #ifdef RENDER_GDI
-    HMODULE hRender = LoadLibrary(_T("render-gdi_d.dll"));
-    #else
-    HMODULE hRender = LoadLibrary(_T("render-skia_d.dll"));
-    #endif
-#else
-    HMODULE hImgDecoder = LoadLibrary(_T("imgdecoder-wic.dll"));
-    #ifdef RENDER_GDI
-    HMODULE hRender = LoadLibrary(_T("render-gdi.dll"));
-    #else
-    HMODULE hRender = LoadLibrary(_T("render-skia.dll"));
-    #endif
-#endif
-    typedef BOOL (*fnCreateImgDecoderFactory)(SOUI::IImgDecoderFactory**,BOOL);
-    fnCreateImgDecoderFactory funImg = (fnCreateImgDecoderFactory)GetProcAddress(hImgDecoder,"CreateImgDecoderFactory_WIC");
-    funImg(&pImgDecoderFactory,TRUE);
-    
-    typedef BOOL (*fnCreateRenderFactory)(SOUI::IRenderFactory **,SOUI::IImgDecoderFactory *);
-    #ifdef RENDER_GDI
-    fnCreateRenderFactory funRender = (fnCreateRenderFactory)GetProcAddress(hRender,"CreateRenderFactory_GDI");
-    #else
-    fnCreateRenderFactory funRender = (fnCreateRenderFactory)GetProcAddress(hRender,"CreateRenderFactory_Skia");
-    #endif
-    
-    funRender(&pRenderFactory,pImgDecoderFactory);
-    
-	SApplication *theApp=new SApplication(pRenderFactory,hInstance);
-    
-#ifdef SUPPORT_LANG
-    typedef BOOL (*funCreateTranslator)(ITranslator **);
-    CAutoRefPtr<ITranslator> trans;
-    #ifdef _DEBUG
-    HMODULE hTrans=LoadLibrary(_T("translator_d.dll"));
-    #else
-    HMODULE hTrans=LoadLibrary(_T("translator.dll"));
-    #endif//_DEBUG
-    if(hTrans)
     {
-        funCreateTranslator funCT = (funCreateTranslator)GetProcAddress(hTrans,"CreateTranslator");
-        funCT(&trans);
-        theApp->SetTranslator(trans);
-        pugi::xml_document xmlLang;
-        if(xmlLang.load_file(L"../demo/translation files/lang_cn.xml"))
+
+        CAutoRefPtr<SOUI::IImgDecoderFactory> pImgDecoderFactory;
+        CAutoRefPtr<SOUI::IRenderFactory> pRenderFactory;
+#ifdef _DEBUG
+        imgDecLoader.CreateInstance(_T("imgdecoder-wic_d.dll"),(IObjRef**)&pImgDecoderFactory);
+#ifdef RENDER_GDI
+        renderLoader.CreateInstance(_T("render-gdi_d.dll"),(IObjRef**)&pRenderFactory);
+#else
+        renderLoader.CreateInstance(_T("render-skia_d.dll"),(IObjRef**)&pRenderFactory);
+#endif
+#else
+        imgDecLoader.CreateInstance(_T("imgdecoder-wic.dll"),(IObjRef**)&pImgDecoderFactory);
+#ifdef RENDER_GDI
+        renderLoader.CreateInstance(_T("render-gdi.dll"),(IObjRef**)&pRenderFactory);
+#else
+        renderLoader.CreateInstance(_T("render-skia.dll"),(IObjRef**)&pRenderFactory);
+#endif
+#endif
+
+        pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
+
+        SApplication *theApp=new SApplication(pRenderFactory,hInstance);
+
+#ifdef SUPPORT_LANG
+        CAutoRefPtr<ITranslator> trans;
+#ifdef _DEBUG
+        transLoader.CreateInstance(_T("translator_d.dll"),(IObjRef**)&trans);
+#else
+        transLoader.CreateInstance(_T("translator.dll"),(IObjRef**)&trans);
+#endif//_DEBUG
+        if(trans)
         {
-            CAutoRefPtr<ILang> langCN;
-            trans->CreateLang(&langCN);
-            langCN->Load(&xmlLang.child(L"language"),1);//1=LD_XML
-            trans->InstallLang(langCN);
+            theApp->SetTranslator(trans);
+            pugi::xml_document xmlLang;
+            if(xmlLang.load_file(L"../demo/translation files/lang_cn.xml"))
+            {
+                CAutoRefPtr<ILang> langCN;
+                trans->CreateLang(&langCN);
+                langCN->Load(&xmlLang.child(L"language"),1);//1=LD_XML
+                trans->InstallLang(langCN);
+            }
         }
-    }
 #endif//SUPPORT_LANG
 
 #ifdef SUPPORT_LUA
-    typedef BOOL (*funCreateScript)(IScriptModule **);
-    CAutoRefPtr<IScriptModule> pScriptLua;
+        CAutoRefPtr<IScriptModule> pScriptLua;
 #ifdef _DEBUG
-    HMODULE hScript=LoadLibrary(_T("scriptmodule-lua_d.dll"));
+        scriptLoader.CreateInstance(_T("scriptmodule-lua_d.dll"),(IObjRef**)&pScriptLua);
 #else
-    HMODULE hScript=LoadLibrary(_T("scriptmodule-lua.dll"));
+        scriptLoader.CreateInstance(_T("scriptmodule-lua.dll"),(IObjRef**)&pScriptLua);
 #endif//_DEBUG
-    if(hScript)
-    {
-        funCreateScript funCS = (funCreateScript)GetProcAddress(hScript,"CreateScriptModule_Lua");
-        funCS(&pScriptLua);
-        pScriptLua->executeScriptFile("../demo/lua/test.lua");
-        theApp->SetScriptModule(pScriptLua);
-    }
+        if(pScriptLua)
+        {
+            pScriptLua->executeScriptFile("../demo/lua/test.lua");
+            theApp->SetScriptModule(pScriptLua);
+        }
 #endif//SUPPORT_LUA
 
 #ifdef RES_USINGFILE
-    TCHAR szCurrentDir[MAX_PATH]={0};
-    GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
-    LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
-    *lpInsertPos = _T('\0');   
-    _tcscat( szCurrentDir, _T("\\..\\demo\\skin") );
+        TCHAR szCurrentDir[MAX_PATH]={0};
+        GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
+        LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
+        *lpInsertPos = _T('\0');   
+        _tcscat( szCurrentDir, _T("\\..\\demo\\skin") );
 
-    SResProviderFiles *pResProvider=new SResProviderFiles;
-    if(!pResProvider->Init(szCurrentDir))
-    {
-        ASSERT(0);
-        return 1;
-    }
+        SResProviderFiles *pResProvider=new SResProviderFiles;
+        if(!pResProvider->Init(szCurrentDir))
+        {
+            ASSERT(0);
+            return 1;
+        }
 #else
-    SResProviderPE *pResProvider = new SResProviderPE(hInstance);
+        SResProviderPE *pResProvider = new SResProviderPE(hInstance);
 #endif
-    
-    theApp->AddResProvider(pResProvider);
 
-	BOOL bOK=theApp->Init(_T("IDR_DUI_INIT")); //初始化DUI系统,原来的系统初始化方式依然可以使用。
-	theApp->SetMsgBoxTemplate(_T("IDR_DUI_MSGBOX"));
+        theApp->AddResProvider(pResProvider);
 
-	int nRet = 0; 
-	// BLOCK: Run application
-	{
-		CMainDlg dlgMain;  
-//         dlgMain.Create(GetActiveWindow(),0,0,800,600);
-//         dlgMain.GetNative()->SendMessage(WM_INITDIALOG);
-//         dlgMain.ShowWindow(SW_SHOWNORMAL);
-//         nRet=theApp->Run(dlgMain.m_hWnd);
- 		nRet = dlgMain.DoModal();  
-	}
+        BOOL bOK=theApp->Init(_T("IDR_DUI_INIT")); //初始化DUI系统,原来的系统初始化方式依然可以使用。
+        theApp->SetMsgBoxTemplate(_T("IDR_DUI_MSGBOX"));
 
+        // BLOCK: Run application
+        {
+            CMainDlg dlgMain;  
+            dlgMain.Create(GetActiveWindow(),0,0,800,600);
+            dlgMain.GetNative()->SendMessage(WM_INITDIALOG);
+            dlgMain.ShowWindow(SW_SHOWNORMAL);
+            nRet=theApp->Run(dlgMain.m_hWnd);
+            //  		nRet = dlgMain.DoModal();  
+        }
 
+        delete theApp;
+        delete pResProvider;
 
-	delete theApp;
-    
-    delete pResProvider;
-    
-    pRenderFactory=NULL;
-    pImgDecoderFactory=NULL;
-    
-	OleUninitialize();
-	return nRet;
+    }
+
+    OleUninitialize();
+    return nRet;
 }

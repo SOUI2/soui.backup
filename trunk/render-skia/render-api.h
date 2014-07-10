@@ -14,5 +14,5 @@
 #include <interface/imgdecoder-i.h>
 
 
-extern "C" RENDERSKIA_API BOOL CreateRenderFactory_Skia(SOUI::IRenderFactory ** ppRenderFactory,SOUI::IImgDecoderFactory *pImgDecoderFactory);
+extern "C" RENDERSKIA_API BOOL SCreateInstance(IObjRef ** ppRenderFactory);
 

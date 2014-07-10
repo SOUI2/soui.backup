@@ -95,7 +95,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
 	// SRenderTarget_Skia
 
-	SRenderTarget_Skia::SRenderTarget_Skia( IRenderFactory_Skia* pRenderFactory ,int nWid,int nHei)
+	SRenderTarget_Skia::SRenderTarget_Skia( IRenderFactory* pRenderFactory ,int nWid,int nHei)
 		:TSkiaRenderObjImpl<IRenderTarget>(pRenderFactory)
 		,m_hBindDC(0)
 		,m_SkCanvas(NULL)
@@ -867,7 +867,7 @@ namespace SOUI
     }
 
 	//////////////////////////////////////////////////////////////////////////
-	SRegion_Skia::SRegion_Skia( IRenderFactory_Skia *pRenderFac )
+	SRegion_Skia::SRegion_Skia( IRenderFactory *pRenderFac )
         :TSkiaRenderObjImpl<IRegion>(pRenderFac)
 	{
 

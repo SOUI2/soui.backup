@@ -15,19 +15,12 @@
 
 namespace SOUI
 {
-	//实现一些和特定系统相关的接口
-	struct IRenderFactory_Skia : public IRenderFactory
-	{
-        virtual IImgDecoderFactory * GetImgDecoderFactory()=0;
-	};
-
-
 	//////////////////////////////////////////////////////////////////////////
 	// SRenderFactory_Skia
-	class SRenderFactory_Skia : public TObjRefImpl<IRenderFactory_Skia>
+	class SRenderFactory_Skia : public TObjRefImpl<IRenderFactory>
 	{
 	public:
-		SRenderFactory_Skia(IImgDecoderFactory *pImgDecoderFactory):m_imgDecoderFactory(pImgDecoderFactory)
+		SRenderFactory_Skia()
 		{
 		}
         
@@ -40,7 +33,9 @@ namespace SOUI
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
         virtual BOOL CreateRegion(IRegion **ppRgn);
         
-        IImgDecoderFactory * GetImgDecoderFactory(){return m_imgDecoderFactory;}
+        virtual void SetImgDecoderFactory(IImgDecoderFactory *pImgDecoderFac){m_imgDecoderFactory=pImgDecoderFac;}
+        
+        virtual IImgDecoderFactory * GetImgDecoderFactory(){return m_imgDecoderFactory;}
     protected:
         CAutoRefPtr<IImgDecoderFactory> m_imgDecoderFactory;
 	};
@@ -52,7 +47,7 @@ namespace SOUI
 	class TSkiaRenderObjImpl : public TObjRefImpl<T>
 	{
 	public:
-		TSkiaRenderObjImpl(IRenderFactory_Skia * pRenderFac):m_pRenderFactory(pRenderFac)
+		TSkiaRenderObjImpl(IRenderFactory * pRenderFac):m_pRenderFactory(pRenderFac)
 		{
 
 		}
@@ -62,12 +57,12 @@ namespace SOUI
 			return m_pRenderFactory;
 		}
 
-		virtual IRenderFactory_Skia * GetRenderFactory_Skia() const
+		virtual IRenderFactory * GetRenderFactory_Skia() const
 		{
 			return m_pRenderFactory;
 		}
 	protected:
-		IRenderFactory_Skia *m_pRenderFactory;
+		IRenderFactory *m_pRenderFactory;
 	};
 
 
@@ -76,7 +71,7 @@ namespace SOUI
 	class SPen_Skia : public TSkiaRenderObjImpl<IPen>
 	{
 	public:
-		SPen_Skia(IRenderFactory_Skia * pRenderFac,int iStyle=PS_SOLID,COLORREF cr=0xFF000000,int cWidth=1)
+		SPen_Skia(IRenderFactory * pRenderFac,int iStyle=PS_SOLID,COLORREF cr=0xFF000000,int cWidth=1)
 			:TSkiaRenderObjImpl<IPen>(pRenderFac)
 			,m_nWidth(cWidth),m_style(iStyle),m_cr(cr)
 		{
@@ -105,7 +100,7 @@ namespace SOUI
 	class SFont_Skia: public TSkiaRenderObjImpl<IFont>
 	{
 	public:
-		SFont_Skia(IRenderFactory_Skia * pRenderFac,const LOGFONT * plf)
+		SFont_Skia(IRenderFactory * pRenderFac,const LOGFONT * plf)
 			:TSkiaRenderObjImpl<IFont>(pRenderFac),m_skFont(NULL)
 		{
 		    memcpy(&m_lf,plf,sizeof(LOGFONT));
@@ -143,11 +138,11 @@ namespace SOUI
 	class SBrush_Skia : public TSkiaRenderObjImpl<IBrush>
 	{
 	public:
-		static SBrush_Skia * CreateSolidBrush(IRenderFactory_Skia * pRenderFac,COLORREF cr){
+		static SBrush_Skia * CreateSolidBrush(IRenderFactory * pRenderFac,COLORREF cr){
 			return new SBrush_Skia(pRenderFac,cr);
 		}
 
-		static SBrush_Skia * CreateBitmapBrush(IRenderFactory_Skia * pRenderFac,SkBitmap bmp)
+		static SBrush_Skia * CreateBitmapBrush(IRenderFactory * pRenderFac,SkBitmap bmp)
 		{
 			return new SBrush_Skia(pRenderFac,bmp);
 		}
@@ -158,12 +153,12 @@ namespace SOUI
 
 		BOOL IsBitmap(){return m_fBmp;}
 	protected:
-		SBrush_Skia(IRenderFactory_Skia * pRenderFac,COLORREF cr)
+		SBrush_Skia(IRenderFactory * pRenderFac,COLORREF cr)
 			:TSkiaRenderObjImpl<IBrush>(pRenderFac),m_cr(cr),m_fBmp(FALSE)
 		{
 
 		}
-		SBrush_Skia(IRenderFactory_Skia * pRenderFac,SkBitmap bmp)
+		SBrush_Skia(IRenderFactory * pRenderFac,SkBitmap bmp)
 			:TSkiaRenderObjImpl<IBrush>(pRenderFac),m_bmp(bmp),m_fBmp(TRUE)
 		{
 
@@ -180,7 +175,7 @@ namespace SOUI
 	class SBitmap_Skia : public TSkiaRenderObjImpl<IBitmap>
 	{
 	public:
-		SBitmap_Skia(IRenderFactory_Skia *pRenderFac)
+		SBitmap_Skia(IRenderFactory *pRenderFac)
 			:TSkiaRenderObjImpl<IBitmap>(pRenderFac),m_hBmp(0)
 		{
 
@@ -215,7 +210,7 @@ namespace SOUI
 	class SRegion_Skia: public TSkiaRenderObjImpl<IRegion>
 	{
 	public:
-		SRegion_Skia(IRenderFactory_Skia *pRenderFac);
+		SRegion_Skia(IRenderFactory *pRenderFac);
 		virtual void CombineRect(LPCRECT lprect,int nCombineMode);
 		virtual BOOL PtInRegion(POINT pt);
 		virtual BOOL RectInRegion(LPCRECT lprect);
@@ -240,7 +235,7 @@ namespace SOUI
 	class SRenderTarget_Skia: public TSkiaRenderObjImpl<IRenderTarget>
 	{
 	public:
-		SRenderTarget_Skia(IRenderFactory_Skia* pRenderFactory,int nWid,int nHei);
+		SRenderTarget_Skia(IRenderFactory* pRenderFactory,int nWid,int nHei);
 		~SRenderTarget_Skia();
 
 		//只支持创建位图表面

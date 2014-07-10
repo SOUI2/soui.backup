@@ -18,7 +18,7 @@
 #include <wincodec.h>
 #include <unknown/obj-ref-impl.hpp>
 
-#include <render/imgdecoder-i.h>
+#include <interface/imgdecoder-i.h>
 
 namespace SOUI
 {
@@ -69,14 +69,17 @@ namespace SOUI
     {
     friend class SImgDecoder_WIC;
     public:
-        SImgDecoderFactory(BOOL bPremultiplied);
+        SImgDecoderFactory(BOOL bPremultiple);
         ~SImgDecoderFactory();
         
+        virtual BOOL IsAlphaPremultiple(){return m_bPremultple;}
+        virtual void SetAlphaPremultiple(BOOL bPreMultiple){m_bPremultple=bPreMultiple;}
         virtual BOOL CreateImgDecoder(IImgDecoder **ppImgDecoder);
     protected:
         static CAutoRefPtr<IWICImagingFactory> s_wicImgFactory;
-        BOOL    m_bPremultplied;
+        BOOL    m_bPremultple;
     };
     
-    extern "C" IMGDECODERWIC_API BOOL CreateImgDecoderFactory_WIC(IImgDecoderFactory **pImgDecoderFactory,BOOL bPremultplied);
 }//end of namespace SOUI
+
+extern "C" IMGDECODERWIC_API BOOL SCreateInstance(IObjRef **pImgDecoderFactory);
