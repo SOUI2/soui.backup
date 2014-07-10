@@ -345,7 +345,8 @@ namespace SOUI
         if(m_bFixWidth) return FALSE;
         DWORD dwHit=HitTest(pt);
         if(HIWORD(dwHit)==LOWORD(dwHit)) return FALSE;
-        SetCursor(::LoadCursor(NULL,IDC_SIZEWE));
+        HCURSOR hCursor=GETRESPROVIDER->LoadCursor(IDC_SIZEWE);
+        SetCursor(hCursor);
         return TRUE;
     }
 

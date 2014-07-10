@@ -113,8 +113,8 @@ BOOL SSplitWnd::CreateChildren( pugi::xml_node xmlNode )
 BOOL SSplitWnd::OnSetCursor(const CPoint &pt)
 {
     if (!m_bAdjustable) return FALSE;
-
-    SetCursor(LoadCursor(NULL,MAKEINTRESOURCE(m_bColMode?IDC_SIZEWE:IDC_SIZENS)));
+    HCURSOR hCursor=GETRESPROVIDER->LoadCursor(m_bColMode?IDC_SIZEWE:IDC_SIZENS);
+    SetCursor(hCursor);
     return TRUE;
 }
 

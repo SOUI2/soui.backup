@@ -34,6 +34,8 @@ namespace SOUI
 
         virtual HCURSOR LoadCursor(LPCTSTR pszResName)
         {
+            if(pszResName>=IDC_ARROW && pszResName<=IDC_HELP)
+                return ::LoadCursor(NULL,pszResName);
             IResProvider *pResProvider=GetMatchResProvider(_T("CURSOR"),pszResName);
             if(!pResProvider) return NULL;
             return pResProvider->LoadCursor(pszResName);
