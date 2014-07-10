@@ -360,6 +360,7 @@ namespace SOUI
         TStringT(const tchar* psz, int nLength)
         {
             Init();
+            if(nLength<0) nLength = SafeStrlen(psz);
             if (nLength != 0)
             {
                 if (AllocBuffer(nLength))
