@@ -6,7 +6,7 @@
 // #include "UIHander.h"
 #include "wtlhelper/whwindow.h"
 
-class CMainDlg : public SHostDialog
+class CMainDlg : public SHostWnd
 // 	,public CWHRoundRectFrameHelper<CMainDlg>	//需要圆角窗口时启用
 {
 public:

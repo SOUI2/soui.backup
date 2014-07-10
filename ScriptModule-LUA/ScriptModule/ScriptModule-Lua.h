@@ -38,4 +38,4 @@ protected:
 	lua_State * d_state;
 };
 
-extern "C" BOOL LUASCRIPTMODULE_API CreateScriptModule_Lua(SOUI::IScriptModule ** ppScript);
+extern "C" BOOL LUASCRIPTMODULE_API SCreateInstance(IObjRef ** ppScript);

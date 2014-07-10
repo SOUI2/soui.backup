@@ -13,5 +13,5 @@
 #include <interface/render-i.h>
 #include <interface/imgdecoder-i.h>
 
-extern "C" RENDERGDI_API BOOL CreateRenderFactory_GDI(SOUI::IRenderFactory ** ppRenderFactory,SOUI::IImgDecoderFactory *pImgDecoderFactory);
+extern "C" RENDERGDI_API BOOL SCreateInstance(IObjRef ** ppRenderFactory);
 

@@ -25,6 +25,8 @@ namespace SOUI
 
     struct IImgDecoderFactory : public IObjRef
     {
+        virtual BOOL IsAlphaPremultiple()=0;
+        virtual void SetAlphaPremultiple(BOOL bPreMultiple)=0;
         virtual BOOL CreateImgDecoder(IImgDecoder **ppImgDecoder)=0;
     };
 }

@@ -137,7 +137,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     CAutoRefPtr<IWICImagingFactory> SImgDecoderFactory::s_wicImgFactory;
 
-    SImgDecoderFactory::SImgDecoderFactory(BOOL bPremultiplied):m_bPremultplied(bPremultiplied)
+    SImgDecoderFactory::SImgDecoderFactory(BOOL bPremultiple):m_bPremultple(bPremultiple)
     {
         HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,NULL,
             CLSCTX_INPROC_SERVER,IID_PPV_ARGS(&s_wicImgFactory));
@@ -152,15 +152,16 @@ namespace SOUI
 
     BOOL SImgDecoderFactory::CreateImgDecoder(IImgDecoder ** ppImgDecoder)
     {
-        *ppImgDecoder = new SImgDecoder_WIC(m_bPremultplied);
+        *ppImgDecoder = new SImgDecoder_WIC(m_bPremultple);
         return TRUE;
     }
     
-    //////////////////////////////////////////////////////////////////////////
-    BOOL CreateImgDecoderFactory_WIC( IImgDecoderFactory **pImgDecoderFactory ,BOOL bPremultplied)
-    {
-        *pImgDecoderFactory = new SImgDecoderFactory(bPremultplied);
-        return TRUE;
-    }
 
 }//end of namespace SOUI
+
+//////////////////////////////////////////////////////////////////////////
+BOOL SCreateInstance(IObjRef **pImgDecoderFactory)
+{
+    *pImgDecoderFactory = new SOUI::SImgDecoderFactory(TRUE);
+    return TRUE;
+}

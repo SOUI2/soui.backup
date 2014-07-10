@@ -1,7 +1,7 @@
 #pragma once
 
 #include <unknown/obj-ref-i.h>
-
+#include "imgdecoder-i.h"
 
 namespace SOUI
 {
@@ -162,6 +162,8 @@ struct IRenderTarget: public IObjRef
 //用来创建设备无关资源
 struct IRenderFactory : public IObjRef
 {
+    virtual IImgDecoderFactory * GetImgDecoderFactory()=0;
+    virtual void SetImgDecoderFactory(IImgDecoderFactory *pImgDecoderFac)=0;
 	virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei)=0;
     virtual BOOL CreateFont(IFont ** ppFont, const LOGFONT &lf)=0;
     virtual BOOL CreateBitmap(IBitmap ** ppBitmap)=0;

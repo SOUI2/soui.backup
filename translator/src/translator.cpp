@@ -248,7 +248,7 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     //  
-    BOOL CreateTranslator( ITranslator **ppTrans )
+    BOOL SCreateInstance( IObjRef **ppTrans )
     {
         *ppTrans = new STranslator;
         return TRUE;

@@ -115,7 +115,7 @@ namespace SOUI
     }
     //////////////////////////////////////////////////////////////////////////
     //	SRegion_GDI
-    SRegion_GDI::SRegion_GDI( IRenderFactory_GDI *pRenderFac )
+    SRegion_GDI::SRegion_GDI( IRenderFactory *pRenderFac )
         :TSkiaRenderObjImpl<IRegion>(pRenderFac)
     {
         m_hRgn = ::CreateRectRgn(0,0,0,0);
@@ -175,7 +175,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     //	SRenderTarget_GDI
     //////////////////////////////////////////////////////////////////////////
-    SRenderTarget_GDI::SRenderTarget_GDI( IRenderFactory_GDI* pRenderFactory ,int nWid,int nHei)
+    SRenderTarget_GDI::SRenderTarget_GDI( IRenderFactory* pRenderFactory ,int nWid,int nHei)
         :TSkiaRenderObjImpl<IRenderTarget>(pRenderFactory)
         ,m_hBindDC(0)
         ,m_hdc(NULL)
