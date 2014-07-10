@@ -18,7 +18,8 @@ namespace SOUI
     protected:
         void OnOK();
         void OnCancel();
-
+        virtual SMessageLoop * GetCurMsgLoop(){return this;}
+        
         EVENT_MAP_BEGIN()
             EVENT_ID_COMMAND(IDOK,OnOK)
             EVENT_ID_COMMAND(IDCANCEL,OnCancel)

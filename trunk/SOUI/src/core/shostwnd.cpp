@@ -44,6 +44,7 @@ HWND SHostWnd::Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x, int 
     //tooltip
     m_pTipCtrl=new STipCtrl;
     m_pTipCtrl->Create(m_hWnd);
+    GetMsgLoop()->AddMessageFilter(m_pTipCtrl);
 
     SetContainer(this);
 
@@ -235,6 +236,7 @@ void SHostWnd::OnDestroy()
 
     if(m_pTipCtrl)
     {
+        GetMsgLoop()->RemoveMessageFilter(m_pTipCtrl);
         if (m_pTipCtrl->IsWindow())
             m_pTipCtrl->DestroyWindow();
         delete m_pTipCtrl;
@@ -1026,6 +1028,11 @@ BOOL SHostWnd::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 const SStringW & SHostWnd::GetHostName()
 {
     return m_hostAttr.m_strName;
+}
+
+SMessageLoop * SHostWnd::GetMsgLoop()
+{
+    return SApplication::getSingletonPtr();
 }
 
 //////////////////////////////////////////////////////////////////////////

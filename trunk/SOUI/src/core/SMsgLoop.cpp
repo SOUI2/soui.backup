@@ -3,8 +3,6 @@
 
 namespace SOUI
 {
-    SMessageLoop* SMessageLoop::s_pCurMsgLoop =0;
-
 
     int SMessageLoop::Run()
     {
@@ -107,9 +105,5 @@ namespace SOUI
         return m_aMsgFilter.Add(pMessageFilter);
     }
 
-    SMessageLoop * SMessageLoop::GetCurMsgLoop()
-    {
-        return s_pCurMsgLoop;
-    }
 
 }//end of namespace SOUI

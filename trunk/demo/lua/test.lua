@@ -4,11 +4,13 @@ function onEvtTest2(sender)
 end
 
 function onEvtTstClick(args)
-	--不支持在一个代码行中连续调用如A():B():C()
+	--涓嶆敮鎸佸湪涓�涓唬鐮佽涓繛缁皟鐢ㄥA():B():C()
 	local sender=args.sender;
-	local luabtn=sender:GetParent():CreateChildrenFromString(L"<button pos=\"0,0,100,30\" class=\"normalbtn\" id=\"12321\" show=\"1\">lua btn</button>");
+	local luabtn=sender:GetParent():CreateChildrenFromString(L"<button pos=\"0,0,150,30\" class=\"normalbtn\" id=\"12321\" show=\"1\">lua btn 涓枃</button>");
 	local sapp=SApplication_getSingleton();
 	local scriptmod=sapp:GetScriptModule();
+	local txt=luabtn:GetWindowText();
+	local txt2=txt:Left(5);
 	scriptmod:subscribeEvent(luabtn,10000,"onEvtTest2");
 	sender:SetVisible(0,1);
 	return 1;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "event/Events.h"
+#include "SMsgLoop.h"
 
 namespace SOUI
 {
@@ -10,58 +11,60 @@ struct IAcceleratorMgr;
 
 struct SOUI_EXP ITimelineHandler
 {
-    virtual void OnNextFrame()=NULL;
+    virtual void OnNextFrame()=0;
 };
 
 class SOUI_EXP ISwndContainer : public ITimelineHandler
 {
     friend class SWindow;
 public:
-    virtual BOOL RegisterDragDrop(SWND swnd,IDropTarget *pDropTarget)=NULL;
+    virtual BOOL RegisterDragDrop(SWND swnd,IDropTarget *pDropTarget)=0;
 
-    virtual BOOL RevokeDragDrop(SWND swnd)=NULL;
+    virtual BOOL RevokeDragDrop(SWND swnd)=0;
 
-    virtual BOOL OnFireEvent(EventArgs &evt)=NULL;
+    virtual BOOL OnFireEvent(EventArgs &evt)=0;
 
-    virtual HWND GetHostHwnd()=NULL;
+    virtual HWND GetHostHwnd()=0;
     
-    virtual const SStringW & GetHostName()=NULL;
+    virtual const SStringW & GetHostName()=0;
 
-    virtual BOOL IsTranslucent()=NULL;
+    virtual BOOL IsTranslucent()=0;
 
-    virtual CRect GetContainerRect()=NULL;
+    virtual CRect GetContainerRect()=0;
 
-    virtual IRenderTarget * OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)=NULL;
+    virtual IRenderTarget * OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)=0;
 
-    virtual void OnReleaseRenderTarget(IRenderTarget *pRT,const CRect &rc,DWORD gdcFlags)=NULL;
+    virtual void OnReleaseRenderTarget(IRenderTarget *pRT,const CRect &rc,DWORD gdcFlags)=0;
 
-    virtual void OnRedraw(const CRect &rc)=NULL;
+    virtual void OnRedraw(const CRect &rc)=0;
 
-    virtual SWND OnGetSwndCapture()=NULL;
+    virtual SWND OnGetSwndCapture()=0;
 
-    virtual BOOL OnReleaseSwndCapture()=NULL;
+    virtual BOOL OnReleaseSwndCapture()=0;
 
-    virtual SWND OnSetSwndCapture(SWND swnd)=NULL;
+    virtual SWND OnSetSwndCapture(SWND swnd)=0;
 
-    virtual void OnSetSwndFocus(SWND swnd)=NULL;
+    virtual void OnSetSwndFocus(SWND swnd)=0;
 
-    virtual SWND SwndGetHover()=NULL;
+    virtual SWND SwndGetHover()=0;
 
-    virtual SWND SwndGetFocus()=NULL;
+    virtual SWND SwndGetFocus()=0;
 
-    virtual BOOL SwndCreateCaret(HBITMAP hBmp,int nWidth,int nHeight)=NULL;
+    virtual BOOL SwndCreateCaret(HBITMAP hBmp,int nWidth,int nHeight)=0;
 
-    virtual BOOL SwndShowCaret(BOOL bShow)=NULL;
+    virtual BOOL SwndShowCaret(BOOL bShow)=0;
 
-    virtual BOOL SwndSetCaretPos(int x,int y)=NULL;
+    virtual BOOL SwndSetCaretPos(int x,int y)=0;
 
-    virtual BOOL SwndUpdateWindow()=NULL;
+    virtual BOOL SwndUpdateWindow()=0;
 
-    virtual IAcceleratorMgr* GetAcceleratorMgr()=NULL;
+    virtual IAcceleratorMgr* GetAcceleratorMgr()=0;
 
-    virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler)=NULL;
+    virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler)=0;
 
-    virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler)=NULL;
+    virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler)=0;
+    
+    virtual SMessageLoop * GetMsgLoop() =0;
 };
 
 

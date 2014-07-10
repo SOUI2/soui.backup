@@ -14,9 +14,6 @@ namespace SOUI
 
     INT_PTR SHostDialog::DoModal(HWND hParent/*=NULL*/)
     {
-        SMessageLoop * pOldMsgLoop=s_pCurMsgLoop;
-        s_pCurMsgLoop = this;
-        
         if(!hParent)
         {
             hParent = SThreadActiveWndMgr::GetActive();
@@ -66,9 +63,7 @@ namespace SOUI
 
         if ( IsWindow() )
             DestroyWindow();
-
-        s_pCurMsgLoop=pOldMsgLoop;
-        
+       
         return m_nRetCode;
     }
 

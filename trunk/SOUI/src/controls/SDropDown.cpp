@@ -22,12 +22,12 @@ namespace SOUI
         ,m_bClick(FALSE)
         ,m_uExitCode(IDCANCEL)
     {
-        SMessageLoop::GetCurMsgLoop()->AddMessageFilter(this);
+        GetMsgLoop()->AddMessageFilter(this);
     }
 
     SDropDownWnd::~SDropDownWnd()
     {
-        SMessageLoop::GetCurMsgLoop()->RemoveMessageFilter(this);
+        GetMsgLoop()->RemoveMessageFilter(this);
     }
 
     void SDropDownWnd::OnFinalMessage(HWND hWnd)
