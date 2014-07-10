@@ -866,6 +866,8 @@ namespace pugi
 
 		// Get error description
 		const char* description() const;
+		
+		bool isOK() const;
 	};
 
 	// Document class (DOM tree root)

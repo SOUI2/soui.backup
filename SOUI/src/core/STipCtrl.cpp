@@ -12,12 +12,10 @@ namespace SOUI
 
 STipCtrl::STipCtrl(void):m_nDelay(500),m_nShowSpan(5000),m_dwHostID(0)
 {
-    SMessageLoop::GetCurMsgLoop()->AddMessageFilter(this);
 }
 
 STipCtrl::~STipCtrl(void)
 {
-    SMessageLoop::GetCurMsgLoop()->RemoveMessageFilter(this);
     if(m_font) m_font.DeleteObject();
 }
 

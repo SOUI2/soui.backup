@@ -63,6 +63,8 @@ public:
 
     virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
 
+    virtual SMessageLoop *GetMsgLoop();
+    
     //////////////////////////////////////////////////////////////////////////
     virtual void ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove);
 

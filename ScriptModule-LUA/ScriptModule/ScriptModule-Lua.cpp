@@ -5,6 +5,7 @@
 #include <event/EventSubscriber.h>
 #include "ScriptModule-Lua.h"
 #include "../lua_tinker/lua_tinker.h"
+#include <string/strcpcvt.h>
 
 using namespace SOUI;
 
@@ -20,12 +21,8 @@ int Utf8ToW(lua_State* L)
 	size_t n = 0;
 	char* str = (char*)luaL_checklstring(L, -1, &n);
 	if(!str)   return 0;
-	int nSize=MultiByteToWideChar(CP_UTF8,0,str,n,NULL,0);
-	wchar_t *wstr=new wchar_t[nSize+1];
-	MultiByteToWideChar(CP_UTF8,0,str,n,wstr,nSize+1);
-	wstr[nSize]=0;
-	lua_pushlstring(L, (char*)wstr, 2*nSize+2);
-	delete []wstr;
+	SStringW strW=S_CA2W(str,CP_UTF8);
+	lua_pushlstring(L, (const char*)(LPCWSTR)strW, 2*strW.GetLength()+2);
 	return 1;
 }
 

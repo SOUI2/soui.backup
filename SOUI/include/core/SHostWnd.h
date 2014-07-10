@@ -243,6 +243,8 @@ protected:
     /*virtual */
     BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
     
+    virtual SMessageLoop * GetMsgLoop();
+
     //////////////////////////////////////////////////////////////////////////
     // IRealWndHandler
     virtual HWND OnRealWndCreate(SRealWnd *pRealWnd);

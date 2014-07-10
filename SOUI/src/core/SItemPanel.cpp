@@ -274,4 +274,10 @@ BOOL SItemPanel::UnregisterTimelineHandler( ITimelineHandler *pHandler )
     if(bRet && m_lstTimelineHandler.IsEmpty()) m_pFrmHost->GetContainer()->UnregisterTimelineHandler(this);
     return bRet;
 }
+
+SMessageLoop * SItemPanel::GetMsgLoop()
+{
+    return m_pFrmHost->GetContainer()->GetMsgLoop();
+}
+
 }//namespace SOUI

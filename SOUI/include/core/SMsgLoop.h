@@ -35,16 +35,11 @@ namespace SOUI
 
     class SOUI_EXP SMessageLoop
     {
-    protected:
-        static SMessageLoop *s_pCurMsgLoop;
-        
     public:
         SArray<IMessageFilter*> m_aMsgFilter;
         SArray<IIdleHandler*> m_aIdleHandler;
         MSG m_msg;
-        
-        static SMessageLoop * GetCurMsgLoop();
-        
+                
         // Message filter operations
         BOOL AddMessageFilter(IMessageFilter* pMessageFilter);
 

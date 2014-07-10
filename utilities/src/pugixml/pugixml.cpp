@@ -5085,6 +5085,11 @@ namespace pugi
 		return status == status_ok;
 	}
 
+    PUGI__FN bool xml_parse_result::isOK() const
+    {
+        return status == status_ok;
+    }
+
 	PUGI__FN const char* xml_parse_result::description() const
 	{
 		switch (status)

@@ -37,8 +37,6 @@ SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR 
     :m_hInst(hInst)
     ,m_RenderFactory(pRendFactory)
 {
-    s_pCurMsgLoop=this;
-    
     createSingletons();
     CSimpleWndHelper::Init(hInst,pszHostClassName);
     STextServiceHelper::Init();

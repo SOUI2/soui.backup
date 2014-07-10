@@ -212,6 +212,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\exports\exp_pugixml.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ScriptModule-Lua.h"
 				>
 			</File>
@@ -265,6 +269,14 @@
 			</File>
 			<File
 				RelativePath=".\exports\exp_ScriptModule.h"
+				>
+			</File>
+			<File
+				RelativePath=".\exports\exp_strcpcvt.h"
+				>
+			</File>
+			<File
+				RelativePath=".\exports\exp_string.h"
 				>
 			</File>
 			<File
