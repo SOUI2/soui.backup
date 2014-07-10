@@ -63,7 +63,7 @@
         </treebox>
       </page>
       <page title="miscellaneous">
-        <animateimg name="ani_test" pos="20,100" skin="icons"/>
+<!--         <animateimg name="ani_test" pos="20,100" skin="icons"/> -->
         <img id="1139" pos="300,200,400,300" skin="icons" tip="img tip" msgtransparent="0"/>
         <check id="1300" pos="40,20" crtext="ff0000" state="4">test1</check>
         <check id="1301" pos="40,70">test2</check>
