@@ -1,20 +1,22 @@
 #include "souistd.h"
 #include "core/SHostDialog.h"
+#include "core/SMsgLoop.h"
 
 namespace SOUI
 {
     SHostDialog::SHostDialog(LPCTSTR pszXmlName):SHostWnd(pszXmlName),m_nRetCode(IDOK)
     {
-        SApplication::getSingleton().PushMessageLoop(this);
     }
 
     SHostDialog::~SHostDialog(void)
     {
-        SApplication::getSingleton().PopMessageLoop();
     }
 
     INT_PTR SHostDialog::DoModal(HWND hParent/*=NULL*/)
     {
+        SMessageLoop * pOldMsgLoop=s_pCurMsgLoop;
+        s_pCurMsgLoop = this;
+        
         if(!hParent)
         {
             hParent = SThreadActiveWndMgr::GetActive();
@@ -65,6 +67,8 @@ namespace SOUI
         if ( IsWindow() )
             DestroyWindow();
 
+        s_pCurMsgLoop=pOldMsgLoop;
+        
         return m_nRetCode;
     }
 

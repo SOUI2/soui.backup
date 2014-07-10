@@ -31,29 +31,18 @@ class SOUI_EXP SApplication :public SSingleton<SApplication>
                         ,public SWindowFactoryMgr
                         ,public SSkinFactoryMgr
                         ,public SResProviderMgr
+                        ,public SMessageLoop
 {
     friend class CSimpleWnd;
 public:
     SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName=_T("SOUIHOST"));
     ~SApplication(void);
 
+    IRenderFactory * GetRenderFactory(){return m_RenderFactory;}
 
-    HINSTANCE GetInstance()
-    {
-        return m_hInst;
-    }
+    HINSTANCE GetInstance() { return m_hInst;}
 
     LPCTSTR GetVersion(){return SOUI_VERSION;}
-
-    IScriptModule * GetScriptModule()
-    {
-        return m_pScriptModule;
-    }
-
-    void SetScriptModule(IScriptModule *pScriptModule)
-    {
-        m_pScriptModule=pScriptModule;
-    }
 
     BOOL Init(LPCTSTR pszName ,LPCTSTR pszType=RT_UIDEF);
 
@@ -61,34 +50,21 @@ public:
 
     BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType);
 
-    IRenderFactory * GetRenderFactory(){return m_RenderFactory;}
+    IScriptModule * GetScriptModule()  { return m_pScriptModule;}
 
+    void SetScriptModule(IScriptModule *pScriptModule){m_pScriptModule=pScriptModule;}
+    
     ITranslator * GetTranslator(){return m_Translator;}
     
     void SetTranslator(ITranslator * pTrans){m_Translator = pTrans;}
     
-    SMessageLoop  * GetMessageLoop(){return m_lstMsgLoop.GetTail();}
-    
-    void PushMessageLoop(SMessageLoop* pMsgLoop)
-    {
-        m_lstMsgLoop.AddTail(pMsgLoop);
-    }
-    
-    SMessageLoop * PopMessageLoop()
-    {
-        return m_lstMsgLoop.RemoveTail();
-    }
-
     int Run(HWND hMainWnd);
 protected:
     void createSingletons();
     void destroySingletons();
 
-    CAutoRefPtr<IScriptModule>  m_pScriptModule;
     HINSTANCE m_hInst;
-    
-    SList<SMessageLoop*> m_lstMsgLoop;
-    SMessageLoop         m_msgLoop;
+    CAutoRefPtr<IScriptModule>  m_pScriptModule;
     CAutoRefPtr<IRenderFactory> m_RenderFactory;
     CAutoRefPtr<ITranslator>    m_Translator;
 };

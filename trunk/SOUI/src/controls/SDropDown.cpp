@@ -12,6 +12,7 @@
  */
 #include "souistd.h"
 #include "control/SDropDown.h"
+#include <core/SMsgLoop.h>
 
 namespace SOUI
 {
@@ -21,12 +22,12 @@ namespace SOUI
         ,m_bClick(FALSE)
         ,m_uExitCode(IDCANCEL)
     {
-        SApplication::getSingleton().GetMessageLoop()->AddMessageFilter(this);
+        SMessageLoop::GetCurMsgLoop()->AddMessageFilter(this);
     }
 
     SDropDownWnd::~SDropDownWnd()
     {
-        SApplication::getSingleton().GetMessageLoop()->RemoveMessageFilter(this);
+        SMessageLoop::GetCurMsgLoop()->RemoveMessageFilter(this);
     }
 
     void SDropDownWnd::OnFinalMessage(HWND hWnd)
