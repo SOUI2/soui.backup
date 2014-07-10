@@ -1,5 +1,6 @@
 #include "souistd.h"
 #include "helper/STipCtrl.h"
+#include "core/SMsgLoop.h"
 
 namespace SOUI
 {
@@ -11,12 +12,12 @@ namespace SOUI
 
 STipCtrl::STipCtrl(void):m_nDelay(500),m_nShowSpan(5000),m_dwHostID(0)
 {
-    SApplication::getSingleton().GetMessageLoop()->AddMessageFilter(this);
+    SMessageLoop::GetCurMsgLoop()->AddMessageFilter(this);
 }
 
 STipCtrl::~STipCtrl(void)
 {
-    SApplication::getSingleton().GetMessageLoop()->RemoveMessageFilter(this);
+    SMessageLoop::GetCurMsgLoop()->RemoveMessageFilter(this);
     if(m_font) m_font.DeleteObject();
 }
 

@@ -37,11 +37,12 @@ SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR 
     :m_hInst(hInst)
     ,m_RenderFactory(pRendFactory)
 {
+    s_pCurMsgLoop=this;
+    
     createSingletons();
     CSimpleWndHelper::Init(hInst,pszHostClassName);
     STextServiceHelper::Init();
     SRicheditMenuDef::Init();
-    m_lstMsgLoop.AddTail(&m_msgLoop);
     m_Translator = new SNullTranslator;
 }
 
@@ -135,7 +136,7 @@ BOOL SApplication::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlNam
 int SApplication::Run( HWND hMainWnd )
 {
     SThreadActiveWndMgr::SetActive(hMainWnd);
-    int nRet=m_msgLoop.Run();
+    int nRet=SMessageLoop::Run();
     SThreadActiveWndMgr::SetActive(NULL);
     if(::IsWindow(hMainWnd)) DestroyWindow(hMainWnd);
     return nRet;

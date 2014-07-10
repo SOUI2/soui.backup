@@ -905,6 +905,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\core\SMsgLoop.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\res.mgr\SObjDefAttr.cpp"
 				>
 			</File>
