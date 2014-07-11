@@ -152,7 +152,6 @@ protected:
     SwndStyle m_style;      /**< 窗口Style，是一组窗口属性 */
     SStringT m_strText;     /**< 窗口文字 */
     DWORD m_dwState;        /**< 窗口状态 */
-    SStringT m_strLinkUrl;  /**< 窗口URL */
     SStringT m_strToolTipText;/**< 窗口ToolTip */
     int     m_nSepSpace;    /**< 窗口水平自动排版的间隔，不支持垂直方向的自动排版 */
     
@@ -405,8 +404,6 @@ public:
     void SetCheck(BOOL bCheck);
 
     BOOL NeedRedrawParent();
-
-    LPCTSTR GetLinkUrl();
 
     ISwndContainer *GetContainer();
 
@@ -856,7 +853,6 @@ protected:
         ATTR_CUSTOM(L"show", OnAttrVisible)
         ATTR_CUSTOM(L"pos", OnAttrPos)
         ATTR_CUSTOM(L"display", OnAttrDisplay)
-        ATTR_STRINGT(L"href", m_strLinkUrl, FALSE)
         ATTR_I18NSTRT(L"tip", m_strToolTipText, FALSE)  //使用语言包翻译
         ATTR_INT(L"msgtransparent", m_bMsgTransparent, FALSE)
         ATTR_INT(L"sep", m_nSepSpace, FALSE)
