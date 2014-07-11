@@ -33,7 +33,7 @@ SItemPanel::SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer
 void SItemPanel::OnFinalRelease()
 {
     AddRef();//防止重复进入该函数
-    SendSwndMessage(WM_DESTROY);
+    SSendMessage(WM_DESTROY);
     __super::OnFinalRelease();
 }
 
@@ -81,7 +81,7 @@ IRenderTarget * SItemPanel::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
     IRenderTarget *pRT=m_pFrmHost->GetRenderTarget(rcInvalid,gdcFlags);
     if(gdcFlags & OLEDC_PAINTBKGND)
     {//调用frmhost的GetRenderTarget时，不会绘制frmHost的背景。注意此外只画背景，不画前景,因为itempanel就是前景
-        m_pFrmHost->SendSwndMessage(WM_ERASEBKGND, (WPARAM)pRT);
+        m_pFrmHost->SSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
     }
     pRT->OffsetViewportOrg(rcItem.left,rcItem.top);
     return pRT;
@@ -253,7 +253,7 @@ BOOL SItemPanel::OnUpdateToolTip( SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTi
 void SItemPanel::OnSetCaretValidateRect( LPCRECT lpRect )
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     CRect rcIntersect;
     rcIntersect.IntersectRect(&rcClient,lpRect);
     CRect rcItem=GetItemRect();

@@ -28,7 +28,7 @@ namespace SOUI
 
         virtual UINT OnGetDlgCode(){return SC_WANTALLKEYS;}
 
-        virtual BOOL IsTabStop(){return TRUE;}
+        virtual BOOL IsFocusable(){return TRUE;}
 
         HRESULT OnAttrClsid(const SStringW & strValue,BOOL bLoading);
         SOUI_MSG_MAP_BEGIN()

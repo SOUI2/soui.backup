@@ -90,7 +90,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(TargetPath) ..\..\..\bin"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration

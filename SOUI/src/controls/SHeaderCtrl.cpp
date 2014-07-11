@@ -73,7 +73,7 @@ namespace SOUI
         SPainter painter;
         BeforePaint(pRT,painter);
         CRect rcClient;
-        GetClient(&rcClient);
+        GetClientRect(&rcClient);
         CRect rcItem(rcClient.left,rcClient.top,rcClient.left,rcClient.bottom);
         for(UINT i=0;i<m_arrItems.GetCount();i++)
         {
@@ -144,7 +144,7 @@ namespace SOUI
     CRect SHeaderCtrl::GetItemRect( UINT iItem )
     {
         CRect    rcClient;
-        GetClient(&rcClient);
+        GetClientRect(&rcClient);
         CRect rcItem(rcClient.left,rcClient.top,rcClient.left,rcClient.bottom);
         for(UINT i=0;i<=iItem && i<m_arrItems.GetCount();i++)
         {
@@ -353,7 +353,7 @@ namespace SOUI
     DWORD SHeaderCtrl::HitTest( CPoint pt )
     {
         CRect    rcClient;
-        GetClient(&rcClient);
+        GetClientRect(&rcClient);
         CRect rcItem(rcClient.left,rcClient.top,rcClient.left,rcClient.bottom);
         int nMargin=m_bSortHeader?CX_HDITEM_MARGIN:0;
         for(UINT i=0;i<m_arrItems.GetCount();i++)
@@ -383,7 +383,7 @@ namespace SOUI
     {
         if(iItem>=m_arrItems.GetCount()) return NULL;
         CRect rcClient;
-        GetClient(rcClient);
+        GetClientRect(rcClient);
         CRect rcItem(0,0,m_arrItems[iItem].cx,rcClient.Height());
         
         CAutoRefPtr<IRenderTarget> pRT;
@@ -406,7 +406,7 @@ namespace SOUI
     void SHeaderCtrl::DrawDraggingState(DWORD dwDragTo)
     {
         CRect rcClient;
-        GetClient(&rcClient);
+        GetClientRect(&rcClient);
         IRenderTarget *pRT=GetRenderTarget(rcClient,OLEDC_PAINTBKGND);
         SPainter painter;
         BeforePaint(pRT,painter);

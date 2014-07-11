@@ -59,7 +59,7 @@ public:
 
     SBHITINFO HitTest(CPoint pt);
 
-    virtual void GetClient(LPRECT pRect);
+    virtual void GetClientRect(LPRECT pRect);
 
 protected:
     CRect GetSbPartRect(BOOL bVertical,UINT uSBCode);

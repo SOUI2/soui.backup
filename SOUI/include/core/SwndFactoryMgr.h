@@ -27,8 +27,6 @@ public:
     {
     }
 
-//     LPCWSTR DuiWindowName(){return T::GetClassName();}
-
     LPCWSTR SWindowBaseName(){return T::BaseClassName();}
 
     // Implement WindowFactory interface

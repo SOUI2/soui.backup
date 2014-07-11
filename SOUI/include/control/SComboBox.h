@@ -339,7 +339,7 @@ protected:
      * 
      * Describe  ÊÇ·ñ½ûÖ¹TAB¼ü
      */  
-    BOOL IsTabStop();
+    BOOL IsFocusable();
 
     SOUI_ATTRS_BEGIN()
         ATTR_INT(L"dropdown", m_bDropdown, FALSE)

@@ -404,7 +404,7 @@ HSTREEITEM STreeCtrl::InsertItem(LPTVITEM pItemObj,HSTREEITEM hParent,HSTREEITEM
 
     int nViewWidth;
     CRect rcClient;
-    GetClient(rcClient);
+    GetClientRect(rcClient);
 
     pItemObj->nLevel = GetItemLevel(hParent)+1;
 
@@ -668,7 +668,7 @@ BOOL STreeCtrl::GetItemRect( LPTVITEM pItemObj,CRect &rcItem )
     if(pItemObj->bVisible==FALSE) return FALSE;
 
     CRect rcClient;
-    GetClient(rcClient);
+    GetClientRect(rcClient);
     int iFirstVisible=m_ptOrigin.y/m_nItemHei;
     int nPageItems=(rcClient.Height()+m_nItemHei-1)/m_nItemHei+1;
 
@@ -704,7 +704,7 @@ BOOL STreeCtrl::GetItemRect( LPTVITEM pItemObj,CRect &rcItem )
 HSTREEITEM STreeCtrl::HitTest(CPoint &pt)
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     CPoint pt2=pt;
     pt2.y -= rcClient.top - m_ptOrigin.y;
     int iItem=pt2.y/m_nItemHei;
@@ -744,7 +744,7 @@ void STreeCtrl::RedrawItem(HSTREEITEM hItem)
 {
     if(!IsVisible(TRUE)) return;
     CRect rcClient;
-    GetClient(rcClient);
+    GetClientRect(rcClient);
 
     int iFirstVisible=m_ptOrigin.y/m_nItemHei;
     int nPageItems=(rcClient.Height()+m_nItemHei-1)/m_nItemHei+1;
@@ -763,7 +763,7 @@ void STreeCtrl::RedrawItem(HSTREEITEM hItem)
         SPainter painter;
         BeforePaint(pRT,painter);
 
-        SendSwndMessage(WM_ERASEBKGND,(WPARAM)(void*)pRT);
+        SSendMessage(WM_ERASEBKGND,(WPARAM)(void*)pRT);
 
         DrawItem(pRT,rcItem,hItem);
 
@@ -1072,7 +1072,7 @@ void STreeCtrl::OnPaint(IRenderTarget *pRT)
     SPainter painter;
     BeforePaint(pRT,painter);
 
-    GetClient(rcClient);
+    GetClientRect(rcClient);
     int iFirstVisible=m_ptOrigin.y/m_nItemHei;
     int nPageItems=(m_rcClient.Height()+m_nItemHei-1)/m_nItemHei+1;
 

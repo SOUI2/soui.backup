@@ -64,7 +64,7 @@ namespace SOUI
                 if(pRefWnd)
                 {//需要确定参考窗口是否完成布局
                     CRect rcRef;
-                    pRefWnd->GetRect(&rcRef);
+                    pRefWnd->GetWindowRect(&rcRef);
                     if(bX)
                     {
                         if(rcRef.right == POS_INIT || rcRef.right==POS_WAIT)
@@ -88,7 +88,7 @@ namespace SOUI
                 if(pRefWnd)
                 {//需要确定参考窗口是否完成布局
                     CRect rcRef;
-                    pRefWnd->GetRect(&rcRef);
+                    pRefWnd->GetWindowRect(&rcRef);
                     if(bX)
                     {
                         if(rcRef.left == POS_INIT || rcRef.left==POS_WAIT)
@@ -201,7 +201,7 @@ namespace SOUI
                 }else
                 {
                     CRect rcSib;
-                    pSibling->GetRect(&rcSib);
+                    pSibling->GetWindowRect(&rcSib);
                     if(rcSib.right==POS_INIT || rcSib.right == POS_WAIT)
                         pt.x=POS_WAIT,nRet++;
                     else
@@ -230,7 +230,7 @@ namespace SOUI
         {
             POSITION posOld=pos;
             SWindow *pChild=pListChildren->GetNext(pos);
-            if(0==pChild->SendSwndMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer))
+            if(0==pChild->SSendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer))
                 pListChildren->RemoveAt(posOld);
         }
         if(0==pListChildren->GetCount())

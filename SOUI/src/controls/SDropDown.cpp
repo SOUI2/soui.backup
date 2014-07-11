@@ -56,7 +56,7 @@ namespace SOUI
     void SDropDownWnd::OnLButtonDown( UINT nFlags, CPoint point )
     {
         CRect rcWnd;
-        GetClientRect(&rcWnd);
+        CSimpleWnd::GetClientRect(&rcWnd);
         if(!rcWnd.PtInRect(point))
         {
             EndDropDown();
@@ -74,7 +74,7 @@ namespace SOUI
             LRESULT lRes=0;
             HWND hWnd=m_hWnd;
             CRect rcWnd;
-            GetClientRect(&rcWnd);
+            CSimpleWnd::GetClientRect(&rcWnd);
             SHostWnd::ProcessWindowMessage(m_hWnd,WM_LBUTTONUP,nFlags,MAKELPARAM(point.x,point.y),lRes);
             if(::IsWindow(hWnd) && !rcWnd.PtInRect(point))
                 EndDropDown();//强制关闭弹出窗口

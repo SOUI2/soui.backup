@@ -17,7 +17,6 @@ SwndStyle::SwndStyle()
     , m_nMarginX(0)
     , m_nMarginY(0)
     , m_nSpacing(0)
-    , m_nLineSpacing(20)
     , m_lpCursorName(IDC_ARROW)
     , m_bDotted(FALSE)
 {

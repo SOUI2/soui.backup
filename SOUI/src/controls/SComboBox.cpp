@@ -14,13 +14,13 @@ CComboEdit::CComboEdit( SComboBoxBase *pOwner )
 void CComboEdit::OnMouseHover( WPARAM wParam, CPoint ptPos )
 {
     __super::OnMouseHover(wParam,ptPos);
-    GetOwner()->SendSwndMessage(WM_MOUSEHOVER,wParam,MAKELPARAM(ptPos.x,ptPos.y));
+    GetOwner()->SSendMessage(WM_MOUSEHOVER,wParam,MAKELPARAM(ptPos.x,ptPos.y));
 }
 
 void CComboEdit::OnMouseLeave()
 {
     __super::OnMouseLeave();
-    GetOwner()->SendSwndMessage(WM_MOUSELEAVE);
+    GetOwner()->SSendMessage(WM_MOUSELEAVE);
 }
 
 void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -28,7 +28,7 @@ void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     SWindow *pOwner = GetOwner();
     if (pOwner && (nChar == VK_DOWN || nChar == VK_ESCAPE))
     {
-        pOwner->SendSwndMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
+        pOwner->SSendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
         return;
     }
 
@@ -58,7 +58,7 @@ SComboBoxBase::SComboBoxBase(void)
 ,m_pDropDownWnd(NULL)
 ,m_iInitSel(-1)
 {
-    m_bTabStop=TRUE;
+    m_bFocusable=TRUE;
     m_style.SetAttribute(L"align",L"left",TRUE);
     m_style.SetAttribute(L"valign",L"middle",TRUE);
 
@@ -84,7 +84,7 @@ BOOL SComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
         if(xmlEditStyle)
             m_pEdit->InitFromXml(xmlEditStyle);
         else
-            m_pEdit->SendSwndMessage(WM_CREATE);
+            m_pEdit->SSendMessage(WM_CREATE);
         SStringW strPos;
         strPos.Format(L"0,0,-%d,-0",szBtn.cx);
         m_pEdit->SetAttribute(L"pos",strPos,TRUE);
@@ -98,13 +98,13 @@ BOOL SComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
 void SComboBoxBase::GetDropBtnRect(LPRECT prc)
 {
     SIZE szBtn=m_pSkinBtn->GetSkinSize();
-    GetClient(prc);
+    GetClientRect(prc);
     prc->left=prc->right-szBtn.cx;
 }
 
 void SComboBoxBase::GetTextRect( LPRECT pRect )
 {
-    GetClient(pRect);
+    GetClientRect(pRect);
     SIZE szBtn=m_pSkinBtn->GetSkinSize();
     pRect->right-=szBtn.cx;
 }
@@ -183,7 +183,7 @@ void SComboBoxBase::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     {
         CComboEdit *pEdit = static_cast<CComboEdit *>(FindChildByID(IDC_CB_EDIT));
         if (pEdit)
-            pEdit->SendSwndMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
+            pEdit->SSendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
         return;
     }
 }
@@ -193,9 +193,9 @@ UINT SComboBoxBase::OnGetDlgCode()
     return SC_WANTARROWS;
 }
 
-BOOL SComboBoxBase::IsTabStop()
+BOOL SComboBoxBase::IsFocusable()
 {
-    if (m_bDropdown && m_bTabStop)
+    if (m_bDropdown && m_bFocusable)
         return TRUE;
     return FALSE;
 }
@@ -245,7 +245,7 @@ void SComboBoxBase::OnCloseUp(SDropDownWnd *pDropDown,UINT uCode)
 BOOL SComboBoxBase::CalcPopupRect( int nHeight,CRect & rcPopup )
 {
     CRect rcWnd;
-    GetRect(&rcWnd);
+    GetWindowRect(&rcWnd);
     ClientToScreen(GetContainer()->GetHostHwnd(),(LPPOINT)&rcWnd);
     ClientToScreen(GetContainer()->GetHostHwnd(),((LPPOINT)&rcWnd)+1);
 
@@ -336,7 +336,7 @@ SComboBox::~SComboBox()
 {
     if(m_pListBox)
     {
-        m_pListBox->SendSwndMessage(WM_DESTROY);
+        m_pListBox->SSendMessage(WM_DESTROY);
         delete m_pListBox;
     }
 }
@@ -431,7 +431,7 @@ SComboBoxEx::~SComboBoxEx()
 {
     if(m_pListBox)
     {
-        m_pListBox->SendSwndMessage(WM_DESTROY);
+        m_pListBox->SSendMessage(WM_DESTROY);
         delete m_pListBox;
     }
 }

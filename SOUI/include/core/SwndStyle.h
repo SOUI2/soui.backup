@@ -42,7 +42,6 @@ public:
     int m_nMarginX;
     int m_nMarginY;
     int m_nSpacing;
-    int m_nLineSpacing;
     BOOL m_bDotted;
 
     LPCTSTR m_lpCursorName;
@@ -96,7 +95,6 @@ protected:
         ATTR_INT(L"y-margin", m_nMarginY, TRUE)
         ATTR_INT(L"margin", m_nMarginX = m_nMarginY, TRUE) // 这样比较bt，不过.....凑合用吧
         ATTR_INT(L"spacing", m_nSpacing, TRUE)
-        ATTR_INT(L"linespacing", m_nLineSpacing, TRUE)
         ATTR_ENUM_BEGIN(L"cursor", LPCTSTR, FALSE)
             ATTR_ENUM_VALUE(L"hand", IDC_HAND)
             ATTR_ENUM_VALUE(L"arrow", IDC_ARROW)

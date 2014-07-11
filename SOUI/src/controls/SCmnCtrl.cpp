@@ -171,14 +171,14 @@ void SLink::OnMouseHover( WPARAM wParam, CPoint pt )
 
 SButton::SButton() :m_accel(0),m_bAnimate(FALSE),m_byAlphaAni(0xFF)
 {
-    m_bTabStop=TRUE;
+    m_bFocusable=TRUE;
 }
 
 void SButton::OnPaint(IRenderTarget *pRT)
 {
     if (!m_pBgSkin) return;
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
 
     if(m_byAlphaAni==0xFF)
     {//不在动画过程中
@@ -360,7 +360,7 @@ BOOL SImageWnd::SetSkin(ISkinObj *pSkin,int iFrame/*=0*/,BOOL bAutoFree/*=TRUE*/
     if(m_dlgpos.nCount==2)
     {
         //重新计算坐标
-        SendSwndMessage(WM_WINDOWPOSCHANGED);
+        SSendMessage(WM_WINDOWPOSCHANGED);
     }
     if(IsVisible(TRUE)) Invalidate();
     return TRUE;
@@ -509,7 +509,7 @@ void SProgress::OnPaint(IRenderTarget *pRT)
     ASSERT(m_pSkinBg && m_pSkinPos);
     
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     m_pSkinBg->Draw(pRT, rcClient, WndState_Normal,m_byAlpha);
     CRect rcValue=rcClient;
 
@@ -602,14 +602,14 @@ SCheckBox::SCheckBox()
     : m_pSkin(GETSKIN(L"btncheckbox"))
     , m_pFocusSkin(GETSKIN(L"focuscheckbox"))
 {
-    m_bTabStop=TRUE;
+    m_bFocusable=TRUE;
 }
 
 
 CRect SCheckBox::GetCheckRect()
 {
     CRect rcClient;
-    GetClient(rcClient);
+    GetClientRect(rcClient);
     ASSERT(m_pSkin);
     CSize szCheck=m_pSkin->GetSkinSize();
     CRect rcCheckBox(rcClient.TopLeft(),szCheck);
@@ -619,7 +619,7 @@ CRect SCheckBox::GetCheckRect()
 
 void SCheckBox::GetTextRect( LPRECT pRect )
 {
-    GetClient(pRect);
+    GetClientRect(pRect);
     ASSERT(m_pSkin);
     CSize szCheck=m_pSkin->GetSkinSize();
     pRect->left+=szCheck.cx+CheckBoxSpacing;    
@@ -719,6 +719,12 @@ void SCheckBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     }
 }
 
+HRESULT SCheckBox::OnAttrCheck( const SStringW& strValue, BOOL bLoading )
+{
+    SetCheck(strValue != L"0");
+    return S_FALSE;
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Icon Control
 
@@ -735,7 +741,7 @@ SIconWnd::~SIconWnd()
 void SIconWnd::OnPaint(IRenderTarget *pRT)
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     pRT->DrawIconEx(rcClient.left,rcClient.top,m_theIcon,rcClient.Width(),rcClient.Height(),DI_NORMAL);
 }
 
@@ -768,14 +774,14 @@ SRadioBox::SRadioBox()
     : m_pSkin(GETSKIN(L"btnRadio"))
     , m_pFocusSkin(GETSKIN(L"focusRadio"))
 {
-    m_bTabStop=TRUE;
+    m_bFocusable=TRUE;
 }
 
 
 CRect SRadioBox::GetRadioRect()
 {
     CRect rcClient;
-    GetClient(rcClient);
+    GetClientRect(rcClient);
     ASSERT(m_pSkin);
     CSize szRadioBox=m_pSkin->GetSkinSize();
     CRect rcRadioBox(rcClient.TopLeft(),szRadioBox);
@@ -786,7 +792,7 @@ CRect SRadioBox::GetRadioRect()
 
 void SRadioBox::GetTextRect( LPRECT pRect )
 {
-    GetClient(pRect);
+    GetClientRect(pRect);
     ASSERT(m_pSkin);
     CSize szRadioBox=m_pSkin->GetSkinSize();
     pRect->left+=szRadioBox.cx+RadioBoxSpacing;
@@ -869,8 +875,7 @@ void SRadioBox::OnLButtonDown(UINT nFlags, CPoint point)
 
 void SRadioBox::OnSetFocus()
 {
-    SWindow *pParent=GetParent();
-    pParent->CheckRadioButton(this);
+    SetCheck(TRUE);
     Invalidate();
 }
 
@@ -888,7 +893,24 @@ SWindow * SRadioBox::GetSelectedSiblingInGroup()
         }
         pSibling=pSibling->GetWindow(GSW_NEXTSIBLING);
     }
-    return this;
+    return NULL;
+}
+
+void SRadioBox::SetCheck( BOOL bCheck )
+{
+    if(IsChecked() == bCheck) return;
+    if(bCheck)
+    {
+        SRadioBox *pCurChecked=(SRadioBox*)GetSelectedSiblingInGroup();
+        if(pCurChecked) pCurChecked->SetCheck(FALSE);
+    }
+    SWindow::SetCheck(bCheck);
+}
+
+HRESULT SRadioBox::OnAttrCheck( const SStringW& strValue, BOOL bLoading )
+{
+    SetCheck(strValue != L"0");
+    return S_FALSE;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -30,7 +30,7 @@ SListBoxEx::SListBoxEx()
     , m_bVirtual(FALSE)
     , m_bItemRedrawDelay(TRUE)
 {
-    m_bTabStop=TRUE;
+    m_bFocusable=TRUE;
     m_evtSet.addEvent(EventOfPanel::EventID);
     m_evtSet.addEvent(EventLBGetDispInfo::EventID);
     m_evtSet.addEvent(EventLBSelChanging::EventID);
@@ -78,7 +78,7 @@ void SListBoxEx::DeleteItem(int iItem)
     UpdatePanelsIndex(iItem,-1);
 
     CRect rcClient;
-    SWindow::GetClient(&rcClient);
+    SWindow::GetClientRect(&rcClient);
     CSize szView(rcClient.Width(),GetItemCount()*m_nItemHei);
     if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
     SetViewSize(szView);
@@ -105,7 +105,7 @@ int SListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData/*=0*/)
     UpdatePanelsIndex(iItem,-1);
 
     CRect rcClient;
-    SWindow::GetClient(&rcClient);
+    SWindow::GetClientRect(&rcClient);
     CSize szView(rcClient.Width(),GetItemCount()*m_nItemHei);
     if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
     SetViewSize(szView);
@@ -149,7 +149,7 @@ void SListBoxEx::EnsureVisible( int iItem )
     if(iItem<0 || iItem>=GetItemCount()) return;
     int iFirstVisible=(m_ptOrigin.y + m_nItemHei -1) / m_nItemHei;
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     int nVisibleItems=rcClient.Height()/m_nItemHei;
     if(iItem<iFirstVisible || iItem> iFirstVisible+nVisibleItems-1)
     {
@@ -227,7 +227,7 @@ void SListBoxEx::RedrawItem(int iItem)
 {
     if(!IsVisible(TRUE)) return;
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     CRect rcItem=GetItemRect(iItem);
     CRect rcInter;
     rcInter.IntersectRect(&rcClient,&rcItem);
@@ -237,7 +237,7 @@ void SListBoxEx::RedrawItem(int iItem)
     SPainter painter;
     BeforePaint(pRT,painter);
 
-    SendSwndMessage(WM_ERASEBKGND,(WPARAM)pRT);
+    SSendMessage(WM_ERASEBKGND,(WPARAM)pRT);
     OnDrawItem(pRT,rcItem,iItem);
 
     AfterPaint(pRT,painter);
@@ -248,7 +248,7 @@ void SListBoxEx::RedrawItem(int iItem)
 int SListBoxEx::HitTest(CPoint &pt)
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     CPoint pt2=pt;
     pt2.y -= rcClient.top - m_ptOrigin.y;
     int nRet=pt2.y/m_nItemHei;
@@ -273,7 +273,7 @@ void SListBoxEx::OnPaint(IRenderTarget * pRT)
     BeforePaint(pRT,duiDC);
 
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     pRT->PushClipRect(&rcClient,RGN_AND);
     int iFirstVisible=m_ptOrigin.y/m_nItemHei;
     int nPageItems=(m_rcClient.Height()+m_nItemHei-1)/m_nItemHei+1;
@@ -402,7 +402,7 @@ void SListBoxEx::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
     SWindow *pOwner = GetOwner();
     if (pOwner && (nChar == VK_ESCAPE))
     {
-        pOwner->SendSwndMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
+        pOwner->SSendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
         return;
     }
 
@@ -424,7 +424,7 @@ void SListBoxEx::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     SWindow *pOwner = GetOwner();
     if (pOwner)
-        pOwner->SendSwndMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
+        pOwner->SSendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
 }
 
 UINT SListBoxEx::OnGetDlgCode()
@@ -463,7 +463,7 @@ void SListBoxEx::OnItemSetCapture(SItemPanel *pItem,BOOL bCapture )
 CRect SListBoxEx::GetItemRect( int iItem )
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     CRect rcRet(CPoint(0,iItem*m_nItemHei),CSize(rcClient.Width(),m_nItemHei));
     rcRet.OffsetRect(rcClient.TopLeft()-m_ptOrigin);
     return rcRet;
@@ -488,7 +488,7 @@ LRESULT SListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
     }
     else
     {
-        if(m_bTabStop && (uMsg==WM_LBUTTONDOWN || uMsg== WM_RBUTTONDOWN || uMsg==WM_LBUTTONDBLCLK))
+        if(m_bFocusable && (uMsg==WM_LBUTTONDOWN || uMsg== WM_RBUTTONDOWN || uMsg==WM_LBUTTONDBLCLK))
             SetFocus();
         int iHover=HitTest(pt);
         if(iHover!=m_iHoverItem)

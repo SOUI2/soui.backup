@@ -71,7 +71,7 @@ namespace SOUI
         void InitPage(BOOL bPage1)
         {
             CRect rcPage;
-            GetRect(&rcPage);
+            GetWindowRect(&rcPage);
             CAutoRefPtr<IRenderTarget> pRTPage=GetRenderTarget(&rcPage,OLEDC_NODRAW);
             PaintBackground(pRTPage,&rcPage);
             BitBlt(m_memRT,bPage1?0:rcPage.Width(),0,rcPage.Width(),rcPage.Height(),pRTPage,rcPage.left,rcPage.top,SRCCOPY);
@@ -115,7 +115,7 @@ STabCtrl::STabCtrl() : m_nCurrentPage(0)
     , m_nAnimateSteps(0)
     , m_ptText(-1,-1)
 {
-    m_bTabStop=TRUE;
+    m_bFocusable=TRUE;
     m_evtSet.addEvent(EventTabSelChanging::EventID);
     m_evtSet.addEvent(EventTabSelChanged::EventID);
 }
@@ -130,7 +130,7 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
     CRect rcSplit;
     DWORD dwState;
     
-    GetClient(&rcTabs);
+    GetClientRect(&rcTabs);
     if(m_nTabAlign==AlignLeft)
         rcTabs.right=rcTabs.left+m_nTabWidth;
     else
@@ -139,7 +139,7 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
     if (m_pSkinFrame)
     {
         CRect rcFrame;
-        GetClient(rcFrame);
+        GetClientRect(rcFrame);
         pRT->PushClipRect(&rcFrame,RGN_AND);
 
         switch (m_nTabAlign)
@@ -186,7 +186,7 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
         rcItemPrev=rcItem;
     }
     
-    if(GetContainer()->SwndGetFocus()==m_hSWnd && IsTabStop())
+    if(GetContainer()->SwndGetFocus()==m_hSWnd && IsFocusable())
     {
         CRect rc;
         GetItemRect(m_nCurrentPage,rc);
@@ -255,7 +255,7 @@ BOOL STabCtrl::RemoveItem( int nIndex , int nSelPage/*=0*/)
         if(m_nCurrentPage>nIndex) m_nCurrentPage--;
 
         CRect rcTitle;
-        GetClient(rcTitle);
+        GetClientRect(rcTitle);
         if(m_nTabAlign==AlignLeft)
             rcTitle.right = rcTitle.left + (m_nTabWidth+m_nFramePos);
         else
@@ -352,14 +352,14 @@ BOOL STabCtrl::SetCurSel( int nIndex )
     if(nOldPage!=-1)
     {
         pTab = GetItem(nOldPage);
-        if( pTab) pTab->SendSwndMessage(WM_SHOWWINDOW,FALSE);
+        if( pTab) pTab->SSendMessage(WM_SHOWWINDOW,FALSE);
     }
 
     m_nCurrentPage = nIndex;
     if(nIndex!=-1)
     {
         pTab = GetItem(m_nCurrentPage);
-        if( pTab) pTab->SendSwndMessage(WM_SHOWWINDOW,TRUE);
+        if( pTab) pTab->SSendMessage(WM_SHOWWINDOW,TRUE);
     }
     
     EventTabSelChanged evt2(this);
@@ -413,7 +413,7 @@ BOOL STabCtrl::SetItemTitle( int nIndex, LPCTSTR lpszTitle )
         pTab->SetTitle(lpszTitle);
 
         CRect rcTabs;
-        GetClient(&rcTabs);
+        GetClientRect(&rcTabs);
         if(m_nTabAlign==AlignLeft)
             rcTabs.right=rcTabs.left+m_nTabWidth;
         else
@@ -443,7 +443,7 @@ BOOL STabCtrl::CreateChildren( pugi::xml_node xmlNode )
     
     if(m_nCurrentPage!=-1)
     {
-        GetItem(m_nCurrentPage)->SendSwndMessage(WM_SHOWWINDOW,TRUE);
+        GetItem(m_nCurrentPage)->SSendMessage(WM_SHOWWINDOW,TRUE);
     }
     return TRUE;
 }
@@ -476,7 +476,7 @@ int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoadin
     if(!bLoading)
     {
         CRect rcContainer=GetChildrenLayoutRect();
-        pChild->SendSwndMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
+        pChild->SSendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
         Invalidate();
     }
 
@@ -510,7 +510,7 @@ BOOL STabCtrl::GetItemRect( int nIndex, CRect &rcItem )
         break;
     }
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     rcItem.IntersectRect(rcItem,rcClient);
     return TRUE;
 }

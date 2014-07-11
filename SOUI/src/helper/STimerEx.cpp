@@ -58,7 +58,7 @@ VOID CALLBACK STimer2::_TimerProc( HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD
     if(getSingleton().GetKeyObject(idEvent,ti))
     {
         SWindow *pSwnd=SWindowMgr::GetWindow(ti.Swnd);
-        if(pSwnd) pSwnd->SendSwndMessage(WM_TIMER2,ti.uTimerID);
+        if(pSwnd) pSwnd->SSendMessage(WM_TIMER2,ti.uTimerID);
     }
 }
 
