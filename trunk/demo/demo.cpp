@@ -14,12 +14,12 @@
 
 #define SUPPORT_LANG    //打开SUPPORT_LANG时，演示多语言支持
 
-// #define RES_TYPE 0   //从文件中加载资源
-// #define RES_TYPE 1   //从PE资源中加载UI资源
-#define RES_TYPE 2   //从zip包中加载资源
+#define RES_TYPE 0   //从文件中加载资源
+//#define RES_TYPE 1   //从PE资源中加载UI资源
+//#define RES_TYPE 2   //从zip包中加载资源
 
 #if RES_TYPE==2
-    #include "../resprovider-zip/SResProviderZip.h"
+    #include "../components/resprovider-zip/SResProviderZip.h"
     #ifdef _DEBUG
     #pragma comment(lib,"resprovider-zip_d.lib")
     #else

@@ -15,44 +15,44 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo", "demo\Demo.vcproj", 
 		{644188F9-379F-467C-B03D-5DE6E0027839} = {644188F9-379F-467C-B03D-5DE6E0027839}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render-skia", "render-skia\render-skia.vcproj", "{6C5D6C99-15E9-4EA4-94FC-639B680B685D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render-skia", "components\render-skia\render-skia.vcproj", "{6C5D6C99-15E9-4EA4-94FC-639B680B685D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81} = {2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utilities", "utilities\utilities.vcproj", "{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgdecoder-wic", "imgdecoder-wic\imgdecoder-wic.vcproj", "{84C8473F-682C-4AFF-82C4-2E5C7FDE9A4C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgdecoder-wic", "components\imgdecoder-wic\imgdecoder-wic.vcproj", "{84C8473F-682C-4AFF-82C4-2E5C7FDE9A4C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkCore", "myskia\vs2008\SkCore\SkCore.vcproj", "{CA37CBA7-D91D-49D4-9DCB-9F2118709260}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkCore", "components\myskia\vs2008\SkCore\SkCore.vcproj", "{CA37CBA7-D91D-49D4-9DCB-9F2118709260}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render-gdi", "render-gdi\render-gdi.vcproj", "{644188F9-379F-467C-B03D-5DE6E0027839}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render-gdi", "components\render-gdi\render-gdi.vcproj", "{644188F9-379F-467C-B03D-5DE6E0027839}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "translator", "translator\translator.vcproj", "{1C379542-31AE-425B-B358-70B4DB1F5965}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "translator", "components\translator\translator.vcproj", "{1C379542-31AE-425B-B358-70B4DB1F5965}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81} = {2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{C764642C-40F4-4E3F-9455-424821953442}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua", "ScriptModule-LUA\lua-5.1\lua.vcproj", "{D0B6AEA5-B4D7-4755-85E9-AD05796C437E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua", "components\ScriptModule-LUA\lua-5.1\lua.vcproj", "{D0B6AEA5-B4D7-4755-85E9-AD05796C437E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "script-lua", "script-lua", "{C2875BC7-7D19-4DCC-BB20-E3D6C65F3060}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScriptModule-Lua", "ScriptModule-LUA\ScriptModule\ScriptModule-Lua.vcproj", "{04465481-0B5C-4191-B1D5-B5C02161EE91}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScriptModule-Lua", "components\ScriptModule-LUA\ScriptModule\ScriptModule-Lua.vcproj", "{04465481-0B5C-4191-B1D5-B5C02161EE91}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D0B6AEA5-B4D7-4755-85E9-AD05796C437E} = {D0B6AEA5-B4D7-4755-85E9-AD05796C437E}
 		{569DE3F2-641F-4CDB-B401-3C731312E844} = {569DE3F2-641F-4CDB-B401-3C731312E844}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "resprovider-zip", "resprovider-zip\resprovider-zip.vcproj", "{2323659A-E209-48FA-9E62-B8BA5FF48619}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "resprovider-zip", "components\resprovider-zip\resprovider-zip.vcproj", "{2323659A-E209-48FA-9E62-B8BA5FF48619}"
 	ProjectSection(ProjectDependencies) = postProject
 		{033A5B72-55E3-4D81-9A5E-B224B2896415} = {033A5B72-55E3-4D81-9A5E-B224B2896415}
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resprovider-zip", "resprovider-zip", "{1F457B63-1E0A-4D8F-9CBE-AE84A02E9231}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "zlib\zlib.vcproj", "{033A5B72-55E3-4D81-9A5E-B224B2896415}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "components\zlib\zlib.vcproj", "{033A5B72-55E3-4D81-9A5E-B224B2896415}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,8 +114,8 @@ Global
 		{6C5D6C99-15E9-4EA4-94FC-639B680B685D}.Debug_Dll|Win32.ActiveCfg = Debug_Dll|Win32
 		{6C5D6C99-15E9-4EA4-94FC-639B680B685D}.Debug_Dll|Win32.Build.0 = Debug_Dll|Win32
 		{6C5D6C99-15E9-4EA4-94FC-639B680B685D}.Debug_Dll|x64.ActiveCfg = Debug_Dll|Win32
-		{6C5D6C99-15E9-4EA4-94FC-639B680B685D}.DEBUG|Win32.ActiveCfg = Debug|Win32
-		{6C5D6C99-15E9-4EA4-94FC-639B680B685D}.DEBUG|Win32.Build.0 = Debug|Win32
+		{6C5D6C99-15E9-4EA4-94FC-639B680B685D}.DEBUG|Win32.ActiveCfg = Debug_Dll|Win32
+		{6C5D6C99-15E9-4EA4-94FC-639B680B685D}.DEBUG|Win32.Build.0 = Debug_Dll|Win32
 		{6C5D6C99-15E9-4EA4-94FC-639B680B685D}.DEBUG|x64.ActiveCfg = Debug_Dll|Win32
 		{6C5D6C99-15E9-4EA4-94FC-639B680B685D}.Release_Dll|Win32.ActiveCfg = Release_Dll|Win32
 		{6C5D6C99-15E9-4EA4-94FC-639B680B685D}.Release_Dll|Win32.Build.0 = Release_Dll|Win32
@@ -129,8 +129,8 @@ Global
 		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}.Debug_Dll|Win32.ActiveCfg = Debug_Dll|Win32
 		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}.Debug_Dll|Win32.Build.0 = Debug_Dll|Win32
 		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}.Debug_Dll|x64.ActiveCfg = Debug_Dll|Win32
-		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}.DEBUG|Win32.ActiveCfg = Debug|Win32
-		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}.DEBUG|Win32.Build.0 = Debug|Win32
+		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}.DEBUG|Win32.ActiveCfg = Debug_Dll|Win32
+		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}.DEBUG|Win32.Build.0 = Debug_Dll|Win32
 		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}.DEBUG|x64.ActiveCfg = Debug_Dll|Win32
 		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}.Release_Dll|Win32.ActiveCfg = Release_Dll|Win32
 		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}.Release_Dll|Win32.Build.0 = Release_Dll|Win32
@@ -144,8 +144,8 @@ Global
 		{84C8473F-682C-4AFF-82C4-2E5C7FDE9A4C}.Debug_Dll|Win32.ActiveCfg = Debug_Dll|Win32
 		{84C8473F-682C-4AFF-82C4-2E5C7FDE9A4C}.Debug_Dll|Win32.Build.0 = Debug_Dll|Win32
 		{84C8473F-682C-4AFF-82C4-2E5C7FDE9A4C}.Debug_Dll|x64.ActiveCfg = Debug_Dll|Win32
-		{84C8473F-682C-4AFF-82C4-2E5C7FDE9A4C}.DEBUG|Win32.ActiveCfg = Debug|Win32
-		{84C8473F-682C-4AFF-82C4-2E5C7FDE9A4C}.DEBUG|Win32.Build.0 = Debug|Win32
+		{84C8473F-682C-4AFF-82C4-2E5C7FDE9A4C}.DEBUG|Win32.ActiveCfg = Debug_Dll|Win32
+		{84C8473F-682C-4AFF-82C4-2E5C7FDE9A4C}.DEBUG|Win32.Build.0 = Debug_Dll|Win32
 		{84C8473F-682C-4AFF-82C4-2E5C7FDE9A4C}.DEBUG|x64.ActiveCfg = Debug_Dll|Win32
 		{84C8473F-682C-4AFF-82C4-2E5C7FDE9A4C}.Release_Dll|Win32.ActiveCfg = Release_Dll|Win32
 		{84C8473F-682C-4AFF-82C4-2E5C7FDE9A4C}.Release_Dll|Win32.Build.0 = Release_Dll|Win32
@@ -174,8 +174,8 @@ Global
 		{644188F9-379F-467C-B03D-5DE6E0027839}.Debug_Dll|Win32.ActiveCfg = Debug_Dll|Win32
 		{644188F9-379F-467C-B03D-5DE6E0027839}.Debug_Dll|Win32.Build.0 = Debug_Dll|Win32
 		{644188F9-379F-467C-B03D-5DE6E0027839}.Debug_Dll|x64.ActiveCfg = Debug_Dll|Win32
-		{644188F9-379F-467C-B03D-5DE6E0027839}.DEBUG|Win32.ActiveCfg = Debug|Win32
-		{644188F9-379F-467C-B03D-5DE6E0027839}.DEBUG|Win32.Build.0 = Debug|Win32
+		{644188F9-379F-467C-B03D-5DE6E0027839}.DEBUG|Win32.ActiveCfg = Debug_Dll|Win32
+		{644188F9-379F-467C-B03D-5DE6E0027839}.DEBUG|Win32.Build.0 = Debug_Dll|Win32
 		{644188F9-379F-467C-B03D-5DE6E0027839}.DEBUG|x64.ActiveCfg = Debug_Dll|Win32
 		{644188F9-379F-467C-B03D-5DE6E0027839}.Release_Dll|Win32.ActiveCfg = Release_Dll|Win32
 		{644188F9-379F-467C-B03D-5DE6E0027839}.Release_Dll|Win32.Build.0 = Release_Dll|Win32

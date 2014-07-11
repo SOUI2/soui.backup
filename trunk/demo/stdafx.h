@@ -15,17 +15,9 @@
 
 #include "resource.h"	//APP×ÊÔ´
 
-#include "../zlib/zconf.h"
-#include "../zlib/zlib.h"
-
 using namespace SOUI;
 
 #ifdef _DEBUG
-
-#if !defined(_WIN64)
-// #pragma comment(lib,"zlib_d.lib")
-#endif
-
 	#ifdef USING_ATL
 	# pragma comment(lib, "soui_static_atl_d.lib")
 	#elif DLL_SOUI
@@ -34,11 +26,6 @@ using namespace SOUI;
 	# pragma comment(lib, "soui_static_d.lib")
 	#endif
 #else
-
-#if !defined(_WIN64)
-// #pragma comment(lib,"zlib.lib")
-#endif
-
 	#ifdef DLL_SOUI
 	# pragma comment(lib, "soui.lib")
 	#else

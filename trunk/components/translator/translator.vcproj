@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../utilities/include;../soui/include;"
+				AdditionalIncludeDirectories="../../utilities/include;../../soui/include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TRANSLATOR_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -118,7 +118,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../utilities/include;../soui/include;"
+				AdditionalIncludeDirectories="../../utilities/include;../../soui/include;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;TRANSLATOR_EXPORTS"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
