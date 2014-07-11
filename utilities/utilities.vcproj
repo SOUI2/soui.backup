@@ -262,6 +262,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\src\sresid.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -313,6 +317,10 @@
 			</File>
 			<File
 				RelativePath=".\include\souicoll.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\SResID.h"
 				>
 			</File>
 			<File
@@ -369,11 +377,11 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\ReadMe.txt"
+			RelativePath=".\include\pugixml\readme.txt"
 			>
 		</File>
 		<File
-			RelativePath=".\include\pugixml\readme.txt"
+			RelativePath=".\ReadMe.txt"
 			>
 		</File>
 	</Files>

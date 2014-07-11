@@ -13,6 +13,9 @@
 
 // Include ZLIB stuff. ZLIB is maintained by Jean-loup Gailly and Mark Adler.
 // It is a general GZIP and PKZIP compatible compression library.
+#include <zconf.h>
+#include <zlib.h>
+
 #include <crtdbg.h>
 #include <tchar.h>
 #include <malloc.h>

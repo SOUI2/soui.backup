@@ -4,7 +4,6 @@
 
 template<>
 class  _COLL_NS::CElementTraits< SOUI::CAccelerator > : public _COLL_NS::CElementTraitsBase< SOUI::CAccelerator >
-
 {
 public:
     static ULONG Hash(INARGTYPE element ) throw()

@@ -1290,6 +1290,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\helper\SResID.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\interface\SResProvider-i.h"
 				>
 			</File>

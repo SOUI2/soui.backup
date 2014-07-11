@@ -6,12 +6,13 @@
 #pragma once
 
 #include "interface/SResProvider-i.h"
+#include <SResID.h>
+#include <unknown/obj-ref-impl.hpp>
 
 namespace SOUI
 {
 
-
-class SOUI_EXP SResProviderPE:public IResProvider
+class SOUI_EXP SResProviderPE:public TObjRefImpl<IResProvider>
 {
 public:
     SResProviderPE(HINSTANCE hInst);
@@ -30,7 +31,7 @@ protected:
 
 
 #define UISKIN_INDEX    _T("uiskin.idx")        //文件夹资源的文件映射表索引表文件名
-class SOUI_EXP SResProviderFiles:public IResProvider
+class SOUI_EXP SResProviderFiles:public TObjRefImpl<IResProvider>
 {
 public:
 
