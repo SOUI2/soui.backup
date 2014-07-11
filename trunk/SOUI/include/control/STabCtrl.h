@@ -1,37 +1,70 @@
-//////////////////////////////////////////////////////////////////////////
-//   File Name: stabctrl.h
-// Description: Tab Control
-//     Creator: Huang Jianxiong
-//////////////////////////////////////////////////////////////////////////
-
+/**
+ * Copyright (C) 2014-2050 SOUI团队
+ * All rights reserverd.
+ * 
+ * @file       stabctrl.h
+ * @brief      
+ * @version    v1.0      
+ * @author     soui      
+ * @date       2014-07-06
+ * 
+ * Describe    扩展列表框 
+ */
 #pragma once
-
 #include "core/SWnd.h"
 
 namespace SOUI
 {
-
+/** 
+ * @class     STabPage
+ * @brief     tab标签页面
+ *
+ * Describe   tab标签页面
+ */
 class SOUI_EXP STabPage : public SWindow
 {
     SOUI_CLASS_NAME(STabPage, L"page")
 
 public:
+    /**
+     * STabPage::STabPage
+     * @brief    构造函数
+     *
+     * Describe  构造函数  
+     */
     STabPage()
     {
         m_bVisible = FALSE;
         m_dwState = WndState_Invisible;
         m_layout.uPositionType = SizeX_FitParent|SizeY_FitParent;
     }
-
+    /**
+     * STabPage::~STabPage
+     * @brief    析构函数
+     *
+     * Describe  析构函数  
+     */
     virtual ~STabPage()
     {
     }
-
+    /**
+     * STabPage::GetTitle
+     * @brief    获取标题
+     * @return   LPCTSTR --- 标题
+     *
+     * Describe  获取标题
+     */
     LPCTSTR GetTitle()
     {
         return m_strTitle;
     }
-
+    /**
+     * STabPage::SetTitle
+     * @brief    设置标题
+     * @param    LPCTSTR lpszTitle --- 标题
+     *
+     * Describe  设置标题 
+     */
     void SetTitle(LPCTSTR lpszTitle)
     {
         m_strTitle = lpszTitle;
@@ -42,7 +75,7 @@ public:
     SOUI_ATTRS_END()
 protected:
 
-    SStringT m_strTitle;
+    SStringT m_strTitle; /**< 标题 */
 };
 
 typedef enum tagSLIDEDIR
@@ -53,6 +86,12 @@ typedef enum tagSLIDEDIR
     SD_BOTTOMTOP,
 } SLIDEDIR;
 
+/** 
+ * @class     STabCtrl
+ * @brief     tab控件
+ *
+ * Describe   tab控件
+ */
 class SOUI_EXP STabCtrl : public SWindow
 {
     friend class STabSlider;
@@ -60,22 +99,22 @@ class SOUI_EXP STabCtrl : public SWindow
     SOUI_CLASS_NAME(STabCtrl, L"tabctrl")
 
 protected:
-    int m_nHoverTabItem;
-    int m_nCurrentPage;
-    int m_nTabSpacing;
-    int m_nTabWidth;
-    int m_nTabHeight;
-    int m_nTabPos;
-    int m_nFramePos;
-    ISkinObj *m_pSkinTab;
-    ISkinObj *m_pSkinIcon;
-    ISkinObj *m_pSkinSplitter;
-    ISkinObj *m_pSkinFrame;
-    CPoint m_ptIcon;
-    CPoint m_ptText;
-    int m_nTabAlign;
+    int m_nHoverTabItem; /**< hover状态item */
+    int m_nCurrentPage;  /**< 当前页码      */
+    int m_nTabSpacing;   /**< tab页面间距   */
+    int m_nTabWidth;     /**< tab页面宽度   */
+    int m_nTabHeight;    /**< tab页面高度   */
+    int m_nTabPos;       /**< tab位置       */
+    int m_nFramePos;     /**< 框架位置      */
+    ISkinObj *m_pSkinTab; /**< ISkibObj对象 */
+    ISkinObj *m_pSkinIcon; /**< ISkibObj对象  */
+    ISkinObj *m_pSkinSplitter;  /**< ISkibObj对象  */
+    ISkinObj *m_pSkinFrame;     /**< ISkibObj对象  */
+    CPoint m_ptIcon;   /**< 图标位置 */
+    CPoint m_ptText;   /**< 标题位置 */
+    int m_nTabAlign;   /**< 排列方式 */
 
-    SArray<STabPage*> m_lstPages;
+    SArray<STabPage*> m_lstPages;  /**< tab标签页面链表 */
 
     enum
     {
@@ -83,65 +122,228 @@ protected:
         AlignLeft,
     };
 
-    int    m_nAnimateSteps;
+    int    m_nAnimateSteps; /**<  */
 public:
-
+    /**
+     * STabCtrl::STabCtrl
+     * @brief    构造函数
+     *
+     * Describe  构造函数  
+     */
     STabCtrl();
+
+    /**
+     * STabCtrl::~STabCtrl
+     * @brief    析构函数
+     *
+     * Describe  析构函数  
+     */
     virtual ~STabCtrl() {}
 
+    /**
+     * STabCtrl::GetCurSel
+     * @brief    获取当前选中
+     * @return   返回int
+     *
+     * Describe  获取当前选中 
+     */
     int GetCurSel()
     {
         return m_nCurrentPage;
     }
-
+    /**
+     * STabCtrl::SetCurSel
+     * @brief    设置当前选中
+     * @param    int nIndex -- 索引
+     * @return   返回BOOL
+     *
+     * Describe  获取当前选中 
+     */
     BOOL SetCurSel(int nIndex);
 
+    /**
+     * STabCtrl::SetCurSel
+     * @brief    设置当前选中
+     * @param    LPCTSTR pszTitle -- 标题
+     * @return   返回BOOL
+     *
+     * Describe  获取当前选中 
+     */
     BOOL SetCurSel(LPCTSTR pszTitle);
 
+    /**
+     * STabCtrl::SetItemTitle
+     * @brief    设置标题
+     * @param    int nIndex  -- 索引
+     * @param    LPCTSTR lpszTitle  -- 标题
+     * @return   返回BOOL
+     *
+     * Describe  获取当前选中 
+     */
     BOOL SetItemTitle(int nIndex, LPCTSTR lpszTitle);
-
+    /**
+     * STabCtrl::CreateChildren
+     * @brief    创建tab页面
+     * @param    pugi::xml_node xmlNode  -- xml文件
+     * @return   返回BOOL
+     *
+     * Describe  创建tab页面
+     */
     BOOL CreateChildren(pugi::xml_node xmlNode);
 
+    /**
+     * STabCtrl::InsertItem
+     * @brief    插入tab页面
+     * @param    LPCWSTR lpContent  -- 标题
+     * @param    int iInsert  -- 位置
+     * @return   返回BOOL
+     *
+     * Describe  插入tab页面
+     */
     BOOL InsertItem(LPCWSTR lpContent,int iInsert=-1);
-
+    /**
+     * STabCtrl::InsertItem
+     * @brief    插入tab页面
+     * @param    pugi::xml_node xmlNode  -- xml文件
+     * @param    int iInsert  -- 位置
+     * @param    BOOL bLoading -- 是否加载
+     * @return   返回int
+     *
+     * Describe  插入tab页面
+     */
     int InsertItem(pugi::xml_node xmlNode,int iInsert=-1,BOOL bLoading=FALSE);
 
+    /**
+     * STabCtrl::GetItemCount
+     * @brief    获取tab页面数
+     * @return   返回int
+     *
+     * Describe  获取tab页面数
+     */
     int GetItemCount()
     {
         return m_lstPages.GetCount();
     }
-
+    /**
+     * STabCtrl::GetItem
+     * @brief    获取指定tab页面
+     * @param    int nIndex -- 索引
+     * @return   返回int
+     *
+     * Describe  获取当前选中 
+     */
     STabPage* GetItem(int nIndex);
 
-
+    /**
+     * STabCtrl::RemoveItem
+     * @brief    删除指定tab页面
+     * @param    int nIndex -- 索引
+     * @param    int nSelPage -- 选中页面
+     * @return   删除指定tab页面
+     *
+     * Describe  获取当前选中 
+     */
     BOOL RemoveItem(int nIndex, int nSelPage=0);
 
+    /**
+     * STabCtrl::RemoveAllItems
+     * @brief    删除所有页面
+     *
+     * Describe  删除所有页面 
+     */
     void RemoveAllItems(void);
 protected:
+    /**
+     * STabCtrl::GetChildrenLayoutRect
+     * @brief    
+     *
+     * Describe  
+     */
     virtual CRect GetChildrenLayoutRect();
-
+    /**
+     * STabCtrl::GetItemRect
+     * @brief    获取指定item位置
+     * @param    int nIndex -- 索引
+     * @param     CRect &rcItem -- 位置
+     *
+     * Describe  获取指定item位置 
+     */
     virtual BOOL GetItemRect(int nIndex, CRect &rcItem);
-
+    /**
+     * STabCtrl::DrawItem
+     * @brief    绘制item
+     * @param    IRenderTarget *pRT -- 绘制设备
+     * @param    const CRect &rcItem -- 绘制区域
+     * @param    int iItem  -- 索引
+     * @param    DWORD dwState  -- 状态
+     *
+     * Describe  绘制item
+     */
     virtual void DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD dwState);
 
+    /**
+     * STabCtrl::OnGetDlgCode
+     * @brief    获取窗口消息码
+     * @return   返回UINT
+     *
+     * Describe  获取窗口消息码
+     */
     virtual UINT OnGetDlgCode()
     {
         return SC_WANTARROWS;
     }
-
+    /**
+     * STabCtrl::OnPaint
+     * @brief    绘画消息
+     * @param    IRenderTarget *pRT -- 绘制设备句柄
+     *
+     * Describe  此函数是消息响应函数
+    */
     void OnPaint(IRenderTarget *pRT);
-
+    /**
+     * STabCtrl::OnLButtonDown
+     * @brief    鼠标左键按下事件
+     * @param    UINT nFlags -- 标志
+     * @param    CPoint point -- 鼠标坐标
+     *
+     * Describe  此函数是消息响应函数
+    */
     void OnLButtonDown(UINT nFlags, CPoint point);
-
+    /**
+     * STabCtrl::OnMouseMove
+     * @brief    鼠标移动事件
+     * @param    UINT nFlags -- 标志
+     * @param    CPoint point -- 鼠标坐标
+     *
+     * Describe  此函数是消息响应函数
+    */
     void OnMouseMove(UINT nFlags, CPoint point);
-
+    /**
+     * STabCtrl::OnMouseLeave
+     * @brief    鼠标离开事件
+     *
+     * Describe  此函数是消息响应函数
+    */
     void OnMouseLeave()
     {
         OnMouseMove(0,CPoint(-1,-1));
     }
-
+    /**
+     * STabCtrl::OnKeyDown
+     * @brief    键盘按下
+     * @param    UINT nChar -- 键码
+     * @param    UINT nRepCnt -- 重复次数
+     * @param    UINT nFlags -- 标志
+     *
+     * Describe  此函数是消息响应函数
+    */
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-
+    /**
+     * STabCtrl::OnDestroy
+     * @brief    销毁
+     *
+     * Describe  此函数是消息响应函数
+    */
     void OnDestroy();
 
     SOUI_MSG_MAP_BEGIN()
