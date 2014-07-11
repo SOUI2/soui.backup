@@ -3,7 +3,7 @@
 namespace SOUI
 {
 
-#define POSFLAG_REFCENTER    '|'        //参考父窗口中心
+#define POSFLAG_REFCENTER      '|'        //参考父窗口中心
 #define POSFLAG_REFPREV        '['        //参考前一个兄弟窗口
 #define POSFLAG_REFNEXT        ']'        //参考下一个兄弟窗口
 #define POSFLAG_PERCENT        '%'        //采用在父窗口的百分比定义坐标
@@ -54,8 +54,8 @@ namespace SOUI
         POS2_LEFTTOP=0,    //左上角
         POS2_RIGHTTOP,    //右上争
         POS2_CENTER,    //中心
-        POS2_LEFTBOTTOM,//
-        POS2_RIGHTBOTTOM,//
+        POS2_LEFTBOTTOM,//左下角
+        POS2_RIGHTBOTTOM,//右下角
     }POS2TYPE;
 
     struct SWND_POSITION
@@ -88,47 +88,71 @@ namespace SOUI
     };
 
     class SWindow;
-    class SwndLayout
+    class SwndLayout : public SWND_POSITION
     {
     public:
-        static void StrPos2SwndPos(LPCWSTR pszPos,SWND_POSITION &dlgpos);
-
-        //************************************
-        // Method:    PositionItem2Point ：将一个position_item解释为绝对坐标
-        // FullName:  SOUI::SWindow::PositionItem2Point
-        // Access:    protected 
-        // Returns:   CPoint
-        // Qualifier:
-        // Parameter: const SWND_POSITION_ITEM & pos
-        // Parameter: int nMin 父窗口的范围
-        // Parameter: int nMax 父窗口的范围
-        // Parameter: BOOL bX 计算X坐标
-        //************************************
-        static int PositionItem2Value(SWindow *pWnd,const SWND_POSITION_ITEM &pos,int nMin, int nMax,BOOL bX);
-
-        //************************************
-        // Method:    ParsePosition :解析一个坐标定义到position_item,增加对百分比的支持
-        // FullName:  SOUI::SWindow::ParsePosition
-        // Access:    protected 
-        // Returns:   LPCSTR
-        // Qualifier:
-        // Parameter: LPCWSTR pszPos
-        // Parameter: BOOL bFirst2Pos:TRUE-计算pos的前面两个值
-        // Parameter: SWND_POSITION_ITEM & pos
-        //************************************
-        static LPCWSTR ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,SWND_POSITION_ITEM &pos);
-
-        //************************************
-        // Method:    CalcPosition:计算窗口坐标
-        // FullName:  SOUI::SWindow::CalcPosition
-        // Access:    protected 
-        // Returns:   int
-        // Qualifier:
-        // Parameter: LPRECT prcContainer
-        //************************************
-        static int CalcPosition(SWindow *pWnd,LPRECT prcContainer,const SWND_POSITION & dlgpos,CRect &rcWindow);
+        SwndLayout(SWindow *pOwner);
+        
+        /**
+         * ParseStrPostion
+         * @brief    解析一个pos字符串
+         * @param    LPCWSTR pszPos --  pos字符串
+         * @return   void 
+         *
+         * Describe  
+         */
+        void ParseStrPostion(LPCWSTR pszPos);
 
 
-        static BOOL CalcChildrenPosition(SWindow *pWnd,SList<SWindow*> *pListChildren);
+        /**
+         * CalcPosition
+         * @brief    计算窗口坐标
+         * @param    LPRECT prcContainer --  容器位置
+         * @param  [out]  CRect & rcWindow --  窗口矩形
+         * @return   int 计算得到的坐标个数
+         *
+         * Describe  每个窗口包含4个坐标，由于一个坐标可能依赖于其它兄弟窗口的布局，一次计算可能不能全部得到4个坐标
+         */
+        int CalcPosition(LPRECT prcContainer,CRect &rcWindow);
+
+
+        /**
+         * CalcChildrenPosition
+         * @brief    计算列表中子窗口的坐标
+         * @param    SList<SWindow * > * pListChildren --  子窗口列表
+         * @return   BOOL TRUE-成功，FALSE-失败，可能由于布局依赖形成死锁
+         *
+         * Describe  
+         */
+        BOOL CalcChildrenPosition(SList<SWindow*> *pListChildren);
+        
+    protected:
+    
+        /**
+         * PositionItem2Value
+         * @brief    将一个position_item解释为绝对坐标
+         * @param    const SWND_POSITION_ITEM & pos --  一个位置定义的引用
+         * @param    int nMin --  父窗口的范围
+         * @param    int nMax --  父窗口的范围
+         * @param    BOOL bX --  计算X坐标
+         * @return   int 计算得到的坐标
+         *
+         * Describe  
+         */
+        int PositionItem2Value(const SWND_POSITION_ITEM &pos,int nMin, int nMax,BOOL bX);
+
+        /**
+         * ParsePosition
+         * @brief    解析一个字符串定义的坐标
+         * @param    LPCWSTR pszPos --  "pos"属性字符串
+         * @param    BOOL bFirst2Pos --  为前面两个坐标标志
+         * @param  [out]  SWND_POSITION_ITEM & pos --  窗口坐标定义
+         * @return   LPCWSTR 返回下一个位置开始
+         *
+         * Describe  前面两个坐标不能指定大小，后面的两个坐标才能指定大小
+         */
+        LPCWSTR ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,SWND_POSITION_ITEM &pos);
+
+        SWindow *m_pOwner;  //**< layout的宿主 */
     };
 }

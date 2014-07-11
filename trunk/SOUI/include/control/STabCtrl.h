@@ -21,7 +21,7 @@ public:
     {
         m_bVisible = FALSE;
         m_dwState = WndState_Invisible;
-        m_dlgpos.uPositionType = SizeX_FitParent|SizeY_FitParent;
+        m_layout.uPositionType = SizeX_FitParent|SizeY_FitParent;
     }
 
     virtual ~STabPage()

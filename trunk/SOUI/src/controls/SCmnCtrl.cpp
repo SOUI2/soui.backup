@@ -363,7 +363,7 @@ BOOL SImageWnd::SetSkin(ISkinObj *pSkin,int iFrame/*=0*/,BOOL bAutoFree/*=TRUE*/
 
     ASSERT(GetParent());
 
-    if(m_dlgpos.nCount==2)
+    if(m_layout.nCount==2)
     {
         //重新计算坐标
         SSendMessage(WM_WINDOWPOSCHANGED);
@@ -491,15 +491,15 @@ CSize SProgress::GetDesiredSize(LPRECT pRcContainer)
     if(IsVertical())
     {
         szRet.cx = sizeBg.cx + 2 * m_style.m_nMarginX;
-        if(m_dlgpos.uPositionType & SizeY_Specify)
-            szRet.cy=m_dlgpos.uSpecifyHeight;
+        if(m_layout.uPositionType & SizeY_Specify)
+            szRet.cy=m_layout.uSpecifyHeight;
         else
             szRet.cy = sizeBg.cy +2 * m_style.m_nMarginY;
     }else
     {
         szRet.cy = sizeBg.cy + 2 * m_style.m_nMarginY;
-        if(m_dlgpos.uPositionType & SizeX_Specify)
-            szRet.cx=m_dlgpos.uSpecifyWidth;
+        if(m_layout.uPositionType & SizeX_Specify)
+            szRet.cx=m_layout.uSpecifyWidth;
         else
             szRet.cx = sizeBg.cx +2 * m_style.m_nMarginX;
     }
