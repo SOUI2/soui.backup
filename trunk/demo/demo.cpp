@@ -16,35 +16,6 @@
 
 #define RES_USINGFILE   //打开RES_USINGFILE从文件中加载资源，否则从PE资源中加载UI资源
 
-class SComLoader
-{
-    typedef BOOL (*funSCreateInstance)(IObjRef **);
-public:
-    SComLoader():m_hMod(0),m_funCreateInst(NULL){}
-    ~SComLoader()
-    {
-        if(m_hMod) FreeLibrary(m_hMod);
-    }
-
-    BOOL CreateInstance(LPCTSTR pszDllPath,IObjRef **ppObj)
-    {
-        if(!m_funCreateInst)
-        {
-            m_hMod=LoadLibrary(pszDllPath);
-            if(!m_hMod) return FALSE;
-            m_funCreateInst=(funSCreateInstance)GetProcAddress(m_hMod,"SCreateInstance");
-            if(!m_funCreateInst)
-            {
-                FreeLibrary(m_hMod);
-                return FALSE;
-            }
-        }
-        return m_funCreateInst(ppObj);
-    }
-protected:
-    HMODULE m_hMod;
-    funSCreateInstance m_funCreateInst;
-};
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
