@@ -107,12 +107,12 @@ void SScriptModule_Lua::executeString( LPCSTR str )
 
 bool SScriptModule_Lua::subscribeEvent(SOUI::SWindow* target, UINT uEvent, LPCSTR subscriber_name )
 {
-	return target->subscribeEvent(uEvent,LuaFunctionSlot(d_state,subscriber_name));
+	return target->GetEventSet()->subscribeEvent(uEvent,LuaFunctionSlot(d_state,subscriber_name));
 }
 
 bool SScriptModule_Lua::unsubscribeEvent(SOUI::SWindow* target, UINT uEvent, LPCSTR subscriber_name )
 {
-	return target->unsubscribeEvent(uEvent,LuaFunctionSlot(d_state,subscriber_name));
+	return target->GetEventSet()->unsubscribeEvent(uEvent,LuaFunctionSlot(d_state,subscriber_name));
 }
 
 
