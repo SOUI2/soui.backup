@@ -482,12 +482,6 @@ BOOL SWindow::NeedRedrawParent()
     return (GetContainer()->IsTranslucent() || !m_pBgSkin || (m_style.m_crBg == CR_INVALID));
 }
 
-
-LPCTSTR SWindow::GetLinkUrl()
-{
-    return m_strLinkUrl;
-}
-
 ISwndContainer *SWindow::GetContainer()
 {
     return m_pContainer;
@@ -1138,12 +1132,7 @@ void SWindow::OnLButtonUp(UINT nFlags,CPoint pt)
 
     ModifyState(0, WndState_PushDown,TRUE);
 
-    LPCTSTR lpszUrl = GetLinkUrl();
-    if (lpszUrl && lpszUrl[0])
-    {
-        ::ShellExecute(NULL, _T("open"), lpszUrl, NULL, NULL, SW_SHOWNORMAL);
-    }
-    else if (GetID() || GetName())
+    if (GetID() || GetName())
     {
         FireCommand();
     }

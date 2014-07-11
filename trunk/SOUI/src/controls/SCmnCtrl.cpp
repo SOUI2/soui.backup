@@ -143,6 +143,12 @@ void SLink::OnLButtonUp( UINT nFlags,CPoint pt )
         return;
     }
     __super::OnLButtonUp(nFlags,pt);
+    
+    if (! m_strLinkUrl.IsEmpty())
+    {
+        ::ShellExecute(NULL, _T("open"), m_strLinkUrl, NULL, NULL, SW_SHOWNORMAL);
+    }
+
 }
 
 void SLink::OnMouseMove( UINT nFlags,CPoint pt )

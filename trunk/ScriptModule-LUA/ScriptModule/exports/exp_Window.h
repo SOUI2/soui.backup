@@ -34,7 +34,6 @@ BOOL ExpLua_Window(lua_State *L)
 		lua_tinker::class_def<SWindow>(L,"SetVisible",&SWindow::SetVisible);
 		lua_tinker::class_def<SWindow>(L,"EnableWindow",&SWindow::EnableWindow);
 		lua_tinker::class_def<SWindow>(L,"SetCheck",&SWindow::SetCheck);
-		lua_tinker::class_def<SWindow>(L,"GetLinkUrl",&SWindow::GetLinkUrl);
 		lua_tinker::class_def<SWindow>(L,"SetOwner",&SWindow::SetOwner);
 		lua_tinker::class_def<SWindow>(L,"GetOwner",&SWindow::GetOwner);
 		lua_tinker::class_def<SWindow>(L,"Invalidate",&SWindow::Invalidate);

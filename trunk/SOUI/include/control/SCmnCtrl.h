@@ -122,6 +122,10 @@ protected:
     void OnMouseMove(UINT nFlags,CPoint pt);
     void OnMouseHover(WPARAM wParam, CPoint ptPos);
 
+    SOUI_ATTRS_BEGIN()
+        ATTR_STRINGT(L"href", m_strLinkUrl, FALSE)
+    SOUI_ATTRS_END()
+    
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONUP(OnLButtonUp)
@@ -129,7 +133,9 @@ protected:
         MSG_WM_MOUSEHOVER(OnMouseHover)
     SOUI_MSG_MAP_END()
 
+protected:
     CRect m_rcText;  /**< 文本显示所在位置 */
+    SStringT m_strLinkUrl;  /**< 窗口URL */
 };
 
 /**
