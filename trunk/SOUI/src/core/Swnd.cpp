@@ -954,32 +954,9 @@ void SWindow::OnNcPaint(IRenderTarget *pRT)
     }
 }
 
-CSize SWindow::CalcSize(LPRECT pRcContainer)
-{
-    CSize sz;
-    if(m_layout.uPositionType & SizeX_Specify)
-        sz.cx=m_layout.uSpecifyWidth;
-    else if(m_layout.uPositionType & SizeX_FitParent)
-        sz.cx=pRcContainer->right-pRcContainer->left;
-    if(m_layout.uPositionType & SizeY_Specify)
-        sz.cy=m_layout.uSpecifyHeight;
-    else if(m_layout.uPositionType & SizeY_FitParent)
-        sz.cy=pRcContainer->bottom-pRcContainer->top;
-    if((m_layout.uPositionType & SizeX_FitContent) || (m_layout.uPositionType & SizeY_FitContent) && m_layout.nCount!=4)
-    {
-        CSize szDesire=GetDesiredSize(pRcContainer);    
-        if(m_layout.uPositionType & SizeX_FitContent)
-            sz.cx=szDesire.cx;
-        if(m_layout.uPositionType & SizeY_FitContent)
-            sz.cy=szDesire.cy;
-    }
-    return sz;
-}
-
-
 CSize SWindow::GetDesiredSize(LPRECT pRcContainer)
 {
-    ASSERT((m_layout.uPositionType & SizeX_FitContent) || (m_layout.uPositionType & SizeY_FitContent));
+    ASSERT(m_layout.IsFitContent());
 
 
     int nTestDrawMode = GetTextAlign() & ~(DT_CENTER | DT_RIGHT | DT_VCENTER | DT_BOTTOM);
@@ -1177,7 +1154,7 @@ CRect SWindow::GetChildrenLayoutRect()
 
 void SWindow::ClearLayoutState()
 {
-    if(m_layout.uPositionType & Pos_Float) return;
+    if(m_layout.IsFloat()) return;
 
     m_rcWindow.left=m_rcWindow.top=m_rcWindow.right=m_rcWindow.bottom=POS_INIT;
 }

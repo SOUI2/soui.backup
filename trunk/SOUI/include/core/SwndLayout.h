@@ -126,6 +126,23 @@ namespace SOUI
          */
         BOOL CalcChildrenPosition(SList<SWindow*> *pListChildren);
         
+        /**
+         * IsFitContent
+         * @brief    获得布局是否依赖于内容标志
+         * @return   BOOL 
+         *
+         * Describe  
+         */
+        BOOL IsFitContent();
+        
+        /**
+         * IsFloat
+         * @brief    查询窗口是否为Pos_float类型的窗口
+         * @return   BOOL TRUE-float
+         *
+         * Describe  
+         */
+        BOOL IsFloat();
     protected:
     
         /**
@@ -152,6 +169,17 @@ namespace SOUI
          * Describe  前面两个坐标不能指定大小，后面的两个坐标才能指定大小
          */
         LPCWSTR ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,SWND_POSITION_ITEM &pos);
+
+
+        /**
+         * CalcSize
+         * @brief    计算窗口大小
+         * @param    LPRECT pRcContainer --  容器位置
+         * @return   CSize 
+         *
+         * Describe  
+         */
+        CSize CalcSize(LPRECT pRcContainer);
 
         SWindow *m_pOwner;  //**< layout的宿主 */
     };

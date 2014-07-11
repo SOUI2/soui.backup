@@ -161,7 +161,7 @@ namespace SOUI
         }else 
         {
             CPoint pt=rcWindow.TopLeft();
-            CSize sz=m_pOwner->CalcSize(lpRcContainer);
+            CSize sz=CalcSize(lpRcContainer);
             if((uPositionType & SizeX_FitParent) &&  (uPositionType &SizeY_FitParent))
             {//³äÂú¸¸´°¿Ú
                 pt.x=lpRcContainer->left;
@@ -270,6 +270,38 @@ namespace SOUI
         else
             nCount = 0;
 
+    }
+
+    CSize SwndLayout::CalcSize( LPRECT pRcContainer )
+    {
+        CSize sz;
+        if(uPositionType & SizeX_Specify)
+            sz.cx=uSpecifyWidth;
+        else if(uPositionType & SizeX_FitParent)
+            sz.cx=pRcContainer->right-pRcContainer->left;
+        if(uPositionType & SizeY_Specify)
+            sz.cy=uSpecifyHeight;
+        else if(uPositionType & SizeY_FitParent)
+            sz.cy=pRcContainer->bottom-pRcContainer->top;
+        if((uPositionType & SizeX_FitContent) || (uPositionType & SizeY_FitContent) && nCount!=4)
+        {
+            CSize szDesire=m_pOwner->GetDesiredSize(pRcContainer);    
+            if(uPositionType & SizeX_FitContent)
+                sz.cx=szDesire.cx;
+            if(uPositionType & SizeY_FitContent)
+                sz.cy=szDesire.cy;
+        }
+        return sz;
+    }
+
+    BOOL SwndLayout::IsFitContent()
+    {
+        return nCount!=4 && (uPositionType & (SizeX_FitContent|SizeY_FitContent));
+    }
+
+    BOOL SwndLayout::IsFloat()
+    {
+        return uPositionType & Pos_Float;
     }
 
 
