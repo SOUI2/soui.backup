@@ -29,7 +29,7 @@ SImgPool::~SImgPool()
 
 IBitmap * SImgPool::GetImage(LPCTSTR pszImgName,LPCTSTR pszType)
 {
-    IResProvider * pResProvider=GETRESPROVIDER;
+    SResProviderMgr * pResProvider=GETRESPROVIDER;
     if(!pszType) pszType=pResProvider->FindImageType(pszImgName);
     if(!pszType) return NULL;
     

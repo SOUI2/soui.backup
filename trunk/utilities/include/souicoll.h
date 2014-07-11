@@ -13,6 +13,9 @@
 
 #pragma once
 
+#include <limits.h>
+#include <malloc.h>
+
 #pragma warning(push)
 #pragma warning(disable: 4702)  // Unreachable code.  This file will have lots of it, especially without EH enabled.
 #pragma warning(disable: 4512)  // assignment operator could not be generated

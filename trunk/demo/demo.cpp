@@ -14,8 +14,18 @@
 
 #define SUPPORT_LANG    //打开SUPPORT_LANG时，演示多语言支持
 
-#define RES_USINGFILE   //打开RES_USINGFILE从文件中加载资源，否则从PE资源中加载UI资源
+// #define RES_TYPE 0   //从文件中加载资源
+// #define RES_TYPE 1   //从PE资源中加载UI资源
+#define RES_TYPE 2   //从zip包中加载资源
 
+#if RES_TYPE==2
+    #include "../resprovider-zip/SResProviderZip.h"
+    #ifdef _DEBUG
+    #pragma comment(lib,"resprovider-zip_d.lib")
+    #else
+    #pragma comment(lib,"resprovider-zip.lib")
+    #endif
+#endif
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
@@ -88,7 +98,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         }
 #endif//SUPPORT_LUA
 
-#ifdef RES_USINGFILE
+#if (RES_TYPE == 0)
         TCHAR szCurrentDir[MAX_PATH]={0};
         GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
         LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
@@ -101,8 +111,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
             ASSERT(0);
             return 1;
         }
-#else
+#elif (RES_TYPE==1)
         SResProviderPE *pResProvider = new SResProviderPE(hInstance);
+#elif (RES_TYPE==2)
+        SResProviderZip *pResProvider = new SResProviderZip(pRenderFactory);
+        pResProvider->Init(_T("demo-skin.zip"));
 #endif
 
         theApp->AddResProvider(pResProvider);
