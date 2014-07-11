@@ -119,7 +119,7 @@ namespace SOUI
         /**
          * PositionItem2Value
          * @brief    将一个position_item解释为绝对坐标
-         * @param    const SWND_POSITION_ITEM & pos --  一个位置定义的引用
+         * @param    const POSITION_ITEM & pos --  一个位置定义的引用
          * @param    int nMin --  父窗口的范围
          * @param    int nMax --  父窗口的范围
          * @param    BOOL bX --  计算X坐标

@@ -9,7 +9,6 @@
 #include "helper/STimerEx.h"
 #include "helper/SwndMsgCracker.h"
 
-#include "gdialpha.h"
 #include "event/EventSubscriber.h"
 #include "event/events.h"
 #include "event/EventSet.h"
@@ -756,11 +755,11 @@ protected:
     /**
      * SwndProc
      * @brief    默认的消息处理函数
-     * @param    UINT uMsg --  
-     * @param    WPARAM wParam --  
-     * @param    LPARAM lParam --  
-     * @param    LRESULT & lResult --  
-     * @return   BOOL 
+     * @param    UINT uMsg --  消息类型
+     * @param    WPARAM wParam --  参数1
+     * @param    LPARAM lParam --  参数2
+     * @param    LRESULT & lResult --  消息返回值
+     * @return   BOOL 是否被处理
      *
      * Describe  在消息映射表中没有处理的消息进入该函数处理
      */
@@ -810,6 +809,8 @@ protected:
     HRESULT OnAttrVisible(const SStringW& strValue, BOOL bLoading);
     HRESULT OnAttrEnable(const SStringW& strValue, BOOL bLoading);
     HRESULT OnAttrDisplay(const SStringW& strValue, BOOL bLoading);
+    HRESULT OnAttrSkin(const SStringW& strValue, BOOL bLoading);
+    HRESULT OnAttrClass(const SStringW& strValue, BOOL bLoading);
 
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
@@ -834,9 +835,9 @@ protected:
     SOUI_ATTRS_BEGIN()
         ATTR_INT(L"id",m_nID,FALSE)
         ATTR_STRINGW(L"name",m_strName,FALSE)
-        ATTR_SKIN(L"skin", m_pBgSkin, TRUE)//直接获得皮肤对象
+        ATTR_CUSTOM(L"skin", OnAttrSkin)//直接获得皮肤对象
         ATTR_SKIN(L"ncskin", m_pNcSkin, TRUE)//直接获得皮肤对象
-        ATTR_STYLE(L"class", m_style, TRUE)    //获得style
+        ATTR_CUSTOM(L"class", OnAttrClass)    //获得style
         ATTR_CHAIN(m_style)                    //支持对style中的属性定制
         ATTR_INT(L"data", m_uData, 0 )
         ATTR_CUSTOM(L"enable", OnAttrEnable)
