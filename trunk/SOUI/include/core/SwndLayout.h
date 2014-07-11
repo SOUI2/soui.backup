@@ -43,7 +43,7 @@ namespace SOUI
         PIT_OFFSET,        //相对于前面x1,y1的偏移,只能在x2,y2中使用，以@开头
     };
 
-    struct SWND_POSITION_ITEM
+    struct POSITION_ITEM
     {
         PIT pit;
         BOOL bMinus;
@@ -58,37 +58,8 @@ namespace SOUI
         POS2_RIGHTBOTTOM,//右下角
     }POS2TYPE;
 
-    struct SWND_POSITION
-    {
-        int nCount;
-        union
-        {
-            struct
-            {
-                SWND_POSITION_ITEM Left;
-                SWND_POSITION_ITEM Top;
-                SWND_POSITION_ITEM Right;
-                SWND_POSITION_ITEM Bottom;
-            };
-            SWND_POSITION_ITEM Item[4];
-        };
-        UINT uPositionType;        //坐标属性
-        POS2TYPE pos2Type;        //指定2点坐标时，坐标类型
-        UINT uSpecifyWidth;
-        UINT uSpecifyHeight;
-
-        SWND_POSITION():nCount(0)
-            ,uPositionType(0)
-            ,pos2Type(POS2_LEFTTOP)
-            ,uSpecifyWidth(0)
-            ,uSpecifyHeight(0)
-        {
-
-        }
-    };
-
     class SWindow;
-    class SwndLayout : public SWND_POSITION
+    class SwndLayout
     {
     public:
         SwndLayout(SWindow *pOwner);
@@ -156,7 +127,7 @@ namespace SOUI
          *
          * Describe  
          */
-        int PositionItem2Value(const SWND_POSITION_ITEM &pos,int nMin, int nMax,BOOL bX);
+        int PositionItem2Value(const POSITION_ITEM &pos,int nMin, int nMax,BOOL bX);
 
         /**
          * ParsePosition
@@ -168,7 +139,7 @@ namespace SOUI
          *
          * Describe  前面两个坐标不能指定大小，后面的两个坐标才能指定大小
          */
-        LPCWSTR ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,SWND_POSITION_ITEM &pos);
+        LPCWSTR ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,POSITION_ITEM &pos);
 
 
         /**
@@ -182,5 +153,23 @@ namespace SOUI
         CSize CalcSize(LPRECT pRcContainer);
 
         SWindow *m_pOwner;  //**< layout的宿主 */
+        
+    public:
+        int nCount;         //**< 定义的坐标个数 */
+        union
+        {
+            struct
+            {
+                POSITION_ITEM Left;
+                POSITION_ITEM Top;
+                POSITION_ITEM Right;
+                POSITION_ITEM Bottom;
+            };
+            POSITION_ITEM Item[4];
+        };
+        UINT uPositionType;       //**< 坐标属性 */
+        POS2TYPE pos2Type;        //**< 指定2点坐标时，坐标类型 */
+        UINT uSpecifyWidth;       //**< 指定的宽度 */
+        UINT uSpecifyHeight;      //**< 指定的高度 */
     };
 }

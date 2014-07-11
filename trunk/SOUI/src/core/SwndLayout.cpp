@@ -5,12 +5,18 @@
 namespace SOUI
 {
 
-    SwndLayout::SwndLayout( SWindow *pOwner ):m_pOwner(pOwner)
+    SwndLayout::SwndLayout( SWindow *pOwner )
+    :m_pOwner(pOwner)
+    ,nCount(0)
+    ,uPositionType(0)
+    ,pos2Type(POS2_LEFTTOP)
+    ,uSpecifyWidth(0)
+    ,uSpecifyHeight(0)
     {
 
     }
     
-    LPCWSTR SwndLayout::ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,SWND_POSITION_ITEM &pos)
+    LPCWSTR SwndLayout::ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,POSITION_ITEM &pos)
     {
         if(!pszPos) return NULL;
 
@@ -41,7 +47,7 @@ namespace SOUI
         return pNext;
     }
 
-    int SwndLayout::PositionItem2Value(const SWND_POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX)
+    int SwndLayout::PositionItem2Value(const POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX)
     {
         int nRet=0;
         int nWid=nMax-nMin;
