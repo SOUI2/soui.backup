@@ -363,7 +363,7 @@ BOOL SImageWnd::SetSkin(ISkinObj *pSkin,int iFrame/*=0*/,BOOL bAutoFree/*=TRUE*/
 
     ASSERT(GetParent());
 
-    if(m_layout.nCount==2)
+    if(m_layout.IsFitContent())
     {
         //重新计算坐标
         SSendMessage(WM_WINDOWPOSCHANGED);

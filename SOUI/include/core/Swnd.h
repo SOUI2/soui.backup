@@ -170,7 +170,7 @@ protected:
     ULONG_PTR m_uData;      /**< 窗口的数据位,可以通过GetUserData获得 */
     
     SwndLayout      m_layout;/**< 布局对象 */
-//    SWND_POSITION m_dlgpos; /**< 布局属性 */
+
     int           m_nMaxWidth;    /**< 自动计算大小时，窗口的最大宽度 */
 
 #ifdef _DEBUG
@@ -728,16 +728,6 @@ protected:
      * Describe  
      */
     virtual CSize GetDesiredSize(LPRECT pRcContainer);
-
-    /**
-     * CalcSize
-     * @brief    计算窗口大小
-     * @param    LPRECT pRcContainer --  容器位置
-     * @return   CSize 
-     *
-     * Describe  
-     */
-    CSize CalcSize(LPRECT pRcContainer);
 
     /**
      * GetNextVisibleWindow
