@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="freetype"
 	ProjectGUID="{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}"
 	TargetFrameworkVersion="131072"
@@ -16,7 +16,7 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\..\..\..\objs\release"
+			OutputDirectory="$(SolutionDir)lib"
 			IntermediateDirectory=".\..\..\..\objs\release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -70,7 +70,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\..\objs\win32\vc2008\freetype253.lib"
+				OutputFile="$(OutDir)\freetype253.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -91,7 +91,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release Multithreaded|Win32"
-			OutputDirectory=".\..\..\..\objs\release_mt"
+			OutputDirectory="$(SolutionDir)lib"
 			IntermediateDirectory=".\..\..\..\objs\release_mt"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -145,7 +145,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\..\objs\win32\vc2008\freetype253MT.lib"
+				OutputFile="$(OutDir)\freetype253MT.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -166,7 +166,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release Singlethreaded|Win32"
-			OutputDirectory=".\..\..\..\objs\release_st"
+			OutputDirectory="$(SolutionDir)lib"
 			IntermediateDirectory=".\..\..\..\objs\release_st"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -220,7 +220,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\..\objs\win32\vc2008\freetype253ST.lib"
+				OutputFile="$(OutDir)\freetype253ST.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -240,7 +240,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\..\..\..\objs\debug"
+			OutputDirectory="$(SolutionDir)lib"
 			IntermediateDirectory=".\..\..\..\objs\debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -292,7 +292,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\..\objs\win32\vc2008\freetype253_D.lib"
+				OutputFile="$(OutDir)\freetype253_D.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -313,7 +313,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug Singlethreaded|Win32"
-			OutputDirectory=".\..\..\..\objs\debug_st"
+			OutputDirectory="$(SolutionDir)lib"
 			IntermediateDirectory=".\..\..\..\objs\debug_st"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -365,7 +365,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\..\objs\win32\vc2008\freetype253ST_D.lib"
+				OutputFile="$(OutDir)\freetype253ST_D.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -386,7 +386,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug Multithreaded|Win32"
-			OutputDirectory=".\..\..\..\objs\debug_mt"
+			OutputDirectory="$(SolutionDir)lib"
 			IntermediateDirectory=".\..\..\..\objs\debug_mt"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -439,7 +439,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\..\objs\win32\vc2008\freetype253MT_D.lib"
+				OutputFile="$(OutDir)\freetype253MT_D.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -1237,6 +1237,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\src\base\ftgxval.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\src\base\ftlcdfil.c"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\src\base\ftmm.c"
 					>
 					<FileConfiguration
@@ -1304,6 +1312,14 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\..\src\base\ftotval.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\src\base\ftpatent.c"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\src\base\ftpfr.c"
 					>
 				</File>
@@ -1321,22 +1337,6 @@
 				</File>
 				<File
 					RelativePath="..\..\..\src\base\ftxf86.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\base\ftlcdfil.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\base\ftgxval.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\base\ftotval.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\src\base\ftpatent.c"
 					>
 				</File>
 				<File
