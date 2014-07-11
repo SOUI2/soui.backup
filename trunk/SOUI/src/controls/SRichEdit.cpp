@@ -2,6 +2,7 @@
 #include "control/SRichEdit.h"
 #include "SApp.h"
 #include "helper/SMenu.h"
+#include <gdialpha.h>
 
 #pragma comment(lib,"imm32.lib")
 

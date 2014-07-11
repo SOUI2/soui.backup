@@ -611,12 +611,6 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
     m_layout.uPositionType = 0;
     SObject::InitFromXml(xmlNode);
 
-    //加载style中指定的皮肤属性，由于皮肤有owner属性，而style没有owner属性，因此需要在属性加载完成后查询皮肤名称并加载 hjx:2012.1.15
-    if(m_pBgSkin==NULL && !m_style.m_strSkinName.IsEmpty())
-        m_pBgSkin=GETSKIN(m_style.m_strSkinName);
-    if(m_pNcSkin==NULL && !m_style.m_strNcSkinName.IsEmpty())
-        m_pNcSkin=GETSKIN(m_style.m_strNcSkinName);
-
     if(!m_bVisible || (m_pParent && !m_pParent->IsVisible(TRUE)))
         ModifyState(WndState_Invisible, 0);
 
@@ -1619,10 +1613,13 @@ BOOL SWindow::FireCtxMenu( CPoint pt )
 HRESULT SWindow::OnAttrPos(const SStringW& strValue, BOOL bLoading)
 {
     if (strValue.IsEmpty()) return E_FAIL;
-    if(!bLoading) InvalidateRect(m_rcWindow);
-    ClearLayoutState();
     m_layout.ParseStrPostion(strValue);
-    if(!bLoading) OnWindowPosChanged(NULL);
+    if(!bLoading)
+    {
+        SWindow *pParent=GetParent();
+        ASSERT(pParent);
+        pParent->UpdateChildrenPosition();
+    }
     return S_FALSE;
 }
 
@@ -1659,6 +1656,45 @@ HRESULT SWindow::OnAttrDisplay( const SStringW& strValue, BOOL bLoading )
         SWindow *pParent=GetParent();
         ASSERT(pParent);
         pParent->UpdateChildrenPosition();
+    }
+    return S_FALSE;
+}
+
+HRESULT SWindow::OnAttrSkin( const SStringW& strValue, BOOL bLoading )
+{
+    m_pBgSkin = GETSKIN(strValue);
+    if(!bLoading && m_layout.IsFitContent())
+    {
+        SWindow *pParent=GetParent();
+        ASSERT(pParent);
+        pParent->UpdateChildrenPosition();
+    }
+    return S_FALSE;
+}
+
+HRESULT SWindow::OnAttrClass( const SStringW& strValue, BOOL bLoading )
+{
+    BOOL bGet=GETSTYLE(strValue,m_style);
+    if(!bGet) return E_FAIL;
+    if(!m_style.m_strSkinName.IsEmpty())
+    {
+        m_pBgSkin = GETSKIN(m_style.m_strSkinName);
+    }
+    if(!m_style.m_strNcSkinName.IsEmpty())
+    {
+        m_pNcSkin = GETSKIN(m_style.m_strNcSkinName);
+    }
+    if(!bLoading)
+    {
+        if(m_layout.IsFitContent())
+        {
+            SWindow *pParent=GetParent();
+            ASSERT(pParent);
+            pParent->UpdateChildrenPosition();
+        }else
+        {
+            InvalidateRect(m_rcWindow);
+        }
     }
     return S_FALSE;
 }
