@@ -20,7 +20,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin"
+			OutputDirectory="$(SolutionDir)bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfATL="0"
@@ -208,7 +208,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\bin"
+			OutputDirectory="$(SolutionDir)bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfATL="0"
@@ -395,7 +395,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug_Dll|Win32"
-			OutputDirectory="..\bin"
+			OutputDirectory="$(SolutionDir)bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfATL="0"
@@ -582,7 +582,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release_Dll|Win32"
-			OutputDirectory="..\bin"
+			OutputDirectory="$(SolutionDir)bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfATL="0"
@@ -769,7 +769,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug_ATL|Win32"
-			OutputDirectory="..\bin"
+			OutputDirectory="$(SolutionDir)bin"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfATL="1"
