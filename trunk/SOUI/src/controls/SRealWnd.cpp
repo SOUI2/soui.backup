@@ -112,7 +112,7 @@ BOOL SRealWnd::InitRealWnd()
         {
             //如果不是在加载的时候创建窗口，则需要自动调整窗口位置
             CRect rcClient;
-            GetClient(&rcClient);
+            GetClientRect(&rcClient);
             SetWindowPos(m_hRealWnd,0,rcClient.left,rcClient.top,rcClient.Width(),rcClient.Height(),SWP_NOZORDER);
         }
         

@@ -104,6 +104,19 @@ typedef enum tagGW_CODE
     GSW_OWNER,
 } GW_CODE;
 
+typedef struct tagSWNDMSG
+{
+    UINT uMsg;
+    WPARAM wParam;
+    LPARAM lParam;
+} SWNDMSG,*PSWNDMSG;
+
+/**
+ * @class     SWindow
+ * @brief     SOUI窗口基类 
+ * 
+ * Describe   SOUI窗口基类,实现窗口的基本接口
+ */
 class SOUI_EXP SWindow : public SObject
     , public SMsgHandleState
     , public TObjRefImpl2<IObjRef,SWindow>
@@ -115,95 +128,175 @@ public:
 
     virtual ~SWindow();
 
-    typedef struct tagSWNDMSG
-    {
-        UINT uMsg;
-        WPARAM wParam;
-        LPARAM lParam;
-    } SWNDMSG,*PSWNDMSG;
 protected:
-    SEventSet   m_evtSet;
-
-    SWND m_hSWnd;
-    ISwndContainer *m_pContainer;
-    SWindow *m_pOwner;
-    SWindow *m_pParent,*m_pFirstChild, *m_pLastChild, *m_pNextSibling,*m_pPrevSibling;    //窗口树结构
-    UINT    m_nChildrenCount;
-    SWNDMSG        *m_pCurMsg;
-
-    CRect m_rcWindow;
-
-    SStringW m_strName;
-    int     m_nID;
-
-    SwndStyle m_style;
-    SStringT m_strText;
-    DWORD m_dwState;
-    SStringT m_strLinkUrl;
-    BOOL m_bMsgTransparent;        //不处理用户操作标志
-    BOOL m_bVisible;            //可见状态
-    BOOL m_bDisplay;            //隐藏时是否占位，不占位时启动重新布局。
-    BOOL m_bDisable;            //禁用状态
-    SStringT m_strToolTipText;
-    int     m_nSepSpace;    //自动排版的水平空格
-    BOOL m_bClipClient;
-    BOOL m_bTabStop;
-    BYTE m_byAlpha;        //窗口透明度,只进行配置，支持依赖于控件。
-
-    ISkinObj * m_pBgSkin;   //背景skin
-    ISkinObj * m_pNcSkin;   //非客户区skin
+    SWND m_hSWnd;       /**< 窗口句柄 */
     
-    SWND_POSITION m_dlgpos;
-    int             m_nMaxWidth;    //自动计算大小时使用
+    ISwndContainer *m_pContainer;/**< 容器对象 */
+    SEventSet   m_evtSet;/**< 窗口事件集合 */
+    
+    SWindow *m_pOwner;  /**< 容器Owner，事件分发时，会把事件交给Owner处理 */
+    SWindow *m_pParent; /**< 父窗口 */
+    SWindow *m_pFirstChild;/**< 第一子窗口 */
+    SWindow *m_pLastChild;/**< 最后窗口 */
+    SWindow *m_pNextSibling;/**< 前一兄弟窗口 */
+    SWindow *m_pPrevSibling; /**< 后一兄弟窗口 */
+    UINT    m_nChildrenCount;  /**< 子窗口数量 */
 
-    BOOL m_bUpdateLocked;//暂时锁定更新
+    SWNDMSG        *m_pCurMsg;  /**< 当前正在处理的窗口消息 */
+
+    CRect m_rcWindow;       /**< 窗口在容器中的位置 */
+
+    SStringW m_strName;     /**< 窗口名称 */
+    int     m_nID;          /**< 窗口ID */
+
+    SwndStyle m_style;      /**< 窗口Style，是一组窗口属性 */
+    SStringT m_strText;     /**< 窗口文字 */
+    DWORD m_dwState;        /**< 窗口状态 */
+    SStringT m_strLinkUrl;  /**< 窗口URL */
+    SStringT m_strToolTipText;/**< 窗口ToolTip */
+    int     m_nSepSpace;    /**< 窗口水平自动排版的间隔，不支持垂直方向的自动排版 */
+    
+    DWORD m_bVisible:1;        /**< 窗口可见状态 */
+    DWORD m_bDisplay:1;        /**< 窗口隐藏时是否占位，不占位时启动重新布局 */
+    DWORD m_bDisable:1;        /**< 窗口禁用状状态 */
+    DWORD m_bClipClient:1;     /**< 窗口绘制时做clip客户区处理的标志,由于clip可能增加计算量，只在绘制可能走出客户区时才设置*/
+    DWORD m_bMsgTransparent:1; /**< 接收消息标志 TRUE-不处理消息 */
+    DWORD m_bFocusable:1;        /**< 窗口可获得焦点标志 */
+    DWORD m_bUpdateLocked:1;   /**< 暂时锁定更新，锁定后，不向宿主发送Invalidate */
+
+    BYTE m_byAlpha;        /**< 窗口透明度,只进行配置，支持依赖于控件 */
+
+    ISkinObj * m_pBgSkin;   /**< 背景skin */
+    ISkinObj * m_pNcSkin;   /**< 非客户区skin */
+    ULONG_PTR m_uData;      /**< 窗口的数据位,可以通过GetUserData获得 */
+    
+    SWND_POSITION m_dlgpos; /**< 布局属性 */
+    int           m_nMaxWidth;    /**< 自动计算大小时，窗口的最大宽度 */
+
 #ifdef _DEBUG
-    DWORD m_nMainThreadId;
+    DWORD m_nMainThreadId;  /**< 窗口宿线程ID */
 #endif
-    ULONG_PTR m_uData;
 public:
 
     //////////////////////////////////////////////////////////////////////////
     // Method Define
-    // Get align
-    UINT GetTextAlign();    
-    // Get position type
-    DWORD GetPositionType();
 
-    // Set position type
+    /**
+     * GetTextAlign
+     * @brief    获得文本的对齐标志
+     * @return   UINT 
+     *
+     * Describe  获得文本的对齐标志
+     */    UINT GetTextAlign();    
+
+    /**
+     * GetPositionType
+     * @brief    获得窗口布局类型
+     * @return   DWORD 
+     *
+     * Describe  获得窗口布局类型
+     */    DWORD GetPositionType();
+
+    /**
+     * SetPositionType
+     * @brief    设置布局类型
+     * @param    DWORD dwPosType --  布局类型
+     * @param    DWORD dwMask --  布局类型mask
+     * @return   void 
+     *
+     * Describe  
+     */    
     void SetPositionType(DWORD dwPosType, DWORD dwMask = 0xFFFFFFFF);
+    
+    /**
+     * GetWindowRect
+     * @brief    获得窗口在宿主中的位置
+     * @param    [out] LPRECT prect --  窗口矩形
+     * @return   void 
+     *
+     * Describe  
+     */    
+    void GetWindowRect(LPRECT prect);
 
-    // Get SWindow rect(position in container)
-    void GetRect(LPRECT prect);
+    /**
+     * GetClientRect
+     * @brief    获得窗口的客户区
+     * @param    [out] LPRECT pRect --  窗口矩形
+     * @return   void 
+     *
+     * Describe  
+     */
+    virtual void GetClientRect(LPRECT pRect);
 
-    virtual void GetClient(LPRECT pRect);
-
-    void GetDlgPosition(SWND_POSITION *pPos);
-    // Get inner text
+    /**
+     * GetWindowText
+     * @brief    获得窗口文本
+     * @return   SStringT 
+     *
+     * Describe  
+     */
     SStringT GetWindowText();
-    // Set inner text
-    BOOL SetWindowText(LPCTSTR lpszText);
 
-    void TestMainThread();
+    /**
+     * SetWindowText
+     * @brief    设置窗口文本
+     * @param    LPCTSTR lpszText --  窗口文本
+     * @return   void 
+     *
+     * Describe  
+     */
+    void SetWindowText(LPCTSTR lpszText);
 
-    // Send a message to SWindow
-    LRESULT SendSwndMessage(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0,BOOL *pbMsgHandled=NULL);
 
+    /**
+     * SSendMessage
+     * @brief    向SWND发送条窗口消息
+     * @param    UINT Msg --  消息类型
+     * @param    WPARAM wParam --  参数1
+     * @param    LPARAM lParam --  参数2
+     * @param [out] BOOL * pbMsgHandled -- 消息处理标志 
+     * @return   LRESULT 消息处理状态，依赖于消息类型
+     *
+     * Describe  
+     */
+    LRESULT SSendMessage(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0,BOOL *pbMsgHandled=NULL);
+
+    /**
+     * GetCurMsg
+     * @brief    获得当前正在处理的消息
+     * @return   PSWNDMSG 
+     *
+     * Describe  
+     */
     PSWNDMSG GetCurMsg()
     {
         return m_pCurMsg;
     }
 
-    // Move SWindow to new place
+    /**
+     * Move
+     * @brief    将窗口移动到指定位置
+     * @param    LPRECT prect --  
+     * @return   void 
+     *
+     * Describe  移动后，窗口的布局标志自动变为Pos_Float
+     */
     void Move(LPRECT prect);
 
+    /**
+     * Move
+     * @brief    将窗口移动到指定位置
+     * @param    int x --  left
+     * @param    int y --  top
+     * @param    int cx --  width
+     * @param    int cy --  height
+     * @return   void 
+     *
+     * Describe 
+     * @see     Move(LPRECT prect)
+     */
     void Move(int x,int y, int cx=-1,int cy=-1);
 
-    // Set current cursor, when hover
-    virtual BOOL OnSetCursor(const CPoint &pt);
-
-    // Get tooltip Info
-    virtual BOOL OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
 
     // Get SWindow state
     DWORD GetState(void);
@@ -211,51 +304,74 @@ public:
     // Modify SWindow state
     DWORD ModifyState(DWORD dwStateAdd, DWORD dwStateRemove,BOOL bUpdate=FALSE);
 
+    /**
+     * GetUserData
+     * @brief    读userdata
+     * @return   ULONG_PTR 
+     *
+     * Describe  
+     */
     ULONG_PTR GetUserData();
+    /**
+     * SetUserData
+     * @brief    设置userdata
+     * @param    ULONG_PTR uData --  原来的userdata
+     * @return   ULONG_PTR 
+     *
+     * Describe  
+     */
     ULONG_PTR SetUserData(ULONG_PTR uData);
 
-    //************************************
-    // Method:    SetTimer
-    // Function:  利用窗口定时器来设置一个ID为0-127的SWND定时器
-    // Access:    public
-    // Returns:   BOOL
-    // Parameter: char id
-    // Parameter: UINT uElapse
-    // remark:
-    //************************************
+    /**
+     * SetTimer
+     * @brief    利用窗口定时器来设置一个ID为0-127的SWND定时器
+     * @param    char id --  定时器ID
+     * @param    UINT uElapse --  延时(MS)
+     * @return   BOOL 
+     *
+     * Describe  参考::SetTimer
+     */
     BOOL SetTimer(char id,UINT uElapse);
 
-    //************************************
-    // Method:    KillTimer
-    // Function:  删除一个SWND定时器
-    // Access:    public
-    // Returns:   void
-    // Parameter: char id
-    // remark:
-    //************************************
+    /**
+     * KillTimer
+     * @brief    删除一个SWND定时器
+     * @param    char id --  定时器ID
+     * @return   void 
+     *
+     * Describe  
+     */
     void KillTimer(char id);
 
-    //************************************
-    // Method:    SetTimer2
-    // Function:  利用函数定时器来模拟一个兼容窗口定时器
-    // Access:    public
-    // Returns:   BOOL
-    // Parameter: UINT_PTR id
-    // Parameter: UINT uElapse
-    // remark: 能够使用SetTimer时尽量不用SetTimer2，在Kill时效率会比较低
-    //************************************
+    /**
+     * SetTimer2
+     * @brief    利用函数定时器来模拟一个兼容窗口定时器
+     * @param    UINT_PTR id --  定时器ID
+     * @param    UINT uElapse --  延时(MS)
+     * @return   BOOL 
+     *
+     * Describe  由于SetTimer只支持0-127的定时器ID，SetTimer2提供设置其它timerid
+     *           能够使用SetTimer时尽量不用SetTimer2，在Kill时效率会比较低
+     */
     BOOL SetTimer2(UINT_PTR id,UINT uElapse);
 
-    //************************************
-    // Method:    KillTimer2
-    // Function:  删除一个KillTimer2设置的定时器
-    // Access:    public
-    // Returns:   void
-    // Parameter: UINT_PTR id
-    // remark: 需要枚举定时器列表
-    //************************************
+    /**
+     * KillTimer2
+     * @brief    删除一个SetTimer2设置的定时器
+     * @param    UINT_PTR id --  
+     * @return   void 
+     *
+     * Describe  需要枚举定时器列表
+     */
     void KillTimer2(UINT_PTR id);
 
+    /**
+     * GetSwnd
+     * @brief    获得窗口句柄
+     * @return   SWND 
+     *
+     * Describe  
+     */
     SWND GetSwnd();
 
 
@@ -310,43 +426,66 @@ public:
     int GetID(){return m_nID;}
     void SetID(int nID){m_nID=nID;}
     
-    //************************************
-    // Method:    FindChildByCmdID, 通过ID查找对应的子窗口
-    // Access:    public 
-    // Returns:   SWindow*
-    // Qualifier:
-    // Parameter: UINT uCmdID
-    //************************************
+    /**
+     * FindChildByID
+     * @brief    通过ID查找对应的子窗口
+     * @param    int nID --  窗口ID
+     * @return   SWindow* 
+     *
+     * Describe  
+     */
     SWindow* FindChildByID(int nID);
 
+    /**
+     * FindChildByID2
+     * @brief    FindChildByID的模板类，支持类型转换
+     * @param    int nID --  窗口ID
+     * @return   T* 
+     *
+     * Describe  
+     */
     template<class T>
     T* FindChildByID2(int nID)
     {
-        T* pRet= dynamic_cast<T *>(FindChildByID(nID));
-        ASSERT(pRet);
-        return pRet;
+        SWindow *pTarget = FindChildByID(nID);
+        if(!pTarget || !pTarget->IsClass(T::GetClassName()))
+        {
+            ASSERT(pTarget);
+            return NULL;
+        }
+        return (T*)pTarget;
     }
 
-    //************************************
-    // Method:    FindChildByName，通过名字查找子窗口
-    // Access:    public 
-    // Returns:   SWindow*
-    // Qualifier:
-    // Parameter: LPCSTR pszName
-    //************************************
+    /**
+     * FindChildByName
+     * @brief    通过名字查找子窗口
+     * @param    LPCWSTR pszName --  窗口name属性
+     * @return   SWindow* 
+     *
+     * Describe  
+     */
     SWindow* FindChildByName(LPCWSTR pszName);
 
     template<class T>
     T* FindChildByName2(LPCWSTR pszName)
     {
-        T* pRet= dynamic_cast<T*>(FindChildByName(pszName));
-        ASSERT(pRet);
-        return pRet;
+        SWindow *pTarget = FindChildByName(pszName);
+        if(!pTarget || !pTarget->IsClass(T::GetClassName()))
+        {
+            ASSERT(pTarget);
+            return NULL;
+        }
+        return (T*)pTarget;
     }
 
-    // 从XML创建子窗口
-    // LPCWSTR pszXml: utf16编码的XML串
-    // return : 顶层的最后一个窗口
+    /**
+     * CreateChildren
+     * @brief    从XML创建子窗口
+     * @param    LPCWSTR pszXml --  合法的utf16编码XML字符串
+     * @return   SWindow * 创建成功的的最后一个窗口
+     *
+     * Describe  
+     */
     SWindow *CreateChildren(LPCWSTR pszXml);
 
     void Invalidate();
@@ -358,22 +497,40 @@ public:
     void BringWindowToTop();
 
 public:
-    //同类控件自动成组标志,主要是给RadioButton用的。
-    virtual BOOL IsSiblingsAutoGroupped(){return FALSE;}
-    
-    //获得在一个group中选中状态的窗口，不是group中的窗口时即为当前窗口
-    virtual SWindow * GetSelectedSiblingInGroup(){return this;}
-    
     //////////////////////////////////////////////////////////////////////////
     // Virtual functions
+    
+    /**
+     * IsSiblingsAutoGroupped
+     * @brief    同类窗口自动成组标志
+     * @return   BOOL 
+     *
+     * Describe  主要是给RadioButton用的
+     */
+    virtual BOOL IsSiblingsAutoGroupped(){return FALSE;}
+    
+    /**
+     * GetSelectedSiblingInGroup
+     * @brief    获得在一个group中选中状态的窗口
+     * @return   SWindow * 
+     *
+     * Describe  不是group中的窗口时返回NULL
+     */
+    virtual SWindow * GetSelectedSiblingInGroup(){return NULL;}
+    
     virtual void OnSetCaretValidateRect(LPCRECT lpRect)
     {
         CRect rcClient;
-        GetClient(&rcClient);
+        GetClientRect(&rcClient);
         CRect rcIntersect;
         rcIntersect.IntersectRect(&rcClient,lpRect);
         if(GetParent()) GetParent()->OnSetCaretValidateRect(&rcIntersect);
     }
+    // Set current cursor, when hover
+    virtual BOOL OnSetCursor(const CPoint &pt);
+
+    // Get tooltip Info
+    virtual BOOL OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
 
     virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState) {}
 
@@ -391,7 +548,7 @@ public:
 
     virtual UINT OnGetDlgCode();
 
-    virtual BOOL IsTabStop();
+    virtual BOOL IsFocusable();
 
     virtual BOOL OnNcHitTest(CPoint pt);
 
@@ -401,82 +558,82 @@ public:
     }
 
 
-    //************************************
-    // Method:    UpdateChildrenPosition :更新子窗口位置
-    // FullName:  SOUI::SWindow::UpdateChildrenPosition
-    // Access:    virtual protected 
-    // Returns:   void
-    // Qualifier:
-    //************************************
+    /**
+     * UpdateChildrenPosition
+     * @brief    更新子窗口位置
+     * @return   void 
+     *
+     * Describe  
+     */
     virtual void UpdateChildrenPosition();
 
 public:
-    //************************************
-    // Method:    RedrawRegion
-    // Function:  将窗口及子窗口内容绘制到DC
-    // Access:    public 
-    // Returns:   BOOL
-    // Qualifier:
-    // Parameter: CDCHandle & dc
-    // Parameter: CRgn & rgn
-    //************************************
-    BOOL RedrawRegion(IRenderTarget *pRT, IRegion *pRgn);
+    /**
+     * RedrawRegion
+     * @brief    将窗口及子窗口内容绘制到RenderTarget
+     * @param    IRenderTarget * pRT --  渲染目标RT
+     * @param    IRegion * pRgn --  渲染区域，为NULL时渲染整个窗口
+     * @return   void 
+     *
+     * Describe  
+     */
+    void RedrawRegion(IRenderTarget *pRT, IRegion *pRgn);
 
-    //************************************
-    // Method:    GetRenderTarget
-    // Function:  获取一个与SWND窗口相适应的内存DC
-    // Access:    public
-    // Returns:   HDC
-    // Parameter: LPRECT pRc - DC范围
-    // Parameter: DWORD gdcFlags 同OLEDCFLAGS
-    // Parameter: BOOL bClientDC 限制在client区域
-    // remark: 使用ReleaseRenderTarget释放
-    //************************************
+    /**
+     * GetRenderTarget
+     * @brief    获取一个与SWND窗口相适应的内存DC
+     * @param    const LPRECT pRc --  RT范围
+     * @param    DWORD gdcFlags --  同OLEDCFLAGS
+     * @param    BOOL bClientDC --  限制在client区域
+     * @return   IRenderTarget * 
+     *
+     * Describe  使用ReleaseRenderTarget释放
+     */
     IRenderTarget * GetRenderTarget(const LPRECT pRc=NULL,DWORD gdcFlags=0,BOOL bClientDC=TRUE);
 
 
-    //************************************
-    // Method:    ReleaseRenderTarget
-    // Function:  释放由GetRenderTarget获取的RT
-    // Access:    public
-    // Returns:   void
-    // Parameter: IRenderTarget *pRT
-    // remark:
-    //************************************
+    /**
+     * ReleaseRenderTarget
+     * @brief    
+     * @param    IRenderTarget * pRT --  释放由GetRenderTarget获取的RT
+     * @return   void 
+     *
+     * Describe  
+     */
     void ReleaseRenderTarget(IRenderTarget *pRT);
 
-    //************************************
-    // Method:    PaintBackground
-    // Function:  画窗口的背景内容
-    // Access:    public
-    // Returns:   void
-    // Parameter: IRenderTarget *pRT 目标RT
-    // Parameter: LPRECT pRc 目标位置
-    // remark:    目标位置必须在窗口位置内
-    //************************************
+    /**
+     * PaintBackground
+     * @brief    画窗口的背景内容
+     * @param    IRenderTarget * pRT --  目标RT
+     * @param    LPRECT pRc --  目标位置
+     * @return   void 
+     *
+     * Describe  目标位置必须在窗口位置内
+     */
     void PaintBackground(IRenderTarget *pRT,LPRECT pRc);
 
-    //************************************
-    // Method:    PaintForeground
-    // Function:  画窗口的前景内容,不包括当前窗口的子窗口
-    // Access:    public
-    // Returns:   void
-    // Parameter: IRenderTarget *pRT 目标RT
-    // Parameter: LPRECT pRc 目标位置
-    // remark:    目标位置必须在窗口位置内
-    //************************************
+    /**
+     * PaintForeground
+     * @brief    画窗口的前景内容
+     * @param    IRenderTarget * pRT --  目标RT
+     * @param    LPRECT pRc --  目标位置
+     * @return   void 
+     *
+     * Describe  目标位置必须在窗口位置内,不包括当前窗口的子窗口
+     */
     void PaintForeground(IRenderTarget *pRT,LPRECT pRc);
 
 
-    //************************************
-    // Method:    AnimateWindow
-    // Function:  窗口动画效果
-    // Access:    public
-    // Returns:   BOOL
-    // Parameter: DWORD dwTime,执行时间
-    // Parameter: DWORD dwFlags,执行模式
-    // remark:
-    //************************************
+    /**
+     * AnimateWindow
+     * @brief    窗口动画效果
+     * @param    DWORD dwTime --  执行时间
+     * @param    DWORD dwFlags --  执行模式
+     * @return   BOOL 
+     *
+     * Describe  
+     */
     BOOL AnimateWindow(DWORD dwTime,DWORD dwFlags);
 protected:
     CRect        m_rcGetRT;
@@ -493,97 +650,106 @@ public:
     void SetFocus();
     void KillFocus();
 
-    SWindow *GetCheckedRadioButton();
-
-    void CheckRadioButton(SWindow * pRadioBox);
-
-    BOOL SetItemVisible(UINT uItemID, BOOL bVisible);
-
-    BOOL IsItemVisible(UINT uItemID, BOOL bCheckParent = FALSE);
-    BOOL GetItemCheck(UINT uItemID);
-
-    BOOL SetItemCheck(UINT uItemID, BOOL bCheck);
-    BOOL EnableItem(UINT uItemID, BOOL bEnable);
-    BOOL IsItemEnable(UINT uItemID, BOOL bCheckParent = FALSE);
-
     SWindow *GetWindow(int uCode);    
 
-    //************************************
-    // Method:    BeforePaint
-    // Function:  为DC准备好当前窗口的绘图环境
-    // Access:    public
-    // Returns:   void
-    // Parameter: CDCHandle & dc
-    // Parameter: SPainter & painter
-    // remark:
-    //************************************
+    /**
+     * BeforePaint
+     * @brief    为RT准备好当前窗口的绘图环境
+     * @param    IRenderTarget * pRT --  
+     * @param    SPainter & painter --  
+     * @return   void 
+     *
+     * Describe  
+     */
     void BeforePaint(IRenderTarget *pRT, SPainter &painter);
 
-    //************************************
-    // Method:    AfterPaint
-    // Function:  恢复由BeforePaint设置的DC状态
-    // Access:    public
-    // Returns:   void
-    // Parameter: CDCHandle & dc
-    // Parameter: SPainter & painter
-    // remark:
-    //************************************
+    /**
+     * AfterPaint
+     * @brief    恢复由BeforePaint设置的RT状态
+     * @param    IRenderTarget * pRT --  
+     * @param    SPainter & painter --  
+     * @return   void 
+     *
+     * Describe  
+     */
     void AfterPaint(IRenderTarget *pRT, SPainter &painter);
 
-    //************************************
-    // Method:    BeforePaintEx
-    // Function:  为DC准备好当前窗口的绘图环境,从顶层窗口开始设置
-    // Access:    public
-    // Returns:   int 当前的DC环境
-    // Parameter: CDCHandle & dc
-    // remark: 使用前使用SaveDC来保存状态，使用后调用RestoreDC来恢复状态
-    //************************************
+    /**
+     * BeforePaintEx
+     * @brief    为DC准备好当前窗口的绘图环境,从顶层窗口开始设置
+     * @param    IRenderTarget * pRT --  渲染RT
+     * @return   void 
+     *
+     * Describe  一般应该和CreateRanderTarget配合使用
+     */
     void BeforePaintEx(IRenderTarget *pRT);
-
 protected:
+    void TestMainThread();
+    /**
+     * FireCommand
+     * @brief    激活窗口的EVT_CMD事件
+     * @return   BOOL 
+     *
+     * Describe  
+     */
     BOOL FireCommand();
+    /**
+     * FireCtxMenu
+     * @brief    激活快捷菜单事件
+     * @param    CPoint pt --  
+     * @return   BOOL 
+     *
+     * Describe  
+     */
     BOOL FireCtxMenu(CPoint pt);
 
-    //************************************
-    // Method:    GetChildrenLayoutRect :返回子窗口的排版空间
-    // FullName:  SOUI::SWindow::GetChildrenLayoutRect
-    // Access:    virtual protected 
-    // Returns:   CRect
-    // Qualifier:
-    //************************************
+    /**
+     * GetChildrenLayoutRect
+     * @brief    获得子窗口的布局空间
+     * @return   CRect 
+     *
+     * Describe  
+     */
     virtual CRect GetChildrenLayoutRect();
 
+    /**
+     * ClearLayoutState
+     * @brief    清除子窗口的布局状态标志
+     * @return   void 
+     *
+     * Describe  
+     */
     void ClearLayoutState();
 
-    //************************************
-    // Method:    GetDesiredSize: 当没有指定窗口大小时，通过如皮肤计算窗口的期望大小
-    // FullName:  SOUI::SWindow::GetDesiredSize
-    // Access:    virtual protected 
-    // Returns:   CSize
-    // Qualifier:
-    // Parameter: LPRECT pRcContainer
-    //************************************
+    /**
+     * GetDesiredSize
+     * @brief    当没有指定窗口大小时，通过如皮肤计算窗口的期望大小
+     * @param    LPRECT pRcContainer --  容器位置
+     * @return   CSize 
+     *
+     * Describe  
+     */
     virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
-    //************************************
-    // Method:    CalcSize ：计算窗口大小
-    // FullName:  SOUI::SWindow::CalcSize
-    // Access:    protected 
-    // Returns:   CSize
-    // Qualifier:
-    // Parameter: LPRECT pRcContainer
-    //************************************
+    /**
+     * CalcSize
+     * @brief    计算窗口大小
+     * @param    LPRECT pRcContainer --  容器位置
+     * @return   CSize 
+     *
+     * Describe  
+     */
     CSize CalcSize(LPRECT pRcContainer);
 
-    //************************************
-    // Method:    GetNextVisibleWindow 获得指定窗口的下一个可见窗口
-    // FullName:  SOUI::SWindow::GetNextVisibleWindow
-    // Access:    protected static 
-    // Returns:   SWindow *    :下一个可见窗口
-    // Qualifier:
-    // Parameter: SWindow * pWnd    :参考窗口
-    // Parameter: const CRect &rcDraw:目标矩形
-    //************************************
+    /**
+     * GetNextVisibleWindow
+     * @brief    获得指定窗口的下一个可见窗口
+     * @param    SWindow * pWnd --  参考窗口
+     * @param    const CRect & rcDraw --  目标矩形
+     * @return   SWindow * 下一个可见窗口
+     *
+     * Describe  
+     */
     static SWindow *GetNextVisibleWindow(SWindow *pWnd,const CRect &rcDraw);
 
     virtual BOOL NeedRedrawWhenStateChange();
@@ -594,20 +760,22 @@ protected:
     void DrawDefFocusRect(IRenderTarget *pRT,CRect rc);
     void DrawAniStep(CRect rcFore,CRect rcBack,IRenderTarget *pRTFore,IRenderTarget * pRTBack,CPoint ptAnchor);
     void DrawAniStep( CRect rcWnd,IRenderTarget *pRTFore,IRenderTarget * pRTBack,BYTE byAlpha);
+
+protected:
     //////////////////////////////////////////////////////////////////////////
     // Message Handler
 
-    //************************************
-    // Method:    SwndProc
-    // Function:  默认的消息处理函数
-    // Access:    virtual public
-    // Returns:   BOOL
-    // Parameter: UINT uMsg
-    // Parameter: WPARAM wParam
-    // Parameter: LPARAM lParam
-    // Parameter: LRESULT & lResult
-    // remark: 在消息映射表中没有处理的消息进入该函数处理
-    //************************************
+    /**
+     * SwndProc
+     * @brief    默认的消息处理函数
+     * @param    UINT uMsg --  
+     * @param    WPARAM wParam --  
+     * @param    LPARAM lParam --  
+     * @param    LRESULT & lResult --  
+     * @return   BOOL 
+     *
+     * Describe  在消息映射表中没有处理的消息进入该函数处理
+     */
     virtual BOOL SwndProc(UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResult)
     {
         return FALSE;
@@ -619,21 +787,10 @@ protected:
 
     void OnDestroy();
 
-    // Draw background default
     BOOL OnEraseBkgnd(IRenderTarget *pRT);
 
-    // Draw inner text default
     void OnPaint(IRenderTarget *pRT);
 
-
-    //************************************
-    // Method:    OnNcPaint
-    // Function:  draw non-client area
-    // Access:    protected
-    // Returns:   void
-    // Parameter: CDCHandle dc
-    // remark:
-    //************************************
     void OnNcPaint(IRenderTarget *pRT);
 
     BOOL OnDefKeyDown(UINT nChar, UINT nFlags);
@@ -659,8 +816,12 @@ protected:
     void OnSetFocus();
     void OnKillFocus();
 
+    //////////////////////////////////////////////////////////////////////////
+    // 属性处理函数
     HRESULT OnAttrPos(const SStringW& strValue, BOOL bLoading);
-    HRESULT OnAttrState(const SStringW& strValue, BOOL bLoading);
+    HRESULT OnAttrVisible(const SStringW& strValue, BOOL bLoading);
+    HRESULT OnAttrEnable(const SStringW& strValue, BOOL bLoading);
+    HRESULT OnAttrDisplay(const SStringW& strValue, BOOL bLoading);
 
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
@@ -690,17 +851,18 @@ protected:
         ATTR_STYLE(L"class", m_style, TRUE)    //获得style
         ATTR_CHAIN(m_style)                    //支持对style中的属性定制
         ATTR_INT(L"data", m_uData, 0 )
-        ATTR_CUSTOM(L"state", OnAttrState)
+        ATTR_CUSTOM(L"enable", OnAttrEnable)
+        ATTR_CUSTOM(L"visible", OnAttrVisible)
+        ATTR_CUSTOM(L"show", OnAttrVisible)
+        ATTR_CUSTOM(L"pos", OnAttrPos)
+        ATTR_CUSTOM(L"display", OnAttrDisplay)
         ATTR_STRINGT(L"href", m_strLinkUrl, FALSE)
         ATTR_I18NSTRT(L"tip", m_strToolTipText, FALSE)  //使用语言包翻译
-        ATTR_CUSTOM(L"pos", OnAttrPos)
-        ATTR_INT(L"show", m_bVisible,FALSE)
-        ATTR_INT(L"display", m_bDisplay,FALSE)
         ATTR_INT(L"msgtransparent", m_bMsgTransparent, FALSE)
         ATTR_INT(L"sep", m_nSepSpace, FALSE)
         ATTR_INT(L"maxwidth",m_nMaxWidth,FALSE)
         ATTR_INT(L"clipclient",m_bClipClient,FALSE)
-        ATTR_INT(L"tabstop",m_bTabStop,FALSE)
+        ATTR_INT(L"focusable",m_bFocusable,FALSE)
         ATTR_ENUM_BEGIN(L"pos2type",POS2TYPE,FALSE)
             ATTR_ENUM_VALUE(L"lefttop",POS2_LEFTTOP)
             ATTR_ENUM_VALUE(L"center",POS2_CENTER)

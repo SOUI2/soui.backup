@@ -15,11 +15,11 @@ BOOL ExpLua_Window(lua_State *L)
 		lua_tinker::class_def<SWindow>(L,"FindChildByName",&SWindow::FindChildByName);
  		lua_tinker::class_def<SWindow>(L,"CreateChildrenFromString",(SWindow* (SWindow::*)(LPCWSTR))&SWindow::CreateChildren);
 		lua_tinker::class_def<SWindow>(L,"GetTextAlign",&SWindow::GetTextAlign);
-		lua_tinker::class_def<SWindow>(L,"GetRect",&SWindow::GetRect);
-		lua_tinker::class_def<SWindow>(L,"GetClient",&SWindow::GetClient);
+		lua_tinker::class_def<SWindow>(L,"GetWindowRect",&SWindow::GetWindowRect);
+		lua_tinker::class_def<SWindow>(L,"GetClientRect",&SWindow::GetClientRect);
 		lua_tinker::class_def<SWindow>(L,"GetWindowText",&SWindow::GetWindowText);
 		lua_tinker::class_def<SWindow>(L,"SetWindowText",&SWindow::SetWindowText);
-		lua_tinker::class_def<SWindow>(L,"SendSwndMessage",&SWindow::SendSwndMessage);
+		lua_tinker::class_def<SWindow>(L,"SendSwndMessage",&SWindow::SSendMessage);
 		lua_tinker::class_def<SWindow>(L,"GetID",&SWindow::GetID);
 		lua_tinker::class_def<SWindow>(L,"SetID",&SWindow::SetID);
 		lua_tinker::class_def<SWindow>(L,"GetUserData",&SWindow::GetUserData);

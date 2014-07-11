@@ -7,7 +7,7 @@
       <imgbtn id="3" name="按钮_恢复" skin="btn_sys_restore"  pos="-83,0" show="0" animate="1" />
       <imgbtn id="5" name="btn_minimize" skin="btn_sys_minimize" pos="-121,0" animate="1" />
     </caption>
-    <tabctrl pos="5,30,-5,-5" cursel="0" tabstop="0" inset="10,0,3,0" animatesteps="10">
+    <tabctrl pos="5,30,-5,-5" cursel="0" focusable="0" inset="10,0,3,0" animatesteps="10">
       <page title="page1">
         <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30">
           <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
@@ -66,10 +66,10 @@
 <!--         <animateimg name="ani_test" pos="20,100" skin="icons"/> -->
         <img id="1139" pos="300,200,400,300" skin="icons" tip="img tip" msgtransparent="0"/>
         <check id="1300" pos="40,20" crtext="ff0000" state="4">test1</check>
-        <check id="1301" pos="40,70">test2</check>
+        <check id="1301" pos="40,70" check="1">test2</check>
         <window pos="0,90,-70,-0" >
           <radio id="1303" pos="10,10">radio1</radio>
-          <radio id="1304" pos="110,10">radio2</radio>
+          <radio id="1304" pos="110,10" check="1">radio2</radio>
           <radio id="1305" pos="10,60">radio3</radio>
           <radio id="1306" pos="110,60">radio4</radio>
         </window>

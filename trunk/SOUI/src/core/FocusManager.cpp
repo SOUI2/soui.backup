@@ -68,6 +68,7 @@ namespace SOUI
             if(IsViewFocusableCandidate(starting_view, pSkipGroupOwner))
             {
                 SWindow* v = starting_view->GetSelectedSiblingInGroup();
+                if(!v) v= starting_view;
                 // The selected view might not be focusable (if it is disabled for
                 // example).
                 if(IsFocusable(v))
@@ -137,10 +138,10 @@ namespace SOUI
     {
         if(can_go_down)
         {//find the last focusable window
-            SWindow *pChild=starting_view->GetWindow(GSW_LASTCHILD);
+            SWindow *pChild = starting_view->GetWindow(GSW_LASTCHILD);
             if(pChild)
             {
-                SWindow *pRet=FindPreviousFocusableViewImpl(pChild,true,false,true,pSkipGroupOwner);
+                SWindow *pRet = FindPreviousFocusableViewImpl(pChild,true,false,true,pSkipGroupOwner);
                 if(pRet) return pRet;
             }
         }
@@ -148,6 +149,7 @@ namespace SOUI
         if(check_starting_view && IsViewFocusableCandidate(starting_view,pSkipGroupOwner))
         {
             SWindow* v = starting_view->GetSelectedSiblingInGroup();
+            if(!v) v = starting_view;
             // The selected view might not be focusable (if it is disabled for example).
             if(IsFocusable(v))
             {
@@ -179,7 +181,7 @@ namespace SOUI
     bool FocusSearch::IsFocusable( SWindow* view )
     {
         if(!view) return false;
-        return view->IsTabStop() && view->IsVisible(TRUE) && !view->IsDisabled(TRUE);
+        return view->IsFocusable() && view->IsVisible(TRUE) && !view->IsDisabled(TRUE);
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -285,11 +287,11 @@ namespace SOUI
         SWindow *pNewFocus=SWindowMgr::GetWindow(swnd);
         if(pOldFocus)
         {
-            pOldFocus->SendSwndMessage(WM_KILLFOCUS,(WPARAM)pNewFocus);
+            pOldFocus->SSendMessage(WM_KILLFOCUS,(WPARAM)pNewFocus);
         }
         if(pNewFocus && !pNewFocus->IsDisabled(TRUE))
         {
-            pNewFocus->SendSwndMessage(WM_SETFOCUS,(WPARAM)pOldFocus);
+            pNewFocus->SSendMessage(WM_SETFOCUS,(WPARAM)pOldFocus);
             focused_view_ = swnd;
         }else
         {
@@ -330,7 +332,7 @@ namespace SOUI
 
         if(pWnd)
         {
-            pWnd->SendSwndMessage(WM_KILLFOCUS);
+            pWnd->SSendMessage(WM_KILLFOCUS);
         }
     }
 
@@ -340,7 +342,7 @@ namespace SOUI
         if(pWnd && !pWnd->IsDisabled(TRUE))
         {
             focused_view_=focused_backup_;
-            pWnd->SendSwndMessage(WM_SETFOCUS);
+            pWnd->SSendMessage(WM_SETFOCUS);
         }
         focused_backup_=0;
     }

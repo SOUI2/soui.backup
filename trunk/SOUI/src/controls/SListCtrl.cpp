@@ -221,7 +221,7 @@ CRect SListCtrl::GetListRect()
 {
     CRect rcList;
 
-    GetClient(&rcList);
+    GetClientRect(&rcList);
     rcList.top += m_nHeaderHeight;
 
     return rcList;
@@ -236,7 +236,7 @@ void SListCtrl::UpdateScrollBar()
     szView.cy = GetItemCount()*m_nItemHeight;
 
     CRect rcClient;
-    SWindow::GetClient(&rcClient);//不计算滚动条大小
+    SWindow::GetClientRect(&rcClient);//不计算滚动条大小
     rcClient.top+=m_nHeaderHeight;
 
     CSize size = rcClient.Size();
@@ -302,7 +302,7 @@ void SListCtrl::UpdateScrollBar()
     SetScrollPos(FALSE, m_siHoz.nPos, TRUE);
 
     //  重新计算客户区及非客户区
-    SendSwndMessage(WM_NCCALCSIZE);
+    SSendMessage(WM_NCCALCSIZE);
 
     //  根据需要调整原点位置
     if (HasScrollBar(FALSE) && m_ptOrigin.x+m_siHoz.nPage>szView.cx)
@@ -322,7 +322,7 @@ void SListCtrl::UpdateScrollBar()
 void SListCtrl::UpdateHeaderCtrl()
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     CRect rcHeader(rcClient);
     rcHeader.bottom=rcHeader.top+m_nHeaderHeight;
     rcHeader.left-=m_ptOrigin.x;
@@ -449,7 +449,7 @@ void SListCtrl::RedrawItem(int nItem)
         CRect rcDC;
         rcDC.IntersectRect(rcItem,rcList);
         IRenderTarget *pRT = GetRenderTarget(&rcDC, OLEDC_PAINTBKGND);
-        SendSwndMessage(WM_ERASEBKGND, (WPARAM)pRT);
+        SSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
 
         SPainter painter;
         BeforePaint(pRT, painter);

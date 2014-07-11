@@ -138,7 +138,7 @@ LRESULT CMainDlg::OnInitDialog( HWND hWnd, LPARAM lParam )
     
 #ifdef SUPPORT_LUA
     SWindow *pTst=FindChildByName(L"btn_tstevt");
-    SApplication::getSingleton().GetScriptModule()->subscribeEvent(pTst,EVT_CMD,"onEvtTstClick");
+    if(pTst) SApplication::getSingleton().GetScriptModule()->subscribeEvent(pTst,EVT_CMD,"onEvtTstClick");
 #endif
 
     return 0;

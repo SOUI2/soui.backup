@@ -46,7 +46,7 @@ CRect SSliderBar::GetPartRect(UINT uSBCode)
     ASSERT(m_pSkinThumb);
 
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
 
 
     SIZE szThumb = m_pSkinThumb->GetSkinSize();

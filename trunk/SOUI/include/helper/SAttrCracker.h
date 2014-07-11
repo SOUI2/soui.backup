@@ -18,12 +18,19 @@ public:                                                             \
     HRESULT hRet = E_FAIL;                                        \
  
 
+//从SObject派生的类是属性结尾
 #define SOUI_ATTRS_END()                              \
     return __super::SetAttribute(                       \
     strAttribName,         \
     strValue,              \
     bLoading               \
     );                     \
+    return hRet;                                                \
+    }                                                               \
+
+//不是从SObject派生的类是属性结尾
+#define SOUI_ATTRS_BREAK()                              \
+        return FALSE;                                                \
     return hRet;                                                \
     }                                                               \
 

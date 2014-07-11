@@ -177,7 +177,7 @@ BOOL SListBox::DeleteString(int nIndex)
     else if(m_iHoverItem>nIndex) m_iHoverItem--;
 
     CRect rcClient;
-    SWindow::GetClient(&rcClient);
+    SWindow::GetClientRect(&rcClient);
     CSize szView(rcClient.Width(),GetCount()*m_nItemHei);
     if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
     SetViewSize(szView);
@@ -207,7 +207,7 @@ void SListBox::EnsureVisible(int nIndex)
     if(nIndex < 0 || nIndex >= GetCount()) return;
 
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
 
     int iFirstVisible = (m_ptOrigin.y + m_nItemHei -1) / m_nItemHei;
     int nVisibleItems = rcClient.Height() / m_nItemHei;
@@ -225,7 +225,7 @@ void SListBox::EnsureVisible(int nIndex)
 int SListBox::HitTest(CPoint &pt)
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     CPoint pt2=pt;
     pt2.y -= rcClient.top - m_ptOrigin.y;
     int nRet=pt2.y/m_nItemHei;
@@ -282,7 +282,7 @@ int SListBox::InsertItem(int nIndex, LPLBITEM pItem)
     if(m_iHoverItem >= nIndex) m_iHoverItem++;
 
     CRect rcClient;
-    SWindow::GetClient(&rcClient);
+    SWindow::GetClientRect(&rcClient);
     CSize szView(rcClient.Width(),GetCount()*m_nItemHei);
     if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
     SetViewSize(szView);
@@ -300,7 +300,7 @@ void SListBox::RedrawItem(int iItem)
     if(!IsVisible(TRUE)) return;
 
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     int iFirstVisible = GetTopIndex();
     int nPageItems=(rcClient.Height()+m_nItemHei-1)/m_nItemHei+1;
 
@@ -313,7 +313,7 @@ void SListBox::RedrawItem(int iItem)
         SPainter painter;
         BeforePaint(pRT,painter);
 
-        SendSwndMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
+        SSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
         DrawItem(pRT,rcItem,iItem);
 
         AfterPaint(pRT,painter);
@@ -444,7 +444,7 @@ void SListBox::OnPaint(IRenderTarget * pRT)
 void SListBox::OnSize(UINT nType,CSize size)
 {
     CRect rcClient;
-    SWindow::GetClient(&rcClient);
+    SWindow::GetClientRect(&rcClient);
     CSize szView(rcClient.Width(),GetCount()*m_nItemHei);
     if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
     SetViewSize(szView);
@@ -507,7 +507,7 @@ void SListBox::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     SWindow *pOwner = GetOwner();
     if (pOwner)
-        pOwner->SendSwndMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
+        pOwner->SSendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
 }
 
 UINT SListBox::OnGetDlgCode()

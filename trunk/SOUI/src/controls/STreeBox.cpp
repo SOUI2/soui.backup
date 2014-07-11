@@ -35,7 +35,7 @@ STreeBox::STreeBox()
     , m_nVisibleItems(0)
     , m_bItemRedrawDelay(TRUE)
 {
-    m_bTabStop=TRUE;
+    m_bFocusable=TRUE;
     m_evtSet.addEvent(EventTBGetDispInfo::EventID);
     m_evtSet.addEvent(EventTBSelChanging::EventID);
     m_evtSet.addEvent(EventTBSelChanged::EventID);
@@ -64,7 +64,7 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
             pParentItem->InsertChild(pToggle);
             pToggle->SetToggle(FALSE,FALSE);
             pToggle->SetID(IDC_SWITCH);
-            pToggle->SendSwndMessage(WM_WINDOWPOSCHANGED);
+            pToggle->SSendMessage(WM_WINDOWPOSCHANGED);
         }
     }
     pItemObj->SetItemData(dwData);
@@ -268,7 +268,7 @@ BOOL STreeBox::EnsureVisible(HSTREEITEM hItem)
 HSTREEITEM STreeBox::HitTest(CPoint &pt)
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     CPoint pt2=pt;
     pt2.y -= rcClient.top - m_ptOrigin.y;
     int iItem=pt2.y/m_nItemHei;
@@ -427,7 +427,7 @@ void STreeBox::RedrawItem(HSTREEITEM hItem)
         SPainter painter;
         BeforePaint(pRT,painter);
 
-        SendSwndMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
+        SSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
         DrawItem(pRT,rcItem,hItem);
 
         AfterPaint(pRT,painter);
@@ -492,7 +492,7 @@ void STreeBox::OnPaint(IRenderTarget *pRT)
 
 void STreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
 {
-    if(m_bTabStop) SetFocus();
+    if(m_bFocusable) SetFocus();
     if(m_pCapturedFrame)
     {
         CRect rcItem=m_pCapturedFrame->GetItemRect();

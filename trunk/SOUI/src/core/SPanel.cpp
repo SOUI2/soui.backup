@@ -30,7 +30,7 @@ BOOL SPanel::ShowScrollBar( int wBar, BOOL bShow )
 {
     if(bShow) m_wBarVisible|=wBar;
     else m_wBarVisible&=~wBar;
-    SendSwndMessage(WM_NCCALCSIZE);
+    SSendMessage(WM_NCCALCSIZE);
     Invalidate();
     return TRUE;
 }
@@ -213,7 +213,7 @@ CRect SPanel::GetScrollBarRect(BOOL bVertical)
     CRect rcSb;
     if(!HasScrollBar(bVertical)) return rcSb;
 
-    __super::GetClient(&rcSb);
+    __super::GetClientRect(&rcSb);
 
     if(bVertical)
     {
@@ -303,14 +303,14 @@ void SPanel::OnNcPaint(IRenderTarget *pRT)
     if(HasScrollBar(TRUE) && HasScrollBar(FALSE))
     {
         CRect rcDest;
-        __super::GetClient(&rcDest);
+        __super::GetClientRect(&rcDest);
         rcDest.left=rcDest.right-m_nSbWid;
         rcDest.top=rcDest.bottom-m_nSbWid;
         m_pSkinSb->Draw(pRT,rcDest,SB_CORNOR);
     }
 }
 
-void SPanel::GetClient(LPRECT pRect)
+void SPanel::GetClientRect(LPRECT pRect)
 {
     pRect->left=m_rcClient.left;
     pRect->right=m_rcClient.right;
@@ -562,7 +562,7 @@ void SPanel::OnNcMouseLeave()
 //滚动条显示或者隐藏时发送该消息
 LRESULT SPanel::OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam)
 {
-    __super::GetClient(&m_rcClient);
+    __super::GetClientRect(&m_rcClient);
 
     if(HasScrollBar(TRUE)) m_rcClient.right-=m_nSbWid;
     if(HasScrollBar(FALSE)) m_rcClient.bottom-=m_nSbWid;
@@ -765,7 +765,7 @@ CSize SScrollView::GetViewSize()
 void SScrollView::UpdateScrollBar()
 {
     CRect rcClient;
-    SWindow::GetClient(&rcClient);
+    SWindow::GetClientRect(&rcClient);
 
     CSize size=rcClient.Size();
     m_wBarVisible=SSB_NULL;    //关闭滚动条
@@ -829,7 +829,7 @@ void SScrollView::UpdateScrollBar()
     SetScrollPos(TRUE,m_siVer.nPos,TRUE);
     SetScrollPos(FALSE,m_siHoz.nPos,TRUE);
 
-    SendSwndMessage(WM_NCCALCSIZE);
+    SSendMessage(WM_NCCALCSIZE);
 
     Invalidate();
 }

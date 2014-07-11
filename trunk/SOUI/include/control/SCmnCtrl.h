@@ -55,7 +55,7 @@ public:
 
 protected:
     int m_bMultiLines;  /**< 是否开启多行显示 */  
-    int m_nLineInter;   /**< 不详 有待完善 */
+    int m_nLineInter;   /**< 行间距 */
 
     SOUI_ATTRS_BEGIN()
         ATTR_INT(L"multilines", m_bMultiLines, FALSE)
@@ -261,7 +261,7 @@ class SOUI_EXP SImageButton : public SButton
 public:
     SImageButton()
     {
-        m_bTabStop=FALSE;
+        m_bFocusable=FALSE;
     }
 };
 
@@ -611,7 +611,6 @@ public:
      */
     SCheckBox();
 
-    void OnPaint(IRenderTarget *pRT);
 protected:
 
     ISkinObj *m_pSkin;   /**< 状态图片资源 */
@@ -686,10 +685,15 @@ protected:
     void OnLButtonUp(UINT nFlags, CPoint point);
 
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+    
+    void OnPaint(IRenderTarget *pRT);
 
+    HRESULT OnAttrCheck(const SStringW& strValue, BOOL bLoading);
+    
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"skin", m_pSkin, FALSE)
         ATTR_SKIN(L"focusskin", m_pFocusSkin, FALSE)
+        ATTR_CUSTOM(L"check",OnAttrCheck)
     SOUI_ATTRS_END()
 
     SOUI_MSG_MAP_BEGIN()
@@ -770,9 +774,6 @@ public:
      */
     SRadioBox();
 
-
-    void OnPaint(IRenderTarget *pRT);
-
 protected:
 
     ISkinObj *m_pSkin;  /**< 皮肤资源 */
@@ -791,6 +792,17 @@ protected:
      * Describe  构造函数
      */
     CRect GetRadioRect();
+    
+    /**
+     * SetCheck
+     * @brief    设置当前窗口的check状态
+     * @param    BOOL bCheck --  check状态
+     * @return   void 
+     *
+     * Describe  
+     */
+    void SetCheck(BOOL bCheck);
+
     /**
      * SRadioBox::GetTextRect
      * @brief    获得文本大小
@@ -849,18 +861,23 @@ protected:
      * @brief    获取一个group中有选中状态的兄弟
      * @return   返回选中状态的兄弟窗口指针
      *
-     * Describe  没有选中状态兄弟时返回this
+     * Describe  没有选中状态兄弟时返回NULL
      */
     virtual SWindow * GetSelectedSiblingInGroup();
     
+protected:
     void OnLButtonDown(UINT nFlags, CPoint point);
 
     void OnSetFocus();
+    
+    void OnPaint(IRenderTarget *pRT);
 
+    HRESULT OnAttrCheck(const SStringW& strValue, BOOL bLoading);
 
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"skin", m_pSkin, FALSE)
         ATTR_SKIN(L"focusskin", m_pFocusSkin, FALSE)
+        ATTR_CUSTOM(L"check",OnAttrCheck)
     SOUI_ATTRS_END()
 
     SOUI_MSG_MAP_BEGIN()
@@ -942,7 +959,7 @@ protected:
     void OnPaint(IRenderTarget *pRT);
     
     COLORREF m_crLine1,m_crLine2; /**< 颜色 */
-    int         m_nRound; /**< 暂时不详 */
+    int         m_nRound; /**< 圆角半径 */
 public:
     SOUI_ATTRS_BEGIN()
         ATTR_COLOR(L"crline1", m_crLine1, FALSE)

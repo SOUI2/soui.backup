@@ -12,7 +12,7 @@ SHotKeyCtrl::SHotKeyCtrl(void)
     m_wInvalidModifier=0;
     m_wInvalidComb=HKCOMB_NONE;
     m_bInSetting=FALSE;
-    m_bTabStop=TRUE;
+    m_bFocusable=TRUE;
 }
 
 SHotKeyCtrl::~SHotKeyCtrl(void)
@@ -42,7 +42,7 @@ void SHotKeyCtrl::OnPaint( IRenderTarget * pRT )
     SPainter painter;
     BeforePaint(pRT,painter);
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     rcClient.OffsetRect(EDIT_INSET,0);
     SStringT str=FormatHotkey();
     pRT->DrawText(str,str.GetLength(),&rcClient,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
@@ -61,7 +61,7 @@ void SHotKeyCtrl::UpdateCaret()
     ReleaseRenderTarget(pRT);
     
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     GetContainer()->SwndSetCaretPos(rcClient.left+EDIT_INSET+szTxt.cx,rcClient.top+(rcClient.Height()-szTxt.cy)/2);
 }
 
@@ -77,7 +77,7 @@ void SHotKeyCtrl::OnSetFocus()
     GetContainer()->SwndCreateCaret(NULL,1,szTxt.cy);
 
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     OnSetCaretValidateRect(&rcClient);
 
     UpdateCaret();

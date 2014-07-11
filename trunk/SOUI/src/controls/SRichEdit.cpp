@@ -244,7 +244,7 @@ HRESULT STextHost::TxGetParaFormat( const PARAFORMAT **ppPF )
 
 HRESULT STextHost::TxGetClientRect( LPRECT prc )
 {
-    m_pRichEdit->GetClient(prc);
+    m_pRichEdit->GetClientRect(prc);
     return S_OK;
 }
 
@@ -588,7 +588,7 @@ SRichEdit::SRichEdit()
     ,m_rcInsetPixel(2,2,2,2)
     ,m_byDbcsLeadByte(0)
 {
-    m_bTabStop=TRUE;
+    m_bFocusable=TRUE;
     m_sizelExtent.cx=m_sizelExtent.cy=0;
     m_evtSet.addEvent(EventRENotify::EventID);
 }
@@ -620,10 +620,10 @@ LRESULT SRichEdit::OnCreate( LPVOID )
     m_pTxtHost->GetTextService()->TxSendMessage(WM_KILLFOCUS, 0, 0, 0);
 
     // set IME
-    DWORD dw = SendSwndMessage(EM_GETLANGOPTIONS);
+    DWORD dw = SSendMessage(EM_GETLANGOPTIONS);
     dw |= IMF_AUTOKEYBOARD | IMF_DUALFONT;
     dw &= ~IMF_AUTOFONT;
-    SendSwndMessage(EM_SETLANGOPTIONS, 0, dw);
+    SSendMessage(EM_SETLANGOPTIONS, 0, dw);
 
     SetWindowText(S_CT2W(SWindow::GetWindowText()));
 
@@ -649,7 +649,7 @@ void SRichEdit::OnDestroy()
 void SRichEdit::OnPaint( IRenderTarget * pRT )
 {
     CRect rcClient,rcClip;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     pRT->PushClipRect(&rcClient);
     pRT->GetClipBound(&rcClip);
 
@@ -687,7 +687,7 @@ void SRichEdit::OnSetFocus()
     __super::OnSetFocus();
 
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     if(GetParent()) GetParent()->OnSetCaretValidateRect(&rcClient);
 
     if(m_pTxtHost)
@@ -743,7 +743,7 @@ BOOL SRichEdit::OnScroll( BOOL bVertical,UINT uCode,int nPos )
 BOOL SRichEdit::OnSetCursor(const CPoint &pt)
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     if(!rcClient.PtInRect(pt))
         return FALSE;
 
@@ -864,7 +864,7 @@ BOOL SRichEdit::GetReadOnly()
 
 BOOL SRichEdit::SetReadOnly(BOOL bReadOnly)
 {
-    return 0 != SendSwndMessage(EM_SETREADONLY, bReadOnly);
+    return 0 != SSendMessage(EM_SETREADONLY, bReadOnly);
 }
 
 LONG SRichEdit::GetLimitText()
@@ -874,7 +874,7 @@ LONG SRichEdit::GetLimitText()
 
 BOOL SRichEdit::SetLimitText(int nLength)
 {
-    return 0 != SendSwndMessage(EM_EXLIMITTEXT, nLength);
+    return 0 != SSendMessage(EM_EXLIMITTEXT, nLength);
 }
 
 WORD SRichEdit::GetDefaultAlign()
@@ -1096,11 +1096,11 @@ void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
             point.Offset(rcCantainer.TopLeft());
             HWND hHost=GetContainer()->GetHostHwnd();
             ::ClientToScreen(hHost,&point);
-            BOOL canPaste=SendSwndMessage(EM_CANPASTE,0);
+            BOOL canPaste=SSendMessage(EM_CANPASTE,0);
             DWORD dwStart=0,dwEnd=0;
-            SendSwndMessage(EM_GETSEL,(WPARAM)&dwStart,(LPARAM)&dwEnd);
+            SSendMessage(EM_GETSEL,(WPARAM)&dwStart,(LPARAM)&dwEnd);
             BOOL hasSel=dwStart<dwEnd;
-            UINT uLen=SendSwndMessage(WM_GETTEXTLENGTH ,0,0);
+            UINT uLen=SSendMessage(WM_GETTEXTLENGTH ,0,0);
             BOOL bReadOnly=m_dwStyle&ES_READONLY;
             EnableMenuItem(menu.m_hMenu,MENU_CUT,MF_BYCOMMAND|((hasSel&&(!bReadOnly))?0:MF_GRAYED));
             EnableMenuItem(menu.m_hMenu,MENU_COPY,MF_BYCOMMAND|(hasSel?0:MF_GRAYED));
@@ -1112,19 +1112,19 @@ void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
             switch(uCmd)
             {
             case MENU_CUT:
-                SendSwndMessage(WM_CUT);
+                SSendMessage(WM_CUT);
                 break;
             case MENU_COPY:
-                SendSwndMessage(WM_COPY);
+                SSendMessage(WM_COPY);
                 break;
             case MENU_PASTE:
-                SendSwndMessage(WM_PASTE);
+                SSendMessage(WM_PASTE);
                 break;
             case MENU_DEL:
-                SendSwndMessage(EM_REPLACESEL,0,(LPARAM)_T(""));
+                SSendMessage(EM_REPLACESEL,0,(LPARAM)_T(""));
                 break;
             case MENU_SELALL:
-                SendSwndMessage(EM_SETSEL,0,-1);
+                SSendMessage(EM_SETSEL,0,-1);
                 break;
             default:
                 break;
@@ -1321,34 +1321,34 @@ void SRichEdit::OnSetFont( IFont *pFont, BOOL bRedraw )
 
 BOOL SRichEdit::SetWindowText( LPCWSTR lpszText )
 {
-    return (BOOL)SendSwndMessage(WM_SETTEXT,0,(LPARAM)lpszText);
+    return (BOOL)SSendMessage(WM_SETTEXT,0,(LPARAM)lpszText);
 }
 
 SStringW SRichEdit::GetWindowText()
 {
     SStringW strRet;
-    int nLen=SendSwndMessage(WM_GETTEXTLENGTH);
+    int nLen=SSendMessage(WM_GETTEXTLENGTH);
     wchar_t *pBuf=strRet.GetBufferSetLength(nLen);
-    SendSwndMessage(WM_GETTEXT,(WPARAM)nLen,(LPARAM)pBuf);
+    SSendMessage(WM_GETTEXT,(WPARAM)nLen,(LPARAM)pBuf);
     strRet.ReleaseBuffer();
     return strRet;
 }
 
 int SRichEdit::GetWindowTextLength()
 {
-    return (int)SendSwndMessage(WM_GETTEXTLENGTH);
+    return (int)SSendMessage(WM_GETTEXTLENGTH);
 }
 
 void SRichEdit::ReplaceSel(LPWSTR pszText,BOOL bCanUndo)
 {
-    SendSwndMessage(EM_REPLACESEL,(WPARAM)bCanUndo,(LPARAM)pszText);
+    SSendMessage(EM_REPLACESEL,(WPARAM)bCanUndo,(LPARAM)pszText);
 }
 
 void SRichEdit::SetSel(DWORD dwSelection, BOOL bNoScroll)
 {
-    SendSwndMessage(EM_SETSEL, LOWORD(dwSelection), HIWORD(dwSelection));
+    SSendMessage(EM_SETSEL, LOWORD(dwSelection), HIWORD(dwSelection));
     if(!bNoScroll)
-        SendSwndMessage(EM_SCROLLCARET, 0, 0L);
+        SSendMessage(EM_SCROLLCARET, 0, 0L);
 }
 
 LRESULT SRichEdit::OnSetTextColor( const SStringW &  strValue,BOOL bLoading )

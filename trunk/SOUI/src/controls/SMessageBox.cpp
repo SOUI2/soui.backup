@@ -135,7 +135,7 @@ namespace SOUI
         SetIcon(uType);
 
         CRect rcText;
-        pMsg->GetRect(&rcText);
+        pMsg->GetWindowRect(&rcText);
 
         CSize szWnd;
         szWnd.cx=max(szMin.cx,rcText.Width()+rcFrame.left+rcFrame.right);

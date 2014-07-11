@@ -131,7 +131,7 @@ void SSplitWnd::OnDestroy()
 void SSplitWnd::OnPaint( IRenderTarget * pRT )
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
 
     if(m_pSkinSep)
     {
@@ -147,7 +147,7 @@ void SSplitWnd::OnPaint( IRenderTarget * pRT )
         {
             CRect rcPane;
             if (!m_arrPane[i]->IsVisible()) continue;
-            m_arrPane[i]->GetRect(&rcPane);
+            m_arrPane[i]->GetWindowRect(&rcPane);
             RB+=m_bColMode?rcPane.Width():rcPane.Height();
             LT=RB;
             RB+=m_nSepSize;
@@ -185,7 +185,7 @@ void SSplitWnd::OnLButtonDown( UINT nFlags,CPoint pt )
     if (!m_bAdjustable) return;
 
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
 
     CRect rcBeam=rcClient;
     if(m_bColMode) rcBeam.right=rcBeam.left;
@@ -199,7 +199,7 @@ void SSplitWnd::OnLButtonDown( UINT nFlags,CPoint pt )
     {
         CRect rcPane;
         if (!m_arrPane[i]->IsVisible()) continue;
-        m_arrPane[i]->GetRect(&rcPane);
+        m_arrPane[i]->GetWindowRect(&rcPane);
         nLT=m_bColMode?rcPane.right:rcPane.bottom;
         nRB=nLT+m_nSepSize;
         if(rcBeam.PtInRect(pt))
@@ -226,8 +226,8 @@ void SSplitWnd::OnMouseMove( UINT nFlags,CPoint pt )
     int nNextPanel = GetNextVisiblePanel(m_iDragBeam);
     if (nNextPanel == -1) return;
 
-    m_arrPane[m_iDragBeam]->GetRect(&rcPane1);
-    m_arrPane[nNextPanel]->GetRect(&rcPane2);
+    m_arrPane[m_iDragBeam]->GetWindowRect(&rcPane1);
+    m_arrPane[nNextPanel]->GetWindowRect(&rcPane2);
 
     CPoint ptMove=pt-m_ptClick;
 
@@ -300,7 +300,7 @@ void SSplitWnd::OnMouseMove( UINT nFlags,CPoint pt )
 void SSplitWnd::Relayout(UINT uMode)
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
 
     BOOL bRowSplit=!m_bColMode;
     BOOL bColSplit=m_bColMode;
@@ -310,7 +310,7 @@ void SSplitWnd::Relayout(UINT uMode)
         for(UINT i=0;i<m_arrPane.GetCount(); i++)
         {
             CRect rcPane;
-            m_arrPane[i]->GetRect(&rcPane);
+            m_arrPane[i]->GetWindowRect(&rcPane);
             rcPane.top=rcClient.top;
             rcPane.bottom=rcClient.bottom;
             m_arrPane[i]->Move(rcPane);
@@ -320,7 +320,7 @@ void SSplitWnd::Relayout(UINT uMode)
         for(UINT i=0;i<m_arrPane.GetCount(); i++)
         {
             CRect rcPane;
-            m_arrPane[i]->GetRect(&rcPane);
+            m_arrPane[i]->GetWindowRect(&rcPane);
             rcPane.left=rcClient.left;
             rcPane.right=rcClient.right;
             m_arrPane[i]->Move(rcPane);
@@ -331,7 +331,7 @@ void SSplitWnd::Relayout(UINT uMode)
         CRect rcPane1;
         if(m_arrPane.GetCount())
         {
-            m_arrPane[0]->GetRect(&rcPane1);
+            m_arrPane[0]->GetWindowRect(&rcPane1);
         }
         //与客户区坐标比较计算出偏移量
         CPoint ptOffset=rcClient.TopLeft()-rcPane1.TopLeft();
@@ -339,7 +339,7 @@ void SSplitWnd::Relayout(UINT uMode)
         for(UINT i=0;i<m_arrPane.GetCount(); i++)
         {
             CRect rcPane;
-            m_arrPane[i]->GetRect(&rcPane);
+            m_arrPane[i]->GetWindowRect(&rcPane);
             rcPane.OffsetRect(ptOffset);
             m_arrPane[i]->Move(rcPane);
         }

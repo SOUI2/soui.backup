@@ -314,7 +314,7 @@ void SCalendar::Init()
 void SCalendar::DrawTitle(IRenderTarget *pRT)
 {
    CRect rect ;
-   GetClient(&rect);
+   GetClientRect(&rect);
 
    rect.bottom = rect.top + m_nTitleHei;
 
@@ -422,7 +422,7 @@ BOOL SCalendar::SetDate(WORD iYear, WORD iMonth, WORD iDay)
 CRect SCalendar::GetDayRect( WORD iDay )
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     rcClient.top+=m_nTitleHei;
     rcClient.bottom-=m_nFooterHei;
     
@@ -442,7 +442,7 @@ CRect SCalendar::GetDayRect( WORD iDay )
 WORD SCalendar::HitTest(CPoint pt)
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     rcClient.top+=m_nTitleHei;
     rcClient.bottom-=m_nFooterHei;
 

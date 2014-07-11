@@ -51,6 +51,12 @@ namespace SOUI
   } SHDITEM,  *LPSHDITEM;
 
 
+  /**
+   * @class     SHeaderCtrl
+   * @brief     表头控件 
+   * 
+   * Describe   表头控件
+   */
   class SOUI_EXP SHeaderCtrl: public SWindow
   {
       SOUI_CLASS_NAME(SHeaderCtrl, L"header")
@@ -296,18 +302,18 @@ namespace SOUI
           MSG_WM_DESTROY(OnDestroy)
       SOUI_MSG_MAP_END()
 
-      ISkinObj *    m_pSkinItem;  /**<  */
-      ISkinObj *    m_pSkinSort;  /**<  */
+      ISkinObj *    m_pSkinItem;  /**< 表头绘制Skin */
+      ISkinObj *    m_pSkinSort;  /**< 排序标志Skin */
       BOOL          m_bSortHeader;      /**< 表头可以点击排序 */
       BOOL          m_bFixWidth;        /**< 表项宽度固定开关 */
       BOOL          m_bItemSwapEnable;  /**< 允许拖动调整位置开关 */
 
-      BOOL            m_bDragging; /**<  */
-      HBITMAP         m_hDragImg;  /**<  */
-      CPoint          m_ptClick;   /**<  */
-      DWORD           m_dwHitTest; /**<  */
-      DWORD           m_dwDragTo;  /**<  */    
+      BOOL            m_bDragging; /**< 正在拖动标志 */
+      HBITMAP         m_hDragImg;  /**< 显示拖动窗口的临时位图 */
+      CPoint          m_ptClick;   /**< 当前点击坐标 */
+      DWORD           m_dwHitTest; /**< 鼠标位置 */
+      DWORD           m_dwDragTo;  /**< 拖放目标 */    
       int             m_nAdjItemOldWidth;  /**< 保存被拖动项的原始宽度 */
-      SArray<SHDITEM> m_arrItems; /**<  */
+      SArray<SHDITEM> m_arrItems; /**< 列表项集合 */
   };
 }//end of namespace SOUI

@@ -126,7 +126,7 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     SWindow::InitFromXml(xmlNode.child(L"root"));
 
     CRect rcClient;
-    GetClientRect(&rcClient);
+    CSimpleWnd::GetClientRect(&rcClient);
     if(rcClient.IsRectEmpty())//APP没有指定窗口大小，使用XML中的值
     {
         SetWindowPos(NULL,0,0,m_hostAttr.m_szInit.cx,m_hostAttr.m_szInit.cy,SWP_NOZORDER|SWP_NOMOVE);
@@ -207,7 +207,7 @@ void SHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
     }
 
     CRect rc;
-    GetClientRect(&rc);
+    CSimpleWnd::GetClientRect(&rc);
     UpdateHost(dc,rc);
 }
 
@@ -232,7 +232,7 @@ int SHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 void SHostWnd::OnDestroy()
 {
-    SWindow::SendSwndMessage(WM_DESTROY);
+    SWindow::SSendMessage(WM_DESTROY);
 
     if(m_pTipCtrl)
     {
@@ -258,7 +258,7 @@ void SHostWnd::OnSize(UINT nType, CSize size)
     m_memRT->Resize(size);
 
     CRect rcClient;
-    GetClientRect(rcClient);
+    CSimpleWnd::GetClientRect(rcClient);
 
     Move(rcClient);
 
@@ -320,7 +320,7 @@ void SHostWnd::OnTimer(UINT_PTR idEvent)
         if(pSwnd)
         {
             if(pSwnd==this) OnSwndTimer(sTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
-            else pSwnd->SendSwndMessage(WM_TIMER,sTimerID.uTimerID,0);
+            else pSwnd->SSendMessage(WM_TIMER,sTimerID.uTimerID,0);
         }
         else
         {
@@ -516,7 +516,7 @@ void SHostWnd::UpdateHost(CDCHandle dc, const CRect &rcInvalid )
     if(m_hostAttr.m_bTranslucent)
     {
         CRect rc;
-        GetWindowRect(&rc);
+        CSimpleWnd::GetWindowRect(&rc);
         BLENDFUNCTION bf= {AC_SRC_OVER,0,0xFF,AC_SRC_ALPHA};
         CDCHandle hdcSrc=::GetDC(NULL);
         UpdateLayeredWindow(hdcSrc,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
@@ -660,7 +660,7 @@ LRESULT SHostWnd::OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam)
     if (bCalcValidRects && (CSimpleWnd::GetStyle() & WS_POPUP))
     {
         CRect rcWindow;
-        GetWindowRect(rcWindow);
+        CSimpleWnd::GetWindowRect(rcWindow);
 
         LPNCCALCSIZE_PARAMS pParam = (LPNCCALCSIZE_PARAMS)lParam;
 
@@ -754,7 +754,7 @@ HWND SHostWnd::OnRealWndCreate(SRealWnd *pRealWnd)
 {
     CRect rcWindow;
     UINT uCmdID=pRealWnd->GetID();
-    pRealWnd->GetRect(&rcWindow);
+    pRealWnd->GetWindowRect(&rcWindow);
 
     const SRealWndParam & paramRealWnd=pRealWnd->GetRealWndParam();
     return CreateWindowEx(paramRealWnd.m_dwExStyle,paramRealWnd.m_strClassName,paramRealWnd.m_strWindowName,paramRealWnd.m_dwStyle,
@@ -786,7 +786,7 @@ void SHostWnd::OnRealWndSize( SRealWnd *pRealWnd )
     if(::IsWindow(pRealWnd->GetRealHwnd(FALSE)))
     {
         CRect rcClient;
-        pRealWnd->GetClient(&rcClient);
+        pRealWnd->GetClientRect(&rcClient);
         ::SetWindowPos(pRealWnd->GetRealHwnd(FALSE),0, rcClient.left, rcClient.top, rcClient.Width(), rcClient.Height(), SWP_NOZORDER);
     }
 }
@@ -806,7 +806,7 @@ void SHostWnd::UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha)
     ASSERT(IsTranslucent());
     HDC hdc=pRT->GetDC(0);
     CRect rc;
-    GetWindowRect(&rc);
+    CSimpleWnd::GetWindowRect(&rc);
     BLENDFUNCTION bf= {AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
     CDCHandle dc=GetDC();
     UpdateLayeredWindow(dc,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
@@ -838,7 +838,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
     }else
     {
         CRect rcWnd;//窗口矩形
-        GetClientRect(&rcWnd);
+        CSimpleWnd::GetClientRect(&rcWnd);
         CRect rcShow(rcWnd);//动画过程中可见部分
         
         CAutoRefPtr<IRenderTarget> pRT;

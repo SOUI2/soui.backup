@@ -13,7 +13,7 @@ namespace SOUI
     BOOL _PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,SWindow *pStart,SWindow *pEnd,PRSTATE & prState )
     {
         RECT rcWnd;
-        pWndCur->GetRect(&rcWnd);
+        pWndCur->GetWindowRect(&rcWnd);
         if (!pWndCur->IsVisible(TRUE) || (!pRgn->IsEmpty() && !pRgn->RectInRegion(&rcWnd)))
         {
             return FALSE;
@@ -36,7 +36,7 @@ namespace SOUI
         PRSTATE prsBack=prState;    //保存当前的绘制状态,在递归结束后根据这个状态来判断是否需要绘制非客户区
 
         CRect rcClient;
-        pWndCur->GetClient(&rcClient);
+        pWndCur->GetClientRect(&rcClient);
         if(pRgn->IsEmpty() || pRgn->RectInRegion(rcClient))
         {//重绘客户区
             CRgn rgnOldClip;
@@ -46,8 +46,8 @@ namespace SOUI
                 {
                     pRT->PushClipRect(&rcClient);
                 }
-                pWndCur->SendSwndMessage(WM_ERASEBKGND, (WPARAM)pRT);
-                pWndCur->SendSwndMessage(WM_PAINT, (WPARAM)pRT);
+                pWndCur->SSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
+                pWndCur->SSendMessage(WM_PAINT, (WPARAM)pRT);
             }
 
             SPainter painter;
@@ -71,7 +71,7 @@ namespace SOUI
             }
         }
         if(prsBack == PRS_DRAWING) 
-            pWndCur->SendSwndMessage(WM_NCPAINT, (WPARAM)pRT);//ncpaint should be placed in tail of paint link
+            pWndCur->SSendMessage(WM_NCPAINT, (WPARAM)pRT);//ncpaint should be placed in tail of paint link
 
         return prState==PRS_DRAWING || prState == PRS_MEETEND;
     }
@@ -95,7 +95,7 @@ SWindow::SWindow()
     , m_nMaxWidth(-1)
     , m_bUpdateLocked(FALSE)
     , m_bClipClient(FALSE)
-    , m_bTabStop(FALSE)
+    , m_bFocusable(FALSE)
     , m_uData(0)
     , m_pOwner(NULL)
     , m_pCurMsg(NULL)
@@ -124,20 +124,17 @@ UINT SWindow::GetTextAlign()
     return m_style.GetTextAlign() ;
 }
 
-// Get position type
 DWORD SWindow::GetPositionType()
 {
     return m_dlgpos.uPositionType;
 }
 
-// Set position type
 void SWindow::SetPositionType(DWORD dwPosType, DWORD dwMask /*= 0xFFFFFFFF*/)
 {
     m_dlgpos.uPositionType = (m_dlgpos.uPositionType & ~dwMask) | (dwPosType & dwMask);
 }
 
-// Get SWindow rect(position in container)
-void SWindow::GetRect(LPRECT prect)
+void SWindow::GetWindowRect(LPRECT prect)
 {
     ASSERT(prect);
     prect->left     = m_rcWindow.left;
@@ -153,7 +150,7 @@ void SWindow::GetRect(LPRECT prect)
     }
 }
 
-void SWindow::GetClient(LPRECT pRect)
+void SWindow::GetClientRect(LPRECT pRect)
 {
     ASSERT(pRect);
     *pRect=m_rcWindow;
@@ -163,29 +160,22 @@ void SWindow::GetClient(LPRECT pRect)
     pRect->bottom-=m_style.m_nMarginY;
 }
 
-void SWindow::GetDlgPosition(SWND_POSITION *pPos)
-{
-    if (pPos)
-        memcpy(pPos, &m_dlgpos, sizeof(SWND_POSITION));
-}
-
 // Get inner text
 SStringT SWindow::GetWindowText()
 {
     return m_strText;
 }
 
-// Get tooltip text
 BOOL SWindow::OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip)
 {
     if(m_hSWnd==hCurTipHost) return FALSE;
     hNewTipHost=m_hSWnd;
-    GetRect(&rcTip);
+    GetWindowRect(&rcTip);
     strTip=m_strToolTipText;
     return TRUE;
 }
 
-BOOL SWindow::SetWindowText(LPCTSTR lpszText)
+void SWindow::SetWindowText(LPCTSTR lpszText)
 {
     m_strText = lpszText;
     if(IsVisible(TRUE)) Invalidate();
@@ -194,7 +184,6 @@ BOOL SWindow::SetWindowText(LPCTSTR lpszText)
         OnWindowPosChanged(NULL);
         if(IsVisible(TRUE)) Invalidate();
     }
-    return TRUE;
 }
 
 void SWindow::TestMainThread()
@@ -212,7 +201,7 @@ void SWindow::TestMainThread()
 
 
 // Send a message to SWindow
-LRESULT SWindow::SendSwndMessage(UINT Msg, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/,BOOL *pbMsgHandled/*=NULL*/)
+LRESULT SWindow::SSendMessage(UINT Msg, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/,BOOL *pbMsgHandled/*=NULL*/)
 {
     LRESULT lResult = 0;
 
@@ -369,7 +358,7 @@ BOOL SWindow::DestroyChild(SWindow *pChild)
 {
     if(this != pChild->GetParent()) return FALSE;
     pChild->Invalidate();
-    pChild->SendSwndMessage(WM_DESTROY);
+    pChild->SSendMessage(WM_DESTROY);
     RemoveChild(pChild);
     pChild->Release();
     return TRUE;
@@ -470,13 +459,13 @@ BOOL SWindow::IsVisible(BOOL bCheckParent /*= FALSE*/)
 void SWindow::SetVisible(BOOL bVisible,BOOL bUpdate/*=FALSE*/)
 {
     if(bUpdate) InvalidateRect(m_rcWindow);
-    SendSwndMessage(WM_SHOWWINDOW,bVisible);
+    SSendMessage(WM_SHOWWINDOW,bVisible);
     if(bUpdate) InvalidateRect(m_rcWindow);
 }
 
 void SWindow::EnableWindow( BOOL bEnable,BOOL bUpdate)
 {
-    SendSwndMessage(WM_ENABLE,bEnable);
+    SSendMessage(WM_ENABLE,bEnable);
     if(bUpdate) InvalidateRect(m_rcWindow);
 }
 
@@ -685,7 +674,7 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
 
     }
 
-    if(0!=SendSwndMessage(WM_CREATE))
+    if(0!=SSendMessage(WM_CREATE))
     {
         if(m_pParent)    m_pParent->DestroyChild(this);
         return FALSE;
@@ -711,7 +700,7 @@ SWND SWindow::SwndFromPoint(CPoint ptHitTest, BOOL bOnlyText)
     if (!m_rcWindow.PtInRect(ptHitTest)) return NULL;
 
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
 
     if(!rcClient.PtInRect(ptHitTest))
         return m_hSWnd;    //只在鼠标位于客户区时，才继续搜索子窗口
@@ -743,16 +732,16 @@ BOOL SWindow::NeedRedrawWhenStateChange()
     return m_style.GetStates()>1;
 }
 
-BOOL SWindow::RedrawRegion(IRenderTarget *pRT, IRegion *pRgn)
+void SWindow::RedrawRegion(IRenderTarget *pRT, IRegion *pRgn)
 {
     PRSTATE prState=PRS_LOOKSTART;
-    return _PaintRegion(pRT,pRgn,this,this,NULL,prState);
+    _PaintRegion(pRT,pRgn,this,this,NULL,prState);
 }
 
 void SWindow::Invalidate()
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     InvalidateRect(rcClient);
 }
 
@@ -822,11 +811,11 @@ LRESULT SWindow::OnWindowPosChanged(LPRECT lpRcContainer)
     }
     if(lRet==0)
     {
-        SendSwndMessage(WM_NCCALCSIZE);//计算非客户区大小
+        SSendMessage(WM_NCCALCSIZE);//计算非客户区大小
 
         CRect rcClient;
-        GetClient(&rcClient);
-        SendSwndMessage(WM_SIZE,0,MAKELPARAM(rcClient.Width(),rcClient.Height()));
+        GetClientRect(&rcClient);
+        SSendMessage(WM_SIZE,0,MAKELPARAM(rcClient.Width(),rcClient.Height()));
 
         UpdateChildrenPosition();
     }
@@ -845,7 +834,7 @@ void SWindow::OnDestroy()
     while (pChild)
     {
         SWindow *pNextChild=pChild->m_pNextSibling;
-        pChild->SendSwndMessage(WM_DESTROY);
+        pChild->SSendMessage(WM_DESTROY);
         pChild->Release();
 
         pChild=pNextChild;
@@ -858,7 +847,7 @@ void SWindow::OnDestroy()
 BOOL SWindow::OnEraseBkgnd(IRenderTarget *pRT)
 {
     CRect rcClient;
-    GetClient(&rcClient);
+    GetClientRect(&rcClient);
     if (!m_pBgSkin)
     {
         COLORREF crBg = m_style.m_crBg;
@@ -943,7 +932,7 @@ void SWindow::OnNcPaint(IRenderTarget *pRT)
         if(bGetRT) pRT=GetRenderTarget(&m_rcWindow,OLEDC_OFFSCREEN,FALSE);//不自动画背景
 
         CRect rcClient;
-        SWindow::GetClient(&rcClient);
+        SWindow::GetClientRect(&rcClient);
         pRT->SaveClip(NULL);
         pRT->ExcludeClipRect(&rcClient);
 
@@ -1017,7 +1006,7 @@ CSize SWindow::GetDesiredSize(LPRECT pRcContainer)
 
 void SWindow::GetTextRect( LPRECT pRect )
 {
-    GetClient(pRect);
+    GetClientRect(pRect);
 }
 
 void SWindow::DrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat)
@@ -1029,7 +1018,7 @@ void SWindow::DrawFocus(IRenderTarget *pRT)
 {
     CRect rcFocus;
     GetTextRect(&rcFocus);
-    if(IsTabStop())    DrawDefFocusRect(pRT,rcFocus);
+    if(IsFocusable())    DrawDefFocusRect(pRT,rcFocus);
 }
 
 
@@ -1048,9 +1037,9 @@ UINT SWindow::OnGetDlgCode()
     return 0;
 }
 
-BOOL SWindow::IsTabStop()
+BOOL SWindow::IsFocusable()
 {
-    return m_bTabStop;
+    return m_bFocusable;
 }
 
 BOOL SWindow::OnDefKeyDown(UINT nChar, UINT nFlags)
@@ -1087,7 +1076,7 @@ void SWindow::OnShowWindow(BOOL bShow, UINT nStatus)
     SWindow *pChild=m_pFirstChild;
     while(pChild)
     {
-        pChild->SendSwndMessage(WM_SHOWWINDOW,bShow,ParentShow);
+        pChild->SSendMessage(WM_SHOWWINDOW,bShow,ParentShow);
         pChild=pChild->GetWindow(GSW_NEXTSIBLING);
     }
     if(!IsVisible(TRUE) && m_hSWnd == GetContainer()->SwndGetFocus())
@@ -1126,7 +1115,7 @@ void SWindow::OnEnable( BOOL bEnable,UINT nStatus )
     SWindow *pChild=m_pFirstChild;
     while(pChild)
     {
-        pChild->SendSwndMessage(WM_ENABLE,bEnable,ParentEnable);
+        pChild->SSendMessage(WM_ENABLE,bEnable,ParentEnable);
         pChild=pChild->GetWindow(GSW_NEXTSIBLING);
     }
     if(IsDisabled(TRUE) && m_hSWnd == GetContainer()->SwndGetFocus())
@@ -1137,7 +1126,7 @@ void SWindow::OnEnable( BOOL bEnable,UINT nStatus )
 
 void SWindow::OnLButtonDown(UINT nFlags,CPoint pt)
 {
-    if(m_bTabStop) SetFocus();
+    if(m_bFocusable) SetFocus();
     SetCapture();
     ModifyState(WndState_PushDown, 0,TRUE);
 }
@@ -1184,36 +1173,14 @@ void SWindow::OnMouseLeave()
 BOOL SWindow::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
     BOOL bRet=FALSE;
-    if(m_pParent) bRet=(BOOL)m_pParent->SendSwndMessage(WM_MOUSEWHEEL,MAKEWPARAM(nFlags,zDelta),MAKELPARAM(pt.x,pt.y));
+    if(m_pParent) bRet=(BOOL)m_pParent->SSendMessage(WM_MOUSEWHEEL,MAKEWPARAM(nFlags,zDelta),MAKELPARAM(pt.x,pt.y));
     return bRet;
 }
-
-HRESULT SWindow::OnAttrState( const SStringW& strValue, BOOL bLoading )
-{
-    int nState=0;
-    ::StrToIntExW(strValue,STIF_SUPPORT_HEX,&nState);
-    m_dwState=nState;
-    if(m_dwState & WndState_Invisible) m_bVisible=FALSE;
-    if(m_dwState & WndState_Disable) m_bDisable=TRUE;
-    return S_FALSE;
-}
-
-
-HRESULT SWindow::OnAttrPos(const SStringW& strValue, BOOL bLoading)
-{
-    if (strValue.IsEmpty()) return E_FAIL;
-    if(!bLoading) InvalidateRect(m_rcWindow);
-    ClearLayoutState();
-    SwndLayout::StrPos2SwndPos(strValue,m_dlgpos);
-    if(!bLoading) OnWindowPosChanged(NULL);
-    return S_FALSE;
-}
-
 
 CRect SWindow::GetChildrenLayoutRect()
 {
     CRect rcRet;
-    GetClient(rcRet);//通常是非客户区，但是tab这样的控件不一样。
+    GetClientRect(rcRet);//通常是非客户区，但是tab这样的控件不一样。
     return rcRet;
 }
 
@@ -1253,7 +1220,7 @@ IRenderTarget * SWindow::GetRenderTarget(const LPRECT pRc/*=NULL*/,DWORD gdcFlag
 {
     ASSERT(m_gdcFlags==-1);
     if(bClientDC)
-        GetClient(&m_rcGetRT);
+        GetClientRect(&m_rcGetRT);
     else
         m_rcGetRT=m_rcWindow;
     
@@ -1264,7 +1231,7 @@ IRenderTarget * SWindow::GetRenderTarget(const LPRECT pRc/*=NULL*/,DWORD gdcFlag
         while(pParent)
         {
             CRect rcParent;
-            pParent->GetClient(&rcParent);
+            pParent->GetClientRect(&rcParent);
             m_rcGetRT.IntersectRect(m_rcGetRT,rcParent);
             pParent=pParent->GetParent();
         }
@@ -1349,112 +1316,6 @@ void SWindow::KillFocus()
     {
         GetContainer()->OnSetSwndFocus(NULL);
     }
-}
-
-SWindow *SWindow::GetCheckedRadioButton()
-{
-    SWindow *pChild=m_pFirstChild;
-    while(pChild)
-    {
-        if(pChild->IsClass(L"radio") && pChild->IsChecked())
-        {
-            return pChild;
-        }
-        pChild=pChild->m_pNextSibling;
-    }
-    return NULL;
-}
-
-void SWindow::CheckRadioButton(SWindow * pRadioBox)
-{
-    SWindow *pChecked=GetCheckedRadioButton();
-    if(pChecked == pRadioBox) return;
-    if(pChecked)
-    {
-        pChecked->ModifyState(0,WndState_Check,TRUE);
-    }
-    pRadioBox->ModifyState(WndState_Check,0,TRUE);
-}
-
-
-BOOL SWindow::SetItemVisible(UINT uItemID, BOOL bVisible)
-{
-    SWindow *pWnd = FindChildByID(uItemID);
-
-    if (pWnd)
-    {
-        pWnd->SetVisible(bVisible,TRUE);
-        return TRUE;
-    }
-
-    return FALSE;
-}
-
-BOOL SWindow::IsItemVisible(UINT uItemID, BOOL bCheckParent /*= FALSE*/)
-{
-    SWindow *pWnd = FindChildByID(uItemID);
-
-    if (pWnd)
-        return pWnd->IsVisible(bCheckParent);
-
-    return FALSE;
-}
-
-BOOL SWindow::GetItemCheck(UINT uItemID)
-{
-    SWindow *pWnd = FindChildByID(uItemID);
-
-    if (pWnd)
-        return pWnd->IsChecked();
-
-    return FALSE;
-}
-
-BOOL SWindow::SetItemCheck(UINT uItemID, BOOL bCheck)
-{
-    SWindow *pWnd = FindChildByID(uItemID);
-
-    if (pWnd)
-    {
-        if (bCheck)
-            pWnd->ModifyState(WndState_Check, 0);
-        else
-            pWnd->ModifyState(0, WndState_Check);
-
-        pWnd->InvalidateRect(pWnd->m_rcWindow);
-
-        return TRUE;
-    }
-
-    return FALSE;
-}
-
-BOOL SWindow::EnableItem(UINT uItemID, BOOL bEnable)
-{
-    SWindow *pWnd = FindChildByID(uItemID);
-
-    if (pWnd)
-    {
-        if (bEnable)
-            pWnd->ModifyState(0, WndState_Disable);
-        else
-            pWnd->ModifyState(WndState_Disable, WndState_Hover);
-
-        pWnd->InvalidateRect(pWnd->m_rcWindow);
-        return TRUE;
-    }
-
-    return FALSE;
-}
-
-BOOL SWindow::IsItemEnable(UINT uItemID, BOOL bCheckParent /*= FALSE*/)
-{
-    SWindow *pWnd = FindChildByID(uItemID);
-
-    if (pWnd)
-        return !pWnd->IsDisabled(bCheckParent);
-
-    return FALSE;
 }
 
 BOOL SWindow::OnNcHitTest(CPoint pt)
@@ -1580,7 +1441,7 @@ BOOL SWindow::AnimateWindow(DWORD dwTime,DWORD dwFlags )
         if(!pParent->IsVisible(TRUE)) return FALSE;
     }
     CRect rcWnd;
-    GetRect(&rcWnd);
+    GetWindowRect(&rcWnd);
 
     CAutoRefPtr<IRegion> rgn;
     GETRENDERFACTORY->CreateRegion(&rgn);
@@ -1785,6 +1646,54 @@ BOOL SWindow::FireCtxMenu( CPoint pt )
     evt.pt=pt;
     FireEvent(evt);
     return evt.bCancel;
+}
+
+//////////////////////////////////////////////////////////////////////////
+HRESULT SWindow::OnAttrPos(const SStringW& strValue, BOOL bLoading)
+{
+    if (strValue.IsEmpty()) return E_FAIL;
+    if(!bLoading) InvalidateRect(m_rcWindow);
+    ClearLayoutState();
+    SwndLayout::StrPos2SwndPos(strValue,m_dlgpos);
+    if(!bLoading) OnWindowPosChanged(NULL);
+    return S_FALSE;
+}
+
+HRESULT SWindow::OnAttrVisible( const SStringW& strValue, BOOL bLoading )
+{
+    BOOL bVisible = strValue != L"0";
+    if(!bLoading)   SetVisible(bVisible,TRUE);
+    else m_bVisible=bVisible;
+    return S_FALSE;
+}
+
+HRESULT SWindow::OnAttrEnable( const SStringW& strValue, BOOL bLoading )
+{
+    BOOL bEnable = strValue != L"0";
+    if(bLoading)
+    {
+        if (bEnable)
+            ModifyState(0, WndState_Disable);
+        else
+            ModifyState(WndState_Disable, WndState_Hover);
+    }
+    else
+    {
+        EnableWindow(bEnable,TRUE);
+    }
+    return S_FALSE;
+}
+
+HRESULT SWindow::OnAttrDisplay( const SStringW& strValue, BOOL bLoading )
+{
+    m_bDisplay = strValue != L"0";
+    if(!bLoading && !IsVisible(TRUE))
+    {
+        SWindow *pParent=GetParent();
+        ASSERT(pParent);
+        pParent->UpdateChildrenPosition();
+    }
+    return S_FALSE;
 }
 
 }//namespace SOUI
