@@ -120,7 +120,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../../soui/include;&quot;../lua-5.1&quot;"
+				AdditionalIncludeDirectories="../../soui/include;../../utilities/include;&quot;../lua-5.1&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;LUASCRIPTMODULE_EXPORTS;"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -169,7 +169,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy $(TargetPath) ..\..\..\bin"
+				CommandLine=""
 			/>
 		</Configuration>
 	</Configurations>
@@ -232,6 +232,14 @@
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
