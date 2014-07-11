@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../soui/include;../../utilities/include;&quot;../lua-5.1&quot;"
+				AdditionalIncludeDirectories="../../../soui/include;../../../utilities/include;&quot;../lua-5.1&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;LUASCRIPTMODULE_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -120,7 +120,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../../soui/include;../../utilities/include;&quot;../lua-5.1&quot;"
+				AdditionalIncludeDirectories="../../../soui/include;../../../utilities/include;&quot;../lua-5.1&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;LUASCRIPTMODULE_EXPORTS;"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
