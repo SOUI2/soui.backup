@@ -70,8 +70,8 @@ BOOL SListCtrl::CreateChildren(pugi::xml_node xmlNode)
     strPos.Format(L"0,0,-0,%d",m_nHeaderHeight);
     m_pHeader->SetAttribute(L"pos",strPos,TRUE);
 
-    m_pHeader->subscribeEvent(EventHeaderItemChanging::EventID, Subscriber(&SListCtrl::OnHeaderSizeChanging,this));
-    m_pHeader->subscribeEvent(EventHeaderItemSwap::EventID, Subscriber(&SListCtrl::OnHeaderSwap,this));
+    m_pHeader->GetEventSet()->subscribeEvent(EventHeaderItemChanging::EventID, Subscriber(&SListCtrl::OnHeaderSizeChanging,this));
+    m_pHeader->GetEventSet()->subscribeEvent(EventHeaderItemSwap::EventID, Subscriber(&SListCtrl::OnHeaderSwap,this));
 
     return TRUE;
 }

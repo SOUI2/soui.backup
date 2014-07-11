@@ -387,26 +387,8 @@ public:
 
     virtual BOOL FireEvent(EventArgs &evt);
     
-    bool subscribeEvent(const DWORD dwEventID, const SlotFunctorBase & subscriber)
-    {
-        return m_evtSet.subscribeEvent(dwEventID,subscriber);
-    }
+    SEventSet * GetEventSet(){return &m_evtSet;}
 
-    bool unsubscribeEvent( const DWORD dwEventID, const SlotFunctorBase & subscriber )
-    {
-        return m_evtSet.unsubscribeEvent(dwEventID,subscriber);
-    }
-    
-    bool isEventMuted(void) const
-    {
-        return m_evtSet.isMuted();
-    }
-
-    void    setEventMute(bool bMute)
-    {
-        return m_evtSet.setMutedState(bMute);
-    }
-    
     virtual UINT OnGetDlgCode();
 
     virtual BOOL IsTabStop();

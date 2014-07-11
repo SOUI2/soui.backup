@@ -518,7 +518,7 @@ BOOL SCalendar::InitFromXml( pugi::xml_node xmlNode )
         if(pBtnToday)
         {
             pBtnToday->SetID(100);
-            pBtnToday->subscribeEvent(EventCmd::EventID,Subscriber(&SCalendar::OnTodayClick,this));
+            pBtnToday->GetEventSet()->subscribeEvent(EventCmd::EventID,Subscriber(&SCalendar::OnTodayClick,this));
         }
         SWindow *pLabelToday=FindChildByName(L"label_today");
         if(pLabelToday)

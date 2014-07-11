@@ -52,7 +52,7 @@ void CMainDlg::InitListCtrl()
     if(pList)
     {
         SWindow *pHeader=pList->GetWindow(GSW_FIRSTCHILD);
-        pHeader->subscribeEvent(EVT_HEADER_CLICK,Subscriber(&CMainDlg::OnListHeaderClick,this));
+        pHeader->GetEventSet()->subscribeEvent(EVT_HEADER_CLICK,Subscriber(&CMainDlg::OnListHeaderClick,this));
 
         TCHAR szColNames[][20]={_T("name"),_T("gender"),_T("age"),_T("score")};
         for(int i=0;i<ARRAYSIZE(szColNames);i++)
