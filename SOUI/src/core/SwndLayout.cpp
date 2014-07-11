@@ -4,6 +4,12 @@
 
 namespace SOUI
 {
+
+    SwndLayout::SwndLayout( SWindow *pOwner ):m_pOwner(pOwner)
+    {
+
+    }
+    
     LPCWSTR SwndLayout::ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,SWND_POSITION_ITEM &pos)
     {
         if(!pszPos) return NULL;
@@ -35,9 +41,7 @@ namespace SOUI
         return pNext;
     }
 
-
-
-    int SwndLayout::PositionItem2Value(SWindow *pWnd, const SWND_POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX)
+    int SwndLayout::PositionItem2Value(const SWND_POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX)
     {
         int nRet=0;
         int nWid=nMax-nMin;
@@ -59,8 +63,8 @@ namespace SOUI
             break;
         case PIT_PREVSIBLING:
             {
-                SWindow *pRefWnd=pWnd->GetWindow(GSW_PREVSIBLING);
-                if(!pRefWnd) pRefWnd=pWnd->GetWindow(GSW_PARENT);
+                SWindow *pRefWnd=m_pOwner->GetWindow(GSW_PREVSIBLING);
+                if(!pRefWnd) pRefWnd=m_pOwner->GetWindow(GSW_PARENT);
                 if(pRefWnd)
                 {//需要确定参考窗口是否完成布局
                     CRect rcRef;
@@ -83,8 +87,8 @@ namespace SOUI
             break;
         case PIT_NEXTSIBLING:
             {
-                SWindow *pRefWnd=pWnd->GetWindow(GSW_NEXTSIBLING);
-                if(!pRefWnd) pRefWnd=pWnd->GetWindow(GSW_PARENT);
+                SWindow *pRefWnd=m_pOwner->GetWindow(GSW_NEXTSIBLING);
+                if(!pRefWnd) pRefWnd=m_pOwner->GetWindow(GSW_PARENT);
                 if(pRefWnd)
                 {//需要确定参考窗口是否完成布局
                     CRect rcRef;
@@ -110,36 +114,35 @@ namespace SOUI
         return nRet;
 
     }
-    int SwndLayout::CalcPosition(SWindow *pWnd, LPRECT lpRcContainer,const SWND_POSITION & dlgpos,CRect &rcWindow )
+    
+    int SwndLayout::CalcPosition(LPRECT lpRcContainer,CRect &rcWindow )
     {
         int nRet=0;
 
         CRect rcContainer;
         if(!lpRcContainer)
         {
-            ASSERT(pWnd->GetParent());
-            rcContainer=pWnd->GetParent()->GetChildrenLayoutRect();
+            ASSERT(m_pOwner->GetParent());
+            rcContainer=m_pOwner->GetParent()->GetChildrenLayoutRect();
             lpRcContainer=&rcContainer;
         }
 
-        UINT uPositionType=dlgpos.uPositionType;
-
-        if(dlgpos.nCount==4)
+        if(nCount==4)
         {//指定了4个坐标
             if(rcWindow.left == POS_INIT || rcWindow.left == POS_WAIT)
-                rcWindow.left=PositionItem2Value(pWnd,dlgpos.Left,lpRcContainer->left,lpRcContainer->right,TRUE);
+                rcWindow.left=PositionItem2Value(Left,lpRcContainer->left,lpRcContainer->right,TRUE);
             if(rcWindow.left==POS_WAIT) nRet++;
 
             if(rcWindow.top == POS_INIT || rcWindow.top == POS_WAIT)
-                rcWindow.top=PositionItem2Value(pWnd,dlgpos.Top,lpRcContainer->top,lpRcContainer->bottom,FALSE);
+                rcWindow.top=PositionItem2Value(Top,lpRcContainer->top,lpRcContainer->bottom,FALSE);
             if(rcWindow.top==POS_WAIT) nRet++;
 
             if(rcWindow.right == POS_INIT || rcWindow.right == POS_WAIT)
             {
-                if(dlgpos.Right.pit!=PIT_OFFSET)
-                    rcWindow.right=PositionItem2Value(pWnd,dlgpos.Right,lpRcContainer->left,lpRcContainer->right,TRUE);
+                if(Right.pit!=PIT_OFFSET)
+                    rcWindow.right=PositionItem2Value(Right,lpRcContainer->left,lpRcContainer->right,TRUE);
                 else if(rcWindow.left!=POS_WAIT)
-                    rcWindow.right=rcWindow.left+(LONG)dlgpos.Right.nPos;
+                    rcWindow.right=rcWindow.left+(LONG)Right.nPos;
                 else
                     rcWindow.right=POS_WAIT;
             }
@@ -147,10 +150,10 @@ namespace SOUI
 
             if(rcWindow.bottom == POS_INIT || rcWindow.bottom == POS_WAIT)
             {
-                if(dlgpos.Bottom.pit!=PIT_OFFSET)
-                    rcWindow.bottom=PositionItem2Value(pWnd,dlgpos.Bottom,lpRcContainer->top,lpRcContainer->bottom,FALSE);
+                if(Bottom.pit!=PIT_OFFSET)
+                    rcWindow.bottom=PositionItem2Value(Bottom,lpRcContainer->top,lpRcContainer->bottom,FALSE);
                 else if(rcWindow.top!=POS_WAIT)
-                    rcWindow.bottom=rcWindow.top+(LONG)dlgpos.Bottom.nPos;
+                    rcWindow.bottom=rcWindow.top+(LONG)Bottom.nPos;
                 else
                     rcWindow.bottom=POS_WAIT;
             }
@@ -158,21 +161,21 @@ namespace SOUI
         }else 
         {
             CPoint pt=rcWindow.TopLeft();
-            CSize sz=pWnd->CalcSize(lpRcContainer);
+            CSize sz=m_pOwner->CalcSize(lpRcContainer);
             if((uPositionType & SizeX_FitParent) &&  (uPositionType &SizeY_FitParent))
             {//充满父窗口
                 pt.x=lpRcContainer->left;
                 pt.y=lpRcContainer->top;
-            }else if(dlgpos.nCount==2)
+            }else if(nCount==2)
             {//只指定了两个坐标
-                if(pt.x==POS_INIT || pt.x==POS_WAIT) pt.x=PositionItem2Value(pWnd,dlgpos.Left,lpRcContainer->left,lpRcContainer->right,TRUE);
+                if(pt.x==POS_INIT || pt.x==POS_WAIT) pt.x=PositionItem2Value(Left,lpRcContainer->left,lpRcContainer->right,TRUE);
                 if(pt.x==POS_WAIT) nRet++;
-                if(pt.y==POS_INIT || pt.y==POS_WAIT) pt.y=PositionItem2Value(pWnd,dlgpos.Top,lpRcContainer->top,lpRcContainer->bottom,FALSE);
+                if(pt.y==POS_INIT || pt.y==POS_WAIT) pt.y=PositionItem2Value(Top,lpRcContainer->top,lpRcContainer->bottom,FALSE);
                 if(pt.y==POS_WAIT) nRet++;
 
                 if(nRet==0)
                 {
-                    switch(dlgpos.pos2Type)
+                    switch(pos2Type)
                     {
                     case POS2_CENTER:
                         pt.Offset(-sz.cx/2,-sz.cy/2);
@@ -191,9 +194,9 @@ namespace SOUI
                         break;
                     }
                 }
-            }else //if(dlgpos.nCount==0)
+            }else //if(nCount==0)
             {//自动排版
-                SWindow *pSibling=pWnd->GetWindow(GSW_PREVSIBLING);
+                SWindow *pSibling=m_pOwner->GetWindow(GSW_PREVSIBLING);
                 if(!pSibling)
                 {
                     pt.x=lpRcContainer->left;
@@ -205,7 +208,7 @@ namespace SOUI
                     if(rcSib.right==POS_INIT || rcSib.right == POS_WAIT)
                         pt.x=POS_WAIT,nRet++;
                     else
-                        pt.x=rcSib.right+pWnd->m_nSepSpace;
+                        pt.x=rcSib.right+m_pOwner->m_nSepSpace;
 
                     if(rcSib.top==POS_INIT || rcSib.top==POS_WAIT)
                         pt.y=POS_WAIT,nRet++;
@@ -221,9 +224,9 @@ namespace SOUI
         return nRet;
     }
 
-    BOOL SwndLayout::CalcChildrenPosition(SWindow *pWnd,SList<SWindow*> *pListChildren)
+    BOOL SwndLayout::CalcChildrenPosition(SList<SWindow*> *pListChildren)
     {
-        CRect rcContainer=pWnd->GetChildrenLayoutRect();
+        CRect rcContainer=m_pOwner->GetChildrenLayoutRect();
         POSITION pos=pListChildren->GetHeadPosition();
         int nChildrenCount=pListChildren->GetCount();
         while(pos)
@@ -241,31 +244,33 @@ namespace SOUI
             return FALSE;
         }else
         {
-            return CalcChildrenPosition(pWnd,pListChildren);
+            return CalcChildrenPosition(pListChildren);
         }
     }
 
-    void SwndLayout::StrPos2SwndPos( LPCWSTR pszValue,SWND_POSITION &dlgpos )
+    void SwndLayout::ParseStrPostion( LPCWSTR pszValue)
     {
-        dlgpos.uPositionType &= ~Pos_Float;
+        uPositionType &= ~Pos_Float;
 
-        dlgpos.nCount=0;
-        while(dlgpos.nCount<4 && pszValue)
+        nCount=0;
+        while(nCount<4 && pszValue)
         {
-            pszValue=ParsePosition(pszValue,dlgpos.nCount<2,dlgpos.Item[dlgpos.nCount++]);
+            pszValue=ParsePosition(pszValue,nCount<2,Item[nCount++]);
         }
 
 
-        if (2 == dlgpos.nCount || 4 == dlgpos.nCount)
+        if (2 == nCount || 4 == nCount)
         {
-            if(2 == dlgpos.nCount)
+            if(2 == nCount)
             {
-                dlgpos.uPositionType = (dlgpos.uPositionType & ~SizeX_Mask) | SizeX_FitContent;
-                dlgpos.uPositionType = (dlgpos.uPositionType & ~SizeY_Mask) | SizeY_FitContent;
+                uPositionType = (uPositionType & ~SizeX_Mask) | SizeX_FitContent;
+                uPositionType = (uPositionType & ~SizeY_Mask) | SizeY_FitContent;
             }
         }
         else
-            dlgpos.nCount = 0;
+            nCount = 0;
 
     }
+
+
 }

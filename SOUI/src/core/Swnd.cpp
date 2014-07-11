@@ -82,6 +82,7 @@ namespace SOUI
 
 SWindow::SWindow()
     : m_hSWnd(SWindowMgr::NewWindow(this))
+    , m_layout(this)
     , m_nID(0)
     , m_pContainer(NULL)
     , m_pParent(NULL),m_pFirstChild(NULL),m_pLastChild(NULL),m_pNextSibling(NULL),m_pPrevSibling(NULL)
@@ -126,12 +127,12 @@ UINT SWindow::GetTextAlign()
 
 DWORD SWindow::GetPositionType()
 {
-    return m_dlgpos.uPositionType;
+    return m_layout.uPositionType;
 }
 
 void SWindow::SetPositionType(DWORD dwPosType, DWORD dwMask /*= 0xFFFFFFFF*/)
 {
-    m_dlgpos.uPositionType = (m_dlgpos.uPositionType & ~dwMask) | (dwPosType & dwMask);
+    m_layout.uPositionType = (m_layout.uPositionType & ~dwMask) | (dwPosType & dwMask);
 }
 
 void SWindow::GetWindowRect(LPRECT prect)
@@ -179,7 +180,7 @@ void SWindow::SetWindowText(LPCTSTR lpszText)
 {
     m_strText = lpszText;
     if(IsVisible(TRUE)) Invalidate();
-    if ((m_dlgpos.uPositionType & (SizeX_FitContent | SizeY_FitContent)) && (4 != m_dlgpos.nCount))
+    if ((m_layout.uPositionType & (SizeX_FitContent | SizeY_FitContent)) && (4 != m_layout.nCount))
     {
         OnWindowPosChanged(NULL);
         if(IsVisible(TRUE)) Invalidate();
@@ -242,7 +243,7 @@ void SWindow::Move(LPRECT prect)
     if(m_rcWindow.EqualRect(prect)) return;
 
     m_rcWindow = prect;
-    m_dlgpos.uPositionType = (m_dlgpos.uPositionType & ~Position_Mask)|Pos_Float;//使用Move后，程序不再自动计算窗口坐标
+    m_layout.uPositionType = (m_layout.uPositionType & ~Position_Mask)|Pos_Float;//使用Move后，程序不再自动计算窗口坐标
     OnWindowPosChanged(NULL);
 }
 
@@ -606,8 +607,8 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
         if (!m_strText.IsEmpty()) BUILDSTRING(m_strText);
     }
 
-    m_dlgpos.nCount = 0;
-    m_dlgpos.uPositionType = 0;
+    m_layout.nCount = 0;
+    m_layout.uPositionType = 0;
     SObject::InitFromXml(xmlNode);
 
     //加载style中指定的皮肤属性，由于皮肤有owner属性，而style没有owner属性，因此需要在属性加载完成后查询皮肤名称并加载 hjx:2012.1.15
@@ -619,28 +620,28 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
     if(!m_bVisible || (m_pParent && !m_pParent->IsVisible(TRUE)))
         ModifyState(WndState_Invisible, 0);
 
-    if (4 != m_dlgpos.nCount)
+    if (4 != m_layout.nCount)
     {
         SStringW strValue = xmlNode.attribute(L"width").value();
         int nValue =_wtoi(strValue);
 
-        if (0 == nValue && L"full" == strValue && 0 == m_dlgpos.nCount)
+        if (0 == nValue && L"full" == strValue && 0 == m_layout.nCount)
         {
             m_rcWindow.right = 0;
-            m_dlgpos.uPositionType = (m_dlgpos.uPositionType & ~SizeX_Mask) | SizeX_FitParent;
+            m_layout.uPositionType = (m_layout.uPositionType & ~SizeX_Mask) | SizeX_FitParent;
         }
         else
         {
             if (nValue > 0)
             {
                 m_rcWindow.right = nValue;
-                m_dlgpos.uSpecifyWidth = nValue;
-                m_dlgpos.uPositionType = (m_dlgpos.uPositionType & ~SizeX_Mask) | SizeX_Specify;
+                m_layout.uSpecifyWidth = nValue;
+                m_layout.uPositionType = (m_layout.uPositionType & ~SizeX_Mask) | SizeX_Specify;
             }
             else
             {
                 m_rcWindow.right = 0;
-                m_dlgpos.uPositionType = (m_dlgpos.uPositionType & ~SizeX_Mask) | SizeX_FitContent;
+                m_layout.uPositionType = (m_layout.uPositionType & ~SizeX_Mask) | SizeX_FitContent;
             }
         }
 
@@ -649,20 +650,20 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
         if (0 == nValue && L"full" == strValue)
         {
             m_rcWindow.bottom = 0;
-            m_dlgpos.uPositionType = (m_dlgpos.uPositionType & ~SizeY_Mask) | SizeY_FitParent;
+            m_layout.uPositionType = (m_layout.uPositionType & ~SizeY_Mask) | SizeY_FitParent;
         }
         else
         {
             if (nValue > 0)
             {
                 m_rcWindow.bottom = nValue;
-                m_dlgpos.uSpecifyHeight = nValue;
-                m_dlgpos.uPositionType = (m_dlgpos.uPositionType & ~SizeY_Mask) | SizeY_Specify;
+                m_layout.uSpecifyHeight = nValue;
+                m_layout.uPositionType = (m_layout.uPositionType & ~SizeY_Mask) | SizeY_Specify;
             }
             else
             {
                 m_rcWindow.bottom = 0;
-                m_dlgpos.uPositionType = (m_dlgpos.uPositionType & ~SizeY_Mask) | SizeY_FitContent;
+                m_layout.uPositionType = (m_layout.uPositionType & ~SizeY_Mask) | SizeY_FitContent;
             }
         }
 
@@ -799,9 +800,9 @@ BOOL SWindow::FireEvent(EventArgs &evt)
 LRESULT SWindow::OnWindowPosChanged(LPRECT lpRcContainer)
 {
     LRESULT lRet=0;
-    if(!(m_dlgpos.uPositionType & Pos_Float))    
+    if(!(m_layout.uPositionType & Pos_Float))    
     {//窗口不是使用Move直接指定的坐标,计算出窗口位置
-        lRet=SwndLayout::CalcPosition(this,lpRcContainer,m_dlgpos,m_rcWindow);
+        lRet=m_layout.CalcPosition(lpRcContainer,m_rcWindow);
     }
     if(lRet==0)
     {
@@ -956,20 +957,20 @@ void SWindow::OnNcPaint(IRenderTarget *pRT)
 CSize SWindow::CalcSize(LPRECT pRcContainer)
 {
     CSize sz;
-    if(m_dlgpos.uPositionType & SizeX_Specify)
-        sz.cx=m_dlgpos.uSpecifyWidth;
-    else if(m_dlgpos.uPositionType & SizeX_FitParent)
+    if(m_layout.uPositionType & SizeX_Specify)
+        sz.cx=m_layout.uSpecifyWidth;
+    else if(m_layout.uPositionType & SizeX_FitParent)
         sz.cx=pRcContainer->right-pRcContainer->left;
-    if(m_dlgpos.uPositionType & SizeY_Specify)
-        sz.cy=m_dlgpos.uSpecifyHeight;
-    else if(m_dlgpos.uPositionType & SizeY_FitParent)
+    if(m_layout.uPositionType & SizeY_Specify)
+        sz.cy=m_layout.uSpecifyHeight;
+    else if(m_layout.uPositionType & SizeY_FitParent)
         sz.cy=pRcContainer->bottom-pRcContainer->top;
-    if((m_dlgpos.uPositionType & SizeX_FitContent) || (m_dlgpos.uPositionType & SizeY_FitContent) && m_dlgpos.nCount!=4)
+    if((m_layout.uPositionType & SizeX_FitContent) || (m_layout.uPositionType & SizeY_FitContent) && m_layout.nCount!=4)
     {
         CSize szDesire=GetDesiredSize(pRcContainer);    
-        if(m_dlgpos.uPositionType & SizeX_FitContent)
+        if(m_layout.uPositionType & SizeX_FitContent)
             sz.cx=szDesire.cx;
-        if(m_dlgpos.uPositionType & SizeY_FitContent)
+        if(m_layout.uPositionType & SizeY_FitContent)
             sz.cy=szDesire.cy;
     }
     return sz;
@@ -978,7 +979,7 @@ CSize SWindow::CalcSize(LPRECT pRcContainer)
 
 CSize SWindow::GetDesiredSize(LPRECT pRcContainer)
 {
-    ASSERT((m_dlgpos.uPositionType & SizeX_FitContent) || (m_dlgpos.uPositionType & SizeY_FitContent));
+    ASSERT((m_layout.uPositionType & SizeX_FitContent) || (m_layout.uPositionType & SizeY_FitContent));
 
 
     int nTestDrawMode = GetTextAlign() & ~(DT_CENTER | DT_RIGHT | DT_VCENTER | DT_BOTTOM);
@@ -1176,7 +1177,7 @@ CRect SWindow::GetChildrenLayoutRect()
 
 void SWindow::ClearLayoutState()
 {
-    if(m_dlgpos.uPositionType & Pos_Float) return;
+    if(m_layout.uPositionType & Pos_Float) return;
 
     m_rcWindow.left=m_rcWindow.top=m_rcWindow.right=m_rcWindow.bottom=POS_INIT;
 }
@@ -1191,7 +1192,7 @@ void SWindow::UpdateChildrenPosition()
         lstWnd.AddTail(pChild);
         pChild=pChild->GetWindow(GSW_NEXTSIBLING);
     }
-    SwndLayout::CalcChildrenPosition(this,&lstWnd);
+    m_layout.CalcChildrenPosition(&lstWnd);
     Invalidate();
 }
 
@@ -1643,7 +1644,7 @@ HRESULT SWindow::OnAttrPos(const SStringW& strValue, BOOL bLoading)
     if (strValue.IsEmpty()) return E_FAIL;
     if(!bLoading) InvalidateRect(m_rcWindow);
     ClearLayoutState();
-    SwndLayout::StrPos2SwndPos(strValue,m_dlgpos);
+    m_layout.ParseStrPostion(strValue);
     if(!bLoading) OnWindowPosChanged(NULL);
     return S_FALSE;
 }

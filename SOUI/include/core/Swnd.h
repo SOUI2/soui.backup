@@ -169,7 +169,8 @@ protected:
     ISkinObj * m_pNcSkin;   /**< 非客户区skin */
     ULONG_PTR m_uData;      /**< 窗口的数据位,可以通过GetUserData获得 */
     
-    SWND_POSITION m_dlgpos; /**< 布局属性 */
+    SwndLayout      m_layout;/**< 布局对象 */
+//    SWND_POSITION m_dlgpos; /**< 布局属性 */
     int           m_nMaxWidth;    /**< 自动计算大小时，窗口的最大宽度 */
 
 #ifdef _DEBUG
@@ -865,7 +866,7 @@ protected:
             ATTR_ENUM_VALUE(L"righttop",POS2_RIGHTTOP)
             ATTR_ENUM_VALUE(L"leftbottom",POS2_LEFTBOTTOM)
             ATTR_ENUM_VALUE(L"rightbottom",POS2_RIGHTBOTTOM)
-        ATTR_ENUM_END(m_dlgpos.pos2Type)
+        ATTR_ENUM_END(m_layout.pos2Type)
         ATTR_INT(L"alpha",m_byAlpha,TRUE)
     SOUI_ATTRS_END()
 
