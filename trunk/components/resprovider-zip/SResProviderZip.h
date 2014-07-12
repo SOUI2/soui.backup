@@ -15,7 +15,8 @@
 #include <string/tstring.h>
 #include <string/strcpcvt.h>
 #include <souicoll.h>
-#include <SResID.h>
+#define _COLL_NS SOUI
+#include <helper/SResID.h>
 #include <interface/render-i.h>
 
 #include "ZipArchive.h"

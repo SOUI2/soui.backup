@@ -14,9 +14,13 @@
           </header>
         </listctrl>
       </page>
-      <page title="scroll view">
-        <scrollview id="1150" pos="10,0,-10,-10" viewwid="900" viewhei="5000">
-        </scrollview>
+      <page title="webkit">
+        <button pos="0,0,@30,25" name="btn_webkit_back">back</button>
+        <button pos="[5,0,@30,25" name="btn_webkit_fore">fore</button>
+        <edit pos="[5,0,-100,25" class="cls_edit" name="edit_url">www.baidu.com</edit>
+        <button pos="-80,0,-0,25" name="btn_webkit_go">go</button>
+        <text pos="0,30,-0,-0">没有注册WKE Webkit浏览器</text>
+        <wkeWebkit pos="0,30,-0,-0" url="www.baidu.com" name="wke_test"/>
       </page>
       <page title="flash">
         <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://swf.sc.chinaz.com//Files/DownLoad/flash2/201401/flash2524.swf" delayinit="1"/>

@@ -5,12 +5,6 @@ class CMainDlg;
 class CUIHander
 {
 public:
-	struct student{
-		TCHAR szName[100];
-		TCHAR szSex[10];
-		int age;
-		int score;
-	};
 
 	CUIHander(CMainDlg *pMainDlg);
 	~CUIHander(void);

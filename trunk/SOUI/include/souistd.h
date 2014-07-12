@@ -57,7 +57,6 @@
     #define SComPtr    CComPtr
     #define SComQIPtr    CComQIPtr
 
-    #include "wtl.mini/msgcrack.h"
     #define SArray    CAtlArray
     #define SList    CAtlList
     #define SMap        CAtlMap
@@ -79,12 +78,13 @@
     #include "../../utilities/include/string/strcpcvt.h"
 #endif//USING_ATL
 
-#include "../../utilities/include/trace.h"
-#include "../../utilities/include/utilities.h"
+#include <trace.h>
+#include <utilities.h>
+#include <wtl.mini/msgcrack.h>
 
 
-#include "interface/render-i.h"
-#include "interface/imgdecoder-i.h"
+#include <interface/render-i.h>
+#include <interface/imgdecoder-i.h>
 
 #include "SApp.h"
 #include "helper/SAttrCracker.h"

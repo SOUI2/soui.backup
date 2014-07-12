@@ -199,10 +199,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\src\sresid.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -233,7 +229,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\include\atl.mini\atldef.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\gdialpha.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\wtl.mini\msgcrack.h"
 				>
 			</File>
 			<File
@@ -245,11 +249,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\atl.mini\SComCli.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\souicoll.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\SResID.h"
+				RelativePath=".\include\wtl.mini\souigdi.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\wtl.mini\souimisc.h"
 				>
 			</File>
 			<File
@@ -306,11 +318,11 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\ReadMe.txt"
+			RelativePath=".\include\pugixml\readme.txt"
 			>
 		</File>
 		<File
-			RelativePath=".\include\pugixml\readme.txt"
+			RelativePath=".\ReadMe.txt"
 			>
 		</File>
 	</Files>

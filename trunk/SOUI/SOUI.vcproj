@@ -1130,10 +1130,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\atl.mini\atldef.h"
-				>
-			</File>
-			<File
 				RelativePath=".\include\helper\auto_reset.h"
 				>
 			</File>
@@ -1223,10 +1219,6 @@
 			</File>
 			<File
 				RelativePath=".\src\activex\SAxUtil.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\atl.mini\SComCli.h"
 				>
 			</File>
 			<File
@@ -1392,18 +1384,6 @@
 			<Filter
 				Name="wtl.mini"
 				>
-				<File
-					RelativePath=".\include\wtl.mini\msgcrack.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\wtl.mini\souigdi.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\wtl.mini\souimisc.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="activex"

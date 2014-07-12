@@ -6,6 +6,7 @@
 #pragma once
 
 #define SUPPORT_LUA     //打开SUPPORT_LUA来演示如何在SOUI中和LUA交互。
+#define SUPPORT_WKE      //需要把wke.dll复制到bin目录才能打开该开关测试wkeWebkit
 
 #include <souistd.h>
 #include <core/SHostDialog.h>
@@ -14,6 +15,10 @@
 #include <res.mgr/sobjdefattr.h>
 
 #include "resource.h"	//APP资源
+
+#ifdef SUPPORT_WKE
+#include "../controls.extend/SWkeWebkit.h"
+#endif
 
 using namespace SOUI;
 

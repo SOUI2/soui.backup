@@ -6,7 +6,7 @@
 #pragma once
 
 #include "interface/SResProvider-i.h"
-#include <SResID.h>
+#include <helper/SResID.h>
 #include <unknown/obj-ref-impl.hpp>
 
 namespace SOUI

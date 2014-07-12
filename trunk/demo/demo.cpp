@@ -27,6 +27,7 @@
     #endif
 #endif
 
+
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
     HRESULT hRes = OleInitialize(NULL);
@@ -118,6 +119,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         pResProvider->Init(_T("demo-skin.zip"));
 #endif
 
+#ifdef SUPPORT_WKE
+        SWkeWebkit::WkeWebkit_Init();
+        theApp->RegisterWndFactory(TplSWindowFactory<SWkeWebkit>());//注册WKE浏览器
+#endif//SUPPORT_WKE
+
         theApp->AddResProvider(pResProvider);
 
         BOOL bOK=theApp->Init(_T("IDR_DUI_INIT")); //初始化DUI系统,原来的系统初始化方式依然可以使用。
@@ -135,6 +141,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
         delete theApp;
         delete pResProvider;
+#ifdef SUPPORT_WKE
+        SWkeWebkit::WkeWebkit_Shutdown();
+#endif//SUPPORT_WKE
 
     }
 
