@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="skcore_d.lib utilities_d.lib freetype253_D.lib Usp10.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;$(SolutionDir)freetype\lib"
+				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;$(SolutionDir)\third-part\freetype\lib"
 				GenerateDebugInformation="true"
 			/>
 			<Tool
@@ -136,7 +136,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="skcore.lib utilities.lib freetype253mt.lib Usp10.lib"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;$(SolutionDir)freetype\lib"
+				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;$(SolutionDir)\third-part\freetype\lib"
 				GenerateDebugInformation="false"
 			/>
 			<Tool

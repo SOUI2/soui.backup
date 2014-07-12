@@ -2,3 +2,4 @@
 第三方源代码请使用SVN从http://code.taobao.org/svn/soui2/third-part下载。
 包含以下组件的LIB
 1) freetype 2.53
+2) WKE

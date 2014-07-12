@@ -55,7 +55,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;;..\myskia\include\;..\myskia\include\config;..\myskia\include\core"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;..\third-part\wke\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -79,10 +79,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib_d.lib"
+				AdditionalDependencies="wke.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\lib;..\bin"
+				AdditionalLibraryDirectories="$(OutDir);..\third-part\wke\lib"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
@@ -244,7 +244,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="1"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="..\soui\include;..\utilities\include"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;..\third-part\wke\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
@@ -267,9 +267,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="wke.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\lib;..\bin"
+				AdditionalLibraryDirectories="$(OutDir);..\third-part\wke\lib"
 				GenerateManifest="true"
 				GenerateDebugInformation="false"
 				AssemblyDebug="0"
@@ -430,7 +431,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;..\translator\include"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;..\third-part\wke\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;DLL_SOUI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -457,7 +458,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\bin"
+				AdditionalLibraryDirectories="$(OutDir);..\third-part\wke\lib"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -618,7 +619,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="..\soui\include;..\utilities\include"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;..\third-part\wke\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;DLL_SOUI"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
@@ -643,7 +644,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\lib;..\bin"
+				AdditionalLibraryDirectories="$(OutDir);..\third-part\wke\lib"
 				GenerateManifest="true"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
@@ -804,7 +805,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\soui\include;..\utilities\include"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;..\third-part\wke\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;USING_ATL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -828,9 +829,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="wke.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_$(ConfigurationName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\lib;..\bin"
+				AdditionalLibraryDirectories="$(OutDir);..\third-part\wke\lib"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
@@ -1155,30 +1157,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="XML"
-			>
-			<File
-				RelativePath=".\layout\dlg_main.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\layout\dlg_msgbox.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\layout\init.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\layout\menu_test.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\layout\page2.xml"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="resource files"
 			>
 			<File
@@ -1227,14 +1205,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="skinole"
-			>
-		</Filter>
-		<Filter
-			Name="zipskin"
-			>
-		</Filter>
-		<Filter
 			Name="wtlhelper"
 			>
 			<File
@@ -1248,6 +1218,18 @@
 			>
 			<File
 				RelativePath=".\lua\test.lua"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="wkeWebkit"
+			>
+			<File
+				RelativePath="..\controls.extend\SWkeWebkit.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\SWkeWebkit.h"
 				>
 			</File>
 		</Filter>

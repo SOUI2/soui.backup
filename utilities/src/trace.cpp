@@ -4,7 +4,7 @@
 
 namespace SOUI
 {
-void  DuiTraceA(LPCSTR pstrFormat, ...)
+void  STraceA(LPCSTR pstrFormat, ...)
 {
 #ifdef _DEBUG
     char szBuffer[300] = { 0 };
@@ -17,7 +17,7 @@ void  DuiTraceA(LPCSTR pstrFormat, ...)
 #endif
 }
 
-void  DuiTraceW(LPCWSTR pstrFormat, ...)
+void  STraceW(LPCWSTR pstrFormat, ...)
 {
 #ifdef _DEBUG
     wchar_t szBuffer[300] = { 0 };

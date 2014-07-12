@@ -4,8 +4,6 @@
 
 #include "stdafx.h"
 #include "MainDlg.h"
-#include "UIHander.h"
-
 
 
 #include <dwmapi.h>
@@ -13,13 +11,11 @@
 
 CMainDlg::CMainDlg() : SHostWnd(_T("IDR_DUI_MAIN_DIALOG"))
 {
-// 	m_pUiHandler = new CUIHander(this);
 	m_bLayoutInited=FALSE;
 } 
 
 CMainDlg::~CMainDlg()
 {
-// 	delete m_pUiHandler; 
 }
 
 int CMainDlg::OnCreate( LPCREATESTRUCT lpCreateStruct )
@@ -85,8 +81,8 @@ int funCmpare(void* pCtx,const void *p1,const void *p2)
     const DXLVITEM *plv1=(const DXLVITEM*)p1;
     const DXLVITEM *plv2=(const DXLVITEM*)p2;
 
-    const CUIHander::student *pst1=(const CUIHander::student *)plv1->dwData;
-    const CUIHander::student *pst2=(const CUIHander::student *)plv2->dwData;
+    const student *pst1=(const student *)plv1->dwData;
+    const student *pst2=(const student *)plv2->dwData;
 
     switch(iCol)
     {
@@ -144,3 +140,34 @@ LRESULT CMainDlg::OnInitDialog( HWND hWnd, LPARAM lParam )
     return 0;
 }
 
+#ifdef SUPPORT_WKE
+void CMainDlg::OnBtnWebkitGo()
+{
+    SWkeWebkit *pWebkit= FindChildByName2<SWkeWebkit>(L"wke_test");
+    if(pWebkit)
+    {
+        SEdit *pEdit=FindChildByName2<SEdit>(L"edit_url");
+        SStringW strUrl=pEdit->GetWindowText();
+        pWebkit->SetAttribute(L"url",strUrl,FALSE);
+    }
+}
+
+void CMainDlg::OnBtnWebkitBackward()
+{
+    SWkeWebkit *pWebkit= FindChildByName2<SWkeWebkit>(L"wke_test");
+    if(pWebkit)
+    {
+        wkeGoBack(pWebkit->GetWebView());
+    }
+}
+
+void CMainDlg::OnBtnWebkitForeward()
+{
+    SWkeWebkit *pWebkit= FindChildByName2<SWkeWebkit>(L"wke_test");
+    if(pWebkit)
+    {
+        wkeGoForward(pWebkit->GetWebView());
+    }
+}
+
+#endif//SUPPORT_WKE

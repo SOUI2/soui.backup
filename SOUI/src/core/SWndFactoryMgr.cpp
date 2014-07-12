@@ -57,9 +57,6 @@ void SWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(SMaskEdit::GetClassName(),new TplSWindowFactory<SMaskEdit>);
     AddKeyObject(SDateEdit::GetClassName(),new TplSWindowFactory<SDateEdit>);
     AddKeyObject(STimeEdit::GetClassName(),new TplSWindowFactory<STimeEdit>);
-    /*
-    AddKeyObject(CDuiItemBox::GetClassName(),new TplSWindowFactory<CDuiItemBox>);
-    //*/
 }
 
 void SWindowFactoryMgr::OnWndFactoryRemoved( const SWindowFactoryPtr & obj )
@@ -71,7 +68,7 @@ SWindow * SWindowFactoryMgr::CreateWindowByName( LPCWSTR pszClassName )
 {
     if(!HasKey(pszClassName))
     {
-        DuiTraceW(L"CreateWindowByName,Warning: no window type:%s in DuiSystem!!",pszClassName);
+        STraceW(L"CreateWindowByName,Warning: no window type:%s in SOUI!!",pszClassName);
         return NULL;
     }
     return GetKeyObject(pszClassName)->NewWindow();
@@ -81,7 +78,7 @@ LPCWSTR SWindowFactoryMgr::BaseClassNameFromClassName( LPCWSTR pszClassName )
 {
     if(!HasKey(pszClassName))
     {
-        DuiTraceW(L"BaseClassNameFromClassName, Warning: no window type:%s in DuiSystem!!",pszClassName);
+        STraceW(L"BaseClassNameFromClassName, Warning: no window type:%s in SOUI!!",pszClassName);
         return NULL;
     }
     LPCWSTR pszBaseClassName=GetKeyObject(pszClassName)->SWindowBaseName();

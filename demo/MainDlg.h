@@ -3,7 +3,6 @@
 /////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-// #include "UIHander.h"
 #include "wtlhelper/whwindow.h"
 
 class CMainDlg : public SHostWnd
@@ -67,6 +66,11 @@ protected:
 		return TRUE;
 	}
 	
+#ifdef SUPPORT_WKE
+    void OnBtnWebkitGo();
+    void OnBtnWebkitBackward();
+    void OnBtnWebkitForeward();
+#endif//SUPPORT_WKE
 
 	EVENT_MAP_BEGIN()
 		EVENT_ID_COMMAND(1, OnClose)
@@ -75,6 +79,11 @@ protected:
 		EVENT_ID_COMMAND(5, OnMinimize)
 		EVENT_NAME_CONTEXTMENU(L"edit_1140",OnEditMenu)
 		EVENT_NAME_COMMAND(L"btn_msgbox",OnBtnMsgBox)
+#ifdef SUPPORT_WKE
+        EVENT_NAME_COMMAND(L"btn_webkit_go",OnBtnWebkitGo)
+        EVENT_NAME_COMMAND(L"btn_webkit_back",OnBtnWebkitBackward)
+        EVENT_NAME_COMMAND(L"btn_webkit_fore",OnBtnWebkitForeward)
+#endif//SUPPORT_WKE
 	EVENT_MAP_END()	
 
 	BEGIN_MSG_MAP_EX(CMainDlg)

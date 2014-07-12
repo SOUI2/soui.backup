@@ -4,12 +4,12 @@
 
 namespace SOUI
 {
-    void UTILITIES_API DuiTraceA(LPCSTR pstrFormat, ...);
-    void UTILITIES_API DuiTraceW(LPCWSTR pstrFormat, ...);
+    void UTILITIES_API STraceA(LPCSTR pstrFormat, ...);
+    void UTILITIES_API STraceW(LPCWSTR pstrFormat, ...);
 }//end of namespace SOUI
 
 #ifdef _UNICODE
-#define STRACE SOUI::DuiTraceW
+#define STRACE SOUI::STraceW
 #else
-#define STRACE SOUI::DuiTraceA
+#define STRACE SOUI::STraceA
 #endif
