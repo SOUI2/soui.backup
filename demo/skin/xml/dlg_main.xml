@@ -27,7 +27,7 @@
       </page>
       <page title="gif">
         <gifplayer pos="10,10" skin="gif_horse" name="giftest"/>
-        <button width="100" height="30" name="btnSelectGif">set gif file</button>
+        <button width="100" height="30" name="btnSelectGif">load gif file</button>
         <gifplayer pos="10,150" skin="gif_penguin"/>
       </page>
       <page title="include">

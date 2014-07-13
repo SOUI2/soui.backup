@@ -79,6 +79,24 @@ namespace SOUI{
         return pBmp;
 	}
 
+    IImgX   * SResProviderZip::LoadImgX( LPCTSTR strType,LPCTSTR pszResName )
+    {
+        SStringT strPath=GetFilePath(pszResName,strType);
+        if(strPath.IsEmpty()) return NULL;
+        CZipFile zf;
+        if(!m_zipFile.GetFile(strPath,zf)) return NULL;
+
+        IImgX *pImgX=NULL;
+        m_renderFactory->GetImgDecoderFactory()->CreateImgX(&pImgX);
+        if(!pImgX) return NULL;
+
+        if(0==pImgX->LoadFromMemory(zf.GetData(),zf.GetSize()))
+        {
+            pImgX->Release();
+            pImgX=NULL;
+        }
+        return pImgX;
+    }
 
 	BOOL SResProviderZip::Init( LPCTSTR pszZipFile )
 	{

@@ -34,6 +34,7 @@ public:
     virtual HBITMAP    LoadBitmap(LPCTSTR pszResName);
     virtual HCURSOR LoadCursor(LPCTSTR pszResName);
     virtual IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
+    virtual IImgX   * LoadImgX(LPCTSTR strType,LPCTSTR pszResName);
     virtual size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
     virtual BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
 
