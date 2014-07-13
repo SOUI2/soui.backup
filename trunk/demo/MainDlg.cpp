@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "MainDlg.h"
 
+#include "../controls.extend/FileHelper.h"
 
 #include <dwmapi.h>
 #pragma comment(lib,"dwmapi.lib")
@@ -170,4 +171,16 @@ void CMainDlg::OnBtnWebkitForeward()
     }
 }
 
+
 #endif//SUPPORT_WKE
+
+void CMainDlg::OnBtnSelectGIF()
+{
+    SGifPlayer *pGifPlayer = FindChildByName2<SGifPlayer>(L"giftest");
+    if(pGifPlayer)
+    {
+        CFileDialogEx openDlg(TRUE,_T("gif"),0,6,_T("gif files(*.gif)\0*.gif\0All files (*.*)\0*.*\0\0"));
+        if(openDlg.DoModal()==IDOK)
+            pGifPlayer->PlayGifFile(openDlg.m_szFileName);
+    }
+}

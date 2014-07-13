@@ -12,7 +12,7 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     // SImgFrame_WIC
-    SImgFrame_WIC::SImgFrame_WIC( IWICBitmapSource *pFrame ):m_pFrame(pFrame)
+    SImgFrame_WIC::SImgFrame_WIC( IWICBitmapSource *pFrame ):m_pFrame(pFrame),m_nFrameDelay(0)
     {
 
     }
@@ -20,6 +20,11 @@ namespace SOUI
     void SImgFrame_WIC::SetWICBitmpaSource( IWICBitmapSource *pFrame )
     {
         m_pFrame=pFrame;
+    }
+
+    void SImgFrame_WIC::SetFrameDelay( int nDelay )
+    {
+        m_nFrameDelay=nDelay;
     }
 
     BOOL SImgFrame_WIC::GetSize( UINT *pWid,UINT *pHei )
@@ -46,20 +51,20 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
 
-    SImgDecoder_WIC::SImgDecoder_WIC(BOOL bPremultiplied)
+    SImgX_WIC::SImgX_WIC(BOOL bPremultiplied)
     :m_pImgArray(NULL)
     ,m_uImgCount(0)
     ,m_bPremultiplied(bPremultiplied)
     {
     }
 
-    SImgDecoder_WIC::~SImgDecoder_WIC(void)
+    SImgX_WIC::~SImgX_WIC(void)
     {
         if(m_pImgArray) delete []m_pImgArray;
         m_pImgArray = NULL;
     }
 
-    int SImgDecoder_WIC::DecodeFromMemory(void *pBuf,size_t bufLen )
+    int SImgX_WIC::LoadFromMemory(void *pBuf,size_t bufLen )
     {
         ASSERT(m_pImgArray == NULL);
 
@@ -76,7 +81,7 @@ namespace SOUI
         return _DoDecode(decoder);
     }
 
-    int SImgDecoder_WIC::DecodeFromFile( LPCWSTR pszFileName )
+    int SImgX_WIC::LoadFromFile( LPCWSTR pszFileName )
     {
         ASSERT(m_pImgArray == NULL);
         IWICImagingFactory*    factory    = SImgDecoderFactory::s_wicImgFactory;
@@ -96,15 +101,15 @@ namespace SOUI
         return _DoDecode(decoder);
     }
 
-    int SImgDecoder_WIC::DecodeFromFile( LPCSTR pszFileName )
+    int SImgX_WIC::LoadFromFile( LPCSTR pszFileName )
     {
         wchar_t wszFileName[MAX_PATH+1];
         MultiByteToWideChar(CP_ACP,0,pszFileName,-1,wszFileName,MAX_PATH);
         if(GetLastError()==ERROR_INSUFFICIENT_BUFFER) return 0;
-        return DecodeFromFile(wszFileName);
+        return LoadFromFile(wszFileName);
     }
 
-    int SImgDecoder_WIC::_DoDecode( IWICBitmapDecoder * pDecoder )
+    int SImgX_WIC::_DoDecode( IWICBitmapDecoder * pDecoder )
     {
         ASSERT(m_uImgCount == 0);
         
@@ -122,6 +127,19 @@ namespace SOUI
             CAutoRefPtr<IWICBitmapFrameDecode> frame;
             if(SUCCEEDED(pDecoder->GetFrame(i,&frame)))
             {
+//                 CAutoRefPtr<IWICMetadataQueryReader> pMetaReader;
+//                 pDecoder->GetMetadataQueryReader(&pMetaReader);
+//                 if(pMetaReader)
+//                 {
+//                     PROPVARIANT propValue;
+//                     PropVariantInit(&propValue);
+//                     HRESULT hr=pMetaReader->GetMetadataByName(L"/grctlext/Delay", &propValue);
+//                     if(SUCCEEDED(hr))
+//                     {
+//                         m_pImgArray[i].SetFrameDelay(propValue.intVal);
+//                     }
+//                     PropVariantClear(&propValue);
+//                 }
                 converter->Initialize(frame,
                     m_bPremultiplied?GUID_WICPixelFormat32bppPBGRA:GUID_WICPixelFormat32bppBGRA,
                     WICBitmapDitherTypeNone,NULL,
@@ -150,9 +168,9 @@ namespace SOUI
         if(s_wicImgFactory) s_wicImgFactory = NULL;
     }
 
-    BOOL SImgDecoderFactory::CreateImgDecoder(IImgDecoder ** ppImgDecoder)
+    BOOL SImgDecoderFactory::CreateImgX(IImgX ** ppImgDecoder)
     {
-        *ppImgDecoder = new SImgDecoder_WIC(m_bPremultple);
+        *ppImgDecoder = new SImgX_WIC(m_bPremultple);
         return TRUE;
     }
     

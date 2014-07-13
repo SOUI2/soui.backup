@@ -25,6 +25,11 @@
       <page title="flash">
         <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://swf.sc.chinaz.com//Files/DownLoad/flash2/201401/flash2524.swf" delayinit="1"/>
       </page>
+      <page title="gif">
+        <gifplayer pos="10,10" skin="gif_horse" name="giftest"/>
+        <button width="100" height="30" name="btnSelectGif">set gif file</button>
+        <gifplayer pos="10,150" skin="gif_penguin"/>
+      </page>
       <page title="include">
         <include src="xml_page2"/>
       </page>
@@ -87,7 +92,7 @@
         <link id="1380" pos="10,250" maxwidth="100" class="cls_btn_weblink" dotted="1" href="www.yy.com">link</link>
         <button name="btn_tstevt" pos="300,300,400,330" class="normalbtn">test event</button>
       </page>
-      <page title="link">
+      <page title="calendar">
         <calendar pos="0,0,-0,-0" name="mp_test" daySkin="btn_yellow" footerHeight="30">
           <text name="label_today" pos="10,-20"/>
           <imgbtn name="btn_today" pos="-50,-25,-5,-0" skin="btn_yellow"/>

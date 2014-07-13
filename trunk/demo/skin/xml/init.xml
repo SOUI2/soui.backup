@@ -59,6 +59,9 @@
     <imgframe name="prog_bar" src="IDP_PROG_BAR" x="3"/>
     <imgframe name="prog_bg" src="IDP_PROG_BG" x="5"/>
     <imgframe name="btn_yellow" src="IDP_BTN_YELLOW" x="3" states="4"/>
+
+    <gif name="gif_horse" src="gif_horse"/>
+    <gif name="gif_penguin" src="gif_penguin"/>
   </skins>
 
   <style>

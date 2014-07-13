@@ -18,6 +18,7 @@ namespace SOUI
         virtual HBITMAP    LoadBitmap(LPCTSTR pszResName)=0;
         virtual HCURSOR LoadCursor(LPCTSTR pszResName)=0;
         virtual IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName)=0;
+        virtual IImgX   * LoadImgX(LPCTSTR strType,LPCTSTR pszResName)=0;
         virtual size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName)=0;
         virtual BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size)=0;
 

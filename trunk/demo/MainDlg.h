@@ -65,6 +65,8 @@ protected:
 		//ÑÝÊ¾ÆÁ±Îedit_1140µÄÓÒ¼ü²Ëµ¥
 		return TRUE;
 	}
+
+    void OnBtnSelectGIF();
 	
 #ifdef SUPPORT_WKE
     void OnBtnWebkitGo();
@@ -79,6 +81,7 @@ protected:
 		EVENT_ID_COMMAND(5, OnMinimize)
 		EVENT_NAME_CONTEXTMENU(L"edit_1140",OnEditMenu)
 		EVENT_NAME_COMMAND(L"btn_msgbox",OnBtnMsgBox)
+		EVENT_NAME_COMMAND(L"btnSelectGif",OnBtnSelectGIF)
 #ifdef SUPPORT_WKE
         EVENT_NAME_COMMAND(L"btn_webkit_go",OnBtnWebkitGo)
         EVENT_NAME_COMMAND(L"btn_webkit_back",OnBtnWebkitBackward)

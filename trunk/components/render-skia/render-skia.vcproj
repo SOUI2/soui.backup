@@ -166,7 +166,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="render-skia"
+			Name="drawtext-skia"
 			>
 			<File
 				RelativePath=".\drawtext-skia.cpp"
@@ -192,29 +192,21 @@
 				RelativePath=".\drawtext-skia.h"
 				>
 			</File>
-			<File
-				RelativePath=".\render-skia.cpp"
-				>
-				<FileConfiguration
-					Name="Debug_Dll|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ShowIncludes="false"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\render-skia.h"
-				>
-			</File>
 		</Filter>
 		<File
-			RelativePath=".\render-api.cpp"
+			RelativePath=".\render-skia.cpp"
 			>
+			<FileConfiguration
+				Name="Debug_Dll|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					ShowIncludes="false"
+				/>
+			</FileConfiguration>
 		</File>
 		<File
-			RelativePath=".\render-api.h"
+			RelativePath=".\render-skia.h"
 			>
 		</File>
 		<File

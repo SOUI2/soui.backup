@@ -798,36 +798,62 @@ namespace SOUI
         return hBmp;
     }
 
-	HRESULT SBitmap_Skia::Init( int nWid,int nHei )
+	HRESULT SBitmap_Skia::Init( int nWid,int nHei ,const LPVOID pBits/*=NULL*/)
 	{
 		m_bitmap.reset();
 		m_bitmap.setConfig(SkBitmap::kARGB_8888_Config,nWid,nHei);
         if(m_hBmp) DeleteObject(m_hBmp);
     		
-		LPVOID pBits=NULL;
-		m_hBmp=CreateGDIBitmap(nWid,nHei,&pBits);
+		LPVOID pBmpBits=NULL;
+		m_hBmp=CreateGDIBitmap(nWid,nHei,&pBmpBits);
 		if(!m_hBmp) return E_OUTOFMEMORY;
-		m_bitmap.setPixels(pBits);
+        if(pBits)
+        {
+            memcpy(pBmpBits,pBits,nWid*nHei*4);
+        }
+		m_bitmap.setPixels(pBmpBits);
 		return S_OK;
 	}
 
+    HRESULT SBitmap_Skia::Init( IImgFrame *pFrame )
+    {
+        UINT uWid=0,uHei =0;
+        pFrame->GetSize(&uWid,&uHei);
+
+        if(m_hBmp) DeleteObject(m_hBmp);
+        m_bitmap.reset();
+        m_bitmap.setConfig(SkBitmap::kARGB_8888_Config, uWid, uHei);
+        void * pBits=NULL;
+        m_hBmp = CreateGDIBitmap(uWid,uHei,&pBits);
+
+        if(!m_hBmp) return E_OUTOFMEMORY;
+        m_bitmap.setPixels(pBits);
+
+        m_bitmap.lockPixels();
+        const int stride = m_bitmap.rowBytes();
+        pFrame->CopyPixels(NULL, stride, stride * uHei,
+            reinterpret_cast<BYTE*>(m_bitmap.getPixels()));
+        m_bitmap.unlockPixels();
+        return S_OK;
+    }
+
 	HRESULT SBitmap_Skia::LoadFromFile( LPCTSTR pszFileName,LPCTSTR pszType )
 	{
-	    CAutoRefPtr<IImgDecoder> imgDecoder;
-	    GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgDecoder(&imgDecoder);
-		if(imgDecoder->DecodeFromFile(S_CT2W(pszFileName))==0) return S_FALSE;
+	    CAutoRefPtr<IImgX> imgDecoder;
+	    GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
+		if(imgDecoder->LoadFromFile(S_CT2W(pszFileName))==0) return S_FALSE;
 		return ImgFromDecoder(imgDecoder);
 	}
 
 	HRESULT SBitmap_Skia::LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType )
 	{
-        CAutoRefPtr<IImgDecoder> imgDecoder;
-        GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgDecoder(&imgDecoder);
-		if(imgDecoder->DecodeFromMemory(pBuf,szLen)==0) return S_FALSE;
+        CAutoRefPtr<IImgX> imgDecoder;
+        GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
+		if(imgDecoder->LoadFromMemory(pBuf,szLen)==0) return S_FALSE;
         return ImgFromDecoder(imgDecoder);
 	}
 
-    HRESULT SBitmap_Skia::ImgFromDecoder(IImgDecoder *imgDecoder)
+    HRESULT SBitmap_Skia::ImgFromDecoder(IImgX *imgDecoder)
     {
         IImgFrame *pFrame=imgDecoder->GetFrame(0);
         UINT uWid=0,uHei =0;
@@ -941,4 +967,10 @@ namespace SOUI
 
 
 
+}//end of namespace SOUI
+
+BOOL SCreateInstance( IObjRef ** ppRenderFactory )
+{
+    *ppRenderFactory = new SOUI::SRenderFactory_Skia;
+    return TRUE;
 }

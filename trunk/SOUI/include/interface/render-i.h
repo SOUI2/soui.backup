@@ -54,10 +54,11 @@ struct IBitmap: public IRenderObj
 	{
 		return OT_BITMAP;
 	}
-	virtual HRESULT Init(int nWid,int nHei)=0;
+	virtual HRESULT Init(int nWid,int nHei,const LPVOID pBits=NULL)=0;
+    virtual HRESULT Init(IImgFrame *pImgFrame) =0;
+
 	virtual HRESULT LoadFromFile(LPCTSTR pszFileName,LPCTSTR pszType)=0;
 	virtual HRESULT LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType)=0;
-	
 	virtual UINT    Width() =0;
 	virtual UINT    Height() =0;
 	virtual SIZE    Size() =0;

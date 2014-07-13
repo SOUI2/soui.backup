@@ -123,6 +123,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         SWkeWebkit::WkeWebkit_Init();
         theApp->RegisterWndFactory(TplSWindowFactory<SWkeWebkit>());//×¢²áWKEä¯ÀÀÆ÷
 #endif//SUPPORT_WKE
+        theApp->RegisterWndFactory(TplSWindowFactory<SGifPlayer>());//×¢²áGIFPlayer
+        theApp->RegisterSkinFactory(TplSkinFactory<SSkinGif>());//×¢²áSkinGif
 
         theApp->AddResProvider(pResProvider);
 

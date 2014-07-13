@@ -20,6 +20,9 @@
 #include "../controls.extend/SWkeWebkit.h"
 #endif
 
+#include "../controls.extend/gif/SGifPlayer.h"
+
+
 using namespace SOUI;
 
 #ifdef _DEBUG

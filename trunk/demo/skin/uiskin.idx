@@ -53,6 +53,10 @@
     <file name="IDP_BTN_YELLOW"  path="image\btn_normal_yellow.png" />
     <file name="IDP_VSCROLLBAR"  path="image\vscrollbar.png" />
   </IMGX>
+  <GIF>
+    <file name="gif_horse"			path="image\horse.gif"/>
+    <file name="gif_penguin"			path="image\penguin.gif"/>
+  </GIF>
   <ICON>
     <file name="IDP_ICO_LOGO"  path="image\img_logo.ico"    />
   </ICON>

@@ -1062,6 +1062,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc"
 			>
 			<File
+				RelativePath="..\controls.extend\FileHelper.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MainDlg.h"
 				>
 			</File>
@@ -1230,6 +1234,26 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\SWkeWebkit.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="gif"
+			>
+			<File
+				RelativePath="..\controls.extend\gif\SGifPlayer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\gif\SGifPlayer.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\gif\SSkinGif.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\gif\SSkinGif.h"
 				>
 			</File>
 		</Filter>
