@@ -51,37 +51,62 @@ namespace SOUI
         bmi.bmiHeader.biSizeImage   = 0;
 
         HDC hdc=GetDC(NULL);
-        LPVOID pBits=NULL;
         HBITMAP hBmp=CreateDIBSection(hdc,&bmi,DIB_RGB_COLORS,ppBits,0,0);
         ReleaseDC(NULL,hdc);
         return hBmp;
     }
 
-    HRESULT SBitmap_GDI::Init( int nWid,int nHei )
+    HRESULT SBitmap_GDI::Init( int nWid,int nHei ,const LPVOID pBits/*=NULL*/)
     {
         if(m_hBmp) DeleteObject(m_hBmp);
-        m_hBmp = CreateGDIBitmap(nWid,nHei,NULL);
-        if(m_hBmp) m_sz.cx=nWid,m_sz.cy=nHei;
+        LPVOID pBmpBits=NULL;
+        m_hBmp = CreateGDIBitmap(nWid,nHei,&pBmpBits);
+        if(m_hBmp)
+        {
+            m_sz.cx=nWid,m_sz.cy=nHei;
+            if(pBits)
+            {
+                const int stride = m_sz.cx*4;
+                memcpy(pBmpBits,pBits,stride*m_sz.cy);
+            }
+        }
         return m_hBmp?S_OK:E_OUTOFMEMORY;
+    }
+
+    HRESULT SBitmap_GDI::Init(IImgFrame *pFrame )
+    {
+        UINT nWid,nHei;
+        pFrame->GetSize(&nWid,&nHei);
+
+        if(m_hBmp) DeleteObject(m_hBmp);
+        void * pBits=NULL;
+        m_hBmp = CreateGDIBitmap(nWid,nHei,&pBits);
+        if(!m_hBmp) return E_OUTOFMEMORY;
+
+        m_sz.cx=nWid,m_sz.cy=nHei;
+        const int stride = m_sz.cx*4;
+        pFrame->CopyPixels(NULL, stride, stride * m_sz.cy,
+            reinterpret_cast<BYTE*>(pBits));
+        return S_OK;
     }
 
     HRESULT SBitmap_GDI::LoadFromFile( LPCTSTR pszFileName,LPCTSTR pszType )
     {
-        CAutoRefPtr<IImgDecoder> imgDecoder;
-        GetRenderFactory_GDI()->GetImgDecoderFactory()->CreateImgDecoder(&imgDecoder);
-        if(imgDecoder->DecodeFromFile(S_CT2W(pszFileName))==0) return S_FALSE;
+        CAutoRefPtr<IImgX> imgDecoder;
+        GetRenderFactory_GDI()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
+        if(imgDecoder->LoadFromFile(S_CT2W(pszFileName))==0) return S_FALSE;
         return ImgFromDecoder(imgDecoder);
     }
 
     HRESULT SBitmap_GDI::LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType )
     {
-        CAutoRefPtr<IImgDecoder> imgDecoder;
-        GetRenderFactory_GDI()->GetImgDecoderFactory()->CreateImgDecoder(&imgDecoder);
-        if(imgDecoder->DecodeFromMemory(pBuf,szLen)==0) return S_FALSE;
+        CAutoRefPtr<IImgX> imgDecoder;
+        GetRenderFactory_GDI()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
+        if(imgDecoder->LoadFromMemory(pBuf,szLen)==0) return S_FALSE;
         return ImgFromDecoder(imgDecoder);
     }
 
-    HRESULT SBitmap_GDI::ImgFromDecoder(IImgDecoder *imgDecoder)
+    HRESULT SBitmap_GDI::ImgFromDecoder(IImgX *imgDecoder)
     {
         IImgFrame *pFrame=imgDecoder->GetFrame(0);
         UINT nWid,nHei;
@@ -96,6 +121,7 @@ namespace SOUI
         const int stride = m_sz.cx*4;
         pFrame->CopyPixels(NULL, stride, stride * m_sz.cy,
             reinterpret_cast<BYTE*>(pBits));
+
         return S_OK;
     }
 
@@ -113,6 +139,7 @@ namespace SOUI
     {
         return m_sz;
     }
+
     //////////////////////////////////////////////////////////////////////////
     //	SRegion_GDI
     SRegion_GDI::SRegion_GDI( IRenderFactory *pRenderFac )
@@ -721,4 +748,12 @@ namespace SOUI
         return S_OK;
     }
 
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+BOOL SCreateInstance(IObjRef ** ppRenderFactory)
+{
+    *ppRenderFactory = new SOUI::SRenderFactory_GDI;
+    return TRUE;
 }

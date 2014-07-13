@@ -20,10 +20,11 @@ public:
     HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0);
     HCURSOR   LoadCursor(LPCTSTR pszResName);
     IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
-    size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
+    IImgX   * LoadImgX(LPCTSTR strType,LPCTSTR pszResName);
     BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
     BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
-
+    size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
+    LPVOID GetRawBufferPtr(LPCTSTR strType,LPCTSTR pszResName);
 protected:
     HRSRC MyFindResource(LPCTSTR strType, LPCTSTR pszResName );
     HINSTANCE m_hResInst;
@@ -42,6 +43,7 @@ public:
     HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0);
     HCURSOR LoadCursor(LPCTSTR pszResName);
     IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
+    IImgX   * LoadImgX(LPCTSTR strType,LPCTSTR pszResName);
     size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
     BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
 

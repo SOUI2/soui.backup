@@ -1282,6 +1282,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\helper\SplitString.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\helper\SResID.h"
 				>
 			</File>

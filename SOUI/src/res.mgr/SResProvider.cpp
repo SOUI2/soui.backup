@@ -41,12 +41,10 @@ IBitmap * SResProviderPE::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
     size_t szImgBuf= GetRawBufferSize(strType,pszResName);
     
     if(szImgBuf==0) return FALSE;
-
-    CMyBuffer<BYTE> buf;
-    buf.Allocate(szImgBuf);
-    GetRawBuffer(strType,pszResName,buf,szImgBuf);
     
-    HRESULT hr=pImg->LoadFromMemory(buf,szImgBuf,strType);
+    LPVOID pBuf=GetRawBufferPtr(strType,pszResName);
+
+    HRESULT hr=pImg->LoadFromMemory((LPBYTE)pBuf,szImgBuf,strType);
 
     if(!SUCCEEDED(hr))
     {
@@ -55,6 +53,23 @@ IBitmap * SResProviderPE::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
     }
 
     return pImg;
+}
+
+IImgX   * SResProviderPE::LoadImgX( LPCTSTR strType,LPCTSTR pszResName )
+{
+    if(!HasResource(strType,pszResName)) return NULL;
+    IImgX *pImgX=NULL;
+    GETRENDERFACTORY->GetImgDecoderFactory()->CreateImgX(&pImgX);
+    if(!pImgX) return NULL;
+    size_t szImgBuf= GetRawBufferSize(strType,pszResName);
+    if(szImgBuf==0) return FALSE;
+    LPVOID pBuf=GetRawBufferPtr(strType,pszResName);
+    if(0==pImgX->LoadFromMemory(pBuf,szImgBuf))
+    {
+        pImgX->Release();
+        pImgX=NULL;
+    }
+    return pImgX;
 }
 
 size_t SResProviderPE::GetRawBufferSize( LPCTSTR strType,LPCTSTR pszResName )
@@ -99,6 +114,30 @@ BOOL SResProviderPE::GetRawBuffer( LPCTSTR strType,LPCTSTR pszResName,LPVOID pBu
     return TRUE;
 }
 
+
+LPVOID SResProviderPE::GetRawBufferPtr( LPCTSTR strType,LPCTSTR pszResName )
+{
+    ASSERT(strType);
+    HRSRC hRsrc = MyFindResource(strType,pszResName);
+
+    if (NULL == hRsrc)
+        return NULL;
+
+    size_t dwSize = ::SizeofResource(m_hResInst, hRsrc);
+    if (0 == dwSize)
+        return NULL;
+
+    HGLOBAL hGlobal = ::LoadResource(m_hResInst, hRsrc);
+    if (NULL == hGlobal)
+        return NULL;
+
+    LPVOID pBuffer = ::LockResource(hGlobal);
+
+    ::FreeResource(hGlobal);
+
+    return pBuffer;
+}
+
 BOOL SResProviderPE::HasResource( LPCTSTR strType,LPCTSTR pszResName )
 {
     ASSERT(strType);
@@ -113,7 +152,6 @@ HRSRC SResProviderPE::MyFindResource( LPCTSTR strType, LPCTSTR pszResName )
 
     return ::FindResource(m_hResInst, pszResName, strType);
 }
-
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -168,6 +206,21 @@ IBitmap * SResProviderFiles::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
     }
     return pImg;
     
+}
+
+IImgX   * SResProviderFiles::LoadImgX( LPCTSTR strType,LPCTSTR pszResName )
+{
+    SStringT strPath=GetRes(strType,pszResName);
+    if(strPath.IsEmpty()) return NULL;
+    IImgX *pImgX=NULL;
+    GETRENDERFACTORY->GetImgDecoderFactory()->CreateImgX(&pImgX);
+    if(!pImgX) return NULL;
+    if(0==pImgX->LoadFromFile(strPath))
+    {
+        pImgX->Release();
+        pImgX=NULL;
+    }
+    return pImgX;
 }
 
 size_t SResProviderFiles::GetRawBufferSize( LPCTSTR strType,LPCTSTR pszResName )

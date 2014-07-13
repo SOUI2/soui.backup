@@ -28,25 +28,28 @@ namespace SOUI
     public:
         SImgFrame_WIC(IWICBitmapSource *pFrame=NULL);
         void SetWICBitmpaSource(IWICBitmapSource *pFrame);
-        
+        void SetFrameDelay(int nDelay);
+
         virtual BOOL GetSize(UINT *pWid,UINT *pHei);
         virtual BOOL CopyPixels( 
             /* [unique][in] */ const RECT *prc,
             /* [in] */ UINT cbStride,
             /* [in] */ UINT cbBufferSize,
             /* [size_is][out] */ BYTE *pbBuffer);
+        virtual int GetDelay(){return m_nFrameDelay;}
     protected:
-        CAutoRefPtr<IWICBitmapSource>  m_pFrame;    
+        CAutoRefPtr<IWICBitmapSource>  m_pFrame;
+        int     m_nFrameDelay;
     };
     
-    class SImgDecoder_WIC : public TObjRefImpl<IImgDecoder>
+    class SImgX_WIC : public TObjRefImpl<IImgX>
     {
         friend class SImgDecoderFactory;
     public:
 
-        int DecodeFromMemory(void *pBuf,size_t bufLen);
-        int DecodeFromFile(LPCWSTR pszFileName);
-        int DecodeFromFile(LPCSTR pszFileName);
+        int LoadFromMemory(void *pBuf,size_t bufLen);
+        int LoadFromFile(LPCWSTR pszFileName);
+        int LoadFromFile(LPCSTR pszFileName);
 
         IImgFrame * GetFrame(UINT iFrame){
             if(iFrame >= m_uImgCount) return NULL;
@@ -54,8 +57,8 @@ namespace SOUI
         }
         virtual UINT GetFrameCount(){return m_uImgCount;}
     protected:
-        SImgDecoder_WIC(BOOL bPremultiplied);
-        ~SImgDecoder_WIC(void);
+        SImgX_WIC(BOOL bPremultiplied);
+        ~SImgX_WIC(void);
         
         int _DoDecode(IWICBitmapDecoder * pDecoder);
 
@@ -67,14 +70,14 @@ namespace SOUI
 
     class SImgDecoderFactory : public TObjRefImpl<IImgDecoderFactory>
     {
-    friend class SImgDecoder_WIC;
+    friend class SImgX_WIC;
     public:
         SImgDecoderFactory(BOOL bPremultiple);
         ~SImgDecoderFactory();
         
         virtual BOOL IsAlphaPremultiple(){return m_bPremultple;}
         virtual void SetAlphaPremultiple(BOOL bPreMultiple){m_bPremultple=bPreMultiple;}
-        virtual BOOL CreateImgDecoder(IImgDecoder **ppImgDecoder);
+        virtual BOOL CreateImgX(IImgX **ppImgDecoder);
     protected:
         static CAutoRefPtr<IWICImagingFactory> s_wicImgFactory;
         BOOL    m_bPremultple;

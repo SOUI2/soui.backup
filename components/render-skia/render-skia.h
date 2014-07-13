@@ -1,6 +1,14 @@
 #pragma once
 
-#include "render-api.h"
+#ifndef _LIB
+#ifdef RENDERSKIA_EXPORTS
+#define RENDERSKIA_API __declspec(dllexport)
+#else
+#define RENDERSKIA_API __declspec(dllimport)
+#endif
+#else
+#define RENDERSKIA_API
+#endif
 
 #include <helper/color.h>
 #include <unknown/obj-ref-impl.hpp>
@@ -11,6 +19,7 @@
 
 #include <string\tstring.h>
 #include <string\strcpcvt.h>
+#include <interface/render-i.h>
 
 
 namespace SOUI
@@ -171,7 +180,7 @@ namespace SOUI
 
 	//////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
-    class SImgDecoder_WIC;
+    class SImgX_WIC;
 	class SBitmap_Skia : public TSkiaRenderObjImpl<IBitmap>
 	{
 	public:
@@ -186,7 +195,8 @@ namespace SOUI
             if(m_hBmp) DeleteObject(m_hBmp);
         }
 
-		virtual HRESULT Init(int nWid,int nHei);
+		virtual HRESULT Init(int nWid,int nHei,const LPVOID pBits=NULL);
+        virtual HRESULT Init(IImgFrame *pFrame);
 		virtual HRESULT LoadFromFile(LPCTSTR pszFileName,LPCTSTR pszType);
 		virtual HRESULT LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType);
 
@@ -199,7 +209,7 @@ namespace SOUI
 	protected:
 	    HBITMAP CreateGDIBitmap(int nWid,int nHei,void ** ppBits);
 	    
-        HRESULT ImgFromDecoder(IImgDecoder *imgDecoder);
+        HRESULT ImgFromDecoder(IImgX *imgDecoder);
 
 		SkBitmap    m_bitmap;   //skia 管理的BITMAP
 		HBITMAP     m_hBmp;     //标准的32位位图，和m_bitmap共享内存
@@ -329,3 +339,5 @@ namespace SOUI
         UINT m_uGetDCFlag;
 	};
 }
+
+EXTERN_C RENDERSKIA_API BOOL SCreateInstance(IObjRef ** ppRenderFactory);

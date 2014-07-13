@@ -59,7 +59,7 @@ namespace SOUI
     }POS2TYPE;
 
     class SWindow;
-    class SwndLayout
+    class SOUI_EXP SwndLayout
     {
     public:
         SwndLayout(SWindow *pOwner);

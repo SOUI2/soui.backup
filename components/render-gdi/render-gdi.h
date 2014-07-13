@@ -1,15 +1,21 @@
 #pragma once
 
-#pragma once
-
-#include "render-api.h"
+#ifndef _LIB
+#ifdef RENDERGDI_EXPORTS
+#define RENDERGDI_API __declspec(dllexport)
+#else
+#define RENDERGDI_API __declspec(dllimport)
+#endif
+#else
+#define RENDERGDI_API
+#endif
 
 #include <helper/color.h>
 #include <unknown/obj-ref-impl.hpp>
 
 #include <string/tstring.h>
 #include <string/strcpcvt.h>
-
+#include <interface/render-i.h>
 
 namespace SOUI
 {
@@ -170,12 +176,12 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     // SBitmap_GDI
-    class SImgDecoder_WIC;
+    class SImgX_WIC;
     class SBitmap_GDI : public TSkiaRenderObjImpl<IBitmap>
     {
     public:
         SBitmap_GDI(IRenderFactory *pRenderFac)
-            :TSkiaRenderObjImpl<IBitmap>(pRenderFac),m_hBmp(0)
+            :TSkiaRenderObjImpl<IBitmap>(pRenderFac),m_hBmp(0),m_nFrameDelay(0)
         {
             m_sz.cx=m_sz.cy=0;
         }
@@ -183,7 +189,8 @@ namespace SOUI
         {
             if(m_hBmp) DeleteObject(m_hBmp);
         }
-        virtual HRESULT Init(int nWid,int nHei);
+        virtual HRESULT Init(int nWid,int nHei,const LPVOID pBits=NULL);
+        virtual HRESULT Init(IImgFrame *pFrame);
         virtual HRESULT LoadFromFile(LPCTSTR pszFileName,LPCTSTR pszType);
         virtual HRESULT LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType);
 
@@ -195,9 +202,10 @@ namespace SOUI
     protected:
         HBITMAP CreateGDIBitmap(int nWid,int nHei,void ** ppBits);
 
-        HRESULT ImgFromDecoder(IImgDecoder *imgDecoder);
+        HRESULT ImgFromDecoder(IImgX *imgDecoder);
         SIZE        m_sz;
         HBITMAP     m_hBmp;     //标准的32位位图，和m_bitmap共享内存
+        int         m_nFrameDelay;
     };
 
     //////////////////////////////////////////////////////////////////////////
@@ -325,3 +333,6 @@ namespace SOUI
         UINT m_uGetDCFlag;
     };
 }
+
+
+EXTERN_C BOOL RENDERGDI_API SCreateInstance(IObjRef ** ppRenderFactory);

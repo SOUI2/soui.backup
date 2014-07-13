@@ -57,6 +57,15 @@ namespace SOUI
             return pResProvider->LoadImage(strType,pszResName);
         }
 
+        IImgX * LoadImgX(LPCTSTR strType,LPCTSTR pszResName)
+        {
+            if(!strType) strType = FindImageType(pszResName);
+            if(!strType) return NULL;
+            IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            if(!pResProvider) return NULL;
+            return pResProvider->LoadImgX(strType,pszResName);
+        }
+
         size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName)
         {
             IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
