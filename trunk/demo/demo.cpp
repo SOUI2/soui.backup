@@ -14,9 +14,9 @@
 
 #define SUPPORT_LANG    //打开SUPPORT_LANG时，演示多语言支持
 
-#define RES_TYPE 0   //从文件中加载资源
-//#define RES_TYPE 1   //从PE资源中加载UI资源
-//#define RES_TYPE 2   //从zip包中加载资源
+// #define RES_TYPE 0   //从文件中加载资源
+#define RES_TYPE 1   //从PE资源中加载UI资源
+// #define RES_TYPE 2   //从zip包中加载资源
 
 #if RES_TYPE==2
     #include "../components/resprovider-zip/SResProviderZip.h"
@@ -116,7 +116,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         SResProviderPE *pResProvider = new SResProviderPE(hInstance);
 #elif (RES_TYPE==2)
         SResProviderZip *pResProvider = new SResProviderZip(pRenderFactory);
-        pResProvider->Init(_T("demo-skin.zip"));
+        pResProvider->Init(_T("skin.zip"));
 #endif
 
 #ifdef SUPPORT_WKE
