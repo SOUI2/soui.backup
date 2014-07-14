@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug_Dll|Win32"
-			OutputDirectory="$(SolutionDir)bin"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\Debug"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfATL="0"
 			CharacterSet="1"
@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\include;..\utilities\include;..\translator\include"
+				AdditionalIncludeDirectories=".\include;..\utilities\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_USRDLL;SOUI_EXPORTS;DLL_SOUI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -69,7 +69,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;"
+				AdditionalLibraryDirectories="$(OutDir)"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				OptimizeReferences="1"
@@ -100,8 +100,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug_Dll|x64"
-			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\Debug"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfATL="0"
 			CharacterSet="1"
@@ -125,7 +125,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\include;.\dependencies;.\dependencies\eastl\include"
+				AdditionalIncludeDirectories=".\include;..\utilities\include"
 				PreprocessorDefinitions="_WIN64;_DEBUG;_USRDLL;DUIENGINE_EXPORTS;DLL_DUI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -150,7 +150,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="shlwapi.lib Msimg32.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
-				AdditionalLibraryDirectories="dependencies\lib"
+				AdditionalLibraryDirectories="$(OutDir)"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				ImportLibrary="$(TargetDir)$(TargetName).lib"
@@ -181,8 +181,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release_Dll|Win32"
-			OutputDirectory="$(SolutionDir)bin"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\Release"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfATL="0"
 			CharacterSet="1"
@@ -207,7 +207,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories=".\include;..\utilities\include;"
+				AdditionalIncludeDirectories=".\include;..\utilities\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_USRDLL;SOUI_EXPORTS;DLL_SOUI"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
@@ -232,7 +232,7 @@
 				IgnoreImportLibrary="false"
 				OutputFile="$(OutDir)\$(ProjectName).dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;"
+				AdditionalLibraryDirectories="$(OutDir)"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				OptimizeReferences="2"
@@ -262,8 +262,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release_Dll|x64"
-			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\Release"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfATL="0"
 			CharacterSet="1"
@@ -288,7 +288,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				AdditionalIncludeDirectories=".\include;.\dependencies;.\dependencies\eastl\include"
+				AdditionalIncludeDirectories=".\include;..\utilities\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_USRDLL;DUIENGINE_EXPORTS;DLL_DUI"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
@@ -313,7 +313,7 @@
 				AdditionalDependencies="shlwapi.lib Msimg32.lib"
 				OutputFile="$(OutDir)\$(ProjectName).dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="dependencies\lib"
+				AdditionalLibraryDirectories="$(OutDir)"
 				GenerateDebugInformation="false"
 				AssemblyDebug="0"
 				TargetMachine="17"
@@ -343,8 +343,8 @@
 		</Configuration>
 		<Configuration
 			Name="DEBUG|Win32"
-			OutputDirectory="$(SolutionDir)bin"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\Debug"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfATL="0"
 			CharacterSet="1"
@@ -413,8 +413,8 @@
 		</Configuration>
 		<Configuration
 			Name="DEBUG|x64"
-			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\Debug"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfATL="1"
 			CharacterSet="1"
@@ -438,7 +438,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\include;.\dependencies"
+				AdditionalIncludeDirectories=".\include;..\utilities\include"
 				PreprocessorDefinitions="WIN32;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -462,8 +462,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="shlwapi.lib Msimg32.lib"
-				OutputFile="..\lib\$(ProjectName)_static_d.lib"
+				OutputFile="$(OutDir)\$(ProjectName)_static_d.lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -484,8 +483,8 @@
 		</Configuration>
 		<Configuration
 			Name="RELEASE|Win32"
-			OutputDirectory="$(SolutionDir)bin"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\Release"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfATL="0"
 			CharacterSet="1"
@@ -509,7 +508,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="1"
-				AdditionalIncludeDirectories=".\include"
+				AdditionalIncludeDirectories=".\include;..\utilities\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_USRDLL;DUIENGINE_EXPORTS"
 				RuntimeLibrary="0"
 				TreatWChar_tAsBuiltInType="true"
@@ -531,7 +530,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\$(ProjectName)_static.lib"
+				OutputFile="$(OutDir)\$(ProjectName)_static.lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -552,8 +551,8 @@
 		</Configuration>
 		<Configuration
 			Name="RELEASE|x64"
-			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\Release"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfATL="1"
 			CharacterSet="1"
@@ -578,7 +577,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				AdditionalIncludeDirectories=".\include;.\dependencies;.\dependencies\eastl\include"
+				AdditionalIncludeDirectories=".\include;..\utilities\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_USRDLL;DUIENGINE_EXPORTS"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
@@ -599,148 +598,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="shlwapi.lib Msimg32.lib"
-				OutputFile="..\lib\$(ProjectName)_static.lib"
-				AdditionalLibraryDirectories=""
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug_ATL|Win32"
-			OutputDirectory="$(SolutionDir)bin"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
-			UseOfATL="1"
-			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories=".\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;USING_ATL"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="souistd.h"
-				BrowseInformation="1"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="4"
-				ShowIncludes="false"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="..\lib\$(ProjectName)_static_ATL_d.lib"
-				AdditionalLibraryDirectories=""
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug_ATL|x64"
-			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
-			ConfigurationType="4"
-			UseOfATL="1"
-			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories=".\include;.\dependencies"
-				PreprocessorDefinitions="WIN32;_DEBUG"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="duistd.h"
-				BrowseInformation="1"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
-				ShowIncludes="false"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				AdditionalDependencies="shlwapi.lib Msimg32.lib"
-				OutputFile="..\lib\$(ProjectName)_static_d.lib"
+				OutputFile="$(OutDir)\$(ProjectName)_static.lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
@@ -983,23 +841,6 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="RELEASE|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug_ATL|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-						PrecompiledHeaderThrough="souistd.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug_ATL|x64"
 					>
 					<Tool
 						Name="VCCLCompilerTool"

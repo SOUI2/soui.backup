@@ -5,7 +5,9 @@
 
 #pragma once
 
-#define SUPPORT_LUA     //打开SUPPORT_LUA来演示如何在SOUI中和LUA交互。
+#if DLL_SOUI
+#define SUPPORT_LUA     //打开SUPPORT_LUA来演示如何在SOUI中和LUA交互,LUA导出依赖DLL编译的SOUI，只有定义了DLL_SOUI才能打开这个开关
+#endif
 //#define SUPPORT_WKE      //需要把third-part/wke/wke.7z解压到bin目录才能打开该开关测试wkeWebkit
 
 #include <souistd.h>
@@ -26,9 +28,7 @@
 using namespace SOUI;
 
 #ifdef _DEBUG
-	#ifdef USING_ATL
-	# pragma comment(lib, "soui_static_atl_d.lib")
-	#elif DLL_SOUI
+	#if DLL_SOUI
 	# pragma comment(lib, "soui_d.lib")
 	#else
 	# pragma comment(lib, "soui_static_d.lib")
