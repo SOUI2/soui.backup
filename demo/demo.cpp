@@ -40,7 +40,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     SComLoader renderLoader;
     SComLoader transLoader;
     SComLoader scriptLoader;
-    
+        
     //将程序的运行路径修改到demo所在的目录
     TCHAR szCurrentDir[MAX_PATH]={0};
     GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );

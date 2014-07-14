@@ -1374,7 +1374,7 @@ namespace SOUI
 
 
     template< typename T >
-    class CDuiStringElementTraits
+    class SStringElementTraits
     {
     public:
         typedef typename T::pctstr INARGTYPE;
@@ -1423,13 +1423,13 @@ namespace SOUI
 
     template<>
     class CElementTraits< SStringA > :
-        public CDuiStringElementTraits< SStringA >
+        public SStringElementTraits< SStringA >
     {
     };
 
     template<>
     class CElementTraits< SStringW > :
-        public CDuiStringElementTraits< SStringW >
+        public SStringElementTraits< SStringW >
     {
     };
 

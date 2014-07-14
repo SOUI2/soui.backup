@@ -242,16 +242,16 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
+				Optimization="0"
 				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;..\third-part\wke\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
-				BrowseInformation="0"
+				BrowseInformation="1"
 				WarningLevel="3"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -272,8 +272,8 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="$(OutDir);..\third-part\wke\lib"
 				GenerateManifest="true"
-				GenerateDebugInformation="false"
-				AssemblyDebug="0"
+				GenerateDebugInformation="true"
+				AssemblyDebug="1"
 				SubSystem="2"
 				LinkTimeCodeGeneration="1"
 				TargetMachine="1"
