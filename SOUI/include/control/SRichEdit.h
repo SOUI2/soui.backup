@@ -1136,11 +1136,11 @@ protected:
      * @brief    设置文本颜色
      * @param    const SStringW &  strValue -- 字符串
      * @param    BOOL bLoading -- 是否加载
-     * @return   返回LRESULT 
+     * @return   返回HRESULT 
      *
      * Describe  设置文本颜色
      */
-    LRESULT OnSetTextColor(const SStringW &  strValue,BOOL bLoading);
+    HRESULT OnSetTextColor(const SStringW &  strValue,BOOL bLoading);
     /**
      * SRichEdit::OnEnableDragDrop
      * @brief    是否允许拖拽

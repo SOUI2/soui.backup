@@ -74,7 +74,7 @@ namespace SOUI
 
         if(FAILED(factory->CreateStream(&stream))) return 0;
 
-        if(FAILED(stream->InitializeFromMemory((BYTE*)pBuf,bufLen))) return 0;
+        if(FAILED(stream->InitializeFromMemory((BYTE*)pBuf,(DWORD)bufLen))) return 0;
 
         if(FAILED(factory->CreateDecoderFromStream(stream,NULL,WICDecodeMetadataCacheOnDemand,&decoder))) return 0;
 

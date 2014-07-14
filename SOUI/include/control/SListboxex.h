@@ -72,7 +72,7 @@ public:
      *
      * Describe  在某项之后插入
      */
-    int InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData=0);
+    int InsertItem(int iItem,pugi::xml_node xmlNode,LPARAM dwData=0);
 
     /**
      * SListBoxEx::InsertItem
@@ -83,7 +83,7 @@ public:
      *
      * Describe  在某项之后插入
      */
-    int InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData=0);
+    int InsertItem(int iItem,LPCWSTR pszXml,LPARAM dwData=0);
     
     /**
      * SListBoxEx::SetCurSel

@@ -1352,7 +1352,7 @@ void SRichEdit::SetSel(DWORD dwSelection, BOOL bNoScroll)
         SSendMessage(EM_SCROLLCARET, 0, 0L);
 }
 
-LRESULT SRichEdit::OnSetTextColor( const SStringW &  strValue,BOOL bLoading )
+HRESULT SRichEdit::OnSetTextColor( const SStringW &  strValue,BOOL bLoading )
 {
     m_style.SetTextColor(0,HexStringToColor(strValue));
     if(!bLoading)

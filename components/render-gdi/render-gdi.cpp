@@ -462,7 +462,7 @@ namespace SOUI
         }
         ALPHAINFO ai;
         CGdiAlpha::AlphaBackup(m_hdc,&rc,ai);
-        ::Polyline(m_hdc,pPt,nCount);
+        ::Polyline(m_hdc,pPt,(int)nCount);
         CGdiAlpha::AlphaRestore(ai);
         return S_OK;
     }

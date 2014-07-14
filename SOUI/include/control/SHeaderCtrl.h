@@ -107,7 +107,7 @@ namespace SOUI
        *
        * Describe  获取列表项个数  
        */      
-      int GetItemCount(){return m_arrItems.GetCount();}
+      size_t GetItemCount(){return m_arrItems.GetCount();}
 
       /**
        * SHeaderCtrl::GetTotalWidth

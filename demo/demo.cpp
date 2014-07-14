@@ -5,7 +5,7 @@
 
 #include <unknown/com-loader.hpp>
 
-#ifdef _DEBUG
+#if defined(_DEBUG) && !defined(_WIN64)
 #include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
 #endif
 

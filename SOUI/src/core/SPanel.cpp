@@ -698,7 +698,7 @@ void SPanel::OnShowWindow( BOOL bShow, UINT nStatus )
     __super::OnShowWindow(bShow,nStatus);
 }
 
-LRESULT SPanel::OnAttrScrollbarSkin( SStringW strValue,BOOL bLoading )
+HRESULT SPanel::OnAttrScrollbarSkin( SStringW strValue,BOOL bLoading )
 {
     ISkinObj *pSbSkin=GETSKIN(strValue);
     ASSERT(pSbSkin);

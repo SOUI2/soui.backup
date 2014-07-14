@@ -2,6 +2,8 @@
 #include "SWkeWebkit.h"
 #include <Imm.h>
 #pragma comment(lib,"imm32.lib")
+
+#ifndef _WIN64
 #pragma comment(lib,"wke.lib")
 
 namespace SOUI
@@ -239,3 +241,5 @@ namespace SOUI
 		return !bLoading;
 	}
 }
+
+#endif //_WIN64

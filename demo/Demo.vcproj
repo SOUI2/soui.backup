@@ -114,8 +114,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\Debug"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\Debug"
 			ConfigurationType="1"
 			UseOfATL="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -150,7 +150,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\duiengine\include;..\duiengine\dependencies;..\duiengine\dependencies\eastl\include"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;..\third-part\wke\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -176,7 +176,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\lib;..\duiengine\dependencies\lib"
+				AdditionalLibraryDirectories="$(OutDir);..\third-part\wke\lib"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
@@ -203,7 +203,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy  $(TargetPath) ..\bin\"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -303,8 +303,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\Release"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\Release"
 			ConfigurationType="1"
 			UseOfATL="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -339,7 +339,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\duiengine\include;..\duiengine\dependencies;..\duiengine\dependencies\eastl\include"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;..\third-part\wke\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
@@ -364,7 +364,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\lib;..\duiengine\dependencies\lib"
+				AdditionalLibraryDirectories="$(OutDir);..\third-part\wke\lib"
 				GenerateManifest="true"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
@@ -391,7 +391,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy  $(TargetPath) ..\bin\"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -489,8 +489,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug_Dll|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\Debug"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\Debug"
 			ConfigurationType="1"
 			UseOfATL="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -525,7 +525,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\duiengine\include;..\duiengine\dependencies;&quot;..\scriptModule\luaScriptModule\lua-5.1&quot;"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;..\third-part\wke\include"
 				PreprocessorDefinitions="_WIN64;_WINDOWS;_DEBUG;DLL_DUI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -552,7 +552,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)_Dll_d.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\lib;..\duiengine\dependencies\lib;..\scriptModule\luaScriptModule\Debug;&quot;..\scriptModule\luaScriptModule\tolua++-1.0.93\lib&quot;"
+				AdditionalLibraryDirectories="$(OutDir);..\third-part\wke\lib"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -578,7 +578,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy  $(TargetPath) ..\bin\"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -677,8 +677,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release_Dll|x64"
-			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\Release"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\Release"
 			ConfigurationType="1"
 			UseOfATL="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -713,7 +713,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\duiengine\include;..\duiengine\dependencies;&quot;..\scriptModule\luaScriptModule\lua-5.1&quot;"
+				AdditionalIncludeDirectories="..\soui\include;..\utilities\include;..\third-part\wke\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;DLL_DUI"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
@@ -738,7 +738,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName)_DLL.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\lib;..\duiengine\dependencies\lib;..\scriptModule\luaScriptModule\Release;&quot;..\scriptModule\luaScriptModule\tolua++-1.0.93\lib&quot;"
+				AdditionalLibraryDirectories="$(OutDir);..\third-part\wke\lib"
 				GenerateManifest="true"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
@@ -765,7 +765,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy  $(TargetPath) ..\bin\"
+				CommandLine=""
 			/>
 		</Configuration>
 	</Configurations>

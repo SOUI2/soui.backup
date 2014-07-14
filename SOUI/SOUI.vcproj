@@ -126,12 +126,12 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\include;..\utilities\include"
-				PreprocessorDefinitions="_WIN64;_DEBUG;_USRDLL;DUIENGINE_EXPORTS;DLL_DUI"
+				PreprocessorDefinitions="_WIN64;_DEBUG;_USRDLL;SOUI_EXPORTS;DLL_SOUI"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="duistd.h"
+				PrecompiledHeaderThrough="souistd.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
@@ -148,7 +148,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="shlwapi.lib Msimg32.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
 				AdditionalLibraryDirectories="$(OutDir)"
 				GenerateDebugInformation="true"
@@ -176,7 +175,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy  $(TargetDir)\$(TargetName).lib ..\lib\&#x0D;&#x0A;copy  $(TargetPath) ..\bin\&#x0D;&#x0A;"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -289,11 +288,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				AdditionalIncludeDirectories=".\include;..\utilities\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_USRDLL;DUIENGINE_EXPORTS;DLL_DUI"
+				PreprocessorDefinitions="WIN32;NDEBUG;_USRDLLSOUI_EXPORTS;DLL_DUI"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="duistd.h"
+				PrecompiledHeaderThrough="souistd.h"
 				BrowseInformation="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
@@ -338,7 +337,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy  $(TargetDir)\$(TargetName).lib ..\lib\&#x0D;&#x0A;copy  $(TargetPath) ..\bin\&#x0D;&#x0A;"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -444,7 +443,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="duistd.h"
+				PrecompiledHeaderThrough="souistd.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
@@ -581,7 +580,7 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_USRDLL;DUIENGINE_EXPORTS"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="duistd.h"
+				PrecompiledHeaderThrough="souistd.h"
 				BrowseInformation="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
