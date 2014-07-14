@@ -39,63 +39,39 @@
 #include <tchar.h>
 #include <stdio.h>
 
-#include "core/SDefine.h"
-#include "helper/color.h"
+#include <core/SDefine.h>
 
 //import pugixml interface
+
+#define _WTYPES_NS SOUI
+#define _COLL_NS    SOUI
+#include <souicoll.h>
+#include <wtl.mini/msgcrack.h>
+#include <wtl.mini/souimisc.h>
+#include <wtl.mini/souigdi.h>
+#include <atl.mini/atldef.h>
+#include <atl.mini/scomcli.h>
+#include <string/tstring.h>
+#include <string/strcpcvt.h>
 #include <pugixml/pugixml.hpp>
-
-#ifdef USING_ATL
-    #define _COLL_NS    ATL
-    #include <atlbase.h>
-    #include <atlapp.h>
-    #include <atlmisc.h>
-    #include <atlgdi.h>
-    #include <atlstr.h>
-    #include <atlcoll.h>
-    #include <atlcomcli.h>
-    #define SComPtr    CComPtr
-    #define SComQIPtr    CComQIPtr
-
-    #define SArray    CAtlArray
-    #define SList    CAtlList
-    #define SMap        CAtlMap
-    #define SStringA    CAtlStringA
-    #define SStringW CAtlStringW
-    #define SStringT CAtlString
-
-    #include "../../utilities/include/string/strcpcvt.h"
-#else//ATL_FREE
-    #define _WTYPES_NS SOUI
-    #define _COLL_NS    SOUI
-    #include "souicoll.h"
-    #include "wtl.mini/msgcrack.h"
-    #include "wtl.mini/souimisc.h"
-    #include "wtl.mini/souigdi.h"
-    #include "atl.mini/atldef.h"
-    #include "atl.mini/scomcli.h"
-    #include "../../utilities/include/string/tstring.h"
-    #include "../../utilities/include/string/strcpcvt.h"
-#endif//USING_ATL
 
 #include <trace.h>
 #include <utilities.h>
-#include <wtl.mini/msgcrack.h>
 
 
 #include <interface/render-i.h>
 #include <interface/imgdecoder-i.h>
 
-#include "SApp.h"
-#include "helper/SAttrCracker.h"
-#include "res.mgr/sfontpool.h"
-#include "res.mgr/sresprovider.h"
+#include <SApp.h>
+#include <helper/SAttrCracker.h>
+#include <helper/color.h>
+#include <res.mgr/sfontpool.h>
+#include <res.mgr/sresprovider.h>
 
-#include "control/souictrls.h"
-#include "control/SMessageBox.h"
+#include <control/souictrls.h>
+#include <control/SMessageBox.h>
 
 
-#pragma comment(lib,"Msimg32.lib")
 #pragma comment(lib,"shlwapi.lib")
 
 #ifdef _DEBUG

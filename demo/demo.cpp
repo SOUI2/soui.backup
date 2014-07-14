@@ -2,7 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "SApp.h" 
+
+#include <unknown/com-loader.hpp>
 
 #ifdef _DEBUG
 #include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
@@ -14,8 +15,8 @@
 
 #define SUPPORT_LANG    //打开SUPPORT_LANG时，演示多语言支持
 
-// #define RES_TYPE 0   //从文件中加载资源
-#define RES_TYPE 1   //从PE资源中加载UI资源
+#define RES_TYPE 0   //从文件中加载资源
+// #define RES_TYPE 1   //从PE资源中加载UI资源
 // #define RES_TYPE 2   //从zip包中加载资源
 
 #if RES_TYPE==2
@@ -39,6 +40,13 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     SComLoader renderLoader;
     SComLoader transLoader;
     SComLoader scriptLoader;
+    
+    //将程序的运行路径修改到demo所在的目录
+    TCHAR szCurrentDir[MAX_PATH]={0};
+    GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
+    LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
+    _tcscpy(lpInsertPos,_T("\\..\\..\\demo"));
+    SetCurrentDirectory(szCurrentDir);
     
     {
 
@@ -94,20 +102,14 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 #endif//_DEBUG
         if(pScriptLua)
         {
-            pScriptLua->executeScriptFile("../demo/lua/test.lua");
+            pScriptLua->executeScriptFile("lua/test.lua");
             theApp->SetScriptModule(pScriptLua);
         }
 #endif//SUPPORT_LUA
 
 #if (RES_TYPE == 0)
-        TCHAR szCurrentDir[MAX_PATH]={0};
-        GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
-        LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
-        *lpInsertPos = _T('\0');   
-        _tcscat( szCurrentDir, _T("\\..\\demo\\skin") );
-
         SResProviderFiles *pResProvider=new SResProviderFiles;
-        if(!pResProvider->Init(szCurrentDir))
+        if(!pResProvider->Init(_T("skin")))
         {
             ASSERT(0);
             return 1;
