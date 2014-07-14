@@ -84,7 +84,7 @@ void SListBoxEx::DeleteItem(int iItem)
     SetViewSize(szView);
 }
 
-int SListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData/*=0*/)
+int SListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,LPARAM dwData/*=0*/)
 {
     SItemPanel *pItemObj=new SItemPanel(this,xmlNode,this);
 
@@ -113,7 +113,7 @@ int SListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,DWORD dwData/*=0*/)
     return iItem;
 }
 
-int SListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,DWORD dwData/*=0*/)
+int SListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,LPARAM dwData/*=0*/)
 {
     if(!pszXml && !m_xmlTempl) return -1;
     if(pszXml)

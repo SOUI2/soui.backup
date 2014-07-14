@@ -220,7 +220,7 @@ public:
      *
      * Describe  获取tab页面数
      */
-    int GetItemCount()
+    size_t GetItemCount()
     {
         return m_lstPages.GetCount();
     }

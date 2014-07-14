@@ -220,7 +220,7 @@ public: \
     if (uMsg == WM_ENABLE) \
     { \
         SetMsgHandled(TRUE); \
-        func((BOOL)wParam,lParam); \
+        func((BOOL)wParam,(UINT)lParam); \
         lResult = 0; \
         if(IsMsgHandled()) \
             return TRUE; \

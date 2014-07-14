@@ -102,7 +102,7 @@ protected:
 
     void ScrollUpdate();
 
-    LRESULT OnAttrScrollbarSkin(SStringW strValue,BOOL bLoading);
+    HRESULT OnAttrScrollbarSkin(SStringW strValue,BOOL bLoading);
 
     SCROLLINFO m_siVer,m_siHoz;
     SSkinScrollbar *m_pSkinSb;

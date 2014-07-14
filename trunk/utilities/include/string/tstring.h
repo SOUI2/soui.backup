@@ -110,7 +110,7 @@ namespace SOUI
 
     struct char_traits
     {
-        static int StrLen(const char* psz)
+        static size_t StrLen(const char* psz)
         {
             return psz ? strlen(psz) : 0;
         }
@@ -234,7 +234,7 @@ namespace SOUI
         typedef wchar_t            this_type;
         typedef wchar_traits    this_traits;
 
-        static int StrLen(const wchar_t* psz)
+        static size_t StrLen(const wchar_t* psz)
         {
             return psz ? wcslen(psz) : 0;
         }
@@ -1123,7 +1123,7 @@ namespace SOUI
 
         static int SafeStrlen(const tchar* psz)
         {
-            return (psz == NULL) ? 0 : tchar_traits::StrLen(psz);
+            return (psz == NULL) ? 0 : (int)tchar_traits::StrLen(psz);
         }
 
     protected:
