@@ -728,6 +728,7 @@ int SScrollView::OnCreate( LPVOID )
 
 void SScrollView::OnSize(UINT nType,CSize size)
 {
+    __super::OnSize(nType,size);
     UpdateScrollBar();
 }
 

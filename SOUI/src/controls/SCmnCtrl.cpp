@@ -294,6 +294,7 @@ void SButton::OnStateChanged( DWORD dwOldState,DWORD dwNewState )
 
 void SButton::OnSize( UINT nType, CSize size )
 {
+    __super::OnSize(nType,size);
     StopCurAnimate();
 }
 

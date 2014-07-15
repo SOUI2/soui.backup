@@ -373,10 +373,12 @@ namespace SOUI
     HRESULT SRenderTarget_GDI::BitBlt( LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop/*=SRCCOPY*/)
     {
         ALPHAINFO ai;
-        CGdiAlpha::AlphaBackup(m_hdc,pRcDest,ai);
+        if(!(dwRop & 0x80000000))
+            CGdiAlpha::AlphaBackup(m_hdc,pRcDest,ai);
         SRenderTarget_GDI *pRTSrc_GDI=(SRenderTarget_GDI*)pRTSour;
         ::BitBlt(m_hdc,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,pRTSrc_GDI->m_hdc,xSrc,ySrc,dwRop);
-        CGdiAlpha::AlphaRestore(ai);
+        if(!(dwRop & 0x80000000))
+            CGdiAlpha::AlphaRestore(ai);
         return S_OK;
     }
 
@@ -688,6 +690,13 @@ namespace SOUI
         {
             *lpPoint=m_ptOrg;
         }
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_GDI::SetViewportOrg( POINT pt )
+    {
+        m_ptOrg = pt;
+        ::SetViewportOrgEx(m_hdc,m_ptOrg.x,m_ptOrg.y,NULL);
         return S_OK;
     }
 

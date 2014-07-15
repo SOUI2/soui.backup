@@ -281,6 +281,7 @@ CRect SItemBox::GetItemRect(int iItem)
 
 void SItemBox::OnSize(UINT nType, CSize size)
 {
+    __super::OnSize(nType,size);
     if(m_rcWindow.IsRectEmpty()) return;
 
     m_ptOrigin=CPoint(0,0);

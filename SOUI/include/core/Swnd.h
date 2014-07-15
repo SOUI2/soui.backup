@@ -159,19 +159,22 @@ protected:
     DWORD m_bDisable:1;        /**< 窗口禁用状状态 */
     DWORD m_bClipClient:1;     /**< 窗口绘制时做clip客户区处理的标志,由于clip可能增加计算量，只在绘制可能走出客户区时才设置*/
     DWORD m_bMsgTransparent:1; /**< 接收消息标志 TRUE-不处理消息 */
-    DWORD m_bFocusable:1;        /**< 窗口可获得焦点标志 */
+    DWORD m_bFocusable:1;      /**< 窗口可获得焦点标志 */
     DWORD m_bUpdateLocked:1;   /**< 暂时锁定更新，锁定后，不向宿主发送Invalidate */
-
-    BYTE m_byAlpha;        /**< 窗口透明度,只进行配置，支持依赖于控件 */
+    DWORD m_bCacheDraw:1;      /**< 支持窗口内容的Cache标志 */
+    DWORD m_bDirty:1;          /**< 缓存窗口脏标志 */
+    
+    BYTE m_byAlpha;         /**< 窗口透明度,只进行配置，支持依赖于控件 */
 
     ISkinObj * m_pBgSkin;   /**< 背景skin */
     ISkinObj * m_pNcSkin;   /**< 非客户区skin */
     ULONG_PTR m_uData;      /**< 窗口的数据位,可以通过GetUserData获得 */
     
-    SwndLayout      m_layout;/**< 布局对象 */
+    SwndLayout    m_layout; /**< 布局对象 */
 
     int           m_nMaxWidth;    /**< 自动计算大小时，窗口的最大宽度 */
 
+    CAutoRefPtr<IRenderTarget> m_cachedRT;/**< 缓存窗口绘制的RT */
 #ifdef _DEBUG
     DWORD m_nMainThreadId;  /**< 窗口宿线程ID */
 #endif
@@ -186,7 +189,8 @@ public:
      * @return   UINT 
      *
      * Describe  获得文本的对齐标志
-     */    UINT GetTextAlign();    
+     */
+    UINT GetTextAlign();    
 
     /**
      * GetPositionType
@@ -194,7 +198,8 @@ public:
      * @return   DWORD 
      *
      * Describe  获得窗口布局类型
-     */    DWORD GetPositionType();
+     */
+    DWORD GetPositionType();
 
     /**
      * SetPositionType
@@ -681,6 +686,14 @@ public:
      */
     void BeforePaintEx(IRenderTarget *pRT);
 protected:
+    bool IsCacheDirty() const  {return m_bCacheDraw&&m_bDirty;}
+    
+    void MarkCacheDirty(bool bDirty) {m_bDirty = bDirty;}
+    
+    bool IsCacheDraw() const {return m_bCacheDraw;}
+    
+    IRenderTarget * GetCachedRenderTarget(){return m_cachedRT;}
+    
     void TestMainThread();
     /**
      * FireCommand
@@ -738,6 +751,14 @@ protected:
      * Describe  
      */
     static SWindow *GetNextVisibleWindow(SWindow *pWnd,const CRect &rcDraw);
+    
+    typedef enum _PRSTATE{
+        PRS_LOOKSTART=0,    //查找开始窗口
+        PRS_DRAWING,        //窗口渲染中
+        PRS_MEETEND         //碰到指定的结束窗口
+    } PRSTATE;
+
+    static  BOOL _PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,SWindow *pStart,SWindow *pEnd,PRSTATE & prState );
 
     virtual BOOL NeedRedrawWhenStateChange();
     virtual void GetTextRect(LPRECT pRect);
@@ -771,6 +792,8 @@ protected:
     LRESULT OnWindowPosChanged(LPRECT lpRcContainer);
 
     int OnCreate(LPVOID);
+    
+    void OnSize(UINT nType, CSize size);
 
     void OnDestroy();
 
@@ -809,6 +832,7 @@ protected:
     HRESULT OnAttrVisible(const SStringW& strValue, BOOL bLoading);
     HRESULT OnAttrEnable(const SStringW& strValue, BOOL bLoading);
     HRESULT OnAttrDisplay(const SStringW& strValue, BOOL bLoading);
+    HRESULT OnAttrCache(const SStringW& strValue, BOOL bLoading);
     HRESULT OnAttrSkin(const SStringW& strValue, BOOL bLoading);
     HRESULT OnAttrClass(const SStringW& strValue, BOOL bLoading);
 
@@ -817,6 +841,7 @@ protected:
         MSG_WM_ERASEBKGND_EX(OnEraseBkgnd)
         MSG_WM_NCPAINT_EX(OnNcPaint)
         MSG_WM_CREATE(OnCreate)
+        MSG_WM_SIZE(OnSize)
         MSG_WM_DESTROY(OnDestroy)
         MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
         MSG_WM_SHOWWINDOW(OnShowWindow)
@@ -844,6 +869,7 @@ protected:
         ATTR_CUSTOM(L"visible", OnAttrVisible)
         ATTR_CUSTOM(L"show", OnAttrVisible)
         ATTR_CUSTOM(L"pos", OnAttrPos)
+        ATTR_CUSTOM(L"cache", OnAttrCache)
         ATTR_CUSTOM(L"display", OnAttrDisplay)
         ATTR_I18NSTRT(L"tip", m_strToolTipText, FALSE)  //使用语言包翻译
         ATTR_INT(L"msgtransparent", m_bMsgTransparent, FALSE)

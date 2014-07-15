@@ -257,6 +257,7 @@ namespace SOUI
 
         virtual HRESULT OffsetViewportOrg(int xOff, int yOff, LPPOINT lpPoint=NULL);
         virtual HRESULT GetViewportOrg(LPPOINT lpPoint);
+        virtual HRESULT SetViewportOrg(POINT pt);
 
         virtual HRESULT PushClipRect(LPCRECT pRect,UINT mode=RGN_AND);
         virtual HRESULT PushClipRegion(IRegion *pRegion,UINT mode=RGN_AND);

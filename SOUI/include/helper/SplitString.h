@@ -3,7 +3,7 @@
 namespace SOUI
 {
     template<class T,class TC>
-    int SplitString(const T &str, TC cSep ,SArray<T> & strLst)
+    size_t SplitString(const T &str, TC cSep ,SArray<T> & strLst)
     {
         int nBegin=0;
         int nEnd=0;
@@ -29,7 +29,7 @@ namespace SOUI
     typedef SArray<SStringA> SStringAList;
     typedef SArray<SStringW> SStringWList;
 
-    template int SplitString<SStringA,char>(const SStringA & str,char cSep, SStringAList & strLst);
-    template int SplitString<SStringW,wchar_t>(const SStringW & str,wchar_t cSep, SStringWList & strLst);
+    template size_t SplitString<SStringA,char>(const SStringA & str,char cSep, SStringAList & strLst);
+    template size_t SplitString<SStringW,wchar_t>(const SStringW & str,wchar_t cSep, SStringWList & strLst);
 
 }

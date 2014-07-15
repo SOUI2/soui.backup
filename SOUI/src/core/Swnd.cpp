@@ -4,78 +4,8 @@
 
 namespace SOUI
 {
-    typedef enum _PRSTATE{
-        PRS_LOOKSTART=0,    //查找开始窗口
-        PRS_DRAWING,        //窗口渲染中
-        PRS_MEETEND            //碰到指定的结束窗口
-    } PRSTATE;
 
-    BOOL _PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,SWindow *pStart,SWindow *pEnd,PRSTATE & prState )
-    {
-        RECT rcWnd;
-        pWndCur->GetWindowRect(&rcWnd);
-        if (!pWndCur->IsVisible(TRUE) || (!pRgn->IsEmpty() && !pRgn->RectInRegion(&rcWnd)))
-        {
-            return FALSE;
-        }
-        if(prState == PRS_DRAWING && pWndCur == pEnd)
-        {
-            prState=PRS_MEETEND;
-        }
 
-        if(prState == PRS_MEETEND)
-        {
-            return FALSE;
-        }
-
-        if(prState == PRS_LOOKSTART && pWndCur==pStart)
-        {
-            prState=PRS_DRAWING;//开始进行绘制
-        }
-
-        PRSTATE prsBack=prState;    //保存当前的绘制状态,在递归结束后根据这个状态来判断是否需要绘制非客户区
-
-        CRect rcClient;
-        pWndCur->GetClientRect(&rcClient);
-        if(pRgn->IsEmpty() || pRgn->RectInRegion(rcClient))
-        {//重绘客户区
-            CRgn rgnOldClip;
-            if(prsBack == PRS_DRAWING)
-            {
-                if(pWndCur->IsClipClient())
-                {
-                    pRT->PushClipRect(&rcClient);
-                }
-                pWndCur->SSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
-                pWndCur->SSendMessage(WM_PAINT, (WPARAM)pRT);
-            }
-
-            SPainter painter;
-
-            pWndCur->BeforePaint(pRT, painter);    //让子窗口继承父窗口的属性
-
-            SWindow *pChild=pWndCur->GetWindow(GSW_FIRSTCHILD);
-            while(pChild)
-            {
-                if(pChild==pEnd) break;
-                _PaintRegion(pRT,pRgn,pChild,pStart,pEnd,prState);
-                if(prState == PRS_MEETEND)
-                    break;
-                pChild=pChild->GetWindow(GSW_NEXTSIBLING);
-            }
-
-            pWndCur->AfterPaint(pRT, painter);
-            if(prsBack == PRS_DRAWING && pWndCur->IsClipClient())
-            {
-                pRT->PopClip();
-            }
-        }
-        if(prsBack == PRS_DRAWING) 
-            pWndCur->SSendMessage(WM_NCPAINT, (WPARAM)pRT);//ncpaint should be placed in tail of paint link
-
-        return prState==PRS_DRAWING || prState == PRS_MEETEND;
-    }
-    
 //////////////////////////////////////////////////////////////////////////
 // SWindow Implement
 //////////////////////////////////////////////////////////////////////////
@@ -97,6 +27,8 @@ SWindow::SWindow()
     , m_bUpdateLocked(FALSE)
     , m_bClipClient(FALSE)
     , m_bFocusable(FALSE)
+    , m_bCacheDraw(FALSE)
+    , m_bDirty(TRUE)
     , m_uData(0)
     , m_pOwner(NULL)
     , m_pCurMsg(NULL)
@@ -721,6 +653,92 @@ BOOL SWindow::NeedRedrawWhenStateChange()
     return m_style.GetStates()>1;
 }
 
+BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,SWindow *pStart,SWindow *pEnd,PRSTATE & prState )
+{
+    RECT rcWnd;
+    pWndCur->GetWindowRect(&rcWnd);
+    if (!pWndCur->IsVisible(TRUE) || (!pRgn->IsEmpty() && !pRgn->RectInRegion(&rcWnd)))
+    {
+        return FALSE;
+    }
+    if(prState == PRS_DRAWING && pWndCur == pEnd)
+    {
+        prState=PRS_MEETEND;
+    }
+
+    if(prState == PRS_MEETEND)
+    {
+        return FALSE;
+    }
+
+    if(prState == PRS_LOOKSTART && pWndCur==pStart)
+    {
+        prState=PRS_DRAWING;//开始进行绘制
+    }
+
+    PRSTATE prsBack=prState;    //保存当前的绘制状态,在递归结束后根据这个状态来判断是否需要绘制非客户区
+
+    CRect rcClient;
+    pWndCur->GetClientRect(&rcClient);
+    if(pRgn->IsEmpty() || pRgn->RectInRegion(rcClient))
+    {//重绘客户区
+        CRgn rgnOldClip;
+        if(prsBack == PRS_DRAWING)
+        {
+            if(pWndCur->IsClipClient())
+            {
+                pRT->PushClipRect(&rcClient);
+            }
+            if(pWndCur->IsCacheDraw())
+            {
+                CRect rcWnd=pWndCur->m_rcWindow;
+                IRenderTarget *pRTCache=pWndCur->GetCachedRenderTarget();
+                if(pWndCur->IsCacheDirty())
+                {
+                    //清除残留的alpha值
+                    HDC hdc=pRTCache->GetDC();
+                    HBRUSH hbr=::CreateSolidBrush(0);
+                    ::FillRect(hdc,&rcWnd,hbr);
+                    pRTCache->ReleaseDC(hdc);
+                    pRTCache->SetViewportOrg(-rcWnd.TopLeft());
+                    pWndCur->SSendMessage(WM_ERASEBKGND, (WPARAM)pRTCache);
+                    pWndCur->SSendMessage(WM_PAINT, (WPARAM)pRTCache);
+                    pWndCur->MarkCacheDirty(false);
+                }
+                pRT->BitBlt(&rcWnd,pRTCache,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
+            }else
+            {
+                pWndCur->SSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
+                pWndCur->SSendMessage(WM_PAINT, (WPARAM)pRT);
+            }
+        }
+
+        SPainter painter;
+
+        pWndCur->BeforePaint(pRT, painter);    //让子窗口继承父窗口的属性
+
+        SWindow *pChild=pWndCur->GetWindow(GSW_FIRSTCHILD);
+        while(pChild)
+        {
+            if(pChild==pEnd) break;
+            _PaintRegion(pRT,pRgn,pChild,pStart,pEnd,prState);
+            if(prState == PRS_MEETEND)
+                break;
+            pChild=pChild->GetWindow(GSW_NEXTSIBLING);
+        }
+
+        pWndCur->AfterPaint(pRT, painter);
+        if(prsBack == PRS_DRAWING && pWndCur->IsClipClient())
+        {
+            pRT->PopClip();
+        }
+    }
+    if(prsBack == PRS_DRAWING) 
+        pWndCur->SSendMessage(WM_NCPAINT, (WPARAM)pRT);//ncpaint should be placed in tail of paint link
+
+    return prState==PRS_DRAWING || prState == PRS_MEETEND;
+}
+
 void SWindow::RedrawRegion(IRenderTarget *pRT, IRegion *pRgn)
 {
     PRSTATE prState=PRS_LOOKSTART;
@@ -746,6 +764,7 @@ void SWindow::InvalidateRect(LPRECT lprect)
 void SWindow::InvalidateRect(const CRect& rect)
 {
     if(!IsVisible(TRUE)) return ;
+    MarkCacheDirty(true);
     BOOL bUpdateLocked=FALSE;
     SWindow *pWnd=this;
     while(pWnd && !bUpdateLocked)
@@ -1695,6 +1714,40 @@ HRESULT SWindow::OnAttrClass( const SStringW& strValue, BOOL bLoading )
         {
             InvalidateRect(m_rcWindow);
         }
+    }
+    return S_FALSE;
+}
+
+void SWindow::OnSize( UINT nType, CSize size )
+{
+    if(m_bCacheDraw)
+    {
+        if(!m_cachedRT)
+        {
+            GETRENDERFACTORY->CreateRenderTarget(&m_cachedRT,size.cx,size.cy);
+        }else
+        {
+            m_cachedRT->Resize(size);
+        }
+    }
+}
+
+HRESULT SWindow::OnAttrCache( const SStringW& strValue, BOOL bLoading )
+{
+    m_bCacheDraw = strValue != L"0";
+    
+    if(!bLoading)
+    {
+        if(m_bCacheDraw && !m_cachedRT)
+        {
+            GETRENDERFACTORY->CreateRenderTarget(&m_cachedRT,m_rcWindow.Width(),m_rcWindow.Height());
+        }
+        if(!m_bCacheDraw && m_cachedRT)
+        {
+            m_cachedRT=NULL;
+        }
+        m_bDirty=TRUE;
+        InvalidateRect(m_rcWindow);
     }
     return S_FALSE;
 }

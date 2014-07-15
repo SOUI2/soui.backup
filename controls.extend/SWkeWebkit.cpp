@@ -42,6 +42,7 @@ namespace SOUI
 
     void SWkeWebkit::OnSize( UINT nType, CSize size )
     {
+        __super::OnSize(nType,size);
         m_pWebView->resize(size.cx,size.cy);
         m_pWebView->tick();
     }

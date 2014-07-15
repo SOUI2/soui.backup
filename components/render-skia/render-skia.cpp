@@ -670,6 +670,15 @@ namespace SOUI
         }
         return S_OK;
     }
+    
+    HRESULT SRenderTarget_Skia::SetViewportOrg( POINT pt )
+    {
+        m_ptOrg.fX = pt.x;
+        m_ptOrg.fY = pt.y;
+        return S_OK;
+    }
+
+
     HDC SRenderTarget_Skia::GetDC( UINT uFlag )
     {
         if(m_hGetDC) return m_hGetDC;
