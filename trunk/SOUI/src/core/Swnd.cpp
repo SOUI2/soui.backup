@@ -1224,12 +1224,21 @@ IRenderTarget * SWindow::GetRenderTarget(const LPRECT pRc/*=NULL*/,DWORD gdcFlag
         m_rcGetRT.IntersectRect(pRc,&m_rcGetRT);
         m_bClipRT=!m_rcGetRT.EqualRect(pRc);
     }
-    IRenderTarget *pRT=GetContainer()->OnGetRenderTarget(m_rcGetRT,gdcFlags);
+    IRenderTarget *pRT=NULL;
+    if(!m_bCacheDraw) 
+        pRT=GetContainer()->OnGetRenderTarget(m_rcGetRT,gdcFlags);
+    else
+    {
+        pRT=m_cachedRT;
+        pRT->SetViewportOrg(m_rcWindow.TopLeft());
+    }
+    ASSERT(pRT);
+    
     if(m_bClipRT)
     {
         pRT->PushClipRect(&m_rcGetRT,RGN_COPY);
     }
-    if(gdcFlags&OLEDC_PAINTBKGND)
+    if(!m_bCacheDraw && gdcFlags&OLEDC_PAINTBKGND)
         PaintBackground(pRT,&m_rcGetRT);
         
     m_oldFont=pRT->GetCurrentObject(OT_FONT);
@@ -1264,7 +1273,16 @@ void SWindow::ReleaseRenderTarget(IRenderTarget *pRT)
     m_oldFont=NULL;
     m_oldColor=CR_INVALID;
     
-    GetContainer()->OnReleaseRenderTarget(pRT,m_rcGetRT,m_gdcFlags);
+    if(!m_bCacheDraw)
+    {
+        GetContainer()->OnReleaseRenderTarget(pRT,m_rcGetRT,m_gdcFlags);
+    }
+    else if(!(m_gdcFlags & OLEDC_NODRAW))
+    {//画到自己的缓存上时，需要把绘制内容传递给host
+        IRenderTarget *pRTHost=GetContainer()->OnGetRenderTarget(m_rcGetRT,m_gdcFlags);
+        pRTHost->BitBlt(m_rcGetRT,pRT,m_rcGetRT.left,m_rcGetRT.top,SRCCOPY|0x80000000);
+        GetContainer()->OnReleaseRenderTarget(pRTHost,m_rcGetRT,m_gdcFlags);
+    }
     
     m_bClipRT=FALSE;
     m_gdcFlags=-1;
