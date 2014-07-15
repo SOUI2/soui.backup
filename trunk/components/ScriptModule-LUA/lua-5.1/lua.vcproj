@@ -128,7 +128,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\$(ProjectName)_static_d.lib"
+				OutputFile="$(OutDir)\$(ProjectName)_d.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -255,7 +255,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\$(ProjectName)_static.lib"
+				OutputFile="$(OutDir)\$(ProjectName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"

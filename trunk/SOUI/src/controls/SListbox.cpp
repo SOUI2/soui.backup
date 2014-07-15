@@ -443,12 +443,12 @@ void SListBox::OnPaint(IRenderTarget * pRT)
 
 void SListBox::OnSize(UINT nType,CSize size)
 {
+    __super::OnSize(nType,size);
     CRect rcClient;
     SWindow::GetClientRect(&rcClient);
     CSize szView(rcClient.Width(),GetCount()*m_nItemHei);
     if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
     SetViewSize(szView);
-    __super::OnSize(nType,size);
 }
 
 void SListBox::OnLButtonDown(UINT nFlags,CPoint pt)

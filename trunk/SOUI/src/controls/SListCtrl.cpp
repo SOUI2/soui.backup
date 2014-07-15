@@ -694,6 +694,7 @@ void SListCtrl::UpdateChildrenPosition()
 
 void SListCtrl::OnSize(UINT nType, CSize size)
 {
+    __super::OnSize(nType,size);
     UpdateScrollBar();
     UpdateHeaderCtrl();
 }

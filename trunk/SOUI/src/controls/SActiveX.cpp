@@ -96,6 +96,7 @@ namespace SOUI
 
     void SActiveX::OnSize( UINT nType, CSize size )
     {
+        __super::OnSize(nType,size);
         if(m_axContainer->GetActiveXControl())
         {
             m_axContainer->OnPosRectChange(m_rcWindow);        

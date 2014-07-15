@@ -116,6 +116,7 @@ struct IRenderTarget: public IObjRef
     
     virtual HRESULT OffsetViewportOrg(int xOff, int yOff, LPPOINT lpPoint=NULL)=0;
     virtual HRESULT GetViewportOrg(LPPOINT lpPoint) =0;
+    virtual HRESULT SetViewportOrg(POINT pt) =0;
 
 	virtual HRESULT PushClipRect(LPCRECT pRect,UINT mode=RGN_AND)=0;
 	virtual HRESULT PushClipRegion(IRegion *pRegion,UINT mode=RGN_AND)=0;

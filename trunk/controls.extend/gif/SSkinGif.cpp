@@ -10,7 +10,7 @@ namespace SOUI
     LRESULT SSkinGif::OnAttrSrc( const SStringW &strValue,BOOL bLoading )
     {
         SStringWList strLst;
-        int nSegs=SplitString(strValue,L':',strLst);
+        size_t nSegs=SplitString(strValue,L':',strLst);
         CAutoRefPtr<IImgX> pImgX;
         if(nSegs == 2)
         {

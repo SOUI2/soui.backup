@@ -184,9 +184,9 @@ class S_NO_VTABLE ActiveXSite :   public IOleClientSite,
     bool InsideClippingRegion(const RECT& rcClip) const
     {
         // true when top/let or bottom/right corners intersect into client area
-        const POINT* pts = reinterpret_cast<const POINT*>(&m_rcPos);
-        const POINT* ptc = reinterpret_cast<const POINT*>(&rcClip);
-        return ( ::PtInRect(&rcClip, pts[0]) || ::PtInRect(&rcClip, pts[0]) ||
+        const POINT* pts = (const POINT*)(&m_rcPos);
+        const POINT* ptc = (const POINT*)(&rcClip);
+        return ( ::PtInRect(&rcClip, pts[0]) || ::PtInRect(&rcClip, pts[1]) ||
                  ::PtInRect(&m_rcPos,ptc[0]) || ::PtInRect(&m_rcPos, ptc[1] ));
     }
 
@@ -218,8 +218,9 @@ class S_NO_VTABLE ActiveXSite :   public IOleClientSite,
             return lResult;
         }
         if ( m_bVisible && m_spViewObject != NULL ) {
+            RECTL rcPos={m_rcPos.left,m_rcPos.top,m_rcPos.right,m_rcPos.bottom};
             lResult = m_spViewObject->Draw(DVASPECT_CONTENT, -1, NULL, NULL, NULL, hDC,
-                                     reinterpret_cast<LPCRECTL>(&m_rcPos), NULL, NULL, 0);
+                                     &rcPos, NULL, NULL, 0);
         }
         return lResult;
     }
