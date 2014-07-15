@@ -9,7 +9,7 @@
     </caption>
     <tabctrl pos="5,30,-5,-5" cursel="0" focusable="0" inset="10,0,3,0" animatesteps="10">
       <page title="page1">
-        <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30">
+        <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cache="0">
           <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
           </header>
         </listctrl>
