@@ -695,14 +695,19 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
                 IRenderTarget *pRTCache=pWndCur->GetCachedRenderTarget();
                 if(pWndCur->IsCacheDirty())
                 {
-                    //Çå³ý²ÐÁôµÄalphaÖµ
-                    HDC hdc=pRTCache->GetDC();
-                    HBRUSH hbr=::CreateSolidBrush(0);
-                    ::FillRect(hdc,&rcWnd,hbr);
-                    pRTCache->ReleaseDC(hdc);
                     pRTCache->SetViewportOrg(-rcWnd.TopLeft());
+                    pRTCache->FillSolidRect(rcWnd,-1);
+                    CAutoRefPtr<IFont> oldFont;
+                    COLORREF crOld=pRT->GetTextColor();
+                    pRTCache->SelectObject(pRT->GetCurrentObject(OT_FONT),(IRenderObj**)&oldFont);
+                    pRTCache->SetTextColor(crOld);
+                    
                     pWndCur->SSendMessage(WM_ERASEBKGND, (WPARAM)pRTCache);
                     pWndCur->SSendMessage(WM_PAINT, (WPARAM)pRTCache);
+                    
+                    pRTCache->SelectObject(oldFont);
+                    pRTCache->SetTextColor(crOld);
+                    
                     pWndCur->MarkCacheDirty(false);
                 }
                 pRT->BitBlt(&rcWnd,pRTCache,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
@@ -1230,7 +1235,7 @@ IRenderTarget * SWindow::GetRenderTarget(const LPRECT pRc/*=NULL*/,DWORD gdcFlag
     else
     {
         pRT=m_cachedRT;
-        pRT->SetViewportOrg(m_rcWindow.TopLeft());
+        pRT->SetViewportOrg(-m_rcWindow.TopLeft());
     }
     ASSERT(pRT);
     

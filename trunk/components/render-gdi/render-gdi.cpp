@@ -738,23 +738,50 @@ namespace SOUI
 
     HRESULT SRenderTarget_GDI::FillSolidRect( LPCRECT pRect,COLORREF cr )
     {
-        HBRUSH hbr=::CreateSolidBrush(cr&0x00FFFFFF);
-        ALPHAINFO ai;
-        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
-        ::FillRect(m_hdc,pRect,hbr);
-        CGdiAlpha::AlphaRestore(ai);
-        ::DeleteObject(hbr);
-        return S_OK;    
-    }
+        int nWid=pRect->right-pRect->left;
+        int nHei=pRect->bottom-pRect->top;
+        
+        BITMAPINFO bmi;
+        memset(&bmi, 0, sizeof(bmi));
+        bmi.bmiHeader.biSize        = sizeof(BITMAPINFOHEADER);
+        bmi.bmiHeader.biWidth       = nWid;
+        bmi.bmiHeader.biHeight      = -nHei; // top-down image 
+        bmi.bmiHeader.biPlanes      = 1;
+        bmi.bmiHeader.biBitCount    = 32;
+        bmi.bmiHeader.biCompression = BI_RGB;
+        bmi.bmiHeader.biSizeImage   = 0;
 
-    HRESULT SRenderTarget_GDI::Clear(COLORREF cr)
-    {
-        cr &= 0x00FFFFFF;
-        RECT rcCanvas={0,0,m_curBmp->Width(),m_curBmp->Height()};
-        HBRUSH hbr=::CreateSolidBrush(cr);
-        ::FillRect(m_hdc,&rcCanvas,hbr);
-        ::DeleteObject(hbr);
-        return S_OK;
+        LPDWORD pBits=NULL;
+        HDC hdc=::GetDC(NULL);
+        HBITMAP hBmp=CreateDIBSection(hdc,&bmi,DIB_RGB_COLORS,(void**)&pBits,0,0);
+        ::ReleaseDC(NULL,hdc);
+        if(!hBmp) return S_FALSE;
+        
+        BYTE r=GetRValue(cr);
+        BYTE g=GetGValue(cr);
+        BYTE b=GetBValue(cr);
+        BYTE a=(cr&0xFF000000)>>24;
+        r = (r*a)>>8;
+        g = (g*a)>>8;
+        b = (b*a)>>8;
+        DWORD crARGB = a<<24 | r<<16 | g<<8 | b;
+        BITMAP bm;
+        GetObject(hBmp,sizeof(bm),&bm);
+        DWORD *p = pBits;
+        for(int y=0;y<nHei;y++) for(int x=0;x<nWid;x++,p++)
+        {
+            memcpy(p,&crARGB,4);
+        }
+        
+        HDC hMemDC=CreateCompatibleDC(m_hdc);
+        ::SelectObject(hMemDC,hBmp);
+        
+        ::FillRect(m_hdc,pRect,(HBRUSH)::GetStockObject(BLACK_BRUSH));
+        BLENDFUNCTION bf={AC_SRC_OVER,0,255,AC_SRC_ALPHA};
+        AlphaBlend(m_hdc,pRect->left,pRect->top,nWid,nHei,hMemDC,0,0,nWid,nHei,bf);
+        ::DeleteDC(hMemDC);
+        ::DeleteObject(hBmp);
+        return S_OK;    
     }
 
 }
