@@ -866,10 +866,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ResModeSelDlg.h"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
@@ -964,10 +960,6 @@
 						AdditionalIncludeDirectories="..\DUIEngine\include;&quot;$(IntDir)&quot;"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\duires\resmode.zip"
-				>
 			</File>
 			<File
 				RelativePath=".\resource.h"
