@@ -3,7 +3,8 @@
 #include <Imm.h>
 #pragma comment(lib,"imm32.lib")
 
-#ifndef _WIN64
+#if defined(SUPPORT_WKE) && !defined(_WIN64)
+
 #pragma comment(lib,"wke.lib")
 
 namespace SOUI
@@ -243,4 +244,4 @@ namespace SOUI
 	}
 }
 
-#endif //_WIN64
+#endif //!defined(_WIN64)
