@@ -189,10 +189,7 @@ void SHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
             m_memRT->PushClipRect(&rcInvalid,RGN_COPY);
         }
         //Çå³ý²ÐÁôµÄalphaÖµ
-        HDC hdc=m_memRT->GetDC();
-        HBRUSH hbr=::CreateSolidBrush(0);
-        ::FillRect(hdc,&rcInvalid,hbr);
-        m_memRT->ReleaseDC(hdc);
+        m_memRT->FillSolidRect(rcInvalid,0);
 
         if(m_bCaretActive) DrawCaret(m_ptCaret);//clear old caret 
         RedrawRegion(m_memRT, pRgnUpdate);
@@ -881,7 +878,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 {
                     *x+=xStepLen;
                     *y+=yStepLen;
-                    pRT->Clear();
+                    pRT->FillSolidRect(rcWnd,0);
                     CPoint ptAnchor;
                     if(dwFlags & AW_VER_NEGATIVE)
                         ptAnchor.y=rcWnd.bottom-rcShow.Height();
@@ -900,7 +897,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 for(int i=0;i<nSteps;i++)
                 {
                     rcShow.DeflateRect(xStep,yStep);
-                    pRT->Clear();
+                    pRT->FillSolidRect(rcWnd,0);
                     _BitBlt(pRT,m_memRT,rcShow,rcShow.TopLeft());
                     UpdateLayerFromRenderTarget(pRT,0xFF);
                     Sleep(10);
@@ -961,7 +958,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 {
                     *x+=xStepLen;
                     *y+=yStepLen;
-                    pRT->Clear();
+                    pRT->FillSolidRect(rcWnd,0);
                     CPoint ptAnchor;
                     if(dwFlags & AW_VER_POSITIVE)
                         ptAnchor.y=rcWnd.bottom-rcShow.Height();
@@ -982,7 +979,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 for(int i=0;i<nSteps;i++)
                 {
                     rcShow.InflateRect(xStep,yStep);
-                    pRT->Clear();
+                    pRT->FillSolidRect(rcWnd,0);
                     _BitBlt(pRT,m_memRT,rcShow,rcShow.TopLeft());
                     UpdateLayerFromRenderTarget(pRT,0xFF);
                     Sleep(10);
