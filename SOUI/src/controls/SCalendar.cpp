@@ -296,10 +296,10 @@ void SCalendar::Init()
     m_evtSet.addEvent(EventCalendarSelDay::EventID);
     m_nTitleHei=TITLE_HEIGHT;
     m_nFooterHei=FOOTER_HEIGHT;
-    m_crWeekend=RGB(255,0,0);
-    m_crDay=RGB(255,0,0);
-    m_crTitleBack=RGB(0,255,0);
-    m_crDayBack=RGB(0,0,255);
+    m_crWeekend=RGBA(255,0,0,255);
+    m_crDay=RGBA(255,0,0,255);
+    m_crTitleBack=RGBA(0,255,0,255);
+    m_crDayBack=RGBA(0,0,255,255);
     m_pTitleSkin=m_pDaySkin=NULL;
 
     m_iHoverDay=0;
