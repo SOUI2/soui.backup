@@ -696,7 +696,7 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
                 if(pWndCur->IsCacheDirty())
                 {
                     pRTCache->SetViewportOrg(-rcWnd.TopLeft());
-                    pRTCache->FillSolidRect(rcWnd,-1);
+                    pRTCache->BitBlt(&rcWnd,pRT,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);//把父窗口的内容复制过来。
                     CAutoRefPtr<IFont> oldFont;
                     COLORREF crOld=pRT->GetTextColor();
                     pRTCache->SelectObject(pRT->GetCurrentObject(OT_FONT),(IRenderObj**)&oldFont);
