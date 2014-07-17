@@ -356,6 +356,7 @@ public:                                                             \
 #define ATTR_ICON(attribname, varname, allredraw)        \
     if (attribname == strAttribName)                            \
         {                                                       \
+        if(varname) DeleteObject(varname);          \
         SStringT strValueT=S_CW2T(strValue);        \
         int nPos=strValueT.ReverseFind(_T(':'));\
         if(nPos!=-1)\

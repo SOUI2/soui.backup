@@ -2,7 +2,7 @@
   <root class="cls_dlg_frame" cache="1">
     <caption pos="0,0,-0,30">
       <icon pos="10,8" src="LOGO:16"/>
-      <text pos="30,10" class="cls_txt_red">SOUI-DEMO version:%ver%</text>
+      <text class="cls_txt_red">SOUI-DEMO version:%ver%</text>
       <imgbtn id="1" skin="btn_sys_close"    pos="-45,0" tip="close" animate="1"/>
       <imgbtn id="2" skin="btn_sys_maximize"  pos="-83,0" animate="1" />
       <imgbtn id="3" name="按钮_恢复" skin="btn_sys_restore"  pos="-83,0" show="0" animate="1" />

@@ -758,10 +758,8 @@ CSize SIconWnd::GetDesiredSize(LPRECT pRcContainer)
     if(!m_theIcon) return CSize();
     ICONINFO iconInfo={0};
     GetIconInfo(m_theIcon,&iconInfo);
-    BITMAP bm={0};
-    GetObject(&iconInfo.hbmColor,sizeof(bm),&bm);
     
-    return CSize(bm.bmWidth,bm.bmHeight);
+    return CSize(iconInfo.xHotspot*2,iconInfo.yHotspot*2);
 }
 
 void SIconWnd::SetIcon(HICON hIcon)
