@@ -41,7 +41,7 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
     "#pragma code_page(936)\r\n"
-    "#include ""duires\\winres.rc2"" //DUI资源\r\n"
+    "#include ""duires\\winres.rc2"" //SOUI资源\r\n"
     "#endif\0"
 END
 
@@ -70,12 +70,12 @@ BEGIN
     BEGIN
         BLOCK "080404b0"
         BEGIN
-            VALUE "FileDescription", "Dui-Demo"
+            VALUE "FileDescription", "Demo"
             VALUE "FileVersion", "1, 0, 0, 1"
-            VALUE "InternalName", "Dui-Demo"
+            VALUE "InternalName", "Demo"
             VALUE "LegalCopyright", "Copyright (C) 2011"
-            VALUE "OriginalFilename", "Dui-Demo.exe"
-            VALUE "ProductName", "Dui-Demo"
+            VALUE "OriginalFilename", "Demo.exe"
+            VALUE "ProductName", "Demo"
             VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END

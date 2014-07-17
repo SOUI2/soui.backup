@@ -43,7 +43,7 @@ namespace SOUI
         item.lParam=lParam;
         m_arrItems.InsertAt(iItem,item);
         //需要更新列的序号
-        for(int i=0;i<GetItemCount();i++)
+        for(size_t i=0;i<GetItemCount();i++)
         {
             if(i==iItem) continue;
             if(m_arrItems[i].iOrder>=iItem)

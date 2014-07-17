@@ -124,7 +124,7 @@ void SLink::OnInitFinished( pugi::xml_node xmlNode)
 BOOL SLink::OnSetCursor(const CPoint &pt)
 {
     if(!m_rcText.PtInRect(pt)) return FALSE;
-    HCURSOR hCursor=GETRESPROVIDER->LoadCursor(m_style.m_lpCursorName);
+    HCURSOR hCursor=GETRESPROVIDER->LoadCursor(m_style.m_strCursor);
     ::SetCursor(hCursor);
     return TRUE;
 }

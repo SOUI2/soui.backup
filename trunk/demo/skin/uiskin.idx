@@ -58,10 +58,14 @@
     <file name="gif_penguin"			path="image\penguin.gif"/>
   </GIF>
   <ICON>
-    <file name="IDP_ICO_LOGO"  path="image\img_logo.ico"    />
+    <file name="LOGO"  path="image\img_logo.ico"    />
   </ICON>
   <BITMAP>
     <file name="IDP_BMPMASK"  path="image\solve.bmp" />
   </BITMAP>
+  <CURSOR>
+    <file name="ANI_ARROW"  path="image\021.ani" />
+    <file name="CUR_TST" path="image\camera_capture.cur"/>
+  </CURSOR>
 </resource>
 

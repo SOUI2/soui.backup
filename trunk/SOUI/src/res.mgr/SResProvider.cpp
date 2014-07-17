@@ -29,7 +29,17 @@ HICON SResProviderPE::LoadIcon(LPCTSTR pszResName ,int cx/*=0*/,int cy/*=0*/)
 
 HCURSOR SResProviderPE::LoadCursor(LPCTSTR pszResName )
 {
-    return ::LoadCursor(m_hResInst,pszResName);
+    HRSRC hRes=::FindResource(m_hResInst,pszResName,RT_ANICURSOR);
+    if(hRes)
+    {
+        DWORD dwSize=SizeofResource(m_hResInst, hRes);
+        HGLOBAL hGlob=LoadResource(m_hResInst, hRes);
+        LPBYTE pBytes=(LPBYTE)LockResource(hGlob); 
+        return  (HCURSOR)CreateIconFromResource(pBytes,dwSize,FALSE,0x00030000);
+    }else
+    {
+        return ::LoadCursor(m_hResInst,pszResName);    
+    }    
 }
 
 IBitmap * SResProviderPE::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
@@ -146,11 +156,14 @@ BOOL SResProviderPE::HasResource( LPCTSTR strType,LPCTSTR pszResName )
 
 HRSRC SResProviderPE::MyFindResource( LPCTSTR strType, LPCTSTR pszResName )
 {
-    if(_tcsicmp(strType,_T("BITMAP"))==0) strType=RT_BITMAP;
-    else if(_tcsicmp(strType,_T("ICON"))==0) strType=RT_ICON;
-    else if(_tcsicmp(strType,_T("CURSOR"))==0) strType=RT_CURSOR;
+    if(_tcsicmp(strType,_T("bitmap"))==0) strType=RT_BITMAP;
+    else if(_tcsicmp(strType,_T("icon"))==0) strType=RT_GROUP_ICON;
+    else if(_tcsicmp(strType,_T("cursor"))==0) strType=RT_GROUP_CURSOR;
 
-    return ::FindResource(m_hResInst, pszResName, strType);
+    HRSRC hRet = ::FindResource(m_hResInst, pszResName, strType);
+    if(!hRet && strType==RT_GROUP_CURSOR)
+        hRet = ::FindResource(m_hResInst,pszResName,RT_ANICURSOR);
+    return hRet;
 }
 
 
@@ -187,7 +200,7 @@ HCURSOR SResProviderFiles::LoadCursor(LPCTSTR pszResName )
 {
     SStringT strPath=GetRes(_T("CURSOR"),pszResName);
     if(strPath.IsEmpty()) return NULL;
-    return (HCURSOR)::LoadImage(NULL, pszResName, IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
+    return (HCURSOR)::LoadImage(NULL, strPath, IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
 }
 
 IBitmap * SResProviderFiles::LoadImage( LPCTSTR strType,LPCTSTR pszResName )

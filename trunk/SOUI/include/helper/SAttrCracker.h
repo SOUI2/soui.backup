@@ -361,8 +361,8 @@ public:                                                             \
         if(nPos!=-1)\
         {\
         int cx=0;                                                \
-        ::StrToIntExW(strValue,STIF_DEFAULT,&cx);            \
-        varname = GETRESPROVIDER->LoadIcon(strValueT,cx,cx);        \
+        ::StrToIntEx(strValueT.Right(strValueT.GetLength()-nPos-1),STIF_DEFAULT,&cx);            \
+        varname = GETRESPROVIDER->LoadIcon(strValueT.Left(nPos),cx,cx);        \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }else\
         varname = GETRESPROVIDER->LoadIcon(strValueT);        \
