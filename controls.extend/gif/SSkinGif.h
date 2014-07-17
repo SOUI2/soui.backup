@@ -12,6 +12,10 @@ purpose:	自定义皮肤对象
 #include <interface/SSkinobj-i.h>
 #include <unknown/obj-ref-impl.hpp>
 
+namespace Gdiplus
+{
+class Bitmap;
+}
 namespace SOUI
 {
     class SGifFrame
@@ -21,6 +25,7 @@ namespace SOUI
         int                  nDelay;
     };
 
+    
     class SSkinGif : public ISkinObj
     {
         SOUI_CLASS_NAME(SSkinGif, L"gif")
@@ -29,6 +34,10 @@ namespace SOUI
         {
 
         }
+
+        static BOOL Gdiplus_Startup();
+        static void Gdiplus_Shutdown();
+
         virtual ~SSkinGif()
         {
             if(m_pFrames) delete [] m_pFrames;
@@ -59,7 +68,7 @@ namespace SOUI
         SOUI_ATTRS_END()
     protected:
         LRESULT OnAttrSrc(const SStringW &strValue,BOOL bLoading);
-        int LoadFromImgX(IImgX *pImgX);
+        int LoadFromGdipImage(Gdiplus::Bitmap * pImg);
         int m_nFrames;
         int m_iFrame;
 
