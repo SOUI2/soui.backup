@@ -190,7 +190,7 @@ void SWindow::Move(int x,int y, int cx/*=-1*/,int cy/*=-1*/)
 // Set current cursor, when hover
 BOOL SWindow::OnSetCursor(const CPoint &pt)
 {
-    HCURSOR hCursor=GETRESPROVIDER->LoadCursor(m_style.m_lpCursorName);
+    HCURSOR hCursor=GETRESPROVIDER->LoadCursor(m_style.m_strCursor);
     ::SetCursor(hCursor);
     return TRUE;
 }

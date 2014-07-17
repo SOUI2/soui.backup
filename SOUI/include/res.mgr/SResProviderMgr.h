@@ -34,8 +34,14 @@ namespace SOUI
 
         HCURSOR LoadCursor(LPCTSTR pszResName)
         {
-            if(pszResName>=IDC_ARROW && pszResName<=IDC_HELP)
-                return ::LoadCursor(NULL,pszResName);
+            if(pszResName >= IDC_ARROW && pszResName <= IDC_HELP)
+                return ::LoadCursor(NULL, pszResName);
+            else 
+            {
+                LPCTSTR pszCursorID=SysCursorName2ID(pszResName);
+                if(pszCursorID)
+                    return ::LoadCursor(NULL, pszCursorID);
+            }
             IResProvider *pResProvider=GetMatchResProvider(_T("CURSOR"),pszResName);
             if(!pResProvider) return NULL;
             return pResProvider->LoadCursor(pszResName);
@@ -94,6 +100,7 @@ namespace SOUI
         
     protected:
         IResProvider * GetMatchResProvider(LPCTSTR pszType,LPCTSTR pszResName);
+        LPCTSTR SysCursorName2ID(LPCTSTR pszCursorName);
         
         SList<IResProvider*> m_lstResProvider;
     };

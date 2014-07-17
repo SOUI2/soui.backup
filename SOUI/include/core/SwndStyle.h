@@ -17,20 +17,13 @@ class SOUI_EXP SwndStyle : public SObject
 
     enum
     {
-        // Specify by "cursor" attribute
-        Cursor_Mask     = 0xF00UL,
-        Cursor_Arrow    = 0x000UL,   // cursor = "arrow"
-        Cursor_Hand     = 0x100UL,   // cursor = "hand"
+        Align_Left               = 0x000UL, // valign = top
+        Align_Center             = 0x100UL, // valign = middle
+        Align_Right              = 0x200UL, // valign = bottom
 
-
-        Align_Left                = 0x000UL, // valign = top
-        Align_Center            = 0x100UL, // valign = middle
-        Align_Right                = 0x200UL, // valign = bottom
-
-        VAlign_Top                = 0x0000UL, // valign = top
+        VAlign_Top               = 0x0000UL, // valign = top
         VAlign_Middle            = 0x1000UL, // valign = middle
         VAlign_Bottom            = 0x2000UL, // valign = bottom
-
     };
 public:
     SwndStyle();
@@ -44,7 +37,7 @@ public:
     int m_nSpacing;
     BOOL m_bDotted;
 
-    LPCTSTR m_lpCursorName;
+    SStringW m_strCursor;
     SStringW m_strSkinName,m_strNcSkinName;
 
     UINT GetTextAlign();
@@ -95,10 +88,7 @@ protected:
         ATTR_INT(L"y-margin", m_nMarginY, TRUE)
         ATTR_INT(L"margin", m_nMarginX = m_nMarginY, TRUE) // 这样比较bt，不过.....凑合用吧
         ATTR_INT(L"spacing", m_nSpacing, TRUE)
-        ATTR_ENUM_BEGIN(L"cursor", LPCTSTR, FALSE)
-            ATTR_ENUM_VALUE(L"hand", IDC_HAND)
-            ATTR_ENUM_VALUE(L"arrow", IDC_ARROW)
-        ATTR_ENUM_END(m_lpCursorName)
+        ATTR_STRINGW(L"cursor",m_strCursor,FALSE)
         ATTR_INT(L"dotted",m_bDotted,FALSE)
     SOUI_ATTRS_END()
 };

@@ -127,7 +127,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 #endif//SUPPORT_WKE
         theApp->RegisterWndFactory(TplSWindowFactory<SGifPlayer>());//注册GIFPlayer
         theApp->RegisterSkinFactory(TplSkinFactory<SSkinGif>());//注册SkinGif
-
+        SSkinGif::Gdiplus_Startup();
+        
         theApp->AddResProvider(pResProvider);
 
         BOOL bOK=theApp->Init(_T("IDR_DUI_INIT")); //初始化DUI系统,原来的系统初始化方式依然可以使用。
@@ -145,6 +146,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
         delete theApp;
         delete pResProvider;
+        SSkinGif::Gdiplus_Shutdown();
 #ifdef SUPPORT_WKE
         SWkeWebkit::WkeWebkit_Shutdown();
 #endif//SUPPORT_WKE
