@@ -23,10 +23,11 @@ void SGifPlayer::OnTimer(char cTimerID)
 		m_iCurFrame++;
 		m_iCurFrame%=nStates;
 		Invalidate();
+        
         if(m_pgif->GetFrameDelay()==0)
-            SetTimer(1,40);
+            SetTimer(1,90);
         else
-            SetTimer(1, m_pgif->GetFrameDelay());	
+            SetTimer(1, m_pgif->GetFrameDelay()*10);	
 	}
 }
 
@@ -35,10 +36,7 @@ void SGifPlayer::OnPaint( IRenderTarget *pRT )
 	__super::OnPaint(pRT);
 	if(m_pgif)
 	{		
-        SStringT strTxt;
-        strTxt.Format(_T("frame %d"),m_iCurFrame);
 		m_pgif->Draw(pRT, m_rcWindow,m_iCurFrame,m_byAlpha);
-        pRT->DrawText(strTxt,strTxt.GetLength(),&m_rcWindow,0);
 	}
 }
 
@@ -51,7 +49,7 @@ void SGifPlayer::OnShowWindow( BOOL bShow, UINT nStatus )
 	}else if(m_pgif)
 	{
         if(m_pgif->GetFrameDelay()==0)
-            SetTimer(1,40);
+            SetTimer(1,90);
         else
 		    SetTimer(1, m_pgif->GetFrameDelay()*10);					
 	}

@@ -4,6 +4,11 @@
 #include <interface/imgdecoder-i.h>
 #include <interface/render-i.h>
 
+#include <GdiPlus.h>
+using namespace Gdiplus;
+
+#pragma comment(lib,"gdiplus.lib")
+
 namespace SOUI
 {
 
@@ -11,15 +16,31 @@ namespace SOUI
     {
         SStringWList strLst;
         size_t nSegs=SplitString(strValue,L':',strLst);
-        CAutoRefPtr<IImgX> pImgX;
+        LPBYTE pBuf=NULL;
+        size_t szBuf=0;
+
         if(nSegs == 2)
         {
-            pImgX = GETRESPROVIDER->LoadImgX(strLst[0],strLst[1]);
+            szBuf=GETRESPROVIDER->GetRawBufferSize(strLst[0],strLst[1]);
+            if(szBuf)
+            {
+                pBuf=new BYTE[szBuf];
+                GETRESPROVIDER->GetRawBuffer(strLst[0],strLst[1],pBuf,szBuf);
+            }
         }else
         {//自动从GIF资源类型里查找资源
-            pImgX = GETRESPROVIDER->LoadImgX(L"gif",strLst[0]);
+            szBuf=GETRESPROVIDER->GetRawBufferSize(L"gif",strLst[0]);
+            if(szBuf)
+            {
+                pBuf=new BYTE[szBuf];
+                GETRESPROVIDER->GetRawBuffer(L"gif",strLst[0],pBuf,szBuf);
+            }
         }
-        LoadFromImgX(pImgX);
+        if(pBuf)
+        {
+            LoadFromMemory(pBuf,szBuf);
+            delete []pBuf;
+        }
         return S_OK;
     }
 
@@ -62,35 +83,98 @@ void SSkinGif::SelectActiveFrame( int iFrame )
 
 int SSkinGif::LoadFromFile( LPCTSTR pszFileName )
 {
-    CAutoRefPtr<IImgX> pImgX;
-    GETRENDERFACTORY->GetImgDecoderFactory()->CreateImgX(&pImgX);
-    pImgX->LoadFromFile(pszFileName);
-    return LoadFromImgX(pImgX);
+    Bitmap *pImg = Bitmap::FromFile(pszFileName);
+    if(!pImg) return 0;
+    if(pImg->GetLastStatus() != Gdiplus::Ok)
+    {
+        delete pImg;
+        return 0;
+    }
+
+    LoadFromGdipImage(pImg);
+    delete pImg;
+    return m_nFrames;
 }
 
-int SSkinGif::LoadFromMemory( LPVOID pBits,size_t szData )
+int SSkinGif::LoadFromMemory( LPVOID pBuf,size_t dwSize )
 {
-    CAutoRefPtr<IImgX> pImgX;
-    GETRENDERFACTORY->GetImgDecoderFactory()->CreateImgX(&pImgX);
-    pImgX->LoadFromMemory(pBits,szData);
-    return LoadFromImgX(pImgX);
+    HGLOBAL hMem = ::GlobalAlloc(GMEM_FIXED, dwSize);
+    BYTE* pMem = (BYTE*)::GlobalLock(hMem);
+
+    memcpy(pMem, pBuf, dwSize);
+
+    IStream* pStm = NULL;
+    ::CreateStreamOnHGlobal(hMem, TRUE, &pStm);
+    Gdiplus::Bitmap *pImg = Gdiplus::Bitmap::FromStream(pStm);
+    if(!pImg || pImg->GetLastStatus() != Gdiplus::Ok)
+    {
+        pStm->Release();
+        ::GlobalUnlock(hMem);
+        return 0;
+    }
+
+    LoadFromGdipImage(pImg);
+    delete pImg;
+    return m_nFrames;
 }
 
-int SSkinGif::LoadFromImgX( IImgX *pImgX )
+int SSkinGif::LoadFromGdipImage( Gdiplus::Bitmap * pImage )
 {
-    if(!pImgX) return 0;
-    if(m_pFrames) delete []m_pFrames;
-    m_nFrames = pImgX->GetFrameCount();
-    m_iFrame =0;
+    UINT nCount = pImage->GetFrameDimensionsCount();
 
-    m_pFrames = new SGifFrame[m_nFrames];
-    for(int i=0; i< m_nFrames;i++)
+    GUID* pDimensionIDs = new GUID[nCount];
+    if (pDimensionIDs != NULL)
+    {
+        pImage->GetFrameDimensionsList(pDimensionIDs, nCount);
+        m_nFrames = pImage->GetFrameCount(&pDimensionIDs[0]);
+        delete pDimensionIDs;
+    }
+    m_pFrames = new SGifFrame [m_nFrames];
+    UINT nSize = pImage->GetPropertyItemSize(PropertyTagFrameDelay);
+    ASSERT (nSize);
+
+    Gdiplus::PropertyItem * pPropertyItem = (Gdiplus::PropertyItem *)malloc(nSize);
+    if (pPropertyItem != NULL)
+    {
+        pImage->GetPropertyItem(PropertyTagFrameDelay, nSize, pPropertyItem);
+        for(int i=0;i<m_nFrames;i++)
+        {
+            m_pFrames[i].nDelay = ((long*)pPropertyItem->value)[i];
+        }
+        free(pPropertyItem);
+    }
+    
+    for(int i=0;i<m_nFrames;i++)
     {
         GETRENDERFACTORY->CreateBitmap(&m_pFrames[i].pBmp);
-        m_pFrames[i].pBmp->Init(pImgX->GetFrame(i));
-        m_pFrames[i].nDelay=pImgX->GetFrame(i)->GetDelay();
+        pImage->SelectActiveFrame(&FrameDimensionTime,i);
+        Bitmap bmp(pImage->GetWidth(),pImage->GetHeight(),PixelFormat32bppPARGB);
+        Graphics g(&bmp);
+        g.DrawImage(pImage,0,0);
+        Gdiplus::Rect rc;
+        rc.Width=pImage->GetWidth();
+        rc.Height=pImage->GetHeight();
+        BitmapData data;
+        bmp.LockBits(&rc,0,PixelFormat32bppPARGB,&data);
+        m_pFrames[i].pBmp->Init(data.Width,data.Height,data.Scan0);
+        bmp.UnlockBits(&data);
     }
     return m_nFrames;
+}
+
+static ULONG_PTR s_gdipToken=0;
+
+BOOL SSkinGif::Gdiplus_Startup()
+{
+    GdiplusStartupInput gdiplusStartupInput;
+    Status st=GdiplusStartup(&s_gdipToken, &gdiplusStartupInput, NULL);
+    return st==0;
+
+}
+
+void SSkinGif::Gdiplus_Shutdown()
+{
+    GdiplusShutdown(s_gdipToken);
 }
 
 }//end of namespace SOUI
