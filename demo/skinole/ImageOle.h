@@ -1,13 +1,13 @@
 #pragma once
 
 #include <richole.h>
-#include <simplewnd.h>
-#include <control/DuiRichEdit.h>
+#include <core/simplewnd.h>
+#include <control/SRichEdit.h>
 
 class CImageOle : public IOleObject, public IViewObject2, public ITimelineHandler
 {
 public:
-	CImageOle(CDuiRichEdit *pRichedit);
+	CImageOle(SRichEdit *pRichedit);
 	~CImageOle(void);
 
 public:
@@ -64,7 +64,7 @@ protected:
 	IOleClientSite *m_pOleClientSite;
 	IAdviseSink *m_pAdvSink;
 
-	CDuiRichEdit *m_pRichedit;
+	SRichEdit *m_pRichedit;
 
 	SOUI::ISkinObj *m_pSkin;
 	int		m_iFrame;
@@ -72,5 +72,5 @@ protected:
 	int		m_nTimeDelay;	//一个动画帧需要的时间
 };
 
-BOOL RichEdit_InsertSkin(CDuiRichEdit *pRicheditCtrl, ISkinObj *pSkin);
-BOOL RichEdit_InsertImage(CDuiRichEdit *pRicheditCtrl, LPCTSTR lpszFileName);
+BOOL RichEdit_InsertSkin(SRichEdit *pRicheditCtrl, ISkinObj *pSkin);
+BOOL RichEdit_InsertImage(SRichEdit *pRicheditCtrl, LPCTSTR lpszFileName);

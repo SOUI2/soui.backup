@@ -781,6 +781,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\skinole\ImageOle.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MainDlg.cpp"
 				>
 			</File>
@@ -862,15 +866,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\skinole\ImageOle.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MainDlg.h"
 				>
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\UIHander.h"
 				>
 			</File>
 		</Filter>
