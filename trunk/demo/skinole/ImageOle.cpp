@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "ImageOle.h"
-#include "../DuiSkinGif.h"
+#include "../../controls.extend/gif/SSkinGif.h"
 #include <tom.h>
 
 #define DEFINE_GUIDXXX(name, l, w1, w2, b1, b2, b3, b4, b5, b6, b7, b8) \
@@ -12,7 +12,7 @@ DEFINE_GUIDXXX(IID_ITextDocument,0x8CC497C0,0xA1DF,0x11CE,0x80,0x98,
 
 using namespace SOUI;
 
-CImageOle::CImageOle(CDuiRichEdit *pRichedit)
+CImageOle::CImageOle(SRichEdit *pRichedit)
 :m_ulRef(0)
 ,m_pOleClientSite(NULL)
 ,m_pAdvSink(NULL)
@@ -208,13 +208,13 @@ HRESULT WINAPI CImageOle::Draw(DWORD dwDrawAspect, LONG lindex, void *pvAspect,
 
 	if(m_pSkin)
 	{
-		if(m_pSkin->IsClass(CDuiSkinGif::GetClassName()))
+		if(m_pSkin->IsClass(SSkinGif::GetClassName()))
 		{
-			CDuiSkinGif *pSkinGif=static_cast<CDuiSkinGif*>(m_pSkin);
-			pSkinGif->Draw(hdcDraw,rcItem,m_iFrame);
+			SSkinGif *pSkinGif=static_cast<SSkinGif*>(m_pSkin);
+// 			pSkinGif->Draw(hdcDraw,rcItem,m_iFrame);
 		}else
 		{
-			m_pSkin->Draw(hdcDraw,rcItem,0);
+// 			m_pSkin->Draw(hdcDraw,rcItem,0);
 		}
 	}
 	return S_OK;
@@ -244,9 +244,9 @@ HRESULT WINAPI CImageOle::SetAdvise(DWORD aspects, DWORD advf, IAdviseSink *pAdv
 		m_pAdvSink->AddRef();
 	}
 
-	if (m_pSkin != NULL && m_pSkin->IsClass(CDuiSkinGif::GetClassName()))
+	if (m_pSkin != NULL && m_pSkin->IsClass(SSkinGif::GetClassName()))
 	{
-		CDuiSkinGif *pGif=static_cast<CDuiSkinGif*>(m_pSkin);
+		SSkinGif *pGif=static_cast<SSkinGif*>(m_pSkin);
 		m_iFrame=0;
 		m_nTimeDelay=pGif->GetFrameDelay(0);
 		m_nTimePass=0;
@@ -294,7 +294,7 @@ void CImageOle::SetDuiSkinObj( ISkinObj *pSkin )
 BOOL CImageOle::GetOleRect( LPRECT lpRect )
 {
 	IRichEditOle *pRichEditOle=NULL;
-	LRESULT lRes=m_pRichedit->DuiSendMessage(EM_GETOLEINTERFACE,0,(LPARAM)&pRichEditOle);
+	LRESULT lRes=m_pRichedit->SSendMessage(EM_GETOLEINTERFACE,0,(LPARAM)&pRichEditOle);
 	if(!pRichEditOle) return FALSE;
 
 	BOOL bRet=FALSE;
@@ -360,11 +360,11 @@ void CImageOle::OnNextFrame()
 		CRect rcOle;
 		if(GetOleRect(&rcOle))
 		{
-			m_pRichedit->NotifyInvalidateRect(rcOle);
+			m_pRichedit->InvalidateRect(rcOle);
 		}
 
-		CDuiSkinGif *pSkinGif=static_cast<CDuiSkinGif*>(m_pSkin);
-		DUIASSERT(pSkinGif);
+		SSkinGif *pSkinGif=static_cast<SSkinGif*>(m_pSkin);
+		ASSERT(pSkinGif);
 		m_iFrame++;
 		if(m_iFrame==pSkinGif->GetStates())
 			m_iFrame=0;
@@ -374,10 +374,10 @@ void CImageOle::OnNextFrame()
 	}
 }
 
-BOOL RichEdit_InsertSkin(CDuiRichEdit *pRicheditCtrl, ISkinObj *pSkin)
+BOOL RichEdit_InsertSkin(SRichEdit *pRicheditCtrl, ISkinObj *pSkin)
 {
 	IRichEditOle *pRichEditOle=NULL;
-	LRESULT lRes=pRicheditCtrl->DuiSendMessage(EM_GETOLEINTERFACE,0,(LPARAM)&pRichEditOle);
+	LRESULT lRes=pRicheditCtrl->SSendMessage(EM_GETOLEINTERFACE,0,(LPARAM)&pRichEditOle);
 	if(!pRichEditOle) return FALSE;
 
 	SCODE sc;
@@ -441,17 +441,18 @@ BOOL RichEdit_InsertSkin(CDuiRichEdit *pRicheditCtrl, ISkinObj *pSkin)
 	return TRUE;
 }
 
-BOOL RichEdit_InsertImage(CDuiRichEdit *pRicheditCtrl, LPCTSTR lpszFileName)
+BOOL RichEdit_InsertImage(SRichEdit *pRicheditCtrl, LPCTSTR lpszFileName)
 {
-	CDuiImgX *pImg=new CDuiImgX;
-	if(!pImg->LoadFromFile(lpszFileName))
-	{
-		delete pImg;
-		return FALSE;
-	}
-	CDuiSkinGif *pSkinGif=new CDuiSkinGif;
-	pSkinGif->SetImage(pImg);
-	BOOL bRet = RichEdit_InsertSkin(pRicheditCtrl,pSkinGif);
-	pSkinGif->Release();
-	return bRet;
+    return 0;
+// 	CDuiImgX *pImg=new CDuiImgX;
+// 	if(!pImg->LoadFromFile(lpszFileName))
+// 	{
+// 		delete pImg;
+// 		return FALSE;
+// 	}
+// 	SSkinGif *pSkinGif=new SSkinGif;
+// 	pSkinGif->SetImage(pImg);
+// 	BOOL bRet = RichEdit_InsertSkin(pRicheditCtrl,pSkinGif);
+// 	pSkinGif->Release();
+// 	return bRet;
 }

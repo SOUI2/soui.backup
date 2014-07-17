@@ -45,7 +45,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     TCHAR szCurrentDir[MAX_PATH]={0};
     GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
     LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
-    _tcscpy(lpInsertPos,_T("\\..\\..\\demo"));
+    _tcscpy(lpInsertPos,_T("\\..\\..\\..\\demo"));
     SetCurrentDirectory(szCurrentDir);
     
     {
