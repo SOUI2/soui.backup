@@ -1032,7 +1032,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="build ui resource"
-					CommandLine="..\tools\uiresbuilder -p skin -i $(InputPath) -r duires\winres.rc2"
+					CommandLine="..\tools\uiresbuilder -p skin -i &quot;$(InputPath)&quot; -r duires\winres.rc2"
 					Outputs="duires\winres.rc2"
 				/>
 			</FileConfiguration>
@@ -1042,7 +1042,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="build ui resource"
-					CommandLine="..\tools\uiresbuilder -p skin -i $(InputPath) -r duires\winres.rc2"
+					CommandLine="..\tools\uiresbuilder -p skin -i &quot;$(InputPath)&quot; -r duires\winres.rc2"
 					Outputs="duires\winres.rc2"
 				/>
 			</FileConfiguration>
@@ -1052,7 +1052,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="build ui resource"
-					CommandLine="..\tools\uiresbuilder -p skin -i $(InputPath) -r duires\winres.rc2"
+					CommandLine="..\tools\uiresbuilder -p skin -i &quot;$(InputPath)&quot; -r duires\winres.rc2"
 					Outputs="duires\winres.rc2"
 				/>
 			</FileConfiguration>
