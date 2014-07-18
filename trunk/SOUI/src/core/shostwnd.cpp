@@ -81,7 +81,7 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     
     m_hostAttr.FreeOwnedSkins();
 
-    DWORD dwStyle =CSimpleWnd::GetStyle();
+    DWORD dwStyle =CSimpleWnd::GetStyle()|WS_OVERLAPPEDWINDOW;
     DWORD dwExStyle  = CSimpleWnd::GetExStyle();
     
     SHostWndAttr hostAttr;
@@ -95,7 +95,7 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     }
     if(m_hostAttr.m_bAppWnd)
     {
-        dwStyle |= WS_SYSMENU;
+        dwStyle |= WS_SYSMENU ;
         dwExStyle |= WS_EX_APPWINDOW;
     }else if(m_hostAttr.m_bToolWnd)
     {
@@ -106,7 +106,7 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
         dwExStyle |= WS_EX_LAYERED;
     }
     
-    if(m_hostAttr.m_dwStyle!=0) dwStyle=m_hostAttr.m_dwStyle;
+    if(m_hostAttr.m_dwStyle!=0) dwStyle=m_hostAttr.m_dwStyle&(~WS_VISIBLE);
     if(m_hostAttr.m_dwExStyle != 0) dwExStyle =m_hostAttr.m_dwExStyle;
     
     ModifyStyle(0,dwStyle);
@@ -121,7 +121,14 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
         ::SetLayeredWindowAttributes(m_dummyWnd.m_hWnd,0,0,LWA_ALPHA);
         m_dummyWnd.ShowWindow(SW_SHOWNOACTIVATE);
     }
-    
+    if(m_hostAttr.m_hAppIconSmall)
+    {
+        SendMessage(WM_SETICON,FALSE,(LPARAM)m_hostAttr.m_hAppIconSmall);
+    }
+    if(m_hostAttr.m_hAppIconBig)
+    {
+        SendMessage(WM_SETICON,TRUE,(LPARAM)m_hostAttr.m_hAppIconBig);
+    }
 
     SWindow::InitFromXml(xmlNode.child(L"root"));
 
