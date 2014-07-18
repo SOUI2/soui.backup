@@ -1027,12 +1027,42 @@
 			RelativePath=".\skin\uiskin.idx"
 			>
 			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="build ui resource"
+					CommandLine="..\tools\uiresbuilder -p skin -i $(InputPath) -r duires\winres.rc2"
+					Outputs="duires\winres.rc2"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="build ui resource"
+					CommandLine="..\tools\uiresbuilder -p skin -i $(InputPath) -r duires\winres.rc2"
+					Outputs="duires\winres.rc2"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
 				Name="Debug_Dll|Win32"
 				>
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="build ui resource"
-					CommandLine="..\tools\uiresbuilder -p skin -i $(InputPath) -r duires\winres.rc2&#x0D;&#x0A;"
+					CommandLine="..\tools\uiresbuilder -p skin -i $(InputPath) -r duires\winres.rc2"
+					Outputs="duires\winres.rc2"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release_Dll|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="build ui resource"
+					CommandLine="..\tools\uiresbuilder -p skin -i &quot;$(InputPath)&quot; -r duires\winres.rc2"
 					Outputs="duires\winres.rc2"
 				/>
 			</FileConfiguration>
