@@ -51,10 +51,18 @@ namespace SOUI
             , m_szInit(640,480)
             , m_dwStyle(0)
             , m_dwExStyle(0)
+            , m_hAppIconSmall(NULL)
+            , m_hAppIconBig(NULL)
         {
 
         }
 
+        ~SHostWndAttr()
+        {
+            if(m_hAppIconSmall) DeleteObject(m_hAppIconSmall);
+            if(m_hAppIconBig) DeleteObject(m_hAppIconBig);
+        }
+        
         void FreeOwnedSkins()
         {
             if(!m_strName.IsEmpty()) 
@@ -81,6 +89,8 @@ namespace SOUI
             ATTR_INT(L"translucent",m_bTranslucent,FALSE)
             ATTR_INT(L"appwnd",m_bAppWnd,FALSE)
             ATTR_INT(L"toolwindow",m_bToolWnd,FALSE)
+            ATTR_ICON(L"smallicon",m_hAppIconSmall,FALSE)
+            ATTR_ICON(L"bigicon",m_hAppIconBig,FALSE)
         SOUI_ATTRS_END()
 
         CRect m_rcMargin;
@@ -97,6 +107,8 @@ namespace SOUI
 
         SStringW m_strName;
         SStringW m_strTitle;
+        HICON   m_hAppIconSmall;
+        HICON   m_hAppIconBig;
     };
 
 class STipCtrl;
