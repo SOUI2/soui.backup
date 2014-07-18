@@ -1345,10 +1345,6 @@
 		<Filter
 			Name="dllmain"
 			>
-			<File
-				RelativePath=".\dllmain.cpp"
-				>
-			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
