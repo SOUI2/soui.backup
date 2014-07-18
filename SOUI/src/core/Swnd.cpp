@@ -1747,10 +1747,10 @@ void SWindow::OnSize( UINT nType, CSize size )
     {
         if(!m_cachedRT)
         {
-            GETRENDERFACTORY->CreateRenderTarget(&m_cachedRT,size.cx,size.cy);
+            GETRENDERFACTORY->CreateRenderTarget(&m_cachedRT,m_rcWindow.Width(),m_rcWindow.Height());
         }else
         {
-            m_cachedRT->Resize(size);
+            m_cachedRT->Resize(m_rcWindow.Size());
         }
     }
 }
