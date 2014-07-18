@@ -717,8 +717,7 @@ HICON CURSORICON_LoadFromBuf(const BYTE * bits,DWORD filesize,INT width, INT hei
 	/* Check for .ani. */
 	if (memcmp( bits, "RIFF", 4 ) == 0)
 	{//not support
-//		hIcon = CURSORICON_CreateIconFromANI( bits, filesize, width, height, depth, !fCursor, loadflags );
-		return 0;
+        return  (HCURSOR)CreateIconFromResource((PBYTE)bits,filesize,FALSE,0x00030000);
 	}
 
 	dir = (const CURSORICONFILEDIR*) bits;
