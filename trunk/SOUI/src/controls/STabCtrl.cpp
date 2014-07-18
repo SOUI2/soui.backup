@@ -158,7 +158,7 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
         pRT->PushClipRect(&rcTabs,RGN_AND);
     }
 
-    for(int i=0; i<GetItemCount(); i++)
+    for(size_t i=0; i<GetItemCount(); i++)
     {
         dwState=WndState_Normal;
         if(i == m_nCurrentPage) dwState=WndState_PushDown;
@@ -247,7 +247,7 @@ BOOL STabCtrl::RemoveItem( int nIndex , int nSelPage/*=0*/)
     if (m_nCurrentPage == nIndex)
     {
         if(nSelPage<0) nSelPage=0;
-        if(nSelPage>=GetItemCount()) nSelPage=GetItemCount()-1;
+        if(nSelPage>=(int)GetItemCount()) nSelPage=GetItemCount()-1;
         m_nCurrentPage=-1;
         SetCurSel(nSelPage);
     }else
@@ -320,7 +320,7 @@ void STabCtrl::OnDestroy()
 
 BOOL STabCtrl::SetCurSel( int nIndex )
 {
-    if( nIndex < 0 || nIndex> GetItemCount()-1 || (m_nCurrentPage == nIndex)) return FALSE;
+    if( nIndex < 0 || nIndex> (int)GetItemCount()-1 || (m_nCurrentPage == nIndex)) return FALSE;
     int nOldPage = m_nCurrentPage;
     
     EventTabSelChanging evt(this);
@@ -517,7 +517,7 @@ BOOL STabCtrl::GetItemRect( int nIndex, CRect &rcItem )
 
 STabPage* STabCtrl::GetItem( int nIndex )
 {
-    if(nIndex<0 || nIndex>=GetItemCount()) return NULL;
+    if(nIndex<0 || nIndex>= (int)GetItemCount()) return NULL;
     return m_lstPages[nIndex];
 }
 
