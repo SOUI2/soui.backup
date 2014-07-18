@@ -1752,6 +1752,7 @@ void SWindow::OnSize( UINT nType, CSize size )
         {
             m_cachedRT->Resize(m_rcWindow.Size());
         }
+        MarkCacheDirty(true);
     }
 }
 
