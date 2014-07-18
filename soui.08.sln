@@ -9,6 +9,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo", "demo\Demo.vcproj", "{4E567F0E-9B95-4EEA-95B6-58BF748C69C4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81} = {2BCA7FCF-E9EF-46C8-841F-AADB8EED5B81}
+		{569DE3F2-641F-4CDB-B401-3C731312E844} = {569DE3F2-641F-4CDB-B401-3C731312E844}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render-skia", "components\render-skia\render-skia.vcproj", "{6C5D6C99-15E9-4EA4-94FC-639B680B685D}"
