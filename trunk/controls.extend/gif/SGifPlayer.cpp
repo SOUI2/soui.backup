@@ -79,18 +79,19 @@ BOOL SGifPlayer::PlayGifFile( LPCTSTR pszFileName )
         ISkinObj *pSkin = GETSKIN(key);
         if(!pSkin->IsClass(SSkinGif::GetClassName())) return FALSE;
         m_pgif=static_cast<SSkinGif*>(pSkin);
-        return TRUE;
-    }
-    SSkinGif *pGifSkin = (SSkinGif*)SApplication::getSingleton().CreateSkinByName(SSkinGif::GetClassName());
-    if(!pGifSkin) return FALSE;
-    if(0==pGifSkin->LoadFromFile(pszFileName))
+    }else
     {
-        pGifSkin->Release();
-        return FALSE;
+        SSkinGif *pGifSkin = (SSkinGif*)SApplication::getSingleton().CreateSkinByName(SSkinGif::GetClassName());
+        if(!pGifSkin) return FALSE;
+        if(0==pGifSkin->LoadFromFile(pszFileName))
+        {
+            pGifSkin->Release();
+            return FALSE;
+        }
+
+        SSkinPool::getSingleton().AddKeyObject(key,pGifSkin);//将创建的skin交给skinpool管理
+        m_pgif = pGifSkin;
     }
-    
-    SSkinPool::getSingleton().AddKeyObject(key,pGifSkin);//将创建的skin交给skinpool管理
-    m_pgif = pGifSkin;
     if(m_layout.IsFitContent())
     {
         GetParent()->UpdateChildrenPosition();
