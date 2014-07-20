@@ -28,12 +28,14 @@ BOOL CDragWnd::BeginDrag( HBITMAP hBmp,POINT ptHot ,COLORREF crKey, BYTE byAlpha
     BITMAP bm;
     GetObject(hBmp,sizeof(bm),&bm);
 
-    if(!s_pCurDragWnd->Create(NULL,WS_POPUP,WS_EX_TRANSPARENT|WS_EX_TOOLWINDOW|WS_EX_TOPMOST|WS_EX_LAYERED,0,0,bm.bmWidth,bm.bmHeight,0,NULL))
+    if(!s_pCurDragWnd->Create(NULL,WS_POPUP,WS_EX_TRANSPARENT|WS_EX_TOOLWINDOW|WS_EX_TOPMOST,0,0,bm.bmWidth,bm.bmHeight,0,NULL))
     {
         delete s_pCurDragWnd;
         s_pCurDragWnd=NULL;
         return FALSE;
     }
+    
+    s_pCurDragWnd->ModifyStyleEx(0,WS_EX_LAYERED);
 
     if(bm.bmBitsPixel==32)
     {
