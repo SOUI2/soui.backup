@@ -219,7 +219,8 @@ namespace SOUI
 	{
         SRegion_Skia * rgn_skia=(SRegion_Skia*)pRegion;
         SkRegion rgn=rgn_skia->GetRegion();
-        
+        rgn.translate((int)m_ptOrg.fX,(int)m_ptOrg.fY);
+
         m_SkCanvas->save();
         m_SkCanvas->clipRegion(rgn,SRegion_Skia::RGNMODE2SkRgnOP(mode));
         
@@ -274,7 +275,10 @@ namespace SOUI
     HRESULT SRenderTarget_Skia::GetClipRegion( IRegion **ppRegion )
     {
         SRegion_Skia *pRgn=new SRegion_Skia(GetRenderFactory_Skia());
-        pRgn->SetRegion(m_SkCanvas->getTotalClip());
+        SkRegion rgn = m_SkCanvas->getTotalClip();
+        //需要将rect的viewOrg还原
+        rgn.translate((int)-m_ptOrg.fX,(int)-m_ptOrg.fY);
+        pRgn->SetRegion(rgn);
         *ppRegion = pRgn;
         return S_OK;
     }
@@ -283,6 +287,9 @@ namespace SOUI
     {
         SkRect skrc;
         m_SkCanvas->getClipBounds(&skrc);
+        //需要将rect的viewOrg还原
+        skrc.offset(-m_ptOrg);
+
         prcBound->left=(LONG)skrc.fLeft;
         prcBound->top=(LONG)skrc.fTop;
         prcBound->right=(LONG)skrc.fRight;
@@ -679,12 +686,10 @@ namespace SOUI
         
         ::SelectObject(m_hGetDC,bmp);
         
-        CAutoRefPtr<SRegion_Skia> rgnClip;
-        GetClipRegion((IRegion**)&rgnClip);
-        if(!rgnClip->IsEmpty())
+        SkRegion rgn = m_SkCanvas->getTotalClip();
+        if(!rgn.isEmpty())
         {
-            SkRegion skrgn=rgnClip->GetRegion();
-            SkRegion::Iterator it(skrgn);
+            SkRegion::Iterator it(rgn);
             int nCount=0;
             for(;!it.done();it.next())
             {

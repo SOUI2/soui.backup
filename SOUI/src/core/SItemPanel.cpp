@@ -20,7 +20,7 @@ SItemPanel::SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer
     ,m_pItemContainer(pItemContainer)
     ,m_dwData(0)
     ,m_crBk(CR_INVALID)
-    ,m_crSelBk(RGB(0,0,128))
+    ,m_crSelBk(RGBA(0,0,128,255))
     ,m_lpItemIndex(-1)
 {
     ASSERT(m_pFrmHost);

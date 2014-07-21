@@ -39,7 +39,7 @@
         <edit pos="50,100,150,150">scroll edit</edit>
       </page>
       <page title="treebox">
-        <treebox pos="0,0,-0,-0" name="mytree" itemhei="30" critembg="#FFFFFF" critemselbg="#000088" indent="10">
+        <treebox pos="0,0,-0,-0" name="mytree" itemhei="30" critembg="#FFFFFF" critemselbg="#cccccc" indent="10">
           <item>
             <text pos="10,0,100,-0" valign="middle" align="center" crtext="ff0000">red test</text>
             <text>normal text</text>
@@ -100,7 +100,7 @@
           <imgbtn name="btn_today" pos="-50,-25,-5,-0" skin="btn_yellow"/>
         </calendar>
       </page>
-      <page id="119" title="duitreectrl">
+      <page id="119" title="treectrl">
         <treectrl pos="10,0,-10,-10"  name="mytree1" itemhei="30" iconskin="TreeIcon" checkbox="1">
           <item text="组织机构" img="0" selimg="1">
             <item text="市场部" img="0" selimg="1">
