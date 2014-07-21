@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UIDEF>
-  <font face="宋体" size="12"/>
+  <font face="宋体" size="18"/>
 
   <editmenu itemskin="skin_menuitem" iconskin="skin_menuicon" itemheight="26" sepskin="skin_menusplit" iconmargin="4" textmargin="8" bgskin="skin_menubg">
     <item id="1" icon="0">剪切</item>
