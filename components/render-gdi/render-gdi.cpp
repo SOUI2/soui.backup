@@ -140,6 +140,18 @@ namespace SOUI
         return m_sz;
     }
 
+    LPVOID SBitmap_GDI::LockPixelBits()
+    {
+        BITMAP bm;
+        GetObject(m_hBmp,sizeof(bm),&bm);
+        return bm.bmBits;
+    }
+
+    void SBitmap_GDI::UnlockPixelBits( LPVOID )
+    {
+
+    }
+
     //////////////////////////////////////////////////////////////////////////
     //	SRegion_GDI
     SRegion_GDI::SRegion_GDI( IRenderFactory *pRenderFac )
@@ -202,14 +214,19 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     //	SRenderTarget_GDI
     //////////////////////////////////////////////////////////////////////////
+    #define SIZE_SOLIDRECT  5
+    
     SRenderTarget_GDI::SRenderTarget_GDI( IRenderFactory* pRenderFactory ,int nWid,int nHei)
         :TSkiaRenderObjImpl<IRenderTarget>(pRenderFactory)
         ,m_hBindDC(0)
         ,m_hdc(NULL)
         ,m_curColor(0xFF000000)//默认黑色
         ,m_uGetDCFlag(0)
+        ,m_bmpForFillSolidRect(pRenderFactory)
     {
         m_ptOrg.x=m_ptOrg.y=0;
+        
+        m_bmpForFillSolidRect.Init(SIZE_SOLIDRECT,SIZE_SOLIDRECT);
         
         HDC hdc=::GetDC(NULL);
         m_hdc = CreateCompatibleDC(hdc);
@@ -736,26 +753,11 @@ namespace SOUI
         return S_OK;
     }
 
+    //通过一个内存位图来填充位置的alpha值
     HRESULT SRenderTarget_GDI::FillSolidRect( LPCRECT pRect,COLORREF cr )
     {
         int nWid=pRect->right-pRect->left;
         int nHei=pRect->bottom-pRect->top;
-        
-        BITMAPINFO bmi;
-        memset(&bmi, 0, sizeof(bmi));
-        bmi.bmiHeader.biSize        = sizeof(BITMAPINFOHEADER);
-        bmi.bmiHeader.biWidth       = nWid;
-        bmi.bmiHeader.biHeight      = -nHei; // top-down image 
-        bmi.bmiHeader.biPlanes      = 1;
-        bmi.bmiHeader.biBitCount    = 32;
-        bmi.bmiHeader.biCompression = BI_RGB;
-        bmi.bmiHeader.biSizeImage   = 0;
-
-        LPDWORD pBits=NULL;
-        HDC hdc=::GetDC(NULL);
-        HBITMAP hBmp=CreateDIBSection(hdc,&bmi,DIB_RGB_COLORS,(void**)&pBits,0,0);
-        ::ReleaseDC(NULL,hdc);
-        if(!hBmp) return S_FALSE;
         
         BYTE r=GetRValue(cr);
         BYTE g=GetGValue(cr);
@@ -765,22 +767,21 @@ namespace SOUI
         g = (g*a)>>8;
         b = (b*a)>>8;
         DWORD crARGB = a<<24 | r<<16 | g<<8 | b;
-        BITMAP bm;
-        GetObject(hBmp,sizeof(bm),&bm);
+        DWORD *pBits = (DWORD*)m_bmpForFillSolidRect.LockPixelBits();
         DWORD *p = pBits;
-        for(int y=0;y<nHei;y++) for(int x=0;x<nWid;x++,p++)
+        for(int y=0;y<SIZE_SOLIDRECT;y++) for(int x=0;x<SIZE_SOLIDRECT;x++,p++)
         {
             memcpy(p,&crARGB,4);
         }
+        m_bmpForFillSolidRect.UnlockPixelBits(pBits);
         
         HDC hMemDC=CreateCompatibleDC(m_hdc);
-        ::SelectObject(hMemDC,hBmp);
+        ::SelectObject(hMemDC,m_bmpForFillSolidRect.GetBitmap());
         
         ::FillRect(m_hdc,pRect,(HBRUSH)::GetStockObject(BLACK_BRUSH));
         BLENDFUNCTION bf={AC_SRC_OVER,0,255,AC_SRC_ALPHA};
-        AlphaBlend(m_hdc,pRect->left,pRect->top,nWid,nHei,hMemDC,0,0,nWid,nHei,bf);
+        AlphaBlend(m_hdc,pRect->left,pRect->top,nWid,nHei,hMemDC,0,0,SIZE_SOLIDRECT,SIZE_SOLIDRECT,bf);
         ::DeleteDC(hMemDC);
-        ::DeleteObject(hBmp);
         return S_OK;    
     }
 

@@ -12,13 +12,13 @@ public:
         if(m_hMod) FreeLibrary(m_hMod);
     }
 
-    BOOL CreateInstance(LPCTSTR pszDllPath,IObjRef **ppObj)
+    BOOL CreateInstance(LPCTSTR pszDllPath,IObjRef **ppObj,LPCSTR pszFnName = "SCreateInstance")
     {
         if(!m_funCreateInst)
         {
             m_hMod=LoadLibrary(pszDllPath);
             if(!m_hMod) return FALSE;
-            m_funCreateInst=(funSCreateInstance)GetProcAddress(m_hMod,"SCreateInstance");
+            m_funCreateInst=(funSCreateInstance)GetProcAddress(m_hMod,pszFnName);
             if(!m_funCreateInst)
             {
                 FreeLibrary(m_hMod);

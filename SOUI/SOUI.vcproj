@@ -204,7 +204,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
+				Optimization="1"
 				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories=".\include;..\utilities\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_USRDLL;SOUI_EXPORTS;DLL_SOUI"

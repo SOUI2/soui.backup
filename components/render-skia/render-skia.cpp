@@ -292,28 +292,16 @@ namespace SOUI
     
 	HRESULT SRenderTarget_Skia::BitBlt( LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop/*=SRCCOPY*/)
 	{
-        if(dwRop == SRCCOPY)
-        {
-            SRenderTarget_Skia *pRTSourSkia=(SRenderTarget_Skia*)pRTSour;
-
-            const SkBitmap & bmpSrc= pRTSourSkia->m_SkCanvas->getDevice()->accessBitmap(true);
-            SkRect rcDst=toSkRect(pRcDest);
-            rcDst.offset(m_ptOrg);
-            RECT rc={xSrc,ySrc,xSrc+pRcDest->right-pRcDest->left,ySrc+pRcDest->bottom-pRcDest->top};
-            SkRect rcSrc=toSkRect(&rc);
-            rcSrc.offset(pRTSourSkia->m_ptOrg);
-            m_SkCanvas->drawBitmapRectToRect(bmpSrc,&rcSrc,rcDst);
-        }else
-        {
-            HDC hdcSrc=pRTSour->GetDC(0);
-            HDC hdcDst=GetDC(0);
-            ALPHAINFO ai;
+        HDC hdcSrc=pRTSour->GetDC(0);
+        HDC hdcDst=GetDC(0);
+        ALPHAINFO ai;
+        if(!(dwRop&0x80000000))
             CGdiAlpha::AlphaBackup(hdcDst,pRcDest,ai);
-            ::BitBlt(hdcDst,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,hdcSrc,xSrc,ySrc,dwRop);
+        ::BitBlt(hdcDst,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,hdcSrc,xSrc,ySrc,dwRop&0x7fffffff);
+        if(!(dwRop&0x80000000))
             CGdiAlpha::AlphaRestore(ai);
-            ReleaseDC(hdcDst);
-            pRTSour->ReleaseDC(hdcSrc);
-        }
+        ReleaseDC(hdcDst);
+        pRTSour->ReleaseDC(hdcSrc);
 		return S_OK;
 	}
 
@@ -673,8 +661,8 @@ namespace SOUI
     
     HRESULT SRenderTarget_Skia::SetViewportOrg( POINT pt )
     {
-        m_ptOrg.fX = pt.x;
-        m_ptOrg.fY = pt.y;
+        m_ptOrg.fX = SkIntToScalar(pt.x);
+        m_ptOrg.fY = SkIntToScalar(pt.y);
         return S_OK;
     }
 
@@ -894,6 +882,17 @@ namespace SOUI
     {
         SIZE sz={m_bitmap.width(),m_bitmap.height()};
         return sz;
+    }
+
+    LPVOID SBitmap_Skia::LockPixelBits()
+    {
+        m_bitmap.lockPixels();
+        return m_bitmap.getPixels();
+    }
+
+    void SBitmap_Skia::UnlockPixelBits( LPVOID )
+    {
+        m_bitmap.unlockPixels();
     }
 
 	//////////////////////////////////////////////////////////////////////////
