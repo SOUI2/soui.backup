@@ -227,8 +227,17 @@ public:                                                             \
 #define ATTR_COLOR(attribname, varname, allredraw)       \
     if (attribname == strAttribName)                            \
         {                                                           \
-        varname = HexStringToColor(strValue);        \
-        hRet = allredraw ? S_OK : S_FALSE;                      \
+            if(!strValue.IsEmpty())\
+            {                                                       \
+                if(strValue[0] == L'#')                             \
+                    varname = HexStringToColor((LPCWSTR)strValue+1);\
+                else                                                \
+                    varname = _wtol(strValue);                      \
+                hRet = allredraw ? S_OK : S_FALSE;                  \
+            }else                                                   \
+            {                                                       \
+                hRet=E_FAIL;                                        \
+            }                                                       \
         }                                                           \
         else                                                        \
  
