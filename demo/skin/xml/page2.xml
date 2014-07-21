@@ -11,7 +11,7 @@
   <button pos="10,200" width="150" height="30">button 1 using width</button>
 
   <img name="img_hidetst" skin="icons" iframe="0" pos="300,150" display="0">
-    <text crtext="ff0000">text</text>
+    <text crtext="#ff0000">text</text>
   </img>
   <img skin="icons" iframe="1" pos="[5,150,-10,-10" />
 </window>
