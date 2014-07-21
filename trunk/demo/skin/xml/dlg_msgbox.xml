@@ -7,7 +7,7 @@
 
     <window pos="5,30,-5,-50">
       <icon name="msgicon" pos="0,0,32,32"/>
-      <text name="msgtext" pos="35,0" crtext="0000FF" multilines="1" maxwidth="300"/>
+      <text name="msgtext" pos="35,0" crtext="#0000FF" multilines="1" maxwidth="300"/>
     </window>
     <window pos="0,-50,-0,-0" name="btn1panel">
       <button pos="|-50,10,|50,-10" name="button1st" class="normalbtn">button1</button>
