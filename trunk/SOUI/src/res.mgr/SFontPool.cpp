@@ -17,7 +17,7 @@ SFontPool::SFontPool(IRenderFactory *pRendFactory)
     : m_lFontSize(-11)
     , m_RenderFactory(pRendFactory)
 {
-    _tcscpy(m_szDefFontFace,_T("Tahoma"));
+    _tcscpy(m_szDefFontFace,_T("ËÎÌו"));
     m_pFunOnKeyRemoved=OnKeyRemoved;
     SetKeyObject(FontKey(FF_DEFAULTFONT),_CreateDefaultGUIFont());
 }

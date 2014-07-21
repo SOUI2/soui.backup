@@ -203,6 +203,8 @@ namespace SOUI
         virtual UINT Width();
         virtual UINT Height();
         virtual SIZE Size();
+        virtual LPVOID  LockPixelBits();
+        virtual void    UnlockPixelBits(LPVOID);
         
 		SkBitmap & GetSkBitmap(){return m_bitmap;}
 		HBITMAP  GetGdiBitmap(){return m_hBmp;}

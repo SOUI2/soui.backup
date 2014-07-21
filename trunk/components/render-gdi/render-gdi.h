@@ -197,10 +197,13 @@ namespace SOUI
         virtual UINT Width();
         virtual UINT Height();
         virtual SIZE Size();
+        virtual LPVOID  LockPixelBits();
+        virtual void    UnlockPixelBits(LPVOID);
 
         HBITMAP  GetBitmap(){return m_hBmp;}
+
+        static HBITMAP CreateGDIBitmap(int nWid,int nHei,void ** ppBits);
     protected:
-        HBITMAP CreateGDIBitmap(int nWid,int nHei,void ** ppBits);
 
         HRESULT ImgFromDecoder(IImgX *imgDecoder);
         SIZE        m_sz;
@@ -330,6 +333,7 @@ namespace SOUI
         RECT m_rcBind;
 
         UINT m_uGetDCFlag;
+        SBitmap_GDI          m_bmpForFillSolidRect;    /**< 为FillSolidRect接口使用的内存位图 */
     };
 }
 

@@ -62,6 +62,8 @@ struct IBitmap: public IRenderObj
 	virtual UINT    Width() =0;
 	virtual UINT    Height() =0;
 	virtual SIZE    Size() =0;
+	virtual LPVOID  LockPixelBits() =0;
+	virtual void    UnlockPixelBits(LPVOID) =0;
 };
 
 struct IFont : public IRenderObj
