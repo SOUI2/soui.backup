@@ -120,7 +120,7 @@ namespace SOUI
 
             m_skFont=SkTypeface::CreateFromName(strFace,(SkTypeface::Style)style);
             
-            m_skPaint.setTextSize((SkScalar)plf->lfHeight);
+            m_skPaint.setTextSize(SkIntToScalar(abs(plf->lfHeight)));
             m_skPaint.setUnderlineText(!!plf->lfUnderline);
             m_skPaint.setTextEncoding(SkPaint::kUTF16_TextEncoding);
             m_skPaint.setAntiAlias(true);
