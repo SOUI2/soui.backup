@@ -62,18 +62,20 @@ namespace SOUI
 
     COLORREF HexStringToColor(LPCWSTR lpszValue)
     {
-       COLORREF cr=RGB(
-            HexStringToULong(lpszValue, 2),
-            HexStringToULong(lpszValue + 2, 2),
-            HexStringToULong(lpszValue + 4, 2)
-            );
         if(wcslen(lpszValue)>6)
         {
-            cr |= HexStringToULong(lpszValue + 6, 2)<<24;
+            return RGB(
+                HexStringToULong(lpszValue + 2, 2),
+                HexStringToULong(lpszValue + 4, 2),
+                HexStringToULong(lpszValue + 6, 2)
+                )| (HexStringToULong(lpszValue , 2)<<24);
         }else
         {
-            cr |= 0xFF000000;
+            return RGB(
+                HexStringToULong(lpszValue, 2),
+                HexStringToULong(lpszValue + 2, 2),
+                HexStringToULong(lpszValue + 4, 2)
+                )|0xFF000000;
         }
-        return cr;
     }
 }//end of namespace SOUI

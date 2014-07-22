@@ -649,15 +649,15 @@ void SRichEdit::OnDestroy()
 
 void SRichEdit::OnPaint( IRenderTarget * pRT )
 {
-    CRect rcClient,rcClip;
+    CRect rcClient;
     GetClientRect(&rcClient);
     pRT->PushClipRect(&rcClient);
-    pRT->GetClipBound(&rcClip);
 
     HDC hdc=pRT->GetDC(0);
     ALPHAINFO ai;
     if(GetContainer()->IsTranslucent())
     {
+        STRACE(_T("Richedit::OnPaint, AlphaBackup"));
         CGdiAlpha::AlphaBackup(hdc,&rcClient,ai);
     }
     RECTL rcL= {rcClient.left,rcClient.top,rcClient.right,rcClient.bottom};
