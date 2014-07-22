@@ -187,12 +187,10 @@ namespace SOUI
 			bmi.bmiHeader.biCompression = BI_RGB;
 			bmi.bmiHeader.biSizeImage   = 0;
 
-			bmp.lockPixels();
 			SetDIBitsToDevice(m_hBindDC,
 				m_rcBind.left,m_rcBind.top,m_rcBind.right-m_rcBind.left,m_rcBind.bottom-m_rcBind.top,
 				m_rcBind.left,bmp.height()-m_rcBind.bottom,0,bmp.height(),
 				bmp.getPixels(),&bmi,DIB_RGB_COLORS);
-			bmp.unlockPixels();
 		}
 		return S_OK;
 	}
@@ -766,9 +764,12 @@ namespace SOUI
         SkPaint paint;
         paint.setStyle(SkPaint::kFill_Style);
         paint.setColor(SColor(cr).toARGB());
-
+        paint.setXfermodeMode(SkXfermode::kSrc_Mode);
+        
         SkRect skrc=toSkRect(pRect);
         skrc.offset(m_ptOrg);
+        SkBitmap & bmp = m_curBmp->GetSkBitmap();
+        LPVOID pBits=bmp.getPixels();
         m_SkCanvas->drawRect(skrc,paint);
         return S_OK;    
     }
@@ -826,11 +827,9 @@ namespace SOUI
         if(!m_hBmp) return E_OUTOFMEMORY;
         m_bitmap.setPixels(pBits);
 
-        m_bitmap.lockPixels();
         const int stride = m_bitmap.rowBytes();
         pFrame->CopyPixels(NULL, stride, stride * uHei,
             reinterpret_cast<BYTE*>(m_bitmap.getPixels()));
-        m_bitmap.unlockPixels();
         return S_OK;
     }
 
@@ -865,11 +864,9 @@ namespace SOUI
         if(!m_hBmp) return E_OUTOFMEMORY;
         m_bitmap.setPixels(pBits);
         
-        m_bitmap.lockPixels();
         const int stride = m_bitmap.rowBytes();
         pFrame->CopyPixels(NULL, stride, stride * uHei,
             reinterpret_cast<BYTE*>(m_bitmap.getPixels()));
-        m_bitmap.unlockPixels();
         return S_OK;
     }
 
@@ -891,13 +888,11 @@ namespace SOUI
 
     LPVOID SBitmap_Skia::LockPixelBits()
     {
-        m_bitmap.lockPixels();
         return m_bitmap.getPixels();
     }
 
     void SBitmap_Skia::UnlockPixelBits( LPVOID )
     {
-        m_bitmap.unlockPixels();
     }
 
 	//////////////////////////////////////////////////////////////////////////
