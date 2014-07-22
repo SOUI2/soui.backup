@@ -99,9 +99,9 @@ protected:
         obj->Release();
     }
 
-    IFontPtr _CreateDefaultGUIFont();
+    IFontPtr _CreateDefaultFont();
 
-    IFontPtr _CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,SStringT strFaceName=_T(""));
+    IFontPtr _CreateFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,SStringT strFaceName=_T(""));
 
     LONG _GetFontAbsHeight(LONG lSize);
 

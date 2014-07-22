@@ -71,13 +71,9 @@ protected:
         ATTR_COLOR(L"crborder", m_crBorder, TRUE)
 
         ATTR_FONT(L"font", m_ftText[0], TRUE)
-        ATTR_FONTEX(L"font2", m_ftText[0], TRUE)
         ATTR_FONT(L"font.hover", m_ftText[1], TRUE)
-        ATTR_FONTEX(L"font2.hover", m_ftText[1], TRUE)
         ATTR_FONT(L"font.push", m_ftText[2], TRUE)
-        ATTR_FONTEX(L"font2.push", m_ftText[2], TRUE)
         ATTR_FONT(L"font.disable", m_ftText[3], TRUE)
-        ATTR_FONTEX(L"font2.disable", m_ftText[3], TRUE)
 
         ATTR_COLOR(L"crtext", m_crText[0], TRUE)
         ATTR_COLOR(L"crtext.hover", m_crText[1], TRUE)

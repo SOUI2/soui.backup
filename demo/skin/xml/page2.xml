@@ -4,7 +4,7 @@
   <text pos="250,50" pos2type="righttop">align right top</text>
   <text pos="250,70" pos2type="righttop">align right top 2</text>
   <check pos="250,90" pos2type="righttop">check right top</check>
-  <check pos="250,110" pos2type="righttop" font2="adding:3">check right top1235</check>
+  <check pos="250,110" pos2type="righttop" font="adding:-5">check right top1235</check>
 
   <text pos="250,130" class="cls_txt_red">text left top</text>
   <button pos="10,150,@150,@30" name="btn_hidetst">button 1 using @</button>

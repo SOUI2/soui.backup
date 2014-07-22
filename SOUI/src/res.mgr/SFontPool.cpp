@@ -19,11 +19,14 @@ SFontPool::SFontPool(IRenderFactory *pRendFactory)
 {
     _tcscpy(m_szDefFontFace,_T("ËÎÌו"));
     m_pFunOnKeyRemoved=OnKeyRemoved;
-    SetKeyObject(FontKey(FF_DEFAULTFONT),_CreateDefaultGUIFont());
+    SetKeyObject(FontKey(FF_DEFAULTFONT),_CreateDefaultFont());
 }
 
-IFontPtr SFontPool::GetFont(WORD uKey,LPCTSTR strFaceName)
+IFontPtr SFontPool::GetFont(WORD uKey,LPCTSTR pszFaceName)
 {
+    SStringT strFaceName(pszFaceName);
+    if(strFaceName.IsEmpty()) strFaceName = m_szDefFontFace;
+    
     IFontPtr hftRet=0;
     FontKey key(uKey,strFaceName);
     if(HasKey(key))
@@ -32,7 +35,7 @@ IFontPtr SFontPool::GetFont(WORD uKey,LPCTSTR strFaceName)
     }
     else
     {
-        hftRet = _CreateNewFont(
+        hftRet = _CreateFont(
                      FF_ISBOLD(uKey), FF_ISUNDERLINE(uKey), FF_ISITALIC(uKey), FF_GETADDING(uKey),strFaceName
                  );
 
@@ -55,10 +58,10 @@ void SFontPool::SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize)
 
     RemoveKeyObject(FontKey(FF_DEFAULTFONT));
     
-    SetKeyObject(FontKey(FF_DEFAULTFONT),_CreateDefaultGUIFont());
+    SetKeyObject(FontKey(FF_DEFAULTFONT),_CreateDefaultFont());
 }
 
-IFontPtr SFontPool::_CreateDefaultGUIFont()
+IFontPtr SFontPool::_CreateDefaultFont()
 {
     ::GetObjectA(::GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &m_lfDefault);
 
@@ -75,13 +78,11 @@ IFontPtr SFontPool::_CreateDefaultGUIFont()
     return pFont;
 }
 
-IFontPtr SFontPool::_CreateNewFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,SStringT strFaceName/*=""*/)
+IFontPtr SFontPool::_CreateFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,SStringT strFaceName)
 {
     LOGFONT lfNew;
 
     memcpy(&lfNew, &m_lfDefault, sizeof(LOGFONT));
-    if(!strFaceName.IsEmpty())
-        _tcscpy_s(lfNew.lfFaceName,_countof(lfNew.lfFaceName),strFaceName);
     lfNew.lfWeight      = (bBold ? FW_BOLD : FW_NORMAL);
     lfNew.lfUnderline   = (FALSE != bUnderline);
     lfNew.lfItalic      = (FALSE != bItalic);
