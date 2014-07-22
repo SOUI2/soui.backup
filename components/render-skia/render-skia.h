@@ -124,6 +124,8 @@ namespace SOUI
             m_skPaint.setUnderlineText(!!plf->lfUnderline);
             m_skPaint.setTextEncoding(SkPaint::kUTF16_TextEncoding);
             m_skPaint.setAntiAlias(true);
+            m_skPaint.setLCDRenderText(true);
+            
 		}
         virtual const LOGFONT * LogFont() const {return &m_lf;}
 
