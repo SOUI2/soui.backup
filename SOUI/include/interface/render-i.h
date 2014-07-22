@@ -137,12 +137,18 @@ struct IRenderTarget: public IObjRef
     virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz) =0;
     virtual HRESULT TextOut(int x,int y, LPCTSTR lpszString,int nCount,BYTE byAlpha = 0xFF) =0;
 
-	virtual HRESULT DrawRectangle(LPRECT pRect)=0;
-	virtual HRESULT FillRectangle(LPRECT pRect)=0;
+	virtual HRESULT DrawRectangle(LPCRECT pRect)=0;
+	virtual HRESULT FillRectangle(LPCRECT pRect)=0;
     virtual HRESULT FillSolidRect(LPCRECT pRect,COLORREF cr)=0;
     virtual HRESULT DrawRoundRect(LPCRECT pRect,POINT pt)=0;
     virtual HRESULT FillRoundRect(LPCRECT pRect,POINT pt)=0;
     
+    virtual HRESULT DrawEllipse(LPCRECT pRect)=0;
+    virtual HRESULT FillEllipse(LPCRECT pRect)=0;
+
+    virtual HRESULT DrawArc(LPCRECT pRect,float startAngle,float sweepAngle,bool useCenter) =0;
+    virtual HRESULT FillArc(LPCRECT pRect,float startAngle,float sweepAngle) =0;
+
     virtual HRESULT DrawLines(LPPOINT pPt,size_t nCount) =0;
     virtual HRESULT GradientFill(LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha=0xFF)=0;
     

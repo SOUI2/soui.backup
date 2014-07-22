@@ -5,6 +5,7 @@
 #include "render-gdi.h"
 #include "GradientFillHelper.h"
 #include <gdialpha.h>
+#include <math.h>
 
 namespace SOUI
 {
@@ -425,7 +426,7 @@ namespace SOUI
         return S_OK;
     }
 
-    HRESULT SRenderTarget_GDI::DrawRectangle(LPRECT pRect)
+    HRESULT SRenderTarget_GDI::DrawRectangle(LPCRECT pRect)
     {
         ALPHAINFO ai;
         CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
@@ -436,7 +437,7 @@ namespace SOUI
         return S_OK;
     }
 
-    HRESULT SRenderTarget_GDI::FillRectangle(LPRECT pRect)
+    HRESULT SRenderTarget_GDI::FillRectangle(LPCRECT pRect)
     {
         ALPHAINFO ai;
         CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
@@ -785,6 +786,72 @@ namespace SOUI
         return S_OK;    
     }
 
+    HRESULT SRenderTarget_GDI::DrawEllipse( LPCRECT pRect )
+    {
+        ALPHAINFO ai;
+        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
+        HGDIOBJ oldBr=::SelectObject(m_hdc,GetStockObject(NULL_BRUSH));
+        ::Ellipse(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom);
+        CGdiAlpha::AlphaRestore(ai);
+        ::SelectObject(m_hdc,oldBr);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_GDI::FillEllipse( LPCRECT pRect )
+    {
+        ALPHAINFO ai;
+        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
+        HGDIOBJ oldPen=::SelectObject(m_hdc,GetStockObject(NULL_PEN));
+        ::Ellipse(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom);
+        CGdiAlpha::AlphaRestore(ai);
+        ::SelectObject(m_hdc,oldPen);
+        return S_OK;
+    }
+    
+    const float PI = 3.1415926f;
+
+    HRESULT SRenderTarget_GDI::DrawArc( LPCRECT pRect,float startAngle,float sweepAngle,bool useCenter )
+    {
+        ALPHAINFO ai;
+        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
+        HGDIOBJ oldBr=::SelectObject(m_hdc,GetStockObject(NULL_BRUSH));
+        POINT ptCenter = {(pRect->left+pRect->right)/2,(pRect->top+pRect->bottom)/2};
+        int   a=ptCenter.x-pRect->left,b=ptCenter.y-pRect->top;
+        POINT pt1,pt2;
+        float startAngle2 =startAngle*PI/180.0f;
+        float endAngle2 = (startAngle+sweepAngle)*PI/180.0f;
+        pt1.x=ptCenter.x+(int)(a*cos(startAngle2));
+        pt1.y=ptCenter.y+(int)(b*sin(startAngle2));
+        pt2.x=ptCenter.x+(int)(a*cos(endAngle2));
+        pt2.y=ptCenter.y+(int)(b*sin(endAngle2));
+        if(useCenter)
+            ::Chord(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom,pt1.x,pt1.y,pt2.x,pt2.y);
+        else
+            ::Arc(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom,pt1.x,pt1.y,pt2.x,pt2.y);
+        CGdiAlpha::AlphaRestore(ai);
+        ::SelectObject(m_hdc,oldBr);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_GDI::FillArc( LPCRECT pRect,float startAngle,float sweepAngle )
+    {
+        ALPHAINFO ai;
+        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
+        HGDIOBJ oldPen=::SelectObject(m_hdc,GetStockObject(NULL_PEN));
+        POINT ptCenter = {(pRect->left+pRect->right)/2,(pRect->top+pRect->bottom)/2};
+        int   a=ptCenter.x-pRect->left,b=ptCenter.y-pRect->top;
+        POINT pt1,pt2;
+        float startAngle2 =startAngle*PI/180.0f;
+        float endAngle2 = (startAngle+sweepAngle)*PI/180.0f;
+        pt1.x=ptCenter.x+(int)(a*cos(startAngle2));
+        pt1.y=ptCenter.y+(int)(b*sin(startAngle2));
+        pt2.x=ptCenter.x+(int)(a*cos(endAngle2));
+        pt2.y=ptCenter.y+(int)(b*sin(endAngle2));
+        ::Chord(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom,pt1.x,pt1.y,pt2.x,pt2.y);
+        CGdiAlpha::AlphaRestore(ai);
+        ::SelectObject(m_hdc,oldPen);
+        return S_OK;
+    }
 }
 
 
