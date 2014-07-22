@@ -364,7 +364,7 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::DrawRectangle(LPRECT pRect)
+	HRESULT SRenderTarget_Skia::DrawRectangle(LPCRECT pRect)
 	{
 		SkPaint paint;
 		paint.setColor(SColor(m_curPen->GetColor()).toARGB());
@@ -379,7 +379,7 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::FillRectangle(LPRECT pRect)
+	HRESULT SRenderTarget_Skia::FillRectangle(LPCRECT pRect)
 	{
 		SkPaint paint;
 		
@@ -789,6 +789,76 @@ namespace SOUI
         return S_OK;    
     }
 
+    HRESULT SRenderTarget_Skia::DrawEllipse( LPCRECT pRect )
+    {
+        SkPaint paint;
+        paint.setColor(SColor(m_curPen->GetColor()).toARGB());
+        SGetLineDashEffect skDash(m_curPen->GetStyle());
+        paint.setPathEffect(skDash.Get());
+        paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
+        paint.setStyle(SkPaint::kStroke_Style);
+
+        SkRect skrc = toSkRect(pRect);
+        skrc.offset(m_ptOrg);
+        m_SkCanvas->drawOval(skrc,paint);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_Skia::FillEllipse( LPCRECT pRect )
+    {
+        SkPaint paint;
+        if(m_curBrush->IsBitmap())
+        {
+            paint.setFilterBitmap(true);
+            paint.setShader(SkShader::CreateBitmapShader(m_curBrush->GetBitmap(),SkShader::kRepeat_TileMode,SkShader::kRepeat_TileMode))->unref();
+        }else
+        {
+            paint.setFilterBitmap(false);
+            paint.setColor(SColor(m_curBrush->GetColor()).toARGB());
+        }
+        paint.setStyle(SkPaint::kFill_Style);
+
+        SkRect skrc=toSkRect(pRect);
+        skrc.offset(m_ptOrg);
+        m_SkCanvas->drawOval(skrc,paint);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_Skia::DrawArc( LPCRECT pRect,float startAngle,float sweepAngle,bool useCenter )
+    {
+        SkPaint paint;
+        paint.setColor(SColor(m_curPen->GetColor()).toARGB());
+        SGetLineDashEffect skDash(m_curPen->GetStyle());
+        paint.setPathEffect(skDash.Get());
+        paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
+        paint.setStyle(SkPaint::kStroke_Style);
+
+        SkRect skrc = toSkRect(pRect);
+        skrc.offset(m_ptOrg);
+        m_SkCanvas->drawArc(skrc,startAngle,sweepAngle,useCenter,paint);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_Skia::FillArc( LPCRECT pRect,float startAngle,float sweepAngle )
+    {
+        SkPaint paint;
+        if(m_curBrush->IsBitmap())
+        {
+            paint.setFilterBitmap(true);
+            paint.setShader(SkShader::CreateBitmapShader(m_curBrush->GetBitmap(),SkShader::kRepeat_TileMode,SkShader::kRepeat_TileMode))->unref();
+        }else
+        {
+            paint.setFilterBitmap(false);
+            paint.setColor(SColor(m_curBrush->GetColor()).toARGB());
+        }
+        paint.setStyle(SkPaint::kFill_Style);
+
+        SkRect skrc=toSkRect(pRect);
+        skrc.offset(m_ptOrg);
+        m_SkCanvas->drawArc(skrc,startAngle, sweepAngle,true,paint);
+        return S_OK;
+
+    }
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
 

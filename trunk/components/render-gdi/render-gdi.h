@@ -280,9 +280,15 @@ namespace SOUI
         virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha=0xFF);
         virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz );
 
-        virtual HRESULT DrawRectangle(LPRECT pRect);
-        virtual HRESULT FillRectangle(LPRECT pRect);
+        virtual HRESULT DrawRectangle(LPCRECT pRect);
+        virtual HRESULT FillRectangle(LPCRECT pRect);
         virtual HRESULT FillSolidRect(LPCRECT pRect,COLORREF cr);
+
+        virtual HRESULT DrawEllipse(LPCRECT pRect);
+        virtual HRESULT FillEllipse(LPCRECT pRect);
+
+        virtual HRESULT DrawArc(LPCRECT pRect,float startAngle,float sweepAngle,bool useCenter);
+        virtual HRESULT FillArc(LPCRECT pRect,float startAngle,float sweepAngle);
 
         virtual HRESULT DrawRoundRect(LPCRECT pRect,POINT pt);
         virtual HRESULT FillRoundRect(LPCRECT pRect,POINT pt);
