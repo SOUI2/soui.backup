@@ -29,7 +29,6 @@ public:
         ATTR_INT(L"textmargin",m_nTextMargin,FALSE)
         ATTR_SIZE(L"iconsize",m_szIcon,FALSE)
         ATTR_FONT(L"font",m_hFont,FALSE)
-        ATTR_FONTEX(L"font2",m_hFont,FALSE)
         ATTR_COLOR(L"crtxt",m_crTxtNormal,FALSE);
         ATTR_COLOR(L"crtxtsel",m_crTxtSel,FALSE);
         ATTR_COLOR(L"crtxtgray",m_crTxtGray,FALSE);

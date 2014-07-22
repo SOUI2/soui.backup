@@ -241,35 +241,15 @@ public:                                                             \
         }                                                           \
         else                                                        \
  
-// font = "1007:ËÎÌו"
-#define ATTR_FONT(attribname, varname, allredraw)        \
-    if (attribname == strAttribName)                            \
-        {                                                           \
-        int nPos=strValue.ReverseFind(L':');\
-        if(nPos!=-1)\
-            {\
-            DWORD dwValue = HexStringToULong(strValue,nPos);  \
-            SStringW strFace=strValue.Right(strValue.GetLength()-nPos-1);\
-            SStringT strFaceT=S_CW2T(strFace);\
-            varname = SFontPool::getSingleton().GetFont(LOWORD(dwValue),strFaceT);    \
-            }else\
-            {\
-            DWORD dwValue = HexStringToULong(strValue);  \
-            varname = SFontPool::getSingleton().GetFont(LOWORD(dwValue));         \
-            }\
-            hRet = allredraw ? S_OK : S_FALSE;                      \
-        }                                                           \
-        else                                                        \
 
-
-//fontex="facename:ËÎÌו;bold:1;italic:1;underline:1;adding:10"
-#define ATTR_FONTEX(attribname, varname, allredraw)        \
+//font="facename:ËÎÌו;bold:1;italic:1;underline:1;adding:10"
+#define ATTR_FONT(attribname, varname, allredraw)                       \
     if (attribname == strAttribName)                                    \
     {                                                                    \
-        BOOL bBold=0,bItalic=0,bUnderline=0;                            \
-        SStringT strFace;                                            \
-        char  nAdding=0;                                                \
-        SStringT attr=S_CW2T(strValue);                    \
+        BOOL bBold=0,bItalic=0,bUnderline=0;                             \
+        SStringT strFace;                                                \
+        char  nAdding=0;                                                 \
+        SStringT attr=S_CW2T(strValue);                                  \
         attr.MakeLower();                                                \
         int nPosBegin=attr.Find(_T("facename:"));                        \
         if(nPosBegin!=-1)                                                \
@@ -277,32 +257,32 @@ public:                                                             \
             nPosBegin+=9;                                                \
             int nPosEnd=attr.Find(_T(";"),nPosBegin);                    \
             if(nPosEnd==-1) nPosEnd=attr.GetLength();                    \
-            strFace=attr.Mid(nPosBegin,nPosEnd-nPosBegin);                \
+            strFace=attr.Mid(nPosBegin,nPosEnd-nPosBegin);               \
         }                                                                \
         nPosBegin=attr.Find(_T("bold:"));                                \
         if(nPosBegin!=-1)                                                \
         {                                                                \
-            bBold=attr.Mid(nPosBegin+5,1)!=_T("0");                            \
+            bBold=attr.Mid(nPosBegin+5,1)!=_T("0");                      \
         }                                                                \
-        nPosBegin=attr.Find(_T("underline:"));                            \
+        nPosBegin=attr.Find(_T("underline:"));                           \
         if(nPosBegin!=-1)                                                \
         {                                                                \
-            bUnderline=attr.Mid(nPosBegin+10,1)!=_T("0");                    \
+            bUnderline=attr.Mid(nPosBegin+10,1)!=_T("0");                \
         }                                                                \
-        nPosBegin=attr.Find(_T("italic:"));                                \
+        nPosBegin=attr.Find(_T("italic:"));                              \
         if(nPosBegin!=-1)                                                \
         {                                                                \
-            bItalic=attr.Mid(nPosBegin+7,1)!=_T("0");                        \
+            bItalic=attr.Mid(nPosBegin+7,1)!=_T("0");                    \
         }                                                                \
-        nPosBegin=attr.Find(_T("adding:"));                                \
+        nPosBegin=attr.Find(_T("adding:"));                              \
         if(nPosBegin!=-1)                                                \
         {                                                                \
-            nAdding=(char)_ttoi((LPCTSTR)attr+nPosBegin+7);                        \
+            nAdding=(char)_ttoi((LPCTSTR)attr+nPosBegin+7);              \
         }                                                                \
         varname = SFontPool::getSingleton().GetFont(bBold,bUnderline,bItalic,nAdding,strFace); \
-        hRet = allredraw ? S_OK : S_FALSE;                                \
+        hRet = allredraw ? S_OK : S_FALSE;                               \
     }                                                                    \
-    else                                                                \
+    else                                                                 \
 
 
 // Value In {String1 : Value1, String2 : Value2 ...}
