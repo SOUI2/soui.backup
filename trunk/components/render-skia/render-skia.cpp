@@ -746,7 +746,7 @@ namespace SOUI
         {
             pts[1].set((SkScalar)pRect->right,(SkScalar)pRect->top);
         }
-        
+                
         SColor cr1(crBegin,byAlpha);
         SColor cr2(crEnd,byAlpha);
         
@@ -755,7 +755,9 @@ namespace SOUI
         SkPaint paint;
         paint.setShader(pShader);
         pShader->unref();
-        m_SkCanvas->drawRect(toSkRect(pRect),paint);        
+        SkRect skrc=toSkRect(pRect);
+        skrc.offset(m_ptOrg);
+        m_SkCanvas->drawRect(skrc,paint);        
         return S_OK;
     }
 
