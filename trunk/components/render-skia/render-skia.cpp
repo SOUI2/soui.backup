@@ -209,6 +209,13 @@ namespace SOUI
         skrc.offset(m_ptOrg);
         
         m_SkCanvas->save();
+
+        if(m_SkCanvas->isClipEmpty())
+        {
+            SkRect rcAll={0.0f,0.0f,(SkScalar)m_curBmp->Width(),(SkScalar)m_curBmp->Height()};
+            m_SkCanvas->clipRect(rcAll,SkRegion::kReplace_Op);
+        }
+
         m_SkCanvas->clipRect(skrc,SRegion_Skia::RGNMODE2SkRgnOP(mode));
 	    return S_OK;
 	}
@@ -220,6 +227,12 @@ namespace SOUI
         rgn.translate((int)m_ptOrg.fX,(int)m_ptOrg.fY);
 
         m_SkCanvas->save();
+
+        if(m_SkCanvas->isClipEmpty())
+        {
+            SkRect rcAll={0.0f,0.0f,(SkScalar)m_curBmp->Width(),(SkScalar)m_curBmp->Height()};
+            m_SkCanvas->clipRect(rcAll,SkRegion::kReplace_Op);
+        }
         m_SkCanvas->clipRegion(rgn,SRegion_Skia::RGNMODE2SkRgnOP(mode));
         
 		return S_OK;
