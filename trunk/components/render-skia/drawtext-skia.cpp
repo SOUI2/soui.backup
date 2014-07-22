@@ -124,20 +124,28 @@ SkScalar SkTextLayoutEx::drawLineEndWithEllipsis( SkCanvas *canvas, SkScalar x, 
         return drawLine(canvas,x,y,iBegin,iEnd,fontHei);
     }else
     {
-        SkScalar fEllipsisWid=m_paint->measureText(CH_ELLIPSIS,sizeof(CH_ELLIPSIS)-sizeof(wchar_t));
-
-        SkScalar fWid=fEllipsisWid;
+        SkScalar fWidEllipsis = m_paint->measureText(CH_ELLIPSIS,sizeof(CH_ELLIPSIS)-sizeof(wchar_t));
+        maxWidth-=fWidEllipsis;
+        
         int i=0;
         const wchar_t *text=m_text.begin()+iBegin;
+        SkScalar fWid=0.0f;
         while(i<(iEnd-iBegin))
         {
-            fWid += m_paint->measureText(text+i,sizeof(wchar_t));
-            if(fWid > maxWidth) break;
+            SkScalar fWord = m_paint->measureText(text+i,sizeof(wchar_t));
+            if(fWid + fWord > maxWidth) break;
+            fWid += fWord;
             i++;
         }
-        drawLine(canvas,x,y,0,i,fontHei);
-        if(!(m_uFormat & DT_CALCRECT)) canvas->drawText(CH_ELLIPSIS,sizeof(CH_ELLIPSIS)-sizeof(wchar_t),x+fWid-fEllipsisWid,y,*m_paint);
-        return fWid;
+        if(!(m_uFormat & DT_CALCRECT))
+        {
+            wchar_t *pbuf=new wchar_t[i+3];
+            memcpy(pbuf,text,i*sizeof(wchar_t));
+            memcpy(pbuf+i,CH_ELLIPSIS,3*sizeof(wchar_t));
+            canvas->drawText(pbuf,(i+3)*sizeof(wchar_t),x,y,*m_paint);
+            delete []pbuf;
+        }
+        return fWid+fWidEllipsis;
     }
 }
 
