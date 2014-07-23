@@ -26,12 +26,12 @@
 
 #ifdef _DEBUG
 #include <crtdbg.h>
-#   define SRES_ASSERTW(expr, format, ...) \
+#   define ASSERT_FMTW(expr, format, ...) \
     (void) ((!!(expr)) || \
     (1 != _CrtDbgReportW(_CRT_ASSERT, _CRT_WIDE(__FILE__), __LINE__, NULL, format, __VA_ARGS__)) || \
     (_CrtDbgBreak(), 0))
 
-#   define SRES_ASSERTA(expr, format, ...) \
+#   define ASSERT_FMTA(expr, format, ...) \
     (void) ((!!(expr)) || \
     (1 != _CrtDbgReport(_CRT_ASSERT, __FILE__, __LINE__, NULL, format, __VA_ARGS__)) || \
     (_CrtDbgBreak(), 0))
@@ -42,9 +42,9 @@
 #endif
 
 #ifdef _UNICODE 
-#   define SRES_ASSERT    SRES_ASSERTW
+#   define ASSERT_FMT    ASSERT_FMTW
 #else
-#   define SRES_ASSERT    SRES_ASSERTA
+#   define ASSERT_FMT    ASSERT_FMTA
 #endif//_UNICODE
 
 #include <assert.h>
