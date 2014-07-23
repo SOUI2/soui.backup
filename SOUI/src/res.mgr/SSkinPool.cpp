@@ -46,7 +46,7 @@ int SSkinPool::LoadSkins(pugi::xml_node xmlNode,DWORD dwOwnerID)
         }
         else
         {
-            SRES_ASSERTW(FALSE,L"load skin error,type=%s,name=%s",strTypeName,strSkinName);
+            ASSERT_FMTW(FALSE,L"load skin error,type=%s,name=%s",strTypeName,strSkinName);
         }
         xmlSkin=xmlSkin.next_sibling();
     }
@@ -77,7 +77,7 @@ ISkinObj* SSkinPool::GetSkin(LPCWSTR strSkinName)
 {
     if(!HasKey(strSkinName))
     {
-        SRES_ASSERTA(FALSE,"GetSkin[%s] Failed!",strSkinName);
+        ASSERT_FMTW(FALSE,L"GetSkin[%s] Failed!",strSkinName);
         return NULL;
     }
     return GetKeyObject(strSkinName);
