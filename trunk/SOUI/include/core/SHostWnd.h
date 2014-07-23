@@ -63,18 +63,6 @@ namespace SOUI
             if(m_hAppIconBig) DeleteObject(m_hAppIconBig);
         }
         
-        void FreeOwnedSkins()
-        {
-            if(!m_strName.IsEmpty()) 
-                SSkinPool::getSingleton().FreeSkins(m_strName);    //load skin only used in the host window
-        }
-
-        void LoadOwnedSkins()
-        {
-            if(!m_strName.IsEmpty()) 
-                SSkinPool::getSingleton().LoadSkins(m_strName);    //load skin only used in the host window
-        }
-
         SOUI_ATTRS_BEGIN()
             ATTR_STRINGW(L"name",m_strName,FALSE)
             ATTR_STRINGW(L"title",m_strTitle,FALSE)
@@ -105,7 +93,7 @@ namespace SOUI
         DWORD m_dwStyle;
         DWORD m_dwExStyle;
 
-        SStringW m_strName;
+        SStringW m_strName;     //Host Name，在语言翻译时作为context使用
         SStringW m_strTitle;
         HICON   m_hAppIconSmall;
         HICON   m_hAppIconBig;
@@ -131,18 +119,15 @@ public:
     HWND Create(HWND hWndParent,int x,int y,int nWidth,int nHeight);
     HWND Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight);
 
-    BOOL SetXml(LPCTSTR pszXmlName);
-
-    BOOL SetXml(LPCWSTR lpszXml,int nLen);
-
+    BOOL InitFromXml(pugi::xml_node xmlNode);
+    
     BOOL AnimateHostWindow(DWORD dwTime,DWORD dwFlags);
 protected:
-    BOOL InitFromXml(pugi::xml_node xmlNode);
     void _Redraw();
     
     SDummyWnd            m_dummyWnd;    //半透明窗口使用的一个响应WM_PAINT消息的窗口
     SHostWndAttr         m_hostAttr;
-
+    DWORD                m_dwSkinOwnerID;   //<**私有Skin的宿主ID*/
     SStringT m_strXmlLayout;
 
     // Tracking flag

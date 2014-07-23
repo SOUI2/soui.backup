@@ -12,6 +12,8 @@ namespace SOUI
 #define TIMER_CARET    1
 #define TIMER_NEXTFRAME 2
 
+static DWORD s_dwSkinOwnerID = 0;
+
 //////////////////////////////////////////////////////////////////////////
 // SHostWnd
 //////////////////////////////////////////////////////////////////////////
@@ -25,6 +27,7 @@ SHostWnd::SHostWnd( LPCTSTR pszResName /*= NULL*/ )
 , m_bNeedAllRepaint(TRUE)
 , m_pTipCtrl(NULL)
 , m_dummyWnd(this)
+, m_dwSkinOwnerID (++s_dwSkinOwnerID)
 {
     SetContainer(this);
 }
@@ -48,7 +51,14 @@ HWND SHostWnd::Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x, int 
 
     SetContainer(this);
 
-    if(!m_strXmlLayout.IsEmpty())  SetXml(m_strXmlLayout);
+    if(!m_strXmlLayout.IsEmpty())
+    {
+        pugi::xml_document xmlDoc;
+        if(LOADXML(xmlDoc,m_strXmlLayout,RT_LAYOUT))
+        {
+            InitFromXml(xmlDoc.child(L"SOUI"));
+        }
+    }
 
     if(nWidth==0 || nHeight==0) CenterWindow(hWnd);
     return hWnd;
@@ -59,35 +69,23 @@ HWND SHostWnd::Create(HWND hWndParent,int x,int y,int nWidth,int nHeight)
     return Create(hWndParent, WS_POPUP | WS_CLIPCHILDREN | WS_TABSTOP,0,x,y,nWidth,nHeight);
 }
 
-BOOL SHostWnd::SetXml(LPCTSTR pszXmlName)
-{
-    pugi::xml_document xmlDoc;
-    if(!LOADXML(xmlDoc,pszXmlName,RT_LAYOUT)) return FALSE;
-
-    return InitFromXml(xmlDoc.child(L"SOUI"));
-}
-
-BOOL SHostWnd::SetXml(LPCWSTR lpszXml,int nLen)
-{
-    pugi::xml_document xmlDoc;
-    if(!xmlDoc.load_buffer(lpszXml,nLen*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) return FALSE;
- 
-    return InitFromXml(xmlDoc.child(L"SOUI"));
-}
 
 BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
 {
     if(!xmlNode) return FALSE;
+    if(!CSimpleWnd::IsWindow()) return FALSE;
     
-    m_hostAttr.FreeOwnedSkins();
-
+    SSendMessage(WM_DESTROY);   //为了能够重入，先销毁原有的SOUI窗口
+    SSkinPool::getSingleton().FreeSkins(m_dwSkinOwnerID);//清理原来的私有Skin
+    
+    SSkinPool::getSingleton().LoadSkins(xmlNode.child(L"skins"),m_dwSkinOwnerID);//从xmlNode加加载私有skin
+    
     DWORD dwStyle =CSimpleWnd::GetStyle()|WS_OVERLAPPEDWINDOW;
     DWORD dwExStyle  = CSimpleWnd::GetExStyle();
     
     SHostWndAttr hostAttr;
     hostAttr.InitFromXml(xmlNode);
     m_hostAttr=hostAttr;
-    m_hostAttr.LoadOwnedSkins();
 
     if (m_hostAttr.m_bResizable)
     {
@@ -249,7 +247,7 @@ void SHostWnd::OnDestroy()
     {
         m_dummyWnd.DestroyWindow();
     }
-    m_hostAttr.FreeOwnedSkins();
+    SSkinPool::getSingleton().FreeSkins(m_dwSkinOwnerID);
 }
 
 void SHostWnd::OnSize(UINT nType, CSize size)

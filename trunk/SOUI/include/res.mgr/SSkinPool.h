@@ -15,18 +15,14 @@ public:
 
     virtual ~SSkinPool();
 
-    BOOL Init(pugi::xml_node xmlNode);
-
     ISkinObj* GetSkin(LPCWSTR strSkinName);
 
-    int LoadSkins(LPCWSTR  pszOwnerName);
+    int LoadSkins(pugi::xml_node xmlNode,DWORD dwOwnerID=0);
 
-    int FreeSkins(LPCWSTR  pszOwnerName);
+    int FreeSkins(DWORD dwOwnerID);
 
 protected:
     static void OnKeyRemoved(const SSkinPtr & obj);
-
-    pugi::xml_document m_xmlSkinDesc;
 };
 
 }//namespace SOUI
