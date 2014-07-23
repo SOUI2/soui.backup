@@ -872,6 +872,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\core\SSkin.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\core\SSkinFactoryMgr.cpp"
 				>
 			</File>
@@ -954,10 +958,6 @@
 			<Filter
 				Name="pools"
 				>
-				<File
-					RelativePath=".\src\core\SSkin.cpp"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1337,14 +1337,6 @@
 					>
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="pugixml"
-			>
-		</Filter>
-		<Filter
-			Name="dllmain"
-			>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
