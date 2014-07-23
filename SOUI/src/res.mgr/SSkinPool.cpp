@@ -19,49 +19,34 @@ SSkinPool::~SSkinPool()
 {
 }
 
-BOOL SSkinPool::Init(pugi::xml_node xmlNode)
+int SSkinPool::LoadSkins(pugi::xml_node xmlNode,DWORD dwOwnerID)
 {
-    if (wcscmp(xmlNode.name(), L"skins") != 0)
-    {
-        ASSERT(FALSE);
-        return FALSE;
-    }
-
-    m_xmlSkinDesc.append_copy(xmlNode);
-    LoadSkins(L"");
-    return TRUE;
-}
-
-int SSkinPool::LoadSkins(LPCWSTR strOwnerName)
-{
+    if(!xmlNode) return 0;
+    
     int nLoaded=0;
     SStringW strSkinName, strTypeName;
 
-    pugi::xml_node xmlSkin=m_xmlSkinDesc.child(L"skins").first_child();
+    pugi::xml_node xmlSkin=xmlNode.first_child();
     while(xmlSkin)
     {
-        SStringW strOwner= xmlSkin.attribute(L"owner").value();
-        if(strOwner==strOwnerName)
+        strTypeName = xmlSkin.name();
+        strSkinName = xmlSkin.attribute(L"name").value();
+
+        if (strSkinName.IsEmpty() || strTypeName.IsEmpty())
+            continue;
+
+        ASSERT(!HasKey(strSkinName));
+        ISkinObj *pSkin=SApplication::getSingleton().CreateSkinByName(strTypeName);
+        if(pSkin)
         {
-            strTypeName = xmlSkin.name();
-            strSkinName = xmlSkin.attribute(L"name").value();
-
-            if (strSkinName.IsEmpty() || strTypeName.IsEmpty())
-                continue;
-
-            ASSERT(!HasKey(strSkinName));
-            ISkinObj *pSkin=SApplication::getSingleton().CreateSkinByName(strTypeName);
-            if(pSkin)
-            {
-                pSkin->InitFromXml(xmlSkin);
-                pSkin->SetOwner(strOwnerName);
-                AddKeyObject(strSkinName,pSkin);
-                nLoaded++;
-            }
-            else
-            {
-                SRES_ASSERTW(FALSE,L"load skin error,type=%s,name=%s",strTypeName,strSkinName);
-            }
+            pSkin->InitFromXml(xmlSkin);
+            pSkin->SetOwnerID(dwOwnerID);
+            AddKeyObject(strSkinName,pSkin);
+            nLoaded++;
+        }
+        else
+        {
+            SRES_ASSERTW(FALSE,L"load skin error,type=%s,name=%s",strTypeName,strSkinName);
         }
         xmlSkin=xmlSkin.next_sibling();
     }
@@ -70,17 +55,15 @@ int SSkinPool::LoadSkins(LPCWSTR strOwnerName)
 }
 
 
-int SSkinPool::FreeSkins( LPCWSTR strOwnerName )
+int SSkinPool::FreeSkins(DWORD dwOwnerID)
 {
-    if(!strOwnerName || wcslen(strOwnerName)==0) return 0;
-
     int nFreed=0;
 
     POSITION pos=m_mapNamedObj->GetStartPosition();
     while(pos)
     {
         SMap<SStringW,SSkinPtr>::CPair *p=m_mapNamedObj->GetNext(pos);
-        if(p->m_value->GetOwner()==strOwnerName)
+        if(p->m_value->GetOwnerID()==dwOwnerID)
         {
             OnKeyRemoved(p->m_value);
             m_mapNamedObj->RemoveAtPos((POSITION)p);

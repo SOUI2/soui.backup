@@ -10,22 +10,15 @@ namespace SOUI
 class SOUI_EXP ISkinObj : public SObject,public TObjRefImpl2<IObjRef,ISkinObj>
 {
 public:
-    ISkinObj()
+    ISkinObj():m_dwOwnerID(0)
     {
     }
     virtual ~ISkinObj()
     {
     }
 
-    void SetOwner(SStringW strOwner)
-    {
-        m_strOwner=strOwner;
-    }
-
-    SStringW GetOwner()
-    {
-        return m_strOwner;
-    }
+    void SetOwnerID(DWORD dwOwnerID){m_dwOwnerID=dwOwnerID;}
+    DWORD GetOwnerID(){return m_dwOwnerID;}
 
     virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha=0xFF)=0;
 
@@ -46,7 +39,7 @@ public:
         return 1;
     }
 protected:
-    SStringW	m_strOwner;
+    DWORD   m_dwOwnerID;
 };
 
 

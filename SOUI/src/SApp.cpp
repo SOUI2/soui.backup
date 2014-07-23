@@ -101,7 +101,7 @@ BOOL SApplication::Init( LPCTSTR pszName ,LPCTSTR pszType)
     }
     
     SStringPool::getSingleton().Init(root.child(L"string"));
-    SSkinPool::getSingleton().Init(root.child(L"skins"));
+    SSkinPool::getSingleton().LoadSkins(root.child(L"skins"));
     SStylePool::getSingleton().Init(root.child(L"style"));
     SObjDefAttr::getSingleton().Init(root.child(L"objattr"));
     return TRUE;
