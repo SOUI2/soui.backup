@@ -47,33 +47,33 @@ namespace SOUI
 
     LPCTSTR SResProviderMgr::SysCursorName2ID( LPCTSTR pszCursorName )
     {
-        if(!wcsicmp(pszCursorName,L"arrow"))
+        if(!_wcsicmp(pszCursorName,L"arrow"))
             return IDC_ARROW;
-        if(!wcsicmp(pszCursorName,L"ibeam"))
+        if(!_wcsicmp(pszCursorName,L"ibeam"))
             return IDC_IBEAM;
-        if(!wcsicmp(pszCursorName,L"wait"))
+        if(!_wcsicmp(pszCursorName,L"wait"))
             return IDC_WAIT;
-        if(!wcsicmp(pszCursorName,L"cross"))
+        if(!_wcsicmp(pszCursorName,L"cross"))
             return IDC_CROSS;
-        if(!wcsicmp(pszCursorName,L"uparrow"))
+        if(!_wcsicmp(pszCursorName,L"uparrow"))
             return IDC_UPARROW;
-        if(!wcsicmp(pszCursorName,L"size"))
+        if(!_wcsicmp(pszCursorName,L"size"))
             return IDC_SIZE;
-        if(!wcsicmp(pszCursorName,L"sizenwse"))
+        if(!_wcsicmp(pszCursorName,L"sizenwse"))
             return IDC_SIZENWSE;
-        if(!wcsicmp(pszCursorName,L"sizenesw"))
+        if(!_wcsicmp(pszCursorName,L"sizenesw"))
             return IDC_SIZENESW;
-        if(!wcsicmp(pszCursorName,L"sizewe"))
+        if(!_wcsicmp(pszCursorName,L"sizewe"))
             return IDC_SIZEWE;
-        if(!wcsicmp(pszCursorName,L"sizens"))
+        if(!_wcsicmp(pszCursorName,L"sizens"))
             return IDC_SIZENS;
-        if(!wcsicmp(pszCursorName,L"sizeall"))
+        if(!_wcsicmp(pszCursorName,L"sizeall"))
             return IDC_SIZEALL;
-        if(!wcsicmp(pszCursorName,L"no"))
+        if(!_wcsicmp(pszCursorName,L"no"))
             return IDC_NO;
-        if(!wcsicmp(pszCursorName,L"hand"))
+        if(!_wcsicmp(pszCursorName,L"hand"))
             return IDC_HAND;
-        if(!wcsicmp(pszCursorName,L"help"))
+        if(!_wcsicmp(pszCursorName,L"help"))
             return IDC_HELP;
         return NULL;
    }
