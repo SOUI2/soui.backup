@@ -14,10 +14,6 @@
 #include "SDropTargetDispatcher.h"
 #include "event/eventcrack.h"
 
-#pragma warning(disable: 4996)
-
-#define INITCODE_NOTSHOW    100
-
 namespace SOUI
 {
 
