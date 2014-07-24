@@ -4,7 +4,7 @@
 namespace SOUI
 {
 
-SStringW SStrCpCvt::CvtW2W( const SStringW &str,unsigned int cp/*=CP_ACP*/ )
+SStringW SStrCpCvt::CvtW2W( const SStringW &str,unsigned int)
 {
     return str;
 }

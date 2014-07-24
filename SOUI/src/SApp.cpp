@@ -41,7 +41,7 @@ SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR 
     CSimpleWndHelper::Init(hInst,pszHostClassName);
     STextServiceHelper::Init();
     SRicheditMenuDef::Init();
-    m_Translator = new SNullTranslator;
+    m_Translator.Attach(new SNullTranslator);
 }
 
 SApplication::~SApplication(void)
@@ -68,6 +68,7 @@ void SApplication::createSingletons()
 void SApplication::destroySingletons()
 {
     delete SObjDefAttr::getSingletonPtr();
+    delete SStylePool::getSingletonPtr();
     delete SSkinPool::getSingletonPtr();
     delete SStringPool::getSingletonPtr();
     delete SImgPool::getSingletonPtr();

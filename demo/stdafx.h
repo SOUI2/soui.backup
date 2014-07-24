@@ -28,18 +28,9 @@
 using namespace SOUI;
 
 #ifdef _DEBUG
-	#if DLL_SOUI
-	# pragma comment(lib, "soui_d.lib")
-	#else
-	# pragma comment(lib, "soui_static_d.lib")
-	#endif
+	# pragma comment(lib, "souid.lib")
 #else
-	#ifdef DLL_SOUI
 	# pragma comment(lib, "soui.lib")
-	#else
-	# pragma comment(lib, "soui_static.lib")
-	#endif
-
 #endif
 
 

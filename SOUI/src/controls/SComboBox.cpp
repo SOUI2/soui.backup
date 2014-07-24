@@ -408,7 +408,7 @@ void SComboBox::OnCloseUp( SDropDownWnd *pDropDown ,UINT uCode)
 
 void SComboBox::OnSelChanged()
 {
-    int nRet=m_pListBox->GetCurSel();
+    m_pListBox->GetCurSel();
     if(m_pEdit)
     {
         SStringT strText=GetLBText(m_pListBox->GetCurSel());

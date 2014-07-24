@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "../include/translator.h"
+#include "translator.h"
 #include <search.h>
 #include <ObjBase.h>
 

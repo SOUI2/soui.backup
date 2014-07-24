@@ -4,12 +4,6 @@
 // that uses this DLL. This way any other project whose source files include this file see 
 // TRANSLATOR_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
-#ifdef TRANSLATOR_EXPORTS
-#define TRANSLATOR_API __declspec(dllexport)
-#else
-#define TRANSLATOR_API __declspec(dllimport)
-#endif
-
 
 #include <souicoll.h>
 #include <unknown/obj-ref-impl.hpp>
@@ -68,6 +62,6 @@ protected:
     SList<ILang*> *m_lstLang;
 };
 
-extern "C" TRANSLATOR_API BOOL SCreateInstance(IObjRef **ppTrans);
+extern "C" __declspec(dllexport) BOOL SCreateInstance(IObjRef **ppTrans);
 
 }

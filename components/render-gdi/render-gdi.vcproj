@@ -1,406 +1,195 @@
-<?xml version="1.0" encoding="gb2312"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="render-gdi"
-	ProjectGUID="{644188F9-379F-467C-B03D-5DE6E0027839}"
-	RootNamespace="rendergdi"
-	Keyword="Win32Proj"
-	TargetFrameworkVersion="196613"
-	>
+	ProjectGUID="{41777FE5-5535-3C99-B23D-7BEC00A4EB1E}"
+	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
-			Name="Win32"
-		/>
-		<Platform
-			Name="x64"
-		/>
+			Name="Win32" />
 	</Platforms>
-	<ToolFiles>
-	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="2"
+			OutputDirectory="."
+			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			ConfigurationType="2"
+			IntermediateDirectory="..\..\obj\debug\render-gdi\"
+			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\..\utilities\include;..\..\soui\include;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;RENDERGDI_EXPORTS"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,d:\Qt\4.7.1\mkspecs\default"
+				AdditionalOptions="-Zm200 -MP -w34100 -w34189"
+				AssemblerListingLocation="..\..\obj\debug\render-gdi\"
+				BufferSecurityCheck="false"
+				DebugInformationFormat="3"
+				ExceptionHandling="1"
+				ForcedIncludeFiles="stdafx.h"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\..\obj\debug\render-gdi\"
+				Optimization ="4"
+				PrecompiledHeaderFile="$(IntDir)\render-gdid.pch"
+				PrecompiledHeaderThrough="stdafx.h"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT"
+				ProgramDataBaseFileName=".\"
 				RuntimeLibrary="3"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
 				UsePrecompiledHeader="2"
-				WarningLevel="3"
-				DebugInformationFormat="4"
-			/>
+				WarningLevel="3" />
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utilities_d.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(OutDir)"
+				AdditionalDependencies="utilitiesd.lib"
+				AdditionalLibraryDirectories="..\..\bin\debug"
 				GenerateDebugInformation="true"
-				SubSystem="2"
-				TargetMachine="1"
-			/>
+				IgnoreImportLibrary="true"
+				LinkTimeCodeGeneration="0"
+				OutputFile="..\..\bin\debug\render-gdid.dll"
+				ProgramDatabaseFile=""
+				SubSystem="0"
+				SuppressStartupBanner="true" />
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCPostBuildEventTool" />
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPreBuildEventTool" />
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreLinkEventTool" />
 			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,_DEBUG" />
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="2"
+			OutputDirectory="."
+			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			ConfigurationType="2"
+			IntermediateDirectory="..\..\obj\release\render-gdi\"
+			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\utilities\include;..\..\soui\include;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;RENDERGDI_EXPORTS"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="true"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,d:\Qt\4.7.1\mkspecs\default"
+				AdditionalOptions="-Zm200 -MP -w34100 -w34189"
+				AssemblerListingLocation="..\..\obj\release\render-gdi\"
+				BufferSecurityCheck="false"
+				DebugInformationFormat="0"
+				ExceptionHandling="1"
+				ForcedIncludeFiles="stdafx.h"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\..\obj\release\render-gdi\"
+				Optimization ="2"
+				PrecompiledHeaderFile="$(IntDir)\render-gdi.pch"
+				PrecompiledHeaderThrough="stdafx.h"
+				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,NDEBUG"
+				ProgramDataBaseFileName=".\"
+				RuntimeLibrary="2"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
 				UsePrecompiledHeader="2"
-				WarningLevel="3"
-				DebugInformationFormat="3"
-			/>
+				WarningLevel="3" />
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="utilities.lib"
+				AdditionalLibraryDirectories="..\..\bin\release"
+				GenerateDebugInformation="false"
+				IgnoreImportLibrary="true"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(OutDir)"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug|x64"
-			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="2"
-			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
+				LinkTimeCodeGeneration="0"
+				OutputFile="..\..\bin\release\render-gdi.dll"
+				ProgramDatabaseFile=""
+				SubSystem="0"
+				SuppressStartupBanner="true" />
 			<Tool
 				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
 			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\..\utilities\include;..\..\soui\include;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;RENDERGDI_EXPORTS"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
-				WarningLevel="3"
-				DebugInformationFormat="3"
-			/>
+				Name="VCPostBuildEventTool" />
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
+				Name="VCPreBuildEventTool" />
+			<Tool
+				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="utilities_d.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(OutDir)"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release|x64"
-			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="2"
-			CharacterSet="1"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\utilities\include;..\..\soui\include;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;RENDERGDI_EXPORTS"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
-				WarningLevel="3"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="utilities.lib"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(OutDir)"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT" />
 		</Configuration>
 	</Configurations>
-	<References>
-	</References>
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
-			>
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath=".\GradientFillHelper.cpp"
-				>
-			</File>
+				RelativePath="GradientFillHelper.cpp" />
 			<File
-				RelativePath=".\render-gdi.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\stdafx.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-			</File>
+				RelativePath="render-gdi.cpp" />
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath=".\GradientFillHelper.h"
-				>
-			</File>
+				RelativePath="GradientFillHelper.h" />
 			<File
-				RelativePath=".\render-gdi.h"
-				>
-			</File>
+				RelativePath="render-gdi.h" />
 			<File
-				RelativePath=".\stdafx.h"
-				>
+				RelativePath="stdafx.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="echo /*-------------------------------------------------------------------- >stdafx.h.cpp &amp;&amp; echo * Precompiled header source file used by Visual Studio.NET to generate>>stdafx.h.cpp &amp;&amp; echo * the .pch file.>>stdafx.h.cpp &amp;&amp; echo *>>stdafx.h.cpp &amp;&amp; echo * Due to issues with the dependencies checker within the IDE, it>>stdafx.h.cpp &amp;&amp; echo * sometimes fails to recompile the PCH file, if we force the IDE to>>stdafx.h.cpp &amp;&amp; echo * create the PCH file directly from the header file.>>stdafx.h.cpp &amp;&amp; echo *>>stdafx.h.cpp &amp;&amp; echo * This file is auto-generated by qmake since no PRECOMPILED_SOURCE was>>stdafx.h.cpp &amp;&amp; echo * specified, and is used as the common stdafx.cpp. The file is only>>stdafx.h.cpp &amp;&amp; echo * generated when creating .vcproj project files, and is not used for>>stdafx.h.cpp &amp;&amp; echo * command line compilations by nmake.>>stdafx.h.cpp &amp;&amp; echo *>>stdafx.h.cpp &amp;&amp; echo * WARNING: All changes made in this file will be lost.>>stdafx.h.cpp &amp;&amp; echo --------------------------------------------------------------------*/>>stdafx.h.cpp &amp;&amp; echo #include &quot;stdafx.h&quot;>>stdafx.h.cpp"
+						Description="Generating precompiled header source file &apos;stdafx.h.cpp&apos; ..."
+						Outputs="stdafx.h.cpp" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="echo /*-------------------------------------------------------------------- >stdafx.h.cpp &amp;&amp; echo * Precompiled header source file used by Visual Studio.NET to generate>>stdafx.h.cpp &amp;&amp; echo * the .pch file.>>stdafx.h.cpp &amp;&amp; echo *>>stdafx.h.cpp &amp;&amp; echo * Due to issues with the dependencies checker within the IDE, it>>stdafx.h.cpp &amp;&amp; echo * sometimes fails to recompile the PCH file, if we force the IDE to>>stdafx.h.cpp &amp;&amp; echo * create the PCH file directly from the header file.>>stdafx.h.cpp &amp;&amp; echo *>>stdafx.h.cpp &amp;&amp; echo * This file is auto-generated by qmake since no PRECOMPILED_SOURCE was>>stdafx.h.cpp &amp;&amp; echo * specified, and is used as the common stdafx.cpp. The file is only>>stdafx.h.cpp &amp;&amp; echo * generated when creating .vcproj project files, and is not used for>>stdafx.h.cpp &amp;&amp; echo * command line compilations by nmake.>>stdafx.h.cpp &amp;&amp; echo *>>stdafx.h.cpp &amp;&amp; echo * WARNING: All changes made in this file will be lost.>>stdafx.h.cpp &amp;&amp; echo --------------------------------------------------------------------*/>>stdafx.h.cpp &amp;&amp; echo #include &quot;stdafx.h&quot;>>stdafx.h.cpp"
+						Description="Generating precompiled header source file &apos;stdafx.h.cpp&apos; ..."
+						Outputs="stdafx.h.cpp" />
+				</FileConfiguration>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
+		<Filter
+			Name="Generated Files"
+			Filter="cpp;c;cxx;moc;h;def;odl;idl;res;"
+			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}">
+			<File
+				RelativePath="stdafx.h.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ForcedIncludeFiles="$(NOINHERIT)"
+						PrecompiledHeaderThrough="$(INHERIT)"
+						UsePrecompiledHeader="1" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ForcedIncludeFiles="$(NOINHERIT)"
+						PrecompiledHeaderThrough="$(INHERIT)"
+						UsePrecompiledHeader="1" />
+				</FileConfiguration>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

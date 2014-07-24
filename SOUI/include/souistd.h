@@ -75,7 +75,7 @@
 #pragma comment(lib,"shlwapi.lib")
 
 #ifdef _DEBUG
-#   pragma comment(lib,"utilities_d.lib")
+#   pragma comment(lib,"utilitiesd.lib")
 #else
 #   pragma comment(lib,"utilities.lib")
 #endif
