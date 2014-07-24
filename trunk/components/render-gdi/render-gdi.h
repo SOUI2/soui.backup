@@ -1,15 +1,5 @@
 #pragma once
 
-#ifndef _LIB
-#ifdef RENDERGDI_EXPORTS
-#define RENDERGDI_API __declspec(dllexport)
-#else
-#define RENDERGDI_API __declspec(dllimport)
-#endif
-#else
-#define RENDERGDI_API
-#endif
-
 #include <helper/color.h>
 #include <unknown/obj-ref-impl.hpp>
 
@@ -344,4 +334,4 @@ namespace SOUI
 }
 
 
-EXTERN_C BOOL RENDERGDI_API SCreateInstance(IObjRef ** ppRenderFactory);
+EXTERN_C BOOL __declspec(dllexport) SCreateInstance(IObjRef ** ppRenderFactory);

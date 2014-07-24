@@ -5,8 +5,8 @@
 //     Version: 2011.7.8 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
 
-#include "duistd.h"
-#include "control/duiitembox.h"
+#include "souistd.h"
+#include "control/sitembox.h"
 
 namespace SOUI
 {
@@ -16,22 +16,20 @@ SItemBox::SItemBox():m_nItemWid(100),m_nItemHei(100),m_nSepHei(5),m_nSepWid(5)
 
 }
 
-CDuiWindow* SItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsureVisible/*=FALSE*/)
+SWindow* SItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsureVisible/*=FALSE*/)
 {
-    CDuiStringA strXml=DUI_CW2A(pszXml,CP_UTF8);
-
     pugi::xml_document xmlDoc;
-    if(!xmlDoc.load_buffer((LPCSTR)strXml,strXml.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return NULL;
+    if(!xmlDoc.load_buffer(pszXml,wcslen(pszXml),pugi::parse_default,pugi::encoding_utf16)) return NULL;
 
-    CDuiWindow *pChild=m_pFirstChild,*pPrevChild=ICWND_FIRST;
+    SWindow *pChild=m_pFirstChild,*pPrevChild=ICWND_FIRST;
     for(int iChild=0; iChild<iItem || iItem==-1; iChild++)
     {
         if(!pChild) break;
         pPrevChild=pChild;
-        pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
+        pChild=pChild->GetWindow(GSW_NEXTSIBLING);
     }
 
-    CDuiWindow *pPanel=new CDuiWindow;
+    SWindow *pPanel=new SWindow;
     InsertChild(pPanel, pPrevChild);
 
     pPanel->LoadChildren(xmlDoc.first_child());
@@ -43,23 +41,23 @@ CDuiWindow* SItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsureVis
 
     if(bEnsureVisible) EnsureVisible(pPanel);
 
-    NotifyInvalidate();
+    Invalidate();
     return pPanel;
 }
 
-CDuiWindow* SItemBox::InsertItem(pugi::xml_node xmlNode,int iItem/*=-1*/,BOOL bEnsureVisible/*=FALSE*/)
+SWindow* SItemBox::InsertItem(pugi::xml_node xmlNode,int iItem/*=-1*/,BOOL bEnsureVisible/*=FALSE*/)
 {
     if (!xmlNode) return NULL;    
 
-    CDuiWindow *pChild=m_pFirstChild,*pPrevChild=ICWND_FIRST;
+    SWindow *pChild=m_pFirstChild,*pPrevChild=ICWND_FIRST;
     for(int iChild=0; iChild<iItem || iItem==-1; iChild++)
     {
         if(!pChild) break;
         pPrevChild=pChild;
-        pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
+        pChild=pChild->GetWindow(GSW_NEXTSIBLING);
     }
 
-    CDuiWindow *pPanel=new CDuiWindow;
+    SWindow *pPanel=new SWindow;
     InsertChild(pPanel, pPrevChild);
 
     pPanel->LoadChildren(xmlNode);
@@ -71,55 +69,55 @@ CDuiWindow* SItemBox::InsertItem(pugi::xml_node xmlNode,int iItem/*=-1*/,BOOL bE
 
     if(bEnsureVisible) EnsureVisible(pPanel);
 
-    NotifyInvalidate();
+    Invalidate();
     return pPanel;
 }
 
 BOOL SItemBox::RemoveItem(UINT iItem)
 {
     if(iItem>=GetItemCount()) return FALSE;
-    CDuiWindow *pChild=m_pFirstChild;
+    SWindow *pChild=m_pFirstChild;
     for(UINT iChild=0; iChild<iItem ; iChild++)
     {
-        pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
+        pChild=pChild->GetWindow(GSW_NEXTSIBLING);
     }
     DestroyChild(pChild);
 
     UpdateScroll();
     ReLayout();
-    NotifyInvalidate();
+    Invalidate();
 
     return TRUE;
 }
 
-BOOL SItemBox::RemoveItem(CDuiWindow * pChild)
+BOOL SItemBox::RemoveItem(SWindow * pChild)
 {
     if (DestroyChild(pChild))
     {
         UpdateScroll();
         ReLayout();
-        NotifyInvalidate();
+        Invalidate();
         return TRUE;
     }
     return FALSE;
 }
 
-void SItemBox::BringWindowAfter(CDuiWindow * pChild, CDuiWindow * pInsertAfter)
+void SItemBox::BringWindowAfter(SWindow * pChild, SWindow * pInsertAfter)
 {
     RemoveChild(pChild);
     InsertChild(pChild, pInsertAfter);
 }
 
-BOOL SItemBox::SetNewPosition(CDuiWindow * pChild, DWORD nPos, BOOL bEnsureVisible)
+BOOL SItemBox::SetNewPosition(SWindow * pChild, DWORD nPos, BOOL bEnsureVisible)
 {
     if (pChild == NULL)
     {
         return FALSE;
     }
 
-    CDuiWindow * pCurChild = m_pFirstChild;
+    SWindow * pCurChild = m_pFirstChild;
     DWORD nCurPos = 0;
-    for (; pCurChild != NULL; pCurChild = pCurChild->GetDuiWindow(GDUI_NEXTSIBLING))
+    for (; pCurChild != NULL; pCurChild = pCurChild->GetWindow(GDUI_NEXTSIBLING))
     {
         if (pCurChild == pChild)
         {
@@ -140,7 +138,7 @@ BOOL SItemBox::SetNewPosition(CDuiWindow * pChild, DWORD nPos, BOOL bEnsureVisib
             EnsureVisible(pChild);
         }
 
-        NotifyInvalidate();
+        Invalidate();
         return TRUE;
     }
 
@@ -150,10 +148,10 @@ BOOL SItemBox::SetNewPosition(CDuiWindow * pChild, DWORD nPos, BOOL bEnsureVisib
     }
     else
     {
-        CDuiWindow * pNewNext = m_pFirstChild;
+        SWindow * pNewNext = m_pFirstChild;
         for (UINT i = 0; i < nPos && pNewNext != NULL; i++)
         {
-            pNewNext = pNewNext->GetDuiWindow(GDUI_NEXTSIBLING);
+            pNewNext = pNewNext->GetWindow(GSW_NEXTSIBLING);
         }
 
         BringWindowAfter(pChild, pNewNext);
@@ -165,18 +163,18 @@ BOOL SItemBox::SetNewPosition(CDuiWindow * pChild, DWORD nPos, BOOL bEnsureVisib
     {
         EnsureVisible(pChild);
     }
-    NotifyInvalidate();
+    Invalidate();
     return TRUE;
 }
 
-int SItemBox::GetItemPos(CDuiWindow * lpCurItem)
+int SItemBox::GetItemPos(SWindow * lpCurItem)
 {
     if (lpCurItem == NULL)
     {
         return -1;
     }
     int nPos = 0;
-    for (CDuiWindow *pChild = m_pFirstChild; pChild != NULL; pChild = pChild->GetDuiWindow(GDUI_NEXTSIBLING), ++nPos)
+    for (SWindow *pChild = m_pFirstChild; pChild != NULL; pChild = pChild->GetWindow(GSW_NEXTSIBLING), ++nPos)
     {
         if (pChild == lpCurItem)
         {
@@ -188,9 +186,9 @@ int SItemBox::GetItemPos(CDuiWindow * lpCurItem)
 
 void SItemBox::RemoveAllItems()
 {
-    CDuiWindow::OnDestroy();
+    SWindow::OnDestroy();
     UpdateScroll();
-    NotifyInvalidate();
+    Invalidate();
 }
 
 UINT SItemBox::GetItemCount()
@@ -208,7 +206,7 @@ void SItemBox::PageDown()
     OnScroll(TRUE,SB_PAGEDOWN,0);
 }
 
-void SItemBox::EnsureVisible(CDuiWindow *pItem)
+void SItemBox::EnsureVisible(SWindow *pItem)
 {
     if(!HasScrollBar(TRUE)) return;
     DUIASSERT(pItem);
@@ -294,13 +292,13 @@ void SItemBox::ReLayout()
 {
     CRect rcItem;
     int iItem=0;
-    CDuiWindow *pChild=m_pFirstChild;
+    SWindow *pChild=m_pFirstChild;
     while(pChild)
     {
         rcItem=GetItemRect(iItem);
         rcItem.OffsetRect(m_rcWindow.TopLeft()-m_ptOrigin);
         pChild->Move(rcItem);
-        pChild=pChild->GetDuiWindow(GDUI_NEXTSIBLING);
+        pChild=pChild->GetWindow(GSW_NEXTSIBLING);
         iItem++;
     }
 }
@@ -330,7 +328,7 @@ BOOL SItemBox::LoadChildren(pugi::xml_node xmlNode)
 
     while(xmlItem)
     {
-        CDuiWindow *pChild=new CDuiWindow;
+        SWindow *pChild=new SWindow;
 
         InsertChild(pChild);
 

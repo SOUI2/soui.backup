@@ -15,6 +15,7 @@ SGifPlayer::~SGifPlayer()
 
 void SGifPlayer::OnTimer(char cTimerID)
 {	
+    UNREFERENCED_PARAMETER(cTimerID);
 	KillTimer(1);	
 
 	if(m_pgif)
@@ -64,7 +65,7 @@ HRESULT SGifPlayer::OnAttrGif( const SStringW & strValue, BOOL bLoading )
 	return bLoading?S_OK:S_FALSE;
 }
 
-CSize SGifPlayer::GetDesiredSize( LPRECT pRcContainer )
+CSize SGifPlayer::GetDesiredSize( LPRECT /*pRcContainer*/ )
 {
 	CSize sz;
 	if(m_pgif) sz=m_pgif->GetSkinSize();

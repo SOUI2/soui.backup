@@ -5,16 +5,6 @@
 // IMGDECODERWIC_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
 
-#ifndef _LIB
-#ifdef IMGDECODERWIC_EXPORTS
-#define IMGDECODERWIC_API __declspec(dllexport)
-#else
-#define IMGDECODERWIC_API __declspec(dllimport)
-#endif
-#else
-#define IMGDECODERWIC_API
-#endif
-
 #include <wincodec.h>
 #include <unknown/obj-ref-impl.hpp>
 
@@ -85,4 +75,4 @@ namespace SOUI
     
 }//end of namespace SOUI
 
-extern "C" IMGDECODERWIC_API BOOL SCreateInstance(IObjRef **pImgDecoderFactory);
+extern "C" __declspec(dllexport) BOOL SCreateInstance(IObjRef **pImgDecoderFactory);

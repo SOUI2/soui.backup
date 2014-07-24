@@ -45,7 +45,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     TCHAR szCurrentDir[MAX_PATH]={0};
     GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
     LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
-    _tcscpy(lpInsertPos,_T("\\..\\..\\..\\demo"));
+    _tcscpy(lpInsertPos,_T("\\..\\..\\demo"));
     SetCurrentDirectory(szCurrentDir);
     
     {
@@ -53,11 +53,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         CAutoRefPtr<SOUI::IImgDecoderFactory> pImgDecoderFactory;
         CAutoRefPtr<SOUI::IRenderFactory> pRenderFactory;
 #ifdef _DEBUG
-        imgDecLoader.CreateInstance(_T("imgdecoder-wic_d.dll"),(IObjRef**)&pImgDecoderFactory);
+        imgDecLoader.CreateInstance(_T("imgdecoder-wicd.dll"),(IObjRef**)&pImgDecoderFactory);
 #ifdef RENDER_GDI
-        renderLoader.CreateInstance(_T("render-gdi_d.dll"),(IObjRef**)&pRenderFactory);
+        renderLoader.CreateInstance(_T("render-gdid.dll"),(IObjRef**)&pRenderFactory);
 #else
-        renderLoader.CreateInstance(_T("render-skia_d.dll"),(IObjRef**)&pRenderFactory);
+        renderLoader.CreateInstance(_T("render-skiad.dll"),(IObjRef**)&pRenderFactory);
 #endif
 #else
         imgDecLoader.CreateInstance(_T("imgdecoder-wic.dll"),(IObjRef**)&pImgDecoderFactory);
@@ -75,7 +75,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 #ifdef SUPPORT_LANG
         CAutoRefPtr<ITranslator> trans;
 #ifdef _DEBUG
-        transLoader.CreateInstance(_T("translator_d.dll"),(IObjRef**)&trans);
+        transLoader.CreateInstance(_T("translatord.dll"),(IObjRef**)&trans);
 #else
         transLoader.CreateInstance(_T("translator.dll"),(IObjRef**)&trans);
 #endif//_DEBUG
@@ -96,7 +96,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 #ifdef SUPPORT_LUA
         CAutoRefPtr<IScriptModule> pScriptLua;
 #ifdef _DEBUG
-        scriptLoader.CreateInstance(_T("scriptmodule-lua_d.dll"),(IObjRef**)&pScriptLua);
+        scriptLoader.CreateInstance(_T("scriptmodule-luad.dll"),(IObjRef**)&pScriptLua);
 #else
         scriptLoader.CreateInstance(_T("scriptmodule-lua.dll"),(IObjRef**)&pScriptLua);
 #endif//_DEBUG
@@ -131,7 +131,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         
         theApp->AddResProvider(pResProvider);
 
-        BOOL bOK=theApp->Init(_T("IDR_DUI_INIT")); //初始化DUI系统,原来的系统初始化方式依然可以使用。
+        theApp->Init(_T("IDR_DUI_INIT")); 
         theApp->SetMsgBoxTemplate(_T("IDR_DUI_MSGBOX"));
 
         // BLOCK: Run application

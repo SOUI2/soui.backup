@@ -199,7 +199,6 @@ class S_NO_VTABLE ActiveXSite :   public IOleClientSite,
         }
         else if (m_spOleObject != NULL)
         {
-            HWND hHost=m_pAxHostDelegate->GetAxHostWindow();
             hr = m_spOleObject->DoVerb(verb, NULL, static_cast<IOleClientSite*>(this), 0,m_pAxHostDelegate->GetAxHostWindow(), &m_rcPos);
             if (verb == OLEIVERB_INPLACEACTIVATE && SUCCEEDED(hr))
             {
