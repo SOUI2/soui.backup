@@ -66,7 +66,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         {
             theApp->SetTranslator(trans);
             pugi::xml_document xmlLang;
-            if(xmlLang.load_file(L"../demo/translation files/lang_cn.xml"))
+            if(xmlLang.load_file(L"translation files/lang_cn.xml"))
             {
                 CAutoRefPtr<ILang> langCN;
                 trans->CreateLang(&langCN);

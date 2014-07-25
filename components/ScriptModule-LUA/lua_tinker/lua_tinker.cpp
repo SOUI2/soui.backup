@@ -6,8 +6,6 @@
 // 
 // please check Licence.txt file for licence and legal issues. 
 
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <iostream>
 
 extern "C" 

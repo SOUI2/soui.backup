@@ -12,16 +12,7 @@ INCLUDEPATH += . \
 dir = ../..
 include($$dir/common.pri)
 
-CONFIG(debug,debug|release){
-	DESTDIR = $$dir/bin/debug
-	QMAKE_LIBDIR += $$DESTDIR
-	LIBS += utilitiesd.lib
-}
-else{
-	DESTDIR = $$dir/bin/release
-	QMAKE_LIBDIR += $$DESTDIR
-	LIBS += utilities.lib
-}
+LIBS += utilities.lib
 
 PRECOMPILED_HEADER = stdafx.h
 

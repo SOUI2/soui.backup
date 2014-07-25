@@ -17,7 +17,7 @@ DLL_SOUI{
     DEFINES += DLL_SOUI
 }
 
-LIBS += souid.lib utilities.lib
+LIBS += soui.lib utilities.lib
 
 PRECOMPILED_HEADER = stdafx.h
 
