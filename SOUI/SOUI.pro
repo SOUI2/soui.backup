@@ -17,7 +17,7 @@ include($$dir/common.pri)
 
 LIBS += utilities.lib
 
-PRECOMPILED_HEADER = souistd.h
+PRECOMPILED_HEADER = include/souistd.h
 
 DEPENDPATH += . \
               include \
