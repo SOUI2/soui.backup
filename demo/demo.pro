@@ -17,16 +17,7 @@ DLL_SOUI{
     DEFINES += DLL_SOUI
 }
 
-CONFIG(debug,debug|release){
-	DESTDIR = $$dir/bin/debug
-	QMAKE_LIBDIR += $$DESTDIR
-	LIBS += souid.lib utilitiesd.lib
-}
-else{
-	DESTDIR = $$dir/bin/release
-	QMAKE_LIBDIR += $$DESTDIR
-	LIBS += souid.lib utilities.lib
-}
+LIBS += souid.lib utilities.lib
 
 PRECOMPILED_HEADER = stdafx.h
 

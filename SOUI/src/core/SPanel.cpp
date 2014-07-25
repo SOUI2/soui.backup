@@ -593,7 +593,6 @@ BOOL SPanel::OnScroll(BOOL bVertical,UINT uCode,int nPos)
 {
     SCROLLINFO *psi=bVertical?(&m_siVer):(&m_siHoz);
     int nNewPos=psi->nPos;
-    int nPage=bVertical?m_siVer.nPage:m_siHoz.nPage;
     switch(uCode)
     {
     case SB_LINEUP:

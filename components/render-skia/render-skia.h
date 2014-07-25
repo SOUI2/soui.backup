@@ -1,14 +1,5 @@
 #pragma once
 
-#ifndef _LIB
-#ifdef RENDERSKIA_EXPORTS
-#define RENDERSKIA_API __declspec(dllexport)
-#else
-#define RENDERSKIA_API __declspec(dllimport)
-#endif
-#else
-#define RENDERSKIA_API
-#endif
 
 #include <helper/color.h>
 #include <unknown/obj-ref-impl.hpp>
@@ -350,4 +341,4 @@ namespace SOUI
 	};
 }
 
-EXTERN_C RENDERSKIA_API BOOL SCreateInstance(IObjRef ** ppRenderFactory);
+EXTERN_C __declspec(dllexport) BOOL SCreateInstance(IObjRef ** ppRenderFactory);

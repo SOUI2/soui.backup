@@ -608,7 +608,6 @@ SWindow * SWindow::CreateChildren(LPCWSTR pszXml)
 {
     pugi::xml_document xmlDoc;
     if(!xmlDoc.load_buffer(pszXml,wcslen(pszXml)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) return NULL;
-    SWindow * pLastChild=m_pLastChild;//保存当前的最后一个子窗口
     BOOL bLoaded=CreateChildren(xmlDoc);
     if(!bLoaded) return NULL;
     OnWindowPosChanged(NULL);
