@@ -38,11 +38,11 @@ public:
     SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName=_T("SOUIHOST"));
     ~SApplication(void);
 
-    IRenderFactory * GetRenderFactory(){return m_RenderFactory;}
+    IRenderFactory * GetRenderFactory();
 
-    HINSTANCE GetInstance() { return m_hInst;}
+    HINSTANCE GetInstance();
 
-    LPCTSTR GetVersion(){return SOUI_VERSION;}
+    LPCTSTR GetVersion();
 
     BOOL Init(LPCTSTR pszName ,LPCTSTR pszType=RT_UIDEF);
 
@@ -50,13 +50,13 @@ public:
 
     BOOL LoadXmlDocment(pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType);
 
-    IScriptModule * GetScriptModule()  { return m_pScriptModule;}
+    IScriptModule * GetScriptModule();
 
-    void SetScriptModule(IScriptModule *pScriptModule){m_pScriptModule=pScriptModule;}
+    void SetScriptModule(IScriptModule *pScriptModule);
     
-    ITranslator * GetTranslator(){return m_Translator;}
+    ITranslator * GetTranslator();
     
-    void SetTranslator(ITranslator * pTrans){m_Translator = pTrans;}
+    void SetTranslator(ITranslator * pTrans);
     
     int Run(HWND hMainWnd);
 protected:

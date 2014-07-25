@@ -23,7 +23,6 @@
 #define _WIN32_IE    0x0601
 #define _RICHEDIT_VER    0x0200
 
-#define _CRT_SECURE_NO_WARNINGS
 #define _CRT_NON_CONFORMING_SWPRINTFS
 
 
@@ -73,9 +72,4 @@
 
 
 #pragma comment(lib,"shlwapi.lib")
-
-#ifdef _DEBUG
-#   pragma comment(lib,"utilitiesd.lib")
-#else
-#   pragma comment(lib,"utilities.lib")
-#endif
+#pragma comment(lib,"utilities.lib")

@@ -140,4 +140,40 @@ int SApplication::Run( HWND hMainWnd )
     if(::IsWindow(hMainWnd)) DestroyWindow(hMainWnd);
     return nRet;
 }
+
+LPCTSTR SApplication::GetVersion()
+{
+	return SOUI_VERSION;
+}
+
+HINSTANCE SApplication::GetInstance()
+{
+	return m_hInst;
+}
+
+void SApplication::SetTranslator(ITranslator * pTrans)
+{
+	m_Translator = pTrans;
+}
+
+ITranslator * SApplication::GetTranslator()
+{
+	return m_Translator;
+}
+
+void SApplication::SetScriptModule(IScriptModule *pScriptModule)
+{
+	m_pScriptModule = pScriptModule;
+}
+
+IScriptModule * SApplication::GetScriptModule()
+{
+	return m_pScriptModule;
+}
+
+IRenderFactory * SApplication::GetRenderFactory()
+{
+	return m_RenderFactory;
+}
+
 }//namespace SOUI

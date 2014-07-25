@@ -27,10 +27,6 @@
 
 using namespace SOUI;
 
-#ifdef _DEBUG
-	# pragma comment(lib, "souid.lib")
-#else
-	# pragma comment(lib, "soui.lib")
-#endif
+# pragma comment(lib, "soui.lib")
 
 

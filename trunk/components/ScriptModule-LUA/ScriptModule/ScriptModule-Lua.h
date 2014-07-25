@@ -1,11 +1,5 @@
 #pragma  once
 
-#ifdef LUASCRIPTMODULE_EXPORTS
-#define LUASCRIPTMODULE_API __declspec(dllexport)
-#else
-#define LUASCRIPTMODULE_API __declspec(dllimport)
-#endif
-
 #include <interface/SScriptModule-i.h>
 #include <unknown/obj-ref-impl.hpp>
 extern "C"
@@ -38,4 +32,4 @@ protected:
 	lua_State * d_state;
 };
 
-extern "C" BOOL LUASCRIPTMODULE_API SCreateInstance(IObjRef ** ppScript);
+extern "C" BOOL __declspec(dllexport) SCreateInstance(IObjRef ** ppScript);
