@@ -21,7 +21,7 @@ CONFIG(debug,debug|release){
 	LIBS += utilities.lib myskia.lib freetype253_d.lib Usp10.lib
 }
 else{
-	LIBS += utilities.lib myskia.lib freetype253.lib Usp10.lib
+	LIBS += utilities.lib myskia.lib freetype253mt.lib Usp10.lib
 }
 
 PRECOMPILED_HEADER = stdafx.h

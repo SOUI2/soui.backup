@@ -35,10 +35,9 @@
     (void) ((!!(expr)) || \
     (1 != _CrtDbgReport(_CRT_ASSERT, __FILE__, __LINE__, NULL, format, __VA_ARGS__)) || \
     (_CrtDbgBreak(), 0))
-
 #else
-#   define SRES_ASSERTW
-#    define SRES_ASSERTA
+#   define ASSERT_FMTW
+#   define ASSERT_FMTA
 #endif
 
 #ifdef _UNICODE 
