@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,d:\Qt\4.7.1\mkspecs\default"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -MP -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\debug\imgdecoder-wic\"
 				BufferSecurityCheck="false"
@@ -76,7 +76,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,d:\Qt\4.7.1\mkspecs\default"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -MP -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\release\imgdecoder-wic\"
 				BufferSecurityCheck="false"

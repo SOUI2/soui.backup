@@ -46,3 +46,5 @@ SOURCES += demo.cpp \
            ../controls.extend/SWkeWebkit.cpp \
            ../controls.extend/gif/SGifPlayer.cpp \
            ../controls.extend/gif/SSkinGif.cpp \
+
+RC_FILE += demo.rc
