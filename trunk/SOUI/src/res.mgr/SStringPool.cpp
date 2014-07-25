@@ -43,7 +43,6 @@ BOOL SStringPool::Init( pugi::xml_node xmlNode )
         ASSERT(FALSE);
         return FALSE;
     }
-    UINT uStringID = 0;
 
     for (pugi::xml_node xmlStr=xmlNode.first_child(); xmlStr; xmlStr=xmlStr.next_sibling())
     {

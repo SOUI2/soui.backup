@@ -15,14 +15,12 @@ INCLUDEPATH += . \
 dir = ../..
 include($$dir/common.pri)
 
+QMAKE_LIBDIR += $$dir/third-part/freetype/lib
+
 CONFIG(debug,debug|release){
-	DESTDIR = $$dir/bin/debug
-	QMAKE_LIBDIR += $$DESTDIR $$dir/third-part/freetype/lib
-	LIBS += utilitiesd.lib myskiad.lib freetype253_D.lib Usp10.lib
+	LIBS += utilities.lib myskia.lib freetype253_d.lib Usp10.lib
 }
 else{
-	DESTDIR = $$dir/bin/release
-	QMAKE_LIBDIR += $$DESTDIR $$dir/third-part/freetype/lib
 	LIBS += utilities.lib myskia.lib freetype253.lib Usp10.lib
 }
 

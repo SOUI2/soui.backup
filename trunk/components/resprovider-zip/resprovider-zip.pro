@@ -15,17 +15,7 @@ DEFINES += RESPROVIDERZIP_EXPORTS
 dir = ../..
 include($$dir/common.pri)
 
-
-CONFIG(debug,debug|release){
-	DESTDIR = $$dir/bin/debug
-	QMAKE_LIBDIR += $$DESTDIR
-	LIBS += zlibd.lib utilitiesd.lib
-}
-else{
-	DESTDIR = $$dir/bin/release
-	QMAKE_LIBDIR += $$DESTDIR
-	LIBS += zlib.lib utilities.lib
-}
+LIBS += zlib.lib utilities.lib
 
 PRECOMPILED_HEADER = stdafx.h
 

@@ -5,19 +5,16 @@
 TEMPLATE = lib
 TARGET = scriptmodule-lua
 DEPENDPATH += . exports
-INCLUDEPATH += .
+INCLUDEPATH += . \
+			   ../lua-51 \
+			   ../../../soui/include \
+			   ../../../utilities/include \
+
 
 dir = ../../..
 include($$dir/common.pri)
 
-debug{
-	DESTDIR = $$dir/bin/debug
-	LIB += lua-5.1d.lib
-}
-release{
-	DESTDIR = $$dir/bin/release
-	LIB += lua-5.1.lib
-}
+LIBS += lua-51.lib soui.lib
 
 PRECOMPILED_HEADER = stdafx.h
 

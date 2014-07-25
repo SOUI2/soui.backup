@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = lib
-TARGET = lua-5.1
+TARGET = lua-51
 DEPENDPATH += .
 INCLUDEPATH += .
 
@@ -12,12 +12,7 @@ CONFIG += staticlib
 dir = ../../..
 include($$dir/common.pri)
 
-debug{
-	DESTDIR = $$dir/bin/debug
-}
-release{
-	DESTDIR = $$dir/bin/release
-}
+DEFINES += _CRT_SECURE_NO_WARNINGS
 
 # Input
 HEADERS += lapi.h \

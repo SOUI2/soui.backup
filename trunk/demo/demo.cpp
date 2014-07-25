@@ -6,7 +6,7 @@
 #include <unknown/com-loader.hpp>
 
 #if defined(_DEBUG) && !defined(_WIN64)
-#include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
+// #include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
 #endif
 
 #include "MainDlg.h"
@@ -21,11 +21,7 @@
 
 #if RES_TYPE==2
     #include "../components/resprovider-zip/SResProviderZip.h"
-    #ifdef _DEBUG
-    #pragma comment(lib,"resprovider-zip_d.lib")
-    #else
-    #pragma comment(lib,"resprovider-zip.lib")
-    #endif
+	#pragma comment(lib,"resprovider-zip.lib")
 #endif
 
 
@@ -52,20 +48,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
         CAutoRefPtr<SOUI::IImgDecoderFactory> pImgDecoderFactory;
         CAutoRefPtr<SOUI::IRenderFactory> pRenderFactory;
-#ifdef _DEBUG
-        imgDecLoader.CreateInstance(_T("imgdecoder-wicd.dll"),(IObjRef**)&pImgDecoderFactory);
-#ifdef RENDER_GDI
-        renderLoader.CreateInstance(_T("render-gdid.dll"),(IObjRef**)&pRenderFactory);
-#else
-        renderLoader.CreateInstance(_T("render-skiad.dll"),(IObjRef**)&pRenderFactory);
-#endif
-#else
         imgDecLoader.CreateInstance(_T("imgdecoder-wic.dll"),(IObjRef**)&pImgDecoderFactory);
 #ifdef RENDER_GDI
         renderLoader.CreateInstance(_T("render-gdi.dll"),(IObjRef**)&pRenderFactory);
 #else
         renderLoader.CreateInstance(_T("render-skia.dll"),(IObjRef**)&pRenderFactory);
-#endif
 #endif
 
         pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
@@ -74,11 +61,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
 #ifdef SUPPORT_LANG
         CAutoRefPtr<ITranslator> trans;
-#ifdef _DEBUG
-        transLoader.CreateInstance(_T("translatord.dll"),(IObjRef**)&trans);
-#else
         transLoader.CreateInstance(_T("translator.dll"),(IObjRef**)&trans);
-#endif//_DEBUG
         if(trans)
         {
             theApp->SetTranslator(trans);
@@ -95,11 +78,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
 #ifdef SUPPORT_LUA
         CAutoRefPtr<IScriptModule> pScriptLua;
-#ifdef _DEBUG
-        scriptLoader.CreateInstance(_T("scriptmodule-luad.dll"),(IObjRef**)&pScriptLua);
-#else
         scriptLoader.CreateInstance(_T("scriptmodule-lua.dll"),(IObjRef**)&pScriptLua);
-#endif//_DEBUG
         if(pScriptLua)
         {
             pScriptLua->executeScriptFile("lua/test.lua");

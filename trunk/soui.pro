@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
-TARGET = 
+TARGET = soui
 DEPENDPATH += .
 INCLUDEPATH += .
 
@@ -13,6 +13,6 @@ SUBDIRS += components/render-skia
 SUBDIRS += components/translator
 SUBDIRS += components/zlib
 SUBDIRS += components/resprovider-zip
-SUBDIRS += components/ScriptModule-LUA/lua-5.1
+SUBDIRS += components/ScriptModule-LUA/lua-51
 SUBDIRS += components/ScriptModule-LUA/ScriptModule
 SUBDIRS += demo
