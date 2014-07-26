@@ -141,7 +141,7 @@ namespace SOUI
         szWnd.cx=max(szMin.cx,rcText.Width()+rcFrame.left+rcFrame.right);
         szWnd.cy=max(szMin.cy,rcText.Height()+rcFrame.top+rcFrame.bottom);
 
-        SetWindowPos(HWND_TOPMOST,0,0,szWnd.cx,szWnd.cy,SWP_NOMOVE);
+        SetWindowPos(0,0,0,szWnd.cx,szWnd.cy,SWP_NOMOVE);
         CenterWindow(m_hWnd);
         
         return DoModal(hWnd);
