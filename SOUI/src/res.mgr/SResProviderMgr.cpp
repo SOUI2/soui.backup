@@ -16,6 +16,13 @@ namespace SOUI
             IResProvider *pResProvider=m_lstResProvider.GetNext(pos);
             pResProvider->Release();
         }
+
+        pos = m_mapCachedCursor.GetStartPosition();
+        while(pos)
+        {
+            CURSORMAP::CPair *pPair=m_mapCachedCursor.GetNext(pos);
+            DeleteObject(pPair->m_value);
+        }
     }
 
     IResProvider * SResProviderMgr::GetMatchResProvider( LPCTSTR pszType,LPCTSTR pszResName )
