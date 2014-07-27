@@ -11,7 +11,7 @@
     <tabctrl pos="5,30,-5,-5" show="1" cursel="0" focusable="0" inset="10,0,3,0" animatesteps="10">
       <page title="page1">
         <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cache="1" cursor="CUR_TST">
-          <header itemSkin="btn_yellow" align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+          <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
           </header>
         </listctrl>
       </page>
@@ -88,16 +88,16 @@
         <button name="btn_msgbox" class="normalbtn" width="100" height="30" accel="ctrl+alt+num 9" animate="1">show msg box</button>
         <hotkey id="1340" pos="350,20,450,45" class="cls_edit"/>
         <hotkey name="ctrl_hk2" pos="460,20,560,45" class="cls_edit"/>
-        <progress name="IDC_PROGTEST" pos="200,100,-10,115" bgskin="prog_bg" posskin="prog_bar" value="20" min="0" max="100" showpercent="1"/>
-        <sliderbar name="IDC_SLIDERTEST" pos="%20.5,130" alpha="200" width="200" bgskin="prog_bg" posskin="prog_bar" thumbskin="slidethumb" value="20" min="0" max="100"/>
+        <progress name="IDC_PROGTEST" pos="200,100,-10,115" value="20" min="0" max="100" showpercent="1"/>
+        <sliderbar name="IDC_SLIDERTEST" pos="%20.5,130" alpha="200" width="200" value="20" min="0" max="100"/>
 
         <link id="1380" pos="10,250" maxwidth="100" class="cls_btn_weblink" dotted="1" href="www.yy.com">link</link>
         <button name="btn_tstevt" pos="300,300,400,330" class="normalbtn">test event</button>
       </page>
       <page title="calendar">
-        <calendar pos="0,0,-0,-0" name="mp_test" daySkin="btn_yellow" footerHeight="30">
+        <calendar pos="0,0,-0,-0" name="mp_test" daySkin="_skin.sys.btn.normal" footerHeight="30">
           <text name="label_today" pos="10,-20"/>
-          <imgbtn name="btn_today" pos="-50,-25,-5,-0" skin="btn_yellow"/>
+          <imgbtn name="btn_today" pos="-50,-25,-5,-0" skin="_skin.sys.btn.normal"/>
         </calendar>
       </page>
       <page id="119" title="treectrl">

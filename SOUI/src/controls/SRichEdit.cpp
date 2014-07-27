@@ -589,6 +589,8 @@ SRichEdit::SRichEdit()
     ,m_rcInsetPixel(2,2,2,2)
     ,m_byDbcsLeadByte(0)
 {
+    m_pNcSkin = GETBUILDINSKIN(SKIN_SYS_BORDER);
+
     m_bFocusable=TRUE;
     m_sizelExtent.cx=m_sizelExtent.cy=0;
     m_evtSet.addEvent(EventRENotify::EventID);

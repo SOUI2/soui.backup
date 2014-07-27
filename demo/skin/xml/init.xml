@@ -17,29 +17,17 @@
   
   <skins>
     <imgframe name="dlg_frame"  src="IDP_MAIN_DLG_FRAME" left="5" right="5" top="40" bottom="40"/>
-    <imglist name="btncheckbox"         src="IDP_BTN_WND_CHECKBOX" states="8"  />
-    <imglist name="btnRadio"            src="IDP_BTN_WND_RADIO" states="8" />
-    <imglist name="focuscheckbox" src="IDP_FOCUS_CHECK"/>
-    <imglist name="focusRadio" src="IDP_FOCUS_RADIO"/>
 
     <imglist name="btn_sys_close"    src="IDP_BTN_SYS_CLOSE" states="3" />
     <imglist name="btn_sys_minimize" src="IDP_BTN_SYS_MINIMIZE" states="3" />
     <imglist name="btn_sys_maximize" src="IDP_BTN_SYS_MAXIMIZE" states="3" />
     <imglist name="btn_sys_restore" src="IDP_BTN_SYS_RESOTRE" states="3" />
 
-    <imglist name="tabskin_default" src="IDP_TAB_COMMON" states="3"/>
-
     <button name="normalbtn" border="#7D9EBC" bg="#FBFCFD" bgup="#FEFEFE"
         bgdown="#C6E2FD" bguphover="#FEFEFE" bgdownhover="#DBEDFE"
         bguppush="#C6E2FD" bgdownpush="#FEFEFE"/>
 
-    <scrollbar name="sb_common" src="IDP_SCROLL" margin="3" hasgripper="0"/>
-    <scrollbar name="sb_test" src="IDP_SCROLL2" margin="3" hasgripper="0" hasinactive="1"/>
-
     <imgframe name="skin_editnc" src="IDP_EDIT_BORDER" states="2" left="2" top="2"/>
-    <imgframe name="skin_split_vert" src="IDP_SPLIT_VERT" top="20" bottom="10"/>
-    <imgframe name="skin_split_horz" src="IDP_SPLIT_HORZ" left="20" right="10"/>
-    <imgframe name="comboboxbtn" src="IDP_DROPBTN" states="3"/>
     <imglist name="icons" src="IDP_ICONS" states="6"/>
     <imglist name="skin_menuicon" src="IDP_ICONS_SMALL" states="12"/>
     <imgframe name="skin_menuitem" src="IDP_MENUSKIN" states="2" left="35" right="5"/>
@@ -50,15 +38,10 @@
     <imglist name="skin_webbtn_back" src="IDP_WEBBTN_BACK" states="4"/>
     <imglist name="skin_webbtn_forward" src="IDP_WEBBTN_FORWARD" states="4"/>
     <imglist name="skin_webbtn_refresh" src="IDP_WEBBTN_REFRESH" states="4"/>
-    <imglist name="TreeToggle"					src="IDR_TREE_TOGGLE" states="6"/>
-    <imglist name="TreeCheckBox"				src="IDR_TREE_CHECKBOX" states="9"/>
     <imglist name="TreeIcon"						src="IDR_TREE_ICON" states="3"/>
     <imglist name="icon3"							src="IDP_ICON3"  states="12"/>
 
     <imglist name="slidethumb" src="IDP_SLIDETHUMB" states="4"/>
-    <imgframe name="prog_bar" src="IDP_PROG_BAR" x="3"/>
-    <imgframe name="prog_bg" src="IDP_PROG_BG" x="5"/>
-    <imgframe name="btn_yellow" src="IDP_BTN_YELLOW" x="3" states="4"/>
 
     <gif name="gif_horse" src="gif_horse"/>
     <gif name="gif_penguin" src="gif_penguin"/>
@@ -78,7 +61,7 @@
     <class name="cls_txt_white"   font="facename:宋体,bold:1"  crtext="#FFFFFF" />
     <!--定义白色粗体宋体-->
 
-    <class name="normalbtn" skin="normalbtn" font="" crtext="#385e8b" crdisabled="#91a7c0" textmode="25" cursor="hand" x-margin="0"/>
+    <class name="normalbtn" font="" crtext="#385e8b" crdisabled="#91a7c0" textmode="25" cursor="hand" x-margin="0"/>
 
     <class name="toptext" textmode="20" />
     <class name="vcentertext" textmode="24"/>
@@ -88,17 +71,14 @@
 
     <class name="linkimage" cursor="hand"/>
 
-    <class name="cls_edit" x-margin="2" y-margin="2" ncskin="skin_editnc"/>
+    <class name="cls_edit" x-margin="2" y-margin="2" />
   </style>
 
   <objattr>
     <button class="normalbtn"/>
-    <check skin="btncheckbox"/>
-    <radio skin="btnRadio"/>
     <imgbtn class="linkimage"/>
-    <tabctrl tabskin="tabskin_default" crtext="000000" align="top" tabwidth="70" tabheight="38" tabspacing="0" tabpos="10" dotted="1"/>
-    <div sbskin="sb_common" sbwid="16"/>
-    <edit transparent="1" x-margin="2" y-margin="2" ncskin="skin_editnc"/>
-    <treectrl toggleskin="TreeToggle" checkskin="TreeCheckBox" critembg="#FFFFFF" critemselbg="#000088" critemtext="#000000" critemseltext="#FFFFFF" indent="17" itemmargin="4"/>
+    <tabctrl crtext="000000" align="top" tabwidth="70" tabheight="38" tabspacing="0" tabpos="10" dotted="1"/>
+    <edit transparent="1" x-margin="2" y-margin="2"/>
+    <treectrl critembg="#FFFFFF" critemselbg="#000088" critemtext="#000000" critemseltext="#FFFFFF" indent="17" itemmargin="4"/>
   </objattr>
 </UIDEF>

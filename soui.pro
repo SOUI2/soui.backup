@@ -3,9 +3,9 @@ TARGET = soui
 DEPENDPATH += .
 INCLUDEPATH += .
 
-
 SUBDIRS += utilities
 SUBDIRS += soui
+SUBDIRS += soui-sys-skin
 SUBDIRS += components/imgdecoder-wic
 SUBDIRS += components/render-gdi
 SUBDIRS += components/myskia

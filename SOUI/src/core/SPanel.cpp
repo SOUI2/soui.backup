@@ -12,12 +12,15 @@ namespace SOUI
 SPanel::SPanel()
     :m_nSbArrowSize(-1)
     ,m_nSbWid(-1)
-    ,m_pSkinSb(NULL)
     ,m_bDragSb(FALSE)
     ,m_wBarVisible(0)
     ,m_wBarEnable(SSB_BOTH)
     ,m_dwUpdateInterval(DEF_UPDATEINTERVAL)
 {
+    ISkinObj *pSkin=GETBUILDINSKIN(SKIN_SYS_SCROLLBAR);
+    if(pSkin && pSkin->IsClass(SSkinScrollbar::GetClassName()))
+        m_pSkinSb=(SSkinScrollbar*)pSkin;
+
     memset(&m_siHoz,0,sizeof(SCROLLINFO));
     memset(&m_siVer,0,sizeof(SCROLLINFO));
     m_HitInfo.uSbCode=-1;
@@ -259,9 +262,7 @@ SBHITINFO SPanel::HitTest(CPoint pt)
 int SPanel::OnCreate(LPVOID)
 {
     int nRet=__super::OnCreate(NULL);
-
     if(nRet!=0) return nRet;
-    if(!m_pSkinSb) m_pSkinSb=dynamic_cast<SSkinScrollbar*>(GETSKIN(L"sb_common"));
     ASSERT(m_pSkinSb);
     if(m_nSbWid==-1) m_nSbWid=m_pSkinSb->GetIdealSize();
     if(!m_pSkinSb->HasArrow()) m_nSbArrowSize=0;

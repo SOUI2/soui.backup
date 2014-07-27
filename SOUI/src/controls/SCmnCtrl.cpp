@@ -175,8 +175,12 @@ void SLink::OnMouseHover( WPARAM wParam, CPoint pt )
 // Usage: <button name=xx skin=xx>inner text example</button>
 //
 
-SButton::SButton() :m_accel(0),m_bAnimate(FALSE),m_byAlphaAni(0xFF)
+SButton::SButton() 
+:m_accel(0)
+,m_bAnimate(FALSE)
+,m_byAlphaAni(0xFF)
 {
+    m_pBgSkin=GETBUILDINSKIN(SKIN_SYS_BTN_NORMAL);
     m_bFocusable=TRUE;
 }
 
@@ -477,8 +481,8 @@ SProgress::SProgress()
     , m_nMaxValue(100)
     , m_nValue(0)
     , m_bShowPercent(FALSE)
-    , m_pSkinBg(NULL)
-    , m_pSkinPos(NULL)
+    , m_pSkinBg(GETBUILDINSKIN(SKIN_SYS_PROG_BKGND))
+    , m_pSkinPos(GETBUILDINSKIN(SKIN_SYS_PROG_BAR))
     , m_bVertical(FALSE)
 {
 
@@ -606,8 +610,8 @@ void SLine::OnPaint(IRenderTarget *pRT)
 //
 
 SCheckBox::SCheckBox()
-    : m_pSkin(GETSKIN(L"btncheckbox"))
-    , m_pFocusSkin(GETSKIN(L"focuscheckbox"))
+    : m_pSkin(GETBUILDINSKIN(SKIN_SYS_CHECKBOX))
+    , m_pFocusSkin(GETBUILDINSKIN(SKIN_SYS_FOCUSCHECKBOX))
 {
     m_bFocusable=TRUE;
 }
@@ -776,8 +780,8 @@ void SIconWnd::SetIcon(HICON hIcon)
 //
 
 SRadioBox::SRadioBox()
-    : m_pSkin(GETSKIN(L"btnRadio"))
-    , m_pFocusSkin(GETSKIN(L"focusRadio"))
+    : m_pSkin(GETBUILDINSKIN(SKIN_SYS_RADIO))
+    , m_pFocusSkin(GETBUILDINSKIN(SKIN_SYS_FOCUSRADIO))
 {
     m_bFocusable=TRUE;
 }

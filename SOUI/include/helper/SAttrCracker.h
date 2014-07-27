@@ -332,7 +332,7 @@ public:                                                             \
         if(nPos!=-1)\
         {\
             SStringT strType=strValueT.Right(strValue.GetLength()-nPos-1);\
-            varname = SImgPool::getSingleton().GetImage(strValueT.Left(nPos),strType);        \
+            varname = SImgPool::getSingleton().GetImage(strType,strValueT.Left(nPos));        \
             if(varname) varname->AddRef();    \
             hRet = allredraw ? S_OK : S_FALSE;                      \
         }else\

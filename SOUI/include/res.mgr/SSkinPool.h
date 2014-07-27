@@ -3,9 +3,36 @@
 #include "interface/Sskinobj-i.h"
 
 #define GETSKIN(p1) SSkinPool::getSingleton().GetSkin(p1)
+#define GETBUILDINSKIN(p1) SSkinPool::getSingleton().GetBuildinSkin(p1)
 
 namespace SOUI
 {
+    //系统内置皮肤名称
+    enum SYS_SKIN
+    {
+        SKIN_SYS_CHECKBOX=0,            //L"_skin.sys.checkbox",
+        SKIN_SYS_RADIO,                 //L"_skin.sys.radio",
+        SKIN_SYS_FOCUSCHECKBOX,         //L"_skin.sys.focuscheckbox",
+        SKIN_SYS_FOCUSRADIO,            //L"_skin.sys.focusradio",
+        SKIN_SYS_BTN_NORMAL,             //L"_skin.sys.btn.normal",
+        SKIN_SYS_SCROLLBAR,             //L"_skin.sys.scrollbar",
+        SKIN_SYS_BORDER,                //L"_skin.sys.border",
+        SKIN_SYS_DROPBTN,               //L"_skin.sys.dropbtn",
+        SKIN_SYS_TREE_TOGGLE,           //L"_skin.sys.tree.toggle",
+        SKIN_SYS_TREE_CHECKBOX,         //L"_skin.sys.tree.checkbox"
+        SKIN_SYS_TAB_PAGE,              //L"_skin.sys.tab.page",
+        SKIN_SYS_HEADER,                //L"_skin.sys.header"
+        SKIN_SYS_SPLIT_VERT,            //L"_skin.sys.split.vert",
+        SKIN_SYS_SPLIT_HORZ,            //L"_skin.sys.split.horz",
+        SKIN_SYS_PROG_BKGND,            //
+        SKIN_SYS_PROG_BAR,              //
+        SKIN_SYS_SLIDER_THUMB,          //
+
+        SKIN_SYS_BTN_CLOSE,             //L"_skin.sys.btn.close",
+        SKIN_SYS_BTN_MINIMIZE,          //L"_skin.sys.btn.minimize",
+        SKIN_SYS_BTN_MAXMIZE,           //L"_skin.sys.btn.maxmize",
+        SKIN_SYS_BTN_RESTORE,           //L"_skin.sys.btn.restore",
+    };
 
 typedef ISkinObj * SSkinPtr;
 class SOUI_EXP SSkinPool :public SSingletonMap<SSkinPool,SSkinPtr,SStringW>
@@ -20,7 +47,10 @@ public:
     int LoadSkins(pugi::xml_node xmlNode,DWORD dwOwnerID=0);
 
     int FreeSkins(DWORD dwOwnerID);
+    
+    ISkinObj * GetBuildinSkin(SYS_SKIN uID);
 
+    BOOL LoadBuildinSkins(IResProvider *pSysSkinProvider,LPCTSTR pszSkinXmlName,LPCTSTR pszXmlType);
 protected:
     static void OnKeyRemoved(const SSkinPtr & obj);
 };

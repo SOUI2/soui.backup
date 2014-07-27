@@ -15,6 +15,7 @@
 #include <OCIdl.h>
 #include "SwndLayout.h"
 #include "res.mgr/SStylePool.h"
+#include "res.mgr/SSkinPool.h"
 
 namespace SOUI
 {
