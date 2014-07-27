@@ -101,7 +101,7 @@ namespace SOUI
 // STabCtrl
 
 STabCtrl::STabCtrl() : m_nCurrentPage(0)
-    , m_pSkinTab(NULL)
+    , m_pSkinTab(GETBUILDINSKIN(SKIN_SYS_TAB_PAGE))
     , m_pSkinIcon(NULL)
     , m_pSkinSplitter(NULL)
     , m_pSkinFrame(NULL)

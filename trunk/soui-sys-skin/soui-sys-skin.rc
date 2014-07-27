@@ -1,0 +1,98 @@
+// Microsoft Visual C++ generated resource script.
+//
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(中华人民共和国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+SYS_BTN_MINIMIZE        PNG                     "res\\sys_btn_minimize.png"
+SYS_BTN_RESTORE         PNG                     "res\\sys_btn_restore.png"
+SYS_BTN_CLOSE           PNG                     "res\\sys_btn_close.png"
+SYS_BTN_MAXIMIZE        PNG                     "res\\sys_btn_maximize.png"
+SYS_BORDER              PNG                     "res\\sys_border.png"
+SYS_CHECKBOX            PNG                     "res\\sys_checkbox.png"
+SYS_RADIO               PNG                     "res\\sys_radio.png"
+SYS_FOCUS_CHECKBOX      PNG                     "res\\sys_focus_checkbox.png"
+SYS_FOCUS_RADIO         PNG                     "res\\sys_focus_radio.png"
+SYS_DROPBTN             PNG                     "res\\sys_dropbtn.png"
+SYS_SCROLLBAR           PNG                     "res\\sys_scrollbar.png"
+SYS_TREE_CHECKBOX       PNG                     "res\\sys_tree_checkbox.png"
+SYS_TREE_TOGGLE         PNG                     "res\\sys_tree_toggle.png"
+SYS_MENU_CHECK          PNG                     "res\\sys_menu_check.png"
+SYS_HEADER              PNG                     "res\\sys_header.png"
+SYS_SPLIT_VERT          PNG                     "res\\sys_split_vert.png"
+SYS_SPLIT_HORZ          PNG                     "res\\sys_split_horz.png"
+SYS_PROG_BKGND          PNG                     "res\\sys_prog_bkgnd.png"
+SYS_PROG_BAR            PNG                     "res\\sys_prog_bar.png"
+SYS_SLIDER_THUMB        PNG                     "res\\sys_slider_thumb.png"
+SYS_TAB_PAGE            PNG                     "res\\sys_tab_page.png"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// XML
+//
+
+SYS_SKIN                XML                     "res\\sys_skin.xml"
+
+#endif    // 中文(中华人民共和国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -109,6 +109,13 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         SSkinGif::Gdiplus_Startup();
         
         theApp->AddResProvider(pResProvider);
+        
+        HMODULE hSysSkins=LoadLibrary(_T("soui-sys-skin"));
+        if(hSysSkins)
+        {
+            SResProviderPE resPE(hSysSkins);
+            SSkinPool::getSingleton().LoadBuildinSkins(&resPE,_T("SYS_SKIN"),_T("XML"));
+        }
 
         theApp->Init(_T("IDR_DUI_INIT")); 
         theApp->SetMsgBoxTemplate(_T("IDR_DUI_MSGBOX"));
