@@ -324,20 +324,20 @@ public:                                                             \
         else                                                        \
  
 
-#define ATTR_IMAGE(attribname, varname, allredraw)        \
-    if (attribname == strAttribName)                            \
-        {                                                       \
-        SStringT strValueT=S_CW2T(strValue);        \
-        int nPos=strValueT.ReverseFind(_T(':'));\
-        if(nPos!=-1)\
-        {\
-            SStringT strType=strValueT.Right(strValue.GetLength()-nPos-1);\
-            varname = SImgPool::getSingleton().GetImage(strType,strValueT.Left(nPos));        \
-            if(varname) varname->AddRef();    \
+//ATTR_IMAGE:直接使用IResProvider::LoadImage创建IBitmap对象，创建成功后引用计数为1
+//不需要调用AddRef，但是用完后需要调用Release
+#define ATTR_IMAGE(attribname, varname, allredraw)                  \
+    if (attribname == strAttribName)                                \
+        {                                                           \
+        SStringT strValueT=S_CW2T(strValue);                        \
+        int nPos=strValueT.ReverseFind(_T(':'));                    \
+        if(nPos!=-1)                                                \
+        {                                                           \
+            SStringT strName=strValueT.Right(strValue.GetLength()-nPos-1);\
+            varname = LOADIMAGE(strValueT.Left(nPos),strName);      \
             hRet = allredraw ? S_OK : S_FALSE;                      \
-        }else\
-            varname = SImgPool::getSingleton().GetImage(strValueT);        \
-            if(varname) varname->AddRef();    \
+        }else                                                       \
+            varname = LOADIMAGE(NULL,strValueT);                    \
             hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \

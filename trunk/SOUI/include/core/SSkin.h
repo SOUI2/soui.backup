@@ -1,7 +1,6 @@
 
 #pragma once
 #include "interface/Sskinobj-i.h"
-#include "res.mgr/SImgPool.h"
 
 namespace SOUI
 {
@@ -64,15 +63,16 @@ public:
     void SetVertical(BOOL bVertical){m_bVertical=bVertical;}
     BOOL IsVertical(){return m_bVertical;}
     
-    
 protected:
+    HRESULT OnAttrImage(const SStringW & strValue,BOOL bLoading);
+
     IBitmap *m_pImg;
     int  m_nStates;
     BOOL m_bTile;
     BOOL m_bVertical;
-
+    
     SOUI_ATTRS_BEGIN()
-        ATTR_IMAGE(L"src", m_pImg, TRUE)
+        ATTR_CUSTOM(L"src", OnAttrImage)
         ATTR_INT(L"tile", m_bTile, TRUE)
         ATTR_INT(L"vertical", m_bVertical, TRUE)
         ATTR_INT(L"states",m_nStates,TRUE)
