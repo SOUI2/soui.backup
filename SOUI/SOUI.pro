@@ -103,7 +103,6 @@ HEADERS += include/SApp.h \
            include/interface/SSkinobj-i.h \
            include/interface/STranslator-i.h \
            include/res.mgr/SFontPool.h \
-           include/res.mgr/SImgPool.h \
            include/res.mgr/SObjDefAttr.h \
            include/res.mgr/SResProvider.h \
            include/res.mgr/SResProviderMgr.h \
@@ -169,7 +168,6 @@ SOURCES += src/SApp.cpp \
            src/helper/SMenu.cpp \
            src/helper/STimerEx.cpp \
            src/res.mgr/SFontPool.cpp \
-           src/res.mgr/SImgPool.cpp \
            src/res.mgr/SObjDefAttr.cpp \
            src/res.mgr/SResProvider.cpp \
            src/res.mgr/SResProviderMgr.cpp \

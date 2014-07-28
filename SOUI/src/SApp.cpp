@@ -6,7 +6,6 @@
 #include "core/mybuffer.h"
 
 #include "res.mgr/sfontpool.h"
-#include "res.mgr/simgpool.h"
 #include "res.mgr/SStringPool.h"
 #include "res.mgr/SSkinPool.h"
 #include "res.mgr/SStylePool.h"
@@ -58,7 +57,6 @@ void SApplication::createSingletons()
     new SWindowMgr();
     new STimer2();
     new SFontPool(m_RenderFactory);
-    new SImgPool();
     new SStringPool();
     new SSkinPool();
     new SStylePool();
@@ -71,7 +69,6 @@ void SApplication::destroySingletons()
     delete SStylePool::getSingletonPtr();
     delete SSkinPool::getSingletonPtr();
     delete SStringPool::getSingletonPtr();
-    delete SImgPool::getSingletonPtr();
     delete SFontPool::getSingletonPtr();
     delete STimer2::getSingletonPtr();
     delete SThreadActiveWndMgr::getSingletonPtr();

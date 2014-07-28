@@ -16,6 +16,7 @@
 #define SOUI_VERSION    _T("0.0.0.1")
 
 #define LOADXML(p1,p2,p3) SApplication::getSingleton().LoadXmlDocment(p1,p2,p3)
+#define LOADIMAGE(p1,p2) SApplication::getSingleton().LoadImage(p1,p2)
 #define GETRESPROVIDER    SApplication::getSingletonPtr()
 #define GETRENDERFACTORY SApplication::getSingleton().GetRenderFactory()
 #define TR(p1,p2)       SApplication::getSingleton().GetTranslator()->tr(p1,p2)

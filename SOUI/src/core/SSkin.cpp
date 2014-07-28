@@ -56,6 +56,24 @@ void SSkinImgList::Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE b
     pRT->DrawBitmapEx(rcDraw,m_pImg,&rcSrc,m_bTile?EM_TILE:EM_STRETCH,byAlpha);
 }
 
+HRESULT SSkinImgList::OnAttrImage( const SStringW & strValue,BOOL bLoading )
+{
+    IBitmap *pImg=NULL;
+    SStringT strValueT=S_CW2T(strValue); 
+    int nPos=strValueT.ReverseFind(_T(':'));
+    if(nPos!=-1)
+    {
+        SStringT strName=strValueT.Right(strValue.GetLength()-nPos-1);
+        pImg = LOADIMAGE(strValueT.Left(nPos),strName);
+    }else 
+    {
+        pImg = LOADIMAGE(NULL,strValueT);
+    }
+    if(!pImg) return E_FAIL;
+    if(m_pImg) m_pImg->Release();
+    m_pImg=pImg;
+    return S_FALSE;
+}
 
 //////////////////////////////////////////////////////////////////////////
 //  SSkinImgFrame
