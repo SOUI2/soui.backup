@@ -12,7 +12,7 @@ namespace SOUI
 SSliderBar::SSliderBar()
     : m_bDrag(FALSE)
     , m_uHtPrev(-1)
-    , m_pSkinThumb(GETBUILDINSKIN(SKIN_SYS_SLIDER_THUMB))
+    , m_pSkinThumb(GETBUILTINSKIN(SKIN_SYS_SLIDER_THUMB))
 {
     m_evtSet.addEvent(EventSliderPos::EventID);
 }

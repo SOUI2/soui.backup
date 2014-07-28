@@ -17,7 +17,7 @@ SPanel::SPanel()
     ,m_wBarEnable(SSB_BOTH)
     ,m_dwUpdateInterval(DEF_UPDATEINTERVAL)
 {
-    ISkinObj *pSkin=GETBUILDINSKIN(SKIN_SYS_SCROLLBAR);
+    ISkinObj *pSkin=GETBUILTINSKIN(SKIN_SYS_SCROLLBAR);
     if(pSkin && pSkin->IsClass(SSkinScrollbar::GetClassName()))
         m_pSkinSb=(SSkinScrollbar*)pSkin;
 

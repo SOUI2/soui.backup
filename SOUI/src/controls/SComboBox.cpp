@@ -49,7 +49,7 @@ BOOL CComboEdit::FireEvent(EventArgs & evt)
 //////////////////////////////////////////////////////////////////////////
 // SComboBoxBase
 SComboBoxBase::SComboBoxBase(void)
-:m_pSkinBtn(GETBUILDINSKIN(SKIN_SYS_DROPBTN))
+:m_pSkinBtn(GETBUILTINSKIN(SKIN_SYS_DROPBTN))
 ,m_pEdit(NULL)
 ,m_bDropdown(TRUE)
 ,m_nDropHeight(200)

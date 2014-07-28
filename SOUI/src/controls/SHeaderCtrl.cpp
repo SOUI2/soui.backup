@@ -10,7 +10,7 @@ namespace SOUI
         :m_bFixWidth(FALSE)
         ,m_bItemSwapEnable(TRUE)
         ,m_bSortHeader(TRUE)
-        ,m_pSkinItem(GETBUILDINSKIN(SKIN_SYS_HEADER))
+        ,m_pSkinItem(GETBUILTINSKIN(SKIN_SYS_HEADER))
         ,m_pSkinSort(NULL)
         ,m_dwHitTest(-1)
         ,m_bDragging(FALSE)

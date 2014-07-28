@@ -114,7 +114,7 @@ const wchar_t * BUILDIN_SKIN_NAMES[]=
     L"_skin.sys.btn.restore"
 };
 
-BOOL SSkinPool::LoadBuildinSkins( IResProvider *pSysSkinProvider ,LPCTSTR pszSkinXmlName,LPCTSTR pszXmlType)
+BOOL SSkinPool::LoadBuiltinSkins( IResProvider *pSysSkinProvider ,LPCTSTR pszSkinXmlName,LPCTSTR pszXmlType)
 {
     size_t szXml= pSysSkinProvider->GetRawBufferSize(pszXmlType,pszSkinXmlName);
     if(szXml == 0) return FALSE;
@@ -131,7 +131,7 @@ BOOL SSkinPool::LoadBuildinSkins( IResProvider *pSysSkinProvider ,LPCTSTR pszSki
     return nSkins == ARRAYSIZE(BUILDIN_SKIN_NAMES);
 }
 
-ISkinObj * SSkinPool::GetBuildinSkin( SYS_SKIN uID )
+ISkinObj * SSkinPool::GetBuiltinSkin( SYS_SKIN uID )
 {
     return GetSkin(BUILDIN_SKIN_NAMES[uID]);
 }

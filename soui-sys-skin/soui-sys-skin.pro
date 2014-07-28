@@ -11,25 +11,3 @@ include($$dir/common.pri)
 QMAKE_LFLAGS += /NOENTRY
 
 RC_FILE += soui-sys-skin.rc
-#resource files
-#RES_FILE += res/sys_btn_minimize.png
-#RES_FILE += res/sys_btn_restore.png
-#RES_FILE += res/sys_btn_close.png
-#RES_FILE += res/sys_btn_maximize.png
-#RES_FILE += res/sys_border.png
-#RES_FILE += res/sys_checkbox.png
-#RES_FILE += res/sys_radio.png
-#RES_FILE += res/sys_focus_checkbox.png
-#RES_FILE += res/sys_focus_radio.png
-#RES_FILE += res/sys_dropbtn.png
-#RES_FILE += res/sys_scrollbar.png
-#RES_FILE += res/sys_tree_checkbox.png
-#RES_FILE += res/sys_tree_toggle.png
-#RES_FILE += res/sys_menu_check.png
-#RES_FILE += res/sys_header.png
-#RES_FILE += res/sys_split_vert.png
-#RES_FILE += res/sys_split_horz.png
-#RES_FILE += res/sys_prog_bkgnd.png
-#RES_FILE += res/sys_prog_bar.png
-#RES_FILE += res/sys_slider_thumb.png
-#RES_FILE += res/sys_tab_page.png
