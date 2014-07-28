@@ -23,16 +23,13 @@ INCLUDEPATH += . \
 		include/pathops \
 		src/image \
 		src/opts \
-		../../third-part/freetype/include \
+		../freetype/include \
 
 dir = ../..
 include($$dir/common.pri)
 
-CONFIG(debug,debug|release){
-	DESTDIR = $$dir/bin/debug
-}
-else{
-	DESTDIR = $$dir/bin/release
+win32-msvc*{
+    QMAKE_CXXFLAGS += /wd4244 /wd4800
 }
 
 # Input

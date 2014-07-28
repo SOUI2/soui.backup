@@ -14,8 +14,8 @@ namespace SOUI
 
 #define IDC_SWITCH    65530
 
-    STreeItem::STreeItem(SWindow *pFrameHost)
-    : SItemPanel(pFrameHost,pugi::xml_node())
+    STreeItem::STreeItem(SWindow *pFrameHost,IItemContainer *pContainer)
+    : SItemPanel(pFrameHost,pugi::xml_node(),pContainer)
     , m_bCollapsed(FALSE)
     , m_bVisible(TRUE)
     , m_nLevel(0)
@@ -48,7 +48,7 @@ STreeBox::~STreeBox()
 
 HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM hParent/*=STVI_ROOT*/, HSTREEITEM hInsertAfter/*=STVI_LAST*/,BOOL bEnsureVisible/*=FALSE*/)
 {
-    STreeItem *pItemObj=new STreeItem(this);
+    STreeItem *pItemObj=new STreeItem(this,this);
     pItemObj->InitFromXml(xmlNode);
     pItemObj->m_nLevel=GetItemLevel(hParent)+1;
     pItemObj->m_bCollapsed=FALSE;
@@ -625,7 +625,7 @@ BOOL STreeBox::FireEvent(EventArgs &evt)
         EventOfPanel *pEvt = (EventOfPanel *)&evt;
         if(pEvt->pOrgEvt->idFrom == IDC_SWITCH)
         {
-            STreeItem *pItem=dynamic_cast<STreeItem*> (pEvt->pPanel);
+            STreeItem *pItem=(STreeItem*)pEvt->pPanel;
             ASSERT(pItem);
             Expand(pItem->m_hItem,TVE_TOGGLE);
             return TRUE;
@@ -681,7 +681,7 @@ void STreeBox::OnItemSetCapture( SItemPanel *pItem,BOOL bCapture )
 
 BOOL STreeBox::OnItemGetRect( SItemPanel *pItem,CRect &rcItem )
 {
-    STreeItem *pItemObj=dynamic_cast<STreeItem*>(pItem);
+    STreeItem *pItemObj=(STreeItem*)pItem;
     if(pItemObj->m_bVisible==FALSE) return FALSE;
 
     int iFirstVisible=m_ptOrigin.y/m_nItemHei;

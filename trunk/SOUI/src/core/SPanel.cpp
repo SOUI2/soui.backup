@@ -702,7 +702,8 @@ HRESULT SPanel::OnAttrScrollbarSkin( SStringW strValue,BOOL bLoading )
 {
     ISkinObj *pSbSkin=GETSKIN(strValue);
     ASSERT(pSbSkin);
-    m_pSkinSb=dynamic_cast<SSkinScrollbar*>(pSbSkin);
+    if(!pSbSkin->IsClass(SSkinScrollbar::GetClassName())) return E_FAIL;
+    m_pSkinSb=(SSkinScrollbar*)pSbSkin;
     ASSERT(m_pSkinSb);
     return bLoading?S_FALSE:S_OK;
 }
