@@ -9,13 +9,6 @@ TARGET = utilities
 dir = ..
 include($$dir/common.pri)
 
-debug{
-	DESTDIR = ../bin/debug
-}
-release{
-	DESTDIR = ../bin/release
-}
-
 DEFINES += UTILITIES_EXPORTS
 
 INCLUDEPATH += .

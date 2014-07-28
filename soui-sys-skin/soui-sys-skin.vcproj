@@ -1,216 +1,134 @@
-<?xml version="1.0" encoding="gb2312"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="soui-sys-skin"
-	ProjectGUID="{89785D25-0DA5-4B40-956A-E7AAAA061891}"
-	Keyword="Qt4VSv1.0"
-	TargetFrameworkVersion="131072"
-	>
+	ProjectGUID="{43EE4A7C-AF06-3F8A-89F5-7AA5C1C893AB}"
+	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
-			Name="Win32"
-		/>
+			Name="Win32" />
 	</Platforms>
-	<ToolFiles>
-	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\bin\debug\"
-			IntermediateDirectory="..\obj\debug\soui-sys-skin\"
-			ConfigurationType="2"
-			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				WarningLevel="0"
-				DefaultCharType="0"
-				EnableErrorChecks="1"
-			/>
+			ConfigurationType="2"
+			IntermediateDirectory="..\obj\debug\soui-sys-skin\"
+			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm200 -w34100 -w34189"
-				Optimization="4"
 				AdditionalIncludeDirectories="..\tools\mkspecs\win32-msvc2008"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
-				GeneratePreprocessedFile="0"
-				ExceptionHandling="1"
-				RuntimeLibrary="3"
-				TreatWChar_tAsBuiltInType="false"
-				RuntimeTypeInfo="true"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\obj\debug\soui-sys-skin\"
-				ObjectFile="..\obj\debug\soui-sys-skin\"
-				ProgramDataBaseFileName=""
-				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
-			/>
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\obj\debug\soui-sys-skin\"
+				Optimization ="4"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
+				ProgramDataBaseFileName="$(IntDir)"
+				RuntimeLibrary="3"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3" />
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_DEBUG"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				IgnoreImportLibrary="true"
-				AdditionalOptions="/debugtype:cv,fixup"
-				OutputFile="$(OutDir)\soui-sys-skin.dll"
-				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\bin\debug"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=""
-				SubSystem="0"
+				IgnoreImportLibrary="true"
 				LinkTimeCodeGeneration="0"
+				OutputFile="$(OutDir)\soui-sys-skin.dll"
+				ProgramDatabaseFile=""
 				ResourceOnlyDLL="true"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
-			/>
+				SubSystem="0"
+				SuppressStartupBanner="true"
+				TargetMachine="1" />
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCManifestTool" />
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPostBuildEventTool" />
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreBuildEventTool" />
 			<Tool
-				Name="VCFxCopTool"
-			/>
+				Name="VCPreLinkEventTool" />
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_DEBUG" />
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\bin\release\"
-			IntermediateDirectory="..\obj\release\soui-sys-skin\"
-			ConfigurationType="2"
-			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				WarningLevel="0"
-				DefaultCharType="0"
-				EnableErrorChecks="1"
-			/>
+			ConfigurationType="2"
+			IntermediateDirectory="..\obj\release\soui-sys-skin\"
+			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm200 -w34100 -w34189"
-				Optimization="2"
 				AdditionalIncludeDirectories="..\tools\mkspecs\win32-msvc2008"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,NDEBUG"
-				GeneratePreprocessedFile="0"
-				ExceptionHandling="1"
-				RuntimeLibrary="2"
-				TreatWChar_tAsBuiltInType="false"
-				RuntimeTypeInfo="true"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\obj\release\soui-sys-skin\"
-				ObjectFile="..\obj\release\soui-sys-skin\"
-				ProgramDataBaseFileName=""
-				WarningLevel="3"
-				SuppressStartupBanner="true"
 				DebugInformationFormat="0"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
-			/>
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\obj\release\soui-sys-skin\"
+				Optimization ="2"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,NDEBUG"
+				ProgramDataBaseFileName="$(IntDir)"
+				RuntimeLibrary="2"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3" />
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				IgnoreImportLibrary="true"
-				OutputFile="$(OutDir)\soui-sys-skin.dll"
-				LinkIncremental="1"
-				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\bin\release"
 				GenerateDebugInformation="false"
-				ProgramDatabaseFile=""
-				SubSystem="0"
+				IgnoreImportLibrary="true"
+				LinkIncremental="1"
 				LinkTimeCodeGeneration="0"
+				OutputFile="$(OutDir)\soui-sys-skin.dll"
+				ProgramDatabaseFile=""
 				ResourceOnlyDLL="true"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
-			/>
+				SubSystem="0"
+				SuppressStartupBanner="true"
+				TargetMachine="1" />
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCManifestTool" />
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPostBuildEventTool" />
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreBuildEventTool" />
 			<Tool
-				Name="VCFxCopTool"
-			/>
+				Name="VCPreLinkEventTool" />
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS" />
 		</Configuration>
 	</Configurations>
-	<References>
-	</References>
 	<Files>
 		<File
-			RelativePath="soui-sys-skin.rc"
-			>
-		</File>
+			RelativePath="soui-sys-skin.rc" />
 	</Files>
 	<Globals>
 	</Globals>
