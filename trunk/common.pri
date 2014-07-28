@@ -16,8 +16,9 @@ else {
 DEFINES += _CRT_SECURE_NO_WARNINGS
 
 QMAKE_LFLAGS += /MACHINE:X86
-QMAKE_LFLAGS_DEBUG += /debugtype:cv,fixup
+#QMAKE_LFLAGS_DEBUG += /debugtype:cv,fixup
 QMAKE_CXXFLAGS += -EHsc
+QMAKE_CXXFLAGS += -Fd$(IntDir)\
 
 win32-msvc*{
     QMAKE_CXXFLAGS += /wd4100 /wd4101 /wd4102 /wd4189 /wd4996
