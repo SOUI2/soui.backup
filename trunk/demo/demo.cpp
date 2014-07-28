@@ -114,7 +114,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         if(hSysSkins)
         {
             SResProviderPE resPE(hSysSkins);
-            SSkinPool::getSingleton().LoadBuildinSkins(&resPE,_T("SYS_SKIN"),_T("XML"));
+            SSkinPool::getSingleton().LoadBuiltinSkins(&resPE,_T("SYS_SKIN"),_T("XML"));
         }
 
         theApp->Init(_T("IDR_DUI_INIT")); 

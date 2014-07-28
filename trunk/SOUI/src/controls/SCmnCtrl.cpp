@@ -180,7 +180,7 @@ SButton::SButton()
 ,m_bAnimate(FALSE)
 ,m_byAlphaAni(0xFF)
 {
-    m_pBgSkin=GETBUILDINSKIN(SKIN_SYS_BTN_NORMAL);
+    m_pBgSkin=GETBUILTINSKIN(SKIN_SYS_BTN_NORMAL);
     m_bFocusable=TRUE;
 }
 
@@ -481,8 +481,8 @@ SProgress::SProgress()
     , m_nMaxValue(100)
     , m_nValue(0)
     , m_bShowPercent(FALSE)
-    , m_pSkinBg(GETBUILDINSKIN(SKIN_SYS_PROG_BKGND))
-    , m_pSkinPos(GETBUILDINSKIN(SKIN_SYS_PROG_BAR))
+    , m_pSkinBg(GETBUILTINSKIN(SKIN_SYS_PROG_BKGND))
+    , m_pSkinPos(GETBUILTINSKIN(SKIN_SYS_PROG_BAR))
     , m_bVertical(FALSE)
 {
 
@@ -610,8 +610,8 @@ void SLine::OnPaint(IRenderTarget *pRT)
 //
 
 SCheckBox::SCheckBox()
-    : m_pSkin(GETBUILDINSKIN(SKIN_SYS_CHECKBOX))
-    , m_pFocusSkin(GETBUILDINSKIN(SKIN_SYS_FOCUSCHECKBOX))
+    : m_pSkin(GETBUILTINSKIN(SKIN_SYS_CHECKBOX))
+    , m_pFocusSkin(GETBUILTINSKIN(SKIN_SYS_FOCUSCHECKBOX))
 {
     m_bFocusable=TRUE;
 }
@@ -780,8 +780,8 @@ void SIconWnd::SetIcon(HICON hIcon)
 //
 
 SRadioBox::SRadioBox()
-    : m_pSkin(GETBUILDINSKIN(SKIN_SYS_RADIO))
-    , m_pFocusSkin(GETBUILDINSKIN(SKIN_SYS_FOCUSRADIO))
+    : m_pSkin(GETBUILTINSKIN(SKIN_SYS_RADIO))
+    , m_pFocusSkin(GETBUILTINSKIN(SKIN_SYS_FOCUSRADIO))
 {
     m_bFocusable=TRUE;
 }

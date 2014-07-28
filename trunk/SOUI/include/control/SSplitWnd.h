@@ -307,7 +307,7 @@ class SOUI_EXP SSplitWnd_Col : public SSplitWnd
 public:
     SSplitWnd_Col()
     {
-        m_pSkinSep= GETBUILDINSKIN(SKIN_SYS_SPLIT_VERT);
+        m_pSkinSep= GETBUILTINSKIN(SKIN_SYS_SPLIT_VERT);
         m_bColMode=TRUE;
     }
 };
@@ -324,7 +324,7 @@ class SOUI_EXP SSplitWnd_Row : public SSplitWnd
 public:
     SSplitWnd_Row()
     {
-        m_pSkinSep=GETBUILDINSKIN(SKIN_SYS_SPLIT_HORZ);
+        m_pSkinSep=GETBUILTINSKIN(SKIN_SYS_SPLIT_HORZ);
         m_bColMode=FALSE;
     }
 };

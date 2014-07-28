@@ -3,7 +3,7 @@
 #include "interface/Sskinobj-i.h"
 
 #define GETSKIN(p1) SSkinPool::getSingleton().GetSkin(p1)
-#define GETBUILDINSKIN(p1) SSkinPool::getSingleton().GetBuildinSkin(p1)
+#define GETBUILTINSKIN(p1) SSkinPool::getSingleton().GetBuiltinSkin(p1)
 
 namespace SOUI
 {
@@ -14,7 +14,7 @@ namespace SOUI
         SKIN_SYS_RADIO,                 //L"_skin.sys.radio",
         SKIN_SYS_FOCUSCHECKBOX,         //L"_skin.sys.focuscheckbox",
         SKIN_SYS_FOCUSRADIO,            //L"_skin.sys.focusradio",
-        SKIN_SYS_BTN_NORMAL,             //L"_skin.sys.btn.normal",
+        SKIN_SYS_BTN_NORMAL,            //L"_skin.sys.btn.normal",
         SKIN_SYS_SCROLLBAR,             //L"_skin.sys.scrollbar",
         SKIN_SYS_BORDER,                //L"_skin.sys.border",
         SKIN_SYS_DROPBTN,               //L"_skin.sys.dropbtn",
@@ -24,9 +24,9 @@ namespace SOUI
         SKIN_SYS_HEADER,                //L"_skin.sys.header"
         SKIN_SYS_SPLIT_VERT,            //L"_skin.sys.split.vert",
         SKIN_SYS_SPLIT_HORZ,            //L"_skin.sys.split.horz",
-        SKIN_SYS_PROG_BKGND,            //
-        SKIN_SYS_PROG_BAR,              //
-        SKIN_SYS_SLIDER_THUMB,          //
+        SKIN_SYS_PROG_BKGND,            //L"_skin.prog.bkgnd",
+        SKIN_SYS_PROG_BAR,              //L"_skin.prog.bar",
+        SKIN_SYS_SLIDER_THUMB,          //L"_skin.slider.thumb",
 
         SKIN_SYS_BTN_CLOSE,             //L"_skin.sys.btn.close",
         SKIN_SYS_BTN_MINIMIZE,          //L"_skin.sys.btn.minimize",
@@ -48,9 +48,9 @@ public:
 
     int FreeSkins(DWORD dwOwnerID);
     
-    ISkinObj * GetBuildinSkin(SYS_SKIN uID);
+    ISkinObj * GetBuiltinSkin(SYS_SKIN uID);
 
-    BOOL LoadBuildinSkins(IResProvider *pSysSkinProvider,LPCTSTR pszSkinXmlName,LPCTSTR pszXmlType);
+    BOOL LoadBuiltinSkins(IResProvider *pSysSkinProvider,LPCTSTR pszSkinXmlName,LPCTSTR pszXmlType);
 protected:
     static void OnKeyRemoved(const SSkinPtr & obj);
 };
