@@ -166,13 +166,6 @@ int SListBoxEx::GetCurSel()
     return m_iSelItem;
 }
 
-int SListBoxEx::GetItemObjIndex(SWindow *pItemObj)
-{
-    SItemPanel * pItemPanel= dynamic_cast<SItemPanel *>(pItemObj);
-    if (NULL == pItemPanel) return -1;
-    return (int)pItemPanel->GetItemIndex();
-}
-
 
 SWindow * SListBoxEx::GetItemPanel(int iItem)
 {

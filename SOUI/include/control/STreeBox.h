@@ -29,11 +29,12 @@ public:
     /**
      * STreeItem::STreeItem
      * @brief    构造函数
-     * @param    SWindow *pFrameHost -- 
+     * @param    SWindow *pFrameHost -- 宿主
+     * @param    IItemContainer *pContainer -- 表项的容器
      *
      * Describe  构造函数  
      */
-    STreeItem(SWindow *pFrameHost);
+    STreeItem(SWindow *pFrameHost,IItemContainer *pContainer);
 
     BOOL m_bCollapsed; /**< 是否折叠 */
     BOOL m_bVisible;   /**< 是否显示 */

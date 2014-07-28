@@ -112,15 +112,6 @@ public:
      */
     int GetCurSel();
 
-    /**
-     * SListBoxEx::GetItemObjIndex
-     * @brief    获取指定项索引
-     * @param    SWindow *pItemObj -- item结构
-     * @return   返回int
-     *
-     * Describe  获取指定项索引
-     */
-    int GetItemObjIndex(SWindow *pItemObj);
 
     /**
      * SListBoxEx::GetItemPanel

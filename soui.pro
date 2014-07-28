@@ -9,6 +9,7 @@ SUBDIRS += soui-sys-skin
 SUBDIRS += components/imgdecoder-wic
 SUBDIRS += components/render-gdi
 SUBDIRS += components/myskia
+SUBDIRS += components/freetype
 SUBDIRS += components/render-skia
 SUBDIRS += components/translator
 SUBDIRS += components/zlib
