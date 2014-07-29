@@ -14,12 +14,12 @@
 namespace SOUI
 {
 
-class SOUI_EXP SStringPool :public SSingletonMap<SStringPool,SStringW,SStringW>
+class SOUI_EXP SStringPool :public SSingletonMap<SStringPool,SStringT,SStringT>
 {
 public:
-    BOOL BuildString(SStringW &strContainer);
+    BOOL BuildString(SStringT &strContainer);
     BOOL Init(pugi::xml_node xmlNode);
-    SStringW Get(const SStringW & strName);
+    SStringT Get(const SStringT & strName);
 };
 
 }//namespace SOUI

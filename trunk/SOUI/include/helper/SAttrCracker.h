@@ -160,9 +160,9 @@ public:                                                             \
 #define ATTR_STRINGW(attribname, varname, allredraw)      \
     if (attribname == strAttribName)                            \
         {                                                           \
-        SStringW strTmp=strValue;                                   \
+        SStringT strTmp=S_CW2T(strValue);                          \
         BUILDSTRING(strTmp);                                    \
-        varname = strTmp;                                        \
+        varname = S_CT2W(strTmp);                                        \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -172,9 +172,8 @@ public:                                                             \
 #define ATTR_STRINGT(attribname, varname, allredraw)     \
     if (attribname == strAttribName)                            \
         {                                                           \
-        SStringW strTmp=strValue;                                   \
-        BUILDSTRING(strTmp);                                    \
-        varname = S_CW2T(strTmp);                               \
+        varname=S_CW2T(strValue);                          \
+        BUILDSTRING(varname);                                    \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -184,44 +183,43 @@ public:                                                             \
 #define ATTR_I18NSTRA(attribname, varname, allredraw)      \
     if (attribname == strAttribName)                            \
         {                                                       \
-        SStringW strTmp=tr(strValue);                           \
+        SStringT strTmp=S_CW2T(tr(strValue));                   \
         BUILDSTRING(strTmp);                                    \
-        varname = S_CW2A(strTmp);                                     \
+        varname = S_CT2A(strTmp);                                     \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
 
 // StringW = StringA
-#define ATTR_I18NSTRW(attribname, varname, allredraw)      \
+#define ATTR_I18NSTRW(attribname, varname, allredraw)           \
     if (attribname == strAttribName)                            \
-        {                                                           \
-        SStringW strTmp=tr(strValue);                          \
-        BUILDSTRING(strTmp);                                \
-        varname = strTmp;                                   \
+        {                                                       \
+        SStringT strTmp=S_CW2T(tr(strValue));                   \
+        BUILDSTRING(strTmp);                                    \
+        varname = S_CT2W(strTmp);                                \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
 
 
 // StringT = StringA
-#define ATTR_I18NSTRT(attribname, varname, allredraw)     \
+#define ATTR_I18NSTRT(attribname, varname, allredraw)           \
     if (attribname == strAttribName)                            \
-        {                                                           \
-        SStringW strTmp=tr(strValue);                                   \
-        BUILDSTRING(strTmp);                                   \
-        varname=S_CW2T(strTmp);                                \
+        {                                                       \
+        varname=S_CW2T(tr(strValue));                           \
+        BUILDSTRING(varname);                                   \
         hRet = allredraw ? S_OK : S_FALSE;                      \
-        }                                                           \
-        else                                                        \
+        }                                                       \
+        else                                                    \
 
 // DWORD = %X StringA
-#define ATTR_HEX(attribname, varname, allredraw)         \
+#define ATTR_HEX(attribname, varname, allredraw)                \
     if (attribname == strAttribName)                            \
-        {                                                           \
-        varname = HexStringToULong(strValue);        \
+        {                                                       \
+        varname = HexStringToULong(strValue);                   \
         hRet = allredraw ? S_OK : S_FALSE;                      \
-        }                                                           \
-        else                                                        \
+        }                                                       \
+        else                                                    \
  
 // COLORREF = %06X StringA
 #define ATTR_COLOR(attribname, varname, allredraw)       \

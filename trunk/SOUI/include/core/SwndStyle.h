@@ -37,7 +37,7 @@ public:
     int m_nSpacing;
     BOOL m_bDotted;
 
-    SStringW m_strCursor;
+    SStringT m_strCursor;
     SStringW m_strSkinName,m_strNcSkinName;
 
     UINT GetTextAlign();
@@ -84,7 +84,7 @@ protected:
         ATTR_INT(L"y-margin", m_nMarginY, TRUE)
         ATTR_INT(L"margin", m_nMarginX = m_nMarginY, TRUE) // 这样比较bt，不过.....凑合用吧
         ATTR_INT(L"spacing", m_nSpacing, TRUE)
-        ATTR_STRINGW(L"cursor",m_strCursor,FALSE)
+        ATTR_STRINGT(L"cursor",m_strCursor,FALSE)
         ATTR_INT(L"dotted",m_bDotted,FALSE)
     SOUI_ATTRS_END()
 };

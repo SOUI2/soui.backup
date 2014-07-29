@@ -14,19 +14,19 @@ namespace SOUI
 
     template<> SStringPool * SSingleton<SStringPool>::ms_Singleton =0;
 
-BOOL SStringPool::BuildString(SStringW &strContainer)
+BOOL SStringPool::BuildString(SStringT &strContainer)
 {
     BOOL bRet=FALSE;
     int nSubStringStart=-1;
     int nSubStringEnd=0;
-    while ((nSubStringStart = strContainer.Find(L"%", nSubStringEnd))!=-1)
+    while ((nSubStringStart = strContainer.Find(_T("%"), nSubStringEnd))!=-1)
     {
-        nSubStringEnd = strContainer.Find(L"%", nSubStringStart + 1);
+        nSubStringEnd = strContainer.Find(_T("%"), nSubStringStart + 1);
         if(nSubStringEnd==-1)
             break;
-        SStringW strName=strContainer.Mid(nSubStringStart+1,nSubStringEnd-nSubStringStart-1);
+        SStringT strName=strContainer.Mid(nSubStringStart+1,nSubStringEnd-nSubStringStart-1);
 
-        SStringW strNewSub=GetKeyObject(strName);
+        SStringT strNewSub=GetKeyObject(strName);
         strContainer = strContainer.Left(nSubStringStart)
                        + strNewSub
                        + strContainer.Mid(nSubStringEnd+1);
@@ -46,16 +46,16 @@ BOOL SStringPool::Init( pugi::xml_node xmlNode )
 
     for (pugi::xml_node xmlStr=xmlNode.first_child(); xmlStr; xmlStr=xmlStr.next_sibling())
     {
-        SStringW strName=xmlStr.name();
-        SStringW str=xmlStr.attribute(L"value").value();
+        SStringT strName=S_CW2T(xmlStr.name());
+        SStringT str=S_CW2T(xmlStr.attribute(L"value").value());
         AddKeyObject(strName,str);
     }
     return TRUE;
 }
 
-SStringW SStringPool::Get(const SStringW & strName)
+SStringT SStringPool::Get(const SStringT & strName)
 {
-    SStringW strRet;
+    SStringT strRet;
     if(HasKey(strName))
     {
         strRet=GetKeyObject(strName);

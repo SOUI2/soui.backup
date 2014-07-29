@@ -1,5 +1,5 @@
 function onEvtTest2(sender)
-	SMessageBox(0,L "onEvtTest2", L "msgbox", 1);
+	SMessageBox(0,T "onEvtTest2", T "msgbox", 1);
 	return 1;
 end
 

@@ -1327,14 +1327,14 @@ BOOL SRichEdit::SetWindowText( LPCWSTR lpszText )
     return (BOOL)SSendMessage(WM_SETTEXT,0,(LPARAM)lpszText);
 }
 
-SStringW SRichEdit::GetWindowText()
+SStringT SRichEdit::GetWindowText()
 {
     SStringW strRet;
     int nLen=SSendMessage(WM_GETTEXTLENGTH);
     wchar_t *pBuf=strRet.GetBufferSetLength(nLen+1);
     SSendMessage(WM_GETTEXT,(WPARAM)nLen+1,(LPARAM)pBuf);
     strRet.ReleaseBuffer();
-    return strRet;
+    return S_CW2T(strRet);
 }
 
 int SRichEdit::GetWindowTextLength()

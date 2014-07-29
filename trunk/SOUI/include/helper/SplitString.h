@@ -32,4 +32,9 @@ namespace SOUI
     template size_t SplitString<SStringA,char>(const SStringA & str,char cSep, SStringAList & strLst);
     template size_t SplitString<SStringW,wchar_t>(const SStringW & str,wchar_t cSep, SStringWList & strLst);
 
+#ifdef _UNICODE
+    #define SStringTList    SStringWList
+#else
+    #define SStringTList    SStringAList
+#endif//_UNICODE
 }
