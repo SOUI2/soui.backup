@@ -14,8 +14,8 @@ namespace SOUI
 
     LRESULT SSkinGif::OnAttrSrc( const SStringW &strValue,BOOL bLoading )
     {
-        SStringWList strLst;
-        size_t nSegs=SplitString(strValue,L':',strLst);
+        SStringTList strLst;
+        size_t nSegs=SplitString(S_CW2T(strValue),_T(':'),strLst);
         LPBYTE pBuf=NULL;
         size_t szBuf=0;
 
@@ -29,11 +29,11 @@ namespace SOUI
             }
         }else
         {//自动从GIF资源类型里查找资源
-            szBuf=GETRESPROVIDER->GetRawBufferSize(L"gif",strLst[0]);
+            szBuf=GETRESPROVIDER->GetRawBufferSize(_T("gif"),strLst[0]);
             if(szBuf)
             {
                 pBuf=new BYTE[szBuf];
-                GETRESPROVIDER->GetRawBuffer(L"gif",strLst[0],pBuf,szBuf);
+                GETRESPROVIDER->GetRawBuffer(_T("gif"),strLst[0],pBuf,szBuf);
             }
         }
         if(pBuf)
@@ -83,7 +83,7 @@ void SSkinGif::SelectActiveFrame( int iFrame )
 
 int SSkinGif::LoadFromFile( LPCTSTR pszFileName )
 {
-    Bitmap *pImg = Bitmap::FromFile(pszFileName);
+    Bitmap *pImg = Bitmap::FromFile(S_CT2W(pszFileName));
     if(!pImg) return 0;
     if(pImg->GetLastStatus() != Gdiplus::Ok)
     {

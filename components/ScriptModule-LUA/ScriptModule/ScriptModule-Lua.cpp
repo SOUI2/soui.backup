@@ -26,6 +26,22 @@ int Utf8ToW(lua_State* L)
 	return 1;
 }
 
+TCHAR * cast_a2t(char * str)
+{
+    return (TCHAR *)str;
+}
+
+
+int Utf8ToT(lua_State *L)
+{
+    size_t n = 0;
+    char* str = (char*)luaL_checklstring(L, -1, &n);
+    if(!str)   return 0;
+    SStringT strT=S_CA2T(str,CP_UTF8);
+    lua_pushlstring(L, (const char*)(LPCTSTR)strT, (strT.GetLength()+1)*sizeof(TCHAR));
+    return 1;
+}
+
 class LuaFunctionSlot : public SlotFunctorBase
 {
 public:
@@ -70,7 +86,11 @@ SScriptModule_Lua::SScriptModule_Lua()
 		SOUI_Export_Lua(d_state);
 		lua_register(d_state, "A2W", Utf8ToW);
 		lua_tinker::def(d_state, "cast_a2w", cast_a2w);
-		luaL_dostring(d_state,"function L (str)\n return cast_a2w(A2W(str));\nend");//注册一个全局的"L"函数，用来将utf8编码的字符串转换为宽字符
+		luaL_dostring(d_state,"function L (str)\n return cast_a2w(A2W(str));\nend");//注册一个全局的"L"函数，用来将utf8编码的字符串转换为WCHAR
+
+        lua_register(d_state, "A2T", Utf8ToT);
+        lua_tinker::def(d_state, "cast_a2t", cast_a2t);
+        luaL_dostring(d_state,"function T (str)\n return cast_a2t(A2T(str));\nend");//注册一个全局的"T"函数，用来将utf8编码的字符串转换为TCHAR
 	}
 }
 

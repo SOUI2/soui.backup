@@ -17,7 +17,7 @@ SwndStyle::SwndStyle()
     , m_nMarginX(0)
     , m_nMarginY(0)
     , m_nSpacing(0)
-    , m_strCursor(L"arrow")
+    , m_strCursor(_T("arrow"))
     , m_bDotted(FALSE)
 {
     for(int i=0; i<4; i++)

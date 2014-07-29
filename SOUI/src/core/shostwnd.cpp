@@ -50,7 +50,7 @@ HWND SHostWnd::Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x, int 
     if (NULL != m_hWnd)
         return m_hWnd;
 
-    HWND hWnd = CSimpleWnd::Create(L"HOSTWND",dwStyle,dwExStyle, x,y,nWidth,nHeight,hWndParent,NULL);
+    HWND hWnd = CSimpleWnd::Create(_T("HOSTWND"),dwStyle,dwExStyle, x,y,nWidth,nHeight,hWndParent,NULL);
     if(!hWnd) return NULL;
 
     //tooltip
@@ -118,7 +118,7 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     
     ModifyStyle(0,dwStyle);
     ModifyStyleEx(0,dwExStyle);
-    CSimpleWnd::SetWindowTextW(m_hostAttr.m_strTitle);
+    CSimpleWnd::SetWindowText(S_CW2T(m_hostAttr.m_strTitle));
     
     if(m_hostAttr.m_bTranslucent)
     {

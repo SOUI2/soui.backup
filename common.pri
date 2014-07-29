@@ -1,6 +1,7 @@
 CONFIG -= qt
 
 CharacterSet = 1
+#DEFINES -= UNICODE
 
 CONFIG(debug, debug|release) {
 	OBJECTS_DIR =   $$dir/obj/debug/$$TARGET

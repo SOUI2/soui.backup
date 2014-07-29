@@ -46,7 +46,7 @@ public:
 	}
     void OnBtnMsgBox()
     {
-        SMessageBox(NULL,L"this is a message box",L"haha",MB_OK|MB_ICONEXCLAMATION);
+        SMessageBox(NULL,_T("this is a message box"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
     }
     
 	int OnCreate(LPCREATESTRUCT lpCreateStruct);
