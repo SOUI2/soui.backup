@@ -464,10 +464,16 @@ namespace SOUI
 		if(nCount<0) nCount= _tcslen(lpszString);
 		SStringW strW=S_CT2W(lpszString,nCount);
         SkPaint     txtPaint = m_curFont->GetPaint();
+        SkPaint::FontMetrics metrics;
+        txtPaint.getFontMetrics(&metrics);
+        SkScalar fx = m_ptOrg.fX + x;
+        SkScalar fy = m_ptOrg.fY + y;
+        fy -= metrics.fAscent;
+
         txtPaint.setColor(m_curColor.toARGB());
         txtPaint.setTypeface(m_curFont->GetFont());
         txtPaint.setAlpha(byAlpha);
-		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,(SkScalar)x+m_ptOrg.fX,(SkScalar)y+m_ptOrg.fY,txtPaint);
+		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,fx,fy,txtPaint);
 		return S_OK;
 	}
 
