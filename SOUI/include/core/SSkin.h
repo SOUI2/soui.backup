@@ -101,8 +101,8 @@ protected:
         ATTR_INT(L"top", m_rcMargin.top, TRUE)
         ATTR_INT(L"right", m_rcMargin.right, TRUE)
         ATTR_INT(L"bottom", m_rcMargin.bottom, TRUE)
-        ATTR_INT(L"x", m_rcMargin.left=m_rcMargin.right, TRUE)
-        ATTR_INT(L"y", m_rcMargin.top=m_rcMargin.bottom, TRUE)
+        ATTR_INT(L"margin-x", m_rcMargin.left=m_rcMargin.right, TRUE)
+        ATTR_INT(L"margin-y", m_rcMargin.top=m_rcMargin.bottom, TRUE)
     SOUI_ATTRS_END()
 };
 
@@ -137,14 +137,15 @@ protected:
 public:
     SOUI_ATTRS_BEGIN()
         ATTR_COLOR(L"border", m_crBorder, TRUE)
-        ATTR_COLOR(L"bgup", m_crUp[ST_NORMAL], TRUE)
-        ATTR_COLOR(L"bgdown", m_crDown[ST_NORMAL], TRUE)
-        ATTR_COLOR(L"bguphover", m_crUp[ST_HOVER], TRUE)
-        ATTR_COLOR(L"bgdownhover", m_crDown[ST_HOVER], TRUE)
-        ATTR_COLOR(L"bguppush", m_crUp[ST_PUSHDOWN], TRUE)
-        ATTR_COLOR(L"bgdownpush", m_crDown[ST_PUSHDOWN], TRUE)
-        ATTR_COLOR(L"bgupdisable", m_crUp[ST_DISABLE], TRUE)
-        ATTR_COLOR(L"bgdowndisable", m_crDown[ST_DISABLE], TRUE)
+        //bkgnd 是否需要增加一个属性"bkgnd" ?? 
+        ATTR_COLOR(L"bkgndUp", m_crUp[ST_NORMAL], TRUE)
+        ATTR_COLOR(L"bkgndDown", m_crDown[ST_NORMAL], TRUE)
+        ATTR_COLOR(L"bkgndUpHover", m_crUp[ST_HOVER], TRUE)
+        ATTR_COLOR(L"bkgndDownHover", m_crDown[ST_HOVER], TRUE)
+        ATTR_COLOR(L"bkgndUpPush", m_crUp[ST_PUSHDOWN], TRUE)
+        ATTR_COLOR(L"bkgndDownPush", m_crDown[ST_PUSHDOWN], TRUE)
+        ATTR_COLOR(L"bkgndUpDisable", m_crUp[ST_DISABLE], TRUE)
+        ATTR_COLOR(L"bkgndDownDisable", m_crDown[ST_DISABLE], TRUE)
     SOUI_ATTRS_END()
 };
 

@@ -530,13 +530,13 @@ protected:
     SOUI_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
-        ATTR_SKIN(L"bgskin", m_pSkinBg, TRUE)
-        ATTR_SKIN(L"posskin", m_pSkinPos, TRUE)
+        ATTR_SKIN(L"bkgndSkin", m_pSkinBg, TRUE)
+        ATTR_SKIN(L"posSkin", m_pSkinPos, TRUE)
         ATTR_INT(L"min", m_nMinValue, FALSE)
         ATTR_INT(L"max", m_nMaxValue, FALSE)
         ATTR_INT(L"value", m_nValue, FALSE)
         ATTR_UINT(L"vertical", m_bVertical, FALSE)
-        ATTR_UINT(L"showpercent", m_bShowPercent, FALSE)
+        ATTR_UINT(L"showPercent", m_bShowPercent, FALSE)
     SOUI_ATTRS_END()
 };
 
