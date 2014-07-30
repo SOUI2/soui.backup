@@ -1,6 +1,7 @@
 #include "souistd.h"
 #include "core/SWnd.h"
 #include "helper/color.h"
+#include "helper/SplitString.h"
 
 namespace SOUI
 {
@@ -494,8 +495,16 @@ BOOL SWindow::CreateChildren(pugi::xml_node xmlNode)
             if(_wcsicmp(xmlChild.name(),L"include")==0)
             {
                 pugi::xml_document xmlDoc;
-                SStringT strName=S_CW2T(xmlChild.attribute(L"src").value());
-                if(LOADXML(xmlDoc,strName,RT_LAYOUT))
+                SStringTList strLst;
+                
+                if(2 == SplitString(S_CW2T(xmlChild.attribute(L"src").value()),_T(':'),strLst))
+                {
+                    LOADXML(xmlDoc,strLst[1],strLst[0]);
+                }else
+                {
+                    LOADXML(xmlDoc,strLst[0],RT_LAYOUT);
+                }
+                if(xmlDoc)
                 {
                     CreateChildren(xmlDoc);
                 }else

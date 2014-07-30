@@ -60,7 +60,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         SApplication *theApp=new SApplication(pRenderFactory,hInstance);
 
 #ifdef SUPPORT_LANG
-        CAutoRefPtr<ITranslator> trans;
+        CAutoRefPtr<ITranslatorMgr> trans;
         transLoader.CreateInstance(_T("translator.dll"),(IObjRef**)&trans);
         if(trans)
         {
@@ -68,10 +68,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
             pugi::xml_document xmlLang;
             if(xmlLang.load_file(L"translation files/lang_cn.xml"))
             {
-                CAutoRefPtr<ILang> langCN;
-                trans->CreateLang(&langCN);
+                CAutoRefPtr<ITranslator> langCN;
+                trans->CreateTranslator(&langCN);
                 langCN->Load(&xmlLang.child(L"language"),1);//1=LD_XML
-                trans->InstallLang(langCN);
+                trans->InstallTranslator(langCN);
             }
         }
 #endif//SUPPORT_LANG

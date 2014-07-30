@@ -24,12 +24,12 @@ namespace SOUI
     LD_COMPILEDDATA,
     };
     
-class SLang : public TObjRefImpl<ILang>
+class STranslator : public TObjRefImpl<ITranslator>
 {
-    friend class STranslator;
+    friend class STranslatorMgr;
 public:
-    SLang();
-    ~SLang();
+    STranslator();
+    ~STranslator();
    
     virtual BOOL Load(LPVOID pData,UINT uType);
     
@@ -44,22 +44,22 @@ protected:
     SArray<SStrMapEntry*> * m_arrEntry;
 };
 
-class STranslator : public TObjRefImpl<ITranslator>
+class STranslatorMgr : public TObjRefImpl<ITranslatorMgr>
 {
 public:
-    STranslator(void);
-    ~STranslator(void);
+    STranslatorMgr(void);
+    ~STranslatorMgr(void);
     
     /*virtual */
-    BOOL CreateLang(ILang ** ppLang);
+    BOOL CreateTranslator(ITranslator ** ppTranslator);
     /*virtual */
-    BOOL InstallLang(ILang *pLang);
+    BOOL InstallTranslator(ITranslator *pTranslator);
     /*virtual */
-    BOOL UninstallLang(REFGUID id);
+    BOOL UninstallTranslator(REFGUID id);
     /*virtual */
     SStringW tr(const SStringW & strSrc,const SStringW & strCtx);
 protected:
-    SList<ILang*> *m_lstLang;
+    SList<ITranslator*> *m_lstLang;
 };
 
 extern "C" __declspec(dllexport) BOOL SCreateInstance(IObjRef **ppTrans);
