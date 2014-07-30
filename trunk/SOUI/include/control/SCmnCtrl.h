@@ -428,7 +428,7 @@ protected:
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"skin", m_pSkin, TRUE)
         ATTR_UINT(L"speed", m_nSpeed, FALSE)
-        ATTR_UINT(L"autostart", m_bAutoStart, FALSE)
+        ATTR_UINT(L"autoStart", m_bAutoStart, FALSE)
     SOUI_ATTRS_END()
 
 protected:
@@ -545,7 +545,7 @@ protected:
  * @brief      线条控件
  * 
  * Describe    线条控件
- * Usage: <hr style=solid size=1 mode="vert" linestyle="dash"/>
+ * Usage: <hr style=solid size=1 mode="vert" lineStyle="dash"/>
  */
 class SOUI_EXP SLine : public SWindow
 {
@@ -578,7 +578,7 @@ protected:
             ATTR_ENUM_VALUE(L"horizontal", HR_HORZ)
             ATTR_ENUM_VALUE(L"tilt", HR_TILT)
         ATTR_ENUM_END(m_mode)
-        ATTR_ENUM_BEGIN(L"linestyle", int, FALSE)
+        ATTR_ENUM_BEGIN(L"lineStyle", int, FALSE)
             ATTR_ENUM_VALUE(L"solid", PS_SOLID)             // default
             ATTR_ENUM_VALUE(L"dash", PS_DASH)               /* -------  */
             ATTR_ENUM_VALUE(L"dot", PS_DOT)                 /* .......  */
@@ -698,7 +698,7 @@ protected:
     
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"skin", m_pSkin, FALSE)
-        ATTR_SKIN(L"focusskin", m_pFocusSkin, FALSE)
+        ATTR_SKIN(L"focusSkin", m_pFocusSkin, FALSE)
         ATTR_CUSTOM(L"check",OnAttrCheck)
     SOUI_ATTRS_END()
 
@@ -882,7 +882,7 @@ protected:
 
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"skin", m_pSkin, FALSE)
-        ATTR_SKIN(L"focusskin", m_pFocusSkin, FALSE)
+        ATTR_SKIN(L"focusSkin", m_pFocusSkin, FALSE)
         ATTR_CUSTOM(L"check",OnAttrCheck)
     SOUI_ATTRS_END()
 
@@ -953,7 +953,7 @@ protected:
  * @brief      组控件
  * 
  * Describe    组控件
- * Usage       <group crline1="b8d5e2" crline2="999999">group text</>
+ * Usage       <group colorLine1="#b8d5e2" colorLine2="#999999">group text</>
  */
 class SOUI_EXP SGroup : public SWindow
 {
