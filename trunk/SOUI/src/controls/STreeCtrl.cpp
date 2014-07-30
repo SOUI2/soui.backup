@@ -391,7 +391,7 @@ void STreeCtrl::LoadItemAttribute(pugi::xml_node xmlItem, LPTVITEM pItem)
             pItem->strText = S_CW2T(attr.value()); 
         else if ( !_wcsicmp(attr.name(), L"img"))
             pItem->nImage = attr.as_int(0);
-        else if ( !_wcsicmp(attr.name(), L"selimg"))
+        else if ( !_wcsicmp(attr.name(), L"selImg"))
             pItem->nSelectedImage = attr.as_int(0);
         else if ( !_wcsicmp(attr.name(), L"data"))
             pItem->lParam = attr.as_uint(0);
