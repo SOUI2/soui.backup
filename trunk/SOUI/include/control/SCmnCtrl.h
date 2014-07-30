@@ -58,8 +58,8 @@ protected:
     int m_nLineInter;   /**< ÐÐ¼ä¾à */
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"multilines", m_bMultiLines, FALSE)
-        ATTR_INT(L"interhei", m_nLineInter, FALSE)
+        ATTR_INT(L"multiLines", m_bMultiLines, FALSE)
+        ATTR_INT(L"interHeight", m_nLineInter, FALSE)
     SOUI_ATTRS_END()
 };
 
@@ -345,7 +345,7 @@ protected:
 
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"skin", m_pSkin, TRUE)
-        ATTR_INT(L"iframe", m_iFrame, FALSE)
+        ATTR_INT(L"iconIndex", m_iFrame, FALSE)
     SOUI_ATTRS_END()
 
     SOUI_MSG_MAP_BEGIN()
