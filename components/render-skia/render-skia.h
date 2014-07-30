@@ -250,9 +250,6 @@ namespace SOUI
 		virtual HRESULT CreateSolidColorBrush(COLORREF cr,IBrush ** ppBrush);
 		virtual HRESULT CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush );
 
-		virtual HRESULT BindDC(HDC hdc,LPCRECT pSubRect);
-		virtual HRESULT BeginDraw();
-		virtual HRESULT EndDraw();
 		virtual HRESULT Resize(SIZE sz);
 
         virtual HRESULT OffsetViewportOrg(int xOff, int yOff, LPPOINT lpPoint=NULL);
@@ -330,9 +327,6 @@ namespace SOUI
 		CAutoRefPtr<SBrush_Skia> m_curBrush;
         CAutoRefPtr<SFont_Skia> m_curFont;
     
-
-		HDC m_hBindDC;
-		RECT m_rcBind;
 
         SkPoint         m_ptOrg;
         

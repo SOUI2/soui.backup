@@ -111,9 +111,6 @@ struct IRenderTarget: public IObjRef
 	virtual HRESULT CreateSolidColorBrush(COLORREF cr,IBrush ** ppBrush)=0;
 	virtual HRESULT CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush )=0;
 
-	virtual HRESULT BindDC(HDC,LPCRECT)=0;
-	virtual HRESULT BeginDraw()=0;
-	virtual HRESULT EndDraw()=0;
 	virtual HRESULT Resize(SIZE sz)=0;
     
     virtual HRESULT OffsetViewportOrg(int xOff, int yOff, LPPOINT lpPoint=NULL)=0;

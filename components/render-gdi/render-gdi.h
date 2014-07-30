@@ -243,9 +243,6 @@ namespace SOUI
         virtual HRESULT CreateSolidColorBrush(COLORREF cr,IBrush ** ppBrush);
         virtual HRESULT CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush );
 
-        virtual HRESULT BindDC(HDC hdc,LPCRECT pSubRect);
-        virtual HRESULT BeginDraw();
-        virtual HRESULT EndDraw();
         virtual HRESULT Resize(SIZE sz);
 
         virtual HRESULT OffsetViewportOrg(int xOff, int yOff, LPPOINT lpPoint=NULL);
@@ -324,9 +321,6 @@ namespace SOUI
         CAutoRefPtr<SBrush_GDI> m_curBrush;
         CAutoRefPtr<SFont_GDI> m_curFont;
         POINT               m_ptOrg;
-
-        HDC m_hBindDC;
-        RECT m_rcBind;
 
         UINT m_uGetDCFlag;
         SBitmap_GDI          m_bmpForFillSolidRect;    /**< 为FillSolidRect接口使用的内存位图 */
