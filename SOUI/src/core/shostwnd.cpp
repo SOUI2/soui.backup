@@ -89,7 +89,7 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     
     SSkinPool::getSingleton().LoadSkins(xmlNode.child(L"skins"),m_dwSkinOwnerID);//从xmlNode加加载私有skin
     
-    DWORD dwStyle =CSimpleWnd::GetStyle()|WS_OVERLAPPEDWINDOW;
+    DWORD dwStyle =CSimpleWnd::GetStyle()|WS_CAPTION;
     DWORD dwExStyle  = CSimpleWnd::GetExStyle();
     
     SHostWndAttr hostAttr;
