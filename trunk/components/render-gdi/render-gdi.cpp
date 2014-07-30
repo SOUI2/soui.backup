@@ -219,7 +219,6 @@ namespace SOUI
     
     SRenderTarget_GDI::SRenderTarget_GDI( IRenderFactory* pRenderFactory ,int nWid,int nHei)
         :TSkiaRenderObjImpl<IRenderTarget>(pRenderFactory)
-        ,m_hBindDC(0)
         ,m_hdc(NULL)
         ,m_curColor(0xFF000000)//Ä¬ÈÏºÚÉ«
         ,m_uGetDCFlag(0)
@@ -284,28 +283,6 @@ namespace SOUI
     {
         SBitmap_GDI *pBmpSkia = (SBitmap_GDI*)pBmp;
         *ppBrush = SBrush_GDI::CreateBitmapBrush(GetRenderFactory_GDI(),pBmpSkia->GetBitmap());
-        return S_OK;
-    }
-
-    HRESULT SRenderTarget_GDI::BindDC( HDC hdc,LPCRECT pSubRect )
-    {
-        m_hBindDC=hdc;
-        m_rcBind = *pSubRect;
-        return S_OK;
-    }
-
-    HRESULT SRenderTarget_GDI::BeginDraw()
-    {
-        return S_OK;
-    }
-
-    HRESULT SRenderTarget_GDI::EndDraw()
-    {
-        if(m_hBindDC)
-        {//copy image to bind dc
-            ::BitBlt(m_hBindDC,m_rcBind.left,m_rcBind.top,m_rcBind.right-m_rcBind.left,m_rcBind.bottom-m_rcBind.top,
-            m_hdc,0,0,SRCCOPY);
-        }
         return S_OK;
     }
 

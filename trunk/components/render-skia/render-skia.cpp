@@ -97,7 +97,6 @@ namespace SOUI
 
 	SRenderTarget_Skia::SRenderTarget_Skia( IRenderFactory* pRenderFactory ,int nWid,int nHei)
 		:TSkiaRenderObjImpl<IRenderTarget>(pRenderFactory)
-		,m_hBindDC(0)
 		,m_SkCanvas(NULL)
         ,m_curColor(0xFF000000)//Ä¬ÈÏºÚÉ«
         ,m_hGetDC(0)
@@ -156,42 +155,6 @@ namespace SOUI
 	{
 		SBitmap_Skia *pBmpSkia = (SBitmap_Skia*)pBmp;
 		*ppBrush = SBrush_Skia::CreateBitmapBrush(GetRenderFactory_Skia(),pBmpSkia->GetSkBitmap());
-		return S_OK;
-	}
-
-	HRESULT SRenderTarget_Skia::BindDC( HDC hdc,LPCRECT pSubRect )
-	{
-		m_hBindDC=hdc;
-		m_rcBind = *pSubRect;
-		return S_OK;
-	}
-
-	HRESULT SRenderTarget_Skia::BeginDraw()
-	{
-		return S_OK;
-	}
-
-	HRESULT SRenderTarget_Skia::EndDraw()
-	{
-		if(m_hBindDC)
-		{//copy image to bind dc
-			SkBitmap bmp=m_curBmp->GetSkBitmap();
-
-			BITMAPINFO bmi;
-			memset(&bmi, 0, sizeof(bmi));
-			bmi.bmiHeader.biSize        = sizeof(BITMAPINFOHEADER);
-			bmi.bmiHeader.biWidth       = bmp.width();
-			bmi.bmiHeader.biHeight      = -bmp.height(); // top-down image 
-			bmi.bmiHeader.biPlanes      = 1;
-			bmi.bmiHeader.biBitCount    = 32;
-			bmi.bmiHeader.biCompression = BI_RGB;
-			bmi.bmiHeader.biSizeImage   = 0;
-
-			SetDIBitsToDevice(m_hBindDC,
-				m_rcBind.left,m_rcBind.top,m_rcBind.right-m_rcBind.left,m_rcBind.bottom-m_rcBind.top,
-				m_rcBind.left,bmp.height()-m_rcBind.bottom,0,bmp.height(),
-				bmp.getPixels(),&bmi,DIB_RGB_COLORS);
-		}
 		return S_OK;
 	}
 
