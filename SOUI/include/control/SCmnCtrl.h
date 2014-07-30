@@ -964,12 +964,12 @@ public:
 protected:
     void OnPaint(IRenderTarget *pRT);
     
-    COLORREF m_crLine1,m_crLine2; /**< 颜色 */
+    COLORREF m_crLine1,m_crLine2; /**< group 3D显示使用的两种颜色 */
     int         m_nRound; /**< 圆角半径 */
 public:
     SOUI_ATTRS_BEGIN()
-        ATTR_COLOR(L"crline1", m_crLine1, FALSE)
-        ATTR_COLOR(L"crline2", m_crLine2, FALSE)
+        ATTR_COLOR(L"colorLine1", m_crLine1, FALSE)
+        ATTR_COLOR(L"colorLine2", m_crLine2, FALSE)
         ATTR_INT(L"round",m_nRound,FALSE)
     SOUI_ATTRS_END()
 

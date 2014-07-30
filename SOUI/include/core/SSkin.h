@@ -136,16 +136,15 @@ protected:
     COLORREF    m_crDown[4];
 public:
     SOUI_ATTRS_BEGIN()
-        ATTR_COLOR(L"border", m_crBorder, TRUE)
-        //bkgnd 是否需要增加一个属性"bkgnd" ?? 
-        ATTR_COLOR(L"bkgndUp", m_crUp[ST_NORMAL], TRUE)
-        ATTR_COLOR(L"bkgndDown", m_crDown[ST_NORMAL], TRUE)
-        ATTR_COLOR(L"bkgndUpHover", m_crUp[ST_HOVER], TRUE)
-        ATTR_COLOR(L"bkgndDownHover", m_crDown[ST_HOVER], TRUE)
-        ATTR_COLOR(L"bkgndUpPush", m_crUp[ST_PUSHDOWN], TRUE)
-        ATTR_COLOR(L"bkgndDownPush", m_crDown[ST_PUSHDOWN], TRUE)
-        ATTR_COLOR(L"bkgndUpDisable", m_crUp[ST_DISABLE], TRUE)
-        ATTR_COLOR(L"bkgndDownDisable", m_crDown[ST_DISABLE], TRUE)
+        ATTR_COLOR(L"colorBorder", m_crBorder, TRUE)
+        ATTR_COLOR(L"colorUp", m_crUp[ST_NORMAL], TRUE)
+        ATTR_COLOR(L"colorDown", m_crDown[ST_NORMAL], TRUE)
+        ATTR_COLOR(L"colorUpHover", m_crUp[ST_HOVER], TRUE)
+        ATTR_COLOR(L"colorDownHover", m_crDown[ST_HOVER], TRUE)
+        ATTR_COLOR(L"colorUpPush", m_crUp[ST_PUSHDOWN], TRUE)
+        ATTR_COLOR(L"colorDownPush", m_crDown[ST_PUSHDOWN], TRUE)
+        ATTR_COLOR(L"colorUpDisable", m_crUp[ST_DISABLE], TRUE)
+        ATTR_COLOR(L"colorDownDisable", m_crDown[ST_DISABLE], TRUE)
     SOUI_ATTRS_END()
 };
 

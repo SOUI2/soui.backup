@@ -356,7 +356,7 @@ protected:
     SOUI_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"cursel", m_nCurrentPage, FALSE)
+        ATTR_INT(L"curSel", m_nCurrentPage, FALSE)
         ATTR_INT(L"tabWidth", m_nTabWidth, FALSE)
         ATTR_INT(L"tabHeight", m_nTabHeight, FALSE)
         ATTR_INT(L"tabPos", m_nTabPos, FALSE)
