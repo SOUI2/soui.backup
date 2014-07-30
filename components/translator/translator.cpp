@@ -18,7 +18,7 @@ namespace SOUI
 
     class SStrMap
     {
-        friend class STranslator;
+        friend class STranslatorMgr;
     public:
         SStringW strSource;
         SStringW strTranslation;
@@ -29,7 +29,7 @@ namespace SOUI
 
     class SStrMapEntry
     {
-        friend class STranslator;
+        friend class STranslatorMgr;
     public:
         ~SStrMapEntry();
         SStringW strCtx;
@@ -77,29 +77,29 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     // SLang
-    SLang::SLang()
+    STranslator::STranslator()
     {
         m_arrEntry = new SArray<SStrMapEntry*>;
     }
 
-    SLang::~SLang()
+    STranslator::~STranslator()
     {
         for(UINT i=0;i<m_arrEntry->GetCount();i++)
             delete m_arrEntry->GetAt(i);
         delete m_arrEntry;
     }
 
-    SStringW SLang::name()
+    SStringW STranslator::name()
     {
         return m_strLang;
     }
 
-    GUID SLang::guid()
+    GUID STranslator::guid()
     {
         return m_guid;
     }
 
-    BOOL SLang::Load( LPVOID pData,UINT uType )
+    BOOL STranslator::Load( LPVOID pData,UINT uType )
     {
         switch(uType)
         {
@@ -109,7 +109,7 @@ namespace SOUI
         return FALSE;
     }
     
-    BOOL SLang::LoadFromXml( pugi::xml_node xmlLang )
+    BOOL STranslator::LoadFromXml( pugi::xml_node xmlLang )
     {
         m_strLang=xmlLang.attribute(L"name").value();
         
@@ -160,7 +160,7 @@ namespace SOUI
         return TRUE;
     }
 
-    BOOL SLang::tr( const SStringW & strSrc,const SStringW & strCtx,SStringW & strRet )
+    BOOL STranslator::tr( const SStringW & strSrc,const SStringW & strCtx,SStringW & strRet )
     {
         SStrMapEntry** pEntry = (SStrMapEntry**)bsearch(&strCtx,m_arrEntry->GetData(),m_arrEntry->GetCount(),sizeof(SStrMapEntry*),SStrMapEntry::CompareInSearch);
         if(pEntry)
@@ -178,29 +178,29 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     //  STranslator
-    BOOL STranslator::InstallLang(ILang *pLang)
+    BOOL STranslatorMgr::InstallTranslator(ITranslator *pTranslator)
     {
         POSITION pos=m_lstLang->GetHeadPosition();
         while(pos)
         {
-            ILang *p=m_lstLang->GetNext(pos);
-            if(IsEqualGUID(pLang->guid(),p->guid()))
+            ITranslator *p=m_lstLang->GetNext(pos);
+            if(IsEqualGUID(pTranslator->guid(),p->guid()))
             {
                 return FALSE;
             }
         }
-        m_lstLang->AddHead(pLang);
-        pLang->AddRef();
+        m_lstLang->AddHead(pTranslator);
+        pTranslator->AddRef();
         return TRUE;
     }
 
-    BOOL STranslator::UninstallLang(REFGUID id)
+    BOOL STranslatorMgr::UninstallTranslator(REFGUID id)
     {
         POSITION pos=m_lstLang->GetHeadPosition();
         while(pos)
         {
             POSITION posBackup=pos;
-            ILang *p=m_lstLang->GetNext(pos);
+            ITranslator *p=m_lstLang->GetNext(pos);
             if(IsEqualGUID(id,p->guid()))
             {
                 m_lstLang->RemoveAt(posBackup);
@@ -211,38 +211,38 @@ namespace SOUI
         return FALSE;
     }
 
-    STranslator::STranslator( void )
+    STranslatorMgr::STranslatorMgr( void )
     {
-        m_lstLang=new SList<ILang*>;
+        m_lstLang=new SList<ITranslator*>;
     }
 
-    STranslator::~STranslator( void )
+    STranslatorMgr::~STranslatorMgr( void )
     {
         POSITION pos=m_lstLang->GetHeadPosition();
         while(pos)
         {
-            ILang *pLang=m_lstLang->GetNext(pos);
+            ITranslator *pLang=m_lstLang->GetNext(pos);
             pLang->Release();
         }
         delete m_lstLang;
     }
 
-    SStringW STranslator::tr(const SStringW & strSrc,const SStringW & strCtx)
+    SStringW STranslatorMgr::tr(const SStringW & strSrc,const SStringW & strCtx)
     {
         if(strSrc.IsEmpty()) return strSrc;
         SStringW strRet;
         POSITION pos=m_lstLang->GetHeadPosition();
         while(pos)
         {
-            ILang *pLang=m_lstLang->GetNext(pos);
+            ITranslator *pLang=m_lstLang->GetNext(pos);
             if(pLang->tr(strSrc,strCtx,strRet)) return strRet;
         }
         return strSrc;
     }
 
-    BOOL STranslator::CreateLang( ILang ** ppLang )
+    BOOL STranslatorMgr::CreateTranslator( ITranslator ** ppTranslator )
     {
-        *ppLang = new SLang;
+        *ppTranslator = new STranslator;
         return TRUE;
     }
 
@@ -250,7 +250,7 @@ namespace SOUI
     //  
     BOOL SCreateInstance( IObjRef **ppTrans )
     {
-        *ppTrans = new STranslator;
+        *ppTrans = new STranslatorMgr;
         return TRUE;
     }
 

@@ -18,12 +18,12 @@
 namespace SOUI
 {
 
-class SNullTranslator : public TObjRefImpl<ITranslator>
+class SNullTranslator : public TObjRefImpl<ITranslatorMgr>
 {
 public:
-    BOOL CreateLang(ILang **pLang){return FALSE;}
-    BOOL InstallLang(ILang * pLang){return FALSE;}
-    BOOL UninstallLang(REFGUID id){return FALSE;}
+    BOOL CreateTranslator(ITranslator **pLang){return FALSE;}
+    BOOL InstallTranslator(ITranslator * pLang){return FALSE;}
+    BOOL UninstallTranslator(REFGUID id){return FALSE;}
     SStringW tr(const SStringW & strSrc,const SStringW & strCtx)
     {
         return strSrc;
@@ -148,12 +148,12 @@ HINSTANCE SApplication::GetInstance()
 	return m_hInst;
 }
 
-void SApplication::SetTranslator(ITranslator * pTrans)
+void SApplication::SetTranslator(ITranslatorMgr * pTrans)
 {
 	m_Translator = pTrans;
 }
 
-ITranslator * SApplication::GetTranslator()
+ITranslatorMgr * SApplication::GetTranslator()
 {
 	return m_Translator;
 }

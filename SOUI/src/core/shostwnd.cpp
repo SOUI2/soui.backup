@@ -5,6 +5,7 @@
 #include "core/mybuffer.h"
 #include "helper/STipCtrl.h"
 #include "helper/color.h"
+#include "helper/SplitString.h"
 
 namespace SOUI
 {
@@ -63,7 +64,17 @@ HWND SHostWnd::Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x, int 
     if(!m_strXmlLayout.IsEmpty())
     {
         pugi::xml_document xmlDoc;
-        if(LOADXML(xmlDoc,m_strXmlLayout,RT_LAYOUT))
+        SStringTList strLst;
+
+        if(2 == SplitString(m_strXmlLayout,_T(':'),strLst))
+        {
+            LOADXML(xmlDoc,strLst[1],strLst[0]);
+        }else
+        {
+            LOADXML(xmlDoc,strLst[0],RT_LAYOUT);
+        }
+
+        if(xmlDoc)
         {
             InitFromXml(xmlDoc.child(L"SOUI"));
         }
