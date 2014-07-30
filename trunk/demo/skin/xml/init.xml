@@ -23,11 +23,6 @@
     <imglist name="btn_sys_maximize" src="IDP_BTN_SYS_MAXIMIZE" states="3" />
     <imglist name="btn_sys_restore" src="IDP_BTN_SYS_RESOTRE" states="3" />
     
-    <!--bkgnd 新增 代码未支持-->
-    <button name="normalbtn" border="#7D9EBC" bkgnd="#FBFCFD" bkgndUp="#FEFEFE"
-        bkgndDown="#C6E2FD" bkgndUpHover="#FEFEFE" bkgndDownHover="#DBEDFE"
-        bkgndUpPush="#C6E2FD" bkgndDownPush="#FEFEFE"/>
-
     <imgframe name="skin_editnc" src="IDP_EDIT_BORDER" states="2" left="2" top="2"/>
     <imglist name="icons" src="IDP_ICONS" states="6"/>
     <imglist name="skin_menuicon" src="IDP_ICONS_SMALL" states="12"/>
@@ -72,7 +67,7 @@
 
     <class name="linkimage" cursor="hand"/>
 
-    <class name="cls_edit" margin-x="2" margin-y="2" />
+    <class name="cls_edit" ncSkin="_skin.sys.border" margin-x="2" margin-y="2" />
   </style>
 
   <objattr>
