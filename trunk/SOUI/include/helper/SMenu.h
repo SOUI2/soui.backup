@@ -20,18 +20,18 @@ public:
     virtual void OnInitFinished(pugi::xml_node xmlNode);
 
     SOUI_ATTRS_BEGIN()
-        ATTR_SKIN(L"itemskin",m_pItemSkin,FALSE)
-        ATTR_SKIN(L"iconskin",m_pIconSkin,FALSE)
-        ATTR_SKIN(L"sepskin",m_pSepSkin,FALSE)
-        ATTR_SKIN(L"checkskin",m_pCheckSkin,FALSE)
-        ATTR_INT(L"itemheight",m_nItemHei,FALSE)
-        ATTR_INT(L"iconmargin",m_nIconMargin,FALSE)
-        ATTR_INT(L"textmargin",m_nTextMargin,FALSE)
-        ATTR_SIZE(L"iconsize",m_szIcon,FALSE)
+        ATTR_SKIN(L"itemSkin",m_pItemSkin,FALSE)
+        ATTR_SKIN(L"iconSkin",m_pIconSkin,FALSE)
+        ATTR_SKIN(L"sepSkin",m_pSepSkin,FALSE)
+        ATTR_SKIN(L"checkSkin",m_pCheckSkin,FALSE)
+        ATTR_INT(L"itemHeight",m_nItemHei,FALSE)
+        ATTR_INT(L"iconMargin",m_nIconMargin,FALSE)
+        ATTR_INT(L"textMargin",m_nTextMargin,FALSE)
+        ATTR_SIZE(L"iconSize",m_szIcon,FALSE)
         ATTR_FONT(L"font",m_hFont,FALSE)
-        ATTR_COLOR(L"crtxt",m_crTxtNormal,FALSE);
-        ATTR_COLOR(L"crtxtsel",m_crTxtSel,FALSE);
-        ATTR_COLOR(L"crtxtgray",m_crTxtGray,FALSE);
+        ATTR_COLOR(L"colorText",m_crTxtNormal,FALSE);
+        ATTR_COLOR(L"colorTextSel",m_crTxtSel,FALSE);
+        ATTR_COLOR(L"cororTextGray",m_crTxtGray,FALSE);
     SOUI_ATTRS_END()
 protected:
     ISkinObj *m_pItemSkin;    //菜单项皮肤，包含2种状态：正常状态+选中状态

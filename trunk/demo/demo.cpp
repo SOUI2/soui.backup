@@ -11,7 +11,7 @@
 
 #include "MainDlg.h"
 
-// #define RENDER_GDI      //打开RENDER_GDI时使用render-gdi模块来渲染，否则采用render-skia渲染
+//#define RENDER_GDI      //打开RENDER_GDI时使用render-gdi模块来渲染，否则采用render-skia渲染
 
 #define SUPPORT_LANG    //打开SUPPORT_LANG时，演示多语言支持
 

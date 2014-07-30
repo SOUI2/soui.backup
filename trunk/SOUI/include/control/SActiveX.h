@@ -41,9 +41,9 @@ namespace SOUI
         SOUI_MSG_MAP_END()
 
         SOUI_ATTRS_BEGIN()
-            ATTR_CUSTOM(L"clsid",OnAttrClsid)
-            ATTR_DWORD(L"clsctx",m_clsCtx,FALSE)
-            ATTR_UINT(L"delayinit",m_bDelayInit,FALSE)
+            ATTR_CUSTOM(L"clsID",OnAttrClsid)
+            ATTR_DWORD(L"clscText",m_clsCtx,FALSE)
+            ATTR_UINT(L"delay",m_bDelayInit,FALSE)
         SOUI_ATTRS_END()
 
         virtual void OnInitActiveXFinished(){}

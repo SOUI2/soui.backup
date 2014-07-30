@@ -53,8 +53,8 @@ protected:
 
     SOUI_ATTRS_BEGIN()
         ATTR_STRINGW(L"skin", m_strSkinName, TRUE)
-        ATTR_STRINGW(L"ncskin", m_strNcSkinName, TRUE)
-        ATTR_HEX(L"textmode", m_nTextAlign, TRUE)
+        ATTR_STRINGW(L"ncSkin", m_strNcSkinName, TRUE)
+        ATTR_HEX(L"textMode", m_nTextAlign, TRUE)
 
         ATTR_ENUM_BEGIN(L"align", UINT, TRUE)
             ATTR_ENUM_VALUE(L"left", Align_Left)
@@ -67,21 +67,21 @@ protected:
             ATTR_ENUM_VALUE(L"bottom", VAlign_Bottom)
         ATTR_ENUM_END(m_uVAlign)
 
-        ATTR_COLOR(L"crbg", m_crBg, TRUE)
-        ATTR_COLOR(L"crborder", m_crBorder, TRUE)
+        ATTR_COLOR(L"colorBkgnd", m_crBg, TRUE)
+        ATTR_COLOR(L"colorBorder", m_crBorder, TRUE)
 
         ATTR_FONT(L"font", m_ftText[0], TRUE)
-        ATTR_FONT(L"font.hover", m_ftText[1], TRUE)
-        ATTR_FONT(L"font.push", m_ftText[2], TRUE)
-        ATTR_FONT(L"font.disable", m_ftText[3], TRUE)
+        ATTR_FONT(L"fontHover", m_ftText[1], TRUE)
+        ATTR_FONT(L"fontPush", m_ftText[2], TRUE)
+        ATTR_FONT(L"fontDisable", m_ftText[3], TRUE)
 
-        ATTR_COLOR(L"crtext", m_crText[0], TRUE)
-        ATTR_COLOR(L"crtext.hover", m_crText[1], TRUE)
-        ATTR_COLOR(L"crtext.push", m_crText[2], TRUE)
-        ATTR_COLOR(L"crtext.disable", m_crText[3], TRUE)
+        ATTR_COLOR(L"colorText", m_crText[0], TRUE)
+        ATTR_COLOR(L"colorTextHover", m_crText[1], TRUE)
+        ATTR_COLOR(L"colorTextPush", m_crText[2], TRUE)
+        ATTR_COLOR(L"colorTextDisable", m_crText[3], TRUE)
 
-        ATTR_INT(L"x-margin", m_nMarginX, TRUE)
-        ATTR_INT(L"y-margin", m_nMarginY, TRUE)
+        ATTR_INT(L"margin-x", m_nMarginX, TRUE)
+        ATTR_INT(L"margin-y", m_nMarginY, TRUE)
         ATTR_INT(L"margin", m_nMarginX = m_nMarginY, TRUE) // 这样比较bt，不过.....凑合用吧
         ATTR_INT(L"spacing", m_nSpacing, TRUE)
         ATTR_STRINGT(L"cursor",m_strCursor,FALSE)

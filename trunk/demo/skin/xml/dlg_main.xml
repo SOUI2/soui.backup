@@ -1,4 +1,4 @@
-﻿<SOUI name="dlg_main" title="SOUI-DEMO version:%ver%" bigicon="LOGO:32" smallicon="LOGO:16" width="600" height="400" appwin="1" margin="20,5,5,5"  resizable="1" translucent="1" >
+﻿<SOUI name="dlg_main" title="SOUI-DEMO version:%ver%" bigIcon="LOGO:32" smallIcon="LOGO:16" width="600" height="400" appWnd="1" margin="20,5,5,5"  resizable="1" translucent="1" >
   <root class="cls_dlg_frame" cache="1">
     <caption pos="0,0,-0,30" show="1" font="adding:8">
       <icon pos="10,8" src="LOGO:16"/>
@@ -8,14 +8,14 @@
       <imgbtn id="3" name="按钮_恢复" skin="btn_sys_restore"  pos="-83,0" show="0" animate="1" />
       <imgbtn id="5" name="btn_minimize" skin="btn_sys_minimize" pos="-121,0" animate="1" />
     </caption>
-    <tabctrl pos="5,30,-5,-5" show="1" cursel="0" focusable="0" inset="10,0,3,0" animatesteps="10">
+    <tabctrl pos="5,30,-5,-5" show="1" cursel="0" focusable="0" inset="10,0,3,0" animateSteps="10">
       <page title="page1">
         <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cache="1" cursor="CUR_TST">
           <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
           </header>
         </listctrl>
       </page>
-      <page title="webkit">
+     <page title="webkit">
         <button pos="0,0,@30,25" name="btn_webkit_back">back</button>
         <button pos="[5,0,@30,25" name="btn_webkit_fore">fore</button>
         <edit pos="[5,0,-100,25" class="cls_edit" name="edit_url">www.baidu.com</edit>
@@ -23,8 +23,8 @@
         <text pos="0,30,-0,-0">没有注册WKE Webkit浏览器,请将third-part\wke\wke.7z解压到bin目录，并在stdafx.h中打开SUPPORT_WKE宏</text>
         <wkeWebkit pos="0,30,-0,-0" url="www.baidu.com" name="wke_test"/>
       </page>
-      <page title="flash">
-        <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://swf.sc.chinaz.com//Files/DownLoad/flash2/201401/flash2524.swf" delayinit="1"/>
+       <page title="flash">
+        <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://swf.sc.chinaz.com//Files//DownLoad//flash2//201401//flash2524.swf" delay="1"/>
       </page>
       <page title="gif">
         <gifplayer pos="10,10" skin="gif_horse" name="giftest" cursor="ANI_ARROW"/>
@@ -39,34 +39,34 @@
         <edit pos="50,100,150,150" font="adding:10">scroll edit</edit>
       </page>
       <page title="treebox">
-        <treebox pos="0,0,-0,-0" name="mytree" itemhei="30" critembg="#FFFFFF" critemselbg="#cccccc" indent="10">
+        <treebox pos="0,0,-0,-0" name="mytree" itemHeight="30" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#cccccc" indent="10">
           <item>
-            <text pos="10,0,100,-0" valign="middle" align="center" crtext="ff0000">red test</text>
+            <text pos="10,0,100,-0" valign="middle" align="center" colorText="ff0000">red test</text>
             <text>normal text</text>
             <edit pos="[5,0,]-5,20">test edit</edit>
             <button class="normalbtn" pos="300,3,-10,-3">button</button>
             <item>
-              <text pos="10,5" crtext="#ff0000">red test</text>
+              <text pos="10,5" colorText="#ff0000">red test</text>
               <text>normal text</text>
               <button class="normalbtn" pos="300,3,-10,-3">button</button>
             </item>
             <item>
-              <text pos="10,5" crtext="#ff0000">red test</text>
+              <text pos="10,5" colorText="#ff0000">red test</text>
               <text>normal text</text>
               <button class="normalbtn" pos="300,3,-10,-3">button</button>
               <item>
-                <text pos="10,5" crtext="#ff0000">red test</text>
+                <text pos="10,5" colorText="#ff0000">red test</text>
                 <text>normal text</text>
                 <button class="normalbtn" pos="300,3,-10,-3">button</button>
                 <item>
-                  <text pos="10,5" crtext="#ff0000">red test</text>
+                  <text pos="10,5" colorText="#ff0000">red test</text>
                   <text>normal text</text>
                   <button class="normalbtn" pos="300,3,-10,-3">button</button>
                 </item>
               </item>
             </item>
             <item>
-              <text pos="10,5" crtext="#ff0000">red test</text>
+              <text pos="10,5" colorText="#ff0000">red test</text>
               <text>normal text</text>
               <button class="normalbtn" pos="300,3,-10,-3">button</button>
             </item>
@@ -75,8 +75,8 @@
       </page>
       <page title="miscellaneous">
 <!--         <animateimg name="ani_test" pos="20,100" skin="icons"/> -->
-        <img id="1139" pos="300,200,400,300" skin="icons" tip="img tip" msgtransparent="0"/>
-        <check id="1300" pos="40,20" crtext="#ff0000" state="4">test1</check>
+        <img id="1139" pos="300,200,400,300" skin="icons" tip="img tip" msgTransParent="0"/>
+        <check id="1300" pos="40,20" colorText="#ff0000" state="4">test1</check>
         <check id="1301" pos="40,70" check="1">test2</check>
         <window pos="0,90,-70,-0" >
           <radio id="1303" pos="10,10">radio1</radio>
@@ -88,10 +88,10 @@
         <button name="btn_msgbox" class="normalbtn" width="100" height="30" accel="ctrl+alt+num 9" animate="1">show msg box</button>
         <hotkey id="1340" pos="350,20,450,45" class="cls_edit"/>
         <hotkey name="ctrl_hk2" pos="460,20,560,45" class="cls_edit"/>
-        <progress name="IDC_PROGTEST" pos="200,100,-10,115" value="20" min="0" max="100" showpercent="1"/>
+        <progress name="IDC_PROGTEST" pos="200,100,-10,115" value="20" min="0" max="100" showPercent="1"/>
         <sliderbar name="IDC_SLIDERTEST" pos="%20.5,130" alpha="200" width="200" value="20" min="0" max="100"/>
 
-        <link id="1380" pos="10,250" maxwidth="100" class="cls_btn_weblink" dotted="1" href="www.yy.com">link</link>
+        <link id="1380" pos="10,250" maxWidth="100" class="cls_btn_weblink" dotted="1" href="www.yy.com">link</link>
         <button name="btn_tstevt" pos="300,300,400,330" class="normalbtn">test event</button>
       </page>
       <page title="calendar">
@@ -100,8 +100,9 @@
           <imgbtn name="btn_today" pos="-50,-25,-5,-0" skin="_skin.sys.btn.normal"/>
         </calendar>
       </page>
+      
       <page id="119" title="treectrl">
-        <treectrl pos="10,0,-10,-10"  name="mytree1" itemhei="30" iconskin="TreeIcon" checkbox="1">
+        <treectrl pos="10,0,-10,-10"  name="mytree1" itemHeight="30" iconSkin="TreeIcon" checkbox="1">
           <item text="组织机构" img="0" selimg="1">
             <item text="市场部" img="0" selimg="1">
               <item text="南一区" img="2"/>

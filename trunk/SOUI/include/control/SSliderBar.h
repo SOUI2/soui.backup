@@ -156,7 +156,7 @@ protected:
     SOUI_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
-        ATTR_SKIN(L"thumbskin", m_pSkinThumb, FALSE)
+        ATTR_SKIN(L"thumbSkin", m_pSkinThumb, FALSE)
     SOUI_ATTRS_END()
 };
 
