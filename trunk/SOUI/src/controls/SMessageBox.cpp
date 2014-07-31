@@ -60,6 +60,9 @@ namespace SOUI
         case MB_ICONHAND:
             pIcon->SetIcon(LoadIcon(NULL,IDI_HAND));
             break;
+        default:
+            pIcon->SetVisible(FALSE,TRUE);
+            break;
         }
         return TRUE;
     }
