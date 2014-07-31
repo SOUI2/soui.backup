@@ -145,9 +145,10 @@ namespace SOUI
         UINT uType = s_MsgBoxInfo.uType&0x0F;
 
         STabCtrl *pBtnSwitch= FindChildByName2<STabCtrl>(NAME_MSGBOX_BTNSWITCH);
+        ASSERT(pBtnSwitch);
         pBtnSwitch->SetCurSel(g_msgBtnText[uType].nBtns-1);
-        
         SWindow *pBtnPanel=pBtnSwitch->GetItem(g_msgBtnText[uType].nBtns-1);
+        ASSERT(pBtnPanel);
         
         for(int i=0; i<g_msgBtnText[uType].nBtns; i++)
         {
