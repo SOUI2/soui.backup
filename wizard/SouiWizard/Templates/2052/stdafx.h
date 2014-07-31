@@ -5,11 +5,8 @@
 
 #pragma once
 
-#if DLL_SOUI
-#define SUPPORT_LUA     //打开SUPPORT_LUA来演示如何在SOUI中和LUA交互,LUA导出依赖DLL编译的SOUI，只有定义了DLL_SOUI才能打开这个开关
-#endif
-//#define SUPPORT_WKE      //需要把third-part/wke/wke.7z解压到bin目录才能打开该开关测试wkeWebkit
-
+#define  _CRT_SECURE_NO_WARNINGS
+	
 #include <souistd.h>
 #include <core/SHostDialog.h>
 #include <control/SMessageBox.h>
@@ -17,13 +14,6 @@
 #include <res.mgr/sobjdefattr.h>
 
 #include "resource.h"	//APP资源
-
-#ifdef SUPPORT_WKE
-#include "../controls.extend/SWkeWebkit.h"
-#endif
-
-#include "../controls.extend/gif/SGifPlayer.h"
-
 
 using namespace SOUI;
 
