@@ -19,6 +19,6 @@
 
   <imglist name="_skin.sys.btn.close" src="PNG:SYS_BTN_CLOSE" states="3" />
   <imglist name="_skin.sys.btn.minimize" src="PNG:SYS_BTN_MINIMIZE" states="3" />
-  <imglist name="_skin.sys.btn.maxmize" src="PNG:SYS_BTN_MAXMIZE" states="3" />
+  <imglist name="_skin.sys.btn.maximize" src="PNG:SYS_BTN_MAXIMIZE" states="3" />
   <imglist name="_skin.sys.btn.restore" src="PNG:SYS_BTN_RESTORE" states="3" />
 </skins>

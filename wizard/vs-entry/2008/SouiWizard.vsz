@@ -1,0 +1,6 @@
+VSWIZARD 7.0
+Wizard=VsWizard.VsWizardEngine.9.0
+
+Param="WIZARD_NAME = SouiWizard"
+Param="RELATIVE_PATH = vcwizards"
+Param="FALLBACK_LCID = 2052"

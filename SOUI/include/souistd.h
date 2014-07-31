@@ -17,7 +17,7 @@
 // Change these values to use different versions
 #ifndef WINVER 
 #define WINVER        0x0500
-#define _WIN32_WINNT    0x0501
+#define _WIN32_WINNT    0x0502
 #endif//WINVER
 
 #define _WIN32_IE    0x0601
