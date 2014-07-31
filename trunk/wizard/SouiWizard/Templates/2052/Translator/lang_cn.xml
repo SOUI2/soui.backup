@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language name="ch" guid="{0DAEDE3C-6B94-4a81-9A55-C304FDD69D98}">
+  <context>
+    <!--没有上下文的翻译-->
+  </context>
+  <context name="dlg_main">
+    <message>
+      <source>close</source>
+      <translation>关闭窗口</translation>
+    </message>
+  </context>
+  <context name="ctx3">
+    <message>
+      <source>hello 1</source>
+      <translation>你好1</translation>
+    </message>
+    <message>
+      <source>hello 4</source>
+      <translation>你好4</translation>
+    </message>
+    <message>
+      <source>hello 2</source>
+      <translation>你好2</translation>
+    </message>
+    <message>
+      <source>hello 3</source>
+      <translation>你好3</translation>
+    </message>
+    <message>
+      <source>hello 8</source>
+      <translation>你好8</translation>
+    </message>
+  </context>
+  
+  <context name="ctx1">
+    <message>
+      <source>message 1</source>
+      <translation>消息1</translation>
+    </message>
+    <message>
+      <source>message 4</source>
+      <translation>消息4</translation>
+    </message>
+    <message>
+      <source>message 2</source>
+      <translation>消息2</translation>
+    </message>
+    <message>
+      <source>message 3</source>
+      <translation>消息3</translation>
+    </message>
+    <message>
+      <source>message 8</source>
+      <translation>消息8</translation>
+    </message>
+  </context>
+  
+  <context name="ctx2">
+    <message>
+      <source>test 1</source>
+      <translation>测试1</translation>
+    </message>
+    <message>
+      <source>test 4</source>
+      <translation>测试4</translation>
+    </message>
+    <message>
+      <source>test 2</source>
+      <translation>测试2</translation>
+    </message>
+    <message>
+      <source>test 3</source>
+      <translation>测试3</translation>
+    </message>
+    <message>
+      <source>test 8</source>
+      <translation>测试8</translation>
+    </message>
+  </context>
+
+</language>
