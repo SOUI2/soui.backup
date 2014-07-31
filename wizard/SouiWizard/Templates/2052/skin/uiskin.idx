@@ -4,6 +4,7 @@
   </UIDEF>
   <LAYOUT>
     <file name="XML_MAINWND" path="xml\dlg_main.xml"  />
+    <file name="XML_MSGBOX" path="xml\dlg_msgbox.xml"  />
   </LAYOUT>
   <IMG>
     <file name="IMG_BKGND"  path="image\dlg_bg_frame.png"  />
