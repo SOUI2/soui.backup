@@ -2,7 +2,7 @@
 <UIDEF>
   <font face="宋体" size="18"/>
 
-  <editmenu itemSkin="skin_menuitem" iconSkin="skin_menuicon" itemHeight="26" sepSkin="skin_menusplit" iconMargin="4" textMargin="8"  bkgndSkin="skin_menubg">
+  <editmenu iconSkin="_skin.sys.menu.editicon" itemHeight="26" iconMargin="4" textMargin="8" >
     <item id="1" icon="0">剪切</item>
     <item id="2" icon="1">复制</item>
     <item id="3" icon="2">粘贴</item>
