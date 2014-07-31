@@ -9,18 +9,20 @@
       <icon name="msgicon" pos="0,0,32,32"/>
       <text name="msgtext" pos="35,0" colorText="#0000FF" multilines="1" maxWidth="300"/>
     </window>
-    <window pos="0,-50,-0,-0" name="btn1panel">
-      <button pos="|-50,10,|50,-10" name="button1st" class="normalbtn">button1</button>
-    </window>
-    <window pos="0,-50,-0,-0" name="btn2panel">
-      <button pos="|-100,10,|-10,-10" name="button1st" class="normalbtn">button1</button>
-      <button pos="|10,10,|100,-10" name="button2nd" class="normalbtn">button2</button>
-    </window>
-    <window pos="0,-50,-0,-0" name="btn3panel">
-      <button pos="|-140,10,|-50,-10" name="button1st" class="normalbtn">button1</button>
-      <button pos="|-45,10,|45,-10" name="button2nd" class="normalbtn">button2</button>
-      <button pos="|50,10,|140,-10" name="button3rd" class="normalbtn">button3</button>
-    </window>
+    <tabctrl name="btnSwitch" pos="0,-50,-0,-0" tabHeight="0">
+      <page>
+        <button pos="|-50,10,|50,-10" name="button1st" class="normalbtn">button1</button>
+      </page>
+      <page>
+        <button pos="|-100,10,|-10,-10" name="button1st" class="normalbtn">button1</button>
+        <button pos="|10,10,|100,-10" name="button2nd" class="normalbtn">button2</button>
+      </page>
+      <page>
+        <button pos="|-140,10,|-50,-10" name="button1st" class="normalbtn">button1</button>
+        <button pos="|-45,10,|45,-10" name="button2nd" class="normalbtn">button2</button>
+        <button pos="|50,10,|140,-10" name="button3rd" class="normalbtn">button3</button>
+      </page>
+    </tabctrl>
   </root>
 </SOUI>
 

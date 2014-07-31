@@ -26,11 +26,8 @@ namespace SOUI
             bEnableParent = TRUE;
         }
         
-        if(!IsWindow())
-        {//进入DoModal前已经创建窗口对象时不再执行Create
-            if(!Create(hParent, 0,0,0,0))
-                return 0;
-        }
+        if(!Create(hParent, 0,0,0,0))
+            return 0;
 
         HWND hWndLastActive = SThreadActiveWndMgr::SetActive(m_hWnd);
 
