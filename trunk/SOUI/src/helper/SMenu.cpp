@@ -8,10 +8,10 @@ namespace SOUI
 {
 
 SMenuAttr::SMenuAttr()
-    :m_pItemSkin(NULL)
+    :m_pItemSkin(GETBUILTINSKIN(SKIN_SYS_MENU_SKIN))
+    ,m_pSepSkin(GETBUILTINSKIN(SKIN_SYS_MENU_SEP))
+    ,m_pCheckSkin(GETBUILTINSKIN(SKIN_SYS_MENU_CHECK))
     ,m_pIconSkin(NULL)
-    ,m_pSepSkin(NULL)
-    ,m_pCheckSkin(NULL)
     ,m_hFont(0)
     ,m_nItemHei(0)
     ,m_nIconMargin(2)

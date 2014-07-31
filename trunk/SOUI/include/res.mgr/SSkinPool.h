@@ -32,6 +32,12 @@ namespace SOUI
         SKIN_SYS_BTN_MINIMIZE,          //L"_skin.sys.btn.minimize",
         SKIN_SYS_BTN_MAXMIZE,           //L"_skin.sys.btn.maxmize",
         SKIN_SYS_BTN_RESTORE,           //L"_skin.sys.btn.restore",
+
+        SKIN_SYS_MENU_CHECK,            //L"_skin.sys.menu.check",
+        SKIN_SYS_MENU_SEP,              //L"_skin.sys.menu.sep",
+        SKIN_SYS_MENU_BORDER,           //L"_skin.sys.menu.border",
+        SKIN_SYS_MENU_SKIN,             //L"_skin.sys.menu.skin",
+        SKIN_SYS_MENU_EDITICON,         //L"_skin.sys.menu.editicon",
     };
 
 typedef ISkinObj * SSkinPtr;

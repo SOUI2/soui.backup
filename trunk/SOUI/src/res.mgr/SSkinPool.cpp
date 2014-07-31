@@ -111,7 +111,12 @@ const wchar_t * BUILDIN_SKIN_NAMES[]=
     L"_skin.sys.btn.close",
     L"_skin.sys.btn.minimize",
     L"_skin.sys.btn.maxmize",
-    L"_skin.sys.btn.restore"
+    L"_skin.sys.btn.restore",
+    L"_skin.sys.menu.check",
+    L"_skin.sys.menu.sep",
+    L"_skin.sys.menu.border",
+    L"_skin.sys.menu.skin",
+    L"_skin.sys.menu.editicon"
 };
 
 BOOL SSkinPool::LoadBuiltinSkins( IResProvider *pSysSkinProvider ,LPCTSTR pszSkinXmlName,LPCTSTR pszXmlType)

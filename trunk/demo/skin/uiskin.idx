@@ -30,12 +30,6 @@
     <file name="IDP_ICONS"  path="image\icon2.png" />
     <file name="IDP_ICONS_SMALL"  path="image\icons.png" />
 
-    <file name="IDP_MENUSKIN"  path="image\menuskin.png" />
-    <file name="IDP_MENUSPLIT"  path="image\menu_split_horz.png" />
-    <file name="IDP_MENUBG"  path="image\img_menu_bg.png" />
-
-    <file name="IDP_MENUCHECK"  path="image\check.png" />
-    <file name="IDP_MENUBORDER"  path="image\menuborder.png" />
     <file name="IDP_WEBBTN_BACK"  path="image\webbtn_back.png" />
     <file name="IDP_WEBBTN_FORWARD"  path="image\webbtn_forward.png" />
     <file name="IDP_WEBBTN_REFRESH"  path="image\webbtn_refresh.png" />
@@ -60,9 +54,6 @@
   <ICON>
     <file name="LOGO"  path="image\img_logo.ico"    />
   </ICON>
-  <BITMAP>
-    <file name="IDP_BMPMASK"  path="image\solve.bmp" />
-  </BITMAP>
   <CURSOR>
     <file name="ANI_ARROW"  path="image\021.ani" />
     <file name="CUR_TST" path="image\camera_capture.cur"/>

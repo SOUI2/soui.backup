@@ -51,10 +51,6 @@ END
 // PNG
 //
 
-SYS_BTN_MINIMIZE        PNG                     "res\\sys_btn_minimize.png"
-SYS_BTN_RESTORE         PNG                     "res\\sys_btn_restore.png"
-SYS_BTN_CLOSE           PNG                     "res\\sys_btn_close.png"
-SYS_BTN_MAXIMIZE        PNG                     "res\\sys_btn_maximize.png"
 SYS_BORDER              PNG                     "res\\sys_border.png"
 SYS_CHECKBOX            PNG                     "res\\sys_checkbox.png"
 SYS_RADIO               PNG                     "res\\sys_radio.png"
@@ -64,7 +60,6 @@ SYS_DROPBTN             PNG                     "res\\sys_dropbtn.png"
 SYS_SCROLLBAR           PNG                     "res\\sys_scrollbar.png"
 SYS_TREE_CHECKBOX       PNG                     "res\\sys_tree_checkbox.png"
 SYS_TREE_TOGGLE         PNG                     "res\\sys_tree_toggle.png"
-SYS_MENU_CHECK          PNG                     "res\\sys_menu_check.png"
 SYS_HEADER              PNG                     "res\\sys_header.png"
 SYS_SPLIT_VERT          PNG                     "res\\sys_split_vert.png"
 SYS_SPLIT_HORZ          PNG                     "res\\sys_split_horz.png"
@@ -73,6 +68,17 @@ SYS_PROG_BAR            PNG                     "res\\sys_prog_bar.png"
 SYS_SLIDER_THUMB        PNG                     "res\\sys_slider_thumb.png"
 SYS_TAB_PAGE            PNG                     "res\\sys_tab_page.png"
 
+SYS_BTN_MINIMIZE        PNG                     "res\\sys_btn_minimize.png"
+SYS_BTN_RESTORE         PNG                     "res\\sys_btn_restore.png"
+SYS_BTN_CLOSE           PNG                     "res\\sys_btn_close.png"
+SYS_BTN_MAXIMIZE        PNG                     "res\\sys_btn_maximize.png"
+
+SYS_MENU_CHECK          PNG                     "res\\sys_menu_check.png"
+SYS_MENU_BKGND          PNG                     "res\\sys_menu_bkgnd.png"
+SYS_MENU_SEP            PNG                     "res\\sys_menu_sep.png"
+SYS_MENU_BORDER         PNG                     "res\\sys_menu_border.png"
+SYS_MENU_SKIN           PNG                     "res\\sys_menu_skin.png"
+SYS_MENU_EDITICON       PNG                     "res\\sys_menu_editicon.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //

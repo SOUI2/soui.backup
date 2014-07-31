@@ -8,11 +8,6 @@
   </LAYOUT>
   <IMG>
     <file name="IMG_BKGND"  path="image\dlg_bg_frame.png"  />
-    <file name="IMG_MENUBG"  path="image\menu_bg.png" />
-    <file name="IMG_MENUSKIN"  path="image\menu_skin.png" />
-    <file name="IMG_MENUSEP"  path="image\menu_sep.png" />
-    <file name="IMG_MENUSBORDER"  path="image\menu_border.png" />
-    <file name="IMG_MENUICON"  path="image\menu_icon.png" />
   </IMG>
   <ICON>
     <file name="ICON_LOGO"  path="image\soui.ico"    />
