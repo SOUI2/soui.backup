@@ -171,7 +171,7 @@ public:
 			reg.Close();
 			DWORD_PTR msgResult=0;
 			//广播环境变量修改消息
-			SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0,LPARAM("Environment"), SMTO_ABORTIFHUNG, 5000, &msgResult);
+			SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0,LPARAM(_T("Environment")), SMTO_ABORTIFHUNG, 5000, &msgResult);
 		}else
 		{
 			MessageBox(_T("添加环境变量失败"),_T("错误"),MB_OK|MB_ICONSTOP);
