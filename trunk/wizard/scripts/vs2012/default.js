@@ -123,7 +123,7 @@ function AddConfig(proj, strProjectName)
 		CLTool.SuppressStartupBanner = true;
 		CLTool.TreatWChar_tAsBuiltInType=false;
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
-		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilites\\include"';
+		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
 		CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;_DEBUG';
 		CLTool.RuntimeLibrary = 1; // 0=MT, 1=MTd, 2=MTD (DLL), 3=MTDd
 		CLTool.BrowseInformation = browseInfoOption.brAllInfo;// FR
@@ -137,6 +137,10 @@ function AddConfig(proj, strProjectName)
 		LinkTool.SuppressStartupBanner = true;  // nologo
 		LinkTool.GenerateDebugInformation = true;
 		LinkTool.AdditionalLibraryDirectories = '"$(SOUIPATH)\\bin\\Debug"';
+
+		//添加调试目录设置
+		var debugSetting = config.DebugSettings;
+		debugSetting.WorkingDirectory =  '"$(SOUIPATH)\\bin\\debug"';
 		
 		// Release设置
 		var config = proj.Object.Configurations('Release');
@@ -150,7 +154,7 @@ function AddConfig(proj, strProjectName)
 		CLTool.SuppressStartupBanner = true;
 		CLTool.TreatWChar_tAsBuiltInType=false;
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
-		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilites\\include"';
+		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
 		CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;NDEBUG';
 		CLTool.RuntimeLibrary = 0; // 0=MT, 1=MTd, 2=MTD (DLL), 3=MTDd
 		CLTool.WholeProgramOptimization = true;	//全程序优化：启动链接时代码生成
@@ -162,6 +166,10 @@ function AddConfig(proj, strProjectName)
 		LinkTool.SuppressStartupBanner = true;  // nologo
 		LinkTool.AdditionalLibraryDirectories = '"$(SOUIPATH)\\bin\\release"';
 		LinkTool.LinkIncremental=1;
+
+		//添加调试目录设置
+		var debugSetting = config.DebugSettings;
+		debugSetting.WorkingDirectory =  '"$(SOUIPATH)\\bin\\release"';
 			
 	}
 	catch(e)
@@ -384,7 +392,7 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		fileConfig = file.FileConfigurations('Release');
 		fileConfig.Tool.UsePrecompiledHeader = 1;
 		//指定uiskin.idx的编译命令
-		cmdline= '"$(SOUIPATH)\\tool\\uiresbuilder.exe" -i "$(InputPath)" -p skin -r .\\duires\\winres.rc2';
+		cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p skin -r .\\duires\\winres.rc2';
 		outfiles=".\\duires\\winres.rc2;";
 		
 		var file = files.Item('uiskin.idx');
