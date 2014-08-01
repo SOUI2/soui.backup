@@ -12,7 +12,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\..\bin\debug\"
+			OutputDirectory="..\..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="2"
@@ -30,7 +30,7 @@
 				GeneratePreprocessedFile="0"
 				ObjectFile="..\..\..\obj\debug\scriptmodule-lua\"
 				Optimization ="4"
-				PrecompiledHeaderFile="$(IntDir)\scriptmodule-lua.pch"
+				PrecompiledHeaderFile="$(IntDir)\scriptmodule-luad.pch"
 				PrecompiledHeaderThrough="stdafx.h"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
 				ProgramDataBaseFileName="$(IntDir)"
@@ -44,12 +44,12 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="lua-51.lib soui.lib"
-				AdditionalLibraryDirectories="..\..\..\bin\debug"
+				AdditionalDependencies="lua-51d.lib souid.lib utilitiesd.lib"
+				AdditionalLibraryDirectories="..\..\..\bin"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkTimeCodeGeneration="0"
-				OutputFile="$(OutDir)\scriptmodule-lua.dll"
+				OutputFile="$(OutDir)\scriptmodule-luad.dll"
 				ProgramDatabaseFile=""
 				SubSystem="0"
 				SuppressStartupBanner="true"
@@ -73,7 +73,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\..\bin\release\"
+			OutputDirectory="..\..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="2"
@@ -105,8 +105,8 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="lua-51.lib soui.lib"
-				AdditionalLibraryDirectories="..\..\..\bin\release"
+				AdditionalDependencies="lua-51.lib soui.lib utilities.lib"
+				AdditionalLibraryDirectories="..\..\..\bin"
 				EnableCOMDATFolding="2"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"

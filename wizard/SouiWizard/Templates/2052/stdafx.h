@@ -14,10 +14,7 @@
 #include <control/souictrls.h>
 #include <res.mgr/sobjdefattr.h>
 
-#include "resource.h"	//APP×ÊÔ´
+#include "resource.h"
 
 using namespace SOUI;
-
-# pragma comment(lib, "soui.lib")
-
 

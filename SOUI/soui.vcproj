@@ -12,7 +12,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin\debug\"
+			OutputDirectory="..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="2"
@@ -30,7 +30,7 @@
 				GeneratePreprocessedFile="0"
 				ObjectFile="..\obj\debug\soui\"
 				Optimization ="4"
-				PrecompiledHeaderFile="$(IntDir)\soui.pch"
+				PrecompiledHeaderFile="$(IntDir)\souid.pch"
 				PrecompiledHeaderThrough="include\souistd.h"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DLL_SOUI,SOUI_EXPORTS,_CRT_SECURE_NO_WARNINGS"
 				ProgramDataBaseFileName="$(IntDir)"
@@ -44,12 +44,12 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utilities.lib"
-				AdditionalLibraryDirectories="..\bin\debug"
+				AdditionalDependencies="utilitiesd.lib"
+				AdditionalLibraryDirectories="..\bin"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkTimeCodeGeneration="0"
-				OutputFile="$(OutDir)\soui.dll"
+				OutputFile="$(OutDir)\souid.dll"
 				ProgramDatabaseFile=""
 				SubSystem="0"
 				SuppressStartupBanner="true"
@@ -73,7 +73,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\bin\release\"
+			OutputDirectory="..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="2"
@@ -106,7 +106,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="utilities.lib"
-				AdditionalLibraryDirectories="..\bin\release"
+				AdditionalLibraryDirectories="..\bin"
 				EnableCOMDATFolding="2"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"

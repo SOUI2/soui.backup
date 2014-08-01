@@ -15,7 +15,12 @@ DEFINES += RESPROVIDERZIP_EXPORTS
 dir = ../..
 include($$dir/common.pri)
 
-LIBS += zlib.lib utilities.lib
+CONFIG(debug,debug|release){
+	LIBS += zlibd.lib utilitiesd.lib
+}
+else{
+	LIBS += zlib.lib utilities.lib
+}
 
 PRECOMPILED_HEADER = stdafx.h
 

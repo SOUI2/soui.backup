@@ -135,11 +135,8 @@ function AddConfig(proj, strProjectName)
 		LinkTool.LinkIncremental = linkIncrementalYes;
 		LinkTool.SuppressStartupBanner = true;  // nologo
 		LinkTool.GenerateDebugInformation = true;
-		LinkTool.AdditionalLibraryDirectories = '"$(SOUIPATH)\\bin\\Debug"';
-		
-		//增加调试目录设置
-		var debugSetting = config.DebugSettings;
-		debugSetting.WorkingDirectory =  '"$(SOUIPATH)\\bin\\Debug"';
+		LinkTool.AdditionalLibraryDirectories = '"$(SOUIPATH)\\bin"';
+		LinkTool.AdditionalDependencies = 'utilitiesd.lib souid.lib'
 		
 		// Release设置
 		var config = proj.Object.Configurations('Release');
@@ -163,12 +160,9 @@ function AddConfig(proj, strProjectName)
 		LinkTool.GenerateDebugInformation = true;
 		LinkTool.LinkIncremental = linkIncrementalYes;
 		LinkTool.SuppressStartupBanner = true;  // nologo
-		LinkTool.AdditionalLibraryDirectories = '"$(SOUIPATH)\\bin\\release"';
+		LinkTool.AdditionalLibraryDirectories = '"$(SOUIPATH)\\bin"';
+		LinkTool.AdditionalDependencies = 'utilities.lib soui.lib'
 		LinkTool.LinkIncremental=1;
-		
-		//添加调试目录设置
-		var debugSetting = config.DebugSettings;
-		debugSetting.WorkingDirectory =  '"$(SOUIPATH)\\bin\\release"';
 		
 	}
 	catch(e)
