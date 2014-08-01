@@ -60,9 +60,21 @@ namespace SOUI
         pStylePool->AddRef();
     }
 
-    SStylePool * SStylePoolMgr::PopStylePool()
+    SStylePool * SStylePoolMgr::PopStylePool(SStylePool *pStylePool)
     {
-        SStylePool * pRet = m_lstStylePools.RemoveTail();
+        SStylePool * pRet=NULL;
+        if(pStylePool)
+        {
+            POSITION pos=m_lstStylePools.Find(pStylePool);
+            if(pos)
+            {
+                pRet=m_lstStylePools.GetAt(pos);
+                m_lstStylePools.RemoveAt(pos);
+            }
+        }else
+        {
+            pRet = m_lstStylePools.RemoveTail();
+        }
         if(pRet) pRet->Release();
         return pRet;
     }

@@ -27,7 +27,7 @@ namespace SOUI
         
         void PushStylePool(SStylePool *pStylePool);
         
-        SStylePool * PopStylePool();
+        SStylePool * PopStylePool(SStylePool *pStylePool);
     protected:
         SList<SStylePool *> m_lstStylePools;
     };

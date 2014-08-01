@@ -6,7 +6,7 @@
 
 #define GETSKIN(p1) SSkinPoolMgr::getSingleton().GetSkin(p1)
 #define GETBUILTINSKIN(p1) SSkinPoolMgr::getSingleton().GetBuiltinSkin(p1)
-
+#define GETSKINPOOLMGR SSkinPoolMgr::getSingletonPtr()
 namespace SOUI
 {
     //系统内置皮肤名称
@@ -72,7 +72,7 @@ public:
     
     void PushSkinPool(SSkinPool *pSkinPool);
 
-    SSkinPool * PopSkinPool();
+    SSkinPool * PopSkinPool(SSkinPool *pSkinPool);
 
     ISkinObj * GetBuiltinSkin(SYS_SKIN uID);
     
