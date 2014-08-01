@@ -177,8 +177,11 @@ public:
                 int nLen=GetDlgItemText(IDC_SOUIDIR,szSouiDir,MAX_PATH);
                 if(szSouiDir[nLen-1]==_T('\\')) szSouiDir[--nLen]=0;
                 _tcscat(szSouiDir,_T("\\bin;"));
-			    _tcscpy(szEnvPath+dwSize-1,szSouiDir);
-			    reg.SetStringValue(_T("PATH"),szEnvPath);
+                if(StrStrI(szEnvPath,szSouiDir)==NULL)
+                {//已经设置后不再设置
+                    _tcscpy(szEnvPath+dwSize-1,szSouiDir);
+                    reg.SetStringValue(_T("PATH"),szEnvPath);
+                }
 			}
 			reg.Close();
 			DWORD_PTR msgResult=0;
