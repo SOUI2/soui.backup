@@ -173,14 +173,20 @@ public:
 			reg.QueryStringValue(_T("Path"),szEnvPath,&dwSize);
 			if(dwSize<3072)
 			{//修改path环境变量
+			    dwSize--;
+                if(szEnvPath[dwSize-1]!=_T(';'))
+                {
+                    szEnvPath[dwSize++]=_T(';');
+                    szEnvPath[dwSize]=_T('\0');
+                }
                 TCHAR szSouiDir[MAX_PATH]={0};
                 int nLen=GetDlgItemText(IDC_SOUIDIR,szSouiDir,MAX_PATH);
                 if(szSouiDir[nLen-1]==_T('\\')) szSouiDir[--nLen]=0;
                 _tcscat(szSouiDir,_T("\\bin;"));
                 if(StrStrI(szEnvPath,szSouiDir)==NULL)
                 {//已经设置后不再设置
-                    _tcscpy(szEnvPath+dwSize-1,szSouiDir);
-                    reg.SetStringValue(_T("PATH"),szEnvPath);
+                    _tcscpy(szEnvPath+dwSize,szSouiDir);
+                    reg.SetStringValue(_T("Path"),szEnvPath);
                 }
 			}
 			reg.Close();
