@@ -147,9 +147,21 @@ void SSkinPoolMgr::PushSkinPool( SSkinPool *pSkinPool )
     pSkinPool->AddRef();
 }
 
-SSkinPool * SSkinPoolMgr::PopSkinPool()
+SSkinPool * SSkinPoolMgr::PopSkinPool(SSkinPool *pSkinPool)
 {
-    SSkinPool *pRet=m_lstSkinPools.RemoveTail();
+    SSkinPool * pRet=NULL;
+    if(pSkinPool)
+    {
+        POSITION pos=m_lstSkinPools.Find(pSkinPool);
+        if(pos)
+        {
+            pRet=m_lstSkinPools.GetAt(pos);
+            m_lstSkinPools.RemoveAt(pos);
+        }
+    }else
+    {
+        pRet = m_lstSkinPools.RemoveTail();
+    }
     if(pRet) pRet->Release();
     return pRet;
 }

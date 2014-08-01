@@ -39,12 +39,12 @@ SHostWnd::SHostWnd( LPCTSTR pszResName /*= NULL*/ )
     m_privateStylePool.Attach(new SStylePool);
     m_privateSkinPool.Attach(new SSkinPool);
     SetContainer(this);
-    GETSTYLEPOOLMGR->PushStylePool(m_privateStylePool);
 }
 
 SHostWnd::~SHostWnd()
 {
-    GETSTYLEPOOLMGR->PopStylePool();
+    GETSTYLEPOOLMGR->PopStylePool(m_privateStylePool);
+    GETSKINPOOLMGR->PopSkinPool(m_privateSkinPool);
 }
 
 HWND SHostWnd::Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight)
@@ -97,11 +97,26 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     if(!CSimpleWnd::IsWindow()) return FALSE;
     
     SSendMessage(WM_DESTROY);   //为了能够重入，先销毁原有的SOUI窗口
-    m_privateStylePool->RemoveAll();
+    if(m_privateStylePool->GetCount())
+    {
+        m_privateStylePool->RemoveAll();
+        GETSTYLEPOOLMGR->PopStylePool(m_privateStylePool);
+    }
     m_privateStylePool->Init(xmlNode.child(L"style"));
-    m_privateSkinPool->RemoveAll();
+    if(m_privateStylePool->GetCount())
+    {
+        GETSTYLEPOOLMGR->PushStylePool(m_privateStylePool);
+    }
+    if(m_privateSkinPool->GetCount())
+    {
+        m_privateSkinPool->RemoveAll();
+        GETSKINPOOLMGR->PopSkinPool(m_privateSkinPool);
+    }
     m_privateSkinPool->LoadSkins(xmlNode.child(L"skins"));//从xmlNode加加载私有skin
-    
+    if(m_privateSkinPool->GetCount())
+    {
+        GETSKINPOOLMGR->PushSkinPool(m_privateSkinPool);
+    }    
     DWORD dwStyle =CSimpleWnd::GetStyle()|WS_CAPTION;
     DWORD dwExStyle  = CSimpleWnd::GetExStyle();
     
