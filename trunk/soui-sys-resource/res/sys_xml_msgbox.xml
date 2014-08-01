@@ -1,5 +1,8 @@
 ﻿<SOUI title="mesagebox" width="200" height="100" appwin="0" frame_size="40,30,10,80" minsize="300,100" resize="0" translucent="1" >
-  <root class="cls_dlg_frame">
+  <style>
+    <class name="normalbtn" skin="_skin.sys.btn.normal" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
+  </style>
+  <root skin="_skin.sys.wnd.bkgnd">
     <caption id="101" pos="0,0,-0,29">
       <text pos="11,9" class="cls_txt_red" name="msgtitle" >title</text>
       <imgbtn id="1" skin="_skin.sys.btn.close"    pos="-45,0" tip="close"/>

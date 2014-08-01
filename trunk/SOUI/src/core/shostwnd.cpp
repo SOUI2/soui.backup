@@ -13,8 +13,6 @@ namespace SOUI
 #define TIMER_CARET    1
 #define TIMER_NEXTFRAME 2
 
-static DWORD s_dwSkinOwnerID = 0;
-
 //////////////////////////////////////////////////////////////////////////
 //    SDummyWnd
 //////////////////////////////////////////////////////////////////////////
@@ -37,13 +35,16 @@ SHostWnd::SHostWnd( LPCTSTR pszResName /*= NULL*/ )
 , m_bNeedAllRepaint(TRUE)
 , m_pTipCtrl(NULL)
 , m_dummyWnd(this)
-, m_dwSkinOwnerID (++s_dwSkinOwnerID)
 {
+    m_privateStylePool.Attach(new SStylePool);
+    m_privateSkinPool.Attach(new SSkinPool);
     SetContainer(this);
+    GETSTYLEPOOLMGR->PushStylePool(m_privateStylePool);
 }
 
 SHostWnd::~SHostWnd()
 {
+    GETSTYLEPOOLMGR->PopStylePool();
 }
 
 HWND SHostWnd::Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight)
@@ -96,9 +97,10 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     if(!CSimpleWnd::IsWindow()) return FALSE;
     
     SSendMessage(WM_DESTROY);   //为了能够重入，先销毁原有的SOUI窗口
-    SSkinPool::getSingleton().FreeSkins(m_dwSkinOwnerID);//清理原来的私有Skin
-    
-    SSkinPool::getSingleton().LoadSkins(xmlNode.child(L"skins"),m_dwSkinOwnerID);//从xmlNode加加载私有skin
+    m_privateStylePool->RemoveAll();
+    m_privateStylePool->Init(xmlNode.child(L"style"));
+    m_privateSkinPool->RemoveAll();
+    m_privateSkinPool->LoadSkins(xmlNode.child(L"skins"));//从xmlNode加加载私有skin
     
     DWORD dwStyle =CSimpleWnd::GetStyle()|WS_CAPTION;
     DWORD dwExStyle  = CSimpleWnd::GetExStyle();
@@ -267,7 +269,6 @@ void SHostWnd::OnDestroy()
     {
         m_dummyWnd.DestroyWindow();
     }
-    SSkinPool::getSingleton().FreeSkins(m_dwSkinOwnerID);
 }
 
 void SHostWnd::OnSize(UINT nType, CSize size)

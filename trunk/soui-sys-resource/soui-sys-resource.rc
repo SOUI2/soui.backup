@@ -78,14 +78,17 @@ SYS_MENU_BKGND          PNG                     "res\\sys_menu_bkgnd.png"
 SYS_MENU_SEP            PNG                     "res\\sys_menu_sep.png"
 SYS_MENU_BORDER         PNG                     "res\\sys_menu_border.png"
 SYS_MENU_SKIN           PNG                     "res\\sys_menu_skin.png"
-SYS_MENU_EDITICON       PNG                     "res\\sys_menu_editicon.png"
+SYS_ICONS               PNG                     "res\\sys_icons.png"
+SYS_WND_BKGND           PNG                     "res\\sys_wnd_bkgnd.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // XML
 //
 
-SYS_SKIN                XML                     "res\\sys_skin.xml"
+SYS_XML_SKIN                XML                     "res\\sys_xml_skin.xml"
+SYS_XML_EDITMENU            XML                     "res\\sys_xml_editmenu.xml"
+SYS_XML_MSGBOX              XML                     "res\\sys_xml_msgbox.xml"
 
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////

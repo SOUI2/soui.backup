@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UIDEF>
   <font face="宋体" size="18"/>
-
-  <editmenu iconSkin="_skin.sys.menu.editicon" itemHeight="26" iconMargin="4" textMargin="8" >
-    <item id="1" icon="0">剪切</item>
-    <item id="2" icon="1">复制</item>
-    <item id="3" icon="2">粘贴</item>
-    <item id="4" icon="3">删除</item>
-    <sep/>
-    <item id="5">全选</item>
-  </editmenu>
   
   <string>
     <ver value="1.0"/>
   </string>
   
   <skins>
-    <imgframe name="dlg_frame"  src="IDP_MAIN_DLG_FRAME" left="5" right="5" top="40" bottom="40"/>
-
     <imglist name="btn_sys_close"    src="IDP_BTN_SYS_CLOSE" states="3" />
     <imglist name="btn_sys_minimize" src="IDP_BTN_SYS_MINIMIZE" states="3" />
     <imglist name="btn_sys_maximize" src="IDP_BTN_SYS_MAXIMIZE" states="3" />
@@ -44,7 +33,7 @@
   </skins>
 
   <style>
-    <class name="cls_dlg_frame" skin="dlg_frame" font="" colorText="#000000" margin-x="0"/>
+    <class name="cls_dlg_frame" skin="_skin.sys.wnd.bkgnd" font="" colorText="#000000" margin-x="0"/>
 
     <class name="cls_btn_link"    cursor="hand" colorHover="#0A84D2" />
     <!--定义文字按钮的样式-->

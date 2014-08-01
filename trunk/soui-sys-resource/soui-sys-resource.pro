@@ -3,11 +3,11 @@
 ######################################################################
 
 TEMPLATE = lib
-TARGET = soui-sys-skin
+TARGET = soui-sys-resource
 
 dir = ..
 include($$dir/common.pri)
 
 QMAKE_LFLAGS += /NOENTRY
 
-RC_FILE += soui-sys-skin.rc
+RC_FILE += soui-sys-resource.rc

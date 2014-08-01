@@ -3,8 +3,10 @@
 
 namespace SOUI
 {
-    template<> SStylePool * SSingleton<SStylePool>::ms_Singleton=0;
 
+    //////////////////////////////////////////////////////////////////////////
+    //SStylePool
+    
     // Get style object from pool by class name
     BOOL SStylePool::GetStyle(LPCWSTR lpszName, SwndStyle& style)
     {
@@ -16,7 +18,7 @@ namespace SOUI
     // Load style-pool from xml tree
     BOOL SStylePool::Init(pugi::xml_node xmlStyleRoot)
     {
-        ASSERT(xmlStyleRoot);
+        if(!xmlStyleRoot) return FALSE;
 
         if (wcscmp(xmlStyleRoot.name(), L"style") != 0)
         {
@@ -36,4 +38,44 @@ namespace SOUI
         }
         return TRUE;
     }
+
+    //////////////////////////////////////////////////////////////////////////
+    // SStylePoolMgr
+    template<> SStylePoolMgr * SSingleton<SStylePoolMgr>::ms_Singleton=0;
+
+    BOOL SStylePoolMgr::GetStyle( LPCWSTR lpszName,SwndStyle& style )
+    {
+        POSITION pos=m_lstStylePools.GetTailPosition();
+        while(pos)
+        {
+            SStylePool *pStylePool=m_lstStylePools.GetPrev(pos);
+            if(pStylePool->GetStyle(lpszName,style)) return TRUE;
+        }
+        return FALSE;
+    }
+
+    void SStylePoolMgr::PushStylePool( SStylePool *pStylePool )
+    {
+        m_lstStylePools.AddTail(pStylePool);
+        pStylePool->AddRef();
+    }
+
+    SStylePool * SStylePoolMgr::PopStylePool()
+    {
+        SStylePool * pRet = m_lstStylePools.RemoveTail();
+        if(pRet) pRet->Release();
+        return pRet;
+    }
+
+    SStylePoolMgr::~SStylePoolMgr()
+    {
+        POSITION pos=m_lstStylePools.GetHeadPosition();
+        while(pos)
+        {
+            SStylePool *p = m_lstStylePools.GetNext(pos);
+            p->Release();
+        }
+        m_lstStylePools.RemoveAll();
+    }
+
 }//end of namespace SOUI

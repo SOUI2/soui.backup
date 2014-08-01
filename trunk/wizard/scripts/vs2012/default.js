@@ -392,7 +392,7 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		fileConfig = file.FileConfigurations('Release');
 		fileConfig.Tool.UsePrecompiledHeader = 1;
 		//÷∏∂®uiskin.idxµƒ±‡“Î√¸¡Ó
-		cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p skin -r .\\duires\\winres.rc2';
+		cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p skin -r .\\duires\\winres.rc2';
 		outfiles=".\\duires\\winres.rc2;";
 		
 		var file = files.Item('uiskin.idx');

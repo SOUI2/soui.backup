@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="soui-sys-skin"
-	ProjectGUID="{43EE4A7C-AF06-3F8A-89F5-7AA5C1C893AB}"
+	Name="soui-sys-resource"
+	ProjectGUID="{C0E73CD1-8D74-3DD4-A766-9DBC8B6B206C}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -16,18 +16,18 @@
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="2"
-			IntermediateDirectory="..\obj\debug\soui-sys-skin\"
+			IntermediateDirectory="..\obj\debug\soui-sys-resource\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\obj\debug\soui-sys-skin\"
+				AssemblerListingLocation="..\obj\debug\soui-sys-resource\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="1"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\obj\debug\soui-sys-skin\"
+				ObjectFile="..\obj\debug\soui-sys-resource\"
 				Optimization ="4"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
 				ProgramDataBaseFileName="$(IntDir)"
@@ -44,7 +44,7 @@
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkTimeCodeGeneration="0"
-				OutputFile="$(OutDir)\soui-sys-skin.dll"
+				OutputFile="$(OutDir)\soui-sys-resource.dll"
 				ProgramDatabaseFile=""
 				ResourceOnlyDLL="true"
 				SubSystem="0"
@@ -73,18 +73,18 @@
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="2"
-			IntermediateDirectory="..\obj\release\soui-sys-skin\"
+			IntermediateDirectory="..\obj\release\soui-sys-resource\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\obj\release\soui-sys-skin\"
+				AssemblerListingLocation="..\obj\release\soui-sys-resource\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="1"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\obj\release\soui-sys-skin\"
+				ObjectFile="..\obj\release\soui-sys-resource\"
 				Optimization ="1"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,NDEBUG"
 				ProgramDataBaseFileName="$(IntDir)"
@@ -104,7 +104,7 @@
 				LinkIncremental="1"
 				LinkTimeCodeGeneration="0"
 				OptimizeReferences="2"
-				OutputFile="$(OutDir)\soui-sys-skin.dll"
+				OutputFile="$(OutDir)\soui-sys-resource.dll"
 				ProgramDatabaseFile=""
 				ResourceOnlyDLL="true"
 				SubSystem="0"
@@ -130,7 +130,7 @@
 	</Configurations>
 	<Files>
 		<File
-			RelativePath="soui-sys-skin.rc" />
+			RelativePath="soui-sys-resource.rc" />
 	</Files>
 	<Globals>
 	</Globals>

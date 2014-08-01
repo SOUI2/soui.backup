@@ -6,7 +6,6 @@
   <LAYOUT>
     <file name="IDR_DUI_MAIN_DIALOG" layer="1" path="xml\dlg_main.xml"  />
     <file name="IDR_MENU_TEST" path="xml\menu_test.xml"  />
-    <file name="IDR_DUI_MSGBOX" path="xml\dlg_msgbox.xml"  />
     <file name="xml_page2" path="xml\page2.xml"  />
   </LAYOUT>
   <IMGX>

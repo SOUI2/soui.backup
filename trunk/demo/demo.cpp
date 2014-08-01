@@ -110,15 +110,14 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         
         theApp->AddResProvider(pResProvider);
         
-        HMODULE hSysSkins=LoadLibrary(_T("soui-sys-skin"));
-        if(hSysSkins)
+        HMODULE hSysResource=LoadLibrary(_T("soui-sys-resource"));
+        if(hSysResource)
         {
-            SResProviderPE resPE(hSysSkins);
-            SSkinPool::getSingleton().LoadBuiltinSkins(&resPE,_T("SYS_SKIN"),_T("XML"));
+            SResProviderPE resPE(hSysResource);
+            theApp->LoadSystemNamedResource(&resPE);
         }
 
         theApp->Init(_T("IDR_DUI_INIT")); 
-        theApp->SetMsgBoxTemplate(_T("IDR_DUI_MSGBOX"));
 
         // BLOCK: Run application
         {

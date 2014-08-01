@@ -5,7 +5,7 @@ INCLUDEPATH += .
 
 SUBDIRS += utilities
 SUBDIRS += soui
-SUBDIRS += soui-sys-skin
+SUBDIRS += soui-sys-resource
 SUBDIRS += components/imgdecoder-wic
 SUBDIRS += components/render-gdi
 SUBDIRS += components/myskia

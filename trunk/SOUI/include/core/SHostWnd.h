@@ -123,7 +123,6 @@ protected:
     
     SDummyWnd            m_dummyWnd;    //半透明窗口使用的一个响应WM_PAINT消息的窗口
     SHostWndAttr         m_hostAttr;
-    DWORD                m_dwSkinOwnerID;   //<**私有Skin的宿主ID*/
     SStringT m_strXmlLayout;
 
     // Tracking flag
@@ -145,7 +144,8 @@ protected:
     CAutoRefPtr<IRegion>    m_rgnInvalidate;
     CAutoRefPtr<IRenderTarget> m_memRT;
     
-    
+    CAutoRefPtr<SStylePool>  m_privateStylePool;
+    CAutoRefPtr<SSkinPool>  m_privateSkinPool;
 protected:
     //////////////////////////////////////////////////////////////////////////
     // Message handler
