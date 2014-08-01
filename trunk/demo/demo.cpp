@@ -11,7 +11,7 @@
 
 #include "MainDlg.h"
 
-//#define RENDER_GDI      //打开RENDER_GDI时使用render-gdi模块来渲染，否则采用render-skia渲染
+#define RENDER_GDI      //打开RENDER_GDI时使用render-gdi模块来渲染，否则采用render-skia渲染
 
 #define SUPPORT_LANG    //打开SUPPORT_LANG时，演示多语言支持
 
@@ -21,9 +21,29 @@
 
 #if RES_TYPE==2
     #include "../components/resprovider-zip/SResProviderZip.h"
-	#pragma comment(lib,"resprovider-zip.lib")
+#ifdef _DEBUG
+	#pragma comment(lib,"resprovider-zipd.lib")
+#else
+    #pragma comment(lib,"resprovider-zip.lib")
+#endif
 #endif
 
+
+#ifdef _DEBUG
+#define COM_IMGDECODER  _T("imgdecoder-wicd.dll")
+#define COM_RENDER_GDI  _T("render-gdid.dll")
+#define COM_RENDER_SKIA _T("render-skiad.dll")
+#define COM_SCRIPT_LUA _T("scriptmodule-luad.dll")
+#define COM_TRANSLATOR _T("translatord.dll")
+#define SYS_NAMED_RESOURCE _T("soui-sys-resourced.dll")
+#else
+#define COM_IMGDECODER  _T("imgdecoder-wic.dll")
+#define COM_RENDER_GDI  _T("render-gdi.dll")
+#define COM_RENDER_SKIA _T("render-skia.dll")
+#define COM_SCRIPT_LUA _T("scriptmodule-lua.dll")
+#define COM_TRANSLATOR _T("translator.dll")
+#define SYS_NAMED_RESOURCE _T("soui-sys-resource.dll")
+#endif
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
@@ -41,18 +61,18 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     TCHAR szCurrentDir[MAX_PATH]={0};
     GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
     LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
-    _tcscpy(lpInsertPos,_T("\\..\\..\\demo"));
+    _tcscpy(lpInsertPos,_T("\\..\\demo"));
     SetCurrentDirectory(szCurrentDir);
     
     {
 
         CAutoRefPtr<SOUI::IImgDecoderFactory> pImgDecoderFactory;
         CAutoRefPtr<SOUI::IRenderFactory> pRenderFactory;
-        imgDecLoader.CreateInstance(_T("imgdecoder-wic.dll"),(IObjRef**)&pImgDecoderFactory);
+        imgDecLoader.CreateInstance(COM_IMGDECODER,(IObjRef**)&pImgDecoderFactory);
 #ifdef RENDER_GDI
-        renderLoader.CreateInstance(_T("render-gdi.dll"),(IObjRef**)&pRenderFactory);
+        renderLoader.CreateInstance(COM_RENDER_GDI,(IObjRef**)&pRenderFactory);
 #else
-        renderLoader.CreateInstance(_T("render-skia.dll"),(IObjRef**)&pRenderFactory);
+        renderLoader.CreateInstance(COM_RENDER_SKIA,(IObjRef**)&pRenderFactory);
 #endif
 
         pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
@@ -61,7 +81,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
 #ifdef SUPPORT_LANG
         CAutoRefPtr<ITranslatorMgr> trans;
-        transLoader.CreateInstance(_T("translator.dll"),(IObjRef**)&trans);
+        transLoader.CreateInstance(COM_TRANSLATOR,(IObjRef**)&trans);
         if(trans)
         {
             theApp->SetTranslator(trans);
@@ -78,7 +98,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
 #ifdef SUPPORT_LUA
         CAutoRefPtr<IScriptModule> pScriptLua;
-        scriptLoader.CreateInstance(_T("scriptmodule-lua.dll"),(IObjRef**)&pScriptLua);
+        scriptLoader.CreateInstance(COM_SCRIPT_LUA,(IObjRef**)&pScriptLua);
         if(pScriptLua)
         {
             pScriptLua->executeScriptFile("lua/test.lua");
@@ -110,7 +130,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         
         theApp->AddResProvider(pResProvider);
         
-        HMODULE hSysResource=LoadLibrary(_T("soui-sys-resource"));
+        HMODULE hSysResource=LoadLibrary(SYS_NAMED_RESOURCE);
         if(hSysResource)
         {
             SResProviderPE resPE(hSysResource);

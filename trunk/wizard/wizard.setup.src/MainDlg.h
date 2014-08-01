@@ -165,9 +165,21 @@ public:
 		//设置环境变量
 
 		CRegKey reg;
-		if(ERROR_SUCCESS==reg.Open(HKEY_LOCAL_MACHINE,_T("System\\CurrentControlSet\\Control\\Session Manager\\Environment"),KEY_SET_VALUE))
+		if(ERROR_SUCCESS==reg.Open(HKEY_LOCAL_MACHINE,_T("System\\CurrentControlSet\\Control\\Session Manager\\Environment"),KEY_SET_VALUE|KEY_QUERY_VALUE))
 		{
 			reg.SetStringValue(_T("SOUIPATH"),szSouiDir);
+			TCHAR szEnvPath[4097];
+			DWORD dwSize=4096;
+			reg.QueryStringValue(_T("Path"),szEnvPath,&dwSize);
+			if(dwSize<3072)
+			{//修改path环境变量
+                TCHAR szSouiDir[MAX_PATH]={0};
+                int nLen=GetDlgItemText(IDC_SOUIDIR,szSouiDir,MAX_PATH);
+                if(szSouiDir[nLen-1]==_T('\\')) szSouiDir[--nLen]=0;
+                _tcscat(szSouiDir,_T("\\bin;"));
+			    _tcscpy(szEnvPath+dwSize-1,szSouiDir);
+			    reg.SetStringValue(_T("PATH"),szEnvPath);
+			}
 			reg.Close();
 			DWORD_PTR msgResult=0;
 			//广播环境变量修改消息

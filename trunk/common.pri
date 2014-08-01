@@ -3,16 +3,24 @@ CONFIG -= qt
 CharacterSet = 1
 #DEFINES -= UNICODE
 
+
 CONFIG(debug, debug|release) {
 	OBJECTS_DIR =   $$dir/obj/debug/$$TARGET
-	DESTDIR = $$dir/bin/debug
+	DESTDIR = $$dir/bin
 	QMAKE_LIBDIR += $$DESTDIR
 }
 else {
 	OBJECTS_DIR =   $$dir/obj/release/$$TARGET
-	DESTDIR = $$dir/bin/release
+	DESTDIR = $$dir/bin
 	QMAKE_LIBDIR += $$DESTDIR
 }
+
+#<--下面这段代码为debug和release生成不同的文件名
+SAVE_TEMPLATE = $$TEMPLATE
+TEMPLATE = fakelib
+TARGET = $$qtLibraryTarget($$TARGET)
+TEMPLATE = $$SAVE_TEMPLATE
+#-->
 
 DEFINES += _CRT_SECURE_NO_WARNINGS
 

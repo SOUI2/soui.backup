@@ -12,13 +12,6 @@ INCLUDEPATH += . \
 dir = ../..
 include($$dir/common.pri)
 
-CONFIG(debug,debug|release){
-	DESTDIR = $$dir/bin/debug
-}
-else{
-	DESTDIR = $$dir/bin/release
-}
-
 PRECOMPILED_HEADER = stdafx.h
 
 # Input

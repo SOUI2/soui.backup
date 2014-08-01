@@ -12,7 +12,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin\debug\"
+			OutputDirectory="..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="1"
@@ -30,7 +30,7 @@
 				GeneratePreprocessedFile="0"
 				ObjectFile="..\obj\debug\demo\"
 				Optimization ="4"
-				PrecompiledHeaderFile="$(IntDir)\demo.pch"
+				PrecompiledHeaderFile="$(IntDir)\demod.pch"
 				PrecompiledHeaderThrough="stdafx.h"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,DLL_SOUI"
 				ProgramDataBaseFileName="$(IntDir)"
@@ -44,13 +44,13 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="soui.lib utilities.lib"
-				AdditionalLibraryDirectories="..\bin\debug"
+				AdditionalDependencies="utilitiesd.lib souid.lib"
+				AdditionalLibraryDirectories="..\bin"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkTimeCodeGeneration="0"
-				OutputFile="$(OutDir)\demo.exe"
+				OutputFile="$(OutDir)\demod.exe"
 				ProgramDatabaseFile=""
 				SubSystem="2"
 				SuppressStartupBanner="true"
@@ -74,7 +74,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\bin\release\"
+			OutputDirectory="..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="1"
@@ -106,8 +106,8 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="soui.lib utilities.lib"
-				AdditionalLibraryDirectories="..\bin\release"
+				AdditionalDependencies="utilities.lib soui.lib"
+				AdditionalLibraryDirectories="..\bin"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				EnableCOMDATFolding="2"
 				GenerateDebugInformation="true"

@@ -12,13 +12,6 @@ CONFIG += staticlib
 dir = ../..
 include($$dir/common.pri)
 
-CONFIG(debug,debug|release){
-	DESTDIR = $$dir/bin/debug
-}
-else{
-	DESTDIR = $$dir/bin/release
-}
-
 DEFINES += _CRT_SECURE_NO_WARNINGS
 
 # Input

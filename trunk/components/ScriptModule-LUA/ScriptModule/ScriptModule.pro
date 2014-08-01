@@ -14,7 +14,12 @@ INCLUDEPATH += . \
 dir = ../../..
 include($$dir/common.pri)
 
-LIBS += lua-51.lib soui.lib
+CONFIG(debug,debug|release){
+	LIBS += lua-51d.lib souid.lib utilitiesd.lib
+}
+else{
+	LIBS += lua-51.lib soui.lib utilities.lib
+}
 
 PRECOMPILED_HEADER = stdafx.h
 

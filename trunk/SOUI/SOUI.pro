@@ -15,7 +15,12 @@ else{
 dir = ..
 include($$dir/common.pri)
 
-LIBS += utilities.lib
+CONFIG(debug,debug|release){
+	LIBS += utilitiesd.lib
+}
+else{
+	LIBS += utilities.lib
+}
 
 PRECOMPILED_HEADER = include/souistd.h
 

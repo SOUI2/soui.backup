@@ -27,6 +27,5 @@
 
 using namespace SOUI;
 
-# pragma comment(lib, "soui.lib")
 
 

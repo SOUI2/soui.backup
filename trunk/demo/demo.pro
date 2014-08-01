@@ -17,7 +17,12 @@ DLL_SOUI{
     DEFINES += DLL_SOUI
 }
 
-LIBS += soui.lib utilities.lib
+CONFIG(debug,debug|release){
+	LIBS += utilitiesd.lib souid.lib
+}
+else{
+	LIBS += utilities.lib soui.lib
+}
 
 PRECOMPILED_HEADER = stdafx.h
 

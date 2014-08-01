@@ -12,7 +12,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\bin\debug\"
+			OutputDirectory="..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="4"
@@ -40,7 +40,7 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\freetype.lib"
+				OutputFile="$(OutDir)\freetyped.lib"
 				SuppressStartupBanner="true" />
 			<Tool
 				Name="VCManifestTool" />
@@ -62,7 +62,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\bin\release\"
+			OutputDirectory="..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="4"

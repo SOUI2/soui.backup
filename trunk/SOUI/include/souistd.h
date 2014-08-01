@@ -72,4 +72,3 @@
 
 
 #pragma comment(lib,"shlwapi.lib")
-#pragma comment(lib,"utilities.lib")

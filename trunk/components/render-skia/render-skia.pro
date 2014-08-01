@@ -15,7 +15,12 @@ INCLUDEPATH += . \
 dir = ../..
 include($$dir/common.pri)
 
-LIBS += utilities.lib myskia.lib freetype.lib Usp10.lib
+CONFIG(debug,debug|release){
+	LIBS += utilitiesd.lib myskiad.lib freetyped.lib Usp10.lib
+}
+else{
+	LIBS += utilities.lib myskia.lib freetype.lib Usp10.lib
+}
 
 PRECOMPILED_HEADER = stdafx.h
 
