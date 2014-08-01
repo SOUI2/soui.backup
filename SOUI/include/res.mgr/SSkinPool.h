@@ -1,9 +1,11 @@
 #pragma once
 #include "core/SSingletonMap.h"
 #include "interface/Sskinobj-i.h"
+#include <unknown/obj-ref-i.h>
+#include <unknown/obj-ref-impl.hpp>
 
-#define GETSKIN(p1) SSkinPool::getSingleton().GetSkin(p1)
-#define GETBUILTINSKIN(p1) SSkinPool::getSingleton().GetBuiltinSkin(p1)
+#define GETSKIN(p1) SSkinPoolMgr::getSingleton().GetSkin(p1)
+#define GETBUILTINSKIN(p1) SSkinPoolMgr::getSingleton().GetBuiltinSkin(p1)
 
 namespace SOUI
 {
@@ -37,11 +39,14 @@ namespace SOUI
         SKIN_SYS_MENU_SEP,              //L"_skin.sys.menu.sep",
         SKIN_SYS_MENU_BORDER,           //L"_skin.sys.menu.border",
         SKIN_SYS_MENU_SKIN,             //L"_skin.sys.menu.skin",
-        SKIN_SYS_MENU_EDITICON,         //L"_skin.sys.menu.editicon",
+        SKIN_SYS_ICONS,                 //L"_skin.sys.icons",
+        SKIN_SYS_WND_BKGND,             //L"_skin.sys.wnd.bkgnd",
+        
+        SKIN_SYS_COUNT,
     };
 
 typedef ISkinObj * SSkinPtr;
-class SOUI_EXP SSkinPool :public SSingletonMap<SSkinPool,SSkinPtr,SStringW>
+class SOUI_EXP SSkinPool :public SCmnMap<SSkinPtr,SStringW>, public TObjRefImpl2<IObjRef,SSkinPool>
 {
 public:
     SSkinPool();
@@ -50,15 +55,33 @@ public:
 
     ISkinObj* GetSkin(LPCWSTR strSkinName);
 
-    int LoadSkins(pugi::xml_node xmlNode,DWORD dwOwnerID=0);
+    int LoadSkins(pugi::xml_node xmlNode);
+   
 
-    int FreeSkins(DWORD dwOwnerID);
-    
-    ISkinObj * GetBuiltinSkin(SYS_SKIN uID);
-
-    BOOL LoadBuiltinSkins(IResProvider *pSysSkinProvider,LPCTSTR pszSkinXmlName,LPCTSTR pszXmlType);
 protected:
     static void OnKeyRemoved(const SSkinPtr & obj);
 };
+
+class SOUI_EXP SSkinPoolMgr : public SSingleton<SSkinPoolMgr> 
+{
+public:
+    SSkinPoolMgr();
+    ~SSkinPoolMgr();
+
+    ISkinObj* GetSkin(LPCWSTR strSkinName);
+    
+    void PushSkinPool(SSkinPool *pSkinPool);
+
+    SSkinPool * PopSkinPool();
+
+    ISkinObj * GetBuiltinSkin(SYS_SKIN uID);
+    
+    SSkinPool * GetBuiltinSkinPool(){return m_bulitinSkinPool;}
+protected:
+    SList<SSkinPool *> m_lstSkinPools;
+    CAutoRefPtr<SSkinPool> m_bulitinSkinPool;
+
+};
+
 
 }//namespace SOUI

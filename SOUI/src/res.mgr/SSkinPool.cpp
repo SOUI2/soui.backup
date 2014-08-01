@@ -9,7 +9,6 @@ namespace SOUI
 
 //////////////////////////////////////////////////////////////////////////
 // SSkinPool
-    template<> SSkinPool* SSingleton<SSkinPool>::ms_Singleton=0;
 
 SSkinPool::SSkinPool()
 {
@@ -20,7 +19,7 @@ SSkinPool::~SSkinPool()
 {
 }
 
-int SSkinPool::LoadSkins(pugi::xml_node xmlNode,DWORD dwOwnerID)
+int SSkinPool::LoadSkins(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return 0;
     
@@ -41,7 +40,6 @@ int SSkinPool::LoadSkins(pugi::xml_node xmlNode,DWORD dwOwnerID)
         if(pSkin)
         {
             pSkin->InitFromXml(xmlSkin);
-            pSkin->SetOwnerID(dwOwnerID);
             AddKeyObject(strSkinName,pSkin);
             nLoaded++;
         }
@@ -56,29 +54,10 @@ int SSkinPool::LoadSkins(pugi::xml_node xmlNode,DWORD dwOwnerID)
 }
 
 
-int SSkinPool::FreeSkins(DWORD dwOwnerID)
-{
-    int nFreed=0;
-
-    POSITION pos=m_mapNamedObj->GetStartPosition();
-    while(pos)
-    {
-        SMap<SStringW,SSkinPtr>::CPair *p=m_mapNamedObj->GetNext(pos);
-        if(p->m_value->GetOwnerID()==dwOwnerID)
-        {
-            OnKeyRemoved(p->m_value);
-            m_mapNamedObj->RemoveAtPos((POSITION)p);
-            nFreed++;
-        }
-    }
-    return nFreed;
-}
-
 ISkinObj* SSkinPool::GetSkin(LPCWSTR strSkinName)
 {
     if(!HasKey(strSkinName))
     {
-        ASSERT_FMTW(FALSE,L"GetSkin[%s] Failed!",strSkinName);
         return NULL;
     }
     return GetKeyObject(strSkinName);
@@ -87,6 +66,42 @@ ISkinObj* SSkinPool::GetSkin(LPCWSTR strSkinName)
 void SSkinPool::OnKeyRemoved(const SSkinPtr & obj )
 {
     obj->Release();
+}
+
+//////////////////////////////////////////////////////////////////////////
+template<> SSkinPoolMgr * SSingleton<SSkinPoolMgr>::ms_Singleton=0;
+
+SSkinPoolMgr::SSkinPoolMgr()
+{
+    m_bulitinSkinPool.Attach(new SSkinPool);
+    PushSkinPool(m_bulitinSkinPool);
+}
+
+SSkinPoolMgr::~SSkinPoolMgr()
+{
+    POSITION pos=m_lstSkinPools.GetHeadPosition();
+    while(pos)
+    {
+        SSkinPool *p = m_lstSkinPools.GetNext(pos);
+        p->Release();
+    }
+    m_lstSkinPools.RemoveAll();
+
+}
+
+ISkinObj* SSkinPoolMgr::GetSkin( LPCWSTR strSkinName )
+{
+    POSITION pos=m_lstSkinPools.GetTailPosition();
+    while(pos)
+    {
+        SSkinPool *pStylePool=m_lstSkinPools.GetPrev(pos);
+        if(ISkinObj* pSkin=pStylePool->GetSkin(strSkinName))
+        {
+            return pSkin;
+        }
+    }
+    ASSERT_FMTW(FALSE,L"GetSkin[%s] Failed!",strSkinName);
+    return NULL;
 }
 
 const wchar_t * BUILDIN_SKIN_NAMES[]=
@@ -116,29 +131,27 @@ const wchar_t * BUILDIN_SKIN_NAMES[]=
     L"_skin.sys.menu.sep",
     L"_skin.sys.menu.border",
     L"_skin.sys.menu.skin",
-    L"_skin.sys.menu.editicon"
+    L"_skin.sys.icons",
+    L"_skin.sys.wnd.bkgnd"
 };
 
-BOOL SSkinPool::LoadBuiltinSkins( IResProvider *pSysSkinProvider ,LPCTSTR pszSkinXmlName,LPCTSTR pszXmlType)
+
+ISkinObj * SSkinPoolMgr::GetBuiltinSkin( SYS_SKIN uID )
 {
-    size_t szXml= pSysSkinProvider->GetRawBufferSize(pszXmlType,pszSkinXmlName);
-    if(szXml == 0) return FALSE;
-    CMyBuffer<char> xmlBuf;
-    xmlBuf.Allocate(szXml);
-    if(!pSysSkinProvider->GetRawBuffer(pszXmlType,pszSkinXmlName,xmlBuf,szXml)) return FALSE;
-
-    pugi::xml_document xmlDoc;
-    if(!xmlDoc.load_buffer_inplace(xmlBuf,szXml)) return FALSE;
-
-    SApplication::getSingleton().AddResProvider(pSysSkinProvider);
-    int nSkins=LoadSkins(xmlDoc.child(L"skins"));
-    SApplication::getSingleton().RemoveResProvider(pSysSkinProvider);
-    return nSkins == ARRAYSIZE(BUILDIN_SKIN_NAMES);
+    return GetBuiltinSkinPool()->GetSkin(BUILDIN_SKIN_NAMES[uID]);
 }
 
-ISkinObj * SSkinPool::GetBuiltinSkin( SYS_SKIN uID )
+void SSkinPoolMgr::PushSkinPool( SSkinPool *pSkinPool )
 {
-    return GetSkin(BUILDIN_SKIN_NAMES[uID]);
+    m_lstSkinPools.AddTail(pSkinPool);
+    pSkinPool->AddRef();
+}
+
+SSkinPool * SSkinPoolMgr::PopSkinPool()
+{
+    SSkinPool *pRet=m_lstSkinPools.RemoveTail();
+    if(pRet) pRet->Release();
+    return pRet;
 }
 
 }//namespace SOUI

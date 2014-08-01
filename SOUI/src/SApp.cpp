@@ -36,7 +36,7 @@ SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR 
     :m_hInst(hInst)
     ,m_RenderFactory(pRendFactory)
 {
-    createSingletons();
+    _CreateSingletons();
     CSimpleWndHelper::Init(hInst,pszHostClassName);
     STextServiceHelper::Init();
     SRicheditMenuDef::Init();
@@ -45,34 +45,53 @@ SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR 
 
 SApplication::~SApplication(void)
 {
-    destroySingletons();
+    _DestroySingletons();
     CSimpleWndHelper::Destroy();
     STextServiceHelper::Destroy();
     SRicheditMenuDef::Destroy();
 }
 
-void SApplication::createSingletons()
+void SApplication::_CreateSingletons()
 {
     new SThreadActiveWndMgr();
     new SWindowMgr();
     new STimer2();
     new SFontPool(m_RenderFactory);
     new SStringPool();
-    new SSkinPool();
-    new SStylePool();
+    new SSkinPoolMgr();
+    new SStylePoolMgr();
     new SObjDefAttr();
 }
 
-void SApplication::destroySingletons()
+void SApplication::_DestroySingletons()
 {
     delete SObjDefAttr::getSingletonPtr();
-    delete SStylePool::getSingletonPtr();
-    delete SSkinPool::getSingletonPtr();
+    delete SStylePoolMgr::getSingletonPtr();
+    delete SSkinPoolMgr::getSingletonPtr();
     delete SStringPool::getSingletonPtr();
     delete SFontPool::getSingletonPtr();
     delete STimer2::getSingletonPtr();
     delete SThreadActiveWndMgr::getSingletonPtr();
     delete SWindowMgr::getSingletonPtr();
+}
+
+BOOL SApplication::_LoadXmlDocment( IResProvider* pResProvider, LPCTSTR pszXmlName ,LPCTSTR pszType ,pugi::xml_document & xmlDoc)
+{
+    DWORD dwSize=pResProvider->GetRawBufferSize(pszType,pszXmlName);
+    if(dwSize==0) return FALSE;
+
+    CMyBuffer<char> strXml;
+    strXml.Allocate(dwSize);
+    pResProvider->GetRawBuffer(pszType,pszXmlName,strXml,dwSize);
+
+    pugi::xml_parse_result result= xmlDoc.load_buffer(strXml,strXml.size(),pugi::parse_default,pugi::encoding_utf8);
+    ASSERT_FMTW(result,L"parse xml error! xmlName=%s,desc=%s,offset=%d",pszXmlName,result.description(),result.offset);
+    return result;
+}
+
+BOOL SApplication::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType )
+{
+    return _LoadXmlDocment(GETRESPROVIDER,pszXmlName,pszType,xmlDoc);
 }
 
 BOOL SApplication::Init( LPCTSTR pszName ,LPCTSTR pszType)
@@ -81,13 +100,6 @@ BOOL SApplication::Init( LPCTSTR pszName ,LPCTSTR pszType)
     if(!LOADXML(xmlDoc,pszName,pszType)) return FALSE;
     pugi::xml_node root=xmlDoc.child(L"UIDEF");
     if(!root) return FALSE;
-
-    //init edit menu
-    pugi::xml_node xmlMenu=root.child(L"editmenu");
-    if(xmlMenu)
-    {
-        SRicheditMenuDef::getSingleton().SetMenuXml(xmlMenu);
-    }
 
     //set default font
     pugi::xml_node xmlFont;
@@ -99,34 +111,58 @@ BOOL SApplication::Init( LPCTSTR pszName ,LPCTSTR pszType)
     }
     
     SStringPool::getSingleton().Init(root.child(L"string"));
-    SSkinPool::getSingleton().LoadSkins(root.child(L"skins"));
-    SStylePool::getSingleton().Init(root.child(L"style"));
+    SSkinPool *pSkinPool = new SSkinPool;
+    pSkinPool->LoadSkins(root.child(L"skins"));
+    SSkinPoolMgr::getSingletonPtr()->PushSkinPool(pSkinPool);
+    pSkinPool->Release();
+    
+    SStylePool *pStylePool = new SStylePool;
+    pStylePool->Init(root.child(L"style"));
+    SStylePoolMgr::getSingleton().PushStylePool(pStylePool);
+    pStylePool->Release();
+    
     SObjDefAttr::getSingleton().Init(root.child(L"objattr"));
     return TRUE;
 }
 
-BOOL SApplication::SetMsgBoxTemplate( LPCTSTR pszXmlName,LPCTSTR pszType)
+UINT SApplication::LoadSystemNamedResource( IResProvider *pResProvider )
 {
-    pugi::xml_document xmlDoc;
-    if(!LOADXML(xmlDoc,pszXmlName,pszType)) return FALSE;
-    pugi::xml_node uiRoot=xmlDoc.child(L"SOUI");   
-    return SMessageBoxImpl::SetMsgTemplate(uiRoot);
-}
-
-BOOL SApplication::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType )
-{
-
-    DWORD dwSize=GETRESPROVIDER->GetRawBufferSize(pszType,pszXmlName);
-    if(dwSize==0) return FALSE;
-
-    CMyBuffer<char> strXml;
-    strXml.Allocate(dwSize);
-    GETRESPROVIDER->GetRawBuffer(pszType,pszXmlName,strXml,dwSize);
-
-    pugi::xml_parse_result result= xmlDoc.load_buffer(strXml,strXml.size(),pugi::parse_default,pugi::encoding_utf8);
-    ASSERT_FMTW(result,L"parse xml error! xmlName=%s,desc=%s,offset=%d",pszXmlName,result.description(),result.offset);
-    return result;
-
+    UINT uRet=0;
+    AddResProvider(pResProvider);
+    //load system skins
+    {
+        pugi::xml_document xmlDoc;
+        if(_LoadXmlDocment(pResProvider,_T("SYS_XML_SKIN"),_T("XML"),xmlDoc))
+        {
+            SSkinPool * p= SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
+            p->LoadSkins(xmlDoc.child(L"skins"));
+        }else
+        {
+            uRet |= 0x01;
+        }
+    }
+    //load edit context menu
+    {
+        pugi::xml_document xmlDoc;
+        if(_LoadXmlDocment(pResProvider,_T("SYS_XML_EDITMENU"),_T("XML"),xmlDoc))
+        {
+            SRicheditMenuDef::getSingleton().SetMenuXml(xmlDoc.child(L"editmenu"));
+        }else
+        {
+            uRet |= 0x02;
+        }
+    }
+    //load messagebox template
+    {
+        pugi::xml_document xmlDoc;
+        if(!_LoadXmlDocment(pResProvider,_T("SYS_XML_MSGBOX"),_T("XML"),xmlDoc)
+        || !SMessageBoxImpl::SetMsgTemplate(xmlDoc.child(L"SOUI")))
+        {
+            uRet |= 0x04;
+        }
+    }
+    RemoveResProvider(pResProvider);
+    return uRet;
 }
 
 int SApplication::Run( HWND hMainWnd )

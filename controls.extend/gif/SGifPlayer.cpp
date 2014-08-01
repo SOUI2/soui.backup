@@ -58,7 +58,7 @@ void SGifPlayer::OnShowWindow( BOOL bShow, UINT nStatus )
 
 HRESULT SGifPlayer::OnAttrGif( const SStringW & strValue, BOOL bLoading )
 {
-	ISkinObj *pSkin = SSkinPool::getSingleton().GetSkin(strValue);
+	ISkinObj *pSkin = SSkinPoolMgr::getSingleton().GetSkin(strValue);
 	if(!pSkin) return E_FAIL;
 	if(!pSkin->IsClass(SSkinGif::GetClassName())) return S_FALSE;
 	m_pgif=static_cast<SSkinGif*>(pSkin);
@@ -75,9 +75,10 @@ CSize SGifPlayer::GetDesiredSize( LPRECT /*pRcContainer*/ )
 BOOL SGifPlayer::PlayGifFile( LPCTSTR pszFileName )
 {
     SStringW key=S_CT2W(pszFileName);
-    if(SSkinPool::getSingleton().HasKey(key))
+    SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
+    ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(key);
+    if(pSkin)
     {
-        ISkinObj *pSkin = GETSKIN(key);
         if(!pSkin->IsClass(SSkinGif::GetClassName())) return FALSE;
         m_pgif=static_cast<SSkinGif*>(pSkin);
     }else
@@ -90,7 +91,7 @@ BOOL SGifPlayer::PlayGifFile( LPCTSTR pszFileName )
             return FALSE;
         }
 
-        SSkinPool::getSingleton().AddKeyObject(key,pGifSkin);//将创建的skin交给skinpool管理
+        pBuiltinSkinPool->AddKeyObject(key,pGifSkin);//将创建的skin交给skinpool管理
         m_pgif = pGifSkin;
     }
     if(m_layout.IsFitContent())

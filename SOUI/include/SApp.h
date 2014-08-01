@@ -95,16 +95,15 @@ public:
     BOOL Init(LPCTSTR pszName ,LPCTSTR pszType=RT_UIDEF);
 
     /**
-     * SetMsgBoxTemplate
-     * @brief    设置SOUI中使用的MessageBox的XML模板
-     * @param    LPCTSTR pszXmlName --  初始化MessageBox的XML文件在资源中的name
-     * @param    LPCTSTR pszType --  初始化MessageBox的XML文件在资源中的Type
-     * @return   BOOL true-设置成功, false-设置失败
+     * LoadSystemNamedResource
+     * @brief    加载SOUI系统默认的命名资源
+     * @param    IResProvider * pResProvider --  
+     * @return   UINT 
      *
-     * Describe  MessageBox的XML模板和一般的UI布局模板语法一样，但是需要遵循MessageBox的固定格式,参考demo中的msgbox模板。
+     * Describe  
      */
-    BOOL SetMsgBoxTemplate(LPCTSTR pszXmlName,LPCTSTR pszType=RT_LAYOUT);
-
+    UINT LoadSystemNamedResource(IResProvider *pResProvider);
+    
     /**
      * LoadXmlDocment
      * @brief    从资源中加载一个XML Document。
@@ -174,8 +173,9 @@ public:
      */
     int Run(HWND hMainWnd);
 protected:
-    void createSingletons();
-    void destroySingletons();
+    void _CreateSingletons();
+    void _DestroySingletons();
+    BOOL _LoadXmlDocment(IResProvider* pResProvider, LPCTSTR pszXmlName ,LPCTSTR pszType ,pugi::xml_document & xmlDoc);
 
     HINSTANCE m_hInst;
     CAutoRefPtr<IScriptModule>  m_pScriptModule;

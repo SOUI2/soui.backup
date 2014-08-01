@@ -12,9 +12,7 @@ stdafx.h
 
 [skin]uiskin.idx
 [skin][xml]init.xml
-[skin][xml]dlg_msgbox.xml
 [skin][xml]dlg_main.xml
 
-[skin][image]dlg_bg_frame.png
 [skin][image]soui.ico
 [Translator]lang_cn.xml

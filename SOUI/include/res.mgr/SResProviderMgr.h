@@ -5,7 +5,7 @@
 
 namespace SOUI
 {
-    class SOUI_EXP SResProviderMgr
+    class SOUI_EXP SResProviderMgr : public IResProvider
     {
     public:
         SResProviderMgr(void);
@@ -18,24 +18,29 @@ namespace SOUI
         //////////////////////////////////////////////////////////////////////////
         // IResProvider
 
-        BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
+        /*virtual */BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
 
-        HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0);
+        /*virtual */HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0);
 
-        HCURSOR LoadCursor(LPCTSTR pszResName);
+        /*virtual */HCURSOR LoadCursor(LPCTSTR pszResName);
 
-        HBITMAP    LoadBitmap(LPCTSTR pszResName);
+        /*virtual */HBITMAP    LoadBitmap(LPCTSTR pszResName);
         
-        IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
+        /*virtual */IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
 
-        IImgX * LoadImgX(LPCTSTR strType,LPCTSTR pszResName);
+        /*virtual */IImgX * LoadImgX(LPCTSTR strType,LPCTSTR pszResName);
 
-        size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
+        /*virtual */size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
 
-        BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
+        /*virtual */BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
 
-        LPCTSTR FindImageType(LPCTSTR pszImgName);
+        /*virtual */LPCTSTR FindImageType(LPCTSTR pszImgName);
         
+        //////////////////////////////////////////////////////////////////////////
+        //IObjRef
+        /*virtual */void AddRef(){}
+        /*virtual */void Release(){};
+        /*virtual */void OnFinalRelease(){}
     protected:
         IResProvider * GetMatchResProvider(LPCTSTR pszType,LPCTSTR pszResName);
         LPCTSTR SysCursorName2ID(LPCTSTR pszCursorName);
