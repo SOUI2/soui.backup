@@ -1,6 +1,15 @@
-//////////////////////////////////////////////////////////////////////////
-// SWindow Handle Manager
-//////////////////////////////////////////////////////////////////////////
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       SWindowMgr.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/08/02
+* 
+* Describe    SOUI系统中的DUI窗口管理模块
+*/
 
 #pragma once
 #include "core/SSingletonMap.h"

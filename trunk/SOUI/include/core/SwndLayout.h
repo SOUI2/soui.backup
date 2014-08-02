@@ -1,3 +1,16 @@
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       SwndLayout.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/08/02
+* 
+* Describe    SOUI的窗口布局模块
+*/
+
 #pragma once
 
 namespace SOUI

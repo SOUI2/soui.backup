@@ -1,8 +1,27 @@
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       SDropTargetDispatcher.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/08/02
+* 
+* Describe    dragdrop分发模块
+*/
+
 #pragma once
 #include "swnd.h"
 
 namespace SOUI{
 
+    /**
+    * @class      SDropTargetDispatcher
+    * @brief      管理DropTarget在DUI窗口之间的分发。
+    * 
+    * Describe    
+    */
     class SDropTargetDispatcher : public IDropTarget
     {
     public:

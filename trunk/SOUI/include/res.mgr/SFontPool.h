@@ -1,6 +1,15 @@
-//////////////////////////////////////////////////////////////////////////
-//  Class Name: SFontPool
-//////////////////////////////////////////////////////////////////////////
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       SFontPool.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/08/02
+* 
+* Describe    SOUI字体管理模块
+*/
 
 #pragma once
 

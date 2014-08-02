@@ -1,5 +1,24 @@
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       mybuffer.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/08/02
+* 
+* Describe    实现一个自动管理的内存缓冲区对象
+*/
+
 #pragma once
 
+/**
+* @class      CMyBuffer
+* @brief      自动管理内存的内存缓冲区对象
+* 
+* Describe    
+*/
 template<typename T, int t_nFixedBytes = 128>
 class CMyBuffer
 {

@@ -8,7 +8,7 @@
 * @author     SOUI group   
 * @date       2014/08/02
 * 
-* Describe    
+* Describe    SOUI窗口风格管理
 */
 #pragma once
 

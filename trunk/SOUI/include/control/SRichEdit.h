@@ -1218,7 +1218,7 @@ protected:
 
 /**
  * @class      SEdit 
- * @brief      
+ * @brief      ¼òµ¥edit¿Ø¼þ
  * 
  * Describe    
  */
