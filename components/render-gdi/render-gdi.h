@@ -122,7 +122,8 @@ namespace SOUI
         virtual BOOL IsBold(){ return m_lf.lfWeight == FW_BOLD;}
         virtual BOOL IsUnderline(){return m_lf.lfUnderline;}
         virtual BOOL IsItalic(){return m_lf.lfItalic;}
-        
+        virtual BOOL IsStrikeOut(){return m_lf.lfStrikeOut;}
+
         HFONT GetFont(){return m_hFont;}
     protected:
         LOGFONT     m_lf;

@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014-2050 SOUI团队
- * All rights reserverd.
+ * All rights reserved.
  * 
  * @file       SHotKeyCtrl.h
  * @brief      热键控件

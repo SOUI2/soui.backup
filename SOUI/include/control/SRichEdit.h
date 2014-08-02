@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014-2050 SOUIÍÅ¶Ó
- * All rights reserverd.
+ * All rights reserved.
  * 
  * @file       SRichEdit.h
  * @brief      RichEdit¿Ø¼þ

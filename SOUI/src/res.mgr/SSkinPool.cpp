@@ -152,6 +152,8 @@ SSkinPool * SSkinPoolMgr::PopSkinPool(SSkinPool *pSkinPool)
     SSkinPool * pRet=NULL;
     if(pSkinPool)
     {
+        if(pSkinPool == m_bulitinSkinPool) return NULL;
+
         POSITION pos=m_lstSkinPools.Find(pSkinPool);
         if(pos)
         {

@@ -1,3 +1,16 @@
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       STranslator-i.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/08/02
+* 
+* Describe    
+*/
+
 #pragma once
 
 #include <unknown/obj-ref-i.h>
@@ -77,6 +90,7 @@ namespace SOUI
          *
          * Describe  
          */
+
         virtual BOOL InstallTranslator(ITranslator * ppTranslator) =0;
         /**
          * UninstallTranslator

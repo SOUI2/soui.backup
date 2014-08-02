@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014-2050 SOUI团队
- * All rights reserverd.
+ * All rights reserved.
  * 
  * @file       stree.hpp
  * @brief      树模板--提供对一般的数据类型实现树结构

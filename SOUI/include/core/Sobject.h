@@ -1,6 +1,16 @@
-//////////////////////////////////////////////////////////////////////////
-//   File Name: sobject.h
-//////////////////////////////////////////////////////////////////////////
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       Sobject.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/08/01
+* 
+* Describe    the base class used in SOUI, which provides type identify of class in runtime
+*             and implement attributes dispatcher described in XML. 
+*/
 
 #pragma once
 
