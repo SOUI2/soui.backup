@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014-2050 SOUI团队
- * All rights reserverd.
+ * All rights reserved.
  * 
  * @file       SDropDown.h
  * @brief      一个通用的下拉窗口模块

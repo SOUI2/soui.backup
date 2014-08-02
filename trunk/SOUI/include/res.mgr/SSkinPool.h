@@ -1,3 +1,16 @@
+/**
+* Copyright (C) 2014-2050 SOUI团队
+* All rights reserved.
+* 
+* @file       SSkinPool.h
+* @brief      SkinObj Pool
+* @version    v1.0      
+* @author     soui      
+* @date       2014-05-28
+* 
+* Describe    管理Skin Object
+*/
+
 #pragma once
 #include "core/SSingletonMap.h"
 #include "interface/Sskinobj-i.h"
@@ -46,6 +59,13 @@ namespace SOUI
     };
 
 typedef ISkinObj * SSkinPtr;
+
+/**
+* @class      SSkinPool
+* @brief      name和ISkinObj的映射表
+* 
+* Describe    
+*/
 class SOUI_EXP SSkinPool :public SCmnMap<SSkinPtr,SStringW>, public TObjRefImpl2<IObjRef,SSkinPool>
 {
 public:
@@ -53,29 +73,81 @@ public:
 
     virtual ~SSkinPool();
 
+    /**
+     * GetSkin
+     * @brief    获得与指定name匹配的SkinObj
+     * @param    LPCWSTR strSkinName --    Name of Skin Object     
+     * @return   ISkinObj*  -- 找到的Skin Object
+     * Describe  
+     */    
     ISkinObj* GetSkin(LPCWSTR strSkinName);
 
+    /**
+     * LoadSkins
+     * @brief    从XML中加载Skin列表
+     * @param    pugi::xml_node xmlNode --  描述SkinObj的XML表     
+     * @return   int -- 成功加载的SkinObj数量
+     * Describe  
+     */    
     int LoadSkins(pugi::xml_node xmlNode);
-   
-
 protected:
     static void OnKeyRemoved(const SSkinPtr & obj);
 };
 
+/**
+* @class      SSkinPoolMgr
+* @brief      管理一个name和ISkinObj的映射表的列表
+* 
+* Describe    
+*/
 class SOUI_EXP SSkinPoolMgr : public SSingleton<SSkinPoolMgr> 
 {
 public:
     SSkinPoolMgr();
     ~SSkinPoolMgr();
 
+    /**
+    * GetSkin
+    * @brief    获得与指定name匹配的SkinObj
+    * @param    LPCWSTR strSkinName --    Name of Skin Object     
+    * @return   ISkinObj*  -- 找到的Skin Object
+    * Describe  
+    */    
     ISkinObj* GetSkin(LPCWSTR strSkinName);
     
+    /**
+     * PushSkinPool
+     * @brief    向列表中增加一个新的SSkinPool对象
+     * @param    SSkinPool * pSkinPool --    SSkinPool对象   
+     * @return   void
+     * Describe  
+     */    
     void PushSkinPool(SSkinPool *pSkinPool);
 
+    /**
+     * PopSkinPool
+     * @brief    弹出一个SSkinPool对象
+     * @param    SSkinPool * pSkinPool --   准备弹出的SSkinPool对象
+     * @return   SSkinPool *    在列表中找到后弹出的SSkinPool对象
+     * Describe  内建SkinPool不用调用PopSkinPool
+     */    
     SSkinPool * PopSkinPool(SSkinPool *pSkinPool);
 
+    /**
+     * GetBuiltinSkin
+     * @brief    获得SOUI系统内建的命名SkinObj
+     * @param    SYS_SKIN uID --  内建SKIN的ID
+     * @return   ISkinObj * 与SKINID对应的ISkinObj
+     * Describe  可能返回失败
+     */    
     ISkinObj * GetBuiltinSkin(SYS_SKIN uID);
     
+    /**
+     * GetBuiltinSkinPool
+     * @brief    获得管理内建SkinPool对象
+     * @return   SSkinPool * -- 内建SkinPool指针
+     * Describe  用户在代码中创建的SkinObj可以交给内建SkinPool管理
+     */    
     SSkinPool * GetBuiltinSkinPool(){return m_bulitinSkinPool;}
 protected:
     SList<SSkinPool *> m_lstSkinPools;

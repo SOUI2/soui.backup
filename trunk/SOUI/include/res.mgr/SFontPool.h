@@ -8,26 +8,33 @@
 #include "interface/render-i.h"
 #include "unknown/obj-ref-impl.hpp"
 
-
+#define FF_STRIKE      0x0008U
 #define FF_BOLD        0x0004U
 #define FF_UNDERLINE   0x0002U
 #define FF_ITALIC      0x0001U
 
-#define FF_MAKEKEY(bold, underline, italic, adding) \
+#define FF_MAKEKEY(bold, underline, italic,strike, adding) \
     (WORD)((adding << 8) \
     | (bold ? FF_BOLD : 0) \
     | (underline ? FF_UNDERLINE : 0) \
-    | (italic ? FF_ITALIC : 0))
+    | (italic ? FF_ITALIC : 0) \
+    | (strike ? FF_STRIKE : 0))
 
+#define FF_ISSTRIKE(key)       ((key & FF_STRIKE) == FF_STRIKE)
 #define FF_ISBOLD(key)         ((key & FF_BOLD) == FF_BOLD)
 #define FF_ISUNDERLINE(key)    ((key & FF_UNDERLINE) == FF_UNDERLINE)
 #define FF_ISITALIC(key)       ((key & FF_ITALIC) == FF_ITALIC)
 #define FF_GETADDING(key)      (key >> 8)
 
-#define FF_DEFAULTFONT         (FF_MAKEKEY(FALSE, FALSE, FALSE, 0))
-#define FF_BOLDFONT            (FF_MAKEKEY(TRUE, FALSE, FALSE, 0))
+#define FF_DEFAULTFONT         (FF_MAKEKEY(FALSE, FALSE, FALSE,FALSE, 0))
+#define FF_BOLDFONT            (FF_MAKEKEY(TRUE, FALSE, FALSE,FALSE, 0))
 
-
+/**
+* @class     FontKey
+* @brief      一个FONT的KEY
+* 
+* Describe    用于实现一个font map
+*/
 class SOUI_EXP FontKey
 {
 public:
@@ -47,6 +54,13 @@ public:
     DWORD     dwStyle;
 };
 
+
+/**
+* @class     CElementTraits< FontKey >
+* @brief      FontKey的Hash及比较模板
+* 
+* Describe    用于实现一个font map
+*/
 template<>
 class _COLL_NS::CElementTraits< FontKey > :
     public _COLL_NS::CElementTraitsBase<FontKey >
@@ -81,36 +95,70 @@ public:
 
 namespace SOUI
 {
+    typedef IFont * IFontPtr;
 
-typedef IFont * IFontPtr;
-
-class SOUI_EXP SFontPool :public SSingletonMap<SFontPool,IFontPtr,FontKey>
-{
-public:
-    SFontPool(IRenderFactory *pRendFactory);
-
-    IFontPtr GetFont(WORD uKey,LPCTSTR strFaceName=_T(""));
-
-    IFontPtr GetFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding = 0,LPCTSTR strFaceName=_T(""));
-    void SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize);
-protected:
-    static void OnKeyRemoved(const IFontPtr & obj)
+    /**
+    * @class      SFontPool
+    * @brief      font pool
+    * 
+    * Describe
+    */
+    class SOUI_EXP SFontPool :public SSingletonMap<SFontPool,IFontPtr,FontKey>
     {
-        obj->Release();
-    }
+    public:
+        SFontPool(IRenderFactory *pRendFactory);
 
-    IFontPtr _CreateDefaultFont();
+        /**
+         * GetFont
+         * @brief    获得与指定的font key对应的IFontPtr
+         * @param    WORD uKey --  font 标志位
+         * @param    LPCTSTR strFaceName --  font name
+         * @return   IFontPtr -- font对象
+         * Describe  
+         */    
+        IFontPtr GetFont(WORD uKey,LPCTSTR strFaceName=_T(""));
 
-    IFontPtr _CreateFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,SStringT strFaceName=_T(""));
+        /**
+         * GetFont
+         * @brief    获得与指定的font key对应的IFontPtr
+         * @param    BOOL bBold --  粗体
+         * @param    BOOL bUnderline --  下划线
+         * @param    BOOL bItalic --  斜体
+         * @param    BOOL bStrike --  删除线
+         * @param    char chAdding --  字体大小变化量
+         * @param    LPCTSTR strFaceName --  字体名
+         * @return   IFontPtr -- font对象
+         * Describe  
+         */    
+        IFontPtr GetFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, BOOL bStrike,char chAdding = 0,LPCTSTR strFaceName=_T(""));
+        
+        /**
+         * SetDefaultFont
+         * @brief    设置默认字体
+         * @param    LPCTSTR lpszFaceName --  字体名
+         * @param    LONG lSize --  字体大小
+         * @return   void
+         * Describe  
+         */    
+        void SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize);
+    protected:
+        static void OnKeyRemoved(const IFontPtr & obj)
+        {
+            obj->Release();
+        }
 
-    LONG _GetFontAbsHeight(LONG lSize);
+        IFontPtr _CreateDefaultFont();
 
-    LOGFONT m_lfDefault;
-    TCHAR m_szDefFontFace[LF_FACESIZE];
-    LONG m_lFontSize;
+        IFontPtr _CreateFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, BOOL bStrike,char chAdding,SStringT strFaceName=_T(""));
 
-    CAutoRefPtr<IRenderFactory> m_RenderFactory;
-};
+        LONG _GetFontAbsHeight(LONG lSize);
+
+        LOGFONT m_lfDefault;
+        TCHAR m_szDefFontFace[LF_FACESIZE];
+        LONG m_lFontSize;
+
+        CAutoRefPtr<IRenderFactory> m_RenderFactory;
+    };
 
 }//namespace SOUI
 

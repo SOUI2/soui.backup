@@ -1,10 +1,16 @@
-/***********************************************************************
-    filename:     ScriptModule-i.h
-    created:    2/4/2013
-    author:        Jiaxiong Huang
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       SScriptModule-i.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/08/02
+* 
+* Describe    
+*/
 
-    purpose:    Abstract class interface for scripting support
-*************************************************************************/
 #pragma once
 
 #include "event/EventSubscriber.h"
@@ -21,6 +27,12 @@ namespace SOUI
 */
 struct IScriptModule : public IObjRef
 {
+    /**
+     * GetScriptEngine
+     * @brief    获得脚本引擎的指针
+     * @return   void * -- 脚本引擎的指针
+     * Describe  
+     */    
     virtual void * GetScriptEngine () = 0;
 
     /*************************************************************************
@@ -94,6 +106,16 @@ struct IScriptModule : public IObjRef
     \return 
     */
     virtual bool subscribeEvent(SWindow* target, UINT uEvent, LPCSTR subscriber_name) = 0;
+
+    /**
+     * unsubscribeEvent
+     * @brief    取消事件订阅
+     * @param    SWindow * target --  目标窗口
+     * @param    UINT uEvent --  目标事件
+     * @param    LPCSTR subscriber_name --  脚本函数名
+     * @return   bool -- true操作成功
+     * Describe  
+     */    
     virtual bool unsubscribeEvent(SWindow* target, UINT uEvent, LPCSTR subscriber_name ) = 0;
 
 };

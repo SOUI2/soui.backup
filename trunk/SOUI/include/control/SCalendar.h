@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014-2050 SOUI团队
- * All rights reserverd.
+ * All rights reserved.
  * 
  * @file       SCalendar.h
  * @brief      日历时间控件

@@ -244,7 +244,7 @@ public:                                                             \
 #define ATTR_FONT(attribname, varname, allredraw)                       \
     if (attribname == strAttribName)                                    \
     {                                                                    \
-        BOOL bBold=0,bItalic=0,bUnderline=0;                             \
+        BOOL bBold=0,bItalic=0,bUnderline=0,bStrike=0;                   \
         SStringT strFace;                                                \
         char  nAdding=0;                                                 \
         SStringT attr=S_CW2T(strValue);                                  \
@@ -272,12 +272,17 @@ public:                                                             \
         {                                                                \
             bItalic=attr.Mid(nPosBegin+7,1)!=_T("0");                    \
         }                                                                \
+        nPosBegin=attr.Find(_T("strike:"));                              \
+        if(nPosBegin!=-1)                                                \
+        {                                                                \
+            bStrike=attr.Mid(nPosBegin+7,1)!=_T("0");                    \
+        }                                                                \
         nPosBegin=attr.Find(_T("adding:"));                              \
         if(nPosBegin!=-1)                                                \
         {                                                                \
             nAdding=(char)_ttoi((LPCTSTR)attr+nPosBegin+7);              \
         }                                                                \
-        varname = SFontPool::getSingleton().GetFont(bBold,bUnderline,bItalic,nAdding,strFace); \
+        varname = SFontPool::getSingleton().GetFont(bBold,bUnderline,bItalic,bStrike,nAdding,strFace); \
         hRet = allredraw ? S_OK : S_FALSE;                               \
     }                                                                    \
     else                                                                 \

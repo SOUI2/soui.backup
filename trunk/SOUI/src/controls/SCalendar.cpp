@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014-2050 SOUI团队
- * All rights reserverd.
+ * All rights reserved.
  *
  * @file       SCalendar.cpp
  * @brief      SCalendarCore以及SCalendar类源文件

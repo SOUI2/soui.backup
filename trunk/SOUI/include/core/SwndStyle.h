@@ -1,7 +1,15 @@
-//////////////////////////////////////////////////////////////////////////
-//   File Name: SwndStyle.h
-//////////////////////////////////////////////////////////////////////////
-
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       SwndStyle.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/08/02
+* 
+* Describe    
+*/
 #pragma once
 
 #include "res.mgr/sstringpool.h"

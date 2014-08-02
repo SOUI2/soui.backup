@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014-2050 SOUI团队
- * All rights reserverd.
+ * All rights reserved.
  * 
  * @file       SCaption.h
  * @brief      标题栏控件
@@ -62,9 +62,16 @@ protected:
      */    
     void OnLButtonDblClk(UINT nFlags, CPoint point);
 
+    void OnMouseMove(UINT nFlags, CPoint point);
+    void OnLButtonUp(UINT nFlags, CPoint point);
+
     SOUI_MSG_MAP_BEGIN()
-    MSG_WM_LBUTTONDOWN(OnLButtonDown)
-    MSG_WM_LBUTTONDBLCLK(OnLButtonDblClk)
+        MSG_WM_LBUTTONDOWN(OnLButtonDown)
+        MSG_WM_LBUTTONDBLCLK(OnLButtonDblClk)
+        MSG_WM_MOUSEMOVE(OnMouseMove)
+        MSG_WM_LBUTTONUP(OnLButtonUp)
     SOUI_MSG_MAP_END()
+private:
+    BOOL m_bIsMaxDown;//最大化时,鼠标左键是否已经按下
 };
 }

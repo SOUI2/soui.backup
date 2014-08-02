@@ -36,7 +36,7 @@ IFontPtr SFontPool::GetFont(WORD uKey,LPCTSTR pszFaceName)
     else
     {
         hftRet = _CreateFont(
-                     FF_ISBOLD(uKey), FF_ISUNDERLINE(uKey), FF_ISITALIC(uKey), FF_GETADDING(uKey),strFaceName
+                     FF_ISBOLD(uKey), FF_ISUNDERLINE(uKey), FF_ISITALIC(uKey),FF_ISSTRIKE(uKey), FF_GETADDING(uKey),strFaceName
                  );
 
         AddKeyObject(key,hftRet);
@@ -44,9 +44,9 @@ IFontPtr SFontPool::GetFont(WORD uKey,LPCTSTR pszFaceName)
     return hftRet;
 }
 
-IFontPtr SFontPool::GetFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding /*= 0*/,LPCTSTR strFaceName/*=""*/)
+IFontPtr SFontPool::GetFont(BOOL bBold, BOOL bUnderline, BOOL bItalic,BOOL bStrike, char chAdding /*= 0*/,LPCTSTR strFaceName/*=""*/)
 {
-    return GetFont(FF_MAKEKEY(bBold, bUnderline, bItalic, chAdding),strFaceName);
+    return GetFont(FF_MAKEKEY(bBold, bUnderline, bItalic, bStrike, chAdding),strFaceName);
 }
 
 void SFontPool::SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize)
@@ -78,7 +78,7 @@ IFontPtr SFontPool::_CreateDefaultFont()
     return pFont;
 }
 
-IFontPtr SFontPool::_CreateFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char chAdding,SStringT strFaceName)
+IFontPtr SFontPool::_CreateFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, BOOL bStrike,char chAdding,SStringT strFaceName)
 {
     LOGFONT lfNew;
 
@@ -86,7 +86,7 @@ IFontPtr SFontPool::_CreateFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, char 
     lfNew.lfWeight      = (bBold ? FW_BOLD : FW_NORMAL);
     lfNew.lfUnderline   = (FALSE != bUnderline);
     lfNew.lfItalic      = (FALSE != bItalic);
-
+    lfNew.lfStrikeOut   = (FALSE != bStrike);
     lfNew.lfHeight = -_GetFontAbsHeight(lfNew.lfHeight - chAdding);//lfNew.lfHeight应该为负值
 
     lfNew.lfQuality = CLEARTYPE_NATURAL_QUALITY;

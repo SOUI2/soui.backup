@@ -108,11 +108,13 @@ namespace SOUI
             BYTE style=SkTypeface::kNormal;
             if(plf->lfItalic) style |= SkTypeface::kItalic;
             if(plf->lfWeight == FW_BOLD) style |= SkTypeface::kBold;
-
+            
             m_skFont=SkTypeface::CreateFromName(strFace,(SkTypeface::Style)style);
             
             m_skPaint.setTextSize(SkIntToScalar(abs(plf->lfHeight)));
             m_skPaint.setUnderlineText(!!plf->lfUnderline);
+            m_skPaint.setStrikeThruText(plf->lfStrikeOut);
+
             m_skPaint.setTextEncoding(SkPaint::kUTF16_TextEncoding);
             m_skPaint.setAntiAlias(true);
             m_skPaint.setLCDRenderText(true);
@@ -128,7 +130,8 @@ namespace SOUI
         virtual BOOL IsBold(){ return m_lf.lfWeight == FW_BOLD;}
         virtual BOOL IsUnderline(){return m_lf.lfUnderline;}
         virtual BOOL IsItalic(){return m_lf.lfItalic;}
-        
+        virtual BOOL IsStrikeOut(){return m_lf.lfStrikeOut;}
+
         const SkPaint  GetPaint() const {return m_skPaint;}
         SkTypeface *GetFont()const {return m_skFont;}
 	protected:

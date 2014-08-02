@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2014-2050 SOUIÕ≈∂”
- * All rights reserverd.
+ * All rights reserved.
  * 
  * @file       SRealWnd.h
  * @brief      
