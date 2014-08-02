@@ -44,6 +44,9 @@ SWindow::SWindow()
 {
     ClearLayoutState();
     m_evtSet.addEvent(EventCmd::EventID);
+    m_evtSet.addEvent(EventCtxMenu::EventID);
+    m_evtSet.addEvent(EventSetFocus::EventID);
+    m_evtSet.addEvent(EventKillFocus::EventID);
 }
 
 SWindow::~SWindow()
@@ -696,7 +699,7 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
             {
                 pRT->PushClipRect(&rcClient);
             }
-            if(pWndCur->IsCacheDraw())
+            if(pWndCur->IsDrawToCache())
             {
                 CRect rcWnd=pWndCur->m_rcWindow;
                 IRenderTarget *pRTCache=pWndCur->GetCachedRenderTarget();
@@ -1200,11 +1203,15 @@ void SWindow::UpdateChildrenPosition()
 
 void SWindow::OnSetFocus()
 {
+    EventSetFocus evt(this);
+    FireEvent(evt);
     InvalidateRect(m_rcWindow);
 }
 
 void SWindow::OnKillFocus()
 {
+    EventKillFocus evt(this);
+    FireEvent(evt);
     InvalidateRect(m_rcWindow);
 }
 

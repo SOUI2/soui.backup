@@ -1,3 +1,16 @@
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       SHostDialog.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/08/02
+* 
+* Describe    SOUIµÄDialogÄ£¿é
+*/
+
 #pragma once
 
 #include "shostwnd.h"

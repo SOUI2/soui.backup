@@ -1,31 +1,32 @@
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       FocusManager.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/08/02
+* 
+* Describe    SOUI中DUI窗口的焦点管理模块
+*/
+
 #pragma once
 #include "core/Swnd.h"
 #include "Accelerator.h"
 
-template<>
-class  _COLL_NS::CElementTraits< SOUI::CAccelerator > : public _COLL_NS::CElementTraitsBase< SOUI::CAccelerator >
-{
-public:
-    static ULONG Hash(INARGTYPE element ) throw()
-    {
-        return MAKELONG(element.GetModifier(),element.GetKey());
-    }
-
-    static bool CompareElements( INARGTYPE element1, INARGTYPE element2 )
-    {
-        return Hash(element1)==Hash(element2);
-    }
-
-    static int CompareElementsOrdered( INARGTYPE element1, INARGTYPE element2 )
-    {
-        return Hash(element1)-Hash(element2);
-    }
-};
 
 namespace SOUI
 {
 
-
+    /**
+     * CopyList
+     * @brief    列表Copy
+     * @param    SList<T> & sour --  源List
+     * @param    SList<T> & dest --  目标List
+     * @return   void
+     * Describe  
+     */    
     template<class T>
     void CopyList(SList<T> &sour,SList<T> &dest)
     {
@@ -37,6 +38,7 @@ namespace SOUI
             dest.AddTail(t);
         }
     }
+
     // FocusSearch is an object that implements the algorithm to find the
     // next view to focus.
     class FocusSearch
@@ -115,7 +117,12 @@ namespace SOUI
         bool cycle_;
     };
 
-
+    /**
+    * @class      CFocusManager
+    * @brief      焦点管理对象
+    * 
+    * Describe    
+    */
     class SOUI_EXP CFocusManager : public IAcceleratorMgr
     {
     public:
