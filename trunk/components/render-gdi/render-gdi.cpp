@@ -65,10 +65,13 @@ namespace SOUI
         if(m_hBmp)
         {
             m_sz.cx=nWid,m_sz.cy=nHei;
+            const int stride = m_sz.cx*4;
             if(pBits)
             {
-                const int stride = m_sz.cx*4;
                 memcpy(pBmpBits,pBits,stride*m_sz.cy);
+            }else
+            {
+                memset(pBmpBits,0,stride*m_sz.cy);
             }
         }
         return m_hBmp?S_OK:E_OUTOFMEMORY;

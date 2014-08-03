@@ -695,6 +695,25 @@ namespace SOUI
         * Describe  一般应该和CreateRanderTarget配合使用
         */
         void BeforePaintEx(IRenderTarget *pRT);
+
+        /**
+        * FireCommand
+        * @brief    激活窗口的EVT_CMD事件
+        * @return   BOOL-- true:EVT_CMD事件被处理
+        *
+        * Describe  
+        */
+        BOOL FireCommand();
+
+        /**
+        * FireCtxMenu
+        * @brief    激活快捷菜单事件
+        * @param    CPoint pt --  鼠标点击位置
+        * @return   BOOL -- true:外部处理了快捷菜单事件
+        *
+        * Describe  
+        */
+        BOOL FireCtxMenu(CPoint pt);
     protected:
         /**
          * IsCacheDirty
@@ -730,25 +749,6 @@ namespace SOUI
         IRenderTarget * GetCachedRenderTarget(){return m_cachedRT;}
 
         void TestMainThread();
-
-        /**
-        * FireCommand
-        * @brief    激活窗口的EVT_CMD事件
-        * @return   BOOL-- true:EVT_CMD事件被处理
-        *
-        * Describe  
-        */
-        BOOL FireCommand();
-
-        /**
-        * FireCtxMenu
-        * @brief    激活快捷菜单事件
-        * @param    CPoint pt --  鼠标点击位置
-        * @return   BOOL -- true:外部处理了快捷菜单事件
-        *
-        * Describe  
-        */
-        BOOL FireCtxMenu(CPoint pt);
 
         /**
         * GetChildrenLayoutRect

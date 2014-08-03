@@ -80,4 +80,19 @@ namespace SOUI
         EndDialog(IDCANCEL);
     }
 
+    void SHostDialog::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
+    {
+        if(nChar == VK_ESCAPE || nChar == VK_RETURN)
+        {
+            SWindow *pBtnExit = FindChildByID(nChar==VK_ESCAPE?IDCANCEL:IDOK);
+            if(pBtnExit)
+            {
+                pBtnExit->FireCommand();
+                return;
+            }
+        }else 
+        {
+            SetMsgHandled(FALSE);
+        }
+    }
 }
