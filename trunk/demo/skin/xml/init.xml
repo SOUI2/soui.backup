@@ -18,7 +18,8 @@
     <imglist name="skin_webbtn_refresh" src="imgx:webbtn_refresh" states="4"/>
     <imglist name="skin_tab_left" src="imgx:png_tab_left" states="3"/>
     <imglist name="skin_tab_left_splitter" src="imgx:png_tab_left_splitter"/>
-
+    <imglist name="skin_tab_main" src="imgx:png_tab_main" states="3"/>
+    <imglist name="skin_btn_menu" src="imgx:btn_menu" states="3"/>
     <gif name="gif_horse" src="gif:gif_horse"/>
     <gif name="gif_penguin" src="gif:gif_penguin"/>
   </skins>

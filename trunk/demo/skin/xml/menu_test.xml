@@ -1,4 +1,4 @@
-﻿<menu itemskin="skin_menuitem" iconskin="skin_menuicon" checkskin="skin_menucheck" itemheight="26" sepskin="skin_menusplit" iconmargin="4" textmargin="8" bgskin="skin_menubg">
+﻿<menu iconSkin="skin_small_icons" itemHeight="26" iconMargin="4" textMargin="8">
   <item id="1" check="1">导出配置</item>
   <item id="2" radio="1">导入配置</item>
   <item id="3" disable="1">检查更新</item>
