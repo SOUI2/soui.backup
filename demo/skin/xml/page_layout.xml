@@ -1,4 +1,4 @@
-﻿<window pos="50,0,-0,-0">
+﻿<include>
   <text pos="100,10" pos2type="center">center align1</text>
   <text pos="100,30" pos2type="center">center align align</text>
   <text pos="250,50" pos2type="rightTop">align right top</text>
@@ -10,8 +10,6 @@
   <button pos="10,150,@150,@30" name="btn_hidetst">button 1 using @</button>
   <button pos="10,200" width="150" height="30">button 1 using width</button>
 
-  <img name="img_hidetst" skin="icons" iframe="0" pos="300,150" display="0">
-    <text colorText="#ff0000">text</text>
-  </img>
-  <img skin="icons" iframe="1" pos="[5,150,-10,-10" />
-</window>
+  <button name="btn_hidetst" pos="300,150,@100,@30" display="0" tip="click me to hide me and see how the next image will move">hide test</button>
+  <img skin="skin_page_icons" iconIndex="1" pos="[5,150,-10,-10" />
+</include>

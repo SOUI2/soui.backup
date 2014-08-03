@@ -326,9 +326,9 @@ protected:
     /**
      * STextHost::TxCreateCaret
      * @brief     Create the caret
-     * @param     HBITMAP hbmp -- 
-     * @param     INT xWidth -- 
-     * @param     INT yHeight -- 
+     * @param     HBITMAP hbmp -- caret bitmap
+     * @param     INT xWidth -- caret width
+     * @param     INT yHeight -- caret height
      * @return    返回BOOL
      *
      * Describe   Create the caret
@@ -338,7 +338,7 @@ protected:
     /**
      * STextHost::TxShowCaret
      * @brief     Show the caret
-     * @param     BOOL fShow -- 
+     * @param     BOOL fShow -- true to show the caret
      * @return    返回BOOL
      *
      * Describe   Show the caret
@@ -348,8 +348,8 @@ protected:
     /**
      * STextHost::TxSetCaretPos
      * @brief     Set the caret position
-     * @param     INT x --
-     * @param     INT y -- 
+     * @param     INT x -- caret position:x
+     * @param     INT y -- caret position:y
      * @return    返回BOOL
      *
      * Describe   Set the caret position
@@ -359,8 +359,8 @@ protected:
     /**
      * STextHost::TxSetTimer
      * @brief     Create a timer with the specified timeout
-     * @param     UINT idTimer --
-     * @param     UINT uTimeout -- 
+     * @param     UINT idTimer -- timer ID
+     * @param     UINT uTimeout -- time interval
      * @return    返回BOOL
      *
      * Describe   Create a timer with the specified timeout
@@ -370,7 +370,7 @@ protected:
     /**
      * STextHost::TxSetTimer
      * @brief     Destroy a timer
-     * @param     UINT idTimer --
+     * @param     UINT idTimer -- timer id
      * @return    返回BOOL
      *
      * Describe   Destroy a timer
@@ -1176,16 +1176,16 @@ protected:
 
     SOUI_ATTRS_BEGIN()
         ATTR_INT(L"style",m_dwStyle,FALSE)
-        ATTR_INT(L"maxbuf",m_cchTextMost,FALSE)
+        ATTR_INT(L"maxBuf",m_cchTextMost,FALSE)
         ATTR_INT(L"transparent",m_fTransparent,FALSE)
         ATTR_INT(L"rich",m_fRich,FALSE)
         ATTR_INT(L"vertical",m_fVertical,FALSE)
-        ATTR_INT(L"wordwrap",m_fWordWrap,FALSE)
-        ATTR_INT(L"allowbeep",m_fAllowBeep,FALSE)
-        ATTR_INT(L"autowordsel",m_fEnableAutoWordSel,FALSE)
+        ATTR_INT(L"wordWrap",m_fWordWrap,FALSE)
+        ATTR_INT(L"allowBeep",m_fAllowBeep,FALSE)
+        ATTR_INT(L"autoWordSel",m_fEnableAutoWordSel,FALSE)
         ATTR_INT(L"vcenter",m_fSingleLineVCenter,FALSE)
         ATTR_RECT(L"inset",m_rcInsetPixel,FALSE)
-        ATTR_CUSTOM(L"crtext",OnSetTextColor)
+        ATTR_CUSTOM(L"colorText",OnSetTextColor)
     SOUI_ATTRS_END()
 
     CHARFORMAT2W   m_cfDef;              /**< Default character format  */

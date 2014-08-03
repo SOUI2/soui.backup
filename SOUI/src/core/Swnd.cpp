@@ -509,7 +509,7 @@ BOOL SWindow::CreateChildren(pugi::xml_node xmlNode)
                 }
                 if(xmlDoc)
                 {
-                    CreateChildren(xmlDoc);
+                    CreateChildren(xmlDoc.child(L"include"));
                 }else
                 {
                     ASSERT(FALSE);
