@@ -5,7 +5,7 @@
   <root skin="_skin.sys.wnd.bkgnd">
     <caption id="101" pos="0,0,-0,29">
       <text pos="11,9" class="cls_txt_red" name="msgtitle" >title</text>
-      <imgbtn id="1" skin="_skin.sys.btn.close"    pos="-45,0" tip="close"/>
+      <imgbtn id="2" skin="_skin.sys.btn.close"    pos="-45,0" tip="close"/>
     </caption>
 
     <window pos="5,30,-5,-50">

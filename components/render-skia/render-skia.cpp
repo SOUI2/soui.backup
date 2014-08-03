@@ -862,6 +862,9 @@ namespace SOUI
         if(pBits)
         {
             memcpy(pBmpBits,pBits,nWid*nHei*4);
+        }else
+        {
+            memset(pBmpBits,0,nWid*nHei*4);
         }
 		m_bitmap.setPixels(pBmpBits);
 		return S_OK;

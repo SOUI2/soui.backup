@@ -29,6 +29,7 @@ namespace SOUI
         void EndDialog(INT_PTR nResult);
 
     protected:
+        void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
         void OnOK();
         void OnCancel();
         virtual SMessageLoop * GetCurMsgLoop(){return this;}
@@ -37,7 +38,14 @@ namespace SOUI
             EVENT_ID_COMMAND(IDOK,OnOK)
             EVENT_ID_COMMAND(IDCANCEL,OnCancel)
         EVENT_MAP_END()
-    
+
+        BEGIN_MSG_MAP_EX(SHostDialog)
+            MSG_WM_CLOSE(OnCancel)
+            MSG_WM_KEYDOWN(OnKeyDown)
+            CHAIN_MSG_MAP(SHostWnd)
+            REFLECT_NOTIFICATIONS_EX()
+        END_MSG_MAP()
+
         INT_PTR m_nRetCode;
     };
 
