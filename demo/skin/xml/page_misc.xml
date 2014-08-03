@@ -18,14 +18,14 @@
       <text pos="50,[5">single line edit:</text>
       <edit width="150" height="35" font="adding:10">scroll edit</edit>
       <text pos="50,[5">richedit:</text>
-      <richedit pos="50,[5,-5,-5" font="adding:10" class="cls_edit" multiLines="1" autoVscroll="1"  vscrollBar="1">scroll edit</richedit>
-<!--       <richedit pos="50,[5,-5,-5" class="cls_edit" multiLines="1" vscrollBar="1" wantReturn="1">this is a richedit.\n中文也可以初始化。</richedit> -->
+      <richedit pos="50,[5,-5,-5" class="cls_edit" multiLines="1" vscrollBar="1" wantReturn="1" rtf="rtf:rtf_test">this is a richedit.中文也可以初始化。</richedit>
     </page>
     <page title="buttons" colorBorder="#ff0000" margin-x="1" margin-y="1">
-      <button name="btn_menu" pos="10,200,150,230" accel="ctrl+alt+num 8" animate="1">dui menu</button>
-      <button name="btn_msgbox" width="100" height="30" accel="ctrl+alt+num 9" animate="1">show msg box</button>
-      <link pos="10,250" maxWidth="100" class="cls_btn_weblink" dotted="1" href="www.setoutsoft.cn">www.setoutsoft.cn</link>
-      <img id="1139" pos="300,200,400,300" skin="skin_page_icons" iconIndex="2" tip="img tip" msgTransParent="0"/>
+      <button name="btn_msgbox" pos="10,50" width="200" height="30" accel="ctrl+alt+9" animate="1">show msg box</button>
+      <text pos="10,[5">press "ctrl+alt+num 9" to activate the msgbox button</text>
+      <link pos="10,130" maxWidth="100" class="cls_btn_weblink" dotted="1" href="www.setoutsoft.cn">www.setoutsoft.cn</link>
+      <img pos="10,200,@100,@100" skin="skin_page_icons" iconIndex="2" tip="img tip" msgTransParent="0"/>
+      <text pos="10,[5" multiLines="1">the image show how to handle message in SImageWnd,\n you can do it by simply setting msgTransParent to 0</text>
     </page>
     <page title="prog and slider" colorBorder="#ff0000" margin-x="1" margin-y="1">
       <progress name="prog_test" pos="200,100,-10,115" value="20" min="0" max="100" showPercent="1"/>
@@ -33,6 +33,12 @@
     </page>
     <page title="script" colorBorder="#ff0000" margin-x="1" margin-y="1">
       <button name="btn_tstevt" pos="300,300,400,330" class="normalbtn">test event</button>
+    </page>
+    <page title="calendar">
+      <calendar pos="0,0,-0,-0" name="mp_test" daySkin="_skin.sys.btn.normal" footerHeight="30">
+        <text name="label_today" pos="10,-20"/>
+        <button name="btn_today" pos="-50,-25,-5,-0" skin="_skin.sys.btn.normal">today</button>
+      </calendar>
     </page>
   </tabctrl>
 </include>

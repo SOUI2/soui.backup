@@ -2,6 +2,8 @@
 #include "control/SRichEdit.h"
 #include "SApp.h"
 #include "helper/SMenu.h"
+#include "helper/SplitString.h"
+#include "core/mybuffer.h"
 #include <gdialpha.h>
 
 #pragma comment(lib,"imm32.lib")
@@ -621,8 +623,10 @@ LRESULT SRichEdit::OnCreate( LPVOID )
     dw &= ~IMF_AUTOFONT;
     SSendMessage(EM_SETLANGOPTIONS, 0, dw);
 
-    SetWindowText(S_CT2W(SWindow::GetWindowText()));
-
+    if(m_strRtfSrc.IsEmpty())
+        SetWindowText(S_CT2W(SWindow::GetWindowText()));
+    else
+        SetAttribute(L"rtf",m_strRtfSrc,FALSE);
     //register droptarget
     OnEnableDragDrop( !(m_dwStyle&ES_READONLY) & m_fEnableDragDrop);
     return 0;
@@ -1347,7 +1351,7 @@ void SRichEdit::SetSel(DWORD dwSelection, BOOL bNoScroll)
         SSendMessage(EM_SCROLLCARET, 0, 0L);
 }
 
-HRESULT SRichEdit::OnSetTextColor( const SStringW &  strValue,BOOL bLoading )
+HRESULT SRichEdit::OnAttrTextColor( const SStringW &  strValue,BOOL bLoading )
 {
     m_style.SetTextColor(0,HexStringToColor(strValue));
     if(!bLoading)
@@ -1355,6 +1359,92 @@ HRESULT SRichEdit::OnSetTextColor( const SStringW &  strValue,BOOL bLoading )
         SetDefaultTextColor(m_style.GetTextColor(0));
     }
     return S_OK;
+}
+
+DWORD CALLBACK EditStreamCallback_FILE(
+                                  DWORD_PTR dwCookie,
+                                  LPBYTE pbBuff,
+                                  LONG cb,
+                                  LONG * pcb 
+                                  )
+{
+    FILE *f=(FILE*)dwCookie;
+    LONG nReaded = fread(pbBuff,1,cb,f);
+    if(pcb) *pcb = nReaded;
+    return 0;
+}
+
+struct MemBlock{
+    LPCBYTE  pBuf;
+    LONG     nRemains;
+};
+
+DWORD CALLBACK EditStreamCallback_MemBlock(
+                                       DWORD_PTR dwCookie,
+                                       LPBYTE pbBuff,
+                                       LONG cb,
+                                       LONG * pcb 
+                                       )
+{
+    MemBlock *pmb=(MemBlock*)dwCookie;
+    if(pmb->nRemains>=cb)
+    {
+        memcpy(pbBuff,pmb->pBuf,cb);
+        pmb->pBuf+=cb;
+        pmb->nRemains-=cb;
+        if(pcb) *pcb = cb;
+        return 0;
+    }else
+    {
+        memcpy(pbBuff,pmb->pBuf,pmb->nRemains);
+        pmb->pBuf+=pmb->nRemains;
+        if(pcb) *pcb = pmb->nRemains;
+        pmb->nRemains =0;
+        return 0;
+    }
+}
+
+
+HRESULT SRichEdit::OnAttrRTF( const SStringW & strValue,BOOL bLoading )
+{
+    if(bLoading)
+    {
+        m_strRtfSrc = strValue;//将数据保存到控件初始化完成再写入控件
+        return S_FALSE;
+    }else
+    {
+        SStringWList lstSrc;
+        int nSegs = SplitString(strValue,L':',lstSrc);
+
+        if(nSegs == 2)
+        {//load from resource
+            DWORD dwSize=GETRESPROVIDER->GetRawBufferSize(lstSrc[0],lstSrc[1]);
+            if(dwSize)
+            {
+                EDITSTREAM es;
+                MemBlock mb={NULL,0};
+                CMyBuffer<BYTE> mybuf;
+                mb.pBuf=mybuf.Allocate(dwSize);
+                mb.nRemains=dwSize;
+                GETRESPROVIDER->GetRawBuffer(lstSrc[0],lstSrc[1],mybuf,dwSize);
+                es.dwCookie=(DWORD_PTR)&mb;
+                es.pfnCallback=EditStreamCallback_MemBlock;
+                SSendMessage(EM_STREAMIN,SF_RTF,(LPARAM)&es);
+            }
+        }else
+        {//load from file
+            FILE *f=_wfopen(lstSrc[0],L"rb");
+            if(f)
+            {
+                EDITSTREAM es;
+                es.dwCookie=(DWORD_PTR)f;
+                es.pfnCallback=EditStreamCallback_FILE;
+                SSendMessage(EM_STREAMIN,SF_RTF,(LPARAM)&es);
+                fclose(f);
+            }
+        }
+        return S_FALSE;
+    }
 }
 
 COLORREF SRichEdit::SetDefaultTextColor( COLORREF cr )

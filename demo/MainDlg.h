@@ -70,6 +70,8 @@ protected:
 
     void OnBtnSelectGIF();
 	
+    void OnBtnMenu();
+
 #ifdef SUPPORT_WKE
     void OnBtnWebkitGo();
     void OnBtnWebkitBackward();
@@ -84,6 +86,7 @@ protected:
 		EVENT_NAME_CONTEXTMENU(L"edit_1140",OnEditMenu)
 		EVENT_NAME_COMMAND(L"btn_msgbox",OnBtnMsgBox)
 		EVENT_NAME_COMMAND(L"btnSelectGif",OnBtnSelectGIF)
+        EVENT_NAME_COMMAND(L"btn_menu",OnBtnMenu)
 #ifdef SUPPORT_WKE
         EVENT_NAME_COMMAND(L"btn_webkit_go",OnBtnWebkitGo)
         EVENT_NAME_COMMAND(L"btn_webkit_back",OnBtnWebkitBackward)

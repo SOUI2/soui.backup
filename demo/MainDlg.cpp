@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "MainDlg.h"
-
+#include "helper/SMenu.h"
 #include "../controls.extend/FileHelper.h"
 
 #include <dwmapi.h>
@@ -180,4 +180,13 @@ void CMainDlg::OnBtnSelectGIF()
         if(openDlg.DoModal()==IDOK)
             pGifPlayer->PlayGifFile(openDlg.m_szFileName);
     }
+}
+
+void CMainDlg::OnBtnMenu()
+{
+    SMenu menu;
+    menu.LoadMenu(_T("menu_test"),_T("LAYOUT"));
+    POINT pt;
+    GetCursorPos(&pt);
+    menu.TrackPopupMenu(0,pt.x,pt.y,m_hWnd);
 }
