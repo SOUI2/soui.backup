@@ -137,7 +137,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
             theApp->LoadSystemNamedResource(&resPE);
         }
 
-        theApp->Init(_T("IDR_DUI_INIT")); 
+        theApp->Init(_T("xml_init")); 
 
         // BLOCK: Run application
         {

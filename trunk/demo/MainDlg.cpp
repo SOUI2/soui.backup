@@ -10,7 +10,7 @@
 #include <dwmapi.h>
 #pragma comment(lib,"dwmapi.lib")
 
-CMainDlg::CMainDlg() : SHostWnd(_T("IDR_DUI_MAIN_DIALOG"))
+CMainDlg::CMainDlg() : SHostWnd(_T("maindlg"))
 {
 	m_bLayoutInited=FALSE;
 } 
@@ -51,9 +51,6 @@ void CMainDlg::InitListCtrl()
         SWindow *pHeader=pList->GetWindow(GSW_FIRSTCHILD);
         pHeader->GetEventSet()->subscribeEvent(EVT_HEADER_CLICK,Subscriber(&CMainDlg::OnListHeaderClick,this));
 
-        TCHAR szColNames[][20]={_T("name"),_T("gender"),_T("age"),_T("score")};
-        for(int i=0;i<ARRAYSIZE(szColNames);i++)
-            pList->InsertColumn(i,szColNames[i],50);
         TCHAR szSex[][5]={_T("ÄÐ"),_T("Å®"),_T("ÈËÑý")};
         for(int i=0;i<100;i++)
         {

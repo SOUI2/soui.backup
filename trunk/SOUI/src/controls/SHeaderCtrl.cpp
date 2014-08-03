@@ -332,7 +332,7 @@ namespace SOUI
             item.pszText=_tcsdup(strTxt);
             item.cchTextMax=strTxt.GetLength();
             item.cx=xmlItem.attribute(L"width").as_int(50);
-            item.lParam=xmlItem.attribute(L"userata").as_uint(0);
+            item.lParam=xmlItem.attribute(L"userData").as_uint(0);
             item.stFlag=(SHDSORTFLAG)xmlItem.attribute(L"sortFlag").as_uint(ST_NULL);
             m_arrItems.InsertAt(m_arrItems.GetCount(),item);
             xmlItem=xmlItem.next_sibling(L"item");

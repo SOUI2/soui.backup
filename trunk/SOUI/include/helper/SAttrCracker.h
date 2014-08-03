@@ -240,7 +240,7 @@ public:                                                             \
         else                                                        \
  
 
-//font="facename:ËÎÌו;bold:1;italic:1;underline:1;adding:10"
+//font="face:ËÎÌו;bold:1;italic:1;underline:1;adding:10"
 #define ATTR_FONT(attribname, varname, allredraw)                       \
     if (attribname == strAttribName)                                    \
     {                                                                    \
@@ -249,7 +249,7 @@ public:                                                             \
         char  nAdding=0;                                                 \
         SStringT attr=S_CW2T(strValue);                                  \
         attr.MakeLower();                                                \
-        int nPosBegin=attr.Find(_T("facename:"));                        \
+        int nPosBegin=attr.Find(_T("face:"));                            \
         if(nPosBegin!=-1)                                                \
         {                                                                \
             nPosBegin+=9;                                                \

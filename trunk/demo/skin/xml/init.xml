@@ -7,29 +7,20 @@
   </string>
   
   <skins>
-    <imglist name="btn_sys_close"    src="IDP_BTN_SYS_CLOSE" states="3" />
-    <imglist name="btn_sys_minimize" src="IDP_BTN_SYS_MINIMIZE" states="3" />
-    <imglist name="btn_sys_maximize" src="IDP_BTN_SYS_MAXIMIZE" states="3" />
-    <imglist name="btn_sys_restore" src="IDP_BTN_SYS_RESOTRE" states="3" />
-    
-    <imgframe name="skin_editnc" src="IDP_EDIT_BORDER" states="2" left="2" top="2"/>
-    <imglist name="icons" src="IDP_ICONS" states="6"/>
-    <imglist name="skin_menuicon" src="IDP_ICONS_SMALL" states="12"/>
-    <imgframe name="skin_menuitem" src="IDP_MENUSKIN" states="2" left="35" right="5"/>
-    <imglist name="skin_menusplit" src="IDP_MENUSPLIT"/>
-    <imgframe name="skin_menubg" src="IDP_MENUBG" left="30" top="5" right="5"/>
-    <imglist name="skin_menucheck" src="IDP_MENUCHECK" subwidth="16"/>
-    <border name="skin_menuborder" src="IDP_MENUBORDER" left="2" top="2" border="2,2,2,2" key="FF00FF" alpha="100"/>
-    <imglist name="skin_webbtn_back" src="IDP_WEBBTN_BACK" states="4"/>
-    <imglist name="skin_webbtn_forward" src="IDP_WEBBTN_FORWARD" states="4"/>
-    <imglist name="skin_webbtn_refresh" src="IDP_WEBBTN_REFRESH" states="4"/>
-    <imglist name="TreeIcon"						src="IDR_TREE_ICON" states="3"/>
-    <imglist name="icon3"							src="IDP_ICON3"  states="12"/>
+    <imglist name="skin_page_icons"	src="imgx:png_page_icons" states="8"/>
+    <imglist name="skin_small_icons" src="imgx:png_small_icons" states="12"/>
+    <imglist name="skin_tree_icon"		src="imgx:png_treeicon" states="3"/>
 
-    <imglist name="slidethumb" src="IDP_SLIDETHUMB" states="4"/>
+    <imglist name="skin_menuicon" src="imgx:png_small_icons" states="12"/>
+    <border name="skin_menuborder" src="imgx:png_menu_border" left="2" top="2" border="2,2,2,2" key="FF00FF" alpha="100"/>
+    <imglist name="skin_webbtn_back" src="imgx:webbtn_back" states="4"/>
+    <imglist name="skin_webbtn_forward" src="imgx:webbtn_forward" states="4"/>
+    <imglist name="skin_webbtn_refresh" src="imgx:webbtn_refresh" states="4"/>
+    <imglist name="skin_tab_left" src="imgx:png_tab_left" states="3"/>
+    <imglist name="skin_tab_left_splitter" src="imgx:png_tab_left_splitter"/>
 
-    <gif name="gif_horse" src="gif_horse"/>
-    <gif name="gif_penguin" src="gif_penguin"/>
+    <gif name="gif_horse" src="gif:gif_horse"/>
+    <gif name="gif_penguin" src="gif:gif_penguin"/>
   </skins>
 
   <style>
@@ -39,11 +30,11 @@
     <!--定义文字按钮的样式-->
     <class name="cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorHover="#1e78d5" font="italic:1" fontHover="underline:1,italic:1" />
 
-    <class name="cls_txt_red"     font="facename:宋体,bold:1"  colorText="#FF0000" />
+    <class name="cls_txt_red"     font="face:宋体,bold:1"  colorText="#FF0000" />
     <!--定义白色粗体宋体-->
-    <class name="cls_txt_black"   font="facename:宋体,bold:1"  colorText="#000000" />
+    <class name="cls_txt_black"   font="face:宋体,bold:1"  colorText="#000000" />
     <!--定义黑色粗体宋体-->
-    <class name="cls_txt_white"   font="facename:宋体,bold:1"  colorText="#FFFFFF" />
+    <class name="cls_txt_white"   font="face:宋体,bold:1"  colorText="#FFFFFF" />
     <!--定义白色粗体宋体-->
 
     <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>

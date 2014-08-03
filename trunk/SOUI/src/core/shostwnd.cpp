@@ -377,6 +377,7 @@ void SHostWnd::OnSwndTimer( char cTimerID )
     if(cTimerID==TIMER_CARET)
     {
         ASSERT(m_bCaretShowing);
+        STraceA("!!OnSwndTimer:pt=%d,%d\n",m_ptCaret.x,m_ptCaret.y);
         DrawCaret(m_ptCaret);
         m_bCaretActive=!m_bCaretActive;
     }else if(cTimerID==TIMER_NEXTFRAME)
@@ -688,8 +689,8 @@ BOOL SHostWnd::SwndSetCaretPos( int x,int y )
 
 BOOL SHostWnd::SwndUpdateWindow()
 {
-    if(m_hostAttr.m_bTranslucent) UpdateWindow(m_dummyWnd.m_hWnd);
-    else UpdateWindow(m_hWnd);
+    if(m_hostAttr.m_bTranslucent) ::UpdateWindow(m_dummyWnd.m_hWnd);
+    else ::UpdateWindow(m_hWnd);
     return TRUE;
 }
 

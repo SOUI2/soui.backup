@@ -297,12 +297,12 @@ void STextHost::TxScrollWindowEx( INT dx, INT dy, LPCRECT lprcScroll, LPCRECT lp
 
 void STextHost::TxKillTimer( UINT idTimer )
 {
-    m_pRichEdit->KillTimer2(idTimer);
+   m_pRichEdit->KillTimer2(idTimer);
 }
 
 BOOL STextHost::TxSetTimer( UINT idTimer, UINT uTimeout )
 {
-    return m_pRichEdit->SetTimer2(idTimer,uTimeout);
+   return m_pRichEdit->SetTimer2(idTimer,uTimeout);
 }
 
 BOOL STextHost::TxSetCaretPos( INT x, INT y )
@@ -337,13 +337,13 @@ BOOL STextHost::TxShowScrollBar( INT fnBar, BOOL fShow )
     int wBar=0;
     switch(fnBar)
     {
-    case SSB_BOTH:
+    case SB_BOTH:
         wBar=SSB_BOTH;
         break;
-    case SSB_VERT:
+    case SB_VERT:
         wBar=SSB_VERT;
         break;
-    case SSB_HORZ:
+    case SB_HORZ:
         wBar=SSB_HORZ;
         break;
     }
@@ -356,13 +356,13 @@ BOOL STextHost::TxEnableScrollBar( INT fuSBFlags, INT fuArrowflags )
     int wBar=0;
     switch(fuSBFlags)
     {
-    case SSB_BOTH:
+    case SB_BOTH:
         wBar=SSB_BOTH;
         break;
-    case SSB_VERT:
+    case SB_VERT:
         wBar=SSB_VERT;
         break;
-    case SSB_HORZ:
+    case SB_HORZ:
         wBar=SSB_HORZ;
         break;
     }
@@ -371,10 +371,7 @@ BOOL STextHost::TxEnableScrollBar( INT fuSBFlags, INT fuArrowflags )
 
 BOOL STextHost::TxSetScrollRange( INT fnBar, LONG nMinPos, INT nMaxPos, BOOL fRedraw )
 {
-    if(fnBar==SSB_HORZ)
-        return m_pRichEdit->SetScrollRange(FALSE,nMinPos,nMaxPos,fRedraw);
-    else
-        return m_pRichEdit->SetScrollRange(TRUE,nMinPos,nMaxPos,fRedraw);
+    return m_pRichEdit->SetScrollRange(fnBar!=SB_HORZ,nMinPos,nMaxPos,fRedraw);
 }
 
 BOOL STextHost::TxSetScrollPos( INT fnBar, INT nPos, BOOL fRedraw )
@@ -382,10 +379,7 @@ BOOL STextHost::TxSetScrollPos( INT fnBar, INT nPos, BOOL fRedraw )
     BOOL bRet=FALSE;
     if(m_pRichEdit->m_fScrollPending) return TRUE;
     m_pRichEdit->m_fScrollPending=TRUE;
-    if(fnBar==SSB_HORZ)
-        bRet= m_pRichEdit->SetScrollPos(FALSE,nPos,fRedraw);
-    else
-        bRet= m_pRichEdit->SetScrollPos(TRUE,nPos,fRedraw);
+    bRet= m_pRichEdit->SetScrollPos(fnBar!=SB_HORZ,nPos,fRedraw);
     m_pRichEdit->m_fScrollPending=FALSE;
     return bRet;
 }
@@ -406,7 +400,7 @@ void STextHost::TxViewChange( BOOL fUpdate )
 {
     if(fUpdate)
     {
-        m_pRichEdit->GetContainer()->SwndUpdateWindow();
+        m_pRichEdit->InvalidateRect(m_pRichEdit->m_rcWindow);//todo:原来调用m_pRichEdit->GetContainer()->OnSwndUpdate()居然出问题了，还不知道什么原因。
     }
 }
 
@@ -418,7 +412,6 @@ COLORREF STextHost::TxGetSysColor( int nIndex )
 HRESULT STextHost::TxGetBackStyle( TXTBACKSTYLE *pstyle )
 {
     *pstyle=TXTBACK_TRANSPARENT;
-    //*pstyle = m_pRichEdit->m_fTransparent ?TXTBACK_TRANSPARENT: TXTBACK_OPAQUE;
     return S_OK;
 }
 
@@ -936,7 +929,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
     HRESULT hRet=S_FALSE;
     DWORD dwBit=0,dwMask=0;
     //hscrollbar
-    if(strAttribName==L"hscrollbar")
+    if(strAttribName==L"hscrollBar")
     {
         if(strValue==L"0")
             m_dwStyle&=~WS_HSCROLL;
@@ -946,7 +939,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         dwMask|=TXTBIT_SCROLLBARCHANGE;
     }
     //vscrollbar
-    else if(strAttribName==L"vscrollbar")
+    else if(strAttribName==L"vscrollBar")
     {
         if(strValue==L"0")
             m_dwStyle&=~WS_VSCROLL;
@@ -956,7 +949,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         dwMask|=TXTBIT_SCROLLBARCHANGE;
     }
     //auto hscroll
-    else if(strAttribName==L"autohscroll")
+    else if(strAttribName==L"autoHscroll")
     {
         if(strValue==L"0")
             m_dwStyle&=~ES_AUTOHSCROLL;
@@ -966,7 +959,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         dwMask|=TXTBIT_SCROLLBARCHANGE;
     }
     //auto hscroll
-    else if(strAttribName==L"autovscroll")
+    else if(strAttribName==L"autoVscroll")
     {
         if(strValue==L"0")
             m_dwStyle&=~ES_AUTOVSCROLL;
@@ -976,7 +969,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         dwMask|=TXTBIT_SCROLLBARCHANGE;
     }
     //multilines
-    else if(strAttribName==L"multilines" && strValue!=L"0")
+    else if(strAttribName==L"multiLines" && strValue!=L"0")
     {
         if(strValue==L"0")
             m_dwStyle&=~ES_MULTILINE;
@@ -985,7 +978,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         dwMask|=TXTBIT_MULTILINE;
     }
     //readonly
-    else if(strAttribName==L"readonly")
+    else if(strAttribName==L"readOnly")
     {
         if(strValue==L"0")
             m_dwStyle&=~ES_READONLY;
@@ -998,7 +991,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         }
     }
     //want return
-    else if(strAttribName==L"wantreturn")
+    else if(strAttribName==L"wantReturn")
     {
         if(strValue==L"0")
             m_dwStyle&=~ES_WANTRETURN;
@@ -1023,7 +1016,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
             m_dwStyle|=ES_NUMBER;
     }
     //password char
-    else if(strAttribName==L"passwordchar")
+    else if(strAttribName==L"passwordChar")
     {
         SStringT strValueT=S_CW2T(strValue);
         m_chPasswordChar=strValueT[0];
@@ -1036,7 +1029,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         else m_dwStyle|=ES_LEFT;
     }
     //enabledragdrop
-    else if(strAttribName==L"enabledragdrop")
+    else if(strAttribName==L"enableDragdrop")
     {
         if(strValue==L"0")
         {
