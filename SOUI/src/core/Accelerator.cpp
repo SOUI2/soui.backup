@@ -177,6 +177,8 @@ namespace SOUI
                 {
                     if(pszKey[0]>=_T('a') && pszKey[0]<=_T('z'))//a-z
                         wKey=pszKey[0]-0x20;
+                    else if(pszKey[0]>=_T('0') && pszKey[0]<=_T('9'))
+                        wKey=pszKey[0];
                     else if(pszKey[0] == _T('-'))
                         wKey=VK_OEM_MINUS;
                     else if(pszKey[0] == _T('='))
