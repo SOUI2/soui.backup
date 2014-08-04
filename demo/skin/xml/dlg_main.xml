@@ -1,4 +1,4 @@
-﻿<SOUI name="dlg_main" title="SOUI-DEMO version:%ver%" bigIcon="LOGO:32" smallIcon="LOGO:16" width="600" height="400" appWnd="1" margin="20,5,5,5"  resizable="1" translucent="1" >
+﻿<SOUI name="dlg_main" title="SOUI-DEMO version:%ver%" bigIcon="LOGO:32" smallIcon="LOGO:16" width="600" height="400" appWnd="1" margin="5,5,5,5"  resizable="1" translucent="1" >
   <root class="cls_dlg_frame" cache="1">
     <caption pos="0,0,-0,30" show="1" font="adding:8">
       <icon pos="10,8" src="LOGO:16"/>

@@ -168,6 +168,14 @@ void CMainDlg::OnBtnWebkitForeward()
     }
 }
 
+void CMainDlg::OnBtnWebkitRefresh()
+{
+    SWkeWebkit *pWebkit= FindChildByName2<SWkeWebkit>(L"wke_test");
+    if(pWebkit)
+    {
+    }
+}
+
 
 #endif//SUPPORT_WKE
 
@@ -189,4 +197,13 @@ void CMainDlg::OnBtnMenu()
     POINT pt;
     GetCursorPos(&pt);
     menu.TrackPopupMenu(0,pt.x,pt.y,m_hWnd);
+}
+
+//演示如何响应菜单事件
+void CMainDlg::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
+{
+    if(uNotifyCode==0 && nID==6)
+    {//nID==6对应menu_test定义的菜单的exit项。
+        PostMessage(WM_CLOSE);
+    }
 }

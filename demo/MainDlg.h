@@ -71,11 +71,14 @@ protected:
     void OnBtnSelectGIF();
 	
     void OnBtnMenu();
+    
+    void OnCommand(UINT uNotifyCode, int nID, HWND wndCtl);
 
 #ifdef SUPPORT_WKE
     void OnBtnWebkitGo();
     void OnBtnWebkitBackward();
     void OnBtnWebkitForeward();
+    void OnBtnWebkitRefresh();
 #endif//SUPPORT_WKE
 
 	EVENT_MAP_BEGIN()
@@ -91,6 +94,7 @@ protected:
         EVENT_NAME_COMMAND(L"btn_webkit_go",OnBtnWebkitGo)
         EVENT_NAME_COMMAND(L"btn_webkit_back",OnBtnWebkitBackward)
         EVENT_NAME_COMMAND(L"btn_webkit_fore",OnBtnWebkitForeward)
+        EVENT_NAME_COMMAND(L"btn_webkit_refresh",OnBtnWebkitRefresh)
 #endif//SUPPORT_WKE
 	EVENT_MAP_END()	
 
@@ -101,8 +105,8 @@ protected:
         MSG_WM_DESTROY(OnDestory)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_SIZE(OnSize)
+		MSG_WM_COMMAND(OnCommand)
 		MSG_WM_SHOWWINDOW(OnShowWindow)
-// 		CHAIN_MSG_MAP_MEMBER((*m_pUiHandler))
 		CHAIN_MSG_MAP(SHostWnd)
 		REFLECT_NOTIFICATIONS_EX()
 	END_MSG_MAP()
