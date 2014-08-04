@@ -1,6 +1,5 @@
 #pragma once
 #include <wke.h>
-#include <core/SSingleton.h>
 
 namespace SOUI
 {   
