@@ -3,6 +3,20 @@
   <context>
     <!--没有上下文的翻译-->
   </context>
+  <context name="editmenu">
+    <message>
+      <source>copy</source>
+      <translation>复制</translation>
+    </message>
+    <message>
+      <source>cut</source>
+      <translation>剪切</translation>
+    </message>
+    <message>
+      <source>paste</source>
+      <translation>粘贴</translation>
+    </message>
+  </context>
   <context name="messagebox">
     <message>
       <source>ok</source>
