@@ -4,7 +4,7 @@
 #include "stdafx.h"
 
 #include <unknown/com-loader.hpp>
-
+#include <core/mybuffer.h>
 #if defined(_DEBUG) && !defined(_WIN64)
 // #include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
 #endif
@@ -66,45 +66,23 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     
     {
 
-        CAutoRefPtr<SOUI::IImgDecoderFactory> pImgDecoderFactory;
-        CAutoRefPtr<SOUI::IRenderFactory> pRenderFactory;
+        CAutoRefPtr<IImgDecoderFactory> pImgDecoderFactory;
+        CAutoRefPtr<IRenderFactory> pRenderFactory;
+        CAutoRefPtr<ITranslatorMgr> trans;
+        CAutoRefPtr<IScriptModule> pScriptLua;
+        
         imgDecLoader.CreateInstance(COM_IMGDECODER,(IObjRef**)&pImgDecoderFactory);
 #ifdef RENDER_GDI
         renderLoader.CreateInstance(COM_RENDER_GDI,(IObjRef**)&pRenderFactory);
 #else
         renderLoader.CreateInstance(COM_RENDER_SKIA,(IObjRef**)&pRenderFactory);
 #endif
-
         pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
 
-        SApplication *theApp=new SApplication(pRenderFactory,hInstance);
-
-#ifdef SUPPORT_LANG
-        CAutoRefPtr<ITranslatorMgr> trans;
         transLoader.CreateInstance(COM_TRANSLATOR,(IObjRef**)&trans);
-        if(trans)
-        {
-            theApp->SetTranslator(trans);
-            pugi::xml_document xmlLang;
-            if(xmlLang.load_file(L"translation files/lang_cn.xml"))
-            {
-                CAutoRefPtr<ITranslator> langCN;
-                trans->CreateTranslator(&langCN);
-                langCN->Load(&xmlLang.child(L"language"),1);//1=LD_XML
-                trans->InstallTranslator(langCN);
-            }
-        }
-#endif//SUPPORT_LANG
-
-#ifdef SUPPORT_LUA
-        CAutoRefPtr<IScriptModule> pScriptLua;
         scriptLoader.CreateInstance(COM_SCRIPT_LUA,(IObjRef**)&pScriptLua);
-        if(pScriptLua)
-        {
-            pScriptLua->executeScriptFile("lua/test.lua");
-            theApp->SetScriptModule(pScriptLua);
-        }
-#endif//SUPPORT_LUA
+        
+        SApplication *theApp=new SApplication(pRenderFactory,hInstance);
 
 #if (RES_TYPE == 0)
         SResProviderFiles *pResProvider=new SResProviderFiles;
@@ -119,7 +97,34 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         SResProviderZip *pResProvider = new SResProviderZip(pRenderFactory);
         pResProvider->Init(_T("skin.zip"));
 #endif
+        theApp->AddResProvider(pResProvider);
 
+        if(trans)
+        {
+            theApp->SetTranslator(trans);
+            pugi::xml_document xmlLang;
+            if(theApp->LoadXmlDocment(xmlLang,_T("lang_cn"),_T("translator")))
+            {
+                CAutoRefPtr<ITranslator> langCN;
+                trans->CreateTranslator(&langCN);
+                langCN->Load(&xmlLang.child(L"language"),1);//1=LD_XML
+                trans->InstallTranslator(langCN);
+            }
+        }
+
+        if(pScriptLua)
+        {
+            theApp->SetScriptModule(pScriptLua);
+            size_t sz=pResProvider->GetRawBufferSize(_T("script"),_T("lua_test"));
+            if(sz)
+            {
+                CMyBuffer<char> lua;
+                lua.Allocate(sz);
+                pResProvider->GetRawBuffer(_T("script"),_T("lua_test"),lua,sz);
+                pScriptLua->executeScriptBuffer(lua,sz);
+            }
+        }
+        
 #ifdef SUPPORT_WKE
         SWkeWebkit::WkeWebkit_Init();
         theApp->RegisterWndFactory(TplSWindowFactory<SWkeWebkit>());//注册WKE浏览器
@@ -128,7 +133,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         theApp->RegisterSkinFactory(TplSkinFactory<SSkinGif>());//注册SkinGif
         SSkinGif::Gdiplus_Startup();
         
-        theApp->AddResProvider(pResProvider);
         
         HMODULE hSysResource=LoadLibrary(SYS_NAMED_RESOURCE);
         if(hSysResource)

@@ -114,6 +114,12 @@ void SScriptModule_Lua::executeScriptFile( LPCSTR pszScriptFile )
  	lua_tinker::dofile(d_state,pszScriptFile);
 }
 
+
+void SScriptModule_Lua::executeScriptBuffer( const char* buff, size_t sz )
+{
+    lua_tinker::dobuffer(d_state,buff,sz);
+}
+
 bool SScriptModule_Lua::executeScriptedEventHandler( LPCSTR handler_name, EventArgs *pArg)
 {
 	LuaFunctionSlot luaFunSlot(d_state,handler_name);

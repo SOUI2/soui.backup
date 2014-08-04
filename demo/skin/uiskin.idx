@@ -44,5 +44,11 @@
   <rtf>
     <file name="rtf_test"	path="rtf\RTF测试.rtf"/>
   </rtf>
+  <script>
+    <file name="lua_test" path="lua\test.lua"/>
+  </script>
+  <translator>
+    <file name="lang_cn" path="translation files\lang_cn.xml"/>
+  </translator>
 </resource>
 
