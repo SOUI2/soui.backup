@@ -1,4 +1,4 @@
-<editmenu iconSkin="_skin.sys.icons" itemHeight="26" iconMargin="4" textMargin="8" >
+<editmenu name="editmenu" iconSkin="_skin.sys.icons" itemHeight="26" iconMargin="4" textMargin="8" >
   <item id="1" icon="3">cut</item>
   <item id="2" icon="4">copy</item>
   <item id="3" icon="5">paste</item>
