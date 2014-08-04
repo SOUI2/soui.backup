@@ -3,23 +3,54 @@
 #include <Imm.h>
 #pragma comment(lib,"imm32.lib")
 
-#if defined(SUPPORT_WKE) && !defined(_WIN64)
-
-#pragma comment(lib,"wke.lib")
-
 namespace SOUI
 {
-
-    void SWkeWebkit::WkeWebkit_Init()
+    //////////////////////////////////////////////////////////////////////////
+    // SWkeLoader
+    SWkeLoader * SWkeLoader::s_pInst=0;
+    
+    SWkeLoader* SWkeLoader::GetInstance()
     {
-        wkeInit();
+        return s_pInst;
     }
 
-    void SWkeWebkit::WkeWebkit_Shutdown()
+    SWkeLoader::SWkeLoader() :m_hModWke(0)
     {
-        wkeShutdown();
+        s_pInst=this;
     }
 
+
+    SWkeLoader::~SWkeLoader()
+    {
+        if(m_hModWke) FreeLibrary(m_hModWke);
+    }
+    
+    BOOL SWkeLoader::Init( LPCTSTR pszDll )
+    {
+        if(m_hModWke) return TRUE;
+        HMODULE m_hModWke=LoadLibrary(pszDll);
+        if(!m_hModWke) return FALSE;
+        m_funWkeInit = (FunWkeInit)GetProcAddress(m_hModWke,"wkeInit");
+        m_funWkeShutdown = (FunWkeShutdown)GetProcAddress(m_hModWke,"wkeShutdown");
+        m_funWkeCreateWebView = (FunWkeCreateWebView)GetProcAddress(m_hModWke,"wkeCreateWebView");
+        m_funWkeDestroyWebView = (FunWkeDestroyWebView)GetProcAddress(m_hModWke,"wkeDestroyWebView");
+        if(!m_funWkeInit 
+            || !m_funWkeShutdown
+            || !m_funWkeCreateWebView
+            || !m_funWkeDestroyWebView )
+        {
+            FreeLibrary(m_hModWke);
+            return FALSE;
+        }
+        m_funWkeInit();
+        return TRUE;
+    }
+
+
+
+    //////////////////////////////////////////////////////////////////////////
+    // SWkeWebkit
+    
     SWkeWebkit::SWkeWebkit(void):m_pWebView(NULL)
     {
     }
@@ -50,7 +81,7 @@ namespace SOUI
 
     int SWkeWebkit::OnCreate( void * )
     {
-        m_pWebView = wkeCreateWebView();
+        m_pWebView = SWkeLoader::GetInstance()->m_funWkeCreateWebView();
         if(!m_pWebView) return 1;
         m_pWebView->setBufHandler(this);
         m_pWebView->loadURL(m_strUrl);
@@ -60,7 +91,7 @@ namespace SOUI
 
 	void SWkeWebkit::OnDestroy()
 	{
-		if(m_pWebView) wkeDestroyWebView(m_pWebView);
+		if(m_pWebView) SWkeLoader::GetInstance()->m_funWkeDestroyWebView(m_pWebView);
 	}
 
 	LRESULT SWkeWebkit::OnMouseEvent( UINT message, WPARAM wParam,LPARAM lParam)
@@ -198,12 +229,12 @@ namespace SOUI
 		return 0;
 	}
 
-	void SWkeWebkit::OnSetDuiFocus()
+	void SWkeWebkit::OnSetFocus()
 	{
 		m_pWebView->focus();
 	}
 
-	void SWkeWebkit::OnKillDuiFocus()
+	void SWkeWebkit::OnKillFocus()
 	{
 		m_pWebView->unfocus();
 	}
@@ -242,6 +273,8 @@ namespace SOUI
 		if(!bLoading) m_pWebView->loadURL(m_strUrl);
 		return !bLoading;
 	}
+
+
+
 }
 
-#endif //!defined(_WIN64)

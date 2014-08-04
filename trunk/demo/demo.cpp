@@ -124,11 +124,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
                 pScriptLua->executeScriptBuffer(lua,sz);
             }
         }
-        
-#ifdef SUPPORT_WKE
-        SWkeWebkit::WkeWebkit_Init();
-        theApp->RegisterWndFactory(TplSWindowFactory<SWkeWebkit>());//×¢²áWKEä¯ÀÀÆ÷
-#endif//SUPPORT_WKE
+        SWkeLoader wkeLoader;
+        if(wkeLoader.Init(_T("wke.dll")))        
+        {
+            theApp->RegisterWndFactory(TplSWindowFactory<SWkeWebkit>());//×¢²áWKEä¯ÀÀÆ÷
+        }
         theApp->RegisterWndFactory(TplSWindowFactory<SGifPlayer>());//×¢²áGIFPlayer
         theApp->RegisterSkinFactory(TplSkinFactory<SSkinGif>());//×¢²áSkinGif
         SSkinGif::Gdiplus_Startup();
@@ -156,9 +156,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         delete theApp;
         delete pResProvider;
         SSkinGif::Gdiplus_Shutdown();
-#ifdef SUPPORT_WKE
-        SWkeWebkit::WkeWebkit_Shutdown();
-#endif//SUPPORT_WKE
 
     }
 
