@@ -74,12 +74,10 @@ protected:
     
     void OnCommand(UINT uNotifyCode, int nID, HWND wndCtl);
 
-#ifdef SUPPORT_WKE
     void OnBtnWebkitGo();
     void OnBtnWebkitBackward();
     void OnBtnWebkitForeward();
     void OnBtnWebkitRefresh();
-#endif//SUPPORT_WKE
 
 	EVENT_MAP_BEGIN()
 		EVENT_ID_COMMAND(1, OnClose)
@@ -90,12 +88,10 @@ protected:
 		EVENT_NAME_COMMAND(L"btn_msgbox",OnBtnMsgBox)
 		EVENT_NAME_COMMAND(L"btnSelectGif",OnBtnSelectGIF)
         EVENT_NAME_COMMAND(L"btn_menu",OnBtnMenu)
-#ifdef SUPPORT_WKE
         EVENT_NAME_COMMAND(L"btn_webkit_go",OnBtnWebkitGo)
         EVENT_NAME_COMMAND(L"btn_webkit_back",OnBtnWebkitBackward)
         EVENT_NAME_COMMAND(L"btn_webkit_fore",OnBtnWebkitForeward)
         EVENT_NAME_COMMAND(L"btn_webkit_refresh",OnBtnWebkitRefresh)
-#endif//SUPPORT_WKE
 	EVENT_MAP_END()	
 
 	BEGIN_MSG_MAP_EX(CMainDlg)

@@ -136,7 +136,6 @@ LRESULT CMainDlg::OnInitDialog( HWND hWnd, LPARAM lParam )
     return 0;
 }
 
-#ifdef SUPPORT_WKE
 void CMainDlg::OnBtnWebkitGo()
 {
     SWkeWebkit *pWebkit= FindChildByName2<SWkeWebkit>(L"wke_test");
@@ -154,7 +153,6 @@ void CMainDlg::OnBtnWebkitBackward()
     if(pWebkit)
     {
         pWebkit->GetWebView()->goBack();
-        wkeGoBack(pWebkit->GetWebView());
     }
 }
 
@@ -175,9 +173,6 @@ void CMainDlg::OnBtnWebkitRefresh()
         pWebkit->GetWebView()->reload();
     }
 }
-
-
-#endif//SUPPORT_WKE
 
 void CMainDlg::OnBtnSelectGIF()
 {
