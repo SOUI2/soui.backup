@@ -153,6 +153,7 @@ void CMainDlg::OnBtnWebkitBackward()
     SWkeWebkit *pWebkit= FindChildByName2<SWkeWebkit>(L"wke_test");
     if(pWebkit)
     {
+        pWebkit->GetWebView()->goBack();
         wkeGoBack(pWebkit->GetWebView());
     }
 }
@@ -162,7 +163,7 @@ void CMainDlg::OnBtnWebkitForeward()
     SWkeWebkit *pWebkit= FindChildByName2<SWkeWebkit>(L"wke_test");
     if(pWebkit)
     {
-        wkeGoForward(pWebkit->GetWebView());
+        pWebkit->GetWebView()->goForward();
     }
 }
 
@@ -171,6 +172,7 @@ void CMainDlg::OnBtnWebkitRefresh()
     SWkeWebkit *pWebkit= FindChildByName2<SWkeWebkit>(L"wke_test");
     if(pWebkit)
     {
+        pWebkit->GetWebView()->reload();
     }
 }
 
