@@ -43,8 +43,11 @@
       <page title ="misc.">
         <include src="layout:page_misc"/>
       </page>
-      <page id="119" title="treectrl">
+      <page title="treectrl">
         <include src="layout:page_treectrl"/>
+      </page>
+      <page title="about">
+        <include src="layout:page_about"/>
       </page>
     </tabctrl>
   </root>
