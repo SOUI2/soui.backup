@@ -46,8 +46,19 @@ struct IScriptModule : public IObjRef
         String object holding the filename of the script file that is to be executed
         
     */
-    virtual    void    executeScriptFile(LPCSTR pszScriptFile)    = 0;
+    virtual void    executeScriptFile(LPCSTR pszScriptFile)  = 0;
 
+    /*!
+    \brief
+        Execute a script buffer.
+
+    \param buff
+        buffer of the script that is to be executed
+        
+    \param sz
+        size of buffer
+    */
+    virtual	void	executeScriptBuffer(const char* buff, size_t sz)  = 0;
     /*!
     \brief
         Execute script code contained in the given String object.

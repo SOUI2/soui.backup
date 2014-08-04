@@ -20,7 +20,8 @@ public:
 	virtual void * GetScriptEngine () {return d_state;}
 
 	virtual	void	executeScriptFile(LPCSTR pszScriptFile);
-    virtual void executeString(LPCSTR str);
+    virtual	void	executeScriptBuffer(const char* buff, size_t sz);
+    virtual void    executeString(LPCSTR str);
 
 	virtual	bool	executeScriptedEventHandler(LPCSTR handler_name,SOUI::EventArgs *pEvt);
 
