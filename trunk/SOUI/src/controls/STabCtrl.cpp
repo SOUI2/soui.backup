@@ -523,6 +523,7 @@ STabPage* STabCtrl::GetItem( int nIndex )
 
 void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD dwState )
 {
+    if(rcItem.IsRectEmpty()) return;
     if(m_pSkinTab)
         m_pSkinTab->Draw(pRT,rcItem,IIF_STATE3(dwState,WndState_Normal,WndState_Hover,WndState_PushDown),m_byAlpha);
 
