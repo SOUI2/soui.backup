@@ -32,7 +32,7 @@
       <sliderbar name="slider_test" pos="%20.5,130" alpha="200" width="200" value="20" min="0" max="100"/>
     </page>
     <page title="script" colorBorder="#ff0000" margin-x="1" margin-y="1">
-      <button name="btn_tstevt" pos="300,300,400,330" class="normalbtn">test event</button>
+      <button name="btn_tstevt" pos="|-50,|-15,@100,@30" tip="click me to execute a lua script defined in lua\test.lua">script test</button>
     </page>
     <page title="calendar">
       <calendar pos="0,0,-0,-0" name="mp_test" daySkin="_skin.sys.btn.normal" footerHeight="30">
