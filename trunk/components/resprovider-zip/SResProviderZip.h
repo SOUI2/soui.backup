@@ -1,14 +1,7 @@
 #pragma once
 
-#ifdef RESPROVIDERZIP_EXPORTS
-#define RESPROVIDERZIP_API __declspec(dllexport)
-#else
-#define RESPROVIDERZIP_API __declspec(dllimport)
-#endif
 
-#ifndef SOUI_EXP
-#define SOUI_EXP RESPROVIDERZIP_API
-#endif
+#define SOUI_EXP
 
 #include <interface/SResProvider-i.h>
 #include <unknown/obj-ref-impl.hpp>
@@ -20,14 +13,19 @@
 #include <interface/render-i.h>
 
 #include "ZipArchive.h"
+#include "zipresprovider-param.h"
 
 namespace SOUI{
 
-class RESPROVIDERZIP_API SResProviderZip : public TObjRefImpl<IResProvider>
+
+
+class SResProviderZip : public TObjRefImpl<IResProvider>
 {
 public:
-	SResProviderZip(IRenderFactory *pRenderFac);
+	SResProviderZip();
 	~SResProviderZip(void);
+	
+    virtual BOOL Init(WPARAM wParam,LPARAM lParam);
 
     virtual BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
     virtual HICON   LoadIcon(LPCTSTR pszResName,int cx,int cy);
@@ -37,15 +35,19 @@ public:
     virtual IImgX   * LoadImgX(LPCTSTR strType,LPCTSTR pszResName);
     virtual size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
     virtual BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
+    virtual LPCTSTR FindImageType(LPCTSTR pszImgName){return Helper_FindImageType(this,pszImgName);}
 
-	BOOL Init(LPCTSTR pszZipFile);
-	BOOL Init(HINSTANCE hInst,LPCTSTR pszResName,LPCTSTR pszType=_T("ZIP"));
 protected:
-	BOOL LoadSkin();
-	SStringT GetFilePath(LPCTSTR pszResName,LPCTSTR pszType);
+    BOOL _Init(LPCTSTR pszZipFile);
+    BOOL _Init(HINSTANCE hInst,LPCTSTR pszResName,LPCTSTR pszType);
+	BOOL _LoadSkin();
+	SStringT _GetFilePath(LPCTSTR pszResName,LPCTSTR pszType);
+	
 	SMap<SResID,SStringT> m_mapFiles;
     CAutoRefPtr<IRenderFactory> m_renderFactory;
 	CZipArchive m_zipFile;
 };
+
+EXTERN_C BOOL __declspec(dllexport) SCreateInstance(IObjRef ** ppObj);
 
 }//namespace SOUI

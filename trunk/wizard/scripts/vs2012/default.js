@@ -96,10 +96,6 @@ function AddFilters(proj)
 		var group = proj.Object.AddFilter('Skin Files');
 		group.Filter = strSkinFilter;
 		
-		var strTransFilter = wizard.FindSymbol('TRANSLATOR_FILTER');
-		var group = proj.Object.AddFilter('Translator Files');
-		group.Filter = strTransFilter;
-
 	}
 	catch(e)
 	{
@@ -118,7 +114,7 @@ function AddConfig(proj, strProjectName)
 	    config.OutputDirectory = 'Debug';
 
 		var CLTool = config.Tools('VCCLCompilerTool');
-		// TODO: 添加编译器设置
+		//添加编译器设置
 		CLTool.UsePrecompiledHeader = 2;    // 2-使用预编译头,1-创建,0-不使用
 		CLTool.SuppressStartupBanner = true;
 		CLTool.TreatWChar_tAsBuiltInType=false;
@@ -131,14 +127,14 @@ function AddConfig(proj, strProjectName)
 		CLTool.DebugInformationFormat = debugOption.debugEditAndContinue;//Edit and continue
 		
 		var LinkTool = config.Tools('VCLinkerTool');
-		// TODO: 添加链接器设置
+		//添加链接器设置
 		LinkTool.GenerateDebugInformation = true;
 		LinkTool.LinkIncremental = linkIncrementalYes;
 		LinkTool.SuppressStartupBanner = true;  // nologo
 		LinkTool.GenerateDebugInformation = true;
 		LinkTool.AdditionalLibraryDirectories = '"$(SOUIPATH)\\bin"';
 		LinkTool.AdditionalDependencies = 'utilitiesd.lib souid.lib'
-
+		
 		// Release设置
 		var config = proj.Object.Configurations('Release');
 		config.CharacterSet = charSetUNICODE;
@@ -146,7 +142,7 @@ function AddConfig(proj, strProjectName)
 		config.OutputDirectory = 'Release';
 
 		var CLTool = config.Tools('VCCLCompilerTool');
-		// TODO: 添加编译器设置
+		//添加编译器设置
 		CLTool.UsePrecompiledHeader = 2;    // 2-使用预编译头,1-创建,0-不使用
 		CLTool.SuppressStartupBanner = true;
 		CLTool.TreatWChar_tAsBuiltInType=false;
@@ -157,7 +153,7 @@ function AddConfig(proj, strProjectName)
 		CLTool.WholeProgramOptimization = true;	//全程序优化：启动链接时代码生成
 		
 		var LinkTool = config.Tools('VCLinkerTool');
-		// TODO: 添加链接器设置
+		//添加链接器设置
 		LinkTool.GenerateDebugInformation = true;
 		LinkTool.LinkIncremental = linkIncrementalYes;
 		LinkTool.SuppressStartupBanner = true;  // nologo
@@ -224,21 +220,17 @@ function GetSourceName(strName)
 	try
 	{
 		strName.toLowerCase();
-		if(strName.indexOf('[skin]') == 0)
+		if(strName.indexOf('[uires]') == 0)
 		{
-			strName=strName.substr(6);
+			strName=strName.substr(7);
 			if(strName.indexOf('[xml]')==0)
-				return 'skin\\xml\\'+strName.substr(5);
+				return 'uires\\xml\\'+strName.substr(5);
 			else if(strName.indexOf('[image]')==0)
-				return 'skin\\image\\'+strName.substr(7);
+				return 'uires\\image\\'+strName.substr(7);
+			else if(strName.indexOf('[Translator]')==0)
+				return 'uires\\Translator\\'+strName.substr(12);
 			else
-				return 'skin\\'+strName;
-		}else if(strName.indexOf('[duires]')==0)
-		{
-			return 'duires\\'+strName.substr(8);
-		}else if(strName.indexOf('[Translator]')==0)
-		{
-			return 'Translator\\'+strName.substr(12);
+				return 'uires\\'+strName;
 		}else
 		{
 			return strName;
@@ -267,29 +259,18 @@ function GetTargetName(strName, strProjectName)
 		if (strName == 'demo.rc')
 		    strTarget = strProjectName + '.rc';
 
-		if (strName.indexOf('[skin]') == 0) // skin文件
-	        {
-	            strName = strName.substr(6);
-	            if(strName.indexOf('[xml]') == 0)//xml
-		            strTarget = 'skin\\xml\\' + strName.substr(5);
-	            else if(strName.indexOf('[image]') == 0)//image
-		            strTarget = 'skin\\image\\' + strName.substr(7);
-	            else
-	            		strTarget = 'skin\\' + strName;
-	        }
-	        
-	        if(strName.indexOf('[duires]') == 0) //duires files
-	        {
-	            strName = strName.substr(8);
-				if (strName == 'demo.ico')
-			    	strTarget = 'duires\\' + strProjectName + '.ico';
-	        	else
-	        		strTarget='duires\\'+strName;
-	        }
-		if(strName.indexOf('[Translator]')==0) // translator files
-		{
-			strTarget = 'Translator\\'+strName.substr(12);
-		}
+		if (strName.indexOf('[uires]') == 0) // skin文件
+	    {
+	        strName = strName.substr(7);
+	        if(strName.indexOf('[xml]') == 0)//xml
+		        strTarget = 'uires\\xml\\' + strName.substr(5);
+	        else if(strName.indexOf('[image]') == 0)//image
+		        strTarget = 'uires\\image\\' + strName.substr(7);
+	        else if(strName.indexOf('[Translator]') == 0)//image
+		        strTarget = 'uires\\Translator\\' + strName.substr(12);
+	        else
+	        	strTarget = 'uires\\' + strName;
+	    }
 		return strTarget;
 	}
 	catch(e)
@@ -311,11 +292,11 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 
         // 过滤器对象
 		var projFilters = proj.Object.Filters;
-		var filterDuires = projFilters.Item('Resource Files');
+		var filterRes = projFilters.Item('Resource Files');
 		var filterSkin = projFilters.Item('Skin Files');
 		var filterSkinImage = filterSkin.AddFilter('image');
 		var filterSkinXML = filterSkin.AddFilter('XML');
-		var filterTranslator = projFilters.Item('Translator Files');
+		var filterTranslator = filterSkin.AddFilter('Translator Files');
 
 		var strTextStream = InfFile.OpenAsTextStream(1, -2);
 		while (!strTextStream.AtEndOfStream)
@@ -343,21 +324,17 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 				var strSource = GetSourceName(strName);
 				
 				var filter = null;
-				if (strTpl.indexOf('[skin]') == 0) // skin
+				if (strTpl.indexOf('[uires]') == 0) // skin
 				{
-				    strTpl = strTpl.substr(6);
+				    strTpl = strTpl.substr(7);
 				    if(strTpl.indexOf('[xml]') == 0) //xml
 				    	filter = filterSkinXML;
 				    else if(strTpl.indexOf('[image]') == 0) //image
 				    	filter = filterSkinImage;
+				    else if(strTpl.indexOf('[Translator]') == 0) //translator
+				    	filter = filterTranslator;
 				    else
 				    	filter = filterSkin;
-				}else if(strTpl.indexOf('[duires]') == 0) //duires
-				{
-					filter = filterDuires;
-				}else if(strTpl.indexOf('[Translator]') == 0)
-				{
-					filter = filterTranslator;
 				}
 				var strTemplate = strTemplatePath + '\\' + strSource;
 				var strFile = strProjectPath + '\\' + strTarget;
@@ -385,11 +362,12 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		fileConfig.Tool.UsePrecompiledHeader = 1;
 		fileConfig = file.FileConfigurations('Release');
 		fileConfig.Tool.UsePrecompiledHeader = 1;
-		//指定uiskin.idx的编译命令
-		cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p skin -r .\\duires\\winres.rc2';
-		outfiles=".\\duires\\winres.rc2;";
+
+		//指定uires.idx的编译命令
+		cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\\res\\soui_res.rc2';
+		outfiles=".\\res\\soui_res.rc2;";
 		
-		var file = files.Item('uiskin.idx');
+		var file = files.Item('uires.idx');
 		var fileConfig = file.FileConfigurations('Debug');
 		buildTool=fileConfig.Tool;
 		buildTool.CommandLine = cmdline;

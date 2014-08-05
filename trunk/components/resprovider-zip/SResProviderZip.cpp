@@ -11,7 +11,7 @@ extern HICON CURSORICON_LoadFromFile( LPCWSTR filename,
 
 namespace SOUI{
 
-    SResProviderZip::SResProviderZip(IRenderFactory *pRenderFac):m_renderFactory(pRenderFac)
+    SResProviderZip::SResProviderZip():m_renderFactory(NULL)
 	{
 	}
 
@@ -21,7 +21,7 @@ namespace SOUI{
 
 	HBITMAP SResProviderZip::LoadBitmap(LPCTSTR pszResName )
 	{
-		SStringT strPath=GetFilePath(pszResName,_T("BITMAP"));
+		SStringT strPath=_GetFilePath(pszResName,_T("BITMAP"));
 		if(strPath.IsEmpty()) return NULL;
 		CZipFile zf;
 		if(!m_zipFile.GetFile(strPath,zf)) return NULL;
@@ -49,7 +49,7 @@ namespace SOUI{
 
 	HICON SResProviderZip::LoadIcon(LPCTSTR pszResName ,int cx/*=0*/,int cy/*=0*/)
 	{
-		SStringT strPath=GetFilePath(pszResName,_T("ICON"));
+		SStringT strPath=_GetFilePath(pszResName,_T("ICON"));
 		if(strPath.IsEmpty()) return NULL;
 		CZipFile zf;
 		if(!m_zipFile.GetFile(strPath,zf)) return NULL;
@@ -59,7 +59,7 @@ namespace SOUI{
 
     HCURSOR SResProviderZip::LoadCursor( LPCTSTR pszResName )
     {
-        SStringT strPath=GetFilePath(pszResName,_T("CURSOR"));
+        SStringT strPath=_GetFilePath(pszResName,_T("CURSOR"));
         if(strPath.IsEmpty()) return NULL;
         CZipFile zf;
         if(!m_zipFile.GetFile(strPath,zf)) return NULL;
@@ -68,7 +68,7 @@ namespace SOUI{
 
 	IBitmap * SResProviderZip::LoadImage( LPCTSTR strType,LPCTSTR pszResName)
 	{
-		SStringT strPath=GetFilePath(pszResName,strType);
+		SStringT strPath=_GetFilePath(pszResName,strType);
 		if(strPath.IsEmpty()) return NULL;
 		CZipFile zf;
 		if(!m_zipFile.GetFile(strPath,zf)) return NULL;
@@ -81,7 +81,7 @@ namespace SOUI{
 
     IImgX   * SResProviderZip::LoadImgX( LPCTSTR strType,LPCTSTR pszResName )
     {
-        SStringT strPath=GetFilePath(pszResName,strType);
+        SStringT strPath=_GetFilePath(pszResName,strType);
         if(strPath.IsEmpty()) return NULL;
         CZipFile zf;
         if(!m_zipFile.GetFile(strPath,zf)) return NULL;
@@ -98,19 +98,30 @@ namespace SOUI{
         return pImgX;
     }
 
-	BOOL SResProviderZip::Init( LPCTSTR pszZipFile )
+	BOOL SResProviderZip::_Init( LPCTSTR pszZipFile )
 	{
 		if(!m_zipFile.Open(pszZipFile)) return FALSE;
-		return LoadSkin();
+		return _LoadSkin();
 	}
 
-	BOOL SResProviderZip::Init( HINSTANCE hInst,LPCTSTR pszResName,LPCTSTR pszType/*=_T("ZIP")*/ )
+	BOOL SResProviderZip::_Init( HINSTANCE hInst,LPCTSTR pszResName,LPCTSTR pszType/*=_T("ZIP")*/ )
 	{
 		if(!m_zipFile.Open(hInst,pszResName,pszType)) return FALSE;
-		return LoadSkin();
+		return _LoadSkin();
 	}
 
-	SStringT SResProviderZip::GetFilePath( LPCTSTR pszResName,LPCTSTR pszType )
+    BOOL SResProviderZip::Init( WPARAM wParam,LPARAM lParam )
+    {
+        ZIPRES_PARAM *zipParam=(ZIPRES_PARAM*)wParam;
+        m_renderFactory = zipParam->pRenderFac;
+        
+        if(zipParam->type == ZIPRES_PARAM::ZIPFILE)
+            return _Init(zipParam->pszZipFile);
+        else
+            return _Init(zipParam->peInfo.hInst,zipParam->peInfo.pszResName,zipParam->peInfo.pszResType);
+    }
+
+	SStringT SResProviderZip::_GetFilePath( LPCTSTR pszResName,LPCTSTR pszType )
 	{
 		SResID resID(pszType,pszResName);
 		SMap<SResID,SStringT>::CPair *p = m_mapFiles.Lookup(resID);
@@ -120,7 +131,7 @@ namespace SOUI{
 
 	size_t SResProviderZip::GetRawBufferSize( LPCTSTR strType,LPCTSTR pszResName )
 	{
-		SStringT strPath=GetFilePath(pszResName,strType);
+		SStringT strPath=_GetFilePath(pszResName,strType);
 		if(strPath.IsEmpty()) return FALSE;
 		ZIP_FIND_DATA zfd;
 		HANDLE hf=m_zipFile.FindFirstFile(strPath,&zfd);
@@ -131,7 +142,7 @@ namespace SOUI{
 
 	BOOL SResProviderZip::GetRawBuffer( LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size )
 	{
-		SStringT strPath=GetFilePath(pszResName,strType);
+		SStringT strPath=_GetFilePath(pszResName,strType);
 		if(strPath.IsEmpty()) return FALSE;
 		CZipFile zf;
 		if(!m_zipFile.GetFile(strPath,zf)) return NULL;
@@ -151,10 +162,10 @@ namespace SOUI{
 		return p!=NULL;
 	}
 
-	BOOL SResProviderZip::LoadSkin()
+	BOOL SResProviderZip::_LoadSkin()
 	{
 		CZipFile zf;
-		BOOL bIdx=m_zipFile.GetFile(_T("uiskin.idx"),zf);
+		BOOL bIdx=m_zipFile.GetFile(UIRES_INDEX,zf);
 		if(!bIdx) return FALSE;
 
 		pugi::xml_document xmlDoc;
@@ -176,5 +187,11 @@ namespace SOUI{
 		}
 		return TRUE;
 	}
+
+    EXTERN_C BOOL SCreateInstance( IObjRef ** ppObj )
+    {
+        *ppObj = new SResProviderZip;
+        return TRUE;
+    }
 
 }//namespace SOUI

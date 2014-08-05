@@ -7,12 +7,11 @@ resource.h
 stdafx.cpp
 stdafx.h
 
+res\soui_res.rc2
 
-[duires]winres.rc2
+[uires]uires.idx
+[uires][xml]init.xml
+[uires][xml]dlg_main.xml
 
-[skin]uiskin.idx
-[skin][xml]init.xml
-[skin][xml]dlg_main.xml
-
-[skin][image]soui.ico
-[Translator]lang_cn.xml
+[uires][image]soui.ico
+[uires][Translator]lang_cn.xml

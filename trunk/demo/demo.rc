@@ -41,7 +41,7 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
     "LANGUAGE 4, 2\r\n"
     "#pragma code_page(936)\r\n"
-    "#include ""duires\\winres.rc2"" //SOUI资源\r\n"
+    "#include ""res\\soui_res.rc2"" //SOUI资源\r\n"
     "#endif\0"
 END
 
@@ -99,7 +99,7 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
 #pragma code_page(936)
-#include "duires\winres.rc2"
+#include "res\soui_res.rc2"
 #endif
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
