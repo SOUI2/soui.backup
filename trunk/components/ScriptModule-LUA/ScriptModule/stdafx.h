@@ -4,6 +4,5 @@
 //
 
 #pragma once
-#define DLL_SOUI
 #include <souistd.h>
 
