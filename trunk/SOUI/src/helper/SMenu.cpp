@@ -66,8 +66,7 @@ void SMenuODWnd::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
         BOOL bSelected = lpDrawItemStruct->itemState & ODS_SELECTED;
         BOOL bChecked = lpDrawItemStruct->itemState & ODS_CHECKED;
         BOOL bRadio = mii.fType&MFT_RADIOCHECK;
-        m_pItemSkin->Draw(pRT,rcItem,0);    //draw normal back
-        if(bSelected) m_pItemSkin->Draw(pRT,rcItem,1);    //draw sel back
+        m_pItemSkin->Draw(pRT,rcItem,bSelected?1:0);    //draw background
 
         //draw icon
         CRect rcIcon;
