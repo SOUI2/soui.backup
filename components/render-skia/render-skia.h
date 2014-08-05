@@ -113,7 +113,7 @@ namespace SOUI
             
             m_skPaint.setTextSize(SkIntToScalar(abs(plf->lfHeight)));
             m_skPaint.setUnderlineText(!!plf->lfUnderline);
-            m_skPaint.setStrikeThruText(plf->lfStrikeOut);
+            m_skPaint.setStrikeThruText(!!plf->lfStrikeOut);
 
             m_skPaint.setTextEncoding(SkPaint::kUTF16_TextEncoding);
             m_skPaint.setAntiAlias(true);

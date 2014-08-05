@@ -14,6 +14,10 @@ INCLUDEPATH += . \
 dir = ../../..
 include($$dir/common.pri)
 
+DLL_SOUI{
+    DEFINES += DLL_SOUI
+}
+
 CONFIG(debug,debug|release){
 	LIBS += lua-51d.lib souid.lib utilitiesd.lib
 }
