@@ -11,11 +11,19 @@ namespace SOUI
 {
 
 
-SResProviderPE::SResProviderPE( HINSTANCE hInst)
-    : m_hResInst(hInst)
+SResProviderPE::SResProviderPE()
+    : m_hResInst(0)
 {
 
 }
+
+
+BOOL SResProviderPE::Init( WPARAM wParam,LPARAM lParam )
+{
+    m_hResInst = (HINSTANCE)wParam;
+    return TRUE;
+}
+
 
 HBITMAP SResProviderPE::LoadBitmap(LPCTSTR pszResName )
 {
@@ -266,11 +274,14 @@ BOOL SResProviderFiles::GetRawBuffer( LPCTSTR strType,LPCTSTR pszResName,LPVOID 
     return bRet;
 }
 
-BOOL SResProviderFiles::Init( LPCTSTR pszPath )
+
+BOOL SResProviderFiles::Init( WPARAM wParam,LPARAM lParam )
 {
+    LPCTSTR pszPath = (LPCTSTR)wParam;
+
     SStringT strPathIndex=pszPath;
     strPathIndex+=_T("\\");
-    strPathIndex+=UISKIN_INDEX;
+    strPathIndex+=UIRES_INDEX;
 
     pugi::xml_document xmlDoc;
     SStringT strFileName;
@@ -303,6 +314,18 @@ BOOL SResProviderFiles::HasResource( LPCTSTR strType,LPCTSTR pszResName )
     SResID resID(strType,pszResName);
     SMap<SResID,SStringT>::CPair *p=m_mapFiles.Lookup(resID);
     return (p!=NULL);
+}
+
+BOOL CreateResProvider( BUILTIN_RESTYPE resType,IObjRef **pObj )
+{
+    *pObj = NULL;
+    switch(resType)
+    {
+    case RES_PE:*pObj = new SResProviderPE;break;
+    case RES_FILE: *pObj = new SResProviderFiles;break;
+    default:break;
+    }
+    return *pObj != NULL;
 }
 
 

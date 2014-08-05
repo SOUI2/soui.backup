@@ -19,15 +19,7 @@
 // #define RES_TYPE 1   //从PE资源中加载UI资源
 // #define RES_TYPE 2   //从zip包中加载资源
 
-#if RES_TYPE==2
-    #include "../components/resprovider-zip/SResProviderZip.h"
-#ifdef _DEBUG
-	#pragma comment(lib,"resprovider-zipd.lib")
-#else
-    #pragma comment(lib,"resprovider-zip.lib")
-#endif
-#endif
-
+#include "../components/resprovider-zip/zipresprovider-param.h"
 
 #ifdef _DEBUG
 #define COM_IMGDECODER  _T("imgdecoder-wicd.dll")
@@ -35,6 +27,7 @@
 #define COM_RENDER_SKIA _T("render-skiad.dll")
 #define COM_SCRIPT_LUA _T("scriptmodule-luad.dll")
 #define COM_TRANSLATOR _T("translatord.dll")
+#define COM_ZIPRESPROVIDER _T("resprovider-zipd.dll")
 #define SYS_NAMED_RESOURCE _T("soui-sys-resourced.dll")
 #else
 #define COM_IMGDECODER  _T("imgdecoder-wic.dll")
@@ -42,6 +35,7 @@
 #define COM_RENDER_SKIA _T("render-skia.dll")
 #define COM_SCRIPT_LUA _T("scriptmodule-lua.dll")
 #define COM_TRANSLATOR _T("translator.dll")
+#define COM_ZIPRESPROVIDER _T("resprovider-zip.dll")
 #define SYS_NAMED_RESOURCE _T("soui-sys-resource.dll")
 #endif
 
@@ -56,7 +50,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     SComLoader renderLoader;
     SComLoader transLoader;
     SComLoader scriptLoader;
-        
+    SComLoader zipResLoader;
+    
     //将程序的运行路径修改到demo所在的目录
     TCHAR szCurrentDir[MAX_PATH]={0};
     GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
@@ -71,31 +66,44 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         CAutoRefPtr<ITranslatorMgr> trans;
         CAutoRefPtr<IScriptModule> pScriptLua;
         
-        imgDecLoader.CreateInstance(COM_IMGDECODER,(IObjRef**)&pImgDecoderFactory);
+        BOOL bLoaded=FALSE;
+        bLoaded=imgDecLoader.CreateInstance(COM_IMGDECODER,(IObjRef**)&pImgDecoderFactory);
+        ASSERT(bLoaded);
 #ifdef RENDER_GDI
-        renderLoader.CreateInstance(COM_RENDER_GDI,(IObjRef**)&pRenderFactory);
+        bLoaded=renderLoader.CreateInstance(COM_RENDER_GDI,(IObjRef**)&pRenderFactory);
 #else
-        renderLoader.CreateInstance(COM_RENDER_SKIA,(IObjRef**)&pRenderFactory);
+        bLoaded=renderLoader.CreateInstance(COM_RENDER_SKIA,(IObjRef**)&pRenderFactory);
 #endif
+        ASSERT(bLoaded);
         pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
 
-        transLoader.CreateInstance(COM_TRANSLATOR,(IObjRef**)&trans);
-        scriptLoader.CreateInstance(COM_SCRIPT_LUA,(IObjRef**)&pScriptLua);
+        bLoaded=transLoader.CreateInstance(COM_TRANSLATOR,(IObjRef**)&trans);
+        ASSERT(bLoaded);
+        bLoaded=scriptLoader.CreateInstance(COM_SCRIPT_LUA,(IObjRef**)&pScriptLua);
+        ASSERT(bLoaded);
         
         SApplication *theApp=new SApplication(pRenderFactory,hInstance);
 
+        CAutoRefPtr<IResProvider>   pResProvider;
 #if (RES_TYPE == 0)
-        SResProviderFiles *pResProvider=new SResProviderFiles;
-        if(!pResProvider->Init(_T("skin")))
+        CreateResProvider(RES_FILE,(IObjRef**)&pResProvider);
+        if(!pResProvider->Init((LPARAM)_T("uires"),0))
         {
             ASSERT(0);
             return 1;
         }
 #elif (RES_TYPE==1)
-        SResProviderPE *pResProvider = new SResProviderPE(hInstance);
+        CreateResProvider(RES_PE,(IObjRef**)&pResProvider);
+        pResProvider->Init((WPARAM)hInstance,0);
 #elif (RES_TYPE==2)
-        SResProviderZip *pResProvider = new SResProviderZip(pRenderFactory);
-        pResProvider->Init(_T("skin.zip"));
+        bLoaded=zipResLoader.CreateInstance(COM_ZIPRESPROVIDER,(IObjRef**)&pResProvider);
+        ASSERT(bLoaded);
+        ZIPRES_PARAM param;
+        param.type = ZIPRES_PARAM::ZIPFILE;
+        param.pRenderFac = pRenderFactory;
+        param.pszZipFile = _T("uires.zip");
+        bLoaded = pResProvider->Init((WPARAM)&param,0);
+        ASSERT(bLoaded);
 #endif
         theApp->AddResProvider(pResProvider);
 
@@ -137,8 +145,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         HMODULE hSysResource=LoadLibrary(SYS_NAMED_RESOURCE);
         if(hSysResource)
         {
-            SResProviderPE resPE(hSysResource);
-            theApp->LoadSystemNamedResource(&resPE);
+            CAutoRefPtr<IResProvider> sysSesProvider;
+            CreateResProvider(RES_PE,(IObjRef**)&sysSesProvider);
+            sysSesProvider->Init((WPARAM)hSysResource,0);
+            theApp->LoadSystemNamedResource(sysSesProvider);
         }
 
         theApp->Init(_T("xml_init")); 
@@ -152,9 +162,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
             nRet=theApp->Run(dlgMain.m_hWnd);
             //  		nRet = dlgMain.DoModal();  
         }
-
+        
         delete theApp;
-        delete pResProvider;
         SSkinGif::Gdiplus_Shutdown();
 
     }

@@ -17,7 +17,8 @@ namespace SOUI
         
         //////////////////////////////////////////////////////////////////////////
         // IResProvider
-
+        /*virtual */BOOL Init(WPARAM,LPARAM){return FALSE;}
+        
         /*virtual */BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
 
         /*virtual */HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0);

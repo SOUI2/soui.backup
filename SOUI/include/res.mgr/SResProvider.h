@@ -12,10 +12,12 @@
 namespace SOUI
 {
 
-class SOUI_EXP SResProviderPE:public TObjRefImpl<IResProvider>
+
+class SResProviderPE:public TObjRefImpl<IResProvider>
 {
 public:
-    SResProviderPE(HINSTANCE hInst);
+    SResProviderPE();
+    BOOL Init(WPARAM wParam,LPARAM lParam);
     HBITMAP    LoadBitmap(LPCTSTR pszResName);
     HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0);
     HCURSOR   LoadCursor(LPCTSTR pszResName);
@@ -25,18 +27,20 @@ public:
     BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
     size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
     LPVOID GetRawBufferPtr(LPCTSTR strType,LPCTSTR pszResName);
+    LPCTSTR FindImageType(LPCTSTR pszImgName){return Helper_FindImageType(this,pszImgName);}
 protected:
     HRSRC MyFindResource(LPCTSTR strType, LPCTSTR pszResName );
     HINSTANCE m_hResInst;
 };
 
 
-#define UISKIN_INDEX    _T("uiskin.idx")        //文件夹资源的文件映射表索引表文件名
-class SOUI_EXP SResProviderFiles:public TObjRefImpl<IResProvider>
+class SResProviderFiles:public TObjRefImpl<IResProvider>
 {
 public:
 
     SResProviderFiles();
+    
+    BOOL Init(WPARAM wParam,LPARAM lParam);
 
     BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
     HBITMAP    LoadBitmap(LPCTSTR pszResName);
@@ -46,13 +50,14 @@ public:
     IImgX   * LoadImgX(LPCTSTR strType,LPCTSTR pszResName);
     size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
     BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
-
-    BOOL Init(LPCTSTR pszPath);
+    LPCTSTR FindImageType(LPCTSTR pszImgName){return Helper_FindImageType(this,pszImgName);}
 protected:
     SStringT GetRes( LPCTSTR strType,LPCTSTR pszResName );
 
     SStringT m_strPath;
     SMap<SResID,SStringT> m_mapFiles;
 };
+
+BOOL SOUI_EXP CreateResProvider(BUILTIN_RESTYPE resType,IObjRef **pObj);
 
 }//namespace SOUI

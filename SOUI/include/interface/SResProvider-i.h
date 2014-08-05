@@ -21,8 +21,16 @@
 #include "render-i.h"
 
 
+#define UIRES_INDEX    _T("uires.idx")        //文件夹资源的文件映射表索引表文件名
+
 namespace SOUI
 {
+    enum BUILTIN_RESTYPE
+    {
+        RES_PE=0,
+        RES_FILE,
+    };
+
     /**
     * @struct     IResProvider
     * @brief      ResProvider对象
@@ -31,6 +39,17 @@ namespace SOUI
     */
     struct SOUI_EXP IResProvider : public IObjRef
     {
+        /**
+         * Init
+         * @brief    资源初始化函数
+         * @param    WPARAM wParam --  param 1 
+         * @param    LPARAM lParam --  param 2
+         * @return   BOOL -- true:succeed
+         *
+         * Describe  every Resprovider must implement this interface.
+         */
+        virtual BOOL Init(WPARAM wParam,LPARAM lParam) =0;
+        
         /**
          * HasResource
          * @brief    查询一个资源是否存在
@@ -119,26 +138,35 @@ namespace SOUI
          * @return   LPCTSTR -- 资源类型，失败返回NULL
          * Describe  没有指定图片类型时默认从这些类别中查找
          */    
-        virtual LPCTSTR FindImageType(LPCTSTR pszImgName)
-        {
-            //图片类型
-            LPCTSTR IMGTYPES[]=
-            {
-                _T("IMGX"),
-                _T("PNG"),
-                _T("JPG"),
-                _T("GIF"),
-                _T("TGA"),
-                _T("TIFF"),
-            };
-            for(int i=0;i< ARRAYSIZE(IMGTYPES);i++)
-            {
-                if(HasResource(IMGTYPES[i],pszImgName)) return IMGTYPES[i];
-            }
-            return NULL;
-        }
+        virtual LPCTSTR FindImageType(LPCTSTR pszImgName) =0;
     };
 
-
+    /**
+    * Helper_FindImageType
+    * @brief    查询与指定名称匹配的资源类型
+    * @param    IResProvider * pResProvider --  当前的ResProvider
+    * @param    LPCTSTR pszImgName --  资源名称
+    * @return   LPCTSTR -- 资源类型，失败返回NULL
+    * Describe  提供一个公共的辅助函数
+    */    
+    inline LPCTSTR Helper_FindImageType(IResProvider * pResProvider, LPCTSTR pszImgName)
+    {
+        //图片类型
+        LPCTSTR IMGTYPES[]=
+        {
+            _T("IMGX"),
+            _T("PNG"),
+            _T("JPG"),
+            _T("GIF"),
+            _T("TGA"),
+            _T("TIFF"),
+        };
+        for(int i=0;i< ARRAYSIZE(IMGTYPES);i++)
+        {
+            if(pResProvider->HasResource(IMGTYPES[i],pszImgName)) return IMGTYPES[i];
+        }
+        return NULL;
+    }
+    
 }//namespace SOUI
 #endif//_SRESPROVIDERBASE_
