@@ -3,7 +3,6 @@
 #include "core/SimpleWnd.h"
 #include "core/SWindowMgr.h"
 #include "core/SThreadActiveWndMgr.h"
-#include "core/mybuffer.h"
 
 #include "res.mgr/sfontpool.h"
 #include "res.mgr/SStringPool.h"
@@ -12,6 +11,7 @@
 #include "res.mgr/SObjDefAttr.h"
 
 #include "helper/STimerEx.h"
+#include "helper/mybuffer.h"
 
 #include "control/SRichEdit.h"
 #include "control/Smessagebox.h"

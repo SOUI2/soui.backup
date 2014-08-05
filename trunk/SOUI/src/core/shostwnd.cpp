@@ -2,7 +2,7 @@
 
 #include "SApp.h"
 #include "core/shostwnd.h"
-#include "core/mybuffer.h"
+#include "helper/mybuffer.h"
 #include "helper/STipCtrl.h"
 #include "helper/color.h"
 #include "helper/SplitString.h"

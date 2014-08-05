@@ -25,7 +25,7 @@ namespace SOUI
     * Describe    
     */
     template <typename T> 
-    class SOUI_EXP SSingleton
+    class SSingleton
     {
     protected:
         static    T* ms_Singleton;
