@@ -1,10 +1,8 @@
 
 #ifdef DLL_SOUI
 # ifdef SOUI_EXPORTS
-# pragma message("soui:dll export")
 #  define SOUI_EXP __declspec(dllexport)
 # else
-# pragma message("soui:dll import")
 #  define SOUI_EXP __declspec(dllimport)
 # endif // SOUI_EXPORTS
 #else

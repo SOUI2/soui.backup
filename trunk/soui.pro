@@ -14,6 +14,8 @@ SUBDIRS += components/render-skia
 SUBDIRS += components/translator
 SUBDIRS += components/zlib
 SUBDIRS += components/resprovider-zip
-SUBDIRS += components/ScriptModule-LUA/lua-51
-SUBDIRS += components/ScriptModule-LUA/ScriptModule
+DLL_SOUI{
+	SUBDIRS += components/ScriptModule-LUA/lua-51
+	SUBDIRS += components/ScriptModule-LUA/ScriptModule
+}
 SUBDIRS += demo
