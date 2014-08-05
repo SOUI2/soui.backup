@@ -75,14 +75,14 @@ void SApplication::_DestroySingletons()
     delete SWindowMgr::getSingletonPtr();
 }
 
-BOOL SApplication::_LoadXmlDocment( IResProvider* pResProvider, LPCTSTR pszXmlName ,LPCTSTR pszType ,pugi::xml_document & xmlDoc)
+BOOL SApplication::_LoadXmlDocment( LPCTSTR pszXmlName ,LPCTSTR pszType ,pugi::xml_document & xmlDoc)
 {
-    DWORD dwSize=pResProvider->GetRawBufferSize(pszType,pszXmlName);
+    DWORD dwSize=GetRawBufferSize(pszType,pszXmlName);
     if(dwSize==0) return FALSE;
 
     CMyBuffer<char> strXml;
     strXml.Allocate(dwSize);
-    pResProvider->GetRawBuffer(pszType,pszXmlName,strXml,dwSize);
+    GetRawBuffer(pszType,pszXmlName,strXml,dwSize);
 
     pugi::xml_parse_result result= xmlDoc.load_buffer(strXml,strXml.size(),pugi::parse_default,pugi::encoding_utf8);
     ASSERT_FMTW(result,L"parse xml error! xmlName=%s,desc=%s,offset=%d",pszXmlName,result.description(),result.offset);
@@ -91,7 +91,7 @@ BOOL SApplication::_LoadXmlDocment( IResProvider* pResProvider, LPCTSTR pszXmlNa
 
 BOOL SApplication::LoadXmlDocment( pugi::xml_document & xmlDoc,LPCTSTR pszXmlName ,LPCTSTR pszType )
 {
-    return _LoadXmlDocment(GETRESPROVIDER,pszXmlName,pszType,xmlDoc);
+    return _LoadXmlDocment(pszXmlName,pszType,xmlDoc);
 }
 
 BOOL SApplication::Init( LPCTSTR pszName ,LPCTSTR pszType)
@@ -132,7 +132,7 @@ UINT SApplication::LoadSystemNamedResource( IResProvider *pResProvider )
     //load system skins
     {
         pugi::xml_document xmlDoc;
-        if(_LoadXmlDocment(pResProvider,_T("SYS_XML_SKIN"),_T("XML"),xmlDoc))
+        if(_LoadXmlDocment(_T("SYS_XML_SKIN"),_T("XML"),xmlDoc))
         {
             SSkinPool * p= SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
             p->LoadSkins(xmlDoc.child(L"skins"));
@@ -144,7 +144,7 @@ UINT SApplication::LoadSystemNamedResource( IResProvider *pResProvider )
     //load edit context menu
     {
         pugi::xml_document xmlDoc;
-        if(_LoadXmlDocment(pResProvider,_T("SYS_XML_EDITMENU"),_T("XML"),xmlDoc))
+        if(_LoadXmlDocment(_T("SYS_XML_EDITMENU"),_T("XML"),xmlDoc))
         {
             SRicheditMenuDef::getSingleton().SetMenuXml(xmlDoc.child(L"editmenu"));
         }else
@@ -155,7 +155,7 @@ UINT SApplication::LoadSystemNamedResource( IResProvider *pResProvider )
     //load messagebox template
     {
         pugi::xml_document xmlDoc;
-        if(!_LoadXmlDocment(pResProvider,_T("SYS_XML_MSGBOX"),_T("XML"),xmlDoc)
+        if(!_LoadXmlDocment(_T("SYS_XML_MSGBOX"),_T("XML"),xmlDoc)
         || !SMessageBoxImpl::SetMsgTemplate(xmlDoc.child(L"SOUI")))
         {
             uRet |= 0x04;
