@@ -175,7 +175,7 @@ public:
 protected:
     void _CreateSingletons();
     void _DestroySingletons();
-    BOOL _LoadXmlDocment(IResProvider* pResProvider, LPCTSTR pszXmlName ,LPCTSTR pszType ,pugi::xml_document & xmlDoc);
+    BOOL _LoadXmlDocment(LPCTSTR pszXmlName ,LPCTSTR pszType ,pugi::xml_document & xmlDoc);
 
     HINSTANCE m_hInst;
     CAutoRefPtr<IScriptModule>  m_pScriptModule;

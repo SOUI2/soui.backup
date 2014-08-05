@@ -37,7 +37,7 @@ namespace SOUI
     * 
     * Describe  实现各种资源的加载
     */
-    struct SOUI_EXP IResProvider : public IObjRef
+    struct IResProvider : public IObjRef
     {
         /**
          * Init

@@ -5,7 +5,7 @@
 
 namespace SOUI
 {
-    class SOUI_EXP SResProviderMgr : public IResProvider
+    class SOUI_EXP SResProviderMgr
     {
     public:
         SResProviderMgr(void);
@@ -16,9 +16,6 @@ namespace SOUI
         void RemoveResProvider(IResProvider * pResProvider);
         
         //////////////////////////////////////////////////////////////////////////
-        // IResProvider
-        /*virtual */BOOL Init(WPARAM,LPARAM){return FALSE;}
-        
         /*virtual */BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
 
         /*virtual */HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0);
