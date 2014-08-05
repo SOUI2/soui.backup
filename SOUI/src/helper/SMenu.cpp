@@ -1,7 +1,7 @@
 #include "souistd.h"
 #include "SApp.h"
 #include "helper/SMenu.h"
-#include "core/mybuffer.h"
+#include "helper/mybuffer.h"
 #include "gdialpha.h"
 
 namespace SOUI

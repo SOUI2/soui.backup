@@ -7,7 +7,7 @@
 
 #include "souistd.h"
 #include "res.mgr/Sstringpool.h"
-#include "core/mybuffer.h"
+#include "helper/mybuffer.h"
 
 namespace SOUI
 {

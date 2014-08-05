@@ -9,7 +9,7 @@
 #include "souistd.h"
 #include "control/Slistboxex.h"
 #include "SApp.h"
-#include "core/mybuffer.h"
+#include "helper/mybuffer.h"
 
 #pragma warning(disable:4018)
 #pragma warning(disable:4267)

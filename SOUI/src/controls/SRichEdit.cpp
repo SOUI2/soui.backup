@@ -3,7 +3,7 @@
 #include "SApp.h"
 #include "helper/SMenu.h"
 #include "helper/SplitString.h"
-#include "core/mybuffer.h"
+#include "helper/mybuffer.h"
 #include <gdialpha.h>
 
 #pragma comment(lib,"imm32.lib")
