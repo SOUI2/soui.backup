@@ -79,8 +79,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
         bLoaded=transLoader.CreateInstance(COM_TRANSLATOR,(IObjRef**)&trans);
         ASSERT(bLoaded);
-        bLoaded=scriptLoader.CreateInstance(COM_SCRIPT_LUA,(IObjRef**)&pScriptLua);
-        ASSERT(bLoaded);
         
         SApplication *theApp=new SApplication(pRenderFactory,hInstance);
 
@@ -119,7 +117,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
                 trans->InstallTranslator(langCN);
             }
         }
-
+#ifdef DLL_SOUI
+        bLoaded=scriptLoader.CreateInstance(COM_SCRIPT_LUA,(IObjRef**)&pScriptLua);
+        ASSERT(bLoaded);
         if(pScriptLua)
         {
             theApp->SetScriptModule(pScriptLua);
@@ -132,6 +132,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
                 pScriptLua->executeScriptBuffer(lua,sz);
             }
         }
+#endif//DLL_SOUI
+
         SWkeLoader wkeLoader;
         if(wkeLoader.Init(_T("wke.dll")))        
         {
