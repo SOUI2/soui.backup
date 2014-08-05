@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="scriptmodule-lua"
-	ProjectGUID="{5E8BCBC7-B946-3938-8AE6-8EE661E4E2B6}"
+	ProjectGUID="{303C7C42-59FA-38E1-954E-0F58BBA1F226}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -222,6 +222,8 @@
 				</FileConfiguration>
 			</File>
 		</Filter>
+		<File
+			RelativePath="ScriptModule-Lua.rc" />
 	</Files>
 	<Globals>
 	</Globals>

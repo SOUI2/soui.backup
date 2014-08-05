@@ -24,3 +24,4 @@ PRECOMPILED_HEADER = stdafx.h
 # Input
 HEADERS += translator.h  targetver.h
 SOURCES += dllmain.cpp  translator.cpp
+RC_FILE += translator.rc

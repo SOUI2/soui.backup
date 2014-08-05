@@ -27,3 +27,4 @@ PRECOMPILED_HEADER = stdafx.h
 # Input
 HEADERS += drawtext-skia.h render-skia.h
 SOURCES += drawtext-skia.cpp render-skia.cpp
+RC_FILE += render-skia.rc

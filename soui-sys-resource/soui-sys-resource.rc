@@ -1,5 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
+#include "resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -67,12 +68,10 @@ SYS_PROG_BKGND          PNG                     "res\\sys_prog_bkgnd.png"
 SYS_PROG_BAR            PNG                     "res\\sys_prog_bar.png"
 SYS_SLIDER_THUMB        PNG                     "res\\sys_slider_thumb.png"
 SYS_TAB_PAGE            PNG                     "res\\sys_tab_page.png"
-
 SYS_BTN_MINIMIZE        PNG                     "res\\sys_btn_minimize.png"
 SYS_BTN_RESTORE         PNG                     "res\\sys_btn_restore.png"
 SYS_BTN_CLOSE           PNG                     "res\\sys_btn_close.png"
 SYS_BTN_MAXIMIZE        PNG                     "res\\sys_btn_maximize.png"
-
 SYS_MENU_CHECK          PNG                     "res\\sys_menu_check.png"
 SYS_MENU_BKGND          PNG                     "res\\sys_menu_bkgnd.png"
 SYS_MENU_SEP            PNG                     "res\\sys_menu_sep.png"
@@ -86,9 +85,46 @@ SYS_WND_BKGND           PNG                     "res\\sys_wnd_bkgnd.png"
 // XML
 //
 
-SYS_XML_SKIN                XML                     "res\\sys_xml_skin.xml"
-SYS_XML_EDITMENU            XML                     "res\\sys_xml_editmenu.xml"
-SYS_XML_MSGBOX              XML                     "res\\sys_xml_msgbox.xml"
+SYS_XML_SKIN            XML                     "res\\sys_xml_skin.xml"
+SYS_XML_EDITMENU        XML                     "res\\sys_xml_editmenu.xml"
+SYS_XML_MSGBOX          XML                     "res\\sys_xml_msgbox.xml"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404b0"
+        BEGIN
+            VALUE "FileDescription", "soui-sys-resource"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "soui-sys"
+            VALUE "LegalCopyright", "Copyright (C) 2014"
+            VALUE "OriginalFilename", "soui-sys-resource.dll"
+            VALUE "ProductName", "soui-sys-resource"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
 
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////

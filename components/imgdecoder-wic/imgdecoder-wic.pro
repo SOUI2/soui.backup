@@ -17,3 +17,4 @@ PRECOMPILED_HEADER = stdafx.h
 # Input
 HEADERS += imgdecoder-wic.h targetver.h
 SOURCES += dllmain.cpp imgdecoder-wic.cpp
+RC_FILE += imgdecoder-wic.rc

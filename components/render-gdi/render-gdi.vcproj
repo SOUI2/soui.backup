@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="render-gdi"
-	ProjectGUID="{E9EA7D7D-8D5A-3F2C-85B9-056200C58EB6}"
+	ProjectGUID="{05DE01F9-C257-3B7F-BD55-AD40AB3E8A05}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -198,6 +198,8 @@
 				</FileConfiguration>
 			</File>
 		</Filter>
+		<File
+			RelativePath="render-gdi.rc" />
 	</Files>
 	<Globals>
 	</Globals>

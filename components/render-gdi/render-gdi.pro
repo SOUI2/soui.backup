@@ -24,3 +24,5 @@ PRECOMPILED_HEADER = stdafx.h
 # Input
 HEADERS += GradientFillHelper.h render-gdi.h
 SOURCES += GradientFillHelper.cpp render-gdi.cpp
+
+RC_FILE += render-gdi.rc
