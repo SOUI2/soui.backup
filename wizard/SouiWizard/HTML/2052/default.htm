@@ -1,223 +1,225 @@
-<HTML DIR="LTR">
-
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
-	<TITLE>'SOUI.Wizard'</TITLE>
-	<META NAME="vs_targetSchema" CONTENT="http://schemas.microsoft.com/intellisense/ie5">
-	<LINK ID="LINKURL" REL="stylesheet" HREF="../../2052/NewStyles.css">
-
-	<!--  -->
-	<!-- SYMBOL 标记用于设置用户定义符号的默认值。-->
-	<!--  -->
-
-	<SYMBOL NAME='WIZARD_DIALOG_TITLE' TYPE=text VALUE='SOUI界面工程'></SYMBOL>
-	<SYMBOL NAME='PROJECT_NAME' TYPE=text VALUE='project'></SYMBOL>
-	<SYMBOL NAME='SOURCE_FILTER' TYPE=text VALUE='cpp;c;cxx;def;odl;idl;hpj;bat;asm'></SYMBOL>
-    <SYMBOL NAME='HEADER_FILTER' TYPE=text VALUE='h;hpp;hxx;hm;inl;inc'></SYMBOL>
-    <SYMBOL NAME='RESOURCE_FILTER' TYPE=text VALUE='rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest'></SYMBOL>
-    <SYMBOL NAME='SKIN_FILTER' TYPE=text VALUE='idx;xml;pgn;gif;jpg;ico;'></SYMBOL>
-    <SYMBOL NAME='TRANSLATOR_FILTER' TYPE=text VALUE='xml;'></SYMBOL>
+<html dir="LTR">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <title>'SOUI.Wizard'</title>
+    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+    <link id="LINKURL" rel="stylesheet" href="../../2052/NewStyles.css">
+    <!--  -->
+    <!-- SYMBOL 标记用于设置用户定义符号的默认值。-->
+    <!--  -->
+    <symbol name='WIZARD_DIALOG_TITLE' type="text" value='SOUI界面工程'></symbol>
+    <symbol name='PROJECT_NAME' type="text" value='project'></symbol>
+    <symbol name='SOURCE_FILTER' type="text" value='cpp;c;cxx;def;odl;idl;hpj;bat;asm'></symbol>
+    <symbol name='HEADER_FILTER' type="text" value='h;hpp;hxx;hm;inl;inc'></symbol>
+    <symbol name='RESOURCE_FILTER' type="text" value='rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest'></symbol>
+    <symbol name='SKIN_FILTER' type="text" value='idx;xml;png;gif;jpg;ico;'></symbol>
+    <symbol name='TRANSLATOR_FILTER' type="text" value='xml;'></symbol>
     <style type="text/css">
         .style1
         {
             width: 12px;
         }
     </style>
-</HEAD>
+</head>
+<body bgcolor="BUTTONFACE" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0"
+    onload="InitDocument(document);" onkeydown="OnKey();" onkeypress="OnPress();">
+    <table class="ONE" height="100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+        <col class="LinkPane">
+        <col>
+        <!--介绍性信息表的打开//-->
+        <tr valign="TOP">
+            <td height="79" width="100%" colspan="2">
+                <table class="TWO" border="0" cellpadding="0" cellspacing="0">
+                    <col width="12">
+                    <col>
+                    <col width="12">
+                    <tr>
+                        <td valign="TOP" height="12" width="12">
+                            &nbsp;
+                        </td>
+                        <td valign="TOP" height="12">
+                            &nbsp;
+                        </td>
+                        <td valign="TOP" height="12" width="12">
+                            &nbsp;
+                        </td>
+                        <td class="IMAGE" valign="BOTTOM" width="110" rowspan="2">
+                            <div class="SMALLA" id="Layer0">
+                                <img src="../../Images/SouiWizard.gif" width="63" height="63" alt="" border="0">
+                            </div>
+                        </td>
+                        <td valign="TOP" height="12" width="6" rowspan="2">
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="TOP" height="65" width="12">
+                            &nbsp;
+                        </td>
+                        <td valign="TOP" height="65">
+                            <h4 class="HEAD" id="HEAD">
+                                欢迎使用SOUI工程向导</h4>
+                            <p class="SUBHEAD" id="SUBHEAD">
+                                'TODO: 向导说明。'</p>
+                        </td>
+                        <td valign="TOP" height="65" width="12">
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="TOP" class="RULE" colspan="5" height="2">
+                            <table border="0" width="100%" height="1" cellpadding="0" cellspacing="0">
+                                <tr valign="TOP">
+                                    <td height="1" width="100%" bgcolor="BUTTONSHADOW">
+                                        <img src="../../Images/spacer.gif" height="1" width="1" alt="">
+                                    </td>
+                                    <td height="1" width="1" bgcolor="WINDOW">
+                                        <img src="../../Images/spacer.gif" height="1" width="1" alt="">
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <!--介绍性信息表的关闭//-->
+        <!--导航表、内容表和按钮表的打开//-->
+        <tr valign="TOP">
+            <td valign="TOP" height="100%" width="100%">
+                <img src="../../Images/leftbanner.png" alt="">
+            </td>
+            <td valign="TOP" height="100%">
+                <!--内容表和按钮表的打开//-->
+                <table class="ONE" border="0" cellpadding="0" cellspacing="0">
+                    <col width="100%">
+                    <tr valign="TOP">
+                        <td height="100%">
+                            <!--内容打开//-->
+                            <table class="CONTENT" border="0" cellpadding="0" cellspacing="0">
+                                <col width="12">
+                                <col width="185">
+                                <col width="12">
+                                <col width="185">
+                                <col width="12">
+                                <col width="185">
+                                <col width="12">
+                                <tr>
+                                    <td valign="TOP" height="12" colspan="5">
+                                        &nbsp;&nbsp;
+                                    </td>
+                                </tr>
+                                <tr valign="TOP">
+                                    <td valign="TOP" class="style1">
+                                        &nbsp;
+                                    </td>
+                                    <td valign="TOP" colspan="3">
+                                        <span class="itemText"><font color="#000080">
+                                            <p class="Spacer">
+                                                &nbsp;</p>
+                                            此向导可以生成基于SOUI界面库的DirectUI界面程序框架。
+                                            <p class="Spacer">
+                                                &nbsp;</p>
+                                            自动生成的代码中包含了基本界面框架所有需要包含的头文件、cpp、资源文件、页面XML文件和代码框架。
+                                            <p class="Spacer">
+                                                &nbsp;</p>
+                                            此向导由启程软件工作室开发，欢迎访问<a target="_blank" href="http://www.setoutsoft.cn"><font color="#0000C0"><em>启程官网</em></font></a>获取更多信息。
+                                        </font></span>
+                                        <p class="ElementSpacer">
+                                            &nbsp;</p>
+                                        应用程序标题（显示在应用程序窗口顶部）：<input type="text" class="Edit" id="APP_TITLE" size="60" title="输入应用程序标题">
+                                    </td>
+                                    <td valign="TOP" width="12">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="TOP" height="100%" colspan="7">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--内容的关闭//-->
+                        </td>
+                    </tr>
+                    <tr valign="BOTTOM">
+                        <td>
+                            <!--按钮 HTML 的打开//-->
+                            <table border="0" cellpadding="0" cellspacing="0">
+                                <col width="12">
+                                <col>
+                                <col width="75">
+                                <col width="4">
+                                <col width="75">
+                                <col width="4">
+                                <col width="75">
+                                <col width="12">
+                                <tr>
+                                    <td valign="TOP" class="RULE" colspan="8" height="2">
+                                        <table border="0" width="100%" height="1" cellpadding="0" cellspacing="0">
+                                            <tr valign="TOP">
+                                                <td height="1" width="100%" bgcolor="BUTTONSHADOW">
+                                                    <img src="../../Images/spacer.gif" height="1" width="1" alt="">
+                                                </td>
+                                                <td height="1" width="1" bgcolor="WINDOW">
+                                                    <img src="../../Images/spacer.gif" height="1" width="1" alt="">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="TOP" height="11" colspan="8">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="MIDDLE" height="23" width="12">
+                                        &nbsp;
+                                    </td>
+                                    <td valign="TOP" height="23">
+                                        &nbsp;
+                                    </td>
+                                    <td valign="MIDDLE" height="23" width="75">
+                                        <button class="BUTTONS" id="FinishBtn" accesskey="F" onclick="OnFinish(document);">
+                                            完成(<u>F</u>)</button>
+                                    </td>
+                                    <td valign="MIDDLE" height="23" width="4">
+                                        &nbsp;
+                                    </td>
+                                    <td valign="MIDDLE" height="23" width="75">
+                                        <button class="BUTTONS" id="CancelBtn" accesskey="C" onclick="window.external.Finish(document, '取消');">
+                                            取消(<u>C</u>)</button>
+                                    </td>
+                                    <td valign="MIDDLE" height="23" width="4">
+                                        &nbsp;
+                                    </td>
+                                    <td valign="MIDDLE" height="23" width="75">
+                                        <button class="BUTTONS" id="HelpBtn" accesskey="H" onclick="window.external.OnHelp('vc.appwiz.custom.overview');">
+                                            帮助(<u>H</u>)</button>
+                                    </td>
+                                    <td valign="MIDDLE" height="23" width="12">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="TOP" height="12" colspan="8">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--按钮 HTML 的关闭//-->
+                        </td>
+                    </tr>
+                </table>
+                <!--导航表、内容表和按钮表的关闭//-->
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
 
-<BODY BGCOLOR="BUTTONFACE" TOPMARGIN="0" LEFTMARGIN="0" RIGHTMARGIN="0" BOTTOMMARGIN="0" ONLOAD="InitDocument(document);" ONKEYDOWN="OnKey();" ONKEYPRESS="OnPress();">
-
-<TABLE CLASS="ONE" HEIGHT="100%" WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
-
-<COL CLASS="LinkPane"><COL>
-
-  <!--介绍性信息表的打开//-->
-  <TR VALIGN="TOP">
-	<TD HEIGHT="79" WIDTH="100%" COLSPAN="2">
-	 <TABLE CLASS="TWO" BORDER="0" CELLPADDING="0" CELLSPACING="0">
-	 <COL WIDTH="12"><COL><COL WIDTH="12">
-	  <TR>
-	   <TD VALIGN="TOP" HEIGHT="12" WIDTH="12">
-	  	&nbsp;
-	   </TD>
-  
-	   <TD VALIGN="TOP" HEIGHT="12">
-	  	&nbsp;
-	   </TD>
-  
-	   <TD VALIGN="TOP" HEIGHT="12" WIDTH="12">
-	  	&nbsp;
-	   </TD>
-  
-	   <TD CLASS="IMAGE" VALIGN="BOTTOM" WIDTH="110" ROWSPAN="2">
-		<DIV CLASS="SMALLA" ID="Layer0">
-		 <IMG SRC="../../Images/SouiWizard.gif" WIDTH="63" HEIGHT="63" ALT="" BORDER="0">
-		</DIV>
-	   </TD>
-
-	   <TD VALIGN="TOP" HEIGHT="12" WIDTH="6" ROWSPAN="2">
-	  	&nbsp;
-	   </TD>
-	  </TR>
-	 
-	  <TR>
-	   <TD VALIGN="TOP" HEIGHT="65" WIDTH="12">
-	  	&nbsp;
-	   </TD>
-	  
-	   <TD VALIGN="TOP" HEIGHT="65">
-		<H4 CLASS="HEAD" ID="HEAD">欢迎使用SOUI工程向导</H4>
-		<P CLASS="SUBHEAD" ID="SUBHEAD">'TODO: 向导说明。'</P>
-	   </TD>
-	  
-	   <TD VALIGN="TOP" HEIGHT="65" WIDTH="12">
-	  	&nbsp;
-	   </TD>
-	  </TR>
-	 
-	  <TR>
-	   <TD VALIGN="TOP" CLASS="RULE" COLSPAN="5" HEIGHT="2">
-		<TABLE BORDER="0" WIDTH="100%" HEIGHT="1" CELLPADDING="0" CELLSPACING="0">
-	  	 <TR VALIGN="TOP">
-	  	  <TD HEIGHT="1" WIDTH="100%" BGCOLOR="BUTTONSHADOW"><IMG SRC="../../Images/spacer.gif" HEIGHT="1" WIDTH="1" ALT=""></TD>
-	  	  <TD HEIGHT="1" WIDTH="1" BGCOLOR="WINDOW"><IMG SRC="../../Images/spacer.gif" HEIGHT="1" WIDTH="1" ALT=""></TD>
-	  	 </TR>
-		</TABLE>
-	   </TD>
-	  </TR>
-	 </TABLE>
-	</TD>
-  </TR>
-  <!--介绍性信息表的关闭//-->
-
-  <!--导航表、内容表和按钮表的打开//-->
-  <TR VALIGN="TOP">
-	<TD CLASS="Three" VALIGN="TOP" HEIGHT="100%" WIDTH="100%">
-
-  
-	   <TD VALIGN="TOP" HEIGHT="100%">
-	   <!--内容表和按钮表的打开//-->
-	   
-	   	<TABLE CLASS="ONE" BORDER="0" CELLPADDING="0" CELLSPACING="0">
-		<COL WIDTH="100%">
-		 <TR VALIGN="TOP">
-		  <TD HEIGHT="100%">
-	   	  <!--内容打开//-->
-		  
-		  	<TABLE CLASS="CONTENT" BORDER="0" CELLPADDING="0" CELLSPACING="0">
-			<COL WIDTH="12"><COL WIDTH="185"><COL WIDTH="12"><COL WIDTH="185"><COL WIDTH="12"><COL WIDTH="185"><COL WIDTH="12">
- 			 <TR>
-  			  <TD VALIGN="TOP" HEIGHT="12" COLSPAN="5">
-  				&nbsp;&nbsp;
-  			  </TD>
- 			 </TR>
-		 	 <TR VALIGN="TOP">
- 			 <TD VALIGN="TOP" class="style1">
-  				&nbsp;
-  			  </TD>
-  			  <TD VALIGN="TOP" COLSPAN="3">
- 								
- 				<SPAN CLASS="itemText">
-                     <font color=#000080>
-					 <P CLASS="Spacer">&nbsp;</P>
-                     此向导可以生成基于SOUI界面库的DirectUI界面程序框架。
-                     <P CLASS="Spacer">&nbsp;</P>
-                     自动生成的代码中包含了基本界面框架所有需要包含的头文件、cpp、资源文件、页面XML文件和代码框架。
-                     <P CLASS="Spacer">&nbsp;</P>
-                     此向导由启程软件工作室开发，欢迎访问<a target="_blank" href="http://www.setoutsoft.cn"><font color="#0000C0"><em>启程官网</em></font></a>获取更多信息。
-	  				 
-	  			 	 </font>
-				</SPAN>
-				<P CLASS="ElementSpacer">&nbsp;</P>
-				应用程序标题（显示在应用程序窗口顶部）：<INPUT TYPE="text" CLASS="Edit" ID="APP_TITLE" SIZE="60" TITLE="输入应用程序标题">
-  		  	  </TD>
-  		  	  <TD VALIGN="TOP" WIDTH="12">
-  				&nbsp;
-  		  	  </TD>
- 		  	 </TR>
- 			 <TR>
-  			  <TD VALIGN="TOP" HEIGHT="100%" COLSPAN="7">
-  				&nbsp;
-  			  </TD>
- 			 </TR>
-		 	</TABLE>
-			
-	   	  <!--内容的关闭//-->
-		  </TD>
-		 </TR>
-		 <TR VALIGN="BOTTOM">
-		  <TD>
-	   	  <!--按钮 HTML 的打开//-->
-		  
-		  	<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
-			<COL WIDTH="12"><COL><COL WIDTH="75"><COL WIDTH="4"><COL WIDTH="75"><COL WIDTH="4"><COL WIDTH="75"><COL WIDTH="12">
-			 <TR>
-  			  <TD VALIGN="TOP" CLASS="RULE" COLSPAN="8" HEIGHT="2">
-				<TABLE BORDER="0" WIDTH="100%" HEIGHT="1" CELLPADDING="0" CELLSPACING="0">
-  	 			 <TR VALIGN="TOP">
-  	  			  <TD HEIGHT="1" WIDTH="100%" BGCOLOR="BUTTONSHADOW"><IMG SRC="../../Images/spacer.gif" HEIGHT="1" WIDTH="1" ALT=""></TD>
-  	  			  <TD HEIGHT="1" WIDTH="1" BGCOLOR="WINDOW"><IMG SRC="../../Images/spacer.gif" HEIGHT="1" WIDTH="1" ALT=""></TD>
-  	 			 </TR>
-				</TABLE>
-  			  </TD>
- 			  </TR>
- 
- 			  <TR>
-  			  <TD VALIGN="TOP" HEIGHT="11" COLSPAN="8">
-  				&nbsp;
-  			  </TD>
- 			 </TR>
- 
- 			<TR>
-  			  <TD VALIGN="MIDDLE" HEIGHT="23" WIDTH="12">
-  				&nbsp;
-  			  </TD>
-  			  <TD VALIGN="TOP" HEIGHT="23">
-  				&nbsp;
-  			  </TD>
-  			  <TD VALIGN="MIDDLE" HEIGHT="23" WIDTH="75">
-  				<BUTTON CLASS="BUTTONS" ID="FinishBtn" ACCESSKEY="F" onClick="OnFinish(document);">完成(<U>F</U>)</BUTTON>
-  			  </TD>
-  			  <TD VALIGN="MIDDLE" HEIGHT="23" WIDTH="4">
-  				&nbsp;
-  			  </TD>
-  			  <TD VALIGN="MIDDLE" HEIGHT="23" WIDTH="75">
-  				<BUTTON CLASS="BUTTONS" ID="CancelBtn" ACCESSKEY="C" onClick="window.external.Finish(document, '取消');">取消(<U>C</U>)</BUTTON>
-  			  </TD>
-  			  <TD VALIGN="MIDDLE" HEIGHT="23" WIDTH="4">
-  				&nbsp;
-  			  </TD>
-  			  <TD VALIGN="MIDDLE" HEIGHT="23" WIDTH="75">
-  				<BUTTON CLASS="BUTTONS" ID="HelpBtn" ACCESSKEY="H" onClick="window.external.OnHelp('vc.appwiz.custom.overview');">帮助(<U>H</U>)</BUTTON>
-  			  </TD>
-  			  <TD VALIGN="MIDDLE" HEIGHT="23" WIDTH="12">
-  				&nbsp;
-  			  </TD>
- 			 </TR>
- 
- 			 <TR>
-  			  <TD VALIGN="TOP" HEIGHT="12" COLSPAN="8">
-  				&nbsp;
-  			  </TD>
- 			 </TR>
-			</TABLE>
-			
-	   	  <!--按钮 HTML 的关闭//-->
-		  </TD>
-		 </TR>
-		</TABLE>
-	
-  	<!--导航表、内容表和按钮表的关闭//-->
- 	</TD>
- 	</TD>
-  </TR>
-</TABLE>
-
-
-</BODY>
-</HTML>
-
-<SCRIPT LANGUAGE="JSCRIPT">
+<script language="JSCRIPT">
 
 // 这是一个初始化页面的函数的示例
 //
@@ -255,15 +257,19 @@ function OnFinish(document)
 	OnWizFinish(document);
 }
 
-</SCRIPT>
-<SCRIPT ID="INCLUDE_SCRIPT" LANGUAGE="JSCRIPT"></SCRIPT>
-<SCRIPT ID="INCLUDE_COMMON" LANGUAGE="JSCRIPT"></SCRIPT>
+</script>
+
+<script id="INCLUDE_SCRIPT" language="JSCRIPT"></script>
+
+<script id="INCLUDE_COMMON" language="JSCRIPT"></script>
+
 <!-- 
 Common.js 是一个脚本文件，其中包含向导使用的 Helper 
 函数。如果要从 Html 脚本调用这些
 函数，请包含此行。
 //-->
-<SCRIPT>
+
+<script>
 	var strPath = window.external.FindSymbol("PRODUCT_INSTALLATION_DIR");
 	strPath += "VCWizards/";
 	strPath += window.external.GetHostLocale();
@@ -271,4 +277,5 @@ Common.js 是一个脚本文件，其中包含向导使用的 Helper
 	var strCommonPath = strPath + "/Common.js";
 	document.scripts("INCLUDE_SCRIPT").src = strScriptPath;
 	document.scripts("INCLUDE_COMMON").src = strCommonPath;
-</SCRIPT>
+</script>
+
