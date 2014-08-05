@@ -7,6 +7,7 @@ TARGET = soui
 
 DLL_SOUI{
     DEFINES += DLL_SOUI SOUI_EXPORTS
+	RC_FILE += soui.rc
 }
 else{
     CONFIG += staticlib

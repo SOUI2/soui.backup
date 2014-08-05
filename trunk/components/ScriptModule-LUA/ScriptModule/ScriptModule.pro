@@ -14,9 +14,7 @@ INCLUDEPATH += . \
 dir = ../../..
 include($$dir/common.pri)
 
-DLL_SOUI{
-    DEFINES += DLL_SOUI
-}
+DEFINES += DLL_SOUI
 
 CONFIG(debug,debug|release){
 	LIBS += lua-51d.lib souid.lib utilitiesd.lib
@@ -27,6 +25,7 @@ else{
 
 PRECOMPILED_HEADER = stdafx.h
 
+RC_FILE += ScriptModule-Lua.rc
 # Input
 HEADERS += require.h \
            ScriptModule-Lua.h \

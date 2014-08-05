@@ -16,6 +16,8 @@ INCLUDEPATH += ./include
 
 PRECOMPILED_HEADER = stdafx.h
 
+RC_FILE += utilities.rc
+
 # Input
 HEADERS += targetver.h \
            include/gdialpha.h \

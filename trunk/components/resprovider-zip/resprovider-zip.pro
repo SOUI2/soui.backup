@@ -29,3 +29,4 @@ HEADERS += SResProviderZip.h ZipArchive.h
 SOURCES += cursoricon.cpp \
            SResProviderZip.cpp \
            zipArchive.cpp
+RC_FILE += ResProvider-Zip.rc
