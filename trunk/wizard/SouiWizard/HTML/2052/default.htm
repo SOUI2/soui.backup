@@ -7,6 +7,10 @@
     <!--  -->
     <!-- SYMBOL 标记用于设置用户定义符号的默认值。-->
     <!--  -->
+  	<SYMBOL NAME='CHECKBOX_TRANSLATOR_SUPPORT' TYPE=checkbox VALUE=true></SYMBOL>
+	<SYMBOL NAME='RADIO_RANDER_GDI' TYPE=checkbox VALUE=false></SYMBOL>
+	<SYMBOL NAME='RADIO_RANDER_SKIA' TYPE=checkbox VALUE=true></SYMBOL>
+
     <symbol name='WIZARD_DIALOG_TITLE' type="text" value='SOUI界面工程'></symbol>
     <symbol name='PROJECT_NAME' type="text" value='project'></symbol>
     <symbol name='SOURCE_FILTER' type="text" value='cpp;c;cxx;def;odl;idl;hpj;bat;asm'></symbol>
@@ -96,49 +100,21 @@
                     <tr valign="TOP">
                         <td height="100%">
                             <!--内容打开//-->
-                            <table class="CONTENT" border="0" cellpadding="0" cellspacing="0">
-                                <col width="12">
-                                <col width="185">
-                                <col width="12">
-                                <col width="185">
-                                <col width="12">
-                                <col width="185">
-                                <col width="12">
-                                <tr>
-                                    <td valign="TOP" height="12" colspan="5">
-                                        &nbsp;&nbsp;
-                                    </td>
-                                </tr>
-                                <tr valign="TOP">
-                                    <td valign="TOP" class="style1">
-                                        &nbsp;
-                                    </td>
-                                    <td valign="TOP" colspan="3">
-                                        <span class="itemText"><font color="#000080">
-                                            <p class="Spacer">
-                                                &nbsp;</p>
-                                            此向导可以生成基于SOUI界面库的DirectUI界面程序框架。
-                                            <p class="Spacer">
-                                                &nbsp;</p>
-                                            自动生成的代码中包含了基本界面框架所有需要包含的头文件、cpp、资源文件、页面XML文件和代码框架。
-                                            <p class="Spacer">
-                                                &nbsp;</p>
-                                            此向导由启程软件工作室开发，欢迎访问<a target="_blank" href="http://www.setoutsoft.cn"><font color="#0000C0"><em>启程官网</em></font></a>获取更多信息。
-                                        </font></span>
-                                        <p class="ElementSpacer">
-                                            &nbsp;</p>
-                                        应用程序标题（显示在应用程序窗口顶部）：<input type="text" class="Edit" id="APP_TITLE" size="60" title="输入应用程序标题">
-                                    </td>
-                                    <td valign="TOP" width="12">
-                                        &nbsp;
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td valign="TOP" height="100%" colspan="7">
-                                        &nbsp;
-                                    </td>
-                                </tr>
-                            </table>
+                             此向导可以生成基于SOUI界面库的DirectUI界面程序框架。自动生成的代码中包含了基本界面框架所有需要包含的头文件、cpp、资源文件、页面XML文件和代码框架。
+                             此向导由启程软件工作室开发，欢迎访问<a target="_blank" href="http://www.setoutsoft.cn"><font color="#0000C0"><em>启程官网</em></font></a>获取更多信息。
+                             <p class="ElementSpacer"/>
+                             应用程序标题（显示在应用程序窗口顶部）：<br />
+                             <input type="text" class="Edit" id="APP_TITLE" size="60" title="输入应用程序标题">
+                             
+            				<P CLASS="ElementSpacer">&nbsp;</P>
+                             <fieldset style="padding: 2">
+                            <legend>渲染模块</legend>
+                            <input type="radio" name="RADIO_RANDER_TYPE" id="RADIO_RANDER_GDI">GDI:体积小</input>
+                            <input type="radio" name="RADIO_RANDER_TYPE" id="RADIO_RANDER_SKIA">Skia:速度快</input>
+                            </fieldset>
+            				<P CLASS="ElementSpacer">&nbsp;</P>
+            				<INPUT TYPE="checkbox" ID="CHECKBOX_TRANSLATOR_SUPPORT">支持语言翻译</INPUT>
+
                             <!--内容的关闭//-->
                         </td>
                     </tr>

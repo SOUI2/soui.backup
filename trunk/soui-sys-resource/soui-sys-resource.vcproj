@@ -1,136 +1,338 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="soui-sys-resource"
 	ProjectGUID="{2BD73466-8F17-3076-9BF8-77B708B954D9}"
-	Keyword="Qt4VSv1.0">
+	RootNamespace="soui-sys-resource"
+	Keyword="Qt4VSv1.0"
+	TargetFrameworkVersion="0"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32" />
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\bin\"
+			IntermediateDirectory="..\obj\debug\soui-sys-resource\"
+			ConfigurationType="2"
+			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			ConfigurationType="2"
-			IntermediateDirectory="..\obj\debug\soui-sys-resource\"
-			UseOfMfc="0">
+			>
 			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\obj\debug\soui-sys-resource\"
-				DebugInformationFormat="3"
-				DisableSpecificWarnings="4100,4101,4102,4189,4996"
-				ExceptionHandling="1"
-				GeneratePreprocessedFile="0"
-				ObjectFile="..\obj\debug\soui-sys-resource\"
-				Optimization ="4"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
-				ProgramDataBaseFileName="$(IntDir)"
-				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				SuppressStartupBanner="true"
-				TreatWChar_tAsBuiltInType="false"
-				WarningLevel="3" />
+				Name="VCPreBuildEventTool"
+			/>
 			<Tool
-				Name="VCCustomBuildTool" />
+				Name="VCCustomBuildTool"
+			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalLibraryDirectories="..\bin"
-				GenerateDebugInformation="true"
-				IgnoreImportLibrary="true"
-				LinkTimeCodeGeneration="0"
-				OutputFile="$(OutDir)\soui-sys-resourced.dll"
-				ProgramDatabaseFile=""
-				ResourceOnlyDLL="true"
-				SubSystem="0"
-				SuppressStartupBanner="true"
-				TargetMachine="1" />
+				Name="VCXMLDataGeneratorTool"
+			/>
 			<Tool
-				Name="VCManifestTool" />
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
 			<Tool
 				Name="VCMIDLTool"
+				WarningLevel="0"
 				DefaultCharType="0"
 				EnableErrorChecks="1"
-				WarningLevel="0" />
+			/>
 			<Tool
-				Name="VCPostBuildEventTool" />
+				Name="VCCLCompilerTool"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				Optimization="4"
+				AdditionalIncludeDirectories="..\tools\mkspecs\win32-msvc2008"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
+				GeneratePreprocessedFile="0"
+				ExceptionHandling="1"
+				RuntimeLibrary="1"
+				TreatWChar_tAsBuiltInType="false"
+				RuntimeTypeInfo="false"
+				AssemblerListingLocation="..\obj\debug\soui-sys-resource\"
+				ObjectFile="..\obj\debug\soui-sys-resource\"
+				ProgramDataBaseFileName="$(IntDir)"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4100,4101,4102,4189,4996"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool" />
-			<Tool
-				Name="VCPreLinkEventTool" />
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_DEBUG" />
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_DEBUG"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				IgnoreImportLibrary="true"
+				OutputFile="$(OutDir)\soui-sys-resourced.dll"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\bin"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=""
+				SubSystem="0"
+				LinkTimeCodeGeneration="0"
+				ResourceOnlyDLL="true"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\bin\"
+			IntermediateDirectory="..\obj\release\soui-sys-resource\"
+			ConfigurationType="2"
+			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			ConfigurationType="2"
-			IntermediateDirectory="..\obj\release\soui-sys-resource\"
-			UseOfMfc="0">
+			>
 			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\obj\release\soui-sys-resource\"
-				DebugInformationFormat="3"
-				DisableSpecificWarnings="4100,4101,4102,4189,4996"
-				ExceptionHandling="1"
-				GeneratePreprocessedFile="0"
-				ObjectFile="..\obj\release\soui-sys-resource\"
-				Optimization ="1"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,NDEBUG"
-				ProgramDataBaseFileName="$(IntDir)"
-				RuntimeLibrary="0"
-				RuntimeTypeInfo="false"
-				SuppressStartupBanner="true"
-				TreatWChar_tAsBuiltInType="false"
-				WarningLevel="3" />
+				Name="VCPreBuildEventTool"
+			/>
 			<Tool
-				Name="VCCustomBuildTool" />
+				Name="VCCustomBuildTool"
+			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalLibraryDirectories="..\bin"
-				EnableCOMDATFolding="2"
-				GenerateDebugInformation="true"
-				IgnoreImportLibrary="true"
-				LinkIncremental="1"
-				LinkTimeCodeGeneration="0"
-				OptimizeReferences="2"
-				OutputFile="$(OutDir)\soui-sys-resource.dll"
-				ProgramDatabaseFile=""
-				ResourceOnlyDLL="true"
-				SubSystem="0"
-				SuppressStartupBanner="true"
-				TargetMachine="1" />
+				Name="VCXMLDataGeneratorTool"
+			/>
 			<Tool
-				Name="VCManifestTool" />
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
 			<Tool
 				Name="VCMIDLTool"
+				WarningLevel="0"
 				DefaultCharType="0"
 				EnableErrorChecks="1"
-				WarningLevel="0" />
+			/>
 			<Tool
-				Name="VCPostBuildEventTool" />
+				Name="VCCLCompilerTool"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				Optimization="1"
+				AdditionalIncludeDirectories="..\tools\mkspecs\win32-msvc2008"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,NDEBUG"
+				GeneratePreprocessedFile="0"
+				ExceptionHandling="1"
+				RuntimeLibrary="0"
+				TreatWChar_tAsBuiltInType="false"
+				RuntimeTypeInfo="false"
+				AssemblerListingLocation="..\obj\release\soui-sys-resource\"
+				ObjectFile="..\obj\release\soui-sys-resource\"
+				ProgramDataBaseFileName="$(IntDir)"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4100,4101,4102,4189,4996"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool" />
-			<Tool
-				Name="VCPreLinkEventTool" />
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS" />
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				IgnoreImportLibrary="true"
+				OutputFile="$(OutDir)\soui-sys-resource.dll"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\bin"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=""
+				SubSystem="0"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				LinkTimeCodeGeneration="0"
+				ResourceOnlyDLL="true"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<File
-			RelativePath="soui-sys-resource.rc" />
+			RelativePath=".\resource.h"
+			>
+		</File>
+		<File
+			RelativePath="soui-sys-resource.rc"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_border.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_btn_close.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_btn_maximize.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_btn_minimize.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_btn_restore.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_checkbox.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_dropbtn.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_focus_checkbox.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_focus_radio.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_header.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_icons.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_menu_bkgnd.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_menu_border.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_menu_check.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_menu_sep.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_menu_skin.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_prog_bar.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_prog_bkgnd.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_radio.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_scrollbar.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_slider_thumb.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_split_horz.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_split_vert.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_tab_page.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_tree_checkbox.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_Tree_toggle.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_wnd_bkgnd.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_xml_editmenu.xml"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_xml_msgbox.xml"
+			>
+		</File>
+		<File
+			RelativePath=".\res\sys_xml_skin.xml"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

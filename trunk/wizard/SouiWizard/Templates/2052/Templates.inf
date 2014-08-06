@@ -7,7 +7,7 @@ resource.h
 stdafx.cpp
 stdafx.h
 
-res\soui_res.rc2
+;res\soui_res.rc2
 
 [uires]uires.idx
 [uires][xml]init.xml
