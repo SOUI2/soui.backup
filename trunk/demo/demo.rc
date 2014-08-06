@@ -12,7 +12,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 中文(中华人民共和国) resources
+// Chinese (P.R.C.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
@@ -70,6 +70,7 @@ BEGIN
     BEGIN
         BLOCK "080404b0"
         BEGIN
+            VALUE "CompanyName", "启程软件"
             VALUE "FileDescription", "Demo"
             VALUE "FileVersion", "1, 0, 0, 1"
             VALUE "InternalName", "Demo"
@@ -85,8 +86,7 @@ BEGIN
     END
 END
 
-
-#endif    // 中文(中华人民共和国) resources
+#endif    // Chinese (P.R.C.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -99,7 +99,7 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
 #pragma code_page(936)
-#include "res\soui_res.rc2"
+#include "res\soui_res.rc2" //SOUI资源
 #endif
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED

@@ -1,5 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
+#include "resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -12,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 中文(中华人民共和国) resources
+// Chinese (P.R.C.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
@@ -68,6 +69,7 @@ BEGIN
     BEGIN
         BLOCK "080404b0"
         BEGIN
+            VALUE "CompanyName", "启程软件"
             VALUE "FileDescription", "scriptmodule-lua"
             VALUE "FileVersion", "1, 0, 0, 1"
             VALUE "InternalName", "scriptmodule-lua"
@@ -83,7 +85,7 @@ BEGIN
     END
 END
 
-#endif    // 中文(中华人民共和国) resources
+#endif    // Chinese (P.R.C.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

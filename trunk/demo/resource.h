@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by dui-demo.rc
+// Used by demo.rc
 //
 #define IDR_XML1                        111
 #define IDR_XML21                       112
