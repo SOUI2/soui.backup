@@ -536,7 +536,7 @@ void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD d
     }
 
     if(m_ptText.x!=-1 && m_ptText.y!=-1)
-    {
+    {//从指定位置开始绘制文字
         pRT->TextOut(rcItem.left+m_ptText.x,rcItem.top+m_ptText.y,GetItem(iItem)->GetTitle(),-1,m_byAlpha);
     }
     else
@@ -545,12 +545,12 @@ void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD d
         UINT alignStyle=m_style.GetTextAlign();
         UINT align=alignStyle;
         if(m_ptText.x==-1 && m_ptText.y!=-1)
-        {
+        {//指定了Y偏移，X居中
             rcText.top+=m_ptText.y;
-            align=alignStyle&(DT_CENTER|DT_RIGHT|DT_END_ELLIPSIS);
+            align=alignStyle&(DT_CENTER|DT_RIGHT|DT_SINGLELINE|DT_END_ELLIPSIS);
         }
         else if(m_ptText.x!=-1 && m_ptText.y==-1)
-        {
+        {//指定了X偏移，Y居中
             rcText.left+=m_ptText.x;
             align=alignStyle&(DT_VCENTER|DT_BOTTOM|DT_SINGLELINE|DT_END_ELLIPSIS);
         }

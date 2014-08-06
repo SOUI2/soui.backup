@@ -1,5 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
+#include "resource.h"
+
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -11,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 中文(中华人民共和国) resources
+// Chinese (P.R.C.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
@@ -109,9 +111,10 @@ BEGIN
     BEGIN
         BLOCK "080404b0"
         BEGIN
+            VALUE "CompanyName", "启程软件"
             VALUE "FileDescription", "soui-sys-resource"
             VALUE "FileVersion", "1, 0, 0, 1"
-            VALUE "InternalName", "soui-sys"
+            VALUE "InternalName", "soui-sys-resource"
             VALUE "LegalCopyright", "Copyright (C) 2014"
             VALUE "OriginalFilename", "soui-sys-resource.dll"
             VALUE "ProductName", "soui-sys-resource"
@@ -124,7 +127,7 @@ BEGIN
     END
 END
 
-#endif    // 中文(中华人民共和国) resources
+#endif    // Chinese (P.R.C.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

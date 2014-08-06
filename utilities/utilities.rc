@@ -1,5 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
+#include "resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -12,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 中文(中华人民共和国) resources
+// Chinese (P.R.C.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
@@ -68,12 +69,13 @@ BEGIN
     BEGIN
         BLOCK "080404b0"
         BEGIN
-            VALUE "FileDescription", "utilitie 动态链接库"
+            VALUE "CompanyName", "启程软件"
+            VALUE "FileDescription", "utilities"
             VALUE "FileVersion", "1, 0, 0, 1"
-            VALUE "InternalName", "utilitie"
+            VALUE "InternalName", "utilities"
             VALUE "LegalCopyright", "Copyright (C) 2014"
-            VALUE "OriginalFilename", "utilitie.dll"
-            VALUE "ProductName", "utilitie 动态链接库"
+            VALUE "OriginalFilename", "utilities.dll"
+            VALUE "ProductName", "utilities"
             VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END
@@ -83,7 +85,7 @@ BEGIN
     END
 END
 
-#endif    // 中文(中华人民共和国) resources
+#endif    // Chinese (P.R.C.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
