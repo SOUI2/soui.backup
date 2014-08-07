@@ -297,7 +297,7 @@ template< typename T >
 class CDefaultHashTraits
 {
 public:
-    static ULONG Hash( const T& element ) throw()
+    static ULONG Hash( const T& element )
     {
         return( ULONG( ULONG_PTR( element ) ) );
     }
@@ -442,12 +442,12 @@ public:
         return( nHash );
     }
 
-    static bool CompareElements( INARGTYPE str1, INARGTYPE str2 ) throw()
+    static bool CompareElements( INARGTYPE str1, INARGTYPE str2 )
     {
         return( T::StrTraits::StringCompareIgnore( str1, str2 ) == 0 );
     }
 
-    static int CompareElementsOrdered( INARGTYPE str1, INARGTYPE str2 ) throw()
+    static int CompareElementsOrdered( INARGTYPE str1, INARGTYPE str2 )
     {
         return( T::StrTraits::StringCompareIgnore( str1, str2 ) );
     }
@@ -475,12 +475,12 @@ public:
         return( nHash );
     }
 
-    static bool CompareElements( INARGTYPE element1, INARGTYPE element2 ) throw()
+    static bool CompareElements( INARGTYPE element1, INARGTYPE element2 )
     {
         return( element1 == element2 );
     }
 
-    static int CompareElementsOrdered( INARGTYPE str1, INARGTYPE str2 ) throw()
+    static int CompareElementsOrdered( INARGTYPE str1, INARGTYPE str2 )
     {
         return( str1.Compare( str2 ) );
     }
@@ -529,21 +529,21 @@ public:
     typedef typename ETraits::OUTARGTYPE OUTARGTYPE;
 
 public:
-    SArray() throw();
+    SArray();
 
-    size_t GetCount() const throw();
-    bool IsEmpty() const throw();
+    size_t GetCount() const;
+    bool IsEmpty() const;
     bool SetCount( size_t nNewSize, int nGrowBy = -1 );
 
-    void FreeExtra() throw();
-    void RemoveAll() throw();
+    void FreeExtra();
+    void RemoveAll();
 
     const E& GetAt( size_t iElement ) const;
     void SetAt( size_t iElement, INARGTYPE element );
     E& GetAt( size_t iElement );
 
-    const E* GetData() const throw();
-    E* GetData() throw();
+    const E* GetData() const;
+    E* GetData();
 
     void SetAtGrow( size_t iElement, INARGTYPE element );
     // Add an empty element to the end of the array
@@ -576,27 +576,27 @@ private:
 
 private:
     static void CallConstructors( E* pElements, size_t nElements );
-    static void CallDestructors( E* pElements, size_t nElements ) throw();
+    static void CallDestructors( E* pElements, size_t nElements );
 
 public:
-    ~SArray() throw();
+    ~SArray();
 
 };
 
 template< typename E, class ETraits >
-inline size_t SArray< E, ETraits >::GetCount() const throw()
+inline size_t SArray< E, ETraits >::GetCount() const
 {
     return( m_nSize );
 }
 
 template< typename E, class ETraits >
-inline bool SArray< E, ETraits >::IsEmpty() const throw()
+inline bool SArray< E, ETraits >::IsEmpty() const
 {
     return( m_nSize == 0 );
 }
 
 template< typename E, class ETraits >
-inline void SArray< E, ETraits >::RemoveAll() throw()
+inline void SArray< E, ETraits >::RemoveAll()
 {
     SetCount( 0, -1 );
 }
@@ -632,13 +632,13 @@ inline E& SArray< E, ETraits >::GetAt( size_t iElement )
 }
 
 template< typename E, class ETraits >
-inline const E* SArray< E, ETraits >::GetData() const throw()
+inline const E* SArray< E, ETraits >::GetData() const
 {
     return( m_pData );
 }
 
 template< typename E, class ETraits >
-inline E* SArray< E, ETraits >::GetData() throw()
+inline E* SArray< E, ETraits >::GetData()
 {
     return( m_pData );
 }
@@ -704,7 +704,7 @@ inline E& SArray< E, ETraits >::operator[]( size_t iElement )
 }
 
 template< typename E, class ETraits >
-SArray< E, ETraits >::SArray()  throw():
+SArray< E, ETraits >::SArray() :
     m_pData( NULL ),
     m_nSize( 0 ),
     m_nMaxSize( 0 ),
@@ -713,7 +713,7 @@ SArray< E, ETraits >::SArray()  throw():
 }
 
 template< typename E, class ETraits >
-SArray< E, ETraits >::~SArray() throw()
+SArray< E, ETraits >::~SArray()
 {
     if( m_pData != NULL )
     {
@@ -868,7 +868,7 @@ void SArray< E, ETraits >::Copy( const SArray< E, ETraits >& aSrc )
 }
 
 template< typename E, class ETraits >
-void SArray< E, ETraits >::FreeExtra() throw()
+void SArray< E, ETraits >::FreeExtra()
 {
     SASSERT_VALID(this);
 
@@ -914,17 +914,17 @@ void SArray< E, ETraits >::SetAtGrow( size_t iElement, INARGTYPE element )
         }
     }
 
-    _STRY
+//     _STRY
     {
         m_pData[iElement] = element;
     }
-    _SCATCHALL()
-    {
-        if( m_nSize != nOldSize )
-        {
-            SetCount( nOldSize, -1 );
-        }
-    }
+//     _SCATCHALL()
+//     {
+//         if( m_nSize != nOldSize )
+//         {
+//             SetCount( nOldSize, -1 );
+//         }
+//     }
 }
 
 template< typename E, class ETraits >
@@ -957,17 +957,17 @@ void SArray< E, ETraits >::InsertAt( size_t iElement, INARGTYPE element, size_t 
         ETraits::RelocateElements( m_pData+(iElement+nElements), m_pData+iElement,
                                    nOldSize-iElement );
 
-        _STRY
+//         _STRY
         {
             // re-init slots we copied from
             CallConstructors( m_pData+iElement, nElements );
         }
-        _SCATCHALL()
-        {
-            ETraits::RelocateElements( m_pData+iElement, m_pData+(iElement+nElements),
-                                       nOldSize-iElement );
-            SetCount( nOldSize, -1 );
-        }
+//         _SCATCHALL()
+//         {
+//             ETraits::RelocateElements( m_pData+iElement, m_pData+(iElement+nElements),
+//                                        nOldSize-iElement );
+//             SetCount( nOldSize, -1 );
+//         }
     }
 
     // insert new value in the gap
@@ -1041,28 +1041,28 @@ void SArray< E, ETraits >::CallConstructors( E* pElements, size_t nElements )
 {
     size_t iElement = 0;
 
-    _STRY
+//     _STRY
     {
         for( iElement = 0; iElement < nElements; iElement++ )
         {
             ::new( pElements+iElement ) E;
         }
     }
-    _SCATCHALL()
-    {
-        while( iElement > 0 )
-        {
-            iElement--;
-            pElements[iElement].~E();
-        }
-
-    }
+//     _SCATCHALL()
+//     {
+//         while( iElement > 0 )
+//         {
+//             iElement--;
+//             pElements[iElement].~E();
+//         }
+// 
+//     }
 }
 
 #pragma pop_macro("new")
 
 template< typename E, class ETraits >
-void SArray< E, ETraits >::CallDestructors( E* pElements, size_t nElements ) throw()
+void SArray< E, ETraits >::CallDestructors( E* pElements, size_t nElements )
 {
     (void)pElements;
 
@@ -1091,7 +1091,7 @@ private:
             m_element( element )
         {
         }
-        ~CNode() throw()
+        ~CNode()
         {
         }
 
@@ -1101,14 +1101,14 @@ private:
         E m_element;
 
     private:
-        CNode( const CNode& ) throw();
+        CNode( const CNode& );
     };
 
 public:
-    SList( UINT nBlockSize = 10 ) throw();
+    SList( UINT nBlockSize = 10 );
 
-    size_t GetCount() const throw();
-    bool IsEmpty() const throw();
+    size_t GetCount() const;
+    bool IsEmpty() const;
 
     E& GetHead();
     const E& GetHead() const;
@@ -1117,8 +1117,8 @@ public:
 
     E RemoveHead();
     E RemoveTail();
-    void RemoveHeadNoReturn() throw();
-    void RemoveTailNoReturn() throw();
+    void RemoveHeadNoReturn();
+    void RemoveTailNoReturn();
 
     POSITION AddHead();
     POSITION AddHead( INARGTYPE element );
@@ -1127,29 +1127,29 @@ public:
     POSITION AddTail( INARGTYPE element );
     void AddTailList( const SList< E, ETraits >* plNew );
 
-    void RemoveAll() throw();
+    void RemoveAll();
 
-    POSITION GetHeadPosition() const throw();
-    POSITION GetTailPosition() const throw();
+    POSITION GetHeadPosition() const;
+    POSITION GetTailPosition() const;
     E& GetNext( POSITION& pos );
     const E& GetNext( POSITION& pos ) const;
     E& GetPrev( POSITION& pos );
-    const E& GetPrev( POSITION& pos ) const throw();
+    const E& GetPrev( POSITION& pos ) const;
 
     E& GetAt( POSITION pos );
     const E& GetAt( POSITION pos ) const;
     void SetAt( POSITION pos, INARGTYPE element );
-    void RemoveAt( POSITION pos ) throw();
+    void RemoveAt( POSITION pos );
 
     POSITION InsertBefore( POSITION pos, INARGTYPE element );
     POSITION InsertAfter( POSITION pos, INARGTYPE element );
 
-    POSITION Find( INARGTYPE element, POSITION posStartAfter = NULL ) const throw();
-    POSITION FindIndex( size_t iElement ) const throw();
+    POSITION Find( INARGTYPE element, POSITION posStartAfter = NULL ) const;
+    POSITION FindIndex( size_t iElement ) const;
 
     void MoveToHead( POSITION pos );
     void MoveToTail( POSITION pos );
-    void SwapElements( POSITION pos1, POSITION pos2 ) throw();
+    void SwapElements( POSITION pos1, POSITION pos2 );
 
 #ifdef _DEBUG
     void AssertValid() const;
@@ -1168,25 +1168,25 @@ private:
     void GetFreeNode();
     CNode* NewNode( CNode* pPrev, CNode* pNext );
     CNode* NewNode( INARGTYPE element, CNode* pPrev, CNode* pNext );
-    void FreeNode( CNode* pNode ) throw();
+    void FreeNode( CNode* pNode );
 
 public:
-    ~SList() throw();
+    ~SList();
 
 private:
     // Private to prevent use
-    SList( const SList& ) throw();
-    SList& operator=( const SList& ) throw();
+    SList( const SList& );
+    SList& operator=( const SList& );
 };
 
 template< typename E, class ETraits >
-inline size_t SList< E, ETraits >::GetCount() const throw()
+inline size_t SList< E, ETraits >::GetCount() const
 {
     return( m_nElements );
 }
 
 template< typename E, class ETraits >
-inline bool SList< E, ETraits >::IsEmpty() const throw()
+inline bool SList< E, ETraits >::IsEmpty() const
 {
     return( m_nElements == 0 );
 }
@@ -1220,13 +1220,13 @@ inline const E& SList< E, ETraits >::GetTail() const
 }
 
 template< typename E, class ETraits >
-inline POSITION SList< E, ETraits >::GetHeadPosition() const throw()
+inline POSITION SList< E, ETraits >::GetHeadPosition() const
 {
     return( POSITION( m_pHead ) );
 }
 
 template< typename E, class ETraits >
-inline POSITION SList< E, ETraits >::GetTailPosition() const throw()
+inline POSITION SList< E, ETraits >::GetTailPosition() const
 {
     return( POSITION( m_pTail ) );
 }
@@ -1268,7 +1268,7 @@ inline E& SList< E, ETraits >::GetPrev( POSITION& pos )
 }
 
 template< typename E, class ETraits >
-inline const E& SList< E, ETraits >::GetPrev( POSITION& pos ) const throw()
+inline const E& SList< E, ETraits >::GetPrev( POSITION& pos ) const
 {
     CNode* pNode;
 
@@ -1304,7 +1304,7 @@ inline void SList< E, ETraits >::SetAt( POSITION pos, INARGTYPE element )
 }
 
 template< typename E, class ETraits >
-SList< E, ETraits >::SList( UINT nBlockSize ) throw() :
+SList< E, ETraits >::SList( UINT nBlockSize ) :
     m_nElements( 0 ),
     m_pHead( NULL ),
     m_pTail( NULL ),
@@ -1340,7 +1340,7 @@ void SList< E, ETraits >::RemoveAll()
 }
 
 template< typename E, class ETraits >
-SList< E, ETraits >::~SList() throw()
+SList< E, ETraits >::~SList()
 {
     RemoveAll();
     SASSUME( m_nElements == 0 );
@@ -1416,7 +1416,7 @@ typename SList< E, ETraits >::CNode* SList< E, ETraits >::NewNode( INARGTYPE ele
 #pragma pop_macro("new")
 
 template< typename E, class ETraits >
-void SList< E, ETraits >::FreeNode( CNode* pNode ) throw()
+void SList< E, ETraits >::FreeNode( CNode* pNode )
 {
     pNode->~CNode();
     pNode->m_pNext = m_pFree;
@@ -1693,7 +1693,7 @@ void SList< E, ETraits >::RemoveAt( POSITION pos )
 }
 
 template< typename E, class ETraits >
-POSITION SList< E, ETraits >::FindIndex( size_t iElement ) const throw()
+POSITION SList< E, ETraits >::FindIndex( size_t iElement ) const
 {
     SASSERT_VALID(this);
 
@@ -1775,7 +1775,7 @@ void SList< E, ETraits >::MoveToTail( POSITION pos )
 }
 
 template< typename E, class ETraits >
-void SList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 ) throw()
+void SList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 )
 {
     ASSERT( pos1 != NULL );
     ASSERT( pos2 != NULL );
@@ -1874,7 +1874,7 @@ void SList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 ) throw()
 }
 
 template< typename E, class ETraits >
-POSITION SList< E, ETraits >::Find( INARGTYPE element, POSITION posStartAfter ) const throw()
+POSITION SList< E, ETraits >::Find( INARGTYPE element, POSITION posStartAfter ) const
 {
     SASSERT_VALID(this);
 
@@ -1949,7 +1949,7 @@ private:
         }
 
     public:
-        UINT GetHash() const throw()
+        UINT GetHash() const
         {
             return( m_nHash );
         }
@@ -1961,41 +1961,41 @@ private:
 
 public:
     SMap( UINT nBins = 17, float fOptimalLoad = 0.75f,
-             float fLoThreshold = 0.25f, float fHiThreshold = 2.25f, UINT nBlockSize = 10 ) throw();
+             float fLoThreshold = 0.25f, float fHiThreshold = 2.25f, UINT nBlockSize = 10 );
 
-    size_t GetCount() const throw();
-    bool IsEmpty() const throw();
+    size_t GetCount() const;
+    bool IsEmpty() const;
 
     bool Lookup( KINARGTYPE key, VOUTARGTYPE value ) const;
-    const CPair* Lookup( KINARGTYPE key ) const throw();
-    CPair* Lookup( KINARGTYPE key ) throw();
+    const CPair* Lookup( KINARGTYPE key ) const;
+    CPair* Lookup( KINARGTYPE key );
     V& operator[]( KINARGTYPE key ) throw(...);
 
     POSITION SetAt( KINARGTYPE key, VINARGTYPE value );
     void SetValueAt( POSITION pos, VINARGTYPE value );
 
-    bool RemoveKey( KINARGTYPE key ) throw();
+    bool RemoveKey( KINARGTYPE key );
     void RemoveAll();
-    void RemoveAtPos( POSITION pos ) throw();
+    void RemoveAtPos( POSITION pos );
 
-    POSITION GetStartPosition() const throw();
+    POSITION GetStartPosition() const;
     void GetNextAssoc( POSITION& pos, KOUTARGTYPE key, VOUTARGTYPE value ) const;
-    const CPair* GetNext( POSITION& pos ) const throw();
-    CPair* GetNext( POSITION& pos ) throw();
+    const CPair* GetNext( POSITION& pos ) const;
+    CPair* GetNext( POSITION& pos );
     const K& GetNextKey( POSITION& pos ) const;
     const V& GetNextValue( POSITION& pos ) const;
     V& GetNextValue( POSITION& pos );
     void GetAt( POSITION pos, KOUTARGTYPE key, VOUTARGTYPE value ) const;
-    CPair* GetAt( POSITION pos ) throw();
-    const CPair* GetAt( POSITION pos ) const throw();
+    CPair* GetAt( POSITION pos );
+    const CPair* GetAt( POSITION pos ) const;
     const K& GetKeyAt( POSITION pos ) const;
     const V& GetValueAt( POSITION pos ) const;
     V& GetValueAt( POSITION pos );
 
-    UINT GetHashTableSize() const throw();
+    UINT GetHashTableSize() const;
     bool InitHashTable( UINT nBins, bool bAllocNow = true );
-    void EnableAutoRehash() throw();
-    void DisableAutoRehash() throw();
+    void EnableAutoRehash();
+    void DisableAutoRehash();
     void Rehash( UINT nBins = 0 );
     void SetOptimalLoad( float fOptimalLoad, float fLoThreshold, float fHiThreshold,
                          bool bRehashNow = false );
@@ -2020,35 +2020,35 @@ private:
     CNode* m_pFree;
 
 private:
-    bool IsLocked() const throw();
-    UINT PickSize( size_t nElements ) const throw();
+    bool IsLocked() const;
+    UINT PickSize( size_t nElements ) const;
     CNode* NewNode( KINARGTYPE key, UINT iBin, UINT nHash );
     void FreeNode( CNode* pNode );
-    void FreePlexes() throw();
-    CNode* GetNode( KINARGTYPE key, UINT& iBin, UINT& nHash, CNode*& pPrev ) const throw();
+    void FreePlexes();
+    CNode* GetNode( KINARGTYPE key, UINT& iBin, UINT& nHash, CNode*& pPrev ) const;
     CNode* CreateNode( KINARGTYPE key, UINT iBin, UINT nHash ) throw(...);
-    void RemoveNode( CNode* pNode, CNode* pPrev ) throw();
-    CNode* FindNextNode( CNode* pNode ) const throw();
-    void UpdateRehashThresholds() throw();
+    void RemoveNode( CNode* pNode, CNode* pPrev );
+    CNode* FindNextNode( CNode* pNode ) const;
+    void UpdateRehashThresholds();
 
 public:
-    ~SMap() throw();
+    ~SMap();
 
 private:
     // Private to prevent use
-    SMap( const SMap& ) throw();
-    SMap& operator=( const SMap& ) throw();
+    SMap( const SMap& );
+    SMap& operator=( const SMap& );
 };
 
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline size_t SMap< K, V, KTraits, VTraits >::GetCount() const throw()
+inline size_t SMap< K, V, KTraits, VTraits >::GetCount() const
 {
     return( m_nElements );
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline bool SMap< K, V, KTraits, VTraits >::IsEmpty() const throw()
+inline bool SMap< K, V, KTraits, VTraits >::IsEmpty() const
 {
     return( m_nElements == 0 );
 }
@@ -2071,7 +2071,7 @@ inline V& SMap< K, V, KTraits, VTraits >::operator[]( KINARGTYPE key ) throw(...
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline UINT SMap< K, V, KTraits, VTraits >::GetHashTableSize() const throw()
+inline UINT SMap< K, V, KTraits, VTraits >::GetHashTableSize() const
 {
     return( m_nBins );
 }
@@ -2088,7 +2088,7 @@ inline void SMap< K, V, KTraits, VTraits >::GetAt( POSITION pos, KOUTARGTYPE key
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetAt( POSITION pos ) throw()
+inline typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetAt( POSITION pos )
 {
     ASSERT( pos != NULL );
 
@@ -2096,7 +2096,7 @@ inline typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTra
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetAt( POSITION pos ) const throw()
+inline const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetAt( POSITION pos ) const
 {
     ASSERT( pos != NULL );
 
@@ -2134,26 +2134,26 @@ inline V& SMap< K, V, KTraits, VTraits >::GetValueAt( POSITION pos )
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline void SMap< K, V, KTraits, VTraits >::DisableAutoRehash() throw()
+inline void SMap< K, V, KTraits, VTraits >::DisableAutoRehash()
 {
     m_nLockCount++;
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline void SMap< K, V, KTraits, VTraits >::EnableAutoRehash() throw()
+inline void SMap< K, V, KTraits, VTraits >::EnableAutoRehash()
 {
     SASSUME( m_nLockCount > 0 );
     m_nLockCount--;
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline bool SMap< K, V, KTraits, VTraits >::IsLocked() const throw()
+inline bool SMap< K, V, KTraits, VTraits >::IsLocked() const
 {
     return( m_nLockCount != 0 );
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-UINT SMap< K, V, KTraits, VTraits >::PickSize( size_t nElements ) const throw()
+UINT SMap< K, V, KTraits, VTraits >::PickSize( size_t nElements ) const
 {
     // List of primes such that s_anPrimes[i] is the smallest prime greater than 2^(5+i/3)
     static const UINT s_anPrimes[] =
@@ -2209,7 +2209,7 @@ typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-POSITION SMap< K, V, KTraits, VTraits >::GetStartPosition() const throw()
+POSITION SMap< K, V, KTraits, VTraits >::GetStartPosition() const
 {
     if( IsEmpty() )
     {
@@ -2240,14 +2240,14 @@ POSITION SMap< K, V, KTraits, VTraits >::SetAt( KINARGTYPE key, VINARGTYPE value
     if( pNode == NULL )
     {
         pNode = CreateNode( key, iBin, nHash );
-        _STRY
+//         _STRY
         {
             pNode->m_value = value;
         }
-        _SCATCHALL()
-        {
-            RemoveAtPos( POSITION( pNode ) );
-        }
+//         _SCATCHALL()
+//         {
+//             RemoveAtPos( POSITION( pNode ) );
+//         }
     }
     else
     {
@@ -2269,7 +2269,7 @@ void SMap< K, V, KTraits, VTraits >::SetValueAt( POSITION pos, VINARGTYPE value 
 
 template< typename K, typename V, class KTraits, class VTraits >
 SMap< K, V, KTraits, VTraits >::SMap( UINT nBins, float fOptimalLoad,
-        float fLoThreshold, float fHiThreshold, UINT nBlockSize ) throw() :
+        float fLoThreshold, float fHiThreshold, UINT nBlockSize ) :
     m_ppBins( NULL ),
     m_nBins( nBins ),
     m_nElements( 0 ),
@@ -2311,7 +2311,7 @@ void SMap< K, V, KTraits, VTraits >::SetOptimalLoad( float fOptimalLoad, float f
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void SMap< K, V, KTraits, VTraits >::UpdateRehashThresholds() throw()
+void SMap< K, V, KTraits, VTraits >::UpdateRehashThresholds()
 {
     m_nHiRehashThreshold = size_t( m_fHiThreshold*m_nBins );
     m_nLoRehashThreshold = size_t( m_fLoThreshold*m_nBins );
@@ -2388,16 +2388,9 @@ void SMap< K, V, KTraits, VTraits >::RemoveAll()
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-SMap< K, V, KTraits, VTraits >::~SMap() throw()
+SMap< K, V, KTraits, VTraits >::~SMap()
 {
-    _STRY
-    {
-        RemoveAll();
-    }
-    _SCATCHALL()
-    {
-        ASSERT(false);
-    }
+    RemoveAll();
 }
 
 #pragma push_macro("new")
@@ -2432,16 +2425,16 @@ typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::
     pNewNode = m_pFree;
     m_pFree = pNewNode->m_pNext;
 
-    _STRY
+//     _STRY
     {
         ::new( pNewNode ) CNode( key, nHash );
     }
-    _SCATCHALL()
-    {
-        pNewNode->m_pNext = m_pFree;
-        m_pFree = pNewNode;
-
-    }
+//     _SCATCHALL()
+//     {
+//         pNewNode->m_pNext = m_pFree;
+//         m_pFree = pNewNode;
+// 
+//     }
     m_nElements++;
 
     pNewNode->m_pNext = m_ppBins[iBin];
@@ -2481,7 +2474,7 @@ void SMap< K, V, KTraits, VTraits >::FreeNode( CNode* pNode )
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void SMap< K, V, KTraits, VTraits >::FreePlexes() throw()
+void SMap< K, V, KTraits, VTraits >::FreePlexes()
 {
     m_pFree = NULL;
     if( m_pBlocks != NULL )
@@ -2493,7 +2486,7 @@ void SMap< K, V, KTraits, VTraits >::FreePlexes() throw()
 
 template< typename K, typename V, class KTraits, class VTraits >
 typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::GetNode(
-    KINARGTYPE key, UINT& iBin, UINT& nHash, CNode*& pPrev ) const throw()
+    KINARGTYPE key, UINT& iBin, UINT& nHash, CNode*& pPrev ) const
 {
     CNode* pFollow;
 
@@ -2540,7 +2533,7 @@ bool SMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key, VOUTARGTYPE value )
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key ) const throw()
+const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key ) const
 {
     UINT iBin;
     UINT nHash;
@@ -2553,7 +2546,7 @@ const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTrai
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key ) throw()
+typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key )
 {
     UINT iBin;
     UINT nHash;
@@ -2566,7 +2559,7 @@ typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-bool SMap< K, V, KTraits, VTraits >::RemoveKey( KINARGTYPE key ) throw()
+bool SMap< K, V, KTraits, VTraits >::RemoveKey( KINARGTYPE key )
 {
     CNode* pNode;
     UINT iBin;
@@ -2712,7 +2705,7 @@ void SMap< K, V, KTraits, VTraits >::GetNextAssoc( POSITION& pos, KOUTARGTYPE ke
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetNext( POSITION& pos ) const throw()
+const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetNext( POSITION& pos ) const
 {
     CNode* pNode;
     CNode* pNext;
@@ -2730,7 +2723,7 @@ const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTrai
 
 template< typename K, typename V, class KTraits, class VTraits >
 typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetNext(
-    POSITION& pos ) throw()
+    POSITION& pos )
 {
     SASSUME( m_ppBins != NULL );
     ASSERT( pos != NULL );
@@ -2795,7 +2788,7 @@ V& SMap< K, V, KTraits, VTraits >::GetNextValue( POSITION& pos )
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::FindNextNode( CNode* pNode ) const throw()
+typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::FindNextNode( CNode* pNode ) const
 {
     CNode* pNext;
 
