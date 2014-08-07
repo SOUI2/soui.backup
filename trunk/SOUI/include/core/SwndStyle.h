@@ -42,7 +42,6 @@ public:
 
     int m_nMarginX;
     int m_nMarginY;
-    int m_nSpacing;
     BOOL m_bDotted;
 
     SStringT m_strCursor;
@@ -91,7 +90,6 @@ protected:
         ATTR_INT(L"margin-x", m_nMarginX, TRUE)
         ATTR_INT(L"margin-y", m_nMarginY, TRUE)
         ATTR_INT(L"margin", m_nMarginX = m_nMarginY, TRUE) // 这样比较bt，不过.....凑合用吧
-        ATTR_INT(L"spacing", m_nSpacing, TRUE)
         ATTR_STRINGT(L"cursor",m_strCursor,FALSE)
         ATTR_INT(L"dotted",m_bDotted,FALSE)
     SOUI_ATTRS_END()
