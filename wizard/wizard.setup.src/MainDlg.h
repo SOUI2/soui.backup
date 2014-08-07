@@ -151,17 +151,17 @@ public:
 			MessageBox(_T("当前目录下没有找到SOUI的向导数据"),_T("错误"),MB_OK|MB_ICONSTOP);
 			return 0;
 		}
-		TCHAR szSouiDir[MAX_PATH]={0};
+		TCHAR szSouiDir[MAX_PATH]={0},szSourCore[MAX_PATH];
 		int nLen=GetDlgItemText(IDC_SOUIDIR,szSouiDir,MAX_PATH);
 		if(szSouiDir[nLen-1]==_T('\\')) szSouiDir[--nLen]=0;
 
-		_tcscat(szSouiDir,_T("\\SOUI"));
-		if(GetFileAttributes(szSouiDir)==INVALID_FILE_ATTRIBUTES)
+        _tcscpy(szSourCore,szSouiDir);
+		_tcscat(szSourCore,_T("\\SOUI"));
+		if(GetFileAttributes(szSourCore)==INVALID_FILE_ATTRIBUTES)
 		{
 			MessageBox(_T("当前目录下没有找到SOUI的源代码"),_T("错误"),MB_OK|MB_ICONSTOP);
 			return 0;
 		}
-		szSouiDir[nLen]=0;
 		//设置环境变量
 
 		CRegKey reg;
@@ -179,13 +179,12 @@ public:
                     szEnvPath[dwSize++]=_T(';');
                     szEnvPath[dwSize]=_T('\0');
                 }
-                TCHAR szSouiDir[MAX_PATH]={0};
-                int nLen=GetDlgItemText(IDC_SOUIDIR,szSouiDir,MAX_PATH);
-                if(szSouiDir[nLen-1]==_T('\\')) szSouiDir[--nLen]=0;
-                _tcscat(szSouiDir,_T("\\bin;"));
-                if(StrStrI(szEnvPath,szSouiDir)==NULL)
+                TCHAR szSouiBin[MAX_PATH]={0};
+                _tcscpy(szSouiBin,szSouiDir);
+                _tcscat(szSouiBin,_T("\\bin;"));
+                if(StrStrI(szEnvPath,szSouiBin)==NULL)
                 {//已经设置后不再设置
-                    _tcscpy(szEnvPath+dwSize,szSouiDir);
+                    _tcscpy(szEnvPath+dwSize,szSouiBin);
                     reg.SetStringValue(_T("Path"),szEnvPath);
                 }
 			}
@@ -211,7 +210,7 @@ public:
 			if(!vslist.GetCheckState(i)) continue;
 
 			VSENVCFG *pCfg=(VSENVCFG*)vslist.GetItemData(i);
-			//复制向导数据
+            //复制入口数据
 			BOOL bOK = TRUE;
 			if(bOK)
 			{
@@ -219,35 +218,36 @@ public:
 				shfo.fFlags=FOF_NOCONFIRMMKDIR|FOF_NOCONFIRMATION;
 				memset(szFrom,0,sizeof(szFrom));
 				memset(szTo,0,sizeof(szTo));
-				_tcscpy(szFrom,_T("SouiWizard"));
+				_tcscpy(szFrom,_T("entry"));
 				_tcscpy(szTo,pCfg->strVsDir);
 				_tcscat(szTo,pCfg->strDataTarget);
 				bOK = 0==SHFileOperation(&shfo);
 			}
-			//复制入口数据
+			//改写SouiWizard.vsz
 			if(bOK)
 			{
-				shfo.wFunc=FO_COPY;
-				shfo.fFlags=FOF_NOCONFIRMMKDIR|FOF_NOCONFIRMATION;
-				memset(szFrom,0,sizeof(szFrom));
-				memset(szTo,0,sizeof(szTo));
 				_tcscpy(szFrom,pCfg->strEntrySrc);
-				_tcscat(szFrom,_T("\\*.*"));
+				_tcscat(szFrom,_T("\\SouiWizard.vsz"));
 				_tcscpy(szTo,pCfg->strVsDir);
 				_tcscat(szTo,pCfg->strEntryTarget);
-				bOK = 0==SHFileOperation(&shfo);
+                _tcscat(szTo,_T("\\SouiWizard.vsz"));
+				
+				CopyFile(szFrom,szTo,FALSE);
+								
+				FILE *f=_tfopen(szTo,_T("r+"));
+				if(f)
+				{
+				    char szBuf[4096];
+				    int nReaded=fread(szBuf,1,4096,f);
+				    szBuf[nReaded]=0;
+				    CStringA str=szBuf;
+				    str.Replace("%SOUIPATH%",CT2A(szSouiDir));
+				    fseek(f,0,SEEK_SET);
+				    fwrite((LPCSTR)str,1,str.GetLength(),f);
+				    fclose(f);				    
+				}
 			}
-			//复制脚本
-			if(bOK)
-			{
-				shfo.wFunc=FO_COPY;
-				memset(szFrom,0,sizeof(szFrom));
-				memset(szTo,0,sizeof(szTo));
-				_tcscpy(szFrom,pCfg->strScriptSrc);
-				CString strTo=pCfg->strVsDir+pCfg->strDataTarget+_T("\\SouiWizard\\Scripts\\2052");
-				_tcscpy(szTo,strTo);
-				bOK= 0==SHFileOperation(&shfo);
-			}
+
 			CString strMsg;
 			strMsg.Format(_T("为%s安装SOUI向导:%s"),pCfg->strName,bOK?_T("成功"):_T("失败"));
 			::SendMessage(GetDlgItem(IDC_LOG),LB_ADDSTRING,0,(LPARAM)(LPCTSTR)strMsg);

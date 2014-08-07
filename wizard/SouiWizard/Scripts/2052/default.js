@@ -30,8 +30,13 @@ function CreateCustomProject(strProjectName, strProjectPath)
 	try
 	{
 		var strProjTemplatePath = wizard.FindSymbol('PROJECT_TEMPLATE_PATH');
+
 		var strProjTemplate = '';
-		strProjTemplate = strProjTemplatePath + '\\default.vcxproj';
+		var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
+		if(WizardVersion >= 10.0)
+			strProjTemplate = strProjTemplatePath + '\\default.vcxproj';
+		else
+			strProjTemplate = strProjTemplatePath + '\\default.vcproj';
 
 		var Solution = dte.Solution;
 		var strSolutionName = "";
@@ -45,9 +50,13 @@ function CreateCustomProject(strProjectName, strProjectPath)
 				Solution.Create(strSolutionPath, strSolutionName);
 			}
 		}
-
+		
 		var strProjectNameWithExt = '';
-		strProjectNameWithExt = strProjectName + '.vcxproj';
+		if(WizardVersion >= 10.0)
+			strProjectNameWithExt = strProjectName + '.vcxproj';
+		else
+			strProjectNameWithExt = strProjectName + '.vcproj';
+
 
 		var oTarget = wizard.FindSymbol("TARGET");
 		var prj;
@@ -95,7 +104,7 @@ function AddFilters(proj)
 		var strSkinFilter = wizard.FindSymbol('SKIN_FILTER');
 		var group = proj.Object.AddFilter('Skin Files');
 		group.Filter = strSkinFilter;
-		
+
 	}
 	catch(e)
 	{
@@ -112,7 +121,7 @@ function AddConfig(proj, strProjectName)
 	    config.CharacterSet = charSetUNICODE;
 	    config.IntermediateDirectory = 'Debug';
 	    config.OutputDirectory = 'Debug';
-
+	    
 		var CLTool = config.Tools('VCCLCompilerTool');
 		//添加编译器设置
 		CLTool.UsePrecompiledHeader = 2;    // 2-使用预编译头,1-创建,0-不使用
@@ -160,7 +169,7 @@ function AddConfig(proj, strProjectName)
 		LinkTool.AdditionalLibraryDirectories = '"$(SOUIPATH)\\bin"';
 		LinkTool.AdditionalDependencies = 'utilities.lib soui.lib'
 		LinkTool.LinkIncremental=1;
-
+		
 	}
 	catch(e)
 	{
@@ -342,15 +351,15 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 				var strExt = strName.substr(strName.lastIndexOf("."));
 				if(strExt==".bmp" || strExt==".ico" || strExt==".gif" || strExt==".rtf" || strExt==".css" || strExt==".png" || strExt==".jpg")
 				    bBinary = true;
-                   		// 复制文件和添加到工程
-				    wizard.RenderTemplate(strTemplate, strFile, bBinary);
-				    if (!bCopyOnly) {
-				        if (filter) {
-				            filter.AddFile(strTarget);
-				        } else {
-				            var file = proj.Object.AddFile(strFile);
-				        }
+                // 复制文件和添加到工程
+				wizard.RenderTemplate(strTemplate, strFile, bBinary);
+				if (!bCopyOnly) {
+				    if (filter) {
+				        filter.AddFile(strTarget);
+				    } else {
+				        var file = proj.Object.AddFile(strFile);
 				    }
+				}
 			}
 		}
 		strTextStream.Close();
@@ -363,9 +372,18 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		fileConfig = file.FileConfigurations('Release');
 		fileConfig.Tool.UsePrecompiledHeader = 1;
 
+		var outfiles=".\\res\\soui_res.rc2;";
+		var cmdline = '';
+		
+		var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
+		if(WizardVersion >= 10.0)
+			cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\\res\\soui_res.rc2';
+		else
+			cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p uires -r .\\res\\soui_res.rc2';
+
+
 		//指定uires.idx的编译命令
-		cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\\res\\soui_res.rc2';
-		outfiles=".\\res\\soui_res.rc2;";
+		cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p uires -r .\\res\\soui_res.rc2';
 		
 		var file = files.Item('uires.idx');
 		var fileConfig = file.FileConfigurations('Debug');
