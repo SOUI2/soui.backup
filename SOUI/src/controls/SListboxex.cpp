@@ -27,7 +27,6 @@ SListBoxEx::SListBoxEx()
     , m_pItemSkin(NULL)
     , m_crItemBg(CR_INVALID)
     , m_crItemSelBg(RGB(0,0,128))
-    , m_bVirtual(FALSE)
     , m_bItemRedrawDelay(TRUE)
 {
     m_bFocusable=TRUE;

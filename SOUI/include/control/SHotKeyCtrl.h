@@ -177,10 +177,10 @@ namespace SOUI
       LRESULT OnWindowPosChanged(LPRECT lpRcContainer);
 
       SOUI_ATTRS_BEGIN()
-          ATTR_WORD(L"invalidcomb",m_wInvalidComb,FALSE)
-          ATTR_WORD(L"defcombkey",m_wInvalidModifier,FALSE)
-          ATTR_WORD(L"combkey",m_wModifier,FALSE)
-          ATTR_WORD(L"hotkey",m_wVK,FALSE)
+          ATTR_WORD(L"invalidComb",m_wInvalidComb,FALSE)
+          ATTR_WORD(L"defCombKey",m_wInvalidModifier,FALSE)
+          ATTR_WORD(L"combKey",m_wModifier,FALSE)
+          ATTR_WORD(L"hotKey",m_wVK,FALSE)
       SOUI_ATTRS_END()
 
       SOUI_MSG_MAP_BEGIN()
