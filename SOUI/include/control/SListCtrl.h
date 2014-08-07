@@ -476,7 +476,7 @@ namespace SOUI
             ATTR_SKIN(L"itemSkin", m_pItemSkin, TRUE)
             ATTR_SKIN(L"iconSkin", m_pIconSkin, TRUE)
             ATTR_COLOR(L"colorItemBkgnd", m_crItemBg, FALSE)
-            ATTR_COLOR(L"colorItemBkgnd", m_crItemBg2, FALSE)
+            ATTR_COLOR(L"colorItemBkgnd2", m_crItemBg2, FALSE)
             ATTR_COLOR(L"colorItemSelBkgnd", m_crItemSelBg, FALSE)
             ATTR_COLOR(L"colorText", m_crText, FALSE)
             ATTR_COLOR(L"colorSelText", m_crSelText, FALSE)
