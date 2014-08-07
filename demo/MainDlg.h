@@ -54,7 +54,8 @@ public:
 	int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	void OnShowWindow(BOOL bShow, UINT nStatus);
 
-
+    void OnBtnHideTest();
+    
 protected:
     void InitListCtrl();
     bool OnListHeaderClick(EventArgs *pEvt);
@@ -92,6 +93,7 @@ protected:
         EVENT_NAME_COMMAND(L"btn_webkit_back",OnBtnWebkitBackward)
         EVENT_NAME_COMMAND(L"btn_webkit_fore",OnBtnWebkitForeward)
         EVENT_NAME_COMMAND(L"btn_webkit_refresh",OnBtnWebkitRefresh)
+        EVENT_NAME_COMMAND(L"btn_hidetst",OnBtnHideTest)
 	EVENT_MAP_END()	
 
 	BEGIN_MSG_MAP_EX(CMainDlg)

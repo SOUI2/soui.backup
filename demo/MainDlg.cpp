@@ -204,3 +204,9 @@ void CMainDlg::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
         PostMessage(WM_CLOSE);
     }
 }
+
+void CMainDlg::OnBtnHideTest()
+{
+    SWindow * pBtn = FindChildByName(L"btn_hidetst");
+    if(pBtn) pBtn->SetVisible(FALSE,TRUE);
+}
