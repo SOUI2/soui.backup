@@ -88,7 +88,7 @@ HEADERS += include/SApp.h \
            include/event/EventSubscriber.h \
            include/helper/auto_reset.h \
            include/helper/color.h \
-           include/help/mybuffer.h \
+           include/helper/mybuffer.h \
            include/helper/DragWnd.h \
            include/helper/MemDC.h \
            include/helper/MenuWndHook.h \
