@@ -202,7 +202,7 @@ protected:
         ATTR_INT(L"indent", m_nIndent, TRUE)
         ATTR_INT(L"itemHeight", m_nItemHei, TRUE)
         ATTR_INT(L"itemMargin", m_nItemMargin, TRUE)
-        ATTR_INT(L"checkbox", m_bCheckBox, TRUE)
+        ATTR_INT(L"checkBox", m_bCheckBox, TRUE)
         ATTR_INT(L"rightClickSel", m_bRightClickSel, TRUE)
         ATTR_SKIN(L"itemBkgndSkin", m_pItemBgSkin, TRUE)
         ATTR_SKIN(L"itemSelSkin", m_pItemSelSkin, TRUE)
