@@ -16,7 +16,6 @@ SwndStyle::SwndStyle()
     , m_crBorder(CR_INVALID)
     , m_nMarginX(0)
     , m_nMarginY(0)
-    , m_nSpacing(0)
     , m_strCursor(_T("arrow"))
     , m_bDotted(FALSE)
 {

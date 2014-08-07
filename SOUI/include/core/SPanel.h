@@ -130,11 +130,11 @@ namespace SOUI
         DWORD        m_dwUpdateInterval;
 
         SOUI_ATTRS_BEGIN()
-            ATTR_CUSTOM(L"sbskin",OnAttrScrollbarSkin)
-            ATTR_INT(L"sbarrowsize", m_nSbArrowSize, FALSE)
-            ATTR_INT(L"sbwid", m_nSbWid, FALSE)
-            ATTR_INT(L"sbenable", m_wBarEnable, FALSE)
-            ATTR_UINT(L"updateinterval", m_dwUpdateInterval, FALSE)
+            ATTR_CUSTOM(L"sbSkin",OnAttrScrollbarSkin)
+            ATTR_INT(L"sbArrowSize", m_nSbArrowSize, FALSE)
+            ATTR_INT(L"sbWid", m_nSbWid, FALSE)
+            ATTR_INT(L"sbEnable", m_wBarEnable, FALSE)
+            ATTR_UINT(L"updateInterval", m_dwUpdateInterval, FALSE)
         SOUI_ATTRS_END()
 
         SOUI_MSG_MAP_BEGIN()
