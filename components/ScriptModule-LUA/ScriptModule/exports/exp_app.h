@@ -6,7 +6,6 @@ BOOL ExpLua_App(lua_State *L)
 {
 	try{
 		lua_tinker::class_add<SApplication>(L,"SApplication");
-		lua_tinker::class_def<SApplication>(L,"GetVersion",&SApplication::GetVersion);
 		lua_tinker::class_def<SApplication>(L,"AddResProvider",&SApplication::AddResProvider);
 		lua_tinker::class_def<SApplication>(L,"RemoveResProvider",&SApplication::RemoveResProvider);
 		lua_tinker::class_def<SApplication>(L,"Init",&SApplication::Init);
