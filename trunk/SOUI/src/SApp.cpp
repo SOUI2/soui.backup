@@ -174,11 +174,6 @@ int SApplication::Run( HWND hMainWnd )
     return nRet;
 }
 
-LPCTSTR SApplication::GetVersion()
-{
-	return SOUI_VERSION;
-}
-
 HINSTANCE SApplication::GetInstance()
 {
 	return m_hInst;

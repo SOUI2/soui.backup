@@ -25,8 +25,6 @@
 #include "core/SSkinFactoryMgr.h"
 
 
-#define SOUI_VERSION    _T("0.9.0.1")
-
 #define LOADXML(p1,p2,p3) SApplication::getSingleton().LoadXmlDocment(p1,p2,p3)
 #define LOADIMAGE(p1,p2) SApplication::getSingleton().LoadImage(p1,p2)
 #define GETRESPROVIDER    SApplication::getSingletonPtr()
@@ -73,15 +71,6 @@ public:
      * Describe  
      */
     HINSTANCE GetInstance();
-
-    /**
-     * GetVersion
-     * @brief    获得SOUI的版本号
-     * @return   LPCTSTR 
-     *
-     * Describe  
-     */
-    LPCTSTR GetVersion();
 
     /**
      * Init
