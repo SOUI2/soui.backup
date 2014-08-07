@@ -1,5 +1,5 @@
-#include "souistd.h"
-#include "control/SDateTimeEdit.h"
+#include "stdafx.h"
+#include "SDateTimeEdit.h"
 
 namespace SOUI{
 

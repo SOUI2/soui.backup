@@ -54,9 +54,6 @@ void SWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(SComboBoxEx::GetClassName(),new TplSWindowFactory<SComboBoxEx>);
     
     AddKeyObject(SCalendar::GetClassName(),new TplSWindowFactory<SCalendar>);
-    AddKeyObject(SMaskEdit::GetClassName(),new TplSWindowFactory<SMaskEdit>);
-    AddKeyObject(SDateEdit::GetClassName(),new TplSWindowFactory<SDateEdit>);
-    AddKeyObject(STimeEdit::GetClassName(),new TplSWindowFactory<STimeEdit>);
 }
 
 void SWindowFactoryMgr::OnWndFactoryRemoved( const SWindowFactoryPtr & obj )
