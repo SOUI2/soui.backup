@@ -186,7 +186,7 @@ protected:
 protected:
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"skin", m_pSkin, FALSE)
-        ATTR_UINT(L"arrowsize", m_uAllowSize, FALSE)
+        ATTR_UINT(L"arrowSize", m_uAllowSize, FALSE)
         ATTR_INT(L"min", m_si.nMin, FALSE)
         ATTR_INT(L"max", m_si.nMax, FALSE)
         ATTR_INT(L"value", m_si.nPos, FALSE)

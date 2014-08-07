@@ -49,8 +49,8 @@ public:
     virtual ~SSplitPane() {}
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"idealsize", m_nSizeIdeal, TRUE)
-        ATTR_INT(L"minsize", m_nSizeMin, TRUE)
+        ATTR_INT(L"idealSize", m_nSizeIdeal, TRUE)
+        ATTR_INT(L"minSize", m_nSizeMin, TRUE)
         ATTR_INT(L"priority", m_nPriority, TRUE)
     SOUI_ATTRS_END()
 protected:

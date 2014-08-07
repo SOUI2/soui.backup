@@ -179,9 +179,9 @@ protected:
     BOOL m_bVert;
 
     SOUI_ATTRS_BEGIN()
-        ATTR_COLOR(L"crFrom", m_crFrom, TRUE)
-        ATTR_COLOR(L"crTo", m_crTo, TRUE)
-        ATTR_INT(L"vert", m_bVert, TRUE)
+        ATTR_COLOR(L"colorFrom", m_crFrom, TRUE)
+        ATTR_COLOR(L"colorTo", m_crTo, TRUE)
+        ATTR_INT(L"vertical", m_bVert, TRUE)
     SOUI_ATTRS_END()
 };
 
@@ -223,14 +223,14 @@ public:
 protected:
     //返回源指定部分在原位图上的位置。
     CRect GetPartRect(int nSbCode, int nState,BOOL bVertical);
-    int            m_nMargin;
+    int         m_nMargin;
     BOOL        m_bHasGripper;
     BOOL        m_bHasInactive;//有失活状态的箭头时，滚动条皮肤有必须有5行，否则可以是3行或者4行
 
     SOUI_ATTRS_BEGIN()
         ATTR_INT(L"margin",m_nMargin,FALSE)
-        ATTR_INT(L"hasgripper",m_bHasGripper,FALSE)
-        ATTR_INT(L"hasinactive",m_bHasInactive,FALSE)
+        ATTR_INT(L"hasGripper",m_bHasGripper,FALSE)
+        ATTR_INT(L"hasInactive",m_bHasInactive,FALSE)
     SOUI_ATTRS_END()
 };
 
