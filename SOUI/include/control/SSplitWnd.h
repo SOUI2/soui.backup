@@ -269,10 +269,10 @@ protected:
     void Relayout(UINT uMode);
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"sepsize", m_nSepSize, TRUE)
+        ATTR_INT(L"sepSize", m_nSepSize, TRUE)
+        ATTR_SKIN(L"sepSkin",m_pSkinSep,TRUE)
         ATTR_INT(L"adjustable", m_bAdjustable, TRUE)
-        ATTR_INT(L"colmode", m_bColMode, TRUE)
-        ATTR_SKIN(L"skinsep",m_pSkinSep,TRUE)
+        ATTR_INT(L"colMode", m_bColMode, TRUE)
     SOUI_ATTRS_END()
 
     SOUI_MSG_MAP_BEGIN()
