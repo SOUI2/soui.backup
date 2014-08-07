@@ -42,11 +42,9 @@ HEADERS += include/SApp.h \
            include/control/SCaption.h \
            include/control/SCmnCtrl.h \
            include/control/SComboBox.h \
-           include/control/SDateTimeEdit.h \
            include/control/SDropDown.h \
            include/control/SHeaderCtrl.h \
            include/control/SHotKeyCtrl.h \
-           include/control/SItembox.h \
            include/control/SListbox.h \
            include/control/SListboxex.h \
            include/control/SListCtrl.h \
@@ -63,7 +61,6 @@ HEADERS += include/SApp.h \
            include/control/STreeCtrl.h \
            include/core/Accelerator.h \
            include/core/FocusManager.h \
-           include/core/mybuffer.h \
            include/core/SDefine.h \
            include/core/SDropTargetDispatcher.h \
            include/core/SHostDialog.h \
@@ -91,6 +88,7 @@ HEADERS += include/SApp.h \
            include/event/EventSubscriber.h \
            include/helper/auto_reset.h \
            include/helper/color.h \
+           include/help/mybuffer.h \
            include/helper/DragWnd.h \
            include/helper/MemDC.h \
            include/helper/MenuWndHook.h \
@@ -129,11 +127,9 @@ SOURCES += src/SApp.cpp \
            src/controls/SCaption.cpp \
            src/controls/SCmnCtrl.cpp \
            src/controls/SComboBox.cpp \
-           src/controls/SDateTimeEdit.cpp \
            src/controls/SDropDown.cpp \
            src/controls/SHeaderCtrl.cpp \
            src/controls/SHotKeyCtrl.cpp \
-           #src/controls/SItembox.cpp \
            src/controls/SListbox.cpp \
            src/controls/SListboxex.cpp \
            src/controls/SListCtrl.cpp \

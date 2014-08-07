@@ -5,8 +5,8 @@
 //     Version: 2011.7.8 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
 
-#include "souistd.h"
-#include "control/sitembox.h"
+#include "stdafx.h"
+#include "sitembox.h"
 
 namespace SOUI
 {
@@ -32,7 +32,7 @@ SWindow* SItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsureVisibl
     SWindow *pPanel=new SWindow;
     InsertChild(pPanel, pPrevChild);
 
-    pPanel->LoadChildren(xmlDoc.first_child());
+    pPanel->CreateChildren(xmlDoc.first_child());
     pPanel->SetVisible(TRUE);
     pPanel->SetFixSize(m_nItemWid,m_nItemHei);
 
@@ -60,7 +60,7 @@ SWindow* SItemBox::InsertItem(pugi::xml_node xmlNode,int iItem/*=-1*/,BOOL bEnsu
     SWindow *pPanel=new SWindow;
     InsertChild(pPanel, pPrevChild);
 
-    pPanel->LoadChildren(xmlNode);
+    pPanel->CreateChildren(xmlNode);
     pPanel->SetVisible(TRUE);
     pPanel->SetFixSize(m_nItemWid,m_nItemHei);
 
@@ -117,7 +117,7 @@ BOOL SItemBox::SetNewPosition(SWindow * pChild, DWORD nPos, BOOL bEnsureVisible)
 
     SWindow * pCurChild = m_pFirstChild;
     DWORD nCurPos = 0;
-    for (; pCurChild != NULL; pCurChild = pCurChild->GetWindow(GDUI_NEXTSIBLING))
+    for (; pCurChild != NULL; pCurChild = pCurChild->GetWindow(GSW_NEXTSIBLING))
     {
         if (pCurChild == pChild)
         {
@@ -209,9 +209,9 @@ void SItemBox::PageDown()
 void SItemBox::EnsureVisible(SWindow *pItem)
 {
     if(!HasScrollBar(TRUE)) return;
-    DUIASSERT(pItem);
+    ASSERT(pItem);
     CRect rcItem;
-    pItem->GetRect(&rcItem);
+    pItem->GetWindowRect(&rcItem);
     int yOffset=0;
     if(rcItem.bottom>m_rcWindow.bottom)
     {
@@ -318,13 +318,13 @@ int SItemBox::GetScrollLineSize(BOOL bVertical)
     else return m_nItemWid+m_nSepWid;
 }
 
-BOOL SItemBox::LoadChildren(pugi::xml_node xmlNode)
+BOOL SItemBox::CreateChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return FALSE;
     RemoveAllItems();
 
     pugi::xml_node xmlParent=xmlNode.parent();
-    pugi::xml_node xmlItem=xmlParent.child("item");
+    pugi::xml_node xmlItem=xmlParent.child(L"item");
 
     while(xmlItem)
     {
@@ -332,12 +332,12 @@ BOOL SItemBox::LoadChildren(pugi::xml_node xmlNode)
 
         InsertChild(pChild);
 
-        pChild->Load(xmlItem);
+        pChild->InitFromXml(xmlItem);
         pChild->SetVisible(TRUE);
         pChild->SetFixSize(m_nItemWid,m_nItemHei);
 
 
-        xmlItem=xmlItem.next_sibling("item");
+        xmlItem=xmlItem.next_sibling(L"item");
     }
     return TRUE;
 }

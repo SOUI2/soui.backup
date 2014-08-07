@@ -278,10 +278,6 @@
 				>
 			</File>
 			<File
-				RelativePath="src\controls\SDateTimeEdit.cpp"
-				>
-			</File>
-			<File
 				RelativePath="src\controls\SDropDown.cpp"
 				>
 			</File>
@@ -516,6 +512,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\helper\mybuffer.h"
+				>
+			</File>
+			<File
 				RelativePath="include\interface\render-i.h"
 				>
 			</File>
@@ -565,10 +565,6 @@
 			</File>
 			<File
 				RelativePath="include\control\SComboBox.h"
-				>
-			</File>
-			<File
-				RelativePath="include\control\SDateTimeEdit.h"
 				>
 			</File>
 			<File

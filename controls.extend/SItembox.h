@@ -11,7 +11,7 @@
  * Describe     
  */
 #pragma once
-#include "core/SPanel.h"
+#include <core/SPanel.h>
 
 namespace SOUI
 {
@@ -22,7 +22,7 @@ namespace SOUI
  * 
  * Describe    ItemBox
  */
-class SOUI_EXP SItemBox
+class SItemBox
     : public SScrollView
 {
     SOUI_CLASS_NAME(SItemBox, L"itembox")
@@ -244,10 +244,10 @@ protected:
     virtual BOOL CreateChildren(pugi::xml_node xmlNode);
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"itemwid", m_nItemWid, TRUE)
-        ATTR_INT(L"itemhei", m_nItemHei, TRUE)
-        ATTR_INT(L"sepwid", m_nSepWid, TRUE)
-        ATTR_INT(L"sephei", m_nSepHei, TRUE)
+        ATTR_INT(L"itemWidth", m_nItemWid, TRUE)
+        ATTR_INT(L"itemHeight", m_nItemHei, TRUE)
+        ATTR_INT(L"sepWidth", m_nSepWid, TRUE)
+        ATTR_INT(L"sepHeight", m_nSepHei, TRUE)
     SOUI_ATTRS_END()
 
     SOUI_MSG_MAP_BEGIN()

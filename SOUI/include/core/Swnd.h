@@ -222,6 +222,18 @@ namespace SOUI
         */    
         void SetPositionType(DWORD dwPosType, DWORD dwMask = 0xFFFFFFFF);
 
+
+        /**
+         * SetFixSize
+         * @brief    设置窗口大小
+         * @param    int nWid --  窗口宽度
+         * @param    int nHei --  窗口高度
+         * @return   void 
+         *
+         * Describe  
+         */
+        void SetFixSize(int nWid,int nHei);
+
         /**
         * GetWindowRect
         * @brief    获得窗口在宿主中的位置

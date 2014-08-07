@@ -71,6 +71,13 @@ void SWindow::SetPositionType(DWORD dwPosType, DWORD dwMask /*= 0xFFFFFFFF*/)
     m_layout.uPositionType = (m_layout.uPositionType & ~dwMask) | (dwPosType & dwMask);
 }
 
+void SWindow::SetFixSize( int nWid,int nHei )
+{
+    m_layout.uPositionType = (m_layout.uPositionType & ~SizeX_Mask) | SizeX_Specify|SizeY_Specify;
+    m_layout.uSpecifyWidth = nWid;
+    m_layout.uSpecifyHeight = nHei;
+}
+
 void SWindow::GetWindowRect(LPRECT prect)
 {
     ASSERT(prect);

@@ -13,8 +13,8 @@
 
 #pragma once
 
-#include "SRichEdit.h"
-#include "helper/STime.h"
+#include <control/SRichEdit.h>
+#include <helper/STime.h>
 
 namespace SOUI{
 
@@ -29,7 +29,7 @@ namespace SOUI{
  * 
  * Describe    隐码输入框  主要用于固定输入格式
  */
-class SOUI_EXP SMaskEdit : public SEdit
+class SMaskEdit : public SEdit
 {
     SOUI_CLASS_NAME(SMaskEdit, L"maskedit")
 
@@ -217,7 +217,7 @@ protected:
  * 
  * Describe    日期编辑框
  */
-class SOUI_EXP SDateEdit : public SMaskEdit
+class  SDateEdit : public SMaskEdit
 {
     SOUI_CLASS_NAME(SDateEdit, L"dateedit")
 
@@ -281,7 +281,7 @@ protected:
  * 
  * Describe    时间编辑框
  */
-class SOUI_EXP STimeEdit : public SDateEdit
+class  STimeEdit : public SDateEdit
 {
     SOUI_CLASS_NAME(STimeEdit, L"timeedit")
 
