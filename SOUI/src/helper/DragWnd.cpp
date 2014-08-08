@@ -6,7 +6,7 @@ namespace SOUI
 
 CDragWnd * CDragWnd:: s_pCurDragWnd=NULL;
 
-CDragWnd::CDragWnd(void)
+CDragWnd::CDragWnd(void):m_bmp(NULL)
 {
 }
 
@@ -14,11 +14,21 @@ CDragWnd::~CDragWnd(void)
 {
 }
 
-void CDragWnd::OnPaint( CDCHandle dc )
+void CDragWnd::OnPaint( HDC dc )
 {
-    CRect rc;
-    GetClientRect(rc);
-    dc.BitBlt(0,0,rc.Width(),rc.Height(),m_memdc,0,0,SRCCOPY);
+    PAINTSTRUCT ps;
+    dc = ::BeginPaint(m_hWnd,&ps);
+    if(m_bmp)
+    {
+        CRect rc;
+        GetClientRect(rc);
+        HDC hMemDC = CreateCompatibleDC(dc);
+        HGDIOBJ hOldBmp=SelectObject(hMemDC,m_bmp);
+        BitBlt(dc,0,0,rc.Width(),rc.Height(),hMemDC,0,0,SRCCOPY);
+        ::SelectObject(hMemDC,hOldBmp);
+        ::DeleteDC(hMemDC);
+    }
+    ::EndPaint(m_hWnd,&ps);
 }
 
 BOOL CDragWnd::BeginDrag( HBITMAP hBmp,POINT ptHot ,COLORREF crKey, BYTE byAlpha,DWORD dwFlags)
@@ -39,7 +49,7 @@ BOOL CDragWnd::BeginDrag( HBITMAP hBmp,POINT ptHot ,COLORREF crKey, BYTE byAlpha
 
     if(bm.bmBitsPixel==32)
     {
-        CDCHandle dc=s_pCurDragWnd->GetDC();
+        HDC dc=s_pCurDragWnd->GetDC();
         CMemDC memdc(dc,hBmp);
         BLENDFUNCTION bf={AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
         s_pCurDragWnd->UpdateLayeredWindow(dc,&CPoint(0,0),&CSize(bm.bmWidth,bm.bmHeight),memdc,&CPoint(0,0),crKey,&bf,LWA_ALPHA);
@@ -47,10 +57,8 @@ BOOL CDragWnd::BeginDrag( HBITMAP hBmp,POINT ptHot ,COLORREF crKey, BYTE byAlpha
     }else
     {
         s_pCurDragWnd->SetLayeredWindowAttributes(crKey,byAlpha,dwFlags);
-        CDCHandle dc=s_pCurDragWnd->GetDC();
-        s_pCurDragWnd->m_memdc.CreateCompatibleDC(dc);
-        s_pCurDragWnd->m_memdc.SelectBitmap(hBmp);
-        s_pCurDragWnd->ReleaseDC(dc);
+        s_pCurDragWnd->m_bmp=hBmp;
+        s_pCurDragWnd->Invalidate();
     }
     s_pCurDragWnd->m_ptHot=ptHot;
     return TRUE;

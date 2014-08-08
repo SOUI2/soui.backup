@@ -25,7 +25,7 @@ namespace SOUI
         {
         }
 
-        void OnPaint(CDCHandle dc);
+        void OnPaint(HDC dc);
 
         BEGIN_MSG_MAP_EX(SDummyWnd)
             MSG_WM_PAINT(OnPaint)
@@ -150,11 +150,11 @@ protected:
     //////////////////////////////////////////////////////////////////////////
     // Message handler
 
-    void OnPrint(CDCHandle dc, UINT uFlags);
+    void OnPrint(HDC dc, UINT uFlags);
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(HDC dc);
 
-    BOOL OnEraseBkgnd(CDCHandle dc);
+    BOOL OnEraseBkgnd(HDC dc);
 
     int OnCreate(LPCREATESTRUCT lpCreateStruct);
 
@@ -258,7 +258,7 @@ protected:
 
     void OnSetCaretValidateRect( LPCRECT lpRect );
 
-    void UpdateHost(CDCHandle dc,const CRect &rc);
+    void UpdateHost(HDC dc,const CRect &rc);
     void UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha);
 protected:
     virtual BOOL _HandleEvent(SOUI::EventArgs *pEvt){return FALSE;}

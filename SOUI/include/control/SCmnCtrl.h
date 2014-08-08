@@ -220,7 +220,7 @@ protected:
 
     void OnSize(UINT nType, CSize size);
 
-    BOOL OnEraseBkgnd(CDCHandle dc){return TRUE;}
+    BOOL OnEraseBkgnd(IRenderTarget * pRT){return TRUE;}
 
     HRESULT OnAttrAccel(SStringW strAccel,BOOL bLoading);
 
@@ -246,7 +246,7 @@ public:
 
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
-        MSG_WM_ERASEBKGND(OnEraseBkgnd)
+        MSG_WM_ERASEBKGND_EX(OnEraseBkgnd)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_KEYDOWN(OnKeyDown)
         MSG_WM_KEYUP(OnKeyUp)

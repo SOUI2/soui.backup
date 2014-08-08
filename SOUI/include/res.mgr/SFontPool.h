@@ -71,8 +71,8 @@ public:
 * Describe    用于实现一个font map
 */
 template<>
-class _COLL_NS::CElementTraits< FontKey > :
-    public _COLL_NS::CElementTraitsBase<FontKey >
+class SOUI::CElementTraits< FontKey > :
+    public SOUI::CElementTraitsBase<FontKey >
 {
 public:
     static ULONG Hash( INARGTYPE fontKey )

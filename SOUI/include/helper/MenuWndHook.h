@@ -36,7 +36,7 @@ public:
     int  OnCreate(LPCREATESTRUCT lpCreateStruct);
     void OnNcCalcsize(BOOL bValidCalc,NCCALCSIZE_PARAMS* lpncsp);
     void OnNcDestroy();
-    void OnPrint(CDCHandle dc);
+    void OnPrint(HDC dc);
     void OnNcPaint();
     void OnWindowPosChanging(WINDOWPOS* pWindowPos);
     void SetLayeredAttr();

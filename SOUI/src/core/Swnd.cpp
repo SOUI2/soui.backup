@@ -699,7 +699,6 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
     pWndCur->GetClientRect(&rcClient);
     if(pRgn->IsEmpty() || pRgn->RectInRegion(rcClient))
     {//重绘客户区
-        CRgn rgnOldClip;
         if(prsBack == PRS_DRAWING)
         {
             if(pWndCur->IsClipClient())

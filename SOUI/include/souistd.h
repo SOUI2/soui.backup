@@ -38,14 +38,10 @@
 
 #include <core/SDefine.h>
 
-//import pugixml interface
-
 #define _WTYPES_NS SOUI
-#define _COLL_NS    SOUI
 #include <souicoll.h>
 #include <wtl.mini/msgcrack.h>
 #include <wtl.mini/souimisc.h>
-#include <wtl.mini/souigdi.h>
 #include <atl.mini/atldef.h>
 #include <atl.mini/scomcli.h>
 #include <string/tstring.h>

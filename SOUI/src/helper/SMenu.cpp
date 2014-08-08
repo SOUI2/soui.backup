@@ -52,7 +52,7 @@ void SMenuODWnd::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
     rcItem.MoveToXY(0,0);
     SMenuItemData *pdmmi=(SMenuItemData*)lpDrawItemStruct->itemData;
 
-    CDCHandle dc(lpDrawItemStruct->hDC);
+    HDC dc(lpDrawItemStruct->hDC);
     CAutoRefPtr<IRenderTarget> pRT;
     GETRENDERFACTORY->CreateRenderTarget(&pRT,rcItem.Width(),rcItem.Height());
 
@@ -137,7 +137,7 @@ void SMenuODWnd::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
     rcItem=lpDrawItemStruct->rcItem;
     
     HDC hmemdc=pRT->GetDC(0);
-    dc.BitBlt(rcItem.left,rcItem.top,rcItem.Width(),rcItem.Height(),hmemdc,0,0,SRCCOPY);
+    BitBlt(dc,rcItem.left,rcItem.top,rcItem.Width(),rcItem.Height(),hmemdc,0,0,SRCCOPY);
     pRT->ReleaseDC(hmemdc);
 }
 

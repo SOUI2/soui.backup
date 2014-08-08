@@ -17,14 +17,14 @@ public:
     static void EndDrag();
 protected:
 
-    void OnPaint(CDCHandle dc);
+    void OnPaint(HDC dc);
 
     BEGIN_MSG_MAP_EX(CDragWnd)
         MSG_WM_PAINT(OnPaint)
     END_MSG_MAP()
 
     CPoint m_ptHot;
-    CMemDC    m_memdc;
+    HBITMAP m_bmp;
 
     static CDragWnd * s_pCurDragWnd;
 };

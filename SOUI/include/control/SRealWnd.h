@@ -186,7 +186,7 @@ protected:
      *
      * Describe  消息响应函数  
      */
-    void OnPaint(CDCHandle dc) {}
+    void OnPaint(IRenderTarget *pRT) {}
 
     /**
      * SRealWnd::ShowRealWindow
@@ -205,7 +205,7 @@ protected:
     BOOL InitRealWnd();
 
     SOUI_MSG_MAP_BEGIN()
-    MSG_WM_PAINT(OnPaint)
+    MSG_WM_PAINT_EX(OnPaint)
     MSG_WM_DESTROY(OnDestroy)
     MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
     MSG_WM_SHOWWINDOW(OnShowWindow)
