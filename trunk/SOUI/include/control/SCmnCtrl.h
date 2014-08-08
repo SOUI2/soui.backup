@@ -699,7 +699,7 @@ protected:
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"skin", m_pSkin, FALSE)
         ATTR_SKIN(L"focusSkin", m_pFocusSkin, FALSE)
-        ATTR_CUSTOM(L"check",OnAttrCheck)
+        ATTR_CUSTOM(L"checked",OnAttrCheck)
     SOUI_ATTRS_END()
 
     SOUI_MSG_MAP_BEGIN()
@@ -883,7 +883,7 @@ protected:
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"skin", m_pSkin, FALSE)
         ATTR_SKIN(L"focusSkin", m_pFocusSkin, FALSE)
-        ATTR_CUSTOM(L"check",OnAttrCheck)
+        ATTR_CUSTOM(L"checked",OnAttrCheck)
     SOUI_ATTRS_END()
 
     SOUI_MSG_MAP_BEGIN()
