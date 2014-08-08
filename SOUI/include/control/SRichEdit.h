@@ -11,6 +11,8 @@
 * Describe    RichEdit¿Ø¼þ
 */
 #pragma once
+
+#include <Imm.h>
 #include <Richedit.h>
 #include <TextServ.h>
 #include "core/SPanel.h"
