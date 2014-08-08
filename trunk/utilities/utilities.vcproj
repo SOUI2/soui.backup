@@ -286,10 +286,6 @@
 				>
 			</File>
 			<File
-				RelativePath="include\wtl.mini\souigdi.h"
-				>
-			</File>
-			<File
 				RelativePath="include\wtl.mini\souimisc.h"
 				>
 			</File>

@@ -25,7 +25,7 @@ protected:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
 
     void OnTimer(UINT_PTR idEvent);
-    void OnPaint(CDCHandle dc);
+    void OnPaint(HDC dc);
 
     BEGIN_MSG_MAP_EX(STipCtrl)
         MSG_WM_PAINT(OnPaint)
@@ -39,7 +39,7 @@ protected:
     SStringT    m_strTip;
     BOOL        m_bTextTip;    
     CRect        m_rcTarget;
-    CFont        m_font;
+    HFONT        m_font;
 };
 
 }//namespace SOUI

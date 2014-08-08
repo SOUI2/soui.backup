@@ -276,12 +276,12 @@ void CMenuWndHook::OnNcCalcsize(BOOL bValidCalc,NCCALCSIZE_PARAMS* lpncsp)
 
 void CMenuWndHook::OnNcPaint()
 {
-    CDCHandle dc=GetWindowDC(m_hWnd);
+    HDC dc=GetWindowDC(m_hWnd);
     OnPrint(dc);
     ReleaseDC(m_hWnd,dc);
 }
 
-void CMenuWndHook::OnPrint(CDCHandle dc)
+void CMenuWndHook::OnPrint(HDC dc)
 {
     if(m_strSkinName.IsEmpty()) return;
     ISkinObj *pSkin=GETSKIN(m_strSkinName);
@@ -296,14 +296,14 @@ void CMenuWndHook::OnPrint(CDCHandle dc)
     CRect rcWnd;
     GetWindowRect(m_hWnd, &rcWnd);
     rcClient.OffsetRect(-rcWnd.TopLeft());
-    dc.ExcludeClipRect(rcClient);
+    ::ExcludeClipRect(dc,rcClient.left,rcClient.top,rcClient.right,rcClient.bottom);
     rcWnd.MoveToXY(0,0);
     
     CAutoRefPtr<IRenderTarget> pRT;
     GETRENDERFACTORY->CreateRenderTarget(&pRT,rcWnd.Width(),rcWnd.Height());
     pBorderSkin->Draw(pRT,rcWnd,0,0xFF);
     HDC hmemdc=pRT->GetDC(0);
-    dc.BitBlt(0,0,rcWnd.Width(),rcWnd.Height(),hmemdc,0,0,SRCCOPY);
+    ::BitBlt(dc,0,0,rcWnd.Width(),rcWnd.Height(),hmemdc,0,0,SRCCOPY);
     pRT->ReleaseDC(hmemdc);
 }
 
@@ -318,10 +318,9 @@ void CMenuWndHook::SetLayeredAttr()
     CRect rcWnd;
     GetWindowRect(m_hWnd,&rcWnd);
     rcWnd.MoveToXY(0,0);
-    CRgn rgn;
-    rgn.CreateEllipticRgnIndirect(&rcWnd);
-    //rgn.CreateRoundRectRgn(rcWnd.left,rcWnd.top,rcWnd.right,rcWnd.bottom,5,5);
-    SetWindowRgn(m_hWnd,rgn,TRUE);
+    HRGN hRgn = ::CreateEllipticRgnIndirect(&rcWnd);
+    SetWindowRgn(m_hWnd,hRgn,TRUE);
+    DeleteObject(hRgn);
 }
 
 }//namespace SOUI

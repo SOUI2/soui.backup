@@ -98,7 +98,7 @@ namespace SOUI
     };
 
     template<>
-    class  _COLL_NS::CElementTraits< SOUI::CAccelerator > : public _COLL_NS::CElementTraitsBase< SOUI::CAccelerator >
+    class  SOUI::CElementTraits< SOUI::CAccelerator > : public SOUI::CElementTraitsBase< SOUI::CAccelerator >
     {
     public:
         static ULONG Hash(INARGTYPE element ) throw()

@@ -3,7 +3,7 @@
 namespace SOUI
 {
 
-class CMemDC :    public CDC
+class CMemDC
 {
 public:
     CMemDC();
@@ -28,7 +28,14 @@ public:
 
     BOOL InitDC(HDC hdc,const CRect &rc);
 
+    operator HDC() const
+    {
+        return m_hDC;
+    }
+
 protected:
+    HDC     m_hDC;
+    
     HBITMAP        m_hOldBmp;
     BOOL        m_bBmpOwner;
     BOOL        m_bHasBitmap;

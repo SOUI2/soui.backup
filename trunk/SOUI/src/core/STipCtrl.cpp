@@ -10,13 +10,13 @@ namespace SOUI
 
 #define MARGIN_TIP        5
 
-STipCtrl::STipCtrl(void):m_nDelay(500),m_nShowSpan(5000),m_dwHostID(0)
+STipCtrl::STipCtrl(void):m_nDelay(500),m_nShowSpan(5000),m_dwHostID(0),m_font(0)
 {
 }
 
 STipCtrl::~STipCtrl(void)
 {
-    if(m_font) m_font.DeleteObject();
+    if(m_font) DeleteObject(m_font);
 }
 
 BOOL STipCtrl::Create( HWND hOwner )
@@ -28,7 +28,7 @@ BOOL STipCtrl::Create( HWND hOwner )
     GetObject(GetStockObject(DEFAULT_GUI_FONT),sizeof(lf),&lf);
     lf.lfHeight=-12;
     _tcscpy(lf.lfFaceName, _T("ËÎÌו"));
-    m_font.CreateFontIndirect(&lf);
+    m_font = CreateFontIndirect(&lf);
 
     return TRUE;
 }
@@ -126,21 +126,26 @@ void STipCtrl::OnTimer( UINT_PTR idEvent )
     }
 }
 
-void STipCtrl::OnPaint( CDCHandle dc )
+void STipCtrl::OnPaint( HDC dc )
 {
-    CPaintDC dcPaint(m_hWnd);
+    PAINTSTRUCT ps;
+    dc=::BeginPaint(m_hWnd, &ps);
+
     CRect rc;
     GetClientRect(&rc);
-    CBrush br;
-    br.CreateSolidBrush(GetSysColor(COLOR_INFOBK));
-    HBRUSH hOld=dcPaint.SelectBrush(br);
-    dcPaint.Rectangle(&rc);
-    dcPaint.SelectBrush(hOld);
+    HBRUSH br=CreateSolidBrush(GetSysColor(COLOR_INFOBK));
+    HGDIOBJ hOld=SelectObject(dc,br);
+    Rectangle(dc,rc.left,rc.top,rc.right,rc.bottom);
+    SelectObject(dc,hOld);
+    DeleteObject(br);
+    
     rc.DeflateRect(MARGIN_TIP,MARGIN_TIP);
-    dcPaint.SetBkMode(TRANSPARENT);
-    HFONT hOldFont=(HFONT)dcPaint.SelectFont(m_font);
-    ::DrawText(dcPaint,m_strTip,-1,&rc,DT_WORDBREAK);
-    dcPaint.SelectFont(hOldFont);
+    SetBkMode(dc,TRANSPARENT);
+    HGDIOBJ hOldFont=SelectObject(dc,m_font);
+    ::DrawText(dc,m_strTip,-1,&rc,DT_WORDBREAK);
+    SelectObject(dc,hOldFont);
+
+    ::EndPaint(m_hWnd, &ps);
 }
 
 BOOL STipCtrl::PreTranslateMessage( MSG* pMsg )

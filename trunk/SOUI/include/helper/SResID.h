@@ -25,8 +25,8 @@ public:
 }//end of namespace SOUI
 
 template<>
-class _COLL_NS::CElementTraits<SOUI::SResID > :
-    public _COLL_NS::CElementTraitsBase<SOUI::SResID >
+class SOUI::CElementTraits<SOUI::SResID > :
+    public SOUI::CElementTraitsBase<SOUI::SResID >
 {
 public:
     static ULONG Hash( INARGTYPE resid )

@@ -16,9 +16,11 @@ namespace SOUI
 //////////////////////////////////////////////////////////////////////////
 //    SDummyWnd
 //////////////////////////////////////////////////////////////////////////
-void SDummyWnd::OnPaint( CDCHandle dc )
+void SDummyWnd::OnPaint( HDC dc )
 {
-    CPaintDC dc1(m_hWnd);
+    PAINTSTRUCT ps;
+    ::BeginPaint(m_hWnd, &ps);
+    ::EndPaint(m_hWnd, &ps);
     m_pOwner->OnPrint(NULL,1);
 }
 
@@ -197,7 +199,7 @@ void SHostWnd::_Redraw()
         m_dummyWnd.Invalidate(FALSE);
 }
 
-void SHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
+void SHostWnd::OnPrint(HDC dc, UINT uFlags)
 {
     if((m_hostAttr.m_bTranslucent && !uFlags) && !m_bNeedAllRepaint && !m_bNeedRepaint) return;
     if (m_bNeedAllRepaint)
@@ -250,13 +252,15 @@ void SHostWnd::OnPrint(CDCHandle dc, UINT uFlags)
     UpdateHost(dc,rc);
 }
 
-void SHostWnd::OnPaint(CDCHandle dc)
+void SHostWnd::OnPaint(HDC dc)
 {
-    CPaintDC dc1(m_hWnd);
-    OnPrint(m_hostAttr.m_bTranslucent?NULL:dc1.m_hDC, 0);
+    PAINTSTRUCT ps;
+    dc=::BeginPaint(m_hWnd, &ps);
+    OnPrint(m_hostAttr.m_bTranslucent?NULL:dc, 0);
+    ::EndPaint(m_hWnd, &ps);
 }
 
-BOOL SHostWnd::OnEraseBkgnd(CDCHandle dc)
+BOOL SHostWnd::OnEraseBkgnd(HDC dc)
 {
     return TRUE;
 }
@@ -542,14 +546,14 @@ void SHostWnd::OnReleaseRenderTarget(IRenderTarget * pRT,const CRect &rc,DWORD g
         {
             DrawCaret(m_ptCaret);//clear old caret
         }
-        CDCHandle dc=GetDC();
+        HDC dc=GetDC();
         UpdateHost(dc,rc);
         ReleaseDC(dc);
     }
     pRT->Release();
 }
 
-void SHostWnd::UpdateHost(CDCHandle dc, const CRect &rcInvalid )
+void SHostWnd::UpdateHost(HDC dc, const CRect &rcInvalid )
 {
     HDC hdc=m_memRT->GetDC(0);
     if(m_hostAttr.m_bTranslucent)
@@ -557,13 +561,13 @@ void SHostWnd::UpdateHost(CDCHandle dc, const CRect &rcInvalid )
         CRect rc;
         CSimpleWnd::GetWindowRect(&rc);
         BLENDFUNCTION bf= {AC_SRC_OVER,0,0xFF,AC_SRC_ALPHA};
-        CDCHandle hdcSrc=::GetDC(NULL);
+        HDC hdcSrc=::GetDC(NULL);
         UpdateLayeredWindow(hdcSrc,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
         ::ReleaseDC(NULL,hdcSrc);
     }
     else
     {
-        dc.BitBlt(rcInvalid.left,rcInvalid.top,rcInvalid.Width(),rcInvalid.Height(),hdc,rcInvalid.left,rcInvalid.top,SRCCOPY);
+        ::BitBlt(dc,rcInvalid.left,rcInvalid.top,rcInvalid.Width(),rcInvalid.Height(),hdc,rcInvalid.left,rcInvalid.top,SRCCOPY);
     }
     m_memRT->ReleaseDC(hdc);
 }
@@ -847,7 +851,7 @@ void SHostWnd::UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha)
     CRect rc;
     CSimpleWnd::GetWindowRect(&rc);
     BLENDFUNCTION bf= {AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
-    CDCHandle dc=GetDC();
+    HDC dc=GetDC();
     UpdateLayeredWindow(dc,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
     ReleaseDC(dc);
     pRT->ReleaseDC(hdc);
