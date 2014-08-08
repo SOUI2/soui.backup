@@ -371,8 +371,10 @@ namespace SOUI
         paint.setPathEffect(skDash.Get());
         paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
         paint.setStyle(SkPaint::kStroke_Style);
+        paint.setAntiAlias(true);
 
         SkRect skrc=toSkRect(pRect);
+        skrc.offset(0.5f,0.5f);//要偏移0.5显示效果才和GDI一致。
         skrc.offset(m_ptOrg);
         m_SkCanvas->drawRoundRect(skrc,(SkScalar)pt.x,(SkScalar)pt.y,paint);
         return S_OK;
@@ -381,6 +383,7 @@ namespace SOUI
     HRESULT SRenderTarget_Skia::FillRoundRect( LPCRECT pRect,POINT pt )
     {
         SkPaint paint;
+        paint.setAntiAlias(true);
 
         if(m_curBrush->IsBitmap())
         {
@@ -394,6 +397,7 @@ namespace SOUI
         paint.setStyle(SkPaint::kFill_Style);
 
         SkRect skrc=toSkRect(pRect);
+        skrc.offset(0.5f,0.5f);//要偏移0.5显示效果才和GDI一致。
         skrc.offset(m_ptOrg);
 
         m_SkCanvas->drawRoundRect(skrc,(SkScalar)pt.x,(SkScalar)pt.y,paint);
@@ -411,6 +415,7 @@ namespace SOUI
         SkPoint::Offset(pts,nCount,m_ptOrg);
 
         SkPaint paint;
+        paint.setAntiAlias(true);
         paint.setColor(SColor(m_curPen->GetColor()).toARGB());
         SGetLineDashEffect skDash(m_curPen->GetStyle());
         paint.setPathEffect(skDash.Get());
