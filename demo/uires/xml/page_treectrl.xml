@@ -1,5 +1,5 @@
 ﻿<include>
-  <treectrl pos="10,0,-10,-10"  name="mytree1" itemHeight="30" iconSkin="skin_tree_icon" checkbox="1">
+  <treectrl pos="10,0,-10,-10"  name="mytree1" itemHeight="30" iconSkin="skin_tree_icon" checkBox="1">
     <item text="组织机构" img="0" selImg="1">
       <item text="市场部" img="0" selImg="1">
         <item text="南一区" img="2"/>
