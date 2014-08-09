@@ -356,7 +356,7 @@ namespace SOUI
         virtual HRESULT RestoreClip(int nState=-1)=0;
 
         virtual HRESULT GetClipRegion(IRegion **ppRegion)=0;
-        virtual HRESULT GetClipBound(LPRECT prcBound)=0;
+        virtual HRESULT GetClipBox(LPRECT prc)=0;
 
         virtual HRESULT DrawText(LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat,BYTE byAlpha =0xFF)=0;
         virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz) =0;

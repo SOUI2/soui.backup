@@ -173,12 +173,6 @@ namespace SOUI
         
         m_SkCanvas->save();
 
-        if(m_SkCanvas->isClipEmpty())
-        {
-            SkRect rcAll={0.0f,0.0f,(SkScalar)m_curBmp->Width(),(SkScalar)m_curBmp->Height()};
-            m_SkCanvas->clipRect(rcAll,SkRegion::kReplace_Op);
-        }
-
         m_SkCanvas->clipRect(skrc,SRegion_Skia::RGNMODE2SkRgnOP(mode));
 	    return S_OK;
 	}
@@ -191,11 +185,6 @@ namespace SOUI
 
         m_SkCanvas->save();
 
-        if(m_SkCanvas->isClipEmpty())
-        {
-            SkRect rcAll={0.0f,0.0f,(SkScalar)m_curBmp->Width(),(SkScalar)m_curBmp->Height()};
-            m_SkCanvas->clipRect(rcAll,SkRegion::kReplace_Op);
-        }
         m_SkCanvas->clipRegion(rgn,SRegion_Skia::RGNMODE2SkRgnOP(mode));
         
 		return S_OK;
@@ -211,11 +200,6 @@ namespace SOUI
     {
         SkRect skrc=toSkRect(pRc);
         skrc.offset(m_ptOrg);
-        if(m_SkCanvas->isClipEmpty())
-        {
-            SkRect rcAll={0.0f,0.0f,(SkScalar)m_curBmp->Width(),(SkScalar)m_curBmp->Height()};
-            m_SkCanvas->clipRect(rcAll,SkRegion::kReplace_Op);
-        }
         m_SkCanvas->clipRect(skrc,SkRegion::kDifference_Op);
         return S_OK;
     }
@@ -224,11 +208,6 @@ namespace SOUI
     {
         SkRect skrc=toSkRect(pRc);
         skrc.offset(m_ptOrg);
-        if(m_SkCanvas->isClipEmpty())
-        {
-            SkRect rcAll={0.0f,0.0f,(SkScalar)m_curBmp->Width(),(SkScalar)m_curBmp->Height()};
-            m_SkCanvas->clipRect(rcAll,SkRegion::kReplace_Op);
-        }
         m_SkCanvas->clipRect(skrc,SkRegion::kIntersect_Op);
         return S_OK;
     }
@@ -257,17 +236,19 @@ namespace SOUI
         return S_OK;
     }
 
-    HRESULT SRenderTarget_Skia::GetClipBound(LPRECT prcBound)
+    HRESULT SRenderTarget_Skia::GetClipBox(LPRECT prc)
     {
         SkRect skrc;
         m_SkCanvas->getClipBounds(&skrc);
         //需要将rect的viewOrg还原
         skrc.offset(-m_ptOrg);
 
-        prcBound->left=(LONG)skrc.fLeft;
-        prcBound->top=(LONG)skrc.fTop;
-        prcBound->right=(LONG)skrc.fRight;
-        prcBound->bottom=(LONG)skrc.fBottom;
+        prc->left=(LONG)skrc.fLeft;
+        prc->top=(LONG)skrc.fTop;
+        prc->right=(LONG)skrc.fRight;
+        prc->bottom=(LONG)skrc.fBottom;
+        //需要4周缩小一个单位才是和GDI相同的剪裁区
+        ::InflateRect(prc,-1,-1);
         return S_OK;
     }
     
@@ -671,40 +652,59 @@ namespace SOUI
         
         ::SelectObject(m_hGetDC,bmp);
         
-        SkRegion rgn = m_SkCanvas->getTotalClip();
-        if(!rgn.isEmpty())
+        SkCanvas::ClipType ct=m_SkCanvas->getClipType();
+
+        switch(ct)
         {
-            SkRegion::Iterator it(rgn);
-            int nCount=0;
-            for(;!it.done();it.next())
+        case SkCanvas::kEmpty_ClipType:
+            ::IntersectClipRect(m_hGetDC,0,0,0,0);
+            break;
+        case SkCanvas::kRect_ClipType:
             {
-                nCount++;
+                SkRect rcClip;
+                m_SkCanvas->getClipBounds(&rcClip);
+                RECT rc = {(int)rcClip.left(),(int)rcClip.top(),(int)rcClip.right(),(int)rcClip.bottom()};
+                ::InflateRect(&rc,-1,-1);//注意需要向内缩小一个象素
+                ::IntersectClipRect(m_hGetDC,rc.left,rc.top,rc.right,rc.bottom);
             }
-            it.rewind();
-            
-            int nSize=sizeof(RGNDATAHEADER)+nCount*sizeof(RECT);
-            RGNDATA *rgnData=(RGNDATA*)malloc(nSize);
-            memset(rgnData,0,nSize);
-            rgnData->rdh.dwSize= sizeof(RGNDATAHEADER);
-            rgnData->rdh.iType = RDH_RECTANGLES;
-            rgnData->rdh.nCount=nCount;
-            rgnData->rdh.rcBound.right=m_curBmp->Width();
-            rgnData->rdh.rcBound.bottom=m_curBmp->Height();
-            
-            nCount=0;
-            LPRECT pRc=(LPRECT)rgnData->Buffer;
-            for(;!it.done();it.next())
+            break;
+        case SkCanvas::kComplex_ClipType:
             {
-                SkIRect skrc=it.rect();
-                RECT rc = {skrc.fLeft,skrc.fTop,skrc.fRight,skrc.fBottom};
-                pRc[nCount++]= rc;
+                SkRegion rgn = m_SkCanvas->getTotalClip();
+                SkRegion::Iterator it(rgn);
+                int nCount=0;
+                for(;!it.done();it.next())
+                {
+                    nCount++;
+                }
+                it.rewind();
+
+                int nSize=sizeof(RGNDATAHEADER)+nCount*sizeof(RECT);
+                RGNDATA *rgnData=(RGNDATA*)malloc(nSize);
+                memset(rgnData,0,nSize);
+                rgnData->rdh.dwSize= sizeof(RGNDATAHEADER);
+                rgnData->rdh.iType = RDH_RECTANGLES;
+                rgnData->rdh.nCount=nCount;
+                rgnData->rdh.rcBound.right=m_curBmp->Width();
+                rgnData->rdh.rcBound.bottom=m_curBmp->Height();
+
+                nCount=0;
+                LPRECT pRc=(LPRECT)rgnData->Buffer;
+                for(;!it.done();it.next())
+                {
+                    SkIRect skrc=it.rect();
+                    RECT rc = {skrc.fLeft,skrc.fTop,skrc.fRight,skrc.fBottom};
+                    pRc[nCount++]= rc;
+                }
+
+                HRGN hRgn=ExtCreateRegion(NULL,nSize,rgnData);
+                free(rgnData);
+                ::SelectClipRgn(m_hGetDC,hRgn);
+                DeleteObject(hRgn);
             }
-            
-            HRGN hRgn=ExtCreateRegion(NULL,nSize,rgnData);
-            free(rgnData);
-            ::SelectClipRgn(m_hGetDC,hRgn);
-            DeleteObject(hRgn);
+            break;
         }
+
         ::SetViewportOrgEx(m_hGetDC,(int)m_ptOrg.fX,(int)m_ptOrg.fY,NULL);
 
         m_uGetDCFlag = uFlag;

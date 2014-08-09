@@ -261,7 +261,7 @@ namespace SOUI
         virtual HRESULT RestoreClip(int nState=-1);
 
         virtual HRESULT GetClipRegion(IRegion **ppRegion);
-        virtual HRESULT GetClipBound(LPRECT prcBound);
+        virtual HRESULT GetClipBox(LPRECT prc);
 
         virtual HRESULT BitBlt(LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop=SRCCOPY);
 
