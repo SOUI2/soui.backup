@@ -271,7 +271,7 @@ void SListBoxEx::OnPaint(IRenderTarget * pRT)
     int nPageItems=(m_rcClient.Height()+m_nItemHei-1)/m_nItemHei+1;
 
     CRect rcClip,rcInter;
-    pRT->GetClipBound(&rcClip);
+    pRT->GetClipBox(&rcClip);
 
     for(int iItem = iFirstVisible; iItem<GetItemCount() && iItem <iFirstVisible+nPageItems; iItem++)
     {

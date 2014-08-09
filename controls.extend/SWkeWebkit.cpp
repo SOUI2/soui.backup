@@ -63,7 +63,7 @@ namespace SOUI
     void SWkeWebkit::OnPaint(IRenderTarget *pRT)
     {
         CRect rcClip;
-        pRT->GetClipBound(&rcClip);
+        pRT->GetClipBox(&rcClip);
         CRect rcClient;
         GetClientRect(&rcClient);
         CRect rcInvalid;

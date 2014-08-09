@@ -650,9 +650,10 @@ void SRichEdit::OnPaint( IRenderTarget * pRT )
 {
     CRect rcClient;
     GetClientRect(&rcClient);
+    pRT->PushClipRect(&rcClient);
     HDC hdc=pRT->GetDC(0);
-    ::SaveDC(hdc);
-    ::IntersectClipRect(hdc,rcClient.left,rcClient.top,rcClient.right,rcClient.bottom);
+    //::SaveDC(hdc);
+    //::IntersectClipRect(hdc,rcClient.left,rcClient.top,rcClient.right,rcClient.bottom);
 
     ALPHAINFO ai;
     if(GetContainer()->IsTranslucent())
@@ -678,8 +679,9 @@ void SRichEdit::OnPaint( IRenderTarget * pRT )
     {
         CGdiAlpha::AlphaRestore(ai);
     }
-    ::RestoreDC(hdc,-1);
+//    ::RestoreDC(hdc,-1);
     pRT->ReleaseDC(hdc);
+    pRT->PopClip();
 }
 
 void SRichEdit::OnSetFocus()

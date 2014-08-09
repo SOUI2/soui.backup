@@ -361,9 +361,9 @@ namespace SOUI
         return S_OK;
     }
 
-    HRESULT SRenderTarget_GDI::GetClipBound(LPRECT prcBound)
+    HRESULT SRenderTarget_GDI::GetClipBox(LPRECT prc)
     {
-        ::GetClipBox(m_hdc,prcBound);
+        ::GetClipBox(m_hdc,prc);
         return S_OK;
     }
 
