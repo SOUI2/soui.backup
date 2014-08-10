@@ -139,7 +139,7 @@ BOOL SPanel::HasScrollBar(BOOL bVertical)
 
 CRect SPanel::GetSbPartRect(BOOL bVertical,UINT uSBCode)
 {
-    ASSERT(m_pSkinSb);
+    SASSERT(m_pSkinSb);
     CRect rcSb=GetScrollBarRect(bVertical);
     if(rcSb.IsRectEmpty()) return rcSb;
 
@@ -197,7 +197,7 @@ end:
 
 CRect SPanel::GetSbRailwayRect( BOOL bVertical )
 {
-    ASSERT(m_pSkinSb);
+    SASSERT(m_pSkinSb);
     CRect rcSb=GetScrollBarRect(bVertical);
     if(rcSb.IsRectEmpty()) return rcSb;
 
@@ -263,7 +263,7 @@ int SPanel::OnCreate(LPVOID)
 {
     int nRet=__super::OnCreate(NULL);
     if(nRet!=0) return nRet;
-    ASSERT(m_pSkinSb);
+    SASSERT(m_pSkinSb);
     if(m_nSbWid==-1) m_nSbWid=m_pSkinSb->GetIdealSize();
     if(!m_pSkinSb->HasArrow()) m_nSbArrowSize=0;
     if(m_nSbArrowSize==-1) m_nSbArrowSize=m_nSbWid;
@@ -701,10 +701,10 @@ void SPanel::OnShowWindow( BOOL bShow, UINT nStatus )
 HRESULT SPanel::OnAttrScrollbarSkin( SStringW strValue,BOOL bLoading )
 {
     ISkinObj *pSbSkin=GETSKIN(strValue);
-    ASSERT(pSbSkin);
+    SASSERT(pSbSkin);
     if(!pSbSkin->IsClass(SSkinScrollbar::GetClassName())) return E_FAIL;
     m_pSkinSb=(SSkinScrollbar*)pSbSkin;
-    ASSERT(m_pSkinSb);
+    SASSERT(m_pSkinSb);
     return bLoading?S_FALSE:S_OK;
 }
 

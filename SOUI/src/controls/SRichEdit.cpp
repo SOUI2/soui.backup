@@ -21,13 +21,13 @@ namespace SOUI
             :nRef(1)
             ,pserv(pTxtSvr)
         {
-            ASSERT(pserv);
+            SASSERT(pserv);
             pserv->AddRef();
         }
 
         ~SRicheditDropTarget()
         {
-            ASSERT(pserv);
+            SASSERT(pserv);
             pserv->Release();
         }
 
@@ -781,7 +781,7 @@ HRESULT SRichEdit::InitDefaultCharFormat( CHARFORMAT2W* pcf ,IFont *pFont)
 {
     CAutoRefPtr<IRenderTarget> pRT;
     GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
-    ASSERT(pRT);
+    SASSERT(pRT);
     BeforePaintEx(pRT);
 
     if(pFont==NULL) pFont=(IFont *)pRT->GetCurrentObject(OT_FONT);

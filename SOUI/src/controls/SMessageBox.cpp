@@ -148,10 +148,10 @@ namespace SOUI
         UINT uType = s_MsgBoxInfo.uType&0x0F;
 
         STabCtrl *pBtnSwitch= FindChildByName2<STabCtrl>(NAME_MSGBOX_BTNSWITCH);
-        ASSERT(pBtnSwitch);
+        SASSERT(pBtnSwitch);
         pBtnSwitch->SetCurSel(g_msgBtnText[uType].nBtns-1);
         SWindow *pBtnPanel=pBtnSwitch->GetItem(g_msgBtnText[uType].nBtns-1);
-        ASSERT(pBtnPanel);
+        SASSERT(pBtnPanel);
         
         for(int i=0; i<g_msgBtnText[uType].nBtns; i++)
         {
@@ -168,11 +168,11 @@ namespace SOUI
         swscanf(pszMinAttr,L"%d,%d",&szMin.cx,&szMin.cy);
 
         SWindow * pTitle= FindChildByName(NAME_MSGBOX_TITLE);
-        ASSERT(pTitle);
+        SASSERT(pTitle);
         pTitle->SetWindowText(TR(s_MsgBoxInfo.pszCaption?s_MsgBoxInfo.pszCaption:_T("prompt"),_T("messagebox")));
 
         SWindow * pMsg= FindChildByName(NAME_MSGBOX_TEXT);
-        ASSERT(pMsg);
+        SASSERT(pMsg);
         pMsg->SetWindowText(TR(s_MsgBoxInfo.pszText,_T("messagebox")));
 
         OnSetIcon(s_MsgBoxInfo.uType);

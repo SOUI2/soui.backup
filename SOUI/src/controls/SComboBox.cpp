@@ -73,7 +73,7 @@ SComboBoxBase::~SComboBoxBase(void)
 
 BOOL SComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
 {
-    ASSERT(m_pSkinBtn);
+    SASSERT(m_pSkinBtn);
     //创建edit对象
     if(!m_bDropdown)
     {
@@ -306,7 +306,7 @@ BOOL SComboBoxBase::FireEvent(EventArgs &evt)
 {
     if(evt.idFrom == IDC_DROPDOWN_LIST)
     {
-        ASSERT(m_pDropDownWnd);
+        SASSERT(m_pDropDownWnd);
         const MSG *pMsg=m_pDropDownWnd->GetCurrentMessage();
         if(evt.GetEventID()==EventLBSelChanged::EventID)
         {
@@ -343,7 +343,7 @@ SComboBox::~SComboBox()
 
 BOOL SComboBox::CreateListBox( pugi::xml_node xmlNode )
 {
-    ASSERT(xmlNode);
+    SASSERT(xmlNode);
     //创建列表控件
     m_pListBox=new SListBox;
     m_pListBox->SetContainer(GetContainer());
@@ -438,7 +438,7 @@ SComboBoxEx::~SComboBoxEx()
 
 BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
 {
-    ASSERT(xmlNode);
+    SASSERT(xmlNode);
     //创建列表控件
     m_pListBox=new SListBoxEx;
     m_pListBox->SetContainer(GetContainer());

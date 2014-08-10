@@ -83,7 +83,7 @@ int SScrollBar::GetPos()
 // Generated message map functions
 CRect SScrollBar::GetPartRect(UINT uSBCode)
 {
-    ASSERT(m_pSkin);
+    SASSERT(m_pSkin);
     int nTrackPos=m_si.nTrackPos;
     int nMax=m_si.nMax;
     if(nMax<m_si.nMin+(int)m_si.nPage-1) nMax=m_si.nMin+m_si.nPage-1;
@@ -137,7 +137,7 @@ end:
 void SScrollBar::OnInitFinished(pugi::xml_node xmlNode)
 {
     __super::OnInitFinished(xmlNode);
-    ASSERT(m_pSkin);
+    SASSERT(m_pSkin);
     if(m_uAllowSize==-1)
     {
         m_uAllowSize=m_pSkin->GetSkinSize().cx/9;
@@ -291,7 +291,7 @@ void SScrollBar::OnTimer(char nIDEvent)
     // TODO: Add your message handler code here and/or call default
     if(nIDEvent==TIMERID_NOTIFY1)
     {
-        ASSERT(m_uClicked!=-1 && m_uClicked!=SB_THUMBTRACK);
+        SASSERT(m_uClicked!=-1 && m_uClicked!=SB_THUMBTRACK);
 
         switch(m_uClicked)
         {
@@ -324,7 +324,7 @@ void SScrollBar::OnTimer(char nIDEvent)
         }
         break;
         default:
-            ASSERT(FALSE);
+            SASSERT(FALSE);
             break;
         }
     }

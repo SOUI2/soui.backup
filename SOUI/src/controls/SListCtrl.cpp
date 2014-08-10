@@ -36,7 +36,7 @@ SListCtrl::~SListCtrl()
 
 int SListCtrl::InsertColumn(int nIndex, LPCTSTR pszText, int nWidth, LPARAM lParam)
 {
-    ASSERT(m_pHeader);
+    SASSERT(m_pHeader);
 
     int nRet = m_pHeader->InsertItem(nIndex, pszText, nWidth, ST_NULL, lParam);
     for(int i=0;i<GetItemCount();i++)

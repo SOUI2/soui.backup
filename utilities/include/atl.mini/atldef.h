@@ -13,7 +13,7 @@
 #endif
 
 #ifndef ATLASSERT
-#define ATLASSERT ASSERT
+#define ATLASSERT SASSERT
 #endif // ATLASSERT
 
 #ifndef ATLASSUME

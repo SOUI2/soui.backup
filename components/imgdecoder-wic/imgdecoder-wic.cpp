@@ -29,13 +29,13 @@ namespace SOUI
 
     BOOL SImgFrame_WIC::GetSize( UINT *pWid,UINT *pHei )
     {
-        ASSERT(m_pFrame);
+        SASSERT(m_pFrame);
         return S_OK == m_pFrame->GetSize(pWid,pHei);
     }
 
     BOOL SImgFrame_WIC::CopyPixels(const RECT *prc, UINT cbStride, UINT cbBufferSize, BYTE *pbBuffer )
     {
-        ASSERT(m_pFrame);
+        SASSERT(m_pFrame);
         if(!prc)
         {
             return S_OK==m_pFrame->CopyPixels(NULL,cbStride,cbBufferSize,pbBuffer);
@@ -66,7 +66,7 @@ namespace SOUI
 
     int SImgX_WIC::LoadFromMemory(void *pBuf,size_t bufLen )
     {
-        ASSERT(m_pImgArray == NULL);
+        SASSERT(m_pImgArray == NULL);
 
         IWICImagingFactory*    factory    = SImgDecoderFactory::s_wicImgFactory;
         CAutoRefPtr<IWICBitmapDecoder>     decoder;
@@ -83,7 +83,7 @@ namespace SOUI
 
     int SImgX_WIC::LoadFromFile( LPCWSTR pszFileName )
     {
-        ASSERT(m_pImgArray == NULL);
+        SASSERT(m_pImgArray == NULL);
         IWICImagingFactory*    factory    = SImgDecoderFactory::s_wicImgFactory;
 
         CAutoRefPtr<IWICBitmapDecoder>     decoder;
@@ -111,7 +111,7 @@ namespace SOUI
 
     int SImgX_WIC::_DoDecode( IWICBitmapDecoder * pDecoder )
     {
-        ASSERT(m_uImgCount == 0);
+        SASSERT(m_uImgCount == 0);
         
         IWICImagingFactory*    factory    = SImgDecoderFactory::s_wicImgFactory;
         CAutoRefPtr<IWICFormatConverter> converter;
@@ -160,7 +160,7 @@ namespace SOUI
         HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,NULL,
             CLSCTX_INPROC_SERVER,IID_PPV_ARGS(&s_wicImgFactory));
         (hr);
-        ASSERT(SUCCEEDED(hr));
+        SASSERT(SUCCEEDED(hr));
     }
 
     SImgDecoderFactory::~SImgDecoderFactory()

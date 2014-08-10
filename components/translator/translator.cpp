@@ -129,7 +129,7 @@ namespace SOUI
         nodeCtx=xmlLang.child(L"context");
         for(int i=0;i<ctxCount;i++)
         {
-            ASSERT(nodeCtx);
+            SASSERT(nodeCtx);
             int strCount=0;
             xml_node nodeStr=nodeCtx.child(L"message");
             while(nodeStr)
@@ -144,7 +144,7 @@ namespace SOUI
             nodeStr=nodeCtx.child(L"message");
             for(int j=0;j<strCount;j++)
             {
-                ASSERT(nodeStr);
+                SASSERT(nodeStr);
                 SStrMap * strMap= new SStrMap;
                 strMap->strSource=nodeStr.child(L"source").text().get();
                 strMap->strTranslation=nodeStr.child(L"translation").text().get();

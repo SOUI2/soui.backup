@@ -11,8 +11,6 @@
 
 #include "MainDlg.h"
 
-#define SUPPORT_LANG    //打开SUPPORT_LANG时，演示多语言支持
-
 #define RES_TYPE 0   //从文件中加载资源
 // #define RES_TYPE 1   //从PE资源中加载UI资源
 // #define RES_TYPE 2   //从zip包中加载资源
@@ -40,7 +38,7 @@
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
     HRESULT hRes = OleInitialize(NULL);
-    ASSERT(SUCCEEDED(hRes));
+    SASSERT(SUCCEEDED(hRes));
     
     int nRet = 0; 
 
@@ -68,14 +66,14 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         int nType=MessageBox(GetActiveWindow(),_T("选择渲染类型：\n[yes]: Skia\n[no]:GDI\n[cancel]:Quit"),_T("select a render"),MB_ICONQUESTION|MB_YESNOCANCEL);
         if(nType == IDCANCEL) return -1;
         bLoaded=renderLoader.CreateInstance(nType==IDYES?COM_RENDER_SKIA:COM_RENDER_GDI,(IObjRef**)&pRenderFactory);
-        ASSERT(bLoaded);
+        SASSERT(bLoaded);
         bLoaded=imgDecLoader.CreateInstance(COM_IMGDECODER,(IObjRef**)&pImgDecoderFactory);
-        ASSERT(bLoaded);
+        SASSERT(bLoaded);
 
         pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
 
         bLoaded=transLoader.CreateInstance(COM_TRANSLATOR,(IObjRef**)&trans);
-        ASSERT(bLoaded);
+        SASSERT(bLoaded);
         
         SApplication *theApp=new SApplication(pRenderFactory,hInstance);
 
@@ -84,7 +82,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         CreateResProvider(RES_FILE,(IObjRef**)&pResProvider);
         if(!pResProvider->Init((LPARAM)_T("uires"),0))
         {
-            ASSERT(0);
+            SASSERT(0);
             return 1;
         }
 #elif (RES_TYPE==1)
@@ -92,13 +90,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         pResProvider->Init((WPARAM)hInstance,0);
 #elif (RES_TYPE==2)
         bLoaded=zipResLoader.CreateInstance(COM_ZIPRESPROVIDER,(IObjRef**)&pResProvider);
-        ASSERT(bLoaded);
+        SASSERT(bLoaded);
         ZIPRES_PARAM param;
-        param.type = ZIPRES_PARAM::ZIPFILE;
-        param.pRenderFac = pRenderFactory;
-        param.pszZipFile = _T("uires.zip");
+        param.ZipFile(pRenderFactory, _T("uires.zip"));
         bLoaded = pResProvider->Init((WPARAM)&param,0);
-        ASSERT(bLoaded);
+        SASSERT(bLoaded);
 #endif
         theApp->AddResProvider(pResProvider);
 
@@ -116,7 +112,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         }
 #ifdef DLL_SOUI
         bLoaded=scriptLoader.CreateInstance(COM_SCRIPT_LUA,(IObjRef**)&pScriptLua);
-        ASSERT(bLoaded);
+        SASSERT(bLoaded);
         if(pScriptLua)
         {
             theApp->SetScriptModule(pScriptLua);
@@ -157,8 +153,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
             CMainDlg dlgMain;  
             dlgMain.Create(GetActiveWindow(),0,0,800,600);
             dlgMain.GetNative()->SendMessage(WM_INITDIALOG);
+            dlgMain.CenterWindow();
             dlgMain.ShowWindow(SW_SHOWNORMAL);
-            dlgMain.SetWindowPos(HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
+//             dlgMain.SetWindowPos(HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
             nRet=theApp->Run(dlgMain.m_hWnd);
             //  		nRet = dlgMain.DoModal();  
         }

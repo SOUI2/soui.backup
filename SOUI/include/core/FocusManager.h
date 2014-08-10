@@ -30,7 +30,7 @@ namespace SOUI
     template<class T>
     void CopyList(SList<T> &sour,SList<T> &dest)
     {
-        ASSERT(dest.IsEmpty());
+        SASSERT(dest.IsEmpty());
         POSITION pos=sour.GetHeadPosition();
         while(pos)
         {

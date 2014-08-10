@@ -243,7 +243,7 @@ inline int CTime::SetDate(int nYear, int nMonth, int nDay) throw()
 inline struct tm* CTime::GetLocalTm(struct tm* ptm) const
 {
     // Ensure ptm is valid
-    ASSERT( ptm != NULL );
+    SASSERT( ptm != NULL );
 
     if (ptm != NULL)
     {

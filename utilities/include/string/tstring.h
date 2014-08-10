@@ -39,12 +39,12 @@ namespace SOUI
 
         inline void AddRef()
         {
-            ASSERT(nRefs > 0);
+            SASSERT(nRefs > 0);
             InterlockedIncrement(&nRefs);
         }
         inline void Release()
         {
-            ASSERT(nRefs != 0);
+            SASSERT(nRefs != 0);
             if (InterlockedDecrement(&nRefs) <= 0)
                 free(this);
         }
@@ -59,14 +59,14 @@ namespace SOUI
 
         inline void Lock()
         {
-            ASSERT(nRefs <= 1);
+            SASSERT(nRefs <= 1);
             nRefs--;  // Locked buffers can't be shared, so no interlocked operation necessary
             if (nRefs == 0)
                 nRefs = -1;
         }
         inline void Unlock()
         {
-            ASSERT(IsLocked());
+            SASSERT(IsLocked());
             if (IsLocked())
             {
                 nRefs++;  // Locked buffers can't be shared, so no interlocked operation necessary
@@ -332,10 +332,10 @@ namespace SOUI
         }
         TStringT(const TStringT& stringSrc)
         {
-            ASSERT(stringSrc.GetData()->nRefs != 0);
+            SASSERT(stringSrc.GetData()->nRefs != 0);
             if (stringSrc.GetData()->nRefs >= 0)
             {
-                ASSERT(stringSrc.GetData() != _tstr_initDataNil);
+                SASSERT(stringSrc.GetData() != _tstr_initDataNil);
                 m_pszData = stringSrc.m_pszData;
                 GetData()->AddRef();
             }
@@ -410,27 +410,27 @@ namespace SOUI
                 *this = sz;
             }
 
-            ASSERT(GetData()->nDataLength == 0);
-            ASSERT(GetData()->IsLocked() || GetData()->nAllocLength == 0);
+            SASSERT(GetData()->nDataLength == 0);
+            SASSERT(GetData()->IsLocked() || GetData()->nAllocLength == 0);
         }
 
         tchar GetAt(int nIndex) const
         {
-            ASSERT(nIndex >= 0);
-            ASSERT(nIndex < GetData()->nDataLength);
+            SASSERT(nIndex >= 0);
+            SASSERT(nIndex < GetData()->nDataLength);
             return m_pszData[nIndex];
         }
         tchar operator[](int nIndex) const
         {
             // same as GetAt
-            ASSERT(nIndex >= 0);
-            ASSERT(nIndex < GetData()->nDataLength);
+            SASSERT(nIndex >= 0);
+            SASSERT(nIndex < GetData()->nDataLength);
             return m_pszData[nIndex];
         }
         void SetAt(int nIndex, tchar ch)
         {
-            ASSERT(nIndex >= 0);
-            ASSERT(nIndex < GetData()->nDataLength);
+            SASSERT(nIndex >= 0);
+            SASSERT(nIndex < GetData()->nDataLength);
 
             CopyBeforeWrite();
             m_pszData[nIndex] = ch;
@@ -455,7 +455,7 @@ namespace SOUI
                 {
                     // can just copy references around
                     Release();
-                    ASSERT(stringSrc.GetData() != _tstr_initDataNil);
+                    SASSERT(stringSrc.GetData() != _tstr_initDataNil);
                     m_pszData = stringSrc.m_pszData;
                     GetData()->AddRef();
                 }
@@ -799,7 +799,7 @@ namespace SOUI
                     }
                     pszStart += tchar_traits::StrLen(pszStart) + 1;
                 }
-                ASSERT(m_pszData[nNewLength] == '\0');
+                SASSERT(m_pszData[nNewLength] == '\0');
                 GetData()->nDataLength = nNewLength;
             }
             return nCount;
@@ -955,7 +955,7 @@ namespace SOUI
         // Access to string implementation buffer as "C" character array
         tchar* GetBuffer(int nMinBufLength)
         {
-            ASSERT(nMinBufLength >= 0);
+            SASSERT(nMinBufLength >= 0);
 
             TStringData* pData = GetData();
             if (pData->IsShared() || nMinBufLength > pData->nAllocLength)
@@ -967,10 +967,10 @@ namespace SOUI
                 if (! ReallocBuffer(nMinBufLength))
                     return NULL;
             }
-            ASSERT(GetData()->nRefs <= 1);
+            SASSERT(GetData()->nRefs <= 1);
 
             // return a pointer to the character storage for this string
-            ASSERT(m_pszData != NULL);
+            SASSERT(m_pszData != NULL);
             return m_pszData;
         }
         void ReleaseBuffer(int nNewLength = -1)
@@ -981,13 +981,13 @@ namespace SOUI
                 nNewLength = SafeStrlen(m_pszData); // zero terminated
 
             TStringData* pData = GetData();
-            ASSERT(nNewLength <= pData->nAllocLength);
+            SASSERT(nNewLength <= pData->nAllocLength);
             pData->nDataLength = nNewLength;
             m_pszData[nNewLength] = '\0';
         }
         tchar* GetBufferSetLength(int nNewLength)
         {
-            ASSERT(nNewLength >= 0);
+            SASSERT(nNewLength >= 0);
 
             if (GetBuffer(nNewLength) == NULL)
                 return NULL;
@@ -998,8 +998,8 @@ namespace SOUI
         }
         void SetLength(int nLength)
         {
-            ASSERT(nLength >= 0);
-            ASSERT(nLength <= GetData()->nAllocLength);
+            SASSERT(nLength >= 0);
+            SASSERT(nLength <= GetData()->nAllocLength);
 
             if (nLength >= 0 && nLength < GetData()->nAllocLength)
             {
@@ -1016,13 +1016,13 @@ namespace SOUI
         void FreeExtra()
         {
             TStringData* pData = GetData();
-            ASSERT(pData->nDataLength <= pData->nAllocLength);
+            SASSERT(pData->nDataLength <= pData->nAllocLength);
             if (pData->nDataLength < pData->nAllocLength)
             {
                 if (ReallocBuffer(pData->nDataLength))
-                    ASSERT(m_pszData[GetData()->nDataLength] == '\0');
+                    SASSERT(m_pszData[GetData()->nDataLength] == '\0');
             }
-            ASSERT(GetData() != NULL);
+            SASSERT(GetData() != NULL);
         }
 
         // Use LockBuffer/UnlockBuffer to turn refcounting off
@@ -1089,14 +1089,14 @@ namespace SOUI
         }
         friend inline TStringT __stdcall operator+(const TStringT& string, const tchar* psz)
         {
-            ASSERT(psz != NULL);
+            SASSERT(psz != NULL);
             TStringT s;
             s.ConcatCopy(string.GetData()->nDataLength, string.m_pszData, TStringT::SafeStrlen(psz), psz);
             return s;
         }
         friend inline TStringT __stdcall operator+(const tchar* psz, const TStringT& string)
         {
-            ASSERT(psz != NULL);
+            SASSERT(psz != NULL);
             TStringT s;
             s.ConcatCopy(TStringT::SafeStrlen(psz), psz, string.GetData()->nDataLength, string.m_pszData);
             return s;
@@ -1130,7 +1130,7 @@ namespace SOUI
         // implementation helpers
         inline TStringData* GetData() const
         {
-            ASSERT(m_pszData != NULL);
+            SASSERT(m_pszData != NULL);
             return ((TStringData*)m_pszData) - 1;
         }
         inline void Init()
@@ -1227,7 +1227,7 @@ namespace SOUI
                 // fast concatenation when buffer big enough
                 memcpy(m_pszData + pData->nDataLength, pszSrcData, nSrcLen * sizeof(tchar));
                 pData->nDataLength += nSrcLen;
-                ASSERT(pData->nDataLength <= pData->nAllocLength);
+                SASSERT(pData->nDataLength <= pData->nAllocLength);
                 m_pszData[pData->nDataLength] = '\0';
             }
         }
@@ -1240,7 +1240,7 @@ namespace SOUI
                 if (AllocBuffer(pData->nDataLength))
                     memcpy(m_pszData, pData->data(), (pData->nDataLength + 1) * sizeof(tchar));
             }
-            ASSERT(GetData()->nRefs <= 1);
+            SASSERT(GetData()->nRefs <= 1);
         }
         bool AllocBeforeWrite(int nLen)
         {
@@ -1251,7 +1251,7 @@ namespace SOUI
                 Release();
                 bRet = AllocBuffer(nLen);
             }
-            ASSERT(GetData()->nRefs <= 1);
+            SASSERT(GetData()->nRefs <= 1);
             return bRet;
         }
 
@@ -1300,7 +1300,7 @@ namespace SOUI
             TStringData* pData = GetData();
             if (pData != _tstr_initDataNil)
             {
-                ASSERT(pData->nRefs != 0);
+                SASSERT(pData->nRefs != 0);
                 pData->Release();
                 Init();
             }
@@ -1310,8 +1310,8 @@ namespace SOUI
         // assumes [optimistically] that data length will equal allocation length
         static TStringData* AllocData(int nLength, TStringData* pOldData = NULL)
         {
-            ASSERT(nLength >= 0);
-            ASSERT(nLength <= 0x7fffffff);    // max size (enough room for 1 extra)
+            SASSERT(nLength >= 0);
+            SASSERT(nLength <= 0x7fffffff);    // max size (enough room for 1 extra)
 
             if (nLength == 0)
                 return _tstr_initDataNil;
@@ -1343,7 +1343,7 @@ namespace SOUI
         {
             if (pData != _tstr_initDataNil)
             {
-                ASSERT(pData->nRefs != 0);
+                SASSERT(pData->nRefs != 0);
                 pData->Release();
             }
         }
@@ -1395,7 +1395,7 @@ namespace SOUI
 
         static ULONG __cdecl Hash(  INARGTYPE  str )
         {
-            ASSERT( str != NULL );
+            SASSERT( str != NULL );
             ULONG nHash = 0;
             const T::_tchar * pch = str;
             while( *pch != 0 )

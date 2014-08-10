@@ -131,7 +131,7 @@ int SSkinGif::LoadFromGdipImage( Gdiplus::Bitmap * pImage )
     }
     m_pFrames = new SGifFrame [m_nFrames];
     UINT nSize = pImage->GetPropertyItemSize(PropertyTagFrameDelay);
-    ASSERT (nSize);
+    SASSERT (nSize);
 
     Gdiplus::PropertyItem * pPropertyItem = (Gdiplus::PropertyItem *)malloc(nSize);
     if (pPropertyItem != NULL)

@@ -80,7 +80,7 @@ void SWindow::SetFixSize( int nWid,int nHei )
 
 void SWindow::GetWindowRect(LPRECT prect)
 {
-    ASSERT(prect);
+    SASSERT(prect);
     prect->left     = m_rcWindow.left;
     prect->top      = m_rcWindow.top;
     if(m_bDisplay || m_bVisible)
@@ -96,7 +96,7 @@ void SWindow::GetWindowRect(LPRECT prect)
 
 void SWindow::GetClientRect(LPRECT pRect)
 {
-    ASSERT(pRect);
+    SASSERT(pRect);
     *pRect=m_rcWindow;
     pRect->left+=m_style.m_nMarginX;
     pRect->right-=m_style.m_nMarginX;
@@ -139,7 +139,7 @@ void SWindow::TestMainThread()
 
     BOOL bOK = (m_nMainThreadId == dwCurThreadID); // 当前线程和构造对象时的线程一致
 
-    ASSERT(bOK);
+    SASSERT(bOK);
 #endif
 }
 
@@ -180,7 +180,7 @@ LRESULT SWindow::SSendMessage(UINT Msg, WPARAM wParam /*= 0*/, LPARAM lParam /*=
 //
 void SWindow::Move(LPRECT prect)
 {
-    ASSERT(prect);
+    SASSERT(prect);
     TestMainThread();
 
     if(m_rcWindow.EqualRect(prect)) return;
@@ -356,10 +356,10 @@ void SWindow::InsertChild(SWindow *pNewChild,SWindow *pInsertAfter/*=ICWND_LAST*
     else
     {
         //insert window at middle
-        ASSERT(pInsertAfter->m_pParent == this);
-        ASSERT(m_pFirstChild && m_pLastChild);
+        SASSERT(pInsertAfter->m_pParent == this);
+        SASSERT(m_pFirstChild && m_pLastChild);
         SWindow *pNext=pInsertAfter->m_pNextSibling;
-        ASSERT(pNext);
+        SASSERT(pNext);
         pInsertAfter->m_pNextSibling=pNewChild;
         pNewChild->m_pPrevSibling=pInsertAfter;
         pNewChild->m_pNextSibling=pNext;
@@ -519,7 +519,7 @@ BOOL SWindow::CreateChildren(pugi::xml_node xmlNode)
                     CreateChildren(xmlDoc.child(L"include"));
                 }else
                 {
-                    ASSERT(FALSE);
+                    SASSERT(FALSE);
                 }
 
             }
@@ -541,7 +541,7 @@ SStringW SWindow::tr( const SStringW &strSrc )
 // Create SWindow from xml element
 BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
 {
-    ASSERT(m_pContainer);
+    SASSERT(m_pContainer);
     if (!xmlNode)
     {
         return FALSE;
@@ -990,7 +990,7 @@ void SWindow::OnNcPaint(IRenderTarget *pRT)
 
 CSize SWindow::GetDesiredSize(LPRECT pRcContainer)
 {
-    ASSERT(m_layout.IsFitContent());
+    SASSERT(m_layout.IsFitContent());
 
 
     int nTestDrawMode = GetTextAlign() & ~(DT_CENTER | DT_RIGHT | DT_VCENTER | DT_BOTTOM);
@@ -1223,7 +1223,7 @@ void SWindow::OnKillFocus()
 
 IRenderTarget * SWindow::GetRenderTarget(const LPRECT pRc/*=NULL*/,DWORD gdcFlags/*=0*/,BOOL bClientDC/*=TRUE*/)
 {
-    ASSERT(m_gdcFlags==-1);
+    SASSERT(m_gdcFlags==-1);
     if(bClientDC)
         GetClientRect(&m_rcGetRT);
     else
@@ -1257,7 +1257,7 @@ IRenderTarget * SWindow::GetRenderTarget(const LPRECT pRc/*=NULL*/,DWORD gdcFlag
         pRT=m_cachedRT;
         pRT->SetViewportOrg(-m_rcWindow.TopLeft());
     }
-    ASSERT(pRT);
+    SASSERT(pRT);
     
     if(m_bClipRT)
     {
@@ -1679,7 +1679,7 @@ HRESULT SWindow::OnAttrPos(const SStringW& strValue, BOOL bLoading)
     if(!bLoading)
     {
         SWindow *pParent=GetParent();
-        ASSERT(pParent);
+        SASSERT(pParent);
         pParent->UpdateChildrenPosition();
     }
     return S_FALSE;
@@ -1716,7 +1716,7 @@ HRESULT SWindow::OnAttrDisplay( const SStringW& strValue, BOOL bLoading )
     if(!bLoading && !IsVisible(TRUE))
     {
         SWindow *pParent=GetParent();
-        ASSERT(pParent);
+        SASSERT(pParent);
         pParent->UpdateChildrenPosition();
     }
     return S_FALSE;
@@ -1728,7 +1728,7 @@ HRESULT SWindow::OnAttrSkin( const SStringW& strValue, BOOL bLoading )
     if(!bLoading && m_layout.IsFitContent())
     {
         SWindow *pParent=GetParent();
-        ASSERT(pParent);
+        SASSERT(pParent);
         pParent->UpdateChildrenPosition();
     }
     return S_FALSE;
@@ -1751,7 +1751,7 @@ HRESULT SWindow::OnAttrClass( const SStringW& strValue, BOOL bLoading )
         if(m_layout.IsFitContent())
         {
             SWindow *pParent=GetParent();
-            ASSERT(pParent);
+            SASSERT(pParent);
             pParent->UpdateChildrenPosition();
         }else
         {

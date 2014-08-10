@@ -35,7 +35,7 @@ SWindow* SWindowMgr::GetWindow(SWND swnd)
 // Specify a handle to a SWindow
 SWND SWindowMgr::NewWindow(SWindow *pSwnd)
 {
-    ASSERT(pSwnd);
+    SASSERT(pSwnd);
     ::EnterCriticalSection(&getSingleton().m_lockWndMap);
 
     SWND swndNext = ++ getSingleton().m_hNextWnd;

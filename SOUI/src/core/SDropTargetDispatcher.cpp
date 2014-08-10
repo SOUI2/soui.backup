@@ -59,7 +59,7 @@ namespace SOUI{
     HRESULT STDMETHODCALLTYPE SDropTargetDispatcher::DragOver( /* [in] */ DWORD grfKeyState, /* [in] */ POINTL pt, /* [out][in] */ __RPC__inout DWORD *pdwEffect )
     {
         SWND hHover=m_pOwner->SwndFromPoint(PointL2FrameClient(pt),FALSE);
-        ASSERT(hHover);
+        SASSERT(hHover);
         *pdwEffect=DROPEFFECT_NONE;
         if(hHover != m_hHover)
         {

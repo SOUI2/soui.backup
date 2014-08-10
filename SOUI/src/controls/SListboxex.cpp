@@ -175,13 +175,13 @@ SWindow * SListBoxEx::GetItemPanel(int iItem)
 
 LPARAM SListBoxEx::GetItemData(int iItem)
 {
-    ASSERT(iItem>=0 || iItem< GetItemCount());
+    SASSERT(iItem>=0 || iItem< GetItemCount());
     return m_arrItems[iItem]->GetItemData();
 }
 
 void SListBoxEx::SetItemData( int iItem,LPARAM lParam )
 {
-    ASSERT(iItem>=0 || iItem< GetItemCount());
+    SASSERT(iItem>=0 || iItem< GetItemCount());
     m_arrItems[iItem]->SetItemData(lParam);
 }
 

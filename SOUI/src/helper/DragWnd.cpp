@@ -67,13 +67,13 @@ BOOL CDragWnd::BeginDrag( HBITMAP hBmp,POINT ptHot ,COLORREF crKey, BYTE byAlpha
 
 void CDragWnd::DragMove( POINT pt )
 {
-    ASSERT(s_pCurDragWnd);
+    SASSERT(s_pCurDragWnd);
     s_pCurDragWnd->SetWindowPos(HWND_TOPMOST,pt.x-s_pCurDragWnd->m_ptHot.x,pt.y-s_pCurDragWnd->m_ptHot.y,0,0,SWP_NOSIZE|SWP_NOSENDCHANGING|SWP_NOOWNERZORDER|SWP_SHOWWINDOW|SWP_NOACTIVATE);
 }
 
 void CDragWnd::EndDrag()
 {
-    ASSERT(s_pCurDragWnd);
+    SASSERT(s_pCurDragWnd);
     s_pCurDragWnd->DestroyWindow();
     delete s_pCurDragWnd;
     s_pCurDragWnd=NULL;

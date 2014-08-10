@@ -11,4 +11,4 @@
 
 #include <assert.h>
 
-#define ASSERT(x) assert(x)
+#define SASSERT(x) assert(x)

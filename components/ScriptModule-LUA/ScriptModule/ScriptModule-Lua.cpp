@@ -65,7 +65,7 @@ public:
 	  {
 		  if(sour.GetSlotType()!=GetSlotType()) return false;
 		  const LuaFunctionSlot *psour=static_cast<const LuaFunctionSlot*>(&sour);
-		  ASSERT(psour);
+		  SASSERT(psour);
 		  return psour->m_luaFun==m_luaFun && psour->m_pLuaState==m_pLuaState;
 	  }
 

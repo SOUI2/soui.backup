@@ -102,7 +102,7 @@ size_t SResProviderPE::GetRawBufferSize( LPCTSTR strType,LPCTSTR pszResName )
 
 BOOL SResProviderPE::GetRawBuffer( LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size )
 {
-    ASSERT(strType);
+    SASSERT(strType);
     HRSRC hRsrc = MyFindResource(strType,pszResName);
 
     if (NULL == hRsrc)
@@ -135,7 +135,7 @@ BOOL SResProviderPE::GetRawBuffer( LPCTSTR strType,LPCTSTR pszResName,LPVOID pBu
 
 LPVOID SResProviderPE::GetRawBufferPtr( LPCTSTR strType,LPCTSTR pszResName )
 {
-    ASSERT(strType);
+    SASSERT(strType);
     HRSRC hRsrc = MyFindResource(strType,pszResName);
 
     if (NULL == hRsrc)
@@ -158,7 +158,7 @@ LPVOID SResProviderPE::GetRawBufferPtr( LPCTSTR strType,LPCTSTR pszResName )
 
 BOOL SResProviderPE::HasResource( LPCTSTR strType,LPCTSTR pszResName )
 {
-    ASSERT(strType);
+    SASSERT(strType);
     return MyFindResource(strType,pszResName)!=NULL;
 }
 

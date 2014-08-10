@@ -89,7 +89,7 @@ BOOL SwndContainerImpl::OnReleaseSwndCapture()
 SWND SwndContainerImpl::OnSetSwndCapture(SWND swnd)
 {
     SWindow *pWnd=SWindowMgr::GetWindow(swnd);
-    ASSERT(pWnd);
+    SASSERT(pWnd);
     if(pWnd->IsDisabled(TRUE)) return 0;
 
     SWND hRet=m_hCapture;

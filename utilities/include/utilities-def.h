@@ -4,8 +4,8 @@
 #define UTILITIES_API __declspec(dllimport)
 #endif
 
-#ifndef ASSERT
+#ifndef SASSERT
 #include <assert.h>
-#define ASSERT(x) assert(x)
-#define ASSERT_NE(a,b) ASSERT(a!=b)
+#define SASSERT(x) assert(x)
+#define ASSERT_NE(a,b) SASSERT(a!=b)
 #endif

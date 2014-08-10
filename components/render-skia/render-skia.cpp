@@ -645,7 +645,7 @@ namespace SOUI
         if(m_hGetDC) return m_hGetDC;
         
         HBITMAP bmp=m_curBmp->GetGdiBitmap();
-        ASSERT(bmp);
+        SASSERT(bmp);
         HDC hdc_desk = ::GetDC(NULL);
         m_hGetDC = CreateCompatibleDC(hdc_desk);
         ::ReleaseDC(NULL,hdc_desk);
@@ -723,6 +723,9 @@ namespace SOUI
 
     HRESULT SRenderTarget_Skia::GradientFill( LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha/*=0xFF*/ )
     {
+        char szbuf[100];
+        sprintf(szbuf,"!!!!SRenderTarget_Skia::GradientFill,crBegin=#%08x,crEnd=#%08x,byAlpha=%u\n",crBegin,crEnd,byAlpha);
+        OutputDebugStringA(szbuf);
         SkPoint pts[2];
         pts[0].set((SkScalar)pRect->left,(SkScalar)pRect->top);
         pts[1].set((SkScalar)pRect->right,(SkScalar)pRect->top);
@@ -740,6 +743,7 @@ namespace SOUI
         SkColor colors[2] = {cr1.toARGB(),cr2.toARGB()};
         SkShader *pShader = SkGradientShader::CreateLinear(pts, colors, NULL,2,SkShader::kMirror_TileMode);
         SkPaint paint;
+        paint.setAntiAlias(true);
         paint.setShader(pShader);
         pShader->unref();
         SkRect skrc=toSkRect(pRect);
@@ -976,13 +980,13 @@ namespace SOUI
 
 	BOOL SRegion_Skia::RectInRegion( LPCRECT lprect )
 	{
-        ASSERT(lprect);
+        SASSERT(lprect);
         return m_rgn.intersects(toSkIRect(lprect));
 	}
 
 	void SRegion_Skia::GetRgnBox( LPRECT lprect )
 	{
-        ASSERT(lprect);
+        SASSERT(lprect);
         SkIRect rc=m_rgn.getBounds();
         lprect->left=rc.left();
         lprect->top=rc.top();
@@ -1020,7 +1024,7 @@ namespace SOUI
         case RGN_OR: op = SkRegion::kUnion_Op;break;
         case RGN_DIFF: op = SkRegion::kDifference_Op;break;
         case RGN_XOR: op = SkRegion::kXOR_Op;break;
-        default:ASSERT(FALSE);break;
+        default:SASSERT(FALSE);break;
         }
         return op;
     }

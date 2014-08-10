@@ -49,7 +49,7 @@ namespace SOUI
 
         STimerID(SWND hWnd,char id)
         {
-            ASSERT(hWnd<0x00FFFFFF && id>=0);
+            SASSERT(hWnd<0x00FFFFFF && id>=0);
             bSwndTimer=1;
             Swnd=hWnd;
             uTimerID=id;
@@ -474,7 +474,7 @@ namespace SOUI
             SWindow *pTarget = FindChildByID(nID);
             if(!pTarget || !pTarget->IsClass(T::GetClassName()))
             {
-                ASSERT(pTarget);
+                SASSERT(pTarget);
                 return NULL;
             }
             return (T*)pTarget;
@@ -496,7 +496,7 @@ namespace SOUI
             SWindow *pTarget = FindChildByName(pszName);
             if(!pTarget || !pTarget->IsClass(T::GetClassName()))
             {
-                ASSERT(pTarget);
+                SASSERT(pTarget);
                 return NULL;
             }
             return (T*)pTarget;

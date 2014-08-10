@@ -61,7 +61,7 @@ BOOL CGdiAlpha::AlphaBackup(HDC hdc,LPCRECT pRect,ALPHAINFO &alphaInfo)
 {
     alphaInfo.lpBuf=NULL;
     HBITMAP hBmp=(HBITMAP)GetCurrentObject(hdc,OBJ_BITMAP);
-    ASSERT(hBmp);
+    SASSERT(hBmp);
     GetObject(hBmp,sizeof(BITMAP),&alphaInfo.bm);
 
     if(alphaInfo.bm.bmBitsPixel!=32) return FALSE;

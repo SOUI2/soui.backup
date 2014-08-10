@@ -23,8 +23,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#ifndef ASSERT
-#define ASSERT(x)
+#ifndef SASSERT
+#define SASSERT(x)
 #endif
 
 //typedef ULONG_PTR HSTREEITEM;
@@ -132,7 +132,7 @@ public:
      */
     static HSTREEITEM GetNextSiblingItem(HSTREEITEM hItem){
         PSTREELINK pLink= (PSTREELINK)hItem;
-        ASSERT(pLink&&pLink!=STVL_ROOT);
+        SASSERT(pLink&&pLink!=STVL_ROOT);
         return (HSTREEITEM)pLink->hNextSibling;
     }
 
@@ -147,7 +147,7 @@ public:
     static HSTREEITEM GetPrevSiblingItem(HSTREEITEM hItem)
     {
         PSTREELINK pLink= (PSTREELINK)hItem;
-        ASSERT(pLink&&pLink!=STVL_ROOT);
+        SASSERT(pLink&&pLink!=STVL_ROOT);
         return (HSTREEITEM)pLink->hPrevSibling;
     }
     
@@ -162,7 +162,7 @@ public:
     static HSTREEITEM GetParentItem(HSTREEITEM hItem)
     {
         PSTREELINK pLink= (PSTREELINK)hItem;
-        ASSERT(pLink&&pLink!=STVL_ROOT);
+        SASSERT(pLink&&pLink!=STVL_ROOT);
         return (HSTREEITEM)pLink->hParent;
     }
     
@@ -198,7 +198,7 @@ public:
     HSTREEITEM GetChildItem(HSTREEITEM hItem,BOOL bFirst=TRUE)
     {
         HSTREENODE hsNode= (HSTREENODE)hItem;
-        ASSERT(hsNode);
+        SASSERT(hsNode);
         if(hsNode==STVN_ROOT)
         {
             if(bFirst)
@@ -245,7 +245,7 @@ public:
     virtual void DeleteItem(HSTREEITEM hItem)
     {
         HSTREENODE hsNode= (HSTREENODE)hItem;
-        ASSERT(hsNode);
+        SASSERT(hsNode);
         if(hsNode==STVN_ROOT)
         {
             FreeNode(STVN_ROOT);
@@ -300,9 +300,9 @@ public:
      * Describe  获取结点中保存的数据
      */
     static T GetItem(HSTREEITEM hItem){
-        ASSERT(hItem!=STVI_ROOT);
+        SASSERT(hItem!=STVI_ROOT);
         HSTREENODE hsNode= (HSTREENODE)hItem;
-        ASSERT(hsNode);
+        SASSERT(hsNode);
         return hsNode->data;
     }
     
@@ -315,9 +315,9 @@ public:
      * Describe  获取结点中保存的数据
      */
     static T *GetItemPt(HSTREEITEM hItem){
-        ASSERT(hItem!=STVI_ROOT);
+        SASSERT(hItem!=STVI_ROOT);
         HSTREENODE hsNode= (HSTREENODE)hItem;
-        ASSERT(hsNode);
+        SASSERT(hsNode);
         return &hsNode->data;
     }
 
@@ -336,7 +336,7 @@ public:
         HSTREENODE hInsertAfterNode=(HSTREENODE) hInsertAfter;
         if(hParentNode==STVN_ROOT)
             hParentNode=NULL;
-        ASSERT(hInsertAfter);
+        SASSERT(hInsertAfter);
         if(hInsertAfterNode!=STVN_FIRST && hInsertAfterNode!=STVN_LAST)
         {
             if(hInsertAfterNode->hParent!=hParentNode) return NULL;
@@ -413,7 +413,7 @@ public:
      */
     HSTREEITEM TraversingRecursion(HSTREEITEM hItem,CBTRAVERSING funTraversing,LPARAM lParam)
     {
-        ASSERT(hItem);
+        SASSERT(hItem);
         if(hItem!=STVI_ROOT)
         {
             if(funTraversing(GetItemPt(hItem),lParam)) return hItem;
@@ -568,7 +568,7 @@ private:
      */
     void FreeNode(HSTREENODE hsNode)
     {
-        ASSERT(hsNode);
+        SASSERT(hsNode);
         HSTREENODE hSibling=(HSTREENODE)GetChildItem((HSTREEITEM)hsNode);
         while(hSibling)
         {

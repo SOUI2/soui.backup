@@ -23,8 +23,8 @@ SItemPanel::SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer
     ,m_crSelBk(RGBA(0,0,128,255))
     ,m_lpItemIndex(-1)
 {
-    ASSERT(m_pFrmHost);
-    ASSERT(m_pItemContainer);
+    SASSERT(m_pFrmHost);
+    SASSERT(m_pItemContainer);
     SetContainer(this);
     if(xmlNode) InitFromXml(xmlNode);
 }

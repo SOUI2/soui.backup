@@ -54,7 +54,7 @@ void SFontPool::SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize)
     _tcscpy_s(m_szDefFontFace,_countof(m_szDefFontFace),lpszFaceName);
     m_lFontSize = -abs(lSize);
 
-    ASSERT(GetCount()==1);//初始化前才可以调用该接口
+    SASSERT(GetCount()==1);//初始化前才可以调用该接口
 
     RemoveKeyObject(FontKey(FF_DEFAULTFONT));
     
@@ -70,7 +70,7 @@ IFontPtr SFontPool::_CreateDefaultFont()
 
     m_lfDefault.lfQuality = ANTIALIASED_QUALITY;
     
-    ASSERT(m_RenderFactory);
+    SASSERT(m_RenderFactory);
 
     IFontPtr pFont=NULL;
     m_RenderFactory->CreateFont(&pFont,m_lfDefault);
@@ -92,7 +92,7 @@ IFontPtr SFontPool::_CreateFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, BOOL 
     lfNew.lfQuality = CLEARTYPE_NATURAL_QUALITY;
 
     IFontPtr pFont=NULL;
-    ASSERT(m_RenderFactory);
+    SASSERT(m_RenderFactory);
     m_RenderFactory->CreateFont(&pFont,lfNew);
 
     return pFont;

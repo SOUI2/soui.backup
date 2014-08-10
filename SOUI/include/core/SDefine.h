@@ -26,29 +26,28 @@
 
 #ifdef _DEBUG
 #include <crtdbg.h>
-#   define ASSERT_FMTW(expr, format, ...) \
+#   define SASSERT_FMTW(expr, format, ...) \
     (void) ((!!(expr)) || \
     (1 != _CrtDbgReportW(_CRT_ASSERT, _CRT_WIDE(__FILE__), __LINE__, NULL, format, __VA_ARGS__)) || \
     (_CrtDbgBreak(), 0))
 
-#   define ASSERT_FMTA(expr, format, ...) \
+#   define SASSERT_FMTA(expr, format, ...) \
     (void) ((!!(expr)) || \
     (1 != _CrtDbgReport(_CRT_ASSERT, __FILE__, __LINE__, NULL, format, __VA_ARGS__)) || \
     (_CrtDbgBreak(), 0))
 #else
-#   define ASSERT_FMTW
-#   define ASSERT_FMTA
+#   define SASSERT_FMTW
+#   define SASSERT_FMTA
 #endif
 
 #ifdef _UNICODE 
-#   define ASSERT_FMT    ASSERT_FMTW
+#   define SASSERT_FMT    ASSERT_FMTW
 #else
-#   define ASSERT_FMT    ASSERT_FMTA
+#   define SASSERT_FMT    ASSERT_FMTA
 #endif//_UNICODE
 
 #include <assert.h>
-#define ASSERT(x) assert(x)
-#define ASSERT_NE(a,b) ASSERT(a!=b)
+#define SASSERT(x) assert(x)
 
 #ifdef _DISABLE_NO_VTABLE
 #define S_NO_VTABLE

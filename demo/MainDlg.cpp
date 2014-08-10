@@ -199,9 +199,16 @@ void CMainDlg::OnBtnMenu()
 //演示如何响应菜单事件
 void CMainDlg::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 {
-    if(uNotifyCode==0 && nID==6)
-    {//nID==6对应menu_test定义的菜单的exit项。
-        PostMessage(WM_CLOSE);
+    if(uNotifyCode==0)
+    {
+        if(nID==6)
+        {//nID==6对应menu_test定义的菜单的exit项。
+            PostMessage(WM_CLOSE);
+        }else if(nID==54)
+        {//about SOUI
+            STabCtrl *pTabCtrl = FindChildByName2<STabCtrl>(L"tab_main");
+            if(pTabCtrl) pTabCtrl->SetCurSel(_T("about"));
+        }
     }
 }
 
