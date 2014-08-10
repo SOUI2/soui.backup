@@ -11,8 +11,6 @@
 
 #include "MainDlg.h"
 
-#define RENDER_GDI      //打开RENDER_GDI时使用render-gdi模块来渲染，否则采用render-skia渲染
-
 #define SUPPORT_LANG    //打开SUPPORT_LANG时，演示多语言支持
 
 #define RES_TYPE 0   //从文件中加载资源
@@ -67,14 +65,13 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         CAutoRefPtr<IScriptModule> pScriptLua;
         
         BOOL bLoaded=FALSE;
+        int nType=MessageBox(GetActiveWindow(),_T("选择渲染类型：\n[yes]: Skia\n[no]:GDI\n[cancel]:Quit"),_T("select a render"),MB_ICONQUESTION|MB_YESNOCANCEL);
+        if(nType == IDCANCEL) return -1;
+        bLoaded=renderLoader.CreateInstance(nType==IDYES?COM_RENDER_SKIA:COM_RENDER_GDI,(IObjRef**)&pRenderFactory);
+        ASSERT(bLoaded);
         bLoaded=imgDecLoader.CreateInstance(COM_IMGDECODER,(IObjRef**)&pImgDecoderFactory);
         ASSERT(bLoaded);
-#ifdef RENDER_GDI
-        bLoaded=renderLoader.CreateInstance(COM_RENDER_GDI,(IObjRef**)&pRenderFactory);
-#else
-        bLoaded=renderLoader.CreateInstance(COM_RENDER_SKIA,(IObjRef**)&pRenderFactory);
-#endif
-        ASSERT(bLoaded);
+
         pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
 
         bLoaded=transLoader.CreateInstance(COM_TRANSLATOR,(IObjRef**)&trans);
@@ -161,6 +158,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
             dlgMain.Create(GetActiveWindow(),0,0,800,600);
             dlgMain.GetNative()->SendMessage(WM_INITDIALOG);
             dlgMain.ShowWindow(SW_SHOWNORMAL);
+            dlgMain.SetWindowPos(HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
             nRet=theApp->Run(dlgMain.m_hWnd);
             //  		nRet = dlgMain.DoModal();  
         }
