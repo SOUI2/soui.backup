@@ -140,33 +140,33 @@ public:
         return m_pCurrentMsg;
     }
 
-    DWORD GetStyle() const throw()
+    DWORD GetStyle() const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return (DWORD)::GetWindowLong(m_hWnd, GWL_STYLE);
     }
 
-    DWORD GetExStyle() const throw()
+    DWORD GetExStyle() const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return (DWORD)::GetWindowLong(m_hWnd, GWL_EXSTYLE);
     }
 
-    LONG_PTR GetWindowLongPtr(int nIndex) const throw()
+    LONG_PTR GetWindowLongPtr(int nIndex) const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::GetWindowLongPtr(m_hWnd, nIndex);
     }
 
-    LONG_PTR SetWindowLongPtr(int nIndex, LONG_PTR dwNewLong) throw()
+    LONG_PTR SetWindowLongPtr(int nIndex, LONG_PTR dwNewLong)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::SetWindowLongPtr(m_hWnd, nIndex, dwNewLong);
     }
 
-    BOOL ModifyStyle(DWORD dwRemove, DWORD dwAdd, UINT nFlags = 0) throw()
+    BOOL ModifyStyle(DWORD dwRemove, DWORD dwAdd, UINT nFlags = 0)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
 
         DWORD dwStyle = ::GetWindowLong(m_hWnd, GWL_STYLE);
         DWORD dwNewStyle = (dwStyle & ~dwRemove) | dwAdd;
@@ -183,9 +183,9 @@ public:
         return TRUE;
     }
 
-    BOOL ModifyStyleEx(DWORD dwRemove, DWORD dwAdd, UINT nFlags = 0) throw()
+    BOOL ModifyStyleEx(DWORD dwRemove, DWORD dwAdd, UINT nFlags = 0)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
 
         DWORD dwStyle = ::GetWindowLong(m_hWnd, GWL_EXSTYLE);
         DWORD dwNewStyle = (dwStyle & ~dwRemove) | dwAdd;
@@ -201,14 +201,14 @@ public:
 
         return TRUE;
     }
-    BOOL SetWindowPos(HWND hWndInsertAfter, int x, int y, int cx, int cy, UINT nFlags) throw()
+    BOOL SetWindowPos(HWND hWndInsertAfter, int x, int y, int cx, int cy, UINT nFlags)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::SetWindowPos(m_hWnd, hWndInsertAfter, x, y, cx, cy, nFlags);
     }
-    BOOL CenterWindow(HWND hWndCenter = NULL) throw()
+    BOOL CenterWindow(HWND hWndCenter = NULL)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
 
         // determine owner window to center against
         DWORD dwStyle = GetStyle();
@@ -265,10 +265,10 @@ public:
         {
             // center within parent client coordinates
             hWndParent = ::GetParent(m_hWnd);
-            ASSERT(::IsWindow(hWndParent));
+            SASSERT(::IsWindow(hWndParent));
 
             ::GetClientRect(hWndParent, &rcArea);
-            ASSERT(::IsWindow(hWndCenter));
+            SASSERT(::IsWindow(hWndCenter));
             ::GetClientRect(hWndCenter, &rcCenter);
             ::MapWindowPoints(hWndCenter, hWndParent, (POINT*)&rcCenter, 2);
         }
@@ -298,7 +298,7 @@ public:
 
     BOOL DestroyWindow()
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::DestroyWindow(m_hWnd);
     }
     BOOL IsWindow()
@@ -307,219 +307,219 @@ public:
     }
 
 
-    BOOL Invalidate(BOOL bErase = TRUE) throw()
+    BOOL Invalidate(BOOL bErase = TRUE)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::InvalidateRect(m_hWnd, NULL, bErase);
     }
 
-    BOOL InvalidateRect(LPCRECT lpRect, BOOL bErase = TRUE) throw()
+    BOOL InvalidateRect(LPCRECT lpRect, BOOL bErase = TRUE)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::InvalidateRect(m_hWnd, lpRect, bErase);
     }
-    BOOL GetWindowRect(LPRECT lpRect) const throw()
+    BOOL GetWindowRect(LPRECT lpRect) const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::GetWindowRect(m_hWnd, lpRect);
     }
 
-    BOOL GetClientRect(LPRECT lpRect) const throw()
+    BOOL GetClientRect(LPRECT lpRect) const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::GetClientRect(m_hWnd, lpRect);
     }
-    BOOL ClientToScreen(LPPOINT lpPoint) const throw()
+    BOOL ClientToScreen(LPPOINT lpPoint) const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::ClientToScreen(m_hWnd, lpPoint);
     }
 
-    BOOL ClientToScreen(LPRECT lpRect) const throw()
+    BOOL ClientToScreen(LPRECT lpRect) const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         if(!::ClientToScreen(m_hWnd, (LPPOINT)lpRect))
             return FALSE;
         return ::ClientToScreen(m_hWnd, ((LPPOINT)lpRect)+1);
     }
 
-    BOOL ScreenToClient(LPPOINT lpPoint) const throw()
+    BOOL ScreenToClient(LPPOINT lpPoint) const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::ScreenToClient(m_hWnd, lpPoint);
     }
 
-    BOOL ScreenToClient(LPRECT lpRect) const throw()
+    BOOL ScreenToClient(LPRECT lpRect) const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         if(!::ScreenToClient(m_hWnd, (LPPOINT)lpRect))
             return FALSE;
         return ::ScreenToClient(m_hWnd, ((LPPOINT)lpRect)+1);
     }
 
-    int MapWindowPoints(HWND hWndTo, LPPOINT lpPoint, UINT nCount) const throw()
+    int MapWindowPoints(HWND hWndTo, LPPOINT lpPoint, UINT nCount) const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::MapWindowPoints(m_hWnd, hWndTo, lpPoint, nCount);
     }
 
-    int MapWindowPoints(HWND hWndTo, LPRECT lpRect) const throw()
+    int MapWindowPoints(HWND hWndTo, LPRECT lpRect) const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::MapWindowPoints(m_hWnd, hWndTo, (LPPOINT)lpRect, 2);
     }
 
 
-    UINT_PTR SetTimer(UINT_PTR nIDEvent, UINT nElapse, void (CALLBACK* lpfnTimer)(HWND, UINT, UINT_PTR, DWORD) = NULL) throw()
+    UINT_PTR SetTimer(UINT_PTR nIDEvent, UINT nElapse, void (CALLBACK* lpfnTimer)(HWND, UINT, UINT_PTR, DWORD) = NULL)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::SetTimer(m_hWnd, nIDEvent, nElapse, (TIMERPROC)lpfnTimer);
     }
 
-    BOOL KillTimer(UINT_PTR nIDEvent) throw()
+    BOOL KillTimer(UINT_PTR nIDEvent)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::KillTimer(m_hWnd, nIDEvent);
     }
 
-    HDC GetDC() throw()
+    HDC GetDC()
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::GetDC(m_hWnd);
     }
 
-    HDC GetWindowDC() throw()
+    HDC GetWindowDC()
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::GetWindowDC(m_hWnd);
     }
 
-    int ReleaseDC(HDC hDC) throw()
+    int ReleaseDC(HDC hDC)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::ReleaseDC(m_hWnd, hDC);
     }
 
-    BOOL CreateCaret(HBITMAP hBitmap) throw()
+    BOOL CreateCaret(HBITMAP hBitmap)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::CreateCaret(m_hWnd, hBitmap, 0, 0);
     }
 
-    BOOL CreateSolidCaret(int nWidth, int nHeight) throw()
+    BOOL CreateSolidCaret(int nWidth, int nHeight)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::CreateCaret(m_hWnd, (HBITMAP)0, nWidth, nHeight);
     }
 
-    BOOL CreateGrayCaret(int nWidth, int nHeight) throw()
+    BOOL CreateGrayCaret(int nWidth, int nHeight)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::CreateCaret(m_hWnd, (HBITMAP)1, nWidth, nHeight);
     }
 
-    BOOL HideCaret() throw()
+    BOOL HideCaret()
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::HideCaret(m_hWnd);
     }
 
-    BOOL ShowCaret() throw()
+    BOOL ShowCaret()
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::ShowCaret(m_hWnd);
     }
-    HWND SetCapture() throw()
+    HWND SetCapture()
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::SetCapture(m_hWnd);
     }
 
-    HWND SetFocus() throw()
+    HWND SetFocus()
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::SetFocus(m_hWnd);
     }
 
-    LRESULT SendMessage(UINT message, WPARAM wParam = 0, LPARAM lParam = 0) throw()
+    LRESULT SendMessage(UINT message, WPARAM wParam = 0, LPARAM lParam = 0)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::SendMessage(m_hWnd,message,wParam,lParam);
     }
 
-    BOOL PostMessage(UINT message, WPARAM wParam = 0, LPARAM lParam = 0) throw()
+    BOOL PostMessage(UINT message, WPARAM wParam = 0, LPARAM lParam = 0)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::PostMessage(m_hWnd,message,wParam,lParam);
     }
 
-    BOOL SendNotifyMessage(UINT message, WPARAM wParam = 0, LPARAM lParam = 0) throw()
+    BOOL SendNotifyMessage(UINT message, WPARAM wParam = 0, LPARAM lParam = 0)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::SendNotifyMessage(m_hWnd, message, wParam, lParam);
     }
-    BOOL SetWindowText(LPCTSTR lpszString) throw()
+    BOOL SetWindowText(LPCTSTR lpszString)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::SetWindowText(m_hWnd, lpszString);
     }
 
-    int GetWindowText(LPTSTR lpszStringBuf, int nMaxCount) const throw()
+    int GetWindowText(LPTSTR lpszStringBuf, int nMaxCount) const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::GetWindowText(m_hWnd, lpszStringBuf, nMaxCount);
     }
-    BOOL IsIconic() const throw()
+    BOOL IsIconic() const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::IsIconic(m_hWnd);
     }
 
-    BOOL IsZoomed() const throw()
+    BOOL IsZoomed() const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::IsZoomed(m_hWnd);
     }
 
-    BOOL IsWindowVisible() const throw()
+    BOOL IsWindowVisible() const
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::IsWindowVisible(m_hWnd);
     }
 
-    BOOL MoveWindow(int x, int y, int nWidth, int nHeight, BOOL bRepaint = TRUE) throw()
+    BOOL MoveWindow(int x, int y, int nWidth, int nHeight, BOOL bRepaint = TRUE)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::MoveWindow(m_hWnd, x, y, nWidth, nHeight, bRepaint);
     }
 
-    BOOL MoveWindow(LPCRECT lpRect, BOOL bRepaint = TRUE) throw()
+    BOOL MoveWindow(LPCRECT lpRect, BOOL bRepaint = TRUE)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::MoveWindow(m_hWnd, lpRect->left, lpRect->top, lpRect->right - lpRect->left, lpRect->bottom - lpRect->top, bRepaint);
     }
 
-    BOOL ShowWindow(int nCmdShow)  throw()
+    BOOL ShowWindow(int nCmdShow) 
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::ShowWindow(m_hWnd,nCmdShow);
     }
 
     int SetWindowRgn(HRGN hRgn,BOOL bRedraw=TRUE)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::SetWindowRgn(m_hWnd,hRgn,bRedraw);
     }
 
     BOOL SetLayeredWindowAttributes(COLORREF crKey,BYTE bAlpha,DWORD dwFlags)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::SetLayeredWindowAttributes(m_hWnd,crKey,bAlpha,dwFlags);
     }
 
     BOOL UpdateLayeredWindow(HDC hdcDst, POINT *pptDst, SIZE *psize, HDC hdcSrc, POINT *pptSrc,COLORREF crKey, BLENDFUNCTION *pblend,DWORD dwFlags)
     {
-        ASSERT(::IsWindow(m_hWnd));
+        SASSERT(::IsWindow(m_hWnd));
         return ::UpdateLayeredWindow(m_hWnd,hdcDst,pptDst,psize,hdcSrc,pptSrc,crKey,pblend,dwFlags);
     }
 

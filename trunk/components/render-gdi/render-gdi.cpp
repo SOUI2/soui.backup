@@ -178,13 +178,13 @@ namespace SOUI
 
     BOOL SRegion_GDI::RectInRegion( LPCRECT lprect )
     {
-        ASSERT(lprect);
+        SASSERT(lprect);
         return ::RectInRegion(m_hRgn,lprect);
     }
 
     void SRegion_GDI::GetRgnBox( LPRECT lprect )
     {
-        ASSERT(lprect);
+        SASSERT(lprect);
         ::GetRgnBox(m_hRgn,lprect);
     }
 

@@ -400,7 +400,7 @@ void STreeCtrl::LoadItemAttribute(pugi::xml_node xmlItem, LPTVITEM pItem)
 
 HSTREEITEM STreeCtrl::InsertItem(LPTVITEM pItemObj,HSTREEITEM hParent,HSTREEITEM hInsertAfter,BOOL bEnsureVisible)
 {
-    ASSERT(pItemObj);
+    SASSERT(pItemObj);
 
     int nViewWidth;
     CRect rcClient;

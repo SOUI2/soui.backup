@@ -51,7 +51,7 @@ public:
     {
         if(sour.GetSlotType()!=SLOT_FUN) return false;
         const FreeFunctionSlot *psour=static_cast<const FreeFunctionSlot*>(&sour);
-        ASSERT(psour);
+        SASSERT(psour);
         return psour->d_function==d_function;
     }
 
@@ -92,7 +92,7 @@ public:
     {
         if(sour.GetSlotType()!=SLOT_MEMBER) return false;
         const MemberFunctionSlot *psour=static_cast<const MemberFunctionSlot*>(&sour);
-        ASSERT(psour);
+        SASSERT(psour);
         return psour->d_function==d_function && psour->d_object==d_object;
     }
 

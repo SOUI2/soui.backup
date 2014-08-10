@@ -380,7 +380,7 @@ void SHostWnd::OnSwndTimer( char cTimerID )
 {
     if(cTimerID==TIMER_CARET)
     {
-        ASSERT(m_bCaretShowing);
+        SASSERT(m_bCaretShowing);
         STraceA("!!OnSwndTimer:pt=%d,%d\n",m_ptCaret.x,m_ptCaret.y);
         DrawCaret(m_ptCaret);
         m_bCaretActive=!m_bCaretActive;
@@ -846,7 +846,7 @@ void SHostWnd::OnKillFocus( HWND wndFocus )
 
 void SHostWnd::UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha)
 {
-    ASSERT(IsTranslucent());
+    SASSERT(IsTranslucent());
     HDC hdc=pRT->GetDC(0);
     CRect rc;
     CSimpleWnd::GetWindowRect(&rc);

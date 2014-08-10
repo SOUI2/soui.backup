@@ -40,7 +40,7 @@ BOOL SStringPool::Init( pugi::xml_node xmlNode )
 {
     if (wcscmp(xmlNode.name(), L"string") != 0)
     {
-        ASSERT(FALSE);
+        SASSERT(FALSE);
         return FALSE;
     }
 

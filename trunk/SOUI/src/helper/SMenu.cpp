@@ -25,7 +25,7 @@ SMenuAttr::SMenuAttr()
 
 void SMenuAttr::OnInitFinished( pugi::xml_node xmlNode )
 {
-    ASSERT(m_pItemSkin);
+    SASSERT(m_pItemSkin);
     if(m_nItemHei==0) m_nItemHei=m_pItemSkin->GetSkinSize().cy;
     if(!m_hFont) m_hFont=SFontPool::getSingleton().GetFont(FF_DEFAULTFONT);
 }
@@ -213,7 +213,7 @@ BOOL SMenu::LoadMenu( pugi::xml_node xmlMenu )
     if(!m_hMenu) return FALSE;
 
     m_menuSkin.InitFromXml(xmlMenu);
-    ASSERT(m_menuSkin.m_pItemSkin);
+    SASSERT(m_menuSkin.m_pItemSkin);
 
     BuildMenu(m_hMenu,xmlMenu);
 
@@ -247,7 +247,7 @@ BOOL SMenu::InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTSTR 
     {
         //²åÈë×Ó²Ëµ¥£¬
         SMenu *pSubMenu=(SMenu*)(LPVOID)nIDNewItem;
-        ASSERT(pSubMenu->m_pParent==NULL);
+        SASSERT(pSubMenu->m_pParent==NULL);
         pMenuData->nID=(UINT_PTR)pSubMenu->m_hMenu;
     }
     else
@@ -286,7 +286,7 @@ UINT SMenu::TrackPopupMenu(
     LPCRECT prcRect
 )
 {
-    ASSERT(IsMenu(m_hMenu));
+    SASSERT(IsMenu(m_hMenu));
 
     SMenuODWnd menuOwner(hWnd);
     *(static_cast<SMenuAttr*>(&menuOwner))=m_menuSkin;

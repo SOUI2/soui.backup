@@ -35,7 +35,7 @@ int SSkinPool::LoadSkins(pugi::xml_node xmlNode)
         if (strSkinName.IsEmpty() || strTypeName.IsEmpty())
             continue;
 
-        ASSERT(!HasKey(strSkinName));
+        SASSERT(!HasKey(strSkinName));
         ISkinObj *pSkin=SApplication::getSingleton().CreateSkinByName(strTypeName);
         if(pSkin)
         {
@@ -45,7 +45,7 @@ int SSkinPool::LoadSkins(pugi::xml_node xmlNode)
         }
         else
         {
-            ASSERT_FMTW(FALSE,L"load skin error,type=%s,name=%s",strTypeName,strSkinName);
+            SASSERT_FMTW(FALSE,L"load skin error,type=%s,name=%s",strTypeName,strSkinName);
         }
         xmlSkin=xmlSkin.next_sibling();
     }
@@ -100,7 +100,7 @@ ISkinObj* SSkinPoolMgr::GetSkin( LPCWSTR strSkinName )
             return pSkin;
         }
     }
-    ASSERT_FMTW(FALSE,L"GetSkin[%s] Failed!",strSkinName);
+    SASSERT_FMTW(FALSE,L"GetSkin[%s] Failed!",strSkinName);
     return NULL;
 }
 

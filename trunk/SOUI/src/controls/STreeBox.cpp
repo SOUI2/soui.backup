@@ -126,7 +126,7 @@ BOOL STreeBox::RemoveItem(HSTREEITEM hItem)
         STreeItem *pParent=GetItem(hParent);
         pParent->m_bCollapsed=FALSE;
         SWindow *pToggle=pParent->GetChild(IDC_SWITCH);
-        ASSERT(pToggle);
+        SASSERT(pToggle);
         pParent->DestroyChild(pToggle);
         if(pParent->m_bVisible) InvalidateRect(pParent->GetItemRect());
     }
@@ -226,7 +226,7 @@ BOOL STreeBox::Expand(HSTREEITEM hItem , UINT nCode)
             if(m_xmlSwitch.first_child())
             {
                 SToggle *pSwitch=(SToggle*)pItem->GetChild(IDC_SWITCH);
-                ASSERT(pSwitch);
+                SASSERT(pSwitch);
                 pSwitch->SetToggle(pItem->m_bCollapsed,FALSE);
             }
             CSize szView(m_rcWindow.Width(),m_nVisibleItems*m_nItemHei);
@@ -458,6 +458,9 @@ void STreeBox::OnPaint(IRenderTarget *pRT)
 
     SPainter painter;
     BeforePaint(pRT,painter);
+    
+    CAutoRefPtr<IRegion> pClipRgn;
+    pRT->GetClipRegion(&pClipRgn);
 
     int iFirstVisible=m_ptOrigin.y/m_nItemHei;
     int nPageItems=(m_rcClient.Height()+m_nItemHei-1)/m_nItemHei+1;
@@ -473,7 +476,8 @@ void STreeBox::OnPaint(IRenderTarget *pRT)
         {
             CRect rcItem(m_nIndent*pItem->m_nLevel,0,m_rcWindow.Width(),m_nItemHei);
             rcItem.OffsetRect(m_rcWindow.left,m_rcWindow.top-m_ptOrigin.y+iVisible*m_nItemHei);
-            DrawItem(pRT,rcItem,hItem);
+            if(pClipRgn->RectInRegion(&rcItem))
+                DrawItem(pRT,rcItem,hItem);
         }
         if(pItem->m_bCollapsed)
         {
@@ -626,7 +630,7 @@ BOOL STreeBox::FireEvent(EventArgs &evt)
         if(pEvt->pOrgEvt->idFrom == IDC_SWITCH)
         {
             STreeItem *pItem=(STreeItem*)pEvt->pPanel;
-            ASSERT(pItem);
+            SASSERT(pItem);
             Expand(pItem->m_hItem,TVE_TOGGLE);
             return TRUE;
         }

@@ -16,7 +16,7 @@ namespace SOUI
 
     SWkeLoader::SWkeLoader() :m_hModWke(0)
     {
-        ASSERT(!s_pInst);
+        SASSERT(!s_pInst);
         s_pInst=this;
     }
 

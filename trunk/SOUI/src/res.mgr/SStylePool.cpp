@@ -22,7 +22,7 @@ namespace SOUI
 
         if (wcscmp(xmlStyleRoot.name(), L"style") != 0)
         {
-            ASSERT(FALSE);
+            SASSERT(FALSE);
             return FALSE;
         }
 

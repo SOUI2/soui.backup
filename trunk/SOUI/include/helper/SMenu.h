@@ -116,7 +116,7 @@ public:
     void DrawItem(LPDRAWITEMSTRUCT /*lpDrawItemStruct*/)
     {
         // must be implemented
-        ASSERT(FALSE);
+        SASSERT(FALSE);
     }
 
     void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)

@@ -12,7 +12,7 @@ BOOL SObjDefAttr::Init( pugi::xml_node xmlNode )
 {
     if (wcscmp(xmlNode.name(), L"objattr") != 0)
     {
-        ASSERT(FALSE);
+        SASSERT(FALSE);
         return FALSE;
     }
 
@@ -56,7 +56,7 @@ void SObjDefAttr::BuildClassAttribute( pugi::xml_node & xmlNode, LPCWSTR pszClas
 
 pugi::xml_node SObjDefAttr::GetDefAttribute(LPCWSTR pszClassName )
 {
-    ASSERT(pszClassName);
+    SASSERT(pszClassName);
     if(!static_cast<SWindowFactoryMgr*>(SApplication::getSingletonPtr())->HasKey(pszClassName))
         return pugi::xml_node();//节点是窗口时才有默认属性
     return _GetDefAttribute(pszClassName);

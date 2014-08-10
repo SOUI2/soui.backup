@@ -24,7 +24,7 @@ CMemDC::CMemDC( HDC hdc,HBITMAP hBmp)
     ,m_bHasBitmap(TRUE)
 {
     m_hDC = CreateCompatibleDC(hdc);
-    ASSERT(m_hDC != NULL);
+    SASSERT(m_hDC != NULL);
     if(hBmp)
         m_hOldBmp=(HBITMAP)::SelectObject(m_hDC,hBmp);
     else
@@ -39,7 +39,7 @@ CMemDC::~CMemDC(void)
 
 HBITMAP CMemDC::SelectBitmap( HBITMAP hBmp )
 {
-    ASSERT(m_hDC);
+    SASSERT(m_hDC);
     if(hBmp)
     {
         m_hOldBmp=(HBITMAP)::SelectObject(m_hDC,hBmp);

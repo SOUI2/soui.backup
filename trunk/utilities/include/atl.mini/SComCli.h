@@ -79,7 +79,7 @@ protected:
     }
     SComPtrBase( int nNull) throw()
     {
-        ASSERT(nNull == 0);
+        SASSERT(nNull == 0);
         (void)nNull;
         p = NULL;
     }
@@ -102,19 +102,19 @@ public:
     }
     T& operator*() const
     {
-        ASSERT(p!=NULL);
+        SASSERT(p!=NULL);
         return *p;
     }
     //The assert on operator& usually indicates a bug.  If this is really
     //what is needed, however, take the address of the p member explicitly.
     T** operator&() throw()
     {
-        ASSERT(p==NULL);
+        SASSERT(p==NULL);
         return &p;
     }
     _SNoAddRefReleaseOnCComPtr<T>* operator->() const throw()
     {
-        ASSERT(p!=NULL);
+        SASSERT(p!=NULL);
         return (_SNoAddRefReleaseOnCComPtr<T>*)p;
     }
     bool operator!() const throw()
@@ -175,7 +175,7 @@ public:
     }
      HRESULT CopyTo( T** ppT) throw()
     {
-        ASSERT(ppT != NULL);
+        SASSERT(ppT != NULL);
         if (ppT == NULL)
             return E_POINTER;
         *ppT = p;
@@ -185,14 +185,14 @@ public:
     }
      HRESULT CoCreateInstance( REFCLSID rclsid,  LPUNKNOWN pUnkOuter = NULL,  DWORD dwClsContext = CLSCTX_ALL) throw()
     {
-        ASSERT(p == NULL);
+        SASSERT(p == NULL);
         return ::CoCreateInstance(rclsid, pUnkOuter, dwClsContext, __uuidof(T), (void**)&p);
     }
      HRESULT CoCreateInstance( LPCOLESTR szProgID,  LPUNKNOWN pUnkOuter = NULL,  DWORD dwClsContext = CLSCTX_ALL) throw()
     {
         CLSID clsid;
         HRESULT hr = CLSIDFromProgID(szProgID, &clsid);
-        ASSERT(p == NULL);
+        SASSERT(p == NULL);
         if (SUCCEEDED(hr))
             hr = ::CoCreateInstance(clsid, pUnkOuter, dwClsContext, __uuidof(T), (void**)&p);
         return hr;
@@ -200,7 +200,7 @@ public:
     template <class Q>
      HRESULT QueryInterface( Q** pp) const throw()
     {
-        ASSERT(pp != NULL);
+        SASSERT(pp != NULL);
         return p->QueryInterface(__uuidof(Q), (void**)pp);
     }
     T* p;
@@ -289,8 +289,8 @@ public:
 // IDispatch specific stuff
      HRESULT GetPropertyByName( LPCOLESTR lpsz,  VARIANT* pVar) throw()
     {
-        ASSERT(p);
-        ASSERT(pVar);
+        SASSERT(p);
+        SASSERT(pVar);
         DISPID dwDispID;
         HRESULT hr = GetIDOfName(lpsz, &dwDispID);
         if (SUCCEEDED(hr))
@@ -303,8 +303,8 @@ public:
     }
      HRESULT PutPropertyByName( LPCOLESTR lpsz,  VARIANT* pVar) throw()
     {
-        ASSERT(p);
-        ASSERT(pVar);
+        SASSERT(p);
+        SASSERT(pVar);
         DISPID dwDispID;
         HRESULT hr = GetIDOfName(lpsz, &dwDispID);
         if (SUCCEEDED(hr))
@@ -381,8 +381,8 @@ public:
     }
      static HRESULT PutProperty( IDispatch* p,  DISPID dwDispID,  VARIANT* pVar) throw()
     {
-        ASSERT(p);
-        ASSERT(pVar != NULL);
+        SASSERT(p);
+        SASSERT(pVar != NULL);
         if (pVar == NULL)
             return E_POINTER;
         
@@ -409,8 +409,8 @@ public:
     }
      static HRESULT GetProperty( IDispatch* p,  DISPID dwDispID,  VARIANT* pVar) throw()
     {
-        ASSERT(p);
-        ASSERT(pVar != NULL);
+        SASSERT(p);
+        SASSERT(pVar != NULL);
         if (pVar == NULL)
             return E_POINTER;
         

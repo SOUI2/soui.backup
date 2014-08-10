@@ -34,7 +34,7 @@ SAxContainer::~SAxContainer()
 
 BOOL SAxContainer::CreateControl(LPCRECT pRect, REFGUID clsid ,DWORD dwClsCtx /*=CLSCTX_INPROC_SERVER*/)
 {
-    ASSERT(m_pAxHostDelegate);
+    SASSERT(m_pAxHostDelegate);
     HRESULT hr = E_FAIL;
     SComPtr<IUnknown> pControl;
     hr = CoCreateInstance(clsid, NULL,dwClsCtx , __uuidof(IUnknown), reinterpret_cast<void**>(&pControl));
