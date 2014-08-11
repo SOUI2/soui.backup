@@ -722,9 +722,6 @@ namespace SOUI
 
     HRESULT SRenderTarget_Skia::GradientFill( LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha/*=0xFF*/ )
     {
-        char szbuf[100];
-        sprintf(szbuf,"!!!!SRenderTarget_Skia::GradientFill,crBegin=#%08x,crEnd=#%08x,byAlpha=%u\n",crBegin,crEnd,byAlpha);
-        OutputDebugStringA(szbuf);
         int nWid=pRect->right-pRect->left;
         int nHei=pRect->bottom-pRect->top;
         SkPoint pts[2];
@@ -748,7 +745,13 @@ namespace SOUI
         pShader->unref();
         SkRect skrc=toSkRect(pRect);
         skrc.offset(m_ptOrg);
-        m_SkCanvas->drawRect(skrc,paint);
+        
+        //通过将canvas的原点做平移处理，可以解决在绘制渐变时出现的问题，还不知道原因。
+        m_SkCanvas->translate(skrc.left(),skrc.top());
+        SkRect rc2=skrc;
+        rc2.offsetTo(0,0);
+        m_SkCanvas->drawRect(rc2,paint);
+        m_SkCanvas->translate(-skrc.left(),-skrc.top());
         return S_OK;
     }
 
