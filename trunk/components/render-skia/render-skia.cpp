@@ -644,8 +644,7 @@ namespace SOUI
     {
         if(m_hGetDC) return m_hGetDC;
         
-        HBITMAP bmp=m_curBmp->GetGdiBitmap();
-        SASSERT(bmp);
+        HBITMAP bmp=m_curBmp->GetGdiBitmap();//bmp¿ÉÄÜÎªNULL
         HDC hdc_desk = ::GetDC(NULL);
         m_hGetDC = CreateCompatibleDC(hdc_desk);
         ::ReleaseDC(NULL,hdc_desk);
@@ -726,29 +725,30 @@ namespace SOUI
         char szbuf[100];
         sprintf(szbuf,"!!!!SRenderTarget_Skia::GradientFill,crBegin=#%08x,crEnd=#%08x,byAlpha=%u\n",crBegin,crEnd,byAlpha);
         OutputDebugStringA(szbuf);
+        int nWid=pRect->right-pRect->left;
+        int nHei=pRect->bottom-pRect->top;
         SkPoint pts[2];
-        pts[0].set((SkScalar)pRect->left,(SkScalar)pRect->top);
-        pts[1].set((SkScalar)pRect->right,(SkScalar)pRect->top);
+        pts[0].iset(0,0);
         if(bVert)
         {
-            pts[1].set((SkScalar)pRect->left,(SkScalar)pRect->bottom);
+            pts[1].iset(0,nHei);
         }else
         {
-            pts[1].set((SkScalar)pRect->right,(SkScalar)pRect->top);
+            pts[1].iset(nWid,0);
         }
                 
         SColor cr1(crBegin,byAlpha);
         SColor cr2(crEnd,byAlpha);
         
-        SkColor colors[2] = {cr1.toARGB(),cr2.toARGB()};
-        SkShader *pShader = SkGradientShader::CreateLinear(pts, colors, NULL,2,SkShader::kMirror_TileMode);
+        const SkColor colors[2] = {cr1.toARGB(),cr2.toARGB()};
+        const SkScalar pos[] = {0.0f,1.0f};
+        SkShader *pShader = SkGradientShader::CreateLinear(pts, colors, pos,2,SkShader::kMirror_TileMode);
         SkPaint paint;
-        paint.setAntiAlias(true);
         paint.setShader(pShader);
         pShader->unref();
         SkRect skrc=toSkRect(pRect);
         skrc.offset(m_ptOrg);
-        m_SkCanvas->drawRect(skrc,paint);        
+        m_SkCanvas->drawRect(skrc,paint);
         return S_OK;
     }
 
