@@ -184,9 +184,10 @@ namespace SOUI
             };
             POSITION_ITEM Item[4];
         };
-        UINT uPositionType;       //**< 坐标属性 */
-        POS2TYPE pos2Type;        //**< 指定2点坐标时，坐标类型 */
-        UINT uSpecifyWidth;       //**< 指定的宽度 */
-        UINT uSpecifyHeight;      //**< 指定的高度 */
+        UINT uPositionType;       /**< 坐标属性 */
+        POS2TYPE pos2Type;        /**< 指定2点坐标时，坐标类型 */
+        UINT uSpecifyWidth;       /**< 指定的宽度 */
+        UINT uSpecifyHeight;      /**< 指定的高度 */
+        int  nSepSpace;           /**< 窗口水平自动排版的水平间隔，不支持垂直方向的自动排版 */
     };
 }

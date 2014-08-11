@@ -12,6 +12,7 @@ namespace SOUI
     ,pos2Type(POS2_LEFTTOP)
     ,uSpecifyWidth(0)
     ,uSpecifyHeight(0)
+    ,nSepSpace(2)
     {
 
     }
@@ -222,7 +223,7 @@ namespace SOUI
                     if(rcSib.right==POS_INIT || rcSib.right == POS_WAIT)
                         pt.x=POS_WAIT,nRet++;
                     else
-                        pt.x=rcSib.right+m_pOwner->m_nSepSpace;
+                        pt.x=rcSib.right+nSepSpace;
 
                     if(rcSib.top==POS_INIT || rcSib.top==POS_WAIT)
                         pt.y=POS_WAIT,nRet++;
