@@ -160,10 +160,9 @@ namespace SOUI
 
         SwndStyle m_style;      /**< 窗口Style，是一组窗口属性 */
         SStringT m_strText;     /**< 窗口文字 */
-        DWORD m_dwState;        /**< 窗口状态 */
         SStringT m_strToolTipText;/**< 窗口ToolTip */
-        int     m_nSepSpace;    /**< 窗口水平自动排版的间隔，不支持垂直方向的自动排版 */
 
+        DWORD m_dwState;        /**< 窗口状态 */
         DWORD m_bVisible:1;        /**< 窗口可见状态 */
         DWORD m_bDisplay:1;        /**< 窗口隐藏时是否占位，不占位时启动重新布局 */
         DWORD m_bDisable:1;        /**< 窗口禁用状状态 */
@@ -922,7 +921,6 @@ namespace SOUI
             ATTR_CUSTOM(L"display", OnAttrDisplay)
             ATTR_I18NSTRT(L"tip", m_strToolTipText, FALSE)  //使用语言包翻译
             ATTR_INT(L"msgTransParent", m_bMsgTransparent, FALSE)
-            ATTR_INT(L"sep", m_nSepSpace, FALSE)
             ATTR_INT(L"maxWidth",m_nMaxWidth,FALSE)
             ATTR_INT(L"clipClient",m_bClipClient,FALSE)
             ATTR_INT(L"focusable",m_bFocusable,FALSE)
@@ -933,6 +931,7 @@ namespace SOUI
                 ATTR_ENUM_VALUE(L"leftBottom",POS2_LEFTBOTTOM)
                 ATTR_ENUM_VALUE(L"rightBottom",POS2_RIGHTBOTTOM)
             ATTR_ENUM_END(m_layout.pos2Type)
+            ATTR_INT(L"sep", m_layout.nSepSpace, FALSE)
             ATTR_INT(L"alpha",m_byAlpha,TRUE)
         SOUI_ATTRS_END()
 
