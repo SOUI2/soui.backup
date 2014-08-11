@@ -242,7 +242,9 @@ namespace SOUI
     class EventLBSelChanging : public EventArgs
     {
     public:
-        EventLBSelChanging(SWindow *pWnd):EventArgs(pWnd){}
+        EventLBSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){
+        
+        }
         enum{EventID=EVT_LB_SELCHANGING};
         virtual UINT GetEventID(){return EventID;}
         int nNewSel;

@@ -342,11 +342,11 @@ protected:
     BOOL IsFocusable();
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"dropdown", m_bDropdown, FALSE)
-        ATTR_INT(L"dropheight", m_nDropHeight, FALSE)
-         ATTR_INT(L"cursel", m_iInitSel, FALSE)
-        ATTR_SKIN(L"btnskin", m_pSkinBtn, FALSE)
-        ATTR_INT(L"animtime", m_iAnimTime, FALSE)
+        ATTR_INT(L"dropDown", m_bDropdown, FALSE)
+        ATTR_INT(L"dropHeight", m_nDropHeight, FALSE)
+        ATTR_INT(L"curSel", m_iInitSel, FALSE)
+        ATTR_SKIN(L"btnSkin", m_pSkinBtn, FALSE)
+        ATTR_INT(L"animateTime", m_iAnimTime, FALSE)
     SOUI_ATTRS_END()
 
     SOUI_MSG_MAP_BEGIN()

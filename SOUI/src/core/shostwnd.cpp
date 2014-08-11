@@ -592,7 +592,7 @@ void SHostWnd::OnRedraw(const CRect &rc)
 
 BOOL SHostWnd::OnReleaseSwndCapture()
 {
-    if(!__super::OnReleaseSwndCapture()) return FALSE;
+    if(!SwndContainerImpl::OnReleaseSwndCapture()) return FALSE;
     ::ReleaseCapture();
     CPoint pt;
     GetCursorPos(&pt);
@@ -604,7 +604,7 @@ BOOL SHostWnd::OnReleaseSwndCapture()
 SWND SHostWnd::OnSetSwndCapture(SWND swnd)
 {
     CSimpleWnd::SetCapture();
-    return __super::OnSetSwndCapture(swnd);
+    return SwndContainerImpl::OnSetSwndCapture(swnd);
 }
 
 BOOL SHostWnd::IsTranslucent()

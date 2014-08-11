@@ -307,12 +307,15 @@ BOOL SComboBoxBase::FireEvent(EventArgs &evt)
     if(evt.idFrom == IDC_DROPDOWN_LIST)
     {
         SASSERT(m_pDropDownWnd);
-        const MSG *pMsg=m_pDropDownWnd->GetCurrentMessage();
+
         if(evt.GetEventID()==EventLBSelChanged::EventID)
         {
             OnSelChanged();
-            if(pMsg->message != WM_KEYDOWN)
-                CloseUp();
+            return TRUE;
+        }
+        if(evt.GetEventID() == EventCmd::EventID)
+        {
+            CloseUp();
             return TRUE;
         }
     }
@@ -350,12 +353,12 @@ BOOL SComboBox::CreateListBox( pugi::xml_node xmlNode )
 
     m_pListBox->InitFromXml(xmlNode.child(L"liststyle"));
     m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
-    m_pListBox->SetAttribute(L"hottrack",L"1",TRUE);
+    m_pListBox->SetAttribute(L"hotTrack",L"1",TRUE);
     m_pListBox->SetOwner(this);    //chain notify message to combobox
     m_pListBox->SetID(IDC_DROPDOWN_LIST);
 
     //初始化列表数据
-    pugi::xml_node xmlNode_Items=xmlNode.parent().child(L"items");
+    pugi::xml_node xmlNode_Items=xmlNode.child(L"items");
     if(xmlNode_Items)
     {
         pugi::xml_node xmlNode_Item=xmlNode_Items.child(L"item");
@@ -445,12 +448,12 @@ BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
 
     m_pListBox->InitFromXml(xmlNode.parent().child(L"liststyle"));
     m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
-    m_pListBox->SetAttribute(L"hottrack",L"1",TRUE);
+    m_pListBox->SetAttribute(L"hotTrack",L"1",TRUE);
     m_pListBox->SetOwner(this);    //chain notify message to combobox
     m_pListBox->SetID(IDC_DROPDOWN_LIST);
 
     //初始化列表数据
-    pugi::xml_node xmlNode_Items=xmlNode.parent().child(L"items");
+    pugi::xml_node xmlNode_Items=xmlNode.child(L"items");
     if(xmlNode_Items)
     {
         int nItems=0;

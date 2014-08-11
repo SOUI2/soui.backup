@@ -188,53 +188,37 @@ protected:
     //////////////////////////////////////////////////////////////////////////
     // IContainer
 
-    /*virtual */
-    BOOL OnFireEvent(EventArgs &evt);
+    virtual BOOL OnFireEvent(EventArgs &evt);
 
-    /*virtual */
-    CRect GetContainerRect();
+    virtual CRect GetContainerRect();
 
-    /*virtual */
-    HWND GetHostHwnd();
+    virtual HWND GetHostHwnd();
 
-    /*virtual */
-    const SStringW & GetHostName();
+    virtual const SStringW & GetHostName();
 
-    /*virtual */
-    IRenderTarget * OnGetRenderTarget(const CRect & rc,DWORD gdcFlags);
+    virtual IRenderTarget * OnGetRenderTarget(const CRect & rc,DWORD gdcFlags);
 
-    /*virtual */
-    void OnReleaseRenderTarget(IRenderTarget * pRT,const CRect &rc,DWORD gdcFlags);
+    virtual void OnReleaseRenderTarget(IRenderTarget * pRT,const CRect &rc,DWORD gdcFlags);
 
-    /*virtual */
-    void OnRedraw(const CRect &rc);
+    virtual void OnRedraw(const CRect &rc);
 
-    /*virtual */
-    BOOL OnReleaseSwndCapture();
+    virtual BOOL OnReleaseSwndCapture();
 
-    /*virtual */
-    SWND OnSetSwndCapture(SWND swnd);
+    virtual SWND OnSetSwndCapture(SWND swnd);
 
-    /*virtual */
-    BOOL IsTranslucent();
+    virtual BOOL IsTranslucent();
 
-    /*virtual */
-    BOOL SwndCreateCaret(HBITMAP hBmp,int nWidth,int nHeight);
+    virtual BOOL SwndCreateCaret(HBITMAP hBmp,int nWidth,int nHeight);
 
-    /*virtual */
-    BOOL SwndShowCaret(BOOL bShow);
+    virtual BOOL SwndShowCaret(BOOL bShow);
 
-    /*virtual */
-    BOOL SwndSetCaretPos(int x,int y);
+    virtual BOOL SwndSetCaretPos(int x,int y);
 
-    /*virtual */
-    BOOL SwndUpdateWindow();
+    virtual BOOL SwndUpdateWindow();
 
-    /*virtual */
-    BOOL RegisterTimelineHandler(ITimelineHandler *pHandler);
+    virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler);
 
-    /*virtual */
-    BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
+    virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
     
     virtual SMessageLoop * GetMsgLoop();
 
