@@ -105,11 +105,27 @@ SkScalar SkTextLayoutEx::drawLine( SkCanvas *canvas, SkScalar x, SkScalar y, int
                 break;
             i++;
         }
+        
+        SkScalar xBase = x;
+        if(m_paint->getTextAlign() != SkPaint::kLeft_Align)
+        {
+            SkScalar nTextWidth = m_paint->measureText(text,(iEnd-iBegin)*sizeof(wchar_t));
+            switch(m_paint->getTextAlign())
+            {
+            case SkPaint::kCenter_Align:
+                xBase = x - nTextWidth/2.0f;
+                break;
+            case SkPaint::kRight_Align:
+                xBase = x- nTextWidth;
+                break;
+            }
+        }
+        
         while(i<m_prefix.count() && m_prefix[i]<iEnd)
         {
-            SkScalar x1 = x + m_paint->measureText(text,(m_prefix[i]-iBegin)*sizeof(wchar_t));
-            SkScalar x2 = x + m_paint->measureText(text,(m_prefix[i]-iBegin+1)*sizeof(wchar_t));
-            canvas->drawLine(x1,y+1,x2,y+1,*m_paint); //绘制下划线
+            SkScalar x1 = m_paint->measureText(text,(m_prefix[i]-iBegin)*sizeof(wchar_t));
+            SkScalar x2 = m_paint->measureText(text,(m_prefix[i]-iBegin+1)*sizeof(wchar_t));
+            canvas->drawLine(xBase+x1,y+1,xBase+x2,y+1,*m_paint); //绘制下划线
             i++;
         }
     }
