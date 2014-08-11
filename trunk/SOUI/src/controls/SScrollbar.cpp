@@ -14,7 +14,7 @@ namespace SOUI
 /////////////////////////////////////////////////////////////////////////////
 // SScrollBar
 SScrollBar::SScrollBar()
-    : m_pSkin(NULL)
+    : m_pSkin(GETBUILTINSKIN(SKIN_SYS_SCROLLBAR))
     , m_bDrag(FALSE)
     , m_uClicked(-1)
     , m_bNotify(FALSE)

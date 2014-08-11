@@ -509,6 +509,10 @@ LRESULT SListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
     }
     if(uMsg==WM_LBUTTONUP && m_iHoverItem!=m_iSelItem)
         NotifySelChange(m_iSelItem,m_iHoverItem);
+    if(uMsg == WM_LBUTTONUP)
+    {
+        FireCommand();
+    }
     return 0;
 }
 

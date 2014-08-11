@@ -446,10 +446,10 @@ BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
     m_pListBox=new SListBoxEx;
     m_pListBox->SetContainer(GetContainer());
 
-    m_pListBox->InitFromXml(xmlNode.parent().child(L"liststyle"));
+    m_pListBox->InitFromXml(xmlNode.child(L"liststyle"));
     m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
     m_pListBox->SetAttribute(L"hotTrack",L"1",TRUE);
-    m_pListBox->SetOwner(this);    //chain notify message to combobox
+    m_pListBox->SetOwner(this);         //chain notify message to combobox
     m_pListBox->SetID(IDC_DROPDOWN_LIST);
 
     //初始化列表数据

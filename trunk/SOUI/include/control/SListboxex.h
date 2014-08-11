@@ -319,9 +319,9 @@ protected:
     /**
      * SListBoxEx::OnMouseEvent
      * @brief    自定义消息响应函数
-     * @param    UINT uMsg --
-     * @param    WPARAM wParam -- 
-     * @param    LPARAM lParam --
+     * @param    UINT uMsg -- 鼠标消息类型
+     * @param    WPARAM wParam -- wParam
+     * @param    LPARAM lParam -- lParam
      * @return   返回LRESULT
      *
      * Describe  自定义消息响应函数
@@ -331,9 +331,9 @@ protected:
     /**
      * SListBoxEx::OnKeyEvent
      * @brief    自定义消息响应函数
-     * @param    UINT uMsg --
-     * @param    WPARAM wParam -- 
-     * @param    LPARAM lParam --
+     * @param    UINT uMsg -- 键盘消息类型
+     * @param    WPARAM wParam -- wParam
+     * @param    LPARAM lParam -- lParam
      * @return   返回LRESULT
      * 
      * Describe  自定义消息响应函数
@@ -458,8 +458,8 @@ protected:
     int        m_iScrollSpeed; /**< 滚动速度      */
 
     pugi::xml_document m_xmlTempl;     /**< 列表模板XML */
-    SItemPanel   *m_pCapturedFrame;    /**<  */
-    ISkinObj     *m_pItemSkin;         /**<  */
+    SItemPanel   *m_pCapturedFrame;    /**< 当前调用了setcapture的列表项 */
+    ISkinObj     *m_pItemSkin;         /**< 列表项的背景skin */
     COLORREF     m_crItemBg;           /**< 背景色 */
     COLORREF     m_crItemSelBg;        /**< 选中背景色 */
     BOOL       m_bItemRedrawDelay;     /**< 表项重绘时缓冲 */       
