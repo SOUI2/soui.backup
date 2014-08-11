@@ -39,7 +39,7 @@
     <class name="cls_txt_white"   font="face:宋体,bold:1"  colorText="#FFFFFF" />
     <!--定义白色粗体宋体-->
 
-    <class name="normalbtn" font="" skin="_skin.sys.header" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
+    <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
 
     <class name="toptext" textMode="20" />
     <class name="vcentertext" textMode="24"/>
