@@ -103,9 +103,9 @@ namespace SOUI
 STabCtrl::STabCtrl() : m_nCurrentPage(0)
     , m_pSkinTab(GETBUILTINSKIN(SKIN_SYS_TAB_PAGE))
     , m_pSkinIcon(NULL)
-    , m_pSkinSplitter(NULL)
+    , m_pSkinTabInter(NULL)
     , m_pSkinFrame(NULL)
-    , m_nTabSpacing(0)
+    , m_nTabInterSize(0)
     , m_nTabWidth(0)
     , m_nTabHeight(0)
     , m_nTabPos(0)
@@ -166,20 +166,20 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
 
         GetItemRect(i,rcItem);
         //»­·Ö¸ôÏß
-        if(i>0 && m_pSkinSplitter)
+        if(i>0 && m_pSkinTabInter)
         {
             rcSplit=rcItem;
             if(m_nTabAlign==AlignLeft)
             {
                 rcSplit.top=rcItemPrev.bottom;
-                rcSplit.bottom = rcSplit.top + m_nTabSpacing;
+                rcSplit.bottom = rcSplit.top + m_nTabInterSize;
             }
             else
             {
                 rcSplit.left=rcItemPrev.right;
-                rcSplit.right=rcSplit.left + m_nTabSpacing;
+                rcSplit.right=rcSplit.left + m_nTabInterSize;
             }
-            m_pSkinSplitter->Draw(pRT,rcSplit,0);
+            m_pSkinTabInter->Draw(pRT,rcSplit,0);
         }
 
         DrawItem(pRT,rcItem,i,dwState);
@@ -503,10 +503,10 @@ BOOL STabCtrl::GetItemRect( int nIndex, CRect &rcItem )
     switch (m_nTabAlign)
     {
     case AlignTop:
-        rcItem.OffsetRect(m_nTabPos + nIndex * (rcItem.Width()+ m_nTabSpacing),0);
+        rcItem.OffsetRect(m_nTabPos + nIndex * (rcItem.Width()+ m_nTabInterSize),0);
         break;
     case AlignLeft:
-        rcItem.OffsetRect(0, m_nTabPos + nIndex * (rcItem.Height()+ m_nTabSpacing));
+        rcItem.OffsetRect(0, m_nTabPos + nIndex * (rcItem.Height()+ m_nTabInterSize));
         break;
     }
     CRect rcClient;

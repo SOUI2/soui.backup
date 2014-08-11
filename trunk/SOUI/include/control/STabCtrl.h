@@ -101,14 +101,14 @@ class SOUI_EXP STabCtrl : public SWindow
 protected:
     int m_nHoverTabItem; /**< hover状态item */
     int m_nCurrentPage;  /**< 当前页码      */
-    int m_nTabSpacing;   /**< tab页面间距   */
+    int m_nTabInterSize;   /**< tab页面间距   */
     int m_nTabWidth;     /**< tab页面宽度   */
     int m_nTabHeight;    /**< tab页面高度   */
     int m_nTabPos;       /**< tab位置       */
     int m_nFramePos;     /**< 框架位置      */
     ISkinObj *m_pSkinTab; /**< ISkibObj对象 */
     ISkinObj *m_pSkinIcon; /**< ISkibObj对象  */
-    ISkinObj *m_pSkinSplitter;  /**< ISkibObj对象  */
+    ISkinObj *m_pSkinTabInter;  /**< ISkibObj对象  */
     ISkinObj *m_pSkinFrame;     /**< ISkibObj对象  */
     CPoint m_ptIcon;   /**< 图标位置 */
     CPoint m_ptText;   /**< 标题位置 */
@@ -361,10 +361,10 @@ protected:
         ATTR_INT(L"tabHeight", m_nTabHeight, FALSE)
         ATTR_INT(L"tabPos", m_nTabPos, FALSE)
         ATTR_INT(L"framePos", m_nFramePos, FALSE)
-        ATTR_INT(L"tabSpacing", m_nTabSpacing, FALSE)
+        ATTR_INT(L"tabInterSize", m_nTabInterSize, FALSE)
+        ATTR_SKIN(L"tabInterSkin", m_pSkinTabInter, FALSE)
         ATTR_SKIN(L"tabSkin", m_pSkinTab, FALSE)
         ATTR_SKIN(L"iconSkin", m_pSkinIcon, FALSE)
-        ATTR_SKIN(L"splitterSkin", m_pSkinSplitter, FALSE)
         ATTR_SKIN(L"frameSkin", m_pSkinFrame, FALSE)
         ATTR_INT(L"icon-x", m_ptIcon.x, FALSE)
         ATTR_INT(L"icon-y", m_ptIcon.y, FALSE)

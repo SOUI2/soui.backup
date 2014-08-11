@@ -34,6 +34,7 @@ SListBox::SListBox()
     , m_ptText(-1,-1)
     , m_bHotTrack(FALSE)
 {
+    m_bFocusable = TRUE;
     m_evtSet.addEvent(EventLBSelChanging::EventID);
     m_evtSet.addEvent(EventLBSelChanged::EventID);
     m_evtSet.addEvent(EventLBGetDispInfo::EventID);
@@ -243,16 +244,20 @@ BOOL SListBox::CreateChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return TRUE;
 
-    pugi::xml_node xmlItem=xmlNode.child(L"items");
-    while(xmlItem)
+    pugi::xml_node xmlItems=xmlNode.child(L"items");
+    if(xmlItems)
     {
-        LPLBITEM pItemObj = new LBITEM;
-        LoadItemAttribute(xmlItem, pItemObj);
-        InsertItem(-1, pItemObj);
-        xmlItem = xmlItem.next_sibling();
+        pugi::xml_node xmlItem= xmlItems.child(L"item");
+        while(xmlItem)
+        {
+            LPLBITEM pItemObj = new LBITEM;
+            LoadItemAttribute(xmlItem, pItemObj);
+            InsertItem(-1, pItemObj);
+            xmlItem = xmlItem.next_sibling();
+        }    
     }
 
-    int nSelItem=xmlNode.attribute(L"cursel").as_int(-1);
+    int nSelItem=xmlNode.attribute(L"curSel").as_int(-1);
     SetCurSel(nSelItem);
 
     return TRUE;
@@ -260,10 +265,9 @@ BOOL SListBox::CreateChildren(pugi::xml_node xmlNode)
 
 void SListBox::LoadItemAttribute(pugi::xml_node xmlNode, LPLBITEM pItem)
 {
-    pItem->nImage=xmlNode.attribute(L"img").as_int(pItem->nImage);
+    pItem->nImage=xmlNode.attribute(L"icon").as_int(pItem->nImage);
     pItem->lParam=xmlNode.attribute(L"data").as_uint(pItem->lParam);
-
-    pItem->strText =  S_CW2T(xmlNode.text().get());
+    pItem->strText =  S_CW2T(tr(xmlNode.attribute(L"text").value()));
     BUILDSTRING(pItem->strText);
 }
 
@@ -453,14 +457,24 @@ void SListBox::OnSize(UINT nType,CSize size)
 
 void SListBox::OnLButtonDown(UINT nFlags,CPoint pt)
 {
+   SWindow::OnLButtonDown(nFlags,pt);
+    if(!m_bHotTrack)
+    {
+        m_iHoverItem = HitTest(pt);
+        if(m_iHoverItem!=m_iSelItem)
+            NotifySelChange(m_iSelItem,m_iHoverItem);
+    }
 }
 
 void SListBox::OnLButtonUp(UINT nFlags,CPoint pt)
 {
-    m_iHoverItem = HitTest(pt);
-
-    if(m_iHoverItem!=m_iSelItem)
-        NotifySelChange(m_iSelItem,m_iHoverItem);
+    if(m_bHotTrack)
+    {
+        m_iHoverItem = HitTest(pt);
+        if(m_iHoverItem!=m_iSelItem)
+            NotifySelChange(m_iSelItem,m_iHoverItem);
+    }
+    SWindow::OnLButtonUp(nFlags,pt);
 }
 
 void SListBox::OnLButtonDbClick(UINT nFlags,CPoint pt)

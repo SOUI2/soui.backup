@@ -99,6 +99,28 @@ namespace SOUI
          */
         void EndDropDown(UINT uCode=IDCANCEL);
     protected:
+        /**
+         * OnReleaseSwndCapture
+         * @brief    阻止窗口的ReleaseCapture
+         * @return   BOOL 
+         *
+         * Describe  调用ReleaseCapture后重新调用SetCapture
+         */
+        virtual BOOL OnReleaseSwndCapture()
+        {
+            BOOL bRet=SHostWnd::OnReleaseSwndCapture();
+            CSimpleWnd::SetCapture();
+            return bRet;
+        }
+    
+        /**
+         * PreTranslateMessage
+         * @brief    
+         * @param    MSG * pMsg --  当前窗口消息
+         * @return   BOOL-- TRUE消息被处理，不再分发。
+         *
+         * Describe  
+         */
         virtual BOOL PreTranslateMessage(MSG* pMsg);
 
         /**
