@@ -17,8 +17,10 @@ namespace SOUI
 {
 
 #define POSFLAG_REFCENTER      '|'        //参考父窗口中心
-#define POSFLAG_REFPREV        '['        //参考前一个兄弟窗口
-#define POSFLAG_REFNEXT        ']'        //参考下一个兄弟窗口
+#define POSFLAG_REFPREV_NEAR   '['        //参考前一个兄弟窗口与自己近的边
+#define POSFLAG_REFNEXT_NEAR   ']'        //参考下一个兄弟窗口与自己近的边
+#define POSFLAG_REFPREV_FAR    '{'        //参考前一个兄弟窗口与自己远的边
+#define POSFLAG_REFNEXT_FAR    '}'        //参考下一个兄弟窗口与自己远的边
 #define POSFLAG_PERCENT        '%'        //采用在父窗口的百分比定义坐标
 #define POSFLAG_DEFSIZE        '@'        //在pos属性中定义窗口的size，只在在定义x2,y2时有效
 
@@ -48,11 +50,13 @@ namespace SOUI
 
     //坐标类型
     enum PIT{
-        PIT_NORMAL=0,    //一般坐标
+        PIT_NORMAL=0,      //一般坐标
         PIT_CENTER,        //参考父窗口中心点,以"|"开始
-        PIT_PERCENT,    //指定在父窗口坐标的中的百分比,以"%"开头
-        PIT_PREVSIBLING,    //指定坐标为相对前一个兄弟窗口的偏移，没有兄弟窗口时为父窗口,以"["开头
-        PIT_NEXTSIBLING,    //指定坐标为相对前一个兄弟窗口的偏移，没有兄弟窗口时为父窗口,以"]"开头
+        PIT_PERCENT,       //指定在父窗口坐标的中的百分比,以"%"开头
+        PIT_PREV_NEAR,     //参考前一个兄弟窗口与自己近的边
+        PIT_NEXT_NEAR,     //参考下一个兄弟窗口与自己近的边
+        PIT_PREV_FAR,      //参考前一个兄弟窗口与自己远的边
+        PIT_NEXT_FAR,      //参考下一个兄弟窗口与自己远的边
         PIT_OFFSET,        //相对于前面x1,y1的偏移,只能在x2,y2中使用，以@开头
     };
 
