@@ -165,23 +165,23 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
         else if(i== m_nHoverTabItem) dwState=WndState_Hover;
 
         GetItemRect(i,rcItem);
-        if(i>0)
+        //»­·Ö¸ôÏß
+        if(i>0 && m_pSkinSplitter)
         {
             rcSplit=rcItem;
             if(m_nTabAlign==AlignLeft)
             {
                 rcSplit.top=rcItemPrev.bottom;
+                rcSplit.bottom = rcSplit.top + m_nTabSpacing;
             }
             else
             {
                 rcSplit.left=rcItemPrev.right;
+                rcSplit.right=rcSplit.left + m_nTabSpacing;
             }
-        }
-
-        if(!rcSplit.IsRectEmpty() && m_pSkinSplitter)
-        {
             m_pSkinSplitter->Draw(pRT,rcSplit,0);
         }
+
         DrawItem(pRT,rcItem,i,dwState);
         rcItemPrev=rcItem;
     }
