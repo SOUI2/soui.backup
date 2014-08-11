@@ -27,8 +27,10 @@ namespace SOUI
         }
         if(pszPos[0]==POSFLAG_REFCENTER) pos.pit=PIT_CENTER,pszPos++;
         else if(pszPos[0]==POSFLAG_PERCENT) pos.pit=PIT_PERCENT,pszPos++;
-        else if(pszPos[0]==POSFLAG_REFPREV) pos.pit=PIT_PREVSIBLING,pszPos++;
-        else if(pszPos[0]==POSFLAG_REFNEXT) pos.pit=PIT_NEXTSIBLING,pszPos++;
+        else if(pszPos[0]==POSFLAG_REFPREV_NEAR) pos.pit=PIT_PREV_NEAR,pszPos++;
+        else if(pszPos[0]==POSFLAG_REFNEXT_NEAR) pos.pit=PIT_NEXT_NEAR,pszPos++;
+        else if(pszPos[0]==POSFLAG_REFPREV_FAR) pos.pit=PIT_PREV_FAR,pszPos++;
+        else if(pszPos[0]==POSFLAG_REFNEXT_FAR) pos.pit=PIT_NEXT_FAR,pszPos++;
         else if(pszPos[0]==POSFLAG_DEFSIZE) pos.pit=PIT_OFFSET,pszPos++;
         else pos.pit=PIT_NORMAL;
 
@@ -67,7 +69,8 @@ namespace SOUI
             nRet=nMin+(int)(pos.nPos*nWid/100);
             if(nRet>nMax) nRet=nMax;
             break;
-        case PIT_PREVSIBLING:
+        case PIT_PREV_NEAR:
+        case PIT_PREV_FAR:
             {
                 SWindow *pRefWnd=m_pOwner->GetWindow(GSW_PREVSIBLING);
                 if(!pRefWnd) pRefWnd=m_pOwner->GetWindow(GSW_PARENT);
@@ -77,21 +80,24 @@ namespace SOUI
                     pRefWnd->GetWindowRect(&rcRef);
                     if(bX)
                     {
-                        if(rcRef.right == POS_INIT || rcRef.right==POS_WAIT)
+                        LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.right:rcRef.left;
+                        if(refPos == POS_INIT || refPos==POS_WAIT)
                             nRet=POS_WAIT;
                         else
-                            nRet=rcRef.right+(int)pos.nPos*(pos.bMinus?-1:1);
+                            nRet=refPos+(int)pos.nPos*(pos.bMinus?-1:1);
                     }else
                     {
-                        if(rcRef.bottom == POS_INIT || rcRef.bottom==POS_WAIT)
+                        LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.bottom:rcRef.top;
+                        if(refPos == POS_INIT || refPos==POS_WAIT)
                             nRet=POS_WAIT;
                         else
-                            nRet=rcRef.bottom+(int)pos.nPos*(pos.bMinus?-1:1);
+                            nRet=refPos+(int)pos.nPos*(pos.bMinus?-1:1);
                     }
                 }
             }
             break;
-        case PIT_NEXTSIBLING:
+        case PIT_NEXT_NEAR:
+        case PIT_NEXT_FAR:
             {
                 SWindow *pRefWnd=m_pOwner->GetWindow(GSW_NEXTSIBLING);
                 if(!pRefWnd) pRefWnd=m_pOwner->GetWindow(GSW_PARENT);
@@ -101,16 +107,18 @@ namespace SOUI
                     pRefWnd->GetWindowRect(&rcRef);
                     if(bX)
                     {
-                        if(rcRef.left == POS_INIT || rcRef.left==POS_WAIT)
+                        LONG refPos = (pos.pit == PIT_NEXT_NEAR)?rcRef.left:rcRef.right;
+                        if(refPos == POS_INIT || refPos==POS_WAIT)
                             nRet=POS_WAIT;
                         else
-                            nRet=rcRef.left+(int)pos.nPos*(pos.bMinus?-1:1);
+                            nRet=refPos+(int)pos.nPos*(pos.bMinus?-1:1);
                     }else
                     {
-                        if(rcRef.top == POS_INIT || rcRef.top==POS_WAIT)
+                        LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.top:rcRef.bottom;
+                        if(refPos == POS_INIT || refPos==POS_WAIT)
                             nRet=POS_WAIT;
                         else
-                            nRet=rcRef.top+(int)pos.nPos*(pos.bMinus?-1:1);
+                            nRet=refPos+(int)pos.nPos*(pos.bMinus?-1:1);
                     }
                 }
             }
