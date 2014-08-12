@@ -1,5 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
+#include "resource.h"
+
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -25,9 +27,6 @@ LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE 
-BEGIN
-END
 
 2 TEXTINCLUDE 
 BEGIN
@@ -50,8 +49,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,9,0,1
- PRODUCTVERSION 0,9,0,1
+ FILEVERSION 0,9,9,1
+ PRODUCTVERSION 0,9,9,1
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -68,12 +67,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Æô³ÌÈí¼þ"
             VALUE "FileDescription", "soui"
-            VALUE "FileVersion", "0, 9, 0, 1"
+            VALUE "FileVersion", "0, 9, 9, 1"
             VALUE "InternalName", "soui"
             VALUE "LegalCopyright", "Copyright (C) 2014"
             VALUE "OriginalFilename", "soui.dll"
             VALUE "ProductName", "soui"
-            VALUE "ProductVersion", "0, 9, 0, 1"
+            VALUE "ProductVersion", "0, 9, 9, 1"
         END
     END
     BLOCK "VarFileInfo"
