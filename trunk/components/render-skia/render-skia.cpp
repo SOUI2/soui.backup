@@ -719,40 +719,36 @@ namespace SOUI
             m_uGetDCFlag =0;
         }
     }
-
+    
     HRESULT SRenderTarget_Skia::GradientFill( LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha/*=0xFF*/ )
     {
-        int nWid=pRect->right-pRect->left;
-        int nHei=pRect->bottom-pRect->top;
+        SkRect skrc = toSkRect(pRect);
+        skrc.offset(m_ptOrg);
+
         SkPoint pts[2];
-        pts[0].iset(0,0);
-        if(bVert)
+        pts[0].set(skrc.left(),skrc.top());
+
+        if (bVert)
         {
-            pts[1].iset(0,nHei);
-        }else
-        {
-            pts[1].iset(nWid,0);
+            pts[1].set(skrc.left(),skrc.bottom());
         }
-                
+        else
+        {
+            pts[1].set(skrc.right(),skrc.top());
+        }
+
         SColor cr1(crBegin,byAlpha);
         SColor cr2(crEnd,byAlpha);
-        
+
         const SkColor colors[2] = {cr1.toARGB(),cr2.toARGB()};
-        const SkScalar pos[] = {0.0f,1.0f};
-        SkShader *pShader = SkGradientShader::CreateLinear(pts, colors, pos,2,SkShader::kMirror_TileMode);
+        SkShader *pShader = SkGradientShader::CreateLinear(pts, colors, NULL,2,SkShader::kMirror_TileMode);
         SkPaint paint;
         paint.setShader(pShader);
         pShader->unref();
-        SkRect skrc=toSkRect(pRect);
-        skrc.offset(m_ptOrg);
-        
-        //通过将canvas的原点做平移处理，可以解决在绘制渐变时出现的问题，还不知道原因。
-        m_SkCanvas->translate(skrc.left(),skrc.top());
-        SkRect rc2=skrc;
-        rc2.offsetTo(0,0);
-        m_SkCanvas->drawRect(rc2,paint);
-        m_SkCanvas->translate(-skrc.left(),-skrc.top());
+
+        m_SkCanvas->drawRect(skrc,paint);
         return S_OK;
+
     }
 
     HRESULT SRenderTarget_Skia::FillSolidRect( LPCRECT pRect,COLORREF cr )
