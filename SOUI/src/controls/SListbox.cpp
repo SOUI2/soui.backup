@@ -526,7 +526,7 @@ void SListBox::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 UINT SListBox::OnGetDlgCode()
 {
-    return SC_WANTALLKEYS;
+    return SC_WANTARROWS|SC_WANTCHARS;
 }
 
 void SListBox::OnDestroy()
