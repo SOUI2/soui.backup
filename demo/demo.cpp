@@ -66,14 +66,14 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         int nType=MessageBox(GetActiveWindow(),_T("Ñ¡ÔñäÖÈ¾ÀàÐÍ£º\n[yes]: Skia\n[no]:GDI\n[cancel]:Quit"),_T("select a render"),MB_ICONQUESTION|MB_YESNOCANCEL);
         if(nType == IDCANCEL) return -1;
         bLoaded=renderLoader.CreateInstance(nType==IDYES?COM_RENDER_SKIA:COM_RENDER_GDI,(IObjRef**)&pRenderFactory);
-        SASSERT(bLoaded);
+        SASSERT_FMT(bLoaded,_T("load module [%s] failed!"),nType==IDYES?COM_RENDER_SKIA:COM_RENDER_GDI);
         bLoaded=imgDecLoader.CreateInstance(COM_IMGDECODER,(IObjRef**)&pImgDecoderFactory);
-        SASSERT(bLoaded);
+        SASSERT_FMT(bLoaded,_T("load module [%s] failed!"),COM_IMGDECODER);
 
         pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
 
         bLoaded=transLoader.CreateInstance(COM_TRANSLATOR,(IObjRef**)&trans);
-        SASSERT(bLoaded);
+        SASSERT_FMT(bLoaded,_T("load module [%s] failed!"),COM_TRANSLATOR);
         
         SApplication *theApp=new SApplication(pRenderFactory,hInstance);
 
@@ -112,7 +112,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         }
 #ifdef DLL_SOUI
         bLoaded=scriptLoader.CreateInstance(COM_SCRIPT_LUA,(IObjRef**)&pScriptLua);
-        SASSERT(bLoaded);
+        SASSERT_FMT(bLoaded,_T("load module [%s] failed!"),COM_SCRIPT_LUA);
         if(pScriptLua)
         {
             theApp->SetScriptModule(pScriptLua);
@@ -155,7 +155,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
             dlgMain.GetNative()->SendMessage(WM_INITDIALOG);
             dlgMain.CenterWindow();
             dlgMain.ShowWindow(SW_SHOWNORMAL);
-//             dlgMain.SetWindowPos(HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
+            dlgMain.SetWindowPos(HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
             nRet=theApp->Run(dlgMain.m_hWnd);
             //  		nRet = dlgMain.DoModal();  
         }

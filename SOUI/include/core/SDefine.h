@@ -41,9 +41,9 @@
 #endif
 
 #ifdef _UNICODE 
-#   define SASSERT_FMT    ASSERT_FMTW
+#   define SASSERT_FMT    SASSERT_FMTW
 #else
-#   define SASSERT_FMT    ASSERT_FMTA
+#   define SASSERT_FMT    SASSERT_FMTA
 #endif//_UNICODE
 
 #include <assert.h>
