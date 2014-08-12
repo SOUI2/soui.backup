@@ -9,6 +9,10 @@
  * @date       2014-05-25
  * 
  * Describe    此类是下拉窗口的父类 只需要派生该类即可
+ *             该窗口禁止激活，因此正常情况下收不到键盘及鼠标事件
+ *             为了收到键盘消息，我们实现一个PreTranslateMessage函数，对键盘消息进行转发。
+ *             为了接收鼠标消息，我们在窗口显示后调用SetCapture来截获鼠标消息。SetCapture会有一个副作用，
+ *             窗口中将收不到WM_SETCURSOR消息，因此在PreTranslateMessage函数中通过WM_MOUSEMOVE消息来模拟WM_SETCURSOR
  */
 #pragma once
 #include "core/shostwnd.h"
@@ -106,12 +110,7 @@ namespace SOUI
          *
          * Describe  调用ReleaseCapture后重新调用SetCapture
          */
-        virtual BOOL OnReleaseSwndCapture()
-        {
-            BOOL bRet=SHostWnd::OnReleaseSwndCapture();
-            CSimpleWnd::SetCapture();
-            return bRet;
-        }
+        virtual BOOL OnReleaseSwndCapture();
     
         /**
          * PreTranslateMessage

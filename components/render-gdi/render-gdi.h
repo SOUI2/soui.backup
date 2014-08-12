@@ -282,6 +282,7 @@ namespace SOUI
         virtual HRESULT FillRoundRect(LPCRECT pRect,POINT pt);
         virtual HRESULT DrawLines(LPPOINT pPt,size_t nCount);
         virtual HRESULT GradientFill(LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha=0xFF);
+        virtual HRESULT GradientFillEx( LPCRECT pRect,const POINT* pts,COLORREF *colors,float *pos,int nCount,BYTE byAlpha=0xFF );
 
         virtual HRESULT TextOut(
             int x,

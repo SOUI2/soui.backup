@@ -22,4 +22,12 @@ namespace SOUI
 
     }
 
+    EventOfComoboxExItem::EventOfComoboxExItem(SWindow *pSender,EventCmd *_pOrgEvt )
+        :EventArgs(pSender)
+        ,pOrgEvt(_pOrgEvt)
+        ,bCancel(FALSE)
+    {
+
+    }
+
 }

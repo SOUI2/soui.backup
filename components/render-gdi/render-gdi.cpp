@@ -733,6 +733,11 @@ namespace SOUI
         }
         return S_OK;
     }
+    
+    HRESULT SRenderTarget_GDI::GradientFillEx( LPCRECT pRect,const POINT* pts,COLORREF *colors,float *pos,int nCount,BYTE byAlpha/*=0xFF */ )
+    {
+        return E_NOTIMPL;
+    }
 
     //通过一个内存位图来填充位置的alpha值
     HRESULT SRenderTarget_GDI::FillSolidRect( LPCRECT pRect,COLORREF cr )
@@ -832,6 +837,8 @@ namespace SOUI
         ::SelectObject(m_hdc,oldPen);
         return S_OK;
     }
+
+
 }
 
 

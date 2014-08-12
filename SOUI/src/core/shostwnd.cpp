@@ -57,12 +57,6 @@ HWND SHostWnd::Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x, int 
     HWND hWnd = CSimpleWnd::Create(_T("HOSTWND"),dwStyle,dwExStyle, x,y,nWidth,nHeight,hWndParent,NULL);
     if(!hWnd) return NULL;
 
-    //tooltip
-    m_pTipCtrl=new STipCtrl;
-    m_pTipCtrl->Create(m_hWnd);
-    GetMsgLoop()->AddMessageFilter(m_pTipCtrl);
-
-    SetContainer(this);
 
     if(!m_strXmlLayout.IsEmpty())
     {
@@ -270,6 +264,14 @@ int SHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
     GETRENDERFACTORY->CreateRenderTarget(&m_memRT,0,0);
     GETRENDERFACTORY->CreateRegion(&m_rgnInvalidate);
+    
+    //tooltip
+    m_pTipCtrl=new STipCtrl;
+    m_pTipCtrl->Create(m_hWnd);
+    GetMsgLoop()->AddMessageFilter(m_pTipCtrl);
+
+    SWindow::SetContainer(this);
+
     return 0;
 }
 

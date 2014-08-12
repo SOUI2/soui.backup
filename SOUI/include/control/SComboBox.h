@@ -28,33 +28,33 @@ class SComboBoxBase;
 
 
 /**
- * @class      CComboEdit
- * @brief      可输入CommboBox
+ * @class      SComboEdit
+ * @brief      在CommboBox中嵌入的Edit控件
  * 
- * Describe    可输入下拉列表
+ * Describe    
  */
-class CComboEdit:public SEdit
+class SComboEdit:public SEdit
 {
 public:
     /**
-     * CComboEdit::CComboEdit
+     * SComboEdit::SComboEdit
      * @param    SComboBoxBase *pOwner  -- 暂无       
      * @brief    构造函数
      *
      * Describe  构造函数
      */
-    CComboEdit(SComboBoxBase *pOwner);
+    SComboEdit(SComboBoxBase *pOwner);
     
     /**
-     * CComboEdit::~CComboEdit
+     * SComboEdit::~SComboEdit
      * @brief    析构函数
      *
      * Describe  析构函数
      */
-    virtual ~CComboEdit(){}
+    virtual ~SComboEdit(){}
 protected:
     /**
-     * CComboEdit::OnMouseHover
+     * SComboEdit::OnMouseHover
      * @brief    键盘鼠标悬停事件
      * @param    WPARAM wParam 
      * @param    CPoint ptPos -- 鼠标所在位置
@@ -63,14 +63,14 @@ protected:
      */
     void OnMouseHover(WPARAM wParam, CPoint ptPos);
     /**
-     * CComboEdit::OnMouseLeave
+     * SComboEdit::OnMouseLeave
      * @brief    键盘鼠标离开事件
      * 
      * Describe  此函数是消息响应函数
      */    
     void OnMouseLeave();
     /**
-     * CComboEdit::OnKeyDown
+     * SComboEdit::OnKeyDown
      * @brief    键盘按下事件
      * @param    UINT nChar -- 按键对应的码值 
      * @param    UINT nRepCnt -- 重复次数
@@ -81,7 +81,7 @@ protected:
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
     /**
-     * CComboEdit::FireEvent
+     * SComboEdit::FireEvent
      * @brief    通知消息
      * @param    EventArgs & evt -- 事件对象 
      * 
@@ -97,7 +97,7 @@ protected:
 };
 
 /**
- * @class      CComboEdit
+ * @class      SComboBoxBase
  * @brief      可输入CommboBox
  * 
  * Describe    可输入下拉列表
@@ -184,7 +184,7 @@ protected:
      * Describe  下拉关闭
      */
     virtual void OnCloseUp(SDropDownWnd *pDropDown,UINT uCode);
-protected:
+
     /**
      * SComboBoxBase::OnSelChanged
      * @brief    下拉窗口改变事件
@@ -192,15 +192,6 @@ protected:
      * Describe  下拉关闭
      */
     virtual void OnSelChanged();
-
-    /**
-     * SComboBoxBase::FireEvent
-     * @brief    通知消息
-     * @param    EventArgs &evt -- 事件对象 
-     * 
-     * Describe  此函数是消息响应函数
-     */ 
-    virtual BOOL FireEvent(EventArgs &evt);
     
 protected:
 
@@ -562,6 +553,15 @@ public:
     
 protected:
     /**
+     * SComboBox::FireEvent
+     * @brief    通知消息
+     * @param    EventArgs &evt -- 事件对象 
+     * 
+     * Describe  此函数是消息响应函数
+     */ 
+    virtual BOOL FireEvent(EventArgs &evt);
+
+    /**
      * SComboBox::CreateListBox
      * @brief    创建下拉列表
      * @param    返回BOOL TRUE -- 成功 FALSE -- 失败
@@ -792,6 +792,15 @@ protected:
      */
     virtual void OnSelChanged();
 protected:
+    /**
+     * SComboBoxEx::FireEvent
+     * @brief    通知消息
+     * @param    EventArgs &evt -- 事件对象 
+     * 
+     * Describe  此函数是消息响应函数
+     */ 
+    virtual BOOL FireEvent(EventArgs &evt);
+
     /**
      * SComboBoxEx::CreateListBox
      * @brief    创建下拉列表
