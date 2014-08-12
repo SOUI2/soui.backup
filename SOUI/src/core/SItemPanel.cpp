@@ -232,14 +232,21 @@ LPARAM SItemPanel::GetItemData()
 BOOL SItemPanel::OnUpdateToolTip( SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip )
 {
     if(hCurTipHost==m_hHover) return FALSE;
-    if(m_hHover==m_hSWnd) return FALSE;
-
+    if(m_hHover==m_hSWnd)
+    {
+        strTip=_T("");
+        hNewTipHost = m_hSWnd;
+        rcTip = GetItemRect();
+        return TRUE;
+    }
+    
     SWindow *pHover=SWindowMgr::GetWindow(m_hHover);
     if(!pHover || pHover->IsDisabled(TRUE))
     {
         hNewTipHost=NULL;
         return TRUE;
     }
+
     BOOL bRet=pHover->OnUpdateToolTip(hCurTipHost,hNewTipHost,rcTip,strTip);
     if(bRet)
     {

@@ -189,6 +189,7 @@ namespace SOUI
         virtual void OnInitFinished(pugi::xml_node xmlNode) {}
 
 #ifdef    _DEBUG
+    public:
         SStringW m_strXml;  //<** XML字符串，用于在调试时观察对象*/
 #endif//_DEBUG
     };

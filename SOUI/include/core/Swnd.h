@@ -920,7 +920,7 @@ namespace SOUI
             ATTR_CUSTOM(L"cache", OnAttrCache)
             ATTR_CUSTOM(L"display", OnAttrDisplay)
             ATTR_I18NSTRT(L"tip", m_strToolTipText, FALSE)  // π”√”Ô—‘∞¸∑≠“Î
-            ATTR_INT(L"msgTransParent", m_bMsgTransparent, FALSE)
+            ATTR_INT(L"msgTransparent", m_bMsgTransparent, FALSE)
             ATTR_INT(L"maxWidth",m_nMaxWidth,FALSE)
             ATTR_INT(L"clipClient",m_bClipClient,FALSE)
             ATTR_INT(L"focusable",m_bFocusable,FALSE)
