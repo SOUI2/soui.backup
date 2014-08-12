@@ -720,6 +720,31 @@ namespace SOUI
         }
     }
     
+    HRESULT SRenderTarget_Skia::GradientFillEx( LPCRECT pRect,const POINT* pts,COLORREF *colors,float *pos,int nCount,BYTE byAlpha/*=0xFF*/ )
+    {
+        SkRect skrc = toSkRect(pRect);
+        skrc.offset(m_ptOrg);
+        SkPoint *skPts = new SkPoint[nCount];
+        SkColor *skColors= new SkColor[nCount];
+        for(int i=0;i<nCount;i++)
+        {
+            skPts[i].iset(pts[i].x,pts[i].y);
+            skPts[i].offset(m_ptOrg.x(),m_ptOrg.y());
+            skColors[i] = SColor(colors[i],byAlpha).toARGB();
+        }
+        
+        SkShader *pShader = SkGradientShader::CreateLinear(skPts, skColors, pos,nCount,SkShader::kMirror_TileMode);
+        SkPaint paint;
+        paint.setShader(pShader);
+        pShader->unref();
+
+        m_SkCanvas->drawRect(skrc,paint);
+
+        delete []skColors;
+        delete []skPts;
+        return S_OK;
+    }
+    
     HRESULT SRenderTarget_Skia::GradientFill( LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha/*=0xFF*/ )
     {
         SkRect skrc = toSkRect(pRect);

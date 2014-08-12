@@ -100,7 +100,8 @@ namespace SOUI
         EVT_HEADER_ITEMSWAP,
 
         EVT_CB_SELCHANGE=19000,
-
+        EVT_CBE_OFITEM=19500,
+        
         EVT_CALENDAR_SELDAY=20000,
 
         EVT_EXTERNAL_BEGIN=10000000,
@@ -199,13 +200,24 @@ namespace SOUI
     {
     public:
         EventOfPanel(SItemPanel *_pPanel,EventArgs *_pOrgEvt);
-        enum{EventID=EVT_OFEVENT};
+        enum{EventID=EVT_OFPANEL};
         virtual UINT GetEventID(){return EventID;}
 
         SItemPanel *pPanel;
         EventArgs * pOrgEvt;
     };
+    
+    class EventOfComoboxExItem : public EventArgs
+    {
+    public:
+        EventOfComoboxExItem(SWindow *pSender,EventCmd *_pOrgEvt);
+        enum{EventID=EVT_CBE_OFITEM};
+        virtual UINT GetEventID(){return EventID;}
 
+        EventCmd    *  pOrgEvt;
+        BOOL           bCancel;
+    };
+    
     class EventTabSelChanging : public EventArgs
     {
     public:

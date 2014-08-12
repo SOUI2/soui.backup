@@ -472,6 +472,10 @@ LRESULT SListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 {
     LRESULT lRet=0;
     CPoint pt(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+
+    if(uMsg==WM_LBUTTONUP && m_iHoverItem!=m_iSelItem)
+        NotifySelChange(m_iSelItem,m_iHoverItem);
+
     if(m_pCapturedFrame)
     {
         CRect rcItem=m_pCapturedFrame->GetItemRect();
@@ -482,6 +486,7 @@ LRESULT SListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
     {
         if(m_bFocusable && (uMsg==WM_LBUTTONDOWN || uMsg== WM_RBUTTONDOWN || uMsg==WM_LBUTTONDBLCLK))
             SetFocus();
+
         int iHover=HitTest(pt);
         if(iHover!=m_iHoverItem)
         {
@@ -506,12 +511,6 @@ LRESULT SListBoxEx::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
         {
             m_arrItems[m_iHoverItem]->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
         }
-    }
-    if(uMsg==WM_LBUTTONUP && m_iHoverItem!=m_iSelItem)
-        NotifySelChange(m_iSelItem,m_iHoverItem);
-    if(uMsg == WM_LBUTTONUP)
-    {
-        FireCommand();
     }
     return 0;
 }

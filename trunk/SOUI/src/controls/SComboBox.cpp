@@ -6,24 +6,24 @@ namespace SOUI
 {
 
 // CComboEdit
-CComboEdit::CComboEdit( SComboBoxBase *pOwner )
+SComboEdit::SComboEdit( SComboBoxBase *pOwner )
 {
     SetOwner(pOwner);
 }
 
-void CComboEdit::OnMouseHover( WPARAM wParam, CPoint ptPos )
+void SComboEdit::OnMouseHover( WPARAM wParam, CPoint ptPos )
 {
     __super::OnMouseHover(wParam,ptPos);
     GetOwner()->SSendMessage(WM_MOUSEHOVER,wParam,MAKELPARAM(ptPos.x,ptPos.y));
 }
 
-void CComboEdit::OnMouseLeave()
+void SComboEdit::OnMouseLeave()
 {
     __super::OnMouseLeave();
     GetOwner()->SSendMessage(WM_MOUSELEAVE);
 }
 
-void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+void SComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     SWindow *pOwner = GetOwner();
     if (pOwner && (nChar == VK_DOWN || nChar == VK_ESCAPE))
@@ -35,7 +35,7 @@ void CComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     SetMsgHandled(FALSE);
 }
 
-BOOL CComboEdit::FireEvent(EventArgs & evt)
+BOOL SComboEdit::FireEvent(EventArgs & evt)
 {
     if(evt.GetEventID()==EVT_RE_NOTIFY)
     {//转发richedit的txNotify消息
@@ -78,7 +78,7 @@ BOOL SComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
     if(!m_bDropdown)
     {
         SIZE szBtn=m_pSkinBtn->GetSkinSize();
-        m_pEdit=new CComboEdit(this);
+        m_pEdit=new SComboEdit(this);
         InsertChild(m_pEdit);
         pugi::xml_node xmlEditStyle=xmlNode.child(L"editstyle");
         if(xmlEditStyle)
@@ -181,7 +181,7 @@ void SComboBoxBase::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     if (!m_bDropdown)
     {
-        CComboEdit *pEdit = static_cast<CComboEdit *>(FindChildByID(IDC_CB_EDIT));
+        SComboEdit *pEdit = static_cast<SComboEdit *>(FindChildByID(IDC_CB_EDIT));
         if (pEdit)
             pEdit->SSendMessage(WM_CHAR, nChar, MAKELONG(nFlags, nRepCnt));
         return;
@@ -302,26 +302,6 @@ void SComboBoxBase::OnDestroy()
     __super::OnDestroy();
 }
 
-BOOL SComboBoxBase::FireEvent(EventArgs &evt)
-{
-    if(evt.idFrom == IDC_DROPDOWN_LIST)
-    {
-        SASSERT(m_pDropDownWnd);
-
-        if(evt.GetEventID()==EventLBSelChanged::EventID)
-        {
-            OnSelChanged();
-            return TRUE;
-        }
-        if(evt.GetEventID() == EventCmd::EventID)
-        {
-            CloseUp();
-            return TRUE;
-        }
-    }
-    return __super::FireEvent(evt);
-}
-
 void SComboBoxBase::OnSelChanged()
 {
     EventCBSelChange evt(this);
@@ -423,11 +403,31 @@ void SComboBox::OnSelChanged()
     __super::OnSelChanged();
 }
 
+BOOL SComboBox::FireEvent( EventArgs &evt )
+{
+    if(evt.idFrom == IDC_DROPDOWN_LIST)
+    {
+        SASSERT(m_pDropDownWnd);
+
+        if(evt.GetEventID()==EventLBSelChanged::EventID)
+        {
+            OnSelChanged();
+            return TRUE;
+        }
+        if(evt.GetEventID() == EventCmd::EventID)
+        {
+            CloseUp();
+            return TRUE;
+        }
+    }
+    return __super::FireEvent(evt);
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 SComboBoxEx::SComboBoxEx():m_uTxtID(0),m_uIconID(0),m_pListBox(NULL)
 {
-
+    m_evtSet.addEvent(EventOfComoboxExItem::EventID);
 }
 
 SComboBoxEx::~SComboBoxEx()
@@ -544,6 +544,33 @@ void SComboBoxEx::OnSelChanged()
     }
     Invalidate();
     __super::OnSelChanged();
+}
+
+BOOL SComboBoxEx::FireEvent( EventArgs &evt )
+{
+    if(evt.idFrom == IDC_DROPDOWN_LIST)
+    {
+        SASSERT(m_pDropDownWnd);
+
+        if(evt.GetEventID()==EventLBSelChanged::EventID)
+        {//列表选中项改变事件
+            OnSelChanged();
+        }
+    }
+    if(evt.GetEventID() == EventOfPanel::EventID)
+    {
+        EventOfPanel *pEvtOfPanel = (EventOfPanel*) &evt;
+        if(pEvtOfPanel->pOrgEvt->GetEventID() == EventCmd::EventID)
+        {
+            EventOfComoboxExItem evt2(this,(EventCmd*)pEvtOfPanel->pOrgEvt);
+            __super::FireEvent(evt2);
+            if(!evt2.bCancel)
+            {//可以关闭下拉列表
+                CloseUp();
+            }        
+        }
+    }
+    return TRUE;
 }
 
 
