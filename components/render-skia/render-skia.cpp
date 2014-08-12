@@ -44,6 +44,14 @@ namespace SOUI
         SkIRect rc={pRc->left,pRc->top,pRc->right,pRc->bottom};
         return SkRect::MakeFromIRect(rc);
     }
+    
+    void InflateSkRect(SkRect *pRect,SkScalar dx,SkScalar dy)
+    {
+        pRect->fLeft -= dx;
+        pRect->fRight += dx;
+        pRect->fTop -= dy;
+        pRect->fBottom += dy;
+    }
 
 	class SGetLineDashEffect
 	{
@@ -319,6 +327,7 @@ namespace SOUI
 
         SkRect skrc=toSkRect(pRect);
         skrc.offset(m_ptOrg);
+        InflateSkRect(&skrc,-0.5f,-0.5f);
 		m_SkCanvas->drawRect(skrc,paint);
 		return S_OK;
 	}
@@ -340,6 +349,7 @@ namespace SOUI
 
         SkRect skrc=toSkRect(pRect);
         skrc.offset(m_ptOrg);
+        InflateSkRect(&skrc,-0.5f,-0.5f);
 		m_SkCanvas->drawRect(skrc,paint);
 		return S_OK;
 	}
@@ -355,7 +365,7 @@ namespace SOUI
         paint.setAntiAlias(true);
 
         SkRect skrc=toSkRect(pRect);
-        skrc.offset(0.5f,0.5f);//要偏移0.5显示效果才和GDI一致。
+        InflateSkRect(&skrc,-0.5f,-0.5f);//要缩小0.5显示效果才和GDI一致。
         skrc.offset(m_ptOrg);
         m_SkCanvas->drawRoundRect(skrc,(SkScalar)pt.x,(SkScalar)pt.y,paint);
         return S_OK;
@@ -378,7 +388,7 @@ namespace SOUI
         paint.setStyle(SkPaint::kFill_Style);
 
         SkRect skrc=toSkRect(pRect);
-        skrc.offset(0.5f,0.5f);//要偏移0.5显示效果才和GDI一致。
+        InflateSkRect(&skrc,-0.5f,-0.5f);//要缩小0.5显示效果才和GDI一致。
         skrc.offset(m_ptOrg);
 
         m_SkCanvas->drawRoundRect(skrc,(SkScalar)pt.x,(SkScalar)pt.y,paint);
