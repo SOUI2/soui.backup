@@ -447,5 +447,18 @@ namespace SOUI
         return m_arrItems[iItem].cx;
     }
 
+    void SHeaderCtrl::OnActivateApp( BOOL bActive, DWORD dwThreadID )
+    {
+        if(m_bDragging)
+        {
+            CDragWnd::EndDrag();
+            DeleteObject(m_hDragImg);
+            m_hDragImg=NULL;
+            m_bDragging=FALSE;
+            ReleaseCapture();
+            Invalidate();
+        }
+    }
+
 
 }//end of namespace SOUI

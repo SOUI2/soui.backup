@@ -59,6 +59,9 @@ LRESULT SwndContainerImpl::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     case WM_ACTIVATE:
         OnActivate(LOWORD(wParam));
         break;
+    case WM_ACTIVATEAPP:
+        OnActivateApp(wParam,lParam);
+        break;
     case WM_IME_STARTCOMPOSITION:
     case WM_IME_ENDCOMPOSITION:
     case WM_IME_COMPOSITION:
@@ -310,4 +313,11 @@ void SwndContainerImpl::OnNextFrame()
         pHandler->OnNextFrame();
     }
 }
+
+void SwndContainerImpl::OnActivateApp( BOOL bActive, DWORD dwThreadID )
+{
+    MSG msg={0,WM_ACTIVATEAPP,bActive,dwThreadID,0};
+    m_pHost->SDispatchMessage(&msg);
+}
+
 }//namespace SOUI

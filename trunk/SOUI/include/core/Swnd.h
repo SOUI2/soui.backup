@@ -287,6 +287,17 @@ namespace SOUI
         LRESULT SSendMessage(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0,BOOL *pbMsgHandled=NULL);
 
         /**
+        * SSendMessage
+        * @brief    向SWND发送条窗口消息
+        * @param    MSG * pMsg --  消息结构体,
+        * @param [out] BOOL * pbMsgHandled -- 消息处理标志 
+        * @return   LRESULT 消息处理状态，依赖于消息类型
+        *
+        * Describe  pMsg中，只有message,wparam,lparam有值,一般情况下要遍历子窗口传递消息
+        */
+        LRESULT SDispatchMessage(MSG * pMsg,BOOL *pbMsgHandled=NULL);
+        
+        /**
         * GetCurMsg
         * @brief    获得当前正在处理的消息
         * @return   PSWNDMSG 

@@ -293,12 +293,15 @@ namespace SOUI
        */            
       void OnDestroy();
       
+      void OnActivateApp(BOOL bActive, DWORD dwThreadID);
+      
       SOUI_MSG_MAP_BEGIN()
           MSG_WM_PAINT_EX(OnPaint)
           MSG_WM_LBUTTONDOWN(OnLButtonDown)
           MSG_WM_LBUTTONUP(OnLButtonUp)
           MSG_WM_MOUSEMOVE(OnMouseMove)
           MSG_WM_MOUSELEAVE(OnMouseLeave)
+          MSG_WM_ACTIVATEAPP(OnActivateApp)
           MSG_WM_DESTROY(OnDestroy)
       SOUI_MSG_MAP_END()
 
