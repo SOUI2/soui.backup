@@ -80,6 +80,7 @@ protected:
     void OnBtnWebkitForeward();
     void OnBtnWebkitRefresh();
 
+    void OnBtnInsertGif2RE();
 	EVENT_MAP_BEGIN()
 		EVENT_ID_COMMAND(1, OnClose)
 		EVENT_ID_COMMAND(2, OnMaximize)
@@ -94,6 +95,7 @@ protected:
         EVENT_NAME_COMMAND(L"btn_webkit_fore",OnBtnWebkitForeward)
         EVENT_NAME_COMMAND(L"btn_webkit_refresh",OnBtnWebkitRefresh)
         EVENT_NAME_COMMAND(L"btn_hidetst",OnBtnHideTest)
+        EVENT_NAME_COMMAND(L"btn_insert_gif",OnBtnInsertGif2RE)
 	EVENT_MAP_END()	
 
 	BEGIN_MSG_MAP_EX(CMainDlg)

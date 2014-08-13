@@ -225,6 +225,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\skinole\ImageOle.cpp"
+				>
+			</File>
+			<File
 				RelativePath="MainDlg.cpp"
 				>
 			</File>
@@ -346,7 +350,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="build ui resource"
-					CommandLine="&quot;..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2"
+					CommandLine="&quot;..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2&#x0D;&#x0A;"
 					Outputs=".\res\soui_res.rc2"
 				/>
 			</FileConfiguration>
@@ -356,7 +360,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="build ui resource"
-					CommandLine="&quot;..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2"
+					CommandLine="&quot;..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2&#x0D;&#x0A;"
 					Outputs=".\res\soui_res.rc2"
 				/>
 			</FileConfiguration>

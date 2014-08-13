@@ -217,3 +217,18 @@ void CMainDlg::OnBtnHideTest()
     SWindow * pBtn = FindChildByName(L"btn_hidetst");
     if(pBtn) pBtn->SetVisible(FALSE,TRUE);
 }
+
+#include "skinole\ImageOle.h"
+
+void CMainDlg::OnBtnInsertGif2RE()
+{
+    SRichEdit *pEdit = FindChildByName2<SRichEdit>(L"re_gifhost");
+    if(pEdit)
+    {
+        ISkinObj * pSkin = GETSKIN(L"gif_penguin");
+        if(pSkin)
+        {
+            RichEdit_InsertSkin(pEdit,pSkin);
+        }
+    }
+}

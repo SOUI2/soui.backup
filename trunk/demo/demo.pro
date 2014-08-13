@@ -38,7 +38,7 @@ HEADERS += MainDlg.h \
 
 SOURCES += demo.cpp \
            MainDlg.cpp \
-           #skinole/ImageOle.cpp \
+           skinole/ImageOle.cpp \
            ../controls.extend/SWkeWebkit.cpp \
            ../controls.extend/gif/SGifPlayer.cpp \
            ../controls.extend/gif/SSkinGif.cpp \
