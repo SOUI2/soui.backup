@@ -458,6 +458,11 @@ LRESULT SHostWnd::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
     return lRet;
 }
 
+LRESULT SHostWnd::OnHostMsg( UINT uMsg, WPARAM wParam, LPARAM lParam )
+{
+    return DoFrameEvent(uMsg,wParam,lParam);
+}
+
 BOOL SHostWnd::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
     ScreenToClient(&pt);

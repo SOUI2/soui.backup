@@ -175,6 +175,19 @@ LRESULT SWindow::SSendMessage(UINT Msg, WPARAM wParam /*= 0*/, LPARAM lParam /*=
     return lResult;
 }
 
+LRESULT SWindow::SDispatchMessage( MSG * pMsg,BOOL *pbMsgHandled/*=NULL*/ )
+{
+    LRESULT lRet = SSendMessage(pMsg->message,pMsg->wParam,pMsg->lParam,pbMsgHandled);
+    if(pbMsgHandled && *pbMsgHandled) return lRet;
+    SWindow *pChild = GetWindow(GSW_FIRSTCHILD);
+    while(pChild)
+    {
+        pChild->SDispatchMessage(pMsg,pbMsgHandled);
+        pChild = pChild->GetWindow(GSW_NEXTSIBLING);
+    }
+    return lRet;
+}
+
 // Move SWindow to new place
 //
 void SWindow::Move(LPRECT prect)

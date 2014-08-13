@@ -23,14 +23,15 @@ namespace SOUI
     {
     public:
         SwndContainerImpl(SWindow *pHost);
-
-        virtual BOOL RegisterDragDrop(SWND swnd,IDropTarget *pDropTarget);
-
-        virtual BOOL RevokeDragDrop(SWND swnd);
-
+        
         IDropTarget * GetDropTarget(){return &m_dropTarget;}
 
         CFocusManager * GetFocusManager() {return &m_focusMgr;}
+    protected:
+        //ISwndContainer
+        virtual BOOL RegisterDragDrop(SWND swnd,IDropTarget *pDropTarget);
+
+        virtual BOOL RevokeDragDrop(SWND swnd);
 
         virtual LRESULT DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
@@ -53,21 +54,22 @@ namespace SOUI
 
         virtual void OnNextFrame();
     protected:
-        virtual void OnFrameMouseMove(UINT uFlag,CPoint pt);
 
-        virtual void OnFrameMouseLeave();
+        void OnFrameMouseMove(UINT uFlag,CPoint pt);
 
+        void OnFrameMouseLeave();
 
-        virtual BOOL OnFrameSetCursor(const CPoint &pt);
+        BOOL OnFrameSetCursor(const CPoint &pt);
 
-        virtual void OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
+        void OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
-        virtual void OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
+        void OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
-        virtual void OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+        void OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 
-        virtual void OnActivate(UINT nState);
+        void OnActivate(UINT nState);
 
+        void OnActivateApp(BOOL bActive, DWORD dwThreadID);
     protected:
         SWND m_hCapture;
         SWND m_hHover;

@@ -181,6 +181,8 @@ protected:
 
     LRESULT OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+    LRESULT OnHostMsg(UINT uMsg, WPARAM wParam, LPARAM lParam);
+
     BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 
     void OnActivate(UINT nState, BOOL bMinimized, HWND wndOther);
@@ -266,6 +268,7 @@ protected:
         MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST, WM_KEYLAST, OnKeyEvent)
         MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
         MESSAGE_HANDLER_EX(WM_IME_CHAR, OnKeyEvent)
+        MESSAGE_HANDLER_EX(WM_ACTIVATEAPP,OnHostMsg)
         MSG_WM_SETCURSOR(OnSetCursor)
         MSG_WM_TIMER(OnTimer)
         MSG_WM_NCACTIVATE(OnNcActivate)
