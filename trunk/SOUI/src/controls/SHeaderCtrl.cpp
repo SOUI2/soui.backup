@@ -195,6 +195,8 @@ namespace SOUI
                     DeleteObject(m_hDragImg);
                     m_hDragImg=NULL;
 
+                    m_arrItems[LOWORD(m_dwHitTest)].state=0;//normal
+
                     if(m_dwDragTo!=m_dwHitTest && IsItemHover(m_dwDragTo))
                     {
                         SHDITEM t=m_arrItems[LOWORD(m_dwHitTest)];
@@ -354,6 +356,8 @@ namespace SOUI
     {
         CRect    rcClient;
         GetClientRect(&rcClient);
+        if(!rcClient.PtInRect(pt)) return -1;
+        
         CRect rcItem(rcClient.left,rcClient.top,rcClient.left,rcClient.bottom);
         int nMargin=m_bSortHeader?CX_HDITEM_MARGIN:0;
         for(UINT i=0;i<m_arrItems.GetCount();i++)
@@ -451,6 +455,13 @@ namespace SOUI
     {
         if(m_bDragging)
         {
+            SASSERT(m_dwHitTest!=-1);
+            if(m_bSortHeader)
+            {
+                m_arrItems[LOWORD(m_dwHitTest)].state=0;//normal
+            }
+            m_dwHitTest = -1;
+            
             CDragWnd::EndDrag();
             DeleteObject(m_hDragImg);
             m_hDragImg=NULL;
