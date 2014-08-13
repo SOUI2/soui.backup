@@ -2,6 +2,7 @@
 #include "ImageOle.h"
 #include "../../controls.extend/gif/SSkinGif.h"
 #include <tom.h>
+#include "../soui/include/sapp.h"
 
 #define DEFINE_GUIDXXX(name, l, w1, w2, b1, b2, b3, b4, b5, b6, b7, b8) \
 	EXTERN_C const GUID CDECL name \
@@ -208,14 +209,26 @@ HRESULT WINAPI CImageOle::Draw(DWORD dwDrawAspect, LONG lindex, void *pvAspect,
 
 	if(m_pSkin)
 	{
-		if(m_pSkin->IsClass(SSkinGif::GetClassName()))
-		{
-			SSkinGif *pSkinGif=static_cast<SSkinGif*>(m_pSkin);
-// 			pSkinGif->Draw(hdcDraw,rcItem,m_iFrame);
-		}else
-		{
-// 			m_pSkin->Draw(hdcDraw,rcItem,0);
-		}
+	    SOUI::IRenderTarget * pRT =NULL;
+        RECT rc2={0,0,rcItem.right-rcItem.left,rcItem.bottom-rcItem.top};
+	    GETRENDERFACTORY->CreateRenderTarget(&pRT,rc2.right,rc2.bottom);
+	    if(pRT)
+        {
+            HDC hdcSrc=pRT->GetDC();
+            ::BitBlt(hdcSrc,0,0,rc2.right,rc2.bottom,hdcDraw,rcItem.left,rcItem.top,SRCCOPY);
+            if(m_pSkin->IsClass(SSkinGif::GetClassName()))
+            {
+                SSkinGif *pSkinGif=static_cast<SSkinGif*>(m_pSkin);
+                pSkinGif->Draw(pRT,&rc2,m_iFrame);
+            }else
+            {
+                m_pSkin->Draw(pRT,&rc2,0);
+            }
+            ::BitBlt(hdcDraw,rcItem.left,rcItem.top,rc2.right,rc2.bottom,hdcSrc,0,0,SRCCOPY);
+            pRT->ReleaseDC(hdcSrc);
+            pRT->Release();
+        }
+		
 	}
 	return S_OK;
 }
@@ -269,7 +282,7 @@ HRESULT WINAPI CImageOle::GetExtent(DWORD dwDrawAspect, LONG lindex, DVTARGETDEV
 
 		HDC hDC = ::GetDC(NULL);
 		lpsizel->cx = ::MulDiv(sz.cx, 2540, GetDeviceCaps(hDC, LOGPIXELSX));
-		lpsizel->cy = ::MulDiv(sz.cx, 2540, GetDeviceCaps(hDC, LOGPIXELSY));
+		lpsizel->cy = ::MulDiv(sz.cy, 2540, GetDeviceCaps(hDC, LOGPIXELSY));
 		::ReleaseDC(NULL, hDC);
 	}
 
@@ -364,12 +377,12 @@ void CImageOle::OnNextFrame()
 		}
 
 		SSkinGif *pSkinGif=static_cast<SSkinGif*>(m_pSkin);
-		ASSERT(pSkinGif);
+		SASSERT(pSkinGif);
 		m_iFrame++;
 		if(m_iFrame==pSkinGif->GetStates())
 			m_iFrame=0;
 
-		m_nTimeDelay=pSkinGif->GetFrameDelay(m_iFrame);
+		m_nTimeDelay=pSkinGif->GetFrameDelay(m_iFrame)*10;
 		m_nTimePass=0;
 	}
 }
@@ -443,16 +456,21 @@ BOOL RichEdit_InsertSkin(SRichEdit *pRicheditCtrl, ISkinObj *pSkin)
 
 BOOL RichEdit_InsertImage(SRichEdit *pRicheditCtrl, LPCTSTR lpszFileName)
 {
-    return 0;
-// 	CDuiImgX *pImg=new CDuiImgX;
-// 	if(!pImg->LoadFromFile(lpszFileName))
-// 	{
-// 		delete pImg;
-// 		return FALSE;
-// 	}
-// 	SSkinGif *pSkinGif=new SSkinGif;
-// 	pSkinGif->SetImage(pImg);
-// 	BOOL bRet = RichEdit_InsertSkin(pRicheditCtrl,pSkinGif);
-// 	pSkinGif->Release();
-// 	return bRet;
+    SStringW key=S_CT2W(lpszFileName);
+    SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
+    ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(key);
+    if(!pSkin)
+    {
+        SSkinGif *pGifSkin = (SSkinGif*)SApplication::getSingleton().CreateSkinByName(SSkinGif::GetClassName());
+        if(!pGifSkin) return FALSE;
+        if(0==pGifSkin->LoadFromFile(lpszFileName))
+        {
+            pGifSkin->Release();
+            return FALSE;
+        }
+
+        pBuiltinSkinPool->AddKeyObject(key,pGifSkin);//将创建的skin交给skinpool管理
+        pSkin = pGifSkin;
+    }
+    return RichEdit_InsertSkin(pRicheditCtrl,pSkin);
 }
