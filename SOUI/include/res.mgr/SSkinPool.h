@@ -14,7 +14,6 @@
 #pragma once
 #include "core/SSingletonMap.h"
 #include "interface/Sskinobj-i.h"
-#include <unknown/obj-ref-i.h>
 #include <unknown/obj-ref-impl.hpp>
 
 #define GETSKIN(p1) SSkinPoolMgr::getSingleton().GetSkin(p1)
