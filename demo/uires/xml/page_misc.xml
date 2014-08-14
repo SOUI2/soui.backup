@@ -25,8 +25,8 @@
       <button name="btn_msgbox" pos="10,50" width="200" height="30" accel="ctrl+alt+f9" animate="1">show msg box</button>
       <text pos="10,[5">press "ctrl+alt+f9" to activate the msgbox button</text>
       <link pos="10,130" maxWidth="100" class="cls_btn_weblink" dotted="1" href="www.setoutsoft.cn">www.setoutsoft.cn</link>
-      <img pos="10,200,@100,@100" skin="skin_page_icons" iconIndex="2" tip="img tip" msgTransParent="0"/>
-      <text pos="10,[5" multiLines="1">the image show how to handle message in SImageWnd,\n you can do it by simply setting msgTransParent to 0</text>
+      <img pos="10,200,@100,@100" skin="skin_page_icons" iconIndex="2" tip="img tip" msgTransparent="0"/>
+      <text pos="10,[5" multiLines="1">the image show how to handle message in SImageWnd,\n you can do it by simply setting msgTransparent to 0</text>
     </page>
     <page title="prog and slider" colorBorder="#ff0000" margin-x="1" margin-y="1">
       <progress name="prog_test" pos="200,100,-10,115" value="20" min="0" max="100" showPercent="1"/>
