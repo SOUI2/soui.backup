@@ -1,16 +1,42 @@
-// MainDlg.h : interface of the CMainDlg class
-//
-/////////////////////////////////////////////////////////////////////////////
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       MainDlg.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/08/15
+* 
+* Describe    主窗口实现
+*/
+
 #pragma once
 
-#include "wtlhelper/whwindow.h"
-
+/**
+* @class      CMainDlg
+* @brief      主窗口实现
+* 
+* Describe    非模式窗口从SHostWnd派生，模式窗口从SHostDialog派生
+*/
 class CMainDlg : public SHostWnd
-// 	,public CWHRoundRectFrameHelper<CMainDlg>	//需要圆角窗口时启用
 {
 public:
-	CMainDlg();
-	~CMainDlg();
+
+    /**
+     * CMainDlg
+     * @brief    构造函数
+     * Describe  使用uires.idx中定义的maindlg对应的xml布局创建UI
+     */    
+    CMainDlg() : SHostWnd(_T("maindlg")),m_bLayoutInited(FALSE)
+    {
+    } 
+
+protected:
+    //////////////////////////////////////////////////////////////////////////
+    //  Window消息响应函数
+    LRESULT OnInitDialog(HWND hWnd, LPARAM lParam);
+    void OnDestory();
 
 	void OnClose()
 	{
@@ -32,7 +58,7 @@ public:
 
 	void OnSize(UINT nType, CSize size)
 	{
-		SetMsgHandled(FALSE);
+		SetMsgHandled(FALSE);   //这一行很重要，保证消息继续传递给SHostWnd处理，当然也可以用SHostWnd::OnSize(nType,size);代替，但是这里使用的方法更简单，通用
 		if(!m_bLayoutInited) return;
 		if(nType==SIZE_MAXIMIZED)
 		{
@@ -44,43 +70,38 @@ public:
 			FindChildByID(2)->SetVisible(TRUE);
 		}
 	}
-    void OnBtnMsgBox()
-    {
-        SMessageBox(NULL,_T("this is a message box"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
-        SMessageBox(NULL,_T("this message box includes two buttons"),_T("haha"),MB_YESNO|MB_ICONQUESTION);
-        SMessageBox(NULL,_T("this message box includes three buttons"),NULL,MB_ABORTRETRYIGNORE);
-    }
     
 	int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	void OnShowWindow(BOOL bShow, UINT nStatus);
 
-    void OnBtnHideTest();
-    
+    //DUI菜单响应函数
+    void OnCommand(UINT uNotifyCode, int nID, HWND wndCtl);
+        
 protected:
-    void InitListCtrl();
-    bool OnListHeaderClick(EventArgs *pEvt);
-    
-    LRESULT OnInitDialog(HWND hWnd, LPARAM lParam);
-    void OnDestory();
-
+    //////////////////////////////////////////////////////////////////////////
+    // SOUI事件处理函数
+	//演示屏蔽指定edit控件的右键菜单
 	BOOL OnEditMenu(CPoint pt)
 	{
-		//演示屏蔽edit_1140的右键菜单
 		return TRUE;
 	}
 
+    //按钮控件的响应
     void OnBtnSelectGIF();
-	
     void OnBtnMenu();
-    
-    void OnCommand(UINT uNotifyCode, int nID, HWND wndCtl);
+    void OnBtnInsertGif2RE();
+    void OnBtnHideTest();
+    void OnBtnMsgBox();
 
     void OnBtnWebkitGo();
     void OnBtnWebkitBackward();
     void OnBtnWebkitForeward();
     void OnBtnWebkitRefresh();
 
-    void OnBtnInsertGif2RE();
+    //演示如何使用subscribeEvent来不使用事件映射表实现事件响应
+    bool OnListHeaderClick(EventArgs *pEvt);
+
+    //UI控件的事件及响应函数映射表
 	EVENT_MAP_BEGIN()
 		EVENT_ID_COMMAND(1, OnClose)
 		EVENT_ID_COMMAND(2, OnMaximize)
@@ -98,8 +119,8 @@ protected:
         EVENT_NAME_COMMAND(L"btn_insert_gif",OnBtnInsertGif2RE)
 	EVENT_MAP_END()	
 
+    //HOST消息及响应函数映射表
 	BEGIN_MSG_MAP_EX(CMainDlg)
-// 		CHAIN_MSG_MAP(CWHRoundRectFrameHelper<CMainDlg>) //需要圆角窗口时启用
 		MSG_WM_CREATE(OnCreate)
         MSG_WM_INITDIALOG(OnInitDialog)
         MSG_WM_DESTROY(OnDestory)
@@ -110,8 +131,11 @@ protected:
 		CHAIN_MSG_MAP(SHostWnd)
 		REFLECT_NOTIFICATIONS_EX()
 	END_MSG_MAP()
+
+protected:
+    //////////////////////////////////////////////////////////////////////////
+    //  辅助函数
+    void InitListCtrl();
 private:
-	BOOL			m_bLayoutInited;
-	int				m_iStep;
-//	CUIHander *    m_pUiHandler; 
+	BOOL			m_bLayoutInited;/**<UI完成布局标志 */
 };
