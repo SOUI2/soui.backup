@@ -11,8 +11,8 @@
 
 #include "MainDlg.h"
 
-#define RES_TYPE 0   //从文件中加载资源
-// #define RES_TYPE 1   //从PE资源中加载UI资源
+// #define RES_TYPE 0   //从文件中加载资源
+#define RES_TYPE 1   //从PE资源中加载UI资源
 // #define RES_TYPE 2   //从zip包中加载资源
 
 #include "../components/resprovider-zip/zipresprovider-param.h"
@@ -37,11 +37,14 @@
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
+    //必须要调用OleInitialize来初始化运行环境
     HRESULT hRes = OleInitialize(NULL);
     SASSERT(SUCCEEDED(hRes));
     
     int nRet = 0; 
 
+    //定义一组组件加载辅助对象
+    //SComLoader实现从DLL的指定函数创建符号SOUI要求的类COM组件。
     SComLoader imgDecLoader;
     SComLoader renderLoader;
     SComLoader transLoader;
@@ -56,39 +59,41 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     SetCurrentDirectory(szCurrentDir);
     
     {
-
-        CAutoRefPtr<IImgDecoderFactory> pImgDecoderFactory;
-        CAutoRefPtr<IRenderFactory> pRenderFactory;
-        CAutoRefPtr<ITranslatorMgr> trans;
-        CAutoRefPtr<IScriptModule> pScriptLua;
+        //定义一组类SOUI系统中使用的类COM组件
+        //CAutoRefPtr是一个SOUI系统中使用的智能指针类
+        CAutoRefPtr<IImgDecoderFactory> pImgDecoderFactory; //图片解码器，由imagedecoder-wid.dll模块提供
+        CAutoRefPtr<IRenderFactory> pRenderFactory;         //UI渲染模块，由render-gdi.dll或者render-skia.dll提供
+        CAutoRefPtr<ITranslatorMgr> trans;                  //多语言翻译模块，由translator.dll提供
+        CAutoRefPtr<IScriptModule> pScriptLua;              //lua脚本模块，由scriptmodule-lua.dll提供
         
         BOOL bLoaded=FALSE;
         int nType=MessageBox(GetActiveWindow(),_T("选择渲染类型：\n[yes]: Skia\n[no]:GDI\n[cancel]:Quit"),_T("select a render"),MB_ICONQUESTION|MB_YESNOCANCEL);
         if(nType == IDCANCEL) return -1;
+        //从各组件中显示创建上述组件对象
         bLoaded=renderLoader.CreateInstance(nType==IDYES?COM_RENDER_SKIA:COM_RENDER_GDI,(IObjRef**)&pRenderFactory);
         SASSERT_FMT(bLoaded,_T("load module [%s] failed!"),nType==IDYES?COM_RENDER_SKIA:COM_RENDER_GDI);
         bLoaded=imgDecLoader.CreateInstance(COM_IMGDECODER,(IObjRef**)&pImgDecoderFactory);
         SASSERT_FMT(bLoaded,_T("load module [%s] failed!"),COM_IMGDECODER);
-
-        pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
-
         bLoaded=transLoader.CreateInstance(COM_TRANSLATOR,(IObjRef**)&trans);
         SASSERT_FMT(bLoaded,_T("load module [%s] failed!"),COM_TRANSLATOR);
-        
+        //为渲染模块设置它需要引用的图片解码模块
+        pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
+        //定义一个唯一的SApplication对象，SApplication管理整个应用程序的资源
         SApplication *theApp=new SApplication(pRenderFactory,hInstance);
 
+        //定义一人个资源提供对象,SOUI系统中实现了3种资源加载方式，分别是从文件加载，从EXE的资源加载及从ZIP压缩包加载
         CAutoRefPtr<IResProvider>   pResProvider;
-#if (RES_TYPE == 0)
+#if (RES_TYPE == 0)//从文件加载
         CreateResProvider(RES_FILE,(IObjRef**)&pResProvider);
         if(!pResProvider->Init((LPARAM)_T("uires"),0))
         {
             SASSERT(0);
             return 1;
         }
-#elif (RES_TYPE==1)
+#elif (RES_TYPE==1)//从EXE资源加载
         CreateResProvider(RES_PE,(IObjRef**)&pResProvider);
         pResProvider->Init((WPARAM)hInstance,0);
-#elif (RES_TYPE==2)
+#elif (RES_TYPE==2)//从ZIP包加载
         bLoaded=zipResLoader.CreateInstance(COM_ZIPRESPROVIDER,(IObjRef**)&pResProvider);
         SASSERT(bLoaded);
         ZIPRES_PARAM param;
@@ -96,10 +101,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         bLoaded = pResProvider->Init((WPARAM)&param,0);
         SASSERT(bLoaded);
 #endif
+        //将创建的IResProvider交给SApplication对象
         theApp->AddResProvider(pResProvider);
 
         if(trans)
-        {
+        {//加载语言翻译包
             theApp->SetTranslator(trans);
             pugi::xml_document xmlLang;
             if(theApp->LoadXmlDocment(xmlLang,_T("lang_cn"),_T("translator")))
@@ -111,6 +117,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
             }
         }
 #ifdef DLL_SOUI
+        //加载LUA脚本模块，注意，脚本模块只有在SOUI内核是以DLL方式编译时才能使用。
         bLoaded=scriptLoader.CreateInstance(COM_SCRIPT_LUA,(IObjRef**)&pScriptLua);
         SASSERT_FMT(bLoaded,_T("load module [%s] failed!"),COM_SCRIPT_LUA);
         if(pScriptLua)
@@ -127,6 +134,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         }
 #endif//DLL_SOUI
 
+        //向SApplication系统中注册由外部扩展的控件及SkinObj类
         SWkeLoader wkeLoader;
         if(wkeLoader.Init(_T("wke.dll")))        
         {
@@ -136,7 +144,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         theApp->RegisterSkinFactory(TplSkinFactory<SSkinGif>());//注册SkinGif
         SSkinGif::Gdiplus_Startup();
         
-        
+        //加载系统资源
         HMODULE hSysResource=LoadLibrary(SYS_NAMED_RESOURCE);
         if(hSysResource)
         {
@@ -146,21 +154,21 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
             theApp->LoadSystemNamedResource(sysSesProvider);
         }
 
+        //加载全局资源描述XML
         theApp->Init(_T("xml_init")); 
 
-        // BLOCK: Run application
         {
+            //创建并显示使用SOUI布局应用程序窗口,为了保存窗口对象的析构先于其它对象，把它们缩进一层。
             CMainDlg dlgMain;  
             dlgMain.Create(GetActiveWindow(),0,0,800,600);
             dlgMain.GetNative()->SendMessage(WM_INITDIALOG);
             dlgMain.CenterWindow();
             dlgMain.ShowWindow(SW_SHOWNORMAL);
-//             dlgMain.SetWindowPos(HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
             nRet=theApp->Run(dlgMain.m_hWnd);
-            //  		nRet = dlgMain.DoModal();  
         }
         
-        delete theApp;
+        //应用程序退出
+        delete theApp; 
         SSkinGif::Gdiplus_Shutdown();
 
     }
