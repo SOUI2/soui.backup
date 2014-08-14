@@ -13,8 +13,8 @@
 #pragma once
 
 #include "sobject.h"
-#include "obj-ref-i.h"
-#include "unknown/obj-ref-impl.hpp"
+#include "../unknown/obj-ref-i.h"
+#include "../unknown/obj-ref-impl.hpp"
 
 namespace SOUI
 {
