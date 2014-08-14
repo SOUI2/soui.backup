@@ -24,13 +24,15 @@
 #include "core/SWndFactoryMgr.h"
 #include "core/SSkinFactoryMgr.h"
 
+#include "control/RealWndHandler-i.h"
 
 #define LOADXML(p1,p2,p3) SApplication::getSingleton().LoadXmlDocment(p1,p2,p3)
 #define LOADIMAGE(p1,p2) SApplication::getSingleton().LoadImage(p1,p2)
 #define GETRESPROVIDER    SApplication::getSingletonPtr()
 #define GETRENDERFACTORY SApplication::getSingleton().GetRenderFactory()
 #define TR(p1,p2)       SApplication::getSingleton().GetTranslator()->tr(p1,p2)
-               
+#define GETREALWNDHANDLER    SApplication::getSingleton().GetRealWndHander()
+
 #define RT_UIDEF _T("UIDEF")
 #define RT_LAYOUT _T("LAYOUT")
 
@@ -153,6 +155,23 @@ public:
     void SetTranslator(ITranslatorMgr * pTrans);
     
     /**
+     * GetRealWndHander
+     * @brief    获得RealWndHander
+     * @return   IRealWndHandler * -- RealWndHander
+     * Describe  
+     */    
+    IRealWndHandler * GetRealWndHander();
+
+    /**
+     * SetRealWndHandler
+     * @brief    设置RealWnd处理接口
+     * @param    IRealWndHandler * pRealHandler --  RealWnd处理接口
+     * @return   void
+     * Describe  
+     */    
+    void SetRealWndHandler(IRealWndHandler *pRealHandler);
+
+    /**
      * Run
      * @brief    启动SOUI的主消息循环
      * @param    HWND hMainWnd --  应用程序主窗口句柄
@@ -165,7 +184,8 @@ protected:
     void _CreateSingletons();
     void _DestroySingletons();
     BOOL _LoadXmlDocment(LPCTSTR pszXmlName ,LPCTSTR pszType ,pugi::xml_document & xmlDoc);
-
+    
+    CAutoRefPtr<IRealWndHandler>  m_pRealWndHandler;
     HINSTANCE m_hInst;
     CAutoRefPtr<IScriptModule>  m_pScriptModule;
     CAutoRefPtr<IRenderFactory> m_RenderFactory;

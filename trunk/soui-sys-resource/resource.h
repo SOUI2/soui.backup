@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by utilities.rc
+// Used by soui-sys-resource.rc
 //
 
 // Next default values for new objects

@@ -421,7 +421,7 @@ namespace SOUI
 	HRESULT SRenderTarget_Skia::TextOut( int x, int y, LPCTSTR lpszString, int nCount,BYTE byAlpha )
 	{
 		if(nCount<0) nCount= _tcslen(lpszString);
-		SStringW strW=S_CT2W(lpszString,nCount);
+		SStringW strW=S_CT2W(SStringW(lpszString,nCount));
         SkPaint     txtPaint = m_curFont->GetPaint();
         SkPaint::FontMetrics metrics;
         txtPaint.getFontMetrics(&metrics);

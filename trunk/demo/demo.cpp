@@ -155,7 +155,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
             dlgMain.GetNative()->SendMessage(WM_INITDIALOG);
             dlgMain.CenterWindow();
             dlgMain.ShowWindow(SW_SHOWNORMAL);
-            dlgMain.SetWindowPos(HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
+//             dlgMain.SetWindowPos(HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
             nRet=theApp->Run(dlgMain.m_hWnd);
             //  		nRet = dlgMain.DoModal();  
         }

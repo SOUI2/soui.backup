@@ -205,10 +205,10 @@ protected:
     BOOL InitRealWnd();
 
     SOUI_MSG_MAP_BEGIN()
-    MSG_WM_PAINT_EX(OnPaint)
-    MSG_WM_DESTROY(OnDestroy)
-    MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
-    MSG_WM_SHOWWINDOW(OnShowWindow)
+        MSG_WM_PAINT_EX(OnPaint)
+        MSG_WM_DESTROY(OnDestroy)
+        MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
+        MSG_WM_SHOWWINDOW(OnShowWindow)
     SOUI_MSG_MAP_END()
 
     SRealWndParam    m_realwndParam;  /**< 窗口参数 */
@@ -218,49 +218,5 @@ protected:
     LPVOID    m_lpData;   /**< 附加参数 */
 };
 
-/** 
- * @interface     IRealWndHandler
- * @brief     
- *
- * Describe   
- */
-interface SOUI_EXP IRealWndHandler
-{
-    /**
-     * SRealWnd::OnRealWndCreate
-     * @brief    窗口创建
-     * @param    SRealWnd *pRealWnd -- 窗口指针
-     *
-     * Describe  窗口创建
-     */    
-    virtual HWND OnRealWndCreate(SRealWnd *pRealWnd)=NULL;
-
-    /**
-     * SRealWnd::OnRealWndInit
-     * @brief    初始化窗口
-     * @param    SRealWnd *pRealWnd -- 窗口指针
-     *
-     * Describe  初始化窗口
-     */
-    virtual BOOL OnRealWndInit(SRealWnd *pRealWnd)=NULL;
-
-    /**
-     * SRealWnd::OnRealWndDestroy
-     * @brief    销毁窗口
-     * @param    SRealWnd *pRealWnd -- 窗口指针
-     *
-     * Describe  销毁窗口
-     */
-    virtual void OnRealWndDestroy(SRealWnd *pRealWnd)=NULL;
-
-    /**
-     * SRealWnd::OnRealWndSize
-     * @brief    调整窗口大小
-     * @param    SRealWnd *pRealWnd -- 窗口指针
-     *
-     * Describe  调整窗口大小
-     */
-    virtual void OnRealWndSize(SRealWnd *pRealWnd)=NULL;
-};
 
 }//namespace SOUI
