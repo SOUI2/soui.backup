@@ -10,19 +10,12 @@
 #include <dwmapi.h>
 #pragma comment(lib,"dwmapi.lib")
 
-CMainDlg::CMainDlg() : SHostWnd(_T("maindlg"))
-{
-	m_bLayoutInited=FALSE;
-} 
 
-CMainDlg::~CMainDlg()
-{
-}
 
 int CMainDlg::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
-	// 		MARGINS mar = {5,5,30,5};
-	// 		DwmExtendFrameIntoClientArea ( m_hWnd, &mar );
+//     MARGINS mar = {5,5,30,5};
+//     DwmExtendFrameIntoClientArea ( m_hWnd, &mar );//打开这里可以启用Aero效果
 	SetMsgHandled(FALSE);
 	return 0;
 }
@@ -231,4 +224,11 @@ void CMainDlg::OnBtnInsertGif2RE()
             RichEdit_InsertSkin(pEdit,pSkin);
         }
     }
+}
+
+void CMainDlg::OnBtnMsgBox()
+{
+    SMessageBox(NULL,_T("this is a message box"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+    SMessageBox(NULL,_T("this message box includes two buttons"),_T("haha"),MB_YESNO|MB_ICONQUESTION);
+    SMessageBox(NULL,_T("this message box includes three buttons"),NULL,MB_ABORTRETRYIGNORE);
 }
