@@ -14,6 +14,11 @@
         if(ChainClass::_HandleEvent(pEvt))       \
             return TRUE;                         \
  
+#define CHAIN_EVENT_MAP_MEMBER(theChainMember) \
+    { \
+    if(theChainMember._HandleEvent(pEvt))       \
+    return TRUE; \
+    }
 
 // BOOL OnEvent(EventArgs *pEvt)
 #define EVENT_HANDLER(cd, func) \
