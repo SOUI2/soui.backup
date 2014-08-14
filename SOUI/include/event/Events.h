@@ -55,14 +55,6 @@ namespace SOUI
 
     enum SOUI_EVENTS
     {
-        EVT_INTERNAL_FIRST=10,
-        EVT_REALWND_CREATE,
-        EVT_REALWND_INIT,
-        EVT_REALWND_DESTROY,
-        EVT_REALWND_SIZE,
-
-        EVT_INTERNAL_LAST=1000,
-
         EVT_CMD=10000,
         EVT_CTXMENU,
         EVT_SETFOCUS,
@@ -105,24 +97,6 @@ namespace SOUI
         EVT_CALENDAR_SELDAY=20000,
 
         EVT_EXTERNAL_BEGIN=10000000,
-    };
-
-    class EventRealWndCreate : public EventArgs
-    {
-    public:
-        EventRealWndCreate(SWindow *pWnd):EventArgs(pWnd),hWndCreated(NULL){}
-        enum{EventID=EVT_REALWND_CREATE};
-        virtual UINT GetEventID(){return EventID;}
-        HWND hWndCreated;   //创建出来的窗口句柄
-    };
-
-    class EventRealWndInit : public EventArgs
-    {
-    public:
-        EventRealWndInit(SWindow *pWnd):EventArgs(pWnd),bSetFocus(FALSE){}
-        enum{EventID=EVT_REALWND_INIT};
-        virtual UINT GetEventID(){return EventID;}
-        BOOL bSetFocus;
     };
 
     class EventCmnArgs : public EventArgs

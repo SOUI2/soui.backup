@@ -50,6 +50,7 @@ HEADERS += include/SApp.h \
            include/control/SListCtrl.h \
            include/control/SMessageBox.h \
            include/control/SouiCtrls.h \
+           include/control/RealWndHandler-i.h \
            include/control/SRealWnd.h \
            include/control/SRichEdit.h \
            include/control/SScrollbar.h \
@@ -124,26 +125,26 @@ HEADERS += include/SApp.h \
 SOURCES += src/SApp.cpp \
            src/activex/SAxContainer.cpp \
            src/activex/SBStr.cpp \
-           src/controls/SActiveX.cpp \
-           src/controls/SCalendar.cpp \
-           src/controls/SCaption.cpp \
-           src/controls/SCmnCtrl.cpp \
-           src/controls/SComboBox.cpp \
-           src/controls/SDropDown.cpp \
-           src/controls/SHeaderCtrl.cpp \
-           src/controls/SHotKeyCtrl.cpp \
-           src/controls/SListbox.cpp \
-           src/controls/SListboxex.cpp \
-           src/controls/SListCtrl.cpp \
-           src/controls/SMessageBox.cpp \
-           src/controls/SRealWnd.cpp \
-           src/controls/SRichEdit.cpp \
-           src/controls/SScrollbar.cpp \
-           src/controls/SSliderBar.cpp \
-           src/controls/SSplitWnd.cpp \
-           src/controls/STabCtrl.cpp \
-           src/controls/STreeBox.cpp \
-           src/controls/STreeCtrl.cpp \
+           src/control/SActiveX.cpp \
+           src/control/SCalendar.cpp \
+           src/control/SCaption.cpp \
+           src/control/SCmnCtrl.cpp \
+           src/control/SComboBox.cpp \
+           src/control/SDropDown.cpp \
+           src/control/SHeaderCtrl.cpp \
+           src/control/SHotKeyCtrl.cpp \
+           src/control/SListbox.cpp \
+           src/control/SListboxex.cpp \
+           src/control/SListCtrl.cpp \
+           src/control/SMessageBox.cpp \
+           src/control/SRealWnd.cpp \
+           src/control/SRichEdit.cpp \
+           src/control/SScrollbar.cpp \
+           src/control/SSliderBar.cpp \
+           src/control/SSplitWnd.cpp \
+           src/control/STabCtrl.cpp \
+           src/control/STreeBox.cpp \
+           src/control/STreeCtrl.cpp \
            src/core/Accelerator.cpp \
            src/core/FocusManager.cpp \
            src/core/SDropTargetDispatcher.cpp \

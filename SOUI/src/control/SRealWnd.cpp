@@ -1,6 +1,7 @@
 #pragma once
 #include "souistd.h"
 #include "control/Srealwnd.h"
+#include "control/RealWndHandler-i.h"
 
 namespace SOUI
 {
@@ -54,8 +55,8 @@ LRESULT SRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
 
     if (lRet==0 && rcOldWnd != m_rcWindow)
     {
-        EventCmnArgs evt(this,EVT_REALWND_SIZE);
-        FireEvent(evt);
+        IRealWndHandler *pRealWndHandler=GETREALWNDHANDLER;
+        if(pRealWndHandler) pRealWndHandler->OnRealWndSize(this);
     }
     return lRet;
 }
@@ -70,8 +71,8 @@ void SRealWnd::OnDestroy()
 {
     if (IsWindow(m_hRealWnd))
     {
-        EventCmnArgs evt(this,EVT_REALWND_DESTROY);
-        FireEvent(evt);
+        IRealWndHandler *pRealWndHandler=GETREALWNDHANDLER;
+        if(pRealWndHandler) pRealWndHandler->OnRealWndDestroy(this);
     }
 }
 
@@ -102,12 +103,12 @@ BOOL SRealWnd::InitRealWnd()
 {
     m_realwndParam.m_dwStyle|= WS_CHILD;
 
-    EventRealWndCreate evt(this);
-    FireEvent(evt);
+    IRealWndHandler *pRealWndHandler=GETREALWNDHANDLER;
 
-    if(::IsWindow(evt.hWndCreated))
+    if(pRealWndHandler) m_hRealWnd = pRealWndHandler->OnRealWndCreate(this);
+
+    if(::IsWindow(m_hRealWnd))
     {
-        m_hRealWnd=evt.hWndCreated;
         if(!m_bInit)
         {
             //如果不是在加载的时候创建窗口，则需要自动调整窗口位置
@@ -115,13 +116,9 @@ BOOL SRealWnd::InitRealWnd()
             GetClientRect(&rcClient);
             SetWindowPos(m_hRealWnd,0,rcClient.left,rcClient.top,rcClient.Width(),rcClient.Height(),SWP_NOZORDER);
         }
-        
-        EventRealWndInit evt(this);
-        FireEvent(evt);        
-        if(evt.bSetFocus)
-        {
-            ::SetFocus(m_hRealWnd);
-        }
+
+        if(pRealWndHandler) pRealWndHandler->OnRealWndInit(this);
+
         return TRUE;
     }
     return FALSE;

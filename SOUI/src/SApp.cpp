@@ -35,6 +35,7 @@ template<> SApplication* SSingleton<SApplication>::ms_Singleton = 0;
 SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName)
     :m_hInst(hInst)
     ,m_RenderFactory(pRendFactory)
+    ,m_pRealWndHandler(NULL)
 {
     _CreateSingletons();
     CSimpleWndHelper::Init(hInst,pszHostClassName);
@@ -202,6 +203,16 @@ IScriptModule * SApplication::GetScriptModule()
 IRenderFactory * SApplication::GetRenderFactory()
 {
 	return m_RenderFactory;
+}
+
+void SApplication::SetRealWndHandler( IRealWndHandler *pRealHandler )
+{
+    m_pRealWndHandler = pRealHandler;
+}
+
+IRealWndHandler * SApplication::GetRealWndHander()
+{
+    return m_pRealWndHandler;
 }
 
 }//namespace SOUI

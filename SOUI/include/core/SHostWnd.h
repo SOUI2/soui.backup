@@ -8,7 +8,6 @@
 #include "SThreadActiveWndMgr.h"
 
 #include "SwndContainerImpl.h"
-#include "control/Srealwnd.h"
 
 #include "SimpleWnd.h"
 #include "SDropTargetDispatcher.h"
@@ -101,7 +100,6 @@ class SOUI_EXP SHostWnd
     : public CSimpleWnd
     , public SwndContainerImpl
     , public SWindow
-    , protected IRealWndHandler
 {
     friend class SDummyWnd;
 public:
@@ -225,11 +223,6 @@ protected:
     virtual SMessageLoop * GetMsgLoop();
 
     //////////////////////////////////////////////////////////////////////////
-    // IRealWndHandler
-    virtual HWND OnRealWndCreate(SRealWnd *pRealWnd);
-    virtual BOOL OnRealWndInit(SRealWnd *pRealWnd);
-    virtual void OnRealWndDestroy(SRealWnd *pRealWnd);
-    virtual void OnRealWndSize(SRealWnd *pRealWnd);
  
     LRESULT OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam);
 

@@ -480,38 +480,7 @@ void SHostWnd::OnActivate( UINT nState, BOOL bMinimized, HWND wndOther )
 
 BOOL SHostWnd::OnFireEvent(EventArgs &evt)
 {
-    BOOL bRet=FALSE;
-    if(evt.GetEventID()>=EVT_INTERNAL_FIRST && evt.GetEventID()<=EVT_INTERNAL_LAST)
-    {
-        bRet=TRUE;
-        switch(evt.GetEventID())
-        {
-        case EVT_REALWND_CREATE:
-            {
-                EventRealWndCreate * pEvt = (EventRealWndCreate *)&evt;
-                pEvt->hWndCreated = OnRealWndCreate((SRealWnd*)pEvt->sender);
-            }
-            break;
-        case EVT_REALWND_INIT:
-            {
-                EventRealWndInit * pEvt = (EventRealWndInit *)&evt;
-                pEvt->bSetFocus=OnRealWndInit((SRealWnd*)pEvt->sender);
-            }
-            break;
-        case EVT_REALWND_DESTROY:
-            OnRealWndDestroy((SRealWnd*)evt.sender);
-            break;
-        case EVT_REALWND_SIZE:
-            OnRealWndSize((SRealWnd*)evt.sender);
-            break;
-        default:
-            bRet=FALSE;
-        }
-    }else
-    {
-        bRet=_HandleEvent(&evt);
-    }
-    return bRet;
+    return _HandleEvent(&evt);
 }
 
 CRect SHostWnd::GetContainerRect()
@@ -795,50 +764,6 @@ UINT SHostWnd::OnWndNcHitTest(CPoint point)
         }
     }
     return HTCLIENT;
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-// IRealWndHandler
-HWND SHostWnd::OnRealWndCreate(SRealWnd *pRealWnd)
-{
-    CRect rcWindow;
-    UINT uCmdID=pRealWnd->GetID();
-    pRealWnd->GetWindowRect(&rcWindow);
-
-    const SRealWndParam & paramRealWnd=pRealWnd->GetRealWndParam();
-    return CreateWindowEx(paramRealWnd.m_dwExStyle,paramRealWnd.m_strClassName,paramRealWnd.m_strWindowName,paramRealWnd.m_dwStyle,
-                          rcWindow.left,rcWindow.top,rcWindow.Width(),rcWindow.Height(),
-                          m_hWnd,(HMENU)(ULONG_PTR)uCmdID,0,NULL);
-}
-
-BOOL SHostWnd::OnRealWndInit( SRealWnd *pRealWnd )
-{
-    return FALSE;
-}
-
-void SHostWnd::OnRealWndDestroy(SRealWnd *pRealWnd)
-{
-    if(::IsWindow(pRealWnd->GetRealHwnd(FALSE)))
-    {
-        ::DestroyWindow(pRealWnd->GetRealHwnd(FALSE));
-    }
-    if(pRealWnd->GetData())
-    {
-        delete pRealWnd->GetData();
-        pRealWnd->SetData(0);
-    }
-}
-
-
-void SHostWnd::OnRealWndSize( SRealWnd *pRealWnd )
-{
-    if(::IsWindow(pRealWnd->GetRealHwnd(FALSE)))
-    {
-        CRect rcClient;
-        pRealWnd->GetClientRect(&rcClient);
-        ::SetWindowPos(pRealWnd->GetRealHwnd(FALSE),0, rcClient.left, rcClient.top, rcClient.Width(), rcClient.Height(), SWP_NOZORDER);
-    }
 }
 
 void SHostWnd::OnSetFocus( HWND wndOld )
