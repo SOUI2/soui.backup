@@ -516,6 +516,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\unknown\obj-ref-i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\unknown\obj-ref-impl.hpp"
+				>
+			</File>
+			<File
 				RelativePath="include\interface\render-i.h"
 				>
 			</File>

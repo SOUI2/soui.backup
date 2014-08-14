@@ -14,8 +14,8 @@
 #pragma once
 #include "core/SSingletonMap.h"
 #include "core/swndstyle.h"
-#include "interface/obj-ref-i.h"
-#include <unknown/obj-ref-impl.hpp>
+#include "../unknown/obj-ref-i.h"
+#include "../unknown/obj-ref-impl.hpp"
 
 //ªÒµ√StylePoolMgr÷∏’Î
 #define GETSTYLEPOOLMGR SStylePoolMgr::getSingletonPtr()

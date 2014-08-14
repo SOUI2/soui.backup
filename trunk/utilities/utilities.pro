@@ -31,9 +31,7 @@ HEADERS += targetver.h \
            include/pugixml/pugixml.hpp \
            include/string/strcpcvt.h \
            include/string/tstring.h \
-           include/unknown/com-loader.hpp \
-           include/unknown/obj-ref-i.h \
-           include/unknown/obj-ref-impl.hpp \
+           include/com-loader.hpp \
            include/wtl.mini/msgcrack.h \
            include/wtl.mini/souigdi.h \
            include/wtl.mini/souimisc.h

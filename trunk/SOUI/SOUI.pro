@@ -100,7 +100,8 @@ HEADERS += include/SApp.h \
            include/helper/STimerEx.h \
            include/helper/STipCtrl.h \
            include/helper/SwndMsgCracker.h \
-           include/interface/obj-ref-i.h \
+           include/unknown/obj-ref-i.h \
+           include/unknown/obj-ref-impl.hpp \
            include/interface/imgdecoder-i.h \
            include/interface/render-i.h \
            include/interface/SResProvider-i.h \

@@ -246,7 +246,7 @@
 				>
 			</File>
 			<File
-				RelativePath="include\unknown\com-loader.hpp"
+				RelativePath=".\include\com-loader.hpp"
 				>
 			</File>
 			<File
@@ -259,10 +259,6 @@
 			</File>
 			<File
 				RelativePath="include\unknown\obj-ref-i.h"
-				>
-			</File>
-			<File
-				RelativePath="include\unknown\obj-ref-impl.hpp"
 				>
 			</File>
 			<File
