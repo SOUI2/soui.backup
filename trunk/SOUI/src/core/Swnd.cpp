@@ -1018,7 +1018,8 @@ CSize SWindow::GetDesiredSize(LPRECT pRcContainer)
     GETRENDERFACTORY->CreateRenderTarget(&pRT,1,1);
     BeforePaintEx(pRT);
     DrawText(pRT,m_strText, m_strText.GetLength(), rcTest, nTestDrawMode | DT_CALCRECT);
-
+    rcTest.right += m_style.m_nMarginX * 2;
+    rcTest.bottom += m_style.m_nMarginY * 2;
     return rcTest.Size();
 }
 
