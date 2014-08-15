@@ -7,13 +7,14 @@ namespace SOUI
 {
 
     pugi::xml_document SMessageBoxImpl::s_xmlMsgTemplate;
-
+    
+    const TCHAR kTrCtx_Msgbox[] = _T("messagebox"); //MSGBOX的翻译上下文
 
     BOOL SMessageBoxImpl::SetMsgTemplate( pugi::xml_node uiRoot )
     {
         if(wcscmp(uiRoot.name(),L"SOUI")!=0 ) return FALSE;
-        if(!uiRoot.attribute(L"frame_size").value()[0]) return FALSE;
-        if(!uiRoot.attribute(L"minsize").value()[0]) return FALSE;
+        if(!uiRoot.attribute(L"frameSize").value()[0]) return FALSE;
+        if(!uiRoot.attribute(L"minSize").value()[0]) return FALSE;
 
         s_xmlMsgTemplate.reset();
         s_xmlMsgTemplate.append_copy(uiRoot);
@@ -156,24 +157,24 @@ namespace SOUI
         for(int i=0; i<g_msgBtnText[uType].nBtns; i++)
         {
             SWindow *pBtn=pBtnPanel->FindChildByName(g_wcsNameOfBtns[i]);
-            pBtn->SetWindowText(TR(g_msgBtnText[uType].btnInfo[i].szText,_T("messagebox")));    
+            pBtn->SetWindowText(TR(g_msgBtnText[uType].btnInfo[i].szText,kTrCtx_Msgbox));    
             pBtn->SetID(g_msgBtnText[uType].btnInfo[i].uBtnID);
         }
         
-        const wchar_t *pszFrameAttr=uiRoot.attribute(L"frame_size").value();
+        const wchar_t *pszFrameAttr=uiRoot.attribute(L"frameSize").value();
         CRect rcFrame;
         swscanf(pszFrameAttr,L"%d,%d,%d,%d",&rcFrame.left,&rcFrame.top,&rcFrame.right,&rcFrame.bottom);
         CSize szMin;
-        const wchar_t *pszMinAttr=uiRoot.attribute(L"minsize").value();
+        const wchar_t *pszMinAttr=uiRoot.attribute(L"minSize").value();
         swscanf(pszMinAttr,L"%d,%d",&szMin.cx,&szMin.cy);
 
         SWindow * pTitle= FindChildByName(NAME_MSGBOX_TITLE);
         SASSERT(pTitle);
-        pTitle->SetWindowText(TR(s_MsgBoxInfo.pszCaption?s_MsgBoxInfo.pszCaption:_T("prompt"),_T("messagebox")));
+        pTitle->SetWindowText(TR(s_MsgBoxInfo.pszCaption?s_MsgBoxInfo.pszCaption:_T("prompt"),kTrCtx_Msgbox));
 
         SWindow * pMsg= FindChildByName(NAME_MSGBOX_TEXT);
         SASSERT(pMsg);
-        pMsg->SetWindowText(TR(s_MsgBoxInfo.pszText,_T("messagebox")));
+        pMsg->SetWindowText(TR(s_MsgBoxInfo.pszText,kTrCtx_Msgbox));
 
         OnSetIcon(s_MsgBoxInfo.uType);
 
