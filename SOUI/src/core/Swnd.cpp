@@ -173,9 +173,25 @@ LRESULT SWindow::SSendMessage(UINT Msg, WPARAM wParam /*= 0*/, LPARAM lParam /*=
     m_pCurMsg=pOldMsg;
     Release();
     
-    if(m_style.m_bMouseRelay && Msg >= WM_MOUSEFIRST && Msg <= WM_MOUSELAST && GetParent())
+    if(m_style.m_bMouseRelay && GetParent())
     {//将鼠标消息交给父窗口处理
-        lResult = GetParent()->SSendMessage(Msg,wParam,lParam,pbMsgHandled);
+        switch(Msg)
+        {
+        case WM_MOUSEMOVE:
+        case WM_MOUSEHOVER:
+            lResult = GetParent()->SSendMessage(Msg,wParam,lParam,pbMsgHandled);
+            break;
+        case WM_MOUSELEAVE:
+            {
+                lResult = GetParent()->SSendMessage(Msg,0,0,pbMsgHandled);
+                HWND hHost=GetContainer()->GetHostHwnd();
+                CPoint pt;
+                ::GetCursorPos(&pt);
+                ::ScreenToClient(hHost,&pt);
+                ::PostMessage(hHost,WM_MOUSEMOVE,0,MAKELPARAM(pt.x,pt.y));
+            }
+            break;    
+        }    
     }
     return lResult;
 }

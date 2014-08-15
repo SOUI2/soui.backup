@@ -15,8 +15,11 @@
       <hotkey name="ctrl_hk1" width="200" height="25" class="cls_edit"/>
       <text pos="50,[5">hotkey 2:</text>
       <hotkey name="ctrl_hk2" width="200" height="25" class="cls_edit"/>
-      <text pos="50,[5">single line edit:</text>
-      <edit width="150" height="35" font="adding:10">scroll edit</edit>
+      <text pos="50,[5" multiLines="1">single line edit in window, \nshow how attribute "mouseRelay" will work:</text>
+      <window class="cls_edit" pos="50,[5,@200,@35">
+        <edit pos="0,0,-30,-0" font="adding:10" margin="0" mouseRelay="1">scroll edit</edit>
+        <button pos="-30,0,-0,-0" mouseRelay="1" >:)</button>
+      </window>
       <text pos="50,[5">richedit:</text>
       <button name="btn_insert_gif" height="25">insert gif to richedit</button>
       <richedit name="re_gifhost" pos="50,[5,-5,-5" class="cls_edit" multiLines="1" vscrollBar="1" wordWrap="1"  autoVscroll="1" hscrollBar="0" wantReturn="1"  rtf="rtf:rtf_test">this is a richedit.中文也可以初始化。</richedit>
