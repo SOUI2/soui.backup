@@ -1,5 +1,15 @@
-//////////////////////////////////////////////////////////////////////////
-// Xml Attributes Declaration Map
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       SAttrCracker.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/08/15
+* 
+* Describe    定义SOUI的XML属性解析宏
+*/
 
 #ifndef _SATTRCRACK_H
 #define _SATTRCRACK_H
@@ -244,45 +254,7 @@ public:                                                             \
 #define ATTR_FONT(attribname, varname, allredraw)                       \
     if (attribname == strAttribName)                                    \
     {                                                                    \
-        BOOL bBold=0,bItalic=0,bUnderline=0,bStrike=0;                   \
-        SStringT strFace;                                                \
-        char  nAdding=0;                                                 \
-        SStringT attr=S_CW2T(strValue);                                  \
-        attr.MakeLower();                                                \
-        int nPosBegin=attr.Find(_T("face:"));                            \
-        if(nPosBegin!=-1)                                                \
-        {                                                                \
-            nPosBegin+=9;                                                \
-            int nPosEnd=attr.Find(_T(";"),nPosBegin);                    \
-            if(nPosEnd==-1) nPosEnd=attr.GetLength();                    \
-            strFace=attr.Mid(nPosBegin,nPosEnd-nPosBegin);               \
-        }                                                                \
-        nPosBegin=attr.Find(_T("bold:"));                                \
-        if(nPosBegin!=-1)                                                \
-        {                                                                \
-            bBold=attr.Mid(nPosBegin+5,1)!=_T("0");                      \
-        }                                                                \
-        nPosBegin=attr.Find(_T("underline:"));                           \
-        if(nPosBegin!=-1)                                                \
-        {                                                                \
-            bUnderline=attr.Mid(nPosBegin+10,1)!=_T("0");                \
-        }                                                                \
-        nPosBegin=attr.Find(_T("italic:"));                              \
-        if(nPosBegin!=-1)                                                \
-        {                                                                \
-            bItalic=attr.Mid(nPosBegin+7,1)!=_T("0");                    \
-        }                                                                \
-        nPosBegin=attr.Find(_T("strike:"));                              \
-        if(nPosBegin!=-1)                                                \
-        {                                                                \
-            bStrike=attr.Mid(nPosBegin+7,1)!=_T("0");                    \
-        }                                                                \
-        nPosBegin=attr.Find(_T("adding:"));                              \
-        if(nPosBegin!=-1)                                                \
-        {                                                                \
-            nAdding=(char)_ttoi((LPCTSTR)attr+nPosBegin+7);              \
-        }                                                                \
-        varname = SFontPool::getSingleton().GetFont(bBold,bUnderline,bItalic,bStrike,nAdding,strFace); \
+        varname = SFontPool::getSingleton().GetFont(strValue);           \
         hRet = allredraw ? S_OK : S_FALSE;                               \
     }                                                                    \
     else                                                                 \

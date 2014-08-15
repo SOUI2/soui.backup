@@ -49,6 +49,49 @@ IFontPtr SFontPool::GetFont(BOOL bBold, BOOL bUnderline, BOOL bItalic,BOOL bStri
     return GetFont(FF_MAKEKEY(bBold, bUnderline, bItalic, bStrike, chAdding),strFaceName);
 }
 
+IFontPtr SFontPool::GetFont( const SStringW & strFont )
+{
+    BOOL bBold=0,bItalic=0,bUnderline=0,bStrike=0;                
+    SStringT strFace;                                         
+    char  chAdding=0;                                          
+    SStringT attr=S_CW2T(strFont);                           
+    attr.MakeLower();                                         
+    int nPosBegin=attr.Find(_T("face:"));                     
+    if(nPosBegin!=-1)                                         
+    {                                                         
+        nPosBegin+=9;                                             
+        int nPosEnd=attr.Find(_T(";"),nPosBegin);                 
+        if(nPosEnd==-1) nPosEnd=attr.GetLength();                 
+        strFace=attr.Mid(nPosBegin,nPosEnd-nPosBegin);        
+    }                                                         
+    nPosBegin=attr.Find(_T("bold:"));                         
+    if(nPosBegin!=-1)                                         
+    {                                                         
+        bBold=attr.Mid(nPosBegin+5,1)!=_T("0");                   
+    }                                                         
+    nPosBegin=attr.Find(_T("underline:"));                    
+    if(nPosBegin!=-1)                                         
+    {                                                         
+        bUnderline=attr.Mid(nPosBegin+10,1)!=_T("0");             
+    }                                                         
+    nPosBegin=attr.Find(_T("italic:"));                       
+    if(nPosBegin!=-1)                                         
+    {                                                         
+        bItalic=attr.Mid(nPosBegin+7,1)!=_T("0");                 
+    }                                                         
+    nPosBegin=attr.Find(_T("strike:"));                       
+    if(nPosBegin!=-1)                                         
+    {                                                         
+        bStrike=attr.Mid(nPosBegin+7,1)!=_T("0");                 
+    }                                                         
+    nPosBegin=attr.Find(_T("adding:"));                       
+    if(nPosBegin!=-1)                                         
+    {                                                         
+        chAdding=(char)_ttoi((LPCTSTR)attr+nPosBegin+7);           
+    }
+    return GetFont(bBold, bUnderline, bItalic,bStrike, chAdding , strFace);
+}
+
 void SFontPool::SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize)
 {
     _tcscpy_s(m_szDefFontFace,_countof(m_szDefFontFace),lpszFaceName);
