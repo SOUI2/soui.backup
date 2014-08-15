@@ -179,6 +179,34 @@ namespace SOUI
         m_clsid=__uuidof(ShockwaveFlashObjects::ShockwaveFlash);
     }
 
+    BOOL SFlashCtrl::Play( LPCWSTR pszUrl )
+    {
+        if(!flash_) return FALSE;
+        m_strUrl = pszUrl;
+        HRESULT hr = flash_->put_Movie(bstr_t(m_strUrl));
+        return SUCCEEDED(hr);
+    }
+
+    void SFlashCtrl::OnAxActivate( IUnknown *pUnknwn )
+    {
+        flash_=pUnknwn;
+        if(flash_)
+        {
+            flash_->put_WMode(bstr_t(_T("transparent")));
+            if(!m_strUrl.IsEmpty()) flash_->put_Movie(bstr_t(m_strUrl));
+        }
+    }
+
+    HRESULT SFlashCtrl::OnAttrUrl( const SStringW & strValue,BOOL bLoading )
+    {
+        m_strUrl = strValue;
+        if(!bLoading)
+        {
+            Play(m_strUrl);
+        }
+        return S_FALSE;
+    }
+
     //////////////////////////////////////////////////////////////////////////
 
     SMediaPlayer::SMediaPlayer()

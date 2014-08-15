@@ -69,20 +69,14 @@ namespace SOUI
             return flash_;
         }
 
+        BOOL Play(LPCWSTR pszUrl);
     protected:
-        virtual void OnAxActivate(IUnknown *pUnknwn)
-        {
-            flash_=pUnknwn;
-            if(flash_)
-            {
-                flash_->put_WMode(bstr_t(_T("transparent")));
-                flash_->put_Movie(bstr_t(m_strUrl));
-            }
+        virtual void OnAxActivate(IUnknown *pUnknwn);
 
-        }
-
+        HRESULT OnAttrUrl(const SStringW & strValue,BOOL bLoading);
+        
         SOUI_ATTRS_BEGIN()
-            ATTR_STRINGW(L"url",m_strUrl,FALSE)
+            ATTR_CUSTOM(L"url",OnAttrUrl)
         SOUI_ATTRS_END()
 
         SStringW m_strUrl;
