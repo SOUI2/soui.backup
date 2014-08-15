@@ -8,6 +8,14 @@
 
 #pragma comment(lib,"imm32.lib")
 
+#ifndef LY_PER_INCH
+#define LY_PER_INCH 1440
+#endif
+
+#ifndef HIMETRIC_PER_INCH
+#define HIMETRIC_PER_INCH 2540
+#endif
+
 namespace SOUI
 {
 
