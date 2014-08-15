@@ -37,15 +37,17 @@ public:
     SwndStyle();
 
 
-    COLORREF m_crBg;
-    COLORREF m_crBorder;
+    COLORREF m_crBg;        /**<背景颜色 */
+    COLORREF m_crBorder;    /**<边框颜色 */
 
-    int m_nMarginX;
-    int m_nMarginY;
-    BOOL m_bDotted;
+    int m_nMarginX;         /**<X方向的边框大小 */
+    int m_nMarginY;         /**<Y方向的边框大小 */
+    BOOL m_bDotted;         /**<支持省略号显示文本 */
 
-    SStringT m_strCursor;
-    SStringW m_strSkinName,m_strNcSkinName;
+    SStringT m_strCursor;   /**<光标NAME */
+    SStringW m_strSkinName; /**<SKIN NAME */
+    SStringW m_strNcSkinName;/**<非客户区SKIN NAME */
+    BOOL m_bMouseRelay;     /**<鼠标消息是否转发给父窗口 */
 
     UINT GetTextAlign();
     int GetStates();
@@ -53,11 +55,11 @@ public:
     IFontPtr GetTextFont(int iState);
     void SetTextColor(int iState,COLORREF cr){m_crText[iState]=cr;}
 protected:
-    UINT m_nTextAlign;
-    UINT m_uAlign,m_uVAlign;
-    COLORREF m_crText[4];
-    IFontPtr m_ftText[4];
-
+    UINT m_nTextAlign;      /**<文本对齐 */
+    UINT m_uAlign,m_uVAlign;/**<水平及垂直对齐 */
+    COLORREF m_crText[4];   /**<文字4种状态下的颜色 */
+    IFontPtr m_ftText[4];   /**<文字4种状态下的字体 */
+    
     SOUI_ATTRS_BEGIN()
         ATTR_STRINGW(L"skin", m_strSkinName, TRUE)
         ATTR_STRINGW(L"ncSkin", m_strNcSkinName, TRUE)
@@ -92,6 +94,7 @@ protected:
         ATTR_INT(L"margin", m_nMarginX = m_nMarginY, TRUE) // 这样比较bt，不过.....凑合用吧
         ATTR_STRINGT(L"cursor",m_strCursor,FALSE)
         ATTR_INT(L"dotted",m_bDotted,FALSE)
+        ATTR_INT(L"mouseRelay",m_bMouseRelay,FALSE)
     SOUI_ATTRS_END()
 };
 
