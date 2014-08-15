@@ -70,11 +70,11 @@ namespace SOUI
 
     struct MSGBTN_TEXT
     {
-        int   nBtns;
+        int   nBtns;    //按钮数,<=3
         struct
         {
-            UINT uBtnID;
-            TCHAR szText[20];       
+            UINT uBtnID;//按钮ID
+            TCHAR szText[20]; //按钮字符    
         }btnInfo[3];
     }g_msgBtnText[]=
     {

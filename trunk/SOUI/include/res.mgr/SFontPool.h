@@ -117,6 +117,17 @@ namespace SOUI
     public:
         SFontPool(IRenderFactory *pRendFactory);
 
+        
+        /**
+         * GetFont
+         * @brief    获得与指定的strFont对应的IFontPtr
+         * @param    const SStringW & strFont --  font描述字符串
+         * @return   IFontPtr -- font对象
+         *
+         * Describe  描述字符串格式如：face:宋体;bold:0;italic:1;underline:1;strike:1;adding:10
+         */
+        IFontPtr GetFont(const SStringW & strFont);
+
         /**
          * GetFont
          * @brief    获得与指定的font key对应的IFontPtr
