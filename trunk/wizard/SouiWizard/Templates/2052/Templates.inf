@@ -14,4 +14,7 @@ stdafx.h
 [uires][xml]dlg_main.xml
 
 [uires][image]soui.ico
+
+[!if CHECKBOX_TRANSLATOR_SUPPORT]
 [uires][Translator]lang_cn.xml
+[!endif]
