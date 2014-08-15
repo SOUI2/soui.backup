@@ -613,6 +613,7 @@ SCheckBox::SCheckBox()
     : m_pSkin(GETBUILTINSKIN(SKIN_SYS_CHECKBOX))
     , m_pFocusSkin(GETBUILTINSKIN(SKIN_SYS_FOCUSCHECKBOX))
 {
+    m_style.SetAttribute(L"align",L"left");
     m_bFocusable=TRUE;
 }
 
@@ -783,6 +784,7 @@ SRadioBox::SRadioBox()
     : m_pSkin(GETBUILTINSKIN(SKIN_SYS_RADIO))
     , m_pFocusSkin(GETBUILTINSKIN(SKIN_SYS_FOCUSRADIO))
 {
+    m_style.SetAttribute(L"align",L"left");
     m_bFocusable=TRUE;
 }
 
