@@ -657,16 +657,9 @@ namespace SOUI
         POINT            m_ptCaret;
     };
 
-#ifndef LY_PER_INCH
-#define LY_PER_INCH 1440
-#endif
-
-#ifndef HIMETRIC_PER_INCH
-#define HIMETRIC_PER_INCH 2540
-#endif
     /**
     * @class      SRichEdit
-    * @brief      SRichEdit
+    * @brief      使用Windowless Richedit实现的edit控件
     * 
     * Describe    SRichEdit
     */
