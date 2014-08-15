@@ -18,6 +18,7 @@ SwndStyle::SwndStyle()
     , m_nMarginY(0)
     , m_strCursor(_T("arrow"))
     , m_bDotted(FALSE)
+    , m_bMouseRelay(FALSE)
 {
     for(int i=0; i<4; i++)
     {

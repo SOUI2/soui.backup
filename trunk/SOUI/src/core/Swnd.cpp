@@ -165,13 +165,18 @@ LRESULT SWindow::SSendMessage(UINT Msg, WPARAM wParam /*= 0*/, LPARAM lParam /*=
     SetMsgHandled(FALSE);
 
     ProcessSwndMessage(Msg, wParam, lParam, lResult);
-
+    
     if(pbMsgHandled) *pbMsgHandled=IsMsgHandled();
 
     SetMsgHandled(bOldMsgHandle);//恢复上一个消息的处理状态
 
     m_pCurMsg=pOldMsg;
     Release();
+    
+    if(m_style.m_bMouseRelay && Msg >= WM_MOUSEFIRST && Msg <= WM_MOUSELAST && GetParent())
+    {//将鼠标消息交给父窗口处理
+        lResult = GetParent()->SSendMessage(Msg,wParam,lParam,pbMsgHandled);
+    }
     return lResult;
 }
 
