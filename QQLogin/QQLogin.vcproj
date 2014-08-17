@@ -169,11 +169,27 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
+				RelativePath=".\image3d\3dlib.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\image3d\3dmatrix.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\image3d\3dtransform.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MainDlg.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\QQLogin.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SImg3DView.cpp"
 				>
 			</File>
 			<File
@@ -202,11 +218,31 @@
 			Filter="h;hpp;hxx;hm;inl;inc"
 			>
 			<File
+				RelativePath=".\image3d\3dlib.h"
+				>
+			</File>
+			<File
+				RelativePath=".\image3d\3dmatrix.h"
+				>
+			</File>
+			<File
+				RelativePath=".\image3d\3dTransform.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MainDlg.h"
 				>
 			</File>
 			<File
+				RelativePath=".\image3d\PerspectiveTransform.h"
+				>
+			</File>
+			<File
 				RelativePath=".\resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SImg3DView.h"
 				>
 			</File>
 			<File
