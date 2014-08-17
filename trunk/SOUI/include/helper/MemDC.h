@@ -3,7 +3,7 @@
 namespace SOUI
 {
 
-class CMemDC
+class SOUI_EXP CMemDC
 {
 public:
     CMemDC();
