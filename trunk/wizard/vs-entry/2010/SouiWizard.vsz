@@ -4,3 +4,4 @@ Wizard=VsWizard.VsWizardEngine.10.0
 Param="WIZARD_NAME = SouiWizard"
 Param="ABSOLUTE_PATH = %SOUIPATH%\wizard\souiwizard"
 Param="FALLBACK_LCID = 2052"
+Param="WIZARD_VERSION = 10.0"

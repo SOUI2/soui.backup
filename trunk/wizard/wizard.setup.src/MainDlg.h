@@ -218,7 +218,7 @@ public:
 				shfo.fFlags=FOF_NOCONFIRMMKDIR|FOF_NOCONFIRMATION;
 				memset(szFrom,0,sizeof(szFrom));
 				memset(szTo,0,sizeof(szTo));
-				_tcscpy(szFrom,_T("entry"));
+				_tcscpy(szFrom,_T("entry\\*.*"));
 				_tcscpy(szTo,pCfg->strVsDir);
 				_tcscat(szTo,pCfg->strDataTarget);
 				bOK = 0==SHFileOperation(&shfo);
