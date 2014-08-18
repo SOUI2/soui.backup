@@ -707,7 +707,7 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
 {
     RECT rcWnd;
     pWndCur->GetWindowRect(&rcWnd);
-    if (!pWndCur->IsVisible(TRUE) || (pRgn && !pRgn->RectInRegion(&rcWnd)))
+    if (!pWndCur->IsVisible(TRUE) || (pRgn && !pRgn->IsEmpty() && !pRgn->RectInRegion(&rcWnd)))
     {
         return FALSE;
     }
@@ -730,7 +730,7 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
 
     CRect rcClient;
     pWndCur->GetClientRect(&rcClient);
-    if(!pRgn || pRgn->RectInRegion(rcClient))
+    if(!pRgn || pRgn->IsEmpty() || pRgn->RectInRegion(rcClient))
     {//重绘客户区
         if(prsBack == PRS_DRAWING)
         {
