@@ -30,7 +30,7 @@ namespace SOUI
     the event system does not look at this value, code at a higher level can use it to determine
     how far to propagate an event.
     */
-    class EventArgs
+    class SOUI_EXP EventArgs
     {
     public:
         /*************************************************************************
@@ -99,7 +99,7 @@ namespace SOUI
         EVT_EXTERNAL_BEGIN=10000000,
     };
 
-    class EventCmnArgs : public EventArgs
+    class SOUI_EXP EventCmnArgs : public EventArgs
     {
     public:
         EventCmnArgs(SWindow *pSender,UINT uEvtID):EventArgs(pSender),uID(uEvtID)
@@ -112,7 +112,7 @@ namespace SOUI
         UINT uID;
     };
 
-    class EventCmd : public EventArgs
+    class SOUI_EXP EventCmd : public EventArgs
     {
     public:
         EventCmd(SWindow *pWnd):EventArgs(pWnd){}
@@ -120,7 +120,7 @@ namespace SOUI
         virtual UINT GetEventID(){return EventID;}
     };
 
-    class EventCtxMenu : public EventArgs
+    class SOUI_EXP EventCtxMenu : public EventArgs
     {
     public:
         EventCtxMenu(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
@@ -130,7 +130,7 @@ namespace SOUI
         BOOL            bCancel;
     };
 
-    class EventSetFocus : public EventArgs
+    class SOUI_EXP EventSetFocus : public EventArgs
     {
     public:
         EventSetFocus(SWindow *pWnd):EventArgs(pWnd){}
@@ -138,7 +138,7 @@ namespace SOUI
         virtual UINT GetEventID(){return EventID;}
     };
 
-    class EventKillFocus : public EventArgs
+    class SOUI_EXP EventKillFocus : public EventArgs
     {
     public:
         EventKillFocus(SWindow *pWnd):EventArgs(pWnd){}
@@ -146,7 +146,7 @@ namespace SOUI
         virtual UINT GetEventID(){return EventID;}
     };
 
-    class EventScroll : public EventArgs
+    class SOUI_EXP EventScroll : public EventArgs
     {
     public:
         EventScroll(SWindow *pWnd):EventArgs(pWnd){}
@@ -157,7 +157,7 @@ namespace SOUI
         BOOL        bVertical;
     };
 
-    class EventOfEvent : public EventArgs
+    class SOUI_EXP EventOfEvent : public EventArgs
     {
     public:
         EventOfEvent(SWindow *pWnd,EventArgs *_pOrgEvt)
@@ -170,7 +170,7 @@ namespace SOUI
     };
 
     class SItemPanel;
-    class EventOfPanel : public EventArgs
+    class SOUI_EXP EventOfPanel : public EventArgs
     {
     public:
         EventOfPanel(SItemPanel *_pPanel,EventArgs *_pOrgEvt);
@@ -181,7 +181,7 @@ namespace SOUI
         EventArgs * pOrgEvt;
     };
     
-    class EventOfComoboxExItem : public EventArgs
+    class SOUI_EXP EventOfComoboxExItem : public EventArgs
     {
     public:
         EventOfComoboxExItem(SWindow *pSender,EventCmd *_pOrgEvt);
@@ -192,7 +192,7 @@ namespace SOUI
         BOOL           bCancel;
     };
     
-    class EventTabSelChanging : public EventArgs
+    class SOUI_EXP EventTabSelChanging : public EventArgs
     {
     public:
         EventTabSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
@@ -203,7 +203,7 @@ namespace SOUI
         BOOL        bCancel;
     };
 
-    class EventTabSelChanged : public EventArgs
+    class SOUI_EXP EventTabSelChanged : public EventArgs
     {
     public:
         EventTabSelChanged(SWindow *pWnd):EventArgs(pWnd){}
@@ -213,7 +213,7 @@ namespace SOUI
         UINT        uNewSel;
     };
 
-    class EventLBGetDispInfo : public EventArgs
+    class SOUI_EXP EventLBGetDispInfo : public EventArgs
     {
     public:
         EventLBGetDispInfo(SWindow *pWnd):EventArgs(pWnd){}
@@ -225,7 +225,7 @@ namespace SOUI
         BOOL bHover;
     };
 
-    class EventLBSelChanging : public EventArgs
+    class SOUI_EXP EventLBSelChanging : public EventArgs
     {
     public:
         EventLBSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){
@@ -238,7 +238,7 @@ namespace SOUI
         BOOL bCancel;
     };
 
-    class EventLBSelChanged : public EventArgs
+    class SOUI_EXP EventLBSelChanged : public EventArgs
     {
     public:
         EventLBSelChanged(SWindow *pWnd):EventArgs(pWnd){}
@@ -248,7 +248,7 @@ namespace SOUI
         int nOldSel;
     };
 
-    class EventTBGetDispInfo : public EventArgs
+    class SOUI_EXP EventTBGetDispInfo : public EventArgs
     {
     public:
         EventTBGetDispInfo(SWindow *pWnd):EventArgs(pWnd){}
@@ -260,7 +260,7 @@ namespace SOUI
         BOOL        bHover;
     };
 
-    class EventTBSelChanging: public EventArgs
+    class SOUI_EXP EventTBSelChanging: public EventArgs
     {
     public:
         EventTBSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
@@ -271,7 +271,7 @@ namespace SOUI
         BOOL        bCancel;
     };
 
-    class EventTBSelChanged: public EventArgs
+    class SOUI_EXP EventTBSelChanged: public EventArgs
     {
     public:
         EventTBSelChanged(SWindow *pWnd):EventArgs(pWnd){}
@@ -281,7 +281,7 @@ namespace SOUI
         HSTREEITEM hOldSel;
     };
 
-    class EventRENotify : public EventArgs
+    class SOUI_EXP EventRENotify : public EventArgs
     {
     public:
         EventRENotify(SWindow *pWnd):EventArgs(pWnd){}
@@ -291,7 +291,7 @@ namespace SOUI
         LPVOID pv;
     };
 
-    class EventSliderPos : public EventArgs
+    class SOUI_EXP EventSliderPos : public EventArgs
     {
     public:
         EventSliderPos(SWindow *pWnd):EventArgs(pWnd){}
@@ -301,7 +301,7 @@ namespace SOUI
     };
 
     //点击表头
-    class EventHeaderClick : public EventArgs
+    class SOUI_EXP EventHeaderClick : public EventArgs
     {
     public:
         EventHeaderClick(SWindow *pWnd):EventArgs(pWnd){}
@@ -311,7 +311,7 @@ namespace SOUI
     };
 
     //点击表头
-    class EventHeaderItemChanging : public EventArgs
+    class SOUI_EXP EventHeaderItemChanging : public EventArgs
     {
     public:
         EventHeaderItemChanging(SWindow *pWnd):EventArgs(pWnd){}
@@ -322,7 +322,7 @@ namespace SOUI
     };
 
     //点击表头
-    class EventHeaderItemChanged : public EventArgs
+    class SOUI_EXP EventHeaderItemChanged : public EventArgs
     {
     public:
         EventHeaderItemChanged(SWindow *pWnd):EventArgs(pWnd){}
@@ -333,7 +333,7 @@ namespace SOUI
     };
 
     //拖动表项调整位置
-    class EventHeaderItemSwap : public EventArgs
+    class SOUI_EXP EventHeaderItemSwap : public EventArgs
     {
     public:
         EventHeaderItemSwap(SWindow *pWnd):EventArgs(pWnd){}
@@ -343,7 +343,7 @@ namespace SOUI
         int      iNewIndex;
     };
 
-    class EventCBSelChange : public EventArgs
+    class SOUI_EXP EventCBSelChange : public EventArgs
     {
     public:
         EventCBSelChange(SWindow *pWnd):EventArgs(pWnd){}
@@ -351,7 +351,7 @@ namespace SOUI
         virtual UINT GetEventID(){return EventID;}
     };
 
-    class EventLCSelChanging : public EventArgs
+    class SOUI_EXP EventLCSelChanging : public EventArgs
     {
     public:
         EventLCSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
@@ -362,7 +362,7 @@ namespace SOUI
         BOOL bCancel;
     };
 
-    class EventLCSelChanged : public EventArgs
+    class SOUI_EXP EventLCSelChanged : public EventArgs
     {
     public:
         EventLCSelChanged(SWindow *pWnd):EventArgs(pWnd){}
@@ -372,7 +372,7 @@ namespace SOUI
         int nOldSel;
     };
 
-    class EventCalendarSelDay : public EventArgs
+    class SOUI_EXP EventCalendarSelDay : public EventArgs
     {
     public:
         EventCalendarSelDay(SWindow *pWnd):EventArgs(pWnd){}
@@ -383,7 +383,7 @@ namespace SOUI
     };
 
 
-    class EventTCSelChanging : public EventArgs
+    class SOUI_EXP EventTCSelChanging : public EventArgs
     {
     public:
         EventTCSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
@@ -394,7 +394,7 @@ namespace SOUI
         BOOL bCancel;
     };
 
-    class EventTCSelChanged : public EventArgs
+    class SOUI_EXP EventTCSelChanged : public EventArgs
     {
     public:
         EventTCSelChanged(SWindow *pWnd):EventArgs(pWnd){}
@@ -404,7 +404,7 @@ namespace SOUI
         HSTREEITEM hNewSel;
     };
 
-    class EventTCCheckState : public EventArgs
+    class SOUI_EXP EventTCCheckState : public EventArgs
     {
     public:
         EventTCCheckState(SWindow *pWnd):EventArgs(pWnd){}
@@ -414,7 +414,7 @@ namespace SOUI
         UINT        uCheckState;
     };
 
-    class EventTCExpand : public EventArgs
+    class SOUI_EXP EventTCExpand : public EventArgs
     {
     public:
         EventTCExpand(SWindow *pWnd):EventArgs(pWnd){}

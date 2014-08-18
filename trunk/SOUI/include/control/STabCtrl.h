@@ -151,6 +151,10 @@ public:
     {
         return m_nCurrentPage;
     }
+    
+    SWindow * GetPage(int iPage);
+    SWindow * GetPage(LPCTSTR pszTitle);
+    
     /**
      * STabCtrl::SetCurSel
      * @brief    设置当前选中
