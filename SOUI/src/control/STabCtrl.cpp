@@ -318,6 +318,22 @@ void STabCtrl::OnDestroy()
 }
 
 
+SWindow * STabCtrl::GetPage( int iPage )
+{
+    if( iPage < 0 || iPage>= (int)GetItemCount() ) return NULL;
+    return m_lstPages[iPage];
+}
+
+SWindow * STabCtrl::GetPage( LPCTSTR pszTitle )
+{
+    for(UINT i=0;i<m_lstPages.GetCount();i++)
+    {
+        if(_tcscmp(m_lstPages[i]->GetTitle(),pszTitle)==0)
+            return GetPage(i);
+    }
+    return NULL;
+}
+
 BOOL STabCtrl::SetCurSel( int nIndex )
 {
     if( nIndex < 0 || nIndex> (int)GetItemCount()-1 || (m_nCurrentPage == nIndex)) return FALSE;
@@ -577,5 +593,6 @@ void STabCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
         SetCurSel(GetItemCount()-1);
     }
 }
+
 
 }//namespace SOUI

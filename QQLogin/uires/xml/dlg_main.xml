@@ -10,5 +10,6 @@
         </page>
       </tabctrl>
     </window>
+    <Turn3dView name="turn3d" pos="0,0,-0,-0"/>
   </root>
 </SOUI>
