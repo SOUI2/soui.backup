@@ -38,8 +38,8 @@ public:
     virtual LPCTSTR FindImageType(LPCTSTR pszImgName){return Helper_FindImageType(this,pszImgName);}
 
 protected:
-    BOOL _Init(LPCTSTR pszZipFile);
-    BOOL _Init(HINSTANCE hInst,LPCTSTR pszResName,LPCTSTR pszType);
+    BOOL _Init(LPCTSTR pszZipFile ,LPCSTR pszPsw);
+    BOOL _Init(HINSTANCE hInst,LPCTSTR pszResName,LPCTSTR pszType ,LPCSTR pszPsw);
 	BOOL _LoadSkin();
 	SStringT _GetFilePath(LPCTSTR pszResName,LPCTSTR pszType);
 	

@@ -98,15 +98,17 @@ namespace SOUI{
         return pImgX;
     }
 
-	BOOL SResProviderZip::_Init( LPCTSTR pszZipFile )
+	BOOL SResProviderZip::_Init( LPCTSTR pszZipFile ,LPCSTR pszPsw)
 	{
 		if(!m_zipFile.Open(pszZipFile)) return FALSE;
+        m_zipFile.SetPassword(pszPsw);
 		return _LoadSkin();
 	}
 
-	BOOL SResProviderZip::_Init( HINSTANCE hInst,LPCTSTR pszResName,LPCTSTR pszType/*=_T("ZIP")*/ )
+	BOOL SResProviderZip::_Init( HINSTANCE hInst,LPCTSTR pszResName,LPCTSTR pszType  ,LPCSTR pszPsw)
 	{
 		if(!m_zipFile.Open(hInst,pszResName,pszType)) return FALSE;
+        m_zipFile.SetPassword(pszPsw);
 		return _LoadSkin();
 	}
 
@@ -116,9 +118,9 @@ namespace SOUI{
         m_renderFactory = zipParam->pRenderFac;
         
         if(zipParam->type == ZIPRES_PARAM::ZIPFILE)
-            return _Init(zipParam->pszZipFile);
+            return _Init(zipParam->pszZipFile,zipParam->pszPsw);
         else
-            return _Init(zipParam->peInfo.hInst,zipParam->peInfo.pszResName,zipParam->peInfo.pszResType);
+            return _Init(zipParam->peInfo.hInst,zipParam->peInfo.pszResName,zipParam->peInfo.pszResType,zipParam->pszPsw);
     }
 
 	SStringT SResProviderZip::_GetFilePath( LPCTSTR pszResName,LPCTSTR pszType )

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ZipArchive.h"
-
+#include <assert.h>
 
 #ifndef __cplusplus
 #error ZipArchive requires C++ compilation (use a .cpp suffix)
@@ -19,10 +19,6 @@
 #include <crtdbg.h>
 #include <tchar.h>
 #include <malloc.h>
-
-#ifndef ATLTRY
-#define ATLTRY(x) x
-#endif
 
 
 CZipFile::CZipFile(DWORD dwSize/*=0*/)
@@ -68,7 +64,7 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 		if (m_pData == NULL)
 			return TRUE;
 
-		ATLTRY(delete[] m_pData);
+		delete[] m_pData;
 		m_pData = NULL;
 		m_dwSize = 0;
 		m_dwPos = 0;
@@ -157,6 +153,13 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 		BYTE b = (BYTE) (m_dwKey[1] >> 24);
 		m_dwKey[2] = _crc32(m_dwKey[2], b);
 	}
+
+    DWORD CZipFile::_crc32( DWORD c, BYTE b )
+    {
+        assert(m_pCrcTable);
+        return m_pCrcTable[((DWORD) (c) ^ (b)) & 0xFF] ^ ((c) >> 8);
+    }
+
 	BOOL CZipFile::_DecryptHeader(LPBYTE pData, DWORD dwSize, DWORD crc32)
 	{
 		if (dwSize < 12)
@@ -175,10 +178,16 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 		return header[11] == (BYTE)(crc32 >> 24);
 	}
 
+    BYTE CZipFile::_DecryptByte() const
+    {
+        DWORD temp = (WORD) (m_dwKey[2] | 2);
+        return (BYTE)((temp * (temp ^ 1)) >> 8);
+    }
+
 	BOOL CZipFile::_DecryptData(LPBYTE& pData, DWORD& dwSize)
 	{
 		LPBYTE pRawData;
-		ATLTRY(pRawData = new BYTE[dwSize - 12]);
+		pRawData = new BYTE[dwSize - 12];
 		_ASSERTE(pRawData);
 
 		if (pRawData == NULL)
@@ -192,7 +201,7 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 			*p++ = c;
 		}
 
-		ATLTRY(delete[] pData);
+		delete[] pData;
 		pData = pRawData;
 		dwSize -= 12;
 
@@ -252,10 +261,10 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 
 		_ASSERTE(m_Header.nDirEntries < 1000); // Sanity check
 
-		ATLTRY(m_DirData = (LPBYTE)malloc(m_Header.dirSize));
+		m_DirData = (LPBYTE)malloc(m_Header.dirSize);
 		_ASSERTE(m_DirData);
 
-		ATLTRY(m_Files = new ZipDirFileHeader*[m_Header.nDirEntries]);
+		m_Files = new ZipDirFileHeader*[m_Header.nDirEntries];
 		_ASSERTE(m_Files);
 
 		if (m_Files == NULL || m_DirData == NULL)
@@ -306,7 +315,7 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 
 		if (m_Files != NULL)
 		{
-			ATLTRY(delete[] m_Files);
+			delete[] m_Files;
 			m_Files = NULL;
 		}
 		if (m_DirData != NULL)
@@ -327,9 +336,7 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 
 	BOOL CZipArchive::SetPassword(LPCSTR pstrPassword)
 	{
-		_ASSERTE(IsOpen());
-		_ASSERTE(!::IsBadStringPtrA(pstrPassword,-1));
-		_ASSERTE(::lstrlenA(pstrPassword) < sizeof(m_szPassword)-1);
+        if(!pstrPassword) return FALSE;
 
 		if (::lstrlenA(pstrPassword) >= sizeof(m_szPassword)-1)
 			return FALSE;
@@ -452,7 +459,7 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 
 		// 		// Decompress file if needed.
 		LPBYTE pData;
-		ATLTRY(pData = new BYTE[hdr.cSize]);
+		pData = new BYTE[hdr.cSize];
 
 		if (pData == NULL)
 			return FALSE;
@@ -460,7 +467,7 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 		dwRead = ReadFile(pData, hdr.cSize);
 		if (dwRead != hdr.cSize)
 		{
-			ATLTRY(delete[] pData);
+            delete[] pData;
 			return FALSE;
 		}
 
@@ -470,16 +477,16 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 #ifdef ZLIB_DECRYPTION
 			if (::lstrlenA(m_szPassword) == 0)
 			{
-				ATLTRY(delete[] pData);
+				delete[] pData;
 				return FALSE;
 			}
 			if (!file._DecryptFile(m_szPassword, pData, dwSize, hdr.crc32))
 			{
-				ATLTRY(delete[] pData);
+                delete[] pData;
 				return FALSE;
 			}
 #else
-			ATLTRY(delete[] pData);
+            delete[] pData;
 			return FALSE;
 #endif
 		}
@@ -487,12 +494,12 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 		switch (hdr.compression)
 		{
 		case LOCAL_COMP_STORE:
-			_ASSERTE(hdr.cSize == hdr.ucSize);
+			//_ASSERTE(hdr.cSize == hdr.ucSize);//加密的时这两个值不一定相等
 			break;
 		case LOCAL_COMP_DEFLAT: 
 			{
 				LPBYTE pTarget;
-				ATLTRY(pTarget = new BYTE[hdr.ucSize]);
+				pTarget = new BYTE[hdr.ucSize];
 				_ASSERTE(pTarget);
 
 				if (pTarget == NULL)
@@ -518,11 +525,11 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 					inflateEnd(&stream);
 				}
 
-				ATLTRY(delete[] pData);
+				delete[] pData;
 
 				if (err != Z_OK)
 				{
-					ATLTRY(delete[] pTarget);
+					delete[] pTarget;
 					return FALSE;
 				}
 				pData = pTarget;
@@ -553,7 +560,7 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 			return INVALID_HANDLE_VALUE;
 
 		FindFileHandle* pFF;
-		ATLTRY(pFF = new FindFileHandle);
+		pFF = new FindFileHandle;
 		if (pFF == NULL)
 			return INVALID_HANDLE_VALUE;
 
@@ -563,7 +570,7 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 		BOOL bRet = FindNextFile((HANDLE)pFF, lpFindFileData);
 		if (!bRet)
 		{
-			ATLTRY(delete pFF);
+			delete pFF;
 			return INVALID_HANDLE_VALUE;
 		}
 		return (HANDLE)pFF;
@@ -627,7 +634,7 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 			return FALSE;
 
 		FindFileHandle* pFF = reinterpret_cast<FindFileHandle*>(hFindFile);
-		ATLTRY(delete pFF);
+		delete pFF;
 		return TRUE;
 	}
 

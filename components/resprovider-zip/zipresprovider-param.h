@@ -15,19 +15,23 @@ namespace SOUI
                 LPCTSTR pszResType;
             }peInfo;
         };
-        void ZipFile(IRenderFactory *_pRenderFac,LPCTSTR pszFile)
+        LPCSTR          pszPsw; //ZIP√‹¬Î
+
+        void ZipFile(IRenderFactory *_pRenderFac,LPCTSTR _pszFile,LPCSTR _pszPsw =NULL)
         {
             type=ZIPFILE;
-            pszZipFile=pszFile;
+            pszZipFile = _pszFile;
             pRenderFac = _pRenderFac;
+            pszPsw     = _pszPsw;
         }
-        void ZipResource(IRenderFactory *_pRenderFac,HINSTANCE hInst,LPCTSTR pszResName,LPCTSTR pszResType=_T("zip"))
+        void ZipResource(IRenderFactory *_pRenderFac,HINSTANCE hInst,LPCTSTR pszResName,LPCTSTR pszResType=_T("zip"),LPCSTR _pszPsw =NULL)
         {
             type=PEDATA;
             pRenderFac = _pRenderFac;
             peInfo.hInst=hInst;
             peInfo.pszResName=pszResName;
             peInfo.pszResType=pszResType;
+            pszPsw     = _pszPsw;
         }
     };
 }

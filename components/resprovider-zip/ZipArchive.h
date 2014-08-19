@@ -3,6 +3,7 @@
 
 #pragma once
 
+#define ZLIB_DECRYPTION
 ///////////////////////////////////////////////////////////////
 // Structures and defines
 
@@ -32,7 +33,7 @@ protected:
 #ifdef ZLIB_DECRYPTION
 	// Decryption
 	const DWORD*	m_pCrcTable;
-	DWORD	m_dwKey[3];
+	DWORD	        m_dwKey[3];
 #endif
 
 public:
@@ -52,19 +53,11 @@ protected:
 
 #ifdef ZLIB_DECRYPTION
 	BOOL _DecryptFile(LPCSTR pstrPassword, LPBYTE& pData, DWORD& dwSize, DWORD crc32);
-	inline DWORD _crc32(DWORD c, BYTE b)
-	{
-		_ASSERTE(m_pCrcTable);
-		return m_pCrcTable[((DWORD) (c) ^ (b)) & 0xFF] ^ ((c) >> 8);
-	}
+	DWORD _crc32(DWORD c, BYTE b);
 	BOOL _InitKeys(LPCSTR pstrPassword);
 	void _UpdateKeys(BYTE c);
 	BOOL _DecryptHeader(LPBYTE pData, DWORD dwSize, DWORD crc32);
-	inline BYTE _DecryptByte() const
-	{
-		DWORD temp = (WORD) (m_dwKey[2] | 2);
-		return (BYTE)((temp * (temp ^ 1)) >> 8);
-	}
+	BYTE _DecryptByte() const;
 	BOOL _DecryptData(LPBYTE& pData, DWORD& dwSize);
 #endif	//	ZLIB_DECRYPTION
 
