@@ -72,10 +72,10 @@ protected:
     BOOL m_bVertical;
     
     SOUI_ATTRS_BEGIN()
-        ATTR_CUSTOM(L"src", OnAttrImage)
-        ATTR_INT(L"tile", m_bTile, TRUE)
-        ATTR_INT(L"vertical", m_bVertical, TRUE)
-        ATTR_INT(L"states",m_nStates,TRUE)
+        ATTR_CUSTOM(L"src", OnAttrImage)    //skinObj引用的图片文件定义在uires.idx中的name属性。
+        ATTR_INT(L"tile", m_bTile, TRUE)    //绘制是否平铺,0--位伸（默认），其它--平铺
+        ATTR_INT(L"vertical", m_bVertical, TRUE)//子图是否垂直排列，0--水平排列(默认), 其它--垂直排列
+        ATTR_INT(L"states",m_nStates,TRUE)  //子图数量,默认为1
     SOUI_ATTRS_END()
 };
 
@@ -97,12 +97,12 @@ protected:
     CRect m_rcMargin;
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"left", m_rcMargin.left, TRUE)
-        ATTR_INT(L"top", m_rcMargin.top, TRUE)
-        ATTR_INT(L"right", m_rcMargin.right, TRUE)
-        ATTR_INT(L"bottom", m_rcMargin.bottom, TRUE)
-        ATTR_INT(L"margin-x", m_rcMargin.left=m_rcMargin.right, TRUE)
-        ATTR_INT(L"margin-y", m_rcMargin.top=m_rcMargin.bottom, TRUE)
+        ATTR_INT(L"left", m_rcMargin.left, TRUE)        //九宫格左边距
+        ATTR_INT(L"top", m_rcMargin.top, TRUE)          //九宫格上边距
+        ATTR_INT(L"right", m_rcMargin.right, TRUE)      //九宫格右边距
+        ATTR_INT(L"bottom", m_rcMargin.bottom, TRUE)    //九宫格下边距
+        ATTR_INT(L"margin-x", m_rcMargin.left=m_rcMargin.right, TRUE)//九宫格左右边距
+        ATTR_INT(L"margin-y", m_rcMargin.top=m_rcMargin.bottom, TRUE)//九宫格上下边距
     SOUI_ATTRS_END()
 };
 
@@ -136,15 +136,15 @@ protected:
     COLORREF    m_crDown[4];
 public:
     SOUI_ATTRS_BEGIN()
-        ATTR_COLOR(L"colorBorder", m_crBorder, TRUE)
-        ATTR_COLOR(L"colorUp", m_crUp[ST_NORMAL], TRUE)
-        ATTR_COLOR(L"colorDown", m_crDown[ST_NORMAL], TRUE)
-        ATTR_COLOR(L"colorUpHover", m_crUp[ST_HOVER], TRUE)
-        ATTR_COLOR(L"colorDownHover", m_crDown[ST_HOVER], TRUE)
-        ATTR_COLOR(L"colorUpPush", m_crUp[ST_PUSHDOWN], TRUE)
-        ATTR_COLOR(L"colorDownPush", m_crDown[ST_PUSHDOWN], TRUE)
-        ATTR_COLOR(L"colorUpDisable", m_crUp[ST_DISABLE], TRUE)
-        ATTR_COLOR(L"colorDownDisable", m_crDown[ST_DISABLE], TRUE)
+        ATTR_COLOR(L"colorBorder", m_crBorder, TRUE)                //边框颜色
+        ATTR_COLOR(L"colorUp", m_crUp[ST_NORMAL], TRUE)             //正常状态渐变起始颜色
+        ATTR_COLOR(L"colorDown", m_crDown[ST_NORMAL], TRUE)         //正常状态渐变终止颜色
+        ATTR_COLOR(L"colorUpHover", m_crUp[ST_HOVER], TRUE)         //浮动状态渐变起始颜色
+        ATTR_COLOR(L"colorDownHover", m_crDown[ST_HOVER], TRUE)     //浮动状态渐变终止颜色
+        ATTR_COLOR(L"colorUpPush", m_crUp[ST_PUSHDOWN], TRUE)       //下压状态渐变起始颜色
+        ATTR_COLOR(L"colorDownPush", m_crDown[ST_PUSHDOWN], TRUE)   //下压状态渐变终止颜色
+        ATTR_COLOR(L"colorUpDisable", m_crUp[ST_DISABLE], TRUE)     //禁用状态渐变起始颜色
+        ATTR_COLOR(L"colorDownDisable", m_crDown[ST_DISABLE], TRUE) //禁用状态渐变终止颜色
     SOUI_ATTRS_END()
 };
 
@@ -179,9 +179,9 @@ protected:
     BOOL m_bVert;
 
     SOUI_ATTRS_BEGIN()
-        ATTR_COLOR(L"colorFrom", m_crFrom, TRUE)
-        ATTR_COLOR(L"colorTo", m_crTo, TRUE)
-        ATTR_INT(L"vertical", m_bVert, TRUE)
+        ATTR_COLOR(L"colorFrom", m_crFrom, TRUE)    //渐变起始颜色
+        ATTR_COLOR(L"colorTo", m_crTo, TRUE)        //渐变终止颜色
+        ATTR_INT(L"vertical", m_bVert, TRUE)        //渐变方向,0--水平(默认), 1--垂直
     SOUI_ATTRS_END()
 };
 
@@ -228,9 +228,9 @@ protected:
     BOOL        m_bHasInactive;//有失活状态的箭头时，滚动条皮肤有必须有5行，否则可以是3行或者4行
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"margin",m_nMargin,FALSE)
-        ATTR_INT(L"hasGripper",m_bHasGripper,FALSE)
-        ATTR_INT(L"hasInactive",m_bHasInactive,FALSE)
+        ATTR_INT(L"margin",m_nMargin,FALSE)             //边缘不拉伸大小
+        ATTR_INT(L"hasGripper",m_bHasGripper,FALSE)     //滑块上是否有帮手(gripper)
+        ATTR_INT(L"hasInactive",m_bHasInactive,FALSE)   //是否有禁用态
     SOUI_ATTRS_END()
 };
 
