@@ -375,15 +375,12 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		var outfiles=".\\res\\soui_res.rc2;";
 		var cmdline = '';
 		
+		//指定uires.idx的编译命令
 		var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
 		if(WizardVersion >= 10.0)
 			cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\\res\\soui_res.rc2';
 		else
 			cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p uires -r .\\res\\soui_res.rc2';
-
-
-		//指定uires.idx的编译命令
-		cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p uires -r .\\res\\soui_res.rc2';
 		
 		var file = files.Item('uires.idx');
 		var fileConfig = file.FileConfigurations('Debug');
