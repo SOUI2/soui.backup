@@ -818,6 +818,7 @@ namespace SOUI
         } PRSTATE;
 
         static  BOOL _PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,SWindow *pStart,SWindow *pEnd,PRSTATE & prState );
+        static void _BeforePaintEx(SWindow *pWnd,IRenderTarget *pRT);
 
         virtual BOOL NeedRedrawWhenStateChange();
         virtual void GetTextRect(LPRECT pRect);

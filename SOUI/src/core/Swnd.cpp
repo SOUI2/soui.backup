@@ -951,13 +951,20 @@ void SWindow::BeforePaint(IRenderTarget *pRT, SPainter &painter)
         painter.crOld = pRT->SetTextColor(crTxt);
 }
 
+
+void SWindow::_BeforePaintEx( SWindow *pWnd,IRenderTarget *pRT )
+{
+    SWindow *pParent=pWnd->GetParent();
+    if(pParent) _BeforePaintEx(pParent,pRT);
+    SPainter painter;
+    pWnd->BeforePaint(pRT,painter);
+}
+
 void SWindow::BeforePaintEx(IRenderTarget *pRT)
 {
-    SWindow *pParent=GetParent();
-    if(pParent) pParent->BeforePaintEx(pRT);
-    SPainter painter;
-    BeforePaint(pRT,painter);
-    //todo:hjx
+    IFont *pDefFont = SFontPool::getSingleton().GetFont(FF_DEFAULTFONT);
+    pRT->SelectObject(pDefFont);
+    _BeforePaintEx(this,pRT);
 }
 
 void SWindow::AfterPaint(IRenderTarget *pRT, SPainter &painter)
