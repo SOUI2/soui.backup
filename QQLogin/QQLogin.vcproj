@@ -17,7 +17,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\bin\"
-			IntermediateDirectory="..\obj\debug\demo\"
+			IntermediateDirectory="..\obj\debug\qqlogin\"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -91,7 +91,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\bin\"
-			IntermediateDirectory="..\obj\Release\demo\"
+			IntermediateDirectory="..\obj\Release\qqlogin\"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
