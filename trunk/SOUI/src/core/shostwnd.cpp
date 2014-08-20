@@ -108,7 +108,7 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
         m_privateSkinPool->RemoveAll();
         GETSKINPOOLMGR->PopSkinPool(m_privateSkinPool);
     }
-    m_privateSkinPool->LoadSkins(xmlNode.child(L"skins"));//从xmlNode加加载私有skin
+    m_privateSkinPool->LoadSkins(xmlNode.child(L"skin"));//从xmlNode加加载私有skin
     if(m_privateSkinPool->GetCount())
     {
         GETSKINPOOLMGR->PushSkinPool(m_privateSkinPool);
