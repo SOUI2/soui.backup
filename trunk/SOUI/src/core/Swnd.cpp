@@ -1816,6 +1816,7 @@ void SWindow::OnSize( UINT nType, CSize size )
         if(!m_cachedRT)
         {
             GETRENDERFACTORY->CreateRenderTarget(&m_cachedRT,m_rcWindow.Width(),m_rcWindow.Height());
+            BeforePaintEx(m_cachedRT);  //从父窗口中继承字体等属性
         }else
         {
             m_cachedRT->Resize(m_rcWindow.Size());
@@ -1833,6 +1834,7 @@ HRESULT SWindow::OnAttrCache( const SStringW& strValue, BOOL bLoading )
         if(m_bCacheDraw && !m_cachedRT)
         {
             GETRENDERFACTORY->CreateRenderTarget(&m_cachedRT,m_rcWindow.Width(),m_rcWindow.Height());
+            BeforePaintEx(m_cachedRT);  //从父窗口中继承字体等属性
         }
         if(!m_bCacheDraw && m_cachedRT)
         {
