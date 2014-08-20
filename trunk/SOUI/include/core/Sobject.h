@@ -13,6 +13,7 @@
 */
 
 #pragma once
+#include <trace.h>
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -166,6 +167,7 @@ namespace SOUI
          */    
         virtual HRESULT DefAttributeProc(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading)
         {
+            STraceW(L"warning!!! unhandled attribute %s in class %s, value = %s",strAttribName,GetObjectClass(),strValue);
             return E_FAIL;
         }
 

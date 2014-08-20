@@ -211,7 +211,7 @@ protected:
         ATTR_SKIN(L"checkSkin", m_pCheckSkin, TRUE)
         ATTR_COLOR(L"colorItemBkgnd",m_crItemBg,FALSE)
         ATTR_COLOR(L"colorItemSelBkgnd",m_crItemSelBg,FALSE)
-        ATTR_COLOR(L"colorrItemText",m_crItemText,FALSE)
+        ATTR_COLOR(L"colorItemText",m_crItemText,FALSE)
         ATTR_COLOR(L"colorItemSelText",m_crItemSelText,FALSE)
     SOUI_ATTRS_END()
 

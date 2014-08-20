@@ -34,7 +34,9 @@ int SSkinPool::LoadSkins(pugi::xml_node xmlNode)
 
         if (strSkinName.IsEmpty() || strTypeName.IsEmpty())
             continue;
-
+            
+        xmlSkin.attribute(L"name").set_userdata(1);    //标记该属性不需要再处理。
+        
         SASSERT(!HasKey(strSkinName));
         ISkinObj *pSkin=SApplication::getSingleton().CreateSkinByName(strTypeName);
         if(pSkin)
@@ -47,6 +49,7 @@ int SSkinPool::LoadSkins(pugi::xml_node xmlNode)
         {
             SASSERT_FMTW(FALSE,L"load skin error,type=%s,name=%s",strTypeName,strSkinName);
         }
+        xmlSkin.attribute(L"name").set_userdata(0);    //清除标记
         xmlSkin=xmlSkin.next_sibling();
     }
 

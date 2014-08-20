@@ -30,7 +30,7 @@
       </page>
       <page title="gif">
         <gifplayer pos="10,10" skin="gif_horse" name="giftest" cursor="ANI_ARROW"/>
-        <button width="150" height="30" name="btnSelectGif">load gif file</button>
+        <button width="250" height="30" name="btnSelectGif">load gif file</button>
         <gifplayer pos="10,150" skin="gif_penguin"/>
         <icon pos="10,300" src="LOGO:64"/>
       </page>

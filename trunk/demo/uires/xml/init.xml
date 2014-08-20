@@ -12,7 +12,7 @@
     <imglist name="skin_tree_icon"		src="imgx:png_treeicon" states="3"/>
 
     <imglist name="skin_menuicon" src="imgx:png_small_icons" states="12"/>
-    <border name="skin_menuborder" src="imgx:png_menu_border" left="2" top="2" border="2,2,2,2" key="FF00FF" alpha="100"/>
+    <border name="skin_menuborder" src="imgx:png_menu_border" left="2" top="2" border="2,2,2,2"/>
     <imglist name="skin_webbtn_back" src="imgx:webbtn_back" states="4"/>
     <imglist name="skin_webbtn_forward" src="imgx:webbtn_forward" states="4"/>
     <imglist name="skin_webbtn_refresh" src="imgx:webbtn_refresh" states="4"/>
@@ -30,7 +30,7 @@
 
     <class name="cls_btn_link"    cursor="hand" colorHover="#0A84D2" />
     <!--定义文字按钮的样式-->
-    <class name="cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorHover="#1e78d5" font="italic:1" fontHover="underline:1,italic:1" />
+    <class name="cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" font="italic:1" fontHover="underline:1,italic:1" />
 
     <class name="cls_txt_red"     font="face:宋体,bold:1"  colorText="#FF0000" />
     <!--定义白色粗体宋体-->
@@ -55,7 +55,7 @@
   <objattr>
     <button class="normalbtn"/>
     <imgbtn class="linkimage"/>
-    <tabctrl colorText="000000" align="top" tabWidth="70" tabHeight="38" tabSpacing="0" tabPos="10" dotted="1"/>
+    <tabctrl colorText="000000" tabAlign="top" tabWidth="70" tabHeight="38" tabInterSize="0" tabPos="10" dotted="1"/>
     <edit transParent="1" margin-x="2" margin-y="2"/>
     <treectrl colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088" colorItemText="#000000" colorItemSelText="#FFFFFF" indent="17" itemMargin="4"/>
   </objattr>

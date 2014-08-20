@@ -65,7 +65,7 @@ SWindow * SWindowFactoryMgr::CreateWindowByName( LPCWSTR pszClassName )
 {
     if(!HasKey(pszClassName))
     {
-        STraceW(L"CreateWindowByName,Warning: no window type:%s in SOUI!!",pszClassName);
+        STraceW(L"Warning: no window type:%s in SOUI!!",pszClassName);
         return NULL;
     }
     return GetKeyObject(pszClassName)->NewWindow();

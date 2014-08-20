@@ -923,7 +923,6 @@ namespace SOUI
             ATTR_CUSTOM(L"skin", OnAttrSkin)        //直接获得皮肤对象
             ATTR_SKIN(L"ncskin", m_pNcSkin, TRUE)   //直接获得皮肤对象
             ATTR_CUSTOM(L"class", OnAttrClass)      //获得style
-            ATTR_CHAIN(m_style)                     //支持对style中的属性定制
             ATTR_INT(L"data", m_uData, 0 )
             ATTR_CUSTOM(L"enable", OnAttrEnable)
             ATTR_CUSTOM(L"visible", OnAttrVisible)
@@ -945,6 +944,7 @@ namespace SOUI
             ATTR_ENUM_END(m_layout.pos2Type)
             ATTR_INT(L"sep", m_layout.nSepSpace, FALSE)
             ATTR_INT(L"alpha",m_byAlpha,TRUE)
+            ATTR_CHAIN(m_style)                     //支持对style中的属性定制
         SOUI_ATTRS_END()
 
     };

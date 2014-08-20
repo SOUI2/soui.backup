@@ -464,7 +464,7 @@ namespace pugi
 	struct xml_attribute_struct
 	{
 		/// Default ctor
-		xml_attribute_struct(impl::xml_memory_page* page): header(reinterpret_cast<uintptr_t>(page)), name(0), value(0), prev_attribute_c(0), next_attribute(0)
+		xml_attribute_struct(impl::xml_memory_page* page): header(reinterpret_cast<uintptr_t>(page)), name(0), value(0), prev_attribute_c(0), next_attribute(0),userdata(0)
 		{
 		}
 
@@ -472,7 +472,8 @@ namespace pugi
 
 		char_t* name;	///< Pointer to attribute name.
 		char_t*	value;	///< Pointer to attribute value.
-
+        
+        int     userdata;///< user data
 		xml_attribute_struct* prev_attribute_c;	///< Previous attribute (cyclic list)
 		xml_attribute_struct* next_attribute;	///< Next attribute
 	};
@@ -3837,6 +3838,18 @@ namespace pugi
 	{
 		return static_cast<size_t>(reinterpret_cast<uintptr_t>(_attr) / sizeof(xml_attribute_struct));
 	}
+	
+	PUGI__FN int xml_attribute::get_userdata() const
+	{
+		return _attr ? _attr->userdata : 0;
+	}
+
+    PUGI__FN bool xml_attribute::set_userdata(int userdata)
+    {
+        if (!_attr) return false;
+        _attr->userdata = userdata;
+        return true;
+    }
 
 	PUGI__FN xml_attribute_struct* xml_attribute::internal_object() const
 	{
