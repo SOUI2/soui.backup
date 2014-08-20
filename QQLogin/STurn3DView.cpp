@@ -18,6 +18,7 @@ namespace SOUI
         , m_bTurning(FALSE)
     {
         m_bVisible=FALSE;
+        memset(&m_3dparam,0,sizeof(m_3dparam));
         m_evtSet.addEvent(EventTurn3d::EventID);
     }
 
