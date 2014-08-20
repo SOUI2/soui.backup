@@ -1,4 +1,13 @@
 ﻿<SOUI name="dlg_main" title="SOUI-DEMO version:%ver%" bigIcon="LOGO:32" smallIcon="LOGO:16" width="600" height="400" appWnd="1" margin="5,5,5,5"  resizable="1" translucent="1" >
+  <skin>
+    <!--局部skin对象-->
+    <gif name="gif_horse" src="gif:gif_horse"/>
+    <gif name="gif_penguin" src="gif:gif_penguin"/>
+  </skin>
+  <style>
+    <!--局部style对象-->
+    <class name="cls_edit" ncSkin="_skin.sys.border" margin-x="2" margin-y="2" />
+  </style>
   <root class="cls_dlg_frame" cache="1">
     <caption pos="0,0,-0,30" show="1" font="adding:8">
       <icon pos="10,8" src="LOGO:16"/>

@@ -113,7 +113,7 @@ BOOL SApplication::Init( LPCTSTR pszName ,LPCTSTR pszType)
     
     SStringPool::getSingleton().Init(root.child(L"string"));
     SSkinPool *pSkinPool = new SSkinPool;
-    pSkinPool->LoadSkins(root.child(L"skins"));
+    pSkinPool->LoadSkins(root.child(L"skin"));
     SSkinPoolMgr::getSingletonPtr()->PushSkinPool(pSkinPool);
     pSkinPool->Release();
     
@@ -136,7 +136,7 @@ UINT SApplication::LoadSystemNamedResource( IResProvider *pResProvider )
         if(_LoadXmlDocment(_T("SYS_XML_SKIN"),_T("XML"),xmlDoc))
         {
             SSkinPool * p= SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-            p->LoadSkins(xmlDoc.child(L"skins"));
+            p->LoadSkins(xmlDoc.child(L"skin"));
         }else
         {
             uRet |= 0x01;

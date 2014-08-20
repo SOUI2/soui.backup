@@ -1,4 +1,4 @@
-<skins>
+<skin>
   <imglist name="_skin.sys.checkbox" src="PNG:SYS_CHECKBOX" states="8"  />
   <imglist name="_skin.sys.radio" src="PNG:SYS_RADIO" states="8" />
   <imglist name="_skin.sys.focuscheckbox" src="PNG:SYS_FOCUS_CHECKBOX"/>
@@ -29,4 +29,4 @@
   <imglist name="_skin.sys.icons" src="PNG:SYS_ICONS" states="12"/>
   <imgframe name="_skin.sys.wnd.bkgnd"  src="PNG:SYS_WND_BKGND" left="5" right="5" top="40" bottom="40"/>
 
-</skins>
+</skin>

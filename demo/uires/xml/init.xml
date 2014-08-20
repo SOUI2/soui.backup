@@ -6,7 +6,8 @@
     <ver value="1.0"/>
   </string>
   
-  <skins>
+  <skin>
+    <!--全局skin对象-->
     <imglist name="skin_page_icons"	src="imgx:png_page_icons" states="9"/>
     <imglist name="skin_small_icons" src="imgx:png_small_icons" states="12"/>
     <imglist name="skin_tree_icon"		src="imgx:png_treeicon" states="3"/>
@@ -20,12 +21,11 @@
     <imglist name="skin_tab_left_splitter" src="imgx:png_tab_left_splitter"/>
     <imglist name="skin_tab_main" src="imgx:png_tab_main" states="3"/>
     <imglist name="skin_btn_menu" src="imgx:btn_menu" states="3"/>
-    <gif name="gif_horse" src="gif:gif_horse"/>
-    <gif name="gif_penguin" src="gif:gif_penguin"/>
 
-  </skins>
+  </skin>
 
   <style>
+    <!--全局style对象-->
     <class name="cls_dlg_frame" skin="_skin.sys.wnd.bkgnd" font="" colorText="#000000" margin-x="0"/>
 
     <class name="cls_btn_link"    cursor="hand" colorHover="#0A84D2" />
@@ -49,10 +49,10 @@
 
     <class name="linkimage" cursor="hand"/>
 
-    <class name="cls_edit" ncSkin="_skin.sys.border" margin-x="2" margin-y="2" />
   </style>
 
   <objattr>
+    <!--控件默认属性-->
     <button class="normalbtn"/>
     <imgbtn class="linkimage"/>
     <tabctrl colorText="000000" tabAlign="top" tabWidth="70" tabHeight="38" tabInterSize="0" tabPos="10" dotted="1"/>
