@@ -943,7 +943,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
     HRESULT hRet=S_FALSE;
     DWORD dwBit=0,dwMask=0;
     //hscrollbar
-    if(strAttribName==L"hscrollBar")
+    if(strAttribName.CompareNoCase(L"hscrollBar")==0)
     {
         if(strValue==L"0")
             m_dwStyle&=~WS_HSCROLL;
@@ -953,7 +953,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         dwMask|=TXTBIT_SCROLLBARCHANGE;
     }
     //vscrollbar
-    else if(strAttribName==L"vscrollBar")
+    if(strAttribName.CompareNoCase(L"vscrollBar")==0)
     {
         if(strValue==L"0")
             m_dwStyle&=~WS_VSCROLL;
@@ -963,7 +963,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         dwMask|=TXTBIT_SCROLLBARCHANGE;
     }
     //auto hscroll
-    else if(strAttribName==L"autoHscroll")
+    if(strAttribName.CompareNoCase(L"autoHscroll")==0)
     {
         if(strValue==L"0")
             m_dwStyle&=~ES_AUTOHSCROLL;
@@ -973,7 +973,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         dwMask|=TXTBIT_SCROLLBARCHANGE;
     }
     //auto hscroll
-    else if(strAttribName==L"autoVscroll")
+    if(strAttribName.CompareNoCase(L"autoVscroll")==0)
     {
         if(strValue==L"0")
             m_dwStyle&=~ES_AUTOVSCROLL;
@@ -983,7 +983,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         dwMask|=TXTBIT_SCROLLBARCHANGE;
     }
     //multilines
-    else if(strAttribName==L"multiLines" && strValue!=L"0")
+    if(strAttribName.CompareNoCase(L"multiLines")==0)
     {
         if(strValue==L"0")
             m_dwStyle&=~ES_MULTILINE;
@@ -992,7 +992,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         dwMask|=TXTBIT_MULTILINE;
     }
     //readonly
-    else if(strAttribName==L"readOnly")
+    if(strAttribName.CompareNoCase(L"readOnly")==0)
     {
         if(strValue==L"0")
             m_dwStyle&=~ES_READONLY;
@@ -1005,7 +1005,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         }
     }
     //want return
-    else if(strAttribName==L"wantReturn")
+    if(strAttribName.CompareNoCase(L"wantReturn")==0)
     {
         if(strValue==L"0")
             m_dwStyle&=~ES_WANTRETURN;
@@ -1013,7 +1013,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
             m_dwStyle|=ES_WANTRETURN;
     }
     //password
-    else if(strAttribName==L"password")
+    if(strAttribName.CompareNoCase(L"password")==0)
     {
         if(strValue==L"0")
             m_dwStyle&=~ES_PASSWORD;
@@ -1022,7 +1022,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         dwMask|=TXTBIT_USEPASSWORD;
     }
     //number
-    else if(strAttribName==L"number")
+    if(strAttribName.CompareNoCase(L"number")==0)
     {
         if(strValue==L"0")
             m_dwStyle&=~ES_NUMBER;
@@ -1030,20 +1030,20 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
             m_dwStyle|=ES_NUMBER;
     }
     //password char
-    else if(strAttribName==L"passwordChar")
+    if(strAttribName.CompareNoCase(L"passwordChar")==0)
     {
         SStringT strValueT=S_CW2T(strValue);
         m_chPasswordChar=strValueT[0];
     }
     //align
-    else if(strAttribName==L"align")
+    if(strAttribName.CompareNoCase(L"align")==0)
     {
         if(strValue==L"center") m_dwStyle|=ES_CENTER;
         else if(strValue==L"right") m_dwStyle|=ES_RIGHT;
         else m_dwStyle|=ES_LEFT;
     }
     //enabledragdrop
-    else if(strAttribName==L"enableDragdrop")
+    if(strAttribName.CompareNoCase(L"enableDragdrop")==0)
     {
         if(strValue==L"0")
         {

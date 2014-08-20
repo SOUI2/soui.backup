@@ -53,7 +53,7 @@ public:                                                             \
         else                                                        \
  
 #define ATTR_CUSTOM(attribname, func)                    \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         hRet = func(strValue, bLoading);                        \
         }                                                           \
@@ -61,7 +61,7 @@ public:                                                             \
  
 // Int = %d StringA
 #define ATTR_INT(attribname, varname, allredraw)         \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         int nRet=0;                                                \
         ::StrToIntExW(strValue,STIF_SUPPORT_HEX,&nRet);            \
@@ -72,7 +72,7 @@ public:                                                             \
  
 // Rect = %d,%d,%d,%d StringA
 #define ATTR_RECT(attribname, varname, allredraw)         \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         swscanf(strValue,L"%d,%d,%d,%d",&varname.left,&varname.top,&varname.right,&varname.bottom);\
         hRet = allredraw ? S_OK : S_FALSE;                      \
@@ -82,7 +82,7 @@ public:                                                             \
 
 // Size = %d,%d StringA
 #define ATTR_SIZE(attribname, varname, allredraw)         \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         swscanf(strValue,L"%d,%d",&varname.cx,&varname.cy);\
         hRet = allredraw ? S_OK : S_FALSE;                      \
@@ -91,7 +91,7 @@ public:                                                             \
  
 // Point = %d,%d StringA
 #define ATTR_POINT(attribname, varname, allredraw)         \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         swscanf(strValue,L"%d,%d",&varname.x,&varname.y);\
         hRet = allredraw ? S_OK : S_FALSE;                      \
@@ -101,7 +101,7 @@ public:                                                             \
 
 // Float = %f StringA
 #define ATTR_FLOAT(attribname, varname, allredraw)         \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         swscanf(strValue,L"%f",&varname);                        \
         hRet = allredraw ? S_OK : S_FALSE;                      \
@@ -110,7 +110,7 @@ public:                                                             \
  
 // UInt = %u StringA
 #define ATTR_UINT(attribname, varname, allredraw)        \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         int nRet=0;                                                \
         ::StrToIntExW(strValue,STIF_SUPPORT_HEX,&nRet);            \
@@ -121,7 +121,7 @@ public:                                                             \
  
 // DWORD = %u StringA
 #define ATTR_DWORD(attribname, varname, allredraw)       \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         int nRet=0;                                                \
         ::StrToIntExW(strValue,STIF_SUPPORT_HEX,&nRet);            \
@@ -132,7 +132,7 @@ public:                                                             \
  
 // WORD = %u StringA
 #define ATTR_WORD(attribname, varname, allredraw)       \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         int nRet=0;                                                \
         ::StrToIntExW(strValue,STIF_SUPPORT_HEX,&nRet);            \
@@ -144,7 +144,7 @@ public:                                                             \
 
 // bool = 0 or 1 StringA
 #define ATTR_BIT(attribname, varname, maskbit, allredraw) \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         int nRet=0;                                                \
         ::StrToIntW(strValue,&nRet);                                \
@@ -157,7 +157,7 @@ public:                                                             \
 
 // StringA = StringA
 #define ATTR_STRINGA(attribname, varname, allredraw)      \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         SStringW strTmp=strValue;                                   \
         BUILDSTRING(strTmp);                                    \
@@ -168,7 +168,7 @@ public:                                                             \
  
 // StringW = StringA
 #define ATTR_STRINGW(attribname, varname, allredraw)      \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         SStringT strTmp=S_CW2T(strValue);                          \
         BUILDSTRING(strTmp);                                    \
@@ -180,7 +180,7 @@ public:                                                             \
 
 // StringT = StringA
 #define ATTR_STRINGT(attribname, varname, allredraw)     \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         varname=S_CW2T(strValue);                          \
         BUILDSTRING(varname);                                    \
@@ -191,7 +191,7 @@ public:                                                             \
 
 // StringA = StringA
 #define ATTR_I18NSTRA(attribname, varname, allredraw)      \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                       \
         SStringT strTmp=S_CW2T(tr(strValue));                   \
         BUILDSTRING(strTmp);                                    \
@@ -202,7 +202,7 @@ public:                                                             \
 
 // StringW = StringA
 #define ATTR_I18NSTRW(attribname, varname, allredraw)           \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                       \
         SStringT strTmp=S_CW2T(tr(strValue));                   \
         BUILDSTRING(strTmp);                                    \
@@ -214,7 +214,7 @@ public:                                                             \
 
 // StringT = StringA
 #define ATTR_I18NSTRT(attribname, varname, allredraw)           \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                       \
         varname=S_CW2T(tr(strValue));                           \
         BUILDSTRING(varname);                                   \
@@ -224,7 +224,7 @@ public:                                                             \
 
 // DWORD = %X StringA
 #define ATTR_HEX(attribname, varname, allredraw)                \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                       \
         varname = HexStringToULong(strValue);                   \
         hRet = allredraw ? S_OK : S_FALSE;                      \
@@ -233,7 +233,7 @@ public:                                                             \
  
 // COLORREF = %06X StringA
 #define ATTR_COLOR(attribname, varname, allredraw)       \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
             if(!strValue.IsEmpty())\
             {                                                       \
@@ -252,7 +252,7 @@ public:                                                             \
 
 //font="face:宋体;bold:1;italic:1;underline:1;adding:10"
 #define ATTR_FONT(attribname, varname, allredraw)                       \
-    if (attribname == strAttribName)                                    \
+    if (0 == strAttribName.CompareNoCase(attribname))                                    \
     {                                                                    \
         varname = SFontPool::getSingleton().GetFont(strValue);           \
         hRet = allredraw ? S_OK : S_FALSE;                               \
@@ -262,7 +262,7 @@ public:                                                             \
 
 // Value In {String1 : Value1, String2 : Value2 ...}
 #define ATTR_ENUM_BEGIN(attribname, vartype, allredraw)        \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         vartype varTemp;                                        \
         \
@@ -282,7 +282,7 @@ public:                                                             \
  
 // SwndStyle From StringA Key
 #define ATTR_STYLE(attribname, varname, allredraw)       \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         GETSTYLE(strValue,varname);                  \
         hRet = allredraw ? S_OK : S_FALSE;                      \
@@ -291,7 +291,7 @@ public:                                                             \
  
 // SSkinPool From StringA Key
 #define ATTR_SKIN(attribname, varname, allredraw)        \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
         varname = GETSKIN(strValue);                    \
         hRet = allredraw ? S_OK : S_FALSE;                      \
@@ -302,7 +302,7 @@ public:                                                             \
 //ATTR_IMAGE:直接使用IResProvider::LoadImage创建IBitmap对象，创建成功后引用计数为1
 //不需要调用AddRef，但是用完后需要调用Release
 #define ATTR_IMAGE(attribname, varname, allredraw)                  \
-    if (attribname == strAttribName)                                \
+    if (0 == strAttribName.CompareNoCase(attribname))                                \
         {                                                           \
         SStringT strValueT=S_CW2T(strValue);                        \
         int nPos=strValueT.ReverseFind(_T(':'));                    \
@@ -318,7 +318,7 @@ public:                                                             \
         else                                                        \
  
 #define ATTR_ICON(attribname, varname, allredraw)        \
-    if (attribname == strAttribName)                            \
+    if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                       \
         if(varname) DeleteObject(varname);          \
         SStringT strValueT=S_CW2T(strValue);        \
