@@ -1,11 +1,11 @@
 ﻿<include>
   <tabctrl pos="0,0,-0,-0" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8">
     <page title="check and radio" colorBorder="#ff0000" margin-x="1" margin-y="1">
-      <check id="1300" pos="40,20" colorText="#ff0000" state="4">test1</check>
-      <check id="1301" pos="40,70" check="1">test2</check>
+      <check id="1300" pos="40,20" colorText="#ff0000" checked="1">test1</check>
+      <check id="1301" pos="40,70">test2</check>
       <window pos="0,90,-70,-0" >
         <radio id="1303" pos="10,10">radio1</radio>
-        <radio id="1304" pos="110,10" check="1">radio2</radio>
+        <radio id="1304" pos="110,10" checked="1">radio2</radio>
         <radio id="1305" pos="10,60">radio3</radio>
         <radio id="1306" pos="110,60">radio4</radio>
       </window>
@@ -88,7 +88,7 @@
     </page>
     <page title="comboboxex">
       <comboboxex show="1" pos="100,100,350,130" dropDown="1" dropHeight="250" class="cls_edit" dotted="0" curSel="3" id_text="1" id_icon="2">
-        <liststyle  class="cls_edit" crbg="#FFFFFF" itemHeight="50" >
+        <liststyle  class="cls_edit" colorBkgnd="#FFFFFF" itemHeight="50" >
           <template skin="_skin.sys.header">
             <text id="1" pos="5,2" colorText="#ff0000"/>
             <img id="2" skin="skin_page_icons" msgTransparent="0" tip="this is an img control"/>

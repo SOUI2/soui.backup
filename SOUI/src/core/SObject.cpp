@@ -23,16 +23,17 @@ namespace SOUI
             pugi::xml_attribute attrClass=defAttr.attribute(L"class");
             if(attrClass)
             {
-                defAttr.remove_attribute(L"class");
+                attrClass.set_userdata(1);
                 SetAttribute(attrClass.name(), attrClass.value(), TRUE);
             }
             for (pugi::xml_attribute attr = defAttr.first_attribute(); attr; attr = attr.next_attribute())
             {
+                if(attr.get_userdata()) continue;
                 SetAttribute(attr.name(), attr.value(), TRUE);
             }
             if(attrClass)
             {
-                defAttr.prepend_copy(attrClass);
+                attrClass.set_userdata(0);
             }
         }
 
@@ -42,16 +43,17 @@ namespace SOUI
         pugi::xml_attribute attrClass=xmlNode.attribute(L"class");
         if(attrClass)
         {
+            attrClass.set_userdata(1);      //预处理过的属性，给属性增加一个userdata
             SetAttribute(attrClass.name(), attrClass.value(), TRUE);
-            xmlNode.remove_attribute(attrClass);
         }
         for (pugi::xml_attribute attr = xmlNode.first_attribute(); attr; attr = attr.next_attribute())
         {
+            if(attr.get_userdata()) continue;   //忽略已经被预处理的属性
             SetAttribute(attr.name(), attr.value(), TRUE);
         }
         if(attrClass)
         {
-            xmlNode.prepend_copy(attrClass);
+            attrClass.set_userdata(0);
         }
         //调用初始化完成接口
         OnInitFinished(xmlNode);

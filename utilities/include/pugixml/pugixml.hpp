@@ -366,7 +366,11 @@ namespace pugi
 
 		// Get hash value (unique for handles to the same object)
 		size_t hash_value() const;
-
+        
+        // get and set userdata, add by huangjianxiong 2014.8.20
+        int get_userdata() const;
+        bool set_userdata(int userdata);
+        
 		// Get internal pointer
 		xml_attribute_struct* internal_object() const;
 	};

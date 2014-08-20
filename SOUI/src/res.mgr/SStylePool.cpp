@@ -33,8 +33,9 @@ namespace SOUI
             lpszClassName = xmlChild.attribute(L"name").value();
             if (!lpszClassName)
                 continue;
-
+            xmlChild.attribute(L"name").set_userdata(1);
             GetKeyObject(lpszClassName).InitFromXml(xmlChild);
+            xmlChild.attribute(L"name").set_userdata(0);
         }
         return TRUE;
     }

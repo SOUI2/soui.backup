@@ -532,35 +532,36 @@ BOOL SWindow::CreateChildren(pugi::xml_node xmlNode)
     for (pugi::xml_node xmlChild=xmlNode.first_child(); xmlChild; xmlChild=xmlChild.next_sibling())
     {
         if(xmlChild.type() != pugi::node_element) continue;
-        SWindow *pChild = SApplication::getSingleton().CreateWindowByName(xmlChild.name());
-        if(!pChild)
+
+        if(_wcsicmp(xmlChild.name(),L"include")==0)
         {//在窗口布局中支持include标签
-            if(_wcsicmp(xmlChild.name(),L"include")==0)
+            pugi::xml_document xmlDoc;
+            SStringTList strLst;
+
+            if(2 == SplitString(S_CW2T(xmlChild.attribute(L"src").value()),_T(':'),strLst))
             {
-                pugi::xml_document xmlDoc;
-                SStringTList strLst;
-                
-                if(2 == SplitString(S_CW2T(xmlChild.attribute(L"src").value()),_T(':'),strLst))
-                {
-                    LOADXML(xmlDoc,strLst[1],strLst[0]);
-                }else
-                {
-                    LOADXML(xmlDoc,strLst[0],RT_LAYOUT);
-                }
-                if(xmlDoc)
-                {
-                    CreateChildren(xmlDoc.child(L"include"));
-                }else
-                {
-                    SASSERT(FALSE);
-                }
-
+                LOADXML(xmlDoc,strLst[1],strLst[0]);
+            }else
+            {
+                LOADXML(xmlDoc,strLst[0],RT_LAYOUT);
             }
-            continue;
-        }
+            if(xmlDoc)
+            {
+                CreateChildren(xmlDoc.child(L"include"));
+            }else
+            {
+                SASSERT(FALSE);
+            }
 
-        InsertChild(pChild);
-        pChild->InitFromXml(xmlChild);
+        }else
+        {
+            SWindow *pChild = SApplication::getSingleton().CreateWindowByName(xmlChild.name());
+            if(pChild)
+            {
+                InsertChild(pChild);
+                pChild->InitFromXml(xmlChild);
+            }
+        }
     }
     return TRUE;
 }
@@ -587,11 +588,17 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
         m_strText.TrimRight(0x0a).TrimLeft(0x0a);
         m_strText.TrimRight(0x0d).TrimLeft(0x0d);
         m_strText.TrimRight(0x20).TrimLeft(0x20);
+        m_strText.TrimRight(0x09).TrimLeft(0x09);
         if (!m_strText.IsEmpty()) BUILDSTRING(m_strText);
     }
 
     m_layout.nCount = 0;
     m_layout.uPositionType = 0;
+    
+    //标记不处理width and height属性
+    xmlNode.attribute(L"width").set_userdata(1);
+    xmlNode.attribute(L"height").set_userdata(1);
+    
     SObject::InitFromXml(xmlNode);
 
     if(!m_bVisible || (m_pParent && !m_pParent->IsVisible(TRUE)))
@@ -601,7 +608,7 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
     {
         SStringW strValue = xmlNode.attribute(L"width").value();
         int nValue =_wtoi(strValue);
-
+        
         if (0 == nValue && L"full" == strValue && 0 == m_layout.nCount)
         {
             m_rcWindow.right = 0;
@@ -623,6 +630,7 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
         }
 
         strValue = xmlNode.attribute(L"height").value();
+        
         nValue =_wtoi(strValue);
         if (0 == nValue && L"full" == strValue)
         {
@@ -643,7 +651,6 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
                 m_layout.uPositionType = (m_layout.uPositionType & ~SizeY_Mask) | SizeY_FitContent;
             }
         }
-
     }
 
     if(0!=SSendMessage(WM_CREATE))

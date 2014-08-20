@@ -95,7 +95,7 @@ protected:
         ATTR_STRINGT(L"cursor",m_strCursor,FALSE)
         ATTR_INT(L"dotted",m_bDotted,FALSE)
         ATTR_INT(L"mouseRelay",m_bMouseRelay,FALSE)
-    SOUI_ATTRS_END()
+    SOUI_ATTRS_BREAK()      //属性不交给SObject处理
 };
 
 
