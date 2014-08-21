@@ -1,7 +1,7 @@
 ﻿<SOUI name="mainWindow" title="%title% ver:%ver%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="390" height="304" appWnd="1" resizable="0" translucent="1" >
   <root>
-    <window pos="0,0,-0,-0" skin="img_login_border" cache="1">
-      <tabctrl name="tab_main" pos="5,5,-5,-5" tabHeight="0">
+    <window pos="0,0,-0,-0" skin="img_login_border">
+      <tabctrl name="tab_main" pos="5,5,-5,-5" tabHeight="0" cache="1">
         <page title="login">
           <include src="LAYOUT:page_login"/>
         </page>

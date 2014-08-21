@@ -53,8 +53,8 @@
 
     </window>
     <window pos="5,-41,-5,-5">
-      <button name="btn_setting_ok" pos="-78,|-13,-8,|13">取消</button>
-      <button name="btn_setting_cancel" pos="-156,|-13,-86,|13">确定</button>
+      <button name="btn_setting_cancel" pos="-78,|-13,-8,|13">取消</button>
+      <button name="btn_setting_ok" pos="-156,|-13,-86,|13">确定</button>
     </window>
   </window>
 

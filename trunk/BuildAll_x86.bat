@@ -76,6 +76,7 @@ IF %SKIPLUA% NEQ "TRUE" (
 	call "%COMPILEDIR%..\IDE\devenv" soui.sln /build "Debug" /project "components\ScriptModule-LUA\ScriptModule\scriptmodule-lua%EXT%" /projectconfig "Debug"
 )
 call "%COMPILEDIR%..\IDE\devenv" soui.sln /build "Debug" /project "demo\demo%EXT%" /projectconfig "Debug"
+call "%COMPILEDIR%..\IDE\devenv" soui.sln /build "Debug" /project "qqlogin\qqlogin%EXT%" /projectconfig "Debug"
 
 ECHO Compile debug version finished.
 ECHO Press any key to compile release version.
@@ -97,6 +98,7 @@ IF %SKIPLUA% NEQ "TRUE" (
 	call "%COMPILEDIR%..\IDE\devenv" soui.sln /build "Release" /project "components\ScriptModule-LUA\ScriptModule\scriptmodule-lua%EXT%" /projectconfig "Release"
 )
 call "%COMPILEDIR%..\IDE\devenv" soui.sln /build "Release" /project "demo\demo%EXT%" /projectconfig "Release"
+call "%COMPILEDIR%..\IDE\devenv" soui.sln /build "Release" /project "qqlogin\qqlogin%EXT%" /projectconfig "Release"
 ECHO Compile debug version finished.
 
 pause

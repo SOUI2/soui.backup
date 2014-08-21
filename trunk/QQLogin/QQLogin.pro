@@ -41,3 +41,5 @@ SOURCES += MainDlg.cpp \
            image3d/3dlib.cpp \
            image3d/3dmatrix.cpp \
            image3d/3dtransform.cpp
+           
+RC_FILE += qqlogin.rc
