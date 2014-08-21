@@ -1,325 +1,223 @@
-<?xml version="1.0" encoding="gb2312"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
-	Name="QQLogin"
-	ProjectGUID="{79FD7180-1EF1-4D77-B0C5-44F99276A703}"
-	TargetFrameworkVersion="196613"
-	>
+	Version="9,00"
+	Name="qqlogin"
+	ProjectGUID="{85E534E8-CBE6-366B-897A-AD6CC3EE9FFD}"
+	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
-			Name="Win32"
-		/>
+			Name="Win32" />
 	</Platforms>
-	<ToolFiles>
-	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\bin\"
-			IntermediateDirectory="..\obj\debug\qqlogin\"
-			ConfigurationType="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			ConfigurationType="1"
+			IntermediateDirectory="..\obj\debug\qqlogin\"
+			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SOUIPATH)\SOUI\include&quot;;&quot;$(SOUIPATH)\utilities\include&quot;"
-				PreprocessorDefinitions="WIN32;_WINDOWS;STRICT;_DEBUG"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AssemblerListingLocation="..\obj\debug\qqlogin\"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4100,4101,4102,4189,4996"
+				ExceptionHandling="0"
+				ForcedIncludeFiles="stdafx.h"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\obj\debug\qqlogin\"
+				Optimization ="4"
+				PrecompiledHeaderFile="$(IntDir)\qqlogind.pch"
+				PrecompiledHeaderThrough="stdafx.h"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,DLL_SOUI"
+				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="1"
+				RuntimeTypeInfo="false"
+				SuppressStartupBanner="true"
 				TreatWChar_tAsBuiltInType="false"
 				UsePrecompiledHeader="2"
-				BrowseInformation="1"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="4"
-			/>
+				WarningLevel="3" />
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="utilitiesd.lib souid.lib"
-				LinkIncremental="2"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;"
+				AdditionalLibraryDirectories="..\bin"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				GenerateDebugInformation="true"
-			/>
+				IgnoreImportLibrary="true"
+				LinkTimeCodeGeneration="0"
+				OutputFile="$(OutDir)\qqlogind.exe"
+				ProgramDatabaseFile=""
+				SubSystem="2"
+				SuppressStartupBanner="true"
+				TargetMachine="1" />
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCManifestTool" />
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPostBuildEventTool" />
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreBuildEventTool" />
 			<Tool
-				Name="VCFxCopTool"
-			/>
+				Name="VCPreLinkEventTool" />
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,DLL_SOUI,_DEBUG" />
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\bin\"
-			IntermediateDirectory="..\obj\Release\qqlogin\"
-			ConfigurationType="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			ConfigurationType="1"
+			IntermediateDirectory="..\obj\release\qqlogin\"
+			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="&quot;..\SOUI\include&quot;;&quot;..\utilities\include&quot;"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AssemblerListingLocation="..\obj\release\qqlogin\"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4100,4101,4102,4189,4996"
+				ExceptionHandling="0"
+				ForcedIncludeFiles="stdafx.h"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\obj\release\qqlogin\"
+				Optimization ="1"
+				PrecompiledHeaderFile="$(IntDir)\qqlogin.pch"
+				PrecompiledHeaderThrough="stdafx.h"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,DLL_SOUI,NDEBUG"
+				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="0"
+				RuntimeTypeInfo="false"
+				SuppressStartupBanner="true"
 				TreatWChar_tAsBuiltInType="false"
 				UsePrecompiledHeader="2"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-			/>
+				WarningLevel="3" />
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="utilities.lib soui.lib"
-				LinkIncremental="1"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;"
+				AdditionalLibraryDirectories="..\bin"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				EnableCOMDATFolding="2"
 				GenerateDebugInformation="true"
-			/>
+				IgnoreImportLibrary="true"
+				LinkIncremental="1"
+				LinkTimeCodeGeneration="0"
+				OptimizeReferences="2"
+				OutputFile="$(OutDir)\qqlogin.exe"
+				ProgramDatabaseFile=""
+				SubSystem="2"
+				SuppressStartupBanner="true"
+				TargetMachine="1" />
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCManifestTool" />
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPostBuildEventTool" />
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreBuildEventTool" />
 			<Tool
-				Name="VCFxCopTool"
-			/>
+				Name="VCPreLinkEventTool" />
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,DLL_SOUI" />
 		</Configuration>
 	</Configurations>
-	<References>
-	</References>
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
-			>
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath=".\image3d\3dlib.cpp"
-				>
-			</File>
+				RelativePath="image3d\3dlib.cpp" />
 			<File
-				RelativePath=".\image3d\3dmatrix.cpp"
-				>
-			</File>
+				RelativePath="image3d\3dmatrix.cpp" />
 			<File
-				RelativePath=".\image3d\3dtransform.cpp"
-				>
-			</File>
+				RelativePath="image3d\3dtransform.cpp" />
 			<File
-				RelativePath=".\MainDlg.cpp"
-				>
-			</File>
+				RelativePath="MainDlg.cpp" />
 			<File
-				RelativePath=".\QQLogin.cpp"
-				>
-			</File>
+				RelativePath="QQLogin.cpp" />
 			<File
-				RelativePath=".\stdafx.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\STurn3DView.cpp"
-				>
-			</File>
+				RelativePath="STurn3DView.cpp" />
 		</Filter>
 		<Filter
 			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc"
-			>
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath=".\image3d\3dlib.h"
-				>
-			</File>
+				RelativePath="image3d\3dTransform.h" />
 			<File
-				RelativePath=".\image3d\3dmatrix.h"
-				>
-			</File>
+				RelativePath="image3d\3dlib.h" />
 			<File
-				RelativePath=".\image3d\3dTransform.h"
-				>
-			</File>
+				RelativePath="image3d\3dmatrix.h" />
 			<File
-				RelativePath=".\MainDlg.h"
-				>
-			</File>
+				RelativePath="MainDlg.h" />
 			<File
-				RelativePath=".\image3d\PerspectiveTransform.h"
-				>
-			</File>
+				RelativePath="image3d\PerspectiveTransform.h" />
 			<File
-				RelativePath=".\resource.h"
-				>
-			</File>
+				RelativePath="STurn3DView.h" />
 			<File
-				RelativePath=".\stdafx.h"
-				>
-			</File>
+				RelativePath="resource.h" />
 			<File
-				RelativePath=".\STurn3DView.h"
-				>
+				RelativePath="stdafx.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="echo /*-------------------------------------------------------------------- >stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * Precompiled header source file used by Visual Studio.NET to generate>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * the .pch file.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * Due to issues with the dependencies checker within the IDE, it>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * sometimes fails to recompile the PCH file, if we force the IDE to>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * create the PCH file directly from the header file.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * This file is auto-generated by qmake since no PRECOMPILED_SOURCE was>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * specified, and is used as the common stdafx.cpp. The file is only>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * generated when creating .vcproj project files, and is not used for>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * command line compilations by nmake.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * WARNING: All changes made in this file will be lost.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo --------------------------------------------------------------------*/>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo #include &quot;stdafx.h&quot;>>stdafx.h.cpp"
+						Description="Generating precompiled header source file &apos;stdafx.h.cpp&apos; ..."
+						Outputs="stdafx.h.cpp" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="echo /*-------------------------------------------------------------------- >stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * Precompiled header source file used by Visual Studio.NET to generate>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * the .pch file.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * Due to issues with the dependencies checker within the IDE, it>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * sometimes fails to recompile the PCH file, if we force the IDE to>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * create the PCH file directly from the header file.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * This file is auto-generated by qmake since no PRECOMPILED_SOURCE was>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * specified, and is used as the common stdafx.cpp. The file is only>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * generated when creating .vcproj project files, and is not used for>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * command line compilations by nmake.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * WARNING: All changes made in this file will be lost.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo --------------------------------------------------------------------*/>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo #include &quot;stdafx.h&quot;>>stdafx.h.cpp"
+						Description="Generating precompiled header source file &apos;stdafx.h.cpp&apos; ..."
+						Outputs="stdafx.h.cpp" />
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest"
-			>
+			Name="Generated Files"
+			Filter="cpp;c;cxx;moc;h;def;odl;idl;res;"
+			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}">
 			<File
-				RelativePath=".\QQLogin.rc"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Skin Files"
-			Filter="idx;xml;png;gif;jpg;ico;"
-			>
-			<File
-				RelativePath=".\uires\xml\page_login.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\uires\xml\page_settings.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\uires\uires.idx"
-				>
+				RelativePath="stdafx.h.cpp">
 				<FileConfiguration
-					Name="Debug|Win32"
-					>
+					Name="Debug|Win32">
 					<Tool
-						Name="VCCustomBuildTool"
-						Description="Building UI Resource"
-						CommandLine="&quot;..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2&#x0D;&#x0A;"
-						Outputs=".\res\soui_res.rc2;"
-					/>
+						Name="VCCLCompilerTool"
+						ForcedIncludeFiles="$(NOINHERIT)"
+						PrecompiledHeaderThrough="stdafx.h"
+						UsePrecompiledHeader="1" />
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
-						Name="VCCustomBuildTool"
-						Description="Building UI Resource"
-						CommandLine="&quot;..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2&#x0D;&#x0A;"
-						Outputs=".\res\soui_res.rc2;"
-					/>
+						Name="VCCLCompilerTool"
+						ForcedIncludeFiles="$(NOINHERIT)"
+						PrecompiledHeaderThrough="stdafx.h"
+						UsePrecompiledHeader="1" />
 				</FileConfiguration>
 			</File>
-			<Filter
-				Name="image"
-				>
-				<File
-					RelativePath=".\uires\image\soui.ico"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="XML"
-				>
-				<File
-					RelativePath=".\uires\xml\dlg_main.xml"
-					>
-				</File>
-				<File
-					RelativePath=".\uires\xml\init.xml"
-					>
-				</File>
-			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
