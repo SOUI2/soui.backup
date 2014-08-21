@@ -19,3 +19,4 @@ DLL_SOUI{
 	SUBDIRS += components/ScriptModule-LUA/ScriptModule
 }
 SUBDIRS += demo
+SUBDIRS += qqlogin

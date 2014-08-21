@@ -278,7 +278,15 @@ namespace SOUI
 	HRESULT SRenderTarget_Skia::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha)
 	{
 		if(cchLen<0) cchLen= _tcslen(pszText);
-		if(cchLen==0) return S_FALSE;
+		if(cchLen==0)
+        {
+            if(uFormat & DT_CALCRECT)
+            {
+                pRc->right=pRc->left;
+                pRc->bottom=pRc->top;
+            }
+            return S_OK;
+        }
 		
 		SStringW strW=S_CT2W(SStringT(pszText,cchLen));
         SkPaint     txtPaint = m_curFont->GetPaint();
