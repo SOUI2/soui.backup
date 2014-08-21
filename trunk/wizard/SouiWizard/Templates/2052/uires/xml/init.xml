@@ -7,8 +7,8 @@
     <ver value="1.0"/>
   </string>
   
-  <skins>
-  </skins>
+  <skin>
+  </skin>
 
   <style>
     <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
