@@ -113,7 +113,7 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     {
         GETSKINPOOLMGR->PushSkinPool(m_privateSkinPool);
     }    
-    DWORD dwStyle =CSimpleWnd::GetStyle()|WS_CAPTION;
+    DWORD dwStyle =CSimpleWnd::GetStyle();
     DWORD dwExStyle  = CSimpleWnd::GetExStyle();
     
     SHostWndAttr hostAttr;
