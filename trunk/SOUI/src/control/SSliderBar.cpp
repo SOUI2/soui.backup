@@ -165,9 +165,7 @@ void SSliderBar::OnLButtonUp(UINT nFlags, CPoint point)
     {
         m_bDrag   = FALSE;
         CRect rcThumb = GetPartRect(SC_THUMB);
-        IRenderTarget *pRT  = GetRenderTarget(&rcThumb, OLEDC_PAINTBKGND);
-        m_pSkinThumb->Draw(pRT, rcThumb, IIF_STATE4(WndState_Hover, 0, 1, 2, 3), m_byAlpha);
-        ReleaseRenderTarget(pRT);
+        InvalidateRect(rcThumb);
     }
     OnMouseMove(nFlags,point);
 }
@@ -233,11 +231,9 @@ void SSliderBar::OnMouseMove(UINT nFlags, CPoint point)
         int uHit = HitTest(point);
         if (uHit != m_uHtPrev && (m_uHtPrev==SC_THUMB || uHit==SC_THUMB))
         {
-            CRect rcThumb = GetPartRect(SC_THUMB);
-            IRenderTarget  * pRT  = GetRenderTarget(&rcThumb, OLEDC_PAINTBKGND);
-            m_pSkinThumb->Draw(pRT, rcThumb, IIF_STATE4(uHit==SC_THUMB?WndState_Hover:WndState_Normal, 0, 1, 2, 3), m_byAlpha);
-            ReleaseRenderTarget(pRT);
             m_uHtPrev = uHit;
+            CRect rcThumb = GetPartRect(SC_THUMB);
+            InvalidateRect(rcThumb);
         }
     }
 }
@@ -247,9 +243,8 @@ void SSliderBar::OnMouseLeave()
     if (!m_bDrag && m_uHtPrev==SC_THUMB)
     {
         CRect rcThumb = GetPartRect(SC_THUMB);
-        IRenderTarget  * pRT  = GetRenderTarget(&rcThumb, OLEDC_PAINTBKGND);
-        m_pSkinThumb->Draw(pRT, rcThumb, IIF_STATE4(WndState_Normal, 0, 1, 2, 3), m_byAlpha);
-        ReleaseRenderTarget(pRT);
+        InvalidateRect(rcThumb);
+        Invalidate();
         m_uHtPrev=-1;
     }
 }
