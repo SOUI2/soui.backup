@@ -541,6 +541,8 @@ void SHostWnd::UpdateHost(HDC dc, const CRect &rcInvalid )
         CRect rc;
         CSimpleWnd::GetWindowRect(&rc);
         BLENDFUNCTION bf= {AC_SRC_OVER,0,0xFF,AC_SRC_ALPHA};
+        HDC hdcDst=::GetDC(NULL);
+        /*
         typedef 
         BOOL (WINAPI *Fun_UpdateLayeredWindow)(
             __in HWND hWnd,
@@ -560,8 +562,7 @@ void SHostWnd::UpdateHost(HDC dc, const CRect &rcInvalid )
         static Fun_UpdateLayeredWindow s_FunUpdateLayeredWindow = (Fun_UpdateLayeredWindow)GetProcAddress(GetModuleHandle(_T("user32.dll")),"UpdateLayeredWindow");
         static Fun_UpdateLayeredWindowIndirect s_FunUpdateLayeredWindowIndirect = (Fun_UpdateLayeredWindowIndirect)GetProcAddress(GetModuleHandle(_T("user32.dll")),"UpdateLayeredWindowIndirect");
         
-        HDC hdcDst=::GetDC(NULL);
-        if(s_FunUpdateLayeredWindowIndirect)
+        if(s_FunUpdateLayeredWindowIndirect && 0)
         {
             UPDATELAYEREDWINDOWINFO info;
             info.cbSize = sizeof(info);
@@ -580,6 +581,8 @@ void SHostWnd::UpdateHost(HDC dc, const CRect &rcInvalid )
         {
             s_FunUpdateLayeredWindow(m_hWnd,hdcDst,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
         }
+        */
+        ::UpdateLayeredWindow(m_hWnd,hdcDst,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
         ::ReleaseDC(NULL,hdcDst);
     }
     else
