@@ -150,8 +150,8 @@ void SSliderBar::OnPaint(IRenderTarget * pRT)
     }
     CRect rcThumb = GetPartRect(SC_THUMB);
     int nState=0;//normal
-    if(m_bDrag) nState=1;//pushback
-    else if(m_uHtPrev==SC_THUMB) nState=2;//hover
+    if(m_bDrag) nState=2;//pushback
+    else if(m_uHtPrev==SC_THUMB) nState=1;//hover
     m_pSkinThumb->Draw(pRT, rcThumb, nState,m_byAlpha);
 
     AfterPaint(pRT, painter);
