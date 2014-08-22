@@ -673,9 +673,6 @@ namespace SOUI
         CRect        m_rcGetRT;
         DWORD        m_gdcFlags;
         BOOL         m_bClipRT;
-        //备分GetRenderTarget时RT中的字体及颜色
-        CAutoRefPtr<IRenderObj> m_oldFont;
-        COLORREF     m_oldColor;
     public:
         SWND GetCapture();
         SWND SetCapture();
