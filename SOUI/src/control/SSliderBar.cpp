@@ -180,6 +180,7 @@ void SSliderBar::OnLButtonDown(UINT nFlags, CPoint point)
         m_bDrag    = TRUE;
         m_ptDrag   = point;
         m_nDragValue=m_nValue;
+        Invalidate();
     }
     else
     {
@@ -196,6 +197,11 @@ void SSliderBar::OnLButtonDown(UINT nFlags, CPoint point)
             }
             SetValue(nValue);
             NotifyPos(SC_THUMB,m_nValue);
+            Invalidate();
+
+            m_bDrag    = TRUE;
+            m_ptDrag   = point;
+            m_nDragValue=m_nValue;
         }
     }
 }
