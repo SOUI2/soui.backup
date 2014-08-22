@@ -1330,40 +1330,19 @@ IRenderTarget * SWindow::GetRenderTarget(const LPRECT pRc/*=NULL*/,DWORD gdcFlag
         m_rcGetRT.IntersectRect(pRc,&m_rcGetRT);
         m_bClipRT=!m_rcGetRT.EqualRect(pRc);
     }
-    IRenderTarget *pRT=NULL;
-    if(!m_bCacheDraw) 
-        pRT=GetContainer()->OnGetRenderTarget(m_rcGetRT,gdcFlags);
-    else
-    {
-        pRT=m_cachedRT;
-        pRT->SetViewportOrg(-m_rcWindow.TopLeft());
-    }
+    IRenderTarget *pRT=GetContainer()->OnGetRenderTarget(m_rcGetRT,gdcFlags);   //不管是不是cache都直接从container获取RT
     SASSERT(pRT);
     
     if(m_bClipRT)
     {
         pRT->PushClipRect(&m_rcGetRT,RGN_COPY);
     }
-    if(!m_bCacheDraw && gdcFlags&OLEDC_PAINTBKGND)
+    if(gdcFlags&OLEDC_PAINTBKGND)
+    {
         PaintBackground(pRT,&m_rcGetRT);
+    }
         
-    m_oldFont=pRT->GetCurrentObject(OT_FONT);
-    m_oldColor=pRT->GetTextColor();
-    //获得父窗口列表
-    SList<SWindow*> lstParent;
-    SWindow *pParent=GetParent();
-    while(pParent)
-    {
-        lstParent.AddHead(pParent);
-        pParent=pParent->GetParent();
-    }
-    POSITION pos=lstParent.GetHeadPosition();
-    while(pos)
-    {
-        SWindow *pWnd=lstParent.GetNext(pos);
-        SPainter painter;
-        pWnd->BeforePaint(pRT,painter);
-    }
+    BeforePaintEx(pRT);
     return pRT;
 }
 
@@ -1373,22 +1352,8 @@ void SWindow::ReleaseRenderTarget(IRenderTarget *pRT)
         PaintForeground(pRT,&m_rcGetRT);
     if(m_bClipRT)
         pRT->PopClip();
-    
-    pRT->SelectObject(m_oldFont);
-    pRT->SetTextColor(m_oldColor);
-    m_oldFont=NULL;
-    m_oldColor=CR_INVALID;
-    
-    if(!m_bCacheDraw)
-    {
-        GetContainer()->OnReleaseRenderTarget(pRT,m_rcGetRT,m_gdcFlags);
-    }
-    else if(!(m_gdcFlags & OLEDC_NODRAW))
-    {//画到自己的缓存上时，需要把绘制内容传递给host
-        IRenderTarget *pRTHost=GetContainer()->OnGetRenderTarget(m_rcGetRT,m_gdcFlags);
-        pRTHost->BitBlt(m_rcGetRT,pRT,m_rcGetRT.left,m_rcGetRT.top,SRCCOPY|0x80000000);
-        GetContainer()->OnReleaseRenderTarget(pRTHost,m_rcGetRT,m_gdcFlags);
-    }
+        
+    GetContainer()->OnReleaseRenderTarget(pRT,m_rcGetRT,m_gdcFlags);
     
     m_bClipRT=FALSE;
     m_gdcFlags=-1;
@@ -1849,7 +1814,6 @@ void SWindow::OnSize( UINT nType, CSize size )
         if(!m_cachedRT)
         {
             GETRENDERFACTORY->CreateRenderTarget(&m_cachedRT,m_rcWindow.Width(),m_rcWindow.Height());
-            BeforePaintEx(m_cachedRT);  //从父窗口中继承字体等属性
         }else
         {
             m_cachedRT->Resize(m_rcWindow.Size());

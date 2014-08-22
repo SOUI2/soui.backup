@@ -95,7 +95,7 @@ namespace SOUI
         //渲染窗口变化前状态
         pFrmWnd->PaintBackground(pRT,rcWnd);
         pFrmWnd->RedrawRegion(pRT,NULL);
-
+        
         CAutoRefPtr<IRenderTarget> pRTCopy1;
         GETRENDERFACTORY->CreateRenderTarget(&pRTCopy1,rcWnd.Width(),rcWnd.Height());
         pRTCopy1->BitBlt(CRect(CPoint(0,0),rcWnd.Size()),pRT,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
