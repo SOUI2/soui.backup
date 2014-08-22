@@ -151,6 +151,10 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
         m_dummyWnd.SetWindowLongPtr(GWL_EXSTYLE,m_dummyWnd.GetWindowLongPtr(GWL_EXSTYLE) | WS_EX_LAYERED);
         ::SetLayeredWindowAttributes(m_dummyWnd.m_hWnd,0,0,LWA_ALPHA);
         m_dummyWnd.ShowWindow(SW_SHOWNOACTIVATE);
+    }else if(dwExStyle & WS_EX_LAYERED || m_hostAttr.m_byAlpha!=0xFF)
+    {
+        if(!(dwExStyle & WS_EX_LAYERED)) ModifyStyleEx(0,WS_EX_LAYERED);
+        ::SetLayeredWindowAttributes(m_hWnd,0,m_hostAttr.m_byAlpha,LWA_ALPHA);
     }
     if(m_hostAttr.m_hAppIconSmall)
     {
@@ -537,9 +541,46 @@ void SHostWnd::UpdateHost(HDC dc, const CRect &rcInvalid )
         CRect rc;
         CSimpleWnd::GetWindowRect(&rc);
         BLENDFUNCTION bf= {AC_SRC_OVER,0,0xFF,AC_SRC_ALPHA};
-        HDC hdcSrc=::GetDC(NULL);
-        UpdateLayeredWindow(hdcSrc,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
-        ::ReleaseDC(NULL,hdcSrc);
+        typedef 
+        BOOL (WINAPI *Fun_UpdateLayeredWindow)(
+            __in HWND hWnd,
+            __in_opt HDC hdcDst,
+            __in_opt POINT* pptDst,
+            __in_opt SIZE* psize,
+            __in_opt HDC hdcSrc,
+            __in_opt POINT* pptSrc,
+            __in COLORREF crKey,
+            __in_opt BLENDFUNCTION* pblend,
+            __in DWORD dwFlags);
+        typedef 
+        BOOL (WINAPI *Fun_UpdateLayeredWindowIndirect)(
+            __in HWND hWnd,
+            __in_ecount(1) UPDATELAYEREDWINDOWINFO CONST *pULWInfo);
+        
+        static Fun_UpdateLayeredWindow s_FunUpdateLayeredWindow = (Fun_UpdateLayeredWindow)GetProcAddress(GetModuleHandle(_T("user32.dll")),"UpdateLayeredWindow");
+        static Fun_UpdateLayeredWindowIndirect s_FunUpdateLayeredWindowIndirect = (Fun_UpdateLayeredWindowIndirect)GetProcAddress(GetModuleHandle(_T("user32.dll")),"UpdateLayeredWindowIndirect");
+        
+        HDC hdcDst=::GetDC(NULL);
+        if(s_FunUpdateLayeredWindowIndirect)
+        {
+            UPDATELAYEREDWINDOWINFO info;
+            info.cbSize = sizeof(info);
+            info.hdcDst=hdcDst;
+            info.pptDst = & rc.TopLeft();
+            info.psize = & rc.Size();
+            info.hdcSrc=hdc;
+            info.pptSrc = & CPoint(0,0);
+            info.crKey  = 0;
+            info.pblend = &bf;
+            info.prcDirty = & rcInvalid;
+            info.dwFlags = ULW_ALPHA;
+            s_FunUpdateLayeredWindowIndirect(m_hWnd,&info);
+        }
+        else if(s_FunUpdateLayeredWindow)
+        {
+            s_FunUpdateLayeredWindow(m_hWnd,hdcDst,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
+        }
+        ::ReleaseDC(NULL,hdcDst);
     }
     else
     {

@@ -48,6 +48,7 @@ namespace SOUI
             , m_dwExStyle(0)
             , m_hAppIconSmall(NULL)
             , m_hAppIconBig(NULL)
+            , m_byAlpha(0xFF)
         {
 
         }
@@ -74,6 +75,7 @@ namespace SOUI
             ATTR_INT(L"toolWindow",m_bToolWnd,FALSE)
             ATTR_ICON(L"smallIcon",m_hAppIconSmall,FALSE)
             ATTR_ICON(L"bigIcon",m_hAppIconBig,FALSE)
+            ATTR_UINT(L"alpha",m_byAlpha,FALSE)
         SOUI_ATTRS_END()
 
         CRect m_rcMargin;
@@ -84,6 +86,7 @@ namespace SOUI
         BOOL m_bAppWnd;
         BOOL m_bToolWnd;
         BOOL m_bTranslucent;    //窗口的半透明属性
+        BYTE m_byAlpha;         //透明度
 
         DWORD m_dwStyle;
         DWORD m_dwExStyle;

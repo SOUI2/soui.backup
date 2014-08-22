@@ -15,9 +15,6 @@
       <caption pos="0,80,-0,-0">
             <img pos="23,37,101,115" skin="img_head" />
             <img pos="22,36,102,116" skin="img_head_mask" />
-        <!--
-            <img pos="87,101,98,112" skin="img_status_invisible" />
-            -->
 
         <comboboxex name="cbx_account" pos="114,36,300,64" dropDown="0" dropHeight="200" class="cls_edit" curSel="0" id_text="3">
           <liststyle class="cls_edit"   itemHeight="44" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#3991D1" colorBkgnd="#70BCDC">
