@@ -13,9 +13,9 @@
   <imgframe name="_skin.sys.header" src="PNG:SYS_HEADER" margin-x="3" margin-y="3" states="4"/>
   <imgframe name="_skin.sys.split.vert" src="PNG:SYS_SPLIT_VERT" top="20" bottom="10"/>
   <imgframe name="_skin.sys.split.horz" src="PNG:SYS_SPLIT_HORZ" left="20" right="10"/>
-  <imgframe name="_skin.prog.bkgnd" src="PNG:SYS_PROG_BKGND" margin-x="5"/>
-  <imgframe name="_skin.prog.bar" src="PNG:SYS_PROG_BAR" margin-x="3"/>
-  <imglist name="_skin.slider.thumb" src="PNG:SYS_SLIDER_THUMB" states="4"/>
+  <imgframe name="_skin.sys.prog.bkgnd" src="PNG:SYS_PROG_BKGND" margin-x="5"/>
+  <imgframe name="_skin.sys.prog.bar" src="PNG:SYS_PROG_BAR" margin-x="3"/>
+  <imglist name="_skin.sys.slider.thumb" src="PNG:SYS_SLIDER_THUMB" states="4"/>
 
   <imglist name="_skin.sys.btn.close" src="PNG:SYS_BTN_CLOSE" states="3" />
   <imglist name="_skin.sys.btn.minimize" src="PNG:SYS_BTN_MINIMIZE" states="3" />
