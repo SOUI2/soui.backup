@@ -59,10 +59,11 @@ IFontPtr SFontPool::GetFont( const SStringW & strFont )
     int nPosBegin=attr.Find(_T("face:"));                     
     if(nPosBegin!=-1)                                         
     {                                                         
-        nPosBegin+=9;                                             
-        int nPosEnd=attr.Find(_T(";"),nPosBegin);                 
-        if(nPosEnd==-1) nPosEnd=attr.GetLength();                 
-        strFace=attr.Mid(nPosBegin,nPosEnd-nPosBegin);        
+        nPosBegin+=5;                                             
+        int nPosEnd=attr.Find(_T(";"),nPosBegin);
+        if(nPosEnd==-1) nPosEnd=attr.Find(_T(","),nPosBegin);
+        if(nPosEnd==-1) nPosEnd=attr.GetLength();
+        strFace=attr.Mid(nPosBegin,nPosEnd-nPosBegin);
     }                                                         
     nPosBegin=attr.Find(_T("bold:"));                         
     if(nPosBegin!=-1)                                         
@@ -131,8 +132,8 @@ IFontPtr SFontPool::_CreateFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, BOOL 
     lfNew.lfItalic      = (FALSE != bItalic);
     lfNew.lfStrikeOut   = (FALSE != bStrike);
     lfNew.lfHeight = -_GetFontAbsHeight(lfNew.lfHeight - chAdding);//lfNew.lfHeight应该为负值
-
     lfNew.lfQuality = CLEARTYPE_NATURAL_QUALITY;
+    _tcscpy_s(lfNew.lfFaceName,_countof(lfNew.lfFaceName),  strFaceName);
 
     IFontPtr pFont=NULL;
     SASSERT(m_RenderFactory);
