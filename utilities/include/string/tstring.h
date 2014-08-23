@@ -646,6 +646,43 @@ namespace SOUI
             return *this;
         }
 
+
+        static bool IsBlankChar(const tchar &c)
+        {
+            const tchar szBlank[]={0x0a,0x0d,0x20,0x09};
+            for(int i = 0; i<ARRAYSIZE(szBlank);i++)
+            {
+                if(c == szBlank[i]) return true;
+            }
+            return false;
+        }
+
+        void TrimBlank()
+        {
+            if(IsEmpty()) return;
+
+            const tchar * pbuf=m_pszData;
+            const tchar * p = pbuf;
+            //look for start
+            while(*p)
+            {
+                if(!IsBlankChar(*p)) break;
+                p++;
+            }
+            const tchar * p1=p;   //get start
+            //look for end
+            const tchar * p2=pbuf + GetLength()-1;
+            while(p2>=p1)
+            {
+                if(!IsBlankChar(*p2)) break;
+                p2--;
+            }
+            if(p2 < p1)
+                Empty();
+            else
+                (*this) = TStringT<tchar, tchar_traits>(p1,p2-p1+1);
+        }
+
         // insert character at zero-based index; concatenates if index is past end of string
         int Insert(int nIndex, tchar ch)
         {
