@@ -59,6 +59,5 @@
         <include src="layout:page_about"/>
       </page>
     </tabctrl>
-<!--     <include src="layout:page_treebox"/> -->
   </root>
 </SOUI>
