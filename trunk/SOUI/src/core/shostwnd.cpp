@@ -540,7 +540,8 @@ void SHostWnd::UpdateHost(HDC dc, const CRect &rcInvalid )
     {
         CRect rc;
         CSimpleWnd::GetWindowRect(&rc);
-        BLENDFUNCTION bf= {AC_SRC_OVER,0,0xFF,AC_SRC_ALPHA};
+        SASSERT(m_hostAttr.m_byAlpha>5);
+        BLENDFUNCTION bf= {AC_SRC_OVER,0,m_hostAttr.m_byAlpha,AC_SRC_ALPHA};
         HDC hdcDst=::GetDC(NULL);
         /*
         typedef 
@@ -1044,9 +1045,9 @@ BOOL SHostWnd::UnregisterTimelineHandler( ITimelineHandler *pHandler )
     return bRet;
 }
 
-const SStringW & SHostWnd::GetHostName()
+const SStringW & SHostWnd::GetTranslatorContext()
 {
-    return m_hostAttr.m_strName;
+    return m_hostAttr.m_strTrCtx;
 }
 
 SMessageLoop * SHostWnd::GetMsgLoop()

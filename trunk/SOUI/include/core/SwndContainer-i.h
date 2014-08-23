@@ -50,7 +50,7 @@ namespace SOUI
 
         virtual HWND GetHostHwnd()=0;
 
-        virtual const SStringW & GetHostName()=0;
+        virtual const SStringW & GetTranslatorContext()=0;
 
         virtual BOOL IsTranslucent()=0;
 

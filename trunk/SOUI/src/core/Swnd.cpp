@@ -569,7 +569,7 @@ BOOL SWindow::CreateChildren(pugi::xml_node xmlNode)
 
 SStringW SWindow::tr( const SStringW &strSrc )
 {
-    return TR(strSrc,GetContainer()->GetHostName());
+    return TR(strSrc,GetContainer()->GetTranslatorContext());
 }
 
 bool IsBlankChar(const wchar_t &c)

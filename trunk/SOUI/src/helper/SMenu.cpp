@@ -185,7 +185,7 @@ SMenu::SMenu( const SMenu & src )
 {
     m_pParent=src.m_pParent;
     m_hMenu=src.m_hMenu;
-    m_menuSkin=src.m_menuSkin;    
+    m_menuAttr=src.m_menuAttr;    
 }
 
 SMenu::~SMenu(void)
@@ -212,8 +212,8 @@ BOOL SMenu::LoadMenu( pugi::xml_node xmlMenu )
     m_hMenu=CreatePopupMenu();
     if(!m_hMenu) return FALSE;
 
-    m_menuSkin.InitFromXml(xmlMenu);
-    SASSERT(m_menuSkin.m_pItemSkin);
+    m_menuAttr.InitFromXml(xmlMenu);
+    SASSERT(m_menuAttr.m_pItemSkin);
 
     BuildMenu(m_hMenu,xmlMenu);
 
@@ -226,7 +226,7 @@ SMenu SMenu::GetSubMenu(int nPos)
     SMenu ret;
     ret.m_pParent=this;
     ret.m_hMenu=hSubMenu;
-    ret.m_menuSkin=m_menuSkin;
+    ret.m_menuAttr=m_menuAttr;
     return ret;
 }
 
@@ -242,6 +242,7 @@ BOOL SMenu::InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTSTR 
     pMenuData->hMenu=m_hMenu;
     pMenuData->itemInfo.iIcon=iIcon;
     pMenuData->itemInfo.strText=strText;
+    pMenuData->itemInfo.strText=S_CW2T(TR(strText,m_menuAttr.m_strTrCtx));
 
     if(nFlags&MF_POPUP)
     {
@@ -289,7 +290,7 @@ UINT SMenu::TrackPopupMenu(
     SASSERT(IsMenu(m_hMenu));
 
     SMenuODWnd menuOwner(hWnd);
-    *(static_cast<SMenuAttr*>(&menuOwner))=m_menuSkin;
+    *(static_cast<SMenuAttr*>(&menuOwner))=m_menuAttr;
     menuOwner.Create(NULL,WS_POPUP,WS_EX_NOACTIVATE,0,0,0,0,NULL,NULL);
     UINT uNewFlags=uFlags|TPM_RETURNCMD;
     UINT uRet=::TrackPopupMenu(m_hMenu,uNewFlags,x,y,0,menuOwner.m_hWnd,prcRect);
@@ -309,7 +310,7 @@ void SMenu::BuildMenu( HMENU menuPopup,pugi::xml_node xmlNode )
             SMenuItemData *pdmmi=new SMenuItemData;
             pdmmi->hMenu=menuPopup;
             pdmmi->itemInfo.iIcon=xmlItem.attribute(L"icon").as_int(-1);
-            pdmmi->itemInfo.strText=S_CW2T(TR(xmlItem.text().get(),xmlNode.attribute(L"name").value()));
+            pdmmi->itemInfo.strText=S_CW2T(TR(xmlItem.text().get(),m_menuAttr.m_strTrCtx));
 
             int nID=xmlItem.attribute(L"id").as_int(0);
             BOOL bCheck=xmlItem.attribute(L"check").as_bool(false);

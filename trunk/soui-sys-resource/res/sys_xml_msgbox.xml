@@ -1,4 +1,4 @@
-﻿<SOUI title="mesagebox" width="200" height="100" appwin="0" frameSize="40,30,10,80" minSize="300,100" resize="0" translucent="1" >
+﻿<SOUI title="mesagebox" width="200" height="100" appwin="0" frameSize="40,30,10,80" minSize="300,100" resize="0" translucent="1" trCtx="messagebox">
   <style>
     <class name="normalbtn" skin="_skin.sys.btn.normal" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
   </style>
