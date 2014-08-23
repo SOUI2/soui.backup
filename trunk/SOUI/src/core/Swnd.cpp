@@ -572,42 +572,6 @@ SStringW SWindow::tr( const SStringW &strSrc )
     return TR(strSrc,GetContainer()->GetTranslatorContext());
 }
 
-bool IsBlankChar(const wchar_t &c)
-{
-    const wchar_t szBlank[]={0x0a,0x0d,0x20,0x09};
-    for(int i = 0; i<ARRAYSIZE(szBlank);i++)
-    {
-        if(c == szBlank[i]) return true;
-    }
-    return false;
-}
-
-void StrTrim(SStringW & str)
-{
-    if(str.IsEmpty()) return;
-    
-    LPCWSTR pbuf=str;
-    LPCWSTR p = pbuf;
-    //look for start
-    while(*p)
-    {
-        if(!IsBlankChar(*p)) break;
-        p++;
-    }
-    LPCWSTR p1=p;   //get start
-    //look for end
-    LPCWSTR p2=pbuf + str.GetLength()-1;
-    while(p2>=p1)
-    {
-        if(!IsBlankChar(*p2)) break;
-        p2--;
-    }
-    if(p2 < p1)
-        str.Empty();
-    else
-        str=SStringW(p1,p2-p1+1);
-}
-
 // Create SWindow from xml element
 BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
 {
@@ -621,7 +585,7 @@ BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
 
     if (!m_strText.IsEmpty())
     {
-        StrTrim(m_strText);
+        m_strText.TrimBlank();
         if (!m_strText.IsEmpty()) BUILDSTRING(m_strText);
     }
 

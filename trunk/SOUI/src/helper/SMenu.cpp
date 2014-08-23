@@ -310,7 +310,9 @@ void SMenu::BuildMenu( HMENU menuPopup,pugi::xml_node xmlNode )
             SMenuItemData *pdmmi=new SMenuItemData;
             pdmmi->hMenu=menuPopup;
             pdmmi->itemInfo.iIcon=xmlItem.attribute(L"icon").as_int(-1);
-            pdmmi->itemInfo.strText=S_CW2T(TR(xmlItem.text().get(),m_menuAttr.m_strTrCtx));
+            SStringW strText = xmlItem.text().get();
+            strText.TrimBlank();
+            pdmmi->itemInfo.strText=S_CW2T(TR(strText,m_menuAttr.m_strTrCtx));
 
             int nID=xmlItem.attribute(L"id").as_int(0);
             BOOL bCheck=xmlItem.attribute(L"check").as_bool(false);
