@@ -38,10 +38,13 @@ struct student{
 //init listctrl
 void CMainDlg::InitListCtrl()
 {
+    //找到列表控件
     SListCtrl *pList=FindChildByName2<SListCtrl>(L"lc_test");
     if(pList)
     {
+        //列表控件的唯一子控件即为表头控件
         SWindow *pHeader=pList->GetWindow(GSW_FIRSTCHILD);
+        //向表头控件订阅表明点击事件，并把它和OnListHeaderClick函数相连。
         pHeader->GetEventSet()->subscribeEvent(EVT_HEADER_CLICK,Subscriber(&CMainDlg::OnListHeaderClick,this));
 
         TCHAR szSex[][5]={_T("男"),_T("女"),_T("人妖")};
@@ -90,12 +93,15 @@ int funCmpare(void* pCtx,const void *p1,const void *p2)
     }
 }
 
+//表头点击事件处理函数
 bool CMainDlg::OnListHeaderClick(EventArgs *pEvtBase)
 {
+    //事件对象强制转换
     EventHeaderClick *pEvt =(EventHeaderClick*)pEvtBase;
     SHeaderCtrl *pHeader=(SHeaderCtrl*)pEvt->sender;
-    SListCtrl *pList=FindChildByName2<SListCtrl>(L"lc_test");
-
+    //从表头控件获得列表控件对象
+    SListCtrl *pList= (SListCtrl*)pHeader->GetParent();
+    //列表数据排序
     SHDITEM hditem;
     hditem.mask=SHDI_ORDER;
     pHeader->GetItem(pEvt->iItem,&hditem);

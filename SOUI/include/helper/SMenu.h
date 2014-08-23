@@ -32,6 +32,7 @@ public:
         ATTR_COLOR(L"colorText",m_crTxtNormal,FALSE);
         ATTR_COLOR(L"colorTextSel",m_crTxtSel,FALSE);
         ATTR_COLOR(L"cororTextGray",m_crTxtGray,FALSE);
+        ATTR_STRINGW(L"trCtx",m_strTrCtx,FALSE);
     SOUI_ATTRS_END()
 protected:
     ISkinObj *m_pItemSkin;    //菜单项皮肤，包含2种状态：正常状态+选中状态
@@ -46,6 +47,7 @@ protected:
     COLORREF      m_crTxtGray;    //灰文本颜色
     CSize          m_szIcon;        //图标尺寸
     CAutoRefPtr<IFont>  m_hFont;
+    SStringW      m_strTrCtx;   //翻译上下文
 };
 
 struct SMenuItemInfo
@@ -204,7 +206,7 @@ protected:
     void BuildMenu(HMENU menuPopup,pugi::xml_node xmlNode);
 
     SArray<SMenuItemData *> m_arrDmmi;
-    SMenuAttr    m_menuSkin;
+    SMenuAttr    m_menuAttr;
     SMenu    *    m_pParent;
 };
 

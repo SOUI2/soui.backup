@@ -47,7 +47,7 @@ public:
 
     virtual SWND OnSetSwndCapture(SWND swnd);
     virtual HWND GetHostHwnd();
-    virtual const SStringW & GetHostName();
+    virtual const SStringW & GetTranslatorContext();
 
     virtual BOOL IsTranslucent();
 

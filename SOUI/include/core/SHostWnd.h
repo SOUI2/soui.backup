@@ -60,7 +60,7 @@ namespace SOUI
         }
         
         SOUI_ATTRS_BEGIN()
-            ATTR_STRINGW(L"name",m_strName,FALSE)
+            ATTR_STRINGW(L"trCtx",m_strTrCtx,FALSE)
             ATTR_STRINGW(L"title",m_strTitle,FALSE)
             ATTR_SIZE(L"size",m_szInit,FALSE)
             ATTR_INT(L"width",m_szInit.cx,FALSE)
@@ -91,7 +91,7 @@ namespace SOUI
         DWORD m_dwStyle;
         DWORD m_dwExStyle;
 
-        SStringW m_strName;     //Host Name，在语言翻译时作为context使用
+        SStringW m_strTrCtx;     //在语言翻译时作为context使用
         SStringW m_strTitle;
         HICON   m_hAppIconSmall;
         HICON   m_hAppIconBig;
@@ -197,7 +197,7 @@ protected:
 
     virtual HWND GetHostHwnd();
 
-    virtual const SStringW & GetHostName();
+    virtual const SStringW & GetTranslatorContext();
 
     virtual IRenderTarget * OnGetRenderTarget(const CRect & rc,DWORD gdcFlags);
 

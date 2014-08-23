@@ -8,8 +8,6 @@ namespace SOUI
 
     pugi::xml_document SMessageBoxImpl::s_xmlMsgTemplate;
     
-    const TCHAR kTrCtx_Msgbox[] = _T("messagebox"); //MSGBOX的翻译上下文
-
     BOOL SMessageBoxImpl::SetMsgTemplate( pugi::xml_node uiRoot )
     {
         if(wcscmp(uiRoot.name(),L"SOUI")!=0 ) return FALSE;
@@ -157,7 +155,7 @@ namespace SOUI
         for(int i=0; i<g_msgBtnText[uType].nBtns; i++)
         {
             SWindow *pBtn=pBtnPanel->FindChildByName(g_wcsNameOfBtns[i]);
-            pBtn->SetWindowText(TR(g_msgBtnText[uType].btnInfo[i].szText,kTrCtx_Msgbox));    
+            pBtn->SetWindowText(TR(g_msgBtnText[uType].btnInfo[i].szText,GetTranslatorContext()));    
             pBtn->SetID(g_msgBtnText[uType].btnInfo[i].uBtnID);
         }
         
@@ -170,11 +168,11 @@ namespace SOUI
 
         SWindow * pTitle= FindChildByName(NAME_MSGBOX_TITLE);
         SASSERT(pTitle);
-        pTitle->SetWindowText(TR(s_MsgBoxInfo.pszCaption?s_MsgBoxInfo.pszCaption:_T("prompt"),kTrCtx_Msgbox));
+        pTitle->SetWindowText(TR(s_MsgBoxInfo.pszCaption?s_MsgBoxInfo.pszCaption:_T("prompt"),GetTranslatorContext()));
 
         SWindow * pMsg= FindChildByName(NAME_MSGBOX_TEXT);
         SASSERT(pMsg);
-        pMsg->SetWindowText(TR(s_MsgBoxInfo.pszText,kTrCtx_Msgbox));
+        pMsg->SetWindowText(TR(s_MsgBoxInfo.pszText,GetTranslatorContext()));
 
         OnSetIcon(s_MsgBoxInfo.uType);
 

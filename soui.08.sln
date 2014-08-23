@@ -56,13 +56,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scriptmodule-lua", "compone
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo", "demo\demo.vcproj", "{67A80F5B-559C-3805-BEB3-75203B8FD249}"
 	ProjectSection(ProjectDependencies) = postProject
-		{0BA3E0B9-F4A6-326C-A97C-1FC118416129} = {0BA3E0B9-F4A6-326C-A97C-1FC118416129}
 		{AA622115-A2D7-311C-8A48-65583D039DC6} = {AA622115-A2D7-311C-8A48-65583D039DC6}
+		{0BA3E0B9-F4A6-326C-A97C-1FC118416129} = {0BA3E0B9-F4A6-326C-A97C-1FC118416129}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "soui-sys-resource", "soui-sys-resource\soui-sys-resource.vcproj", "{2BD73466-8F17-3076-9BF8-77B708B954D9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qqlogin", "QQLogin\QQLogin.vcproj", "{85E534E8-CBE6-366B-897A-AD6CC3EE9FFD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AA622115-A2D7-311C-8A48-65583D039DC6} = {AA622115-A2D7-311C-8A48-65583D039DC6}
+		{0BA3E0B9-F4A6-326C-A97C-1FC118416129} = {0BA3E0B9-F4A6-326C-A97C-1FC118416129}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
