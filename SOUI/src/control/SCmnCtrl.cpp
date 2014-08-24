@@ -968,7 +968,11 @@ CSize SToggle::GetDesiredSize(LPRECT pRcContainer)
 #define GROUP_HEADER        20
 #define GROUP_ROUNDCORNOR    4
 
-SGroup::SGroup():m_nRound(GROUP_ROUNDCORNOR),m_crLine1(RGB(0xF0,0xF0,0xF0)),m_crLine2(RGB(0xA0,0xA0,0xA0))
+SGroup::SGroup()
+:m_nRound(GROUP_ROUNDCORNOR)
+,m_crLine1(RGBA(0xF0,0xF0,0xF0,0xFF))
+,m_crLine2(RGBA(0xA0,0xA0,0xA0,0xFF))
+,m_nHeaderHeight(20)
 {
 }
 
@@ -1028,11 +1032,18 @@ void SGroup::OnPaint(IRenderTarget *pRT)
 
     if(!m_strText.IsEmpty())
     {
-        pRT->DrawText(m_strText, m_strText.GetLength(), rcText, DT_SINGLELINE|DT_VCENTER);
         pRT->PopClip();
+        pRT->DrawText(m_strText, m_strText.GetLength(), rcText, DT_SINGLELINE|DT_VCENTER);
     }
 
     AfterPaint(pRT, painter);
+}
+
+CRect SGroup::GetChildrenLayoutRect()
+{
+    CRect rcLayout = SWindow::GetChildrenLayoutRect();
+    rcLayout.top += m_nHeaderHeight;
+    return rcLayout;
 }
 
 }//namespace SOUI
