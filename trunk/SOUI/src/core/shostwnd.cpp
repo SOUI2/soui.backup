@@ -166,7 +166,7 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     }
 
     SWindow::InitFromXml(xmlNode.child(L"root"));
-
+    SWindow::SSendMessage(WM_SHOWWINDOW,TRUE,0);//保证子窗口处理一次showwindow事件
     CRect rcClient;
     CSimpleWnd::GetClientRect(&rcClient);
     if(rcClient.IsRectEmpty())//APP没有指定窗口大小，使用XML中的值
