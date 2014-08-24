@@ -90,6 +90,6 @@ HCURSOR CmfcdemoDlg::OnQueryDragIcon()
 void CmfcdemoDlg::OnOpenSouiDlg()
 {
     SOUI::SHostDialog dlg(_T("xml:maindlg"));
-    dlg.DoModal();
+    dlg.DoModal(m_hWnd);
 }
 
