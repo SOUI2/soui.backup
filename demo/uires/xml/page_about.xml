@@ -1,8 +1,10 @@
 ﻿<include>
   <text pos="10,10">欢迎使用SOUI！</text>
-  <text pos="10,[5">版本:0.9.0.1</text>
+  <text pos="10,[5">版本:0.9.9.1</text>
   <text pos="10,[5">协议类型：MIT，个人，企业均可以免费使用本产品，请保留产品的license</text>
   <text pos="10,[5">版权所有：启程软件</text>
   <edit pos="10,[5,@300,@30">QQ群：229313785</edit>
   <edit pos="10,[5,@500,@30">SVN：http://code.taobao.org/svn/soui2/trunk</edit>
+  <text pos="10,[5">SOUI教程:</text>
+  <link href="http://www.cnblogs.com/setoutsoft/" class="cls_btn_weblink">http://www.cnblogs.com/setoutsoft/</link>
 </include>
