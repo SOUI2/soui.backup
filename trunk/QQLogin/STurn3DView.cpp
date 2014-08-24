@@ -40,6 +40,8 @@ namespace SOUI
             GetWindow(GSW_PREVSIBLING)->SetVisible(TRUE,FALSE);
             SetVisible(FALSE,TRUE);//Òþ²Ø´°¿Ú
             m_bTurning = FALSE;
+            m_bmpBefore = NULL;
+            m_bmpAfter = NULL;
             m_bmpTrans = NULL;
             EventTurn3d evt(this,m_bTurn2Front);
             FireEvent(evt);
