@@ -962,15 +962,19 @@ public:
     SGroup();
 
 protected:
+    virtual CRect GetChildrenLayoutRect();
+
     void OnPaint(IRenderTarget *pRT);
     
     COLORREF m_crLine1,m_crLine2; /**< group 3D显示使用的两种颜色 */
     int         m_nRound; /**< 圆角半径 */
+    int         m_nHeaderHeight; /**< 头部高度 */
 public:
     SOUI_ATTRS_BEGIN()
         ATTR_COLOR(L"colorLine1", m_crLine1, FALSE)
         ATTR_COLOR(L"colorLine2", m_crLine2, FALSE)
         ATTR_INT(L"round",m_nRound,FALSE)
+        ATTR_INT(L"headerHeight",m_nHeaderHeight,TRUE)
     SOUI_ATTRS_END()
 
     SOUI_MSG_MAP_BEGIN()

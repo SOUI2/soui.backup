@@ -1,15 +1,16 @@
 ﻿<include>
-  <text pos="100,10" pos2type="center">center align1</text>
-  <text pos="100,30" pos2type="center">center align align</text>
-  <text pos="250,50" pos2type="rightTop">align right top</text>
-  <text pos="250,70" pos2type="rightTop">align right top 2</text>
-  <check pos="250,90" pos2type="rightTop">check right top</check>
-  <check pos="250,110" pos2type="rightTop" font="adding:-5">check right top1235</check>
-
+  <group pos="0,0,-0,-0">I'm a group
+    <text pos="100,10" pos2type="center">center align1</text>
+    <text pos="100,30" pos2type="center">center align align</text>
+    <text pos="250,50" pos2type="rightTop">align right top</text>
+    <text pos="250,70" pos2type="rightTop">align right top 2</text>
+    <check pos="250,90" pos2type="rightTop">check right top</check>
+    <check pos="250,110" pos2type="rightTop" font="adding:-5">check right top1235</check>
   <text pos="250,130" class="cls_txt_red">text left top</text>
   <button pos="10,150,@150,@30">button 1 using @</button>
   <button pos="10,200" width="150" height="30">button 1 using width</button>
 
   <button name="btn_hidetst" pos="300,150,@100,@30" display="0" tip="click me to hide me and see how the next image will move">hide test</button>
   <img skin="skin_page_icons" iconIndex="1" pos="[5,150,-10,-10" />
+  </group>
 </include>
