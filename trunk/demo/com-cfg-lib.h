@@ -9,24 +9,27 @@
 #pragma comment(lib,"myskiad")
 #pragma comment(lib,"freetyped")
 #pragma comment(lib,"zlibd")
+#ifdef DLL_SOUI
 #pragma comment(lib,"lua-51d")
-
+#pragma comment(lib,"scriptmodule-luad")
+#endif
 #pragma comment(lib,"render-gdid")
 #pragma comment(lib,"imgdecoder-wicd")
 #pragma comment(lib,"render-skiad")
-#pragma comment(lib,"scriptmodule-luad")
 #pragma comment(lib,"translatord")
 #pragma comment(lib,"resprovider-zipd")
 #else
 #pragma comment(lib,"myskia")
 #pragma comment(lib,"freetype")
 #pragma comment(lib,"zlib")
+#ifdef DLL_SOUI
 #pragma comment(lib,"lua-51")
+#pragma comment(lib,"scriptmodule-lua")
+#endif
 
 #pragma comment(lib,"imgdecoder-wic")
 #pragma comment(lib,"render-gdi")
 #pragma comment(lib,"render-skia")
-#pragma comment(lib,"scriptmodule-lua")
 #pragma comment(lib,"translator")
 #pragma comment(lib,"resprovider-zip")
 #endif
