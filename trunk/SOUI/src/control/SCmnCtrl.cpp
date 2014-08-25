@@ -703,12 +703,6 @@ UINT SCheckBox::_GetDrawState()
     return uState;
 }
 
-void SCheckBox::OnLButtonDown(UINT nFlags, CPoint point)
-{
-    SetFocus();
-    __super::OnLButtonDown(nFlags,point);
-}
-
 void SCheckBox::OnLButtonUp(UINT nFlags, CPoint point)
 {
     if (IsChecked())
@@ -878,11 +872,6 @@ BOOL SRadioBox::NeedRedrawWhenStateChange()
     return TRUE;
 }
 
-void SRadioBox::OnLButtonDown(UINT nFlags, CPoint point)
-{
-    SetFocus();
-    __super::OnLButtonDown(nFlags,point);
-}
 
 void SRadioBox::OnSetFocus()
 {
