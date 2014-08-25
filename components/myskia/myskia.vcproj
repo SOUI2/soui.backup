@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="myskia"
-	ProjectGUID="{C157A165-E7FC-3CEF-A9C1-906DFB81C1AF}"
+	ProjectGUID="{FDCB2417-6860-3C9A-B97E-6A249178103E}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

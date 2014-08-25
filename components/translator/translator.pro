@@ -4,6 +4,16 @@
 
 TEMPLATE = lib
 TARGET = translator
+
+!CONFIG(LIB_SOUI_COM){
+	DEFINES += DLL_SOUI_COM
+	RC_FILE += translator.rc
+}
+else{
+	CONFIG += staticlib
+}
+
+
 DEPENDPATH += .
 INCLUDEPATH += . \
 			  ../../utilities/include \
@@ -24,4 +34,3 @@ PRECOMPILED_HEADER = stdafx.h
 # Input
 HEADERS += translator.h  targetver.h
 SOURCES += dllmain.cpp  translator.cpp
-RC_FILE += translator.rc

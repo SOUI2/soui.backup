@@ -13,9 +13,14 @@ INCLUDEPATH += . \
 dir = ..
 include($$dir/common.pri)
 
-DLL_SOUI{
+CONFIG(DLL_SOUI){
     DEFINES += DLL_SOUI
 }
+
+!CONFIG(LIB_SOUI_COM){
+	DEFINES += DLL_SOUI_COM
+}
+
 
 CONFIG(debug,debug|release){
 	LIBS += utilitiesd.lib souid.lib

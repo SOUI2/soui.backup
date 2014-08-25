@@ -838,13 +838,16 @@ namespace SOUI
         return S_OK;
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    namespace RENDER_GDI
+    {
+        BOOL SCreateInstance(IObjRef ** ppRenderFactory)
+        {
+            *ppRenderFactory = new SRenderFactory_GDI;
+            return TRUE;
+        }
+    }
 
 }
 
 
-//////////////////////////////////////////////////////////////////////////
-BOOL SCreateInstance(IObjRef ** ppRenderFactory)
-{
-    *ppRenderFactory = new SOUI::SRenderFactory_GDI;
-    return TRUE;
-}

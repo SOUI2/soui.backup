@@ -336,6 +336,10 @@ namespace SOUI
         HDC m_hGetDC;
         UINT m_uGetDCFlag;
 	};
+	
+	namespace RENDER_SKIA
+    {
+        SOUI_COM_C BOOL SOUI_COM_API SCreateInstance(IObjRef ** ppRenderFactory);
+    }
 }
 
-EXTERN_C __declspec(dllexport) BOOL SCreateInstance(IObjRef ** ppRenderFactory);

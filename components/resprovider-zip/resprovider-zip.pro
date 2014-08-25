@@ -4,6 +4,15 @@
 
 TEMPLATE = lib
 TARGET =  resprovider-zip
+
+!CONFIG(LIB_SOUI_COM){
+	DEFINES += DLL_SOUI_COM
+	RC_FILE += ResProvider-Zip.rc
+}
+else{
+	CONFIG += staticlib
+}
+
 DEPENDPATH += .
 INCLUDEPATH += . \
 			   ../zlib \
@@ -29,4 +38,3 @@ HEADERS += SResProviderZip.h ZipArchive.h
 SOURCES += cursoricon.cpp \
            SResProviderZip.cpp \
            zipArchive.cpp
-RC_FILE += ResProvider-Zip.rc

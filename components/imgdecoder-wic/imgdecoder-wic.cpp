@@ -174,12 +174,15 @@ namespace SOUI
         return TRUE;
     }
     
+    //////////////////////////////////////////////////////////////////////////
+    namespace IMGDECODOR_WIC
+    {
+        BOOL SCreateInstance(IObjRef **pImgDecoderFactory)
+        {
+            *pImgDecoderFactory = new SImgDecoderFactory(TRUE);
+            return TRUE;
+        }
+    }
 
 }//end of namespace SOUI
 
-//////////////////////////////////////////////////////////////////////////
-BOOL SCreateInstance(IObjRef **pImgDecoderFactory)
-{
-    *pImgDecoderFactory = new SOUI::SImgDecoderFactory(TRUE);
-    return TRUE;
-}

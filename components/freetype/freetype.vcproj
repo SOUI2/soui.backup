@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="freetype"
-	ProjectGUID="{90764A76-1010-3738-B58A-914F96F00BDA}"
+	ProjectGUID="{5613A99B-C201-30F0-BBB1-CEA62DB48B56}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

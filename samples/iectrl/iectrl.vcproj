@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="iectrl"
 	ProjectGUID="{356AEB51-0DDF-426F-BCF2-380801DC4FB7}"
+	RootNamespace="iectrl"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -16,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin\"
-			IntermediateDirectory="..\obj\debug\iectrl\"
+			OutputDirectory="..\..\bin\"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -39,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\SOUI\include;..\utilities\include;..\controls.extend"
+				AdditionalIncludeDirectories="..\..\SOUI\include;..\..\utilities\include;..\..\controls.extend"
 				PreprocessorDefinitions="WIN32;_WINDOWS;STRICT;_DEBUG"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="false"
@@ -91,8 +92,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\bin\"
-			IntermediateDirectory="..\obj\release\iectrl\"
+			OutputDirectory="..\..\bin\"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -114,7 +115,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="..\SOUI\include;..\utilities\include;..\controls.extend"
+				AdditionalIncludeDirectories="..\..\SOUI\include;..\..\utilities\include;..\..\controls.extend"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				RuntimeLibrary="0"
 				TreatWChar_tAsBuiltInType="false"
@@ -178,7 +179,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\controls.extend\SIECtrl.cpp"
+				RelativePath="..\..\controls.extend\SIECtrl.cpp"
 				>
 			</File>
 			<File
@@ -215,7 +216,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\controls.extend\SIECtrl.h"
+				RelativePath="..\..\controls.extend\SIECtrl.h"
 				>
 			</File>
 			<File
@@ -245,7 +246,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Building UI Resource"
-						CommandLine="&quot;..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2&#x0D;&#x0A;"
+						CommandLine="&quot;..\..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2&#x0D;&#x0A;"
 						Outputs=".\res\soui_res.rc2;"
 					/>
 				</FileConfiguration>
@@ -255,7 +256,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Building UI Resource"
-						CommandLine="&quot;..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2&#x0D;&#x0A;"
+						CommandLine="&quot;..\..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2&#x0D;&#x0A;"
 						Outputs=".\res\soui_res.rc2;"
 					/>
 				</FileConfiguration>

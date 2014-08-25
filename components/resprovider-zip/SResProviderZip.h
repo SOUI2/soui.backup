@@ -17,8 +17,6 @@
 
 namespace SOUI{
 
-
-
 class SResProviderZip : public TObjRefImpl<IResProvider>
 {
 public:
@@ -48,6 +46,9 @@ protected:
 	CZipArchive m_zipFile;
 };
 
-EXTERN_C BOOL __declspec(dllexport) SCreateInstance(IObjRef ** ppObj);
+namespace RESPROVIDER_ZIP
+{
+    SOUI_COM_C BOOL SOUI_COM_API SCreateInstance(IObjRef ** ppObj);
+}
 
 }//namespace SOUI

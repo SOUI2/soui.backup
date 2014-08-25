@@ -9,28 +9,33 @@ extern "C"
 #include <lauxlib.h>
 };
 
-// 此类是从 luaScriptModule.dll 导出的
-class SScriptModule_Lua : public SOUI::TObjRefImpl<SOUI::IScriptModule>
+namespace SOUI
 {
-public:
-	SScriptModule_Lua(void);
+    class SScriptModule_Lua : public SOUI::TObjRefImpl<IScriptModule>
+    {
+    public:
+        SScriptModule_Lua(void);
 
-	~SScriptModule_Lua();
+        ~SScriptModule_Lua();
 
-	virtual void * GetScriptEngine () {return d_state;}
+        virtual void * GetScriptEngine () {return d_state;}
 
-	virtual	void	executeScriptFile(LPCSTR pszScriptFile);
-    virtual	void	executeScriptBuffer(const char* buff, size_t sz);
-    virtual void    executeString(LPCSTR str);
+        virtual	void	executeScriptFile(LPCSTR pszScriptFile);
+        virtual	void	executeScriptBuffer(const char* buff, size_t sz);
+        virtual void    executeString(LPCSTR str);
 
-	virtual	bool	executeScriptedEventHandler(LPCSTR handler_name,SOUI::EventArgs *pEvt);
+        virtual	bool	executeScriptedEventHandler(LPCSTR handler_name,SOUI::EventArgs *pEvt);
 
-    virtual LPCSTR getIdentifierString() const;
+        virtual LPCSTR getIdentifierString() const;
 
-    virtual bool subscribeEvent(SOUI::SWindow* target, UINT uEvent, LPCSTR subscriber_name);
-	virtual bool unsubscribeEvent(SOUI::SWindow* target, UINT uEvent, LPCSTR subscriber_name );
-protected:
-	lua_State * d_state;
-};
+        virtual bool subscribeEvent(SOUI::SWindow* target, UINT uEvent, LPCSTR subscriber_name);
+        virtual bool unsubscribeEvent(SOUI::SWindow* target, UINT uEvent, LPCSTR subscriber_name );
+    protected:
+        lua_State * d_state;
+    };
 
-extern "C" BOOL __declspec(dllexport) SCreateInstance(IObjRef ** ppScript);
+    namespace SCRIPT_LUA
+    {
+        SOUI_COM_C BOOL SOUI_COM_API SCreateInstance(IObjRef ** ppScript);
+    }
+}
