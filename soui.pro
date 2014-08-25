@@ -19,4 +19,6 @@ DLL_SOUI{
 	SUBDIRS += components/ScriptModule-LUA/ScriptModule
 }
 SUBDIRS += demo
-SUBDIRS += qqlogin
+!LIB_SOUI_COM{
+	SUBDIRS += qqlogin
+}
