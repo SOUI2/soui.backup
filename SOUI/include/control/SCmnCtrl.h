@@ -247,7 +247,6 @@ public:
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_ERASEBKGND_EX(OnEraseBkgnd)
-        MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_KEYDOWN(OnKeyDown)
         MSG_WM_KEYUP(OnKeyUp)
         MSG_WM_DESTROY(OnDestroy)
@@ -686,8 +685,6 @@ protected:
      */
     virtual void DrawFocus(IRenderTarget *pRT);
 
-    void OnLButtonDown(UINT nFlags, CPoint point);
-
     void OnLButtonUp(UINT nFlags, CPoint point);
 
     void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
@@ -704,7 +701,6 @@ protected:
 
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
-        MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONUP(OnLButtonUp)
         MSG_WM_KEYDOWN(OnKeyDown)
     SOUI_MSG_MAP_END()
@@ -872,8 +868,6 @@ protected:
     virtual SWindow * GetSelectedSiblingInGroup();
     
 protected:
-    void OnLButtonDown(UINT nFlags, CPoint point);
-
     void OnSetFocus();
     
     void OnPaint(IRenderTarget *pRT);
@@ -888,7 +882,6 @@ protected:
 
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
-        MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_SETFOCUS_EX(OnSetFocus)
     SOUI_MSG_MAP_END()
 };
