@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "../unknown/obj-ref-i.h"
+#include <unknown/obj-ref-i.h>
 
 namespace SOUI
 {

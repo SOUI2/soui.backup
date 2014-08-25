@@ -4,6 +4,15 @@
 
 TEMPLATE = lib
 TARGET = render-gdi
+
+!CONFIG(LIB_SOUI_COM){
+	DEFINES += DLL_SOUI_COM
+	RC_FILE += render-gdi.rc
+}
+else{
+	CONFIG += staticlib
+}
+
 DEPENDPATH += .
 INCLUDEPATH += . \
 			   ../../soui/include \
@@ -25,4 +34,3 @@ PRECOMPILED_HEADER = stdafx.h
 HEADERS += GradientFillHelper.h render-gdi.h
 SOURCES += GradientFillHelper.cpp render-gdi.cpp
 
-RC_FILE += render-gdi.rc

@@ -327,7 +327,11 @@ namespace SOUI
         UINT m_uGetDCFlag;
         SBitmap_GDI          m_bmpForFillSolidRect;    /**< 为FillSolidRect接口使用的内存位图 */
     };
+    
+    namespace RENDER_GDI
+    {
+        SOUI_COM_C BOOL SOUI_COM_API SCreateInstance(IObjRef ** ppRenderFactory);
+    }
 }
 
 
-EXTERN_C BOOL __declspec(dllexport) SCreateInstance(IObjRef ** ppRenderFactory);

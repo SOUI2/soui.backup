@@ -3,6 +3,16 @@
 ######################################################################
 TEMPLATE = lib
 TARGET = render-skia
+
+!CONFIG(LIB_SOUI_COM){
+	DEFINES += DLL_SOUI_COM
+	RC_FILE += render-skia.rc
+}
+else{
+	CONFIG += staticlib
+}
+
+
 DEPENDPATH += .
 INCLUDEPATH += . \
 			   ../../soui/include \
@@ -27,4 +37,3 @@ PRECOMPILED_HEADER = stdafx.h
 # Input
 HEADERS += drawtext-skia.h render-skia.h
 SOURCES += drawtext-skia.cpp render-skia.cpp
-RC_FILE += render-skia.rc

@@ -248,10 +248,12 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     //  
-    BOOL SCreateInstance( IObjRef **ppTrans )
+    namespace TRANSLATOR
     {
-        *ppTrans = new STranslatorMgr;
-        return TRUE;
+        BOOL SCreateInstance( IObjRef **ppTrans )
+        {
+            *ppTrans = new STranslatorMgr;
+            return TRUE;
+        }
     }
-
 }

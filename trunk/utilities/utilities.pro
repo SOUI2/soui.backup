@@ -31,6 +31,8 @@ HEADERS += targetver.h \
            include/pugixml/pugixml.hpp \
            include/string/strcpcvt.h \
            include/string/tstring.h \
+           include/unknown/obj-ref-i.h \
+           include/unknown/obj-ref-impl.hpp \
            include/com-loader.hpp \
            include/wtl.mini/msgcrack.h \
            include/wtl.mini/souigdi.h \
@@ -39,4 +41,5 @@ SOURCES += src/gdialpha.cpp \
            src/trace.cpp \
            src/utilities.cpp \
            src/pugixml/pugixml.cpp \
-           src/string/strcpcvt.cpp
+           src/string/strcpcvt.cpp	\
+           src/unknown/obj-ref-impl.cpp 

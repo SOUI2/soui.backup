@@ -73,6 +73,10 @@ namespace SOUI
         BOOL    m_bPremultple;
     };
     
+    //////////////////////////////////////////////////////////////////////////
+    namespace IMGDECODOR_WIC
+    {
+        SOUI_COM_C BOOL SOUI_COM_API SCreateInstance(IObjRef **pImgDecoderFactory);
+    }
 }//end of namespace SOUI
 
-extern "C" __declspec(dllexport) BOOL SCreateInstance(IObjRef **pImgDecoderFactory);

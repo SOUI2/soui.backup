@@ -190,10 +190,13 @@ namespace SOUI{
 		return TRUE;
 	}
 
-    EXTERN_C BOOL SCreateInstance( IObjRef ** ppObj )
+    namespace RESPROVIDER_ZIP
     {
-        *ppObj = new SResProviderZip;
-        return TRUE;
+        BOOL SCreateInstance( IObjRef ** ppObj )
+        {
+            *ppObj = new SResProviderZip;
+            return TRUE;
+        }
     }
 
 }//namespace SOUI

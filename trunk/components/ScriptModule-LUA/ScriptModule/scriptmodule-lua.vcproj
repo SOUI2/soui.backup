@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="scriptmodule-lua"
-	ProjectGUID="{303C7C42-59FA-38E1-954E-0F58BBA1F226}"
+	ProjectGUID="{5E8BCBC7-B946-3938-8AE6-8EE661E4E2B6}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -32,7 +32,7 @@
 				Optimization ="4"
 				PrecompiledHeaderFile="$(IntDir)\scriptmodule-luad.pch"
 				PrecompiledHeaderThrough="stdafx.h"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,DLL_SOUI"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DLL_SOUI_COM,_CRT_SECURE_NO_WARNINGS,DLL_SOUI"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
@@ -69,7 +69,7 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,DLL_SOUI,_DEBUG" />
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DLL_SOUI_COM,_CRT_SECURE_NO_WARNINGS,DLL_SOUI,_DEBUG" />
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -93,7 +93,7 @@
 				Optimization ="1"
 				PrecompiledHeaderFile="$(IntDir)\scriptmodule-lua.pch"
 				PrecompiledHeaderThrough="stdafx.h"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,DLL_SOUI,NDEBUG"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DLL_SOUI_COM,_CRT_SECURE_NO_WARNINGS,DLL_SOUI,NDEBUG"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="0"
 				RuntimeTypeInfo="false"
@@ -133,7 +133,7 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,DLL_SOUI" />
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DLL_SOUI_COM,_CRT_SECURE_NO_WARNINGS,DLL_SOUI" />
 		</Configuration>
 	</Configurations>
 	<Files>

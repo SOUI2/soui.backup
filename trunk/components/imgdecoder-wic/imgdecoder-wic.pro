@@ -4,6 +4,16 @@
 
 TEMPLATE = lib
 TARGET = imgdecoder-wic
+
+!CONFIG(LIB_SOUI_COM){
+	DEFINES += DLL_SOUI_COM
+	RC_FILE += imgdecoder-wic.rc
+}
+else{
+	CONFIG += staticlib
+}
+
+
 DEPENDPATH += .
 INCLUDEPATH += . \
 			   ../../utilities/include \
@@ -12,9 +22,15 @@ INCLUDEPATH += . \
 dir = ../..
 include($$dir/common.pri)
 
+CONFIG(debug,debug|release){
+	LIBS += utilitiesd.lib
+}
+else{
+	LIBS += utilities.lib
+}
+
 PRECOMPILED_HEADER = stdafx.h
 
 # Input
 HEADERS += imgdecoder-wic.h targetver.h
 SOURCES += dllmain.cpp imgdecoder-wic.cpp
-RC_FILE += imgdecoder-wic.rc

@@ -4,6 +4,15 @@
 
 TEMPLATE = lib
 TARGET = scriptmodule-lua
+
+!CONFIG(LIB_SOUI_COM){
+	DEFINES += DLL_SOUI_COM
+	RC_FILE += ScriptModule-Lua.rc
+}
+else{
+	CONFIG += staticlib
+}
+
 DEPENDPATH += . exports
 INCLUDEPATH += . \
 			   ../lua-51 \
@@ -25,7 +34,6 @@ else{
 
 PRECOMPILED_HEADER = stdafx.h
 
-RC_FILE += ScriptModule-Lua.rc
 # Input
 HEADERS += require.h \
            ScriptModule-Lua.h \

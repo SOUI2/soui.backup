@@ -7,6 +7,7 @@
 #include <gdialpha.h>
 
 #include "drawtext-skia.h"
+
 #include "render-skia.h"
 
 #include "trace.h"
@@ -1076,12 +1077,15 @@ namespace SOUI
         m_rgn.setEmpty();
     }
 
-
+    //////////////////////////////////////////////////////////////////////////
+    namespace RENDER_SKIA
+    {
+        BOOL SCreateInstance( IObjRef ** ppRenderFactory )
+        {
+            *ppRenderFactory = new SRenderFactory_Skia;
+            return TRUE;
+        }
+    }
 
 }//end of namespace SOUI
 
-BOOL SCreateInstance( IObjRef ** ppRenderFactory )
-{
-    *ppRenderFactory = new SOUI::SRenderFactory_Skia;
-    return TRUE;
-}

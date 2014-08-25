@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 
-#include <com-loader.hpp>
 #include <helper/mybuffer.h>
 #if defined(_DEBUG) && !defined(_WIN64)
 // #include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
@@ -18,38 +17,31 @@
 #include "../components/resprovider-zip/zipresprovider-param.h"
 
 #ifdef _DEBUG
-#define COM_IMGDECODER  _T("imgdecoder-wicd.dll")
-#define COM_RENDER_GDI  _T("render-gdid.dll")
-#define COM_RENDER_SKIA _T("render-skiad.dll")
-#define COM_SCRIPT_LUA _T("scriptmodule-luad.dll")
-#define COM_TRANSLATOR _T("translatord.dll")
-#define COM_ZIPRESPROVIDER _T("resprovider-zipd.dll")
 #define SYS_NAMED_RESOURCE _T("soui-sys-resourced.dll")
 #else
-#define COM_IMGDECODER  _T("imgdecoder-wic.dll")
-#define COM_RENDER_GDI  _T("render-gdi.dll")
-#define COM_RENDER_SKIA _T("render-skia.dll")
-#define COM_SCRIPT_LUA _T("scriptmodule-lua.dll")
-#define COM_TRANSLATOR _T("translator.dll")
-#define COM_ZIPRESPROVIDER _T("resprovider-zip.dll")
 #define SYS_NAMED_RESOURCE _T("soui-sys-resource.dll")
 #endif
+
+#ifdef DLL_SOUI_COM
+#include "com-cfg-dll.h"    //组件采用DLL的配置
+#else
+#include "com-cfg-lib.h"    //组件采用LIB的配置
+#endif
+
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
     //必须要调用OleInitialize来初始化运行环境
     HRESULT hRes = OleInitialize(NULL);
     SASSERT(SUCCEEDED(hRes));
-    
+
     int nRet = 0; 
 
-    //定义一组组件加载辅助对象
-    //SComLoader实现从DLL的指定函数创建符号SOUI要求的类COM组件。
-    SComLoader imgDecLoader;
-    SComLoader renderLoader;
-    SComLoader transLoader;
-    SComLoader scriptLoader;
-    SComLoader zipResLoader;
+    #ifdef DLL_SOUI_COM
+    SComMgrDll *pComMgr = new SComMgrDll;
+    #else
+    SComMgrLib *pComMgr = new SComMgrLib;
+    #endif
     
     //将程序的运行路径修改到demo所在的目录
     TCHAR szCurrentDir[MAX_PATH]={0};
@@ -57,7 +49,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
     _tcscpy(lpInsertPos,_T("\\..\\demo"));
     SetCurrentDirectory(szCurrentDir);
-    
+
     {
         //定义一组类SOUI系统中使用的类COM组件
         //CAutoRefPtr是一个SOUI系统中使用的智能指针类
@@ -65,17 +57,22 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         CAutoRefPtr<IRenderFactory> pRenderFactory;         //UI渲染模块，由render-gdi.dll或者render-skia.dll提供
         CAutoRefPtr<ITranslatorMgr> trans;                  //多语言翻译模块，由translator.dll提供
         CAutoRefPtr<IScriptModule> pScriptLua;              //lua脚本模块，由scriptmodule-lua.dll提供
-        
+
         BOOL bLoaded=FALSE;
         int nType=MessageBox(GetActiveWindow(),_T("选择渲染类型：\n[yes]: Skia\n[no]:GDI\n[cancel]:Quit"),_T("select a render"),MB_ICONQUESTION|MB_YESNOCANCEL);
         if(nType == IDCANCEL) return -1;
         //从各组件中显示创建上述组件对象
-        bLoaded=renderLoader.CreateInstance(nType==IDYES?COM_RENDER_SKIA:COM_RENDER_GDI,(IObjRef**)&pRenderFactory);
-        SASSERT_FMT(bLoaded,_T("load module [%s] failed!"),nType==IDYES?COM_RENDER_SKIA:COM_RENDER_GDI);
-        bLoaded=imgDecLoader.CreateInstance(COM_IMGDECODER,(IObjRef**)&pImgDecoderFactory);
-        SASSERT_FMT(bLoaded,_T("load module [%s] failed!"),COM_IMGDECODER);
-        bLoaded=transLoader.CreateInstance(COM_TRANSLATOR,(IObjRef**)&trans);
-        SASSERT_FMT(bLoaded,_T("load module [%s] failed!"),COM_TRANSLATOR);
+        
+        if(nType == IDYES)
+            bLoaded = pComMgr->CreateRender_Skia((IObjRef**)&pRenderFactory);
+        else
+            bLoaded = pComMgr->CreateRender_GDI((IObjRef**)&pRenderFactory);
+        SASSERT_FMT(bLoaded,_T("load interface [%s] failed!"),nType==IDYES?_T("render_skia"):_T("render_gdi"));
+        bLoaded=pComMgr->CreateImgDecoder((IObjRef**)&pImgDecoderFactory);
+        SASSERT_FMT(bLoaded,_T("load interface [%s] failed!"),_T("imgdecoder"));
+        bLoaded=pComMgr->CreateTranslator((IObjRef**)&trans);
+        SASSERT_FMT(bLoaded,_T("load interface [%s] failed!"),_T("translator"));
+
         //为渲染模块设置它需要引用的图片解码模块
         pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
         //定义一个唯一的SApplication对象，SApplication管理整个应用程序的资源
@@ -94,8 +91,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         CreateResProvider(RES_PE,(IObjRef**)&pResProvider);
         pResProvider->Init((WPARAM)hInstance,0);
 #elif (RES_TYPE==2)//从ZIP包加载
-        bLoaded=zipResLoader.CreateInstance(COM_ZIPRESPROVIDER,(IObjRef**)&pResProvider);
-        SASSERT(bLoaded);
+        bLoaded=pComMgr->CreateResProvider_ZIP((IObjRef**)&pResProvider);
+        SASSERT_FMT(bLoaded,_T("load interface [%s] failed!"),_T("resprovider_zip"));
+
         ZIPRES_PARAM param;
         param.ZipFile(pRenderFactory, _T("uires.zip"),"souizip");
         bLoaded = pResProvider->Init((WPARAM)&param,0);
@@ -118,8 +116,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         }
 #ifdef DLL_SOUI
         //加载LUA脚本模块，注意，脚本模块只有在SOUI内核是以DLL方式编译时才能使用。
-        bLoaded=scriptLoader.CreateInstance(COM_SCRIPT_LUA,(IObjRef**)&pScriptLua);
-        SASSERT_FMT(bLoaded,_T("load module [%s] failed!"),COM_SCRIPT_LUA);
+        bLoaded=pComMgr->CreateScrpit_Lua((IObjRef**)&pScriptLua);
+        SASSERT_FMT(bLoaded,_T("load interface [%s] failed!"),_T("scirpt_lua"));
+        
         if(pScriptLua)
         {
             theApp->SetScriptModule(pScriptLua);
@@ -143,7 +142,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         theApp->RegisterWndFactory(TplSWindowFactory<SGifPlayer>());//注册GIFPlayer
         theApp->RegisterSkinFactory(TplSkinFactory<SSkinGif>());//注册SkinGif
         SSkinGif::Gdiplus_Startup();
-        
+
         //加载系统资源
         HMODULE hSysResource=LoadLibrary(SYS_NAMED_RESOURCE);
         if(hSysResource)
@@ -166,13 +165,14 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
             dlgMain.ShowWindow(SW_SHOWNORMAL);
             nRet=theApp->Run(dlgMain.m_hWnd);
         }
-        
+
         //应用程序退出
         delete theApp; 
         SSkinGif::Gdiplus_Shutdown();
-
     }
-
+    delete pComMgr;
     OleUninitialize();
     return nRet;
 }
+
+
