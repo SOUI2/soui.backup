@@ -1318,7 +1318,9 @@ void SWindow::ReleaseRenderTarget(IRenderTarget *pRT)
         pRT->PopClip();
         
     GetContainer()->OnReleaseRenderTarget(pRT,m_rcGetRT,m_gdcFlags);
-    
+    //调用GetRenderTarget后通常是要在上面绘制即时图象，但是并不会更新到缓存上，因此要标记缓存脏
+    if(m_bCacheDraw) MarkCacheDirty(true);
+
     m_bClipRT=FALSE;
     m_gdcFlags=-1;
 }

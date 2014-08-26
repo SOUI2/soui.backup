@@ -185,7 +185,7 @@ int SListCtrl::GetSelectedItem()
 void SListCtrl::SetSelectedItem(int nItem)
 {
     m_nSelectItem = nItem;
-
+    
     Invalidate();
 }
 
@@ -514,7 +514,8 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
     CRect rcIcon, rcText;
 
 
-    if (nItem == m_nSelectItem)
+    if (((!m_bHotTrack || m_nHoverItem==-1) && nItem == m_nSelectItem) //没有hover或者非hottrack,高亮显示selitem
+        ||(m_bHotTrack && nItem == m_nHoverItem))   //hottrack且有hover状态时高亮显示hover
     {
         if (m_pItemSkin != NULL)
             nBgImg = 2;
@@ -719,5 +720,22 @@ bool SListCtrl::OnHeaderSwap(EventArgs *pEvt)
     return true;
 }
 
+void SListCtrl::OnMouseMove( UINT nFlags, CPoint pt )
+{
+    int nHoverItem = HitTest(pt);
+    if(m_bHotTrack && nHoverItem != m_nHoverItem)
+    {
+        m_nHoverItem= nHoverItem;
+        Invalidate();
+    }
+}
 
+void SListCtrl::OnMouseLeave()
+{
+    if(m_bHotTrack)
+    {
+        m_nHoverItem=-1;
+        Invalidate();
+    }
+}
 }//end of namespace 
