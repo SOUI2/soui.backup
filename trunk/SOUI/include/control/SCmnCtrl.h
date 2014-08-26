@@ -247,6 +247,7 @@ public:
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_ERASEBKGND_EX(OnEraseBkgnd)
+        MSG_WM_LBUTTONDBLCLK(OnLButtonDown) //将双击消息处理为单击
         MSG_WM_KEYDOWN(OnKeyDown)
         MSG_WM_KEYUP(OnKeyUp)
         MSG_WM_DESTROY(OnDestroy)

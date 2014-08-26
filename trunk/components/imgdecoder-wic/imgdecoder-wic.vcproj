@@ -173,6 +173,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
+				AdditionalDependencies="utilities.lib"
 				OutputFile="$(OutDir)\imgdecoder-wic.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
