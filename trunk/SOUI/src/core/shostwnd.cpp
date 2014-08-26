@@ -755,12 +755,12 @@ void SHostWnd::OnGetMinMaxInfo(LPMINMAXINFO lpMMI)
         ::GetMonitorInfo(hMonitor, &mi);
 
         CRect rcWork = mi.rcWork, rcMonitor = mi.rcMonitor;
-        lpMMI->ptMaxPosition.x = abs(rcWork.left - rcMonitor.left) - 1;
-        lpMMI->ptMaxPosition.y = abs(rcWork.top - rcMonitor.top) - 1;
-        lpMMI->ptMaxSize.x = abs(rcWork.Width()) + 2;
-        lpMMI->ptMaxSize.y = abs(rcWork.Height()) + 2;
-        lpMMI->ptMaxTrackSize.x = abs(rcWork.Width()) + 2;
-        lpMMI->ptMaxTrackSize.y = abs(rcWork.Height()) + 2;
+        lpMMI->ptMaxPosition.x = abs(rcWork.left - rcMonitor.left) - 1 - m_hostAttr.m_rcMaxInset.left;
+        lpMMI->ptMaxPosition.y = abs(rcWork.top - rcMonitor.top) - 1 - m_hostAttr.m_rcMaxInset.top;
+        lpMMI->ptMaxSize.x = abs(rcWork.Width()) + 2 + m_hostAttr.m_rcMaxInset.right;
+        lpMMI->ptMaxSize.y = abs(rcWork.Height()) + 2 + m_hostAttr.m_rcMaxInset.bottom;
+        lpMMI->ptMaxTrackSize.x = abs(rcWork.Width()) + 2 + m_hostAttr.m_rcMaxInset.right;
+        lpMMI->ptMaxTrackSize.y = abs(rcWork.Height()) + 2 + m_hostAttr.m_rcMaxInset.bottom;
         lpMMI->ptMinTrackSize = CPoint(m_hostAttr.m_szMin.cx, m_hostAttr.m_szMin.cy);
     }
 }

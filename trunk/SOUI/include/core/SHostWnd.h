@@ -63,6 +63,7 @@ namespace SOUI
             ATTR_STRINGW(L"trCtx",m_strTrCtx,FALSE)
             ATTR_STRINGW(L"title",m_strTitle,FALSE)
             ATTR_SIZE(L"size",m_szInit,FALSE)
+			ATTR_RECT(L"maxInset",m_rcMaxInset,FALSE)
             ATTR_INT(L"width",m_szInit.cx,FALSE)
             ATTR_INT(L"height",m_szInit.cy,FALSE)
             ATTR_RECT(L"margin",m_rcMargin,FALSE)
@@ -81,6 +82,10 @@ namespace SOUI
         CRect m_rcMargin;
         CSize m_szMin;
         CSize m_szInit;
+
+		/**/
+		CRect m_rcMaxInset;
+		/**/
 
         BOOL m_bResizable;
         BOOL m_bAppWnd;
@@ -113,8 +118,8 @@ public:
     SWindow * GetRoot(){return this;}
     CSimpleWnd * GetNative(){return this;}
 
-    HWND Create(HWND hWndParent,int x,int y,int nWidth,int nHeight);
-    HWND Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x, int y, int nWidth, int nHeight);
+    HWND Create(HWND hWndParent,int x = CW_USEDEFAULT, int y = CW_USEDEFAULT, int nWidth = CW_USEDEFAULT, int nHeight = CW_USEDEFAULT);
+    HWND Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x = CW_USEDEFAULT, int y = CW_USEDEFAULT, int nWidth = CW_USEDEFAULT, int nHeight = CW_USEDEFAULT);
 
     BOOL InitFromXml(pugi::xml_node xmlNode);
     
