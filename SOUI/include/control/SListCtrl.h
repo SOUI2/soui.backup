@@ -403,6 +403,25 @@ namespace SOUI
      * Describe  消息响应函数 
      */
      void    OnLButtonUp(UINT nFlags, CPoint pt);
+
+     /**
+      * OnMouseMove
+      * @brief    处理鼠标移动
+      * @param    UINT nFlags --  标志
+      * @param    CPoint pt --  坐标
+      * @return   void 
+      * Describe  
+      */    
+     void    OnMouseMove(UINT nFlags, CPoint pt);
+
+     /**
+      * OnMouseLeave
+      * @brief    处理鼠标离开消息
+      * @return   void
+      * Describe  
+      */    
+     void   OnMouseLeave();
+
     /**
      * SListCtrl::OnSize
      * @brief    消息响应函数
@@ -484,7 +503,7 @@ namespace SOUI
             ATTR_INT(L"icon-y", m_ptIcon.y, FALSE)
             ATTR_INT(L"text-x", m_ptText.x, FALSE)
             ATTR_INT(L"text-y", m_ptText.y, FALSE)
-            ATTR_INT(L"hottrack", m_bHotTrack, FALSE)
+            ATTR_INT(L"hotTrack", m_bHotTrack, FALSE)
         SOUI_ATTRS_END()
 
         SOUI_MSG_MAP_BEGIN()
@@ -493,6 +512,8 @@ namespace SOUI
             MSG_WM_SIZE(OnSize)
             MSG_WM_LBUTTONDOWN(OnLButtonDown)
             MSG_WM_LBUTTONUP(OnLButtonUp)
+            MSG_WM_MOUSEMOVE(OnMouseMove)
+            MSG_WM_MOUSELEAVE(OnMouseLeave)
         SOUI_MSG_MAP_END()
     };
 
