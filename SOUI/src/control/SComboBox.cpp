@@ -122,7 +122,7 @@ void SComboBoxBase::OnPaint(IRenderTarget * pRT )
         DrawText(pRT,strText, strText.GetLength(), rcText, GetTextAlign());
     }
     //draw focus rect
-    if(GetContainer()->SwndGetFocus()==m_hSWnd)
+    if(GetContainer()->SwndGetFocus()==m_swnd)
     {
         DrawFocus(pRT);
     }

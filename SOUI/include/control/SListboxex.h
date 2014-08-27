@@ -296,15 +296,14 @@ protected:
 
     /**
      * SListBoxEx::OnUpdateToolTip
-     * @brief    更新提示框
-     * @param    SWND hCurTipHost -- 
-     * @param    SWND &hNewTipHost -- 
-     * @param    CRect &rcTip --
-     * @param    SStringT &strTip -- 
+     * @brief    更新提示
+     * @param    CPoint pt --  感应位置
+     * @param    SwndToolTipInfo & tipInfo --  提示信息
+     * @return   BOOL 
      *
-     * Describe  更新提示框
+     * Describe  
      */
-    virtual BOOL OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
+    virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo);
 
     /**
      * SListBoxEx::NotifySelChange

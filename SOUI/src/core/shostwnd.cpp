@@ -431,14 +431,16 @@ LRESULT SHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
         }
         else
         {
-            SWND hNewTipHost=0;
-            CRect rcTip;
-            SStringT strTip;
-            BOOL bUpdate=pHover->OnUpdateToolTip(m_pTipCtrl->m_dwHostID,hNewTipHost,rcTip,strTip);
-            if(bUpdate)
+            CPoint pt(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+            SwndToolTipInfo tipInfo;
+            BOOL bOK=pHover->OnUpdateToolTip(pt,tipInfo);
+            if(bOK)
             {
-                m_pTipCtrl->m_dwHostID=hNewTipHost;
-                m_pTipCtrl->UpdateTip(rcTip,strTip);
+                TIPID id={tipInfo.swnd,tipInfo.dwCookie};
+                m_pTipCtrl->UpdateTip(id,tipInfo.rcTarget,tipInfo.strTip);
+            }else
+            {//hide tooltip
+                m_pTipCtrl->ClearTip();
             }
         }
     }

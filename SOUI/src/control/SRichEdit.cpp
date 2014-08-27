@@ -1071,7 +1071,7 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
 
 void SRichEdit::OnLButtonDown( UINT nFlags, CPoint point )
 {
-    if(m_hSWnd!=GetContainer()->SwndGetFocus())
+    if(m_swnd!=GetContainer()->SwndGetFocus())
     {
         SetFocus();
     }
@@ -1230,7 +1230,7 @@ LRESULT SRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
             m_rcInset.bottom=DYtoHimetricY(m_rcInsetPixel.bottom,yPerInch);
         }
         ReleaseDC(GetContainer()->GetHostHwnd(),hdc);
-        BOOL bFocus = GetContainer()->SwndGetFocus()==m_hSWnd;
+        BOOL bFocus = GetContainer()->SwndGetFocus()==m_swnd;
         if(bFocus) KillFocus();
         m_pTxtHost->GetTextService()->OnTxPropertyBitsChange(TXTBIT_EXTENTCHANGE|TXTBIT_CLIENTRECTCHANGE, TXTBIT_EXTENTCHANGE|TXTBIT_CLIENTRECTCHANGE);
         if(bFocus) SetFocus();
@@ -1470,11 +1470,11 @@ void SRichEdit::OnEnableDragDrop( BOOL bEnable )
     if(bEnable)
     {
         SRicheditDropTarget *pDropTarget=new SRicheditDropTarget(m_pTxtHost->GetTextService());
-        GetContainer()->RegisterDragDrop(m_hSWnd,pDropTarget);
+        GetContainer()->RegisterDragDrop(m_swnd,pDropTarget);
         pDropTarget->Release();
     }else
     {
-        GetContainer()->RevokeDragDrop(m_hSWnd);
+        GetContainer()->RevokeDragDrop(m_swnd);
     }
 }
 

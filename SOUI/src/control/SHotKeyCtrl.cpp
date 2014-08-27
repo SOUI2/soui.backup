@@ -34,7 +34,7 @@ int SHotKeyCtrl::OnCreate( LPVOID )
 void SHotKeyCtrl::OnLButtonDown( UINT nFlags,CPoint pt )
 {
     __super::OnLButtonDown(nFlags,pt);
-    GetContainer()->OnSetSwndFocus(m_hSWnd);
+    GetContainer()->OnSetSwndFocus(m_swnd);
 }
 
 void SHotKeyCtrl::OnPaint( IRenderTarget * pRT )

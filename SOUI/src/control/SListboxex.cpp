@@ -430,11 +430,11 @@ void SListBoxEx::OnDestroy()
     __super::OnDestroy();
 }
 
-BOOL SListBoxEx::OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip)
+BOOL SListBoxEx::OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo)
 {
     if(m_iHoverItem==-1)
-        return __super::OnUpdateToolTip(hCurTipHost,hNewTipHost,rcTip,strTip);
-    return m_arrItems[m_iHoverItem]->OnUpdateToolTip(hCurTipHost,hNewTipHost,rcTip,strTip);
+        return __super::OnUpdateToolTip(pt,tipInfo);
+    return m_arrItems[m_iHoverItem]->OnUpdateToolTip(pt,tipInfo);
 }
 
 void SListBoxEx::OnItemSetCapture(SItemPanel *pItem,BOOL bCapture )
@@ -571,7 +571,7 @@ void SListBoxEx::Relayout()
 
 void SListBoxEx::OnViewOriginChanged( CPoint ptOld,CPoint ptNew )
 {
-    if(m_iSelItem!=-1 && GetContainer()->SwndGetFocus()==m_hSWnd)
+    if(m_iSelItem!=-1 && GetContainer()->SwndGetFocus()==m_swnd)
     {//这里需要重新设置一下选中行的焦点状态来更新光标位置
         m_arrItems[m_iSelItem]->DoFrameEvent(WM_KILLFOCUS,0,0);
         m_arrItems[m_iSelItem]->DoFrameEvent(WM_SETFOCUS,0,0);

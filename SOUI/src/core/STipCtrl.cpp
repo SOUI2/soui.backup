@@ -10,7 +10,7 @@ namespace SOUI
 
 #define MARGIN_TIP        5
 
-STipCtrl::STipCtrl(void):m_nDelay(500),m_nShowSpan(5000),m_dwHostID(0),m_font(0)
+STipCtrl::STipCtrl(void):m_nDelay(500),m_nShowSpan(5000),m_font(0)
 {
 }
 
@@ -64,10 +64,12 @@ void STipCtrl::RelayEvent( const MSG *pMsg )
     }
 }
 
-void STipCtrl::UpdateTip(CRect rc, LPCTSTR pszTip,BOOL bText/*=TRUE*/ )
+void STipCtrl::UpdateTip(const TIPID &id, CRect rc,LPCTSTR pszTip)
 {
+    if(m_id == id) return;
+    
+    m_id = id;
     m_rcTarget=rc;
-    m_bTextTip=bText;
     m_strTip=pszTip;
     m_strTip.Replace(_T("\\n"),_T("\\r"));
     
@@ -75,6 +77,12 @@ void STipCtrl::UpdateTip(CRect rc, LPCTSTR pszTip,BOOL bText/*=TRUE*/ )
     {
         ShowTip(TRUE);
     }
+}
+
+void STipCtrl::ClearTip()
+{
+    m_id.dwHi = m_id.dwLow =0;
+    ShowTip(FALSE);
 }
 
 void STipCtrl::SetDelayTime( DWORD dwType,UINT iTime )
@@ -86,7 +94,6 @@ void STipCtrl::ShowTip(BOOL bShow)
 {
     if(!bShow)
     {
-        //m_dwHostID=0;
         ShowWindow(SW_HIDE);
         m_rcTarget.SetRect(0,0,0,0);
         m_strTip=_T("");

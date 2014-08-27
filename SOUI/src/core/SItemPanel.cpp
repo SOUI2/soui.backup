@@ -176,7 +176,7 @@ void SItemPanel::ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove)
 SWND SItemPanel::SwndFromPoint(POINT ptHitTest, BOOL bOnlyText)
 {
     SWND hRet=__super::SwndFromPoint(ptHitTest,bOnlyText);
-    if(hRet==m_hSWnd) hRet=NULL;
+    if(hRet==m_swnd) hRet=NULL;
     return hRet;
 }
 
@@ -229,29 +229,30 @@ LPARAM SItemPanel::GetItemData()
     return m_dwData;
 }
 
-BOOL SItemPanel::OnUpdateToolTip( SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip )
+BOOL SItemPanel::OnUpdateToolTip(CPoint pt, SwndToolTipInfo &tipInfo)
 {
-    if(hCurTipHost==m_hHover) return FALSE;
-    if(m_hHover==m_hSWnd)
+    CRect rcItem=GetItemRect();
+    if(m_hHover==m_swnd)
     {
-        strTip=_T("");
-        hNewTipHost = m_hSWnd;
-        rcTip = GetItemRect();
+        tipInfo.swnd = m_swnd;
+        tipInfo.dwCookie =0;
+        tipInfo.rcTarget = rcItem;
+        tipInfo.strTip = m_strToolTipText;
         return TRUE;
     }
     
     SWindow *pHover=SWindowMgr::GetWindow(m_hHover);
     if(!pHover || pHover->IsDisabled(TRUE))
     {
-        hNewTipHost=NULL;
+        tipInfo.swnd=0;
         return TRUE;
     }
-
-    BOOL bRet=pHover->OnUpdateToolTip(hCurTipHost,hNewTipHost,rcTip,strTip);
+    
+    pt -= rcItem.TopLeft();
+    BOOL bRet=pHover->OnUpdateToolTip(pt,tipInfo);
     if(bRet)
     {
-        CRect rcItem=GetItemRect();
-        rcTip.OffsetRect(rcItem.TopLeft());
+        tipInfo.rcTarget.OffsetRect(rcItem.TopLeft());
     }
     return bRet;
 }

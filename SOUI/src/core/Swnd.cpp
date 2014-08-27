@@ -12,7 +12,7 @@ namespace SOUI
 //////////////////////////////////////////////////////////////////////////
 
 SWindow::SWindow()
-    : m_hSWnd(SWindowMgr::NewWindow(this))
+    : m_swnd(SWindowMgr::NewWindow(this))
     , m_layout(this)
     , m_nID(0)
     , m_pContainer(NULL)
@@ -50,7 +50,7 @@ SWindow::SWindow()
 
 SWindow::~SWindow()
 {
-    SWindowMgr::DestroyWindow(m_hSWnd);
+    SWindowMgr::DestroyWindow(m_swnd);
 }
 
 
@@ -109,12 +109,23 @@ SStringT SWindow::GetWindowText()
     return m_strText;
 }
 
-BOOL SWindow::OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip)
+
+void SWindow::OnSetCaretValidateRect( LPCRECT lpRect )
 {
-    if(m_hSWnd==hCurTipHost) return FALSE;
-    hNewTipHost=m_hSWnd;
-    GetWindowRect(&rcTip);
-    strTip=m_strToolTipText;
+    CRect rcClient;
+    GetClientRect(&rcClient);
+    CRect rcIntersect;
+    rcIntersect.IntersectRect(&rcClient,lpRect);
+    if(GetParent()) GetParent()->OnSetCaretValidateRect(&rcIntersect);
+}
+
+BOOL SWindow::OnUpdateToolTip(CPoint pt, SwndToolTipInfo &tipInfo)
+{
+    if(m_strToolTipText.IsEmpty()) return FALSE;
+    tipInfo.swnd = m_swnd;
+    tipInfo.dwCookie =0;
+    tipInfo.rcTarget = m_rcWindow;
+    tipInfo.strTip = m_strToolTipText;
     return TRUE;
 }
 
@@ -274,30 +285,30 @@ ULONG_PTR SWindow::SetUserData(ULONG_PTR uData)
 
 BOOL SWindow::SetTimer(char id,UINT uElapse)
 {
-    STimerID timerID(m_hSWnd,id);
+    STimerID timerID(m_swnd,id);
     return ::SetTimer(GetContainer()->GetHostHwnd(),DWORD(timerID),uElapse,NULL);
 }
 
 void SWindow::KillTimer(char id)
 {
-    STimerID timerID(m_hSWnd,id);
+    STimerID timerID(m_swnd,id);
     ::KillTimer(GetContainer()->GetHostHwnd(),DWORD(timerID));
 }
 
 
 BOOL SWindow::SetTimer2( UINT_PTR id,UINT uElapse )
 {
-    return STimer2::SetTimer(m_hSWnd,id,uElapse);
+    return STimer2::SetTimer(m_swnd,id,uElapse);
 }
 
 void SWindow::KillTimer2( UINT_PTR id )
 {
-    STimer2::KillTimer(m_hSWnd,id);
+    STimer2::KillTimer(m_swnd,id);
 }
 
 SWND SWindow::GetSwnd()
 {
-    return m_hSWnd;
+    return m_swnd;
 }
 
 
@@ -678,7 +689,7 @@ SWND SWindow::SwndFromPoint(CPoint ptHitTest, BOOL bOnlyText)
     GetClientRect(&rcClient);
 
     if(!rcClient.PtInRect(ptHitTest))
-        return m_hSWnd;    //只在鼠标位于客户区时，才继续搜索子窗口
+        return m_swnd;    //只在鼠标位于客户区时，才继续搜索子窗口
     
     SWND swndChild = NULL;
 
@@ -695,7 +706,7 @@ SWND SWindow::SwndFromPoint(CPoint ptHitTest, BOOL bOnlyText)
         pChild=pChild->m_pPrevSibling;
     }
 
-    return m_hSWnd;
+    return m_swnd;
 }
 
 BOOL SWindow::NeedRedrawWhenStateChange()
@@ -989,7 +1000,7 @@ void SWindow::OnPaint(IRenderTarget *pRT)
     DrawText(pRT,m_strText, m_strText.GetLength(), rcText, GetTextAlign());
 
     //draw focus rect
-    if(GetContainer()->SwndGetFocus()==m_hSWnd)
+    if(GetContainer()->SwndGetFocus()==m_swnd)
     {
         DrawFocus(pRT);
     }
@@ -1130,7 +1141,7 @@ void SWindow::OnShowWindow(BOOL bShow, UINT nStatus)
         pChild->SSendMessage(WM_SHOWWINDOW,bShow,ParentShow);
         pChild=pChild->GetWindow(GSW_NEXTSIBLING);
     }
-    if(!IsVisible(TRUE) && m_hSWnd == GetContainer()->SwndGetFocus())
+    if(!IsVisible(TRUE) && m_swnd == GetContainer()->SwndGetFocus())
     {
         GetContainer()->OnSetSwndFocus(NULL);
     }
@@ -1169,7 +1180,7 @@ void SWindow::OnEnable( BOOL bEnable,UINT nStatus )
         pChild->SSendMessage(WM_ENABLE,bEnable,ParentEnable);
         pChild=pChild->GetWindow(GSW_NEXTSIBLING);
     }
-    if(IsDisabled(TRUE) && m_hSWnd == GetContainer()->SwndGetFocus())
+    if(IsDisabled(TRUE) && m_swnd == GetContainer()->SwndGetFocus())
     {
         GetContainer()->OnSetSwndFocus(NULL);
     }
@@ -1202,7 +1213,7 @@ void SWindow::OnRButtonDown( UINT nFlags, CPoint point )
 
 void SWindow::OnMouseHover(WPARAM wParam, CPoint ptPos)
 {
-    if(GetCapture()==m_hSWnd)
+    if(GetCapture()==m_swnd)
         ModifyState(WndState_PushDown,0,FALSE);
     ModifyState(WndState_Hover, 0,TRUE);
     OnNcPaint(0);
@@ -1210,7 +1221,7 @@ void SWindow::OnMouseHover(WPARAM wParam, CPoint ptPos)
 
 void SWindow::OnMouseLeave()
 {
-    if(GetCapture()==m_hSWnd)
+    if(GetCapture()==m_swnd)
         ModifyState(0,WndState_PushDown,FALSE);
     ModifyState(0,WndState_Hover,TRUE);
     OnNcPaint(0);
@@ -1332,7 +1343,7 @@ SWND SWindow::GetCapture()
 
 SWND SWindow::SetCapture()
 {
-    return GetContainer()->OnSetSwndCapture(m_hSWnd);
+    return GetContainer()->OnSetSwndCapture(m_swnd);
 }
 
 BOOL SWindow::ReleaseCapture()
@@ -1342,12 +1353,12 @@ BOOL SWindow::ReleaseCapture()
 
 void SWindow::SetFocus()
 {
-    GetContainer()->OnSetSwndFocus(m_hSWnd);
+    GetContainer()->OnSetSwndFocus(m_swnd);
 }
 
 void SWindow::KillFocus()
 {
-    if(GetContainer()->SwndGetFocus()==m_hSWnd)
+    if(GetContainer()->SwndGetFocus()==m_swnd)
     {
         GetContainer()->OnSetSwndFocus(NULL);
     }
