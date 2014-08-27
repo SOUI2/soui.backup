@@ -82,7 +82,7 @@ public:
     void SetItemData(LPARAM dwData);
     LPARAM GetItemData();
 
-    BOOL OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
+    virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo &tipInfo);
     
     void OnSetCaretValidateRect(LPCRECT lpRect);
 

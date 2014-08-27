@@ -186,7 +186,7 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
         rcItemPrev=rcItem;
     }
     
-    if(GetContainer()->SwndGetFocus()==m_hSWnd && IsFocusable())
+    if(GetContainer()->SwndGetFocus()==m_swnd && IsFocusable())
     {
         CRect rc;
         GetItemRect(m_nCurrentPage,rc);
@@ -211,29 +211,11 @@ CRect STabCtrl::GetChildrenLayoutRect()
 
 void STabCtrl::OnLButtonDown( UINT nFlags, CPoint point )
 {
-    CRect rcItem;
-    BOOL bClickMove = TRUE;
-    int nTabCount=GetItemCount();
-    for (int i = 0; i < nTabCount; i ++)
+    SWindow::OnLButtonDown(nFlags,point);
+    int iClickItem = HitTest(point);
+    if(iClickItem != m_nCurrentPage)
     {
-        GetItemRect(i, rcItem);
-
-        if (rcItem.PtInRect(point))
-        {
-            bClickMove = FALSE;
-            if (i == m_nCurrentPage)
-                continue;
-
-            SetCurSel(i);
-            break;
-        }
-    }
-    if (bClickMove)
-    {
-        __super::OnLButtonDown(nFlags,point);
-    }else
-    {
-        SetFocus();
+        SetCurSel(iClickItem);
     }
 }
 
@@ -575,6 +557,20 @@ void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD d
     }
 }
 
+
+BOOL STabCtrl::OnUpdateToolTip( CPoint pt, SwndToolTipInfo & tipInfo )
+{
+    int iItem = HitTest(pt);
+    if(iItem == -1) return FALSE;
+    if(GetItem(iItem)->GetToolTipText().IsEmpty()) return FALSE;
+    tipInfo.swnd = m_swnd;
+    tipInfo.dwCookie = iItem;
+    GetItemRect(iItem,tipInfo.rcTarget);
+    tipInfo.strTip = GetItem(iItem)->GetToolTipText();
+    return TRUE;
+}
+
+
 void STabCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
     if(nChar==VK_LEFT || nChar==VK_UP)
@@ -592,6 +588,22 @@ void STabCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
     {
         SetCurSel(GetItemCount()-1);
     }
+}
+
+int STabCtrl::HitTest( CPoint pt )
+{
+    int nTabCount=GetItemCount();
+    for (int i = 0; i < nTabCount; i ++)
+    {
+        CRect rcItem;
+        GetItemRect(i, rcItem);
+
+        if (rcItem.PtInRect(pt))
+        {
+            return i;
+        }
+    }
+    return -1;
 }
 
 

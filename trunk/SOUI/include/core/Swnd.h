@@ -120,6 +120,14 @@ namespace SOUI
         LPARAM lParam;
     } SWNDMSG,*PSWNDMSG;
 
+    struct SwndToolTipInfo
+    {
+        SWND    swnd;       //拥有tooltip的窗口
+        DWORD   dwCookie;   //tooltip在窗口内的ID，对应一个窗口不同区域显示不同tip的情况，一般可以不提供
+        CRect   rcTarget;   //tooltip感应区
+        SStringT strTip;    //top字符串
+    };
+    
     /**
     * @class     SWindow
     * @brief     SOUI窗口基类 
@@ -138,7 +146,7 @@ namespace SOUI
         virtual ~SWindow();
 
     protected:
-        SWND m_hSWnd;       /**< 窗口句柄 */
+        SWND m_swnd;       /**< 窗口句柄 */
 
         ISwndContainer *m_pContainer;/**< 容器对象 */
         SEventSet   m_evtSet;/**< 窗口事件集合 */
@@ -552,19 +560,29 @@ namespace SOUI
         */
         virtual SWindow * GetSelectedSiblingInGroup(){return NULL;}
 
-        virtual void OnSetCaretValidateRect(LPCRECT lpRect)
-        {
-            CRect rcClient;
-            GetClientRect(&rcClient);
-            CRect rcIntersect;
-            rcIntersect.IntersectRect(&rcClient,lpRect);
-            if(GetParent()) GetParent()->OnSetCaretValidateRect(&rcIntersect);
-        }
+        /**
+         * OnSetCaretValidateRect
+         * @brief    设置光标显示区
+         * @param    LPCRECT lpRect --  光标显示区
+         * @return   void 
+         *
+         * Describe  
+         */
+        virtual void OnSetCaretValidateRect(LPCRECT lpRect);
+        
         // Set current cursor, when hover
         virtual BOOL OnSetCursor(const CPoint &pt);
 
-        // Get tooltip Info
-        virtual BOOL OnUpdateToolTip(SWND hCurTipHost,SWND &hNewTipHost,CRect &rcTip,SStringT &strTip);
+        /**
+         * OnUpdateToolTip
+         * @brief    处理tooltip
+         * @param    const CPoint & pt --  测试点
+         * @param [out]  SwndToolTipInfo & tipInfo -- tip信息 
+         * @return   BOOL -- TRUE:更新tooltip，FALSE:不更新tooltip
+         *
+         * Describe  
+         */
+        virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo &tipInfo);
 
         virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState) {}
 

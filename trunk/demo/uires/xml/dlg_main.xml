@@ -31,10 +31,10 @@
           </header>
         </listctrl>
       </page>
-      <page title="webkit">
+      <page title="webkit" tip="show webkit based on WKE">
         <include src="layout:page_webkit"/>
       </page>
-      <page title="flash">
+      <page title="flash" tip="windowless flash control">
         <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://swf.sc.chinaz.com//Files//DownLoad//flash2//201401//flash2524.swf" delay="1"/>
       </page>
       <page title="gif">
@@ -43,19 +43,19 @@
         <gifplayer pos="10,150" skin="gif_penguin"/>
         <icon pos="10,300" src="LOGO:64"/>
       </page>
-      <page title="layout">
+      <page title="layout" tip="show layout capability in soui">
         <include src="layout:page_layout"/>
       </page>
       <page title="treebox">
         <include src="layout:page_treebox"/>
       </page>
-      <page title ="misc.">
+      <page title ="misc." tip="many features, just find it.">
         <include src="layout:page_misc"/>
       </page>
-      <page title="treectrl">
+      <page title="treectrl" tip="tree control">
         <include src="layout:page_treectrl"/>
       </page>
-      <page title="about">
+      <page title="about" tip="copy right(c) setoutsoft 2014.">
         <include src="layout:page_about"/>
       </page>
     </tabctrl>

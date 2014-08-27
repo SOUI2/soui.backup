@@ -284,7 +284,7 @@ void SButton::OnStateChanged( DWORD dwOldState,DWORD dwNewState )
 {
     StopCurAnimate();
 
-    if(GetCapture()==m_hSWnd)    //点击中
+    if(GetCapture()==m_swnd)    //点击中
         return;
 
     if(m_bAnimate &&
