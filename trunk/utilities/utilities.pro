@@ -42,4 +42,3 @@ SOURCES += src/gdialpha.cpp \
            src/utilities.cpp \
            src/pugixml/pugixml.cpp \
            src/string/strcpcvt.cpp	\
-           src/unknown/obj-ref-impl.cpp 
