@@ -22,12 +22,6 @@ INCLUDEPATH += . \
 dir = ../..
 include($$dir/common.pri)
 
-CONFIG(debug,debug|release){
-	LIBS += utilitiesd.lib
-}
-else{
-	LIBS += utilities.lib
-}
 
 PRECOMPILED_HEADER = stdafx.h
 

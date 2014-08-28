@@ -10,10 +10,8 @@
 #define SOUI_COM_C  EXTERN_C
 #endif//SOUI_COM_DLL
 
-struct UTILITIES_API IObjRef
+struct IObjRef
 {
-	virtual ~IObjRef();
-
 	virtual void AddRef() = 0;
 
 	virtual void Release() = 0;
