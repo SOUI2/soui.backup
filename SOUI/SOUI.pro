@@ -99,7 +99,7 @@ HEADERS += include/SApp.h \
            include/helper/SResID.h \
            include/helper/STime.h \
            include/helper/STimerEx.h \
-           include/helper/STipCtrl.h \
+           include/helper/SToolTip.h \
            include/helper/SwndMsgCracker.h \
            include/interface/imgdecoder-i.h \
            include/interface/render-i.h \
@@ -107,6 +107,7 @@ HEADERS += include/SApp.h \
            include/interface/SScriptModule-i.h \
            include/interface/SSkinobj-i.h \
            include/interface/STranslator-i.h \
+           include/interface/stooltip-i.h \
            include/res.mgr/SFontPool.h \
            include/res.mgr/SObjDefAttr.h \
            include/res.mgr/SResProvider.h \
@@ -156,7 +157,6 @@ SOURCES += src/SApp.cpp \
            src/core/SSkin.cpp \
            src/core/SSkinFactoryMgr.cpp \
            src/core/SThreadActiveWndMgr.cpp \
-           src/core/STipCtrl.cpp \
            src/core/SWindowMgr.cpp \
            src/core/Swnd.cpp \
            src/core/SwndContainerImpl.cpp \
@@ -170,6 +170,8 @@ SOURCES += src/SApp.cpp \
            src/helper/MenuWndHook.cpp \
            src/helper/SMenu.cpp \
            src/helper/STimerEx.cpp \
+           src/helper/stooltip.cpp \
+
            src/res.mgr/SFontPool.cpp \
            src/res.mgr/SObjDefAttr.cpp \
            src/res.mgr/SResProvider.cpp \

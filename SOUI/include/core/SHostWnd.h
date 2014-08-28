@@ -12,6 +12,7 @@
 #include "SimpleWnd.h"
 #include "SDropTargetDispatcher.h"
 #include "event/eventcrack.h"
+#include "interface/stooltip-i.h"
 
 namespace SOUI
 {
@@ -102,8 +103,6 @@ namespace SOUI
         HICON   m_hAppIconBig;
     };
 
-class STipCtrl;
-
 class SOUI_EXP SHostWnd
     : public CSimpleWnd
     , public SwndContainerImpl
@@ -145,7 +144,7 @@ protected:
     BOOL m_bNeedRepaint;
     BOOL m_bNeedAllRepaint;
 
-    STipCtrl    * m_pTipCtrl;
+    IToolTip * m_pTipCtrl;
 
     CAutoRefPtr<IRegion>    m_rgnInvalidate;
     CAutoRefPtr<IRenderTarget> m_memRT;

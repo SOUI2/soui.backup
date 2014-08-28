@@ -17,6 +17,8 @@
 #include "interface/render-i.h"
 #include "interface/SScriptModule-i.h"
 #include "interface/STranslator-i.h"
+#include "interface/stooltip-i.h"
+#include "control/RealWndHandler-i.h"
 
 #include "res.mgr/SResProviderMgr.h"
 
@@ -24,14 +26,15 @@
 #include "core/SWndFactoryMgr.h"
 #include "core/SSkinFactoryMgr.h"
 
-#include "control/RealWndHandler-i.h"
+
+#define GETRESPROVIDER      SApplication::getSingletonPtr()
+#define GETRENDERFACTORY    SApplication::getSingleton().GetRenderFactory()
+#define GETREALWNDHANDLER   SApplication::getSingleton().GetRealWndHander()
+#define GETTOOLTIPFACTORY   SApplication::getSingleton().GetToolTipFactory()
 
 #define LOADXML(p1,p2,p3) SApplication::getSingleton().LoadXmlDocment(p1,p2,p3)
 #define LOADIMAGE(p1,p2) SApplication::getSingleton().LoadImage(p1,p2)
-#define GETRESPROVIDER    SApplication::getSingletonPtr()
-#define GETRENDERFACTORY SApplication::getSingleton().GetRenderFactory()
 #define TR(p1,p2)       SApplication::getSingleton().GetTranslator()->tr(p1,p2)
-#define GETREALWNDHANDLER    SApplication::getSingleton().GetRealWndHander()
 
 #define RT_UIDEF _T("UIDEF")
 #define RT_LAYOUT _T("LAYOUT")
@@ -172,6 +175,23 @@ public:
     void SetRealWndHandler(IRealWndHandler *pRealHandler);
 
     /**
+     * GetToolTipFactory
+     * @brief    获取ToolTip处理接口
+     * @return   IToolTipFactory * -- ToolTip处理接口
+     * Describe  
+     */    
+    IToolTipFactory * GetToolTipFactory();
+
+    /**
+     * SetToolTipFactory
+     * @brief    设置ToolTip处理接口
+     * @param    IToolTipFactory * pToolTipFac --  ToolTip处理接口
+     * @return   void -- 
+     * Describe  
+     */    
+    void SetToolTipFactory(IToolTipFactory* pToolTipFac);
+
+    /**
      * Run
      * @brief    启动SOUI的主消息循环
      * @param    HWND hMainWnd --  应用程序主窗口句柄
@@ -189,7 +209,8 @@ protected:
     HINSTANCE m_hInst;
     CAutoRefPtr<IScriptModule>  m_pScriptModule;
     CAutoRefPtr<IRenderFactory> m_RenderFactory;
-    CAutoRefPtr<ITranslatorMgr>    m_Translator;
+    CAutoRefPtr<ITranslatorMgr>    m_translator;
+    CAutoRefPtr<IToolTipFactory>    m_tooltipFactory;
 };
 
 }//namespace SOUI
