@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="imgdecoder-wic"
-	ProjectGUID="{C5B4C352-744B-326E-84E7-9E6EFFBD1DCA}"
+	Name="360"
+	ProjectGUID="{73C5F9C9-1F07-397E-B929-898B92AAC27B}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -12,27 +12,27 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\bin\"
+			OutputDirectory="..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			ConfigurationType="2"
-			IntermediateDirectory="..\..\obj\debug\imgdecoder-wic\"
+			ConfigurationType="1"
+			IntermediateDirectory="..\obj\debug\360\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\..\obj\debug\imgdecoder-wic\"
+				AssemblerListingLocation="..\obj\debug\360\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="0"
 				ForcedIncludeFiles="stdafx.h"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\obj\debug\imgdecoder-wic\"
+				ObjectFile="..\obj\debug\360\"
 				Optimization ="4"
-				PrecompiledHeaderFile="$(IntDir)\imgdecoder-wicd.pch"
+				PrecompiledHeaderFile="$(IntDir)\360d.pch"
 				PrecompiledHeaderThrough="stdafx.h"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DLL_SOUI_COM,_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,DLL_SOUI"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
@@ -44,13 +44,15 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalLibraryDirectories="..\..\bin"
+				AdditionalDependencies="utilitiesd.lib souid.lib"
+				AdditionalLibraryDirectories="..\bin"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkTimeCodeGeneration="0"
-				OutputFile="$(OutDir)\imgdecoder-wicd.dll"
+				OutputFile="$(OutDir)\360d.exe"
 				ProgramDatabaseFile=""
-				SubSystem="0"
+				SubSystem="2"
 				SuppressStartupBanner="true"
 				TargetMachine="1" />
 			<Tool
@@ -68,31 +70,31 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DLL_SOUI_COM,_CRT_SECURE_NO_WARNINGS,_DEBUG" />
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,DLL_SOUI,_DEBUG" />
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\bin\"
+			OutputDirectory="..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			ConfigurationType="2"
-			IntermediateDirectory="..\..\obj\release\imgdecoder-wic\"
+			ConfigurationType="1"
+			IntermediateDirectory="..\obj\release\360\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\..\obj\release\imgdecoder-wic\"
+				AssemblerListingLocation="..\obj\release\360\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="0"
 				ForcedIncludeFiles="stdafx.h"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\obj\release\imgdecoder-wic\"
+				ObjectFile="..\obj\release\360\"
 				Optimization ="1"
-				PrecompiledHeaderFile="$(IntDir)\imgdecoder-wic.pch"
+				PrecompiledHeaderFile="$(IntDir)\360.pch"
 				PrecompiledHeaderThrough="stdafx.h"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DLL_SOUI_COM,_CRT_SECURE_NO_WARNINGS,NDEBUG"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,DLL_SOUI,NDEBUG"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="0"
 				RuntimeTypeInfo="false"
@@ -104,16 +106,18 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalLibraryDirectories="..\..\bin"
+				AdditionalDependencies="utilities.lib soui.lib"
+				AdditionalLibraryDirectories="..\bin"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				EnableCOMDATFolding="2"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkIncremental="1"
 				LinkTimeCodeGeneration="0"
 				OptimizeReferences="2"
-				OutputFile="$(OutDir)\imgdecoder-wic.dll"
+				OutputFile="$(OutDir)\360.exe"
 				ProgramDatabaseFile=""
-				SubSystem="0"
+				SubSystem="2"
 				SuppressStartupBanner="true"
 				TargetMachine="1" />
 			<Tool
@@ -131,7 +135,7 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DLL_SOUI_COM,_CRT_SECURE_NO_WARNINGS" />
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,DLL_SOUI" />
 		</Configuration>
 	</Configurations>
 	<Files>
@@ -140,16 +144,18 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="dllmain.cpp" />
+				RelativePath="360.cpp" />
 			<File
-				RelativePath="imgdecoder-wic.cpp" />
+				RelativePath="MainDlg.cpp" />
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="imgdecoder-wic.h" />
+				RelativePath="MainDlg.h" />
+			<File
+				RelativePath="resource.h" />
 			<File
 				RelativePath="stdafx.h">
 				<FileConfiguration
@@ -169,8 +175,6 @@
 						Outputs="stdafx.h.cpp" />
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath="targetver.h" />
 		</Filter>
 		<Filter
 			Name="Generated Files"
@@ -197,7 +201,7 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="imgdecoder-wic.rc" />
+			RelativePath="360.rc" />
 	</Files>
 	<Globals>
 	</Globals>
