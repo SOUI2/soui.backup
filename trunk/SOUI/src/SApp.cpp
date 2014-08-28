@@ -12,6 +12,7 @@
 
 #include "helper/STimerEx.h"
 #include "helper/mybuffer.h"
+#include "helper/SToolTip.h"
 
 #include "control/SRichEdit.h"
 #include "control/Smessagebox.h"
@@ -30,6 +31,30 @@ public:
     } 
 };
 
+class SDefToolTipFactory : public TObjRefImpl<IToolTipFactory>
+{
+public:
+    /*virtual */IToolTip * CreateToolTip(HWND hHost)
+    {
+        STipCtrl *pTipCtrl = new STipCtrl;
+        if(!pTipCtrl->Create(hHost))
+        {
+            delete pTipCtrl;
+            return NULL;
+        }
+        return pTipCtrl;
+    }
+
+    /*virtual */void DestroyToolTip(IToolTip *pToolTip)
+    {
+        if(pToolTip)
+        {
+            STipCtrl *pTipCtrl= (STipCtrl *)pToolTip;
+            pTipCtrl->DestroyWindow();
+        }
+    }
+};
+
 template<> SApplication* SSingleton<SApplication>::ms_Singleton = 0;
 
 SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName)
@@ -41,7 +66,8 @@ SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR 
     CSimpleWndHelper::Init(hInst,pszHostClassName);
     STextServiceHelper::Init();
     SRicheditMenuDef::Init();
-    m_Translator.Attach(new SNullTranslator);
+    m_translator.Attach(new SNullTranslator);
+    m_tooltipFactory.Attach(new SDefToolTipFactory);
 }
 
 SApplication::~SApplication(void)
@@ -182,12 +208,12 @@ HINSTANCE SApplication::GetInstance()
 
 void SApplication::SetTranslator(ITranslatorMgr * pTrans)
 {
-	m_Translator = pTrans;
+	m_translator = pTrans;
 }
 
 ITranslatorMgr * SApplication::GetTranslator()
 {
-	return m_Translator;
+	return m_translator;
 }
 
 void SApplication::SetScriptModule(IScriptModule *pScriptModule)
@@ -213,6 +239,16 @@ void SApplication::SetRealWndHandler( IRealWndHandler *pRealHandler )
 IRealWndHandler * SApplication::GetRealWndHander()
 {
     return m_pRealWndHandler;
+}
+
+IToolTipFactory * SApplication::GetToolTipFactory()
+{
+    return m_tooltipFactory;
+}
+
+void SApplication::SetToolTipFactory( IToolTipFactory* pToolTipFac )
+{
+    m_tooltipFactory = pToolTipFac;
 }
 
 }//namespace SOUI

@@ -3,7 +3,6 @@
 #include "SApp.h"
 #include "core/shostwnd.h"
 #include "helper/mybuffer.h"
-#include "helper/STipCtrl.h"
 #include "helper/color.h"
 #include "helper/SplitString.h"
 
@@ -269,10 +268,8 @@ int SHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
     GETRENDERFACTORY->CreateRenderTarget(&m_memRT,0,0);
     GETRENDERFACTORY->CreateRegion(&m_rgnInvalidate);
     
-    //tooltip
-    m_pTipCtrl=new STipCtrl;
-    m_pTipCtrl->Create(m_hWnd);
-    GetMsgLoop()->AddMessageFilter(m_pTipCtrl);
+    m_pTipCtrl = GETTOOLTIPFACTORY->CreateToolTip(m_hWnd);
+    if(m_pTipCtrl) GetMsgLoop()->AddMessageFilter(m_pTipCtrl);
 
     SWindow::SetContainer(this);
 
@@ -286,9 +283,7 @@ void SHostWnd::OnDestroy()
     if(m_pTipCtrl)
     {
         GetMsgLoop()->RemoveMessageFilter(m_pTipCtrl);
-        if (m_pTipCtrl->IsWindow())
-            m_pTipCtrl->DestroyWindow();
-        delete m_pTipCtrl;
+        GETTOOLTIPFACTORY->DestroyToolTip(m_pTipCtrl);
     }
     if(m_hostAttr.m_bTranslucent && m_dummyWnd.IsWindow())
     {
@@ -422,12 +417,12 @@ LRESULT SHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     DoFrameEvent(uMsg,wParam,lParam);    //将鼠标消息转发到SWindow处理
 
-    if(m_pTipCtrl && m_pTipCtrl->IsWindow())
+    if(m_pTipCtrl)
     {
         SWindow *pHover=SWindowMgr::GetWindow(m_hHover);
         if(!pHover || pHover->IsDisabled(TRUE))
         {
-            m_pTipCtrl->ShowTip(FALSE);
+            m_pTipCtrl->ClearTip();
         }
         else
         {
