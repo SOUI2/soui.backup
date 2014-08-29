@@ -171,7 +171,6 @@ SOURCES += src/SApp.cpp \
            src/helper/SMenu.cpp \
            src/helper/STimerEx.cpp \
            src/helper/stooltip.cpp \
-
            src/res.mgr/SFontPool.cpp \
            src/res.mgr/SObjDefAttr.cpp \
            src/res.mgr/SResProvider.cpp \
