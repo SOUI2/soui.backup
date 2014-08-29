@@ -78,8 +78,7 @@ void SMenuODWnd::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
         {
             if(m_pCheckSkin)
             {
-                if(bRadio) m_pCheckSkin->Draw(pRT,rcIcon,1);
-                else m_pCheckSkin->Draw(pRT,rcIcon,0);
+                m_pCheckSkin->Draw(pRT,rcIcon,bRadio?1:0);
             }
         }
         else if(pdmmi->itemInfo.iIcon!=-1 && m_pIconSkin)
