@@ -37,7 +37,7 @@ public:
     /*virtual */IToolTip * CreateToolTip(HWND hHost)
     {
         STipCtrl *pTipCtrl = new STipCtrl;
-        if(!pTipCtrl->Create(hHost))
+        if(!pTipCtrl->Create())
         {
             delete pTipCtrl;
             return NULL;

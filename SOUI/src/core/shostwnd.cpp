@@ -284,6 +284,7 @@ void SHostWnd::OnDestroy()
     {
         GetMsgLoop()->RemoveMessageFilter(m_pTipCtrl);
         GETTOOLTIPFACTORY->DestroyToolTip(m_pTipCtrl);
+        m_pTipCtrl = NULL;
     }
     if(m_hostAttr.m_bTranslucent && m_dummyWnd.IsWindow())
     {

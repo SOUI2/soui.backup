@@ -19,9 +19,9 @@ namespace SOUI
         if(m_font) DeleteObject(m_font);
     }
 
-    BOOL STipCtrl::Create( HWND hOwner )
+    BOOL STipCtrl::Create()
     {
-        HWND hWnd=CSimpleWnd::Create(NULL,WS_POPUP,WS_EX_TOOLWINDOW|WS_EX_TOPMOST|WS_EX_NOACTIVATE,0,0,0,0,hOwner,NULL);
+        HWND hWnd=CSimpleWnd::Create(NULL,WS_POPUP,WS_EX_TOOLWINDOW|WS_EX_TOPMOST|WS_EX_NOACTIVATE,0,0,0,0,NULL,NULL);
         if(!hWnd) return FALSE;
 
         LOGFONT lf;
@@ -83,11 +83,6 @@ namespace SOUI
     {
         m_id.dwHi = m_id.dwLow =0;
         ShowTip(FALSE);
-    }
-
-    void STipCtrl::SetDelayTime( DWORD dwType,UINT iTime )
-    {
-
     }
 
     void STipCtrl::ShowTip(BOOL bShow)
