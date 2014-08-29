@@ -12,12 +12,10 @@ namespace SOUI
         STipCtrl(void);
         virtual ~STipCtrl(void);
 
-        BOOL Create(HWND hOwner);
+        BOOL Create();
 
     public://IToolTip
         /*virtual*/ void RelayEvent(const MSG *pMsg);
-
-        /*virtual*/ void SetDelayTime(DWORD dwType,UINT iTime);
 
         /*virtual*/ void UpdateTip(const TIPID &id, CRect rc,LPCTSTR pszTip);
 
