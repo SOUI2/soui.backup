@@ -801,7 +801,7 @@ HRESULT SRichEdit::InitDefaultCharFormat( CHARFORMAT2W* pcf ,IFont *pFont)
     pcf->cbSize = sizeof(CHARFORMAT2W);
     pcf->dwMask = CFM_SIZE | CFM_OFFSET | CFM_FACE | CFM_CHARSET | CFM_COLOR | CFM_BOLD | CFM_ITALIC | CFM_UNDERLINE;
 
-    pcf->crTextColor = pRT->GetTextColor();
+    pcf->crTextColor = pRT->GetTextColor() & 0x00ffffff;
     HDC hdc=GetDC(NULL);
     LONG yPixPerInch = GetDeviceCaps(hdc, LOGPIXELSY);
     ReleaseDC(NULL,hdc);
@@ -1363,7 +1363,7 @@ void SRichEdit::SetSel(DWORD dwSelection, BOOL bNoScroll)
 
 HRESULT SRichEdit::OnAttrTextColor( const SStringW &  strValue,BOOL bLoading )
 {
-    m_style.SetTextColor(0,HexStringToColor(strValue));
+    m_style.SetTextColor(0,HexStringToColor((LPCWSTR)strValue +1));
     if(!bLoading)
     {
         SetDefaultTextColor(m_style.GetTextColor(0));

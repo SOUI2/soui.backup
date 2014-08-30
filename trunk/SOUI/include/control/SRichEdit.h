@@ -1157,9 +1157,9 @@ namespace SOUI
             MESSAGE_HANDLER_EX(EM_SETCHARFORMAT,OnSetCharFormat)
             MESSAGE_HANDLER_EX(EM_SETREADONLY,OnSetReadOnly)
             MESSAGE_HANDLER_EX(EM_EXLIMITTEXT,OnSetLimitText)
-            SOUI_MSG_MAP_END()
+        SOUI_MSG_MAP_END()
 
-            SOUI_ATTRS_BEGIN()
+        SOUI_ATTRS_BEGIN()
             ATTR_INT(L"style",m_dwStyle,FALSE)
             ATTR_INT(L"maxBuf",m_cchTextMost,FALSE)
             ATTR_INT(L"transparent",m_fTransparent,FALSE)
@@ -1172,7 +1172,7 @@ namespace SOUI
             ATTR_RECT(L"inset",m_rcInsetPixel,FALSE)
             ATTR_CUSTOM(L"colorText",OnAttrTextColor)
             ATTR_CUSTOM(L"rtf",OnAttrRTF)
-            SOUI_ATTRS_END()
+        SOUI_ATTRS_END()
 
     protected:
         /**
