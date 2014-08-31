@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="iectrl"
-	ProjectGUID="{356AEB51-0DDF-426F-BCF2-380801DC4FB7}"
-	RootNamespace="iectrl"
+	Name="animate_demo"
+	ProjectGUID="{F41B4A33-1948-42D0-BFCF-C58EEE0371CE}"
+	RootNamespace="animate_demo"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -17,13 +17,15 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\bin\"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="..\..\bin"
+			IntermediateDirectory="Debug"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description=""
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -40,8 +42,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\SOUI\include;..\..\utilities\include;..\..\controls.extend"
-				PreprocessorDefinitions="WIN32;_WINDOWS;STRICT;_DEBUG"
+				AdditionalIncludeDirectories="..\..\SOUI\include;..\..\utilities\include;"
+				PreprocessorDefinitions="WIN32;_WINDOWS;STRICT;_DEBUG;"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="false"
 				UsePrecompiledHeader="2"
@@ -55,6 +57,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
+				AdditionalIncludeDirectories="$(DUIENGINEPATH)\duiengine\include;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -62,10 +65,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="utilitiesd.lib souid.lib"
-				OutputFile="$(OutDir)\$(ProjectName)d.exe"
+				OutputFile="$(OurDir)\$(ProjectName)d.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;"
+				AdditionalLibraryDirectories="$(OutDir)"
 				GenerateDebugInformation="true"
 			/>
 			<Tool
@@ -92,13 +95,15 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\bin\"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="..\..\bin"
+			IntermediateDirectory="Release"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description=""
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -115,8 +120,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="..\..\SOUI\include;..\..\utilities\include;..\..\controls.extend"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
+				AdditionalIncludeDirectories="..\..\SOUI\include;..\..\utilities\include;"
+				PreprocessorDefinitions="WIN32;_WINDOWS;STRICT;NDEBUG;"
 				RuntimeLibrary="0"
 				TreatWChar_tAsBuiltInType="false"
 				UsePrecompiledHeader="2"
@@ -128,6 +133,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
+				AdditionalIncludeDirectories="$(DUIENGINEPATH)\duiengine\include;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -135,10 +141,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="utilities.lib soui.lib"
-				LinkIncremental="1"
+				OutputFile="$(OurDir)\$(ProjectName).exe"
+				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;"
-				GenerateDebugInformation="true"
+				AdditionalLibraryDirectories="$(OutDir)"
+				GenerateDebugInformation="false"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -171,15 +178,11 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
-				RelativePath=".\iectrl.cpp"
+				RelativePath=".\ani_demo.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\MainDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\SIECtrl.cpp"
 				>
 			</File>
 			<File
@@ -216,10 +219,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\controls.extend\SIECtrl.h"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
@@ -229,13 +228,32 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest"
 			>
 			<File
-				RelativePath=".\iectrl.rc"
+				RelativePath=".\duires\ani_demo.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\ani_demo.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\uires\image\girl.jpg"
+				>
+			</File>
+			<File
+				RelativePath=".\duires\res.h"
+				>
+			</File>
+			<File
+				RelativePath=".\duires\winres.h"
+				>
+			</File>
+			<File
+				RelativePath=".\duires\winres.rc2"
 				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Skin Files"
-			Filter="idx;xml;png;gif;jpg;ico;"
 			>
 			<File
 				RelativePath=".\uires\uires.idx"
@@ -245,9 +263,8 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Building UI Resource"
-						CommandLine="&quot;..\..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2&#x0D;&#x0A;"
-						Outputs=".\res\soui_res.rc2;"
+						CommandLine="&quot;..\..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\duires\winres.rc2&#x0D;&#x0A;"
+						Outputs="duires\winres.rc2"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -255,9 +272,8 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Building UI Resource"
-						CommandLine="&quot;..\..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2&#x0D;&#x0A;"
-						Outputs=".\res\soui_res.rc2;"
+						CommandLine="&quot;..\..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\duires\winres.rc2&#x0D;&#x0A;"
+						Outputs="duires\winres.rc2"
 					/>
 				</FileConfiguration>
 			</File>
@@ -265,7 +281,11 @@
 				Name="image"
 				>
 				<File
-					RelativePath=".\uires\image\soui.ico"
+					RelativePath=".\uires\image\dlg_bg_frame.png"
+					>
+				</File>
+				<File
+					RelativePath=".\uires\image\img_busy.png"
 					>
 				</File>
 			</Filter>

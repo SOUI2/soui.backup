@@ -1447,8 +1447,8 @@ SWindow * SWindow::GetNextVisibleWindow( SWindow *pWnd ,const CRect &rcDraw)
 void SWindow::DrawAniStep( CRect rcFore,CRect rcBack,IRenderTarget * pRTFore,IRenderTarget * pRTBack,CPoint ptAnchor)
 {
     IRenderTarget * pRT=GetRenderTarget(rcBack,OLEDC_OFFSCREEN,FALSE);
-    pRT->BitBlt(&rcBack,pRTBack,rcBack.left,rcBack.top,SRCCOPY);
-    pRT->BitBlt(&rcFore,pRTFore,ptAnchor.x,ptAnchor.y,SRCCOPY);
+    pRT->BitBlt(&rcBack,pRTBack,rcBack.left,rcBack.top,SRCCOPY|0x80000000);
+    pRT->BitBlt(&rcFore,pRTFore,ptAnchor.x,ptAnchor.y,SRCCOPY|0x80000000);
     PaintForeground(pRT,rcBack);//画前景
     ReleaseRenderTarget(pRT);
 }
@@ -1458,15 +1458,20 @@ void SWindow::DrawAniStep( CRect rcWnd,IRenderTarget * pRTFore,IRenderTarget * p
     IRenderTarget * pRT=GetRenderTarget(rcWnd,OLEDC_OFFSCREEN,FALSE);
     if(byAlpha>0 && byAlpha<255)
     {
-        pRT->BitBlt(&rcWnd,pRTBack,rcWnd.left,rcWnd.top,SRCCOPY);
-        IBitmap *pBmp = (IBitmap*)pRTFore->GetCurrentObject(OT_BITMAP);
-        pRT->DrawBitmap(&rcWnd,pBmp,rcWnd.left,rcWnd.top,byAlpha);
+        pRT->BitBlt(&rcWnd,pRTBack,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
+        CAutoRefPtr<IBitmap> bmpEmpty,bmpCur;
+        //必须是一个有效的位图才能替换出当前的位图
+        GETRENDERFACTORY->CreateBitmap(&bmpEmpty);
+        bmpEmpty->Init(1,1);
+        pRTFore->SelectObject(bmpEmpty,(IRenderObj**)&bmpCur);
+        pRT->DrawBitmap(&rcWnd,bmpCur,0,0,byAlpha);
+        pRTFore->SelectObject(bmpCur);
     }else if(byAlpha==0)
     {
-        pRT->BitBlt(&rcWnd,pRTBack,rcWnd.left,rcWnd.top,SRCCOPY);
+        pRT->BitBlt(&rcWnd,pRTBack,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
     }else if(byAlpha==255)
     {
-        pRT->BitBlt(&rcWnd,pRTFore,rcWnd.left,rcWnd.top,SRCCOPY);
+        pRT->BitBlt(&rcWnd,pRTFore,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
     }
     PaintForeground(pRT,rcWnd);//画前景
     ReleaseRenderTarget(pRT);
@@ -1501,7 +1506,7 @@ BOOL SWindow::AnimateWindow(DWORD dwTime,DWORD dwFlags )
     //渲染窗口变化前状态
     PaintBackground(pRT,rcWnd);
     RedrawRegion(pRT,rgn);
-    pRTBefore->BitBlt(&rcWnd,pRT,rcWnd.left,rcWnd.top,SRCCOPY);
+    pRTBefore->BitBlt(&rcWnd,pRT,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
     
     //更新窗口可见性
     SetVisible(!(dwFlags&AW_HIDE),FALSE);
@@ -1512,7 +1517,7 @@ BOOL SWindow::AnimateWindow(DWORD dwTime,DWORD dwFlags )
 
     PaintBackground(pRT,rcWnd);
     RedrawRegion(pRT,rgn);
-    pRTAfter->BitBlt(&rcWnd,pRT,rcWnd.left,rcWnd.top,SRCCOPY);
+    pRTAfter->BitBlt(&rcWnd,pRT,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
 
     ReleaseRenderTarget(pRT);
 
@@ -1643,10 +1648,10 @@ BOOL SWindow::AnimateWindow(DWORD dwTime,DWORD dwFlags )
                 {
                     ptAnchor.y=rcWnd.bottom-rcNewState.Height();
                 }
-                DrawAniStep(rcNewState,rcWnd,pRTBefore,pRTAfter,ptAnchor);
+                DrawAniStep(rcNewState,rcWnd,pRTAfter,pRTBefore,ptAnchor);
                 Sleep(10);
             }
-            DrawAniStep(rcWnd,rcWnd,pRTBefore,pRTAfter,rcWnd.TopLeft());
+            DrawAniStep(rcWnd,rcWnd,pRTAfter,pRTBefore,rcWnd.TopLeft());
             return TRUE;
         }else if(dwFlags&AW_CENTER)
         {
@@ -1658,10 +1663,10 @@ BOOL SWindow::AnimateWindow(DWORD dwTime,DWORD dwFlags )
             for(int i=0;i<nSteps;i++)
             {
                 rcNewState.InflateRect(xStep,yStep);
-                DrawAniStep(rcNewState,rcWnd,pRTBefore,pRTAfter,rcNewState.TopLeft());
+                DrawAniStep(rcNewState,rcWnd,pRTAfter,pRTBefore,rcNewState.TopLeft());
                 Sleep(10);
             }
-            DrawAniStep(rcWnd,rcWnd,pRTBefore,pRTAfter,rcWnd.TopLeft());
+            DrawAniStep(rcWnd,rcWnd,pRTAfter,pRTBefore,rcWnd.TopLeft());
             return TRUE;
         }else if(dwFlags&AW_BLEND)
         {
@@ -1669,11 +1674,11 @@ BOOL SWindow::AnimateWindow(DWORD dwTime,DWORD dwFlags )
             BYTE byStepLen=255/nSteps;
             for(int i=0;i<nSteps;i++)
             {
-                DrawAniStep(rcWnd,pRTBefore,pRTAfter,byAlpha);
+                DrawAniStep(rcWnd,pRTAfter,pRTBefore,byAlpha);
                 Sleep(10);
                 byAlpha+=byStepLen;
             }
-            DrawAniStep(rcWnd,pRTBefore,pRTAfter,255);
+            DrawAniStep(rcWnd,pRTAfter,pRTBefore,255);
             return TRUE;
         }
         return FALSE;

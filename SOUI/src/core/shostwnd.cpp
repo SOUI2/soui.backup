@@ -831,22 +831,10 @@ void SHostWnd::UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha)
     ReleaseDC(dc);
     pRT->ReleaseDC(hdc);
 }
-/*
 BOOL _BitBlt(IRenderTarget *pRTDst,IRenderTarget * pRTSrc,CRect rcDst,CPoint ptSrc)
 {
-    return S_OK == pRTDst->BitBlt(&rcDst,pRTSrc,ptSrc.x,ptSrc.y,SRCCOPY);
+    return S_OK == pRTDst->BitBlt(&rcDst,pRTSrc,ptSrc.x,ptSrc.y,SRCCOPY|0x80000000);
 }
-*/
-BOOL _BitBlt(IRenderTarget *pRTDst,IRenderTarget * pRTSrc,CRect rcDst,CPoint ptSrc)
-{
-    HDC dcSrc=pRTSrc->GetDC();
-    HDC dcDst=pRTDst->GetDC();
-    ::BitBlt(dcDst,rcDst.left,rcDst.top,rcDst.Width(),rcDst.Height(),dcSrc,ptSrc.x,ptSrc.y,SRCCOPY);
-    pRTDst->ReleaseDC(dcDst);
-    pRTSrc->ReleaseDC(dcSrc);
-    return TRUE;
-}
-
 
 BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
 {
