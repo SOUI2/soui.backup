@@ -35,12 +35,12 @@ namespace SOUI
 
 
     //////////////////////////////////////////////////////////////////////////
-    // TSkiaRenderObjImpl
+    // TGdiRenderObjImpl
     template<class T>
-    class TSkiaRenderObjImpl : public TObjRefImpl<T>
+    class TGdiRenderObjImpl : public TObjRefImpl<T>
     {
     public:
-        TSkiaRenderObjImpl(IRenderFactory * pRenderFac):m_pRenderFactory(pRenderFac)
+        TGdiRenderObjImpl(IRenderFactory * pRenderFac):m_pRenderFactory(pRenderFac)
         {
 
         }
@@ -61,11 +61,11 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     // SPen_GDI
-    class SPen_GDI : public TSkiaRenderObjImpl<IPen>
+    class SPen_GDI : public TGdiRenderObjImpl<IPen>
     {
     public:
         SPen_GDI(IRenderFactory * pRenderFac,int iStyle=PS_SOLID,COLORREF cr=0,int cWidth=1)
-            :TSkiaRenderObjImpl<IPen>(pRenderFac)
+            :TGdiRenderObjImpl<IPen>(pRenderFac)
             ,m_nWidth(cWidth),m_style(iStyle),m_cr(cr&0x00FFFFFF)
             ,m_hPen(NULL)
         {
@@ -98,11 +98,11 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     // SFont_GDI
-    class SFont_GDI: public TSkiaRenderObjImpl<IFont>
+    class SFont_GDI: public TGdiRenderObjImpl<IFont>
     {
     public:
         SFont_GDI(IRenderFactory * pRenderFac,const LOGFONT * plf)
-            :TSkiaRenderObjImpl<IFont>(pRenderFac),m_hFont(NULL)
+            :TGdiRenderObjImpl<IFont>(pRenderFac),m_hFont(NULL)
         {
             memcpy(&m_lf,plf,sizeof(LOGFONT));
             m_hFont=CreateFontIndirect(&m_lf);
@@ -130,7 +130,7 @@ namespace SOUI
         HFONT       m_hFont;
     };
 
-    class SBrush_GDI : public TSkiaRenderObjImpl<IBrush>
+    class SBrush_GDI : public TGdiRenderObjImpl<IBrush>
     {
     public:
         static SBrush_GDI * CreateSolidBrush(IRenderFactory * pRenderFac,COLORREF cr){
@@ -148,12 +148,12 @@ namespace SOUI
         HBRUSH GetBrush(){return m_hBrush;}
     protected:
         SBrush_GDI(IRenderFactory * pRenderFac,COLORREF cr)
-            :TSkiaRenderObjImpl<IBrush>(pRenderFac),m_fBmp(FALSE)
+            :TGdiRenderObjImpl<IBrush>(pRenderFac),m_fBmp(FALSE)
         {
             m_hBrush = ::CreateSolidBrush(cr&0x00ffffff);
         }
         SBrush_GDI(IRenderFactory * pRenderFac,HBITMAP hBmp)
-            :TSkiaRenderObjImpl<IBrush>(pRenderFac),m_fBmp(TRUE)
+            :TGdiRenderObjImpl<IBrush>(pRenderFac),m_fBmp(TRUE)
         {
             m_hBrush = ::CreatePatternBrush(hBmp);
         }
@@ -168,11 +168,11 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     // SBitmap_GDI
     class SImgX_WIC;
-    class SBitmap_GDI : public TSkiaRenderObjImpl<IBitmap>
+    class SBitmap_GDI : public TGdiRenderObjImpl<IBitmap>
     {
     public:
         SBitmap_GDI(IRenderFactory *pRenderFac)
-            :TSkiaRenderObjImpl<IBitmap>(pRenderFac),m_hBmp(0),m_nFrameDelay(0)
+            :TGdiRenderObjImpl<IBitmap>(pRenderFac),m_hBmp(0),m_nFrameDelay(0)
         {
             m_sz.cx=m_sz.cy=0;
         }
@@ -204,7 +204,7 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     //	SRegion_GDI
-    class SRegion_GDI: public TSkiaRenderObjImpl<IRegion>
+    class SRegion_GDI: public TGdiRenderObjImpl<IRegion>
     {
     public:
         SRegion_GDI(IRenderFactory *pRenderFac);
@@ -231,7 +231,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     //	SRenderTarget_GDI
     //////////////////////////////////////////////////////////////////////////
-    class SRenderTarget_GDI: public TSkiaRenderObjImpl<IRenderTarget>
+    class SRenderTarget_GDI: public TGdiRenderObjImpl<IRenderTarget>
     {
     public:
         SRenderTarget_GDI(IRenderFactory* pRenderFactory,int nWid,int nHei);

@@ -159,7 +159,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     //	SRegion_GDI
     SRegion_GDI::SRegion_GDI( IRenderFactory *pRenderFac )
-        :TSkiaRenderObjImpl<IRegion>(pRenderFac)
+        :TGdiRenderObjImpl<IRegion>(pRenderFac)
     {
         m_hRgn = ::CreateRectRgn(0,0,0,0);
     }
@@ -221,7 +221,7 @@ namespace SOUI
     #define SIZE_SOLIDRECT  5
     
     SRenderTarget_GDI::SRenderTarget_GDI( IRenderFactory* pRenderFactory ,int nWid,int nHei)
-        :TSkiaRenderObjImpl<IRenderTarget>(pRenderFactory)
+        :TGdiRenderObjImpl<IRenderTarget>(pRenderFactory)
         ,m_hdc(NULL)
         ,m_curColor(0xFF000000)//Ä¬ÈÏºÚÉ«
         ,m_uGetDCFlag(0)
@@ -493,10 +493,11 @@ namespace SOUI
         HBITMAP bmp=pBmp->GetBitmap();
         HDC hmemdc=CreateCompatibleDC(m_hdc);
         ::SelectObject(hmemdc,bmp);
+
         BLENDFUNCTION bf={ AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
         int nWid=pRcDest->right-pRcDest->left;
         int nHei=pRcDest->bottom-pRcDest->top;
-        AlphaBlend(m_hdc,pRcDest->left,pRcDest->top,nWid,nHei,
+        BOOL bOK=AlphaBlend(m_hdc,pRcDest->left,pRcDest->top,nWid,nHei,
                    hmemdc,xSrc,ySrc,nWid,nHei,bf);
         DeleteDC(hmemdc);
         
