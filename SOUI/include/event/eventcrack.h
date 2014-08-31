@@ -1,23 +1,23 @@
 #pragma once
 
-#define EVENT_MAP_BEGIN()                   \
-    virtual BOOL _HandleEvent(SOUI::EventArgs *pEvt)        \
-    {                                           \
-        UINT      uCode = pEvt->GetEventID();   \
+#define EVENT_MAP_BEGIN()                           \
+    virtual BOOL _HandleEvent(SOUI::EventArgs *pEvt)\
+    {                                               \
+        UINT      uCode = pEvt->GetEventID();       \
  
 
-#define EVENT_MAP_END()                     \
-        return FALSE;                           \
-    }                                           \
+#define EVENT_MAP_END()                             \
+        return __super::_HandleEvent(pEvt);         \
+    }                                               \
  
-#define CHAIN_EVENT_MAP(ChainClass)         \
-        if(ChainClass::_HandleEvent(pEvt))       \
-            return TRUE;                         \
+#define CHAIN_EVENT_MAP(ChainClass)                 \
+        if(ChainClass::_HandleEvent(pEvt))          \
+            return TRUE;                            \
  
-#define CHAIN_EVENT_MAP_MEMBER(theChainMember) \
-    { \
-    if(theChainMember._HandleEvent(pEvt))       \
-    return TRUE; \
+#define CHAIN_EVENT_MAP_MEMBER(theChainMember)      \
+    {                                               \
+    if(theChainMember._HandleEvent(pEvt))           \
+        return TRUE;                                \
     }
 
 // BOOL OnEvent(EventArgs *pEvt)
