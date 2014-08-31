@@ -439,6 +439,8 @@ namespace SOUI
 
         BOOL IsChecked();
 
+        virtual void SetCheck(BOOL bCheck);
+
         BOOL IsDisabled(BOOL bCheckParent = FALSE);
 
         BOOL IsVisible(BOOL bCheckParent = FALSE);
@@ -446,7 +448,6 @@ namespace SOUI
 
         void EnableWindow( BOOL bEnable,BOOL bUpdate=FALSE);
 
-        void SetCheck(BOOL bCheck);
 
         BOOL NeedRedrawParent();
 
@@ -559,6 +560,14 @@ namespace SOUI
         * Describe  不是group中的窗口时返回NULL
         */
         virtual SWindow * GetSelectedSiblingInGroup(){return NULL;}
+
+        /**
+         * GetSelectedChildInGroup
+         * @brief    获取有选择状态的子窗口
+         * @return   SWindow * -- 选中状态窗口
+         * Describe  
+         */    
+        virtual SWindow * GetSelectedChildInGroup();
 
         /**
          * OnSetCaretValidateRect

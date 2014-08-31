@@ -1820,4 +1820,11 @@ HRESULT SWindow::OnAttrCache( const SStringW& strValue, BOOL bLoading )
     return S_FALSE;
 }
 
+SWindow * SWindow::GetSelectedChildInGroup()
+{
+    SWindow *pChild = GetWindow(GSW_FIRSTCHILD);
+    if(!pChild || !pChild->IsSiblingsAutoGroupped()) return NULL;
+    return pChild->GetSelectedSiblingInGroup();
+}
+
 }//namespace SOUI

@@ -38,6 +38,7 @@ BOOL SStringPool::BuildString(SStringT &strContainer)
 
 BOOL SStringPool::Init( pugi::xml_node xmlNode )
 {
+    if(!xmlNode) return FALSE;
     if (wcscmp(xmlNode.name(), L"string") != 0)
     {
         SASSERT(FALSE);

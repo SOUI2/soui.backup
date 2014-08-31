@@ -10,6 +10,7 @@ namespace SOUI
 
 BOOL SObjDefAttr::Init( pugi::xml_node xmlNode )
 {
+    if(!xmlNode) return FALSE;
     if (wcscmp(xmlNode.name(), L"objattr") != 0)
     {
         SASSERT(FALSE);
