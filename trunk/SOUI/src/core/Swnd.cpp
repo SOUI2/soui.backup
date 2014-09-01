@@ -1196,9 +1196,9 @@ void SWindow::OnLButtonDown(UINT nFlags,CPoint pt)
 void SWindow::OnLButtonUp(UINT nFlags,CPoint pt)
 {
     ReleaseCapture();
+    ModifyState(0, WndState_PushDown,TRUE);
     if(!m_rcWindow.PtInRect(pt)) return;
 
-    ModifyState(0, WndState_PushDown,TRUE);
 
     if (GetID() || GetName())
     {

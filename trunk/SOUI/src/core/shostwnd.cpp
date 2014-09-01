@@ -1044,5 +1044,64 @@ SMessageLoop * SHostWnd::GetMsgLoop()
     return SApplication::getSingletonPtr();
 }
 
+#ifndef DISABLE_SWNDSPY
+
+LRESULT SHostWnd::OnSwndEnum(UINT uMsg, WPARAM wParam,LPARAM lParam )
+{
+    if(!m_hostAttr.m_bAllowSpy) return 0;
+    SWND swndCur=(SWND)wParam;
+    if(swndCur==-1) swndCur=m_swnd;
+    SWindow *pSwnd = SWindowMgr::GetWindow(swndCur);
+    if(!pSwnd) return 0;
+    SWindow *pRet = pSwnd->GetWindow(lParam);
+    if(!pRet) return 0;
+    return pRet->GetSwnd();
+}
+
+LRESULT SHostWnd::OnSwndSpy(UINT uMsg, WPARAM wParam,LPARAM lParam )
+{
+    if(!m_hostAttr.m_bAllowSpy) return 0;
+    SWND swndCur=(SWND)wParam;
+    if(swndCur==-1) swndCur=m_swnd;
+    SWindow *pSwnd = SWindowMgr::GetWindow(swndCur);
+    if(!pSwnd) return -1;
+    
+    SWNDINFO *pSwndInfo=new SWNDINFO;
+    COPYDATASTRUCT cds;
+    cds.dwData = UM_SWNDSPY;
+    cds.cbData = sizeof(SWNDINFO);
+    cds.lpData = pSwndInfo;
+    
+    pSwndInfo->swnd = swndCur;
+    pSwnd->GetWindowRect(&pSwndInfo->rcWnd);
+    pSwnd->GetClientRect(&pSwndInfo->rcClient);
+    pSwndInfo->bVisible=pSwnd->IsVisible(TRUE);
+    pSwndInfo->nID = pSwnd->GetID();
+
+    SStringW strTmp=pSwnd->GetName();
+    if(strTmp.GetLength()<=SWND_MAX_NAME)
+        wcscpy(pSwndInfo->szName,strTmp);
+    else
+        wcscpy(pSwndInfo->szName,L"##buf overflow!");
+    
+    strTmp = pSwnd->GetObjectClass();
+    if(strTmp.GetLength()<=SWND_MAX_CLASS)
+        wcscpy(pSwndInfo->szClassName,strTmp);
+    else
+        wcscpy(pSwndInfo->szClassName,L"##buf overflow!");
+    
+    wcscpy(pSwndInfo->szXmlStr,L"##unavailable!");
+#ifdef _DEBUG
+    strTmp=pSwnd->m_strXml;
+    if(strTmp.GetLength()<=SWND_MAX_XML)
+        wcscpy(pSwndInfo->szXmlStr,strTmp);
+    else
+        wcscpy(pSwndInfo->szXmlStr,L"##buf overflow!");
+#endif//_DEBUG
+    ::SendMessage((HWND)lParam,WM_COPYDATA,(WPARAM)m_hWnd,(LPARAM)&cds);
+    delete pSwndInfo;
+    return 1;
+}
+#endif//DISABLE_SWNDSPY
 
 }//namespace SOUI

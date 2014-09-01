@@ -13,6 +13,7 @@
 #include "SDropTargetDispatcher.h"
 #include "event/eventcrack.h"
 #include "interface/stooltip-i.h"
+#include "helper/swndspy.h"
 
 namespace SOUI
 {
@@ -50,6 +51,7 @@ namespace SOUI
             , m_hAppIconSmall(NULL)
             , m_hAppIconBig(NULL)
             , m_byAlpha(0xFF)
+            , m_bAllowSpy(TRUE)
         {
 
         }
@@ -78,6 +80,7 @@ namespace SOUI
             ATTR_ICON(L"smallIcon",m_hAppIconSmall,FALSE)
             ATTR_ICON(L"bigIcon",m_hAppIconBig,FALSE)
             ATTR_UINT(L"alpha",m_byAlpha,FALSE)
+            ATTR_INT(L"allowSpy",m_bAllowSpy,FALSE)
         SOUI_ATTRS_END()
 
         CRect m_rcMargin;
@@ -101,6 +104,8 @@ namespace SOUI
         SStringW m_strTitle;
         HICON   m_hAppIconSmall;
         HICON   m_hAppIconBig;
+        
+        BOOL    m_bAllowSpy;    //‘ –Ìspy
     };
 
 class SOUI_EXP SHostWnd
@@ -243,11 +248,17 @@ protected:
     void OnKillFocus(HWND wndFocus);
 
     void OnSetCaretValidateRect( LPCRECT lpRect );
+    
+#ifndef DISABLE_SWNDSPY
+    LRESULT OnSwndEnum(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
+    LRESULT OnSwndSpy(UINT uMsg,WPARAM wParam,LPARAM lParam);
+#endif
+    
     void UpdateHost(HDC dc,const CRect &rc);
     void UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha);
 protected:
-    virtual BOOL _HandleEvent(SOUI::EventArgs *pEvt){return FALSE;}
+    virtual BOOL _HandleEvent(EventArgs *pEvt){return FALSE;}
 
     BEGIN_MSG_MAP_EX(SHostWnd)
         MSG_WM_SIZE(OnSize)
@@ -275,6 +286,10 @@ protected:
         MSG_WM_NCCALCSIZE(OnNcCalcSize)
         MSG_WM_NCHITTEST(OnWndNcHitTest)
         MSG_WM_GETMINMAXINFO(OnGetMinMaxInfo)
+    #ifndef DISABLE_SWNDSPY
+        MESSAGE_HANDLER_EX(UM_SWNDENUM, OnSwndEnum)
+        MESSAGE_HANDLER_EX(UM_SWNDSPY, OnSwndSpy)
+    #endif
         REFLECT_NOTIFY_CODE(NM_CUSTOMDRAW)
     END_MSG_MAP()
 };

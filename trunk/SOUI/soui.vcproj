@@ -812,6 +812,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\helper\swndspy.h"
+				>
+			</File>
+			<File
 				RelativePath="include\core\SwndStyle.h"
 				>
 			</File>
