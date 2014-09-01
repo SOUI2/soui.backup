@@ -272,7 +272,8 @@ namespace SOUI
         virtual HRESULT GetClipRegion(IRegion **ppRegion);
         virtual HRESULT GetClipBox(LPRECT prc);
         
-		virtual HRESULT BitBlt(LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop=SRCCOPY);
+		virtual HRESULT BitBlt(LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop=SRCCOPY|0x80000000);
+        virtual HRESULT AlphaBlend(LPCRECT pRcDest,IRenderTarget *pRTSrc,LPCRECT pRcSrc,BYTE byAlpha);
 
 		virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha=0xFF);
 		virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz );

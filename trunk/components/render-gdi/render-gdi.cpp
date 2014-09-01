@@ -497,13 +497,22 @@ namespace SOUI
         BLENDFUNCTION bf={ AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
         int nWid=pRcDest->right-pRcDest->left;
         int nHei=pRcDest->bottom-pRcDest->top;
-        BOOL bOK=AlphaBlend(m_hdc,pRcDest->left,pRcDest->top,nWid,nHei,
+        BOOL bOK=::AlphaBlend(m_hdc,pRcDest->left,pRcDest->top,nWid,nHei,
                    hmemdc,xSrc,ySrc,nWid,nHei,bf);
         DeleteDC(hmemdc);
         
-        return S_OK;
+        return bOK?S_OK:E_FAIL;
     }
 
+    HRESULT SRenderTarget_GDI::AlphaBlend( LPCRECT pRcDest,IRenderTarget *pRTSrc,LPCRECT pRcSrc,BYTE byAlpha )
+    {
+        BLENDFUNCTION bf={ AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
+        SRenderTarget_GDI *pRTGdiSrc=(SRenderTarget_GDI*)pRTSrc;
+        BOOL bOK=::AlphaBlend(m_hdc,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,
+                              pRTGdiSrc->m_hdc,pRcSrc->left,pRcSrc->top,pRcSrc->right-pRcSrc->left,pRcSrc->bottom-pRcSrc->top,
+                              bf);
+        return bOK?S_OK:E_FAIL;
+    }
 
     HRESULT SRenderTarget_GDI::DrawBitmapEx( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,EXPEND_MODE expendMode, BYTE byAlpha/*=0xFF*/ )
     {
@@ -518,7 +527,7 @@ namespace SOUI
         BLENDFUNCTION bf={ AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
         if(expendMode == EM_STRETCH)
         {
-            AlphaBlend(m_hdc,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,
+            ::AlphaBlend(m_hdc,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,
                 hmemdc,pRcSrc->left,pRcSrc->top,pRcSrc->right-pRcSrc->left,pRcSrc->bottom-pRcSrc->top,bf);
         }else
         {
@@ -530,7 +539,7 @@ namespace SOUI
             {
                 for(int x=pRcDest->left; x<pRcDest->right; x+=nWid)
                 {
-                    AlphaBlend(m_hdc,x,y,nWid,nHei,
+                    ::AlphaBlend(m_hdc,x,y,nWid,nHei,
                         hmemdc,pRcSrc->left,pRcSrc->top,nWid,nHei,
                         bf);                    
                 }
@@ -725,7 +734,7 @@ namespace SOUI
             ::SelectObject(hmemdc,hbmp);
             GradientFillRect(hmemdc,&rc,crBegin,crEnd,bVert);
             BLENDFUNCTION bf={AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA };
-            AlphaBlend(m_hdc,pRect->left,pRect->top,nWid,nHei,hmemdc,0,0,nWid,nHei,bf);
+            ::AlphaBlend(m_hdc,pRect->left,pRect->top,nWid,nHei,hmemdc,0,0,nWid,nHei,bf);
             DeleteDC(hmemdc);
             DeleteObject(hbmp);
         }else
@@ -767,7 +776,7 @@ namespace SOUI
         
         ::FillRect(m_hdc,pRect,(HBRUSH)::GetStockObject(BLACK_BRUSH));
         BLENDFUNCTION bf={AC_SRC_OVER,0,255,AC_SRC_ALPHA};
-        AlphaBlend(m_hdc,pRect->left,pRect->top,nWid,nHei,hMemDC,0,0,SIZE_SOLIDRECT,SIZE_SOLIDRECT,bf);
+        ::AlphaBlend(m_hdc,pRect->left,pRect->top,nWid,nHei,hMemDC,0,0,SIZE_SOLIDRECT,SIZE_SOLIDRECT,bf);
         ::DeleteDC(hMemDC);
         return S_OK;    
     }

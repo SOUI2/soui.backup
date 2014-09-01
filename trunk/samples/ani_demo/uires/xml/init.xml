@@ -4,6 +4,7 @@
   <skin>
     <imgframe name="dlg_frame" src="imgx:IDP_MAIN_DLG_FRAME" left="5" right="5" top="40" bottom="40"/>
     <imglist name="skin_girl" src="imgx:girl"/>
+    <imglist name="skin_haha" src="imgx:haha"/>
     <imglist name="img_busy" src="imgx:IDP_BUSY" states="8"/>
   </skin>
   

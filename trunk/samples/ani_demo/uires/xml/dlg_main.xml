@@ -22,7 +22,7 @@
         <radio name="slide_ver_positive">上->下</radio>
       </group>
 
-      <window pos="|0,|10" width="320" height="240" pos2type="center" colorBkgnd="#ff0000">
+      <window pos="|0,|10" width="320" height="240" pos2type="center" skin="skin_haha">
         <text pos="0,0,-0,-0" name="img_tst" skin="skin_girl" font="adding:20" colorText="#ff0000">text</text>
         <animateimg pos="|0,|0" pos2type="center" skin="img_busy" autostart="1"/>
       </window>
