@@ -15,5 +15,7 @@
 
 #include "resource.h"
 
+#include "SCaptureButton.h"
+
 using namespace SOUI;
 

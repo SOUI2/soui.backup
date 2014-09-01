@@ -1,4 +1,4 @@
-﻿<SOUI name="mainWindow" title="%title% ver:%ver%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="600" height="400" appWnd="1" margin="5,5,5,5"  resizable="1" translucent="1" >
+﻿<SOUI name="mainWindow" title="%title% ver:%ver%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="480" height="320" appWnd="1" margin="5,5,5,5"  resizable="1" translucent="1" >
   <root skin="_skin.sys.wnd.bkgnd" cache="1">
     <caption pos="0,0,-0,30" show="1" font="adding:8">
       <icon pos="10,8" src="ICON_LOGO:16"/>
@@ -12,11 +12,9 @@
       <captureButton name="img_capture_host" pos="0,0" skin="skin_spyhost" />
       <captureButton name="img_capture_swnd" pos="[10,0" skin="skin_spyhost" />
       <text name="txt_hosthwnd" pos="[10,0,@100,@30">0x00000000</text>
-      <text name="txt_hostclass" pos="[10,0,@100,@30">class name</text>
+      <text name="txt_hostclass" pos="[10,0,@150,@30"/>
     </window>
-    <window pos="5,[5,-5,-5" colorBkgnd="#ff0000">
-      <text pos="|0,|0" pos2type="center">这是一个由SOUI向导生成的APP框架</text>
-      <button class ="normalbtn" pos="|-50,[20,@100,@30" name="btn_msgbox">show msg box</button> 
-    </window>
+    <treectrl pos="5,[5,-5,-5"  name="treeSwnd" itemHeight="25" checkBox="0">
+    </treectrl>
   </root>
 </SOUI>

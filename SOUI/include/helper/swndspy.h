@@ -1,9 +1,11 @@
 #pragma once
 
-#define UM_SWNDENUM  (WM_USER+1000)     //枚举窗口列表,wparam:SWND,lparam:SWindow::GetWindow
-//返回窗口的SWND值
+#define SPYMSG_SETSPY    (WM_USER+1000)     //设置SPY消息接收窗口句柄
 
-#define UM_SWNDSPY  (WM_USER+1001)      //获取窗口属性，wparam:swnd,lparam:HWND
+#define SPYMSG_SWNDENUM  (WM_USER+1001)     //枚举窗口列表,wparam:SWND,lparam:SWindow::GetWindow
+                                            //返回窗口的SWND值
+
+#define SPYMSG_SWNDINFO  (WM_USER+1002)      //获取窗口属性，wparam:swnd,lparam:Cookie
 
 #define SWND_MAX_NAME   250
 #define SWND_MAX_CLASS  50

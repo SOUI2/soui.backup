@@ -248,15 +248,21 @@ protected:
     void OnKillFocus(HWND wndFocus);
 
     void OnSetCaretValidateRect( LPCRECT lpRect );
-    
-#ifndef DISABLE_SWNDSPY
-    LRESULT OnSwndEnum(UINT uMsg,WPARAM wParam,LPARAM lParam);
-
-    LRESULT OnSwndSpy(UINT uMsg,WPARAM wParam,LPARAM lParam);
-#endif
-    
+        
     void UpdateHost(HDC dc,const CRect &rc);
     void UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha);
+
+#ifndef DISABLE_SWNDSPY
+protected:
+    LRESULT OnSpyMsgSetSpy(UINT uMsg,WPARAM wParam,LPARAM lParam);
+
+    LRESULT OnSpyMsgSwndEnum(UINT uMsg,WPARAM wParam,LPARAM lParam);
+
+    LRESULT OnSpyMsgSwndSpy(UINT uMsg,WPARAM wParam,LPARAM lParam);
+
+    HWND    m_hSpyWnd;
+#endif
+
 protected:
     virtual BOOL _HandleEvent(EventArgs *pEvt){return FALSE;}
 
@@ -287,8 +293,9 @@ protected:
         MSG_WM_NCHITTEST(OnWndNcHitTest)
         MSG_WM_GETMINMAXINFO(OnGetMinMaxInfo)
     #ifndef DISABLE_SWNDSPY
-        MESSAGE_HANDLER_EX(UM_SWNDENUM, OnSwndEnum)
-        MESSAGE_HANDLER_EX(UM_SWNDSPY, OnSwndSpy)
+        MESSAGE_HANDLER_EX(SPYMSG_SETSPY, OnSpyMsgSetSpy)
+        MESSAGE_HANDLER_EX(SPYMSG_SWNDENUM, OnSpyMsgSwndEnum)
+        MESSAGE_HANDLER_EX(SPYMSG_SWNDINFO, OnSpyMsgSwndSpy)
     #endif
         REFLECT_NOTIFY_CODE(NM_CUSTOMDRAW)
     END_MSG_MAP()
