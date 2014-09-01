@@ -24,7 +24,6 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description=""
 				CommandLine=""
 			/>
 			<Tool
@@ -102,7 +101,6 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description=""
 				CommandLine=""
 			/>
 			<Tool
@@ -237,6 +235,10 @@
 			</File>
 			<File
 				RelativePath=".\uires\image\girl.jpg"
+				>
+			</File>
+			<File
+				RelativePath=".\uires\image\haha.jpg"
 				>
 			</File>
 			<File

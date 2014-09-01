@@ -1459,13 +1459,7 @@ void SWindow::DrawAniStep( CRect rcWnd,IRenderTarget * pRTFore,IRenderTarget * p
     if(byAlpha>0 && byAlpha<255)
     {
         pRT->BitBlt(&rcWnd,pRTBack,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
-        CAutoRefPtr<IBitmap> bmpEmpty,bmpCur;
-        //必须是一个有效的位图才能替换出当前的位图
-        GETRENDERFACTORY->CreateBitmap(&bmpEmpty);
-        bmpEmpty->Init(1,1);
-        pRTFore->SelectObject(bmpEmpty,(IRenderObj**)&bmpCur);
-        pRT->DrawBitmap(&rcWnd,bmpCur,0,0,byAlpha);
-        pRTFore->SelectObject(bmpCur);
+        pRT->AlphaBlend(&rcWnd,pRTFore,&rcWnd,byAlpha);
     }else if(byAlpha==0)
     {
         pRT->BitBlt(&rcWnd,pRTBack,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);

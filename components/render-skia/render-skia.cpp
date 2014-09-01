@@ -53,7 +53,10 @@ namespace SOUI
         pRect->fTop -= dy;
         pRect->fBottom += dy;
     }
-
+    
+    int RectWid(LPCRECT pRc){return pRc->right-pRc->left;}
+    int RectHei(LPCRECT pRc){return pRc->bottom-pRc->top;}
+    
 	class SGetLineDashEffect
 	{
 	public:
@@ -472,10 +475,20 @@ namespace SOUI
         return S_OK;
     }
     
+    HRESULT SRenderTarget_Skia::AlphaBlend( LPCRECT pRcDest,IRenderTarget *pRTSrc,LPCRECT pRcSrc,BYTE byAlpha )
+    {
+        IBitmap *pBmp=(IBitmap*) pRTSrc->GetCurrentObject(OT_BITMAP);
+        if(!pBmp) return S_FALSE;
+        RECT rcSrc = *pRcSrc;
+        POINT ptSrcOrg;
+        pRTSrc->GetViewportOrg(&ptSrcOrg);
+        OffsetRect(&rcSrc,ptSrcOrg.x,ptSrcOrg.y);
+        return DrawBitmapEx(pRcDest,pBmp,&rcSrc,EM_STRETCH,byAlpha);
+    }
 
     HRESULT SRenderTarget_Skia::DrawBitmapEx( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,EXPEND_MODE expendMode, BYTE byAlpha/*=0xFF*/ )
     {
-        if(expendMode == EM_NULL)
+        if(expendMode == EM_NULL || (RectWid(pRcDest)==RectWid(pRcSrc) && RectHei(pRcDest)==RectHei(pRcSrc)))
             return DrawBitmap(pRcDest,pBitmap,pRcSrc->left,pRcSrc->top,byAlpha);
             
         SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
@@ -880,6 +893,8 @@ namespace SOUI
         return S_OK;
 
     }
+
+
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
 
