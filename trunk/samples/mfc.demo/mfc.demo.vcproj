@@ -71,6 +71,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="souid.lib utilitiesd.lib"
+				OutputFile="$(OutDir)\$(ProjectName)d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="$(OutDir)"
 				GenerateDebugInformation="true"
@@ -286,8 +287,8 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="&quot;..\..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2"
-						Outputs="..\res\soui_res.rc2"
+						CommandLine="&quot;..\..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2&#x0D;&#x0A;"
+						Outputs=".\res\soui_res.rc2"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -295,8 +296,8 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						CommandLine="&quot;..\..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2"
-						Outputs="..\res\soui_res.rc2"
+						CommandLine="&quot;..\..\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2&#x0D;&#x0A;"
+						Outputs=".\res\soui_res.rc2"
 					/>
 				</FileConfiguration>
 			</File>
@@ -324,10 +325,6 @@
 					>
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="dui_source"
-			>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
