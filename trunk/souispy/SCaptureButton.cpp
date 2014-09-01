@@ -6,6 +6,7 @@ namespace SOUI
     SCaptureButton::SCaptureButton(void)
     {
         m_evtSet.addEvent(EventCapture::EventID);
+        m_evtSet.addEvent(EventCaptureFinish::EventID);
     }
 
     SCaptureButton::~SCaptureButton(void)
@@ -22,6 +23,8 @@ namespace SOUI
     void SCaptureButton::OnLButtonUp( UINT nFlags, CPoint point )
     {
         SWindow::OnLButtonUp(nFlags,point);
+        EventCaptureFinish evt(this,point);
+        FireEvent(evt);
     }
 
     void SCaptureButton::OnMouseMove( UINT nFlags, CPoint point )

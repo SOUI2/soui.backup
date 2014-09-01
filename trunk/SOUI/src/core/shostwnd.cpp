@@ -1046,11 +1046,11 @@ SMessageLoop * SHostWnd::GetMsgLoop()
 
 #ifndef DISABLE_SWNDSPY
 
-LRESULT SHostWnd::OnSwndEnum(UINT uMsg, WPARAM wParam,LPARAM lParam )
+LRESULT SHostWnd::OnSpyMsgSwndEnum(UINT uMsg, WPARAM wParam,LPARAM lParam )
 {
     if(!m_hostAttr.m_bAllowSpy) return 0;
     SWND swndCur=(SWND)wParam;
-    if(swndCur==-1) swndCur=m_swnd;
+    if(swndCur==0) swndCur=m_swnd;
     SWindow *pSwnd = SWindowMgr::GetWindow(swndCur);
     if(!pSwnd) return 0;
     SWindow *pRet = pSwnd->GetWindow(lParam);
@@ -1058,17 +1058,17 @@ LRESULT SHostWnd::OnSwndEnum(UINT uMsg, WPARAM wParam,LPARAM lParam )
     return pRet->GetSwnd();
 }
 
-LRESULT SHostWnd::OnSwndSpy(UINT uMsg, WPARAM wParam,LPARAM lParam )
+LRESULT SHostWnd::OnSpyMsgSwndSpy(UINT uMsg, WPARAM wParam,LPARAM lParam )
 {
     if(!m_hostAttr.m_bAllowSpy) return 0;
     SWND swndCur=(SWND)wParam;
-    if(swndCur==-1) swndCur=m_swnd;
+    if(swndCur==0) swndCur=m_swnd;
     SWindow *pSwnd = SWindowMgr::GetWindow(swndCur);
-    if(!pSwnd) return -1;
+    if(!pSwnd) return 0;
     
     SWNDINFO *pSwndInfo=new SWNDINFO;
     COPYDATASTRUCT cds;
-    cds.dwData = UM_SWNDSPY;
+    cds.dwData = SPYMSG_SWNDINFO;
     cds.cbData = sizeof(SWNDINFO);
     cds.lpData = pSwndInfo;
     
@@ -1098,8 +1098,19 @@ LRESULT SHostWnd::OnSwndSpy(UINT uMsg, WPARAM wParam,LPARAM lParam )
     else
         wcscpy(pSwndInfo->szXmlStr,L"##buf overflow!");
 #endif//_DEBUG
-    ::SendMessage((HWND)lParam,WM_COPYDATA,(WPARAM)m_hWnd,(LPARAM)&cds);
+    ::SendMessage(m_hSpyWnd,WM_COPYDATA,(WPARAM)m_hWnd,(LPARAM)&cds);
     delete pSwndInfo;
+    return 1;
+}
+
+LRESULT SHostWnd::OnSpyMsgSetSpy( UINT uMsg,WPARAM wParam,LPARAM lParam )
+{
+    m_hSpyWnd = (HWND)lParam;
+    if(!::IsWindow(m_hSpyWnd))
+    {
+        m_hSpyWnd = 0;
+        return 0;
+    }
     return 1;
 }
 #endif//DISABLE_SWNDSPY
