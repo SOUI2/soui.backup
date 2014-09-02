@@ -35,6 +35,7 @@ STreeCtrl::STreeCtrl()
 , m_nItemPushDownBtn(STVIBtn_None)
 {
     m_bClipClient = TRUE;
+    m_bFocusable  = TRUE;
     m_evtSet.addEvent(EventTCSelChanging::EventID);
     m_evtSet.addEvent(EventTCSelChanged::EventID);
     m_evtSet.addEvent(EventTCCheckState::EventID);
@@ -47,20 +48,20 @@ STreeCtrl::~STreeCtrl()
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-HSTREEITEM STreeCtrl::InsertItem(LPCTSTR lpszItem, HSTREEITEM hParent, HSTREEITEM hInsertAfter)
+HSTREEITEM STreeCtrl::InsertItem(LPCTSTR lpszItem, HSTREEITEM hParent, HSTREEITEM hInsertAfter,BOOL bEnsureVisible)
 {
-    return InsertItem(lpszItem, -1, -1, NULL,  hParent, hInsertAfter);
+    return InsertItem(lpszItem, -1, -1, NULL,  hParent, hInsertAfter,bEnsureVisible);
 }
 
 HSTREEITEM STreeCtrl::InsertItem(LPCTSTR lpszItem, int nImage,
-        int nSelectedImage, HSTREEITEM hParent, HSTREEITEM hInsertAfter)
+        int nSelectedImage, HSTREEITEM hParent, HSTREEITEM hInsertAfter,BOOL bEnsureVisible)
 {
-    return InsertItem(lpszItem, nImage, nSelectedImage, NULL,  hParent, hInsertAfter);
+    return InsertItem(lpszItem, nImage, nSelectedImage, NULL,  hParent, hInsertAfter,bEnsureVisible);
 }
 
 HSTREEITEM STreeCtrl::InsertItem(LPCTSTR lpszItem, int nImage,
     int nSelectedImage, LPARAM lParam,
-    HSTREEITEM hParent, HSTREEITEM hInsertAfter)
+    HSTREEITEM hParent, HSTREEITEM hInsertAfter,BOOL bEnsureVisible)
 {
     LPTVITEM pItemObj = new TVITEM();
 
@@ -69,7 +70,7 @@ HSTREEITEM STreeCtrl::InsertItem(LPCTSTR lpszItem, int nImage,
     pItemObj->nSelectedImage  = nSelectedImage;
     pItemObj->lParam = lParam;
 
-    return InsertItem(pItemObj, hParent, hInsertAfter, TRUE);
+    return InsertItem(pItemObj, hParent, hInsertAfter, bEnsureVisible);
 }
 
 BOOL STreeCtrl::RemoveItem(HSTREEITEM hItem)
@@ -321,6 +322,7 @@ BOOL STreeCtrl::Expand(HSTREEITEM hItem , UINT nCode)
 
 BOOL STreeCtrl::EnsureVisible(HSTREEITEM hItem)
 {
+    if(CSTree<LPTVITEM>::GetRootItem(hItem) != GetRootItem()) return FALSE;
     LPTVITEM pItem=GetItem(hItem);
     if(!pItem->bVisible)
     {
@@ -1028,35 +1030,6 @@ void STreeCtrl::ItemMouseLeave(HSTREEITEM hItem)
     }
 }
 
-BOOL STreeCtrl::NotifyParent()
-{
-    EventTCSelChanging evt1(this);
-    evt1.hOldSel=m_hSelItem;
-    evt1.hNewSel=m_hHoverItem;
-    
-    FireEvent(evt1);
-    if(evt1.bCancel) return FALSE;
-    
-    EventTCSelChanged evt(this);
-    evt.hOldSel=m_hSelItem;
-    evt.hNewSel=m_hHoverItem;
-
-    if(m_hSelItem)
-    {
-        HSTREEITEM hOldSelItem = m_hSelItem;
-        m_hSelItem = m_hHoverItem;        
-        RedrawItem(hOldSelItem);
-    }
-    else
-        m_hSelItem = m_hHoverItem;
-
-    if(m_hSelItem)
-        RedrawItem(m_hSelItem);
-
-    FireEvent(evt);
-    return TRUE;
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 void STreeCtrl::OnDestroy()
@@ -1109,9 +1082,8 @@ void STreeCtrl::OnLButtonDown(UINT nFlags,CPoint pt)
     m_hHoverItem=HitTest(pt);
 
     if(m_hHoverItem!=m_hSelItem)
-        NotifyParent();
+        SelectItem(m_hHoverItem,FALSE);
 
-    //pt 已经在HitTest中被修改过
     if(m_hHoverItem)
     {    
         m_hCaptureItem = m_hHoverItem;
@@ -1127,7 +1099,7 @@ void STreeCtrl::OnRButtonDown(UINT nFlags, CPoint pt)
     m_hHoverItem=HitTest(pt);
 
     if(m_hHoverItem!=m_hSelItem)
-        NotifyParent();
+        SelectItem(m_hHoverItem,FALSE);
 }
 
 void STreeCtrl::OnLButtonUp(UINT nFlags,CPoint pt)
@@ -1177,6 +1149,40 @@ void STreeCtrl::OnMouseLeave()
         ItemMouseLeave(m_hHoverItem);
         m_hHoverItem=NULL;
     }
+}
+
+BOOL STreeCtrl::SelectItem( HSTREEITEM hItem,BOOL bEnsureVisible/*=TRUE*/ )
+{
+    if(CSTree<LPTVITEM>::GetRootItem(hItem) != GetRootItem()) return FALSE;
+
+    EventTCSelChanging evt1(this);
+    evt1.hOldSel=m_hSelItem;
+    evt1.hNewSel=hItem;
+
+    FireEvent(evt1);
+    if(evt1.bCancel) return FALSE;
+
+    if(bEnsureVisible) EnsureVisible(hItem);
+
+    EventTCSelChanged evt(this);
+    evt.hOldSel=m_hSelItem;
+    evt.hNewSel=hItem;
+    
+    m_hSelItem = hItem;
+    
+    FireEvent(evt);
+
+    if(evt.hOldSel)
+    {
+        RedrawItem(evt.hOldSel);
+    }
+
+    if(m_hSelItem)
+    {
+        RedrawItem(m_hSelItem);
+    }
+
+    return TRUE;
 }
 
 }//namespace SOUI

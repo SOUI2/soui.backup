@@ -268,7 +268,7 @@ namespace SOUI
         *
         * Describe  
         */
-        SStringT GetWindowText();
+        virtual SStringT GetWindowText();
 
         /**
         * SetWindowText
@@ -278,7 +278,7 @@ namespace SOUI
         *
         * Describe  
         */
-        void SetWindowText(LPCTSTR lpszText);
+        virtual void SetWindowText(LPCTSTR lpszText);
 
 
         /**

@@ -185,7 +185,25 @@ public:
         }
         return nRet;
     }
-
+    
+    /**
+     * GetRootItem
+     * @brief    获取指定节点的根节点
+     * @param    HSTREEITEM hItem -- 当前节点 
+     * @return   HSTREEITEM 根节点
+     *
+     * Describe  
+     */
+    static HSTREEITEM GetRootItem(HSTREEITEM hItem)
+    {
+        HSTREEITEM hParent=hItem;
+        while(GetParentItem(hParent))
+        {
+            hParent = GetParentItem(hParent);
+        }
+        return hParent;
+    }
+    
     /**
      * CSTree::GetChildItem
      * @brief    获取第一个子结点

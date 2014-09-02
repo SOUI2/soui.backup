@@ -74,12 +74,12 @@ public:
 
     virtual ~STreeCtrl();
     
-    HSTREEITEM InsertItem(LPCTSTR lpszItem, HSTREEITEM hParent=STVI_ROOT, HSTREEITEM hInsertAfter=STVI_LAST);
+    HSTREEITEM InsertItem(LPCTSTR lpszItem, HSTREEITEM hParent=STVI_ROOT, HSTREEITEM hInsertAfter=STVI_LAST,BOOL bEnsureVisible=TRUE);
     HSTREEITEM InsertItem(LPCTSTR lpszItem, int nImage,
-        int nSelectedImage, HSTREEITEM hParent=STVI_ROOT, HSTREEITEM hInsertAfter=STVI_LAST);        
+        int nSelectedImage, HSTREEITEM hParent=STVI_ROOT, HSTREEITEM hInsertAfter=STVI_LAST,BOOL bEnsureVisible=TRUE);        
     HSTREEITEM InsertItem(LPCTSTR lpszItem, int nImage,
         int nSelectedImage, LPARAM lParam,
-        HSTREEITEM hParent=STVI_ROOT, HSTREEITEM hInsertAfter=STVI_LAST);
+        HSTREEITEM hParent=STVI_ROOT, HSTREEITEM hInsertAfter=STVI_LAST,BOOL bEnsureVisible=TRUE);
 
     BOOL RemoveItem(HSTREEITEM hItem);
     void RemoveAllItems();
@@ -90,7 +90,9 @@ public:
     HSTREEITEM GetChildItem(HSTREEITEM hItem,BOOL bFirst =TRUE);
     HSTREEITEM GetParentItem(HSTREEITEM hItem);
     HSTREEITEM GetSelectedItem();
-
+    HSTREEITEM GetNextItem(HSTREEITEM hItem){return CSTree<LPTVITEM>::GetNextItem(hItem);}
+    BOOL SelectItem(HSTREEITEM hItem,BOOL bEnsureVisible=TRUE);
+    
     BOOL GetItemText(HSTREEITEM hItem, SStringT& strText) const;
     BOOL SetItemText(HSTREEITEM hItem, LPCTSTR lpszItem);
     BOOL GetItemImage(HSTREEITEM hItem, int& nImage, int& nSelectedImage) const;
@@ -149,8 +151,6 @@ protected:
 
     void ItemMouseMove(HSTREEITEM hItem, UINT nFlags,CPoint pt);
     void ItemMouseLeave(HSTREEITEM hItem);
-
-    BOOL NotifyParent();
     
 protected:
 

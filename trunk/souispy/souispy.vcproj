@@ -236,6 +236,10 @@
 			Filter="idx;xml;png;gif;jpg;ico;"
 			>
 			<File
+				RelativePath=".\uires\image\icons.png"
+				>
+			</File>
+			<File
 				RelativePath=".\uires\image\spyhost.png"
 				>
 			</File>

@@ -7,6 +7,7 @@
   </LAYOUT>
   <IMGX>
     <file name="png_spyhost" path="image\spyhost.png"/>
+    <file name="png_icons" path="image\icons.png"/>
   </IMGX>
   <ICON>
     <file name="ICON_LOGO"  path="image\soui.ico"    />
