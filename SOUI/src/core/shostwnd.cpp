@@ -1071,6 +1071,7 @@ LRESULT SHostWnd::OnSpyMsgSwndSpy(UINT uMsg, WPARAM wParam,LPARAM lParam )
     cds.dwData = SPYMSG_SWNDINFO;
     cds.cbData = sizeof(SWNDINFO);
     cds.lpData = pSwndInfo;
+    memset(pSwndInfo,0,sizeof(SWNDINFO));
     
     pSwndInfo->swnd = swndCur;
     pSwnd->GetWindowRect(&pSwndInfo->rcWnd);
@@ -1113,6 +1114,14 @@ LRESULT SHostWnd::OnSpyMsgSetSpy( UINT uMsg,WPARAM wParam,LPARAM lParam )
     }
     return 1;
 }
+
+LRESULT SHostWnd::OnSpyMsgHitTest( UINT uMsg,WPARAM wParam,LPARAM lParam )
+{
+    CPoint pt(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam));
+    ScreenToClient(&pt);
+    return SwndFromPoint(pt,FALSE);
+}
+
 #endif//DISABLE_SWNDSPY
 
 }//namespace SOUI

@@ -1329,9 +1329,9 @@ void SRichEdit::OnSetFont( IFont *pFont, BOOL bRedraw )
     }
 }
 
-BOOL SRichEdit::SetWindowText( LPCWSTR lpszText )
+void SRichEdit::SetWindowText( LPCWSTR lpszText )
 {
-    return (BOOL)SSendMessage(WM_SETTEXT,0,(LPARAM)lpszText);
+    SSendMessage(WM_SETTEXT,0,(LPARAM)lpszText);
 }
 
 SStringT SRichEdit::GetWindowText()

@@ -709,7 +709,7 @@ namespace SOUI
         *
         * Describe   设置窗口标题
         */
-        BOOL SetWindowText(LPCWSTR lpszText);
+        void SetWindowText(LPCWSTR lpszText);
         /**
         * SRichEdit::SetSel
         * @brief     设置选中
