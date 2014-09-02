@@ -200,6 +200,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\SwndFrame.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -219,6 +223,10 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SwndFrame.h"
 				>
 			</File>
 		</Filter>
