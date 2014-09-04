@@ -106,15 +106,13 @@ STabCtrl::STabCtrl() : m_nCurrentPage(0)
     , m_pSkinTabInter(NULL)
     , m_pSkinFrame(NULL)
     , m_nTabInterSize(0)
-    , m_nTabWidth(0)
-    , m_nTabHeight(0)
     , m_nTabPos(0)
-    , m_nFramePos(0)
     , m_nHoverTabItem(-1)
     , m_nTabAlign(AlignTop)
     , m_nAnimateSteps(0)
     , m_ptText(-1,-1)
 {
+    m_szTab.cx = m_szTab.cy = -1;
     m_bFocusable=TRUE;
     m_evtSet.addEvent(EventTabSelChanging::EventID);
     m_evtSet.addEvent(EventTabSelChanged::EventID);
@@ -125,38 +123,13 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
     SPainter painter;
     BeforePaint(pRT,painter);
     
-    CRect rcTabs;
     CRect rcItem,rcItemPrev;
     CRect rcSplit;
     DWORD dwState;
+    CRect rcTitle=GetTitleRect();
     
-    GetClientRect(&rcTabs);
-    if(m_nTabAlign==AlignLeft)
-        rcTabs.right=rcTabs.left+m_nTabWidth;
-    else
-        rcTabs.bottom=rcTabs.top+m_nTabHeight;
 
-    if (m_pSkinFrame)
-    {
-        CRect rcFrame;
-        GetClientRect(rcFrame);
-        pRT->PushClipRect(&rcFrame,RGN_AND);
-
-        switch (m_nTabAlign)
-        {
-        case AlignTop:
-            rcFrame.top += m_nTabHeight + m_nFramePos;
-            break;
-        case AlignLeft:
-            rcFrame.left += m_nTabWidth + m_nFramePos;
-            break;
-        }
-        m_pSkinFrame->Draw(pRT, rcFrame, WndState_Normal);
-    }
-    else
-    {
-        pRT->PushClipRect(&rcTabs,RGN_AND);
-    }
+    pRT->PushClipRect(&rcTitle,RGN_AND);
 
     for(size_t i=0; i<GetItemCount(); i++)
     {
@@ -185,7 +158,14 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
         DrawItem(pRT,rcItem,i,dwState);
         rcItemPrev=rcItem;
     }
+    pRT->PopClip();
     
+    if (m_pSkinFrame)
+    {
+        CRect rcPage = GetChildrenLayoutRect();
+        m_pSkinFrame->Draw(pRT, rcPage, WndState_Normal);
+    }
+
     if(GetContainer()->SwndGetFocus()==m_swnd && IsFocusable())
     {
         CRect rc;
@@ -193,19 +173,29 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
         rc.DeflateRect(2,2);
         DrawDefFocusRect(pRT,&rc);
     }
-    
-    pRT->PopClip();
-
     AfterPaint(pRT,painter);
 }
 
 CRect STabCtrl::GetChildrenLayoutRect()
 {
-    CRect rcRet=__super::GetChildrenLayoutRect();
-    if(m_nTabAlign==AlignLeft)
-        rcRet.left+= (m_nTabWidth+m_nFramePos);
-    else
-        rcRet.top+= (m_nTabHeight+m_nFramePos);
+    CRect rcRet;
+    GetClientRect(rcRet);
+
+    switch(m_nTabAlign)
+    {
+    case AlignLeft:
+        rcRet.left+= m_szTab.cx;
+        break;
+    case AlignRight:
+        rcRet.right-=m_szTab.cx;
+        break;
+    case AlignTop:
+        rcRet.top += m_szTab.cy;
+        break;
+    case AlignBottom:
+        rcRet.bottom -= m_szTab.cy;
+        break;
+    }
     return rcRet;
 }
 
@@ -235,14 +225,7 @@ BOOL STabCtrl::RemoveItem( int nIndex , int nSelPage/*=0*/)
     }else
     {
         if(m_nCurrentPage>nIndex) m_nCurrentPage--;
-
-        CRect rcTitle;
-        GetClientRect(rcTitle);
-        if(m_nTabAlign==AlignLeft)
-            rcTitle.right = rcTitle.left + (m_nTabWidth+m_nFramePos);
-        else
-            rcTitle.bottom = rcTitle.top + (m_nTabHeight+m_nFramePos);
-        
+        CRect rcTitle = GetTitleRect();
         InvalidateRect(rcTitle);
     }
     return TRUE;
@@ -367,7 +350,7 @@ BOOL STabCtrl::SetCurSel( int nIndex )
     if(pTabSlider)
     {
         SLIDEDIR sd=SD_RIGHTLEFT;
-        if(m_nTabAlign==AlignTop)
+        if(m_nTabAlign==AlignTop || m_nTabAlign == AlignBottom)
         {
             if(nOldPage<nIndex) sd=SD_RIGHTLEFT;
             else sd=SD_LEFTRIGHT;
@@ -410,13 +393,8 @@ BOOL STabCtrl::SetItemTitle( int nIndex, LPCTSTR lpszTitle )
     {
         pTab->SetTitle(lpszTitle);
 
-        CRect rcTabs;
-        GetClientRect(&rcTabs);
-        if(m_nTabAlign==AlignLeft)
-            rcTabs.right=rcTabs.left+m_nTabWidth;
-        else
-            rcTabs.bottom=rcTabs.top+m_nTabHeight;
-        InvalidateRect(rcTabs);
+        CRect rcTitle = GetTitleRect();
+        InvalidateRect(rcTitle);
         return TRUE;
     }
 
@@ -481,35 +459,50 @@ int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoadin
     return iInsert;
 }
 
+
+CRect STabCtrl::GetTitleRect()
+{
+    CRect rcTitle;
+    GetClientRect(rcTitle);
+    switch(m_nTabAlign)
+    {
+    case AlignTop:
+        rcTitle.bottom = rcTitle.top+ m_szTab.cy;
+        break;
+    case AlignBottom:
+        rcTitle.top = rcTitle.bottom- m_szTab.cy;
+        break;
+    case AlignLeft:
+        rcTitle.right = rcTitle.left + m_szTab.cx;
+        break;
+    case AlignRight:
+        rcTitle.left = rcTitle.right - m_szTab.cx;
+        break;
+    }
+    return rcTitle;    
+}
+
 BOOL STabCtrl::GetItemRect( int nIndex, CRect &rcItem )
 {
     if (nIndex < 0 || nIndex >= (int)GetItemCount())
         return FALSE;
-
-    SIZE size = {0, 0};
-
-    if (m_pSkinTab)
-        size = m_pSkinTab->GetSkinSize();
-
-    if (0 != m_nTabHeight)
-        size.cy = m_nTabHeight;
-    if(0 != m_nTabWidth)
-        size.cx=m_nTabWidth;
-
-    rcItem.SetRect(m_rcWindow.left, m_rcWindow.top, m_rcWindow.left + size.cx, m_rcWindow.top + size.cy);
+    
+    CRect rcTitle = GetTitleRect();
+        
+    rcItem = CRect(rcTitle.TopLeft(),m_szTab);
 
     switch (m_nTabAlign)
     {
     case AlignTop:
+    case AlignBottom:
         rcItem.OffsetRect(m_nTabPos + nIndex * (rcItem.Width()+ m_nTabInterSize),0);
         break;
     case AlignLeft:
+    case AlignRight:
         rcItem.OffsetRect(0, m_nTabPos + nIndex * (rcItem.Height()+ m_nTabInterSize));
         break;
     }
-    CRect rcClient;
-    GetClientRect(&rcClient);
-    rcItem.IntersectRect(rcItem,rcClient);
+    rcItem.IntersectRect(rcItem,rcTitle);
     return TRUE;
 }
 
@@ -604,6 +597,16 @@ int STabCtrl::HitTest( CPoint pt )
         }
     }
     return -1;
+}
+
+void STabCtrl::OnInitFinished( pugi::xml_node xmlNode )
+{
+    if(m_pSkinTab)
+    {
+        SIZE sz = m_pSkinTab->GetSkinSize();
+        if(m_szTab.cx == -1) m_szTab.cx = sz.cx;
+        if(m_szTab.cy == -1) m_szTab.cy = sz.cy;
+    }
 }
 
 
