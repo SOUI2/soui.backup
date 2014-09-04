@@ -98,6 +98,11 @@ namespace SOUI
     int SIECtrl::OnCreate( LPVOID )
     {
         int nRet=__super::OnCreate(NULL);
+        if(GetContainer()->IsTranslucent())
+        {
+            SASSERT_FMT(FALSE,_T("iectrl can't used in translucent host"));
+            return -1;
+        }
         GetContainer()->GetMsgLoop()->AddMessageFilter(this);
         return nRet;
     }
