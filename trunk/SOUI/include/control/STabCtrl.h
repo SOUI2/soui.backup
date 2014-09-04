@@ -104,10 +104,8 @@ namespace SOUI
         int m_nHoverTabItem; /**< hover状态item */
         int m_nCurrentPage;  /**< 当前页码      */
         int m_nTabInterSize;   /**< tab页面间距   */
-        int m_nTabWidth;     /**< tab页面宽度   */
-        int m_nTabHeight;    /**< tab页面高度   */
+        SIZE m_szTab;        /**< tab SIZE   */
         int m_nTabPos;       /**< tab位置       */
-        int m_nFramePos;     /**< 框架位置      */
         ISkinObj *m_pSkinTab; /**< ISkibObj对象 */
         ISkinObj *m_pSkinIcon; /**< ISkibObj对象  */
         ISkinObj *m_pSkinTabInter;  /**< ISkibObj对象  */
@@ -122,6 +120,8 @@ namespace SOUI
         {
             AlignTop,
             AlignLeft,
+            AlignBottom,
+            AlignRight,
         };
 
         int    m_nAnimateSteps; /**<  */
@@ -266,6 +266,16 @@ namespace SOUI
         * Describe  
         */
         virtual CRect GetChildrenLayoutRect();
+        
+        /**
+         * GetTitleRect
+         * @brief    获取tab头的矩形
+         * @return   CRect 
+         *
+         * Describe  
+         */
+        virtual CRect GetTitleRect();
+        
         /**
         * STabCtrl::GetItemRect
         * @brief    获取指定item位置
@@ -275,6 +285,7 @@ namespace SOUI
         * Describe  获取指定item位置 
         */
         virtual BOOL GetItemRect(int nIndex, CRect &rcItem);
+        
         /**
         * STabCtrl::DrawItem
         * @brief    绘制item
@@ -300,6 +311,8 @@ namespace SOUI
         }
 
         virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo);
+        
+        virtual void OnInitFinished(pugi::xml_node xmlNode);
     protected:
         int HitTest(CPoint pt);
         
@@ -369,10 +382,10 @@ namespace SOUI
 
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"curSel", m_nCurrentPage, FALSE)
-            ATTR_INT(L"tabWidth", m_nTabWidth, FALSE)
-            ATTR_INT(L"tabHeight", m_nTabHeight, FALSE)
+            ATTR_SIZE(L"tabSize",m_szTab,TRUE)
+            ATTR_INT(L"tabWidth", m_szTab.cx, FALSE)
+            ATTR_INT(L"tabHeight", m_szTab.cy, FALSE)
             ATTR_INT(L"tabPos", m_nTabPos, FALSE)
-            ATTR_INT(L"framePos", m_nFramePos, FALSE)
             ATTR_INT(L"tabInterSize", m_nTabInterSize, FALSE)
             ATTR_SKIN(L"tabInterSkin", m_pSkinTabInter, FALSE)
             ATTR_SKIN(L"tabSkin", m_pSkinTab, FALSE)
@@ -385,6 +398,8 @@ namespace SOUI
             ATTR_ENUM_BEGIN(L"tabAlign", int, TRUE)
                 ATTR_ENUM_VALUE(L"top", AlignTop)
                 ATTR_ENUM_VALUE(L"left", AlignLeft)
+                ATTR_ENUM_VALUE(L"right", AlignRight)
+                ATTR_ENUM_VALUE(L"bottom", AlignBottom)
             ATTR_ENUM_END(m_nTabAlign)
             ATTR_INT(L"animateSteps",m_nAnimateSteps,FALSE)
         SOUI_ATTRS_END()
