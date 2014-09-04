@@ -45,7 +45,7 @@
 
 // void OnCommand(EventArgs *pEvt)
 #define EVENT_COMMAND(func)                                                     \
-    if (EVT_CMD == uCode)                                                      \
+    if (SOUI::EVT_CMD == uCode)                                                      \
     {                                                                               \
     func(pEvt);   \
     return TRUE;                                                                \
@@ -53,7 +53,7 @@
 
 // void OnCommand()
 #define EVENT_ID_COMMAND(id, func)                                  \
-    if (EVT_CMD == uCode && id == pEvt->idFrom)  \
+    if (SOUI::EVT_CMD == uCode && id == pEvt->idFrom)  \
     {                                                                       \
         func();                                                             \
         return TRUE;                                                        \
@@ -61,7 +61,7 @@
  
 // void OnCommand()
 #define EVENT_ID_COMMAND_RANGE(idMin, idMax, func)                    \
-    if (EVT_CMD == uCode && idMin <= pEvt->idFrom && idMax >= pEvt->idFrom )  \
+    if (SOUI::EVT_CMD == uCode && idMin <= pEvt->idFrom && idMax >= pEvt->idFrom )  \
     {                                                                            \
         func(pEvt->idFrom);                                   \
         return TRUE;                                                            \
@@ -69,7 +69,7 @@
 
 // void OnCommand()
 #define EVENT_NAME_COMMAND(name, func)                                  \
-    if (EVT_CMD == uCode && pEvt->nameFrom!= NULL && wcscmp(pEvt->nameFrom,name)==0)  \
+    if (SOUI::EVT_CMD == uCode && pEvt->nameFrom!= NULL && wcscmp(pEvt->nameFrom,name)==0)  \
     {                                                                       \
         func();                                                             \
         return TRUE;                                                        \
@@ -78,7 +78,7 @@
  
 // BOOL OnContextMenu(CPoint pt)
 #define EVENT_ID_CONTEXTMENU(id,func)                                      \
-    if (EVT_CTXMENU == uCode && pEvt->idFrom==id)                          \
+    if (SOUI::EVT_CTXMENU == uCode && pEvt->idFrom==id)                          \
 {                                                                          \
     SOUI::EventCtxMenu* pEvtCtxMenu = (SOUI::EventCtxMenu*)pEvt;           \
     pEvtCtxMenu->bCancel=func(pEvtCtxMenu->pt);                            \
@@ -88,7 +88,7 @@
 
 // void OnContextMenu(CPoint pt)
 #define EVENT_NAME_CONTEXTMENU(name,func)                                      \
-    if (EVT_CTXMENU == uCode && pEvt->nameFrom!= NULL && wcscmp(pEvt->nameFrom,name)==0) \
+    if (SOUI::EVT_CTXMENU == uCode && pEvt->nameFrom!= NULL && wcscmp(pEvt->nameFrom,name)==0) \
 {                                                                               \
     SOUI::EventCtxMenu* pEvtCtxMenu = (SOUI::EventCtxMenu*)pEvt;           \
     pEvtCtxMenu->bCancel=func(pEvtCtxMenu->pt);                            \
