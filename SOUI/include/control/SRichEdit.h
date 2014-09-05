@@ -669,13 +669,13 @@ namespace SOUI
     public:
         SOUI_CLASS_NAME(SRichEdit, L"richedit")
 
-            /**
-            * SRichEdit::SRichEdit
-            * @brief     构造函数
-            *
-            * Describe   构造函数
-            */
-            SRichEdit();
+        /**
+        * SRichEdit::SRichEdit
+        * @brief     构造函数
+        *
+        * Describe   构造函数
+        */
+        SRichEdit();
 
         /**
         * SRichEdit::~SRichEdit
@@ -1210,7 +1210,8 @@ namespace SOUI
         UINT    m_fSingleLineVCenter:1;        /**< Whether control that is single line will be vertical centered */
         UINT    m_fScrollPending    :1;        /**< Whether scroll is activated by richedit or by panelex */
         UINT    m_fEnableDragDrop    :1;       /**< 允许在该控件中使用拖放 */
-
+        UINT    m_fAutoSel              :1;    /**< 有焦点时自动全选 */
+        
         BYTE    m_byDbcsLeadByte; /**< DBCS输入时的中文头字节*/
         SStringW m_strRtfSrc;     /**< 在XML中指定的RTF数据源*/
         STextHost    *m_pTxtHost; /**< Host of Richedit*/
@@ -1235,13 +1236,7 @@ namespace SOUI
         SEdit()
         {
             m_fRich=0;
+            m_fAutoSel=TRUE;
         }
-        /**
-        * SEdit::~SEdit
-        * @brief    析构函数 
-        *
-        * Describe  析构函数
-        */
-        virtual ~SEdit() {}
     };
 }//namespace SOUI
