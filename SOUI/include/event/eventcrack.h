@@ -1,7 +1,30 @@
-#pragma once
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       eventcrack.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2014/09/05
+* 
+* Describe    SOUI系统中使用的事件映射宏
+*/
+
 
 #define EVENT_MAP_BEGIN()                           \
     virtual BOOL _HandleEvent(SOUI::EventArgs *pEvt)\
+    {                                               \
+        UINT      uCode = pEvt->GetEventID();       \
+
+
+#define EVENT_MAP_DECLEAR()                         \
+protected:                                          \
+    virtual BOOL _HandleEvent(SOUI::EventArgs *pEvt);\
+    
+
+#define EVENT_MAP_BEGIN2(classname)                 \
+    BOOL classname::_HandleEvent(SOUI::EventArgs *pEvt)\
     {                                               \
         UINT      uCode = pEvt->GetEventID();       \
  
@@ -20,55 +43,55 @@
         return TRUE;                                \
     }
 
-// BOOL OnEvent(EventArgs *pEvt)
-#define EVENT_HANDLER(cd, func) \
-    if(cd == uCode) \
-{ \
-    return func(pEvt); \
-} 
+// void OnEvent(EventArgs *pEvt)
+#define EVENT_HANDLER(cd, func)                     \
+    if(cd == uCode)                                 \
+    {                                               \
+        func(pEvt); return TRUE;                    \
+    } 
 
 
-// BOOL OnEvent(EventArgs *pEvt)
-#define EVENT_ID_HANDLER(id, cd, func) \
-    if(cd == uCode && id == pEvt->idFrom) \
-    { \
-        return func(pEvt); \
+// void OnEvent(EventArgs *pEvt)
+#define EVENT_ID_HANDLER(id, cd, func)              \
+    if(cd == uCode && id == pEvt->idFrom)           \
+    {                                               \
+        func(pEvt); return TRUE;                    \
     }
 
-// BOOL OnEvent(EventArgs *pEvt)
-#define EVENT_NAME_HANDLER(name, cd, func) \
+// void OnEvent(EventArgs *pEvt)
+#define EVENT_NAME_HANDLER(name, cd, func)          \
     if(cd == uCode && pEvt->nameFrom!= NULL && wcscmp(pEvt->nameFrom,name)==0) \
-{ \
-    return func(pEvt); \
-}
+    {                                               \
+        func(pEvt); return TRUE;                    \
+    }
 
 
 // void OnCommand(EventArgs *pEvt)
-#define EVENT_COMMAND(func)                                                     \
-    if (SOUI::EVT_CMD == uCode)                                                      \
-    {                                                                               \
-    func(pEvt);   \
-    return TRUE;                                                                \
-    }                                                                               \
+#define EVENT_COMMAND(func)                                             \
+    if (SOUI::EVT_CMD == uCode)                                         \
+    {                                                                   \
+        func(pEvt);                                                     \
+        return TRUE;                                                    \
+    }                                                                   \
 
 // void OnCommand()
-#define EVENT_ID_COMMAND(id, func)                                  \
-    if (SOUI::EVT_CMD == uCode && id == pEvt->idFrom)  \
-    {                                                                       \
-        func();                                                             \
-        return TRUE;                                                        \
-    }                                                                       \
+#define EVENT_ID_COMMAND(id, func)                                      \
+    if (SOUI::EVT_CMD == uCode && id == pEvt->idFrom)                   \
+    {                                                                   \
+        func();                                                         \
+        return TRUE;                                                    \
+    }                                                                   \
  
 // void OnCommand()
-#define EVENT_ID_COMMAND_RANGE(idMin, idMax, func)                    \
+#define EVENT_ID_COMMAND_RANGE(idMin, idMax, func)                               \
     if (SOUI::EVT_CMD == uCode && idMin <= pEvt->idFrom && idMax >= pEvt->idFrom )  \
     {                                                                            \
-        func(pEvt->idFrom);                                   \
-        return TRUE;                                                            \
+        func(pEvt->idFrom);                                                      \
+        return TRUE;                                                             \
     }                                                                            \
 
 // void OnCommand()
-#define EVENT_NAME_COMMAND(name, func)                                  \
+#define EVENT_NAME_COMMAND(name, func)                                      \
     if (SOUI::EVT_CMD == uCode && pEvt->nameFrom!= NULL && wcscmp(pEvt->nameFrom,name)==0)  \
     {                                                                       \
         func();                                                             \
@@ -78,20 +101,20 @@
  
 // BOOL OnContextMenu(CPoint pt)
 #define EVENT_ID_CONTEXTMENU(id,func)                                      \
-    if (SOUI::EVT_CTXMENU == uCode && pEvt->idFrom==id)                          \
+    if (SOUI::EVT_CTXMENU == uCode && pEvt->idFrom==id)                    \
 {                                                                          \
     SOUI::EventCtxMenu* pEvtCtxMenu = (SOUI::EventCtxMenu*)pEvt;           \
     pEvtCtxMenu->bCancel=func(pEvtCtxMenu->pt);                            \
-    return TRUE;                                                                \
-}                                                                               \
+    return TRUE;                                                           \
+}                                                                          \
 
 
-// void OnContextMenu(CPoint pt)
-#define EVENT_NAME_CONTEXTMENU(name,func)                                      \
+// BOOL OnContextMenu(CPoint pt)
+#define EVENT_NAME_CONTEXTMENU(name,func)                                       \
     if (SOUI::EVT_CTXMENU == uCode && pEvt->nameFrom!= NULL && wcscmp(pEvt->nameFrom,name)==0) \
 {                                                                               \
-    SOUI::EventCtxMenu* pEvtCtxMenu = (SOUI::EventCtxMenu*)pEvt;           \
-    pEvtCtxMenu->bCancel=func(pEvtCtxMenu->pt);                            \
+    SOUI::EventCtxMenu* pEvtCtxMenu = (SOUI::EventCtxMenu*)pEvt;                \
+    pEvtCtxMenu->bCancel=func(pEvtCtxMenu->pt);                                 \
     return TRUE;                                                                \
 }                                                                               \
 
