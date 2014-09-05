@@ -585,6 +585,7 @@ SRichEdit::SRichEdit()
     ,m_fSingleLineVCenter(TRUE)
     ,m_fScrollPending(FALSE)
     ,m_fEnableDragDrop(FALSE)
+    ,m_fAutoSel(FALSE)
     ,m_cchTextMost(cInitTextMax)
     ,m_chPasswordChar(_T('*'))
     ,m_lAccelPos(-1)
@@ -660,8 +661,6 @@ void SRichEdit::OnPaint( IRenderTarget * pRT )
     GetClientRect(&rcClient);
     pRT->PushClipRect(&rcClient);
     HDC hdc=pRT->GetDC(0);
-    //::SaveDC(hdc);
-    //::IntersectClipRect(hdc,rcClient.left,rcClient.top,rcClient.right,rcClient.bottom);
 
     ALPHAINFO ai;
     if(GetContainer()->IsTranslucent())
@@ -687,7 +686,6 @@ void SRichEdit::OnPaint( IRenderTarget * pRT )
     {
         CGdiAlpha::AlphaRestore(ai);
     }
-//    ::RestoreDC(hdc,-1);
     pRT->ReleaseDC(hdc);
     pRT->PopClip();
 }
@@ -705,6 +703,7 @@ void SRichEdit::OnSetFocus()
         m_pTxtHost->m_fUiActive=TRUE;
         m_pTxtHost->GetTextService()->OnTxUIActivate();
         m_pTxtHost->GetTextService()->TxSendMessage(WM_SETFOCUS, 0, 0, 0);
+        if(m_fAutoSel) SetSel(MAKELONG(0,-1),TRUE);
     }
 }
 
@@ -1057,6 +1056,17 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
             OnEnableDragDrop( !(m_dwStyle&ES_READONLY) & m_fEnableDragDrop);
         }
     }
+    //auto Sel
+    else if(strAttribName.CompareNoCase(L"autoSel")==0)
+    {
+        if(strValue==L"0")
+        {
+            m_fAutoSel=FALSE;
+        }else
+        {
+            m_fAutoSel=TRUE;
+        }
+    }
     else
     {
         hRet=__super::DefAttributeProc(strAttribName,strValue,bLoading);
@@ -1071,11 +1081,14 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
 
 void SRichEdit::OnLButtonDown( UINT nFlags, CPoint point )
 {
-    if(m_swnd!=GetContainer()->SwndGetFocus())
+    if(GetContainer()->SwndGetFocus()!=m_swnd)
     {
         SetFocus();
+        if(!m_fAutoSel) m_pTxtHost->GetTextService()->TxSendMessage(GetCurMsg()->uMsg,GetCurMsg()->wParam,GetCurMsg()->lParam,NULL);
+    }else
+    {
+        m_pTxtHost->GetTextService()->TxSendMessage(GetCurMsg()->uMsg,GetCurMsg()->wParam,GetCurMsg()->lParam,NULL);
     }
-    m_pTxtHost->GetTextService()->TxSendMessage(GetCurMsg()->uMsg,GetCurMsg()->wParam,GetCurMsg()->lParam,NULL);
 }
 
 void SRichEdit::OnLButtonUp( UINT nFlags, CPoint point )
