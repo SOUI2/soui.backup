@@ -168,24 +168,24 @@ public:
 		if(ERROR_SUCCESS==reg.Open(HKEY_LOCAL_MACHINE,_T("System\\CurrentControlSet\\Control\\Session Manager\\Environment"),KEY_SET_VALUE|KEY_QUERY_VALUE))
 		{
 			reg.SetStringValue(_T("SOUIPATH"),szSouiDir);
-			TCHAR szEnvPath[4097];
-			DWORD dwSize=4096;
-			reg.QueryStringValue(_T("Path"),szEnvPath,&dwSize);
-			if(dwSize<3072)
+			DWORD dwSize=0;
+			LONG lRet = reg.QueryStringValue(_T("Path"),NULL,&dwSize);
+			if(ERROR_SUCCESS == lRet)
 			{//修改path环境变量
-			    dwSize--;
-                if(szEnvPath[dwSize-1]!=_T(';'))
-                {
-                    szEnvPath[dwSize++]=_T(';');
-                    szEnvPath[dwSize]=_T('\0');
-                }
-                TCHAR szSouiBin[MAX_PATH]={0};
-                _tcscpy(szSouiBin,szSouiDir);
-                _tcscat(szSouiBin,_T("\\bin;"));
-                if(StrStrI(szEnvPath,szSouiBin)==NULL)
+                CString str;
+                TCHAR * pBuf=str.GetBufferSetLength(dwSize);
+                lRet = reg.QueryStringValue(_T("Path"),pBuf,&dwSize);
+                str.ReleaseBuffer();
+                
+                CString strSouiBin(szSouiDir);
+                strSouiBin+= _T("\\bin");
+                if(StrStrI(str,strSouiBin) == NULL)
                 {//已经设置后不再设置
-                    _tcscpy(szEnvPath+dwSize,szSouiBin);
-                    reg.SetStringValue(_T("Path"),szEnvPath);
+                    if(str.IsEmpty())
+                        str=strSouiBin;
+                    else
+                        str=strSouiBin+_T(";")+str;
+                    reg.SetStringValue(_T("Path"),str);
                 }
 			}
 			reg.Close();
@@ -197,6 +197,8 @@ public:
 			MessageBox(_T("添加环境变量失败"),_T("错误"),MB_OK|MB_ICONSTOP);
 			return 0;
 		}
+
+        return 0;
 
 		//准备复制文件
 		TCHAR szFrom[1024]={0};
