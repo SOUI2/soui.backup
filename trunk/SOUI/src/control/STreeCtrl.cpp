@@ -1081,7 +1081,7 @@ void STreeCtrl::OnLButtonDown(UINT nFlags,CPoint pt)
 {
     m_hHoverItem=HitTest(pt);
 
-    if(m_hHoverItem!=m_hSelItem)
+    if(m_hHoverItem!=m_hSelItem && m_hHoverItem)
         SelectItem(m_hHoverItem,FALSE);
 
     if(m_hHoverItem)
@@ -1098,7 +1098,7 @@ void STreeCtrl::OnRButtonDown(UINT nFlags, CPoint pt)
 
     m_hHoverItem=HitTest(pt);
 
-    if(m_hHoverItem!=m_hSelItem)
+    if(m_hHoverItem!=m_hSelItem && m_hHoverItem)
         SelectItem(m_hHoverItem,FALSE);
 }
 
@@ -1153,6 +1153,7 @@ void STreeCtrl::OnMouseLeave()
 
 BOOL STreeCtrl::SelectItem( HSTREEITEM hItem,BOOL bEnsureVisible/*=TRUE*/ )
 {
+    if(!hItem) return FALSE;
     if(CSTree<LPTVITEM>::GetRootItem(hItem) != GetRootItem()) return FALSE;
 
     EventTCSelChanging evt1(this);
