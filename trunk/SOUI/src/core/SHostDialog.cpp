@@ -90,7 +90,6 @@ namespace SOUI
             if(pBtnExit)
             {
                 pBtnExit->FireCommand();
-                return;
             }
         }
     }
