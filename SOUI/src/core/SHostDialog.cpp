@@ -82,6 +82,8 @@ namespace SOUI
 
     void SHostDialog::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
     {
+        SHostWnd::OnKeyEvent(WM_KEYDOWN,(WPARAM)nChar,MAKELPARAM(nRepCnt,nFlags));
+        if(SHostWnd::IsMsgHandled()) return;
         if(nChar == VK_ESCAPE || nChar == VK_RETURN)
         {
             SWindow *pBtnExit = FindChildByID(nChar==VK_ESCAPE?IDCANCEL:IDOK);
@@ -90,9 +92,6 @@ namespace SOUI
                 pBtnExit->FireCommand();
                 return;
             }
-        }else 
-        {
-            SetMsgHandled(FALSE);
         }
     }
 }
