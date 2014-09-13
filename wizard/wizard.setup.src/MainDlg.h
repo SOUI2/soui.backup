@@ -198,8 +198,6 @@ public:
 			return 0;
 		}
 
-        return 0;
-
 		//准备复制文件
 		TCHAR szFrom[1024]={0};
 		TCHAR szTo[1024]={0};
@@ -273,27 +271,20 @@ public:
 			if(!vslist.GetCheckState(i)) continue;
 
 			VSENVCFG *pCfg=(VSENVCFG*)vslist.GetItemData(i);
-			BOOL bOK=TRUE;
-			//remove data files
-			if(bOK)
-			{
-				TCHAR szBuf[1000]={0};
-				CString strFrom=pCfg->strVsDir+pCfg->strDataTarget+_T("\\SouiWizard");
-				_tcscpy(szBuf,strFrom);//注意需要以两个0结尾
-				shfo.pFrom=szBuf;
-				bOK= 0==SHFileOperation(&shfo);
-			}
-			//remove entry files
-			if(bOK)
-			{
-				CString strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\SouiWizard.ico");
-				DeleteFile(strSource);
-				strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\SouiWizard.vsdir");
-				bOK = DeleteFile(strSource);
-				strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\SouiWizard.vsz");
-				bOK = DeleteFile(strSource);
-			}
-			
+            //remove entry files
+            CString strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\SouiWizard.ico");
+            BOOL bOK = DeleteFile(strSource);
+            if(bOK)
+            {
+                strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\SouiWizard.vsdir");
+                bOK = DeleteFile(strSource);
+            }
+            if(bOK)
+            {
+                strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\SouiWizard.vsz");
+                bOK = DeleteFile(strSource);
+            }
+
 			CString strMsg;
 			strMsg.Format(_T("从%s中卸载SOUI向导%s"),pCfg->strName,bOK?_T("成功"):_T("失败"));
 			::SendMessage(GetDlgItem(IDC_LOG),LB_ADDSTRING,0,(LPARAM)(LPCTSTR)strMsg);
