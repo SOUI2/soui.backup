@@ -597,7 +597,7 @@ protected:
  * @brief      复选框控件
  * 
  * Describe    复选框控件
- * Usage: <check state=4>This is a check-box</check>
+ * Usage: <check checked="1">This is a check-box</check>
  */
 class SOUI_EXP SCheckBox : public SWindow
 {
@@ -757,7 +757,7 @@ protected:
  * @brief      单选框控件
  * 
  * Describe    单选框控件
- * Usage: <radio state=1>This is a check-box</radio>
+ * Usage: <radio checked="1">This is a check-box</radio>
  */
 class SOUI_EXP SRadioBox : public SWindow
 {

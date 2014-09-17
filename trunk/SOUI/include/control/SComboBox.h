@@ -156,6 +156,14 @@ public:
      * Describe  下拉关闭
      */
     void CloseUp();
+
+	/**
+	 * SComboBoxBase::SetFocus
+	 * @brief    得到焦点,重载SWindow,解决ComboBox得到焦点时,子控件Edit得不到焦点的问题
+	 * 
+	 * Describe  得到焦点
+	 */
+	virtual void SetFocus();
 protected:
     /**
      * SComboBoxBase::GetDropDownOwner

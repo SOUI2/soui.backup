@@ -296,6 +296,14 @@ void SComboBoxBase::CloseUp()
     }
 }
 
+void SComboBoxBase::SetFocus()
+{
+	if(m_pEdit) 
+		m_pEdit->SetFocus();
+	else
+		__super::SetFocus();
+}
+
 void SComboBoxBase::OnDestroy()
 {
     CloseUp();
