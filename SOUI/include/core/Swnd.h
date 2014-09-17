@@ -618,6 +618,8 @@ namespace SOUI
             return m_bClipClient;
         }
 
+        virtual void SetFocus();
+        virtual void KillFocus();
 
         /**
         * UpdateChildrenPosition
@@ -704,9 +706,6 @@ namespace SOUI
         SWND GetCapture();
         SWND SetCapture();
         BOOL ReleaseCapture();
-
-        void SetFocus();
-        void KillFocus();
 
         SWindow *GetWindow(int uCode);    
 
