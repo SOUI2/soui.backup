@@ -1,0 +1,139 @@
+﻿<include>
+  <tabctrl pos="0,0,-0,-0" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8">
+    <page title="check and radio" colorBorder="#ff0000" margin-x="1" margin-y="1">
+      <check id="1300" pos="40,20" colorText="#ff0000" checked="1">test1</check>
+      <check id="1301" pos="40,70">test2</check>
+      <window pos="0,90,-70,-0" >
+        <radio id="1303" pos="10,10">radio1</radio>
+        <radio id="1304" pos="110,10" checked="1">radio2</radio>
+        <radio id="1305" pos="10,60">radio3</radio>
+        <radio id="1306" pos="110,60">radio4</radio>
+      </window>
+    </page>
+    <page title="edit and hotkey" colorBorder="#ff0000" margin-x="1" margin-y="1">
+      <text pos="50,20">hotkey 1:</text>
+      <hotkey name="ctrl_hk1" width="200" height="25" class="cls_edit"/>
+      <text pos="50,[5">hotkey 2:</text>
+      <hotkey name="ctrl_hk2" width="200" height="25" class="cls_edit"/>
+      <text pos="50,[5" multiLines="1">single line edit in window, \nshow how attribute "mouseRelay" will work:</text>
+      <window class="cls_edit" pos="50,[5,@200,@35">
+        <edit pos="0,0,-30,-0" font="adding:10" margin="0" mouseRelay="1">scroll edit</edit>
+        <button pos="-30,0,-0,-0" mouseRelay="1" >:)</button>
+      </window>
+      <text pos="50,[5">richedit:</text>
+      <button name="btn_insert_gif" height="25">insert gif to richedit</button>
+      <richedit name="re_gifhost" pos="50,[5,-5,-5" class="cls_edit" multiLines="1" vscrollBar="1" wordWrap="1"  autoVscroll="1" hscrollBar="0" wantReturn="1"  rtf="rtf:rtf_test">this is a richedit.中文也可以初始化。</richedit>
+    </page>
+    <page title="buttons" colorBorder="#ff0000" margin-x="1" margin-y="1">
+      <button name="btn_msgbox" pos="10,50" width="200" height="30" accel="ctrl+alt+f9" animate="1">show msg box</button>
+      <text pos="10,[5">press "ctrl+alt+f9" to activate the msgbox button</text>
+      <link pos="10,130" maxWidth="100" class="cls_btn_weblink" dotted="1" href="www.setoutsoft.cn">www.setoutsoft.cn</link>
+      <img pos="10,200,@100,@100" skin="skin_page_icons" iconIndex="2" tip="img tip" msgTransparent="0"/>
+      <text pos="10,[5" multiLines="1">the image show how to handle message in SImageWnd,\n you can do it by simply setting msgTransparent to 0</text>
+    </page>
+    <page title="prog and slider" colorBorder="#ff0000" margin-x="1" margin-y="1">
+      <progress name="prog_test" pos="200,100,-10,115" value="20" min="0" max="100" showPercent="1"/>
+      <sliderbar name="slider_test" pos="%20.5,130" alpha="200" width="200" value="20" min="0" max="100"/>
+    </page>
+    <page title="script" colorBorder="#ff0000" margin-x="1" margin-y="1">
+      <button name="btn_tstevt" pos="|-50,|-15,@100,@30" tip="click me to execute a lua script defined in lua\test.lua">script test</button>
+    </page>
+    <page title="calendar">
+      <calendar pos="0,0,-0,-0" name="mp_test" daySkin="_skin.sys.btn.normal" footerHeight="30">
+        <text name="label_today" pos="10,-20"/>
+        <button name="btn_today" pos="-50,-25,-5,-0" skin="_skin.sys.btn.normal">today</button>
+      </calendar>
+    </page>
+    <page title="split">
+      <splitrow name="split_row" pos="10,0,-10,-10" sepSize="6">
+        <pane idealSize="250" minSize="30" priority="0" colorBkgnd="#880000" clipClient="1">
+          <text pos="|-50,|-20" colorText="#ffffff">pane1 priority=2</text>
+        </pane>
+        <pane idealSize="400" minSize="30" priority="1">
+          <splitcol name="split_col" pos="0,0,-0,-0" sepSize="6">
+            <pane idealSize="200" minSize="30" priority="0" colorBkgnd="#000088" clipClient="1">
+              <text pos="|-50,|-20" colorText="#ffffff">pane2.1 priority=0</text>
+            </pane>
+            <pane idealSize="400" minSize="30" priority="1" colorBkgnd="#008800" clipClient="1">
+              <text pos="|-50,|-20" colorText="0">pane2.2 priority=1</text>
+            </pane>
+          </splitcol>
+        </pane>
+      </splitrow>
+    </page>
+    <page title="combobox and listbox">
+      <combobox name="cbx_test" pos="10,50,200,74" dropDown="1" dropHeight="100" class="cls_edit" dotted="0" animateTime="200" curSel="2">
+        <liststyle class="cls_edit"  iconSkin="skin_menuicon" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088"/>
+        <editstyle inset="5,0,5,0" colorText="#000000" align="left" colorBkgnd="#FFFFFF"/>
+        <items>
+          <item text="combobox.item1" icon="1" data="100"/>
+          <item text="combobox.item2" icon="2" data="100"/>
+          <item text="combobox.item3" icon="3" data="103"/>
+          <item text="combobox.item4" icon="4" data="100"/>
+          <item text="combobox.item5" icon="5" data="105"/>
+          <item text="combobox.item6" icon="0" data="100"/>
+        </items>
+      </combobox>
+      
+      <listbox name="lb_test" pos="210,50,400,200" hotTrack="1" class="cls_edit"  iconSkin="skin_menuicon" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088">
+        <items>
+          <item text="item1" icon="1" data="100"/>
+          <item text="item2" icon="2" data="100"/>
+          <item text="item3" icon="3" data="103"/>
+          <item text="item4" icon="4" data="100"/>
+          <item text="item5" icon="5" data="105"/>
+          <item text="item6" icon="0" data="100"/>
+        </items>
+      </listbox>
+    </page>
+    <page title="comboboxex">
+      <comboboxex show="1" pos="10,10,250,40" dropDown="1" dropHeight="250" class="cls_edit" dotted="0" curSel="3" id_text="1" id_icon="2">
+        <liststyle  class="cls_edit" colorBkgnd="#FFFFFF" itemHeight="50" >
+          <template skin="_skin.sys.header">
+            <text id="1" pos="5,2" colorText="#ff0000"/>
+            <img id="2" skin="skin_page_icons" msgTransparent="0" tip="this is an img control"/>
+            <button id="3" pos="5,20,100,43" tip="delete cur item">delete</button>
+            <link id="4" maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
+          </template>
+        </liststyle>
+        <editstyle crtext="000000" align="left" x-margin="0" y-margin="0"/>
+        <items>
+          <item text="combobox.item1" icon="1" data="100"/>
+          <item text="combobox.item2" icon="2" data="100"/>
+          <item text="combobox.item3" icon="3" data="103"/>
+          <item text="combobox.item4" icon="4" data="100"/>
+          <item text="combobox.item5" icon="5" data="105"/>
+          <item text="combobox.item6" icon="6" data="100"/>
+        </items>
+      </comboboxex>
+      <listboxex pos="10,50,250,-10" class="cls_edit" itemHeight="50">
+        <items>
+          <item>
+            <text pos="5,2" colorText="#ff0000">text item text item 1</text>
+            <img skin="skin_page_icons" iconIndex="0" msgTransparent="0" tip="this is an img control"/>
+            <button pos="5,20,100,43">item 1</button>
+            <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
+          </item>
+          <item>
+            <text pos="5,2" colorText="#ff0000">text item text item 2</text>
+            <img skin="skin_page_icons" iconIndex="1" msgTransparent="0" tip="this is an img control"/>
+            <button pos="5,20,100,43">item 2</button>
+            <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
+          </item>
+          <item>
+            <text pos="5,2" colorText="#ff0000">text item text item 3</text>
+            <img skin="skin_page_icons" iconIndex="2" msgTransparent="0" tip="this is an img control"/>
+            <button pos="5,20,100,43">item 3</button>
+            <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
+          </item>
+          <item>
+            <text pos="5,2" colorText="#ff0000">text item text item 4</text>
+            <img skin="skin_page_icons" iconIndex="3" msgTransparent="0" tip="this is an img control"/>
+            <button pos="5,20,100,43">item 4</button>
+            <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
+          </item>
+        </items>        
+      </listboxex>
+    </page>
+  </tabctrl>
+</include>
