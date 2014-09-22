@@ -1024,9 +1024,10 @@ void SWindow::OnNcPaint(IRenderTarget *pRT)
 
         int nState=0;
         if(WndState_Hover & m_dwState) nState=1;
+		else if (WndState_Disable & m_dwState)	nState = 2;/**< Ìí¼Ó½ûÖ¹×´Ì¬*/
         if(m_pNcSkin)
         {
-            if(nState>=m_pNcSkin->GetStates()) nState=0;
+            if(nState>=m_pNcSkin->GetStates()) nState=0;	/**< Èç¹ûÃ»ÓÐ½ûÖ¹×´Ì¬µÄÍ¼Æ¬,ÔòÓÃÆÕÍ¨×´Ì¬*/
             m_pNcSkin->Draw(pRT,m_rcWindow,nState,m_byAlpha);
         }
         else
