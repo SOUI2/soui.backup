@@ -81,6 +81,7 @@ namespace SOUI
         EVT_TC_SELCHANGED,
         EVT_TC_EXPAND,
         EVT_TC_CHECKSTATE,
+        EVT_TC_DBCLICK,    //treectrl的叶子节点双击事件, add by zhaosheng
 
         EVT_RE_NOTIFY=16000,
 
@@ -422,6 +423,16 @@ namespace SOUI
         virtual UINT GetEventID(){return EventID;}
         HSTREEITEM  hItem;
         BOOL bCollapsed;
+    };
+
+    //双击treectrl的叶子节点 add by zhaosheng
+    class SOUI_EXP EventTCDbClick : public EventArgs
+    {
+    public:
+        EventTCDbClick(SWindow *pWnd):EventArgs(pWnd){}
+        enum{EventID=EVT_TC_DBCLICK};
+        virtual UINT GetEventID(){return EventID;}
+        HSTREEITEM hItem;  //双击选中的节点
     };
 
 } // End of  CEGUI namespace section
