@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "utilities.h"
-
 namespace SOUI
 {
 #define HIMETRIC_PER_INCH   2540
@@ -77,5 +76,26 @@ namespace SOUI
                 HexStringToULong(lpszValue + 4, 2)
                 )|0xFF000000;
         }
+    }
+    
+    COLORREF StringToColor(const SStringW & str)
+    {
+        if(str.IsEmpty()) return 0;
+        SStringW str2=str;
+        str2.MakeLower();
+        int r=0,g=0,b=0,a=255;
+        int nSegs=0;
+        if(str2[0] == L'#')
+        {
+            nSegs=swscanf(str2,L"#%02x%02x%02x%02x",&r,&g,&b,&a);
+        }else if(str2.GetLength()>4 && str2.Left(3)==L"rgb")
+        {
+            if(str2[3]==L'a')
+                nSegs=swscanf(str2,L"rgba(%u,%u,%u,%u)",&r,&g,&b,&a);
+            else
+                nSegs=swscanf(str2,L"rgb(%u,%u,%u,%u)",&r,&g,&b);                
+        }
+        if(nSegs!=3 && nSegs!=4) return 0;
+        return RGB(r,g,b)|(a<<24);
     }
 }//end of namespace SOUI
