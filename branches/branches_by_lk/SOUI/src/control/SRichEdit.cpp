@@ -592,7 +592,6 @@ SRichEdit::SRichEdit()
     ,m_dwStyle(ES_LEFT|ES_AUTOHSCROLL)
     ,m_rcInsetPixel(2,2,2,2)
     ,m_byDbcsLeadByte(0)
-	,m_dwTextColor(RGB(0,0,0))
 {
     m_pNcSkin = GETBUILTINSKIN(SKIN_SYS_BORDER);
 
@@ -1377,8 +1376,7 @@ void SRichEdit::SetSel(DWORD dwSelection, BOOL bNoScroll)
 
 HRESULT SRichEdit::OnAttrTextColor( const SStringW &  strValue,BOOL bLoading )
 {
-	m_dwTextColor = HexStringToColor((LPCWSTR)strValue +1);
-    m_style.SetTextColor(0,m_dwTextColor);
+    m_style.SetTextColor(0,HexStringToColor((LPCWSTR)strValue +1));
     if(!bLoading)
     {
         SetDefaultTextColor(m_style.GetTextColor(0));
@@ -1493,130 +1491,47 @@ void SRichEdit::OnEnableDragDrop( BOOL bEnable )
     }
 }
 
-SEdit::SEdit()
-	:m_strDefText(L"")
-	,m_dwDefColor(RGB(128,128,128))
-	,m_bIsInit(true)
-	,m_bIsPasswordEdit(false)
-{
-	m_fRich=0;
-	m_fAutoSel=TRUE;
-}
+//////////////////////////////////////////////////////////////////////////
 
-void SEdit::OnSetFocus()
+SEdit::SEdit() :m_crCue(RGBA(0xcc,0xcc,0xcc,0xff))
 {
-	__super::OnSetFocus();
-	SStringT Text = SRichEdit::GetWindowText();
-	SetDefaultTextColor(m_dwTextColor);
-	if (Text.GetLength() && Text.CompareNoCase(m_strDefText) == 0)
-	{
-		SetWindowText(L"");
-		
-		if (m_bIsPasswordEdit)
-			SetAttribute(L"password", L"1");
-	}
+    m_fRich=0;
+    m_fAutoSel=TRUE;
 }
 
 void SEdit::OnKillFocus()
 {
-	__super::OnKillFocus();
-	SStringT Text = SRichEdit::GetWindowText();
-
-	if (!Text.GetLength())
-	{
-		if (m_bIsPasswordEdit)
-			SetAttribute(L"password", L"0");
-
-		if (m_strDefText.GetLength())
-		{
-			SetDefaultTextColor(m_dwDefColor);
-			SetWindowText(m_strDefText);
-		}
-	}
+    SRichEdit::OnKillFocus();
+    if(!m_strCue.IsEmpty() && GetWindowTextLength() == 0) Invalidate();
 }
 
-HRESULT SEdit::DefAttributeProc(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading)
+void SEdit::OnSetFocus()
 {
-	HRESULT hRet = __super::DefAttributeProc(strAttribName,strValue,bLoading);
-
-	if (m_bIsInit)
-	{
-		m_bIsInit = false;
-		if (strAttribName.CompareNoCase(L"password")==0 && strValue.Compare(L"1") == 0)
-			m_bIsPasswordEdit = true;
-		else
-			m_bIsPasswordEdit = false;
-	}
-	return hRet;
+    SRichEdit::OnSetFocus();
+    if(!m_strCue.IsEmpty() && GetWindowTextLength() == 0) Invalidate();
 }
 
-BOOL SEdit::InitFromXml(pugi::xml_node xmlNode)
+void SEdit::OnPaint( IRenderTarget * pRT )
 {
-	//InitFromXml Pre
-	BOOL bRet = __super::InitFromXml(xmlNode);
-	//InitFromXml Post
-	
-	SStringT strName=S_CW2T(xmlNode.name());
-	pugi::xml_node parent = xmlNode.parent();
-	SStringT parName = parent.name();
-
-	if (strName.CompareNoCase(L"edit") == 0
-		|| strName.CompareNoCase(L"editstyle") == 0)
-	{
-		if (parName.CompareNoCase(L"combobox") == 0 || parName.CompareNoCase(L"comboboxex") == 0)
-		{
-			/**< combobox与comboboxex控件*/
-			m_strDefText = parent.attribute(L"defText").value();
-		}
-		else if (strName.CompareNoCase(L"edit") == 0)
-		{
-			/**< edit 控件*/
-			m_strDefText = xmlNode.attribute(L"defText").value();
-		}
-			
-		
-		if (!m_strText.GetLength() && m_strDefText.GetLength())
-		{
-			if (m_bIsPasswordEdit)
-				SetAttribute(L"password", L"0");
-
-			SetDefaultTextColor(m_dwDefColor);
-			SetWindowText(m_strDefText);
-		}
-	}
-	return bRet;
+    SRichEdit::OnPaint(pRT);
+    if(!m_strCue.IsEmpty() && GetWindowTextLength() == 0 && GetContainer()->SwndGetFocus()!=m_swnd)
+    {
+        SPainter painter;
+        BeforePaint(pRT,painter);
+        COLORREF crOld = pRT->SetTextColor(m_crCue);
+        
+        CRect rc;
+        GetClientRect(&rc);
+        pRT->DrawText(m_strCue,m_strCue.GetLength(),&rc,DT_SINGLELINE|DT_VCENTER);
+        
+        pRT->SetTextColor(crOld);
+        AfterPaint(pRT,painter);
+    }
 }
 
-SStringT SEdit::GetWindowText()
+SOUI::SStringT SEdit::GetCueText() const
 {
-	SStringT sText = SRichEdit::GetWindowText();
-
-	if (m_strDefText.GetLength() && sText.Compare(m_strDefText) == 0)
-	{
-		return SStringT();
-	}
-	return sText;
-}
-
-void SEdit::SetWindowText(LPCTSTR lpszText)
-{
-	__super::SetWindowText(lpszText);
-	SStringT sText = SRichEdit::GetWindowText();
-	if (sText.Compare(m_strDefText))
-	{
-		SetDefaultTextColor(m_dwTextColor);
-	}
-}
-
-int SEdit::GetWindowTextLength()
-{
-	SStringT sText = SRichEdit::GetWindowText();
-	/**< 当默认文本不为空时,所获内容与默认文本内容一致时,返回0*/
-	if (m_strDefText.GetLength() && sText.Compare(m_strDefText) == 0)
-	{
-		return 0;
-	}
-    return (int)SSendMessage(WM_GETTEXTLENGTH);
+    return m_strCue;
 }
 
 }//namespace SOUI

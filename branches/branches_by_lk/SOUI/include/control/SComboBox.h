@@ -164,7 +164,6 @@ public:
 	 * Describe  得到焦点
 	 */
 	virtual void SetFocus();
-
 protected:
     /**
      * SComboBoxBase::GetDropDownOwner
@@ -334,7 +333,7 @@ protected:
     UINT OnGetDlgCode();
     
     /**
-     * SComboBoxBase::IsFocusable
+     * SComboBoxBase::IsTabStop
      * @brief    是否禁止TAB键
      * 
      * Describe  是否禁止TAB键
@@ -378,7 +377,7 @@ protected:
         }
     }
 
-    SEdit *m_pEdit;      /**< SRichEdit指针 */
+    SRichEdit *m_pEdit;      /**< SRichEdit指针 */
     DWORD     m_dwBtnState;  /**< 按钮状态      */
     ISkinObj *m_pSkinBtn;    /**< 按钮资源      */
     
