@@ -1233,10 +1233,47 @@ namespace SOUI
         *
         * Describe  构造函数
         */
-        SEdit()
-        {
-            m_fRich=0;
-            m_fAutoSel=TRUE;
-        }
+        SEdit();
+        
+        SStringT GetCueText() const;
+        
+        SOUI_ATTRS_BEGIN()
+            ATTR_COLOR(L"cueColor",m_crCue,TRUE)
+            ATTR_I18NSTRT(L"cueText",m_strCue,TRUE)
+        SOUI_ATTRS_END()
+
+    protected:
+    
+        /**
+        * SEdit::OnPaint
+        * @brief    绘制消息
+        * @param    IRenderTarget * pRT -- 绘画设备上下文
+        * 
+        * Describe  此函数是消息响应函数
+        */
+        void OnPaint(IRenderTarget * pRT);
+        /**
+        * SEdit::OnSetFocus
+        * @brief    获得焦点
+        * 
+        * Describe  此函数是消息响应函数
+        */
+        void OnSetFocus();
+        /**
+        * SEdit::OnKillFocus
+        * @brief    失去焦点
+        * 
+        * Describe  此函数是消息响应函数
+        */
+        void OnKillFocus();
+
+        SOUI_MSG_MAP_BEGIN()
+            MSG_WM_PAINT_EX(OnPaint)
+            MSG_WM_SETFOCUS_EX(OnSetFocus)
+            MSG_WM_KILLFOCUS_EX(OnKillFocus)
+        SOUI_MSG_MAP_END()
+
+        COLORREF    m_crCue;
+        SStringT    m_strCue;
     };
 }//namespace SOUI

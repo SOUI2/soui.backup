@@ -17,7 +17,7 @@
       <hotkey name="ctrl_hk2" width="200" height="25" class="cls_edit"/>
       <text pos="50,[5" multiLines="1">single line edit in window, \nshow how attribute "mouseRelay" will work:</text>
       <window class="cls_edit" pos="50,[5,@200,@35">
-        <edit pos="0,0,-30,-0" font="adding:10" margin="0" mouseRelay="1">scroll edit</edit>
+        <edit pos="0,0,-30,-0" font="adding:10" margin="0" mouseRelay="1" cueText="cue text" cueColor="#ff0000" password="1">scroll edit</edit>
         <button pos="-30,0,-0,-0" mouseRelay="1" >:)</button>
       </window>
       <text pos="50,[5">richedit:</text>
@@ -115,7 +115,7 @@
             <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
           </item>
           <item>
-            <text pos="5,2" colorText="#ff0000">text item text item 2</text>
+            <text pos="5,2" colorText="#ff0000" >中文字体显示 2</text>
             <img skin="skin_page_icons" iconIndex="1" msgTransparent="0" tip="this is an img control"/>
             <button pos="5,20,100,43">item 2</button>
             <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>

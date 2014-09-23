@@ -233,15 +233,12 @@ public:                                                             \
         else                                                    \
  
 // COLORREF = %06X StringA
-#define ATTR_COLOR(attribname, varname, allredraw)       \
-    if (0 == strAttribName.CompareNoCase(attribname))                            \
+#define ATTR_COLOR(attribname, varname, allredraw)                  \
+    if (0 == strAttribName.CompareNoCase(attribname))               \
         {                                                           \
-            if(!strValue.IsEmpty())\
+            if(!strValue.IsEmpty())                                 \
             {                                                       \
-                if(strValue[0] == L'#')                             \
-                    varname = HexStringToColor((LPCWSTR)strValue+1);\
-                else                                                \
-                    varname = _wtol(strValue);                      \
+                varname = StringToColor(strValue);                  \
                 hRet = allredraw ? S_OK : S_FALSE;                  \
             }else                                                   \
             {                                                       \
@@ -253,7 +250,7 @@ public:                                                             \
 
 //font="face:ËÎÌו;bold:1;italic:1;underline:1;adding:10"
 #define ATTR_FONT(attribname, varname, allredraw)                       \
-    if (0 == strAttribName.CompareNoCase(attribname))                                    \
+    if (0 == strAttribName.CompareNoCase(attribname))                   \
     {                                                                    \
         varname = SFontPool::getSingleton().GetFont(strValue);           \
         hRet = allredraw ? S_OK : S_FALSE;                               \

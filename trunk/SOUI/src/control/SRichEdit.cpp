@@ -1491,4 +1491,47 @@ void SRichEdit::OnEnableDragDrop( BOOL bEnable )
     }
 }
 
+//////////////////////////////////////////////////////////////////////////
+
+SEdit::SEdit() :m_crCue(RGBA(0xcc,0xcc,0xcc,0xff))
+{
+    m_fRich=0;
+    m_fAutoSel=TRUE;
+}
+
+void SEdit::OnKillFocus()
+{
+    SRichEdit::OnKillFocus();
+    if(!m_strCue.IsEmpty() && GetWindowTextLength() == 0) Invalidate();
+}
+
+void SEdit::OnSetFocus()
+{
+    SRichEdit::OnSetFocus();
+    if(!m_strCue.IsEmpty() && GetWindowTextLength() == 0) Invalidate();
+}
+
+void SEdit::OnPaint( IRenderTarget * pRT )
+{
+    SRichEdit::OnPaint(pRT);
+    if(!m_strCue.IsEmpty() && GetWindowTextLength() == 0 && GetContainer()->SwndGetFocus()!=m_swnd)
+    {
+        SPainter painter;
+        BeforePaint(pRT,painter);
+        COLORREF crOld = pRT->SetTextColor(m_crCue);
+        
+        CRect rc;
+        GetClientRect(&rc);
+        pRT->DrawText(m_strCue,m_strCue.GetLength(),&rc,DT_SINGLELINE|DT_VCENTER);
+        
+        pRT->SetTextColor(crOld);
+        AfterPaint(pRT,painter);
+    }
+}
+
+SOUI::SStringT SEdit::GetCueText() const
+{
+    return m_strCue;
+}
+
 }//namespace SOUI
