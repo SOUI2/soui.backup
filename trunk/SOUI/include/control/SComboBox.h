@@ -132,6 +132,16 @@ public:
      */
     virtual int GetCurSel() const =0;
 
+    
+     /**
+     * SComboBoxBase::SetCurSel
+     * @brief    设置当前选中
+     * @param    int iSel -- 选中索引
+     * 
+     * Describe  设置当前选中
+     */ 
+    virtual BOOL SetCurSel(int iSel)=0;
+
     /**
      * SComboBoxBase::GetWindowText
      * @brief    获取窗口标题
@@ -201,6 +211,8 @@ protected:
      */
     virtual void OnSelChanged();
     
+    
+    virtual BOOL FireEvent(EventArgs &evt);
 protected:
 
     /**

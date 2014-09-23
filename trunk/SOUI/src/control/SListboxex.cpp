@@ -128,8 +128,9 @@ int SListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,LPARAM dwData/*=0*/)
 
 BOOL SListBoxEx::SetCurSel(int iItem)
 {
-    if(iItem<0 || iItem>=GetItemCount()) return FALSE;
-
+    if(iItem>=GetItemCount()) return FALSE;
+    if(iItem < 0 ) iItem =-1;
+    
     if(m_iSelItem==iItem) return FALSE;
     int nOldSel=m_iSelItem;
     m_iSelItem=iItem;
@@ -138,8 +139,11 @@ BOOL SListBoxEx::SetCurSel(int iItem)
         m_arrItems[nOldSel]->ModifyItemState(0,WndState_Check);
         if(IsVisible(TRUE)) RedrawItem(nOldSel);
     }
-    m_arrItems[m_iSelItem]->ModifyItemState(WndState_Check,0);
-    if(IsVisible(TRUE)) RedrawItem(m_iSelItem);
+    if(m_iSelItem!=-1)
+    {
+        m_arrItems[m_iSelItem]->ModifyItemState(WndState_Check,0);
+        if(IsVisible(TRUE)) RedrawItem(m_iSelItem);
+    }
     return TRUE;
 }
 
