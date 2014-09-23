@@ -967,6 +967,13 @@ void STreeCtrl::ItemLButtonDbClick(HSTREEITEM hItem, UINT nFlags,CPoint pt)
     int nHitTestBtn = ItemHitTest(hItem, pt);
     if (nHitTestBtn == STVIBtn_CheckBox)
         ItemLButtonDown(hItem, nFlags, pt);
+    //产生双击事件 add by zhaosheng
+    if (hItem)
+    {
+        EventTCDbClick dbClick(this);
+        dbClick.hItem = hItem;
+        FireEvent(dbClick);
+    }
 }
 
 void STreeCtrl::ItemMouseMove(HSTREEITEM hItem, UINT nFlags,CPoint pt)
