@@ -25,7 +25,7 @@
               <imgbtn id="4" pos="-24,|-8,-10,|7" skin="btn_list_close" tip="删除账号信息"/>
             </template>
           </liststyle>
-          <editstyle vcenter="1" colorText="#000000" align="left" colorBkgnd="#FFFFFF" />
+          <editstyle vcenter="1" colorText="#000000" align="left" colorBkgnd="#FFFFFF" cueText="输入帐号"/>
           <items>
             <item text="276883782"/>
           </items>
@@ -33,7 +33,7 @@
 
 
         <window pos="114,70,300,98" class="cls_edit" colorBkgnd="#ffffff">
-          <edit pos="0,0,-19,-0" margin="0" password="1" mouseRelay="1"/>
+          <edit pos="0,0,-19,-0" margin="0" password="1" mouseRelay="1" cueText="输入密码"/>
           <imgbtn pos="-19,3" skin="btn_keyboard" mouseRelay="1"/>
         </window>
 
