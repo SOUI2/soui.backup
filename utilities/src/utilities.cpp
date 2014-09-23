@@ -91,9 +91,9 @@ namespace SOUI
         }else if(str2.GetLength()>4 && str2.Left(3)==L"rgb")
         {
             if(str2[3]==L'a')
-                nSegs=swscanf(str2,L"rgba(%d,%d,%d,%d)",&r,&g,&b,&a);
+                nSegs=swscanf(str2,L"rgba(%u,%u,%u,%u)",&r,&g,&b,&a);
             else
-                nSegs=swscanf(str2,L"rgb(%d,%d,%d,%d)",&r,&g,&b);                
+                nSegs=swscanf(str2,L"rgb(%u,%u,%u,%u)",&r,&g,&b);                
         }
         if(nSegs!=3 && nSegs!=4) return 0;
         return RGB(r,g,b)|(a<<24);
