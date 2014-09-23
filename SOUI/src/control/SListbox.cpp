@@ -56,11 +56,12 @@ int SListBox::GetCurSel() const
 
 BOOL SListBox::SetCurSel(int nIndex)
 {
-    if(m_iSelItem == nIndex) return 0;
-
-    if(nIndex < 0 && nIndex >= GetCount())
+    if(nIndex >= GetCount())
         return FALSE;
+        
+    if(nIndex < 0 ) nIndex =-1;
 
+    if(m_iSelItem == nIndex) return 0;
     int nOldSelItem = m_iSelItem;
     m_iSelItem = nIndex;
 
@@ -68,8 +69,8 @@ BOOL SListBox::SetCurSel(int nIndex)
     {
         if(nOldSelItem != -1)
             RedrawItem(nOldSelItem);
-
-        RedrawItem(nIndex);
+        if(m_iSelItem!=-1)
+            RedrawItem(m_iSelItem);
     }
     return TRUE;
 }

@@ -81,15 +81,18 @@ BOOL SComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
         m_pEdit=new SComboEdit(this);
         InsertChild(m_pEdit);
         pugi::xml_node xmlEditStyle=xmlNode.child(L"editstyle");
+        m_pEdit->GetEventSet()->setMutedState(true);
         if(xmlEditStyle)
             m_pEdit->InitFromXml(xmlEditStyle);
         else
             m_pEdit->SSendMessage(WM_CREATE);
+        m_pEdit->GetEventSet()->setMutedState(false);
         SStringW strPos;
         strPos.Format(L"0,0,-%d,-0",szBtn.cx);
         m_pEdit->SetAttribute(L"pos",strPos,TRUE);
         m_pEdit->SetID(IDC_CB_EDIT);
-
+        m_pEdit->SSendMessage(EM_SETEVENTMASK,0 ,ENM_CHANGE );
+        
     }
     return CreateListBox(xmlNode);
 }
@@ -316,6 +319,21 @@ void SComboBoxBase::OnSelChanged()
     FireEvent(evt);
 }
 
+BOOL SComboBoxBase::FireEvent( EventArgs &evt )
+{
+    if(evt.GetEventID() == EventRENotify::EventID)
+    {
+        EventRENotify *evtRe = (EventRENotify*)&evt;
+        if(evtRe->iNotify == EN_CHANGE && !m_pEdit->GetEventSet()->isMuted())
+        {
+            m_pEdit->GetEventSet()->setMutedState(true);
+            SetCurSel(-1);
+            m_pEdit->GetEventSet()->setMutedState(false);
+        }
+    }
+    return SWindow::FireEvent(evt);
+}
+
 //////////////////////////////////////////////////////////////////////////
 SComboBox::SComboBox()
 :m_pListBox(NULL)
@@ -400,7 +418,7 @@ void SComboBox::OnCloseUp( SDropDownWnd *pDropDown ,UINT uCode)
 void SComboBox::OnSelChanged()
 {
     m_pListBox->GetCurSel();
-    if(m_pEdit)
+    if(m_pEdit && !m_pEdit->GetEventSet()->isMuted())
     {
         SStringT strText=GetLBText(m_pListBox->GetCurSel());
         m_pEdit->GetEventSet()->setMutedState(true);
@@ -428,7 +446,7 @@ BOOL SComboBox::FireEvent( EventArgs &evt )
             return TRUE;
         }
     }
-    return __super::FireEvent(evt);
+    return SComboBoxBase::FireEvent(evt);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -543,7 +561,7 @@ void SComboBoxEx::OnCloseUp( SDropDownWnd *pDropDown ,UINT uCode)
 void SComboBoxEx::OnSelChanged()
 {
     int iSel=m_pListBox->GetCurSel();
-    if(m_pEdit)
+    if(m_pEdit && !m_pEdit->GetEventSet()->isMuted())
     {
         SStringT strText=GetLBText(iSel);
         m_pEdit->GetEventSet()->setMutedState(true);
@@ -563,6 +581,7 @@ BOOL SComboBoxEx::FireEvent( EventArgs &evt )
         if(evt.GetEventID()==EventLBSelChanged::EventID)
         {//列表选中项改变事件
             OnSelChanged();
+            return TRUE;
         }
     }
     if(evt.GetEventID() == EventOfPanel::EventID)
@@ -575,10 +594,11 @@ BOOL SComboBoxEx::FireEvent( EventArgs &evt )
             if(!evt2.bCancel)
             {//可以关闭下拉列表
                 CloseUp();
-            }        
+            }
+            return TRUE;        
         }
     }
-    return TRUE;
+    return SComboBoxBase::FireEvent(evt);
 }
 
 
