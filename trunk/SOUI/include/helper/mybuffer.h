@@ -78,7 +78,7 @@ public:
     {
         SASSERT(m_p == NULL);
         if(nBytes >= t_nFixedBytes)
-            m_p = static_cast<T*>(malloc(nBytes+1));
+            m_p = static_cast<T*>(malloc(nBytes+sizeof(T)));
         else
             m_p = reinterpret_cast<T*>(m_abFixedBuffer);
         m_nSize=nBytes/sizeof(T);
