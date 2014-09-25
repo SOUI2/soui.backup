@@ -39,7 +39,7 @@ public:
     void OnPrint(HDC dc);
     void OnNcPaint();
     void OnWindowPosChanging(WINDOWPOS* pWindowPos);
-    void SetLayeredAttr();
+    void OnWindowPosChanged();
 
 // ²Ù×÷ ----------------------------------------------------------
 public:
