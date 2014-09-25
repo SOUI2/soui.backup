@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <helper/MenuWndHook.h>
 
 #include <helper/mybuffer.h>
 #if defined(_DEBUG) && !defined(_WIN64)
@@ -152,7 +153,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
             sysSesProvider->Init((WPARAM)hSysResource,0);
             theApp->LoadSystemNamedResource(sysSesProvider);
         }
-
+        //采用hook绘制菜单的边框
+        CMenuWndHook::InstallHook(hInstance,L"_skin.sys.menu.border");
+        
         //加载全局资源描述XML
         theApp->Init(_T("xml_init")); 
 
@@ -168,6 +171,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
         //应用程序退出
         delete theApp; 
+        
+        //卸载菜单边框绘制hook
+        CMenuWndHook::UnInstallHook();
+        
         SSkinGif::Gdiplus_Shutdown();
     }
     delete pComMgr;

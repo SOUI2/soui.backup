@@ -12,7 +12,6 @@ namespace SOUI
         AddKeyObject(SSkinButton::GetClassName(),new TplSkinFactory<SSkinButton>);
         AddKeyObject(SSkinGradation::GetClassName(),new TplSkinFactory<SSkinGradation>);
         AddKeyObject(SSkinScrollbar::GetClassName(),new TplSkinFactory<SSkinScrollbar>);
-        AddKeyObject(SSkinMenuBorder::GetClassName(),new TplSkinFactory<SSkinMenuBorder>);
     }
 
     void SSkinFactoryMgr::OnSkinRemoved( const CSkinFactoryPtr & obj )

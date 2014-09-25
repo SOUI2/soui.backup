@@ -97,12 +97,13 @@ protected:
     CRect m_rcMargin;
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"left", m_rcMargin.left, TRUE)        //æ≈π¨∏Ò◊Û±ﬂæ‡
-        ATTR_INT(L"top", m_rcMargin.top, TRUE)          //æ≈π¨∏Ò…œ±ﬂæ‡
-        ATTR_INT(L"right", m_rcMargin.right, TRUE)      //æ≈π¨∏Ò”“±ﬂæ‡
-        ATTR_INT(L"bottom", m_rcMargin.bottom, TRUE)    //æ≈π¨∏Òœ¬±ﬂæ‡
-        ATTR_INT(L"margin-x", m_rcMargin.left=m_rcMargin.right, TRUE)//æ≈π¨∏Ò◊Û”“±ﬂæ‡
-        ATTR_INT(L"margin-y", m_rcMargin.top=m_rcMargin.bottom, TRUE)//æ≈π¨∏Ò…œœ¬±ﬂæ‡
+        ATTR_INT(L"left", m_rcMargin.left, FALSE)        //æ≈π¨∏Ò◊Û±ﬂæ‡
+        ATTR_INT(L"top", m_rcMargin.top, FALSE)          //æ≈π¨∏Ò…œ±ﬂæ‡
+        ATTR_INT(L"right", m_rcMargin.right, FALSE)      //æ≈π¨∏Ò”“±ﬂæ‡
+        ATTR_INT(L"bottom", m_rcMargin.bottom, FALSE)    //æ≈π¨∏Òœ¬±ﬂæ‡
+        ATTR_INT(L"margin-x", m_rcMargin.left=m_rcMargin.right, FALSE)//æ≈π¨∏Ò◊Û”“±ﬂæ‡
+        ATTR_INT(L"margin-y", m_rcMargin.top=m_rcMargin.bottom, FALSE)//æ≈π¨∏Ò…œœ¬±ﬂæ‡
+        ATTR_RECT(L"margin" ,m_rcMargin,FALSE)          //æ≈π¨∏Ò4÷‹
     SOUI_ATTRS_END()
 };
 
@@ -234,27 +235,5 @@ protected:
     SOUI_ATTRS_END()
 };
 
-class SOUI_EXP SSkinMenuBorder : public SSkinImgFrame
-{
-    SOUI_CLASS_NAME(SSkinMenuBorder, L"border")
-
-public:
-
-    SSkinMenuBorder():m_rcBorder(1,1,1,1)
-    {
-
-    }
-
-    CRect GetMarginRect()
-    {
-        return m_rcBorder;
-    }
-protected:
-    CRect        m_rcBorder;
-
-    SOUI_ATTRS_BEGIN()
-        ATTR_RECT(L"border",m_rcBorder,FALSE)
-    SOUI_ATTRS_END()
-};
 
 }//namespace SOUI
