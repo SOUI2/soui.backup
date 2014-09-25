@@ -884,6 +884,7 @@ LRESULT SWindow::OnWindowPosChanged(LPRECT lpRcContainer)
     LRESULT lRet=0;
     if(!(m_layout.uPositionType & Pos_Float))    
     {//窗口不是使用Move直接指定的坐标,计算出窗口位置
+        m_rcWindow.left = m_rcWindow.top = m_rcWindow.right = m_rcWindow.bottom = POS_INIT;//注意先使原窗口坐标无效
         lRet=m_layout.CalcPosition(lpRcContainer,m_rcWindow);
     }
     if(lRet==0)
