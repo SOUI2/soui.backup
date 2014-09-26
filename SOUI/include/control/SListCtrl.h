@@ -86,10 +86,12 @@ namespace SOUI
         {
             dwData = 0;
             arSubItems=NULL;
+            checked = FALSE;
         }
 
         ArrSubItem  *arSubItems;
         DWORD       dwData;
+        BOOL    checked;
     } DXLVITEM;
 
     //////////////////////////////////////////////////////////////////////////
@@ -287,6 +289,14 @@ namespace SOUI
      * Describe  排序
      */
         BOOL            SortItems( PFNLVCOMPAREEX pfnCompare, void * pContext );
+
+        BOOL            GetCheckState(int nItem);   
+        BOOL            SetCheckState(int nItem, BOOL bCheck);  
+        int             GetCheckedItemCount();
+        int             GetFirstCheckedItem();
+        VOID            EnableMultiSelection(BOOL enable) { m_bMultiSelection = enable; }
+        VOID            EnableCheckBox(BOOL enable) { m_bCheckBox = enable; }
+        VOID            EnableHotTrack(BOOL enable) { m_bHotTrack = enable; }
     protected:
     /**
      * SListCtrl::GetTopIndex
@@ -334,7 +344,7 @@ namespace SOUI
      *
      * Describe  修改选中项
      */
-        void            NotifySelChange(int nOldSel, int nNewSel);
+        void            NotifySelChange(int nOldSel, int nNewSel, BOOL checkBox = FALSE);
     /**
      * SListCtrl::OnPaint
      * @brief    绘制
@@ -461,6 +471,8 @@ namespace SOUI
      */
      void            UpdateHeaderCtrl();
 
+     BOOL            HitCheckBox(const CPoint& pt);
+
     protected:
         int             m_nHeaderHeight;  /**< 列表头高度 */
         int             m_nItemHeight;  /**< 条目高度 */
@@ -480,6 +492,9 @@ namespace SOUI
 
         ISkinObj*    m_pItemSkin;  /**< */
         ISkinObj*    m_pIconSkin;  /**< */
+        ISkinObj*    m_pCheckSkin; /**< */
+        BOOL        m_bCheckBox;
+        BOOL        m_bMultiSelection;
 
     protected:
         typedef SArray<DXLVITEM> ArrLvItem;  /**< 保存item数组 */
@@ -492,8 +507,11 @@ namespace SOUI
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"headerHeight", m_nHeaderHeight, FALSE)
             ATTR_INT(L"itemHeight", m_nItemHeight, FALSE)
+            ATTR_INT(L"checkBox", m_bCheckBox, TRUE)
+            ATTR_INT(L"multiSelection", m_bMultiSelection, TRUE)
             ATTR_SKIN(L"itemSkin", m_pItemSkin, TRUE)
             ATTR_SKIN(L"iconSkin", m_pIconSkin, TRUE)
+            ATTR_SKIN(L"checkSkin", m_pCheckSkin, TRUE)
             ATTR_COLOR(L"colorItemBkgnd", m_crItemBg, FALSE)
             ATTR_COLOR(L"colorItemBkgnd2", m_crItemBg2, FALSE)
             ATTR_COLOR(L"colorItemSelBkgnd", m_crItemSelBg, FALSE)
