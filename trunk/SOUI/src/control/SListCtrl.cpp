@@ -21,9 +21,12 @@ SListCtrl::SListCtrl()
     , m_crSelText(RGBA(255,255,0,255))
     , m_pItemSkin(NULL)
     , m_pIconSkin(NULL)
+    , m_pCheckSkin(GETBUILTINSKIN(SKIN_SYS_CHECKBOX))
     , m_ptIcon(-1,-1)
     , m_ptText(-1,-1)
     , m_bHotTrack(FALSE)
+    , m_bCheckBox(FALSE)
+    , m_bMultiSelection(FALSE)
 {
     m_bClipClient = TRUE;
     m_evtSet.addEvent(EventLCSelChanging::EventID);
@@ -503,6 +506,26 @@ void SListCtrl::OnPaint(IRenderTarget * pRT)
     AfterPaint(pRT, painter);
 }
 
+BOOL SListCtrl::HitCheckBox(const CPoint& pt)
+{
+    if (!m_bCheckBox)
+        return FALSE;
+
+    CRect rect = GetListRect();
+    rect.left += ITEM_MARGIN;
+    rect.OffsetRect(-m_ptOrigin.x,0);
+
+    CSize sizeSkin = m_pCheckSkin->GetSkinSize();
+    int nOffsetX = 3;
+    CRect rcCheck;
+    rcCheck.SetRect(0, 0, sizeSkin.cx, sizeSkin.cy);
+    rcCheck.OffsetRect(rect.left + nOffsetX, 0);
+
+    if (pt.x >= rcCheck.left && pt.x <= rcCheck.right)
+        return TRUE;
+    return FALSE;
+}
+
 void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
 {
     BOOL bTextColorChanged = FALSE;
@@ -514,7 +537,7 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
     CRect rcIcon, rcText;
 
 
-    if (((!m_bHotTrack || m_nHoverItem==-1) && nItem == m_nSelectItem) //没有hover或者非hottrack,高亮显示selitem
+    if ((/*(!m_bHotTrack || m_nHoverItem==-1) && */lvItem.checked) //没有hover或者非hottrack,高亮显示selitem
         ||(m_bHotTrack && nItem == m_nHoverItem))   //hottrack且有hover状态时高亮显示hover
     {
         if (m_pItemSkin != NULL)
@@ -566,6 +589,19 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
 
         if (rcVisiblePart.IsRectEmpty())
             continue;
+
+        if (nCol == 0 && m_bCheckBox && m_pCheckSkin)
+        {
+            CSize sizeSkin = m_pCheckSkin->GetSkinSize();
+            int nOffsetX = 3;
+            int nOffsetY = (m_nItemHeight - sizeSkin.cy) / 2;
+            CRect rcCheck;
+            rcCheck.SetRect(0, 0, sizeSkin.cx, sizeSkin.cy);
+            rcCheck.OffsetRect(rcCol.left + nOffsetX, rcCol.top + nOffsetY);
+            m_pCheckSkin->Draw(pRT, rcCheck, lvItem.checked ? 4 : 0);
+
+            rcCol.left = sizeSkin.cx + 6 + rcCol.left;
+        }
 
         DXLVSUBITEM& subItem = lvItem.arSubItems->GetAt(hdi.iOrder);
 
@@ -626,7 +662,7 @@ int SListCtrl::GetTopIndex() const
     return m_ptOrigin.y / m_nItemHeight;
 }
 
-void SListCtrl::NotifySelChange(int nOldSel, int nNewSel)
+void SListCtrl::NotifySelChange(int nOldSel, int nNewSel, BOOL checkBox)
 {
     EventLCSelChanging evt1(this);
     evt1.nOldSel=nOldSel;
@@ -635,12 +671,45 @@ void SListCtrl::NotifySelChange(int nOldSel, int nNewSel)
     FireEvent(evt1);
     if(evt1.bCancel) return;
 
-    m_nSelectItem = nNewSel;
-    if (nOldSel != -1)
-        RedrawItem(nOldSel);
-
-    if (m_nSelectItem != -1)
-        RedrawItem(m_nSelectItem);
+    if (checkBox) {
+            DXLVITEM &newItem = m_arrItems[nNewSel];
+            newItem.checked = newItem.checked? FALSE:TRUE;
+            m_nSelectItem = nNewSel;
+            RedrawItem(nNewSel);
+    } else  {
+        if ((m_bMultiSelection || m_bCheckBox) && GetKeyState(VK_CONTROL) < 0) {
+            if (nNewSel != -1) {
+                DXLVITEM &newItem = m_arrItems[nNewSel];
+                newItem.checked = newItem.checked? FALSE:TRUE;
+                m_nSelectItem = newItem.checked? nNewSel : -1;
+                RedrawItem(nNewSel);
+            }
+        } else {
+            m_nSelectItem = -1;
+            for (int i = 0; i < GetItemCount(); i++)
+            {
+                DXLVITEM &lvItem = m_arrItems[i];
+                if (i != nNewSel && lvItem.checked) 
+                {
+                    lvItem.checked = FALSE;
+                    RedrawItem(i);
+                }
+            }
+            if (nNewSel != -1) {
+                DXLVITEM &newItem = m_arrItems[nNewSel];
+                newItem.checked = TRUE;
+                m_nSelectItem = nNewSel;
+                RedrawItem(nNewSel);
+            }
+        }
+    }
+    
+//     m_nSelectItem = nNewSel;
+//     if (nOldSel != -1)
+//         RedrawItem(nOldSel);
+// 
+//     if (m_nSelectItem != -1)
+//         RedrawItem(m_nSelectItem);
 
     EventLCSelChanged evt2(this);
     evt2.nOldSel=nOldSel;
@@ -673,17 +742,22 @@ BOOL SListCtrl::OnScroll(BOOL bVertical, UINT uCode, int nPos)
 void SListCtrl::OnLButtonDown(UINT nFlags, CPoint pt)
 {
     m_nHoverItem = HitTest(pt);
+    BOOL hitCheckBox = HitCheckBox(pt);
 
-    if (m_nHoverItem!=m_nSelectItem && !m_bHotTrack)
+    if (hitCheckBox)
+        NotifySelChange(m_nSelectItem, m_nHoverItem, TRUE);
+    else if (m_nHoverItem!=m_nSelectItem && !m_bHotTrack)
+        NotifySelChange(m_nSelectItem, m_nHoverItem);
+    else if (m_nHoverItem != -1 || m_nSelectItem != -1)
         NotifySelChange(m_nSelectItem, m_nHoverItem);
 }
 
 void SListCtrl::OnLButtonUp(UINT nFlags, CPoint pt)
 {
-    m_nHoverItem = HitTest(pt);
-
-    if (m_bHotTrack || m_nHoverItem!=m_nSelectItem)
-        NotifySelChange(m_nSelectItem, m_nHoverItem);
+//     m_nHoverItem = HitTest(pt);
+// 
+//     if (m_bHotTrack || m_nHoverItem!=m_nSelectItem)
+//         NotifySelChange(m_nSelectItem, m_nHoverItem);
 }
 
 
@@ -738,4 +812,56 @@ void SListCtrl::OnMouseLeave()
         Invalidate();
     }
 }
+
+BOOL SListCtrl::GetCheckState(int nItem)
+{
+    if (nItem >= GetItemCount())
+        return FALSE;
+
+    const DXLVITEM lvItem = m_arrItems[nItem];
+    return lvItem.checked;
+}
+
+BOOL SListCtrl::SetCheckState(int nItem, BOOL bCheck)
+{
+    if (!m_bCheckBox) return FALSE;
+
+    if (nItem >= GetItemCount())
+        return FALSE;
+
+    DXLVITEM &lvItem = m_arrItems[nItem];
+    lvItem.checked = bCheck;
+
+    return TRUE;
+}
+
+int SListCtrl::GetCheckedItemCount()
+{
+    int ret = 0;
+
+    for (int i = 0; i < GetItemCount(); i++)
+    {
+        const DXLVITEM lvItem = m_arrItems[i];
+        if (lvItem.checked)
+            ret++;
+    }
+
+    return ret;
+}
+
+int SListCtrl::GetFirstCheckedItem()
+{
+    int ret = -1;
+    for (int i = 0; i < GetItemCount(); i++)
+    {
+        const DXLVITEM lvItem = m_arrItems[i];
+        if (lvItem.checked) {
+            ret = i;
+            break;
+        }
+    }
+
+    return ret;
+}
+
 }//end of namespace 
