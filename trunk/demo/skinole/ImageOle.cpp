@@ -344,6 +344,10 @@ BOOL CImageOle::GetOleRect( LPRECT lpRect )
 			else
 				hr = pTextRange->GetPoint(TA_BASELINE|TA_LEFT, &nLeft, &nBottom);
 
+            if(hr!=S_OK)
+            {
+                DWORD dwErr=GetLastError();
+            }
 			pTextDocument->Release();
 			pTextRange->Release();
 

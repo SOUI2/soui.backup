@@ -10,6 +10,7 @@ namespace SOUI
 
     SResProviderMgr::~SResProviderMgr(void)
     {
+        SAutoLock lock(m_cs);
         POSITION pos=m_lstResProvider.GetHeadPosition();
         while(pos)
         {
@@ -27,6 +28,7 @@ namespace SOUI
 
     IResProvider * SResProviderMgr::GetMatchResProvider( LPCTSTR pszType,LPCTSTR pszResName )
     {
+        SAutoLock lock(m_cs);
         POSITION pos=m_lstResProvider.GetHeadPosition();
         while(pos)
         {
@@ -38,12 +40,14 @@ namespace SOUI
    
     void SResProviderMgr::AddResProvider( IResProvider * pResProvider )
     {
+        SAutoLock lock(m_cs);
         m_lstResProvider.AddHead(pResProvider);
         pResProvider->AddRef();
     }
 
     void SResProviderMgr::RemoveResProvider( IResProvider * pResProvider )
     {
+        SAutoLock lock(m_cs);
         POSITION pos=m_lstResProvider.Find(pResProvider);
         if(pos)
         {
@@ -54,6 +58,7 @@ namespace SOUI
 
     LPCTSTR SResProviderMgr::SysCursorName2ID( LPCTSTR pszCursorName )
     {
+        SAutoLock lock(m_cs);
         if(!_tcsicmp(pszCursorName,_T("arrow")))
             return IDC_ARROW;
         if(!_tcsicmp(pszCursorName,_T("ibeam")))
@@ -87,6 +92,7 @@ namespace SOUI
 
     LPCTSTR SResProviderMgr::FindImageType( LPCTSTR pszImgName )
     {
+        SAutoLock lock(m_cs);
         POSITION pos=m_lstResProvider.GetHeadPosition();
         while(pos)
         {
@@ -99,6 +105,7 @@ namespace SOUI
 
     BOOL SResProviderMgr::GetRawBuffer( LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size )
     {
+        SAutoLock lock(m_cs);
         IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
         if(!pResProvider) return FALSE;
         return pResProvider->GetRawBuffer(strType,pszResName,pBuf,size);
@@ -106,6 +113,7 @@ namespace SOUI
 
     size_t SResProviderMgr::GetRawBufferSize( LPCTSTR strType,LPCTSTR pszResName )
     {
+        SAutoLock lock(m_cs);
         IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
         if(!pResProvider) return 0;
         return pResProvider->GetRawBufferSize(strType,pszResName);
@@ -113,6 +121,7 @@ namespace SOUI
 
     IImgX * SResProviderMgr::LoadImgX( LPCTSTR strType,LPCTSTR pszResName )
     {
+        SAutoLock lock(m_cs);
         if(!strType) strType = FindImageType(pszResName);
         if(!strType) return NULL;
         IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
@@ -122,6 +131,7 @@ namespace SOUI
 
     IBitmap * SResProviderMgr::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
     {
+        SAutoLock lock(m_cs);
         if(!strType) strType = FindImageType(pszResName);
         if(!strType) return NULL;
         IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
@@ -131,6 +141,7 @@ namespace SOUI
 
     HBITMAP SResProviderMgr::LoadBitmap( LPCTSTR pszResName )
     {
+        SAutoLock lock(m_cs);
         IResProvider *pResProvider=GetMatchResProvider(_T("BITMAP"),pszResName);
         if(!pResProvider) return NULL;
         return pResProvider->LoadBitmap(pszResName);
@@ -138,6 +149,7 @@ namespace SOUI
 
     HCURSOR SResProviderMgr::LoadCursor( LPCTSTR pszResName )
     {
+        SAutoLock lock(m_cs);
         if(IS_INTRESOURCE(pszResName))
             return ::LoadCursor(NULL, pszResName);
         else 
@@ -161,6 +173,7 @@ namespace SOUI
 
     HICON SResProviderMgr::LoadIcon( LPCTSTR pszResName,int cx/*=0*/,int cy/*=0*/ )
     {
+        SAutoLock lock(m_cs);
         IResProvider *pResProvider=GetMatchResProvider(_T("ICON"),pszResName);
         if(!pResProvider) return NULL;
         return pResProvider->LoadIcon(pszResName,cx,cy);
@@ -168,6 +181,7 @@ namespace SOUI
 
     BOOL SResProviderMgr::HasResource( LPCTSTR strType,LPCTSTR pszResName )
     {
+        SAutoLock lock(m_cs);
         IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
         if(!pResProvider) return FALSE;
         return TRUE;
