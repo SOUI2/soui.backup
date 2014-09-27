@@ -101,6 +101,7 @@ HEADERS += include/SApp.h \
            include/helper/STimerEx.h \
            include/helper/SToolTip.h \
            include/helper/SwndMsgCracker.h \
+           include/helper/SCriticalSection.h \
            include/interface/imgdecoder-i.h \
            include/interface/render-i.h \
            include/interface/SResProvider-i.h \

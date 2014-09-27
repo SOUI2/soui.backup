@@ -564,6 +564,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\helper\SCriticalSection.h"
+				>
+			</File>
+			<File
 				RelativePath="include\core\SDefine.h"
 				>
 			</File>

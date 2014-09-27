@@ -3,16 +3,18 @@
 
 #include "stdafx.h"
 #include <helper/MenuWndHook.h>
-
 #include <helper/mybuffer.h>
+#include "httpsvr/HTTPServer.h"
+#include "MemFlash.h"
+
 #if defined(_DEBUG) && !defined(_WIN64)
 // #include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
 #endif
 
 #include "MainDlg.h"
 
-#define RES_TYPE 0   //从文件中加载资源
-// #define RES_TYPE 1   //从PE资源中加载UI资源
+// #define RES_TYPE 0   //从文件中加载资源
+#define RES_TYPE 1   //从PE资源中加载UI资源
 // #define RES_TYPE 2   //从zip包中加载资源
 
 #include "../components/resprovider-zip/zipresprovider-param.h"
@@ -103,6 +105,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         //将创建的IResProvider交给SApplication对象
         theApp->AddResProvider(pResProvider);
 
+        //创建一个http服务器，用来从资源中加载flash
+        CMemFlash   memFlash;
+        CHTTPServer flashSvr(&memFlash);
+        flashSvr.Start(CMemFlash::HomeDir(),"",82,0);
+
         if(trans)
         {//加载语言翻译包
             theApp->SetTranslator(trans);
@@ -172,6 +179,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         //应用程序退出
         delete theApp; 
         
+        flashSvr.Shutdown();
+
         //卸载菜单边框绘制hook
         CMenuWndHook::UnInstallHook();
         

@@ -2,9 +2,10 @@
 
 #include "interface/sresprovider-i.h"
 #include "atl.mini/scomcli.h"
-
+#include "helper/SCriticalSection.h"
 namespace SOUI
 {
+
     class SOUI_EXP SResProviderMgr
     {
     public:
@@ -47,5 +48,7 @@ namespace SOUI
         
         typedef SMap<SStringT,HCURSOR> CURSORMAP;
         CURSORMAP  m_mapCachedCursor;
+
+        SCriticalSection    m_cs;
     };
 }

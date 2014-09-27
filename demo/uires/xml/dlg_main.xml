@@ -35,7 +35,7 @@
         <include src="layout:page_webkit"/>
       </page>
       <page title="flash" tip="windowless flash control">
-        <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://swf.sc.chinaz.com//Files//DownLoad//flash2//201401//flash2524.swf" delay="1"/>
+        <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://127.0.0.1:82/flash/apple.swf" delay="1"/>
       </page>
       <page title="gif">
         <gifplayer pos="10,10" skin="gif_horse" name="giftest" cursor="ANI_ARROW"/>

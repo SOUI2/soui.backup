@@ -39,13 +39,20 @@ HEADERS += MainDlg.h \
            ../controls.extend/SWkeWebkit.h \
            ../controls.extend/gif/SGifPlayer.h \
            ../controls.extend/gif/SSkinGif.h \
-           ../controls.extend/FileHelper.h
-
+           ../controls.extend/FileHelper.h \
+           httpsvr/filereader-i.h \
+           httpsvr/log.h \
+           httpsvr/genericserver.h \
+           httpsvr/httpserver.h
+	
 SOURCES += demo.cpp \
            MainDlg.cpp \
            skinole/ImageOle.cpp \
            ../controls.extend/SWkeWebkit.cpp \
            ../controls.extend/gif/SGifPlayer.cpp \
            ../controls.extend/gif/SSkinGif.cpp \
+           httpsvr/log.cpp \
+           httpsvr/genericserver.cpp \
+           httpsvr/httpserver.cpp
 
 RC_FILE += demo.rc
