@@ -290,10 +290,39 @@ namespace SOUI
      */
         BOOL            SortItems( PFNLVCOMPAREEX pfnCompare, void * pContext );
 
-        BOOL            GetCheckState(int nItem);   
+       /**
+        * SListCtrl::GetCheckState
+        * @brief    获取某一行是否被选中
+        * @param    int nItem -- 指定哪一行
+        * @return   返回选中状态
+        *
+        * Describe  获取某一行是否被选中
+        */
+        BOOL            GetCheckState(int nItem);  
+
+        /**
+         * SListCtrl::SetCheckState
+         * @brief   设置某一行的选中状态
+         * @param   int nItem -- 指定行
+         * @param   BOOL bCheck -- 状态
+         * @return  返回函数执行是否成功
+         *
+         * Describe 设置某一行的选中状态
+        */
         BOOL            SetCheckState(int nItem, BOOL bCheck);  
+
+        /**
+         * SListCtrl::GetCheckedItemCount
+         * @brief   获取选中行的计数
+         * @return  返回计数
+         *
+         * Describe 获取选中行的计数
+         */
         int             GetCheckedItemCount();
+		
+		
         int             GetFirstCheckedItem();
+        int             GetLastCheckedItem();
         VOID            EnableMultiSelection(BOOL enable) { m_bMultiSelection = enable; }
         VOID            EnableCheckBox(BOOL enable) { m_bCheckBox = enable; }
         VOID            EnableHotTrack(BOOL enable) { m_bHotTrack = enable; }
