@@ -537,7 +537,7 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
     CRect rcIcon, rcText;
 
 
-    if ((/*(!m_bHotTrack || m_nHoverItem==-1) && */lvItem.checked) //没有hover或者非hottrack,高亮显示selitem
+    if ( lvItem.checked //高亮显示checkeditem
         ||(m_bHotTrack && nItem == m_nHoverItem))   //hottrack且有hover状态时高亮显示hover
     {
         if (m_pItemSkin != NULL)
@@ -590,6 +590,7 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
         if (rcVisiblePart.IsRectEmpty())
             continue;
 
+        // 绘制 checkbox
         if (nCol == 0 && m_bCheckBox && m_pCheckSkin)
         {
             CSize sizeSkin = m_pCheckSkin->GetSkinSize();
@@ -681,8 +682,28 @@ void SListCtrl::NotifySelChange(int nOldSel, int nNewSel, BOOL checkBox)
             if (nNewSel != -1) {
                 DXLVITEM &newItem = m_arrItems[nNewSel];
                 newItem.checked = newItem.checked? FALSE:TRUE;
-                m_nSelectItem = newItem.checked? nNewSel : -1;
+                m_nSelectItem = nNewSel;
                 RedrawItem(nNewSel);
+            }
+        } else if ((m_bMultiSelection || m_bCheckBox) && GetKeyState(VK_SHIFT) < 0) {
+            if (nNewSel != -1) {
+                if (nOldSel == -1)
+                    nOldSel = 0;
+
+                int imax = (nOldSel > nNewSel) ? nOldSel : nNewSel;
+                int imin = (imax == nOldSel) ? nNewSel : nOldSel;
+                for (int i = 0; i < GetItemCount(); i++)
+                {
+                    DXLVITEM &lvItem = m_arrItems[i];
+                    BOOL last = lvItem.checked;
+                    if (i >= imin && i<= imax) {
+                        lvItem.checked = TRUE;
+                    } else {
+                        lvItem.checked = FALSE;
+                    }
+                    if (last != lvItem.checked)
+                        RedrawItem(i);
+                }
             }
         } else {
             m_nSelectItem = -1;
@@ -691,8 +712,10 @@ void SListCtrl::NotifySelChange(int nOldSel, int nNewSel, BOOL checkBox)
                 DXLVITEM &lvItem = m_arrItems[i];
                 if (i != nNewSel && lvItem.checked) 
                 {
+                    BOOL last = lvItem.checked;
                     lvItem.checked = FALSE;
-                    RedrawItem(i);
+                    if (last != lvItem.checked)
+                        RedrawItem(i);
                 }
             }
             if (nNewSel != -1) {
@@ -704,13 +727,6 @@ void SListCtrl::NotifySelChange(int nOldSel, int nNewSel, BOOL checkBox)
         }
     }
     
-//     m_nSelectItem = nNewSel;
-//     if (nOldSel != -1)
-//         RedrawItem(nOldSel);
-// 
-//     if (m_nSelectItem != -1)
-//         RedrawItem(m_nSelectItem);
-
     EventLCSelChanged evt2(this);
     evt2.nOldSel=nOldSel;
     evt2.nNewSel=nNewSel;
@@ -754,10 +770,6 @@ void SListCtrl::OnLButtonDown(UINT nFlags, CPoint pt)
 
 void SListCtrl::OnLButtonUp(UINT nFlags, CPoint pt)
 {
-//     m_nHoverItem = HitTest(pt);
-// 
-//     if (m_bHotTrack || m_nHoverItem!=m_nSelectItem)
-//         NotifySelChange(m_nSelectItem, m_nHoverItem);
 }
 
 
@@ -853,6 +865,21 @@ int SListCtrl::GetFirstCheckedItem()
 {
     int ret = -1;
     for (int i = 0; i < GetItemCount(); i++)
+    {
+        const DXLVITEM lvItem = m_arrItems[i];
+        if (lvItem.checked) {
+            ret = i;
+            break;
+        }
+    }
+
+    return ret;
+}
+
+int SListCtrl::GetLastCheckedItem()
+{
+    int ret = -1;
+    for (int i = GetItemCount() - 1; i >= 0; i--)
     {
         const DXLVITEM lvItem = m_arrItems[i];
         if (lvItem.checked) {
