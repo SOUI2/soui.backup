@@ -43,7 +43,8 @@ HEADERS += MainDlg.h \
            httpsvr/filereader-i.h \
            httpsvr/log.h \
            httpsvr/genericserver.h \
-           httpsvr/httpserver.h
+           httpsvr/httpserver.h \
+           memflash.h
 	
 SOURCES += demo.cpp \
            MainDlg.cpp \
@@ -53,6 +54,7 @@ SOURCES += demo.cpp \
            ../controls.extend/gif/SSkinGif.cpp \
            httpsvr/log.cpp \
            httpsvr/genericserver.cpp \
-           httpsvr/httpserver.cpp
+           httpsvr/httpserver.cpp \
+           memflash.cpp
 
 RC_FILE += demo.rc
