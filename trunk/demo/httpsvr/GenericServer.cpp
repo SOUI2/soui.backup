@@ -293,7 +293,7 @@ UINT __stdcall CGenericServer::AcceptThread(LPVOID pParam)
 	//
 	//	B I N D
 	//
-	result = bind(s, (struct sockaddr *)&saLocal, sizeof(saLocal));
+	result = ::bind(s, (struct sockaddr *)&saLocal, sizeof(saLocal));
 	if(result == SOCKET_ERROR)
 	{
 		pGenericServer->LogMessage(LOGFILENAME, _T("bind(...) failure"), _T("AcceptThread"), WSAGetLastError());
@@ -304,7 +304,7 @@ UINT __stdcall CGenericServer::AcceptThread(LPVOID pParam)
 	//
 	//	L I S T E N
 	//
-	result = listen(s, SOMAXCONN);
+	result = ::listen(s, SOMAXCONN);
 	if(result == SOCKET_ERROR)
 	{
 		pGenericServer->LogMessage(LOGFILENAME, _T("listen(...) failure"), _T("AcceptThread"), WSAGetLastError());
