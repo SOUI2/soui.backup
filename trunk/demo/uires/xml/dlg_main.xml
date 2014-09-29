@@ -31,7 +31,7 @@
           </header>
         </listctrl>
       </page>
-      <page title="webkit" tip="show webkit based on WKE">
+      <page title="教程" tip="show webkit based on WKE">
         <include src="layout:page_webkit"/>
       </page>
       <page title="flash" tip="windowless flash control">
