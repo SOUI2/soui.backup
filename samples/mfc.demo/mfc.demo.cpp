@@ -20,6 +20,14 @@ using namespace SOUI;
 #define COM_RENDER_GDI  _T("render-gdi.dll")
 #endif
 
+
+#ifdef _DEBUG
+#define SYS_NAMED_RESOURCE _T("soui-sys-resourced.dll")
+#else
+#define SYS_NAMED_RESOURCE _T("soui-sys-resource.dll")
+#endif
+
+
 // CmfcdemoApp 构造
 
 CmfcdemoApp::CmfcdemoApp()
@@ -65,6 +73,16 @@ BOOL CmfcdemoApp::InitInstance()
         pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
 
         SApplication *pSouiApp=new SApplication(pRenderFactory,theApp.m_hInstance);
+
+        //加载系统资源
+        HMODULE hSysResource=LoadLibrary(SYS_NAMED_RESOURCE);
+        if(hSysResource)
+        {
+            CAutoRefPtr<IResProvider> sysSesProvider;
+            CreateResProvider(RES_PE,(IObjRef**)&sysSesProvider);
+            sysSesProvider->Init((WPARAM)hSysResource,0);
+            pSouiApp->LoadSystemNamedResource(sysSesProvider);
+        }
 
         CAutoRefPtr<IResProvider>   pResProvider;
         CreateResProvider(RES_PE,(IObjRef**)&pResProvider);

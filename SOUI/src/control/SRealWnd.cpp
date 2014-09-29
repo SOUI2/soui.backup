@@ -56,7 +56,16 @@ LRESULT SRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
     if (lRet==0 && rcOldWnd != m_rcWindow)
     {
         IRealWndHandler *pRealWndHandler=GETREALWNDHANDLER;
-        if(pRealWndHandler) pRealWndHandler->OnRealWndSize(this);
+        HWND hRealWnd = GetRealHwnd(FALSE);
+        if(pRealWndHandler && ::IsWindow(hRealWnd))
+        {
+            if(!pRealWndHandler->OnRealWndSize(this))
+            {
+                CRect rcWnd;
+                GetClientRect(&rcWnd);
+                ::SetWindowPos(hRealWnd,0,rcWnd.left,rcWnd.top,rcWnd.Width(),rcWnd.Height(),SWP_NOZORDER);
+            }
+        }
     }
     return lRet;
 }
