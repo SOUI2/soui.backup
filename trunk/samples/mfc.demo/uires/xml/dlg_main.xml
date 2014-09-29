@@ -5,7 +5,7 @@
       <imgbtn id="1" name="btn_close" skin="skin.btnclose" pos="-45,0" tip="close" animate="0"/>
     </caption>
     <window pos="0,29,-0,-0">
-      <realwnd pos="10,10,-10,-10" name="mfcbtn" wndclass="button" wndname="MFC Button"/>
+      <realwnd pos="10,10,-10,-10" name="mfcbtn" id="100" wndclass="button" wndname="MFC Button"/>
     </window>
   </root>
 </SOUI>

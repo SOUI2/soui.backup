@@ -34,15 +34,6 @@ namespace SOUI
         virtual HWND OnRealWndCreate(SRealWnd *pRealWnd)=NULL;
 
         /**
-        * SRealWnd::OnRealWndInit
-        * @brief    初始化窗口
-        * @param    SRealWnd *pRealWnd -- 窗口指针
-        *
-        * Describe  初始化窗口
-        */
-        virtual BOOL OnRealWndInit(SRealWnd *pRealWnd)=NULL;
-
-        /**
         * SRealWnd::OnRealWndDestroy
         * @brief    销毁窗口
         * @param    SRealWnd *pRealWnd -- 窗口指针
@@ -52,13 +43,24 @@ namespace SOUI
         virtual void OnRealWndDestroy(SRealWnd *pRealWnd)=NULL;
 
         /**
+        * SRealWnd::OnRealWndInit
+        * @brief    初始化窗口
+        * @param    SRealWnd *pRealWnd -- 窗口指针
+        * @return   BOOL -- FALSE:交由系统处理，TRUE:用户处理
+        *
+        * Describe  初始化窗口
+        */
+        virtual BOOL OnRealWndInit(SRealWnd *pRealWnd)=NULL;
+
+        /**
         * SRealWnd::OnRealWndSize
         * @brief    调整窗口大小
         * @param    SRealWnd *pRealWnd -- 窗口指针
+        * @return   BOOL -- FALSE：交由SOUI处理; TRUE:用户管理窗口的移动
         *
         * Describe  调整窗口大小
         */
-        virtual void OnRealWndSize(SRealWnd *pRealWnd)=NULL;
+        virtual BOOL OnRealWndSize(SRealWnd *pRealWnd)=NULL;
     };
 
 }//namespace SOUI

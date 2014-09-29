@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "mfc.demo.h"
 #include "mfc.demoDlg.h"
+#include "realwnddlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -89,7 +90,7 @@ HCURSOR CmfcdemoDlg::OnQueryDragIcon()
 
 void CmfcdemoDlg::OnOpenSouiDlg()
 {
-    SOUI::SHostDialog dlg(_T("xml:maindlg"));
+    CRealWndDlg dlg;
     dlg.DoModal(m_hWnd);
 }
 

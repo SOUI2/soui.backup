@@ -204,6 +204,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RealWndDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SouiRealWndHandler.cpp"
 				>
 			</File>
@@ -239,6 +243,10 @@
 			</File>
 			<File
 				RelativePath=".\mfc.demoDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RealWndDlg.h"
 				>
 			</File>
 			<File
