@@ -22,4 +22,5 @@ SUBDIRS += demo
 !LIB_SOUI_COM{
 	SUBDIRS += qqlogin
 	SUBDIRS += 360
+	SUBDIRS += souispy
 }

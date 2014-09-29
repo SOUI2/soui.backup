@@ -75,7 +75,7 @@ public:
     /**
      * STreeBox::InsertItem
      * @brief    插入新项    
-     * @param    pugi::xml_node xmlNode -- xml文件
+     * @param    pugi::xml_node xmlNode -- xml数据结点
      * @param    DWORD dwData -- 附加数据
      * @param    HSTREEITEM hParent -- 父节点
      * @param    HSTREEITEM hInsertAfter -- 某点之后插入
@@ -89,7 +89,7 @@ public:
     /**
      * STreeBox::InsertItem
      * @brief    插入新项    
-     * @param    LPCWSTR pszXml -- xml文件名
+     * @param    LPCWSTR pszXml -- xml字符串(utf16)
      * @param    DWORD dwData -- 附加数据
      * @param    HSTREEITEM hParent -- 父节点
      * @param    HSTREEITEM hInsertAfter -- 某点之后插入
