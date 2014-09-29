@@ -1238,7 +1238,7 @@ BOOL SWindow::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 CRect SWindow::GetChildrenLayoutRect()
 {
     CRect rcRet;
-    GetClientRect(rcRet);//通常是非客户区，但是tab这样的控件不一样。
+    GetClientRect(rcRet);//通常是客户区，但是tab这样的控件不一样。
     return rcRet;
 }
 
