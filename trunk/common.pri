@@ -38,6 +38,9 @@ else{
 
 QMAKE_CXXFLAGS += -Fd$(IntDir)
 
+#打开wchar_t为内置类型
+QMAKE_CXXFLAGS += /Zc:wchar_t
+
 
 QMAKE_CXXFLAGS_RELEASE += /O1
 QMAKE_CXXFLAGS_RELEASE += /Zi
