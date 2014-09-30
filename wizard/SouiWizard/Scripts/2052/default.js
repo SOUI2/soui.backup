@@ -126,7 +126,7 @@ function AddConfig(proj, strProjectName)
 		//添加编译器设置
 		CLTool.UsePrecompiledHeader = 2;    // 2-使用预编译头,1-创建,0-不使用
 		CLTool.SuppressStartupBanner = true;
-		CLTool.TreatWChar_tAsBuiltInType=false;
+		CLTool.TreatWChar_tAsBuiltInType=true;
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
 		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
 		CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;_DEBUG';
@@ -154,7 +154,7 @@ function AddConfig(proj, strProjectName)
 		//添加编译器设置
 		CLTool.UsePrecompiledHeader = 2;    // 2-使用预编译头,1-创建,0-不使用
 		CLTool.SuppressStartupBanner = true;
-		CLTool.TreatWChar_tAsBuiltInType=false;
+		CLTool.TreatWChar_tAsBuiltInType=true;
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
 		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
 		CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;NDEBUG';

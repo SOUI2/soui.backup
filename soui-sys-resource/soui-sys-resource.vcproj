@@ -34,7 +34,7 @@
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
 				SuppressStartupBanner="true"
-				TreatWChar_tAsBuiltInType="false"
+				TreatWChar_tAsBuiltInType="true"
 				WarningLevel="3" />
 			<Tool
 				Name="VCCustomBuildTool" />
@@ -91,7 +91,7 @@
 				RuntimeLibrary="0"
 				RuntimeTypeInfo="false"
 				SuppressStartupBanner="true"
-				TreatWChar_tAsBuiltInType="false"
+				TreatWChar_tAsBuiltInType="true"
 				WarningLevel="3" />
 			<Tool
 				Name="VCCustomBuildTool" />

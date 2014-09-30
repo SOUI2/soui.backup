@@ -37,7 +37,7 @@
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
 				SuppressStartupBanner="true"
-				TreatWChar_tAsBuiltInType="false"
+				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3" />
 			<Tool
@@ -98,7 +98,7 @@
 				RuntimeLibrary="0"
 				RuntimeTypeInfo="false"
 				SuppressStartupBanner="true"
-				TreatWChar_tAsBuiltInType="false"
+				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3" />
 			<Tool
