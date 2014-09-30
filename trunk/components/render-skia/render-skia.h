@@ -176,7 +176,6 @@ namespace SOUI
 
 	//////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
-    class SImgX_WIC;
 	class SBitmap_Skia : public TSkiaRenderObjImpl<IBitmap>
 	{
 	public:

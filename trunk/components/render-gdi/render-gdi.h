@@ -167,7 +167,6 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     // SBitmap_GDI
-    class SImgX_WIC;
     class SBitmap_GDI : public TGdiRenderObjImpl<IBitmap>
     {
     public:
