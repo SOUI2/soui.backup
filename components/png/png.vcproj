@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="lua-51"
-	ProjectGUID="{CEFE47A7-0DBE-3F2A-8D53-1932380C8E96}"
+	Name="png"
+	ProjectGUID="{E5629B7B-4877-3E0E-BCC1-6B2364A11210}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -12,22 +12,22 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\..\bin\"
+			OutputDirectory="..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="4"
-			IntermediateDirectory="..\..\..\obj\debug\lua-51\"
+			IntermediateDirectory="..\..\obj\debug\png\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,..\..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\zlib&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\..\..\obj\debug\lua-51\"
+				AssemblerListingLocation="..\..\obj\debug\png\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="0"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\..\obj\debug\lua-51\"
+				ObjectFile="..\..\obj\debug\png\"
 				Optimization ="4"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS"
 				ProgramDataBaseFileName="$(IntDir)"
@@ -40,7 +40,7 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\lua-51d.lib"
+				OutputFile="$(OutDir)\pngd.lib"
 				SuppressStartupBanner="true" />
 			<Tool
 				Name="VCManifestTool" />
@@ -62,22 +62,22 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\..\bin\"
+			OutputDirectory="..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="4"
-			IntermediateDirectory="..\..\..\obj\release\lua-51\"
+			IntermediateDirectory="..\..\obj\release\png\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,..\..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\zlib&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\..\..\obj\release\lua-51\"
+				AssemblerListingLocation="..\..\obj\release\png\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="0"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\..\obj\release\lua-51\"
+				ObjectFile="..\..\obj\release\png\"
 				Optimization ="1"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS,NDEBUG"
 				ProgramDataBaseFileName="$(IntDir)"
@@ -90,7 +90,7 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\lua-51.lib"
+				OutputFile="$(OutDir)\png.lib"
 				SuppressStartupBanner="true" />
 			<Tool
 				Name="VCManifestTool" />
@@ -117,122 +117,54 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="lapi.c" />
+				RelativePath="png.c" />
 			<File
-				RelativePath="lauxlib.c" />
+				RelativePath="pngerror.c" />
 			<File
-				RelativePath="lbaselib.c" />
+				RelativePath="pngget.c" />
 			<File
-				RelativePath="lcode.c" />
+				RelativePath="pngmem.c" />
 			<File
-				RelativePath="ldblib.c" />
+				RelativePath="pngpread.c" />
 			<File
-				RelativePath="ldebug.c" />
+				RelativePath="pngread.c" />
 			<File
-				RelativePath="ldo.c" />
+				RelativePath="pngrio.c" />
 			<File
-				RelativePath="ldump.c" />
+				RelativePath="pngrtran.c" />
 			<File
-				RelativePath="lfunc.c" />
+				RelativePath="pngrutil.c" />
 			<File
-				RelativePath="lgc.c" />
+				RelativePath="pngset.c" />
 			<File
-				RelativePath="linit.c" />
+				RelativePath="pngtrans.c" />
 			<File
-				RelativePath="liolib.c" />
+				RelativePath="pngwio.c" />
 			<File
-				RelativePath="llex.c" />
+				RelativePath="pngwrite.c" />
 			<File
-				RelativePath="lmathlib.c" />
+				RelativePath="pngwtran.c" />
 			<File
-				RelativePath="lmem.c" />
-			<File
-				RelativePath="loadlib.c" />
-			<File
-				RelativePath="lobject.c" />
-			<File
-				RelativePath="lopcodes.c" />
-			<File
-				RelativePath="loslib.c" />
-			<File
-				RelativePath="lparser.c" />
-			<File
-				RelativePath="lstate.c" />
-			<File
-				RelativePath="lstring.c" />
-			<File
-				RelativePath="lstrlib.c" />
-			<File
-				RelativePath="ltable.c" />
-			<File
-				RelativePath="ltablib.c" />
-			<File
-				RelativePath="ltm.c" />
-			<File
-				RelativePath="lua.c" />
-			<File
-				RelativePath="luac.c" />
-			<File
-				RelativePath="lundump.c" />
-			<File
-				RelativePath="lvm.c" />
-			<File
-				RelativePath="lzio.c" />
-			<File
-				RelativePath="print.c" />
-			<File
-				RelativePath="version.c" />
+				RelativePath="pngwutil.c" />
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="lapi.h" />
+				RelativePath="png.h" />
 			<File
-				RelativePath="lauxlib.h" />
+				RelativePath="pngconf.h" />
 			<File
-				RelativePath="lcode.h" />
+				RelativePath="pngdebug.h" />
 			<File
-				RelativePath="ldebug.h" />
+				RelativePath="pnginfo.h" />
 			<File
-				RelativePath="ldo.h" />
+				RelativePath="pnglibconf.h" />
 			<File
-				RelativePath="lfunc.h" />
+				RelativePath="pngpriv.h" />
 			<File
-				RelativePath="lgc.h" />
-			<File
-				RelativePath="llex.h" />
-			<File
-				RelativePath="llimits.h" />
-			<File
-				RelativePath="lmem.h" />
-			<File
-				RelativePath="lobject.h" />
-			<File
-				RelativePath="lopcodes.h" />
-			<File
-				RelativePath="lparser.h" />
-			<File
-				RelativePath="lstate.h" />
-			<File
-				RelativePath="lstring.h" />
-			<File
-				RelativePath="ltable.h" />
-			<File
-				RelativePath="ltm.h" />
-			<File
-				RelativePath="lua.h" />
-			<File
-				RelativePath="luaconf.h" />
-			<File
-				RelativePath="lualib.h" />
-			<File
-				RelativePath="lundump.h" />
-			<File
-				RelativePath="lvm.h" />
-			<File
-				RelativePath="lzio.h" />
+				RelativePath="pngstruct.h" />
 		</Filter>
 	</Files>
 	<Globals>

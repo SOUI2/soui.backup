@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="imgdecoder-wic"
-	ProjectGUID="{C5B4C352-744B-326E-84E7-9E6EFFBD1DCA}"
+	ProjectGUID="{2E1FF2E0-D5DB-3ECE-9E48-62F994165AAC}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

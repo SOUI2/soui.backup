@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="zlib"
-	ProjectGUID="{77273406-8E6A-354A-887D-D4193C40CEE0}"
+	Name="imgdecoder-png"
+	ProjectGUID="{BA03FC05-2312-3601-A4B9-A90FF59A0785}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -15,21 +15,21 @@
 			OutputDirectory="..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			ConfigurationType="4"
-			IntermediateDirectory="..\..\obj\debug\zlib\"
+			ConfigurationType="2"
+			IntermediateDirectory="..\..\obj\debug\imgdecoder-png\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\png&quot;,&quot;..\zlib&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\..\obj\debug\zlib\"
+				AssemblerListingLocation="..\..\obj\debug\imgdecoder-png\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="0"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\obj\debug\zlib\"
+				ObjectFile="..\..\obj\debug\imgdecoder-png\"
 				Optimization ="4"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DLL_SOUI_COM,_CRT_SECURE_NO_WARNINGS"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
@@ -39,9 +39,17 @@
 			<Tool
 				Name="VCCustomBuildTool" />
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\zlibd.lib"
-				SuppressStartupBanner="true" />
+				Name="VCLinkerTool"
+				AdditionalDependencies="zlibd.lib pngd.lib"
+				AdditionalLibraryDirectories="..\..\bin"
+				GenerateDebugInformation="true"
+				IgnoreImportLibrary="true"
+				LinkTimeCodeGeneration="0"
+				OutputFile="$(OutDir)\imgdecoder-pngd.dll"
+				ProgramDatabaseFile=""
+				SubSystem="0"
+				SuppressStartupBanner="true"
+				TargetMachine="1" />
 			<Tool
 				Name="VCManifestTool" />
 			<Tool
@@ -57,29 +65,28 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS,_DEBUG"
-				ResourceOutputFileName="$(OutDir)\$(InputName).res" />
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DLL_SOUI_COM,_CRT_SECURE_NO_WARNINGS,_DEBUG" />
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			ConfigurationType="4"
-			IntermediateDirectory="..\..\obj\release\zlib\"
+			ConfigurationType="2"
+			IntermediateDirectory="..\..\obj\release\imgdecoder-png\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\png&quot;,&quot;..\zlib&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\..\obj\release\zlib\"
+				AssemblerListingLocation="..\..\obj\release\imgdecoder-png\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="0"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\obj\release\zlib\"
+				ObjectFile="..\..\obj\release\imgdecoder-png\"
 				Optimization ="1"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS,NDEBUG"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DLL_SOUI_COM,_CRT_SECURE_NO_WARNINGS,NDEBUG"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="0"
 				RuntimeTypeInfo="false"
@@ -89,9 +96,20 @@
 			<Tool
 				Name="VCCustomBuildTool" />
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\zlib.lib"
-				SuppressStartupBanner="true" />
+				Name="VCLinkerTool"
+				AdditionalDependencies="zlib.lib png.lib"
+				AdditionalLibraryDirectories="..\..\bin"
+				EnableCOMDATFolding="2"
+				GenerateDebugInformation="true"
+				IgnoreImportLibrary="true"
+				LinkIncremental="1"
+				LinkTimeCodeGeneration="0"
+				OptimizeReferences="2"
+				OutputFile="$(OutDir)\imgdecoder-png.dll"
+				ProgramDatabaseFile=""
+				SubSystem="0"
+				SuppressStartupBanner="true"
+				TargetMachine="1" />
 			<Tool
 				Name="VCManifestTool" />
 			<Tool
@@ -107,8 +125,7 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS"
-				ResourceOutputFileName="$(OutDir)\$(InputName).res" />
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DLL_SOUI_COM,_CRT_SECURE_NO_WARNINGS" />
 		</Configuration>
 	</Configurations>
 	<Files>
@@ -117,57 +134,21 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="adler32.c" />
+				RelativePath="decoder-apng.cpp" />
 			<File
-				RelativePath="compress.c" />
-			<File
-				RelativePath="crc32.c" />
-			<File
-				RelativePath="deflate.c" />
-			<File
-				RelativePath="gzio.c" />
-			<File
-				RelativePath="infback.c" />
-			<File
-				RelativePath="inffast.c" />
-			<File
-				RelativePath="inflate.c" />
-			<File
-				RelativePath="inftrees.c" />
-			<File
-				RelativePath="trees.c" />
-			<File
-				RelativePath="uncompr.c" />
-			<File
-				RelativePath="zutil.c" />
+				RelativePath="imgdecoder-png.cpp" />
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="crc32.h" />
+				RelativePath="decoder-apng.h" />
 			<File
-				RelativePath="deflate.h" />
-			<File
-				RelativePath="inffast.h" />
-			<File
-				RelativePath="inffixed.h" />
-			<File
-				RelativePath="inflate.h" />
-			<File
-				RelativePath="inftrees.h" />
-			<File
-				RelativePath="trees.h" />
-			<File
-				RelativePath="zconf.h" />
-			<File
-				RelativePath="zconf.in.h" />
-			<File
-				RelativePath="zlib.h" />
-			<File
-				RelativePath="zutil.h" />
+				RelativePath="imgdecoder-png.h" />
 		</Filter>
+		<File
+			RelativePath="imgdecoder-png.rc" />
 	</Files>
 	<Globals>
 	</Globals>

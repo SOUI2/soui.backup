@@ -357,7 +357,7 @@ BOOL STextHost::TxShowScrollBar( INT fnBar, BOOL fShow )
         wBar=SSB_HORZ;
         break;
     }
-    m_pRichEdit->SetTimer(TIMER_INVALIDATE,40);//todo:
+//     m_pRichEdit->SetTimer(TIMER_INVALIDATE,40);//todo:
     return m_pRichEdit->ShowScrollBar(wBar,fShow);
 }
 
