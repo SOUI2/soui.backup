@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="360"
-	ProjectGUID="{73C5F9C9-1F07-397E-B929-898B92AAC27B}"
+	ProjectGUID="{5359B2B8-EB9D-3090-B50A-4B86EE0470D6}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
