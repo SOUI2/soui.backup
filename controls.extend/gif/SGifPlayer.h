@@ -1,6 +1,8 @@
 #pragma once
 #include <core/swnd.h>
-#include "SSkinGif.h"
+
+#include "sskingif.h"
+#include "SSkinAPNG.h"
 
 namespace SOUI
 {
@@ -27,16 +29,27 @@ namespace SOUI
          */    
         BOOL PlayGifFile(LPCTSTR pszFileName);
 
+        /**
+        * PlayAPNGFile
+        * @brief    在控件中播放一个APNG图片文件
+        * @param    LPCTSTR pszFileName --  文件名
+        * @return   BOOL -- true:成功
+        * Describe  
+        */    
+        BOOL PlayAPNGFile(LPCTSTR pszFileName);
+
     protected://SWindow的虚函数
         virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
     public://属性处理
         SOUI_ATTRS_BEGIN()		
-            ATTR_CUSTOM(L"skin", OnAttrGif) //为控件提供一个skin属性，用来接收SSkinObj对象的name
+            ATTR_CUSTOM(L"skin", OnAttrSkin) //为控件提供一个skin属性，用来接收SSkinObj对象的name
         SOUI_ATTRS_END()
     protected:
-        HRESULT OnAttrGif(const SStringW & strValue, BOOL bLoading);
-
+        HRESULT OnAttrSkin(const SStringW & strValue, BOOL bLoading);
+        
+    protected:
+        BOOL _PlayFile(LPCTSTR pszFileName, BOOL bGif);
     protected://消息处理，SOUI控件的消息处理和WTL，MFC很相似，采用相似的映射表，相同或者相似的消息映射宏
         
         /**
@@ -77,7 +90,7 @@ namespace SOUI
         SOUI_MSG_MAP_END()	
 
     private:
-        SSkinGif *m_pgif;
+        SSkinAni *m_aniSkin;
         int	m_iCurFrame;
     };
 

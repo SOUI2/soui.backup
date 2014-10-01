@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "SGifPlayer.h"
+#include "sskingif.h"
+#include "SSkinAPNG.h"
 
 namespace SOUI
 {
 
-SGifPlayer::SGifPlayer() :m_pgif(NULL), m_iCurFrame(0)
+SGifPlayer::SGifPlayer() :m_aniSkin(NULL), m_iCurFrame(0)
 {
 
 }
@@ -18,26 +20,26 @@ void SGifPlayer::OnTimer(char cTimerID)
     UNREFERENCED_PARAMETER(cTimerID);
 	KillTimer(1);	
 
-	if(m_pgif)
+	if(m_aniSkin)
 	{
-		int nStates=m_pgif->GetStates();
+		int nStates=m_aniSkin->GetStates();
 		m_iCurFrame++;
 		m_iCurFrame%=nStates;
 		Invalidate();
         
-        if(m_pgif->GetFrameDelay()==0)
+        if(m_aniSkin->GetFrameDelay()==0)
             SetTimer(1,90);
         else
-            SetTimer(1, m_pgif->GetFrameDelay()*10);	
+            SetTimer(1, m_aniSkin->GetFrameDelay()*10);	
 	}
 }
 
 void SGifPlayer::OnPaint( IRenderTarget *pRT )
 {	
 	__super::OnPaint(pRT);
-	if(m_pgif)
+	if(m_aniSkin)
 	{		
-		m_pgif->Draw(pRT, m_rcWindow,m_iCurFrame,m_byAlpha);
+		m_aniSkin->Draw(pRT, m_rcWindow,m_iCurFrame,m_byAlpha);
 	}
 }
 
@@ -47,43 +49,53 @@ void SGifPlayer::OnShowWindow( BOOL bShow, UINT nStatus )
 	if(!bShow)
 	{
 		KillTimer(1);
-	}else if(m_pgif)
+	}else if(m_aniSkin)
 	{
-        if(m_pgif->GetFrameDelay()==0)
+        if(m_aniSkin->GetFrameDelay()==0)
             SetTimer(1,90);
         else
-		    SetTimer(1, m_pgif->GetFrameDelay()*10);					
+		    SetTimer(1, m_aniSkin->GetFrameDelay()*10);					
 	}
 }
 
-HRESULT SGifPlayer::OnAttrGif( const SStringW & strValue, BOOL bLoading )
+HRESULT SGifPlayer::OnAttrSkin( const SStringW & strValue, BOOL bLoading )
 {
 	ISkinObj *pSkin = SSkinPoolMgr::getSingleton().GetSkin(strValue);
 	if(!pSkin) return E_FAIL;
-	if(!pSkin->IsClass(SSkinGif::GetClassName())) return S_FALSE;
-	m_pgif=static_cast<SSkinGif*>(pSkin);
+	if(!pSkin->IsClass(SSkinAni::GetClassName())) return S_FALSE;
+	m_aniSkin=static_cast<SSkinAni*>(pSkin);
 	return bLoading?S_OK:S_FALSE;
 }
 
 CSize SGifPlayer::GetDesiredSize( LPRECT /*pRcContainer*/ )
 {
 	CSize sz;
-	if(m_pgif) sz=m_pgif->GetSkinSize();
+	if(m_aniSkin) sz=m_aniSkin->GetSkinSize();
 	return sz;
 }
 
 BOOL SGifPlayer::PlayGifFile( LPCTSTR pszFileName )
+{
+    return _PlayFile(pszFileName,TRUE);
+}
+
+BOOL SGifPlayer::PlayAPNGFile( LPCTSTR pszFileName )
+{
+    return _PlayFile(pszFileName,FALSE);
+}
+
+BOOL SGifPlayer::_PlayFile( LPCTSTR pszFileName, BOOL bGif )
 {
     SStringW key=S_CT2W(pszFileName);
     SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
     ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(key);
     if(pSkin)
     {
-        if(!pSkin->IsClass(SSkinGif::GetClassName())) return FALSE;
-        m_pgif=static_cast<SSkinGif*>(pSkin);
+        if(!pSkin->IsClass(SSkinAni::GetClassName())) return FALSE;
+        m_aniSkin=static_cast<SSkinAni*>(pSkin);
     }else
     {
-        SSkinGif *pGifSkin = (SSkinGif*)SApplication::getSingleton().CreateSkinByName(SSkinGif::GetClassName());
+        SSkinAni *pGifSkin = (SSkinAni*)SApplication::getSingleton().CreateSkinByName(bGif?SSkinGif::GetClassName():SSkinAPNG::GetClassName());
         if(!pGifSkin) return FALSE;
         if(0==pGifSkin->LoadFromFile(pszFileName))
         {
@@ -92,7 +104,7 @@ BOOL SGifPlayer::PlayGifFile( LPCTSTR pszFileName )
         }
 
         pBuiltinSkinPool->AddKeyObject(key,pGifSkin);//将创建的skin交给skinpool管理
-        m_pgif = pGifSkin;
+        m_aniSkin = pGifSkin;
     }
     if(m_layout.IsFitContent())
     {
