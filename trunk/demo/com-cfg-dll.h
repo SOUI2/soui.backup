@@ -3,7 +3,7 @@
 #include <com-loader.hpp>
 
 #ifdef _DEBUG
-#define COM_IMGDECODER  _T("imgdecoder-pngd.dll")
+#define COM_IMGDECODER  _T("imgdecoder-wicd.dll")
 #define COM_RENDER_GDI  _T("render-gdid.dll")
 #define COM_RENDER_SKIA _T("render-skiad.dll")
 #define COM_SCRIPT_LUA _T("scriptmodule-luad.dll")
