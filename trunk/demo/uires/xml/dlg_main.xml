@@ -3,6 +3,7 @@
     <!--局部skin对象-->
     <gif name="gif_horse" src="gif:gif_horse"/>
     <gif name="gif_penguin" src="gif:gif_penguin"/>
+    <apng name="apng_haha" src="apng:apng_haha"/>
   </skin>
   <style>
     <!--局部style对象-->
@@ -37,11 +38,13 @@
       <page title="flash" tip="windowless flash control">
         <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://127.0.0.1:82/flash/apple.swf" delay="1"/>
       </page>
-      <page title="gif">
+      <page title="animate" tip="play gif and apng">
         <gifplayer pos="10,10" skin="gif_horse" name="giftest" cursor="ANI_ARROW"/>
         <button width="250" height="30" name="btnSelectGif">load gif file</button>
         <gifplayer pos="10,150" skin="gif_penguin"/>
-        <icon pos="10,300" src="LOGO:64"/>
+        <icon pos="[10,{0" src="LOGO:64"/>
+        <gifplayer pos="[10,{0" skin="apng_haha" />
+        <text pos="{0,[10" colorText="#ff0000">Pay attention! apng would be played only if imgdecoder-png is used here!</text>
       </page>
       <page title="layout" tip="show layout capability in soui">
         <include src="layout:page_layout"/>

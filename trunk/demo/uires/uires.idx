@@ -42,6 +42,9 @@
     <file name="gif_horse"	path="image\horse.gif"/>
     <file name="gif_penguin"	path="image\penguin.gif"/>
   </GIF>
+  <apng>
+    <file name="apng_haha"	path="image\apng_haha.png"/>
+  </apng>
   <rtf>
     <file name="rtf_test"	path="rtf\RTF测试.rtf"/>
   </rtf>
