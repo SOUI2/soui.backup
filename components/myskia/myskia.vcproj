@@ -511,10 +511,6 @@
 			<File
 				RelativePath="src\core\SkFontHost.cpp" />
 			<File
-				RelativePath="src\ports\SkFontHost_FreeType.cpp" />
-			<File
-				RelativePath="src\ports\SkFontHost_FreeType_common.cpp" />
-			<File
 				RelativePath="src\ports\SkFontHost_win.cpp" />
 			<File
 				RelativePath="src\ports\SkFontMgr_default_gdi.cpp" />
@@ -555,41 +551,13 @@
 			<File
 				RelativePath="src\image\SkImage.cpp" />
 			<File
-				RelativePath="src\images\SkImageDecoder.cpp" />
-			<File
-				RelativePath="src\images\SkImageDecoder_FactoryDefault.cpp" />
-			<File
-				RelativePath="src\images\SkImageDecoder_FactoryRegistrar.cpp" />
-			<File
-				RelativePath="src\images\SkImageDecoder_libbmp.cpp" />
-			<File
-				RelativePath="src\images\SkImageDecoder_libico.cpp" />
-			<File
-				RelativePath="src\images\SkImageEncoder.cpp" />
-			<File
-				RelativePath="src\images\SkImageEncoder_Factory.cpp" />
-			<File
-				RelativePath="src\images\SkImageEncoder_argb.cpp" />
-			<File
 				RelativePath="src\core\SkImageFilter.cpp" />
 			<File
 				RelativePath="src\core\SkImageInfo.cpp" />
 			<File
 				RelativePath="src\image\SkImagePriv.cpp" />
 			<File
-				RelativePath="src\images\SkImageRef.cpp" />
-			<File
-				RelativePath="src\images\SkImageRefPool.cpp" />
-			<File
-				RelativePath="src\images\SkImageRef_GlobalPool.cpp" />
-			<File
-				RelativePath="src\image\SkImage_Codec.cpp" />
-			<File
-				RelativePath="src\image\SkImage_Gpu.cpp" />
-			<File
 				RelativePath="src\image\SkImage_Raster.cpp" />
-			<File
-				RelativePath="src\images\SkImages.cpp" />
 			<File
 				RelativePath="src\core\SkInstCnt.cpp" />
 			<File
@@ -686,8 +654,6 @@
 				RelativePath="src\utils\SkPDFRasterizer.cpp" />
 			<File
 				RelativePath="src\core\SkPackBits.cpp" />
-			<File
-				RelativePath="src\images\SkPageFlipper.cpp" />
 			<File
 				RelativePath="src\core\SkPaint.cpp" />
 			<File
@@ -815,8 +781,6 @@
 			<File
 				RelativePath="src\core\SkScalar.cpp" />
 			<File
-				RelativePath="src\images\SkScaledBitmapSampler.cpp" />
-			<File
 				RelativePath="src\core\SkScaledImageCache.cpp" />
 			<File
 				RelativePath="src\core\SkScalerContext.cpp" />
@@ -840,8 +804,6 @@
 				RelativePath="src\effects\SkStippleMaskFilter.cpp" />
 			<File
 				RelativePath="src\core\SkStream.cpp" />
-			<File
-				RelativePath="src\images\SkStreamHelpers.cpp" />
 			<File
 				RelativePath="src\core\SkString.cpp" />
 			<File
@@ -914,8 +876,6 @@
 				RelativePath="src\effects\SkXfermodeImageFilter.cpp" />
 			<File
 				RelativePath="src\opts\SkXfermode_opts_SSE2.cpp" />
-			<File
-				RelativePath="src\images\bmpdecoderhelper.cpp" />
 			<File
 				RelativePath="src\core\ext.cpp" />
 			<File
@@ -1454,8 +1414,6 @@
 			<File
 				RelativePath="include\core\SkFontHost.h" />
 			<File
-				RelativePath="src\ports\SkFontHost_FreeType_common.h" />
-			<File
 				RelativePath="include\core\SkFontLCDConfig.h" />
 			<File
 				RelativePath="include\ports\SkFontMgr.h" />
@@ -1521,8 +1479,6 @@
 				RelativePath="src\image\SkImagePriv.h" />
 			<File
 				RelativePath="include\images\SkImageRef.h" />
-			<File
-				RelativePath="src\images\SkImageRefPool.h" />
 			<File
 				RelativePath="include\images\SkImageRef_GlobalPool.h" />
 			<File
@@ -1842,8 +1798,6 @@
 			<File
 				RelativePath="include\core\SkScalar.h" />
 			<File
-				RelativePath="src\images\SkScaledBitmapSampler.h" />
-			<File
 				RelativePath="src\core\SkScaledImageCache.h" />
 			<File
 				RelativePath="include\core\SkScalerContext-bak.h" />
@@ -1869,8 +1823,6 @@
 				RelativePath="include\effects\SkStippleMaskFilter.h" />
 			<File
 				RelativePath="include\core\SkStream.h" />
-			<File
-				RelativePath="src\images\SkStreamHelpers.h" />
 			<File
 				RelativePath="include\core\SkString.h" />
 			<File
@@ -2003,10 +1955,6 @@
 				RelativePath="src\opts\SkXfermode_opts_SSE2.h" />
 			<File
 				RelativePath="src\core\SkXfermode_proccoeff.h" />
-			<File
-				RelativePath="src\images\bmpdecoderhelper.h" />
-			<File
-				RelativePath="src\images\transform_scanline.h" />
 		</Filter>
 	</Files>
 	<Globals>

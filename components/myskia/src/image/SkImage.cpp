@@ -79,10 +79,10 @@ GrTexture* SkImage::getTexture() {
 }
 
 SkData* SkImage::encode(SkImageEncoder::Type type, int quality) const {
-    SkBitmap bm;
-    if (as_IB(this)->getROPixels(&bm)) {
-        return SkImageEncoder::EncodeData(bm, type, quality);
-    }
+//     SkBitmap bm;
+//     if (as_IB(this)->getROPixels(&bm)) {
+//         return SkImageEncoder::EncodeData(bm, type, quality);
+//     }
     return NULL;
 }
 

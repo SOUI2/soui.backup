@@ -37,8 +37,10 @@ HEADERS += MainDlg.h \
            skinole/ImageOle.h \
            wtlhelper/whwindow.h \
            ../controls.extend/SWkeWebkit.h \
+           ../controls.extend/gif/SAniImgFrame.h \
            ../controls.extend/gif/SGifPlayer.h \
            ../controls.extend/gif/SSkinGif.h \
+           ../controls.extend/gif/SSkinAPNG.h \
            ../controls.extend/FileHelper.h \
            httpsvr/filereader-i.h \
            httpsvr/log.h \
@@ -52,6 +54,7 @@ SOURCES += demo.cpp \
            ../controls.extend/SWkeWebkit.cpp \
            ../controls.extend/gif/SGifPlayer.cpp \
            ../controls.extend/gif/SSkinGif.cpp \
+           ../controls.extend/gif/SSkinAPNG.cpp \
            httpsvr/log.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \
