@@ -257,7 +257,7 @@ void CMenuWndHook::OnWindowPosChanging(WINDOWPOS *pWindowPos)
     SSkinImgFrame *pBorderSkin=static_cast<SSkinImgFrame*>(pSkin);
     if(!pBorderSkin) return;
     pWindowPos->cx += pBorderSkin->GetMargin().left+pBorderSkin->GetMargin().right-SM_CXMENUBORDER*2;
-    pWindowPos->cy -= pBorderSkin->GetMargin().top+pBorderSkin->GetMargin().bottom-SM_CXMENUBORDER*2;
+    pWindowPos->cy += pBorderSkin->GetMargin().top+pBorderSkin->GetMargin().bottom-SM_CXMENUBORDER*2;
 }
 
 void CMenuWndHook::OnNcCalcsize(BOOL bValidCalc,NCCALCSIZE_PARAMS* lpncsp)
