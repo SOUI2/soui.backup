@@ -44,7 +44,7 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utilitiesd.lib myskiad.lib freetyped.lib Usp10.lib"
+				AdditionalDependencies="utilitiesd.lib myskiad.lib Usp10.lib"
 				AdditionalLibraryDirectories="..\..\bin"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
@@ -105,7 +105,7 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utilities.lib myskia.lib freetype.lib Usp10.lib"
+				AdditionalDependencies="utilities.lib myskia.lib Usp10.lib"
 				AdditionalLibraryDirectories="..\..\bin"
 				EnableCOMDATFolding="2"
 				GenerateDebugInformation="true"

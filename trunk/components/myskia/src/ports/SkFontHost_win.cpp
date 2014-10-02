@@ -47,6 +47,16 @@ static void call_ensure_accessible(const LOGFONT& lf) {
     }
 }
 
+SkTypeface* SkFontHost::NextLogicalFont(SkFontID fontID, SkTypeface::Style s)
+{
+    SkTypeface* skface = SkTypeface::CreateFromName("msyh", s);
+    return skface;
+}
+
+SkScalerContext* SkFontHost::CreateScalerContext(SkTypeface* f, const SkDescriptor* desc) {
+    return NULL;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // always packed xxRRGGBB

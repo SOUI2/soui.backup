@@ -26,10 +26,10 @@ dir = ../..
 include($$dir/common.pri)
 
 CONFIG(debug,debug|release){
-	LIBS += utilitiesd.lib myskiad.lib freetyped.lib Usp10.lib
+	LIBS += utilitiesd.lib myskiad.lib Usp10.lib
 }
 else{
-	LIBS += utilities.lib myskia.lib freetype.lib Usp10.lib
+	LIBS += utilities.lib myskia.lib Usp10.lib
 }
 
 PRECOMPILED_HEADER = stdafx.h
