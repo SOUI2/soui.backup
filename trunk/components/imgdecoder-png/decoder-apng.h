@@ -8,20 +8,9 @@ struct FRAME {
 class APNGDATA
 {
 public:
-    APNGDATA()
-    {
-        frame.p = NULL;
-        frame.rows = NULL;
-        pDelay =NULL;
-        nWid = nHei =nFrames = nLoops =0;
-    }
+    APNGDATA();
 
-    ~APNGDATA()
-    {
-        if(frame.p) delete []frame.p;
-        if(frame.rows) delete []frame.rows;
-        if(pDelay) delete []pDelay;
-    }
+    ~APNGDATA();
 
     FRAME frame;
     unsigned short *pDelay;

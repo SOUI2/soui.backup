@@ -35,6 +35,7 @@
 using namespace std;
 #include "png.h"     /* original (unpatched) libpng is ok */
 #include "zlib.h"
+#include <malloc.h>
 
 #include "decoder-apng.h"
 
@@ -53,6 +54,40 @@ using namespace std;
 
 struct CHUNK { unsigned char * p; unsigned int size; };
 
+void Frame_Create(FRAME *frm,int nWid,int nHei)
+{
+    int rowSize = nWid * 4;
+    frm->p = (BYTE*)malloc(rowSize*nHei);
+    frm->rows = (LPBYTE *)malloc(nHei*sizeof(LPBYTE));
+    LPBYTE  t=frm->p;
+    for(int i=0;i<nHei;i++,t+=rowSize)
+    {
+        frm->rows[i] = t;
+    }
+}
+
+void Frame_Destroy(FRAME *frm)
+{
+    if(frm->p) free(frm->p);
+    frm->p=NULL;
+    if(frm->rows) free(frm->rows);
+    frm->rows=NULL;
+}
+
+
+APNGDATA::APNGDATA()
+{
+    frame.p = NULL;
+    frame.rows = NULL;
+    pDelay =NULL;
+    nWid = nHei =nFrames = nLoops =0;
+}
+
+APNGDATA::~APNGDATA()
+{
+    Frame_Destroy(&frame);
+    if(pDelay) delete []pDelay;
+}
 
 FRAME frameRaw;
 
@@ -289,19 +324,11 @@ APNGDATA * LoadAPNG(IReader *pReader)
 
             pDelays = new unsigned short[num_frames];
             pDelays[0] = 10;
-
-            frameRaw.p = new unsigned char[imagesize];
-            frameRaw.rows = new png_bytep[h * sizeof(png_bytep)];
-            for (j=0; j<h; ++j)
-                frameRaw.rows[j] = frameRaw.p + j * rowbytes;
-
-            framesAPNG.p = new unsigned char[imagesize];
-            framesAPNG.rows = new png_bytep[h * sizeof(png_bytep)];
-            for (j=0; j<h; ++j)
-                framesAPNG.rows[j] = framesAPNG.p + j * rowbytes;
-
-            frameCur.p    = framesAPNG.p;
-            frameCur.rows = framesAPNG.rows;
+            
+            Frame_Create(&frameRaw,w,h);
+            Frame_Create(&framesAPNG,w,h);
+            
+            frameCur = framesAPNG;
 
             png_ptr  = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
             info_ptr = png_create_info_struct(png_ptr);
@@ -325,15 +352,10 @@ APNGDATA * LoadAPNG(IReader *pReader)
                     delete[] pDelays;
                     pDelays = new unsigned short[num_frames];
 
-                    delete[] framesAPNG.p;
-                    delete[] framesAPNG.rows;
-                    framesAPNG.p = new unsigned char[num_frames * imagesize];
-                    framesAPNG.rows = new png_bytep[num_frames * h * sizeof(png_bytep)];
-                    for (j=0; j<num_frames*h; ++j)
-                        framesAPNG.rows[j] = framesAPNG.p + j * rowbytes;
-
-                    frameCur.p = framesAPNG.p;
-                    frameCur.rows = framesAPNG.rows;
+                    Frame_Destroy(&framesAPNG);
+                    Frame_Create(&framesAPNG,w,h*num_frames);
+                    
+                    frameCur = framesAPNG;
 
                     delete[] chunk.p;
                 }
@@ -360,8 +382,7 @@ APNGDATA * LoadAPNG(IReader *pReader)
                                     for (j=0; j<h0; j++)
                                         memset(frameNext.rows[y0 + j] + x0*4, 0, w0*4);
                             }
-                            frameCur.p = frameNext.p;
-                            frameCur.rows = frameNext.rows;
+                            frameCur = frameNext;
 
                             memcpy(chunk_ihdr.p + 8, chunk.p + 12, 8);
                             recalc_crc(chunk_ihdr.p, chunk_ihdr.size);
@@ -459,8 +480,7 @@ APNGDATA * LoadAPNG(IReader *pReader)
                                             delete[] chunk.p;
                                     }
             }
-            delete[] frameRaw.rows;
-            delete[] frameRaw.p;
+            Frame_Destroy(&frameRaw);
             png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
         }
         else
