@@ -1,238 +1,407 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="lua-51"
 	ProjectGUID="{CEFE47A7-0DBE-3F2A-8D53-1932380C8E96}"
-	Keyword="Qt4VSv1.0">
+	Keyword="Qt4VSv1.0"
+	TargetFrameworkVersion="0"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32" />
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\..\bin\"
+			IntermediateDirectory="..\..\..\obj\debug\lua-51\"
+			ConfigurationType="4"
+			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			ConfigurationType="4"
-			IntermediateDirectory="..\..\..\obj\debug\lua-51\"
-			UseOfMfc="0">
+			>
 			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,..\..\..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\..\..\obj\debug\lua-51\"
-				DebugInformationFormat="3"
-				DisableSpecificWarnings="4100,4101,4102,4189,4996"
-				ExceptionHandling="0"
-				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\..\obj\debug\lua-51\"
-				Optimization ="4"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS"
-				ProgramDataBaseFileName="$(IntDir)"
-				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				SuppressStartupBanner="true"
-				TreatWChar_tAsBuiltInType="true"
-				WarningLevel="3" />
+				Name="VCPreBuildEventTool"
+			/>
 			<Tool
-				Name="VCCustomBuildTool" />
+				Name="VCCustomBuildTool"
+			/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\lua-51d.lib"
-				SuppressStartupBanner="true" />
+				Name="VCXMLDataGeneratorTool"
+			/>
 			<Tool
-				Name="VCManifestTool" />
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
 			<Tool
 				Name="VCMIDLTool"
+				WarningLevel="0"
 				DefaultCharType="0"
 				EnableErrorChecks="1"
-				WarningLevel="0" />
+			/>
 			<Tool
-				Name="VCPostBuildEventTool" />
+				Name="VCCLCompilerTool"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				Optimization="4"
+				AdditionalIncludeDirectories="&quot;.&quot;,..\..\..\tools\mkspecs\win32-msvc2008"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS"
+				GeneratePreprocessedFile="0"
+				ExceptionHandling="0"
+				RuntimeLibrary="1"
+				TreatWChar_tAsBuiltInType="true"
+				RuntimeTypeInfo="false"
+				AssemblerListingLocation="..\..\..\obj\debug\lua-51\"
+				ObjectFile="..\..\..\obj\debug\lua-51\"
+				ProgramDataBaseFileName="$(IntDir)"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4100,4101,4102,4189,4996"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool" />
-			<Tool
-				Name="VCPreLinkEventTool" />
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS,_DEBUG"
-				ResourceOutputFileName="$(OutDir)\$(InputName).res" />
+				ResourceOutputFileName="$(OutDir)\$(InputName).res"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)\lua-51d.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\..\bin\"
+			IntermediateDirectory="..\..\..\obj\release\lua-51\"
+			ConfigurationType="4"
+			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			ConfigurationType="4"
-			IntermediateDirectory="..\..\..\obj\release\lua-51\"
-			UseOfMfc="0">
+			>
 			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,..\..\..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\..\..\obj\release\lua-51\"
-				DebugInformationFormat="3"
-				DisableSpecificWarnings="4100,4101,4102,4189,4996"
-				ExceptionHandling="0"
-				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\..\obj\release\lua-51\"
-				Optimization ="1"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS,NDEBUG"
-				ProgramDataBaseFileName="$(IntDir)"
-				RuntimeLibrary="0"
-				RuntimeTypeInfo="false"
-				SuppressStartupBanner="true"
-				TreatWChar_tAsBuiltInType="true"
-				WarningLevel="3" />
+				Name="VCPreBuildEventTool"
+			/>
 			<Tool
-				Name="VCCustomBuildTool" />
+				Name="VCCustomBuildTool"
+			/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\lua-51.lib"
-				SuppressStartupBanner="true" />
+				Name="VCXMLDataGeneratorTool"
+			/>
 			<Tool
-				Name="VCManifestTool" />
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
 			<Tool
 				Name="VCMIDLTool"
+				WarningLevel="0"
 				DefaultCharType="0"
 				EnableErrorChecks="1"
-				WarningLevel="0" />
+			/>
 			<Tool
-				Name="VCPostBuildEventTool" />
+				Name="VCCLCompilerTool"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				Optimization="1"
+				AdditionalIncludeDirectories="&quot;.&quot;,..\..\..\tools\mkspecs\win32-msvc2008"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS,NDEBUG"
+				GeneratePreprocessedFile="0"
+				ExceptionHandling="0"
+				RuntimeLibrary="0"
+				TreatWChar_tAsBuiltInType="true"
+				RuntimeTypeInfo="false"
+				AssemblerListingLocation="..\..\..\obj\release\lua-51\"
+				ObjectFile="..\..\..\obj\release\lua-51\"
+				ProgramDataBaseFileName="$(IntDir)"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4100,4101,4102,4189,4996"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool" />
-			<Tool
-				Name="VCPreLinkEventTool" />
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS"
-				ResourceOutputFileName="$(OutDir)\$(InputName).res" />
+				ResourceOutputFileName="$(OutDir)\$(InputName).res"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)\lua-51.lib"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			>
 			<File
-				RelativePath="lapi.c" />
+				RelativePath="lapi.c"
+				>
+			</File>
 			<File
-				RelativePath="lauxlib.c" />
+				RelativePath="lauxlib.c"
+				>
+			</File>
 			<File
-				RelativePath="lbaselib.c" />
+				RelativePath="lbaselib.c"
+				>
+			</File>
 			<File
-				RelativePath="lcode.c" />
+				RelativePath="lcode.c"
+				>
+			</File>
 			<File
-				RelativePath="ldblib.c" />
+				RelativePath="ldblib.c"
+				>
+			</File>
 			<File
-				RelativePath="ldebug.c" />
+				RelativePath="ldebug.c"
+				>
+			</File>
 			<File
-				RelativePath="ldo.c" />
+				RelativePath="ldo.c"
+				>
+			</File>
 			<File
-				RelativePath="ldump.c" />
+				RelativePath="ldump.c"
+				>
+			</File>
 			<File
-				RelativePath="lfunc.c" />
+				RelativePath="lfunc.c"
+				>
+			</File>
 			<File
-				RelativePath="lgc.c" />
+				RelativePath="lgc.c"
+				>
+			</File>
 			<File
-				RelativePath="linit.c" />
+				RelativePath="linit.c"
+				>
+			</File>
 			<File
-				RelativePath="liolib.c" />
+				RelativePath="liolib.c"
+				>
+			</File>
 			<File
-				RelativePath="llex.c" />
+				RelativePath="llex.c"
+				>
+			</File>
 			<File
-				RelativePath="lmathlib.c" />
+				RelativePath="lmathlib.c"
+				>
+			</File>
 			<File
-				RelativePath="lmem.c" />
+				RelativePath="lmem.c"
+				>
+			</File>
 			<File
-				RelativePath="loadlib.c" />
+				RelativePath="loadlib.c"
+				>
+			</File>
 			<File
-				RelativePath="lobject.c" />
+				RelativePath="lobject.c"
+				>
+			</File>
 			<File
-				RelativePath="lopcodes.c" />
+				RelativePath="lopcodes.c"
+				>
+			</File>
 			<File
-				RelativePath="loslib.c" />
+				RelativePath="loslib.c"
+				>
+			</File>
 			<File
-				RelativePath="lparser.c" />
+				RelativePath="lparser.c"
+				>
+			</File>
 			<File
-				RelativePath="lstate.c" />
+				RelativePath="lstate.c"
+				>
+			</File>
 			<File
-				RelativePath="lstring.c" />
+				RelativePath="lstring.c"
+				>
+			</File>
 			<File
-				RelativePath="lstrlib.c" />
+				RelativePath="lstrlib.c"
+				>
+			</File>
 			<File
-				RelativePath="ltable.c" />
+				RelativePath="ltable.c"
+				>
+			</File>
 			<File
-				RelativePath="ltablib.c" />
+				RelativePath="ltablib.c"
+				>
+			</File>
 			<File
-				RelativePath="ltm.c" />
+				RelativePath="ltm.c"
+				>
+			</File>
 			<File
-				RelativePath="lua.c" />
+				RelativePath="lundump.c"
+				>
+			</File>
 			<File
-				RelativePath="luac.c" />
+				RelativePath="lvm.c"
+				>
+			</File>
 			<File
-				RelativePath="lundump.c" />
+				RelativePath="lzio.c"
+				>
+			</File>
 			<File
-				RelativePath="lvm.c" />
+				RelativePath="print.c"
+				>
+			</File>
 			<File
-				RelativePath="lzio.c" />
-			<File
-				RelativePath="print.c" />
-			<File
-				RelativePath="version.c" />
+				RelativePath="version.c"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
 			<File
-				RelativePath="lapi.h" />
+				RelativePath="lapi.h"
+				>
+			</File>
 			<File
-				RelativePath="lauxlib.h" />
+				RelativePath="lauxlib.h"
+				>
+			</File>
 			<File
-				RelativePath="lcode.h" />
+				RelativePath="lcode.h"
+				>
+			</File>
 			<File
-				RelativePath="ldebug.h" />
+				RelativePath="ldebug.h"
+				>
+			</File>
 			<File
-				RelativePath="ldo.h" />
+				RelativePath="ldo.h"
+				>
+			</File>
 			<File
-				RelativePath="lfunc.h" />
+				RelativePath="lfunc.h"
+				>
+			</File>
 			<File
-				RelativePath="lgc.h" />
+				RelativePath="lgc.h"
+				>
+			</File>
 			<File
-				RelativePath="llex.h" />
+				RelativePath="llex.h"
+				>
+			</File>
 			<File
-				RelativePath="llimits.h" />
+				RelativePath="llimits.h"
+				>
+			</File>
 			<File
-				RelativePath="lmem.h" />
+				RelativePath="lmem.h"
+				>
+			</File>
 			<File
-				RelativePath="lobject.h" />
+				RelativePath="lobject.h"
+				>
+			</File>
 			<File
-				RelativePath="lopcodes.h" />
+				RelativePath="lopcodes.h"
+				>
+			</File>
 			<File
-				RelativePath="lparser.h" />
+				RelativePath="lparser.h"
+				>
+			</File>
 			<File
-				RelativePath="lstate.h" />
+				RelativePath="lstate.h"
+				>
+			</File>
 			<File
-				RelativePath="lstring.h" />
+				RelativePath="lstring.h"
+				>
+			</File>
 			<File
-				RelativePath="ltable.h" />
+				RelativePath="ltable.h"
+				>
+			</File>
 			<File
-				RelativePath="ltm.h" />
+				RelativePath="ltm.h"
+				>
+			</File>
 			<File
-				RelativePath="lua.h" />
+				RelativePath="lua.h"
+				>
+			</File>
 			<File
-				RelativePath="luaconf.h" />
+				RelativePath="luaconf.h"
+				>
+			</File>
 			<File
-				RelativePath="lualib.h" />
+				RelativePath="lualib.h"
+				>
+			</File>
 			<File
-				RelativePath="lundump.h" />
+				RelativePath="lundump.h"
+				>
+			</File>
 			<File
-				RelativePath="lvm.h" />
+				RelativePath="lvm.h"
+				>
+			</File>
 			<File
-				RelativePath="lzio.h" />
+				RelativePath="lzio.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
