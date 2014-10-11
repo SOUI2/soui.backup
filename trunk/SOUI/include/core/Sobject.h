@@ -20,17 +20,6 @@
 // SObject Class Name Declaration
 #define SOUI_CLASS_NAME(theclass, classname)            \
 public:                                                 \
-    static BOOL CheckAndNew(LPCWSTR lpszName,void **ppRet) \
-    {                                                   \
-        if (wcscmp(GetClassName(), lpszName)  == 0)     \
-        {                                               \
-            * (theclass**)ppRet=new theclass;           \
-            return TRUE;                                \
-        }                                               \
-        else                                            \
-            return FALSE;                               \
-    }                                                   \
-    \
     static LPCWSTR GetClassName()                       \
     {                                                   \
         return classname;                               \

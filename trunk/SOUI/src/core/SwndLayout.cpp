@@ -204,6 +204,18 @@ namespace SOUI
                     case POS2_RIGHTBOTTOM:
                         pt.Offset(-sz.cx,-sz.cy);
                         break;
+                    case POS2_MIDTOP:
+                        pt.Offset(-sz.cx/2,0);
+                        break;
+                    case POS2_LEFTMID:
+                        pt.Offset(0,-sz.cy/2);
+                        break;
+                    case POS2_RIGHTMID:
+                        pt.Offset(-sz.cx,-sz.cy/2);
+                        break;
+                    case POS2_MIDBOTTOM:
+                        pt.Offset(-sz.cx/2,-sz.cy);
+                        break;
                     case POS2_LEFTTOP:
                     default:
                         break;

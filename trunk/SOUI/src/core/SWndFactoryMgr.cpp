@@ -33,6 +33,7 @@ void SWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(SToggle::GetClassName(),new TplSWindowFactory<SToggle>);
     AddKeyObject(SCaption::GetClassName(),new TplSWindowFactory<SCaption>);
     AddKeyObject(STabCtrl::GetClassName(),new TplSWindowFactory<STabCtrl>);
+    AddKeyObject(STabPage::GetClassName(),new TplSWindowFactory<STabPage>);
     AddKeyObject(SActiveX::GetClassName(),new TplSWindowFactory<SActiveX>);
     AddKeyObject(SFlashCtrl::GetClassName(),new TplSWindowFactory<SFlashCtrl>);
     AddKeyObject(SMediaPlayer::GetClassName(),new TplSWindowFactory<SMediaPlayer>);

@@ -69,9 +69,13 @@ namespace SOUI
 
     typedef enum tagPOS2TYPE{
         POS2_LEFTTOP=0,    //左上角
+        POS2_MIDTOP,
         POS2_RIGHTTOP,    //右上争
+        POS2_LEFTMID,
         POS2_CENTER,    //中心
+        POS2_RIGHTMID,
         POS2_LEFTBOTTOM,//左下角
+        POS2_MIDBOTTOM,
         POS2_RIGHTBOTTOM,//右下角
     }POS2TYPE;
 

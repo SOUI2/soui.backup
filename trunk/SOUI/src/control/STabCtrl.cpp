@@ -436,9 +436,9 @@ BOOL STabCtrl::InsertItem( LPCWSTR lpContent ,int iInsert/*=-1*/)
 
 int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoading/*=FALSE*/ )
 {
-    STabPage *pChild=NULL;
-    if (!STabPage::CheckAndNew(xmlNode.name(),(void**)&pChild)) return -1;
-
+    if (wcscmp(xmlNode.name(),STabPage::GetClassName()) != 0) return -1;
+    STabPage *pChild = (STabPage *)SApplication::getSingleton().CreateWindowByName(STabPage::GetClassName());
+    
     if(iInsert==-1) iInsert=m_lstPages.GetCount();
     InsertChild(pChild);
 
