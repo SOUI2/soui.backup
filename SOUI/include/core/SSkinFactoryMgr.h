@@ -4,17 +4,17 @@
 namespace SOUI
 {
 
-    class CSkinFactory
+    class SSkinFactory
     {
     public:
-        virtual ~CSkinFactory() {}
+        virtual ~SSkinFactory() {}
         virtual ISkinObj * NewSkin()=NULL;
         virtual const SStringW & GetTypeName()=NULL;
-        virtual CSkinFactory * Clone()=NULL;
+        virtual SSkinFactory * Clone()=NULL;
     };
 
     template<typename T>
-    class TplSkinFactory :public CSkinFactory
+    class TplSkinFactory :public SSkinFactory
     {
     public:
         TplSkinFactory():m_strTypeName(T::GetClassName())
@@ -31,7 +31,7 @@ namespace SOUI
             return m_strTypeName;
         }
 
-        virtual CSkinFactory * Clone()
+        virtual SSkinFactory * Clone()
         {
             return new TplSkinFactory<T>;
         }
@@ -39,8 +39,8 @@ namespace SOUI
         SStringW m_strTypeName;
     };
 
-    typedef CSkinFactory * CSkinFactoryPtr;
-    class SOUI_EXP SSkinFactoryMgr: public SCmnMap<CSkinFactoryPtr,SStringW>
+    typedef SSkinFactory * SSkinFactoryPtr;
+    class SOUI_EXP SSkinFactoryMgr: public SCmnMap<SSkinFactoryPtr,SStringW>
     {
     public:
         SSkinFactoryMgr()
@@ -49,7 +49,7 @@ namespace SOUI
             AddStandardSkin();
         }
 
-        bool RegisterSkinFactory(CSkinFactory &skinFactory,bool bReplace=false)
+        bool RegisterSkinFactory(SSkinFactory &skinFactory,bool bReplace=false)
         {
             if(HasKey(skinFactory.GetTypeName()))
             {
@@ -68,7 +68,7 @@ namespace SOUI
         ISkinObj * CreateSkinByName(LPCWSTR pszClassName);
 
     protected:
-        static void OnSkinRemoved(const CSkinFactoryPtr & obj);
+        static void OnSkinRemoved(const SSkinFactoryPtr & obj);
         void AddStandardSkin();
     };
 }//end of namespace

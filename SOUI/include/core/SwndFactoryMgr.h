@@ -43,7 +43,7 @@ namespace SOUI
         LPCWSTR SWindowBaseName(){return T::BaseClassName();}
 
         // Implement WindowFactory interface
-        SWindow* NewWindow()
+        virtual SWindow* NewWindow()
         {
             return new T;
         }

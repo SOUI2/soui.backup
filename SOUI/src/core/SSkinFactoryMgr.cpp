@@ -14,7 +14,7 @@ namespace SOUI
         AddKeyObject(SSkinScrollbar::GetClassName(),new TplSkinFactory<SSkinScrollbar>);
     }
 
-    void SSkinFactoryMgr::OnSkinRemoved( const CSkinFactoryPtr & obj )
+    void SSkinFactoryMgr::OnSkinRemoved( const SSkinFactoryPtr & obj )
     {
         delete obj;
     }
