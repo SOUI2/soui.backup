@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="render-skia"
-	ProjectGUID="{4F2A1D30-5F30-32CA-B5E4-F398CF429AED}"
+	ProjectGUID="{C26A8689-8880-3EDA-B493-E87AC1EA82BA}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\myskia&quot;,&quot;..\myskia\include&quot;,&quot;..\myskia\include\config&quot;,&quot;..\myskia\include\core&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\skia&quot;,&quot;..\skia\include&quot;,&quot;..\skia\include\config&quot;,&quot;..\skia\include\core&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\debug\render-skia\"
 				DebugInformationFormat="3"
@@ -44,7 +44,7 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utilitiesd.lib myskiad.lib Usp10.lib"
+				AdditionalDependencies="utilitiesd.lib skiad.lib Usp10.lib opengl32.lib"
 				AdditionalLibraryDirectories="..\..\bin"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
@@ -81,7 +81,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\myskia&quot;,&quot;..\myskia\include&quot;,&quot;..\myskia\include\config&quot;,&quot;..\myskia\include\core&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\skia&quot;,&quot;..\skia\include&quot;,&quot;..\skia\include\config&quot;,&quot;..\skia\include\core&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\release\render-skia\"
 				DebugInformationFormat="3"
@@ -105,7 +105,7 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utilities.lib myskia.lib Usp10.lib"
+				AdditionalDependencies="utilities.lib skia.lib Usp10.lib opengl32.lib"
 				AdditionalLibraryDirectories="..\..\bin"
 				EnableCOMDATFolding="2"
 				GenerateDebugInformation="true"

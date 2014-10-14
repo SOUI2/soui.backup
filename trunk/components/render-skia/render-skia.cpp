@@ -10,6 +10,8 @@
 
 #include "render-skia.h"
 
+#define getTotalClip internal_private_getTotalClip
+
 #include "trace.h"
 namespace SOUI
 {
@@ -683,57 +685,49 @@ namespace SOUI
         
         ::SelectObject(m_hGetDC,bmp);
         
-        SkCanvas::ClipType ct=m_SkCanvas->getClipType();
-
-        switch(ct)
+        if(m_SkCanvas->isClipEmpty())
         {
-        case SkCanvas::kEmpty_ClipType:
             ::IntersectClipRect(m_hGetDC,0,0,0,0);
-            break;
-        case SkCanvas::kRect_ClipType:
+        }else if(m_SkCanvas->isClipRect())
+        {
+            SkRect rcClip;
+            m_SkCanvas->getClipBounds(&rcClip);
+            RECT rc = {(int)rcClip.left(),(int)rcClip.top(),(int)rcClip.right(),(int)rcClip.bottom()};
+            ::InflateRect(&rc,-1,-1);//注意需要向内缩小一个象素
+            ::IntersectClipRect(m_hGetDC,rc.left,rc.top,rc.right,rc.bottom);
+        }else
+        {
+            SkRegion rgn = m_SkCanvas->getTotalClip();
+            SkRegion::Iterator it(rgn);
+            int nCount=0;
+            for(;!it.done();it.next())
             {
-                SkRect rcClip;
-                m_SkCanvas->getClipBounds(&rcClip);
-                RECT rc = {(int)rcClip.left(),(int)rcClip.top(),(int)rcClip.right(),(int)rcClip.bottom()};
-                ::InflateRect(&rc,-1,-1);//注意需要向内缩小一个象素
-                ::IntersectClipRect(m_hGetDC,rc.left,rc.top,rc.right,rc.bottom);
+                nCount++;
             }
-            break;
-        case SkCanvas::kComplex_ClipType:
+            it.rewind();
+
+            int nSize=sizeof(RGNDATAHEADER)+nCount*sizeof(RECT);
+            RGNDATA *rgnData=(RGNDATA*)malloc(nSize);
+            memset(rgnData,0,nSize);
+            rgnData->rdh.dwSize= sizeof(RGNDATAHEADER);
+            rgnData->rdh.iType = RDH_RECTANGLES;
+            rgnData->rdh.nCount=nCount;
+            rgnData->rdh.rcBound.right=m_curBmp->Width();
+            rgnData->rdh.rcBound.bottom=m_curBmp->Height();
+
+            nCount=0;
+            LPRECT pRc=(LPRECT)rgnData->Buffer;
+            for(;!it.done();it.next())
             {
-                SkRegion rgn = m_SkCanvas->getTotalClip();
-                SkRegion::Iterator it(rgn);
-                int nCount=0;
-                for(;!it.done();it.next())
-                {
-                    nCount++;
-                }
-                it.rewind();
-
-                int nSize=sizeof(RGNDATAHEADER)+nCount*sizeof(RECT);
-                RGNDATA *rgnData=(RGNDATA*)malloc(nSize);
-                memset(rgnData,0,nSize);
-                rgnData->rdh.dwSize= sizeof(RGNDATAHEADER);
-                rgnData->rdh.iType = RDH_RECTANGLES;
-                rgnData->rdh.nCount=nCount;
-                rgnData->rdh.rcBound.right=m_curBmp->Width();
-                rgnData->rdh.rcBound.bottom=m_curBmp->Height();
-
-                nCount=0;
-                LPRECT pRc=(LPRECT)rgnData->Buffer;
-                for(;!it.done();it.next())
-                {
-                    SkIRect skrc=it.rect();
-                    RECT rc = {skrc.fLeft,skrc.fTop,skrc.fRight,skrc.fBottom};
-                    pRc[nCount++]= rc;
-                }
-
-                HRGN hRgn=ExtCreateRegion(NULL,nSize,rgnData);
-                free(rgnData);
-                ::SelectClipRgn(m_hGetDC,hRgn);
-                DeleteObject(hRgn);
+                SkIRect skrc=it.rect();
+                RECT rc = {skrc.fLeft,skrc.fTop,skrc.fRight,skrc.fBottom};
+                pRc[nCount++]= rc;
             }
-            break;
+
+            HRGN hRgn=ExtCreateRegion(NULL,nSize,rgnData);
+            free(rgnData);
+            ::SelectClipRgn(m_hGetDC,hRgn);
+            DeleteObject(hRgn);
         }
 
         ::SetViewportOrgEx(m_hGetDC,(int)m_ptOrg.fX,(int)m_ptOrg.fY,NULL);
@@ -920,7 +914,7 @@ namespace SOUI
 	HRESULT SBitmap_Skia::Init( int nWid,int nHei ,const LPVOID pBits/*=NULL*/)
 	{
 		m_bitmap.reset();
-		m_bitmap.setConfig(SkBitmap::kARGB_8888_Config,nWid,nHei);
+		m_bitmap.setInfo(SkImageInfo::Make(nWid,nHei,kN32_SkColorType,kPremul_SkAlphaType));
         if(m_hBmp) DeleteObject(m_hBmp);
     		
 		LPVOID pBmpBits=NULL;
@@ -944,7 +938,7 @@ namespace SOUI
 
         if(m_hBmp) DeleteObject(m_hBmp);
         m_bitmap.reset();
-        m_bitmap.setConfig(SkBitmap::kARGB_8888_Config, uWid, uHei);
+        m_bitmap.setInfo(SkImageInfo::Make(uWid, uHei,kN32_SkColorType,kPremul_SkAlphaType));
         void * pBits=NULL;
         m_hBmp = CreateGDIBitmap(uWid,uHei,&pBits);
 
@@ -981,7 +975,7 @@ namespace SOUI
 
         if(m_hBmp) DeleteObject(m_hBmp);
         m_bitmap.reset();
-        m_bitmap.setConfig(SkBitmap::kARGB_8888_Config, uWid, uHei);
+        m_bitmap.setInfo(SkImageInfo::Make(uWid, uHei,kN32_SkColorType,kPremul_SkAlphaType));
         void * pBits=NULL;
         m_hBmp = CreateGDIBitmap(uWid,uHei,&pBits);
         
