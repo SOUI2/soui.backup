@@ -31,6 +31,7 @@ SListCtrl::SListCtrl()
     m_bClipClient = TRUE;
     m_evtSet.addEvent(EventLCSelChanging::EventID);
     m_evtSet.addEvent(EventLCSelChanged::EventID);
+    m_evtSet.addEvent(EventLCItemDeleted::EventID);
 }
 
 SListCtrl::~SListCtrl()
@@ -337,6 +338,12 @@ void SListCtrl::DeleteItem(int nItem)
     if (nItem>=0 && nItem < GetItemCount())
     {
         DXLVITEM &lvi=m_arrItems[nItem];
+
+		EventLCItemDeleted evt2(this);
+		evt2.nItem = nItem;
+		evt2.dwData = lvi.dwData;
+		FireEvent(evt2);
+
         for(int i=0;i<GetColumnCount();i++)
         {
             DXLVSUBITEM &lvsi =lvi.arSubItems->GetAt(i);
@@ -353,9 +360,21 @@ void SListCtrl::DeleteColumn( int iCol )
 {
     if(m_pHeader->DeleteItem(iCol))
     {
+		int nColumnCount = m_pHeader->GetItemCount();
+
         for(int i=0;i<GetItemCount();i++)
         {
-            DXLVSUBITEM &lvsi=m_arrItems[i].arSubItems->GetAt(iCol);
+			DXLVITEM &lvi = m_arrItems[i];
+
+			if (0 == nColumnCount)
+			{
+				EventLCItemDeleted evt2(this);
+				evt2.nItem = i;
+				evt2.dwData = lvi.dwData;
+				FireEvent(evt2);
+			}
+
+            DXLVSUBITEM &lvsi=lvi.arSubItems->GetAt(iCol);
             if(lvsi.strText) free(lvsi.strText);
             m_arrItems[i].arSubItems->RemoveAt(iCol);
         }
@@ -365,10 +384,16 @@ void SListCtrl::DeleteColumn( int iCol )
 
 void SListCtrl::DeleteAllItems()
 {
-    m_nSelectItem = -1;
+	m_nSelectItem = -1;
     for(int i=0;i<GetItemCount();i++)
     {
-        DXLVITEM &lvi=m_arrItems[i];
+		DXLVITEM &lvi = m_arrItems[i];
+
+		EventLCItemDeleted evt2(this);
+		evt2.nItem = i;
+		evt2.dwData = lvi.dwData;
+		FireEvent(evt2);
+
         for(int j=0;j<GetColumnCount();j++)
         {
             DXLVSUBITEM &lvsi =lvi.arSubItems->GetAt(j);
@@ -563,7 +588,7 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
         pRT->FillSolidRect( rcItem, crItemBg);
 
     //  ×ó±ß¼ÓÉÏ¿Õ°×
-    rcItem.left += ITEM_MARGIN;
+	rcItem.left += ITEM_MARGIN;
 
     if (CR_INVALID != crText)
     {

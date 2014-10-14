@@ -460,6 +460,12 @@ namespace SOUI
             if(pPt[i].y<rc.top) rc.top=pPt[i].y;
             if(pPt[i].y>rc.bottom) rc.bottom=pPt[i].y;
         }
+        rc.left -= 1;
+        rc.top -=1;
+        int nPenWidth = 1;
+        if(m_curPen) nPenWidth = m_curPen->GetWidth();
+        rc.bottom+=nPenWidth;
+        rc.right+=nPenWidth;
         ALPHAINFO ai;
         CGdiAlpha::AlphaBackup(m_hdc,&rc,ai);
         ::Polyline(m_hdc,pPt,(int)nCount);
