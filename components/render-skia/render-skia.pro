@@ -17,20 +17,21 @@ DEPENDPATH += .
 INCLUDEPATH += . \
 			   ../../soui/include \
 			   ../../utilities/include \
-			   ../myskia \
-			   ../myskia/include \
-			   ../myskia/include/config \
-			   ../myskia/include/core \
+			   ../skia \
+			   ../skia/include \
+			   ../skia/include/config \
+			   ../skia/include/core \
 
 dir = ../..
 include($$dir/common.pri)
 
 CONFIG(debug,debug|release){
-	LIBS += utilitiesd.lib myskiad.lib Usp10.lib
+	LIBS += utilitiesd.lib skiad.lib
 }
 else{
-	LIBS += utilities.lib myskia.lib Usp10.lib
+	LIBS += utilities.lib skia.lib
 }
+LIBS += Usp10.lib opengl32.lib
 
 PRECOMPILED_HEADER = stdafx.h
 
