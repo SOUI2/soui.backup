@@ -72,6 +72,7 @@ namespace SOUI
 
         EVT_LC_SELCHANGING=13000,
         EVT_LC_SELCHANGED,
+		EVT_LC_ITEMDELETED,
 
         EVT_TB_GETDISPINFO=14000,    
         EVT_TB_SELCHANGING,
@@ -372,6 +373,17 @@ namespace SOUI
         int nNewSel;
         int nOldSel;
     };
+
+	class SOUI_EXP EventLCItemDeleted : public EventArgs
+	{
+	public:
+		EventLCItemDeleted(SWindow *pWnd) :EventArgs(pWnd){}
+		enum{ EventID = EVT_LC_ITEMDELETED };
+		virtual UINT GetEventID(){ return EventID; }
+		
+		int		nItem;
+		DWORD   dwData;
+	};
 
     class SOUI_EXP EventCalendarSelDay : public EventArgs
     {

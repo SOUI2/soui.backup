@@ -545,7 +545,7 @@ protected:
  * @brief      线条控件
  * 
  * Describe    线条控件
- * Usage: <hr style=solid size=1 mode="vert" lineStyle="dash"/>
+ * Usage: <hr size=1 mode="vert" lineStyle="dash"/>
  */
 class SOUI_EXP SLine : public SWindow
 {

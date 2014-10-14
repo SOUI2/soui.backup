@@ -575,15 +575,13 @@ void SProgress::GetRange( int *pMin,int *pMax )
 //////////////////////////////////////////////////////////////////////////
 // Line Control
 // Simple HTML "HR" tag
-//
-// Usage: <hr style=solid size=1 crbg=.../>
-//
 
 SLine::SLine()
     : m_nLineStyle(PS_SOLID)
     , m_nLineSize(1)
     , m_mode(HR_HORZ)
 {
+    m_style.m_crBg=RGBA(0,0,0,255);
 }
 
 void SLine::OnPaint(IRenderTarget *pRT)
@@ -605,9 +603,6 @@ void SLine::OnPaint(IRenderTarget *pRT)
 
 //////////////////////////////////////////////////////////////////////////
 // Check Box
-//
-// Usage: <check state=1>This is a check-box</check>
-//
 
 SCheckBox::SCheckBox()
     : m_pSkin(GETBUILTINSKIN(SKIN_SYS_CHECKBOX))
