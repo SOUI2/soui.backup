@@ -428,7 +428,7 @@ CRect SListCtrl::GetItemRect(int nItem, int nSubItem)
         m_pHeader->GetItem(nCol, &hdi);
         rcItem.left  = rcItem.right;
         rcItem.right = rcItem.left+hdi.cx;
-        if (hdi.iOrder == nSubItem)
+		if (nCol == nSubItem)
             break;
     }
 
