@@ -29,4 +29,17 @@
 					   		</caption>
 					  ....
 					  </root> 
-		以上就是完成步骤，至于替换背景图片也是相同道理                                                                                
+		以上就是完成步骤，至于替换背景图片也是相同道理  
+		
+3. 获取文本框edit的值
+   SEdit *pEditNmae=FindChildByName2<SEdit>(L"uname");
+	 SStringW strUname=pEditNmae->GetWindowText(); 
+	 if (strUname.IsEmpty())
+	 {// 未输入处理
+	 
+	 }
+	 else
+	 {//输入处理
+	 
+	 }         
+                                                                    
