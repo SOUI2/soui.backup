@@ -9,7 +9,7 @@
 
 #include <interface/imgdecoder-i.h>
 
-class APNGDATA;
+struct APNGDATA;
 
 namespace SOUI
 {
