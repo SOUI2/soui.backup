@@ -76,7 +76,7 @@ namespace SOUI
     {
         if(m_pImgArray) delete []m_pImgArray;
         m_pImgArray = NULL;
-        if(m_pngData) delete m_pngData;
+        if(m_pngData) APNG_Destroy(m_pngData);
     }
 
     int SImgX_PNG::_DoDecode(APNGDATA *pData)
@@ -88,7 +88,7 @@ namespace SOUI
         int nHei = m_pngData->nHei;
 
         //swap rgba to bgra and do premultiply
-        BYTE *p=m_pngData->frame.p;
+        BYTE *p=m_pngData->pdata;
         int pixel_count = nWid * nHei * m_pngData->nFrames;
         for (int i=0; i < pixel_count; ++i) {
             BYTE a = p[3];
@@ -105,10 +105,12 @@ namespace SOUI
             p += 4;
         }
 
+        p=m_pngData->pdata;
         m_pImgArray = new SImgFrame_PNG[m_pngData->nFrames];
         for(int i=0;i<m_pngData->nFrames;i++)
         {
-            m_pImgArray[i].Attach(m_pngData->frame.rows[i*nHei],nWid,nHei,m_pngData->pDelay[i]);
+            m_pImgArray[i].Attach(p,nWid,nHei,m_pngData->pDelay?m_pngData->pDelay[i]:0);
+            p += nWid*nHei*4;
         }
         return m_pngData->nFrames;
     }
