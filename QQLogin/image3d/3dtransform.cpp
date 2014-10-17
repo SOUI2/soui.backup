@@ -243,11 +243,16 @@ void C3DTransform::Render(const PARAM3DTRANSFORM & param3d)
 			int ny = 0; //fy;   //     导致效率降低。这里使用内嵌汇编指令。(3D游戏编程大师技巧 P918)
 
 			// 浮点数转整数。 注意：默认的fistp是四舍五入模式。需要通过调用_control87(_MCW_RC, _RC_DOWN);进行调整
+#ifndef _WIN64
 			__asm	fld    fxSrc;
 			__asm	fistp  nx;
 
 			__asm	fld    fySrc;
 			__asm	fistp  ny;
+#else
+            nx = int(fxSrc);
+            ny = int(fySrc);
+#endif//WIN32
 
 			// 1. ceil的效率非常非常低!千万别在这用
 			// 但是有一个问题如果height为300，ySrc=299.99999999时，转成(int)得到的结果是300，
@@ -291,6 +296,7 @@ void C3DTransform::Render(const PARAM3DTRANSFORM & param3d)
 				float u = (float)fxSrc - nx;
 				float v = (float)fySrc - ny;
 			
+#ifndef _WIN64
 				float fpm3 = FLOAT_TO_FIXP16(u*v);
 				float fpm2 = FLOAT_TO_FIXP16(u*(1.0f-v));
 				float fpm1 = FLOAT_TO_FIXP16(v*(1.0f-u));
@@ -310,7 +316,13 @@ void C3DTransform::Render(const PARAM3DTRANSFORM & param3d)
 					fld    fpm0;
 					fistp  pm0_16;
 				}
-        pDest = pDstBits + X * nPixByte;
+#else
+                int pm3_16 = int(FLOAT_TO_FIXP16(u*v));
+                int pm2_16 = int(FLOAT_TO_FIXP16(u*(1.0f-v)));
+                int pm1_16 = int(FLOAT_TO_FIXP16(v*(1.0f-u)));
+                int pm0_16 = int(FLOAT_TO_FIXP16((1.0f-u)*(1.0f-v)));
+#endif//WIN32
+                pDest = pDstBits + X * nPixByte;
 				*pDest++=(BYTE)((pm0_16*(*p0++) + pm1_16*(*p1++) + pm2_16*(*p2++) + pm3_16*(*p3++)) >> FIXP16_SHIFT);
 				*pDest++=(BYTE)((pm0_16*(*p0++) + pm1_16*(*p1++) + pm2_16*(*p2++) + pm3_16*(*p3++)) >> FIXP16_SHIFT);
 				*pDest++=(BYTE)((pm0_16*(*p0++) + pm1_16*(*p1++) + pm2_16*(*p2++) + pm3_16*(*p3++)) >> FIXP16_SHIFT);
