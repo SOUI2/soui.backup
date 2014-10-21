@@ -143,8 +143,8 @@ void CMainDlg::OnBtnWebkitGo()
     if(pWebkit)
     {
         SEdit *pEdit=FindChildByName2<SEdit>(L"edit_url");
-        SStringW strUrl=pEdit->GetWindowText();
-        pWebkit->SetAttribute(L"url",strUrl,FALSE);
+        SStringT strUrl=pEdit->GetWindowText();
+        pWebkit->SetAttribute(L"url",S_CT2W(strUrl),FALSE);
     }
 }
 

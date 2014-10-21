@@ -1,9 +1,13 @@
 CONFIG -= qt
 CONFIG += exceptions_off stl_off  
 
-CharacterSet = 1
-#DEFINES -= UNICODE
-
+!CONFIG(MBCS){
+	CharacterSet = 1
+}
+else{
+	CharacterSet = 2
+	DEFINES -= UNICODE
+}
 
 CONFIG(debug, debug|release) {
 	OBJECTS_DIR =   $$dir/obj/debug/$$TARGET
