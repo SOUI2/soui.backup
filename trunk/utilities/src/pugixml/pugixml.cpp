@@ -3673,7 +3673,7 @@ namespace pugi
 		if(m_nSize+size<MAX_XML_CHARBUF)
 		{
 			memcpy(m_szBuf+m_nSize,data,size*sizeof(char_t));
-			m_nSize+=size;
+			m_nSize+=(int)size;
 			m_szBuf[m_nSize]=0;
 		}
 	}

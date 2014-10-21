@@ -15,28 +15,6 @@ namespace SOUI
         }
 #endif
 
-        //检索并设置类的默认属性
-        pugi::xml_node defAttr = GETCSS(GetObjectClass());
-        if(defAttr)
-        {
-            //优先处理"class"属性
-            pugi::xml_attribute attrClass=defAttr.attribute(L"class");
-            if(attrClass)
-            {
-                attrClass.set_userdata(1);
-                SetAttribute(attrClass.name(), attrClass.value(), TRUE);
-            }
-            for (pugi::xml_attribute attr = defAttr.first_attribute(); attr; attr = attr.next_attribute())
-            {
-                if(attr.get_userdata()) continue;
-                SetAttribute(attr.name(), attr.value(), TRUE);
-            }
-            if(attrClass)
-            {
-                attrClass.set_userdata(0);
-            }
-        }
-
         //设置当前对象的属性
 
         //优先处理"class"属性

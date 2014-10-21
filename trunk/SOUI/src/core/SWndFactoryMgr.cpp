@@ -2,6 +2,7 @@
 #include "core/SWnd.h"
 #include "core/SWndFactoryMgr.h"
 #include "control/souictrls.h"
+#include "res.mgr/SObjDefAttr.h"
 
 namespace SOUI
 {
@@ -69,7 +70,33 @@ SWindow * SWindowFactoryMgr::CreateWindowByName( LPCWSTR pszClassName )
         STraceW(L"Warning: no window type:%s in SOUI!!",pszClassName);
         return NULL;
     }
-    return GetKeyObject(pszClassName)->NewWindow();
+    SWindow * pRet = GetKeyObject(pszClassName)->NewWindow();
+    SASSERT(pRet);
+    if(pRet)
+    {
+        //检索并设置类的默认属性
+        pugi::xml_node defAttr = GETCSS(pszClassName);
+        if(defAttr)
+        {
+            //优先处理"class"属性
+            pugi::xml_attribute attrClass=defAttr.attribute(L"class");
+            if(attrClass)
+            {
+                attrClass.set_userdata(1);
+                pRet->SetAttribute(attrClass.name(), attrClass.value(), TRUE);
+            }
+            for (pugi::xml_attribute attr = defAttr.first_attribute(); attr; attr = attr.next_attribute())
+            {
+                if(attr.get_userdata()) continue;
+                pRet->SetAttribute(attr.name(), attr.value(), TRUE);
+            }
+            if(attrClass)
+            {
+                attrClass.set_userdata(0);
+            }
+        }
+    }
+    return pRet;
 }
 
 LPCWSTR SWindowFactoryMgr::BaseClassNameFromClassName( LPCWSTR pszClassName )

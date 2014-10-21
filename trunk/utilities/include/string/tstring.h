@@ -680,7 +680,7 @@ namespace SOUI
             if(p2 < p1)
                 Empty();
             else
-                (*this) = TStringT<tchar, tchar_traits>(p1,p2-p1+1);
+                (*this) = TStringT<tchar, tchar_traits>(p1,(int)(p2-p1+1));
         }
 
         // insert character at zero-based index; concatenates if index is past end of string
