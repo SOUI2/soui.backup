@@ -1436,8 +1436,8 @@ HRESULT SRichEdit::OnAttrRTF( const SStringW & strValue,BOOL bLoading )
         return S_FALSE;
     }else
     {
-        SStringWList lstSrc;
-        int nSegs = SplitString(strValue,L':',lstSrc);
+        SStringTList lstSrc;
+        int nSegs = SplitString(S_CW2T(strValue),_T(':'),lstSrc);
 
         if(nSegs == 2)
         {//load from resource
@@ -1456,7 +1456,7 @@ HRESULT SRichEdit::OnAttrRTF( const SStringW & strValue,BOOL bLoading )
             }
         }else
         {//load from file
-            FILE *f=_wfopen(lstSrc[0],L"rb");
+            FILE *f=_tfopen(lstSrc[0],_T("rb"));
             if(f)
             {
                 EDITSTREAM es;

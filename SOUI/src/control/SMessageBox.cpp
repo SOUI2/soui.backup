@@ -155,7 +155,7 @@ namespace SOUI
         for(int i=0; i<g_msgBtnText[uType].nBtns; i++)
         {
             SWindow *pBtn=pBtnPanel->FindChildByName(g_wcsNameOfBtns[i]);
-            pBtn->SetWindowText(TR(g_msgBtnText[uType].btnInfo[i].szText,GetTranslatorContext()));    
+            pBtn->SetWindowText(S_CW2T(TR(S_CT2W(g_msgBtnText[uType].btnInfo[i].szText),GetTranslatorContext())));    
             pBtn->SetID(g_msgBtnText[uType].btnInfo[i].uBtnID);
         }
         
@@ -168,11 +168,11 @@ namespace SOUI
 
         SWindow * pTitle= FindChildByName(NAME_MSGBOX_TITLE);
         SASSERT(pTitle);
-        pTitle->SetWindowText(TR(s_MsgBoxInfo.pszCaption?s_MsgBoxInfo.pszCaption:_T("prompt"),GetTranslatorContext()));
+        pTitle->SetWindowText(S_CW2T(TR(s_MsgBoxInfo.pszCaption?S_CT2W(s_MsgBoxInfo.pszCaption):L"prompt",GetTranslatorContext())));
 
         SWindow * pMsg= FindChildByName(NAME_MSGBOX_TEXT);
         SASSERT(pMsg);
-        pMsg->SetWindowText(TR(s_MsgBoxInfo.pszText,GetTranslatorContext()));
+        pMsg->SetWindowText(S_CW2T(TR(S_CT2W(s_MsgBoxInfo.pszText),GetTranslatorContext())));
 
         OnSetIcon(s_MsgBoxInfo.uType);
 

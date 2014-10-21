@@ -241,7 +241,7 @@ BOOL SMenu::InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTSTR 
     pMenuData->hMenu=m_hMenu;
     pMenuData->itemInfo.iIcon=iIcon;
     pMenuData->itemInfo.strText=strText;
-    pMenuData->itemInfo.strText=S_CW2T(TR(strText,m_menuAttr.m_strTrCtx));
+    pMenuData->itemInfo.strText=S_CW2T(TR(S_CT2W(strText),m_menuAttr.m_strTrCtx));
 
     if(nFlags&MF_POPUP)
     {
