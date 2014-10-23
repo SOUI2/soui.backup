@@ -24,6 +24,7 @@ CONFIG(debug,debug|release){
 else{
 	LIBS += utilities.lib soui.lib
 }
+qqlogin.depends += utilities soui
 
 PRECOMPILED_HEADER = stdafx.h
 

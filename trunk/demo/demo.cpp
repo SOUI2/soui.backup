@@ -25,12 +25,6 @@
 #define SYS_NAMED_RESOURCE _T("soui-sys-resource.dll")
 #endif
 
-#ifdef DLL_SOUI_COM
-#include "com-cfg-dll.h"    //组件采用DLL的配置
-#else
-#include "com-cfg-lib.h"    //组件采用LIB的配置
-#endif
-
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
@@ -40,11 +34,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
     int nRet = 0; 
 
-    #ifdef DLL_SOUI_COM
-    SComMgrDll *pComMgr = new SComMgrDll;
-    #else
-    SComMgrLib *pComMgr = new SComMgrLib;
-    #endif
+    SComMgr *pComMgr = new SComMgr;
     
     //将程序的运行路径修改到demo所在的目录
     TCHAR szCurrentDir[MAX_PATH]={0};

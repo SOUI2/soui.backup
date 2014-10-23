@@ -13,14 +13,6 @@ INCLUDEPATH += . \
 dir = ..
 include($$dir/common.pri)
 
-CONFIG(DLL_SOUI){
-    DEFINES += DLL_SOUI
-}
-
-!CONFIG(LIB_SOUI_COM){
-	DEFINES += DLL_SOUI_COM
-}
-
 
 CONFIG(debug,debug|release){
 	LIBS += utilitiesd.lib souid.lib
@@ -29,7 +21,7 @@ else{
 	LIBS += utilities.lib soui.lib
 }
 
-depends += utilities soui
+demo.depends += utilities soui
 
 PRECOMPILED_HEADER = stdafx.h
 
@@ -63,3 +55,4 @@ SOURCES += demo.cpp \
            memflash.cpp
 
 RC_FILE += demo.rc
+
