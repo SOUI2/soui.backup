@@ -22,6 +22,7 @@ CONFIG(debug,debug|release){
 else{
 	LIBS += utilities.lib
 }
+soui.depends += utilities
 
 PRECOMPILED_HEADER = include/souistd.h
 

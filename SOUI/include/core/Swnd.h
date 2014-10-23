@@ -402,7 +402,7 @@ namespace SOUI
         /**
         * KillTimer2
         * @brief    删除一个SetTimer2设置的定时器
-        * @param    UINT_PTR id --  
+        * @param    UINT_PTR id --  SetTimer2设置的定时器ID
         * @return   void 
         *
         * Describe  需要枚举定时器列表

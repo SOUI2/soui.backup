@@ -300,15 +300,9 @@ void SHostWnd::OnSize(UINT nType, CSize size)
         return;
     
     m_memRT->Resize(size);
-
-    CRect rcClient;
-    CSimpleWnd::GetClientRect(rcClient);
-
-    Move(rcClient);
+    Move(CRect(0,0,size.cx,size.cy));
 
     _Redraw();
-
-    SetMsgHandled(FALSE);//交给其它处理器继续处理
 }
 
 void SHostWnd::OnMouseMove(UINT nFlags, CPoint point)
