@@ -6,24 +6,18 @@ INCLUDEPATH += .
 SUBDIRS += utilities
 SUBDIRS += soui
 SUBDIRS += soui-sys-resource
-SUBDIRS += components/imgdecoder-wic
-SUBDIRS += components/render-gdi
-SUBDIRS += components/skia
-SUBDIRS += components/render-skia
-SUBDIRS += components/translator
-SUBDIRS += components/zlib
-SUBDIRS += components/png
-SUBDIRS += components/resprovider-zip
-SUBDIRS += components/imgdecoder-stb
-SUBDIRS += components/imgdecoder-png
+SUBDIRS += components
 
-DLL_SOUI{
-	SUBDIRS += components/ScriptModule-LUA/lua-51
-	SUBDIRS += components/ScriptModule-LUA/ScriptModule
-}
 SUBDIRS += demo
 !LIB_SOUI_COM{
 	SUBDIRS += qqlogin
 	SUBDIRS += 360
 	SUBDIRS += souispy
+	
+	qqlogin.depends = soui
+	360.depends = soui
+	souispy.depends = soui
 }
+
+soui.depends += utilities
+demo.depends += soui

@@ -234,7 +234,7 @@ void SListBoxEx::RedrawItem(int iItem)
     BeforePaint(pRT,painter);
 
     SSendMessage(WM_ERASEBKGND,(WPARAM)pRT);
-    OnDrawItem(pRT,rcItem,iItem);
+    DrawItem(pRT,rcItem,iItem);
 
     AfterPaint(pRT,painter);
     ReleaseRenderTarget(pRT);
@@ -284,7 +284,7 @@ void SListBoxEx::OnPaint(IRenderTarget * pRT)
         rcItem.OffsetRect(m_rcClient.TopLeft());
         rcInter.IntersectRect(&rcClip,&rcItem);
         if(!rcInter.IsRectEmpty())
-            OnDrawItem(pRT,rcItem,iItem);
+            DrawItem(pRT,rcItem,iItem);
     }
     pRT->PopClip();
     AfterPaint(pRT,duiDC);
@@ -297,7 +297,7 @@ void SListBoxEx::OnSize( UINT nType, CSize size )
     Relayout();
 }
 
-void SListBoxEx::OnDrawItem(IRenderTarget *pRT, CRect & rc, int iItem)
+void SListBoxEx::DrawItem(IRenderTarget *pRT, CRect & rc, int iItem)
 {
     EventLBGetDispInfo evt(this);
     evt.bHover=iItem == m_iHoverItem;
