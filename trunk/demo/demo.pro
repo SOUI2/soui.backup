@@ -29,6 +29,8 @@ else{
 	LIBS += utilities.lib soui.lib
 }
 
+depends += utilities soui
+
 PRECOMPILED_HEADER = stdafx.h
 
 # Input

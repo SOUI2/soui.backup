@@ -91,19 +91,19 @@ public:
 
     /**
      * SListBox::GetTopIndex
-     * @brief    获取置顶项选项索引
+     * @brief    获取第一条可见记录索引
      * @return   返回int
      *
-     * Describe  设置选中项
+     * Describe  
      */
     inline int GetTopIndex() const;
 
     /**
      * SListBox::SetTopIndex
-     * @brief    设置置顶项
-     * @param    int nIndex -- 待置顶项索引
+     * @brief    设置第一条可见记录索引
+     * @param    int nIndex -- 第一条可见记录索引
      *
-     * Describe  设置置顶项
+     * Describe  
      */
     BOOL SetTopIndex(int nIndex);
 
@@ -311,7 +311,7 @@ protected:
      *
      * Describe  绘制
      */
-    void DrawItem(IRenderTarget *pRT, CRect &rc, int iItem);
+    virtual void DrawItem(IRenderTarget *pRT, CRect &rc, int iItem);
 
     /**
      * SListBox::NotifySelChange

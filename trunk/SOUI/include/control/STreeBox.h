@@ -307,7 +307,7 @@ protected:
      * 
      * Describe  ÖØÐÂ»æÖÆ
      */
-    void DrawItem(IRenderTarget *pRT, CRect & rc, HSTREEITEM hItem);
+    virtual void DrawItem(IRenderTarget *pRT, CRect & rc, HSTREEITEM hItem);
 
     /**
      * STreeBox::OnPaint

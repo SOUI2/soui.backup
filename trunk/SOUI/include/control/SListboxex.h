@@ -275,7 +275,7 @@ protected:
     void OnSize(UINT nType, CSize size);
 
     /**
-     * SListBoxEx::OnDrawItem
+     * SListBoxEx::DrawItem
      * @brief    绘制
      * @param    IRenderTarget *pRT  -- 绘制设备
      * @param    CRect & rc -- 位置
@@ -283,7 +283,7 @@ protected:
      *
      * Describe  绘制
      */
-    virtual void OnDrawItem(IRenderTarget *pRT, CRect & rc, int iItem);
+    virtual void DrawItem(IRenderTarget *pRT, CRect & rc, int iItem);
 
     /**
      * SListBoxEx::CreateChildren
