@@ -3,26 +3,23 @@ TARGET = soui
 DEPENDPATH += .
 INCLUDEPATH += .
 
-DLL_SOUI{
-	system(copy soui\def\dll.h soui\include\def.h)
-}
-else{
-	system(copy soui\def\lib.h soui\include\def.h)
-}
+include(cpy-cfg.pri)
 
-CONFIG(LIB_SOUI_COM){
-	DEFINES += LIB_SOUI_COM
-}
-
+SUBDIRS += coll-mem
 SUBDIRS += utilities
 SUBDIRS += soui
-SUBDIRS += soui-sys-resource
 SUBDIRS += components
 
+SUBDIRS += soui-sys-resource
 SUBDIRS += demo
-!LIB_SOUI_COM{
-	SUBDIRS += qqlogin
-	SUBDIRS += 360
-	SUBDIRS += souispy
-}
+SUBDIRS += qqlogin
+SUBDIRS += 360
+SUBDIRS += souispy
 
+utilities.depends += coll-mem
+soui.depends += utilities
+
+360.depends += utilities soui
+demo.depends += utilities soui
+qqlogin.depends += utilities soui
+souispy.depends += utilities soui

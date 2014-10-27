@@ -22,6 +22,13 @@
 #include <assert.h>
 #include <wchar.h>
 
+#include <coll-mem.h>
+#ifdef _DEBUG
+#pragma comment(lib,"coll-memd.lib")
+#else
+#pragma comment(lib,"coll-mem.lib")
+#endif
+
 #ifndef PUGIXML_NO_XPATH
 #	include <math.h>
 #	include <float.h>
@@ -137,15 +144,6 @@ PUGI__NS_END
 
 // Memory allocation
 PUGI__NS_BEGIN
-	PUGI__FN void* default_allocate(size_t size)
-	{
-		return malloc(size);
-	}
-
-	PUGI__FN void default_deallocate(void* ptr)
-	{
-		free(ptr);
-	}
 
 	template <typename T>
 	struct xml_memory_management_function_storage
@@ -154,8 +152,8 @@ PUGI__NS_BEGIN
 		static deallocation_function deallocate;
 	};
 
-	template <typename T> allocation_function xml_memory_management_function_storage<T>::allocate = default_allocate;
-	template <typename T> deallocation_function xml_memory_management_function_storage<T>::deallocate = default_deallocate;
+	template <typename T> allocation_function xml_memory_management_function_storage<T>::allocate = CollMalloc;
+	template <typename T> deallocation_function xml_memory_management_function_storage<T>::deallocate = CollFree;
 
 	typedef xml_memory_management_function_storage<int> xml_memory;
 PUGI__NS_END

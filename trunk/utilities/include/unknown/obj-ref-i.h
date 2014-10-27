@@ -1,8 +1,9 @@
 #pragma once
 
 #include "../utilities-def.h"
+#include <com-def.h>
 
-#ifndef DLL_SOUI_COM
+#ifdef LIB_SOUI_COM
 #define SOUI_COM_API
 #define SOUI_COM_C
 #else

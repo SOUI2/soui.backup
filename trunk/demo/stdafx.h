@@ -8,7 +8,6 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 #include <winsock2.h>
-#include <def.h>
 #include <souistd.h>
 #include <core/SHostDialog.h>
 #include <control/SMessageBox.h>

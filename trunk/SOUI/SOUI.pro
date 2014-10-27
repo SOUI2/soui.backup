@@ -5,8 +5,8 @@
 TEMPLATE = lib
 TARGET = soui
 
-CONFIG(DLL_SOUI){
-    DEFINES += DLL_SOUI SOUI_EXPORTS
+!LIB_ALL:!LIB_CORE{
+    DEFINES += SOUI_EXPORTS
 	RC_FILE += soui.rc
 }
 else{
@@ -22,7 +22,6 @@ CONFIG(debug,debug|release){
 else{
 	LIBS += utilities.lib
 }
-soui.depends += utilities
 
 PRECOMPILED_HEADER = include/souistd.h
 

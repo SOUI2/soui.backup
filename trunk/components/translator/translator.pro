@@ -5,14 +5,13 @@
 TEMPLATE = lib
 TARGET = translator
 
-!CONFIG(LIB_SOUI_COM){
-	DEFINES += DLL_SOUI_COM
+
+!LIB_ALL:!COM_LIB{
 	RC_FILE += translator.rc
 }
 else{
 	CONFIG += staticlib
 }
-
 
 DEPENDPATH += .
 INCLUDEPATH += . \
@@ -21,6 +20,7 @@ INCLUDEPATH += . \
 
 dir = ../..
 include($$dir/common.pri)
+
 
 CONFIG(debug,debug|release){
 	LIBS += utilitiesd.lib

@@ -1,13 +1,13 @@
+#include <core-def.h>
 
-#ifdef DLL_SOUI
+#ifdef DLL_CORE
 # ifdef SOUI_EXPORTS
-#  define SOUI_EXP __declspec(dllexport)
+#   define SOUI_EXP __declspec(dllexport)
 # else
-#  define SOUI_EXP __declspec(dllimport)
+#   define SOUI_EXP __declspec(dllimport)
 # endif // SOUI_EXPORTS
 #else
-# pragma message("soui:lib")
-#define SOUI_EXP
+#   define SOUI_EXP
 #endif
 
 #define OR_API SOUI_EXP

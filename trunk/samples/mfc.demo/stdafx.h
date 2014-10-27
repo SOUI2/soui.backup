@@ -26,8 +26,6 @@
 
 #include "resource.h"	//APP×ÊÔ´
 
-#define	 DLL_SOUI
-
 #include <souistd.h>
 #include <core/SHostDialog.h>
 #include <control/SMessageBox.h>

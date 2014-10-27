@@ -5,8 +5,7 @@
 TEMPLATE = lib
 TARGET =  resprovider-zip
 
-!CONFIG(LIB_SOUI_COM){
-	DEFINES += DLL_SOUI_COM
+!LIB_ALL:!COM_LIB{
 	RC_FILE += ResProvider-Zip.rc
 }
 else{
@@ -30,6 +29,7 @@ CONFIG(debug,debug|release){
 else{
 	LIBS += zlib.lib utilities.lib
 }
+
 
 PRECOMPILED_HEADER = stdafx.h
 
