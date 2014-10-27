@@ -4,6 +4,8 @@
 
 #define MAX_TRACEBUF    502
 
+#include "souicoll.h"
+
 namespace SOUI
 {
 void  STraceA(LPCSTR pstrFormat, ...)

@@ -14,7 +14,7 @@ SUBDIRS += resprovider-zip
 SUBDIRS += imgdecoder-stb
 SUBDIRS += imgdecoder-png
 
-DLL_SOUI{
+!LIB_ALL:!LIB_SOUI{
 	SUBDIRS += ScriptModule-LUA
 }
 
@@ -22,3 +22,4 @@ imgdecoder-png.depends += zlib png
 render-skia.depends += skia
 resprovider-zip.depends += zlib utilities
 translator.depends += utilities
+resprovider-zip.depends += zlib utilities

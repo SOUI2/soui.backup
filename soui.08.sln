@@ -5,6 +5,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "render-skia", "render-skia", "{D7624109-CB66-4AA1-9F07-504B5D51BFB6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utilities", "utilities\utilities.vcproj", "{AA622115-A2D7-311C-8A48-65583D039DC6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{590CFCAC-8EDD-355F-A8AA-81C425D00E7B} = {590CFCAC-8EDD-355F-A8AA-81C425D00E7B}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "soui", "SOUI\soui.vcproj", "{0BA3E0B9-F4A6-326C-A97C-1FC118416129}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -79,6 +82,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{4DF98E2B-7A65-4C6A-A19E-4CA2E9BE3B87}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "skia", "components\skia\skia.vcproj", "{D2E3D7E8-56A1-3BEE-A58C-80C268323152}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coll-mem", "coll-mem\coll-mem.vcproj", "{590CFCAC-8EDD-355F-A8AA-81C425D00E7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -162,6 +167,10 @@ Global
 		{D2E3D7E8-56A1-3BEE-A58C-80C268323152}.Debug|Win32.Build.0 = Debug|Win32
 		{D2E3D7E8-56A1-3BEE-A58C-80C268323152}.Release|Win32.ActiveCfg = Release|Win32
 		{D2E3D7E8-56A1-3BEE-A58C-80C268323152}.Release|Win32.Build.0 = Release|Win32
+		{590CFCAC-8EDD-355F-A8AA-81C425D00E7B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{590CFCAC-8EDD-355F-A8AA-81C425D00E7B}.Debug|Win32.Build.0 = Debug|Win32
+		{590CFCAC-8EDD-355F-A8AA-81C425D00E7B}.Release|Win32.ActiveCfg = Release|Win32
+		{590CFCAC-8EDD-355F-A8AA-81C425D00E7B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

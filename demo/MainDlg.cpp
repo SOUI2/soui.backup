@@ -129,7 +129,7 @@ LRESULT CMainDlg::OnInitDialog( HWND hWnd, LPARAM lParam )
     m_bLayoutInited=TRUE;
     InitListCtrl();
     
-#ifdef DLL_SOUI
+#ifdef DLL_CORE
     SWindow *pTst=FindChildByName(L"btn_tstevt");
     if(pTst) SApplication::getSingleton().GetScriptModule()->subscribeEvent(pTst,EVT_CMD,"onEvtTstClick");
 #endif

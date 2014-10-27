@@ -4,8 +4,7 @@
 TEMPLATE = lib
 TARGET = render-skia
 
-!CONFIG(LIB_SOUI_COM){
-	DEFINES += DLL_SOUI_COM
+!LIB_ALL:!COM_LIB{
 	RC_FILE += render-skia.rc
 }
 else{

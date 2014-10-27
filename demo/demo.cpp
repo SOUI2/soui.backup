@@ -112,7 +112,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
                 trans->InstallTranslator(langCN);
             }
         }
-#ifdef DLL_SOUI
+#ifdef DLL_CORE
         //加载LUA脚本模块，注意，脚本模块只有在SOUI内核是以DLL方式编译时才能使用。
         bLoaded=pComMgr->CreateScrpit_Lua((IObjRef**)&pScriptLua);
         SASSERT_FMT(bLoaded,_T("load interface [%s] failed!"),_T("scirpt_lua"));
@@ -129,7 +129,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
                 pScriptLua->executeScriptBuffer(lua,sz);
             }
         }
-#endif//DLL_SOUI
+#endif//DLL_CORE
 
         //向SApplication系统中注册由外部扩展的控件及SkinObj类
         SWkeLoader wkeLoader;

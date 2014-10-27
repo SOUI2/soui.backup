@@ -3,24 +3,26 @@
 ######################################################################
 
 TEMPLATE = lib
-
 TARGET = utilities
+INCLUDEPATH += .
+INCLUDEPATH += ./include
 
 dir = ..
 include($$dir/common.pri)
 
-DEFINES += UTILITIES_EXPORTS
-
-INCLUDEPATH += .
-INCLUDEPATH += ./include
+!LIB_ALL:!LIB_CORE{
+	DEFINES += UTILITIES_EXPORTS
+	RC_FILE += utilities.rc
+}
+else{
+    CONFIG += staticlib
+}
 
 PRECOMPILED_HEADER = stdafx.h
 
-RC_FILE += utilities.rc
 
 # Input
-HEADERS += targetver.h \
-           include/gdialpha.h \
+HEADERS += include/gdialpha.h \
            include/souicoll.h \
            include/trace.h \
            include/utilities-def.h \
@@ -42,3 +44,4 @@ SOURCES += src/gdialpha.cpp \
            src/utilities.cpp \
            src/pugixml/pugixml.cpp \
            src/string/strcpcvt.cpp	\
+           src/string/tstring.cpp	\

@@ -1,5 +1,7 @@
 CONFIG -= qt
-CONFIG += exceptions_off stl_off  
+CONFIG += stl_off  
+INCLUDEPATH += $$dir/config
+INCLUDEPATH += $$dir/coll-mem
 
 !CONFIG(MBCS){
 	CharacterSet = 1
@@ -44,6 +46,9 @@ else{
 }
 else{
 	QMAKE_CXXFLAGS += /clr
+	CONFIG += exceptions_off
+	#关闭异常
+	QMAKE_CXXFLAGS -= -EHsc
 }
 
 QMAKE_CXXFLAGS += -Fd$(IntDir)
@@ -75,8 +80,6 @@ CONFIG(USING_CLR){
 	QMAKE_CXXFLAGS_RELEASE += /MD
 	QMAKE_CXXFLAGS_DEBUG += /MDd
 }
-#关闭异常
-QMAKE_CXXFLAGS -= -EHsc
 
 win32-msvc*{
     QMAKE_CXXFLAGS += /wd4100 /wd4101 /wd4102 /wd4189 /wd4996

@@ -8,6 +8,7 @@ DEPENDPATH += .
 INCLUDEPATH += . \
 			   ../utilities/include \
 			   ../soui/include \
+			   ../components \
 			   
 dir = ..
 include($$dir/common.pri)
@@ -18,7 +19,6 @@ CONFIG(debug,debug|release){
 else{
 	LIBS += utilities.lib soui.lib
 }
-souispy.depends += utilities soui
 
 PRECOMPILED_HEADER = stdafx.h
 

@@ -20,12 +20,12 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\third-part\wke\include&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\third-part\wke\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,&quot;..\coll-mem&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\obj\debug\demo\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
-				ExceptionHandling="0"
+				ExceptionHandling="1"
 				ForcedIncludeFiles="stdafx.h"
 				GeneratePreprocessedFile="0"
 				ObjectFile="..\obj\debug\demo\"
@@ -82,12 +82,12 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\third-part\wke\include&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\third-part\wke\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,&quot;..\coll-mem&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\obj\release\demo\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
-				ExceptionHandling="0"
+				ExceptionHandling="1"
 				ForcedIncludeFiles="stdafx.h"
 				GeneratePreprocessedFile="0"
 				ObjectFile="..\obj\release\demo\"

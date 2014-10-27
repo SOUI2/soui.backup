@@ -10,6 +10,7 @@
 #include <control/SMessageBox.h>
 #include <control/souictrls.h>
 #include <res.mgr/sobjdefattr.h>
+#include <com-cfg.h>
 
 #include "resource.h"
 

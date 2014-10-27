@@ -19,7 +19,12 @@
 #endif
 
 #include "../utilities-def.h"
-#include <malloc.h>
+#include <coll-mem.h>
+#ifdef _DEBUG
+#pragma comment(lib,"coll-memd.lib")
+#else
+#pragma comment(lib,"coll-mem.lib")
+#endif
 
 namespace SOUI
 {
@@ -29,8 +34,6 @@ namespace SOUI
         long nRefs;            // Reference count: negative == locked
         int nDataLength;    // Length of currently used data in XCHARs (not including terminating null)
         int nAllocLength;    // Length of allocated data in XCHARs (not including terminating null)
-        //    void* pReversed;    // String manager for this StringData
-        //    tchar data[nAllocLength+1]    // A TStringData is always followed in memory by the actual array of character data
 
         inline void* data() const
         {
@@ -46,7 +49,7 @@ namespace SOUI
         {
             SASSERT(nRefs != 0);
             if (InterlockedDecrement(&nRefs) <= 0)
-                free(this);
+                CollFree(this);
         }
         inline bool IsShared() const
         {
@@ -76,34 +79,10 @@ namespace SOUI
         }
     };
 
-    // Globals
 
-    // For an empty string, m_pszData will point here
-    // (note: avoids special case of checking for NULL m_pszData)
-    // empty string data (and locked)
-    _declspec(selectany) int _tstr_rgInitData[] = { -1, 0, 0, 0, 0, 0, 0, 0 };
-    _declspec(selectany) TStringData* _tstr_initDataNil = (TStringData*)&_tstr_rgInitData;
-    _declspec(selectany) const void* _tstr_initPszNil = (const void*)(((unsigned char*)&_tstr_rgInitData) + sizeof(TStringData));
 
-#define VIRTUAL_FORMAT_MAX_SIZE    (dwPageSize * 1024)    //    4096 * 1024
-
-    static int PageFaultExceptionFilter(DWORD dwCode, void* pBaseAddr, DWORD* pdwAllocSize, DWORD dwPageSize)
-    {
-        void* pResult = NULL;
-
-        if (dwCode != EXCEPTION_ACCESS_VIOLATION)
-            return EXCEPTION_EXECUTE_HANDLER;
-
-        if (*pdwAllocSize + dwPageSize > VIRTUAL_FORMAT_MAX_SIZE)
-            return EXCEPTION_EXECUTE_HANDLER;
-
-        pResult = VirtualAlloc((BYTE*)pBaseAddr + *pdwAllocSize, dwPageSize, MEM_COMMIT, PAGE_READWRITE);
-        if (pResult == NULL)
-            return EXCEPTION_EXECUTE_HANDLER;
-
-        *pdwAllocSize += dwPageSize;
-        return EXCEPTION_CONTINUE_EXECUTION;
-    }
+    extern TStringData* _tstr_initDataNil;
+    extern const void* _tstr_initPszNil;
 
     struct char_traits;
     struct wchar_traits;
@@ -194,38 +173,12 @@ namespace SOUI
             return psz + 1;
 #endif
         }
-        static int VirtualFormat(char** ppszDst, const char* pszFormat, va_list args)
+        static int Format(char** ppszDst, const char* pszFormat, va_list args)
         {
-            DWORD dwAllocSize = 0, dwPageSize = 0;
-            char* pszBuffer = NULL;
-            int nLength = 0;
-
-            SYSTEM_INFO si;
-            GetSystemInfo(&si);
-            dwPageSize = si.dwPageSize;
-
-            *ppszDst = NULL;
-
-            pszBuffer = (char*)VirtualAlloc(NULL, VIRTUAL_FORMAT_MAX_SIZE, MEM_RESERVE, PAGE_READWRITE);
-            if (pszBuffer == NULL)
-                return NULL;
-
-            dwAllocSize = dwPageSize;
-            pszBuffer = (char*)::VirtualAlloc(pszBuffer, dwPageSize, MEM_COMMIT, PAGE_READWRITE);
-            if (pszBuffer == NULL)
-                return NULL;
-
-            __try
-            {
-                nLength = vsprintf(pszBuffer, pszFormat, args);
-            }
-            __except (PageFaultExceptionFilter(GetExceptionCode(), pszBuffer, &dwAllocSize, dwPageSize))
-            {
-                VirtualFree(pszBuffer, 0, MEM_RELEASE);
-                return 0;
-            }
-            *ppszDst = pszBuffer;
-            return nLength;
+            int len = _vscprintf( pszFormat, args )+1; // _vscprintf doesn't count terminating '\0'
+            *ppszDst = (char*)CollMalloc(len);
+            vsprintf(*ppszDst, pszFormat, args);
+            return len;
         }
     };
 
@@ -282,38 +235,12 @@ namespace SOUI
         {
             return psz + 1;
         }
-        static int VirtualFormat(wchar_t** ppszDst, const wchar_t* pszFormat, va_list args)
+        static int Format(wchar_t** ppszDst, const wchar_t* pszFormat, va_list args)
         {
-            DWORD dwAllocSize = 0, dwPageSize = 0;
-            wchar_t* pszBuffer = NULL;
-            int nLength = 0;
-
-            SYSTEM_INFO si;
-            GetSystemInfo(&si);
-            dwPageSize = si.dwPageSize;
-
-            *ppszDst = NULL;
-
-            pszBuffer = (wchar_t*)VirtualAlloc(NULL, VIRTUAL_FORMAT_MAX_SIZE, MEM_RESERVE, PAGE_READWRITE);
-            if (pszBuffer == NULL)
-                return NULL;
-
-            dwAllocSize = dwPageSize;
-            pszBuffer = (wchar_t*)::VirtualAlloc(pszBuffer, dwPageSize, MEM_COMMIT, PAGE_READWRITE);
-            if (pszBuffer == NULL)
-                return NULL;
-
-            __try
-            {
-                nLength = vswprintf(pszBuffer, pszFormat, args);
-            }
-            __except (PageFaultExceptionFilter(GetExceptionCode(), pszBuffer, &dwAllocSize, dwPageSize))
-            {
-                VirtualFree(pszBuffer, 0, MEM_RELEASE);
-                return 0;
-            }
-            *ppszDst = pszBuffer;
-            return nLength;
+            int len = _vscwprintf( pszFormat, args )+1; // _vscprintf doesn't count terminating '\0'
+            *ppszDst = (wchar_t*)CollMalloc(len*sizeof(wchar_t));
+            vswprintf(*ppszDst, pszFormat, args);
+            return len;
         }
     };
 
@@ -924,7 +851,7 @@ namespace SOUI
 
             va_list argList;
             va_start(argList, nFormatID);
-            BOOL bRet = FormatV(strFormat, argList);
+            BOOL bRet = _Format(strFormat, argList);
             va_end(argList);
             return bRet;
         }
@@ -936,47 +863,17 @@ namespace SOUI
 
             va_list argList;
             va_start(argList, nFormatID);
-            AppendFormatV(strFormat, argList);
+            _AppendFormat(strFormat, argList);
             va_end(argList);
         }
 #endif
-        BOOL FormatV(const tchar* pszFormat, va_list args)
-        {
-            if (pszFormat == NULL || *pszFormat == '\0')
-            {
-                Empty();
-                return FALSE;
-            }
 
-            tchar* pszBuffer = NULL;
-            int nLength = tchar_traits::VirtualFormat(&pszBuffer, pszFormat, args);
-            if (nLength > 0 && pszBuffer != NULL)
-            {
-                *this = TStringT(pszBuffer, nLength);
-                ::VirtualFree(pszBuffer, 0, MEM_RELEASE);
-                return TRUE;
-            }
-            return FALSE;
-        }
-        void AppendFormatV(const tchar* pszFormat, va_list args)
-        {
-            if (pszFormat == NULL || *pszFormat == '\0')
-                return;
-
-            tchar* pszBuffer = NULL;
-            int nLength = tchar_traits::VirtualFormat(&pszBuffer, pszFormat, args);
-            if (nLength > 0 && pszBuffer != NULL)
-            {
-                *this += TStringT(pszBuffer, nLength);
-                ::VirtualFree(pszBuffer, 0, MEM_RELEASE);
-            }
-        }
         // formatting (using sprintf style formatting)
         BOOL __cdecl Format(const tchar* pszFormat, ...)
         {
             va_list argList;
             va_start(argList, pszFormat);
-            BOOL bRet = FormatV(pszFormat, argList);
+            BOOL bRet = _Format(pszFormat, argList);
             va_end(argList);
             return bRet;
         }
@@ -985,7 +882,7 @@ namespace SOUI
         {
             va_list argList;
             va_start(argList, pszFormat);
-            AppendFormatV(pszFormat, argList);
+            _AppendFormat(pszFormat, argList);
             va_end(argList);
         }
 
@@ -1175,6 +1072,39 @@ namespace SOUI
             m_pszData = (tchar*)_tstr_initPszNil;
         }
 
+        BOOL _Format(const tchar* pszFormat, va_list args)
+        {
+            if (pszFormat == NULL || *pszFormat == '\0')
+            {
+                Empty();
+                return FALSE;
+            }
+
+            tchar* pszBuffer = NULL;
+            int nLength = tchar_traits::Format(&pszBuffer, pszFormat, args);
+            if (nLength > 0 && pszBuffer != NULL)
+            {
+                *this = TStringT(pszBuffer, nLength);
+                CollFree(pszBuffer);
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        void _AppendFormat(const tchar* pszFormat, va_list args)
+        {
+            if (pszFormat == NULL || *pszFormat == '\0')
+                return;
+
+            tchar* pszBuffer = NULL;
+            int nLength = tchar_traits::Format(&pszBuffer, pszFormat, args);
+            if (nLength > 0 && pszBuffer != NULL)
+            {
+                *this += TStringT(pszBuffer, nLength);
+                CollFree(pszBuffer);
+            }
+        }
+
         // Assignment operators
         //  All assign a new value to the string
         //      (a) first see if the buffer is big enough
@@ -1356,9 +1286,9 @@ namespace SOUI
             int nSize = sizeof(TStringData) + (nLength + 1 + TSTRING_PADDING) * sizeof(tchar);
             TStringData* pData;
             if (pOldData == NULL)
-                pData = (TStringData*)malloc(nSize);
+                pData = (TStringData*)CollMalloc(nSize);
             else
-                pData = (TStringData*)realloc(pOldData, nSize);
+                pData = (TStringData*)CollRealloc(pOldData, nSize);
             if (pData == NULL)
                 return NULL;
 
@@ -1387,6 +1317,10 @@ namespace SOUI
 
     protected:
         tchar* m_pszData;   // pointer to ref counted string data
+
+        // For an empty string, m_pszData will point here
+        // (note: avoids special case of checking for NULL m_pszData)
+        // empty string data (and locked)
     };
 
 #ifdef UTILITIES_EXPORTS

@@ -9,6 +9,7 @@ INCLUDEPATH += . \
 			   ../utilities/include \
 			   ../soui/include \
 			   ../third-part/wke/include \
+			   ../components \
 			   
 dir = ..
 include($$dir/common.pri)
@@ -20,8 +21,6 @@ CONFIG(debug,debug|release){
 else{
 	LIBS += utilities.lib soui.lib
 }
-
-demo.depends += utilities soui
 
 PRECOMPILED_HEADER = stdafx.h
 

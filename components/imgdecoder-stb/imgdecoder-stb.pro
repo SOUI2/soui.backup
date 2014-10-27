@@ -5,8 +5,7 @@
 TEMPLATE = lib
 TARGET = imgdecoder-stb
 
-!CONFIG(LIB_SOUI_COM){
-	DEFINES += DLL_SOUI_COM
+!LIB_ALL:!COM_LIB{
 	RC_FILE += imgdecoder-stb.rc
 }
 else{

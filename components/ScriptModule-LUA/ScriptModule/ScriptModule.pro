@@ -5,8 +5,7 @@
 TEMPLATE = lib
 TARGET = scriptmodule-lua
 
-!CONFIG(LIB_SOUI_COM){
-	DEFINES += DLL_SOUI_COM
+!LIB_ALL:!COM_LIB{
 	RC_FILE += ScriptModule-Lua.rc
 }
 else{
@@ -23,7 +22,6 @@ INCLUDEPATH += . \
 dir = ../../..
 include($$dir/common.pri)
 
-DEFINES += DLL_SOUI
 
 CONFIG(debug,debug|release){
 	LIBS += lua-51d.lib souid.lib utilitiesd.lib
@@ -31,6 +29,7 @@ CONFIG(debug,debug|release){
 else{
 	LIBS += lua-51.lib soui.lib utilities.lib
 }
+scriptmodule-lua.depends = utilities soui lua-51
 
 PRECOMPILED_HEADER = stdafx.h
 

@@ -14,7 +14,12 @@
 #pragma once
 
 #include <limits.h>
-#include <malloc.h>
+#include <coll-mem.h>
+#ifdef _DEBUG
+#pragma comment(lib,"coll-memd.lib")
+#else
+#pragma comment(lib,"coll-mem.lib")
+#endif
 
 #pragma warning(push)
 #pragma warning(disable: 4702)  // Unreachable code.  This file will have lots of it, especially without EH enabled.
@@ -226,7 +231,7 @@ struct SPlex     // warning variable length structure
     // like 'calloc' but no zero fill
     // may throw memory exceptions
 
-    void FreeDataChain();       // free this one and links
+    void FreeDataChain();       // CollFree this one and links
 };
 
 inline SPlex* SPlex::Create( SPlex*& pHead, size_t nMax, size_t nElementSize )
@@ -242,7 +247,7 @@ inline SPlex* SPlex::Create( SPlex*& pHead, size_t nMax, size_t nElementSize )
     {
         return NULL;
     }
-    pPlex = static_cast< SPlex* >( malloc( nBytes ) );
+    pPlex = static_cast< SPlex* >( CollMalloc( nBytes ) );
     if( pPlex == NULL )
     {
         return( NULL );
@@ -264,7 +269,7 @@ inline void SPlex::FreeDataChain()
         SPlex* pNext;
 
         pNext = pPlex->pNext;
-        free( pPlex );
+        CollFree( pPlex );
         pPlex = pNext;
     }
 }
@@ -454,7 +459,7 @@ public:
 };
 
 template< typename T >
-class CDuiStringRefElementTraits :
+class SStringRefElementTraits :
     public CElementTraitsBase< T >
 {
 public:
@@ -718,7 +723,7 @@ SArray< E, ETraits >::~SArray()
     if( m_pData != NULL )
     {
         CallDestructors( m_pData, m_nSize );
-        free( m_pData );
+        CollFree( m_pData );
     }
 }
 
@@ -730,7 +735,7 @@ bool SArray< E, ETraits >::GrowBuffer( size_t nNewSize )
         if( m_pData == NULL )
         {
             size_t nAllocSize =  size_t( m_nGrowBy ) > nNewSize ? size_t( m_nGrowBy ) : nNewSize ;
-            m_pData = static_cast< E* >( calloc( nAllocSize,sizeof( E ) ) );
+            m_pData = static_cast< E* >( CollCalloc( nAllocSize,sizeof( E ) ) );
             if( m_pData == NULL )
             {
                 return( false );
@@ -758,7 +763,7 @@ bool SArray< E, ETraits >::GrowBuffer( size_t nNewSize )
 #ifdef SIZE_T_MAX
             SASSERT( nNewMax <= SIZE_T_MAX/sizeof( E ) ); // no overflow
 #endif
-            E* pNewData = static_cast< E* >( calloc( nNewMax,sizeof( E ) ) );
+            E* pNewData = static_cast< E* >( CollCalloc( nNewMax,sizeof( E ) ) );
             if( pNewData == NULL )
             {
                 return false;
@@ -768,7 +773,7 @@ bool SArray< E, ETraits >::GrowBuffer( size_t nNewSize )
             ETraits::RelocateElements( pNewData, m_pData, m_nSize );
 
             // get rid of old stuff (note: no destructors called)
-            free( m_pData );
+            CollFree( m_pData );
             m_pData = pNewData;
             m_nMaxSize = nNewMax;
         }
@@ -793,7 +798,7 @@ bool SArray< E, ETraits >::SetCount( size_t nNewSize, int nGrowBy )
         if( m_pData != NULL )
         {
             CallDestructors( m_pData, m_nSize );
-            free( m_pData );
+            CollFree( m_pData );
             m_pData = NULL;
         }
         m_nSize = 0;
@@ -881,7 +886,7 @@ void SArray< E, ETraits >::FreeExtra()
         E* pNewData = NULL;
         if( m_nSize != 0 )
         {
-            pNewData = (E*)calloc( m_nSize,sizeof( E ) );
+            pNewData = (E*)CollCalloc( m_nSize,sizeof( E ) );
             if( pNewData == NULL )
             {
                 return;
@@ -892,7 +897,7 @@ void SArray< E, ETraits >::FreeExtra()
         }
 
         // get rid of old stuff (note: no destructors called)
-        free( m_pData );
+        CollFree( m_pData );
         m_pData = pNewData;
         m_nMaxSize = m_nSize;
     }
@@ -2329,14 +2334,14 @@ bool SMap< K, V, KTraits, VTraits >::InitHashTable( UINT nBins, bool bAllocNow )
 
     if( m_ppBins != NULL )
     {
-        delete[] m_ppBins;
+        CollFree(m_ppBins);
         m_ppBins = NULL;
     }
 
     if( bAllocNow )
     {
         //hjx            ATLTRY( m_ppBins = new CNode*[nBins] );
-        m_ppBins = new CNode*[nBins];
+        m_ppBins = (CNode**)CollMalloc(nBins*sizeof(CNode*));
         if( m_ppBins == NULL )
         {
             return false;
@@ -2374,7 +2379,7 @@ void SMap< K, V, KTraits, VTraits >::RemoveAll()
         }
     }
 
-    delete[] m_ppBins;
+    CollFree(m_ppBins);
     m_ppBins = NULL;
     m_nElements = 0;
 
@@ -2649,7 +2654,7 @@ void SMap< K, V, KTraits, VTraits >::Rehash( UINT nBins )
     }
 
     //hjx        ATLTRY(ppBins = new CNode*[nBins]);
-    ppBins = new CNode*[nBins];
+    ppBins = (CNode**)CollMalloc(nBins*sizeof(CNode*));
     if (ppBins == NULL)
     {
         SThrow( E_OUTOFMEMORY );
@@ -2679,7 +2684,7 @@ void SMap< K, V, KTraits, VTraits >::Rehash( UINT nBins )
         }
     }
 
-    delete[] m_ppBins;
+    CollFree(m_ppBins);
     m_ppBins = ppBins;
     m_nBins = nBins;
 
