@@ -135,5 +135,10 @@
         </items>        
       </listboxex>
     </page>
+    <page title="drag drop">
+      <edit name="edit_drop_top" pos="10,10,-10,]-10" cueText="draging a file to me to see what will happen"/>
+      <text pos ="10,|0" pos2type="leftMid" colorText="RGB(255,0,0)"  colorBkgnd="RGB(0,255,0)">show how to implement dragdrop in soui</text>
+      <edit name="edit_drop_bottom" pos="10,[10,-10,-10" cueText="draging a file to me to see what will happen"/>
+    </page>
   </tabctrl>
 </include>
