@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="imgdecoder-stb"
-	ProjectGUID="{A03DFF3D-F896-33C3-9CFC-A0301B363F21}"
+	ProjectGUID="{658DA7C6-8EFF-322C-8E00-ECF6EEF7B4E4}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\config&quot;,&quot;..\..\coll-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\config&quot;,&quot;..\..\soui-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\debug\imgdecoder-stb\"
 				DebugInformationFormat="3"
@@ -76,7 +76,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\config&quot;,&quot;..\..\coll-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\config&quot;,&quot;..\..\soui-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\release\imgdecoder-stb\"
 				DebugInformationFormat="3"

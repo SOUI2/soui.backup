@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="png"
-	ProjectGUID="{E5629B7B-4877-3E0E-BCC1-6B2364A11210}"
+	ProjectGUID="{68801D79-80E4-3BB2-9BEA-440AA7BC6F7E}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\zlib&quot;,&quot;..\..\config&quot;,&quot;..\..\coll-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\zlib&quot;,&quot;..\..\config&quot;,&quot;..\..\soui-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\debug\png\"
 				DebugInformationFormat="3"
@@ -70,7 +70,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\zlib&quot;,&quot;..\..\config&quot;,&quot;..\..\coll-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\zlib&quot;,&quot;..\..\config&quot;,&quot;..\..\soui-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\release\png\"
 				DebugInformationFormat="3"

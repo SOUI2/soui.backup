@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="render-gdi"
-	ProjectGUID="{05DE01F9-C257-3B7F-BD55-AD40AB3E8A05}"
+	ProjectGUID="{E9EA7D7D-8D5A-3F2C-85B9-056200C58EB6}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\config&quot;,&quot;..\..\coll-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\config&quot;,&quot;..\..\soui-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\debug\render-gdi\"
 				DebugInformationFormat="3"
@@ -81,7 +81,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\config&quot;,&quot;..\..\coll-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\config&quot;,&quot;..\..\soui-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\release\render-gdi\"
 				DebugInformationFormat="3"

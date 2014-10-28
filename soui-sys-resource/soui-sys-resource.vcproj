@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="soui-sys-resource"
-	ProjectGUID="{2BD73466-8F17-3076-9BF8-77B708B954D9}"
+	ProjectGUID="{C0E73CD1-8D74-3DD4-A766-9DBC8B6B206C}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;..\config&quot;,&quot;..\coll-mem&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;..\config&quot;,&quot;..\soui-mem&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\obj\debug\soui-sys-resource\"
 				DebugInformationFormat="3"
@@ -77,7 +77,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;..\config&quot;,&quot;..\coll-mem&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;..\config&quot;,&quot;..\soui-mem&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\obj\release\soui-sys-resource\"
 				DebugInformationFormat="3"

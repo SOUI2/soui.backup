@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = lib
-TARGET = coll-mem
+TARGET = soui-mem
 INCLUDEPATH += .
 
 dir = ..
@@ -17,5 +17,5 @@ else{
 }
 
 # Input
-HEADERS += coll-mem.h 
-SOURCES += coll-mem.cpp
+HEADERS += soui-mem.h 
+SOURCES += soui-mem.cpp
