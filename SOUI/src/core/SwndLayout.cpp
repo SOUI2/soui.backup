@@ -115,7 +115,7 @@ namespace SOUI
                             nRet=refPos+(int)pos.nPos*(pos.bMinus?-1:1);
                     }else
                     {
-                        LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.top:rcRef.bottom;
+                        LONG refPos = (pos.pit == PIT_NEXT_NEAR)?rcRef.top:rcRef.bottom;
                         if(refPos == POS_INIT || refPos==POS_WAIT)
                             nRet=POS_WAIT;
                         else
