@@ -22,11 +22,11 @@
 #include <assert.h>
 #include <wchar.h>
 
-#include <coll-mem.h>
+#include <soui-mem.h>
 #ifdef _DEBUG
-#pragma comment(lib,"coll-memd.lib")
+#pragma comment(lib,"soui-memd.lib")
 #else
-#pragma comment(lib,"coll-mem.lib")
+#pragma comment(lib,"soui-mem.lib")
 #endif
 
 #ifndef PUGIXML_NO_XPATH

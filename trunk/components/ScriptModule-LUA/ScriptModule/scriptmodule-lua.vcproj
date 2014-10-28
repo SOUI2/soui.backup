@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="scriptmodule-lua"
-	ProjectGUID="{303C7C42-59FA-38E1-954E-0F58BBA1F226}"
+	ProjectGUID="{5E8BCBC7-B946-3938-8AE6-8EE661E4E2B6}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\lua-51&quot;,&quot;..\..\..\soui\include&quot;,&quot;..\..\..\utilities\include&quot;,&quot;..\..\..\config&quot;,&quot;..\..\..\coll-mem&quot;,..\..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\lua-51&quot;,&quot;..\..\..\soui\include&quot;,&quot;..\..\..\utilities\include&quot;,&quot;..\..\..\config&quot;,&quot;..\..\..\soui-mem&quot;,..\..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\..\..\obj\debug\scriptmodule-lua\"
 				DebugInformationFormat="3"
@@ -81,7 +81,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\lua-51&quot;,&quot;..\..\..\soui\include&quot;,&quot;..\..\..\utilities\include&quot;,&quot;..\..\..\config&quot;,&quot;..\..\..\coll-mem&quot;,..\..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\lua-51&quot;,&quot;..\..\..\soui\include&quot;,&quot;..\..\..\utilities\include&quot;,&quot;..\..\..\config&quot;,&quot;..\..\..\soui-mem&quot;,..\..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\..\..\obj\release\scriptmodule-lua\"
 				DebugInformationFormat="3"

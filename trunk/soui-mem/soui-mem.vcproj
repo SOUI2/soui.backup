@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="coll-mem"
-	ProjectGUID="{590CFCAC-8EDD-355F-A8AA-81C425D00E7B}"
+	Name="soui-mem"
+	ProjectGUID="{A56EB1C0-0CE0-398B-BCC3-542F46A73FC9}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -16,18 +16,18 @@
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="2"
-			IntermediateDirectory="..\obj\debug\coll-mem\"
+			IntermediateDirectory="..\obj\debug\soui-mem\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\config&quot;,&quot;..\coll-mem&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\config&quot;,&quot;..\soui-mem&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\obj\debug\coll-mem\"
+				AssemblerListingLocation="..\obj\debug\soui-mem\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="1"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\obj\debug\coll-mem\"
+				ObjectFile="..\obj\debug\soui-mem\"
 				Optimization ="4"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,COLLMEM_EXPORTS"
 				ProgramDataBaseFileName="$(IntDir)"
@@ -44,7 +44,7 @@
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkTimeCodeGeneration="0"
-				OutputFile="$(OutDir)\coll-memd.dll"
+				OutputFile="$(OutDir)\soui-memd.dll"
 				ProgramDatabaseFile=""
 				SubSystem="0"
 				SuppressStartupBanner="true"
@@ -72,18 +72,18 @@
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="2"
-			IntermediateDirectory="..\obj\release\coll-mem\"
+			IntermediateDirectory="..\obj\release\soui-mem\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\config&quot;,&quot;..\coll-mem&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\config&quot;,&quot;..\soui-mem&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
-				AssemblerListingLocation="..\obj\release\coll-mem\"
+				AssemblerListingLocation="..\obj\release\soui-mem\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="1"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\obj\release\coll-mem\"
+				ObjectFile="..\obj\release\soui-mem\"
 				Optimization ="1"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,COLLMEM_EXPORTS,NDEBUG"
 				ProgramDataBaseFileName="$(IntDir)"
@@ -103,7 +103,7 @@
 				LinkIncremental="1"
 				LinkTimeCodeGeneration="0"
 				OptimizeReferences="2"
-				OutputFile="$(OutDir)\coll-mem.dll"
+				OutputFile="$(OutDir)\soui-mem.dll"
 				ProgramDatabaseFile=""
 				SubSystem="0"
 				SuppressStartupBanner="true"
@@ -132,14 +132,14 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="coll-mem.cpp" />
+				RelativePath="soui-mem.cpp" />
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="coll-mem.h" />
+				RelativePath="soui-mem.h" />
 		</Filter>
 	</Files>
 	<Globals>

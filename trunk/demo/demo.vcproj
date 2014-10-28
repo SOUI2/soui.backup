@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="demo"
-	ProjectGUID="{67A80F5B-559C-3805-BEB3-75203B8FD249}"
+	ProjectGUID="{307EFC7E-DD20-3E9D-8097-54A9D5C4E35D}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\third-part\wke\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,&quot;..\coll-mem&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\third-part\wke\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,&quot;..\soui-mem&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\obj\debug\demo\"
 				DebugInformationFormat="3"
@@ -82,7 +82,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\third-part\wke\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,&quot;..\coll-mem&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\third-part\wke\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,&quot;..\soui-mem&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\obj\release\demo\"
 				DebugInformationFormat="3"

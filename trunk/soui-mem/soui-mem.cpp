@@ -1,4 +1,4 @@
-#include "coll-mem.h"
+#include "soui-mem.h"
 #include <malloc.h>
 
 void * CollMalloc(size_t szMem)
