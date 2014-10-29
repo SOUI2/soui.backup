@@ -101,9 +101,9 @@ function AddFilters(proj)
 		var group = proj.Object.AddFilter('Resource Files');
 		group.Filter = strResFilter;
 		
-		var strSkinFilter = wizard.FindSymbol('SKIN_FILTER');
-		var group = proj.Object.AddFilter('Skin Files');
-		group.Filter = strSkinFilter;
+		var strSouiFilter = wizard.FindSymbol('SOUIRES_FILTER');
+		var group = proj.Object.AddFilter('SoUI Resouece');
+		group.Filter = strSouiFilter;
 
 	}
 	catch(e)
@@ -116,11 +116,22 @@ function AddConfig(proj, strProjectName)
 {
 	try
 	{
+		var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
+		var SysResBuiltin = wizard.FindSymbol('CHECKBOX_SYSRES_BUILTIN');
+		
         // Debug设置
 	    var config = proj.Object.Configurations('Debug');
 	    config.CharacterSet = charSetUNICODE;
-	    config.IntermediateDirectory = 'Debug';
-	    config.OutputDirectory = 'Debug';
+	    if(WizardVersion >= 10.0)
+		{
+	    		config.IntermediateDirectory = '$(Configuration)\\';
+	    		config.OutputDirectory = '$(SolutionDir)$(Configuration)\\';
+	    }
+		else
+		{
+				config.IntermediateDirectory = '$(ConfigurationName)';
+	    		config.OutputDirectory = '$(SolutionDir)$(ConfigurationName)';
+		}
 	    
 		var CLTool = config.Tools('VCCLCompilerTool');
 		//添加编译器设置
@@ -128,7 +139,7 @@ function AddConfig(proj, strProjectName)
 		CLTool.SuppressStartupBanner = true;
 		CLTool.TreatWChar_tAsBuiltInType=true;
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
-		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
+		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\config";"$(SOUIPATH)\\soui-mem";"$(SOUIPATH)\\components";"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
 		CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;_DEBUG';
 		CLTool.RuntimeLibrary = 1; // 0=MT, 1=MTd, 2=MTD (DLL), 3=MTDd
 		CLTool.BrowseInformation = browseInfoOption.brAllInfo;// FR
@@ -144,19 +155,31 @@ function AddConfig(proj, strProjectName)
 		LinkTool.AdditionalLibraryDirectories = '"$(SOUIPATH)\\bin"';
 		LinkTool.AdditionalDependencies = 'utilitiesd.lib souid.lib'
 		
+		var resCplTool = config.Tools('VCResourceCompilerTool');
+		if(SysResBuiltin)
+		{
+			resCplTool.AdditionalIncludeDirectories ='"$(SOUIPATH)\\soui-sys-resource"';
+		}
 		// Release设置
 		var config = proj.Object.Configurations('Release');
 		config.CharacterSet = charSetUNICODE;
-		config.IntermediateDirectory = 'Release';
-		config.OutputDirectory = 'Release';
-
+		if(WizardVersion >= 10.0)
+		{
+	    		config.IntermediateDirectory = '$(Configuration)\\';
+	    		config.OutputDirectory = '$(SolutionDir)$(Configuration)\\';
+	    	}
+		else
+		{
+			config.IntermediateDirectory = '$(ConfigurationName)';
+	    		config.OutputDirectory = '$(SolutionDir)$(ConfigurationName)';
+		}
 		var CLTool = config.Tools('VCCLCompilerTool');
 		//添加编译器设置
 		CLTool.UsePrecompiledHeader = 2;    // 2-使用预编译头,1-创建,0-不使用
 		CLTool.SuppressStartupBanner = true;
 		CLTool.TreatWChar_tAsBuiltInType=true;
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
-		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
+		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\config";"$(SOUIPATH)\\soui-mem";"$(SOUIPATH)\\components";"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
 		CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;NDEBUG';
 		CLTool.RuntimeLibrary = 0; // 0=MT, 1=MTd, 2=MTD (DLL), 3=MTDd
 		CLTool.WholeProgramOptimization = true;	//全程序优化：启动链接时代码生成
@@ -165,11 +188,17 @@ function AddConfig(proj, strProjectName)
 		//添加链接器设置
 		LinkTool.GenerateDebugInformation = true;
 		LinkTool.LinkIncremental = linkIncrementalYes;
-		LinkTool.SuppressStartupBanner = true;  // nologo
+		LinkTool.SuppressStartupBanner = true;  // nologoif(UserDll)
 		LinkTool.AdditionalLibraryDirectories = '"$(SOUIPATH)\\bin"';
 		LinkTool.AdditionalDependencies = 'utilities.lib soui.lib'
 		LinkTool.LinkIncremental=1;
 		
+		var resCplTool = config.Tools('VCResourceCompilerTool');
+		if(SysResBuiltin)
+		{
+			resCplTool.AdditionalIncludeDirectories ='"$(SOUIPATH)\\soui-sys-resource"';
+		}
+
 	}
 	catch(e)
 	{
@@ -212,7 +241,8 @@ function CreateCustomInfFile()
 		var strWizTempFile = strTempFolder + "\\" + fso.GetTempName();
 
 		var strTemplatePath = wizard.FindSymbol('TEMPLATES_PATH');
-		var strInfFile = strTemplatePath + '\\Templates.inf';
+		var strInfFile= strTemplatePath + '\\Templates.inf';
+
 		wizard.RenderTemplate(strInfFile, strWizTempFile);
 
 		var WizTempFile = fso.GetFile(strWizTempFile);
@@ -231,19 +261,9 @@ function GetSourceName(strName)
 		strName.toLowerCase();
 		if(strName.indexOf('[uires]') == 0)
 		{
-			strName=strName.substr(7);
-			if(strName.indexOf('[xml]')==0)
-				return 'uires\\xml\\'+strName.substr(5);
-			else if(strName.indexOf('[image]')==0)
-				return 'uires\\image\\'+strName.substr(7);
-			else if(strName.indexOf('[Translator]')==0)
-				return 'uires\\Translator\\'+strName.substr(12);
-			else
-				return 'uires\\'+strName;
-		}else
-		{
-			return strName;
+			strName= "uires\\"+strName.substr(7);
 		}
+		return strName;
 	}
 	catch(e)
 	{
@@ -259,26 +279,15 @@ function GetTargetName(strName, strProjectName)
 		// TODO: 基于模板文件名设置呈现文件的名称
 		var strTarget = strName;
 
-		if (strName == 'readme.txt')
-			strTarget = 'ReadMe.txt';
-
 		if (strName == 'demo.cpp')
 		    strTarget = strProjectName + '.cpp';
 
 		if (strName == 'demo.rc')
 		    strTarget = strProjectName + '.rc';
 
-		if (strName.indexOf('[uires]') == 0) // skin文件
+		if (strName.indexOf('[uires]') == 0) // UI资源文件
 	    {
-	        strName = strName.substr(7);
-	        if(strName.indexOf('[xml]') == 0)//xml
-		        strTarget = 'uires\\xml\\' + strName.substr(5);
-	        else if(strName.indexOf('[image]') == 0)//image
-		        strTarget = 'uires\\image\\' + strName.substr(7);
-	        else if(strName.indexOf('[Translator]') == 0)//image
-		        strTarget = 'uires\\Translator\\' + strName.substr(12);
-	        else
-	        	strTarget = 'uires\\' + strName;
+	        strTarget = "uires\\"+strName.substr(7);
 	    }
 		return strTarget;
 	}
@@ -302,16 +311,13 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
         // 过滤器对象
 		var projFilters = proj.Object.Filters;
 		var filterRes = projFilters.Item('Resource Files');
-		var filterSkin = projFilters.Item('Skin Files');
-		var filterSkinImage = filterSkin.AddFilter('image');
-		var filterSkinXML = filterSkin.AddFilter('XML');
-		var filterTranslator = filterSkin.AddFilter('Translator Files');
+		var filterUIRES = projFilters.Item('SoUI Resouece');
 
 		var strTextStream = InfFile.OpenAsTextStream(1, -2);
 		while (!strTextStream.AtEndOfStream)
 		{
 		    strTpl = strTextStream.ReadLine();
-		    if (strTpl != '' && strTpl.indexOf(';') != 0) // 注释行
+		    if (strTpl != '' && strTpl.indexOf(';') != 0) // ;注释行
 			{
 			    var bCopyOnly = false;  //“true”仅将文件从 strTemplate 复制到 strTarget，而不对项目进行呈现/添加
 			    var bBinary = false;
@@ -333,23 +339,15 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 				var strSource = GetSourceName(strName);
 				
 				var filter = null;
-				if (strTpl.indexOf('[uires]') == 0) // skin
+				if (strTpl.indexOf('[uires]') == 0) // soui res
 				{
-				    strTpl = strTpl.substr(7);
-				    if(strTpl.indexOf('[xml]') == 0) //xml
-				    	filter = filterSkinXML;
-				    else if(strTpl.indexOf('[image]') == 0) //image
-				    	filter = filterSkinImage;
-				    else if(strTpl.indexOf('[Translator]') == 0) //translator
-				    	filter = filterTranslator;
-				    else
-				    	filter = filterSkin;
+					filter = filterUIRES;
 				}
 				var strTemplate = strTemplatePath + '\\' + strSource;
 				var strFile = strProjectPath + '\\' + strTarget;
 
 				var strExt = strName.substr(strName.lastIndexOf("."));
-				if(strExt==".bmp" || strExt==".ico" || strExt==".gif" || strExt==".rtf" || strExt==".css" || strExt==".png" || strExt==".jpg")
+				if(strExt==".bmp" || strExt==".ico" || strExt==".gif" || strExt==".rtf" || strExt==".css" || strExt==".png" || strExt==".jpg" || strExt==".lua")
 				    bBinary = true;
                 // 复制文件和添加到工程
 				wizard.RenderTemplate(strTemplate, strFile, bBinary);
@@ -357,7 +355,7 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 				    if (filter) {
 				        filter.AddFile(strTarget);
 				    } else {
-				        var file = proj.Object.AddFile(strFile);
+				        proj.Object.AddFile(strFile);
 				    }
 				}
 			}
@@ -386,12 +384,12 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		var fileConfig = file.FileConfigurations('Debug');
 		buildTool=fileConfig.Tool;
 		buildTool.CommandLine = cmdline;
-		buildTool.Description = 'Building UI Resource';
+		buildTool.Description = 'Building SoUI Resource';
 		buildTool.Outputs = outfiles;
 		fileConfig = file.FileConfigurations('Release');
 		buildTool=fileConfig.Tool;
 		buildTool.CommandLine = cmdline;
-		buildTool.Description = 'Building UI Resource';
+		buildTool.Description = 'Building SoUI Resource';
 		buildTool.Outputs = outfiles;
 
 	}
