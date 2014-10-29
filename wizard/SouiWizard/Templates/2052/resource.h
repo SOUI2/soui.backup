@@ -1,11 +1,7 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by dui-demo.rc
+// Used by [!output PROJECT_NAME].rc
 //
-#define IDR_XML1                        111
-#define IDR_XML21                       112
-#define IDR_ZIP1                        113
-#define IDR_ZIP_MODESEL                 113
 
 // Next default values for new objects
 // 

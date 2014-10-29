@@ -1,3 +1,4 @@
+@import "styles.css";
 /******************************************************************************/
 /*DEFAULT STYLES FOR ALL SECTIONS**********************************************/
 /******************************************************************************/
@@ -10,7 +11,7 @@ body						  { font-family: 宋体, Tahoma, MS Sans Serif, Arial, Sans Serif;
 		  		 			    margin-left: 0px;
 							    margin-right: 0px;
 							    margin-bottom: 0px;
-								overflow: auto; }
+								overflow: hide; }
 
 a:link						  { color: captiontext;
 				  				text-decoration: none; }
@@ -71,7 +72,7 @@ span.horiLine1				  { height: 30px;
 button						  { font-family: 宋体, Tahoma, MS Sans Serif, Arial, Sans Serif;
 							    font-weight: normal;
 				 			    font-size: 9pt;
-								height: 23px;
+								min-height: 23px;
 								cursor: hand; }
 
 .buttons				  	  { width: 100%; }
@@ -111,9 +112,16 @@ span.itemTextTop			  { position: relative; }
 span.itemText				  { font-family: 宋体, Tahoma, MS Sans Serif, Arial, Sans Serif;
 								font-weight: normal;
 								font-size: 9pt;
-								line-height: 11pt;
+								line-height: 9pt;
 								position: relative;
 								top: -3px; }
+
+span.itemTextA				  { font-family: 宋体, Tahoma, MS Sans Serif, Arial, Sans Serif;
+								font-weight: normal;
+								font-size: 9pt;
+								line-height: 9pt;
+								position: relative;
+								top: 12px; }
 
 span.itemTextIndent			  { position: relative;
 								left: 17px;
@@ -148,18 +156,29 @@ div.itemTextRadioIndentB	  { position: relative;
 div.itemTextCheckboxA		  { position: relative;
 								top: -17px;
 								left: 17px;
-								margin-bottom: -23px; }
+								padding-top: 1px;
+								margin-bottom: -23px;
+								width: 80%; }
 
 div.itemTextCheckboxB		  { position: relative;
 								top: -18px;
 								left: 25px;
 								padding-top: 1px;
-								margin-bottom: -25px; }
+								margin-bottom: -25px;
+								width: 80%; }
+
+div.itemTextCheckboxC		  { position: relative;
+								top: -13px;
+								left: 17px;
+								padding-top: 1px;
+								margin-bottom: -23px; }
 
 div.itemTextCheckboxIndentB	  { position: relative;
 								top: -16px;
 								left: 42px;
-								margin-bottom: -25px; }
+								padding-top: 1px;
+								margin-bottom: -25px;
+								width: 80%; }
 
 input						  { font-family: 宋体, Tahoma, MS Sans Serif, Arial, Sans Serif;
 							    font-weight: normal;
@@ -194,6 +213,11 @@ select						  { font-family: 宋体, Tahoma, MS Sans Serif, Arial, Sans Serif;
 .checkboxA					  { position: relative;
 								top: -2px;
 								left: 4px; }
+
+.checkboxB					  { position: relative;
+								top: 3px;
+								margin-left: -4px;
+								z-index: 2; }
 
 .checkboxIndent				  { position:relative;
 								margin-top: -1px;
@@ -644,11 +668,11 @@ p.elementSpacer22			  { margin-bottom: 3px; }
 	/*Removed background color, changed top, and bottom margins*/
 	div.linkSelected			  { height: 2.6em;
 									position: relative;
-									top: -6px;
+									top: -2px;
 									left: 0px;
 									right: 0px;
 									z-index: 1;
-									margin-bottom: -.7em; }
+									margin-bottom: -.3em; }
 
 	/*Changed top and bottom margins*/
 	div.link					  { height: 2em;
@@ -658,14 +682,6 @@ p.elementSpacer22			  { margin-bottom: 3px; }
 									right: 0px;
 									z-index: 1;
 									margin-bottom: -.7em; }
-
-	/*Comment out
-	div.vertLine				  { background: url(Images/DottedVert.gif) repeat;
-									height: 125%;
-						 			width: 1px;
-									position: relative;
-									top: -12px;
-									left: -1px; }*/
 
 	/*Deleted dotted line*/
 	span.vertLine1				  { height: 100%;
@@ -683,9 +699,6 @@ p.elementSpacer22			  { margin-bottom: 3px; }
 	/*Removed all background image modification elements and set image to 0 opacity*/
 	td.threeCustom				  { filter: Alpha(Opacity = 0); }
 
-
-	/*Comment out
-	td.dottedline				  { background: url(Images/DottedHori.gif) repeat; }*/
 
 	/*Removed border color*/
 	div.inlineA					  {	position: relative;
