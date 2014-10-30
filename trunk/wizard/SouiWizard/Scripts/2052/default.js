@@ -139,7 +139,7 @@ function AddConfig(proj, strProjectName)
 		CLTool.SuppressStartupBanner = true;
 		CLTool.TreatWChar_tAsBuiltInType=true;
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
-		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\config";"$(SOUIPATH)\\soui-mem";"$(SOUIPATH)\\components";"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
+		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\config";"$(SOUIPATH)\\components";"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
 		CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;_DEBUG';
 		CLTool.RuntimeLibrary = 1; // 0=MT, 1=MTd, 2=MTD (DLL), 3=MTDd
 		CLTool.BrowseInformation = browseInfoOption.brAllInfo;// FR
@@ -179,7 +179,7 @@ function AddConfig(proj, strProjectName)
 		CLTool.SuppressStartupBanner = true;
 		CLTool.TreatWChar_tAsBuiltInType=true;
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
-		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\config";"$(SOUIPATH)\\soui-mem";"$(SOUIPATH)\\components";"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
+		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\config";"$(SOUIPATH)\\components";"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
 		CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;NDEBUG';
 		CLTool.RuntimeLibrary = 0; // 0=MT, 1=MTd, 2=MTD (DLL), 3=MTDd
 		CLTool.WholeProgramOptimization = true;	//全程序优化：启动链接时代码生成
