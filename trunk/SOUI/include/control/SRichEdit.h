@@ -1172,6 +1172,7 @@ namespace SOUI
             ATTR_RECT(L"inset",m_rcInsetPixel,FALSE)
             ATTR_CUSTOM(L"colorText",OnAttrTextColor)
             ATTR_CUSTOM(L"rtf",OnAttrRTF)
+            ATTR_CUSTOM(L"align",OnAttrAlign)
         SOUI_ATTRS_END()
 
     protected:
@@ -1187,6 +1188,8 @@ namespace SOUI
         HRESULT OnAttrTextColor(const SStringW &  strValue,BOOL bLoading);
 
         HRESULT OnAttrRTF(const SStringW &  strValue,BOOL bLoading);
+
+        HRESULT OnAttrAlign(const SStringW &  strValue,BOOL bLoading);
 
         CHARFORMAT2W   m_cfDef;              /**< Default character format  */
         PARAFORMAT2    m_pfDef;              /**< Default paragraph format  */
