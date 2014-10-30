@@ -19,12 +19,7 @@
 #endif
 
 #include "../utilities-def.h"
-#include <soui-mem.h>
-#ifdef _DEBUG
-#pragma comment(lib,"soui-memd.lib")
-#else
-#pragma comment(lib,"soui-mem.lib")
-#endif
+#include <soui_mem_wrapper.h>
 
 namespace SOUI
 {
@@ -49,7 +44,7 @@ namespace SOUI
         {
             SASSERT(nRefs != 0);
             if (InterlockedDecrement(&nRefs) <= 0)
-                CollFree(this);
+                soui_mem_wrapper::SouiFree(this);
         }
         inline bool IsShared() const
         {
@@ -176,7 +171,7 @@ namespace SOUI
         static int Format(char** ppszDst, const char* pszFormat, va_list args)
         {
             int len = _vscprintf( pszFormat, args )+1; // _vscprintf doesn't count terminating '\0'
-            *ppszDst = (char*)CollMalloc(len);
+            *ppszDst = (char*)soui_mem_wrapper::SouiMalloc(len);
             vsprintf(*ppszDst, pszFormat, args);
             return len;
         }
@@ -238,7 +233,7 @@ namespace SOUI
         static int Format(wchar_t** ppszDst, const wchar_t* pszFormat, va_list args)
         {
             int len = _vscwprintf( pszFormat, args )+1; // _vscprintf doesn't count terminating '\0'
-            *ppszDst = (wchar_t*)CollMalloc(len*sizeof(wchar_t));
+            *ppszDst = (wchar_t*)soui_mem_wrapper::SouiMalloc(len*sizeof(wchar_t));
             vswprintf(*ppszDst, pszFormat, args);
             return len;
         }
@@ -1085,7 +1080,7 @@ namespace SOUI
             if (nLength > 0 && pszBuffer != NULL)
             {
                 *this = TStringT(pszBuffer, nLength);
-                CollFree(pszBuffer);
+                soui_mem_wrapper::SouiFree(pszBuffer);
                 return TRUE;
             }
             return FALSE;
@@ -1101,7 +1096,7 @@ namespace SOUI
             if (nLength > 0 && pszBuffer != NULL)
             {
                 *this += TStringT(pszBuffer, nLength);
-                CollFree(pszBuffer);
+                soui_mem_wrapper::SouiFree(pszBuffer);
             }
         }
 
@@ -1286,9 +1281,9 @@ namespace SOUI
             int nSize = sizeof(TStringData) + (nLength + 1 + TSTRING_PADDING) * sizeof(tchar);
             TStringData* pData;
             if (pOldData == NULL)
-                pData = (TStringData*)CollMalloc(nSize);
+                pData = (TStringData*)soui_mem_wrapper::SouiMalloc(nSize);
             else
-                pData = (TStringData*)CollRealloc(pOldData, nSize);
+                pData = (TStringData*)soui_mem_wrapper::SouiRealloc(pOldData, nSize);
             if (pData == NULL)
                 return NULL;
 

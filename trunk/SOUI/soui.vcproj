@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;..\config&quot;,&quot;..\soui-mem&quot;,&quot;.&quot;,&quot;include&quot;,&quot;..\utilities\include&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;..\config&quot;,&quot;.&quot;,&quot;include&quot;,&quot;..\utilities\include&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\obj\debug\soui\"
 				DebugInformationFormat="3"
@@ -81,7 +81,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;..\config&quot;,&quot;..\soui-mem&quot;,&quot;.&quot;,&quot;include&quot;,&quot;..\utilities\include&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;..\config&quot;,&quot;.&quot;,&quot;include&quot;,&quot;..\utilities\include&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\obj\release\soui\"
 				DebugInformationFormat="3"

@@ -27,6 +27,7 @@ HEADERS += include/gdialpha.h \
            include/trace.h \
            include/utilities-def.h \
            include/utilities.h \
+           include/soui_mem_wrapper.h
            include/atl.mini/atldef.h \
            include/atl.mini/SComCli.h \
            include/pugixml/pugiconfig.hpp \
@@ -38,10 +39,12 @@ HEADERS += include/gdialpha.h \
            include/com-loader.hpp \
            include/wtl.mini/msgcrack.h \
            include/wtl.mini/souigdi.h \
-           include/wtl.mini/souimisc.h
+           include/wtl.mini/souimisc.h \
+           
 SOURCES += src/gdialpha.cpp \
            src/trace.cpp \
            src/utilities.cpp \
+           src/soui_mem_wrapper.cpp\
            src/pugixml/pugixml.cpp \
            src/string/strcpcvt.cpp	\
            src/string/tstring.cpp	\

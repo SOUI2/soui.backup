@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,&quot;..\soui-mem&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\obj\debug\360\"
 				DebugInformationFormat="3"
@@ -82,7 +82,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,&quot;..\soui-mem&quot;,..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\obj\release\360\"
 				DebugInformationFormat="3"
