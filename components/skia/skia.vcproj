@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;include\config&quot;,&quot;include\core&quot;,&quot;src\core&quot;,&quot;include\gpu&quot;,&quot;src\gpu&quot;,&quot;include\images&quot;,&quot;include\utils&quot;,&quot;include\utils\win&quot;,&quot;src\utils&quot;,&quot;include\ports&quot;,&quot;include\text&quot;,&quot;include\effects&quot;,&quot;src\sfnt&quot;,&quot;include\pathops&quot;,&quot;src\image&quot;,&quot;src\opts&quot;,&quot;src\lazy&quot;,&quot;..\..\config&quot;,&quot;..\..\soui-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;include\config&quot;,&quot;include\core&quot;,&quot;src\core&quot;,&quot;include\gpu&quot;,&quot;src\gpu&quot;,&quot;include\images&quot;,&quot;include\utils&quot;,&quot;include\utils\win&quot;,&quot;src\utils&quot;,&quot;include\ports&quot;,&quot;include\text&quot;,&quot;include\effects&quot;,&quot;src\sfnt&quot;,&quot;include\pathops&quot;,&quot;src\image&quot;,&quot;src\opts&quot;,&quot;src\lazy&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\debug\skia\"
 				DebugInformationFormat="3"
@@ -70,7 +70,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;include\config&quot;,&quot;include\core&quot;,&quot;src\core&quot;,&quot;include\gpu&quot;,&quot;src\gpu&quot;,&quot;include\images&quot;,&quot;include\utils&quot;,&quot;include\utils\win&quot;,&quot;src\utils&quot;,&quot;include\ports&quot;,&quot;include\text&quot;,&quot;include\effects&quot;,&quot;src\sfnt&quot;,&quot;include\pathops&quot;,&quot;src\image&quot;,&quot;src\opts&quot;,&quot;src\lazy&quot;,&quot;..\..\config&quot;,&quot;..\..\soui-mem&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;include\config&quot;,&quot;include\core&quot;,&quot;src\core&quot;,&quot;include\gpu&quot;,&quot;src\gpu&quot;,&quot;include\images&quot;,&quot;include\utils&quot;,&quot;include\utils\win&quot;,&quot;src\utils&quot;,&quot;include\ports&quot;,&quot;include\text&quot;,&quot;include\effects&quot;,&quot;src\sfnt&quot;,&quot;include\pathops&quot;,&quot;src\image&quot;,&quot;src\opts&quot;,&quot;src\lazy&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\release\skia\"
 				DebugInformationFormat="3"

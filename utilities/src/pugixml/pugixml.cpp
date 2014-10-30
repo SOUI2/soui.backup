@@ -22,12 +22,7 @@
 #include <assert.h>
 #include <wchar.h>
 
-#include <soui-mem.h>
-#ifdef _DEBUG
-#pragma comment(lib,"soui-memd.lib")
-#else
-#pragma comment(lib,"soui-mem.lib")
-#endif
+#include <soui_mem_wrapper.h>
 
 #ifndef PUGIXML_NO_XPATH
 #	include <math.h>
@@ -152,8 +147,8 @@ PUGI__NS_BEGIN
 		static deallocation_function deallocate;
 	};
 
-	template <typename T> allocation_function xml_memory_management_function_storage<T>::allocate = CollMalloc;
-	template <typename T> deallocation_function xml_memory_management_function_storage<T>::deallocate = CollFree;
+	template <typename T> allocation_function xml_memory_management_function_storage<T>::allocate = SOUI::soui_mem_wrapper::SouiMalloc;
+	template <typename T> deallocation_function xml_memory_management_function_storage<T>::deallocate = SOUI::soui_mem_wrapper::SouiFree;
 
 	typedef xml_memory_management_function_storage<int> xml_memory;
 PUGI__NS_END

@@ -10,7 +10,7 @@ dir = ..
 include($$dir/common.pri)
 
 !CONFIG(LIB_ALL){
-	DEFINES += COLLMEM_EXPORTS
+	DEFINES += SOUIMEM_EXPORTS
 }
 else{
     CONFIG += staticlib

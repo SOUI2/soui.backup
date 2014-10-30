@@ -3,19 +3,19 @@
 #include <core-def.h>
 
 #ifdef LIB_ALL
-#define COLLMEM_API
+#define SOUIMEM_API
 #else
-#ifdef COLLMEM_EXPORTS
-#define COLLMEM_API __declspec(dllexport)
+#ifdef SOUIMEM_EXPORTS
+#define SOUIMEM_API __declspec(dllexport)
 #else
-#define COLLMEM_API __declspec(dllimport)
+#define SOUIMEM_API __declspec(dllimport)
 #endif
 #endif
 
 extern "C"
 {
-    COLLMEM_API void * CollMalloc(size_t szMem);
-    COLLMEM_API void * CollRealloc(void *p,size_t szMem);
-    COLLMEM_API void * CollCalloc(size_t count, size_t szEle);
-    COLLMEM_API void   CollFree(void *p);
+    SOUIMEM_API void * SouiMalloc(size_t szMem);
+    SOUIMEM_API void * SouiRealloc(void *p,size_t szMem);
+    SOUIMEM_API void * SouiCalloc(size_t count, size_t szEle);
+    SOUIMEM_API void   SouiFree(void *p);
 };

@@ -14,12 +14,7 @@
 #pragma once
 
 #include <limits.h>
-#include <soui-mem.h>
-#ifdef _DEBUG
-#pragma comment(lib,"soui-memd.lib")
-#else
-#pragma comment(lib,"soui-mem.lib")
-#endif
+#include <soui_mem_wrapper.h>
 
 #pragma warning(push)
 #pragma warning(disable: 4702)  // Unreachable code.  This file will have lots of it, especially without EH enabled.
@@ -231,7 +226,7 @@ struct SPlex     // warning variable length structure
     // like 'calloc' but no zero fill
     // may throw memory exceptions
 
-    void FreeDataChain();       // CollFree this one and links
+    void FreeDataChain();       // soui_mem_wrapper::SouiFree this one and links
 };
 
 inline SPlex* SPlex::Create( SPlex*& pHead, size_t nMax, size_t nElementSize )
@@ -247,7 +242,7 @@ inline SPlex* SPlex::Create( SPlex*& pHead, size_t nMax, size_t nElementSize )
     {
         return NULL;
     }
-    pPlex = static_cast< SPlex* >( CollMalloc( nBytes ) );
+    pPlex = static_cast< SPlex* >( soui_mem_wrapper::SouiMalloc( nBytes ) );
     if( pPlex == NULL )
     {
         return( NULL );
@@ -269,7 +264,7 @@ inline void SPlex::FreeDataChain()
         SPlex* pNext;
 
         pNext = pPlex->pNext;
-        CollFree( pPlex );
+        soui_mem_wrapper::SouiFree( pPlex );
         pPlex = pNext;
     }
 }
@@ -723,7 +718,7 @@ SArray< E, ETraits >::~SArray()
     if( m_pData != NULL )
     {
         CallDestructors( m_pData, m_nSize );
-        CollFree( m_pData );
+        soui_mem_wrapper::SouiFree( m_pData );
     }
 }
 
@@ -735,7 +730,7 @@ bool SArray< E, ETraits >::GrowBuffer( size_t nNewSize )
         if( m_pData == NULL )
         {
             size_t nAllocSize =  size_t( m_nGrowBy ) > nNewSize ? size_t( m_nGrowBy ) : nNewSize ;
-            m_pData = static_cast< E* >( CollCalloc( nAllocSize,sizeof( E ) ) );
+            m_pData = static_cast< E* >( soui_mem_wrapper::SouiCalloc( nAllocSize,sizeof( E ) ) );
             if( m_pData == NULL )
             {
                 return( false );
@@ -763,7 +758,7 @@ bool SArray< E, ETraits >::GrowBuffer( size_t nNewSize )
 #ifdef SIZE_T_MAX
             SASSERT( nNewMax <= SIZE_T_MAX/sizeof( E ) ); // no overflow
 #endif
-            E* pNewData = static_cast< E* >( CollCalloc( nNewMax,sizeof( E ) ) );
+            E* pNewData = static_cast< E* >( soui_mem_wrapper::SouiCalloc( nNewMax,sizeof( E ) ) );
             if( pNewData == NULL )
             {
                 return false;
@@ -773,7 +768,7 @@ bool SArray< E, ETraits >::GrowBuffer( size_t nNewSize )
             ETraits::RelocateElements( pNewData, m_pData, m_nSize );
 
             // get rid of old stuff (note: no destructors called)
-            CollFree( m_pData );
+            soui_mem_wrapper::SouiFree( m_pData );
             m_pData = pNewData;
             m_nMaxSize = nNewMax;
         }
@@ -798,7 +793,7 @@ bool SArray< E, ETraits >::SetCount( size_t nNewSize, int nGrowBy )
         if( m_pData != NULL )
         {
             CallDestructors( m_pData, m_nSize );
-            CollFree( m_pData );
+            soui_mem_wrapper::SouiFree( m_pData );
             m_pData = NULL;
         }
         m_nSize = 0;
@@ -886,7 +881,7 @@ void SArray< E, ETraits >::FreeExtra()
         E* pNewData = NULL;
         if( m_nSize != 0 )
         {
-            pNewData = (E*)CollCalloc( m_nSize,sizeof( E ) );
+            pNewData = (E*)soui_mem_wrapper::SouiCalloc( m_nSize,sizeof( E ) );
             if( pNewData == NULL )
             {
                 return;
@@ -897,7 +892,7 @@ void SArray< E, ETraits >::FreeExtra()
         }
 
         // get rid of old stuff (note: no destructors called)
-        CollFree( m_pData );
+        soui_mem_wrapper::SouiFree( m_pData );
         m_pData = pNewData;
         m_nMaxSize = m_nSize;
     }
@@ -2334,14 +2329,14 @@ bool SMap< K, V, KTraits, VTraits >::InitHashTable( UINT nBins, bool bAllocNow )
 
     if( m_ppBins != NULL )
     {
-        CollFree(m_ppBins);
+        soui_mem_wrapper::SouiFree(m_ppBins);
         m_ppBins = NULL;
     }
 
     if( bAllocNow )
     {
         //hjx            ATLTRY( m_ppBins = new CNode*[nBins] );
-        m_ppBins = (CNode**)CollMalloc(nBins*sizeof(CNode*));
+        m_ppBins = (CNode**)soui_mem_wrapper::SouiMalloc(nBins*sizeof(CNode*));
         if( m_ppBins == NULL )
         {
             return false;
@@ -2379,7 +2374,7 @@ void SMap< K, V, KTraits, VTraits >::RemoveAll()
         }
     }
 
-    CollFree(m_ppBins);
+    soui_mem_wrapper::SouiFree(m_ppBins);
     m_ppBins = NULL;
     m_nElements = 0;
 
@@ -2654,7 +2649,7 @@ void SMap< K, V, KTraits, VTraits >::Rehash( UINT nBins )
     }
 
     //hjx        ATLTRY(ppBins = new CNode*[nBins]);
-    ppBins = (CNode**)CollMalloc(nBins*sizeof(CNode*));
+    ppBins = (CNode**)soui_mem_wrapper::SouiMalloc(nBins*sizeof(CNode*));
     if (ppBins == NULL)
     {
         SThrow( E_OUTOFMEMORY );
@@ -2684,7 +2679,7 @@ void SMap< K, V, KTraits, VTraits >::Rehash( UINT nBins )
         }
     }
 
-    CollFree(m_ppBins);
+    soui_mem_wrapper::SouiFree(m_ppBins);
     m_ppBins = ppBins;
     m_nBins = nBins;
 

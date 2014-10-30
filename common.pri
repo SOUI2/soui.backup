@@ -1,7 +1,6 @@
 CONFIG -= qt
 CONFIG += stl_off  
 INCLUDEPATH += $$dir/config
-INCLUDEPATH += $$dir/soui-mem
 
 !CONFIG(MBCS){
 	CharacterSet = 1
