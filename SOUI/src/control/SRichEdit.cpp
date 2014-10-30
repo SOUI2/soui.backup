@@ -1034,13 +1034,6 @@ HRESULT SRichEdit::DefAttributeProc(const SStringW & strAttribName,const SString
         SStringT strValueT=S_CW2T(strValue);
         m_chPasswordChar=strValueT[0];
     }
-    //align
-    else if(strAttribName.CompareNoCase(L"align")==0)
-    {
-        if(strValue==L"center") m_dwStyle|=ES_CENTER;
-        else if(strValue==L"right") m_dwStyle|=ES_RIGHT;
-        else m_dwStyle|=ES_LEFT;
-    }
     //enabledragdrop
     else if(strAttribName.CompareNoCase(L"enableDragdrop")==0)
     {
@@ -1489,6 +1482,24 @@ void SRichEdit::OnEnableDragDrop( BOOL bEnable )
     {
         GetContainer()->RevokeDragDrop(m_swnd);
     }
+}
+
+HRESULT SRichEdit::OnAttrAlign( const SStringW & strValue,BOOL bLoading )
+{
+    if(!strValue.CompareNoCase(L"center")) m_dwStyle|=ES_CENTER;
+    else if(!strValue.CompareNoCase(L"right")) m_dwStyle|=ES_RIGHT;
+    else m_dwStyle|=ES_LEFT;
+    if(!bLoading)
+    {
+        if(m_dwStyle&ES_CENTER)
+            m_pfDef.wAlignment=PFA_CENTER;
+        else if(m_dwStyle&ES_RIGHT)
+            m_pfDef.wAlignment=PFA_RIGHT;
+        else
+            m_pfDef.wAlignment = PFA_LEFT;
+        m_pTxtHost->GetTextService()->OnTxPropertyBitsChange(TXTBIT_PARAFORMATCHANGE, 0);
+    }
+    return bLoading?S_FALSE:S_OK;
 }
 
 //////////////////////////////////////////////////////////////////////////
