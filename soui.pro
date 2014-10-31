@@ -5,7 +5,6 @@ INCLUDEPATH += .
 
 include(cpy-cfg.pri)
 
-SUBDIRS += soui-mem
 SUBDIRS += utilities
 SUBDIRS += soui
 SUBDIRS += components
@@ -16,7 +15,6 @@ SUBDIRS += qqlogin
 SUBDIRS += 360
 SUBDIRS += souispy
 
-utilities.depends += soui-mem
 soui.depends += utilities
 
 360.depends += utilities soui

@@ -18,22 +18,5 @@ namespace SOUI
         static void * SouiRealloc(void *p,size_t szMem);
         static void * SouiCalloc(size_t count, size_t szEle);
         static void   SouiFree(void *p);
-    private:
-        static soui_mem_wrapper * GetInstance();
-        
-        soui_mem_wrapper(void);
-        ~soui_mem_wrapper(void);
-        
-        typedef void * (*FunMalloc)(size_t szMem);
-        typedef void * (*FunRealloc)(void *p,size_t szMem);
-        typedef void * (*FunCalloc)(size_t count, size_t szEle);
-        typedef void   (*FunFree)(void *p);
-
-        FunMalloc   m_funMalloc;
-        FunRealloc  m_funRealloc;
-        FunCalloc   m_funCalloc;
-        FunFree     m_funFree;
-        
-        HMODULE m_hSouiMem;      
     };
 }
