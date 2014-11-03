@@ -11,11 +11,13 @@ namespace SOUI
     public:
         SEditIP();
         ~SEditIP();
-        inline const BYTE GetFiled(){return m_nField;}
+        inline const BYTE GetFiled(){
+            SStringT str = GetWindowText();
+            return (BYTE)_ttoi(str);
+            }
         inline void SetField(BYTE nField){
-            m_nField = nField;
-            SStringW str;
-            str.Format(L"%u",nField);
+            SStringT str;
+            str.Format(_T("%u"),nField);
             SetWindowText(str);
             }
         inline void ClearEdit(){SetField(0);}
@@ -32,12 +34,10 @@ namespace SOUI
             MSG_WM_KILLFOCUS_EX(OnKillFocus)
         SOUI_MSG_MAP_END()
     private:
-        BYTE m_nField;
     };
 
 	SEditIP::SEditIP()
 	{
-		m_nField = 0;
 	}
 	
 	SEditIP::~SEditIP()
@@ -67,7 +67,6 @@ namespace SOUI
         __super::OnKillFocus();
         SStringW strValue = GetWindowText();
         UINT uiValue = _wtoi(strValue);
-        m_nField = (BYTE)uiValue;
         if (uiValue > 255)
         {
             SetField(255);
