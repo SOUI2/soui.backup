@@ -175,34 +175,18 @@ namespace SOUI
 	
 	void SIPAddressCtrl::SetAddress(_In_ BYTE nField0,_In_ BYTE nField1,_In_ BYTE nField2,_In_ BYTE nField3)
 	{
-		SStringT data;
 		m_editFields[0]->SetField(nField0);
-		data.Format(_T("%d"),nField0);
-		m_editFields[0]->SetWindowText(data);
-		
 		m_editFields[1]->SetField(nField1);
-		data.Format(_T("%d"),nField1);
-		m_editFields[1]->SetWindowText(data);
-		
 		m_editFields[2]->SetField(nField2);
-		data.Format(_T("%d"),nField2);
-		m_editFields[2]->SetWindowText(data);
-		
 		m_editFields[3]->SetField(nField3);
-		data.Format(_T("%d"),nField3);
-		m_editFields[3]->SetWindowText(data);
 	}
 	
 	void SIPAddressCtrl::ClearAddress()
 	{
 		m_editFields[0]->ClearEdit();
-		m_editFields[0]->SetWindowText(_T(""));
 		m_editFields[1]->ClearEdit();
-		m_editFields[1]->SetWindowText(_T(""));
 		m_editFields[2]->ClearEdit();
-		m_editFields[2]->SetWindowText(_T(""));
 		m_editFields[3]->ClearEdit();
-		m_editFields[3]->SetWindowText(_T(""));
 	}
 }
 
