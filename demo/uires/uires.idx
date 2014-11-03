@@ -37,6 +37,7 @@
     <file name="png_tab_left_splitter"  path="image\tab_left_splitter.png" />
     <file name="png_tab_main"  path="image\tab_main.png" />
     <file name="btn_menu" path="image\btn_menu.png"  />
+    <file name="png_propswitch" path="image\propswitch.png"/>
   </IMGX>
   <GIF>
     <file name="gif_horse"	path="image\horse.gif"/>

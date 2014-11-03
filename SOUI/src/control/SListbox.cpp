@@ -194,7 +194,7 @@ int SListBox::AddString(LPCTSTR lpszItem, int nImage, LPARAM lParam)
 
 int SListBox::InsertString(int nIndex, LPCTSTR lpszItem, int nImage,  LPARAM lParam)
 {
-    SASSERT(lpszItem);
+    //SASSERT(lpszItem);
 
     LPLBITEM pItem = new LBITEM;
     pItem->strText = lpszItem;
@@ -276,7 +276,7 @@ int SListBox::InsertItem(int nIndex, LPLBITEM pItem)
 {
     SASSERT(pItem);
 
-    if(nIndex==-1 || nIndex>=GetCount())
+    if(nIndex==-1 || nIndex>GetCount())
     {
         nIndex = GetCount();
     }

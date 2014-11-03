@@ -12,6 +12,7 @@ namespace SOUI
         while(pParent)
         {
             iLevel ++;
+            pParent = pParent->GetParent();
         }
         return iLevel;
     }
@@ -127,6 +128,7 @@ namespace SOUI
 
     BOOL SPropertyItemBase::InitFromXml( pugi::xml_node xmlNode )
     {
+        SObject::InitFromXml(xmlNode);
         pugi::xml_node xmlProp=xmlNode.first_child();
         while(xmlProp)
         {
@@ -136,8 +138,9 @@ namespace SOUI
                 SPropertyItemBase *pItem2 = static_cast<SPropertyItemBase*>(pItem);
                 if(pItem2)
                 {
-                    InsertChild(pItem);
                     pItem2->InitFromXml(xmlProp);
+                    InsertChild(pItem2);
+                    pItem2->Release();
                 }
             }
             xmlProp = xmlProp.next_sibling();
@@ -201,7 +204,6 @@ namespace SOUI
 
     void SPropertyGrid::OnItemExpanded( IPropertyItem *pItem)
     {
-        SASSERT(m_orderType == OT_GROUP);
         int iInsert = IndexOfPropertyItem(pItem);
         if(pItem->IsExpand())
         {
@@ -309,30 +311,27 @@ namespace SOUI
 
     int SPropertyGrid::ExpandChildren( const IPropertyItem *pItem,int iInsert )
     {
-        SASSERT(m_orderType == OT_GROUP);
         SASSERT(pItem->IsExpand());
         SASSERT(iInsert != -1);
         int nRet =0;
         IPropertyItem *pChild = pItem->GetItem(IPropertyItem::GPI_FIRSTCHILD);
         while(pChild)
         {
-            InsertString(iInsert++,NULL,-1,(LPARAM)pChild);
+            InsertString(++iInsert,NULL,-1,(LPARAM)pChild);
             nRet ++;
-            pChild = pItem->GetItem(IPropertyItem::GPI_NEXTSIBLING);
             if(pChild->ChildrenCount() && pChild->IsExpand())
             {
                 int nAdded = ExpandChildren(pChild,iInsert);
                 nRet += nAdded;
                 iInsert += nAdded;
             }
-            pChild = pItem->GetItem(IPropertyItem::GPI_NEXTSIBLING);
+            pChild = pChild->GetItem(IPropertyItem::GPI_NEXTSIBLING);
         }
         return nRet;
     }
 
     void SPropertyGrid::CollapseChildren( const IPropertyItem *pItem,int idx)
     {
-        SASSERT(m_orderType == OT_GROUP);
         int nChilds = pItem->ChildrenCount();
         for(int i=0;i<nChilds;i++)
         {
@@ -357,12 +356,12 @@ namespace SOUI
         pRT->FillSolidRect(rcSwitch,0xFF888888);
         pRT->FillSolidRect(rcNameBack,iItem == SListBox::GetCurSel()? 0xFF880000:0xFFFFFFFF);
         
+        int iLevel = pItem->GetLevel();
+        if(iLevel>1) rcSwitch.OffsetRect(rcSwitch.Width()*(iLevel-1),0);
         if(pItem->ChildrenCount() && m_switchSkin)
         {
-            int iLevel = pItem->GetLevel();
-            if(iLevel>1) rcSwitch.OffsetRect(rcSwitch.Width()*(iLevel-1),0);
-            int iState = pItem->IsExpand()?0:1;
-            if(pItem->IsGroup()) iState += 2;
+            int iState = pItem->IsExpand()?GROUP_EXPANDED:GROUP_COLLAPSED;
+            if(!pItem->IsGroup()) iState += 2;
             m_switchSkin->Draw(pRT,rcSwitch,iState);
         }
         
@@ -371,11 +370,11 @@ namespace SOUI
         
         pRT->DrawText(pItem->GetName(),pItem->GetName().GetLength(),rcName,DT_SINGLELINE|DT_VCENTER);
         CRect rcItem = rc;
-        rc.left = rcName.right;
+        rcItem.left= rcNameBack.right;
         pItem->DrawItem(pRT,rcItem);
     }
 
-    void SPropertyGrid::OnLButtonDblClk( UINT nFlags, CPoint point )
+    void SPropertyGrid::OnLButtonDbClick( UINT nFlags, CPoint point )
     {
         SListBox::OnLButtonDbClick(nFlags,point);
         int iItem = SListBox::HitTest(point);
@@ -385,17 +384,67 @@ namespace SOUI
             if(pItem->ChildrenCount())
             {
                 pItem->Expand(!pItem->IsExpand());
-                OnItemExpanded(pItem);
             }
         }
     }
 
     BOOL SPropertyGrid::InitFromXml( pugi::xml_node xmlNode )
     {
-        
+        BOOL bRet = __super::InitFromXml(xmlNode);
+        if(!bRet) return FALSE;
+        pugi::xml_node xmlChild = xmlNode.child(SPropertyGroup::GetClassName());
+        while(xmlChild)
+        {
+            SPropertyGroup *pGroup = (SPropertyGroup *)SPropertyGroup::CreatePropItem(this);
+            pGroup->InitFromXml(xmlChild);
+            InsertGroup(pGroup);
+            pGroup->Release();
+            xmlChild = xmlChild.next_sibling(SPropertyGroup::GetClassName());
+        }
         return TRUE;
     }
 
+    void SPropertyGrid::OnSize( UINT nType, CSize size )
+    {
+        __super::OnSize(nType,size);
+    }
 
+    SPropertyGrid::ITEMPART SPropertyGrid::HitTest(int iItem, CPoint &pt )
+    {
+        if(iItem==-1) return IP_NULL;
+        IPropertyItem *pItem = (IPropertyItem*)GetItemData(iItem);
+        CRect rcItem=GetItemRect(pItem);
+        int iLevel = pItem->GetLevel();
+        CRect rcSwitch = rcItem;
+        rcSwitch.right = rcSwitch.left+ rcSwitch.Height();
+        if(iLevel>1) rcSwitch.OffsetRect(rcSwitch.Width()*(iLevel-1),0);
+        if(pt.x<rcSwitch.left) return IP_NULL;
+        if(pt.x<rcSwitch.right) return IP_SWITCH;
+        CRect rcName = rcItem;
+        rcName.right = rcItem.left + m_nNameWidth + rcItem.Height();
+        if(pt.x<rcName.right - 1) return IP_NAME;
+        if(pt.x<rcName.right + 1) return IP_SEP;
+        return IP_VALUE;
+    }
+
+    void SPropertyGrid::OnLButtonDown( UINT nFlags,CPoint pt )
+    {
+        SListBox::OnLButtonDown(nFlags,pt);
+
+        int iItem = SListBox::HitTest(CPoint(pt));
+        if(iItem!=-1)
+        {
+            ITEMPART ip = HitTest(iItem,pt);
+            if(ip == IP_SWITCH)
+            {
+                IPropertyItem *pItem = (IPropertyItem*)GetItemData(iItem);
+                if(pItem->ChildrenCount())
+                {
+                    pItem->Expand(!pItem->IsExpand());
+                }
+            }
+        }
+
+    }
 
 }

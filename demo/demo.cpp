@@ -141,7 +141,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         theApp->RegisterSkinFactory(TplSkinFactory<SSkinGif>());//注册SkinGif
         theApp->RegisterSkinFactory(TplSkinFactory<SSkinAPNG>());//注册SkinGif
 
-        theApp->RegisterWndFactory(TplSWindowFactory<SIPAddressCtrl>());//注册GIFPlayer
+        theApp->RegisterWndFactory(TplSWindowFactory<SIPAddressCtrl>());//注册IP控件
+        theApp->RegisterWndFactory(TplSWindowFactory<SPropertyGrid>());//注册属性表控件
         SSkinGif::Gdiplus_Startup();
 
         //加载系统资源

@@ -94,12 +94,12 @@ namespace SOUI
         virtual void OnKillFocus() {}
 
         SOUI_ATTRS_BEGIN()
-            ATTR_STRINGT(L"Name",m_strName,TRUE)
+            ATTR_STRINGT(L"name",m_strName,TRUE)
             ATTR_STRINGT(L"descption",m_strDescription,TRUE)
         SOUI_ATTRS_END()
 
-    protected:
         virtual BOOL InitFromXml(pugi::xml_node xmlNode);
+    protected:
 
         SStringT        m_strName;
         SStringT        m_strDescription;
@@ -183,10 +183,18 @@ namespace SOUI
     #define IG_FIRST (SPropertyGroup*)0
     #define IG_LAST  (SPropertyGroup*)1
     
-    class SPropertyGrid : protected SListBox
+    class SPropertyGrid : public SListBox
     {
         SOUI_CLASS_NAME(SPropertyGrid, L"propgrid")
     public:
+        enum EXPSTATE
+        {
+            GROUP_EXPANDED,
+            GROUP_COLLAPSED,
+            ITEM_EXPANDED,
+            ITEM_EXCOLLAPSED,
+        };
+
         enum ORDERTYPE
         {
             OT_NULL,
@@ -207,7 +215,7 @@ namespace SOUI
         
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"indent",m_nIndent,TRUE)
-            ATTR_INT(L"NameWidth",m_nNameWidth,TRUE)
+            ATTR_INT(L"nameWidth",m_nNameWidth,TRUE)
             ATTR_ENUM_BEGIN(L"orderType",ORDERTYPE,TRUE)
                 ATTR_ENUM_VALUE(L"null",OT_NULL)
                 ATTR_ENUM_VALUE(L"group",OT_GROUP)
@@ -217,15 +225,29 @@ namespace SOUI
         SOUI_ATTRS_END()
         
     protected:
+        enum ITEMPART
+        {
+            IP_NULL,
+            IP_SWITCH,
+            IP_NAME,
+            IP_SEP,
+            IP_VALUE,
+        };
+        ITEMPART HitTest(int iItem, CPoint &pt);
+
         virtual BOOL InitFromXml(pugi::xml_node xmlNode);
         
         virtual void DrawItem(IRenderTarget *pRT, CRect &rc, int iItem);
         virtual UINT OnGetDlgCode(){return SC_WANTALLKEYS;}
         
-        void OnLButtonDblClk(UINT nFlags, CPoint point);
+        void OnLButtonDown(UINT nFlags,CPoint pt);
+        void OnLButtonDbClick(UINT nFlags, CPoint point);
+        void OnSize(UINT nType, CSize size);
         
         SOUI_MSG_MAP_BEGIN()
+            MSG_WM_LBUTTONDOWN(OnLButtonDown)
             MSG_WM_LBUTTONDBLCLK(OnLButtonDbClick)
+            MSG_WM_SIZE(OnSize)
         SOUI_MSG_MAP_END()
     protected:
         int ExpandChildren(const IPropertyItem *pItem,int iInsert);
