@@ -35,6 +35,7 @@ HEADERS += MainDlg.h \
            ../controls.extend/gif/SSkinGif.h \
            ../controls.extend/gif/SSkinAPNG.h \
            ../controls.extend/FileHelper.h \
+           ../controls.extend/sipaddressctrl.h \
            httpsvr/filereader-i.h \
            httpsvr/log.h \
            httpsvr/genericserver.h \
@@ -48,6 +49,7 @@ SOURCES += demo.cpp \
            ../controls.extend/gif/SGifPlayer.cpp \
            ../controls.extend/gif/SSkinGif.cpp \
            ../controls.extend/gif/SSkinAPNG.cpp \
+           ../controls.extend/sipaddressctrl.cpp \
            httpsvr/log.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \

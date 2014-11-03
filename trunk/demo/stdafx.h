@@ -19,6 +19,7 @@
 
 #include "../controls.extend/SWkeWebkit.h"
 #include "../controls.extend/gif/SGifPlayer.h"
+#include "../controls.extend/SIPAddressCtrl.h"
 
 
 using namespace SOUI;

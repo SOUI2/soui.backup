@@ -1335,9 +1335,14 @@ void SRichEdit::OnSetFont( IFont *pFont, BOOL bRedraw )
     }
 }
 
-void SRichEdit::SetWindowText( LPCWSTR lpszText )
+void SRichEdit::SetWindowText( LPCTSTR lpszText )
 {
+#ifdef _UNICODE
     SSendMessage(WM_SETTEXT,0,(LPARAM)lpszText);
+#else
+    SStringW str = S_CT2W(lpszText);
+    SSendMessage(WM_SETTEXT,0,(LPARAM)(LPCTSTR)str);
+#endif
 }
 
 SStringT SRichEdit::GetWindowText()
