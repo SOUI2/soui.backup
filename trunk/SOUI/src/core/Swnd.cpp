@@ -587,76 +587,74 @@ SStringW SWindow::tr( const SStringW &strSrc )
 BOOL SWindow::InitFromXml(pugi::xml_node xmlNode)
 {
     SASSERT(m_pContainer);
-    if (!xmlNode)
+    if (xmlNode)
     {
-        return FALSE;
-    }
+        m_strText = S_CW2T(tr(xmlNode.text().get()));   //使用语言包翻译。
 
-    m_strText = S_CW2T(tr(xmlNode.text().get()));   //使用语言包翻译。
-
-    if (!m_strText.IsEmpty())
-    {
-        m_strText.TrimBlank();
-        if (!m_strText.IsEmpty()) BUILDSTRING(m_strText);
-    }
-
-    m_layout.nCount = 0;
-    m_layout.uPositionType = 0;
-    
-    //标记不处理width and height属性
-    xmlNode.attribute(L"width").set_userdata(1);
-    xmlNode.attribute(L"height").set_userdata(1);
-    
-    SObject::InitFromXml(xmlNode);
-
-    if(!m_bVisible || (m_pParent && !m_pParent->IsVisible(TRUE)))
-        ModifyState(WndState_Invisible, 0);
-
-    if (4 != m_layout.nCount)
-    {
-        SStringW strValue = xmlNode.attribute(L"width").value();
-        int nValue =_wtoi(strValue);
-        
-        if (0 == nValue && L"full" == strValue && 0 == m_layout.nCount)
+        if (!m_strText.IsEmpty())
         {
-            m_rcWindow.right = 0;
-            m_layout.uPositionType = (m_layout.uPositionType & ~SizeX_Mask) | SizeX_FitParent;
+            m_strText.TrimBlank();
+            if (!m_strText.IsEmpty()) BUILDSTRING(m_strText);
         }
-        else
+
+        m_layout.nCount = 0;
+        m_layout.uPositionType = 0;
+        
+        //标记不处理width and height属性
+        xmlNode.attribute(L"width").set_userdata(1);
+        xmlNode.attribute(L"height").set_userdata(1);
+        
+        SObject::InitFromXml(xmlNode);
+
+        if(!m_bVisible || (m_pParent && !m_pParent->IsVisible(TRUE)))
+            ModifyState(WndState_Invisible, 0);
+
+        if (4 != m_layout.nCount)
         {
-            if (nValue > 0)
-            {
-                m_rcWindow.right = nValue;
-                m_layout.uSpecifyWidth = nValue;
-                m_layout.uPositionType = (m_layout.uPositionType & ~SizeX_Mask) | SizeX_Specify;
-            }
-            else
+            SStringW strValue = xmlNode.attribute(L"width").value();
+            int nValue =_wtoi(strValue);
+            
+            if (0 == nValue && L"full" == strValue && 0 == m_layout.nCount)
             {
                 m_rcWindow.right = 0;
-                m_layout.uPositionType = (m_layout.uPositionType & ~SizeX_Mask) | SizeX_FitContent;
-            }
-        }
-
-        strValue = xmlNode.attribute(L"height").value();
-        
-        nValue =_wtoi(strValue);
-        if (0 == nValue && L"full" == strValue)
-        {
-            m_rcWindow.bottom = 0;
-            m_layout.uPositionType = (m_layout.uPositionType & ~SizeY_Mask) | SizeY_FitParent;
-        }
-        else
-        {
-            if (nValue > 0)
-            {
-                m_rcWindow.bottom = nValue;
-                m_layout.uSpecifyHeight = nValue;
-                m_layout.uPositionType = (m_layout.uPositionType & ~SizeY_Mask) | SizeY_Specify;
+                m_layout.uPositionType = (m_layout.uPositionType & ~SizeX_Mask) | SizeX_FitParent;
             }
             else
             {
+                if (nValue > 0)
+                {
+                    m_rcWindow.right = nValue;
+                    m_layout.uSpecifyWidth = nValue;
+                    m_layout.uPositionType = (m_layout.uPositionType & ~SizeX_Mask) | SizeX_Specify;
+                }
+                else
+                {
+                    m_rcWindow.right = 0;
+                    m_layout.uPositionType = (m_layout.uPositionType & ~SizeX_Mask) | SizeX_FitContent;
+                }
+            }
+
+            strValue = xmlNode.attribute(L"height").value();
+            
+            nValue =_wtoi(strValue);
+            if (0 == nValue && L"full" == strValue)
+            {
                 m_rcWindow.bottom = 0;
-                m_layout.uPositionType = (m_layout.uPositionType & ~SizeY_Mask) | SizeY_FitContent;
+                m_layout.uPositionType = (m_layout.uPositionType & ~SizeY_Mask) | SizeY_FitParent;
+            }
+            else
+            {
+                if (nValue > 0)
+                {
+                    m_rcWindow.bottom = nValue;
+                    m_layout.uSpecifyHeight = nValue;
+                    m_layout.uPositionType = (m_layout.uPositionType & ~SizeY_Mask) | SizeY_Specify;
+                }
+                else
+                {
+                    m_rcWindow.bottom = 0;
+                    m_layout.uPositionType = (m_layout.uPositionType & ~SizeY_Mask) | SizeY_FitContent;
+                }
             }
         }
     }

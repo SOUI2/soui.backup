@@ -120,7 +120,7 @@ namespace SOUI
             MSG_WM_SIZE(OnSize)
         SOUI_MSG_MAP_END()
     public:
-        void OnInplaceActiveWndCreate(IPropertyItem *pItem,SWindow *pWnd);
+        void OnInplaceActiveWndCreate(IPropertyItem *pItem,SWindow *pWnd,pugi::xml_node xmlInit);
         void OnInplaceActiveWndDestroy(IPropertyItem *pItem,SWindow *pWnd);
         
     protected:

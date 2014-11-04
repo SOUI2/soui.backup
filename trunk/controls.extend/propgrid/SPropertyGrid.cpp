@@ -403,7 +403,7 @@ namespace SOUI
         }else
         {
             int iItem = SListBox::HitTest(CPoint(pt));
-            if(iItem==-1) return FALSE;
+            if(iItem<0) return FALSE;
             ITEMPART ip = HitTest(iItem,pt);
             if(ip==IP_SWITCH)
                 SetCursor(SApplication::getSingleton().LoadCursor(MAKEINTRESOURCE(IDC_HAND)));
@@ -465,11 +465,12 @@ namespace SOUI
         return bRet;
     }
 
-    void SPropertyGrid::OnInplaceActiveWndCreate( IPropertyItem *pItem,SWindow *pWnd )
+    void SPropertyGrid::OnInplaceActiveWndCreate( IPropertyItem *pItem,SWindow *pWnd ,pugi::xml_node xmlInit)
     {
         SASSERT(m_pInplaceActiveWnd == NULL);
         InsertChild(pWnd);
-        pWnd->SSendMessage(WM_CREATE);
+        pWnd->InitFromXml(xmlInit);
+
         CRect rcItem = GetItemRect(pItem);
         CRect rcValue= rcItem;
         rcValue.left += rcItem.Height()+m_nNameWidth;

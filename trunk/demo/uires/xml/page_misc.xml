@@ -155,8 +155,15 @@
           <proptext name="text1.2" value="value 1.2"></proptext>
         </propgroup>
         <propgroup name="group2" description="desc of group2">
+          <propoption name="option2.2" value="1" options="true|false|empty"></propoption>
           <proptext name="text2.2" value="value 2.2"></proptext>
           <proptext name="text2.1" value="value 2.1"></proptext>
+          <proptext name="text2.3" value="value 2.3"></proptext>
+          <proptext name="text2.4" value="value 2.4"></proptext>
+          <proptext name="text2.5" value="value 2.5"></proptext>
+          <proptext name="text2.6" value="value 2.6"></proptext>
+          <proptext name="text2.7" value="value 2.7"></proptext>
+          <proptext name="text2.8" value="value 2.8"></proptext>
         </propgroup>
       </propgrid>
     </page>

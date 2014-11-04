@@ -36,7 +36,7 @@ HEADERS += MainDlg.h \
            ../controls.extend/gif/SSkinAPNG.h \
            ../controls.extend/FileHelper.h \
            ../controls.extend/sipaddressctrl.h \
-           ../controls.extend/SPropertyGrid.h \
+           ../controls.extend/propgrid/SPropertyGrid.h \
            httpsvr/filereader-i.h \
            httpsvr/log.h \
            httpsvr/genericserver.h \
@@ -51,7 +51,9 @@ SOURCES += demo.cpp \
            ../controls.extend/gif/SSkinGif.cpp \
            ../controls.extend/gif/SSkinAPNG.cpp \
            ../controls.extend/sipaddressctrl.cpp \
-           ../controls.extend/SPropertyGrid.cpp \
+           ../controls.extend/propgrid/SPropertyGrid.cpp \
+           ../controls.extend/propgrid/propitem/spropertyitem-text.cpp \
+           ../controls.extend/propgrid/propitem/spropertyitem-option.cpp \
            httpsvr/log.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \

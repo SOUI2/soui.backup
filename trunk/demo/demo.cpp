@@ -6,7 +6,7 @@
 #include <helper/mybuffer.h>
 #include "httpsvr/HTTPServer.h"
 #include "MemFlash.h"
-#include "../controls.extend/SPropertyGrid.h"
+#include "../controls.extend/propgrid/SPropertyGrid.h"
 
 #if defined(_DEBUG) && !defined(_WIN64)
 // #include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
