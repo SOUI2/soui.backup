@@ -148,7 +148,14 @@ namespace SOUI
         return TRUE;
     }
 
-    //////////////////////////////////////////////////////////////////////////
+    HRESULT SPropertyItemBase::OnAttrExpanded( const SStringW & strValue,BOOL bLoading )
+    {
+        BOOL bExpanded = strValue!=L"0";
+        if(!bLoading) Expand(bExpanded);
+        else m_bExpanded = bExpanded;
+        return S_FALSE;
+    }
+//////////////////////////////////////////////////////////////////////////
     void SPropertyItemText::DrawItem( IRenderTarget *pRT,CRect rc )
     {
         pRT->DrawText(m_strValue,m_strValue.GetLength(),rc,DT_SINGLELINE|DT_VCENTER);
@@ -247,7 +254,7 @@ namespace SOUI
         for(int i=0;i<GetCount();i++)
         {
             IPropertyItem *p = (IPropertyItem *)GetItemData(i);
-            if(pItem->GetName()>p->GetName()) 
+            if(pItem->GetName()<p->GetName()) 
             {
                 iInsert = i;
                 break;
@@ -284,6 +291,18 @@ namespace SOUI
                     InsertString(-1,NULL,-1,(LPARAM)pChild);
                     pChild = pChild->GetItem(IPropertyItem::GPI_NEXTSIBLING);
                 }
+                //展开子项s
+                pChild=pGroup->GetItem(IPropertyItem::GPI_FIRSTCHILD);
+                while(pChild)
+                {
+                    if(pChild->ChildrenCount() && pChild->IsExpand())
+                    {
+                        int iInsert = IndexOfPropertyItem(pChild);
+                        ExpandChildren(pChild,iInsert);
+                    }
+                    pChild = pChild->GetItem(IPropertyItem::GPI_NEXTSIBLING);
+                }
+
             }
             break;
         case OT_GROUP:
@@ -303,6 +322,18 @@ namespace SOUI
                     SortInsert(pChild);
                     pChild = pChild->GetItem(IPropertyItem::GPI_NEXTSIBLING);
                 }
+                //展开子项s
+                pChild=pGroup->GetItem(IPropertyItem::GPI_FIRSTCHILD);
+                while(pChild)
+                {
+                    if(pChild->ChildrenCount() && pChild->IsExpand())
+                    {
+                        int iInsert = IndexOfPropertyItem(pChild);
+                        ExpandChildren(pChild,iInsert);
+                    }
+                    pChild = pChild->GetItem(IPropertyItem::GPI_NEXTSIBLING);
+                }
+
             }
             break;
         }
@@ -314,9 +345,23 @@ namespace SOUI
         SASSERT(pItem->IsExpand());
         SASSERT(iInsert != -1);
         int nRet =0;
+        SList<IPropertyItem*> lstChilds;
         IPropertyItem *pChild = pItem->GetItem(IPropertyItem::GPI_FIRSTCHILD);
         while(pChild)
         {
+            lstChilds.AddTail(pChild);
+            pChild = pChild->GetItem(IPropertyItem::GPI_NEXTSIBLING);
+        }
+
+        if(m_orderType == OT_NAME)
+        {
+            SortItems(lstChilds);
+        }
+
+        POSITION pos = lstChilds.GetHeadPosition();
+        while(pos)
+        {
+            IPropertyItem *pChild = lstChilds.GetNext(pos);
             InsertString(++iInsert,NULL,-1,(LPARAM)pChild);
             nRet ++;
             if(pChild->ChildrenCount() && pChild->IsExpand())
@@ -325,8 +370,8 @@ namespace SOUI
                 nRet += nAdded;
                 iInsert += nAdded;
             }
-            pChild = pChild->GetItem(IPropertyItem::GPI_NEXTSIBLING);
         }
+
         return nRet;
     }
 
@@ -447,4 +492,35 @@ namespace SOUI
 
     }
 
+    void SPropertyGrid::SortItems( SList<IPropertyItem*> & lstItems )
+    {
+        SList<IPropertyItem*> lstCpy;
+        POSITION pos = lstItems.GetHeadPosition();
+        while(pos)
+        {
+            IPropertyItem *pItem = lstItems.GetNext(pos);
+            POSITION pos2 = lstCpy.GetHeadPosition();
+            while(pos2)
+            {
+                IPropertyItem* pItem2=lstCpy.GetAt(pos2);
+                if(pItem->GetName()<pItem2->GetName())
+                {
+                    lstCpy.InsertBefore(pos2,pItem);
+                    break;
+                }
+                lstCpy.GetNext(pos2);
+            }
+            if(!pos2)
+            {
+                lstCpy.InsertAfter(NULL,pItem);
+            }
+        }
+        lstItems.RemoveAll();
+        pos = lstCpy.GetHeadPosition();
+        while(pos)
+        {
+            IPropertyItem *pItem = lstItems.GetNext(pos);
+            lstItems.InsertAfter(NULL,pItem);
+        }
+    }
 }

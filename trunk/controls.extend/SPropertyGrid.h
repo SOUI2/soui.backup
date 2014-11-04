@@ -96,11 +96,13 @@ namespace SOUI
         SOUI_ATTRS_BEGIN()
             ATTR_STRINGT(L"name",m_strName,TRUE)
             ATTR_STRINGT(L"descption",m_strDescription,TRUE)
+            ATTR_CUSTOM(L"expanded",OnAttrExpanded)
         SOUI_ATTRS_END()
 
         virtual BOOL InitFromXml(pugi::xml_node xmlNode);
     protected:
-
+        HRESULT OnAttrExpanded(const SStringW &  strValue,BOOL bLoading);
+       
         SStringT        m_strName;
         SStringT        m_strDescription;
         
@@ -114,7 +116,7 @@ namespace SOUI
         BOOL            m_bExpanded;
         
     protected:
-        SPropertyItemBase(SPropertyGrid * pOwner):m_pOwner(pOwner),m_pParent(NULL),m_bExpanded(FALSE){
+        SPropertyItemBase(SPropertyGrid * pOwner):m_pOwner(pOwner),m_pParent(NULL),m_bExpanded(TRUE){
             SASSERT(pOwner);
         }
     };
@@ -234,6 +236,7 @@ namespace SOUI
             IP_VALUE,
         };
         ITEMPART HitTest(int iItem, CPoint &pt);
+        void SortItems(SList<IPropertyItem*> & lstItems);
 
         virtual BOOL InitFromXml(pugi::xml_node xmlNode);
         
