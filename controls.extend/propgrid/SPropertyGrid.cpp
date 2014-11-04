@@ -1,179 +1,26 @@
 #include "StdAfx.h"
 #include "SPropertyGrid.h"
+#include "propitem/SPropertyItem-Text.h"
+#include "propitem/SPropertyItem-Option.h"
 
 const int KPropItemIndent   = 10;
 
 namespace SOUI
 {
-    int SPropertyItemBase::GetLevel() const
-    {
-        int iLevel = 0;
-        IPropertyItem *pParent=GetParent();
-        while(pParent)
-        {
-            iLevel ++;
-            pParent = pParent->GetParent();
-        }
-        return iLevel;
-    }
-
-    BOOL SPropertyItemBase::IsExpand() const
-    {
-        return m_bExpanded;
-    }
-
-    void SPropertyItemBase::Expand( BOOL bExpend )
-    {
-        m_bExpanded = bExpend;
-        GetOwner()->OnItemExpanded(this);
-    }
-
-    IPropertyItem * SPropertyItemBase::GetParent() const
-    {
-        return m_pParent;
-    }
-
-    void SPropertyItemBase::SetParent( IPropertyItem * pParent )
-    {
-        m_pParent = pParent;
-    }
-
-
-    IPropertyItem * SPropertyItemBase::GetItem( PROPITEMTYPE type) const
-    {
-        switch (type)
-        {
-        case GPI_PARENT:
-            return GetParent();
-            break;
-        case GPI_FIRSTCHILD:
-            if(m_childs.IsEmpty()) return NULL;
-            else return m_childs.GetHead();
-            break;
-        case GPI_LASTCHILD:
-            if(m_childs.IsEmpty()) return NULL;
-            else return m_childs.GetTail();
-            break;
-        case GPI_NEXTSIBLING:
-            {
-                SPropertyItemBase * pParent = (SPropertyItemBase*)GetParent();
-                if(!pParent) return NULL;
-                
-                POSITION pos = pParent->m_childs.Find((IPropertyItemPtr)this);
-                SASSERT(pos);
-                pParent->m_childs.GetNext(pos);
-                if(!pos) return NULL;
-                return pParent->m_childs.GetAt(pos);
-            }
-            break;
-        case GPI_PREVSIBLINIG:
-            {
-                SPropertyItemBase * pParent = (SPropertyItemBase*)GetParent();
-                if(!pParent) return NULL;
-                POSITION pos = pParent->m_childs.Find((IPropertyItemPtr)this);
-                SASSERT(pos);
-                pParent->m_childs.GetPrev(pos);
-                if(!pos) return NULL;
-                return pParent->m_childs.GetAt(pos);
-            }
-            break;
-        }
-        return NULL;
-    }
-
-    SPropertyGrid * SPropertyItemBase::GetOwner() const
-    {
-        return m_pOwner;
-    }
-
-    BOOL SPropertyItemBase::InsertChild( IPropertyItem * pChild,IPropertyItem * pInsertAfter/*=IC_LAST*/ )
-    {
-        if(pInsertAfter == IC_LAST) m_childs.InsertAfter(NULL,pChild);
-        else if(pInsertAfter == IC_FIRST) m_childs.InsertBefore(NULL,pChild);
-        else
-        {
-            POSITION pos = m_childs.Find(pInsertAfter);
-            if(!pos) return FALSE;
-            m_childs.InsertAfter(pos,pChild);            
-        }
-        pChild->SetParent(this);
-        pChild->AddRef();
-        return TRUE;
-    }
-
-    int SPropertyItemBase::ChildrenCount() const
-    {
-        return m_childs.GetCount();
-    }
-
-    BOOL SPropertyItemBase::RemoveChild( IPropertyItem * pChild )
-    {
-        POSITION pos = m_childs.Find(pChild);
-        if(!pos) return FALSE;
-        m_childs.RemoveAt(pos);
-        pChild->Release();
-        return TRUE;
-    }
-
-    SPropertyItemBase::~SPropertyItemBase()
-    {
-        POSITION pos = m_childs.GetHeadPosition();
-        while(pos)
-        {
-            IPropertyItemPtr pChild = m_childs.GetNext(pos);
-            pChild->Release();
-        }
-        m_childs.RemoveAll();
-    }
-
-    BOOL SPropertyItemBase::InitFromXml( pugi::xml_node xmlNode )
-    {
-        SObject::InitFromXml(xmlNode);
-        pugi::xml_node xmlProp=xmlNode.first_child();
-        while(xmlProp)
-        {
-            IPropertyItem * pItem = SPropItemMap::CreatePropItem(xmlProp.name(),GetOwner());
-            if(pItem)
-            {
-                SPropertyItemBase *pItem2 = static_cast<SPropertyItemBase*>(pItem);
-                if(pItem2)
-                {
-                    pItem2->InitFromXml(xmlProp);
-                    InsertChild(pItem2);
-                    pItem2->Release();
-                }
-            }
-            xmlProp = xmlProp.next_sibling();
-        }
-        return TRUE;
-    }
-
-    HRESULT SPropertyItemBase::OnAttrExpanded( const SStringW & strValue,BOOL bLoading )
-    {
-        BOOL bExpanded = strValue!=L"0";
-        if(!bLoading) Expand(bExpanded);
-        else m_bExpanded = bExpanded;
-        return S_FALSE;
-    }
-//////////////////////////////////////////////////////////////////////////
-    void SPropertyItemText::DrawItem( IRenderTarget *pRT,CRect rc )
-    {
-        pRT->DrawText(m_strValue,m_strValue.GetLength(),rc,DT_SINGLELINE|DT_VCENTER);
-    }
-
     //////////////////////////////////////////////////////////////////////////
     void SPropertyGroup::DrawItem( IRenderTarget *pRT,CRect rc )
     {
         pRT->FillSolidRect(rc,0xFF888888);
     }
 
-
+    
     //////////////////////////////////////////////////////////////////////////
     SPropItemMap SPropItemMap::s_mapPropItem;
     
     SPropItemMap::SPropItemMap()
     {
         SetAt(SPropertyItemText::GetClassName(),SPropertyItemText::CreatePropItem);
+        SetAt(SPropertyItemOption::GetClassName(),SPropertyItemOption::CreatePropItem);
         SetAt(SPropertyGroup::GetClassName(),SPropertyGroup::CreatePropItem);
     }
 
@@ -189,8 +36,14 @@ namespace SOUI
     }
 
     //////////////////////////////////////////////////////////////////////////
-    SPropertyGrid::SPropertyGrid(void):m_nIndent(KPropItemIndent),m_nNameWidth(100),m_switchSkin(NULL)
+    SPropertyGrid::SPropertyGrid(void)
+    :m_nIndent(KPropItemIndent)
+    ,m_nNameWidth(100)
+    ,m_switchSkin(NULL)
+    ,m_bDraging(FALSE)
+    ,m_pInplaceActiveWnd(NULL)
     {
+        GetEventSet()->subscribeEvent(EventLBSelChanged::EventID,Subscriber(&SPropertyGrid::OnSelChanged,this));
     }
 
     SPropertyGrid::~SPropertyGrid(void)
@@ -454,7 +307,7 @@ namespace SOUI
         __super::OnSize(nType,size);
     }
 
-    SPropertyGrid::ITEMPART SPropertyGrid::HitTest(int iItem, CPoint &pt )
+    SPropertyGrid::ITEMPART SPropertyGrid::HitTest(int iItem,const CPoint &pt )
     {
         if(iItem==-1) return IP_NULL;
         IPropertyItem *pItem = (IPropertyItem*)GetItemData(iItem);
@@ -464,28 +317,42 @@ namespace SOUI
         rcSwitch.right = rcSwitch.left+ rcSwitch.Height();
         if(iLevel>1) rcSwitch.OffsetRect(rcSwitch.Width()*(iLevel-1),0);
         if(pt.x<rcSwitch.left) return IP_NULL;
-        if(pt.x<rcSwitch.right) return IP_SWITCH;
+        if(pt.x<rcSwitch.right && pItem->ChildrenCount()) return IP_SWITCH;
         CRect rcName = rcItem;
         rcName.right = rcItem.left + m_nNameWidth + rcItem.Height();
-        if(pt.x<rcName.right - 1) return IP_NAME;
-        if(pt.x<rcName.right + 1) return IP_SEP;
+        if(pt.x<rcName.right) return IP_NAME;
         return IP_VALUE;
     }
 
     void SPropertyGrid::OnLButtonDown( UINT nFlags,CPoint pt )
     {
-        SListBox::OnLButtonDown(nFlags,pt);
-
-        int iItem = SListBox::HitTest(CPoint(pt));
-        if(iItem!=-1)
+        CRect rcClient;
+        GetClientRect(&rcClient);
+        if(pt.x-rcClient.left>=m_nItemHei+m_nNameWidth-1
+        && pt.x-rcClient.left<=m_nItemHei+m_nNameWidth+1)
         {
-            ITEMPART ip = HitTest(iItem,pt);
-            if(ip == IP_SWITCH)
+            SWindow::OnLButtonDown(nFlags,pt);
+            m_ptDrag = pt;
+            m_bDraging = TRUE;
+        }else
+        {
+            SListBox::OnLButtonDown(nFlags,pt);
+
+            int iItem = SListBox::HitTest(CPoint(pt));
+            if(iItem!=-1)
             {
-                IPropertyItem *pItem = (IPropertyItem*)GetItemData(iItem);
-                if(pItem->ChildrenCount())
+                ITEMPART ip = HitTest(iItem,pt);
+                if(ip == IP_SWITCH)
                 {
-                    pItem->Expand(!pItem->IsExpand());
+                    IPropertyItem *pItem = (IPropertyItem*)GetItemData(iItem);
+                    if(pItem->ChildrenCount())
+                    {
+                        pItem->Expand(!pItem->IsExpand());
+                    }
+                }else if(ip==IP_VALUE)
+                {
+                    IPropertyItem *pItem = (IPropertyItem*)GetItemData(iItem);
+                    pItem->OnInplaceActive(true);
                 }
             }
         }
@@ -523,4 +390,101 @@ namespace SOUI
             lstItems.InsertAfter(NULL,pItem);
         }
     }
+
+    BOOL SPropertyGrid::OnSetCursor( const CPoint &pt )
+    {
+        CRect rcClient;
+        GetClientRect(&rcClient);
+        if(m_bDraging 
+        ||  (pt.x-rcClient.left>=m_nItemHei+m_nNameWidth-1
+            && pt.x-rcClient.left<=m_nItemHei+m_nNameWidth+1))
+        {
+            SetCursor(SApplication::getSingleton().LoadCursor(MAKEINTRESOURCE(IDC_SIZEWE)));
+        }else
+        {
+            int iItem = SListBox::HitTest(CPoint(pt));
+            if(iItem==-1) return FALSE;
+            ITEMPART ip = HitTest(iItem,pt);
+            if(ip==IP_SWITCH)
+                SetCursor(SApplication::getSingleton().LoadCursor(MAKEINTRESOURCE(IDC_HAND)));
+            else
+                return FALSE;            
+        }
+        return TRUE;
+    }
+
+    void SPropertyGrid::OnLButtonUp( UINT nFlags,CPoint pt )
+    {
+        if(m_bDraging)
+        {
+            m_bDraging = FALSE;
+            SWindow::OnLButtonUp(nFlags,pt);
+        }else
+        {
+            SListBox::OnLButtonUp(nFlags,pt);
+        }
+    }
+
+    void SPropertyGrid::OnMouseMove( UINT nFlags,CPoint pt )
+    {
+        SListBox::OnMouseMove(nFlags,pt);
+        if(m_bDraging)
+        {
+            m_nNameWidth += pt.x-m_ptDrag.x;
+            m_ptDrag = pt;
+            Invalidate();
+        }
+    }
+
+    bool SPropertyGrid::OnSelChanged( EventArgs *pEvt )
+    {
+        EventLBSelChanged * pLbSelChanged = (EventLBSelChanged*)pEvt;
+        if(pLbSelChanged->nOldSel!=-1)
+        {
+//             IPropertyItem * pItem = (IPropertyItem*)GetItemData(pLbSelChanged->nOldSel);
+//             pItem->OnKillFocus();
+        }
+        return true;
+    }
+
+    BOOL SPropertyGrid::OnScroll( BOOL bVertical,UINT uCode,int nPos )
+    {
+        BOOL bRet = SListBox::OnScroll(bVertical,uCode,nPos);
+        if(bRet)
+        {
+            if(m_pInplaceActiveWnd)
+            {
+                int nCurSel = GetCurSel();
+                SASSERT(nCurSel!=-1);
+                IPropertyItem * pItem = (IPropertyItem*)GetItemData(nCurSel);
+                CRect rcItem = GetItemRect(pItem);
+                rcItem.left += rcItem.Height()+m_nNameWidth;
+                m_pInplaceActiveWnd->Move(rcItem);
+            }
+        }
+        return bRet;
+    }
+
+    void SPropertyGrid::OnInplaceActiveWndCreate( IPropertyItem *pItem,SWindow *pWnd )
+    {
+        SASSERT(m_pInplaceActiveWnd == NULL);
+        InsertChild(pWnd);
+        pWnd->SSendMessage(WM_CREATE);
+        CRect rcItem = GetItemRect(pItem);
+        CRect rcValue= rcItem;
+        rcValue.left += rcItem.Height()+m_nNameWidth;
+        pWnd->Move(rcValue);
+        pWnd->SetFocus();
+        m_pInplaceActiveWnd = pWnd;
+        STRACE(_T("OnInplaceActiveWndCreate"));
+    }
+
+    void SPropertyGrid::OnInplaceActiveWndDestroy( IPropertyItem *pItem,SWindow *pWnd )
+    {
+        SASSERT(m_pInplaceActiveWnd == pWnd);
+        RemoveChild(pWnd);
+        m_pInplaceActiveWnd = NULL;
+        STRACE(_T("OnInplaceActiveWndDestroy"));
+    }
+
 }
