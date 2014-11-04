@@ -28,8 +28,8 @@ namespace SOUI
         
         virtual void UpdateData()
         {
-//             SStringT strValue=GetWindowText();
-//             m_pOwner->SetValue(&strValue);
+            int nCurSel=GetCurSel();
+            m_pOwner->SetValue(&nCurSel);
         }
 
     protected:
@@ -49,16 +49,21 @@ namespace SOUI
         {
             SASSERT(!m_pCombobox);
             m_pCombobox = new TplPropEmbedWnd<SPropCombobox>(this);
-            m_pCombobox->SetAttribute(L"colorBkgnd",L"#ffffff",TRUE);
-            m_pCombobox->SetAttribute(L"dropDown",L"1",TRUE);
-            SStringW strHei;
-            strHei.Format(L"%d",m_nDropHeight);
-            m_pCombobox->SetAttribute(L"dropHeight",strHei,TRUE);
-            m_pOwner->OnInplaceActiveWndCreate(this,m_pCombobox);
+            wchar_t szXml[]=L"<combobox dropDown=\"1\" colorBkgnd=\"#ffffff\">\
+                <liststyle colorBorder=\"#000000\" margin-x=\"1\" margin-y=\"1\" colorText=\"#000000\" colorSelText=\"#FFFFFF\" colorItemBkgnd=\"#FFFFFF\" colorItemSelBkgnd=\"#000088\"/>\
+                <editstyle inset=\"5,0,5,0\" colorText=\"#000000\" align=\"left\" colorBkgnd=\"#FFFFFF\"/>\
+                </combobox>";
+            pugi::xml_document xmlDoc;
+            xmlDoc.load_buffer(szXml,sizeof(szXml));
+            pugi::xml_node xmlNode=xmlDoc.first_child();
+            xmlNode.append_attribute(L"dropHeght").set_value(m_nDropHeight);
+            xmlNode.append_attribute(L"dropDown").set_value(1);
+            m_pOwner->OnInplaceActiveWndCreate(this,m_pCombobox,xmlNode);
             for(UINT i=0;i<m_options.GetCount();i++)
             {
                 m_pCombobox->InsertItem(i,m_options[i],0,i);
             }
+            m_pCombobox->SetCurSel(m_nValue);
         }else
         {
             if(m_pCombobox)
