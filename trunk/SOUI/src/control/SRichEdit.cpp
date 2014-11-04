@@ -1236,10 +1236,27 @@ LRESULT SRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
             m_rcInset.bottom=DYtoHimetricY(m_rcInsetPixel.bottom,yPerInch);
         }
         ReleaseDC(GetContainer()->GetHostHwnd(),hdc);
+        
+        //窗口有焦点时，需要更新光标位置：先使edit失活用来关闭光标，再激活edit来显示光标。
+        //此处不应该直接用setfocus和killfocus，因为这两个消息可能会被外面响应。导致逻辑错误
         BOOL bFocus = GetContainer()->SwndGetFocus()==m_swnd;
-        if(bFocus) KillFocus();
+        if(bFocus)
+        {
+            m_pTxtHost->m_fUiActive=FALSE;
+            m_pTxtHost->GetTextService()->OnTxUIDeactivate();
+            m_pTxtHost->GetTextService()->TxSendMessage(WM_KILLFOCUS,0,0,NULL);
+            m_pTxtHost->TxShowCaret(FALSE);
+        }
         m_pTxtHost->GetTextService()->OnTxPropertyBitsChange(TXTBIT_EXTENTCHANGE|TXTBIT_CLIENTRECTCHANGE, TXTBIT_EXTENTCHANGE|TXTBIT_CLIENTRECTCHANGE);
-        if(bFocus) SetFocus();
+        if(bFocus)
+        {
+            CRect rcClient;
+            GetClientRect(&rcClient);
+            if(GetParent()) GetParent()->OnSetCaretValidateRect(&rcClient);
+            m_pTxtHost->m_fUiActive=TRUE;
+            m_pTxtHost->GetTextService()->OnTxUIActivate();
+            m_pTxtHost->GetTextService()->TxSendMessage(WM_SETFOCUS,0,0,NULL);
+        }
     }
     return 0;
 }

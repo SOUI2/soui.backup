@@ -256,7 +256,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\controls.extend\SPropertyGrid.cpp"
+				RelativePath="..\controls.extend\propgrid\SPropertyGrid.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Option.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Text.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\SPropertyItemBase.cpp"
 				>
 			</File>
 			<File
@@ -326,7 +338,27 @@
 				>
 			</File>
 			<File
-				RelativePath="..\controls.extend\SPropertyGrid.h"
+				RelativePath="..\controls.extend\propgrid\SPropertyEmbedWndHelper.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\SPropertyGrid.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\SPropertyItem-i.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Option.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Text.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\SPropertyItemBase.h"
 				>
 			</File>
 			<File

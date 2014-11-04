@@ -20,7 +20,6 @@
 #include "../controls.extend/SWkeWebkit.h"
 #include "../controls.extend/gif/SGifPlayer.h"
 #include "../controls.extend/SIPAddressCtrl.h"
-#include "../controls.extend/SPropertyGrid.h"
 
 
 using namespace SOUI;
