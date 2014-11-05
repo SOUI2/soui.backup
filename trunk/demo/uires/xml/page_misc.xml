@@ -157,17 +157,17 @@
             <proptext name="text1.2" value="value 1.2"></proptext>
           </propgroup>
           <propgroup name="group2" description="desc of group2">
-            <propcolor name="color2.1" value="#00ff00" format="#%02x%02x%02x%02x"/>
             <propoption name="option2.1" value="1" options="true|false|empty"/>
-            <propsize name="size2.1" value="200,300"/>
+            <propsize name="size2.1" value="200,300" childrenNames="宽|高"/>
             <proptext name="text2.2" value="value 2.2"></proptext>
-            <proptext name="text2.1" value="value 2.1"></proptext>
-            <proptext name="text2.3" value="value 2.3"></proptext>
-            <proptext name="text2.4" value="value 2.4"></proptext>
-            <proptext name="text2.5" value="value 2.5"></proptext>
-            <proptext name="text2.6" value="value 2.6"></proptext>
-            <proptext name="text2.7" value="value 2.7"></proptext>
-            <proptext name="text2.8" value="value 2.8"></proptext>
+            <propcolor name="color2.1" value="#00ff00" format="#%02x%02x%02x%02x"/>
+            <proptext name="text2.1" value="value 2.1"/>
+            <proptext name="text2.3" value="value 2.3"/>
+            <proptext name="text2.4" value="value 2.4"/>
+            <proptext name="text2.5" value="value 2.5"/>
+            <proptext name="text2.6" value="value 2.6"/>
+            <proptext name="text2.7" value="value 2.7"/>
+            <proptext name="text2.8" value="value 2.8"/>
           </propgroup>
         </groups>
       </propgrid>

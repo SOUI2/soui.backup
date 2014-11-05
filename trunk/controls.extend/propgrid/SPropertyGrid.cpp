@@ -47,6 +47,7 @@ namespace SOUI
     ,m_bDraging(FALSE)
     ,m_pInplaceActiveWnd(NULL)
     {
+        GetEventSet()->addEvent(EventPropGridValueChanged::EventID);
         GetEventSet()->subscribeEvent(EventLBSelChanged::EventID,Subscriber(&SPropertyGrid::OnSelChanged,this));
     }
 
@@ -249,14 +250,14 @@ namespace SOUI
     void SPropertyGrid::DrawItem( IRenderTarget *pRT, CRect &rc, int iItem )
     {
         IPropertyItem *pItem = (IPropertyItem*)GetItemData(iItem);
-
+        
         CRect rcSwitch = rc;
         CRect rcNameBack = rc;
         rcSwitch.right = rcSwitch.left +rcSwitch.Height();
         rcNameBack.left = rcSwitch.right;
         rcNameBack.right = rcNameBack.left + m_nNameWidth;
         pRT->FillSolidRect(rcSwitch,0xFF888888);
-        pRT->FillSolidRect(rcNameBack,iItem == SListBox::GetCurSel()? 0xFF880000:0xFFFFFFFF);
+        pRT->FillSolidRect(rcNameBack,iItem == SListBox::GetCurSel()? 0xFF880000:(pItem->IsGroup()?0xFF888888:0xffffffff));
         
         int iLevel = pItem->GetLevel();
         if(iLevel>1) rcSwitch.OffsetRect(rcSwitch.Width()*(iLevel-1),0);
@@ -264,7 +265,9 @@ namespace SOUI
         {
             int iState = pItem->IsExpand()?GROUP_EXPANDED:GROUP_COLLAPSED;
             if(!pItem->IsGroup()) iState += 2;
-            m_switchSkin->Draw(pRT,rcSwitch,iState);
+            CRect rcDraw = rcSwitch;
+            rcDraw.DeflateRect((rcSwitch.Size()-m_switchSkin->GetSkinSize())/2);
+            m_switchSkin->Draw(pRT,rcDraw,iState);
         }
         
         CRect rcName = rcNameBack;
