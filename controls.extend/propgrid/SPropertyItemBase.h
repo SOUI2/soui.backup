@@ -14,6 +14,7 @@ namespace SOUI
         virtual ~SPropertyItemBase();
 
         virtual BOOL IsGroup() const {return FALSE;}
+        virtual BOOL HasButton() const {return FALSE;}
         virtual int  GetLevel() const ;
         virtual BOOL IsExpand() const ;
         virtual void Expand(BOOL bExpend) ;
@@ -36,6 +37,7 @@ namespace SOUI
 
         virtual void DrawItem(IRenderTarget *pRT,CRect rc){}
         virtual void OnInplaceActive(bool bActive){}
+        virtual void OnButtonClick(){}
 
         SOUI_ATTRS_BEGIN()
             ATTR_STRINGT(L"name",m_strName,TRUE)

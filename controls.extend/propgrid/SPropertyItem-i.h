@@ -17,6 +17,7 @@ namespace SOUI
         };
         virtual ~IPropertyItem(){}
         virtual BOOL IsGroup() const =0;
+        virtual BOOL HasButton() const =0;
         virtual int  GetLevel() const =0;
         virtual BOOL IsExpand() const =0;
         virtual void Expand(BOOL bExpend) =0;
@@ -38,6 +39,7 @@ namespace SOUI
         virtual void DrawItem(IRenderTarget *pRT,CRect rc) =0;
 
         virtual void OnInplaceActive(bool bActive)=0;
+        virtual void OnButtonClick()=0;
     };
 
     struct IPropInplaceWnd{

@@ -1137,8 +1137,11 @@ void SWindow::OnShowWindow(BOOL bShow, UINT nStatus)
     SWindow *pChild=m_pFirstChild;
     while(pChild)
     {
+        pChild->AddRef();
         pChild->SSendMessage(WM_SHOWWINDOW,bShow,ParentShow);
-        pChild=pChild->GetWindow(GSW_NEXTSIBLING);
+        SWindow *pNextChild=pChild->GetWindow(GSW_NEXTSIBLING);;
+        pChild->Release();
+        pChild=pNextChild;
     }
     if(!IsVisible(TRUE) && m_swnd == GetContainer()->SwndGetFocus())
     {

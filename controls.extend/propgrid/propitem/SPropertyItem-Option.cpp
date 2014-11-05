@@ -17,7 +17,13 @@ namespace SOUI
         
         void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
         {
-            SComboBox::OnKeyDown(nChar,nRepCnt,nFlags); 
+            if(nChar == VK_RETURN)
+            {
+                GetParent()->SetFocus();
+            }else
+            {
+                SComboBox::OnKeyDown(nChar,nRepCnt,nFlags); 
+            }
         }
         
         SOUI_MSG_MAP_BEGIN()
@@ -51,7 +57,6 @@ namespace SOUI
             m_pCombobox = new TplPropEmbedWnd<SPropCombobox>(this);
             wchar_t szXml[]=L"<combobox dropDown=\"1\" colorBkgnd=\"#ffffff\">\
                 <liststyle colorBorder=\"#000000\" margin-x=\"1\" margin-y=\"1\" colorText=\"#000000\" colorSelText=\"#FFFFFF\" colorItemBkgnd=\"#FFFFFF\" colorItemSelBkgnd=\"#000088\"/>\
-                <editstyle inset=\"5,0,5,0\" colorText=\"#000000\" align=\"left\" colorBkgnd=\"#FFFFFF\"/>\
                 </combobox>";
             pugi::xml_document xmlDoc;
             xmlDoc.load_buffer(szXml,sizeof(szXml));

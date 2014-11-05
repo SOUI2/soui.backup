@@ -99,7 +99,7 @@ namespace SOUI
         ITEMPART HitTest(int iItem, const CPoint &pt);
         void SortItems(SList<IPropertyItem*> & lstItems);
 
-        virtual BOOL InitFromXml(pugi::xml_node xmlNode);
+        virtual BOOL CreateChildren(pugi::xml_node xmlNode);
         
         virtual void DrawItem(IRenderTarget *pRT, CRect &rc, int iItem);
         virtual UINT OnGetDlgCode(){return SC_WANTALLKEYS;}
@@ -111,7 +111,6 @@ namespace SOUI
         void OnMouseMove(UINT nFlags,CPoint pt);
         void OnLButtonDbClick(UINT nFlags, CPoint point);
         void OnSize(UINT nType, CSize size);
-        
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_LBUTTONDOWN(OnLButtonDown)
             MSG_WM_LBUTTONUP(OnLButtonUp)
@@ -128,18 +127,22 @@ namespace SOUI
         
     protected:
         bool OnSelChanged(EventArgs *pEvt);
+        bool OnCmdBtnClicked(EventArgs *pEvt);
         
         int ExpandChildren(const IPropertyItem *pItem,int iInsert);
         void CollapseChildren(const IPropertyItem *pItem,int idx);
         
         int IndexOfPropertyItem(const IPropertyItem *pItem) const;
+        enum {CHILD_CMDBTN=1,CHILD_INPLACEWND=2};
+        void UpdateChildrenPos(UINT childs=CHILD_CMDBTN|CHILD_INPLACEWND);
         
         int m_nIndent;          //缩进大小
         int m_nNameWidth;    //属性名占用空间
         ORDERTYPE   m_orderType;
         SList<SPropertyGroup *> m_lstGroup; //根分类列表
         ISkinObj  *  m_switchSkin;
-        
+        SWindow   *  m_pCmdBtn; //有弹出按钮的表项使用的按钮
+                
         CPoint      m_ptDrag;
         BOOL        m_bDraging;
         

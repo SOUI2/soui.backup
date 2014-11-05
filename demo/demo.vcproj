@@ -260,6 +260,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Color.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Option.cpp"
 				>
 			</File>
@@ -343,6 +347,10 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\propgrid\SPropertyGrid.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Color.h"
 				>
 			</File>
 			<File
