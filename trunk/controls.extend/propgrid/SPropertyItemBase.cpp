@@ -156,4 +156,10 @@ namespace SOUI
         return S_FALSE;
     }
 
+    void SPropertyItemBase::OnValueChanged()
+    {
+        GetOwner()->OnItemValueChanged(this);
+        if(GetParent()) GetParent()->OnChildValueChanged(this);
+    }
+
 }

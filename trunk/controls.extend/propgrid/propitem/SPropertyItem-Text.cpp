@@ -34,7 +34,7 @@ namespace SOUI
         virtual void UpdateData()
         {
             SStringT strValue=GetWindowText();
-            m_pOwner->SetValue(&strValue);
+            m_pOwner->SetString(strValue);
         }
 
     protected:
@@ -44,7 +44,8 @@ namespace SOUI
     
     void SPropertyItemText::DrawItem( IRenderTarget *pRT,CRect rc )
     {
-        pRT->DrawText(m_strValue,m_strValue.GetLength(),rc,DT_SINGLELINE|DT_VCENTER);
+        SStringT strValue = GetString();
+        pRT->DrawText(strValue,strValue.GetLength(),rc,DT_SINGLELINE|DT_VCENTER);
     }
     
     void SPropertyItemText::OnInplaceActive(bool bActive)
@@ -57,7 +58,7 @@ namespace SOUI
             pugi::xml_node xmlNode=xmlDoc.append_child(L"root");
             xmlNode.append_attribute(L"colorBkgnd").set_value(L"#ffffff");
             m_pOwner->OnInplaceActiveWndCreate(this,m_pEdit,xmlNode);
-            m_pEdit->SetWindowText(m_strValue);
+            m_pEdit->SetWindowText(GetString());
         }else
         {
             if(m_pEdit)
@@ -69,8 +70,16 @@ namespace SOUI
         }
     }
 
-    void SPropertyItemText::SetValue( void *pValue,UINT uType/*=0*/ )
+    void SPropertyItemText::SetValue( void *pValue)
     {
         m_strValue = *(SStringT*)pValue;
+        OnValueChanged();
     }
+
+    void SPropertyItemText::SetString( const SStringT & strValue )
+    {
+        m_strValue = strValue;
+        OnValueChanged();
+    }
+
 }

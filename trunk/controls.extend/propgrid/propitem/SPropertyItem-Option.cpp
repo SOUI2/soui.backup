@@ -45,7 +45,7 @@ namespace SOUI
     
     void SPropertyItemOption::DrawItem( IRenderTarget *pRT,CRect rc )
     {
-        SStringT strValue=GetValue();
+        SStringT strValue=GetString();
         pRT->DrawText(strValue,strValue.GetLength(),rc,DT_SINGLELINE|DT_VCENTER);
     }
     
@@ -80,15 +80,27 @@ namespace SOUI
         }
     }
 
-    void SPropertyItemOption::SetValue( void *pValue,UINT uType/*=0*/ )
+    void SPropertyItemOption::SetValue( void *pValue)
     {
         m_nValue = *(int*)pValue;
+        OnValueChanged();
     }
 
-    SStringT SPropertyItemOption::GetValue() const
+    const void * SPropertyItemOption::GetValue() const
+    {
+        return &m_nValue;
+    }
+
+    SStringT SPropertyItemOption::GetString() const
     {
         if(m_nValue<0 || m_nValue>=(int)m_options.GetCount()) return _T("");
         return m_options[m_nValue];
+    }
+
+    void SPropertyItemOption::SetString( const SStringT & strValue )
+    {
+        m_nValue = _ttoi(strValue);
+        OnValueChanged();
     }
 
     HRESULT SPropertyItemOption::OnAttrOptions( const SStringW & strValue,BOOL bLoading )

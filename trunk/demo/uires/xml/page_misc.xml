@@ -159,6 +159,7 @@
           <propgroup name="group2" description="desc of group2">
             <propcolor name="color2.1" value="#00ff00"></propcolor>
             <propoption name="option2.1" value="1" options="true|false|empty"></propoption>
+            <propsize name="size2.1" value="200,300"/>
             <proptext name="text2.2" value="value 2.2"></proptext>
             <proptext name="text2.1" value="value 2.1"></proptext>
             <proptext name="text2.3" value="value 2.3"></proptext>

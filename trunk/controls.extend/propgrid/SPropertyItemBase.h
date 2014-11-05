@@ -30,27 +30,35 @@ namespace SOUI
 
         virtual SStringT GetName() const{return m_strName;}
         virtual void SetName(const SStringT & strName){m_strName=strName;}
+        virtual int GetID()const {return m_nID;}
+        virtual void SetID(int nID) {m_nID = nID;}
         virtual SStringT GetDescription() const {return m_strDescription;}
         virtual void SetDescription(const SStringT & strDescription){m_strDescription =strDescription;}
-        virtual SStringT GetValue() const {return _T("");}
-        virtual void SetValue(void *pValue,UINT uType=0){}
+        virtual SStringT GetString() const {return _T("");}
+        virtual void SetString(const SStringT & strValue) {}
+        virtual const void* GetValue() const {return NULL;}
+        virtual void SetValue(void *pValue){}
 
         virtual void DrawItem(IRenderTarget *pRT,CRect rc){}
         virtual void OnInplaceActive(bool bActive){}
         virtual void OnButtonClick(){}
+        virtual void OnValueChanged();
+        virtual void OnChildValueChanged( IPropertyItem *pChild ){}
 
         SOUI_ATTRS_BEGIN()
-            ATTR_STRINGT(L"name",m_strName,TRUE)
-            ATTR_STRINGT(L"descption",m_strDescription,TRUE)
-            ATTR_INT(L"readOnly",m_bReadOnly,TRUE)
+            ATTR_STRINGT(L"name",m_strName,FALSE)
+            ATTR_INT(L"id",m_nID,FALSE)
+            ATTR_STRINGT(L"description",m_strDescription,FALSE)
+            ATTR_INT(L"readOnly",m_bReadOnly,FALSE)
             ATTR_CUSTOM(L"expanded",OnAttrExpanded)
-            SOUI_ATTRS_END()
+        SOUI_ATTRS_END()
 
-            virtual BOOL InitFromXml(pugi::xml_node xmlNode);
+        virtual BOOL InitFromXml(pugi::xml_node xmlNode);
     protected:
         HRESULT OnAttrExpanded(const SStringW &  strValue,BOOL bLoading);
 
         SStringT        m_strName;
+        int             m_nID;
         SStringT        m_strDescription;
 
         SPropertyGrid * m_pOwner;
@@ -63,7 +71,7 @@ namespace SOUI
         BOOL            m_bExpanded;
         BOOL            m_bReadOnly;
     protected:
-        SPropertyItemBase(SPropertyGrid * pOwner):m_pOwner(pOwner),m_pParent(NULL),m_bExpanded(TRUE){
+        SPropertyItemBase(SPropertyGrid * pOwner):m_pOwner(pOwner),m_pParent(NULL),m_bExpanded(TRUE),m_nID(0){
             SASSERT(pOwner);
         }
     };

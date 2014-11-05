@@ -92,7 +92,7 @@ namespace SOUI
         pRT->FillSolidRect(&rcColor,m_crValue);
         CRect rcValue = rc;
         rcValue.left += KColorWidth;
-        SStringT strValue = GetValue();
+        SStringT strValue = GetString();
         pRT->DrawText(strValue,strValue.GetLength(),&rcValue,DT_SINGLELINE|DT_VCENTER);
     }
     
@@ -106,7 +106,7 @@ namespace SOUI
             pugi::xml_node xmlNode=xmlDoc.append_child(L"root");
             xmlNode.append_attribute(L"colorBkgnd").set_value(L"#ffffff");
             m_pOwner->OnInplaceActiveWndCreate(this,m_pEdit,xmlNode);
-            m_pEdit->SetWindowText(GetValue());
+            m_pEdit->SetWindowText(GetString());
         }else
         {
             if(m_pEdit)
@@ -118,9 +118,25 @@ namespace SOUI
         }
     }
 
-    void SPropertyItemColor::SetValue( void *pValue,UINT uType/*=0*/ )
+    void SPropertyItemColor::SetValue( void *pValue)
     {
         m_crValue = *(COLORREF*)pValue;
+        OnValueChanged();
+    }
+
+    const void* SPropertyItemColor::GetValue()
+    {
+        return &m_crValue;
+    }
+
+    void SPropertyItemColor::SetString( const SStringT & strValue )
+    {
+        int r,g,b,a;
+        if(_stscanf(strValue,m_strFormat,&r,&g,&g,&a)==4)
+        {
+            m_crValue = RGBA(r,g,b,a);
+            OnValueChanged();
+        }
     }
 
     void SPropertyItemColor::OnButtonClick()
@@ -139,6 +155,7 @@ namespace SOUI
         if (ChooseColor(&cc))
         {
             m_crValue = cc.rgbResult|0xff000000;
+            OnValueChanged();
             CRect rc=GetOwner()->GetItemRect(this);
             GetOwner()->InvalidateRect(&rc);
         }
