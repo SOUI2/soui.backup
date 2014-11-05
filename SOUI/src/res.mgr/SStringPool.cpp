@@ -27,10 +27,16 @@ BOOL SStringPool::BuildString(SStringT &strContainer)
         SStringT strName=strContainer.Mid(nSubStringStart+1,nSubStringEnd-nSubStringStart-1);
 
         SStringT strNewSub=GetKeyObject(strName);
-        strContainer = strContainer.Left(nSubStringStart)
-                       + strNewSub
-                       + strContainer.Mid(nSubStringEnd+1);
-        nSubStringEnd+=strNewSub.GetLength()-(nSubStringEnd-nSubStringStart);
+        if(!strNewSub.IsEmpty())
+        {
+            strContainer = strContainer.Left(nSubStringStart)
+                + strNewSub
+                + strContainer.Mid(nSubStringEnd+1);
+            nSubStringEnd+=strNewSub.GetLength()-(nSubStringEnd-nSubStringStart);
+        }else
+        {//不是有效的内部变量，不做转义
+            nSubStringEnd++;
+        }
         bRet=TRUE;
     }
     return bRet;
