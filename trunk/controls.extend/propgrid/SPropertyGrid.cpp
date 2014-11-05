@@ -2,6 +2,7 @@
 #include "SPropertyGrid.h"
 #include "propitem/SPropertyItem-Text.h"
 #include "propitem/SPropertyItem-Option.h"
+#include "propitem/SPropertyItem-Color.h"
 
 const int KPropItemIndent   = 10;
 
@@ -21,6 +22,7 @@ namespace SOUI
     {
         SetAt(SPropertyItemText::GetClassName(),SPropertyItemText::CreatePropItem);
         SetAt(SPropertyItemOption::GetClassName(),SPropertyItemOption::CreatePropItem);
+        SetAt(SPropertyItemColor::GetClassName(),SPropertyItemColor::CreatePropItem);
         SetAt(SPropertyGroup::GetClassName(),SPropertyGroup::CreatePropItem);
     }
 
@@ -269,6 +271,8 @@ namespace SOUI
         pRT->DrawText(pItem->GetName(),pItem->GetName().GetLength(),rcName,DT_SINGLELINE|DT_VCENTER);
         CRect rcItem = rc;
         rcItem.left= rcNameBack.right;
+        if(pItem->HasButton()) rcItem.right -= rcItem.Height();
+            
         pItem->DrawItem(pRT,rcItem);
     }
 
@@ -286,18 +290,28 @@ namespace SOUI
         }
     }
 
-    BOOL SPropertyGrid::InitFromXml( pugi::xml_node xmlNode )
+    BOOL SPropertyGrid::CreateChildren( pugi::xml_node xmlNode )
     {
-        BOOL bRet = __super::InitFromXml(xmlNode);
-        if(!bRet) return FALSE;
-        pugi::xml_node xmlChild = xmlNode.child(SPropertyGroup::GetClassName());
-        while(xmlChild)
+        pugi::xml_node xmlCmdBtn = xmlNode.child(L"cmdbtnstyle");
+        SASSERT(xmlCmdBtn);
+        m_pCmdBtn = SApplication::getSingleton().CreateWindowByName(SWindow::GetClassName());
+        InsertChild(m_pCmdBtn);
+        m_pCmdBtn->InitFromXml(xmlCmdBtn);
+        m_pCmdBtn->SetVisible(FALSE);
+        m_pCmdBtn->GetEventSet()->subscribeEvent(EventCmd::EventID,Subscriber(&SPropertyGrid::OnCmdBtnClicked,this));
+        
+        pugi::xml_node xmlGroups = xmlNode.child(L"groups");
+        if(xmlGroups)
         {
-            SPropertyGroup *pGroup = (SPropertyGroup *)SPropertyGroup::CreatePropItem(this);
-            pGroup->InitFromXml(xmlChild);
-            InsertGroup(pGroup);
-            pGroup->Release();
-            xmlChild = xmlChild.next_sibling(SPropertyGroup::GetClassName());
+            pugi::xml_node xmlChild = xmlGroups.child(SPropertyGroup::GetClassName());
+            while(xmlChild)
+            {
+                SPropertyGroup *pGroup = (SPropertyGroup *)SPropertyGroup::CreatePropItem(this);
+                pGroup->InitFromXml(xmlChild);
+                InsertGroup(pGroup);
+                pGroup->Release();
+                xmlChild = xmlChild.next_sibling(SPropertyGroup::GetClassName());
+            }
         }
         return TRUE;
     }
@@ -305,6 +319,7 @@ namespace SOUI
     void SPropertyGrid::OnSize( UINT nType, CSize size )
     {
         __super::OnSize(nType,size);
+        UpdateChildrenPos();
     }
 
     SPropertyGrid::ITEMPART SPropertyGrid::HitTest(int iItem,const CPoint &pt )
@@ -438,30 +453,24 @@ namespace SOUI
 
     bool SPropertyGrid::OnSelChanged( EventArgs *pEvt )
     {
-        EventLBSelChanged * pLbSelChanged = (EventLBSelChanged*)pEvt;
-        if(pLbSelChanged->nOldSel!=-1)
-        {
-//             IPropertyItem * pItem = (IPropertyItem*)GetItemData(pLbSelChanged->nOldSel);
-//             pItem->OnKillFocus();
-        }
+        UpdateChildrenPos(CHILD_CMDBTN);
         return true;
     }
 
+    bool SPropertyGrid::OnCmdBtnClicked( EventArgs *pEvt )
+    {
+        int nCurSel = GetCurSel();
+        SASSERT(nCurSel!=-1);
+        IPropertyItem *pItem =(IPropertyItem*)GetItemData(nCurSel);
+        SASSERT(pItem->HasButton());
+        pItem->OnButtonClick();
+        return true;
+    }
+    
     BOOL SPropertyGrid::OnScroll( BOOL bVertical,UINT uCode,int nPos )
     {
         BOOL bRet = SListBox::OnScroll(bVertical,uCode,nPos);
-        if(bRet)
-        {
-            if(m_pInplaceActiveWnd)
-            {
-                int nCurSel = GetCurSel();
-                SASSERT(nCurSel!=-1);
-                IPropertyItem * pItem = (IPropertyItem*)GetItemData(nCurSel);
-                CRect rcItem = GetItemRect(pItem);
-                rcItem.left += rcItem.Height()+m_nNameWidth;
-                m_pInplaceActiveWnd->Move(rcItem);
-            }
-        }
+        UpdateChildrenPos();
         return bRet;
     }
 
@@ -474,6 +483,7 @@ namespace SOUI
         CRect rcItem = GetItemRect(pItem);
         CRect rcValue= rcItem;
         rcValue.left += rcItem.Height()+m_nNameWidth;
+        if(pItem->HasButton()) rcValue.right -= rcValue.Height();
         pWnd->Move(rcValue);
         pWnd->SetFocus();
         m_pInplaceActiveWnd = pWnd;
@@ -487,5 +497,39 @@ namespace SOUI
         m_pInplaceActiveWnd = NULL;
         STRACE(_T("OnInplaceActiveWndDestroy"));
     }
+
+    void SPropertyGrid::UpdateChildrenPos(UINT childs)
+    {
+        int nCurSel = GetCurSel();
+        if(nCurSel==-1) return;
+        
+        IPropertyItem * pItem = (IPropertyItem*)GetItemData(nCurSel);
+        CRect rcItem = GetItemRect(pItem);
+        rcItem.left += rcItem.Height()+m_nNameWidth;
+        
+        CRect rcValue = rcItem;
+        if(pItem->HasButton())
+        {
+            rcValue.right -= rcValue.Height();
+        }
+        
+        if(m_pInplaceActiveWnd && childs&CHILD_INPLACEWND)
+        {
+            m_pInplaceActiveWnd->Move(rcValue);
+        }
+        
+        if(childs & CHILD_CMDBTN)
+        {
+            m_pCmdBtn->SetVisible(FALSE);
+            if(pItem->HasButton())
+            {
+                CRect rcBtn = rcItem;
+                rcBtn.left = rcBtn.right-rcBtn.Height();
+                m_pCmdBtn->Move(&rcBtn);
+                m_pCmdBtn->SetVisible(TRUE,TRUE);
+            }
+        }
+    }
+
 
 }
