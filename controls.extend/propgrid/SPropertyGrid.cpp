@@ -535,7 +535,9 @@ namespace SOUI
 
     void SPropertyGrid::OnItemValueChanged( IPropertyItem *pItem )
     {
-        STRACE(_T("OnItemValueChanged:name=%s,id=%d,value=%s"),pItem->GetName(),pItem->GetID(),pItem->GetString());
+        EventPropGridValueChanged evt(this);
+        evt.pItem = pItem;
+        FireEvent(evt);
     }
 
 

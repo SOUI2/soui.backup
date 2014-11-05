@@ -12,6 +12,7 @@ namespace SOUI
     {
     public:
         virtual ~SPropertyItemBase();
+        virtual LPCWSTR GetItemClass() const {return GetClassName();}
 
         virtual BOOL IsGroup() const {return FALSE;}
         virtual BOOL HasButton() const {return FALSE;}

@@ -132,7 +132,7 @@ namespace SOUI
     void SPropertyItemColor::SetString( const SStringT & strValue )
     {
         int r,g,b,a;
-        if(_stscanf(strValue,m_strFormat,&r,&g,&g,&a)==4)
+        if(_stscanf(strValue,m_strFormat,&r,&g,&b,&a)==4)
         {
             m_crValue = RGBA(r,g,b,a);
             OnValueChanged();

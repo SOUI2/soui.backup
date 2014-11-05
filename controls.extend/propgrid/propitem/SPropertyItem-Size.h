@@ -21,11 +21,13 @@ namespace SOUI
         virtual void OnChildValueChanged(IPropertyItem *pChild);
         
         SOUI_ATTRS_BEGIN()
-            ATTR_CUSTOM(L"value",OnSetValue)
+            ATTR_CUSTOM(L"value",OnAttrValue)
+            ATTR_CUSTOM(L"childrenNames",OnAttrChildrenNames)
         SOUI_ATTRS_END()
 
     protected:
-        HRESULT OnSetValue(const SStringW & strValue,BOOL bLoading);
+        HRESULT OnAttrValue(const SStringW & strValue,BOOL bLoading);
+        HRESULT OnAttrChildrenNames(const SStringW & strValue,BOOL bLoading);
         
         SIZE    m_szValue;
         
