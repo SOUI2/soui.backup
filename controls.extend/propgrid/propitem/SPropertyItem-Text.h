@@ -10,8 +10,10 @@ namespace SOUI
     public:
         virtual void DrawItem(IRenderTarget *pRT,CRect rc);
         
-        void SetValue(void *pValue,UINT uType=0);
-        virtual SStringT GetValue() const {return m_strValue;}
+        virtual void SetValue(void *pValue);
+        virtual const void* GetValue(){return (LPCTSTR)m_strValue;}
+        virtual void SetString(const SStringT & strValue);
+        virtual SStringT GetString() const {return m_strValue;}
        
         SOUI_ATTRS_BEGIN()
             ATTR_STRINGT(L"value",m_strValue,TRUE)

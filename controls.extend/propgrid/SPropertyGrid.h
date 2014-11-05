@@ -121,7 +121,7 @@ namespace SOUI
     public:
         void OnInplaceActiveWndCreate(IPropertyItem *pItem,SWindow *pWnd,pugi::xml_node xmlInit);
         void OnInplaceActiveWndDestroy(IPropertyItem *pItem,SWindow *pWnd);
-        
+        void OnItemValueChanged(IPropertyItem *pItem);
     protected:
         SWindow *   m_pInplaceActiveWnd;    //属性内嵌的窗口
         

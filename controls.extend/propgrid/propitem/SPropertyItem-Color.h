@@ -12,8 +12,11 @@ namespace SOUI
         virtual BOOL HasButton() const {return TRUE;}
         virtual void DrawItem(IRenderTarget *pRT,CRect rc);
         
-        void SetValue(void *pValue,UINT uType=0);
-        virtual SStringT GetValue() const {
+        virtual void SetValue(void *pValue);
+        virtual const void* GetValue();
+        virtual void SetString(const SStringT & strValue);
+        
+        virtual SStringT GetString() const {
             SStringT str;
             int r,g,b,a;
             r = GetRValue(m_crValue);
@@ -23,7 +26,7 @@ namespace SOUI
             str.Format(m_strFormat,r,g,b,a);
             return str;
         }
-       
+        
         SOUI_ATTRS_BEGIN()
             ATTR_STRINGT(L"format",m_strFormat,TRUE)
             ATTR_COLOR(L"value",m_crValue,TRUE)

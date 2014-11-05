@@ -3,6 +3,7 @@
 #include "propitem/SPropertyItem-Text.h"
 #include "propitem/SPropertyItem-Option.h"
 #include "propitem/SPropertyItem-Color.h"
+#include "propitem/SPropertyItem-Size.h"
 
 const int KPropItemIndent   = 10;
 
@@ -23,6 +24,7 @@ namespace SOUI
         SetAt(SPropertyItemText::GetClassName(),SPropertyItemText::CreatePropItem);
         SetAt(SPropertyItemOption::GetClassName(),SPropertyItemOption::CreatePropItem);
         SetAt(SPropertyItemColor::GetClassName(),SPropertyItemColor::CreatePropItem);
+        SetAt(SPropertyItemSize::GetClassName(),SPropertyItemSize::CreatePropItem);
         SetAt(SPropertyGroup::GetClassName(),SPropertyGroup::CreatePropItem);
     }
 
@@ -529,6 +531,11 @@ namespace SOUI
                 m_pCmdBtn->SetVisible(TRUE,TRUE);
             }
         }
+    }
+
+    void SPropertyGrid::OnItemValueChanged( IPropertyItem *pItem )
+    {
+        STRACE(_T("OnItemValueChanged:name=%s,id=%d,value=%s"),pItem->GetName(),pItem->GetID(),pItem->GetString());
     }
 
 
