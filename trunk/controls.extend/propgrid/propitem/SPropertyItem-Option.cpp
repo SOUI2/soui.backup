@@ -55,7 +55,7 @@ namespace SOUI
         {
             SASSERT(!m_pCombobox);
             m_pCombobox = new TplPropEmbedWnd<SPropCombobox>(this);
-            wchar_t szXml[]=L"<combobox dropDown=\"1\" colorBkgnd=\"#ffffff\">\
+            wchar_t szXml[]=L"<combobox dropDown=\"1\" colorBkgnd=\"#ffffff\" focusable=\"0\">\
                 <liststyle colorBorder=\"#000000\" margin-x=\"1\" margin-y=\"1\" colorText=\"#000000\" colorSelText=\"#FFFFFF\" colorItemBkgnd=\"#FFFFFF\" colorItemSelBkgnd=\"#000088\"/>\
                 </combobox>";
             pugi::xml_document xmlDoc;

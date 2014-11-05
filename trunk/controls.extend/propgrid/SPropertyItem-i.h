@@ -16,6 +16,7 @@ namespace SOUI
             GPI_PREVSIBLINIG,
         };
         virtual ~IPropertyItem(){}
+        virtual LPCWSTR GetItemClass() const =0;
         virtual BOOL IsGroup() const =0;
         virtual BOOL HasButton() const =0;
         virtual int  GetLevel() const =0;

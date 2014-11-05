@@ -6,7 +6,17 @@
 
 namespace SOUI
 {
-     
+    #define EVT_PG_VALUECHANGED (EVT_EXTERNAL_BEGIN+100)
+
+    class EventPropGridValueChanged : public EventArgs
+    {
+    public:
+        EventPropGridValueChanged(SWindow *pWnd):EventArgs(pWnd){}
+        enum{EventID=EVT_PG_VALUECHANGED};
+        virtual UINT GetEventID(){return EventID;}
+        IPropertyItem * pItem;
+    };
+
     class SPropertyGroup : public SPropertyItemBase
     {
         SOUI_CLASS_NAME(SPropertyGroup,L"propgroup")

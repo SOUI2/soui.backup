@@ -2,6 +2,7 @@
 #include "SPropertyItem-Size.h"
 #include "../SPropertyEmbedWndHelper.hpp"
 #include "../SPropertyGrid.h"
+#include <helper/SplitString.h>
 
 #define CHILD_WIDTH     1
 #define CHILD_HEIGHT    2
@@ -12,12 +13,12 @@ namespace SOUI
     {
         IPropertyItem *pWidth = SPropertyItemText::CreatePropItem(pOwner);
         pWidth->SetID(CHILD_WIDTH);
-        pWidth->SetName(_T("Width"));
+        pWidth->SetName(S_CW2T(TR(L"width",GetOwner()->GetContainer()->GetTranslatorContext())));
         InsertChild(pWidth);
         pWidth->Release();
         IPropertyItem *pHeight = SPropertyItemText::CreatePropItem(pOwner);
         pHeight->SetID(CHILD_HEIGHT);
-        pHeight->SetName(_T("Height"));
+        pHeight->SetName(S_CW2T(TR(L"height",GetOwner()->GetContainer()->GetTranslatorContext())));
         InsertChild(pHeight);
         pHeight->Release();
         m_szValue.cx=m_szValue.cy=0;
@@ -76,10 +77,21 @@ namespace SOUI
         __super::OnValueChanged();
     }
 
-    HRESULT SPropertyItemSize::OnSetValue( const SStringW & strValue,BOOL bLoading )
+    HRESULT SPropertyItemSize::OnAttrValue( const SStringW & strValue,BOOL bLoading )
     {
         SetString(S_CW2T(strValue));
         return S_FALSE;
     }
 
+    HRESULT SPropertyItemSize::OnAttrChildrenNames( const SStringW & strValue,BOOL bLoading )
+    {
+        SArray<SStringT> strNames;
+        SplitString(S_CW2T(TR(strValue,GetOwner()->GetContainer()->GetTranslatorContext())),_T('|'),strNames);
+        if(strNames.GetCount()==2)
+        {
+            GetItem(GPI_FIRSTCHILD)->SetName(strNames[0]);
+            GetItem(GPI_LASTCHILD)->SetName(strNames[1]);
+        }
+        return S_FALSE;
+    }
 }
