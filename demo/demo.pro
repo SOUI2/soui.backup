@@ -51,10 +51,12 @@ SOURCES += demo.cpp \
            ../controls.extend/gif/SSkinGif.cpp \
            ../controls.extend/gif/SSkinAPNG.cpp \
            ../controls.extend/sipaddressctrl.cpp \
+           ../controls.extend/propgrid/spropertygrid.cpp \
            ../controls.extend/propgrid/spropertyitembase.cpp \
            ../controls.extend/propgrid/propitem/spropertyitem-text.cpp \
            ../controls.extend/propgrid/propitem/spropertyitem-option.cpp \
            ../controls.extend/propgrid/propitem/spropertyitem-color.cpp \
+           ../controls.extend/propgrid/propitem/spropertyitem-size.cpp \
            httpsvr/log.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \
