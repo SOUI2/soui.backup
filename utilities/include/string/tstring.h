@@ -170,8 +170,8 @@ namespace SOUI
         }
         static int Format(char** ppszDst, const char* pszFormat, va_list args)
         {
-            int len = _vscprintf( pszFormat, args )+1; // _vscprintf doesn't count terminating '\0'
-            *ppszDst = (char*)soui_mem_wrapper::SouiMalloc(len);
+            int len = _vscprintf( pszFormat, args ); // _vscprintf doesn't count terminating '\0'
+            *ppszDst = (char*)soui_mem_wrapper::SouiMalloc(len+1);
             vsprintf(*ppszDst, pszFormat, args);
             return len;
         }
@@ -232,8 +232,8 @@ namespace SOUI
         }
         static int Format(wchar_t** ppszDst, const wchar_t* pszFormat, va_list args)
         {
-            int len = _vscwprintf( pszFormat, args )+1; // _vscprintf doesn't count terminating '\0'
-            *ppszDst = (wchar_t*)soui_mem_wrapper::SouiMalloc(len*sizeof(wchar_t));
+            int len = _vscwprintf( pszFormat, args ); // _vscprintf doesn't count terminating '\0'
+            *ppszDst = (wchar_t*)soui_mem_wrapper::SouiMalloc((len+1)*sizeof(wchar_t));
             vswprintf(*ppszDst, pszFormat, args);
             return len;
         }
