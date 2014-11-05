@@ -26,9 +26,9 @@ BOOL SStringPool::BuildString(SStringT &strContainer)
             break;
         SStringT strName=strContainer.Mid(nSubStringStart+1,nSubStringEnd-nSubStringStart-1);
 
-        SStringT strNewSub=GetKeyObject(strName);
-        if(!strNewSub.IsEmpty())
+        if(HasKey(strName))
         {
+            SStringT strNewSub=GetKeyObject(strName);
             strContainer = strContainer.Left(nSubStringStart)
                 + strNewSub
                 + strContainer.Mid(nSubStringEnd+1);
