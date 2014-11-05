@@ -228,6 +228,8 @@ int SListBox::HitTest(CPoint &pt)
 {
     CRect rcClient;
     GetClientRect(&rcClient);
+    if(!rcClient.PtInRect(pt)) return -1;
+    
     CPoint pt2=pt;
     pt2.y -= rcClient.top - m_ptOrigin.y;
     int nRet=pt2.y/m_nItemHei;
