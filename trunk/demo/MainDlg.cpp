@@ -367,3 +367,45 @@ void CMainDlg::OnBtnMsgBox()
     SMessageBox(NULL,_T("this message box includes two buttons"),_T("haha"),MB_YESNO|MB_ICONQUESTION);
     SMessageBox(NULL,_T("this message box includes three buttons"),NULL,MB_ABORTRETRYIGNORE);
 }
+
+#include <render-skia/Render-Skia2-i.h>
+
+void CMainDlg::OnSkiaTest()
+{
+    CAutoRefPtr<IRenderTarget> pRT;
+    GETRENDERFACTORY->CreateRenderTarget(&pRT,100,100);
+    CAutoRefPtr<IRenderTarget_Skia2> pRTSkia2;
+    HRESULT hr=pRT->QueryInterface(__uuidof(IRenderTarget_Skia2),(IObjRef**)&pRTSkia2);
+    if(SUCCEEDED(hr))
+    {
+        CRect rcUp(0,0,100,50);
+        CRect rcDown(0,50,100,100);
+        pRT->FillSolidRect(&rcUp,RGBA(255,0,0,255));
+        pRT->FillSolidRect(&rcDown,RGBA(0,255,0,255));
+        
+        SWindow *pCanvas = FindChildByName(L"skia_canvas");
+        if(pCanvas)
+        {
+            IRenderTarget* pRTDst= pCanvas->GetRenderTarget();
+            CRect rcCanvas;
+            pCanvas->GetWindowRect(&rcCanvas);
+            
+            CRect rcDst(rcCanvas.TopLeft(),CSize(100,100));
+            pRTDst->BitBlt(&rcDst,pRT,0,0);
+            
+            pRTSkia2->Init(pRT);
+            pRTSkia2->rotate(45.0f);
+            pRT->FillSolidRect(&rcUp,RGBA(0,0,255,255));
+            pRT->FillSolidRect(&rcDown,RGBA(0,255,255,255));
+            
+            
+            rcDst.OffsetRect(100,0);
+            pRTDst->BitBlt(&rcDst,pRT,0,0);
+            
+            pCanvas->ReleaseRenderTarget(pRTDst);
+        }
+    }else
+    {
+        SMessageBox(NULL,_T("当前使用的渲染引擎不是skia"),_T("错误"),MB_OK|MB_ICONSTOP);
+    }
+}

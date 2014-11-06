@@ -9,6 +9,7 @@
 #include "drawtext-skia.h"
 
 #include "render-skia.h"
+#include "Render-Skia2.h"
 
 #define getTotalClip internal_private_getTotalClip
 
@@ -890,7 +891,12 @@ namespace SOUI
 
     HRESULT SRenderTarget_Skia::QueryInterface( REFGUID iid,IObjRef ** ppObj )
     {
-        return E_NOTIMPL;
+        if(iid == __uuidof(IRenderTarget_Skia2))
+        {
+            *ppObj = new RenderTarget_Skia2;
+            return S_OK;
+        }
+        return E_NOINTERFACE;
     }
 
 

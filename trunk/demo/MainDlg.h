@@ -98,6 +98,8 @@ protected:
     void OnBtnWebkitForeward();
     void OnBtnWebkitRefresh();
 
+    void OnSkiaTest();
+    
     //演示如何使用subscribeEvent来不使用事件映射表实现事件响应
     bool OnListHeaderClick(EventArgs *pEvt);
 
@@ -117,6 +119,7 @@ protected:
         EVENT_NAME_COMMAND(L"btn_webkit_refresh",OnBtnWebkitRefresh)
         EVENT_NAME_COMMAND(L"btn_hidetst",OnBtnHideTest)
         EVENT_NAME_COMMAND(L"btn_insert_gif",OnBtnInsertGif2RE)
+        EVENT_NAME_COMMAND(L"btn_skiatest",OnSkiaTest)
 	EVENT_MAP_END()	
 
     //HOST消息及响应函数映射表
