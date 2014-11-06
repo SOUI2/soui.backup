@@ -323,6 +323,8 @@ namespace SOUI
 		
         virtual HDC GetDC(UINT uFlag);
         virtual void ReleaseDC(HDC hdc);
+
+        virtual HRESULT QueryInterface(REFGUID iid,IObjRef ** ppObj);
     protected:
 		SkCanvas *m_SkCanvas;
         SColor            m_curColor;

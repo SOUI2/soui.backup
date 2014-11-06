@@ -888,6 +888,11 @@ namespace SOUI
 
     }
 
+    HRESULT SRenderTarget_Skia::QueryInterface( REFGUID iid,IObjRef ** ppObj )
+    {
+        return E_NOTIMPL;
+    }
+
 
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia

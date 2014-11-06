@@ -315,6 +315,7 @@ namespace SOUI
         virtual HDC GetDC(UINT uFlag=0);
         virtual void ReleaseDC(HDC hdc);
 
+        virtual HRESULT QueryInterface(REFGUID iid,IObjRef ** ppObj){ return E_NOTIMPL;}
     protected:
         HDC               m_hdc;
         SColor            m_curColor;

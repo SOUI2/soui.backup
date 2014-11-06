@@ -392,7 +392,19 @@ namespace SOUI
         //两个兼容GDI操作的接口
         virtual HDC GetDC(UINT uFlag=0)=0;
         virtual void ReleaseDC(HDC hdc) =0;
+        
+        /**
+         * QueryInterface
+         * @brief    提供接口扩展的用的方法
+         * @param    REFGUID iid --  待扩展接口ID
+         * @param    IObjRef * * ppObj --  接口输出
+         * @return   HRESULT -- 成功返回S_OK
+         *
+         * Describe  具体能获取什么接口依赖于不同的渲染引擎
+         */
+        virtual HRESULT QueryInterface(REFGUID iid,IObjRef ** ppObj) =0;
     };
+
 
     /**
     * @struct     IRenderFactory
