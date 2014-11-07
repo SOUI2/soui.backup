@@ -159,7 +159,7 @@
       </treectrl>
     </page>
     <page title="propertygrid">
-      <propgrid pos="10,50,-100,-10" nameWidth="100" orderType="group" switchSkin="skin_propswitch" colorBkgnd="#ff0000" itemHeight="30">
+      <propgrid pos="10,50,-100,-10" nameWidth="180" orderType="group" switchSkin="skin_propswitch" colorBkgnd="#ffffff" itemHeight="30">
         <cmdbtnstyle skin="_skin.sys.btn.normal">...</cmdbtnstyle>
         <groups>
           <propgroup name="group1" description="desc of group1">

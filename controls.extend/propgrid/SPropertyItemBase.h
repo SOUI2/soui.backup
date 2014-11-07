@@ -40,7 +40,7 @@ namespace SOUI
         virtual const void* GetValue() const {return NULL;}
         virtual void SetValue(void *pValue){}
 
-        virtual void AdjustInplaceActiveWndRect(CRect & rc){}
+        virtual void AdjustInplaceActiveWndRect(CRect & rc){rc.bottom--;}
         virtual void DrawItem(IRenderTarget *pRT,CRect rc){}
         virtual void OnInplaceActive(bool bActive){}
         virtual void OnButtonClick(){}

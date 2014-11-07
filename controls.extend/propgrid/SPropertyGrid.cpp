@@ -258,7 +258,6 @@ namespace SOUI
         rcNameBack.right = rcNameBack.left + m_nNameWidth;
         pRT->FillSolidRect(rcSwitch,0xFF888888);
         pRT->FillSolidRect(rcNameBack,iItem == SListBox::GetCurSel()? 0xFF880000:(pItem->IsGroup()?0xFF888888:0xffffffff));
-        
         int iLevel = pItem->GetLevel();
         if(iLevel>1) rcSwitch.OffsetRect(rcSwitch.Width()*(iLevel-1),0);
         if(pItem->ChildrenCount() && m_switchSkin)
@@ -277,8 +276,21 @@ namespace SOUI
         CRect rcItem = rc;
         rcItem.left= rcNameBack.right;
         if(pItem->HasButton()) rcItem.right -= rcItem.Height();
-            
+        
         pItem->DrawItem(pRT,rcItem);
+        
+        if(!pItem->IsGroup())
+        {
+            CAutoRefPtr<IPen> pen,oldPen;
+            pRT->CreatePen(PS_SOLID,0xff888888,1,&pen);
+            pRT->SelectObject(pen,(IRenderObj**)&oldPen);
+            CPoint pts[2]={CPoint(rc.left+rc.Height(),rc.bottom-1),CPoint(rc.right,rc.bottom-1)};
+            pRT->DrawLines(pts,2);
+            CPoint pts2[2]={CPoint(rcNameBack.right,rcNameBack.top),rcNameBack.BottomRight()};
+            pRT->DrawLines(pts2,2);
+            pRT->SelectObject(oldPen);
+        }
+
     }
 
     void SPropertyGrid::OnLButtonDbClick( UINT nFlags, CPoint point )
@@ -291,6 +303,9 @@ namespace SOUI
             if(pItem->ChildrenCount())
             {
                 pItem->Expand(!pItem->IsExpand());
+            }else if(!pItem->IsGroup()) 
+            {
+                pItem->OnInplaceActive(true);
             }
         }
     }

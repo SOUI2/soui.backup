@@ -636,6 +636,7 @@ BOOL SPanel::OnScroll(BOOL bVertical,UINT uCode,int nPos)
             ReleaseRenderTarget(pRT);
         }
     }
+    Invalidate();
     return TRUE;
 }
 
