@@ -367,7 +367,7 @@ namespace SOUI
         virtual HRESULT FillSolidRect(LPCRECT pRect,COLORREF cr)=0;
         virtual HRESULT DrawRoundRect(LPCRECT pRect,POINT pt)=0;
         virtual HRESULT FillRoundRect(LPCRECT pRect,POINT pt)=0;
-
+        virtual HRESULT ClearRect(LPCRECT pRect,COLORREF cr)=0;
         virtual HRESULT DrawEllipse(LPCRECT pRect)=0;
         virtual HRESULT FillEllipse(LPCRECT pRect)=0;
 

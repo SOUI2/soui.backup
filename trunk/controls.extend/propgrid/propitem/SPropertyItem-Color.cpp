@@ -5,7 +5,7 @@
 #include <commdlg.h>
 
 const int KColorWidth   = 50;
-
+const int KTransGridSize    =5;
 namespace SOUI
 {
     void SPropertyItemColor::DrawItem( IRenderTarget *pRT,CRect rc )
@@ -13,7 +13,22 @@ namespace SOUI
         CRect rcColor = rc;
         rcColor.right = rcColor.left + KColorWidth;
         rcColor.DeflateRect(2,2);
-        pRT->FillSolidRect(&rcColor,0xffffffff);
+        
+        //画一个代表透明的网格背景
+        pRT->PushClipRect(&rcColor);
+        bool bDrawY=true;
+        for(int y=rcColor.top;y<rcColor.bottom;y+=KTransGridSize)
+        {
+            bool bDraw= bDrawY;
+            for(int x=rcColor.left;x<rcColor.right;x+=KTransGridSize)
+            {
+                if(bDraw) pRT->FillSolidRect(CRect(CPoint(x,y),CSize(KTransGridSize,KTransGridSize)),RGBA(0xcc,0xcc,0xcc,0xff));
+                bDraw=!bDraw;
+            }
+            bDrawY=!bDrawY;
+        }
+        pRT->PopClip();
+        
         pRT->FillSolidRect(&rcColor,m_crValue);
         pRT->DrawRectangle(&rcColor);
         CRect rcValue = rc;

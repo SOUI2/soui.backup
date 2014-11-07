@@ -780,13 +780,42 @@ namespace SOUI
         HDC hMemDC=CreateCompatibleDC(m_hdc);
         ::SelectObject(hMemDC,m_bmpForFillSolidRect.GetBitmap());
         
-        ::FillRect(m_hdc,pRect,(HBRUSH)::GetStockObject(BLACK_BRUSH));
         BLENDFUNCTION bf={AC_SRC_OVER,0,255,AC_SRC_ALPHA};
         ::AlphaBlend(m_hdc,pRect->left,pRect->top,nWid,nHei,hMemDC,0,0,SIZE_SOLIDRECT,SIZE_SOLIDRECT,bf);
         ::DeleteDC(hMemDC);
         return S_OK;    
     }
 
+    HRESULT SRenderTarget_GDI::ClearRect( LPCRECT pRect,COLORREF cr )
+    {
+        int nWid=pRect->right-pRect->left;
+        int nHei=pRect->bottom-pRect->top;
+
+        BYTE r=GetRValue(cr);
+        BYTE g=GetGValue(cr);
+        BYTE b=GetBValue(cr);
+        BYTE a=(cr&0xFF000000)>>24;
+        r = (r*a)>>8;
+        g = (g*a)>>8;
+        b = (b*a)>>8;
+        DWORD crARGB = a<<24 | r<<16 | g<<8 | b;
+        DWORD *pBits = (DWORD*)m_bmpForFillSolidRect.LockPixelBits();
+        DWORD *p = pBits;
+        for(int y=0;y<SIZE_SOLIDRECT;y++) for(int x=0;x<SIZE_SOLIDRECT;x++,p++)
+        {
+            memcpy(p,&crARGB,4);
+        }
+        m_bmpForFillSolidRect.UnlockPixelBits(pBits);
+
+        HDC hMemDC=CreateCompatibleDC(m_hdc);
+        ::SelectObject(hMemDC,m_bmpForFillSolidRect.GetBitmap());
+        ::FillRect(m_hdc,pRect,(HBRUSH)GetStockObject(BLACK_BRUSH));
+        BLENDFUNCTION bf={AC_SRC_OVER,0,255,AC_SRC_ALPHA};
+        ::AlphaBlend(m_hdc,pRect->left,pRect->top,nWid,nHei,hMemDC,0,0,SIZE_SOLIDRECT,SIZE_SOLIDRECT,bf);
+        ::DeleteDC(hMemDC);
+        return S_OK;    
+    }
+    
     HRESULT SRenderTarget_GDI::DrawEllipse( LPCRECT pRect )
     {
         ALPHAINFO ai;
@@ -853,6 +882,7 @@ namespace SOUI
         ::SelectObject(m_hdc,oldPen);
         return S_OK;
     }
+
 
     //////////////////////////////////////////////////////////////////////////
     namespace RENDER_GDI

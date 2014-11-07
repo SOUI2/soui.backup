@@ -230,7 +230,7 @@ void SHostWnd::OnPrint(HDC dc, UINT uFlags)
             m_memRT->PushClipRect(&rcInvalid,RGN_COPY);
         }
         //Çå³ý²ÐÁôµÄalphaÖµ
-        m_memRT->FillSolidRect(rcInvalid,0);
+        m_memRT->ClearRect(rcInvalid,0);
 
         if(m_bCaretActive) DrawCaret(m_ptCaret);//clear old caret 
         RedrawRegion(m_memRT, pRgnUpdate);
@@ -884,7 +884,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 {
                     *x+=xStepLen;
                     *y+=yStepLen;
-                    pRT->FillSolidRect(rcWnd,0);
+                    pRT->ClearRect(rcWnd,0);
                     CPoint ptAnchor;
                     if(dwFlags & AW_VER_NEGATIVE)
                         ptAnchor.y=rcWnd.bottom-rcShow.Height();
@@ -903,7 +903,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 for(int i=0;i<nSteps;i++)
                 {
                     rcShow.DeflateRect(xStep,yStep);
-                    pRT->FillSolidRect(rcWnd,0);
+                    pRT->ClearRect(rcWnd,0);
                     _BitBlt(pRT,m_memRT,rcShow,rcShow.TopLeft());
                     UpdateLayerFromRenderTarget(pRT,m_hostAttr.m_byAlpha);
                     Sleep(10);
@@ -964,7 +964,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 {
                     *x+=xStepLen;
                     *y+=yStepLen;
-                    pRT->FillSolidRect(rcWnd,0);
+                    pRT->ClearRect(rcWnd,0);
                     CPoint ptAnchor;
                     if(dwFlags & AW_VER_POSITIVE)
                         ptAnchor.y=rcWnd.bottom-rcShow.Height();
@@ -985,7 +985,7 @@ BOOL SHostWnd::AnimateHostWindow(DWORD dwTime,DWORD dwFlags)
                 for(int i=0;i<nSteps;i++)
                 {
                     rcShow.InflateRect(xStep,yStep);
-                    pRT->FillSolidRect(rcWnd,0);
+                    pRT->ClearRect(rcWnd,0);
                     _BitBlt(pRT,m_memRT,rcShow,rcShow.TopLeft());
                     UpdateLayerFromRenderTarget(pRT,m_hostAttr.m_byAlpha);
                     Sleep(10);
