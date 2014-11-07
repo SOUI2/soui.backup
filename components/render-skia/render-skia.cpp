@@ -337,7 +337,7 @@ namespace SOUI
 		paint.setColor(SColor(m_curPen->GetColor()).toARGB());
 		SGetLineDashEffect skDash(m_curPen->GetStyle());
  		paint.setPathEffect(skDash.Get());
-		paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
+		paint.setStrokeWidth((SkScalar)m_curPen->GetWidth()-0.5f);
 		paint.setStyle(SkPaint::kStroke_Style);
 
         SkRect skrc=toSkRect(pRect);
@@ -808,12 +808,23 @@ namespace SOUI
         SkPaint paint;
         paint.setStyle(SkPaint::kFill_Style);
         paint.setColor(SColor(cr).toARGB());
-        paint.setXfermodeMode(SkXfermode::kSrc_Mode);
+        paint.setXfermodeMode(SkXfermode::kSrcOver_Mode);
         
         SkRect skrc=toSkRect(pRect);
         skrc.offset(m_ptOrg);
-        SkBitmap & bmp = m_curBmp->GetSkBitmap();
-        LPVOID pBits=bmp.getPixels();
+        m_SkCanvas->drawRect(skrc,paint);
+        return S_OK;    
+    }
+
+    HRESULT SRenderTarget_Skia::ClearRect( LPCRECT pRect,COLORREF cr )
+    {
+        SkPaint paint;
+        paint.setStyle(SkPaint::kFill_Style);
+        paint.setColor(SColor(cr).toARGB());
+        paint.setXfermodeMode(SkXfermode::kSrc_Mode);
+
+        SkRect skrc=toSkRect(pRect);
+        skrc.offset(m_ptOrg);
         m_SkCanvas->drawRect(skrc,paint);
         return S_OK;    
     }

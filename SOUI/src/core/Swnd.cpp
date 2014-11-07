@@ -1410,7 +1410,7 @@ void SWindow::PaintBackground(IRenderTarget *pRT,LPRECT pRc )
     GETRENDERFACTORY->CreateRegion(&pRgn);
     pRgn->CombineRect(&rcDraw,RGN_COPY);
     
-    pRT->FillSolidRect(&rcDraw,0);//清除残留的alpha值
+    pRT->ClearRect(&rcDraw,0);//清除残留的alpha值
     PRSTATE prState=PRS_LOOKSTART;
     _PaintRegion(pRT,pRgn,pTopWnd,pTopWnd,this,prState);
     pRT->PopClip();
