@@ -98,6 +98,7 @@ namespace SOUI
 
     void SPropertyItemColor::AdjustInplaceActiveWndRect( CRect & rc )
     {
+        __super::AdjustInplaceActiveWndRect(rc);
         rc.left += KColorWidth;
     }
 
