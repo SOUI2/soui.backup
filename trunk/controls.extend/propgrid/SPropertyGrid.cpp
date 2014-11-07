@@ -489,10 +489,10 @@ namespace SOUI
         CRect rcValue= rcItem;
         rcValue.left += rcItem.Height()+m_nNameWidth;
         if(pItem->HasButton()) rcValue.right -= rcValue.Height();
+        pItem->AdjustInplaceActiveWndRect(rcValue);
         pWnd->Move(rcValue);
         pWnd->SetFocus();
         m_pInplaceActiveWnd = pWnd;
-        STRACE(_T("OnInplaceActiveWndCreate"));
     }
 
     void SPropertyGrid::OnInplaceActiveWndDestroy( IPropertyItem *pItem,SWindow *pWnd )
@@ -500,7 +500,6 @@ namespace SOUI
         SASSERT(m_pInplaceActiveWnd == pWnd);
         RemoveChild(pWnd);
         m_pInplaceActiveWnd = NULL;
-        STRACE(_T("OnInplaceActiveWndDestroy"));
     }
 
     void SPropertyGrid::UpdateChildrenPos(UINT childs)
@@ -520,6 +519,7 @@ namespace SOUI
         
         if(m_pInplaceActiveWnd && childs&CHILD_INPLACEWND)
         {
+            pItem->AdjustInplaceActiveWndRect(rcValue);
             m_pInplaceActiveWnd->Move(rcValue);
         }
         

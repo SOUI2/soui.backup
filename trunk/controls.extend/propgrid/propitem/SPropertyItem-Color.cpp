@@ -4,92 +4,18 @@
 #include "../SPropertyGrid.h"
 #include <commdlg.h>
 
-const int KColorWidth   = 20;
+const int KColorWidth   = 50;
 
 namespace SOUI
 {
-    class SPropColorEdit: public SEdit
-                        , public IPropInplaceWnd
-    {
-    public:
-        SPropColorEdit(SPropertyItemColor *pOwner):m_pOwner(pOwner)
-        {
-            SASSERT(m_pOwner);
-            m_rcInsetPixel.left = KColorWidth;
-            m_cr = m_pOwner->m_crValue;
-        }
-        
-        void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
-        {
-            if(nChar==VK_RETURN)
-            {
-                GetParent()->SetFocus();
-            }else
-            {
-                SEdit::OnKeyDown(nChar,nRepCnt,nFlags);            
-            }
-        }
-        
-        void OnPaint(IRenderTarget *pRT)
-        {
-            SEdit::OnPaint(pRT);
-            CRect rcColor;
-            GetClientRect(&rcColor);
-            rcColor.right = rcColor.left +KColorWidth;
-            pRT->FillSolidRect(&rcColor,m_cr);
-        }
-        
-        int OnCreate(void *)
-        {
-            SEdit::OnCreate(NULL);
-            LRESULT lr=SSendMessage(EM_SETEVENTMASK,0,ENM_CHANGE);
-            GetEventSet()->subscribeEvent(EventRENotify::EventID,Subscriber(&SPropColorEdit::OnReNotify,this));
-            return 0;
-        }
-        
-        bool OnReNotify(EventArgs *pEvt)
-        {
-            EventRENotify *pReEvt = (EventRENotify*)pEvt;
-            if(pReEvt->iNotify == EN_CHANGE)
-            {
-                SStringT strValue=GetWindowText();
-                int r,g,b,a;
-                int nGet=_stscanf(strValue,m_pOwner->m_strFormat,&r,&g,&b,&a);
-                if(nGet==4)
-                {
-                    m_cr = RGBA(r,g,b,a);
-                    CRect rcColor;
-                    GetClientRect(&rcColor);
-                    rcColor.right= rcColor.left +KColorWidth;
-                    InvalidateRect(&rcColor);
-                }
-            }
-            return true;
-        }
-        
-        SOUI_MSG_MAP_BEGIN()
-            MSG_WM_KEYDOWN(OnKeyDown)
-            MSG_WM_PAINT_EX(OnPaint)
-            MSG_WM_CREATE(OnCreate)
-        SOUI_MSG_MAP_END()
-        
-        virtual IPropertyItem* GetOwner(){return m_pOwner;}
-        
-        virtual void UpdateData()
-        {
-            m_pOwner->SetValue(&m_cr);
-        }
-
-    protected:
-        CAutoRefPtr<SPropertyItemColor> m_pOwner;
-        COLORREF    m_cr;
-    };
-    
     void SPropertyItemColor::DrawItem( IRenderTarget *pRT,CRect rc )
     {
         CRect rcColor = rc;
         rcColor.right = rcColor.left + KColorWidth;
+        rcColor.DeflateRect(2,2);
+        pRT->FillSolidRect(&rcColor,0xffffffff);
         pRT->FillSolidRect(&rcColor,m_crValue);
+        pRT->DrawRectangle(&rcColor);
         CRect rcValue = rc;
         rcValue.left += KColorWidth;
         SStringT strValue = GetString();
@@ -98,26 +24,35 @@ namespace SOUI
     
     void SPropertyItemColor::OnInplaceActive(bool bActive)
     {
+        SPropertyItemText::OnInplaceActive(bActive);
         if(bActive)
         {
-            SASSERT(!m_pEdit);
-            m_pEdit = new TplPropEmbedWnd<SPropColorEdit>(this);
-            pugi::xml_document xmlDoc;
-            pugi::xml_node xmlNode=xmlDoc.append_child(L"root");
-            xmlNode.append_attribute(L"colorBkgnd").set_value(L"#ffffff");
-            m_pOwner->OnInplaceActiveWndCreate(this,m_pEdit,xmlNode);
-            m_pEdit->SetWindowText(GetString());
-        }else
-        {
-            if(m_pEdit)
-            {
-                m_pOwner->OnInplaceActiveWndDestroy(this,m_pEdit);
-                m_pEdit->Release();
-                m_pEdit = NULL;
-            }
+            LRESULT lr=m_pEdit->SSendMessage(EM_SETEVENTMASK,0,ENM_CHANGE);
+            m_pEdit->GetEventSet()->subscribeEvent(EventRENotify::EventID,Subscriber(&SPropertyItemColor::OnReNotify,this));
         }
     }
 
+    bool SPropertyItemColor::OnReNotify(EventArgs *pEvt)
+    {
+        EventRENotify *pReEvt = (EventRENotify*)pEvt;
+        if(pReEvt->iNotify == EN_CHANGE)
+        {
+            SStringT strValue=m_pEdit->GetWindowText();
+            int r,g,b,a;
+            int nGet=_stscanf(strValue,m_strFormat,&r,&g,&b,&a);
+            if(nGet==4)
+            {
+                m_crValue = RGBA(r,g,b,a);
+                CRect rcColor;
+                m_pEdit->GetWindowRect(&rcColor);
+                rcColor.right=rcColor.left;
+                rcColor.left -= KColorWidth;
+                m_pOwner->InvalidateRect(rcColor);
+            }
+        }
+        return true;
+    }
+    
     void SPropertyItemColor::SetValue( void *pValue)
     {
         m_crValue = *(COLORREF*)pValue;
@@ -159,6 +94,11 @@ namespace SOUI
             CRect rc=GetOwner()->GetItemRect(this);
             GetOwner()->InvalidateRect(&rc);
         }
+    }
+
+    void SPropertyItemColor::AdjustInplaceActiveWndRect( CRect & rc )
+    {
+        rc.left += KColorWidth;
     }
 
 }
