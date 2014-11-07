@@ -1,16 +1,17 @@
 #pragma once
 
-#include "../SPropertyItemBase.h"
+#include "SPropertyItem-Text.h"
 
 namespace SOUI
 {
-    class SPropertyItemColor : public SPropertyItemBase
+    class SPropertyItemColor : public SPropertyItemText
     {
         friend class SPropColorEdit;
         SOUI_CLASS_NAME(SPropertyGroup,L"propcolor")
     public:
         virtual BOOL HasButton() const {return TRUE;}
         virtual void DrawItem(IRenderTarget *pRT,CRect rc);
+        virtual void AdjustInplaceActiveWndRect(CRect & rc);
         
         virtual void SetValue(void *pValue);
         virtual const void* GetValue();
@@ -39,14 +40,15 @@ namespace SOUI
         SStringT m_strFormat;
         COLORREF    m_crValue;
         
-        SEdit  * m_pEdit;
     public:
         static IPropertyItem * CreatePropItem(SPropertyGrid *pOwner)
         {
             return new SPropertyItemColor(pOwner);
         }
     protected:
-        SPropertyItemColor(SPropertyGrid *pOwner):SPropertyItemBase(pOwner),m_pEdit(NULL)
+        bool OnReNotify(EventArgs *pEvt);
+
+        SPropertyItemColor(SPropertyGrid *pOwner):SPropertyItemText(pOwner)
         {
             m_strFormat = _T("RGB(%d,%d,%d,%d)");
         }
