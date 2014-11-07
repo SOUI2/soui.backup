@@ -758,7 +758,7 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
                 if(pWndCur->IsCacheDirty())
                 {
                     pRTCache->SetViewportOrg(-rcWnd.TopLeft());
-                    pRTCache->BitBlt(&rcWnd,pRT,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);//把父窗口的内容复制过来。
+                    pRTCache->BitBlt(&rcWnd,pRT,rcWnd.left,rcWnd.top,SRCCOPY);//把父窗口的内容复制过来。
                     CAutoRefPtr<IFont> oldFont;
                     COLORREF crOld=pRT->GetTextColor();
                     pRTCache->SelectObject(pRT->GetCurrentObject(OT_FONT),(IRenderObj**)&oldFont);
@@ -772,7 +772,7 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
                     
                     pWndCur->MarkCacheDirty(false);
                 }
-                pRT->BitBlt(&rcWnd,pRTCache,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
+                pRT->BitBlt(&rcWnd,pRTCache,rcWnd.left,rcWnd.top,SRCCOPY);
             }else
             {
                 pWndCur->SSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
@@ -1449,8 +1449,8 @@ SWindow * SWindow::GetNextVisibleWindow( SWindow *pWnd ,const CRect &rcDraw)
 void SWindow::DrawAniStep( CRect rcFore,CRect rcBack,IRenderTarget * pRTFore,IRenderTarget * pRTBack,CPoint ptAnchor)
 {
     IRenderTarget * pRT=GetRenderTarget(rcBack,OLEDC_OFFSCREEN,FALSE);
-    pRT->BitBlt(&rcBack,pRTBack,rcBack.left,rcBack.top,SRCCOPY|0x80000000);
-    pRT->BitBlt(&rcFore,pRTFore,ptAnchor.x,ptAnchor.y,SRCCOPY|0x80000000);
+    pRT->BitBlt(&rcBack,pRTBack,rcBack.left,rcBack.top,SRCCOPY);
+    pRT->BitBlt(&rcFore,pRTFore,ptAnchor.x,ptAnchor.y,SRCCOPY);
     PaintForeground(pRT,rcBack);//画前景
     ReleaseRenderTarget(pRT);
 }
@@ -1460,14 +1460,14 @@ void SWindow::DrawAniStep( CRect rcWnd,IRenderTarget * pRTFore,IRenderTarget * p
     IRenderTarget * pRT=GetRenderTarget(rcWnd,OLEDC_OFFSCREEN,FALSE);
     if(byAlpha>0 && byAlpha<255)
     {
-        pRT->BitBlt(&rcWnd,pRTBack,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
+        pRT->BitBlt(&rcWnd,pRTBack,rcWnd.left,rcWnd.top,SRCCOPY);
         pRT->AlphaBlend(&rcWnd,pRTFore,&rcWnd,byAlpha);
     }else if(byAlpha==0)
     {
-        pRT->BitBlt(&rcWnd,pRTBack,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
+        pRT->BitBlt(&rcWnd,pRTBack,rcWnd.left,rcWnd.top,SRCCOPY);
     }else if(byAlpha==255)
     {
-        pRT->BitBlt(&rcWnd,pRTFore,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
+        pRT->BitBlt(&rcWnd,pRTFore,rcWnd.left,rcWnd.top,SRCCOPY);
     }
     PaintForeground(pRT,rcWnd);//画前景
     ReleaseRenderTarget(pRT);
@@ -1502,7 +1502,7 @@ BOOL SWindow::AnimateWindow(DWORD dwTime,DWORD dwFlags )
     //渲染窗口变化前状态
     PaintBackground(pRT,rcWnd);
     RedrawRegion(pRT,rgn);
-    pRTBefore->BitBlt(&rcWnd,pRT,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
+    pRTBefore->BitBlt(&rcWnd,pRT,rcWnd.left,rcWnd.top,SRCCOPY);
     
     //更新窗口可见性
     SetVisible(!(dwFlags&AW_HIDE),FALSE);
@@ -1513,7 +1513,7 @@ BOOL SWindow::AnimateWindow(DWORD dwTime,DWORD dwFlags )
 
     PaintBackground(pRT,rcWnd);
     RedrawRegion(pRT,rgn);
-    pRTAfter->BitBlt(&rcWnd,pRT,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
+    pRTAfter->BitBlt(&rcWnd,pRT,rcWnd.left,rcWnd.top,SRCCOPY);
 
     ReleaseRenderTarget(pRT);
 
