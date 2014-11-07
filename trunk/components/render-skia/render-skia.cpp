@@ -10,10 +10,13 @@
 
 #include "render-skia.h"
 #include "Render-Skia2.h"
+#include "trace.h"
+
+#include "skia2rop2.h"
 
 #define getTotalClip internal_private_getTotalClip
 
-#include "trace.h"
+
 namespace SOUI
 {
 	//PS_SOLID
@@ -269,16 +272,40 @@ namespace SOUI
     
 	HRESULT SRenderTarget_Skia::BitBlt( LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop/*=SRCCOPY*/)
 	{
-        HDC hdcSrc=pRTSour->GetDC(0);
-        HDC hdcDst=GetDC(0);
-        ALPHAINFO ai;
-        if(!(dwRop&0x80000000))
-            CGdiAlpha::AlphaBackup(hdcDst,pRcDest,ai);
-        ::BitBlt(hdcDst,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,hdcSrc,xSrc,ySrc,dwRop&0x7fffffff);
-        if(!(dwRop&0x80000000))
-            CGdiAlpha::AlphaRestore(ai);
-        ReleaseDC(hdcDst);
-        pRTSour->ReleaseDC(hdcSrc);
+        SkPaint paint;
+        paint.setStyle(SkPaint::kFill_Style);
+        dwRop = dwRop & 0x7fffffff;
+        switch(dwRop)
+        {
+        case SRCCOPY:
+            paint.setXfermodeMode(SkXfermode::kSrc_Mode);
+            break;
+        case DSTINVERT:
+            paint.setXfermode(new ProcXfermode(ProcXfermode::Rop2_Invert));
+            break;
+        case SRCINVERT:
+            paint.setXfermode(new ProcXfermode(ProcXfermode::Rop2_Xor));
+            break;
+        case SRCAND:
+            paint.setXfermode(new ProcXfermode(ProcXfermode::Rop2_And));
+            break;
+        default:
+            SASSERT(FALSE);
+            break;
+        }
+
+        SRenderTarget_Skia *pRtSourSkia=(SRenderTarget_Skia*)pRTSour;
+        SkBitmap    bmpSrc=pRtSourSkia->m_curBmp->GetSkBitmap();
+        POINT ptSourViewport;
+        pRtSourSkia->GetViewportOrg(&ptSourViewport);
+        xSrc += ptSourViewport.x;
+        ySrc += ptSourViewport.y;
+        
+        
+        SkIRect isrc={xSrc,ySrc,xSrc + pRcDest->right-pRcDest->left,ySrc+pRcDest->bottom-pRcDest->top};
+        SkRect skrc=toSkRect(pRcDest);
+        skrc.offset(m_ptOrg);
+        m_SkCanvas->drawBitmapRect(bmpSrc,&isrc,skrc,&paint);
 		return S_OK;
 	}
 

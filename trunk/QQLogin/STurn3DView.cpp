@@ -100,7 +100,7 @@ namespace SOUI
         
         CAutoRefPtr<IRenderTarget> pRTCopy1;
         GETRENDERFACTORY->CreateRenderTarget(&pRTCopy1,rcWnd.Width(),rcWnd.Height());
-        pRTCopy1->BitBlt(CRect(CPoint(0,0),rcWnd.Size()),pRT,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
+        pRTCopy1->BitBlt(CRect(CPoint(0,0),rcWnd.Size()),pRT,rcWnd.left,rcWnd.top,SRCCOPY);
         m_bmpBefore = (IBitmap*)pRTCopy1->GetCurrentObject(OT_BITMAP);        
         
         //渲染窗口变化后状态
@@ -112,7 +112,7 @@ namespace SOUI
         
         CAutoRefPtr<IRenderTarget> pRTCopy2;
         GETRENDERFACTORY->CreateRenderTarget(&pRTCopy2,rcWnd.Width(),rcWnd.Height());
-        pRTCopy2->BitBlt(CRect(CPoint(0,0),rcWnd.Size()),pRT,rcWnd.left,rcWnd.top,SRCCOPY|0x80000000);
+        pRTCopy2->BitBlt(CRect(CPoint(0,0),rcWnd.Size()),pRT,rcWnd.left,rcWnd.top,SRCCOPY);
         m_bmpAfter = (IBitmap*)pRTCopy2->GetCurrentObject(OT_BITMAP);        
         
         pFrmWnd->ReleaseRenderTarget(pRT);
