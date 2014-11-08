@@ -216,6 +216,71 @@ namespace SOUI
     }
     
     //////////////////////////////////////////////////////////////////////////
+    //  DCBuffer
+    //////////////////////////////////////////////////////////////////////////
+    class DCBuffer
+    {
+    public:
+        DCBuffer(HDC hdc,LPCRECT pRect,BYTE byAlpha,BOOL bCopyBits=TRUE):m_hdc(hdc),m_byAlpha(byAlpha),m_pRc(pRect)
+        {
+            m_nWid = pRect->right-pRect->left;
+            m_nHei = pRect->bottom-pRect->top;
+            m_hBmp = SBitmap_GDI::CreateGDIBitmap(m_nWid,m_nHei,(void**)&m_pBits);
+            m_hMemDC = ::CreateCompatibleDC(hdc);
+            ::SetBkMode(m_hMemDC,TRANSPARENT);
+            ::SelectObject(m_hMemDC,m_hBmp);
+            ::SetViewportOrgEx(m_hMemDC,-pRect->left,-pRect->top,NULL);
+            //从原DC中获得画笔，画刷，字体，颜色等
+            m_hCurPen = ::SelectObject(hdc,GetStockObject(BLACK_PEN));
+            m_hCurBrush = ::SelectObject(hdc,GetStockObject(BLACK_BRUSH));
+            m_hCurFont = ::SelectObject(hdc,GetStockObject(DEFAULT_GUI_FONT));
+            COLORREF crCur = ::GetTextColor(hdc);
+
+            //将画笔，画刷，字体设置到memdc里
+            ::SelectObject(m_hMemDC,m_hCurPen);
+            ::SelectObject(m_hMemDC,m_hCurBrush);
+            ::SelectObject(m_hMemDC,m_hCurFont);
+            ::SetTextColor(m_hMemDC,crCur);
+
+            if(bCopyBits) ::BitBlt(m_hMemDC,pRect->left,pRect->top,m_nWid,m_nHei,m_hdc,pRect->left,pRect->top,SRCCOPY);
+        }
+
+        ~DCBuffer()
+        {
+            BYTE * p= m_pBits+3;
+            for(int i=0;i<m_nHei;i++)for(int j=0;j<m_nWid;j++,p+=4) *p=0xFF;
+
+            BLENDFUNCTION bf={AC_SRC_OVER,0,m_byAlpha,AC_SRC_ALPHA };
+            BOOL bRet=::AlphaBlend(m_hdc,m_pRc->left,m_pRc->top,m_nWid,m_nHei,m_hMemDC,m_pRc->left,m_pRc->top,m_nWid,m_nHei,bf);
+            ::DeleteDC(m_hMemDC);
+            ::DeleteObject(m_hBmp);
+            
+            //恢复原DC的画笔，画刷，字体
+            ::SelectObject(m_hdc,m_hCurPen);
+            ::SelectObject(m_hdc,m_hCurBrush);
+            ::SelectObject(m_hdc,m_hCurFont);
+        }
+
+        operator HDC()
+        {
+            return m_hMemDC;
+        }
+
+    protected:
+        HDC m_hdc;
+        HDC m_hMemDC;
+        HBITMAP m_hBmp; 
+        LPBYTE  m_pBits;
+        BYTE    m_byAlpha;
+        LPCRECT m_pRc;
+        int     m_nWid,m_nHei;
+
+        HGDIOBJ m_hCurPen;
+        HGDIOBJ m_hCurBrush;
+        HGDIOBJ m_hCurFont;
+    };
+
+    //////////////////////////////////////////////////////////////////////////
     //	SRenderTarget_GDI
     //////////////////////////////////////////////////////////////////////////
     #define SIZE_SOLIDRECT  5
@@ -380,23 +445,21 @@ namespace SOUI
         return S_OK;
     }
 
-    HRESULT SRenderTarget_GDI::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha)
+    HRESULT SRenderTarget_GDI::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat)
     {
-        COLORREF crOld=::SetTextColor(m_hdc,m_curColor.toCOLORREF()&0x00ffffff);
-        ALPHAINFO ai;
-        if(uFormat&DT_CALCRECT)
+        if(uFormat & DT_CALCRECT)
         {
-            ::DrawText(m_hdc,pszText,cchLen,pRc,uFormat|DT_CALCRECT);
-        }else
-        {
-            CGdiAlpha::AlphaBackup(m_hdc,pRc,ai);
+            ::DrawText(m_hdc,pszText,cchLen,pRc,uFormat);
+            return S_OK;
         }
-        ::DrawText(m_hdc,pszText,cchLen,pRc,uFormat);
-        if(!(uFormat&DT_CALCRECT))
+        
+        if(cchLen == 0) return S_OK;
+
         {
-            CGdiAlpha::AlphaRestore(ai);
+            DCBuffer dcBuf(m_hdc,pRc,m_curColor.a);
+            ::DrawText(dcBuf,pszText,cchLen,pRc,uFormat);
         }
-        ::SetTextColor(m_hdc,crOld);
+
         return S_OK;
     }
 
@@ -419,34 +482,35 @@ namespace SOUI
 
     HRESULT SRenderTarget_GDI::FillRectangle(LPCRECT pRect)
     {
-        ALPHAINFO ai;
-        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
-        HGDIOBJ oldPen=::SelectObject(m_hdc,GetStockObject(NULL_PEN));
-        ::Rectangle(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom);
-        CGdiAlpha::AlphaRestore(ai);
-        ::SelectObject(m_hdc,oldPen);
+        BYTE byAlpha=0xFF;
+        if(!m_curBrush->IsBitmap()) byAlpha = GetAValue(m_curBrush->GetColor());
+
+        DCBuffer dcBuf(m_hdc,pRect,byAlpha,FALSE);
+        
+        HGDIOBJ oldPen=::SelectObject(dcBuf,GetStockObject(NULL_PEN));
+        ::Rectangle(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom);
+        ::SelectObject(dcBuf,oldPen);
         return S_OK;
     }
 
     HRESULT SRenderTarget_GDI::DrawRoundRect( LPCRECT pRect,POINT pt )
     {
-        ALPHAINFO ai;
-        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
-        HGDIOBJ oldBr=::SelectObject(m_hdc,GetStockObject(NULL_BRUSH));
-        ::RoundRect(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom,pt.x,pt.y);
-        CGdiAlpha::AlphaRestore(ai);
-        ::SelectObject(m_hdc,oldBr);
+        DCBuffer dcBuf(m_hdc,pRect,GetAValue(m_curPen->GetColor()));
+        HGDIOBJ oldBr=::SelectObject(dcBuf,GetStockObject(NULL_BRUSH));
+        ::RoundRect(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt.x,pt.y);
+        ::SelectObject(dcBuf,oldBr);
         return S_OK;
     }
 
     HRESULT SRenderTarget_GDI::FillRoundRect( LPCRECT pRect,POINT pt )
     {
-        ALPHAINFO ai;
-        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
-        HGDIOBJ oldPen=::SelectObject(m_hdc,GetStockObject(NULL_PEN));
-        ::RoundRect(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom,pt.x,pt.y);
-        CGdiAlpha::AlphaRestore(ai);
-        ::SelectObject(m_hdc,oldPen);
+        BYTE byAlpha=0xFF;
+        if(!m_curBrush->IsBitmap()) byAlpha = GetAValue(m_curBrush->GetColor());
+        DCBuffer dcBuf(m_hdc,pRect,byAlpha);
+
+        HGDIOBJ oldPen=::SelectObject(dcBuf,GetStockObject(NULL_PEN));
+        ::RoundRect(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt.x,pt.y);
+        ::SelectObject(dcBuf,oldPen);
         return S_OK;
     }
 
@@ -466,25 +530,18 @@ namespace SOUI
         if(m_curPen) nPenWidth = m_curPen->GetWidth();
         rc.bottom+=nPenWidth;
         rc.right+=nPenWidth;
-        ALPHAINFO ai;
-        CGdiAlpha::AlphaBackup(m_hdc,&rc,ai);
-        ::Polyline(m_hdc,pPt,(int)nCount);
-        CGdiAlpha::AlphaRestore(ai);
+
+        DCBuffer dcBuf(m_hdc,&rc,GetAValue(m_curPen->GetColor()));
+        ::Polyline(dcBuf,pPt,(int)nCount);
         return S_OK;
     }
 
-    HRESULT SRenderTarget_GDI::TextOut( int x, int y, LPCTSTR lpszString, int nCount,BYTE byAlpha )
+    HRESULT SRenderTarget_GDI::TextOut( int x, int y, LPCTSTR lpszString, int nCount)
     {
-        COLORREF crOld=::SetTextColor(m_hdc,m_curColor.toCOLORREF()&0x00ffffff);
         SIZE sz;
         MeasureText(lpszString,nCount,&sz);
         RECT rc={x,y,x+sz.cx,y+sz.cy};
-        ALPHAINFO ai;
-        CGdiAlpha::AlphaBackup(m_hdc,&rc,ai);
-        ::TextOut(m_hdc,x,y,lpszString,nCount);
-        CGdiAlpha::AlphaRestore(ai);
-        ::SetTextColor(m_hdc,crOld);
-        return S_OK;
+        return DrawText(lpszString,nCount,&rc,DT_LEFT|DT_SINGLELINE);
     }
 
     HRESULT SRenderTarget_GDI::DrawIconEx( int xLeft, int yTop, HICON hIcon, int cxWidth,int cyWidth,UINT diFlags )
@@ -732,17 +789,8 @@ namespace SOUI
     {
         if(byAlpha!=0xFF)
         {
-            int nWid=pRect->right-pRect->left;
-            int nHei=pRect->bottom-pRect->top;
-            RECT rc={0,0,nWid,nHei};
-            HBITMAP hbmp=CreateCompatibleBitmap(m_hdc,nWid,nHei);
-            HDC hmemdc=CreateCompatibleDC(m_hdc);
-            ::SelectObject(hmemdc,hbmp);
-            GradientFillRect(hmemdc,&rc,crBegin,crEnd,bVert);
-            BLENDFUNCTION bf={AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA };
-            ::AlphaBlend(m_hdc,pRect->left,pRect->top,nWid,nHei,hmemdc,0,0,nWid,nHei,bf);
-            DeleteDC(hmemdc);
-            DeleteObject(hbmp);
+            DCBuffer dcBuf(m_hdc,pRect,byAlpha,FALSE);
+            GradientFillRect(dcBuf,pRect,crBegin,crEnd,bVert);
         }else
         {
             GradientFillRect(m_hdc,pRect,crBegin,crEnd,bVert);
@@ -758,31 +806,10 @@ namespace SOUI
     //通过一个内存位图来填充位置的alpha值
     HRESULT SRenderTarget_GDI::FillSolidRect( LPCRECT pRect,COLORREF cr )
     {
-        int nWid=pRect->right-pRect->left;
-        int nHei=pRect->bottom-pRect->top;
-        
-        BYTE r=GetRValue(cr);
-        BYTE g=GetGValue(cr);
-        BYTE b=GetBValue(cr);
-        BYTE a=(cr&0xFF000000)>>24;
-        r = (r*a)>>8;
-        g = (g*a)>>8;
-        b = (b*a)>>8;
-        DWORD crARGB = a<<24 | r<<16 | g<<8 | b;
-        DWORD *pBits = (DWORD*)m_bmpForFillSolidRect.LockPixelBits();
-        DWORD *p = pBits;
-        for(int y=0;y<SIZE_SOLIDRECT;y++) for(int x=0;x<SIZE_SOLIDRECT;x++,p++)
-        {
-            memcpy(p,&crARGB,4);
-        }
-        m_bmpForFillSolidRect.UnlockPixelBits(pBits);
-        
-        HDC hMemDC=CreateCompatibleDC(m_hdc);
-        ::SelectObject(hMemDC,m_bmpForFillSolidRect.GetBitmap());
-        
-        BLENDFUNCTION bf={AC_SRC_OVER,0,255,AC_SRC_ALPHA};
-        ::AlphaBlend(m_hdc,pRect->left,pRect->top,nWid,nHei,hMemDC,0,0,SIZE_SOLIDRECT,SIZE_SOLIDRECT,bf);
-        ::DeleteDC(hMemDC);
+        DCBuffer dcBuf(m_hdc,pRect,GetAValue(cr),FALSE);
+        HBRUSH br=::CreateSolidBrush(cr&0x00ffffff);
+        ::FillRect(dcBuf,pRect,br);
+        ::DeleteObject(br);
         return S_OK;    
     }
 
@@ -790,51 +817,34 @@ namespace SOUI
     {
         int nWid=pRect->right-pRect->left;
         int nHei=pRect->bottom-pRect->top;
-
-        BYTE r=GetRValue(cr);
-        BYTE g=GetGValue(cr);
-        BYTE b=GetBValue(cr);
-        BYTE a=(cr&0xFF000000)>>24;
-        r = (r*a)>>8;
-        g = (g*a)>>8;
-        b = (b*a)>>8;
-        DWORD crARGB = a<<24 | r<<16 | g<<8 | b;
-        DWORD *pBits = (DWORD*)m_bmpForFillSolidRect.LockPixelBits();
-        DWORD *p = pBits;
-        for(int y=0;y<SIZE_SOLIDRECT;y++) for(int x=0;x<SIZE_SOLIDRECT;x++,p++)
-        {
-            memcpy(p,&crARGB,4);
-        }
-        m_bmpForFillSolidRect.UnlockPixelBits(pBits);
-
+        LPDWORD pBits;
+        HBITMAP hBmp=SBitmap_GDI::CreateGDIBitmap(nWid,nHei,(void**)&pBits);
         HDC hMemDC=CreateCompatibleDC(m_hdc);
-        ::SelectObject(hMemDC,m_bmpForFillSolidRect.GetBitmap());
-        ::FillRect(m_hdc,pRect,(HBRUSH)GetStockObject(BLACK_BRUSH));
-        BLENDFUNCTION bf={AC_SRC_OVER,0,255,AC_SRC_ALPHA};
-        ::AlphaBlend(m_hdc,pRect->left,pRect->top,nWid,nHei,hMemDC,0,0,SIZE_SOLIDRECT,SIZE_SOLIDRECT,bf);
+        ::SelectObject(hMemDC,hBmp);
+
+        SColor color(cr);
+        DWORD dwColor=color.toARGB();
+        LPDWORD p=pBits;
+        for(int i=0;i<nHei;i++)for(int j=0;j<nWid;j++) *pBits++ = dwColor;
+        ::BitBlt(m_hdc,pRect->left,pRect->top,nWid,nHei,hMemDC,0,0,SRCCOPY);
         ::DeleteDC(hMemDC);
+        ::DeleteObject(hBmp);
         return S_OK;    
     }
     
     HRESULT SRenderTarget_GDI::DrawEllipse( LPCRECT pRect )
     {
-        ALPHAINFO ai;
-        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
-        HGDIOBJ oldBr=::SelectObject(m_hdc,GetStockObject(NULL_BRUSH));
-        ::Ellipse(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom);
-        CGdiAlpha::AlphaRestore(ai);
-        ::SelectObject(m_hdc,oldBr);
+        DCBuffer dcBuf(m_hdc,pRect,GetAValue(m_curPen->GetColor()));
+        ::Ellipse(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom);
         return S_OK;
     }
 
     HRESULT SRenderTarget_GDI::FillEllipse( LPCRECT pRect )
     {
-        ALPHAINFO ai;
-        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
-        HGDIOBJ oldPen=::SelectObject(m_hdc,GetStockObject(NULL_PEN));
-        ::Ellipse(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom);
-        CGdiAlpha::AlphaRestore(ai);
-        ::SelectObject(m_hdc,oldPen);
+        BYTE byAlpha=0xFF;
+        if(!m_curBrush->IsBitmap()) byAlpha = GetAValue(m_curBrush->GetColor());
+        DCBuffer dcBuf(m_hdc,pRect,byAlpha);
+        ::Ellipse(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom);
         return S_OK;
     }
     
@@ -842,9 +852,9 @@ namespace SOUI
 
     HRESULT SRenderTarget_GDI::DrawArc( LPCRECT pRect,float startAngle,float sweepAngle,bool useCenter )
     {
-        ALPHAINFO ai;
-        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
-        HGDIOBJ oldBr=::SelectObject(m_hdc,GetStockObject(NULL_BRUSH));
+        DCBuffer dcBuf(m_hdc,pRect,GetAValue(m_curPen->GetColor()));
+
+        HGDIOBJ oldBr=::SelectObject(dcBuf,GetStockObject(NULL_BRUSH));
         POINT ptCenter = {(pRect->left+pRect->right)/2,(pRect->top+pRect->bottom)/2};
         int   a=ptCenter.x-pRect->left,b=ptCenter.y-pRect->top;
         POINT pt1,pt2;
@@ -855,19 +865,20 @@ namespace SOUI
         pt2.x=ptCenter.x+(int)(a*cos(endAngle2));
         pt2.y=ptCenter.y+(int)(b*sin(endAngle2));
         if(useCenter)
-            ::Chord(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom,pt1.x,pt1.y,pt2.x,pt2.y);
+            ::Chord(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt1.x,pt1.y,pt2.x,pt2.y);
         else
-            ::Arc(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom,pt1.x,pt1.y,pt2.x,pt2.y);
-        CGdiAlpha::AlphaRestore(ai);
-        ::SelectObject(m_hdc,oldBr);
+            ::Arc(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt1.x,pt1.y,pt2.x,pt2.y);
+        ::SelectObject(dcBuf,oldBr);
         return S_OK;
     }
 
     HRESULT SRenderTarget_GDI::FillArc( LPCRECT pRect,float startAngle,float sweepAngle )
     {
-        ALPHAINFO ai;
-        CGdiAlpha::AlphaBackup(m_hdc,pRect,ai);
-        HGDIOBJ oldPen=::SelectObject(m_hdc,GetStockObject(NULL_PEN));
+        BYTE byAlpha=0xFF;
+        if(!m_curBrush->IsBitmap()) byAlpha = GetAValue(m_curBrush->GetColor());
+        DCBuffer dcBuf(m_hdc,pRect,byAlpha);
+
+        HGDIOBJ oldPen=::SelectObject(dcBuf,GetStockObject(NULL_PEN));
         POINT ptCenter = {(pRect->left+pRect->right)/2,(pRect->top+pRect->bottom)/2};
         int   a=ptCenter.x-pRect->left,b=ptCenter.y-pRect->top;
         POINT pt1,pt2;
@@ -877,9 +888,8 @@ namespace SOUI
         pt1.y=ptCenter.y+(int)(b*sin(startAngle2));
         pt2.x=ptCenter.x+(int)(a*cos(endAngle2));
         pt2.y=ptCenter.y+(int)(b*sin(endAngle2));
-        ::Chord(m_hdc,pRect->left,pRect->top,pRect->right,pRect->bottom,pt1.x,pt1.y,pt2.x,pt2.y);
-        CGdiAlpha::AlphaRestore(ai);
-        ::SelectObject(m_hdc,oldPen);
+        ::Chord(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt1.x,pt1.y,pt2.x,pt2.y);
+        ::SelectObject(dcBuf,oldPen);
         return S_OK;
     }
 

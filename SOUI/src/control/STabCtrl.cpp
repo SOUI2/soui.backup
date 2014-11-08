@@ -528,7 +528,7 @@ void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD d
 
     if(m_ptText.x!=-1 && m_ptText.y!=-1)
     {//从指定位置开始绘制文字
-        pRT->TextOut(rcItem.left+m_ptText.x,rcItem.top+m_ptText.y,GetItem(iItem)->GetTitle(),-1,m_byAlpha);
+        pRT->TextOut(rcItem.left+m_ptText.x,rcItem.top+m_ptText.y,GetItem(iItem)->GetTitle(),-1);
     }
     else
     {
@@ -546,7 +546,7 @@ void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD d
             align=alignStyle&(DT_VCENTER|DT_BOTTOM|DT_SINGLELINE|DT_END_ELLIPSIS);
         }
         
-        pRT->DrawText(GetItem(iItem)->GetTitle(),-1,&rcText,align,m_byAlpha);
+        pRT->DrawText(GetItem(iItem)->GetTitle(),-1,&rcText,align);
     }
 }
 

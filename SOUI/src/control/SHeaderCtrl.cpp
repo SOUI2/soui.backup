@@ -270,15 +270,18 @@ namespace SOUI
                 }
             }else if(m_dwHitTest!=-1)
             {//调节宽度
-                int cxNew=m_nAdjItemOldWidth+pt.x-m_ptClick.x;
-                if(cxNew<0) cxNew=0;
-                m_arrItems[LOWORD(m_dwHitTest)].cx=cxNew;
-                Invalidate();
-                GetContainer()->SwndUpdateWindow();//立即更新窗口
-                //发出调节宽度消息
-                EventHeaderItemChanging evt(this);
-                evt.nWidth=cxNew;
-                FireEvent(evt);
+				if (m_bFixWidth)
+				{
+					int cxNew = m_nAdjItemOldWidth + pt.x - m_ptClick.x;
+					if (cxNew < 0) cxNew = 0;
+					m_arrItems[LOWORD(m_dwHitTest)].cx = cxNew;
+					Invalidate();
+					GetContainer()->SwndUpdateWindow();//立即更新窗口
+					//发出调节宽度消息
+					EventHeaderItemChanging evt(this);
+					evt.nWidth = cxNew;
+					FireEvent(evt);
+				}
             }
         }else
         {

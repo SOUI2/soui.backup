@@ -339,9 +339,9 @@ protected:
      */
     virtual CSize GetDesiredSize(LPRECT pRcContainer);
 
-    BOOL m_bManaged;  /**< 暂时不详 */
+    BOOL m_bManaged;  /**< 是否要自动释放当前的m_pSkin对象 */
     int m_iFrame;  /**< 资源图片ID */
-    ISkinObj *m_pSkin;  /**< 资源对象 */
+    ISkinObj *m_pSkin;  /**< ISkinObj对象 */
 
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"skin", m_pSkin, TRUE)

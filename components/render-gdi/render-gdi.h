@@ -66,10 +66,10 @@ namespace SOUI
     public:
         SPen_GDI(IRenderFactory * pRenderFac,int iStyle=PS_SOLID,COLORREF cr=0,int cWidth=1)
             :TGdiRenderObjImpl<IPen>(pRenderFac)
-            ,m_nWidth(cWidth),m_style(iStyle),m_cr(cr&0x00FFFFFF)
+            ,m_nWidth(cWidth),m_style(iStyle),m_cr(cr)
             ,m_hPen(NULL)
         {
-            m_hPen = ::CreatePen(m_style,m_nWidth,m_cr);
+            m_hPen = ::CreatePen(m_style,m_nWidth,m_cr&0x00ffffff);
         }
         ~SPen_GDI()
         {
@@ -84,7 +84,7 @@ namespace SOUI
 
         COLORREF GetColor(){return m_cr;}
 
-        void SetColor(COLORREF cr){m_cr = cr&0x00FFFFFF;}
+        void SetColor(COLORREF cr){m_cr = cr;}
         
         HPEN GetPen(){return m_hPen;}
     protected:
@@ -146,11 +146,13 @@ namespace SOUI
         BOOL IsBitmap(){return m_fBmp;}
         
         HBRUSH GetBrush(){return m_hBrush;}
+
+        COLORREF GetColor() const {return m_cr;}
     protected:
         SBrush_GDI(IRenderFactory * pRenderFac,COLORREF cr)
-            :TGdiRenderObjImpl<IBrush>(pRenderFac),m_fBmp(FALSE)
+            :TGdiRenderObjImpl<IBrush>(pRenderFac),m_fBmp(FALSE),m_cr(cr)
         {
-            m_hBrush = ::CreateSolidBrush(cr&0x00ffffff);
+            m_hBrush = ::CreateSolidBrush(m_cr&0x00ffffff);
         }
         SBrush_GDI(IRenderFactory * pRenderFac,HBITMAP hBmp)
             :TGdiRenderObjImpl<IBrush>(pRenderFac),m_fBmp(TRUE)
@@ -161,8 +163,11 @@ namespace SOUI
         {
             DeleteObject(m_hBrush);
         }
+
+
         HBRUSH   m_hBrush;
         BOOL	 m_fBmp;
+        COLORREF    m_cr;
     };
 
     //////////////////////////////////////////////////////////////////////////
@@ -226,7 +231,6 @@ namespace SOUI
         HRGN    m_hRgn;
     };
 
-
     //////////////////////////////////////////////////////////////////////////
     //	SRenderTarget_GDI
     //////////////////////////////////////////////////////////////////////////
@@ -265,7 +269,7 @@ namespace SOUI
         virtual HRESULT BitBlt(LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop=SRCCOPY);
         virtual HRESULT AlphaBlend(LPCRECT pRcDest,IRenderTarget *pRTSrc,LPCRECT pRcSrc,BYTE byAlpha);
 
-        virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha=0xFF);
+        virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat);
         virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz );
 
         virtual HRESULT DrawRectangle(LPCRECT pRect);
@@ -289,8 +293,7 @@ namespace SOUI
             int x,
             int y,
             LPCTSTR lpszString,
-            int nCount,
-            BYTE byAlpha =0xFF);
+            int nCount);
 
         virtual HRESULT DrawIconEx(int xLeft, int yTop, HICON hIcon, int cxWidth,int cyWidth,UINT diFlags);
         virtual HRESULT DrawBitmap(LPCRECT pRcDest,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha=0xFF);
@@ -310,6 +313,7 @@ namespace SOUI
         {
             COLORREF crOld=m_curColor.toCOLORREF();
             m_curColor.setRGB(color);
+            ::SetTextColor(m_hdc,color&0x00ffffff);
             return crOld;
         }
 

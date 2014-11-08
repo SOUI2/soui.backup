@@ -1,5 +1,5 @@
 ﻿<include>
-  <tabctrl pos="0,0,-0,-0" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8">
+  <tabctrl pos="0,0,-0,-0" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
     <page title="listctrl">
       <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cursor="CUR_TST">
         <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
@@ -56,7 +56,7 @@
               <text pos="|-50,|-20" colorText="#ffffff">pane2.1 priority=0</text>
             </pane>
             <pane idealSize="400" minSize="30" priority="1" colorBkgnd="#008800" clipClient="1">
-              <text pos="|-50,|-20" colorText="0">pane2.2 priority=1</text>
+              <text pos="|-50,|-20" colorText="#ff0000">pane2.2 priority=1</text>
             </pane>
           </splitcol>
         </pane>
@@ -97,7 +97,7 @@
             <link id="4" maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
           </template>
         </liststyle>
-        <editstyle crtext="000000" align="left" x-margin="0" y-margin="0"/>
+        <editstyle colorText="#000000" align="left" x-margin="0" y-margin="0"/>
         <items>
           <item text="combobox.item1" icon="1" data="100"/>
           <item text="combobox.item2" icon="2" data="100"/>
