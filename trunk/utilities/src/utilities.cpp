@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "utilities.h"
+#include "string/strcpcvt.h"
+
 namespace SOUI
 {
 #define HIMETRIC_PER_INCH   2540
@@ -95,7 +97,11 @@ namespace SOUI
             else
                 nSegs=swscanf(str2,L"rgb(%u,%u,%u)",&r,&g,&b);                
         }
-        if(nSegs!=3 && nSegs!=4) return 0;
+        if(nSegs!=3 && nSegs!=4)
+        {
+            SASSERT_FMT(FALSE,TEXT("String2Color Failed with [%s]"),S_CW2T(str));
+            return 0;
+        }
         return RGB(r,g,b)|(a<<24);
     }
 }//end of namespace SOUI

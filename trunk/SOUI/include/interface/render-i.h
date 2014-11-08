@@ -358,9 +358,9 @@ namespace SOUI
         virtual HRESULT GetClipRegion(IRegion **ppRegion)=0;
         virtual HRESULT GetClipBox(LPRECT prc)=0;
 
-        virtual HRESULT DrawText(LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat,BYTE byAlpha =0xFF)=0;
+        virtual HRESULT DrawText(LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat)=0;
         virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz) =0;
-        virtual HRESULT TextOut(int x,int y, LPCTSTR lpszString,int nCount,BYTE byAlpha = 0xFF) =0;
+        virtual HRESULT TextOut(int x,int y, LPCTSTR lpszString,int nCount) =0;
 
         virtual HRESULT DrawRectangle(LPCRECT pRect)=0;
         virtual HRESULT FillRectangle(LPCRECT pRect)=0;

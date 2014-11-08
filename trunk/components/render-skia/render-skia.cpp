@@ -309,7 +309,7 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha)
+	HRESULT SRenderTarget_Skia::DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat)
 	{
 		if(cchLen<0) cchLen= _tcslen(pszText);
 		if(cchLen==0)
@@ -326,7 +326,6 @@ namespace SOUI
         SkPaint     txtPaint = m_curFont->GetPaint();
         txtPaint.setColor(m_curColor.toARGB());
         txtPaint.setTypeface(m_curFont->GetFont());
-        txtPaint.setAlpha(byAlpha);
         if(uFormat & DT_CENTER)
             txtPaint.setTextAlign(SkPaint::kCenter_Align);
         else if(uFormat & DT_RIGHT)
@@ -460,7 +459,7 @@ namespace SOUI
         return S_OK;
     }
 
-	HRESULT SRenderTarget_Skia::TextOut( int x, int y, LPCTSTR lpszString, int nCount,BYTE byAlpha )
+	HRESULT SRenderTarget_Skia::TextOut( int x, int y, LPCTSTR lpszString, int nCount)
 	{
 		if(nCount<0) nCount= _tcslen(lpszString);
 		SStringW strW=S_CT2W(SStringW(lpszString,nCount));
@@ -473,7 +472,6 @@ namespace SOUI
 
         txtPaint.setColor(m_curColor.toARGB());
         txtPaint.setTypeface(m_curFont->GetFont());
-        txtPaint.setAlpha(byAlpha);
 		m_SkCanvas->drawText((LPCWSTR)strW,strW.GetLength()*2,fx,fy,txtPaint);
 		return S_OK;
 	}

@@ -1072,7 +1072,7 @@ void SWindow::GetTextRect( LPRECT pRect )
 
 void SWindow::DrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat)
 {
-    pRT->DrawText(pszBuf,cchText,pRect,uFormat,m_byAlpha);
+    pRT->DrawText(pszBuf,cchText,pRect,uFormat);
 }
 
 void SWindow::DrawFocus(IRenderTarget *pRT)

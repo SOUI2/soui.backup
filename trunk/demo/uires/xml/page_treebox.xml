@@ -1,7 +1,7 @@
 ﻿<include>
   <treebox pos="0,0,-100,-0" name="mytree" itemHeight="30" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#cccccc" indent="10">
     <item>
-      <text pos="10,0,100,-0" valign="middle" align="center" colorText="ff0000">red test</text>
+      <text pos="10,0,100,-0" valign="middle" align="center" colorText="#ff0000">red test</text>
       <text>normal text</text>
       <edit pos="[5,0,]-5,20">test edit</edit>
       <button class="normalbtn" pos="300,3,-10,-3">button</button>

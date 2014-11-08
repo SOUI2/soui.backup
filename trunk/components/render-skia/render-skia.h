@@ -274,7 +274,7 @@ namespace SOUI
 		virtual HRESULT BitBlt(LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop=SRCCOPY);
         virtual HRESULT AlphaBlend(LPCRECT pRcDest,IRenderTarget *pRTSrc,LPCRECT pRcSrc,BYTE byAlpha);
 
-		virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat ,BYTE byAlpha=0xFF);
+		virtual HRESULT DrawText( LPCTSTR pszText,int cchLen,LPRECT pRc,UINT uFormat);
 		virtual HRESULT MeasureText(LPCTSTR pszText,int cchLen, SIZE *psz );
 
 		virtual HRESULT DrawRectangle(LPCRECT pRect);
@@ -298,8 +298,7 @@ namespace SOUI
 			int x,
 			int y,
 			LPCTSTR lpszString,
-			int nCount,
-            BYTE byAlpha =0xFF);
+			int nCount);
 
         virtual HRESULT DrawIconEx(int xLeft, int yTop, HICON hIcon, int cxWidth,int cyWidth,UINT diFlags);
         virtual HRESULT DrawBitmap(LPCRECT pRcDest,IBitmap *pBitmap,int xSrc,int ySrc,BYTE byAlpha=0xFF);

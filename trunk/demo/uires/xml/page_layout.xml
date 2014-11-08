@@ -11,6 +11,8 @@
   <button pos="10,200" width="150" height="30">button 1 using width</button>
 
   <button name="btn_hidetst" pos="300,150,@100,@30" display="0" tip="click me to hide me and see how the next image will move">hide test</button>
-  <img skin="skin_page_icons" iconIndex="1" pos="[5,150,-10,-10" />
+    <window skin="skin_page_icons" pos="[5,150,-10,-10" >
+      <text pos="|0,|0" pos2type="center" alpha="100" font="adding:20" colorText="#ff0000">alpha test</text>
+    </window>
   </group>
 </include>

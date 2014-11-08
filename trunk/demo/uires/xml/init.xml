@@ -55,7 +55,7 @@
     <!--控件默认属性-->
     <button class="normalbtn"/>
     <imgbtn class="linkimage"/>
-    <tabctrl colorText="000000" tabAlign="top" tabWidth="70" tabHeight="38" tabInterSize="0" tabPos="10" dotted="1"/>
+    <tabctrl colorText="#000000" tabAlign="top" tabWidth="70" tabHeight="38" tabInterSize="0" tabPos="10" dotted="1"/>
     <edit transParent="1" margin-x="2" margin-y="2"/>
     <treectrl colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088" colorItemText="#000000" colorItemSelText="#FFFFFF" indent="17" itemMargin="4"/>
   </objattr>
