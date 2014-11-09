@@ -44,7 +44,7 @@ int SSkinImgList::GetStates()
     return m_nStates;
 }
 
-void SSkinImgList::Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha)
+void SSkinImgList::_Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha)
 {
     if(!m_pImg) return;
     SIZE sz=GetSkinSize();
@@ -82,7 +82,7 @@ SSkinImgFrame::SSkinImgFrame()
 {
 }
 
-void SSkinImgFrame::Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha)
+void SSkinImgFrame::_Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha)
 {
     if(!m_pImg) return;
     SIZE sz=GetSkinSize();
@@ -110,7 +110,7 @@ SSkinButton::SSkinButton()
     m_crDown[3]=(RGB(0x80, 0x80, 0x80));
 }
 
-void SSkinButton::Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha)
+void SSkinButton::_Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha)
 {
     CRect rcDraw = *prcDraw;
     
@@ -150,7 +150,7 @@ SSkinGradation::SSkinGradation()
 {
 }
 
-void SSkinGradation::Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha)
+void SSkinGradation::_Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha)
 {
     pRT->GradientFill(prcDraw,m_bVert,m_crFrom,m_crTo,byAlpha);
 }
@@ -205,7 +205,7 @@ CRect SSkinScrollbar::GetPartRect(int nSbCode, int nState,BOOL bVertical)
     }
 }
 
-void SSkinScrollbar::Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha)
+void SSkinScrollbar::_Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha)
 {
     if(!m_pImg) return;
     int nSbCode=LOWORD(dwState);

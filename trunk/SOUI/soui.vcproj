@@ -728,6 +728,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\core\SSkinObjBase.h"
+				>
+			</File>
+			<File
 				RelativePath="include\res.mgr\SSkinPool.h"
 				>
 			</File>

@@ -221,7 +221,11 @@ namespace SOUI
     class DCBuffer
     {
     public:
-        DCBuffer(HDC hdc,LPCRECT pRect,BYTE byAlpha,BOOL bCopyBits=TRUE):m_hdc(hdc),m_byAlpha(byAlpha),m_pRc(pRect)
+        DCBuffer(HDC hdc,LPCRECT pRect,BYTE byAlpha,BOOL bCopyBits=TRUE)
+            :m_hdc(hdc)
+            ,m_byAlpha(byAlpha)
+            ,m_pRc(pRect)
+            ,m_bCopyBits(bCopyBits)
         {
             m_nWid = pRect->right-pRect->left;
             m_nHei = pRect->bottom-pRect->top;
@@ -242,13 +246,17 @@ namespace SOUI
             ::SelectObject(m_hMemDC,m_hCurFont);
             ::SetTextColor(m_hMemDC,crCur);
 
-            if(bCopyBits) ::BitBlt(m_hMemDC,pRect->left,pRect->top,m_nWid,m_nHei,m_hdc,pRect->left,pRect->top,SRCCOPY);
+            if(m_bCopyBits) ::BitBlt(m_hMemDC,pRect->left,pRect->top,m_nWid,m_nHei,m_hdc,pRect->left,pRect->top,SRCCOPY);
+            //将alpha全部强制修改为0xFF。
+            BYTE * p= m_pBits+3;
+            for(int i=0;i<m_nHei;i++)for(int j=0;j<m_nWid;j++,p+=4) *p=0xFF;
         }
 
         ~DCBuffer()
         {
+            //将alpha为0xFF的改为0,为0的改为0xFF
             BYTE * p= m_pBits+3;
-            for(int i=0;i<m_nHei;i++)for(int j=0;j<m_nWid;j++,p+=4) *p=0xFF;
+            for(int i=0;i<m_nHei;i++)for(int j=0;j<m_nWid;j++,p+=4) *p=~(*p);
 
             BLENDFUNCTION bf={AC_SRC_OVER,0,m_byAlpha,AC_SRC_ALPHA };
             BOOL bRet=::AlphaBlend(m_hdc,m_pRc->left,m_pRc->top,m_nWid,m_nHei,m_hMemDC,m_pRc->left,m_pRc->top,m_nWid,m_nHei,bf);
@@ -274,6 +282,7 @@ namespace SOUI
         BYTE    m_byAlpha;
         LPCRECT m_pRc;
         int     m_nWid,m_nHei;
+        BOOL    m_bCopyBits;
 
         HGDIOBJ m_hCurPen;
         HGDIOBJ m_hCurBrush;

@@ -194,23 +194,23 @@ void SButton::OnPaint(IRenderTarget *pRT)
     {//不在动画过程中
         m_pBgSkin->Draw(
             pRT, rcClient,
-            IIF_STATE4(GetState(), 0, 1, 2, 3),m_byAlpha
+            IIF_STATE4(GetState(), 0, 1, 2, 3)
             );
     }
     else
     {//在动画过程中
-        BYTE byNewAlpha=(BYTE)(((UINT)m_byAlphaAni*m_byAlpha)>>8);
+        BYTE byNewAlpha=(BYTE)(((UINT)m_byAlphaAni*m_pBgSkin->GetAlpha())>>8);
         if(GetState()&WndState_Hover)
         {
             //get hover
-            m_pBgSkin->Draw(pRT, rcClient, 0, m_byAlpha);
+            m_pBgSkin->Draw(pRT, rcClient, 0, m_pBgSkin->GetAlpha());
             m_pBgSkin->Draw(pRT, rcClient, 1, byNewAlpha);
         }
         else
         {
             //lose hover
-            m_pBgSkin->Draw(pRT, rcClient,0, m_byAlpha);
-            m_pBgSkin->Draw(pRT, rcClient, 1, m_byAlpha-byNewAlpha);
+            m_pBgSkin->Draw(pRT, rcClient,0, m_pBgSkin->GetAlpha());
+            m_pBgSkin->Draw(pRT, rcClient, 1, m_pBgSkin->GetAlpha()-byNewAlpha);
         }
     }
 
@@ -342,7 +342,7 @@ SImageWnd::~SImageWnd()
 void SImageWnd::OnPaint(IRenderTarget *pRT)
 {
     if (m_pSkin)
-        m_pSkin->Draw(pRT, m_rcWindow, m_iFrame,m_byAlpha);
+        m_pSkin->Draw(pRT, m_rcWindow, m_iFrame);
 }
 
 BOOL SImageWnd::SetSkin(ISkinObj *pSkin,int iFrame/*=0*/,BOOL bAutoFree/*=TRUE*/)
@@ -405,7 +405,7 @@ SAnimateImgWnd::SAnimateImgWnd()
 void SAnimateImgWnd::OnPaint(IRenderTarget *pRT)
 {
     if (m_pSkin)
-        m_pSkin->Draw(pRT, m_rcWindow, m_iCurFrame,m_byAlpha);
+        m_pSkin->Draw(pRT, m_rcWindow, m_iCurFrame);
 }
 
 
@@ -521,7 +521,7 @@ void SProgress::OnPaint(IRenderTarget *pRT)
     
     CRect rcClient;
     GetClientRect(&rcClient);
-    m_pSkinBg->Draw(pRT, rcClient, WndState_Normal,m_byAlpha);
+    m_pSkinBg->Draw(pRT, rcClient, WndState_Normal);
     CRect rcValue=rcClient;
 
     if(IsVertical())
@@ -534,7 +534,7 @@ void SProgress::OnPaint(IRenderTarget *pRT)
     }
     if(m_nValue>m_nMinValue)
     {
-        m_pSkinPos->Draw(pRT, rcValue, WndState_Normal,m_byAlpha);
+        m_pSkinPos->Draw(pRT, rcValue, WndState_Normal);
     }
 
 

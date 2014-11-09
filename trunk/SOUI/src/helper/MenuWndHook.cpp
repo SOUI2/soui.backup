@@ -301,7 +301,7 @@ void CMenuWndHook::OnPrint(HDC dc)
     
     CAutoRefPtr<IRenderTarget> pRT;
     GETRENDERFACTORY->CreateRenderTarget(&pRT,rcWnd.Width(),rcWnd.Height());
-    pBorderSkin->Draw(pRT,rcWnd,0,0xFF);
+    pBorderSkin->Draw(pRT,rcWnd,0);
     HDC hmemdc=pRT->GetDC(0);
     ::BitBlt(dc,0,0,rcWnd.Width(),rcWnd.Height(),hmemdc,0,0,SRCCOPY);
     pRT->ReleaseDC(hmemdc);

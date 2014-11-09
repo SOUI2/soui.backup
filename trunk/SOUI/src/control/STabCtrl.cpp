@@ -516,7 +516,7 @@ void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD d
 {
     if(rcItem.IsRectEmpty()) return;
     if(m_pSkinTab)
-        m_pSkinTab->Draw(pRT,rcItem,IIF_STATE3(dwState,WndState_Normal,WndState_Hover,WndState_PushDown),m_byAlpha);
+        m_pSkinTab->Draw(pRT,rcItem,IIF_STATE3(dwState,WndState_Normal,WndState_Hover,WndState_PushDown));
 
     CRect rcIcon(m_ptIcon+rcItem.TopLeft(),CSize(0,0));
     if(m_pSkinIcon)

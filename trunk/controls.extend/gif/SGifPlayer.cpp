@@ -39,7 +39,7 @@ void SGifPlayer::OnPaint( IRenderTarget *pRT )
 	__super::OnPaint(pRT);
 	if(m_aniSkin)
 	{		
-		m_aniSkin->Draw(pRT, m_rcWindow,m_iCurFrame,m_byAlpha);
+		m_aniSkin->Draw(pRT, m_rcWindow,m_iCurFrame);
 	}
 }
 
