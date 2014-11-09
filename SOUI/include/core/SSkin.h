@@ -1,6 +1,6 @@
-
 #pragma once
-#include "interface/Sskinobj-i.h"
+
+#include "SSkinObjBase.h"
 
 namespace SOUI
 {
@@ -27,7 +27,7 @@ enum
 
 
 //////////////////////////////////////////////////////////////////////////
-class SOUI_EXP SSkinImgList: public ISkinObj
+class SOUI_EXP SSkinImgList: public SSkinObjBase
 {
     SOUI_CLASS_NAME(SSkinImgList, L"imglist")
 
@@ -35,7 +35,6 @@ public:
     SSkinImgList();
     virtual ~SSkinImgList();
 
-    virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha=0xFF);
 
     virtual SIZE GetSkinSize();
 
@@ -43,6 +42,7 @@ public:
     
     virtual int GetStates();
     void    SetStates(int nStates){m_nStates=nStates;}
+
 
 
     void SetImage(IBitmap *pImg)
@@ -64,13 +64,13 @@ public:
     BOOL IsVertical(){return m_bVertical;}
     
 protected:
+    virtual void _Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha);
     HRESULT OnAttrImage(const SStringW & strValue,BOOL bLoading);
 
     IBitmap *m_pImg;
     int  m_nStates;
     BOOL m_bTile;
     BOOL m_bVertical;
-    
     SOUI_ATTRS_BEGIN()
         ATTR_CUSTOM(L"src", OnAttrImage)    //skinObj引用的图片文件定义在uires.idx中的name属性。
         ATTR_INT(L"tile", m_bTile, TRUE)    //绘制是否平铺,0--位伸（默认），其它--平铺
@@ -92,8 +92,8 @@ public:
 
     CRect GetMargin(){return m_rcMargin;}
 
-    virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha=0xFF);
 protected:
+    virtual void _Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha);
     CRect m_rcMargin;
 
     SOUI_ATTRS_BEGIN()
@@ -108,7 +108,7 @@ protected:
 };
 
 //////////////////////////////////////////////////////////////////////////
-class SOUI_EXP SSkinButton : public ISkinObj
+class SOUI_EXP SSkinButton : public SSkinObjBase
 {
     SOUI_CLASS_NAME(SSkinButton, L"button")
 
@@ -122,7 +122,6 @@ class SOUI_EXP SSkinButton : public ISkinObj
 public:
     SSkinButton();
 
-    virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha=0xFF);
 
     virtual BOOL IgnoreState();
 
@@ -131,11 +130,12 @@ public:
     void SetColors(COLORREF crUp[4],COLORREF crDown[4],COLORREF crBorder);
 
 protected:
+    virtual void _Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha);
     COLORREF m_crBorder;
 
     COLORREF    m_crUp[4];
     COLORREF    m_crDown[4];
-public:
+
     SOUI_ATTRS_BEGIN()
         ATTR_COLOR(L"colorBorder", m_crBorder, TRUE)                //边框颜色
         ATTR_COLOR(L"colorUp", m_crUp[ST_NORMAL], TRUE)             //正常状态渐变起始颜色
@@ -151,13 +151,11 @@ public:
 
 //////////////////////////////////////////////////////////////////////////
 
-class SOUI_EXP SSkinGradation  : public ISkinObj
+class SOUI_EXP SSkinGradation  : public SSkinObjBase
 {
     SOUI_CLASS_NAME(SSkinGradation, L"gradation")
 public:
     SSkinGradation();
-
-    virtual void Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha=0xFF);
     
     void SetColorFrom(COLORREF crFrom)
     {
@@ -175,6 +173,8 @@ public:
     }
 
 protected:
+    virtual void _Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha);
+
     COLORREF m_crFrom;
     COLORREF m_crTo;
     BOOL m_bVert;
@@ -211,8 +211,6 @@ public:
 
     SSkinScrollbar();
 
-    virtual void Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha=0xFF);
-
     //指示滚动条皮肤是否支持显示上下箭头
     virtual BOOL HasArrow(){return TRUE;}
     
@@ -222,6 +220,7 @@ public:
     }
 
 protected:
+    virtual void _Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha);
     //返回源指定部分在原位图上的位置。
     CRect GetPartRect(int nSbCode, int nState,BOOL bVertical);
     int         m_nMargin;

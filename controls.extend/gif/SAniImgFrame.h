@@ -10,7 +10,7 @@ namespace SOUI
         int                  nDelay;
     };
 
-    class SSkinAni : public ISkinObj
+    class SSkinAni : public SSkinObjBase
     {
         SOUI_CLASS_NAME(SSkinAni,L"skinani")
     public:
@@ -24,23 +24,6 @@ namespace SOUI
             if(m_pFrames) delete [] m_pFrames;
         }
 
-        /**
-        * Draw
-        * @brief    绘制指定帧的GIF图
-        * @param    IRenderTarget * pRT --  绘制目标
-        * @param    LPCRECT rcDraw --  绘制范围
-        * @param    DWORD dwState --  绘制状态，这里被解释为帧号
-        * @param    BYTE byAlpha --  透明度
-        * @return   void
-        * Describe  
-        */    
-        virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha=0xFF)
-        {
-            if(m_nFrames == 0 || !m_pFrames) return;
-            if(dwState!=-1) SelectActiveFrame(dwState);
-            CRect rcSrc(CPoint(0,0),GetSkinSize());
-            pRT->DrawBitmapEx(rcDraw,m_pFrames[m_iFrame].pBmp,rcSrc,EM_STRETCH,byAlpha);
-        }
 
         /**
         * GetStates
@@ -120,6 +103,24 @@ namespace SOUI
         virtual int LoadFromFile(LPCTSTR pszFileName){return 0;}
         virtual int LoadFromMemory(LPVOID pData,size_t len){return 0;}
     protected:
+        /**
+        * Draw
+        * @brief    绘制指定帧的GIF图
+        * @param    IRenderTarget * pRT --  绘制目标
+        * @param    LPCRECT rcDraw --  绘制范围
+        * @param    DWORD dwState --  绘制状态，这里被解释为帧号
+        * @param    BYTE byAlpha --  透明度
+        * @return   void
+        * Describe  
+        */    
+        virtual void _Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha=0xFF)
+        {
+            if(m_nFrames == 0 || !m_pFrames) return;
+            if(dwState!=-1) SelectActiveFrame(dwState);
+            CRect rcSrc(CPoint(0,0),GetSkinSize());
+            pRT->DrawBitmapEx(rcDraw,m_pFrames[m_iFrame].pBmp,rcSrc,EM_STRETCH,byAlpha);
+        }
+
         int m_nFrames;
         int m_iFrame;
 

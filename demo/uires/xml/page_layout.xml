@@ -12,7 +12,7 @@
 
   <button name="btn_hidetst" pos="300,150,@100,@30" display="0" tip="click me to hide me and see how the next image will move">hide test</button>
     <window skin="skin_page_icons" pos="[5,150,-10,-10" >
-      <text pos="|0,|0" pos2type="center" alpha="100" font="adding:20" colorText="#ff0000">alpha test</text>
+      <text pos="|0,|0" pos2type="center" font="adding:20" colorText="#ff000066">alpha test</text>
     </window>
   </group>
 </include>

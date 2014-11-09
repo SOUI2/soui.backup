@@ -181,8 +181,6 @@ namespace SOUI
         DWORD m_bCacheDraw:1;      /**< 支持窗口内容的Cache标志 */
         DWORD m_bDirty:1;          /**< 缓存窗口脏标志 */
 
-        BYTE m_byAlpha;         /**< 窗口透明度,只进行配置，支持依赖于控件 */
-
         ISkinObj * m_pBgSkin;   /**< 背景skin */
         ISkinObj * m_pNcSkin;   /**< 非客户区skin */
         ULONG_PTR m_uData;      /**< 窗口的数据位,可以通过GetUserData获得 */
@@ -970,7 +968,6 @@ namespace SOUI
                 ATTR_ENUM_VALUE(L"midBottom",POS2_MIDBOTTOM)
             ATTR_ENUM_END(m_layout.pos2Type)
             ATTR_INT(L"sep", m_layout.nSepSpace, FALSE)
-            ATTR_INT(L"alpha",m_byAlpha,TRUE)
             ATTR_CHAIN(m_style)                     //支持对style中的属性定制
         SOUI_ATTRS_END()
 

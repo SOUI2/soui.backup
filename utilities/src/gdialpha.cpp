@@ -20,10 +20,7 @@ LPBYTE CGdiAlpha::ALPHABACKUP(BITMAP *pBitmap,int x,int y,int cx,int cy)
     LPBYTE lpBits=NULL;
     for(int iRow=0; iRow<cy; iRow++)
     {
-//         if(pBitmap->bmHeight>0)//bottom-up
-//             lpBits=(LPBYTE)pBitmap->bmBits+(pBitmap->bmHeight-1-y-iRow)*pBitmap->bmWidth*4+x*4;
-//         else
-            lpBits=(LPBYTE)pBitmap->bmBits+(y+iRow)*pBitmap->bmWidth*4+x*4;
+        lpBits=(LPBYTE)pBitmap->bmBits+(y+iRow)*pBitmap->bmWidth*4+x*4;
         lpBits+=3;
         for(int iCol=0; iCol<cx; iCol++)
         {
@@ -43,10 +40,7 @@ void CGdiAlpha::ALPHARESTORE(BITMAP *pBitmap,int x,int y,int cx,int cy,LPBYTE lp
     LPBYTE lpBits=NULL;
     for(int iRow=0; iRow<cy; iRow++)
     {
-//         if(pBitmap->bmHeight>0)//bottom-up
-//             lpBits=(LPBYTE)pBitmap->bmBits+(pBitmap->bmHeight-1-y-iRow)*pBitmap->bmWidth*4+x*4;
-//         else
-            lpBits=(LPBYTE)pBitmap->bmBits+(y+iRow)*pBitmap->bmWidth*4+x*4;
+        lpBits=(LPBYTE)pBitmap->bmBits+(y+iRow)*pBitmap->bmWidth*4+x*4;
         lpBits+=3;
         for(int iCol=0; iCol<cx; iCol++)
         {

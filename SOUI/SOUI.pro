@@ -73,6 +73,7 @@ HEADERS += include/SApp.h \
            include/core/SPanel.h \
            include/core/SSingleton.h \
            include/core/SSingletonMap.h \
+           include/core/SSkinObjBase.h \
            include/core/SSkin.h \
            include/core/SSkinFactoryMgr.h \
            include/core/SThreadActiveWndMgr.h \

@@ -36,7 +36,6 @@ SWindow::SWindow()
     , m_pNcSkin(NULL)
     , m_bClipRT(FALSE)
     , m_gdcFlags(-1)
-    , m_byAlpha(0xFF)
 #ifdef _DEBUG
     , m_nMainThreadId( ::GetCurrentThreadId() ) // 初始化对象的线程不一定是主线程
 #endif
@@ -949,7 +948,7 @@ BOOL SWindow::OnEraseBkgnd(IRenderTarget *pRT)
             nState=1;
         }
         if(nState>=m_pBgSkin->GetStates()) nState=0;
-        m_pBgSkin->Draw(pRT, rcClient, nState,m_byAlpha); 
+        m_pBgSkin->Draw(pRT, rcClient, nState); 
     }
     return TRUE;
 }
@@ -1026,7 +1025,7 @@ void SWindow::OnNcPaint(IRenderTarget *pRT)
         if(m_pNcSkin)
         {
             if(nState>=m_pNcSkin->GetStates()) nState=0;
-            m_pNcSkin->Draw(pRT,m_rcWindow,nState,m_byAlpha);
+            m_pNcSkin->Draw(pRT,m_rcWindow,nState);
         }
         else
         {
@@ -1087,7 +1086,7 @@ void SWindow::DrawDefFocusRect(IRenderTarget *pRT,CRect rcFocus )
 {
     rcFocus.DeflateRect(2,2);
     CAutoRefPtr<IPen> pPen,oldPen;
-    pRT->CreatePen(PS_DOT,RGBA(88,88,88,m_byAlpha),1,&pPen);
+    pRT->CreatePen(PS_DOT,RGBA(88,88,88,0xFF),1,&pPen);
     pRT->SelectObject(pPen,(IRenderObj**)&oldPen);
     pRT->DrawRectangle(&rcFocus);    
     pRT->SelectObject(oldPen);

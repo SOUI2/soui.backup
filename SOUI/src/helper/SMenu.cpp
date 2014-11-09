@@ -18,9 +18,9 @@ SMenuAttr::SMenuAttr()
     ,m_nTextMargin(5)
     ,m_szIcon(CX_ICON,CY_ICON)
 {
-    m_crTxtNormal=GetSysColor(COLOR_MENUTEXT);
-    m_crTxtSel=GetSysColor(COLOR_HIGHLIGHTTEXT);
-    m_crTxtGray=GetSysColor(COLOR_GRAYTEXT);
+    m_crTxtNormal=GetSysColor(COLOR_MENUTEXT)|0xff000000;
+    m_crTxtSel=GetSysColor(COLOR_HIGHLIGHTTEXT)|0xff000000;
+    m_crTxtGray=GetSysColor(COLOR_GRAYTEXT)|0xff000000;
 }
 
 void SMenuAttr::OnInitFinished( pugi::xml_node xmlNode )
