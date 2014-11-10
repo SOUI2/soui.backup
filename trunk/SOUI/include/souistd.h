@@ -36,6 +36,9 @@
 #include <tchar.h>
 #include <stdio.h>
 
+#include <trace.h>
+#include <utilities.h>
+
 #include <core/SDefine.h>
 
 #define _WTYPES_NS SOUI
@@ -48,8 +51,6 @@
 #include <string/strcpcvt.h>
 #include <pugixml/pugixml.hpp>
 
-#include <trace.h>
-#include <utilities.h>
 
 
 #include <interface/render-i.h>

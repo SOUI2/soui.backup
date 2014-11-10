@@ -27,7 +27,7 @@ bool CMemFlash::FileExist( const char * pszFileName )
     if(pos==-1) return false;
     SStringA strType=str.Left(pos);
     SStringA strName=str.Right(str.GetLength()-pos-1);
-    return GETRESPROVIDER->HasResource(S_CA2T(strType),S_CA2T(strName));
+    return !!GETRESPROVIDER->HasResource(S_CA2T(strType),S_CA2T(strName));
 }
 
 HANDLE CMemFlash::Open( const char * pszFileName )

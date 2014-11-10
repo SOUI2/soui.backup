@@ -33,6 +33,7 @@
 #   define SASSERT_FMT    SASSERT_FMTA
 #endif//_UNICODE
 
+#ifndef SASSERT
 #include <assert.h>
 #define SASSERT(x) assert(x)
-#define ASSERT_NE(a,b) SASSERT(a!=b)
+#endif
