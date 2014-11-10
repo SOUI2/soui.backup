@@ -1161,7 +1161,12 @@ void STreeCtrl::OnMouseLeave()
 BOOL STreeCtrl::SelectItem( HSTREEITEM hItem,BOOL bEnsureVisible/*=TRUE*/ )
 {
     if(!hItem) return FALSE;
-    if(CSTree<LPTVITEM>::GetRootItem(hItem) != GetRootItem()) return FALSE;
+    HSTREEITEM hRoot = CSTree<LPTVITEM>::GetRootItem(hItem);
+    while(CSTree<LPTVITEM>::GetPrevSiblingItem(hRoot))
+    {
+        hRoot = CSTree<LPTVITEM>::GetPrevSiblingItem(hRoot);
+    }
+    if(hRoot != GetRootItem()) return FALSE;
 
     EventTCSelChanging evt1(this);
     evt1.hOldSel=m_hSelItem;
