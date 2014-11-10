@@ -270,7 +270,7 @@ namespace SOUI
                 }
             }else if(m_dwHitTest!=-1)
             {//µ÷½Ú¿í¶È
-				if (m_bFixWidth)
+				if (!m_bFixWidth)
 				{
 					int cxNew = m_nAdjItemOldWidth + pt.x - m_ptClick.x;
 					if (cxNew < 0) cxNew = 0;
