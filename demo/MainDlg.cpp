@@ -116,7 +116,7 @@ public:
 
         bool success = false;
         TCHAR filename[MAX_PATH];
-        success=DragQueryFile(hdrop, 0, filename, MAX_PATH);
+        success=!!DragQueryFile(hdrop, 0, filename, MAX_PATH);
         DragFinish(hdrop);
         GlobalUnlock(medium.hGlobal);
 
