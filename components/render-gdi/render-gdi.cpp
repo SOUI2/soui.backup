@@ -254,10 +254,16 @@ namespace SOUI
 
         ~DCBuffer()
         {
-            //将alpha为0xFF的改为0,为0的改为0xFF
+            //将alpha为0xFF的改为0,同时将rgb值也清0(XP系统下不清0会导致背景变成白色）,为0的改为0xFF
             BYTE * p= m_pBits+3;
-            for(int i=0;i<m_nHei;i++)for(int j=0;j<m_nWid;j++,p+=4) *p=~(*p);
-
+            for(int i=0;i<m_nHei;i++)for(int j=0;j<m_nWid;j++,p+=4)
+			{
+				if(*p==0) *p=0xff;
+				else
+				{
+					memset(p-3,0,4);
+				}
+			}
             BLENDFUNCTION bf={AC_SRC_OVER,0,m_byAlpha,AC_SRC_ALPHA };
             BOOL bRet=::AlphaBlend(m_hdc,m_pRc->left,m_pRc->top,m_nWid,m_nHei,m_hMemDC,m_pRc->left,m_pRc->top,m_nWid,m_nHei,bf);
             ::DeleteDC(m_hMemDC);
