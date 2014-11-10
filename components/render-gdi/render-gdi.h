@@ -331,7 +331,6 @@ namespace SOUI
         POINT               m_ptOrg;
 
         UINT m_uGetDCFlag;
-        SBitmap_GDI          m_bmpForFillSolidRect;    /**< 为FillSolidRect接口使用的内存位图 */
     };
     
     namespace RENDER_GDI

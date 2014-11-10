@@ -292,19 +292,15 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     //	SRenderTarget_GDI
     //////////////////////////////////////////////////////////////////////////
-    #define SIZE_SOLIDRECT  5
     
     SRenderTarget_GDI::SRenderTarget_GDI( IRenderFactory* pRenderFactory ,int nWid,int nHei)
         :TGdiRenderObjImpl<IRenderTarget>(pRenderFactory)
         ,m_hdc(NULL)
         ,m_curColor(0xFF000000)//Ä¬ÈÏºÚÉ«
         ,m_uGetDCFlag(0)
-        ,m_bmpForFillSolidRect(pRenderFactory)
     {
         m_ptOrg.x=m_ptOrg.y=0;
-        
-        m_bmpForFillSolidRect.Init(SIZE_SOLIDRECT,SIZE_SOLIDRECT);
-        
+                
         HDC hdc=::GetDC(NULL);
         m_hdc = CreateCompatibleDC(hdc);
         ::ReleaseDC(NULL,hdc);
