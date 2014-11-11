@@ -6,6 +6,8 @@
 #include "souistd.h"
 #include "core/Spanel.h"
 
+#define DEF_UPDATEINTERVAL    0
+
 namespace SOUI
 {
 
@@ -284,7 +286,7 @@ void SPanel::OnNcPaint(IRenderTarget *pRT)
         rcDest=GetSbRailwayRect(TRUE);
         m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_PAGEUP,nState,TRUE));
         rcDest=GetSbPartRect(TRUE,SB_THUMBTRACK);
-        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_THUMBTRACK,nState,TRUE));
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_THUMBTRACK,m_bDragSb?SBST_PUSHDOWN:nState,TRUE));
         rcDest=GetSbPartRect(TRUE,SB_LINEDOWN);
         m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_LINEDOWN,nState,TRUE));
     }
@@ -296,7 +298,7 @@ void SPanel::OnNcPaint(IRenderTarget *pRT)
         rcDest=GetSbRailwayRect(FALSE);
         m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_PAGEUP,nState,FALSE));
         rcDest=GetSbPartRect(FALSE,SB_THUMBTRACK);
-        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_THUMBTRACK,nState,FALSE));
+        m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_THUMBTRACK,m_bDragSb?SBST_PUSHDOWN:nState,FALSE));
         rcDest=GetSbPartRect(FALSE,SB_LINEDOWN);
         m_pSkinSb->Draw(pRT,rcDest,MAKESBSTATE(SB_LINEDOWN,nState,FALSE));
     }

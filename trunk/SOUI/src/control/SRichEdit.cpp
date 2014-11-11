@@ -357,7 +357,6 @@ BOOL STextHost::TxShowScrollBar( INT fnBar, BOOL fShow )
         wBar=SSB_HORZ;
         break;
     }
-//     m_pRichEdit->SetTimer(TIMER_INVALIDATE,40);//todo:
     return m_pRichEdit->ShowScrollBar(wBar,fShow);
 }
 
@@ -667,6 +666,9 @@ void SRichEdit::OnPaint( IRenderTarget * pRT )
     {
         CGdiAlpha::AlphaBackup(hdc,&rcClient,ai);
     }
+    LONG lPos =0;
+    HRESULT hr=m_pTxtHost->GetTextService()->TxGetVScroll(NULL,NULL,&lPos,NULL,NULL);
+    STRACE(_T("SRichEdit::OnPaint,pos = %d, hr=0x%08x"),lPos,hr);
     RECTL rcL= {rcClient.left,rcClient.top,rcClient.right,rcClient.bottom};
     m_pTxtHost->GetTextService()->TxDraw(
         DVASPECT_CONTENT,          // Draw Aspect
@@ -743,9 +745,12 @@ BOOL SRichEdit::OnScroll( BOOL bVertical,UINT uCode,int nPos )
     if(m_fScrollPending) return FALSE;
     LRESULT lresult=-1;
     m_fScrollPending=TRUE;
+    STRACE(_T("SRichedit::OnScroll,pos=%d"),nPos);
+    SPanel::OnScroll(bVertical,uCode,nPos);
     m_pTxtHost->GetTextService()->TxSendMessage(bVertical?WM_VSCROLL:WM_HSCROLL,MAKEWPARAM(uCode,nPos),0,&lresult);
     m_fScrollPending=FALSE;
-    __super::OnScroll(bVertical,uCode,nPos);
+    if(uCode==SB_THUMBTRACK)
+        ScrollUpdate();
     return lresult==0;
 }
 

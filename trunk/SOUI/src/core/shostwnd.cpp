@@ -377,7 +377,6 @@ void SHostWnd::OnSwndTimer( char cTimerID )
     if(cTimerID==TIMER_CARET)
     {
         SASSERT(m_bCaretShowing);
-        STraceA("!!OnSwndTimer:pt=%d,%d\n",m_ptCaret.x,m_ptCaret.y);
         DrawCaret(m_ptCaret);
         m_bCaretActive=!m_bCaretActive;
     }else if(cTimerID==TIMER_NEXTFRAME)
