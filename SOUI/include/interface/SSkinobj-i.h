@@ -55,26 +55,26 @@ namespace SOUI
         virtual void Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState)=0;
 
         /**
-         * GetSkinSize
-         * @brief    获得Skin的默认大小
-         * @return   SIZE -- Skin的默认大小
-         * Describe  派生类应该根据skin的特点实现该接口
-         */    
+        * GetSkinSize
+        * @brief    获得Skin的默认大小
+        * @return   SIZE -- Skin的默认大小
+        * Describe  派生类应该根据skin的特点实现该接口
+        */    
         virtual SIZE GetSkinSize()=0;
         /**
-         * IgnoreState
-         * @brief    查询skin是否有状态信息
-         * @return   BOOL -- true有状态信息
-         * Describe  
-         */    
+        * IgnoreState
+        * @brief    查询skin是否有状态信息
+        * @return   BOOL -- true有状态信息
+        * Describe  
+        */    
         virtual BOOL IgnoreState()=0;
 
         /**
-         * GetStates
-         * @brief    获得skin对象包含的状态数量
-         * @return   int -- 状态数量
-         * Describe  默认为1
-         */    
+        * GetStates
+        * @brief    获得skin对象包含的状态数量
+        * @return   int -- 状态数量
+        * Describe  默认为1
+        */    
         virtual int GetStates()=0;
 
         /**

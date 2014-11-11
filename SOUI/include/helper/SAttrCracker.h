@@ -288,11 +288,11 @@ public:                                                             \
         else                                                        \
  
 // SSkinPool From StringA Key
-#define ATTR_SKIN(attribname, varname, allredraw)        \
-    if (0 == strAttribName.CompareNoCase(attribname))                            \
+#define ATTR_SKIN(attribname, varname, allredraw)                   \
+    if (0 == strAttribName.CompareNoCase(attribname))               \
         {                                                           \
-        varname = GETSKIN(strValue);                    \
-        hRet = allredraw ? S_OK : S_FALSE;                      \
+        varname = GETSKIN(strValue);                                \
+        hRet = allredraw ? S_OK : S_FALSE;                          \
         }                                                           \
         else                                                        \
  
@@ -300,24 +300,31 @@ public:                                                             \
 //ATTR_IMAGE:直接使用IResProvider::LoadImage创建IBitmap对象，创建成功后引用计数为1
 //不需要调用AddRef，但是用完后需要调用Release
 #define ATTR_IMAGE(attribname, varname, allredraw)                  \
-    if (0 == strAttribName.CompareNoCase(attribname))                                \
-        {                                                           \
+    if (0 == strAttribName.CompareNoCase(attribname))               \
+    {                                                               \
+        IBitmap *pImg=NULL;                                         \
         SStringT strValueT=S_CW2T(strValue);                        \
         int nPos=strValueT.ReverseFind(_T(':'));                    \
         if(nPos!=-1)                                                \
         {                                                           \
             SStringT strName=strValueT.Right(strValue.GetLength()-nPos-1);\
-            varname = LOADIMAGE(strValueT.Left(nPos),strName);      \
-            hRet = allredraw ? S_OK : S_FALSE;                      \
+            pImg = LOADIMAGE(strValueT.Left(nPos),strName);         \
         }else                                                       \
-            varname = LOADIMAGE(NULL,strValueT);                    \
+        {                                                           \
+            pImg = LOADIMAGE(NULL,strValueT);                       \
+        }                                                           \
+        if(!pImg) hRet =E_FAIL;                                     \
+        else{                                                       \
+            if(varname) varname->Release();                         \
+            varname = pImg;                                         \
             hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
-        else                                                        \
+     }                                                              \
+     else                                                           \
  
-#define ATTR_ICON(attribname, varname, allredraw)        \
-    if (0 == strAttribName.CompareNoCase(attribname))                            \
-        {                                                       \
+#define ATTR_ICON(attribname, varname, allredraw)                  \
+    if (0 == strAttribName.CompareNoCase(attribname))              \
+        {                                                          \
         if(varname) DeleteObject(varname);          \
         SStringT strValueT=S_CW2T(strValue);        \
         int nPos=strValueT.ReverseFind(_T(':'));\

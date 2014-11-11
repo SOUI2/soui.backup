@@ -25,7 +25,6 @@ namespace SOUI
 #define TIMER_SBWAIT    1        //启动连续滚动的定时器
 #define TIMER_SBGO    2        //连续滚动的定时器
 
-#define DEF_UPDATEINTERVAL    20
 
     typedef struct tagSBHITINFO
     {

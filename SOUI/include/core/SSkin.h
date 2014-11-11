@@ -65,17 +65,16 @@ public:
     
 protected:
     virtual void _Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha);
-    HRESULT OnAttrImage(const SStringW & strValue,BOOL bLoading);
 
     IBitmap *m_pImg;
     int  m_nStates;
     BOOL m_bTile;
     BOOL m_bVertical;
     SOUI_ATTRS_BEGIN()
-        ATTR_CUSTOM(L"src", OnAttrImage)    //skinObj引用的图片文件定义在uires.idx中的name属性。
-        ATTR_INT(L"tile", m_bTile, TRUE)    //绘制是否平铺,0--位伸（默认），其它--平铺
-        ATTR_INT(L"vertical", m_bVertical, TRUE)//子图是否垂直排列，0--水平排列(默认), 其它--垂直排列
-        ATTR_INT(L"states",m_nStates,TRUE)  //子图数量,默认为1
+        ATTR_IMAGE(L"src", m_pImg,FALSE)    //skinObj引用的图片文件定义在uires.idx中的name属性。
+        ATTR_INT(L"tile", m_bTile, FALSE)    //绘制是否平铺,0--位伸（默认），其它--平铺
+        ATTR_INT(L"vertical", m_bVertical, FALSE)//子图是否垂直排列，0--水平排列(默认), 其它--垂直排列
+        ATTR_INT(L"states",m_nStates,FALSE)  //子图数量,默认为1
     SOUI_ATTRS_END()
 };
 
