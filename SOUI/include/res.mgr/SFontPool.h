@@ -17,26 +17,28 @@
 #include "interface/render-i.h"
 #include "unknown/obj-ref-impl.hpp"
 
-#define FF_STRIKE      0x0008U
-#define FF_BOLD        0x0004U
-#define FF_UNDERLINE   0x0002U
-#define FF_ITALIC      0x0001U
+/**
+* @union      FONTSTYLE
+* @brief      FONT的风格
+* 
+* Describe    
+*/
+union FONTSTYLE{
+    DWORD     dwStyle;  //DWORD版本的风格
+    struct
+    {
+        DWORD cSize:16;//字体大小，为short有符号类型
+        DWORD fItalic:1;//斜体标志位
+        DWORD fUnderline:1;//下划线标志位
+        DWORD fBold:1;//粗体标志位
+        DWORD fStrike:1;//删除线标志位
+        DWORD fAbsSize:1;//字体的cSize是绝对大小还是相对于默认字体的大小,1代表cSize为绝对大小
+    };
+    
+    FONTSTYLE(DWORD _dwStyle):dwStyle(_dwStyle){}
+}; 
 
-#define FF_MAKEKEY(bold, underline, italic,strike, adding) \
-    (WORD)((adding << 8) \
-    | (bold ? FF_BOLD : 0) \
-    | (underline ? FF_UNDERLINE : 0) \
-    | (italic ? FF_ITALIC : 0) \
-    | (strike ? FF_STRIKE : 0))
-
-#define FF_ISSTRIKE(key)       ((key & FF_STRIKE) == FF_STRIKE)
-#define FF_ISBOLD(key)         ((key & FF_BOLD) == FF_BOLD)
-#define FF_ISUNDERLINE(key)    ((key & FF_UNDERLINE) == FF_UNDERLINE)
-#define FF_ISITALIC(key)       ((key & FF_ITALIC) == FF_ITALIC)
-#define FF_GETADDING(key)      (key >> 8)
-
-#define FF_DEFAULTFONT         (FF_MAKEKEY(FALSE, FALSE, FALSE,FALSE, 0))
-#define FF_BOLDFONT            (FF_MAKEKEY(TRUE, FALSE, FALSE,FALSE, 0))
+#define FF_DEFAULTFONT FONTSTYLE(0)
 
 /**
 * @class     FontKey
@@ -59,8 +61,9 @@ public:
         }
         dwStyle=_dwStyle;
     }
+    
+    DWORD    dwStyle;
     TCHAR    strFaceName[LF_FACESIZE+1];
-    DWORD     dwStyle;
 };
 
 
@@ -131,26 +134,12 @@ namespace SOUI
         /**
          * GetFont
          * @brief    获得与指定的font key对应的IFontPtr
-         * @param    WORD uKey --  font 标志位
-         * @param    LPCTSTR strFaceName --  font name
-         * @return   IFontPtr -- font对象
-         * Describe  
-         */    
-        IFontPtr GetFont(WORD uKey,LPCTSTR strFaceName=_T(""));
-
-        /**
-         * GetFont
-         * @brief    获得与指定的font key对应的IFontPtr
-         * @param    BOOL bBold --  粗体
-         * @param    BOOL bUnderline --  下划线
-         * @param    BOOL bItalic --  斜体
-         * @param    BOOL bStrike --  删除线
-         * @param    char chAdding --  字体大小变化量
+         * @param    FONTSTYLE style --  字体风格
          * @param    LPCTSTR strFaceName --  字体名
          * @return   IFontPtr -- font对象
          * Describe  
          */    
-        IFontPtr GetFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, BOOL bStrike,char chAdding = 0,LPCTSTR strFaceName=_T(""));
+        IFontPtr GetFont(FONTSTYLE style,LPCTSTR strFaceName=_T(""));
         
         /**
          * SetDefaultFont
@@ -167,16 +156,11 @@ namespace SOUI
             obj->Release();
         }
 
-        IFontPtr _CreateDefaultFont();
-
-        IFontPtr _CreateFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, BOOL bStrike,char chAdding,SStringT strFaceName=_T(""));
-
-        LONG _GetFontAbsHeight(LONG lSize);
+        IFontPtr _CreateFont(const LOGFONT &lf);
+        
+        IFontPtr _CreateFont(FONTSTYLE style,const SStringT & strFaceName);
 
         LOGFONT m_lfDefault;
-        TCHAR m_szDefFontFace[LF_FACESIZE];
-        LONG m_lFontSize;
-
         CAutoRefPtr<IRenderFactory> m_RenderFactory;
     };
 

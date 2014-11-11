@@ -14,46 +14,41 @@ template<> SFontPool* SSingleton<SFontPool>::ms_Singleton    = 0;
 
 
 SFontPool::SFontPool(IRenderFactory *pRendFactory)
-    : m_lFontSize(-11)
-    , m_RenderFactory(pRendFactory)
+    :m_RenderFactory(pRendFactory)
 {
-    _tcscpy(m_szDefFontFace,_T("宋体"));
+    ::GetObjectA(::GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &m_lfDefault);
+    m_lfDefault.lfHeight = -12;
+    m_lfDefault.lfQuality = ANTIALIASED_QUALITY;
+    _tcscpy(m_lfDefault.lfFaceName,_T("宋体"));
+
     m_pFunOnKeyRemoved=OnKeyRemoved;
-    SetKeyObject(FontKey(FF_DEFAULTFONT),_CreateDefaultFont());
+    SetKeyObject(FontKey(0,m_lfDefault.lfFaceName),_CreateFont(m_lfDefault));
 }
 
-IFontPtr SFontPool::GetFont(WORD uKey,LPCTSTR pszFaceName)
+IFontPtr SFontPool::GetFont(FONTSTYLE style,LPCTSTR pszFaceName)
 {
     SStringT strFaceName(pszFaceName);
-    if(strFaceName.IsEmpty()) strFaceName = m_szDefFontFace;
+    if(strFaceName == m_lfDefault.lfFaceName) strFaceName = _T("");
     
     IFontPtr hftRet=0;
-    FontKey key(uKey,strFaceName);
+    FontKey key(style.dwStyle,strFaceName);
     if(HasKey(key))
     {
         hftRet=GetKeyObject(key);
     }
     else
     {
-        hftRet = _CreateFont(
-                     FF_ISBOLD(uKey), FF_ISUNDERLINE(uKey), FF_ISITALIC(uKey),FF_ISSTRIKE(uKey), FF_GETADDING(uKey),strFaceName
-                 );
-
+        hftRet = _CreateFont(style,strFaceName);
         AddKeyObject(key,hftRet);
     }
     return hftRet;
 }
 
-IFontPtr SFontPool::GetFont(BOOL bBold, BOOL bUnderline, BOOL bItalic,BOOL bStrike, char chAdding /*= 0*/,LPCTSTR strFaceName/*=""*/)
-{
-    return GetFont(FF_MAKEKEY(bBold, bUnderline, bItalic, bStrike, chAdding),strFaceName);
-}
-
 IFontPtr SFontPool::GetFont( const SStringW & strFont )
 {
-    BOOL bBold=0,bItalic=0,bUnderline=0,bStrike=0;                
+    FONTSTYLE fntStyle(0);
+    
     SStringT strFace;                                         
-    char  chAdding=0;                                          
     SStringT attr=S_CW2T(strFont);                           
     attr.MakeLower();                                         
     int nPosBegin=attr.Find(_T("face:"));                     
@@ -68,83 +63,80 @@ IFontPtr SFontPool::GetFont( const SStringW & strFont )
     nPosBegin=attr.Find(_T("bold:"));                         
     if(nPosBegin!=-1)                                         
     {                                                         
-        bBold=attr.Mid(nPosBegin+5,1)!=_T("0");                   
+        fntStyle.fBold=attr.Mid(nPosBegin+5,1)!=_T("0");                   
     }                                                         
     nPosBegin=attr.Find(_T("underline:"));                    
     if(nPosBegin!=-1)                                         
     {                                                         
-        bUnderline=attr.Mid(nPosBegin+10,1)!=_T("0");             
+        fntStyle.fUnderline=attr.Mid(nPosBegin+10,1)!=_T("0");             
     }                                                         
     nPosBegin=attr.Find(_T("italic:"));                       
     if(nPosBegin!=-1)                                         
     {                                                         
-        bItalic=attr.Mid(nPosBegin+7,1)!=_T("0");                 
+        fntStyle.fItalic=attr.Mid(nPosBegin+7,1)!=_T("0");                 
     }                                                         
     nPosBegin=attr.Find(_T("strike:"));                       
     if(nPosBegin!=-1)                                         
     {                                                         
-        bStrike=attr.Mid(nPosBegin+7,1)!=_T("0");                 
+        fntStyle.fStrike=attr.Mid(nPosBegin+7,1)!=_T("0");                 
     }                                                         
     nPosBegin=attr.Find(_T("adding:"));                       
     if(nPosBegin!=-1)                                         
     {                                                         
-        chAdding=(char)_ttoi((LPCTSTR)attr+nPosBegin+7);           
+        fntStyle.cSize=(short)_ttoi((LPCTSTR)attr+nPosBegin+7);           
+    }else
+    {
+        nPosBegin=attr.Find(_T("size:"));
+        if(nPosBegin != -1)
+        {
+            fntStyle.cSize=(short)_ttoi((LPCTSTR)attr+nPosBegin+5);
+            fntStyle.fAbsSize=1;       
+        }                       
     }
-    return GetFont(bBold, bUnderline, bItalic,bStrike, chAdding , strFace);
+    return GetFont(fntStyle, strFace);
 }
 
 void SFontPool::SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize)
 {
-    _tcscpy_s(m_szDefFontFace,_countof(m_szDefFontFace),lpszFaceName);
-    m_lFontSize = -abs(lSize);
-
     SASSERT(GetCount()==1);//初始化前才可以调用该接口
+    RemoveKeyObject(FontKey(0));
 
-    RemoveKeyObject(FontKey(FF_DEFAULTFONT));
-    
-    SetKeyObject(FontKey(FF_DEFAULTFONT),_CreateDefaultFont());
+    _tcscpy_s(m_lfDefault.lfFaceName,_countof(m_lfDefault.lfFaceName),lpszFaceName);
+    m_lfDefault.lfHeight = -abs(lSize);
+
+    SetKeyObject(FontKey(0),_CreateFont(m_lfDefault));
 }
 
-IFontPtr SFontPool::_CreateDefaultFont()
+IFontPtr SFontPool::_CreateFont(const LOGFONT &lf)
 {
-    ::GetObjectA(::GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &m_lfDefault);
-
-    m_lfDefault.lfHeight = -_GetFontAbsHeight(m_lFontSize);
-    _tcscpy_s(m_lfDefault.lfFaceName,_countof(m_lfDefault.lfFaceName),  m_szDefFontFace);
-
-    m_lfDefault.lfQuality = ANTIALIASED_QUALITY;
     
     SASSERT(m_RenderFactory);
 
     IFontPtr pFont=NULL;
-    m_RenderFactory->CreateFont(&pFont,m_lfDefault);
+    m_RenderFactory->CreateFont(&pFont,lf);
 
     return pFont;
 }
 
-IFontPtr SFontPool::_CreateFont(BOOL bBold, BOOL bUnderline, BOOL bItalic, BOOL bStrike,char chAdding,SStringT strFaceName)
+IFontPtr SFontPool::_CreateFont(FONTSTYLE style,const SStringT & strFaceName)
 {
     LOGFONT lfNew;
-
+        
     memcpy(&lfNew, &m_lfDefault, sizeof(LOGFONT));
-    lfNew.lfWeight      = (bBold ? FW_BOLD : FW_NORMAL);
-    lfNew.lfUnderline   = (FALSE != bUnderline);
-    lfNew.lfItalic      = (FALSE != bItalic);
-    lfNew.lfStrikeOut   = (FALSE != bStrike);
-    lfNew.lfHeight = -_GetFontAbsHeight(lfNew.lfHeight - chAdding);//lfNew.lfHeight应该为负值
+    lfNew.lfWeight      = (style.fBold ? FW_BOLD : FW_NORMAL);
+    lfNew.lfUnderline   = (FALSE != style.fUnderline);
+    lfNew.lfItalic      = (FALSE != style.fItalic);
+    lfNew.lfStrikeOut   = (FALSE != style.fStrike);
+    if(style.fAbsSize)
+        lfNew.lfHeight = -abs((short)style.cSize);
+    else
+        lfNew.lfHeight -= -(short)style.cSize;  //cSize为正代表字体变大，否则变小
+        
     lfNew.lfQuality = CLEARTYPE_NATURAL_QUALITY;
     _tcscpy_s(lfNew.lfFaceName,_countof(lfNew.lfFaceName),  strFaceName);
 
-    IFontPtr pFont=NULL;
-    SASSERT(m_RenderFactory);
-    m_RenderFactory->CreateFont(&pFont,lfNew);
-
-    return pFont;
+    return _CreateFont(lfNew);
 }
 
-LONG SFontPool::_GetFontAbsHeight(LONG lSize)
-{
-    return lSize<0? (-lSize):lSize;
-}
 
 }//namespace SOUI
