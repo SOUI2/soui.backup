@@ -130,7 +130,7 @@ IFontPtr SFontPool::_CreateFont(FONTSTYLE style,const SStringT & strFaceName)
     if(style.fAbsSize)
         lfNew.lfHeight = -abs((short)style.cSize);
     else
-        lfNew.lfHeight -= -(short)style.cSize;  //cSize为正代表字体变大，否则变小
+        lfNew.lfHeight -= (short)style.cSize;  //cSize为正代表字体变大，否则变小
         
     lfNew.lfQuality = CLEARTYPE_NATURAL_QUALITY;
     _tcscpy_s(lfNew.lfFaceName,_countof(lfNew.lfFaceName),  strFaceName);

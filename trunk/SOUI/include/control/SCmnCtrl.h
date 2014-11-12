@@ -777,6 +777,17 @@ public:
      */
     SRadioBox();
 
+
+    /**
+     * SetCheck
+     * @brief    设置当前窗口的check状态
+     * @param    BOOL bCheck --  check状态
+     * @return   void 
+     *
+     * Describe  
+     */
+    virtual void SetCheck(BOOL bCheck);
+
 protected:
 
     ISkinObj *m_pSkin;  /**< 皮肤资源 */
@@ -796,16 +807,6 @@ protected:
      */
     CRect GetRadioRect();
     
-    /**
-     * SetCheck
-     * @brief    设置当前窗口的check状态
-     * @param    BOOL bCheck --  check状态
-     * @return   void 
-     *
-     * Describe  
-     */
-    void SetCheck(BOOL bCheck);
-
     /**
      * SRadioBox::GetTextRect
      * @brief    获得文本大小
