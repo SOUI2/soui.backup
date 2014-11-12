@@ -38,6 +38,7 @@ IFontPtr SFontPool::GetFont(FONTSTYLE style,LPCTSTR pszFaceName)
     }
     else
     {
+        if(strFaceName.IsEmpty()) strFaceName = m_lfDefault.lfFaceName;
         hftRet = _CreateFont(style,strFaceName);
         AddKeyObject(key,hftRet);
     }
