@@ -20,6 +20,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render-gdi", "components\re
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render-skia", "components\render-skia\render-skia.vcproj", "{C26A8689-8880-3EDA-B493-E87AC1EA82BA}"
 	ProjectSection(ProjectDependencies) = postProject
+		{E702AC1C-4AC7-3904-9CE2-27CF661F6049} = {E702AC1C-4AC7-3904-9CE2-27CF661F6049}
 		{C2B034F6-3E66-3632-8CBF-452C2E6C9BA9} = {C2B034F6-3E66-3632-8CBF-452C2E6C9BA9}
 	EndProjectSection
 EndProject
