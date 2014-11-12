@@ -28,15 +28,18 @@ namespace SOUI
             delete this;
         }
         void OnChar(UINT nChar,UINT nRepCnt,UINT nFlags);
+        void OnSetFocus();
         void OnKillFocus();
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_CHAR(OnChar)
+            MSG_WM_SETFOCUS_EX(OnSetFocus)
             MSG_WM_KILLFOCUS_EX(OnKillFocus)
         SOUI_MSG_MAP_END()
     private:
+        HIMC m_hImcCopy;
     };
 
-	SEditIP::SEditIP()
+	SEditIP::SEditIP():m_hImcCopy(NULL)
 	{
 	}
 	
@@ -47,24 +50,38 @@ namespace SOUI
 
 	void SEditIP::OnChar(UINT nChar,UINT nRepCnt,UINT nFlags)
 	{
-		if(nChar == '.')
+		if(nChar == '.' || isdigit(nChar))
 		{
-			SWindow *pSwnd = GetWindow(GSW_NEXTSIBLING);
-			if (NULL != pSwnd && pSwnd->IsClass(SEditIP::GetClassName()))
+			if (nChar != '.')
+				__super::OnChar(nChar,nRepCnt,nFlags);
+
+			if(GetWindowTextLength() > 2 || nChar == '.')
 			{
-				pSwnd->SetFocus();
+				SWindow *pSwnd = GetWindow(GSW_NEXTSIBLING);
+				if (NULL != pSwnd && pSwnd->IsClass(SEditIP::GetClassName()))
+				{
+					pSwnd->SetFocus();
+				}
 			}
-		}
-		else if (isdigit(nChar))
-		{
-			__super::OnChar(nChar,nRepCnt,nFlags);
 		}
 	}
 	
 
+    void SEditIP::OnSetFocus()
+    {
+        __super::OnSetFocus();
+        HWND hHost = GetContainer()->GetHostHwnd();
+        m_hImcCopy = ImmGetContext(hHost);
+        ImmAssociateContext(hHost,NULL);
+    }
+
     void SEditIP::OnKillFocus()
     {
         __super::OnKillFocus();
+        HWND hHost = GetContainer()->GetHostHwnd();
+        ImmAssociateContext(hHost,m_hImcCopy);
+        m_hImcCopy = 0;
+        
         SStringW strValue = GetWindowText();
         UINT uiValue = _wtoi(strValue);
         if (uiValue > 255)
@@ -72,7 +89,6 @@ namespace SOUI
             SetField(255);
         }
     }
-
 
     //////////////////////////////////////////////////////////////////////////
     //
