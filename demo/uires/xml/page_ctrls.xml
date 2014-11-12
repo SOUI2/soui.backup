@@ -34,6 +34,12 @@
       <link pos="10,130" maxWidth="100" class="cls_btn_weblink" dotted="1" href="www.setoutsoft.cn">www.setoutsoft.cn</link>
       <img pos="10,200,@100,@100" skin="skin_page_icons" iconIndex="2" tip="img tip" msgTransparent="0"/>
       <text pos="10,[5" multiLines="1">the image show how to handle message in SImageWnd,\n you can do it by simply setting msgTransparent to 0</text>
+      <window pos="10,[10,-10,-10">
+        <radio pos="0,0" name="radio_1">radio 1</radio>
+        <radio pos="[10,{0" name="radio_2">radio 2</radio>
+        <radio pos="0,[10" name="radio_3" checked="1">radio 3</radio>
+        <radio pos="[10,{0" name="radio_4">radio 4</radio>
+      </window>
     </page>
     <page title="prog and slider" colorBorder="#ff0000" margin-x="1" margin-y="1">
       <progress name="prog_test" pos="200,100,-10,115" value="20" min="0" max="100" showPercent="1"/>
