@@ -748,6 +748,17 @@ BOOL SRichEdit::OnScroll( BOOL bVertical,UINT uCode,int nPos )
     STRACE(_T("SRichedit::OnScroll,pos=%d"),nPos);
     SPanel::OnScroll(bVertical,uCode,nPos);
     m_pTxtHost->GetTextService()->TxSendMessage(bVertical?WM_VSCROLL:WM_HSCROLL,MAKEWPARAM(uCode,nPos),0,&lresult);
+    LONG lPos=0;
+    if(bVertical)
+    {
+        m_pTxtHost->GetTextService()->TxGetVScroll(NULL,NULL,&lPos,NULL,NULL);
+    }else
+    {
+        m_pTxtHost->GetTextService()->TxGetHScroll(NULL,NULL,&lPos,NULL,NULL);
+    }
+    if(lPos != GetScrollPos(bVertical))
+        SetScrollPos(bVertical,lPos,TRUE);
+    
     m_fScrollPending=FALSE;
     if(uCode==SB_THUMBTRACK)
         ScrollUpdate();
