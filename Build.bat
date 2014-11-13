@@ -102,9 +102,15 @@ rem 参数配置完成
 
 tools\qmake -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
 
-SET /p selected=open soui.sln[y/n]?
-if "%selected%" == "y" (
+SET /p selected=open[o], compile[c] "soui.sln" or quit(q) [o,c or q]?
+if "%selected%" == "o" (
 	soui.sln
+) else if "%selected%" == "c" (
+	SET buildParam="devenv" soui.sln /build	
+	call !buildParam! "Debug"
+	call !buildParam! "Release"
+) else (
+	goto final
 )
 
 goto final
