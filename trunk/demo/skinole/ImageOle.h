@@ -4,10 +4,10 @@
 #include <core/simplewnd.h>
 #include <control/SRichEdit.h>
 
-class CImageOle : public IOleObject, public IViewObject2, public ITimelineHandler
+class CImageOle : public IOleObject, public IViewObject2, public SOUI::ITimelineHandler
 {
-public:
-	CImageOle(SRichEdit *pRichedit);
+private:
+	CImageOle(SOUI::SRichEdit *pRichedit);
 	~CImageOle(void);
 
 public:
@@ -53,24 +53,25 @@ public:
 	// IViewObject2接口
 	virtual HRESULT WINAPI GetExtent(DWORD dwDrawAspect, LONG lindex, DVTARGETDEVICE *ptd, LPSIZEL lpsizel);
 
-	void OnNextFrame();
+	virtual void OnNextFrame();
 
-	void SetDuiSkinObj(ISkinObj *pSkin);
-
+	void SetSkinObj(ISkinObj *pSkin);
+    
+    static CImageOle * CreateObject(SOUI::SRichEdit *pRichedit);
 protected:
-	BOOL GetOleRect(LPRECT prc);
 
-	ULONG m_ulRef;
-	IOleClientSite *m_pOleClientSite;
-	IAdviseSink *m_pAdvSink;
+	volatile LONG m_ulRef;
+	
+	SOUI::CAutoRefPtr<IOleClientSite> m_pOleClientSite;
+	SOUI::CAutoRefPtr<IAdviseSink> m_pAdvSink;
+    SOUI::CAutoRefPtr<SOUI::ISkinObj> m_pSkin;
 
-	SRichEdit *m_pRichedit;
-
-	SOUI::ISkinObj *m_pSkin;
+	SOUI::SRichEdit *m_pRichedit;
+	
 	int		m_iFrame;
 	int		m_nTimePass;	//过去的时间
 	int		m_nTimeDelay;	//一个动画帧需要的时间
 };
 
-BOOL RichEdit_InsertSkin(SRichEdit *pRicheditCtrl, ISkinObj *pSkin);
-BOOL RichEdit_InsertImage(SRichEdit *pRicheditCtrl, LPCTSTR lpszFileName);
+BOOL RichEdit_InsertSkin(SOUI::SRichEdit *pRicheditCtrl, SOUI::ISkinObj *pSkin);
+BOOL RichEdit_InsertImage(SOUI::SRichEdit *pRicheditCtrl, LPCTSTR lpszFileName);

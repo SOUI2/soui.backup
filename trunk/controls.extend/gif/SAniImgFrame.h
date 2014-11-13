@@ -66,6 +66,19 @@ namespace SOUI
             }
             return nRet;
         }
+        
+        IBitmap * GetFrameImage(int iFrame=-1)
+        {
+            if(iFrame==-1) iFrame=m_iFrame;
+            long nRet=-1;
+            if(m_nFrames>1 && iFrame>=0 && iFrame<m_nFrames)
+            {
+                return m_pFrames[iFrame].pBmp;
+            }else
+            {
+                return NULL;
+            }
+        }
 
 
         /**
