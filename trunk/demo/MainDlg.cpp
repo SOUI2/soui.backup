@@ -6,6 +6,7 @@
 #include "MainDlg.h"
 #include "helper/SMenu.h"
 #include "../controls.extend/FileHelper.h"
+#include "skinole\ImageOle.h"
 
 #include <dwmapi.h>
 #pragma comment(lib,"dwmapi.lib")
@@ -263,6 +264,13 @@ LRESULT CMainDlg::OnInitDialog( HWND hWnd, LPARAM lParam )
         RegisterDragDrop(pEdit1->GetSwnd(),new CTestDropTarget1(pEdit1));
         RegisterDragDrop(pEdit2->GetSwnd(),new CTestDropTarget1(pEdit2));
     }
+    
+    SRichEdit *pEdit = FindChildByName2<SRichEdit>(L"re_gifhost");
+    if(pEdit)
+    {
+        RichEdit_SetOleCallback(pEdit);
+    }
+
     return 0;
 }
 
@@ -345,30 +353,6 @@ void CMainDlg::OnBtnHideTest()
     SWindow * pBtn = FindChildByName(L"btn_hidetst");
     if(pBtn) pBtn->SetVisible(FALSE,TRUE);
 }
-
-#include "skinole\ImageOle.h"
-
-MIDL_INTERFACE("5BA130CC-3CDF-4CA8-9CBE-0689AEA210A9")
-IGifCtl : public IDispatch
-{
-public:
-    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE LoadFromFile( 
-        /* [in] */ BSTR FileName) = 0;
-
-    virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE _OnTimer( void) = 0;
-
-};
-
-#define MIDL_DEFINE_GUID(type,name,l,w1,w2,b1,b2,b3,b4,b5,b6,b7,b8) \
-    const type name = {l,w1,w2,{b1,b2,b3,b4,b5,b6,b7,b8}}
-
-MIDL_DEFINE_GUID(IID, IID_IGifCtl,0x5BA130CC,0x3CDF,0x4CA8,0x9C,0xBE,0x06,0x89,0xAE,0xA2,0x10,0xA9);
-
-
-MIDL_DEFINE_GUID(IID, LIBID_GIFOLELib,0xF0287498,0xB7F8,0x41C2,0xA0,0xA8,0x25,0x9A,0xAF,0x23,0x25,0x81);
-
-
-MIDL_DEFINE_GUID(CLSID, CLSID_GifCtl,0x925A6194,0x9AFA,0x40F2,0x92,0x47,0xBD,0xFC,0x3C,0x10,0x65,0xA2);
 
 
 void CMainDlg::OnBtnInsertGif2RE()

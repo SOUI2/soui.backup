@@ -26,7 +26,7 @@
       </window>
       <text pos="50,[5">richedit:</text>
       <button name="btn_insert_gif" height="25">insert gif to richedit</button>
-      <richedit name="re_gifhost" pos="50,[5,-5,-5" class="cls_edit" multiLines="1" vscrollBar="1" wordWrap="1"  autoVscroll="1" hscrollBar="0" wantReturn="1"  rtf="rtf:rtf_test">this is a richedit.中文也可以初始化。</richedit>
+      <richedit name="re_gifhost" pos="50,[5,-5,-5" class="cls_edit" enableDragdrop="1" multiLines="1" vscrollBar="1" wordWrap="1"  autoVscroll="1" hscrollBar="0" wantReturn="1"  rtf="rtf:rtf_test">this is a richedit.中文也可以初始化。</richedit>
     </page>
     <page title="buttons" colorBorder="#ff0000" margin-x="1" margin-y="1">
       <button name="btn_msgbox" pos="10,50" width="200" height="30" accel="ctrl+alt+f9" animate="1">show msg box</button>

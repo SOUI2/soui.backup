@@ -70,6 +70,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "souispy", "souispy\souispy.
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgdecoder-png", "components\imgdecoder-png\imgdecoder-png.vcproj", "{CA87CA7E-F08D-3537-87A2-5E88B450DF36}"
+	ProjectSection(ProjectDependencies) = postProject
+		{68801D79-80E4-3BB2-9BEA-440AA7BC6F7E} = {68801D79-80E4-3BB2-9BEA-440AA7BC6F7E}
+		{E74072F9-4383-3B0F-A789-9ADD4E407BF8} = {E74072F9-4383-3B0F-A789-9ADD4E407BF8}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "png", "components\png\png.vcproj", "{68801D79-80E4-3BB2-9BEA-440AA7BC6F7E}"
 EndProject

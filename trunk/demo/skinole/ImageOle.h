@@ -4,7 +4,9 @@
 #include <core/simplewnd.h>
 #include <control/SRichEdit.h>
 
-class CImageOle : public IOleObject, public IViewObject2, public SOUI::ITimelineHandler
+class __declspec(uuid("{8C96DAB8-0525-44e4-B026-0FB76E05BB05}")) CImageOle : public IOleObject
+                                                                           , public IViewObject2
+                                                                           , public SOUI::ITimelineHandler
 {
 private:
 	CImageOle(SOUI::SRichEdit *pRichedit);
@@ -73,5 +75,46 @@ protected:
 	int		m_nTimeDelay;	//一个动画帧需要的时间
 };
 
+class __declspec(uuid("{C733506E-7539-4a88-9B7F-334356B28C62}")) SRichEditOleCallback_Impl : public IRichEditOleCallback
+{
+public:
+	static SRichEditOleCallback_Impl * CreateObject(SOUI::SRichEdit *pRicheditCtrl);
+    
+    virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID iid, void ** ppvObject);
+    virtual ULONG STDMETHODCALLTYPE AddRef();
+    virtual ULONG STDMETHODCALLTYPE Release();
+
+
+    virtual HRESULT STDMETHODCALLTYPE GetNewStorage(LPSTORAGE* lplpstg);
+
+    virtual HRESULT STDMETHODCALLTYPE GetInPlaceContext(LPOLEINPLACEFRAME FAR *lplpFrame,
+        LPOLEINPLACEUIWINDOW FAR *lplpDoc, LPOLEINPLACEFRAMEINFO lpFrameInfo);
+    virtual HRESULT STDMETHODCALLTYPE ShowContainerUI(BOOL fShow);
+    virtual HRESULT STDMETHODCALLTYPE QueryInsertObject(LPCLSID lpclsid, LPSTORAGE lpstg, LONG cp);
+    virtual HRESULT STDMETHODCALLTYPE DeleteObject(LPOLEOBJECT lpoleobj);
+    virtual HRESULT STDMETHODCALLTYPE QueryAcceptData(LPDATAOBJECT lpdataobj, CLIPFORMAT FAR *lpcfFormat,
+        DWORD reco, BOOL fReally, HGLOBAL hMetaPict);
+    virtual HRESULT STDMETHODCALLTYPE ContextSensitiveHelp(BOOL fEnterMode);
+    virtual HRESULT STDMETHODCALLTYPE GetClipboardData(CHARRANGE FAR *lpchrg, DWORD reco, LPDATAOBJECT FAR *lplpdataobj);
+    virtual HRESULT STDMETHODCALLTYPE GetDragDropEffect(BOOL fDrag, DWORD grfKeyState, LPDWORD pdwEffect);
+    virtual HRESULT STDMETHODCALLTYPE GetContextMenu(WORD seltyp, LPOLEOBJECT lpoleobj, CHARRANGE FAR *lpchrg,
+        HMENU FAR *lphmenu);
+        
+private:
+	SRichEditOleCallback_Impl(SOUI::SRichEdit *pRicheditCtrl);
+    
+    ~SRichEditOleCallback_Impl()
+    {
+    
+    }
+    
+    int m_iNumStorages;
+    CAutoRefPtr<IStorage> m_pStorage;
+	SOUI::SRichEdit *m_pRicheditCtrl;
+
+    DWORD m_dwRef;
+};
+
+BOOL RichEdit_SetOleCallback(SOUI::SRichEdit *pRicheditCtrl);
 BOOL RichEdit_InsertSkin(SOUI::SRichEdit *pRicheditCtrl, SOUI::ISkinObj *pSkin);
 BOOL RichEdit_InsertImage(SOUI::SRichEdit *pRicheditCtrl, LPCTSTR lpszFileName);

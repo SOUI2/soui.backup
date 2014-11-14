@@ -44,7 +44,7 @@ namespace SOUI
             /* [in] */ REFIID riid,
             /* [iid_is][out] */ __RPC__deref_out void __RPC_FAR *__RPC_FAR *ppvObject)
         {
-            HRESULT hr=S_FALSE;
+            HRESULT hr=E_NOINTERFACE;
             if(riid==__uuidof(IUnknown))
                 *ppvObject=(IUnknown*) this,hr=S_OK;
             else if(riid==__uuidof(IDropTarget))

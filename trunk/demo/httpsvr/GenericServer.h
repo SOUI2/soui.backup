@@ -124,7 +124,7 @@ private:
 	int						ServerPort;
 	int						PersistenceTO;
 
-	BOOL					bRun;
+	HANDLE					m_hRunMutex;
 protected:
 	STRVECT					Visitors;
 };

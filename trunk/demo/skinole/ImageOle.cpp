@@ -300,6 +300,155 @@ CImageOle * CImageOle::CreateObject( SOUI::SRichEdit *pRichedit )
     return new CImageOle(pRichedit);
 }
 
+
+//////////////////////////////////////////////////////////////////////////
+// SIRichEditOleCallback_Impl
+SRichEditOleCallback_Impl::SRichEditOleCallback_Impl(SOUI::SRichEdit *pRicheditCtrl) :m_dwRef(1), m_iNumStorages(0), m_pRicheditCtrl(pRicheditCtrl)
+{
+    HRESULT hResult = ::StgCreateDocfile(NULL,
+        STGM_TRANSACTED | STGM_READWRITE | STGM_SHARE_EXCLUSIVE |STGM_CREATE ,
+        0, &m_pStorage );
+    SASSERT(SUCCEEDED(hResult));
+}
+
+HRESULT STDMETHODCALLTYPE 
+SRichEditOleCallback_Impl::GetNewStorage(LPSTORAGE* lplpstg)
+{
+    m_iNumStorages++;
+    WCHAR tName[50];
+    swprintf(tName, L"REOLEStorage%d", m_iNumStorages);
+
+    HRESULT hResult = m_pStorage->CreateStorage(tName, 
+        STGM_TRANSACTED | STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE ,
+        0, 0, lplpstg );
+
+    if (hResult != S_OK )
+    {
+//        ::AfxThrowOleException( hResult );
+    }
+
+    return hResult;
+}
+
+HRESULT STDMETHODCALLTYPE 
+SRichEditOleCallback_Impl::QueryInterface(REFIID iid, void ** ppvObject)
+{
+
+    HRESULT hr = S_OK;
+    *ppvObject = NULL;
+
+    if ( iid == IID_IUnknown ||
+        iid == IID_IRichEditOleCallback )
+    {
+        *ppvObject = this;
+        AddRef();
+        hr = NOERROR;
+    }
+    else
+    {
+        hr = E_NOINTERFACE;
+    }
+
+    return hr;
+}
+
+
+
+ULONG STDMETHODCALLTYPE 
+SRichEditOleCallback_Impl::AddRef()
+{
+    return ++m_dwRef;
+}
+
+
+
+ULONG STDMETHODCALLTYPE 
+SRichEditOleCallback_Impl::Release()
+{
+    if ( --m_dwRef == 0 )
+    {
+        delete this;
+        return 0;
+    }
+
+    return m_dwRef;
+}
+
+
+HRESULT STDMETHODCALLTYPE 
+SRichEditOleCallback_Impl::GetInPlaceContext(LPOLEINPLACEFRAME FAR *lplpFrame,
+                                                            LPOLEINPLACEUIWINDOW FAR *lplpDoc, LPOLEINPLACEFRAMEINFO lpFrameInfo)
+{
+    return S_OK;
+}
+
+
+HRESULT STDMETHODCALLTYPE 
+SRichEditOleCallback_Impl::ShowContainerUI(BOOL fShow)
+{
+    return S_OK;
+}
+
+
+
+HRESULT STDMETHODCALLTYPE 
+SRichEditOleCallback_Impl::QueryInsertObject(LPCLSID lpclsid, LPSTORAGE lpstg, LONG cp)
+{
+    return S_OK;
+}
+
+
+HRESULT STDMETHODCALLTYPE 
+SRichEditOleCallback_Impl::DeleteObject(LPOLEOBJECT lpoleobj)
+{
+    return S_OK;
+}
+
+
+
+HRESULT STDMETHODCALLTYPE 
+SRichEditOleCallback_Impl::QueryAcceptData(LPDATAOBJECT lpdataobj, CLIPFORMAT FAR *lpcfFormat,
+                                                          DWORD reco, BOOL fReally, HGLOBAL hMetaPict)
+{
+    return S_OK;
+}
+
+
+HRESULT STDMETHODCALLTYPE 
+SRichEditOleCallback_Impl::ContextSensitiveHelp(BOOL fEnterMode)
+{
+    return S_OK;
+}
+
+
+
+HRESULT STDMETHODCALLTYPE 
+SRichEditOleCallback_Impl::GetClipboardData(CHARRANGE FAR *lpchrg, DWORD reco, LPDATAOBJECT FAR *lplpdataobj)
+{
+    return S_OK;
+}
+
+
+HRESULT STDMETHODCALLTYPE 
+SRichEditOleCallback_Impl::GetDragDropEffect(BOOL fDrag, DWORD grfKeyState, LPDWORD pdwEffect)
+{
+    return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE 
+SRichEditOleCallback_Impl::GetContextMenu(WORD seltyp, LPOLEOBJECT lpoleobj, CHARRANGE FAR *lpchrg,
+                                                         HMENU FAR *lphmenu)
+{
+    return S_OK;
+}
+
+SRichEditOleCallback_Impl * SRichEditOleCallback_Impl::CreateObject(SOUI::SRichEdit *pRicheditCtrl)
+{
+	return new SRichEditOleCallback_Impl(pRicheditCtrl);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// global functions
 BOOL RichEdit_InsertSkin(SOUI::SRichEdit *pRicheditCtrl, SOUI::ISkinObj *pSkin)
 {
 	IRichEditOle *pRichEditOle=NULL;
@@ -331,7 +480,7 @@ BOOL RichEdit_InsertSkin(SOUI::SRichEdit *pRicheditCtrl, SOUI::ISkinObj *pSkin)
 
 	REOBJECT reobject = {0};
 	reobject.cbStruct = sizeof(REOBJECT);
-	reobject.clsid    = CLSID_NULL;
+	reobject.clsid    = __uuidof(CImageOle);
 	reobject.cp       = REO_CP_SELECTION;
 	reobject.dvaspect = DVASPECT_CONTENT;
     reobject.dwFlags  = REO_BELOWBASELINE;
@@ -367,4 +516,12 @@ BOOL RichEdit_InsertImage(SOUI::SRichEdit *pRicheditCtrl, LPCTSTR lpszFileName)
         pSkin = pGifSkin;
     }
     return RichEdit_InsertSkin(pRicheditCtrl,pSkin);
+}
+
+BOOL RichEdit_SetOleCallback( SOUI::SRichEdit *pRicheditCtrl )
+{
+    SRichEditOleCallback_Impl * pReCB = SRichEditOleCallback_Impl::CreateObject();
+    pRicheditCtrl->SSendMessage(EM_SETOLECALLBACK,0,(LPARAM)pReCB);
+    pReCB->Release();
+    return TRUE;
 }
