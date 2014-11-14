@@ -520,7 +520,7 @@ BOOL RichEdit_InsertImage(SOUI::SRichEdit *pRicheditCtrl, LPCTSTR lpszFileName)
 
 BOOL RichEdit_SetOleCallback( SOUI::SRichEdit *pRicheditCtrl )
 {
-    SRichEditOleCallback_Impl * pReCB = SRichEditOleCallback_Impl::CreateObject();
+	SRichEditOleCallback_Impl * pReCB = SRichEditOleCallback_Impl::CreateObject(pRicheditCtrl);
     pRicheditCtrl->SSendMessage(EM_SETOLECALLBACK,0,(LPARAM)pReCB);
     pReCB->Release();
     return TRUE;
