@@ -21,7 +21,7 @@
 
 CGenericServer::CGenericServer()
 {
-	bRun = FALSE;
+	m_hRunMutex = 0;
 }
 
 CGenericServer::~CGenericServer()
@@ -81,8 +81,11 @@ BOOL CGenericServer::AddClient(SOCKET s, char* ClientAddress, int port)
 
 BOOL CGenericServer::Run(int Port, int PersTO)
 {
-	if(bRun)
+	m_hRunMutex = CreateMutex(NULL, TRUE, _T("name.mutex.generic.server"));
+	if (GetLastError() == ERROR_ALREADY_EXISTS)
 	{
+		CloseHandle(m_hRunMutex);
+		m_hRunMutex = 0;
 		LogMessage(LOGFILENAME, _T("_beginthreadex(...) failure, for Launch Thread"), _T("Run"), errno);
 		return FALSE;
 	}
@@ -131,7 +134,6 @@ BOOL CGenericServer::Run(int Port, int PersTO)
 	
 	CloseHandle(ThreadLaunchedEvent);
 	
-	bRun = TRUE;
 
 	return TRUE;
 }
@@ -140,7 +142,7 @@ BOOL CGenericServer::Run(int Port, int PersTO)
 
 BOOL CGenericServer::Shutdown()
 {
-	if(!bRun)
+	if (!m_hRunMutex)
 		return FALSE;
 	
 	BOOL bResult = TRUE;
@@ -180,8 +182,8 @@ BOOL CGenericServer::Shutdown()
 	DeleteCriticalSection(&cs);
 	DeleteCriticalSection(&_cs);
 
-	bRun = FALSE;
-	
+	CloseHandle(m_hRunMutex);
+	m_hRunMutex = 0;
 	return bResult;
 }
 
@@ -217,7 +219,6 @@ void CGenericServer::CleanupThread(WSAEVENT Event, SOCKET s, NewConnectionTag* p
 	if(it != ThreadList.end())
 	{
 		EnterCriticalSection(&_cs);
-		HANDLE aaa = (*it).hThread;
 		HandleList.push_back((*it).hThread);
 		ThreadList.erase(it);
 		LeaveCriticalSection(&_cs);

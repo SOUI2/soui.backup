@@ -96,10 +96,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         //将创建的IResProvider交给SApplication对象
         theApp->AddResProvider(pResProvider);
 
-        //创建一个http服务器，用来从资源中加载flash
-        CMemFlash   memFlash;
-        CHTTPServer flashSvr(&memFlash);
-        flashSvr.Start(CMemFlash::HomeDir(),"",82,0);
+		//创建一个http服务器，用来从资源中加载flash
+		CMemFlash   memFlash;
+		CHTTPServer flashSvr(&memFlash);
+		flashSvr.Start(CMemFlash::HomeDir(), "", 82, 0);
 
         if(trans)
         {//加载语言翻译包
@@ -183,6 +183,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     }
     delete pComMgr;
     OleUninitialize();
+
     return nRet;
 }
 
