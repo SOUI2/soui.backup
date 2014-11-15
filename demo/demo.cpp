@@ -96,10 +96,12 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         //将创建的IResProvider交给SApplication对象
         theApp->AddResProvider(pResProvider);
 
-		//创建一个http服务器，用来从资源中加载flash
-		CMemFlash   memFlash;
-		CHTTPServer flashSvr(&memFlash);
-		flashSvr.Start(CMemFlash::HomeDir(), "", 82, 0);
+        //创建一个http服务器，用来从资源中加载flash
+        CMemFlash   memFlash;
+
+        string str="abcd";//奇怪了，这个CHTTPServer只有在这里加一句string的调用才不会导致异常。不知道什么道理，有没有人帮我解释一下？
+        CHTTPServer flashSvr(&memFlash);
+        flashSvr.Start(CMemFlash::HomeDir(),"",82,0);
 
         if(trans)
         {//加载语言翻译包
