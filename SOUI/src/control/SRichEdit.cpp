@@ -808,9 +808,7 @@ HRESULT SRichEdit::InitDefaultCharFormat( CHARFORMAT2W* pcf ,IFont *pFont)
     BeforePaintEx(pRT);
 
     if(pFont==NULL) pFont=(IFont *)pRT->GetCurrentObject(OT_FONT);
-    SIZE szTxt;
-    pRT->MeasureText(_T("A"),1,&szTxt);
-    m_nFontHeight=szTxt.cy;
+	m_nFontHeight=abs(pFont->TextSize());
 
     memset(pcf, 0, sizeof(CHARFORMAT2W));
     pcf->cbSize = sizeof(CHARFORMAT2W);
