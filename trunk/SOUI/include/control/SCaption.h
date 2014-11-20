@@ -22,7 +22,7 @@ namespace SOUI
  * 
  * Describe    标签类 只需要继承此类即可
  */
-class SCaption :
+class SOUI_EXP SCaption :
     public SWindow
 {
     SOUI_CLASS_NAME(SCaption, L"caption")
