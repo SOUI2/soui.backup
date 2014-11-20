@@ -160,29 +160,18 @@ EXTERN_C const IID IID_ITextHost =   /* c5bdd8d0-d26e-11ce-a89e-00aa006cadc5 */
     {0xa8, 0x9e, 0x00, 0xaa, 0x00, 0x6c, 0xad, 0xc5}
 };
 
-// Convert Pixels on the X axis to Himetric
-LONG DXtoHimetricX(LONG dx, LONG xPerInch)
+// Convert Device Pixels to Himetric
+LONG DtoHimetric(LONG d, LONG dPerInch)
 {
-    return (LONG) MulDiv(dx, HIMETRIC_PER_INCH, xPerInch);
+    return (LONG) MulDiv(d, HIMETRIC_PER_INCH, dPerInch);
 }
 
-// Convert Pixels on the Y axis to Himetric
-LONG DYtoHimetricY(LONG dy, LONG yPerInch)
+// Convert Himetric Device pixels
+LONG HimetrictoD(LONG lHimetric, LONG dPerInch)
 {
-    return (LONG) MulDiv(dy, HIMETRIC_PER_INCH, yPerInch);
+    return (LONG) MulDiv(lHimetric, dPerInch, HIMETRIC_PER_INCH);
 }
 
-// Convert Himetric along the X axis to X pixels
-LONG HimetricXtoDX(LONG xHimetric, LONG xPerInch)
-{
-    return (LONG) MulDiv(xHimetric, xPerInch, HIMETRIC_PER_INCH);
-}
-
-// Convert Himetric along the Y axis to Y pixels
-LONG HimetricYtoDY(LONG yHimetric, LONG yPerInch)
-{
-    return (LONG) MulDiv(yHimetric, yPerInch, HIMETRIC_PER_INCH);
-}
 
 STextHost::STextHost(void)
     :m_pRichEdit(NULL)
@@ -740,6 +729,14 @@ void SRichEdit::OnTimer2( UINT_PTR idEvent )
 }
 
 
+CSize SRichEdit::GetDesiredSize( LPRECT pRcContainer )
+{
+    CSize sz = __super::GetDesiredSize(pRcContainer);
+    sz.cx += m_rcInsetPixel.left + m_rcInsetPixel.right;
+    sz.cy += m_rcInsetPixel.top + m_rcInsetPixel.bottom;
+    return sz;
+}
+
 BOOL SRichEdit::OnScroll( BOOL bVertical,UINT uCode,int nPos )
 {
     if(m_fScrollPending) return FALSE;
@@ -747,6 +744,7 @@ BOOL SRichEdit::OnScroll( BOOL bVertical,UINT uCode,int nPos )
     m_fScrollPending=TRUE;
     STRACE(_T("SRichedit::OnScroll,pos=%d"),nPos);
     SPanel::OnScroll(bVertical,uCode,nPos);
+       
     m_pTxtHost->GetTextService()->TxSendMessage(bVertical?WM_VSCROLL:WM_HSCROLL,MAKEWPARAM(uCode,nPos),0,&lresult);
     LONG lPos=0;
     if(bVertical)
@@ -806,7 +804,8 @@ HRESULT SRichEdit::InitDefaultCharFormat( CHARFORMAT2W* pcf ,IFont *pFont)
     GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
     SASSERT(pRT);
     BeforePaintEx(pRT);
-
+    
+    CAutoRefPtr<IFont> oldFont;
     if(pFont==NULL) pFont=(IFont *)pRT->GetCurrentObject(OT_FONT);
 	m_nFontHeight=abs(pFont->TextSize());
 
@@ -819,7 +818,7 @@ HRESULT SRichEdit::InitDefaultCharFormat( CHARFORMAT2W* pcf ,IFont *pFont)
     LONG yPixPerInch = GetDeviceCaps(hdc, LOGPIXELSY);
     ReleaseDC(NULL,hdc);
     const LOGFONT *plf=pFont->LogFont();
-    pcf->yHeight = -abs(pFont->TextSize() * LY_PER_INCH / yPixPerInch);
+    pcf->yHeight = -abs(MulDiv(pFont->TextSize(), LY_PER_INCH, yPixPerInch));
     pcf->yOffset = 0;
     pcf->dwEffects = 0;
     if(pFont->IsBold())
@@ -1098,9 +1097,10 @@ void SRichEdit::OnLButtonDown( UINT nFlags, CPoint point )
     }
 }
 
-void SRichEdit::OnLButtonUp( UINT nFlags, CPoint point )
+LRESULT SRichEdit::OnButtonClick(UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
-    m_pTxtHost->GetTextService()->TxSendMessage(GetCurMsg()->uMsg,GetCurMsg()->wParam,GetCurMsg()->lParam,NULL);
+    m_pTxtHost->GetTextService()->TxSendMessage(uMsg,wParam,lParam,NULL);
+    return 0;
 }
 
 enum{
@@ -1234,20 +1234,20 @@ LRESULT SRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
         HDC hdc=GetDC(GetContainer()->GetHostHwnd());
         LONG xPerInch = ::GetDeviceCaps(hdc, LOGPIXELSX);
         LONG yPerInch =    ::GetDeviceCaps(hdc, LOGPIXELSY);
-        m_sizelExtent.cx = DXtoHimetricX(m_siHoz.nPage, xPerInch);
-        m_sizelExtent.cy = DYtoHimetricY(m_siVer.nPage, yPerInch);
+        m_sizelExtent.cx = DtoHimetric(m_siHoz.nPage, xPerInch);
+        m_sizelExtent.cy = DtoHimetric(m_siVer.nPage, yPerInch);
 
-        m_rcInset.left=DXtoHimetricX(m_rcInsetPixel.left,xPerInch);
-        m_rcInset.right=DXtoHimetricX(m_rcInsetPixel.right,xPerInch);
+        m_rcInset.left=DtoHimetric(m_rcInsetPixel.left,xPerInch);
+        m_rcInset.right=DtoHimetric(m_rcInsetPixel.right,xPerInch);
         if(!m_fRich && m_fSingleLineVCenter && !(m_dwStyle&ES_MULTILINE))
         {
-            m_rcInset.top=
-                m_rcInset.bottom=DYtoHimetricY(m_siVer.nPage-m_nFontHeight,yPerInch)/2;
+            m_rcInset.top   =
+            m_rcInset.bottom=DtoHimetric(m_siVer.nPage-m_nFontHeight,yPerInch)/2;
         }
         else
         {
-            m_rcInset.top=DYtoHimetricY(m_rcInsetPixel.top,yPerInch);
-            m_rcInset.bottom=DYtoHimetricY(m_rcInsetPixel.bottom,yPerInch);
+            m_rcInset.top=DtoHimetric(m_rcInsetPixel.top,yPerInch);
+            m_rcInset.bottom=DtoHimetric(m_rcInsetPixel.bottom,yPerInch);
         }
         ReleaseDC(GetContainer()->GetHostHwnd(),hdc);
         

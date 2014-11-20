@@ -452,6 +452,46 @@
 			RelativePath="demo.rc"
 			>
 		</File>
+		<File
+			RelativePath=".\uires\xml\dlg_main.xml"
+			>
+		</File>
+		<File
+			RelativePath=".\uires\xml\init.xml"
+			>
+		</File>
+		<File
+			RelativePath=".\uires\xml\menu_test.xml"
+			>
+		</File>
+		<File
+			RelativePath=".\uires\xml\page_about.xml"
+			>
+		</File>
+		<File
+			RelativePath=".\uires\xml\page_ctrls.xml"
+			>
+		</File>
+		<File
+			RelativePath=".\uires\xml\page_layout.xml"
+			>
+		</File>
+		<File
+			RelativePath=".\uires\xml\page_misc.xml"
+			>
+		</File>
+		<File
+			RelativePath=".\uires\xml\page_skia.xml"
+			>
+		</File>
+		<File
+			RelativePath=".\uires\xml\page_treebox.xml"
+			>
+		</File>
+		<File
+			RelativePath=".\uires\xml\page_webkit.xml"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

@@ -269,6 +269,7 @@ LRESULT CMainDlg::OnInitDialog( HWND hWnd, LPARAM lParam )
     if(pEdit)
     {
         RichEdit_SetOleCallback(pEdit);
+        pEdit->SetAttribute(L"rtf",L"rtf:rtf_test");
     }
 
     return 0;

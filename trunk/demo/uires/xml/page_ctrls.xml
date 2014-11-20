@@ -69,7 +69,7 @@
       </splitrow>
     </page>
     <page title="combobox and listbox">
-      <combobox name="cbx_test" pos="10,50,200,74" dropDown="1" dropHeight="100" class="cls_edit" dotted="0" animateTime="200" curSel="2">
+      <combobox name="cbx_test" pos="10,50,200,74"  dropDown="1" dropHeight="100" class="cls_edit" dotted="0" animateTime="200" curSel="2">
         <liststyle class="cls_edit"  iconSkin="skin_menuicon" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088"/>
         <editstyle inset="5,0,5,0" colorText="#000000" align="left" colorBkgnd="#FFFFFF"/>
         <items>
@@ -94,7 +94,7 @@
       </listbox>
     </page>
     <page title="comboboxex">
-      <comboboxex show="1" pos="10,10,250,40" dropDown="1" dropHeight="250" class="cls_edit" dotted="0" curSel="3" id_text="1" id_icon="2">
+      <comboboxex show="1" pos="10,10,250,40" id="11111" dropDown="1" dropHeight="250" class="cls_edit" dotted="0" curSel="3" id_text="1" id_icon="2">
         <liststyle  class="cls_edit" colorBkgnd="#FFFFFF" itemHeight="50" >
           <template skin="_skin.sys.header">
             <text id="1" pos="5,2" colorText="#ff0000"/>
