@@ -126,7 +126,7 @@ HRESULT WINAPI CImageOle::IsUpToDate(void)
 
 HRESULT WINAPI CImageOle::GetUserClassID(CLSID *pClsid)
 {
-	*pClsid = IID_NULL;
+	*pClsid = __uuidof(CImageOle);
 	return S_OK;
 }
 
@@ -322,11 +322,6 @@ SRichEditOleCallback_Impl::GetNewStorage(LPSTORAGE* lplpstg)
         STGM_TRANSACTED | STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE ,
         0, 0, lplpstg );
 
-    if (hResult != S_OK )
-    {
-//        ::AfxThrowOleException( hResult );
-    }
-
     return hResult;
 }
 
@@ -425,7 +420,7 @@ SRichEditOleCallback_Impl::ContextSensitiveHelp(BOOL fEnterMode)
 HRESULT STDMETHODCALLTYPE 
 SRichEditOleCallback_Impl::GetClipboardData(CHARRANGE FAR *lpchrg, DWORD reco, LPDATAOBJECT FAR *lplpdataobj)
 {
-    return S_OK;
+    return E_NOTIMPL;
 }
 
 
@@ -460,6 +455,23 @@ BOOL RichEdit_InsertSkin(SOUI::SRichEdit *pRicheditCtrl, SOUI::ISkinObj *pSkin)
 	if (NULL == pOleClientSite)
 		return FALSE;
 
+    CAutoRefPtr<IStorage> lpStorage = NULL;        //存储接口
+    CAutoRefPtr<ILockBytes> lpLockBytes = NULL;
+
+    HRESULT hr = ::CreateILockBytesOnHGlobal(NULL,TRUE,&lpLockBytes); //创建LOCKBYTE对象
+    if (FAILED(hr))
+    {
+        return FALSE;
+    }
+    SASSERT(lpLockBytes != NULL);
+    hr = ::StgCreateDocfileOnILockBytes(lpLockBytes,
+        STGM_SHARE_EXCLUSIVE | STGM_CREATE | STGM_READWRITE,
+        0,&lpStorage);
+    if (FAILED(hr))
+    {
+        return FALSE;
+    }
+
 	CImageOle *pImageOle = CImageOle::CreateObject(pRicheditCtrl);
 	if (NULL == pImageOle)
 		return FALSE;
@@ -474,9 +486,10 @@ BOOL RichEdit_InsertSkin(SOUI::SRichEdit *pRicheditCtrl, SOUI::ISkinObj *pSkin)
 		return FALSE;
 	}
 
+
 	pImageOle->SetClientSite(pOleClientSite);
 
-	HRESULT hr = ::OleSetContainedObject(pOleObject, TRUE);
+	hr = ::OleSetContainedObject(pOleObject, TRUE);
 
 	REOBJECT reobject = {0};
 	reobject.cbStruct = sizeof(REOBJECT);
@@ -487,7 +500,9 @@ BOOL RichEdit_InsertSkin(SOUI::SRichEdit *pRicheditCtrl, SOUI::ISkinObj *pSkin)
 	reobject.poleobj  = pOleObject;
 	reobject.polesite = pOleClientSite;
 	reobject.dwUser   = 0;
-
+    reobject.pstg = lpStorage;
+    lpStorage->AddRef();
+    
 	pRichEditOle->InsertObject(&reobject);
 
 	pOleObject->Release();
@@ -521,7 +536,7 @@ BOOL RichEdit_InsertImage(SOUI::SRichEdit *pRicheditCtrl, LPCTSTR lpszFileName)
 BOOL RichEdit_SetOleCallback( SOUI::SRichEdit *pRicheditCtrl )
 {
 	SRichEditOleCallback_Impl * pReCB = SRichEditOleCallback_Impl::CreateObject(pRicheditCtrl);
-    pRicheditCtrl->SSendMessage(EM_SETOLECALLBACK,0,(LPARAM)pReCB);
+    pRicheditCtrl->SSendMessage(EM_SETOLECALLBACK,0,(LPARAM)(IRichEditOleCallback*)pReCB);
     pReCB->Release();
     return TRUE;
 }

@@ -42,7 +42,7 @@ BOOL SComboEdit::FireEvent(EventArgs & evt)
         evt.idFrom=GetOwner()->GetID();
         evt.nameFrom=GetOwner()->GetName();
     }
-    return __super::FireEvent(evt);
+    return SEdit::FireEvent(evt);
 }
 
 
@@ -431,10 +431,8 @@ void SComboBox::OnSelChanged()
 
 BOOL SComboBox::FireEvent( EventArgs &evt )
 {
-    if(evt.idFrom == IDC_DROPDOWN_LIST)
+    if(evt.idFrom == IDC_DROPDOWN_LIST && m_pDropDownWnd)
     {
-        SASSERT(m_pDropDownWnd);
-
         if(evt.GetEventID()==EventLBSelChanged::EventID)
         {
             OnSelChanged();
@@ -574,10 +572,8 @@ void SComboBoxEx::OnSelChanged()
 
 BOOL SComboBoxEx::FireEvent( EventArgs &evt )
 {
-    if(evt.idFrom == IDC_DROPDOWN_LIST)
+    if(evt.idFrom == IDC_DROPDOWN_LIST && m_pDropDownWnd)
     {
-        SASSERT(m_pDropDownWnd);
-
         if(evt.GetEventID()==EventLBSelChanged::EventID)
         {//列表选中项改变事件
             OnSelChanged();

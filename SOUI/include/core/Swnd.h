@@ -113,12 +113,12 @@ namespace SOUI
         GSW_OWNER,
     } GW_CODE;
 
-    typedef struct tagSWNDMSG
+    typedef struct SWNDMSG
     {
         UINT uMsg;
         WPARAM wParam;
         LPARAM lParam;
-    } SWNDMSG,*PSWNDMSG;
+    } *PSWNDMSG;
 
     struct SwndToolTipInfo
     {
@@ -910,6 +910,7 @@ namespace SOUI
         //////////////////////////////////////////////////////////////////////////
         // 属性处理函数
         HRESULT OnAttrPos(const SStringW& strValue, BOOL bLoading);
+        HRESULT OnAttrOffset(const SStringW& strValue, BOOL bLoading);
         HRESULT OnAttrVisible(const SStringW& strValue, BOOL bLoading);
         HRESULT OnAttrEnable(const SStringW& strValue, BOOL bLoading);
         HRESULT OnAttrDisplay(const SStringW& strValue, BOOL bLoading);
@@ -949,6 +950,7 @@ namespace SOUI
             ATTR_CUSTOM(L"visible", OnAttrVisible)
             ATTR_CUSTOM(L"show", OnAttrVisible)
             ATTR_CUSTOM(L"pos", OnAttrPos)
+            ATTR_CUSTOM(L"offset", OnAttrOffset)
             ATTR_CUSTOM(L"cache", OnAttrCache)
             ATTR_CUSTOM(L"display", OnAttrDisplay)
             ATTR_I18NSTRT(L"tip", m_strToolTipText, FALSE)  //使用语言包翻译
@@ -956,17 +958,6 @@ namespace SOUI
             ATTR_INT(L"maxWidth",m_nMaxWidth,FALSE)
             ATTR_INT(L"clipClient",m_bClipClient,FALSE)
             ATTR_INT(L"focusable",m_bFocusable,FALSE)
-            ATTR_ENUM_BEGIN(L"pos2type",POS2TYPE,FALSE)
-                ATTR_ENUM_VALUE(L"leftTop",POS2_LEFTTOP)
-                ATTR_ENUM_VALUE(L"center",POS2_CENTER)
-                ATTR_ENUM_VALUE(L"rightTop",POS2_RIGHTTOP)
-                ATTR_ENUM_VALUE(L"leftBottom",POS2_LEFTBOTTOM)
-                ATTR_ENUM_VALUE(L"rightBottom",POS2_RIGHTBOTTOM)
-                ATTR_ENUM_VALUE(L"leftMid",POS2_LEFTMID)
-                ATTR_ENUM_VALUE(L"midTop",POS2_MIDTOP)
-                ATTR_ENUM_VALUE(L"rightMid",POS2_RIGHTMID)
-                ATTR_ENUM_VALUE(L"midBottom",POS2_MIDBOTTOM)
-            ATTR_ENUM_END(m_layout.pos2Type)
             ATTR_INT(L"sep", m_layout.nSepSpace, FALSE)
             ATTR_CHAIN(m_style)                     //支持对style中的属性定制
         SOUI_ATTRS_END()

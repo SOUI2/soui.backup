@@ -925,6 +925,17 @@ namespace SOUI
             if(m_dwStyle&ES_WANTRETURN) uRet |= SC_WANTRETURN;
             return uRet;
         }
+        
+        /**
+        * GetDesiredSize
+        * @brief    当没有指定窗口大小时，通过如皮肤计算窗口的期望大小
+        * @param    LPRECT pRcContainer --  容器位置
+        * @return   CSize 
+        *
+        * Describe  注意需要增加inset的大小
+        */
+        virtual CSize GetDesiredSize(LPRECT pRcContainer);
+
         /**
         * SRichEdit::OnScroll
         * @brief    滚动条事件
@@ -985,6 +996,7 @@ namespace SOUI
         *
         * Describe  
         */
+        
         HRESULT OnTxNotify(DWORD iNotify,LPVOID pv);
         /**
         * SRichEdit::DefAttributeProc
@@ -996,6 +1008,7 @@ namespace SOUI
         * Describe  默认属性处理函数
         */
         virtual HRESULT DefAttributeProc(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading);
+        
         /**
         * SRichEdit::OnLButtonDown
         * @brief    左键按下事件
@@ -1005,15 +1018,7 @@ namespace SOUI
         * Describe  此函数是消息响应函数
         */
         void OnLButtonDown(UINT nFlags, CPoint point);
-        /**
-        * SRichEdit::OnLButtonUp
-        * @brief    左键抬起事件
-        * @param    UINT nFlags -- 标志
-        * @param    CPoint point -- 鼠标坐标
-        *
-        * Describe  此函数是消息响应函数
-        */
-        void OnLButtonUp(UINT nFlags, CPoint point);
+        
         /**
         * SRichEdit::OnRButtonDown
         * @brief    右键按下事件
@@ -1023,6 +1028,7 @@ namespace SOUI
         * Describe  此函数是消息响应函数
         */
         void OnRButtonDown(UINT nFlags, CPoint point);
+        
         /**
         * SRichEdit::OnMouseMove
         * @brief    鼠标移动
@@ -1032,6 +1038,7 @@ namespace SOUI
         * Describe  此函数是消息响应函数
         */
         void OnMouseMove(UINT nFlags, CPoint point);
+        
         /**
         * SRichEdit::OnKeyDown
         * @brief    键盘按下事件
@@ -1042,6 +1049,19 @@ namespace SOUI
         * Describe  此函数是消息响应函数
         */ 
         void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+        
+        /**
+        * SRichEdit::OnButtonClick
+        * @brief    通用鼠标事件
+        * @param    UINT uMsg -- msg
+        * @param    WPARAM wParam -- wParam
+        * @param    LPARAM lParam -- lParam
+        * @return   返回LRESULT  
+        *
+        * Describe  此函数是消息响应函数
+        */
+        LRESULT OnButtonClick(UINT uMsg,WPARAM wParam,LPARAM lParam);
+
         /**
         * SRichEdit::OnChar
         * @brief    字符事件
@@ -1146,12 +1166,14 @@ namespace SOUI
             MSG_WM_TIMER_EX(OnTimer)
             MSG_WM_TIMER2(OnTimer2)
             MSG_WM_LBUTTONDOWN(OnLButtonDown)
-            MSG_WM_LBUTTONUP(OnLButtonUp)
             MSG_WM_RBUTTONDOWN(OnRButtonDown)
             MSG_WM_MOUSEMOVE(OnMouseMove)
             MSG_WM_KEYDOWN(OnKeyDown)
             MSG_WM_CHAR(OnChar)
             MSG_WM_SETFONT_EX(OnSetFont)
+            MESSAGE_HANDLER_EX(WM_LBUTTONDBLCLK,OnButtonClick)
+            MESSAGE_HANDLER_EX(WM_LBUTTONUP,OnButtonClick)
+
             MESSAGE_HANDLER_EX(WM_SETTEXT,OnSetText)
             MESSAGE_HANDLER_EX(EM_SETPARAFORMAT,OnSetParaFormat)
             MESSAGE_HANDLER_EX(EM_SETCHARFORMAT,OnSetCharFormat)

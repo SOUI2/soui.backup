@@ -881,7 +881,7 @@ LRESULT SWindow::OnWindowPosChanged(LPRECT lpRcContainer)
     LRESULT lRet=0;
     if(!(m_layout.uPositionType & Pos_Float))    
     {//窗口不是使用Move直接指定的坐标,计算出窗口位置
-        m_rcWindow.left = m_rcWindow.top = m_rcWindow.right = m_rcWindow.bottom = POS_INIT;//注意先使原窗口坐标无效
+        ClearLayoutState();
         lRet=m_layout.CalcPosition(lpRcContainer,m_rcWindow);
     }
     if(lRet==0)
@@ -1699,6 +1699,24 @@ HRESULT SWindow::OnAttrPos(const SStringW& strValue, BOOL bLoading)
 {
     if (strValue.IsEmpty()) return E_FAIL;
     m_layout.ParseStrPostion(strValue);
+    if(!bLoading)
+    {
+        SWindow *pParent=GetParent();
+        SASSERT(pParent);
+        pParent->UpdateChildrenPosition();
+    }
+    return S_FALSE;
+}
+
+HRESULT SWindow::OnAttrOffset(const SStringW& strValue, BOOL bLoading)
+{
+    if (strValue.IsEmpty()) return E_FAIL;
+    SStringWList lstOffset;
+    SplitString(strValue,L',',lstOffset);
+    if(lstOffset.GetCount()!=2) return E_FAIL;
+    m_layout.fOffsetX = (float)_wtof(lstOffset[0]);
+    m_layout.fOffsetY = (float)_wtof(lstOffset[1]);
+    
     if(!bLoading)
     {
         SWindow *pParent=GetParent();

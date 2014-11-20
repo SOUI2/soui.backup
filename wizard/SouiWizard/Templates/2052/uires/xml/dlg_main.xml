@@ -36,7 +36,7 @@ translucent="1"
     </tabctrl>
 	[!else]
     <window pos="5,[2,-5,-5">
-      <text pos="|0,|0" pos2type="center">这是一个由SOUI向导生成的APP框架</text>
+      <text pos="|0,|0" offset="-0.5,-0.5">这是一个由SOUI向导生成的APP框架</text>
     </window>
     [!endif]
   </root>

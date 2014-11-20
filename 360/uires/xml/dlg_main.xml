@@ -16,37 +16,37 @@
 				</page>
 				<page title="木马查杀" tip="木马查杀">
 					<window pos="0,0,-0,-0" skin="_skin.white.bg" cache="1">
-						<text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
 					</window>
 				</page>
 				<page title="系统修复" tip="系统修复">
 					<window pos="0,0,-0,-0" skin="_skin.white.bg" cache="1">
-						<text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
 					</window>
 				</page>
 				<page title="电脑清理" tip="电脑清理">
 					<window pos="0,0,-0,-0" skin="_skin.white.bg" cache="1">
-						<text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
 					</window>
 				</page>
 				<page title="优化加速" tip="优化加速">
 					<window pos="0,0,-0,-0" skin="_skin.white.bg" cache="1">
-						<text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
 					</window>
 				</page>
 				<page title="电脑专家" tip="电脑专家">
 					<window pos="0,0,-0,-0" skin="_skin.white.bg" cache="1">
-						<text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
 					</window>
 				</page>
 				<page title="电脑门诊" tip="电脑门诊">	
 					<window pos="0,0,-0,-0" skin="_skin.white.bg" cache="1">
-						<text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
 					</window>
 				</page>
 				<page title="软件管家" tip="软件管家">
 					<window pos="0,0,-0,-0" skin="_skin.white.bg" cache="1">
-						<text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
 					</window>
 				</page>
 			</tabctrl>

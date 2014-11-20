@@ -9,7 +9,8 @@ namespace SOUI
     :m_pOwner(pOwner)
     ,nCount(0)
     ,uPositionType(0)
-    ,pos2Type(POS2_LEFTTOP)
+    ,fOffsetX(0.0f)
+    ,fOffsetY(0.0f)
     ,uSpecifyWidth(0)
     ,uSpecifyHeight(0)
     ,nSepSpace(2)
@@ -39,8 +40,7 @@ namespace SOUI
         if(pszPos[0]==L'-')
         {
             pszPos++;
-            if(pos.pit != PIT_PERCENT)//百分比值时，不允许使用负值，直接忽略
-                pos.bMinus=TRUE;
+            pos.bMinus=TRUE;
         }
 
         pos.nPos=(float)_wtof(pszPos);
@@ -67,7 +67,10 @@ namespace SOUI
                 nRet=nMin+(int)pos.nPos;
             break;
         case PIT_PERCENT: 
-            nRet=nMin+(int)(pos.nPos*nWid/100);
+            if(pos.bMinus)
+                nRet=nMin+(int)((100.0f-pos.nPos)*nWid/100);
+            else
+                nRet=nMin+(int)(pos.nPos*nWid/100);
             if(nRet>nMax) nRet=nMax;
             break;
         case PIT_PREV_NEAR:
@@ -176,7 +179,6 @@ namespace SOUI
         }else 
         {
             CPoint pt=rcWindow.TopLeft();
-            CSize sz=CalcSize(lpRcContainer);
             if((uPositionType & SizeX_FitParent) &&  (uPositionType &SizeY_FitParent))
             {//充满父窗口
                 pt.x=lpRcContainer->left;
@@ -187,40 +189,6 @@ namespace SOUI
                 if(pt.x==POS_WAIT) nRet++;
                 if(pt.y==POS_INIT || pt.y==POS_WAIT) pt.y=PositionItem2Value(Top,lpRcContainer->top,lpRcContainer->bottom,FALSE);
                 if(pt.y==POS_WAIT) nRet++;
-
-                if(nRet==0)
-                {
-                    switch(pos2Type)
-                    {
-                    case POS2_CENTER:
-                        pt.Offset(-sz.cx/2,-sz.cy/2);
-                        break;
-                    case POS2_RIGHTTOP:
-                        pt.Offset(-sz.cx,0);
-                        break;
-                    case POS2_LEFTBOTTOM:
-                        pt.Offset(0,-sz.cy);
-                        break;
-                    case POS2_RIGHTBOTTOM:
-                        pt.Offset(-sz.cx,-sz.cy);
-                        break;
-                    case POS2_MIDTOP:
-                        pt.Offset(-sz.cx/2,0);
-                        break;
-                    case POS2_LEFTMID:
-                        pt.Offset(0,-sz.cy/2);
-                        break;
-                    case POS2_RIGHTMID:
-                        pt.Offset(-sz.cx,-sz.cy/2);
-                        break;
-                    case POS2_MIDBOTTOM:
-                        pt.Offset(-sz.cx/2,-sz.cy);
-                        break;
-                    case POS2_LEFTTOP:
-                    default:
-                        break;
-                    }
-                }
             }else //if(nCount==0)
             {//自动排版
                 SWindow *pSibling=m_pOwner->GetWindow(GSW_PREVSIBLING);
@@ -243,11 +211,22 @@ namespace SOUI
                         pt.y=rcSib.top;
                 }
             }
-            if(nRet==0)    rcWindow=CRect(pt,sz);
-            else rcWindow.left=pt.x,rcWindow.top=pt.y;
+            if(nRet==0)
+                rcWindow=CRect(pt,CalcSize(lpRcContainer));
+            else 
+                rcWindow.left=pt.x,rcWindow.top=pt.y;
         }
 
-        if(nRet==0) rcWindow.NormalizeRect();
+        if(nRet==0)
+        {//没有坐标等待计算了
+            rcWindow.NormalizeRect();
+            //处理窗口的偏移(offset)属性
+            CSize sz = rcWindow.Size();
+            CPoint ptOffset;
+            ptOffset.x = (LONG)(sz.cx * fOffsetX);
+            ptOffset.y = (LONG)(sz.cy * fOffsetY);
+            rcWindow.OffsetRect(ptOffset);
+        }
         return nRet;
     }
 
