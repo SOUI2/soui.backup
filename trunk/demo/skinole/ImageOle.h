@@ -73,6 +73,8 @@ protected:
 	int		m_iFrame;
 	int		m_nTimePass;	//过去的时间
 	int		m_nTimeDelay;	//一个动画帧需要的时间
+	
+	CRect   m_rcObj;
 };
 
 class __declspec(uuid("{C733506E-7539-4a88-9B7F-334356B28C62}")) SRichEditOleCallback_Impl : public IRichEditOleCallback

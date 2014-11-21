@@ -186,7 +186,7 @@ HRESULT WINAPI CImageOle::Draw(DWORD dwDrawAspect, LONG lindex, void *pvAspect,
 	rcItem.top    = lprcBounds->top;
 	rcItem.right  = lprcBounds->right;
 	rcItem.bottom = lprcBounds->bottom;
-
+    m_rcObj =rcItem;
 	if(m_pSkin)
 	{
 	    SOUI::IRenderTarget * pRT =NULL;
@@ -287,7 +287,7 @@ void CImageOle::OnNextFrame()
 		m_nTimeDelay=pSkinGif->GetFrameDelay(m_iFrame)*10;
 		m_nTimePass=0;
 		
-		if(m_pAdvSink) m_pAdvSink->OnViewChange(DVASPECT_CONTENT,-1);
+		m_pRichedit->InvalidateRect(m_rcObj);
 	}
 }
 
