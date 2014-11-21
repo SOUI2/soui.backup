@@ -1726,6 +1726,39 @@ HRESULT SWindow::OnAttrOffset(const SStringW& strValue, BOOL bLoading)
     return S_FALSE;
 }
 
+
+HRESULT SWindow::OnAttrPos2type(const SStringW& strValue, BOOL bLoading)
+{
+    if (strValue.IsEmpty()) return E_FAIL;
+    SStringW strValue2=strValue.MakeLower();
+    if(strValue2 == L"lefttop")
+        m_layout.fOffsetX=m_layout.fOffsetY=0.0f;
+    else if(strValue2 == L"leftmid")
+        m_layout.fOffsetX=0.0f,m_layout.fOffsetY=-0.5f;
+    else if(strValue2 == L"leftbottom")
+        m_layout.fOffsetX=0.0f,m_layout.fOffsetY=-1.0f;
+    else if(strValue2 == L"midtop")
+        m_layout.fOffsetX=-0.5f,m_layout.fOffsetY=0.0f;
+    else if(strValue2 == L"center")
+        m_layout.fOffsetX=-0.5f,m_layout.fOffsetY=-0.5f;
+    else if(strValue2 == L"midbottom")
+        m_layout.fOffsetX=-0.5f,m_layout.fOffsetY=-1.0f;
+    else if(strValue2 == L"righttop")
+        m_layout.fOffsetX=-1.0f,m_layout.fOffsetY=0.0f;
+    else if(strValue2 == L"rightmid")
+        m_layout.fOffsetX=-1.0f,m_layout.fOffsetY=-0.5f;
+    else if(strValue2 == L"leftbottom")
+        m_layout.fOffsetX=-1.0f,m_layout.fOffsetY=-1.0f;
+
+    if(!bLoading)
+    {
+        SWindow *pParent=GetParent();
+        SASSERT(pParent);
+        pParent->UpdateChildrenPosition();
+    }
+    return S_FALSE;
+}
+
 HRESULT SWindow::OnAttrVisible( const SStringW& strValue, BOOL bLoading )
 {
     BOOL bVisible = strValue != L"0";
