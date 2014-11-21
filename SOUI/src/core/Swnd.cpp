@@ -1730,7 +1730,8 @@ HRESULT SWindow::OnAttrOffset(const SStringW& strValue, BOOL bLoading)
 HRESULT SWindow::OnAttrPos2type(const SStringW& strValue, BOOL bLoading)
 {
     if (strValue.IsEmpty()) return E_FAIL;
-    SStringW strValue2=strValue.MakeLower();
+    SStringW strValue2=strValue;
+    strValue2.MakeLower();
     if(strValue2 == L"lefttop")
         m_layout.fOffsetX=m_layout.fOffsetY=0.0f;
     else if(strValue2 == L"leftmid")
