@@ -417,3 +417,29 @@ void CMainDlg::OnSkiaTest()
         SMessageBox(NULL,_T("当前使用的渲染引擎不是skia"),_T("错误"),MB_OK|MB_ICONSTOP);
     }
 }
+
+void CMainDlg::OnListBoxExEvent( EventArgs *pEvt )
+{
+    EventOfPanel *pEvtOfPanel = (EventOfPanel*)pEvt;
+    if(pEvtOfPanel->pOrgEvt->GetEventID() == EventCmd::EventID
+        && pEvtOfPanel->pOrgEvt->sender->IsClass(SButton::GetClassName()))
+    {
+        int iItem = pEvtOfPanel->pPanel->GetItemIndex();
+        SStringT strMsg;
+        strMsg.Format(_T("收到列表项:%d中的name为%s的窗口点击事件"),iItem,S_CW2T(pEvtOfPanel->pOrgEvt->nameFrom));
+        SMessageBox(m_hWnd,strMsg,_T("EVENTOFPANEL"),MB_OK|MB_ICONEXCLAMATION);        
+    }
+}
+
+void CMainDlg::OnTreeBoxEvent( EventArgs *pEvt )
+{
+    EventOfPanel *pEvtOfPanel = (EventOfPanel*)pEvt;
+    if(pEvtOfPanel->pOrgEvt->GetEventID() == EventCmd::EventID
+        && pEvtOfPanel->pOrgEvt->sender->IsClass(SButton::GetClassName()))
+    {
+        HSTREEITEM hItem = (HSTREEITEM)pEvtOfPanel->pPanel->GetItemIndex();
+        SStringT strMsg;
+        strMsg.Format(_T("收到treebox item:0x%08x中的name为%s的窗口点击事件"),hItem,S_CW2T(pEvtOfPanel->pOrgEvt->nameFrom));
+        SMessageBox(m_hWnd,strMsg,_T("EVENTOFPANEL"),MB_OK|MB_ICONEXCLAMATION);        
+    }
+}

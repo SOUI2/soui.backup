@@ -113,7 +113,7 @@
           <item text="combobox.item6" icon="6" data="100"/>
         </items>
       </comboboxex>
-      <listboxex pos="10,50,250,-10" class="cls_edit" itemHeight="50">
+      <listboxex name="lbe_test" pos="10,50,250,-10" class="cls_edit" itemHeight="50">
         <items>
           <item>
             <text pos="5,2" colorText="#ff0000">text item text item 1</text>

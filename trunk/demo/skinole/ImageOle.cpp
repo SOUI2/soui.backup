@@ -234,16 +234,6 @@ HRESULT WINAPI CImageOle::SetAdvise(DWORD aspects, DWORD advf, IAdviseSink *pAdv
 	if (aspects == DVASPECT_CONTENT && pAdvSink != NULL)
 	{
 		m_pAdvSink = pAdvSink;
-		
-        if (m_pSkin != NULL && m_pSkin->IsClass(SSkinGif::GetClassName()))
-        {
-            SSkinGif *pGif=static_cast<SSkinGif*>((ISkinObj*)m_pSkin);
-            m_iFrame=0;
-            m_nTimeDelay=pGif->GetFrameDelay(0);
-            m_nTimePass=0;
-            m_pRichedit->GetContainer()->RegisterTimelineHandler(this);
-        }
-
         return S_OK;
 	}else
 	{
@@ -275,6 +265,12 @@ HRESULT WINAPI CImageOle::GetExtent(DWORD dwDrawAspect, LONG lindex, DVTARGETDEV
 void CImageOle::SetSkinObj( ISkinObj *pSkin )
 {
     m_pSkin=pSkin;
+    if(m_pSkin->IsClass(SSkinAni::GetClassName()))
+    {
+        m_iFrame=-1;
+        m_nTimeDelay=0;
+        OnNextFrame();
+    }
 }
 
 void CImageOle::OnNextFrame()
@@ -282,7 +278,7 @@ void CImageOle::OnNextFrame()
 	m_nTimePass+=10;
 	if(m_nTimePass>=m_nTimeDelay)
 	{
-		SSkinGif *pSkinGif=static_cast<SSkinGif*>((ISkinObj*)m_pSkin);
+		SSkinAni *pSkinGif=static_cast<SSkinAni*>((ISkinObj*)m_pSkin);
 		SASSERT(pSkinGif);
 		m_iFrame++;
 		if(m_iFrame==pSkinGif->GetStates())
@@ -446,6 +442,8 @@ SRichEditOleCallback_Impl * SRichEditOleCallback_Impl::CreateObject(SOUI::SRichE
 // global functions
 BOOL RichEdit_InsertSkin(SOUI::SRichEdit *pRicheditCtrl, SOUI::ISkinObj *pSkin)
 {
+    SASSERT(pSkin && pRicheditCtrl);
+    
 	IRichEditOle *pRichEditOle=NULL;
 	LRESULT lRes=pRicheditCtrl->SSendMessage(EM_GETOLEINTERFACE,0,(LPARAM)&pRichEditOle);
 	if(!pRichEditOle) return FALSE;
@@ -504,6 +502,11 @@ BOOL RichEdit_InsertSkin(SOUI::SRichEdit *pRicheditCtrl, SOUI::ISkinObj *pSkin)
     lpStorage->AddRef();
     
 	pRichEditOle->InsertObject(&reobject);
+
+    if (pSkin->IsClass(SSkinAni::GetClassName()))
+    {
+        pRicheditCtrl->GetContainer()->RegisterTimelineHandler(pImageOle);
+    }
 
 	pOleObject->Release();
 	pOleClientSite->Release();

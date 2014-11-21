@@ -62,6 +62,8 @@ LRESULT SItemPanel::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 BOOL SItemPanel::OnFireEvent(EventArgs &evt)
 {
     EventOfPanel evt2(this,&evt);
+    evt2.nameFrom = m_pFrmHost->GetName();
+    evt2.idFrom = m_pFrmHost->GetID();
     return m_pFrmHost->FireEvent(evt2);
 }
 
