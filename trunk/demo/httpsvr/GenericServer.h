@@ -38,8 +38,6 @@
 #include <functional>
 #include <process.h>
 
-#include "Log.h"
-
 using namespace std;
 
 struct NewConnectionTag;
@@ -80,7 +78,7 @@ struct StatisticsTag
 };
 
 
-class CGenericServer : public CLog
+class CGenericServer
 {
 public:
 							CGenericServer();
@@ -95,6 +93,10 @@ protected:
 	virtual int				DataSent(DWORD)							= 0;
 	virtual BOOL			IsComplete(string)						= 0;
 	virtual BOOL			ParseRequest(string, string&, BOOL&)	= 0;
+	
+    virtual BOOL ClearLog(const TCHAR*){return FALSE;}
+    virtual BOOL LogMessage(const TCHAR*, const TCHAR*, const TCHAR* = NULL, long = NULL){return FALSE;}
+
 private:				
 	static UINT	__stdcall	AcceptThread(LPVOID);
 	static UINT __stdcall 	ClientThread(LPVOID);
