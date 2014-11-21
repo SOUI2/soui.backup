@@ -38,7 +38,6 @@ HEADERS += MainDlg.h \
            ../controls.extend/sipaddressctrl.h \
            ../controls.extend/propgrid/SPropertyGrid.h \
            httpsvr/filereader-i.h \
-           httpsvr/log.h \
            httpsvr/genericserver.h \
            httpsvr/httpserver.h \
            memflash.h
@@ -57,7 +56,6 @@ SOURCES += demo.cpp \
            ../controls.extend/propgrid/propitem/spropertyitem-option.cpp \
            ../controls.extend/propgrid/propitem/spropertyitem-color.cpp \
            ../controls.extend/propgrid/propitem/spropertyitem-size.cpp \
-           httpsvr/log.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \
            memflash.cpp
