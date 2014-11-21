@@ -911,6 +911,7 @@ namespace SOUI
         // 属性处理函数
         HRESULT OnAttrPos(const SStringW& strValue, BOOL bLoading);
         HRESULT OnAttrOffset(const SStringW& strValue, BOOL bLoading);
+        HRESULT OnAttrPos2type(const SStringW& strValue, BOOL bLoading);
         HRESULT OnAttrVisible(const SStringW& strValue, BOOL bLoading);
         HRESULT OnAttrEnable(const SStringW& strValue, BOOL bLoading);
         HRESULT OnAttrDisplay(const SStringW& strValue, BOOL bLoading);
@@ -951,6 +952,7 @@ namespace SOUI
             ATTR_CUSTOM(L"show", OnAttrVisible)
             ATTR_CUSTOM(L"pos", OnAttrPos)
             ATTR_CUSTOM(L"offset", OnAttrOffset)
+            ATTR_CUSTOM(L"pos2type", OnAttrPos2type)
             ATTR_CUSTOM(L"cache", OnAttrCache)
             ATTR_CUSTOM(L"display", OnAttrDisplay)
             ATTR_I18NSTRT(L"tip", m_strToolTipText, FALSE)  //使用语言包翻译
