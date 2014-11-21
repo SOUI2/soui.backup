@@ -39,8 +39,6 @@ public:
     BOOL m_bCollapsed; /**< 是否折叠 */
     BOOL m_bVisible;   /**< 是否显示 */
     int  m_nLevel;     /**< tree深度 */
-
-    HSTREEITEM m_hItem; /**< 结构 */
 };
 
 /** 

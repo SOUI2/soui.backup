@@ -1,5 +1,5 @@
 ﻿<include>
-  <treebox pos="0,0,-100,-0" name="mytree" itemHeight="30" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#cccccc" indent="10">
+  <treebox pos="0,0,-100,-0" name="tb_test" itemHeight="30" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#cccccc" indent="10">
     <item>
       <text pos="10,0,100,-0" valign="middle" align="center" colorText="#ff0000">red test</text>
       <text>normal text</text>
@@ -8,37 +8,37 @@
       <item>
         <text pos="10,5" colorText="#ff0000" font="underline:1">red test</text>
         <text font="strike:1">normal text</text>
-        <button class="normalbtn" pos="300,3,-10,-3">button</button>
+        <button class="normalbtn" pos="300,3,-10,-3" name="btn_in_treebox">button</button>
       </item>
       <item>
         <text pos="10,5" colorText="#ff0000">red test</text>
         <text>normal text</text>
-        <button class="normalbtn" pos="300,3,-10,-3">button</button>
+        <button class="normalbtn" pos="300,3,-10,-3" name="btn_in_treebox">button</button>
         <item>
           <text pos="10,5" colorText="#ff0000">red test</text>
           <text>normal text</text>
-          <button class="normalbtn" pos="300,3,-10,-3">button</button>
+          <button class="normalbtn" pos="300,3,-10,-3" name="btn_in_treebox">button</button>
           <item>
             <text pos="10,5" colorText="#ff0000">red test</text>
             <text>normal text</text>
-            <button class="normalbtn" pos="300,3,-10,-3">button</button>
+            <button class="normalbtn" pos="300,3,-10,-3" name="btn_in_treebox">button</button>
           </item>
         </item>
       </item>
       <item>
         <text pos="10,5" colorText="#ff0000">red test</text>
         <text>normal text</text>
-        <button class="normalbtn" pos="300,3,-10,-3">button</button>
+        <button class="normalbtn" pos="300,3,-10,-3" name="btn_in_treebox">button</button>
       </item>
       <item>
         <text pos="10,5" colorText="#ff0000">red test</text>
         <text>normal text</text>
-        <button class="normalbtn" pos="300,3,-10,-3">button</button>
+        <button class="normalbtn" pos="300,3,-10,-3" name="btn_in_treebox">button</button>
       </item>
       <item>
         <text pos="10,5" colorText="#ff0000">red test</text>
         <text>normal text</text>
-        <button class="normalbtn" pos="300,3,-10,-3">button</button>
+        <button class="normalbtn" pos="300,3,-10,-3" name="btn_in_treebox">button</button>
       </item>
     </item>
   </treebox>

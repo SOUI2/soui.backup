@@ -73,7 +73,7 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
     pItemObj->SetSkin(m_pItemSkin);
 
     HSTREEITEM hRet= CSTree<STreeItem*>::InsertItem(pItemObj,hParent,hInsertAfter);
-    pItemObj->m_hItem=hRet;
+    pItemObj->SetItemIndex((LPARAM)hRet);
 
     if(pItemObj->m_bVisible)
     {
@@ -631,7 +631,7 @@ BOOL STreeBox::FireEvent(EventArgs &evt)
         {
             STreeItem *pItem=(STreeItem*)pEvt->pPanel;
             SASSERT(pItem);
-            Expand(pItem->m_hItem,TVE_TOGGLE);
+            Expand((HSTREEITEM)pItem->GetItemIndex(),TVE_TOGGLE);
             return TRUE;
         }
     }
