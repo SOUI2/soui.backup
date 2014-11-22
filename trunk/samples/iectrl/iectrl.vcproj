@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\SOUI\include;..\..\utilities\include;..\..\controls.extend"
+				AdditionalIncludeDirectories="..\..\SOUI\include;..\..\utilities\include;..\..\controls.extend;..\..\config"
 				PreprocessorDefinitions="WIN32;_WINDOWS;STRICT;_DEBUG"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
@@ -115,7 +115,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="..\..\SOUI\include;..\..\utilities\include;..\..\controls.extend"
+				AdditionalIncludeDirectories="..\..\SOUI\include;..\..\utilities\include;..\..\controls.extend;..\..\config"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				RuntimeLibrary="0"
 				TreatWChar_tAsBuiltInType="true"
