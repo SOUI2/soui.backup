@@ -506,6 +506,10 @@ namespace SOUI
         * Describe  
         */
         SWindow* FindChildByName(LPCWSTR pszName);
+        SWindow* FindChildByName(LPCSTR pszName)
+        {
+            return FindChildByName(S_CA2W(pszName));
+        }
 
         template<class T>
         T* FindChildByName2(LPCWSTR pszName)
@@ -517,6 +521,12 @@ namespace SOUI
                 return NULL;
             }
             return (T*)pTarget;
+        }
+
+        template<class T>
+        T* FindChildByName2(LPCSTR pszName)
+        {
+            return FindChildByName2<T>(S_CA2W(pszName));
         }
 
         /**

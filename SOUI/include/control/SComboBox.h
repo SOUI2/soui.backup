@@ -132,8 +132,16 @@ public:
      */
     virtual int GetCurSel() const =0;
 
+    /**
+    * SComboBoxBase::GetCount
+    * @brief    获取下拉项个数
+    * @return   返回int
+    * 
+    * Describe  获取下拉项个数
+    */ 
+    virtual int  GetCount() const =0;
     
-     /**
+    /**
      * SComboBoxBase::SetCurSel
      * @brief    设置当前选中
      * @param    int iSel -- 选中索引
@@ -143,13 +151,24 @@ public:
     virtual BOOL SetCurSel(int iSel)=0;
 
     /**
-     * SComboBoxBase::GetWindowText
-     * @brief    获取窗口标题
-     * @return   返回SStringT
-     *
-     * Describe  获取当前选中索引
-     */
-    virtual SStringT GetWindowText() =0;
+    * SComboBoxEx::GetTextRect
+    * @brief    获取文本位置
+    * @param    LPRECT pRect -- 文本位置
+    *
+    * Describe  获取文本位置
+    */
+    virtual SStringT GetWindowText();
+
+    virtual SStringT GetLBText(int iItem) =0;
+    /**
+     * FindString
+     * @brief    查找字符串位置
+     * @param    LPCTSTR pszFind --  查找目标
+     * @param    int nAfter --  开始位置
+     * @return   int -- 目标索引，失败返回-1。
+     * Describe  
+     */    
+    virtual int FindString(LPCTSTR pszFind,int nAfter=0);
 
     /**
      * SComboBoxBase::DropDown
@@ -377,7 +396,7 @@ protected:
      * 
      * Describe  获取编辑框内容
      */  
-    SStringT GetEditText()
+    SStringT GetEditText() const
     {
         if(!m_bDropdown)
         {
@@ -465,25 +484,9 @@ public:
      * 
      * Describe  获取下拉项个数
      */ 
-    int  GetCount()
+    int  GetCount() const
     {
         return m_pListBox->GetCount();
-    }
-    /**
-     * SComboBox::GetTextRect
-     * @brief    获取文本位置
-     * @param    LPRECT pRect -- 文本位置
-     *
-     * Describe  获取文本位置
-     */
-    SStringT GetWindowText()
-    {
-        if(!m_bDropdown)
-        {
-            return GetEditText();
-        }
-        if(m_pListBox->GetCurSel()==-1) return _T("");
-        return GetLBText(m_pListBox->GetCurSel());
     }
 
     /**
@@ -688,23 +691,11 @@ public:
      * 
      * Describe  获取下拉项个数
      */ 
-    int  GetCount()
+    int  GetCount() const
     {
         return m_pListBox->GetItemCount();
     }
     
-    /**
-     * SComboBoxEx::GetTextRect
-     * @brief    获取文本位置
-     * @param    LPRECT pRect -- 文本位置
-     *
-     * Describe  获取文本位置
-     */
-    SStringT GetWindowText()
-    {
-        if(!m_bDropdown) return GetEditText();
-        return GetLBText(m_pListBox->GetCurSel());
-    }
 
     /**
      * SComboBoxEx::GetItemData
@@ -791,14 +782,7 @@ public:
      *
      * Describe  获取文本
      */
-    SStringT GetLBText(int iItem)
-    {
-        if(m_uTxtID == 0 || iItem<0 || iItem>= GetCount()) return _T("");
-        SWindow *pItem=m_pListBox->GetItemPanel(iItem);
-        SWindow *pText=pItem->FindChildByID(m_uTxtID);
-        if(!pText) return _T("");
-        return pText->GetWindowText();
-    }
+    SStringT GetLBText(int iItem);
 
     SListBoxEx * GetListBox(){return m_pListBox;}
 

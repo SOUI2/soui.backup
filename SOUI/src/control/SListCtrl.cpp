@@ -142,7 +142,7 @@ BOOL SListCtrl::SetSubItem(int nItem, int nSubItem, const DXLVSUBITEM* plv)
     return TRUE;
 }
 
-BOOL SListCtrl::GetSubItem(int nItem, int nSubItem, DXLVSUBITEM* plv)
+BOOL SListCtrl::GetSubItem(int nItem, int nSubItem, DXLVSUBITEM* plv) const
 {
     if (nItem>=GetItemCount() || nSubItem>=GetColumnCount())
         return FALSE;
@@ -181,6 +181,15 @@ BOOL SListCtrl::SetSubItemText(int nItem, int nSubItem, LPCTSTR pszText)
 }
 
 
+SStringT SListCtrl::GetSubItemText( int nItem, int nSubItem ) const
+{
+    if (nItem>=GetItemCount() || nSubItem>=GetColumnCount())
+        return _T("");
+
+    const DXLVSUBITEM & lvsi_src=m_arrItems[nItem].arSubItems->GetAt(nSubItem);
+    return lvsi_src.strText;
+}
+
 int SListCtrl::GetSelectedItem()
 {
     return m_nSelectItem;
@@ -193,7 +202,7 @@ void SListCtrl::SetSelectedItem(int nItem)
     Invalidate();
 }
 
-int SListCtrl::GetItemCount()
+int SListCtrl::GetItemCount() const
 {
     if (GetColumnCount() <= 0)
         return 0;
@@ -675,7 +684,7 @@ void SListCtrl::OnDestroy()
     __super::OnDestroy();
 }
 
-int SListCtrl::GetColumnCount()
+int SListCtrl::GetColumnCount() const
 {
     if (!m_pHeader)
         return 0;

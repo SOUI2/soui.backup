@@ -304,8 +304,10 @@ BOOL SResProviderFiles::Init( WPARAM wParam,LPARAM lParam )
         }
         xmlType=xmlType.next_sibling();
     }
-
-    m_strPath=pszPath;
+    
+    TCHAR szFullPath[1025];
+    GetFullPathName(pszPath,1024,szFullPath,NULL);
+    m_strPath=szFullPath;
     return TRUE;
 }
 

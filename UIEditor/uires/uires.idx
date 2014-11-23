@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resource>
+  <uidef>
+    <file name="IDR_DUI_INIT"  path="xml\init.xml"  />
+  </uidef>
+  <layout>
+    <file name="dlg_main"   path="xml\dlg_main.xml"/>
+    <file name="dlg_newfile" path="xml\dlg_newfile.xml"/>
+    <file name="dlg_newskin" path="xml\dlg_newskin.xml"/>
+  </layout>
+
+  <png>
+    <file name="transbkgnd"   path="image\transbkgnd.png"/>
+  </png>
+  <icon>
+    <file name="logo" path="image\uieditor.ico"/>
+  </icon>
+</resource>
+
+

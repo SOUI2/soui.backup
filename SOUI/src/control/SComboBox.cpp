@@ -315,7 +315,7 @@ void SComboBoxBase::OnDestroy()
 
 void SComboBoxBase::OnSelChanged()
 {
-    EventCBSelChange evt(this);
+    EventCBSelChange evt(this,GetCurSel());
     FireEvent(evt);
 }
 
@@ -332,6 +332,26 @@ BOOL SComboBoxBase::FireEvent( EventArgs &evt )
         }
     }
     return SWindow::FireEvent(evt);
+}
+
+int SComboBoxBase::FindString( LPCTSTR pszFind,int nAfter/*=0*/ )
+{
+    for(int i=nAfter;i<GetCount();i++)
+    {
+        SStringT strItem = GetLBText(i);
+        if(strItem == pszFind) return i;
+    }
+    return -1;
+}
+
+SStringT SComboBoxBase::GetWindowText()
+{
+    if(!m_bDropdown)
+    {
+        return GetEditText();
+    }
+    if(GetCurSel()==-1) return _T("");
+    return GetLBText(GetCurSel());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -597,6 +617,14 @@ BOOL SComboBoxEx::FireEvent( EventArgs &evt )
     return SComboBoxBase::FireEvent(evt);
 }
 
+SStringT SComboBoxEx::GetLBText( int iItem )
+{
+    if(m_uTxtID == 0 || iItem<0 || iItem>= GetCount()) return _T("");
+    SWindow *pItem=m_pListBox->GetItemPanel(iItem);
+    SWindow *pText=pItem->FindChildByID(m_uTxtID);
+    if(!pText) return _T("");
+    return pText->GetWindowText();
+}
 
 }//namespace SOUI
 
