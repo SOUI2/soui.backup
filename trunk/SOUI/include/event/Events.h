@@ -348,9 +348,10 @@ namespace SOUI
     class SOUI_EXP EventCBSelChange : public EventArgs
     {
     public:
-        EventCBSelChange(SWindow *pWnd):EventArgs(pWnd){}
+        EventCBSelChange(SWindow *pWnd,int _nCurSel):EventArgs(pWnd),nCurSel(_nCurSel){}
         enum{EventID=EVT_CB_SELCHANGE};
         virtual UINT GetEventID(){return EventID;}
+        int nCurSel;
     };
 
     class SOUI_EXP EventLCSelChanging : public EventArgs

@@ -24,7 +24,7 @@
 
 // Include stddef.h for size_t and ptrdiff_t
 #include <stddef.h>
-
+#include <stdio.h>
 // Include exception header for XPath
 #if !defined(PUGIXML_NO_XPATH) && !defined(PUGIXML_NO_EXCEPTIONS)
 #	include <exception>
@@ -239,14 +239,20 @@ namespace pugi
 		virtual void write(const void* data, size_t size) = 0;
 	};
 
-	// xml_writer implementation for FILE*
-	class PUGIXML_CLASS xml_writer_file: public xml_writer
+	// xml_writer implementation for FILE*, export by inline
+	class  xml_writer_file: public xml_writer
 	{
 	public:
 		// Construct writer from a FILE* object; void* is used to avoid header dependencies on stdio
-		xml_writer_file(void* file);
+        xml_writer_file(void* file_): file(file_)
+        {
+        }
 
-		virtual void write(const void* data, size_t size);
+        virtual void write(const void* data, size_t size)
+        {
+            size_t result = fwrite(data, 1, size, static_cast<FILE*>(file));
+            (void)!result; // unfortunately we can't do proper error handling here
+        }
 
 	private:
 		void* file;

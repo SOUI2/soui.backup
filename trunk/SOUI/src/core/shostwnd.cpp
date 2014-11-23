@@ -73,6 +73,9 @@ HWND SHostWnd::Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x, int 
         if(xmlDoc)
         {
             InitFromXml(xmlDoc.child(L"SOUI"));
+        }else
+        {
+            SASSERT_FMTA(FALSE,"Load layout [%s] Failed",S_CT2A(m_strXmlLayout));
         }
     }
 
@@ -88,7 +91,11 @@ HWND SHostWnd::Create(HWND hWndParent,int x,int y,int nWidth,int nHeight)
 
 BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
 {
-    if(!xmlNode) return FALSE;
+    if(!xmlNode)
+    {
+        SASSERT_FMTA(FALSE,"Null XML node");
+        return FALSE;
+    }
     if(!CSimpleWnd::IsWindow()) return FALSE;
     
     SSendMessage(WM_DESTROY);   //为了能够重入，先销毁原有的SOUI窗口

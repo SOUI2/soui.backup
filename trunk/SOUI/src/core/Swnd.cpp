@@ -102,12 +102,10 @@ void SWindow::GetClientRect(LPRECT pRect)
     pRect->bottom-=m_style.m_nMarginY;
 }
 
-// Get inner text
 SStringT SWindow::GetWindowText()
 {
     return m_strText;
 }
-
 
 void SWindow::OnSetCaretValidateRect( LPCRECT lpRect )
 {
