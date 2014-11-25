@@ -363,7 +363,7 @@ namespace SOUI
         }
 
         // overloaded assignment
-        const TStringT& operator=(const TStringT& stringSrc)
+        TStringT& operator=(const TStringT& stringSrc)
         {
             if (m_pszData != stringSrc.m_pszData)
             {
@@ -384,7 +384,7 @@ namespace SOUI
             }
             return *this;
         }
-        const TStringT& operator=(const tchar* psz)
+        TStringT& operator=(const tchar* psz)
         {
             TStringT strCopy(psz);
             AssignCopy(strCopy.GetData()->nDataLength, strCopy.m_pszData);
@@ -864,21 +864,22 @@ namespace SOUI
 #endif
 
         // formatting (using sprintf style formatting)
-        BOOL __cdecl Format(const tchar* pszFormat, ...)
+        TStringT __cdecl Format(const tchar* pszFormat, ...)
         {
             va_list argList;
             va_start(argList, pszFormat);
-            BOOL bRet = _Format(pszFormat, argList);
+            _Format(pszFormat, argList);
             va_end(argList);
-            return bRet;
+            return *this;
         }
         // Append formatted data using format string 'pszFormat'
-        void __cdecl AppendFormat(const tchar* pszFormat, ...)
+        TStringT  __cdecl AppendFormat(const tchar* pszFormat, ...)
         {
             va_list argList;
             va_start(argList, pszFormat);
             _AppendFormat(pszFormat, argList);
             va_end(argList);
+            return *this;
         }
 
         // Access to string implementation buffer as "C" character array
