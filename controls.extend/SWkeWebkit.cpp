@@ -2,7 +2,7 @@
 #include "SWkeWebkit.h"
 #include <Imm.h>
 #pragma comment(lib,"imm32.lib")
-
+#pragma comment(lib,"msimg32.lib")
 namespace SOUI
 {
     //////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     // SWkeWebkit
     
-    SWkeWebkit::SWkeWebkit(void):m_pWebView(NULL)
+    SWkeWebkit::SWkeWebkit(void):m_pWebView(NULL),m_byAlpha(0xFF)
     {
     }
 
@@ -69,7 +69,14 @@ namespace SOUI
         CRect rcInvalid;
         rcInvalid.IntersectRect(&rcClip,&rcClient);
         HDC hdc=pRT->GetDC();
-        m_pWebView->paint(hdc,rcInvalid.left,rcInvalid.top,rcInvalid.Width(),rcInvalid.Height(),rcInvalid.left-rcClient.left,rcInvalid.top-rcClient.top,true);
+        if(m_byAlpha!=0xff)
+        {
+            BLENDFUNCTION bf={AC_SRC_OVER,0,m_byAlpha,AC_SRC_ALPHA };
+            AlphaBlend(hdc,rcInvalid.left,rcInvalid.top,rcInvalid.Width(),rcInvalid.Height(),m_pWebView->getViewDC(),rcInvalid.left-rcClient.left,rcInvalid.top-rcClient.top,rcInvalid.Width(),rcInvalid.Height(),bf);
+        }else
+        {
+            BitBlt(hdc,rcInvalid.left,rcInvalid.top,rcInvalid.Width(),rcInvalid.Height(),m_pWebView->getViewDC(),rcInvalid.left-rcClient.left,rcInvalid.top-rcClient.top,SRCCOPY);            
+        }
         pRT->ReleaseDC(hdc);
     }
 
