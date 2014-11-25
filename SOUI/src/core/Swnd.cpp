@@ -749,10 +749,10 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
                 pRT->PushClipRect(&rcClient);
             }
             if(pWndCur->IsDrawToCache())
-            {
+            {//在窗口正在创建的时候进来pRTCache可能为NULL
                 CRect rcWnd=pWndCur->m_rcWindow;
                 IRenderTarget *pRTCache=pWndCur->GetCachedRenderTarget();
-                if(pWndCur->IsCacheDirty())
+                if(pRTCache && pWndCur->IsCacheDirty())
                 {
                     pRTCache->SetViewportOrg(-rcWnd.TopLeft());
                     pRTCache->BitBlt(&rcWnd,pRT,rcWnd.left,rcWnd.top,SRCCOPY);//把父窗口的内容复制过来。
@@ -769,7 +769,8 @@ BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,S
                     
                     pWndCur->MarkCacheDirty(false);
                 }
-                pRT->BitBlt(&rcWnd,pRTCache,rcWnd.left,rcWnd.top,SRCCOPY);
+                if(pRTCache)
+                    pRT->BitBlt(&rcWnd,pRTCache,rcWnd.left,rcWnd.top,SRCCOPY);
             }else
             {
                 pWndCur->SSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
