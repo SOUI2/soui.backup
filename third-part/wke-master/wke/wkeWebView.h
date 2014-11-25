@@ -50,10 +50,11 @@ namespace wke
         virtual void addDirtyArea(int x, int y, int w, int h);
 
         virtual void layoutIfNeeded();
-        virtual void paint(void* dst, int pitch);
+        virtual void paint(void* bits, int pitch);
+        virtual void paint(void* bits, int bufWid, int bufHei, int xDst, int yDst, int w, int h, int xSrc, int ySrc, bool bCopyAlpha);
 		virtual void tick();
-		virtual void paint(HDC hdc,int x,int y,int cx,int cy,int xSrc,int ySrc,bool fKeepAlpha);
-
+        virtual HDC  getViewDC();
+        
         virtual bool canGoBack() const;
         virtual bool goBack();
         virtual bool canGoForward() const;
