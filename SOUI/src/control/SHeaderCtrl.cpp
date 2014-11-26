@@ -458,8 +458,7 @@ namespace SOUI
     {
         if(m_bDragging)
         {
-            SASSERT(m_dwHitTest!=-1);
-            if(m_bSortHeader)
+            if(m_bSortHeader && m_dwHitTest !=-1)
             {
                 m_arrItems[LOWORD(m_dwHitTest)].state=0;//normal
             }
