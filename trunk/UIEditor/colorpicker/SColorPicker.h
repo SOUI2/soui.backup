@@ -26,6 +26,7 @@ public:
 protected://IColorPicker
 	virtual void OnColorChanged(COLORREF cr);
 	virtual void OnColorEnd(BOOL bCancel,COLORREF cr);
+    virtual SMessageLoop * GetMsgLoop();
 protected:
 	void OnPaint(IRenderTarget *pRT);
 	void OnLButtonUp(UINT nFlags,CPoint pt);

@@ -28,18 +28,15 @@ namespace SOUI
 struct IColorPicker{
 	virtual void OnColorChanged(COLORREF cr)=0;
 	virtual void OnColorEnd(BOOL bCancel,COLORREF cr)=0;
+	virtual SMessageLoop * GetMsgLoop() =0;
 };
 
 /////////////////////////////////////////////////////////////////////////////
 // CColourPopup window
 
-class CColourPopup : public CSimpleWnd , public IMessageFilter
+class CColourPopup : public CSimpleWnd,	public IMessageFilter
+
 {
-	// To hold the colours and their names
-	typedef struct {
-		COLORREF crColour;
-		TCHAR    *szName;
-	} ColourTableEntry;
 // Construction
 public:
     CColourPopup(HWND hOwner,IColorPicker *pColorPicker);
@@ -64,8 +61,8 @@ protected:
     void EndSelection(int nMessage);
     void DrawCell(HDC hdc, int nIndex);
 
-    COLORREF GetColour(int nIndex)              { return m_crColours[nIndex].crColour; }
-    LPCTSTR GetColourName(int nIndex)           { return m_crColours[nIndex].szName; }
+    COLORREF GetColour(int nIndex);
+    LPCTSTR GetColourName(int nIndex);
     int  GetIndex(int row, int col) const;
     int  GetRow(int nIndex) const;
     int  GetColumn(int nIndex) const;
@@ -74,8 +71,6 @@ protected:
 
 // protected attributes
 protected:
-    static ColourTableEntry m_crColours[];
-    int            m_nNumColours;
     int            m_nNumColumns, m_nNumRows;
     int            m_nBoxSize, m_nMargin;
     int            m_nCurrentSel;

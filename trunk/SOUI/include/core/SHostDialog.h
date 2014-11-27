@@ -32,7 +32,7 @@ namespace SOUI
         void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
         void OnOK();
         void OnCancel();
-        virtual SMessageLoop * GetCurMsgLoop(){return this;}
+        virtual SMessageLoop * GetMsgLoop(){return this;}
         
         EVENT_MAP_BEGIN()
             EVENT_ID_COMMAND(IDOK,OnOK)

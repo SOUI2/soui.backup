@@ -36,13 +36,13 @@ void CNewSkinDlg::OnEditNotify_imglist( EventArgs * pEvt )
 void CNewSkinDlg::UpdateimglistPreview()
 {
 	SRichEdit *pEdit=FindChildByName2<SRichEdit>(L"edit_imglist_src_name");
-	SStringT strSrcName=CUIHelper::GetEditText(pEdit);
+	SStringT strSrcName=pEdit->GetWindowText();
 	SStringT strSrcFile=m_pMainDlg->GetImageSrcFile(strSrcName);
 	if(!strSrcFile.IsEmpty())
 	{
 		CSkinView_ImgList *pImgView=FindChildByName2<CSkinView_ImgList>(L"imgview_imglist");
 		pImgView->SetImageFile(strSrcFile);
-		SStringT strStates=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_imglist_states"));
+		SStringT strStates=FindChildByName2<SRichEdit>(L"edit_imglist_states")->GetWindowText();
 		int nStates=_ttoi(strStates);
 		if(nStates<=0) nStates=1;
 		pImgView->SetStates(nStates);
@@ -66,18 +66,18 @@ void CNewSkinDlg::OnEditNotify_imgframe( EventArgs * pEvt )
 void CNewSkinDlg::UpdateImgframePreview()
 {
 	SRichEdit *pEdit=FindChildByName2<SRichEdit>(L"edit_imgframe_src_name");
-	SStringT strSrcName=CUIHelper::GetEditText(pEdit);
+	SStringT strSrcName=pEdit->GetWindowText();
 	SStringT strSrcFile=m_pMainDlg->GetImageSrcFile(strSrcName);
 	if(!strSrcFile.IsEmpty())
 	{
 		CSkinView_ImgFrame *pImgView=FindChildByName2<CSkinView_ImgFrame>(L"imgview_imgframe");
 		pImgView->SetImageFile(strSrcFile);
-		SStringT strStates=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_imgframe_states"));
+		SStringT strStates=FindChildByName2<SRichEdit>(L"edit_imgframe_states")->GetWindowText();
 		int nStates=_ttoi(strStates);
 		if(nStates<=0) nStates=1;
 		pImgView->SetStates(nStates);
 		
-		SStringT strMargin=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_imgframe_frame"));
+		SStringT strMargin=FindChildByName2<SRichEdit>(L"edit_imgframe_frame")->GetWindowText();
 		CRect rcMargin;
 		int nsegs=_stscanf(strMargin,_T("%d,%d,%d,%d"),&rcMargin.left,&rcMargin.top,&rcMargin.right,&rcMargin.bottom);
 		if(nsegs==4)
@@ -107,7 +107,7 @@ void CNewSkinDlg::OnOK()
 	{
 		xml_node xmlSkins=xmlInit.first_child().child(L"skins");
 		if(!xmlSkins) xmlSkins=xmlInit.first_child().append_child(L"skins");
-		SStringT strSkinName=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_skin_name"));
+		SStringT strSkinName=FindChildByName2<SRichEdit>(L"edit_skin_name")->GetWindowText();
 		if(strSkinName.IsEmpty())
 		{
 			SMessageBox(GetActiveWindow(),_T("没有指定的皮肤名"),_T("错误"),MB_OK|MB_ICONSTOP);
@@ -140,9 +140,9 @@ void CNewSkinDlg::OnOK()
 		{
 		case 0://imglist
 			{
-				SStringT strSrcName=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_imglist_src_name"));
+				SStringT strSrcName=FindChildByName2<SRichEdit>(L"edit_imglist_src_name")->GetWindowText();
 				xmlSkin.append_attribute(L"src").set_value(strSkinNameW);
-				SStringT strStates=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_imglist_states"));
+				SStringT strStates=FindChildByName2<SRichEdit>(L"edit_imglist_states")->GetWindowText();
 				int nStates=_ttoi(strStates);
 				if(nStates!=0) xmlSkin.append_attribute(L"states").set_value(nStates);
 				if(FindChildByName(L"chk_imglist_vert")->IsChecked())
@@ -153,9 +153,9 @@ void CNewSkinDlg::OnOK()
 			break;
 		case 1://imgframe
 			{
-				SStringT strSrcName=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_imgframe_src_name"));
+				SStringT strSrcName=FindChildByName2<SRichEdit>(L"edit_imgframe_src_name")->GetWindowText();
 				xmlSkin.append_attribute(L"src").set_value(strSkinNameW);
-				SStringT strStates=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_imgframe_states"));
+				SStringT strStates=FindChildByName2<SRichEdit>(L"edit_imgframe_states")->GetWindowText();
 				int nStates=_ttoi(strStates);
 				if(nStates!=0) xmlSkin.append_attribute(L"states").set_value(nStates);
 				if(FindChildByName(L"chk_imgframe_vert")->IsChecked())
@@ -163,7 +163,7 @@ void CNewSkinDlg::OnOK()
 				if(FindChildByName(L"chk_imgframe_tile")->IsChecked())
 					xmlSkin.append_attribute(L"tile").set_value(L"1");
 
-				SStringT strFrame=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_imgframe_frame"));
+				SStringT strFrame=FindChildByName2<SRichEdit>(L"edit_imgframe_frame")->GetWindowText();
 				CRect rcMargin;
 				int nSegs=_stscanf(strFrame,_T("%d,%d,%d,%d"),&rcMargin.left,&rcMargin.top,&rcMargin.right,&rcMargin.bottom);
 				if(nSegs==4)
@@ -177,28 +177,28 @@ void CNewSkinDlg::OnOK()
 			break;
 		case 2://scrollbar
 			{
-				SStringT strSrcName=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_imgframe_src_name"));
+				SStringT strSrcName=FindChildByName2<SRichEdit>(L"edit_imgframe_src_name")->GetWindowText();
 				xmlSkin.append_attribute(L"src").set_value(strSkinNameW);
-				SStringT strMargin=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_scrollbar_margin"));
+				SStringT strMargin=FindChildByName2<SRichEdit>(L"edit_scrollbar_margin")->GetWindowText();
 				int nMargin=_ttoi(strMargin);
 				if(nMargin>0) xmlSkin.append_attribute(L"margin").set_value(nMargin);
 				if(FindChildByName(L"chk_scrollbar_hasgripper")->IsChecked())
-					xmlSkin.append_attribute(L"hasgripper").set_value(L"1");
+					xmlSkin.append_attribute(L"hasGripper").set_value(L"1");
 				if(FindChildByName(L"chk_scrollbar_inactive")->IsChecked())
-					xmlSkin.append_attribute(L"hasinactive").set_value(L"1");
+					xmlSkin.append_attribute(L"hasInactive").set_value(L"1");
 			}
 			break;
 		case 3://button
 			{
-				xmlSkin.append_attribute(L"bgup").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt1_up")->GetColor()));
-				xmlSkin.append_attribute(L"bgdown").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt1_down")->GetColor()));
-				xmlSkin.append_attribute(L"bguphover").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt2_up")->GetColor()));
-				xmlSkin.append_attribute(L"bgdownhover").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt2_down")->GetColor()));
-				xmlSkin.append_attribute(L"bguppush").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt3_up")->GetColor()));
-				xmlSkin.append_attribute(L"bgdownpush").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt3_down")->GetColor()));
-				xmlSkin.append_attribute(L"bgupdisable").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt4_up")->GetColor()));
-				xmlSkin.append_attribute(L"bgdowndisable").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt4_down")->GetColor()));
-				xmlSkin.append_attribute(L"border").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt_border")->GetColor()));
+				xmlSkin.append_attribute(L"colorUp").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt1_up")->GetColor()));
+				xmlSkin.append_attribute(L"colorDown").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt1_down")->GetColor()));
+				xmlSkin.append_attribute(L"colorUpHover").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt2_up")->GetColor()));
+				xmlSkin.append_attribute(L"colorDownHover").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt2_down")->GetColor()));
+				xmlSkin.append_attribute(L"colorUpPush").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt3_up")->GetColor()));
+				xmlSkin.append_attribute(L"colorDownPush").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt3_down")->GetColor()));
+				xmlSkin.append_attribute(L"colorUpDisable").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt4_up")->GetColor()));
+				xmlSkin.append_attribute(L"colorDownDisable").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt4_down")->GetColor()));
+				xmlSkin.append_attribute(L"colorBorder").set_value(Color2Hex(FindChildByName2<SColorPicker>(L"crpk_bt_border")->GetColor()));
 			}
 			break;
 		case 4://gradation
@@ -227,62 +227,62 @@ void CNewSkinDlg::OnOK()
 void CNewSkinDlg::OnCrChange_Button_Border( EventArgs * pEvt )
 {
     EventColorChange *pEvt2 = (EventColorChange*)pEvt;
-	SetButtonSkinColor(L"border",pEvt2->crSel);
+	SetButtonSkinColor(L"colorBorder",pEvt2->crSel);
 }
 
 void CNewSkinDlg::OnCrChange_Button_Normal_Up( EventArgs * pEvt )
 {
     EventColorChange *pEvt2 = (EventColorChange*)pEvt;
-	SetButtonSkinColor(L"bgup",pEvt2->crSel);
+	SetButtonSkinColor(L"colorUp",pEvt2->crSel);
 }
 
 
 void CNewSkinDlg::OnCrChange_Button_Normal_Down( EventArgs * pEvt )
 {
     EventColorChange *pEvt2 = (EventColorChange*)pEvt;
-	SetButtonSkinColor(L"bgdown",pEvt2->crSel);
+	SetButtonSkinColor(L"colorDown",pEvt2->crSel);
 }
 
 
 void CNewSkinDlg::OnCrChange_Button_Hover_Up( EventArgs * pEvt )
 {
     EventColorChange *pNmColor = (EventColorChange*)pEvt;
-	SetButtonSkinColor(L"bguphover",pNmColor->crSel);
+	SetButtonSkinColor(L"colorUpHover",pNmColor->crSel);
 }
 
 
 void CNewSkinDlg::OnCrChange_Button_Hover_Down( EventArgs * pEvt )
 {
     EventColorChange *pNmColor = (EventColorChange*)pEvt;
-	SetButtonSkinColor(L"bgdownhover",pNmColor->crSel);
+	SetButtonSkinColor(L"colorDownHover",pNmColor->crSel);
 }
 
 
 void CNewSkinDlg::OnCrChange_Button_Pushdown_Up( EventArgs * pEvt )
 {
     EventColorChange *pNmColor = (EventColorChange*)pEvt;
-	SetButtonSkinColor(L"bguppush",pNmColor->crSel);
+	SetButtonSkinColor(L"colorUpPush",pNmColor->crSel);
 }
 
 
 void CNewSkinDlg::OnCrChange_Button_Pushdown_Down( EventArgs * pEvt )
 {
     EventColorChange *pNmColor = (EventColorChange*)pEvt;
-	SetButtonSkinColor(L"bgdownpush",pNmColor->crSel);
+	SetButtonSkinColor(L"colorDownPush",pNmColor->crSel);
 }
 
 
 void CNewSkinDlg::OnCrChange_Button_Disable_Up( EventArgs * pEvt )
 {
     EventColorChange *pNmColor = (EventColorChange*)pEvt;
-	SetButtonSkinColor(L"bgupdisable",pNmColor->crSel);
+	SetButtonSkinColor(L"colorUpDisable",pNmColor->crSel);
 }
 
 
 void CNewSkinDlg::OnCrChange_Button_Disable_Down( EventArgs * pEvt )
 {
     EventColorChange *pNmColor = (EventColorChange*)pEvt;
-	SetButtonSkinColor(L"bgdowndisable",pNmColor->crSel);
+	SetButtonSkinColor(L"colorDownDisable",pNmColor->crSel);
 }
 
 void CNewSkinDlg::SetButtonSkinColor( const SStringW &strAttr,COLORREF cr )
