@@ -4,7 +4,7 @@
 namespace SOUI
 {
 
-SColorPicker::SColorPicker(void):m_crDef(0),m_crCur(0)
+SColorPicker::SColorPicker(void):m_crDef(RGBA(0,0,0,255)),m_crCur(RGBA(0,0,0,255))
 {
     GetEventSet()->addEvent(EventColorChange::EventID);
 }
@@ -18,6 +18,11 @@ void SColorPicker::OnPaint( IRenderTarget *pRT)
 	CRect rcClient;
 	GetClientRect(&rcClient);
 	pRT->FillSolidRect(&rcClient,m_crCur);
+	CAutoRefPtr<IPen> pen,oldPen;
+	pRT->CreatePen(PS_DOT,RGBA(0xcc,0xcc,0xcc,0xff),1,&pen);
+	pRT->SelectObject(pen,(IRenderObj**)&oldPen);
+	pRT->DrawRectangle(&rcClient);
+	pRT->SelectObject(oldPen);
 }
 
 void SColorPicker::OnLButtonUp( UINT nFlags,CPoint pt )
@@ -34,17 +39,22 @@ void SColorPicker::OnLButtonUp( UINT nFlags,CPoint pt )
 
 void SColorPicker::OnColorChanged( COLORREF cr )
 {
-	m_crCur=cr;
+	m_crCur=cr|0xff000000;
 	Invalidate();
 }
 
 void SColorPicker::OnColorEnd( BOOL bCancel,COLORREF cr )
 {
 	if(bCancel) m_crCur=m_crDef;
-	else m_crCur=cr;
+	else m_crCur=cr|0xff000000;
 	ModifyState(0,WndState_PushDown,TRUE);
     EventColorChange evt(this,m_crCur);
     FireEvent(evt);
+}
+
+SMessageLoop * SColorPicker::GetMsgLoop()
+{
+    return GetContainer()->GetMsgLoop();
 }
 
 }//end of namespace

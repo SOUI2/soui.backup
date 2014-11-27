@@ -45,13 +45,14 @@ static char THIS_FILE[] = __FILE__;
 #define CUSTOM_BOX_VALUE  -2
 #define INVALID_COLOUR    -1
 
-#define MAX_COLOURS      100
-
 
 namespace SOUI
 {
-
-CColourPopup::ColourTableEntry CColourPopup::m_crColours[] = 
+    // To hold the colours and their names
+    struct ColourTableEntry{
+        COLORREF crColour;
+        TCHAR    *szName;
+    } g_colorTable[] = 
 {
     { RGB(0x00, 0x00, 0x00),    _T("Black")             },
     { RGB(0xA5, 0x2A, 0x00),    _T("Brown")             },
@@ -99,6 +100,8 @@ CColourPopup::ColourTableEntry CColourPopup::m_crColours[] =
     { RGB(0xFF, 0xFF, 0xFF),    _T("White")             }
 };
 
+const    int            KNumColours = sizeof(g_colorTable)/sizeof(ColourTableEntry);
+
 /////////////////////////////////////////////////////////////////////////////
 // CColourPopup
 
@@ -107,14 +110,11 @@ CColourPopup::CColourPopup(HWND hOwner,IColorPicker *pColorPicker)
 ,m_pColorPicker(pColorPicker)
 {
     Initialise();
+    m_pColorPicker->GetMsgLoop()->AddMessageFilter(this);
 }
 
 void CColourPopup::Initialise()
 {
-    m_nNumColours       = sizeof(m_crColours)/sizeof(ColourTableEntry);
-    if (m_nNumColours > MAX_COLOURS)
-        m_nNumColours = MAX_COLOURS;
-
     m_nNumColumns       = 0;
     m_nNumRows          = 0;
     m_nBoxSize          = 18;
@@ -137,6 +137,7 @@ void CColourPopup::Initialise()
 
 CColourPopup::~CColourPopup()
 {
+    m_pColorPicker->GetMsgLoop()->RemoveMessageFilter(this);
     DeleteObject(m_Font);
 }
 
@@ -226,14 +227,14 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                 row = col = CUSTOM_BOX_VALUE;
             else
            { 
-                row = GetRow(m_nNumColours-1); 
-                col = GetColumn(m_nNumColours-1); 
+                row = GetRow(KNumColours-1); 
+                col = GetColumn(KNumColours-1); 
             }
         }
         else if (row == CUSTOM_BOX_VALUE)
         { 
-            row = GetRow(m_nNumColours-1); 
-            col = GetColumn(m_nNumColours-1); 
+            row = GetRow(KNumColours-1); 
+            col = GetColumn(KNumColours-1); 
         }
         else if (row > 0) row--;
         else /* row == 0 */
@@ -244,8 +245,8 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                 row = col = CUSTOM_BOX_VALUE;
             else
             { 
-                row = GetRow(m_nNumColours-1); 
-                col = GetColumn(m_nNumColours-1); 
+                row = GetRow(KNumColours-1); 
+                col = GetColumn(KNumColours-1); 
             }
         }
         ChangeSelection(GetIndex(row, col));
@@ -290,14 +291,14 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                 row = col = CUSTOM_BOX_VALUE;
             else
            { 
-                row = GetRow(m_nNumColours-1); 
-                col = GetColumn(m_nNumColours-1); 
+                row = GetRow(KNumColours-1); 
+                col = GetColumn(KNumColours-1); 
             }
         }
         else if (row == CUSTOM_BOX_VALUE)
         { 
-            row = GetRow(m_nNumColours-1); 
-            col = GetColumn(m_nNumColours-1); 
+            row = GetRow(KNumColours-1); 
+            col = GetColumn(KNumColours-1); 
         }
         else if (col > 0) col--;
         else /* col == 0 */
@@ -311,8 +312,8 @@ void CColourPopup::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
                     row = col = CUSTOM_BOX_VALUE;
                 else
                 { 
-                    row = GetRow(m_nNumColours-1); 
-                    col = GetColumn(m_nNumColours-1); 
+                    row = GetRow(KNumColours-1); 
+                    col = GetColumn(KNumColours-1); 
                 }
             }
         }
@@ -344,7 +345,7 @@ void CColourPopup::OnPaint(HDC )
         DrawCell(hdc, DEFAULT_BOX_VALUE);
  
     // Draw colour cells
-    for (int i = 0; i < m_nNumColours; i++)
+    for (int i = 0; i < KNumColours; i++)
         DrawCell(hdc, i);
     
     // Draw custom text
@@ -383,7 +384,7 @@ void CColourPopup::OnMouseMove(UINT nFlags, CPoint point)
         nNewSelection = GetIndex(point.y / m_nBoxSize, point.x / m_nBoxSize);
 
         // In range? If not, default and exit
-        if (nNewSelection < 0 || nNewSelection >= m_nNumColours)
+        if (nNewSelection < 0 || nNewSelection >= KNumColours)
         {
             return;
         }
@@ -419,7 +420,7 @@ int CColourPopup::GetIndex(int row, int col) const
         return INVALID_COLOUR;
     else
     {
-        if (row*m_nNumColumns + col >= m_nNumColours)
+        if (row*m_nNumColumns + col >= KNumColours)
             return INVALID_COLOUR;
         else
             return row*m_nNumColumns + col;
@@ -432,7 +433,7 @@ int CColourPopup::GetRow(int nIndex) const
         return CUSTOM_BOX_VALUE;
     else if (nIndex == DEFAULT_BOX_VALUE && m_strDefaultText.GetLength())
         return DEFAULT_BOX_VALUE;
-    else if (nIndex < 0 || nIndex >= m_nNumColours)
+    else if (nIndex < 0 || nIndex >= KNumColours)
         return INVALID_COLOUR;
     else
         return nIndex / m_nNumColumns; 
@@ -444,7 +445,7 @@ int CColourPopup::GetColumn(int nIndex) const
         return CUSTOM_BOX_VALUE;
     else if (nIndex == DEFAULT_BOX_VALUE && m_strDefaultText.GetLength())
         return DEFAULT_BOX_VALUE;
-    else if (nIndex < 0 || nIndex >= m_nNumColours)
+    else if (nIndex < 0 || nIndex >= KNumColours)
         return INVALID_COLOUR;
     else
         return nIndex % m_nNumColumns; 
@@ -458,7 +459,7 @@ void CColourPopup::FindCellFromColour(COLORREF crColour)
         return;
     }
 
-    for (int i = 0; i < m_nNumColours; i++)
+    for (int i = 0; i < KNumColours; i++)
     {
         if (GetColour(i) == crColour)
         {
@@ -491,7 +492,7 @@ BOOL CColourPopup::GetCellRect(int nIndex, const LPRECT& rect)
         return TRUE;
     }
 
-    if (nIndex < 0 || nIndex >= m_nNumColours)
+    if (nIndex < 0 || nIndex >= KNumColours)
         return FALSE;
 
     rect->left = GetColumn(nIndex) * m_nBoxSize + m_nMargin;
@@ -551,8 +552,8 @@ void CColourPopup::SetWindowSize()
     // Get the number of columns and rows
     //m_nNumColumns = (int) sqrt((double)m_nNumColours);    // for a square window (yuk)
     m_nNumColumns = 8;
-    m_nNumRows = m_nNumColours / m_nNumColumns;
-    if (m_nNumColours % m_nNumColumns) m_nNumRows++;
+    m_nNumRows = KNumColours / m_nNumColumns;
+    if (KNumColours % m_nNumColumns) m_nNumRows++;
 
     // Get the current window position, and set the new size
     CRect rect;
@@ -615,7 +616,7 @@ void CColourPopup::CreateToolTips()
     if (!m_ToolTip.Create(m_hWnd,0)) return;
 	
     // Add a tool for each cell
-    for (int i = 0; i < m_nNumColours; i++)
+    for (int i = 0; i < KNumColours; i++)
     {
         CRect rect;
          if (!GetCellRect(i, rect)) continue;
@@ -627,10 +628,10 @@ void CColourPopup::ChangeSelection(int nIndex)
 {
     HDC hdc = GetDC();
 
-    if (nIndex > m_nNumColours)
+    if (nIndex > KNumColours)
         nIndex = CUSTOM_BOX_VALUE; 
 
-    if ((m_nCurrentSel >= 0 && m_nCurrentSel < m_nNumColours) ||
+    if ((m_nCurrentSel >= 0 && m_nCurrentSel < KNumColours) ||
         m_nCurrentSel == CUSTOM_BOX_VALUE || m_nCurrentSel == DEFAULT_BOX_VALUE)
     {
         // Set Current selection as invalid and redraw old selection (this way
@@ -685,9 +686,9 @@ void FillSolidRect(HDC hdc, LPCRECT lpRect, COLORREF clr)
     }
 }
 
-void FillSolidRect(HDC hdc, int x1,int y1,int x2,int y2, COLORREF clr)
+void FillSolidRect(HDC hdc, int x,int y,int w,int h, COLORREF clr)
 {
-    RECT rc={x1,y1,x2,y2};
+    RECT rc={x,y,x+w,y+h};
     FillSolidRect(hdc,&rc,clr);
 }
 
@@ -715,7 +716,6 @@ void CColourPopup::DrawCell(HDC hdc, int nIndex)
                            m_CustomTextRect.Width()-4*m_nMargin, 1, ::GetSysColor(COLOR_3DHILIGHT));
 
         TextButtonRect.DeflateRect(1,1);
-
         // fill background
         if (m_nChosenColourSel == nIndex && m_nCurrentSel != nIndex)
             FillSolidRect(hdc,TextButtonRect, ::GetSysColor(COLOR_3DLIGHT));
@@ -849,6 +849,16 @@ BOOL CColourPopup::MyChooseColor(COLORREF &cr)
 
 	cr=cc.rgbResult;
 	return TRUE;
+}
+
+COLORREF CColourPopup::GetColour( int nIndex )
+{
+    return g_colorTable[nIndex].crColour;
+}
+
+LPCTSTR CColourPopup::GetColourName( int nIndex )
+{
+    return g_colorTable[nIndex].szName;
 }
 
 }//end of namespace

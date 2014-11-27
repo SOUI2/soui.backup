@@ -43,10 +43,10 @@ void CNewFileDlg::OnBtn_SelFile()
 
 void CNewFileDlg::OnBtn_OK()
 {
-	m_strSrcFile=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_src_file"));
-	m_strResPath=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_res_path"));
-	m_strResName=CUIHelper::GetEditText(FindChildByName2<SRichEdit>(L"edit_res_name"));
-	m_strResType=CUIHelper::GetComboboxText(FindChildByName2<SComboBox>(L"cbx_res_type"));
+	m_strSrcFile=FindChildByName2<SRichEdit>(L"edit_src_file")->GetWindowText();
+	m_strResPath=FindChildByName2<SRichEdit>(L"edit_res_path")->GetWindowText();
+	m_strResName=FindChildByName2<SRichEdit>(L"edit_res_name")->GetWindowText();
+	m_strResType=FindChildByName2<SComboBox>(L"cbx_res_type")->GetWindowText();
 	EndDialog(IDOK);
 }
 
