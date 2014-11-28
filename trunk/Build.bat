@@ -22,6 +22,7 @@ if %selected%==1 (
 	SET target=x86
 ) else if %selected%==2 (
 	SET target=x64
+	SET cfg=!cfg! x64
 ) else (
 	goto error
 )
