@@ -69,7 +69,10 @@ namespace SOUI
 
     BOOL SActiveX::InitActiveX()
     {
-        BOOL bRet=m_axContainer->CreateControl(m_rcWindow,m_clsid,m_clsCtx);
+        CRect rcPos = m_rcWindow;
+        if(m_rcWindow.left == POS_INIT || m_rcWindow.left == POS_WAIT)
+            rcPos = CRect();
+        BOOL bRet=m_axContainer->CreateControl(rcPos,m_clsid,m_clsCtx);
         if(bRet)
         {
             m_axContainer->ActivateAx(NULL);
