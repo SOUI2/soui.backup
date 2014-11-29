@@ -95,11 +95,17 @@ void SWindow::GetWindowRect(LPRECT prect)
 void SWindow::GetClientRect(LPRECT pRect)
 {
     SASSERT(pRect);
-    *pRect=m_rcWindow;
-    pRect->left+=m_style.m_nMarginX;
-    pRect->right-=m_style.m_nMarginX;
-    pRect->top+=m_style.m_nMarginY;
-    pRect->bottom-=m_style.m_nMarginY;
+    if(m_rcWindow.left == POS_INIT || m_rcWindow.left == POS_WAIT)
+    {
+        memset(pRect,0,sizeof(RECT));
+    }else
+    {
+        *pRect=m_rcWindow;
+        pRect->left+=m_style.m_nMarginX;
+        pRect->right-=m_style.m_nMarginX;
+        pRect->top+=m_style.m_nMarginY;
+        pRect->bottom-=m_style.m_nMarginY;
+    }
 }
 
 SStringT SWindow::GetWindowText()

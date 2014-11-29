@@ -69,14 +69,14 @@ namespace SOUI
 
     BOOL SActiveX::InitActiveX()
     {
-        CRect rcPos = m_rcWindow;
-        if(m_rcWindow.left == POS_INIT || m_rcWindow.left == POS_WAIT)
-            rcPos = CRect();
-        BOOL bRet=m_axContainer->CreateControl(rcPos,m_clsid,m_clsCtx);
+        BOOL bRet=m_axContainer->CreateControl(m_clsid,m_clsCtx);
         if(bRet)
         {
+            CRect rcClient;
+            GetClientRect(&rcClient);
             m_axContainer->ActivateAx(NULL);
             SetActiveXVisible(IsVisible(TRUE));
+            m_axContainer->OnPosRectChange(rcClient);        
         }
         OnInitActiveXFinished();
         return bRet;
