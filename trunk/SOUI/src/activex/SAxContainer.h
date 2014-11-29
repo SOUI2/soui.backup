@@ -85,13 +85,12 @@ class S_NO_VTABLE ActiveXSite :   public IOleClientSite,
         return m_spControl;
     }
 
-    void Init(IUnknown* pControl,LPCRECT pRect)
+    void Init(IUnknown* pControl)
     {
         m_spControl = pControl;
         m_spOleObject = pControl;
         m_spInPlaceObject = pControl;
         m_spOleObjectWindowless = pControl;
-        OnPosRectChange(pRect);
     }
 
     void Clear()
@@ -677,7 +676,7 @@ class S_NO_VTABLE SAxContainer :   public IOleContainer,
     SAxContainer();
     virtual ~SAxContainer();
 
-    BOOL CreateControl(LPCRECT pRect, REFGUID guid, DWORD dwClsCtx=CLSCTX_INPROC_SERVER);
+    BOOL CreateControl(REFGUID guid, DWORD dwClsCtx=CLSCTX_INPROC_SERVER);
 
     ///////////////////////////////////////////////////////////////////////////
     // IOleContainer

@@ -32,7 +32,7 @@ SAxContainer::~SAxContainer()
 {
 }
 
-BOOL SAxContainer::CreateControl(LPCRECT pRect, REFGUID clsid ,DWORD dwClsCtx /*=CLSCTX_INPROC_SERVER*/)
+BOOL SAxContainer::CreateControl(REFGUID clsid ,DWORD dwClsCtx /*=CLSCTX_INPROC_SERVER*/)
 {
     SASSERT(m_pAxHostDelegate);
     HRESULT hr = E_FAIL;
@@ -40,7 +40,7 @@ BOOL SAxContainer::CreateControl(LPCRECT pRect, REFGUID clsid ,DWORD dwClsCtx /*
     hr = CoCreateInstance(clsid, NULL,dwClsCtx , __uuidof(IUnknown), reinterpret_cast<void**>(&pControl));
     if ( SUCCEEDED(hr) )
     {
-        Init(pControl,pRect);
+        Init(pControl);
     }
     return SUCCEEDED(hr);
 }
