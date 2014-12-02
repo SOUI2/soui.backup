@@ -74,27 +74,7 @@ SWindow * SWindowFactoryMgr::CreateWindowByName( LPCWSTR pszClassName )
     SASSERT(pRet);
     if(pRet)
     {
-        //检索并设置类的默认属性
-        pugi::xml_node defAttr = GETCSS(pszClassName);
-        if(defAttr)
-        {
-            //优先处理"class"属性
-            pugi::xml_attribute attrClass=defAttr.attribute(L"class");
-            if(attrClass)
-            {
-                attrClass.set_userdata(1);
-                pRet->SetAttribute(attrClass.name(), attrClass.value(), TRUE);
-            }
-            for (pugi::xml_attribute attr = defAttr.first_attribute(); attr; attr = attr.next_attribute())
-            {
-                if(attr.get_userdata()) continue;
-                pRet->SetAttribute(attr.name(), attr.value(), TRUE);
-            }
-            if(attrClass)
-            {
-                attrClass.set_userdata(0);
-            }
-        }
+        SetSwndDefAttr(pRet);
     }
     return pRet;
 }
@@ -112,4 +92,32 @@ LPCWSTR SWindowFactoryMgr::BaseClassNameFromClassName( LPCWSTR pszClassName )
     if(wcscmp(pszBaseClassName,pszClassName)==0) return NULL;
     return pszBaseClassName;
 }
+
+void SWindowFactoryMgr::SetSwndDefAttr( SWindow *pWnd )
+{
+    LPCWSTR pszClassName = pWnd->GetObjectClass();
+    
+    //检索并设置类的默认属性
+    pugi::xml_node defAttr = GETCSS(pszClassName);
+    if(defAttr)
+    {
+        //优先处理"class"属性
+        pugi::xml_attribute attrClass=defAttr.attribute(L"class");
+        if(attrClass)
+        {
+            attrClass.set_userdata(1);
+            pWnd->SetAttribute(attrClass.name(), attrClass.value(), TRUE);
+        }
+        for (pugi::xml_attribute attr = defAttr.first_attribute(); attr; attr = attr.next_attribute())
+        {
+            if(attr.get_userdata()) continue;
+            pWnd->SetAttribute(attr.name(), attr.value(), TRUE);
+        }
+        if(attrClass)
+        {
+            attrClass.set_userdata(0);
+        }
+    }
+}
+
 }//namesspace SOUI
