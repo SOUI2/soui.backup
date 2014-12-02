@@ -103,6 +103,8 @@ namespace SOUI
 
         SWindow *CreateWindowByName(LPCWSTR pszClassName);
 
+        void SetSwndDefAttr(SWindow *pWnd);
+        
         LPCWSTR BaseClassNameFromClassName(LPCWSTR pszClassName);
     protected:
         static void OnWndFactoryRemoved(const SWindowFactoryPtr & obj);
