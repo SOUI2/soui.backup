@@ -374,7 +374,7 @@ BOOL SComboBox::CreateListBox( pugi::xml_node xmlNode )
 {
     SASSERT(xmlNode);
     //创建列表控件
-    m_pListBox=new SListBox;
+    m_pListBox=(SListBox*)SApplication::getSingleton().CreateWindowByName(SListBox::GetClassName());
     m_pListBox->SetContainer(GetContainer());
 
     m_pListBox->InitFromXml(xmlNode.child(L"liststyle"));
@@ -487,7 +487,7 @@ BOOL SComboBoxEx::CreateListBox( pugi::xml_node xmlNode )
 {
     SASSERT(xmlNode);
     //创建列表控件
-    m_pListBox=new SListBoxEx;
+    m_pListBox=(SListBoxEx*)SApplication::getSingleton().CreateWindowByName(SListBoxEx::GetClassName());
     m_pListBox->SetContainer(GetContainer());
 
     m_pListBox->InitFromXml(xmlNode.child(L"liststyle"));
