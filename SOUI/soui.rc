@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 中文(中华人民共和国) resources
+// Chinese (P.R.C.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
@@ -52,9 +52,17 @@ END
 // Version
 //
 
+#define VER_FILE    1, 1, 0, 1
+#define VER_PRODUCT 1, 1, 0, 1
+
+#define _STRING(x) #x
+#define VER_STR(x) _STRING(x)
+#define VER_FILE_STR VER_STR(VER_FILE)
+#define VER_PRODUCT_STR VER_STR(VER_PRODUCT)
+ 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,9,9,1
- PRODUCTVERSION 0,9,9,1
+ FILEVERSION VER_FILE
+ PRODUCTVERSION VER_PRODUCT
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -71,12 +79,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "启程软件"
             VALUE "FileDescription", "soui"
-            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "FileVersion", VER_FILE_STR
             VALUE "InternalName", "soui"
             VALUE "LegalCopyright", "Copyright (C) 2014"
             VALUE "OriginalFilename", "soui.dll"
             VALUE "ProductName", "soui"
-            VALUE "ProductVersion", "1, 0, 0, 1"
+            VALUE "ProductVersion", VER_PRODUCT_STR
         END
     END
     BLOCK "VarFileInfo"
@@ -85,7 +93,7 @@ BEGIN
     END
 END
 
-#endif    // 中文(中华人民共和国) resources
+#endif    // Chinese (P.R.C.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
