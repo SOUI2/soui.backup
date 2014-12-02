@@ -401,7 +401,7 @@ namespace SOUI
         paint.setColor(SColor(m_curPen->GetColor()).toARGB());
         SGetLineDashEffect skDash(m_curPen->GetStyle());
         paint.setPathEffect(skDash.Get());
-        paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
+        paint.setStrokeWidth((SkScalar)m_curPen->GetWidth()-0.5f);
         paint.setStyle(SkPaint::kStroke_Style);
         paint.setAntiAlias(true);
 
@@ -451,7 +451,7 @@ namespace SOUI
         paint.setColor(SColor(m_curPen->GetColor()).toARGB());
         SGetLineDashEffect skDash(m_curPen->GetStyle());
         paint.setPathEffect(skDash.Get());
-        paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
+        paint.setStrokeWidth((SkScalar)m_curPen->GetWidth()-0.5f);
         paint.setStyle(SkPaint::kStroke_Style);
         m_SkCanvas->drawPoints(SkCanvas::kPolygon_PointMode,nCount,pts,paint);
         delete []pts;
@@ -860,7 +860,7 @@ namespace SOUI
         paint.setColor(SColor(m_curPen->GetColor()).toARGB());
         SGetLineDashEffect skDash(m_curPen->GetStyle());
         paint.setPathEffect(skDash.Get());
-        paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
+        paint.setStrokeWidth((SkScalar)m_curPen->GetWidth()-0.5f);
         paint.setStyle(SkPaint::kStroke_Style);
 
         SkRect skrc = toSkRect(pRect);
@@ -895,7 +895,7 @@ namespace SOUI
         paint.setColor(SColor(m_curPen->GetColor()).toARGB());
         SGetLineDashEffect skDash(m_curPen->GetStyle());
         paint.setPathEffect(skDash.Get());
-        paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
+        paint.setStrokeWidth((SkScalar)m_curPen->GetWidth()-0.5f);
         paint.setStyle(SkPaint::kStroke_Style);
 
         SkRect skrc = toSkRect(pRect);
