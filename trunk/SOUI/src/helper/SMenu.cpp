@@ -122,8 +122,8 @@ void SMenuODWnd::DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct )
         else
         {
             CAutoRefPtr<IPen> pen1,pen2,oldPen;
-            pRT->CreatePen(PS_SOLID,1,RGBA(196,196,196,255),&pen1);
-            pRT->CreatePen(PS_SOLID,1,RGBA(255,255,255,255),&pen2);
+            pRT->CreatePen(PS_SOLID,RGBA(196,196,196,255),1,&pen1);
+            pRT->CreatePen(PS_SOLID,RGBA(255,255,255,255),1,&pen2);
             pRT->SelectObject(pen1,(IRenderObj**)&oldPen);
             POINT pts[2]={{rcItem.left,rcItem.top},{rcItem.right,rcItem.top}};
             pRT->DrawLines(pts,2);
