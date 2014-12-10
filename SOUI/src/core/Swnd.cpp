@@ -672,7 +672,7 @@ namespace SOUI
 
         SWND swndChild = NULL;
 
-        SWindow *pChild=GetWindow(GSW_FIRSTCHILD);
+        SWindow *pChild=GetWindow(GSW_LASTCHILD);
         while(pChild)
         {
             if (pChild->IsVisible(TRUE) && !pChild->IsMsgTransparent())
@@ -682,7 +682,7 @@ namespace SOUI
                 if (swndChild) return swndChild;
             }
 
-            pChild=pChild->GetWindow(GSW_NEXTSIBLING);
+            pChild=pChild->GetWindow(GSW_PREVSIBLING);
         }
 
         return m_swnd;
