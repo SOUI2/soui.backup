@@ -194,6 +194,15 @@ protected:
     virtual BOOL OnSetCursor(const CPoint &pt);
     
     /**
+     * SSplitWnd::OnRelayout
+     * @brief    修改窗口位置
+     * @param    LPRECT lpWndPos -- 窗口位置
+     *
+     * Describe  修改窗口位置  消息响应函数
+     */
+    virtual void OnRelayout(const CRect &rcOld, const CRect & rcNew);
+    
+    /**
      * SSplitWnd::OnDestroy
      * @brief    销毁
      *
@@ -210,14 +219,6 @@ protected:
      */
     void OnPaint(IRenderTarget * pRT);
     
-    /**
-     * SSplitWnd::OnWindowPosChanged
-     * @brief    修改窗口位置
-     * @param    LPRECT lpWndPos -- 窗口位置
-     *
-     * Describe  修改窗口位置  消息响应函数
-     */
-    LRESULT OnWindowPosChanged(LPRECT lpWndPos);
     
     /**
      * SSplitWnd::OnLButtonDown

@@ -88,7 +88,7 @@ protected:
      *
      * Describe  获取大小 
      */
-    virtual CSize    GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize    GetDesiredSize(LPCRECT pRcContainer);
 
     /**
      * SSliderBar::GetPartRect

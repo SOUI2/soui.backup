@@ -263,7 +263,7 @@ LRESULT SSliderBar::NotifyPos(UINT uCode, int nPos)
     return FireEvent(evt);
 }
 
-CSize SSliderBar::GetDesiredSize(LPRECT pRcContainer)
+CSize SSliderBar::GetDesiredSize(LPCRECT pRcContainer)
 {
     SASSERT(m_pSkinBg && m_pSkinThumb);
     CSize szRet;

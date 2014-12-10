@@ -5,6 +5,24 @@
 namespace SOUI
 {
 
+    //////////////////////////////////////////////////////////////////////////
+    SWindowRepos::SWindowRepos(SWindow *pWnd):m_pWnd(pWnd)
+    {
+        SASSERT(m_pWnd);
+        m_rcWnd = m_pWnd->m_rcWindow;
+        m_pWnd->m_rcWindow.SetRect(POS_INIT,POS_INIT,POS_INIT,POS_INIT);
+    }
+
+    SWindowRepos::~SWindowRepos()
+    {
+        if(m_pWnd->m_rcWindow != m_rcWnd)
+        {
+            m_pWnd->OnRelayout(m_rcWnd,m_pWnd->m_rcWindow);
+        }
+    }
+    
+    //////////////////////////////////////////////////////////////////////////
+    //
     SwndLayout::SwndLayout( SWindow *pOwner )
     :m_pOwner(pOwner)
     ,nCount(0)
@@ -15,7 +33,7 @@ namespace SOUI
     ,uSpecifyHeight(0)
     ,nSepSpace(2)
     {
-
+        InitLayoutState();
     }
     
     LPCWSTR SwndLayout::ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,POSITION_ITEM &pos)
@@ -50,6 +68,18 @@ namespace SOUI
         return pNext;
     }
 
+    CRect SwndLayout::GetWindowLayoutRect(SWindow *pWindow)
+    {
+        CRect rc = pWindow->m_rcWindow;
+        
+        if(!pWindow->m_bDisplay && !pWindow->m_bVisible)
+        {
+            rc.right=rc.left;
+            rc.bottom=rc.top;
+        }
+        return rc;
+    }
+    
     int SwndLayout::PositionItem2Value(const POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX)
     {
         int nRet=0;
@@ -80,8 +110,7 @@ namespace SOUI
                 if(!pRefWnd) pRefWnd=m_pOwner->GetWindow(GSW_PARENT);
                 if(pRefWnd)
                 {//需要确定参考窗口是否完成布局
-                    CRect rcRef;
-                    pRefWnd->GetWindowRect(&rcRef);
+                    CRect rcRef = GetWindowLayoutRect(pRefWnd);
                     if(bX)
                     {
                         LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.right:rcRef.left;
@@ -107,8 +136,7 @@ namespace SOUI
                 if(!pRefWnd) pRefWnd=m_pOwner->GetWindow(GSW_PARENT);
                 if(pRefWnd)
                 {//需要确定参考窗口是否完成布局
-                    CRect rcRef;
-                    pRefWnd->GetWindowRect(&rcRef);
+                    CRect rcRef = GetWindowLayoutRect(pRefWnd);
                     if(bX)
                     {
                         LONG refPos = (pos.pit == PIT_NEXT_NEAR)?rcRef.left:rcRef.right;
@@ -133,32 +161,24 @@ namespace SOUI
 
     }
     
-    int SwndLayout::CalcPosition(LPRECT lpRcContainer,CRect &rcWindow )
+    int SwndLayout::CalcPosition(const CRect & rcContainer,CRect &rcWindow )
     {
         int nRet=0;
-
-        CRect rcContainer;
-        if(!lpRcContainer)
-        {
-            SASSERT(m_pOwner->GetParent());
-            rcContainer=m_pOwner->GetParent()->GetChildrenLayoutRect();
-            lpRcContainer=&rcContainer;
-        }
 
         if(nCount==4)
         {//指定了4个坐标
             if(rcWindow.left == POS_INIT || rcWindow.left == POS_WAIT)
-                rcWindow.left=PositionItem2Value(Left,lpRcContainer->left,lpRcContainer->right,TRUE);
+                rcWindow.left=PositionItem2Value(Left,rcContainer.left,rcContainer.right,TRUE);
             if(rcWindow.left==POS_WAIT) nRet++;
 
             if(rcWindow.top == POS_INIT || rcWindow.top == POS_WAIT)
-                rcWindow.top=PositionItem2Value(Top,lpRcContainer->top,lpRcContainer->bottom,FALSE);
+                rcWindow.top=PositionItem2Value(Top,rcContainer.top,rcContainer.bottom,FALSE);
             if(rcWindow.top==POS_WAIT) nRet++;
 
             if(rcWindow.right == POS_INIT || rcWindow.right == POS_WAIT)
             {
                 if(Right.pit!=PIT_OFFSET)
-                    rcWindow.right=PositionItem2Value(Right,lpRcContainer->left,lpRcContainer->right,TRUE);
+                    rcWindow.right=PositionItem2Value(Right,rcContainer.left,rcContainer.right,TRUE);
                 else if(rcWindow.left!=POS_WAIT)
                     rcWindow.right=rcWindow.left+(LONG)Right.nPos;
                 else
@@ -169,7 +189,7 @@ namespace SOUI
             if(rcWindow.bottom == POS_INIT || rcWindow.bottom == POS_WAIT)
             {
                 if(Bottom.pit!=PIT_OFFSET)
-                    rcWindow.bottom=PositionItem2Value(Bottom,lpRcContainer->top,lpRcContainer->bottom,FALSE);
+                    rcWindow.bottom=PositionItem2Value(Bottom,rcContainer.top,rcContainer.bottom,FALSE);
                 else if(rcWindow.top!=POS_WAIT)
                     rcWindow.bottom=rcWindow.top+(LONG)Bottom.nPos;
                 else
@@ -181,25 +201,24 @@ namespace SOUI
             CPoint pt=rcWindow.TopLeft();
             if((uPositionType & SizeX_FitParent) &&  (uPositionType &SizeY_FitParent))
             {//充满父窗口
-                pt.x=lpRcContainer->left;
-                pt.y=lpRcContainer->top;
+                pt.x=rcContainer.left;
+                pt.y=rcContainer.top;
             }else if(nCount==2)
             {//只指定了两个坐标
-                if(pt.x==POS_INIT || pt.x==POS_WAIT) pt.x=PositionItem2Value(Left,lpRcContainer->left,lpRcContainer->right,TRUE);
+                if(pt.x==POS_INIT || pt.x==POS_WAIT) pt.x=PositionItem2Value(Left,rcContainer.left,rcContainer.right,TRUE);
                 if(pt.x==POS_WAIT) nRet++;
-                if(pt.y==POS_INIT || pt.y==POS_WAIT) pt.y=PositionItem2Value(Top,lpRcContainer->top,lpRcContainer->bottom,FALSE);
+                if(pt.y==POS_INIT || pt.y==POS_WAIT) pt.y=PositionItem2Value(Top,rcContainer.top,rcContainer.bottom,FALSE);
                 if(pt.y==POS_WAIT) nRet++;
             }else //if(nCount==0)
             {//自动排版
                 SWindow *pSibling=m_pOwner->GetWindow(GSW_PREVSIBLING);
                 if(!pSibling)
                 {
-                    pt.x=lpRcContainer->left;
-                    pt.y=lpRcContainer->top;
+                    pt.x=rcContainer.left;
+                    pt.y=rcContainer.top;
                 }else
                 {
-                    CRect rcSib;
-                    pSibling->GetWindowRect(&rcSib);
+                    CRect rcSib = pSibling->m_rcWindow;
                     if(rcSib.right==POS_INIT || rcSib.right == POS_WAIT)
                         pt.x=POS_WAIT,nRet++;
                     else
@@ -212,7 +231,7 @@ namespace SOUI
                 }
             }
             if(nRet==0)
-                rcWindow=CRect(pt,CalcSize(lpRcContainer));
+                rcWindow=CRect(pt,CalcSize(rcContainer));
             else 
                 rcWindow.left=pt.x,rcWindow.top=pt.y;
         }
@@ -230,17 +249,19 @@ namespace SOUI
         return nRet;
     }
 
-    BOOL SwndLayout::CalcChildrenPosition(SList<SWindow*> *pListChildren)
+    BOOL SwndLayout::CalcChildrenPosition(SList<SWindowRepos*> *pListChildren,const CRect & rcContainer)
     {
-        CRect rcContainer=m_pOwner->GetChildrenLayoutRect();
         POSITION pos=pListChildren->GetHeadPosition();
         int nChildrenCount=pListChildren->GetCount();
         while(pos)
         {
             POSITION posOld=pos;
-            SWindow *pChild=pListChildren->GetNext(pos);
-            if(0==pChild->SSendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer))
+            SWindow *pChild=pListChildren->GetNext(pos)->GetWindow();
+            if(0 == pChild->m_layout.CalcPosition(rcContainer,pChild->m_rcWindow))
+            {
+                delete pListChildren->GetAt(posOld);
                 pListChildren->RemoveAt(posOld);
+            }
         }
         if(0==pListChildren->GetCount())
             return TRUE;
@@ -250,7 +271,7 @@ namespace SOUI
             return FALSE;
         }else
         {
-            return CalcChildrenPosition(pListChildren);
+            return CalcChildrenPosition(pListChildren,rcContainer);
         }
     }
 
@@ -278,20 +299,20 @@ namespace SOUI
 
     }
 
-    CSize SwndLayout::CalcSize( LPRECT pRcContainer )
+    CSize SwndLayout::CalcSize(const CRect & rcContainer)
     {
         CSize sz;
         if(uPositionType & SizeX_Specify)
             sz.cx=uSpecifyWidth;
         else if(uPositionType & SizeX_FitParent)
-            sz.cx=pRcContainer->right-pRcContainer->left;
+            sz.cx=rcContainer.right-rcContainer.left;
         if(uPositionType & SizeY_Specify)
             sz.cy=uSpecifyHeight;
         else if(uPositionType & SizeY_FitParent)
-            sz.cy=pRcContainer->bottom-pRcContainer->top;
+            sz.cy=rcContainer.bottom-rcContainer.top;
         if((uPositionType & SizeX_FitContent) || (uPositionType & SizeY_FitContent) && nCount!=4)
         {
-            CSize szDesire=m_pOwner->GetDesiredSize(pRcContainer);    
+            CSize szDesire=m_pOwner->GetDesiredSize(rcContainer);    
             if(uPositionType & SizeX_FitContent)
                 sz.cx=szDesire.cx;
             if(uPositionType & SizeY_FitContent)
@@ -310,5 +331,9 @@ namespace SOUI
         return uPositionType & Pos_Float;
     }
 
+    void SwndLayout::InitLayoutState()
+    {
+        m_pOwner->m_rcWindow.SetRect(POS_INIT,POS_INIT,POS_INIT,POS_INIT);
+    }
 
 }

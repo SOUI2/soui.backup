@@ -174,8 +174,6 @@ namespace SOUI
 
       void UpdateCaret();
 
-      LRESULT OnWindowPosChanged(LPRECT lpRcContainer);
-
       SOUI_ATTRS_BEGIN()
           ATTR_WORD(L"invalidComb",m_wInvalidComb,FALSE)
           ATTR_WORD(L"defCombKey",m_wInvalidModifier,FALSE)
@@ -193,7 +191,6 @@ namespace SOUI
           MSG_WM_KEYUP(OnKeyUp)
           MSG_WM_SYSKEYDOWN(OnSysKeyDown)
           MSG_WM_SYSKEYUP(OnSysKeyUp)
-          MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
       SOUI_MSG_MAP_END()
       WORD     m_wInvalidComb;     /**< 无效的组合键 */
       WORD     m_wInvalidModifier; /**< 对无效组合键的替换方案,默认方案 */

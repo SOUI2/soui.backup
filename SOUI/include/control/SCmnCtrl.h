@@ -198,7 +198,7 @@ protected:
      *
      * Describe  根据内容窗体矩形大小，计算出适合的大小
      */
-    virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPCRECT pRcContainer);
     
     /**
      * SButton::OnStateChanged
@@ -337,7 +337,7 @@ protected:
      *
      * Describe  根据矩形的大小，获取预期大小(解释有点不对)
      */
-    virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPCRECT pRcContainer);
 
     BOOL m_bManaged;  /**< 是否要自动释放当前的m_pSkin对象 */
     int m_iFrame;  /**< 资源图片ID */
@@ -411,7 +411,7 @@ protected:
      *
      * Describe  根据矩形的大小，获取预期大小(解释有点不对)
      */
-    virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPCRECT pRcContainer);
     virtual void OnNextFrame();
 
     void OnPaint(IRenderTarget *pRT);
@@ -511,7 +511,7 @@ protected:
      *
      * Describe  根据矩形的大小，获取预期大小(解释有点不对)
      */
-    virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPCRECT pRcContainer);
 
     void OnPaint(IRenderTarget *pRT);
 
@@ -645,7 +645,7 @@ protected:
      *
      * Describe  根据矩形的大小，获取预期大小(解释有点不对)
      */
-    virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPCRECT pRcContainer);
     /**
      * SCheckBox::GetTextRect
      * @brief    获取文本大小
@@ -738,7 +738,7 @@ public:
      */
     void SetIcon(HICON hIcon);
 protected:
-    virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPCRECT pRcContainer);
 
     HICON m_theIcon; /**< 图标资源句柄 */
 
@@ -778,16 +778,6 @@ public:
     SRadioBox();
 
 
-    /**
-     * SetCheck
-     * @brief    设置当前窗口的check状态
-     * @param    BOOL bCheck --  check状态
-     * @return   void 
-     *
-     * Describe  
-     */
-    virtual void SetCheck(BOOL bCheck);
-
 protected:
 
     ISkinObj *m_pSkin;  /**< 皮肤资源 */
@@ -822,7 +812,7 @@ protected:
      *
      * Describe  获取预期大小值
      */
-    virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPCRECT pRcContainer);
     /**
      * SRadioBox::NeedRedrawWhenStateChange
      * @brief    当状态改变时候是否需要重绘
@@ -869,6 +859,17 @@ protected:
      */
     virtual SWindow * GetSelectedSiblingInGroup();
     
+    
+    /**
+     * OnStateChanging
+     * @brief    状态发生变化
+     * @param    DWORD dwOldState --  原状态
+     * @param    DWORD dwNewState --  新状态
+     * @return   void 
+     *
+     * Describe  
+     */
+    virtual void OnStateChanging(DWORD dwOldState,DWORD dwNewState);
 protected:
     void OnSetFocus();
     
@@ -926,7 +927,7 @@ public:
 protected:
     void OnPaint(IRenderTarget *pRT);
     void OnLButtonUp(UINT nFlags,CPoint pt);
-    virtual CSize GetDesiredSize(LPRECT pRcContainer);
+    virtual CSize GetDesiredSize(LPCRECT pRcContainer);
     virtual BOOL NeedRedrawWhenStateChange(){return TRUE;}
 
     SOUI_ATTRS_BEGIN()

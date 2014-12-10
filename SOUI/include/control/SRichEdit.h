@@ -934,7 +934,7 @@ namespace SOUI
         *
         * Describe  注意需要增加inset的大小
         */
-        virtual CSize GetDesiredSize(LPRECT pRcContainer);
+        virtual CSize GetDesiredSize(LPCRECT pRcContainer);
 
         /**
         * SRichEdit::OnScroll

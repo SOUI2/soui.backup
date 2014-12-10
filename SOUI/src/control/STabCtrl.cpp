@@ -439,22 +439,14 @@ int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoadin
     if (wcscmp(xmlNode.name(),STabPage::GetClassName()) != 0) return -1;
     STabPage *pChild = (STabPage *)SApplication::getSingleton().CreateWindowByName(STabPage::GetClassName());
     
-    if(iInsert==-1) iInsert=m_lstPages.GetCount();
     InsertChild(pChild);
 
-    m_lstPages.InsertAt(iInsert,pChild);
-
+    pChild->Move(GetChildrenLayoutRect());
     pChild->InitFromXml(xmlNode);
-    pChild->SetPositionType(SizeX_FitParent|SizeY_FitParent);
 
+    if(iInsert==-1) iInsert=m_lstPages.GetCount();
+    m_lstPages.InsertAt(iInsert,pChild);
     if(!bLoading && m_nCurrentPage>=iInsert) m_nCurrentPage++;
-
-    if(!bLoading)
-    {
-        CRect rcContainer=GetChildrenLayoutRect();
-        pChild->SSendMessage(WM_WINDOWPOSCHANGED,0,(LPARAM)&rcContainer);
-        Invalidate();
-    }
 
     return iInsert;
 }
@@ -606,6 +598,15 @@ void STabCtrl::OnInitFinished( pugi::xml_node xmlNode )
         SIZE sz = m_pSkinTab->GetSkinSize();
         if(m_szTab.cx == -1) m_szTab.cx = sz.cx;
         if(m_szTab.cy == -1) m_szTab.cy = sz.cy;
+    }
+}
+
+void STabCtrl::UpdateChildrenPosition()
+{
+    CRect rcPage = GetChildrenLayoutRect();
+    for(size_t i =0 ;i<m_lstPages.GetCount() ;i++)
+    {
+        m_lstPages[i]->Move(rcPage);
     }
 }
 

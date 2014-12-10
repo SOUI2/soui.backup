@@ -42,7 +42,7 @@ namespace SOUI
         m_pBgSkin->Draw(pRT,m_rcWindow,IsChecked()?1:0);
     }
 
-    CSize SCaptureButton::GetDesiredSize( LPRECT pRcContainer )
+    CSize SCaptureButton::GetDesiredSize( LPCRECT pRcContainer )
     {
         if(!m_pBgSkin) return CSize();
         return m_pBgSkin->GetSkinSize();

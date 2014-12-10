@@ -181,7 +181,6 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     }else
     {
         Move(&rcClient);
-        OnWindowPosChanged(NULL);
     }
 
     _Redraw();
