@@ -39,7 +39,7 @@ namespace SOUI
         BOOL PlayAPNGFile(LPCTSTR pszFileName);
 
     protected://SWindow的虚函数
-        virtual CSize GetDesiredSize(LPRECT pRcContainer);
+        virtual CSize GetDesiredSize(LPCRECT pRcContainer);
 
     public://属性处理
         SOUI_ATTRS_BEGIN()		

@@ -729,7 +729,7 @@ void SRichEdit::OnTimer2( UINT_PTR idEvent )
 }
 
 
-CSize SRichEdit::GetDesiredSize( LPRECT pRcContainer )
+CSize SRichEdit::GetDesiredSize( LPCRECT pRcContainer )
 {
     CSize sz = __super::GetDesiredSize(pRcContainer);
     sz.cx += m_rcInsetPixel.left + m_rcInsetPixel.right;

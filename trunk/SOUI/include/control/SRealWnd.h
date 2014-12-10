@@ -159,7 +159,7 @@ protected:
      *
      * Describe  ÐÞ¸Ä´°¿ÚÎ»ÖÃ
      */
-    LRESULT OnWindowPosChanged(LPRECT lpWndPos);
+    LRESULT OnWindowPosChanged();
 
     /**
      * SRealWnd::OnShowWindow

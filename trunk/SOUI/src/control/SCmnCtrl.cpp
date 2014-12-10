@@ -271,7 +271,7 @@ HRESULT SButton::OnAttrAccel( SStringW strAccel,BOOL bLoading )
     return S_FALSE;
 }
 
-CSize SButton::GetDesiredSize( LPRECT pRcContainer )
+CSize SButton::GetDesiredSize( LPCRECT pRcContainer )
 {
     SASSERT(m_pBgSkin);
     CSize szRet=m_pBgSkin->GetSkinSize();
@@ -385,7 +385,7 @@ BOOL SImageWnd::SetIcon( int nSubID )
     return TRUE;
 }
 
-CSize SImageWnd::GetDesiredSize(LPRECT pRcContainer)
+CSize SImageWnd::GetDesiredSize(LPCRECT pRcContainer)
 {
     CSize szRet;
     if(m_pSkin) szRet=m_pSkin->GetSkinSize();
@@ -432,7 +432,7 @@ void SAnimateImgWnd::OnDestroy()
     Stop();
 }
 
-CSize SAnimateImgWnd::GetDesiredSize(LPRECT pRcContainer)
+CSize SAnimateImgWnd::GetDesiredSize(LPCRECT pRcContainer)
 {
     CSize szRet;
     if(m_pSkin) szRet=m_pSkin->GetSkinSize();
@@ -489,7 +489,7 @@ SProgress::SProgress()
 }
 
 
-CSize SProgress::GetDesiredSize(LPRECT pRcContainer)
+CSize SProgress::GetDesiredSize(LPCRECT pRcContainer)
 {
     CSize szRet;
     SIZE sizeBg = m_pSkinBg->GetSkinSize();
@@ -651,7 +651,7 @@ void SCheckBox::DrawFocus(IRenderTarget *pRT)
     }
 }
 
-CSize SCheckBox::GetDesiredSize(LPRECT pRcContainer)
+CSize SCheckBox::GetDesiredSize(LPCRECT pRcContainer)
 {
     SASSERT(m_pSkin);
     CSize szCheck=m_pSkin->GetSkinSize();
@@ -747,7 +747,7 @@ void SIconWnd::OnPaint(IRenderTarget *pRT)
 }
 
 
-CSize SIconWnd::GetDesiredSize(LPRECT pRcContainer)
+CSize SIconWnd::GetDesiredSize(LPCRECT pRcContainer)
 {
     if(!m_theIcon) return CSize();
     ICONINFO iconInfo={0};
@@ -819,7 +819,7 @@ void SRadioBox::DrawFocus(IRenderTarget *pRT)
 }
 
 
-CSize SRadioBox::GetDesiredSize(LPRECT pRcContainer)
+CSize SRadioBox::GetDesiredSize(LPCRECT pRcContainer)
 {
     CSize szRet=__super::GetDesiredSize(pRcContainer);
     CSize szRaio=m_pSkin->GetSkinSize();
@@ -891,21 +891,20 @@ SWindow * SRadioBox::GetSelectedSiblingInGroup()
     return NULL;
 }
 
-void SRadioBox::SetCheck( BOOL bCheck )
-{
-    if(IsChecked() == bCheck) return;
-    if(bCheck)
-    {
-        SRadioBox *pCurChecked=(SRadioBox*)GetSelectedSiblingInGroup();
-        if(pCurChecked) pCurChecked->SetCheck(FALSE);
-    }
-    SWindow::SetCheck(bCheck);
-}
 
 HRESULT SRadioBox::OnAttrCheck( const SStringW& strValue, BOOL bLoading )
 {
     SetCheck(strValue != L"0");
     return S_FALSE;
+}
+
+void SRadioBox::OnStateChanging( DWORD dwOldState,DWORD dwNewState )
+{
+    if((dwNewState & WndState_Check) && !(dwOldState & WndState_Check))
+    {
+        SRadioBox *pCurChecked=(SRadioBox*)GetSelectedSiblingInGroup();
+        if(pCurChecked) pCurChecked->SetCheck(FALSE);
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -942,7 +941,7 @@ void SToggle::OnLButtonUp(UINT nFlags,CPoint pt)
     __super::OnLButtonUp(nFlags,pt);
 }
 
-CSize SToggle::GetDesiredSize(LPRECT pRcContainer)
+CSize SToggle::GetDesiredSize(LPCRECT pRcContainer)
 {
     CSize sz;
     if(m_pSkin) sz=m_pSkin->GetSkinSize();

@@ -301,13 +301,15 @@ void SComboBoxBase::CloseUp()
     }
 }
 
-void SComboBoxBase::SetFocus()
+
+void SComboBoxBase::OnSetFocus()
 {
-	if(m_pEdit) 
-		m_pEdit->SetFocus();
-	else
-		__super::SetFocus();
+    if(m_pEdit) 
+        m_pEdit->SetFocus();
+    else
+        __super::OnSetFocus();
 }
+
 
 void SComboBoxBase::OnDestroy()
 {

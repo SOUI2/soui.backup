@@ -48,7 +48,7 @@ public:
     SStringW m_strSkinName; /**<SKIN NAME */
     SStringW m_strNcSkinName;/**<非客户区SKIN NAME */
     BOOL m_bMouseRelay;     /**<鼠标消息是否转发给父窗口 */
-
+    BYTE    m_byAlpha;      /**<窗口透明度 */
     UINT GetTextAlign();
     int GetStates();
     COLORREF GetTextColor(int iState);
@@ -95,6 +95,7 @@ protected:
         ATTR_STRINGT(L"cursor",m_strCursor,FALSE)
         ATTR_INT(L"dotted",m_bDotted,FALSE)
         ATTR_INT(L"mouseRelay",m_bMouseRelay,FALSE)
+        ATTR_INT(L"alpha",m_byAlpha,TRUE)
     SOUI_ATTRS_BREAK()      //属性不交给SObject处理
 };
 

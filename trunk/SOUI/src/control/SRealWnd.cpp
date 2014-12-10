@@ -47,11 +47,11 @@ void SRealWnd::ShowRealWindow()
     }
 }
 
-LRESULT SRealWnd::OnWindowPosChanged(LPRECT lpWndPos)
+LRESULT SRealWnd::OnWindowPosChanged()
 {
     CRect rcOldWnd = m_rcWindow;
 
-    LRESULT lRet=__super::OnWindowPosChanged(lpWndPos);
+    LRESULT lRet=__super::OnWindowPosChanged();
 
     if (lRet==0 && rcOldWnd != m_rcWindow)
     {

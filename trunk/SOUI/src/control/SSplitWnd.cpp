@@ -163,19 +163,14 @@ int SSplitWnd::FunComp( const void * p1,const void * p2 )
     return pPane1->pPane->m_nPriority-pPane2->pPane->m_nPriority;
 }
 
-LRESULT SSplitWnd::OnWindowPosChanged( LPRECT lpWndPos )
+void SSplitWnd::OnRelayout(const CRect &rcOld, const CRect & rcNew)
 {
-    CRect rcWnd=m_rcWindow;
-    LRESULT lRet=__super::OnWindowPosChanged(lpWndPos);
-    if(lRet==0)
-    {
-        UINT uMode=0;
-        if(rcWnd.Width()!=m_rcWindow.Width()) uMode |= layout_horz;
-        if(rcWnd.Height()!=m_rcWindow.Height()) uMode |= layout_vert;
-        if(rcWnd.TopLeft()!=m_rcWindow.TopLeft() || rcWnd.BottomRight()!=m_rcWindow.BottomRight()) uMode |= layout_pos;
-        Relayout(uMode);
-    }
-    return lRet;
+    __super::OnRelayout(rcOld,rcNew);
+    UINT uMode=0;
+    if(rcOld.Width()!=rcNew.Width()) uMode |= layout_horz;
+    if(rcOld.Height()!=rcNew.Height()) uMode |= layout_vert;
+    if(rcOld.TopLeft()!=rcNew.TopLeft() || rcOld.BottomRight()!=rcNew.BottomRight()) uMode |= layout_pos;
+    Relayout(uMode);
 }
 
 void SSplitWnd::OnLButtonDown( UINT nFlags,CPoint pt )

@@ -71,7 +71,18 @@ namespace SOUI
         }
         
         SStringT GetToolTipText(){return m_strToolTipText;}
-
+        
+        /**
+         * OnUpdateToolTip
+         * @brief    处理tooltip
+         * @param    const CPoint & pt --  测试点
+         * @param [out]  SwndToolTipInfo & tipInfo -- tip信息 
+         * @return   BOOL -- FALSE
+         *
+         * Describe  总是返回FALSE，禁止在page页面上显示tooltip
+         */
+        virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo &tipInfo){return FALSE;}
+        
         SOUI_ATTRS_BEGIN()
             ATTR_I18NSTRT(L"title", m_strTitle, FALSE)
         SOUI_ATTRS_END()
@@ -312,6 +323,15 @@ namespace SOUI
 
         virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo);
         
+        /**
+        * UpdateChildrenPosition
+        * @brief    更新子窗口位置
+        * @return   void 
+        *
+        * Describe  
+        */
+        virtual void UpdateChildrenPosition();
+
         virtual void OnInitFinished(pugi::xml_node xmlNode);
     protected:
         int HitTest(CPoint pt);
