@@ -424,14 +424,14 @@ BOOL STabCtrl::CreateChildren( pugi::xml_node xmlNode )
     return TRUE;
 }
 
-BOOL STabCtrl::InsertItem( LPCWSTR lpContent ,int iInsert/*=-1*/)
+int STabCtrl::InsertItem( LPCWSTR lpContent ,int iInsert/*=-1*/)
 {
     pugi::xml_document xmlDoc;
     if(!xmlDoc.load_buffer(lpContent,wcslen(lpContent)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) return FALSE;
 
     pugi::xml_node xmlTab=xmlDoc.child(L"page");
 
-    return InsertItem(xmlTab,iInsert)!=-1;
+    return InsertItem(xmlTab,iInsert);
 }
 
 int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoading/*=FALSE*/ )
