@@ -211,13 +211,14 @@ namespace SOUI
         /**
         * STabCtrl::InsertItem
         * @brief    插入tab页面
-        * @param    LPCWSTR lpContent  -- 标题
+        * @param    LPCWSTR lpContent  -- XML描述的page信息
         * @param    int iInsert  -- 位置
-        * @return   返回BOOL
+        * @return   返回插入位置
         *
         * Describe  插入tab页面
         */
-        BOOL InsertItem(LPCWSTR lpContent,int iInsert=-1);
+        int InsertItem(LPCWSTR lpContent,int iInsert=-1);
+
         /**
         * STabCtrl::InsertItem
         * @brief    插入tab页面
