@@ -2,6 +2,16 @@
   <style>
     <class name="normalbtn" skin="_skin.sys.btn.normal" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
   </style>
+  <buttonText>
+    <ok>确定</ok>
+    <cancel>取消</cancel>
+    <abort>中止</abort>
+    <retry>重试</retry>
+    <yes>是</yes>
+    <no>否</no>
+    <ignore>忽略</ignore>
+  </buttonText>
+  
   <root skin="_skin.sys.wnd.bkgnd">
     <caption id="101" pos="0,0,-0,29">
       <text pos="11,9" class="cls_txt_red" name="msgtitle" >title</text>

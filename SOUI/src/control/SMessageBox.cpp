@@ -72,7 +72,7 @@ namespace SOUI
         struct
         {
             UINT uBtnID;//按钮ID
-            TCHAR szText[20]; //按钮字符    
+            WCHAR szText[20]; //按钮字符    
         }btnInfo[3];
     }g_msgBtnText[]=
     {
@@ -152,10 +152,16 @@ namespace SOUI
         SWindow *pBtnPanel=pBtnSwitch->GetItem(g_msgBtnText[uType].nBtns-1);
         SASSERT(pBtnPanel);
         
+        pugi::xml_node nodeBtnTxt = s_xmlMsgTemplate.child(L"SOUI").child(L"buttonText");
         for(int i=0; i<g_msgBtnText[uType].nBtns; i++)
         {
             SWindow *pBtn=pBtnPanel->FindChildByName(g_wcsNameOfBtns[i]);
-            pBtn->SetWindowText(S_CW2T(TR(S_CT2W(g_msgBtnText[uType].btnInfo[i].szText),GetTranslatorContext())));    
+            const wchar_t *pBtnText = g_msgBtnText[uType].btnInfo[i].szText;
+            //先从模板中的buttonText节点里查按钮的文字
+            pugi::xml_node nodeTxt = nodeBtnTxt.child(pBtnText);
+            if(nodeTxt) pBtnText=nodeTxt.text().get();
+            //设置按钮文字，从翻译引擎中翻译
+            pBtn->SetWindowText(S_CW2T(TR(pBtnText,GetTranslatorContext())));    
             pBtn->SetID(g_msgBtnText[uType].btnInfo[i].uBtnID);
         }
         
