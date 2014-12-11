@@ -446,7 +446,7 @@ void SComboBox::OnSelChanged()
     {
         SStringT strText=GetLBText(m_pListBox->GetCurSel());
         m_pEdit->GetEventSet()->setMutedState(true);
-        m_pEdit->SetWindowText(S_CT2W(strText));
+        m_pEdit->SetWindowText(strText);
         m_pEdit->GetEventSet()->setMutedState(false);
     }
     Invalidate();
@@ -587,7 +587,7 @@ void SComboBoxEx::OnSelChanged()
     {
         SStringT strText=GetLBText(iSel);
         m_pEdit->GetEventSet()->setMutedState(true);
-        m_pEdit->SetWindowText(S_CT2W(strText));
+        m_pEdit->SetWindowText(strText);
         m_pEdit->GetEventSet()->setMutedState(false);
     }
     Invalidate();

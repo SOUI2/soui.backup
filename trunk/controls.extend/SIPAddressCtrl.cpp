@@ -82,8 +82,8 @@ namespace SOUI
         ImmAssociateContext(hHost,m_hImcCopy);
         m_hImcCopy = 0;
         
-        SStringW strValue = GetWindowText();
-        UINT uiValue = _wtoi(strValue);
+        SStringT strValue = GetWindowText();
+        UINT uiValue = _ttoi(strValue);
         if (uiValue > 255)
         {
             SetField(255);
