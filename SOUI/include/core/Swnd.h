@@ -473,12 +473,12 @@ namespace SOUI
         /**
         * Move
         * @brief    将窗口移动到指定位置
-        * @param    LPRECT prect --  
+        * @param    LPCRECT prect --  
         * @return   void 
         *
         * Describe  移动后，窗口的布局标志自动变为Pos_Float
         */
-        void Move(LPRECT prect);
+        void Move(LPCRECT prect);
 
         /**
         * Move
