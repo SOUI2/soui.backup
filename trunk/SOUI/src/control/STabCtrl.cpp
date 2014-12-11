@@ -427,10 +427,10 @@ BOOL STabCtrl::CreateChildren( pugi::xml_node xmlNode )
 int STabCtrl::InsertItem( LPCWSTR lpContent ,int iInsert/*=-1*/)
 {
     pugi::xml_document xmlDoc;
-    if(!xmlDoc.load_buffer(lpContent,wcslen(lpContent)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) return FALSE;
+    if(!xmlDoc.load_buffer(lpContent,wcslen(lpContent)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) return -1;
 
     pugi::xml_node xmlTab=xmlDoc.child(L"page");
-
+    if(!xmlTab)   return -1;
     return InsertItem(xmlTab,iInsert);
 }
 
@@ -440,14 +440,20 @@ int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoadin
     STabPage *pChild = (STabPage *)SApplication::getSingleton().CreateWindowByName(STabPage::GetClassName());
     
     InsertChild(pChild);
-
-    pChild->Move(GetChildrenLayoutRect());
     pChild->InitFromXml(xmlNode);
+    
+    CRect rcPage=GetChildrenLayoutRect();
+    pChild->Move(&rcPage);
 
     if(iInsert==-1) iInsert=m_lstPages.GetCount();
     m_lstPages.InsertAt(iInsert,pChild);
-    if(!bLoading && m_nCurrentPage>=iInsert) m_nCurrentPage++;
-
+    if(!bLoading )
+    {
+        if(m_nCurrentPage>=iInsert)  m_nCurrentPage++;
+        InvalidateRect(GetTitleRect());
+        if(m_nCurrentPage == -1) SetCurSel(iInsert);
+    }
+    
     return iInsert;
 }
 

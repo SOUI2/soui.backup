@@ -204,7 +204,7 @@ namespace SOUI
 
     // Move SWindow to new place
     //
-    void SWindow::Move(LPRECT prect)
+    void SWindow::Move(LPCRECT prect)
     {
         SASSERT(prect);
         TestMainThread();
