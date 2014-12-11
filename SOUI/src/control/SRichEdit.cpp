@@ -621,7 +621,7 @@ LRESULT SRichEdit::OnCreate( LPVOID )
     SSendMessage(EM_SETLANGOPTIONS, 0, dw);
 
     if(m_strRtfSrc.IsEmpty())
-        SetWindowText(S_CT2W(SWindow::GetWindowText()));
+        SetWindowText(SWindow::GetWindowText());
     else
         SetAttribute(L"rtf",m_strRtfSrc,FALSE);
     //register droptarget
@@ -1372,7 +1372,7 @@ void SRichEdit::SetWindowText( LPCTSTR lpszText )
     SSendMessage(WM_SETTEXT,0,(LPARAM)lpszText);
 #else
     SStringW str = S_CT2W(lpszText);
-    SSendMessage(WM_SETTEXT,0,(LPARAM)(LPCTSTR)str);
+    SSendMessage(WM_SETTEXT,0,(LPARAM)(LPCWSTR)str);
 #endif
 }
 
