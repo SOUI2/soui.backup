@@ -290,7 +290,7 @@ void SwndContainerImpl::OnActivate( UINT nState )
 
 BOOL SwndContainerImpl::RegisterTimelineHandler( ITimelineHandler *pHandler )
 {
-    POSITION pos=m_lstTimelineHandler.Find(pHandler);
+    SPOSITION pos=m_lstTimelineHandler.Find(pHandler);
     if(pos) return FALSE;
     m_lstTimelineHandler.AddTail(pHandler);
     return TRUE;
@@ -298,7 +298,7 @@ BOOL SwndContainerImpl::RegisterTimelineHandler( ITimelineHandler *pHandler )
 
 BOOL SwndContainerImpl::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 {
-    POSITION pos=m_lstTimelineHandler.Find(pHandler);
+    SPOSITION pos=m_lstTimelineHandler.Find(pHandler);
     if(!pos) return FALSE;
     m_lstTimelineHandler.RemoveAt(pos);
     return TRUE;
@@ -306,7 +306,7 @@ BOOL SwndContainerImpl::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 
 void SwndContainerImpl::OnNextFrame()
 {
-    POSITION pos=m_lstTimelineHandler.GetHeadPosition();
+    SPOSITION pos=m_lstTimelineHandler.GetHeadPosition();
     while(pos)
     {
         ITimelineHandler * pHandler=m_lstTimelineHandler.GetNext(pos);

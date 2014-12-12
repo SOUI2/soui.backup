@@ -59,7 +59,7 @@ namespace SOUI
 
     SPropertyGrid::~SPropertyGrid(void)
     {
-        POSITION pos = m_lstGroup.GetHeadPosition();
+        SPOSITION pos = m_lstGroup.GetHeadPosition();
         while(pos)
         {
             SPropertyGroup * pGroup = m_lstGroup.GetNext(pos);
@@ -129,7 +129,7 @@ namespace SOUI
 
     BOOL SPropertyGrid::InsertGroup( SPropertyGroup * pGroup,SPropertyGroup* pInertAfter/*=IG_LAST*/ )
     {
-        POSITION pos = m_lstGroup.Find(pGroup);
+        SPOSITION pos = m_lstGroup.Find(pGroup);
         if(pos) return FALSE;
         if(pInertAfter == IG_FIRST)
         {
@@ -222,7 +222,7 @@ namespace SOUI
             SortItems(lstChilds);
         }
 
-        POSITION pos = lstChilds.GetHeadPosition();
+        SPOSITION pos = lstChilds.GetHeadPosition();
         while(pos)
         {
             IPropertyItem *pChild = lstChilds.GetNext(pos);
@@ -400,11 +400,11 @@ namespace SOUI
     void SPropertyGrid::SortItems( SList<IPropertyItem*> & lstItems )
     {
         SList<IPropertyItem*> lstCpy;
-        POSITION pos = lstItems.GetHeadPosition();
+        SPOSITION pos = lstItems.GetHeadPosition();
         while(pos)
         {
             IPropertyItem *pItem = lstItems.GetNext(pos);
-            POSITION pos2 = lstCpy.GetHeadPosition();
+            SPOSITION pos2 = lstCpy.GetHeadPosition();
             while(pos2)
             {
                 IPropertyItem* pItem2=lstCpy.GetAt(pos2);

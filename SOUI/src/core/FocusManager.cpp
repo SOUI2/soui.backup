@@ -357,17 +357,17 @@ namespace SOUI
     {
         if(!accelerators_.Lookup(accelerator)) return;
         AcceleratorTargetList* targets=&accelerators_[accelerator];
-        POSITION pos = targets->Find(target);
+        SPOSITION pos = targets->Find(target);
         if(pos) targets->RemoveAt(pos);
     }
 
     void CFocusManager::UnregisterAccelerators( IAcceleratorTarget* target )
     {
-        POSITION pos=accelerators_.GetStartPosition();
+        SPOSITION pos=accelerators_.GetStartPosition();
         while(pos)
         {
             AcceleratorTargetList & targets=accelerators_.GetValueAt(pos);
-            POSITION pos2=targets.Find(target);
+            SPOSITION pos2=targets.Find(target);
             if(pos2) targets.RemoveAt(pos2);
             accelerators_.GetNext(pos);
         }
@@ -382,7 +382,7 @@ namespace SOUI
         AcceleratorTargetList targets;
         CopyList(accelerators_[accelerator],targets);
         
-        POSITION pos=targets.GetHeadPosition();
+        SPOSITION pos=targets.GetHeadPosition();
 
         while(pos)
         {

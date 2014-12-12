@@ -11,7 +11,7 @@ namespace SOUI
     SResProviderMgr::~SResProviderMgr(void)
     {
         SAutoLock lock(m_cs);
-        POSITION pos=m_lstResProvider.GetHeadPosition();
+        SPOSITION pos=m_lstResProvider.GetHeadPosition();
         while(pos)
         {
             IResProvider *pResProvider=m_lstResProvider.GetNext(pos);
@@ -29,7 +29,7 @@ namespace SOUI
     IResProvider * SResProviderMgr::GetMatchResProvider( LPCTSTR pszType,LPCTSTR pszResName )
     {
         SAutoLock lock(m_cs);
-        POSITION pos=m_lstResProvider.GetHeadPosition();
+        SPOSITION pos=m_lstResProvider.GetHeadPosition();
         while(pos)
         {
             IResProvider * pResProvider=m_lstResProvider.GetNext(pos);
@@ -48,7 +48,7 @@ namespace SOUI
     void SResProviderMgr::RemoveResProvider( IResProvider * pResProvider )
     {
         SAutoLock lock(m_cs);
-        POSITION pos=m_lstResProvider.Find(pResProvider);
+        SPOSITION pos=m_lstResProvider.Find(pResProvider);
         if(pos)
         {
             m_lstResProvider.RemoveAt(pos);
@@ -93,7 +93,7 @@ namespace SOUI
     LPCTSTR SResProviderMgr::FindImageType( LPCTSTR pszImgName )
     {
         SAutoLock lock(m_cs);
-        POSITION pos=m_lstResProvider.GetHeadPosition();
+        SPOSITION pos=m_lstResProvider.GetHeadPosition();
         while(pos)
         {
             IResProvider* pResProvider=m_lstResProvider.GetNext(pos);

@@ -13,7 +13,7 @@ namespace SOUI{
     SDropTargetDispatcher::~SDropTargetDispatcher(void)
     {
         DragLeave();
-        POSITION pos=m_mapDropTarget.GetStartPosition();
+        SPOSITION pos=m_mapDropTarget.GetStartPosition();
         while(pos)
         {
             DTMAP::CPair *pPair=m_mapDropTarget.GetNext(pos);

@@ -251,11 +251,11 @@ namespace SOUI
 
     BOOL SwndLayout::CalcChildrenPosition(SList<SWindowRepos*> *pListChildren,const CRect & rcContainer)
     {
-        POSITION pos=pListChildren->GetHeadPosition();
+        SPOSITION pos=pListChildren->GetHeadPosition();
         int nChildrenCount=pListChildren->GetCount();
         while(pos)
         {
-            POSITION posOld=pos;
+            SPOSITION posOld=pos;
             SWindow *pChild=pListChildren->GetNext(pos)->GetWindow();
             if(0 == pChild->m_layout.CalcPosition(rcContainer,pChild->m_rcWindow))
             {

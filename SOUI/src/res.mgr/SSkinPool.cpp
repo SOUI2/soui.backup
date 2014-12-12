@@ -82,7 +82,7 @@ SSkinPoolMgr::SSkinPoolMgr()
 
 SSkinPoolMgr::~SSkinPoolMgr()
 {
-    POSITION pos=m_lstSkinPools.GetHeadPosition();
+    SPOSITION pos=m_lstSkinPools.GetHeadPosition();
     while(pos)
     {
         SSkinPool *p = m_lstSkinPools.GetNext(pos);
@@ -94,7 +94,7 @@ SSkinPoolMgr::~SSkinPoolMgr()
 
 ISkinObj* SSkinPoolMgr::GetSkin( LPCWSTR strSkinName )
 {
-    POSITION pos=m_lstSkinPools.GetTailPosition();
+    SPOSITION pos=m_lstSkinPools.GetTailPosition();
     while(pos)
     {
         SSkinPool *pStylePool=m_lstSkinPools.GetPrev(pos);
@@ -157,7 +157,7 @@ SSkinPool * SSkinPoolMgr::PopSkinPool(SSkinPool *pSkinPool)
     {
         if(pSkinPool == m_bulitinSkinPool) return NULL;
 
-        POSITION pos=m_lstSkinPools.Find(pSkinPool);
+        SPOSITION pos=m_lstSkinPools.Find(pSkinPool);
         if(pos)
         {
             pRet=m_lstSkinPools.GetAt(pos);

@@ -31,7 +31,7 @@ namespace SOUI
     void CopyList(SList<T> &sour,SList<T> &dest)
     {
         SASSERT(dest.IsEmpty());
-        POSITION pos=sour.GetHeadPosition();
+        SPOSITION pos=sour.GetHeadPosition();
         while(pos)
         {
             T &t=sour.GetNext(pos);

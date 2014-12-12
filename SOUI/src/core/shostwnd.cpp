@@ -273,7 +273,6 @@ int SHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
     GETRENDERFACTORY->CreateRenderTarget(&m_memRT,0,0);
     GETRENDERFACTORY->CreateRegion(&m_rgnInvalidate);
-    
     m_pTipCtrl = GETTOOLTIPFACTORY->CreateToolTip(m_hWnd);
     if(m_pTipCtrl) GetMsgLoop()->AddMessageFilter(m_pTipCtrl);
 

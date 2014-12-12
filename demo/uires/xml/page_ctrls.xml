@@ -2,7 +2,7 @@
   <tabctrl pos="0,0,-0,-0" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
     <page title="listctrl">
       <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cursor="CUR_TST">
-        <header align="left" itemSwapEnable="1" fixWidth="1" sortHeader="1">
+        <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
           <items>
             <item width="150">name</item>
             <item width="150">gender</item>

@@ -46,7 +46,7 @@ namespace SOUI
 
     BOOL SStylePoolMgr::GetStyle( LPCWSTR lpszName,SwndStyle& style )
     {
-        POSITION pos=m_lstStylePools.GetTailPosition();
+        SPOSITION pos=m_lstStylePools.GetTailPosition();
         while(pos)
         {
             SStylePool *pStylePool=m_lstStylePools.GetPrev(pos);
@@ -66,7 +66,7 @@ namespace SOUI
         SStylePool * pRet=NULL;
         if(pStylePool)
         {
-            POSITION pos=m_lstStylePools.Find(pStylePool);
+            SPOSITION pos=m_lstStylePools.Find(pStylePool);
             if(pos)
             {
                 pRet=m_lstStylePools.GetAt(pos);
@@ -82,7 +82,7 @@ namespace SOUI
 
     SStylePoolMgr::~SStylePoolMgr()
     {
-        POSITION pos=m_lstStylePools.GetHeadPosition();
+        SPOSITION pos=m_lstStylePools.GetHeadPosition();
         while(pos)
         {
             SStylePool *p = m_lstStylePools.GetNext(pos);
