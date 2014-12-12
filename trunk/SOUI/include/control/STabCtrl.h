@@ -32,7 +32,7 @@ namespace SOUI
         *
         * Describe  构造函数  
         */
-        STabPage()
+        STabPage():m_iIcon(-1)
         {
             m_bVisible = FALSE;
             m_dwState = WndState_Invisible;
@@ -70,6 +70,10 @@ namespace SOUI
             m_strTitle = lpszTitle;
         }
         
+        int GetIconIndex() const {return m_iIcon;}
+        
+        void SetIconIndex(int iIcon) {m_iIcon=iIcon;}
+        
         SStringT GetToolTipText(){return m_strToolTipText;}
         
         /**
@@ -85,10 +89,12 @@ namespace SOUI
         
         SOUI_ATTRS_BEGIN()
             ATTR_I18NSTRT(L"title", m_strTitle, FALSE)
+            ATTR_INT(L"iconIndex", m_iIcon,FALSE)
         SOUI_ATTRS_END()
     protected:
 
         SStringT m_strTitle; /**< 标题 */
+        int      m_iIcon;
     };
 
     typedef enum tagSLIDEDIR

@@ -521,7 +521,9 @@ void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD d
     {
         rcIcon.right=rcIcon.left+m_pSkinIcon->GetSkinSize().cx;
         rcIcon.bottom=rcIcon.top+m_pSkinIcon->GetSkinSize().cy;
-        m_pSkinIcon->Draw(pRT,rcIcon,iItem);
+        int iIcon=GetItem(iItem)->GetIconIndex();
+        if(iIcon == -1) iIcon = iItem;
+        m_pSkinIcon->Draw(pRT,rcIcon,iIcon);
     }
 
     if(m_ptText.x!=-1 && m_ptText.y!=-1)
