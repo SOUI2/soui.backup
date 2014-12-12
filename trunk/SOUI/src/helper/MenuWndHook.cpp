@@ -67,7 +67,7 @@ void CMenuWndHook::InstallHook(HINSTANCE hInst,LPCWSTR pszSkinName)
 
 void CMenuWndHook::UnInstallHook()
 {
-    POSITION pos= m_WndMenuMap.GetStartPosition();
+    SPOSITION pos= m_WndMenuMap.GetStartPosition();
     while(pos)
     {
         SMap<HWND,CMenuWndHook*>::CPair *p=m_WndMenuMap.GetNext(pos);

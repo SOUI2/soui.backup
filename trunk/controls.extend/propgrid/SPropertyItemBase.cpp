@@ -59,7 +59,7 @@ namespace SOUI
                 SPropertyItemBase * pParent = (SPropertyItemBase*)GetParent();
                 if(!pParent) return NULL;
 
-                POSITION pos = pParent->m_childs.Find((IPropertyItemPtr)this);
+                SPOSITION pos = pParent->m_childs.Find((IPropertyItemPtr)this);
                 SASSERT(pos);
                 pParent->m_childs.GetNext(pos);
                 if(!pos) return NULL;
@@ -70,7 +70,7 @@ namespace SOUI
             {
                 SPropertyItemBase * pParent = (SPropertyItemBase*)GetParent();
                 if(!pParent) return NULL;
-                POSITION pos = pParent->m_childs.Find((IPropertyItemPtr)this);
+                SPOSITION pos = pParent->m_childs.Find((IPropertyItemPtr)this);
                 SASSERT(pos);
                 pParent->m_childs.GetPrev(pos);
                 if(!pos) return NULL;
@@ -92,7 +92,7 @@ namespace SOUI
         else if(pInsertAfter == IC_FIRST) m_childs.InsertBefore(NULL,pChild);
         else
         {
-            POSITION pos = m_childs.Find(pInsertAfter);
+            SPOSITION pos = m_childs.Find(pInsertAfter);
             if(!pos) return FALSE;
             m_childs.InsertAfter(pos,pChild);            
         }
@@ -108,7 +108,7 @@ namespace SOUI
 
     BOOL SPropertyItemBase::RemoveChild( IPropertyItem * pChild )
     {
-        POSITION pos = m_childs.Find(pChild);
+        SPOSITION pos = m_childs.Find(pChild);
         if(!pos) return FALSE;
         m_childs.RemoveAt(pos);
         pChild->Release();
@@ -117,7 +117,7 @@ namespace SOUI
 
     SPropertyItemBase::~SPropertyItemBase()
     {
-        POSITION pos = m_childs.GetHeadPosition();
+        SPOSITION pos = m_childs.GetHeadPosition();
         while(pos)
         {
             IPropertyItemPtr pChild = m_childs.GetNext(pos);

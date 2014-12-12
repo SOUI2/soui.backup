@@ -26,7 +26,7 @@ BOOL SObjDefAttr::Init( pugi::xml_node xmlNode )
         xmlObjAttr=xmlObjAttr.next_sibling();
     }
 
-    POSITION pos=m_mapNamedObj->GetStartPosition();
+    SPOSITION pos=m_mapNamedObj->GetStartPosition();
     while(pos)
     {
         SMap<SStringW,pugi::xml_node>::CPair *p=m_mapNamedObj->GetNext(pos);

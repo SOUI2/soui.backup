@@ -55,7 +55,7 @@ public:
     {
         if(m_pFunOnKeyRemoved)
         {
-            POSITION pos=m_mapNamedObj->GetStartPosition();
+            SPOSITION pos=m_mapNamedObj->GetStartPosition();
             while(pos)
             {
                 SMap<TKey,TObj>::CPair *p=m_mapNamedObj->GetNext(pos);

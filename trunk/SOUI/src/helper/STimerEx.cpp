@@ -24,14 +24,14 @@ BOOL STimer2::_SetTimer( SWND swnd,UINT_PTR uTimerID,UINT nElapse )
 
 void STimer2::_KillTimer( SWND swnd,UINT_PTR uTimerID )
 {
-    POSITION pos=m_mapNamedObj->GetStartPosition();
+    SPOSITION pos=m_mapNamedObj->GetStartPosition();
     while(pos)
     {
         SMap<UINT_PTR,TIMERINFO>::CPair *p=m_mapNamedObj->GetNext(pos);
         if(p->m_value.Swnd==swnd && p->m_value.uTimerID==uTimerID)
         {
             ::KillTimer(NULL,p->m_key);
-            m_mapNamedObj->RemoveAtPos((POSITION)p);
+            m_mapNamedObj->RemoveAtPos((SPOSITION)p);
             break;
         }
     }
@@ -39,14 +39,14 @@ void STimer2::_KillTimer( SWND swnd,UINT_PTR uTimerID )
 
 void STimer2::_KillTimer( SWND Swnd )
 {
-    POSITION pos=m_mapNamedObj->GetStartPosition();
+    SPOSITION pos=m_mapNamedObj->GetStartPosition();
     while(pos)
     {
         SMap<UINT_PTR,TIMERINFO>::CPair *p=m_mapNamedObj->GetNext(pos);
         if(p->m_value.Swnd==Swnd)
         {
             ::KillTimer(NULL,p->m_key);
-            m_mapNamedObj->RemoveAtPos((POSITION)p);
+            m_mapNamedObj->RemoveAtPos((SPOSITION)p);
         }
     }
 }

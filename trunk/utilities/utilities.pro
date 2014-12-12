@@ -25,6 +25,7 @@ PRECOMPILED_HEADER = stdafx.h
 HEADERS += include/gdialpha.h \
            include/souicoll.h \
            include/trace.h \
+           include/snew.h \
            include/utilities-def.h \
            include/utilities.h \
            include/soui_mem_wrapper.h \

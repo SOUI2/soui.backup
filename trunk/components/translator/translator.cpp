@@ -180,7 +180,7 @@ namespace SOUI
     //  STranslator
     BOOL STranslatorMgr::InstallTranslator(ITranslator *pTranslator)
     {
-        POSITION pos=m_lstLang->GetHeadPosition();
+        SPOSITION pos=m_lstLang->GetHeadPosition();
         while(pos)
         {
             ITranslator *p=m_lstLang->GetNext(pos);
@@ -196,10 +196,10 @@ namespace SOUI
 
     BOOL STranslatorMgr::UninstallTranslator(REFGUID id)
     {
-        POSITION pos=m_lstLang->GetHeadPosition();
+        SPOSITION pos=m_lstLang->GetHeadPosition();
         while(pos)
         {
-            POSITION posBackup=pos;
+            SPOSITION posBackup=pos;
             ITranslator *p=m_lstLang->GetNext(pos);
             if(IsEqualGUID(id,p->guid()))
             {
@@ -218,7 +218,7 @@ namespace SOUI
 
     STranslatorMgr::~STranslatorMgr( void )
     {
-        POSITION pos=m_lstLang->GetHeadPosition();
+        SPOSITION pos=m_lstLang->GetHeadPosition();
         while(pos)
         {
             ITranslator *pLang=m_lstLang->GetNext(pos);
@@ -231,7 +231,7 @@ namespace SOUI
     {
         if(strSrc.IsEmpty()) return strSrc;
         SStringW strRet;
-        POSITION pos=m_lstLang->GetHeadPosition();
+        SPOSITION pos=m_lstLang->GetHeadPosition();
         while(pos)
         {
             ITranslator *pLang=m_lstLang->GetNext(pos);

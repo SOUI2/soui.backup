@@ -15,6 +15,7 @@
 
 #include <limits.h>
 #include <soui_mem_wrapper.h>
+#include "snew.h"
 
 #pragma warning(push)
 #pragma warning(disable: 4702)  // Unreachable code.  This file will have lots of it, especially without EH enabled.
@@ -59,25 +60,15 @@
 #endif
 #define _SCATCHALL() __pragma(warning(push)) __pragma(warning(disable: 4571)) catch( ... ) __pragma(warning(pop))
 
-//copy from <new.h>
-#ifndef __PLACEMENT_NEW_INLINE
-#define __PLACEMENT_NEW_INLINE
-inline void *__CRTDECL operator new(size_t, void *_Where)
-{return (_Where); }
-#if     _MSC_VER >= 1200
-inline void __CRTDECL operator delete(void *, void *)
-{return; }
-#endif
-#endif
 
 #pragma pack(push,_ATL_PACKING)
 namespace SOUI
 {
 
-struct __POSITION
+struct __SPOSITION
 {
 };
-typedef __POSITION* POSITION;
+typedef __SPOSITION* SPOSITION;
 
 template<typename T>
 class SLimits;
@@ -1081,7 +1072,7 @@ public:
 
 private:
     class CNode :
-        public __POSITION
+        public __SPOSITION
     {
     public:
         CNode()
@@ -1120,36 +1111,36 @@ public:
     void RemoveHeadNoReturn();
     void RemoveTailNoReturn();
 
-    POSITION AddHead();
-    POSITION AddHead( INARGTYPE element );
+    SPOSITION AddHead();
+    SPOSITION AddHead( INARGTYPE element );
     void AddHeadList( const SList< E, ETraits >* plNew );
-    POSITION AddTail();
-    POSITION AddTail( INARGTYPE element );
+    SPOSITION AddTail();
+    SPOSITION AddTail( INARGTYPE element );
     void AddTailList( const SList< E, ETraits >* plNew );
 
     void RemoveAll();
 
-    POSITION GetHeadPosition() const;
-    POSITION GetTailPosition() const;
-    E& GetNext( POSITION& pos );
-    const E& GetNext( POSITION& pos ) const;
-    E& GetPrev( POSITION& pos );
-    const E& GetPrev( POSITION& pos ) const;
+    SPOSITION GetHeadPosition() const;
+    SPOSITION GetTailPosition() const;
+    E& GetNext( SPOSITION& pos );
+    const E& GetNext( SPOSITION& pos ) const;
+    E& GetPrev( SPOSITION& pos );
+    const E& GetPrev( SPOSITION& pos ) const;
 
-    E& GetAt( POSITION pos );
-    const E& GetAt( POSITION pos ) const;
-    void SetAt( POSITION pos, INARGTYPE element );
-    void RemoveAt( POSITION pos );
+    E& GetAt( SPOSITION pos );
+    const E& GetAt( SPOSITION pos ) const;
+    void SetAt( SPOSITION pos, INARGTYPE element );
+    void RemoveAt( SPOSITION pos );
 
-    POSITION InsertBefore( POSITION pos, INARGTYPE element );
-    POSITION InsertAfter( POSITION pos, INARGTYPE element );
+    SPOSITION InsertBefore( SPOSITION pos, INARGTYPE element );
+    SPOSITION InsertAfter( SPOSITION pos, INARGTYPE element );
 
-    POSITION Find( INARGTYPE element, POSITION posStartAfter = NULL ) const;
-    POSITION FindIndex( size_t iElement ) const;
+    SPOSITION Find( INARGTYPE element, SPOSITION posStartAfter = NULL ) const;
+    SPOSITION FindIndex( size_t iElement ) const;
 
-    void MoveToHead( POSITION pos );
-    void MoveToTail( POSITION pos );
-    void SwapElements( POSITION pos1, POSITION pos2 );
+    void MoveToHead( SPOSITION pos );
+    void MoveToTail( SPOSITION pos );
+    void SwapElements( SPOSITION pos1, SPOSITION pos2 );
 
 #ifdef _DEBUG
     void AssertValid() const;
@@ -1220,67 +1211,67 @@ inline const E& SList< E, ETraits >::GetTail() const
 }
 
 template< typename E, class ETraits >
-inline POSITION SList< E, ETraits >::GetHeadPosition() const
+inline SPOSITION SList< E, ETraits >::GetHeadPosition() const
 {
-    return( POSITION( m_pHead ) );
+    return( SPOSITION( m_pHead ) );
 }
 
 template< typename E, class ETraits >
-inline POSITION SList< E, ETraits >::GetTailPosition() const
+inline SPOSITION SList< E, ETraits >::GetTailPosition() const
 {
-    return( POSITION( m_pTail ) );
+    return( SPOSITION( m_pTail ) );
 }
 
 template< typename E, class ETraits >
-inline E& SList< E, ETraits >::GetNext( POSITION& pos )
-{
-    CNode* pNode;
-
-    SENSURE( pos != NULL );
-    pNode = (CNode*)pos;
-    pos = POSITION( pNode->m_pNext );
-
-    return( pNode->m_element );
-}
-
-template< typename E, class ETraits >
-inline const E& SList< E, ETraits >::GetNext( POSITION& pos ) const
+inline E& SList< E, ETraits >::GetNext( SPOSITION& pos )
 {
     CNode* pNode;
 
     SENSURE( pos != NULL );
     pNode = (CNode*)pos;
-    pos = POSITION( pNode->m_pNext );
+    pos = SPOSITION( pNode->m_pNext );
 
     return( pNode->m_element );
 }
 
 template< typename E, class ETraits >
-inline E& SList< E, ETraits >::GetPrev( POSITION& pos )
+inline const E& SList< E, ETraits >::GetNext( SPOSITION& pos ) const
 {
     CNode* pNode;
 
     SENSURE( pos != NULL );
     pNode = (CNode*)pos;
-    pos = POSITION( pNode->m_pPrev );
+    pos = SPOSITION( pNode->m_pNext );
 
     return( pNode->m_element );
 }
 
 template< typename E, class ETraits >
-inline const E& SList< E, ETraits >::GetPrev( POSITION& pos ) const
+inline E& SList< E, ETraits >::GetPrev( SPOSITION& pos )
+{
+    CNode* pNode;
+
+    SENSURE( pos != NULL );
+    pNode = (CNode*)pos;
+    pos = SPOSITION( pNode->m_pPrev );
+
+    return( pNode->m_element );
+}
+
+template< typename E, class ETraits >
+inline const E& SList< E, ETraits >::GetPrev( SPOSITION& pos ) const
 {
     CNode* pNode;
 
     SASSERT( pos != NULL );
     pNode = (CNode*)pos;
-    pos = POSITION( pNode->m_pPrev );
+    pos = SPOSITION( pNode->m_pPrev );
 
     return( pNode->m_element );
 }
 
 template< typename E, class ETraits >
-inline E& SList< E, ETraits >::GetAt( POSITION pos )
+inline E& SList< E, ETraits >::GetAt( SPOSITION pos )
 {
     SENSURE( pos != NULL );
     CNode* pNode = (CNode*)pos;
@@ -1288,7 +1279,7 @@ inline E& SList< E, ETraits >::GetAt( POSITION pos )
 }
 
 template< typename E, class ETraits >
-inline const E& SList< E, ETraits >::GetAt( POSITION pos ) const
+inline const E& SList< E, ETraits >::GetAt( SPOSITION pos ) const
 {
     SENSURE( pos != NULL );
     CNode* pNode = (CNode*)pos;
@@ -1296,7 +1287,7 @@ inline const E& SList< E, ETraits >::GetAt( POSITION pos ) const
 }
 
 template< typename E, class ETraits >
-inline void SList< E, ETraits >::SetAt( POSITION pos, INARGTYPE element )
+inline void SList< E, ETraits >::SetAt( SPOSITION pos, INARGTYPE element )
 {
     SENSURE( pos != NULL );
     CNode* pNode = (CNode*)pos;
@@ -1430,7 +1421,7 @@ void SList< E, ETraits >::FreeNode( CNode* pNode )
 }
 
 template< typename E, class ETraits >
-POSITION SList< E, ETraits >::AddHead()
+SPOSITION SList< E, ETraits >::AddHead()
 {
     CNode* pNode = NewNode( NULL, m_pHead );
     if( m_pHead != NULL )
@@ -1443,11 +1434,11 @@ POSITION SList< E, ETraits >::AddHead()
     }
     m_pHead = pNode;
 
-    return( POSITION( pNode ) );
+    return( SPOSITION( pNode ) );
 }
 
 template< typename E, class ETraits >
-POSITION SList< E, ETraits >::AddHead( INARGTYPE element )
+SPOSITION SList< E, ETraits >::AddHead( INARGTYPE element )
 {
     CNode* pNode;
 
@@ -1463,11 +1454,11 @@ POSITION SList< E, ETraits >::AddHead( INARGTYPE element )
     }
     m_pHead = pNode;
 
-    return( POSITION( pNode ) );
+    return( SPOSITION( pNode ) );
 }
 
 template< typename E, class ETraits >
-POSITION SList< E, ETraits >::AddTail()
+SPOSITION SList< E, ETraits >::AddTail()
 {
     CNode* pNode = NewNode( m_pTail, NULL );
     if( m_pTail != NULL )
@@ -1480,11 +1471,11 @@ POSITION SList< E, ETraits >::AddTail()
     }
     m_pTail = pNode;
 
-    return( POSITION( pNode ) );
+    return( SPOSITION( pNode ) );
 }
 
 template< typename E, class ETraits >
-POSITION SList< E, ETraits >::AddTail( INARGTYPE element )
+SPOSITION SList< E, ETraits >::AddTail( INARGTYPE element )
 {
     CNode* pNode;
 
@@ -1500,7 +1491,7 @@ POSITION SList< E, ETraits >::AddTail( INARGTYPE element )
     }
     m_pTail = pNode;
 
-    return( POSITION( pNode ) );
+    return( SPOSITION( pNode ) );
 }
 
 template< typename E, class ETraits >
@@ -1508,7 +1499,7 @@ void SList< E, ETraits >::AddHeadList( const SList< E, ETraits >* plNew )
 {
     SENSURE( plNew != NULL );
 
-    POSITION pos = plNew->GetTailPosition();
+    SPOSITION pos = plNew->GetTailPosition();
     while( pos != NULL )
     {
         INARGTYPE element = plNew->GetPrev( pos );
@@ -1521,7 +1512,7 @@ void SList< E, ETraits >::AddTailList( const SList< E, ETraits >* plNew )
 {
     SENSURE( plNew != NULL );
 
-    POSITION pos = plNew->GetHeadPosition();
+    SPOSITION pos = plNew->GetHeadPosition();
     while( pos != NULL )
     {
         INARGTYPE element = plNew->GetNext( pos );
@@ -1613,7 +1604,7 @@ void SList< E, ETraits >::RemoveTailNoReturn()
 }
 
 template< typename E, class ETraits >
-POSITION SList< E, ETraits >::InsertBefore( POSITION pos, INARGTYPE element )
+SPOSITION SList< E, ETraits >::InsertBefore( SPOSITION pos, INARGTYPE element )
 {
     SASSERT_VALID(this);
 
@@ -1635,11 +1626,11 @@ POSITION SList< E, ETraits >::InsertBefore( POSITION pos, INARGTYPE element )
     }
     pOldNode->m_pPrev = pNewNode;
 
-    return( POSITION( pNewNode ) );
+    return( SPOSITION( pNewNode ) );
 }
 
 template< typename E, class ETraits >
-POSITION SList< E, ETraits >::InsertAfter( POSITION pos, INARGTYPE element )
+SPOSITION SList< E, ETraits >::InsertAfter( SPOSITION pos, INARGTYPE element )
 {
     SASSERT_VALID(this);
 
@@ -1661,11 +1652,11 @@ POSITION SList< E, ETraits >::InsertAfter( POSITION pos, INARGTYPE element )
     }
     pOldNode->m_pNext = pNewNode;
 
-    return( POSITION( pNewNode ) );
+    return( SPOSITION( pNewNode ) );
 }
 
 template< typename E, class ETraits >
-void SList< E, ETraits >::RemoveAt( POSITION pos )
+void SList< E, ETraits >::RemoveAt( SPOSITION pos )
 {
     SASSERT_VALID(this);
     SENSURE( pos != NULL );
@@ -1693,7 +1684,7 @@ void SList< E, ETraits >::RemoveAt( POSITION pos )
 }
 
 template< typename E, class ETraits >
-POSITION SList< E, ETraits >::FindIndex( size_t iElement ) const
+SPOSITION SList< E, ETraits >::FindIndex( size_t iElement ) const
 {
     SASSERT_VALID(this);
 
@@ -1709,11 +1700,11 @@ POSITION SList< E, ETraits >::FindIndex( size_t iElement ) const
         pNode = pNode->m_pNext;
     }
 
-    return( POSITION( pNode ) );
+    return( SPOSITION( pNode ) );
 }
 
 template< typename E, class ETraits >
-void SList< E, ETraits >::MoveToHead( POSITION pos )
+void SList< E, ETraits >::MoveToHead( SPOSITION pos )
 {
     SENSURE( pos != NULL );
 
@@ -1745,7 +1736,7 @@ void SList< E, ETraits >::MoveToHead( POSITION pos )
 }
 
 template< typename E, class ETraits >
-void SList< E, ETraits >::MoveToTail( POSITION pos )
+void SList< E, ETraits >::MoveToTail( SPOSITION pos )
 {
     SENSURE( pos != NULL );
     CNode* pNode = static_cast< CNode* >( pos );
@@ -1775,7 +1766,7 @@ void SList< E, ETraits >::MoveToTail( POSITION pos )
 }
 
 template< typename E, class ETraits >
-void SList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 )
+void SList< E, ETraits >::SwapElements( SPOSITION pos1, SPOSITION pos2 )
 {
     SASSERT( pos1 != NULL );
     SASSERT( pos2 != NULL );
@@ -1874,7 +1865,7 @@ void SList< E, ETraits >::SwapElements( POSITION pos1, POSITION pos2 )
 }
 
 template< typename E, class ETraits >
-POSITION SList< E, ETraits >::Find( INARGTYPE element, POSITION posStartAfter ) const
+SPOSITION SList< E, ETraits >::Find( INARGTYPE element, SPOSITION posStartAfter ) const
 {
     SASSERT_VALID(this);
 
@@ -1891,7 +1882,7 @@ POSITION SList< E, ETraits >::Find( INARGTYPE element, POSITION posStartAfter ) 
     for( ; pNode != NULL; pNode = pNode->m_pNext )
     {
         if( ETraits::CompareElements( pNode->m_element, element ) )
-            return( POSITION( pNode ) );
+            return( SPOSITION( pNode ) );
     }
 
     return( NULL );
@@ -1924,7 +1915,7 @@ public:
     typedef typename VTraits::OUTARGTYPE VOUTARGTYPE;
 
     class CPair :
-        public __POSITION
+        public __SPOSITION
     {
     protected:
         CPair( KINARGTYPE key ) :
@@ -1971,26 +1962,26 @@ public:
     CPair* Lookup( KINARGTYPE key );
     V& operator[]( KINARGTYPE key ) throw(...);
 
-    POSITION SetAt( KINARGTYPE key, VINARGTYPE value );
-    void SetValueAt( POSITION pos, VINARGTYPE value );
+    SPOSITION SetAt( KINARGTYPE key, VINARGTYPE value );
+    void SetValueAt( SPOSITION pos, VINARGTYPE value );
 
     bool RemoveKey( KINARGTYPE key );
     void RemoveAll();
-    void RemoveAtPos( POSITION pos );
+    void RemoveAtPos( SPOSITION pos );
 
-    POSITION GetStartPosition() const;
-    void GetNextAssoc( POSITION& pos, KOUTARGTYPE key, VOUTARGTYPE value ) const;
-    const CPair* GetNext( POSITION& pos ) const;
-    CPair* GetNext( POSITION& pos );
-    const K& GetNextKey( POSITION& pos ) const;
-    const V& GetNextValue( POSITION& pos ) const;
-    V& GetNextValue( POSITION& pos );
-    void GetAt( POSITION pos, KOUTARGTYPE key, VOUTARGTYPE value ) const;
-    CPair* GetAt( POSITION pos );
-    const CPair* GetAt( POSITION pos ) const;
-    const K& GetKeyAt( POSITION pos ) const;
-    const V& GetValueAt( POSITION pos ) const;
-    V& GetValueAt( POSITION pos );
+    SPOSITION GetStartPosition() const;
+    void GetNextAssoc( SPOSITION& pos, KOUTARGTYPE key, VOUTARGTYPE value ) const;
+    const CPair* GetNext( SPOSITION& pos ) const;
+    CPair* GetNext( SPOSITION& pos );
+    const K& GetNextKey( SPOSITION& pos ) const;
+    const V& GetNextValue( SPOSITION& pos ) const;
+    V& GetNextValue( SPOSITION& pos );
+    void GetAt( SPOSITION pos, KOUTARGTYPE key, VOUTARGTYPE value ) const;
+    CPair* GetAt( SPOSITION pos );
+    const CPair* GetAt( SPOSITION pos ) const;
+    const K& GetKeyAt( SPOSITION pos ) const;
+    const V& GetValueAt( SPOSITION pos ) const;
+    V& GetValueAt( SPOSITION pos );
 
     UINT GetHashTableSize() const;
     bool InitHashTable( UINT nBins, bool bAllocNow = true );
@@ -2077,7 +2068,7 @@ inline UINT SMap< K, V, KTraits, VTraits >::GetHashTableSize() const
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline void SMap< K, V, KTraits, VTraits >::GetAt( POSITION pos, KOUTARGTYPE key, VOUTARGTYPE value ) const
+inline void SMap< K, V, KTraits, VTraits >::GetAt( SPOSITION pos, KOUTARGTYPE key, VOUTARGTYPE value ) const
 {
     SENSURE( pos != NULL );
 
@@ -2088,7 +2079,7 @@ inline void SMap< K, V, KTraits, VTraits >::GetAt( POSITION pos, KOUTARGTYPE key
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetAt( POSITION pos )
+inline typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetAt( SPOSITION pos )
 {
     SASSERT( pos != NULL );
 
@@ -2096,7 +2087,7 @@ inline typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTra
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetAt( POSITION pos ) const
+inline const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetAt( SPOSITION pos ) const
 {
     SASSERT( pos != NULL );
 
@@ -2104,7 +2095,7 @@ inline const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline const K& SMap< K, V, KTraits, VTraits >::GetKeyAt( POSITION pos ) const
+inline const K& SMap< K, V, KTraits, VTraits >::GetKeyAt( SPOSITION pos ) const
 {
     SENSURE( pos != NULL );
 
@@ -2114,7 +2105,7 @@ inline const K& SMap< K, V, KTraits, VTraits >::GetKeyAt( POSITION pos ) const
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline const V& SMap< K, V, KTraits, VTraits >::GetValueAt( POSITION pos ) const
+inline const V& SMap< K, V, KTraits, VTraits >::GetValueAt( SPOSITION pos ) const
 {
     SENSURE( pos != NULL );
 
@@ -2124,7 +2115,7 @@ inline const V& SMap< K, V, KTraits, VTraits >::GetValueAt( POSITION pos ) const
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-inline V& SMap< K, V, KTraits, VTraits >::GetValueAt( POSITION pos )
+inline V& SMap< K, V, KTraits, VTraits >::GetValueAt( SPOSITION pos )
 {
     SENSURE( pos != NULL );
 
@@ -2209,7 +2200,7 @@ typename SMap< K, V, KTraits, VTraits >::CNode* SMap< K, V, KTraits, VTraits >::
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-POSITION SMap< K, V, KTraits, VTraits >::GetStartPosition() const
+SPOSITION SMap< K, V, KTraits, VTraits >::GetStartPosition() const
 {
     if( IsEmpty() )
     {
@@ -2220,7 +2211,7 @@ POSITION SMap< K, V, KTraits, VTraits >::GetStartPosition() const
     {
         if( m_ppBins[iBin] != NULL )
         {
-            return( POSITION( m_ppBins[iBin] ) );
+            return( SPOSITION( m_ppBins[iBin] ) );
         }
     }
     SASSERT( false );
@@ -2229,7 +2220,7 @@ POSITION SMap< K, V, KTraits, VTraits >::GetStartPosition() const
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-POSITION SMap< K, V, KTraits, VTraits >::SetAt( KINARGTYPE key, VINARGTYPE value )
+SPOSITION SMap< K, V, KTraits, VTraits >::SetAt( KINARGTYPE key, VINARGTYPE value )
 {
     CNode* pNode;
     UINT iBin;
@@ -2254,11 +2245,11 @@ POSITION SMap< K, V, KTraits, VTraits >::SetAt( KINARGTYPE key, VINARGTYPE value
         pNode->m_value = value;
     }
 
-    return( POSITION( pNode ) );
+    return( SPOSITION( pNode ) );
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void SMap< K, V, KTraits, VTraits >::SetValueAt( POSITION pos, VINARGTYPE value )
+void SMap< K, V, KTraits, VTraits >::SetValueAt( SPOSITION pos, VINARGTYPE value )
 {
     SASSERT( pos != NULL );
 
@@ -2599,7 +2590,7 @@ void SMap< K, V, KTraits, VTraits >::RemoveNode( CNode* pNode, CNode* pPrev )
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void SMap< K, V, KTraits, VTraits >::RemoveAtPos( POSITION pos )
+void SMap< K, V, KTraits, VTraits >::RemoveAtPos( SPOSITION pos )
 {
     SENSURE( pos != NULL );
 
@@ -2687,7 +2678,7 @@ void SMap< K, V, KTraits, VTraits >::Rehash( UINT nBins )
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-void SMap< K, V, KTraits, VTraits >::GetNextAssoc( POSITION& pos, KOUTARGTYPE key,
+void SMap< K, V, KTraits, VTraits >::GetNextAssoc( SPOSITION& pos, KOUTARGTYPE key,
         VOUTARGTYPE value ) const
 {
     CNode* pNode;
@@ -2699,13 +2690,13 @@ void SMap< K, V, KTraits, VTraits >::GetNextAssoc( POSITION& pos, KOUTARGTYPE ke
     pNode = (CNode*)pos;
     pNext = FindNextNode( pNode );
 
-    pos = POSITION( pNext );
+    pos = SPOSITION( pNext );
     key = pNode->m_key;
     value = pNode->m_value;
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetNext( POSITION& pos ) const
+const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetNext( SPOSITION& pos ) const
 {
     CNode* pNode;
     CNode* pNext;
@@ -2716,14 +2707,14 @@ const typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTrai
     pNode = (CNode*)pos;
     pNext = FindNextNode( pNode );
 
-    pos = POSITION( pNext );
+    pos = SPOSITION( pNext );
 
     return( pNode );
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
 typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::GetNext(
-    POSITION& pos )
+    SPOSITION& pos )
 {
     SASSUME( m_ppBins != NULL );
     SASSERT( pos != NULL );
@@ -2731,13 +2722,13 @@ typename SMap< K, V, KTraits, VTraits >::CPair* SMap< K, V, KTraits, VTraits >::
     CNode* pNode = static_cast< CNode* >( pos );
     CNode* pNext = FindNextNode( pNode );
 
-    pos = POSITION( pNext );
+    pos = SPOSITION( pNext );
 
     return( pNode );
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-const K& SMap< K, V, KTraits, VTraits >::GetNextKey( POSITION& pos ) const
+const K& SMap< K, V, KTraits, VTraits >::GetNextKey( SPOSITION& pos ) const
 {
     CNode* pNode;
     CNode* pNext;
@@ -2748,13 +2739,13 @@ const K& SMap< K, V, KTraits, VTraits >::GetNextKey( POSITION& pos ) const
     pNode = (CNode*)pos;
     pNext = FindNextNode( pNode );
 
-    pos = POSITION( pNext );
+    pos = SPOSITION( pNext );
 
     return( pNode->m_key );
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-const V& SMap< K, V, KTraits, VTraits >::GetNextValue( POSITION& pos ) const
+const V& SMap< K, V, KTraits, VTraits >::GetNextValue( SPOSITION& pos ) const
 {
     CNode* pNode;
     CNode* pNext;
@@ -2765,13 +2756,13 @@ const V& SMap< K, V, KTraits, VTraits >::GetNextValue( POSITION& pos ) const
     pNode = (CNode*)pos;
     pNext = FindNextNode( pNode );
 
-    pos = POSITION( pNext );
+    pos = SPOSITION( pNext );
 
     return( pNode->m_value );
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-V& SMap< K, V, KTraits, VTraits >::GetNextValue( POSITION& pos )
+V& SMap< K, V, KTraits, VTraits >::GetNextValue( SPOSITION& pos )
 {
     CNode* pNode;
     CNode* pNext;
@@ -2782,7 +2773,7 @@ V& SMap< K, V, KTraits, VTraits >::GetNextValue( POSITION& pos )
     pNode = (CNode*)pos;
     pNext = FindNextNode( pNode );
 
-    pos = POSITION( pNext );
+    pos = SPOSITION( pNext );
 
     return( pNode->m_value );
 }
