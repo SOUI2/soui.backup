@@ -102,7 +102,9 @@ namespace SOUI
          * Describe  此函数是用于销毁下拉窗口(注释可能不对 请大家指点)
          */
         void EndDropDown(UINT uCode=IDCANCEL);
+        
     protected:
+        virtual SMessageLoop * GetMsgLoop();
         /**
          * OnReleaseSwndCapture
          * @brief    阻止窗口的ReleaseCapture
