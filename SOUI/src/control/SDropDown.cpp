@@ -143,4 +143,9 @@ namespace SOUI
         return bRet;
     }
 
+    SMessageLoop * SDropDownWnd::GetMsgLoop()
+    {
+        return m_pOwner->GetDropDownOwner()->GetContainer()->GetMsgLoop();
+    }
+
 }//end of namespace SOUI
