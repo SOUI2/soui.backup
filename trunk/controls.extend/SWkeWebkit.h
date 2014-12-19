@@ -57,7 +57,7 @@ namespace SOUI
         void OnTimer(char cTimerID);
 
         virtual BOOL OnSetCursor(const CPoint &pt);
-
+        virtual UINT OnGetDlgCode(){return SC_WANTALLKEYS;}
         BOOL OnAttrUrl(SStringW strValue, BOOL bLoading);
         SOUI_ATTRS_BEGIN()
             ATTR_CUSTOM(L"url",OnAttrUrl)
