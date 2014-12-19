@@ -140,7 +140,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
-				Optimization="1"
+				Optimization="0"
 				AdditionalIncludeDirectories="&quot;..\config&quot;,&quot;.&quot;,&quot;include&quot;,&quot;..\utilities\include&quot;,..\tools\mkspecs\win32-msvc2008"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,SOUI_EXPORTS,_CRT_SECURE_NO_WARNINGS,NDEBUG"
 				GeneratePreprocessedFile="0"
