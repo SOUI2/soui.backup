@@ -68,6 +68,10 @@ LRESULT SwndContainerImpl::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     case WM_IME_CHAR:
         OnFrameKeyEvent(uMsg,wParam,lParam);
         break;
+    case WM_MOUSEWHEEL:
+    case 0x20E: //WM_MOUSEHWHEEL
+        OnFrameMouseWheel(uMsg,wParam,lParam);
+        break;
     default:
         if(uMsg>=WM_KEYFIRST && uMsg<=WM_KEYLAST)
             OnFrameKeyEvent(uMsg,wParam,lParam);
@@ -215,7 +219,7 @@ void SwndContainerImpl::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     SWindow *pCapture=SWindowMgr::GetWindow(m_hCapture);
     if(pCapture)
     {
-        if(m_bNcHover && uMsg!=WM_MOUSEWHEEL) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
+        if(m_bNcHover) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
         BOOL bMsgHandled = FALSE;
         pCapture->SSendMessage(uMsg,wParam,lParam,&bMsgHandled);
         m_pHost->SetMsgHandled(bMsgHandled);
@@ -227,13 +231,37 @@ void SwndContainerImpl::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
         if(pHover  && !pHover->IsDisabled(TRUE))
         {
             BOOL bMsgHandled = FALSE;
-            if(m_bNcHover && uMsg!=WM_MOUSEWHEEL) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
+            if(m_bNcHover) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
             pHover->SSendMessage(uMsg,wParam,lParam,&bMsgHandled);
             m_pHost->SetMsgHandled(bMsgHandled);
         }else
         {
             m_pHost->SetMsgHandled(FALSE);
         }
+    }
+}
+
+void SwndContainerImpl::OnFrameMouseWheel( UINT uMsg,WPARAM wParam,LPARAM lParam )
+{
+    SWindow *pWndTarget =SWindowMgr::GetWindow(m_hCapture);
+    if(!pWndTarget)
+    {
+        pWndTarget = SWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
+    }
+    if(!pWndTarget)
+    {
+        m_hHover=m_pHost->SwndFromPoint(CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)),FALSE);
+        pWndTarget=SWindowMgr::GetWindow(m_hHover);
+    }
+    
+    if(pWndTarget  && !pWndTarget->IsDisabled(TRUE))
+    {
+        BOOL bMsgHandled = FALSE;
+        pWndTarget->SSendMessage(uMsg,wParam,lParam,&bMsgHandled);
+        m_pHost->SetMsgHandled(bMsgHandled);
+    }else
+    {
+        m_pHost->SetMsgHandled(FALSE);
     }
 }
 
@@ -319,5 +347,6 @@ void SwndContainerImpl::OnActivateApp( BOOL bActive, DWORD dwThreadID )
     MSG msg={0,WM_ACTIVATEAPP,bActive,dwThreadID,0};
     m_pHost->SDispatchMessage(&msg);
 }
+
 
 }//namespace SOUI
