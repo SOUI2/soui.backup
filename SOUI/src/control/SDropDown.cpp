@@ -110,17 +110,15 @@ namespace SOUI
         if(pMsg->message==WM_ACTIVATEAPP)
         {
             CSimpleWnd::SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
-            return FALSE;
         }
-        
-        if(pMsg->message == WM_MOUSEMOVE)
+        else if(pMsg->message == WM_MOUSEMOVE)
         {//由于窗口显示后就调用了setcapture，导致收不到setcursor消息，这里在WM_MOUSEMOVE消息里模拟一个setcursor消息。
             CSimpleWnd::SendMessage(WM_SETCURSOR,(WPARAM)m_hWnd,MAKELPARAM(HTCLIENT,WM_MOUSEMOVE));
-            return FALSE;
         }
-        if(!(pMsg->message>=WM_KEYFIRST && pMsg->message<=WM_KEYLAST) && pMsg->message!=WM_MOUSEWHEEL) return FALSE;
-        CSimpleWnd::SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
-        return TRUE;
+        return FALSE;
+//         if(!(pMsg->message>=WM_KEYFIRST && pMsg->message<=WM_KEYLAST) && pMsg->message!=WM_MOUSEWHEEL) return FALSE;
+//         CSimpleWnd::SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
+//         return TRUE;
     }
 
     void SDropDownWnd::OnActivateApp( BOOL bActive, DWORD dwThreadID )

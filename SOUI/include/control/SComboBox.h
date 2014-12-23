@@ -96,6 +96,14 @@ protected:
     SOUI_MSG_MAP_END()
 };
 
+class SOUI_EXP SDropDownWnd_ComboBox : public SDropDownWnd
+{
+public:
+    SDropDownWnd_ComboBox(ISDropDownOwner* pOwner):SDropDownWnd(pOwner){}
+    
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+};
+
 /**
  * @class      SComboBoxBase
  * @brief      ø… ‰»ÎCommboBox

@@ -536,17 +536,6 @@ public:
     static BOOL DefaultReflectionHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lResult);
 
 public://EXTRACT FROM BEGIN_MSG_MAP_EX and END_MSG_MAP
-    BOOL m_bMsgHandled;
-    /* "handled" management for cracked handlers */ 
-    BOOL IsMsgHandled() const
-    { 
-        return m_bMsgHandled;
-    }
-    void SetMsgHandled(BOOL bHandled)
-    { 
-        m_bMsgHandled = bHandled;
-    } 
-
     BOOL ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lResult, DWORD dwMsgMapID = 0)
     {
         return FALSE;
