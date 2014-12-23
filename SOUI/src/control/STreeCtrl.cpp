@@ -1086,6 +1086,7 @@ void STreeCtrl::OnPaint(IRenderTarget *pRT)
 
 void STreeCtrl::OnLButtonDown(UINT nFlags,CPoint pt)
 {
+    __super::OnLButtonDown(nFlags,pt);
     m_hHoverItem=HitTest(pt);
 
     if(m_hHoverItem!=m_hSelItem && m_hHoverItem)
@@ -1111,6 +1112,8 @@ void STreeCtrl::OnRButtonDown(UINT nFlags, CPoint pt)
 
 void STreeCtrl::OnLButtonUp(UINT nFlags,CPoint pt)
 {
+    __super::OnLButtonUp(nFlags,pt);
+
     m_hHoverItem=HitTest(pt);
 
     if (m_hCaptureItem)

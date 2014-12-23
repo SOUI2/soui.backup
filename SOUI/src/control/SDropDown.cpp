@@ -116,9 +116,6 @@ namespace SOUI
             CSimpleWnd::SendMessage(WM_SETCURSOR,(WPARAM)m_hWnd,MAKELPARAM(HTCLIENT,WM_MOUSEMOVE));
         }
         return FALSE;
-//         if(!(pMsg->message>=WM_KEYFIRST && pMsg->message<=WM_KEYLAST) && pMsg->message!=WM_MOUSEWHEEL) return FALSE;
-//         CSimpleWnd::SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
-//         return TRUE;
     }
 
     void SDropDownWnd::OnActivateApp( BOOL bActive, DWORD dwThreadID )

@@ -29,6 +29,7 @@ SListCtrl::SListCtrl()
     , m_bMultiSelection(FALSE)
 {
     m_bClipClient = TRUE;
+    m_bFocusable = TRUE;
     m_evtSet.addEvent(EventLCSelChanging::EventID);
     m_evtSet.addEvent(EventLCSelChanged::EventID);
     m_evtSet.addEvent(EventLCItemDeleted::EventID);
@@ -791,6 +792,7 @@ BOOL SListCtrl::OnScroll(BOOL bVertical, UINT uCode, int nPos)
 
 void SListCtrl::OnLButtonDown(UINT nFlags, CPoint pt)
 {
+    __super::OnLButtonDown(nFlags,pt);
     m_nHoverItem = HitTest(pt);
     BOOL hitCheckBox = HitCheckBox(pt);
 
@@ -804,6 +806,7 @@ void SListCtrl::OnLButtonDown(UINT nFlags, CPoint pt)
 
 void SListCtrl::OnLButtonUp(UINT nFlags, CPoint pt)
 {
+    __super::OnLButtonUp(nFlags,pt);
 }
 
 
