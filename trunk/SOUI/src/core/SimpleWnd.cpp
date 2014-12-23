@@ -228,6 +228,7 @@ LRESULT CSimpleWnd::ForwardNotifications(UINT uMsg, WPARAM wParam, LPARAM lParam
     case WM_CTLCOLORMSGBOX:
     case WM_CTLCOLORSCROLLBAR:
     case WM_CTLCOLORSTATIC:
+        bHandled = TRUE;
         lResult = ::SendMessage(GetParent(m_hWnd),uMsg, wParam, lParam);
         break;
     default:
@@ -303,7 +304,7 @@ LRESULT CSimpleWnd::ReflectNotifications(UINT uMsg, WPARAM wParam, LPARAM lParam
         bHandled = FALSE;
         return 1;
     }
-
+    bHandled = TRUE;
     SASSERT(::IsWindow(hWndChild));
     return ::SendMessage(hWndChild, OCM__BASE + uMsg, wParam, lParam);
 }

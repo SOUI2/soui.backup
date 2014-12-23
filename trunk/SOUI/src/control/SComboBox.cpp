@@ -45,6 +45,20 @@ BOOL SComboEdit::FireEvent(EventArgs & evt)
     return SEdit::FireEvent(evt);
 }
 
+//////////////////////////////////////////////////////////////////////////
+// SDropDownWnd_ComboBox
+BOOL SDropDownWnd_ComboBox::PreTranslateMessage( MSG* pMsg )
+{
+    SDropDownWnd::PreTranslateMessage(pMsg);
+
+    if(pMsg->message==WM_MOUSEWHEEL 
+    || ((pMsg->message == WM_KEYDOWN || pMsg->message==WM_KEYUP) && (pMsg->wParam == VK_UP || pMsg->wParam==VK_DOWN || pMsg->wParam==VK_RETURN || pMsg->wParam==VK_ESCAPE)))
+    {//截获滚轮及上下键消息
+        CSimpleWnd::SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
+        return TRUE;    
+    }
+    return FALSE;
+}
 
 //////////////////////////////////////////////////////////////////////////
 // SComboBoxBase
@@ -285,7 +299,7 @@ void SComboBoxBase::DropDown()
 
     if(!m_pDropDownWnd)
     {
-        m_pDropDownWnd = new SDropDownWnd(this);
+        m_pDropDownWnd = new SDropDownWnd_ComboBox(this);
         CRect rcPopup;
         BOOL bDown=CalcPopupRect(GetListBoxHeight(),rcPopup);
         m_pDropDownWnd->Create(rcPopup,0);
