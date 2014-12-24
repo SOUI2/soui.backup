@@ -276,7 +276,19 @@ namespace SOUI
         * Describe  删除所有页面 
         */
         void RemoveAllItems(void);
+        
     protected:
+        /**
+        * BeforePaint
+        * @brief    为RT准备好当前窗口的绘图环境
+        * @param    IRenderTarget * pRT --  
+        * @param    SPainter & painter --  
+        * @return   void 
+        *
+        * Describe  和SWindow不同，STabCtrl中强制使用normal状态配置字体及颜色，其它状态给tab头使用
+        */
+        virtual void BeforePaint(IRenderTarget *pRT, SPainter &painter);
+
         /**
         * STabCtrl::GetChildrenLayoutRect
         * @brief    
