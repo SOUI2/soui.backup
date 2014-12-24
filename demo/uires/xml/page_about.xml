@@ -1,11 +1,13 @@
 ﻿<include>
   <text pos="10,10">欢迎使用SOUI！</text>
-  <text pos="10,[5">版本:1.0.0.1</text>
+  <text pos="10,[5">版本:1.2.0.1</text>
   <text pos="10,[5">协议类型：MIT，个人，企业均可以免费使用本产品，请保留产品的license</text>
   <text pos="10,[5">版权所有：启程软件</text>
   <edit pos="10,[5,@150,@30" readOnly="1">QQ群：229313785</edit>
   <link href="http://jq.qq.com/?_wv=1027&k=PxXh59"  class="cls_btn_weblink">点击链接申请加入群</link>
-  <edit pos="10,[10,@500,@30"  readOnly="1">SVN：http://code.taobao.org/svn/soui2/trunk</edit>
+  <text pos="10,[10">SVN：</text><edit width="500" height="30" readOnly="1">http://code.taobao.org/svn/soui2/trunk</edit>
+  <text pos="10,[10">GIT.oschina：</text><edit width="500" height="30" readOnly="1">https://git.oschina.net/setousoft/soui.git</edit>
+  <text pos="10,[10">GIT.github：</text><edit width="500" height="30" readOnly="1"> https://github.com/setoutsoft/soui</edit>
   <text pos="10,[5">SOUI教程:</text>
   <link href="http://www.cnblogs.com/setoutsoft/" class="cls_btn_weblink">http://www.cnblogs.com/setoutsoft/</link>
   <group pos="10,[5,-10,@100" align="left">
