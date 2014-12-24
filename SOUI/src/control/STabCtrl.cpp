@@ -516,6 +516,14 @@ void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD d
     if(m_pSkinTab)
         m_pSkinTab->Draw(pRT,rcItem,IIF_STATE3(dwState,WndState_Normal,WndState_Hover,WndState_PushDown));
 
+    //根据状态从style中获得字体，颜色
+    IFontPtr font=m_style.GetTextFont(dwState);
+    COLORREF crTxt = m_style.GetTextColor(dwState);
+    CAutoRefPtr<IFont> oldFont;
+    if(font) pRT->SelectObject(font,(IRenderObj**)&oldFont);
+    COLORREF crOld = 0;
+    if(crTxt != CR_INVALID) crOld = pRT->SetTextColor(crTxt);
+    
     CRect rcIcon(m_ptIcon+rcItem.TopLeft(),CSize(0,0));
     if(m_pSkinIcon)
     {
@@ -548,6 +556,10 @@ void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD d
         
         pRT->DrawText(GetItem(iItem)->GetTitle(),-1,&rcText,align);
     }
+    
+    //恢复字体，颜色
+    if(font) pRT->SelectObject(oldFont);
+    if(crTxt!=CR_INVALID) pRT->SetTextColor(crOld);
 }
 
 
@@ -616,6 +628,18 @@ void STabCtrl::UpdateChildrenPosition()
     {
         m_lstPages[i]->Move(rcPage);
     }
+}
+
+void STabCtrl::BeforePaint( IRenderTarget *pRT, SPainter &painter )
+{
+    IFontPtr pFont = m_style.GetTextFont(0);
+    if(pFont) 
+        pRT->SelectObject(pFont,(IRenderObj**)&painter.pOldPen);
+
+    COLORREF crTxt = m_style.GetTextColor(0);
+    if(crTxt != CR_INVALID)
+        painter.crOld = pRT->SetTextColor(crTxt);
+
 }
 
 

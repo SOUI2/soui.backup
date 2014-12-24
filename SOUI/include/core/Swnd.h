@@ -710,7 +710,28 @@ namespace SOUI
          * Describe  默认绘制一个虚线框
          */
         virtual void DrawFocus(IRenderTarget *pRT);
+        
+        /**
+        * BeforePaint
+        * @brief    为RT准备好当前窗口的绘图环境
+        * @param    IRenderTarget * pRT --  
+        * @param    SPainter & painter --  
+        * @return   void 
+        *
+        * Describe  
+        */
+        virtual void BeforePaint(IRenderTarget *pRT, SPainter &painter);
 
+        /**
+        * AfterPaint
+        * @brief    恢复由BeforePaint设置的RT状态
+        * @param    IRenderTarget * pRT --  
+        * @param    SPainter & painter --  
+        * @return   void 
+        *
+        * Describe  
+        */
+        virtual void AfterPaint(IRenderTarget *pRT, SPainter &painter);
     public://render相关方法
         /**
         * RedrawRegion
@@ -767,29 +788,6 @@ namespace SOUI
         * Describe  目标位置必须在窗口位置内,不包括当前窗口的子窗口
         */
         void PaintForeground(IRenderTarget *pRT,LPRECT pRc);
-
-
-        /**
-        * BeforePaint
-        * @brief    为RT准备好当前窗口的绘图环境
-        * @param    IRenderTarget * pRT --  
-        * @param    SPainter & painter --  
-        * @return   void 
-        *
-        * Describe  
-        */
-        void BeforePaint(IRenderTarget *pRT, SPainter &painter);
-
-        /**
-        * AfterPaint
-        * @brief    恢复由BeforePaint设置的RT状态
-        * @param    IRenderTarget * pRT --  
-        * @param    SPainter & painter --  
-        * @return   void 
-        *
-        * Describe  
-        */
-        void AfterPaint(IRenderTarget *pRT, SPainter &painter);
 
         /**
         * BeforePaintEx
