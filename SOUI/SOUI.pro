@@ -119,10 +119,11 @@ HEADERS += include/SApp.h \
            include/res.mgr/SStylePool.h \
            src/activex/SAxContainer.h \
            src/activex/SAxUtil.h \
+           src/updatelayeredwindow/SUpdateLayeredWindow.h \
            include/activex/flash10t.tlh \
            include/activex/flash10t.tli \
            include/activex/wmp.tlh
-
+		   
 SOURCES += src/SApp.cpp \
            src/activex/SAxContainer.cpp \
            src/activex/SBStr.cpp \
@@ -179,4 +180,5 @@ SOURCES += src/SApp.cpp \
            src/res.mgr/SResProviderMgr.cpp \
            src/res.mgr/SSkinPool.cpp \
            src/res.mgr/SStringPool.cpp \
-           src/res.mgr/SStylePool.cpp
+           src/res.mgr/SStylePool.cpp \
+           src/updatelayeredwindow/SUpdateLayeredWindow.cpp

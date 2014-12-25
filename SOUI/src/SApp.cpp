@@ -16,6 +16,8 @@
 
 #include "control/SRichEdit.h"
 #include "control/Smessagebox.h"
+#include "updatelayeredwindow/SUpdateLayeredWindow.h"
+
 namespace SOUI
 {
 
@@ -62,6 +64,7 @@ SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR 
     ,m_RenderFactory(pRendFactory)
     ,m_pRealWndHandler(NULL)
 {
+    SWndSurface::Init();
     _CreateSingletons();
     CSimpleWndHelper::Init(hInst,pszHostClassName);
     STextServiceHelper::Init();

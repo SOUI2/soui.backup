@@ -422,6 +422,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\updatelayeredwindow\SUpdateLayeredWindow.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\core\SWindowMgr.cpp"
 				>
 			</File>
@@ -789,6 +793,10 @@
 			</File>
 			<File
 				RelativePath="include\control\STreeCtrl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\updatelayeredwindow\SUpdateLayeredWindow.h"
 				>
 			</File>
 			<File

@@ -6,6 +6,8 @@
 #include "helper/color.h"
 #include "helper/SplitString.h"
 
+#include "../updatelayeredwindow/SUpdateLayeredWindow.h"
+
 namespace SOUI
 {
 
@@ -531,62 +533,17 @@ void SHostWnd::OnReleaseRenderTarget(IRenderTarget * pRT,const CRect &rc,DWORD g
 
 void SHostWnd::UpdateHost(HDC dc, const CRect &rcInvalid )
 {
-    HDC hdc=m_memRT->GetDC(0);
     if(m_hostAttr.m_bTranslucent)
     {
-        CRect rc;
-        CSimpleWnd::GetWindowRect(&rc);
         SASSERT(m_hostAttr.m_byAlpha>5);
-        BLENDFUNCTION bf= {AC_SRC_OVER,0,m_hostAttr.m_byAlpha,AC_SRC_ALPHA};
-        HDC hdcDst=::GetDC(NULL);
-        /*
-        typedef 
-        BOOL (WINAPI *Fun_UpdateLayeredWindow)(
-            __in HWND hWnd,
-            __in_opt HDC hdcDst,
-            __in_opt POINT* pptDst,
-            __in_opt SIZE* psize,
-            __in_opt HDC hdcSrc,
-            __in_opt POINT* pptSrc,
-            __in COLORREF crKey,
-            __in_opt BLENDFUNCTION* pblend,
-            __in DWORD dwFlags);
-        typedef 
-        BOOL (WINAPI *Fun_UpdateLayeredWindowIndirect)(
-            __in HWND hWnd,
-            __in_ecount(1) UPDATELAYEREDWINDOWINFO CONST *pULWInfo);
-        
-        static Fun_UpdateLayeredWindow s_FunUpdateLayeredWindow = (Fun_UpdateLayeredWindow)GetProcAddress(GetModuleHandle(_T("user32.dll")),"UpdateLayeredWindow");
-        static Fun_UpdateLayeredWindowIndirect s_FunUpdateLayeredWindowIndirect = (Fun_UpdateLayeredWindowIndirect)GetProcAddress(GetModuleHandle(_T("user32.dll")),"UpdateLayeredWindowIndirect");
-        
-        if(s_FunUpdateLayeredWindowIndirect && 0)
-        {
-            UPDATELAYEREDWINDOWINFO info;
-            info.cbSize = sizeof(info);
-            info.hdcDst=hdcDst;
-            info.pptDst = & rc.TopLeft();
-            info.psize = & rc.Size();
-            info.hdcSrc=hdc;
-            info.pptSrc = & CPoint(0,0);
-            info.crKey  = 0;
-            info.pblend = &bf;
-            info.prcDirty = & rcInvalid;
-            info.dwFlags = ULW_ALPHA;
-            s_FunUpdateLayeredWindowIndirect(m_hWnd,&info);
-        }
-        else if(s_FunUpdateLayeredWindow)
-        {
-            s_FunUpdateLayeredWindow(m_hWnd,hdcDst,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
-        }
-        */
-        ::UpdateLayeredWindow(m_hWnd,hdcDst,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
-        ::ReleaseDC(NULL,hdcDst);
+        UpdateLayerFromRenderTarget(m_memRT,m_hostAttr.m_byAlpha,&rcInvalid);
     }
     else
     {
+        HDC hdc=m_memRT->GetDC(0);
         ::BitBlt(dc,rcInvalid.left,rcInvalid.top,rcInvalid.Width(),rcInvalid.Height(),hdc,rcInvalid.left,rcInvalid.top,SRCCOPY);
+        m_memRT->ReleaseDC(hdc);
     }
-    m_memRT->ReleaseDC(hdc);
 }
 
 void SHostWnd::OnRedraw(const CRect &rc)
@@ -817,17 +774,19 @@ void SHostWnd::OnKillFocus( HWND wndFocus )
     DoFrameEvent(WM_KILLFOCUS,0,0);
 }
 
-void SHostWnd::UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha)
+void SHostWnd::UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha, LPCRECT prcDirty)
 {
     SASSERT(IsTranslucent());
     HDC hdc=pRT->GetDC(0);
     CRect rc;
     CSimpleWnd::GetWindowRect(&rc);
-    BLENDFUNCTION bf= {AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
-    HDC dc=GetDC();
-    UpdateLayeredWindow(dc,&rc.TopLeft(),&rc.Size(),hdc,&CPoint(0,0),0,&bf,ULW_ALPHA);
-    ReleaseDC(dc);
-    pRT->ReleaseDC(hdc);
+    CRect rcDirty = rc;
+    rcDirty.MoveToXY(0,0);
+    if(!prcDirty) prcDirty = &rcDirty;
+    
+    BLENDFUNCTION bf= {AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};        
+    S_UPDATELAYEREDWINDOWINFO info={sizeof(info), NULL, &rc.TopLeft(), &rc.Size(),hdc, &CPoint(0,0), 0, &bf, ULW_ALPHA, prcDirty};
+    SWndSurface::SUpdateLayeredWindowIndirect(m_hWnd,&info);
 }
 
 BOOL _BitBlt(IRenderTarget *pRTDst,IRenderTarget * pRTSrc,CRect rcDst,CPoint ptSrc)
