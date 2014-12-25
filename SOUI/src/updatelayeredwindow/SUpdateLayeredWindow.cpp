@@ -15,7 +15,7 @@ namespace SOUI{
     BOOL WINAPI _SUpdateLayeredWindowIndirect(HWND hWnd, const S_UPDATELAYEREDWINDOWINFO *info)
     {
         SASSERT(s_funUpdateLayeredWindow);
-        return (*s_funUpdateLayeredWindow)(hWnd, info->hdcDst, info->pptDst, info->psize, info->hdcSrc,
+        return ::UpdateLayeredWindow(hWnd, info->hdcDst, info->pptDst, info->psize, info->hdcSrc,
             info->pptSrc, info->crKey, info->pblend, info->dwFlags);
     }
 
@@ -38,9 +38,10 @@ namespace SOUI{
         return TRUE;
     }
 
-    BOOL SWndSurface::SUpdateLayeredWindowIndirect(HWND hWnd, const S_UPDATELAYEREDWINDOWINFO *pULWInfo)
+    BOOL WINAPI SWndSurface::SUpdateLayeredWindowIndirect(HWND hWnd, const S_UPDATELAYEREDWINDOWINFO *pULWInfo)
     {
-        return s_funUpdateLayeredWindowIndirect(hWnd,pULWInfo);
+        BOOL bRet = s_funUpdateLayeredWindowIndirect(hWnd,pULWInfo);
+        return bRet;
     }
 
 }
