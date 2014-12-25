@@ -15,7 +15,7 @@ namespace SOUI{
     BOOL WINAPI _SUpdateLayeredWindowIndirect(HWND hWnd, const S_UPDATELAYEREDWINDOWINFO *info)
     {
         SASSERT(s_funUpdateLayeredWindow);
-        return ::UpdateLayeredWindow(hWnd, info->hdcDst, info->pptDst, info->psize, info->hdcSrc,
+        return (*s_funUpdateLayeredWindow)(hWnd, info->hdcDst, info->pptDst, info->psize, info->hdcSrc,
             info->pptSrc, info->crKey, info->pblend, info->dwFlags);
     }
 
