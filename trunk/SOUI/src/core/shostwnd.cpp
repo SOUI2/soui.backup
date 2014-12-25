@@ -777,16 +777,20 @@ void SHostWnd::OnKillFocus( HWND wndFocus )
 void SHostWnd::UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha, LPCRECT prcDirty)
 {
     SASSERT(IsTranslucent());
-    HDC hdc=pRT->GetDC(0);
     CRect rc;
     CSimpleWnd::GetWindowRect(&rc);
-    CRect rcDirty = rc;
-    rcDirty.MoveToXY(0,0);
-    if(!prcDirty) prcDirty = &rcDirty;
-    
+    CRect rcDirty = prcDirty? (*prcDirty): CRect(0,0,rc.Width(),rc.Height());
     BLENDFUNCTION bf= {AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};        
-    S_UPDATELAYEREDWINDOWINFO info={sizeof(info), NULL, &rc.TopLeft(), &rc.Size(),hdc, &CPoint(0,0), 0, &bf, ULW_ALPHA, prcDirty};
+    
+    //注意：下面这几个参数不能直接在info参数里直接使用&rc.Size()，否则会被编译器优化掉，导致参数错误
+    CPoint ptDst = rc.TopLeft();
+    CSize  szDst = rc.Size();
+    CPoint ptSrc;
+    
+    HDC hdc=pRT->GetDC(0);
+    S_UPDATELAYEREDWINDOWINFO info={sizeof(info), NULL, &ptDst, &szDst,hdc, &ptSrc, 0, &bf, ULW_ALPHA, &rcDirty};
     SWndSurface::SUpdateLayeredWindowIndirect(m_hWnd,&info);
+    pRT->ReleaseDC(hdc);
 }
 
 BOOL _BitBlt(IRenderTarget *pRTDst,IRenderTarget * pRTSrc,CRect rcDst,CPoint ptSrc)
