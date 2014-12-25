@@ -250,7 +250,7 @@ protected:
     void OnSetCaretValidateRect( LPCRECT lpRect );
         
     void UpdateHost(HDC dc,const CRect &rc);
-    void UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha);
+    void UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha, LPCRECT prcDirty=NULL);
 
 #ifndef DISABLE_SWNDSPY
 protected:
