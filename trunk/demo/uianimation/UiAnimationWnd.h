@@ -51,7 +51,7 @@ namespace SOUI
 
         void SetIcons(ISkinObj *pIcon,int nIcons);
 
-        HRESULT Arrange(const CSize & sz, int iModal=0);
+        HRESULT Arrange(const CSize & sz, int iModal);
         
         IUIAnimationManager * GetAnimationMgr() {return m_pAnimationManager;}
 
