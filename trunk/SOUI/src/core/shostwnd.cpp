@@ -217,6 +217,8 @@ void SHostWnd::OnPrint(HDC dc, UINT uFlags)
 
     if (m_bNeedRepaint)
     {
+        m_bNeedRepaint = FALSE;
+
         SThreadActiveWndMgr::EnterPaintLock();
         CAutoRefPtr<IFont> defFont,oldFont;
         defFont = SFontPool::getSingleton().GetFont(FF_DEFAULTFONT);
@@ -248,7 +250,6 @@ void SHostWnd::OnPrint(HDC dc, UINT uFlags)
         
         m_memRT->SelectObject(oldFont);
 
-        m_bNeedRepaint = FALSE;
         SThreadActiveWndMgr::LeavePaintLock();
     }
 

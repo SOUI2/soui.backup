@@ -7,6 +7,7 @@
 #include "httpsvr/HTTPServer.h"
 #include "MemFlash.h"
 #include "../controls.extend/propgrid/SPropertyGrid.h"
+#include "uianimation/UiAnimationWnd.h"
 
 #if defined(_DEBUG) && !defined(_WIN64)
 // #include <vld.h>//使用Vitural Leaker Detector来检测内存泄漏，可以从http://vld.codeplex.com/ 下载
@@ -145,6 +146,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
         theApp->RegisterWndFactory(TplSWindowFactory<SIPAddressCtrl>());//注册IP控件
         theApp->RegisterWndFactory(TplSWindowFactory<SPropertyGrid>());//注册属性表控件
+        theApp->RegisterWndFactory(TplSWindowFactory<SUiAnimationWnd>());//注册属性表控件
         SSkinGif::Gdiplus_Startup();
 
         //加载系统资源

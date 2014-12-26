@@ -252,30 +252,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\controls.extend\propgrid\SPropertyGrid.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Color.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Option.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Size.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Text.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\propgrid\SPropertyItemBase.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\controls.extend\gif\SSkinAPNG.cpp"
 				>
 			</File>
@@ -285,6 +261,10 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\SWkeWebkit.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\uianimation\UiAnimationWnd.cpp"
 				>
 			</File>
 		</Filter>
@@ -338,38 +318,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\controls.extend\propgrid\SPropertyEmbedWndHelper.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\propgrid\SPropertyGrid.h"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Color.h"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\propgrid\SPropertyItem-i.h"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Option.h"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Size.h"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Text.h"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\propgrid\SPropertyItemBase.h"
-				>
-			</File>
-			<File
 				RelativePath="..\controls.extend\gif\SSkinAPNG.h"
 				>
 			</File>
@@ -406,6 +354,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\uianimation\UIAnimation.h"
+				>
+			</File>
+			<File
+				RelativePath=".\uianimation\UiAnimationWnd.h"
+				>
+			</File>
+			<File
 				RelativePath="wtlhelper\whwindow.h"
 				>
 			</File>
@@ -438,6 +394,106 @@
 						ForcedIncludeFiles="$(NOINHERIT)"
 					/>
 				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="propertygrid"
+			>
+			<File
+				RelativePath="..\controls.extend\propgrid\SPropertyEmbedWndHelper.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\SPropertyGrid.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\SPropertyGrid.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Color.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Color.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\SPropertyItem-i.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Option.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Option.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Size.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Size.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Text.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\propitem\SPropertyItem-Text.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\SPropertyItemBase.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\propgrid\SPropertyItemBase.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="gridview"
+			>
+			<File
+				RelativePath="..\controls.extend\gridview\CellRange.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\gridview\GridCell.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\gridview\GridCellBase.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\gridview\GridCtrl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\gridview\InPlaceEdit.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="animation"
+			>
+			<File
+				RelativePath=".\uianimation\UIAnimation.h"
+				>
+			</File>
+			<File
+				RelativePath=".\uianimation\UiAnimationWnd.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\uianimation\UiAnimationWnd.h"
+				>
 			</File>
 		</Filter>
 		<File
