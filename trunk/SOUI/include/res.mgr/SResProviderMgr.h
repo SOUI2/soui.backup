@@ -35,11 +35,12 @@ namespace SOUI
 
         /*virtual */LPCTSTR FindImageType(LPCTSTR pszImgName);
         
-        //////////////////////////////////////////////////////////////////////////
-        //IObjRef
-        /*virtual */void AddRef(){}
-        /*virtual */void Release(){};
-        /*virtual */void OnFinalRelease(){}
+    public://helper
+        //使用type:name形式的字符串加载图片，如果没有type,则自动查找type
+        IBitmap * LoadImage2(const SStringW & strImgID);
+        
+        //使用name:size形式的字符串加载图标，如果没有size,则默认系统图标SIZE
+        HICON     LoadIcon2(const SStringW & strIconID);
     protected:
         IResProvider * GetMatchResProvider(LPCTSTR pszType,LPCTSTR pszResName);
         LPCTSTR SysCursorName2ID(LPCTSTR pszCursorName);

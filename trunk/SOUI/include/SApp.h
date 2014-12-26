@@ -32,9 +32,12 @@
 #define GETREALWNDHANDLER   SApplication::getSingleton().GetRealWndHander()
 #define GETTOOLTIPFACTORY   SApplication::getSingleton().GetToolTipFactory()
 
-#define LOADXML(p1,p2,p3) SApplication::getSingleton().LoadXmlDocment(p1,p2,p3)
-#define LOADIMAGE(p1,p2) SApplication::getSingleton().LoadImage(p1,p2)
-#define TR(p1,p2)       SApplication::getSingleton().GetTranslator()->tr(p1,p2)
+#define LOADXML(p1,p2,p3)   SApplication::getSingleton().LoadXmlDocment(p1,p2,p3)
+#define LOADIMAGE(p1,p2)    SApplication::getSingleton().LoadImage(p1,p2)
+#define LOADIMAGE2(p1)      SApplication::getSingleton().LoadImage2(p1)
+#define LOADICON(p1,p2)     SApplication::getSingleton().LoadIcon(p1,p2,p2)
+#define LOADICON2(p1)       SApplication::getSingleton().LoadIcon2(p1)
+#define TR(p1,p2)           SApplication::getSingleton().GetTranslator()->tr(p1,p2)
 
 #define RT_UIDEF _T("UIDEF")
 #define RT_LAYOUT _T("LAYOUT")

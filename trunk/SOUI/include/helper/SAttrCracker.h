@@ -302,17 +302,7 @@ public:                                                             \
 #define ATTR_IMAGE(attribname, varname, allredraw)                  \
     if (0 == strAttribName.CompareNoCase(attribname))               \
     {                                                               \
-        IBitmap *pImg=NULL;                                         \
-        SStringT strValueT=S_CW2T(strValue);                        \
-        int nPos=strValueT.ReverseFind(_T(':'));                    \
-        if(nPos!=-1)                                                \
-        {                                                           \
-            SStringT strName=strValueT.Right(strValue.GetLength()-nPos-1);\
-            pImg = LOADIMAGE(strValueT.Left(nPos),strName);         \
-        }else                                                       \
-        {                                                           \
-            pImg = LOADIMAGE(NULL,strValueT);                       \
-        }                                                           \
+        IBitmap *pImg=LOADIMAGE2(strValue);                          \
         if(!pImg) hRet =E_FAIL;                                     \
         else{                                                       \
             if(varname) varname->Release();                         \
@@ -321,24 +311,31 @@ public:                                                             \
         }                                                           \
      }                                                              \
      else                                                           \
+
+
+//ATTR_IMAGEAUTOREF:varname应该是一个CAutoRefPtr<IBitmap>对象
+#define ATTR_IMAGEAUTOREF(attribname, varname, allredraw)           \
+    if (0 == strAttribName.CompareNoCase(attribname))               \
+    {                                                               \
+        IBitmap *pImg=LOADIMAGE2(strValue);                         \
+        if(!pImg) hRet =E_FAIL;                                     \
+        else{                                                       \
+            varname = pImg;                                         \
+            pImg->Release();                                        \
+            hRet = allredraw ? S_OK : S_FALSE;                      \
+        }                                                           \
+     }                                                              \
+     else                                                           \
+
  
 #define ATTR_ICON(attribname, varname, allredraw)                  \
     if (0 == strAttribName.CompareNoCase(attribname))              \
-        {                                                          \
-        if(varname) DeleteObject(varname);          \
-        SStringT strValueT=S_CW2T(strValue);        \
-        int nPos=strValueT.ReverseFind(_T(':'));\
-        if(nPos!=-1)\
-        {\
-        int cx=0;                                                \
-        ::StrToIntEx(strValueT.Right(strValueT.GetLength()-nPos-1),STIF_DEFAULT,&cx);            \
-        varname = GETRESPROVIDER->LoadIcon(strValueT.Left(nPos),cx,cx);        \
-        hRet = allredraw ? S_OK : S_FALSE;                      \
-        }else\
-        varname = GETRESPROVIDER->LoadIcon(strValueT);        \
-        hRet = allredraw ? S_OK : S_FALSE;                      \
-        }                                                           \
-        else                                                        \
+    {                                                              \
+        if(varname) DeleteObject(varname);                         \
+        varname = LOADICON2(strValue);                             \
+        hRet = allredraw ? S_OK : S_FALSE;                         \
+    }                                                              \
+    else                                                           \
 
 
 #endif//_SATTRCRACK_H
