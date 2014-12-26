@@ -40,8 +40,10 @@ HEADERS += MainDlg.h \
            httpsvr/filereader-i.h \
            httpsvr/genericserver.h \
            httpsvr/httpserver.h \
-           memflash.h
-	
+           memflash.h \
+		   uianimation/uianimation.h \
+		   uianimation/uianimationwnd.h
+		   
 SOURCES += demo.cpp \
            MainDlg.cpp \
            skinole/ImageOle.cpp \
@@ -58,7 +60,8 @@ SOURCES += demo.cpp \
            ../controls.extend/propgrid/propitem/spropertyitem-size.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \
-           memflash.cpp
+           memflash.cpp	\
+		   uianimation/uianimationwnd.cpp
 
 RC_FILE += demo.rc
 
