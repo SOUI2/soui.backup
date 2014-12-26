@@ -1,6 +1,7 @@
 #include "souistd.h"
 #include "res.mgr/SResProviderMgr.h"
 #include "res.mgr/SResProvider.h"
+#include "helper/SplitString.h"
 
 namespace SOUI
 {
@@ -185,6 +186,31 @@ namespace SOUI
         IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
         if(!pResProvider) return FALSE;
         return TRUE;
+    }
+
+    IBitmap * SResProviderMgr::LoadImage2(const SStringW & strImgID)
+    {
+        SStringT strImgID2 = S_CW2T(strImgID);
+        SStringTList strLst;
+        int nSegs = SplitString(strImgID2,_T(':'),strLst);
+        if(nSegs == 2) return LoadImage(strLst[0],strLst[1]);
+        else return LoadImage(NULL,strLst[0]);
+    }
+
+    HICON SResProviderMgr::LoadIcon2(const SStringW & strIconID)
+    {
+        SStringT strIconID2 = S_CW2T(strIconID);
+        SStringTList strLst;
+        int nSegs = SplitString(strIconID2,_T(':'),strLst);
+        if(nSegs == 2)
+        {
+            int cx = _ttoi(strLst[1]);
+            return LoadIcon(strLst[0],cx,cx);
+        }
+        else 
+        {
+            return LoadIcon(strLst[0]);
+        }
     }
 
 }
