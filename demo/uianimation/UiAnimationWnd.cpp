@@ -14,7 +14,7 @@ namespace SOUI{
             // Create Animation Timer
 
         HRESULT hr = CoCreateInstance(
-            CLSID_UIAnimationTimer,
+            __uuidof(UIAnimationTimer),
             NULL,
             CLSCTX_INPROC_SERVER,
             IID_PPV_ARGS(&m_pAnimationTimer)
@@ -24,7 +24,7 @@ namespace SOUI{
             // Create Animation Transition Library
 
             hr = CoCreateInstance(
-                CLSID_UIAnimationTransitionLibrary,
+                __uuidof(UIAnimationTransitionLibrary),
                 NULL,
                 CLSCTX_INPROC_SERVER,
                 IID_PPV_ARGS(&m_pTransitionLibrary)
@@ -34,7 +34,7 @@ namespace SOUI{
                 // Create the Transition Factory to wrap interpolators in transitions
 
                 hr = CoCreateInstance(
-                    CLSID_UIAnimationTransitionFactory,
+                    __uuidof(UIAnimationTransitionFactory),
                     NULL,
                     CLSCTX_INPROC_SERVER,
                     IID_PPV_ARGS(&m_pTransitionFactory)
@@ -150,7 +150,7 @@ namespace SOUI{
         :m_pOwner(pOwner),m_plstIcon(NULL),m_nIcons(0),m_iModal(-1)
     {
         HRESULT hr = CoCreateInstance(
-            CLSID_UIAnimationManager,
+            __uuidof(UIAnimationManager),
             NULL,
             CLSCTX_INPROC_SERVER,
             IID_PPV_ARGS(&m_pAnimationManager)
@@ -194,7 +194,7 @@ namespace SOUI{
     CUiAnimationIconLayout::~CUiAnimationIconLayout()
     {
         if(m_plstIcon) delete [] m_plstIcon;
-        for(int i=0;i<m_arrCharBits.GetCount();i++)
+        for(UINT i=0;i<m_arrCharBits.GetCount();i++)
         {
             delete m_arrCharBits[i];
         }
@@ -210,10 +210,12 @@ namespace SOUI{
         }
     }
 
-    HRESULT CUiAnimationIconLayout::Arrange( const CSize & sz, int iModal/*=0*/ )
+    HRESULT CUiAnimationIconLayout::Arrange( const CSize & sz, int iModal )
     {
-        if(iModal >= m_arrCharBits.GetCount()) return E_NOTIMPL;
-
+        if(iModal >= (int)m_arrCharBits.GetCount()) return E_NOTIMPL;
+        if(iModal <0) iModal = m_iModal;
+        if(iModal <0) iModal = 0;
+        
         IUIAnimationStoryboard *pStoryboard;
         HRESULT hr = m_pAnimationManager->CreateStoryboard(
             &pStoryboard
@@ -236,13 +238,13 @@ namespace SOUI{
                 fScale = szClient.cy*1.0/szModel.cy;
             }
             int xOffset=0, yOffset=0;
-            int nWid=szModel.cx*fScale;
-            int nHei=szModel.cy*fScale;
+            int nWid=(int)(szModel.cx*fScale);
+            int nHei=(int)(szModel.cy*fScale);
 
             xOffset = (szClient.cx-nWid)/2;
             yOffset = (szClient.cy-nHei)/2;
 
-            for (UINT i = 0; i < m_nIcons; i++)
+            for (int i = 0; i < m_nIcons; i++)
             {
                 CSize sizeIcon = m_plstIcon[i].GetSize();
                 DOUBLE xDest, yDest;
@@ -397,7 +399,7 @@ namespace SOUI{
 
     void CUiAnimationIconLayout::GetIconsPos(int iModal,LPPOINT pts)
     {
-        SASSERT(iModal<m_arrCharBits.GetCount());
+        SASSERT(iModal<(int)m_arrCharBits.GetCount());
 
         CHARBITS *pCharBit = m_arrCharBits[iModal];
         int idx=0;
@@ -496,14 +498,6 @@ namespace SOUI{
         delete CUiAnimation::getSingletonPtr();
     }
 
-    void SUiAnimationWnd::OnSize( UINT nType, CSize size )
-    {
-        if(m_pLayout)
-        {
-            m_pLayout->Arrange(size,m_pLayout->NextModal());
-        }
-    }
-
     void SUiAnimationWnd::OnPaint( IRenderTarget *pRT )
     {
         if(m_pLayout) 
@@ -523,6 +517,11 @@ namespace SOUI{
             CSize sz=rc.Size();
             m_pLayout->Arrange(sz,m_pLayout->NextModal());
         }
+    }
+
+    void SUiAnimationWnd::OnSize(UINT nType, CSize size)
+    {
+        if(m_pLayout) m_pLayout->Arrange(size,-1);
     }
 
 
