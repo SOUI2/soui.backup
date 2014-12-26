@@ -55,10 +55,14 @@ IBitmap * SResProviderPE::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
     if(!HasResource(strType,pszResName)) return NULL;
     IBitmap * pImg=NULL;
     GETRENDERFACTORY->CreateBitmap(&pImg);
-    
+    if(!pImg) return NULL;
     size_t szImgBuf= GetRawBufferSize(strType,pszResName);
     
-    if(szImgBuf==0) return FALSE;
+    if(szImgBuf==0)
+    {
+        pImg->Release();
+        return FALSE;
+    }
     
     LPVOID pBuf=GetRawBufferPtr(strType,pszResName);
 

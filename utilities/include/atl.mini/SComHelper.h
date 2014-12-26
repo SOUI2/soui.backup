@@ -66,7 +66,7 @@ namespace SOUI
 
     public:
     
-        virtual void OnFinialRelease() = 0;
+        virtual void OnFinialRelease(){delete this;}
 
     protected:
         LONG m_cRef;

@@ -8,5 +8,8 @@
       <text pos ="10,|0" offset="0,-0.5" colorText="RGB(255,0,0)"  colorBkgnd="RGB(0,255,0)">show how to implement dragdrop in soui</text>
       <edit name="edit_drop_bottom" pos="10,[10,-10,-10" cueText="draging a file to me to see what will happen"/>
     </page>
+    <page title="animation">
+      <uianimationwnd pos="0,0,-0,-0" icon="skin_small_icons" aniMode="imgx:png_animode"/>
+    </page>
   </tabctrl>
 </include>
