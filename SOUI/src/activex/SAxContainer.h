@@ -89,6 +89,7 @@ class S_NO_VTABLE ActiveXSite :   public IOleClientSite,
     {
         m_spControl = pControl;
         m_spOleObject = pControl;
+        m_spInPlaceObject = pControl;
     }
 
     void Clear()
@@ -440,9 +441,7 @@ class S_NO_VTABLE ActiveXSite :   public IOleClientSite,
         if (pfNoRedraw) {
             *pfNoRedraw = FALSE;
         }
-        
-        m_spInPlaceObject = m_spControl;
-        
+                
         if ((dwFlags & ACTIVATE_WINDOWLESS) != 0) {
             m_spOleObjectWindowless = m_spControl;
             
@@ -542,7 +541,7 @@ class S_NO_VTABLE ActiveXSite :   public IOleClientSite,
         hr = S_OK;
         if (lprcPosRect && memcmp(&m_rcPos, lprcPosRect, sizeof(m_rcPos)) != 0 )
         {
-            if (m_spInPlaceObject != NULL )
+            if (m_spInPlaceObject)
             {
                 memcpy(&m_rcPos, lprcPosRect, sizeof(m_rcPos));
                 hr = m_spInPlaceObject->SetObjectRects(&m_rcPos, &m_rcPos);

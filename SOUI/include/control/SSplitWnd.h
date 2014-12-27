@@ -256,7 +256,7 @@ protected:
      * @param    const void * p1 -- 参数1
      * @param    const void * p2 -- 参数2
      *
-     * Describe  此函数是消息响应函数
+     * Describe  
      */
     static int FunComp(const void * p1,const void * p2);
 
@@ -279,7 +279,6 @@ protected:
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_DESTROY(OnDestroy)
-        MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONUP(OnLButtonUp)
         MSG_WM_MOUSEMOVE(OnMouseMove)

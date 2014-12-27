@@ -115,9 +115,9 @@ namespace SOUI
     {
         m_strText = lpszText;
         if(IsVisible(TRUE)) Invalidate();
-        if ((m_layout.uPositionType & (SizeX_FitContent | SizeY_FitContent)) && (4 != m_layout.nCount))
+        if (m_layout.IsFitContent())
         {
-            OnWindowPosChanged();
+            if(GetParent()) GetParent()->UpdateChildrenPosition();
             if(IsVisible(TRUE)) Invalidate();
         }
     }
@@ -911,15 +911,6 @@ namespace SOUI
         SSendMessage(WM_SIZE,0,MAKELPARAM(rcClient.Width(),rcClient.Height()));
 
         UpdateChildrenPosition();
-    }
-
-    LRESULT SWindow::OnWindowPosChanged()
-    {
-        //请求父窗口对所有子窗口进行重新布局
-        SWindow *pParent=GetParent();
-        SASSERT(pParent);
-        if(pParent) pParent->UpdateChildrenPosition();
-        return 0;
     }
 
     int SWindow::OnCreate( LPVOID )
@@ -1744,9 +1735,9 @@ namespace SOUI
     {
         if (strValue.IsEmpty()) return E_FAIL;
         m_layout.ParseStrPostion(strValue);
-        if(!bLoading)
+        if(!bLoading && GetParent())
         {
-            OnWindowPosChanged();
+            GetParent()->UpdateChildrenPosition();
         }
         return S_FALSE;
     }
@@ -1760,9 +1751,9 @@ namespace SOUI
         m_layout.fOffsetX = (float)_wtof(lstOffset[0]);
         m_layout.fOffsetY = (float)_wtof(lstOffset[1]);
 
-        if(!bLoading)
+        if(!bLoading && GetParent())
         {
-            OnWindowPosChanged();
+            GetParent()->UpdateChildrenPosition();
         }
         return S_FALSE;
     }
