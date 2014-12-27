@@ -64,7 +64,7 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
             pParentItem->InsertChild(pToggle);
             pToggle->SetToggle(FALSE,FALSE);
             pToggle->SetID(IDC_SWITCH);
-            pToggle->SSendMessage(WM_WINDOWPOSCHANGED);
+            pParentItem->UpdateChildrenPosition();
         }
     }
     pItemObj->SetItemData(dwData);

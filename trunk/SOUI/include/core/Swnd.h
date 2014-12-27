@@ -885,6 +885,7 @@ namespace SOUI
         void UpdateCacheMode();
         
         void TestMainThread();
+
     protected:// Message Handler
 
         /**
@@ -902,8 +903,6 @@ namespace SOUI
         {
             return FALSE;
         }
-
-        LRESULT OnWindowPosChanged();
 
         int OnCreate(LPVOID);
 
@@ -945,7 +944,6 @@ namespace SOUI
             MSG_WM_CREATE(OnCreate)
             MSG_WM_SIZE(OnSize)
             MSG_WM_DESTROY(OnDestroy)
-            MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
             MSG_WM_SHOWWINDOW(OnShowWindow)
             MSG_WM_ENABLE_EX(OnEnable)
             MSG_WM_LBUTTONDOWN(OnLButtonDown)

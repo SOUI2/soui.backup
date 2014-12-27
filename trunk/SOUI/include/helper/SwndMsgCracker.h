@@ -19,15 +19,6 @@ protected:                                                          \
     }
 
 
-#define MSG_WM_WINPOSCHANGED_EX(func) \
-    if (uMsg == WM_WINDOWPOSCHANGED) \
-{ \
-    SetMsgHandled(TRUE); \
-    lResult=func(); \
-    if(IsMsgHandled()) \
-    return TRUE; \
-}
-
 // BOOL OnEraseBkgnd(IRenderTarget * pRT)
 #define MSG_WM_ERASEBKGND_EX(func) \
     if (uMsg == WM_ERASEBKGND) \
