@@ -47,27 +47,19 @@ void SRealWnd::ShowRealWindow()
     }
 }
 
-LRESULT SRealWnd::OnWindowPosChanged()
+void SRealWnd::OnSize( UINT nType, CSize size )
 {
-    CRect rcOldWnd = m_rcWindow;
-
-    LRESULT lRet=__super::OnWindowPosChanged();
-
-    if (lRet==0 && rcOldWnd != m_rcWindow)
+    IRealWndHandler *pRealWndHandler=GETREALWNDHANDLER;
+    HWND hRealWnd = GetRealHwnd(FALSE);
+    if(pRealWndHandler && ::IsWindow(hRealWnd))
     {
-        IRealWndHandler *pRealWndHandler=GETREALWNDHANDLER;
-        HWND hRealWnd = GetRealHwnd(FALSE);
-        if(pRealWndHandler && ::IsWindow(hRealWnd))
+        if(!pRealWndHandler->OnRealWndSize(this))
         {
-            if(!pRealWndHandler->OnRealWndSize(this))
-            {
-                CRect rcWnd;
-                GetClientRect(&rcWnd);
-                ::SetWindowPos(hRealWnd,0,rcWnd.left,rcWnd.top,rcWnd.Width(),rcWnd.Height(),SWP_NOZORDER);
-            }
+            CRect rcWnd;
+            GetClientRect(&rcWnd);
+            ::SetWindowPos(hRealWnd,0,rcWnd.left,rcWnd.top,rcWnd.Width(),rcWnd.Height(),SWP_NOZORDER);
         }
     }
-    return lRet;
 }
 
 void SRealWnd::OnShowWindow(BOOL bShow, UINT nStatus)

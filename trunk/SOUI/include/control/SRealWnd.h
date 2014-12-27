@@ -126,11 +126,11 @@ public:
     }
 
     SOUI_ATTRS_BEGIN()
-    ATTR_STRINGT(L"wndclass", m_realwndParam.m_strClassName, FALSE)
-    ATTR_STRINGT(L"wndname", m_realwndParam.m_strWindowName, FALSE)
-    ATTR_HEX(L"style", m_realwndParam.m_dwStyle, FALSE)
-    ATTR_HEX(L"exstyle", m_realwndParam.m_dwExStyle, FALSE)
-    ATTR_INT(L"init",m_bInit,FALSE)
+        ATTR_STRINGT(L"wndclass", m_realwndParam.m_strClassName, FALSE)
+        ATTR_STRINGT(L"wndname", m_realwndParam.m_strWindowName, FALSE)
+        ATTR_HEX(L"style", m_realwndParam.m_dwStyle, FALSE)
+        ATTR_HEX(L"exstyle", m_realwndParam.m_dwExStyle, FALSE)
+        ATTR_INT(L"init",m_bInit,FALSE)
     SOUI_ATTRS_END()
 protected:
     /**
@@ -152,14 +152,15 @@ protected:
     virtual BOOL InitFromXml(pugi::xml_node xmlNode);
 
     /**
-     * SRealWnd::OnWindowPosChanged
+     * SRealWnd::OnSize
      * @brief    修改窗口位置
-     * @param    LPRECT lpWndPos -- 位置
+     * @param    UINT nType -- 位置类型
+     * @param    CSize size -- 位置
      * @return   返回LRESULT
      *
-     * Describe  修改窗口位置
+     * Describe 
      */
-    LRESULT OnWindowPosChanged();
+    void OnSize(UINT nType, CSize size);
 
     /**
      * SRealWnd::OnShowWindow
@@ -207,7 +208,7 @@ protected:
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_DESTROY(OnDestroy)
-        MSG_WM_WINPOSCHANGED_EX(OnWindowPosChanged)
+        MSG_WM_SIZE(OnSize)
         MSG_WM_SHOWWINDOW(OnShowWindow)
     SOUI_MSG_MAP_END()
 
