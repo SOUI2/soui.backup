@@ -42,13 +42,16 @@ public:
 
     int m_nMarginX;         /**<X方向的边框大小 */
     int m_nMarginY;         /**<Y方向的边框大小 */
-    BOOL m_bDotted;         /**<支持省略号显示文本 */
 
     SStringT m_strCursor;   /**<光标NAME */
     SStringW m_strSkinName; /**<SKIN NAME */
     SStringW m_strNcSkinName;/**<非客户区SKIN NAME */
-    BOOL m_bMouseRelay;     /**<鼠标消息是否转发给父窗口 */
+
     BYTE    m_byAlpha;      /**<窗口透明度 */
+    DWORD    m_bDotted:1;      /**<支持省略号显示文本 */
+    DWORD    m_bMouseRelay:1;  /**<鼠标消息是否转发给父窗口 */
+    DWORD    m_bBkgndBlend:1;  /**<渲染窗口内容和背景混合标志 */
+
     UINT GetTextAlign();
     int GetStates();
     COLORREF GetTextColor(int iState);
@@ -96,6 +99,7 @@ protected:
         ATTR_INT(L"dotted",m_bDotted,FALSE)
         ATTR_INT(L"mouseRelay",m_bMouseRelay,FALSE)
         ATTR_INT(L"alpha",m_byAlpha,TRUE)
+        ATTR_INT(L"bkgndBlend",m_bBkgndBlend,TRUE)
     SOUI_ATTRS_BREAK()      //属性不交给SObject处理
 };
 

@@ -43,6 +43,8 @@ namespace SOUI
     enum {NormalShow=0,ParentShow=1};    //提供WM_SHOWWINDOW消息识别是父窗口显示还是要显示本窗口
     enum {NormalEnable=0,ParentEnable=1};    //提供WM_ENABLE消息识别是父窗口可用还是直接操作当前窗口
 
+    enum {KInvalidTimerID  = 127};  /**<非背景混合窗口刷新的定时器ID，使用非背景混合窗口时不能在外部使用该定时器ID*/
+
 
     class STimerID
     {
@@ -858,6 +860,8 @@ namespace SOUI
 
     protected://helper functions
 
+        BOOL _SetTimer(char id,UINT uElapse);
+
         /**
         * GetNextVisibleWindow
         * @brief    获得指定窗口的下一个可见窗口
@@ -937,6 +941,8 @@ namespace SOUI
         void OnSetFocus();
         void OnKillFocus();
         
+        void OnTimer(char cTimerID);
+
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
             MSG_WM_ERASEBKGND_EX(OnEraseBkgnd)
@@ -955,6 +961,7 @@ namespace SOUI
             MSG_WM_MOUSEWHEEL(OnMouseWheel)
             MSG_WM_SETFOCUS_EX(OnSetFocus)
             MSG_WM_KILLFOCUS_EX(OnKillFocus)
+            MSG_WM_TIMER_EX(OnTimer)
         WND_MSG_MAP_END_BASE()  //消息不再往基类传递，此外使用WND_MSG_MAP_END_BASE而不是WND_MSG_MAP_END
 
     protected:
@@ -1043,6 +1050,7 @@ namespace SOUI
         DWORD               m_gdcFlags;
         BOOL                m_bClipRT;
 
+        CAutoRefPtr<IRegion>    m_invalidRegion;/**< 非背景混合窗口的脏区域 */
 #ifdef _DEBUG
         DWORD               m_nMainThreadId;    /**< 窗口宿线程ID */
 #endif

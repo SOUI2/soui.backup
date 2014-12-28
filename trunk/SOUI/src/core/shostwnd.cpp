@@ -38,6 +38,7 @@ SHostWnd::SHostWnd( LPCTSTR pszResName /*= NULL*/ )
 , m_bNeedAllRepaint(TRUE)
 , m_pTipCtrl(NULL)
 , m_dummyWnd(this)
+, m_bSizeMoving(FALSE)
 {
     m_privateStylePool.Attach(new SStylePool);
     m_privateSkinPool.Attach(new SSkinPool);
@@ -365,8 +366,11 @@ void SHostWnd::OnTimer(UINT_PTR idEvent)
         SWindow *pSwnd=SWindowMgr::GetWindow((SWND)sTimerID.Swnd);
         if(pSwnd)
         {
-            if(pSwnd==this) OnSwndTimer(sTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
-            else pSwnd->SSendMessage(WM_TIMER,sTimerID.uTimerID,0);
+            if(!m_bSizeMoving || (sTimerID.uTimerID!=KInvalidTimerID || pSwnd->GetStyle().m_bBkgndBlend))
+            {//在拉伸窗口过程中不相应定时器
+                if(pSwnd==this) OnSwndTimer(sTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
+                else pSwnd->SSendMessage(WM_TIMER,sTimerID.uTimerID,0);
+            }
         }
         else
         {
@@ -1083,6 +1087,16 @@ LRESULT SHostWnd::OnSpyMsgHitTest( UINT uMsg,WPARAM wParam,LPARAM lParam )
     CPoint pt(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam));
     ScreenToClient(&pt);
     return SwndFromPoint(pt,FALSE);
+}
+
+void SHostWnd::OnEnterSizeMove()
+{
+    m_bSizeMoving = TRUE;
+}
+
+void SHostWnd::OnExitSizeMove()
+{
+    m_bSizeMoving = FALSE;
 }
 
 #endif//DISABLE_SWNDSPY

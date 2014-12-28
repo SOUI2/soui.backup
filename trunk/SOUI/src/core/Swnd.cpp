@@ -274,8 +274,9 @@ namespace SOUI
 
     BOOL SWindow::SetTimer(char id,UINT uElapse)
     {
-        STimerID timerID(m_swnd,id);
-        return ::SetTimer(GetContainer()->GetHostHwnd(),DWORD(timerID),uElapse,NULL);
+        SASSERT(id!=KInvalidTimerID || m_style.m_bBkgndBlend);
+
+        return _SetTimer(id,uElapse);
     }
 
     void SWindow::KillTimer(char id)
@@ -843,17 +844,28 @@ namespace SOUI
     {
         TestMainThread();
         MarkCacheDirty(true);
-        if(!IsVisible(TRUE)) return ;
-        BOOL bUpdateLocked=FALSE;
-        SWindow *pWnd=this;
-        while(pWnd && !bUpdateLocked)
+        if(!IsVisible(TRUE) || IsUpdateLocked()) return ;
+        //只能更新窗口有效区域
+        CRect rcIntersect = rect & m_rcWindow;
+        if(rcIntersect.IsRectEmpty()) return;
+
+        if(!m_style.m_bBkgndBlend)
+        {//非背景混合窗口，通过一个定时器管理窗口刷新
+            if(!m_invalidRegion)
+            {
+                GETRENDERFACTORY->CreateRegion(&m_invalidRegion);
+            }
+            m_invalidRegion->CombineRect(rcIntersect,RGN_OR);
+            _SetTimer(KInvalidTimerID,0);//请求尽快刷新
+        }else
         {
-            bUpdateLocked=pWnd->IsUpdateLocked();
-            pWnd=pWnd->GetParent();
-        }
-        if (!bUpdateLocked)
-        {
-            GetContainer()->OnRedraw(rect);
+            if(GetParent())
+            {
+                GetParent()->InvalidateRect(rcIntersect);
+            }else
+            {
+                GetContainer()->OnRedraw(rcIntersect);
+            }
         }
     }
 
@@ -1458,13 +1470,28 @@ namespace SOUI
             _PaintRegion(pRT,pRgn,this,pChild,NULL,prState);
         }
         
-        //绘制兄弟窗口的重叠部分        
+        //绘制非客户区
+        CRect rcClient;
+        GetClientRect(&rcClient);
+        if(!(rcDraw & rcClient).EqualRect(rcDraw) && rcClient != m_rcWindow)
+        {//存在非客户区而且绘制区超出了客户区
+            SSendMessage(WM_NCPAINT,(WPARAM)pRT);
+        }
+
+        //绘制兄弟窗口的重叠部分
         SWindow *pNextVisibleSibling=GetNextVisibleWindow(this,rcDraw);
-        while(pNextVisibleSibling)
+        if(pNextVisibleSibling)
         {
+            CAutoRefPtr<IFont> defFont,oldFont;
+            defFont = SFontPool::getSingleton().GetFont(FF_DEFAULTFONT);
+            pRT->SelectObject(defFont,(IRenderObj**)&oldFont);
+            COLORREF crOld = pRT->SetTextColor(RGBA(0,0,0,0xFF));
+
             PRSTATE prState=PRS_LOOKSTART;
-            _PaintRegion(pRT,pRgn,this,pNextVisibleSibling,NULL,prState);
-            pNextVisibleSibling = GetNextVisibleWindow(pNextVisibleSibling,rcDraw);
+            _PaintRegion(pRT,pRgn,GetTopLevelParent(),pNextVisibleSibling,NULL,prState);
+
+            pRT->SelectObject(oldFont);
+            pRT->SetTextColor(crOld);
         }
         
         pRT->PopClip();
@@ -1927,4 +1954,41 @@ namespace SOUI
         return pChild->GetSelectedSiblingInGroup();
     }
 
+    void SWindow::OnTimer( char cTimerID )
+    {
+        SASSERT((cTimerID != KInvalidTimerID) || !m_style.m_bBkgndBlend);
+
+        if(cTimerID == KInvalidTimerID && !m_style.m_bBkgndBlend) 
+        {
+            KillTimer(cTimerID);
+
+            if(m_invalidRegion)
+            {
+                //刷新非背景混合的窗口
+                CRect rcDirty;
+                m_invalidRegion->GetRgnBox(&rcDirty);
+                CAutoRefPtr<IRegion> tmpRegin = m_invalidRegion;
+                m_invalidRegion = NULL;
+
+                if(IsVisible(TRUE))
+                {//可能已经不可见了。
+                    IRenderTarget *pRT = GetRenderTarget(rcDirty,OLEDC_OFFSCREEN,TRUE);
+
+                    pRT->PushClipRegion(tmpRegin,RGN_AND);
+                    SSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
+                    SSendMessage(WM_PAINT, (WPARAM)pRT);
+                    PaintForeground(pRT,rcDirty);//画前景
+                    pRT->PopClip();
+
+                    ReleaseRenderTarget(pRT);
+                }
+            }
+        }
+    }
+
+    BOOL SWindow::_SetTimer( char id,UINT uElapse )
+    {
+        STimerID timerID(m_swnd,id);
+        return ::SetTimer(GetContainer()->GetHostHwnd(),DWORD(timerID),uElapse,NULL);
+    }
 }//namespace SOUI

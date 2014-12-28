@@ -4,6 +4,8 @@
 #include <helper/splitstring.h>
 
 namespace SOUI{
+    
+    #define TIEMRID_MODE    1
 
     //////////////////////////////////////////////////////////////////////////
     //  CUiAnimation
@@ -488,7 +490,7 @@ namespace SOUI{
         m_pLayout = new CUiAnimationIconLayout(this,m_pAniMode);
         m_pLayout->SetIcons(m_pSkinIcon,460);
         
-        SetTimer(1,3000);
+        SetTimer(TIEMRID_MODE,3000);
         return 0;
     }
 
@@ -510,12 +512,18 @@ namespace SOUI{
 
     void SUiAnimationWnd::OnTimer(char cEvt)
     {
-        if(IsVisible(TRUE))
+        if(cEvt == TIEMRID_MODE)
         {
-            CRect rc;
-            GetClientRect(&rc);
-            CSize sz=rc.Size();
-            m_pLayout->Arrange(sz,m_pLayout->NextModal());
+            if(IsVisible(TRUE))
+            {
+                CRect rc;
+                GetClientRect(&rc);
+                CSize sz=rc.Size();
+                m_pLayout->Arrange(sz,m_pLayout->NextModal());
+            }
+        }else
+        {
+            __super::OnTimer(cEvt);
         }
     }
 
