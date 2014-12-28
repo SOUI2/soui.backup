@@ -156,6 +156,8 @@ protected:
     
     CAutoRefPtr<SStylePool>  m_privateStylePool;
     CAutoRefPtr<SSkinPool>  m_privateSkinPool;
+
+    BOOL        m_bSizeMoving;
 protected:
     //////////////////////////////////////////////////////////////////////////
     // Message handler
@@ -252,6 +254,9 @@ protected:
     void UpdateHost(HDC dc,const CRect &rc);
     void UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha, LPCRECT prcDirty=NULL);
 
+    void OnEnterSizeMove();
+    void OnExitSizeMove();
+
 #ifndef DISABLE_SWNDSPY
 protected:
     LRESULT OnSpyMsgSetSpy(UINT uMsg,WPARAM wParam,LPARAM lParam);
@@ -294,6 +299,8 @@ protected:
         MSG_WM_NCCALCSIZE(OnNcCalcSize)
         MSG_WM_NCHITTEST(OnWndNcHitTest)
         MSG_WM_GETMINMAXINFO(OnGetMinMaxInfo)
+        MSG_WM_ENTERSIZEMOVE(OnEnterSizeMove)
+        MSG_WM_EXITSIZEMOVE(OnExitSizeMove)
     #ifndef DISABLE_SWNDSPY
         MESSAGE_HANDLER_EX(SPYMSG_SETSPY, OnSpyMsgSetSpy)
         MESSAGE_HANDLER_EX(SPYMSG_SWNDENUM, OnSpyMsgSwndEnum)
