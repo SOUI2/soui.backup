@@ -9,7 +9,7 @@
       <edit name="edit_drop_bottom" pos="10,[10,-10,-10" cueText="draging a file to me to see what will happen"/>
     </page>
     <page title="animation" font="adding:10">
-      <!--在uianimationwnd元素中指定bkgndBlend为0还是1对性能影响很大，动画时，为0时因为不需要重绘窗口背景4核I5(笔记本）CPU占用为3%，为1则提高到23%-->
+      <!--注意在uianimationwnd元素中指定bkgndBlend为0还是1对性能影响-->
       <uianimationwnd pos="0,0,-0,-0" icon="skin_small_icons" aniMode="imgx:png_animode"  colorBkgnd="#cccccc" bkgndBlend="0"/>
       <text pos="|0,20" offset="-0.5,0" colorText="#ff0000">SOUI动画演示</text>
     </page>

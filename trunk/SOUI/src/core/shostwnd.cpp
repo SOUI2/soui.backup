@@ -5,6 +5,7 @@
 #include "helper/mybuffer.h"
 #include "helper/color.h"
 #include "helper/SplitString.h"
+#include "helper/copylist.hpp"
 
 #include "../updatelayeredwindow/SUpdateLayeredWindow.h"
 
@@ -38,7 +39,7 @@ SHostWnd::SHostWnd( LPCTSTR pszResName /*= NULL*/ )
 , m_bNeedAllRepaint(TRUE)
 , m_pTipCtrl(NULL)
 , m_dummyWnd(this)
-, m_bSizeMoving(FALSE)
+, m_bRending(FALSE)
 {
     m_privateStylePool.Attach(new SStylePool);
     m_privateSkinPool.Attach(new SSkinPool);
@@ -207,7 +208,6 @@ void SHostWnd::_Redraw()
 
 void SHostWnd::OnPrint(HDC dc, UINT uFlags)
 {
-    if((m_hostAttr.m_bTranslucent && !uFlags) && !m_bNeedAllRepaint && !m_bNeedRepaint) return;
     if (m_bNeedAllRepaint)
     {
         m_rgnInvalidate->Clear();
@@ -215,6 +215,7 @@ void SHostWnd::OnPrint(HDC dc, UINT uFlags)
         m_bNeedRepaint=TRUE;
     }
 
+    CRect rcInvalid;
 
     if (m_bNeedRepaint)
     {
@@ -231,13 +232,13 @@ void SHostWnd::OnPrint(HDC dc, UINT uFlags)
         m_rgnInvalidate=NULL;
         GETRENDERFACTORY->CreateRegion(&m_rgnInvalidate);
 
-        CRect rcInvalid=m_rcWindow;
         if (!pRgnUpdate->IsEmpty())
         {
-            m_memRT->PushClipRegion(pRgnUpdate,RGN_COPY);
             pRgnUpdate->GetRgnBox(&rcInvalid);
+            m_memRT->PushClipRegion(pRgnUpdate,RGN_COPY);
         }else
         {
+            rcInvalid=m_rcWindow;
             m_memRT->PushClipRect(&rcInvalid,RGN_COPY);
         }
         //清除残留的alpha值
@@ -252,11 +253,21 @@ void SHostWnd::OnPrint(HDC dc, UINT uFlags)
         m_memRT->SelectObject(oldFont);
 
         SThreadActiveWndMgr::LeavePaintLock();
+        
     }
+    
+    //渲染非背景混合窗口,设置m_bRending=TRUE以保证只执行一次UpdateHost
+    m_bRending = TRUE;
+    _UpdateNonBkgndBlendSwnd();
+    SPOSITION pos = m_lstUpdatedRect.GetHeadPosition();
+    while(pos)
+    {
+        rcInvalid = rcInvalid | m_lstUpdatedRect.GetNext(pos);
+    }
+    m_lstUpdatedRect.RemoveAll();
+    m_bRending = FALSE;
 
-    CRect rc;
-    CSimpleWnd::GetClientRect(&rc);
-    UpdateHost(dc,rc);
+    UpdateHost(dc,rcInvalid);
 }
 
 void SHostWnd::OnPaint(HDC dc)
@@ -366,11 +377,8 @@ void SHostWnd::OnTimer(UINT_PTR idEvent)
         SWindow *pSwnd=SWindowMgr::GetWindow((SWND)sTimerID.Swnd);
         if(pSwnd)
         {
-            if(!m_bSizeMoving || (sTimerID.uTimerID!=KInvalidTimerID || pSwnd->GetStyle().m_bBkgndBlend))
-            {//在拉伸窗口过程中不相应定时器
-                if(pSwnd==this) OnSwndTimer(sTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
-                else pSwnd->SSendMessage(WM_TIMER,sTimerID.uTimerID,0);
-            }
+            if(pSwnd==this) OnSwndTimer(sTimerID.uTimerID);//由于DUIWIN采用了ATL一致的消息映射表模式，因此在HOST中不能有DUI的消息映射表（重复会导致SetMsgHandled混乱)
+            else pSwnd->SSendMessage(WM_TIMER,sTimerID.uTimerID,0);
         }
         else
         {
@@ -527,11 +535,17 @@ void SHostWnd::OnReleaseRenderTarget(IRenderTarget * pRT,const CRect &rc,DWORD g
         m_memRT->BitBlt(&rc,pRT,rc.left,rc.top,SRCCOPY);
         if(m_bCaretActive)
         {
-            DrawCaret(m_ptCaret);//clear old caret
+            DrawCaret(m_ptCaret);//restore old caret
         }
-        HDC dc=GetDC();
-        UpdateHost(dc,rc);
-        ReleaseDC(dc);
+        if(!m_bRending)
+        {
+            HDC dc=GetDC();
+            UpdateHost(dc,rc);
+            ReleaseDC(dc);
+        }else
+        {
+            m_lstUpdatedRect.AddTail(rc);
+        }
     }
     pRT->Release();
 }
@@ -1089,14 +1103,44 @@ LRESULT SHostWnd::OnSpyMsgHitTest( UINT uMsg,WPARAM wParam,LPARAM lParam )
     return SwndFromPoint(pt,FALSE);
 }
 
-void SHostWnd::OnEnterSizeMove()
+LRESULT SHostWnd::OnUpdateSwnd(UINT uMsg,WPARAM wParam,LPARAM)
 {
-    m_bSizeMoving = TRUE;
+    (uMsg);
+    SWND swnd = (SWND)wParam;
+    SASSERT(SWindowMgr::getSingleton().GetWindow(swnd));
+    
+    if(!m_lstUpdateSwnd.Find(swnd))
+    {//防止重复加入
+        if(m_lstUpdateSwnd.IsEmpty())
+        {//请求刷新窗口
+            if(!m_hostAttr.m_bTranslucent)
+            {
+                CSimpleWnd::Invalidate(FALSE);
+            }else if(m_dummyWnd.IsWindow()) 
+            {
+                m_dummyWnd.Invalidate(FALSE);
+            }
+        }
+        m_lstUpdateSwnd.AddTail(swnd);
+    }
+    return 0;
 }
 
-void SHostWnd::OnExitSizeMove()
+void SHostWnd::_UpdateNonBkgndBlendSwnd()
 {
-    m_bSizeMoving = FALSE;
+    SList<SWND> lstUpdateSwnd;
+    CopyList(m_lstUpdateSwnd,lstUpdateSwnd);
+    m_lstUpdateSwnd.RemoveAll();
+    
+    SPOSITION pos = lstUpdateSwnd.GetHeadPosition();
+    while(pos)
+    {
+        SWindow *pWnd = SWindowMgr::getSingleton().GetWindow(lstUpdateSwnd.GetNext(pos));
+        if(pWnd)
+        {
+            pWnd->_Update();
+        }
+    }
 }
 
 #endif//DISABLE_SWNDSPY

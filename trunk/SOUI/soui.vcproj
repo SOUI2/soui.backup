@@ -468,6 +468,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\helper\copylist.hpp"
+				>
+			</File>
+			<File
 				RelativePath="include\helper\DragWnd.h"
 				>
 			</File>
@@ -825,6 +829,10 @@
 			</File>
 			<File
 				RelativePath="include\helper\SwndMsgCracker.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\helper\swndspy.h"
 				>
 			</File>
 			<File

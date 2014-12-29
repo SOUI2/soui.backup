@@ -274,9 +274,8 @@ namespace SOUI
 
     BOOL SWindow::SetTimer(char id,UINT uElapse)
     {
-        SASSERT(id!=KInvalidTimerID || m_style.m_bBkgndBlend);
-
-        return _SetTimer(id,uElapse);
+        STimerID timerID(m_swnd,id);
+        return ::SetTimer(GetContainer()->GetHostHwnd(),DWORD(timerID),uElapse,NULL);
     }
 
     void SWindow::KillTimer(char id)
@@ -856,7 +855,7 @@ namespace SOUI
                 GETRENDERFACTORY->CreateRegion(&m_invalidRegion);
             }
             m_invalidRegion->CombineRect(rcIntersect,RGN_OR);
-            _SetTimer(KInvalidTimerID,0);//请求尽快刷新
+            ::SendMessage(GetContainer()->GetHostHwnd(),UM_UPDATESWND,(WPARAM)m_swnd,0);//请求刷新窗口
         }else
         {
             if(GetParent())
@@ -1954,14 +1953,12 @@ namespace SOUI
         return pChild->GetSelectedSiblingInGroup();
     }
 
-    void SWindow::OnTimer( char cTimerID )
+    void SWindow::_Update()
     {
-        SASSERT((cTimerID != KInvalidTimerID) || !m_style.m_bBkgndBlend);
+        SASSERT(!m_style.m_bBkgndBlend);
 
-        if(cTimerID == KInvalidTimerID && !m_style.m_bBkgndBlend) 
+        if(!m_style.m_bBkgndBlend && m_invalidRegion && !m_invalidRegion->IsEmpty()) 
         {
-            KillTimer(cTimerID);
-
             if(m_invalidRegion)
             {
                 //刷新非背景混合的窗口
@@ -1986,9 +1983,4 @@ namespace SOUI
         }
     }
 
-    BOOL SWindow::_SetTimer( char id,UINT uElapse )
-    {
-        STimerID timerID(m_swnd,id);
-        return ::SetTimer(GetContainer()->GetHostHwnd(),DWORD(timerID),uElapse,NULL);
-    }
 }//namespace SOUI
