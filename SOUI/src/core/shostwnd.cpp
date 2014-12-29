@@ -14,7 +14,7 @@ namespace SOUI
 
 #define TIMER_CARET    1
 #define TIMER_NEXTFRAME 2
-
+#define KConstDummyPaint    0x80000000
 //////////////////////////////////////////////////////////////////////////
 //    SDummyWnd
 //////////////////////////////////////////////////////////////////////////
@@ -23,7 +23,7 @@ void SDummyWnd::OnPaint( HDC dc )
     PAINTSTRUCT ps;
     ::BeginPaint(m_hWnd, &ps);
     ::EndPaint(m_hWnd, &ps);
-    m_pOwner->OnPrint(NULL,1);
+    m_pOwner->OnPrint(NULL,KConstDummyPaint);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -254,6 +254,9 @@ void SHostWnd::OnPrint(HDC dc, UINT uFlags)
 
         SThreadActiveWndMgr::LeavePaintLock();
         
+    }else if(uFlags != KConstDummyPaint) //由系统发的WM_PAINT或者WM_PRINT产生的重绘请求
+    {
+        rcInvalid = m_rcWindow;
     }
     
     //渲染非背景混合窗口,设置m_bRending=TRUE以保证只执行一次UpdateHost
