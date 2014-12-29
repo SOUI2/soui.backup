@@ -97,10 +97,12 @@ HEADERS += include/SApp.h \
            include/helper/SAttrCracker.h \
            include/helper/SMenu.h \
            include/helper/SplitString.h \
+           include/helper/copylist.hpp \
            include/helper/SResID.h \
            include/helper/STime.h \
            include/helper/STimerEx.h \
            include/helper/SToolTip.h \
+           include/helper/swndspy.h \
            include/helper/SwndMsgCracker.h \
            include/helper/SCriticalSection.h \
            include/interface/imgdecoder-i.h \

@@ -521,9 +521,6 @@ namespace SOUI{
                 CSize sz=rc.Size();
                 m_pLayout->Arrange(sz,m_pLayout->NextModal());
             }
-        }else
-        {
-            __super::OnTimer(cEvt);
         }
     }
 
