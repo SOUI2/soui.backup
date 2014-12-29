@@ -360,7 +360,11 @@ void STreeBox::LoadBranch(HSTREEITEM hParent,pugi::xml_node xmlItem)
         HSTREEITEM hItem=InsertItem(xmlItem,dwData,hParent);
 
         pugi::xml_node xmlChild=xmlItem.child(L"item");
-        if(xmlChild) LoadBranch(hItem,xmlChild);
+        if(xmlChild)
+        {
+            LoadBranch(hItem,xmlChild);
+            Expand(hItem,xmlItem.attribute(L"expand").as_bool(true)?TVE_EXPAND:TVE_COLLAPSE);
+        }
 
         xmlItem=xmlItem.next_sibling(L"item");
     }
