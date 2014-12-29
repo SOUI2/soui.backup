@@ -254,7 +254,8 @@ void SHostWnd::OnPrint(HDC dc, UINT uFlags)
 
         SThreadActiveWndMgr::LeavePaintLock();
         
-    }else if(uFlags != KConstDummyPaint) //由系统发的WM_PAINT或者WM_PRINT产生的重绘请求
+    }
+    if(uFlags != KConstDummyPaint) //由系统发的WM_PAINT或者WM_PRINT产生的重绘请求
     {
         rcInvalid = m_rcWindow;
     }
@@ -324,7 +325,6 @@ void SHostWnd::OnSize(UINT nType, CSize size)
     
     m_memRT->Resize(size);
     Move(CRect(0,0,size.cx,size.cy));
-
     _Redraw();
 }
 
