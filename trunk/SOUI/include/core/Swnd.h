@@ -364,7 +364,7 @@ namespace SOUI
             SWindow *pTarget = FindChildByID(nID,nDeep);
             if(!pTarget || !pTarget->IsClass(T::GetClassName()))
             {
-                SASSERT(pTarget);
+                SASSERT_FMTW(FALSE,L"FindChildByID2 Failed, no window of class [%s] with id of [%d] was found within [%d] levels",T::GetClassName(),nID,nDeep);
                 return NULL;
             }
             return (T*)pTarget;
@@ -401,7 +401,7 @@ namespace SOUI
             SWindow *pTarget = FindChildByName(pszName,nDeep);
             if(!pTarget || !pTarget->IsClass(T::GetClassName()))
             {
-                SASSERT(pTarget);
+                SASSERT_FMTW(FALSE,L"FindChildByName2 Failed, no window of class [%s] with name of [%s] was found within [%d] levels",T::GetClassName(),pszName,nDeep);
                 return NULL;
             }
             return (T*)pTarget;
