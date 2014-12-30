@@ -496,6 +496,7 @@ namespace SOUI{
 
     void SUiAnimationWnd::OnDestroy()
     {
+        SWindow::OnDestroy();
         if(m_pLayout) delete m_pLayout;
         delete CUiAnimation::getSingletonPtr();
     }
@@ -525,7 +526,8 @@ namespace SOUI{
     }
 
     void SUiAnimationWnd::OnSize(UINT nType, CSize size)
-    {
+    { 
+        SWindow::OnSize(nType,size);
         if(m_pLayout) m_pLayout->Arrange(size,-1);
     }
 
