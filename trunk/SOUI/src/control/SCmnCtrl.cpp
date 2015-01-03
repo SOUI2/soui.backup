@@ -939,7 +939,7 @@ void SToggle::OnPaint(IRenderTarget *pRT)
 
 void SToggle::OnLButtonUp(UINT nFlags,CPoint pt)
 {
-    m_bToggled=!m_bToggled;
+    if(m_rcWindow.PtInRect(pt)) m_bToggled=!m_bToggled;
     __super::OnLButtonUp(nFlags,pt);
 }
 
