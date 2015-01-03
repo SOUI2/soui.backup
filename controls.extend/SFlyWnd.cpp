@@ -32,6 +32,9 @@ namespace SOUI
 
     bool SFlyWnd::OnSwitchClick( EventArgs *pEvt )
     {
+        //让窗口可以更新hover状态
+        pEvt->sender->SSendMessage(WM_MOUSELEAVE);
+
         m_rcAniBegin = m_rcWindow;
         m_bEndPos = ! m_bEndPos;
         SwndLayoutBuilder::InitLayoutState(m_rcAniEnd);
