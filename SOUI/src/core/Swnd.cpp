@@ -215,8 +215,14 @@ namespace SOUI
 
         CRect rcOld = m_rcWindow;
         m_rcWindow = prect;
-
+        
         OnRelayout(rcOld,m_rcWindow);
+
+        //让窗口可以更新hover状态
+        CPoint pt;
+        GetCursorPos(&pt);
+        ScreenToClient(GetContainer()->GetHostHwnd(),&pt);
+        PostMessage(GetContainer()->GetHostHwnd(),WM_MOUSEMOVE,0,MAKELPARAM(pt.x,pt.y));
     }
 
     void SWindow::Move(int x,int y, int cx/*=-1*/,int cy/*=-1*/)
