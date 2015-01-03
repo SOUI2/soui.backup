@@ -1,5 +1,6 @@
 #include "souistd.h"
 #include "core/SWnd.h"
+#include "core/SwndLayoutBuilder.h"
 #include "helper/color.h"
 #include "helper/SplitString.h"
 
@@ -13,7 +14,6 @@ namespace SOUI
 
     SWindow::SWindow()
         : m_swnd(SWindowMgr::NewWindow(this))
-        , m_layout(this)
         , m_nID(0)
         , m_pContainer(NULL)
         , m_pParent(NULL),m_pFirstChild(NULL),m_pLastChild(NULL),m_pNextSibling(NULL),m_pPrevSibling(NULL)
@@ -36,6 +36,7 @@ namespace SOUI
         , m_pNcSkin(NULL)
         , m_bClipRT(FALSE)
         , m_gdcFlags(-1)
+        , m_bFloat(FALSE)
 #ifdef _DEBUG
         , m_nMainThreadId( ::GetCurrentThreadId() ) // 初始化对象的线程不一定是主线程
 #endif
@@ -115,7 +116,7 @@ namespace SOUI
     {
         m_strText = lpszText;
         if(IsVisible(TRUE)) Invalidate();
-        if (m_layout.IsFitContent())
+        if (m_layout.IsFitContent(PD_ALL))
         {
             if(GetParent()) GetParent()->UpdateChildrenPosition();
             if(IsVisible(TRUE)) Invalidate();
@@ -209,7 +210,7 @@ namespace SOUI
         SASSERT(prect);
         TestMainThread();
 
-        m_layout.uPositionType = (m_layout.uPositionType & ~Position_Mask)|Pos_Float;//使用Move后，程序不再自动计算窗口坐标
+        m_bFloat = TRUE;//使用Move后，程序不再自动计算窗口坐标
         if(m_rcWindow.EqualRect(prect)) return;
 
         CRect rcOld = m_rcWindow;
@@ -578,65 +579,23 @@ namespace SOUI
                 if (!m_strText.IsEmpty()) BUILDSTRING(m_strText);
             }
 
-            m_layout.nCount = 0;
-            m_layout.uPositionType = 0;
+            m_layout.Clear();
 
-            //标记不处理width and height属性
+            //标记不处理width , height and size属性
             xmlNode.attribute(L"width").set_userdata(1);
             xmlNode.attribute(L"height").set_userdata(1);
+            xmlNode.attribute(L"size").set_userdata(1);
 
             SObject::InitFromXml(xmlNode);
 
             if(!m_bVisible || (m_pParent && !m_pParent->IsVisible(TRUE)))
                 ModifyState(WndState_Invisible, 0);
-
+            
             if (4 != m_layout.nCount)
             {
-                SStringW strValue = xmlNode.attribute(L"width").value();
-                int nValue =_wtoi(strValue);
-
-                if (0 == nValue && L"full" == strValue && 0 == m_layout.nCount)
-                {
-                    m_rcWindow.right = 0;
-                    m_layout.uPositionType = (m_layout.uPositionType & ~SizeX_Mask) | SizeX_FitParent;
-                }
-                else
-                {
-                    if (nValue > 0)
-                    {
-                        m_rcWindow.right = nValue;
-                        m_layout.uSpecifyWidth = nValue;
-                        m_layout.uPositionType = (m_layout.uPositionType & ~SizeX_Mask) | SizeX_Specify;
-                    }
-                    else
-                    {
-                        m_rcWindow.right = 0;
-                        m_layout.uPositionType = (m_layout.uPositionType & ~SizeX_Mask) | SizeX_FitContent;
-                    }
-                }
-
-                strValue = xmlNode.attribute(L"height").value();
-
-                nValue =_wtoi(strValue);
-                if (0 == nValue && L"full" == strValue)
-                {
-                    m_rcWindow.bottom = 0;
-                    m_layout.uPositionType = (m_layout.uPositionType & ~SizeY_Mask) | SizeY_FitParent;
-                }
-                else
-                {
-                    if (nValue > 0)
-                    {
-                        m_rcWindow.bottom = nValue;
-                        m_layout.uSpecifyHeight = nValue;
-                        m_layout.uPositionType = (m_layout.uPositionType & ~SizeY_Mask) | SizeY_Specify;
-                    }
-                    else
-                    {
-                        m_rcWindow.bottom = 0;
-                        m_layout.uPositionType = (m_layout.uPositionType & ~SizeY_Mask) | SizeY_FitContent;
-                    }
-                }
+                m_layout.InitWidth(xmlNode.attribute(L"width").value());
+                m_layout.InitHeight(xmlNode.attribute(L"height").value());
+                m_layout.InitSizeFromString(xmlNode.attribute(L"size").value());
             }
         }
 
@@ -1070,7 +1029,7 @@ namespace SOUI
 
     CSize SWindow::GetDesiredSize(LPCRECT pRcContainer)
     {
-        SASSERT(m_layout.IsFitContent());
+        SASSERT(m_layout.IsFitContent(PD_ALL));
 
 
         int nTestDrawMode = GetTextAlign() & ~(DT_CENTER | DT_RIGHT | DT_VCENTER | DT_BOTTOM);
@@ -1088,7 +1047,11 @@ namespace SOUI
         DrawText(pRT,m_strText, m_strText.GetLength(), rcTest, nTestDrawMode | DT_CALCRECT);
         rcTest.right += m_style.m_nMarginX * 2;
         rcTest.bottom += m_style.m_nMarginY * 2;
-        return rcTest.Size();
+
+        CSize szRet = rcTest.Size();
+        if(!m_layout.IsFitContent(PD_X)) szRet.cx = m_layout.uSpecifyWidth;
+        if(!m_layout.IsFitContent(PD_Y)) szRet.cy = m_layout.uSpecifyHeight;
+        return szRet;
     }
 
     void SWindow::GetTextRect( LPRECT pRect )
@@ -1264,11 +1227,11 @@ namespace SOUI
         SWindow *pChild=GetWindow(GSW_FIRSTCHILD);
         while(pChild)
         {
-            if(!pChild->m_layout.IsFloat())
+            if(!pChild->m_bFloat)
                 lstWnd.AddTail(new SWindowRepos(pChild));
             pChild=pChild->GetWindow(GSW_NEXTSIBLING);
         }
-        m_layout.CalcChildrenPosition(&lstWnd,GetChildrenLayoutRect());
+        SwndLayoutBuilder::CalcChildrenPosition(&lstWnd,GetChildrenLayoutRect());
     }
 
     void SWindow::OnSetFocus()
@@ -1760,7 +1723,7 @@ namespace SOUI
     HRESULT SWindow::OnAttrPos(const SStringW& strValue, BOOL bLoading)
     {
         if (strValue.IsEmpty()) return E_FAIL;
-        m_layout.ParseStrPostion(strValue);
+        if(!m_layout.InitPosFromString(strValue)) return E_FAIL;
         if(!bLoading && GetParent())
         {
             GetParent()->UpdateChildrenPosition();
@@ -1771,11 +1734,7 @@ namespace SOUI
     HRESULT SWindow::OnAttrOffset(const SStringW& strValue, BOOL bLoading)
     {
         if (strValue.IsEmpty()) return E_FAIL;
-        SStringWList lstOffset;
-        SplitString(strValue,L',',lstOffset);
-        if(lstOffset.GetCount()!=2) return E_FAIL;
-        m_layout.fOffsetX = (float)_wtof(lstOffset[0]);
-        m_layout.fOffsetY = (float)_wtof(lstOffset[1]);
+        if(!m_layout.InitOffsetFromString(strValue)) return E_FAIL;
 
         if(!bLoading && GetParent())
         {
@@ -1787,27 +1746,7 @@ namespace SOUI
 
     HRESULT SWindow::OnAttrPos2type(const SStringW& strValue, BOOL bLoading)
     {
-        if (strValue.IsEmpty()) return E_FAIL;
-        SStringW strValue2=strValue;
-        strValue2.MakeLower();
-        if(strValue2 == L"lefttop")
-            m_layout.fOffsetX=m_layout.fOffsetY=0.0f;
-        else if(strValue2 == L"leftmid")
-            m_layout.fOffsetX=0.0f,m_layout.fOffsetY=-0.5f;
-        else if(strValue2 == L"leftbottom")
-            m_layout.fOffsetX=0.0f,m_layout.fOffsetY=-1.0f;
-        else if(strValue2 == L"midtop")
-            m_layout.fOffsetX=-0.5f,m_layout.fOffsetY=0.0f;
-        else if(strValue2 == L"center")
-            m_layout.fOffsetX=-0.5f,m_layout.fOffsetY=-0.5f;
-        else if(strValue2 == L"midbottom")
-            m_layout.fOffsetX=-0.5f,m_layout.fOffsetY=-1.0f;
-        else if(strValue2 == L"righttop")
-            m_layout.fOffsetX=-1.0f,m_layout.fOffsetY=0.0f;
-        else if(strValue2 == L"rightmid")
-            m_layout.fOffsetX=-1.0f,m_layout.fOffsetY=-0.5f;
-        else if(strValue2 == L"leftbottom")
-            m_layout.fOffsetX=-1.0f,m_layout.fOffsetY=-1.0f;
+        if(!m_layout.InitOffsetFromPos2Type(strValue)) return E_FAIL;
 
         if(!bLoading)
         {
@@ -1858,7 +1797,7 @@ namespace SOUI
     HRESULT SWindow::OnAttrSkin( const SStringW& strValue, BOOL bLoading )
     {
         m_pBgSkin = GETSKIN(strValue);
-        if(!bLoading && m_layout.IsFitContent())
+        if(!bLoading && m_layout.IsFitContent(PD_ALL))
         {
             SWindow *pParent=GetParent();
             SASSERT(pParent);
@@ -1881,7 +1820,7 @@ namespace SOUI
         }
         if(!bLoading)
         {
-            if(m_layout.IsFitContent())
+            if(m_layout.IsFitContent(PD_ALL))
             {
                 SWindow *pParent=GetParent();
                 SASSERT(pParent);
@@ -1983,4 +1922,8 @@ namespace SOUI
         }
     }
 
+    const SwndLayout * SWindow::GetLayout() const
+    {
+        return &m_layout;
+    }
 }//namespace SOUI

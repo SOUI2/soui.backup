@@ -83,6 +83,7 @@ HEADERS += include/SApp.h \
            include/core/SwndContainerImpl.h \
            include/core/SwndFactoryMgr.h \
            include/core/SwndLayout.h \
+           include/core/SwndLayoutBuilder.h \
            include/core/SwndStyle.h \
            include/event/eventcrack.h \
            include/event/Events.h \
@@ -167,6 +168,7 @@ SOURCES += src/SApp.cpp \
            src/core/SwndContainerImpl.cpp \
            src/core/SWndFactoryMgr.cpp \
            src/core/SwndLayout.cpp \
+           src/core/SwndLayoutBuilder.cpp \
            src/core/SwndStyle.cpp \
            src/event/Events.cpp \
            src/event/EventSet.cpp \

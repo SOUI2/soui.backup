@@ -13,5 +13,17 @@
       <uianimationwnd pos="0,0,-0,-0" icon="skin_small_icons" aniMode="imgx:png_animode"  colorBkgnd="#cccccc" bkgndBlend="0"/>
       <text pos="|0,20" offset="-0.5,0" colorText="#ff0000">SOUI动画演示</text>
     </page>
+    <page title="flywnd">
+      <window pos="0,0,-0,-0" clipClient="1" bkgndBlend="0" colorBkgnd="#cccccc">
+        <flywnd pos="-210,10,-0,-10" posEnd="-10,10,@210,-10">
+          <toggle pos="0,|-15,@10,@30" skin="_skin.sys.tree.toggle" name="switch" tip="click me to show the animator that show or hide the pane"></toggle>
+          <window pos="10,0,-0,-0" alpha="100">
+            <window pos="0,0,-0,-0" colorBkgnd="#ff0000">
+              <text pos="10,20,-0,@100" multilines="1">click the left grip to \nshow or hide the \npane</text>
+            </window>
+          </window>
+        </flywnd>
+      </window>
+    </page>
   </tabctrl>
 </include>

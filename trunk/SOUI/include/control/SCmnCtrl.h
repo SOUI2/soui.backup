@@ -897,7 +897,7 @@ protected:
  */
 class SOUI_EXP SToggle : public SWindow
 {
-    SOUI_CLASS_NAME(SToggle, L"toogle")
+    SOUI_CLASS_NAME(SToggle, L"toggle")
 public:
     
     /**

@@ -244,6 +244,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SFlyWnd.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\gif\SGifPlayer.cpp"
 				>
 			</File>
@@ -307,6 +311,10 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\gif\SAniImgFrame.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\SFlyWnd.h"
 				>
 			</File>
 			<File
@@ -453,30 +461,6 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\propgrid\SPropertyItemBase.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="gridview"
-			>
-			<File
-				RelativePath="..\controls.extend\gridview\CellRange.h"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\gridview\GridCell.h"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\gridview\GridCellBase.h"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\gridview\GridCtrl.h"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\gridview\InPlaceEdit.h"
 				>
 			</File>
 		</Filter>

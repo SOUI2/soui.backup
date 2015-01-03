@@ -52,6 +52,8 @@ namespace SOUI
 
 		}
 
+        virtual ~TSkiaRenderObjImpl(){}
+
 		virtual IRenderFactory * GetRenderFactory() const
 		{
 			return m_pRenderFactory;
@@ -120,6 +122,12 @@ namespace SOUI
             m_skPaint.setLCDRenderText(true);
             
 		}
+
+        virtual ~SFont_Skia()
+        {
+            if(m_skFont) m_skFont->unref();
+        }
+
         virtual const LOGFONT * LogFont() const {return &m_lf;}
 
         virtual LPCTSTR FamilyName()

@@ -1,339 +1,296 @@
 #include "souistd.h"
 #include "core/SwndLayout.h"
-#include "core/SWnd.h"
+#include "helper/SplitString.h"
 
 namespace SOUI
 {
-
-    //////////////////////////////////////////////////////////////////////////
-    SWindowRepos::SWindowRepos(SWindow *pWnd):m_pWnd(pWnd)
-    {
-        SASSERT(m_pWnd);
-        m_rcWnd = m_pWnd->m_rcWindow;
-        m_pWnd->m_rcWindow.SetRect(POS_INIT,POS_INIT,POS_INIT,POS_INIT);
-    }
-
-    SWindowRepos::~SWindowRepos()
-    {
-        if(m_pWnd->m_rcWindow != m_rcWnd)
-        {
-            m_pWnd->OnRelayout(m_rcWnd,m_pWnd->m_rcWindow);
-        }
-    }
     
     //////////////////////////////////////////////////////////////////////////
     //
-    SwndLayout::SwndLayout( SWindow *pOwner )
-    :m_pOwner(pOwner)
-    ,nCount(0)
-    ,uPositionType(0)
+    SwndLayout::SwndLayout()
+    :nCount(0)
+    ,uPositionType(SizeX_FitContent | SizeY_FitContent)
     ,fOffsetX(0.0f)
     ,fOffsetY(0.0f)
     ,uSpecifyWidth(0)
     ,uSpecifyHeight(0)
-    ,nSepSpace(2)
     {
-        InitLayoutState();
     }
     
-    LPCWSTR SwndLayout::ParsePosition(LPCWSTR pszPos,BOOL bFirst2Pos,POSITION_ITEM &pos)
+    void SwndLayout::Clear()
     {
-        if(!pszPos) return NULL;
-
-        if(pszPos[0]==POSFLAG_DEFSIZE && bFirst2Pos)
-        {//如果在前面两个坐标中定义size，自动忽略
-            SASSERT(FALSE);
-            pszPos++;
-        }
-        if(pszPos[0]==POSFLAG_REFCENTER) pos.pit=PIT_CENTER,pszPos++;
-        else if(pszPos[0]==POSFLAG_PERCENT) pos.pit=PIT_PERCENT,pszPos++;
-        else if(pszPos[0]==POSFLAG_REFPREV_NEAR) pos.pit=PIT_PREV_NEAR,pszPos++;
-        else if(pszPos[0]==POSFLAG_REFNEXT_NEAR) pos.pit=PIT_NEXT_NEAR,pszPos++;
-        else if(pszPos[0]==POSFLAG_REFPREV_FAR) pos.pit=PIT_PREV_FAR,pszPos++;
-        else if(pszPos[0]==POSFLAG_REFNEXT_FAR) pos.pit=PIT_NEXT_FAR,pszPos++;
-        else if(pszPos[0]==POSFLAG_DEFSIZE) pos.pit=PIT_OFFSET,pszPos++;
-        else pos.pit=PIT_NORMAL;
-
-        pos.bMinus=FALSE;
-        if(pszPos[0]==L'-')
-        {
-            pszPos++;
-            pos.bMinus=TRUE;
-        }
-
-        pos.nPos=(float)_wtof(pszPos);
-
-        const wchar_t *pNext=wcschr(pszPos,L',');
-        if(pNext) pNext++;
-        return pNext;
+        nCount=0;
+        uPositionType= SizeX_FitContent | SizeY_FitContent;
+        fOffsetX=0.0f;
+        fOffsetY=0.0f;
     }
 
-    CRect SwndLayout::GetWindowLayoutRect(SWindow *pWindow)
+    BOOL SwndLayout::IsEmpty()
     {
-        CRect rc = pWindow->m_rcWindow;
+        return uPositionType == 0 && nCount ==0;
+    }
+
+    BOOL SwndLayout::IsFitParent(POSDIR pd)  const
+    {
+        switch(pd)
+        {
+        case PD_X: return uPositionType & SizeX_FitParent;
+        case PD_Y: return uPositionType & SizeY_FitParent;
+        case PD_ALL:return (uPositionType & (SizeX_FitParent | SizeY_FitParent));
+        default:SASSERT(FALSE);return FALSE;
+        }
+    }
+
+    BOOL SwndLayout::IsFitContent(POSDIR pd)  const
+    {
+        switch(pd)
+        {
+        case PD_X: return uPositionType & SizeX_FitContent;
+        case PD_Y: return uPositionType & SizeY_FitContent;
+        case PD_ALL:return (uPositionType & (SizeX_FitContent | SizeY_FitContent));
+        default:SASSERT(FALSE);return FALSE;
+        }
+    }
+
+
+    BOOL SwndLayout::IsSpecifySize( POSDIR pd )  const
+    {
+        switch(pd)
+        {
+        case PD_X: return uPositionType & SizeX_Specify;
+        case PD_Y: return uPositionType & SizeY_Specify;
+        case PD_ALL:return (uPositionType & (SizeX_Specify | SizeY_Specify));
+        default:SASSERT(FALSE);return FALSE;
+        }
+    }
+
+    BOOL SwndLayout::InitPosFromString( const SStringW & strPos )
+    {
+        SStringWList strLst;
+        SplitString(strPos,L',',strLst);
+        if(strLst.GetCount() != 2 && strLst.GetCount() != 4) return FALSE;
         
-        if(!pWindow->m_bDisplay && !pWindow->m_bVisible)
+        BOOL bRet = TRUE;
+
+        bRet = ParsePosition12(strLst[0],strLst[1]);
+        if(strLst.GetCount() == 4)
         {
-            rc.right=rc.left;
-            rc.bottom=rc.top;
+            bRet = ParsePosition34(strLst[2],strLst[3]);
         }
-        return rc;
-    }
-    
-    int SwndLayout::PositionItem2Value(const POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX)
-    {
-        int nRet=0;
-        int nWid=nMax-nMin;
-
-        switch(pos.pit)
-        {
-        case PIT_CENTER: 
-            nRet=(int)pos.nPos * (pos.bMinus?-1:1) + nWid/2 + nMin;
-            break;
-        case PIT_NORMAL: 
-            if(pos.bMinus)
-                nRet=nMax-(int)pos.nPos;
-            else
-                nRet=nMin+(int)pos.nPos;
-            break;
-        case PIT_PERCENT: 
-            if(pos.bMinus)
-                nRet=nMin+(int)((100.0f-pos.nPos)*nWid/100);
-            else
-                nRet=nMin+(int)(pos.nPos*nWid/100);
-            if(nRet>nMax) nRet=nMax;
-            break;
-        case PIT_PREV_NEAR:
-        case PIT_PREV_FAR:
-            {
-                SWindow *pRefWnd=m_pOwner->GetWindow(GSW_PREVSIBLING);
-                if(!pRefWnd) pRefWnd=m_pOwner->GetWindow(GSW_PARENT);
-                if(pRefWnd)
-                {//需要确定参考窗口是否完成布局
-                    CRect rcRef = GetWindowLayoutRect(pRefWnd);
-                    if(bX)
-                    {
-                        LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.right:rcRef.left;
-                        if(refPos == POS_INIT || refPos==POS_WAIT)
-                            nRet=POS_WAIT;
-                        else
-                            nRet=refPos+(int)pos.nPos*(pos.bMinus?-1:1);
-                    }else
-                    {
-                        LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.bottom:rcRef.top;
-                        if(refPos == POS_INIT || refPos==POS_WAIT)
-                            nRet=POS_WAIT;
-                        else
-                            nRet=refPos+(int)pos.nPos*(pos.bMinus?-1:1);
-                    }
-                }
-            }
-            break;
-        case PIT_NEXT_NEAR:
-        case PIT_NEXT_FAR:
-            {
-                SWindow *pRefWnd=m_pOwner->GetWindow(GSW_NEXTSIBLING);
-                if(!pRefWnd) pRefWnd=m_pOwner->GetWindow(GSW_PARENT);
-                if(pRefWnd)
-                {//需要确定参考窗口是否完成布局
-                    CRect rcRef = GetWindowLayoutRect(pRefWnd);
-                    if(bX)
-                    {
-                        LONG refPos = (pos.pit == PIT_NEXT_NEAR)?rcRef.left:rcRef.right;
-                        if(refPos == POS_INIT || refPos==POS_WAIT)
-                            nRet=POS_WAIT;
-                        else
-                            nRet=refPos+(int)pos.nPos*(pos.bMinus?-1:1);
-                    }else
-                    {
-                        LONG refPos = (pos.pit == PIT_NEXT_NEAR)?rcRef.top:rcRef.bottom;
-                        if(refPos == POS_INIT || refPos==POS_WAIT)
-                            nRet=POS_WAIT;
-                        else
-                            nRet=refPos+(int)pos.nPos*(pos.bMinus?-1:1);
-                    }
-                }
-            }
-            break;
-        }
-
-        return nRet;
-
-    }
-    
-    int SwndLayout::CalcPosition(const CRect & rcContainer,CRect &rcWindow )
-    {
-        int nRet=0;
-
-        if(nCount==4)
-        {//指定了4个坐标
-            if(rcWindow.left == POS_INIT || rcWindow.left == POS_WAIT)
-                rcWindow.left=PositionItem2Value(Left,rcContainer.left,rcContainer.right,TRUE);
-            if(rcWindow.left==POS_WAIT) nRet++;
-
-            if(rcWindow.top == POS_INIT || rcWindow.top == POS_WAIT)
-                rcWindow.top=PositionItem2Value(Top,rcContainer.top,rcContainer.bottom,FALSE);
-            if(rcWindow.top==POS_WAIT) nRet++;
-
-            if(rcWindow.right == POS_INIT || rcWindow.right == POS_WAIT)
-            {
-                if(Right.pit!=PIT_OFFSET)
-                    rcWindow.right=PositionItem2Value(Right,rcContainer.left,rcContainer.right,TRUE);
-                else if(rcWindow.left!=POS_WAIT)
-                    rcWindow.right=rcWindow.left+(LONG)Right.nPos;
-                else
-                    rcWindow.right=POS_WAIT;
-            }
-            if(rcWindow.right==POS_WAIT) nRet++;
-
-            if(rcWindow.bottom == POS_INIT || rcWindow.bottom == POS_WAIT)
-            {
-                if(Bottom.pit!=PIT_OFFSET)
-                    rcWindow.bottom=PositionItem2Value(Bottom,rcContainer.top,rcContainer.bottom,FALSE);
-                else if(rcWindow.top!=POS_WAIT)
-                    rcWindow.bottom=rcWindow.top+(LONG)Bottom.nPos;
-                else
-                    rcWindow.bottom=POS_WAIT;
-            }
-            if(rcWindow.bottom==POS_WAIT) nRet++;
-        }else 
-        {
-            CPoint pt=rcWindow.TopLeft();
-            if((uPositionType & SizeX_FitParent) &&  (uPositionType &SizeY_FitParent))
-            {//充满父窗口
-                pt.x=rcContainer.left;
-                pt.y=rcContainer.top;
-            }else if(nCount==2)
-            {//只指定了两个坐标
-                if(pt.x==POS_INIT || pt.x==POS_WAIT) pt.x=PositionItem2Value(Left,rcContainer.left,rcContainer.right,TRUE);
-                if(pt.x==POS_WAIT) nRet++;
-                if(pt.y==POS_INIT || pt.y==POS_WAIT) pt.y=PositionItem2Value(Top,rcContainer.top,rcContainer.bottom,FALSE);
-                if(pt.y==POS_WAIT) nRet++;
-            }else //if(nCount==0)
-            {//自动排版
-                SWindow *pSibling=m_pOwner->GetWindow(GSW_PREVSIBLING);
-                if(!pSibling)
-                {
-                    pt.x=rcContainer.left;
-                    pt.y=rcContainer.top;
-                }else
-                {
-                    CRect rcSib = pSibling->m_rcWindow;
-                    if(rcSib.right==POS_INIT || rcSib.right == POS_WAIT)
-                        pt.x=POS_WAIT,nRet++;
-                    else
-                        pt.x=rcSib.right+nSepSpace;
-
-                    if(rcSib.top==POS_INIT || rcSib.top==POS_WAIT)
-                        pt.y=POS_WAIT,nRet++;
-                    else
-                        pt.y=rcSib.top;
-                }
-            }
-            if(nRet==0)
-                rcWindow=CRect(pt,CalcSize(rcContainer));
-            else 
-                rcWindow.left=pt.x,rcWindow.top=pt.y;
-        }
-
-        if(nRet==0)
-        {//没有坐标等待计算了
-            rcWindow.NormalizeRect();
-            //处理窗口的偏移(offset)属性
-            CSize sz = rcWindow.Size();
-            CPoint ptOffset;
-            ptOffset.x = (LONG)(sz.cx * fOffsetX);
-            ptOffset.y = (LONG)(sz.cy * fOffsetY);
-            rcWindow.OffsetRect(ptOffset);
-        }
-        return nRet;
+        return bRet;
     }
 
-    BOOL SwndLayout::CalcChildrenPosition(SList<SWindowRepos*> *pListChildren,const CRect & rcContainer)
+    BOOL SwndLayout::InitOffsetFromString( const SStringW & strPos )
     {
-        SPOSITION pos=pListChildren->GetHeadPosition();
-        int nChildrenCount=pListChildren->GetCount();
-        while(pos)
+        float fx,fy;
+        int nSegs=swscanf(strPos,L"%f,%f",&fx,&fy);
+        if(nSegs != 2) return FALSE;
+        fOffsetX = fx;
+        fOffsetY = fy;
+        return TRUE;
+    }
+
+    BOOL SwndLayout::InitOffsetFromPos2Type( const SStringW & strPos2Type )
+    {
+        if (strPos2Type.IsEmpty()) return FALSE;
+        SStringW strValue2=strPos2Type;
+        strValue2.MakeLower();
+        BOOL bRet=TRUE;
+        if(strValue2 == L"lefttop")
+            fOffsetX=fOffsetY=0.0f;
+        else if(strValue2 == L"leftmid")
+            fOffsetX=0.0f,fOffsetY=-0.5f;
+        else if(strValue2 == L"leftbottom")
+            fOffsetX=0.0f,fOffsetY=-1.0f;
+        else if(strValue2 == L"midtop")
+            fOffsetX=-0.5f,fOffsetY=0.0f;
+        else if(strValue2 == L"center")
+            fOffsetX=-0.5f,fOffsetY=-0.5f;
+        else if(strValue2 == L"midbottom")
+            fOffsetX=-0.5f,fOffsetY=-1.0f;
+        else if(strValue2 == L"righttop")
+            fOffsetX=-1.0f,fOffsetY=0.0f;
+        else if(strValue2 == L"rightmid")
+            fOffsetX=-1.0f,fOffsetY=-0.5f;
+        else if(strValue2 == L"leftbottom")
+            fOffsetX=-1.0f,fOffsetY=-1.0f;
+        else
+            bRet=FALSE;
+        return bRet;
+    }
+
+    BOOL SwndLayout::SetFitParent(POSDIR pd)
+    {
+        if(pd == 0 || nCount !=0) return FALSE;
+
+        if(pd & PD_X)
         {
-            SPOSITION posOld=pos;
-            SWindow *pChild=pListChildren->GetNext(pos)->GetWindow();
-            if(0 == pChild->m_layout.CalcPosition(rcContainer,pChild->m_rcWindow))
-            {
-                delete pListChildren->GetAt(posOld);
-                pListChildren->RemoveAt(posOld);
-            }
+            uPositionType &= ~SizeX_Mask;
+            uPositionType |= SizeX_FitParent;
         }
-        if(0==pListChildren->GetCount())
-            return TRUE;
-        if(nChildrenCount == pListChildren->GetCount())
-        {//窗口布局依赖死锁
-            SASSERT(FALSE);
+        if(pd & PD_Y)
+        {
+            uPositionType &= ~SizeY_Mask;
+            uPositionType |= SizeY_FitParent;
+        }
+
+        return TRUE;
+    }
+
+    BOOL SwndLayout::SetFitContent(POSDIR pd)
+    {
+        if(pd == 0 || nCount == 4) return FALSE;
+
+        if(pd & PD_X)
+        {
+            uPositionType &= ~SizeX_Mask;
+            uPositionType |= SizeX_FitContent;
+        }
+        if(pd & PD_Y)
+        {
+            uPositionType &= ~SizeY_Mask;
+            uPositionType |= SizeY_FitContent;
+        }
+        return TRUE;
+    }
+
+    BOOL SwndLayout::ParsePosition12( const SStringW & strPos1, const SStringW &strPos2 )
+    {
+        if(strPos1.IsEmpty() || strPos2.IsEmpty()) 
             return FALSE;
+        POSITION_ITEM pos1,pos2;
+        if(!StrPos2ItemPos(strPos1,pos1) || !StrPos2ItemPos(strPos2,pos2) )
+            return FALSE;
+        if(pos1.pit == PIT_SIZE || pos2.pit == PIT_SIZE)//前面2个属性不能是size类型
+            return FALSE;
+        pos [PI_LEFT] = pos1;
+        pos [PI_TOP] = pos2;
+        nCount = 2;
+        return TRUE;
+    }
+
+    BOOL SwndLayout::ParsePosition34( const SStringW & strPos3, const SStringW &strPos4 )
+    {
+        if(strPos3.IsEmpty() || strPos4.IsEmpty()) return FALSE;
+        POSITION_ITEM pos3,pos4;
+        if(!StrPos2ItemPos(strPos3,pos3) || !StrPos2ItemPos(strPos4,pos4) ) return FALSE;
+
+        pos [PI_RIGHT] = pos3;
+        pos [PI_BOTTOM] = pos4;
+        nCount = 4;
+        return TRUE;
+    }
+
+    BOOL SwndLayout::StrPos2ItemPos( const SStringW &strPos,POSITION_ITEM & pos )
+    {
+        if(strPos.IsEmpty()) return FALSE;
+        
+        LPCWSTR pszPos = strPos;
+        switch(pszPos[0])
+        {
+        case POSFLAG_REFCENTER: pos.pit=PIT_CENTER,pszPos++;break;
+        case POSFLAG_PERCENT: pos.pit=PIT_PERCENT,pszPos++;break;
+        case POSFLAG_REFPREV_NEAR: pos.pit=PIT_PREV_NEAR,pszPos++;break;
+        case POSFLAG_REFNEXT_NEAR: pos.pit=PIT_NEXT_NEAR,pszPos++;break;
+        case POSFLAG_REFPREV_FAR: pos.pit=PIT_PREV_FAR,pszPos++;break;
+        case POSFLAG_REFNEXT_FAR: pos.pit=PIT_NEXT_FAR,pszPos++;break;
+        case POSFLAG_SIZE:pos.pit=PIT_SIZE,pszPos++;break;
+        default: pos.pit=PIT_NORMAL;break;
+        }
+        
+        if(pszPos [0] == L'-')
+        {
+            pos.cMinus = -1;
+            pszPos ++;
         }else
         {
-            return CalcChildrenPosition(pListChildren,rcContainer);
+            pos.cMinus = 1;
         }
+        pos.nPos=(float)_wtof(pszPos);
+        
+        //size属性不能<0
+        if(pos.nPos < 0.0f && pos.pit == PIT_SIZE) 
+            return FALSE;
+        return TRUE;
     }
 
-    void SwndLayout::ParseStrPostion( LPCWSTR pszValue)
+    BOOL SwndLayout::InitSizeFromString( const SStringW & strSize )
     {
-        uPositionType &= ~Pos_Float;
+        SStringWList strLst;
+        SplitString(strSize,L',',strLst);
+        if(strLst.GetCount() != 2) return FALSE;
+        
+        return InitWidth(strLst[0]) && InitHeight(strLst[1]);
+    }
 
-        nCount=0;
-        while(nCount<4 && pszValue)
+    BOOL SwndLayout::InitWidth( const SStringW & strWidth )
+    {
+        if(strWidth.IsEmpty()) return FALSE;
+
+        SStringW strValue = strWidth;
+        strValue.MakeLower();
+        
+        BOOL bRet=FALSE;
+        if(strValue == L"full")
         {
-            pszValue=ParsePosition(pszValue,nCount<2,Item[nCount++]);
-        }
-
-
-        if (2 == nCount || 4 == nCount)
+            bRet=SetFitParent(PD_X);
+        }else
         {
-            if(2 == nCount)
-            {
-                uPositionType = (uPositionType & ~SizeX_Mask) | SizeX_FitContent;
-                uPositionType = (uPositionType & ~SizeY_Mask) | SizeY_FitContent;
-            }
+            int nWid = _wtoi(strValue);
+            if(nWid<0)//size<0，代表自动计算size
+                bRet=SetFitContent(PD_X);
+            else
+                bRet=SetWidth(nWid);
         }
-        else
-            nCount = 0;
-
+        return bRet;
     }
 
-    CSize SwndLayout::CalcSize(const CRect & rcContainer)
+    BOOL SwndLayout::InitHeight( const SStringW & strHeight )
     {
-        CSize sz;
-        if(uPositionType & SizeX_Specify)
-            sz.cx=uSpecifyWidth;
-        else if(uPositionType & SizeX_FitParent)
-            sz.cx=rcContainer.right-rcContainer.left;
-        if(uPositionType & SizeY_Specify)
-            sz.cy=uSpecifyHeight;
-        else if(uPositionType & SizeY_FitParent)
-            sz.cy=rcContainer.bottom-rcContainer.top;
-        if((uPositionType & SizeX_FitContent) || (uPositionType & SizeY_FitContent) && nCount!=4)
+        if(strHeight.IsEmpty()) return FALSE;
+
+        SStringW strValue = strHeight;
+        strValue.MakeLower();
+        
+        BOOL bRet =FALSE;
+        if(strValue == L"full")
         {
-            CSize szDesire=m_pOwner->GetDesiredSize(rcContainer);    
-            if(uPositionType & SizeX_FitContent)
-                sz.cx=szDesire.cx;
-            if(uPositionType & SizeY_FitContent)
-                sz.cy=szDesire.cy;
+            bRet=SetFitParent(PD_Y);
+        }else
+        {
+            int nHei = _wtoi(strValue);
+            if(nHei<0)//size<0，代表自动计算size
+                bRet=SetFitContent(PD_Y);
+            else
+                bRet=SetHeight(nHei);
         }
-        return sz;
+        return bRet;
     }
 
-    BOOL SwndLayout::IsFitContent()
+
+    BOOL SwndLayout::SetWidth( UINT nWid )
     {
-        return nCount!=4 && (uPositionType & (SizeX_FitContent|SizeY_FitContent));
+        if(nCount == 4) return FALSE;
+
+
+        uPositionType &= ~ SizeX_Mask;
+        uPositionType |= SizeX_Specify;
+
+        uSpecifyWidth = nWid;
+
+        return TRUE;
     }
 
-    BOOL SwndLayout::IsFloat()
+    BOOL SwndLayout::SetHeight( UINT nHei )
     {
-        return uPositionType & Pos_Float;
-    }
+        if(nCount == 4) return FALSE;
 
-    void SwndLayout::InitLayoutState()
-    {
-        m_pOwner->m_rcWindow.SetRect(POS_INIT,POS_INIT,POS_INIT,POS_INIT);
+        uPositionType &= ~ SizeY_Mask;
+        uPositionType |= SizeY_Specify;
+
+        uSpecifyHeight = nHei;
+
+        return TRUE;
     }
 
 }
