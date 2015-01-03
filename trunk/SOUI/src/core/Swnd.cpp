@@ -6,8 +6,6 @@
 
 namespace SOUI
 {
-
-
     //////////////////////////////////////////////////////////////////////////
     // SWindow Implement
     //////////////////////////////////////////////////////////////////////////
@@ -197,7 +195,7 @@ namespace SOUI
 
         CRect rcOld = m_rcWindow;
         m_rcWindow = prect;
-        
+
         OnRelayout(rcOld,m_rcWindow);
     }
 
@@ -229,11 +227,11 @@ namespace SOUI
         TestMainThread();
 
         DWORD dwOldState = m_dwState;
-        
+
         DWORD dwNewState = m_dwState;
         dwNewState &= ~dwStateRemove;
         dwNewState |= dwStateAdd;
-        
+
         OnStateChanging(dwOldState,dwNewState);
 
         m_dwState = dwNewState;
@@ -301,7 +299,7 @@ namespace SOUI
     BOOL SWindow::DestroyChild(SWindow *pChild)
     {
         TestMainThread();
-       if(this != pChild->GetParent()) return FALSE;
+        if(this != pChild->GetParent()) return FALSE;
         pChild->Invalidate();
         pChild->SSendMessage(WM_DESTROY);
         RemoveChild(pChild);
@@ -572,7 +570,7 @@ namespace SOUI
 
             if(!m_bVisible || (m_pParent && !m_pParent->IsVisible(TRUE)))
                 ModifyState(WndState_Invisible, 0);
-            
+
             if (4 != m_layout.nCount)
             {
                 m_layout.InitWidth(xmlNode.attribute(L"width").value());
@@ -728,8 +726,8 @@ namespace SOUI
                 pRT->PopClip();
             }
         }
-        
-        
+
+
         if(prsBack == PRS_DRAWING && rcWnd != rcClient) 
         {//只在客户区与非客户区不相同时才绘制非客户区
             if(pWndCur->IsDrawToCache())
@@ -1262,7 +1260,7 @@ namespace SOUI
             m_rcGetRT.IntersectRect(pRc,&m_rcGetRT);
             m_bClipRT=!m_rcGetRT.EqualRect(pRc);
         }
-        
+
         IRenderTarget *pRT = NULL;
         if(IsDrawToCache())
         {
@@ -1310,12 +1308,12 @@ namespace SOUI
                 pRTCantainer->AlphaBlend(&m_rcGetRT,pRT,&m_rcGetRT,m_style.m_byAlpha);
             pRT = pRTCantainer;            
         }
-        
+
         if(m_gdcFlags & OLEDC_PAINTBKGND)
             PaintForeground(pRT,&m_rcGetRT);
         if(m_bClipRT)
             pRT->PopClip();
-        
+
         GetContainer()->OnReleaseRenderTarget(pRT,m_rcGetRT,m_gdcFlags);
 
         m_bClipRT=FALSE;
@@ -1397,7 +1395,7 @@ namespace SOUI
         pRT->ClearRect(&rcDraw,0);//清除残留的alpha值
         PRSTATE prState=PRS_LOOKSTART;
         _PaintRegion(pRT,pRgn,pTopWnd,pTopWnd,this,prState);
-        
+
         pRT->PopClip();
     }
 
@@ -1409,7 +1407,7 @@ namespace SOUI
         GETRENDERFACTORY->CreateRegion(&pRgn);
         pRgn->CombineRect(&rcDraw,RGN_COPY);
         pRT->PushClipRect(&rcDraw);
-        
+
         //绘制子窗口
         SWindow *pChild = GetWindow(GSW_FIRSTCHILD);
         if(pChild) 
@@ -1417,7 +1415,7 @@ namespace SOUI
             PRSTATE prState=PRS_LOOKSTART;
             _PaintRegion(pRT,pRgn,this,pChild,NULL,prState);
         }
-        
+
         //绘制非客户区
         CRect rcClient;
         GetClientRect(&rcClient);
@@ -1441,7 +1439,7 @@ namespace SOUI
             pRT->SelectObject(oldFont);
             pRT->SetTextColor(crOld);
         }
-        
+
         pRT->PopClip();
     }
 
@@ -1866,7 +1864,7 @@ namespace SOUI
         if(!bLoading)
         {
             UpdateCacheMode();
-            InvalidateRect(m_rcWindow);
+            InvalidateRect(NULL);
         }
         return S_FALSE;
     }
