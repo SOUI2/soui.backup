@@ -86,6 +86,10 @@ namespace SOUI
 
         virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler)=0;
 
+        virtual BOOL RegisterTrackMouseEvent(SWND swnd)=0;
+
+        virtual BOOL UnregisterTrackMouseEvent(SWND swnd)=0;
+
         virtual SMessageLoop * GetMsgLoop() =0;
     };
 

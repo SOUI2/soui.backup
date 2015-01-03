@@ -983,7 +983,7 @@ namespace SOUI
         HRESULT OnAttrAlpha(const SStringW& strValue, BOOL bLoading);
         HRESULT OnAttrSkin(const SStringW& strValue, BOOL bLoading);
         HRESULT OnAttrClass(const SStringW& strValue, BOOL bLoading);
-
+        HRESULT OnAttrTrackMouseEvent(const SStringW& strValue, BOOL bLoading);
 
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"id",m_nID,FALSE)
@@ -1001,6 +1001,7 @@ namespace SOUI
             ATTR_CUSTOM(L"pos2type", OnAttrPos2type)
             ATTR_CUSTOM(L"cache", OnAttrCache)
             ATTR_CUSTOM(L"alpha",OnAttrAlpha)
+            ATTR_CUSTOM(L"trackMouseEvent",OnAttrTrackMouseEvent)
             ATTR_I18NSTRT(L"tip", m_strToolTipText, FALSE)  // π”√”Ô—‘∞¸∑≠“Î
             ATTR_INT(L"msgTransparent", m_bMsgTransparent, FALSE)
             ATTR_INT(L"maxWidth",m_nMaxWidth,FALSE)

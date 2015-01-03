@@ -3,56 +3,12 @@
 #include <core/Swnd.h>
 #include <control/SCmnCtrl.h>
 
+#include "SAnimator.h"
+
 namespace SOUI
 {
 #define NAME_SWITCH L"switch"
 
-    class SAnimator
-    {
-    public:
-        enum {
-            PER_START = 0,
-            PER_END = 100,
-        };
-
-        SAnimator():m_uDuration(0){}
-
-        virtual ~SAnimator(){}
-
-        void Start(UINT uDuration)
-        {
-            m_dwStart = GetTickCount();
-            m_uDuration = uDuration;
-            OnAnimatorState(0);
-        }
-        
-        BOOL IsBusy(){return m_uDuration != 0;}
-
-        BOOL Update()
-        {
-            if(m_uDuration == 0) return FALSE;
-
-            DWORD dwElapse = GetTickCount() - m_dwStart;
-            if(dwElapse >= m_uDuration)
-            {
-                OnAnimatorState(100);
-                m_uDuration = 0;
-            }else
-            {
-                OnAnimatorState(dwElapse*100/m_uDuration);
-            }
-            return TRUE;
-        }
-
-        //¶¯»­×´Ì¬¸Ä±ä£¬percent in [0,100]
-        virtual void OnAnimatorState(int percent)
-        {
-
-        }
-    private:
-        DWORD m_dwStart;
-        DWORD m_uDuration;
-    };
 
     class SFlyWnd : public SWindow ,public SAnimator , public ITimelineHandler
     {

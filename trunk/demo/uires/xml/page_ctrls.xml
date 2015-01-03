@@ -20,9 +20,9 @@
       <text pos="50,[5">ip address control:</text>
       <ipctrl name="ip_test" width="200" height="25" class="cls_edit"/>
       <text pos="50,[5" multiLines="1">single line edit in window, \nshow how attribute "mouseRelay" will work:</text>
-      <window class="cls_edit" pos="50,[5,@200,@35">
-        <edit pos="0,0,-30,-0" font="adding:10" margin="0" mouseRelay="1" cueText="cue text" cueColor="rgb(255,0,0)" password="1">scroll edit</edit>
-        <button pos="-30,0,-0,-0" mouseRelay="1" >:)</button>
+      <window class="cls_edit" pos="50,[5,@200,@35" trackMouseEvent="1">
+        <edit pos="0,0,-30,-0" font="adding:10" margin="0" cueText="cue text" cueColor="rgb(255,0,0)" password="1">scroll edit</edit>
+        <button pos="-30,0,-0,-0" >:)</button>
       </window>
       <text pos="50,[5">richedit:</text>
       <button name="btn_insert_gif" height="25">insert gif to richedit</button>

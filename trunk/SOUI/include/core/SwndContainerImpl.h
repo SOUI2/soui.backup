@@ -52,6 +52,11 @@ namespace SOUI
 
         virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
 
+        virtual BOOL RegisterTrackMouseEvent(SWND swnd);
+
+        virtual BOOL UnregisterTrackMouseEvent(SWND swnd);
+
+    public://ITimelineHandler
         virtual void OnNextFrame();
     protected:
 
@@ -84,6 +89,7 @@ namespace SOUI
         SWindow    *m_pHost;
 
         SList<ITimelineHandler*>    m_lstTimelineHandler;
+        SList<SWND>                 m_lstTrackMouseEvtWnd;
     };
 
 }//namespace SOUI

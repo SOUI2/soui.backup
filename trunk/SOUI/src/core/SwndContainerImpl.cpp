@@ -128,26 +128,13 @@ void SwndContainerImpl::OnFrameMouseMove(UINT uFlag,CPoint pt)
 {
     SWindow *pCapture=SWindowMgr::GetWindow(m_hCapture);
     if(pCapture)
-    {
+    {//有窗口设置了鼠标捕获,不需要判断是否有TrackMouseEvent属性,也不需要判断客户区与非客户区的变化
         CRect rc;
         pCapture->GetWindowRect(&rc);
         SWindow * pHover=rc.PtInRect(pt)?pCapture:NULL;
         SWND hHover=pHover?pHover->GetSwnd():NULL;
         if(hHover!=m_hHover)
-        {
-            SWindow *pOldHover=SWindowMgr::GetWindow(m_hHover);
-            m_hHover=hHover;
-            if(pOldHover) pOldHover->SSendMessage(m_bNcHover?WM_NCMOUSELEAVE:WM_MOUSELEAVE);
-            if(pHover)    pHover->SSendMessage(m_bNcHover?WM_NCMOUSEHOVER:WM_MOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
-        }
-        pCapture->SSendMessage(m_bNcHover?WM_NCMOUSEMOVE:WM_MOUSEMOVE,uFlag,MAKELPARAM(pt.x,pt.y));
-    }
-    else
-    {
-        SWND hHover=m_pHost->SwndFromPoint(pt,FALSE);
-        SWindow * pHover=SWindowMgr::GetWindow(hHover);
-        if(m_hHover!=hHover)
-        {
+        {//检测鼠标是否在捕获窗口间移动
             SWindow *pOldHover=SWindowMgr::GetWindow(m_hHover);
             m_hHover=hHover;
             if(pOldHover)
@@ -155,7 +142,38 @@ void SwndContainerImpl::OnFrameMouseMove(UINT uFlag,CPoint pt)
                 if(m_bNcHover) pOldHover->SSendMessage(WM_NCMOUSELEAVE);
                 pOldHover->SSendMessage(WM_MOUSELEAVE);
             }
-            if(pHover && !pHover->IsDisabled(TRUE))
+            if(pHover && !(pHover->GetState()&WndState_Hover))    
+            {
+                if(m_bNcHover) pHover->SSendMessage(WM_NCMOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
+                pHover->SSendMessage(WM_MOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
+            }
+        }
+        pCapture->SSendMessage(m_bNcHover?WM_NCMOUSEMOVE:WM_MOUSEMOVE,uFlag,MAKELPARAM(pt.x,pt.y));
+    }
+    else
+    {//没有设置鼠标捕获
+        SWND hHover=m_pHost->SwndFromPoint(pt,FALSE);
+        SWindow * pHover=SWindowMgr::GetWindow(hHover);
+        if(m_hHover!=hHover)
+        {//hover窗口发生了变化
+            SWindow *pOldHover=SWindowMgr::GetWindow(m_hHover);
+            m_hHover=hHover;
+            if(pOldHover)
+            {
+                BOOL bLeave=TRUE;
+                if(pOldHover->GetStyle().m_bTrackMouseEvent)
+                {//对于有监视鼠标事件的窗口做特殊处理
+                    CRect rcWnd;
+                    pOldHover->GetWindowRect(&rcWnd);
+                    bLeave =!rcWnd.PtInRect(pt);
+                }
+                if(bLeave)
+                {
+                    if(m_bNcHover) pOldHover->SSendMessage(WM_NCMOUSELEAVE);
+                    pOldHover->SSendMessage(WM_MOUSELEAVE);
+                }
+            }
+            if(pHover && !pHover->IsDisabled(TRUE) && !(pHover->GetState() & WndState_Hover))
             {
                 m_bNcHover=pHover->OnNcHitTest(pt);
                 if(m_bNcHover) pHover->SSendMessage(WM_NCMOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
@@ -163,25 +181,48 @@ void SwndContainerImpl::OnFrameMouseMove(UINT uFlag,CPoint pt)
             }
         }
         else if(pHover && !pHover->IsDisabled(TRUE))
-        {
+        {//窗口内移动，检测客户区和非客户区的变化
             BOOL bNcHover=pHover->OnNcHitTest(pt);
             if(bNcHover!=m_bNcHover)
             {
                 m_bNcHover=bNcHover;
                 if(m_bNcHover)
                 {
-                    pHover->SSendMessage(WM_MOUSELEAVE);
                     pHover->SSendMessage(WM_NCMOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
                 }
                 else
                 {
                     pHover->SSendMessage(WM_NCMOUSELEAVE);
-                    pHover->SSendMessage(WM_MOUSEHOVER,uFlag,MAKELPARAM(pt.x,pt.y));
                 }
             }
         }
         if(pHover && !pHover->IsDisabled(TRUE))
             pHover->SSendMessage(m_bNcHover?WM_NCMOUSEMOVE:WM_MOUSEMOVE,uFlag,MAKELPARAM(pt.x,pt.y));
+    }
+
+    //处理trackMouseEvent属性
+    SPOSITION pos = m_lstTrackMouseEvtWnd.GetHeadPosition();
+    while(pos)
+    {
+        SWND swnd = m_lstTrackMouseEvtWnd.GetNext(pos);
+        SWindow *pWnd = SWindowMgr::GetWindow(swnd);
+        if(!pWnd) 
+        {
+            UnregisterTrackMouseEvent(swnd);
+        }else if(pWnd->IsVisible(TRUE))
+        {
+            CRect rcWnd;
+            pWnd->GetWindowRect(&rcWnd);
+            BOOL bInWnd = rcWnd.PtInRect(pt);
+            if(bInWnd && !(pWnd->GetState() & WndState_Hover))
+            {
+                pWnd->SSendMessage(WM_MOUSEHOVER);
+            }else if(!bInWnd && (pWnd->GetState() & WndState_Hover))
+            {
+                pWnd->SSendMessage(WM_MOUSELEAVE);
+            }
+        }
+
     }
 }
 
@@ -348,5 +389,19 @@ void SwndContainerImpl::OnActivateApp( BOOL bActive, DWORD dwThreadID )
     m_pHost->SDispatchMessage(&msg);
 }
 
+BOOL SwndContainerImpl::RegisterTrackMouseEvent( SWND swnd )
+{
+    if(m_lstTrackMouseEvtWnd.Find(swnd)) return FALSE;
+    m_lstTrackMouseEvtWnd.AddTail(swnd);
+    return TRUE;
+}
 
+BOOL SwndContainerImpl::UnregisterTrackMouseEvent( SWND swnd )
+{
+    SPOSITION pos =m_lstTrackMouseEvtWnd.Find(swnd);
+    if(!pos) return FALSE;
+    m_lstTrackMouseEvtWnd.RemoveAt(pos);
+    return TRUE;
+
+}
 }//namespace SOUI

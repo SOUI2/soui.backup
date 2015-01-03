@@ -55,6 +55,9 @@ namespace SOUI
 
     enum SOUI_EVENTS
     {
+        EVT_MOUSE_HOVER=9000,//两个窗口鼠标状态事件
+        EVT_MOUSE_LEAVE,
+
         EVT_CMD=10000,
         EVT_CTXMENU,
         EVT_SETFOCUS,

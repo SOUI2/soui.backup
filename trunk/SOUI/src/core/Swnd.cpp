@@ -41,6 +41,8 @@ namespace SOUI
         , m_nMainThreadId( ::GetCurrentThreadId() ) // 初始化对象的线程不一定是主线程
 #endif
     {
+        m_evtSet.addEvent(EVT_MOUSE_HOVER);
+        m_evtSet.addEvent(EVT_MOUSE_LEAVE);
         m_evtSet.addEvent(EventCmd::EventID);
         m_evtSet.addEvent(EventCtxMenu::EventID);
         m_evtSet.addEvent(EventSetFocus::EventID);
@@ -167,26 +169,6 @@ namespace SOUI
         m_pCurMsg=pOldMsg;
         Release();
 
-        if(m_style.m_bMouseRelay && GetParent())
-        {//将鼠标消息交给父窗口处理
-            switch(Msg)
-            {
-            case WM_MOUSEMOVE:
-            case WM_MOUSEHOVER:
-                lResult = GetParent()->SSendMessage(Msg,wParam,lParam,pbMsgHandled);
-                break;
-            case WM_MOUSELEAVE:
-                {
-                    lResult = GetParent()->SSendMessage(Msg,0,0,pbMsgHandled);
-                    HWND hHost=GetContainer()->GetHostHwnd();
-                    CPoint pt;
-                    ::GetCursorPos(&pt);
-                    ::ScreenToClient(hHost,&pt);
-                    ::PostMessage(hHost,WM_MOUSEMOVE,0,MAKELPARAM(pt.x,pt.y));
-                }
-                break;    
-            }    
-        }
         return lResult;
     }
 
@@ -1197,6 +1179,8 @@ namespace SOUI
             ModifyState(WndState_PushDown,0,FALSE);
         ModifyState(WndState_Hover, 0,TRUE);
         OnNcPaint(0);
+        EventCmnArgs evtHover(this,EVT_MOUSE_HOVER);
+        FireEvent(evtHover);
     }
 
     void SWindow::OnMouseLeave()
@@ -1205,6 +1189,8 @@ namespace SOUI
             ModifyState(0,WndState_PushDown,FALSE);
         ModifyState(0,WndState_Hover,TRUE);
         OnNcPaint(0);
+        EventCmnArgs evtLeave(this,EVT_MOUSE_LEAVE);
+        FireEvent(evtLeave);
     }
 
     BOOL SWindow::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
@@ -1833,6 +1819,16 @@ namespace SOUI
         return S_FALSE;
     }
 
+    HRESULT SWindow::OnAttrTrackMouseEvent( const SStringW& strValue, BOOL bLoading )
+    {
+        m_style.m_bTrackMouseEvent = strValue==L"0"?0:1;
+        if(m_style.m_bTrackMouseEvent)
+            GetContainer()->RegisterTrackMouseEvent(m_swnd);
+        else
+            GetContainer()->UnregisterTrackMouseEvent(m_swnd);
+        return S_FALSE;
+    }
+
     void SWindow::OnSize( UINT nType, CSize size )
     {
         if(IsDrawToCache())
@@ -1881,6 +1877,7 @@ namespace SOUI
         if(!bLoading)
         {
             UpdateCacheMode();
+            InvalidateRect(NULL);
         }
         return bLoading?S_FALSE:S_OK;
     }
