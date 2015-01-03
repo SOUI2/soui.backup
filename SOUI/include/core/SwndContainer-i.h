@@ -27,7 +27,7 @@ namespace SOUI
     * 
     * Describe    
     */
-    struct SOUI_EXP ITimelineHandler
+    struct ITimelineHandler
     {
         virtual void OnNextFrame()=0;
     };
@@ -38,10 +38,8 @@ namespace SOUI
     * 
     * Describe    
     */
-    class SOUI_EXP ISwndContainer : public ITimelineHandler
+    struct ISwndContainer : public ITimelineHandler
     {
-        friend class SWindow;
-    public:
         virtual BOOL RegisterDragDrop(SWND swnd,IDropTarget *pDropTarget)=0;
 
         virtual BOOL RevokeDragDrop(SWND swnd)=0;

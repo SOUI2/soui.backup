@@ -44,6 +44,8 @@ namespace SOUI
         {
 
         }
+        
+        virtual ~TGdiRenderObjImpl(){}
 
         virtual IRenderFactory * GetRenderFactory() const
         {

@@ -175,17 +175,19 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
         SendMessage(WM_SETICON,TRUE,(LPARAM)m_hostAttr.m_hAppIconBig);
     }
 
-    SWindow::InitFromXml(xmlNode.child(L"root"));
-    SWindow::SSendMessage(WM_SHOWWINDOW,TRUE,0);//保证子窗口处理一次showwindow事件
     CRect rcClient;
     CSimpleWnd::GetClientRect(&rcClient);
     if(rcClient.IsRectEmpty())//APP没有指定窗口大小，使用XML中的值
     {
         SetWindowPos(NULL,0,0,m_hostAttr.m_szInit.cx,m_hostAttr.m_szInit.cy,SWP_NOZORDER|SWP_NOMOVE);
-    }else
-    {
-        Move(&rcClient);
     }
+
+
+    SWindow::InitFromXml(xmlNode.child(L"root"));
+    SWindow::SSendMessage(WM_SHOWWINDOW,TRUE,0);//保证子窗口处理一次showwindow事件
+
+    CSimpleWnd::GetClientRect(&rcClient);
+    OnRelayout(rcClient,rcClient);
 
     _Redraw();
 

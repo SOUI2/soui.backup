@@ -36,7 +36,7 @@ namespace SOUI
         {
             m_bVisible = FALSE;
             m_dwState = WndState_Invisible;
-            m_layout.uPositionType = SizeX_FitParent|SizeY_FitParent;
+            m_layout.SetFitParent();
         }
         /**
         * STabPage::~STabPage

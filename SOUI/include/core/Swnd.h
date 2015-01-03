@@ -21,10 +21,11 @@
 #include "event/EventSubscriber.h"
 #include "event/events.h"
 #include "event/EventSet.h"
-#include <OCIdl.h>
 #include "SwndLayout.h"
 #include "res.mgr/SStylePool.h"
 #include "res.mgr/SSkinPool.h"
+
+#include <OCIdl.h>
 
 #define SC_WANTARROWS     0x0001      /* Control wants arrow keys         */
 #define SC_WANTTAB        0x0002      /* Control wants tab keys           */
@@ -143,7 +144,7 @@ namespace SOUI
         , public TObjRefImpl2<IObjRef,SWindow>
     {
         SOUI_CLASS_NAME(SWindow, L"window")
-        friend class SwndLayout;
+        friend class SwndLayoutBuilder;
         friend class SWindowRepos;
         friend class SHostWnd;
     public:
@@ -648,7 +649,7 @@ namespace SOUI
         * @param    const CRect & rcNew --  新位置
         * @return   void 
         *
-        * Describe  
+        * Describe  窗口位置发生变化,更新窗口及计算子窗口位置
         */
         virtual void OnRelayout(const CRect &rcOld, const CRect & rcNew);
         
@@ -660,6 +661,14 @@ namespace SOUI
         * Describe  
         */
         virtual CRect GetChildrenLayoutRect();
+
+        /**
+         * GetLayout
+         * @brief    获得当前窗口的布局对象
+         * @return   const SwndPosition * -- 布局对象指针
+         * Describe  
+         */    
+        virtual const SwndLayout * GetLayout() const;
 
         /**
         * GetDesiredSize
@@ -997,13 +1006,13 @@ namespace SOUI
             ATTR_INT(L"maxWidth",m_nMaxWidth,FALSE)
             ATTR_INT(L"clipClient",m_bClipClient,FALSE)
             ATTR_INT(L"focusable",m_bFocusable,FALSE)
-            ATTR_INT(L"sep", m_layout.nSepSpace, FALSE)
             ATTR_CHAIN(m_style)                     //支持对style中的属性定制
         SOUI_ATTRS_END()
         
     protected:
         SWND                m_swnd;             /**< 窗口句柄 */
         CRect               m_rcWindow;         /**< 窗口在容器中的位置 */
+        BOOL                m_bFloat;           /**< 窗口位置固定不动的标志 */
 
         ISwndContainer *    m_pContainer;       /**< 容器对象 */
         SEventSet           m_evtSet;           /**< 窗口事件集合 */
@@ -1039,7 +1048,7 @@ namespace SOUI
         ISkinObj *          m_pNcSkin;          /**< 非客户区skin */
         ULONG_PTR           m_uData;            /**< 窗口的数据位,可以通过GetUserData获得 */
 
-        SwndLayout          m_layout;           /**< 布局对象 */
+        SwndLayout        m_layout;           /**< 布局对象 */
         int                 m_nMaxWidth;        /**< 自动计算大小时，窗口的最大宽度 */
 
         CAutoRefPtr<IRenderTarget> m_cachedRT;  /**< 缓存窗口绘制的RT */

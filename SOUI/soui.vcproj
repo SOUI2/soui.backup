@@ -442,7 +442,11 @@
 				>
 			</File>
 			<File
-				RelativePath="src\core\SwndLayout.cpp"
+				RelativePath=".\src\core\SwndLayout.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\core\SwndLayoutBuilder.cpp"
 				>
 			</File>
 			<File
@@ -824,11 +828,15 @@
 				>
 			</File>
 			<File
-				RelativePath="include\core\SwndLayout.h"
+				RelativePath=".\include\core\SwndLayoutBuilder.h"
 				>
 			</File>
 			<File
 				RelativePath="include\helper\SwndMsgCracker.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SwndPosition.h"
 				>
 			</File>
 			<File

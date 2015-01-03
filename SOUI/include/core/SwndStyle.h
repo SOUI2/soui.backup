@@ -47,7 +47,8 @@ public:
     SStringW m_strSkinName; /**<SKIN NAME */
     SStringW m_strNcSkinName;/**<非客户区SKIN NAME */
 
-    BYTE    m_byAlpha;      /**<窗口透明度 */
+    BYTE    m_byAlpha;          /**<窗口透明度 */
+    BYTE    m_bySepSpace;      /**<子窗口水平间隔 */
     DWORD    m_bDotted:1;      /**<支持省略号显示文本 */
     DWORD    m_bMouseRelay:1;  /**<鼠标消息是否转发给父窗口 */
     DWORD    m_bBkgndBlend:1;  /**<渲染窗口内容和背景混合标志 */
@@ -100,6 +101,7 @@ protected:
         ATTR_INT(L"mouseRelay",m_bMouseRelay,FALSE)
         ATTR_INT(L"alpha",m_byAlpha,TRUE)
         ATTR_INT(L"bkgndBlend",m_bBkgndBlend,TRUE)
+        ATTR_INT(L"sepSpace",m_bySepSpace,TRUE)
     SOUI_ATTRS_BREAK()      //属性不交给SObject处理
 };
 
