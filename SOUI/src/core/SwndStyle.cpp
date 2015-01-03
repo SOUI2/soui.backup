@@ -19,7 +19,7 @@ SwndStyle::SwndStyle()
     , m_strCursor(_T("arrow"))
     , m_byAlpha(0xFF)
     , m_bDotted(0)
-    , m_bMouseRelay(0)
+    , m_bTrackMouseEvent(0)
     , m_bBkgndBlend(1)
     , m_bySepSpace(5)
 {
