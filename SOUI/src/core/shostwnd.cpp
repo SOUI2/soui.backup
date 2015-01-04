@@ -429,10 +429,10 @@ void SHostWnd::DrawCaret(CPoint pt)
     
     if(!m_hostAttr.m_bTranslucent)
     {
-        CSimpleWnd::InvalidateRect(rcCaret, FALSE);
+        CSimpleWnd::InvalidateRect(rcShowCaret, FALSE);
     }else if(m_dummyWnd.IsWindow()) 
     {
-        m_rgnInvalidate->CombineRect(&rcCaret,RGN_OR);
+        m_rgnInvalidate->CombineRect(&rcShowCaret,RGN_OR);
         m_dummyWnd.Invalidate(FALSE);
     }else
     {
