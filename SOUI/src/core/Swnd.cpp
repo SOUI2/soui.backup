@@ -638,12 +638,6 @@ namespace SOUI
 
     BOOL SWindow::_PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,SWindow *pStart,SWindow *pEnd,PRSTATE & prState )
     {
-        CRect rcWnd;
-        pWndCur->GetWindowRect(&rcWnd);
-        if (!pWndCur->IsVisible(TRUE) || (pRgn && !pRgn->IsEmpty() && !pRgn->RectInRegion(&rcWnd)))
-        {
-            return FALSE;
-        }
         if(prState == PRS_DRAWING && pWndCur == pEnd)
         {
             prState=PRS_MEETEND;
@@ -657,6 +651,13 @@ namespace SOUI
         if(prState == PRS_LOOKSTART && pWndCur==pStart)
         {
             prState=PRS_DRAWING;//开始进行绘制
+        }
+
+        CRect rcWnd;
+        pWndCur->GetWindowRect(&rcWnd);
+        if (!pWndCur->IsVisible(TRUE) || (pRgn && !pRgn->IsEmpty() && !pRgn->RectInRegion(&rcWnd)))
+        {
+            return FALSE;
         }
 
         PRSTATE prsBack=prState;    //保存当前的绘制状态,在递归结束后根据这个状态来判断是否需要绘制非客户区
