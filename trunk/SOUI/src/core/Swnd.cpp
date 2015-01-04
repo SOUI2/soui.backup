@@ -1416,14 +1416,6 @@ namespace SOUI
             _PaintRegion(pRT,pRgn,this,pChild,NULL,prState);
         }
 
-        //绘制非客户区
-        CRect rcClient;
-        GetClientRect(&rcClient);
-        if(!(rcDraw & rcClient).EqualRect(rcDraw) && rcClient != m_rcWindow)
-        {//存在非客户区而且绘制区超出了客户区
-            SSendMessage(WM_NCPAINT,(WPARAM)pRT);
-        }
-
         //绘制兄弟窗口的重叠部分
         SWindow *pNextVisibleSibling=GetNextVisibleWindow(this,rcDraw);
         if(pNextVisibleSibling)
