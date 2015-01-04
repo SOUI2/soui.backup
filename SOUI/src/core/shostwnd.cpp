@@ -256,7 +256,12 @@ void SHostWnd::OnPrint(HDC dc, UINT uFlags)
 
         SThreadActiveWndMgr::LeavePaintLock();
         
+    }else
+    {//缓存已经更新好了，只需要重新更新到窗口
+        m_rgnInvalidate->GetRgnBox(&rcInvalid);
+        m_rgnInvalidate->Clear();
     }
+    
     if(uFlags != KConstDummyPaint) //由系统发的WM_PAINT或者WM_PRINT产生的重绘请求
     {
         rcInvalid = m_rcWindow;
@@ -425,10 +430,13 @@ void SHostWnd::DrawCaret(CPoint pt)
     if(!m_hostAttr.m_bTranslucent)
     {
         CSimpleWnd::InvalidateRect(rcCaret, FALSE);
+    }else if(m_dummyWnd.IsWindow()) 
+    {
+        m_rgnInvalidate->CombineRect(&rcCaret,RGN_OR);
+        m_dummyWnd.Invalidate(FALSE);
     }else
     {
-        if(m_dummyWnd.IsWindow()) 
-            m_dummyWnd.Invalidate(FALSE);
+        SASSERT(FALSE);
     }
 }
 
