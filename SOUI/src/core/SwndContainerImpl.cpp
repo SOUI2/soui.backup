@@ -12,21 +12,22 @@ namespace SOUI
 #define WM_NCMOUSELAST  WM_NCMBUTTONDBLCLK
 
 
-SwndContainerImpl::SwndContainerImpl(SWindow *pHost)
-    :m_pHost(pHost)
+SwndContainerImpl::SwndContainerImpl(SWindow *pRoot)
+    :m_pRoot(pRoot)
     ,m_hCapture(NULL)
     ,m_hHover(NULL)
     ,m_bNcHover(FALSE)
-    ,m_dropTarget(pHost)
-    ,m_focusMgr(pHost)
+    ,m_dropTarget(pRoot)
+    ,m_focusMgr(pRoot)
+    ,m_bZorderDirty(TRUE)
 {
 }
 
 LRESULT SwndContainerImpl::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
     LRESULT lRet=0;
-    m_pHost->AddRef();
-    m_pHost->SetMsgHandled(TRUE);
+    m_pRoot->AddRef();
+    m_pRoot->SetMsgHandled(TRUE);
 
     switch(uMsg)
     {
@@ -78,11 +79,11 @@ LRESULT SwndContainerImpl::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
         else if(uMsg>=WM_MOUSEFIRST && uMsg <= WM_MOUSELAST)
             OnFrameMouseEvent(uMsg,wParam,lParam);
         else
-            m_pHost->SetMsgHandled(FALSE);
+            m_pRoot->SetMsgHandled(FALSE);
         break;
     }
 
-    m_pHost->Release();
+    m_pRoot->Release();
     return lRet;
 }
 
@@ -152,7 +153,7 @@ void SwndContainerImpl::OnFrameMouseMove(UINT uFlag,CPoint pt)
     }
     else
     {//没有设置鼠标捕获
-        SWND hHover=m_pHost->SwndFromPoint(pt,FALSE);
+        SWND hHover=m_pRoot->SwndFromPoint(pt,FALSE);
         SWindow * pHover=SWindowMgr::GetWindow(hHover);
         if(m_hHover!=hHover)
         {//hover窗口发生了变化
@@ -263,21 +264,21 @@ void SwndContainerImpl::OnFrameMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
         if(m_bNcHover) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
         BOOL bMsgHandled = FALSE;
         pCapture->SSendMessage(uMsg,wParam,lParam,&bMsgHandled);
-        m_pHost->SetMsgHandled(bMsgHandled);
+        m_pRoot->SetMsgHandled(bMsgHandled);
     }
     else
     {
-        m_hHover=m_pHost->SwndFromPoint(CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)),FALSE);
+        m_hHover=m_pRoot->SwndFromPoint(CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)),FALSE);
         SWindow *pHover=SWindowMgr::GetWindow(m_hHover);
         if(pHover  && !pHover->IsDisabled(TRUE))
         {
             BOOL bMsgHandled = FALSE;
             if(m_bNcHover) uMsg += WM_NCMOUSEFIRST - WM_MOUSEFIRST;//转换成NC对应的消息
             pHover->SSendMessage(uMsg,wParam,lParam,&bMsgHandled);
-            m_pHost->SetMsgHandled(bMsgHandled);
+            m_pRoot->SetMsgHandled(bMsgHandled);
         }else
         {
-            m_pHost->SetMsgHandled(FALSE);
+            m_pRoot->SetMsgHandled(FALSE);
         }
     }
 }
@@ -291,7 +292,7 @@ void SwndContainerImpl::OnFrameMouseWheel( UINT uMsg,WPARAM wParam,LPARAM lParam
     }
     if(!pWndTarget)
     {
-        m_hHover=m_pHost->SwndFromPoint(CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)),FALSE);
+        m_hHover=m_pRoot->SwndFromPoint(CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)),FALSE);
         pWndTarget=SWindowMgr::GetWindow(m_hHover);
     }
     
@@ -299,10 +300,10 @@ void SwndContainerImpl::OnFrameMouseWheel( UINT uMsg,WPARAM wParam,LPARAM lParam
     {
         BOOL bMsgHandled = FALSE;
         pWndTarget->SSendMessage(uMsg,wParam,lParam,&bMsgHandled);
-        m_pHost->SetMsgHandled(bMsgHandled);
+        m_pRoot->SetMsgHandled(bMsgHandled);
     }else
     {
-        m_pHost->SetMsgHandled(FALSE);
+        m_pRoot->SetMsgHandled(FALSE);
     }
 }
 
@@ -313,10 +314,10 @@ void SwndContainerImpl::OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     {
         BOOL bMsgHandled = FALSE;
         pFocus->SSendMessage(uMsg,wParam,lParam,&bMsgHandled);
-        m_pHost->SetMsgHandled(bMsgHandled);
+        m_pRoot->SetMsgHandled(bMsgHandled);
     }else
     {
-        m_pHost->SetMsgHandled(FALSE);
+        m_pRoot->SetMsgHandled(FALSE);
     }
 }
 
@@ -329,10 +330,10 @@ void SwndContainerImpl::OnFrameKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
     {
         BOOL bMsgHandled=FALSE;
         pFocus->SSendMessage(WM_KEYDOWN,nChar,MAKELPARAM(nRepCnt,nFlags),&bMsgHandled);
-        m_pHost->SetMsgHandled(bMsgHandled);
+        m_pRoot->SetMsgHandled(bMsgHandled);
     }else
     {
-        m_pHost->SetMsgHandled(FALSE);
+        m_pRoot->SetMsgHandled(FALSE);
     }
 }
 
@@ -386,7 +387,7 @@ void SwndContainerImpl::OnNextFrame()
 void SwndContainerImpl::OnActivateApp( BOOL bActive, DWORD dwThreadID )
 {
     MSG msg={0,WM_ACTIVATEAPP,bActive,dwThreadID,0};
-    m_pHost->SDispatchMessage(&msg);
+    m_pRoot->SDispatchMessage(&msg);
 }
 
 BOOL SwndContainerImpl::RegisterTrackMouseEvent( SWND swnd )
@@ -404,4 +405,31 @@ BOOL SwndContainerImpl::UnregisterTrackMouseEvent( SWND swnd )
     return TRUE;
 
 }
+
+void SwndContainerImpl::MarkWndTreeZorderDirty()
+{
+    m_bZorderDirty = TRUE;
+}
+
+void SwndContainerImpl::BuildWndTreeZorder()
+{
+    if(m_bZorderDirty)
+    {
+        UINT uInitZorder =0;
+        _BuildWndTreeZorder(m_pRoot,uInitZorder);
+        m_bZorderDirty = FALSE;
+    }
+}
+
+void SwndContainerImpl::_BuildWndTreeZorder( SWindow *pWnd,UINT & iOrder )
+{
+    pWnd->m_uZorder = iOrder++;
+    SWindow *pChild = pWnd->GetWindow(GSW_FIRSTCHILD);
+    while(pChild)
+    {
+        _BuildWndTreeZorder(pChild,iOrder);
+        pChild=pChild->GetWindow(GSW_NEXTSIBLING);
+    }
+}
+
 }//namespace SOUI

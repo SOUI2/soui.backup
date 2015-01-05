@@ -147,6 +147,7 @@ namespace SOUI
         friend class SwndLayoutBuilder;
         friend class SWindowRepos;
         friend class SHostWnd;
+        friend class SwndContainerImpl;
     public:
         SWindow();
 
@@ -872,25 +873,12 @@ namespace SOUI
 
         void _Update();
         
-        /**
-        * GetNextVisibleWindow
-        * @brief    获得指定窗口的下一个可见窗口
-        * @param    SWindow * pWnd --  参考窗口
-        * @param    const CRect & rcDraw --  目标矩形
-        * @return   SWindow * 下一个可见窗口
-        *
-        * Describe  
-        */
-        static SWindow *GetNextVisibleWindow(SWindow *pWnd,const CRect &rcDraw);
+        //将窗口内容绘制到RenderTarget上
+        void _PaintWindowClient(IRenderTarget *pRT);
+        void _PaintWindowNonClient(IRenderTarget *pRT);
 
-        enum PRSTATE{
-            PRS_LOOKSTART=0,    //查找开始窗口
-            PRS_DRAWING,        //窗口渲染中
-            PRS_MEETEND         //碰到指定的结束窗口
-        };
-
-        static  BOOL _PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,SWindow *pStart,SWindow *pEnd,PRSTATE & prState );
         static void _BeforePaintEx(SWindow *pWnd,IRenderTarget *pRT);
+        static  void _PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,UINT iZorderBegin,UINT iZorderEnd);
 
         void DrawDefFocusRect(IRenderTarget *pRT,CRect rc);
         void DrawAniStep(CRect rcFore,CRect rcBack,IRenderTarget *pRTFore,IRenderTarget * pRTBack,CPoint ptAnchor);
@@ -1033,6 +1021,7 @@ namespace SOUI
         SStringT            m_strToolTipText;   /**< 窗口ToolTip */
         SStringW            m_strName;          /**< 窗口名称 */
         int                 m_nID;              /**< 窗口ID */
+        UINT                m_uZorder;          /**< 窗口Zorder */
 
         DWORD               m_dwState;          /**< 窗口在渲染过程中的状态 */
         DWORD               m_bVisible:1;       /**< 窗口可见状态 */

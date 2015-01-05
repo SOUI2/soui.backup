@@ -184,6 +184,8 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
 
 
     SWindow::InitFromXml(xmlNode.child(L"root"));
+    BuildWndTreeZorder();
+
     SWindow::SSendMessage(WM_SHOWWINDOW,TRUE,0);//保证子窗口处理一次showwindow事件
 
     CSimpleWnd::GetClientRect(&rcClient);
