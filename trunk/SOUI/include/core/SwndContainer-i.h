@@ -20,7 +20,12 @@ namespace SOUI
 {
 
     struct IAcceleratorMgr;
-
+    
+    enum{
+    ZORDER_MIN  = 0,
+    ZORDER_MAX  = (UINT)-1,
+    };
+    
     /**
     * @struct     ITimelineHandler
     * @brief      时间轴处理接口
@@ -91,6 +96,12 @@ namespace SOUI
         virtual BOOL UnregisterTrackMouseEvent(SWND swnd)=0;
 
         virtual SMessageLoop * GetMsgLoop() =0;
+
+        //标记窗口树的zorder失效
+        virtual void MarkWndTreeZorderDirty() = 0;
+
+        //重建窗口树的zorder
+        virtual void BuildWndTreeZorder() = 0;
     };
 
 
