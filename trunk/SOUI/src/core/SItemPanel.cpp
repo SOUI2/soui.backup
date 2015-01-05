@@ -26,7 +26,11 @@ SItemPanel::SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer
     SASSERT(m_pFrmHost);
     SASSERT(m_pItemContainer);
     SetContainer(this);
-    if(xmlNode) InitFromXml(xmlNode);
+    if(xmlNode) 
+    {
+        InitFromXml(xmlNode);
+        BuildWndTreeZorder();
+    }
 }
 
 void SItemPanel::OnFinalRelease()
@@ -190,6 +194,7 @@ void SItemPanel::Draw(IRenderTarget *pRT,const CRect & rc)
     pRT->OffsetViewportOrg(rc.left,rc.top);
     CAutoRefPtr<IRegion> rgn;
     GETRENDERFACTORY->CreateRegion(&rgn);
+    BuildWndTreeZorder();
     RedrawRegion(pRT,rgn);
     pRT->OffsetViewportOrg(-rc.left,-rc.top);
 }

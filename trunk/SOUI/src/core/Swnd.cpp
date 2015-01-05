@@ -16,6 +16,7 @@ namespace SOUI
         , m_pContainer(NULL)
         , m_pParent(NULL),m_pFirstChild(NULL),m_pLastChild(NULL),m_pNextSibling(NULL),m_pPrevSibling(NULL)
         , m_nChildrenCount(0)
+        , m_uZorder(0)
         , m_dwState(WndState_Normal)
         , m_bMsgTransparent(FALSE)
         , m_bVisible(TRUE)

@@ -249,6 +249,7 @@ void SHostWnd::OnPrint(HDC dc, UINT uFlags)
         m_memRT->ClearRect(rcInvalid,0);
 
         if(m_bCaretActive) DrawCaret(m_ptCaret);//clear old caret 
+        BuildWndTreeZorder();
         RedrawRegion(m_memRT, pRgnUpdate);
         if(m_bCaretActive) DrawCaret(m_ptCaret);//redraw caret 
         
