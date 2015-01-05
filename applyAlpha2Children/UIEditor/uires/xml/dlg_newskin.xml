@@ -1,0 +1,92 @@
+﻿<SOUI name="dlg_newskin" title="new skin" width="500" height="300" appwin="0" margin="5,5,5,5" resize="1">
+  <root>
+    <window name="maindlg" pos="0,0,-0,-0" class="cls_dlg_frame">
+      <caption id="101" pos="0,0,-0,29">
+        <text pos="11,9" class="cls_txt_red">Insert New Skin</text>
+        <imgbtn id="2" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+      </caption>
+      <window pos="5,29,-5,-5">
+        <tabctrl name="tab_skin_type" pos="0,0,-0,-50" tabpos="150">
+          <page title="imglist">
+            <text pos="0,0" height="25">图片名:</text>
+            <edit name="edit_imglist_src_name" pos="[5,0" width="100" height="25"/>
+            <check name="chk_imglist_vert" pos="[5,0" height="25">垂直排列</check>
+            <check name="chk_imglist_tile" pos="[5,0" height="25">平铺模式</check>
+            <text pos="0,40" height="25">子图数:</text>
+            <edit name="edit_imglist_states" pos="[5,40" width="100" height="25"/>
+            <skinview_imglist name="imgview_imglist" pos="0,80,-0,-0"/>
+          </page>
+          <page title="imgframe">
+            <text pos="0,0" height="25">图片名:</text>
+            <edit name="edit_imgframe_src_name" pos="[5,0" width="100" height="25"/>
+            <check name="chk_imgframe_vert" pos="[5,0" height="25">垂直排列</check>
+            <check name="chk_imgframe_tile" pos="[5,0" height="25">平铺模式</check>
+            <text pos="0,40" height="25">子图数:</text>
+            <edit name="edit_imgframe_states" pos="[5,40" width="30" height="25"/>
+            <text pos="[10,40" height="25">九宫分割(0,0,0,0):</text>
+            <edit name="edit_imgframe_frame" pos="[5,40" width="100" height="25"/>
+            <skinview_imgframe name="imgview_imgframe" pos="0,80,-0,-0"/>
+          </page>
+          <page title="scrollbar">
+            <text pos="0,0" height="25">图片名:</text>
+            <edit name="edit_scrollbar_src_name" pos="[5,0" width="100" height="25"/>
+            <text pos="0,40" height="25">边缘宽度:</text>
+            <edit name="edit_scrollbar_margin" pos="[5,40" width="30" height="25"/>
+            <check name="chk_scrollbar_gripper" pos="[10,40" height="25">有拉手</check>
+            <check name="chk_scrollbar_inactive" pos="[10,40" height="25">有失活状态</check>
+            <skinview_imglist name="imgview_scrollbar" pos="0,80,-0,-0"/>
+          </page>
+          <page title="button">
+            <group pos="0,0" width="90" height="70">正常状态
+              <text pos="5,5">颜色上</text>
+              <colorpicker pos="[5,{0,@16,@16" name="crpk_bt1_up" color="#FEFEFE"/>
+              <text pos="5,[5">颜色下</text>
+              <colorpicker pos="[5,{0,@16,@16" name="crpk_bt1_down" color="#C6E2FD"/>
+            </group>
+
+            <group width="90" height="70">浮起状态
+              <text pos="5,5">颜色上</text>
+              <colorpicker pos="[5,{0,@16,@16" name="crpk_bt2_up" color="#FEFEFE"/>
+              <text pos="5,[5">颜色下</text>
+              <colorpicker pos="[5,{0,@16,@16" name="crpk_bt2_down" color="#DBEDFE"/>
+            </group>
+            <group width="90" height="70">按下状态
+              <text pos="5,5">颜色上</text>
+              <colorpicker pos="[5,{0,@16,@16" name="crpk_bt3_up" color="#FEFEFE"/>
+              <text pos="5,[5">颜色下</text>
+              <colorpicker pos="[5,{0,@16,@16" name="crpk_bt3_down" color="#DBEDFE"/>
+            </group>
+            <group width="90" height="70">禁用状态
+              <text pos="5,5">颜色上</text>
+              <colorpicker pos="[5,{0,@16,@16" name="crpk_bt4_up" color="#8e8e8e"/>
+              <text pos="5,[5">颜色下</text>
+              <colorpicker pos="[5,{0,@16,@16" name="crpk_bt4_down" color="#808080"/>
+            </group>
+            <text pos="5,80">边缘颜色</text>
+            <colorpicker pos="[5,{0,@16,@16" name="crpk_bt_border" color="#707070"/>
+
+            <skinview_button name="imgview_button" pos="0,100,-0,-0" viewtype="button"/>
+          </page>
+          <page title="gradation">
+            <text pos="5,5">颜色1</text>
+            <colorpicker pos="[5,{0,@16,@16" name="crpk_gradation_from" color="#8e8e8e"/>
+            <text pos="[5,5">颜色2</text>
+            <colorpicker pos="[5,{0,@16,@16" name="crpk_gradation_to" color="#808080"/>
+
+            <check name="chk_gradation_dir" pos="5,[5" height="25">纵向渐变</check>
+
+            <skinview_gradation name="imgview_gradation" pos="0,100,-0,-0"/>
+          </page>
+        </tabctrl>
+        
+        <text pos="0,0" height="25">皮肤名:</text>
+        <edit name="edit_skin_name" pos="[5,0" width="100" height="25"/>
+
+        
+        <hr pos="0,-50,-0,-48"/>
+        <button id="1" pos="|-100,-25" pos2type="center" width="100" height="25">确定</button>
+        <button id="2" pos="|100,-25" pos2type="center" width="100" height="25">取消</button>
+      </window>
+    </window>
+  </root>
+</SOUI>

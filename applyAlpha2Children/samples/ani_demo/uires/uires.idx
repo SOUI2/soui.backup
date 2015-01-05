@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resource>
+  <xml>
+    <file name="INIT"  path="xml\init.xml"  />
+    <file name="MAIN_DIALOG" path="xml\dlg_main.xml"/>
+  </xml>
+
+  <imgx>
+    <file name="IDP_MAIN_DLG_FRAME"     path="image\dlg_bg_frame.png"  />
+    <file name="IDP_BUSY"   path="image\img_busy.png" />
+    <file name="girl" path="image\girl.jpg"/>
+    <file name="haha" path="image\haha.jpg"/>
+  </imgx>
+
+</resource>
