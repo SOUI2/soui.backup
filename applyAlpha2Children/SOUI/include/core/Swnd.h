@@ -873,6 +873,23 @@ namespace SOUI
 
         void _Update();
         
+
+        /**
+         * _IsChildrenRenderContainer
+         * @brief    确定渲染时子窗口的内容是不是渲染到当前窗口的缓存上
+         * @return   BOOL -- TREU:子窗口的内容先渲染到this的缓存RT上
+         * Describe  
+         */    
+        BOOL _IsChildrenRenderContainer();
+    
+        /**
+         * _GetCurrentRenderContainer
+         * @brief    获得当前窗口所属的渲染层宿主窗口
+         * @return   SWindow * -- 渲染层宿主窗口
+         * Describe  
+         */    
+        SWindow * _GetCurrentRenderContainer();
+
         /**
         * _GetRenderTarget
         * @brief    获取一个与SWND窗口相适应的内存DC
@@ -883,7 +900,7 @@ namespace SOUI
         *
         * Describe  使用ReleaseRenderTarget释放
         */
-        IRenderTarget * _GetRenderTarget(CRect & rcGetRT,DWORD gdcFlags,BOOL bClientDC);
+        IRenderTarget * _GetRenderTarget(CRect & rcGetRT,DWORD gdcFlags,UINT uBkgndZorderMin,UINT uBkgndZorderMax);
 
 
         /**
@@ -894,7 +911,7 @@ namespace SOUI
         *
         * Describe  
         */
-        void _ReleaseRenderTarget(IRenderTarget *pRT);
+        void _ReleaseRenderTarget(IRenderTarget *pRT,DWORD gdcFlag,UINT uFrgndZorderMin,UINT uFrgndZorderMax);
 
         //将窗口内容绘制到RenderTarget上
         void _PaintWindowClient(IRenderTarget *pRT);
