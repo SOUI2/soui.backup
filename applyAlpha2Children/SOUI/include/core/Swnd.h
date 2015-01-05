@@ -866,19 +866,43 @@ namespace SOUI
         * @return   IRenderTarget * -- Cache窗口内容的RenderTarget
         * Describe  
         */    
-        IRenderTarget * GetCachedRenderTarget(){return m_cachedRT;}
+        IRenderTarget * GetCachedRenderTarget();
 
 
     protected://helper functions
 
         void _Update();
         
+        /**
+        * _GetRenderTarget
+        * @brief    获取一个与SWND窗口相适应的内存DC
+        * @param  [in,out]  CRect & rcGetRT --  RT范围,保存最后的有效绘制区
+        * @param    DWORD gdcFlags --  同OLEDCFLAGS
+        * @param    BOOL bClientDC --  限制在client区域
+        * @return   IRenderTarget * 
+        *
+        * Describe  使用ReleaseRenderTarget释放
+        */
+        IRenderTarget * _GetRenderTarget(CRect & rcGetRT,DWORD gdcFlags,BOOL bClientDC);
+
+
+        /**
+        * _ReleaseRenderTarget
+        * @brief    
+        * @param    IRenderTarget * pRT --  释放由GetRenderTarget获取的RT
+        * @return   void 
+        *
+        * Describe  
+        */
+        void _ReleaseRenderTarget(IRenderTarget *pRT);
+
         //将窗口内容绘制到RenderTarget上
         void _PaintWindowClient(IRenderTarget *pRT);
         void _PaintWindowNonClient(IRenderTarget *pRT);
+        void _PaintRegion(IRenderTarget *pRT, IRegion *pRgn,UINT iZorderBegin,UINT iZorderEnd);
+        void _PaintRegion2(IRenderTarget *pRT, IRegion *pRgn,UINT iZorderBegin,UINT iZorderEnd);
 
         static void _BeforePaintEx(SWindow *pWnd,IRenderTarget *pRT);
-        static  void _PaintRegion( IRenderTarget *pRT, IRegion *pRgn,SWindow *pWndCur,UINT iZorderBegin,UINT iZorderEnd);
 
         void DrawDefFocusRect(IRenderTarget *pRT,CRect rc);
         void DrawAniStep(CRect rcFore,CRect rcBack,IRenderTarget *pRTFore,IRenderTarget * pRTBack,CPoint ptAnchor);
@@ -1045,7 +1069,6 @@ namespace SOUI
         
         CRect               m_rcGetRT;
         DWORD               m_gdcFlags;
-        BOOL                m_bClipRT;
 
         CAutoRefPtr<IRegion>    m_invalidRegion;/**< 非背景混合窗口的脏区域 */
 #ifdef _DEBUG

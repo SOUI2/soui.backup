@@ -312,26 +312,21 @@ namespace SOUI
         ::ReleaseDC(NULL,hdc);
         ::SetBkMode(m_hdc,TRANSPARENT);
         
-        CAutoRefPtr<IPen> pPen;
-        CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&pPen);
-        SelectObject(pPen);
+        CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&m_defPen);
+        SelectObject(m_defPen);
 
-        CAutoRefPtr<IBrush> pBr;
-        CreateSolidColorBrush(SColor(0,0,0).toCOLORREF(),&pBr);
-        SelectObject(pBr);
+        CreateSolidColorBrush(SColor(0,0,0).toCOLORREF(),&m_defBrush);
+        SelectObject(m_defBrush);
 
-        CAutoRefPtr<IFont> pFont;
         LOGFONT lf={0};
         lf.lfHeight=20;
         _tcscpy(lf.lfFaceName,_T("ËÎÌו"));
-        pRenderFactory->CreateFont(&pFont,lf);
-        SelectObject(pFont);
+        pRenderFactory->CreateFont(&m_defFont,lf);
+        SelectObject(m_defFont);
 
-        CAutoRefPtr<IBitmap> pBmp;
-        GetRenderFactory_GDI()->CreateBitmap(&pBmp);
-        pBmp->Init(nWid,nHei);
-        SelectObject(pBmp);
-
+        GetRenderFactory_GDI()->CreateBitmap(&m_defBmp);
+        m_defBmp->Init(nWid,nHei);
+        SelectObject(m_defBmp);
     }
 
     SRenderTarget_GDI::~SRenderTarget_GDI()
@@ -720,6 +715,22 @@ namespace SOUI
             break;
         }
         return pRet;
+    }
+
+    HRESULT SRenderTarget_GDI::SelectDefaultObject(OBJTYPE objType, IRenderObj ** ppOldObj)
+    {
+        IRenderObj *pDefObj = NULL;
+        switch(objType)
+        {
+        case OT_BITMAP: pDefObj = m_defBmp;break;
+        case OT_PEN: pDefObj = m_defPen;break;
+        case OT_BRUSH: pDefObj = m_defBrush;break;
+        case OT_FONT: pDefObj = m_defFont;break;
+        default:return E_INVALIDARG;
+        }
+        if(pDefObj == GetCurrentObject(objType)) 
+            return S_FALSE;
+        return SelectObject(pDefObj,ppOldObj);
     }
 
     HRESULT SRenderTarget_GDI::SelectObject( IRenderObj *pObj,IRenderObj ** ppOldObj /*= NULL*/ )

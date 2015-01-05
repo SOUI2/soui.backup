@@ -385,6 +385,8 @@ namespace SOUI
         virtual HRESULT BitBlt(LPCRECT pRcDest,IRenderTarget *pRTSour,int xSrc,int ySrc,DWORD dwRop=SRCCOPY)=0;
         virtual HRESULT AlphaBlend(LPCRECT pRcDest,IRenderTarget *pRTSrc,LPCRECT pRcSrc,BYTE byAlpha) =0;
         virtual IRenderObj * GetCurrentObject(OBJTYPE uType) =0;
+        //将指定的RenderObj恢复为默认状态
+        virtual HRESULT SelectDefaultObject(OBJTYPE objType, IRenderObj ** pOldObj = NULL) =0;
         virtual HRESULT SelectObject(IRenderObj *pObj,IRenderObj ** pOldObj = NULL) =0;
         virtual COLORREF GetTextColor() =0;
         virtual COLORREF SetTextColor(COLORREF color)=0;

@@ -122,25 +122,24 @@ namespace SOUI
 	{
         m_ptOrg.fX=m_ptOrg.fY=0.0f;
 
-		CAutoRefPtr<IPen> pPen;
-		CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&pPen);
-		SelectObject(pPen);
+        CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&m_defPen);
+        SelectObject(m_defPen);
 
-		CAutoRefPtr<IBrush> pBr;
-		CreateSolidColorBrush(SColor(0,0,0).toCOLORREF(),&pBr);
-		SelectObject(pBr);
+        CreateSolidColorBrush(SColor(0,0,0).toCOLORREF(),&m_defBrush);
+        SelectObject(m_defBrush);
 
-        CAutoRefPtr<IFont> pFont;
         LOGFONT lf={0};
         lf.lfHeight=20;
         _tcscpy(lf.lfFaceName,_T("ËÎÌו"));
-        pRenderFactory->CreateFont(&pFont,lf);
-        SelectObject(pFont);
+        pRenderFactory->CreateFont(&m_defFont,lf);
+        SelectObject(m_defFont);
 
-        CAutoRefPtr<IBitmap> pBmp;
-        GetRenderFactory_Skia()->CreateBitmap(&pBmp);
-        pBmp->Init(nWid,nHei);
-        SelectObject(pBmp);
+        GetRenderFactory_Skia()->CreateBitmap(&m_defBmp);
+        m_defBmp->Init(nWid,nHei);
+        SelectObject(m_defBmp);
+		CAutoRefPtr<IPen> pPen;
+		CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&pPen);
+		SelectObject(pPen);
         
         m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
 	}
@@ -640,6 +639,23 @@ namespace SOUI
 		}
 		return pRet;
 	}
+
+
+    HRESULT SRenderTarget_Skia::SelectDefaultObject(OBJTYPE objType,IRenderObj ** ppOldObj /*= NULL*/)
+    {
+        IRenderObj *pDefObj = NULL;
+        switch(objType)
+        {
+        case OT_BITMAP: pDefObj = m_defBmp;break;
+        case OT_PEN: pDefObj = m_defPen;break;
+        case OT_BRUSH: pDefObj = m_defBrush;break;
+        case OT_FONT: pDefObj = m_defFont;break;
+        default:return E_INVALIDARG;
+        }
+        if(pDefObj == GetCurrentObject(objType)) 
+            return S_FALSE;
+        return SelectObject(pDefObj,ppOldObj);
+    }
 
     HRESULT SRenderTarget_Skia::SelectObject( IRenderObj *pObj,IRenderObj ** ppOldObj /*= NULL*/ )
     {
