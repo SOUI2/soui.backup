@@ -43,7 +43,7 @@ namespace SOUI
         , m_pCurMsg(NULL)
         , m_pBgSkin(NULL)
         , m_pNcSkin(NULL)
-        , m_gdcFlags(-1)
+        , m_pGetRTData(NULL)
         , m_bFloat(FALSE)
 #ifdef _DEBUG
         , m_nMainThreadId( ::GetCurrentThreadId() ) // 初始化对象的线程不一定是主线程
@@ -653,9 +653,9 @@ namespace SOUI
     void SWindow::_PaintWindowClient(IRenderTarget *pRT)
     {
         //下面两个条件不能同时成立
-        SASSERT((_IsChildrenRenderContainer() ^ (pRT == m_cachedRT)) );
+        SASSERT(!(_IsLayeredWindow() && (pRT == m_cachedRT)) );
 
-        if(IsDrawToCache() && !_IsChildrenRenderContainer() )
+        if(IsDrawToCache() && !_IsLayeredWindow() )
         {
             IRenderTarget *pRTCache=m_cachedRT;
             if(pRTCache)
@@ -692,7 +692,7 @@ namespace SOUI
 
     void SWindow::_PaintWindowNonClient( IRenderTarget *pRT )
     {
-        if(IsDrawToCache() && !_IsChildrenRenderContainer() )
+        if(IsDrawToCache() && !_IsLayeredWindow() )
         {
             IRenderTarget *pRTCache=m_cachedRT;
             if(pRTCache)
@@ -729,7 +729,7 @@ namespace SOUI
         
         IRenderTarget *pRTBack = pRT;//backup current RT
         
-        if(_IsChildrenRenderContainer())
+        if(_IsLayeredWindow())
         {//绘制到窗口的缓存上,需要继承原RT的绘图属性
             //按照设计，这类窗口必定要在渲染的zorder范围内，否则就是实现有问题
             SASSERT(m_uZorder >= iZorderBegin && m_uZorder < iZorderEnd);
@@ -789,7 +789,7 @@ namespace SOUI
             _PaintWindowNonClient(pRT);
         }
         
-        if(_IsChildrenRenderContainer())
+        if(_IsLayeredWindow())
         {//将绘制到窗口的缓存上的图像返回到上一级RT
             pRTBack->AlphaBlend(&m_rcWindow,pRT,&m_rcWindow,m_style.m_byAlpha);
 
@@ -807,6 +807,7 @@ namespace SOUI
     void SWindow::_PaintRegion(IRenderTarget *pRT, IRegion *pRgn,UINT iZorderBegin,UINT iZorderEnd)
     {
         GetContainer()->BuildWndTreeZorder();
+        BeforePaintEx(pRT);
         _PaintRegion2(pRT,pRgn,iZorderBegin,iZorderEnd);
     }
 
@@ -1023,20 +1024,12 @@ namespace SOUI
             painter.crOld = pRT->SetTextColor(crTxt);
     }
 
-
-    void SWindow::_BeforePaintEx( SWindow *pWnd,IRenderTarget *pRT )
-    {
-        SWindow *pParent=pWnd->GetParent();
-        if(pParent) _BeforePaintEx(pParent,pRT);
-        SPainter painter;
-        pWnd->BeforePaint(pRT,painter);
-    }
-
     void SWindow::BeforePaintEx(IRenderTarget *pRT)
     {
-        IFont *pDefFont = SFontPool::getSingleton().GetFont(FF_DEFAULTFONT);
-        pRT->SelectObject(pDefFont);
-        _BeforePaintEx(this,pRT);
+        SWindow *pParent=GetParent();
+        if(pParent) pParent->BeforePaintEx(pRT);
+        SPainter painter;
+        BeforePaint(pRT,painter);
     }
 
     void SWindow::AfterPaint(IRenderTarget *pRT, SPainter &painter)
@@ -1326,18 +1319,18 @@ namespace SOUI
     }
 
     //当窗口有半透明属性并且透明度要需要应用于子窗口时，子窗口的图像渲染到this的缓存RT上。
-    BOOL SWindow::_IsChildrenRenderContainer()
+    BOOL SWindow::_IsLayeredWindow()
     {
         return m_style.m_byAlpha!=0xFF && m_style.m_bApplyAlpha2Children;
     }
 
     //查询当前窗口内容将被渲染到哪一个渲染层上，没有渲染层时返回NULL
-    SWindow * SWindow::_GetCurrentRenderContainer()
+    SWindow * SWindow::_GetCurrentLayeredWindow()
     {
         SWindow *pWnd = this;
         while(pWnd)
         {
-            if(pWnd->_IsChildrenRenderContainer())
+            if(pWnd->_IsLayeredWindow())
             {
                 break;
             }
@@ -1349,187 +1342,108 @@ namespace SOUI
 
     IRenderTarget * SWindow::GetRenderTarget(const LPRECT pRc/*=NULL*/,DWORD gdcFlags/*=0*/,BOOL bClientDC/*=TRUE*/)
     {
-        SASSERT(m_gdcFlags==-1);
-        
+        CRect rcRT;        
         if(bClientDC)
-            GetClientRect(&m_rcGetRT);
+            GetClientRect(&rcRT);
         else
-            GetWindowRect(&m_rcGetRT);
-        if(pRc) m_rcGetRT.IntersectRect(pRc,&m_rcGetRT);
+            GetWindowRect(&rcRT);
+        if(pRc) rcRT.IntersectRect(pRc,&rcRT);
         
-        //获得最近的一个渲染层的RT
-        IRenderTarget *pRT = _GetRenderTarget(m_rcGetRT,gdcFlags,ZORDER_MIN,m_uZorder);
-        
-        pRT->PushClipRect(&m_rcGetRT,RGN_COPY);
-
-        /*
-        if(gdcFlags & OLEDC_PAINTBKGND)
+        SWindow *pParent = GetParent();
+        while(pParent)
         {
-            //查询pRT是由哪一级窗口获得的,再从这一级窗口开始绘制背景
-            SWindow *pRenderContainer = _GetCurrentRenderContainer();
-            if(pRenderContainer)
-            {//有中间层,需要获得到达中间渲染层时的字体等信息
-                pRenderContainer->BeforePaintEx(pRT);
-            }else
-            {
-                pRenderContainer = GetTopLevelParent();
-            }
-
-            //绘制从pRenderContainer开始到this之间的窗口构成的背景
-            CAutoRefPtr<IRegion> rgn;
-            GETRENDERFACTORY->CreateRegion(&rgn);
-            rgn->CombineRect(&m_rcGetRT,RGN_COPY);
-            
-            pRenderContainer->_PaintRegion(pRT,rgn,ZORDER_MIN,m_uZorder);
+            rcRT.IntersectRect(rcRT,pParent->m_rcWindow);
+            pParent = pParent->GetParent();
         }
         
-        //设置从根窗口到当前窗口的字体等信息
-        BeforePaintEx(pRT);
-*/
-        m_gdcFlags = gdcFlags;
+        CAutoRefPtr<IRegion> rgn;
+        GETRENDERFACTORY->CreateRegion(&rgn);
+        rgn->CombineRect(rcRT,RGN_COPY);
+        //获得最近的一个渲染层的RT
+        IRenderTarget *pRT = _GetRenderTarget(rcRT,gdcFlags,m_uZorder+1,rgn);
+        
+        pRT->PushClipRect(&rcRT,RGN_COPY);
         return pRT;
     }
 
     void SWindow::ReleaseRenderTarget(IRenderTarget *pRT)
     {
-        /*
-        if(m_gdcFlags&OLEDC_PAINTBKGND)
-        {
-            //查询pRT是由哪一级窗口获得的,再从这一级窗口开始绘制当前窗口的前景
-            SWindow *pRenderContainer = _GetCurrentRenderContainer();
-            if(!pRenderContainer)
-            {
-                pRenderContainer = GetTopLevelParent();
-            }
-            //如果是顶层窗口则获得系统默认字体
-            pRenderContainer->BeforePaintEx(pRT);
-
-            //绘制从pRenderContainer开始到this之间的窗口构成的背景
-            CAutoRefPtr<IRegion> rgn;
-            GETRENDERFACTORY->CreateRegion(&rgn);
-            rgn->CombineRect(&m_rcGetRT,RGN_COPY);
-
-            //绘制在当前渲染层中所有zorder大于当前窗口zorder的窗口（前景）
-            pRenderContainer->_PaintRegion(pRT,rgn,m_uZorder+1,ZORDER_MAX);
-        }
-*/
         pRT->PopClip();        
-        _ReleaseRenderTarget(pRT,m_uZorder+1,ZORDER_MAX);        
-
-        m_gdcFlags = -1;
+        _ReleaseRenderTarget(pRT);        
     }
     
-    IRenderTarget * SWindow::_GetRenderTarget(CRect & rcGetRT,DWORD gdcFlags,UINT uBkgndZorderMin,UINT uBkgndZorderMax)
+    IRenderTarget * SWindow::_GetRenderTarget(CRect & rcGetRT,DWORD gdcFlags,UINT uMinFrgndZorder,IRegion *pRgn)
     {
-        rcGetRT.IntersectRect(rcGetRT,m_rcWindow);
-        
         IRenderTarget *pRT = NULL;
-        if(_IsChildrenRenderContainer())
+        SWindow *pLayerWindow = _GetCurrentLayeredWindow();
+        
+        GETRTDATA *pGetRTData = new GETRTDATA;
+        pGetRTData->gdcFlags = gdcFlags;
+        pGetRTData->rcRT = rcGetRT;
+        pGetRTData->uMinFrgndZorder = uMinFrgndZorder;
+        pGetRTData->rgn = pRgn;
+
+        if(pLayerWindow)
         {
-            SASSERT(IsDrawToCache());
             pRT = GetCachedRenderTarget();
-            m_rcGetRT = rcGetRT;
-            m_gdcFlags=gdcFlags;
-
-            if(gdcFlags & OLEDC_PAINTBKGND)
-            {
-                //绘制从pRenderContainer开始到this之间的窗口构成的背景
-                CAutoRefPtr<IRegion> rgn;
-                GETRENDERFACTORY->CreateRegion(&rgn);
-                rgn->CombineRect(&m_rcGetRT,RGN_COPY);
-
-                _PaintRegion(pRT,rgn,uBkgndZorderMin,uBkgndZorderMax);
-            }
-        }
-        else
+        }else
         {
-            if(GetParent())
-            {
-                pRT = GetParent()->_GetRenderTarget(rcGetRT,gdcFlags,uBkgndZorderMin,uBkgndZorderMax);
-            }
-            else
-            {
-                pRT = GetContainer()->OnGetRenderTarget(rcGetRT,gdcFlags);
-                m_rcGetRT = rcGetRT;
-                m_gdcFlags=gdcFlags;
-
-                if(gdcFlags & OLEDC_PAINTBKGND)
-                {
-                    //绘制从pRenderContainer开始到this之间的窗口构成的背景
-                    CAutoRefPtr<IRegion> rgn;
-                    GETRENDERFACTORY->CreateRegion(&rgn);
-                    rgn->CombineRect(&m_rcGetRT,RGN_COPY);
-
-                    _PaintRegion(pRT,rgn,uBkgndZorderMin,uBkgndZorderMax);
-                }
-            }
+            pLayerWindow = GetRoot();
+            pRT = GetContainer()->OnGetRenderTarget(rcGetRT,gdcFlags);
         }
-        SASSERT(pRT);
-
-
+        
+        //save get RT data
+        SASSERT(pLayerWindow->m_pGetRTData == NULL);
+        pLayerWindow->m_pGetRTData = pGetRTData;
+        
+        if(gdcFlags & OLEDC_PAINTBKGND)
+        {//绘制当前窗口的背景
+            pLayerWindow->_PaintRegion(pRT,pRgn,ZORDER_MIN,m_uZorder);
+        }
         return pRT;
     }
 
     
-    void SWindow::_ReleaseRenderTarget(IRenderTarget *pRT,DWORD gdcFlag,UINT uFrgndZorderMin,UINT uFrgndZorderMax)
+    void SWindow::_ReleaseRenderTarget(IRenderTarget *pRT)
     {
-        if(_IsChildrenRenderContainer())
-        {//到达一个渲染层，将pRT中的图像传递到上层的RT中
-            SASSERT(IsDrawToCache());
+        SWindow *pLayerWindow = _GetCurrentLayeredWindow();
+        if(pLayerWindow)
+        {//存在一个渲染层
+            PGETRTDATA &pGetRTData = pLayerWindow->m_pGetRTData;
+            SASSERT(pGetRTData);
+            if(pGetRTData->gdcFlags != OLEDC_NODRAW)
+            {
+                if(pGetRTData->gdcFlags == OLEDC_PAINTBKGND)
+                {//从指定的窗口开始绘制前景
+                    pLayerWindow->_PaintRegion(pRT,pGetRTData->rgn,pGetRTData->uMinFrgndZorder,ZORDER_MAX);
+                }
 
-            if(gdcFlag&OLEDC_PAINTBKGND)
-            {
-                BeforePaintEx(pRT);
-
-                //绘制从pRenderContainer开始到this之间的窗口构成的背景
-                CAutoRefPtr<IRegion> rgn;
-                GETRENDERFACTORY->CreateRegion(&rgn);
-                rgn->CombineRect(&m_rcGetRT,RGN_COPY);
-
-                //绘制在当前渲染层中所有前景
-                _PaintRegion(pRT,rgn,uFrgndZorderMin,uFrgndZorderMax);
+                SWindow *pParent = GetParent();
+                SASSERT(pParent);
+                SWindow *pLastChild = pLayerWindow;
+                while(pLastChild->GetChildrenCount())
+                {
+                    pLastChild = pLastChild->GetWindow(GSW_LASTCHILD);
+                }
+                
+                //获得下一渲染层(LayerWindow)的RT,绘制前景时不再绘制当前层(从当前层zorder最大的窗口+1开始)
+                //为了不破坏下层渲染状态,只有最上层的调用都可以指定OLEDC_OFFSCREEN标志,内部调用自动使用OLEDC_PAINTBKGND
+                pRT->SelectDefaultObject(OT_FONT);//清除pRT对字体可能的占用
+                
+                IRenderTarget *pRT2 = pParent->_GetRenderTarget(pGetRTData->rcRT,OLEDC_PAINTBKGND,pLastChild->m_uZorder+1,pGetRTData->rgn);
+                pRT2->AlphaBlend(pGetRTData->rcRT,pRT,pGetRTData->rcRT,pLayerWindow->m_style.m_byAlpha);
+                pParent->_ReleaseRenderTarget(pRT2);
             }
-
-            IRenderTarget *pRTParent = NULL;
-            if(GetParent())
-            {
-                pRTParent = GetParent()->_GetRenderTarget(&m_rcGetRT,m_gdcFlags,ZORDER_MIN,m_uZorder);
-            }
-            else 
-            {
-                pRTParent = GetContainer()->OnGetRenderTarget(&m_rcGetRT,m_gdcFlags);
-            }
-            
-            pRTParent->AlphaBlend(&m_rcGetRT,pRT,&m_rcGetRT,m_style.m_byAlpha);
-            MarkCacheDirty(true);//由于缓存上混合了子窗口的数据,缓存标识为脏
-            
-            //绘制兄弟窗口重叠的前景到pRTParent上
-            SWindow *pLastChild = this;
-            while(pLastChild->GetChildrenCount())
-            {
-                pLastChild = pLastChild->GetWindow(GSW_LASTCHILD);
-            }
-            
-
-            if(GetParent()) 
-            {
-                GetParent()->ReleaseRenderTarget(pRTParent);
-            }
-            else 
-            {
-                GetContainer()->OnReleaseRenderTarget(pRTParent,m_rcGetRT,m_gdcFlags);
-            }
-            m_gdcFlags = -1;
+            delete pGetRTData;
+            pGetRTData = NULL;
         }else
-        {
-            if(GetParent())
-            {
-                GetParent()->_ReleaseRenderTarget(pRT);
-            }else
-            {
-                GetContainer()->OnReleaseRenderTarget(pRT,m_rcGetRT,m_gdcFlags);
-                m_gdcFlags = -1;
-            }
+        {//已经到达最底层了
+            SWindow *pRoot = GetRoot();
+            PGETRTDATA & pGetRTData = pRoot->m_pGetRTData;
+            SASSERT(pGetRTData);
+            GetContainer()->OnReleaseRenderTarget(pRT,pGetRTData->rcRT,pGetRTData->gdcFlags);
+            delete pGetRTData;
+            pGetRTData = NULL;
         }
     }
 
