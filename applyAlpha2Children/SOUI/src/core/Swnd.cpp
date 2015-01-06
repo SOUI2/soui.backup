@@ -806,10 +806,10 @@ namespace SOUI
 
     }
 
+    //当前函数中的参数包含zorder,为了保证传递进来的zorder是正确的,必须在外面调用zorder重建.
     void SWindow::_PaintRegion(IRenderTarget *pRT, IRegion *pRgn,UINT iZorderBegin,UINT iZorderEnd)
     {
         TestMainThread();
-        GetContainer()->BuildWndTreeZorder();
         BeforePaintEx(pRT);
         _PaintRegion2(pRT,pRgn,iZorderBegin,iZorderEnd);
     }
@@ -1029,15 +1029,18 @@ namespace SOUI
     {
         if(m_style.m_nMarginX!=0 || m_style.m_nMarginY!=0)
         {
-            BOOL bGetRT = pRT==0;
-            if(bGetRT) pRT=GetRenderTarget(&m_rcWindow,OLEDC_OFFSCREEN,FALSE);//不自动画背景
-
-            CRect rcClient;
-            SWindow::GetClientRect(&rcClient);
-            pRT->SaveClip(NULL);
-            pRT->ExcludeClipRect(&rcClient);
-
-            if(bGetRT) PaintBackground(pRT,&m_rcWindow);
+            BOOL bGetRT = (pRT==0);
+            if(bGetRT)
+            {
+                pRT=GetRenderTarget(&m_rcWindow,OLEDC_OFFSCREEN,FALSE);//不自动画背景
+                PaintBackground(pRT,&m_rcWindow);
+            }
+            else
+            {
+                CRect rcClient;
+                GetClientRect(&rcClient);
+                pRT->PushClipRect(&rcClient,RGN_DIFF);
+            }
 
             int nState=0;
             if(WndState_Hover & m_dwState) nState=1;
@@ -1051,12 +1054,18 @@ namespace SOUI
                 COLORREF crBg = m_style.m_crBorder;
                 if (CR_INVALID != crBg)
                 {
-                    pRT->FillSolidRect(&m_rcWindow,crBg);
+                     pRT->FillSolidRect(&m_rcWindow,crBg);
                 }
             }
-            if(bGetRT) PaintForeground(pRT,&m_rcWindow);
-            pRT->PopClip();
-            if(bGetRT) ReleaseRenderTarget(pRT);
+            if(bGetRT)
+            {
+                PaintForeground(pRT,&m_rcWindow);
+                ReleaseRenderTarget(pRT);
+            }
+            else
+            {
+                pRT->PopClip();
+            }
         }
     }
 
@@ -1326,16 +1335,20 @@ namespace SOUI
         CAutoRefPtr<IRegion> rgn;
         GETRENDERFACTORY->CreateRegion(&rgn);
         rgn->CombineRect(rcRT,RGN_COPY);
+        if(!bClientDC)
+        {
+            CRect rcClient;
+            GetClientRect(&rcClient);
+            rgn->CombineRect(rcClient,RGN_DIFF);
+        }
+
         //获得最近的一个渲染层的RT
         IRenderTarget *pRT = _GetRenderTarget(rcRT,gdcFlags,m_uZorder+1,rgn);
-        
-        pRT->PushClipRect(&rcRT,RGN_COPY);
         return pRT;
     }
 
     void SWindow::ReleaseRenderTarget(IRenderTarget *pRT)
     {
-        pRT->PopClip();        
         _ReleaseRenderTarget(pRT);        
     }
     
@@ -1363,8 +1376,11 @@ namespace SOUI
         SASSERT(pLayerWindow->m_pGetRTData == NULL);
         pLayerWindow->m_pGetRTData = pGetRTData;
         
+        pRT->PushClipRegion(pRgn,RGN_COPY);
+        
         if(gdcFlags & OLEDC_PAINTBKGND)
         {//绘制当前窗口的背景
+            GetContainer()->BuildWndTreeZorder();
             pLayerWindow->_PaintRegion(pRT,pRgn,ZORDER_MIN,m_uZorder);
         }
         return pRT;
@@ -1382,6 +1398,7 @@ namespace SOUI
             {
                 if(pGetRTData->gdcFlags == OLEDC_PAINTBKGND)
                 {//从指定的窗口开始绘制前景
+                    GetContainer()->BuildWndTreeZorder();
                     pLayerWindow->_PaintRegion(pRT,pGetRTData->rgn,pGetRTData->uMinFrgndZorder,ZORDER_MAX);
                 }
 
@@ -1396,11 +1413,12 @@ namespace SOUI
                 //获得下一渲染层(LayerWindow)的RT,绘制前景时不再绘制当前层(从当前层zorder最大的窗口+1开始)
                 //为了不破坏下层渲染状态,只有最上层的调用都可以指定OLEDC_OFFSCREEN标志,内部调用自动使用OLEDC_PAINTBKGND
                 pRT->SelectDefaultObject(OT_FONT);//清除pRT对字体可能的占用
-                
+
                 IRenderTarget *pRT2 = pParent->_GetRenderTarget(pGetRTData->rcRT,OLEDC_PAINTBKGND,pLastChild->m_uZorder+1,pGetRTData->rgn);
                 pRT2->AlphaBlend(pGetRTData->rcRT,pRT,pGetRTData->rcRT,pLayerWindow->m_style.m_byAlpha);
                 pParent->_ReleaseRenderTarget(pRT2);
             }
+            pRT->PopClip();//对应_GetRenderTarget中调用的PushClipRegion
             delete pGetRTData;
             pGetRTData = NULL;
         }else
@@ -1408,6 +1426,8 @@ namespace SOUI
             SWindow *pRoot = GetRoot();
             PGETRTDATA & pGetRTData = pRoot->m_pGetRTData;
             SASSERT(pGetRTData);
+            
+            pRT->PopClip();//对应_GetRenderTarget中调用的PushClipRegion
             GetContainer()->OnReleaseRenderTarget(pRT,pGetRTData->rcRT,pGetRTData->gdcFlags);
             delete pGetRTData;
             pGetRTData = NULL;
@@ -1488,6 +1508,7 @@ namespace SOUI
 
         pRT->ClearRect(&rcDraw,0);//清除残留的alpha值
         
+        GetContainer()->BuildWndTreeZorder();
         pTopWnd->_PaintRegion(pRT,pRgn,ZORDER_MIN,m_uZorder);
 
         pRT->PopClip();
@@ -1501,7 +1522,8 @@ namespace SOUI
         GETRENDERFACTORY->CreateRegion(&pRgn);
         pRgn->CombineRect(&rcDraw,RGN_COPY);
         pRT->PushClipRect(&rcDraw);
- 
+        
+        GetContainer()->BuildWndTreeZorder();
         GetTopLevelParent()->_PaintRegion(pRT,pRgn,m_uZorder+1,ZORDER_MAX);
 
         pRT->PopClip();

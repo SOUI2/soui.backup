@@ -60,7 +60,8 @@ namespace SOUI
         virtual BOOL OnIdle(int /*nIdleCount*/);
         
         virtual int Run();
-
+        
+        void OnMsg(LPMSG pMsg);
     };
 
 
