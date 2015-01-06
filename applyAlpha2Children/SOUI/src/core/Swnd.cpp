@@ -731,7 +731,7 @@ namespace SOUI
         
         IRenderTarget *pRTBack = pRT;//backup current RT
         
-        if(IsLayeredWindow())
+        if(IsLayeredWindow() && pRTBack != GetCachedRenderTarget())
         {//绘制到窗口的缓存上,需要继承原RT的绘图属性
             //按照设计，这类窗口必定要在渲染的zorder范围内，否则就是实现有问题
             SASSERT(m_uZorder >= iZorderBegin && m_uZorder < iZorderEnd);
@@ -791,7 +791,7 @@ namespace SOUI
             _PaintWindowNonClient(pRT);
         }
         
-        if(IsLayeredWindow())
+        if(IsLayeredWindow() && pRTBack!=GetCachedRenderTarget())
         {//将绘制到窗口的缓存上的图像返回到上一级RT
             pRTBack->AlphaBlend(&m_rcWindow,pRT,&m_rcWindow,m_style.m_byAlpha);
 
@@ -1385,7 +1385,7 @@ namespace SOUI
                     pLayerWindow->_PaintRegion(pRT,pGetRTData->rgn,pGetRTData->uMinFrgndZorder,ZORDER_MAX);
                 }
 
-                SWindow *pParent = GetParent();
+                SWindow *pParent = pLayerWindow->GetParent();
                 SASSERT(pParent);
                 SWindow *pLastChild = pLayerWindow;
                 while(pLastChild->GetChildrenCount())
