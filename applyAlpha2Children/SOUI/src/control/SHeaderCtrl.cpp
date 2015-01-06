@@ -263,7 +263,6 @@ namespace SOUI
                     if(IsItemHover(dwDragTo) && m_dwDragTo!=dwDragTo)
                     {
                         m_dwDragTo=dwDragTo;
-                        STRACE(_T("\n!!! dragto %d"),LOWORD(dwDragTo));
                         DrawDraggingState(dwDragTo);
                     }
                     CDragWnd::DragMove(pt2);

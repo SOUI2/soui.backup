@@ -528,7 +528,7 @@ IRenderTarget * SHostWnd::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
     GETRENDERFACTORY->CreateRenderTarget(&pRT,rc.Width(),rc.Height());
     pRT->OffsetViewportOrg(-rc.left,-rc.top);
     
-    if(!(gdcFlags & OLEDC_NODRAW))
+    if(gdcFlags != OLEDC_NODRAW)
     {
         if(m_bCaretActive)
         {
