@@ -303,6 +303,7 @@ namespace SOUI
         virtual HRESULT DrawBitmap9Patch(LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,LPCRECT pRcSourMargin,EXPEND_MODE expendMode,BYTE byAlpha=0xFF);
 
         virtual IRenderObj * GetCurrentObject(OBJTYPE uType);
+        virtual HRESULT SelectDefaultObject(OBJTYPE objType, IRenderObj ** ppOldObj = NULL);
         virtual HRESULT SelectObject(IRenderObj *pObj,IRenderObj ** ppOldObj = NULL);
 
 
@@ -331,6 +332,12 @@ namespace SOUI
         CAutoRefPtr<SBrush_GDI> m_curBrush;
         CAutoRefPtr<SFont_GDI> m_curFont;
         POINT               m_ptOrg;
+        
+        //注意保存4个默认的GDI对象
+        CAutoRefPtr<IBitmap> m_defBmp;
+        CAutoRefPtr<IPen> m_defPen;
+        CAutoRefPtr<IBrush> m_defBrush;
+        CAutoRefPtr<IFont> m_defFont;
 
         UINT m_uGetDCFlag;
     };

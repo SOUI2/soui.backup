@@ -52,7 +52,7 @@ public:
     DWORD    m_bDotted:1;           /**<支持省略号显示文本 */
     DWORD    m_bTrackMouseEvent:1;  /**<监视鼠标进入及移出消息 */
     DWORD    m_bBkgndBlend:1;       /**<渲染窗口内容和背景混合标志 */
-    DWORD    m_bApplyAlpha2Children;/**<指示是否将alpha应用到子窗口 */
+    DWORD    m_bLayeredWindow;      /**<指示是否是一个分层窗口 */
 
     UINT GetTextAlign();
     int GetStates();
@@ -101,7 +101,7 @@ protected:
         ATTR_INT(L"dotted",m_bDotted,FALSE)
         ATTR_INT(L"trackMouseEvent",m_bTrackMouseEvent,FALSE)
         ATTR_INT(L"alpha",m_byAlpha,TRUE)
-        ATTR_INT(L"applyAlpha2Children",m_bApplyAlpha2Children,TRUE)
+        ATTR_INT(L"layeredWindow",m_bLayeredWindow,TRUE)
         ATTR_INT(L"bkgndBlend",m_bBkgndBlend,TRUE)
         ATTR_INT(L"sepSpace",m_bySepSpace,TRUE)
     SOUI_ATTRS_BREAK()      //属性不交给SObject处理

@@ -132,6 +132,9 @@ protected:
     void _Redraw();
     void _UpdateNonBkgndBlendSwnd();
     
+    virtual void BeforePaint(IRenderTarget *pRT, SPainter &painter);
+    virtual void AfterPaint(IRenderTarget *pRT, SPainter &painter);
+    
     SDummyWnd            m_dummyWnd;    //半透明窗口使用的一个响应WM_PAINT消息的窗口
     SHostWndAttr         m_hostAttr;
     SStringT m_strXmlLayout;

@@ -226,10 +226,8 @@ void SHostWnd::OnPrint(HDC dc, UINT uFlags)
         m_bNeedRepaint = FALSE;
 
         SThreadActiveWndMgr::EnterPaintLock();
-        CAutoRefPtr<IFont> defFont,oldFont;
-        defFont = SFontPool::getSingleton().GetFont(FF_DEFAULTFONT);
-        m_memRT->SelectObject(defFont,(IRenderObj**)&oldFont);
-        m_memRT->SetTextColor(RGBA(0,0,0,0xFF));
+        SPainter painter;
+        BeforePaint(m_memRT,painter);
 
         //m_rgnInvalidate有可能在RedrawRegion时被修改，必须生成一个临时的区域对象
         CAutoRefPtr<IRegion> pRgnUpdate=m_rgnInvalidate;
@@ -255,7 +253,7 @@ void SHostWnd::OnPrint(HDC dc, UINT uFlags)
         
         m_memRT->PopClip();
         
-        m_memRT->SelectObject(oldFont);
+        AfterPaint(m_memRT,painter);
 
         SThreadActiveWndMgr::LeavePaintLock();
         
@@ -530,10 +528,7 @@ IRenderTarget * SHostWnd::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
     GETRENDERFACTORY->CreateRenderTarget(&pRT,rc.Width(),rc.Height());
     pRT->OffsetViewportOrg(-rc.left,-rc.top);
     
-    pRT->SelectObject(SFontPool::getSingleton().GetFont(FF_DEFAULTFONT));
-    pRT->SetTextColor(RGBA(0,0,0,0xFF));
-
-    if(!(gdcFlags & OLEDC_NODRAW))
+    if(gdcFlags != OLEDC_NODRAW)
     {
         if(m_bCaretActive)
         {
@@ -546,7 +541,7 @@ IRenderTarget * SHostWnd::OnGetRenderTarget(const CRect & rc,DWORD gdcFlags)
 
 void SHostWnd::OnReleaseRenderTarget(IRenderTarget * pRT,const CRect &rc,DWORD gdcFlags)
 {
-    if(!(gdcFlags & OLEDC_NODRAW))
+    if(gdcFlags != OLEDC_NODRAW)
     {
         m_memRT->BitBlt(&rc,pRT,rc.left,rc.top,SRCCOPY);
         if(m_bCaretActive)
@@ -1157,6 +1152,18 @@ void SHostWnd::_UpdateNonBkgndBlendSwnd()
             pWnd->_Update();
         }
     }
+}
+
+
+void SHostWnd::BeforePaint(IRenderTarget *pRT, SPainter &painter)
+{
+    pRT->SelectObject(SFontPool::getSingleton().GetFont(FF_DEFAULTFONT));
+    pRT->SetTextColor(RGBA(0,0,0,255));
+}
+
+void SHostWnd::AfterPaint(IRenderTarget *pRT, SPainter &painter)
+{
+    pRT->SelectDefaultObject(OT_FONT);
 }
 
 #endif//DISABLE_SWNDSPY
