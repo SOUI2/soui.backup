@@ -167,7 +167,7 @@ namespace SOUI
     void SRegion_GDI::CombineRect( LPCRECT lprect,int nCombineMode )
     {
         HRGN hRgn=::CreateRectRgnIndirect(lprect);
-        ::CombineRgn(m_hRgn,m_hRgn,hRgn,nCombineMode);
+        ::CombineRgn(m_hRgn,hRgn,m_hRgn,nCombineMode);
         DeleteObject(hRgn);
     }
 

@@ -89,17 +89,16 @@ namespace SOUI
         if(!pFrmWnd) return FALSE;
                 
         
-        IRenderTarget *pRT=pFrmWnd->GetRenderTarget(rcWnd,OLEDC_NODRAW,FALSE);
-
+        IRenderTarget *pRT=pFrmWnd->GetRenderTarget(rcWnd,OLEDC_NODRAW,TRUE);
         pWndFront->SetVisible(TRUE,FALSE);
         pWndBack->SetVisible(FALSE,FALSE);
 
         //渲染窗口变化前状态
-        pFrmWnd->PaintBackground(pRT,rcWnd);
         pFrmWnd->RedrawRegion(pRT,NULL);
         
         CAutoRefPtr<IRenderTarget> pRTCopy1;
         GETRENDERFACTORY->CreateRenderTarget(&pRTCopy1,rcWnd.Width(),rcWnd.Height());
+
         pRTCopy1->BitBlt(CRect(CPoint(0,0),rcWnd.Size()),pRT,rcWnd.left,rcWnd.top,SRCCOPY);
         m_bmpBefore = (IBitmap*)pRTCopy1->GetCurrentObject(OT_BITMAP);        
         
@@ -107,7 +106,6 @@ namespace SOUI
         pWndFront->SetVisible(FALSE,FALSE);
         pWndBack->SetVisible(TRUE,FALSE);
 
-        pFrmWnd->PaintBackground(pRT,rcWnd);
         pFrmWnd->RedrawRegion(pRT,NULL);
         
         CAutoRefPtr<IRenderTarget> pRTCopy2;
