@@ -1,5 +1,5 @@
 ﻿<include>
-  <tabctrl pos="0,0,-0,-0" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
+  <tabctrl pos="0,0,-0,-0" alpha="200" layeredWindow="1" colorBkgnd="#cccccc" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
     <page title="listctrl">
       <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cursor="CUR_TST">
         <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
@@ -12,7 +12,7 @@
         </header>
       </listctrl>
     </page>
-    <page title="edit and hotkey" colorBorder="#ff0000" margin-x="1" margin-y="1">
+    <page title="edit and hotkey" colorBorder="#ffff00" margin-x="5" margin-y="5">
       <text pos="50,20">hotkey 1:</text>
       <hotkey name="ctrl_hk1" width="200" height="25" class="cls_edit"/>
       <text pos="50,[5">hotkey 2:</text>
@@ -28,8 +28,8 @@
       <button name="btn_insert_gif" height="25">insert gif to richedit</button>
       <richedit name="re_gifhost" pos="50,[5,-5,-5" class="cls_edit" enableDragdrop="1" multiLines="1" vscrollBar="1" wordWrap="1"  autoVscroll="1" hscrollBar="0" wantReturn="1"  rtf="rtf:rtf_test">this is a richedit.中文也可以初始化。</richedit>
     </page>
-    <page title="buttons" colorBorder="#ff0000" margin-x="1" margin-y="1">
-      <button name="btn_msgbox" pos="10,50" width="200" height="30" accel="ctrl+alt+f9" animate="1">show msg box</button>
+    <page title="buttons" colorBorder="#ffff00" margin-x="15" margin-y="15">
+      <button name="btn_msgbox" pos="10,50" width="200" height="30" accel="ctrl+alt+f9" animate="0">show msg box</button>
       <text pos="10,[5">press "ctrl+alt+f9" to activate the msgbox button</text>
       <link pos="10,130" maxWidth="100" class="cls_btn_weblink" dotted="1" href="www.setoutsoft.cn">www.setoutsoft.cn</link>
       <img pos="10,200,@100,@100" skin="skin_page_icons" iconIndex="2" tip="img tip" msgTransparent="0"/>

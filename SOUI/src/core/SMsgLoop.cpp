@@ -4,6 +4,16 @@
 namespace SOUI
 {
 
+
+    void SMessageLoop::OnMsg(LPMSG pMsg)
+    {
+        if(!PreTranslateMessage(pMsg))
+        {
+            ::TranslateMessage(pMsg);
+            ::DispatchMessage(pMsg);
+        }
+    }
+
     int SMessageLoop::Run()
     {
         BOOL bDoIdle = TRUE;
@@ -30,12 +40,8 @@ namespace SOUI
                 STRACE(_T("SMessageLoop::Run - exiting"));
                 break;   // WM_QUIT, exit message loop
             }
-
-            if(!PreTranslateMessage(&m_msg))
-            {
-                ::TranslateMessage(&m_msg);
-                ::DispatchMessage(&m_msg);
-            }
+            
+            OnMsg(&m_msg);
 
             if(IsIdleMessage(&m_msg))
             {
