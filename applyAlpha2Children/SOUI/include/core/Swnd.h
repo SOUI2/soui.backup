@@ -861,7 +861,7 @@ namespace SOUI
         * @return   bool -- true绘制到cache上。
         * Describe  
         */    
-        bool IsDrawToCache() const {return m_bCacheDraw || m_style.m_byAlpha!=0xFF;}
+        bool IsDrawToCache() const;
 
         /**
         * GetCachedRenderTarget
@@ -871,19 +871,18 @@ namespace SOUI
         */    
         IRenderTarget * GetCachedRenderTarget();
 
+        /**
+         * IsLayeredWindow
+         * @brief    确定渲染时子窗口的内容是不是渲染到当前窗口的缓存上
+         * @return   BOOL -- TREU:子窗口的内容先渲染到this的缓存RT上
+         * Describe  
+         */    
+        BOOL IsLayeredWindow();
 
     protected://helper functions
 
         void _Update();
         
-
-        /**
-         * _IsChildrenRenderContainer
-         * @brief    确定渲染时子窗口的内容是不是渲染到当前窗口的缓存上
-         * @return   BOOL -- TREU:子窗口的内容先渲染到this的缓存RT上
-         * Describe  
-         */    
-        BOOL _IsLayeredWindow();
     
         /**
          * _GetCurrentRenderContainer

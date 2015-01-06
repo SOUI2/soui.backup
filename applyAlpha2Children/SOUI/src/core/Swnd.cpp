@@ -652,10 +652,12 @@ namespace SOUI
     //如果当前窗口有绘制缓存，它可能是由cache属性定义的，也可能是由于定义了alpha
     void SWindow::_PaintWindowClient(IRenderTarget *pRT)
     {
-        //下面两个条件不能同时成立
-        SASSERT(!(_IsLayeredWindow() && (pRT == m_cachedRT)) );
+        if(IsLayeredWindow())
+        {
+            SASSERT((pRT == m_cachedRT)); 
+        }
 
-        if(IsDrawToCache() && !_IsLayeredWindow() )
+        if(IsDrawToCache() && !IsLayeredWindow() )
         {
             IRenderTarget *pRTCache=m_cachedRT;
             if(pRTCache)
@@ -692,7 +694,7 @@ namespace SOUI
 
     void SWindow::_PaintWindowNonClient( IRenderTarget *pRT )
     {
-        if(IsDrawToCache() && !_IsLayeredWindow() )
+        if(IsDrawToCache() && !IsLayeredWindow() )
         {
             IRenderTarget *pRTCache=m_cachedRT;
             if(pRTCache)
@@ -729,7 +731,7 @@ namespace SOUI
         
         IRenderTarget *pRTBack = pRT;//backup current RT
         
-        if(_IsLayeredWindow())
+        if(IsLayeredWindow())
         {//绘制到窗口的缓存上,需要继承原RT的绘图属性
             //按照设计，这类窗口必定要在渲染的zorder范围内，否则就是实现有问题
             SASSERT(m_uZorder >= iZorderBegin && m_uZorder < iZorderEnd);
@@ -739,7 +741,7 @@ namespace SOUI
             COLORREF crTxt = pRT->GetTextColor();
             
             pRT = GetCachedRenderTarget();
-            pRT->ClearRect(&m_rcWindow,RGBA(0,0,0,255));
+            pRT->ClearRect(&m_rcWindow,0);
             if(SUCCEEDED(hr)) pRT->SelectObject(curFont);
             pRT->SetTextColor(crTxt);
         }
@@ -789,7 +791,7 @@ namespace SOUI
             _PaintWindowNonClient(pRT);
         }
         
-        if(_IsLayeredWindow())
+        if(IsLayeredWindow())
         {//将绘制到窗口的缓存上的图像返回到上一级RT
             pRTBack->AlphaBlend(&m_rcWindow,pRT,&m_rcWindow,m_style.m_byAlpha);
 
@@ -806,6 +808,7 @@ namespace SOUI
 
     void SWindow::_PaintRegion(IRenderTarget *pRT, IRegion *pRgn,UINT iZorderBegin,UINT iZorderEnd)
     {
+        TestMainThread();
         GetContainer()->BuildWndTreeZorder();
         BeforePaintEx(pRT);
         _PaintRegion2(pRT,pRgn,iZorderBegin,iZorderEnd);
@@ -814,43 +817,7 @@ namespace SOUI
     void SWindow::RedrawRegion(IRenderTarget *pRT, IRegion *pRgn)
     {
         TestMainThread();
-        if(!IsVisible(TRUE))    //只在自己完全可见的情况下才绘制
-            return;
-
-        CRect rcWnd,rcClient;
-        GetWindowRect(&rcWnd);
-        GetClientRect(&rcClient);
-
-        if(!pRgn || pRgn->IsEmpty() || pRgn->RectInRegion(&rcWnd))
-        {//paint client
-            if(IsClipClient())
-            {
-                pRT->PushClipRect(rcClient);
-            }
-            _PaintWindowClient(pRT);
-
-            SPainter painter;
-            BeforePaint(pRT,painter);
-
-            SWindow *pChild = GetWindow(GSW_FIRSTCHILD);
-            while(pChild)
-            {
-                pChild->RedrawRegion(pRT,pRgn);
-                pChild = pChild->GetWindow(GSW_NEXTSIBLING);
-            }
-            AfterPaint(pRT,painter);
-
-            if(IsClipClient())
-            {
-                pRT->PopClip();
-            }
-
-        }
-        if((!pRgn ||  pRgn->IsEmpty() ||pRgn->RectInRegion(&rcWnd)) 
-            && (rcWnd!=rcClient))
-        {//paint nonclient
-            _PaintWindowNonClient(pRT);
-        }        
+        _PaintRegion2(pRT,pRgn,ZORDER_MIN,ZORDER_MAX);
     }
 
     void SWindow::Invalidate()
@@ -1319,9 +1286,9 @@ namespace SOUI
     }
 
     //当窗口有半透明属性并且透明度要需要应用于子窗口时，子窗口的图像渲染到this的缓存RT上。
-    BOOL SWindow::_IsLayeredWindow()
+    BOOL SWindow::IsLayeredWindow()
     {
-        return m_style.m_byAlpha!=0xFF && m_style.m_bApplyAlpha2Children;
+        return m_style.m_bLayeredWindow;
     }
 
     //查询当前窗口内容将被渲染到哪一个渲染层上，没有渲染层时返回NULL
@@ -1330,7 +1297,7 @@ namespace SOUI
         SWindow *pWnd = this;
         while(pWnd)
         {
-            if(pWnd->_IsLayeredWindow())
+            if(pWnd->IsLayeredWindow())
             {
                 break;
             }
@@ -1385,7 +1352,7 @@ namespace SOUI
 
         if(pLayerWindow)
         {
-            pRT = GetCachedRenderTarget();
+            pRT = pLayerWindow->GetCachedRenderTarget();
         }else
         {
             pLayerWindow = GetRoot();
@@ -1924,6 +1891,8 @@ namespace SOUI
             {
                 m_cachedRT->Resize(m_rcWindow.Size());
             }
+            m_cachedRT->SetViewportOrg(-m_rcWindow.TopLeft());
+
             MarkCacheDirty(true);
         }
     }
@@ -1933,6 +1902,7 @@ namespace SOUI
         if(IsDrawToCache() && !m_cachedRT)
         {
             GETRENDERFACTORY->CreateRenderTarget(&m_cachedRT,m_rcWindow.Width(),m_rcWindow.Height());
+            m_cachedRT->SetViewportOrg(-m_rcWindow.TopLeft());
             MarkCacheDirty(true);
         }
         if(!IsDrawToCache() && m_cachedRT)
@@ -2008,8 +1978,14 @@ namespace SOUI
 
     IRenderTarget * SWindow::GetCachedRenderTarget()
     {
+        SASSERT(IsDrawToCache());
         if(!m_cachedRT) GETRENDERFACTORY->CreateRenderTarget(&m_cachedRT,0,0);
         return m_cachedRT;
+    }
+
+    bool SWindow::IsDrawToCache() const
+    {
+        return m_bCacheDraw || m_style.m_byAlpha!=0xFF || m_style.m_bLayeredWindow;
     }
 
 }//namespace SOUI
