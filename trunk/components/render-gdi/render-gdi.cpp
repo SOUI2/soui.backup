@@ -6,7 +6,7 @@
 #include "GradientFillHelper.h"
 #include <gdialpha.h>
 #include <math.h>
-
+#include <trace.h>
 namespace SOUI
 {
 
@@ -164,10 +164,30 @@ namespace SOUI
         m_hRgn = ::CreateRectRgn(0,0,0,0);
     }
 
+    /*
+    int CombineRgn(  HRGN hrgnDest,      // handle to destination region
+    HRGN hrgnSrc1,      // handle to source region
+    HRGN hrgnSrc2,      // handle to source region
+    int fnCombineMode   // region combining mode);
+    
+    RGN_AND Creates the intersection of the two combined regions. 
+    RGN_COPY Creates a copy of the region identified by hrgnSrc1. 
+    RGN_DIFF Combines the parts of hrgnSrc1 that are not part of hrgnSrc2. 
+    RGN_OR Creates the union of two combined regions. 
+    RGN_XOR Creates the union of two combined regions except for any overlapping areas. 
+    
+    注意 RGN_DIFF 和 RGN_COPY对于hrgnSrc1的使用差异
+    */
     void SRegion_GDI::CombineRect( LPCRECT lprect,int nCombineMode )
     {
         HRGN hRgn=::CreateRectRgnIndirect(lprect);
-        ::CombineRgn(m_hRgn,hRgn,m_hRgn,nCombineMode);
+        if(nCombineMode == RGN_DIFF)
+        {
+            ::CombineRgn(m_hRgn,m_hRgn,hRgn,RGN_DIFF);
+        }else
+        {
+            ::CombineRgn(m_hRgn,hRgn,m_hRgn,nCombineMode);
+        }
         DeleteObject(hRgn);
     }
 
