@@ -765,14 +765,11 @@ void STreeCtrl::RedrawItem(HSTREEITEM hItem)
         if (rcItem.right > rcClient.right) rcItem.right = rcClient.right;
 
         CAutoRefPtr<IRenderTarget> pRT=GetRenderTarget(&rcItem,OLEDC_PAINTBKGND);
-        SPainter painter;
-        BeforePaint(pRT,painter);
 
         SSendMessage(WM_ERASEBKGND,(WPARAM)(void*)pRT);
 
         DrawItem(pRT,rcItem,hItem);
 
-        AfterPaint(pRT,painter);
         ReleaseRenderTarget(pRT);
     }
 }

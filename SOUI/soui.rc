@@ -52,8 +52,8 @@ END
 // Version
 //
 
-#define VER_FILE    1, 4, 0, 2
-#define VER_PRODUCT 1, 4, 0, 2
+#define VER_FILE    1, 4, 0, 3
+#define VER_PRODUCT 1, 4, 0, 3
 
 #define _STRING(x) #x
 #define VER_STR(x) _STRING(x)

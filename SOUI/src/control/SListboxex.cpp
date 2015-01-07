@@ -230,13 +230,10 @@ void SListBoxEx::RedrawItem(int iItem)
     if(rcInter.IsRectEmpty()) return;
 
     IRenderTarget * pRT=GetRenderTarget(&rcItem,OLEDC_PAINTBKGND);
-    SPainter painter;
-    BeforePaint(pRT,painter);
 
     SSendMessage(WM_ERASEBKGND,(WPARAM)pRT);
     DrawItem(pRT,rcItem,iItem);
 
-    AfterPaint(pRT,painter);
     ReleaseRenderTarget(pRT);
 }
 

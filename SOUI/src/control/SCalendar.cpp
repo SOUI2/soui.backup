@@ -379,10 +379,7 @@ void SCalendar::RedrawDay(WORD iDay )
 {
     CRect rcDay=GetDayRect(iDay);
     IRenderTarget * pRT=GetRenderTarget(&rcDay,OLEDC_PAINTBKGND);
-    SPainter painter;
-    BeforePaint(pRT,painter);
     DrawDay(pRT,rcDay,iDay);
-    AfterPaint(pRT,painter);
     ReleaseRenderTarget(pRT);
 }
 

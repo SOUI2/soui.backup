@@ -1381,6 +1381,7 @@ namespace SOUI
         if(pLayerWindow)
         {
             pRT = pLayerWindow->GetCachedRenderTarget();
+            pRT->ClearRect(rcGetRT,0);
         }else
         {
             pLayerWindow = GetRoot();
@@ -1442,7 +1443,9 @@ namespace SOUI
                 //获得下一渲染层(LayerWindow)的RT,绘制前景时不再绘制当前层(从当前层zorder最大的窗口+1开始)
                 //为了不破坏下层渲染状态,只有最上层的调用都可以指定OLEDC_OFFSCREEN标志,内部调用自动使用OLEDC_PAINTBKGND
                 IRenderTarget *pRT2 = pParent->_GetRenderTarget(pGetRTData->rcRT,OLEDC_PAINTBKGND,uFrgndZorderMin,pGetRTData->rgn);
+                pParent->_PaintWindowClient(pRT2);
                 pRT2->AlphaBlend(pGetRTData->rcRT,pRT,pGetRTData->rcRT,pLayerWindow->m_style.m_byAlpha);
+                pParent->_PaintWindowNonClient(pRT2);
                 pParent->_ReleaseRenderTarget(pRT2);
             }
             pRT->PopClip();//对应_GetRenderTarget中调用的PushClipRegion

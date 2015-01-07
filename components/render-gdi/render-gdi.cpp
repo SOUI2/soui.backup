@@ -448,6 +448,8 @@ namespace SOUI
     {
         SRegion_GDI *pRgn=new SRegion_GDI(GetRenderFactory_GDI());
         ::GetClipRgn(m_hdc,pRgn->GetRegion());
+        POINT pt={-m_ptOrg.x,-m_ptOrg.y};
+        pRgn->Offset(pt);
         *ppRegion = pRgn;
         return S_OK;
     }
