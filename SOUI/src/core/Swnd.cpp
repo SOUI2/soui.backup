@@ -767,10 +767,24 @@ namespace SOUI
             if(pChild->m_uZorder< iZorderBegin)
             {//看整个分枝的zorder是不是在绘制范围内
                 SWindow *pNextChild = pChild->GetWindow(GSW_NEXTSIBLING);
-                if(pNextChild && pNextChild->m_uZorder<iZorderBegin)
+                if(pNextChild)
                 {
-                    pChild = pNextChild;
-                    continue;;
+                    if(pNextChild->m_uZorder<=iZorderBegin)
+                    {
+                        pChild = pNextChild;
+                        continue;
+                    }
+                }else
+                {//最后一个节点时查看最后子窗口的zorder
+                    SWindow *pLastChild = pChild;
+                    while(pLastChild->GetChildrenCount())
+                    {
+                        pLastChild = pLastChild->GetWindow(GSW_LASTCHILD);
+                    }
+                    if(pLastChild->m_uZorder < iZorderBegin)
+                    {
+                        break;
+                    }
                 }
             }
             pChild->_PaintRegion2(pRT,pRgn,iZorderBegin,iZorderEnd);
@@ -1344,6 +1358,7 @@ namespace SOUI
 
         //获得最近的一个渲染层的RT
         IRenderTarget *pRT = _GetRenderTarget(rcRT,gdcFlags,m_uZorder+1,rgn);
+        BeforePaintEx(pRT);
         return pRT;
     }
 
@@ -1389,6 +1404,8 @@ namespace SOUI
     
     void SWindow::_ReleaseRenderTarget(IRenderTarget *pRT)
     {
+        pRT->SelectDefaultObject(OT_FONT);//清除pRT对字体可能的占用
+
         SWindow *pLayerWindow = _GetCurrentLayeredWindow();
         if(pLayerWindow)
         {//存在一个渲染层
@@ -1401,20 +1418,30 @@ namespace SOUI
                     GetContainer()->BuildWndTreeZorder();
                     pLayerWindow->_PaintRegion(pRT,pGetRTData->rgn,pGetRTData->uMinFrgndZorder,ZORDER_MAX);
                 }
-
+                
                 SWindow *pParent = pLayerWindow->GetParent();
                 SASSERT(pParent);
-                SWindow *pLastChild = pLayerWindow;
-                while(pLastChild->GetChildrenCount())
+                
+                
+                UINT uFrgndZorderMin = ZORDER_MAX;
+                //查找上一个渲染层的前景：向上层查找下一个兄弟，直到找到为止
+                SWindow *pWnd = pLayerWindow;
+                while(pWnd)
                 {
-                    pLastChild = pLastChild->GetWindow(GSW_LASTCHILD);
+                    SWindow *pNextSibling = pWnd->GetWindow(GSW_NEXTSIBLING);
+                    if(pNextSibling)
+                    {
+                        uFrgndZorderMin = pNextSibling->m_uZorder;
+                        break;
+                    }else
+                    {
+                        pWnd = pWnd->GetParent();
+                    }
                 }
                 
                 //获得下一渲染层(LayerWindow)的RT,绘制前景时不再绘制当前层(从当前层zorder最大的窗口+1开始)
                 //为了不破坏下层渲染状态,只有最上层的调用都可以指定OLEDC_OFFSCREEN标志,内部调用自动使用OLEDC_PAINTBKGND
-                pRT->SelectDefaultObject(OT_FONT);//清除pRT对字体可能的占用
-
-                IRenderTarget *pRT2 = pParent->_GetRenderTarget(pGetRTData->rcRT,OLEDC_PAINTBKGND,pLastChild->m_uZorder+1,pGetRTData->rgn);
+                IRenderTarget *pRT2 = pParent->_GetRenderTarget(pGetRTData->rcRT,OLEDC_PAINTBKGND,uFrgndZorderMin,pGetRTData->rgn);
                 pRT2->AlphaBlend(pGetRTData->rcRT,pRT,pGetRTData->rcRT,pLayerWindow->m_style.m_byAlpha);
                 pParent->_ReleaseRenderTarget(pRT2);
             }
@@ -1427,6 +1454,12 @@ namespace SOUI
             PGETRTDATA & pGetRTData = pRoot->m_pGetRTData;
             SASSERT(pGetRTData);
             
+            if(pGetRTData->gdcFlags == OLEDC_PAINTBKGND)
+            {//从指定的窗口开始绘制前景
+                GetContainer()->BuildWndTreeZorder();
+                pRoot->_PaintRegion(pRT,pGetRTData->rgn,pGetRTData->uMinFrgndZorder,ZORDER_MAX);
+            }
+
             pRT->PopClip();//对应_GetRenderTarget中调用的PushClipRegion
             GetContainer()->OnReleaseRenderTarget(pRT,pGetRTData->rcRT,pGetRTData->gdcFlags);
             delete pGetRTData;

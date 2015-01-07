@@ -394,7 +394,7 @@ void CMainDlg::OnSkiaTest()
         SWindow *pCanvas = FindChildByName(L"skia_canvas");
         if(pCanvas)
         {
-            IRenderTarget* pRTDst= pCanvas->GetRenderTarget(0,2);
+            IRenderTarget* pRTDst= pCanvas->GetRenderTarget(0,OLEDC_PAINTBKGND);
             CRect rcCanvas;
             pCanvas->GetWindowRect(&rcCanvas);
             
