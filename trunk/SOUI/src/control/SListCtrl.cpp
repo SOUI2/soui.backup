@@ -489,10 +489,7 @@ void SListCtrl::RedrawItem(int nItem)
         IRenderTarget *pRT = GetRenderTarget(&rcDC, OLEDC_PAINTBKGND);
         SSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
 
-        SPainter painter;
-        BeforePaint(pRT, painter);
         DrawItem(pRT, rcItem, nItem);
-        AfterPaint(pRT, painter);
 
         ReleaseRenderTarget(pRT);
     }

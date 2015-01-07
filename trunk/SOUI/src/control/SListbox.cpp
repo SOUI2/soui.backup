@@ -317,13 +317,10 @@ void SListBox::RedrawItem(int iItem)
         rcItem.OffsetRect(0,m_nItemHei*iItem-m_ptOrigin.y);
         rcItem.OffsetRect(rcClient.TopLeft());
         IRenderTarget *pRT=GetRenderTarget(&rcItem,OLEDC_PAINTBKGND);
-        SPainter painter;
-        BeforePaint(pRT,painter);
 
         SSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
         DrawItem(pRT,rcItem,iItem);
 
-        AfterPaint(pRT,painter);
         ReleaseRenderTarget(pRT);
     }
 }

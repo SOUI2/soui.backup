@@ -158,10 +158,7 @@ namespace SOUI
     {
         CRect rcItem=GetItemRect(iItem);
         IRenderTarget *pRT=GetRenderTarget(rcItem,OLEDC_PAINTBKGND);
-        SPainter painter;
-        BeforePaint(pRT,painter);
         DrawItem(pRT,rcItem,m_arrItems.GetData()+iItem);
-        AfterPaint(pRT,painter);
         ReleaseRenderTarget(pRT);
     }
 

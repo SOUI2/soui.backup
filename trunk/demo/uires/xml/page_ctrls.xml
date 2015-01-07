@@ -1,7 +1,7 @@
 ﻿<include>
   <tabctrl pos="0,0,-0,-0" alpha="200" layeredWindow="1" colorBkgnd="#cccccc" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
     <page title="listctrl">
-      <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cursor="CUR_TST">
+      <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cursor="CUR_TST" font="underline:1">
         <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
           <items>
             <item width="150">name</item>
@@ -143,7 +143,7 @@
       </listboxex>
     </page>
     <page title="treectrl">
-      <treectrl pos="10,0,-10,-10"  name="mytree1" itemHeight="30" iconSkin="skin_tree_icon" checkBox="1">
+      <treectrl pos="10,0,-10,-10"  name="mytree1" itemHeight="30" iconSkin="skin_tree_icon" checkBox="1" font="underline:1">
         <item text="组织机构" img="0" selImg="1"  expand="0">
           <item text="市场部" img="0" selImg="1">
             <item text="南一区" img="2"/>
