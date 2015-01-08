@@ -111,13 +111,6 @@ protected:
     //演示如何响应如listboxex,treeboxex中的item中包含控件的事件。
     void OnListBoxExEvent(EventArgs *pEvt);
     void OnTreeBoxEvent(EventArgs *pEvt);
-    
-    //webkit工具条的渐显渐隐效果实现
-    void OnWebkitToolbar_Hover(EventArgs *pEvt);
-    void OnWebkitToolbar_Leave(EventArgs *pEvt);
-    
-    SAnimator   m_toolbarAnimator;
-
     //UI控件的事件及响应函数映射表
 	EVENT_MAP_BEGIN()
 		EVENT_ID_COMMAND(1, OnClose)
@@ -137,8 +130,6 @@ protected:
         EVENT_NAME_COMMAND(L"btn_skiatest",OnSkiaTest)
         EVENT_NAME_HANDLER(L"lbe_test",EVT_OFPANEL,OnListBoxExEvent)//响应EVT_OFPANEL事件
         EVENT_NAME_HANDLER(L"tb_test",EVT_OFPANEL,OnTreeBoxEvent)//响应EVT_OFPANEL事件
-        EVENT_NAME_HANDLER(L"webkit_toolbar",EVT_MOUSE_HOVER,OnWebkitToolbar_Hover)
-        EVENT_NAME_HANDLER(L"webkit_toolbar",EVT_MOUSE_LEAVE,OnWebkitToolbar_Leave)
 	EVENT_MAP_END()	
 
     //HOST消息及响应函数映射表
@@ -150,7 +141,6 @@ protected:
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_COMMAND(OnCommand)
 		MSG_WM_SHOWWINDOW(OnShowWindow)
-        MSG_WM_TIMER(OnTimer);
 		CHAIN_MSG_MAP(SHostWnd)
 		REFLECT_NOTIFICATIONS_EX()
 	END_MSG_MAP()

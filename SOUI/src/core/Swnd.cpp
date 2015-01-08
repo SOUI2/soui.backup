@@ -940,6 +940,11 @@ namespace SOUI
 
     int SWindow::OnCreate( LPVOID )
     {
+        if(m_style.m_bTrackMouseEvent)
+            GetContainer()->RegisterTrackMouseEvent(m_swnd);
+        else
+            GetContainer()->UnregisterTrackMouseEvent(m_swnd);
+
         return 0;
     }
 
@@ -1931,10 +1936,13 @@ namespace SOUI
     HRESULT SWindow::OnAttrTrackMouseEvent( const SStringW& strValue, BOOL bLoading )
     {
         m_style.m_bTrackMouseEvent = strValue==L"0"?0:1;
-        if(m_style.m_bTrackMouseEvent)
-            GetContainer()->RegisterTrackMouseEvent(m_swnd);
-        else
-            GetContainer()->UnregisterTrackMouseEvent(m_swnd);
+        if(!bLoading)
+        {
+            if(m_style.m_bTrackMouseEvent)
+                GetContainer()->RegisterTrackMouseEvent(m_swnd);
+            else
+                GetContainer()->UnregisterTrackMouseEvent(m_swnd);
+        }
         return S_FALSE;
     }
 
