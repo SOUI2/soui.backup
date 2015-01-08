@@ -16,7 +16,7 @@
     <page title="flywnd">
       <window pos="0,0,-0,-0" clipClient="1" skin="skin_bkgnd" >
         <flywnd pos="-210,10,-0,-10" posEnd="-10,10,@210,-10" alpha="100" layeredWindow="1">
-          <toggle pos="0,|-15,@10,@30" skin="_skin.sys.tree.toggle" name="switch" cursor="hand" tip="click me to show the animator that show or hide the pane"></toggle>
+          <toggle pos="0,|-15,@10,@30" skin="skin_btn_expand" name="switch" cursor="hand" tip="click me to show the animator that show or hide the pane"></toggle>
           <window pos="10,0,-0,-0" colorBkgnd="#ff0000">
             <treectrl pos="10,0,-10,-10"  name="mytree2" itemHeight="30" iconSkin="skin_tree_icon" checkBox="1" font="underline:1">
               <item text="组织机构" img="0" selImg="1"  expand="0">
