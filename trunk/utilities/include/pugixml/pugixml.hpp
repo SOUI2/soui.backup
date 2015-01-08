@@ -466,6 +466,10 @@ namespace pugi
 		// Set node name/value (returns false if node is empty, there is not enough memory, or node can not have name/value)
 		bool set_name(const char_t* rhs);
 		bool set_value(const char_t* rhs);
+
+        // Set or get node userdata
+        int get_userdata() const;
+        bool set_userdata(int userdata);
 		
 		// Add attribute with specified name. Returns added attribute, or empty attribute on errors.
 		xml_attribute append_attribute(const char_t* name);
@@ -504,6 +508,7 @@ namespace pugi
 		// Remove specified child
 		bool remove_child(const xml_node& n);
 		bool remove_child(const char_t* name);
+
 
 		// Find attribute using predicate. Returns first attribute for which predicate returned true.
 		template <typename Predicate> xml_attribute find_attribute(Predicate pred) const

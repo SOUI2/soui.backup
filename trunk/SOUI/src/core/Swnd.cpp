@@ -538,7 +538,7 @@ namespace SOUI
                     SASSERT(FALSE);
                 }
 
-            }else
+            }else if(!xmlChild.get_userdata())//通过userdata来标记一个节点是否可以忽略
             {
                 SWindow *pChild = SApplication::getSingleton().CreateWindowByName(xmlChild.name());
                 if(pChild)
