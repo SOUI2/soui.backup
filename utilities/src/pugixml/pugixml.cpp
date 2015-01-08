@@ -476,7 +476,7 @@ namespace pugi
 	{
 		/// Default ctor
 		/// \param type - node type
-		xml_node_struct(impl::xml_memory_page* page, xml_node_type type): header(reinterpret_cast<uintptr_t>(page) | (type - 1)), parent(0), name(0), value(0), first_child(0), prev_sibling_c(0), next_sibling(0), first_attribute(0)
+		xml_node_struct(impl::xml_memory_page* page, xml_node_type type): header(reinterpret_cast<uintptr_t>(page) | (type - 1)), parent(0), name(0), value(0), first_child(0), prev_sibling_c(0), next_sibling(0), first_attribute(0), userdata(0)
 		{
 		}
 
@@ -493,6 +493,8 @@ namespace pugi
 		xml_node_struct*		next_sibling;			///< Right brother
 
 		xml_attribute_struct*	first_attribute;		///< First attribute
+		
+		int                     userdata;
 	};
 
 
@@ -4172,6 +4174,18 @@ namespace pugi
 			return false;
 		}
 	}
+
+    PUGI__FN int xml_node::get_userdata() const
+    {
+        return _root ? _root->userdata : 0;
+    }
+
+    PUGI__FN bool xml_node::set_userdata(int userdata)
+    {
+        if (!_root) return false;
+        _root->userdata = userdata;
+        return true;
+    }
 
 	PUGI__FN xml_attribute xml_node::append_attribute(const char_t* name_)
 	{
@@ -10201,6 +10215,7 @@ namespace pugi
 	{
 		return query.evaluate_node_set(*this);
 	}
+
 }
 
 #endif
