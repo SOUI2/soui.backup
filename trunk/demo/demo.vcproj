@@ -244,6 +244,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SFadeFrame.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\SFlyWnd.cpp"
 				>
 			</File>
@@ -311,6 +315,10 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\gif\SAniImgFrame.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\SFadeFrame.h"
 				>
 			</File>
 			<File

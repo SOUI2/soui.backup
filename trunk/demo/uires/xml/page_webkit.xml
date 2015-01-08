@@ -1,13 +1,14 @@
 ﻿<include>
   <text pos="0,0,-0,-0" align="center">没有找到wke.dll,请将third-part\wke\wke.7z解压到bin目录。</text>
   <wkeWebkit pos="0,0,-0,-0" url="http://www.cnblogs.com/setoutsoft/" name="wke_test"/>
-  <window pos="0,0,-0,28" name="webkit_toolbar" trackMouseEvent="1">
+  <fadeframe pos="0,0,-16,28" name="webkit_toolbar">
     <!--一个实现渐显渐隐动画的工具栏控件-->
-    <window size="full,full" colorBkgnd="#ff0000"/>
-    <imgbtn pos="0,0" name="btn_webkit_back" skin="skin_webbtn_back" alpha="128"/>
-    <imgbtn pos="[5,0," name="btn_webkit_fore" skin="skin_webbtn_forward"/>
-    <imgbtn pos="[5,0," name="btn_webkit_refresh" skin="skin_webbtn_refresh"/>
-    <edit pos="[5,0,-100,25" class="cls_edit" name="edit_url">http://www.cnblogs.com/setoutsoft/</edit>
-    <button pos="-80,0,-0,25" name="btn_webkit_go">go</button>
-  </window>
+    <window size="full,full" colorBkgnd="#ff0000" layeredWindow="1">
+      <imgbtn pos="0,0" name="btn_webkit_back" skin="skin_webbtn_back" alpha="128"/>
+      <imgbtn pos="[5,0," name="btn_webkit_fore" skin="skin_webbtn_forward"/>
+      <imgbtn pos="[5,0," name="btn_webkit_refresh" skin="skin_webbtn_refresh"/>
+      <edit pos="[5,0,-100,25" class="cls_edit" name="edit_url">http://www.cnblogs.com/setoutsoft/</edit>
+      <button pos="-80,0,-0,25" name="btn_webkit_go">go</button>
+    </window>
+  </fadeframe>
 </include>
