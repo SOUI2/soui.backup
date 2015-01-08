@@ -35,18 +35,8 @@ namespace SOUI
         //让窗口可以更新hover状态
         pEvt->sender->SSendMessage(WM_MOUSELEAVE);
 
-        m_rcAniBegin = m_rcWindow;
-        m_bEndPos = ! m_bEndPos;
-        SwndLayoutBuilder::InitLayoutState(m_rcAniEnd);
+        SwitchState(!m_bEndPos);
         
-        SASSERT(GetParent());
-        CRect rcContainer = GetParent()->GetChildrenLayoutRect();
-        int nRet =SwndLayoutBuilder::CalcPosition(this,rcContainer,m_rcAniEnd);
-        SASSERT(nRet == 0);
-
-        SAnimator::Start(m_nAniTime);
-        GetContainer()->RegisterTimelineHandler(this);
-
         return true;
     }
 
@@ -108,4 +98,32 @@ namespace SOUI
     {
         SAnimator::Update();
     }
+
+    BOOL SFlyWnd::SwitchState(BOOL bEndPos)
+    {
+        if(m_bEndPos == bEndPos) return FALSE;
+        
+        m_rcAniBegin = m_rcWindow;
+        m_bEndPos = bEndPos;
+        SwndLayoutBuilder::InitLayoutState(m_rcAniEnd);
+
+        SASSERT(GetParent());
+        CRect rcContainer = GetParent()->GetChildrenLayoutRect();
+        int nRet =SwndLayoutBuilder::CalcPosition(this,rcContainer,m_rcAniEnd);
+        SASSERT(nRet == 0);
+
+        SAnimator::Start(m_nAniTime);
+        GetContainer()->RegisterTimelineHandler(this);
+        
+        SToggle *pSwitch = FindChildByName2<SToggle>("switch");
+        if(pSwitch) pSwitch->SetToggle(m_bEndPos);
+        
+        return TRUE;
+    }
+
+    BOOL SFlyWnd::IsAtEndPos() const
+    {
+        return m_bEndPos;
+    }
+
 }
