@@ -22,6 +22,7 @@
     <imglist name="skin_btn_menu" src="imgx:btn_menu" states="3"/>
     <imglist name="skin_propswitch" src="imgx:png_propswitch" states="4"/>
 	<imglist name="skin_bkgnd" src="IMGX:jpg_bkgnd"/>
+	<imglist name="skin_btn_expand" src="imgx:btn_expand" states="6"/>
   </skin>
 
   <style>
