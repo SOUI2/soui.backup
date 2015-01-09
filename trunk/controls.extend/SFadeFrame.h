@@ -20,6 +20,7 @@ namespace SOUI
         SOUI_ATTRS_BEGIN()
             ATTR_UINT(L"AniTime",m_nAniTime,FALSE)
             ATTR_UINT(L"DelayTime",m_nDelayTime,FALSE)
+            ATTR_STRINGW(L"targetName",m_strTargetName,FALSE)
         SOUI_ATTRS_END()
 
         void OnMouseHover(WPARAM wParam, CPoint ptPos);
@@ -34,7 +35,8 @@ namespace SOUI
         DWORD  m_nAniTime;
         DWORD  m_nDelayTime;
         
-        int         m_nAlphaBegin,m_nAlphaEnd;
+        SStringW m_strTargetName;
+        int     m_nAlphaBegin,m_nAlphaEnd;
         BYTE    m_byAlphaCurrent;
     };
 
