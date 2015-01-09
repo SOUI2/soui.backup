@@ -1,6 +1,6 @@
 ﻿<include>
   <text pos="0,0,-0,-0" align="center">没有找到wke.dll,请将third-part\wke\wke.7z解压到bin目录。</text>
-  <fadeframe pos="0,0,-16,28" targetName="webkit_toolbar">
+  <fadeframe pos="0,0,-16,28" targetName="webkit_toolbar" showAlpha="200">
     <!--一个实现渐显渐隐动画的工具栏控件-->
   </fadeframe>
   <wkeWebkit pos="0,0,-0,-0" url="http://www.cnblogs.com/setoutsoft/" name="wke_test"/>
