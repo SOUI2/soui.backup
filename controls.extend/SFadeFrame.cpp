@@ -5,10 +5,9 @@
 #define TIMER_HIDE  2
 
 namespace SOUI{
-    SFadeFrame::SFadeFrame(void):m_nAniTime(200),m_nDelayTime(200)
+    SFadeFrame::SFadeFrame(void):m_nAniTime(200),m_nDelayTime(200),m_byAlphaShow(0xFF),m_byAlphaCurrent(0xFF)
     {
         m_style.m_bTrackMouseEvent = true;
-        m_byAlphaCurrent = 0xFF;
     }
 
     SFadeFrame::~SFadeFrame(void)
@@ -34,9 +33,9 @@ namespace SOUI{
         KillTimer(cTimerID);
         if(cTimerID == TIMER_SHOW)
         {
-            if(m_byAlphaCurrent == m_style.m_byAlpha) return;
+            if(m_byAlphaCurrent == m_byAlphaShow) return;
             m_nAlphaBegin = m_byAlphaCurrent;
-            m_nAlphaEnd = m_style.m_byAlpha;
+            m_nAlphaEnd = m_byAlphaShow;
         }else if(cTimerID == TIMER_HIDE)
         {
             if(m_byAlphaCurrent == 0) return;
