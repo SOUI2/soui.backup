@@ -137,7 +137,8 @@ BOOL SApplication::Init( LPCTSTR pszName ,LPCTSTR pszType)
     if(xmlFont)
     {
         int nSize=xmlFont.attribute(L"size").as_int(12);
-        SFontPool::getSingleton().SetDefaultFont(S_CW2T(xmlFont.attribute(L"face").value()),nSize);
+        BYTE byCharset=(BYTE)xmlFont.attribute(L"charset").as_int(DEFAULT_CHARSET);
+        SFontPool::getSingleton().SetDefaultFont(S_CW2T(xmlFont.attribute(L"face").value()),nSize,byCharset);
     }
     
     SStringPool::getSingleton().Init(root.child(L"string"));

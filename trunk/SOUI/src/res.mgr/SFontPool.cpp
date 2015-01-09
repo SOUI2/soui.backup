@@ -45,66 +45,95 @@ IFontPtr SFontPool::GetFont(FONTSTYLE style,LPCTSTR pszFaceName)
     return hftRet;
 }
 
+const TCHAR  KFontFace[]      =   _T("face:");
+const TCHAR  KFontBold[]      =   _T("bold:");
+const TCHAR  KFontUnderline[] =   _T("underline:");
+const TCHAR  KFontItalic[]    =   _T("italic:");
+const TCHAR  KFontStrike[]    =   _T("strike:");
+const TCHAR  KFontAdding[]    =   _T("adding:");
+const TCHAR  KFontSize[]      =   _T("size:");
+const TCHAR  KFontCharset[]   =   _T("charset:");
+
+
+#define LEN_FACE    (ARRAYSIZE(KFontFace)-1)
+#define LEN_BOLD    (ARRAYSIZE(KFontBold)-1)
+#define LEN_UNDERLINE    (ARRAYSIZE(KFontUnderline)-1)
+#define LEN_ITALIC  (ARRAYSIZE(KFontItalic)-1)
+#define LEN_STRIKE  (ARRAYSIZE(KFontStrike)-1)
+#define LEN_ADDING  (ARRAYSIZE(KFontAdding)-1)
+#define LEN_SIZE    (ARRAYSIZE(KFontSize)-1)
+#define LEN_CHARSET (ARRAYSIZE(KFontCharset)-1)
+
 IFontPtr SFontPool::GetFont( const SStringW & strFont )
 {
     FONTSTYLE fntStyle(0);
+    fntStyle.byCharset = DEFAULT_CHARSET;
     
     SStringT strFace;                                         
     SStringT attr=S_CW2T(strFont);                           
     attr.MakeLower();                                         
-    int nPosBegin=attr.Find(_T("face:"));                     
+    int nPosBegin=attr.Find(KFontFace);                     
     if(nPosBegin!=-1)                                         
     {                                                         
-        nPosBegin+=5;                                             
+        nPosBegin+=LEN_FACE;                                             
         int nPosEnd=attr.Find(_T(";"),nPosBegin);
         if(nPosEnd==-1) nPosEnd=attr.Find(_T(","),nPosBegin);
         if(nPosEnd==-1) nPosEnd=attr.GetLength();
         strFace=attr.Mid(nPosBegin,nPosEnd-nPosBegin);
     }                                                         
-    nPosBegin=attr.Find(_T("bold:"));                         
+    nPosBegin=attr.Find(LEN_BOLD);                         
     if(nPosBegin!=-1)                                         
     {                                                         
-        fntStyle.fBold=attr.Mid(nPosBegin+5,1)!=_T("0");                   
+        fntStyle.fBold=attr.Mid(nPosBegin+LEN_BOLD,1)!=_T("0");                   
     }                                                         
-    nPosBegin=attr.Find(_T("underline:"));                    
+    nPosBegin=attr.Find(KFontUnderline);                    
     if(nPosBegin!=-1)                                         
     {                                                         
-        fntStyle.fUnderline=attr.Mid(nPosBegin+10,1)!=_T("0");             
+        fntStyle.fUnderline=attr.Mid(nPosBegin+LEN_UNDERLINE,1)!=_T("0");             
     }                                                         
-    nPosBegin=attr.Find(_T("italic:"));                       
+    nPosBegin=attr.Find(KFontItalic);                       
     if(nPosBegin!=-1)                                         
     {                                                         
-        fntStyle.fItalic=attr.Mid(nPosBegin+7,1)!=_T("0");                 
+        fntStyle.fItalic=attr.Mid(nPosBegin+LEN_ITALIC,1)!=_T("0");                 
     }                                                         
-    nPosBegin=attr.Find(_T("strike:"));                       
+    nPosBegin=attr.Find(KFontStrike);                       
     if(nPosBegin!=-1)                                         
     {                                                         
-        fntStyle.fStrike=attr.Mid(nPosBegin+7,1)!=_T("0");                 
+        fntStyle.fStrike=attr.Mid(nPosBegin+LEN_STRIKE,1)!=_T("0");                 
     }                                                         
-    nPosBegin=attr.Find(_T("adding:"));                       
+    nPosBegin=attr.Find(KFontAdding);                       
     if(nPosBegin!=-1)                                         
     {                                                         
-        fntStyle.cSize=(short)_ttoi((LPCTSTR)attr+nPosBegin+7);           
+        fntStyle.cSize=(short)_ttoi((LPCTSTR)attr+nPosBegin+LEN_ADDING);           
     }else
     {
-        nPosBegin=attr.Find(_T("size:"));
+        nPosBegin=attr.Find(KFontSize);
         if(nPosBegin != -1)
         {
-            fntStyle.cSize=(short)_ttoi((LPCTSTR)attr+nPosBegin+5);
+            fntStyle.cSize=(short)_ttoi((LPCTSTR)attr+nPosBegin+LEN_SIZE);
             fntStyle.fAbsSize=1;       
         }                       
+    }
+    
+    //允许定义字符集
+    nPosBegin = attr.Find(KFontCharset);
+    if(nPosBegin!=-1)
+    {
+        fntStyle.byCharset = (BYTE)_ttoi((LPCTSTR)attr+nPosBegin+LEN_CHARSET);
     }
     return GetFont(fntStyle, strFace);
 }
 
-void SFontPool::SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize)
+void SFontPool::SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize,BYTE byCharset/*=DEFAULT_CHARSET*/)
 {
     SASSERT(GetCount()==1);//初始化前才可以调用该接口
     RemoveKeyObject(FontKey(0));
 
     _tcscpy_s(m_lfDefault.lfFaceName,_countof(m_lfDefault.lfFaceName),lpszFaceName);
     m_lfDefault.lfHeight = -abs(lSize);
-
+    if(byCharset!=DEFAULT_CHARSET) 
+        m_lfDefault.lfCharSet = byCharset;
+    
     SetKeyObject(FontKey(0),_CreateFont(m_lfDefault));
 }
 
@@ -133,9 +162,12 @@ IFontPtr SFontPool::_CreateFont(FONTSTYLE style,const SStringT & strFaceName)
     else
         lfNew.lfHeight -= (short)style.cSize;  //cSize为正代表字体变大，否则变小
         
-    lfNew.lfQuality = CLEARTYPE_NATURAL_QUALITY;
+    lfNew.lfQuality = ANTIALIASED_QUALITY;
+    
+    if(style.byCharset!=DEFAULT_CHARSET) lfNew.lfCharSet = style.byCharset;
+    
     _tcscpy_s(lfNew.lfFaceName,_countof(lfNew.lfFaceName),  strFaceName);
-
+    
     return _CreateFont(lfNew);
 }
 

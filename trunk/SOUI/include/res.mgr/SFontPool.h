@@ -27,12 +27,14 @@ union FONTSTYLE{
     DWORD     dwStyle;  //DWORD版本的风格
     struct
     {
-        DWORD cSize:16;//字体大小，为short有符号类型
+        DWORD cSize:16; //字体大小，为short有符号类型
         DWORD fItalic:1;//斜体标志位
         DWORD fUnderline:1;//下划线标志位
         DWORD fBold:1;//粗体标志位
         DWORD fStrike:1;//删除线标志位
         DWORD fAbsSize:1;//字体的cSize是绝对大小还是相对于默认字体的大小,1代表cSize为绝对大小
+        DWORD fReserved:3;//保留位
+        DWORD byCharset:8;   //字符集
     };
     
     FONTSTYLE(DWORD _dwStyle):dwStyle(_dwStyle){}
@@ -146,10 +148,11 @@ namespace SOUI
          * @brief    设置默认字体
          * @param    LPCTSTR lpszFaceName --  字体名
          * @param    LONG lSize --  字体大小
+         * @param    BYTE byCharset -- 字符集
          * @return   void
          * Describe  
          */    
-        void SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize);
+        void SetDefaultFont(LPCTSTR lpszFaceName, LONG lSize,BYTE byCharset=DEFAULT_CHARSET);
     protected:
         static void OnKeyRemoved(const IFontPtr & obj)
         {
