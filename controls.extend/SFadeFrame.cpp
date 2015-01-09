@@ -67,15 +67,12 @@ namespace SOUI{
 
     void SFadeFrame::SetChildrenAlpha(BYTE byAlpha)
     {
-        SStringW strAlpha;
-        strAlpha.Format(L"%d",byAlpha);
-        SWindow *pChild = GetWindow(GSW_FIRSTCHILD);
-        while(pChild)
+        SWindow *pTarget = GetRoot()->FindChildByName(m_strTargetName);
+        if(pTarget)
         {
-            if(pChild->IsVisible(FALSE) ^ (byAlpha>0))
-                pChild->SetVisible(byAlpha>0,TRUE);
-            pChild->SetAttribute(L"alpha",strAlpha);
-            pChild = pChild->GetWindow(GSW_NEXTSIBLING);
+            if(pTarget->IsVisible(FALSE) ^ (byAlpha>0))
+                pTarget->SetVisible(byAlpha>0,TRUE);
+            pTarget->SetAttribute(L"alpha",SStringW().Format(L"%d",byAlpha));
         }
         m_byAlphaCurrent = byAlpha;
     }
