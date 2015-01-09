@@ -16,7 +16,7 @@
     <imglist name="_skin.btn.min" src="PNG:ID_SYS_BTN_MIN" states="3" />
     <imglist name="_skin.tab.main" src="PNG:ID_TAB_MAIN" states="3" />
     <imglist name="_skin.tab.icon" src="PNG:ID_TAB_ICON" states="8" />
-    <imglist name="_skin.white.bg" src="PNG:ID_WHITE_BG" />
+    <imglist name="_skin.white.bg" src="PNG:ID_WHITE_BG"  alpha="100"/>
     <imglist name="_skin.logo" src="PNG:ID_SKIN_LOGO" />
     <imglist name="_skin.ver.line" src="PNG:ID_SKIN_VER_LINE" />
     <imglist name="_skin.hor.line" src="PNG:ID_SKIN_HOR_LINE" />

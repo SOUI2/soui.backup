@@ -1,5 +1,5 @@
 <include>
-	<window pos="0,0,-0,-0" skin="_skin.white.bg" cache="1" >
+	<window pos="0,0,-0,-0" skin="_skin.white.bg" >
 		<window pos="2,2,]-2,-2" >
 			<img skin="_skin.error" pos="|-304,|-225" />
 			<imgbtn name="btn_check" skin="_skin.check.btn" pos="|-83,|0" width="166" height="66" animate="1" />

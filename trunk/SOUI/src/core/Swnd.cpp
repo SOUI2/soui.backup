@@ -665,8 +665,8 @@ namespace SOUI
                 CRect rcWnd=m_rcWindow;
                 if(IsCacheDirty())
                 {
-                    pRTCache->SetViewportOrg(-rcWnd.TopLeft());
-                    pRTCache->BitBlt(&rcWnd,pRT,rcWnd.left,rcWnd.top,SRCCOPY);//把父窗口的内容复制过来。
+                    pRTCache->ClearRect(&rcWnd,0);
+                    
                     CAutoRefPtr<IFont> oldFont;
                     COLORREF crOld=pRT->GetTextColor();
                     pRTCache->SelectObject(pRT->GetCurrentObject(OT_FONT),(IRenderObj**)&oldFont);
@@ -680,10 +680,7 @@ namespace SOUI
 
                     MarkCacheDirty(false);
                 }
-                if(m_style.m_byAlpha == 0xFF)
-                    pRT->BitBlt(&rcWnd,pRTCache,rcWnd.left,rcWnd.top,SRCCOPY);
-                else
-                    pRT->AlphaBlend(&rcWnd,pRTCache,&rcWnd,m_style.m_byAlpha);
+                pRT->AlphaBlend(&rcWnd,pRTCache,&rcWnd,m_style.m_byAlpha);
             }
         }else
         {
