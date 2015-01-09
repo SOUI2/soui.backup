@@ -1569,7 +1569,7 @@ namespace SOUI
 
     void SWindow::DrawAniStep( CRect rcFore,CRect rcBack,IRenderTarget * pRTFore,IRenderTarget * pRTBack,CPoint ptAnchor)
     {
-        IRenderTarget * pRT=GetRenderTarget(rcBack,OLEDC_OFFSCREEN,FALSE);
+        IRenderTarget * pRT=GetRenderTarget(rcBack,OLEDC_OFFSCREEN,TRUE);
         pRT->BitBlt(&rcBack,pRTBack,rcBack.left,rcBack.top,SRCCOPY);
         pRT->BitBlt(&rcFore,pRTFore,ptAnchor.x,ptAnchor.y,SRCCOPY);
         PaintForeground(pRT,rcBack);//»­Ç°¾°
@@ -1578,7 +1578,7 @@ namespace SOUI
 
     void SWindow::DrawAniStep( CRect rcWnd,IRenderTarget * pRTFore,IRenderTarget * pRTBack,BYTE byAlpha)
     {
-        IRenderTarget * pRT=GetRenderTarget(rcWnd,OLEDC_OFFSCREEN,FALSE);
+        IRenderTarget * pRT=GetRenderTarget(rcWnd,OLEDC_OFFSCREEN,TRUE);
         if(byAlpha>0 && byAlpha<255)
         {
             pRT->BitBlt(&rcWnd,pRTBack,rcWnd.left,rcWnd.top,SRCCOPY);
@@ -1615,7 +1615,7 @@ namespace SOUI
         GETRENDERFACTORY->CreateRegion(&rgn);
         rgn->CombineRect(&rcWnd,RGN_COPY);
 
-        IRenderTarget *pRT=GetRenderTarget(rcWnd,OLEDC_NODRAW,FALSE);
+        IRenderTarget *pRT=GetRenderTarget(rcWnd,OLEDC_NODRAW,TRUE);
         CAutoRefPtr<IRenderTarget> pRTBefore;
         GETRENDERFACTORY->CreateRenderTarget(&pRTBefore,rcWnd.Width(),rcWnd.Height());
         pRTBefore->OffsetViewportOrg(-rcWnd.left,-rcWnd.top);
