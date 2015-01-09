@@ -148,7 +148,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
         theApp->RegisterWndFactory(TplSWindowFactory<SIPAddressCtrl>());//×¢²áIP¿Ø¼þ
         theApp->RegisterWndFactory(TplSWindowFactory<SPropertyGrid>());//×¢²áÊôÐÔ±í¿Ø¼þ
-        theApp->RegisterWndFactory(TplSWindowFactory<SUiAnimationWnd>());//×¢²á¶¯»­¿Ø¼þ
+        
+        if(SUCCEEDED(CUiAnimation::Init()))
+        {
+            theApp->RegisterWndFactory(TplSWindowFactory<SUiAnimationWnd>());//×¢²á¶¯»­¿Ø¼þ
+        }
         theApp->RegisterWndFactory(TplSWindowFactory<SFlyWnd>());//×¢²á·ÉÐÐ¶¯»­¿Ø¼þ
         theApp->RegisterWndFactory(TplSWindowFactory<SFadeFrame>());//×¢²á½¥ÏÔÒþ¶¯»­¿Ø¼þ
         SSkinGif::Gdiplus_Startup();
@@ -185,7 +189,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
         //Ð¶ÔØ²Ëµ¥±ß¿ò»æÖÆhook
         CMenuWndHook::UnInstallHook();
-        
+        CUiAnimation::Free();
         SSkinGif::Gdiplus_Shutdown();
     }
     delete pComMgr;
