@@ -9,12 +9,14 @@ namespace SOUI
     class CUiAnimation : public SSingleton<CUiAnimation>
     {
     public:
-
-        HRESULT Init();
+        static HRESULT Init();
+        static void Free();
         
         SComPtr<IUIAnimationTimer>              m_pAnimationTimer;
         SComPtr<IUIAnimationTransitionLibrary>  m_pTransitionLibrary;
         SComPtr<IUIAnimationTransitionFactory>  m_pTransitionFactory;
+    protected:
+        CUiAnimation(IUIAnimationTimer *pUiAniTimer);
     };
     
     class CImgThumnail

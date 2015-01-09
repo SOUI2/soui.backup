@@ -11,40 +11,63 @@ namespace SOUI{
     //  CUiAnimation
     template<> CUiAnimation* SSingleton<CUiAnimation>::ms_Singleton = NULL;
     
+
+    CUiAnimation::CUiAnimation(IUIAnimationTimer *pUiAniTimer)
+    {
+        SASSERT(pUiAniTimer);
+        m_pAnimationTimer = pUiAniTimer;
+        
+        // Create Animation Transition Library
+
+        HRESULT hr = CoCreateInstance(
+            __uuidof(UIAnimationTransitionLibrary),
+            NULL,
+            CLSCTX_INPROC_SERVER,
+            IID_PPV_ARGS(&m_pTransitionLibrary)
+            );
+        if (SUCCEEDED(hr))
+        {
+            // Create the Transition Factory to wrap interpolators in transitions
+
+            hr = CoCreateInstance(
+                __uuidof(UIAnimationTransitionFactory),
+                NULL,
+                CLSCTX_INPROC_SERVER,
+                IID_PPV_ARGS(&m_pTransitionFactory)
+                );
+        }
+        
+        SASSERT(SUCCEEDED(hr));
+    }
+
     HRESULT CUiAnimation::Init()
     {
+        SASSERT(!getSingletonPtr());
+        
             // Create Animation Timer
+        SComPtr<IUIAnimationTimer>    pAnimationTimer;
 
         HRESULT hr = CoCreateInstance(
             __uuidof(UIAnimationTimer),
             NULL,
             CLSCTX_INPROC_SERVER,
-            IID_PPV_ARGS(&m_pAnimationTimer)
+            IID_PPV_ARGS(&pAnimationTimer)
             );
         if (SUCCEEDED(hr))
         {
-            // Create Animation Transition Library
-
-            hr = CoCreateInstance(
-                __uuidof(UIAnimationTransitionLibrary),
-                NULL,
-                CLSCTX_INPROC_SERVER,
-                IID_PPV_ARGS(&m_pTransitionLibrary)
-                );
-            if (SUCCEEDED(hr))
-            {
-                // Create the Transition Factory to wrap interpolators in transitions
-
-                hr = CoCreateInstance(
-                    __uuidof(UIAnimationTransitionFactory),
-                    NULL,
-                    CLSCTX_INPROC_SERVER,
-                    IID_PPV_ARGS(&m_pTransitionFactory)
-                    );
-            }
+            //创建一个UIAnimation的单例
+            new CUiAnimation(pAnimationTimer);
         }
 
         return hr;
+    }
+
+    void CUiAnimation::Free()
+    {
+        if(getSingletonPtr())
+        {
+            delete getSingletonPtr();
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -478,15 +501,7 @@ namespace SOUI{
             SASSERT_FMT(FALSE,_T("please set icon and bmpmode value in xml!"));
             return -1;
         }
-        
-        new CUiAnimation;
-        HRESULT hr=CUiAnimation::getSingleton().Init();
-        
-        if(!SUCCEEDED(hr))
-        {
-            SASSERT_FMT(FALSE,_T("create animation objects failed, animation objects require win7+."));
-            return -1;
-        }
+                
         m_pLayout = new CUiAnimationIconLayout(this,m_pAniMode);
         m_pLayout->SetIcons(m_pSkinIcon,460);
         
@@ -498,7 +513,6 @@ namespace SOUI{
     {
         SWindow::OnDestroy();
         if(m_pLayout) delete m_pLayout;
-        delete CUiAnimation::getSingletonPtr();
     }
 
     void SUiAnimationWnd::OnPaint( IRenderTarget *pRT )
