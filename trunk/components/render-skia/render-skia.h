@@ -102,31 +102,9 @@ namespace SOUI
 	class SFont_Skia: public TSkiaRenderObjImpl<IFont>
 	{
 	public:
-		SFont_Skia(IRenderFactory * pRenderFac,const LOGFONT * plf)
-			:TSkiaRenderObjImpl<IFont>(pRenderFac),m_skFont(NULL)
-		{
-		    memcpy(&m_lf,plf,sizeof(LOGFONT));
-            SStringA strFace=S_CT2A(plf->lfFaceName,CP_UTF8);
-            BYTE style=SkTypeface::kNormal;
-            if(plf->lfItalic) style |= SkTypeface::kItalic;
-            if(plf->lfWeight == FW_BOLD) style |= SkTypeface::kBold;
-            
-            m_skFont=SkTypeface::CreateFromName(strFace,(SkTypeface::Style)style);
-            
-            m_skPaint.setTextSize(SkIntToScalar(abs(plf->lfHeight)));
-            m_skPaint.setUnderlineText(!!plf->lfUnderline);
-            m_skPaint.setStrikeThruText(!!plf->lfStrikeOut);
+		SFont_Skia(IRenderFactory * pRenderFac,const LOGFONT * plf);
 
-            m_skPaint.setTextEncoding(SkPaint::kUTF16_TextEncoding);
-            m_skPaint.setAntiAlias(true);
-            m_skPaint.setLCDRenderText(true);
-            
-		}
-
-        virtual ~SFont_Skia()
-        {
-            if(m_skFont) m_skFont->unref();
-        }
+        virtual ~SFont_Skia();
 
         virtual const LOGFONT * LogFont() const {return &m_lf;}
 
@@ -187,16 +165,8 @@ namespace SOUI
 	class SBitmap_Skia : public TSkiaRenderObjImpl<IBitmap>
 	{
 	public:
-		SBitmap_Skia(IRenderFactory *pRenderFac)
-			:TSkiaRenderObjImpl<IBitmap>(pRenderFac),m_hBmp(0)
-		{
-
-		}
-        ~SBitmap_Skia()
-        {
-            m_bitmap.reset();
-            if(m_hBmp) DeleteObject(m_hBmp);
-        }
+		SBitmap_Skia(IRenderFactory *pRenderFac);
+        ~SBitmap_Skia();
 
 		virtual HRESULT Init(int nWid,int nHei,const LPVOID pBits=NULL);
         virtual HRESULT Init(IImgFrame *pFrame);
@@ -226,6 +196,8 @@ namespace SOUI
 	{
 	public:
 		SRegion_Skia(IRenderFactory *pRenderFac);
+        virtual ~SRegion_Skia();
+
 		virtual void CombineRect(LPCRECT lprect,int nCombineMode);
 		virtual BOOL PtInRegion(POINT pt);
 		virtual BOOL RectInRegion(LPCRECT lprect);

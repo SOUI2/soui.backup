@@ -8,37 +8,27 @@
       <text pos ="10,|0" offset="0,-0.5" colorText="RGB(255,0,0)"  colorBkgnd="RGB(0,255,0)">show how to implement dragdrop in soui</text>
       <edit name="edit_drop_bottom" pos="10,[10,-10,-10" cueText="draging a file to me to see what will happen"/>
     </page>
-    <page title="animation" font="adding:10">
+    <page title="animation" font="adding:10" clipClient="1">
+      <text pos="|0,|0" offset="-0.5,-0.5" colorText="#ff0000">动画效果只在Vista及以上版本的操作系统能够演示</text>
       <!--注意在uianimationwnd元素中指定bkgndBlend为0还是1对性能影响-->
       <uianimationwnd pos="0,0,-0,-0" icon="skin_small_icons" aniMode="imgx:png_animode"  colorBkgnd="#cccccc" bkgndBlend="0"/>
       <text pos="|0,20" offset="-0.5,0" colorText="#ff0000">SOUI动画演示</text>
     </page>
     <page title="flywnd">
       <window pos="0,0,-0,-0" clipClient="1" skin="skin_bkgnd" >
-        <flywnd pos="-210,10,-0,-10" posEnd="-10,10,@210,-10" alpha="100" layeredWindow="1">
+        <flywnd name="leftpane" pos="0,10,@210,-10" posEnd="0,10,@210,-10" offsetEnd="-0.9524,0" alpha="100" layeredWindow="1">
+          <!--左边自动隐藏窗口,200/210=0.9524-->
+          <window pos="0,0,-10,-0" colorBkgnd="#ff0000">
+            <include src="layout:treectrl"/>
+            <text pos="10,-100,-0,@100" multilines="1">click the right grip to \nshow or hide the \npane</text>
+          </window>
+          <toggle pos="-10,|-15,-0,@30" skin="skin_btn_expand" name="switch" cursor="hand" tip="click me to show the animator that show or hide the pane"></toggle>
+        </flywnd>
+        <flywnd name="rightpane" pos="-210,10,-0,-10" posEnd="-10,10,@210,-10" alpha="100" layeredWindow="1">
+          <!--右边自动隐藏窗口-->
           <toggle pos="0,|-15,@10,@30" skin="skin_btn_expand" name="switch" cursor="hand" tip="click me to show the animator that show or hide the pane"></toggle>
           <window pos="10,0,-0,-0" colorBkgnd="#ff0000">
-            <treectrl pos="10,0,-10,-10"  name="mytree2" itemHeight="30" iconSkin="skin_tree_icon" checkBox="1" font="underline:1">
-              <item text="组织机构" img="0" selImg="1"  expand="0">
-                <item text="市场部" img="0" selImg="1">
-                  <item text="南一区" img="2"/>
-                  <item text="北二区" img="2"/>
-                  <item text="西三区" img="2">
-                    <item text="第一分队" img="0" selImg="1" expand="0">
-                      <item text="张三组" img="2"/>
-                      <item text="李四组" img="2"/>
-                      <item text="王五组" img="2"/>
-                    </item>
-                  </item>
-                </item>
-              </item>
-              <item text="宣传部" img="0" selImg="1" expand="0">
-                <item text="南一区" img="2"/>
-                <item text="北二区" img="2"/>
-                <item text="西三区" img="2"/>
-              </item>
-            </treectrl>
-
+            <include src="layout:treectrl"/>
             <text pos="10,-100,-0,@100" multilines="1">click the left grip to \nshow or hide the \npane</text>
           </window>
         </flywnd>

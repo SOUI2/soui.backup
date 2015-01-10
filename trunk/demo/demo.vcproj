@@ -532,6 +532,10 @@
 			RelativePath=".\uires\xml\page_webkit.xml"
 			>
 		</File>
+		<File
+			RelativePath=".\uires\xml\treectrl.xml"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

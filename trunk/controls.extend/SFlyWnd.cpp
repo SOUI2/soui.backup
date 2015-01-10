@@ -30,6 +30,16 @@ namespace SOUI
         return S_FALSE;
     }
 
+    HRESULT SFlyWnd::OnAttrOffsetEnd( const SStringW& strValue, BOOL bLoading )
+    {
+        if(!m_endLayout.InitOffsetFromString(strValue)) return E_FAIL;
+        if(bLoading && m_bEndPos && GetParent())
+        {
+            GetParent()->UpdateChildrenPosition();
+        }
+        return S_FALSE;
+    }
+
     bool SFlyWnd::OnSwitchClick( EventArgs *pEvt )
     {
         //让窗口可以更新hover状态

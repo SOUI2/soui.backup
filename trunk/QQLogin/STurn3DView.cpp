@@ -89,7 +89,7 @@ namespace SOUI
         if(!pFrmWnd) return FALSE;
                 
         
-        IRenderTarget *pRT=pFrmWnd->GetRenderTarget(rcWnd,OLEDC_NODRAW,TRUE);
+        IRenderTarget *pRT=pFrmWnd->GetRenderTarget(rcWnd,OLEDC_NODRAW,FALSE);
         pWndFront->SetVisible(TRUE,FALSE);
         pWndBack->SetVisible(FALSE,FALSE);
 

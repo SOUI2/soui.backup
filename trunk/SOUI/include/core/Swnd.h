@@ -763,14 +763,24 @@ namespace SOUI
         /**
         * GetRenderTarget
         * @brief    获取一个与SWND窗口相适应的内存DC
-        * @param    const LPRECT pRc --  RT范围
+        * @param    LPCRECT pRc --  RT范围
         * @param    DWORD gdcFlags --  同OLEDCFLAGS
-        * @param    BOOL bClientDC --  限制在client区域
         * @return   IRenderTarget * 
         *
         * Describe  使用ReleaseRenderTarget释放
         */
-        IRenderTarget * GetRenderTarget(const LPRECT pRc=NULL,DWORD gdcFlags=0,BOOL bClientDC=TRUE);
+        IRenderTarget * GetRenderTarget(LPCRECT pRc,DWORD gdcFlags=OLEDC_NODRAW,BOOL bClientRT=TRUE);
+
+        /**
+        * GetRenderTarget
+        * @brief    获取一个与SWND窗口相适应的内存DC
+        * @param    DWORD gdcFlags --  同OLEDCFLAGS
+        * @param    IRegion *pRgn --  RT范围
+        * @return   IRenderTarget * 
+        *
+        * Describe  使用ReleaseRenderTarget释放
+        */
+        IRenderTarget * GetRenderTarget(DWORD gdcFlags,IRegion *pRgn);
 
 
         /**
@@ -844,8 +854,8 @@ namespace SOUI
         * @return   bool -- true表示Cache已经Dirty
         * Describe  
         */    
-        bool IsCacheDirty() const  {return IsDrawToCache()&&m_bDirty;}
-
+        bool IsCacheDirty() const  {return IsDrawToCache()&&m_bCacheDirty;}
+        
         /**
         * MarkCacheDirty
         * @brief    标记Cache的Dirty标志
@@ -853,7 +863,7 @@ namespace SOUI
         * @return   void
         * Describe  
         */    
-        void MarkCacheDirty(bool bDirty) {m_bDirty = bDirty;}
+        void MarkCacheDirty(bool bDirty) {m_bCacheDirty = bDirty;}
 
         /**
         * IsDrawToCache
@@ -870,6 +880,7 @@ namespace SOUI
         * Describe  
         */    
         IRenderTarget * GetCachedRenderTarget();
+        
 
         /**
          * IsLayeredWindow
@@ -877,7 +888,9 @@ namespace SOUI
          * @return   BOOL -- TREU:子窗口的内容先渲染到this的缓存RT上
          * Describe  
          */    
-        BOOL IsLayeredWindow();
+        BOOL IsLayeredWindow() const;
+    
+        IRenderTarget * GetLayerRenderTarget();
 
     protected://helper functions
 
@@ -897,12 +910,12 @@ namespace SOUI
         * @brief    获取一个与SWND窗口相适应的内存DC
         * @param  [in,out]  CRect & rcGetRT --  RT范围,保存最后的有效绘制区
         * @param    DWORD gdcFlags --  同OLEDCFLAGS
-        * @param    BOOL bClientDC --  限制在client区域
+        * @param    IRegion *pRgn --  绘制区域
         * @return   IRenderTarget * 
         *
         * Describe  使用ReleaseRenderTarget释放
         */
-        IRenderTarget * _GetRenderTarget(CRect & rcGetRT,DWORD gdcFlags,UINT uMinFrgndZorder,IRegion *pRgn);
+        IRenderTarget * _GetRenderTarget(CRect & rcGetRT,DWORD gdcFlags,IRegion *pRgn);
 
 
         /**
@@ -916,8 +929,8 @@ namespace SOUI
         void _ReleaseRenderTarget(IRenderTarget *pRT);
 
         //将窗口内容绘制到RenderTarget上
-        void _PaintWindowClient(IRenderTarget *pRT);
-        void _PaintWindowNonClient(IRenderTarget *pRT);
+        void _PaintClient(IRenderTarget *pRT);
+        void _PaintNonClient(IRenderTarget *pRT);
         void _PaintRegion(IRenderTarget *pRT, IRegion *pRgn,UINT iZorderBegin,UINT iZorderEnd);
         void _PaintRegion2(IRenderTarget *pRT, IRegion *pRgn,UINT iZorderBegin,UINT iZorderEnd);
 
@@ -926,7 +939,8 @@ namespace SOUI
         void DrawAniStep( CRect rcWnd,IRenderTarget *pRTFore,IRenderTarget * pRTBack,BYTE byAlpha);
         
         void UpdateCacheMode();
-        
+        void UpdateLayeredWindowMode();
+
         void TestMainThread();
 
     protected:// Message Handler
@@ -1013,6 +1027,7 @@ namespace SOUI
         HRESULT OnAttrSkin(const SStringW& strValue, BOOL bLoading);
         HRESULT OnAttrClass(const SStringW& strValue, BOOL bLoading);
         HRESULT OnAttrTrackMouseEvent(const SStringW& strValue, BOOL bLoading);
+        HRESULT OnAttrLayeredWindow(const SStringW& strValue, BOOL bLoading);
 
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"id",m_nID,FALSE)
@@ -1030,6 +1045,7 @@ namespace SOUI
             ATTR_CUSTOM(L"pos2type", OnAttrPos2type)
             ATTR_CUSTOM(L"cache", OnAttrCache)
             ATTR_CUSTOM(L"alpha",OnAttrAlpha)
+            ATTR_CUSTOM(L"layeredWindow",OnAttrLayeredWindow)
             ATTR_CUSTOM(L"trackMouseEvent",OnAttrTrackMouseEvent)
             ATTR_I18NSTRT(L"tip", m_strToolTipText, FALSE)  //使用语言包翻译
             ATTR_INT(L"msgTransparent", m_bMsgTransparent, FALSE)
@@ -1073,22 +1089,24 @@ namespace SOUI
         DWORD               m_bFocusable:1;     /**< 窗口可获得焦点标志 */
         DWORD               m_bUpdateLocked:1;  /**< 暂时锁定更新，锁定后，不向宿主发送Invalidate */
         DWORD               m_bCacheDraw:1;     /**< 支持窗口内容的Cache标志 */
-        DWORD               m_bDirty:1;         /**< 缓存窗口脏标志 */
+        DWORD               m_bCacheDirty:1;    /**< 缓存窗口脏标志 */
+        DWORD               m_bLayeredWindow:1; /**< 指示是否是一个分层窗口 */
+
+        CAutoRefPtr<IRenderTarget> m_cachedRT;  /**< 缓存窗口绘制的RT */
+        CAutoRefPtr<IRenderTarget> m_layeredRT; /**< 分层窗口绘制的RT */
 
         ISkinObj *          m_pBgSkin;          /**< 背景skin */
         ISkinObj *          m_pNcSkin;          /**< 非客户区skin */
         ULONG_PTR           m_uData;            /**< 窗口的数据位,可以通过GetUserData获得 */
 
-        SwndLayout        m_layout;             /**< 布局对象 */
+        SwndLayout          m_layout;           /**< 布局对象 */
         int                 m_nMaxWidth;        /**< 自动计算大小时，窗口的最大宽度 */
 
-        CAutoRefPtr<IRenderTarget> m_cachedRT;  /**< 缓存窗口绘制的RT */
-        
+
         typedef struct GETRTDATA
         {
             CRect rcRT;             /**< GETRT调用的有效范围 */
             DWORD gdcFlags;         /**< GETRT绘制标志位 */
-            UINT  uMinFrgndZorder;  /**< GETRT时前景开始的zorder */
             CAutoRefPtr<IRegion> rgn;/**< 保存一个和rcRT对应的IRegion对象 */
         } * PGETRTDATA;
         

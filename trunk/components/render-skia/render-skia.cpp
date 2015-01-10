@@ -954,6 +954,18 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
+    static int s_cBmp = 0;
+    SBitmap_Skia::SBitmap_Skia( IRenderFactory *pRenderFac ) :TSkiaRenderObjImpl<IBitmap>(pRenderFac),m_hBmp(0)
+    {
+        STRACE(L"bitmap new; objects = %d",++s_cBmp);
+    }
+
+    SBitmap_Skia::~SBitmap_Skia()
+    {
+        m_bitmap.reset();
+        if(m_hBmp) DeleteObject(m_hBmp);
+        STRACE(L"bitmap delete objects = %d",--s_cBmp);
+    }
 
     HBITMAP SBitmap_Skia::CreateGDIBitmap( int nWid,int nHei,void ** ppBits )
     {
@@ -1076,12 +1088,18 @@ namespace SOUI
     {
     }
 
-	//////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    static int s_cRgn =0;
 	SRegion_Skia::SRegion_Skia( IRenderFactory *pRenderFac )
         :TSkiaRenderObjImpl<IRegion>(pRenderFac)
 	{
-
+        STRACE(L"region new; objects = %d",++s_cRgn);
 	}
+
+    SRegion_Skia::~SRegion_Skia()
+    {
+        STRACE(L"region delete; objects = %d",--s_cRgn);
+    }
 
 	void SRegion_Skia::CombineRect( LPCRECT lprect,int nCombineMode )
 	{
@@ -1149,6 +1167,35 @@ namespace SOUI
         m_rgn.setEmpty();
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    // SFont_Skia
+    static int s_cFont =0;
+    SFont_Skia::SFont_Skia( IRenderFactory * pRenderFac,const LOGFONT * plf ) :TSkiaRenderObjImpl<IFont>(pRenderFac),m_skFont(NULL)
+    {
+        memcpy(&m_lf,plf,sizeof(LOGFONT));
+        SStringA strFace=S_CT2A(plf->lfFaceName,CP_UTF8);
+        BYTE style=SkTypeface::kNormal;
+        if(plf->lfItalic) style |= SkTypeface::kItalic;
+        if(plf->lfWeight == FW_BOLD) style |= SkTypeface::kBold;
+
+        m_skFont=SkTypeface::CreateFromName(strFace,(SkTypeface::Style)style);
+
+        m_skPaint.setTextSize(SkIntToScalar(abs(plf->lfHeight)));
+        m_skPaint.setUnderlineText(!!plf->lfUnderline);
+        m_skPaint.setStrikeThruText(!!plf->lfStrikeOut);
+
+        m_skPaint.setTextEncoding(SkPaint::kUTF16_TextEncoding);
+        m_skPaint.setAntiAlias(true);
+        m_skPaint.setLCDRenderText(true);
+
+        STRACE(L"font new: objects = %d", ++s_cFont);
+    }
+
+    SFont_Skia::~SFont_Skia()
+    {
+        if(m_skFont) m_skFont->unref();
+        STRACE(L"font delete: objects = %d", --s_cFont);
+    }
     //////////////////////////////////////////////////////////////////////////
     namespace RENDER_SKIA
     {

@@ -8,7 +8,7 @@
   </string>
 
   <skin>
-    <imglist name="_skin.bg" src="PNG:ID_PNG_BG" />
+    <imglist name="_skin.bg" src="PNG:ID_PNG_BG"/>
     <imgframe name="_skin.shadow" src="PNG:ID_PNG_SHADOW" left="5" top="3" right="5" bottom="7"/>
     <imglist name="_skin.btn.close" src="PNG:ID_SYS_BTN_CLOSE" states="3" />
     <imglist name="_skin.btn.max" src="PNG:ID_SYS_BTN_MAX" states="3" />
