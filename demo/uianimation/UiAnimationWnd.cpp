@@ -482,7 +482,7 @@ namespace SOUI{
     }
     //////////////////////////////////////////////////////////////////////////
     //  SUiAnimationWnd
-    SUiAnimationWnd::SUiAnimationWnd(void):m_pSkinIcon(NULL),m_pLayout(NULL),m_pAniMode(NULL)
+    SUiAnimationWnd::SUiAnimationWnd(void):m_pSkinIcon(NULL),m_pLayout(NULL),m_pAniMode(NULL),m_bResized(FALSE)
     {
         m_bClipClient = TRUE;
     }
@@ -542,8 +542,23 @@ namespace SOUI{
     void SUiAnimationWnd::OnSize(UINT nType, CSize size)
     { 
         SWindow::OnSize(nType,size);
-        if(m_pLayout) m_pLayout->Arrange(size,-1);
+        if(m_pLayout && IsVisible(TRUE))
+        {
+            m_bResized = FALSE;
+            m_pLayout->Arrange(size,-1);
+        }
+        else m_bResized =TRUE;
     }
 
+    void SUiAnimationWnd::OnShowWindow( BOOL bShow, UINT nStatus )
+    {
+        SWindow::OnShowWindow(bShow,nStatus);
+        if(bShow && m_bResized)
+        {
+            CRect rcClient;
+            GetClientRect(&rcClient);
+            OnSize(0,rcClient.Size());
+        }
+    }
 
 }
