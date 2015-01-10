@@ -98,11 +98,13 @@ namespace SOUI
         void OnSize(UINT nType, CSize size);
         void OnPaint(IRenderTarget *pRT);
         void OnTimer(char cEvt);
-        
+        void OnShowWindow(BOOL bShow, UINT nStatus);
+
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_CREATE(OnCreate)
             MSG_WM_DESTROY(OnDestroy)
             MSG_WM_SIZE(OnSize)
+            MSG_WM_SHOWWINDOW(OnShowWindow)
             MSG_WM_PAINT_EX(OnPaint)
             MSG_WM_TIMER_EX(OnTimer)
         SOUI_MSG_MAP_END()
@@ -116,6 +118,7 @@ namespace SOUI
         ISkinObj        *               m_pSkinIcon;
         IBitmap         *               m_pAniMode;
         CUiAnimationIconLayout *        m_pLayout;
+        BOOL                            m_bResized;
     };
 
 }
