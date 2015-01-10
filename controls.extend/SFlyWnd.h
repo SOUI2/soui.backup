@@ -28,11 +28,13 @@ namespace SOUI
         virtual void OnNextFrame();
 
         HRESULT OnAttrPosEnd(const SStringW& strValue, BOOL bLoading);
+        HRESULT OnAttrOffsetEnd(const SStringW& strValue, BOOL bLoading);
                 
         bool OnSwitchClick(EventArgs *pEvt);
 
         SOUI_ATTRS_BEGIN()
             ATTR_CUSTOM(L"posEnd",OnAttrPosEnd)
+            ATTR_CUSTOM(L"offsetEnd",OnAttrOffsetEnd)
             ATTR_UINT(L"AniTime",m_nAniTime,FALSE)
         SOUI_ATTRS_END()
     protected:
