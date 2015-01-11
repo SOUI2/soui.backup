@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = qqlogin
+TARGET = MusicPlayer
 DEPENDPATH += .
 INCLUDEPATH += .
 
@@ -21,22 +21,31 @@ CONFIG(debug,debug|release){
 else{
 	LIBS += utilities.lib soui.lib
 }
+LIBS += bass.lib
 
 PRECOMPILED_HEADER = stdafx.h
 
 # Input
 HEADERS += MainDlg.h \
            resource.h \
+		   BassMusic.h \
+			DropEx.h \
+			Macro.h \
+			MusicOperat.h \
            ../controls.extend/STurn3DView.h \
            ../controls.extend/image3d/3dlib.h \
            ../controls.extend/image3d/3dmatrix.h \
            ../controls.extend/image3d/3dTransform.h \
-           ../controls.extend/image3d/PerspectiveTransform.h
+           ../controls.extend/image3d/PerspectiveTransform.h \
+		   ../controls.extend/trayicon/SShellNotifyIcon.h
+
 SOURCES += MainDlg.cpp \
-           QQLogin.cpp \
+           BassMusic.cpp \
+		   MusicPlayer.cpp \
            ../controls.extend/STurn3DView.cpp \
            ../controls.extend/image3d/3dlib.cpp \
            ../controls.extend/image3d/3dmatrix.cpp \
-           ../controls.extend/image3d/3dtransform.cpp
-           
-RC_FILE += qqlogin.rc
+           ../controls.extend/image3d/3dtransform.cpp \
+ 		   ../controls.extend/trayicon/SShellNotifyIcon.cpp
+          
+RC_FILE += musicplayer.rc

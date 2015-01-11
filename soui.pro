@@ -14,6 +14,7 @@ SUBDIRS += demo
 SUBDIRS += qqlogin
 SUBDIRS += 360
 SUBDIRS += souispy
+SUBDIRS += MusicPlayer
 
 soui.depends += utilities
 
@@ -21,3 +22,4 @@ soui.depends += utilities
 demo.depends += utilities soui
 qqlogin.depends += utilities soui
 souispy.depends += utilities soui
+MusicPlayer.depends += utilities soui

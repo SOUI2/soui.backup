@@ -7,7 +7,7 @@ namespace SOUI
 
     SFlyWnd::SFlyWnd(void):m_bEndPos(FALSE),m_nAniTime(200)
     {
-       
+       m_evtSet.addEvent(EVT_FLYSTATE);
     }
 
     SFlyWnd::~SFlyWnd(void)
@@ -85,6 +85,8 @@ namespace SOUI
             m_bFloat = FALSE;
             m_bAniMove = FALSE;
         }
+        FlyStateEvent evt(this,percent,m_bEndPos);
+        FireEvent(evt);
     }
 
     void SFlyWnd::OnRelayout( const CRect &rcOld, const CRect & rcNew )
