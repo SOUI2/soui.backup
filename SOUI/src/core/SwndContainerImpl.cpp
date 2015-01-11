@@ -376,10 +376,12 @@ BOOL SwndContainerImpl::UnregisterTimelineHandler( ITimelineHandler *pHandler )
 
 void SwndContainerImpl::OnNextFrame()
 {
-    SPOSITION pos=m_lstTimelineHandler.GetHeadPosition();
+    SList<ITimelineHandler*> lstCopy;
+    CopyList(m_lstTimelineHandler,lstCopy);
+    SPOSITION pos=lstCopy.GetHeadPosition();
     while(pos)
     {
-        ITimelineHandler * pHandler=m_lstTimelineHandler.GetNext(pos);
+        ITimelineHandler * pHandler=lstCopy.GetNext(pos);
         pHandler->OnNextFrame();
     }
 }
