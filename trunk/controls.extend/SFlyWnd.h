@@ -9,6 +9,26 @@ namespace SOUI
 {
 #define NAME_SWITCH L"switch"
 
+#define EVT_FLYSTATE    (EVT_EXTERNAL_BEGIN+200)
+
+    class FlyStateEvent : public EventArgs
+    {
+    public:
+        FlyStateEvent(SWindow *pSender,int _percent,BOOL _bEndPos)
+            :EventArgs(pSender)
+            ,nPercent(_percent)
+            ,bEndPos(_bEndPos)
+        {
+
+        }
+        
+        enum{EventID = EVT_FLYSTATE};
+
+        virtual UINT GetEventID(){return EventID;}
+
+        int nPercent;
+        BOOL bEndPos;
+    };
 
     class SFlyWnd : public SWindow ,public SAnimator , public ITimelineHandler
     {

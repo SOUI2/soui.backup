@@ -4,17 +4,28 @@
 //
 
 #pragma once
-	
+
+#define  _CRT_SECURE_NO_WARNINGS
 #include <souistd.h>
 #include <core/SHostDialog.h>
 #include <control/SMessageBox.h>
 #include <control/souictrls.h>
 #include <res.mgr/sobjdefattr.h>
 #include <com-cfg.h>
-
 #include "resource.h"
 
-using namespace SOUI;
+#include "../controls.extend/trayicon/SShellNotifyIcon.h"
+#include "../controls.extend/STurn3DView.h"
+#include "../controls.extend/SFlyWnd.h"
 
-#include "..\controls.extend\STurn3DView.h"
+
+#include "bass.h"
+#pragma comment(lib,"Bass.lib")
+
+#include "atlstr.h"//使用CString或其他
+#include "Macro.h"
+#include<map>
+#include<iostream>
+
+using namespace SOUI;
 
