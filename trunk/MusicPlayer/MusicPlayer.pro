@@ -37,7 +37,8 @@ HEADERS += MainDlg.h \
            ../controls.extend/image3d/3dmatrix.h \
            ../controls.extend/image3d/3dTransform.h \
            ../controls.extend/image3d/PerspectiveTransform.h \
-		   ../controls.extend/trayicon/SShellNotifyIcon.h
+		   ../controls.extend/trayicon/SShellNotifyIcon.h \
+		   ../controls.extend/sflywnd.h
 
 SOURCES += MainDlg.cpp \
            BassMusic.cpp \
@@ -46,6 +47,7 @@ SOURCES += MainDlg.cpp \
            ../controls.extend/image3d/3dlib.cpp \
            ../controls.extend/image3d/3dmatrix.cpp \
            ../controls.extend/image3d/3dtransform.cpp \
- 		   ../controls.extend/trayicon/SShellNotifyIcon.cpp
+ 		   ../controls.extend/trayicon/SShellNotifyIcon.cpp \
+		   ../controls.extend/sflywnd.cpp
           
 RC_FILE += musicplayer.rc
