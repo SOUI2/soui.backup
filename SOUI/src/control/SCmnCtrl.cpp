@@ -906,6 +906,7 @@ void SRadioBox::OnStateChanging( DWORD dwOldState,DWORD dwNewState )
     {
         SRadioBox *pCurChecked=(SRadioBox*)GetSelectedSiblingInGroup();
         if(pCurChecked) pCurChecked->SetCheck(FALSE);
+        FireCommand();
     }
 }
 

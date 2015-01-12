@@ -769,7 +769,7 @@ namespace SOUI
         *
         * Describe   π”√ReleaseRenderTarget Õ∑≈
         */
-        IRenderTarget * GetRenderTarget(LPCRECT pRc,DWORD gdcFlags=OLEDC_NODRAW,BOOL bClientRT=TRUE);
+        IRenderTarget * GetRenderTarget(LPCRECT pRc=NULL,DWORD gdcFlags=OLEDC_NODRAW,BOOL bClientRT=TRUE);
 
         /**
         * GetRenderTarget

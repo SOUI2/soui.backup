@@ -34,20 +34,44 @@
       <link pos="10,130" maxWidth="100" class="cls_btn_weblink" dotted="1" href="www.setoutsoft.cn">www.setoutsoft.cn</link>
       <img pos="10,[10,@100,@100" skin="skin_page_icons" iconIndex="2" tip="img tip" msgTransparent="0"/>
       <text pos="10,[5" multiLines="1">the image show how to handle message in SImageWnd,\n you can do it by simply setting msgTransparent to 0</text>
-      <group pos="10,[10,@200,@90">radio
+    </page>
+    <page title="radiobox">
+      <group pos="10,10,@200,@90">
+        radio
         <radio pos="10,0" name="radio_1">radio 1</radio>
         <radio pos="[10,{0" name="radio_2">radio 2</radio>
         <radio pos="10,[10" name="radio_3" checked="1">radio 3</radio>
         <radio pos="[10,{0" name="radio_4">radio 4</radio>
       </group>
-      <group pos="[50,{0,@180,@100">radio2
-        <radio2 pos="10,0" name="radio2_1" skin="skin_webbtn_forward"></radio2>
-        <radio2 pos="[20,{0" name="radio2_2"  skin="skin_webbtn_forward"></radio2>
-        <radio2 pos="[20,{0" name="radio2_3" skin="skin_webbtn_forward"></radio2>
-        <radio2 pos="10,[10" name="radio2_4" checked="1" skin="skin_webbtn_forward"></radio2>
-        <radio2 pos="[20,{0" name="radio2_5" skin="skin_webbtn_forward"></radio2>
-        <radio2 pos="[20,{0" name="radio2_6" skin="skin_webbtn_forward"></radio2>
+      <group pos="[50,{0,@180,@100">
+        radio2
+        <radio2 pos="10,0" id="10000" name="radio2_1"  skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="[20,{0" id="10001" name="radio2_2"  skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="[20,{0" id="10002" name="radio2_3" skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="10,[10" id="10003" name="radio2_4" checked="1" skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="[20,{0" id="10004" name="radio2_5" skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="[20,{0" id="10005" name="radio2_6" skin="skin_webbtn_forward"></radio2>
       </group>
+      <tabctrl pos="{0,[10,@300,@200" name="tab_radio2" tabHeight="0" cursel="3" colorBkgnd="#00cc00">
+        <page>
+          <text pos="|0,|0" offset="-0.5,-0.5">page1</text>
+        </page>
+        <page>
+          <text pos="|0,|0" offset="-0.5,-0.5">page2</text>
+        </page>
+        <page>
+          <text pos="|0,|0" offset="-0.5,-0.5">page3</text>
+        </page>
+        <page>
+          <text pos="|0,|0" offset="-0.5,-0.5">page4</text>
+        </page>
+        <page>
+          <text pos="|0,|0" offset="-0.5,-0.5">page5</text>
+        </page>
+        <page>
+          <text pos="|0,|0" offset="-0.5,-0.5">page6</text>
+        </page>
+      </tabctrl>
     </page>
     <page title="prog and slider" colorBorder="#ff0000" margin-x="1" margin-y="1">
       <progress name="prog_test" pos="200,100,-10,115" value="20" min="0" max="100" showPercent="1"/>

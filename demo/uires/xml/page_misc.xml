@@ -15,7 +15,7 @@
       <text pos="|0,20" offset="-0.5,0" colorText="#ff0000">SOUI动画演示</text>
     </page>
     <page title="flywnd">
-      <window pos="0,0,-0,-0" clipClient="1" skin="skin_bkgnd" >
+      <window pos="0,0,-0,-0" clipClient="1" skin="skin_bkgnd" cache="1">
         <flywnd name="leftpane" pos="0,10,@210,-10" posEnd="0,10,@210,-10" offsetEnd="-0.9524,0" alpha="100" layeredWindow="1">
           <!--左边自动隐藏窗口,200/210=0.9524-->
           <window pos="0,0,-10,-0" colorBkgnd="#ff0000">
