@@ -24,6 +24,7 @@ namespace SOUI
             
             m_pSkin->Draw(pRT,rc,nState);
         }
+        SWindow::OnPaint(pRT);
     }
 
 }

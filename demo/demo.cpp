@@ -9,6 +9,7 @@
 #include "../controls.extend/propgrid/SPropertyGrid.h"
 #include "../controls.extend/SFlyWnd.h"
 #include "../controls.extend/SFadeFrame.h"
+#include "../controls.extend/sradiobox2.h"
 #include "uianimation/UiAnimationWnd.h"
 
 #if defined(_DEBUG) && !defined(_WIN64)
@@ -155,6 +156,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         }
         theApp->RegisterWndFactory(TplSWindowFactory<SFlyWnd>());//注册飞行动画控件
         theApp->RegisterWndFactory(TplSWindowFactory<SFadeFrame>());//注册渐显隐动画控件
+        theApp->RegisterWndFactory(TplSWindowFactory<SRadioBox2>());//注册渐显隐动画控件
         SSkinGif::Gdiplus_Startup();
 
         //加载系统资源

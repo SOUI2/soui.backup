@@ -14,7 +14,8 @@ namespace SOUI
     protected:
         virtual CSize GetDesiredSize(LPCRECT pRcContainer)
         {
-            return SWindow::GetDesiredSize(pRcContainer);
+            if(m_pSkin) return m_pSkin->GetSkinSize();
+            else return SWindow::GetDesiredSize(pRcContainer);
         }
         virtual void GetTextRect(LPRECT pRect)
         {
