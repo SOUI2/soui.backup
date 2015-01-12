@@ -19,8 +19,7 @@
 #include "../controls.extend/SFlyWnd.h"
 
 
-#include "bass.h"
-#pragma comment(lib,"Bass.lib")
+#include <bass.h>
 
 #include "atlstr.h"//使用CString或其他
 #include "Macro.h"

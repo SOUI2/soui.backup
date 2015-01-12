@@ -11,9 +11,12 @@ INCLUDEPATH += . \
 			   ../utilities/include \
 			   ../soui/include \
 			   ../components \
+			   ../third-part/bass 
 			   
 dir = ..
 include($$dir/common.pri)
+
+QMAKE_LIBDIR += ../third-part/bass
 
 CONFIG(debug,debug|release){
 	LIBS += utilitiesd.lib souid.lib
