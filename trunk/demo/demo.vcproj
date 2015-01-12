@@ -260,6 +260,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SRadioBox2.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\gif\SSkinAPNG.cpp"
 				>
 			</File>
@@ -331,6 +335,10 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\sipaddressctrl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\SRadioBox2.h"
 				>
 			</File>
 			<File
