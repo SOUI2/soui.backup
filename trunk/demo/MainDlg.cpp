@@ -443,3 +443,12 @@ void CMainDlg::OnTreeBoxEvent( EventArgs *pEvt )
         SMessageBox(m_hWnd,strMsg,_T("EVENTOFPANEL"),MB_OK|MB_ICONEXCLAMATION);        
     }
 }
+
+void CMainDlg::OnTabPageRadioSwitch(int nID)
+{
+    if(m_bLayoutInited)
+    {
+        STabCtrl *pTab =FindChildByName2<STabCtrl>(L"tab_radio2");
+        if(pTab) pTab->SetCurSel(nID-10000);
+    }
+}
