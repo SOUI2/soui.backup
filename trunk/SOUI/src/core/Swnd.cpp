@@ -667,7 +667,9 @@ namespace SOUI
 
                     MarkCacheDirty(false);
                 }
-                pRT->AlphaBlend(&rcWnd,pRTCache,&rcWnd,IsLayeredWindow()?0xFF:m_style.m_byAlpha);
+                CRect rcClip;
+                pRT->GetClipBox(&rcClip);
+                pRT->AlphaBlend(&rcClip,pRTCache,&rcClip,IsLayeredWindow()?0xFF:m_style.m_byAlpha);
             }
         }else
         {
