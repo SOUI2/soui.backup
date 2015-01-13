@@ -92,8 +92,9 @@ namespace SOUI
         IRenderTarget *pRT=pFrmWnd->GetRenderTarget(rcWnd,OLEDC_NODRAW,FALSE);
         pWndFront->SetVisible(TRUE,FALSE);
         pWndBack->SetVisible(FALSE,FALSE);
-
+        
         //渲染窗口变化前状态
+        pRT->ClearRect(&rcWnd,0);
         pFrmWnd->RedrawRegion(pRT,NULL);
         
         CAutoRefPtr<IRenderTarget> pRTCopy1;
@@ -106,6 +107,7 @@ namespace SOUI
         pWndFront->SetVisible(FALSE,FALSE);
         pWndBack->SetVisible(TRUE,FALSE);
 
+        pRT->ClearRect(&rcWnd,0);
         pFrmWnd->RedrawRegion(pRT,NULL);
         
         CAutoRefPtr<IRenderTarget> pRTCopy2;
