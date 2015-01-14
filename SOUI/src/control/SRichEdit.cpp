@@ -1255,15 +1255,16 @@ void SRichEdit::OnChar( UINT nChar, UINT nRepCnt, UINT nFlags )
 LRESULT SRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
 {
     __super::OnNcCalcSize(bCalcValidRects,lParam);
-
+    
+    CRect rcInsetPixel = m_rcInsetPixel;
     if(!m_fRich && m_fSingleLineVCenter && !(m_dwStyle&ES_MULTILINE))
     {
-        m_rcInsetPixel.top   =
-        m_rcInsetPixel.bottom=(m_rcClient.Height()-m_nFontHeight)/2;
+        rcInsetPixel.top   =
+        rcInsetPixel.bottom=(m_rcClient.Height()-m_nFontHeight)/2;
     }
 
-    m_siHoz.nPage=m_rcClient.Width()-m_rcInsetPixel.left-m_rcInsetPixel.right;
-    m_siVer.nPage=m_rcClient.Height()-m_rcInsetPixel.top-m_rcInsetPixel.bottom;
+    m_siHoz.nPage=m_rcClient.Width()-rcInsetPixel.left-rcInsetPixel.right;
+    m_siVer.nPage=m_rcClient.Height()-rcInsetPixel.top-rcInsetPixel.bottom;
 
     if(m_pTxtHost)
     {
@@ -1275,10 +1276,10 @@ LRESULT SRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
         m_sizelExtent.cx = DtoHimetric(m_rcClient.Width(), xPerInch);
         m_sizelExtent.cy = DtoHimetric(m_rcClient.Height(), yPerInch);
 
-        m_rcInset.left=DtoHimetric(m_rcInsetPixel.left,xPerInch);
-        m_rcInset.right=DtoHimetric(m_rcInsetPixel.right,xPerInch);
-        m_rcInset.top=DtoHimetric(m_rcInsetPixel.top,yPerInch);
-        m_rcInset.bottom=DtoHimetric(m_rcInsetPixel.bottom,yPerInch);
+        m_rcInset.left=DtoHimetric(rcInsetPixel.left,xPerInch);
+        m_rcInset.right=DtoHimetric(rcInsetPixel.right,xPerInch);
+        m_rcInset.top=DtoHimetric(rcInsetPixel.top,yPerInch);
+        m_rcInset.bottom=DtoHimetric(rcInsetPixel.bottom,yPerInch);
         
         //窗口有焦点时，需要更新光标位置：先使edit失活用来关闭光标，再激活edit来显示光标。
         //此处不应该直接用setfocus和killfocus，因为这两个消息可能会被外面响应。导致逻辑错误
