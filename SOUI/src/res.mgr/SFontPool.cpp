@@ -17,7 +17,7 @@ SFontPool::SFontPool(IRenderFactory *pRendFactory)
     :m_RenderFactory(pRendFactory)
 {
     ::GetObjectA(::GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &m_lfDefault);
-    m_lfDefault.lfHeight = -12;
+    m_lfDefault.lfHeight  = -12;
     m_lfDefault.lfQuality = ANTIALIASED_QUALITY;
     _tcscpy(m_lfDefault.lfFaceName,_T("ËÎÌו"));
 
