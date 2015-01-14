@@ -22,6 +22,37 @@ namespace SOUI
     template<> STextServiceHelper * SSingleton<STextServiceHelper>::ms_Singleton=0;
     template<> SRicheditMenuDef * SSingleton<SRicheditMenuDef>::ms_Singleton=0;
 
+    //////////////////////////////////////////////////////////////////////////
+    //  STextServiceHelper
+    
+    STextServiceHelper::STextServiceHelper()
+    {
+        m_rich20=LoadLibrary(_T("riched20.dll"));
+        if(m_rich20) m_funCreateTextServices= (PCreateTextServices)GetProcAddress(m_rich20,"CreateTextServices");
+    }
+
+    STextServiceHelper::~STextServiceHelper()
+    {
+        if(m_rich20) FreeLibrary(m_rich20);
+        m_funCreateTextServices=NULL;
+    }
+
+    BOOL STextServiceHelper::Init()
+    {
+        if(ms_Singleton) return FALSE;
+        new STextServiceHelper();
+        return TRUE;
+    }
+
+    HRESULT STextServiceHelper::CreateTextServices(IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk)
+    {
+        if(!m_funCreateTextServices) return E_NOTIMPL;
+        return m_funCreateTextServices(punkOuter,pITextHost,ppUnk);
+    }
+
+    
+    //////////////////////////////////////////////////////////////////////////
+    //
     class SRicheditDropTarget : public IDropTarget
     {
     public:
@@ -177,12 +208,13 @@ STextHost::STextHost(void)
     :m_pRichEdit(NULL)
     ,cRefs(0)
     ,m_fUiActive(FALSE)
+    ,pserv(NULL)
 {
 }
 
 STextHost::~STextHost(void)
 {
-    pserv->Release();
+    if(pserv) pserv->Release();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -578,12 +610,12 @@ SRichEdit::SRichEdit()
     ,m_chPasswordChar(_T('*'))
     ,m_lAccelPos(-1)
     ,m_dwStyle(ES_LEFT|ES_AUTOHSCROLL)
-    ,m_rcInsetPixel(2,2,2,2)
     ,m_byDbcsLeadByte(0)
 {
     m_pNcSkin = GETBUILTINSKIN(SKIN_SYS_BORDER);
 
-    m_bFocusable=TRUE;
+    m_bFocusable  = TRUE;
+    m_bClipClient = TRUE;
     m_sizelExtent.cx=m_sizelExtent.cy=0;
     m_evtSet.addEvent(EventRENotify::EventID);
 }
@@ -816,7 +848,7 @@ HRESULT SRichEdit::InitDefaultCharFormat( CHARFORMAT2W* pcf ,IFont *pFont)
     LONG yPixPerInch = GetDeviceCaps(hdc, LOGPIXELSY);
     ReleaseDC(NULL,hdc);
     const LOGFONT *plf=pFont->LogFont();
-    pcf->yHeight = -abs(MulDiv(pFont->TextSize(), LY_PER_INCH, yPixPerInch));
+    pcf->yHeight = abs(MulDiv(pFont->TextSize(), LY_PER_INCH, yPixPerInch));
     pcf->yOffset = 0;
     pcf->dwEffects = 0;
     if(pFont->IsBold())
@@ -828,7 +860,7 @@ HRESULT SRichEdit::InitDefaultCharFormat( CHARFORMAT2W* pcf ,IFont *pFont)
     pcf->bCharSet = plf->lfCharSet;
     pcf->bPitchAndFamily = plf->lfPitchAndFamily;
 #ifdef _UNICODE
-    _tcscpy(pcf->szFaceName, plf->lfFaceName);
+    wcscpy(pcf->szFaceName, plf->lfFaceName);
 #else
     //need to thunk pcf->szFaceName to a standard char string.in this case it's easy because our thunk is also our copy
     MultiByteToWideChar(CP_ACP, 0, plf->lfFaceName, LF_FACESIZE, pcf->szFaceName, LF_FACESIZE) ;
@@ -1224,6 +1256,12 @@ LRESULT SRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
 {
     __super::OnNcCalcSize(bCalcValidRects,lParam);
 
+    if(!m_fRich && m_fSingleLineVCenter && !(m_dwStyle&ES_MULTILINE))
+    {
+        m_rcInsetPixel.top   =
+        m_rcInsetPixel.bottom=(m_rcClient.Height()-m_nFontHeight)/2;
+    }
+
     m_siHoz.nPage=m_rcClient.Width()-m_rcInsetPixel.left-m_rcInsetPixel.right;
     m_siVer.nPage=m_rcClient.Height()-m_rcInsetPixel.top-m_rcInsetPixel.bottom;
 
@@ -1232,22 +1270,15 @@ LRESULT SRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
         HDC hdc=GetDC(GetContainer()->GetHostHwnd());
         LONG xPerInch = ::GetDeviceCaps(hdc, LOGPIXELSX);
         LONG yPerInch =    ::GetDeviceCaps(hdc, LOGPIXELSY);
-        m_sizelExtent.cx = DtoHimetric(m_siHoz.nPage, xPerInch);
-        m_sizelExtent.cy = DtoHimetric(m_siVer.nPage, yPerInch);
+        ReleaseDC(GetContainer()->GetHostHwnd(),hdc);
+
+        m_sizelExtent.cx = DtoHimetric(m_rcClient.Width(), xPerInch);
+        m_sizelExtent.cy = DtoHimetric(m_rcClient.Height(), yPerInch);
 
         m_rcInset.left=DtoHimetric(m_rcInsetPixel.left,xPerInch);
         m_rcInset.right=DtoHimetric(m_rcInsetPixel.right,xPerInch);
-        if(!m_fRich && m_fSingleLineVCenter && !(m_dwStyle&ES_MULTILINE))
-        {
-            m_rcInset.top   =
-            m_rcInset.bottom=DtoHimetric(m_siVer.nPage-m_nFontHeight,yPerInch)/2;
-        }
-        else
-        {
-            m_rcInset.top=DtoHimetric(m_rcInsetPixel.top,yPerInch);
-            m_rcInset.bottom=DtoHimetric(m_rcInsetPixel.bottom,yPerInch);
-        }
-        ReleaseDC(GetContainer()->GetHostHwnd(),hdc);
+        m_rcInset.top=DtoHimetric(m_rcInsetPixel.top,yPerInch);
+        m_rcInset.bottom=DtoHimetric(m_rcInsetPixel.bottom,yPerInch);
         
         //窗口有焦点时，需要更新光标位置：先使edit失活用来关闭光标，再激活edit来显示光标。
         //此处不应该直接用setfocus和killfocus，因为这两个消息可能会被外面响应。导致逻辑错误

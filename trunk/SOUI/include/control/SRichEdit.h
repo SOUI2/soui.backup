@@ -41,11 +41,7 @@ namespace SOUI
         *
         * Describe  
         */
-        HRESULT CreateTextServices( IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk )
-        {
-            if(!m_funCreateTextServices) return E_NOTIMPL;
-            return m_funCreateTextServices(punkOuter,pITextHost,ppUnk);
-        }
+        HRESULT CreateTextServices( IUnknown *punkOuter, ITextHost *pITextHost, IUnknown **ppUnk );
 
         /**
         * STextServiceHelper::Init
@@ -54,11 +50,7 @@ namespace SOUI
         *
         * Describe  初始化
         */
-        static BOOL Init(){
-            if(ms_Singleton) return FALSE;
-            new STextServiceHelper();
-            return TRUE;
-        }
+        static BOOL Init();
 
         /**
         * STextServiceHelper::Destroy
@@ -78,22 +70,14 @@ namespace SOUI
         *
         * Describe  构造函数 
         */
-        STextServiceHelper()
-        {
-            m_rich20=LoadLibrary(_T("riched20.dll"));
-            if(m_rich20) m_funCreateTextServices= (PCreateTextServices)GetProcAddress(m_rich20,"CreateTextServices");
-        }
+        STextServiceHelper();
         /**
         * STextServiceHelper::~STextServiceHelper
         * @brief    析构函数 
         *
         * Describe  析构函数 
         */
-        ~STextServiceHelper()
-        {
-            if(m_rich20) FreeLibrary(m_rich20);
-            m_funCreateTextServices=NULL;
-        }
+        ~STextServiceHelper();
 
         HINSTANCE    m_rich20; /**< richedit module */
         PCreateTextServices    m_funCreateTextServices;  /**< 回调函数 */
