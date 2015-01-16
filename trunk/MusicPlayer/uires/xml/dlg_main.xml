@@ -17,7 +17,7 @@
         <!--<icon pos="10,8" src="LOGO:64"/>-->
         <!--<img skin="_skin.logo" pos="10,8" />-->
         <!--<img skin="_skin.logo.skin" pos="10,8" />-->
-        <text pos="80,50" colorText="#CEA481">SOUI-MUSIC</text>
+        <text pos="80,50" colorText="#CEA481">MusicPlayer</text>
         <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
         <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-83,0" animate="1" />
         <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />

@@ -11,26 +11,27 @@
     <text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#ff0000">在线音乐</text>
 
     <!-- SOUI的treebox实现音乐列表 -->
-    <treebox pos="5,50,-5,-0" name="music_tree_box" itemHeight="60" colorItemBkgnd="#6E96C8" colorItemSelBkgnd="#065DED" indent="10">
+    <treebox pos="5,50,-5,-50" name="music_tree_box" itemHeight="60" colorItemBkgnd="#6E96C8" colorItemSelBkgnd="#065DED" indent="10">
       <item>
         <img skin="_skin.logo.skin" pos="5,5,55,55" />
-        <text pos="70,5,," valign="middle" align="left" colorText="#CDD7E1" >歌曲：BEYOND - 不再犹豫</text>
-        <text pos="70,20," valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
-        <text pos="70,35," valign="middle" align="left" colorText="#CDD7E1" >时长：05:01 交流群:229313785</text>
+        <text pos="70,5, " valign="middle" align="left" colorText="#CDD7E1" >歌曲：BEYOND - 不再犹豫</text>
+        <text pos="70,20 " valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
+        <text pos="70,35 " valign="middle" align="left" colorText="#CDD7E1" >时长：05:01 </text>
+        <!--交流群:229313785-->
       </item>
 
       <item check="1">
         <img skin="_skin.spectrum" pos="5,5,55,55" />
-        <text pos="70,5,," valign="middle" align="left" colorText="#CDD7E1" >歌曲：本兮 - 寂夜</text>
-        <text pos="70,20," valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
-        <text pos="70,35," valign="middle" align="left" colorText="#CDD7E1" >时长：03:39 </text>
+        <text pos="70,5"  valign="middle" align="left" colorText="#CDD7E1" >歌曲：本兮 - 寂夜</text>
+        <text pos="70,20" valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
+        <text pos="70,35" valign="middle" align="left" colorText="#CDD7E1" >时长：03:39 </text>
       </item>
 
       <item>
         <img skin="_skin.logo.skin" pos="5,5,55,55" />
-        <text pos="70,5,," valign="middle" align="left" colorText="#CDD7E1" >歌曲：刘德华 - 暗里着迷 (粤)</text>
-        <text pos="70,20," valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
-        <text pos="70,35," valign="middle" align="left" colorText="#CDD7E1" >时长：04:50 QQ:1035144170 </text>
+        <text pos="70,5  " valign="middle" align="left" colorText="#CDD7E1" >歌曲：刘德华 - 暗里着迷 (粤)</text>
+        <text pos="70,20 " valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
+        <text pos="70,35 " valign="middle" align="left" colorText="#CDD7E1" >时长：04:50 QQ:1035144170 </text>
       </item>
     </treebox>
     

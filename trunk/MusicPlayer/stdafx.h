@@ -24,6 +24,7 @@
 #include "atlstr.h"//使用CString或其他
 #include "Macro.h"
 #include<map>
+#include <vector>
 #include<iostream>
 
 using namespace SOUI;
