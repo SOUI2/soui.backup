@@ -6,6 +6,8 @@
 
 typedef map<int,tagMusicInfo*>	CMusicManagerMap;
 
+typedef BOOL(__stdcall *pCallBack)(vector<CString> vInfo, void *pUser);// 回调函数原型
+
 class CTestDropTarget:public IDropTarget
 {
 public:
@@ -74,12 +76,25 @@ protected:
 	int nRef;
 };
 
+/****************************************************************************
+*  功    能：拖拽获取音乐路径                                               *
+*  修 改 人：小可                                                           *
+*  添加时间：2014.01.15 00：41                                              *
+*  版本类型：修改                                                           *
+*  联系方式：QQ-1035144170                                                  *
+****************************************************************************/
+
 class CTestDropTarget1 : public CTestDropTarget
 {
 protected:
 	SWindow *m_pEdit;
+private:
+	void *pParen;
+	pCallBack pDropCall;
+	//std::vector<CString> vInfo;//音乐文件路径列表
+	vector<CString> vMusicPath;	 //音乐文件路径列表
 public:
-	CTestDropTarget1(SWindow *pEdit):m_pEdit(pEdit)
+	CTestDropTarget1(SWindow *pEdit):m_pEdit(pEdit),pDropCall(NULL),pParen(NULL)
 	{
 		if(m_pEdit) m_pEdit->AddRef();
 	}
@@ -129,39 +144,19 @@ public:
 				int pathLen = DragQueryFile(hdrop, i, filePath, sizeof(filePath));                             
 				CString str= filePath;
 				str.Format(_T("%s"), filePath);
-				int filetype;
-				filetype=IsWantedFile(filePath);
-				if (1==filetype) //视频格式
-				{
-					int i=0;
-					//MessageBox(_T("你要播放的是视频文件！！！")); 
-				}
-				if (0==filetype) //音频格式
-				{
-					int i=0;
-					//MessageBox(_T("你要播放的是音频文件！！！")); 
 
-				}
-				if (-1==filetype)//其他格式
+				if ((PathIsDirectory(filePath) ? true:false))
 				{
-					int i=0;
-					//MessageBox(_T("程序不支持的文件格式！！！请拖拽“*.mp3;*.wma;*.wav;*.mid;*.rmi;*.aac;*.ac3;*.aiff;*.m4a;*.mka;*.mp2;*.ogg或*.rm;*.rmvb;*.flv;*.f4v;*.avi;*.3gp;*.mp4;*.wmv;*.mpeg;*.mpga;*.asf;*.dat;*.mov”的音视频文件！")); 
-				}
-				TraverseFolder(filePath);
-				FindInAll(filePath);
-				//想判断是文件还是文件夹再保存
-				//if ()//单个文件
-				//{
-				//}else//文件夹
-				//{
-				//}
-				//m_PicCtr.push_back(filePath);
-				//BrowerFolder(filePath,0);
-				if(count && m_pEdit)
-				{
-					m_pEdit->SetWindowText(filePath);
-				}
+					FindInAll(filePath);//是文件夹就遍历所有文件在插入
+					//TraverseFolder(filePath);
+					//BrowerFolder(filePath,0);
 
+				}else
+				{
+					//单个文件是音频就直接插入
+					InsertMusicVector(filePath );
+				}
+				pDropCall(vMusicPath,pParen);
 			}
 		}
 		DragFinish(hdrop); 
@@ -176,8 +171,8 @@ public:
 	*  功能描述: 判断是否是想要的文件                                         
 	*  输入参数：const CString &str       [IN] :单个音频文件路径      
 	*  输出参数: 无
-	*  返 回 值：TRUE 执行成功
-	* 		     HKL_DLL_FAILU 执行失败
+	*  返 回 值：TRUE  执行成功
+	* 		     FALSE 执行失败
 	*  抛出异常：无
 	***********************************************************************/
 	BOOL IsWantedFile(const CString &str)
@@ -217,7 +212,7 @@ public:
 			}
 			//return -1 != STR_FileFilter.Find(strLower);
 		}
-		return FALSE;
+		return -1;
 	}
 
 	/***********************************************************************
@@ -326,7 +321,7 @@ public:
 				{                
 					wsprintf(szFile, _T("%s\\%s"), lpszPath, wfd.cFileName);               
 					printf("%s\n",szFile);  
-					InsertMusicMap(szFile);
+					InsertMusicVector(szFile);
 				}// 对文件进行操作         
 			}     
 		}
@@ -342,29 +337,100 @@ public:
 	} 
 	//int main(int argc, char* argv[]) {     char findFile[64]="d:";//要查找的目录    FindInAll(findFile);    getchar();    return 0; } 
 
-	void InsertMusicMap( LPCTSTR lpFilePath )
+
+	/***********************************************************************
+	*  函 数 名：InsertMusicVector                                          
+	*  功能描述: 保存拖拽的音频文件路径于容器                                      
+	*  输入参数：LPCTSTR lpFilePath             [IN] :单个音频路径信息   
+	*  输出参数: 无
+	*  返 回 值：无
+	*  抛出异常：无
+	***********************************************************************/
+	void InsertMusicVector( LPCTSTR lpFilePath )
 	{
+		int filetype;
+		filetype=IsWantedFile(lpFilePath);
+		vector<CString>::iterator iter;
+		if (1==filetype) //视频格式
+		{
+			//MessageBox(_T("你要播放的是视频文件！！！")); 
+		}
+		if (0==filetype) //音频格式
+		{
+			if (vMusicPath.empty())
+			{
+				vMusicPath.push_back(lpFilePath);
+			}else
+			{
+				//for (iter=vMusicPath.begin();iter!=vMusicPath.end();iter++)
+				//{
+				//	if (*iter!=lpFilePath)
+				//	{
+				//		vMusicPath.push_back(lpFilePath);
+				//		//MessageBox(_T("你要播放的是音频文件！！！")); 
+				//	}else
+				//	{
+				//		//MessageBox(_T("列表已有此歌曲！！！")); 
+				//		return;
+				//	}
+				//}
+
+			 	iter= vMusicPath.begin();
+			 	while( iter!=vMusicPath.end())//用while和continue以保证迭代器的遍历
+			 	{
+			 		if ((*iter)!=lpFilePath)
+			 		{
+			 
+			 			vMusicPath.push_back(lpFilePath);
+			 
+			 			iter= vMusicPath.begin();
+			 
+			 			break;
+			 		}/*else//不做过滤,每次可以允许拖拽相同的歌曲
+					{
+
+						continue;
+					}
+					if (*iter==vMusicPath.at(vMusicPath.size()-1))
+					{
+						break;
+					}*/
+			 
+			 		++iter ;
+			 	}
+
+			}
+
+		}
+		if (-1==filetype)//其他格式
+		{
+			//MessageBox(_T("程序不支持的文件格式！！！请拖拽“*.mp3;*.wma;*.wav;*.mid;*.rmi;*.aac;*.ac3;*.aiff;*.m4a;*.mka;*.mp2;*.ogg
+			//或*.rm;*.rmvb;*.flv;*.f4v;*.avi;*.3gp;*.mp4;*.wmv;*.mpeg;*.mpga;*.asf;*.dat;*.mov”的音视频文件！")); 
+		}
 		//保存拖拽的文件给音频操作类操作
-		int i=0;
-		////加载文件
-		//HSTREAM hStream = m_pBassMusic->LoadFile(lpFilePath);
-		//if ( hStream == -1 ) return;
 
-		////往ListBox中添加新数据
-		////m_ListMusic.AddString(lpFileName);
+		/*用回到把信息回给主对话框操作*/
+	}
 
-		////获取媒体标签
-		//tagMusicInfo *pInfo = m_pBassMusic->GetInfo(hStream);
-
-		////通过map和ListBox结合，一起管理播放列表
-		//tagMusicInfo *pMusicInfo = new tagMusicInfo;
-
-		//pMusicInfo->dwTime = pInfo->dwTime;
-		//pMusicInfo->hStream = pInfo->hStream;
-		//lstrcpyn(pMusicInfo->szArtist,pInfo->szArtist,CountArray(pMusicInfo->szArtist));
-		//lstrcpyn(pMusicInfo->szTitle,pInfo->szTitle,CountArray(pMusicInfo->szTitle));
-
-		//m_MusicManager.insert(pair<int,tagMusicInfo*>(1,pMusicInfo));
+	/***********************************************************************
+	*  函 数 名：GetDragData                                          
+	*  功能描述: 存回调用于获取所有拖拽音频路径                                         
+	*  输入参数：pCallBack funCallGetInfo       [IN] :获取数据回调函数   
+	*            void *pUser                    [IN] :主窗口指针
+	*  输出参数: 无
+	*  返 回 值：TRUE  执行成功
+	* 		     FALSE 执行失败
+	*  抛出异常：无
+	***********************************************************************/
+	BOOL GetDragData(pCallBack funCallGetInfo,void *pUser)
+	{
+		if (funCallGetInfo != NULL)
+		{
+			pParen=pUser;
+			pDropCall= funCallGetInfo;
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 };
