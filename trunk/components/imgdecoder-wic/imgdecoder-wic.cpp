@@ -17,7 +17,7 @@ namespace SOUI
 
     }
     
-    void SImgFrame_WIC::SetWICBitmpaSource( IWICBitmapSource *pFrame )
+    void SImgFrame_WIC::SetWICBitmapSource( IWICBitmapSource *pFrame )
     {
         m_pFrame=pFrame;
     }
@@ -146,7 +146,7 @@ namespace SOUI
                     0.f,WICBitmapPaletteTypeCustom);
                 CAutoRefPtr<IWICBitmapSource> bmp;
                 converter->QueryInterface(IID_PPV_ARGS(&bmp));
-                m_pImgArray[i].SetWICBitmpaSource(bmp);
+                m_pImgArray[i].SetWICBitmapSource(bmp);
             }
         }
         return m_uImgCount;

@@ -17,7 +17,7 @@ namespace SOUI
     {
     public:
         SImgFrame_WIC(IWICBitmapSource *pFrame=NULL);
-        void SetWICBitmpaSource(IWICBitmapSource *pFrame);
+        void SetWICBitmapSource(IWICBitmapSource *pFrame);
         void SetFrameDelay(int nDelay);
 
         virtual BOOL GetSize(UINT *pWid,UINT *pHei);
