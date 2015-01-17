@@ -34,7 +34,7 @@
         <text pos="70,35 " valign="middle" align="left" colorText="#CDD7E1" >时长：04:50 QQ:1035144170 </text>
       </item>
     </treebox>
-    
+    <text name="play_title" pos="15,-35" colorText="#000000" font="underline:1">当前播放: 无 </text>
   </window>
   <!--<group pos="0,0,-0,-0">
     I'm a group
