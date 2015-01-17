@@ -11,7 +11,7 @@
 #include "BassMusic.h"
 
 //通知消息ID
-#define MSG_USER_SEARCH_DMTASKDLG	(WM_USER+204)
+#define MSG_USER_REDRAW	(WM_USER+2000)
 
 class CMusicOpreat:public IMusicState,public SHostWnd
 {
