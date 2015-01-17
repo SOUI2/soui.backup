@@ -10,14 +10,18 @@
 #include "DropEx.h"
 #include "BassMusic.h"
 
+//通知消息ID
+#define MSG_USER_SEARCH_DMTASKDLG	(WM_USER+204)
+
 class CMusicOpreat:public IMusicState,public SHostWnd
 {
 public:
-	CMusicOpreat(void);
+	CMusicOpreat(HWND m_PWnd);
 	~CMusicOpreat(void);
 
-	static CMusicOpreat *GetInstance();
-
+	//static CMusicOpreat *GetInstance();
+private:
+	 HWND m_ParenhWnd;
 	//接口继承
 public:
 	//正在播放
