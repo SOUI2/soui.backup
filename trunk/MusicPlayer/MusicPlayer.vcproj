@@ -241,6 +241,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MusicOperat.cpp"
+				>
+			</File>
+			<File
 				RelativePath="MusicPlayer.cpp"
 				>
 			</File>
