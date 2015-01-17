@@ -148,5 +148,5 @@ void CMusicOpreat::OnStop()
 	//自动切换下一首歌
 	OnButPlayNext();
 	//::PostMessage(GetContainer()->GetHostHwnd(), MSG_USER_SEARCH_DMTASKDLG, 0, 0);
-	::PostMessage(m_ParenhWnd,MSG_USER_SEARCH_DMTASKDLG,0,0);
+	::PostMessage(m_ParenhWnd,MSG_USER_REDRAW,0,0);
 }
