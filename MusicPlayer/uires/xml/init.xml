@@ -13,7 +13,6 @@
     <imgframe name="_skin.white.bkg" src="PNG:ID_PNG_WHITE_BKG"/>
     <imgframe name="_skin.music.list.bkg" src="PNG:ID_PNG_MUSIC_LIST_BKG"/>
     
-    <imglist name="_skin.logo" src="PNG:ID_PNG_LOGO" />
     <imglist name="_skin.logo.skin" src="PNG:ID_SKIN_LOGO" />
     <imglist name="_skin.spectrum" src="PNG:ID_SKIN_SPECTRUM" />
     

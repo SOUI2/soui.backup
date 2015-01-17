@@ -17,7 +17,6 @@
     <file name="ID_PNG_TOP_BKG" path="image\theme_top.png"/>
     <file name="ID_PNG_WHITE_BKG" path="image\white_bg.png"/>
     <file name="ID_PNG_MUSIC_LIST_BKG" path="image\dlg_music_list_bkg.png"/>
-    <file name="ID_PNG_LOGO" path="image\logo.png"/>
     <file name="ID_PNG_TAB_MAIN" path="image\skin_tab_main.png"/>
     <file name="ID_PNG_TAB_ICON" path="image\skin_tab_icon.png"/>
     <file name="ID_SKIN_LOGO" path="image\logo-128.png"/>

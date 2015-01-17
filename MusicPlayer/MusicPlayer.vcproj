@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="MusicPlayer"
 	ProjectGUID="{45DF2E47-78CB-3F62-8E5E-86EDEF03016D}"
+	RootNamespace="MusicPlayer"
 	Keyword="Qt4VSv1.0"
 	TargetFrameworkVersion="0"
 	>
@@ -344,10 +345,10 @@
 			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}"
 			>
 			<File
-				RelativePath="..\obj\release\MusicPlayer\musicplayer.res"
+				RelativePath="..\obj\debug\MusicPlayer\musicplayer.res"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -356,10 +357,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\obj\debug\MusicPlayer\musicplayer.res"
+				RelativePath="..\obj\release\MusicPlayer\musicplayer.res"
 				>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -414,6 +415,10 @@
 		</File>
 		<File
 			RelativePath=".\uires\xml\page_musiclist.xml"
+			>
+		</File>
+		<File
+			RelativePath=".\uires\uires.idx"
 			>
 		</File>
 	</Files>
