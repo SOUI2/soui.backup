@@ -41,7 +41,7 @@ public:
 	HSTREAM				m_hStream;					//当前播放
 	IMusicState			*m_pMusicState;				//接口指针
 
-	//
+	//单例模式
 public:
 	CBassMusicEngine(void);
 	~CBassMusicEngine(void);
