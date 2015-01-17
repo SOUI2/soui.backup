@@ -9,8 +9,9 @@
 #include "StdAfx.h"
 #include "MusicOperat.h"
 
-CMusicOpreat::CMusicOpreat(void)
+CMusicOpreat::CMusicOpreat(HWND m_PWnd)
 {
+	m_ParenhWnd=m_PWnd;
 	nIndex=0;         //播放索引
 	hStream=NULL;     //播放流
 	m_pBassMusic=NULL;
@@ -20,18 +21,19 @@ CMusicOpreat::CMusicOpreat(void)
 
 CMusicOpreat::~CMusicOpreat(void)
 {
+	
 	if (hStream)
 	{
 		BASS_ChannelStop(hStream);
 		hStream=NULL;
 	}
 }
-CMusicOpreat * CMusicOpreat::GetInstance()
-{
-	static CMusicOpreat _Instance;
-
-	return &_Instance;
-}
+//CMusicOpreat * CMusicOpreat::GetInstance()
+//{
+//	static CMusicOpreat _Instance;
+//
+//	return &_Instance;
+//}
 
 void CMusicOpreat::InitDatas()
 {
@@ -145,4 +147,6 @@ void CMusicOpreat::OnStop()
 {
 	//自动切换下一首歌
 	OnButPlayNext();
+	//::PostMessage(GetContainer()->GetHostHwnd(), MSG_USER_SEARCH_DMTASKDLG, 0, 0);
+	::PostMessage(m_ParenhWnd,MSG_USER_SEARCH_DMTASKDLG,0,0);
 }
