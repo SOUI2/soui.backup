@@ -125,6 +125,8 @@ const wchar_t * BUILDIN_SKIN_NAMES[]=
     L"_skin.sys.split.horz",
     L"_skin.sys.prog.bkgnd",
     L"_skin.sys.prog.bar",
+    L"_skin.sys.vert.prog.bkgnd",
+    L"_skin.sys.vert.prog.bar",
     L"_skin.sys.slider.thumb",
     L"_skin.sys.btn.close",
     L"_skin.sys.btn.minimize",

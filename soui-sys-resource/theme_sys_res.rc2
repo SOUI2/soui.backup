@@ -17,6 +17,8 @@ SYS_SPLIT_VERT          PNG                     "theme_sys_res\\sys_split_vert.p
 SYS_SPLIT_HORZ          PNG                     "theme_sys_res\\sys_split_horz.png"
 SYS_PROG_BKGND          PNG                     "theme_sys_res\\sys_prog_bkgnd.png"
 SYS_PROG_BAR            PNG                     "theme_sys_res\\sys_prog_bar.png"
+SYS_VERT_PROG_BKGND     PNG                     "theme_sys_res\\sys_vert_prog_bkgnd.png"
+SYS_VERT_PROG_BAR       PNG                     "theme_sys_res\\sys_vert_prog_bar.png"
 SYS_SLIDER_THUMB        PNG                     "theme_sys_res\\sys_slider_thumb.png"
 SYS_TAB_PAGE            PNG                     "theme_sys_res\\sys_tab_page.png"
 SYS_BTN_MINIMIZE        PNG                     "theme_sys_res\\sys_btn_minimize.png"

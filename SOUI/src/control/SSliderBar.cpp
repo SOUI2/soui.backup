@@ -13,6 +13,7 @@ SSliderBar::SSliderBar()
     : m_bDrag(FALSE)
     , m_uHtPrev(-1)
     , m_pSkinThumb(GETBUILTINSKIN(SKIN_SYS_SLIDER_THUMB))
+    , m_bThumbInRail(FALSE)
 {
     m_evtSet.addEvent(EventSliderPos::EventID);
 }
@@ -41,96 +42,85 @@ int SSliderBar::HitTest(CPoint pt)
 }
 
 
+SSliderBar::RANGE SSliderBar::_GetPartRange( int nLength,int nThumbSize, BOOL bThumbInRail, int nMin,int nMax,int nValue, UINT uSBCode )
+{
+    int nRailLen = nLength - nThumbSize;
+    
+    int nHalfThumb = nThumbSize/2;
+    int nSelect = nRailLen*nValue/(nMax-nMin);
+
+    RANGE rRet={0};
+    switch(uSBCode)
+    {
+    case SC_RAILBACK://轨道背景
+        rRet.value1=0;
+        rRet.value2=nLength;
+        if(!bThumbInRail)
+        {
+            rRet.value1+=nHalfThumb;
+            rRet.value2-=nHalfThumb;
+        }
+        break;
+    case SC_RAIL:   //轨道区
+        rRet.value1=0;
+        rRet.value2=nLength;
+        rRet.value1+=nHalfThumb;
+        rRet.value2-=nHalfThumb;
+        break;
+    case SC_SELECT:
+        rRet.value1=0;
+        rRet.value2=nSelect;
+        if(!bThumbInRail)
+        {
+            rRet.value1+=nHalfThumb;
+        }
+        rRet.value2+=nHalfThumb;
+        break;
+    case SC_THUMB:
+        rRet.value1 = nSelect;
+        rRet.value2 = nSelect+nThumbSize;
+        break;
+    }
+
+    return rRet;
+}
+
+
 CRect SSliderBar::GetPartRect(UINT uSBCode)
 {
     SASSERT(m_pSkinThumb);
 
     CRect rcClient;
     GetClientRect(&rcClient);
-
-
+    
     SIZE szThumb = m_pSkinThumb->GetSkinSize();
+    SIZE szRail  = m_pSkinBg->GetSkinSize();
 
-    int nLength = IsVertical()? rcClient.Height():rcClient.Width();
-    int nHei=IsVertical()? rcClient.Width():rcClient.Height();
-    int nRailWid=IsVertical()? m_pSkinBg->GetSkinSize().cx:m_pSkinBg->GetSkinSize().cy;
-    int nRailLength=nLength-(IsVertical()?szThumb.cy:szThumb.cx);
-    if(nRailWid>nHei) nRailWid=nHei;
-
-    CRect rcRet(0,0,nLength,nHei);
-    switch (uSBCode)
+    if(IsVertical())
     {
-    case SC_RAIL:
+        RANGE r = _GetPartRange(rcClient.Height(),szThumb.cy,m_bThumbInRail,m_nMinValue,m_nMaxValue,m_nValue,uSBCode);
+        CRect rc(rcClient.left,r.value1,rcClient.right,r.value2);
+        rc.OffsetRect(0,rcClient.top);
+        int   nSliderSize = max(szThumb.cx,szRail.cx);
+        rc.DeflateRect((rcClient.Width()-nSliderSize)/2,0);
+        if(uSBCode != SC_THUMB)
         {
-            //  左边要偏移滑块的一半(+1)
-            rcRet.left   += szThumb.cx/2;
-            //  右边要偏移滑块的一半(-1)
-            rcRet.right  -= szThumb.cx/2;
-            //  垂直居中
-            rcRet.top    += (nHei-nRailWid)/2;
-            rcRet.bottom -= (nHei-nRailWid)/2;
+            rc.DeflateRect((nSliderSize-szRail.cx)/2,0);
         }
-        break;
-
-    case SC_SELECT:
+        return rc;
+    }else
+    {
+        RANGE r = _GetPartRange(rcClient.Width(),szThumb.cx,m_bThumbInRail,m_nMinValue,m_nMaxValue,m_nValue,uSBCode);
+        CRect rc(r.value1,rcClient.top,r.value2,rcClient.bottom);
+        rc.OffsetRect(rcClient.left,0);
+        int   nSliderSize = max(szThumb.cy,szRail.cy);
+        rc.DeflateRect(0,(rcClient.Height()-nSliderSize)/2);
+        if(uSBCode != SC_THUMB)
         {
-            rcRet.left   += szThumb.cx/2;
-            rcRet.right  = rcRet.left+(m_nValue-m_nMinValue)*nRailLength/(m_nMaxValue-m_nMinValue);
-            //  垂直居中
-            rcRet.top    += (nHei-nRailWid)/2;
-            rcRet.bottom -= (nHei-nRailWid)/2;
+            rc.DeflateRect(0,(nSliderSize-szRail.cy)/2);
         }
-        break;
-
-    case SC_THUMB:
-        {
-            int nPos=(m_nValue-m_nMinValue)*nRailLength/(m_nMaxValue-m_nMinValue);
-            CSize szThumb=m_pSkinThumb->GetSkinSize();
-            if(!IsVertical())
-            {
-                rcRet.left += nPos;
-                //rcRet.left-=szThumb.cx/2-szThumb.cx/2;left不需要变化了
-                rcRet.right=rcRet.left+szThumb.cx;
-                int nMargin=(rcClient.Height()-szThumb.cy)/2;
-                if(nMargin>0)
-                {
-                    rcRet.top+=nMargin;
-                    rcRet.bottom=rcRet.top+szThumb.cy;
-                }else
-                {
-                    rcRet.top=0;
-                    rcRet.bottom=rcClient.Height();
-                }
-            }
-            else
-            {
-                rcRet.top += nPos;
-                //rcRet.top-=szThumb.cy/2-szThumb.cy/2;
-                rcRet.bottom=rcRet.top+szThumb.cy;
-                int nMargin=(rcClient.Width()-szThumb.cx)/2;
-                if(nMargin>0)
-                {
-                    rcRet.left+=nMargin;
-                    rcRet.right=rcRet.left+szThumb.cx;
-                }else
-                {
-                    rcRet.left=0;
-                    rcRet.right=rcClient.Width();
-                }
-            }
-            
-        }
-        break;
+        return rc;
     }
-
-    if(uSBCode!=SC_THUMB && IsVertical())
-    {//将横坐标，纵坐标交换
-        
-        _TSWAP(rcRet.left,rcRet.top);
-        _TSWAP(rcRet.right,rcRet.bottom);
-    }
-    rcRet.OffsetRect(rcClient.TopLeft());
-    return rcRet;
 }
 
 void SSliderBar::OnPaint(IRenderTarget * pRT)
@@ -141,7 +131,7 @@ void SSliderBar::OnPaint(IRenderTarget * pRT)
 
     BeforePaint(pRT, painter);
 
-    CRect rcRail=GetPartRect(SC_RAIL);
+    CRect rcRail=GetPartRect(SC_RAILBACK);
     m_pSkinBg->Draw(pRT,rcRail,0);
     if(m_nValue!=m_nMinValue)
     {
@@ -184,25 +174,22 @@ void SSliderBar::OnLButtonDown(UINT nFlags, CPoint point)
     }
     else
     {
-        if (uHit == SC_SELECT || uHit == SC_RAIL)
+        CRect rcRail=GetPartRect(SC_RAIL);
+        int nValue=0;
+        if(IsVertical())
         {
-            CRect rcRail=GetPartRect(SC_RAIL);
-            int nValue=0;
-            if(IsVertical())
-            {
-                nValue= (point.y-rcRail.top)*(m_nMaxValue-m_nMinValue+1)/rcRail.Height();
-            }else
-            {
-                nValue= (point.x-rcRail.left)*(m_nMaxValue-m_nMinValue+1)/rcRail.Width();
-            }
-            SetValue(nValue);
-            NotifyPos(SC_THUMB,m_nValue);
-            Invalidate();
-
-            m_bDrag    = TRUE;
-            m_ptDrag   = point;
-            m_nDragValue=m_nValue;
+            nValue= (point.y-rcRail.top)*(m_nMaxValue-m_nMinValue+1)/rcRail.Height();
+        }else
+        {
+            nValue= (point.x-rcRail.left)*(m_nMaxValue-m_nMinValue+1)/rcRail.Width();
         }
+        SetValue(nValue);
+        NotifyPos(SC_THUMB,m_nValue);
+        Invalidate();
+
+        m_bDrag    = TRUE;
+        m_ptDrag   = point;
+        m_nDragValue=m_nValue;
     }
 }
 

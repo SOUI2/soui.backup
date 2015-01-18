@@ -25,6 +25,11 @@ class SOUI_EXP SSliderBar : public SProgress
 {
     SOUI_CLASS_NAME(SSliderBar, L"sliderbar")
 
+    struct RANGE
+    {
+        int value1;
+        int value2;
+    };
 public:
     
     /**
@@ -48,6 +53,7 @@ public:
         SC_RAIL,
         SC_SELECT,
         SC_THUMB,
+        SC_RAILBACK,
     };
 
 public:    
@@ -61,13 +67,13 @@ public:
     int    HitTest(CPoint pt);
 
 protected:
-    BOOL      m_bDrag;  /**< 是否允许拖动 */
-    CPoint    m_ptDrag; /**< 拖动位置     */
-    int       m_nDragValue; /**< 拖动距离 */
-    int       m_uHtPrev; /**<  */
+    BOOL      m_bDrag;          /**< 是否允许拖动 */
+    CPoint    m_ptDrag;         /**< 拖动位置     */
+    int       m_nDragValue;     /**< 拖动距离 */
+    int       m_uHtPrev;        /**< 上次的鼠标位置 */
 
-    ISkinObj  *m_pSkinThumb; /**< 皮肤对象 */
-
+    ISkinObj *m_pSkinThumb;     /**< 皮肤对象 */
+    BOOL      m_bThumbInRail;   /**< 滑块包含在轨道中 */
 protected:
     
     /**
@@ -99,6 +105,8 @@ protected:
      */
     CRect   GetPartRect(UINT uSBCode);
     
+    RANGE _GetPartRange(int nLength,int nThumbSize, BOOL bThumbInRail, int nMin,int nMax,int nValue, UINT uSBCode);
+
     /**
      * SSliderBar::OnPaint
      * @brief    绘制
@@ -156,7 +164,8 @@ protected:
     SOUI_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()
-        ATTR_SKIN(L"thumbSkin", m_pSkinThumb, FALSE)
+        ATTR_SKIN(L"thumbSkin", m_pSkinThumb, TRUE)
+        ATTR_INT(L"thumbInRail",m_bThumbInRail,TRUE)
     SOUI_ATTRS_END()
 };
 
