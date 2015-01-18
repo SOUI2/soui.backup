@@ -66,6 +66,11 @@ namespace SOUI
         EVT_OFEVENT,    //消息二次包装
         EVT_OFPANEL,    //一个itemPanel中的消息的二次包装
 
+        //增加3个itempanel相关的事件,经过EVT_OFPANEL到达应用层
+        EVT_ITEMPANEL_CLICK,
+        EVT_ITEMPANEL_DBCLICK,
+        EVT_ITEMPANEL_RCLICK,
+
         EVT_TAB_SELCHANGING=11000,
         EVT_TAB_SELCHANGED,
 
