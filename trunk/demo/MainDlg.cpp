@@ -442,6 +442,12 @@ void CMainDlg::OnTreeBoxEvent( EventArgs *pEvt )
         strMsg.Format(_T("收到treebox item:0x%08x中的name为%s的窗口点击事件"),hItem,S_CW2T(pEvtOfPanel->pOrgEvt->nameFrom));
         SMessageBox(m_hWnd,strMsg,_T("EVENTOFPANEL"),MB_OK|MB_ICONEXCLAMATION);        
     }
+
+    if(pEvtOfPanel->pOrgEvt->GetEventID() >= EVT_ITEMPANEL_CLICK && pEvtOfPanel->pOrgEvt->GetEventID() <= EVT_ITEMPANEL_RCLICK)
+    {
+        HSTREEITEM hItem = (HSTREEITEM)pEvtOfPanel->pPanel->GetItemIndex();
+        STRACE(_T("OnTreeBoxEvent: EVT_ITEMPANEL_X, itemid=0x%08x,evtid=%d"),hItem,pEvtOfPanel->pOrgEvt->GetEventID());
+    }
 }
 
 void CMainDlg::OnTabPageRadioSwitch(int nID)

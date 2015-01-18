@@ -31,6 +31,9 @@ SItemPanel::SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer
         InitFromXml(xmlNode);
         BuildWndTreeZorder();
     }
+    m_evtSet.addEvent(EVT_ITEMPANEL_CLICK);
+    m_evtSet.addEvent(EVT_ITEMPANEL_DBCLICK);
+    m_evtSet.addEvent(EVT_ITEMPANEL_RCLICK);
 }
 
 void SItemPanel::OnFinalRelease()
@@ -55,6 +58,20 @@ LRESULT SItemPanel::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
             ModifyState(0,WndState_Hover,TRUE);
             break;
         }
+    }
+
+    if(uMsg == WM_LBUTTONDOWN)
+    {
+        EventCmnArgs evt(this,EVT_ITEMPANEL_CLICK);
+        OnFireEvent(evt);
+    }else if(uMsg == WM_RBUTTONDOWN)
+    {
+        EventCmnArgs evt(this,EVT_ITEMPANEL_RCLICK);
+        OnFireEvent(evt);
+    }else if(uMsg == WM_LBUTTONDBLCLK)
+    {
+        EventCmnArgs evt(this,EVT_ITEMPANEL_DBCLICK);
+        OnFireEvent(evt);
     }
 
     SetMsgHandled(FALSE);
