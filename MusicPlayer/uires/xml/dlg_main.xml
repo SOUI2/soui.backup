@@ -192,7 +192,7 @@
         <!-- 使用控件：SOUI的Progress控件的使用          -->
         <!--progress name="prog_test" pos="175,25,-252,115" value="20" min="0" max="100" showPercent="1" thumbSkin="_skin.btn.slider.thumb"/>-->
         <!-- 使用控件：SOUI的Sliderbar控件的使用         -->
-        <sliderbar name="slider_test" colorBkgnd="#ff0000" pos="70,30" alpha="200" width="250" value="0" min="0" max="100" showpercent="1" posSkin="_skin.btn.slider.pos" bkgndSkin="_skin.btn.slider.bkg" thumbSkin="_skin.btn.slider.thumb" tile="1"/>
+        <sliderbar name="slider_test" pos="70,30" alpha="200" width="250" value="0" min="0" max="100" showpercent="1" posSkin="_skin.btn.slider.pos" bkgndSkin="_skin.btn.slider.bkg" thumbSkin="_skin.btn.slider.thumb" tile="1"/>
         <!-- 属性tile="1"平铺progressbar的前景图         -->
         <!--<imgbtn name="btn_voume" skin="_skin.btn.volume" pos="-242,26" animate="1" />
         <imgbtn name="btn_lyric" skin="_skin.btn.lyric" pos="-188,24" animate="1" />
