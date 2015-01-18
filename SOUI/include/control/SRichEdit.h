@@ -1205,7 +1205,7 @@ namespace SOUI
         SIZEL        m_sizelExtent;          /**< Extent array              */
         CRect        m_rcInset;              /**< inset margin              */
         CRect        m_rcInsetPixel;         /**< inset margin in pixel     */
-        int          m_nFontHeight;          /**< 文字输出高度              */
+        int          m_nFontHeight;          /**< 单行文字输出高度          */
         DWORD        m_dwStyle;
 
         UINT    m_fEnableAutoWordSel    :1;    /**< enable Word style auto word selection?  */

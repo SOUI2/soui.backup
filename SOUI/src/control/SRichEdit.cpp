@@ -27,7 +27,7 @@ namespace SOUI
     
     STextServiceHelper::STextServiceHelper()
     {
-        m_rich20=LoadLibrary(_T("riched20.dll"));
+        m_rich20=LoadLibrary(_T("E:\\soui.taobao\\third-part\\richedit\\Debug\\richedit.dll"));
         if(m_rich20) m_funCreateTextServices= (PCreateTextServices)GetProcAddress(m_rich20,"CreateTextServices");
     }
 
@@ -837,7 +837,9 @@ HRESULT SRichEdit::InitDefaultCharFormat( CHARFORMAT2W* pcf ,IFont *pFont)
     
     CAutoRefPtr<IFont> oldFont;
     if(pFont==NULL) pFont=(IFont *)pRT->GetCurrentObject(OT_FONT);
-	m_nFontHeight=abs(pFont->TextSize());
+    SIZE szTxt;
+    pRT->MeasureText(_T("A"),1,&szTxt);
+	m_nFontHeight=szTxt.cy;
 
     memset(pcf, 0, sizeof(CHARFORMAT2W));
     pcf->cbSize = sizeof(CHARFORMAT2W);
