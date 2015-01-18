@@ -550,6 +550,11 @@ void STreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
 
 LRESULT STreeBox::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 {
+    if(uMsg == WM_MOUSEWHEEL)
+    {
+        POINT pt={GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam) };
+        return SScrollView::OnMouseWheel(GET_KEYSTATE_WPARAM(wParam),GET_WHEEL_DELTA_WPARAM(wParam),pt);
+    }
     CPoint pt(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam));
     if(m_pCapturedFrame)
     {
