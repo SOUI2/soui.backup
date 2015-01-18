@@ -77,7 +77,7 @@
             <text pos="182,0,180,-0" colorBkgnd="#DADADA" colorText="#ff0000"></text>
             <text pos="|90,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#80FFFF">本地歌曲</text>-->
 
-            <window pos="1,1,-1,-105"  cache="1">
+            <window pos="1,1,-1,-105"  cache="0">
               <!--skin="_skin.sys.wnd.bkgnd"-->
               <tabctrl name="tab_3d" pos="1,1,-1,-1" tabHeight="0" >
                 <page title="musiclist">
@@ -131,12 +131,16 @@
               <check pos="65,170">开机自动运行</check>
               
               <text pos="55,200">关闭程序：</text>
-              <radio pos="65,220" name="radio_1" checked="1">最小化到托盘</radio>
-              <radio pos="65,240" name="radio_2">退出程序</radio>
+              <window pos="{10,[10,@300,@50">
+                <radio pos="0,0" name="radio_1" checked="1">最小化到托盘</radio>
+                <radio pos="0,20" name="radio_2">退出程序</radio>
+              </window>
 
               <text pos="55,280">添加音乐到列表时：</text>
-              <radio pos="65,300" name="radio_4" checked="1">下一首播放</radio>
-              <radio pos="65,320" name="radio_5">最后播放</radio>
+              <window pos="{10,[10,@300,@50">
+                <radio pos="0,0" name="radio_4" checked="1">下一首播放</radio>
+                <radio pos="0,20" name="radio_5">最后播放</radio>
+              </window>
 
               <!--<window pos="10,[10,-10,-10">
               </window>-->

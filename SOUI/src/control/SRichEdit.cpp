@@ -27,7 +27,7 @@ namespace SOUI
     
     STextServiceHelper::STextServiceHelper()
     {
-        m_rich20=LoadLibrary(_T("E:\\soui.taobao\\third-part\\richedit\\Debug\\richedit.dll"));
+        m_rich20=LoadLibrary(_T("riched20.dll"));
         if(m_rich20) m_funCreateTextServices= (PCreateTextServices)GetProcAddress(m_rich20,"CreateTextServices");
     }
 
