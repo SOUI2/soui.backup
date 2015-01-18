@@ -514,6 +514,7 @@ protected:
     virtual CSize GetDesiredSize(LPCRECT pRcContainer);
 
     void OnPaint(IRenderTarget *pRT);
+    int  OnCreate(void*);
 
     int m_nMinValue; /**< 进度最小值 */
     int m_nMaxValue; /**< 进度最大值 */
@@ -527,6 +528,7 @@ protected:
 
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
+        MSG_WM_CREATE(OnCreate)
     SOUI_MSG_MAP_END()
 
     SOUI_ATTRS_BEGIN()

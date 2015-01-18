@@ -74,8 +74,11 @@
       </tabctrl>
     </page>
     <page title="prog and slider" colorBorder="#ff0000" margin-x="1" margin-y="1">
-      <progress name="prog_test" pos="200,100,-10,115" value="20" min="0" max="100" showPercent="1"/>
-      <sliderbar name="slider_test" pos="%20.5,130" alpha="200" width="200" value="20" min="0" max="100"/>
+      <progress name="prog_test" pos="100,100,@200,@15" font="adding:-8" value="20" min="0" max="100" showPercent="1"/>
+      <sliderbar name="slider_test" thumbInRail="0" pos="100,[10" alpha="200" width="200" value="20" min="0" max="100"/>
+      <sliderbar name="slider_test2" thumbInRail="1" pos="100,[10" alpha="200" width="200" value="20" min="0" max="100"/>
+      <sliderbar name="slider_test3" thumbInRail="0" vertical="1" pos="10,10" alpha="200" height="200" value="20" min="0" max="100"/>
+      <sliderbar name="slider_test4" thumbInRail="1" vertical="1" pos="[10,10" alpha="200" height="200" value="20" min="0" max="100"/>
     </page>
     <page title="calendar">
       <calendar pos="0,0,-0,-0" name="mp_test" daySkin="_skin.sys.btn.normal" footerHeight="30">

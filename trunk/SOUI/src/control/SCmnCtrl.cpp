@@ -481,8 +481,8 @@ SProgress::SProgress()
     , m_nMaxValue(100)
     , m_nValue(0)
     , m_bShowPercent(FALSE)
-    , m_pSkinBg(GETBUILTINSKIN(SKIN_SYS_PROG_BKGND))
-    , m_pSkinPos(GETBUILTINSKIN(SKIN_SYS_PROG_BAR))
+    , m_pSkinBg(NULL)
+    , m_pSkinPos(NULL)
     , m_bVertical(FALSE)
 {
 
@@ -547,9 +547,18 @@ void SProgress::OnPaint(IRenderTarget *pRT)
     AfterPaint(pRT, painter);
 }
 
+int SProgress::OnCreate( void* )
+{
+    if(!m_pSkinBg)  m_pSkinBg=GETBUILTINSKIN(IsVertical()?SKIN_SYS_VERT_PROG_BKGND:SKIN_SYS_PROG_BKGND);
+    if(!m_pSkinPos) m_pSkinPos=GETBUILTINSKIN(IsVertical()?SKIN_SYS_VERT_PROG_BAR:SKIN_SYS_PROG_BAR);
+    SASSERT(m_pSkinBg && m_pSkinPos);
+    return (m_pSkinBg && m_pSkinPos)?0:-1;
+}
+
 BOOL SProgress::SetValue(int dwValue)
 {
-    if(dwValue<m_nMinValue || dwValue>m_nMaxValue) return FALSE;
+    if(dwValue<m_nMinValue) dwValue =m_nMinValue;
+    if(dwValue>m_nMaxValue) dwValue =m_nMaxValue;
     m_nValue=dwValue;
     
     Invalidate();

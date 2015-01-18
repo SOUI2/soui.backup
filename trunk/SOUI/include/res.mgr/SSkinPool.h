@@ -40,6 +40,8 @@ namespace SOUI
         SKIN_SYS_SPLIT_HORZ,            //L"_skin.sys.split.horz",
         SKIN_SYS_PROG_BKGND,            //L"_skin.sys.prog.bkgnd",
         SKIN_SYS_PROG_BAR,              //L"_skin.sys.prog.bar",
+        SKIN_SYS_VERT_PROG_BKGND,       //L"_skin.sys.vert.prog.bkgnd",
+        SKIN_SYS_VERT_PROG_BAR,         //L"_skin.sys.vert.prog.bar",
         SKIN_SYS_SLIDER_THUMB,          //L"_skin.sys.slider.thumb",
 
         SKIN_SYS_BTN_CLOSE,             //L"_skin.sys.btn.close",
