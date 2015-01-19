@@ -307,6 +307,8 @@ protected:
      */
     virtual void DrawItem(IRenderTarget *pRT, CRect & rc, HSTREEITEM hItem);
 
+    virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo);
+
     /**
      * STreeBox::OnPaint
      * @brief    绘制
@@ -425,6 +427,7 @@ protected:
         return SC_WANTALLKEYS;
     }
 
+protected:
     /**
      * STreeBox::IsAncestor
      * @brief    判断是否是先祖
@@ -434,6 +437,8 @@ protected:
      * Describe  判断是否是先祖
     */
     BOOL IsAncestor(HSTREEITEM hItem1,HSTREEITEM hItem2);
+
+    void UpdateSwitchState(HSTREEITEM hItem);
 protected:
     /**
      * STreeBox::OnItemSetCapture
@@ -475,7 +480,6 @@ protected:
     COLORREF m_crItemSelBg;  /**< 选中背景色 */ 
     ISkinObj * m_pItemSkin;  /**< ISkinObj对象 */ 
     BOOL m_bItemRedrawDelay;  /**< */
-    pugi::xml_document m_xmlSwitch;/**< xml文件 */
 
     SOUI_ATTRS_BEGIN()
         ATTR_INT(L"indent", m_nIndent, TRUE)
