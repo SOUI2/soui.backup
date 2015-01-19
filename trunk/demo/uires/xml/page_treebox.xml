@@ -9,11 +9,13 @@
         <text pos="10,5" colorText="#ff0000" font="underline:1">red test</text>
         <text font="strike:1">normal text</text>
         <button class="normalbtn" pos="300,3,-10,-3" name="btn_in_treebox">button</button>
+        <toggle pos="0,5" name="switch" skin="_skin.sys.tree.toggle" tip="show how to use switch"/>
       </item>
       <item>
         <text pos="10,5" colorText="#ff0000">red test</text>
         <text>normal text</text>
-        <button class="normalbtn" pos="300,3,-10,-3" name="btn_in_treebox">button</button>
+        <button class="normalbtn" pos="300,3,-10,-3" name="btn_in_treebox" tip="button">button with tip</button>
+        <toggle pos="0,5" name="switch" skin="_skin.sys.tree.toggle" tip="show how to use switch"/>
         <item expand="0">
           <text pos="10,5" colorText="#ff0000">red test</text>
           <text>normal text</text>
