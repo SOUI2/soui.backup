@@ -12,7 +12,7 @@
 namespace SOUI
 {
 
-#define IDC_SWITCH    65530
+static const wchar_t NAME_SWITCH[] =   L"switch";
 
     STreeItem::STreeItem(SWindow *pFrameHost,IItemContainer *pContainer)
     : SItemPanel(pFrameHost,pugi::xml_node(),pContainer)
@@ -56,16 +56,6 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
     {
         STreeItem * pParentItem= GetItem(hParent);
         if(pParentItem->m_bCollapsed || !pParentItem->m_bVisible) pItemObj->m_bVisible=FALSE;
-        if(!GetChildItem(hParent) && m_xmlSwitch.first_child())
-        {
-            SToggle *pToggle= (SToggle*)SApplication::getSingleton().CreateWindowByName(SToggle::GetClassName());
-            pToggle->SetContainer(pParentItem->GetContainer());
-            pToggle->InitFromXml(m_xmlSwitch.first_child());
-            pParentItem->InsertChild(pToggle);
-            pToggle->SetToggle(FALSE,FALSE);
-            pToggle->SetID(IDC_SWITCH);
-            pParentItem->UpdateChildrenPosition();
-        }
     }
     pItemObj->SetItemData(dwData);
     pItemObj->SetColor(m_crItemBg,m_crItemSelBg);
@@ -74,6 +64,12 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
 
     HSTREEITEM hRet= CSTree<STreeItem*>::InsertItem(pItemObj,hParent,hInsertAfter);
     pItemObj->SetItemIndex((LPARAM)hRet);
+
+    UpdateSwitchState(hRet);
+    if(hParent!=STVI_ROOT) 
+    {
+        UpdateSwitchState(hParent);
+    }
 
     if(pItemObj->m_bVisible)
     {
@@ -119,18 +115,8 @@ BOOL STreeBox::RemoveItem(HSTREEITEM hItem)
     if(IsAncestor(hItem,m_hSelItem)) m_hSelItem=NULL;
 
     DeleteItem(hItem);
-
-    if(hParent && !GetChildItem(hParent) && m_xmlSwitch)
-    {
-        //去掉父节点的展开标志
-        STreeItem *pParent=GetItem(hParent);
-        pParent->m_bCollapsed=FALSE;
-        SWindow *pToggle=pParent->FindChildByID(IDC_SWITCH,1);
-        SASSERT(pToggle);
-        pParent->DestroyChild(pToggle);
-        if(pParent->m_bVisible) InvalidateRect(pParent->GetItemRect());
-    }
-
+    
+    UpdateSwitchState(hParent);
 
     if(bVisible)
     {
@@ -223,12 +209,8 @@ BOOL STreeBox::Expand(HSTREEITEM hItem , UINT nCode)
         }
         if(bRet)
         {
-            if(m_xmlSwitch.first_child())
-            {
-                SToggle *pSwitch=(SToggle*)pItem->FindChildByID(IDC_SWITCH,1);
-                SASSERT(pSwitch);
-                pSwitch->SetToggle(pItem->m_bCollapsed,FALSE);
-            }
+            UpdateSwitchState(hItem);
+
             CSize szView(m_rcWindow.Width(),m_nVisibleItems*m_nItemHei);
             if(szView.cy>m_rcWindow.Height()) szView.cx-=m_nSbWid;
             SetViewSize(szView);
@@ -339,10 +321,6 @@ int STreeBox::GetScrollLineSize(BOOL bVertical)
 BOOL STreeBox::CreateChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return FALSE;
-
-    pugi::xml_node xmlSwitch=xmlNode.child(L"switch");
-
-    if(xmlSwitch)   m_xmlSwitch.append_copy(xmlSwitch);
 
     RemoveAllItems();
 
@@ -635,7 +613,8 @@ BOOL STreeBox::FireEvent(EventArgs &evt)
     if(evt.GetEventID()==EventOfPanel::EventID)
     {
         EventOfPanel *pEvt = (EventOfPanel *)&evt;
-        if(pEvt->pOrgEvt->idFrom == IDC_SWITCH)
+        if(pEvt->pOrgEvt->GetEventID()==EVT_CMD 
+            && wcscmp(pEvt->pOrgEvt->nameFrom , NAME_SWITCH)==0)
         {
             STreeItem *pItem=(STreeItem*)pEvt->pPanel;
             SASSERT(pItem);
@@ -769,6 +748,25 @@ LRESULT STreeBox::OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
         SetMsgHandled(FALSE);
     }
     return lRet;
+}
+
+void STreeBox::UpdateSwitchState( HSTREEITEM hItem )
+{
+    STreeItem *pItem = GetItem(hItem);
+    SToggle *pSwitch = pItem->FindChildByName2<SToggle>(NAME_SWITCH);
+    if(pSwitch)
+    {
+        pSwitch->SetVisible(GetChildItem(hItem)!=0);
+        pSwitch->SetToggle(!pItem->m_bCollapsed);
+    }
+}
+
+BOOL STreeBox::OnUpdateToolTip( CPoint pt, SwndToolTipInfo & tipInfo )
+{
+    if(m_hHoverItem==NULL)
+        return __super::OnUpdateToolTip(pt,tipInfo);
+    STreeItem *pItem = GetItem(m_hHoverItem);
+    return pItem->OnUpdateToolTip(pt,tipInfo);
 }
 
 }//namespace SOUI
