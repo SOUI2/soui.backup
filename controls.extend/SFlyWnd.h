@@ -7,7 +7,6 @@
 
 namespace SOUI
 {
-#define NAME_SWITCH L"switch"
 
 #define EVT_FLYSTATE    (EVT_EXTERNAL_BEGIN+200)
 
