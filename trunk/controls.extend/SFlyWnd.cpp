@@ -4,6 +4,7 @@
 
 namespace SOUI
 {
+    static const wchar_t NAME_SWITCH[] =   L"switch";
 
     SFlyWnd::SFlyWnd(void):m_bEndPos(FALSE),m_nAniTime(200)
     {
