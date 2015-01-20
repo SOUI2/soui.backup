@@ -199,6 +199,7 @@ public:
 
     SRichEdit * m_pHost;
     LONG m_cRef;
+    int         m_cTime;
 };
 
 
