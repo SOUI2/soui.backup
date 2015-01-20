@@ -479,3 +479,29 @@ void CMainDlg::OnTabPageRadioSwitch(int nID)
         if(pTab) pTab->SetCurSel(nID-10000);
     }
 }
+
+void CMainDlg::OnBtnRtfSave()
+{
+    SRichEdit *pEdit = FindChildByName2<SRichEdit>(L"re_gifhost");
+    if(pEdit)
+    {
+        CFileDialogEx openDlg(FALSE,_T("rtf"),_T("soui_richedit"),6,_T("rtf files(*.rtf)\0*.rtf\0All files (*.*)\0*.*\0\0"));
+        if(openDlg.DoModal()==IDOK)
+        {
+            pEdit->SaveRtf(openDlg.m_szFileName);
+        }
+    }
+}
+
+void CMainDlg::OnBtnRtfOpen()
+{
+    SRichEdit *pEdit = FindChildByName2<SRichEdit>(L"re_gifhost");
+    if(pEdit)
+    {
+        CFileDialogEx openDlg(TRUE,_T("rtf"),0,6,_T("rtf files(*.rtf)\0*.rtf\0All files (*.*)\0*.*\0\0"));
+        if(openDlg.DoModal()==IDOK)
+        {
+            pEdit->LoadRtf(openDlg.m_szFileName);
+        }
+    }
+}

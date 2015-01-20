@@ -94,7 +94,11 @@ protected:
     //按钮控件的响应
     void OnBtnSelectGIF();
     void OnBtnMenu();
+
     void OnBtnInsertGif2RE();
+    void OnBtnRtfSave();
+    void OnBtnRtfOpen();
+
     void OnBtnHideTest();
     void OnBtnMsgBox();
 
@@ -130,6 +134,8 @@ protected:
         EVENT_NAME_COMMAND(L"btn_webkit_refresh",OnBtnWebkitRefresh)
         EVENT_NAME_COMMAND(L"btn_hidetst",OnBtnHideTest)
         EVENT_NAME_COMMAND(L"btn_insert_gif",OnBtnInsertGif2RE)
+        EVENT_NAME_COMMAND(L"btn_richedit_save",OnBtnRtfSave)
+        EVENT_NAME_COMMAND(L"btn_richedit_open",OnBtnRtfOpen)
         EVENT_NAME_COMMAND(L"btn_skiatest",OnSkiaTest)
         EVENT_NAME_HANDLER(L"lbe_test",EVT_OFPANEL,OnListBoxExEvent)//响应EVT_OFPANEL事件
         EVENT_NAME_HANDLER(L"tb_test",EVT_OFPANEL,OnTreeBoxEvent)//响应EVT_OFPANEL事件
