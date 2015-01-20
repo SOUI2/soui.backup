@@ -24,9 +24,6 @@
         <edit pos="0,0,-30,-0" font="adding:10" margin="0" cueText="cue text" cueColor="rgb(255,0,0)" password="1">scroll edit</edit>
         <button pos="-30,0,-0,-0" >:)</button>
       </window>
-      <text pos="50,[5">richedit:</text>
-      <button name="btn_insert_gif" height="25">insert gif to richedit</button>
-      <richedit name="re_gifhost" pos="50,[5,-5,-5" class="cls_edit" enableDragdrop="1" multiLines="1" vscrollBar="1" wordWrap="1"  autoVscroll="1" hscrollBar="0" wantReturn="1"  rtf="rtf:rtf_test">this is a richedit.中文也可以初始化。</richedit>
     </page>
     <page title="buttons" colorBorder="#ffff00" margin-x="15" margin-y="15">
       <button name="btn_msgbox" pos="10,50" width="200" height="30" accel="ctrl+alt+f9" animate="0">show msg box</button>
