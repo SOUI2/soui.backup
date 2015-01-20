@@ -669,6 +669,9 @@ namespace SOUI
         */
         virtual ~SRichEdit() {}
 
+        DWORD SaveRtf(LPCTSTR pszFileName);
+
+        DWORD LoadRtf(LPCTSTR pszFileName);
     public://richedit interface
         /**
         * SRichEdit::GetWindowText

@@ -1451,7 +1451,7 @@ HRESULT SRichEdit::OnAttrTextColor( const SStringW &  strValue,BOOL bLoading )
     return S_OK;
 }
 
-DWORD CALLBACK EditStreamCallback_FILE(
+DWORD CALLBACK EditStreamInCallback_FILE(
                                   DWORD_PTR dwCookie,
                                   LPBYTE pbBuff,
                                   LONG cb,
@@ -1464,12 +1464,25 @@ DWORD CALLBACK EditStreamCallback_FILE(
     return 0;
 }
 
+DWORD CALLBACK EditStreamOutCallback_FILE(
+                                       DWORD_PTR dwCookie,
+                                       LPBYTE pbBuff,
+                                       LONG cb,
+                                       LONG * pcb 
+                                       )
+{
+    FILE *f=(FILE*)dwCookie;
+    LONG nWrited = fwrite(pbBuff,1,cb,f);
+    if(pcb) *pcb = nWrited;
+    return 0;
+}
+
 struct MemBlock{
     LPCBYTE  pBuf;
     LONG     nRemains;
 };
 
-DWORD CALLBACK EditStreamCallback_MemBlock(
+DWORD CALLBACK EditStreamInCallback_MemBlock(
                                        DWORD_PTR dwCookie,
                                        LPBYTE pbBuff,
                                        LONG cb,
@@ -1518,20 +1531,12 @@ HRESULT SRichEdit::OnAttrRTF( const SStringW & strValue,BOOL bLoading )
                 mb.nRemains=dwSize;
                 GETRESPROVIDER->GetRawBuffer(lstSrc[0],lstSrc[1],mybuf,dwSize);
                 es.dwCookie=(DWORD_PTR)&mb;
-                es.pfnCallback=EditStreamCallback_MemBlock;
+                es.pfnCallback=EditStreamInCallback_MemBlock;
                 SSendMessage(EM_STREAMIN,SF_RTF,(LPARAM)&es);
             }
         }else
         {//load from file
-            FILE *f=_tfopen(lstSrc[0],_T("rb"));
-            if(f)
-            {
-                EDITSTREAM es;
-                es.dwCookie=(DWORD_PTR)f;
-                es.pfnCallback=EditStreamCallback_FILE;
-                SSendMessage(EM_STREAMIN,SF_RTF,(LPARAM)&es);
-                fclose(f);
-            }
+            LoadRtf(lstSrc[0]);
         }
         return S_FALSE;
     }
@@ -1576,6 +1581,29 @@ HRESULT SRichEdit::OnAttrAlign( const SStringW & strValue,BOOL bLoading )
     return bLoading?S_FALSE:S_OK;
 }
 
+DWORD SRichEdit::SaveRtf( LPCTSTR pszFileName )
+{
+    FILE *f=_tfopen(pszFileName,_T("wb"));
+    if(!f) return 0;
+    EDITSTREAM es;
+    es.dwCookie=(DWORD_PTR)f;
+    es.pfnCallback=EditStreamOutCallback_FILE;
+    DWORD dwRet=SSendMessage(EM_STREAMOUT,SF_RTF,(LPARAM)&es);
+    fclose(f);
+    return dwRet;
+}
+
+DWORD SRichEdit::LoadRtf( LPCTSTR pszFileName )
+{
+    FILE *f=_tfopen(pszFileName,_T("rb"));
+    if(!f) return FALSE;
+    EDITSTREAM es;
+    es.dwCookie=(DWORD_PTR)f;
+    es.pfnCallback=EditStreamInCallback_FILE;
+    DWORD dwRet=SSendMessage(EM_STREAMIN,SF_RTF,(LPARAM)&es);
+    fclose(f);
+    return dwRet;
+}
 //////////////////////////////////////////////////////////////////////////
 
 SEdit::SEdit() :m_crCue(RGBA(0xcc,0xcc,0xcc,0xff))
