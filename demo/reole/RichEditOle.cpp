@@ -297,7 +297,7 @@ HRESULT CSmileySource::GetFrameCount( /* [out] */ int *pFrameCount )
 
 HRESULT CSmileySource::GetFrameDelay( /* [in] */ int iFrame, /* [out] */ int *pFrameDelay )
 {
-    if(!m_pImg) return E_FAIL;
+    if(!m_pImg || m_pImg->GetFrameCount()<=1) return E_FAIL;
     if(iFrame>=m_pImg->GetFrameCount()) return E_INVALIDARG;
     *pFrameDelay = m_pImg->GetFrameDelays()[iFrame];
     return S_OK;
@@ -327,7 +327,7 @@ ISmileySource * CSmileySource::CreateInstance()
 
 //////////////////////////////////////////////////////////////////////////
 //  CSmileyHost
-CSmileyHost::CSmileyHost() :m_pHost(0),m_cRef(1)
+CSmileyHost::CSmileyHost() :m_pHost(0),m_cRef(1),m_cTime(0)
 {
 
 }
@@ -365,9 +365,12 @@ HRESULT STDMETHODCALLTYPE CSmileyHost::SetTimer( /* [in] */ ITimerHandler * pTim
     return S_OK;
 }
 
-
+#define INTERVAL    2
 HRESULT STDMETHODCALLTYPE  CSmileyHost::OnTimer( int nInterval )
 {
+    if(++m_cTime<INTERVAL) return S_OK;
+    m_cTime=0;
+
     TIMERHANDLER_LIST lstDone;
     
     //找到所有到时间的定时器,防止在执行定时器时插入新定时器，需要先查找再执行。
@@ -377,7 +380,7 @@ HRESULT STDMETHODCALLTYPE  CSmileyHost::OnTimer( int nInterval )
         TIMERHANDLER_LIST::iterator it2=it;
         it++;
         TIMERINFO *pTi = *it2;
-        pTi->nPassTime += nInterval;
+        pTi->nPassTime += nInterval*INTERVAL;
         if(pTi->nPassTime >= pTi->nInterval)
         {
             lstDone.push_back(pTi);
