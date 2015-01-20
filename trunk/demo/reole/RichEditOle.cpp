@@ -39,24 +39,28 @@ float FitSize(CSize& InSize, CSize& ImageSize)
     return scale;
 }
 
-BOOL GetBitmapFromFile(Gdiplus::Bitmap* &m_pBitmap, const SStringW& strFilename, 
+HBITMAP GetBitmapFromFile(const SStringW& strFilename, 
                        int& m_nFrameCount, CSize& m_FrameSize, CSize& ImageSize,
                        UINT* &m_pFrameDelays )
 {
-    Gdiplus::Bitmap * tempBitmap= new Gdiplus::Bitmap((LPCWSTR)strFilename);    
-    if (!tempBitmap) return FALSE;
+    Gdiplus::Bitmap * bmpSrc= new Gdiplus::Bitmap((LPCWSTR)strFilename);    
+    if (!bmpSrc) return NULL;
     GUID   pageGuid = FrameDimensionTime;
     // Get the number of frames in the first dimension.
-    m_nFrameCount = max(1, tempBitmap->GetFrameCount(&pageGuid));
+    m_nFrameCount = max(1, bmpSrc->GetFrameCount(&pageGuid));
 
 
-    CSize imSize(tempBitmap->GetWidth(),tempBitmap->GetHeight());
+    CSize imSize(bmpSrc->GetWidth(),bmpSrc->GetHeight());
     m_FrameSize=ImageSize;
     float scale=FitSize(m_FrameSize,imSize);
+    
+    HDC hdc = GetDC(NULL);
+    HDC hMemDC = CreateCompatibleDC(hdc);
+    HBITMAP hBmp = CreateCompatibleBitmap(hdc,m_FrameSize.cx*m_nFrameCount, m_FrameSize.cy);
+    SelectObject(hMemDC,hBmp);
 
-    m_pBitmap=new Gdiplus::Bitmap(m_FrameSize.cx*m_nFrameCount, m_FrameSize.cy, PixelFormat32bppARGB);
+    Graphics *g = new Gdiplus::Graphics(hMemDC);
 
-    Graphics *g=new Gdiplus::Graphics(m_pBitmap);
     ImageAttributes attr;
     if ( scale!=1 ) 
     {
@@ -71,22 +75,22 @@ BOOL GetBitmapFromFile(Gdiplus::Bitmap* &m_pBitmap, const SStringW& strFilename,
     if (m_nFrameCount>1)
     {
         m_pFrameDelays=new UINT[m_nFrameCount];
-        int nSize = tempBitmap->GetPropertyItemSize(PropertyTagFrameDelay);
+        int nSize = bmpSrc->GetPropertyItemSize(PropertyTagFrameDelay);
         // Allocate a buffer to receive the property item.
         PropertyItem* pDelays = (PropertyItem*) new char[nSize];
-        tempBitmap->GetPropertyItem(PropertyTagFrameDelay, nSize, pDelays);
+        bmpSrc->GetPropertyItem(PropertyTagFrameDelay, nSize, pDelays);
         for (int i=0; i<m_nFrameCount; i++)
         {
             GUID pageGuid = FrameDimensionTime;
-            tempBitmap->SelectActiveFrame(&pageGuid, i);
+            bmpSrc->SelectActiveFrame(&pageGuid, i);
             Rect rect(i*m_FrameSize.cx,0,m_FrameSize.cx, m_FrameSize.cy);
             if (scale>=1 )
-                g->DrawImage(tempBitmap,rect,0,0,tempBitmap->GetWidth(),tempBitmap->GetHeight(), UnitPixel/*, &attr*/);
+                g->DrawImage(bmpSrc,rect,0,0,bmpSrc->GetWidth(),bmpSrc->GetHeight(), UnitPixel/*, &attr*/);
             else
             {
-                Bitmap bm2(tempBitmap->GetWidth(),tempBitmap->GetHeight(), PixelFormat32bppARGB);
+                Bitmap bm2(bmpSrc->GetWidth(),bmpSrc->GetHeight(), PixelFormat32bppARGB);
                 Graphics g2(&bm2);
-                g2.DrawImage(tempBitmap,Rect(0,0,bm2.GetWidth(),bm2.GetHeight()),0,0,tempBitmap->GetWidth(),tempBitmap->GetHeight(), UnitPixel);
+                g2.DrawImage(bmpSrc,Rect(0,0,bm2.GetWidth(),bm2.GetHeight()),0,0,bmpSrc->GetWidth(),bmpSrc->GetHeight(), UnitPixel);
                 g->DrawImage(&bm2,rect,0,0,bm2.GetWidth(),bm2.GetHeight(), UnitPixel, &attr);
             }
             m_pFrameDelays[i]=10*max(((int*) pDelays->value)[i], 10);
@@ -96,19 +100,21 @@ BOOL GetBitmapFromFile(Gdiplus::Bitmap* &m_pBitmap, const SStringW& strFilename,
     else
     {
         Rect rect(0,0,m_FrameSize.cx, m_FrameSize.cy);
-        g->DrawImage(tempBitmap,rect,0,0,tempBitmap->GetWidth(),tempBitmap->GetHeight(), UnitPixel, &attr);
+        g->DrawImage(bmpSrc,rect,0,0,bmpSrc->GetWidth(),bmpSrc->GetHeight(), UnitPixel, &attr);
         m_pFrameDelays=NULL;
     }
-    ImageSize=CSize(tempBitmap->GetWidth(),tempBitmap->GetHeight());
+    ImageSize=CSize(bmpSrc->GetWidth(),bmpSrc->GetHeight());
     delete g;
-    delete tempBitmap;
-    return TRUE;
+    delete bmpSrc;
+    DeleteDC(hMemDC);
+    ReleaseDC(NULL,hdc);
+    return hBmp;
 }
 
 
 ImageItem::ImageItem() : 
 m_nRef( 0 ), 
-m_pBitmap( NULL ),
+m_hMemDC( NULL ),
 m_nFrameCount( 0 ),
 m_pFrameDelays( NULL )
 {
@@ -116,18 +122,30 @@ m_pFrameDelays( NULL )
 }
 ImageItem::~ImageItem()
 {
-    if ( m_pBitmap ) delete m_pBitmap;
+    if(m_hMemDC)
+    {
+        HBITMAP hBmp = (HBITMAP)::GetCurrentObject(m_hMemDC,OBJ_BITMAP);
+        DeleteDC(m_hMemDC);
+        DeleteObject(hBmp);
+        m_hMemDC=NULL;
+    }
     if ( m_pFrameDelays ) delete [] m_pFrameDelays;
 }
 
 BOOL ImageItem::LoadImageFromFile(const SStringW& strFilename, int nHeight)
 {
-    ATLASSERT(m_pBitmap == NULL);
+    ATLASSERT(m_hMemDC == NULL);
     m_imgid.m_nHeight=nHeight;
     m_imgid.m_strFilename=strFilename;
 
     CSize ImageSize(0, nHeight);
-    return GetBitmapFromFile(m_pBitmap, strFilename, m_nFrameCount, m_FrameSize, ImageSize, m_pFrameDelays );
+    HBITMAP hBmp = GetBitmapFromFile(strFilename, m_nFrameCount, m_FrameSize, ImageSize, m_pFrameDelays );
+    if(!hBmp) return FALSE;
+    HDC hDC = ::GetDC(NULL);
+    m_hMemDC = CreateCompatibleDC(hDC);
+    ::SelectObject(m_hMemDC,hBmp);
+    ReleaseDC(NULL,hDC);
+    return TRUE;
 }
 
 int ImageItem::Release()
@@ -142,11 +160,19 @@ int ImageItem::Release()
 
 void ImageItem::Draw( HDC hdc,LPCRECT pRect,int iFrame )
 {
-    if(m_pBitmap)
+    if(m_hMemDC)
     {
-        Graphics g(hdc);
-        RectF rcDst(pRect->left,pRect->top,pRect->right-pRect->left,pRect->bottom-pRect->top);
-        g.DrawImage(m_pBitmap,rcDst,m_FrameSize.cx*iFrame,0,m_FrameSize.cx,m_FrameSize.cy,UnitPixel);
+        int nWid = pRect->right-pRect->left;
+        int nHei = pRect->bottom-pRect->top;
+        if(nWid == m_FrameSize.cx && nHei == m_FrameSize.cy)
+        {
+            BitBlt(hdc,pRect->left,pRect->top,nWid,nHei,
+                m_hMemDC,m_FrameSize.cx*iFrame,0,SRCCOPY);
+        }else
+        {
+            StretchBlt(hdc,pRect->left,pRect->top,nWid,nHei,
+                m_hMemDC,m_FrameSize.cx*iFrame,0,m_FrameSize.cx,m_FrameSize.cy,SRCCOPY);
+        }
     }
 }
 /////////////////////////////////////////////////////////////////////////////

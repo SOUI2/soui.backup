@@ -44,7 +44,7 @@ public:
 class ImageItem
 {  
 private:
-    Gdiplus::Bitmap*      m_pBitmap;
+    HDC          m_hMemDC;
     UINT*        m_pFrameDelays;
     int          m_nFrameCount;
     CSize         m_FrameSize;
@@ -71,8 +71,6 @@ public:
     CSize GetFrameSize() 
     { return m_FrameSize; }
     
-    Gdiplus::Bitmap * GetImages(){return m_pBitmap;}
-
     void Draw(HDC hdc,LPCRECT pRect,int iFrame);
 };
 
