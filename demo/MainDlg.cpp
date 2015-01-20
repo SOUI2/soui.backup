@@ -6,7 +6,13 @@
 #include "MainDlg.h"
 #include "helper/SMenu.h"
 #include "../controls.extend/FileHelper.h"
-#include "skinole\ImageOle.h"
+#include "reole\richeditole.h"
+
+#ifdef _DEBUG
+#import "..\bin\SoSmileyd.dll" named_guids
+#else
+#import "..\bin\SoSmiley.dll" named_guids
+#endif
 
 #include <dwmapi.h>
 #pragma comment(lib,"dwmapi.lib")
@@ -268,7 +274,7 @@ LRESULT CMainDlg::OnInitDialog( HWND hWnd, LPARAM lParam )
     SRichEdit *pEdit = FindChildByName2<SRichEdit>(L"re_gifhost");
     if(pEdit)
     {
-        RichEdit_SetOleCallback(pEdit);
+        CRichEditOleCallback::SetRicheditOleCallback(pEdit);
         pEdit->SetAttribute(L"rtf",L"rtf:rtf_test");
     }
 
@@ -361,10 +367,25 @@ void CMainDlg::OnBtnInsertGif2RE()
     SRichEdit *pEdit = FindChildByName2<SRichEdit>(L"re_gifhost");
     if(pEdit)
     {
-        ISkinObj * pSkin = GETSKIN(L"gif_penguin");
-        if(pSkin)
+        CFileDialogEx openDlg(TRUE,_T("gif"),0,6,_T("gif files(*.gif)\0*.gif\0All files (*.*)\0*.*\0\0"));
+        if(openDlg.DoModal()==IDOK)
         {
-            RichEdit_InsertSkin(pEdit,pSkin);
+            ISmileySource* pSource = CSmileySource::CreateInstance();
+            HRESULT hr=pSource->Init((WPARAM)(LPCWSTR)S_CT2W(openDlg.m_szFileName),0);
+            if(SUCCEEDED(hr))
+            {
+                ISoSmileyCtrl* pSmiley;
+                hr=::CoCreateInstance(SoSmiley::CLSID_CSoSmileyCtrl,NULL,CLSCTX_INPROC,__uuidof(SoSmiley::ISoSmileyCtrl),(LPVOID*)&pSmiley); 
+                if(SUCCEEDED(hr))
+                {
+                    pSmiley->SetSource(pSource);
+                    SComPtr<IRichEditOle> ole;
+                    pEdit->SSendMessage(EM_GETOLEINTERFACE,0,(LPARAM)&ole);
+                    pSmiley->Insert2Richedit((DWORD_PTR)(void*)ole);
+                }
+                pSmiley->Release();
+            }
+            pSource->Release();
         }
     }
 }

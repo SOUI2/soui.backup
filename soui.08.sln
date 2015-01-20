@@ -85,10 +85,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{4DF98E2B
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "skia", "components\skia\skia.vcproj", "{E702AC1C-4AC7-3904-9CE2-27CF661F6049}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MusicPlayer", "MusicPlayer\MusicPlayer.vcproj", "{45DF2E47-78CB-3F62-8E5E-86EDEF03016D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MusicPlayer", "MusicPlayer\MusicPlayer.vcproj", "{E8EDDEC5-87FE-3E8E-910B-EF276746C028}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E7B5140C-2BFA-320F-A981-BC98D0F5B2C0} = {E7B5140C-2BFA-320F-A981-BC98D0F5B2C0}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SoSmiley", "SoSmiley\SoSmiley.vcproj", "{97E4C8A6-6AE4-3FCC-98A0-304F82982778}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +115,7 @@ Global
 		{E9EA7D7D-8D5A-3F2C-85B9-056200C58EB6}.Release|Win32.ActiveCfg = Release|Win32
 		{E9EA7D7D-8D5A-3F2C-85B9-056200C58EB6}.Release|Win32.Build.0 = Release|Win32
 		{C26A8689-8880-3EDA-B493-E87AC1EA82BA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C26A8689-8880-3EDA-B493-E87AC1EA82BA}.Debug|Win32.Build.0 = Debug|Win32
 		{C26A8689-8880-3EDA-B493-E87AC1EA82BA}.Release|Win32.ActiveCfg = Release|Win32
 		{C26A8689-8880-3EDA-B493-E87AC1EA82BA}.Release|Win32.Build.0 = Release|Win32
 		{011C35B5-1944-3E4F-8E34-5E17EA3BC205}.Debug|Win32.ActiveCfg = Debug|Win32
@@ -170,10 +173,14 @@ Global
 		{E702AC1C-4AC7-3904-9CE2-27CF661F6049}.Debug|Win32.ActiveCfg = Debug|Win32
 		{E702AC1C-4AC7-3904-9CE2-27CF661F6049}.Release|Win32.ActiveCfg = Release|Win32
 		{E702AC1C-4AC7-3904-9CE2-27CF661F6049}.Release|Win32.Build.0 = Release|Win32
-		{45DF2E47-78CB-3F62-8E5E-86EDEF03016D}.Debug|Win32.ActiveCfg = Debug|Win32
-		{45DF2E47-78CB-3F62-8E5E-86EDEF03016D}.Debug|Win32.Build.0 = Debug|Win32
-		{45DF2E47-78CB-3F62-8E5E-86EDEF03016D}.Release|Win32.ActiveCfg = Release|Win32
-		{45DF2E47-78CB-3F62-8E5E-86EDEF03016D}.Release|Win32.Build.0 = Release|Win32
+		{E8EDDEC5-87FE-3E8E-910B-EF276746C028}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E8EDDEC5-87FE-3E8E-910B-EF276746C028}.Debug|Win32.Build.0 = Debug|Win32
+		{E8EDDEC5-87FE-3E8E-910B-EF276746C028}.Release|Win32.ActiveCfg = Release|Win32
+		{E8EDDEC5-87FE-3E8E-910B-EF276746C028}.Release|Win32.Build.0 = Release|Win32
+		{97E4C8A6-6AE4-3FCC-98A0-304F82982778}.Debug|Win32.ActiveCfg = Debug|Win32
+		{97E4C8A6-6AE4-3FCC-98A0-304F82982778}.Debug|Win32.Build.0 = Debug|Win32
+		{97E4C8A6-6AE4-3FCC-98A0-304F82982778}.Release|Win32.ActiveCfg = Release|Win32
+		{97E4C8A6-6AE4-3FCC-98A0-304F82982778}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

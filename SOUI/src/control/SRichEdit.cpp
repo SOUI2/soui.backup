@@ -664,7 +664,6 @@ LRESULT SRichEdit::OnCreate( LPVOID )
 void SRichEdit::OnDestroy()
 {
     OnEnableDragDrop(FALSE);
-    __super::OnDestroy();
 
     if(m_pTxtHost)
     {
@@ -672,6 +671,7 @@ void SRichEdit::OnDestroy()
         m_pTxtHost->Release();
         m_pTxtHost=NULL;
     }
+    __super::OnDestroy();
 }
 
 
@@ -819,7 +819,13 @@ BOOL SRichEdit::SwndProc( UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT & lResul
 {
     if(m_pTxtHost && m_pTxtHost->GetTextService())
     {
-       if(m_pTxtHost->GetTextService()->TxSendMessage(uMsg,wParam,lParam,&lResult)==S_OK)
+        if(uMsg == EM_GETRECT)
+        {
+            SetMsgHandled(TRUE);
+            GetClientRect((LPRECT)lParam);
+            return TRUE;
+        }
+        if(m_pTxtHost->GetTextService()->TxSendMessage(uMsg,wParam,lParam,&lResult)==S_OK)
         {
             SetMsgHandled(TRUE);
             return TRUE;

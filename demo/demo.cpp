@@ -36,7 +36,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     //必须要调用OleInitialize来初始化运行环境
     HRESULT hRes = OleInitialize(NULL);
     SASSERT(SUCCEEDED(hRes));
-
+    LoadLibrary(L"E:\\soui.taobao\\richedit\\Debug\\riched20.dll");
+        
     int nRet = 0; 
 
     SComMgr *pComMgr = new SComMgr;
@@ -158,7 +159,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         theApp->RegisterWndFactory(TplSWindowFactory<SFadeFrame>());//注册渐显隐动画控件
         theApp->RegisterWndFactory(TplSWindowFactory<SRadioBox2>());//注册渐显隐动画控件
         SSkinGif::Gdiplus_Startup();
-
+        
+        
         //加载系统资源
         HMODULE hSysResource=LoadLibrary(SYS_NAMED_RESOURCE);
         if(hSysResource)
@@ -192,6 +194,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         //卸载菜单边框绘制hook
         CMenuWndHook::UnInstallHook();
         CUiAnimation::Free();
+                
         SSkinGif::Gdiplus_Shutdown();
     }
     delete pComMgr;
