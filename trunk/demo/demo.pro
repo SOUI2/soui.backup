@@ -27,7 +27,7 @@ PRECOMPILED_HEADER = stdafx.h
 # Input
 HEADERS += MainDlg.h \
            resource.h \
-           skinole/ImageOle.h \
+           reole/richeditole.h \
            wtlhelper/whwindow.h \
            ../controls.extend/SWkeWebkit.h \
            ../controls.extend/gif/SAniImgFrame.h \
@@ -49,7 +49,7 @@ HEADERS += MainDlg.h \
 		   
 SOURCES += demo.cpp \
            MainDlg.cpp \
-           skinole/ImageOle.cpp \
+           reole/richeditole.cpp \
            ../controls.extend/SWkeWebkit.cpp \
            ../controls.extend/gif/SGifPlayer.cpp \
            ../controls.extend/gif/SSkinGif.cpp \

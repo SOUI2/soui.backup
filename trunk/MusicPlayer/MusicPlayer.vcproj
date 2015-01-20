@@ -3,8 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="MusicPlayer"
-	ProjectGUID="{45DF2E47-78CB-3F62-8E5E-86EDEF03016D}"
-	RootNamespace="MusicPlayer"
+	ProjectGUID="{E8EDDEC5-87FE-3E8E-910B-EF276746C028}"
 	Keyword="Qt4VSv1.0"
 	TargetFrameworkVersion="0"
 	>
@@ -18,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="."
+			OutputDirectory="..\bin\"
 			IntermediateDirectory="..\obj\debug\MusicPlayer\"
 			ConfigurationType="1"
 			UseOfMFC="0"
@@ -47,12 +46,11 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				Optimization="4"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\components&quot;,&quot;..\third-part\bass&quot;,&quot;..\config&quot;,d:\Qt\4.7.1\mkspecs\win32-msvc2008"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\components&quot;,&quot;..\third-part\bass&quot;,&quot;..\config&quot;,..\tools\mkspecs\win32-msvc2008"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
-				RuntimeLibrary="3"
-				BufferSecurityCheck="false"
+				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
 				RuntimeTypeInfo="false"
 				UsePrecompiledHeader="2"
@@ -72,7 +70,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,_CRT_SECURE_NO_WARNINGS,_DEBUG"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_DEBUG"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -82,7 +80,7 @@
 				IgnoreImportLibrary="true"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				AdditionalDependencies="utilitiesd.lib souid.lib bass.lib"
-				OutputFile="..\bin\MusicPlayerd.exe"
+				OutputFile="$(OutDir)\MusicPlayerd.exe"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\bin,..\third-part\bass"
 				GenerateDebugInformation="true"
@@ -115,7 +113,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="."
+			OutputDirectory="..\bin\"
 			IntermediateDirectory="..\obj\release\MusicPlayer\"
 			ConfigurationType="1"
 			UseOfMFC="0"
@@ -144,12 +142,11 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				Optimization="1"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\components&quot;,&quot;..\third-part\bass&quot;,&quot;..\config&quot;,d:\Qt\4.7.1\mkspecs\win32-msvc2008"
-				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,_CRT_SECURE_NO_WARNINGS,NDEBUG"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\components&quot;,&quot;..\third-part\bass&quot;,&quot;..\config&quot;,..\tools\mkspecs\win32-msvc2008"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,NDEBUG"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
-				RuntimeLibrary="2"
-				BufferSecurityCheck="false"
+				RuntimeLibrary="0"
 				TreatWChar_tAsBuiltInType="true"
 				RuntimeTypeInfo="false"
 				UsePrecompiledHeader="2"
@@ -169,7 +166,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -179,13 +176,15 @@
 				IgnoreImportLibrary="true"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				AdditionalDependencies="utilities.lib soui.lib bass.lib"
-				OutputFile="..\bin\MusicPlayer.exe"
+				OutputFile="$(OutDir)\MusicPlayer.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\bin,..\third-part\bass"
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile=""
 				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				LinkTimeCodeGeneration="0"
 				TargetMachine="1"
 			/>
@@ -323,7 +322,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating precompiled header source file &apos;stdafx.h.cpp&apos; ..."
-						CommandLine="echo /*-------------------------------------------------------------------- &gt;stdafx.h.cpp &amp;&amp; echo * Precompiled header source file used by Visual Studio.NET to generate&gt;&gt;stdafx.h.cpp &amp;&amp; echo * the .pch file.&gt;&gt;stdafx.h.cpp &amp;&amp; echo *&gt;&gt;stdafx.h.cpp &amp;&amp; echo * Due to issues with the dependencies checker within the IDE, it&gt;&gt;stdafx.h.cpp &amp;&amp; echo * sometimes fails to recompile the PCH file, if we force the IDE to&gt;&gt;stdafx.h.cpp &amp;&amp; echo * create the PCH file directly from the header file.&gt;&gt;stdafx.h.cpp &amp;&amp; echo *&gt;&gt;stdafx.h.cpp &amp;&amp; echo * This file is auto-generated by qmake since no PRECOMPILED_SOURCE was&gt;&gt;stdafx.h.cpp &amp;&amp; echo * specified, and is used as the common stdafx.cpp. The file is only&gt;&gt;stdafx.h.cpp &amp;&amp; echo * generated when creating .vcproj project files, and is not used for&gt;&gt;stdafx.h.cpp &amp;&amp; echo * command line compilations by nmake.&gt;&gt;stdafx.h.cpp &amp;&amp; echo *&gt;&gt;stdafx.h.cpp &amp;&amp; echo * WARNING: All changes made in this file will be lost.&gt;&gt;stdafx.h.cpp &amp;&amp; echo --------------------------------------------------------------------*/&gt;&gt;stdafx.h.cpp &amp;&amp; echo #include &quot;stdafx.h&quot;&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;"
+						CommandLine="echo /*-------------------------------------------------------------------- &gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * Precompiled header source file used by Visual Studio.NET to generate&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * the .pch file.&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo *&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * Due to issues with the dependencies checker within the IDE, it&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * sometimes fails to recompile the PCH file, if we force the IDE to&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * create the PCH file directly from the header file.&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo *&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * This file is auto-generated by qmake since no PRECOMPILED_SOURCE was&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * specified, and is used as the common stdafx.cpp. The file is only&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * generated when creating .vcproj project files, and is not used for&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * command line compilations by nmake.&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo *&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * WARNING: All changes made in this file will be lost.&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo --------------------------------------------------------------------*/&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo #include &quot;stdafx.h&quot;&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;"
 						Outputs="stdafx.h.cpp"
 					/>
 				</FileConfiguration>
@@ -333,7 +332,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating precompiled header source file &apos;stdafx.h.cpp&apos; ..."
-						CommandLine="echo /*-------------------------------------------------------------------- &gt;stdafx.h.cpp &amp;&amp; echo * Precompiled header source file used by Visual Studio.NET to generate&gt;&gt;stdafx.h.cpp &amp;&amp; echo * the .pch file.&gt;&gt;stdafx.h.cpp &amp;&amp; echo *&gt;&gt;stdafx.h.cpp &amp;&amp; echo * Due to issues with the dependencies checker within the IDE, it&gt;&gt;stdafx.h.cpp &amp;&amp; echo * sometimes fails to recompile the PCH file, if we force the IDE to&gt;&gt;stdafx.h.cpp &amp;&amp; echo * create the PCH file directly from the header file.&gt;&gt;stdafx.h.cpp &amp;&amp; echo *&gt;&gt;stdafx.h.cpp &amp;&amp; echo * This file is auto-generated by qmake since no PRECOMPILED_SOURCE was&gt;&gt;stdafx.h.cpp &amp;&amp; echo * specified, and is used as the common stdafx.cpp. The file is only&gt;&gt;stdafx.h.cpp &amp;&amp; echo * generated when creating .vcproj project files, and is not used for&gt;&gt;stdafx.h.cpp &amp;&amp; echo * command line compilations by nmake.&gt;&gt;stdafx.h.cpp &amp;&amp; echo *&gt;&gt;stdafx.h.cpp &amp;&amp; echo * WARNING: All changes made in this file will be lost.&gt;&gt;stdafx.h.cpp &amp;&amp; echo --------------------------------------------------------------------*/&gt;&gt;stdafx.h.cpp &amp;&amp; echo #include &quot;stdafx.h&quot;&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;"
+						CommandLine="echo /*-------------------------------------------------------------------- &gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * Precompiled header source file used by Visual Studio.NET to generate&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * the .pch file.&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo *&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * Due to issues with the dependencies checker within the IDE, it&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * sometimes fails to recompile the PCH file, if we force the IDE to&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * create the PCH file directly from the header file.&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo *&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * This file is auto-generated by qmake since no PRECOMPILED_SOURCE was&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * specified, and is used as the common stdafx.cpp. The file is only&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * generated when creating .vcproj project files, and is not used for&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * command line compilations by nmake.&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo *&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo * WARNING: All changes made in this file will be lost.&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo --------------------------------------------------------------------*/&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;if errorlevel 1 goto VCReportError&#x0D;&#x0A;echo #include &quot;stdafx.h&quot;&gt;&gt;stdafx.h.cpp&#x0D;&#x0A;"
 						Outputs="stdafx.h.cpp"
 					/>
 				</FileConfiguration>
@@ -349,30 +348,6 @@
 			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}"
 			>
 			<File
-				RelativePath="..\obj\debug\MusicPlayer\musicplayer.res"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\obj\release\MusicPlayer\musicplayer.res"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="stdafx.h.cpp"
 				>
 				<FileConfiguration
@@ -381,7 +356,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
-						PrecompiledHeaderThrough="$(INHERIT)"
+						PrecompiledHeaderThrough="stdafx.h"
 						ForcedIncludeFiles="$(NOINHERIT)"
 					/>
 				</FileConfiguration>
@@ -391,38 +366,14 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
-						PrecompiledHeaderThrough="$(INHERIT)"
+						PrecompiledHeaderThrough="stdafx.h"
 						ForcedIncludeFiles="$(NOINHERIT)"
 					/>
 				</FileConfiguration>
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\uires\xml\dlg_main.xml"
-			>
-		</File>
-		<File
-			RelativePath=".\uires\xml\init.xml"
-			>
-		</File>
-		<File
-			RelativePath=".\uires\xml\menu_tray.xml"
-			>
-		</File>
-		<File
 			RelativePath="musicplayer.rc"
-			>
-		</File>
-		<File
-			RelativePath=".\uires\xml\page_lrc.xml"
-			>
-		</File>
-		<File
-			RelativePath=".\uires\xml\page_musiclist.xml"
-			>
-		</File>
-		<File
-			RelativePath=".\uires\uires.idx"
 			>
 		</File>
 	</Files>

@@ -140,7 +140,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm200 -w34100 -w34189"
-				Optimization="1"
+				Optimization="0"
 				AdditionalIncludeDirectories="&quot;..\config&quot;,&quot;.&quot;,&quot;include&quot;,&quot;..\utilities\include&quot;,..\tools\mkspecs\win32-msvc2008"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,SOUI_EXPORTS,_CRT_SECURE_NO_WARNINGS,NDEBUG"
 				GeneratePreprocessedFile="0"
@@ -422,7 +422,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\updatelayeredwindow\SUpdateLayeredWindow.cpp"
+				RelativePath="src\updatelayeredwindow\SUpdateLayeredWindow.cpp"
 				>
 			</File>
 			<File
@@ -442,11 +442,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\core\SwndLayout.cpp"
+				RelativePath="src\core\SwndLayout.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\core\SwndLayoutBuilder.cpp"
+				RelativePath="src\core\SwndLayoutBuilder.cpp"
 				>
 			</File>
 			<File
@@ -472,7 +472,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\helper\copylist.hpp"
+				RelativePath="include\helper\copylist.hpp"
 				>
 			</File>
 			<File
@@ -740,7 +740,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\core\SSkinObjBase.h"
+				RelativePath="include\core\SSkinObjBase.h"
 				>
 			</File>
 			<File
@@ -804,7 +804,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\updatelayeredwindow\SUpdateLayeredWindow.h"
+				RelativePath="src\updatelayeredwindow\SUpdateLayeredWindow.h"
 				>
 			</File>
 			<File
@@ -828,7 +828,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\core\SwndLayoutBuilder.h"
+				RelativePath="include\core\SwndLayout.h"
+				>
+			</File>
+			<File
+				RelativePath="include\core\SwndLayoutBuilder.h"
 				>
 			</File>
 			<File
@@ -836,11 +840,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\core\SwndPosition.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\helper\swndspy.h"
+				RelativePath="include\helper\swndspy.h"
 				>
 			</File>
 			<File

@@ -46,6 +46,7 @@ HEADERS += MainDlg.h \
 SOURCES += MainDlg.cpp \
            BassMusic.cpp \
 		   MusicPlayer.cpp \
+		   MusicOperat.cpp \
            ../controls.extend/STurn3DView.cpp \
            ../controls.extend/image3d/3dlib.cpp \
            ../controls.extend/image3d/3dmatrix.cpp \
