@@ -34,5 +34,13 @@
         </flywnd>
       </window>
     </page>
+    <page title="smiley" >
+      <window pos="0,5,-0,@30">
+        <button name="btn_insert_gif" pos="5,0,@150,@25">insert gif</button>
+        <button name="btn_richedit_open" pos="[5,0,@150,@25">open from rtf</button>
+        <button name="btn_richedit_save" pos="[5,0,@150,@25">save to rtf</button>
+      </window>
+      <richedit name="re_gifhost" pos="5,[5,-5,-5" colorBkgnd="#ffffff" bkgndBlend="0" class="cls_edit" enableDragdrop="1" multiLines="1" vscrollBar="1" wordWrap="1"  autoVscroll="1" hscrollBar="0" wantReturn="1"  rtf="rtf:rtf_test">this is a richedit.中文也可以初始化。</richedit>
+    </page>
   </tabctrl>
 </include>
