@@ -36,7 +36,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     //必须要调用OleInitialize来初始化运行环境
     HRESULT hRes = OleInitialize(NULL);
     SASSERT(SUCCEEDED(hRes));
-    LoadLibrary(L"E:\\soui.taobao\\richedit\\Debug\\riched20.dll");
         
     int nRet = 0; 
 
