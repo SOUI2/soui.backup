@@ -39,6 +39,22 @@ float FitSize(CSize& InSize, CSize& ImageSize)
     return scale;
 }
 
+HBITMAP CreateGDIBitmap(HDC hdc, int nWid,int nHei )
+{
+    BITMAPINFO bmi;
+    memset(&bmi, 0, sizeof(bmi));
+    bmi.bmiHeader.biSize        = sizeof(BITMAPINFOHEADER);
+    bmi.bmiHeader.biWidth       = nWid;
+    bmi.bmiHeader.biHeight      = -nHei; // top-down image 
+    bmi.bmiHeader.biPlanes      = 1;
+    bmi.bmiHeader.biBitCount    = 32;
+    bmi.bmiHeader.biCompression = BI_RGB;
+    bmi.bmiHeader.biSizeImage   = 0;
+
+    HBITMAP hBmp=CreateDIBSection(hdc,&bmi,DIB_RGB_COLORS,NULL,0,0);
+    return hBmp;
+}
+
 HBITMAP GetBitmapFromFile(const SStringW& strFilename, 
                        int& m_nFrameCount, CSize& m_FrameSize, CSize& ImageSize,
                        UINT* &m_pFrameDelays )
@@ -56,7 +72,7 @@ HBITMAP GetBitmapFromFile(const SStringW& strFilename,
     
     HDC hdc = GetDC(NULL);
     HDC hMemDC = CreateCompatibleDC(hdc);
-    HBITMAP hBmp = CreateCompatibleBitmap(hdc,m_FrameSize.cx*m_nFrameCount, m_FrameSize.cy);
+    HBITMAP hBmp = CreateGDIBitmap(hdc,m_FrameSize.cx*m_nFrameCount, m_FrameSize.cy);
     SelectObject(hMemDC,hBmp);
 
     Graphics *g = new Gdiplus::Graphics(hMemDC);
@@ -162,17 +178,10 @@ void ImageItem::Draw( HDC hdc,LPCRECT pRect,int iFrame )
 {
     if(m_hMemDC)
     {
-        int nWid = pRect->right-pRect->left;
-        int nHei = pRect->bottom-pRect->top;
-        if(nWid == m_FrameSize.cx && nHei == m_FrameSize.cy)
-        {
-            BitBlt(hdc,pRect->left,pRect->top,nWid,nHei,
-                m_hMemDC,m_FrameSize.cx*iFrame,0,SRCCOPY);
-        }else
-        {
-            StretchBlt(hdc,pRect->left,pRect->top,nWid,nHei,
-                m_hMemDC,m_FrameSize.cx*iFrame,0,m_FrameSize.cx,m_FrameSize.cy,SRCCOPY);
-        }
+        BLENDFUNCTION bf={ AC_SRC_OVER,0,0xFF,AC_SRC_ALPHA};
+        AlphaBlend(hdc,pRect->left,pRect->top,pRect->right-pRect->left,pRect->bottom-pRect->top,
+                m_hMemDC,m_FrameSize.cx*iFrame,0,m_FrameSize.cx,m_FrameSize.cy,
+                bf);
     }
 }
 /////////////////////////////////////////////////////////////////////////////
