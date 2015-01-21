@@ -460,7 +460,7 @@ HRESULT STDMETHODCALLTYPE CSmileyHost::SetRichedit(/* [in] */DWORD_PTR dwRichedi
 CRichEditOleCallback::CRichEditOleCallback():m_dwRef(1),m_iStorage(0)
 {
     HRESULT hResult = ::StgCreateDocfile(NULL,
-        STGM_TRANSACTED | STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE ,
+        STGM_TRANSACTED | STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE| STGM_DELETEONRELEASE,
         0, &m_stg );
 
     if ( m_stg == NULL ||
