@@ -484,11 +484,20 @@ CRichEditOleCallback::GetNewStorage(LPSTORAGE* ppStg)
     WCHAR tName[150];
     swprintf(tName, L"REStorage_%d", ++m_iStorage);
 
-
+    if(m_iStorage%100 == 0)
+    {//每100个对象提交一次,避免创建stream or storage由于内存不足而失败
+        m_stg->Commit(STGC_DEFAULT);
+    }
     HRESULT hr = m_stg->CreateStorage(tName, 
         STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE ,
         0, 0, ppStg );    
-
+    if(FAILED(hr) && (hr & E_OUTOFMEMORY))
+    {//失败后向storage提交后重试
+        m_stg->Commit(STGC_DEFAULT);
+        hr = m_stg->CreateStorage(tName, 
+            STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE ,
+            0, 0, ppStg );    
+    }
     return hr;
 }
 
