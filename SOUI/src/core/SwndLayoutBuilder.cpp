@@ -215,8 +215,6 @@ namespace SOUI
                     {
                         if(!IsWaitingPos(rcSib.top))
                         {
-                            SWindow *pParent = pWnd->GetParent();
-                            SASSERT(pParent);
                             pt.y=rcSib.top;
                         }else
                         {
