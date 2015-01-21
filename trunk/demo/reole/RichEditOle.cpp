@@ -298,7 +298,7 @@ HRESULT CSmileySource::GetFrameCount( /* [out] */ int *pFrameCount )
 HRESULT CSmileySource::GetFrameDelay( /* [in] */ int iFrame, /* [out] */ int *pFrameDelay )
 {
     if(!m_pImg || m_pImg->GetFrameCount()<=1) return E_FAIL;
-    if(iFrame>=m_pImg->GetFrameCount()) return E_INVALIDARG;
+    if(iFrame>=(int)m_pImg->GetFrameCount()) return E_INVALIDARG;
     *pFrameDelay = m_pImg->GetFrameDelays()[iFrame];
     return S_OK;
 }
