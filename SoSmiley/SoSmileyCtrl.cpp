@@ -170,13 +170,7 @@ HRESULT CSoSmileyCtrl::FireViewChange()
     }
     else
     {
-        RECT rcSmiley;
-        if(GetObjectPos(&rcSmiley))
-        {
-            //::InflateRect(&rcSmiley,2,2);
-            rcSmiley.top-=2;
-            m_pSmileyHost->InvalidateRect(&rcSmiley);
-        }
+        UpdateSmiley();
     }
     return S_OK;
 }
@@ -261,14 +255,15 @@ int FindLastOleInrange(IRichEditOle *pOle, int iBegin,int iEnd,int cpMin,int cpM
     }
 }
 
-BOOL CSoSmileyCtrl::GetObjectPos(LPRECT pRect)
-{
-    if(!m_pSmileyHost) return FALSE;
+#define  MAX_FULL_SMILEIES   50     //超过MAX_FULL_SMILEIES个表情可见时不计算表情位置，直接全屏刷新。
 
-    IRichEditOle * ole=NULL;
+void CSoSmileyCtrl::UpdateSmiley()
+{
+    if(!m_pSmileyHost) return ;
+    CComPtr<IRichEditOle>  ole;
     LRESULT lMsgRet = 0;
     m_pSmileyHost->SendMessage(EM_GETOLEINTERFACE, 0, (LPARAM)&ole,&lMsgRet);
-    if (!lMsgRet) return FALSE;
+    if (!lMsgRet) return;
 
     //获得可见字符范围
     m_pSmileyHost->SendMessage(EM_GETFIRSTVISIBLELINE,0,0,&lMsgRet);
@@ -289,76 +284,93 @@ BOOL CSoSmileyCtrl::GetObjectPos(LPRECT pRect)
     BOOL bFind = FALSE;
 
     int iFirstVisibleOle = FindFirstOleInrange(ole,0,nCount,cpFirst,cpLast);
-    if(iFirstVisibleOle!=-1)
+    if(iFirstVisibleOle==-1) return;
+    int iLastVisibleOle = FindLastOleInrange(ole,iFirstVisibleOle,nCount,cpFirst,cpLast);
+    
+    if(iLastVisibleOle - iFirstVisibleOle >= MAX_FULL_SMILEIES)
     {
-        int iLastVisibleOle = FindLastOleInrange(ole,iFirstVisibleOle,nCount,cpFirst,cpLast);
-        ATLASSERT(iLastVisibleOle!=-1);
-
-        for(int i=iFirstVisibleOle;i<=iLastVisibleOle;i++)
+        m_pSmileyHost->InvalidateRect(NULL);
+    }else
+    {
+        RECT rcSmiley={0};
+        if(GetSmileyPos(ole,iFirstVisibleOle,iLastVisibleOle,&rcSmiley))
         {
-            REOBJECT reobj={0};
-            reobj.cbStruct=sizeof(REOBJECT);
-            ole->GetObject(i,&reobj,REO_GETOBJ_NO_INTERFACES);
-
-            if (reobj.clsid==__uuidof(CSoSmileyCtrl) && reobj.dwUser==m_dwID)
-            {
-                long left, bottom;
-                HRESULT res;
-                ITextDocument * iDoc=NULL;
-                ITextRange *iRange=NULL;
-                
-                ole->QueryInterface(__uuidof(ITextDocument),(void**)&iDoc);
-                if (!iDoc) break;
-
-                iDoc->Range(reobj.cp, reobj.cp, &iRange);
-
-                BOOL bBottom=TRUE;
-                if (reobj.dwFlags&REO_BELOWBASELINE)
-                    res=iRange->GetPoint(TA_BOTTOM|TA_LEFT, &left, &bottom);
-                else
-                    res=iRange->GetPoint(TA_BASELINE|TA_LEFT, &left, &bottom);
-                if (res!=S_OK) //object is out of screen let do normal fireview change
-                {
-                    res=iRange->GetPoint(TA_TOP|TA_LEFT, &left, &bottom);
-                    bBottom = FALSE;
-                }
-
-                iRange->Release();
-                iDoc->Release();
-
-                if (res!=S_OK) //object is out of screen let do normal fireview change
-                {
-                    memset(pRect,0,sizeof(RECT));
-                    break;
-                }
-
-                SIZE sz;
-                m_pSmileySource->GetSize(&sz);
-
-                DWORD nom=1, den=1;
-                m_pSmileyHost->SendMessage( EM_GETZOOM, (WPARAM)&nom, (LPARAM)&den,&lMsgRet);
-                if(lMsgRet && nom && den)
-                {
-                    sz.cx = sz.cx * nom / den;
-                    sz.cy = sz.cy * nom / den;
-                }
-                CRect rcHost;
-                m_pSmileyHost->GetHostRect(&rcHost);
-
-
-                CPoint pt(left,bottom-(bBottom?sz.cy:0));
-                pt -= rcHost.TopLeft();
-
-                CRect rc(pt,sz);
-                memcpy(pRect,rc,sizeof(RECT));
-                bFind = TRUE;
-
-                break;            
-            }
-
+            rcSmiley.top-=2;
+            m_pSmileyHost->InvalidateRect(&rcSmiley);
         }
     }
-    ole->Release();
+}
+
+
+BOOL CSoSmileyCtrl::GetSmileyPos(IRichEditOle *ole,int iFirst,int iLast,LPRECT pRect)
+{
+    ATLASSERT(m_pSmileyHost);
+    
+    BOOL bFind=FALSE;    
+    for(int i=iFirst;i<=iLast;i++)
+    {
+        REOBJECT reobj={0};
+        reobj.cbStruct=sizeof(REOBJECT);
+        HRESULT hr=ole->GetObject(i,&reobj,REO_GETOBJ_NO_INTERFACES);
+        if(FAILED(hr)) break;
+        
+        if (reobj.clsid==__uuidof(CSoSmileyCtrl) && reobj.dwUser==m_dwID)
+        {
+            long left, bottom;
+            HRESULT res;
+            ITextDocument * iDoc=NULL;
+            ITextRange *iRange=NULL;
+
+            ole->QueryInterface(__uuidof(ITextDocument),(void**)&iDoc);
+            if (!iDoc) break;
+
+            iDoc->Range(reobj.cp, reobj.cp, &iRange);
+
+            BOOL bBottom=TRUE;
+            if (reobj.dwFlags&REO_BELOWBASELINE)
+                res=iRange->GetPoint(TA_BOTTOM|TA_LEFT, &left, &bottom);
+            else
+                res=iRange->GetPoint(TA_BASELINE|TA_LEFT, &left, &bottom);
+            if (res!=S_OK) //object is out of screen let do normal fireview change
+            {
+                res=iRange->GetPoint(TA_TOP|TA_LEFT, &left, &bottom);
+                bBottom = FALSE;
+            }
+
+            iRange->Release();
+            iDoc->Release();
+
+            if (res!=S_OK) //object is out of screen let do normal fireview change
+            {
+                memset(pRect,0,sizeof(RECT));
+                break;
+            }
+
+            SIZE sz;
+            m_pSmileySource->GetSize(&sz);
+
+            DWORD nom=1, den=1;
+            LRESULT lMsgRet =0;
+            m_pSmileyHost->SendMessage( EM_GETZOOM, (WPARAM)&nom, (LPARAM)&den,&lMsgRet);
+            if(lMsgRet && nom && den)
+            {
+                sz.cx = sz.cx * nom / den;
+                sz.cy = sz.cy * nom / den;
+            }
+            CRect rcHost;
+            m_pSmileyHost->GetHostRect(&rcHost);
+
+
+            CPoint pt(left,bottom-(bBottom?sz.cy:0));
+            pt -= rcHost.TopLeft();
+
+            CRect rc(pt,sz);
+            memcpy(pRect,rc,sizeof(RECT));
+            bFind = TRUE;
+
+            break;            
+        }
+    }
     return bFind;
 }
 

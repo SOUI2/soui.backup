@@ -146,7 +146,8 @@ public://IPersistStorage
 public://ITimerHander
     STDMETHOD(OnTimer)();
 private:
-    BOOL GetObjectPos(LPRECT pRect);
+    void UpdateSmiley();
+    BOOL GetSmileyPos(IRichEditOle *pOle,int iFirst,int iLast,LPRECT pRect);
     
     CComPtr<ISmileyHost>    m_pSmileyHost;
     CComPtr<ISmileySource>  m_pSmileySource;

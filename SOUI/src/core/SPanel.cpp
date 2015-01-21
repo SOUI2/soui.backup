@@ -759,6 +759,10 @@ void SScrollView::SetViewSize(CSize szView)
     CSize oldViewSize=m_szView;
     m_szView=szView;
     UpdateScrollBar();
+    CRect rcClient;
+    GetClientRect(&rcClient);
+    SSendMessage(WM_SIZE,0,MAKELPARAM(rcClient.Width(),rcClient.Height()));
+    
     OnViewSizeChanged(oldViewSize,szView);
 }
 
