@@ -446,7 +446,7 @@ public :
     // ----------------------------------
     #ifdef DEBUG
     void AssertFn(BOOL, LPSTR, LPSTR, int);
-    void sprintf (CHAR * buff, char *fmt, ...);
+    void sprintf (char * buff, char *fmt, ...);
     void TraceOn ( void );
     void TraceOff (void );
     void TraceMsg(WCHAR *ptext);

@@ -1470,9 +1470,12 @@ void CW32System::AssertFn(BOOL f, LPSTR, LPSTR, int)
 	}
 }
 
-void CW32System::sprintf (CHAR * buff, char *fmt, ...)
+void CW32System::sprintf (char * buff, char *fmt, ...)
 {
-	#pragma message("Review JMO : Finish this")
+    va_list args;
+    va_start(args, fmt);
+    ::wvsprintfA(buff, fmt, args);
+    va_end(args);
 }
 
 static BOOL fTracing = FALSE; //FALSE;
