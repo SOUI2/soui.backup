@@ -286,7 +286,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\snew.h"
+				RelativePath="include\snew.h"
 				>
 			</File>
 			<File

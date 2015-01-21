@@ -21,7 +21,6 @@
 			IntermediateDirectory="..\obj\debug\SoSmiley\"
 			ConfigurationType="2"
 			UseOfMFC="0"
-			UseOfATL="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			>

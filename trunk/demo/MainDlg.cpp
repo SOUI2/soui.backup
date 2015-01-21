@@ -8,6 +8,8 @@
 #include "../controls.extend/FileHelper.h"
 #include "reole\richeditole.h"
 
+#pragma warning(disable:4192)
+
 #ifdef _DEBUG
 #import "..\bin\SoSmileyd.dll" named_guids
 #else
