@@ -2,6 +2,8 @@
 //
 #include "stdafx.h"
 #include "RichEditOle.h"
+#include <GdiPlus.h>
+#pragma comment(lib,"gdiplus")
 
 
 HRESULT GetSmileyHost(SRichEdit * pRichedit,ISmileyHost ** ppHost)
@@ -339,62 +341,57 @@ CSmileyHost::~CSmileyHost()
 
 void CSmileyHost::ClearTimer()
 {
-    TIMERHANDLER_LIST::iterator it = m_lstTimerInfo.begin();
-    while(it != m_lstTimerInfo.end())
+    SPOSITION pos = m_lstTimerInfo.GetHeadPosition();
+    while(pos)
     {
-        delete (*it);
-        it++;
+        TIMERINFO *pTi = m_lstTimerInfo.GetNext(pos);
+        pTi->pHandler->Release();
+        delete pTi;
     }
-    m_lstTimerInfo.clear();
+    m_lstTimerInfo.RemoveAll();
 }
 
 HRESULT STDMETHODCALLTYPE CSmileyHost::SetTimer( /* [in] */ ITimerHandler * pTimerHander, /* [in] */ int nInterval )
 {
-    TIMERHANDLER_LIST::iterator it = m_lstTimerInfo.begin();
-    while(it != m_lstTimerInfo.end())
+    SPOSITION pos = m_lstTimerInfo.GetHeadPosition();
+    while(pos)
     {
-        if((*it)->pTimerHandler == pTimerHander) return S_FALSE;
-        it++;
-    }
-    TIMERINFO * pti= new TIMERINFO;
-    pti->pTimerHandler=pTimerHander;
-    pti->nInterval=nInterval;
-    pti->nPassTime=0;
+        if(m_lstTimerInfo.GetNext(pos)->pHandler == pTimerHander) return S_FALSE;
+    } 
 
-    m_lstTimerInfo.push_back(pti);
+    m_lstTimerInfo.AddTail(new TIMERINFO(pTimerHander,nInterval));
+    pTimerHander->AddRef();
+        
     return S_OK;
 }
 
-#define INTERVAL    2
+#define INTERVAL    5
 HRESULT STDMETHODCALLTYPE  CSmileyHost::OnTimer( int nInterval )
 {
     if(++m_cTime<INTERVAL) return S_OK;
     m_cTime=0;
-
-    TIMERHANDLER_LIST lstDone;
     
     //找到所有到时间的定时器,防止在执行定时器时插入新定时器，需要先查找再执行。
-    TIMERHANDLER_LIST::iterator it = m_lstTimerInfo.begin();
-    while(it != m_lstTimerInfo.end())
+    TIMERHANDLER_LIST lstDone;
+    SPOSITION pos = m_lstTimerInfo.GetHeadPosition();
+    while(pos)
     {
-        TIMERHANDLER_LIST::iterator it2=it;
-        it++;
-        TIMERINFO *pTi = *it2;
-        pTi->nPassTime += nInterval*INTERVAL;
-        if(pTi->nPassTime >= pTi->nInterval)
+        SPOSITION pos2 = pos;
+        TIMERINFO *pti = m_lstTimerInfo.GetNext(pos);
+        pti->nInterval -= nInterval*INTERVAL;
+        if(pti->nInterval <= 0)
         {
-            lstDone.push_back(pTi);
-            m_lstTimerInfo.erase(it2);
+            lstDone.AddTail(pti);
+            m_lstTimerInfo.RemoveAt(pos2);
         }
     }
-    
-    //执行定时器
-    it = lstDone.begin();
-    while(it!=lstDone.end())
+    pos = lstDone.GetHeadPosition();
+    while(pos)
     {
-        (*it)->pTimerHandler->OnTimer();
-        delete (*it);
-        it++;
+        TIMERINFO *pTi = lstDone.GetNext(pos);
+        pTi->pHandler->OnTimer();
+        pTi->pHandler->Release();
+        delete pTi;
     }
     return S_OK;
 }

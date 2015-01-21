@@ -8,11 +8,6 @@
 
 #include <richole.h>
 #include <map>
-#include <list>
-#include <GdiPlus.h>
-#pragma comment(lib,"gdiplus")
-
-
 
 #include "../sosmiley/_sosmiley.h"
 #include <control/srichedit.h>
@@ -189,12 +184,14 @@ public:
     
     struct TIMERINFO
     {
-        SComPtr<ITimerHandler>  pTimerHandler;
+        TIMERINFO(ITimerHandler *_p,int _nInterval)
+        :pHandler(_p),nInterval(_nInterval)
+        {}
+        ITimerHandler * pHandler;
         int nInterval;
-        int nPassTime;
     };
 
-    typedef std::list<TIMERINFO*> TIMERHANDLER_LIST;
+    typedef SList<TIMERINFO*> TIMERHANDLER_LIST;
     TIMERHANDLER_LIST m_lstTimerInfo;
 
     SRichEdit * m_pHost;
