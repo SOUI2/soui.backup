@@ -345,6 +345,7 @@ void CSmileyHost::ClearTimer()
     while(pos)
     {
         TIMERINFO *pTi = m_lstTimerInfo.GetNext(pos);
+        pTi->pHandler->Clear();
         pTi->pHandler->Release();
         delete pTi;
     }
@@ -385,14 +386,39 @@ HRESULT STDMETHODCALLTYPE  CSmileyHost::OnTimer( int nInterval )
             m_lstTimerInfo.RemoveAt(pos2);
         }
     }
+    if(lstDone.IsEmpty()) return S_OK;
+
+    //计算出刷新区域
+    CAutoRefPtr<IRegion> rgn;
+    GETRENDERFACTORY->CreateRegion(&rgn);;
+    RECT rcSmiley;
     pos = lstDone.GetHeadPosition();
     while(pos)
     {
         TIMERINFO *pTi = lstDone.GetNext(pos);
-        pTi->pHandler->OnTimer();
+        pTi->pHandler->GetRect(&rcSmiley);
+        int nWid=rcSmiley.right-rcSmiley.left;
+        rgn->CombineRect(&rcSmiley,RGN_OR);
+    }
+    
+    CRect rcClient;
+    m_pHost->GetClientRect(&rcClient);
+    rgn->CombineRect(&rcClient,RGN_AND);
+    
+    //刷新表情
+    IRenderTarget *pRT = m_pHost->GetRenderTarget(OLEDC_PAINTBKGND,rgn);
+    HDC hdc = pRT->GetDC(0);
+    pos = lstDone.GetHeadPosition();
+    while(pos)
+    {
+        TIMERINFO *pTi = lstDone.GetNext(pos);
+        pTi->pHandler->OnTimer(hdc);
         pTi->pHandler->Release();
         delete pTi;
     }
+    pRT->ReleaseDC(hdc);
+    m_pHost->ReleaseRenderTarget(pRT);
+
     return S_OK;
 }
 
@@ -446,7 +472,20 @@ HRESULT STDMETHODCALLTYPE CSmileyHost::SetRichedit(/* [in] */DWORD_PTR dwRichedi
     SASSERT(!m_pHost);
     m_pHost = (SRichEdit *)dwRichedit;
     m_pHost->GetContainer()->RegisterTimelineHandler(this);
+    
+    //订阅richedit的EN_UPDATE消息,用来更新表情坐标
+    m_pHost->GetEventSet()->subscribeEvent(EventRENotify::EventID,Subscriber(&CSmileyHost::OnHostUpdate,this));
     return S_OK;
+}
+
+bool CSmileyHost::OnHostUpdate(SOUI::EventArgs *pEvt)
+{
+    EventRENotify *pReNotify = (EventRENotify*)pEvt;
+    if(pReNotify->iNotify == EN_UPDATE)
+    {
+        ClearTimer();
+    }
+    return false; 
 }
 
 
