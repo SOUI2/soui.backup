@@ -337,7 +337,6 @@ CSmileyHost::CSmileyHost() :m_pHost(0),m_cRef(1),m_cTime(0)
 
 CSmileyHost::~CSmileyHost()
 {
-    if(m_pHost) m_pHost->GetContainer()->UnregisterTimelineHandler(this);
 }
 
 void CSmileyHost::ClearTimer()
@@ -367,7 +366,7 @@ HRESULT STDMETHODCALLTYPE CSmileyHost::SetTimer( /* [in] */ ITimerHandler * pTim
     return S_OK;
 }
 
-#define INTERVAL    5
+#define INTERVAL    2
 HRESULT STDMETHODCALLTYPE  CSmileyHost::OnTimer( int nInterval )
 {
     if(++m_cTime<INTERVAL) return S_OK;
@@ -481,11 +480,19 @@ HRESULT STDMETHODCALLTYPE CSmileyHost::SetRichedit(/* [in] */DWORD_PTR dwRichedi
 {
     SASSERT(!m_pHost);
     m_pHost = (SRichEdit *)dwRichedit;
-    m_pHost->GetContainer()->RegisterTimelineHandler(this);
-    
     //订阅richedit的EN_UPDATE消息,用来更新表情坐标
+    m_pHost->GetEventSet()->subscribeEvent(EVT_VISIBLECHANGED,Subscriber(&CSmileyHost::OnHostVisibleChanged,this));
     m_pHost->GetEventSet()->subscribeEvent(EventRENotify::EventID,Subscriber(&CSmileyHost::OnHostUpdate,this));
     return S_OK;
+}
+
+bool CSmileyHost::OnHostVisibleChanged(SOUI::EventArgs *pEvt)
+{
+    if(m_pHost->IsVisible(TRUE))
+        m_pHost->GetContainer()->RegisterTimelineHandler(this);
+    else
+        m_pHost->GetContainer()->UnregisterTimelineHandler(this);
+    return false;
 }
 
 bool CSmileyHost::OnHostUpdate(SOUI::EventArgs *pEvt)

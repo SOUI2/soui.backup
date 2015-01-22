@@ -62,6 +62,7 @@ namespace SOUI
         EVT_CTXMENU,
         EVT_SETFOCUS,
         EVT_KILLFOCUS,
+        EVT_VISIBLECHANGED,
         EVT_SCROLL,
         EVT_OFEVENT,    //消息二次包装
         EVT_OFPANEL,    //一个itemPanel中的消息的二次包装
