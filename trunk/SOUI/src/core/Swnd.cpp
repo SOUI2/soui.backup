@@ -43,6 +43,7 @@ namespace SOUI
     {
         m_evtSet.addEvent(EVT_MOUSE_HOVER);
         m_evtSet.addEvent(EVT_MOUSE_LEAVE);
+        m_evtSet.addEvent(EVT_VISIBLECHANGED);
         m_evtSet.addEvent(EventCmd::EventID);
         m_evtSet.addEvent(EventCtxMenu::EventID);
         m_evtSet.addEvent(EventSetFocus::EventID);
@@ -1172,6 +1173,9 @@ namespace SOUI
             SWindow *pParent=GetParent();
             if(pParent) pParent->UpdateChildrenPosition();
         }
+        
+        EventCmnArgs evtShow(this,EVT_VISIBLECHANGED);
+        FireEvent(evtShow);
     }
 
 
