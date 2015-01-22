@@ -2,6 +2,7 @@
 //
 #include "stdafx.h"
 #include "RichEditOle.h"
+#include <gdialpha.h>
 #include <GdiPlus.h>
 #pragma comment(lib,"gdiplus")
 
@@ -407,7 +408,13 @@ HRESULT STDMETHODCALLTYPE  CSmileyHost::OnTimer( int nInterval )
     
     //Ë¢ÐÂ±íÇé
     IRenderTarget *pRT = m_pHost->GetRenderTarget(OLEDC_PAINTBKGND,rgn);
+    
     HDC hdc = pRT->GetDC(0);
+
+    pRT->GetClipBox(&rcClient);
+    ALPHAINFO ai;
+    CGdiAlpha::AlphaBackup(hdc,&rcClient,ai);
+
     pos = lstDone.GetHeadPosition();
     while(pos)
     {
@@ -416,6 +423,8 @@ HRESULT STDMETHODCALLTYPE  CSmileyHost::OnTimer( int nInterval )
         pTi->pHandler->Release();
         delete pTi;
     }
+    CGdiAlpha::AlphaRestore(ai);
+    
     pRT->ReleaseDC(hdc);
     m_pHost->ReleaseRenderTarget(pRT);
 
