@@ -408,6 +408,7 @@ HRESULT STDMETHODCALLTYPE  CSmileyHost::OnTimer( int nInterval )
     
     //Ë¢ÐÂ±íÇé
     IRenderTarget *pRT = m_pHost->GetRenderTarget(OLEDC_PAINTBKGND,rgn);
+    m_pHost->SSendMessage(WM_ERASEBKGND,(WPARAM)pRT);
     
     HDC hdc = pRT->GetDC(0);
 
