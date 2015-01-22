@@ -203,6 +203,8 @@ void CSoSmileyCtrl::UpdateSmiley(HDC hdc)
     
     if(!hdc) return;
     
+    UpdateSmileyFlag();
+    
     m_pSmileySource->Draw(hdc,&m_rcPos,m_iFrameIndex);
     
     if (m_dwDrawFlag == REO_INVERTEDSELECT)
@@ -365,6 +367,9 @@ DWORD CSoSmileyCtrl::GetSmileyFlag(IRichEditOle *ole,int iFirst,int iLast)
 void CSoSmileyCtrl::UpdateSmileyFlag()
 {
     if(!m_pSmileyHost) return ;
+    
+    if(m_dwDrawFlag!=-1) return;
+    
     CComPtr<IRichEditOle>  ole;
     LRESULT lMsgRet = 0;
     m_pSmileyHost->SendMessage(EM_GETOLEINTERFACE, 0, (LPARAM)&ole,&lMsgRet);
@@ -396,6 +401,7 @@ void CSoSmileyCtrl::UpdateSmileyFlag()
 STDMETHODIMP CSoSmileyCtrl::Clear()
 {
     memset(&m_rcPos,0,sizeof(RECT));
-    UpdateSmileyFlag();
+    m_dwDrawFlag = -1;
+//    UpdateSmileyFlag();
     return S_OK;
 }
