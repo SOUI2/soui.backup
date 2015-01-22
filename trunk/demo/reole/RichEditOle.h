@@ -180,6 +180,8 @@ public://ISmileyHost
 public://ITimelineHandler
     virtual void OnNextFrame(){OnTimer(10);}
 public:
+    bool OnHostUpdate(SOUI::EventArgs *pEvt);
+    
     void ClearTimer();
     
     struct TIMERINFO

@@ -17,7 +17,9 @@ interface IRichEditOle;
     pointer_default(unique)
 ]
 __interface  ITimerHandler : IUnknown{
-    [id(1), helpstring("method OnTimer")] HRESULT OnTimer();
+    [id(1), helpstring("method OnTimer")] HRESULT OnTimer([in]HDC hdc);
+    [id(2), helpstring("method Clear")] HRESULT Clear();
+    [id(3), helpstring("method GetRect")] HRESULT GetRect([out]LPRECT pRect);
 };
 
 //ISmileySource
@@ -144,15 +146,22 @@ public://IPersistStorage
     STDMETHOD(Load)(IStorage* pStorage);//重载IPersistStorage::Load，初始化完成后写入几个标志位
 
 public://ITimerHander
-    STDMETHOD(OnTimer)();
+    STDMETHOD(OnTimer)(HDC hdc);
+    STDMETHOD(Clear)();;
+    STDMETHOD(GetRect)(LPRECT pRect){memcpy(pRect,&m_rcPos,sizeof(RECT));return S_OK;};
+    
 private:
-    void UpdateSmiley();
-    BOOL GetSmileyPos(IRichEditOle *pOle,int iFirst,int iLast,LPRECT pRect);
+    void UpdateSmiley(HDC hdc);
+    void UpdateSmileyFlag();
+    DWORD GetSmileyFlag(IRichEditOle *ole,int iFirst,int iLast);
     
     CComPtr<ISmileyHost>    m_pSmileyHost;
     CComPtr<ISmileySource>  m_pSmileySource;
     int                     m_iFrameIndex;
     DWORD                   m_dwID;
+    RECT                    m_rcPos;
+    
+    DWORD                   m_dwDrawFlag;
 };
 
 #endif // SoSmileyCtrl_h__

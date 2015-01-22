@@ -15,9 +15,10 @@ DWORD _GenerateID()
 
 // CCSmiley
 
-CSoSmileyCtrl::CSoSmileyCtrl():m_iFrameIndex(0)
+CSoSmileyCtrl::CSoSmileyCtrl():m_iFrameIndex(0),m_dwDrawFlag(0)
 {
     m_dwID = _GenerateID();
+    memset(&m_rcPos,0,sizeof(RECT));
 }
 
 CSoSmileyCtrl::~CSoSmileyCtrl()
@@ -117,13 +118,13 @@ STDMETHODIMP CSoSmileyCtrl::SetSource(ISmileySource * pSource)
     return S_OK;
 }
 
-STDMETHODIMP CSoSmileyCtrl::OnTimer()
+STDMETHODIMP CSoSmileyCtrl::OnTimer(HDC hdc)
 {
     int cFrame = 1;
     m_pSmileySource->GetFrameCount(&cFrame);
     m_iFrameIndex++;
     m_iFrameIndex %= cFrame;
-    FireViewChange();
+    UpdateSmiley(hdc);
     return S_OK;
 }
 
@@ -170,7 +171,7 @@ HRESULT CSoSmileyCtrl::FireViewChange()
     }
     else
     {
-        UpdateSmiley();
+//         UpdateSmiley(NULL);
     }
     return S_OK;
 }
@@ -180,6 +181,10 @@ HRESULT CSoSmileyCtrl::OnDraw(ATL_DRAWINFO& di)
     if(!m_pSmileySource) return E_FAIL;
     RECT rc={di.prcBounds->left,di.prcBounds->top,di.prcBounds->right,di.prcBounds->bottom};
     m_pSmileySource->Draw(di.hdcDraw,&rc,m_iFrameIndex);
+    if(!di.bZoomed)
+    {//在copy时会有bZoomed标志，把矩形放大。这里先清除掉
+        m_rcPos = rc;//cache pos, position will be updated in response to EN_UPDATE message come from it's host
+    }
     
     int nDelay=0;
     HRESULT hr = m_pSmileySource->GetFrameDelay(m_iFrameIndex,&nDelay);
@@ -188,6 +193,73 @@ HRESULT CSoSmileyCtrl::OnDraw(ATL_DRAWINFO& di)
         m_pSmileyHost->SetTimer(this,nDelay);
     }
     return S_OK;    
+}
+
+
+void CSoSmileyCtrl::UpdateSmiley(HDC hdc)
+{
+    if(!m_pSmileyHost) return ;
+    if(::IsRectEmpty(&m_rcPos)) return;
+    
+    if(!hdc) return;
+    
+    m_pSmileySource->Draw(hdc,&m_rcPos,m_iFrameIndex);
+    
+    if (m_dwDrawFlag == REO_INVERTEDSELECT)
+    {
+        //Invert entire object
+        InvertRect(hdc, &m_rcPos);
+    }
+    else if(m_dwDrawFlag == REO_SELECTED)
+    {
+        // Just the border, so use a null brush
+        SaveDC(hdc);
+        SetROP2(hdc, R2_NOT);
+        SelectObject(hdc, GetStockObject(NULL_BRUSH));
+        Rectangle(hdc, m_rcPos.left, m_rcPos.top, m_rcPos.right, m_rcPos.bottom);
+        RestoreDC(hdc, -1);
+    }
+    
+    int nDelay=0;
+    HRESULT hr = m_pSmileySource->GetFrameDelay(m_iFrameIndex,&nDelay);
+    if(SUCCEEDED(hr) && m_pSmileyHost)
+    {
+        m_pSmileyHost->SetTimer(this,nDelay);
+    }
+}
+
+
+HRESULT CSoSmileyCtrl::Load( IStorage* pStorage )
+{
+    //向RichEditFlags字段中写入3个REOBJECT标志。分析了Richedit20的wince源代码后发现对象初始化完成插入richedit前会从"RichEditFlags"流中读3个标志位
+    CComPtr<IStream> spStream;
+    static LPCOLESTR vszRichEditFlags = OLESTR("RichEditFlags");
+    HRESULT hr = pStorage->CreateStream(vszRichEditFlags,
+        STGM_WRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE,
+        0, 0, &spStream);
+    if (FAILED(hr)) return hr;
+    DWORD dwFlag=REO_BELOWBASELINE,dwUser=m_dwID,dwAspect=DVASPECT_CONTENT;
+    spStream->Write(&dwFlag,sizeof(dwFlag),NULL);
+    spStream->Write(&dwUser,sizeof(dwUser),NULL);
+    spStream->Write(&dwAspect,sizeof(dwAspect),NULL);
+
+    return IPersistStorageImpl<CSoSmileyCtrl>::Load(pStorage);
+}
+
+STDMETHODIMP CSoSmileyCtrl::SetClientSite(IOleClientSite *pClientSite)
+{
+    if(pClientSite) 
+    {
+        CComPtr<IRichEditOleCallback> pCallback;
+        HRESULT hr=pClientSite->QueryInterface(IID_IRichEditOleCallback,(void**)&pCallback);
+        if(FAILED(hr)) return E_FAIL;
+
+        //从callback中获取host
+        hr = pCallback->QueryInterface(__uuidof(ISmileyHost),(LPVOID*)&m_pSmileyHost);
+        if(FAILED(hr)) return E_FAIL;
+    }
+    
+    return __super::SetClientSite(pClientSite);
 }
 
 
@@ -255,16 +327,49 @@ int FindLastOleInrange(IRichEditOle *pOle, int iBegin,int iEnd,int cpMin,int cpM
     }
 }
 
-#define  MAX_FULL_SMILEIES   50     //超过MAX_FULL_SMILEIES个表情可见时不计算表情位置，直接全屏刷新。
 
-void CSoSmileyCtrl::UpdateSmiley()
+//获得表情的绘制状态
+DWORD CSoSmileyCtrl::GetSmileyFlag(IRichEditOle *ole,int iFirst,int iLast)
+{
+    ATLASSERT(m_pSmileyHost);
+
+    DWORD dwFlag =0;
+    for(int i=iFirst;i<=iLast;i++)
+    {
+        REOBJECT reobj={0};
+        reobj.cbStruct=sizeof(REOBJECT);
+        HRESULT hr=ole->GetObject(i,&reobj,REO_GETOBJ_NO_INTERFACES);
+        if(FAILED(hr)) break;
+
+        if (reobj.clsid==__uuidof(CSoSmileyCtrl) && reobj.dwUser==m_dwID)
+        {
+            //选中单个对象时绘制边框，选中多个对象时反色
+            CHARRANGE chr={0};
+            m_pSmileyHost->SendMessage(EM_EXGETSEL, 0, (LPARAM)&chr,NULL);
+
+            if  ( chr.cpMin!=chr.cpMax 
+                && (reobj.cp<chr.cpMax && reobj.cp>=chr.cpMin) )
+            {
+                if((chr.cpMax-chr.cpMin) > 1)
+                    dwFlag=REO_INVERTEDSELECT;
+                else
+                    dwFlag=REO_SELECTED;                
+            }
+
+            break;            
+        }
+    }
+    return dwFlag;
+}
+
+void CSoSmileyCtrl::UpdateSmileyFlag()
 {
     if(!m_pSmileyHost) return ;
     CComPtr<IRichEditOle>  ole;
     LRESULT lMsgRet = 0;
     m_pSmileyHost->SendMessage(EM_GETOLEINTERFACE, 0, (LPARAM)&ole,&lMsgRet);
     if (!lMsgRet) return;
-
+        
     //获得可见字符范围
     m_pSmileyHost->SendMessage(EM_GETFIRSTVISIBLELINE,0,0,&lMsgRet);
 
@@ -281,128 +386,16 @@ void CSoSmileyCtrl::UpdateSmiley()
     //采用两分法查找在可见范围中的OLE对象
     int nCount=ole->GetObjectCount();
 
-    BOOL bFind = FALSE;
-
     int iFirstVisibleOle = FindFirstOleInrange(ole,0,nCount,cpFirst,cpLast);
     if(iFirstVisibleOle==-1) return;
     int iLastVisibleOle = FindLastOleInrange(ole,iFirstVisibleOle,nCount,cpFirst,cpLast);
     
-    if(iLastVisibleOle - iFirstVisibleOle >= MAX_FULL_SMILEIES)
-    {
-        m_pSmileyHost->InvalidateRect(NULL);
-    }else
-    {
-        RECT rcSmiley={0};
-        if(GetSmileyPos(ole,iFirstVisibleOle,iLastVisibleOle,&rcSmiley))
-        {
-            rcSmiley.top-=2;
-            m_pSmileyHost->InvalidateRect(&rcSmiley);
-        }
-    }
+    m_dwDrawFlag = GetSmileyFlag(ole,iFirstVisibleOle,iLastVisibleOle);
 }
 
-
-BOOL CSoSmileyCtrl::GetSmileyPos(IRichEditOle *ole,int iFirst,int iLast,LPRECT pRect)
+STDMETHODIMP CSoSmileyCtrl::Clear()
 {
-    ATLASSERT(m_pSmileyHost);
-    
-    BOOL bFind=FALSE;    
-    for(int i=iFirst;i<=iLast;i++)
-    {
-        REOBJECT reobj={0};
-        reobj.cbStruct=sizeof(REOBJECT);
-        HRESULT hr=ole->GetObject(i,&reobj,REO_GETOBJ_NO_INTERFACES);
-        if(FAILED(hr)) break;
-        
-        if (reobj.clsid==__uuidof(CSoSmileyCtrl) && reobj.dwUser==m_dwID)
-        {
-            long left, bottom;
-            HRESULT res;
-            ITextDocument * iDoc=NULL;
-            ITextRange *iRange=NULL;
-
-            ole->QueryInterface(__uuidof(ITextDocument),(void**)&iDoc);
-            if (!iDoc) break;
-
-            iDoc->Range(reobj.cp, reobj.cp, &iRange);
-
-            BOOL bBottom=TRUE;
-            if (reobj.dwFlags&REO_BELOWBASELINE)
-                res=iRange->GetPoint(TA_BOTTOM|TA_LEFT, &left, &bottom);
-            else
-                res=iRange->GetPoint(TA_BASELINE|TA_LEFT, &left, &bottom);
-            if (res!=S_OK) //object is out of screen let do normal fireview change
-            {
-                res=iRange->GetPoint(TA_TOP|TA_LEFT, &left, &bottom);
-                bBottom = FALSE;
-            }
-
-            iRange->Release();
-            iDoc->Release();
-
-            if (res!=S_OK) //object is out of screen let do normal fireview change
-            {
-                memset(pRect,0,sizeof(RECT));
-                break;
-            }
-
-            SIZE sz;
-            m_pSmileySource->GetSize(&sz);
-
-            DWORD nom=1, den=1;
-            LRESULT lMsgRet =0;
-            m_pSmileyHost->SendMessage( EM_GETZOOM, (WPARAM)&nom, (LPARAM)&den,&lMsgRet);
-            if(lMsgRet && nom && den)
-            {
-                sz.cx = sz.cx * nom / den;
-                sz.cy = sz.cy * nom / den;
-            }
-            CRect rcHost;
-            m_pSmileyHost->GetHostRect(&rcHost);
-
-
-            CPoint pt(left,bottom-(bBottom?sz.cy:0));
-            pt -= rcHost.TopLeft();
-
-            CRect rc(pt,sz);
-            memcpy(pRect,rc,sizeof(RECT));
-            bFind = TRUE;
-
-            break;            
-        }
-    }
-    return bFind;
-}
-
-HRESULT CSoSmileyCtrl::Load( IStorage* pStorage )
-{
-    //向RichEditFlags字段中写入3个REOBJECT标志。分析了Richedit20的wince源代码后发现对象初始化完成插入richedit前会从"RichEditFlags"流中读3个标志位
-    CComPtr<IStream> spStream;
-    static LPCOLESTR vszRichEditFlags = OLESTR("RichEditFlags");
-    HRESULT hr = pStorage->CreateStream(vszRichEditFlags,
-        STGM_WRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE,
-        0, 0, &spStream);
-    if (FAILED(hr)) return hr;
-    DWORD dwFlag=REO_BELOWBASELINE,dwUser=m_dwID,dwAspect=DVASPECT_CONTENT;
-    spStream->Write(&dwFlag,sizeof(dwFlag),NULL);
-    spStream->Write(&dwUser,sizeof(dwUser),NULL);
-    spStream->Write(&dwAspect,sizeof(dwAspect),NULL);
-
-    return IPersistStorageImpl<CSoSmileyCtrl>::Load(pStorage);
-}
-
-STDMETHODIMP CSoSmileyCtrl::SetClientSite(IOleClientSite *pClientSite)
-{
-    if(pClientSite) 
-    {
-        CComPtr<IRichEditOleCallback> pCallback;
-        HRESULT hr=pClientSite->QueryInterface(IID_IRichEditOleCallback,(void**)&pCallback);
-        if(FAILED(hr)) return E_FAIL;
-
-        //从callback中获取host
-        hr = pCallback->QueryInterface(__uuidof(ISmileyHost),(LPVOID*)&m_pSmileyHost);
-        if(FAILED(hr)) return E_FAIL;
-    }
-    
-    return __super::SetClientSite(pClientSite);
+    memset(&m_rcPos,0,sizeof(RECT));
+    UpdateSmileyFlag();
+    return S_OK;
 }
