@@ -589,8 +589,8 @@ SLine::SLine()
     : m_nLineStyle(PS_SOLID)
     , m_nLineSize(1)
     , m_mode(HR_HORZ)
+    , m_crLine(RGBA(0,0,0,255))
 {
-    m_style.m_crBg=RGBA(0,0,0,255);
 }
 
 void SLine::OnPaint(IRenderTarget *pRT)
@@ -604,7 +604,7 @@ void SLine::OnPaint(IRenderTarget *pRT)
     case HR_TILT:pts[1]=m_rcWindow.BottomRight();break;
     }
     CAutoRefPtr<IPen> curPen,oldPen;
-    pRT->CreatePen(m_nLineStyle,m_style.m_crBg,m_nLineSize,&curPen);
+    pRT->CreatePen(m_nLineStyle,m_crLine,m_nLineSize,&curPen);
     pRT->SelectObject(curPen,(IRenderObj**)&oldPen);
     pRT->DrawLines(pts,2);
     pRT->SelectObject(oldPen);

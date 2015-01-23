@@ -567,6 +567,8 @@ protected:
     int m_nLineStyle;
     int m_nLineSize;
     
+    COLORREF    m_crLine;
+    
     enum HRMODE{
         HR_HORZ=0,
         HR_VERT,
@@ -574,6 +576,7 @@ protected:
     }m_mode;
 
     SOUI_ATTRS_BEGIN()
+        ATTR_COLOR(L"colorLine", m_crLine, FALSE)
         ATTR_INT(L"size", m_nLineSize, FALSE)
         ATTR_ENUM_BEGIN(L"mode", HRMODE, FALSE)
             ATTR_ENUM_VALUE(L"vertical", HR_VERT)
