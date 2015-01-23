@@ -13,6 +13,7 @@ SUBDIRS += png
 SUBDIRS += resprovider-zip
 SUBDIRS += imgdecoder-stb
 SUBDIRS += imgdecoder-png
+SUBDIRS += imgdecoder-gdip
 
 !LIB_ALL:!LIB_SOUI{
 	SUBDIRS += ScriptModule-LUA
