@@ -53,8 +53,8 @@ namespace SOUI
         int _DoDecode(IWICBitmapDecoder * pDecoder);
 
         SImgFrame_WIC *     m_pImgArray;
-        UINT					  m_uImgCount;
-        BOOL m_bPremultiplied;
+        UINT				m_uImgCount;
+        BOOL                m_bPremultiplied;
 
     };
 
