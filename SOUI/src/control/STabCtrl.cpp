@@ -116,6 +116,8 @@ STabCtrl::STabCtrl() : m_nCurrentPage(0)
     m_bFocusable=TRUE;
     m_evtSet.addEvent(EventTabSelChanging::EventID);
     m_evtSet.addEvent(EventTabSelChanged::EventID);
+    m_evtSet.addEvent(EventTabItemHover::EventID);
+    m_evtSet.addEvent(EventTabItemLeave::EventID);
 }
 
 void STabCtrl::OnPaint(IRenderTarget *pRT)
@@ -260,15 +262,27 @@ void STabCtrl::OnMouseMove( UINT nFlags, CPoint point )
     }
     if (m_nHoverTabItem != nOldHover)
     {
-        if(nOldHover!=-1 && nOldHover!=m_nCurrentPage)
+        if(nOldHover!=-1)
         {
-            GetItemRect(nOldHover, rcItem);
-            InvalidateRect(rcItem);
+            if(nOldHover!=m_nCurrentPage)
+            {
+                GetItemRect(nOldHover, rcItem);
+                InvalidateRect(rcItem);
+            }
+            EventTabItemLeave evt(this);
+            evt.iLeave = nOldHover;
+            FireEvent(evt);
         }
-        if(m_nHoverTabItem!=-1 && m_nHoverTabItem != m_nCurrentPage)
+        if(m_nHoverTabItem!=-1)
         {
-            GetItemRect(m_nHoverTabItem, rcItem);
-            InvalidateRect(rcItem);
+            if(m_nHoverTabItem != m_nCurrentPage)
+            {
+                GetItemRect(m_nHoverTabItem, rcItem);
+                InvalidateRect(rcItem);
+            }
+            EventTabItemHover evt(this);
+            evt.iHover = m_nHoverTabItem;
+            FireEvent(evt);
         }
     }
 }

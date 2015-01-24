@@ -75,6 +75,8 @@ namespace SOUI
 
         EVT_TAB_SELCHANGING=11000,
         EVT_TAB_SELCHANGED,
+        EVT_TAB_ITEMHOVER,
+        EVT_TAB_ITEMLEAVE,
 
         EVT_LB_GETDISPINFO=12000,
         EVT_LB_SELCHANGING,
@@ -235,6 +237,24 @@ namespace SOUI
         virtual UINT GetEventID(){return EventID;}
         UINT        uOldSel;
         UINT        uNewSel;
+    };
+
+    class SOUI_EXP EventTabItemHover : public EventArgs
+    {
+    public:
+        EventTabItemHover(SWindow *pWnd):EventArgs(pWnd){}
+        enum{EventID=EVT_TAB_ITEMHOVER};
+        virtual UINT GetEventID(){return EventID;}
+        int iHover;
+    };
+
+    class SOUI_EXP EventTabItemLeave : public EventArgs
+    {
+    public:
+        EventTabItemLeave(SWindow *pWnd):EventArgs(pWnd){}
+        enum{EventID=EVT_TAB_ITEMLEAVE};
+        virtual UINT GetEventID(){return EventID;}
+        int iLeave;
     };
 
     class SOUI_EXP EventLBGetDispInfo : public EventArgs
