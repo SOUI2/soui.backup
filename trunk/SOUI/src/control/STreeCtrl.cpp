@@ -456,10 +456,6 @@ HSTREEITEM STreeCtrl::InsertItem(pugi::xml_node xmlItem,HSTREEITEM hParent/*=STV
     return InsertItem(pItemObj, hParent, hInsertAfter, bEnsureVisible);
 }
 
-int STreeCtrl::GetScrollLineSize(BOOL bVertical)
-{
-    return m_nItemHei;
-}
 
 BOOL STreeCtrl::IsAncestor(HSTREEITEM hItem1,HSTREEITEM hItem2)
 {

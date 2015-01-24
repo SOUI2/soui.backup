@@ -18,6 +18,7 @@ SPanel::SPanel()
     ,m_wBarVisible(0)
     ,m_wBarEnable(SSB_BOTH)
     ,m_dwUpdateInterval(DEF_UPDATEINTERVAL)
+    ,m_nScrollSpeed(10)
 {
     ISkinObj *pSkin=GETBUILTINSKIN(SKIN_SYS_SCROLLBAR);
     if(pSkin && pSkin->IsClass(SSkinScrollbar::GetClassName()))
@@ -711,24 +712,17 @@ HRESULT SPanel::OnAttrScrollbarSkin( SStringW strValue,BOOL bLoading )
     return bLoading?S_FALSE:S_OK;
 }
 
+int SPanel::GetScrollLineSize( BOOL bVertical )
+{
+    return m_nScrollSpeed;
+}
 
 //////////////////////////////////////////////////////////////////////////
 SScrollView::SScrollView()
-:m_szView(-1,-1)
-,m_ptOrigin(0,0)
 {
     m_bClipClient=TRUE;
 }
 
-int SScrollView::OnCreate( LPVOID )
-{
-    int nRet=__super::OnCreate(NULL);
-    if(nRet!=0) return nRet;
-    if(m_szView.cx==-1) m_szView.cx=m_rcClient.Width();
-    if(m_szView.cy==-1) m_szView.cy=m_rcClient.Height();
-    SetViewOrigin(m_ptOrigin);
-    return 0;
-}
 
 void SScrollView::OnSize(UINT nType,CSize size)
 {

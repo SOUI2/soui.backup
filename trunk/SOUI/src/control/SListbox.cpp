@@ -20,7 +20,6 @@ namespace SOUI
 
 SListBox::SListBox()
     : m_nItemHei(20)
-    , m_iScrollSpeed(-1)
     , m_iSelItem(-1)
     , m_iHoverItem(-1)
     , m_crItemBg(CR_INVALID)
@@ -295,11 +294,6 @@ int SListBox::InsertItem(int nIndex, LPLBITEM pItem)
     SetViewSize(szView);
 
     return nIndex;
-}
-
-int SListBox::GetScrollLineSize(BOOL bVertical)
-{
-    return m_iScrollSpeed >0 ? m_iScrollSpeed : m_nItemHei;
 }
 
 void SListBox::RedrawItem(int iItem)

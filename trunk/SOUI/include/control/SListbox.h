@@ -294,15 +294,6 @@ protected:
     int InsertItem(int nIndex, LPLBITEM pItem);
 
     /**
-     * SListBox::GetScrollLineSize
-     * @brief    获取滚动大小
-     * @param    BOOL bVertical -- 是否是垂直
-     *
-     * Describe  获取滚动大小
-     */
-    virtual int GetScrollLineSize(BOOL bVertical);
-
-    /**
      * SListBox::DrawItem
      * @brief    绘制
      * @param    IRenderTarget *pRT -- 绘制设备
@@ -456,7 +447,6 @@ protected:
 public:
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"scrollSpeed", m_iScrollSpeed, FALSE)
         ATTR_INT(L"itemHeight", m_nItemHei, FALSE)
         ATTR_SKIN(L"itemSkin", m_pItemSkin, TRUE)
         ATTR_SKIN(L"iconSkin", m_pIconSkin, TRUE)

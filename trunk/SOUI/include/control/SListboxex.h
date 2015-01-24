@@ -247,15 +247,6 @@ protected:
     CRect    GetItemRect(int iItem);
 
     /**
-     * SListBoxEx::GetScrollLineSize
-     * @brief    获取滚动大小
-     * @param    BOOL bVertical -- 是否是垂直
-     *
-     * Describe  获取滚动大小
-     */
-    virtual int GetScrollLineSize(BOOL bVertical);
-
-    /**
      * SListBoxEx::OnPaint
      * @brief    绘制
      * @param    IRenderTarget *pRT -- 绘制设备
@@ -464,7 +455,6 @@ protected:
     BOOL       m_bItemRedrawDelay;     /**< 表项重绘时缓冲 */       
 public:
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"scrollSpeed", m_iScrollSpeed, FALSE)
         ATTR_INT(L"itemHeight", m_nItemHei, FALSE)
         ATTR_SKIN(L"itemSkin", m_pItemSkin, TRUE)
         ATTR_COLOR(L"colorItemBkgnd",m_crItemBg,FALSE)

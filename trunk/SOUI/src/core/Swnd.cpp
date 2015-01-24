@@ -44,6 +44,7 @@ namespace SOUI
         m_evtSet.addEvent(EVT_MOUSE_HOVER);
         m_evtSet.addEvent(EVT_MOUSE_LEAVE);
         m_evtSet.addEvent(EVT_VISIBLECHANGED);
+        m_evtSet.addEvent(EVT_STATECHANGED);
         m_evtSet.addEvent(EventCmd::EventID);
         m_evtSet.addEvent(EventCtxMenu::EventID);
         m_evtSet.addEvent(EventSetFocus::EventID);
@@ -2078,5 +2079,18 @@ namespace SOUI
         SASSERT(IsLayeredWindow());
         if(!m_layeredRT)  GETRENDERFACTORY->CreateRenderTarget(&m_layeredRT,0,0);
         return m_layeredRT;
+    }
+
+    void SWindow::OnStateChanging( DWORD dwOldState,DWORD dwNewState )
+    {
+        
+    }
+
+    void SWindow::OnStateChanged( DWORD dwOldState,DWORD dwNewState )
+    {
+        EventStateChanged evt(this);
+        evt.dwOldState = dwOldState;
+        evt.dwNewState = dwNewState;
+        FireEvent(evt);
     }
 }//namespace SOUI

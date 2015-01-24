@@ -36,6 +36,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     //必须要调用OleInitialize来初始化运行环境
     HRESULT hRes = OleInitialize(NULL);
     SASSERT(SUCCEEDED(hRes));
+//     LoadLibrary(L"E:\\soui.taobao\\third-part\\richedit\\Debug\\riched20.dll");
         
     int nRet = 0; 
 
@@ -103,8 +104,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         //创建一个http服务器，用来从资源中加载flash
         CMemFlash   memFlash;
 
-//         CHTTPServer flashSvr(&memFlash);
-//         flashSvr.Start(CMemFlash::HomeDir(),"",82,0);
+        CHTTPServer flashSvr(&memFlash);
+        flashSvr.Start(CMemFlash::HomeDir(),"",82,0);
 
         if(trans)
         {//加载语言翻译包
@@ -188,7 +189,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         //应用程序退出
         delete theApp; 
         
-//         flashSvr.Shutdown();
+        flashSvr.Shutdown();
 
         //卸载菜单边框绘制hook
         CMenuWndHook::UnInstallHook();
