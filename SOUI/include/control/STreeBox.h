@@ -39,6 +39,8 @@ public:
     BOOL m_bCollapsed; /**< 是否折叠 */
     BOOL m_bVisible;   /**< 是否显示 */
     int  m_nLevel;     /**< tree深度 */
+    int  m_nItemHeight;/**< 表项高度 */
+    int  m_nBranchHeight;/**< 分枝总显示高度 */
 };
 
 /** 
@@ -164,22 +166,6 @@ public:
     HSTREEITEM GetParentItem(HSTREEITEM hItem);
 
     /**
-     * STreeBox::PageUp
-     * @brief    上一页  
-     * 
-     * Describe  上一页  
-     */
-    void PageUp();
-
-    /**
-     * STreeBox::PageDown
-     * @brief    下一页 
-     * 
-     * Describe  下一页
-     */
-    void PageDown();
-
-    /**
      * STreeBox::OnDestroy
      * @brief    销毁    
      * 
@@ -218,7 +204,7 @@ public:
 
     /**
      * STreeBox::GetItemPanel
-     * @brief    获取节点
+     * @brief    获取节点的STreeItem对象
      * @param    HSTREEITEM hItem -- 节点
      * 
      * Describe  获取节点
@@ -227,6 +213,15 @@ public:
     {
         return GetItem(hItem);
     }
+
+    /**
+     * STreeBox::GetItemRect
+     * @brief    获取节点在窗口中的显示位置
+     * @param    HSTREEITEM hItem --  目标节点
+     * @return   CRect -- 显示位置（窗口坐标）
+     * Describe  不显示则返回空矩形
+     */    
+    CRect GetItemRect(HSTREEITEM hItem);
 protected:
     /**
      * STreeBox::SetChildrenVisible
@@ -245,14 +240,7 @@ protected:
      * Describe  释放节点
      */
     virtual void OnNodeFree(STreeItem * & pItem);
-    /**
-     * STreeBox::GetScrollLineSize
-     * @brief    滚动条长度
-     * @param    BOOL bVertical -- 是否是垂直
-     * 
-     * Describe  滚动条长度
-     */
-    virtual int GetScrollLineSize(BOOL bVertical);
+
     /**
      * STreeBox::CreateChildren
      * @brief    创建tree
@@ -270,23 +258,9 @@ protected:
      * Describe  加载分支节点
      */
     void LoadBranch(HSTREEITEM hParent,pugi::xml_node xmlNode);
-    /**
-     * STreeBox::OnNcCalcSize
-     * @brief    计算非客户区大小
-     * @param    BOOL bCalcValidRects  --  
-     * @param    LPARAM lParam -- 
-     * 
-     * Describe  计算非客户区大小
-     */
-    LRESULT OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam);
-    /**
-     * STreeBox::GetItemShowIndex
-     * @brief    获取索引
-     * @param    HSTREEITEM hItemObj -- 节点
-     * 
-     * Describe  获取索引
-     */
-    int GetItemShowIndex(HSTREEITEM hItemObj);
+
+    void OnSize(UINT nType,CSize size);
+
     /**
      * STreeBox::RedrawItem
      * @brief    重新绘制
@@ -415,6 +389,9 @@ protected:
      * Describe  
     */
     virtual void OnViewOriginChanged( CPoint ptOld,CPoint ptNew );
+
+    virtual void OnViewSizeChanged(CSize szOld,CSize szNew);
+
     /**
      * STreeBox::OnGetDlgCode
      * @brief    获取窗口消息码
@@ -439,6 +416,32 @@ protected:
     BOOL IsAncestor(HSTREEITEM hItem1,HSTREEITEM hItem2);
 
     void UpdateSwitchState(HSTREEITEM hItem);
+
+    void UpdateItemWidth(HSTREEITEM hItem,int nWidth);
+    
+    void SetViewHeight(int nHeight);
+
+    bool OnItemStateChanged(EventArgs *pEvt);
+    
+    void UpdateAncestorBranchHeight(HSTREEITEM hItem,int nHeightChange);
+
+        /**
+     * STreeBox::GetItemShowIndex
+     * @brief    获取索引
+     * @param    HSTREEITEM hItemObj -- 节点
+     * 
+     * Describe  获取索引
+     */
+    int GetItemShowIndex(HSTREEITEM hItemObj);
+    
+    //计算一个ITEM在控件中显示的偏移量
+    CPoint GetItemOffsetInView(HSTREEITEM hItem);
+
+    CRect GetItemRectInView(HSTREEITEM hItem);
+
+    void  PaintVisibleItem(IRenderTarget *pRT,IRegion *pRgn,HSTREEITEM hItem,int & yOffset);
+
+    HSTREEITEM _HitTest(HSTREEITEM hItem,int & yOffset,const CPoint & pt );
 protected:
     /**
      * STreeBox::OnItemSetCapture
@@ -458,32 +461,32 @@ protected:
      * Describe  
     */
     virtual BOOL OnItemGetRect(SItemPanel *pItem,CRect &rcItem);
+
     /**
      * STreeBox::IsItemRedrawDelay
-     * @brief    判断是否是先祖
+     * @brief    获取表项延时刷新标志
      * @param    返回BOOL
      *
-     * Describe  判断是否是先祖
+     * Describe 
     */
     virtual BOOL IsItemRedrawDelay(){return m_bItemRedrawDelay;}
 
     HSTREEITEM    m_hSelItem;  /**< 选中item */
     HSTREEITEM    m_hHoverItem; /**< hover状态item */
 
-    int            m_nVisibleItems;  /**< 显示item个数 */
+    SItemPanel    *m_pCapturedFrame;  /**< 当前捕获光标的表项 */
 
-    SItemPanel    *m_pCapturedFrame;  /**<  */
-
-    int  m_nItemHei;  /**< 高度 */ 
-    int  m_nIndent;  /**< 缩进 */ 
-    COLORREF m_crItemBg; /**< 背景色 */ 
-    COLORREF m_crItemSelBg;  /**< 选中背景色 */ 
-    ISkinObj * m_pItemSkin;  /**< ISkinObj对象 */ 
-    BOOL m_bItemRedrawDelay;  /**< */
+    int  m_nItemHeight;         /**< 高度 */ 
+    int  m_nIndent;             /**< 缩进 */ 
+    COLORREF m_crItemBg;        /**< 背景色 */ 
+    COLORREF m_crItemSelBg;     /**< 选中背景色 */ 
+    ISkinObj * m_pItemSkin;     /**< ISkinObj对象 */ 
+    BOOL m_bItemRedrawDelay;    /**< 表项中控件刷新时延时*/
+    pugi::xml_document  m_xmlTemplate;/**< XML模板*/
 
     SOUI_ATTRS_BEGIN()
         ATTR_INT(L"indent", m_nIndent, TRUE)
-        ATTR_INT(L"itemHeight", m_nItemHei, TRUE)
+        ATTR_INT(L"itemHeight", m_nItemHeight, TRUE)
         ATTR_SKIN(L"itemSkin", m_pItemSkin, TRUE)
         ATTR_COLOR(L"colorItemBkgnd",m_crItemBg,FALSE)
         ATTR_COLOR(L"colorItemSelBkgnd",m_crItemSelBg,FALSE)
@@ -493,6 +496,7 @@ protected:
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_NCCALCSIZE(OnNcCalcSize)
+        MSG_WM_SIZE(OnSize)
         MSG_WM_DESTROY(OnDestroy)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONDBLCLK(OnLButtonDbClick)

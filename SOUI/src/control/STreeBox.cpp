@@ -24,7 +24,7 @@ static const wchar_t NAME_SWITCH[] =   L"switch";
 
 
 STreeBox::STreeBox()
-    : m_nItemHei(20)
+    : m_nItemHeight(20)         //默认为固定高度的列表项
     , m_nIndent(10)
     , m_hSelItem(NULL)
     , m_hHoverItem(NULL)
@@ -32,13 +32,13 @@ STreeBox::STreeBox()
     , m_crItemBg(CR_INVALID)
     , m_crItemSelBg(RGB(0,0,128))
     , m_pItemSkin(NULL)
-    , m_nVisibleItems(0)
     , m_bItemRedrawDelay(TRUE)
 {
     m_bFocusable=TRUE;
     m_evtSet.addEvent(EventTBGetDispInfo::EventID);
     m_evtSet.addEvent(EventTBSelChanging::EventID);
     m_evtSet.addEvent(EventTBSelChanged::EventID);
+    m_evtSet.addEvent(EventTBQueryItemHeight::EventID);
 }
 
 STreeBox::~STreeBox()
@@ -57,13 +57,32 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
         STreeItem * pParentItem= GetItem(hParent);
         if(pParentItem->m_bCollapsed || !pParentItem->m_bVisible) pItemObj->m_bVisible=FALSE;
     }
-    pItemObj->SetItemData(dwData);
-    pItemObj->SetColor(m_crItemBg,m_crItemSelBg);
-    pItemObj->Move(CRect(0,0,m_rcClient.Width()-pItemObj->m_nLevel*m_nIndent,m_nItemHei));
-    pItemObj->SetSkin(m_pItemSkin);
 
     HSTREEITEM hRet= CSTree<STreeItem*>::InsertItem(pItemObj,hParent,hInsertAfter);
     pItemObj->SetItemIndex((LPARAM)hRet);
+    pItemObj->SetItemData(dwData);
+    pItemObj->SetColor(m_crItemBg,m_crItemSelBg);
+
+    int nHeight = m_nItemHeight;
+    if(nHeight<=0)
+    {
+        EventTBQueryItemHeight evt(this);
+        evt.nItemHeight = nHeight;
+        evt.hItem = hRet;
+        evt.dwState = WndState_Normal;
+        FireEvent(evt);
+        nHeight = evt.nItemHeight;
+        SASSERT(nHeight>0);
+    }
+    pItemObj->SetSkin(m_pItemSkin);
+    pItemObj->m_nItemHeight = nHeight;
+    pItemObj->m_nBranchHeight = nHeight;
+
+    UpdateAncestorBranchHeight(hRet,nHeight);
+
+    pItemObj->Move(CRect(0,0,m_rcClient.Width()-pItemObj->m_nLevel*m_nIndent,nHeight));
+
+    pItemObj->GetEventSet()->subscribeEvent(EventStateChanged::EventID,Subscriber(&STreeBox::OnItemStateChanged,this));
 
     UpdateSwitchState(hRet);
     if(hParent!=STVI_ROOT) 
@@ -73,12 +92,8 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
 
     if(pItemObj->m_bVisible)
     {
-        m_nVisibleItems++;
-
-        CSize szView(m_rcWindow.Width(),m_nVisibleItems*m_nItemHei);
-        if(szView.cy>m_rcWindow.Height()) szView.cx-=m_nSbWid;
-        SetViewSize(szView);
-        Invalidate();
+        int nViewHei = GetViewSize().cy;
+        SetViewHeight(nViewHei + nHeight);
     }
 
     if(bEnsureVisible) EnsureVisible(hRet);
@@ -88,10 +103,29 @@ HSTREEITEM STreeBox::InsertItem(pugi::xml_node xmlNode,DWORD dwData,HSTREEITEM h
 STreeItem* STreeBox::InsertItem(LPCWSTR pszXml,DWORD dwData,HSTREEITEM hParent/*=STVI_ROOT*/, HSTREEITEM hInsertAfter/*=STVI_LAST*/,BOOL bEnsureVisible/*=FALSE*/)
 {
     pugi::xml_document xmlDoc;
-
-    if(!xmlDoc.load_buffer(pszXml,wcslen(pszXml)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) return NULL;
-
-    HSTREEITEM hItem=InsertItem(xmlDoc.first_child(),dwData,hParent,hInsertAfter,bEnsureVisible);
+    pugi::xml_node xmlItem;
+    if(pszXml)
+    {
+        if(!xmlDoc.load_buffer(pszXml,wcslen(pszXml)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16))
+            return NULL;
+        xmlItem=xmlDoc.first_child();
+    }else
+    {
+        int nLevel = 0;
+        if(hParent!=STVI_ROOT)
+        {
+            STreeItem *pItem = GetItem(hParent);
+            nLevel = pItem->m_nLevel+1;
+        }
+        pugi::xml_node xmlItem = m_xmlTemplate.child(L"template");
+        for(int i=0;i<nLevel;i++)
+        {
+            xmlItem = xmlItem.child(L"template");
+        }
+    }
+    if(!xmlItem)
+        return NULL;
+    HSTREEITEM hItem=InsertItem(xmlItem,dwData,hParent,hInsertAfter,bEnsureVisible);
     return GetItem(hItem);
 }
 
@@ -101,39 +135,27 @@ BOOL STreeBox::RemoveItem(HSTREEITEM hItem)
     HSTREEITEM hParent=GetParentItem(hItem);
 
     STreeItem * pItem= CSTree<STreeItem*>::GetItem(hItem);
-
-    BOOL bVisible=pItem->m_bVisible;
-    if(bVisible)
-    {
-        if(GetChildItem(hItem) && pItem->m_bCollapsed==FALSE)
-        {
-            SetChildrenVisible(hItem,FALSE);
-        }
-    }
+    int nBranchHei = pItem->m_bVisible?pItem->m_nBranchHeight:0;
 
     if(IsAncestor(hItem,m_hHoverItem)) m_hHoverItem=NULL;
     if(IsAncestor(hItem,m_hSelItem)) m_hSelItem=NULL;
 
-    DeleteItem(hItem);
-    
     UpdateSwitchState(hParent);
-
-    if(bVisible)
+    if(nBranchHei!=0) 
     {
-        m_nVisibleItems--;
-
-        CSize szView(m_rcWindow.Width(),m_nVisibleItems*m_nItemHei);
-        if(szView.cy>m_rcWindow.Height()) szView.cx-=m_nSbWid;
-        SetViewSize(szView);
-        Invalidate();
+        UpdateAncestorBranchHeight(hItem,-nBranchHei);
     }
+
+    DeleteItem(hItem);
+
+    SetViewHeight(GetViewSize().cy - nBranchHei);
+
     return TRUE;
 }
 
 void STreeBox::RemoveAllItems()
 {
     DeleteAllItems();
-    m_nVisibleItems=0;
     m_hSelItem=0;
     m_hHoverItem=0;
     m_pCapturedFrame=NULL;
@@ -167,16 +189,6 @@ HSTREEITEM STreeBox::GetParentItem(HSTREEITEM hItem)
 }
 
 
-void STreeBox::PageUp()
-{
-    OnScroll(TRUE,SB_PAGEUP,0);
-}
-
-void STreeBox::PageDown()
-{
-    OnScroll(TRUE,SB_PAGEDOWN,0);
-}
-
 void STreeBox::OnDestroy()
 {
     DeleteAllItems();
@@ -185,37 +197,38 @@ void STreeBox::OnDestroy()
 
 BOOL STreeBox::Expand(HSTREEITEM hItem , UINT nCode)
 {
+    if(!CSTree<STreeItem*>::GetChildItem(hItem)) return FALSE;
     BOOL bRet=FALSE;
-    if(CSTree<STreeItem*>::GetChildItem(hItem))
+    STreeItem *pItem=CSTree<STreeItem*>::GetItem(hItem);
+    if(nCode==TVE_COLLAPSE && !pItem->m_bCollapsed)
     {
-        STreeItem *pItem=CSTree<STreeItem*>::GetItem(hItem);
-        if(nCode==TVE_COLLAPSE && !pItem->m_bCollapsed)
-        {
-            pItem->m_bCollapsed=TRUE;
-            SetChildrenVisible(hItem,FALSE);
-            bRet=TRUE;
-        }
-        if(nCode==TVE_EXPAND && pItem->m_bCollapsed)
-        {
-            pItem->m_bCollapsed=FALSE;
-            SetChildrenVisible(hItem,TRUE);
-            bRet=TRUE;
-        }
-        if(nCode==TVE_TOGGLE)
-        {
-            pItem->m_bCollapsed=!pItem->m_bCollapsed;
-            SetChildrenVisible(hItem,!pItem->m_bCollapsed);
-            bRet=TRUE;
-        }
-        if(bRet)
-        {
-            UpdateSwitchState(hItem);
+        pItem->m_bCollapsed=TRUE;
+        SetChildrenVisible(hItem,FALSE);
+        bRet=TRUE;
+    }
+    if(nCode==TVE_EXPAND && pItem->m_bCollapsed)
+    {
+        pItem->m_bCollapsed=FALSE;
+        SetChildrenVisible(hItem,TRUE);
+        bRet=TRUE;
+    }
+    if(nCode==TVE_TOGGLE)
+    {
+        pItem->m_bCollapsed=!pItem->m_bCollapsed;
+        SetChildrenVisible(hItem,!pItem->m_bCollapsed);
+        bRet=TRUE;
+    }
+    if(bRet)
+    {
+        UpdateSwitchState(hItem);
+        
+        int nChildrenHeight = pItem->m_nBranchHeight - pItem->m_nItemHeight;
+        if(pItem->m_bCollapsed) nChildrenHeight*=-1;
 
-            CSize szView(m_rcWindow.Width(),m_nVisibleItems*m_nItemHei);
-            if(szView.cy>m_rcWindow.Height()) szView.cx-=m_nSbWid;
-            SetViewSize(szView);
-            Invalidate();
-        }
+        UpdateAncestorBranchHeight(hItem,nChildrenHeight);
+
+        int nViewHei = GetViewSize().cy+nChildrenHeight;
+        SetViewHeight(nViewHei);
     }
     return bRet;
 }
@@ -233,17 +246,45 @@ BOOL STreeBox::EnsureVisible(HSTREEITEM hItem)
             hParent=GetParentItem(hParent);
         }
     }
-    int iVisible= GetItemShowIndex(hItem);
-    int yOffset=iVisible*m_nItemHei;
-    if(yOffset+m_nItemHei>m_ptOrigin.y+m_rcClient.Height())
+
+    CRect rcItemInView = GetItemRectInView(hItem);
+
+    if(rcItemInView.top>m_ptOrigin.y+m_rcClient.Height())
     {
-        SetScrollPos(TRUE,yOffset+m_nItemHei-m_rcClient.Height(),TRUE);
+        SetScrollPos(TRUE,rcItemInView.bottom-m_rcClient.Height(),TRUE);
     }
-    else if(yOffset<m_ptOrigin.y)
+    else if(rcItemInView.bottom<m_ptOrigin.y)
     {
-        SetScrollPos(TRUE,yOffset,TRUE);
+        SetScrollPos(TRUE,rcItemInView.top,TRUE);
     }
     return TRUE;
+}
+
+
+HSTREEITEM STreeBox::_HitTest(HSTREEITEM hItem, int & yOffset, const CPoint & pt )
+{
+    CRect rcClient;
+    GetClientRect(&rcClient);
+    STreeItem * pItem = GetItem(hItem);
+    if(pt.y>=yOffset && pt.y<yOffset+pItem->m_nItemHeight)
+        return hItem;
+
+    yOffset += pItem->m_nItemHeight;
+
+    if(!pItem->m_bCollapsed)
+    {
+        HSTREEITEM hChild=GetChildItem(hItem,TRUE);
+        if(hChild)
+        {
+            HSTREEITEM hRet = _HitTest(hChild,yOffset,pt);
+            if(hRet) return hRet;
+        }
+    }
+
+    hItem = GetNextSiblingItem(hItem);
+    if(!hItem) return NULL;
+
+    return _HitTest(hItem,yOffset,pt);
 }
 
 //自动修改pt的位置为相对当前项的偏移量
@@ -251,43 +292,22 @@ HSTREEITEM STreeBox::HitTest(CPoint &pt)
 {
     CRect rcClient;
     GetClientRect(&rcClient);
-    CPoint pt2=pt;
-    pt2.y -= rcClient.top - m_ptOrigin.y;
-    int iItem=pt2.y/m_nItemHei;
-    if( iItem >= m_nVisibleItems) return NULL;
-
-    HSTREEITEM hRet=NULL;
-
-    int iVisible=-1;
-    HSTREEITEM hItem=CSTree<STreeItem*>::GetNextItem(STVI_ROOT);
-    while(hItem)
+    if(!rcClient.PtInRect(pt)) return NULL;
+    int yOffset = 0;
+    pt -= rcClient.TopLeft() - m_ptOrigin;//更新pt
+    HSTREEITEM hHit = _HitTest(GetChildItem(STVI_ROOT,TRUE),yOffset,pt);
+    if(hHit)
     {
-        STreeItem *pItem=CSTree<STreeItem*>::GetItem(hItem);
-        if(pItem->m_bVisible) iVisible++;
-        if(iVisible == iItem)
+        STreeItem *pItem = GetItem(hHit);
+        if(pt.x >= pItem->m_nLevel*m_nIndent && pt.x< rcClient.Width())
         {
-            CRect rcItem(m_nIndent*pItem->m_nLevel,0,m_rcWindow.Width(),m_nItemHei);
-            rcItem.OffsetRect(m_rcWindow.left,m_rcWindow.top-m_ptOrigin.y+iVisible*m_nItemHei);
-            pt-=rcItem.TopLeft();
-            hRet=hItem;
-            break;
+            pt.y-=yOffset;
+            pt.x-=pItem->m_nLevel*m_nIndent;
+            return hHit;
         }
-        if(pItem->m_bCollapsed)
-        {
-            //跳过被折叠的项
-            HSTREEITEM hChild= GetChildItem(hItem,FALSE);
-            while(hChild)
-            {
-                hItem=hChild;
-                hChild= GetChildItem(hItem,FALSE);
-            }
-        }
-        hItem=CSTree<STreeItem*>::GetNextItem(hItem);
     }
-    return hRet;
+    return NULL;
 }
-
-
 
 void STreeBox::SetChildrenVisible(HSTREEITEM hItem,BOOL bVisible)
 {
@@ -296,7 +316,6 @@ void STreeBox::SetChildrenVisible(HSTREEITEM hItem,BOOL bVisible)
     {
         STreeItem *pItem=GetItem(hChild);
         pItem->m_bVisible=bVisible;
-        m_nVisibleItems += bVisible?1:-1;
         if(!pItem->m_bCollapsed) SetChildrenVisible(hChild,bVisible);
         hChild=GetNextSiblingItem(hChild);
     }
@@ -312,20 +331,21 @@ void STreeBox::OnNodeFree(STreeItem * & pItem)
     pItem->Release();
 }
 
-
-int STreeBox::GetScrollLineSize(BOOL bVertical)
-{
-    return m_nItemHei;
-}
-
 BOOL STreeBox::CreateChildren(pugi::xml_node xmlNode)
 {
     if(!xmlNode) return FALSE;
 
     RemoveAllItems();
-
+    pugi::xml_node xmlTemplate = xmlNode.child(L"template");
+    if(xmlTemplate)
+    {
+        m_xmlTemplate.append_copy(xmlTemplate);
+    }
     pugi::xml_node xmlItem=xmlNode.child(L"item");
-    if(xmlItem) LoadBranch(STVI_ROOT,xmlItem);
+    if(xmlItem) 
+    {
+        LoadBranch(STVI_ROOT,xmlItem);
+    }
 
     return TRUE;
 }
@@ -348,18 +368,59 @@ void STreeBox::LoadBranch(HSTREEITEM hParent,pugi::xml_node xmlItem)
     }
 }
 
-LRESULT STreeBox::OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam)
+void STreeBox::OnSize( UINT nType,CSize size )
 {
-    __super::OnNcCalcSize(bCalcValidRects,lParam);
-    HSTREEITEM hItem=GetNextItem(STVI_ROOT);
-    while(hItem)
+    __super::OnSize(nType,size);
+    CSize szView = GetViewSize();
+    CRect rcClient;
+    SWindow::GetClientRect(&rcClient);
+    if(szView.cy>rcClient.Height())
+        szView.cx = rcClient.Width()-m_nSbWid;
+    else
+        szView.cx = rcClient.Width();
+    SetViewSize(szView);
+}
+
+CPoint STreeBox::GetItemOffsetInView( HSTREEITEM hItem )
+{
+    CPoint ptOffset;
+    STreeItem *pItem = GetItem(hItem);
+    SASSERT(pItem->m_bVisible);
+
+    ptOffset.x = pItem->m_nLevel * m_nIndent;
+
+    HSTREEITEM hPreSibling = GetPrevSiblingItem(hItem);
+    while(hPreSibling)
     {
-        STreeItem * pItem= GetItem(hItem);
-        pItem->Move(CRect(0,0,m_rcClient.Width()-pItem->m_nLevel*m_nIndent,m_nItemHei));
-        hItem=GetNextItem(hItem);
+        STreeItem *pPreItem = GetItem(hPreSibling);
+        if(!pPreItem->m_bCollapsed)
+            ptOffset.y+= pPreItem->m_nBranchHeight;
+        else
+            ptOffset.y += pPreItem->m_nItemHeight;
+        hPreSibling = GetPrevSiblingItem(hPreSibling);
     }
-    Invalidate();
-    return 0;
+    HSTREEITEM hParent = GetParentItem(hItem);
+    if(hParent)
+    {
+        ptOffset.y+=GetItemOffsetInView(hParent).y;
+        STreeItem *pParentItem = GetItem(hParent);
+        ptOffset.y+= pParentItem->m_nItemHeight;
+    }
+    return ptOffset;
+}
+
+
+CRect STreeBox::GetItemRectInView(HSTREEITEM hItem)
+{
+    CRect rcItem;
+    STreeItem *pItem = GetItem(hItem);
+    if(pItem->m_bVisible)
+    {
+        CPoint ptOffset = GetItemOffsetInView(hItem);
+        pItem->GetWindowRect(&rcItem);
+        rcItem.OffsetRect(ptOffset);
+    }
+    return rcItem;
 }
 
 int STreeBox::GetItemShowIndex(HSTREEITEM hItemObj)
@@ -392,28 +453,26 @@ int STreeBox::GetItemShowIndex(HSTREEITEM hItemObj)
 void STreeBox::RedrawItem(HSTREEITEM hItem)
 {
     if(!IsVisible(TRUE)) return;
-    int iFirstVisible=m_ptOrigin.y/m_nItemHei;
-    int nPageItems=(m_rcWindow.Height()+m_nItemHei-1)/m_nItemHei+1;
-    int iItem=GetItemShowIndex(hItem);
 
+    CRect rcItem = GetItemRectInView(hItem);
+    if(rcItem.IsRectEmpty())
+        return;
+    rcItem.OffsetRect(-m_ptOrigin);
 
-    if(iItem!=-1 && iItem>=iFirstVisible && iItem<iFirstVisible+nPageItems)
-    {
-        STreeItem *pItem=CSTree<STreeItem*>::GetItem(hItem);
+    CRect rcClient;
+    GetClientRect(&rcClient);
 
-        CRect rcItem(pItem->m_nLevel*m_nIndent,0,m_rcClient.Width(),m_nItemHei);
-        rcItem.OffsetRect(0,m_nItemHei*iItem-m_ptOrigin.y);
-        rcItem.OffsetRect(m_rcClient.TopLeft());
+    rcItem.OffsetRect(rcClient.TopLeft());
 
-        IRenderTarget *pRT=GetRenderTarget(&rcItem,OLEDC_PAINTBKGND);
-        CRect rcClip;
-        pRT->GetClipBox(&rcClip);
+    if((rcItem & rcClient).IsRectEmpty())
+        return;
+    
+    IRenderTarget *pRT=GetRenderTarget(&rcItem,OLEDC_PAINTBKGND);
 
-        SSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
-        DrawItem(pRT,rcItem,hItem);
+    SSendMessage(WM_ERASEBKGND,(WPARAM)(HDC)pRT);
+    DrawItem(pRT,rcItem,hItem);
 
-        ReleaseRenderTarget(pRT);
-    }
+    ReleaseRenderTarget(pRT);
 }
 
 void STreeBox::DrawItem(IRenderTarget * pRT, CRect & rc, HSTREEITEM hItem)
@@ -433,45 +492,55 @@ void STreeBox::DrawItem(IRenderTarget * pRT, CRect & rc, HSTREEITEM hItem)
     pItem->Draw(pRT,rc);
 }
 
+
+void STreeBox::PaintVisibleItem( IRenderTarget *pRT,IRegion *pRgn,HSTREEITEM hItem,int &yOffset )
+{
+    CRect rcClient;
+    GetClientRect(&rcClient);
+    CRect rcItem;
+    STreeItem * pItem = GetItem(hItem);
+    pItem->GetWindowRect(&rcItem);
+    rcItem.OffsetRect(pItem->m_nLevel*m_nIndent,yOffset);
+    rcItem.OffsetRect(-m_ptOrigin);
+    rcItem.OffsetRect(rcClient.TopLeft());
+
+    if(yOffset+pItem->m_nItemHeight> m_ptOrigin.y && pRgn->RectInRegion(&rcItem))
+        DrawItem(pRT,rcItem,hItem);
+
+    yOffset += rcItem.Height();
+    
+    int yOffsetMax = m_ptOrigin.y+rcClient.Height();
+    if(yOffset>=yOffsetMax)
+        return;
+
+    if(!pItem->m_bCollapsed)
+    {
+        HSTREEITEM hChild=GetChildItem(hItem,TRUE);
+        if(hChild && yOffset<yOffsetMax)
+        {
+            PaintVisibleItem(pRT,pRgn,hChild,yOffset);
+        }
+    }
+
+    if(yOffset>yOffsetMax) 
+        return;
+
+    hItem = GetNextSiblingItem(hItem);
+    if(hItem)
+        PaintVisibleItem(pRT,pRgn,hItem,yOffset);
+}
+
 void STreeBox::OnPaint(IRenderTarget *pRT)
 {
-    if(IsUpdateLocked()) return;
-
     SPainter painter;
     BeforePaint(pRT,painter);
     
     CAutoRefPtr<IRegion> pClipRgn;
     pRT->GetClipRegion(&pClipRgn);
     
-    int iFirstVisible=m_ptOrigin.y/m_nItemHei;
-    int nPageItems=(m_rcClient.Height()+m_nItemHei-1)/m_nItemHei+1;
+    int yOffset =0;
+    PaintVisibleItem(pRT,pClipRgn,GetChildItem(STVI_ROOT,TRUE),yOffset);
 
-    int iVisible=-1;
-    HSTREEITEM hItem=CSTree<STreeItem*>::GetNextItem(STVI_ROOT);
-    while(hItem)
-    {
-        STreeItem *pItem=CSTree<STreeItem*>::GetItem(hItem);
-        if(pItem->m_bVisible) iVisible++;
-        if(iVisible > iFirstVisible+nPageItems) break;
-        if(iVisible>=iFirstVisible)
-        {
-            CRect rcItem(m_nIndent*pItem->m_nLevel,0,m_rcWindow.Width(),m_nItemHei);
-            rcItem.OffsetRect(m_rcWindow.left,m_rcWindow.top-m_ptOrigin.y+iVisible*m_nItemHei);
-            if(pClipRgn->RectInRegion(&rcItem))
-                DrawItem(pRT,rcItem,hItem);
-        }
-        if(pItem->m_bCollapsed)
-        {
-            //跳过被折叠的项
-            HSTREEITEM hChild= GetChildItem(hItem,FALSE);
-            while(hChild)
-            {
-                hItem=hChild;
-                hChild= GetChildItem(hItem,FALSE);
-            }
-        }
-        hItem=CSTree<STreeItem*>::GetNextItem(hItem);
-    }
     AfterPaint(pRT,painter);
 }
 
@@ -508,13 +577,13 @@ void STreeBox::OnLButtonDown(UINT nFlags,CPoint pt)
             {
                 CSTree<STreeItem*>::GetItem(m_hSelItem)->GetFocusManager()->SetFocusedHwnd(0);
                 CSTree<STreeItem*>::GetItem(m_hSelItem)->ModifyItemState(0,WndState_Check);
-                RedrawItem(m_hSelItem);
+                InvalidateRect(GetItemRect(m_hSelItem));
             }
             m_hSelItem=m_hHoverItem;
             if(m_hSelItem)
             {
                 CSTree<STreeItem*>::GetItem(m_hSelItem)->ModifyItemState(WndState_Check,0);
-                RedrawItem(m_hSelItem);
+                InvalidateRect(GetItemRect(m_hSelItem));
             }
             FireEvent(evt2);
         }
@@ -673,38 +742,12 @@ void STreeBox::OnItemSetCapture( SItemPanel *pItem,BOOL bCapture )
 BOOL STreeBox::OnItemGetRect( SItemPanel *pItem,CRect &rcItem )
 {
     STreeItem *pItemObj=(STreeItem*)pItem;
-    if(pItemObj->m_bVisible==FALSE) return FALSE;
-
-    int iFirstVisible=m_ptOrigin.y/m_nItemHei;
-    int nPageItems=(m_rcWindow.Height()+m_nItemHei-1)/m_nItemHei+1;
-
-    int iVisible=-1;
-    HSTREEITEM hItem=CSTree<STreeItem*>::GetNextItem(STVI_ROOT);
-    while(hItem)
-    {
-        STreeItem *pItem=CSTree<STreeItem*>::GetItem(hItem);
-        if(pItem->m_bVisible) iVisible++;
-        if(iVisible > iFirstVisible+nPageItems) break;
-        if(iVisible>=iFirstVisible && pItem==pItemObj)
-        {
-            CRect rcRet(m_nIndent*pItemObj->m_nLevel,0,m_rcWindow.Width(),m_nItemHei);
-            rcRet.OffsetRect(m_rcWindow.left,m_rcWindow.top-m_ptOrigin.y+iVisible*m_nItemHei);
-            rcItem=rcRet;
-            return TRUE;
-        }
-        if(pItem->m_bCollapsed)
-        {
-            //跳过被折叠的项
-            HSTREEITEM hChild= GetChildItem(hItem,FALSE);
-            while(hChild)
-            {
-                hItem=hChild;
-                hChild= GetChildItem(hItem,FALSE);
-            }
-        }
-        hItem=CSTree<STreeItem*>::GetNextItem(hItem);
-    }
-    return FALSE;
+    HSTREEITEM hItem = (HSTREEITEM)pItemObj->GetItemIndex();
+    if(pItemObj->m_bVisible==FALSE) 
+        return FALSE;
+    
+    rcItem = GetItemRect(hItem);
+    return !rcItem.IsRectEmpty();
 }
 
 
@@ -729,6 +772,31 @@ void STreeBox::OnViewOriginChanged( CPoint ptOld,CPoint ptNew )
     }
 }
 
+void STreeBox::UpdateItemWidth(HSTREEITEM hItem,int nWidth)
+{
+    if(hItem != STVI_ROOT)
+    {
+        STreeItem * pItem = CSTree<STreeItem*>::GetItem(hItem);
+        if(!pItem->m_bVisible) return;
+        int xOffset = m_nIndent * pItem->m_nLevel;
+        pItem->Move(0,0,nWidth-xOffset,pItem->m_nItemHeight);
+    }
+
+    HSTREEITEM hChild = GetChildItem(hItem,TRUE);
+    while(hChild)
+    {
+        UpdateItemWidth(hChild,nWidth);
+        hChild = GetNextSiblingItem(hChild);
+    }
+}
+
+void STreeBox::OnViewSizeChanged( CSize szOld,CSize szNew )
+{
+    if(szOld.cx == szNew.cx) return;
+    //显示宽度发生了变化
+    UpdateItemWidth(STVI_ROOT,szNew.cx);
+    Invalidate();
+}
 
 LRESULT STreeBox::OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 {
@@ -767,6 +835,81 @@ BOOL STreeBox::OnUpdateToolTip( CPoint pt, SwndToolTipInfo & tipInfo )
         return __super::OnUpdateToolTip(pt,tipInfo);
     STreeItem *pItem = GetItem(m_hHoverItem);
     return pItem->OnUpdateToolTip(pt,tipInfo);
+}
+
+bool STreeBox::OnItemStateChanged( EventArgs *pEvt )
+{
+    if(!pEvt->sender->IsClass(STreeItem::GetClassName())) return false;
+    EventStateChanged *pEvtStateChanged = (EventStateChanged*)pEvt;
+    STreeItem * pItem = (STreeItem*) pEvt->sender;
+    if(m_nItemHeight>0) //固定高度
+        return true;
+    
+    
+    EventTBQueryItemHeight evt(this);
+    evt.nItemHeight = pItem->m_nItemHeight;
+    evt.hItem = (HSTREEITEM)pItem->GetItemIndex();
+    evt.dwState = pEvtStateChanged->dwNewState;
+    FireEvent(evt);
+
+    if(evt.nItemHeight != pItem->m_nItemHeight)
+    {
+        CRect rcClient;
+        GetClientRect(&rcClient);
+        
+        int nHeightChange = evt.nItemHeight - pItem->m_nItemHeight;
+        pItem->Move(CRect(0,0,rcClient.Width()-m_nIndent*pItem->m_nLevel,evt.nItemHeight));
+        pItem->m_nItemHeight = evt.nItemHeight;
+        UpdateAncestorBranchHeight(evt.hItem,nHeightChange);
+        SetViewHeight(GetViewSize().cy + nHeightChange);
+    }
+
+    return true;
+}
+
+void STreeBox::SetViewHeight( int nHeight )
+{
+    CRect rcClient;
+    SWindow::GetClientRect(&rcClient);
+    CSize szView = GetViewSize();
+    szView.cy = nHeight;
+    szView.cx = rcClient.Width();
+    if(szView.cy > rcClient.Height())
+        szView.cx -= m_nSbWid;
+    SetViewSize(szView);
+}
+
+void STreeBox::UpdateAncestorBranchHeight(HSTREEITEM hItem, int nHeightChange )
+{
+    HSTREEITEM hParent = GetParentItem(hItem);
+    while(hParent)
+    {
+        STreeItem * pItem = GetItem(hParent);
+        if(pItem->m_bCollapsed) break;
+        pItem->m_nBranchHeight += nHeightChange;
+        hParent = GetParentItem(hParent);
+    }
+}
+
+CRect STreeBox::GetItemRect( HSTREEITEM hItem )
+{
+    CRect rcItem;
+    SASSERT(hItem && hItem != STVI_ROOT);
+
+    STreeItem *pItemObj=GetItem(hItem);
+    if(pItemObj->m_bVisible==FALSE) 
+        return rcItem;
+
+    CRect rcClient;
+    GetClientRect(&rcClient);
+
+    rcItem = GetItemRectInView(hItem);
+    rcItem.OffsetRect(-m_ptOrigin);
+    rcItem.OffsetRect(rcClient.TopLeft());
+
+    if((rcClient & rcItem).IsRectEmpty()) 
+        rcItem.SetRectEmpty();
+    return rcItem;    
 }
 
 }//namespace SOUI

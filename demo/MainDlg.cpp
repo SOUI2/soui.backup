@@ -507,3 +507,21 @@ void CMainDlg::OnBtnRtfOpen()
         }
     }
 }
+
+void CMainDlg::OnTreeBoxQueryItemHeight( EventArgs * pEvt )
+{
+    EventTBQueryItemHeight *pEvtTbQueryItemHeight = (EventTBQueryItemHeight*)pEvt;
+    STreeBox *pTreeBox = (STreeBox*)pEvt->sender;
+    STreeItem *pItem = pTreeBox->GetItemPanel(pEvtTbQueryItemHeight->hItem);
+
+    if(pItem->m_nLevel>0)
+    {
+        if(pEvtTbQueryItemHeight->dwState & WndState_Check)
+            pEvtTbQueryItemHeight->nItemHeight = 40;
+        else
+            pEvtTbQueryItemHeight->nItemHeight = 30;
+    }else
+    {
+        pEvtTbQueryItemHeight->nItemHeight = 50;
+    }
+}

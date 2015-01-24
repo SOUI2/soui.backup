@@ -119,8 +119,6 @@ protected:
     HSTREEITEM InsertItem(LPTVITEM pItemObj,HSTREEITEM hParent,HSTREEITEM hInsertAfter,BOOL bEnsureVisible);
     HSTREEITEM InsertItem(pugi::xml_node xmlNode,HSTREEITEM hParent=STVI_ROOT, HSTREEITEM hInsertAfter=STVI_LAST,BOOL bEnsureVisible=FALSE);
     
-    virtual int GetScrollLineSize(BOOL bVertical);    
-
     BOOL IsAncestor(HSTREEITEM hItem1,HSTREEITEM hItem2);
 
     void SetChildrenVisible(HSTREEITEM hItem,BOOL bVisible);
@@ -196,7 +194,6 @@ protected:
     COLORREF m_crItemBg,m_crItemSelBg;
     COLORREF m_crItemText,m_crItemSelText;
 
-    UINT        m_uPopMenuID;
 
     SOUI_ATTRS_BEGIN()        
         ATTR_INT(L"indent", m_nIndent, TRUE)

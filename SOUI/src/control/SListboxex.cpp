@@ -255,10 +255,6 @@ int SListBoxEx::HitTest(CPoint &pt)
     return nRet;
 }
 
-int SListBoxEx::GetScrollLineSize(BOOL bVertical)
-{
-    return m_iScrollSpeed >0 ? m_iScrollSpeed : m_nItemHei;
-}
 
 void SListBoxEx::OnPaint(IRenderTarget * pRT)
 {

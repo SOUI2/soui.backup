@@ -613,8 +613,8 @@ namespace SOUI
         */
         virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo &tipInfo);
 
-        virtual void OnStateChanging(DWORD dwOldState,DWORD dwNewState) {}
-        virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState) {}
+        virtual void OnStateChanging(DWORD dwOldState,DWORD dwNewState);
+        virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState);
 
         virtual BOOL InitFromXml(pugi::xml_node xmlNode);
         virtual BOOL CreateChildren(pugi::xml_node xmlNode);
