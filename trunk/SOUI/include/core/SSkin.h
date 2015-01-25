@@ -221,7 +221,7 @@ public:
 protected:
     virtual void _Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha);
     //返回源指定部分在原位图上的位置。
-    CRect GetPartRect(int nSbCode, int nState,BOOL bVertical);
+    virtual CRect GetPartRect(int nSbCode, int nState,BOOL bVertical);
     int         m_nMargin;
     BOOL        m_bHasGripper;
     BOOL        m_bHasInactive;//有失活状态的箭头时，滚动条皮肤有必须有5行，否则可以是3行或者4行

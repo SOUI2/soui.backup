@@ -21,8 +21,9 @@
     <imglist name="skin_tab_main" src="imgx:png_tab_main" states="3"/>
     <imglist name="skin_btn_menu" src="imgx:btn_menu" states="3"/>
     <imglist name="skin_propswitch" src="imgx:png_propswitch" states="4"/>
-	<imglist name="skin_bkgnd" src="IMGX:jpg_bkgnd"/>
-	<imglist name="skin_btn_expand" src="imgx:btn_expand" states="6"/>
+	  <imglist name="skin_bkgnd" src="IMGX:jpg_bkgnd"/>
+	  <imglist name="skin_btn_expand" src="imgx:btn_expand" states="6"/>
+    <vscrollbar name="skin_vscrollbar" src="imgx:png_vscroll" states="3" margin="4"/>
   </skin>
 
   <style>
