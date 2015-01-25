@@ -11,6 +11,8 @@
 #include "../controls.extend/SFadeFrame.h"
 #include "../controls.extend/sradiobox2.h"
 #include "../controls.extend/SVscrollbar.h"
+#include "../controls.extend/SChromeTabCtrl.h"
+
 #include "uianimation/UiAnimationWnd.h"
 
 #if defined(_DEBUG) && !defined(_WIN64)
@@ -152,6 +154,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
         theApp->RegisterWndFactory(TplSWindowFactory<SIPAddressCtrl>());//×¢²áIP¿Ø¼þ
         theApp->RegisterWndFactory(TplSWindowFactory<SPropertyGrid>());//×¢²áÊôÐÔ±í¿Ø¼þ
+        theApp->RegisterWndFactory(TplSWindowFactory<SChromeTabCtrl>());//×¢²áChromeTabCtrl
         
         if(SUCCEEDED(CUiAnimation::Init()))
         {

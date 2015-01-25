@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "../controls.extend/SAnimator.h"
+#include "../controls.extend/SChromeTabCtrl.h"
 
 /**
 * @class      CMainDlg
@@ -117,6 +117,8 @@ protected:
     void OnTreeBoxEvent(EventArgs *pEvt);
     
     void OnTreeBoxQueryItemHeight(EventArgs * pEvt);
+    
+    void OnChromeTabNew(EventArgs *pEvt);
 
     void OnTabPageRadioSwitch(int nID);
     
@@ -143,6 +145,7 @@ protected:
         EVENT_NAME_HANDLER(L"tb_test",EVT_OFPANEL,OnTreeBoxEvent)//响应EVT_OFPANEL事件
         EVENT_NAME_HANDLER(L"tb_test",EVT_TB_QUERYITEMHEIGHT,OnTreeBoxQueryItemHeight)//响应动态查询高度事件
         EVENT_ID_COMMAND_RANGE(10000,10005,OnTabPageRadioSwitch)    //10000-10005是XML中定义的radio2的ID
+        EVENT_NAME_HANDLER(L"chromeTab",EVT_CHROMETAB_NEW,OnChromeTabNew)
 	EVENT_MAP_END()	
 
     //HOST消息及响应函数映射表

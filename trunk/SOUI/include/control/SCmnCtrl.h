@@ -158,6 +158,17 @@ public:
      * Describe  构造函数
      */
     SButton();
+
+public:
+        /**
+     * SButton::GetDesiredSize
+     * @brief    获得期望的大小值
+     * @param    LPRECT pRcContainer -- 内容窗体矩形
+     *
+     * Describe  根据内容窗体矩形大小，计算出适合的大小
+     */
+    virtual CSize GetDesiredSize(LPCRECT pRcContainer);
+
 protected:
     /**
      * SButton::NeedRedrawWhenStateChange
@@ -190,15 +201,8 @@ protected:
      * Describe  处理加速键响应消息
      */
     virtual bool OnAcceleratorPressed(const CAccelerator& accelerator);
+
 protected:
-    /**
-     * SButton::GetDesiredSize
-     * @brief    获得期望的大小值
-     * @param    LPRECT pRcContainer -- 内容窗体矩形
-     *
-     * Describe  根据内容窗体矩形大小，计算出适合的大小
-     */
-    virtual CSize GetDesiredSize(LPCRECT pRcContainer);
     
     /**
      * SButton::OnStateChanged

@@ -44,6 +44,8 @@
     <file name="btn_menu" path="image\btn_menu.png"  />
     <file name="png_propswitch" path="image\propswitch.png"/>
     <file name="png_animode" path="image\animode.png"/>
+    <file name="png_chrome_tab_new" path="image\chromeTabNew.png"/>
+    <file name="png_chrome_tab_close" path="image\chromeTabClose.png"/>
   </IMGX>
   <GIF>
     <file name="gif_horse"	path="image\horse.gif"/>

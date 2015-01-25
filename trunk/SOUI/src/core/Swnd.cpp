@@ -1072,8 +1072,18 @@ namespace SOUI
 
     CSize SWindow::GetDesiredSize(LPCRECT pRcContainer)
     {
-        SASSERT(m_layout.IsFitContent(PD_ALL));
+        CSize szRet;
+        if(m_layout.IsSpecifySize(PD_X))
+        {
+            szRet.cx = m_layout.uSpecifyWidth;
+        }
+        if(m_layout.IsSpecifySize(PD_Y))
+        {
+            szRet.cy = m_layout.uSpecifyHeight;
+        }
 
+        if(szRet.cx && szRet.cy) 
+            return szRet;
 
         int nTestDrawMode = GetTextAlign() & ~(DT_CENTER | DT_RIGHT | DT_VCENTER | DT_BOTTOM);
 
@@ -1091,9 +1101,10 @@ namespace SOUI
         rcTest.right += m_style.m_nMarginX * 2;
         rcTest.bottom += m_style.m_nMarginY * 2;
 
-        CSize szRet = rcTest.Size();
-        if(!m_layout.IsFitContent(PD_X)) szRet.cx = m_layout.uSpecifyWidth;
-        if(!m_layout.IsFitContent(PD_Y)) szRet.cy = m_layout.uSpecifyHeight;
+        if(m_layout.IsFitContent(PD_X)) 
+            szRet.cx = rcTest.Width();
+        if(m_layout.IsFitContent(PD_Y)) 
+            szRet.cy = rcTest.Height();
         return szRet;
     }
 

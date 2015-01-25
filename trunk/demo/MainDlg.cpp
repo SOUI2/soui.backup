@@ -525,3 +525,12 @@ void CMainDlg::OnTreeBoxQueryItemHeight( EventArgs * pEvt )
         pEvtTbQueryItemHeight->nItemHeight = 50;
     }
 }
+
+void CMainDlg::OnChromeTabNew( EventArgs *pEvt )
+{
+    static int iPage = 0;
+    EventChromeTabNew *pEvtTabNew = (EventChromeTabNew*)pEvt;
+
+    SStringT strTitle = SStringT().Format(_T("ÐÂ½¨´°¿Ú %d"),++iPage);
+    pEvtTabNew->pNewTab->SetWindowText(strTitle);
+}
