@@ -155,12 +155,9 @@ CRect SSkinScrollbar::GetPartRect(int nSbCode, int nState,BOOL bVertical)
         return CRect(CPoint(szFrame.cx*8,(1+(bVertical?0:1))*szFrame.cy),szFrame);
     }else
     {
-        if(nState==SBST_INACTIVE)
+        if(nState==SBST_INACTIVE && !m_bHasInactive)
         {
-            if(nSbCode==SB_THUMBTRACK || !m_bHasInactive)
-            {
-                nState=SBST_NORMAL;
-            }
+            nState=SBST_NORMAL;
         }
         CRect rcRet;
         int iPart=-1;

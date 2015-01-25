@@ -10,6 +10,7 @@
 #include "../controls.extend/SFlyWnd.h"
 #include "../controls.extend/SFadeFrame.h"
 #include "../controls.extend/sradiobox2.h"
+#include "../controls.extend/SVscrollbar.h"
 #include "uianimation/UiAnimationWnd.h"
 
 #if defined(_DEBUG) && !defined(_WIN64)
@@ -146,7 +147,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         }
         theApp->RegisterWndFactory(TplSWindowFactory<SGifPlayer>());//×¢²áGIFPlayer
         theApp->RegisterSkinFactory(TplSkinFactory<SSkinGif>());//×¢²áSkinGif
-        theApp->RegisterSkinFactory(TplSkinFactory<SSkinAPNG>());//×¢²áSkinGif
+        theApp->RegisterSkinFactory(TplSkinFactory<SSkinAPNG>());//×¢²áSSkinAPNG
+        theApp->RegisterSkinFactory(TplSkinFactory<SSkinVScrollbar>());//×¢²á×ÝÏò¹ö¶¯ÌõÆ¤·ô
 
         theApp->RegisterWndFactory(TplSWindowFactory<SIPAddressCtrl>());//×¢²áIP¿Ø¼þ
         theApp->RegisterWndFactory(TplSWindowFactory<SPropertyGrid>());//×¢²áÊôÐÔ±í¿Ø¼þ

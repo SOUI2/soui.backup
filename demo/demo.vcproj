@@ -402,6 +402,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SVscrollbar.h"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\SWkeWebkit.h"
 				>
 			</File>
