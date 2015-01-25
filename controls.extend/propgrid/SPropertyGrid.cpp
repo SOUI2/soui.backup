@@ -306,7 +306,7 @@ namespace SOUI
             if(pItem->ChildrenCount())
             {
                 pItem->Expand(!pItem->IsExpand());
-            }else if(!pItem->IsGroup()) 
+            }else if(!pItem->IsGroup() && !pItem->IsInplaceActive()) 
             {
                 pItem->OnInplaceActive(true);
             }
