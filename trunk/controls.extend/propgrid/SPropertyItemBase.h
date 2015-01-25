@@ -42,7 +42,8 @@ namespace SOUI
 
         virtual void AdjustInplaceActiveWndRect(CRect & rc){rc.bottom--;}
         virtual void DrawItem(IRenderTarget *pRT,CRect rc){}
-        virtual void OnInplaceActive(bool bActive){}
+        virtual bool IsInplaceActive(){return m_bInplaceActive;}
+        virtual void OnInplaceActive(bool bActive){ m_bInplaceActive = bActive;}
         virtual void OnButtonClick(){}
         virtual void OnValueChanged();
         virtual void OnChildValueChanged( IPropertyItem *pChild ){}
@@ -72,8 +73,15 @@ namespace SOUI
 
         BOOL            m_bExpanded;
         BOOL            m_bReadOnly;
+        bool            m_bInplaceActive;
     protected:
-        SPropertyItemBase(SPropertyGrid * pOwner):m_pOwner(pOwner),m_pParent(NULL),m_bExpanded(TRUE),m_nID(0){
+        SPropertyItemBase(SPropertyGrid * pOwner)
+            :m_pOwner(pOwner)
+            ,m_pParent(NULL)
+            ,m_bExpanded(TRUE)
+            ,m_nID(0)
+            ,m_bInplaceActive(false)
+        {
             SASSERT(pOwner);
         }
     };

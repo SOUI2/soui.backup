@@ -51,6 +51,7 @@ namespace SOUI
     
     void SPropertyItemOption::OnInplaceActive(bool bActive)
     {
+        __super::OnInplaceActive(bActive);
         if(bActive)
         {
             SASSERT(!m_pCombobox);

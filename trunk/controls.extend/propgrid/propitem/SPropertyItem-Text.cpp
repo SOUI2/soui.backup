@@ -50,6 +50,7 @@ namespace SOUI
     
     void SPropertyItemText::OnInplaceActive(bool bActive)
     {
+        __super::OnInplaceActive(bActive);
         if(bActive)
         {
             SASSERT(!m_pEdit);
