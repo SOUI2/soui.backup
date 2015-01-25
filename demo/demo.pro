@@ -40,6 +40,7 @@ HEADERS += MainDlg.h \
            ../controls.extend/sflywnd.h \
            ../controls.extend/sfadeframe.h \
            ../controls.extend/sradiobox2.h \
+           ../controls.extend/SChromeTabCtrl.h \
            httpsvr/filereader-i.h \
            httpsvr/genericserver.h \
            httpsvr/httpserver.h \
@@ -64,6 +65,7 @@ SOURCES += demo.cpp \
            ../controls.extend/sflywnd.cpp \
            ../controls.extend/sfadeframe.cpp \
            ../controls.extend/sradiobox2.cpp \
+           ../controls.extend/SChromeTabCtrl.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \
            memflash.cpp	\

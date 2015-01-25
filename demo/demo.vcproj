@@ -244,6 +244,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SChromeTabCtrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\sfadeframe.cpp"
 				>
 			</File>
@@ -343,6 +347,10 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\gif\SAniImgFrame.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\SChromeTabCtrl.h"
 				>
 			</File>
 			<File
