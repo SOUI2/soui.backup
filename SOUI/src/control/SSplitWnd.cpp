@@ -143,7 +143,7 @@ void SSplitWnd::OnPaint( IRenderTarget * pRT )
         long &RB= m_bColMode?rcSep.right:rcSep.bottom;
         long &LT= m_bColMode?rcSep.left:rcSep.top;
 
-        for(UINT i=0; i<m_arrPane.GetCount()-1; i++)
+        for(int i=0; i< (int)m_arrPane.GetCount()-1; i++)
         {
             CRect rcPane;
             if (!m_arrPane[i]->IsVisible()) continue;
