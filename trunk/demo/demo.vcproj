@@ -260,6 +260,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SIECtrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\sipaddressctrl.cpp"
 				>
 			</File>
@@ -363,6 +367,10 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\gif\SGifPlayer.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\SIECtrl.h"
 				>
 			</File>
 			<File

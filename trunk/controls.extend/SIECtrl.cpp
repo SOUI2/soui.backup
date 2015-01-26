@@ -100,7 +100,8 @@ namespace SOUI
         int nRet=__super::OnCreate(NULL);
         if(GetContainer()->IsTranslucent())
         {
-            SASSERT_FMT(FALSE,_T("iectrl can't used in translucent host"));
+            STRACE(_T("warning!!! create iectrl failed bacause of host is translucent!"));
+//          SASSERT_FMT(FALSE,_T("iectrl can't used in translucent host"));
             return -1;
         }
         GetContainer()->GetMsgLoop()->AddMessageFilter(this);
@@ -116,6 +117,8 @@ namespace SOUI
     {
         BOOL bRet = FALSE;
         if(!m_pIE) return FALSE;
+        if(!IsVisible(TRUE)) return FALSE;
+
         // give HTML page a chance to translate this message
         SComQIPtr<IOleInPlaceActiveObject> spInPlaceActiveObject(m_pIE);
         if(spInPlaceActiveObject)

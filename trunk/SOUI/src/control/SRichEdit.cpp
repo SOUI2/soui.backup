@@ -683,10 +683,8 @@ void SRichEdit::OnPaint( IRenderTarget * pRT )
     HDC hdc=pRT->GetDC(0);
 
     ALPHAINFO ai;
-    if(GetContainer()->IsTranslucent())
-    {
-        CGdiAlpha::AlphaBackup(hdc,&rcClient,ai);
-    }
+    CGdiAlpha::AlphaBackup(hdc,&rcClient,ai);
+
     LONG lPos =0;
     HRESULT hr=m_pTxtHost->GetTextService()->TxGetVScroll(NULL,NULL,&lPos,NULL,NULL);
     RECTL rcL= {rcClient.left,rcClient.top,rcClient.right,rcClient.bottom};
@@ -704,10 +702,7 @@ void SRichEdit::OnPaint( IRenderTarget * pRT )
         NULL,                    // Call back parameter
         TXTVIEW_ACTIVE);
 
-    if(GetContainer()->IsTranslucent())
-    {
-        CGdiAlpha::AlphaRestore(ai);
-    }
+    CGdiAlpha::AlphaRestore(ai);
     pRT->ReleaseDC(hdc);
     pRT->PopClip();
 }
