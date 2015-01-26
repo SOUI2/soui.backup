@@ -41,19 +41,6 @@ namespace SOUI
         int       iCloseTab;
     };
 
-    class EventTabNew : public EventArgs
-    {
-    public:
-        EventTabNew(SWindow *_pNewTab,SWindow *pSender):EventArgs(pSender),pNewTab(_pNewTab)
-        {
-
-        }
-
-        virtual UINT GetEventID(){return EVT_CHROMETAB_NEW;}
-
-        SWindow * pNewTab;
-    };
-
     class EventChromeTabSelChanged : public EventArgs
     {
     public:

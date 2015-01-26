@@ -12,6 +12,7 @@
 #include "../controls.extend/sradiobox2.h"
 #include "../controls.extend/SVscrollbar.h"
 #include "../controls.extend/SChromeTabCtrl.h"
+#include "../controls.extend/siectrl.h"
 
 #include "uianimation/UiAnimationWnd.h"
 
@@ -155,6 +156,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         theApp->RegisterWndFactory(TplSWindowFactory<SIPAddressCtrl>());//×¢²áIP¿Ø¼þ
         theApp->RegisterWndFactory(TplSWindowFactory<SPropertyGrid>());//×¢²áÊôÐÔ±í¿Ø¼þ
         theApp->RegisterWndFactory(TplSWindowFactory<SChromeTabCtrl>());//×¢²áChromeTabCtrl
+        theApp->RegisterWndFactory(TplSWindowFactory<SIECtrl>());//×¢²áIECtrl
         
         if(SUCCEEDED(CUiAnimation::Init()))
         {

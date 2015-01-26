@@ -163,6 +163,8 @@ namespace SOUI
             }
 
             ShowWindow(window, bVisible ? SW_SHOW : SW_HIDE);
+            if(!bVisible) //避免主窗口失去焦点
+                ::SetFocus(GetContainer()->GetHostHwnd());
         }
     }
 
