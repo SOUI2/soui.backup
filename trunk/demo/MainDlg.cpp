@@ -376,7 +376,7 @@ void CMainDlg::OnBtnInsertGif2RE()
             HRESULT hr=pSource->Init((WPARAM)(LPCWSTR)S_CT2W(openDlg.m_szFileName),0);
             if(SUCCEEDED(hr))
             {
-                ISoSmileyCtrl* pSmiley;
+                SComPtr<ISoSmileyCtrl> pSmiley;
                 hr=::CoCreateInstance(SoSmiley::CLSID_CSoSmileyCtrl,NULL,CLSCTX_INPROC,__uuidof(SoSmiley::ISoSmileyCtrl),(LPVOID*)&pSmiley); 
                 if(SUCCEEDED(hr))
                 {
@@ -384,8 +384,34 @@ void CMainDlg::OnBtnInsertGif2RE()
                     SComPtr<IRichEditOle> ole;
                     pEdit->SSendMessage(EM_GETOLEINTERFACE,0,(LPARAM)&ole);
                     pSmiley->Insert2Richedit((DWORD_PTR)(void*)ole);
+                }else
+                {
+                    UINT uRet = SMessageBox(m_hWnd,_T("可能是因为没有向系统注册表情COM模块。\\n现在注册吗?"),_T("创建表情OLE对象失败"),MB_YESNO|MB_ICONSTOP);
+                    if(uRet == IDYES)
+                    {
+                        HMODULE hMod = LoadLibrary(_T("sosmiley.dll"));
+                        if(hMod)
+                        {
+                            typedef HRESULT (STDAPICALLTYPE *DllRegisterServerPtr)();
+                            DllRegisterServerPtr funRegDll = (DllRegisterServerPtr)GetProcAddress(hMod,"DllRegisterServer");
+                            if(funRegDll)
+                            {
+                                HRESULT hr=funRegDll();
+                                if(FAILED(hr))
+                                {
+                                    SMessageBox(m_hWnd,_T("请使用管理员权限运行模块注册程序"),_T("注册表情COM失败"),MB_OK|MB_ICONSTOP);
+                                }else
+                                {
+                                    SMessageBox(m_hWnd,_T("请重试"),_T("注册成功"),MB_OK|MB_ICONINFORMATION);
+                                }
+                            }
+                            FreeLibrary(hMod);
+                        }else
+                        {
+                            SMessageBox(m_hWnd,_T("没有找到表情COM模块[sosmiley.dll]。\\n现在注册吗"),_T("错误"),MB_OK|MB_ICONSTOP);
+                        }
+                    }
                 }
-                pSmiley->Release();
             }
             pSource->Release();
         }
