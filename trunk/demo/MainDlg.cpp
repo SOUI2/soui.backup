@@ -533,4 +533,5 @@ void CMainDlg::OnChromeTabNew( EventArgs *pEvt )
 
     SStringT strTitle = SStringT().Format(_T("ÐÂ½¨´°¿Ú %d"),++iPage);
     pEvtTabNew->pNewTab->SetWindowText(strTitle);
+    pEvtTabNew->pNewTab->SetAttribute(L"tip",S_CT2W(strTitle));
 }
