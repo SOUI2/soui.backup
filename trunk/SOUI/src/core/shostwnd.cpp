@@ -134,6 +134,10 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     {
         dwStyle |= WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_THICKFRAME;
     }
+	else
+    {
+        dwStyle |= WS_MINIMIZEBOX;
+    }
     if(m_hostAttr.m_bAppWnd)
     {
         dwStyle |= WS_SYSMENU ;

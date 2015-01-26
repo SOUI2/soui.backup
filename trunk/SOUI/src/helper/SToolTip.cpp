@@ -1,5 +1,8 @@
 #include "souistd.h"
 #include "helper\SToolTip.h"
+//增加对多显示器的支持
+#define  COMPILE_MULTIMON_STUBS
+#include <multimon.h>
 
 namespace SOUI
 {
@@ -103,10 +106,23 @@ namespace SOUI
             ::ReleaseDC(NULL,hdc);
             CRect rcWnd;
             GetWindowRect(&rcWnd);
+
+			//增加对多显示器的支持			
+			HMONITOR hMonitor;
+			MONITORINFO mi;
+			hMonitor = MonitorFromRect(&rcWnd, MONITOR_DEFAULTTONEAREST);	 
+			mi.cbSize = sizeof(mi);
+			GetMonitorInfo(hMonitor, &mi);	
+			int cx=mi.rcWork.right;
+			int cy=mi.rcWork.bottom;
+			/*增加部分结束*/
+
+
             rcWnd.right=rcWnd.left+rcText.right+2*MARGIN_TIP;
             rcWnd.bottom=rcWnd.top+rcText.bottom+2*MARGIN_TIP;
-            int cx = GetSystemMetrics(SM_CXSCREEN); 
-            int cy = GetSystemMetrics(SM_CYSCREEN);
+			//去掉下面这两行
+            //int cx = GetSystemMetrics(SM_CXSCREEN);			 
+            //int cy = GetSystemMetrics(SM_CYSCREEN);
             if(rcWnd.right>cx) rcWnd.OffsetRect(cx-rcWnd.right,0);
             if(rcWnd.bottom>cy) rcWnd.OffsetRect(0,cy-rcWnd.bottom);
             SetWindowPos(HWND_TOPMOST,rcWnd.left,rcWnd.top,rcWnd.Width(),rcWnd.Height(),SWP_NOSENDCHANGING|SWP_SHOWWINDOW|SWP_NOACTIVATE);
