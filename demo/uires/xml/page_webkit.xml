@@ -4,9 +4,9 @@
     <newBtnStyle size="40,30" skin="skin_chrome_tab_new"/>
     <closeBtnStyle pos="-2,2" offset="-1,0" skin="skin_chrome_tab_close"/>
     <tabs>
-      <chromeTab skin="_skin.sys.btn.normal">tab1</chromeTab>
-      <chromeTab skin="_skin.sys.btn.normal">tab2</chromeTab>
-      <chromeTab skin="_skin.sys.btn.normal">tab3</chromeTab>
+      <chromeTab skin="_skin.sys.btn.normal" tip="the tab #1">tab1</chromeTab>
+      <chromeTab skin="_skin.sys.btn.normal" tip="the tab #2">tab2</chromeTab>
+      <chromeTab skin="_skin.sys.btn.normal" tip="the tab #3">tab3</chromeTab>
     </tabs>
   </chromeTabCtrl>
   <window pos="0,[0,-0,-0">
