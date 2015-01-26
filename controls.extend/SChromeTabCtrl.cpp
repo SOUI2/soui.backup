@@ -13,18 +13,25 @@ namespace SOUI
     class SChromeTab : public SWindow , public SAnimator
     {
         SOUI_CLASS_NAME(SChromeTab,L"chromeTab")
+        friend class SChromeTabCtrl;
     public:
         SChromeTab();
 
         void MoveTo(const CRect & rcEnd);
+        
+        SOUI_ATTRS_BEGIN()
+            ATTR_INT(L"allowClose",m_bAllowClose,FALSE)
+        SOUI_ATTRS_END()
+        
     protected:
         virtual void OnAnimatorState(int percent);
         virtual void OnFinalRelease(){delete this;}
 
         CRect m_rcBegin, m_rcEnd;
+        BOOL    m_bAllowClose;
     };
 
-    SChromeTab::SChromeTab()
+    SChromeTab::SChromeTab():m_bAllowClose(TRUE)
     {
         m_bClipClient = TRUE;
     }
@@ -109,6 +116,8 @@ namespace SOUI
 
             for(UINT i = 0;i<m_lstTab.GetCount();i++)
             {//自动插入一个closeBtn
+                if(!m_lstTab[i]->m_bAllowClose) continue;
+                
                 SWindow *pBtn = SApplication::getSingleton().CreateWindowByName(SImageButton::GetClassName());
                 m_lstTab[i]->InsertChild(pBtn);
                 pBtn->InitFromXml(xmlCloseBtn);
@@ -135,7 +144,7 @@ namespace SOUI
             {
                 nTabWid = (rcClient.Width()-szBtnNew.cx) / m_lstTab.GetCount();
             }
-            rcTab.right = nTabWid;
+            rcTab.right = rcTab.left + nTabWid;
             for(UINT i=0;i<m_lstTab.GetCount();i++)
             {
                 m_lstTab[i]->MoveTo(rcTab);
@@ -158,7 +167,7 @@ namespace SOUI
             {
                 nTabHei = (rcClient.Height()-szBtnNew.cx) / m_lstTab.GetCount();
             }
-            rcTab.bottom = nTabHei;
+            rcTab.bottom = rcTab.top + nTabHei;
             for(UINT i=0;i<m_lstTab.GetCount();i++)
             {
                 m_lstTab[i]->MoveTo(rcTab);
@@ -210,21 +219,9 @@ namespace SOUI
         SChromeTab *pTab = (SChromeTab*)pEvt->sender;
         int idx = GetTabIndex(pTab);
         SASSERT(idx!=-1);
-        if(idx != m_iCurSel)
-        {
-            if(m_iCurSel!=-1)
-            {
-                m_lstTab[m_iCurSel]->ModifyState(0,WndState_Check,TRUE);
-            }
-            pTab->ModifyState(WndState_Check,0,TRUE);
+        
+        SetCurSel(idx);
 
-            EventChromeTabSelChanged evt(this);
-            evt.iOldSel = m_iCurSel;
-            evt.iNewSel = idx;
-
-            m_iCurSel = idx;
-            FireEvent(evt);
-        }
         return true;
     }
 
@@ -261,7 +258,7 @@ namespace SOUI
         }
 
         pugi::xml_node xmlCloseBtn = m_xmlStyle.child(KXmlCloseBtnStyle);
-        if(xmlCloseBtn)
+        if(xmlCloseBtn && pNewTab->m_bAllowClose)
         {
             SWindow *pBtn = SApplication::getSingleton().CreateWindowByName(SImageButton::GetClassName());
             pNewTab->InsertChild(pBtn);
@@ -319,4 +316,33 @@ namespace SOUI
         GetContainer()->UnregisterTimelineHandler(this);
         __super::OnDestroy();
     }
+
+    void SChromeTabCtrl::SetCurSel(int iTab,bool bSendNotify)
+    {
+        if(iTab != m_iCurSel)
+        {
+            int oldSel = m_iCurSel;
+            if(m_iCurSel!=-1)
+            {
+                m_lstTab[m_iCurSel]->ModifyState(0,WndState_Check,TRUE);
+            }
+            
+            if(iTab != -1)
+            {
+                m_lstTab[iTab]->ModifyState(WndState_Check,0,TRUE);
+            }
+            m_iCurSel = iTab;
+            
+            
+            if(bSendNotify)
+            {
+                EventChromeTabSelChanged evt(this);
+                evt.iOldSel = oldSel;
+                evt.iNewSel = iTab;
+
+                FireEvent(evt);
+            }
+        }
+    }
+
 }

@@ -41,21 +41,6 @@ namespace SOUI
         int       iCloseTab;
     };
 
-    class EventChromeTabSelChanged : public EventArgs
-    {
-    public:
-        EventChromeTabSelChanged(SWindow *pSender):EventArgs(pSender)
-        {
-
-        }
-
-        virtual UINT GetEventID(){return EVT_CHROMETAB_CLOSE;}
-
-        int         iOldSel;
-        int         iNewSel;
-    };
-
-    class SChromeTab;
     class EventTabNew : public EventArgs
     {
     public:
@@ -69,6 +54,21 @@ namespace SOUI
         SWindow * pNewTab;
     };
 
+    class EventChromeTabSelChanged : public EventArgs
+    {
+    public:
+        EventChromeTabSelChanged(SWindow *pSender):EventArgs(pSender)
+        {
+
+        }
+
+        virtual UINT GetEventID(){return EVT_CHROMETAB_SELCHANGED;}
+
+        int         iOldSel;
+        int         iNewSel;
+    };
+
+    class SChromeTab;
     class SChromeTabCtrl : public SWindow, public ITimelineHandler
     {
         SOUI_CLASS_NAME(SChromeTabCtrl,L"chromeTabCtrl")
@@ -82,7 +82,13 @@ namespace SOUI
         ~SChromeTabCtrl(void);
         
         BOOL InsertTab(LPCTSTR pszTitle,int iPos = -1);
-
+        
+        void SetCurSel(int iTab,bool bSendNotify = true);
+        
+        int GetCurSel() const
+        {
+            return m_iCurSel;
+        }
     protected:
         virtual BOOL CreateChildren(pugi::xml_node xmlNode);
         virtual void UpdateChildrenPosition();
