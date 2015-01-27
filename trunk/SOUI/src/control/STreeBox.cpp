@@ -117,7 +117,7 @@ STreeItem* STreeBox::InsertItem(LPCWSTR pszXml,DWORD dwData,HSTREEITEM hParent/*
             STreeItem *pItem = GetItem(hParent);
             nLevel = pItem->m_nLevel+1;
         }
-        pugi::xml_node xmlItem = m_xmlTemplate.child(L"template");
+        xmlItem = m_xmlTemplate.child(L"template");
         for(int i=0;i<nLevel;i++)
         {
             xmlItem = xmlItem.child(L"template");
@@ -263,6 +263,7 @@ BOOL STreeBox::EnsureVisible(HSTREEITEM hItem)
 
 HSTREEITEM STreeBox::_HitTest(HSTREEITEM hItem, int & yOffset, const CPoint & pt )
 {
+	if(!hItem) return NULL;
     CRect rcClient;
     GetClientRect(&rcClient);
     STreeItem * pItem = GetItem(hItem);
@@ -495,6 +496,7 @@ void STreeBox::DrawItem(IRenderTarget * pRT, CRect & rc, HSTREEITEM hItem)
 
 void STreeBox::PaintVisibleItem( IRenderTarget *pRT,IRegion *pRgn,HSTREEITEM hItem,int &yOffset )
 {
+	if(!hItem) return;
     CRect rcClient;
     GetClientRect(&rcClient);
     CRect rcItem;

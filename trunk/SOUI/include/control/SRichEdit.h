@@ -984,7 +984,7 @@ namespace SOUI
         * Describe  
         */
         
-        HRESULT OnTxNotify(DWORD iNotify,LPVOID pv);
+        virtual HRESULT OnTxNotify(DWORD iNotify,LPVOID pv);
         /**
         * SRichEdit::DefAttributeProc
         * @brief    默认属性处理函数

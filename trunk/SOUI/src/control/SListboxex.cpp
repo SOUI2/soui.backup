@@ -114,7 +114,6 @@ int SListBoxEx::InsertItem(int iItem,pugi::xml_node xmlNode,LPARAM dwData/*=0*/)
 
 int SListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,LPARAM dwData/*=0*/)
 {
-    if(!pszXml && !m_xmlTempl) return -1;
     if(pszXml)
     {
         pugi::xml_document xmlDoc;
@@ -122,7 +121,9 @@ int SListBoxEx::InsertItem(int iItem,LPCWSTR pszXml,LPARAM dwData/*=0*/)
         return InsertItem(iItem,xmlDoc.first_child(),dwData);
     }else
     {
-        return InsertItem(iItem,m_xmlTempl.first_child(),dwData);
+        pugi::xml_node xmlNode = m_xmlTempl.child(L"template");
+        if(!xmlNode) return -1;
+        return InsertItem(iItem,xmlNode,dwData);
     }
 }
 
@@ -193,25 +194,36 @@ void SListBoxEx::SetItemData( int iItem,LPARAM lParam )
 BOOL SListBoxEx::SetItemCount(int nItems,LPCTSTR pszXmlTemplate)
 {
     if(m_arrItems.GetCount()!=0) return FALSE;
+    pugi::xml_document xmlDoc;
+    pugi::xml_node xmlTemplate = m_xmlTempl.child(L"template");
     if(pszXmlTemplate)
     {
         SStringA strUtf8=S_CT2A(pszXmlTemplate,CP_UTF8);
-        pugi::xml_document xmlDoc;
         if(!xmlDoc.load_buffer((LPCSTR)strUtf8,strUtf8.GetLength(),pugi::parse_default,pugi::encoding_utf8)) return FALSE;
-        m_xmlTempl.append_copy(xmlDoc.first_child());
+        xmlTemplate = xmlDoc.first_child();
     }
-    if(m_xmlTempl)
-    {
-        for(int i=0;i<nItems;i++)
-        {
-            InsertItem(i,m_xmlTempl.first_child());
-        }
-        return TRUE;
-    }else
-    {
+    if(!xmlTemplate) 
         return FALSE;
+    
+    
+    m_arrItems.SetCount(nItems);
+    for(int i=0;i<nItems;i++)
+    {
+        SItemPanel *pItemObj=new SItemPanel(this,xmlTemplate,this);
+        pItemObj->Move(CRect(0,0,m_rcClient.Width(),m_nItemHei));
+        if(m_pItemSkin) pItemObj->SetSkin(m_pItemSkin);
+        pItemObj->SetColor(m_crItemBg,m_crItemSelBg);
+        m_arrItems[i] = pItemObj;
+        pItemObj->SetItemIndex(i);
     }
+    
+    CRect rcClient;
+    SWindow::GetClientRect(&rcClient);
+    CSize szView(rcClient.Width(),GetItemCount()*m_nItemHei);
+    if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
+    SetViewSize(szView);
 
+    return TRUE;
 }
 
 int SListBoxEx::GetItemCount()
