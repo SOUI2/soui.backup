@@ -25,3 +25,4 @@ demo.depends += utilities soui SoSmiley
 qqlogin.depends += utilities soui
 souispy.depends += utilities soui
 MusicPlayer.depends += utilities soui
+PcManager.depends += utilities soui
