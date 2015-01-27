@@ -1415,14 +1415,15 @@ namespace SOUI
     {
         SASSERT(m_pGetRTData);
 
-        if(m_pGetRTData->gdcFlags == OLEDC_PAINTBKGND)
-        {//从指定的窗口开始绘制前景
-            _PaintRegion2(pRT,m_pGetRTData->rgn,m_uZorder+1,ZORDER_MAX);
-        }
-        pRT->PopClip();//对应_GetRenderTarget中调用的PushClipRegion
-
         SWindow *pRoot = GetRoot();
         SWindow *pLayerWindow = _GetCurrentLayeredWindow();
+
+        if(m_pGetRTData->gdcFlags == OLEDC_PAINTBKGND)
+        {//从指定的窗口开始绘制前景
+            SWindow * pLayer = pLayerWindow?pLayerWindow:pRoot;
+            pLayer->_PaintRegion2(pRT,m_pGetRTData->rgn,m_uZorder+1,ZORDER_MAX);
+        }
+        pRT->PopClip();//对应_GetRenderTarget中调用的PushClipRegion
 
         if(pLayerWindow)
         {//存在一个渲染层
