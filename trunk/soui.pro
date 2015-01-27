@@ -16,6 +16,7 @@ SUBDIRS += qqlogin
 SUBDIRS += 360
 SUBDIRS += souispy
 SUBDIRS += MusicPlayer
+SUBDIRS += PcManager
 
 soui.depends += utilities
 

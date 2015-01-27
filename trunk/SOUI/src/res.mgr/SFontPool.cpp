@@ -18,7 +18,7 @@ SFontPool::SFontPool(IRenderFactory *pRendFactory)
 {
     ::GetObjectA(::GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &m_lfDefault);
     m_lfDefault.lfHeight  = -12;
-    m_lfDefault.lfQuality = ANTIALIASED_QUALITY;
+    m_lfDefault.lfQuality = CLEARTYPE_QUALITY;
     _tcscpy(m_lfDefault.lfFaceName,_T("宋体"));
 
     m_pFunOnKeyRemoved=OnKeyRemoved;
@@ -162,7 +162,7 @@ IFontPtr SFontPool::_CreateFont(FONTSTYLE style,const SStringT & strFaceName)
     else
         lfNew.lfHeight -= (short)style.cSize;  //cSize为正代表字体变大，否则变小
         
-    lfNew.lfQuality = ANTIALIASED_QUALITY;
+    lfNew.lfQuality = CLEARTYPE_QUALITY;
     
     if(style.byCharset!=DEFAULT_CHARSET) lfNew.lfCharSet = style.byCharset;
     
