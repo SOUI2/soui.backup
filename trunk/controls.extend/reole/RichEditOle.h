@@ -244,7 +244,7 @@ public:
         HMENU FAR *lphmenu);
 
 protected:
-    CRichEditOleCallback();
+    CRichEditOleCallback(SRichEdit * pRichedit);
     virtual ~CRichEditOleCallback();
 
     SComPtr<IStorage>   m_stg;
@@ -252,6 +252,7 @@ protected:
 
     DWORD m_dwRef;
     CSmileyHost * m_pSmileyHost;
+    SRichEdit   * m_pRichedit;
 };
 
 
