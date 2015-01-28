@@ -96,9 +96,10 @@ protected:
     void OnBtnMenu();
 
     void OnBtnInsertGif2RE();
+    void OnBtnAppendMsg();
     void OnBtnRtfSave();
     void OnBtnRtfOpen();
-
+    
     void OnBtnHideTest();
     void OnBtnMsgBox();
 
@@ -138,6 +139,7 @@ protected:
         EVENT_NAME_COMMAND(L"btn_webkit_refresh",OnBtnWebkitRefresh)
         EVENT_NAME_COMMAND(L"btn_hidetst",OnBtnHideTest)
         EVENT_NAME_COMMAND(L"btn_insert_gif",OnBtnInsertGif2RE)
+        EVENT_NAME_COMMAND(L"btn_append_msg",OnBtnAppendMsg)
         EVENT_NAME_COMMAND(L"btn_richedit_save",OnBtnRtfSave)
         EVENT_NAME_COMMAND(L"btn_richedit_open",OnBtnRtfOpen)
         EVENT_NAME_COMMAND(L"btn_skiatest",OnSkiaTest)

@@ -97,6 +97,9 @@ namespace SOUI
         void OnTimer(char cTimerID);
 
         void OnShowWindow(BOOL bShow, UINT nStatus);
+        
+        void OnVScroll(UINT nSBCode, UINT nPos, HWND);
+        void OnHScroll(UINT nSBCode, UINT nPos, HWND);
     protected:
         virtual int  GetScrollLineSize(BOOL bVertical);
         virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
@@ -146,6 +149,8 @@ namespace SOUI
             MSG_WM_MOUSEWHEEL(OnMouseWheel)
             MSG_WM_TIMER_EX(OnTimer)
             MSG_WM_SHOWWINDOW(OnShowWindow)
+            MSG_WM_VSCROLL(OnVScroll)
+            MSG_WM_HSCROLL(OnHScroll)
         SOUI_MSG_MAP_END()
     };
 

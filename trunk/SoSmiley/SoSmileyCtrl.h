@@ -33,11 +33,12 @@ __interface  ITimerHandler : IUnknown{
 __interface  ISmileySource : IUnknown{
     [id(1), helpstring("method Stream_Load")] HRESULT Stream_Load([in] LPSTREAM pStm);
     [id(2), helpstring("method Stream_Save")] HRESULT Stream_Save([in] LPSTREAM pStm);
-    [id(3), helpstring("method Init")] HRESULT Init([in] WPARAM wParam,[in] LPARAM lParam);
-    [id(4), helpstring("method GetFrameCount")] HRESULT GetFrameCount([out] int *pFrameCount);
-    [id(5), helpstring("method GetFrameDelay")] HRESULT GetFrameDelay([in] int iFrame, [out] int *pFrameDelay);
-    [id(6), helpstring("method GetSize")] HRESULT GetSize([out] LPSIZE pSize);
-    [id(7), helpstring("method Draw")] HRESULT Draw([in] HDC hdc,[in] LPCRECT pRect,[in] int iFrame);
+    [id(3), helpstring("method LoadFromID")] HRESULT LoadFromID(UINT uID);
+    [id(4), helpstring("method LoadFromFile")] HRESULT LoadFromFile(LPCWSTR pszFilePath);
+    [id(5), helpstring("method GetFrameCount")] HRESULT GetFrameCount([out] int *pFrameCount);
+    [id(6), helpstring("method GetFrameDelay")] HRESULT GetFrameDelay([in] int iFrame, [out] int *pFrameDelay);
+    [id(7), helpstring("method GetSize")] HRESULT GetSize([out] LPSIZE pSize);
+    [id(8), helpstring("method Draw")] HRESULT Draw([in] HDC hdc,[in] LPCRECT pRect,[in] int iFrame);
 };
 
 //ISmileyHost

@@ -224,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FormatMsgDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath="httpsvr\genericserver.cpp"
 				>
 			</File>
@@ -240,7 +244,11 @@
 				>
 			</File>
 			<File
-				RelativePath="reole\richeditole.cpp"
+				RelativePath="..\controls.extend\reole\RichEditOle.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\SChatEdit.cpp"
 				>
 			</File>
 			<File
@@ -326,6 +334,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FormatMsgDlg.h"
+				>
+			</File>
+			<File
 				RelativePath="httpsvr\genericserver.h"
 				>
 			</File>
@@ -346,11 +358,15 @@
 				>
 			</File>
 			<File
-				RelativePath="reole\richeditole.h"
+				RelativePath="..\controls.extend\reole\RichEditOle.h"
 				>
 			</File>
 			<File
 				RelativePath="..\controls.extend\gif\SAniImgFrame.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\SChatEdit.h"
 				>
 			</File>
 			<File

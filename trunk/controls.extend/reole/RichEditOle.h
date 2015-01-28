@@ -15,24 +15,24 @@
 class ImageID
 {
 public:
+    UINT      m_uID;
     SStringW m_strFilename;
-    int          m_nHeight;
     
     ImageID & operator = (const ImageID & src)
     {
         m_strFilename = src.m_strFilename;
-        m_nHeight = src.m_nHeight;
+        m_uID = src.m_uID;
         return *this;
     }
 
     bool operator == (const ImageID & src) const
     {
-        return m_nHeight == src.m_nHeight && m_strFilename.CompareNoCase(src.m_strFilename)==0;
+        return m_uID == src.m_uID && m_strFilename.CompareNoCase(src.m_strFilename)==0;
     }
 
     bool operator < (const ImageID & src) const
     {
-        return m_strFilename.CompareNoCase(src.m_strFilename)<0 || m_nHeight<src.m_nHeight;
+        return m_uID<src.m_uID || m_strFilename.CompareNoCase(src.m_strFilename)<0;
     }
 };
 
@@ -72,13 +72,17 @@ public:
 class CSmileySource : public ISmileySource
 {
 public:
+    CSmileySource();
+    virtual ~CSmileySource();
 
     static bool GdiplusStartup(void);
 
     static void GdiplusShutdown(void);
-
-    static ISmileySource * CreateInstance();
-
+    
+protected:
+    //获对ID对应的图片路径
+    virtual SStringW ImageID2Path(UINT nID);
+    
 public:
     virtual HRESULT STDMETHODCALLTYPE QueryInterface( 
         /* [in] */ REFIID riid,
@@ -109,9 +113,11 @@ public:
     virtual HRESULT STDMETHODCALLTYPE Stream_Save( 
         /* [in] */ LPSTREAM pStm);
 
-    virtual HRESULT STDMETHODCALLTYPE Init( 
-        /* [in] */ WPARAM wParam,
-        /* [in] */ LPARAM lParam);
+    virtual HRESULT STDMETHODCALLTYPE LoadFromID( 
+        /* [in] */ UINT uID);
+
+    virtual HRESULT STDMETHODCALLTYPE LoadFromFile( 
+        /* [in] */ LPCWSTR pszFilePath);
 
     virtual HRESULT STDMETHODCALLTYPE GetFrameCount( 
         /* [out] */ int *pFrameCount);
@@ -130,8 +136,8 @@ public:
 
 
 protected:    
-    CSmileySource();
-    ~CSmileySource();
+
+    HRESULT Init(const ImageID &imgid);
 
     ImageItem    * m_pImg;
 
@@ -145,6 +151,11 @@ class CSmileyHost : public ISmileyHost , public ITimelineHandler
 public:
     CSmileyHost();
     ~CSmileyHost();
+    
+    typedef ISmileySource * (* CreateSourcePtr)();
+    
+    void SetCreateSourcePtr( CreateSourcePtr pCreateSource);
+    
 public://IUnkown
     virtual HRESULT STDMETHODCALLTYPE QueryInterface( 
         /* [in] */ REFIID riid,
@@ -184,6 +195,9 @@ public:
     bool OnHostVisibleChanged(SOUI::EventArgs *pEvt);
     
     void ClearTimer();
+    
+protected:
+    static ISmileySource * DefCreateSource();
 
     struct TIMERINFO
     {
@@ -200,13 +214,15 @@ public:
     SRichEdit * m_pHost;
     LONG m_cRef;
     int         m_cTime;
+    
+    CreateSourcePtr m_pCreateSource;
 };
 
 
 class CRichEditOleCallback : public IRichEditOleCallback
 {
 public:
-    static BOOL SetRicheditOleCallback(SRichEdit *pRichedit);
+    static BOOL SetRicheditOleCallback(SRichEdit *pRichedit,CSmileyHost::CreateSourcePtr pCreateSource = NULL);
     
 public:
     virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID iid, void ** ppvObject);
