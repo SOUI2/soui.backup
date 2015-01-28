@@ -413,6 +413,13 @@ void SListBoxEx::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
         nNewSelItem = m_iSelItem-1;
     else if (pOwner && nChar == VK_RETURN)
         nNewSelItem = m_iSelItem;
+    else if(nChar == VK_PRIOR)
+    {
+        OnScroll(TRUE,SB_PAGEUP,0);
+    }else if(nChar == VK_NEXT)
+    {
+        OnScroll(TRUE,SB_PAGEDOWN,0);
+    }
 
     if(nNewSelItem!=-1)
     {

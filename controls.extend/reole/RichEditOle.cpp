@@ -6,6 +6,7 @@
 #include <GdiPlus.h>
 #pragma comment(lib,"gdiplus")
 
+#include "dataobject.h"
 
 HRESULT GetSmileyHost(SRichEdit * pRichedit,ISmileyHost ** ppHost)
 {
@@ -522,7 +523,12 @@ bool CSmileyHost::OnHostUpdate(SOUI::EventArgs *pEvt)
 //////////////////////////////////////////////////////////////////////////
 // CRichEditOleCallback
 
-CRichEditOleCallback::CRichEditOleCallback():m_dwRef(1),m_iStorage(0)
+static const UINT KCF_SMILEY = RegisterClipboardFormat(L"richedit_smiley_enable");
+
+CRichEditOleCallback::CRichEditOleCallback(SRichEdit * pRichedit)
+:m_pRichedit(pRichedit)
+,m_dwRef(1)
+,m_iStorage(0)
 {
     HRESULT hResult = ::StgCreateDocfile(NULL,
         STGM_TRANSACTED | STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE| STGM_DELETEONRELEASE,
@@ -644,13 +650,84 @@ CRichEditOleCallback::DeleteObject(LPOLEOBJECT lpoleobj)
 }
 
 
+HRESULT STDMETHODCALLTYPE 
+CRichEditOleCallback::GetClipboardData(CHARRANGE FAR *lpchrg, DWORD reco, LPDATAOBJECT FAR *lplpdataobj)
+{
+    /*演示自定义剪贴板格式的复制
+    if(RECO_COPY == reco || RECO_CUT == reco)
+    {
+        wchar_t * pBuf = new WCHAR[lpchrg->cpMax - lpchrg->cpMin +1];
+        TEXTRANGE txtRng;
+        txtRng.chrg = *lpchrg;
+        txtRng.lpstrText = pBuf;
+        m_pRichedit->SSendMessage(EM_GETTEXTRANGE,0,(LPARAM)&txtRng);
+        pBuf[lpchrg->cpMax - lpchrg->cpMin] =0;
+        
+        int  strBytes=  (lpchrg->cpMax - lpchrg->cpMin +1) * 2;  
+        HGLOBAL hG = GlobalAlloc(GMEM_DDESHARE, strBytes);  
+        void* pBuffer = GlobalLock(hG);  
+        {  
+            memcpy(pBuffer, pBuf, strBytes);  
+            GlobalUnlock(hG);  
+        }  
+        delete []txtRng.lpstrText;
+
+        FORMATETC fmt;  
+        fmt.cfFormat = KCF_SMILEY;  
+        fmt.dwAspect = DVASPECT_CONTENT;  
+        fmt.lindex = -1;  
+        fmt.ptd = NULL;  
+        fmt.tymed = TYMED_HGLOBAL;  
+
+        STGMEDIUM stg;  
+        stg.tymed = TYMED_HGLOBAL;  
+        stg.hGlobal = hG;  
+        stg.pUnkForRelease = NULL;  
+
+        HRESULT hr =CreateDataObject(&fmt,&stg,1,lplpdataobj);
+
+
+        return hr;
+    }
+    */
+    return E_NOTIMPL;
+}
 
 HRESULT STDMETHODCALLTYPE 
 CRichEditOleCallback::QueryAcceptData(LPDATAOBJECT lpdataobj, CLIPFORMAT FAR *lpcfFormat,
                                       DWORD reco, BOOL fReally, HGLOBAL hMetaPict)
 {
-    return S_OK;
+    if(!fReally) return S_OK;
+
+    /*演示自定义剪贴板格式的粘贴
+    if(RECO_DROP == reco || RECO_PASTE == reco)
+    {
+        FORMATETC fmt;  
+        fmt.cfFormat = KCF_SMILEY;  
+        fmt.dwAspect = DVASPECT_CONTENT;  
+        fmt.lindex = -1;  
+        fmt.ptd = NULL;  
+        fmt.tymed = TYMED_HGLOBAL;  
+        //如果KCF_SMILEY 剪贴板格式可用  
+        if (SUCCEEDED(lpdataobj->QueryGetData(&fmt)) )
+        {  
+            STGMEDIUM stg;  
+            HRESULT hr = lpdataobj->GetData(&fmt, &stg);  
+
+            int nSize = GlobalSize(stg.hGlobal);  
+            void* pBuffer = GlobalLock(stg.hGlobal);  
+            {  
+
+                STRACE(L"QueryAcceptData:%s",(LPWSTR)pBuffer);
+                GlobalUnlock(stg.hGlobal);  
+            }  
+            return S_OK;  
+        } 
+    }
+    */
+    return E_NOTIMPL;
 }
+
 
 
 HRESULT STDMETHODCALLTYPE 
@@ -659,13 +736,6 @@ CRichEditOleCallback::ContextSensitiveHelp(BOOL fEnterMode)
     return S_OK;
 }
 
-
-
-HRESULT STDMETHODCALLTYPE 
-CRichEditOleCallback::GetClipboardData(CHARRANGE FAR *lpchrg, DWORD reco, LPDATAOBJECT FAR *lplpdataobj)
-{
-    return E_NOTIMPL;
-}
 
 
 HRESULT STDMETHODCALLTYPE 
@@ -683,7 +753,7 @@ CRichEditOleCallback::GetContextMenu(WORD seltyp, LPOLEOBJECT lpoleobj, CHARRANG
 
 BOOL CRichEditOleCallback::SetRicheditOleCallback(SRichEdit *pRichedit,CSmileyHost::CreateSourcePtr pCreateSource /*= NULL*/)
 {
-    CRichEditOleCallback *pCallback = new CRichEditOleCallback;
+    CRichEditOleCallback *pCallback = new CRichEditOleCallback(pRichedit);
     pCallback->m_pSmileyHost->SetRichedit((DWORD_PTR)pRichedit);
     pCallback->m_pSmileyHost->SetCreateSourcePtr(pCreateSource);
     BOOL bRet=pRichedit->SSendMessage(EM_SETOLECALLBACK,0,(LPARAM)pCallback);
