@@ -619,6 +619,12 @@ BOOL SPanel::OnScroll(BOOL bVertical,UINT uCode,int nPos)
     case SB_THUMBPOSITION:
         nNewPos=nPos;
         break;
+    case SB_TOP:
+        nNewPos = psi->nMin;
+        break;
+    case SB_BOTTOM:
+        nNewPos = psi->nMax-psi->nPage+1;
+        break;
     }
 
     if(nNewPos<psi->nMin) nNewPos=psi->nMin;
@@ -717,6 +723,16 @@ HRESULT SPanel::OnAttrScrollbarSkin( SStringW strValue,BOOL bLoading )
 int SPanel::GetScrollLineSize( BOOL bVertical )
 {
     return m_nScrollSpeed;
+}
+
+void SPanel::OnVScroll(UINT nSBCode, UINT nPos, HWND)
+{
+    OnScroll(TRUE,nSBCode,nPos);
+}
+
+void SPanel::OnHScroll(UINT nSBCode, UINT nPos, HWND)
+{
+    OnScroll(FALSE,nSBCode,nPos);
 }
 
 //////////////////////////////////////////////////////////////////////////

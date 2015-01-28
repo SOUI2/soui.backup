@@ -60,7 +60,7 @@ public:
     CFileDialogEx(BOOL bOpenFileDialog, // TRUE for FileOpen, FALSE for FileSaveAs
         LPCTSTR lpszDefExt = NULL,
         LPCTSTR lpszFileName = NULL,
-        DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+        DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT ,
         LPCTSTR lpszFilter = NULL,
         HWND hWndParent = NULL)
     {
@@ -75,7 +75,7 @@ public:
         m_ofn.lpstrDefExt = lpszDefExt;
         m_ofn.lpstrFileTitle = (LPTSTR)m_szFileTitle;
         m_ofn.nMaxFileTitle = _MAX_FNAME;
-        m_ofn.Flags = dwFlags | OFN_EXPLORER | OFN_ENABLEHOOK | OFN_ENABLESIZING;
+        m_ofn.Flags = dwFlags | OFN_EXPLORER | OFN_ENABLEHOOK | OFN_ENABLESIZING| OFN_NOCHANGEDIR;
         m_ofn.lpstrFilter = lpszFilter;
         m_ofn.hwndOwner = hWndParent;
 

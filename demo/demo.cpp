@@ -13,6 +13,7 @@
 #include "../controls.extend/SVscrollbar.h"
 #include "../controls.extend/SChromeTabCtrl.h"
 #include "../controls.extend/siectrl.h"
+#include "../controls.extend/schatedit.h"
 
 #include "uianimation/UiAnimationWnd.h"
 
@@ -40,7 +41,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
     //必须要调用OleInitialize来初始化运行环境
     HRESULT hRes = OleInitialize(NULL);
     SASSERT(SUCCEEDED(hRes));
-//     LoadLibrary(L"E:\\soui.taobao\\third-part\\richedit\\Debug\\riched20.dll");
+//     LoadLibrary(L"E:\\soui.taobao\\richedit\\Debug\\riched20.dll");
         
     int nRet = 0; 
 
@@ -157,6 +158,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         theApp->RegisterWndFactory(TplSWindowFactory<SPropertyGrid>());//注册属性表控件
         theApp->RegisterWndFactory(TplSWindowFactory<SChromeTabCtrl>());//注册ChromeTabCtrl
         theApp->RegisterWndFactory(TplSWindowFactory<SIECtrl>());//注册IECtrl
+        theApp->RegisterWndFactory(TplSWindowFactory<SChatEdit>());//注册ChatEdit
         
         if(SUCCEEDED(CUiAnimation::Init()))
         {

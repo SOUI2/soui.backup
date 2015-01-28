@@ -6,7 +6,9 @@
 #include "MainDlg.h"
 #include "helper/SMenu.h"
 #include "../controls.extend/FileHelper.h"
-#include "reole\richeditole.h"
+#include "../controls.extend/SChatEdit.h"
+#include "../controls.extend/reole/richeditole.h"
+#include "FormatMsgDlg.h"
 
 #pragma warning(disable:4192)
 
@@ -253,6 +255,25 @@ void CMainDlg::OnDestory()
 }
 
 
+class CSmileySource2 : public CSmileySource
+{
+public:
+    CSmileySource2(){}
+
+protected:
+    //获对ID对应的图片路径
+    virtual SStringW ImageID2Path(UINT nID)
+    {
+        return SStringW().Format(L"./gif/%d.gif",nID);
+    }
+};
+
+//Richedit中插入表情使用的回调函数。
+ISmileySource * CreateSource2()
+{
+    return  new CSmileySource2;
+}
+
 LRESULT CMainDlg::OnInitDialog( HWND hWnd, LPARAM lParam )
 {
     m_bLayoutInited=TRUE;
@@ -276,7 +297,7 @@ LRESULT CMainDlg::OnInitDialog( HWND hWnd, LPARAM lParam )
     SRichEdit *pEdit = FindChildByName2<SRichEdit>(L"re_gifhost");
     if(pEdit)
     {
-        CRichEditOleCallback::SetRicheditOleCallback(pEdit);
+        CRichEditOleCallback::SetRicheditOleCallback(pEdit,CreateSource2);
         pEdit->SetAttribute(L"rtf",L"rtf:rtf_test");
     }
 
@@ -372,8 +393,8 @@ void CMainDlg::OnBtnInsertGif2RE()
         CFileDialogEx openDlg(TRUE,_T("gif"),0,6,_T("gif files(*.gif)\0*.gif\0All files (*.*)\0*.*\0\0"));
         if(openDlg.DoModal()==IDOK)
         {
-            ISmileySource* pSource = CSmileySource::CreateInstance();
-            HRESULT hr=pSource->Init((WPARAM)(LPCWSTR)S_CT2W(openDlg.m_szFileName),0);
+            ISmileySource* pSource = new CSmileySource2;
+            HRESULT hr=pSource->LoadFromFile(S_CT2W(openDlg.m_szFileName));
             if(SUCCEEDED(hr))
             {
                 SComPtr<ISoSmileyCtrl> pSmiley;
@@ -412,8 +433,24 @@ void CMainDlg::OnBtnInsertGif2RE()
                         }
                     }
                 }
+            }else
+            {
+                SMessageBox(m_hWnd,_T("加载表情失败"),_T("错误"),MB_OK|MB_ICONSTOP);
             }
             pSource->Release();
+        }
+    }
+}
+
+void CMainDlg::OnBtnAppendMsg()
+{
+    SChatEdit *pEdit = FindChildByName2<SChatEdit>(L"re_gifhost");
+    if(pEdit)
+    {
+        CFormatMsgDlg formatMsgDlg;
+        if(formatMsgDlg.DoModal()==IDOK)
+        {
+            pEdit->AppendFormatText(formatMsgDlg.m_strMsg);
         }
     }
 }

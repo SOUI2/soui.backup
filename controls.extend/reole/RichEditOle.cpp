@@ -59,70 +59,50 @@ HBITMAP CreateGDIBitmap(HDC hdc, int nWid,int nHei )
 }
 
 HBITMAP GetBitmapFromFile(const SStringW& strFilename, 
-                       int& m_nFrameCount, CSize& m_FrameSize, CSize& ImageSize,
-                       UINT* &m_pFrameDelays )
+                       int& nFrameCount, CSize& szImg,
+                       UINT* &pFrameDelays )
 {
     Gdiplus::Bitmap * bmpSrc= new Gdiplus::Bitmap((LPCWSTR)strFilename);    
     if (!bmpSrc) return NULL;
     GUID   pageGuid = FrameDimensionTime;
     // Get the number of frames in the first dimension.
-    m_nFrameCount = max(1, bmpSrc->GetFrameCount(&pageGuid));
+    nFrameCount = max(1, bmpSrc->GetFrameCount(&pageGuid));
 
 
     CSize imSize(bmpSrc->GetWidth(),bmpSrc->GetHeight());
-    m_FrameSize=ImageSize;
-    float scale=FitSize(m_FrameSize,imSize);
+    szImg=imSize;
     
     HDC hdc = GetDC(NULL);
     HDC hMemDC = CreateCompatibleDC(hdc);
-    HBITMAP hBmp = CreateGDIBitmap(hdc,m_FrameSize.cx*m_nFrameCount, m_FrameSize.cy);
+    HBITMAP hBmp = CreateGDIBitmap(hdc,szImg.cx*nFrameCount, szImg.cy);
     SelectObject(hMemDC,hBmp);
 
     Graphics *g = new Gdiplus::Graphics(hMemDC);
 
-    ImageAttributes attr;
-    if ( scale!=1 ) 
-    {
-        g->SetInterpolationMode(InterpolationModeHighQualityBicubic);
-        g->SetPixelOffsetMode(PixelOffsetModeHighQuality);            
-        if ( scale<1 )
-        {
-            attr.SetGamma((REAL)1.2,ColorAdjustTypeBitmap); //some darker to made sharpen
-        }
-    }
     g->Clear(Color(0));
-    if (m_nFrameCount>1)
+    if (nFrameCount>1)
     {
-        m_pFrameDelays=new UINT[m_nFrameCount];
+        pFrameDelays=new UINT[nFrameCount];
         int nSize = bmpSrc->GetPropertyItemSize(PropertyTagFrameDelay);
         // Allocate a buffer to receive the property item.
         PropertyItem* pDelays = (PropertyItem*) new char[nSize];
         bmpSrc->GetPropertyItem(PropertyTagFrameDelay, nSize, pDelays);
-        for (int i=0; i<m_nFrameCount; i++)
+        for (int i=0; i<nFrameCount; i++)
         {
             GUID pageGuid = FrameDimensionTime;
             bmpSrc->SelectActiveFrame(&pageGuid, i);
-            Rect rect(i*m_FrameSize.cx,0,m_FrameSize.cx, m_FrameSize.cy);
-            if (scale>=1 )
-                g->DrawImage(bmpSrc,rect,0,0,bmpSrc->GetWidth(),bmpSrc->GetHeight(), UnitPixel/*, &attr*/);
-            else
-            {
-                Bitmap bm2(bmpSrc->GetWidth(),bmpSrc->GetHeight(), PixelFormat32bppARGB);
-                Graphics g2(&bm2);
-                g2.DrawImage(bmpSrc,Rect(0,0,bm2.GetWidth(),bm2.GetHeight()),0,0,bmpSrc->GetWidth(),bmpSrc->GetHeight(), UnitPixel);
-                g->DrawImage(&bm2,rect,0,0,bm2.GetWidth(),bm2.GetHeight(), UnitPixel, &attr);
-            }
-            m_pFrameDelays[i]=10*max(((int*) pDelays->value)[i], 10);
+            Rect rect(i*szImg.cx,0,szImg.cx, szImg.cy);
+            g->DrawImage(bmpSrc,rect,0,0,bmpSrc->GetWidth(),bmpSrc->GetHeight(), UnitPixel/*, &attr*/);
+            pFrameDelays[i]=10*max(((int*) pDelays->value)[i], 10);
         }   
         delete [] pDelays;
     }
     else
     {
-        Rect rect(0,0,m_FrameSize.cx, m_FrameSize.cy);
-        g->DrawImage(bmpSrc,rect,0,0,bmpSrc->GetWidth(),bmpSrc->GetHeight(), UnitPixel, &attr);
-        m_pFrameDelays=NULL;
+        Rect rect(0,0,szImg.cx, szImg.cy);
+        g->DrawImage(bmpSrc,rect,0,0,bmpSrc->GetWidth(),bmpSrc->GetHeight(), UnitPixel);
+        pFrameDelays=NULL;
     }
-    ImageSize=CSize(bmpSrc->GetWidth(),bmpSrc->GetHeight());
     delete g;
     delete bmpSrc;
     DeleteDC(hMemDC);
@@ -151,14 +131,13 @@ ImageItem::~ImageItem()
     if ( m_pFrameDelays ) delete [] m_pFrameDelays;
 }
 
-BOOL ImageItem::LoadImageFromFile(const SStringW& strFilename, int nHeight)
+BOOL ImageItem::LoadImageFromFile(const SStringW& strFilename, int nID)
 {
     ATLASSERT(m_hMemDC == NULL);
-    m_imgid.m_nHeight=nHeight;
+    m_imgid.m_uID=nID;
     m_imgid.m_strFilename=strFilename;
 
-    CSize ImageSize(0, nHeight);
-    HBITMAP hBmp = GetBitmapFromFile(strFilename, m_nFrameCount, m_FrameSize, ImageSize, m_pFrameDelays );
+    HBITMAP hBmp = GetBitmapFromFile(strFilename, m_nFrameCount, m_FrameSize, m_pFrameDelays );
     if(!hBmp) return FALSE;
     HDC hDC = ::GetDC(NULL);
     m_hMemDC = CreateCompatibleDC(hDC);
@@ -208,7 +187,7 @@ void CSmileySource::GdiplusShutdown( void )
     }
 }
 
-CSmileySource::CSmileySource():m_pImg(NULL),m_cRef(0)
+CSmileySource::CSmileySource():m_pImg(NULL),m_cRef(1)
 {
 
 }
@@ -228,15 +207,19 @@ CSmileySource::~CSmileySource()
 
 HRESULT CSmileySource::Stream_Load( /* [in] */ LPSTREAM pStm )
 {
+    UINT uID;
+    pStm->Read(&uID,4,NULL);
+    
     int nFileLen=0;
     pStm->Read(&nFileLen,4,NULL);
     wchar_t *pszFileName=new wchar_t[nFileLen+1];
     pStm->Read(pszFileName,nFileLen*2,NULL);
     pszFileName[nFileLen]=0;
-    int nHeight = 0;
-    pStm->Read(&nHeight,4,NULL);
-
-    HRESULT hr = Init((WPARAM)pszFileName,(LPARAM)nHeight);
+    
+    HRESULT hr = S_FALSE;
+    if(uID != -1) hr = LoadFromID(uID);
+    else hr = LoadFromFile(pszFileName);
+    
     delete []pszFileName;
     return hr;
 }
@@ -245,49 +228,11 @@ HRESULT CSmileySource::Stream_Save( /* [in] */ LPSTREAM pStm )
 {
     if(!m_pImg) return E_FAIL;
     ImageID id = m_pImg->GetImageID();
+    pStm->Write(&id.m_uID,4,NULL);
     int nFileLen = id.m_strFilename.GetLength();
     pStm->Write(&nFileLen,4,NULL);
     pStm->Write((LPCWSTR)id.m_strFilename,nFileLen*2,NULL);
-    pStm->Write(&id.m_nHeight,4,NULL);
 
-    return S_OK;
-}
-
-HRESULT CSmileySource::Init( /* [in] */ WPARAM wParam, /* [in] */ LPARAM lParam )
-{
-    ImageID imgid;
-    imgid.m_strFilename = (wchar_t*)wParam;
-    imgid.m_nHeight = (int)lParam;
-    
-    if(m_pImg)
-    {
-        if(!m_pImg->IsEqual(imgid))
-        {//设置新图
-            ImageID oldID = m_pImg->GetImageID();
-            if(m_pImg->Release() ==0 )
-                _imgPool.erase(oldID);
-            m_pImg = NULL;
-        }else
-        {//相同的图，直接返回
-            return S_OK;
-        }
-    }
-    IMAGEPOOL::iterator it = _imgPool.find(imgid);
-    if(it==_imgPool.end())
-    {//在pool中没有找到
-        ImageItem *pImg = new ImageItem;
-        if(!pImg->LoadImageFromFile(imgid.m_strFilename,imgid.m_nHeight))
-        {
-            delete pImg;
-            return E_INVALIDARG;
-        }
-        _imgPool[imgid] = pImg;
-        m_pImg = pImg;
-    }else
-    {
-        m_pImg = it->second;
-    }
-    m_pImg->AddRef();
     return S_OK;
 }
 
@@ -321,22 +266,88 @@ HRESULT CSmileySource::Draw( /* [in] */ HDC hdc, /* [in] */ LPCRECT pRect , int 
     return S_OK;
 }
 
-ISmileySource * CSmileySource::CreateInstance()
+SStringW CSmileySource::ImageID2Path(UINT nID)
 {
-    ISmileySource *pRet = new CSmileySource;
-    pRet->AddRef();
-    return pRet;
+    return L"";
+}
+
+HRESULT CSmileySource::Init(const ImageID &imgid)
+{    
+    if(m_pImg)
+    {
+        if(!m_pImg->IsEqual(imgid))
+        {//设置新图
+            ImageID oldID = m_pImg->GetImageID();
+            if(m_pImg->Release() ==0 )
+                _imgPool.erase(oldID);
+            m_pImg = NULL;
+        }else
+        {//相同的图，直接返回
+            return S_OK;
+        }
+    }
+    IMAGEPOOL::iterator it = _imgPool.find(imgid);
+    if(it==_imgPool.end())
+    {//在pool中没有找到
+        ImageItem *pImg = new ImageItem;
+        if(!pImg->LoadImageFromFile(imgid.m_strFilename,imgid.m_uID))
+        {
+            delete pImg;
+            return E_INVALIDARG;
+        }
+        _imgPool[imgid] = pImg;
+        m_pImg = pImg;
+    }else
+    {
+        m_pImg = it->second;
+    }
+    m_pImg->AddRef();
+    return S_OK;
+}
+
+
+HRESULT STDMETHODCALLTYPE CSmileySource::LoadFromID(/* [in] */ UINT uID)
+{
+    SStringW strFileName = ImageID2Path(uID);
+    if(strFileName.IsEmpty()) return E_INVALIDARG;
+    ImageID imgID;
+    imgID.m_uID = uID;
+    imgID.m_strFilename = strFileName;
+    return Init(imgID);
+}
+
+HRESULT STDMETHODCALLTYPE CSmileySource::LoadFromFile(/* [in] */ LPCWSTR pszFilePath)
+{
+    ImageID imgID;
+    imgID.m_uID = -1;
+    imgID.m_strFilename =pszFilePath;
+    return Init(imgID);
 }
 
 //////////////////////////////////////////////////////////////////////////
 //  CSmileyHost
-CSmileyHost::CSmileyHost() :m_pHost(0),m_cRef(1),m_cTime(0)
+
+ISmileySource * CSmileyHost::DefCreateSource()
+{
+    return  new CSmileySource;
+}
+
+
+CSmileyHost::CSmileyHost() :m_pHost(0),m_cRef(1),m_cTime(0),m_pCreateSource(DefCreateSource)
 {
 
 }
 
 CSmileyHost::~CSmileyHost()
 {
+}
+
+void CSmileyHost::SetCreateSourcePtr(CreateSourcePtr pCreateSource)
+{
+    if(pCreateSource==NULL) 
+        m_pCreateSource = &DefCreateSource;
+    else
+        m_pCreateSource = pCreateSource;
 }
 
 void CSmileyHost::ClearTimer()
@@ -431,9 +442,10 @@ HRESULT STDMETHODCALLTYPE  CSmileyHost::OnTimer( int nInterval )
     return S_OK;
 }
 
+
 HRESULT STDMETHODCALLTYPE CSmileyHost::CreateSource( ISmileySource ** ppSource )
 {
-    *ppSource = CSmileySource::CreateInstance();
+    *ppSource = m_pCreateSource();
     return S_OK;
 }
 
@@ -669,10 +681,11 @@ CRichEditOleCallback::GetContextMenu(WORD seltyp, LPOLEOBJECT lpoleobj, CHARRANG
     return S_OK;
 }
 
-BOOL CRichEditOleCallback::SetRicheditOleCallback(SRichEdit *pRichedit)
+BOOL CRichEditOleCallback::SetRicheditOleCallback(SRichEdit *pRichedit,CSmileyHost::CreateSourcePtr pCreateSource /*= NULL*/)
 {
     CRichEditOleCallback *pCallback = new CRichEditOleCallback;
     pCallback->m_pSmileyHost->SetRichedit((DWORD_PTR)pRichedit);
+    pCallback->m_pSmileyHost->SetCreateSourcePtr(pCreateSource);
     BOOL bRet=pRichedit->SSendMessage(EM_SETOLECALLBACK,0,(LPARAM)pCallback);
     pCallback->Release();
     return bRet;
