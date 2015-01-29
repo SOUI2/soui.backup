@@ -33,12 +33,14 @@ __interface  ITimerHandler : IUnknown{
 __interface  ISmileySource : IUnknown{
     [id(1), helpstring("method Stream_Load")] HRESULT Stream_Load([in] LPSTREAM pStm);
     [id(2), helpstring("method Stream_Save")] HRESULT Stream_Save([in] LPSTREAM pStm);
-    [id(3), helpstring("method LoadFromID")] HRESULT LoadFromID(UINT uID);
-    [id(4), helpstring("method LoadFromFile")] HRESULT LoadFromFile(LPCWSTR pszFilePath);
-    [id(5), helpstring("method GetFrameCount")] HRESULT GetFrameCount([out] int *pFrameCount);
-    [id(6), helpstring("method GetFrameDelay")] HRESULT GetFrameDelay([in] int iFrame, [out] int *pFrameDelay);
-    [id(7), helpstring("method GetSize")] HRESULT GetSize([out] LPSIZE pSize);
-    [id(8), helpstring("method Draw")] HRESULT Draw([in] HDC hdc,[in] LPCRECT pRect,[in] int iFrame);
+    [id(3), helpstring("method LoadFromID")] HRESULT LoadFromID([in]UINT uID);
+    [id(4), helpstring("method LoadFromFile")] HRESULT LoadFromFile([in]LPCWSTR pszFilePath);
+    [id(5), helpstring("method GetID")] HRESULT GetID([out] UINT *pID);
+    [id(6), helpstring("method GetFile")] HRESULT GetFile([out] BSTR * bstrFile);
+    [id(7), helpstring("method GetFrameCount")] HRESULT GetFrameCount([out] int *pFrameCount);
+    [id(8), helpstring("method GetFrameDelay")] HRESULT GetFrameDelay([in] int iFrame, [out] int *pFrameDelay);
+    [id(9), helpstring("method GetSize")] HRESULT GetSize([out] LPSIZE pSize);
+    [id(10), helpstring("method Draw")] HRESULT Draw([in] HDC hdc,[in] LPCRECT pRect,[in] int iFrame);
 };
 
 //ISmileyHost
@@ -56,7 +58,8 @@ __interface  ISmileyHost : IUnknown{
     [id(4), helpstring("method InvalidateRect")] HRESULT InvalidateRect([in] LPCRECT pRect);
     [id(5), helpstring("method CreateSource")] HRESULT CreateSource([in,out] ISmileySource **ppSource);
     [id(6), helpstring("method SetTimer")] HRESULT SetTimer([in] ITimerHandler * pTimerHander,[in] int nInterval);
-    [id(7), helpstring("method OnTimer")] HRESULT OnTimer([in] int nInterval);
+    [id(7), helpstring("method KillTimer")] HRESULT KillTimer([in] ITimerHandler * pTimerHander);
+    [id(8), helpstring("method OnTimer")] HRESULT OnTimer([in] int nInterval);
 };
 
 // ISoSmileyCtrl
@@ -71,6 +74,7 @@ __interface  ISmileyHost : IUnknown{
 __interface  ISoSmileyCtrl : IDispatch{
     [id(1), helpstring("method Insert2Richedit")] HRESULT Insert2Richedit([in] DWORD_PTR ole);
     [id(2), helpstring("method SetSource")] HRESULT SetSource([in] ISmileySource * pSource);
+    [id(3), helpstring("method GetSource")] HRESULT GetSource([out] ISmileySource ** ppSource);
 };
 
 
@@ -135,6 +139,7 @@ public:
 public://ISoSmileyCtrl
     STDMETHOD(Insert2Richedit)(DWORD_PTR ole);
     STDMETHOD(SetSource)(ISmileySource * pSource);    
+    STDMETHOD(GetSource)(ISmileySource ** ppSource);    
     
 public://IOleObject
     STDMETHOD(SetClientSite)(IOleClientSite *pClientSite);

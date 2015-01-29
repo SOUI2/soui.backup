@@ -12,9 +12,12 @@
 #include "../sosmiley/_sosmiley.h"
 #include <control/srichedit.h>
 
+#define ID_INVALID  -1
 class ImageID
 {
 public:
+    ImageID():m_uID(ID_INVALID){}
+    
     UINT      m_uID;
     SStringW m_strFilename;
     
@@ -118,6 +121,12 @@ public:
 
     virtual HRESULT STDMETHODCALLTYPE LoadFromFile( 
         /* [in] */ LPCWSTR pszFilePath);
+        
+    virtual HRESULT STDMETHODCALLTYPE GetID( 
+        /* [out] */ UINT *pID);
+
+    virtual HRESULT STDMETHODCALLTYPE GetFile( 
+        /* [out] */ BSTR *bstrFile);
 
     virtual HRESULT STDMETHODCALLTYPE GetFrameCount( 
         /* [out] */ int *pFrameCount);
@@ -185,7 +194,10 @@ public://ISmileyHost
     virtual HRESULT STDMETHODCALLTYPE SetTimer(
         /* [in] */ ITimerHandler * pTimerHander,
         /* [in] */ int nInterval);
-
+        
+    virtual HRESULT STDMETHODCALLTYPE KillTimer(
+        /* [in] */ ITimerHandler * pTimerHander);
+        
     virtual HRESULT STDMETHODCALLTYPE  OnTimer(int nInterval);
 
 public://ITimelineHandler

@@ -306,11 +306,26 @@ HRESULT STDMETHODCALLTYPE CSmileySource::LoadFromID(/* [in] */ UINT uID)
 HRESULT STDMETHODCALLTYPE CSmileySource::LoadFromFile(/* [in] */ LPCWSTR pszFilePath)
 {
     ImageID imgID;
-    imgID.m_uID = -1;
+    imgID.m_uID = ID_INVALID;
     imgID.m_strFilename =pszFilePath;
     return Init(imgID);
 }
 
+
+HRESULT STDMETHODCALLTYPE CSmileySource::GetID(/* [out] */ UINT *pID)
+{
+    if(!m_pImg) return E_FAIL;
+    if(m_pImg->GetImageID().m_uID == ID_INVALID) return E_FAIL;
+    *pID = m_pImg->GetImageID().m_uID;
+    return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE CSmileySource::GetFile(/* [out] */ BSTR *bstrFile)
+{
+    if(!m_pImg) return E_FAIL;
+    *bstrFile = ::SysAllocString((const OLECHAR*)(LPCWSTR)m_pImg->GetImageID().m_strFilename);
+    return S_OK;
+}
 //////////////////////////////////////////////////////////////////////////
 //  CSmileyHost
 
@@ -345,7 +360,6 @@ void CSmileyHost::ClearTimer()
     {
         TIMERINFO *pTi = m_lstTimerInfo.GetNext(pos);
         pTi->pHandler->Clear();
-        pTi->pHandler->Release();
         delete pTi;
     }
     m_lstTimerInfo.RemoveAll();
@@ -360,10 +374,29 @@ HRESULT STDMETHODCALLTYPE CSmileyHost::SetTimer( /* [in] */ ITimerHandler * pTim
     } 
 
     m_lstTimerInfo.AddTail(new TIMERINFO(pTimerHander,nInterval));
-    pTimerHander->AddRef();
         
     return S_OK;
 }
+
+
+HRESULT STDMETHODCALLTYPE CSmileyHost::KillTimer(/* [in] */ ITimerHandler * pTimerHander)
+{
+    SPOSITION pos = m_lstTimerInfo.GetHeadPosition();
+    while(pos)
+    {
+        SPOSITION pos2 = pos;
+        TIMERINFO *pTi = m_lstTimerInfo.GetNext(pos);
+        if(pTi->pHandler == pTimerHander)
+        {
+            pTi->pHandler->Clear();
+            delete pTi;
+            m_lstTimerInfo.RemoveAt(pos2);
+            break;
+        }
+    }
+    return S_OK;
+}
+
 
 #define INTERVAL    2
 HRESULT STDMETHODCALLTYPE  CSmileyHost::OnTimer( int nInterval )
@@ -419,7 +452,6 @@ HRESULT STDMETHODCALLTYPE  CSmileyHost::OnTimer( int nInterval )
     {
         TIMERINFO *pTi = lstDone.GetNext(pos);
         pTi->pHandler->OnTimer(hdc);
-        pTi->pHandler->Release();
         delete pTi;
     }
     CGdiAlpha::AlphaRestore(ai);
