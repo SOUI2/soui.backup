@@ -1,7 +1,7 @@
 ﻿<include>
-  <tabctrl pos="0,0,-0,-0" alpha="200" layeredWindow="1" colorBkgnd="#cccccc" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
+  <tabctrl pos="0,0,-0,-0" alpha="255" layeredWindow="1" colorBkgnd="#cccccc" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
     <page title="listctrl">
-      <listctrl name="lc_test" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cursor="CUR_TST" font="underline:1">
+      <listctrl name="lc_test" hotTrack="1" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cursor="CUR_TST" font="underline:1" itemSkin="skin_tab_left">
         <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
           <items>
             <item width="150">name</item>
@@ -106,7 +106,7 @@
     </page>
     <page title="combobox and listbox">
       <combobox name="cbx_test" pos="10,50,200,74"  dropDown="1" dropHeight="100" class="cls_edit" dotted="0" animateTime="200" curSel="2">
-        <liststyle class="cls_edit"  iconSkin="skin_menuicon" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088"/>
+        <liststyle class="cls_edit"  iconSkin="skin_menuicon" itemSkin="skin_tab_left" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088"/>
         <editstyle inset="5,0,5,0" colorText="#000000" align="left" colorBkgnd="#FFFFFF"/>
         <items>
           <item text="combobox.item1" icon="1" data="100"/>
@@ -118,7 +118,7 @@
         </items>
       </combobox>
       
-      <listbox name="lb_test" pos="210,50,400,200" hotTrack="1" class="cls_edit"  iconSkin="skin_menuicon" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088">
+      <listbox name="lb_test" pos="210,50,400,200" hotTrack="1" itemSkin="skin_tab_left" class="cls_edit"  iconSkin="skin_menuicon" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088">
         <items>
           <item text="item1" icon="1" data="100"/>
           <item text="item2" icon="2" data="100"/>
@@ -130,9 +130,9 @@
       </listbox>
     </page>
     <page title="comboboxex">
-      <comboboxex show="1" pos="10,10,250,40" id="11111" dropDown="1" dropHeight="250" class="cls_edit" dotted="0" curSel="3" id_text="1" id_icon="2">
-        <liststyle  class="cls_edit" colorBkgnd="#FFFFFF" itemHeight="50" >
-          <template skin="_skin.sys.header">
+      <comboboxex show="1" pos="10,10,250,40"  id="11111" dropDown="1" dropHeight="250" class="cls_edit" dotted="0" curSel="3" id_text="1" id_icon="2">
+        <liststyle  class="cls_edit" colorBkgnd="#FFFFFF" itemHeight="50" itemSkin="skin_tab_left"   >
+          <template  >
             <text id="1" pos="5,2" colorText="#ff0000"/>
             <img id="2" skin="skin_page_icons" msgTransparent="0" tip="this is an img control"/>
             <button id="3" pos="5,20,100,43" tip="delete cur item">delete</button>
@@ -149,7 +149,7 @@
           <item text="combobox.item6" icon="6" data="100"/>
         </items>
       </comboboxex>
-      <listboxex name="lbe_test" pos="10,50,250,-10" class="cls_edit" itemHeight="50">
+      <listboxex name="lbe_test" pos="10,50,250,-10" class="cls_edit" itemSkin="skin_tab_left" itemHeight="50">
         <items>
           <item>
             <text pos="5,2" colorText="#ff0000">text item text item 1</text>
