@@ -446,12 +446,14 @@ protected:
     int        m_iSelItem;     /**< 选中条目      */
     int        m_iHoverItem;   /**< Hover状态条目 */
     int        m_iScrollSpeed; /**< 滚动速度      */
+	BOOL    m_bHotTrack;    /**<  */
 
     pugi::xml_document m_xmlTempl;     /**< 列表模板XML */
     SItemPanel   *m_pCapturedFrame;    /**< 当前调用了setcapture的列表项 */
     ISkinObj     *m_pItemSkin;         /**< 列表项的背景skin */
     COLORREF     m_crItemBg;           /**< 背景色 */
     COLORREF     m_crItemSelBg;        /**< 选中背景色 */
+	COLORREF     m_crItemHotBg;        /**< Hot背景色 */
     BOOL       m_bItemRedrawDelay;     /**< 表项重绘时缓冲 */       
 public:
     SOUI_ATTRS_BEGIN()
@@ -459,7 +461,9 @@ public:
         ATTR_SKIN(L"itemSkin", m_pItemSkin, TRUE)
         ATTR_COLOR(L"colorItemBkgnd",m_crItemBg,FALSE)
         ATTR_COLOR(L"colorItemSelBkgnd",m_crItemSelBg,FALSE)
+		ATTR_COLOR(L"colorItemHotBkgnd",m_crItemHotBg,FALSE)
         ATTR_INT(L"itemRedrawDelay", m_bItemRedrawDelay, TRUE)
+		ATTR_INT(L"hotTrack",m_bHotTrack,FALSE)
     SOUI_ATTRS_END()
 
     SOUI_MSG_MAP_BEGIN()

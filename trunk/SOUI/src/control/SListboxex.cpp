@@ -26,7 +26,8 @@ SListBoxEx::SListBoxEx()
     , m_pCapturedFrame(NULL)
     , m_pItemSkin(NULL)
     , m_crItemBg(CR_INVALID)
-    , m_crItemSelBg(RGBA(0,0,128,255))
+    , m_crItemSelBg(RGBA(57,145,209,255))
+	, m_crItemHotBg(RGBA(57,145,209,128))
     , m_bItemRedrawDelay(TRUE)
 {
     m_bFocusable=TRUE;
@@ -304,6 +305,40 @@ void SListBoxEx::OnSize( UINT nType, CSize size )
 
 void SListBoxEx::DrawItem(IRenderTarget *pRT, CRect & rc, int iItem)
 {
+	if (iItem < 0 || iItem >= GetItemCount()) return;
+
+	BOOL bTextColorChanged = FALSE;
+	int nBgImg = 0; 
+	COLORREF crItemBg = m_crItemBg;  
+
+	if ( iItem == m_iSelItem) 
+	{//和下面那个if的条件分开，才会有sel和hot的区别
+		if (m_pItemSkin != NULL)
+			nBgImg = 2;
+		else if (CR_INVALID != m_crItemSelBg)
+			crItemBg = m_crItemSelBg;
+ 
+	}
+	else if  ((iItem == m_iHoverItem || (m_iHoverItem==-1 && iItem== m_iSelItem)) && m_bHotTrack)
+	{
+		if (m_pItemSkin != NULL)
+			nBgImg = 1;
+		else if (CR_INVALID != m_crItemHotBg)
+			crItemBg = m_crItemHotBg; 
+	}
+
+	//绘制背景
+	//     if (m_pItemSkin != NULL)
+	//         m_pItemSkin->Draw(pRT, rc, nBgImg);
+	//     else if (CR_INVALID != crItemBg)
+	//         pRT->FillSolidRect( rc, crItemBg);
+	//上面的代码在某些时候，【指定skin的时候，会导致背景异常】
+	if (CR_INVALID != crItemBg)//先画背景
+		pRT->FillSolidRect( rc, crItemBg);
+
+	if (m_pItemSkin != NULL)//有skin，则覆盖背景
+		m_pItemSkin->Draw(pRT, rc, nBgImg);
+
     EventLBGetDispInfo evt(this);
     evt.bHover=iItem == m_iHoverItem;
     evt.bSel =iItem == m_iSelItem;

@@ -24,7 +24,8 @@ SListBox::SListBox()
     , m_iHoverItem(-1)
     , m_crItemBg(CR_INVALID)
     , m_crItemBg2(CR_INVALID)
-    , m_crItemSelBg(CR_INVALID)
+    , m_crItemSelBg(RGBA(57,145,209,255))
+	, m_crItemHotBg(RGBA(57,145,209,128))
     , m_crText(CR_INVALID)
     , m_crSelText(CR_INVALID)
     , m_pItemSkin(NULL)
@@ -333,14 +334,17 @@ void SListBox::DrawItem(IRenderTarget * pRT, CRect & rc, int iItem)
 
     if (iItem % 2)
     {
-        if (m_pItemSkin != NULL)
-            nBgImg = 1;
-        else if (CR_INVALID != m_crItemBg2)
-            crItemBg = m_crItemBg2;
+//         if (m_pItemSkin != NULL)
+//             nBgImg = 1;
+//         else if (CR_INVALID != m_crItemBg2)
+//             crItemBg = m_crItemBg2;
+		//上面的代码不要了，因为skin间隔效果没必要，只留下颜色间隔就好了
+		if (CR_INVALID != m_crItemBg2)
+				crItemBg = m_crItemBg2;
     }
 
-    if ( (!m_bHotTrack && iItem == m_iSelItem) || ((iItem == m_iHoverItem || (m_iHoverItem==-1 && iItem== m_iSelItem)) && m_bHotTrack))
-    {
+    if ( iItem == m_iSelItem) 
+    {//和下面那个if的条件分开，才会有sel和hot的区别
         if (m_pItemSkin != NULL)
             nBgImg = 2;
         else if (CR_INVALID != m_crItemSelBg)
@@ -349,12 +353,29 @@ void SListBox::DrawItem(IRenderTarget * pRT, CRect & rc, int iItem)
         if (CR_INVALID != m_crSelText)
             crText = m_crSelText;
     }
+	else if  ((iItem == m_iHoverItem || (m_iHoverItem==-1 && iItem== m_iSelItem)) && m_bHotTrack)
+	{
+		if (m_pItemSkin != NULL)
+			nBgImg = 1;
+		else if (CR_INVALID != m_crItemHotBg)
+			crItemBg = m_crItemHotBg;
+
+		if (CR_INVALID != m_crSelText)
+			crText = m_crSelText;
+	}
 
     //绘制背景
-    if (m_pItemSkin != NULL)
-        m_pItemSkin->Draw(pRT, rc, nBgImg);
-    else if (CR_INVALID != crItemBg)
-        pRT->FillSolidRect( rc, crItemBg);
+//     if (m_pItemSkin != NULL)
+//         m_pItemSkin->Draw(pRT, rc, nBgImg);
+//     else if (CR_INVALID != crItemBg)
+//         pRT->FillSolidRect( rc, crItemBg);
+//上面的代码在某些时候，【指定skin的时候，会导致背景异常】
+	if (CR_INVALID != crItemBg)//先画背景
+		pRT->FillSolidRect( rc, crItemBg);
+
+	if (m_pItemSkin != NULL)//有skin，则覆盖背景
+		m_pItemSkin->Draw(pRT, rc, nBgImg);
+
 
     if (CR_INVALID != crText)
     {
@@ -536,6 +557,17 @@ void SListBox::OnShowWindow( BOOL bShow, UINT nStatus )
         m_iHoverItem=-1;
     }
     __super::OnShowWindow(bShow,nStatus);
+}
+
+void SListBox::OnMouseLeave()
+{
+	__super::OnMouseLeave();
+	if(m_iHoverItem!=-1)
+	{
+		int nOldHover=m_iHoverItem;
+		m_iHoverItem=-1;
+		RedrawItem(nOldHover);
+	}
 }
 
 }//namespace SOUI
