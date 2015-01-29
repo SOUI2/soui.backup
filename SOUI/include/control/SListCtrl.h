@@ -527,6 +527,7 @@ namespace SOUI
         COLORREF        m_crItemBg;  /**< 背景色 */
         COLORREF        m_crItemBg2;  /**< 背景色 */
         COLORREF        m_crItemSelBg;  /**< 选中背景色 */
+		COLORREF        m_crItemHotBg;  /**< Hot背景色 */
         COLORREF        m_crText;  /**< 文本颜色 */
         COLORREF        m_crSelText;  /**< 选中文本颜色 */
 
@@ -554,6 +555,7 @@ namespace SOUI
             ATTR_SKIN(L"checkSkin", m_pCheckSkin, TRUE)
             ATTR_COLOR(L"colorItemBkgnd", m_crItemBg, FALSE)
             ATTR_COLOR(L"colorItemBkgnd2", m_crItemBg2, FALSE)
+            ATTR_COLOR(L"colorItemHotBkgnd", m_crItemHotBg, FALSE)
             ATTR_COLOR(L"colorItemSelBkgnd", m_crItemSelBg, FALSE)
             ATTR_COLOR(L"colorText", m_crText, FALSE)
             ATTR_COLOR(L"colorSelText", m_crSelText, FALSE)

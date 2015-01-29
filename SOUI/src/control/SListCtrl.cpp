@@ -16,7 +16,8 @@ SListCtrl::SListCtrl()
     , m_nSelectItem(-1)
     , m_crItemBg(RGBA(255,255,255,255))
     , m_crItemBg2(RGBA(226,226,226,255))
-    , m_crItemSelBg(RGBA(140,160,240,255))
+	, m_crItemSelBg(RGBA(57,145,209,255))
+	, m_crItemHotBg(RGBA(57,145,209,128))
     , m_crText(RGBA(0,0,0,255))
     , m_crSelText(RGBA(255,255,0,255))
     , m_pItemSkin(NULL)
@@ -569,30 +570,51 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
     CRect rcIcon, rcText;
 
 
-    if ( lvItem.checked //高亮显示checkeditem
-        ||(m_bHotTrack && nItem == m_nHoverItem))   //hottrack且有hover状态时高亮显示hover
-    {
-        if (m_pItemSkin != NULL)
-            nBgImg = 2;
-        else if (CR_INVALID != m_crItemSelBg)
-            crItemBg = m_crItemSelBg;
+	if (nItem % 2)
+	{
+		//         if (m_pItemSkin != NULL)
+		//             nBgImg = 1;
+		//         else if (CR_INVALID != m_crItemBg2)
+		//             crItemBg = m_crItemBg2;
+		//上面的代码不要了，因为skin间隔效果没必要，只留下颜色间隔就好了
+		if (CR_INVALID != m_crItemBg2)
+			crItemBg = m_crItemBg2;
+	}
 
-        if (CR_INVALID != m_crSelText)
-            crText = m_crSelText;
-    }
-    else if(nItem % 2)
-    {
-        if (m_pItemSkin != NULL)
-            nBgImg = 1;
-        else if (CR_INVALID != m_crItemBg2)
-            crItemBg = m_crItemBg2;
-    }
+ 
 
-    //  绘制背景
-    if (m_pItemSkin != NULL)
-        m_pItemSkin->Draw(pRT, rcItem, nBgImg);
-    else if (CR_INVALID != crItemBg)
-        pRT->FillSolidRect( rcItem, crItemBg);
+	if ( lvItem.checked) 
+	{//和下面那个if的条件分开，才会有sel和hot的区别
+		if (m_pItemSkin != NULL)
+			nBgImg = 2;
+		else if (CR_INVALID != m_crItemSelBg)
+			crItemBg = m_crItemSelBg;
+
+		if (CR_INVALID != m_crSelText)
+			crText = m_crSelText;
+	}
+	else if  (m_bHotTrack && nItem == m_nHoverItem)
+	{
+		if (m_pItemSkin != NULL)
+			nBgImg = 1;
+		else if (CR_INVALID != m_crItemHotBg)
+			crItemBg = m_crItemHotBg;
+
+		if (CR_INVALID != m_crSelText)
+			crText = m_crSelText;
+	}
+
+	//绘制背景
+	//     if (m_pItemSkin != NULL)
+	//         m_pItemSkin->Draw(pRT, rc, nBgImg);
+	//     else if (CR_INVALID != crItemBg)
+	//         pRT->FillSolidRect( rc, crItemBg);
+	//上面的代码在某些时候，【指定skin的时候，会导致背景异常】，所以颠倒一下顺序
+	if (CR_INVALID != crItemBg)//先画背景
+		pRT->FillSolidRect( rcItem, crItemBg);
+
+	if (m_pItemSkin != NULL)//有skin，则覆盖背景
+		m_pItemSkin->Draw(pRT, rcItem, nBgImg); 
 
     //  左边加上空白
 	rcItem.left += ITEM_MARGIN;
