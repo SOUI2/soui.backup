@@ -25,20 +25,32 @@ namespace SOUI{
     {
     }    
 
-    BOOL SChatEdit::AppendFormatText(const SStringW & strMsg)
+    BOOL SChatEdit::AppendFormatText(const SStringW & strMsg,BOOL bNewLine,BOOL bCanUndo)
     {
-        pugi::xml_document doc;
-        if(!doc.load_buffer((LPCWSTR)strMsg,strMsg.GetLength()*2,pugi::parse_default,pugi::encoding_utf16)) return FALSE;
-        return AppendFormatText(doc);
+        BOOL bRet = FALSE;
+        SStringW strBuf= L"<msg>"+strMsg+L"</msg>";
+        LPWSTR pszBuf = strBuf.GetBuffer(strBuf.GetLength());
+        {
+            pugi::xml_document doc;
+            if(doc.load_buffer_inplace(pszBuf,strBuf.GetLength()*2,pugi::parse_default,pugi::encoding_utf16))
+            {
+                bRet = AppendFormatText(doc.child(L"msg"),bNewLine,bCanUndo);        
+            }
+        }
+        strBuf.ReleaseBuffer();
+        return bRet;
     }
 
-    BOOL SChatEdit::AppendFormatText(const pugi::xml_node xmlMsg)
+    BOOL SChatEdit::AppendFormatText(const pugi::xml_node xmlMsg,BOOL bNewLine,BOOL bCanUndo)
     {
         TCHAR szRet[]={0x0a,0};
         int nLen = (int)SSendMessage(WM_GETTEXTLENGTH);
-        SSendMessage(EM_SETSEL,nLen,nLen);
-        SSendMessage(EM_REPLACESEL,FALSE,(LPARAM)L"\r\n");
-        nLen = (int)SSendMessage(WM_GETTEXTLENGTH);
+        if(bNewLine)
+        {//插入一个换行符
+            SSendMessage(EM_SETSEL,nLen,nLen);
+            SSendMessage(EM_REPLACESEL,bCanUndo,(LPARAM)L"\r\n");
+            nLen = (int)SSendMessage(WM_GETTEXTLENGTH);
+        }
         SSendMessage(EM_SETSEL,nLen,nLen);
         long iCaret = nLen;
 
@@ -47,13 +59,42 @@ namespace SOUI{
         cf.dwMask = CFM_ALL;
         SSendMessage(EM_GETCHARFORMAT,SCF_SELECTION,(LPARAM)&cf);        
         cf.dwEffects &= ~CFE_AUTOCOLOR;
-        _AppendFormatText(iCaret,cf,xmlMsg);
+        _InsertFormatText(iCaret,cf,xmlMsg,bCanUndo);
         
         SSendMessage(WM_VSCROLL,MAKEWPARAM(SB_BOTTOM,0));
         return TRUE;
     }
 
-    int SChatEdit::_AppendFormatText(int iCaret,CHARFORMAT cf,pugi::xml_node xmlText)
+    BOOL SChatEdit::ReplaceSelectionByFormatText(const SStringW & strMsg,BOOL bCanUndo/*=TRUE*/)
+    {
+        BOOL bRet = FALSE;
+        SStringW strBuf= L"<msg>"+strMsg+L"</msg>";
+        LPWSTR pszBuf = strBuf.GetBuffer(strBuf.GetLength());
+        {
+            pugi::xml_document doc;
+            if(doc.load_buffer_inplace(pszBuf,strBuf.GetLength()*2,pugi::parse_default,pugi::encoding_utf16))
+            {
+                SSendMessage(EM_REPLACESEL,bCanUndo,(LPARAM)L"");
+
+                long iCaret = 0;
+                SSendMessage(EM_GETSEL,(WPARAM)&iCaret);
+
+                CHARFORMAT cf={0};
+                cf.cbSize = sizeof(cf);
+                cf.dwMask = CFM_ALL;
+                SSendMessage(EM_GETCHARFORMAT,SCF_SELECTION,(LPARAM)&cf);        
+                cf.dwEffects &= ~CFE_AUTOCOLOR;
+                _InsertFormatText(iCaret,cf,doc.child(L"msg"),bCanUndo);
+                
+                bRet = TRUE;
+            }
+        }
+        strBuf.ReleaseBuffer();
+        
+        return TRUE;
+    }
+
+    int SChatEdit::_InsertFormatText(int iCaret,CHARFORMAT cf,pugi::xml_node xmlText,BOOL bCanUndo)
     {
         SStringW strText = xmlText.value();
         if(xmlText.name() == KLabelSmiley)
@@ -136,7 +177,7 @@ namespace SOUI{
 
         int nRet = strTextT.GetLength();
         
-        SSendMessage(EM_REPLACESEL,FALSE,(LPARAM)(LPCTSTR)strTextT);
+        SSendMessage(EM_REPLACESEL,bCanUndo,(LPARAM)(LPCTSTR)strTextT);
         int iEnd = iCaret + nRet;
         SSendMessage(EM_SETSEL,iCaret,iEnd);
         SSendMessage(EM_SETCHARFORMAT,SCF_SELECTION,(LPARAM)&cfNew);
@@ -146,7 +187,7 @@ namespace SOUI{
         pugi::xml_node xmlChild = xmlText.first_child();
         while(xmlChild)
         {
-            int nSubLen = _AppendFormatText(iCaret,cfNew,xmlChild);
+            int nSubLen = _InsertFormatText(iCaret,cfNew,xmlChild,bCanUndo);
             iCaret += nSubLen;
             nRet += nSubLen;
             
@@ -180,26 +221,32 @@ namespace SOUI{
         }
         return SRichEdit::OnKeyDown(nChar,nRepCnt,nFlags);
     }
+    
     SStringW SChatEdit::GetFormatText()
     {
-        SStringW strMsg;
+        SStringW strTxt;
 
 
         TEXTRANGE  txtRng;
         txtRng.chrg.cpMin =0;
         txtRng.chrg.cpMax = SSendMessage(WM_GETTEXTLENGTH);
-        txtRng.lpstrText = strMsg.GetBufferSetLength(txtRng.chrg.cpMax);
+        txtRng.lpstrText = strTxt.GetBufferSetLength(txtRng.chrg.cpMax);
         
         SSendMessage(EM_GETTEXTRANGE,0,(LPARAM)&txtRng);
-        strMsg.ReleaseBuffer();
+        strTxt.ReleaseBuffer();
 
         SComPtr<IRichEditOle> ole;
         SSendMessage(EM_GETOLEINTERFACE,0,(LPARAM)(void**)&ole);
-
-        for(int i=0;i<strMsg.GetLength();i++)
+        
+        SStringW strMsg;
+        int iPlainTxtBegin = 0;
+        for(int i=0;i<strTxt.GetLength();i++)
         {
-            if(strMsg[i] == 0xfffc)
+            if(strTxt[i] == 0xfffc)
             {//找到一个OLE对象
+                strMsg += strTxt.Mid(iPlainTxtBegin,i-iPlainTxtBegin);
+                iPlainTxtBegin = i+1;
+
                 REOBJECT reobj={sizeof(reobj),0};
                 reobj.cp = i;
                 HRESULT hr = ole->GetObject( REO_IOB_USE_CP , &reobj, REO_GETOBJ_POLEOBJ);
@@ -215,28 +262,31 @@ namespace SOUI{
                             hr = smiley->GetSource(&source);
                             SASSERT(SUCCEEDED(hr));
                             UINT uID = -1;
-                            SStringW strSmiley = L"<smiley ";
+                            SStringW strSmiley = L"<smiley";
                             if(SUCCEEDED(source->GetID(&uID)))
                             {
-                                strSmiley += SStringW().Format(L"id=\"%d\"",uID);
+                                strSmiley += SStringW().Format(L" id=\"%d\"",uID);
                             }
 
                             BSTR strFile;
                             if(SUCCEEDED(source->GetFile(&strFile)))
                             {
-                                strSmiley += SStringW().Format(L"path=\"%s\"",strFile);
+                                strSmiley += SStringW().Format(L" path=\"%s\"",strFile);
                                 ::SysFreeString(strFile);
                             }
                             strSmiley += L"/>";
 
-                            strMsg = strMsg.Left(i) + strSmiley + strMsg.Right(strMsg.GetLength() - i);
+                            strMsg += strSmiley;
 
-                            i += strSmiley.GetLength() -1;
                         }
                     }
                     reobj.poleobj->Release();
                 }
             }
+        }
+        if(iPlainTxtBegin<strTxt.GetLength())
+        {
+            strMsg += strTxt.Right(strTxt.GetLength()-iPlainTxtBegin);
         }
         return strMsg;
     }
