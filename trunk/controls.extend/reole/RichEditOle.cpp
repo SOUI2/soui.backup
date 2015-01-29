@@ -29,20 +29,6 @@ HRESULT GetSmileyHost(SRichEdit * pRichedit,ISmileyHost ** ppHost)
 
 using namespace Gdiplus;
 
-float FitSize(CSize& InSize, CSize& ImageSize)
-{
-    float scaleX= (InSize.cx>0) ? (float)InSize.cx/ImageSize.cx : 0;
-    float scaleY= (InSize.cy>0)? (float)InSize.cy/ImageSize.cy : 0;
-    float scale=1;
-    if (scaleX&&scaleY) 
-        scale=min(scaleX, scaleY);
-    else if ( scaleX||scaleY )
-        scale = scaleX ? scaleX : scaleY;
-    InSize.cx=(INT)(ImageSize.cx * scale);
-    InSize.cy=(INT)(ImageSize.cy * scale);
-    return scale;
-}
-
 HBITMAP CreateGDIBitmap(HDC hdc, int nWid,int nHei )
 {
     BITMAPINFO bmi;
@@ -341,6 +327,7 @@ CSmileyHost::CSmileyHost() :m_pHost(0),m_cRef(1),m_cTime(0),m_pCreateSource(DefC
 
 CSmileyHost::~CSmileyHost()
 {
+    m_pHost->GetContainer()->UnregisterTimelineHandler(this);
 }
 
 void CSmileyHost::SetCreateSourcePtr(CreateSourcePtr pCreateSource)
@@ -517,7 +504,6 @@ bool CSmileyHost::OnHostUpdate(SOUI::EventArgs *pEvt)
     }
     return false; 
 }
-
 
 
 //////////////////////////////////////////////////////////////////////////
