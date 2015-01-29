@@ -23,7 +23,10 @@ CSoSmileyCtrl::CSoSmileyCtrl():m_iFrameIndex(0),m_dwDrawFlag(0)
 
 CSoSmileyCtrl::~CSoSmileyCtrl()
 {
-
+    if(m_pSmileyHost) 
+    {//保证定时器不再引用自己
+        m_pSmileyHost->KillTimer(this);
+    }
 }
 
 STDMETHODIMP CSoSmileyCtrl::Insert2Richedit(DWORD_PTR pole)
@@ -115,6 +118,14 @@ STDMETHODIMP CSoSmileyCtrl::SetSource(ISmileySource * pSource)
         ::ReleaseDC(NULL, hDC);
     }
 
+    return S_OK;
+}
+
+STDMETHODIMP CSoSmileyCtrl::GetSource(ISmileySource ** ppSource)
+{
+    if(! m_pSmileySource) return E_FAIL;
+    *ppSource = m_pSmileySource;
+    (*ppSource)->AddRef();
     return S_OK;
 }
 
@@ -402,6 +413,5 @@ STDMETHODIMP CSoSmileyCtrl::Clear()
 {
     memset(&m_rcPos,0,sizeof(RECT));
     m_dwDrawFlag = -1;
-//    UpdateSmileyFlag();
     return S_OK;
 }

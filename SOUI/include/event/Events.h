@@ -62,6 +62,7 @@ namespace SOUI
         EVT_CTXMENU,
         EVT_SETFOCUS,
         EVT_KILLFOCUS,
+        EVT_DESTROY,
         EVT_VISIBLECHANGED,
         EVT_STATECHANGED,
         EVT_SCROLL,

@@ -29,7 +29,7 @@ namespace SOUI{
     {
         pugi::xml_document doc;
         if(!doc.load_buffer((LPCWSTR)strMsg,strMsg.GetLength()*2,pugi::parse_default,pugi::encoding_utf16)) return FALSE;
-        return AppendFormatText(doc.child(L"msg"));
+        return AppendFormatText(doc);
     }
 
     BOOL SChatEdit::AppendFormatText(const pugi::xml_node xmlMsg)
@@ -180,5 +180,66 @@ namespace SOUI{
         }
         return SRichEdit::OnKeyDown(nChar,nRepCnt,nFlags);
     }
+    SStringW SChatEdit::GetFormatText()
+    {
+        SStringW strMsg;
+
+
+        TEXTRANGE  txtRng;
+        txtRng.chrg.cpMin =0;
+        txtRng.chrg.cpMax = SSendMessage(WM_GETTEXTLENGTH);
+        txtRng.lpstrText = strMsg.GetBufferSetLength(txtRng.chrg.cpMax);
+        
+        SSendMessage(EM_GETTEXTRANGE,0,(LPARAM)&txtRng);
+        strMsg.ReleaseBuffer();
+
+        SComPtr<IRichEditOle> ole;
+        SSendMessage(EM_GETOLEINTERFACE,0,(LPARAM)(void**)&ole);
+
+        for(int i=0;i<strMsg.GetLength();i++)
+        {
+            if(strMsg[i] == 0xfffc)
+            {//找到一个OLE对象
+                REOBJECT reobj={sizeof(reobj),0};
+                reobj.cp = i;
+                HRESULT hr = ole->GetObject( REO_IOB_USE_CP , &reobj, REO_GETOBJ_POLEOBJ);
+                if(SUCCEEDED(hr) && reobj.poleobj)
+                {
+                    if(reobj.clsid == CLSID_CSoSmileyCtrl)
+                    {
+                        SComPtr<ISoSmileyCtrl> smiley;
+                        hr = reobj.poleobj->QueryInterface(__uuidof(ISoSmileyCtrl), (void**)&smiley);
+                        if(SUCCEEDED(hr))
+                        {
+                            SComPtr<ISmileySource> source;
+                            hr = smiley->GetSource(&source);
+                            SASSERT(SUCCEEDED(hr));
+                            UINT uID = -1;
+                            SStringW strSmiley = L"<smiley ";
+                            if(SUCCEEDED(source->GetID(&uID)))
+                            {
+                                strSmiley += SStringW().Format(L"id=\"%d\"",uID);
+                            }
+
+                            BSTR strFile;
+                            if(SUCCEEDED(source->GetFile(&strFile)))
+                            {
+                                strSmiley += SStringW().Format(L"path=\"%s\"",strFile);
+                                ::SysFreeString(strFile);
+                            }
+                            strSmiley += L"/>";
+
+                            strMsg = strMsg.Left(i) + strSmiley + strMsg.Right(strMsg.GetLength() - i);
+
+                            i += strSmiley.GetLength() -1;
+                        }
+                    }
+                    reobj.poleobj->Release();
+                }
+            }
+        }
+        return strMsg;
+    }
+
 
 }

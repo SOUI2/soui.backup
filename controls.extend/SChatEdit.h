@@ -27,11 +27,13 @@ namespace SOUI
         // Returns:   BOOL -- success:TRUE
         // Qualifier: 
         // Parameter: const SStringW & strMsg
-        // remark: strMsg :一个XML格式的正文，支持标签：<msg><color value="#ff0000">abc<link color="#0000ff">home</link><underline>efg<italic>abc<bold>abc<strike>afc<font value="宋体">abc<smiley id="1" path="c:\a.gif"/></font></strike></bold></italic></underline></color></msg>
+        // remark: strMsg :一个XML格式的正文，支持标签：<color value="#ff0000">abc<link color="#0000ff">home</link><underline>efg<italic>abc<bold>abc<strike>afc<font value="宋体">abc<smiley id="1" path="c:\a.gif"/></font></strike></bold></italic></underline></color>
         //************************************
         BOOL AppendFormatText(const SStringW & strMsg);
 
         BOOL AppendFormatText(const pugi::xml_node xmlMsg);
+
+        SStringW GetFormatText();
         
     protected:
         int     OnCreate(LPVOID);

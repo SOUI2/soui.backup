@@ -45,6 +45,8 @@ namespace SOUI
         m_evtSet.addEvent(EVT_MOUSE_LEAVE);
         m_evtSet.addEvent(EVT_VISIBLECHANGED);
         m_evtSet.addEvent(EVT_STATECHANGED);
+        m_evtSet.addEvent(EVT_DESTROY);
+        
         m_evtSet.addEvent(EventCmd::EventID);
         m_evtSet.addEvent(EventCtxMenu::EventID);
         m_evtSet.addEvent(EventSetFocus::EventID);
@@ -933,6 +935,9 @@ namespace SOUI
 
     void SWindow::OnDestroy()
     {
+        EventCmnArgs evt(this,EVT_DESTROY);
+        FireEvent(evt);
+        
         //destroy children windows
         SWindow *pChild=m_pFirstChild;
         while (pChild)
