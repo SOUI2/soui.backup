@@ -29,9 +29,11 @@ namespace SOUI
         // Parameter: const SStringW & strMsg
         // remark: strMsg :一个XML格式的正文，支持标签：<color value="#ff0000">abc<link color="#0000ff">home</link><underline>efg<italic>abc<bold>abc<strike>afc<font value="宋体">abc<smiley id="1" path="c:\a.gif"/></font></strike></bold></italic></underline></color>
         //************************************
-        BOOL AppendFormatText(const SStringW & strMsg);
+        BOOL AppendFormatText(const SStringW & strMsg,BOOL bNewLine=TRUE,BOOL bCanUndo=TRUE);
 
-        BOOL AppendFormatText(const pugi::xml_node xmlMsg);
+        BOOL AppendFormatText(const pugi::xml_node xmlMsg,BOOL bNewLine=TRUE,BOOL bCanUndo=TRUE);
+
+        BOOL ReplaceSelectionByFormatText(const SStringW & strMsg,BOOL bCanUndo=TRUE);
 
         SStringW GetFormatText();
         
@@ -45,7 +47,7 @@ namespace SOUI
         SOUI_MSG_MAP_END()
         
     protected:
-        int _AppendFormatText(int iCaret,CHARFORMAT cf,pugi::xml_node xmlText);
+        int _InsertFormatText(int iCaret,CHARFORMAT cf,pugi::xml_node xmlText,BOOL bCanUndo);
     };
 
 }
