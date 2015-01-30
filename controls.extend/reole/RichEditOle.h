@@ -39,6 +39,36 @@ public:
     }
 };
 
+namespace SOUI
+{
+    template<>
+    class CElementTraits<ImageID > :
+        public CElementTraitsBase<ImageID >
+    {
+    public:
+        static ULONG Hash( INARGTYPE imgid )
+        {
+            ULONG_PTR uRet=0;
+            if(imgid.m_uID!=ID_INVALID) return imgid.m_uID;
+            return SStringElementTraits<SStringW>::Hash(imgid.m_strFilename)+10000;
+        }
+
+        static bool CompareElements( INARGTYPE element1, INARGTYPE element2 )
+        {
+            return element1.m_uID == element2.m_uID
+                && element1.m_strFilename == element2.m_strFilename;
+        }
+
+        static int CompareElementsOrdered( INARGTYPE element1, INARGTYPE element2 )
+        {
+            int nRet = (int)element1.m_uID - (int)element2.m_uID;
+            if(nRet==0) nRet= element1.m_strFilename.Compare(element2.m_strFilename);
+            return nRet;
+        }
+    };
+
+}
+
 class ImageItem
 {  
 private:
@@ -150,9 +180,9 @@ protected:
 
     ImageItem    * m_pImg;
 
-    typedef std::map<ImageID, ImageItem* > IMAGEPOOL;
-    static IMAGEPOOL   _imgPool;
-    static ULONG_PTR   _gdiPlusToken;
+    typedef SMap<ImageID, ImageItem* > IMAGEPOOL;
+    static IMAGEPOOL   s_imgPool;
+    static ULONG_PTR   s_gdiPlusToken;
 };
 
 class CSmileyHost : public ISmileyHost , public ITimelineHandler
