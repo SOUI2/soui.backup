@@ -154,23 +154,23 @@ void ImageItem::Draw( HDC hdc,LPCRECT pRect,int iFrame )
     }
 }
 /////////////////////////////////////////////////////////////////////////////
-ULONG_PTR   CSmileySource::_gdiPlusToken    = 0;
-CSmileySource::IMAGEPOOL CSmileySource::_imgPool;
+ULONG_PTR   CSmileySource::s_gdiPlusToken    = 0;
+CSmileySource::IMAGEPOOL CSmileySource::s_imgPool;
 
 
 bool CSmileySource::GdiplusStartup( void )
 {
     Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 
-    return Gdiplus::Ok == Gdiplus::GdiplusStartup(&_gdiPlusToken, &gdiplusStartupInput, NULL);
+    return Gdiplus::Ok == Gdiplus::GdiplusStartup(&s_gdiPlusToken, &gdiplusStartupInput, NULL);
 }
 
 void CSmileySource::GdiplusShutdown( void )
 {
-    if (_gdiPlusToken != 0)
+    if (s_gdiPlusToken != 0)
     {
-        Gdiplus::GdiplusShutdown(_gdiPlusToken);
-        _gdiPlusToken = 0;
+        Gdiplus::GdiplusShutdown(s_gdiPlusToken);
+        s_gdiPlusToken = 0;
     }
 }
 
@@ -186,7 +186,7 @@ CSmileySource::~CSmileySource()
         ImageID id = m_pImg->GetImageID();
         if(m_pImg->Release()==0)
         {
-            _imgPool.erase(id);
+            s_imgPool.RemoveKey(id);
         }
     }
 }
@@ -266,15 +266,17 @@ HRESULT CSmileySource::Init(const ImageID &imgid)
         {//设置新图
             ImageID oldID = m_pImg->GetImageID();
             if(m_pImg->Release() ==0 )
-                _imgPool.erase(oldID);
+                s_imgPool.RemoveKey(oldID);
             m_pImg = NULL;
         }else
         {//相同的图，直接返回
             return S_OK;
         }
     }
-    IMAGEPOOL::iterator it = _imgPool.find(imgid);
-    if(it==_imgPool.end())
+    
+    SPOSITION pos = s_imgPool.Lookup(imgid);
+    
+    if(!pos)
     {//在pool中没有找到
         ImageItem *pImg = new ImageItem;
         if(!pImg->LoadImageFromFile(imgid.m_strFilename,imgid.m_uID))
@@ -282,11 +284,11 @@ HRESULT CSmileySource::Init(const ImageID &imgid)
             delete pImg;
             return E_INVALIDARG;
         }
-        _imgPool[imgid] = pImg;
+        s_imgPool[imgid] = pImg;
         m_pImg = pImg;
     }else
     {
-        m_pImg = it->second;
+        m_pImg = s_imgPool.GetAt(pos)->m_value;
     }
     m_pImg->AddRef();
     return S_OK;
