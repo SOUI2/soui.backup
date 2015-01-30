@@ -3,6 +3,23 @@
 #pragma  once
 
 #include <com-def.h>
+#include <string/tstring.h>
+
+#define COM_IMGDECODER  _T("imgdecoder-png")
+
+#ifdef _DEBUG
+#define COM_RENDER_GDI  _T("render-gdid.dll")
+#define COM_RENDER_SKIA _T("render-skiad.dll")
+#define COM_SCRIPT_LUA _T("scriptmodule-luad.dll")
+#define COM_TRANSLATOR _T("translatord.dll")
+#define COM_ZIPRESPROVIDER _T("resprovider-zipd.dll")
+#else
+#define COM_RENDER_GDI  _T("render-gdi.dll")
+#define COM_RENDER_SKIA _T("render-skia.dll")
+#define COM_SCRIPT_LUA _T("scriptmodule-lua.dll")
+#define COM_TRANSLATOR _T("translator.dll")
+#define COM_ZIPRESPROVIDER _T("resprovider-zip.dll")
+#endif
 
 #ifdef LIB_SOUI_COM
 #pragma message("LIB_SOUI_COM")
@@ -11,31 +28,38 @@
 #pragma comment(lib,"opengl32")
 
 #ifdef _DEBUG
-#pragma comment(lib,"skiad")
-#pragma comment(lib,"zlibd")
-#ifdef DLL_CORE
-#pragma comment(lib,"lua-51d")
-#pragma comment(lib,"scriptmodule-luad")
-#endif
-#pragma comment(lib,"render-gdid")
-#pragma comment(lib,"render-skiad")
-#pragma comment(lib,"imgdecoder-wicd")
-#pragma comment(lib,"translatord")
-#pragma comment(lib,"resprovider-zipd")
-#else
-#pragma comment(lib,"skia")
-#pragma comment(lib,"zlib")
-#ifdef DLL_CORE
-#pragma comment(lib,"lua-51")
-#pragma comment(lib,"scriptmodule-lua")
-#endif
+    #pragma comment(lib,"skiad")
+    #pragma comment(lib,"zlibd")
+    #ifdef DLL_CORE
+    #pragma comment(lib,"lua-51d")
+    #pragma comment(lib,"scriptmodule-luad")
+    #endif
+    #pragma comment(lib,"render-gdid")
+    #pragma comment(lib,"render-skiad")
+    #pragma comment(lib,"imgdecoder-wicd")
+    #pragma comment(lib,"imgdecoder-stbd")
+    #pragma comment(lib,"imgdecoder-pngd")
+    #pragma comment(lib,"imgdecoder-gdipd")
+    #pragma comment(lib,"translatord")
+    #pragma comment(lib,"resprovider-zipd")
+#else//_DEBUG
 
-#pragma comment(lib,"imgdecoder-wic")
-#pragma comment(lib,"render-gdi")
-#pragma comment(lib,"render-skia")
-#pragma comment(lib,"translator")
-#pragma comment(lib,"resprovider-zip")
-#endif
+    #pragma comment(lib,"skia")
+    #pragma comment(lib,"zlib")
+    #ifdef DLL_CORE
+    #pragma comment(lib,"lua-51")
+    #pragma comment(lib,"scriptmodule-lua")
+    #endif
+
+    #pragma comment(lib,"imgdecoder-wic")
+    #pragma comment(lib,"imgdecoder-stb")
+    #pragma comment(lib,"imgdecoder-png")
+    #pragma comment(lib,"imgdecoder-gdip")
+    #pragma comment(lib,"render-gdi")
+    #pragma comment(lib,"render-skia")
+    #pragma comment(lib,"translator")
+    #pragma comment(lib,"resprovider-zip")
+#endif//_DEBUG
 
 namespace SOUI
 {
@@ -43,6 +67,19 @@ namespace SOUI
     {
         BOOL SCreateInstance(IObjRef **);
     }
+    namespace IMGDECODOR_STB
+    {
+        BOOL SCreateInstance(IObjRef **);
+    }
+    namespace IMGDECODOR_PNG
+    {
+        BOOL SCreateInstance(IObjRef **);
+    }
+    namespace IMGDECODOR_GDIP
+    {
+        BOOL SCreateInstance(IObjRef **);
+    }
+
     namespace RENDER_GDI
     {
         BOOL SCreateInstance(IObjRef **);
@@ -68,9 +105,27 @@ namespace SOUI
 class SComMgr
 {
 public:
+    SComMgr(LPCTSTR pszImgDecoder = NULL)
+    {
+        if(pszImgDecoder) m_strImgDecoder = pszImgDecoder;
+        else m_strImgDecoder = COM_IMGDECODER;
+    }
+
     BOOL CreateImgDecoder(IObjRef ** ppObj)
     {
-        return SOUI::IMGDECODOR_WIC::SCreateInstance(ppObj);
+        if(m_strImgDecoder == _T("imgdecoder-wic"))
+            return SOUI::IMGDECODOR_WIC::SCreateInstance(ppObj);
+        else if(m_strImgDecoder == _T("imgdecoder-stb"))
+            return SOUI::IMGDECODOR_STB::SCreateInstance(ppObj);
+        else if(m_strImgDecoder == _T("imgdecoder-png"))
+            return SOUI::IMGDECODOR_PNG::SCreateInstance(ppObj);
+        else if(m_strImgDecoder == _T("imgdecoder-gdip"))
+            return SOUI::IMGDECODOR_GDIP::SCreateInstance(ppObj);
+        else
+        {
+            SASSERT(0);
+            return FALSE;
+        }
     }
 
     BOOL CreateRender_GDI(IObjRef **ppObj)
@@ -95,34 +150,32 @@ public:
     {
         return SOUI::RESPROVIDER_ZIP::SCreateInstance(ppObj);
     }
+
+    SOUI::SStringT    m_strImgDecoder;
 };
 
 #else
 	
 #include <com-loader.hpp>
 
-#ifdef _DEBUG
-#define COM_IMGDECODER  _T("imgdecoder-pngd.dll")
-#define COM_RENDER_GDI  _T("render-gdid.dll")
-#define COM_RENDER_SKIA _T("render-skiad.dll")
-#define COM_SCRIPT_LUA _T("scriptmodule-luad.dll")
-#define COM_TRANSLATOR _T("translatord.dll")
-#define COM_ZIPRESPROVIDER _T("resprovider-zipd.dll")
-#else
-#define COM_IMGDECODER  _T("imgdecoder-png.dll")
-#define COM_RENDER_GDI  _T("render-gdi.dll")
-#define COM_RENDER_SKIA _T("render-skia.dll")
-#define COM_SCRIPT_LUA _T("scriptmodule-lua.dll")
-#define COM_TRANSLATOR _T("translator.dll")
-#define COM_ZIPRESPROVIDER _T("resprovider-zip.dll")
-#endif
 
 class SComMgr
 {
 public:
-   BOOL CreateImgDecoder(IObjRef ** ppObj)
+    SComMgr(LPCTSTR pszImgDecoder = NULL)
     {
-        return imgDecLoader.CreateInstance(COM_IMGDECODER,ppObj);
+        if(pszImgDecoder) m_strImgDecoder = pszImgDecoder;
+        else m_strImgDecoder = COM_IMGDECODER;
+    }
+
+    BOOL CreateImgDecoder(IObjRef ** ppObj)
+    {
+#ifdef _DEBUG
+        SOUI::SStringT strImgDecoder = m_strImgDecoder+_T("d.dll");
+#else
+        SOUI::SStringT strImgDecoder = m_strImgDecoder+_T(".dll");
+#endif
+        return imgDecLoader.CreateInstance(m_strImgDecoder,ppObj);
     }
     
     BOOL CreateRender_GDI(IObjRef **ppObj)
@@ -154,5 +207,6 @@ protected:
     SComLoader transLoader;
     SComLoader scriptLoader;
     SComLoader zipResLoader;
+    SOUI::SStringT m_strImgDecoder;
 };
 #endif
