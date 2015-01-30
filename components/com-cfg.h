@@ -175,7 +175,7 @@ public:
 #else
         SOUI::SStringT strImgDecoder = m_strImgDecoder+_T(".dll");
 #endif
-        return imgDecLoader.CreateInstance(m_strImgDecoder,ppObj);
+        return imgDecLoader.CreateInstance(strImgDecoder,ppObj);
     }
     
     BOOL CreateRender_GDI(IObjRef **ppObj)
