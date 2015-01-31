@@ -234,7 +234,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     namespace IMGDECODOR_GDIP
     {
-        BOOL IMGDECODOR_GDIP::SCreateInstance( IObjRef **pImgDecoderFactory )
+        BOOL SCreateInstance( IObjRef **pImgDecoderFactory )
         {
             *pImgDecoderFactory = new SImgDecoderFactory_GDIP();
             return TRUE;
