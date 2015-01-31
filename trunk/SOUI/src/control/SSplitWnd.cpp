@@ -7,7 +7,7 @@ namespace SOUI
 #define DEF_SEPSIZE    5
 
 
-SSplitPane::SSplitPane():m_nPriority(0),m_nSizeIdeal(20),m_nSizeMin(0)
+SSplitPane::SSplitPane():m_nPriority(0),m_nSizeIdeal(20),m_nSizeMin(0),m_nSizeMax(100000)
 {
 
 }
@@ -28,26 +28,29 @@ SSplitWnd::~SSplitWnd(void)
 }
 
 
-BOOL SSplitWnd::SetPaneInfo( UINT iPane,int nIdealSize,int nMinSize,int nPriority )
+BOOL SSplitWnd::SetPaneInfo( UINT iPane,int nIdealSize,int nMinSize,int nMaxSize,int nPriority )
 {
     if(iPane>m_arrPane.GetCount()-1) return FALSE;
     if(nIdealSize!=-1) m_arrPane[iPane]->m_nSizeIdeal=nIdealSize;
     if(nMinSize!=-1) m_arrPane[iPane]->m_nSizeMin=nMinSize;
+    if(nMaxSize!=-1) m_arrPane[iPane]->m_nSizeMax = nMaxSize;
     if(nPriority!=-1) m_arrPane[iPane]->m_nPriority=nPriority;
-    Relayout(m_bColMode?layout_vert:layout_horz);
+    if(m_arrPane[iPane]->IsVisible())
+        Relayout(m_bColMode?layout_vert:layout_horz);
     return TRUE;
 }
 
-BOOL SSplitWnd::GetPaneInfo( UINT iPane,int *pnIdealSize,int *pnMinSize,int *pnPriority )
+BOOL SSplitWnd::GetPaneInfo( UINT iPane,int *pnIdealSize,int *pnMinSize,int *pnMaxSize,int *pnPriority )
 {
     if(iPane>m_arrPane.GetCount()-1) return FALSE;
     if(pnIdealSize) *pnIdealSize=m_arrPane[iPane]->m_nSizeIdeal;
     if(pnMinSize) *pnMinSize=m_arrPane[iPane]->m_nSizeMin;
+    if(pnMaxSize) *pnMaxSize=m_arrPane[iPane]->m_nSizeMax;
     if(pnPriority) *pnPriority=m_arrPane[iPane]->m_nPriority;
     return TRUE;
 }
 
-BOOL SSplitWnd::ShowPanel(UINT iPane)
+BOOL SSplitWnd::ShowPane(UINT iPane)
 {
     if (iPane < 0 || iPane >= m_arrPane.GetCount()) return FALSE;
 
@@ -57,7 +60,7 @@ BOOL SSplitWnd::ShowPanel(UINT iPane)
     return TRUE;
 }
 
-BOOL SSplitWnd::HidePanel(UINT iPane)
+BOOL SSplitWnd::HidePane(UINT iPane)
 {
     if (iPane < 0 || iPane >= m_arrPane.GetCount()) return FALSE;
 
@@ -457,4 +460,18 @@ void SSplitWnd::Relayout(UINT uMode)
     }
 }
 
+int SSplitWnd::PaneIndex( const SStringW & strName ) const
+{
+    for(UINT i = 0;i<m_arrPane.GetCount();i++)
+    {
+        if(m_arrPane[i]->GetName() == strName) return i;
+    }
+    return -1;
+}
+
+SSplitPane * SSplitWnd::GetPane( UINT iPane )
+{
+    if(iPane>=m_arrPane.GetCount()) return FALSE;
+    return m_arrPane[iPane];
+}
 }//namespace SOUI

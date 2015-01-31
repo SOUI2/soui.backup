@@ -28,7 +28,7 @@ enum SPLITMODE {SM_COL=0,SM_ROW};
 class SOUI_EXP SSplitPane : public SWindow
 {
     friend class SSplitWnd;
-    SOUI_CLASS_NAME(SSplitPane, L"splitpane")
+    SOUI_CLASS_NAME(SSplitPane, L"pane")
 public:
     
     /**
@@ -51,12 +51,14 @@ public:
     SOUI_ATTRS_BEGIN()
         ATTR_INT(L"idealSize", m_nSizeIdeal, TRUE)
         ATTR_INT(L"minSize", m_nSizeMin, TRUE)
+        ATTR_INT(L"maxSize", m_nSizeMax,TRUE)
         ATTR_INT(L"priority", m_nPriority, TRUE)
     SOUI_ATTRS_END()
 protected:
     int m_nSizeIdeal;  /**< 理想大小 */
     int m_nSizeMin;    /**< 最小大小 */
-    int m_nPriority;   /**< 优先级   */
+    int m_nSizeMax;    /**< 最大大小 */
+    int m_nPriority;   /**< 优先级,值越小优先级越高  */
 };
 
 /** 
@@ -104,12 +106,15 @@ public:
      * @param    UINT iPane  --  panel id
      * @param    int nIdealSize  -- 理想大小
      * @param    int nMinSize    -- 最小大小
+     * @param    int nMaxSize    -- 最大大小
      * @param    int nPriority   -- 优先级
      * @return   返回BOOL     
      *
      * Describe  设置panel信息  
      */
-    BOOL SetPaneInfo(UINT iPane,int nIdealSize,int nMinSize,int nPriority);
+    BOOL SetPaneInfo(UINT iPane,int nIdealSize,int nMinSize,int nMaxSize,int nPriority);
+
+    SSplitPane * GetPane(UINT iPane);
 
     /**
      * SSplitWnd::GetPaneInfo
@@ -117,33 +122,42 @@ public:
      * @param    UINT iPane  --  panel id
      * @param    int *pnIdealSize  -- 理想大小
      * @param    int *pnMinSize    -- 最小大小
+     * @param    int *pnMaxSize    -- 最大大小
      * @param    int *pnPriority   -- 优先级
      * @return   返回BOOL     
      *
      * Describe  获取panel信息 
      */
-    BOOL GetPaneInfo(UINT iPane,int *pnIdealSize,int *pnMinSize,int *pnPriority);
+    BOOL GetPaneInfo(UINT iPane,int *pnIdealSize,int *pnMinSize,int *pnMaxSize,int *pnPriority);
 
     /**
-     * SSplitWnd::ShowPanel
-     * @brief    显示panel
-     * @param    UINT iPane -- panel id     
+     * SSplitWnd::ShowPane
+     * @brief    显示pane
+     * @param    UINT iPane -- pane index     
      * @return   返回BOOL     
      *
-     * Describe  显示panel  
+     * Describe  显示pane 
      */
-    BOOL ShowPanel(UINT iPane);
+    BOOL ShowPane(UINT iPane);
 
     /**
-     * SSplitWnd::HidePanel
-     * @brief    隐藏panel
-     * @param    UINT iPane -- panel id
+     * SSplitWnd::HidePane
+     * @brief    隐藏pane
+     * @param    UINT iPane -- panel index
      * @return   返回BOOL
      *
-     * Describe  隐藏panel  
+     * Describe  隐藏pane  
      */
-    BOOL HidePanel(UINT iPane);
+    BOOL HidePane(UINT iPane);
 
+    /**
+     * SSplitWnd::PaneIndex
+     * @brief    获得一个Pane的索引
+     * @param    const SStringW & strName --  Pane的name
+     * @return   int -- Pane的索引
+     * Describe  
+     */    
+    int  PaneIndex(const SStringW & strName) const;
 protected:
     
     /**

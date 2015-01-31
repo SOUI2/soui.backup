@@ -321,6 +321,9 @@ namespace SOUI
     void SWindow::InsertChild(SWindow *pNewChild,SWindow *pInsertAfter/*=ICWND_LAST*/)
     {
         TestMainThread();
+        if(pNewChild->m_pParent == this) 
+            return;
+
         pNewChild->SetContainer(GetContainer());
         pNewChild->m_pParent=this;
         pNewChild->m_pPrevSibling=pNewChild->m_pNextSibling=NULL;
@@ -364,14 +367,25 @@ namespace SOUI
     BOOL SWindow::RemoveChild(SWindow *pChild)
     {
         TestMainThread();
-        if(this != pChild->GetParent()) return FALSE;
+        if(this != pChild->GetParent()) 
+            return FALSE;
+
         SWindow *pPrevSib=pChild->m_pPrevSibling;
         SWindow *pNextSib=pChild->m_pNextSibling;
-        if(pPrevSib) pPrevSib->m_pNextSibling=pNextSib;
-        else m_pFirstChild=pNextSib;
-        if(pNextSib) pNextSib->m_pPrevSibling=pPrevSib;
-        else m_pLastChild=pPrevSib;
+
+        if(pPrevSib) 
+            pPrevSib->m_pNextSibling=pNextSib;
+        else 
+            m_pFirstChild=pNextSib;
+
+        if(pNextSib) 
+            pNextSib->m_pPrevSibling=pPrevSib;
+        else 
+            m_pLastChild=pPrevSib;
+
         pChild->m_pParent=NULL;
+        pChild->m_pNextSibling = NULL;
+        pChild->m_pPrevSibling = NULL;
         m_nChildrenCount--;
         return TRUE;
     }
