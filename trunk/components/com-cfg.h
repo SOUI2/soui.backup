@@ -30,6 +30,7 @@
 #ifdef _DEBUG
     #pragma comment(lib,"skiad")
     #pragma comment(lib,"zlibd")
+    #pragma comment(lib,"pngd")
     #ifdef DLL_CORE
     #pragma comment(lib,"lua-51d")
     #pragma comment(lib,"scriptmodule-luad")
@@ -46,6 +47,7 @@
 
     #pragma comment(lib,"skia")
     #pragma comment(lib,"zlib")
+    #pragma comment(lib,"png")
     #ifdef DLL_CORE
     #pragma comment(lib,"lua-51")
     #pragma comment(lib,"scriptmodule-lua")
