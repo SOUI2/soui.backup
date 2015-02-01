@@ -118,13 +118,12 @@ ImageItem::~ImageItem()
     if ( m_pFrameDelays ) delete [] m_pFrameDelays;
 }
 
-BOOL ImageItem::LoadImageFromFile(const SStringW& strFilename, int nID)
+BOOL ImageItem::LoadImage(const ImageID & imgid)
 {
     ATLASSERT(m_hMemDC == NULL);
-    m_imgid.m_uID=nID;
-    m_imgid.m_strFilename=strFilename;
+    m_imgid = imgid;
 
-    HBITMAP hBmp = GetBitmapFromFile(strFilename, m_nFrameCount, m_FrameSize, m_pFrameDelays );
+    HBITMAP hBmp = GetBitmapFromFile(imgid.m_strFilename, m_nFrameCount, m_FrameSize, m_pFrameDelays );
     if(!hBmp) return FALSE;
     HDC hDC = ::GetDC(NULL);
     m_hMemDC = CreateCompatibleDC(hDC);
@@ -279,7 +278,7 @@ HRESULT CSmileySource::Init(const ImageID &imgid)
     if(!pos)
     {//在pool中没有找到
         ImageItem *pImg = new ImageItem;
-        if(!pImg->LoadImageFromFile(imgid.m_strFilename,imgid.m_uID))
+        if(!pImg->LoadImage(imgid))
         {
             delete pImg;
             return E_INVALIDARG;
