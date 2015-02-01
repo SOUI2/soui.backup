@@ -748,13 +748,21 @@ void SScrollView::OnSize(UINT nType,CSize size)
     UpdateScrollBar();
 }
 
+void SScrollView::OnViewOriginChanged( CPoint ptOld,CPoint ptNew )
+{
+    UpdateChildrenPosition();
+}
 
 void SScrollView::SetViewOrigin(CPoint pt)
 {
     if(m_ptOrigin==pt) return;
     CPoint ptOld=m_ptOrigin;
     m_ptOrigin=pt;
+    SetScrollPos(FALSE,m_ptOrigin.x,TRUE);
+    SetScrollPos(TRUE,m_ptOrigin.y,TRUE);
+
     OnViewOriginChanged(ptOld,pt);
+
     Invalidate();
 }
 

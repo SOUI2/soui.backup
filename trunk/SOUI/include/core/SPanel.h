@@ -173,9 +173,7 @@ namespace SOUI
         void OnSize(UINT nType,CSize size);
     protected:
         virtual void OnViewSizeChanged(CSize szOld,CSize szNew){}
-        virtual void OnViewOriginChanged(CPoint ptOld,CPoint ptNew) {
-            UpdateChildrenPosition();
-        }
+        virtual void OnViewOriginChanged(CPoint ptOld,CPoint ptNew);
 
     protected:
         virtual CRect GetChildrenLayoutRect()
@@ -196,6 +194,7 @@ namespace SOUI
             ATTR_INT(L"viewhei", m_szView.cy, FALSE)
             ATTR_INT(L"origin-x", m_ptOrigin.x, FALSE)
             ATTR_INT(L"origin-y", m_ptOrigin.y, FALSE)
+            ATTR_SIZE(L"viewSize",m_szView,FALSE)
         SOUI_ATTRS_END()
 
         SOUI_MSG_MAP_BEGIN()
