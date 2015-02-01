@@ -82,7 +82,7 @@ private:
 public:
     ImageItem();
     ~ImageItem();
-    BOOL LoadImageFromFile(const SStringW& strFilename, int nHeight);
+    BOOL LoadImage(const ImageID & imgid);
     bool IsEqual(const ImageID & id) 
     {return m_imgid == id; }
     ImageID GetImageID()
