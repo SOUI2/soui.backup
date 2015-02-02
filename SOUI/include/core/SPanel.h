@@ -172,7 +172,7 @@ namespace SOUI
     protected:
         void OnSize(UINT nType,CSize size);
     protected:
-        virtual void OnViewSizeChanged(CSize szOld,CSize szNew){}
+        virtual void OnViewSizeChanged(CSize szOld,CSize szNew);
         virtual void OnViewOriginChanged(CPoint ptOld,CPoint ptNew);
 
     protected:

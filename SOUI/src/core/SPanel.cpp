@@ -29,7 +29,7 @@ SPanel::SPanel()
     m_HitInfo.uSbCode=-1;
     m_siHoz.nTrackPos=-1;
     m_siVer.nTrackPos=-1;
-
+    
 }
 
 BOOL SPanel::ShowScrollBar( int wBar, BOOL bShow )
@@ -739,6 +739,8 @@ void SPanel::OnHScroll(UINT nSBCode, UINT nPos, HWND)
 SScrollView::SScrollView()
 {
     m_bClipClient=TRUE;
+    GetEventSet()->addEvent(EventScrollViewOriginChanged::EventID);
+    GetEventSet()->addEvent(EventScrollViewSizeChanged::EventID);
 }
 
 
@@ -751,6 +753,18 @@ void SScrollView::OnSize(UINT nType,CSize size)
 void SScrollView::OnViewOriginChanged( CPoint ptOld,CPoint ptNew )
 {
     UpdateChildrenPosition();
+    EventScrollViewOriginChanged evt(this);
+    evt.ptOldOrigin = ptOld;
+    evt.ptNewOrigin = ptNew;
+    FireEvent(evt);
+}
+
+void SScrollView::OnViewSizeChanged( CSize szOld,CSize szNew )
+{
+    EventScrollViewSizeChanged evt(this);
+    evt.szOldViewSize = szOld;
+    evt.szNewViewSize = szNew;
+    FireEvent(evt);
 }
 
 void SScrollView::SetViewOrigin(CPoint pt)

@@ -908,9 +908,11 @@ namespace SOUI
     BOOL SWindow::FireEvent(EventArgs &evt)
     {
         TestMainThread();
+        if(m_evtSet.isMuted()) return FALSE;
+
         m_evtSet.FireEvent(evt);
         if(evt.handled != 0) return TRUE;
-
+        
         if(GetOwner()) return GetOwner()->FireEvent(evt);
         return GetContainer()->OnFireEvent(evt);
     }
