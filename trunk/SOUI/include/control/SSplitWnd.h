@@ -11,13 +11,11 @@
  * Describe     
  */
 #pragma once
-#include "core/SPanel.h"
+#include <core/swnd.h>
+#include <helper/copylist.hpp>
 
 namespace SOUI
 {
-
-enum SPLITMODE {SM_COL=0,SM_ROW};
-
 
 /** 
  * @class     SSplitPane
@@ -49,16 +47,17 @@ public:
     virtual ~SSplitPane() {}
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"idealSize", m_nSizeIdeal, TRUE)
-        ATTR_INT(L"minSize", m_nSizeMin, TRUE)
-        ATTR_INT(L"maxSize", m_nSizeMax,TRUE)
-        ATTR_INT(L"priority", m_nPriority, TRUE)
+        ATTR_INT(L"idealSize", m_nSizeIdeal, FALSE)
+        ATTR_INT(L"minSize", m_nSizeMin, FALSE)
+        ATTR_INT(L"maxSize", m_nSizeMax,FALSE)
+        ATTR_INT(L"priority", m_nPriority, FALSE)
     SOUI_ATTRS_END()
+    
 protected:
     int m_nSizeIdeal;  /**< 理想大小 */
     int m_nSizeMin;    /**< 最小大小 */
     int m_nSizeMax;    /**< 最大大小 */
-    int m_nPriority;   /**< 优先级,值越小优先级越高  */
+    int m_nPriority;   /**< 优先级,值越大优先级越高,优先级越高，窗格越先到达idealSize  */
 };
 
 /** 
@@ -71,17 +70,36 @@ class SOUI_EXP SSplitWnd :
     public SWindow
 {
     SOUI_CLASS_NAME(SSplitWnd, L"splitwnd")
-
-    enum {
-        layout_vert=1,        //纵向布局改变
-        layout_horz=2,        //横向布局改变
-        layout_pos=4,        //窗口位置发生改变
-    };
-    struct PANEORDER
+    
+    enum SPLIT_ORINTATION
     {
-        int idx;
-        SSplitPane *pPane;
+        Horizontal=0,
+        Vertical,
     };
+    //窗口的SIZE信息
+    struct PANESIZE
+    {
+        int actural;
+        int preferred;
+        int minimum;
+        int maximum;
+    };
+    typedef SArray<PANESIZE> PANESIZELIST;
+    
+protected:
+
+    typedef SArray<SSplitPane*> SplitPaneList;
+    SplitPaneList     m_lstPane;            /**< 按显示顺序排序的分隔列表 */
+    SplitPaneList     m_lstPriority;        /**< 按优先级排序的分隔列表 */
+    int                 m_spliterSize;        /**< 分隔条的size */
+    int                 m_orintation;         /**< 分割方向，参考 SPLIT_ORINTATION */
+
+    BOOL                m_bAdjustable;        /**< 是否支持拖动调节窗格大小 */
+    ISkinObj *          m_pSkinSep;           /**< ISkinObj对象 */
+
+    CPoint              m_ptDragPrev;         /**< 拖动调整的前一个位置 */
+    int                 m_iDragSep;           /**< 正在拖动哪一根分隔条,-1代表没有拖动状态 */
+
 public:
     
     /**
@@ -100,35 +118,7 @@ public:
      */
     virtual ~SSplitWnd(void);
 
-    /**
-     * SSplitWnd::SetPaneInfo
-     * @brief    设置panel信息
-     * @param    UINT iPane  --  panel id
-     * @param    int nIdealSize  -- 理想大小
-     * @param    int nMinSize    -- 最小大小
-     * @param    int nMaxSize    -- 最大大小
-     * @param    int nPriority   -- 优先级
-     * @return   返回BOOL     
-     *
-     * Describe  设置panel信息  
-     */
-    BOOL SetPaneInfo(UINT iPane,int nIdealSize,int nMinSize,int nMaxSize,int nPriority);
-
     SSplitPane * GetPane(UINT iPane);
-
-    /**
-     * SSplitWnd::GetPaneInfo
-     * @brief    获取panel信息
-     * @param    UINT iPane  --  panel id
-     * @param    int *pnIdealSize  -- 理想大小
-     * @param    int *pnMinSize    -- 最小大小
-     * @param    int *pnMaxSize    -- 最大大小
-     * @param    int *pnPriority   -- 优先级
-     * @return   返回BOOL     
-     *
-     * Describe  获取panel信息 
-     */
-    BOOL GetPaneInfo(UINT iPane,int *pnIdealSize,int *pnMinSize,int *pnMaxSize,int *pnPriority);
 
     /**
      * SSplitWnd::ShowPane
@@ -158,6 +148,26 @@ public:
      * Describe  
      */    
     int  PaneIndex(const SStringW & strName) const;
+    
+    /**
+     * SSplitWnd::InsertItem
+     * @brief    插入一个新的窗格
+     * @param    SSplitPane* pane --  窗格指针
+     * @param    int index --  插入位置，默认最后
+     * @return   int -- Pane的索引
+     * Describe  
+     */    
+    int  InsertItem( SSplitPane* pane, int index = -1  );
+
+    /**
+     * SSplitWnd::RemoveItem
+     * @brief    删除一个窗格
+     * @param    SSplitPane* pane --  窗格指针
+     * @return   void
+     * Describe  
+     */    
+    void RemoveItem( SSplitPane * pane );
+
 protected:
     
     /**
@@ -166,26 +176,8 @@ protected:
      *
      * Describe  更新子窗口位置
      */
-    virtual void UpdateChildrenPosition(){}//empty
-    
-    /**
-     * SSplitWnd::GetVisiblePanelCount
-     * @brief    获取显示可见panel个数
-     * @return   返回 int
-     *
-     * Describe  获取显示可见panel个数
-     */
-    int GetVisiblePanelCount();
-    
-    /**
-     * SSplitWnd::GetNextVisiblePanel
-     * @brief    获取下一个 panel-id
-     * @param    UINT iPanel -- panel id
-     * @return   返回int
-     *
-     * Describe  获取下一个 panel-id 
-     */
-    int GetNextVisiblePanel(UINT iPanel);
+    virtual void UpdateChildrenPosition();
+
     
     /**
      * SSplitWnd::CreateChildren
@@ -206,24 +198,7 @@ protected:
      * Describe  设置坐标
      */
     virtual BOOL OnSetCursor(const CPoint &pt);
-    
-    /**
-     * SSplitWnd::OnRelayout
-     * @brief    修改窗口位置
-     * @param    LPRECT lpWndPos -- 窗口位置
-     *
-     * Describe  修改窗口位置  消息响应函数
-     */
-    virtual void OnRelayout(const CRect &rcOld, const CRect & rcNew);
-    
-    /**
-     * SSplitWnd::OnDestroy
-     * @brief    销毁
-     *
-     * Describe  销毁  
-     */
-    void OnDestroy();
-    
+        
     /**
      * SSplitWnd::OnPaint
      * @brief    绘制
@@ -264,49 +239,40 @@ protected:
      */
     void OnMouseMove(UINT nFlags,CPoint pt);
 
-    /**
-     * SSplitWnd::FunComp
-     * @brief    比较函数
-     * @param    const void * p1 -- 参数1
-     * @param    const void * p2 -- 参数2
-     *
-     * Describe  
-     */
+protected:
+    //qsort比较函数
     static int FunComp(const void * p1,const void * p2);
+    
+    //将一个SplitPaneList按照优先级从大到小排序
+    void SortPriorityList(SplitPaneList & lstPane);
+    
+    //从SplitPaneList获取size信息
+    void FatchPaneSizeInfo(const SplitPaneList & lstPane, PANESIZELIST & lstPaneSize);
+    
+    //根据计算获得的窗格size信息设置窗格位置
+    int ResetPanesPostion(SplitPaneList & lstPane, SplitPaneList & lstPanePriority, PANESIZELIST & lstPaneSize, int offset);
 
-    /**
-     * SSplitWnd::Relayout
-     * @brief    重新布局
-     * @param    UINT uMode -- 
-     *
-     * Describe  重新布局
-     */
-    void Relayout(UINT uMode);
+    //调整列表中控件的高度（宽度）
+    int AdjustPanesSize(PANESIZELIST & lstPriority, int remain);
 
+    //重新布局
+    void Relayout(const CRect &rc,PANESIZELIST lstPaneSize=PANESIZELIST());
+
+public:
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"sepSize", m_nSepSize, TRUE)
+        ATTR_INT(L"sepSize", m_spliterSize, TRUE)
         ATTR_SKIN(L"sepSkin",m_pSkinSep,TRUE)
         ATTR_INT(L"adjustable", m_bAdjustable, TRUE)
-        ATTR_INT(L"colMode", m_bColMode, TRUE)
+        ATTR_INT(L"vertical", m_orintation, TRUE)
     SOUI_ATTRS_END()
 
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
-        MSG_WM_DESTROY(OnDestroy)
         MSG_WM_LBUTTONDOWN(OnLButtonDown)
         MSG_WM_LBUTTONUP(OnLButtonUp)
         MSG_WM_MOUSEMOVE(OnMouseMove)
     SOUI_MSG_MAP_END()
 
-protected:
-    SArray<SSplitPane *> m_arrPane; /**< 保存panel */
-    ISkinObj *m_pSkinSep;   /**< ISkinObj对象 */
-    int m_nSepSize;         /**<  */
-    BOOL m_bAdjustable;     /**<  */
-    BOOL m_bColMode;        /**<  */
-
-    int m_iDragBeam;        /**<  */
-    CPoint m_ptClick;       /**<  */
 };
 
 /** 
@@ -322,7 +288,7 @@ public:
     SSplitWnd_Col()
     {
         m_pSkinSep= GETBUILTINSKIN(SKIN_SYS_SPLIT_VERT);
-        m_bColMode=TRUE;
+        m_orintation=Vertical;
     }
 };
 
@@ -339,7 +305,7 @@ public:
     SSplitWnd_Row()
     {
         m_pSkinSep=GETBUILTINSKIN(SKIN_SYS_SPLIT_HORZ);
-        m_bColMode=FALSE;
+        m_orintation=Horizontal;
     }
 };
 

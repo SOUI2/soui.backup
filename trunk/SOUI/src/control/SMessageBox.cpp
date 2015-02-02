@@ -80,54 +80,54 @@ namespace SOUI
         {
             1,
             {
-                {IDOK,    _T("ok")},
-                {0,    _T("")},
-                {0,   _T("")}
+                {IDOK,    L"ok"},
+                {0,    L""},
+                {0,   L""}
             }
         },
         //MB_OKCANCEL
         {
             2,
             {
-                {IDOK,    _T("ok")},
-                {IDCANCEL,    _T("cancel")},
-                {0,    _T("")}
+                {IDOK,    L"ok"},
+                {IDCANCEL,    L"cancel"},
+                {0,    L""}
             }
         },
         //MB_ABORTRETRYIGNORE
         {
             3,
             {
-                {IDABORT,_T("abort")},
-                {IDRETRY,_T("retry")},
-                {IDIGNORE,_T("ignore")}
+                {IDABORT,L"abort"},
+                {IDRETRY,L"retry"},
+                {IDIGNORE,L"ignore"}
             }
         },
         //MB_YESNOCANCEL
         {
             3,
             {
-                {IDYES,_T("yes")},
-                {IDNO,_T("no")},
-                {IDCANCEL,_T("cancel")}
+                {IDYES,L"yes"},
+                {IDNO,L"no"},
+                {IDCANCEL,L"cancel"}
             }
         },
         //MB_YESNO
         {
             2,
             {
-                {IDYES,_T("yes")},
-                {IDNO,_T("no")},
-                {0,_T("")}
+                {IDYES,L"yes"},
+                {IDNO,L"no"},
+                {0,L""}
             }
         },
         //MB_RETRYCANCEL
         {
             2,
             {
-                {IDRETRY,_T("retry")},
-                {IDCANCEL,_T("cancel")},
-                {0,_T("")}
+                {IDRETRY,L"retry"},
+                {IDCANCEL,L"cancel"},
+                {0,L""}
             }
         }
     };

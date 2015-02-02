@@ -456,13 +456,14 @@ int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoadin
     InsertChild(pChild);
     pChild->InitFromXml(xmlNode);
     
-    CRect rcPage=GetChildrenLayoutRect();
-    pChild->Move(&rcPage);
-
     if(iInsert==-1) iInsert=m_lstPages.GetCount();
     m_lstPages.InsertAt(iInsert,pChild);
+
     if(!bLoading )
     {
+        CRect rcPage=GetChildrenLayoutRect();
+        pChild->Move(&rcPage);
+
         if(m_nCurrentPage>=iInsert)  m_nCurrentPage++;
         InvalidateRect(GetTitleRect());
         if(m_nCurrentPage == -1) SetCurSel(iInsert);

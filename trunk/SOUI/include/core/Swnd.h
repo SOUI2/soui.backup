@@ -262,6 +262,12 @@ namespace SOUI
         */    
         void GetWindowRect(LPRECT prect);
 
+        CRect GetWindowRect() {
+            CRect rc;
+            GetWindowRect(&rc);
+            return rc;
+        }
+        
         /**
         * GetClientRect
         * @brief    获得窗口的客户区
@@ -272,6 +278,12 @@ namespace SOUI
         */
         virtual void GetClientRect(LPRECT pRect);
         
+        CRect GetClientRect()
+        {
+            CRect rc;
+            GetClientRect(&rc);
+            return rc;
+        }
     public://窗口树结构相关方法
         /**
          * GetParent

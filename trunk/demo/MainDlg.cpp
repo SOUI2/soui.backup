@@ -450,7 +450,7 @@ void CMainDlg::OnBtnAppendMsg()
         CFormatMsgDlg formatMsgDlg;
         if(formatMsgDlg.DoModal()==IDOK)
         {
-            pEdit->AppendFormatText(formatMsgDlg.m_strMsg);
+            pEdit->AppendFormatText(S_CT2W(formatMsgDlg.m_strMsg));
         }
     }
 }

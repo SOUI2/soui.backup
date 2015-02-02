@@ -31,18 +31,22 @@ class SOUI::CElementTraits<SOUI::SResID > :
 public:
     static ULONG Hash( INARGTYPE resid )
     {
-        ULONG_PTR uRet=0;
-
-        for(LPCTSTR p=resid.szType; *p; p++)
+        ULONG nHash=0;
+        
+        const TCHAR * pch = resid.szType;
+        while( *pch != 0 )
         {
-            uRet=uRet*68+*p;
+            nHash = (nHash<<5)+nHash+(*pch);
+            pch++;
         }
-        uRet*=10000;
-        for(LPCTSTR p=resid.szName; *p; p++)
+        
+        pch = resid.szName;
+        while( *pch != 0 )
         {
-            uRet=uRet*68+*p;
+            nHash = (nHash<<5)+nHash+(*pch);
+            pch++;
         }
-        return (ULONG)uRet;
+        return( nHash );
     }
 
     static bool CompareElements( INARGTYPE element1, INARGTYPE element2 )
