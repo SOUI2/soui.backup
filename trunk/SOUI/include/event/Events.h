@@ -65,6 +65,11 @@ namespace SOUI
         EVT_DESTROY,
         EVT_VISIBLECHANGED,
         EVT_STATECHANGED,
+
+        //增加两个滚动VIEW的事件
+        EVT_SCROLLVIEW_ORIGINCHANGED,
+        EVT_SCROLLVIEW_SIZECHANGED,
+
         EVT_SCROLL,
         EVT_OFEVENT,    //消息二次包装
         EVT_OFPANEL,    //一个itemPanel中的消息的二次包装
@@ -171,6 +176,28 @@ namespace SOUI
 
         DWORD dwOldState;
         DWORD dwNewState;
+    };
+    
+    class SOUI_EXP EventScrollViewOriginChanged : public EventArgs
+    {
+    public:
+        EventScrollViewOriginChanged(SWindow *pWnd):EventArgs(pWnd){}
+        enum{EventID=EVT_SCROLLVIEW_ORIGINCHANGED};
+        virtual UINT GetEventID(){return EventID;}
+
+        CPoint ptOldOrigin;
+        CPoint ptNewOrigin;
+    };
+
+    class SOUI_EXP EventScrollViewSizeChanged : public EventArgs
+    {
+    public:
+        EventScrollViewSizeChanged(SWindow *pWnd):EventArgs(pWnd){}
+        enum{EventID=EVT_SCROLLVIEW_SIZECHANGED};
+        virtual UINT GetEventID(){return EventID;}
+
+        CSize szOldViewSize;
+        CSize szNewViewSize;
     };
 
     class SOUI_EXP EventScroll : public EventArgs
