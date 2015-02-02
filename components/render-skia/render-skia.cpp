@@ -957,14 +957,14 @@ namespace SOUI
     static int s_cBmp = 0;
     SBitmap_Skia::SBitmap_Skia( IRenderFactory *pRenderFac ) :TSkiaRenderObjImpl<IBitmap>(pRenderFac),m_hBmp(0)
     {
-        STRACE(L"bitmap new; objects = %d",++s_cBmp);
+//         STRACE(L"bitmap new; objects = %d",++s_cBmp);
     }
 
     SBitmap_Skia::~SBitmap_Skia()
     {
         m_bitmap.reset();
         if(m_hBmp) DeleteObject(m_hBmp);
-        STRACE(L"bitmap delete objects = %d",--s_cBmp);
+//         STRACE(L"bitmap delete objects = %d",--s_cBmp);
     }
 
     HBITMAP SBitmap_Skia::CreateGDIBitmap( int nWid,int nHei,void ** ppBits )
@@ -1093,12 +1093,12 @@ namespace SOUI
 	SRegion_Skia::SRegion_Skia( IRenderFactory *pRenderFac )
         :TSkiaRenderObjImpl<IRegion>(pRenderFac)
 	{
-        STRACE(L"region new; objects = %d",++s_cRgn);
+//         STRACE(L"region new; objects = %d",++s_cRgn);
 	}
 
     SRegion_Skia::~SRegion_Skia()
     {
-        STRACE(L"region delete; objects = %d",--s_cRgn);
+//         STRACE(L"region delete; objects = %d",--s_cRgn);
     }
 
 	void SRegion_Skia::CombineRect( LPCRECT lprect,int nCombineMode )
@@ -1188,13 +1188,13 @@ namespace SOUI
         m_skPaint.setAntiAlias(true);
         m_skPaint.setLCDRenderText(true);
 
-        STRACE(L"font new: objects = %d", ++s_cFont);
+//         STRACE(L"font new: objects = %d", ++s_cFont);
     }
 
     SFont_Skia::~SFont_Skia()
     {
         if(m_skFont) m_skFont->unref();
-        STRACE(L"font delete: objects = %d", --s_cFont);
+//         STRACE(L"font delete: objects = %d", --s_cFont);
     }
     //////////////////////////////////////////////////////////////////////////
     namespace RENDER_SKIA

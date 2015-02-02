@@ -38,6 +38,7 @@ void SWindowFactoryMgr::AddStandardWindowFactory()
     AddKeyObject(SActiveX::GetClassName(),new TplSWindowFactory<SActiveX>);
     AddKeyObject(SFlashCtrl::GetClassName(),new TplSWindowFactory<SFlashCtrl>);
     AddKeyObject(SMediaPlayer::GetClassName(),new TplSWindowFactory<SMediaPlayer>);
+    AddKeyObject(SSplitPane::GetClassName(),new TplSWindowFactory<SSplitPane>);
     AddKeyObject(SSplitWnd::GetClassName(),new TplSWindowFactory<SSplitWnd>);
     AddKeyObject(SSplitWnd_Col::GetClassName(),new TplSWindowFactory<SSplitWnd_Col>);
     AddKeyObject(SSplitWnd_Row::GetClassName(),new TplSWindowFactory<SSplitWnd_Row>);

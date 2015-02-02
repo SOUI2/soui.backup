@@ -195,10 +195,11 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     CSimpleWnd::GetClientRect(&rcClient);
     OnRelayout(rcClient,rcClient);
 
-    _Redraw();
-
-    RedrawRegion(m_memRT,m_rgnInvalidate);
-
+    //设置重绘标记
+    m_bNeedAllRepaint = TRUE;
+    m_bNeedRepaint = TRUE;
+    m_rgnInvalidate->Clear();
+    
     return TRUE;
 }
 

@@ -542,7 +542,7 @@ bool CSmileyHost::OnHostUpdate(SOUI::EventArgs *pEvt)
 //////////////////////////////////////////////////////////////////////////
 // CRichEditOleCallback
 
-static const UINT KCF_SMILEY = RegisterClipboardFormat(L"richedit_smiley_enable");
+static const UINT KCF_SMILEY = RegisterClipboardFormat(_T("richedit_smiley_enable"));
 
 CRichEditOleCallback::CRichEditOleCallback(SRichEdit * pRichedit)
 :m_pRichedit(pRichedit)

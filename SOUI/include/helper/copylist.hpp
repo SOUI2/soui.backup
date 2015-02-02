@@ -22,4 +22,13 @@ namespace SOUI
         }
     }
 
+    template<class T>
+    int ArrayFind(const SArray<T> & array, const T & obj)
+    {
+        for(int i=0;i<(int)array.GetCount();i++)
+        {
+            if(array[i] == obj) return i;
+        }
+        return -1;
+    }
 }

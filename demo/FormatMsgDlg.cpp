@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "FormatMsgDlg.h"
 
-CFormatMsgDlg::CFormatMsgDlg(void):SHostDialog(L"layout:dlg_formatmsg")
+CFormatMsgDlg::CFormatMsgDlg(void):SHostDialog(_T("layout:dlg_formatmsg"))
 {
 }
 

@@ -47,7 +47,7 @@ namespace SOUI
         SOUI_MSG_MAP_END()
         
     protected:
-        int _InsertFormatText(int iCaret,CHARFORMAT cf,pugi::xml_node xmlText,BOOL bCanUndo);
+        int _InsertFormatText(int iCaret,CHARFORMATW cf,pugi::xml_node xmlText,BOOL bCanUndo);
     };
 
 }

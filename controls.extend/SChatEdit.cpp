@@ -54,7 +54,7 @@ namespace SOUI{
         SSendMessage(EM_SETSEL,nLen,nLen);
         long iCaret = nLen;
 
-        CHARFORMAT cf={0};
+        CHARFORMATW cf={0};
         cf.cbSize = sizeof(cf);
         cf.dwMask = CFM_ALL;
         SSendMessage(EM_GETCHARFORMAT,SCF_SELECTION,(LPARAM)&cf);        
@@ -79,7 +79,7 @@ namespace SOUI{
                 long iCaret = 0;
                 SSendMessage(EM_GETSEL,(WPARAM)&iCaret);
 
-                CHARFORMAT cf={0};
+                CHARFORMATW cf={0};
                 cf.cbSize = sizeof(cf);
                 cf.dwMask = CFM_ALL;
                 SSendMessage(EM_GETCHARFORMAT,SCF_SELECTION,(LPARAM)&cf);        
@@ -94,7 +94,7 @@ namespace SOUI{
         return TRUE;
     }
 
-    int SChatEdit::_InsertFormatText(int iCaret,CHARFORMAT cf,pugi::xml_node xmlText,BOOL bCanUndo)
+    int SChatEdit::_InsertFormatText(int iCaret,CHARFORMATW cf,pugi::xml_node xmlText,BOOL bCanUndo)
     {
         SStringW strText = xmlText.value();
         if(xmlText.name() == KLabelSmiley)
@@ -133,7 +133,7 @@ namespace SOUI{
             return SUCCEEDED(hr)?1:0;
         }
         
-        CHARFORMAT cfNew = cf;
+        CHARFORMATW cfNew = cf;
         cfNew.dwMask = 0;
         if(xmlText.name() == KLabelColor)
         {
@@ -172,12 +172,9 @@ namespace SOUI{
             }
         }
         
+        int nRet = strText.GetLength();
         
-        SStringT strTextT = S_CW2T(strText);
-
-        int nRet = strTextT.GetLength();
-        
-        SSendMessage(EM_REPLACESEL,bCanUndo,(LPARAM)(LPCTSTR)strTextT);
+        SSendMessage(EM_REPLACESEL,bCanUndo,(LPARAM)(LPCWSTR)strText);
         int iEnd = iCaret + nRet;
         SSendMessage(EM_SETSEL,iCaret,iEnd);
         SSendMessage(EM_SETCHARFORMAT,SCF_SELECTION,(LPARAM)&cfNew);
@@ -230,7 +227,7 @@ namespace SOUI{
         TEXTRANGE  txtRng;
         txtRng.chrg.cpMin =0;
         txtRng.chrg.cpMax = SSendMessage(WM_GETTEXTLENGTH);
-        txtRng.lpstrText = strTxt.GetBufferSetLength(txtRng.chrg.cpMax);
+        txtRng.lpstrText = (LPTSTR)strTxt.GetBufferSetLength(txtRng.chrg.cpMax);
         
         SSendMessage(EM_GETTEXTRANGE,0,(LPARAM)&txtRng);
         strTxt.ReleaseBuffer();

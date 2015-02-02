@@ -14,7 +14,7 @@
 #include <new>
 #include <string.h>
 #include <Windows.h>
-#pragma warning(disalbe:4100)
+#pragma warning(disable:4100)
 
 namespace lua_tinker
 {
