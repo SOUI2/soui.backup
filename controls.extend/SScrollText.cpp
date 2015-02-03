@@ -49,24 +49,7 @@ namespace SOUI
     void SScrollText::OnSize(UINT nType, CSize size)
     {
         __super::OnSize(nType,size);
-        
-        CAutoRefPtr<IRenderTarget> pRT;
-        GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
-        BeforePaintEx(pRT);
-        SIZE sz;
-        pRT->MeasureText(m_strText,m_strText.GetLength(),&sz);
-        
-        if(sz.cx - size.cx>0)
-        {
-            if(IsVisible(TRUE)) SetTimer(1,m_nSpeed);
-            m_nScrollWidth = sz.cx;
-        }
-        else
-        {
-            KillTimer(1);
-            m_nOffset = 0;
-            m_nScrollWidth = 0;
-        }
+        UpdateScrollInfo(size);
     }
 
     void SScrollText::OnShowWindow(BOOL bShow, UINT nStatus)
@@ -78,6 +61,33 @@ namespace SOUI
                 SetTimer(1,m_nSpeed);
             else
                 KillTimer(1);
+        }
+    }
+
+    void SScrollText::SetWindowText(const SStringT & strText)
+    {
+        m_strText = strText;
+        UpdateScrollInfo(GetClientRect().Size());//重新计算滚动长度
+    }
+
+    void SScrollText::UpdateScrollInfo(CSize size)
+    {
+        CAutoRefPtr<IRenderTarget> pRT;
+        GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
+        BeforePaintEx(pRT);
+        SIZE sz;
+        pRT->MeasureText(m_strText,m_strText.GetLength(),&sz);
+
+        if(sz.cx - size.cx>0)
+        {
+            if(IsVisible(TRUE)) SetTimer(1,m_nSpeed);
+            m_nScrollWidth = sz.cx;
+        }
+        else
+        {
+            KillTimer(1);
+            m_nOffset = 0;
+            m_nScrollWidth = 0;
         }
     }
 
