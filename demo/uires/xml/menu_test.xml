@@ -11,5 +11,5 @@
     <item id="54" icon="3">关于SOUI</item>
   </item>
   <sep/>
-  <item id="6">退出</item>
+  <item id="6">退出(&X)</item>
 </menu>
