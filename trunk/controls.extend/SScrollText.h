@@ -9,11 +9,14 @@ namespace SOUI
         SScrollText(void);
         ~SScrollText(void);
         
+        void SetWindowText(const SStringT & strText);
     protected:
         void OnTimer(char cTimer);
         void OnPaint(IRenderTarget *pRT);
         void OnSize(UINT nType, CSize size);
         void OnShowWindow(BOOL bShow, UINT nStatus);
+        
+        void UpdateScrollInfo(CSize size);
         
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
