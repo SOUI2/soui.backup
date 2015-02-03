@@ -308,6 +308,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SScrollText.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\gif\SSkinAPNG.cpp"
 				>
 			</File>
@@ -407,6 +411,10 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\sradiobox2.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\SScrollText.h"
 				>
 			</File>
 			<File

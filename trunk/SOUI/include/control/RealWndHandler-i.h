@@ -50,7 +50,7 @@ namespace SOUI
         *
         * Describe  初始化窗口
         */
-        virtual BOOL OnRealWndInit(SRealWnd *pRealWnd)=NULL;
+        virtual BOOL OnRealWndInit(SRealWnd *pRealWnd){return FALSE;}
 
         /**
         * SRealWnd::OnRealWndSize
@@ -60,7 +60,7 @@ namespace SOUI
         *
         * Describe  调整窗口大小
         */
-        virtual BOOL OnRealWndSize(SRealWnd *pRealWnd)=NULL;
+        virtual BOOL OnRealWndSize(SRealWnd *pRealWnd){return FALSE;}
     };
 
 }//namespace SOUI
