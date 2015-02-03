@@ -14,6 +14,7 @@
 #include "../controls.extend/SChromeTabCtrl.h"
 #include "../controls.extend/siectrl.h"
 #include "../controls.extend/schatedit.h"
+#include "../controls.extend/SScrollText.h"
 
 #include "uianimation/UiAnimationWnd.h"
 
@@ -159,6 +160,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         theApp->RegisterWndFactory(TplSWindowFactory<SChromeTabCtrl>());//×¢²áChromeTabCtrl
         theApp->RegisterWndFactory(TplSWindowFactory<SIECtrl>());//×¢²áIECtrl
         theApp->RegisterWndFactory(TplSWindowFactory<SChatEdit>());//×¢²áChatEdit
+        theApp->RegisterWndFactory(TplSWindowFactory<SScrollText>());//×¢²áSScrollText
         
         if(SUCCEEDED(CUiAnimation::Init()))
         {

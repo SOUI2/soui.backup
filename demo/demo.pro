@@ -45,6 +45,7 @@ HEADERS += MainDlg.h \
            ../controls.extend/schatedit.h \
            ../controls.extend/reole/richeditole.h \
            ../controls.extend/reole/dataobject.h \
+           ../controls.extend/sscrolltext.h \
            httpsvr/filereader-i.h \
            httpsvr/genericserver.h \
            httpsvr/httpserver.h \
@@ -74,6 +75,7 @@ SOURCES += demo.cpp \
            ../controls.extend/schatedit.cpp \
            ../controls.extend/reole/richeditole.cpp \
            ../controls.extend/reole/dataobject.cpp \
+           ../controls.extend/sscrolltext.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \
            memflash.cpp	\

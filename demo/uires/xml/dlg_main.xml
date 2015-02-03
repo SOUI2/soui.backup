@@ -35,7 +35,7 @@
         <gifplayer pos="10,150" skin="gif_penguin"/>
         <icon pos="[10,{0" src="LOGO:64"/>
         <gifplayer pos="[10,{0" skin="apng_haha" />
-        <text pos="{0,[10" colorText="#ff0000">Pay attention! apng would be played only if imgdecoder-png is used here!</text>
+        <scrolltext pos="{0,[10,@200,@30" colorText="#ff0000" speed="10">Pay attention! apng would be played only if imgdecoder-png is used here!</scrolltext>
       </page>
       <page title="layout" tip="show layout capability in soui">
         <include src="layout:page_layout"/>
