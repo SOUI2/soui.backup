@@ -54,7 +54,9 @@ struct SMenuItemInfo
 {
     int iIcon;
     SStringT strText;
+    UINT vHotKey;
 };
+
 struct SMenuItemData
 {
     HMENU hMenu;
@@ -72,6 +74,7 @@ public:
     MESSAGE_HANDLER(WM_MEASUREITEM, OnMeasureItem)
     MESSAGE_HANDLER(WM_COMPAREITEM, OnCompareItem)
     MESSAGE_HANDLER(WM_DELETEITEM, OnDeleteItem)
+    MESSAGE_HANDLER(WM_MENUCHAR,OnMenuChar)
     ALT_MSG_MAP(1)
     MESSAGE_HANDLER(OCM_DRAWITEM, OnDrawItem)
     MESSAGE_HANDLER(OCM_MEASUREITEM, OnMeasureItem)
@@ -114,6 +117,20 @@ public:
         return (LRESULT)TRUE;
     }
 
+    LRESULT OnMenuChar(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+    {
+        T* pT = static_cast<T*>(this);
+        pT->SetMsgHandled(TRUE);
+        
+        UINT nChar = LOWORD(wParam);
+        UINT nFlags = HIWORD(wParam);
+        HMENU hMenu =(HMENU)lParam;
+        LRESULT lRes = pT->OnMenuChar(nChar,nFlags,hMenu);
+        
+        bHandled = pT->IsMsgHandled();
+        return lRes;
+    }
+    
     // Overrideables
     void DrawItem(LPDRAWITEMSTRUCT /*lpDrawItemStruct*/)
     {
@@ -168,6 +185,12 @@ protected:
 
     void OnMenuSelect(UINT nItemID, UINT nFlags, HMENU menu);
 
+    LRESULT OnMenuChar(
+        UINT nChar,
+        UINT nFlags,
+        HMENU hMenu 
+        );
+        
     BEGIN_MSG_MAP_EX(SMenuODWnd)
     MSG_WM_INITMENU(OnInitMenu)
     MSG_WM_INITMENUPOPUP(OnInitMenuPopup)
@@ -204,7 +227,8 @@ public:
 protected:
 
     void BuildMenu(HMENU menuPopup,pugi::xml_node xmlNode);
-
+    void InitMenuItemData(SMenuItemInfo & itemInfo, const SStringW & strText);
+    
     SArray<SMenuItemData *> m_arrDmmi;
     SMenuAttr    m_menuAttr;
     SMenu    *    m_pParent;

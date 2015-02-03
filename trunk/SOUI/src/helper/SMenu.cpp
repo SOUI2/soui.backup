@@ -174,6 +174,25 @@ void SMenuODWnd::OnMenuSelect( UINT nItemID, UINT nFlags, HMENU menu )
     ::SendMessage(m_hMenuOwner,WM_MENUSELECT,MAKEWPARAM(nItemID,nFlags),(LPARAM)menu);
 }
 
+LRESULT SMenuODWnd::OnMenuChar(UINT nChar, UINT nFlags, HMENU hMenu)
+{
+    wchar_t cChar = tolower(nChar);
+    
+    int nMenuItems = ::GetMenuItemCount(hMenu);
+    for(int i=0;i<nMenuItems;i++)
+    {
+        MENUITEMINFO mi={sizeof(mi),0};
+        mi.fMask = MIIM_DATA;
+        ::GetMenuItemInfo(hMenu,i,TRUE,&mi);
+        SMenuItemData * pItemData =(SMenuItemData*)mi.dwItemData;
+        if(pItemData && pItemData->itemInfo.vHotKey == nChar)
+        {
+            return MAKELONG(i,MNC_EXECUTE);
+        }
+    }
+    return MAKELONG(0,MNC_IGNORE);
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 SMenu::SMenu():m_pParent(NULL),m_hMenu(0)
@@ -229,6 +248,21 @@ SMenu SMenu::GetSubMenu(int nPos)
     return ret;
 }
 
+void SMenu::InitMenuItemData(SMenuItemInfo & itemInfo, const SStringW & strTextW)
+{
+    itemInfo.strText=S_CW2T(TR(strTextW,m_menuAttr.m_strTrCtx));
+
+    //²éÕÒ¿ì½Ý¼ü
+    int iHotKey = strTextW.Find(L"&");
+    if(iHotKey != -1 && iHotKey < strTextW.GetLength()-1)
+    {
+        itemInfo.vHotKey = tolower(strTextW[iHotKey+1]);
+    }else
+    {
+        itemInfo.vHotKey = 0;
+    }
+}
+
 BOOL SMenu::InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTSTR strText, int iIcon)
 {
     nFlags|=MF_OWNERDRAW;
@@ -240,8 +274,7 @@ BOOL SMenu::InsertMenu(UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem,LPCTSTR 
     SMenuItemData *pMenuData=new SMenuItemData;
     pMenuData->hMenu=m_hMenu;
     pMenuData->itemInfo.iIcon=iIcon;
-    pMenuData->itemInfo.strText=strText;
-    pMenuData->itemInfo.strText=S_CW2T(TR(S_CT2W(strText),m_menuAttr.m_strTrCtx));
+    InitMenuItemData(pMenuData->itemInfo,S_CT2W(strText));
 
     if(nFlags&MF_POPUP)
     {
@@ -311,7 +344,7 @@ void SMenu::BuildMenu( HMENU menuPopup,pugi::xml_node xmlNode )
             pdmmi->itemInfo.iIcon=xmlItem.attribute(L"icon").as_int(-1);
             SStringW strText = xmlItem.text().get();
             strText.TrimBlank();
-            pdmmi->itemInfo.strText=S_CW2T(TR(strText,m_menuAttr.m_strTrCtx));
+            InitMenuItemData(pdmmi->itemInfo,strText);
 
             int nID=xmlItem.attribute(L"id").as_int(0);
             BOOL bCheck=xmlItem.attribute(L"check").as_bool(false);
