@@ -3,96 +3,144 @@
 
 namespace SOUI
 {
-    class STabSlider : public SWindow
+    class STabSlider : public SWindow , public ITimelineHandler
     {
         SOUI_CLASS_NAME(STabSlider, L"tabslider")
 
     public:
-        STabSlider( STabCtrl *pTabCtrl =NULL)
+        STabSlider( STabCtrl *pTabCtrl,int iFrom, int iTo,int nSteps):m_nSteps(nSteps),m_iStep(0)
         {
-            if(pTabCtrl)
+            SASSERT(pTabCtrl);
+            m_style.m_bBkgndBlend = false;//don't blend with backgrand.
+            
+            CRect rcPage=pTabCtrl->GetChildrenLayoutRect();
+            pTabCtrl->InsertChild(this);
+            Move(rcPage);
+            
+            m_bVertical = pTabCtrl->m_nTabAlign == STabCtrl::AlignLeft || pTabCtrl->m_nTabAlign ==STabCtrl::AlignRight;
+            if( m_bVertical )
             {
-                CRect rcPage=pTabCtrl->GetChildrenLayoutRect();
-                pTabCtrl->InsertChild(this);
-                Move(rcPage);
-                SetVisible(FALSE);
+                GETRENDERFACTORY->CreateRenderTarget(&m_memRT,rcPage.Width(),rcPage.Height()*2);
+            }else
+            {
                 GETRENDERFACTORY->CreateRenderTarget(&m_memRT,rcPage.Width()*2,rcPage.Height());
             }
+            
+            CPoint pt;
+
+            if(m_bVertical)
+            {
+                if(iFrom<iTo)
+                {// move up 
+                    pt.x = pt.y =0;
+                    m_nStepLen = rcPage.Height()/nSteps;
+                }else
+                {// move down
+                    pt.x = 0, pt.y = rcPage.Height();
+                    m_ptOffset.y = rcPage.Height();
+                    m_nStepLen = -rcPage.Height()/nSteps;
+                }
+            }else
+            {
+                if(iFrom<iTo)
+                {// move left
+                    pt.x = pt.y =0;
+                    m_nStepLen = rcPage.Width()/nSteps;
+                }else
+                {
+                    pt.x = rcPage.Width(),pt.y =0;
+                    m_ptOffset.x = rcPage.Width();
+                    m_nStepLen = -rcPage.Width()/nSteps;
+                }
+            }
+            pt -= rcPage.TopLeft();
+            m_memRT->SetViewportOrg(pt);
+            PaintBackground(m_memRT,&rcPage);
+                        
+            pTabCtrl->GetItem(iFrom)->SetVisible(FALSE);
+            
+            if(m_bVertical)
+            {
+                if(iFrom<iTo)
+                {// move up 
+                    pt.x = 0, pt.y = rcPage.Height();
+                }else
+                {// move down
+                    pt.x = pt.y =0;
+                }
+            }else
+            {
+                if(iFrom<iTo)
+                {// move left
+                    pt.x = rcPage.Width(),pt.y =0;
+                }else
+                {
+                    pt.x = pt.y =0;
+                }
+            }
+
+            pt -= rcPage.TopLeft();
+            m_memRT->SetViewportOrg(pt);
+            pTabCtrl->GetItem(iTo)->SetVisible(TRUE);
+            PaintBackground(m_memRT,&rcPage);
+            
+            m_memRT->SetViewportOrg(CPoint());
+                        
+            GetContainer()->RegisterTimelineHandler(this);
+            SetVisible(TRUE,TRUE);
         }
 
         virtual ~STabSlider()
         {
-            if(GetParent())
+        }
+        
+        void OnNextFrame()
+        {
+            if(++m_iStep > m_nSteps)
             {
-                GetParent()->RemoveChild(this);
+                GetParent()->DestroyChild(this);
+            }else
+            {
+                if(m_bVertical)
+                    m_ptOffset.y += m_nStepLen;
+                else
+                    m_ptOffset.x += m_nStepLen;
+                InvalidateRect(NULL);
             }
         }
-
-        void Slide(SLIDEDIR sd,int nSteps=20)
-        {
-            CRect rcPage=m_rcWindow;
-
-            SetVisible(TRUE);
-
-            BringWindowToTop();
-            for(int i=0; i<nSteps; i++)
-            {
-                CAutoRefPtr<IRenderTarget> pRTPage=GetRenderTarget(NULL,OLEDC_OFFSCREEN);
-                switch(sd)
-                {
-                case SD_LEFTRIGHT:
-                    BitBlt(pRTPage,rcPage.left,rcPage.top,rcPage.Width()*(i+1)/nSteps,rcPage.Height(),m_memRT,rcPage.Width()+rcPage.Width()*(nSteps-i-1)/nSteps,0,SRCCOPY);
-                    BitBlt(pRTPage,rcPage.left+rcPage.Width()*(i+1)/nSteps,rcPage.top,rcPage.Width()*(nSteps-i-1)/nSteps,rcPage.Height(),m_memRT,0,0,SRCCOPY);
-                    break;
-                case SD_RIGHTLEFT:
-                    BitBlt(pRTPage,rcPage.left,rcPage.top,rcPage.Width(),rcPage.Height(),m_memRT,rcPage.Width()*(i+1)/nSteps,0,SRCCOPY);
-                    break;
-                case SD_TOPBOTTOM:
-                    BitBlt(pRTPage,rcPage.left,rcPage.top+rcPage.Height()*(nSteps-i-1)/nSteps,rcPage.Width(),rcPage.Height()*(i+1)/nSteps,
-                        m_memRT,rcPage.Width(),0,SRCCOPY);//new
-                    BitBlt(pRTPage,rcPage.left,rcPage.top,rcPage.Width(),rcPage.Height()*(nSteps-i-1)/nSteps,
-                        m_memRT,0,rcPage.Height()*(i+1)/nSteps,SRCCOPY);//old
-                    break;
-                case SD_BOTTOMTOP:
-                    BitBlt(pRTPage,rcPage.left,rcPage.top,rcPage.Width(),rcPage.Height()*(i+1)/nSteps,
-                        m_memRT,rcPage.Width(),rcPage.Height()*(nSteps-i-1)/nSteps,SRCCOPY);//new
-                    BitBlt(pRTPage,rcPage.left,rcPage.top+rcPage.Height()*(i+1)/nSteps,rcPage.Width(),rcPage.Height()*(nSteps-i-1)/nSteps,
-                        m_memRT,0,0,SRCCOPY);//old
-                    break;
-                }
-                PaintForeground(pRTPage,&rcPage);
-                ReleaseRenderTarget(pRTPage);
-                Sleep(10);
-            }
-
-            SetVisible(FALSE);
-        }
-
-        void InitPage(BOOL bPage1)
-        {
-            CRect rcPage;
-            GetWindowRect(&rcPage);
-            CAutoRefPtr<IRenderTarget> pRTPage=GetRenderTarget(&rcPage,OLEDC_NODRAW);
-            PaintBackground(pRTPage,&rcPage);
-            BitBlt(m_memRT,bPage1?0:rcPage.Width(),0,rcPage.Width(),rcPage.Height(),pRTPage,rcPage.left,rcPage.top,SRCCOPY);
-            ReleaseRenderTarget(pRTPage);
-        }
+        
     protected:
 
         void OnPaint(IRenderTarget *pRT)
         {
+            CRect rcWnd = GetWindowRect();
+            pRT->BitBlt(rcWnd,m_memRT,m_ptOffset.x,m_ptOffset.y,SRCCOPY);
         }
         
-        void BitBlt(IRenderTarget *pRTDest,int xDest,int yDest,int nWid,int nHei,IRenderTarget *pRTSrc,int xSrc,int ySrc,DWORD rop)
+        void OnSize(UINT fType,CSize sz)
         {
-            CRect rcDest(xDest,yDest,xDest+nWid,yDest+nHei);
-            pRTDest->BitBlt(&rcDest,pRTSrc,xSrc,ySrc,rop);
+            SWindow::OnSize(fType,sz);
+            if(!m_memRT) return;
+            //resize slidewnd as animitor running, just stop the animator
+            GetParent()->DestroyChild(this);
         }
-        
+                
+        void OnDestroy()
+        {
+            GetContainer()->UnregisterTimelineHandler(this);
+            SWindow::OnDestroy();
+        }
+            
         CAutoRefPtr<IRenderTarget> m_memRT;
-        
+        CPoint                     m_ptOffset;
+        int                        m_nStepLen;
+        int                        m_nSteps;
+        int                        m_iStep;
+        bool                       m_bVertical;
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
+            MSG_WM_SIZE(OnSize)
+            MSG_WM_DESTROY(OnDestroy)
         SOUI_MSG_MAP_END()
     };
 
@@ -303,14 +351,33 @@ SWindow * STabCtrl::GetPage( int iPage )
     return m_lstPages[iPage];
 }
 
-SWindow * STabCtrl::GetPage( LPCTSTR pszTitle )
+
+int STabCtrl::GetPageIndex(LPCTSTR pszName,BOOL bTitle)
 {
-    for(UINT i=0;i<m_lstPages.GetCount();i++)
+    if(bTitle)
     {
-        if(_tcscmp(m_lstPages[i]->GetTitle(),pszTitle)==0)
-            return GetPage(i);
+        for(UINT i=0;i<m_lstPages.GetCount();i++)
+        {
+            if(_tcscmp(m_lstPages[i]->GetTitle(),pszName)==0)
+                return i;
+        }
+    }else
+    {
+        SStringW strName = S_CT2W(pszName);
+        for(UINT i=0;i<m_lstPages.GetCount();i++)
+        {
+            if(m_lstPages[i]->GetName()==strName)
+                return i;
+        }
     }
-    return NULL;
+    return -1;
+}
+
+SWindow * STabCtrl::GetPage( LPCTSTR pszName,BOOL bTitle/*=TRUE*/ )
+{
+    int iPage = GetPageIndex(pszName,bTitle);
+    if(iPage == -1) return NULL;
+    return m_lstPages[iPage];
 }
 
 BOOL STabCtrl::SetCurSel( int nIndex )
@@ -338,66 +405,35 @@ BOOL STabCtrl::SetCurSel( int nIndex )
 
     STabSlider *pTabSlider=NULL;
 
-    if(m_nAnimateSteps && IsVisible(TRUE) && nOldPage!=-1)
+    if(m_nAnimateSteps && IsVisible(TRUE) && nOldPage!=-1 && nIndex !=-1)
     {
-        pTabSlider=new STabSlider(this);
-        pTabSlider->InitPage(TRUE);
-    }
-
-    if(nOldPage!=-1)
+        pTabSlider=new STabSlider(this,nOldPage,nIndex,m_nAnimateSteps);
+    }else
     {
-        pTab = GetItem(nOldPage);
-        if( pTab) pTab->SSendMessage(WM_SHOWWINDOW,FALSE);
+        if(nOldPage!=-1)
+        {
+            GetItem(nOldPage)->SetVisible(FALSE,TRUE);
+        }
+        if(nIndex!=-1)
+        {
+            GetItem(nIndex)->SetVisible(TRUE,TRUE);
+        }
     }
-
     m_nCurrentPage = nIndex;
-    if(nIndex!=-1)
-    {
-        pTab = GetItem(m_nCurrentPage);
-        if( pTab) pTab->SSendMessage(WM_SHOWWINDOW,TRUE);
-    }
-    
+        
     EventTabSelChanged evt2(this);
     evt2.uNewSel=nIndex;
     evt2.uOldSel=nOldPage;
 
-    if(pTabSlider)
-    {
-        SLIDEDIR sd=SD_RIGHTLEFT;
-        if(m_nTabAlign==AlignTop || m_nTabAlign == AlignBottom)
-        {
-            if(nOldPage<nIndex) sd=SD_RIGHTLEFT;
-            else sd=SD_LEFTRIGHT;
-        }
-        else
-        {
-            if(nOldPage<nIndex) sd=SD_BOTTOMTOP;
-            else sd=SD_TOPBOTTOM;
-        }
-        pTabSlider->InitPage(FALSE);
-
-        pTabSlider->Slide(sd,m_nAnimateSteps);
-
-        delete pTabSlider;
-    }
     FireEvent(evt2);
-    
-    if(IsVisible(TRUE))
-    {
-        Invalidate();
-    }
-
     return TRUE;
 }
 
-BOOL STabCtrl::SetCurSel( LPCTSTR pszTitle )
+BOOL STabCtrl::SetCurSel( LPCTSTR pszName,BOOL bTitle/*=TRUE */)
 {
-    for(UINT i=0;i<m_lstPages.GetCount();i++)
-    {
-        if(_tcscmp(m_lstPages[i]->GetTitle(),pszTitle)==0)
-            return SetCurSel(i);
-    }
-    return FALSE;
+    int iPage = GetPageIndex(pszName,bTitle);
+    if(iPage == -1) return FALSE;
+    return SetCurSel(iPage);
 }
 
 BOOL STabCtrl::SetItemTitle( int nIndex, LPCTSTR lpszTitle )

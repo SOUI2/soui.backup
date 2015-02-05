@@ -740,7 +740,7 @@ namespace SOUI
             CAutoRefPtr<IFont> curFont;
             HRESULT hr = pRTBack->SelectDefaultObject(OT_FONT,(IRenderObj**)&curFont);
             COLORREF crTxt = pRTBack->GetTextColor();
-            if(SUCCEEDED(hr)) pRT->SelectObject(curFont);
+            if(S_OK == hr) pRT->SelectObject(curFont);
             pRT->SetTextColor(crTxt);
 
             if(pRgn && !pRgn->IsEmpty()) pRT->PushClipRegion(pRgn,RGN_COPY);
@@ -814,7 +814,7 @@ namespace SOUI
             HRESULT hr = pRT->SelectDefaultObject(OT_FONT,(IRenderObj**)&curFont);
 
             pRT = pRTBack;
-            if(SUCCEEDED(hr)) pRT->SelectObject(curFont);
+            if(S_OK == hr) pRT->SelectObject(curFont);
         }
 
     }
