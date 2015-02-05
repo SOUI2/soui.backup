@@ -11,7 +11,7 @@ namespace SOUI
         STabSlider( STabCtrl *pTabCtrl,int iFrom, int iTo,int nSteps):m_nSteps(nSteps),m_iStep(0)
         {
             SASSERT(pTabCtrl);
-            m_style.m_bBkgndBlend = false;//don't blend with backgrand.
+//             m_style.m_bBkgndBlend = false;//don't blend with backgrand.目前这个属性还有点问题，暂时关闭该功能。
             
             CRect rcPage=pTabCtrl->GetChildrenLayoutRect();
             pTabCtrl->InsertChild(this);
@@ -81,17 +81,20 @@ namespace SOUI
 
             pt -= rcPage.TopLeft();
             m_memRT->SetViewportOrg(pt);
-            pTabCtrl->GetItem(iTo)->SetVisible(TRUE);
+            m_pWndTo = pTabCtrl->GetItem(iTo);
+            m_pWndTo->SetVisible(TRUE);
             PaintBackground(m_memRT,&rcPage);
             
             m_memRT->SetViewportOrg(CPoint());
                         
             GetContainer()->RegisterTimelineHandler(this);
+            m_pWndTo->SetVisible(FALSE);
             SetVisible(TRUE,TRUE);
         }
 
         virtual ~STabSlider()
         {
+            m_pWndTo->SetVisible(TRUE,TRUE);//动画结束时才显示待显示page
         }
         
         void OnNextFrame()
@@ -137,6 +140,7 @@ namespace SOUI
         int                        m_nSteps;
         int                        m_iStep;
         bool                       m_bVertical;
+        SWindow *                  m_pWndTo;
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
             MSG_WM_SIZE(OnSize)
