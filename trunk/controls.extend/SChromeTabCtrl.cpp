@@ -19,6 +19,7 @@ namespace SOUI
         SChromeTab(SChromeTabCtrl* pHost);
 
         void MoveTo(const CRect & rcEnd);
+        BOOL IsDragable() { return m_iOrder!=-1;}
         
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"allowClose",m_bAllowClose,FALSE)
@@ -40,12 +41,12 @@ namespace SOUI
         CRect m_rcBegin, m_rcEnd;
         BOOL    m_bAllowClose;
         CPoint  m_ptDrag;
-		int     m_nOrder;
+		int     m_iOrder;
 		bool    m_bDrag;
 		SChromeTabCtrl* m_pHost;
     };
-
-    SChromeTab::SChromeTab(SChromeTabCtrl* pHost):m_bAllowClose(TRUE),m_pHost(pHost),m_nOrder(-1)
+    
+    SChromeTab::SChromeTab(SChromeTabCtrl* pHost):m_bAllowClose(TRUE),m_pHost(pHost),m_iOrder(-1)
     {
         m_bClipClient = TRUE;
     }
@@ -70,7 +71,7 @@ namespace SOUI
 
 	void SChromeTab::OnMouseMove(UINT nFlags,CPoint pt)
 	{
-        if(nFlags & MK_LBUTTON)
+        if(nFlags & MK_LBUTTON && IsDragable())
 		{
 			CRect rcWnd = GetWindowRect();
 			if(m_pHost->m_tabAlign == SChromeTabCtrl::TDIR_HORZ)
@@ -83,21 +84,17 @@ namespace SOUI
 			m_bDrag = true;
 		}
 	}
+	
 	void SChromeTab::OnLButtonUp(UINT nFlags,CPoint pt)
 	{
-        ReleaseCapture();
-        ModifyState(0, WndState_PushDown,TRUE);
-		if(!m_bDrag)
-		    FireCommand();
-		else
-            m_pHost->UpdateChildrenPosition();		    
+        SWindow::OnLButtonUp(nFlags,pt);
+        if(m_bDrag)  m_pHost->UpdateChildrenPosition();		    
 	}
 	
 	void SChromeTab::OnLButtonDown(UINT nFlags,CPoint pt)
 	{
+	    SWindow::OnLButtonDown(nFlags,pt);
         BringWindowToTop();
-        SetCapture();
-        ModifyState(WndState_PushDown, 0,TRUE);
 	    m_ptDrag = pt;
 	    m_bDrag  = false;
 	}
@@ -118,7 +115,7 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     // SChromeTabCtrl
-    SChromeTabCtrl::SChromeTabCtrl(void):m_iCurSel(-1),m_tabAlign(TDIR_HORZ),m_nDesiredSize(200)
+    SChromeTabCtrl::SChromeTabCtrl(void):m_pSelTab(NULL),m_tabAlign(TDIR_HORZ),m_nDesiredSize(200)
     {
         m_evtSet.addEvent(EVT_CHROMETAB_CLOSE);
         m_evtSet.addEvent(EVT_CHROMETAB_NEW);
@@ -142,7 +139,7 @@ namespace SOUI
 			  if(rcWnd.left <= ptCur.x && rcWnd.right >= ptCur.x)
 			  {
 				  rcWnd.left -= rcWnd.Width();
-				  if(pCurMove->m_nOrder > m_lstTab[i]->m_nOrder)
+				  if(pCurMove->m_iOrder > m_lstTab[i]->m_iOrder)
 				  {
                       rcWnd.OffsetRect(rcWnd.Width(),0); 
 				  }
@@ -150,13 +147,13 @@ namespace SOUI
 				  {
                       rcWnd.OffsetRect(-rcWnd.Width(),0); 
 				  }
-				  int order = pCurMove->m_nOrder ;
-				  pCurMove->m_nOrder = m_lstTab[i]->m_nOrder;
-				  m_lstTab[i]->m_nOrder = order;
+				  int order = pCurMove->m_iOrder ;
+				  pCurMove->m_iOrder = m_lstTab[i]->m_iOrder;
+				  m_lstTab[i]->m_iOrder = order;
                   m_lstTab[i]->Move(rcWnd);
 				  SChromeTab* pTemp = m_lstTab[i];
-				  m_lstTab[pCurMove->m_nOrder] = pCurMove;
-				  m_lstTab[pTemp->m_nOrder] = pTemp;
+				  m_lstTab[pCurMove->m_iOrder] = pCurMove;
+				  m_lstTab[pTemp->m_iOrder] = pTemp;
 			  }
 		}
         return 1;
@@ -165,14 +162,14 @@ namespace SOUI
     BOOL SChromeTabCtrl::CreateChildren( pugi::xml_node xmlNode )
     {
         pugi::xml_node xmlTabs = xmlNode.child(L"tabs");//所有tab都必须在tabs标签内
-        int i =0;
+
         for (pugi::xml_node xmlChild=xmlTabs.first_child(); xmlChild; xmlChild=xmlChild.next_sibling())
         {
             if(wcscmp(xmlChild.name() , SChromeTab::GetClassName())!=0) 
                 continue;
             SChromeTab * pTab = new SChromeTab(this);
-			pTab->m_nOrder = i++;
             SASSERT(pTab);
+            pTab->m_iOrder = m_lstTab.GetCount();
             m_lstTab.Add(pTab);
             InsertChild(pTab);
             pTab->InitFromXml(xmlChild);
@@ -272,41 +269,57 @@ namespace SOUI
         return true;
     }
 
+    BOOL SChromeTabCtrl::RemoveTab(int idx)
+    {
+        if(idx>=m_lstTab.GetCount()) return FALSE;
+        
+        SChromeTab *pTab = NULL;
+        for(int i=0;i<m_lstTab.GetCount();i++)
+        {
+            if(m_lstTab[i]->m_iOrder == idx)
+            {
+                pTab = m_lstTab[i];
+                break;
+            }
+        }
+        
+        SASSERT(pTab);
+        
+        if(pTab == m_pSelTab)
+            m_pSelTab = NULL;
+
+        m_lstTab.RemoveAt(idx);
+        DestroyChild(pTab);
+        UpdateChildrenPosition();
+
+        //update tab order
+        for(int i=0 ; i < (int)m_lstTab.GetCount(); i++)
+        {
+            if(m_lstTab[i]->m_iOrder > idx) 
+                m_lstTab[i]->m_iOrder--;
+        }
+        return TRUE;
+    }
+    
     bool SChromeTabCtrl::OnBtnCloseTabClick( EventArgs *pEvt )
     {
         SChromeTab *pTab = (SChromeTab*)pEvt->sender->GetParent();
-        int idx = GetTabIndex(pTab);
-        if(idx != -1)
-        {
-            EventChromeTabClose evt(this);
-            evt.pCloseTab = pTab;
-            evt.iCloseTab = idx;
-            FireEvent(evt);
 
-            m_lstTab.RemoveAt(idx);
-            DestroyChild(pTab);
-            UpdateChildrenPosition();
+        EventChromeTabClose evt(this);
+        evt.pCloseTab = pTab;
+        evt.iCloseTab = pTab->m_iOrder;
+        FireEvent(evt);
 
-            if(idx==m_iCurSel)
-            {
-                m_iCurSel--;
-				m_iCurSel = max(0,m_iCurSel);
-				
-            }else if(idx<m_iCurSel)
-            {
-                m_iCurSel--;
-            }
-        }
+        RemoveTab(pTab->m_iOrder);
+        
         return true;
     }
 
     bool SChromeTabCtrl::OnTabClick( EventArgs *pEvt )
     {
         SChromeTab *pTab = (SChromeTab*)pEvt->sender;
-        int idx = GetTabIndex(pTab);
-        SASSERT(idx!=-1);
         
-        SetCurSel(idx);
+        SetCurSel(pTab->m_iOrder);
 
         return true;
     }
@@ -330,8 +343,16 @@ namespace SOUI
         
 
         if(iPos<0) iPos = m_lstTab.GetCount();
-        pNewTab->m_nOrder = iPos;
+        pNewTab->m_iOrder = iPos;
+        
+        for(int i=0;i<m_lstTab.GetCount();i++)
+        {
+            if(m_lstTab[i]->m_iOrder>=iPos)
+                m_lstTab[i]->m_iOrder++;
+        }
+
         m_lstTab.InsertAt(iPos,pNewTab);
+        
         CRect rcClient;
         GetClientRect(&rcClient);
         CRect rcLeft;
@@ -369,17 +390,6 @@ namespace SOUI
         return TRUE;
     }
 
-    int SChromeTabCtrl::GetTabIndex( const SChromeTab* pTab ) const
-    {
-        for(UINT i=0;i<m_lstTab.GetCount();i++)
-        {
-            if(pTab == m_lstTab[i])
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
 
     void SChromeTabCtrl::OnNextFrame()
     {
@@ -406,21 +416,23 @@ namespace SOUI
 
     void SChromeTabCtrl::SetCurSel(int iTab,bool bSendNotify)
     {
-        if(iTab != m_iCurSel)
+        if(iTab >= (int)m_lstTab.GetCount()) return;
+        int iCurSel = m_pSelTab? m_pSelTab->m_iOrder: -1;
+        if(iTab != iCurSel)
         {
-            int oldSel = m_iCurSel;
-            if(m_iCurSel!=-1)
+            int oldSel = iCurSel;
+            if(m_pSelTab)
             {
-                m_lstTab[m_iCurSel]->ModifyState(0,WndState_Check,TRUE);
+                m_pSelTab->ModifyState(0,WndState_Check,TRUE);
+                m_pSelTab = NULL;
             }
             
             if(iTab != -1)
             {
-                m_lstTab[iTab]->ModifyState(WndState_Check,0,TRUE);
+                m_pSelTab = m_lstTab[iTab];
+                m_pSelTab->ModifyState(WndState_Check,0,TRUE);
             }
-            m_iCurSel = iTab;
-            
-            
+                        
             if(bSendNotify)
             {
                 EventChromeTabSelChanged evt(this);
@@ -431,5 +443,11 @@ namespace SOUI
             }
         }
     }
+
+    int SChromeTabCtrl::GetCurSel() const
+    {
+        return m_pSelTab?m_pSelTab->m_iOrder:-1;
+    }
+
 
 }

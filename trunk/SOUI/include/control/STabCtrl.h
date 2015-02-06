@@ -124,7 +124,7 @@ namespace SOUI
         int m_nTabAlign;   /**< 排列方式 */
 
         SArray<STabPage*> m_lstPages;  /**< tab标签页面链表 */
-
+        STabSlider *      m_tabSlider;
         enum
         {
             AlignTop,
@@ -348,7 +348,8 @@ namespace SOUI
         int HitTest(CPoint pt);
         
         int GetPageIndex(LPCTSTR pszName,BOOL bTitle);
-
+        
+        void OnSliderFinish();
     protected:
         /**
         * STabCtrl::OnPaint
