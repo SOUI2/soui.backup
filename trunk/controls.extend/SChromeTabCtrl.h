@@ -76,9 +76,11 @@ namespace SOUI
         {
             return m_iCurSel;
         }
+		int ChangeTabPos(SChromeTab* pCurMove,CPoint ptCur);
+		 virtual void UpdateChildrenPosition();
     protected:
         virtual BOOL CreateChildren(pugi::xml_node xmlNode);
-        virtual void UpdateChildrenPosition();
+       /* virtual void UpdateChildrenPosition();*/
         
         virtual void OnNextFrame();
 
