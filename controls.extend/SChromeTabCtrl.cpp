@@ -314,7 +314,6 @@ namespace SOUI
     BOOL SChromeTabCtrl::InsertTab( LPCTSTR pszTitle,int iPos )
     {
         SChromeTab *pNewTab = new SChromeTab(this);
-		pNewTab->m_nOrder = iPos;
         SASSERT(pNewTab);
         
         InsertChild(pNewTab);
@@ -331,6 +330,7 @@ namespace SOUI
         
 
         if(iPos<0) iPos = m_lstTab.GetCount();
+        pNewTab->m_nOrder = iPos;
         m_lstTab.InsertAt(iPos,pNewTab);
         CRect rcClient;
         GetClientRect(&rcClient);
