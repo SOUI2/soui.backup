@@ -8,7 +8,7 @@ namespace SOUI
         SOUI_CLASS_NAME(STabSlider, L"tabslider")
 
     public:
-        STabSlider( STabCtrl *pTabCtrl,int iFrom, int iTo,int nSteps):m_nSteps(nSteps),m_iStep(0)
+        STabSlider( STabCtrl *pTabCtrl,int iFrom, int iTo,int nSteps):m_pTabCtrl(pTabCtrl),m_nSteps(nSteps),m_iStep(0)
         {
             SASSERT(pTabCtrl);
 //             m_style.m_bBkgndBlend = false;//don't blend with backgrand.目前这个属性还有点问题，暂时关闭该功能。
@@ -81,27 +81,26 @@ namespace SOUI
 
             pt -= rcPage.TopLeft();
             m_memRT->SetViewportOrg(pt);
-            m_pWndTo = pTabCtrl->GetItem(iTo);
-            m_pWndTo->SetVisible(TRUE);
+            
+            pTabCtrl->GetItem(iTo)->SetVisible(TRUE);
             PaintBackground(m_memRT,&rcPage);
             
             m_memRT->SetViewportOrg(CPoint());
                         
             GetContainer()->RegisterTimelineHandler(this);
-            m_pWndTo->SetVisible(FALSE);
+            pTabCtrl->GetItem(iTo)->SetVisible(FALSE);
             SetVisible(TRUE,TRUE);
         }
 
         virtual ~STabSlider()
         {
-            m_pWndTo->SetVisible(TRUE,TRUE);//动画结束时才显示待显示page
         }
         
         void OnNextFrame()
         {
             if(++m_iStep > m_nSteps)
             {
-                GetParent()->DestroyChild(this);
+                Stop();
             }else
             {
                 if(m_bVertical)
@@ -112,6 +111,10 @@ namespace SOUI
             }
         }
         
+        void Stop()
+        {
+            m_pTabCtrl->OnSliderFinish();
+        }
     protected:
 
         void OnPaint(IRenderTarget *pRT)
@@ -125,7 +128,7 @@ namespace SOUI
             SWindow::OnSize(fType,sz);
             if(!m_memRT) return;
             //resize slidewnd as animitor running, just stop the animator
-            GetParent()->DestroyChild(this);
+            Stop();
         }
                 
         void OnDestroy()
@@ -140,7 +143,7 @@ namespace SOUI
         int                        m_nSteps;
         int                        m_iStep;
         bool                       m_bVertical;
-        SWindow *                  m_pWndTo;
+        STabCtrl *                 m_pTabCtrl;
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
             MSG_WM_SIZE(OnSize)
@@ -163,6 +166,7 @@ STabCtrl::STabCtrl() : m_nCurrentPage(0)
     , m_nTabAlign(AlignTop)
     , m_nAnimateSteps(0)
     , m_ptText(-1,-1)
+    , m_tabSlider(NULL)
 {
     m_szTab.cx = m_szTab.cy = -1;
     m_bFocusable=TRUE;
@@ -384,6 +388,16 @@ SWindow * STabCtrl::GetPage( LPCTSTR pszName,BOOL bTitle/*=TRUE*/ )
     return m_lstPages[iPage];
 }
 
+void STabCtrl::OnSliderFinish()
+{
+    SASSERT(m_tabSlider);
+    DestroyChild(m_tabSlider);
+    m_tabSlider = NULL;
+    STabPage * pPage = m_lstPages[m_nCurrentPage];
+    SASSERT(pPage);
+    pPage->SetVisible(TRUE,TRUE);
+}
+
 BOOL STabCtrl::SetCurSel( int nIndex )
 {
     if( nIndex < 0 || nIndex> (int)GetItemCount()-1 || (m_nCurrentPage == nIndex)) return FALSE;
@@ -406,12 +420,14 @@ BOOL STabCtrl::SetCurSel( int nIndex )
     InvalidateRect(rcItem);
     GetItemRect(nIndex, rcItem);
     InvalidateRect(rcItem);
-
-    STabSlider *pTabSlider=NULL;
-
+    
+    if(m_tabSlider)
+    {
+        m_tabSlider->Stop();
+    }
     if(m_nAnimateSteps && IsVisible(TRUE) && nOldPage!=-1 && nIndex !=-1)
     {
-        pTabSlider=new STabSlider(this,nOldPage,nIndex,m_nAnimateSteps);
+        m_tabSlider = new STabSlider(this,nOldPage,nIndex,m_nAnimateSteps);
     }else
     {
         if(nOldPage!=-1)

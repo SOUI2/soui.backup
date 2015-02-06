@@ -55,10 +55,10 @@ namespace SOUI
         int         iNewSel;
     };
 
-    class SChromeTab;
     class SChromeTabCtrl : public SWindow, public ITimelineHandler
     {
         SOUI_CLASS_NAME(SChromeTabCtrl,L"chromeTabCtrl")
+        friend class SChromeTab;
     public:
         enum TABDIR{
             TDIR_HORZ,
@@ -70,17 +70,16 @@ namespace SOUI
         
         BOOL InsertTab(LPCTSTR pszTitle,int iPos = -1);
         
+        BOOL RemoveTab(int iTab);
+        
         void SetCurSel(int iTab,bool bSendNotify = true);
         
-        int GetCurSel() const
-        {
-            return m_iCurSel;
-        }
-		int ChangeTabPos(SChromeTab* pCurMove,CPoint ptCur);
-		 virtual void UpdateChildrenPosition();
+        int GetCurSel() const;
     protected:
+        int ChangeTabPos(SChromeTab* pCurMove,CPoint ptCur);
+
         virtual BOOL CreateChildren(pugi::xml_node xmlNode);
-       /* virtual void UpdateChildrenPosition();*/
+        virtual void UpdateChildrenPosition();
         
         virtual void OnNextFrame();
 
@@ -88,8 +87,6 @@ namespace SOUI
         bool OnBtnCloseTabClick(EventArgs *pEvt);
         bool OnTabClick(EventArgs *pEvt);
     
-        int GetTabIndex(const SChromeTab* pTab)const;
-
         int OnCreate(LPVOID);
         void OnDestroy();
 
@@ -111,10 +108,9 @@ namespace SOUI
         SArray<SChromeTab*> m_lstTab;
 
         SChromeTab *        m_pBtnNew;
-
+        SChromeTab *        m_pSelTab;
+        
         pugi::xml_document  m_xmlStyle;
-
-        int                 m_iCurSel;
     };
 
 }
