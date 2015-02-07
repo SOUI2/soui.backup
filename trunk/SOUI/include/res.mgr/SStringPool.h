@@ -14,12 +14,26 @@
 namespace SOUI
 {
 
-class SOUI_EXP SStringPool :public SSingletonMap<SStringPool,SStringT,SStringT>
-{
-public:
-    BOOL BuildString(SStringT &strContainer);
-    BOOL Init(pugi::xml_node xmlNode);
-    SStringT Get(const SStringT & strName);
-};
+    class SOUI_EXP SStringPool :public SSingletonMap<SStringPool,SStringT,SStringT>
+    {
+    public:
+        BOOL BuildString(SStringT &strContainer);
+        BOOL Init(pugi::xml_node xmlNode);
+        SStringT Get(const SStringT & strName);
+    };
 
+    class SOUI_EXP SNamedID : public  SSingleton<SNamedID>
+    {
+        struct NAMEDID
+        {
+            SStringW strName;
+            int      nID;
+        };
+    public:
+        BOOL Init(pugi::xml_node xmlNode);
+        int  String2ID(const SStringW &strName);
+    protected:
+        static int funCompare(const void * p1,const void * p2);
+        SArray<NAMEDID> m_lstNamedID;
+    };
 }//namespace SOUI

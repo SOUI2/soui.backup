@@ -38,6 +38,7 @@
 #define LOADICON(p1,p2)     SApplication::getSingleton().LoadIcon(p1,p2,p2)
 #define LOADICON2(p1)       SApplication::getSingleton().LoadIcon2(p1)
 #define TR(p1,p2)           SApplication::getSingleton().GetTranslator()->tr(p1,p2)
+#define STR2ID(p1)          SNamedID::getSingleton().String2ID(p1)
 
 #define RT_UIDEF _T("UIDEF")
 #define RT_LAYOUT _T("LAYOUT")

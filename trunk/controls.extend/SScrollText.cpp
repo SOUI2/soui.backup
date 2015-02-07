@@ -38,14 +38,6 @@ namespace SOUI
         AfterPaint(pRT,painter);
     }
 
-    void SScrollText::OnTimer(char cTimer)
-    {
-        m_nOffset ++;
-        if(m_nOffset>m_nScrollWidth)
-            m_nOffset = 0;
-        Invalidate();
-    }
-
     void SScrollText::OnSize(UINT nType, CSize size)
     {
         __super::OnSize(nType,size);
@@ -58,9 +50,14 @@ namespace SOUI
         if(m_nScrollWidth>0)
         {
             if(bShow)
-                SetTimer(1,m_nSpeed);
+            {
+                GetContainer()->RegisterTimelineHandler(this);
+                m_nNextInterval = m_nSpeed;
+            }
             else
-                KillTimer(1);
+            {
+                GetContainer()->UnregisterTimelineHandler(this);
+            }
         }
     }
 
@@ -91,4 +88,22 @@ namespace SOUI
         }
     }
 
+    void SScrollText::OnNextFrame()
+    {
+        m_nNextInterval -= 10;
+        if(m_nNextInterval < 0)
+        {
+            m_nNextInterval = m_nSpeed;
+            m_nOffset ++;
+            if(m_nOffset>m_nScrollWidth)
+                m_nOffset = 0;
+            Invalidate();
+        }
+    }
+
+    void SScrollText::OnDestroy()
+    {
+        GetContainer()->UnregisterTimelineHandler(this);
+        SStatic::OnDestroy();
+    }
 }

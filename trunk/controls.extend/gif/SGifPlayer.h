@@ -13,7 +13,7 @@ namespace SOUI
     * 
     * Describe
     */
-    class SGifPlayer : public SWindow
+    class SGifPlayer : public SWindow , public ITimelineHandler
     {
         SOUI_CLASS_NAME(SGifPlayer, L"gifplayer")   //定义GIF控件在XM加的标签
     public:
@@ -40,6 +40,8 @@ namespace SOUI
 
     protected://SWindow的虚函数
         virtual CSize GetDesiredSize(LPCRECT pRcContainer);
+    protected://ITimerLineHander
+        virtual void OnNextFrame();
 
     public://属性处理
         SOUI_ATTRS_BEGIN()		
@@ -62,17 +64,6 @@ namespace SOUI
         void OnPaint(IRenderTarget *pRT);
 
         /**
-         * OnTimer
-         * @brief    SOUI窗口的定时器处理函数
-         * @param    char cTimerID --  定时器ID，范围从0-127。
-         * @return   void
-         * Describe  SOUI控件的定时器是Host窗口定时器ID的分解，以方便所有的控件都通过Host获得定时器的分发。
-         *           注意使用MSG_WM_TIMER_EX来映射该消息。定时器使用SWindow::SetTimer及SWindow::KillTimer来创建及释放。
-         *           如果该定时器ID范围不能满足要求，可以使用SWindow::SetTimer2来创建。
-         */    
-        void OnTimer(char cTimerID);
-
-        /**
          * OnShowWindow
          * @brief    处理窗口显示消息
          * @param    BOOL bShow --  true:显示
@@ -81,17 +72,20 @@ namespace SOUI
          * Describe  参考MSDN的WM_SHOWWINDOW消息
          */    
         void OnShowWindow(BOOL bShow, UINT nStatus);
+    
+        void OnDestroy();
 
         //SOUI控件消息映射表
         SOUI_MSG_MAP_BEGIN()	
-            MSG_WM_TIMER_EX(OnTimer)    //定时器消息
             MSG_WM_PAINT_EX(OnPaint)    //窗口绘制消息
             MSG_WM_SHOWWINDOW(OnShowWindow)//窗口显示状态消息
+            MSG_WM_DESTROY(OnDestroy)
         SOUI_MSG_MAP_END()	
 
     private:
         SSkinAni *m_aniSkin;
         int	m_iCurFrame;
+        int     m_nNextInterval;
     };
 
 }

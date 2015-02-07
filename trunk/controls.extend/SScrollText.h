@@ -2,7 +2,7 @@
 
 namespace SOUI
 {
-    class SScrollText : public SStatic
+    class SScrollText : public SStatic , public ITimelineHandler
     {
         SOUI_CLASS_NAME(SScrollText,L"scrolltext")
     public:
@@ -11,17 +11,19 @@ namespace SOUI
         
         void SetWindowText(const SStringT & strText);
     protected:
-        void OnTimer(char cTimer);
+        virtual void OnNextFrame();
+    protected:
         void OnPaint(IRenderTarget *pRT);
         void OnSize(UINT nType, CSize size);
         void OnShowWindow(BOOL bShow, UINT nStatus);
-        
+        void OnDestroy();
+
         void UpdateScrollInfo(CSize size);
         
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
-            MSG_WM_TIMER_EX(OnTimer)
             MSG_WM_SIZE(OnSize)
+            MSG_WM_DESTROY(OnDestroy)
             MSG_WM_SHOWWINDOW(OnShowWindow)
         SOUI_MSG_MAP_END()
         
@@ -32,6 +34,7 @@ namespace SOUI
         int m_nSpeed;
         int m_nOffset;
         int m_nScrollWidth;
+        int m_nNextInterval;
     };
 
 }

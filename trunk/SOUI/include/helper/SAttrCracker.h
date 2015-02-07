@@ -337,5 +337,4 @@ public:                                                             \
     }                                                              \
     else                                                           \
 
-
 #endif//_SATTRCRACK_H

@@ -30,12 +30,12 @@
         <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://127.0.0.1:82/flash/apple.swf" delay="1"/>
       </page>
       <page title="animate" tip="play gif and apng">
-        <gifplayer pos="10,10" skin="gif_horse" name="giftest" cursor="ANI_ARROW"/>
+        <gifplayer pos="10,10" skin="gif_horse" name="giftest" cursor="ANI_ARROW" show="1"/>
         <button width="250" height="30" name="btnSelectGif">load gif file</button>
-        <gifplayer pos="10,150" skin="gif_penguin"/>
+        <gifplayer pos="10,150" skin="gif_penguin" show="1"/>
         <icon pos="[10,{0" src="LOGO:64"/>
         <gifplayer pos="[10,{0" skin="apng_haha" />
-        <scrolltext pos="{0,[10,@200,@30" colorText="#ff0000" speed="10">Pay attention! apng would be played only if imgdecoder-png is used here!</scrolltext>
+        <scrolltext show="1" pos="{0,[10,@200,@30" colorText="#ff0000" speed="10">Pay attention! apng would be played only if imgdecoder-png is used here!</scrolltext>
       </page>
       <page title="layout" tip="show layout capability in soui">
         <include src="layout:page_layout"/>
