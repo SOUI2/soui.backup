@@ -40,6 +40,7 @@ SHostWnd::SHostWnd( LPCTSTR pszResName /*= NULL*/ )
 , m_pTipCtrl(NULL)
 , m_dummyWnd(this)
 , m_bRending(FALSE)
+, m_uMouseFlag(0)
 {
     m_privateStylePool.Attach(new SStylePool);
     m_privateSkinPool.Attach(new SSkinPool);
@@ -352,7 +353,6 @@ void SHostWnd::OnMouseMove(UINT nFlags, CPoint point)
         tme.dwHoverTime = 0;
         m_bTrackFlag = TrackMouseEvent(&tme);
     }
-
     OnMouseEvent(WM_MOUSEMOVE,nFlags,MAKELPARAM(point.x,point.y));
 }
 
@@ -448,6 +448,9 @@ void SHostWnd::DrawCaret(CPoint pt)
 
 LRESULT SHostWnd::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+    m_uMouseFlag = wParam;
+    m_ptMouseMove = CPoint(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam));
+
     DoFrameEvent(uMsg,wParam,lParam);    //将鼠标消息转发到SWindow处理
 
     if(m_pTipCtrl)
@@ -1171,6 +1174,20 @@ void SHostWnd::AfterPaint(IRenderTarget *pRT, SPainter &painter)
     pRT->SelectDefaultObject(OT_FONT);
 }
 
+void SHostWnd::OnCaptureChanged( HWND wnd )
+{
+    if(wnd != m_hWnd)
+    {//如果当前响应了鼠标按下消息，在lost capture时也应该响应弹起消息
+        if(m_uMouseFlag & MK_LBUTTON)
+        {
+            SendMessage(WM_LBUTTONUP,0,MAKELPARAM(m_ptMouseMove.x,m_ptMouseMove.y));
+        }
+        if(m_uMouseFlag & MK_RBUTTON)
+        {
+            SendMessage(WM_RBUTTONUP,0,MAKELPARAM(m_ptMouseMove.x,m_ptMouseMove.y));
+        }
+    }
+}
 #endif//DISABLE_SWNDSPY
 
 }//namespace SOUI

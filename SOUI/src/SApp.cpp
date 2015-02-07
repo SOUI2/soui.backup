@@ -88,6 +88,7 @@ void SApplication::_CreateSingletons()
     new STimer2();
     new SFontPool(m_RenderFactory);
     new SStringPool();
+    new SNamedID();
     new SSkinPoolMgr();
     new SStylePoolMgr();
     new SObjDefAttr();
@@ -98,6 +99,7 @@ void SApplication::_DestroySingletons()
     delete SObjDefAttr::getSingletonPtr();
     delete SStylePoolMgr::getSingletonPtr();
     delete SSkinPoolMgr::getSingletonPtr();
+    delete SNamedID::getSingletonPtr();
     delete SStringPool::getSingletonPtr();
     delete SFontPool::getSingletonPtr();
     delete STimer2::getSingletonPtr();
@@ -142,6 +144,8 @@ BOOL SApplication::Init( LPCTSTR pszName ,LPCTSTR pszType)
     }
     
     SStringPool::getSingleton().Init(root.child(L"string"));
+    SNamedID::getSingleton().Init(root.child(L"id"));
+
     SSkinPool *pSkinPool = new SSkinPool;
     pSkinPool->LoadSkins(root.child(L"skin"));
     SSkinPoolMgr::getSingletonPtr()->PushSkinPool(pSkinPool);

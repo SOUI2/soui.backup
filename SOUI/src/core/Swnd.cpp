@@ -2053,6 +2053,51 @@ namespace SOUI
         return bLoading?S_FALSE:S_OK;
     }
 
+    HRESULT SWindow::OnAttrID( const SStringW& strValue, BOOL bLoading )
+    {
+        if(!strValue.IsEmpty())
+        {
+            if(strValue[0]==L'#')//#123
+            {
+                m_nID = STR2ID(strValue.Right(strValue.GetLength()-1));
+            }else if(strValue.Left(2) == L"ID")
+            {
+                if(strValue == L"IDOK")
+                {
+                    m_nID = IDOK;
+                }else if(strValue == L"IDCANCEL")
+                {
+                    m_nID = IDCANCEL;
+                }else if(strValue == L"IDCLOSE")
+                {
+                    m_nID = IDCLOSE;
+                }else if(strValue == L"IDHELP")
+                {
+                    m_nID = IDHELP;
+                }else if(strValue == L"IDCLOSE")
+                {
+                    m_nID = IDCLOSE;
+                }else if(strValue == L"IDYES")
+                {
+                    m_nID = IDYES;
+                }else if(strValue == L"IDNO")
+                {
+                    m_nID = IDNO;
+                }else if(strValue == L"IDRETRY")
+                {
+                    m_nID = IDRETRY;
+                }else if(strValue == L"IDIGNORE")
+                {
+                    m_nID = IDIGNORE;
+                }
+            }else
+            {
+                m_nID = _wtoi(strValue);
+            }
+        }
+        return S_FALSE;
+    }
+
     SWindow * SWindow::GetSelectedChildInGroup()
     {
         SWindow *pChild = GetWindow(GSW_FIRSTCHILD);

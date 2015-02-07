@@ -114,6 +114,37 @@ class SOUI_EXP SHostWnd
     , public SWindow
 {
     friend class SDummyWnd;
+protected:    
+    SDummyWnd            m_dummyWnd;            /**<半透明窗口使用的一个响应WM_PAINT消息的窗口*/
+    SHostWndAttr         m_hostAttr;            /**<host属性，对应XML中的SOUI结点 */
+    SStringT             m_strXmlLayout;        /**<布局资源名称,如xml:main_wnd */
+
+    BOOL                 m_bTrackFlag;          /**< 跟踪鼠标标志 */
+
+    BOOL                    m_bCaretShowing;    /**<当前有插入符正在显示*/
+    CAutoRefPtr<IBitmap>    m_bmpCaret;         /**<半透明窗口中的模拟插入符*/
+    SIZE                    m_szCaret;          /**<插入符大小*/
+    BOOL                    m_bCaretActive;     /**<模拟插入符正在显示标志*/
+    CPoint                  m_ptCaret;          /**<插入符位置*/
+    CRect                   m_rcValidateCaret;  /**<可以显示插入符的位置*/
+
+    BOOL                    m_bNeedRepaint;     /**<缓存脏标志*/
+    BOOL                    m_bNeedAllRepaint;  /**<缓存全部更新标志*/
+
+    IToolTip *              m_pTipCtrl;         /**<tip接口*/
+
+    CAutoRefPtr<IRegion>    m_rgnInvalidate;    /**<脏区域*/
+    CAutoRefPtr<IRenderTarget> m_memRT;         /**<绘制缓存*/
+
+    CAutoRefPtr<SStylePool> m_privateStylePool; /**<局部style pool*/
+    CAutoRefPtr<SSkinPool>  m_privateSkinPool;  /**<局部skin pool*/
+
+    SList<SWND>             m_lstUpdateSwnd;    /**<等待刷新的非背景混合窗口列表*/
+    SList<RECT>             m_lstUpdatedRect;   /**<更新的脏矩形列表*/
+    BOOL                    m_bRending;         /**<正在渲染过程中*/
+    
+    CPoint                  m_ptMouseMove;      /**<上一次mousemove坐标*/      
+    UINT                    m_uMouseFlag;       /**<鼠标按钮状态*/   
 public:
     SHostWnd(LPCTSTR pszResName = NULL);
     virtual ~SHostWnd();
@@ -128,42 +159,11 @@ public:
     BOOL InitFromXml(pugi::xml_node xmlNode);
     
     BOOL AnimateHostWindow(DWORD dwTime,DWORD dwFlags);
-protected:
+
+protected://辅助函数
     void _Redraw();
     void _UpdateNonBkgndBlendSwnd();
     
-    virtual void BeforePaint(IRenderTarget *pRT, SPainter &painter);
-    virtual void AfterPaint(IRenderTarget *pRT, SPainter &painter);
-    
-    SDummyWnd            m_dummyWnd;    //半透明窗口使用的一个响应WM_PAINT消息的窗口
-    SHostWndAttr         m_hostAttr;
-    SStringT m_strXmlLayout;
-
-    // Tracking flag
-    BOOL m_bTrackFlag;
-
-
-    BOOL m_bCaretShowing;    //当前有插入符正在显示
-    CAutoRefPtr<IBitmap>    m_bmpCaret; //半透明窗口中的模拟插入符
-    SIZE                    m_szCaret;  //插入符大小
-    BOOL m_bCaretActive;    //模拟插入符正在显示标志
-    CPoint m_ptCaret;        //插入符位置
-    CRect    m_rcValidateCaret;//可以显示插入符的位置
-
-    BOOL m_bNeedRepaint;
-    BOOL m_bNeedAllRepaint;
-
-    IToolTip * m_pTipCtrl;
-
-    CAutoRefPtr<IRegion>    m_rgnInvalidate;
-    CAutoRefPtr<IRenderTarget> m_memRT;
-    
-    CAutoRefPtr<SStylePool>  m_privateStylePool;
-    CAutoRefPtr<SSkinPool>  m_privateSkinPool;
-
-    SList<SWND>             m_lstUpdateSwnd;    /**<等待刷新的非背景混合窗口列表*/
-    SList<RECT>             m_lstUpdatedRect;   /**<更新的脏矩形列表*/
-    BOOL                    m_bRending;         /**<正在渲染过程中*/
 protected:
     //////////////////////////////////////////////////////////////////////////
     // Message handler
@@ -204,9 +204,41 @@ protected:
     BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 
     void OnActivate(UINT nState, BOOL bMinimized, HWND wndOther);
+ 
+    LRESULT OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam);
 
-    //////////////////////////////////////////////////////////////////////////
-    // IContainer
+    void OnGetMinMaxInfo(LPMINMAXINFO lpMMI);
+
+    BOOL OnNcActivate(BOOL bActive);
+    
+    UINT OnWndNcHitTest(CPoint point);
+
+    void OnSetFocus(HWND wndOld);
+    void OnKillFocus(HWND wndFocus);
+
+    void OnSetCaretValidateRect( LPCRECT lpRect );
+        
+    void UpdateHost(HDC dc,const CRect &rc);
+    void UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha, LPCRECT prcDirty=NULL);
+
+    LRESULT OnUpdateSwnd(UINT uMsg,WPARAM,LPARAM);
+    
+    void OnCaptureChanged(HWND wnd);
+
+#ifndef DISABLE_SWNDSPY
+protected:
+    LRESULT OnSpyMsgSetSpy(UINT uMsg,WPARAM wParam,LPARAM lParam);
+
+    LRESULT OnSpyMsgSwndEnum(UINT uMsg,WPARAM wParam,LPARAM lParam);
+
+    LRESULT OnSpyMsgSwndSpy(UINT uMsg,WPARAM wParam,LPARAM lParam);
+    
+    LRESULT OnSpyMsgHitTest(UINT uMsg,WPARAM wParam,LPARAM lParam);
+
+    HWND    m_hSpyWnd;
+#endif
+
+protected:// IContainer
 
     virtual BOOL OnFireEvent(EventArgs &evt);
 
@@ -239,43 +271,14 @@ protected:
     virtual BOOL RegisterTimelineHandler(ITimelineHandler *pHandler);
 
     virtual BOOL UnregisterTimelineHandler(ITimelineHandler *pHandler);
-    
+
     virtual SMessageLoop * GetMsgLoop();
 
-    //////////////////////////////////////////////////////////////////////////
- 
-    LRESULT OnNcCalcSize(BOOL bCalcValidRects, LPARAM lParam);
+protected://Swindow 虚方法
+    virtual void BeforePaint(IRenderTarget *pRT, SPainter &painter);
+    virtual void AfterPaint(IRenderTarget *pRT, SPainter &painter);
 
-    void OnGetMinMaxInfo(LPMINMAXINFO lpMMI);
-
-    BOOL OnNcActivate(BOOL bActive);
-    
-    UINT OnWndNcHitTest(CPoint point);
-
-    void OnSetFocus(HWND wndOld);
-    void OnKillFocus(HWND wndFocus);
-
-    void OnSetCaretValidateRect( LPCRECT lpRect );
-        
-    void UpdateHost(HDC dc,const CRect &rc);
-    void UpdateLayerFromRenderTarget(IRenderTarget *pRT,BYTE byAlpha, LPCRECT prcDirty=NULL);
-
-    LRESULT OnUpdateSwnd(UINT uMsg,WPARAM,LPARAM);
-    
-#ifndef DISABLE_SWNDSPY
-protected:
-    LRESULT OnSpyMsgSetSpy(UINT uMsg,WPARAM wParam,LPARAM lParam);
-
-    LRESULT OnSpyMsgSwndEnum(UINT uMsg,WPARAM wParam,LPARAM lParam);
-
-    LRESULT OnSpyMsgSwndSpy(UINT uMsg,WPARAM wParam,LPARAM lParam);
-    
-    LRESULT OnSpyMsgHitTest(UINT uMsg,WPARAM wParam,LPARAM lParam);
-
-    HWND    m_hSpyWnd;
-#endif
-
-protected:
+protected://事件处理接口
     virtual BOOL _HandleEvent(EventArgs *pEvt){return FALSE;}
 
     BEGIN_MSG_MAP_EX(SHostWnd)
@@ -304,13 +307,13 @@ protected:
         MSG_WM_NCCALCSIZE(OnNcCalcSize)
         MSG_WM_NCHITTEST(OnWndNcHitTest)
         MSG_WM_GETMINMAXINFO(OnGetMinMaxInfo)
+        MSG_WM_CAPTURECHANGED(OnCaptureChanged)
         MESSAGE_HANDLER_EX(UM_UPDATESWND,OnUpdateSwnd)
     #ifndef DISABLE_SWNDSPY
         MESSAGE_HANDLER_EX(SPYMSG_SETSPY, OnSpyMsgSetSpy)
         MESSAGE_HANDLER_EX(SPYMSG_SWNDENUM, OnSpyMsgSwndEnum)
         MESSAGE_HANDLER_EX(SPYMSG_SWNDINFO, OnSpyMsgSwndSpy)
         MESSAGE_HANDLER_EX(SPYMSG_HITTEST, OnSpyMsgHitTest)
-        
     #endif
         REFLECT_NOTIFY_CODE(NM_CUSTOMDRAW)
     END_MSG_MAP()

@@ -7,7 +7,6 @@
 
 #include "souistd.h"
 #include "res.mgr/Sstringpool.h"
-#include "helper/mybuffer.h"
 
 namespace SOUI
 {
@@ -45,7 +44,7 @@ BOOL SStringPool::BuildString(SStringT &strContainer)
 BOOL SStringPool::Init( pugi::xml_node xmlNode )
 {
     if(!xmlNode) return FALSE;
-    if (wcscmp(xmlNode.name(), L"string") != 0)
+    if (wcsicmp(xmlNode.name(), L"string") != 0)
     {
         SASSERT(FALSE);
         return FALSE;
@@ -69,6 +68,46 @@ SStringT SStringPool::Get(const SStringT & strName)
         BuildString(strRet);
     }
     return strRet;
+}
+
+//////////////////////////////////////////////////////////////////////////
+template<> SNamedID * SSingleton<SNamedID>::ms_Singleton =0;
+
+// SNamedID
+int SNamedID::funCompare(const  void * p1, const void * p2 )
+{
+    const NAMEDID * namedid1 = (const NAMEDID*)p1;
+    const NAMEDID * namedid2 = (const NAMEDID*)p2;
+    return namedid2->strName.Compare(namedid1->strName);
+}
+
+BOOL SNamedID::Init( pugi::xml_node xmlNode )
+{
+    if(!xmlNode) return FALSE;
+    if (wcsicmp(xmlNode.name(), L"id") != 0)
+    {
+        SASSERT(FALSE);
+        return FALSE;
+    }
+
+    for (pugi::xml_node xmlStr=xmlNode.first_child(); xmlStr; xmlStr=xmlStr.next_sibling())
+    {
+        NAMEDID namedID;
+        namedID.strName=S_CW2T(xmlStr.name());
+        namedID.nID=xmlStr.attribute(L"value").as_int(0);
+        m_lstNamedID.Add(namedID);
+    }
+    qsort(m_lstNamedID.GetData(),m_lstNamedID.GetCount(),sizeof(NAMEDID),funCompare);
+    return TRUE;
+}
+
+
+int SNamedID::String2ID( const SStringW &strName )
+{
+    NAMEDID target = {strName,0};
+    NAMEDID *pFind = (NAMEDID *)bsearch(&target,m_lstNamedID.GetData(),m_lstNamedID.GetCount(),sizeof(NAMEDID),funCompare);
+    if(!pFind) return 0;
+    return pFind->nID;
 }
 
 }//namespace SOUI

@@ -6,7 +6,7 @@
 namespace SOUI
 {
 
-SGifPlayer::SGifPlayer() :m_aniSkin(NULL), m_iCurFrame(0)
+SGifPlayer::SGifPlayer() :m_aniSkin(NULL), m_iCurFrame(0),m_nNextInterval(0)
 {
 
 }
@@ -15,24 +15,6 @@ SGifPlayer::~SGifPlayer()
 {
 }
 
-void SGifPlayer::OnTimer(char cTimerID)
-{	
-    UNREFERENCED_PARAMETER(cTimerID);
-	KillTimer(1);	
-
-	if(m_aniSkin)
-	{
-		int nStates=m_aniSkin->GetStates();
-		m_iCurFrame++;
-		m_iCurFrame%=nStates;
-		Invalidate();
-        
-        if(m_aniSkin->GetFrameDelay()==0)
-            SetTimer(1,90);
-        else
-            SetTimer(1, m_aniSkin->GetFrameDelay()*10);	
-	}
-}
 
 void SGifPlayer::OnPaint( IRenderTarget *pRT )
 {	
@@ -48,14 +30,32 @@ void SGifPlayer::OnShowWindow( BOOL bShow, UINT nStatus )
 	__super::OnShowWindow(bShow,nStatus);
 	if(!bShow)
 	{
-		KillTimer(1);
-	}else if(m_aniSkin)
+        GetContainer()->UnregisterTimelineHandler(this);
+	}else if(m_aniSkin && m_aniSkin->GetStates()>1)
 	{
+        GetContainer()->RegisterTimelineHandler(this);
         if(m_aniSkin->GetFrameDelay()==0)
-            SetTimer(1,90);
+            m_nNextInterval = 90;
         else
-		    SetTimer(1, m_aniSkin->GetFrameDelay()*10);					
+            m_nNextInterval = m_aniSkin->GetFrameDelay()*10;
 	}
+}
+
+void SGifPlayer::OnNextFrame()
+{
+    m_nNextInterval -= 10;
+    if(m_nNextInterval <= 0 && m_aniSkin)
+    {
+        int nStates=m_aniSkin->GetStates();
+        m_iCurFrame++;
+        m_iCurFrame%=nStates;
+        Invalidate();
+
+        if(m_aniSkin->GetFrameDelay()==0)
+            m_nNextInterval = 90;
+        else
+            m_nNextInterval =m_aniSkin->GetFrameDelay()*10;	
+    }
 }
 
 HRESULT SGifPlayer::OnAttrSkin( const SStringW & strValue, BOOL bLoading )
@@ -64,6 +64,14 @@ HRESULT SGifPlayer::OnAttrSkin( const SStringW & strValue, BOOL bLoading )
 	if(!pSkin) return E_FAIL;
 	if(!pSkin->IsClass(SSkinAni::GetClassName())) return S_FALSE;
 	m_aniSkin=static_cast<SSkinAni*>(pSkin);
+    if(!bLoading)
+    {
+        m_iCurFrame = 0;
+        if(m_aniSkin->GetFrameDelay()==0)
+            m_nNextInterval = 90;
+        else
+            m_nNextInterval =m_aniSkin->GetFrameDelay()*10;	
+    }
 	return bLoading?S_OK:S_FALSE;
 }
 
@@ -113,4 +121,9 @@ BOOL SGifPlayer::_PlayFile( LPCTSTR pszFileName, BOOL bGif )
     return TRUE;
 }
 
+void SGifPlayer::OnDestroy()
+{
+    GetContainer()->UnregisterTimelineHandler(this);
+    __super::OnDestroy();
+}
 }

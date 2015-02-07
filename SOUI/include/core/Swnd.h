@@ -1040,9 +1040,10 @@ namespace SOUI
         HRESULT OnAttrClass(const SStringW& strValue, BOOL bLoading);
         HRESULT OnAttrTrackMouseEvent(const SStringW& strValue, BOOL bLoading);
         HRESULT OnAttrLayeredWindow(const SStringW& strValue, BOOL bLoading);
+        HRESULT OnAttrID(const SStringW& strValue, BOOL bLoading);
 
         SOUI_ATTRS_BEGIN()
-            ATTR_INT(L"id",m_nID,FALSE)
+            ATTR_CUSTOM(L"id",OnAttrID)
             ATTR_STRINGW(L"name",m_strName,FALSE)
             ATTR_CUSTOM(L"skin", OnAttrSkin)        //直接获得皮肤对象
             ATTR_SKIN(L"ncskin", m_pNcSkin, TRUE)   //直接获得皮肤对象

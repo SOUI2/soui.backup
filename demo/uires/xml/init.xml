@@ -6,6 +6,12 @@
     <ver value="1.5"/>
   </string>
   
+  <id>
+    <id_test1 value="100"/>
+    <id_test2 value="101"/>
+    <id_test3 value="102"/>
+  </id>
+  
   <skin>
     <!--全局skin对象-->
     <imglist name="skin_page_icons"	src="imgx:png_page_icons" states="9" alpha="100"/>
