@@ -161,6 +161,12 @@ namespace SOUI
 
     BOOL SChromeTabCtrl::CreateChildren( pugi::xml_node xmlNode )
     {
+        pugi::xml_node xmlTabStyle = xmlNode.child(KXmlTabStyle);
+        if(xmlTabStyle)
+        {
+            m_xmlStyle.append_copy(xmlTabStyle);
+        }
+
         pugi::xml_node xmlTabs = xmlNode.child(L"tabs");//所有tab都必须在tabs标签内
 
         for (pugi::xml_node xmlChild=xmlTabs.first_child(); xmlChild; xmlChild=xmlChild.next_sibling())
@@ -172,16 +178,12 @@ namespace SOUI
             pTab->m_iOrder = m_lstTab.GetCount();
             m_lstTab.Add(pTab);
             InsertChild(pTab);
+            if(xmlTabStyle)
+                pTab->InitFromXml(xmlTabStyle);
             pTab->InitFromXml(xmlChild);
             pTab->GetEventSet()->subscribeEvent(EventCmd::EventID,Subscriber(&SChromeTabCtrl::OnTabClick,this));
         }
         
-        pugi::xml_node xmlTabStyle = xmlNode.child(KXmlTabStyle);
-        if(xmlTabStyle)
-        {
-            m_xmlStyle.append_copy(xmlTabStyle);
-        }
-
         pugi::xml_node xmlNewBtn = xmlNode.child(KXmlNewBtnStyle);
         if(xmlNewBtn)
         {
