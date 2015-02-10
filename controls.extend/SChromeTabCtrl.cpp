@@ -19,7 +19,7 @@ namespace SOUI
         SChromeTab(SChromeTabCtrl* pHost);
 
         void MoveTo(const CRect & rcEnd);
-        BOOL IsDragable() { return m_iOrder!=-1;}
+        BOOL IsDragable() { return m_iOrder!=-1 && m_pHost->m_bEnableDrag;}
         
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"allowClose",m_bAllowClose,FALSE)
@@ -71,7 +71,7 @@ namespace SOUI
 
 	void SChromeTab::OnMouseMove(UINT nFlags,CPoint pt)
 	{
-        if(nFlags & MK_LBUTTON && IsDragable())
+        if((nFlags & MK_LBUTTON) && IsDragable())
 		{
 			CRect rcWnd = GetWindowRect();
 			if(m_pHost->m_tabAlign == SChromeTabCtrl::TDIR_HORZ)
@@ -115,7 +115,11 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     // SChromeTabCtrl
-    SChromeTabCtrl::SChromeTabCtrl(void):m_pSelTab(NULL),m_tabAlign(TDIR_HORZ),m_nDesiredSize(200)
+    SChromeTabCtrl::SChromeTabCtrl(void)
+    :m_pSelTab(NULL)
+    ,m_tabAlign(TDIR_HORZ)
+    ,m_nDesiredSize(200)
+    ,m_bEnableDrag(TRUE)
     {
         m_evtSet.addEvent(EVT_CHROMETAB_CLOSE);
         m_evtSet.addEvent(EVT_CHROMETAB_NEW);

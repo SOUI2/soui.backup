@@ -97,6 +97,7 @@ namespace SOUI
 
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"tabDesiredSize",m_nDesiredSize,FALSE)
+            ATTR_INT(L"enableDrag",m_bEnableDrag,FALSE)
             ATTR_ENUM_BEGIN(L"tabAlign",TABDIR,FALSE)
                 ATTR_ENUM_VALUE(L"vertical",TDIR_VERT)
                 ATTR_ENUM_VALUE(L"horizontal",TDIR_HORZ)
@@ -105,6 +106,8 @@ namespace SOUI
 
         int     m_nDesiredSize;
         TABDIR  m_tabAlign;
+        BOOL    m_bEnableDrag;
+        
         SArray<SChromeTab*> m_lstTab;
 
         SChromeTab *        m_pBtnNew;
