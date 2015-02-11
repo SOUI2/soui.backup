@@ -24,7 +24,7 @@ namespace SOUI
      * 
      * Describe    此类是日历的核心类 大部分函数都是静态函数
      */
-    class CCalendarCore
+    class SOUI_EXP CCalendarCore
     {
     public:
         /**
@@ -222,7 +222,7 @@ namespace SOUI
      * 
      * Describe    此类是日历的核心类 大部分函数都是静态函数
      */
-    class SCalendar : public SWindow
+    class SOUI_EXP SCalendar : public SWindow
     {
     public:
         SOUI_CLASS_NAME(SCalendar, L"calendar")

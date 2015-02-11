@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="demo"
 	ProjectGUID="{307EFC7E-DD20-3E9D-8097-54A9D5C4E35D}"
+	RootNamespace="demo"
 	Keyword="Qt4VSv1.0"
 	TargetFrameworkVersion="0"
 	>
@@ -252,6 +253,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SCalendar2.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\SChatEdit.cpp"
 				>
 			</File>
@@ -375,6 +380,10 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\gif\SAniImgFrame.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\SCalendar2.h"
 				>
 			</File>
 			<File
