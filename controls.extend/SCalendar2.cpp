@@ -465,8 +465,8 @@ namespace SOUI{
 			wmemset(buffer,0,sizeof(buffer)/sizeof(wchar_t));		 
 			CSize strSize;
 			pRT->MeasureText(wt,wcslen(wt),&strSize);
-			UINT btn_width=3*nWid;
-			UINT btn_left=2*nWid;
+			UINT btn_width=(3*nWid<strSize.cx)?strSize.cx:3*nWid;
+			UINT btn_left=(3*nWid<strSize.cx)?((rect.Width()-strSize.cx)/2):2*nWid;			
 			UINT btn_top=((m_nHeaderHei-strSize.cy)>=0)?(m_nHeaderHei-strSize.cy)/2:0;
 			UINT btn_height=((m_nHeaderHei-strSize.cy)>=0)?strSize.cy:m_nHeaderHei;
 			wsprintf(buffer
