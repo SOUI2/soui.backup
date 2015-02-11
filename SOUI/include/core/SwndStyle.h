@@ -42,7 +42,7 @@ public:
 
     int m_nMarginX;                 /**<X方向的边框大小 */
     int m_nMarginY;                 /**<Y方向的边框大小 */
-
+    CRect    m_rcInset;
     SStringT m_strCursor;           /**<光标NAME */
     SStringW m_strSkinName;         /**<SKIN NAME */
     SStringW m_strNcSkinName;       /**<非客户区SKIN NAME */
@@ -96,6 +96,7 @@ protected:
         ATTR_INT(L"margin-x", m_nMarginX, TRUE)
         ATTR_INT(L"margin-y", m_nMarginY, TRUE)
         ATTR_INT(L"margin", m_nMarginX = m_nMarginY, TRUE) // 这样比较bt，不过.....凑合用吧
+        ATTR_RECT(L"inset",m_rcInset,TRUE)
         ATTR_STRINGT(L"cursor",m_strCursor,FALSE)
         ATTR_INT(L"dotted",m_bDotted,FALSE)
         ATTR_INT(L"trackMouseEvent",m_bTrackMouseEvent,FALSE)
