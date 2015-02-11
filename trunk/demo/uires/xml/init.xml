@@ -32,6 +32,15 @@
     <vscrollbar name="skin_vscrollbar" src="imgx:png_vscroll" states="3" margin="4"/>
     <imglist name="skin_chrome_tab_new" src="imgx:png_chrome_tab_new" states="3"/>
     <imglist name="skin_chrome_tab_close" src="imgx:png_chrome_tab_close" states="3"/>
+
+    <imgframe name="skin_btn_curve" src="img.calendar2:png_skin_btn_curve"    />
+    <imgframe name="skin_btn_semiarc" src="img.calendar2:png_skin_btn_semiarc"     />
+    <imgframe name="skin_png_line_1px" src="img.calendar2:png_line_1px"      />
+    <imgframe  name="skin_png_radio_button" src="img.calendar2:png_radio_button" states="8"    margin="3" />
+    <imgframe name="cal_arrow_left" src="img.calendar2:cal_arrow_left"  states="3" />
+    <imgframe name="cal_arrow_right" src="img.calendar2:cal_arrow_right"  states="3"   />
+    <imgframe name="cal_btn_day" src="img.calendar2:cal_btn_day"  states="3"   />
+
   </skin>
 
   <style>

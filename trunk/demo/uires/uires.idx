@@ -48,6 +48,15 @@
     <file name="png_chrome_tab_new" path="image\chromeTabNew.png"/>
     <file name="png_chrome_tab_close" path="image\chromeTabClose.png"/>
   </IMGX>
+  <img.calendar2>
+    <file name="png_skin_btn_semiarc" path="img.calendar2\skin_btn_semiarc.png"/>
+    <file name="png_skin_btn_curve" path="img.calendar2\skin_btn_curve.png"/>
+    <file name="png_line_1px" path="img.calendar2\gradient_1px.png"/>
+    <file name="png_radio_button" path="img.calendar2\button_radio_aio.png"/>
+    <file name="cal_arrow_left" path="img.calendar2\cal_arrow_left.png"/>
+    <file name="cal_arrow_right" path="img.calendar2\cal_arrow_right.png"/>
+    <file name="cal_btn_day" path="img.calendar2\cal_day_skin.png"/>
+  </img.calendar2>
   <GIF>
     <file name="gif_horse"	path="image\horse.gif"/>
     <file name="gif_penguin"	path="image\penguin.gif"/>
