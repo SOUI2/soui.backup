@@ -208,9 +208,6 @@ namespace SOUI
         }
         pos.nPos=(float)_wtof(pszPos);
         
-        //size Ù–‘≤ªƒ‹<0
-        if(pos.nPos < 0.0f && pos.pit == PIT_SIZE) 
-            return FALSE;
         return TRUE;
     }
 

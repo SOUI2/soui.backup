@@ -1119,8 +1119,8 @@ namespace SOUI
         GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
         BeforePaintEx(pRT);
         DrawText(pRT,m_strText, m_strText.GetLength(), rcTest, nTestDrawMode | DT_CALCRECT);
-        rcTest.right += m_style.m_nMarginX * 2;
-        rcTest.bottom += m_style.m_nMarginY * 2;
+        rcTest.right  += m_style.m_nMarginX * 2 + m_style.m_rcInset.left + m_style.m_rcInset.right;
+        rcTest.bottom += m_style.m_nMarginY * 2 + m_style.m_rcInset.top  + m_style.m_rcInset.bottom;
 
         if(m_layout.IsFitContent(PD_X)) 
             szRet.cx = rcTest.Width();
