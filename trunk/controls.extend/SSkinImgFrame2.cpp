@@ -29,7 +29,13 @@ namespace SOUI
         m_strImgKey = strValue.Left(iPos);
         SStringW strRgn = strValue.Right(strValue.GetLength()-iPos);
         if(swscanf(strRgn,L"{%d,%d,%d,%d}",&m_rcImg.left,&m_rcImg.top,&m_rcImg.right,&m_rcImg.bottom)!=4)
-            return E_FAIL;
+        {
+            CPoint pt;
+            CSize sz;
+            if(swscanf(strRgn,L"{%d,%d,@%d,@%d}",&pt.x,&pt.y,&sz.cx,&sz.cy)!=4)
+                return E_FAIL;
+            m_rcImg = CRect(pt,sz);
+        }
         
         IMGPOOL::CPair * p = s_imgPool.Lookup(m_strImgKey);
         if(p)
@@ -63,7 +69,7 @@ namespace SOUI
 			OffsetRect(&rcSrc,0, dwState * rcSrc.Height());
 		else
 			OffsetRect(&rcSrc, dwState * rcSrc.Width(), 0);
-
+        rcSrc.DeflateRect(m_offset);
         pRT->DrawBitmap9Patch(rcDraw,GetImage(),&rcSrc,&m_rcMargin,IsTile()?EM_TILE:EM_STRETCH,byAlpha);
     }
 
