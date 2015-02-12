@@ -40,8 +40,8 @@ public:
     COLORREF m_crBg;                /**<背景颜色 */
     COLORREF m_crBorder;            /**<边框颜色 */
 
-    int m_nMarginX;                 /**<X方向的边框大小 */
-    int m_nMarginY;                 /**<Y方向的边框大小 */
+    int      m_nMarginX;            /**<X方向的边框大小 */
+    int      m_nMarginY;            /**<Y方向的边框大小 */
     CRect    m_rcInset;
     SStringT m_strCursor;           /**<光标NAME */
     SStringW m_strSkinName;         /**<SKIN NAME */
