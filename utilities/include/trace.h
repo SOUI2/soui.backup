@@ -8,8 +8,11 @@ namespace SOUI
     void UTILITIES_API STraceW(LPCWSTR pstrFormat, ...);
 }//end of namespace SOUI
 
+#define STRACEW SOUI::STraceW
+#define STRACEA SOUI::STraceA
+
 #ifdef _UNICODE
-#define STRACE SOUI::STraceW
+#define STRACE STRACEW
 #else
-#define STRACE SOUI::STraceA
+#define STRACE STRACEA
 #endif

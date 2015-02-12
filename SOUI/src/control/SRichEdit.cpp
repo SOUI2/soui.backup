@@ -897,7 +897,9 @@ HRESULT SRichEdit::OnTxNotify( DWORD iNotify,LPVOID pv )
     EventRENotify evt(this);
     evt.iNotify=iNotify;
     evt.pv=pv;
-    return FireEvent(evt);
+    evt.hr = S_OK;
+    FireEvent(evt);
+    return evt.hr;
 }
 //////////////////////////////////////////////////////////////////////////
 //    richedit interfaces
