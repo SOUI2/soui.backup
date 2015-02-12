@@ -372,6 +372,7 @@ namespace SOUI
         virtual UINT GetEventID(){return EventID;}
         DWORD iNotify;
         LPVOID pv;
+        HRESULT hr;
     };
 
     class SOUI_EXP EventSliderPos : public EventArgs
