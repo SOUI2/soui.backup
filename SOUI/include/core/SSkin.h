@@ -41,27 +41,28 @@ public:
     virtual BOOL IgnoreState();
     
     virtual int GetStates();
-    void    SetStates(int nStates){m_nStates=nStates;}
+    virtual void SetStates(int nStates){m_nStates=nStates;}
 
 
 
-    void SetImage(IBitmap *pImg)
+    virtual bool SetImage(IBitmap *pImg)
     {
         if(m_pImg) m_pImg->Release();
         m_pImg=pImg;
         if(m_pImg) m_pImg->AddRef();
+        return true;
     }
 
-    IBitmap * GetImage()
+    virtual IBitmap * GetImage()
     {
         return m_pImg;
     }
 
-    void SetTile(BOOL bTile){m_bTile=bTile;}
-    BOOL IsTile(){return m_bTile;}
+    virtual void SetTile(BOOL bTile){m_bTile=bTile;}
+    virtual BOOL IsTile(){return m_bTile;}
 
-    void SetVertical(BOOL bVertical){m_bVertical=bVertical;}
-    BOOL IsVertical(){return m_bVertical;}
+    virtual void SetVertical(BOOL bVertical){m_bVertical=bVertical;}
+    virtual BOOL IsVertical(){return m_bVertical;}
     
 protected:
     virtual void _Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha);

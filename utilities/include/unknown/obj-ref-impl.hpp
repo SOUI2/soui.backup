@@ -23,21 +23,22 @@ public:
 	//!添加引用
 	/*!
 	*/
-	virtual void AddRef()
+	virtual long AddRef()
 	{
-		InterlockedIncrement(&m_cRef);
+		return InterlockedIncrement(&m_cRef);
 	}
 
 	//!释放引用
 	/*!
 	*/
-	virtual void Release()
+	virtual long Release()
 	{
-		InterlockedDecrement(&m_cRef);
-		if(m_cRef==0)
+		long lRet = InterlockedDecrement(&m_cRef);
+		if(lRet==0)
 		{
 			OnFinalRelease();
 		}
+		return lRet;
 	}
 
 	//!释放对象
