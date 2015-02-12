@@ -184,7 +184,7 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     CSimpleWnd::GetClientRect(&rcClient);
     if(rcClient.IsRectEmpty())//APP没有指定窗口大小，使用XML中的值
     {
-        SetWindowPos(NULL,0,0,m_hostAttr.m_szInit.cx,m_hostAttr.m_szInit.cy,SWP_NOZORDER|SWP_NOMOVE);
+        SetWindowPos(NULL,0,0,m_hostAttr.m_szInit.cx,m_hostAttr.m_szInit.cy,SWP_NOZORDER|SWP_NOMOVE|SWP_NOSENDCHANGING|SWP_NOACTIVATE);
     }
 
 
