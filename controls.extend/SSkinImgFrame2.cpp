@@ -46,4 +46,22 @@ namespace SOUI
         return S_OK;
     }
 
+    SIZE SSkinImgFrame2::GetSkinSize()
+    {
+        CSize szImg = m_rcImg.Size();
+        if(IsVertical()) szImg.cy /= GetStates();
+        else szImg.cx /= GetStates();
+        return szImg;
+    }
+
+    void SSkinImgFrame2::_Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha)
+    {
+        if(!GetImage()) return;
+        
+        CRect rcSrc = CRect(m_rcImg.TopLeft(),GetSkinSize());
+        if(IsVertical()) rcSrc.OffsetRect(0,rcSrc.Height());
+        else rcSrc.OffsetRect(rcSrc.Width(),0);
+        pRT->DrawBitmap9Patch(rcDraw,GetImage(),&rcSrc,&m_rcMargin,IsTile()?EM_TILE:EM_STRETCH,byAlpha);
+    }
+
 }
