@@ -13,8 +13,7 @@ namespace SOUI
         SSkinImgFrame2(void);
         ~SSkinImgFrame2(void);
         
-        virtual int GetStates(){return 1;}
-        virtual SIZE GetSkinSize(){return m_rcImg.Size();}
+        virtual SIZE GetSkinSize();
         
         virtual bool SetImage(IBitmap *pImg){return false;}
         
@@ -24,6 +23,9 @@ namespace SOUI
         
     protected:
         LRESULT OnAttrSrc(const SStringW & strValue,BOOL bLoading);
+
+        virtual void _Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha);
+
         CRect m_rcImg;
         SStringW m_strImgKey;
     };
