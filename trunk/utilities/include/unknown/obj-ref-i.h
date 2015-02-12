@@ -13,9 +13,9 @@
 
 struct IObjRef
 {
-	virtual void AddRef() = 0;
+	virtual long AddRef() = 0;
 
-	virtual void Release() = 0;
+	virtual long Release() = 0;
 	
 	virtual void OnFinalRelease() =0;
 };

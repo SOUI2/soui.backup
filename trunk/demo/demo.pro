@@ -34,6 +34,7 @@ HEADERS += MainDlg.h \
            ../controls.extend/gif/SGifPlayer.h \
            ../controls.extend/gif/SSkinGif.h \
            ../controls.extend/gif/SSkinAPNG.h \
+           ../controls.extend/SSkinImgFrame2.h \
            ../controls.extend/FileHelper.h \
            ../controls.extend/sipaddressctrl.h \
            ../controls.extend/propgrid/SPropertyGrid.h \
@@ -61,6 +62,7 @@ SOURCES += demo.cpp \
            ../controls.extend/gif/SGifPlayer.cpp \
            ../controls.extend/gif/SSkinGif.cpp \
            ../controls.extend/gif/SSkinAPNG.cpp \
+           ../controls.extend/SSkinImgFrame2.cpp \
            ../controls.extend/sipaddressctrl.cpp \
            ../controls.extend/propgrid/spropertygrid.cpp \
            ../controls.extend/propgrid/spropertyitembase.cpp \
