@@ -277,10 +277,10 @@ namespace SOUI
 
     BOOL SChromeTabCtrl::RemoveTab(int idx)
     {
-        if(idx>=m_lstTab.GetCount()) return FALSE;
+        if(idx>=(int)m_lstTab.GetCount()) return FALSE;
         
         SChromeTab *pTab = NULL;
-        for(int i=0;i<m_lstTab.GetCount();i++)
+        for(int i=0;i<(int)m_lstTab.GetCount();i++)
         {
             if(m_lstTab[i]->m_iOrder == idx)
             {
@@ -351,7 +351,7 @@ namespace SOUI
         if(iPos<0) iPos = m_lstTab.GetCount();
         pNewTab->m_iOrder = iPos;
         
-        for(int i=0;i<m_lstTab.GetCount();i++)
+        for(int i=0;i<(int)m_lstTab.GetCount();i++)
         {
             if(m_lstTab[i]->m_iOrder>=iPos)
                 m_lstTab[i]->m_iOrder++;
