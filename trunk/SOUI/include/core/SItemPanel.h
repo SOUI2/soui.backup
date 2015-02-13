@@ -30,7 +30,7 @@ public:
 
     virtual void OnFinalRelease();
 
-    //////////////////////////////////////////////////////////////////////////
+public://SwndContainerImpl
     virtual LRESULT DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
     virtual BOOL OnFireEvent(EventArgs &evt);
@@ -65,7 +65,7 @@ public:
 
     virtual SMessageLoop *GetMsgLoop();
     
-    //////////////////////////////////////////////////////////////////////////
+public://SWindow
     virtual void ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove);
 
     virtual SWND SwndFromPoint(POINT ptHitTest, BOOL bOnlyText);
@@ -76,15 +76,14 @@ public:
     virtual void SetColor(COLORREF crBk,COLORREF crSelBk);
 
     virtual BOOL NeedRedrawWhenStateChange();
-
+    virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo &tipInfo);
+    virtual BOOL IsLayeredWindow() const {return FALSE;}
+    virtual void OnSetCaretValidateRect(LPCRECT lpRect);
+    
     CRect GetItemRect();
     void SetItemCapture(BOOL bCapture);
     void SetItemData(LPARAM dwData);
     LPARAM GetItemData();
-
-    virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo &tipInfo);
-    
-    void OnSetCaretValidateRect(LPCRECT lpRect);
 
     LPARAM GetItemIndex(){return m_lpItemIndex;}
     void SetItemIndex(LPARAM lp){m_lpItemIndex=lp;}
