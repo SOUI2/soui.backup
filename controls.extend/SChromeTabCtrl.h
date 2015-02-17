@@ -71,10 +71,14 @@ namespace SOUI
         BOOL InsertTab(LPCTSTR pszTitle,int iPos = -1);
         
         BOOL RemoveTab(int iTab);
+        BOOL RemoveTab(SChromeTab *pTab);
         
         void SetCurSel(int iTab,bool bSendNotify = true);
         
         int GetCurSel() const;
+
+        int GetTabIndex(int iTab) const;
+        int GetTabOrder(int iTabIndex) const;
     protected:
         int ChangeTabPos(SChromeTab* pCurMove,CPoint ptCur);
 
@@ -108,7 +112,7 @@ namespace SOUI
         TABDIR  m_tabAlign;
         BOOL    m_bEnableDrag;
         
-        SArray<SChromeTab*> m_lstTab;
+        SArray<SChromeTab*> m_lstTabOrder;
 
         SChromeTab *        m_pBtnNew;
         SChromeTab *        m_pSelTab;
