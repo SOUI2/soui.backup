@@ -1,0 +1,56 @@
+<SOUI name="mainWindow" title="SOUI-DEMO version:%ver%" bigIcon="ICON_LOGO:32" maxInset="5,3,10,10" smallIcon="ICON_LOGO:16" width="910" height="610" minsize="910,610" margin="5,3,5,7" appWnd="1" resizable="1" translucent="1" >
+	<root skin="_skin.shadow">
+		<window pos="5,3,-5,-7" skin="_skin.bg" >
+			<caption pos="0,0,-0,40" show="1" font="adding:8">
+				<imgbtn name="btn_close" skin="_skin.btn.close" pos="-35,0" tip="close" animate="1"/>
+				<imgbtn name="btn_max" skin="_skin.btn.max"  pos="-62,0" animate="1" />
+				<imgbtn name="btn_restore" skin="_skin.btn.restore"  pos="-62,0" show="0" animate="1" />
+				<imgbtn name="btn_min" skin="_skin.btn.min" pos="-89,0" animate="1" />
+				<imgbtn name="btn_menu" skin="_skin.menu" pos="-116,0" animate="1" />
+				<imgbtn name="btn_feedback" skin="_skin.feedback" pos="-143,0" animate="1" />
+				<imgbtn name="btn_skin" skin="_skin.skin" pos="-170,0" animate="1" />
+			</caption>
+			<tabctrl name="tab_main" font="face:微软雅黑,adding:-2" tabPos="10" tabAlign="top" colorText="#ffffff" pos="0,40,-0,-0" show="1" curSel="0" focusable="0" tabHeight="75" tabSkin="_skin.tab.main" iconSkin="_skin.tab.icon" text-y="50" icon-x="12" tabInterSize="5">
+				<page title="电脑体验" tip="电脑体验">
+					<include src="layout:check_page"/>
+				</page>
+				<page title="木马查杀" tip="木马查杀">
+					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+					</window>
+				</page>
+				<page title="系统修复" tip="系统修复">
+					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+					</window>
+				</page>
+				<page title="电脑清理" tip="电脑清理">
+					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+					</window>
+				</page>
+				<page title="优化加速" tip="优化加速">
+					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+					</window>
+				</page>
+				<page title="电脑专家" tip="电脑专家">
+					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+					</window>
+				</page>
+				<page title="电脑门诊" tip="电脑门诊">	
+					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+					</window>
+				</page>
+				<page title="软件管家" tip="软件管家">
+					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
+						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+					</window>
+				</page>
+			</tabctrl>
+			<img skin="_skin.logo" pos="-178,40" />
+		</window>
+	</root>
+</SOUI>

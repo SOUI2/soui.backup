@@ -1,0 +1,56 @@
+﻿<include>
+  <!--login page-->
+  <caption pos="0,0,-0,-55">
+    <flash name="flash_bkgnd" pos="0,0,-0,-0" />
+    <caption pos="0,0,-0,30">
+      <!--title bar-->
+      <icon pos="10,8" src="ICON_LOGO:16"/>
+      <text pos="[5,4">%title% ver:%ver%</text>
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-40,0" tip="close" animate="1"/>
+      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-75,0" animate="1" />
+      <imgbtn name="btn_setting" skin="btn_login_setting" pos="-105,0" animate="1" />
+    </caption>
+    <caption pos="0,30,-0,-0">
+      <!--body-->
+      <caption pos="0,80,-0,-0">
+            <img pos="23,37,101,115" skin="img_head" />
+            <img pos="22,36,102,116" skin="img_head_mask" />
+
+        <comboboxex name="cbx_account" pos="114,36,300,64" dropDown="0" dropHeight="200" class="cls_edit" curSel="0" id_text="3">
+          <liststyle class="cls_edit"   itemHeight="44" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd1="#FFFFFF" colorItemSelBkgnd="#3991D1" colorBkgnd="#ffffff">
+            <template>
+              <img id="1" pos="1,|-20,41,|20" skin="img_head_small" /><!---->
+              <text id="2" pos="49,9">想象元素</text>
+              <text id="3" pos="48,26" colorText="#FFFFFF"/>
+              <imgbtn id="4" pos="-24,|-8,-10,|7" skin="btn_list_close" tip="删除账号信息"/>
+            </template>
+          </liststyle>
+          <editstyle vcenter="1" colorText="#000000" align="left" colorBkgnd="#FFFFFF" cueText="输入帐号"/>
+          <items>
+            <item text="276883782"/>
+			<item text="276883782"/>
+			<item text="276883782"/>
+          </items>
+        </comboboxex>
+
+
+        <window pos="114,70,300,98" class="cls_edit" colorBkgnd="#ffffff">
+          <edit pos="0,0,-19,-0" margin="0" password="1" mouseRelay="1" cueText="输入密码"/>
+          <imgbtn pos="-19,3" skin="btn_keyboard" mouseRelay="1"/>
+        </window>
+
+
+        <check pos="113,103">记住密码</check>
+        <check pos="200,103">自动登录</check>
+
+        <imgbtn pos="-80,43" skin="btn_register" />
+        <imgbtn pos="-80,77" skin="btn_getpswback" />
+      </caption>
+    </caption>
+  </caption>
+  <window pos="0,-55,-0,-0" colorBkgnd="#ffffff">
+    <imgbtn pos="15,|-12,39,|12" skin="btn_login2" />
+    <imgbtn pos="|-80,|-18,|80,|18" skin="btn_login">登      录</imgbtn>
+    <imgbtn pos="-45,|-19,-7,|19" skin="btn_login_2dcode" />
+  </window>
+</include>

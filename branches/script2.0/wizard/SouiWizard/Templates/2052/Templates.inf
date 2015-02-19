@@ -1,0 +1,32 @@
+;常规窗口模板
+readme.txt
+demo.cpp
+demo.rc
+MainDlg.cpp
+MainDlg.h
+resource.h
+stdafx.cpp
+stdafx.h
+
+res\soui_res.rc2
+
+[uires]uires.idx
+[uires]xml\init.xml
+[uires]xml\dlg_main.xml
+[!if WIN_STYLES_TAB]
+[uires]xml\page.xml
+[uires]image\tab_main.png
+[uires]image\page_icons.png
+[!endif]
+[uires]image\soui.ico
+
+[!if CHECKBOX_TRANSLATOR_SUPPORT]
+[uires]\Translator\lang_cn.xml
+[!endif]
+
+[!if CHECKBOX_SHELLNOTIFYICON]
+[uires]xml\menu_tray.xml
+[uires]image\traymenu_icons.png
+trayicon\SShellNotifyIcon.h
+trayicon\SShellNotifyIcon.cpp
+[!endif]

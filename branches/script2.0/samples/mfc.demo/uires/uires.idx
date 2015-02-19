@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resource>
+  <xml>
+    <file name="uidef"  path="xml\init.xml"  />
+    <file name="maindlg"  path="xml\dlg_main.xml"/>
+  </xml>
+  <imgx>
+    <file name="bk_frame"    path="image\dlg_bg_frame.png"  />
+    <file name="btn_close"   path="image\btn_sys_close.png"    />
+  </imgx>
+</resource>

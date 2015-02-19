@@ -1,0 +1,54 @@
+﻿<resource>
+  <UIDEF>
+    <file name="XML_INIT" path="xml\init.xml"  />
+  </UIDEF>
+  <LAYOUT>
+    <file name="XML_MAINWND" path="xml\dlg_main.xml"  />
+
+    <file name="PAGE_LRC" path="xml\page_lrc.xml"  />
+    <file name="PAGE_MUSICLIST" path="xml\page_musiclist.xml"  />
+  </LAYOUT>
+  
+  <IMG>
+        <file name="traymenu_icons" path="image\traymenu_icons.png"  />
+  </IMG>
+  <PNG>
+    <file name="ID_PNG_SHADOW_BKG" path="image\shadow_bkg.png"/>
+    <file name="ID_PNG_TOP_BKG" path="image\theme_top.png"/>
+    <file name="ID_PNG_WHITE_BKG" path="image\white_bg.png"/>
+    <file name="ID_PNG_MUSIC_LIST_BKG" path="image\dlg_music_list_bkg.png"/>
+    <file name="ID_PNG_TAB_MAIN" path="image\skin_tab_main.png"/>
+    <file name="ID_PNG_TAB_ICON" path="image\skin_tab_icon.png"/>
+    <file name="ID_SKIN_LOGO" path="image\logo-128.png"/>
+    <file name="ID_SKIN_SPECTRUM" path="image\spectrum.png"/>
+    
+
+
+    <file name="ID_PNG_PLAY_PREV" path="image\btn_play_prev.png"/>
+    <file name="ID_PNG_PLAY" path="image\btn_play.png"/>
+    <file name="ID_PNG_PLAY_NEXT" path="image\btn_play_next.png"/>
+    <file name="ID_PNG_VOLUME" path="image\btn_volume.png"/>
+    <file name="ID_PNG_LYRIC" path="image\btn_lyric.png"/>
+    <file name="ID_PNG_PLAY_MODE" path="image\btn_play_mode.png"/>
+    <file name="ID_PNG_PLAYING_LIST" path="image\btn_playing_list.png"/>
+    <file name="ID_PNG_SLIDER_BKG" path="image\play_slider_bkg.png"/>
+    <file name="ID_PNG_SLIDER_POS" path="image\play_slider_pos.png"/> 
+    <file name="ID_PNG_SLIDER_THUMB" path="image\play_slider_thumb.png"/>
+    <file name="ID_PNG_VERT_LINE" path="image\skin_vertical_line.png"/>
+    <file name="ID_PNG_VSCROLLBAR" path="image\vscrollbar.png"/>
+
+    <file name="ID_PNG_MY_MUSIC" path="image\my_music_tab.png"/>
+    <file name="ID_PNG_ONLINE_MUSIC" path="image\online_music_tab.png"/>
+    <file name="ID_PNG_MY_DEVICE" path="image\my_device_tab.png"/>
+    <file name="btn_expand" path="image\btn_expand.png"/>
+  </PNG>
+  <ICON>
+    <file name="ICON_LOGO"  path="image\BaiduMusic.ico"    />
+  </ICON>
+    <translator>
+    <file name="lang_cn"  path="translator\lang_cn.xml"    />
+  </translator>
+  <SMENU>
+    <file name="menu_tray" path="xml\menu_tray.xml"  />
+  </SMENU>
+  </resource>
