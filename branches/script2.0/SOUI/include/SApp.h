@@ -26,7 +26,6 @@
 #include "core/SWndFactoryMgr.h"
 #include "core/SSkinFactoryMgr.h"
 
-
 #define GETRESPROVIDER      SApplication::getSingletonPtr()
 #define GETRENDERFACTORY    SApplication::getSingleton().GetRenderFactory()
 #define GETREALWNDHANDLER   SApplication::getSingleton().GetRealWndHander()
@@ -69,6 +68,7 @@ public:
      * Describe  
      */
     SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR pszHostClassName=_T("SOUIHOST"));
+
     ~SApplication(void);
 
 
@@ -122,7 +122,7 @@ public:
      * Describe  
      */
     IRenderFactory * GetRenderFactory();
-
+    
     /**
      * GetScriptModule
      * @brief    获取SOUI中引用的脚本模块
@@ -204,6 +204,10 @@ public:
      * Describe  
      */
     int Run(HWND hMainWnd);
+
+    void SetAppDir(const SStringT & strAppDir){m_strAppDir = strAppDir;}
+
+    SStringT GetAppDir()const{return m_strAppDir;}
 protected:
     void _CreateSingletons();
     void _DestroySingletons();
@@ -215,6 +219,8 @@ protected:
     CAutoRefPtr<IRenderFactory> m_RenderFactory;
     CAutoRefPtr<ITranslatorMgr>    m_translator;
     CAutoRefPtr<IToolTipFactory>    m_tooltipFactory;
+
+    SStringT    m_strAppDir;
 };
 
 }//namespace SOUI

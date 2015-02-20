@@ -1514,7 +1514,7 @@ HRESULT SRichEdit::OnAttrRTF( const SStringW & strValue,BOOL bLoading )
     }else
     {
         SStringTList lstSrc;
-        int nSegs = SplitString(S_CW2T(strValue),_T(':'),lstSrc);
+        int nSegs = ParseResID(S_CW2T(strValue),lstSrc);
 
         if(nSegs == 2)
         {//load from resource

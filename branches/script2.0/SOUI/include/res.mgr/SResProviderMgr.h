@@ -17,23 +17,21 @@ namespace SOUI
         void RemoveResProvider(IResProvider * pResProvider);
         
         //////////////////////////////////////////////////////////////////////////
-        /*virtual */BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName);
+        BOOL HasResource(LPCTSTR pszType,LPCTSTR pszResName);
 
-        /*virtual */HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0);
+        HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0,BOOL bFromFile = FALSE);
 
-        /*virtual */HCURSOR LoadCursor(LPCTSTR pszResName);
+        HCURSOR LoadCursor(LPCTSTR pszResName,BOOL bFromFile = FALSE);
 
-        /*virtual */HBITMAP    LoadBitmap(LPCTSTR pszResName);
+        HBITMAP LoadBitmap(LPCTSTR pszResName,BOOL bFromFile = FALSE);
         
-        /*virtual */IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName);
+        IBitmap * LoadImage(LPCTSTR pszType,LPCTSTR pszResName);
 
-        /*virtual */IImgX * LoadImgX(LPCTSTR strType,LPCTSTR pszResName);
+        IImgX * LoadImgX(LPCTSTR pszType,LPCTSTR pszResName);
 
-        /*virtual */size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
+        size_t GetRawBufferSize(LPCTSTR pszType,LPCTSTR pszResName);
 
-        /*virtual */BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
-
-        /*virtual */LPCTSTR FindImageType(LPCTSTR pszImgName);
+        BOOL GetRawBuffer(LPCTSTR pszType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
         
     public://helper
         //使用type:name形式的字符串加载图片，如果没有type,则自动查找type
@@ -44,7 +42,10 @@ namespace SOUI
     protected:
         IResProvider * GetMatchResProvider(LPCTSTR pszType,LPCTSTR pszResName);
         LPCTSTR SysCursorName2ID(LPCTSTR pszCursorName);
-        
+
+        //检查资源类型是否为文件
+        BOOL    IsFileType(LPCTSTR pszType);
+
         SList<IResProvider*> m_lstResProvider;
         
         typedef SMap<SStringT,HCURSOR> CURSORMAP;

@@ -222,6 +222,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\helper\AppDir.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\helper\DragWnd.cpp"
 				>
 			</File>
@@ -461,6 +465,10 @@
 			>
 			<File
 				RelativePath="include\core\Accelerator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\helper\AppDir.h"
 				>
 			</File>
 			<File

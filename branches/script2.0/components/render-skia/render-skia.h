@@ -170,8 +170,8 @@ namespace SOUI
 
 		virtual HRESULT Init(int nWid,int nHei,const LPVOID pBits=NULL);
         virtual HRESULT Init(IImgFrame *pFrame);
-		virtual HRESULT LoadFromFile(LPCTSTR pszFileName,LPCTSTR pszType);
-		virtual HRESULT LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType);
+		virtual HRESULT LoadFromFile(LPCTSTR pszFileName);
+		virtual HRESULT LoadFromMemory(LPBYTE pBuf,size_t szLen);
 
         virtual UINT Width();
         virtual UINT Height();
