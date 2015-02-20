@@ -43,7 +43,7 @@ namespace SOUI
         return 1;
     }
 
-    class LuaFunctionSlot : public SlotFunctorBase
+    class LuaFunctionSlot : public ISlotFunctor
     {
     public:
         //! Slot function type.
@@ -57,12 +57,12 @@ namespace SOUI
             return lua_tinker::call<bool>(m_pLuaState,m_luaFun,pArg);
         }
 
-        virtual SlotFunctorBase* Clone() const 
+        virtual ISlotFunctor* Clone() const 
         {
             return new LuaFunctionSlot(m_pLuaState,m_luaFun);
         }
 
-        virtual bool Equal(const SlotFunctorBase & sour)const 
+        virtual bool Equal(const ISlotFunctor & sour)const 
         {
             if(sour.GetSlotType()!=GetSlotType()) return false;
             const LuaFunctionSlot *psour=static_cast<const LuaFunctionSlot*>(&sour);
@@ -132,25 +132,24 @@ namespace SOUI
         lua_tinker::dostring(d_state,str);
     }
 
-    bool SScriptModule_Lua::subscribeEvent(SOUI::SWindow* target, UINT uEvent, LPCSTR subscriber_name )
+    bool SScriptModule_Lua::subscribeEvent(SWindow* target, UINT uEvent, LPCSTR subscriber_name )
     {
         return target->GetEventSet()->subscribeEvent(uEvent,LuaFunctionSlot(d_state,subscriber_name));
     }
 
-    bool SScriptModule_Lua::unsubscribeEvent(SOUI::SWindow* target, UINT uEvent, LPCSTR subscriber_name )
+    bool SScriptModule_Lua::unsubscribeEvent(SWindow* target, UINT uEvent, LPCSTR subscriber_name )
     {
         return target->GetEventSet()->unsubscribeEvent(uEvent,LuaFunctionSlot(d_state,subscriber_name));
     }
 
+}
 
-    //////////////////////////////////////////////////////////////////////////
-    namespace SCRIPT_LUA
+//////////////////////////////////////////////////////////////////////////
+namespace SCRIPT_LUA
+{
+    BOOL SCreateInstance(IObjRef ** ppScript)
     {
-        BOOL SCreateInstance(IObjRef ** ppScript)
-        {
-            *ppScript= new SScriptModule_Lua;
-            return TRUE;
-        }
+        *ppScript= new SOUI::SScriptModule_Lua;
+        return TRUE;
     }
-
 }
