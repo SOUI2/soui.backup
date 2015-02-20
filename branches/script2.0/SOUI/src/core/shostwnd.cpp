@@ -146,7 +146,8 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
             }
         }else
         {
-            SStringW strScript = xmlScript.text().get();
+            //从script节点的cdata中获取脚本
+            SStringW strScript = xmlScript.child_value();
             if(!strScript.IsEmpty())
             {
                 SStringA utf8Script = S_CW2A(strScript,CP_UTF8);
