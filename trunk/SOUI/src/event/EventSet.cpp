@@ -5,14 +5,14 @@ namespace SOUI
 {
     //////////////////////////////////////////////////////////////////////////
     // SEvent
-    bool SEvent::subscribe( const SlotFunctorBase& slot )
+    bool SEvent::subscribe( const ISlotFunctor& slot )
     {
         if(findSlotFunctor(slot) != -1) return false;
         m_evtSlots.Add(slot.Clone());
         return true;
     }
 
-    bool SEvent::unsubscribe( const SlotFunctorBase& slot )
+    bool SEvent::unsubscribe( const ISlotFunctor& slot )
     {
         int idx=findSlotFunctor(slot);
         if(idx==-1) return false;
@@ -22,7 +22,7 @@ namespace SOUI
         return true;
     }
 
-    int SEvent::findSlotFunctor( const SlotFunctorBase& slot )
+    int SEvent::findSlotFunctor( const ISlotFunctor& slot )
     {
         for(UINT i=0;i<m_evtSlots.GetCount();i++)
         {
@@ -101,13 +101,13 @@ namespace SOUI
         m_evtArr.RemoveAll();
     }
 
-    bool SEventSet::subscribeEvent( const DWORD dwEventID, const SlotFunctorBase & subscriber )
+    bool SEventSet::subscribeEvent( const DWORD dwEventID, const ISlotFunctor & subscriber )
     {
         if(!isEventPresent(dwEventID)) return false;
         return GetEventObject(dwEventID)->subscribe(subscriber);
     }
 
-    bool SEventSet::unsubscribeEvent( const DWORD dwEventID, const SlotFunctorBase & subscriber )
+    bool SEventSet::unsubscribeEvent( const DWORD dwEventID, const ISlotFunctor & subscriber )
     {
         if(!isEventPresent(dwEventID)) return false;
         return GetEventObject(dwEventID)->unsubscribe(subscriber);

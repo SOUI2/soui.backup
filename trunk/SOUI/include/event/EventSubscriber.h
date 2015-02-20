@@ -13,13 +13,12 @@ enum _SLOTTYPE{SLOT_FUN,SLOT_MEMBER,SLOT_USER};
     functor objects that bind slots to signals (or in CEGUI terms, handlers to
     events).
 */
-class SOUI_EXP SlotFunctorBase
+struct SOUI_EXP ISlotFunctor
 {
-public:
-    virtual ~SlotFunctorBase() {};
+    virtual ~ISlotFunctor() {};
     virtual bool operator()(EventArgs *pArg) = 0;
-    virtual SlotFunctorBase* Clone() const =0;
-    virtual bool Equal(const SlotFunctorBase & sour)const  =0;
+    virtual ISlotFunctor* Clone() const =0;
+    virtual bool Equal(const ISlotFunctor & sour)const  =0;
     virtual UINT GetSlotType() const  =0;
 };
 
@@ -27,7 +26,7 @@ public:
 \brief
     Slot functor class that calls back via a free function pointer.
 */
-class SOUI_EXP FreeFunctionSlot : public SlotFunctorBase
+class SOUI_EXP FreeFunctionSlot : public ISlotFunctor
 {
 public:
     //! Slot function type.
@@ -42,12 +41,12 @@ public:
         return d_function(pArg);
     }
 
-    virtual SlotFunctorBase* Clone() const 
+    virtual ISlotFunctor* Clone() const 
     {
         return new FreeFunctionSlot(d_function);
     }
 
-    virtual bool Equal(const SlotFunctorBase & sour)const 
+    virtual bool Equal(const ISlotFunctor & sour)const 
     {
         if(sour.GetSlotType()!=SLOT_FUN) return false;
         const FreeFunctionSlot *psour=static_cast<const FreeFunctionSlot*>(&sour);
@@ -67,7 +66,7 @@ private:
     member function.
 */
 template<typename T>
-class MemberFunctionSlot : public SlotFunctorBase
+class MemberFunctionSlot : public ISlotFunctor
 {
 public:
     //! Member function slot type.
@@ -83,12 +82,12 @@ public:
         return (d_object->*d_function)(pArg);
     }
 
-    virtual SlotFunctorBase* Clone() const 
+    virtual ISlotFunctor* Clone() const 
     {
         return new MemberFunctionSlot(d_function,d_object);
     }
 
-    virtual bool Equal(const SlotFunctorBase & sour)const 
+    virtual bool Equal(const ISlotFunctor & sour)const 
     {
         if(sour.GetSlotType()!=SLOT_MEMBER) return false;
         const MemberFunctionSlot *psour=static_cast<const MemberFunctionSlot*>(&sour);
