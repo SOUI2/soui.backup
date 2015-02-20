@@ -34,9 +34,9 @@ namespace SOUI
 
         \return void
         */
-        bool subscribe(const SlotFunctorBase& slot);
+        bool subscribe(const ISlotFunctor& slot);
 
-        bool unsubscribe(const SlotFunctorBase& slot);
+        bool unsubscribe(const ISlotFunctor& slot);
 
         void operator()(EventArgs& args)
         {
@@ -47,10 +47,10 @@ namespace SOUI
         }
 
     protected:
-        int findSlotFunctor(const SlotFunctorBase& slot);
+        int findSlotFunctor(const ISlotFunctor& slot);
 
         DWORD    m_dwEventID;
-        SArray<SlotFunctorBase *> m_evtSlots;
+        SArray<ISlotFunctor *> m_evtSlots;
     };
 
     class SOUI_EXP SEventSet
@@ -118,9 +118,9 @@ namespace SOUI
 
         \return
         */
-        bool subscribeEvent(const DWORD dwEventID, const SlotFunctorBase & subscriber);
+        bool subscribeEvent(const DWORD dwEventID, const ISlotFunctor & subscriber);
 
-        bool unsubscribeEvent( const DWORD dwEventID, const SlotFunctorBase & subscriber );
+        bool unsubscribeEvent( const DWORD dwEventID, const ISlotFunctor & subscriber );
 
         void FireEvent(EventArgs& args);
 
