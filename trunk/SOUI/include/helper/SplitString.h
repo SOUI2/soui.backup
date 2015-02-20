@@ -32,6 +32,20 @@ namespace SOUI
     template size_t SplitString<SStringA,char>(const SStringA & str,char cSep, SStringAList & strLst);
     template size_t SplitString<SStringW,wchar_t>(const SStringW & str,wchar_t cSep, SStringWList & strLst);
 
+    inline int ParseResID(const SStringW & str,SStringWList & strLst)
+    {
+        int nPos = str.Find(L':');
+        if(nPos==-1)
+        {
+            strLst.Add(str);
+        }else
+        {
+            strLst.Add(str.Left(nPos));
+            strLst.Add(str.Right(str.GetLength()-nPos-1));
+        }
+        return strLst.GetCount();
+    }
+
 #ifdef _UNICODE
     #define SStringTList    SStringWList
 #else

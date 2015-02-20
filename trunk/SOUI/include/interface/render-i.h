@@ -114,22 +114,20 @@ namespace SOUI
          * LoadFromFile
          * @brief    从文件中加载位图
          * @param    LPCTSTR pszFileName --  文件名
-         * @param    LPCTSTR pszType --  文件类型
          * @return   HRESULT -- 成功返回S_OK,失败返回错误代码
          * Describe  
          */    
-        virtual HRESULT LoadFromFile(LPCTSTR pszFileName,LPCTSTR pszType)=0;
+        virtual HRESULT LoadFromFile(LPCTSTR pszFileName)=0;
 
         /**
          * LoadFromMemory
          * @brief    从内存中加载位图
          * @param    LPBYTE pBuf --  内存地址
          * @param    size_t szLen --  内存大小
-         * @param    LPCTSTR pszType --  图片类型
          * @return   HRESULT -- 成功返回S_OK,失败返回错误代码
          * Describe  
          */    
-        virtual HRESULT LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType)=0;
+        virtual HRESULT LoadFromMemory(LPBYTE pBuf,size_t szLen)=0;
 
         /**
          * Width

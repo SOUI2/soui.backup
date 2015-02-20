@@ -52,5 +52,8 @@
         <button name="btn_today" pos="-60,-25,-5,-0" skin="cal_btn_day" font="bold:1" >Today</button>
       </calendar2>
     </page>
+    <page title="file resource">
+      <button name="btn_filewnd" pos="|0,|0,@150,@30" offset="-0.5,-0.5">从文件创建窗口</button>
+    </page>
   </tabctrl>
 </include>

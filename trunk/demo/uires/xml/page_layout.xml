@@ -17,5 +17,6 @@
     <window skin="skin_page_icons" pos="[5,150,-10,-10" >
       <text pos="|0,|0" offset="-0.5,-0.5" font="adding:20" colorText="#ff000066">alpha test</text>
     </window>
+    
   </group>
 </include>

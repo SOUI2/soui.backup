@@ -94,7 +94,7 @@ namespace SOUI
         return S_OK;
     }
 
-    HRESULT SBitmap_GDI::LoadFromFile( LPCTSTR pszFileName,LPCTSTR pszType )
+    HRESULT SBitmap_GDI::LoadFromFile( LPCTSTR pszFileName)
     {
         CAutoRefPtr<IImgX> imgDecoder;
         GetRenderFactory_GDI()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
@@ -102,7 +102,7 @@ namespace SOUI
         return ImgFromDecoder(imgDecoder);
     }
 
-    HRESULT SBitmap_GDI::LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType )
+    HRESULT SBitmap_GDI::LoadFromMemory(LPBYTE pBuf,size_t szLen)
     {
         CAutoRefPtr<IImgX> imgDecoder;
         GetRenderFactory_GDI()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);

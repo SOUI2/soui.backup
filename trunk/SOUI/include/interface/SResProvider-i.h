@@ -58,7 +58,7 @@ namespace SOUI
          * @return   BOOL -- true存在，false不存在
          * Describe  
          */    
-        virtual BOOL HasResource(LPCTSTR strType,LPCTSTR pszResName)=0;
+        virtual BOOL HasResource(LPCTSTR pszType,LPCTSTR pszResName)=0;
 
         /**
          * LoadIcon
@@ -69,7 +69,7 @@ namespace SOUI
          * @return   HICON -- 成功返回ICON的句柄，失败返回0
          * Describe  
          */    
-        virtual HICON   LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0)=0;
+        virtual HICON LoadIcon(LPCTSTR pszResName,int cx=0,int cy=0)=0;
 
         /**
          * LoadBitmap
@@ -78,7 +78,7 @@ namespace SOUI
          * @return   HBITMAP -- 成功返回BITMAP的句柄，失败返回0
          * Describe  
          */    
-        virtual HBITMAP    LoadBitmap(LPCTSTR pszResName)=0;
+        virtual HBITMAP LoadBitmap(LPCTSTR pszResName)=0;
 
         /**
          * LoadCursor
@@ -97,7 +97,7 @@ namespace SOUI
          * @return   IBitmap * -- 成功返回一个IBitmap对象，失败返回0
          * Describe  如果没有定义strType，则根据name使用FindImageType自动查找匹配的类型
          */    
-        virtual IBitmap * LoadImage(LPCTSTR strType,LPCTSTR pszResName)=0;
+        virtual IBitmap * LoadImage(LPCTSTR pszType,LPCTSTR pszResName)=0;
 
         /**
          * LoadImgX
@@ -107,7 +107,7 @@ namespace SOUI
          * @return   IImgX   * -- 成功返回一个IImgX对象，失败返回0
          * Describe  
          */    
-        virtual IImgX   * LoadImgX(LPCTSTR strType,LPCTSTR pszResName)=0;
+        virtual IImgX   * LoadImgX(LPCTSTR pszType,LPCTSTR pszResName)=0;
 
         /**
          * GetRawBufferSize
@@ -117,7 +117,7 @@ namespace SOUI
          * @return   size_t -- 资源大小（byte)，失败返回0
          * Describe  
          */    
-        virtual size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName)=0;
+        virtual size_t GetRawBufferSize(LPCTSTR pszType,LPCTSTR pszResName)=0;
 
         /**
          * GetRawBuffer
@@ -129,44 +129,8 @@ namespace SOUI
          * @return   BOOL -- true成功
          * Describe  应该先用GetRawBufferSize查询资源大小再分配足够空间
          */    
-        virtual BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size)=0;
-
-        /**
-         * FindImageType
-         * @brief    查询与指定名称匹配的资源类型
-         * @param    LPCTSTR pszImgName --  资源名称
-         * @return   LPCTSTR -- 资源类型，失败返回NULL
-         * Describe  没有指定图片类型时默认从这些类别中查找
-         */    
-        virtual LPCTSTR FindImageType(LPCTSTR pszImgName) =0;
+        virtual BOOL GetRawBuffer(LPCTSTR pszType,LPCTSTR pszResName,LPVOID pBuf,size_t size)=0;
     };
 
-    /**
-    * Helper_FindImageType
-    * @brief    查询与指定名称匹配的资源类型
-    * @param    IResProvider * pResProvider --  当前的ResProvider
-    * @param    LPCTSTR pszImgName --  资源名称
-    * @return   LPCTSTR -- 资源类型，失败返回NULL
-    * Describe  提供一个公共的辅助函数
-    */    
-    inline LPCTSTR Helper_FindImageType(IResProvider * pResProvider, LPCTSTR pszImgName)
-    {
-        //图片类型
-        LPCTSTR IMGTYPES[]=
-        {
-            _T("IMGX"),
-            _T("PNG"),
-            _T("JPG"),
-            _T("GIF"),
-            _T("TGA"),
-            _T("TIFF"),
-        };
-        for(int i=0;i< ARRAYSIZE(IMGTYPES);i++)
-        {
-            if(pResProvider->HasResource(IMGTYPES[i],pszImgName)) return IMGTYPES[i];
-        }
-        return NULL;
-    }
-    
 }//namespace SOUI
 #endif//_SRESPROVIDERBASE_
