@@ -311,4 +311,9 @@ SMessageLoop * SItemPanel::GetMsgLoop()
     return m_pFrmHost->GetContainer()->GetMsgLoop();
 }
 
+IScriptModule * SItemPanel::GetScriptModule()
+{
+    return m_pFrmHost->GetContainer()->GetScriptModule();
+}
+
 }//namespace SOUI

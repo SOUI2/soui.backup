@@ -125,22 +125,23 @@ public:
     
     /**
      * GetScriptModule
-     * @brief    获取SOUI中引用的脚本模块
-     * @return   IScriptModule * 脚本模块指针
+     * @brief    创建脚本模块对象
+     * @param [out] IScriptModule **ppScriptModule -- 脚本模块对象
+     * @return   HRESULT -- S_OK 创建成功
      *
      * Describe  
      */
-    IScriptModule * GetScriptModule();
+    HRESULT CreateScriptModule(IScriptModule **ppScriptModule);
 
     /**
      * SetScriptModule
-     * @brief    设置SOUI中使用的脚本模块
-     * @param    IScriptModule * pScriptModule --  脚本模块指针
+     * @brief    设置SOUI中使用的脚本模块类厂
+     * @param    IScriptFactory *pScriptModule --  脚本模块类厂
      * @return   void 
      *
      * Describe  
      */
-    void SetScriptModule(IScriptModule *pScriptModule);
+    void SetScriptFactory(IScriptFactory *pScriptModule);
     
     /**
      * GetTranslator
@@ -213,14 +214,14 @@ protected:
     void _DestroySingletons();
     BOOL _LoadXmlDocment(LPCTSTR pszXmlName ,LPCTSTR pszType ,pugi::xml_document & xmlDoc);
     
-    CAutoRefPtr<IRealWndHandler>  m_pRealWndHandler;
-    HINSTANCE m_hInst;
-    CAutoRefPtr<IScriptModule>  m_pScriptModule;
-    CAutoRefPtr<IRenderFactory> m_RenderFactory;
-    CAutoRefPtr<ITranslatorMgr>    m_translator;
+    CAutoRefPtr<IRealWndHandler>    m_pRealWndHandler;
+    CAutoRefPtr<IScriptFactory>     m_pScriptFactory;
+    CAutoRefPtr<IRenderFactory>     m_RenderFactory;
+    CAutoRefPtr<ITranslatorMgr>     m_translator;
     CAutoRefPtr<IToolTipFactory>    m_tooltipFactory;
 
     SStringT    m_strAppDir;
+    HINSTANCE   m_hInst;
 };
 
 }//namespace SOUI
