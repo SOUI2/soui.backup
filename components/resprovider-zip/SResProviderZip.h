@@ -31,7 +31,6 @@ public:
     virtual IImgX   * LoadImgX(LPCTSTR strType,LPCTSTR pszResName);
     virtual size_t GetRawBufferSize(LPCTSTR strType,LPCTSTR pszResName);
     virtual BOOL GetRawBuffer(LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size);
-    virtual LPCTSTR FindImageType(LPCTSTR pszImgName){return Helper_FindImageType(this,pszImgName);}
 
 protected:
     BOOL _Init(LPCTSTR pszZipFile ,LPCSTR pszPsw);

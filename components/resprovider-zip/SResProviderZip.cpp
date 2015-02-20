@@ -75,7 +75,7 @@ namespace SOUI{
         IBitmap * pBmp=NULL;
         m_renderFactory->CreateBitmap(&pBmp);
         if(!pBmp) return NULL;
-        pBmp->LoadFromMemory(zf.GetData(),zf.GetSize(),strType);
+        pBmp->LoadFromMemory(zf.GetData(),zf.GetSize());
         return pBmp;
 	}
 

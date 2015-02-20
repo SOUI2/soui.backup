@@ -1026,7 +1026,7 @@ namespace SOUI
         return S_OK;
     }
 
-	HRESULT SBitmap_Skia::LoadFromFile( LPCTSTR pszFileName,LPCTSTR pszType )
+	HRESULT SBitmap_Skia::LoadFromFile( LPCTSTR pszFileName)
 	{
 	    CAutoRefPtr<IImgX> imgDecoder;
 	    GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
@@ -1034,7 +1034,7 @@ namespace SOUI
 		return ImgFromDecoder(imgDecoder);
 	}
 
-	HRESULT SBitmap_Skia::LoadFromMemory(LPBYTE pBuf,size_t szLen,LPCTSTR pszType )
+	HRESULT SBitmap_Skia::LoadFromMemory(LPBYTE pBuf,size_t szLen)
 	{
         CAutoRefPtr<IImgX> imgDecoder;
         GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);

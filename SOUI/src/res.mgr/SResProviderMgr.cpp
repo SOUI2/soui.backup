@@ -5,6 +5,8 @@
 
 namespace SOUI
 {
+    const static TCHAR KTypeFile[]   = _T("file");  //从文件加载资源时指定的类型
+
     SResProviderMgr::SResProviderMgr()
     {
     }
@@ -29,6 +31,8 @@ namespace SOUI
 
     IResProvider * SResProviderMgr::GetMatchResProvider( LPCTSTR pszType,LPCTSTR pszResName )
     {
+        if(!pszType) return NULL;
+
         SAutoLock lock(m_cs);
         SPOSITION pos=m_lstResProvider.GetHeadPosition();
         while(pos)
@@ -80,7 +84,7 @@ namespace SOUI
             return IDC_SIZEWE;
         if(!_tcsicmp(pszCursorName,_T("sizens")))
             return IDC_SIZENS;
-        if(!_tcsicmp(pszCursorName,_T("sizeal_T(")))
+        if(!_tcsicmp(pszCursorName,_T("sizeall")))
             return IDC_SIZEALL;
         if(!_tcsicmp(pszCursorName,_T("no")))
             return IDC_NO;
@@ -91,64 +95,78 @@ namespace SOUI
         return NULL;
    }
 
-    LPCTSTR SResProviderMgr::FindImageType( LPCTSTR pszImgName )
-    {
-        SAutoLock lock(m_cs);
-        SPOSITION pos=m_lstResProvider.GetHeadPosition();
-        while(pos)
-        {
-            IResProvider* pResProvider=m_lstResProvider.GetNext(pos);
-            LPCTSTR pszType=pResProvider->FindImageType(pszImgName);
-            if(pszType) return pszType;
-        }
-        return NULL;
-    }
-
     BOOL SResProviderMgr::GetRawBuffer( LPCTSTR strType,LPCTSTR pszResName,LPVOID pBuf,size_t size )
     {
         SAutoLock lock(m_cs);
-        IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
-        if(!pResProvider) return FALSE;
-        return pResProvider->GetRawBuffer(strType,pszResName,pBuf,size);
+        if(IsFileType(strType))
+        {
+            return SResLoadFromFile::GetRawBuffer(pszResName,pBuf,size);
+        }else
+        {
+            IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            if(!pResProvider) return FALSE;
+            return pResProvider->GetRawBuffer(strType,pszResName,pBuf,size);
+        }
     }
 
     size_t SResProviderMgr::GetRawBufferSize( LPCTSTR strType,LPCTSTR pszResName )
     {
         SAutoLock lock(m_cs);
-        IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
-        if(!pResProvider) return 0;
-        return pResProvider->GetRawBufferSize(strType,pszResName);
+        if(IsFileType(strType))
+        {
+            return SResLoadFromFile::GetRawBufferSize(pszResName);
+        }else
+        {
+            IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            if(!pResProvider) return 0;
+            return pResProvider->GetRawBufferSize(strType,pszResName);
+        }
     }
 
     IImgX * SResProviderMgr::LoadImgX( LPCTSTR strType,LPCTSTR pszResName )
     {
         SAutoLock lock(m_cs);
-        if(!strType) strType = FindImageType(pszResName);
-        if(!strType) return NULL;
-        IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
-        if(!pResProvider) return NULL;
-        return pResProvider->LoadImgX(strType,pszResName);
+        if(IsFileType(strType))
+        {
+            return SResLoadFromFile::LoadImgX(pszResName);
+        }else
+        {
+            IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
+            if(!pResProvider) return NULL;
+            return pResProvider->LoadImgX(strType,pszResName);
+        }
     }
 
-    IBitmap * SResProviderMgr::LoadImage( LPCTSTR strType,LPCTSTR pszResName )
+    IBitmap * SResProviderMgr::LoadImage( LPCTSTR pszType,LPCTSTR pszResName )
+    {
+        if(!pszType) return NULL;
+        SAutoLock lock(m_cs);
+        if(IsFileType(pszType))
+        {
+            return SResLoadFromFile::LoadImage(pszResName);
+        }else
+        {
+            IResProvider *pResProvider=GetMatchResProvider(pszType,pszResName);
+            if(!pResProvider) return NULL;
+            return pResProvider->LoadImage(pszType,pszResName);
+        }
+    }
+
+    HBITMAP SResProviderMgr::LoadBitmap( LPCTSTR pszResName ,BOOL bFromFile /*= FALSE*/)
     {
         SAutoLock lock(m_cs);
-        if(!strType) strType = FindImageType(pszResName);
-        if(!strType) return NULL;
-        IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
-        if(!pResProvider) return NULL;
-        return pResProvider->LoadImage(strType,pszResName);
+        if(bFromFile)
+        {
+            return SResLoadFromFile::LoadBitmap(pszResName);
+        }else
+        {
+            IResProvider *pResProvider=GetMatchResProvider(KTypeBitmap,pszResName);
+            if(!pResProvider) return NULL;
+            return pResProvider->LoadBitmap(pszResName);
+        }
     }
 
-    HBITMAP SResProviderMgr::LoadBitmap( LPCTSTR pszResName )
-    {
-        SAutoLock lock(m_cs);
-        IResProvider *pResProvider=GetMatchResProvider(_T("BITMAP"),pszResName);
-        if(!pResProvider) return NULL;
-        return pResProvider->LoadBitmap(pszResName);
-    }
-
-    HCURSOR SResProviderMgr::LoadCursor( LPCTSTR pszResName )
+    HCURSOR SResProviderMgr::LoadCursor( LPCTSTR pszResName ,BOOL bFromFile /*= FALSE*/)
     {
         SAutoLock lock(m_cs);
         if(IS_INTRESOURCE(pszResName))
@@ -162,9 +180,16 @@ namespace SOUI
         const CURSORMAP::CPair * pPair  = m_mapCachedCursor.Lookup(pszResName);
         if(pPair) return pPair->m_value;
         
-        IResProvider *pResProvider=GetMatchResProvider(_T("CURSOR"),pszResName);
-        if(!pResProvider) return NULL;
-        HCURSOR hRet =pResProvider->LoadCursor(pszResName);
+        HCURSOR hRet = NULL;
+        if(bFromFile)
+        {
+            hRet = SResLoadFromFile::LoadCursor(pszResName);
+        }else
+        {
+            IResProvider *pResProvider=GetMatchResProvider(KTypeCursor,pszResName);
+            if(pResProvider)
+                hRet =pResProvider->LoadCursor(pszResName);
+        }
         if(hRet)
         {
             m_mapCachedCursor[pszResName]=hRet;
@@ -172,27 +197,37 @@ namespace SOUI
         return hRet;
     }
 
-    HICON SResProviderMgr::LoadIcon( LPCTSTR pszResName,int cx/*=0*/,int cy/*=0*/ )
+    HICON SResProviderMgr::LoadIcon( LPCTSTR pszResName,int cx/*=0*/,int cy/*=0*/ ,BOOL bFromFile /*= FALSE*/)
     {
         SAutoLock lock(m_cs);
-        IResProvider *pResProvider=GetMatchResProvider(_T("ICON"),pszResName);
-        if(!pResProvider) return NULL;
-        return pResProvider->LoadIcon(pszResName,cx,cy);
+        if(bFromFile)
+        {
+            return SResLoadFromFile::LoadIcon(pszResName,cx,cy);
+        }else
+        {
+            IResProvider *pResProvider=GetMatchResProvider(KTypeIcon,pszResName);
+            if(!pResProvider) return NULL;
+            return pResProvider->LoadIcon(pszResName,cx,cy);
+        }
     }
 
-    BOOL SResProviderMgr::HasResource( LPCTSTR strType,LPCTSTR pszResName )
+    BOOL SResProviderMgr::HasResource( LPCTSTR pszType,LPCTSTR pszResName )
     {
         SAutoLock lock(m_cs);
-        IResProvider *pResProvider=GetMatchResProvider(strType,pszResName);
-        if(!pResProvider) return FALSE;
-        return TRUE;
+        if(IsFileType(pszType))
+        {
+            return ::GetFileAttributes(pszResName) != INVALID_FILE_ATTRIBUTES;
+        }else
+        {
+            return NULL != GetMatchResProvider(pszType,pszResName);
+        }
     }
 
     IBitmap * SResProviderMgr::LoadImage2(const SStringW & strImgID)
     {
         SStringT strImgID2 = S_CW2T(strImgID);
         SStringTList strLst;
-        int nSegs = SplitString(strImgID2,_T(':'),strLst);
+        int nSegs = ParseResID(strImgID2,strLst);
         if(nSegs == 2) return LoadImage(strLst[0],strLst[1]);
         else return LoadImage(NULL,strLst[0]);
     }
@@ -201,7 +236,7 @@ namespace SOUI
     {
         SStringT strIconID2 = S_CW2T(strIconID);
         SStringTList strLst;
-        int nSegs = SplitString(strIconID2,_T(':'),strLst);
+        int nSegs = ParseResID(strIconID2,strLst);
         if(nSegs == 2)
         {
             int cx = _ttoi(strLst[1]);
@@ -213,4 +248,9 @@ namespace SOUI
         }
     }
 
+    BOOL SResProviderMgr::IsFileType( LPCTSTR pszType )
+    {
+        if(!pszType) return FALSE;
+        return _tcsicmp(pszType,KTypeFile) == 0;
+    }
 }
