@@ -15,7 +15,7 @@ namespace SOUI
     LRESULT SSkinGif::OnAttrSrc( const SStringW &strValue,BOOL bLoading )
     {
         SStringTList strLst;
-        size_t nSegs=SplitString(S_CW2T(strValue),_T(':'),strLst);
+        size_t nSegs=ParseResID(S_CW2T(strValue),strLst);
         LPBYTE pBuf=NULL;
         size_t szBuf=0;
 

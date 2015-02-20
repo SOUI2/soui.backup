@@ -66,8 +66,8 @@ HWND SHostWnd::Create(HWND hWndParent,DWORD dwStyle,DWORD dwExStyle, int x, int 
     {
         pugi::xml_document xmlDoc;
         SStringTList strLst;
-
-        if(2 == SplitString(m_strXmlLayout,_T(':'),strLst))
+        
+        if(2 == ParseResID(m_strXmlLayout,strLst))
         {
             LOADXML(xmlDoc,strLst[1],strLst[0]);
         }else
