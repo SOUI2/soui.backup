@@ -9,6 +9,7 @@
     <!--局部style对象-->
     <class name="cls_edit" ncSkin="_skin.sys.border" margin-x="2" margin-y="2" />
   </style>
+  <script src="lua:lua_test"/>
   <root class="cls_dlg_frame" cache="1">
     <caption pos="0,0,-0,30" show="1" font="adding:8">
       <icon pos="10,8" src="LOGO:16"/>

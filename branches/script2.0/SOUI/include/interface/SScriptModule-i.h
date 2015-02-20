@@ -130,5 +130,10 @@ struct IScriptModule : public IObjRef
 
 };
 
+struct IScriptFactory : public IObjRef
+{
+    virtual HRESULT CreateScriptModule(IScriptModule ** ppScriptModule) = 0;
+};
+
 } // End of  SOUI namespace section
 

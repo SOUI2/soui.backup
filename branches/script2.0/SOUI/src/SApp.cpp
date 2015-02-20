@@ -232,14 +232,16 @@ ITranslatorMgr * SApplication::GetTranslator()
 	return m_translator;
 }
 
-void SApplication::SetScriptModule(IScriptModule *pScriptModule)
+void SApplication::SetScriptFactory(IScriptFactory *pScriptFactory)
 {
-	m_pScriptModule = pScriptModule;
+	m_pScriptFactory = pScriptFactory;
 }
 
-IScriptModule * SApplication::GetScriptModule()
+
+HRESULT SApplication::CreateScriptModule( IScriptModule **ppScriptModule )
 {
-	return m_pScriptModule;
+    if(!m_pScriptFactory) return E_FAIL;
+    return m_pScriptFactory->CreateScriptModule(ppScriptModule);
 }
 
 IRenderFactory * SApplication::GetRenderFactory()

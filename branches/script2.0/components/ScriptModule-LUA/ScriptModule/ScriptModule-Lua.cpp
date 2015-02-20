@@ -142,6 +142,12 @@ namespace SOUI
         return target->GetEventSet()->unsubscribeEvent(uEvent,LuaFunctionSlot(d_state,subscriber_name));
     }
 
+
+    HRESULT SIScriptFactory::CreateScriptModule( IScriptModule ** ppScriptModule )
+    {
+        *ppScriptModule= new SOUI::SScriptModule_Lua;
+        return S_OK;
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -149,7 +155,7 @@ namespace SCRIPT_LUA
 {
     BOOL SCreateInstance(IObjRef ** ppScript)
     {
-        *ppScript= new SOUI::SScriptModule_Lua;
+        *ppScript= new SOUI::SIScriptFactory;
         return TRUE;
     }
 }

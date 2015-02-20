@@ -67,9 +67,9 @@
   <rtf>
     <file name="rtf_test"	path="rtf\RTF测试.rtf"/>
   </rtf>
-  <script>
+  <lua>
     <file name="lua_test" path="lua\test.lua"/>
-  </script>
+  </lua>
   <translator>
     <file name="lang_cn" path="translation files\lang_cn.xml"/>
   </translator>

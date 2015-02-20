@@ -123,7 +123,38 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     if(m_privateSkinPool->GetCount())
     {
         GETSKINPOOLMGR->PushSkinPool(m_privateSkinPool);
-    }    
+    }
+
+    //加载脚本数据
+    pugi::xml_node xmlScript = xmlNode.child(L"script");
+    if(m_pScriptModule && xmlScript)
+    {
+        pugi::xml_attribute attrSrc = xmlScript.attribute(L"src");
+        if(attrSrc)
+        {
+            SStringW strSrc = attrSrc.value();
+            SStringWList lstSrc;
+            if(ParseResID(strSrc,lstSrc)==2)
+            {
+                DWORD dwSize = SApplication::getSingleton().GetRawBufferSize(lstSrc[0],lstSrc[1]);
+                if(dwSize)
+                {
+                    CMyBuffer<char> buff(dwSize);
+                    SApplication::getSingleton().GetRawBuffer(lstSrc[0],lstSrc[1],buff,dwSize);
+                    m_pScriptModule->executeScriptBuffer(buff,dwSize);
+                }
+            }
+        }else
+        {
+            SStringW strScript = xmlScript.text().get();
+            if(!strScript.IsEmpty())
+            {
+                SStringA utf8Script = S_CW2A(strScript,CP_UTF8);
+                m_pScriptModule->executeScriptBuffer(utf8Script,utf8Script.GetLength());
+            }
+        }
+    }
+
     DWORD dwStyle =CSimpleWnd::GetStyle();
     DWORD dwExStyle  = CSimpleWnd::GetExStyle();
     
@@ -308,6 +339,9 @@ int SHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
     GETRENDERFACTORY->CreateRegion(&m_rgnInvalidate);
     m_pTipCtrl = GETTOOLTIPFACTORY->CreateToolTip(m_hWnd);
     if(m_pTipCtrl) GetMsgLoop()->AddMessageFilter(m_pTipCtrl);
+    
+    //创建脚本模块,可能不成功
+    SApplication::getSingleton().CreateScriptModule(&m_pScriptModule);
 
     SWindow::SetContainer(this);
 
@@ -1188,6 +1222,12 @@ void SHostWnd::OnCaptureChanged( HWND wnd )
         }
     }
 }
+
 #endif//DISABLE_SWNDSPY
+
+IScriptModule * SHostWnd::GetScriptModule()
+{
+    return m_pScriptModule;
+}
 
 }//namespace SOUI

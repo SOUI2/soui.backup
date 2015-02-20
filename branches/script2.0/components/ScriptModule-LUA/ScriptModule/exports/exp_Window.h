@@ -5,13 +5,15 @@ BOOL ExpLua_Window(lua_State *L)
 	try{
 		lua_tinker::class_add<SWindow>(L,"SWindow");
 		lua_tinker::class_con<SWindow>(L,lua_tinker::constructor<SWindow>);
+        lua_tinker::class_def<SWindow>(L,"GetContainer",&SWindow::GetContainer);
+        lua_tinker::class_def<SWindow>(L,"GetRoot",&SWindow::GetRoot);
+        lua_tinker::class_def<SWindow>(L,"GetTopLevelParent",&SWindow::GetTopLevelParent);
 		lua_tinker::class_def<SWindow>(L,"GetParent",&SWindow::GetParent);
-		lua_tinker::class_def<SWindow>(L,"GetTopLevelParent",&SWindow::GetTopLevelParent);
 		lua_tinker::class_def<SWindow>(L,"DestroyChild",&SWindow::DestroyChild);
 		lua_tinker::class_def<SWindow>(L,"GetChildrenCount",&SWindow::GetChildrenCount);
 		lua_tinker::class_def<SWindow>(L,"FindChildByID",&SWindow::FindChildByID);
-// 		lua_tinker::class_def<SWindow>(L,"FindChildByNameA",(SWindow* (SWindow::*)(LPCSTR,int))&SWindow::FindChildByName);
-//      lua_tinker::class_def<SWindow>(L,"FindChildByNameW",(SWindow* (SWindow::*)(LPCWSTR,int ))&SWindow::FindChildByName);
+        lua_tinker::class_def<SWindow>(L,"FindChildByNameA",(SWindow* (SWindow::*)(LPCSTR,int))&SWindow::FindChildByName);
+        lua_tinker::class_def<SWindow>(L,"FindChildByNameW",(SWindow* (SWindow::*)(LPCWSTR,int ))&SWindow::FindChildByName);
  		lua_tinker::class_def<SWindow>(L,"CreateChildrenFromString",(SWindow* (SWindow::*)(LPCWSTR))&SWindow::CreateChildren);
 		lua_tinker::class_def<SWindow>(L,"GetTextAlign",&SWindow::GetTextAlign);
 		lua_tinker::class_def<SWindow>(L,"GetWindowRect",(void (SWindow::*)(LPRECT))&SWindow::GetWindowRect);
@@ -38,7 +40,7 @@ BOOL ExpLua_Window(lua_State *L)
 		lua_tinker::class_def<SWindow>(L,"Invalidate",&SWindow::Invalidate);
         lua_tinker::class_def<SWindow>(L,"InvalidateRect",(void (SWindow::*)(LPCRECT))&SWindow::InvalidateRect);
 		lua_tinker::class_def<SWindow>(L,"AnimateWindow",&SWindow::AnimateWindow);
-
+        lua_tinker::class_def<SWindow>(L,"GetScriptModule",&SWindow::GetScriptModule);
 		return TRUE;
 	}catch(...)
 	{
