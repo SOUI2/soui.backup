@@ -13,6 +13,8 @@
 
 #pragma once
 
+#include "core/Sobject.h"
+
 namespace SOUI
 {
     class SWindow;
@@ -36,7 +38,7 @@ namespace SOUI
         /*************************************************************************
         Construction
         *************************************************************************/
-        EventArgs(SWindow *pSender);
+        EventArgs(SObject *pSender);
 
         virtual ~EventArgs(void) {}
         virtual UINT GetEventID()= 0;
@@ -50,7 +52,7 @@ namespace SOUI
         int  idFrom; /**< 事件发送者ID */
         LPCWSTR nameFrom; /**< 事件发送者name */
 
-        SWindow *sender;  /**< 产生事件的原始DUI窗口对象，可能和idFrom and nameFrom指定的窗口不同 */
+        SObject *sender;  /**< 产生事件的原始SOUI对象，可能和idFrom and nameFrom指定的对象不同 */
     };
 
     enum SOUI_EVENTS
@@ -123,7 +125,7 @@ namespace SOUI
     class SOUI_EXP EventCmnArgs : public EventArgs
     {
     public:
-        EventCmnArgs(SWindow *pSender,UINT uEvtID):EventArgs(pSender),uID(uEvtID)
+        EventCmnArgs(SObject *pSender,UINT uEvtID):EventArgs(pSender),uID(uEvtID)
         {
 
         }
@@ -136,7 +138,7 @@ namespace SOUI
     class SOUI_EXP EventCmd : public EventArgs
     {
     public:
-        EventCmd(SWindow *pWnd):EventArgs(pWnd){}
+        EventCmd(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_CMD};
         virtual UINT GetEventID(){return EventID;}
     };
@@ -144,7 +146,7 @@ namespace SOUI
     class SOUI_EXP EventCtxMenu : public EventArgs
     {
     public:
-        EventCtxMenu(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
+        EventCtxMenu(SObject *pSender):EventArgs(pSender),bCancel(FALSE){}
         enum{EventID=EVT_CTXMENU};
         virtual UINT GetEventID(){return EventID;}
         POINT           pt;
@@ -154,7 +156,7 @@ namespace SOUI
     class SOUI_EXP EventSetFocus : public EventArgs
     {
     public:
-        EventSetFocus(SWindow *pWnd):EventArgs(pWnd){}
+        EventSetFocus(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_SETFOCUS};
         virtual UINT GetEventID(){return EventID;}
     };
@@ -162,7 +164,7 @@ namespace SOUI
     class SOUI_EXP EventKillFocus : public EventArgs
     {
     public:
-        EventKillFocus(SWindow *pWnd):EventArgs(pWnd){}
+        EventKillFocus(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_KILLFOCUS};
         virtual UINT GetEventID(){return EventID;}
     };
@@ -170,7 +172,7 @@ namespace SOUI
     class SOUI_EXP EventStateChanged : public EventArgs
     {
     public:
-        EventStateChanged(SWindow *pWnd):EventArgs(pWnd){}
+        EventStateChanged(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_STATECHANGED};
         virtual UINT GetEventID(){return EventID;}
 
@@ -181,7 +183,7 @@ namespace SOUI
     class SOUI_EXP EventScrollViewOriginChanged : public EventArgs
     {
     public:
-        EventScrollViewOriginChanged(SWindow *pWnd):EventArgs(pWnd){}
+        EventScrollViewOriginChanged(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_SCROLLVIEW_ORIGINCHANGED};
         virtual UINT GetEventID(){return EventID;}
 
@@ -192,7 +194,7 @@ namespace SOUI
     class SOUI_EXP EventScrollViewSizeChanged : public EventArgs
     {
     public:
-        EventScrollViewSizeChanged(SWindow *pWnd):EventArgs(pWnd){}
+        EventScrollViewSizeChanged(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_SCROLLVIEW_SIZECHANGED};
         virtual UINT GetEventID(){return EventID;}
 
@@ -203,7 +205,7 @@ namespace SOUI
     class SOUI_EXP EventScroll : public EventArgs
     {
     public:
-        EventScroll(SWindow *pWnd):EventArgs(pWnd){}
+        EventScroll(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_SCROLL};
         virtual UINT GetEventID(){return EventID;}
         UINT        uSbCode;
@@ -214,8 +216,8 @@ namespace SOUI
     class SOUI_EXP EventOfEvent : public EventArgs
     {
     public:
-        EventOfEvent(SWindow *pWnd,EventArgs *_pOrgEvt)
-            :EventArgs(pWnd)
+        EventOfEvent(SObject *pSender,EventArgs *_pOrgEvt)
+            :EventArgs(pSender)
             ,pOrgEvt(_pOrgEvt)
         {}
         enum{EventID=EVT_OFEVENT};
@@ -238,7 +240,7 @@ namespace SOUI
     class SOUI_EXP EventOfComoboxExItem : public EventArgs
     {
     public:
-        EventOfComoboxExItem(SWindow *pSender,EventCmd *_pOrgEvt);
+        EventOfComoboxExItem(SObject *pSender,EventCmd *_pOrgEvt);
         enum{EventID=EVT_CBE_OFITEM};
         virtual UINT GetEventID(){return EventID;}
 
@@ -249,7 +251,7 @@ namespace SOUI
     class SOUI_EXP EventTabSelChanging : public EventArgs
     {
     public:
-        EventTabSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
+        EventTabSelChanging(SObject *pSender):EventArgs(pSender),bCancel(FALSE){}
         enum{EventID=EVT_TAB_SELCHANGING};
         virtual UINT GetEventID(){return EventID;}
         UINT        uOldSel;
@@ -260,7 +262,7 @@ namespace SOUI
     class SOUI_EXP EventTabSelChanged : public EventArgs
     {
     public:
-        EventTabSelChanged(SWindow *pWnd):EventArgs(pWnd){}
+        EventTabSelChanged(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_TAB_SELCHANGED};
         virtual UINT GetEventID(){return EventID;}
         UINT        uOldSel;
@@ -270,7 +272,7 @@ namespace SOUI
     class SOUI_EXP EventTabItemHover : public EventArgs
     {
     public:
-        EventTabItemHover(SWindow *pWnd):EventArgs(pWnd){}
+        EventTabItemHover(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_TAB_ITEMHOVER};
         virtual UINT GetEventID(){return EventID;}
         int iHover;
@@ -279,7 +281,7 @@ namespace SOUI
     class SOUI_EXP EventTabItemLeave : public EventArgs
     {
     public:
-        EventTabItemLeave(SWindow *pWnd):EventArgs(pWnd){}
+        EventTabItemLeave(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_TAB_ITEMLEAVE};
         virtual UINT GetEventID(){return EventID;}
         int iLeave;
@@ -288,7 +290,7 @@ namespace SOUI
     class SOUI_EXP EventLBGetDispInfo : public EventArgs
     {
     public:
-        EventLBGetDispInfo(SWindow *pWnd):EventArgs(pWnd){}
+        EventLBGetDispInfo(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_LB_GETDISPINFO};
         virtual UINT GetEventID(){return EventID;}
         int  iItem;
@@ -300,7 +302,7 @@ namespace SOUI
     class SOUI_EXP EventLBSelChanging : public EventArgs
     {
     public:
-        EventLBSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){
+        EventLBSelChanging(SObject *pSender):EventArgs(pSender),bCancel(FALSE){
         
         }
         enum{EventID=EVT_LB_SELCHANGING};
@@ -313,7 +315,7 @@ namespace SOUI
     class SOUI_EXP EventLBSelChanged : public EventArgs
     {
     public:
-        EventLBSelChanged(SWindow *pWnd):EventArgs(pWnd){}
+        EventLBSelChanged(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_LB_SELCHANGED};
         virtual UINT GetEventID(){return EventID;}
         int nNewSel;
@@ -323,7 +325,7 @@ namespace SOUI
     class SOUI_EXP EventTBGetDispInfo : public EventArgs
     {
     public:
-        EventTBGetDispInfo(SWindow *pWnd):EventArgs(pWnd){}
+        EventTBGetDispInfo(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_TB_GETDISPINFO};
         virtual UINT GetEventID(){return EventID;}
         HSTREEITEM  hItem;
@@ -335,7 +337,7 @@ namespace SOUI
     class SOUI_EXP EventTBSelChanging: public EventArgs
     {
     public:
-        EventTBSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
+        EventTBSelChanging(SObject *pSender):EventArgs(pSender),bCancel(FALSE){}
         enum{EventID=EVT_TB_SELCHANGING};
         virtual UINT GetEventID(){return EventID;}
         HSTREEITEM hNewSel;
@@ -346,7 +348,7 @@ namespace SOUI
     class SOUI_EXP EventTBSelChanged: public EventArgs
     {
     public:
-        EventTBSelChanged(SWindow *pWnd):EventArgs(pWnd){}
+        EventTBSelChanged(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_TB_SELCHANGED};
         virtual UINT GetEventID(){return EventID;}
         HSTREEITEM hNewSel;
@@ -356,7 +358,7 @@ namespace SOUI
     class SOUI_EXP EventTBQueryItemHeight : public EventArgs
     {
     public:
-        EventTBQueryItemHeight(SWindow *pWnd):EventArgs(pWnd){}
+        EventTBQueryItemHeight(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_TB_QUERYITEMHEIGHT};
         virtual UINT GetEventID(){return EventID;}
         HSTREEITEM hItem;
@@ -367,7 +369,7 @@ namespace SOUI
     class SOUI_EXP EventRENotify : public EventArgs
     {
     public:
-        EventRENotify(SWindow *pWnd):EventArgs(pWnd){}
+        EventRENotify(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_RE_NOTIFY};
         virtual UINT GetEventID(){return EventID;}
         DWORD iNotify;
@@ -378,7 +380,7 @@ namespace SOUI
     class SOUI_EXP EventSliderPos : public EventArgs
     {
     public:
-        EventSliderPos(SWindow *pWnd):EventArgs(pWnd){}
+        EventSliderPos(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_SLIDER_POS};
         virtual UINT GetEventID(){return EventID;}
         int     nPos;
@@ -388,7 +390,7 @@ namespace SOUI
     class SOUI_EXP EventHeaderClick : public EventArgs
     {
     public:
-        EventHeaderClick(SWindow *pWnd):EventArgs(pWnd){}
+        EventHeaderClick(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_HEADER_CLICK};
         virtual UINT GetEventID(){return EventID;}
         int   iItem;
@@ -398,7 +400,7 @@ namespace SOUI
     class SOUI_EXP EventHeaderItemChanging : public EventArgs
     {
     public:
-        EventHeaderItemChanging(SWindow *pWnd):EventArgs(pWnd){}
+        EventHeaderItemChanging(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_HEADER_ITEMCHANGING};
         virtual UINT GetEventID(){return EventID;}
         int   iItem;
@@ -409,7 +411,7 @@ namespace SOUI
     class SOUI_EXP EventHeaderItemChanged : public EventArgs
     {
     public:
-        EventHeaderItemChanged(SWindow *pWnd):EventArgs(pWnd){}
+        EventHeaderItemChanged(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_HEADER_ITEMCHANGED};
         virtual UINT GetEventID(){return EventID;}
         int   iItem;
@@ -420,7 +422,7 @@ namespace SOUI
     class SOUI_EXP EventHeaderItemSwap : public EventArgs
     {
     public:
-        EventHeaderItemSwap(SWindow *pWnd):EventArgs(pWnd){}
+        EventHeaderItemSwap(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_HEADER_ITEMSWAP};
         virtual UINT GetEventID(){return EventID;}
         int   iOldIndex;
@@ -430,7 +432,7 @@ namespace SOUI
     class SOUI_EXP EventCBSelChange : public EventArgs
     {
     public:
-        EventCBSelChange(SWindow *pWnd,int _nCurSel):EventArgs(pWnd),nCurSel(_nCurSel){}
+        EventCBSelChange(SObject *pSender,int _nCurSel):EventArgs(pSender),nCurSel(_nCurSel){}
         enum{EventID=EVT_CB_SELCHANGE};
         virtual UINT GetEventID(){return EventID;}
         int nCurSel;
@@ -439,7 +441,7 @@ namespace SOUI
     class SOUI_EXP EventLCSelChanging : public EventArgs
     {
     public:
-        EventLCSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
+        EventLCSelChanging(SObject *pSender):EventArgs(pSender),bCancel(FALSE){}
         enum{EventID=EVT_LC_SELCHANGING};
         virtual UINT GetEventID(){return EventID;}
         int nNewSel;
@@ -450,7 +452,7 @@ namespace SOUI
     class SOUI_EXP EventLCSelChanged : public EventArgs
     {
     public:
-        EventLCSelChanged(SWindow *pWnd):EventArgs(pWnd){}
+        EventLCSelChanged(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_LC_SELCHANGED};
         virtual UINT GetEventID(){return EventID;}
         int nNewSel;
@@ -460,7 +462,7 @@ namespace SOUI
 	class SOUI_EXP EventLCItemDeleted : public EventArgs
 	{
 	public:
-		EventLCItemDeleted(SWindow *pWnd) :EventArgs(pWnd){}
+		EventLCItemDeleted(SObject *pSender) :EventArgs(pSender){}
 		enum{ EventID = EVT_LC_ITEMDELETED };
 		virtual UINT GetEventID(){ return EventID; }
 		
@@ -471,7 +473,7 @@ namespace SOUI
     class SOUI_EXP EventCalendarSelDay : public EventArgs
     {
     public:
-        EventCalendarSelDay(SWindow *pWnd):EventArgs(pWnd){}
+        EventCalendarSelDay(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_CALENDAR_SELDAY};
         virtual UINT GetEventID(){return EventID;}
         WORD   wOldDay;
@@ -482,7 +484,7 @@ namespace SOUI
     class SOUI_EXP EventTCSelChanging : public EventArgs
     {
     public:
-        EventTCSelChanging(SWindow *pWnd):EventArgs(pWnd),bCancel(FALSE){}
+        EventTCSelChanging(SObject *pSender):EventArgs(pSender),bCancel(FALSE){}
         enum{EventID=EVT_TC_SELCHANGING};
         virtual UINT GetEventID(){return EventID;}
         HSTREEITEM hOldSel;
@@ -493,7 +495,7 @@ namespace SOUI
     class SOUI_EXP EventTCSelChanged : public EventArgs
     {
     public:
-        EventTCSelChanged(SWindow *pWnd):EventArgs(pWnd){}
+        EventTCSelChanged(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_TC_SELCHANGED};
         virtual UINT GetEventID(){return EventID;}
         HSTREEITEM hOldSel;
@@ -503,7 +505,7 @@ namespace SOUI
     class SOUI_EXP EventTCCheckState : public EventArgs
     {
     public:
-        EventTCCheckState(SWindow *pWnd):EventArgs(pWnd){}
+        EventTCCheckState(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_TC_CHECKSTATE};
         virtual UINT GetEventID(){return EventID;}
         HSTREEITEM  hItem;
@@ -513,7 +515,7 @@ namespace SOUI
     class SOUI_EXP EventTCExpand : public EventArgs
     {
     public:
-        EventTCExpand(SWindow *pWnd):EventArgs(pWnd){}
+        EventTCExpand(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_TC_EXPAND};
         virtual UINT GetEventID(){return EventID;}
         HSTREEITEM  hItem;
@@ -524,7 +526,7 @@ namespace SOUI
     class SOUI_EXP EventTCDbClick : public EventArgs
     {
     public:
-        EventTCDbClick(SWindow *pWnd):EventArgs(pWnd){}
+        EventTCDbClick(SObject *pSender):EventArgs(pSender){}
         enum{EventID=EVT_TC_DBCLICK};
         virtual UINT GetEventID(){return EventID;}
         HSTREEITEM hItem;  //双击选中的节点

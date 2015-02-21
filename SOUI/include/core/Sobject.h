@@ -169,6 +169,21 @@ namespace SOUI
          */    
         virtual SStringW tr(const SStringW &strSrc);
 
+        /**
+         * GetID
+         * @brief    获取对象ID
+         * @return   int -- 对象ID
+         * Describe  
+         */    
+        virtual int GetID() const {return 0;}
+
+        /**
+         * GetName
+         * @brief    获取对象Name
+         * @return   LPCWSTR -- 对象Name
+         * Describe  
+         */    
+        virtual LPCWSTR GetName() const {return NULL;}
     protected:
         /**
          * OnInitFinished

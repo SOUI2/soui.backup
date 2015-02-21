@@ -7,6 +7,7 @@ namespace SOUI
 
     class SPropertyGrid;
     struct IPropertyItem : public IObjRef
+                         , public SObject
     {
         enum PROPITEMTYPE{
             GPI_PARENT,
@@ -31,9 +32,8 @@ namespace SOUI
         virtual BOOL RemoveChild(IPropertyItem * pChild)=0;
         virtual int ChildrenCount() const =0;
 
-        virtual SStringT GetName() const =0;
+        virtual SStringT GetName2() const =0;
         virtual void SetName(const SStringT & strName) =0;
-        virtual int GetID()const =0;
         virtual void SetID(int nID) =0;
         virtual SStringT GetDescription() const =0;
         virtual void SetDescription(const SStringT & strDescription) =0;
