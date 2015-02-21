@@ -47,7 +47,21 @@
     <file name="png_animode" path="image\animode.png"/>
     <file name="png_chrome_tab_new" path="image\chromeTabNew.png"/>
     <file name="png_chrome_tab_close" path="image\chromeTabClose.png"/>
-  </IMGX>
+	
+	<file name="png_lcex_header" path="image\lcex_header.png"/>
+	<file name="png_lcex_header_arrow" path="image\lcex_headerarrow.png"/>
+	<file name="png_lcex_selectrange" path="image\lcex_selectrange.png"/>
+	<file name="png_icon1" path="image\icon\1.png"/>
+	<file name="png_icon2" path="image\icon\2.png"/>
+	<file name="png_icon3" path="image\icon\3.png"/>
+	<file name="png_icon4" path="image\icon\4.png"/>
+	<file name="png_icon5" path="image\icon\5.png"/>
+	<file name="png_icon6" path="image\icon\6.png"/>
+	<file name="png_icon7" path="image\icon\7.png"/>
+	<file name="png_star1" path="image\icon\star_green.png"/>
+	<file name="png_star2" path="image\icon\star_yellow.png"/>
+	<file name="png_install" path="image\icon\button_install.png"/>
+  </IMGX> 
   <img.calendar2>
     <file name="png_skin_btn_semiarc" path="img.calendar2\skin_btn_semiarc.png"/>
     <file name="png_skin_btn_curve" path="img.calendar2\skin_btn_curve.png"/>

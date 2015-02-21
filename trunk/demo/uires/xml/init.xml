@@ -10,7 +10,7 @@
     <id_test1 value="100"/>
     <id_test2 value="101"/>
     <id_test3 value="102"/>
-  </id>
+  </id> 
   
   <skin>
     <!--全局skin对象-->
@@ -22,7 +22,7 @@
     <imglist name="skin_webbtn_back" src="imgx:webbtn_back" states="4"/>
     <imglist name="skin_webbtn_forward" src="imgx:webbtn_forward" states="4"/>
     <imglist name="skin_webbtn_refresh" src="imgx:webbtn_refresh" states="4"/>
-    <imglist name="skin_tab_left" src="imgx:png_tab_left" states="3"/>
+    <imgframe name="skin_tab_left" src="imgx:png_tab_left" states="3" margin="1,1,1,1"/>
     <imglist name="skin_tab_left_splitter" src="imgx:png_tab_left_splitter"/>
     <imglist name="skin_tab_main" src="imgx:png_tab_main" states="3"/>
     <imglist name="skin_btn_menu" src="imgx:btn_menu" states="3"/>
@@ -41,6 +41,19 @@
     <imgframe name="cal_arrow_right" src="img.calendar2:cal_arrow_right"  states="3"   />
     <imgframe name="cal_btn_day" src="img.calendar2:cal_btn_day"  states="3"   />
 
+	<imgframe name="skin_lcex_header" src="imgx:png_lcex_header" states="4" margin-x="2" margin-y="2"/>
+	<imgframe name="skin_lcex_header_arrow" src="imgx:png_lcex_header_arrow" states="2"  />
+	<imgframe name="skin_lcex_selectrange" src="imgx:png_lcex_selectrange" margin-x="1" margin-y="1"/>
+	<imgframe name="skin_icon1" src="imgx:png_icon1" />
+	<imgframe name="skin_icon2" src="imgx:png_icon2" />
+	<imgframe name="skin_icon3" src="imgx:png_icon3" />
+	<imgframe name="skin_icon4" src="imgx:png_icon4" />
+	<imgframe name="skin_icon5" src="imgx:png_icon5" />
+	<imgframe name="skin_icon6" src="imgx:png_icon6" />
+	<imgframe name="skin_icon7" src="imgx:png_icon7" />
+	<imgframe name="skin_star1" src="imgx:png_star1" states="3" />
+	<imgframe name="skin_star2" src="imgx:png_star2" states="3" />
+	<imgframe name="skin_install" src="imgx:png_install" states="3" />
   </skin>
 
   <style>

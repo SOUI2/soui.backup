@@ -187,7 +187,7 @@ namespace SOUI
 
         virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
 
-        void UpdateScrollBar();
+        virtual void UpdateScrollBar();
     protected:
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"viewwid", m_szView.cx, FALSE)
