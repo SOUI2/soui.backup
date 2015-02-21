@@ -285,6 +285,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SListCtrlEx.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\propgrid\spropertygrid.cpp"
 				>
 			</File>
@@ -416,6 +420,10 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\sipaddressctrl.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\SListCtrlEx.h"
 				>
 			</File>
 			<File

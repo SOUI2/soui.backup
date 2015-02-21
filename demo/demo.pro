@@ -48,6 +48,7 @@ HEADERS += MainDlg.h \
            ../controls.extend/reole/dataobject.h \
            ../controls.extend/sscrolltext.h \
            ../controls.extend/scalendar2.h \
+           ../controls.extend/slistctrlex.h \
            httpsvr/filereader-i.h \
            httpsvr/genericserver.h \
            httpsvr/httpserver.h \
@@ -80,6 +81,7 @@ SOURCES += demo.cpp \
            ../controls.extend/reole/dataobject.cpp \
            ../controls.extend/sscrolltext.cpp \
            ../controls.extend/scalendar2.cpp \
+           ../controls.extend/slistctrlex.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \
            memflash.cpp	\
