@@ -8,8 +8,8 @@
 namespace SOUI
 {
     class SPropertyItemBase : public TObjRefImpl<IPropertyItem>
-        , public SObject
     {
+        SOUI_CLASS_NAME(SPropertyItemBase,L"propitembase")
     public:
         virtual ~SPropertyItemBase();
         virtual LPCWSTR GetItemClass() const {return GetClassName();}
@@ -28,8 +28,8 @@ namespace SOUI
         virtual BOOL RemoveChild(IPropertyItem * pChild);
         virtual int ChildrenCount() const;
 
-
-        virtual SStringT GetName() const{return m_strName;}
+        virtual SStringT GetName2() const{return m_strName;}
+        virtual LPCWSTR GetName() const{return m_strName;}
         virtual void SetName(const SStringT & strName){m_strName=strName;}
         virtual int GetID()const {return m_nID;}
         virtual void SetID(int nID) {m_nID = nID;}

@@ -6,7 +6,7 @@
 
 namespace SOUI
 {
-    EventArgs::EventArgs( SWindow *pSender ) : handled(0)
+    EventArgs::EventArgs( SObject *pSender ) : handled(0)
         , sender(pSender)
     {
         idFrom = pSender->GetID();
@@ -22,7 +22,7 @@ namespace SOUI
 
     }
 
-    EventOfComoboxExItem::EventOfComoboxExItem(SWindow *pSender,EventCmd *_pOrgEvt )
+    EventOfComoboxExItem::EventOfComoboxExItem(SObject *pSender,EventCmd *_pOrgEvt )
         :EventArgs(pSender)
         ,pOrgEvt(_pOrgEvt)
         ,bCancel(FALSE)

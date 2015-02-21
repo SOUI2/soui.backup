@@ -11,6 +11,10 @@
 
 namespace SOUI
 {
+//定义两个脚本函数
+const static char  KScriptFun_Init[] = ".init";
+const static char  KScriptFun_Exit[] = ".exit";
+
 
 #define TIMER_CARET    1
 #define TIMER_NEXTFRAME 2

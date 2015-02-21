@@ -330,7 +330,8 @@ namespace SOUI
 
     bool SChromeTabCtrl::OnBtnCloseTabClick( EventArgs *pEvt )
     {
-        SChromeTab *pTab = (SChromeTab*)pEvt->sender->GetParent();
+        SWindow *pBtn = (SWindow*)pEvt->sender;
+        SChromeTab *pTab = (SChromeTab*)pBtn->GetParent();
 
         EventChromeTabClose evt(this);
         evt.pCloseTab = pTab;
