@@ -14,7 +14,7 @@ namespace SOUI
     {
     public:
         FlyStateEvent(SWindow *pSender,int _percent,BOOL _bEndPos)
-            :EventArgs(pSender)
+            :TplEventArgs<FlyStateEvent>(pSender)
             ,nPercent(_percent)
             ,bEndPos(_bEndPos)
         {

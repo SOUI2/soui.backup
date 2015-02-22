@@ -9,7 +9,7 @@ namespace SOUI
     public:
         EventCapture(SWindow *pWnd,CPoint pt):TplEventArgs<EventCapture>(pWnd),pt_(pt){}
         enum{EventID=EVT_EXTERNAL_BEGIN};
-        static LPCSTR ScriptHanlder(){return "on_capture";}
+        static LPCSTR ScriptHandler(){return "on_capture";}
 
         CPoint pt_;
     };
@@ -19,7 +19,7 @@ namespace SOUI
     public:
         EventCaptureFinish(SWindow *pWnd,CPoint pt):TplEventArgs<EventCaptureFinish>(pWnd),pt_(pt){}
         enum{EventID=EVT_EXTERNAL_BEGIN+1};
-        static LPCSTR ScriptHanlder(){return "on_capture_finish";}
+        static LPCSTR ScriptHandler(){return "on_capture_finish";}
 
         CPoint pt_;
     };
