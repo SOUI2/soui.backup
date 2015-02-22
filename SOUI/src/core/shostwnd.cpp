@@ -11,10 +11,6 @@
 
 namespace SOUI
 {
-//定义两个脚本函数
-const static char  KScriptFun_Init[] = "on_init";
-const static char  KScriptFun_Exit[] = "on_exit";
-
 
 #define TIMER_CARET    1
 #define TIMER_NEXTFRAME 2
@@ -49,6 +45,8 @@ SHostWnd::SHostWnd( LPCTSTR pszResName /*= NULL*/ )
     m_privateStylePool.Attach(new SStylePool);
     m_privateSkinPool.Attach(new SSkinPool);
     SetContainer(this);
+    m_evtSet.addEvent(EVENTID(EventInit));
+    m_evtSet.addEvent(EVENTID(EventExit));
 }
 
 SHostWnd::~SHostWnd()
@@ -110,8 +108,8 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     //free old script module
     if(m_pScriptModule)
     {
-        EventCmnArgs evt(this,0);
-        m_pScriptModule->executeScriptedEventHandler(KScriptFun_Exit,&evt);
+        EventExit evt(this);
+        m_pScriptModule->executeScriptedEventHandler(EventExit::ScriptHandler(),&evt);
         m_pScriptModule = NULL;
     }
     //为了能够重入，先销毁原有的SOUI窗口
@@ -251,8 +249,8 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     
     if(m_pScriptModule)
     {//脚本独有的事件
-        EventCmnArgs evt(this,0);
-        m_pScriptModule->executeScriptedEventHandler(KScriptFun_Init,&evt);
+        EventInit evt(this);
+        m_pScriptModule->executeScriptedEventHandler(EventInit::ScriptHandler(),&evt);
     }
     return TRUE;
 }
@@ -371,8 +369,8 @@ void SHostWnd::OnDestroy()
 {
     if(m_pScriptModule)
     {//脚本独有的事件
-        EventCmnArgs evt(this,0);
-        m_pScriptModule->executeScriptedEventHandler(KScriptFun_Exit,&evt);
+        EventExit evt(this);
+        m_pScriptModule->executeScriptedEventHandler(EventExit::ScriptHandler(),&evt);
     }
 
     SWindow::SSendMessage(WM_DESTROY);

@@ -20,6 +20,9 @@ namespace SOUI
     class SWindow;
     enum SOUI_EVENTS
     {
+        EVT_INIT=8000,
+        EVT_EXIT,
+
         EVT_MOUSE_HOVER=9000,//两个窗口鼠标状态事件
         EVT_MOUSE_LEAVE,
 
@@ -157,6 +160,22 @@ namespace SOUI
     };
 
     #define EVENTID(x) x::EventID,x::ScriptHandler()
+
+    class SOUI_EXP EventInit : public TplEventArgs<EventInit>
+    {
+    public:
+        EventInit(SObject *pSender):TplEventArgs<EventInit>(pSender){}
+        enum{EventID=EVT_INIT};
+        static LPCSTR ScriptHandler(){return "on_init";}
+    };
+
+    class SOUI_EXP EventExit : public TplEventArgs<EventExit>
+    {
+    public:
+        EventExit(SObject *pSender):TplEventArgs<EventExit>(pSender){}
+        enum{EventID=EVT_EXIT};
+        static LPCSTR ScriptHandler(){return "on_exit";}
+    };
 
     class SOUI_EXP EventSwndDestroy : public TplEventArgs<EventSwndDestroy>
     {

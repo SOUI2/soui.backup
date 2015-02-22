@@ -35,6 +35,7 @@ BOOL SOUI_Export_Lua(lua_State *L)
 	if(bRet) bRet=ExpLua_MessageBox(L);
 	if(bRet) bRet=ExpLua_ScriptModule(L);
 	if(bRet) bRet=ExpLua_ResProvider(L);
+    if(bRet) bRet=ExpLua_SObject(L);
     if(bRet) bRet=ExpLua_Window(L);
     if(bRet) bRet=ExpLua_EventArgs(L);
 	return bRet;
