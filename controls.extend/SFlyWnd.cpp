@@ -8,7 +8,7 @@ namespace SOUI
 
     SFlyWnd::SFlyWnd(void):m_bEndPos(FALSE),m_nAniTime(200)
     {
-       m_evtSet.addEvent(EVT_FLYSTATE);
+       m_evtSet.addEvent(EVENTID(FlyStateEvent));
     }
 
     SFlyWnd::~SFlyWnd(void)

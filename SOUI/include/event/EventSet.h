@@ -8,7 +8,7 @@ namespace SOUI
     class SEvent
     {
     public:
-        SEvent(DWORD dwEventID):m_dwEventID(dwEventID)
+        SEvent(DWORD dwEventID,LPCSTR pszEventHandlerName):m_dwEventID(dwEventID),m_strEventHanderName(pszEventHandlerName)
         {
 
         }
@@ -24,6 +24,7 @@ namespace SOUI
 
         DWORD GetEventID(){return m_dwEventID;}
 
+        SStringA GetEventHandlerName() const {return m_strEventHanderName;}
         /*!
         \brief
             Subscribes some function or object to the Event
@@ -50,11 +51,13 @@ namespace SOUI
         int findSlotFunctor(const ISlotFunctor& slot);
 
         DWORD    m_dwEventID;
+        SStringA m_strEventHanderName;
         SArray<ISlotFunctor *> m_evtSlots;
     };
 
     class SOUI_EXP SEventSet
     {
+        friend class SWindow;
     public:
         SEventSet(void);
         virtual ~SEventSet(void);
@@ -71,7 +74,7 @@ namespace SOUI
 
         \exception AlreadyExistsException    Thrown if an Event already exists named \a name.
         */
-        void    addEvent(const DWORD dwEventID);
+        void    addEvent(const DWORD dwEventID,LPCSTR pszEventHandlerName);
 
 
         /*!
@@ -105,6 +108,8 @@ namespace SOUI
             true if an Event named \a name was found, or false if the Event was not found
         */
         bool    isEventPresent(const DWORD dwEventID);
+
+        bool    isEventPresent(const SStringA &  pszEventHandlerName);
 
         /*!
         \brief

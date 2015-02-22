@@ -35,9 +35,9 @@ SListBox::SListBox()
     , m_bHotTrack(FALSE)
 {
     m_bFocusable = TRUE;
-    m_evtSet.addEvent(EventLBSelChanging::EventID);
-    m_evtSet.addEvent(EventLBSelChanged::EventID);
-    m_evtSet.addEvent(EventLBGetDispInfo::EventID);
+    m_evtSet.addEvent(EVENTID(EventLBSelChanging));
+    m_evtSet.addEvent(EVENTID(EventLBSelChanged));
+    m_evtSet.addEvent(EVENTID(EventLBGetDispInfo));
 }
 
 SListBox::~SListBox()

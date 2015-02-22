@@ -1,4 +1,12 @@
-function onEvtTest2(sender)
+function on_init(args)
+	SMessageBox(0,T "execute script function: on_init", T "msgbox", 1);
+end
+
+function on_exit(args)
+	SMessageBox(0,T "execute script function: on_exit", T "msgbox", 1);
+end
+
+function onEvtTest2(args)
 	SMessageBox(0,T "onEvtTest2", T "msgbox", 1);
 	return 1;
 end

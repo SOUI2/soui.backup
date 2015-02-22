@@ -14,6 +14,8 @@ namespace SOUI
         EventPropGridValueChanged(SWindow *pWnd):EventArgs(pWnd){}
         enum{EventID=EVT_PG_VALUECHANGED};
         virtual UINT GetEventID(){return EventID;}
+        static LPCSTR ScriptHandler(){return "on_propgrid_value_changed";}
+
         IPropertyItem * pItem;
     };
 

@@ -31,9 +31,9 @@ SItemPanel::SItemPanel(SWindow *pFrameHost,pugi::xml_node xmlNode,IItemContainer
         InitFromXml(xmlNode);
         BuildWndTreeZorder();
     }
-    m_evtSet.addEvent(EVT_ITEMPANEL_CLICK);
-    m_evtSet.addEvent(EVT_ITEMPANEL_DBCLICK);
-    m_evtSet.addEvent(EVT_ITEMPANEL_RCLICK);
+    m_evtSet.addEvent(EVENTID(EventItemPanelClick));
+    m_evtSet.addEvent(EVENTID(EventItemPanelDbclick));
+    m_evtSet.addEvent(EVENTID(EventItemPanelRclick));
 }
 
 void SItemPanel::OnFinalRelease()
@@ -62,15 +62,15 @@ LRESULT SItemPanel::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 
     if(uMsg == WM_LBUTTONDOWN)
     {
-        EventCmnArgs evt(this,EVT_ITEMPANEL_CLICK);
+        EventItemPanelClick evt(this);
         OnFireEvent(evt);
     }else if(uMsg == WM_RBUTTONDOWN)
     {
-        EventCmnArgs evt(this,EVT_ITEMPANEL_RCLICK);
+        EventItemPanelRclick evt(this);
         OnFireEvent(evt);
     }else if(uMsg == WM_LBUTTONDBLCLK)
     {
-        EventCmnArgs evt(this,EVT_ITEMPANEL_DBCLICK);
+        EventItemPanelDbclick evt(this);
         OnFireEvent(evt);
     }
 

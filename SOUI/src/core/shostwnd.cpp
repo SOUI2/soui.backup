@@ -12,8 +12,8 @@
 namespace SOUI
 {
 //定义两个脚本函数
-const static char  KScriptFun_Init[] = ".init";
-const static char  KScriptFun_Exit[] = ".exit";
+const static char  KScriptFun_Init[] = "on_init";
+const static char  KScriptFun_Exit[] = "on_exit";
 
 
 #define TIMER_CARET    1
@@ -107,7 +107,19 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     }
     if(!CSimpleWnd::IsWindow()) return FALSE;
     
-    SSendMessage(WM_DESTROY);   //为了能够重入，先销毁原有的SOUI窗口
+    //free old script module
+    if(m_pScriptModule)
+    {
+        EventCmnArgs evt(this,0);
+        m_pScriptModule->executeScriptedEventHandler(KScriptFun_Exit,&evt);
+        m_pScriptModule = NULL;
+    }
+    //为了能够重入，先销毁原有的SOUI窗口
+    SSendMessage(WM_DESTROY);   
+    //create new script module
+    SApplication::getSingleton().CreateScriptModule(&m_pScriptModule);
+    
+
     if(m_privateStylePool->GetCount())
     {
         m_privateStylePool->RemoveAll();
@@ -237,6 +249,11 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     m_bNeedRepaint = TRUE;
     m_rgnInvalidate->Clear();
     
+    if(m_pScriptModule)
+    {//脚本独有的事件
+        EventCmnArgs evt(this,0);
+        m_pScriptModule->executeScriptedEventHandler(KScriptFun_Init,&evt);
+    }
     return TRUE;
 }
 
@@ -345,9 +362,6 @@ int SHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
     m_pTipCtrl = GETTOOLTIPFACTORY->CreateToolTip(m_hWnd);
     if(m_pTipCtrl) GetMsgLoop()->AddMessageFilter(m_pTipCtrl);
     
-    //创建脚本模块,可能不成功
-    SApplication::getSingleton().CreateScriptModule(&m_pScriptModule);
-
     SWindow::SetContainer(this);
 
     return 0;
@@ -355,6 +369,12 @@ int SHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 void SHostWnd::OnDestroy()
 {
+    if(m_pScriptModule)
+    {//脚本独有的事件
+        EventCmnArgs evt(this,0);
+        m_pScriptModule->executeScriptedEventHandler(KScriptFun_Exit,&evt);
+    }
+
     SWindow::SSendMessage(WM_DESTROY);
 
     if(m_pTipCtrl)
@@ -1183,6 +1203,7 @@ LRESULT SHostWnd::OnUpdateSwnd(UINT uMsg,WPARAM wParam,LPARAM)
     }
     return 0;
 }
+#endif//DISABLE_SWNDSPY
 
 void SHostWnd::_UpdateNonBkgndBlendSwnd()
 {
@@ -1228,11 +1249,10 @@ void SHostWnd::OnCaptureChanged( HWND wnd )
     }
 }
 
-#endif//DISABLE_SWNDSPY
-
 IScriptModule * SHostWnd::GetScriptModule()
 {
     return m_pScriptModule;
 }
+
 
 }//namespace SOUI

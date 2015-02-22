@@ -18,7 +18,7 @@ namespace SOUI{
 
     SChatEdit::SChatEdit(void)
     {
-        GetEventSet()->addEvent(EventChatEditKeyReturn::EventID);
+        GetEventSet()->addEvent(EVENTID(EventChatEditKeyReturn));
     }
 
     SChatEdit::~SChatEdit(void)
