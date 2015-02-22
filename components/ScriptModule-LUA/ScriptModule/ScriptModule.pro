@@ -46,6 +46,7 @@ HEADERS += require.h \
            exports/exp_strcpcvt.h \
            exports/exp_string.h \
            exports/exp_Window.h \
+           exports/exp_Object.h \
            ../lua_tinker/lua_tinker.h
 
 SOURCES += ScriptModule-Lua.cpp \

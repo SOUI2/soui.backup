@@ -18,6 +18,7 @@ using namespace SOUI;
 #include "exp_app.h"
 #include "exp_ScriptModule.h"
 #include "exp_ResProvider.h"
+#include "exp_object.h"
 #include "exp_msgbox.h"
 #include "exp_eventArgs.h"
 #include "exp_Window.h"

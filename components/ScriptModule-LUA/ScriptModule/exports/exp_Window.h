@@ -1,9 +1,19 @@
 #include <core/swnd.h>
 
+//定义一个从SObject转换成SWindow的方法
+SWindow * toSWindow(SObject * pObj)
+{
+    if(!pObj->IsClass(SWindow::GetClassName())) return NULL;
+    return (SWindow*)pObj;
+}
+
 BOOL ExpLua_Window(lua_State *L)
 {
 	try{
+        lua_tinker::def(L,"toSWindow",toSWindow);
 		lua_tinker::class_add<SWindow>(L,"SWindow");
+        lua_tinker::class_inh<SWindow,IObjRef>(L);
+        lua_tinker::class_inh<SWindow,SObject>(L);
 		lua_tinker::class_con<SWindow>(L,lua_tinker::constructor<SWindow>);
         lua_tinker::class_def<SWindow>(L,"GetContainer",&SWindow::GetContainer);
         lua_tinker::class_def<SWindow>(L,"GetRoot",&SWindow::GetRoot);
