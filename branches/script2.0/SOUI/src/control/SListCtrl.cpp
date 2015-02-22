@@ -31,9 +31,9 @@ SListCtrl::SListCtrl()
 {
     m_bClipClient = TRUE;
     m_bFocusable = TRUE;
-    m_evtSet.addEvent(EventLCSelChanging::EventID);
-    m_evtSet.addEvent(EventLCSelChanged::EventID);
-    m_evtSet.addEvent(EventLCItemDeleted::EventID);
+    m_evtSet.addEvent(EVENTID(EventLCSelChanging));
+    m_evtSet.addEvent(EVENTID(EventLCSelChanged));
+    m_evtSet.addEvent(EVENTID(EventLCItemDeleted));
 }
 
 SListCtrl::~SListCtrl()

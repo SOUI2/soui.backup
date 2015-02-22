@@ -24,7 +24,7 @@ SScrollBar::SScrollBar()
 {
     memset(&m_si,0,sizeof(SCROLLINFO));
     m_si.nTrackPos=-1;
-    m_evtSet.addEvent(EventScroll::EventID);
+    m_evtSet.addEvent(EVENTID(EventScroll));
 }
 
 SScrollBar::~SScrollBar()

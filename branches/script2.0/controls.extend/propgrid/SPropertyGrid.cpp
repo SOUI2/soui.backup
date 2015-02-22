@@ -53,7 +53,7 @@ namespace SOUI
     ,m_bDraging(FALSE)
     ,m_pInplaceActiveWnd(NULL)
     {
-        GetEventSet()->addEvent(EventPropGridValueChanged::EventID);
+        GetEventSet()->addEvent(EVENTID(EventPropGridValueChanged));
         GetEventSet()->subscribeEvent(EventLBSelChanged::EventID,Subscriber(&SPropertyGrid::OnSelChanged,this));
     }
 

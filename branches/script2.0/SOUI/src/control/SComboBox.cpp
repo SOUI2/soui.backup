@@ -76,8 +76,8 @@ SComboBoxBase::SComboBoxBase(void)
     m_style.SetAttribute(L"align",L"left",TRUE);
     m_style.SetAttribute(L"valign",L"middle",TRUE);
 
-    m_evtSet.addEvent(EventCBSelChange::EventID);
-    m_evtSet.addEvent(EventRENotify::EventID);
+    m_evtSet.addEvent(EVENTID(EventCBSelChange));
+    m_evtSet.addEvent(EVENTID(EventRENotify));
 }
 
 SComboBoxBase::~SComboBoxBase(void)
@@ -489,7 +489,7 @@ BOOL SComboBox::FireEvent( EventArgs &evt )
 
 SComboBoxEx::SComboBoxEx():m_uTxtID(0),m_uIconID(0),m_pListBox(NULL)
 {
-    m_evtSet.addEvent(EventOfComoboxExItem::EventID);
+    m_evtSet.addEvent(EVENTID(EventOfComoboxExItem));
 }
 
 SComboBoxEx::~SComboBoxEx()

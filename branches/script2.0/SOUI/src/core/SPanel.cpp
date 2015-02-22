@@ -739,8 +739,8 @@ void SPanel::OnHScroll(UINT nSBCode, UINT nPos, HWND)
 SScrollView::SScrollView()
 {
     m_bClipClient=TRUE;
-    GetEventSet()->addEvent(EventScrollViewOriginChanged::EventID);
-    GetEventSet()->addEvent(EventScrollViewSizeChanged::EventID);
+    GetEventSet()->addEvent(EVENTID(EventScrollViewOriginChanged));
+    GetEventSet()->addEvent(EVENTID(EventScrollViewSizeChanged));
 }
 
 
