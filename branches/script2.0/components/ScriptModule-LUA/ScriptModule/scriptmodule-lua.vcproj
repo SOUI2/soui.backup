@@ -248,6 +248,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\exports\exp_hostwnd.h"
+				>
+			</File>
+			<File
 				RelativePath="exports\exp_msgbox.h"
 				>
 			</File>

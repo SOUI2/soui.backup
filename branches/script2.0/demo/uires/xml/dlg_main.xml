@@ -34,7 +34,7 @@
     end
     ]]>
   </script>
-  <root class="cls_dlg_frame" cache="1">
+  <root class="cls_dlg_frame" cache="1" on_init="on_init" on_exit="on_exit">
     <caption pos="0,0,-0,30" show="1" font="adding:8">
       <icon pos="10,8" src="LOGO:16"/>
       <text class="cls_txt_red">SOUI-DEMO version:%ver%</text>

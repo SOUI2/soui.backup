@@ -39,6 +39,7 @@ HEADERS += require.h \
            exports/exp_app.h \
            exports/exp_Basic.h \
            exports/exp_eventArgs.h \
+           exports/exp_hostwnd.h \
            exports/exp_msgbox.h \
            exports/exp_pugixml.h \
            exports/exp_ResProvider.h \
