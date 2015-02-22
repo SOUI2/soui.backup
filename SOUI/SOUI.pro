@@ -102,6 +102,7 @@ HEADERS += include/SApp.h \
            include/helper/SResID.h \
            include/helper/STime.h \
            include/helper/STimerEx.h \
+           include/helper/SScriptTimer.h \
            include/helper/SToolTip.h \
            include/helper/swndspy.h \
            include/helper/SwndMsgCracker.h \
@@ -177,6 +178,7 @@ SOURCES += src/SApp.cpp \
            src/helper/MenuWndHook.cpp \
            src/helper/SMenu.cpp \
            src/helper/STimerEx.cpp \
+           src/helper/SScriptTimer.cpp \
            src/helper/stooltip.cpp \
            src/res.mgr/SFontPool.cpp \
            src/res.mgr/SObjDefAttr.cpp \

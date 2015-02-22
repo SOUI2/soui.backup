@@ -11,6 +11,7 @@
 #include "res.mgr/SObjDefAttr.h"
 
 #include "helper/STimerEx.h"
+#include "helper/SScriptTimer.h"
 #include "helper/mybuffer.h"
 #include "helper/SToolTip.h"
 #include "helper/AppDir.h"
@@ -92,6 +93,7 @@ void SApplication::_CreateSingletons()
     new SThreadActiveWndMgr();
     new SWindowMgr();
     new STimer2();
+    new SScriptTimer();
     new SFontPool(m_RenderFactory);
     new SStringPool();
     new SNamedID();
@@ -108,6 +110,7 @@ void SApplication::_DestroySingletons()
     delete SNamedID::getSingletonPtr();
     delete SStringPool::getSingletonPtr();
     delete SFontPool::getSingletonPtr();
+    delete SScriptTimer::getSingletonPtr();
     delete STimer2::getSingletonPtr();
     delete SThreadActiveWndMgr::getSingletonPtr();
     delete SWindowMgr::getSingletonPtr();

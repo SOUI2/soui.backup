@@ -16,6 +16,7 @@ using namespace SOUI;
 #include "exp_strcpcvt.h"
 #include "exp_pugixml.h"
 #include "exp_app.h"
+#include "exp_hostwnd.h"
 #include "exp_ScriptModule.h"
 #include "exp_ResProvider.h"
 #include "exp_object.h"
@@ -32,6 +33,7 @@ BOOL SOUI_Export_Lua(lua_State *L)
     if(bRet) bRet=ExpLua_StrCpCvt(L);
     if(bRet) bRet=ExpLua_pugixml(L);
 	if(bRet) bRet=ExpLua_App(L);
+    if(bRet) bRet=ExpLua_HostWnd(L);
 	if(bRet) bRet=ExpLua_MessageBox(L);
 	if(bRet) bRet=ExpLua_ScriptModule(L);
 	if(bRet) bRet=ExpLua_ResProvider(L);

@@ -15,6 +15,8 @@ namespace SOUI
 #define TIMER_CARET    1
 #define TIMER_NEXTFRAME 2
 #define KConstDummyPaint    0x80000000
+
+
 //////////////////////////////////////////////////////////////////////////
 //    SDummyWnd
 //////////////////////////////////////////////////////////////////////////
@@ -109,9 +111,10 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     if(m_pScriptModule)
     {
         EventExit evt(this);
-        m_pScriptModule->executeScriptedEventHandler(EventExit::ScriptHandler(),&evt);
+        FireEvent(evt);
         m_pScriptModule = NULL;
     }
+
     //为了能够重入，先销毁原有的SOUI窗口
     SSendMessage(WM_DESTROY);   
     //create new script module
@@ -248,10 +251,11 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     m_rgnInvalidate->Clear();
     
     if(m_pScriptModule)
-    {//脚本独有的事件
+    {
         EventInit evt(this);
-        m_pScriptModule->executeScriptedEventHandler(EventInit::ScriptHandler(),&evt);
+        FireEvent(evt);
     }
+
     return TRUE;
 }
 
@@ -370,7 +374,7 @@ void SHostWnd::OnDestroy()
     if(m_pScriptModule)
     {//脚本独有的事件
         EventExit evt(this);
-        m_pScriptModule->executeScriptedEventHandler(EventExit::ScriptHandler(),&evt);
+        FireEvent(evt);
     }
 
     SWindow::SSendMessage(WM_DESTROY);
@@ -1252,5 +1256,29 @@ IScriptModule * SHostWnd::GetScriptModule()
     return m_pScriptModule;
 }
 
+LRESULT SHostWnd::OnScriptTimer( UINT uMsg,WPARAM wParam,LPARAM lParam )
+{
+    if(m_pScriptModule)
+    {
+        EventTimer evt(this,(UINT)wParam);
+        m_pScriptModule->executeScriptedEventHandler((LPCSTR)lParam,&evt);
+    }
+    return 0;
+}
+
+UINT SHostWnd::setTimeout( LPCSTR pszScriptFunc,UINT uElapse )
+{
+    return SScriptTimer::getSingleton().SetTimer(m_hWnd,pszScriptFunc,uElapse,FALSE);
+}
+
+UINT SHostWnd::setInterval( LPCSTR pszScriptFunc,UINT uElapse )
+{
+    return SScriptTimer::getSingleton().SetTimer(m_hWnd,pszScriptFunc,uElapse,TRUE);
+}
+
+void SHostWnd::clearTimer( UINT uID )
+{
+    SScriptTimer::getSingleton().ClearTimer(uID);
+}
 
 }//namespace SOUI

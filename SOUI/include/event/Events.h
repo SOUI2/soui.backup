@@ -22,6 +22,7 @@ namespace SOUI
     {
         EVT_INIT=8000,
         EVT_EXIT,
+        EVT_TIMER,
 
         EVT_MOUSE_HOVER=9000,//两个窗口鼠标状态事件
         EVT_MOUSE_LEAVE,
@@ -175,6 +176,16 @@ namespace SOUI
         EventExit(SObject *pSender):TplEventArgs<EventExit>(pSender){}
         enum{EventID=EVT_EXIT};
         static LPCSTR ScriptHandler(){return "on_exit";}
+    };
+
+    class SOUI_EXP EventTimer : public TplEventArgs<EventTimer>
+    {
+    public:
+        EventTimer(SObject *pSender,UINT _uID):TplEventArgs<EventTimer>(pSender),uID(_uID){}
+        enum{EventID=EVT_TIMER};
+        static LPCSTR ScriptHandler(){return NULL;}
+
+        UINT uID;
     };
 
     class SOUI_EXP EventSwndDestroy : public TplEventArgs<EventSwndDestroy>

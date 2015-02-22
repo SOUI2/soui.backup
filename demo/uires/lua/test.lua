@@ -1,5 +1,7 @@
 function on_init(args)
+	math.randomseed(os.time());
 	SMessageBox(0,T "execute script function: on_init", T "msgbox", 1);
+	return 1;
 end
 
 function on_exit(args)
