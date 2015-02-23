@@ -420,6 +420,7 @@ namespace lua_tinker
 	// member variable
 	struct var_base
 	{
+        virtual ~var_base(){}
 		virtual void get(lua_State *L) = 0;
 		virtual void set(lua_State *L) = 0;
 	};
