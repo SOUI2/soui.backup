@@ -54,6 +54,7 @@ BOOL ExpLua_Window(lua_State *L)
         lua_tinker::class_def<SWindow>(L,"GetScriptModule",&SWindow::GetScriptModule);
         lua_tinker::class_def<SWindow>(L,"Move2",(void (SWindow::*)(int,int,int,int))&SWindow::Move);
         lua_tinker::class_def<SWindow>(L,"Move",(void (SWindow::*)(LPCRECT))&SWindow::Move);
+        lua_tinker::class_def<SWindow>(L,"FireCommand",&SWindow::FireCommand);
 
 		return TRUE;
 	}catch(...)
