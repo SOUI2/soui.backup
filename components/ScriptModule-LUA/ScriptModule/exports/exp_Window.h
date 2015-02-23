@@ -26,7 +26,9 @@ BOOL ExpLua_Window(lua_State *L)
  		lua_tinker::class_def<SWindow>(L,"CreateChildrenFromString",(SWindow* (SWindow::*)(LPCWSTR))&SWindow::CreateChildren);
 		lua_tinker::class_def<SWindow>(L,"GetTextAlign",&SWindow::GetTextAlign);
 		lua_tinker::class_def<SWindow>(L,"GetWindowRect",(void (SWindow::*)(LPRECT))&SWindow::GetWindowRect);
+        lua_tinker::class_def<SWindow>(L,"GetWindowRect2",(CRect (SWindow::*)())&SWindow::GetWindowRect);
 		lua_tinker::class_def<SWindow>(L,"GetClientRect",(void (SWindow::*)(LPRECT))&SWindow::GetClientRect);
+        lua_tinker::class_def<SWindow>(L,"GetClientRect2",(CRect (SWindow::*)())&SWindow::GetClientRect);
 		lua_tinker::class_def<SWindow>(L,"GetWindowText",&SWindow::GetWindowText);
 		lua_tinker::class_def<SWindow>(L,"SetWindowText",&SWindow::SetWindowText);
 		lua_tinker::class_def<SWindow>(L,"SendSwndMessage",&SWindow::SSendMessage);
@@ -50,6 +52,9 @@ BOOL ExpLua_Window(lua_State *L)
         lua_tinker::class_def<SWindow>(L,"InvalidateRect",(void (SWindow::*)(LPCRECT))&SWindow::InvalidateRect);
 		lua_tinker::class_def<SWindow>(L,"AnimateWindow",&SWindow::AnimateWindow);
         lua_tinker::class_def<SWindow>(L,"GetScriptModule",&SWindow::GetScriptModule);
+        lua_tinker::class_def<SWindow>(L,"Move2",(void (SWindow::*)(int,int,int,int))&SWindow::Move);
+        lua_tinker::class_def<SWindow>(L,"Move",(void (SWindow::*)(LPCRECT))&SWindow::Move);
+
 		return TRUE;
 	}catch(...)
 	{

@@ -51,6 +51,7 @@ BOOL ExpLua_Basic(lua_State *L)
 		lua_tinker::class_def<CRect>(L,"IsRectNull",&CRect::IsRectNull);
 		lua_tinker::class_def<CRect>(L,"PtInRect",&CRect::PtInRect);
 		lua_tinker::class_def<CRect>(L,"SetRectEmpty",&CRect::SetRectEmpty);
+        lua_tinker::class_def<CRect>(L,"OffsetRect",(void (CRect::*)(int,int))&CRect::OffsetRect);
 
 
 		//CSize
