@@ -702,6 +702,7 @@ int lua_tinker::meta_set(lua_State *L)
 	}
 	else if(lua_isnil(L, -1))
 	{
+        invoke_parent(L);
 		lua_pushvalue(L,2);
 		lua_pushvalue(L,3);
 		lua_rawset(L, -4);
@@ -806,6 +807,8 @@ lua_tinker::table::table(lua_State* L, const char* name)
 	}
 
 	m_obj = new table_obj(L, lua_gettop(L));
+
+    m_obj->inc_ref();
 }
 
 lua_tinker::table::table(lua_State* L, int index)
