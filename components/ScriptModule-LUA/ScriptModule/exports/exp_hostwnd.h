@@ -11,6 +11,7 @@ BOOL ExpLua_HostWnd(lua_State *L)
 {
 	try{
 		lua_tinker::class_add<SHostWnd>(L,"SHostWnd");
+        lua_tinker::class_inh<SHostWnd,SWindow>(L);
 		lua_tinker::class_def<SHostWnd>(L,"AnimateHostWindow",&SHostWnd::AnimateHostWindow);
 		lua_tinker::class_def<SHostWnd>(L,"setTimeout",&SHostWnd::setTimeout);
 		lua_tinker::class_def<SHostWnd>(L,"setInterval",&SHostWnd::setInterval);
