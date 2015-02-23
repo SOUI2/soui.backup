@@ -128,7 +128,7 @@ namespace SOUI
          */    
         virtual HRESULT SetAttribute(const SStringA &  strAttribName, const SStringA &  strValue, BOOL bLoading)
         {
-            return DefAttributeProc(S_CA2W(strAttribName),S_CA2W(strValue),bLoading);
+            return SetAttribute(S_CA2W(strAttribName),S_CA2W(strValue),bLoading);
         }
 
         /**
@@ -158,6 +158,20 @@ namespace SOUI
         {
             STraceW(L"warning!!! unhandled attribute %s in class %s, value = %s",strAttribName,GetObjectClass(),strValue);
             return E_FAIL;
+        }
+
+        /**
+         * OnAttribute
+         * @brief    属性处理后调用的方法
+         * @param    const SStringW & strAttribName --  属性名
+         * @param    const SStringW & strValue --  属性名
+         * @param    HRESULT hr --  属性处理结果
+         * @return   HRESULT -- 属性处理结果
+         * Describe  不做处理，直接返回
+         */    
+        virtual HRESULT AfterAttribute(const SStringW & strAttribName,const SStringW & strValue,HRESULT hr)
+        {
+            return hr;
         }
 
         /**

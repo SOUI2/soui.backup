@@ -1,5 +1,10 @@
 #include <core/sobject.h>
 
+void SetObjAttr(SObject *pObj,LPCSTR pszAttr,LPCSTR pszValue)
+{
+    pObj->SetAttribute(pszAttr,pszValue,FALSE);
+}
+
 BOOL ExpLua_SObject(lua_State *L)
 {
 	try{
@@ -12,6 +17,7 @@ BOOL ExpLua_SObject(lua_State *L)
         lua_tinker::class_def<SObject>(L,"tr",&SObject::tr);
         lua_tinker::class_def<SObject>(L,"GetID",&SObject::GetID);
         lua_tinker::class_def<SObject>(L,"GetName",&SObject::GetName);
+        lua_tinker::def(L,"SetObjAttr",SetObjAttr);
 #ifdef _DEBUG
         lua_tinker::class_mem<SObject>(L,"m_strXml",&SObject::m_strXml);
 #endif

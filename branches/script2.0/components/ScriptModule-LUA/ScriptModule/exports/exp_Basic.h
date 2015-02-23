@@ -1,7 +1,19 @@
 //导出基本结构体类型
+UINT rgb(int r,int g,int b)
+{
+    return RGBA(r,g,b,255);
+}
+
+UINT rgba(int r,int g, int b, int a)
+{
+    return RGBA(r,g,b,a);
+}
+
 BOOL ExpLua_Basic(lua_State *L)
 {
 	try{
+        lua_tinker::def(L,"RGB",rgb);
+        lua_tinker::def(L,"RGBA",rgba);
 
 		//POINT
 		lua_tinker::class_add<POINT>(L,"POINT");
