@@ -24,16 +24,21 @@ namespace SOUI
         EVT_EXIT,
         EVT_TIMER,
 
-        EVT_MOUSE_HOVER=9000,//两个窗口鼠标状态事件
-        EVT_MOUSE_LEAVE,
-
-        EVT_CMD=10000,
-        EVT_CTXMENU,
-        EVT_SETFOCUS,
+        //基本窗口事件
+        EVT_SETFOCUS=8100,
         EVT_KILLFOCUS,
+        EVT_CREATE,
         EVT_DESTROY,
+        EVT_SIZE,
         EVT_VISIBLECHANGED,
         EVT_STATECHANGED,
+
+        //两个窗口鼠标状态事件
+        EVT_MOUSE_HOVER=9000,
+        EVT_MOUSE_LEAVE,
+        
+        EVT_CMD=10000,
+        EVT_CTXMENU,
 
         //增加两个滚动VIEW的事件
         EVT_SCROLLVIEW_ORIGINCHANGED,
@@ -147,6 +152,7 @@ namespace SOUI
         virtual UINT GetEventID(){return T::EventID;}
         virtual LPCSTR GetScriptHandler() const {return T::ScriptHandler();}
     };
+
     class SOUI_EXP EventCmnArgs : public EventArgs
     {
     public:
@@ -188,12 +194,30 @@ namespace SOUI
         UINT uID;
     };
 
+    class SOUI_EXP EventSwndCreate : public TplEventArgs<EventSwndCreate>
+    {
+    public:
+        EventSwndCreate(SObject *pSender):TplEventArgs<EventSwndCreate>(pSender){}
+        enum{EventID=EVT_CREATE};
+        static LPCSTR ScriptHandler(){return "on_create";}
+    };
+
     class SOUI_EXP EventSwndDestroy : public TplEventArgs<EventSwndDestroy>
     {
     public:
         EventSwndDestroy(SObject *pSender):TplEventArgs<EventSwndDestroy>(pSender){}
         enum{EventID=EVT_DESTROY};
         static LPCSTR ScriptHandler(){return "on_destroy";}
+    };
+
+    class SOUI_EXP EventSwndSize : public TplEventArgs<EventSwndSize>
+    {
+    public:
+        EventSwndSize(SObject *pSender,CSize _szWnd):TplEventArgs<EventSwndSize>(pSender),szWnd(_szWnd){}
+        enum{EventID=EVT_SIZE};
+        static LPCSTR ScriptHandler(){return "on_size";}
+
+        CSize szWnd;
     };
 
     class SOUI_EXP EventSwndStateChanged : public TplEventArgs<EventSwndStateChanged>
