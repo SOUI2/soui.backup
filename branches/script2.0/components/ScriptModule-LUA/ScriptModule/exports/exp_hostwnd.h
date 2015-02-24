@@ -2,9 +2,7 @@
 
 SHostWnd * toHostWnd(SObject *pObj)
 {
-    if(!pObj->IsClass(SHostWnd::GetClassName()))
-        return NULL;
-    return (SHostWnd*)pObj;
+    return sobj_cast<SHostWnd>(pObj);
 }
 
 BOOL ExpLua_HostWnd(lua_State *L)
