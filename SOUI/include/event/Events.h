@@ -108,8 +108,9 @@ namespace SOUI
     the event system does not look at this value, code at a higher level can use it to determine
     how far to propagate an event.
     */
-    class SOUI_EXP EventArgs
+    class SOUI_EXP EventArgs : public SObject
     {
+        SOUI_CLASS_NAME(EventArgs,L"eventargs")
     public:
         /*************************************************************************
         Construction
@@ -124,7 +125,7 @@ namespace SOUI
 
         virtual ~EventArgs(void) {}
         virtual UINT GetEventID()= 0;
-        virtual LPCSTR GetScriptHandler() const {return NULL;}
+        virtual LPCWSTR GetScriptHandler() const {return NULL;}
         /*************************************************************************
         Data members
         *************************************************************************/
@@ -150,7 +151,7 @@ namespace SOUI
         }
 
         virtual UINT GetEventID(){return T::EventID;}
-        virtual LPCSTR GetScriptHandler() const {return T::ScriptHandler();}
+        virtual LPCWSTR GetScriptHandler() const {return T::GetClassName();}
     };
 
     class SOUI_EXP EventCmnArgs : public EventArgs
@@ -166,156 +167,155 @@ namespace SOUI
         UINT uID;
     };
 
-    #define EVENTID(x) x::EventID,x::ScriptHandler()
+    #define EVENTID(x) x::EventID,x::GetClassName()
 
     class SOUI_EXP EventInit : public TplEventArgs<EventInit>
     {
+        SOUI_CLASS_NAME(EventInit,L"on_init")
     public:
         EventInit(SObject *pSender):TplEventArgs<EventInit>(pSender){}
         enum{EventID=EVT_INIT};
-        static LPCSTR ScriptHandler(){return "on_init";}
     };
 
     class SOUI_EXP EventExit : public TplEventArgs<EventExit>
     {
+        SOUI_CLASS_NAME(EventExit,L"on_exit")
     public:
         EventExit(SObject *pSender):TplEventArgs<EventExit>(pSender){}
         enum{EventID=EVT_EXIT};
-        static LPCSTR ScriptHandler(){return "on_exit";}
     };
 
     class SOUI_EXP EventTimer : public TplEventArgs<EventTimer>
     {
+        SOUI_CLASS_NAME(EventTimer,L"on_timer")
     public:
         EventTimer(SObject *pSender,UINT _uID):TplEventArgs<EventTimer>(pSender),uID(_uID){}
         enum{EventID=EVT_TIMER};
-        static LPCSTR ScriptHandler(){return NULL;}
 
         UINT uID;
     };
 
     class SOUI_EXP EventSwndCreate : public TplEventArgs<EventSwndCreate>
     {
+        SOUI_CLASS_NAME(EventSwndCreate,L"on_create")
     public:
         EventSwndCreate(SObject *pSender):TplEventArgs<EventSwndCreate>(pSender){}
         enum{EventID=EVT_CREATE};
-        static LPCSTR ScriptHandler(){return "on_create";}
     };
 
     class SOUI_EXP EventSwndDestroy : public TplEventArgs<EventSwndDestroy>
     {
+        SOUI_CLASS_NAME(EventSwndDestroy,L"on_destroy")
     public:
         EventSwndDestroy(SObject *pSender):TplEventArgs<EventSwndDestroy>(pSender){}
         enum{EventID=EVT_DESTROY};
-        static LPCSTR ScriptHandler(){return "on_destroy";}
     };
 
     class SOUI_EXP EventSwndSize : public TplEventArgs<EventSwndSize>
     {
+        SOUI_CLASS_NAME(EventSwndSize,L"on_size")
     public:
         EventSwndSize(SObject *pSender,CSize _szWnd):TplEventArgs<EventSwndSize>(pSender),szWnd(_szWnd){}
         enum{EventID=EVT_SIZE};
-        static LPCSTR ScriptHandler(){return "on_size";}
-
         CSize szWnd;
     };
 
     class SOUI_EXP EventSwndStateChanged : public TplEventArgs<EventSwndStateChanged>
     {
+        SOUI_CLASS_NAME(EventSwndStateChanged,L"on_state_changed")
     public:
         EventSwndStateChanged(SObject *pSender):TplEventArgs<EventSwndStateChanged>(pSender){}
         enum{EventID=EVT_STATECHANGED};
-        static LPCSTR ScriptHandler(){return "on_state_changed";}
     };
 
     class SOUI_EXP EventSwndVisibleChanged : public TplEventArgs<EventSwndVisibleChanged>
     {
+        SOUI_CLASS_NAME(EventSwndVisibleChanged,L"on_visible_changed")
     public:
         EventSwndVisibleChanged(SObject *pSender):TplEventArgs<EventSwndVisibleChanged>(pSender){}
         enum{EventID=EVT_VISIBLECHANGED};
-        static LPCSTR ScriptHandler(){return "on_visible_changed";}
     };
 
     class SOUI_EXP EventSwndMouseLeave : public TplEventArgs<EventSwndMouseLeave>
     {
+        SOUI_CLASS_NAME(EventSwndMouseLeave,L"on_mouse_leave")
     public:
         EventSwndMouseLeave(SObject *pSender):TplEventArgs<EventSwndMouseLeave>(pSender){}
         enum{EventID=EVT_MOUSE_LEAVE};
-        static LPCSTR ScriptHandler(){return "on_mouse_leave";}
     };
 
     class SOUI_EXP EventSwndMouseHover : public TplEventArgs<EventSwndMouseHover>
     {
+        SOUI_CLASS_NAME(EventSwndMouseHover,L"on_mouse_hover")
     public:
         EventSwndMouseHover(SObject *pSender):TplEventArgs<EventSwndMouseHover>(pSender){}
         enum{EventID=EVT_MOUSE_HOVER};
-        static LPCSTR ScriptHandler(){return "on_mouse_hover";}
     };
 
     class SOUI_EXP EventItemPanelRclick : public TplEventArgs<EventItemPanelRclick>
     {
+        SOUI_CLASS_NAME(EventItemPanelRclick,L"on_itemparem_rclick")
     public:
         EventItemPanelRclick(SObject *pSender):TplEventArgs<EventItemPanelRclick>(pSender){}
         enum{EventID=EVT_ITEMPANEL_RCLICK};
-        static LPCSTR ScriptHandler(){return "on_itemparem_rclick";}
     };
 
     class SOUI_EXP EventItemPanelDbclick : public TplEventArgs<EventItemPanelDbclick>
     {
+        SOUI_CLASS_NAME(EventItemPanelDbclick,L"on_itempanel_dbclick")
     public:
         EventItemPanelDbclick(SObject *pSender):TplEventArgs<EventItemPanelDbclick>(pSender){}
         enum{EventID=EVT_ITEMPANEL_DBCLICK};
-        static LPCSTR ScriptHandler(){return "on_itempanel_dbclick";}
     };
 
     class SOUI_EXP EventItemPanelClick : public TplEventArgs<EventItemPanelClick>
     {
+        SOUI_CLASS_NAME(EventItemPanelClick,L"on_itempanel_rclick")
     public:
         EventItemPanelClick(SObject *pSender):TplEventArgs<EventItemPanelClick>(pSender){}
         enum{EventID=EVT_ITEMPANEL_CLICK};
-        static LPCSTR ScriptHandler(){return "on_itempanel_click";}
     };
 
     class SOUI_EXP EventCmd : public TplEventArgs<EventCmd>
     {
+        SOUI_CLASS_NAME(EventCmd,L"on_command")
     public:
         EventCmd(SObject *pSender):TplEventArgs<EventCmd>(pSender){}
         enum{EventID=EVT_CMD};
-        static LPCSTR ScriptHandler(){return "on_command";}
     };
 
     class SOUI_EXP EventCtxMenu : public TplEventArgs<EventCtxMenu>
     {
+        SOUI_CLASS_NAME(EventCtxMenu,L"on_conext_menu")
     public:
         EventCtxMenu(SObject *pSender):TplEventArgs<EventCtxMenu>(pSender),bCancel(FALSE){}
         enum{EventID=EVT_CTXMENU};
-        static LPCSTR ScriptHandler(){return "on_conext_menu";}
         POINT           pt;
         BOOL            bCancel;
     };
 
     class SOUI_EXP EventSetFocus : public TplEventArgs<EventSetFocus>
     {
+        SOUI_CLASS_NAME(EventSetFocus,L"on_set_focus")
     public:
         EventSetFocus(SObject *pSender):TplEventArgs<EventSetFocus>(pSender){}
         enum{EventID=EVT_SETFOCUS};
-        static LPCSTR ScriptHandler(){return "on_set_focus";}
     };
 
     class SOUI_EXP EventKillFocus : public TplEventArgs<EventKillFocus>
     {
+        SOUI_CLASS_NAME(EventSetFocus,L"on_kill_focus")
     public:
         EventKillFocus(SObject *pSender):TplEventArgs<EventKillFocus>(pSender){}
         enum{EventID=EVT_KILLFOCUS};
-        static LPCSTR ScriptHandler(){return "on_kill_focus";}
     };
     
     class SOUI_EXP EventStateChanged : public TplEventArgs<EventStateChanged>
     {
+        SOUI_CLASS_NAME(EventStateChanged,L"on_state_changed")
     public:
         EventStateChanged(SObject *pSender):TplEventArgs<EventStateChanged>(pSender){}
         enum{EventID=EVT_STATECHANGED};
-        static LPCSTR ScriptHandler(){return "on_state_changed";}
 
         DWORD dwOldState;
         DWORD dwNewState;
@@ -323,10 +323,10 @@ namespace SOUI
     
     class SOUI_EXP EventScrollViewOriginChanged : public TplEventArgs<EventScrollViewOriginChanged>
     {
+        SOUI_CLASS_NAME(EventScrollViewOriginChanged,L"on_scrollview_origin_changed")
     public:
         EventScrollViewOriginChanged(SObject *pSender):TplEventArgs<EventScrollViewOriginChanged>(pSender){}
         enum{EventID=EVT_SCROLLVIEW_ORIGINCHANGED};
-        static LPCSTR ScriptHandler(){return "on_scrollview_origin_changed";}
 
         CPoint ptOldOrigin;
         CPoint ptNewOrigin;
@@ -334,10 +334,10 @@ namespace SOUI
 
     class SOUI_EXP EventScrollViewSizeChanged : public TplEventArgs<EventScrollViewSizeChanged>
     {
+        SOUI_CLASS_NAME(EventScrollViewSizeChanged,L"on_scrollview_size_changed")
     public:
         EventScrollViewSizeChanged(SObject *pSender):TplEventArgs<EventScrollViewSizeChanged>(pSender){}
         enum{EventID=EVT_SCROLLVIEW_SIZECHANGED};
-        static LPCSTR ScriptHandler(){return "on_scrollview_size_changed";}
 
         CSize szOldViewSize;
         CSize szNewViewSize;
@@ -345,10 +345,10 @@ namespace SOUI
 
     class SOUI_EXP EventScroll : public TplEventArgs<EventScroll>
     {
+        SOUI_CLASS_NAME(EventScroll,L"on_scroll")
     public:
         EventScroll(SObject *pSender):TplEventArgs<EventScroll>(pSender){}
         enum{EventID=EVT_SCROLL};
-        static LPCSTR ScriptHandler(){return "on_scroll";}
         UINT        uSbCode;
         int         nPos;
         BOOL        bVertical;
@@ -356,23 +356,23 @@ namespace SOUI
 
     class SOUI_EXP EventOfEvent : public TplEventArgs<EventOfEvent>
     {
+        SOUI_CLASS_NAME(EventOfEvent,L"on_event_of_event")
     public:
         EventOfEvent(SObject *pSender,EventArgs *_pOrgEvt)
             :TplEventArgs<EventOfEvent>(pSender)
             ,pOrgEvt(_pOrgEvt)
         {}
         enum{EventID=EVT_OFEVENT};
-        static LPCSTR ScriptHandler(){return "on_event_of_event";}
         EventArgs * pOrgEvt;
     };
 
     class SItemPanel;
     class SOUI_EXP EventOfPanel : public TplEventArgs<EventOfPanel>
     {
+        SOUI_CLASS_NAME(EventOfPanel,L"on_event_of_panel")
     public:
         EventOfPanel(SItemPanel *_pPanel,EventArgs *_pOrgEvt);
         enum{EventID=EVT_OFPANEL};
-        static LPCSTR ScriptHandler(){return "on_event_of_panel";}
 
         SItemPanel *pPanel;
         EventArgs * pOrgEvt;
@@ -380,6 +380,7 @@ namespace SOUI
     
     class SOUI_EXP EventOfComoboxExItem : public TplEventArgs<EventOfComoboxExItem>
     {
+        SOUI_CLASS_NAME(EventOfComoboxExItem,L"on_event_of_comboxex_item")
     public:
         EventOfComoboxExItem(SObject *pSender,EventCmd *_pOrgEvt )
             :TplEventArgs<EventOfComoboxExItem>(pSender)
@@ -390,7 +391,6 @@ namespace SOUI
         }
 
         enum{EventID=EVT_CBE_OFITEM};
-        static LPCSTR ScriptHandler(){return "on_event_of_comboxex_item";}
 
         EventCmd    *  pOrgEvt;
         BOOL           bCancel;
@@ -398,10 +398,10 @@ namespace SOUI
     
     class SOUI_EXP EventTabSelChanging : public TplEventArgs<EventTabSelChanging>
     {
+        SOUI_CLASS_NAME(EventTabSelChanging,L"on_tab_sel_changing")
     public:
         EventTabSelChanging(SObject *pSender):TplEventArgs<EventTabSelChanging>(pSender),bCancel(FALSE){}
         enum{EventID=EVT_TAB_SELCHANGING};
-        static LPCSTR ScriptHandler(){return "on_tab_sel_changing";}
         UINT        uOldSel;
         UINT        uNewSel;
         BOOL        bCancel;
@@ -409,38 +409,38 @@ namespace SOUI
 
     class SOUI_EXP EventTabSelChanged : public TplEventArgs<EventTabSelChanged>
     {
+        SOUI_CLASS_NAME(EventTabSelChanged,L"on_tab_sel_changed")
     public:
         EventTabSelChanged(SObject *pSender):TplEventArgs<EventTabSelChanged>(pSender){}
         enum{EventID=EVT_TAB_SELCHANGED};
-        static LPCSTR ScriptHandler(){return "on_tab_sel_changed";}
         UINT        uOldSel;
         UINT        uNewSel;
     };
 
     class SOUI_EXP EventTabItemHover : public TplEventArgs<EventTabItemHover>
     {
+        SOUI_CLASS_NAME(EventTabItemHover,L"on_tab_item_hover")
     public:
         EventTabItemHover(SObject *pSender):TplEventArgs<EventTabItemHover>(pSender){}
         enum{EventID=EVT_TAB_ITEMHOVER};
-        static LPCSTR ScriptHandler(){return "on_tab_item_hover";}
         int iHover;
     };
 
     class SOUI_EXP EventTabItemLeave : public TplEventArgs<EventTabItemLeave>
     {
+        SOUI_CLASS_NAME(EventTabItemLeave,L"on_tab_item_leave")
     public:
         EventTabItemLeave(SObject *pSender):TplEventArgs<EventTabItemLeave>(pSender){}
         enum{EventID=EVT_TAB_ITEMLEAVE};
-        static LPCSTR ScriptHandler(){return "on_tab_item_leave";}
         int iLeave;
     };
 
     class SOUI_EXP EventLBGetDispInfo : public TplEventArgs<EventLBGetDispInfo>
     {
+        SOUI_CLASS_NAME(EventLBGetDispInfo,L"on_listbox_get_display_info")
     public:
         EventLBGetDispInfo(SObject *pSender):TplEventArgs<EventLBGetDispInfo>(pSender){}
         enum{EventID=EVT_LB_GETDISPINFO};
-        static LPCSTR ScriptHandler(){return "on_listbox_get_display_info";}
         int  iItem;
         SWindow * pItem;
         BOOL bSel;
@@ -449,12 +449,12 @@ namespace SOUI
 
     class SOUI_EXP EventLBSelChanging : public TplEventArgs<EventLBSelChanging>
     {
+        SOUI_CLASS_NAME(EventLBSelChanging,L"on_listbox_sel_changing")
     public:
         EventLBSelChanging(SObject *pSender):TplEventArgs<EventLBSelChanging>(pSender),bCancel(FALSE){
         
         }
         enum{EventID=EVT_LB_SELCHANGING};
-        static LPCSTR ScriptHandler(){return "on_listbox_sel_changing";}
 
         int nNewSel;
         int nOldSel;
@@ -463,20 +463,20 @@ namespace SOUI
 
     class SOUI_EXP EventLBSelChanged : public TplEventArgs<EventLBSelChanged>
     {
+        SOUI_CLASS_NAME(EventLBSelChanged,L"on_listbox_sel_changed")
     public:
         EventLBSelChanged(SObject *pSender):TplEventArgs<EventLBSelChanged>(pSender){}
         enum{EventID=EVT_LB_SELCHANGED};
-        static LPCSTR ScriptHandler(){return "on_listbox_sel_changed";}
         int nNewSel;
         int nOldSel;
     };
 
     class SOUI_EXP EventTBGetDispInfo : public TplEventArgs<EventTBGetDispInfo>
     {
+        SOUI_CLASS_NAME(EventTBGetDispInfo,L"on_treebox_get_display_info")
     public:
         EventTBGetDispInfo(SObject *pSender):TplEventArgs<EventTBGetDispInfo>(pSender){}
         enum{EventID=EVT_TB_GETDISPINFO};
-        static LPCSTR ScriptHandler(){return "on_treebox_get_display_info";}
         HSTREEITEM  hItem;
         SWindow     *pItemWnd;
         BOOL        bSel;
@@ -485,10 +485,10 @@ namespace SOUI
 
     class SOUI_EXP EventTBSelChanging: public TplEventArgs<EventTBSelChanging>
     {
+        SOUI_CLASS_NAME(EventTBSelChanging,L"on_treebox_sel_changing")
     public:
         EventTBSelChanging(SObject *pSender):TplEventArgs<EventTBSelChanging>(pSender),bCancel(FALSE){}
         enum{EventID=EVT_TB_SELCHANGING};
-        static LPCSTR ScriptHandler(){return "on_treebox_sel_changing";}
         HSTREEITEM hNewSel;
         HSTREEITEM hOldSel;
         BOOL        bCancel;
@@ -496,20 +496,20 @@ namespace SOUI
 
     class SOUI_EXP EventTBSelChanged: public TplEventArgs<EventTBSelChanged>
     {
+        SOUI_CLASS_NAME(EventTBSelChanged,L"on_treebox_sel_changed")
     public:
         EventTBSelChanged(SObject *pSender):TplEventArgs<EventTBSelChanged>(pSender){}
         enum{EventID=EVT_TB_SELCHANGED};
-        static LPCSTR ScriptHandler(){return "on_treebox_sel_changed";}
         HSTREEITEM hNewSel;
         HSTREEITEM hOldSel;
     };
     
     class SOUI_EXP EventTBQueryItemHeight : public TplEventArgs<EventTBQueryItemHeight>
     {
+        SOUI_CLASS_NAME(EventTBQueryItemHeight,L"on_treebox_query_item_height")
     public:
         EventTBQueryItemHeight(SObject *pSender):TplEventArgs<EventTBQueryItemHeight>(pSender){}
         enum{EventID=EVT_TB_QUERYITEMHEIGHT};
-        static LPCSTR ScriptHandler(){return "on_treebox_query_item_height";}
         HSTREEITEM hItem;
         DWORD      dwState;    //状态,和SWindow::GetState的值一致
         int        nItemHeight;//返回值保存到这里
@@ -517,10 +517,10 @@ namespace SOUI
 
     class SOUI_EXP EventRENotify : public TplEventArgs<EventRENotify>
     {
+        SOUI_CLASS_NAME(EventRENotify,L"on_richedit_notify")
     public:
         EventRENotify(SObject *pSender):TplEventArgs<EventRENotify>(pSender){}
         enum{EventID=EVT_RE_NOTIFY};
-        static LPCSTR ScriptHandler(){return "on_richedit_notify";}
         DWORD iNotify;
         LPVOID pv;
         HRESULT hr;
@@ -528,30 +528,30 @@ namespace SOUI
 
     class SOUI_EXP EventSliderPos : public TplEventArgs<EventSliderPos>
     {
+        SOUI_CLASS_NAME(EventSliderPos,L"on_slider_pos")
     public:
         EventSliderPos(SObject *pSender):TplEventArgs<EventSliderPos>(pSender){}
         enum{EventID=EVT_SLIDER_POS};
-        static LPCSTR ScriptHandler(){return "on_slider_pos";}
         int     nPos;
     };
 
     //点击表头
     class SOUI_EXP EventHeaderClick : public TplEventArgs<EventHeaderClick>
     {
+        SOUI_CLASS_NAME(EventHeaderClick,L"on_header_click")
     public:
         EventHeaderClick(SObject *pSender):TplEventArgs<EventHeaderClick>(pSender){}
         enum{EventID=EVT_HEADER_CLICK};
-        static LPCSTR ScriptHandler(){return "on_header_click";}
         int   iItem;
     };
 
     //点击表头
     class SOUI_EXP EventHeaderItemChanging : public TplEventArgs<EventHeaderItemChanging>
     {
+        SOUI_CLASS_NAME(EventHeaderItemChanging,L"on_header_item_changing")
     public:
         EventHeaderItemChanging(SObject *pSender):TplEventArgs<EventHeaderItemChanging>(pSender){}
         enum{EventID=EVT_HEADER_ITEMCHANGING};
-        static LPCSTR ScriptHandler(){return "on_header_item_changing";}
         int   iItem;
         int   nWidth;
     };
@@ -559,10 +559,10 @@ namespace SOUI
     //点击表头
     class SOUI_EXP EventHeaderItemChanged : public TplEventArgs<EventHeaderItemChanged>
     {
+        SOUI_CLASS_NAME(EventHeaderItemChanged,L"on_header_item_changed")
     public:
         EventHeaderItemChanged(SObject *pSender):TplEventArgs<EventHeaderItemChanged>(pSender){}
         enum{EventID=EVT_HEADER_ITEMCHANGED};
-        static LPCSTR ScriptHandler(){return "on_header_item_changed";}
         int   iItem;
         int   nWidth;
     };
@@ -570,29 +570,29 @@ namespace SOUI
     //拖动表项调整位置
     class SOUI_EXP EventHeaderItemSwap : public TplEventArgs<EventHeaderItemSwap>
     {
+        SOUI_CLASS_NAME(EventHeaderItemSwap,L"on_header_item_swap")
     public:
         EventHeaderItemSwap(SObject *pSender):TplEventArgs<EventHeaderItemSwap>(pSender){}
         enum{EventID=EVT_HEADER_ITEMSWAP};
-        static LPCSTR ScriptHandler(){return "on_header_item_swap";}
         int   iOldIndex;
         int      iNewIndex;
     };
 
     class SOUI_EXP EventCBSelChange : public TplEventArgs<EventCBSelChange>
     {
+        SOUI_CLASS_NAME(EventCBSelChange,L"on_combobox_sel_change")
     public:
         EventCBSelChange(SObject *pSender,int _nCurSel):TplEventArgs<EventCBSelChange>(pSender),nCurSel(_nCurSel){}
         enum{EventID=EVT_CB_SELCHANGE};
-        static LPCSTR ScriptHandler(){return "on_combobox_sel_change";}
         int nCurSel;
     };
 
     class SOUI_EXP EventLCSelChanging : public TplEventArgs<EventLCSelChanging>
     {
+        SOUI_CLASS_NAME(EventLCSelChanging,L"on_listctrl_sel_changing")
     public:
         EventLCSelChanging(SObject *pSender):TplEventArgs<EventLCSelChanging>(pSender),bCancel(FALSE){}
         enum{EventID=EVT_LC_SELCHANGING};
-        static LPCSTR ScriptHandler(){return "on_listctrl_sel_changing";}
         int nNewSel;
         int nOldSel;
         BOOL bCancel;
@@ -600,30 +600,30 @@ namespace SOUI
 
     class SOUI_EXP EventLCSelChanged : public TplEventArgs<EventLCSelChanged>
     {
+        SOUI_CLASS_NAME(EventLCSelChanged,L"on_listctrl_sel_changed")
     public:
         EventLCSelChanged(SObject *pSender):TplEventArgs<EventLCSelChanged>(pSender){}
         enum{EventID=EVT_LC_SELCHANGED};
-        static LPCSTR ScriptHandler(){return "on_listctrl_sel_changed";}
         int nNewSel;
         int nOldSel;
     };
 
 	class SOUI_EXP EventLCItemDeleted : public TplEventArgs<EventLCItemDeleted>
 	{
+        SOUI_CLASS_NAME(EventLCItemDeleted,L"on_listctrl_del_item")
 	public:
 		EventLCItemDeleted(SObject *pSender) :TplEventArgs<EventLCItemDeleted>(pSender){}
 		enum{ EventID = EVT_LC_ITEMDELETED };
-        static LPCSTR ScriptHandler(){return "on_listctrl_del_item";}
 		int		nItem;
 		DWORD   dwData;
 	};
 
     class SOUI_EXP EventCalendarSelDay : public TplEventArgs<EventCalendarSelDay>
     {
+        SOUI_CLASS_NAME(EventCalendarSelDay,L"on_calendar_sel_day")
     public:
         EventCalendarSelDay(SObject *pSender):TplEventArgs<EventCalendarSelDay>(pSender){}
         enum{EventID=EVT_CALENDAR_SELDAY};
-        static LPCSTR ScriptHandler(){return "on_calendar_sel_day";}
         WORD   wOldDay;
         WORD   wNewDay;
     };
@@ -631,10 +631,10 @@ namespace SOUI
 
     class SOUI_EXP EventTCSelChanging : public TplEventArgs<EventTCSelChanging>
     {
+        SOUI_CLASS_NAME(EventTCSelChanging,L"on_treectrl_sel_changing")
     public:
         EventTCSelChanging(SObject *pSender):TplEventArgs<EventTCSelChanging>(pSender),bCancel(FALSE){}
         enum{EventID=EVT_TC_SELCHANGING};
-        static LPCSTR ScriptHandler(){return "on_treectrl_sel_changing";}
         HSTREEITEM hOldSel;
         HSTREEITEM hNewSel;
         BOOL bCancel;
@@ -642,30 +642,30 @@ namespace SOUI
 
     class SOUI_EXP EventTCSelChanged : public TplEventArgs<EventTCSelChanged>
     {
+        SOUI_CLASS_NAME(EventTCSelChanged,L"on_treectrl_sel_changed")
     public:
         EventTCSelChanged(SObject *pSender):TplEventArgs<EventTCSelChanged>(pSender){}
         enum{EventID=EVT_TC_SELCHANGED};
-        static LPCSTR ScriptHandler(){return "on_treectrl_sel_changed";}
         HSTREEITEM hOldSel;
         HSTREEITEM hNewSel;
     };
 
     class SOUI_EXP EventTCCheckState : public TplEventArgs<EventTCCheckState>
     {
+        SOUI_CLASS_NAME(EventTCCheckState,L"on_treectrl_item_check")
     public:
         EventTCCheckState(SObject *pSender):TplEventArgs<EventTCCheckState>(pSender){}
         enum{EventID=EVT_TC_CHECKSTATE};
-        static LPCSTR ScriptHandler(){return "on_treectrl_item_check";}
         HSTREEITEM  hItem;
         UINT        uCheckState;
     };
 
     class SOUI_EXP EventTCExpand : public TplEventArgs<EventTCExpand>
     {
+        SOUI_CLASS_NAME(EventTCExpand,L"on_treectrl_item_expand")
     public:
         EventTCExpand(SObject *pSender):TplEventArgs<EventTCExpand>(pSender){}
         enum{EventID=EVT_TC_EXPAND};
-        static LPCSTR ScriptHandler(){return "on_treectrl_item_expand";}
         HSTREEITEM  hItem;
         BOOL bCollapsed;
     };
@@ -673,10 +673,10 @@ namespace SOUI
     //双击treectrl的叶子节点 add by zhaosheng
     class SOUI_EXP EventTCDbClick : public TplEventArgs<EventTCDbClick>
     {
+        SOUI_CLASS_NAME(EventTCDbClick,L"on_treectrl_item_dbclick")
     public:
         EventTCDbClick(SObject *pSender):TplEventArgs<EventTCDbClick>(pSender){}
         enum{EventID=EVT_TC_DBCLICK};
-        static LPCSTR ScriptHandler(){return "on_treectrl_item_dbclick";}
         HSTREEITEM hItem;  //双击选中的节点
     };
 

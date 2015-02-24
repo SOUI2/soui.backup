@@ -13,10 +13,10 @@ namespace SOUI
 {
     class EventTurn3d : public TplEventArgs<EventTurn3d>
     {
+        SOUI_CLASS_NAME(EventTurn3d,L"on_turn3d")
     public:
         EventTurn3d(SWindow *pWnd,BOOL bTurn2Front):TplEventArgs<EventTurn3d>(pWnd),bTurn2Front_(bTurn2Front){}
         enum{EventID=EVT_EXTERNAL_BEGIN};
-        static LPCSTR ScriptHandler(){return "on_turn3d";};        
         BOOL bTurn2Front_;
     };
     

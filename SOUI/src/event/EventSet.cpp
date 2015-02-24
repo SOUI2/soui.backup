@@ -66,7 +66,7 @@ namespace SOUI
         }
     }
 
-    void SEventSet::addEvent( const DWORD dwEventID ,LPCSTR pszEventHandlerName)
+    void SEventSet::addEvent( const DWORD dwEventID ,LPCWSTR pszEventHandlerName)
     {
         if(!isEventPresent(dwEventID))
         {
@@ -92,7 +92,7 @@ namespace SOUI
         return GetEventObject(dwEventID)!=NULL;
     }
 
-    bool SEventSet::isEventPresent(const SStringA & pszEventHandlerName )
+    bool SEventSet::isEventPresent(const SStringW & pszEventHandlerName )
     {
         for(UINT i=0;i<m_evtArr.GetCount();i++)
         {

@@ -6,20 +6,20 @@ namespace SOUI
 {
     class EventCapture : public TplEventArgs<EventCapture>
     {
+        SOUI_CLASS_NAME(EventCapture,L"on_capture")
     public:
         EventCapture(SWindow *pWnd,CPoint pt):TplEventArgs<EventCapture>(pWnd),pt_(pt){}
         enum{EventID=EVT_EXTERNAL_BEGIN};
-        static LPCSTR ScriptHandler(){return "on_capture";}
 
         CPoint pt_;
     };
 
     class EventCaptureFinish : public TplEventArgs<EventCaptureFinish>
     {
+        SOUI_CLASS_NAME(EventCaptureFinish,L"on_capture_finish")
     public:
         EventCaptureFinish(SWindow *pWnd,CPoint pt):TplEventArgs<EventCaptureFinish>(pWnd),pt_(pt){}
         enum{EventID=EVT_EXTERNAL_BEGIN+1};
-        static LPCSTR ScriptHandler(){return "on_capture_finish";}
 
         CPoint pt_;
     };
