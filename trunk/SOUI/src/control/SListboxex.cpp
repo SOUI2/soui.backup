@@ -31,10 +31,10 @@ SListBoxEx::SListBoxEx()
     , m_bItemRedrawDelay(TRUE)
 {
     m_bFocusable=TRUE;
-    m_evtSet.addEvent(EventOfPanel::EventID);
-    m_evtSet.addEvent(EventLBGetDispInfo::EventID);
-    m_evtSet.addEvent(EventLBSelChanging::EventID);
-    m_evtSet.addEvent(EventLBSelChanged::EventID);
+    m_evtSet.addEvent(EVENTID(EventOfPanel));
+    m_evtSet.addEvent(EVENTID(EventLBGetDispInfo));
+    m_evtSet.addEvent(EVENTID(EventLBSelChanging));
+    m_evtSet.addEvent(EVENTID(EventLBSelChanged));
 }
 
 SListBoxEx::~SListBoxEx()

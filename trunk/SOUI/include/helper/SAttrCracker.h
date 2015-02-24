@@ -35,13 +35,13 @@ public:                                                             \
     strValue,                                                   \
     bLoading                                                    \
     );                                                          \
-    return hRet;                                                \
+    return AfterAttribute(strAttribName,strValue,hRet);         \
     }                                                           \
     
 
 //不是从SObject派生的类是属性结尾
 #define SOUI_ATTRS_BREAK()                                      \
-        return E_NOTIMPL;                                           \
+        return E_NOTIMPL;                                       \
     return hRet;                                                \
     }                                                           \
 

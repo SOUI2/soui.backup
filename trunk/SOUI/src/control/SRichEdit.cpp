@@ -617,7 +617,7 @@ SRichEdit::SRichEdit()
     m_bFocusable  = TRUE;
     m_bClipClient = TRUE;
     m_sizelExtent.cx=m_sizelExtent.cy=0;
-    m_evtSet.addEvent(EventRENotify::EventID);
+    m_evtSet.addEvent(EVENTID(EventRENotify));
 }
 
 

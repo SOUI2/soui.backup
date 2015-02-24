@@ -15,6 +15,8 @@ namespace SOUI
 #define TIMER_CARET    1
 #define TIMER_NEXTFRAME 2
 #define KConstDummyPaint    0x80000000
+
+
 //////////////////////////////////////////////////////////////////////////
 //    SDummyWnd
 //////////////////////////////////////////////////////////////////////////
@@ -45,6 +47,8 @@ SHostWnd::SHostWnd( LPCTSTR pszResName /*= NULL*/ )
     m_privateStylePool.Attach(new SStylePool);
     m_privateSkinPool.Attach(new SSkinPool);
     SetContainer(this);
+    m_evtSet.addEvent(EVENTID(EventInit));
+    m_evtSet.addEvent(EVENTID(EventExit));
 }
 
 SHostWnd::~SHostWnd()
@@ -103,7 +107,20 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     }
     if(!CSimpleWnd::IsWindow()) return FALSE;
     
-    SSendMessage(WM_DESTROY);   //为了能够重入，先销毁原有的SOUI窗口
+    //free old script module
+    if(m_pScriptModule)
+    {
+        EventExit evt(this);
+        FireEvent(evt);
+        m_pScriptModule = NULL;
+    }
+
+    //为了能够重入，先销毁原有的SOUI窗口
+    SSendMessage(WM_DESTROY);   
+    //create new script module
+    SApplication::getSingleton().CreateScriptModule(&m_pScriptModule);
+    
+
     if(m_privateStylePool->GetCount())
     {
         m_privateStylePool->RemoveAll();
@@ -123,7 +140,39 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     if(m_privateSkinPool->GetCount())
     {
         GETSKINPOOLMGR->PushSkinPool(m_privateSkinPool);
-    }    
+    }
+
+    //加载脚本数据
+    pugi::xml_node xmlScript = xmlNode.child(L"script");
+    if(m_pScriptModule && xmlScript)
+    {
+        pugi::xml_attribute attrSrc = xmlScript.attribute(L"src");
+        if(attrSrc)
+        {
+            SStringW strSrc = attrSrc.value();
+            SStringWList lstSrc;
+            if(ParseResID(strSrc,lstSrc)==2)
+            {
+                DWORD dwSize = SApplication::getSingleton().GetRawBufferSize(lstSrc[0],lstSrc[1]);
+                if(dwSize)
+                {
+                    CMyBuffer<char> buff(dwSize);
+                    SApplication::getSingleton().GetRawBuffer(lstSrc[0],lstSrc[1],buff,dwSize);
+                    m_pScriptModule->executeScriptBuffer(buff,dwSize);
+                }
+            }
+        }else
+        {
+            //从script节点的cdata中获取脚本
+            SStringW strScript = xmlScript.child_value();
+            if(!strScript.IsEmpty())
+            {
+                SStringA utf8Script = S_CW2A(strScript,CP_UTF8);
+                m_pScriptModule->executeScriptBuffer(utf8Script,utf8Script.GetLength());
+            }
+        }
+    }
+
     DWORD dwStyle =CSimpleWnd::GetStyle();
     DWORD dwExStyle  = CSimpleWnd::GetExStyle();
     
@@ -201,6 +250,12 @@ BOOL SHostWnd::InitFromXml(pugi::xml_node xmlNode )
     m_bNeedRepaint = TRUE;
     m_rgnInvalidate->Clear();
     
+    if(m_pScriptModule)
+    {
+        EventInit evt(this);
+        FireEvent(evt);
+    }
+
     return TRUE;
 }
 
@@ -308,7 +363,7 @@ int SHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
     GETRENDERFACTORY->CreateRegion(&m_rgnInvalidate);
     m_pTipCtrl = GETTOOLTIPFACTORY->CreateToolTip(m_hWnd);
     if(m_pTipCtrl) GetMsgLoop()->AddMessageFilter(m_pTipCtrl);
-
+    
     SWindow::SetContainer(this);
 
     return 0;
@@ -316,6 +371,12 @@ int SHostWnd::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 void SHostWnd::OnDestroy()
 {
+    if(m_pScriptModule)
+    {//脚本独有的事件
+        EventExit evt(this);
+        FireEvent(evt);
+    }
+
     SWindow::SSendMessage(WM_DESTROY);
 
     if(m_pTipCtrl)
@@ -1144,6 +1205,7 @@ LRESULT SHostWnd::OnUpdateSwnd(UINT uMsg,WPARAM wParam,LPARAM)
     }
     return 0;
 }
+#endif//DISABLE_SWNDSPY
 
 void SHostWnd::_UpdateNonBkgndBlendSwnd()
 {
@@ -1188,6 +1250,35 @@ void SHostWnd::OnCaptureChanged( HWND wnd )
         }
     }
 }
-#endif//DISABLE_SWNDSPY
+
+IScriptModule * SHostWnd::GetScriptModule()
+{
+    return m_pScriptModule;
+}
+
+LRESULT SHostWnd::OnScriptTimer( UINT uMsg,WPARAM wParam,LPARAM lParam )
+{
+    if(m_pScriptModule)
+    {
+        EventTimer evt(this,(UINT)wParam);
+        m_pScriptModule->executeScriptedEventHandler((LPCSTR)lParam,&evt);
+    }
+    return 0;
+}
+
+UINT SHostWnd::setTimeout( LPCSTR pszScriptFunc,UINT uElapse )
+{
+    return SScriptTimer::getSingleton().SetTimer(m_hWnd,pszScriptFunc,uElapse,FALSE);
+}
+
+UINT SHostWnd::setInterval( LPCSTR pszScriptFunc,UINT uElapse )
+{
+    return SScriptTimer::getSingleton().SetTimer(m_hWnd,pszScriptFunc,uElapse,TRUE);
+}
+
+void SHostWnd::clearTimer( UINT uID )
+{
+    SScriptTimer::getSingleton().ClearTimer(uID);
+}
 
 }//namespace SOUI

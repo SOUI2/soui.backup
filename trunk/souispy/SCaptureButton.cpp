@@ -5,8 +5,8 @@ namespace SOUI
 {
     SCaptureButton::SCaptureButton(void)
     {
-        m_evtSet.addEvent(EventCapture::EventID);
-        m_evtSet.addEvent(EventCaptureFinish::EventID);
+        m_evtSet.addEvent(EVENTID(EventCapture));
+        m_evtSet.addEvent(EVENTID(EventCaptureFinish));
     }
 
     SCaptureButton::~SCaptureButton(void)

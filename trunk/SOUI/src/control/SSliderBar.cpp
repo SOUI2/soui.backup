@@ -15,7 +15,7 @@ SSliderBar::SSliderBar()
     , m_pSkinThumb(GETBUILTINSKIN(SKIN_SYS_SLIDER_THUMB))
     , m_bThumbInRail(FALSE)
 {
-    m_evtSet.addEvent(EventSliderPos::EventID);
+    m_evtSet.addEvent(EVENTID(EventSliderPos));
 }
 
 SSliderBar::~SSliderBar()

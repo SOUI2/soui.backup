@@ -4,22 +4,22 @@
 
 namespace SOUI
 {
-    class EventCapture : public EventArgs
+    class EventCapture : public TplEventArgs<EventCapture>
     {
+        SOUI_CLASS_NAME(EventCapture,L"on_capture")
     public:
-        EventCapture(SWindow *pWnd,CPoint pt):EventArgs(pWnd),pt_(pt){}
+        EventCapture(SWindow *pWnd,CPoint pt):TplEventArgs<EventCapture>(pWnd),pt_(pt){}
         enum{EventID=EVT_EXTERNAL_BEGIN};
-        virtual UINT GetEventID(){return EventID;}
 
         CPoint pt_;
     };
 
-    class EventCaptureFinish : public EventArgs
+    class EventCaptureFinish : public TplEventArgs<EventCaptureFinish>
     {
+        SOUI_CLASS_NAME(EventCaptureFinish,L"on_capture_finish")
     public:
-        EventCaptureFinish(SWindow *pWnd,CPoint pt):EventArgs(pWnd),pt_(pt){}
+        EventCaptureFinish(SWindow *pWnd,CPoint pt):TplEventArgs<EventCaptureFinish>(pWnd),pt_(pt){}
         enum{EventID=EVT_EXTERNAL_BEGIN+1};
-        virtual UINT GetEventID(){return EventID;}
 
         CPoint pt_;
     };

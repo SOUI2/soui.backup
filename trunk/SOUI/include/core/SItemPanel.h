@@ -65,6 +65,8 @@ public://SwndContainerImpl
 
     virtual SMessageLoop *GetMsgLoop();
     
+    virtual IScriptModule * GetScriptModule();
+
 public://SWindow
     virtual void ModifyItemState(DWORD dwStateAdd, DWORD dwStateRemove);
 

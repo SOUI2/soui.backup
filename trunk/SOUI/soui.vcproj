@@ -370,6 +370,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\helper\SScriptTimer.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\control\SScrollbar.cpp"
 				>
 			</File>
@@ -721,6 +725,10 @@
 			</File>
 			<File
 				RelativePath="include\interface\SScriptModule-i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\helper\SScriptTimer.h"
 				>
 			</File>
 			<File

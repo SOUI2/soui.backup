@@ -8,12 +8,13 @@ namespace SOUI
 {
     #define EVT_PG_VALUECHANGED (EVT_EXTERNAL_BEGIN+100)
 
-    class EventPropGridValueChanged : public EventArgs
+    class EventPropGridValueChanged : public TplEventArgs<EventPropGridValueChanged>
     {
+        SOUI_CLASS_NAME(EventPropGridValueChanged,L"on_propgrid_value_changed")
     public:
-        EventPropGridValueChanged(SWindow *pWnd):EventArgs(pWnd){}
+        EventPropGridValueChanged(SObject *pWnd):TplEventArgs<EventPropGridValueChanged>(pWnd){}
         enum{EventID=EVT_PG_VALUECHANGED};
-        virtual UINT GetEventID(){return EventID;}
+
         IPropertyItem * pItem;
     };
 

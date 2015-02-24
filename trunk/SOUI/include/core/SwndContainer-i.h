@@ -15,6 +15,7 @@
 
 #include "event/Events.h"
 #include "SMsgLoop.h"
+#include "interface/SScriptModule-i.h"
 
 namespace SOUI
 {
@@ -102,6 +103,8 @@ namespace SOUI
 
         //重建窗口树的zorder
         virtual void BuildWndTreeZorder() = 0;
+
+        virtual IScriptModule * GetScriptModule() = 0;
     };
 
 

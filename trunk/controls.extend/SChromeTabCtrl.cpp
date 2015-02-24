@@ -126,9 +126,9 @@ namespace SOUI
     ,m_nDesiredSize(200)
     ,m_bEnableDrag(TRUE)
     {
-        m_evtSet.addEvent(EVT_CHROMETAB_CLOSE);
-        m_evtSet.addEvent(EVT_CHROMETAB_NEW);
-        m_evtSet.addEvent(EVT_CHROMETAB_SELCHANGED);
+        m_evtSet.addEvent(EVENTID(EventChromeTabNew));
+        m_evtSet.addEvent(EVENTID(EventChromeTabClose));
+        m_evtSet.addEvent(EVENTID(EventChromeTabSelChanged));
     }
 
     SChromeTabCtrl::~SChromeTabCtrl(void)
@@ -330,7 +330,8 @@ namespace SOUI
 
     bool SChromeTabCtrl::OnBtnCloseTabClick( EventArgs *pEvt )
     {
-        SChromeTab *pTab = (SChromeTab*)pEvt->sender->GetParent();
+        SWindow *pBtn = (SWindow*)pEvt->sender;
+        SChromeTab *pTab = (SChromeTab*)pBtn->GetParent();
 
         EventChromeTabClose evt(this);
         evt.pCloseTab = pTab;

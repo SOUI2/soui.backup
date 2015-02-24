@@ -17,10 +17,10 @@ namespace SOUI
         ,m_hDragImg(NULL)
     {
         m_bClipClient=TRUE;
-        m_evtSet.addEvent(EventHeaderClick::EventID);
-        m_evtSet.addEvent(EventHeaderItemChanged::EventID);
-        m_evtSet.addEvent(EventHeaderItemChanging::EventID);
-        m_evtSet.addEvent(EventHeaderItemSwap::EventID);
+        m_evtSet.addEvent(EVENTID(EventHeaderClick));
+        m_evtSet.addEvent(EVENTID(EventHeaderItemChanged));
+        m_evtSet.addEvent(EVENTID(EventHeaderItemChanging));
+        m_evtSet.addEvent(EVENTID(EventHeaderItemSwap));
     }
 
     SHeaderCtrl::~SHeaderCtrl(void)

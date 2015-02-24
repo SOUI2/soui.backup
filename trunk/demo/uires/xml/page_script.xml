@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<include>
+  <window size="full,full" name="game_wnd" on_size="on_canvas_size" id="300">
+    <window pos="10,10,-20,-50" name="game_canvas" clipClient="1">
+      <!--比赛场地-->
+      <gifplayer name="player_1" pos="0,0" skin="gif_horse">
+        <text pos="0,%1" colorText="rgb(255,0,0)" font="size:20">1</text>
+      </gifplayer>
+      <gifplayer name="player_2" pos="0,0" skin="gif_horse">
+        <text pos="0,0" colorText="rgb(255,0,0)" font="size:20">2</text>
+      </gifplayer>
+      <gifplayer name="player_3" pos="0,0" skin="gif_horse">
+        <text pos="0,0" colorText="rgb(255,0,0)" font="size:20">3</text>
+      </gifplayer>
+      <gifplayer name="player_4" pos="0,0" skin="gif_horse">
+        <text pos="0,0" colorText="rgb(255,0,0)" font="size:20">4</text>
+      </gifplayer>
+    </window>
+    <window pos="10,[5,-20,-0" name="game_toolbar">
+      <button name="btn_run" pos="0,0,@100,@30" tip="run the game" on_command="on_run">run</button>
+    </window>
+
+  </window>
+</include>

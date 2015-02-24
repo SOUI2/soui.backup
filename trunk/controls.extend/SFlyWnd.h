@@ -10,11 +10,12 @@ namespace SOUI
 
 #define EVT_FLYSTATE    (EVT_EXTERNAL_BEGIN+200)
 
-    class FlyStateEvent : public EventArgs
+    class FlyStateEvent : public TplEventArgs<FlyStateEvent>
     {
+        SOUI_CLASS_NAME(FlyStateEvent,L"on_flywnd_state")
     public:
         FlyStateEvent(SWindow *pSender,int _percent,BOOL _bEndPos)
-            :EventArgs(pSender)
+            :TplEventArgs<FlyStateEvent>(pSender)
             ,nPercent(_percent)
             ,bEndPos(_bEndPos)
         {
@@ -22,8 +23,6 @@ namespace SOUI
         }
         
         enum{EventID = EVT_FLYSTATE};
-
-        virtual UINT GetEventID(){return EventID;}
 
         int nPercent;
         BOOL bEndPos;

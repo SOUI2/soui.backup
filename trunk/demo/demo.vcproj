@@ -529,6 +529,10 @@
 			RelativePath="demo.rc"
 			>
 		</File>
+		<File
+			RelativePath=".\uires\xml\page_script.xml"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

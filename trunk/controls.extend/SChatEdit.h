@@ -10,6 +10,7 @@ namespace SOUI
     EventChatEditKeyReturn(SWindow *pSender):EventArgs(pSender),bCancel(false){}
     enum {EventID=EVT_CHATEDIT_KEYRETURN};
     virtual UINT GetEventID() { return EventID;}
+    static LPCSTR ScriptHandler(){return "on_chatedit_key_return";}
     bool bCancel;
     };
     

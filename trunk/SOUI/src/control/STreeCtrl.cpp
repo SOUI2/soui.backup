@@ -36,10 +36,10 @@ STreeCtrl::STreeCtrl()
 {
     m_bClipClient = TRUE;
     m_bFocusable  = TRUE;
-    m_evtSet.addEvent(EventTCSelChanging::EventID);
-    m_evtSet.addEvent(EventTCSelChanged::EventID);
-    m_evtSet.addEvent(EventTCCheckState::EventID);
-    m_evtSet.addEvent(EventTCExpand::EventID);
+    m_evtSet.addEvent(EVENTID(EventTCSelChanging));
+    m_evtSet.addEvent(EVENTID(EventTCSelChanged));
+    m_evtSet.addEvent(EVENTID(EventTCCheckState));
+    m_evtSet.addEvent(EVENTID(EventTCExpand));
 }
 
 STreeCtrl::~STreeCtrl()
