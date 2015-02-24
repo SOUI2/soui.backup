@@ -20,6 +20,7 @@ namespace SOUI
 {
     class SOUI_EXP SHostDialog : public SHostWnd , public SMessageLoop
     {
+        SOUI_CLASS_NAME(SHostDialog,L"hostdlg")
     public:
         SHostDialog(LPCTSTR pszXmlName);
         ~SHostDialog(void);

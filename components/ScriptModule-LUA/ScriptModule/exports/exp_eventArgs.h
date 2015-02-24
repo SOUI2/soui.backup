@@ -1,13 +1,14 @@
 #include <event/events.h>
 
+
 EventTimer * toEventTimer(EventArgs *pEvt)
 {
-    return (EventTimer *)pEvt;
+    return sobj_cast<EventTimer>(pEvt);
 }
 
 EventSwndSize * toEventSize(EventArgs *pEvt)
 {
-    return (EventSwndSize*)pEvt;
+    return sobj_cast<EventSwndSize>(pEvt);
 }
 
 BOOL ExpLua_EventArgs(lua_State *L)
