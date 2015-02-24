@@ -3,8 +3,7 @@
 //定义一个从SObject转换成SWindow的方法
 SWindow * toSWindow(SObject * pObj)
 {
-    if(!pObj->IsClass(SWindow::GetClassName())) return NULL;
-    return (SWindow*)pObj;
+    return sobj_cast<SWindow>(pObj);
 }
 
 BOOL ExpLua_Window(lua_State *L)
