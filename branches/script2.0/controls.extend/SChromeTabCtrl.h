@@ -12,13 +12,13 @@ namespace SOUI
 #define EVT_CHROMETAB_SELCHANGED    (EVT_CHROMETAB_BEGIN + 2)
     class EventChromeTabNew : public TplEventArgs<EventChromeTabNew>
     {
+        SOUI_CLASS_NAME(EventChromeTabNew,L"on_chrometab_new")
     public:
         EventChromeTabNew(SWindow *pSender):TplEventArgs<EventChromeTabNew>(pSender)
         {
 
         }
         enum{EventID=EVT_CHROMETAB_NEW};
-        static LPCSTR ScriptHandler(){return "on_chrometab_new";}
         SWindow * pNewTab;
 
         int       iNewTab;
@@ -26,13 +26,13 @@ namespace SOUI
 
     class EventChromeTabClose : public TplEventArgs<EventChromeTabClose>
     {
+        SOUI_CLASS_NAME(EventChromeTabClose,L"on_chrometab_close")
     public:
         EventChromeTabClose(SWindow *pSender):TplEventArgs<EventChromeTabClose>(pSender)
         {
 
         }
         enum{EventID=EVT_CHROMETAB_CLOSE};
-        static LPCSTR ScriptHandler(){return "on_chrometab_close";}
 
         SWindow * pCloseTab;
 
@@ -41,13 +41,13 @@ namespace SOUI
 
     class EventChromeTabSelChanged : public TplEventArgs<EventChromeTabSelChanged>
     {
+        SOUI_CLASS_NAME(EventChromeTabSelChanged,L"on_chrometab_sel_changed")
     public:
         EventChromeTabSelChanged(SWindow *pSender):TplEventArgs<EventChromeTabSelChanged>(pSender)
         {
 
         }
         enum{EventID=EVT_CHROMETAB_SELCHANGED};
-        static LPCSTR ScriptHandler(){return "on_chrometab_sel_changed";}
 
         int         iOldSel;
         int         iNewSel;

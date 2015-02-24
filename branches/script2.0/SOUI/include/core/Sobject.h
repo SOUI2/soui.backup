@@ -214,4 +214,23 @@ namespace SOUI
 #endif//_DEBUG
     };
 
+    /**
+     * sobj_cast
+     * @brief    SOUI Object 的类型安全的类型转换接口
+     * @param    SObject * pObj --  源对象
+     * @return   T * -- 转换后的对象
+     * Describe  如果源对象不是待转换对象类型，返回NULL
+     */    
+    template<class T>
+    T * sobj_cast(SObject *pObj)
+    {
+        if(!pObj)
+            return NULL;
+
+        if(pObj->IsClass(T::GetClassName()))
+            return (T*)pObj;
+        else
+            return NULL;
+    }
+
 }//namespace SOUI

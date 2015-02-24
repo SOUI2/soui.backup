@@ -12,6 +12,7 @@ namespace SOUI
 
     class FlyStateEvent : public TplEventArgs<FlyStateEvent>
     {
+        SOUI_CLASS_NAME(FlyStateEvent,L"on_flywnd_state")
     public:
         FlyStateEvent(SWindow *pSender,int _percent,BOOL _bEndPos)
             :TplEventArgs<FlyStateEvent>(pSender)
@@ -22,7 +23,6 @@ namespace SOUI
         }
         
         enum{EventID = EVT_FLYSTATE};
-        static LPCSTR ScriptHandler(){return "on_flywnd_state";};
 
         int nPercent;
         BOOL bEndPos;
