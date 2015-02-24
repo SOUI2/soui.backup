@@ -11,13 +11,12 @@
 #include <event/Events.h>
 namespace SOUI
 {
-    class EventTurn3d : public EventArgs
+    class EventTurn3d : public TplEventArgs<EventTurn3d>
     {
+        SOUI_CLASS_NAME(EventTurn3d,L"on_turn3d")
     public:
-        EventTurn3d(SWindow *pWnd,BOOL bTurn2Front):EventArgs(pWnd),bTurn2Front_(bTurn2Front){}
+        EventTurn3d(SWindow *pWnd,BOOL bTurn2Front):TplEventArgs<EventTurn3d>(pWnd),bTurn2Front_(bTurn2Front){}
         enum{EventID=EVT_EXTERNAL_BEGIN};
-        virtual UINT GetEventID(){return EventID;}
-        
         BOOL bTurn2Front_;
     };
     

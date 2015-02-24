@@ -35,10 +35,10 @@ STreeBox::STreeBox()
     , m_bItemRedrawDelay(TRUE)
 {
     m_bFocusable=TRUE;
-    m_evtSet.addEvent(EventTBGetDispInfo::EventID);
-    m_evtSet.addEvent(EventTBSelChanging::EventID);
-    m_evtSet.addEvent(EventTBSelChanged::EventID);
-    m_evtSet.addEvent(EventTBQueryItemHeight::EventID);
+    m_evtSet.addEvent(EVENTID(EventTBGetDispInfo));
+    m_evtSet.addEvent(EVENTID(EventTBSelChanging));
+    m_evtSet.addEvent(EVENTID(EventTBSelChanged));
+    m_evtSet.addEvent(EVENTID(EventTBQueryItemHeight));
 }
 
 STreeBox::~STreeBox()

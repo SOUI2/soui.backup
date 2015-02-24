@@ -53,7 +53,7 @@ namespace SOUI
     ,m_bDraging(FALSE)
     ,m_pInplaceActiveWnd(NULL)
     {
-        GetEventSet()->addEvent(EventPropGridValueChanged::EventID);
+        GetEventSet()->addEvent(EVENTID(EventPropGridValueChanged));
         GetEventSet()->subscribeEvent(EventLBSelChanged::EventID,Subscriber(&SPropertyGrid::OnSelChanged,this));
     }
 
@@ -278,7 +278,7 @@ namespace SOUI
         CRect rcName = rcNameBack;
         rcName.left = rcSwitch.right;
         
-        pRT->DrawText(pItem->GetName(),pItem->GetName().GetLength(),rcName,DT_SINGLELINE|DT_VCENTER);
+        pRT->DrawText(pItem->GetName2(),pItem->GetName2().GetLength(),rcName,DT_SINGLELINE|DT_VCENTER);
         CRect rcItem = rc;
         rcItem.left= rcNameBack.right;
         if(pItem->HasButton()) rcItem.right -= rcItem.Height();

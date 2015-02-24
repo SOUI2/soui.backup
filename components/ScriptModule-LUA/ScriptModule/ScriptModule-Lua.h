@@ -34,6 +34,12 @@ namespace SOUI
         lua_State * d_state;
     };
 
+    class SIScriptFactory: public TObjRefImpl<IScriptFactory>
+    {
+    public:
+        virtual HRESULT CreateScriptModule(IScriptModule ** ppScriptModule);
+    };
+
 }
 
 namespace SCRIPT_LUA

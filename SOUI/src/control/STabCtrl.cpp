@@ -170,10 +170,10 @@ STabCtrl::STabCtrl() : m_nCurrentPage(0)
 {
     m_szTab.cx = m_szTab.cy = -1;
     m_bFocusable=TRUE;
-    m_evtSet.addEvent(EventTabSelChanging::EventID);
-    m_evtSet.addEvent(EventTabSelChanged::EventID);
-    m_evtSet.addEvent(EventTabItemHover::EventID);
-    m_evtSet.addEvent(EventTabItemLeave::EventID);
+    m_evtSet.addEvent(EVENTID(EventTabSelChanging));
+    m_evtSet.addEvent(EVENTID(EventTabSelChanged));
+    m_evtSet.addEvent(EVENTID(EventTabItemHover));
+    m_evtSet.addEvent(EVENTID(EventTabItemLeave));
 }
 
 void STabCtrl::OnPaint(IRenderTarget *pRT)

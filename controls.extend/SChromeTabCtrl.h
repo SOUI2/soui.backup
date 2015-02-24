@@ -10,46 +10,44 @@ namespace SOUI
 #define EVT_CHROMETAB_NEW           (EVT_CHROMETAB_BEGIN + 0)
 #define EVT_CHROMETAB_CLOSE         (EVT_CHROMETAB_BEGIN + 1)
 #define EVT_CHROMETAB_SELCHANGED    (EVT_CHROMETAB_BEGIN + 2)
-
-    class EventChromeTabNew : public EventArgs
+    class EventChromeTabNew : public TplEventArgs<EventChromeTabNew>
     {
+        SOUI_CLASS_NAME(EventChromeTabNew,L"on_chrometab_new")
     public:
-        EventChromeTabNew(SWindow *pSender):EventArgs(pSender)
+        EventChromeTabNew(SWindow *pSender):TplEventArgs<EventChromeTabNew>(pSender)
         {
 
         }
-
-        virtual UINT GetEventID(){return EVT_CHROMETAB_NEW;}
-
+        enum{EventID=EVT_CHROMETAB_NEW};
         SWindow * pNewTab;
 
         int       iNewTab;
     };
 
-    class EventChromeTabClose : public EventArgs
+    class EventChromeTabClose : public TplEventArgs<EventChromeTabClose>
     {
+        SOUI_CLASS_NAME(EventChromeTabClose,L"on_chrometab_close")
     public:
-        EventChromeTabClose(SWindow *pSender):EventArgs(pSender)
+        EventChromeTabClose(SWindow *pSender):TplEventArgs<EventChromeTabClose>(pSender)
         {
 
         }
-
-        virtual UINT GetEventID(){return EVT_CHROMETAB_CLOSE;}
+        enum{EventID=EVT_CHROMETAB_CLOSE};
 
         SWindow * pCloseTab;
 
         int       iCloseTab;
     };
 
-    class EventChromeTabSelChanged : public EventArgs
+    class EventChromeTabSelChanged : public TplEventArgs<EventChromeTabSelChanged>
     {
+        SOUI_CLASS_NAME(EventChromeTabSelChanged,L"on_chrometab_sel_changed")
     public:
-        EventChromeTabSelChanged(SWindow *pSender):EventArgs(pSender)
+        EventChromeTabSelChanged(SWindow *pSender):TplEventArgs<EventChromeTabSelChanged>(pSender)
         {
 
         }
-
-        virtual UINT GetEventID(){return EVT_CHROMETAB_SELCHANGED;}
+        enum{EventID=EVT_CHROMETAB_SELCHANGED};
 
         int         iOldSel;
         int         iNewSel;

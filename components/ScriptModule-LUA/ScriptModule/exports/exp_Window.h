@@ -1,21 +1,33 @@
 #include <core/swnd.h>
 
+//定义一个从SObject转换成SWindow的方法
+SWindow * toSWindow(SObject * pObj)
+{
+    return sobj_cast<SWindow>(pObj);
+}
+
 BOOL ExpLua_Window(lua_State *L)
 {
 	try{
+        lua_tinker::def(L,"toSWindow",toSWindow);
 		lua_tinker::class_add<SWindow>(L,"SWindow");
+        lua_tinker::class_inh<SWindow,SObject>(L);
 		lua_tinker::class_con<SWindow>(L,lua_tinker::constructor<SWindow>);
+        lua_tinker::class_def<SWindow>(L,"GetContainer",&SWindow::GetContainer);
+        lua_tinker::class_def<SWindow>(L,"GetRoot",&SWindow::GetRoot);
+        lua_tinker::class_def<SWindow>(L,"GetTopLevelParent",&SWindow::GetTopLevelParent);
 		lua_tinker::class_def<SWindow>(L,"GetParent",&SWindow::GetParent);
-		lua_tinker::class_def<SWindow>(L,"GetTopLevelParent",&SWindow::GetTopLevelParent);
 		lua_tinker::class_def<SWindow>(L,"DestroyChild",&SWindow::DestroyChild);
 		lua_tinker::class_def<SWindow>(L,"GetChildrenCount",&SWindow::GetChildrenCount);
 		lua_tinker::class_def<SWindow>(L,"FindChildByID",&SWindow::FindChildByID);
-// 		lua_tinker::class_def<SWindow>(L,"FindChildByNameA",(SWindow* (SWindow::*)(LPCSTR,int))&SWindow::FindChildByName);
-//      lua_tinker::class_def<SWindow>(L,"FindChildByNameW",(SWindow* (SWindow::*)(LPCWSTR,int ))&SWindow::FindChildByName);
+        lua_tinker::class_def<SWindow>(L,"FindChildByNameA",(SWindow* (SWindow::*)(LPCSTR,int))&SWindow::FindChildByName);
+        lua_tinker::class_def<SWindow>(L,"FindChildByNameW",(SWindow* (SWindow::*)(LPCWSTR,int ))&SWindow::FindChildByName);
  		lua_tinker::class_def<SWindow>(L,"CreateChildrenFromString",(SWindow* (SWindow::*)(LPCWSTR))&SWindow::CreateChildren);
 		lua_tinker::class_def<SWindow>(L,"GetTextAlign",&SWindow::GetTextAlign);
 		lua_tinker::class_def<SWindow>(L,"GetWindowRect",(void (SWindow::*)(LPRECT))&SWindow::GetWindowRect);
+        lua_tinker::class_def<SWindow>(L,"GetWindowRect2",(CRect (SWindow::*)())&SWindow::GetWindowRect);
 		lua_tinker::class_def<SWindow>(L,"GetClientRect",(void (SWindow::*)(LPRECT))&SWindow::GetClientRect);
+        lua_tinker::class_def<SWindow>(L,"GetClientRect2",(CRect (SWindow::*)())&SWindow::GetClientRect);
 		lua_tinker::class_def<SWindow>(L,"GetWindowText",&SWindow::GetWindowText);
 		lua_tinker::class_def<SWindow>(L,"SetWindowText",&SWindow::SetWindowText);
 		lua_tinker::class_def<SWindow>(L,"SendSwndMessage",&SWindow::SSendMessage);
@@ -38,6 +50,10 @@ BOOL ExpLua_Window(lua_State *L)
 		lua_tinker::class_def<SWindow>(L,"Invalidate",&SWindow::Invalidate);
         lua_tinker::class_def<SWindow>(L,"InvalidateRect",(void (SWindow::*)(LPCRECT))&SWindow::InvalidateRect);
 		lua_tinker::class_def<SWindow>(L,"AnimateWindow",&SWindow::AnimateWindow);
+        lua_tinker::class_def<SWindow>(L,"GetScriptModule",&SWindow::GetScriptModule);
+        lua_tinker::class_def<SWindow>(L,"Move2",(void (SWindow::*)(int,int,int,int))&SWindow::Move);
+        lua_tinker::class_def<SWindow>(L,"Move",(void (SWindow::*)(LPCRECT))&SWindow::Move);
+        lua_tinker::class_def<SWindow>(L,"FireCommand",&SWindow::FireCommand);
 
 		return TRUE;
 	}catch(...)

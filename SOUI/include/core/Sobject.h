@@ -128,7 +128,7 @@ namespace SOUI
          */    
         virtual HRESULT SetAttribute(const SStringA &  strAttribName, const SStringA &  strValue, BOOL bLoading)
         {
-            return DefAttributeProc(S_CA2W(strAttribName),S_CA2W(strValue),bLoading);
+            return SetAttribute(S_CA2W(strAttribName),S_CA2W(strValue),bLoading);
         }
 
         /**
@@ -161,6 +161,20 @@ namespace SOUI
         }
 
         /**
+         * OnAttribute
+         * @brief    属性处理后调用的方法
+         * @param    const SStringW & strAttribName --  属性名
+         * @param    const SStringW & strValue --  属性名
+         * @param    HRESULT hr --  属性处理结果
+         * @return   HRESULT -- 属性处理结果
+         * Describe  不做处理，直接返回
+         */    
+        virtual HRESULT AfterAttribute(const SStringW & strAttribName,const SStringW & strValue,HRESULT hr)
+        {
+            return hr;
+        }
+
+        /**
          * tr
          * @brief    语言翻译接口
          * @param    const SStringW & strSrc --  源字符串
@@ -169,6 +183,21 @@ namespace SOUI
          */    
         virtual SStringW tr(const SStringW &strSrc);
 
+        /**
+         * GetID
+         * @brief    获取对象ID
+         * @return   int -- 对象ID
+         * Describe  
+         */    
+        virtual int GetID() const {return 0;}
+
+        /**
+         * GetName
+         * @brief    获取对象Name
+         * @return   LPCWSTR -- 对象Name
+         * Describe  
+         */    
+        virtual LPCWSTR GetName() const {return NULL;}
     protected:
         /**
          * OnInitFinished
@@ -184,5 +213,24 @@ namespace SOUI
         SStringW m_strXml;  //<** XML字符串，用于在调试时观察对象*/
 #endif//_DEBUG
     };
+
+    /**
+     * sobj_cast
+     * @brief    SOUI Object 的类型安全的类型转换接口
+     * @param    SObject * pObj --  源对象
+     * @return   T * -- 转换后的对象
+     * Describe  如果源对象不是待转换对象类型，返回NULL
+     */    
+    template<class T>
+    T * sobj_cast(SObject *pObj)
+    {
+        if(!pObj)
+            return NULL;
+
+        if(pObj->IsClass(T::GetClassName()))
+            return (T*)pObj;
+        else
+            return NULL;
+    }
 
 }//namespace SOUI

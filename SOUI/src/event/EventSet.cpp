@@ -66,11 +66,11 @@ namespace SOUI
         }
     }
 
-    void SEventSet::addEvent( const DWORD dwEventID )
+    void SEventSet::addEvent( const DWORD dwEventID ,LPCWSTR pszEventHandlerName)
     {
         if(!isEventPresent(dwEventID))
         {
-            m_evtArr.Add(new SEvent(dwEventID));
+            m_evtArr.Add(new SEvent(dwEventID,pszEventHandlerName));
         }
     }
 
@@ -90,6 +90,16 @@ namespace SOUI
     bool SEventSet::isEventPresent( const DWORD dwEventID )
     {
         return GetEventObject(dwEventID)!=NULL;
+    }
+
+    bool SEventSet::isEventPresent(const SStringW & pszEventHandlerName )
+    {
+        for(UINT i=0;i<m_evtArr.GetCount();i++)
+        {
+            if(m_evtArr[i]->GetEventHandlerName() == pszEventHandlerName)
+                return true;
+        }
+        return false;
     }
 
     void SEventSet::removeAllEvents( void )
