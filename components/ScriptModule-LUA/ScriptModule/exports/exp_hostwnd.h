@@ -14,6 +14,7 @@ BOOL ExpLua_HostWnd(lua_State *L)
 		lua_tinker::class_def<SHostWnd>(L,"setTimeout",&SHostWnd::setTimeout);
 		lua_tinker::class_def<SHostWnd>(L,"setInterval",&SHostWnd::setInterval);
 		lua_tinker::class_def<SHostWnd>(L,"clearTimer",&SHostWnd::clearTimer);
+        lua_tinker::class_def<SHostWnd>(L,"GetRoot",&SHostWnd::GetRoot);
         
         lua_tinker::def(L,"toHostWnd",toHostWnd);
 		return TRUE;
