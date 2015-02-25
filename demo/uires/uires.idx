@@ -75,6 +75,7 @@
   <GIF>
     <file name="gif_horse"	path="image\horse.gif"/>
     <file name="gif_penguin"	path="image\penguin.gif"/>
+    <file name="gif_win" path="image\win.gif"/>
   </GIF>
   <apng>
     <file name="apng_haha"	path="image\apng_haha.png"/>

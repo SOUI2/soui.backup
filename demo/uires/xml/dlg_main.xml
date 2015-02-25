@@ -3,6 +3,7 @@
     <!--局部skin对象-->
     <gif name="gif_horse" src="gif:gif_horse"/>
     <gif name="gif_penguin" src="gif:gif_penguin"/>
+    <gif name="gif_win" src="gif:gif_win"/>
     <apng name="apng_haha" src="apng:apng_haha"/>
   </skin>
   <style>
