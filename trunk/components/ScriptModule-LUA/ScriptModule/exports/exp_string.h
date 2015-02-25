@@ -7,7 +7,6 @@ BOOL ExpLua_String(lua_State *L)
 		lua_tinker::class_add<SStringA>(L,"SStringA");
         lua_tinker::class_con<SStringA>(L,lua_tinker::constructor<SStringA>);
         lua_tinker::class_con<SStringA>(L,lua_tinker::constructor<SStringA,const SStringA &>);
-        lua_tinker::class_con<SStringA>(L,lua_tinker::constructor<SStringA,char,int>);
         lua_tinker::class_con<SStringA>(L,lua_tinker::constructor<SStringA,const char*,int>);
         
         lua_tinker::class_def<SStringA>(L,"GetLength",&SStringA::GetLength);
@@ -47,7 +46,6 @@ BOOL ExpLua_String(lua_State *L)
         lua_tinker::class_add<SStringW>(L,"SStringW");
         lua_tinker::class_con<SStringW>(L,lua_tinker::constructor<SStringW>);
         lua_tinker::class_con<SStringW>(L,lua_tinker::constructor<SStringW,const SStringW &>);
-        lua_tinker::class_con<SStringW>(L,lua_tinker::constructor<SStringW,wchar_t,int>);
         lua_tinker::class_con<SStringW>(L,lua_tinker::constructor<SStringW,const wchar_t*,int>);
 
         lua_tinker::class_def<SStringW>(L,"GetLength",&SStringW::GetLength);
