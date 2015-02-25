@@ -4,6 +4,10 @@ gamewnd = nil;
 gamecanvas = nil;
 players = {};
 
+coins_all = 100;	--现有资金
+coins_bet = {0,0,0,0} --下注金额
+bet_rate = 4;		--赔率
+
 function on_init(args)
 	--初始化全局对象
 	win = toHostWnd(args.sender);
@@ -37,7 +41,7 @@ function on_timer(args)
 		local wid = rcPlayer:Width();
 		local hei = rcPlayer:Height();
 
-		local stop = false;
+		local win_id = 0;
 		for i = 1,4 do
 			local prog = players[i]:GetUserData();
 			if(prog<200) then
@@ -47,16 +51,46 @@ function on_timer(args)
 				rc.left = rcCanvas.left + (widCanvas-wid)*prog/200;
 				players[i]:Move2(rc.left,rc.top,-1,-1);
 			else
-				stop = true;
+				win_id = i;
+
+				local rc = players[i]:GetWindowRect2();
+				rc.left = rcCanvas.left + (widCanvas-wid);
+				players[i]:Move2(rc.left,rc.top,-1,-1);
 			end
 		end
 
-		if stop then
+		if win_id ~= 0 then
 			gamewnd:FindChildByNameA("btn_run",-1):FireCommand();
+			coins_all = coins_all + coins_bet[win_id] * 4;
+			gamewnd:FindChildByNameA("txt_coins",-1):SetWindowText(T(coins_all));
+
+			coins_bet = {0,0,0,0};
+
+			for i= 1,4 do
+				gamewnd:FindChildByID(i,-1):SetWindowText(T(i .. "#"));
+			end
 		end
 	end
 end
 
+function on_bet(args)
+	if tid ~= 0 then
+		return 1;
+	end
+
+	local btn = toSWindow(args.sender);
+	if coins_all > 10 then
+		id = btn:GetID();
+		coins_bet[id] = coins_bet[id] + 10;
+		coins_all = coins_all -10;
+		local str = "#" .. id .. "(" .. coins_bet[id] .. ")";
+		btn:SetWindowText(T(str));
+
+		gamewnd:FindChildByNameA("txt_coins",-1):SetWindowText(T(coins_all));
+
+	end
+	return 1;
+end
 
 function on_canvas_size(args)
 	if win == nil then
