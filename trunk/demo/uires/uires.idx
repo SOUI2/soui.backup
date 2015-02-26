@@ -49,19 +49,19 @@
     <file name="png_chrome_tab_new" path="image\chromeTabNew.png"/>
     <file name="png_chrome_tab_close" path="image\chromeTabClose.png"/>
 	
-	<file name="png_lcex_header" path="image\lcex_header.png"/>
-	<file name="png_lcex_header_arrow" path="image\lcex_headerarrow.png"/>
-	<file name="png_lcex_selectrange" path="image\lcex_selectrange.png"/>
-	<file name="png_icon1" path="image\icon\1.png"/>
-	<file name="png_icon2" path="image\icon\2.png"/>
-	<file name="png_icon3" path="image\icon\3.png"/>
-	<file name="png_icon4" path="image\icon\4.png"/>
-	<file name="png_icon5" path="image\icon\5.png"/>
-	<file name="png_icon6" path="image\icon\6.png"/>
-	<file name="png_icon7" path="image\icon\7.png"/>
-	<file name="png_star1" path="image\icon\star_green.png"/>
-	<file name="png_star2" path="image\icon\star_yellow.png"/>
-	<file name="png_install" path="image\icon\button_install.png"/>
+	  <file name="png_lcex_header" path="image\lcex_header.png"/>
+	  <file name="png_lcex_header_arrow" path="image\lcex_headerarrow.png"/>
+	  <file name="png_lcex_selectrange" path="image\lcex_selectrange.png"/>
+	  <file name="png_icon1" path="image\icon\1.png"/>
+	  <file name="png_icon2" path="image\icon\2.png"/>
+	  <file name="png_icon3" path="image\icon\3.png"/>
+	  <file name="png_icon4" path="image\icon\4.png"/>
+	  <file name="png_icon5" path="image\icon\5.png"/>
+	  <file name="png_icon6" path="image\icon\6.png"/>
+	  <file name="png_icon7" path="image\icon\7.png"/>
+	  <file name="png_star1" path="image\icon\star_green.png"/>
+	  <file name="png_star2" path="image\icon\star_yellow.png"/>
+	  <file name="png_install" path="image\icon\button_install.png"/>
   </IMGX> 
   <img.calendar2>
     <file name="png_skin_btn_semiarc" path="img.calendar2\skin_btn_semiarc.png"/>
@@ -72,10 +72,13 @@
     <file name="cal_arrow_right" path="img.calendar2\cal_arrow_right.png"/>
     <file name="cal_btn_day" path="img.calendar2\cal_day_skin.png"/>
   </img.calendar2>
-  <GIF>
-    <file name="gif_horse"	path="image\horse.gif"/>
-    <file name="gif_penguin"	path="image\penguin.gif"/>
+  <img.game>
+    <file name="img_coin" path="image\coin.png"/>
     <file name="gif_win" path="image\win.gif"/>
+    <file name="gif_horse"	path="image\horse.gif"/>
+  </img.game>
+  <GIF>
+    <file name="gif_penguin"	path="image\penguin.gif"/>
   </GIF>
   <apng>
     <file name="apng_haha"	path="image\apng_haha.png"/>
