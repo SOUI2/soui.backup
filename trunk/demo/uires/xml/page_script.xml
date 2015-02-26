@@ -29,10 +29,10 @@
         <window pos="0,%87.5,@64,@64" offset="0,-0.5" skin="img_coin" id="4" tip="下注4号马" on_command="on_bet">0</window>
       </window>
     </window>
-    <window pos="10,[5,-20,-0" name="game_toolbar">
+    <window pos="10,[5,-0,-0" name="game_toolbar">
       <button name="btn_run" pos="0,|0,@100,@30" offset="0,-0.5" tip="run the game" on_command="on_run">run</button>
-      <text pos="[10,0,@100,-0">现有金币:</text>
-      <text pos="[0,0,@50,-0" name="txt_coins">100</text>
+      <text pos="]-80,0,@80,-0">现有金币:</text>
+      <text pos="-64,0,@64,-0" name="txt_coins" align="center">100</text>
     </window>
 
   </window>
