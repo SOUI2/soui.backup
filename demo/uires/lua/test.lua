@@ -93,7 +93,7 @@ function on_bet(args)
 	end
 
 	local btn = toSWindow(args.sender);
-	if coins_all > 10 then
+	if coins_all >= 10 then
 		id = btn:GetID();
 		coins_bet[id] = coins_bet[id] + 10;
 		coins_all = coins_all -10;
