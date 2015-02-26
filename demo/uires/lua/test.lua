@@ -81,7 +81,7 @@ function on_timer(args)
 			flag_win:SetUserData(win_id);
 
 			for i= 1,4 do
-				gamewnd:FindChildByID(i,-1):SetWindowText(T(i .. "#"));
+				gamewnd:FindChildByID(i,-1):SetWindowText(T("0"));
 			end
 		end
 	end
@@ -97,8 +97,7 @@ function on_bet(args)
 		id = btn:GetID();
 		coins_bet[id] = coins_bet[id] + 10;
 		coins_all = coins_all -10;
-		local str = "#" .. id .. "(" .. coins_bet[id] .. ")";
-		btn:SetWindowText(T(str));
+		btn:SetWindowText(T(coins_bet[id]));
 
 		gamewnd:FindChildByNameA("txt_coins",-1):SetWindowText(T(coins_all));
 
