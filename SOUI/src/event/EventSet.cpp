@@ -49,7 +49,7 @@ namespace SOUI
     {
         for(UINT i=0;i<m_evtArr.GetCount();i++)
         {
-            if(m_evtArr[i]->GetEventID()==dwEventID) return m_evtArr[i];
+            if(m_evtArr[i]->GetID()==dwEventID) return m_evtArr[i];
         }
         return NULL;
     }
@@ -57,7 +57,7 @@ namespace SOUI
     void SEventSet::FireEvent(EventArgs& args )
     {
         // find event object
-        SEvent* ev = GetEventObject(args.GetEventID());
+        SEvent* ev = GetEventObject(args.GetID());
 
         // fire the event if present and set is not muted
         if ((ev != 0) && !m_bMuted)
@@ -78,7 +78,7 @@ namespace SOUI
     {
         for(UINT i=0;i<m_evtArr.GetCount();i++)
         {
-            if(m_evtArr[i]->GetEventID()==dwEventID)
+            if(m_evtArr[i]->GetID()==dwEventID)
             {
                 delete m_evtArr[i];
                 m_evtArr.RemoveAt(i);
@@ -90,16 +90,6 @@ namespace SOUI
     bool SEventSet::isEventPresent( const DWORD dwEventID )
     {
         return GetEventObject(dwEventID)!=NULL;
-    }
-
-    bool SEventSet::isEventPresent(const SStringW & pszEventHandlerName )
-    {
-        for(UINT i=0;i<m_evtArr.GetCount();i++)
-        {
-            if(m_evtArr[i]->GetEventHandlerName() == pszEventHandlerName)
-                return true;
-        }
-        return false;
     }
 
     void SEventSet::removeAllEvents( void )
@@ -123,5 +113,28 @@ namespace SOUI
         return GetEventObject(dwEventID)->unsubscribe(subscriber);
     }
 
+    bool SEventSet::setEventScriptHandler( const SStringW & strEventName,const SStringA strScriptHandler )
+    {
+        for(UINT i=0;i<m_evtArr.GetCount();i++)
+        {
+            if(m_evtArr[i]->GetName() == strEventName)
+            {
+                m_evtArr[i]->SetScriptHandler(strScriptHandler);
+                return true;
+            }
+        }
+        return false;
+    }
 
+    SStringA SEventSet::getEventScriptHandler( const SStringW & strEventName ) const
+    {
+        for(UINT i=0;i<m_evtArr.GetCount();i++)
+        {
+            if(m_evtArr[i]->GetName() == strEventName)
+            {
+                return m_evtArr[i]->GetScriptHandler();
+            }
+        }
+        return "";
+    }
 }//end of namespace

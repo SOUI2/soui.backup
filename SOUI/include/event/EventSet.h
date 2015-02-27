@@ -8,7 +8,7 @@ namespace SOUI
     class SEvent
     {
     public:
-        SEvent(DWORD dwEventID,LPCWSTR pszEventHandlerName):m_dwEventID(dwEventID),m_strEventHanderName(pszEventHandlerName)
+        SEvent(DWORD dwEventID,LPCWSTR pszEventName):m_dwEventID(dwEventID),m_strEventName(pszEventName)
         {
 
         }
@@ -22,9 +22,13 @@ namespace SOUI
             m_evtSlots.RemoveAll();
         }
 
-        DWORD GetEventID(){return m_dwEventID;}
+        DWORD GetID(){return m_dwEventID;}
 
-        SStringW GetEventHandlerName() const {return m_strEventHanderName;}
+        SStringW GetName() const {return m_strEventName;}
+
+        SStringA GetScriptHandler() const {return m_strScriptHandler;}
+
+        void SetScriptHandler(const SStringA & strScriptHandler){m_strScriptHandler = strScriptHandler;}
         /*!
         \brief
             Subscribes some function or object to the Event
@@ -51,7 +55,9 @@ namespace SOUI
         int findSlotFunctor(const ISlotFunctor& slot);
 
         DWORD    m_dwEventID;
-        SStringW m_strEventHanderName;
+        SStringW m_strEventName;
+        SStringA m_strScriptHandler;
+
         SArray<ISlotFunctor *> m_evtSlots;
     };
 
@@ -109,8 +115,9 @@ namespace SOUI
         */
         bool    isEventPresent(const DWORD dwEventID);
 
-        bool    isEventPresent(const SStringW &  pszEventHandlerName);
+        bool    setEventScriptHandler(const SStringW &  strEventName,const SStringA strScriptHandler);
 
+        SStringA getEventScriptHandler(const SStringW &  strEventName) const;
         /*!
         \brief
             Subscribes a handler to Event. .
