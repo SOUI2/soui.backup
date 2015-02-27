@@ -30,7 +30,18 @@ namespace SOUI
     class SUnknownImpl: public T
     {
     public:
-        SUnknownImpl():m_cRef(0){}
+        SUnknownImpl():m_cRef(1){}
+
+        template<typename P1>
+        SUnknownImpl(P1 p1):T(p1),m_cRef(1)
+        {
+        }
+
+        template<typename P1,typename P2>
+        SUnknownImpl(P1 p1,P2 p2):T(p1,p2),m_cRef(1)
+        {
+        }
+
         virtual ~SUnknownImpl(){}
         
         
@@ -69,6 +80,6 @@ namespace SOUI
         virtual void OnFinialRelease(){delete this;}
 
     protected:
-        LONG m_cRef;
+        volatile LONG m_cRef;
     };
 }

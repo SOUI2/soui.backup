@@ -52,14 +52,14 @@ __interface  ISmileySource : IUnknown{
     pointer_default(unique)
 ]
 __interface  ISmileyHost : IUnknown{
-    [id(1), helpstring("method SetRichedit")] HRESULT SetRichedit([in] DWORD_PTR dwRichedit);   
-    [id(2), helpstring("method SendMessage")] HRESULT SendMessage([in] UINT uMsg,[in] WPARAM wParam,[in] LPARAM lParam,[out] LRESULT *pRet);
-    [id(3), helpstring("method GetHostRect")] HRESULT GetHostRect([out] LPRECT prcHost);
-    [id(4), helpstring("method InvalidateRect")] HRESULT InvalidateRect([in] LPCRECT pRect);
-    [id(5), helpstring("method CreateSource")] HRESULT CreateSource([in,out] ISmileySource **ppSource);
-    [id(6), helpstring("method SetTimer")] HRESULT SetTimer([in] ITimerHandler * pTimerHander,[in] int nInterval);
-    [id(7), helpstring("method KillTimer")] HRESULT KillTimer([in] ITimerHandler * pTimerHander);
-    [id(8), helpstring("method OnTimer")] HRESULT OnTimer([in] int nInterval);
+    [id(1), helpstring("method SendMessage")] HRESULT SendMessage([in] UINT uMsg,[in] WPARAM wParam,[in] LPARAM lParam,[out] LRESULT *pRet);
+    [id(2), helpstring("method GetHostRect")] HRESULT GetHostRect([out] LPRECT prcHost);
+    [id(3), helpstring("method InvalidateRect")] HRESULT InvalidateRect([in] LPCRECT pRect);
+    [id(4), helpstring("method CreateSource")] HRESULT CreateSource([in,out] ISmileySource **ppSource);
+    [id(5), helpstring("method SetTimer")] HRESULT SetTimer([in] ITimerHandler * pTimerHander,[in] int nInterval);
+    [id(6), helpstring("method KillTimer")] HRESULT KillTimer([in] ITimerHandler * pTimerHander);
+    [id(7), helpstring("method OnTimer")] HRESULT OnTimer([in] int nInterval);
+    [id(8), helpstring("method ClearTimer")] HRESULT ClearTimer();
 };
 
 // ISoSmileyCtrl

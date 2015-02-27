@@ -96,7 +96,6 @@ namespace SOUI{
 
     CUIAnimationManagerEventHandler::CUIAnimationManagerEventHandler(SUiAnimationWnd * pOwner):m_pOwner(pOwner)
     {
-        AddRef();
         m_pOwner->AddRef();
     }
 

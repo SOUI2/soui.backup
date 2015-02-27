@@ -7,7 +7,6 @@
 
 
 #include <richole.h>
-#include <map>
 
 #include "../sosmiley/_sosmiley.h"
 #include <control/srichedit.h>
@@ -185,87 +184,13 @@ protected:
     static ULONG_PTR   s_gdiPlusToken;
 };
 
-class CSmileyHost : public ISmileyHost , public ITimelineHandler
-{
-public:
-    CSmileyHost();
-    ~CSmileyHost();
-    
-    typedef ISmileySource * (* CreateSourcePtr)();
-    
-    void SetCreateSourcePtr( CreateSourcePtr pCreateSource);
-    
-public://IUnkown
-    virtual HRESULT STDMETHODCALLTYPE QueryInterface( 
-        /* [in] */ REFIID riid,
-        /* [iid_is][out] */ __RPC__deref_out void __RPC_FAR *__RPC_FAR *ppvObject);
-
-    virtual ULONG STDMETHODCALLTYPE AddRef( void);
-
-    virtual ULONG STDMETHODCALLTYPE Release( void);
-
-public://ISmileyHost
-    virtual HRESULT STDMETHODCALLTYPE SetRichedit(/* [in] */DWORD_PTR dwRichedit);   
-    virtual HRESULT STDMETHODCALLTYPE SendMessage( 
-        /* [in] */ UINT uMsg,
-        /* [in] */ WPARAM wParam,
-        /* [in] */ LPARAM lParam,
-        /* [out] */ LRESULT *pRet);
-
-    virtual HRESULT STDMETHODCALLTYPE GetHostRect( 
-        /* [out] */ LPRECT prcHost);
-
-    virtual HRESULT STDMETHODCALLTYPE InvalidateRect( 
-        /* [in] */ LPCRECT pRect);
-
-    virtual HRESULT STDMETHODCALLTYPE CreateSource(
-        /* [in,out] */ ISmileySource ** ppSource);
-
-    virtual HRESULT STDMETHODCALLTYPE SetTimer(
-        /* [in] */ ITimerHandler * pTimerHander,
-        /* [in] */ int nInterval);
-        
-    virtual HRESULT STDMETHODCALLTYPE KillTimer(
-        /* [in] */ ITimerHandler * pTimerHander);
-        
-    virtual HRESULT STDMETHODCALLTYPE  OnTimer(int nInterval);
-
-public://ITimelineHandler
-    virtual void OnNextFrame(){OnTimer(10);}
-public:
-    bool OnHostUpdate(SOUI::EventArgs *pEvt);
-    bool OnHostVisibleChanged(SOUI::EventArgs *pEvt);
-    
-    void ClearTimer();
-    
-protected:
-    static ISmileySource * DefCreateSource();
-
-    struct TIMERINFO
-    {
-        TIMERINFO(ITimerHandler *_p,int _nInterval)
-        :pHandler(_p),nInterval(_nInterval)
-        {}
-        ITimerHandler * pHandler;
-        int nInterval;
-    };
-
-    typedef SList<TIMERINFO*> TIMERHANDLER_LIST;
-    TIMERHANDLER_LIST m_lstTimerInfo;
-
-    SRichEdit * m_pHost;
-    LONG m_cRef;
-    int         m_cTime;
-    
-    CreateSourcePtr m_pCreateSource;
-};
-
+typedef ISmileySource * (* FunCreateSource)();
 
 class CRichEditOleCallback : public IRichEditOleCallback
 {
 public:
-    static BOOL SetRicheditOleCallback(SRichEdit *pRichedit,CSmileyHost::CreateSourcePtr pCreateSource = NULL);
-    
+    CRichEditOleCallback(ISmileyHost *pSmileyHost);
+
 public:
     virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID iid, void ** ppvObject);
     virtual ULONG STDMETHODCALLTYPE AddRef();
@@ -286,16 +211,76 @@ public:
         HMENU FAR *lphmenu);
 
 protected:
-    CRichEditOleCallback(SRichEdit * pRichedit);
     virtual ~CRichEditOleCallback();
 
     SComPtr<IStorage>   m_stg;
     int                 m_iStorage;
 
     DWORD m_dwRef;
-    CSmileyHost * m_pSmileyHost;
-    SRichEdit   * m_pRichedit;
+    ISmileyHost *       m_pSmileyHost;
 };
 
+class CSmileyHost : public ISmileyHost , public ITimelineHandler
+{
+public:
+    CSmileyHost(SRichEdit *pRichedit,FunCreateSource pCreateSource);
+    ~CSmileyHost();
+
+public://ISmileyHost
+    virtual HRESULT STDMETHODCALLTYPE SendMessage( 
+        /* [in] */ UINT uMsg,
+        /* [in] */ WPARAM wParam,
+        /* [in] */ LPARAM lParam,
+        /* [out] */ LRESULT *pRet);
+
+    virtual HRESULT STDMETHODCALLTYPE GetHostRect( 
+        /* [out] */ LPRECT prcHost);
+
+    virtual HRESULT STDMETHODCALLTYPE InvalidateRect( 
+        /* [in] */ LPCRECT pRect);
+
+    virtual HRESULT STDMETHODCALLTYPE CreateSource(
+        /* [in,out] */ ISmileySource ** ppSource);
+
+    virtual HRESULT STDMETHODCALLTYPE SetTimer(
+        /* [in] */ ITimerHandler * pTimerHander,
+        /* [in] */ int nInterval);
+
+    virtual HRESULT STDMETHODCALLTYPE KillTimer(
+        /* [in] */ ITimerHandler * pTimerHander);
+
+    virtual HRESULT STDMETHODCALLTYPE  OnTimer(int nInterval);
+
+    virtual HRESULT STDMETHODCALLTYPE  ClearTimer();
+
+public://ITimelineHandler
+    virtual void OnNextFrame(){OnTimer(10);}
+public:
+    bool OnHostUpdate(SOUI::EventArgs *pEvt);
+    bool OnHostVisibleChanged(SOUI::EventArgs *pEvt);
+
+protected:
+
+    struct TIMERINFO
+    {
+        TIMERINFO(ITimerHandler *_p,int _nInterval)
+            :pHandler(_p),nInterval(_nInterval)
+        {}
+        ITimerHandler * pHandler;
+        int nInterval;
+    };
+
+    typedef SList<TIMERINFO*> TIMERHANDLER_LIST;
+    TIMERHANDLER_LIST m_lstTimerInfo;
+
+    SRichEdit * m_pHost;
+    int         m_cTime;
+
+    FunCreateSource m_pCreateSource;
+};
+
+
+
+BOOL SetSRicheditOleCallback(SRichEdit *pRichedit,FunCreateSource pCreateSource = NULL);
 
 #endif // !defined(AFX_OLERICHEDITCTRL_H__3DFF15EE_7336_4297_9620_7F00B611DAA1__INCLUDED_)
