@@ -124,8 +124,7 @@ namespace SOUI
         }
 
         virtual ~EventArgs(void) {}
-        virtual UINT GetEventID()= 0;
-        virtual LPCWSTR GetScriptHandler() const {return NULL;}
+
         /*************************************************************************
         Data members
         *************************************************************************/
@@ -150,21 +149,21 @@ namespace SOUI
         {
         }
 
-        virtual UINT GetEventID(){return T::EventID;}
-        virtual LPCWSTR GetScriptHandler() const {return T::GetClassName();}
+        virtual int GetID() const {return T::EventID;}
+        virtual LPCWSTR GetName() const {return T::GetClassName();}
     };
 
     class SOUI_EXP EventCmnArgs : public EventArgs
     {
     public:
-        EventCmnArgs(SObject *pSender,UINT uEvtID):EventArgs(pSender),uID(uEvtID)
+        EventCmnArgs(SObject *pSender,int _nID):EventArgs(pSender),nID(_nID)
         {
 
         }
-        virtual UINT GetEventID(){return uID;}
+        virtual int GetID() const{return nID;}
 
     protected:
-        UINT uID;
+        int nID;
     };
 
     #define EVENTID(x) x::EventID,x::GetClassName()

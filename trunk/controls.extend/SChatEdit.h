@@ -4,14 +4,13 @@ namespace SOUI
 {
     #define EVT_CHATEDIT_KEYRETURN (EVT_EXTERNAL_BEGIN+500)
     
-    class EventChatEditKeyReturn : public EventArgs
+    class EventChatEditKeyReturn : public TplEventArgs<EventChatEditKeyReturn>
     {
+        SOUI_CLASS_NAME(EventChatEditKeyReturn,L"on_chatedit_key_return")
     public:
-    EventChatEditKeyReturn(SWindow *pSender):EventArgs(pSender),bCancel(false){}
-    enum {EventID=EVT_CHATEDIT_KEYRETURN};
-    virtual UINT GetEventID() { return EventID;}
-    static LPCSTR ScriptHandler(){return "on_chatedit_key_return";}
-    bool bCancel;
+        EventChatEditKeyReturn(SObject *pSender):TplEventArgs<EventChatEditKeyReturn>(pSender),bCancel(false){}
+        enum {EventID=EVT_CHATEDIT_KEYRETURN};
+        bool bCancel;
     };
     
     class SChatEdit : public SRichEdit

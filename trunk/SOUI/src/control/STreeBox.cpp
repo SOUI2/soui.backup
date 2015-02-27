@@ -681,10 +681,10 @@ void STreeBox::OnMouseLeave()
 
 BOOL STreeBox::FireEvent(EventArgs &evt)
 {
-    if(evt.GetEventID()==EventOfPanel::EventID)
+    if(evt.GetID()==EventOfPanel::EventID)
     {
         EventOfPanel *pEvt = (EventOfPanel *)&evt;
-        if(pEvt->pOrgEvt->GetEventID()==EVT_CMD 
+        if(pEvt->pOrgEvt->GetID()==EVT_CMD 
             && wcscmp(pEvt->pOrgEvt->nameFrom , NAME_SWITCH)==0)
         {
             STreeItem *pItem=(STreeItem*)pEvt->pPanel;

@@ -37,7 +37,7 @@ void SComboEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 BOOL SComboEdit::FireEvent(EventArgs & evt)
 {
-    if(evt.GetEventID()==EVT_RE_NOTIFY)
+    if(evt.GetID()==EVT_RE_NOTIFY)
     {//转发richedit的txNotify消息
         evt.idFrom=GetOwner()->GetID();
         evt.nameFrom=GetOwner()->GetName();
@@ -339,7 +339,7 @@ void SComboBoxBase::OnSelChanged()
 
 BOOL SComboBoxBase::FireEvent( EventArgs &evt )
 {
-    if(evt.GetEventID() == EventRENotify::EventID)
+    if(evt.GetID() == EventRENotify::EventID)
     {
         EventRENotify *evtRe = (EventRENotify*)&evt;
         if(evtRe->iNotify == EN_CHANGE && !m_pEdit->GetEventSet()->isMuted())
@@ -471,12 +471,12 @@ BOOL SComboBox::FireEvent( EventArgs &evt )
 {
     if(evt.idFrom == IDC_DROPDOWN_LIST && m_pDropDownWnd)
     {
-        if(evt.GetEventID()==EventLBSelChanged::EventID)
+        if(evt.GetID()==EventLBSelChanged::EventID)
         {
             OnSelChanged();
             return TRUE;
         }
-        if(evt.GetEventID() == EventCmd::EventID)
+        if(evt.GetID() == EventCmd::EventID)
         {
             CloseUp();
             return TRUE;
@@ -612,16 +612,16 @@ BOOL SComboBoxEx::FireEvent( EventArgs &evt )
 {
     if(evt.idFrom == IDC_DROPDOWN_LIST && m_pDropDownWnd)
     {
-        if(evt.GetEventID()==EventLBSelChanged::EventID)
+        if(evt.GetID()==EventLBSelChanged::EventID)
         {//列表选中项改变事件
             OnSelChanged();
             return TRUE;
         }
     }
-    if(evt.GetEventID() == EventOfPanel::EventID)
+    if(evt.GetID() == EventOfPanel::EventID)
     {
         EventOfPanel *pEvtOfPanel = (EventOfPanel*) &evt;
-        if(pEvtOfPanel->pOrgEvt->GetEventID() == EventCmd::EventID)
+        if(pEvtOfPanel->pOrgEvt->GetID() == EventCmd::EventID)
         {
             EventOfComoboxExItem evt2(this,(EventCmd*)pEvtOfPanel->pOrgEvt);
             __super::FireEvent(evt2);
