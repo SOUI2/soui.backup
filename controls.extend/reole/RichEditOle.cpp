@@ -2,27 +2,12 @@
 //
 #include "stdafx.h"
 #include "RichEditOle.h"
+#include <atl.mini/SComHelper.h>
 #include <gdialpha.h>
 #include <GdiPlus.h>
 #pragma comment(lib,"gdiplus")
 
 #include "dataobject.h"
-
-HRESULT GetSmileyHost(SRichEdit * pRichedit,ISmileyHost ** ppHost)
-{
-    SComPtr<IRichEditOle> ole;
-    if(!pRichedit->SSendMessage(EM_GETOLEINTERFACE,0,(LPARAM)(void**)&ole))
-    {
-        return S_FALSE;
-    }
-    SComPtr<IRichEditOleCallback> pCallback;
-    HRESULT hr = ole->QueryInterface(IID_IRichEditOleCallback,(LPVOID*)&pCallback);
-    if(SUCCEEDED(hr))
-    {
-        hr = pCallback->QueryInterface(__uuidof(ISmileyHost),(LPVOID*)ppHost);
-    }
-    return hr;
-}
 
 //////////////////////////////////////////////////////////////////////////
 //  ImageItem
@@ -327,226 +312,14 @@ HRESULT STDMETHODCALLTYPE CSmileySource::GetFile(/* [out] */ BSTR *bstrFile)
     *bstrFile = ::SysAllocString((const OLECHAR*)(LPCWSTR)m_pImg->GetImageID().m_strFilename);
     return S_OK;
 }
-//////////////////////////////////////////////////////////////////////////
-//  CSmileyHost
-
-ISmileySource * CSmileyHost::DefCreateSource()
-{
-    return  new CSmileySource;
-}
-
-
-CSmileyHost::CSmileyHost() :m_pHost(0),m_cRef(1),m_cTime(0),m_pCreateSource(DefCreateSource)
-{
-
-}
-
-CSmileyHost::~CSmileyHost()
-{
-    m_pHost->GetContainer()->UnregisterTimelineHandler(this);
-}
-
-void CSmileyHost::SetCreateSourcePtr(CreateSourcePtr pCreateSource)
-{
-    if(pCreateSource==NULL) 
-        m_pCreateSource = &DefCreateSource;
-    else
-        m_pCreateSource = pCreateSource;
-}
-
-void CSmileyHost::ClearTimer()
-{
-    SPOSITION pos = m_lstTimerInfo.GetHeadPosition();
-    while(pos)
-    {
-        TIMERINFO *pTi = m_lstTimerInfo.GetNext(pos);
-        pTi->pHandler->Clear();
-        delete pTi;
-    }
-    m_lstTimerInfo.RemoveAll();
-}
-
-HRESULT STDMETHODCALLTYPE CSmileyHost::SetTimer( /* [in] */ ITimerHandler * pTimerHander, /* [in] */ int nInterval )
-{
-    SPOSITION pos = m_lstTimerInfo.GetHeadPosition();
-    while(pos)
-    {
-        if(m_lstTimerInfo.GetNext(pos)->pHandler == pTimerHander) return S_FALSE;
-    } 
-
-    m_lstTimerInfo.AddTail(new TIMERINFO(pTimerHander,nInterval));
-        
-    return S_OK;
-}
-
-
-HRESULT STDMETHODCALLTYPE CSmileyHost::KillTimer(/* [in] */ ITimerHandler * pTimerHander)
-{
-    SPOSITION pos = m_lstTimerInfo.GetHeadPosition();
-    while(pos)
-    {
-        SPOSITION pos2 = pos;
-        TIMERINFO *pTi = m_lstTimerInfo.GetNext(pos);
-        if(pTi->pHandler == pTimerHander)
-        {
-            pTi->pHandler->Clear();
-            delete pTi;
-            m_lstTimerInfo.RemoveAt(pos2);
-            break;
-        }
-    }
-    return S_OK;
-}
-
-
-#define INTERVAL    2
-HRESULT STDMETHODCALLTYPE  CSmileyHost::OnTimer( int nInterval )
-{
-    if(++m_cTime<INTERVAL) return S_OK;
-    m_cTime=0;
-    
-    //找到所有到时间的定时器,防止在执行定时器时插入新定时器，需要先查找再执行。
-    TIMERHANDLER_LIST lstDone;
-    SPOSITION pos = m_lstTimerInfo.GetHeadPosition();
-    while(pos)
-    {
-        SPOSITION pos2 = pos;
-        TIMERINFO *pti = m_lstTimerInfo.GetNext(pos);
-        pti->nInterval -= nInterval*INTERVAL;
-        if(pti->nInterval <= 0)
-        {
-            lstDone.AddTail(pti);
-            m_lstTimerInfo.RemoveAt(pos2);
-        }
-    }
-    if(lstDone.IsEmpty()) return S_OK;
-
-    //计算出刷新区域
-    CAutoRefPtr<IRegion> rgn;
-    GETRENDERFACTORY->CreateRegion(&rgn);;
-    RECT rcSmiley;
-    pos = lstDone.GetHeadPosition();
-    while(pos)
-    {
-        TIMERINFO *pTi = lstDone.GetNext(pos);
-        pTi->pHandler->GetRect(&rcSmiley);
-        int nWid=rcSmiley.right-rcSmiley.left;
-        rgn->CombineRect(&rcSmiley,RGN_OR);
-    }
-    
-    CRect rcClient;
-    m_pHost->GetClientRect(&rcClient);
-    rgn->CombineRect(&rcClient,RGN_AND);
-    
-    //刷新表情
-    IRenderTarget *pRT = m_pHost->GetRenderTarget(OLEDC_PAINTBKGND,rgn);
-    m_pHost->SSendMessage(WM_ERASEBKGND,(WPARAM)pRT);
-    
-    HDC hdc = pRT->GetDC(0);
-
-    pRT->GetClipBox(&rcClient);
-    ALPHAINFO ai;
-    CGdiAlpha::AlphaBackup(hdc,&rcClient,ai);
-
-    pos = lstDone.GetHeadPosition();
-    while(pos)
-    {
-        TIMERINFO *pTi = lstDone.GetNext(pos);
-        pTi->pHandler->OnTimer(hdc);
-        delete pTi;
-    }
-    CGdiAlpha::AlphaRestore(ai);
-    
-    pRT->ReleaseDC(hdc);
-    m_pHost->ReleaseRenderTarget(pRT);
-
-    return S_OK;
-}
-
-
-HRESULT STDMETHODCALLTYPE CSmileyHost::CreateSource( ISmileySource ** ppSource )
-{
-    *ppSource = m_pCreateSource();
-    return S_OK;
-}
-
-HRESULT STDMETHODCALLTYPE CSmileyHost::InvalidateRect( /* [in] */ LPCRECT pRect )
-{
-    m_pHost->InvalidateRect(pRect);
-    return S_OK;
-}
-
-HRESULT STDMETHODCALLTYPE CSmileyHost::GetHostRect( /* [out] */ LPRECT prcHost )
-{
-    ::GetWindowRect(m_pHost->GetContainer()->GetHostHwnd(),prcHost);
-    return S_OK;
-}
-
-HRESULT STDMETHODCALLTYPE CSmileyHost::SendMessage( /* [in] */ UINT uMsg, /* [in] */ WPARAM wParam, /* [in] */ LPARAM lParam, /* [out] */ LRESULT *pRet )
-{
-    LRESULT lRet=m_pHost->SSendMessage(uMsg,wParam,lParam);
-    if(pRet) *pRet = lRet;
-    return S_OK;
-}
-
-ULONG STDMETHODCALLTYPE CSmileyHost::Release( void )
-{
-    LONG lRet = --m_cRef;
-    if(lRet == 0)
-    {
-        delete this;
-    }
-    return lRet;
-}
-
-ULONG STDMETHODCALLTYPE CSmileyHost::AddRef( void )
-{
-    return ++m_cRef;
-}
-
-HRESULT STDMETHODCALLTYPE CSmileyHost::QueryInterface( /* [in] */ REFIID riid, /* [iid_is][out] */ __RPC__deref_out void __RPC_FAR *__RPC_FAR *ppvObject )
-{
-    return E_NOINTERFACE;
-}
-
-HRESULT STDMETHODCALLTYPE CSmileyHost::SetRichedit(/* [in] */DWORD_PTR dwRichedit)
-{
-    SASSERT(!m_pHost);
-    m_pHost = (SRichEdit *)dwRichedit;
-    //订阅richedit的EN_UPDATE消息,用来更新表情坐标
-    m_pHost->GetEventSet()->subscribeEvent(EVT_VISIBLECHANGED,Subscriber(&CSmileyHost::OnHostVisibleChanged,this));
-    m_pHost->GetEventSet()->subscribeEvent(EventRENotify::EventID,Subscriber(&CSmileyHost::OnHostUpdate,this));
-    return S_OK;
-}
-
-bool CSmileyHost::OnHostVisibleChanged(SOUI::EventArgs *pEvt)
-{
-    if(m_pHost->IsVisible(TRUE))
-        m_pHost->GetContainer()->RegisterTimelineHandler(this);
-    else
-        m_pHost->GetContainer()->UnregisterTimelineHandler(this);
-    return false;
-}
-
-bool CSmileyHost::OnHostUpdate(SOUI::EventArgs *pEvt)
-{
-    EventRENotify *pReNotify = (EventRENotify*)pEvt;
-    if(pReNotify->iNotify == EN_UPDATE)
-    {
-        ClearTimer();
-    }
-    return false; 
-}
-
 
 //////////////////////////////////////////////////////////////////////////
 // CRichEditOleCallback
 
 static const UINT KCF_SMILEY = RegisterClipboardFormat(_T("richedit_smiley_enable"));
 
-CRichEditOleCallback::CRichEditOleCallback(SRichEdit * pRichedit)
-:m_pRichedit(pRichedit)
-,m_dwRef(1)
+CRichEditOleCallback::CRichEditOleCallback(ISmileyHost *pSmileyHost)
+:m_dwRef(1)
 ,m_iStorage(0)
 {
     HRESULT hResult = ::StgCreateDocfile(NULL,
@@ -559,7 +332,9 @@ CRichEditOleCallback::CRichEditOleCallback(SRichEdit * pRichedit)
 //         AfxThrowOleException( hResult );
     }
 
-    m_pSmileyHost = new CSmileyHost;
+    m_pSmileyHost = pSmileyHost;
+    SASSERT(m_pSmileyHost);
+    m_pSmileyHost->AddRef();
 }
 
 CRichEditOleCallback::~CRichEditOleCallback()
@@ -770,12 +545,195 @@ CRichEditOleCallback::GetContextMenu(WORD seltyp, LPOLEOBJECT lpoleobj, CHARRANG
     return S_OK;
 }
 
-BOOL CRichEditOleCallback::SetRicheditOleCallback(SRichEdit *pRichedit,CSmileyHost::CreateSourcePtr pCreateSource /*= NULL*/)
+
+
+//////////////////////////////////////////////////////////////////////////
+//  CSmileyHost
+
+CSmileyHost::CSmileyHost(SRichEdit *pRichedit,FunCreateSource pCreateSource) 
+:m_pHost(pRichedit)
+,m_pCreateSource(pCreateSource)
+,m_cTime(0)
 {
-    CRichEditOleCallback *pCallback = new CRichEditOleCallback(pRichedit);
-    pCallback->m_pSmileyHost->SetRichedit((DWORD_PTR)pRichedit);
-    pCallback->m_pSmileyHost->SetCreateSourcePtr(pCreateSource);
+    SASSERT(m_pHost);
+    //订阅richedit的EN_UPDATE消息,用来更新表情坐标
+    m_pHost->GetEventSet()->subscribeEvent(EVT_VISIBLECHANGED,Subscriber(&CSmileyHost::OnHostVisibleChanged,this));
+    m_pHost->GetEventSet()->subscribeEvent(EventRENotify::EventID,Subscriber(&CSmileyHost::OnHostUpdate,this));
+}
+
+CSmileyHost::~CSmileyHost()
+{
+    m_pHost->GetContainer()->UnregisterTimelineHandler(this);
+}
+
+
+HRESULT STDMETHODCALLTYPE CSmileyHost::ClearTimer()
+{
+    SPOSITION pos = m_lstTimerInfo.GetHeadPosition();
+    while(pos)
+    {
+        TIMERINFO *pTi = m_lstTimerInfo.GetNext(pos);
+        pTi->pHandler->Clear();
+        delete pTi;
+    }
+    m_lstTimerInfo.RemoveAll();
+    return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE CSmileyHost::SetTimer( /* [in] */ ITimerHandler * pTimerHander, /* [in] */ int nInterval )
+{
+    SPOSITION pos = m_lstTimerInfo.GetHeadPosition();
+    while(pos)
+    {
+        if(m_lstTimerInfo.GetNext(pos)->pHandler == pTimerHander) return S_FALSE;
+    } 
+
+    m_lstTimerInfo.AddTail(new TIMERINFO(pTimerHander,nInterval));
+
+    return S_OK;
+}
+
+
+HRESULT STDMETHODCALLTYPE CSmileyHost::KillTimer(/* [in] */ ITimerHandler * pTimerHander)
+{
+    SPOSITION pos = m_lstTimerInfo.GetHeadPosition();
+    while(pos)
+    {
+        SPOSITION pos2 = pos;
+        TIMERINFO *pTi = m_lstTimerInfo.GetNext(pos);
+        if(pTi->pHandler == pTimerHander)
+        {
+            pTi->pHandler->Clear();
+            delete pTi;
+            m_lstTimerInfo.RemoveAt(pos2);
+            break;
+        }
+    }
+    return S_OK;
+}
+
+
+#define INTERVAL    2
+HRESULT STDMETHODCALLTYPE  CSmileyHost::OnTimer( int nInterval )
+{
+    if(++m_cTime<INTERVAL) return S_OK;
+    m_cTime=0;
+
+    //找到所有到时间的定时器,防止在执行定时器时插入新定时器，需要先查找再执行。
+    TIMERHANDLER_LIST lstDone;
+    SPOSITION pos = m_lstTimerInfo.GetHeadPosition();
+    while(pos)
+    {
+        SPOSITION pos2 = pos;
+        TIMERINFO *pti = m_lstTimerInfo.GetNext(pos);
+        pti->nInterval -= nInterval*INTERVAL;
+        if(pti->nInterval <= 0)
+        {
+            lstDone.AddTail(pti);
+            m_lstTimerInfo.RemoveAt(pos2);
+        }
+    }
+    if(lstDone.IsEmpty()) return S_OK;
+
+    //计算出刷新区域
+    CAutoRefPtr<IRegion> rgn;
+    GETRENDERFACTORY->CreateRegion(&rgn);;
+    RECT rcSmiley;
+    pos = lstDone.GetHeadPosition();
+    while(pos)
+    {
+        TIMERINFO *pTi = lstDone.GetNext(pos);
+        pTi->pHandler->GetRect(&rcSmiley);
+        int nWid=rcSmiley.right-rcSmiley.left;
+        rgn->CombineRect(&rcSmiley,RGN_OR);
+    }
+
+    CRect rcClient;
+    m_pHost->GetClientRect(&rcClient);
+    rgn->CombineRect(&rcClient,RGN_AND);
+
+    //刷新表情
+    IRenderTarget *pRT = m_pHost->GetRenderTarget(OLEDC_PAINTBKGND,rgn);
+    m_pHost->SSendMessage(WM_ERASEBKGND,(WPARAM)pRT);
+
+    HDC hdc = pRT->GetDC(0);
+
+    pRT->GetClipBox(&rcClient);
+    ALPHAINFO ai;
+    CGdiAlpha::AlphaBackup(hdc,&rcClient,ai);
+
+    pos = lstDone.GetHeadPosition();
+    while(pos)
+    {
+        TIMERINFO *pTi = lstDone.GetNext(pos);
+        pTi->pHandler->OnTimer(hdc);
+        delete pTi;
+    }
+    CGdiAlpha::AlphaRestore(ai);
+
+    pRT->ReleaseDC(hdc);
+    m_pHost->ReleaseRenderTarget(pRT);
+
+    return S_OK;
+}
+
+
+HRESULT STDMETHODCALLTYPE CSmileyHost::CreateSource( ISmileySource ** ppSource )
+{
+    if(m_pCreateSource) 
+        *ppSource = m_pCreateSource();
+    else
+        *ppSource  = new CSmileySource;
+    return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE CSmileyHost::InvalidateRect( /* [in] */ LPCRECT pRect )
+{
+    m_pHost->InvalidateRect(pRect);
+    return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE CSmileyHost::GetHostRect( /* [out] */ LPRECT prcHost )
+{
+    ::GetWindowRect(m_pHost->GetContainer()->GetHostHwnd(),prcHost);
+    return S_OK;
+}
+
+HRESULT STDMETHODCALLTYPE CSmileyHost::SendMessage( /* [in] */ UINT uMsg, /* [in] */ WPARAM wParam, /* [in] */ LPARAM lParam, /* [out] */ LRESULT *pRet )
+{
+    LRESULT lRet=m_pHost->SSendMessage(uMsg,wParam,lParam);
+    if(pRet) *pRet = lRet;
+    return S_OK;
+}
+
+
+bool CSmileyHost::OnHostVisibleChanged(SOUI::EventArgs *pEvt)
+{
+    if(m_pHost->IsVisible(TRUE))
+        m_pHost->GetContainer()->RegisterTimelineHandler(this);
+    else
+        m_pHost->GetContainer()->UnregisterTimelineHandler(this);
+    return false;
+}
+
+bool CSmileyHost::OnHostUpdate(SOUI::EventArgs *pEvt)
+{
+    EventRENotify *pReNotify = (EventRENotify*)pEvt;
+    if(pReNotify->iNotify == EN_UPDATE)
+    {
+        ClearTimer();
+    }
+    return false; 
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+BOOL SetSRicheditOleCallback(SRichEdit *pRichedit,FunCreateSource pCreateSource /*= NULL*/)
+{
+    ISmileyHost *pHost = new SUnknownImpl<CSmileyHost>(pRichedit,pCreateSource);
+    CRichEditOleCallback *pCallback = new CRichEditOleCallback(pHost);
     BOOL bRet=pRichedit->SSendMessage(EM_SETOLECALLBACK,0,(LPARAM)pCallback);
     pCallback->Release();
+    pHost->Release();
     return bRet;
 }
