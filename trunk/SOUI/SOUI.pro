@@ -107,7 +107,7 @@ HEADERS += include/SApp.h \
            include/helper/swndspy.h \
            include/helper/SwndMsgCracker.h \
            include/helper/SCriticalSection.h \
-		   include/hellper/AppDir.h \
+		   include/helper/AppDir.h \
            include/interface/imgdecoder-i.h \
            include/interface/render-i.h \
            include/interface/SResProvider-i.h \
@@ -181,7 +181,7 @@ SOURCES += src/SApp.cpp \
            src/helper/STimerEx.cpp \
            src/helper/SScriptTimer.cpp \
            src/helper/stooltip.cpp \
-		   src/hellper/AppDir.cpp \
+		   src/helper/AppDir.cpp \
            src/res.mgr/SFontPool.cpp \
            src/res.mgr/SObjDefAttr.cpp \
            src/res.mgr/SResProvider.cpp \
