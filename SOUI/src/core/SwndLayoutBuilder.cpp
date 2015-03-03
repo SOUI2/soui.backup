@@ -170,7 +170,7 @@ namespace SOUI
                 {
                     if(!IsWaitingPos(rcWindow.top))
                     {
-                        if(pSwndLayout->pos[PI_RIGHT].cMinus  == -1)
+                        if(pSwndLayout->pos[PI_BOTTOM].cMinus  == -1)
                         {
                             CSize szWnd=pWnd->GetDesiredSize(rcContainer);
                             rcWindow.bottom = rcWindow.top + szWnd.cy;
