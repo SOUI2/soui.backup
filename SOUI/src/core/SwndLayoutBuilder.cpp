@@ -148,7 +148,14 @@ namespace SOUI
                 {
                     if(!IsWaitingPos(rcWindow.left))
                     {
-                        rcWindow.right = rcWindow.left + (int)pSwndLayout->pos[PI_RIGHT].nPos;
+                        if(pSwndLayout->pos[PI_RIGHT].cMinus == -1)
+                        {
+                            CSize szWnd=pWnd->GetDesiredSize(rcContainer);
+                            rcWindow.right = rcWindow.left + szWnd.cx;
+                        }else
+                        {
+                            rcWindow.right = rcWindow.left + (int)pSwndLayout->pos[PI_RIGHT].nPos;
+                        }
                     }
                 }else
                 {
@@ -163,7 +170,14 @@ namespace SOUI
                 {
                     if(!IsWaitingPos(rcWindow.top))
                     {
-                        rcWindow.bottom = rcWindow.top + (int)pSwndLayout->pos[PI_BOTTOM].nPos;
+                        if(pSwndLayout->pos[PI_RIGHT].cMinus  == -1)
+                        {
+                            CSize szWnd=pWnd->GetDesiredSize(rcContainer);
+                            rcWindow.bottom = rcWindow.top + szWnd.cy;
+                        }else
+                        {
+                            rcWindow.bottom = rcWindow.top + (int)pSwndLayout->pos[PI_BOTTOM].nPos;
+                        }
                     }
                 }else
                 {
