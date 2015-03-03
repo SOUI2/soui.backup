@@ -81,7 +81,7 @@ IFontPtr SFontPool::GetFont( const SStringW & strFont )
         if(nPosEnd==-1) nPosEnd=attr.GetLength();
         strFace=attr.Mid(nPosBegin,nPosEnd-nPosBegin);
     }                                                         
-    nPosBegin=attr.Find(LEN_BOLD);                         
+    nPosBegin=attr.Find(KFontBold);                         
     if(nPosBegin!=-1)                                         
     {                                                         
         fntStyle.fBold=attr.Mid(nPosBegin+LEN_BOLD,1)!=_T("0");                   
