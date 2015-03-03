@@ -159,7 +159,7 @@ end
 
 function on_btn_select_cbx(args)
 	local btn = toSWindow(args.sender);
-	local parent = btn:GetParent();
-	local cbx = toComboboxBase(parent:FindChildByNameA("cbx_test2",-1));
+	local cbxwnd = btn:GetWindow(2);--get previous sibling
+	local cbx = toComboboxBase(cbxwnd);
 	cbx:SetCurSel(-1);
 end
