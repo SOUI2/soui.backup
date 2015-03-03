@@ -71,6 +71,7 @@ SComboBoxBase::SComboBoxBase(void)
 ,m_iAnimTime(200)
 ,m_pDropDownWnd(NULL)
 ,m_iInitSel(-1)
+,m_nTextOffset(0)
 {
     m_bFocusable=TRUE;
     m_style.SetAttribute(L"align",L"left",TRUE);
@@ -104,7 +105,7 @@ BOOL SComboBoxBase::CreateChildren( pugi::xml_node xmlNode )
             m_pEdit->SSendMessage(WM_CREATE);
         m_pEdit->GetEventSet()->setMutedState(false);
         SStringW strPos;
-        strPos.Format(L"0,0,-%d,-0",szBtn.cx);
+        strPos.Format(L"%d,0,-%d,-0",m_nTextOffset,szBtn.cx);
         m_pEdit->SetAttribute(L"pos",strPos,TRUE);
         m_pEdit->SetID(IDC_CB_EDIT);
         m_pEdit->SSendMessage(EM_SETEVENTMASK,0 ,ENM_CHANGE );
@@ -124,6 +125,7 @@ void SComboBoxBase::GetDropBtnRect(LPRECT prc)
 void SComboBoxBase::GetTextRect( LPRECT pRect )
 {
     GetClientRect(pRect);
+    pRect->left += m_nTextOffset;
     SIZE szBtn=m_pSkinBtn->GetSkinSize();
     pRect->right-=szBtn.cx;
 }

@@ -344,7 +344,7 @@
       </listbox>
     </page>
     <page title="comboboxex">
-      <comboboxex pos="10,10,250,40"  name="cbx_test2" dropDown="0" dropHeight="250" class="cls_edit" dotted="0" curSel="3" id_text="1" id_icon="2">
+      <comboboxex pos="10,10,250,40" textOffset="50"  name="cbx_test2" dropDown="0" dropHeight="250" class="cls_edit" dotted="0" curSel="3" id_text="1" id_icon="2">
         <liststyle  class="cls_edit" colorBkgnd="#FFFFFF" itemHeight="50" itemSkin="skin_tab_left"   >
           <template  >
             <text id="1" pos="5,2" colorText="#ff0000"/>
