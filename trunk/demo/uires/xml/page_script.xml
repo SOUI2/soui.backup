@@ -31,7 +31,7 @@
     </window>
     <window pos="10,[5,-0,-0" name="game_toolbar">
       <button name="btn_run" pos="0,|0,@100,@30" offset="0,-0.5" tip="run the game" on_command="on_run">run</button>
-      <text pos="]-80,0,@80,-0">现有金币:</text>
+      <text pos="]-5,0,@-1,-0" offset="-1,0">现有金币:</text>
       <text pos="-64,0,@64,-0" name="txt_coins" align="center">100</text>
     </window>
 
