@@ -554,6 +554,7 @@ public:
      */
     void ResetContent()
     {
+        SetCurSel(-1);
         return m_pListBox->DeleteAll();
     }
 
