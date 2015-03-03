@@ -157,3 +157,9 @@ function on_run(args)
 	return 1;
 end
 
+function on_btn_select_cbx(args)
+	local btn = toSWindow(args.sender);
+	local parent = btn:GetParent();
+	local cbx = toComboboxBase(parent:FindChildByNameA("cbx_test2",-1));
+	cbx:SetCurSel(-1);
+end

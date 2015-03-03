@@ -23,6 +23,7 @@ using namespace SOUI;
 #include "exp_msgbox.h"
 #include "exp_eventArgs.h"
 #include "exp_Window.h"
+#include "exp_ctrls.h"
 
 BOOL SOUI_Export_Lua(lua_State *L)
 {
@@ -40,5 +41,7 @@ BOOL SOUI_Export_Lua(lua_State *L)
     if(bRet) bRet=ExpLua_SObject(L);
     if(bRet) bRet=ExpLua_Window(L);
     if(bRet) bRet=ExpLua_EventArgs(L);
+    if(bRet) bRet=ExpLua_Ctrls(L);
+    
 	return bRet;
 }

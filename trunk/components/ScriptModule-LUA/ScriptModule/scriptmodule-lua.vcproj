@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="scriptmodule-lua"
 	ProjectGUID="{5E8BCBC7-B946-3938-8AE6-8EE661E4E2B6}"
+	RootNamespace="scriptmodule-lua"
 	Keyword="Qt4VSv1.0"
 	TargetFrameworkVersion="0"
 	>
@@ -241,6 +242,10 @@
 			</File>
 			<File
 				RelativePath="exports\exp_Basic.h"
+				>
+			</File>
+			<File
+				RelativePath=".\exports\exp_ctrls.h"
 				>
 			</File>
 			<File

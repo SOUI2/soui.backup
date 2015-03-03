@@ -343,7 +343,7 @@
       </listbox>
     </page>
     <page title="comboboxex">
-      <comboboxex show="1" pos="10,10,250,40"  id="11111" dropDown="1" dropHeight="250" class="cls_edit" dotted="0" curSel="3" id_text="1" id_icon="2">
+      <comboboxex pos="10,10,250,40"  name="cbx_test2" dropDown="0" dropHeight="250" class="cls_edit" dotted="0" curSel="3" id_text="1" id_icon="2">
         <liststyle  class="cls_edit" colorBkgnd="#FFFFFF" itemHeight="50" itemSkin="skin_tab_left"   >
           <template  >
             <text id="1" pos="5,2" colorText="#ff0000"/>
@@ -362,6 +362,7 @@
           <item text="combobox.item6" icon="6" data="100"/>
         </items>
       </comboboxex>
+      <button pos="[10,{0,@150,@25" on_command="on_btn_select_cbx">setcursel(-1)</button>
       <listboxex name="lbe_test" pos="10,50,250,-10" class="cls_edit" itemSkin="skin_tab_left" itemHeight="50">
         <items>
           <item>
