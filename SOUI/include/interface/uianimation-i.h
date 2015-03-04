@@ -10,6 +10,7 @@
          DECLSPEC_UUID(), struct */
 /* @@MIDL_FILE_HEADING(  ) */
 #pragma once
+#include <wtypes.h>
 #include <unknown/obj-ref-i.h>
 namespace SOUI{
 typedef DOUBLE UI_ANIMATION_SECONDS;
@@ -33,6 +34,29 @@ enum __MIDL___MIDL_itf_UIAnimation_0000_0000_0003
 	UI_ANIMATION_MODE_ENABLED	= 2
     } 	UI_ANIMATION_MODE;
     
+    struct IUIAnimationVariable;
+    struct IUIAnimationVariable;
+    struct IUIAnimationStoryboard;
+    struct IUIAnimationVariable;
+    struct IUIAnimationStoryboard;
+    struct IUIAnimationManagerEventHandler;
+    struct IUIAnimationPriorityComparison;
+    struct IUIAnimationPriorityComparison;
+    struct IUIAnimationPriorityComparison;
+    struct IUIAnimationPriorityComparison;
+    struct IUIAnimationStoryboard;
+    struct IUIAnimationVariableChangeHandler;
+    struct IUIAnimationVariableIntegerChangeHandler;
+    struct IUIAnimationTransition;
+    struct IUIAnimationTransition;
+    struct IUIAnimationTransition;
+    struct IUIAnimationTransition;
+    struct IUIAnimationStoryboardEventHandler;
+    struct IUIAnimationTimerUpdateHandler;
+    struct IUIAnimationTimerEventHandler;
+    struct IUIAnimationTimerClientEventHandler;
+    
+    //////////////////////////////////////////////////////////////////////////
     struct     IUIAnimationManager : public IObjRef
     {
         virtual /* [annotation] */ 
