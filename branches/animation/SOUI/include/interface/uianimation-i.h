@@ -35,21 +35,11 @@ enum __MIDL___MIDL_itf_UIAnimation_0000_0000_0003
     } 	UI_ANIMATION_MODE;
     
     struct IUIAnimationVariable;
-    struct IUIAnimationVariable;
-    struct IUIAnimationStoryboard;
-    struct IUIAnimationVariable;
     struct IUIAnimationStoryboard;
     struct IUIAnimationManagerEventHandler;
     struct IUIAnimationPriorityComparison;
-    struct IUIAnimationPriorityComparison;
-    struct IUIAnimationPriorityComparison;
-    struct IUIAnimationPriorityComparison;
-    struct IUIAnimationStoryboard;
     struct IUIAnimationVariableChangeHandler;
     struct IUIAnimationVariableIntegerChangeHandler;
-    struct IUIAnimationTransition;
-    struct IUIAnimationTransition;
-    struct IUIAnimationTransition;
     struct IUIAnimationTransition;
     struct IUIAnimationStoryboardEventHandler;
     struct IUIAnimationTimerUpdateHandler;
@@ -164,12 +154,6 @@ enum __MIDL___MIDL_itf_UIAnimation_0000_0000_0003
         
     };
     
-typedef /* [public][public][v1_enum] */ 
-enum __MIDL___MIDL_itf_UIAnimation_0000_0001_0001
-    {	UI_ANIMATION_ROUNDING_NEAREST	= 0,
-	UI_ANIMATION_ROUNDING_FLOOR	= 1,
-	UI_ANIMATION_ROUNDING_CEILING	= 2
-    } 	UI_ANIMATION_ROUNDING_MODE;
 /* interface IUIAnimationVariable */
 /* [unique][helpstring][uuid][object][local] */ 
     
@@ -191,21 +175,6 @@ enum __MIDL___MIDL_itf_UIAnimation_0000_0001_0001
         DOUBLE *previousValue) = 0;
         
         virtual /* [annotation] */ 
-        HRESULT  GetIntegerValue( 
-        /* [annotation][retval][out] */ 
-        INT32 *value) = 0;
-        
-        virtual /* [annotation] */ 
-        HRESULT  GetFinalIntegerValue( 
-        /* [annotation][retval][out] */ 
-        INT32 *finalValue) = 0;
-        
-        virtual /* [annotation] */ 
-        HRESULT  GetPreviousIntegerValue( 
-        /* [annotation][retval][out] */ 
-        INT32 *previousValue) = 0;
-        
-        virtual /* [annotation] */ 
         HRESULT  GetCurrentStoryboard( 
         /* [annotation][retval][out] */ 
         IUIAnimationStoryboard **storyboard) = 0;
@@ -221,11 +190,6 @@ enum __MIDL___MIDL_itf_UIAnimation_0000_0001_0001
         DOUBLE bound) = 0;
         
         virtual /* [annotation] */ 
-        HRESULT  SetRoundingMode( 
-        /* [annotation][in] */ 
-        UI_ANIMATION_ROUNDING_MODE mode) = 0;
-        
-        virtual /* [annotation] */ 
         HRESULT  SetTag( 
         /* [annotation][in] */ 
         UINT32 id) = 0;
@@ -239,11 +203,6 @@ enum __MIDL___MIDL_itf_UIAnimation_0000_0001_0001
         HRESULT  SetVariableChangeHandler( 
         /* [annotation][unique][in] */ 
         IUIAnimationVariableChangeHandler *handler) = 0;
-        
-        virtual /* [annotation] */ 
-        HRESULT  SetVariableIntegerChangeHandler( 
-        /* [annotation][unique][in] */ 
-        IUIAnimationVariableIntegerChangeHandler *handler) = 0;
         
     };
     
@@ -385,6 +344,7 @@ typedef struct __MIDL___MIDL_itf_UIAnimation_0000_0002_0003
         IUIAnimationStoryboardEventHandler *handler) = 0;
         
     };
+    
     struct     IUIAnimationTransition : public IObjRef
     {
         virtual /* [annotation] */ 
