@@ -71,52 +71,67 @@ namespace SOUI
         case PIT_PREV_NEAR:
         case PIT_PREV_FAR:
             {
+                CRect rcRef;
                 SWindow *pRefWnd=pWindow->GetWindow(GSW_PREVSIBLING);
-                if(!pRefWnd) pRefWnd=pWindow->GetWindow(GSW_PARENT);
                 if(pRefWnd)
-                {//需要确定参考窗口是否完成布局
-                    CRect rcRef = GetWindowLayoutRect(pRefWnd);
-                    if(bX)
-                    {
-                        LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.right:rcRef.left;
-                        if(IsWaitingPos(refPos))
-                            nRet=POS_WAIT;
-                        else
-                            nRet=refPos+(int)pos.nPos*pos.cMinus;
-                    }else
-                    {
-                        LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.bottom:rcRef.top;
-                        if(IsWaitingPos(refPos))
-                            nRet=POS_WAIT;
-                        else
-                            nRet=refPos+(int)pos.nPos*pos.cMinus;
-                    }
+                {
+                    rcRef = GetWindowLayoutRect(pRefWnd);
+                }else
+                {
+                    pRefWnd=pWindow->GetWindow(GSW_PARENT);
+                    SASSERT(pRefWnd);
+                    rcRef = GetWindowLayoutRect(pRefWnd);
+                    rcRef.right = rcRef.left;
+                    rcRef.bottom = rcRef.top;
+                }
+                if(bX)
+                {
+                    LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.right:rcRef.left;
+                    if(IsWaitingPos(refPos))
+                        nRet=POS_WAIT;
+                    else
+                        nRet=refPos+(int)pos.nPos*pos.cMinus;
+                }else
+                {
+                    LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.bottom:rcRef.top;
+                    if(IsWaitingPos(refPos))
+                        nRet=POS_WAIT;
+                    else
+                        nRet=refPos+(int)pos.nPos*pos.cMinus;
                 }
             }
             break;
         case PIT_NEXT_NEAR:
         case PIT_NEXT_FAR:
             {
-                SWindow *pRefWnd=pWindow->GetWindow(GSW_NEXTSIBLING);
-                if(!pRefWnd) pRefWnd=pWindow->GetWindow(GSW_PARENT);
+                CRect rcRef;
+                SWindow *pRefWnd=pWindow->GetWindow(GSW_PREVSIBLING);
                 if(pRefWnd)
-                {//需要确定参考窗口是否完成布局
-                    CRect rcRef = GetWindowLayoutRect(pRefWnd);
-                    if(bX)
-                    {
-                        LONG refPos = (pos.pit == PIT_NEXT_NEAR)?rcRef.left:rcRef.right;
-                        if(IsWaitingPos(refPos))
-                            nRet=POS_WAIT;
-                        else
-                            nRet=refPos+(int)pos.nPos*pos.cMinus;
-                    }else
-                    {
-                        LONG refPos = (pos.pit == PIT_NEXT_NEAR)?rcRef.top:rcRef.bottom;
-                        if(IsWaitingPos(refPos))
-                            nRet=POS_WAIT;
-                        else
-                            nRet=refPos+(int)pos.nPos*pos.cMinus;
-                    }
+                {
+                    rcRef = GetWindowLayoutRect(pRefWnd);
+                }else
+                {
+                    pRefWnd=pWindow->GetWindow(GSW_PARENT);
+                    SASSERT(pRefWnd);
+                    rcRef = GetWindowLayoutRect(pRefWnd);
+                    rcRef.left = rcRef.right;
+                    rcRef.top = rcRef.bottom;
+                }
+
+                if(bX)
+                {
+                    LONG refPos = (pos.pit == PIT_NEXT_NEAR)?rcRef.left:rcRef.right;
+                    if(IsWaitingPos(refPos))
+                        nRet=POS_WAIT;
+                    else
+                        nRet=refPos+(int)pos.nPos*pos.cMinus;
+                }else
+                {
+                    LONG refPos = (pos.pit == PIT_NEXT_NEAR)?rcRef.top:rcRef.bottom;
+                    if(IsWaitingPos(refPos))
+                        nRet=POS_WAIT;
+                    else
+                        nRet=refPos+(int)pos.nPos*pos.cMinus;
                 }
             }
             break;
