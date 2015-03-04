@@ -14,6 +14,7 @@ SUBDIRS += resprovider-zip
 SUBDIRS += imgdecoder-stb
 SUBDIRS += imgdecoder-png
 SUBDIRS += imgdecoder-gdip
+SUBDIRS += uianimation
 
 !LIB_ALL:!LIB_SOUI{
 	SUBDIRS += ScriptModule-LUA
