@@ -105,7 +105,7 @@ namespace SOUI
         case PIT_NEXT_FAR:
             {
                 CRect rcRef;
-                SWindow *pRefWnd=pWindow->GetWindow(GSW_PREVSIBLING);
+                SWindow *pRefWnd=pWindow->GetWindow(GSW_NEXTSIBLING);
                 if(pRefWnd)
                 {
                     rcRef = GetWindowLayoutRect(pRefWnd);
