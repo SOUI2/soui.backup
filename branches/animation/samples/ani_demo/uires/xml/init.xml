@@ -1,0 +1,30 @@
+﻿<UIDEF>
+  <font face="宋体" size="12"/>
+
+  <skin>
+    <imgframe name="dlg_frame" src="imgx:IDP_MAIN_DLG_FRAME" left="5" right="5" top="40" bottom="40"/>
+    <imglist name="skin_girl" src="imgx:girl"/>
+    <imglist name="skin_haha" src="imgx:haha"/>
+    <imglist name="img_busy" src="imgx:IDP_BUSY" states="8"/>
+  </skin>
+  
+  <style>
+    <class name="cls_dlg_frame" skin="dlg_frame"/>
+
+    <class name="cls_btn_link"    cursor="hand" crhover="#0A84D2" />
+    <!--定义文字按钮的样式-->
+    <class name="cls_btn_weblink" cursor="hand" crtext="#1e78d5" crhover="#1e78d5" fontHover="underline:1" />
+
+
+    <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
+
+    <class name="toptext" textmode="20" />
+    <class name="vcentertext" textmode="24"/>
+    <class name="rightvcentertext" textmode="26"/>
+    <class name="centertext" textmode="25"/>
+    <class name="righttext" textmode="22"/>
+
+    <class name="linkimage" cursor="hand"/>
+  </style>
+
+</UIDEF>

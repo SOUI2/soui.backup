@@ -1,0 +1,79 @@
+<include>
+  <window pos="0,0,-266,-0">
+    <img pos="|-250,55" name="" skin="skin.home_icon"/>
+    <text pos="|0,{30" offset="-0.5,0" class="font:bold" font="size:16">部分实时防护未开启，电脑有被入侵的风险</text>
+    <text pos="{0,[15" class="font:label" >您的电脑已经有N天没有体检了，点击体检</text>
+    <switch pos="[20,{0" skin="skin.switch_back" skinforce="skin.switch_force" open="0"/>
+    <imgbtn pos="|0,[65" offset="-0.5,0" name="home_tiyan" skin="skin.home_tiyan"/>
+    <text pos="|0,[30" offset="-0.5,0" class="font:bold" colorText="#343434">安全体检可以全面了解电脑的安全状态，防范与未然</text>
+    <text pos="{0,[15" class="font:label" >上次体检时间：2015.01.23 自动体检已关闭</text>
+    <link pos="[15,{0" class="cls_link" >点击修改</link>
+  </window>
+  <window pos="[0,0,-0,-0">
+    <hr pos="0,0,@1,-0" size="1" mode="vertical" colorLine="#d0d0d0"></hr>
+    <img pos="20,20" skin="skin.qq_logo"></img>
+    <text pos="[4,{8" class="font:bold">SOUI V2.0</text>
+    <link pos="{0,[6" class="cls_link">QQ等级加速完成</link>
+    <link pos="[20,{0" class="cls_link">注销</link>
+    <img pos="20,[4" skin="skin.home_1" cursor="hand" msgTransparent="0" tip="电脑管家"></img>
+    <img pos="[4,{0" skin="skin.home_2" cursor="hand" msgTransparent="0" tip="安全等级"></img>
+    <img pos="[4,{0" skin="skin.home_3" cursor="hand" msgTransparent="0" tip="个人中心"></img>
+    <img pos="[4,{0" skin="skin.home_4" cursor="hand" msgTransparent="0" tip="特权礼物"></img>
+    <img pos="[4,{0" skin="skin.home_5" cursor="hand" msgTransparent="0" tip="消息中心"></img>
+    
+    <hr pos="5,92,-8,@1" size="1" mode="horizontal" lineStyle="dot" colorLine="#969798"></hr>
+
+    <text pos="8,[12" class="font:bold">快速通道</text>
+    <window name="home_left_con" pos="6,[8,-12,-48" clipClient="1" tag="左下角tool容器">
+      <window pos="0,0,-0,-0" offset="0,0" colorText="#000000" name="home_left_window_0">
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_0" text="清理垃圾" pos="0,0" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_1" text="清理痕迹" pos="|,{0" offset="-0.5,0" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_2" text="系统加速" pos="-0,{0" offset="-1,0" animate="1"></toolbox>
+
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_3" text="清理插件" pos="0,[2" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_4" text="开机加速" pos="|,{0" offset="-0.5,0" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_5" text="硬件检测" pos="-0,{0" offset="-1,0" animate="1"></toolbox>
+
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_6" text="实时防护" pos="0,[2" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_7" text="小Q书桌" pos="|,{0" offset="-0.5,0" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_8" text="无线网络安全" pos="-0,{0" offset="-1,0" animate="1"></toolbox>
+
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_9" text="测试网速" pos="0,[2" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_10" text="流量监控" pos="|,{0" offset="-0.5,0" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_11" text="财产保镖" pos="-0,{0" offset="-1,0" animate="1"></toolbox>
+        
+      </window>
+      <window pos="{0,0,[0,[0" offset="1,0" colorText="#000000" name="home_left_window_1">
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_12" text="文件粉碎" pos="0,0" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_13" text="健康小助手" pos="|,{0" offset="-0.5,0" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_14" text="系统修复" pos="-0,{0" offset="-1,0" animate="1"></toolbox>
+
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_15" text="软件卸载" pos="0,[2" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_16" text="网络连接" pos="|,{0" offset="-0.5,0" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_17" text="网速保护" pos="-0,{0" offset="-1,0" animate="1"></toolbox>
+
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_18" text="软件升级" pos="0,[2" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_19" text="软件搬家" pos="|,{0" offset="-0.5,0" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_20" text="默认程序设置" pos="-0,{0" offset="-1,0" animate="1"></toolbox>
+
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_21" text="杀毒专区" pos="0,[2" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_22" text="装机助手" pos="|,{0" offset="-0.5,0" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_23" text="3G流量统计" pos="-0,{0" offset="-1,0" animate="1"></toolbox>
+
+      </window>
+      <window pos="{0,0,[0,[0" offset="1,0" colorText="#000000" name="home_left_window_2">
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_24" text="文件保险柜" pos="0,0" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_25" text="QQ安全" pos="|,{0" offset="-0.5,0" animate="1"></toolbox>
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_26" text="ARP防火墙" pos="-0,{0" offset="-1,0" animate="1"></toolbox>
+
+        <toolbox skin="skin.tool_box" icon="skin.home_icon_27" text="专家协助" pos="0,[2" animate="1"></toolbox>
+
+      </window>
+    </window>
+    <img name="home_radiobg_0" skin="skin.home_radio0" pos="|-20,-30" offset="-1,0" cursor="hand" msgTransparent="0"></img>
+    <img name="home_radio" skin="skin.home_radio1" pos="|-20,-30" offset="-1,0" cursor="hand" msgTransparent="0"></img>
+    <img name="home_radiobg_1" skin="skin.home_radio0" pos="|,-30" offset="0,0" cursor="hand" msgTransparent="0"></img>
+    <img name="home_radiobg_2" skin="skin.home_radio0" pos="|20,-30" offset="1,0" cursor="hand" msgTransparent="0"></img>
+  </window>
+
+</include>
