@@ -1,4 +1,4 @@
-﻿<SOUI name="mainWindow" title="%title%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="600" height="400"  margin="20,5,5,5"  resizable="1"
+﻿<SOUI name="mainWindow" title="%title%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="600" height="400"  margin="5,5,5,5"  resizable="1"
 appWnd="1"
 translucent="1"
 >
@@ -16,10 +16,10 @@ translucent="1"
       <page title="image merge" name="page_imagemerge">
         <include src="layout:page_imgmerge"/>
       </page>
-      <!--
-      <page title="code line">
+      <page title="code line" name="page_codeline">
         <include src="layout:page_codeline"/>
       </page>
+      <!--
       <page title="to unicode">
         <include src="layout:page_2unicode"/>
       </page>

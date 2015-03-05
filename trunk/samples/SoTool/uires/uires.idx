@@ -16,6 +16,9 @@
   <img.imagemerge>
     <file name="png_transbkgnd" path="image\image-merge\transbkgnd.png"/>
   </img.imagemerge>
+  <img.codeline>
+    <file name="png_foldericon"	path="image\code-line\folder.png"/>
+  </img.codeline>
   <ICON>
     <file name="ICON_LOGO"  path="image\soui.ico"    />
   </ICON>

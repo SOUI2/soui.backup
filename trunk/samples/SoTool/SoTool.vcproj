@@ -173,6 +173,10 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
+				RelativePath=".\CodeLineCounter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ImageMerger.cpp"
 				>
 			</File>
@@ -213,6 +217,10 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc"
 			>
+			<File
+				RelativePath=".\CodeLineCounter.h"
+				>
+			</File>
 			<File
 				RelativePath=".\ImageMerger.h"
 				>

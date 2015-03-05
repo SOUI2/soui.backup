@@ -13,6 +13,9 @@
 #include <control/souictrls.h>
 #include <res.mgr/sobjdefattr.h>
 #include <com-cfg.h>
+
+#include <controls.extend/FileHelper.h>
+
 #include "resource.h"
 
 #include "SImgCanvas.h"
