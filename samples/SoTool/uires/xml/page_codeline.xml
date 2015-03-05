@@ -1,3 +1,21 @@
 ﻿<include>
-  <text pos="0,0">code lines counter</text>
+  <tabctrl size="full,full" name="tab_codeline" tabWidth="50" tabAlign="bottom">
+    <page title="dir" name="page_dir">
+      <window pos="0,0,-0,@30">
+        <text pos="0,|0" offset="0,-0.5">source dir:</text>
+        <edit pos="[5,0,]-5,-0" name="edit_dir" cueText="select a directory to counter"/>
+        <button pos="-0,0,@50,-0" offset="-1,0" name="btn_picker_dir">...</button>
+      </window>
+      <window pos="0,[5,-0,@30">
+        <text pos="0,|0" offset="0,-0.5">file types:</text>
+        <edit pos="[5,0,]-5,-0" name="edit_filetypes" cueText="type file types, separated by comma ';'"/>
+        <button pos="-0,0,@50,-0" offset="-1,0" name="btn_go">go</button>
+      </window>
+      <treectrl pos="0,[5,-0,-0" name="tree_dir" itemHeight="25" iconSkin="skin_folder_icon" checkBox="1" colorBkgnd="#ffffff"/>
+    </page>
+    <page title="result" name="page_result">
+      <text pos="0,0">progress:</text>
+      <progress pos="0,[5,-0,@10" name="prog_run"/>
+    </page>
+  </tabctrl>
 </include>

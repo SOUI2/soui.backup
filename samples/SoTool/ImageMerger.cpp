@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "ImageMerger.h"
-#include <controls.extend/FileHelper.h>
 
 #include <atl.mini/SComHelper.h>
 

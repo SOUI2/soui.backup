@@ -12,12 +12,16 @@
     <imglist name="skin_page_icons"	src="img:png_page_icons" states="9"/>
 
     <imglist name="skin_transbkgnd" src="img.imagemerge:png_transbkgnd" tile="1"/>
+
+    <imglist name="skin_folder_icon" src="img.codeline:png_foldericon" states="2"/>
   </skin>
 
   <style>
     <class name="cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" font="italic:1" fontHover="underline:1,italic:1" />
+    <class name="cls_border" margin="1,1,1,1" skinBorder="_sys.skin.border"/>
   </style>
 
   <objattr>
+    <richedit class="cls_border"/>
   </objattr>
 </UIDEF>
