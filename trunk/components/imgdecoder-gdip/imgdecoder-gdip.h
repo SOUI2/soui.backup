@@ -64,15 +64,13 @@ namespace SOUI
     {
         friend class SImgX_GDIP;
     public:
-        SImgDecoderFactory_GDIP(BOOL bPremultiple=TRUE);
+        SImgDecoderFactory_GDIP();
         ~SImgDecoderFactory_GDIP();
 
-        virtual BOOL IsAlphaPremultiple(){return m_bPremultple;}
-        virtual void SetAlphaPremultiple(BOOL bPreMultiple){m_bPremultple=bPreMultiple;}
         virtual BOOL CreateImgX(IImgX **ppImgDecoder);
+        virtual HRESULT SaveImage(IBitmap *pImg, LPCWSTR pszFileName, const LPVOID pFormat);
     protected:
     
-        BOOL    m_bPremultple;
         
         ULONG_PTR _gdiPlusToken;
     };

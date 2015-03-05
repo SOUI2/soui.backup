@@ -34,7 +34,7 @@ namespace SOUI
     
     class SImgX_WIC : public TObjRefImpl<IImgX>
     {
-        friend class SImgDecoderFactory;
+        friend class SImgDecoderFactory_WIC;
     public:
 
         int LoadFromMemory(void *pBuf,size_t bufLen);
@@ -58,19 +58,17 @@ namespace SOUI
 
     };
 
-    class SImgDecoderFactory : public TObjRefImpl<IImgDecoderFactory>
+    class SImgDecoderFactory_WIC : public TObjRefImpl<IImgDecoderFactory>
     {
     friend class SImgX_WIC;
     public:
-        SImgDecoderFactory(BOOL bPremultiple);
-        ~SImgDecoderFactory();
+        SImgDecoderFactory_WIC();
+        ~SImgDecoderFactory_WIC();
         
-        virtual BOOL IsAlphaPremultiple(){return m_bPremultple;}
-        virtual void SetAlphaPremultiple(BOOL bPreMultiple){m_bPremultple=bPreMultiple;}
         virtual BOOL CreateImgX(IImgX **ppImgDecoder);
+        HRESULT SaveImage(IBitmap *pImg, LPCWSTR pszFileName, const LPVOID pFormat);
     protected:
         static CAutoRefPtr<IWICImagingFactory> s_wicImgFactory;
-        BOOL    m_bPremultple;
     };
     
     //////////////////////////////////////////////////////////////////////////

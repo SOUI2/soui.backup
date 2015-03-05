@@ -13,6 +13,21 @@ namespace SOUI
     struct IRenderTarget;
     struct IRenderFactory;
 
+    /**
+    * @struct     IRenderFactory
+    * @brief      RenderFactory对象
+    * 
+    * Describe
+    */
+    struct IRenderFactory : public IObjRef
+    {
+        virtual IImgDecoderFactory * GetImgDecoderFactory()=0;
+        virtual void SetImgDecoderFactory(IImgDecoderFactory *pImgDecoderFac)=0;
+        virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei)=0;
+        virtual BOOL CreateFont(IFont ** ppFont, const LOGFONT &lf)=0;
+        virtual BOOL CreateBitmap(IBitmap ** ppBitmap)=0;
+        virtual BOOL CreateRegion(IRegion **ppRgn)=0;
+    };
 
     enum OBJTYPE
     {
@@ -169,6 +184,19 @@ namespace SOUI
          * Describe  与LockPixelBits配对使用
          */    
         virtual void    UnlockPixelBits(LPVOID) =0;
+        
+         /**
+         * UnlockPixelBits
+         * @brief    Save
+         * @param    LPCWSTR pszFileName --  File name
+         * @param    const LPVOID *pFormat --  image format
+         * @return   HRESULT -- S_OK: succeed
+         * Describe  
+         */    
+        virtual HRESULT Save(LPCWSTR pszFileName,const LPVOID pFormat)
+        {
+            return GetRenderFactory()->GetImgDecoderFactory()->SaveBitmap(this,pszFileName,pFormat);
+        }
     };
 
     /**
@@ -405,21 +433,5 @@ namespace SOUI
         virtual HRESULT QueryInterface(REFGUID iid,IObjRef ** ppObj) =0;
     };
 
-
-    /**
-    * @struct     IRenderFactory
-    * @brief      RenderFactory对象
-    * 
-    * Describe
-    */
-    struct IRenderFactory : public IObjRef
-    {
-        virtual IImgDecoderFactory * GetImgDecoderFactory()=0;
-        virtual void SetImgDecoderFactory(IImgDecoderFactory *pImgDecoderFac)=0;
-        virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei)=0;
-        virtual BOOL CreateFont(IFont ** ppFont, const LOGFONT &lf)=0;
-        virtual BOOL CreateBitmap(IBitmap ** ppBitmap)=0;
-        virtual BOOL CreateRegion(IRegion **ppRgn)=0;
-    };
 
 }//end of namespace SOUI
