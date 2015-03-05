@@ -143,6 +143,11 @@ namespace SOUI
     {
         return E_FAIL;
     }
+    
+    LPCWSTR SImgDecoderFactory_PNG::GetDescription() const
+    {
+        return DESC_IMGDECODER;
+    }
 
     //////////////////////////////////////////////////////////////////////////
     BOOL IMGDECODOR_PNG::SCreateInstance( IObjRef **pImgDecoderFactory )

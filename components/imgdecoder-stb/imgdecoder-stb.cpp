@@ -132,6 +132,11 @@ namespace SOUI
         *ppImgDecoder = new SImgX_STB(TRUE);
         return TRUE;
     }
+    
+    LPCWSTR SImgDecoderFactory_STB::GetDescription() const
+    {
+        return DESC_IMGDECODER;
+    }
 
     //////////////////////////////////////////////////////////////////////////
     BOOL IMGDECODOR_STB::SCreateInstance( IObjRef **pImgDecoderFactory )

@@ -55,6 +55,7 @@ namespace SOUI
         SImgFrame_STB *     m_pImg;
     };
 
+    #define DESC_IMGDECODER L"stb"
     class SImgDecoderFactory_STB : public TObjRefImpl<IImgDecoderFactory>
     {
     friend class SImgX_STB;
@@ -63,6 +64,7 @@ namespace SOUI
         ~SImgDecoderFactory_STB();
         
         virtual BOOL CreateImgX(IImgX **ppImgDecoder);
+        LPCWSTR GetDescription() const;
     };
     
     //////////////////////////////////////////////////////////////////////////

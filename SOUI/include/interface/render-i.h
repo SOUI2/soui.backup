@@ -195,7 +195,7 @@ namespace SOUI
          */    
         virtual HRESULT Save(LPCWSTR pszFileName,const LPVOID pFormat)
         {
-            return GetRenderFactory()->GetImgDecoderFactory()->SaveBitmap(this,pszFileName,pFormat);
+            return GetRenderFactory()->GetImgDecoderFactory()->SaveImage(this,pszFileName,pFormat);
         }
     };
 

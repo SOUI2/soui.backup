@@ -60,6 +60,7 @@ namespace SOUI
         SImgFrame_GDIP  *    m_pImgArray;
     };
 
+    #define DESC_IMGDECODER L"gdi+"
     class SImgDecoderFactory_GDIP : public TObjRefImpl<IImgDecoderFactory>
     {
         friend class SImgX_GDIP;
@@ -69,6 +70,7 @@ namespace SOUI
 
         virtual BOOL CreateImgX(IImgX **ppImgDecoder);
         virtual HRESULT SaveImage(IBitmap *pImg, LPCWSTR pszFileName, const LPVOID pFormat);
+        virtual LPCWSTR GetDescription() const;
     protected:
     
         

@@ -179,6 +179,11 @@ namespace SOUI
         return E_FAIL;
     }
 
+    LPCWSTR SImgDecoderFactory_WIC::GetDescription() const
+    {
+        return DESC_IMGDECODER;
+    }
+
     //////////////////////////////////////////////////////////////////////////
     namespace IMGDECODOR_WIC
     {

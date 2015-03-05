@@ -140,9 +140,20 @@ namespace SOUI
          * @return   HRESULT 
          * Describe  
          */    
-        virtual HRESULT SaveBitmap(IBitmap *pImg, LPCWSTR pszFileName, const LPVOID pFormat)
+        virtual HRESULT SaveImage(IBitmap *pImg, LPCWSTR pszFileName, const LPVOID pFormat)
         {
             return E_NOTIMPL;
+        }
+
+         /**
+         * GetImgDecoderDesc
+         * @brief    query image decoder description
+         * @return   LPCWSTR 
+         * Describe  
+         */            
+        virtual LPCWSTR GetDescription() const
+        {
+            return NULL;
         }
     };
 }

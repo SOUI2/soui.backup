@@ -58,6 +58,7 @@ namespace SOUI
 
     };
 
+    #define DESC_IMGDECODER L"wic"
     class SImgDecoderFactory_WIC : public TObjRefImpl<IImgDecoderFactory>
     {
     friend class SImgX_WIC;
@@ -67,6 +68,7 @@ namespace SOUI
         
         virtual BOOL CreateImgX(IImgX **ppImgDecoder);
         HRESULT SaveImage(IBitmap *pImg, LPCWSTR pszFileName, const LPVOID pFormat);
+        LPCWSTR GetDescription() const;
     protected:
         static CAutoRefPtr<IWICImagingFactory> s_wicImgFactory;
     };

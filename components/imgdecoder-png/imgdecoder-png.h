@@ -59,6 +59,7 @@ namespace SOUI
         SImgFrame_PNG  *    m_pImgArray;
     };
 
+    #define DESC_IMGDECODER L"apng"
     class SImgDecoderFactory_PNG : public TObjRefImpl<IImgDecoderFactory>
     {
     friend class SImgX_PNG;
@@ -68,6 +69,7 @@ namespace SOUI
         
         virtual HRESULT SaveImage(IBitmap *pImg, LPCWSTR pszFileName, const LPVOID pFormat);
         virtual BOOL CreateImgX(IImgX **ppImgDecoder);
+        LPCWSTR GetDescription() const;
     };
     
     //////////////////////////////////////////////////////////////////////////
