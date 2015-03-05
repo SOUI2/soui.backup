@@ -7,6 +7,7 @@
 #pragma comment(lib,"gdiplus")
 
 #include "imgdecoder-gdip.h"
+#include <interface/render-i.h>
 
 using namespace Gdiplus;
 
@@ -204,8 +205,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     //  SImgDecoderFactory_PNG
 
-    SImgDecoderFactory_GDIP::SImgDecoderFactory_GDIP( BOOL bPremultiple )
-        :m_bPremultple(bPremultiple)
+    SImgDecoderFactory_GDIP::SImgDecoderFactory_GDIP( )
     {
         GdiplusStartupInput gdiplusStartupInput;
 
@@ -227,8 +227,18 @@ namespace SOUI
 
     BOOL SImgDecoderFactory_GDIP::CreateImgX( IImgX **ppImgDecoder )
     {
-        *ppImgDecoder = new SImgX_GDIP(m_bPremultple);
+        *ppImgDecoder = new SImgX_GDIP(TRUE);
         return TRUE;
+    }
+
+    HRESULT SImgDecoderFactory_GDIP::SaveImage(IBitmap *pImg, LPCWSTR pszFileName,const LPVOID pFormat)
+    {
+        const CLSID * pClsidFmt = (const CLSID*)pFormat;
+        
+        LPVOID pBits = pImg->LockPixelBits();
+        Bitmap bmp(pImg->Width(),pImg->Height(),pImg->Width()*4,PixelFormat32bppPARGB,(BYTE*)pBits);
+        pImg->UnlockPixelBits(pBits);
+        return Ok == bmp.Save(pszFileName,pClsidFmt)?S_OK:E_FAIL;
     }
 
     //////////////////////////////////////////////////////////////////////////

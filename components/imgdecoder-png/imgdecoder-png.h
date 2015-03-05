@@ -63,14 +63,11 @@ namespace SOUI
     {
     friend class SImgX_PNG;
     public:
-        SImgDecoderFactory_PNG(BOOL bPremultiple=TRUE);
+        SImgDecoderFactory_PNG();
         ~SImgDecoderFactory_PNG();
         
-        virtual BOOL IsAlphaPremultiple(){return m_bPremultple;}
-        virtual void SetAlphaPremultiple(BOOL bPreMultiple){m_bPremultple=bPreMultiple;}
+        virtual HRESULT SaveImage(IBitmap *pImg, LPCWSTR pszFileName, const LPVOID pFormat);
         virtual BOOL CreateImgX(IImgX **ppImgDecoder);
-    protected:
-        BOOL    m_bPremultple;
     };
     
     //////////////////////////////////////////////////////////////////////////

@@ -113,6 +113,7 @@ namespace SOUI
         virtual IImgFrame * GetFrame(UINT iFrame)=0;
     };
 
+    struct IBitmap;
     /**
     * @struct     IImgDecoderFactory
     * @brief      image decoder factory
@@ -122,23 +123,6 @@ namespace SOUI
     struct IImgDecoderFactory : public IObjRef
     {
         /**
-         * IsAlphaPremultiple
-         * @brief    get whether the output image buffer should be alpha premultipled.
-         * @return   BOOL -- TRUE: the output image will be alpha premultipled.
-         * Describe  
-         */    
-        virtual BOOL IsAlphaPremultiple()=0;
-
-        /**
-         * SetAlphaPremultiple
-         * @brief    set alpha premultiple flag
-         * @param    BOOL bPreMultiple --  alpha premultiple flag
-         * @return   void
-         * Describe  
-         */    
-        virtual void SetAlphaPremultiple(BOOL bPreMultiple)=0;
-
-        /**
          * CreateImgX
          * @brief    create a IImgX object
          * @param [out] IImgX * * ppImgDecoder --  the created IImgX
@@ -146,5 +130,19 @@ namespace SOUI
          * Describe  
          */    
         virtual BOOL CreateImgX(IImgX **ppImgDecoder)=0;
+        
+         /**
+         * SaveImage
+         * @brief    Write a IBitmap Object to File with the specified format
+         * @param [in] IBitmap *pImg  --  IBitmap Object
+         * @param [in] LPCWSTR pszFileName --  file name
+         * @param [in] LPVOID pFormat --  format param
+         * @return   HRESULT 
+         * Describe  
+         */    
+        virtual HRESULT SaveBitmap(IBitmap *pImg, LPCWSTR pszFileName, const LPVOID pFormat)
+        {
+            return E_NOTIMPL;
+        }
     };
 }

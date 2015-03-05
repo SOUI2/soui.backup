@@ -59,14 +59,10 @@ namespace SOUI
     {
     friend class SImgX_STB;
     public:
-        SImgDecoderFactory_STB(BOOL bPremultiple=TRUE);
+        SImgDecoderFactory_STB();
         ~SImgDecoderFactory_STB();
         
-        virtual BOOL IsAlphaPremultiple(){return m_bPremultple;}
-        virtual void SetAlphaPremultiple(BOOL bPreMultiple);
         virtual BOOL CreateImgX(IImgX **ppImgDecoder);
-    protected:
-        BOOL    m_bPremultple;
     };
     
     //////////////////////////////////////////////////////////////////////////

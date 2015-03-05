@@ -123,8 +123,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     //  SImgDecoderFactory_PNG
 
-    SImgDecoderFactory_PNG::SImgDecoderFactory_PNG( BOOL bPremultiple/*=TRUE*/ )
-    :m_bPremultple(bPremultiple)
+    SImgDecoderFactory_PNG::SImgDecoderFactory_PNG()
     {
 
     }
@@ -136,8 +135,13 @@ namespace SOUI
 
     BOOL SImgDecoderFactory_PNG::CreateImgX( IImgX **ppImgDecoder )
     {
-        *ppImgDecoder = new SImgX_PNG(m_bPremultple);
+        *ppImgDecoder = new SImgX_PNG(TRUE);
         return TRUE;
+    }
+
+    HRESULT SImgDecoderFactory_PNG::SaveImage(IBitmap *pImg, LPCWSTR pszFileName, const LPVOID pFormat)
+    {
+        return E_FAIL;
     }
 
     //////////////////////////////////////////////////////////////////////////
