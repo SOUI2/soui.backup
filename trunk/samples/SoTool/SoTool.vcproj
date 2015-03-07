@@ -173,11 +173,15 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
+				RelativePath=".\CImageMergerHandler.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CodeLineCounter.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ImageMerger.cpp"
+				RelativePath=".\CodeLineCounterHandler.cpp"
 				>
 			</File>
 			<File
@@ -218,11 +222,15 @@
 			Filter="h;hpp;hxx;hm;inl;inc"
 			>
 			<File
+				RelativePath=".\CImageMergerHandler.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CodeLineCounter.h"
 				>
 			</File>
 			<File
-				RelativePath=".\ImageMerger.h"
+				RelativePath=".\CodeLineCounterHandler.h"
 				>
 			</File>
 			<File
@@ -259,6 +267,10 @@
 			Name="SoUI Resouece"
 			Filter="idx;xml;png;gif;jpg;ico;lua;bmp"
 			>
+			<File
+				RelativePath=".\uires\xml\codelinecounter.xml"
+				>
+			</File>
 			<File
 				RelativePath=".\uires\xml\dlg_main.xml"
 				>

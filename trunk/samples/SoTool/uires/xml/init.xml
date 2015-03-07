@@ -18,10 +18,11 @@
 
   <style>
     <class name="cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" font="italic:1" fontHover="underline:1,italic:1" />
-    <class name="cls_border" margin="1,1,1,1" skinBorder="_sys.skin.border"/>
+    <class name="cls_border" margin="1,1,1,1" ncSkin="_skin.sys.border"/>
   </style>
 
   <objattr>
     <richedit class="cls_border"/>
+    <combobox class="cls_border"/>
   </objattr>
 </UIDEF>

@@ -8,14 +8,39 @@
       </window>
       <window pos="0,[5,-0,@30">
         <text pos="0,|0" offset="0,-0.5">file types:</text>
-        <edit pos="[5,0,]-5,-0" name="edit_filetypes" cueText="type file types, separated by comma ';'"/>
+        <combobox pos="[5,0,]-5,-0" name="cbx_filetypes">
+          <liststyle itemHeight="25" class="cls_border" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088"/>
+          <editstyle colorText="#000000" align="left" margin="0,0,0,0"/>
+
+        </combobox>
         <button pos="-0,0,@50,-0" offset="-1,0" name="btn_go">go</button>
       </window>
-      <treectrl pos="0,[5,-0,-0" name="tree_dir" itemHeight="25" iconSkin="skin_folder_icon" checkBox="1" colorBkgnd="#ffffff"/>
+      <splitrow pos="0,[5,-0,-0" name="split_tree" sepSize="0">
+        <pane min="20" ideaSize="100">
+          <treectrl pos="0,[5,-0,]0" name="tree_dir" itemHeight="25" iconSkin="skin_folder_icon" checkBox="1" colorBkgnd="#ffffff"/>
+        </pane>
+        <pane minSize="20" ideaSize="20" maxSize="20" show="0">
+          <text pos="0,0">progress:</text>
+          <progress pos="[5,5,-5,@10" name="prog_run"/>
+        </pane>
+      </splitrow>
     </page>
     <page title="result" name="page_result">
-      <text pos="0,0">progress:</text>
-      <progress pos="0,[5,-0,@10" name="prog_run"/>
+      <text pos="0,[5,@100,@25">扫描目录数：</text>
+      <text pos="[5,{0" name="txt_folders"/>
+      
+      <text pos="0,[5,@100,@25">扫描文件数：</text>
+      <text pos="[5,{5" name="txt_files"/>
+
+      <text pos="0,[5,@100,@25">代码行数：</text>
+      <text pos="[5,{5" name="txt_codelines"/>
+
+      <text pos="0,[5,@100,@25">空行数：</text>
+      <text pos="[5,{5" name="txt_blanklines"/>
+      
+      <text pos="0,[5,@100,@25">注释数：</text>
+      <text pos="[5,{5" name="txt_remarklines"/>
+
     </page>
   </tabctrl>
 </include>
