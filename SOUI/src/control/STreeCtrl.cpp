@@ -253,10 +253,10 @@ BOOL STreeCtrl::GetCheckState(HSTREEITEM hItem) const
     if (!m_bCheckBox) return FALSE;
 
     LPTVITEM pItem=CSTree<LPTVITEM>::GetItem(hItem);
-    if (pItem->nCheckBoxValue == STVICheckBox_Checked)
-        return TRUE;
+    if (pItem->nCheckBoxValue == STVICheckBox_UnChecked)
+        return FALSE;
 
-    return FALSE;
+    return TRUE;
 }
 
 BOOL STreeCtrl::SetCheckState(HSTREEITEM hItem, BOOL bCheck)

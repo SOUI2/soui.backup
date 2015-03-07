@@ -905,7 +905,15 @@ SWindow * SRadioBox::GetSelectedSiblingInGroup()
 
 HRESULT SRadioBox::OnAttrCheck( const SStringW& strValue, BOOL bLoading )
 {
-    SetCheck(strValue != L"0");
+    if(bLoading)
+    {
+        GetEventSet()->setMutedState(true);
+        SetCheck(strValue != L"0");
+        GetEventSet()->setMutedState(false);
+    }else
+    {
+        SetCheck(strValue != L"0");
+    }
     return S_FALSE;
 }
 
@@ -914,8 +922,17 @@ void SRadioBox::OnStateChanging( DWORD dwOldState,DWORD dwNewState )
     if((dwNewState & WndState_Check) && !(dwOldState & WndState_Check))
     {
         SRadioBox *pCurChecked=(SRadioBox*)GetSelectedSiblingInGroup();
-        if(pCurChecked) pCurChecked->SetCheck(FALSE);
-        FireCommand();
+        //防止从XML初始化时发事件到宿主窗口
+        bool isMute = GetEventSet()->isMuted();
+        if(pCurChecked)
+        {
+            if(isMute)
+                pCurChecked->GetEventSet()->setMutedState(true);
+            pCurChecked->SetCheck(FALSE);
+            if(isMute)
+                pCurChecked->GetEventSet()->setMutedState(false);
+        }
+        if(!isMute) FireCommand();
     }
 }
 
