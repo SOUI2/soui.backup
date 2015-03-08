@@ -13,18 +13,16 @@ translucent="1"
     </caption>
 
     <tabctrl name="tab_main" pos="5,[2,-5,-5" curSel="0" focusable="0" animateSteps="10" tabHeight="75" tabSkin="skin_tab_main" text-y="50" iconSkin="skin_page_icons" icon-x="10" colorTextHover="#ff0000" fontHover="italic:1">
-      <page title="image merge" name="page_imagemerge">
+      <page title="图片合并" name="page_imagemerge" tip="多个相同尺寸的图片合并成一个">
         <include src="layout:page_imgmerge"/>
       </page>
-      <page title="code line" name="page_codeline">
+      <page title="代码行数" name="page_codeline" tip="统计代码行数">
         <include src="layout:page_codeline"/>
       </page>
-      <!--
-      <page title="to unicode">
+      <page title="2Unicode" name="page_2unicode" tip="将文本文件转换为Unicode存储">
         <include src="layout:page_2unicode"/>
       </page>
-      -->
-      <page title="about" iconIndex="8">
+      <page title="关于" iconIndex="8" tip="关于本工具">
         <include src="layout:page_about"/>
       </page>
     </tabctrl>

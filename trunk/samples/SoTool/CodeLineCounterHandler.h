@@ -1,7 +1,9 @@
 #pragma once
 
 #include "CodeLineCounter.h"
-class CCodeLineCounterHandler
+#include "FolderHander.h"
+
+class CCodeLineCounterHandler : public CFolderHander
 {
     friend class CMainDlg;
     struct FILEINFO
@@ -10,42 +12,25 @@ class CCodeLineCounterHandler
         DWORD    dwSize;
         CCodeConfig cfg;
     };
-    struct LANGEXTS
-    {
-        SStringW strLang;
-        SStringW strExts;
-    };
 public:
     CCodeLineCounterHandler(void);
     ~CCodeLineCounterHandler(void);
 
     void OnInit(SWindow *pRoot);
-    void InitDir(const SStringT & strPath,BOOL bInput=FALSE);
 protected:
     
     void OnBtnGo();
-    void OnBtnFileTypes(EventArgs *pEvt);
-    void OnKillFocus_Dir(EventArgs *pEvt);
-
-    void InitDirTree(HSTREEITEM hTreeItem,const SStringT & strPath);
-    
 
     EVENT_MAP_BEGIN()
+        EVENT_CHECK_SENDER_ROOT(m_pPageRoot)
         EVENT_NAME_COMMAND(L"btn_go", OnBtnGo)
-        EVENT_NAME_HANDLER(L"btn_dropdown_filetypes",EventCmd::EventID, OnBtnFileTypes)
-        EVENT_NAME_HANDLER(L"edit_dir",EventKillFocus::EventID,OnKillFocus_Dir)
+        CHAIN_EVENT_MAP(CFolderHander)
     EVENT_MAP_END()
 
-    SWindow *   m_pPageRoot;
-    SStringT    m_strDir;
-    STreeCtrl * m_pDirTree;
-
+    SWindow * m_pPageRoot;
 protected:
     typedef SMap<SStringW,CCodeConfig> CODECFGMAP;
 
     DWORD EnumFileInfo(const CODECFGMAP &cfg, const SStringW & strPath,HSTREEITEM hItem,SList<FILEINFO> & lstFileInfo, int &nDirs);
     CODECFGMAP m_mapCodeCfg;
-
-    typedef SArray<LANGEXTS> LANGEXTLIST;
-    LANGEXTLIST m_lstLangExts;
 };

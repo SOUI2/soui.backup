@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "CImageMergerHandler.h"
+#include "ImageMergerHandler.h"
 #include "droptarget.h"
 
 class CDropTarget_Canvas : public CDropTarget
