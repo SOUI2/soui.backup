@@ -1,10 +1,9 @@
 ﻿<include>
-  <tabctrl size="full,full" name="tab_codeline" tabWidth="50" tabAlign="bottom">
-    <page title="dir" name="page_dir">
+  <tabctrl size="full,full" name="tab_codeline" tabWidth="100" tabAlign="bottom"  tabSkin="skin_tabskin">
+    <page title="扫描目录" name="page_dir">
       <window pos="0,0,-0,@30">
         <text pos="0,|0" offset="0,-0.5">source dir:</text>
-        <edit pos="[5,0,]-5,-0" name="edit_dir" cueText="select a directory to counter"/>
-        <button pos="-0,0,@50,-0" offset="-1,0" name="btn_picker_dir">...</button>
+        <edit pos="[5,0,-5,-0" name="edit_dir" cueText="drag or input a directory here"/>
       </window>
       <window pos="0,[5,-0,@30">
         <text pos="0,|0" offset="0,-0.5">file types:</text>
@@ -17,7 +16,7 @@
       </window>
       <splitrow pos="0,[5,-0,-0" name="split_tree" sepSize="0">
         <pane min="20" ideaSize="100">
-          <treectrl pos="0,[5,-0,]0" name="tree_dir" itemHeight="25" iconSkin="skin_folder_icon" checkBox="1" colorBkgnd="#ffffff"/>
+          <treectrl pos="0,[5,-0,]0" name="tree_dir" itemHeight="25" class="cls_border" iconSkin="skin_folder_icon" checkBox="1" colorBkgnd="#ffffff"/>
         </pane>
         <pane minSize="20" ideaSize="20" maxSize="20" show="0">
           <text pos="0,0">progress:</text>
@@ -25,22 +24,34 @@
         </pane>
       </splitrow>
     </page>
-    <page title="result" name="page_result">
-      <text pos="0,[5,@100,@25">扫描目录数：</text>
-      <text pos="[5,{5" name="txt_folders"/>
+    <page title="统计结果" name="page_result">
+      <text pos="0,[5,@100,@25" align="right">扫描目录数：</text>
+      <text pos="[5,{5" name="txt_folders">0</text>
       
-      <text pos="0,[5,@100,@25">扫描文件数：</text>
-      <text pos="[5,{5" name="txt_files"/>
+      <text pos="0,[5,@100,@25" align="right">扫描文件数：</text>
+      <text pos="[5,{5" name="txt_files">0</text>
 
-      <text pos="0,[5,@100,@25">代码行数：</text>
-      <text pos="[5,{5" name="txt_codelines"/>
+      <text pos="0,[5,@100,@25" align="right">代码行数：</text>
+      <text pos="[5,{5" name="txt_codelines">0</text>
 
-      <text pos="0,[5,@100,@25">空行数：</text>
-      <text pos="[5,{5" name="txt_blanklines"/>
+      <text pos="0,[5,@100,@25" align="right">空行数：</text>
+      <text pos="[5,{5" name="txt_blanklines">0</text>
       
-      <text pos="0,[5,@100,@25">注释数：</text>
-      <text pos="[5,{5" name="txt_remarklines"/>
+      <text pos="0,[5,@100,@25" align="right">注释数：</text>
+      <text pos="[5,{5" name="txt_remarklines">0</text>
 
+      <listctrl pos="160,5,-0,-0" name="lst_linecounter_report" itemHeight="25" class="cls_border">
+        <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+          <items>
+            <item width="100">文件类型</item>
+            <item width="60">扩展名</item>
+            <item width="80">代码行</item>
+            <item width="80">空行</item>
+            <item width="80">注释行</item>
+          </items>
+        </header>
+
+      </listctrl>
     </page>
   </tabctrl>
 </include>

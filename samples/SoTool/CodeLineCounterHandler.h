@@ -15,17 +15,17 @@ public:
     ~CCodeLineCounterHandler(void);
 
     void OnInit(SWindow *pRoot);
+    void InitDir(const SStringT & strPath,BOOL bInput=FALSE);
 protected:
     
-    void OnBtnPickerDir();
     void OnBtnGo();
 
     void OnKillFocus_Dir(EventArgs *pEvt);
 
     void InitDirTree(HSTREEITEM hTreeItem,const SStringT & strPath);
+    
 
     EVENT_MAP_BEGIN()
-        EVENT_NAME_COMMAND(L"btn_picker_dir", OnBtnPickerDir)
         EVENT_NAME_COMMAND(L"btn_go", OnBtnGo)
         EVENT_NAME_HANDLER(L"edit_dir",EventKillFocus::EventID,OnKillFocus_Dir)
     EVENT_MAP_END()
