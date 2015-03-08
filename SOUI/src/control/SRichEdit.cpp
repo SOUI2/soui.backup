@@ -1632,6 +1632,7 @@ void SEdit::OnPaint( IRenderTarget * pRT )
         
         CRect rc;
         GetClientRect(&rc);
+        rc.DeflateRect(m_rcInsetPixel.left,m_rcInsetPixel.top,m_rcInsetPixel.right,m_rcInsetPixel.bottom);
         pRT->DrawText(m_strCue,m_strCue.GetLength(),&rc,DT_SINGLELINE|DT_VCENTER);
         
         pRT->SetTextColor(crOld);
