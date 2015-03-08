@@ -44,6 +44,11 @@ namespace SOUI
     remstate HandlerLine(const SStringW & str,const CCodeConfig & config,remstate curState)
     {
         remstate st = none;
+        SStringW str2 = str;
+        str2.TrimBlank();
+        if(str2.IsEmpty())
+            return blank;
+
         if(curState == multirem1)
         {//look for multirem2
             int nPos =str.Find(config.strMultiLinesRemarkEnd);
@@ -54,17 +59,9 @@ namespace SOUI
                     st = multirem21;
                 else
                     st = multirem2;
-            }else
-            {
-                SStringW str2 = str;
-                str2.TrimBlank();
-                if(str2.IsEmpty())
-                    st = blank;
             }
         }else
         {//look for singlerem or multirem1
-            SStringW str2 = str;
-            str2.TrimBlank();
             if(!config.strSingleLineRemark.IsEmpty() && str2.Left(config.strSingleLineRemark.GetLength()) == config.strSingleLineRemark)
             {//single remark
                 st = singlerem;
@@ -73,8 +70,14 @@ namespace SOUI
                 remstate st2 = HandlerLine(str.Right(str.GetLength()-config.strMultiLinesRemarkBegin.GetLength()),config,multirem1);
                 if(st2 != multirem2)
                     st = multirem1;
-                else// find multi rem end in the same line, treat it as normal
+                else if(str.Right(config.strMultiLinesRemarkEnd.GetLength())==config.strMultiLinesRemarkEnd)
+                    st = singlerem;//multilines remark in the same line, treat as single line remark
+                else
+                    // find multi rem end in the same line, treat it as normal
                     st = normal;
+            }else
+            {
+                st = normal;
             }
         }
         return st;
@@ -99,6 +102,7 @@ namespace SOUI
             fseek(f,-1,SEEK_CUR);
         }else if(enc == encoding_latin1)
         {
+            fseek(f,-4,SEEK_CUR);
             canHanle = TRUE;
         }
         
@@ -126,6 +130,7 @@ namespace SOUI
                 }
                 SStringW strLine(szLine);
                 strLine.TrimRight('\n');//去掉行尾的换行符
+                strLine.TrimRight('\r');//去掉行尾的换行符
                 
                 remstate st = HandlerLine(strLine,config,stCur);
                 if(stCur == multirem1)
