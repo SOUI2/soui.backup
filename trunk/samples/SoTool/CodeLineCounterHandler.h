@@ -35,7 +35,8 @@ protected:
     STreeCtrl * m_pDirTree;
 
 protected:
-    DWORD EnumFileInfo(const SStringW & strPath,HSTREEITEM hItem,SList<FILEINFO> & lstFileInfo, int &nDirs);
     typedef SMap<SStringW,CCodeConfig> CODECFGMAP;
+
+    DWORD EnumFileInfo(const CODECFGMAP &cfg, const SStringW & strPath,HSTREEITEM hItem,SList<FILEINFO> & lstFileInfo, int &nDirs);
     CODECFGMAP m_mapCodeCfg;
 };

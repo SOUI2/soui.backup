@@ -70,6 +70,7 @@ void CCodeLineCounterHandler::OnKillFocus_Dir( EventArgs *pEvt )
     m_pDirTree->RemoveAllItems();
     HSTREEITEM hRoot = m_pDirTree->InsertItem(_T("root"),0,1);
     InitDirTree(hRoot,m_strDir);
+    m_pDirTree->SetCheckState(hRoot,TRUE);
 }
 
 void CCodeLineCounterHandler::InitDirTree(HSTREEITEM hTreeItem,const SStringT & strPath)
@@ -113,13 +114,17 @@ void CCodeLineCounterHandler::OnBtnGo()
     }
     SStringTList lstTypes;
     SplitString(strlst[1],_T(';'),lstTypes);
-    
+    CODECFGMAP cfg;
+    for(int i=0;i<lstTypes.GetCount();i++)
+    {
+        cfg[lstTypes[i]] = m_mapCodeCfg[lstTypes[i]];
+    }
 
     //获得文件列表，计每个目标文件的文件大小
     HSTREEITEM hRoot = m_pDirTree->GetRootItem();
     SList<FILEINFO> lstFileInfo;
     int nDirs = 1;
-    DWORD szAll = EnumFileInfo(m_strDir,hRoot,lstFileInfo,nDirs);
+    DWORD szAll = EnumFileInfo(cfg,m_strDir,hRoot,lstFileInfo,nDirs);
     if(lstFileInfo.GetCount() == 0)
     {
         SMessageBox(m_pPageRoot->GetContainer()->GetHostHwnd(),_T("指定的目录下没有找到满足条件的文件类型"),_T("提示"),MB_OK|MB_ICONINFORMATION);
@@ -166,7 +171,7 @@ void CCodeLineCounterHandler::OnBtnGo()
 }
 
 
-DWORD CCodeLineCounterHandler::EnumFileInfo(const SStringW & strPath, HSTREEITEM hItem,SList<FILEINFO> & lstFileInfo , int &nDirs)
+DWORD CCodeLineCounterHandler::EnumFileInfo(const CODECFGMAP &cfg, const SStringW & strPath, HSTREEITEM hItem,SList<FILEINFO> & lstFileInfo , int &nDirs)
 {
     DWORD fileSizeDir = 0;
 
@@ -185,7 +190,7 @@ DWORD CCodeLineCounterHandler::EnumFileInfo(const SStringW & strPath, HSTREEITEM
                 if(!pszExt) continue;
                 pszExt ++;
                 
-                CODECFGMAP::CPair * pPair = m_mapCodeCfg.Lookup(pszExt);
+                const CODECFGMAP::CPair * pPair = cfg.Lookup(pszExt);
                 if(!pPair) continue;
                 FILEINFO fi;
                 fi.strFileName = strPath + L"\\" + fd.cFileName;
@@ -207,7 +212,7 @@ DWORD CCodeLineCounterHandler::EnumFileInfo(const SStringW & strPath, HSTREEITEM
             SStringT strDirName;
             m_pDirTree->GetItemText(hChild,strDirName);
             SStringW strPath2 = strPath + L"\\" + S_CT2W(strDirName);
-            fileSizeDir += EnumFileInfo(strPath2,hChild,lstFileInfo,nDirs);
+            fileSizeDir += EnumFileInfo(cfg,strPath2,hChild,lstFileInfo,nDirs);
             nDirs ++;
         }
         hChild = m_pDirTree->GetNextItem(hChild);

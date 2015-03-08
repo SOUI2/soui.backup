@@ -27,7 +27,7 @@
     </page>
     <page title="result" name="page_result">
       <text pos="0,[5,@100,@25">扫描目录数：</text>
-      <text pos="[5,{0" name="txt_folders"/>
+      <text pos="[5,{5" name="txt_folders"/>
       
       <text pos="0,[5,@100,@25">扫描文件数：</text>
       <text pos="[5,{5" name="txt_files"/>
