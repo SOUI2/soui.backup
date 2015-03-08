@@ -247,7 +247,7 @@ DWORD CCodeLineCounterHandler::EnumFileInfo(const CODECFGMAP &cfg, const SString
             fileSizeDir += EnumFileInfo(cfg,strPath2,hChild,lstFileInfo,nDirs);
             nDirs ++;
         }
-        hChild = m_pDirTree->GetNextItem(hChild);
+        hChild = m_pDirTree->GetNextSiblingItem(hChild);
     }
     return fileSizeDir;
 }
