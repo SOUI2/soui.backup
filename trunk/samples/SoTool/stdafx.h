@@ -13,7 +13,7 @@
 #include <control/souictrls.h>
 #include <res.mgr/sobjdefattr.h>
 #include <com-cfg.h>
-
+#include <helper/SMenu.h>
 #include <controls.extend/FileHelper.h>
 
 #include "resource.h"

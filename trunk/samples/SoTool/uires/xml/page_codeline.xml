@@ -7,11 +7,10 @@
       </window>
       <window pos="0,[5,-0,@30">
         <text pos="0,|0" offset="0,-0.5">file types:</text>
-        <combobox pos="[5,0,]-5,-0" name="cbx_filetypes">
-          <liststyle itemHeight="25" class="cls_border" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088"/>
-          <editstyle colorText="#000000" align="left" margin="0,0,0,0"/>
-
-        </combobox>
+        <window pos="[5,0,]-5,-0" class="cls_border" trackMouseEvent="1">
+          <edit pos="0,0,-15,-0" name="edit_filetypes" cueText="input file types" margin="0,0,0,0"/>
+          <imgbtn pos="[0,0,-0,-0" name="btn_dropdown_filetypes" skin="_skin.sys.dropbtn"/>
+        </window>
         <button pos="-0,0,@50,-0" offset="-1,0" name="btn_go">go</button>
       </window>
       <splitrow pos="0,[5,-0,-0" name="split_tree" sepSize="0">

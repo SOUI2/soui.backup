@@ -137,15 +137,13 @@ void CCodeLineCounterHandler::OnInit( SWindow *pRoot )
     xmlNode = xmlCodeSyntax.child(L"config").child(L"languages");
     if(xmlNode)
     {
-        SComboBox * pCbx = m_pPageRoot->FindChildByName2<SComboBox>(L"cbx_filetypes");
-        SASSERT(pCbx);
         pugi::xml_node xmlLang = xmlNode.child(L"language");
         while(xmlLang)
         {
-            SStringW strName = xmlLang.attribute(L"name").value();
-            SStringW strExts = xmlLang.attribute(L"exts").value();
-            SStringW str = strName + L":" + strExts;
-            pCbx->InsertItem(-1, S_CW2T(str),0,0);
+            LANGEXTS langExts;
+            langExts.strLang = xmlLang.attribute(L"name").value();
+            langExts.strExts = xmlLang.attribute(L"exts").value();
+            m_lstLangExts.Add(langExts);
 
             xmlLang = xmlLang.next_sibling(L"language");
         }
@@ -259,20 +257,20 @@ void CCodeLineCounterHandler::OnBtnGo()
         SMessageBox(m_pPageRoot->GetContainer()->GetHostHwnd(),_T("没有指定扫描目录"),_T("错误"),MB_OK|MB_ICONSTOP);
         return;
     }
-    SStringT strTypes = m_pPageRoot->FindChildByName(L"cbx_filetypes")->GetWindowText();
-    SStringTList strlst;
-    SplitString(strTypes,_T(':'),strlst);
-    if(strlst.GetCount()!=2)
-    {
-        SMessageBox(m_pPageRoot->GetContainer()->GetHostHwnd(),_T("没有指定文件类型"),_T("错误"),MB_OK|MB_ICONSTOP);
-        return;
-    }
+    SStringT strTypes = m_pPageRoot->FindChildByName(L"edit_filetypes")->GetWindowText();
     SStringWList lstTypes;
-    SplitString(S_CT2W(strlst[1]),L';',lstTypes);
+    SplitString(S_CT2W(strTypes),L';',lstTypes);
     CODECFGMAP cfg;
     for(int i=0;i<lstTypes.GetCount();i++)
     {
-        cfg[lstTypes[i]] = m_mapCodeCfg[lstTypes[i]];
+        CODECFGMAP::CPair *pPair = m_mapCodeCfg.Lookup(lstTypes[i]);
+        if(!pPair) continue;
+        cfg[lstTypes[i]] = pPair->m_value;
+    }
+    if(cfg.IsEmpty())
+    {
+        SMessageBox(m_pPageRoot->GetContainer()->GetHostHwnd(),_T("没有指定文件类型或者类型无效"),_T("错误"),MB_OK|MB_ICONSTOP);
+        return;
     }
 
     //获得文件列表，计每个目标文件的文件大小
@@ -344,3 +342,34 @@ void CCodeLineCounterHandler::OnBtnGo()
     }
 }
 
+void CCodeLineCounterHandler::OnBtnFileTypes(EventArgs *pEvt)
+{
+    SWindow *pBtn = sobj_cast<SWindow>(pEvt->sender);
+    CRect rcBtn = pBtn->GetWindowRect();
+    HWND hWnd = pBtn->GetContainer()->GetHostHwnd();
+    ::ClientToScreen(hWnd,(LPPOINT)&rcBtn);
+    ::ClientToScreen(hWnd,(LPPOINT)&rcBtn+1);
+
+    SMenu menu;
+    menu.LoadMenu(_T("menu_filetype"),_T("xml"));
+    for(int i=0;i<m_lstLangExts.GetCount();i++)
+    {
+        SStringW strDesc = m_lstLangExts[i].strLang+L":"+m_lstLangExts[i].strExts;
+        menu.InsertMenu(i,MF_BYPOSITION,i+10,S_CW2T(strDesc),-1);
+    }
+    
+    int id = menu.TrackPopupMenu(TPM_RIGHTALIGN|TPM_RETURNCMD,rcBtn.right,rcBtn.bottom,hWnd);
+    if(id!=0)
+    {
+        id-=10;
+        SEdit *pEdit = m_pPageRoot->FindChildByName2<SEdit>(L"edit_filetypes");
+        SASSERT(pEdit);
+        if(pEdit->GetWindowTextLength()!=0)
+        {
+            pEdit->SetSel(-1);
+            pEdit->ReplaceSel(L";");            
+        }
+        pEdit->SetSel(-1);
+        pEdit->ReplaceSel(m_lstLangExts[id].strExts);
+    }
+}

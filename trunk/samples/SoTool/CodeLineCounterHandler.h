@@ -10,6 +10,11 @@ class CCodeLineCounterHandler
         DWORD    dwSize;
         CCodeConfig cfg;
     };
+    struct LANGEXTS
+    {
+        SStringW strLang;
+        SStringW strExts;
+    };
 public:
     CCodeLineCounterHandler(void);
     ~CCodeLineCounterHandler(void);
@@ -19,7 +24,7 @@ public:
 protected:
     
     void OnBtnGo();
-
+    void OnBtnFileTypes(EventArgs *pEvt);
     void OnKillFocus_Dir(EventArgs *pEvt);
 
     void InitDirTree(HSTREEITEM hTreeItem,const SStringT & strPath);
@@ -27,6 +32,7 @@ protected:
 
     EVENT_MAP_BEGIN()
         EVENT_NAME_COMMAND(L"btn_go", OnBtnGo)
+        EVENT_NAME_HANDLER(L"btn_dropdown_filetypes",EventCmd::EventID, OnBtnFileTypes)
         EVENT_NAME_HANDLER(L"edit_dir",EventKillFocus::EventID,OnKillFocus_Dir)
     EVENT_MAP_END()
 
@@ -39,4 +45,7 @@ protected:
 
     DWORD EnumFileInfo(const CODECFGMAP &cfg, const SStringW & strPath,HSTREEITEM hItem,SList<FILEINFO> & lstFileInfo, int &nDirs);
     CODECFGMAP m_mapCodeCfg;
+
+    typedef SArray<LANGEXTS> LANGEXTLIST;
+    LANGEXTLIST m_lstLangExts;
 };

@@ -280,6 +280,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\uires\xml\menu_filetype.xml"
+				>
+			</File>
+			<File
 				RelativePath=".\uires\xml\page_2unicode.xml"
 				>
 			</File>

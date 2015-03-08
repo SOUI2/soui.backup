@@ -709,12 +709,12 @@ namespace SOUI
         /**
         * SRichEdit::ReplaceSel
         * @brief     替换选中项
-        * @param     LPWSTR pszText -- 
+        * @param     LPCWSTR pszText -- 
         * @param     BOOL bCanUndo -- 
         *
         * Describe   替换选中项
         */
-        void ReplaceSel(LPWSTR pszText,BOOL bCanUndo=TRUE);
+        void ReplaceSel(LPCWSTR pszText,BOOL bCanUndo=TRUE);
         /**
         * SRichEdit::GetWordWrap
         * @brief    

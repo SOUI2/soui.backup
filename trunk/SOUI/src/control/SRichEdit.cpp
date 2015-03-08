@@ -1426,7 +1426,7 @@ int SRichEdit::GetWindowTextLength()
     return (int)SSendMessage(WM_GETTEXTLENGTH);
 }
 
-void SRichEdit::ReplaceSel(LPWSTR pszText,BOOL bCanUndo)
+void SRichEdit::ReplaceSel(LPCWSTR pszText,BOOL bCanUndo)
 {
     SSendMessage(EM_REPLACESEL,(WPARAM)bCanUndo,(LPARAM)pszText);
 }
