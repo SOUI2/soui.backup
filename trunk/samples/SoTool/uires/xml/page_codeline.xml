@@ -3,7 +3,7 @@
     <page title="扫描目录" name="page_dir">
       <window pos="0,0,-0,@30">
         <text pos="0,|0" offset="0,-0.5">source dir:</text>
-        <edit pos="[5,0,-5,-0" name="edit_dir" cueText="drag or input a directory here"/>
+        <edit pos="[5,0,-5,-0" name="edit_dir" inset="5,0,5,0" cueText="drag or input a directory here"/>
       </window>
       <window pos="0,[5,-0,@30">
         <text pos="0,|0" offset="0,-0.5">file types:</text>
