@@ -17,7 +17,7 @@ namespace SOUI
         encoding_latin1
     };
 
-    encoding guess_buffer_encoding(char d0, char d1, char d2, char d3)
+    encoding guess_buffer_encoding(BYTE d0, BYTE d1, BYTE d2, BYTE d3)
     {
         // look for BOM in first few bytes
         if (d0 == 0 && d1 == 0 && d2 == 0xfe && d3 == 0xff) return encoding_utf32_be;
@@ -89,7 +89,7 @@ namespace SOUI
     {
         FILE *f = _tfopen(pszFileName,_T("rb"));
         if(!f) return FALSE;
-        char bom[4]={0};
+        BYTE bom[4]={0};
         fread(bom,1,4,f);
         encoding enc = guess_buffer_encoding(bom[0],bom[1],bom[2],bom[3]);
 

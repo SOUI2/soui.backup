@@ -44,6 +44,13 @@ protected:                                          \
         return TRUE;                                \
     }
 
+#define EVENT_CHECK_SENDER_ROOT(pRoot)              \
+    {                                               \
+    SWindow *pWnd = sobj_cast<SWindow>(pEvt->sender);\
+    if(!pWnd->IsDescendant(pRoot))                  \
+        return FALSE;                               \
+    }
+
 // void OnEvent(EventArgs *pEvt)
 #define EVENT_HANDLER(cd, func)                     \
     if(cd == uCode)                                 \

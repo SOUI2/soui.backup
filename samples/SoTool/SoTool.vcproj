@@ -173,7 +173,7 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
 			>
 			<File
-				RelativePath=".\CImageMergerHandler.cpp"
+				RelativePath=".\2UnicodeHandler.cpp"
 				>
 			</File>
 			<File
@@ -182,6 +182,14 @@
 			</File>
 			<File
 				RelativePath=".\CodeLineCounterHandler.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FolderHander.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ImageMergerHandler.cpp"
 				>
 			</File>
 			<File
@@ -222,7 +230,7 @@
 			Filter="h;hpp;hxx;hm;inl;inc"
 			>
 			<File
-				RelativePath=".\CImageMergerHandler.h"
+				RelativePath=".\2UnicodeHandler.h"
 				>
 			</File>
 			<File
@@ -235,6 +243,14 @@
 			</File>
 			<File
 				RelativePath=".\droptarget.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FolderHander.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ImageMergerHandler.h"
 				>
 			</File>
 			<File
@@ -293,6 +309,10 @@
 			</File>
 			<File
 				RelativePath=".\uires\xml\page_codeline.xml"
+				>
+			</File>
+			<File
+				RelativePath=".\uires\xml\page_folder.xml"
 				>
 			</File>
 			<File
