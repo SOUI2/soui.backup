@@ -11,6 +11,7 @@
   </LAYOUT>
   <xml>
     <file name="syntax" path="xml\syntax.xml"/>
+    <file name="menu_filetype" path="xml\menu_filetype.xml"/>
   </xml>
   <IMG>
     <file name="png_page_icons"   path="image\page_icons.png" />
