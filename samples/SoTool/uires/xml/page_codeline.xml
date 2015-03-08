@@ -37,7 +37,7 @@
       <text pos="0,[5,@100,@25" align="right">空行数：</text>
       <text pos="[5,{5" name="txt_blanklines">0</text>
       
-      <text pos="0,[5,@100,@25" align="right">注释数：</text>
+      <text pos="0,[5,@100,@25" align="right">注释行数：</text>
       <text pos="[5,{5" name="txt_remarklines">0</text>
 
       <listctrl pos="160,5,-0,-0" name="lst_linecounter_report" itemHeight="25" class="cls_border">
