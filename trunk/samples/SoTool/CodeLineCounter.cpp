@@ -62,10 +62,12 @@ namespace SOUI
             }
         }else
         {//look for singlerem or multirem1
-            if(!config.strSingleLineRemark.IsEmpty() && str2.Left(config.strSingleLineRemark.GetLength()) == config.strSingleLineRemark)
+            bool bSingleLineRemark = !config.strSingleLineRemark.IsEmpty() && str2.Left(config.strSingleLineRemark.GetLength()) == config.strSingleLineRemark;
+            bool bMultiLineRemark = !config.strMultiLinesRemarkBegin.IsEmpty() && str2.Left(config.strMultiLinesRemarkBegin.GetLength()) == config.strMultiLinesRemarkBegin;
+            if(bSingleLineRemark && !bMultiLineRemark)
             {//single remark
                 st = singlerem;
-            }else if(!config.strMultiLinesRemarkBegin.IsEmpty() && str2.Left(config.strMultiLinesRemarkBegin.GetLength()) == config.strMultiLinesRemarkBegin)
+            }else if(bMultiLineRemark)
             {//multi rem begin
                 remstate st2 = HandlerLine(str.Right(str.GetLength()-config.strMultiLinesRemarkBegin.GetLength()),config,multirem1);
                 if(st2 != multirem2)
