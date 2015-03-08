@@ -234,6 +234,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\droptarget.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MainDlg.h"
 				>
 			</File>
@@ -268,10 +272,6 @@
 			Filter="idx;xml;png;gif;jpg;ico;lua;bmp"
 			>
 			<File
-				RelativePath=".\uires\xml\codelinecounter.xml"
-				>
-			</File>
-			<File
 				RelativePath=".\uires\xml\dlg_main.xml"
 				>
 			</File>
@@ -301,6 +301,10 @@
 			</File>
 			<File
 				RelativePath=".\uires\image\soui.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\uires\xml\syntax.xml"
 				>
 			</File>
 			<File

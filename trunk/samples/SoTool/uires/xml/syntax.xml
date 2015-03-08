@@ -5,7 +5,7 @@
     <filetype type="C/C++头文件" ext="h" singleLineRemark="//" multiLinesRemarkBegin="/*" multiLinesRemarkEnd="*/"/>
     <filetype type="模板头文件" ext="hpp" singleLineRemark="//" multiLinesRemarkBegin="/*" multiLinesRemarkEnd="*/"/>
     <filetype type="C++源文件" ext="cpp" singleLineRemark="//" multiLinesRemarkBegin="/*" multiLinesRemarkEnd="*/"/>
-    <filetype type="C++源文件2" ext="cc" singleLineRemark="//" multiLinesRemarkBegin="/*" multiLinesRemarkEnd="*/"/>
+    <filetype type="CC源文件" ext="cc" singleLineRemark="//" multiLinesRemarkBegin="/*" multiLinesRemarkEnd="*/"/>
     <filetype type="资源文件" ext="rc" singleLineRemark="//" multiLinesRemarkBegin="/*" multiLinesRemarkEnd="*/"/>
 
     <filetype type="XML文件" ext="xml" singleLineRemark="" multiLinesRemarkBegin="&lt;!--" multiLinesRemarkEnd="--&gt;"/>
