@@ -253,6 +253,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SFolderList.cpp"
+				>
+			</File>
+			<File
 				RelativePath="SImgCanvas.cpp"
 				>
 			</File>
@@ -308,6 +312,10 @@
 			</File>
 			<File
 				RelativePath="SEdit2.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SFolderList.h"
 				>
 			</File>
 			<File

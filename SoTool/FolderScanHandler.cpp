@@ -76,7 +76,7 @@ void CFolderScanHandler::OnInit(SWindow *pRoot)
     m_pPageRoot->GetContainer()->RegisterDragDrop(pEditDir->GetSwnd(),pDT);
     pDT->Release();
 
-    m_pTreelist = m_pPageRoot->FindChildByName2<STreeList>(L"tree_dir");
+    m_pTreelist = m_pPageRoot->FindChildByName2<SFolderTreeList>(L"tree_dir");
     SASSERT(m_pTreelist);
 }
 
@@ -90,9 +90,7 @@ void CFolderScanHandler::OnGo(EventArgs *pEvt)
     if(!(dwAttr & FILE_ATTRIBUTE_DIRECTORY))
         return;
     
-    SMCTreeCtrl *pMcTreeCtrl = m_pTreelist->GetMCTreeCtrl();
+    SFolderTreeCtrl *pMcTreeCtrl = m_pTreelist->GetFolderTreeCtrl();
     pMcTreeCtrl->RemoveAllItems();
-    HSTREEITEM hRoot = pMcTreeCtrl->InsertItem(_T("root"),0,0);
-    pMcTreeCtrl->SetItemText(hRoot,0,_T("10G"));
-    pMcTreeCtrl->SetItemText(hRoot,1,_T("100%"));
+    HSTREEITEM hRoot = pMcTreeCtrl->InsertItem(_T("root"),TRUE,12345,STVI_ROOT);
 }

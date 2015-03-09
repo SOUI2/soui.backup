@@ -18,6 +18,6 @@ protected:
     EVENT_MAP_BREAK()
     
     SWindow *m_pPageRoot;
-    STreeList *m_pTreelist;
+    SFolderTreeList *m_pTreelist;
 };
 
