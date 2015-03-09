@@ -7,7 +7,7 @@
   </window>
   <splitrow pos="0,[5,-0,-0" name="split_tree" sepSize="0">
     <pane min="20" ideaSize="100">
-      <treelist pos="0,[5,-0,]0" name="tree_dir" class="cls_border" treeLabel="文件树" colorBkgnd="#ffffff">
+      <treelist pos="0,[5,-0,]0" name="tree_dir" class="cls_border" treeLabel="文件树" headerHeight="25" colorBkgnd="#ffffff">
         <treectrlstyle itemHeight="25" checkBox="0" treeWidth="400"/>
         <headerstyle>
           <items>

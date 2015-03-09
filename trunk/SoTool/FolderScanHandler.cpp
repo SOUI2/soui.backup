@@ -80,7 +80,7 @@ void CFolderScanHandler::OnInit(SWindow *pRoot)
     SASSERT(m_pTreelist);
 }
 
-void CFolderScanHandler::OnGo()
+void CFolderScanHandler::OnGo(EventArgs *pEvt)
 {
     SWindow *pEditDir = m_pPageRoot->FindChildByName(L"edit_dir");
     SStringT strDir = pEditDir->GetWindowText();

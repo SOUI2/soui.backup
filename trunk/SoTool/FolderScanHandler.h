@@ -9,11 +9,12 @@ public:
     
     void OnInit(SWindow *pRoot);
 protected:
-    void OnGo();
+    void OnGo(EventArgs *pEvt);
     
     EVENT_MAP_BEGIN()
         EVENT_CHECK_SENDER_ROOT(m_pPageRoot)
-        EVENT_NAME_COMMAND(L"btn_go",OnGo)
+        EVENT_NAME_HANDLER(L"btn_go",EventCmd::EventID,OnGo)
+        EVENT_NAME_HANDLER(L"edit_dir",EventKeyEnter::EventID,OnGo)
     EVENT_MAP_BREAK()
     
     SWindow *m_pPageRoot;
