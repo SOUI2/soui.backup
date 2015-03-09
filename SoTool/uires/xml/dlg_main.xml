@@ -22,6 +22,9 @@ translucent="1"
       <page title="2Unicode" name="page_2unicode" tip="将文本文件转换为Unicode存储">
         <include src="layout:page_2unicode"/>
       </page>
+      <page title="文件扫描" name="page_folderscan">
+        <include src="layout:page_folderscan"/>
+      </page>
       <page title="关于" iconIndex="8" tip="关于本工具">
         <include src="layout:page_about"/>
       </page>

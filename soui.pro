@@ -17,6 +17,7 @@ SUBDIRS += 360
 SUBDIRS += souispy
 SUBDIRS += MusicPlayer
 SUBDIRS += PcManager
+SUBDIRS += SoTool
 
 soui.depends += utilities
 
@@ -26,3 +27,4 @@ qqlogin.depends += utilities soui
 souispy.depends += utilities soui
 MusicPlayer.depends += utilities soui
 PcManager.depends += utilities soui
+SoTool.depends += utilities soui
