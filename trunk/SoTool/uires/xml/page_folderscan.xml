@@ -7,7 +7,7 @@
   </window>
   <splitrow pos="0,[5,-0,-0" name="split_tree" sepSize="0">
     <pane min="20" ideaSize="100">
-      <treelist pos="0,[5,-0,]0" name="tree_dir" class="cls_border" treeLabel="文件树" headerHeight="25" colorBkgnd="#ffffff">
+      <foldertreelist pos="0,[5,-0,]0" name="tree_dir" class="cls_border" treeLabel="文件树" headerHeight="25" colorBkgnd="#ffffff">
         <treectrlstyle itemHeight="25" checkBox="0" treeWidth="400"/>
         <headerstyle>
           <items>
@@ -15,7 +15,7 @@
             <item width="100">文件夹占用比例</item>
           </items>
         </headerstyle>
-      </treelist>
+      </foldertreelist>
     </pane>
     <pane minSize="20" ideaSize="20" maxSize="20" show="0">
       <text pos="0,0">进度:</text>
