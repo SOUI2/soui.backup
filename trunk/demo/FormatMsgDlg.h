@@ -12,6 +12,7 @@ public:
     
     EVENT_MAP_BEGIN()
         EVENT_ID_COMMAND(IDOK,OnOK)
+        CHAIN_EVENT_MAP(SHostDialog)
     EVENT_MAP_END()
         
 };
