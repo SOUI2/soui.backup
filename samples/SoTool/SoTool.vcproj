@@ -197,6 +197,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SEdit2.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SImgCanvas.cpp"
 				>
 			</File>
@@ -259,6 +263,10 @@
 			</File>
 			<File
 				RelativePath=".\resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SEdit2.h"
 				>
 			</File>
 			<File
