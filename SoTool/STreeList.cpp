@@ -126,6 +126,27 @@ namespace SOUI
         }
     }
 
+    BOOL SMCTreeCtrl::SetColWidth(int iCol,int nWid)
+    {
+        if(iCol<0 || iCol>=m_arrColWidth.GetCount()) 
+            return FALSE;
+        m_arrColWidth.SetAt(iCol,nWid);
+        m_nItemWid = -1;
+        CalcItemWidth(0);
+        
+        Invalidate();
+        return TRUE;
+    }
+
+    void SMCTreeCtrl::SetTreeWidth(int nWid)
+    {
+        m_nTreeWidth = nWid;
+        m_nItemWid = -1;
+        CalcItemWidth(0);
+
+        Invalidate();
+    }
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -188,7 +209,10 @@ namespace SOUI
     bool STreeList::OnHeaderSizeChanging(EventArgs *pEvt)
     {
         EventHeaderItemChanging *pEvt2=sobj_cast<EventHeaderItemChanging>(pEvt);
-        
+        if(pEvt2->iItem == 0)
+            m_pTreeCtrl->SetTreeWidth(pEvt2->nWidth);
+        else
+            m_pTreeCtrl->SetColWidth(pEvt2->iItem-1,pEvt2->nWidth);
         return true;
     }
 
