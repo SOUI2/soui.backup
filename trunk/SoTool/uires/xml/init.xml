@@ -16,7 +16,7 @@
     <imglist name="skin_folder_icon" src="img.codeline:png_foldericon" states="2"/>
     <imgframe name="skin_tabskin" src="img.codeline:png_tabskin" states="3" margin="5,5,5,10"/>
 
-    <imglist name="skin_scan" src="img.folderscan:png_scan" states="39"/>
+    <imglist name="skin_scan" src="img.folderscan:png_scan" states="5"/>
   </skin>
 
   <style>
