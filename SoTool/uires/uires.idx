@@ -26,6 +26,9 @@
     <file name="png_foldericon"	path="image\code-line\folder.png"/>
     <file name="png_tabskin" path="image\code-line\tab_page.png"/>
   </img.codeline>
+  <img.folderscan>
+    <file name="png_scan" path="image\folder-scan\scan.png"/>
+  </img.folderscan>
   <ICON>
     <file name="ICON_LOGO"  path="image\soui.ico"    />
   </ICON>

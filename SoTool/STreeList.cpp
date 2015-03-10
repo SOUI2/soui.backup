@@ -117,11 +117,16 @@ namespace SOUI
     {
         CRect rcTreeItem = rc;
         rcTreeItem.right = rcTreeItem.left + m_nTreeWidth;
-        STreeCtrl::DrawItem(pRT,rcTreeItem,hItem);
+        DrawTreeItem(pRT,rcTreeItem,hItem);
         
         CRect rcListItem = rc;
         rcListItem.left = rcTreeItem.right;
         DrawListItem(pRT,rcListItem,hItem);
+    }
+
+    void SMCTreeCtrl::DrawTreeItem(IRenderTarget *pRT, CRect & rc,HSTREEITEM hItem)
+    {
+        STreeCtrl::DrawItem(pRT,rc,hItem);
     }
 
     void SMCTreeCtrl::DrawListItem(IRenderTarget *pRT, CRect & rc,HSTREEITEM hItem)
