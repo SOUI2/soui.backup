@@ -78,6 +78,35 @@ void CFolderScanHandler::OnInit(SWindow *pRoot)
 
     m_pTreelist = m_pPageRoot->FindChildByName2<SFolderTreeList>(L"tree_dir");
     SASSERT(m_pTreelist);
+    m_pTreelist->GetFolderTreeCtrl()->GetEventSet()->subscribeEvent(EventTCDbClick::EventID,Subscriber(&CFolderScanHandler::OnTreeDbclick,this));
+}
+
+bool CFolderScanHandler::OnTreeDbclick(EventArgs *pEvt)
+{
+    EventTCDbClick *pEvt2 = sobj_cast<EventTCDbClick>(pEvt);
+    pEvt2->bCancel = TRUE;
+    HSTREEITEM hItem = pEvt2->hItem;
+    HSTREEITEM hRoot = m_pTreelist->GetFolderTreeCtrl()->GetRootItem();
+    
+    SStringT strPath;
+    while(hItem != hRoot)
+    {
+        SStringT strItem;
+        m_pTreelist->GetFolderTreeCtrl()->GetItemText(hItem,strItem);
+        strPath = strItem + _T("\\") + strPath;
+        hItem = m_pTreelist->GetFolderTreeCtrl()->GetParentItem(hItem);
+    }
+    
+    SWindow *pEditDir = m_pPageRoot->FindChildByName(L"edit_dir");
+    
+    SStringT strRoot = pEditDir->GetWindowText();
+
+    strPath = strRoot + _T("\\") + strPath;
+    
+    SStringT strCmd = SStringT().Format(_T("/select, %s"),strPath);
+    ShellExecute( NULL, _T("open"), _T("explorer.exe"), strCmd, NULL, SW_SHOWNORMAL ); 
+    
+    return true;
 }
 
 BOOL CFolderScanHandler::DoSomething()
