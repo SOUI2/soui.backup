@@ -72,9 +72,9 @@ BOOL CFolderScanHandler::DoSomething()
     MSG msg;
     while(PeekMessage(&msg,NULL,0,0,PM_REMOVE))
     {
-        if(msg.message == PM_REMOVE)
+        if(msg.message == WM_QUIT)
         {
-            PostThreadMessage(0,WM_QUIT,0,0);
+            PostMessage(m_pPageRoot->GetContainer()->GetHostHwnd(),WM_QUIT,0,0);
             return FALSE;
         }
         TranslateMessage(&msg);
