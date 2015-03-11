@@ -10,6 +10,7 @@ public:
     void OnInit(SWindow *pRoot);
 protected:
     void OnGo(EventArgs *pEvt);
+    bool OnTreeDbclick(EventArgs *pEvt);
     BOOL EnumFiles(SStringT strPath,HSTREEITEM hParent);
     BOOL DoSomething();
     
