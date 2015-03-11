@@ -7,7 +7,7 @@
   </window>
   <window pos="0,[5,-0,-0">
     <foldertreelist pos="0,[5,-0,-0" name="tree_dir" class="cls_border" treeLabel="文件树" headerHeight="25" colorBkgnd="#ffffff">
-      <treectrlstyle itemHeight="25" checkBox="0" treeWidth="350"/>
+      <treectrlstyle itemHeight="25" checkBox="0" treeWidth="350" tip="双击打开文件位置"/>
       <headerstyle>
         <items>
           <item width="80">占用空间</item>
