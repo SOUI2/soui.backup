@@ -225,6 +225,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CalcMd5Handler.cpp"
+				>
+			</File>
+			<File
 				RelativePath="CodeLineCounter.cpp"
 				>
 			</File>
@@ -246,6 +250,10 @@
 			</File>
 			<File
 				RelativePath="MainDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Md5.cpp"
 				>
 			</File>
 			<File
@@ -279,6 +287,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CalcMd5Handler.h"
+				>
+			</File>
+			<File
 				RelativePath="CodeLineCounter.h"
 				>
 			</File>
@@ -304,6 +316,10 @@
 			</File>
 			<File
 				RelativePath="MainDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Md5.h"
 				>
 			</File>
 			<File
