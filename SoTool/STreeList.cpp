@@ -198,6 +198,7 @@ namespace SOUI
     ,m_pHeader(NULL)
     ,m_pTreeCtrl(NULL)
     {
+        m_bClipClient = TRUE;
     }
 
     STreeList::~STreeList(void)
