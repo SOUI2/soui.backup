@@ -661,56 +661,99 @@ static void invoke_parent(lua_State *L)
 	}
 }
 
+
 /*---------------------------------------------------------------------------*/ 
 int lua_tinker::meta_get(lua_State *L)
 {
-	lua_getmetatable(L,1);
-	lua_pushvalue(L,2);
-	lua_rawget(L,-2);
+    // 传入表 和 索引参数
+    // stack: 1.类(userdata) 2.变量(string) 
+    lua_getmetatable(L,1);
+    // stack: 1.类(userdata) 2.变量(string) 3.meta(table)
+    lua_pushvalue(L,2);
+    // stack: 1.类(userdata) 2.变量(string) 3.meta(table) 4.变量(string)
+    lua_rawget(L,-2);
+    // stack: 1.类(userdata) 2.变量(string) 3.meta(table) 4.meta[变量]value值(userdata)
 
-	if(lua_isuserdata(L,-1))
-	{
-		user2type<var_base*>::invoke(L,-1)->get(L);
-		lua_remove(L, -2);
-	}
-	else if(lua_isnil(L,-1))
-	{
-		lua_remove(L,-1);
-		invoke_parent(L);
-		if(lua_isnil(L,-1))
-		{
-			lua_pushfstring(L, "can't find '%s' class variable. (forgot registering class variable ?)", lua_tostring(L, 2));
-			lua_error(L);
-		}
-	} 
+    // 如果存在userdata 存在该变量
+    if(lua_isuserdata(L,-1))
+    {
+        user2type<var_base*>::invoke(L,-1)->get(L);
+        // stack: 1.类(userdata) 2.变量(string) 3.meta(table) 4.meta[变量]value值(userdata) 5.实际值
+        lua_remove(L, -2);
+        // stack: 1.类(userdata) 2.变量(string) 3.meta(table) 4.实际值
+    }
+    else if(lua_isnil(L,-1))
+    {
+        // stack: 1.类(userdata) 2.变量(string) 3.meta(table) 4.nil
+        lua_remove(L,-1);
+        // stack: 1.类(userdata) 2.变量(string) 3.meta(table) 
+        invoke_parent(L);
+        // fix bug by fergus
+        // 调用父类也需调用get
+        if(lua_isuserdata(L,-1))
+        {
+            // stack: 1.类(userdata) 2.变量(string) 3.meta(table) 4.父类中的变量(userdata) 
+            user2type<var_base*>::invoke(L,-1)->get(L);
+            // stack: 1.类(userdata) 2.变量(string) 3.meta(table) 4.父类中的变量(userdata) 5.实际值
+            lua_remove(L, -2);
+            // stack: 1.类(userdata) 2.变量(string) 3.meta(table) 4.实际值
+        }
+        else if(lua_isnil(L,-1))
+        {
+            // stack: 1.类(userdata) 2.变量(string) 3.meta(table) 4.nil
+            lua_pushfstring(L, "can't find '%s' class variable. (forgot registering class variable ?)", lua_tostring(L, 2));
+            lua_error(L);
+        }
+    } 
 
-	lua_remove(L,-2);
+    lua_remove(L,-2);
+    // stack: 1.类(userdata) 2.变量(string) 3.实际值
 
-	return 1;
+    return 1;
 }
 
 /*---------------------------------------------------------------------------*/ 
 int lua_tinker::meta_set(lua_State *L)
 {
-	lua_getmetatable(L,1);
-	lua_pushvalue(L,2);
-	lua_rawget(L,-2);
+    // stack: 1.类(userdata) 2.变量(string) 3.要赋的值
+    lua_getmetatable(L,1);
+    // stack: 1.类(userdata) 2.变量(string) 3.要赋的值 4.类meta(table)
+    lua_pushvalue(L,2);
+    // stack: 1.类(userdata) 2.变量(string) 3.要赋的值 4.类meta(table) 5.变量(string)
+    lua_rawget(L,-2);
+    // stack: 1.类(userdata) 2.变量(string) 3.要赋的值 4.类meta(table) 5.meta[变量](userdata mem_var指针)
 
-	if(lua_isuserdata(L,-1))
-	{
-		user2type<var_base*>::invoke(L,-1)->set(L);
-	}
-	else if(lua_isnil(L, -1))
-	{
+    if(lua_isuserdata(L,-1))
+    {
+        user2type<var_base*>::invoke(L,-1)->set(L);
+        // stack: 1.类(userdata) 2.变量(string) 3.要赋的值 4.类meta(table) 5.meta[变量](userdata mem_var指针)
+    }
+    else if(lua_isnil(L, -1))
+    {
+        // stack: 1.类(userdata) 2.变量(string) 3.要赋的值 4.类meta(table) 5.nil
+        lua_remove(L,-1);
+        // stack: 1.类(userdata) 2.变量(string) 3.要赋的值 4.类meta(table)
+        lua_pushvalue(L,2);
+        // stack: 1.类(userdata) 2.变量(string) 3.要赋的值 4.类meta(table) 5.变量(string)
+        lua_pushvalue(L,4);
+        // stack: 1.类(userdata) 2.变量(string) 3.要赋的值 4.类meta(table) 5.变量(string) 6.类meta(table)
         invoke_parent(L);
-		lua_pushvalue(L,2);
-		lua_pushvalue(L,3);
-		lua_rawset(L, -4);
-	}
-	lua_settop(L, 3);
-	return 0;
+        // stack: 1.类(userdata) 2.变量(string) 3.要赋的值 4.类meta(table) 5.变量(string) 6.类meta(table) 7.获取到父类的变量(userdata mem_var指针)
+        if(lua_isuserdata(L,-1))
+        {
+            user2type<var_base*>::invoke(L,-1)->set(L);
+        }
+        else if(lua_isnil(L,-1))
+        {
+            // stack: 1.类(userdata) 2.变量(string) 3.要赋的值 4.类meta(table) 5.变量(string) 6.类meta(table) 7.nil
+            lua_pushfstring(L, "can't find '%s' class variable. (forgot registering class variable ?)", lua_tostring(L, 2));
+            lua_error(L);
+        }
+    }
+    lua_settop(L, 3);
+    // stack: 1.类(userdata) 2.变量(string) 3.要赋的值
+    return 0;
 }
-
 /*---------------------------------------------------------------------------*/ 
 void lua_tinker::push_meta(lua_State *L, const char* name)
 {
