@@ -80,7 +80,7 @@ namespace SOUI
 
     SScriptModule_Lua::SScriptModule_Lua()
     {
-        d_state = lua_open();
+        d_state = luaL_newstate();
         if(d_state)
         {
             luaL_openlibs(d_state);

@@ -21,7 +21,7 @@ BOOL ExpLua_Ctrls(lua_State *L)
 {
 	try{
 		lua_tinker::class_add<SComboBoxBase>(L,"SComboBoxBase");
-        lua_tinker::class_inh<SComboBoxBase,SWindow>(L);
+        lua_tinker::class_def<SComboBoxBase>(L,"toSWindow",&SComboBoxBase::toSWindow);
 		lua_tinker::class_def<SComboBoxBase>(L,"GetCurSel",&SComboBoxBase::GetCurSel);
 		lua_tinker::class_def<SComboBoxBase>(L,"GetCount",&SComboBoxBase::GetCount);
 		lua_tinker::class_def<SComboBoxBase>(L,"SetCurSel",&SComboBoxBase::SetCurSel);

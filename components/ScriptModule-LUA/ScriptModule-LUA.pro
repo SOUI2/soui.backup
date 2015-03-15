@@ -3,7 +3,7 @@ TARGET = ScriptModule-LUA
 DEPENDPATH += .
 INCLUDEPATH += .
 
-SUBDIRS += lua-51
+SUBDIRS += lua-52
 SUBDIRS += ScriptModule
 
-ScriptModule.depends += lua-51 soui
+ScriptModule.depends += lua-52 soui
