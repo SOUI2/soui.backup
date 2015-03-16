@@ -7,7 +7,7 @@ BOOL ExpLua_String(lua_State *L)
 		lua_tinker::class_add<SStringA>(L,"SStringA");
         lua_tinker::class_con<SStringA>(L,lua_tinker::constructor<SStringA>);
         lua_tinker::class_con<SStringA>(L,lua_tinker::constructor<SStringA,const SStringA &>);
-        lua_tinker::class_con<SStringA>(L,lua_tinker::constructor<SStringA,const char*,int>);
+        lua_tinker::class_con<SStringA>(L,lua_tinker::constructor<SStringA,const char*>);
         
         lua_tinker::class_def<SStringA>(L,"GetLength",&SStringA::GetLength);
         lua_tinker::class_def<SStringA>(L,"IsEmpty",&SStringA::IsEmpty);
@@ -46,7 +46,7 @@ BOOL ExpLua_String(lua_State *L)
         lua_tinker::class_add<SStringW>(L,"SStringW");
         lua_tinker::class_con<SStringW>(L,lua_tinker::constructor<SStringW>);
         lua_tinker::class_con<SStringW>(L,lua_tinker::constructor<SStringW,const SStringW &>);
-        lua_tinker::class_con<SStringW>(L,lua_tinker::constructor<SStringW,const wchar_t*,int>);
+        lua_tinker::class_con<SStringW>(L,lua_tinker::constructor<SStringW,const wchar_t*>);
 
         lua_tinker::class_def<SStringW>(L,"GetLength",&SStringW::GetLength);
         lua_tinker::class_def<SStringW>(L,"IsEmpty",&SStringW::IsEmpty);
@@ -62,13 +62,13 @@ BOOL ExpLua_String(lua_State *L)
         lua_tinker::class_def<SStringW>(L,"TrimRight",&SStringW::TrimRight);
         lua_tinker::class_def<SStringW>(L,"TrimLeft",&SStringW::TrimLeft);
         lua_tinker::class_def<SStringW>(L,"Trim",&SStringW::Trim);
-        lua_tinker::class_def<SStringW>(L,"Insertwchar_t",(int (SStringW::*)(int,wchar_t))&SStringW::Insert);
+        lua_tinker::class_def<SStringW>(L,"InsertChar",(int (SStringW::*)(int,wchar_t))&SStringW::Insert);
         lua_tinker::class_def<SStringW>(L,"InsertStr",(int (SStringW::*)(int,const wchar_t*))&SStringW::Insert);
         lua_tinker::class_def<SStringW>(L,"Delete",&SStringW::Delete);
-        lua_tinker::class_def<SStringW>(L,"Replacewchar_t",(int (SStringW::*)(wchar_t,wchar_t))&SStringW::Replace);
+        lua_tinker::class_def<SStringW>(L,"ReplaceChar",(int (SStringW::*)(wchar_t,wchar_t))&SStringW::Replace);
         lua_tinker::class_def<SStringW>(L,"ReplaceStr",(int (SStringW::*)(const wchar_t*,const wchar_t*))&SStringW::Replace);
         lua_tinker::class_def<SStringW>(L,"Remove",&SStringW::Remove);
-        lua_tinker::class_def<SStringW>(L,"Findwchar_t",(int (SStringW::*)(wchar_t,int) const)&SStringW::Find);
+        lua_tinker::class_def<SStringW>(L,"FindChar",(int (SStringW::*)(wchar_t,int) const)&SStringW::Find);
         lua_tinker::class_def<SStringW>(L,"FindStr",(int (SStringW::*)(const wchar_t *,int) const)&SStringW::Find);
         lua_tinker::class_def<SStringW>(L,"ReverseFind",&SStringW::ReverseFind);
         lua_tinker::class_def<SStringW>(L,"GetBuffer",&SStringW::GetBuffer);
