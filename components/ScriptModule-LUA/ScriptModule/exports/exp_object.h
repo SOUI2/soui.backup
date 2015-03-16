@@ -12,6 +12,7 @@ BOOL ExpLua_SObject(lua_State *L)
 		lua_tinker::class_def<SObject>(L,"IsClass",&SObject::IsClass);
         lua_tinker::class_def<SObject>(L,"GetObjectClass",&SObject::GetObjectClass);
         lua_tinker::class_def<SObject>(L,"InitFromXml",&SObject::InitFromXml);
+        lua_tinker::class_def<SObject>(L,"SetAttribute",(HRESULT (SObject::*)(const char *, const char *, BOOL))&SObject::SetAttribute);
         lua_tinker::class_def<SObject>(L,"SetAttributeA",(HRESULT (SObject::*)(const SStringA &, const SStringA &, BOOL))&SObject::SetAttribute);
         lua_tinker::class_def<SObject>(L,"SetAttributeW",(HRESULT (SObject::*)(const SStringW &, const SStringW &, BOOL))&SObject::SetAttribute);
         lua_tinker::class_def<SObject>(L,"tr",&SObject::tr);
