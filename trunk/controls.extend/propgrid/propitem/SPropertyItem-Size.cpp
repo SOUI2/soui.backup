@@ -13,12 +13,12 @@ namespace SOUI
     {
         IPropertyItem *pWidth = SPropertyItemText::CreatePropItem(pOwner);
         pWidth->SetID(CHILD_WIDTH);
-        pWidth->SetName(S_CW2T(TR(L"width",GetOwner()->GetContainer()->GetTranslatorContext())));
+        pWidth->SetName(TR(L"width",GetOwner()->GetContainer()->GetTranslatorContext()));
         InsertChild(pWidth);
         pWidth->Release();
         IPropertyItem *pHeight = SPropertyItemText::CreatePropItem(pOwner);
         pHeight->SetID(CHILD_HEIGHT);
-        pHeight->SetName(S_CW2T(TR(L"height",GetOwner()->GetContainer()->GetTranslatorContext())));
+        pHeight->SetName(TR(L"height",GetOwner()->GetContainer()->GetTranslatorContext()));
         InsertChild(pHeight);
         pHeight->Release();
         m_szValue.cx=m_szValue.cy=0;
@@ -85,8 +85,8 @@ namespace SOUI
 
     HRESULT SPropertyItemSize::OnAttrChildrenNames( const SStringW & strValue,BOOL bLoading )
     {
-        SArray<SStringT> strNames;
-        SplitString(S_CW2T(TR(strValue,GetOwner()->GetContainer()->GetTranslatorContext())),_T('|'),strNames);
+        SArray<SStringW> strNames;
+        SplitString(TR(strValue,GetOwner()->GetContainer()->GetTranslatorContext()),L'|',strNames);
         if(strNames.GetCount()==2)
         {
             GetItem(GPI_FIRSTCHILD)->SetName(strNames[0]);

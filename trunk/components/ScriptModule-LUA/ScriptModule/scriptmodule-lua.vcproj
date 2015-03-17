@@ -293,10 +293,6 @@
 				>
 			</File>
 			<File
-				RelativePath="require.h"
-				>
-			</File>
-			<File
 				RelativePath="ScriptModule-Lua.h"
 				>
 			</File>

@@ -278,7 +278,8 @@ namespace SOUI
         CRect rcName = rcNameBack;
         rcName.left = rcSwitch.right;
         
-        pRT->DrawText(pItem->GetName2(),pItem->GetName2().GetLength(),rcName,DT_SINGLELINE|DT_VCENTER);
+        SStringT strName = S_CW2T(pItem->GetName2());
+        pRT->DrawText(strName,strName.GetLength(),rcName,DT_SINGLELINE|DT_VCENTER);
         CRect rcItem = rc;
         rcItem.left= rcNameBack.right;
         if(pItem->HasButton()) rcItem.right -= rcItem.Height();

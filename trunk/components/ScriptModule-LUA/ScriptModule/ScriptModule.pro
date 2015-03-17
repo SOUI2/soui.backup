@@ -14,7 +14,7 @@ else{
 
 DEPENDPATH += . exports
 INCLUDEPATH += . \
-			   ../lua-51 \
+			   ../lua-52/src \
 			   ../../../soui/include \
 			   ../../../utilities/include \
 
@@ -24,10 +24,10 @@ include($$dir/common.pri)
 
 
 CONFIG(debug,debug|release){
-	LIBS += lua-51d.lib souid.lib utilitiesd.lib
+	LIBS += lua-52d.lib souid.lib utilitiesd.lib
 }
 else{
-	LIBS += lua-51.lib soui.lib utilities.lib
+	LIBS += lua-52.lib soui.lib utilities.lib
 }
 scriptmodule-lua.depends = utilities soui lua-51
 
