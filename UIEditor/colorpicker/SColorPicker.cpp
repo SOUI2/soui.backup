@@ -6,7 +6,7 @@ namespace SOUI
 
 SColorPicker::SColorPicker(void):m_crDef(RGBA(0,0,0,255)),m_crCur(RGBA(0,0,0,255))
 {
-    GetEventSet()->addEvent(EventColorChange::EventID);
+    GetEventSet()->addEvent(EVENTID(EventColorChange));
 }
 
 SColorPicker::~SColorPicker(void)
