@@ -16,7 +16,8 @@
     <button name="btn_hidetst" pos="300,150,@100,@30" display="0" tip="click me to hide me and see how the next image will move">hide test</button>
     <window skin="skin_page_icons" pos="[5,150,-10,-10" >
       <text pos="|0,|0" offset="-0.5,-0.5" font="adding:20" colorText="#ff000066">alpha test</text>
+      <text pos="5,5" id="100" visible="0">ref text</text>
+      <button pos="sib.left@100:10,sib.bottom@100:10,@100,@25">ref 100</button>
     </window>
-    
   </group>
 </include>
