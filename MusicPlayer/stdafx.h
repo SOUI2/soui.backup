@@ -5,7 +5,8 @@
 
 #pragma once
 
-#define  _CRT_SECURE_NO_WARNINGS
+#include "atlstr.h"
+
 #include <souistd.h>
 #include <core/SHostDialog.h>
 #include <control/SMessageBox.h>
@@ -21,7 +22,6 @@
 
 #include <bass.h>
 
-#include "atlstr.h"//使用CString或其他
 #include "Macro.h"
 #include<map>
 #include <vector>
