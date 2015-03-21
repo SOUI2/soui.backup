@@ -9,7 +9,10 @@
       <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
     </caption>
     <window pos="5,30,-5,-5">
-      <iectrl name="iectrl_demo" pos="0,0,-0,-0" url="www.baidu.com"/>
+      <window pos="0,0,-0,@30">
+        <button name="btn_calljs" pos="0,0,100,-0">call js</button>
+      </window>
+      <iectrl name="iectrl_demo" pos="0,[0,-0,-0" url="www.baidu.com"/>
     </window>
   </root>
 </SOUI>

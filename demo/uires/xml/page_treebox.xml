@@ -1,7 +1,7 @@
 ﻿<include>
   <treebox pos="0,0,-100,-0" name="tb_test" itemHeight="-1" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#cccccc" indent="10">
     <!--itemHeight<=0代表通过EventTBQueryItemHeight事件来获得表项高度-->
-    <item>
+    <item expand="0">
       <window size="full,full" colorBkgnd="#0000ff" alpha="100"/>
       <text pos="10,0,100,-0" valign="middle" align="center" colorText="#ff0000">Group 1</text>
       <text>normal text</text>
@@ -14,7 +14,7 @@
         <button class="normalbtn" pos="300,3,-10,-3" name="btn_in_treebox">button</button>
         <toggle pos="0,5" name="switch" skin="_skin.sys.tree.toggle" tip="show how to use switch"/>
       </item>
-      <item>
+      <item  expand="0">
         <text pos="10,5" colorText="#ff0000">red test</text>
         <text>normal text</text>
         <button class="normalbtn" pos="300,3,-10,-3" name="btn_in_treebox" tip="button">button with tip</button>

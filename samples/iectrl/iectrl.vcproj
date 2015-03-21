@@ -179,6 +179,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SDocHostUIHandler.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\controls.extend\SIECtrl.cpp"
 				>
 			</File>
@@ -213,6 +217,10 @@
 			</File>
 			<File
 				RelativePath=".\resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SDocHostUIHandler.h"
 				>
 			</File>
 			<File
@@ -284,6 +292,11 @@
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
+			>
+		</File>
+		<File
+			RelativePath=".\uires\html\test.htm"
+			DeploymentContent="true"
 			>
 		</File>
 	</Files>
