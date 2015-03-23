@@ -716,6 +716,7 @@ HEADERS += src\gpu\effects\GrYUVtoRGBEffect.h
 SOURCES += src\sfnt\SkOTTable_name.cpp
 SOURCES += src\sfnt\SkOTUtils.cpp
 SOURCES += src\images\SkImageDecoder.cpp
+SOURCES += src\images\SkImageEncoder.cpp
 SOURCES += src\images\SkImageEncoder_Factory.cpp
 HEADERS += include\core\SkAdvancedTypefaceMetrics.h
 HEADERS += include\core\SkBBHFactory.h
