@@ -118,7 +118,7 @@ namespace SOUI
         BOOL bRet = FALSE;
         if(!m_pIE) return FALSE;
         if(!IsVisible(TRUE)) return FALSE;
-
+        if(::GetFocus() == GetContainer()->GetHostHwnd()) return FALSE;
         // give HTML page a chance to translate this message
         SComQIPtr<IOleInPlaceActiveObject> spInPlaceActiveObject(m_pIE);
         if(spInPlaceActiveObject)
