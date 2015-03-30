@@ -14,7 +14,6 @@ BOOL ExpLua_Window(lua_State *L)
 		lua_tinker::class_add<SWindow>(L,"SWindow");
         lua_tinker::class_inh<SWindow,SObject>(L);
 		lua_tinker::class_con<SWindow>(L,lua_tinker::constructor<SWindow>);
-//         lua_tinker::class_def<SWindow>(L,"toSObject",&SWindow::toSObject);
         lua_tinker::class_def<SWindow>(L,"GetContainer",&SWindow::GetContainer);
         lua_tinker::class_def<SWindow>(L,"GetRoot",&SWindow::GetRoot);
         lua_tinker::class_def<SWindow>(L,"GetTopLevelParent",&SWindow::GetTopLevelParent);
