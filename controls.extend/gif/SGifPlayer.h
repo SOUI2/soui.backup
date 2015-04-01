@@ -82,7 +82,7 @@ namespace SOUI
             MSG_WM_DESTROY(OnDestroy)
         SOUI_MSG_MAP_END()	
 
-    private:
+    protected:
         SSkinAni *m_aniSkin;
         int	m_iCurFrame;
         int     m_nNextInterval;
