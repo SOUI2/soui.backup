@@ -172,7 +172,6 @@ SOURCES += src/SApp.cpp \
            src/core/SwndLayout.cpp \
            src/core/SwndLayoutBuilder.cpp \
            src/core/SwndStyle.cpp \
-           src/event/Events.cpp \
            src/event/EventSet.cpp \
            src/helper/DragWnd.cpp \
            src/helper/MemDC.cpp \

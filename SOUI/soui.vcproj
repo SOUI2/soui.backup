@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="soui"
 	ProjectGUID="{E7B5140C-2BFA-320F-A981-BC98D0F5B2C0}"
+	RootNamespace="soui"
 	Keyword="Qt4VSv1.0"
 	TargetFrameworkVersion="0"
 	>
@@ -227,10 +228,6 @@
 			</File>
 			<File
 				RelativePath="src\helper\DragWnd.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\event\Events.cpp"
 				>
 			</File>
 			<File
