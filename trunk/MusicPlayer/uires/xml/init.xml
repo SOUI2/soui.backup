@@ -29,7 +29,7 @@
     <imglist name="_skin.btn.slider.pos" src="PNG:ID_PNG_SLIDER_POS" />
     <imglist name="_skin.btn.slider.thumb" src="PNG:ID_PNG_SLIDER_THUMB" states="4" />
     <imglist name="_skin.btn.vert.line" src="PNG:ID_PNG_VERT_LINE" states="4" />
-    <imglist name="_skin.vscrollbar" src="PNG:ID_PNG_VSCROLLBAR" states="4" />
+    <vscrollbar name="_skin.vscrollbar" src="PNG:ID_PNG_VSCROLLBAR" states="3" margin="4"/>
 
     <imglist name="_skin.btn.my.music" src="PNG:ID_PNG_MY_MUSIC" states="4" />
     <imglist name="_skin.btn.online.music" src="PNG:ID_PNG_ONLINE_MUSIC" states="4" />
