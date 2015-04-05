@@ -5,7 +5,7 @@
 <!-- 联系方式：QQ-1035144170              -->
 
 <include>
-  <window pos="0,0,-1,-0" skin="_skin.shadow.bkg">
+  <window name="win_music" pos="0,0,-1,-0" skin="_skin.shadow.bkg">
     <!--<imgbtn name="btn_TEST" skin="_skin.sys.btn.restore" pos="-121,0" animate="1" />-->
     <text pos="10,5" colorText="#ff0000">音乐列表</text>
     <text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#ff0000">本地音乐</text>
