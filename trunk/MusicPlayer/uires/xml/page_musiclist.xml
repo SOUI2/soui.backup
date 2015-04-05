@@ -8,10 +8,36 @@
   <window pos="0,0,-1,-0" skin="_skin.shadow.bkg">
     <!--<imgbtn name="btn_TEST" skin="_skin.sys.btn.restore" pos="-121,0" animate="1" />-->
     <text pos="10,5" colorText="#ff0000">音乐列表</text>
-    <text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#ff0000">在线音乐</text>
+    <text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#ff0000">本地音乐</text>
 
     <!-- SOUI的treebox实现音乐列表 -->
-    <treebox pos="5,50,-5,-50" name="music_tree_box" itemHeight="60" colorItemBkgnd="#6E96C8" colorItemSelBkgnd="#065DED" indent="10" vscrollBar="1" sbSkin="_skin.vscrollbar" autoVscroll="1" hscrollBar="0">
+    <!--<treebox pos="5,50,-5,-50" name="music_tree_box" itemHeight="60" colorItemBkgnd="#6E96C8" colorItemSelBkgnd="#065DED" indent="10" vscrollBar="1" sbSkin="_skin.vscrollbar" autoVscroll="1" hscrollBar="0">
+      <item>
+        <img skin="_skin.logo.skin" pos="5,5,55,55" />
+        <text pos="70,5, " valign="middle" align="left" colorText="#CDD7E1" >歌曲：BEYOND - 不再犹豫</text>
+        <text pos="70,20 " valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
+        <text pos="70,35 " valign="middle" align="left" colorText="#CDD7E1" >时长：05:01 </text>
+        --><!--交流群:229313785--><!--
+      </item>
+
+      <item check="1">
+        <img skin="_skin.spectrum" pos="5,5,55,55" />
+        <text pos="70,5"  valign="middle" align="left" colorText="#CDD7E1" >歌曲：本兮 - 寂夜</text>
+        <text pos="70,20" valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
+        <text pos="70,35" valign="middle" align="left" colorText="#CDD7E1" >时长：03:39 </text>
+      </item>
+
+      <item>
+        <img skin="_skin.logo.skin" pos="5,5,55,55" />
+        <text pos="70,5  " valign="middle" align="left" colorText="#CDD7E1" >歌曲：刘德华 - 暗里着迷 (粤)</text>
+        <text pos="70,20 " valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
+        <text pos="70,35 " valign="middle" align="left" colorText="#CDD7E1" >时长：04:50 QQ:1035144170 </text>
+      </item>
+    </treebox>-->
+
+    <!-- SOUI的listboxex实现音乐列表 -->
+    <listboxex name="music_lbe" pos="5,50,-5,-50" itemHeight="60" vscrollBar="1" sbSkin="_skin.vscrollbar" autoVscroll="1" hscrollBar="0" class="cls_edit">
+      <items>
       <item>
         <img skin="_skin.logo.skin" pos="5,5,55,55" />
         <text pos="70,5, " valign="middle" align="left" colorText="#CDD7E1" >歌曲：BEYOND - 不再犹豫</text>
@@ -33,7 +59,9 @@
         <text pos="70,20 " valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
         <text pos="70,35 " valign="middle" align="left" colorText="#CDD7E1" >时长：04:50 QQ:1035144170 </text>
       </item>
-    </treebox>
+      </items>
+    </listboxex>
+    
     <!--<text name="play_title" pos="15,-35" colorText="#000000" font="underline:1">当前播放: 无 </text>-->
     <scrolltext name="play_title" show="1" pos="{90,[10,@200,@30" colorText="#ff0000" speed="10">Pay attention! apng would be played only if imgdecoder-png is used here!</scrolltext>
   </window>
