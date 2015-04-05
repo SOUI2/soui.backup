@@ -76,7 +76,7 @@ void CMusicOpreat::OnButPrev()         // ÉÏÒ»Çú
 	m_pBassMusic->Stop(hStream);
 
 	nIndex--;
-	if (nIndex<=0)
+	if (nIndex<0)
 	{
 		nIndex=m_MusicManager.size()-1;
 	}
