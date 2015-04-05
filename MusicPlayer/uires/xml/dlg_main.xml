@@ -1,6 +1,6 @@
 ﻿<!-- 功    能：使用SOUI自主设计音乐播放器 -->
 <!-- 作    者：小可                       -->
-<!-- 添加时间：2014.01.09 17：00          -->
+<!-- 添加时间：2015.01.09 17：00          -->
 <!-- 版本类型：初始版本                   -->
 <!-- 联系方式：QQ-1035144170              -->
 
@@ -189,10 +189,11 @@
         <imgbtn name="btn_play_mode" skin="_skin.btn.play.mode" pos="-114,25" animate="1" />
         <imgbtn name="btn_playing_list" skin="_skin.btn.playing.list" pos="-60,25" animate="1" />-->
 
+        <text name="text_time" pos="|0,15" pos2type="center" colorText="#CDD7E1">00:00/00:00</text>
         <!-- 使用控件：SOUI的Progress控件的使用          -->
         <!--progress name="prog_test" pos="175,25,-252,115" value="20" min="0" max="100" showPercent="1" thumbSkin="_skin.btn.slider.thumb"/>-->
         <!-- 使用控件：SOUI的Sliderbar控件的使用         -->
-        <sliderbar name="slider_test" pos="70,30" alpha="200" width="250" value="0" min="0" max="100" showpercent="1" posSkin="_skin.btn.slider.pos" bkgndSkin="_skin.btn.slider.bkg" thumbSkin="_skin.btn.slider.thumb" tile="1"/>
+        <sliderbar name="slider_test" pos="70,30" alpha="200" width="250" value="0" min="0" max="1000" showpercent="1" posSkin="_skin.btn.slider.pos" bkgndSkin="_skin.btn.slider.bkg" thumbSkin="_skin.btn.slider.thumb" tile="1"/>
         <!-- 属性tile="1"平铺progressbar的前景图         -->
         <!--<imgbtn name="btn_voume" skin="_skin.btn.volume" pos="-242,26" animate="1" />
         <imgbtn name="btn_lyric" skin="_skin.btn.lyric" pos="-188,24" animate="1" />

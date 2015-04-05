@@ -18,6 +18,8 @@
 #include "../controls.extend/trayicon/SShellNotifyIcon.h"
 #include "../controls.extend/STurn3DView.h"
 #include "../controls.extend/SFlyWnd.h"
+#include "../controls.extend/SScrollText.h"
+#include "../controls.extend/SVscrollbar.h"
 
 
 #include <bass.h>
