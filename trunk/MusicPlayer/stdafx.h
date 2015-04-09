@@ -20,8 +20,10 @@
 #include "../controls.extend/SFlyWnd.h"
 #include "../controls.extend/SScrollText.h"
 #include "../controls.extend/SVscrollbar.h"
+#include "../controls.extend/SFadeFrame.h"
 
 
+#include "SScrollLrc.h"
 #include <bass.h>
 
 #include "Macro.h"
