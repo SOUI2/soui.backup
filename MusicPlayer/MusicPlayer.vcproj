@@ -237,6 +237,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\LrcDowl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\LrcParse.cpp"
+				>
+			</File>
+			<File
 				RelativePath="MainDlg.cpp"
 				>
 			</File>
@@ -249,7 +257,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SFadeFrame.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\sflywnd.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SScrollLrc.cpp"
 				>
 			</File>
 			<File
@@ -291,6 +307,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\LrcDowl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\LrcParse.h"
+				>
+			</File>
+			<File
 				RelativePath="Macro.h"
 				>
 			</File>
@@ -311,7 +335,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SAnimator.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\SFadeFrame.h"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\sflywnd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SScrollLrc.h"
 				>
 			</File>
 			<File

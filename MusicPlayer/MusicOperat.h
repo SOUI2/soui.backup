@@ -9,6 +9,9 @@
 #pragma once
 #include "DropEx.h"
 #include "BassMusic.h"
+#include "LrcParse.h"
+#include "LrcDowl.h"
+
 
 //通知消息ID
 #define MSG_USER_REDRAW	(WM_USER+2000)

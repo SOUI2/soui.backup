@@ -17,6 +17,10 @@ CMusicOpreat::CMusicOpreat(HWND m_PWnd)
 	m_pBassMusic=NULL;
 	m_pMainState=NULL;
 
+	//≤‚ ‘£∫
+	CLrcParse lrcPar;
+	lrcPar.ReadFile("");
+
 }
 
 CMusicOpreat::~CMusicOpreat(void)
