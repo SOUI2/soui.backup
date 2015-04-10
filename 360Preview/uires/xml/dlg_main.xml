@@ -1,0 +1,15 @@
+﻿<SOUI name="mainWindow" title="%title%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="680" height="370"  margin="20,5,5,5"  resizable="1" appWnd="1" translucent="1" alpha="255">
+  <root cache="1">
+   <viewswitch name="vw_switch" pos="1,3,-1,-1" skinlightlevel="skin_bg_light_level"   skin="skin_bg_main" skin1="skin_bg_softmgr" skin2="skin_bg_desktop" skin3="skin_bg_diagnoscan" skin4="skin_bg_guard" skin5="skin_bg_ucenter" skin6="skin_bg_shishihaohu" >
+     <caption pos="0,0,-0,30">
+       <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-40,2" tip="close" animate="1"/>
+     </caption>
+     
+     <toolbox name="btn_desktop" skin="skin_bg_toolbox" icon="skin_ico_desktop" text="360安全桌面" pos="8,-50" animate="1"></toolbox>
+     <toolbox name="btn_ucenter" skin="skin_bg_toolbox" icon="skin_ico_ucenter" text="个人中心" pos="[90,-50" offset="-0.5,0" animate="1"></toolbox>
+     <toolbox name="btn_guard" skin="skin_bg_toolbox" icon="skin_ico_guard" text="木马防火墙" pos="[90,-50" offset="-0.5,0" animate="1"></toolbox>
+     <toolbox name="btn_diagnosescan" skin="skin_bg_toolbox" icon="skin_ico_diagnosescan" text="电脑门诊" pos="[90,-50" offset="-0.5,0" animate="1"></toolbox>
+  </viewswitch>
+
+      </root>
+</SOUI>

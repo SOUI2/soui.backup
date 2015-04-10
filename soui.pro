@@ -14,6 +14,7 @@ SUBDIRS += SoSmiley
 SUBDIRS += demo
 SUBDIRS += qqlogin
 SUBDIRS += 360
+SUBDIRS += 360Preview
 SUBDIRS += souispy
 SUBDIRS += MusicPlayer
 SUBDIRS += PcManager
@@ -22,6 +23,7 @@ SUBDIRS += SoTool
 soui.depends += utilities
 
 360.depends += utilities soui
+360Preview.depends += utilities soui
 demo.depends += utilities soui SoSmiley
 qqlogin.depends += utilities soui
 souispy.depends += utilities soui
