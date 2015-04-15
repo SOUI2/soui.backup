@@ -125,6 +125,8 @@ protected:
     
     void OnBtnFileWnd();
 
+    void OnUrlReNotify(EventArgs *pEvt);
+
     //UI控件的事件及响应函数映射表
 	EVENT_MAP_BEGIN()
 		EVENT_ID_COMMAND(1, OnClose)
@@ -152,6 +154,7 @@ protected:
         EVENT_ID_COMMAND_RANGE(10000,10005,OnTabPageRadioSwitch)    //10000-10005是XML中定义的radio2的ID
         EVENT_NAME_HANDLER(L"chromeTab",EVT_CHROMETAB_NEW,OnChromeTabNew)
         EVENT_NAME_COMMAND(L"btn_filewnd",OnBtnFileWnd)
+        EVENT_NAME_HANDLER(L"edit_url",EVT_RE_NOTIFY,OnUrlReNotify)
 	EVENT_MAP_END()	
 
     //HOST消息及响应函数映射表
