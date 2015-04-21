@@ -5,7 +5,6 @@ namespace SOUI
 {
     SMCTreeCtrl::SMCTreeCtrl():m_nTreeWidth(100),m_nItemWid(-1)
     {
-        m_evtSet.addEvent(EVENTID(EventScroll));
     }
 
     SMCTreeCtrl::~SMCTreeCtrl()
@@ -41,18 +40,6 @@ namespace SOUI
                 m_nItemWid += m_arrColWidth[i];
         }
         return m_nItemWid;
-    }
-    
-    BOOL SMCTreeCtrl::OnScroll(BOOL bVertical,UINT uCode,int nPos)
-    {
-        BOOL bRet = STreeCtrl::OnScroll(bVertical,uCode,nPos);
-        if(!bRet) return FALSE;
-        EventScroll evt(this);
-        evt.bVertical = bVertical;
-        evt.uSbCode = uCode;
-        evt.nPos = nPos;
-        FireEvent(evt);
-        return TRUE;
     }
 
     int SMCTreeCtrl::InsertColumn(int iCol,int nWid)
