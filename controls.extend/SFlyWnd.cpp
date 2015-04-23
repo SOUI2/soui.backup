@@ -15,7 +15,7 @@ namespace SOUI
     {
     }
 
-    const SwndLayout * SFlyWnd::GetLayout() const
+    SwndLayout * SFlyWnd::GetLayout()
     {
         if(m_bEndPos) return &m_endLayout;
         else return SWindow::GetLayout();
@@ -26,7 +26,7 @@ namespace SOUI
         if(!m_endLayout.InitPosFromString(strValue)) return E_FAIL;
         if(bLoading && m_bEndPos && GetParent())
         {
-            GetParent()->UpdateChildrenPosition();
+            GetParent()->UpdateChildrenPosition(FALSE);
         }
         return S_FALSE;
     }

@@ -38,7 +38,7 @@ namespace SOUI
         BOOL SwitchState(BOOL bEndPos);
         BOOL IsAtEndPos() const;
     protected:
-        virtual const SwndLayout * GetLayout() const;
+        virtual SwndLayout * GetLayout();
         virtual BOOL CreateChildren(pugi::xml_node xmlNode);
         virtual void OnRelayout(const CRect &rcOld, const CRect & rcNew);
 
