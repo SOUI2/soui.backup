@@ -26,7 +26,7 @@ namespace SOUI
         if(!m_endLayout.InitPosFromString(strValue)) return E_FAIL;
         if(bLoading && m_bEndPos && GetParent())
         {
-            GetParent()->UpdateChildrenPosition(FALSE);
+            GetParent()->UpdateChildrenPosition();
         }
         return S_FALSE;
     }
