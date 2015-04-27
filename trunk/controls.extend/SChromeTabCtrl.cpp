@@ -125,6 +125,7 @@ namespace SOUI
     ,m_tabAlign(TDIR_HORZ)
     ,m_nDesiredSize(200)
     ,m_bEnableDrag(TRUE)
+    ,m_pBtnNew(NULL)
     {
         m_evtSet.addEvent(EVENTID(EventChromeTabNew));
         m_evtSet.addEvent(EVENTID(EventChromeTabClose));
