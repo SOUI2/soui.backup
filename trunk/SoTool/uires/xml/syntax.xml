@@ -7,6 +7,7 @@
     <filetype type="C++源文件" ext="cpp" singleLineRemark="//" multiLinesRemarkBegin="/*" multiLinesRemarkEnd="*/"/>
     <filetype type="CC源文件" ext="cc" singleLineRemark="//" multiLinesRemarkBegin="/*" multiLinesRemarkEnd="*/"/>
     <filetype type="资源文件" ext="rc" singleLineRemark="//" multiLinesRemarkBegin="/*" multiLinesRemarkEnd="*/"/>
+    <filetype type="java源文件" ext="java" singleLineRemark="//" multiLinesRemarkBegin="/*" multiLinesRemarkEnd="*/"/>
 
     <filetype type="XML文件" ext="xml" singleLineRemark="" multiLinesRemarkBegin="&lt;!--" multiLinesRemarkEnd="--&gt;"/>
 
@@ -17,5 +18,7 @@
     <language name="C/C++" exts="c;h;hpp;cpp;cc;rc"/>
     <language name="XML" exts="xml"/>
     <language name="LUA" exts="lua"/>
+    <language name="java" exts="java" />
+
   </languages>
 </config>
