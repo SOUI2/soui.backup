@@ -109,6 +109,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua-52", "components\ScriptModule-LUA\lua-52\lua-52.vcproj", "{9B5585FF-E2F4-37FD-AC83-3B23CF61873C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "360Preview", "360Preview\360Preview.vcproj", "{A6E02C40-2AD4-3919-8B68-26228414DFC3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E7B5140C-2BFA-320F-A981-BC98D0F5B2C0} = {E7B5140C-2BFA-320F-A981-BC98D0F5B2C0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
