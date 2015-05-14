@@ -54,7 +54,8 @@ HEADERS += MainDlg.h \
            httpsvr/httpserver.h \
            memflash.h \
 		   uianimation/uianimation.h \
-		   uianimation/uianimationwnd.h
+		   uianimation/uianimationwnd.h\
+		   appledock/sdesktopdock.h
 		   
 SOURCES += demo.cpp \
            MainDlg.cpp \
@@ -85,7 +86,8 @@ SOURCES += demo.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \
            memflash.cpp	\
-		   uianimation/uianimationwnd.cpp
-
+		   uianimation/uianimationwnd.cpp \
+			appledock/sdesktopdock.cpp
+			
 RC_FILE += demo.rc
 
