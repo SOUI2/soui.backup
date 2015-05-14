@@ -265,6 +265,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\appledock\SDesktopDock.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\sfadeframe.cpp"
 				>
 			</File>
@@ -400,6 +404,10 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\SChromeTabCtrl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\appledock\SDesktopDock.h"
 				>
 			</File>
 			<File

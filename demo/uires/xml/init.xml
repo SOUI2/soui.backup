@@ -58,6 +58,19 @@
     <gif name="gif_horse" src="img.game:gif_horse"/>
     <gif name="gif_win" src="img.game:gif_win"/>
     <imglist name="img_coin" src="img.game:img_coin"/>
+
+
+    <imglist name="skin_dock_bg" src="img.dock:PNG_MAINBK"/>
+    <imglist name="skin_png_icon_1" src="img.dock:PNG_ICON_1"/>
+    <imglist name="skin_png_icon_2" src="img.dock:PNG_ICON_2"/>
+    <imglist name="skin_png_icon_3" src="img.dock:PNG_ICON_3"/>
+    <imglist name="skin_png_icon_4" src="img.dock:PNG_ICON_4"/>
+    <imglist name="skin_png_icon_5" src="img.dock:PNG_ICON_5"/>
+    <imglist name="skin_png_icon_6" src="img.dock:PNG_ICON_6"/>
+    <imglist name="skin_png_icon_7" src="img.dock:PNG_ICON_7"/>
+    <imglist name="skin_png_icon_8" src="img.dock:PNG_ICON_8"/>
+    <imglist name="skin_png_icon_9" src="img.dock:PNG_ICON_9"/>
+    <imglist name="skin_png_icon_10" src="img.dock:PNG_ICON_10"/>
   </skin>
 
   <style>
