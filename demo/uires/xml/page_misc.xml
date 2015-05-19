@@ -48,7 +48,7 @@
       <iectrl size="full,full" url="http://www.baidu.com"/>
     </page>
     <page title="calendar2">
-      <calendar2 pos="2,2,205,201" name="mp_test" headerSkin="skin_btn_curve" titleSkin="skin_btn_curve" footerSkin="skin_btn_semiarc" daySkin="skin_png_radio_button" colorBorder="RGB(27,55,108)" footerHeight="30" preMonSkin="cal_arrow_left" nextMonSkin="cal_arrow_right"  prevYearSkin="cal_arrow_left" nextYearSkin="cal_arrow_right" sepMonYearSkin="skin_png_line_1px" MonYearSkin="skin_png_radio_button" bkgSkin="" headerTxtColor="#000000FF">
+      <calendar2 pos="0,0,-0,-0" name="mp_test" hasLunar="1" headerSkin="skin_btn_curve" titleSkin="skin_btn_curve" footerSkin="skin_btn_semiarc" daySkin="skin_png_radio_button" colorBorder="RGB(237,243,247)" footerHeight="30" preMonSkin="cal_arrow_left" nextMonSkin="cal_arrow_right"  prevYearSkin="cal_arrow_left" nextYearSkin="cal_arrow_right" sepMonYearSkin="skin_png_line_1px" MonYearSkin="skin_png_radio_button" bkgSkin="" headerTxtColor="#000000FF">
         <button name="btn_today" pos="-60,-25,-5,-0" skin="cal_btn_day" font="bold:1" >Today</button>
       </calendar2>
     </page>
