@@ -19,6 +19,7 @@ CSoSmileyCtrl::CSoSmileyCtrl():m_iFrameIndex(0),m_dwDrawFlag(0)
 {
     m_dwID = _GenerateID();
     memset(&m_rcPos,0,sizeof(RECT));
+	m_bRecomposeOnResize=1;
 }
 
 CSoSmileyCtrl::~CSoSmileyCtrl()
