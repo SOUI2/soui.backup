@@ -271,6 +271,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\core\SCaret.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\control\SCmnCtrl.cpp"
 				>
 			</File>
@@ -574,6 +578,10 @@
 			</File>
 			<File
 				RelativePath="include\control\SCaption.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\core\SCaret.h"
 				>
 			</File>
 			<File

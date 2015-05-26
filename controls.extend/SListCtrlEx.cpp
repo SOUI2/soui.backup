@@ -870,7 +870,7 @@ lblEnd:
 
 	void SListCtrlEx::OnViewOriginChanged( CPoint ptOld,CPoint ptNew )
 	{
-		if(m_iSelItem!=-1 && GetContainer()->SwndGetFocus()==m_swnd)
+		if(m_iSelItem!=-1 && GetContainer()->GetFocus()==m_swnd)
 		{//这里需要重新设置一下选中行的焦点状态来更新光标位置
 			m_arrItems[m_iSelItem]->DoFrameEvent(WM_KILLFOCUS,0,0);
 			m_arrItems[m_iSelItem]->DoFrameEvent(WM_SETFOCUS,0,0);

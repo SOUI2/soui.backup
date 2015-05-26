@@ -85,6 +85,7 @@ HEADERS += include/SApp.h \
            include/core/SwndLayout.h \
            include/core/SwndLayoutBuilder.h \
            include/core/SwndStyle.h \
+           include/core/scaret.h \
            include/event/eventcrack.h \
            include/event/Events.h \
            include/event/EventSet.h \
@@ -172,6 +173,7 @@ SOURCES += src/SApp.cpp \
            src/core/SwndLayout.cpp \
            src/core/SwndLayoutBuilder.cpp \
            src/core/SwndStyle.cpp \
+           src/core/scaret.cpp \
            src/event/EventSet.cpp \
            src/helper/DragWnd.cpp \
            src/helper/MemDC.cpp \
