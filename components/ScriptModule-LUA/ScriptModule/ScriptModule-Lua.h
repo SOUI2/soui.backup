@@ -40,9 +40,9 @@ namespace SOUI
         virtual HRESULT CreateScriptModule(IScriptModule ** ppScriptModule);
     };
 
+	namespace SCRIPT_LUA
+	{
+		SOUI_COM_C BOOL SOUI_COM_API SCreateInstance(IObjRef ** ppScript);
+	}
 }
 
-namespace SCRIPT_LUA
-{
-    SOUI_COM_C BOOL SOUI_COM_API SCreateInstance(IObjRef ** ppScript);
-}

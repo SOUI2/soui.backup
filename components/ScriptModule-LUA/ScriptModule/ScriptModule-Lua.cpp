@@ -148,14 +148,15 @@ namespace SOUI
         *ppScriptModule= new SOUI::SScriptModule_Lua;
         return S_OK;
     }
+
+	namespace SCRIPT_LUA
+	{
+		BOOL SCreateInstance(IObjRef ** ppScript)
+		{
+			*ppScript= new SOUI::SIScriptFactory;
+			return TRUE;
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
-namespace SCRIPT_LUA
-{
-    BOOL SCreateInstance(IObjRef ** ppScript)
-    {
-        *ppScript= new SOUI::SIScriptFactory;
-        return TRUE;
-    }
-}
