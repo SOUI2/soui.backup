@@ -41,8 +41,10 @@ HEADERS += MainDlg.h \
            ../controls.extend/image3d/3dTransform.h \
            ../controls.extend/image3d/PerspectiveTransform.h \
 		   ../controls.extend/trayicon/SShellNotifyIcon.h \
-		   ../controls.extend/sflywnd.h
-
+		   ../controls.extend/sflywnd.h \
+		   ../controls.extend/sfadeframe.h \
+		   ../controls.extend/sscrolltext.h
+		   
 SOURCES += MainDlg.cpp \
            BassMusic.cpp \
 		   MusicPlayer.cpp \
@@ -52,6 +54,8 @@ SOURCES += MainDlg.cpp \
            ../controls.extend/image3d/3dmatrix.cpp \
            ../controls.extend/image3d/3dtransform.cpp \
  		   ../controls.extend/trayicon/SShellNotifyIcon.cpp \
-		   ../controls.extend/sflywnd.cpp
+		   ../controls.extend/sflywnd.cpp \
+		   ../controls.extend/sfadeframe.cpp \
+		   ../controls.extend/sscrolltext.cpp
           
 RC_FILE += musicplayer.rc
