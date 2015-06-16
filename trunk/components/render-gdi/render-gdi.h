@@ -212,6 +212,7 @@ namespace SOUI
     //	SRegion_GDI
     class SRegion_GDI: public TGdiRenderObjImpl<IRegion>
     {
+    friend class SRenderTarget_GDI;
     public:
         SRegion_GDI(IRenderFactory *pRenderFac);
         ~SRegion_GDI(){
@@ -219,6 +220,9 @@ namespace SOUI
         }
 
         virtual void CombineRect(LPCRECT lprect,int nCombineMode);
+        virtual void CombineRgn(const IRegion * pRgnSrc,int nCombineMode );
+        virtual void SetRgn(const HRGN rgn);
+
         virtual BOOL PtInRegion(POINT pt);
         virtual BOOL RectInRegion(LPCRECT lprect);
         virtual void GetRgnBox(LPRECT lprect);
@@ -226,10 +230,10 @@ namespace SOUI
         virtual void Offset(POINT pt);
         virtual void Clear();
 
-        HRGN GetRegion() const;
-
-        void SetRegion(const HRGN rgn);
     protected:
+        HRGN GetRegion() const;
+        void _CombineRgn(HRGN hRgn,int nCombineMode);
+        
         HRGN    m_hRgn;
     };
 

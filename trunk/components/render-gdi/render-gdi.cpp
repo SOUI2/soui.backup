@@ -181,6 +181,20 @@ namespace SOUI
     void SRegion_GDI::CombineRect( LPCRECT lprect,int nCombineMode )
     {
         HRGN hRgn=::CreateRectRgnIndirect(lprect);
+        _CombineRgn(hRgn,nCombineMode);
+        DeleteObject(hRgn);
+    }
+
+    void SRegion_GDI::CombineRgn(const IRegion * pRgnSrc,int nCombineMode)
+    {
+        const SRegion_GDI *pRgnSrcGdi = (const SRegion_GDI*)pRgnSrc;
+        HRGN hRgn = pRgnSrcGdi->GetRegion();
+        _CombineRgn(hRgn,nCombineMode);
+    }
+
+
+    void SRegion_GDI::_CombineRgn(HRGN hRgn,int nCombineMode)
+    {
         if(nCombineMode == RGN_DIFF)
         {
             ::CombineRgn(m_hRgn,m_hRgn,hRgn,RGN_DIFF);
@@ -188,7 +202,7 @@ namespace SOUI
         {
             ::CombineRgn(m_hRgn,hRgn,m_hRgn,nCombineMode);
         }
-        DeleteObject(hRgn);
+
     }
 
     BOOL SRegion_GDI::PtInRegion( POINT pt )
@@ -225,7 +239,7 @@ namespace SOUI
         return m_hRgn;
     }
 
-    void SRegion_GDI::SetRegion( const HRGN  rgn )
+    void SRegion_GDI::SetRgn( const HRGN  rgn )
     {
         ::CombineRgn(m_hRgn,rgn,NULL,RGN_COPY);
     }
@@ -234,7 +248,7 @@ namespace SOUI
     {
         ::SetRectRgn(m_hRgn,0,0,0,0);
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     //  DCBuffer
     //////////////////////////////////////////////////////////////////////////

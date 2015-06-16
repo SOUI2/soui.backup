@@ -62,5 +62,8 @@
         <text pos="|0,|0" offset="-0.5,-0.5" font="font:黑体,bold:2,adding:20" colorText="#ff000066">多点桌面 dock演示 </text>
       </deskdock>
     </page>
+    <page title="SetWindowRgn">
+      <window name="wnd_rgn" pos="|0,|0,@100,@50" offset="-0.5,-0.5" colorBkgnd="#ff000088" cursor="hand">Region</window>
+    </page>
   </tabctrl>
 </include>
