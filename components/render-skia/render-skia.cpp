@@ -1106,6 +1106,31 @@ namespace SOUI
         m_rgn.op(toSkIRect(lprect),RGNMODE2SkRgnOP(nCombineMode));
 	}
 
+    void SRegion_Skia::CombineRgn(const IRegion * pRgnSrc,int nCombineMode)
+    {
+        const SRegion_Skia * pRgnSrc2 = (const SRegion_Skia*)pRgnSrc;
+        m_rgn.op(pRgnSrc2->GetRegion(),RGNMODE2SkRgnOP(nCombineMode));
+    }
+
+    void SRegion_Skia::SetRgn(const HRGN hRgn)
+    {
+        DWORD dwSize = GetRegionData(hRgn,0,NULL);
+        RGNDATA *pData = (RGNDATA*)malloc(dwSize);
+        GetRegionData(hRgn,dwSize,pData);
+        SkIRect *pRcs= new SkIRect[pData->rdh.nCount];
+        LPRECT pRcsSrc = (LPRECT)pData->Buffer;
+        for(int i = 0 ;i< pData->rdh.nCount;i++)
+        {
+            pRcs[i].fLeft = pRcsSrc[i].left;
+            pRcs[i].fTop = pRcsSrc[i].top;
+            pRcs[i].fRight = pRcsSrc[i].right;
+            pRcs[i].fBottom = pRcsSrc[i].bottom;
+        }
+        m_rgn.setRects(pRcs,pData->rdh.nCount);
+        free(pData);
+        delete []pRcs;
+    }
+    
 	BOOL SRegion_Skia::PtInRegion( POINT pt )
 	{
         return m_rgn.contains(pt.x,pt.y);
@@ -1166,6 +1191,7 @@ namespace SOUI
     {
         m_rgn.setEmpty();
     }
+
 
     //////////////////////////////////////////////////////////////////////////
     // SFont_Skia

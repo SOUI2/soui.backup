@@ -199,6 +199,8 @@ namespace SOUI
         virtual ~SRegion_Skia();
 
 		virtual void CombineRect(LPCRECT lprect,int nCombineMode);
+        virtual void CombineRgn(const IRegion * pRgnSrc,int nCombineMode );
+        virtual void SetRgn(const HRGN hRgn);
 		virtual BOOL PtInRegion(POINT pt);
 		virtual BOOL RectInRegion(LPCRECT lprect);
 		virtual void GetRgnBox(LPRECT lprect);

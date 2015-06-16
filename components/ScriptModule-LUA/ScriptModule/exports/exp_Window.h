@@ -27,8 +27,8 @@ BOOL ExpLua_Window(lua_State *L)
 		lua_tinker::class_def<SWindow>(L,"GetTextAlign",&SWindow::GetTextAlign);
 		lua_tinker::class_def<SWindow>(L,"GetWindowRect",(void (SWindow::*)(LPRECT))&SWindow::GetWindowRect);
         lua_tinker::class_def<SWindow>(L,"GetWindowRect2",(CRect (SWindow::*)())&SWindow::GetWindowRect);
-		lua_tinker::class_def<SWindow>(L,"GetClientRect",(void (SWindow::*)(LPRECT))&SWindow::GetClientRect);
-        lua_tinker::class_def<SWindow>(L,"GetClientRect2",(CRect (SWindow::*)())&SWindow::GetClientRect);
+		lua_tinker::class_def<SWindow>(L,"GetClientRect",(void (SWindow::*)(LPRECT)const)&SWindow::GetClientRect);
+        lua_tinker::class_def<SWindow>(L,"GetClientRect2",(CRect (SWindow::*)()const)&SWindow::GetClientRect);
 		lua_tinker::class_def<SWindow>(L,"GetWindowText",&SWindow::GetWindowText);
 		lua_tinker::class_def<SWindow>(L,"SetWindowText",&SWindow::SetWindowText);
 		lua_tinker::class_def<SWindow>(L,"SendSwndMessage",&SWindow::SSendMessage);
@@ -57,6 +57,8 @@ BOOL ExpLua_Window(lua_State *L)
         lua_tinker::class_def<SWindow>(L,"FireCommand",&SWindow::FireCommand);
         lua_tinker::class_def<SWindow>(L,"GetDesiredSize",&SWindow::GetDesiredSize);
         lua_tinker::class_def<SWindow>(L,"GetWindow",&SWindow::GetWindow);
+        lua_tinker::class_def<SWindow>(L,"SetWindowRgn",&SWindow::SetWindowRgn);
+        lua_tinker::class_def<SWindow>(L,"GetWindowRgn",&SWindow::GetWindowRgn);
 
 		return TRUE;
 	}catch(...)
