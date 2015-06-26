@@ -50,7 +50,7 @@
     <file name="png_chrome_tab_close" path="image\chromeTabClose.png"/>
 	
 	  <file name="png_lcex_header" path="image\lcex_header.png"/>
-	  <file name="png_lcex_header_arrow" path="image\lcex_headerarrow.png"/>
+	  <file name="png_lcex_header_arrow" path="image\lcex_header_arrow.png"/>
 	  <file name="png_lcex_selectrange" path="image\lcex_selectrange.png"/>
 	  <file name="png_icon1" path="image\icon\1.png"/>
 	  <file name="png_icon2" path="image\icon\2.png"/>
