@@ -6,4 +6,6 @@
     <icon pos="%25,5" offset="-0.5,0" src="logo:32"/>
     <icon pos="%75,{0" offset="-0.5,0" src="logo:32"/>
   </window>
+  <imageMask pos="{0,[10,@100,@100" skin="skin_avatar" mask="imgx:png_mask.g"/>
+  <text pos="{0,[10">image mask</text>
 </include>

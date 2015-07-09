@@ -62,6 +62,8 @@
 	  <file name="png_star1" path="image\icon\star_green.png"/>
 	  <file name="png_star2" path="image\icon\star_yellow.png"/>
 	  <file name="png_install" path="image\icon\button_install.png"/>
+    <file name="png_mask" path="image\mask.png"/>
+    <file name="png_avatar" path="image\avatar.png"/>
   </IMGX> 
   <img.calendar2>
     <file name="png_skin_btn_semiarc" path="img.calendar2\skin_btn_semiarc.png"/>

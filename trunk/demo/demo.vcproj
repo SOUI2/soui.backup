@@ -285,6 +285,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SImageMaskWnd.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\sipaddressctrl.cpp"
 				>
 			</File>
@@ -427,6 +431,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SImageMaskWnd.h"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\sipaddressctrl.h"
 				>
 			</File>
@@ -535,6 +543,10 @@
 		</Filter>
 		<File
 			RelativePath="demo.rc"
+			>
+		</File>
+		<File
+			RelativePath=".\uires\image\mask.png"
 			>
 		</File>
 		<File
