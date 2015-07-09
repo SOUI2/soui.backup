@@ -58,7 +58,7 @@
     <gif name="gif_horse" src="img.game:gif_horse"/>
     <gif name="gif_win" src="img.game:gif_win"/>
     <imglist name="img_coin" src="img.game:img_coin"/>
-
+    <imglist name="skin_avatar" src="imgx:png_avatar"/>
 
     <imglist name="skin_dock_bg" src="img.dock:PNG_MAINBK"/>
     <imglist name="skin_png_icon_1" src="img.dock:PNG_ICON_1"/>

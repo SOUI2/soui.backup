@@ -665,6 +665,9 @@ namespace SOUI
         case OT_BITMAP: 
             pRet=m_curBmp;
             m_curBmp=(SBitmap_Skia*)pObj;
+            //重新生成clip
+            delete m_SkCanvas;
+            m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
             break;
         case OT_PEN:
             pRet=m_curPen;
