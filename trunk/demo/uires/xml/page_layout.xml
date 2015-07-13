@@ -19,5 +19,10 @@
       <text pos="5,5" id="100" visible="0">ref text</text>
       <button pos="sib.left@100:10,sib.bottom@100:10,@100,@25">ref 100</button>
     </window>
+
+    <window pos="10,300" colorBkgnd="#cccccc">
+      <text pos="5,5" >child1</text>
+      <text pos="-30,20" offset="-1,0" multilines="1">parent position is determined by childs\npos="-30,60" offset="-1,-1"</text>
+    </window>
   </group>
 </include>
