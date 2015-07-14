@@ -1,0 +1,61 @@
+﻿<include>
+  <!--login settings-->
+  <window name="set_form" pos="0,0,-0,-0" colorBkgnd="#008888">
+    <caption pos="5,5,-5,34">
+      <!-- <img skin="login_set_title" pos="10,7" /> -->
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-40,0" tip="close" animate="1"/>
+      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-75,0" animate="1" />
+    </caption>
+    <window pos="5,35,-5,-42">
+      <text pos="15,15">网络设置</text>
+
+      <text pos="20,42">类型：</text>
+      <combobox name="net_cfg_type_cmb" pos="53,38,160,62" class="cls_edit" dropDown="1" dropHeight="200" dotted="0" curSel="0" >
+        <liststyle class="cls_edit"   itemHeight="20" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#3991D1" colorBkgnd="#70BCDC"/>
+        <editstyle inset="5,0,5,0" vcenter="1" colorText="000000" align="left" colorBkgnd="FFFFFF" />
+        <items>
+          <item text=" 不使用代理"  data="100"/>
+          <item text=" HTTP代理"  data="101"/>
+          <item text=" SOCKETS5代理"  data="102"/>
+          <item text=" 使用浏览器设置"  data="103"/>
+        </items>
+      </combobox>
+      <text pos="8,69">用户名：</text>
+      <edit pos="53,65,160,89" name="net_cfg_user_edt" class="cls_edit" />
+      <text pos="165,42">地址：</text>
+      <edit pos="200,38,280,62" id="137" name="net_cfg_addr_edt" class="cls_edit" />
+      <text pos="165,69">密码：</text>
+      <edit pos="200,65,280,89" name="net_cfg_pswd_edt" class="cls_edit" />
+      <text pos="285,42">端口：</text>
+      <edit pos="319,38,-8,62" name="net_cfg_port_edt" class="cls_edit" />
+      <text pos="298,69">域：</text>
+      <edit pos="319,65,-8,89" name="net_cfg_field_edt" class="cls_edit" />
+
+      <button id="136" name="btn_test_net_set" pos="-78,100,-8,126">测试</button>
+
+      <text pos="15,138">登录服务器</text>
+
+      <text pos="20,170">类型：</text>
+      <combobox show="1" id="134" pos="53,166,160,190" dropDown="1" dropHeight="200" class="cls_edit" dotted="0" curSel="0">
+        <liststyle class="cls_edit"   itemHeight="20" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#3991D1" colorBkgnd="#70BCDC"/>
+        <editstyle inset="5,0,5,0" vcenter="1" colorText="000000" align="left" colorBkgnd="FFFFFF" />
+        <items>
+          <item text=" 不使用高级选项"  data="100"/>
+          <item text=" UDP类型"  data="100"/>
+          <item text=" TCP类型"  data="103"/>
+        </items>
+
+      </combobox>
+      <text pos="165,170">地址：</text>
+      <edit pos="200,166,280,190" name="serv_cfg_addr_edt" class="cls_edit" />
+      <text pos="285,170">端口：</text>
+      <edit pos="319,166,-8,190" name="serv_cfg_port_edt" class="cls_edit" />
+
+    </window>
+    <window pos="5,-41,-5,-5">
+      <button name="btn_setting_cancel" pos="-78,|-13,-8,|13">取消</button>
+      <button name="btn_setting_ok" pos="-156,|-13,-86,|13">确定</button>
+    </window>
+  </window>
+
+</include>

@@ -1,0 +1,28 @@
+<include>
+	<window pos="0,0,-0,-0" skin="_skin.white.bg" >
+		<window pos="2,2,]-2,-2" >
+			<img skin="_skin.error" pos="|-304,|-225" />
+			<imgbtn name="btn_check" skin="_skin.check.btn" pos="|-83,|0" width="166" height="66" animate="1" />
+		</window>
+		<img skin="_skin.ver.line" pos="-246,0,-245,-0" />
+		<img skin="_skin.reg.bg" pos="-240,16" />
+		<window pos="-244,132,@242,@103" >
+			<img skin="_skin.hor.line" pos="0,8" height="1" />
+			<window pos="|-81,|0" offset="-0.5,-0.5" width="70" height="70" ><!--colorBkgnd="#ff0000" -->
+				<imgbtn name="btn_firewall" skin="_skin.firewall" pos="|-25,|-25" width="50" height="45" animate="1" />
+				<text pos="|0,[5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">木马防火墙</text>
+			</window>
+			<img skin="_skin.ver.line" pos="[5,8,@1,@87" />
+			<window pos="|0,|0" offset="-0.5,-0.5" width="70" height="70" >
+				<imgbtn name="btn_guard" skin="_skin.guard" pos="|-25,|-25" width="50" height="45" animate="1" />
+				<text pos="|0,[5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">360保镖</text>
+			</window>
+			<img skin="_skin.ver.line" pos="[5,8,@1,@87" />
+			<window pos="|81,|0" offset="-0.5,-0.5" width="70" height="70" >
+				<imgbtn name="btn_payinsure" skin="_skin.payinsure" pos="|-25,|-25" width="50" height="45" animate="1" />
+				<text pos="|0,[5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">网购先赔</text>
+			</window>
+			<img skin="_skin.hor.line" pos="0,-8" height="1" />
+		</window>
+	</window>
+</include>

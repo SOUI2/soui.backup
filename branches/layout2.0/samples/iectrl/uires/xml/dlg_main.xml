@@ -1,0 +1,18 @@
+﻿<SOUI name="mainWindow" title="%title% ver:%ver%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="600" height="400" appWnd="1" margin="20,5,5,5"  resizable="1" translucent="0" alpha="240">
+  <root skin="_skin.sys.wnd.bkgnd" cache="1">
+    <caption pos="0,0,-0,30" show="1" font="adding:8">
+      <icon pos="10,8" src="ICON_LOGO:16"/>
+      <text pos="26,2">%title% ver:%ver%</text>
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+      <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
+      <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
+      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+    </caption>
+    <window pos="5,30,-5,-5">
+      <window pos="0,0,-0,@30">
+        <button name="btn_calljs" pos="0,0,100,-0">call js</button>
+      </window>
+      <iectrl name="iectrl_demo" pos="0,[0,-0,-0" url="www.baidu.com"/>
+    </window>
+  </root>
+</SOUI>

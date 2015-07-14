@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<include>
+  <window pos="0,0,-0,@30">
+    <text pos="0,|0" offset="0,-0.5">源代码目录:</text>
+    <edit2 pos="[5,0,-5,-0" name="edit_dir" inset="5,0,5,0" cueText="输入或者拖动文件夹到此"/>
+  </window>
+  <window pos="0,[5,-0,@30">
+    <text pos="0,|0" offset="0,-0.5">源文件类型:</text>
+    <window pos="[5,0,]-5,-0" class="cls_border" trackMouseEvent="1">
+      <edit pos="0,0,-15,-0" name="edit_filetypes" inset="5,0,5,0" cueText="输入或者选择文件类型" margin="0,0,0,0"/>
+      <imgbtn pos="[0,0,-0,-0" name="btn_dropdown_filetypes" skin="_skin.sys.dropbtn"/>
+    </window>
+    <button pos="-0,0,@50,-0" offset="-1,0" name="btn_go">go</button>
+  </window>
+  <splitrow pos="0,[5,-0,-0" name="split_tree" sepSize="0">
+    <pane min="20" ideaSize="100">
+      <treectrl pos="0,[5,-0,]0" name="tree_dir" itemHeight="25" class="cls_border" iconSkin="skin_folder_icon" checkBox="1" colorBkgnd="#ffffff"/>
+    </pane>
+    <pane minSize="20" ideaSize="20" maxSize="20" show="0">
+      <text pos="0,0">进度:</text>
+      <progress pos="[5,5,-5,@10" name="prog_run"/>
+    </pane>
+  </splitrow>
+</include>

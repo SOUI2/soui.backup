@@ -1,0 +1,220 @@
+﻿<!-- 功    能：使用SOUI自主设计音乐播放器 -->
+<!-- 作    者：小可                       -->
+<!-- 添加时间：2015.01.09 17：00          -->
+<!-- 版本类型：初始版本                   -->
+<!-- 联系方式：QQ-1035144170              -->
+
+<SOUI name="mainWindow" title="SOUI-DEMO ver:%ver%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="400" height="700" minsize="400,700" appWnd="1" margin="20,5,5,5"  resizable="0" translucent="1" toolWindow="1" alpha="255">
+  <style>
+    <!--局部style对象-->
+    <class name="cls_edit" ncSkin="_skin.sys.border" margin-x="2" margin-y="2" />
+  </style>
+  <root skin="_skin.shadow.bkg" cache="1">
+    <window pos="5,3,-5,-5" skin="_skin.top.bkg" cache="1">
+      
+      <caption pos="5,3,-0,30" show="1" font="adding:8">
+        <icon pos="10,10" src="ICON_LOGO:64"/>
+        <!--<icon pos="10,8" src="LOGO:64"/>-->
+        <!--<img skin="_skin.logo" pos="10,8" />-->
+        <!--<img skin="_skin.logo.skin" pos="10,8" />-->
+        <text pos="80,50" colorText="#CEA481">MusicPlayer</text>
+        <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+        <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-83,0" animate="1" />
+        <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
+        <imgbtn name="btn_max" skin="_skin.sys.btn.maximize" pos="-121,0" animate="1" />
+        
+      </caption>
+
+      <!-- 使用控件：SOUI的Tab控件的使用         -->
+      <!--<tabctrl name="tab_main" font="face:微软雅黑,adding:-2" tabPos="320" tabAlign="top" colorText="#96D00D" pos="0,25,-0,-90" show="1" curSel="0" focusable="0" tabHeight="75" tabSkin="_skin.tab.main" iconSkin="_skin.tab.icon" text-y="50" icon-x="12" tabInterSize="5" animateSteps="10">-->
+      <tabctrl name="tab_main" font="face:微软雅黑,adding:-2" tabPos="320" tabAlign="top" colorText="#96D00D" pos="0,100,-0,-90" show="1" curSel="0" focusable="0" tabHeight="0" tabSkin="_skin.tab.main" iconSkin="_skin.tab.icon" text-y="50" icon-x="12" tabInterSize="5" animateSteps="10">
+        <page title="我的音乐" tip="我的音乐">
+          <window pos="0,0,-0,-0" skin="_skin.white.bkg" cache="1">
+            <!-- 使用控件：SOUI的Treebox控件的使用         -->
+            <!--<treebox pos="0,0,180,-0" name="mytree" itemHeight="30" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#cccccc" indent="10">
+              <item>
+                <text pos="10,0,100,-0" valign="middle" align="left" colorText="#ff0000" font="face:微软雅黑,adding:5">我的音乐</text>
+                <item>
+                  <text pos="10,5" colorText="#ff0000" font="underline:1">试听列表</text>
+                </item>
+                <item>
+                  <text pos="10,5" colorText="#ff0000">本地音乐</text>
+                </item>
+                <item>
+                  <text pos="10,5" colorText="#ff0000">音乐下载</text>
+                  <text>最爱</text>
+                </item>
+              </item>
+
+              <item>
+                <text pos="10,0,100,-0" valign="middle" align="left" colorText="#ff0000" font="face:微软雅黑,adding:5">云歌曲</text>
+                <item>
+                  <text pos="10,5" colorText="#ff0000" font="underline:1">我收藏的单曲</text>
+                </item>
+                <item>
+                  <text pos="10,5" colorText="#ff0000">我下载的单曲</text>
+                </item>
+                <item>
+                  <text pos="10,5" colorText="#ff0000">我购买的单曲</text>
+                  <text>未知</text>
+                </item>
+              </item>
+              
+              <item>
+                <text pos="10,0,100,-0" valign="middle" align="left" colorText="#ff0000" font="face:微软雅黑,adding:5">本地歌曲</text>
+                <item>
+                  <text pos="10,5" colorText="#ff0000" font="underline:1">歌曲一</text>
+                </item>
+                <item>
+                  <text pos="10,5" colorText="#ff0000">歌曲二</text>
+                </item>
+                <item>
+                  <text pos="10,5" colorText="#ff0000">歌曲三</text>
+                  <text>热门</text>
+                </item>
+              </item>
+            </treebox>
+            <text pos="182,0,180,-0" colorBkgnd="#DADADA" colorText="#ff0000"></text>
+            <text pos="|90,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#80FFFF">本地歌曲</text>-->
+
+            <window pos="1,1,-1,-105"  cache="0">
+              <!--skin="_skin.sys.wnd.bkgnd"-->
+              <tabctrl name="tab_3d" pos="1,1,-1,-1" tabHeight="0" >
+                <page title="musiclist">
+                  <include src="LAYOUT:PAGE_MUSICLIST"/>
+                </page>
+                <page title="lrc">
+                  <include src="LAYOUT:PAGE_LRC"/>
+                </page>
+
+              </tabctrl>
+            </window>
+            <Turn3dView name="turn3d" pos="0,0,-0,-0"/>
+            <!--<button class ="normalbtn" pos="8,-102,-8,-8" name="btn_3D">3D翻页效果演示</button>-->
+            <img skin="_skin.spectrum" show="0" name="spectrum" pos="8,-102,-8,-8" />
+            
+            <!--<flywnd pos="-210,10,-0,-10" posEnd="-10,10,@210,-10" alpha="100" layeredWindow="1">-->
+            <!--<flywnd pos="0,-100,-10,-10" posEnd="0,-0,@100,-10" alpha="100" layeredWindow="1"> 向左下角收缩-->
+            <!--向右下角收缩-->
+            <flywnd pos="2,-100,-10,-10" posEnd="-100,-0,-10,-10" alpha="100" layeredWindow="1" name="myflywnd">
+              <toggle pos="0,|-15,@10,@30" colorBkgnd="#ff0158" skin="skin_btn_expand" name="switch" cursor="hand" tip="控制面板"></toggle>
+              <window pos="10,0,-0,-0" colorBkgnd="#ff0000">
+                <imgbtn name="btn_prev" skin="_skin.btn.prev" pos="25,25" animate="1" />
+                <imgbtn name="btn_play" skin="_skin.btn.play" pos="85,15" animate="1" />
+                <imgbtn name="btn_play_next" skin="_skin.btn.play.next" pos="165,25" animate="1" />
+                
+                <imgbtn name="btn_lyric" skin="_skin.btn.lyric" pos="-114,26" animate="1" />
+                <imgbtn name="btn_music_list" skin="_skin.btn.playing.list" pos="-60,27" animate="1" />
+                <!--<text pos="10,-100,-0,@100" multilines="1">click the left grip to \nshow or hide the \npane</text>-->
+              </window>
+            </flywnd>
+            
+          </window>
+          
+        </page>
+        
+        <page title="在线音乐" tip="在线音乐">
+          <window pos="0,0,-0,-0" skin="_skin.white.bkg" cache="1">
+            <!--使用控件：SOUI的scrollbar控件的使用-->
+            <!--<scrollbar pos="-18,0,-0,-0" skin="_skin.sys.scrollbar" vertical="1" min="0" max="100" value="20" page="2"></scrollbar>-->
+            <!--<text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#000000">在线音乐</text>-->
+
+            <window pos="5,5,-5,-5" clipClient="1" skin="_skin.shadow.bkg" >
+              <text pos="50,20" pos2type="center" font="face:微软雅黑,adding:9" colorText="#000000">设置</text>
+              
+              <text pos="55,90">播放文件路径：</text>
+              <!--<hotkey pos="65,110" name="ctrl_hk1" width="200" height="25" class="cls_edit" cueText="输入音频文件所在的文件夹路径"/>-->
+              <edit pos="65,110" vcenter="1" width="200" height="25"  class="cls_edit" cueText="输入音频文件所在的文件夹路径"/>
+              <button name="btn_insert_gif" height="25" width="40">浏览</button>
+              
+              <text pos="55,150">启动：</text>
+              <check pos="65,170">开机自动运行</check>
+              
+              <text pos="55,200">关闭程序：</text>
+              <window pos="{10,[10,@300,@50">
+                <radio pos="0,0" name="radio_1" checked="1">最小化到托盘</radio>
+                <radio pos="0,20" name="radio_2">退出程序</radio>
+              </window>
+
+              <text pos="55,280">添加音乐到列表时：</text>
+              <window pos="{10,[10,@300,@50">
+                <radio pos="0,0" name="radio_4" checked="1">下一首播放</radio>
+                <radio pos="0,20" name="radio_5">最后播放</radio>
+              </window>
+
+              <text pos="55,360">音乐水平垂直导航：</text>
+              <window pos="{10,[10,@300,@50">
+                <radio pos="0,0" name="radio_4" checked="1">去掉水平导航</radio>
+                <radio pos="0,20" name="radio_5">去掉垂直导航</radio>
+              </window>
+
+              <!--<window pos="10,[10,-10,-10">
+              </window>-->
+            </window>
+            
+          </window>
+
+        </page>
+        
+        <page title="我的设备" tip="我的设备">
+          <window pos="0,0,-0,-0" skin="_skin.white.bkg" cache="1">
+            <text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#ff0000">我的设备</text>
+            <!-- 使用控件：SOUI的Listctrl控件的使用          -->
+            <listctrl name="listctrl_log" pos="10,0,-10,-0" itemHeight="32" headerHeight="30" font="face:微软雅黑,adding:9"  >
+              <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1" colorText="#8000FF">
+                <items>
+                  <item width="150">名称</item>
+                  <item width="320">未知</item>
+                  <item width="80">详情</item>
+                </items>
+              </header>
+            </listctrl>
+
+            <listctrl name="lc_test" pos="10,100,-10,-100" itemHeight="20" headerHeight="30" >
+              <!--cursor="CUR_TST" itemSkin="_skin.vscrollbar" sbSkin="_skin.vscrollbar"-->
+              <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+                <items>
+                  <item width="150">name</item>
+                  <item width="150">gender</item>
+                  <item width="150">age</item>
+                  <item width="150">score</item>
+                </items>
+              </header>
+            </listctrl>
+            
+          </window>
+        </page>
+      </tabctrl>
+      <window pos="5,[0,-5,-0"  cache="1">
+        <!--colorBkgnd="#3D3D3D"-->
+        <!--<imgbtn name="btn_prev" skin="_skin.btn.prev" pos="25,25" animate="1" />
+        <imgbtn name="btn_play" skin="_skin.btn.play" pos="85,15" animate="1" />
+        <imgbtn name="btn_play_next" skin="_skin.btn.play.next" pos="165,25" animate="1" />
+        
+        <imgbtn name="btn_voume" skin="_skin.btn.volume" pos="225,26" animate="1" />
+        <imgbtn name="btn_play_mode" skin="_skin.btn.play.mode" pos="-114,25" animate="1" />
+        <imgbtn name="btn_playing_list" skin="_skin.btn.playing.list" pos="-60,25" animate="1" />-->
+
+        <text name="text_time" pos="|0,15" pos2type="center" colorText="#CDD7E1">00:00/00:00</text>
+        <!-- 使用控件：SOUI的Progress控件的使用          -->
+        <!--progress name="prog_test" pos="175,25,-252,115" value="20" min="0" max="100" showPercent="1" thumbSkin="_skin.btn.slider.thumb"/>-->
+        <!-- 使用控件：SOUI的Sliderbar控件的使用         -->
+        <sliderbar name="slider_test" pos="70,30" alpha="200" width="250" value="0" min="0" max="1000" showpercent="1" posSkin="_skin.btn.slider.pos" bkgndSkin="_skin.btn.slider.bkg" thumbSkin="_skin.btn.slider.thumb" tile="1"/>
+        <!-- 属性tile="1"平铺progressbar的前景图         -->
+        <!--<imgbtn name="btn_voume" skin="_skin.btn.volume" pos="-242,26" animate="1" />
+        <imgbtn name="btn_lyric" skin="_skin.btn.lyric" pos="-188,24" animate="1" />
+        <imgbtn name="btn_play_mode" skin="_skin.btn.play.mode" pos="-134,25" animate="1" />
+        <imgbtn name="btn_playing_list" skin="_skin.btn.playing.list" pos="-80,25" animate="1" />-->
+        <!--<imgbtn name="btn_lyric" skin="_skin.btn.lyric" pos="-80,5" animate="1" />-->
+        <imgbtn name="btn_voume" skin="_skin.btn.volume" pos="-55,18" animate="1" />
+        <imgbtn name="btn_play_mode" skin="_skin.btn.play.mode" pos="15,18" animate="1" />
+        <text pos="|0,-15" pos2type="center" colorText="#CDD7E1">当前版本1.0.0.0--关于本程序@小可</text>
+      </window>
+      
+      <imgbtn name="btn_my_music" skin="_skin.btn.my.music" pos="384,30" animate="1" />
+      <imgbtn name="btn_online_music" skin="_skin.btn.online.music" pos="468,30" animate="1" />
+      <imgbtn name="btn_my_device" skin="_skin.but.my.device" pos="552,30" animate="1" />
+      
+    </window>
+  </root>
+</SOUI>

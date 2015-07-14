@@ -1,0 +1,22 @@
+﻿<UIDEF>
+  <font face="宋体" size="12"/>
+
+  <string>
+    <ver value="1.0"/>
+    <title value="soui and mfc"/>
+  </string>
+
+  <skin>
+    <imgframe name="skin.bkframe" src="imgx:bk_frame" left="5" right="5" top="40" bottom="40"/>
+    <imglist name="skin.btnclose"    src="imgx:btn_close" states="3" />
+    <button name="skin.button" colorBorder="#7D9EBC" colorUp="#FEFEFE" colorDown="#C6E2FD" colorUpHover="#FEFEFE" colorDownHover="#DBEDFE" colorUpPush="#C6E2FD" colorDownPush="#FEFEFE"/>
+  </skin>
+  <style>
+    <class name="normalbtn" skin="skin.button" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
+  </style>
+
+  <objattr>
+    <button class="normalbtn"/>
+  </objattr>
+
+</UIDEF>

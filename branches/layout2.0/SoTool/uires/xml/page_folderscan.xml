@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<include>
+  <window pos="0,0,-0,@30">
+    <text pos="0,|0" offset="0,-0.5">扫描目录:</text>
+    <edit2 pos="[5,0,]-5,-0" name="edit_dir" inset="5,0,5,0" cueText="输入或者拖动文件夹到此"/>
+    <button pos="-0,0,@50,-0" offset="-1,0" name="btn_go">go</button>
+  </window>
+  <window pos="0,[5,-0,-0">
+    <foldertreelist pos="0,[5,-0,-0" name="tree_dir" class="cls_border" treeLabel="文件树" headerHeight="25" colorBkgnd="#ffffff">
+      <treectrlstyle itemHeight="25" checkBox="0" treeWidth="350" tip="双击打开文件位置"/>
+      <headerstyle>
+        <items>
+          <item width="80">占用空间</item>
+          <item width="120">文件夹占用比例</item>
+        </items>
+      </headerstyle>
+    </foldertreelist>
+    <animateimg name="ani_scan" pos="|0,|0" offset="-0.5,-0.5" skin="skin_scan" autoStart="1" show="0"/>
+  </window>
+</include>
