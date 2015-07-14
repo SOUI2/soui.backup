@@ -16,19 +16,20 @@ SSwitch::~SSwitch()
 
 void SSwitch::OnPaint( IRenderTarget *pRT )
 {
+    CRect rcWnd = GetWindowRect();
 	if (m_pSkin)
-		m_pSkin->Draw(pRT, m_rcWindow, 0);
+		m_pSkin->Draw(pRT, rcWnd, 0);
 	if (!m_pSkinForce) 
 		return;
 	UINT uState = _GetDrawState();
 	SIZE skSize = m_pSkinForce->GetSkinSize();
-	int dwSpace = m_rcWindow.Width() - skSize.cx ;
+	int dwSpace = rcWnd.Width() - skSize.cx ;
 	CRect dwRet;
 	dwRet.left =(m_FrameNow * dwSpace / m_FrameCount );
 	dwRet.top = 0;
 	dwRet.right = dwRet.left + skSize.cx ;
 	dwRet.bottom = skSize.cy;
-	POINT dwOff = {m_rcWindow.left ,m_rcWindow.top };
+	POINT dwOff = rcWnd.TopLeft();
 	dwRet.OffsetRect(dwOff);
 	m_pSkinForce->Draw(pRT,dwRet,(DWORD)uState);
 }
@@ -55,7 +56,7 @@ void SSwitch::OnTimer( char cTimerID )
 	} 
 	else
 		KillTimer(1);
-	InvalidateRect(m_rcWindow);
+	InvalidateRect(NULL);
 }
 
 CSize SSwitch::GetDesiredSize( LPCRECT pRcContainer )
@@ -118,7 +119,7 @@ UINT SSwitch::_GetDrawState()
 
 void SSwitch::OnStateChanged( DWORD dwOldState,DWORD dwNewState )
 {
-	InvalidateRect(m_rcWindow);
+	InvalidateRect(NULL);
 	__super::OnStateChanged(dwOldState, dwNewState);
 }
 

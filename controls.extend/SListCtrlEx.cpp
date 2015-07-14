@@ -1070,4 +1070,10 @@ lblEnd:
 		return m_pHeader->GetItemCount();
 	}
 
+    void SListCtrlEx::OnItemRequestRelayout(SItemPanel *pItem)
+    {
+        CRect rcWnd = pItem->GetWindowRect();
+        pItem->Move(rcWnd);
+    }
+
 }//namespace SOUI
