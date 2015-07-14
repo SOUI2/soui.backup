@@ -1,4 +1,4 @@
-﻿<SOUI name="mainWindow" title="%title% ver:%ver%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="640" height="480" appWnd="1" margin="5,5,5,5"  resizable="1" translucent="0" >
+﻿<SOUI name="mainWindow" title="%title% ver:%ver%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="640" height="480" appWnd="1" margin="5,5,5,5"  resizable="1" translucent="1" >
   <root skin="_skin.sys.wnd.bkgnd" cache="1">
     <caption pos="0,0,-0,30" show="1" font="adding:8">
       <icon pos="10,8" src="ICON_LOGO:16"/>

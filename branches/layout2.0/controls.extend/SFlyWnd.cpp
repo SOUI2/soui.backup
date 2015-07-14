@@ -117,7 +117,7 @@ namespace SOUI
     {
         if(m_bEndPos == bEndPos) return FALSE;
         
-        m_rcAniBegin = m_rcWindow;
+        m_rcAniBegin = GetWindowRect();
         m_bEndPos = bEndPos;
         SwndLayoutBuilder::InitLayoutState(m_rcAniEnd);
 
