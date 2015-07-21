@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window pos="0,0,-0,-0">
+  <button pos="10,5,@100,@25" name="btn_test">btn</button>
+  <animateimg pos="[10,{0" skin="skin_busy" name="ani_test"/>
+  <text pos="-20,{0" offset="-1,0" colorText="#ff0000">text item</text>
+</window>
