@@ -4,26 +4,16 @@
 //
 
 #pragma once
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-#include <winsock2.h>
+
+#define  _CRT_SECURE_NO_WARNINGS
+#define	 DLL_SOUI
 #include <souistd.h>
 #include <core/SHostDialog.h>
 #include <control/SMessageBox.h>
 #include <control/souictrls.h>
 #include <res.mgr/sobjdefattr.h>
 #include <com-cfg.h>
-
-#include "resource.h"	//APP×ÊÔ´
-
-#include "../controls.extend/SWkeWebkit.h"
-#include "../controls.extend/gif/SGifPlayer.h"
-#include "../controls.extend/gif/SGifPlayer2.h"
-#include "../controls.extend/SIPAddressCtrl.h"
-#include "../controls.extend/SImageMaskWnd.h"
+#include "resource.h"
 
 using namespace SOUI;
-
-
 
