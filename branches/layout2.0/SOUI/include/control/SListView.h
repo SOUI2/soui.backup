@@ -7,16 +7,72 @@ namespace SOUI
 {
     interface IListViewItemLocator : public IObjRef
     {
-        virtual bool IsFixHeight() const PURE;
-        virtual int GetItemHeight(IAdapter *adapter,int iItem)PURE;
-        virtual int GetTotalHeight(IAdapter *adapter)PURE;
+        virtual int GetItemHeight(IAdapter *adapter,int iItem) PURE;
+        virtual int GetTotalHeight(IAdapter *adapter) PURE;
         virtual int Item2Position(IAdapter *adapter,int iItem) PURE;
-        virtual int Position2Item(IAdapter *adapter,int position,bool bTop)PURE;
-        virtual void SetItemHeight(int iItem,int nHeight)PURE;
+        virtual int Position2Item(IAdapter *adapter,int position,bool bTop) PURE;
+        virtual int GetScrollLineSize() const PURE;
+    };
+    
+    class SOUI_EXP SListViewItemLocatorFix : public TObjRefImpl<IListViewItemLocator>
+    {
+    public:
+        SListViewItemLocatorFix(int nItemHei):m_nItemHeight(nItemHei){}
+
+        virtual int GetItemHeight(IAdapter *adapter,int iItem){
+            return m_nItemHeight;
+        }
+        virtual int GetTotalHeight(IAdapter *adapter)
+        {
+            if(!adapter) return 0;
+            return m_nItemHeight * adapter->getCount();
+        }
+        virtual int Item2Position(IAdapter *adapter,int iItem)
+        {
+            return iItem * m_nItemHeight;
+        }
+
+        virtual int Position2Item(IAdapter *adapter,int position,bool bTop)
+        {
+            if(!adapter) return -1;
+            int nRet = (position+(bTop?0:(m_nItemHeight-1)))/m_nItemHeight;
+
+            if(nRet<0) nRet =0;
+            if(nRet>adapter->getCount()) nRet = adapter->getCount();
+            return nRet;
+        }
+
+        virtual int GetScrollLineSize() const 
+        {
+            return m_nItemHeight;
+        }        
+    protected:
+        int m_nItemHeight;
+    };
+    
+    class SOUI_EXP EventListViewSelChanged : public TplEventArgs<EventListViewSelChanged>
+    {
+        SOUI_CLASS_NAME(EventListViewSelChanged,L"on_listview_select_changed")
+    public:
+        EventListViewSelChanged(SObject *pSender):TplEventArgs<EventListViewSelChanged>(pSender){}
+        enum{EventID=EVT_LV_SELCHANGED};
+        
+        int iOldSel;
+        int iNewSel;
+    };
+
+    class SOUI_EXP EventListViewItemClick : public TplEventArgs<EventListViewItemClick>
+    {
+        SOUI_CLASS_NAME(EventListViewItemClick,L"on_listview_item_click")
+    public:
+        EventListViewItemClick(SObject *pSender):TplEventArgs<EventListViewItemClick>(pSender){}
+        enum{EventID=EVT_LV_ITEMCLICK};
+
+        int iClick;
     };
     
     class SOUI_EXP SListView : public SPanel
-        , public IItemContainer
+        , protected IItemContainer
     {
         SOUI_CLASS_NAME(SListView,L"listview")
 
@@ -26,7 +82,10 @@ namespace SOUI
         ~SListView();
 
         void SetAdapter(IAdapter * adapter);
-
+        void EnsureVisible( int iItem );
+        
+        void SetSel(int iItem,BOOL bNotify=FALSE);
+        int  GetSel()const{return m_iSelItem;}
     protected:
         virtual void OnItemSetCapture(SItemPanel *pItem,BOOL bCapture);
         virtual BOOL OnItemGetRect(SItemPanel *pItem,CRect &rcItem);
@@ -39,11 +98,13 @@ namespace SOUI
         
     protected:
         virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
-        
+        virtual int  GetScrollLineSize(BOOL bVertical);
+
     protected:
         void UpdateScrollBar();
         void RedrawItem(SItemPanel *pItem);
         SItemPanel * HitTest(CPoint & pt);
+        SItemPanel * GetItemPanel(int iItem);
         
         void UpdateVisibleItems(int minOld,int maxOld,int minNew,int maxNew);
         
@@ -56,6 +117,7 @@ namespace SOUI
         LRESULT OnMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
         LRESULT OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam );
+        void OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags );
 
         void OnMouseLeave();
 
@@ -66,6 +128,7 @@ namespace SOUI
             MSG_WM_SIZE(OnSize)
             MSG_WM_MOUSEWHEEL(OnMouseWheel)
             MSG_WM_MOUSELEAVE(OnMouseLeave)
+            MSG_WM_KEYDOWN(OnKeyDown)
             MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
             MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
             MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
@@ -88,5 +151,6 @@ namespace SOUI
         
         SArray<SList<SItemPanel*> *>    m_itemRecycle;//item回收站,每一种样式在回收站中保持一个列表，以便重复利用
         
+        BOOL                            m_bScrollUpdate; //滚动时更新窗口标志
     };
 }
