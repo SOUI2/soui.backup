@@ -227,6 +227,7 @@ protected:
      */
     virtual BOOL IsItemRedrawDelay(){return m_bItemRedrawDelay;}
 
+    virtual void OnItemRequestRelayout(SItemPanel *pItem);
 protected:
 
     /**

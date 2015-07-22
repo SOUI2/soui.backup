@@ -59,6 +59,7 @@
     <gif name="gif_win" src="img.game:gif_win"/>
     <imglist name="img_coin" src="img.game:img_coin"/>
     <imglist name="skin_avatar" src="imgx:png_avatar"/>
+    <imglist name="skin_busy"	src="imgx:img_busy" states="8"/>
 
     <imglist name="skin_dock_bg" src="img.dock:PNG_MAINBK"/>
     <imglist name="skin_png_icon_1" src="img.dock:PNG_ICON_1"/>
@@ -71,6 +72,8 @@
     <imglist name="skin_png_icon_8" src="img.dock:PNG_ICON_8"/>
     <imglist name="skin_png_icon_9" src="img.dock:PNG_ICON_9"/>
     <imglist name="skin_png_icon_10" src="img.dock:PNG_ICON_10"/>
+
+
   </skin>
 
   <style>

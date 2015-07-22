@@ -94,7 +94,7 @@ namespace SOUI
 
 	int SListCtrlEx::InsertItem(int iItem,pugi::xml_node xmlNode,LPARAM dwData/*=0*/)
 	{
-		SItemPanel *pItemObj=new SItemPanel(this,xmlNode,this);
+		SItemPanel *pItemObj=SItemPanel::Create(this,xmlNode,this);
 
 		if(iItem==-1 || iItem>=GetItemCount())
 		{
@@ -218,7 +218,7 @@ namespace SOUI
 		m_arrItems.SetCount(nItems);
 		for(int i=0;i<nItems;i++)
 		{
-			SItemPanel *pItemObj=new SItemPanel(this,xmlTemplate,this);
+			SItemPanel *pItemObj= SItemPanel::Create(this,xmlTemplate,this);
 			pItemObj->Move(CRect(0,0,m_rcClient.Width(),m_nItemHeight));
 			if(m_pItemSkin) pItemObj->SetSkin(m_pItemSkin);
 			pItemObj->SetColor(m_crItemBg,m_crItemSelBg);
@@ -1069,5 +1069,11 @@ lblEnd:
 
 		return m_pHeader->GetItemCount();
 	}
+
+    void SListCtrlEx::OnItemRequestRelayout(SItemPanel *pItem)
+    {
+        CRect rcWnd = pItem->GetWindowRect();
+        pItem->Move(rcWnd);
+    }
 
 }//namespace SOUI

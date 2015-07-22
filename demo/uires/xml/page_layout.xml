@@ -1,5 +1,5 @@
 ﻿<include>
-  <group pos="0,0,-0,-0">
+  <group pos="0,0,-0,-0" id="10000">
     I'm a group
     <text pos="100,10" offset="-0.5,-0.5">center align1</text>
     <text pos="100,30" offset="-0.5,-0.5">center align align</text>
@@ -13,11 +13,11 @@
 
     <text pos="%50,20,%90,@50" colorBkgnd="#ff0000">pos="%50,100,%90,@50"</text>
     
-    <button name="btn_hidetst" pos="300,150,@100,@30" display="0" tip="click me to hide me and see how the next image will move">hide test</button>
-    <window skin="skin_page_icons" pos="[5,150,-10,-10" >
+    <button name="btn_display" pos="300,150,@100,@30" display="0" >Image Ref</button>
+    <window skin="skin_page_icons" pos="[5,150,-10,-10" id="1236">
       <text pos="|0,|0" offset="-0.5,-0.5" font="adding:20" colorText="#ff000066">alpha test</text>
       <text pos="5,5" id="100" visible="0">ref text</text>
-      <button pos="sib.left@100:10,sib.bottom@100:10,@100,@25">ref 100</button>
+      <button pos="sib.left@100:10,sib.bottom@100:10,@100,@25" name="btn_hidetst" tip="click me to hide me and see how the next image will move">ref id:100</button>
     </window>
 
     <window pos="10,300" colorBkgnd="#cccccc">
