@@ -1,229 +1,242 @@
 ﻿<include>
   <tabctrl pos="0,0,-0,-0" alpha="200" layeredWindow="1" animateSteps="10"  colorBkgnd="#cccccc" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
-    <page title="listctrl">
-      <listctrl name="lc_test" hotTrack="1" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cursor="CUR_TST" font="underline:1" itemSkin="skin_tab_left">
-        <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
-          <items>
-            <item width="150">name</item>
-            <item width="150">gender</item>
-            <item width="150">age</item>
-            <item width="150">score</item>
-          </items>
-        </header>
-      </listctrl>
-    </page>
-    <page title="listctrlex">
-		<listctrlex name="lcex_test2" colorBkgnd="#ffffff" hotTrack="1" multiSelection="1" pos="10,10,-10,-10" itemHeight="70" headerHeight="30"  itemSkin="skin_tab_left" colorItemSelBkgnd="#f7f7f7ff" colorItemHotBkgnd="#f7f7f777" selectRangeSkin="skin_lcex_selectrange">
-			<header align="center"  sortSkin="skin_lcex_header_arrow" itemSkin="skin_lcex_header" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" colorBkgnd="#ffffff" >
-			  <items>
-				<item width="480">软件名称</item>
-				<item width="95">软件评分</item>
-				<item width="100">大小</item>
-				<item width="100">安装时间</item>
-				<item width="100">使用频率</item>
-				<item width="100">操作</item>
-			  </items>
-			</header>
-			<items>
-			  <item>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_icon1" pos="10,8" height="54" width="54" msgTransparent="0" /> 
-					<text pos="70,16" font="bold:1,adding:-1">鲁大师</text>
-					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">鲁大师是一款专业的硬件检测，驱动安装工具</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="10,16"  />
-					<img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="25,16"  />
-					<img skin="skin_star2" iconIndex="1" msgTransparent="0" pos="40,16"  />
-					<img skin="skin_star2" iconIndex="2" msgTransparent="0" pos="55,16"  />
-					<img skin="skin_star2" iconIndex="2" msgTransparent="0" pos="70,16"  />
-					<text pos="15,36,50,-16" font="adding:-5"  >5.4分</text>
-					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >20.92M</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<imgbtn animate="1" pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
-				</window>
-			  </item>
-			  <item>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_icon2" pos="10,8" height="54" width="54" msgTransparent="0" /> 
-					<text pos="70,16" font="bold:1,adding:-1">Photoshop</text>
-					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">强大的图片处理工具</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
-					<img skin="skin_star1" iconIndex="1" msgTransparent="0" pos="55,16"  />
-					<img skin="skin_star1" iconIndex="2" msgTransparent="0" pos="70,16"  />
-					<text pos="15,36,50,-16" font="adding:-5"  >8.9分</text>
-					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >520.54M</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-02-09</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
-				</window>
-			  </item>
-			  <item>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_icon3" pos="10,8" height="54" width="54" msgTransparent="0" /> 
-					<text pos="70,16" font="bold:1,adding:-1">QQ6.8</text>
-					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">腾讯公司出品的即时聊天工具</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
-					<img skin="skin_star1" iconIndex="1" msgTransparent="0" pos="55,16"  />
-					<img skin="skin_star1" iconIndex="2" msgTransparent="0" pos="70,16"  />
-					<text pos="15,36,50,-16" font="adding:-5"  >8.3分</text>
-					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
-				</window>
-			  </item>
-			  <item>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_icon4" pos="10,8" height="54" width="54" msgTransparent="0" /> 
-					<text pos="70,16" font="bold:1,adding:-1">Visual Studio 2008</text>
-					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">Microsoft公司的程序开发套件</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
-					<img skin="skin_star1" iconIndex="1" msgTransparent="0" pos="55,16"  />
-					<img skin="skin_star1" iconIndex="2" msgTransparent="0" pos="70,16"  />
-					<text pos="15,36,50,-16" font="adding:-5"  >8.2分</text>
-					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2085.92M</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
-				</window>
-			  </item> 
-			  <item>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_icon5" pos="10,8" height="54" width="54" msgTransparent="0" /> 
-					<text pos="70,16" font="bold:1,adding:-1">YY</text>
-					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">YY语音</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="55,16"  />
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="70,16"  />
-					<text pos="15,36,50,-16" font="adding:-5"  >10.0分</text>
-					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
-				</window>
-			  </item>
-			  <item>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_icon6" pos="10,8" height="54" width="54" msgTransparent="0" /> 
-					<text pos="70,16" font="bold:1,adding:-1">火狐浏览器</text>
-					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">速度最快的浏览器</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
-					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
-					<img skin="skin_star1" iconIndex="1" msgTransparent="0" pos="55,16"  />
-					<img skin="skin_star1" iconIndex="2" msgTransparent="0" pos="70,16"  />
-					<text pos="15,36,50,-16" font="adding:-5"  >8.5分</text>
-					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
-				</window>
-			  </item>
-			  <item>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_icon7" pos="10,8" height="54" width="54" msgTransparent="0" /> 
-					<text pos="70,16" font="bold:1,adding:-1">迅雷</text>
-					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">迅雷下载软件</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="10,16"  />
-					<img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="25,16"  />
-					<img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="40,16"  />
-					<img skin="skin_star2" iconIndex="1" msgTransparent="0" pos="55,16"  />
-					<img skin="skin_star2" iconIndex="2" msgTransparent="0" pos="70,16"  />
-					<text pos="15,36,50,-16" font="adding:-5"  >7.3分</text>
-					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
-				</window>
-				<window clipClient="1" cache="1" >
-					<imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
-				</window>
-			  </item>
-			</items>  
-			
-		  </listctrlex>
+    <page title="listctrls">
+      <tabctrl pos="0,0,-0,-0" animateSteps="10" curSel="2" colorBkgnd="#ffffff" tabAlign="top" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabHeight="30" tabWidth="150" iconSkin="skin_small_icons" icon-x="5" icon-y="4" colorText="#000000bb">
+        <page title="listctrl">
+          <listctrl name="lc_test" hotTrack="1" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cursor="CUR_TST" font="underline:1" itemSkin="skin_tab_left">
+            <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+              <items>
+                <item width="150">name</item>
+                <item width="150">gender</item>
+                <item width="150">age</item>
+                <item width="150">score</item>
+              </items>
+            </header>
+          </listctrl>
+        </page>
+        <page title="listctrlex">
+          <listctrlex name="lcex_test2" colorBkgnd="#ffffff" hotTrack="1" multiSelection="1" pos="10,10,-10,-10" itemHeight="70" headerHeight="30"  itemSkin="skin_tab_left" colorItemSelBkgnd="#f7f7f7ff" colorItemHotBkgnd="#f7f7f777" selectRangeSkin="skin_lcex_selectrange">
+            <header align="center"  sortSkin="skin_lcex_header_arrow" itemSkin="skin_lcex_header" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" colorBkgnd="#ffffff" >
+              <items>
+                <item width="480">软件名称</item>
+                <item width="95">软件评分</item>
+                <item width="100">大小</item>
+                <item width="100">安装时间</item>
+                <item width="100">使用频率</item>
+                <item width="100">操作</item>
+              </items>
+            </header>
+            <items>
+              <item>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_icon1" pos="10,8" height="54" width="54" msgTransparent="0" />
+                  <text pos="70,16" font="bold:1,adding:-1">鲁大师</text>
+                  <text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">鲁大师是一款专业的硬件检测，驱动安装工具</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="10,16"  />
+                  <img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="25,16"  />
+                  <img skin="skin_star2" iconIndex="1" msgTransparent="0" pos="40,16"  />
+                  <img skin="skin_star2" iconIndex="2" msgTransparent="0" pos="55,16"  />
+                  <img skin="skin_star2" iconIndex="2" msgTransparent="0" pos="70,16"  />
+                  <text pos="15,36,50,-16" font="adding:-5"  >5.4分</text>
+                  <link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >20.92M</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <imgbtn animate="1" pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+                </window>
+              </item>
+              <item>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_icon2" pos="10,8" height="54" width="54" msgTransparent="0" />
+                  <text pos="70,16" font="bold:1,adding:-1">Photoshop</text>
+                  <text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">强大的图片处理工具</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
+                  <img skin="skin_star1" iconIndex="1" msgTransparent="0" pos="55,16"  />
+                  <img skin="skin_star1" iconIndex="2" msgTransparent="0" pos="70,16"  />
+                  <text pos="15,36,50,-16" font="adding:-5"  >8.9分</text>
+                  <link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >520.54M</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-02-09</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+                </window>
+              </item>
+              <item>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_icon3" pos="10,8" height="54" width="54" msgTransparent="0" />
+                  <text pos="70,16" font="bold:1,adding:-1">QQ6.8</text>
+                  <text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">腾讯公司出品的即时聊天工具</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
+                  <img skin="skin_star1" iconIndex="1" msgTransparent="0" pos="55,16"  />
+                  <img skin="skin_star1" iconIndex="2" msgTransparent="0" pos="70,16"  />
+                  <text pos="15,36,50,-16" font="adding:-5"  >8.3分</text>
+                  <link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+                </window>
+              </item>
+              <item>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_icon4" pos="10,8" height="54" width="54" msgTransparent="0" />
+                  <text pos="70,16" font="bold:1,adding:-1">Visual Studio 2008</text>
+                  <text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">Microsoft公司的程序开发套件</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
+                  <img skin="skin_star1" iconIndex="1" msgTransparent="0" pos="55,16"  />
+                  <img skin="skin_star1" iconIndex="2" msgTransparent="0" pos="70,16"  />
+                  <text pos="15,36,50,-16" font="adding:-5"  >8.2分</text>
+                  <link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >2085.92M</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+                </window>
+              </item>
+              <item>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_icon5" pos="10,8" height="54" width="54" msgTransparent="0" />
+                  <text pos="70,16" font="bold:1,adding:-1">YY</text>
+                  <text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">YY语音</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="55,16"  />
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="70,16"  />
+                  <text pos="15,36,50,-16" font="adding:-5"  >10.0分</text>
+                  <link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+                </window>
+              </item>
+              <item>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_icon6" pos="10,8" height="54" width="54" msgTransparent="0" />
+                  <text pos="70,16" font="bold:1,adding:-1">火狐浏览器</text>
+                  <text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">速度最快的浏览器</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
+                  <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
+                  <img skin="skin_star1" iconIndex="1" msgTransparent="0" pos="55,16"  />
+                  <img skin="skin_star1" iconIndex="2" msgTransparent="0" pos="70,16"  />
+                  <text pos="15,36,50,-16" font="adding:-5"  >8.5分</text>
+                  <link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+                </window>
+              </item>
+              <item>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_icon7" pos="10,8" height="54" width="54" msgTransparent="0" />
+                  <text pos="70,16" font="bold:1,adding:-1">迅雷</text>
+                  <text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">迅雷下载软件</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="10,16"  />
+                  <img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="25,16"  />
+                  <img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="40,16"  />
+                  <img skin="skin_star2" iconIndex="1" msgTransparent="0" pos="55,16"  />
+                  <img skin="skin_star2" iconIndex="2" msgTransparent="0" pos="70,16"  />
+                  <text pos="15,36,50,-16" font="adding:-5"  >7.3分</text>
+                  <link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+                </window>
+                <window clipClient="1" cache="1" >
+                  <imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+                </window>
+              </item>
+            </items>
+
+          </listctrlex>
+        </page>
+        <page title="listview">
+          <listview pos="5,[0,-5,-5" name="lv_test" itemHeight="50">
+            <template itemHeight="50" colorHover="#cccccc" colorSelected="#0000ff">
+              <button pos="10,5,@150,@25" name="btn_test">btn</button>
+              <animateimg pos="[10,{0" skin="skin_busy" name="ani_test"/>
+              <text pos="-20,{0" offset="-1,0" colorText="#ff0000">text item</text>
+            </template>
+          </listview>
+        </page>
+      </tabctrl>
     </page>
     <page title="edit and hotkey" colorBorder="#ffff00" margin-x="5" margin-y="5">
       <text pos="50,20">hotkey 1:</text>

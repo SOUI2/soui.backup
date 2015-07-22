@@ -331,6 +331,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\control\SListView.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\helper\SMenu.cpp"
 				>
 			</File>
@@ -473,6 +477,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\interface\Adapter-i.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\helper\AppDir.h"
 				>
 			</File>
@@ -525,6 +533,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\helper\LunarData.h"
+				>
+			</File>
+			<File
 				RelativePath="include\helper\MemDC.h"
 				>
 			</File>
@@ -546,6 +558,10 @@
 			</File>
 			<File
 				RelativePath="include\control\SActiveX.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\helper\SAdapterBase.h"
 				>
 			</File>
 			<File
@@ -646,6 +662,10 @@
 			</File>
 			<File
 				RelativePath="include\control\SListCtrl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\control\SListView.h"
 				>
 			</File>
 			<File

@@ -22,7 +22,7 @@ namespace SOUI
 	{
 		SPainter painter;
 		BeforePaint(pRT,painter);
-
+        CRect rcWnd = GetWindowRect();
 		for(int i = 0; i < (int)m_dwPageCount; i++)
 		{
 			ISkinObj *pSkinObj = m_pSkin[i];
@@ -31,8 +31,8 @@ namespace SOUI
 				SIZE SkinSize =pSkinObj->GetSkinSize();
 				CRect rct;
 
-				rct.left = (i*m_rcWindow.Width() - (m_iSelected * m_rcWindow.Width())+m_iMoveWidth) ;
-				rct.top = m_rcWindow.top +2; 
+				rct.left = (i*rcWnd.Width() - (m_iSelected * rcWnd.Width())+m_iMoveWidth) ;
+				rct.top = rcWnd.top +2; 
 				rct.bottom = SkinSize.cy;
 				rct.right = rct.left + SkinSize.cx;
 
@@ -42,7 +42,7 @@ namespace SOUI
 		}
 
 		if (m_pSkinLightLevel)
-			m_pSkinLightLevel->Draw(pRT,m_rcWindow,0);
+			m_pSkinLightLevel->Draw(pRT,rcWnd,0);
 
 		AfterPaint(pRT,painter);
 	}
@@ -51,6 +51,8 @@ namespace SOUI
 		if (nSelect> m_dwPageCount)
 			return;
 
+        CRect rcWnd = GetWindowRect();
+
 		m_SelButton = nSelect;
 		if(m_SelButton != -1)
 		{
@@ -58,7 +60,7 @@ namespace SOUI
 			{
 				return;
 			}
-			m_iMoveWidth = (m_SelButton-m_iSelected)*m_rcWindow.Width();
+			m_iMoveWidth = (m_SelButton-m_iSelected)*rcWnd.Width();
 			m_iSelected = m_SelButton;
 
 			m_iTimesMove = (m_iMoveWidth>0?m_iMoveWidth:-m_iMoveWidth)/10;
@@ -95,16 +97,18 @@ namespace SOUI
 	{
 		__super::OnMouseMove(nFlags,pt);
 
+        CRect rcWnd = GetWindowRect();
+
 		if(m_bWantMove)
 		{
 			m_iMoveWidth = pt.x - m_iDownX;
-			if(m_iSelected == 0 && m_iMoveWidth > m_rcWindow.Width())
+			if(m_iSelected == 0 && m_iMoveWidth > rcWnd.Width())
 			{
-				m_iMoveWidth = m_rcWindow.Width();
+				m_iMoveWidth = rcWnd.Width();
 			}
-			if(m_iSelected == (int)m_dwPageCount-1 && -m_iMoveWidth > m_rcWindow.Width())
+			if(m_iSelected == (int)m_dwPageCount-1 && -m_iMoveWidth > GetWindowRect().Width())
 			{
-				m_iMoveWidth = -m_rcWindow.Width();
+				m_iMoveWidth = -rcWnd.Width();
 			}
 			Invalidate();
 			return;
@@ -113,23 +117,25 @@ namespace SOUI
 	}
 	void SViewSwitch::OnLButtonUp(UINT nFlags, CPoint point)
 	{
+        CRect rcWnd = GetWindowRect();
+
 		if(m_bWantMove)
 		{
 			m_bWantMove = FALSE;
 			ReleaseCapture();
 			if(m_iMoveWidth > 0)
 			{
-				if(m_iSelected > 0 && m_iMoveWidth > m_rcWindow.Width()/4)
+				if(m_iSelected > 0 && m_iMoveWidth > rcWnd.Width()/4)
 				{
-					m_iMoveWidth -= m_rcWindow.Width();
+					m_iMoveWidth -= rcWnd.Width();
 					m_iSelected--;
 				}
 			}
 			else
 			{
-				if(m_iSelected < (int)m_dwPageCount-1 && -m_iMoveWidth > m_rcWindow.Width()/4)
+				if(m_iSelected < (int)m_dwPageCount-1 && -m_iMoveWidth > rcWnd.Width()/4)
 				{
-					m_iMoveWidth += m_rcWindow.Width();
+					m_iMoveWidth += rcWnd.Width();
 					m_iSelected++;
 				}
 			}
