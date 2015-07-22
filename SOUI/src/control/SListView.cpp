@@ -242,14 +242,13 @@ namespace SOUI
         rgnOld.bottom = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos + m_siVer.nPage,false);
         
         __super::OnScroll(bVertical, uCode, nPos);
-        
         CRect rgnNew(0,0,1,0);
         rgnNew.top = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos,true);
         rgnNew.bottom = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos + m_siVer.nPage,false);
         
         UpdateVisibleItems(rgnOld.top,rgnOld.bottom,rgnNew.top,rgnNew.bottom);
         
-        //加速滚动
+        //加速滚动时UI的刷新
         static DWORD dwTime1=0;
         DWORD dwTime=GetTickCount();
         if(dwTime-dwTime1>50)
@@ -257,6 +256,7 @@ namespace SOUI
             UpdateWindow();
             dwTime1=dwTime;
         }
+
         return TRUE;
     }
 
