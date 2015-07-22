@@ -3,42 +3,7 @@
 
 namespace SOUI
 {
-    class SListViewItemLocatorFix : public TObjRefImpl<IListViewItemLocator>
-    {
-    public:
-        SListViewItemLocatorFix(int nItemHei):m_nItemHeight(nItemHei){}
-        virtual bool IsFixHeight() const 
-        {
-            return true;
-        }
-
-        virtual int GetItemHeight(IAdapter *adapter,int iItem){
-            return m_nItemHeight;
-        }
-        virtual int GetTotalHeight(IAdapter *adapter)
-        {
-            if(!adapter) return 0;
-            return m_nItemHeight * adapter->getCount();
-        }
-        virtual int Item2Position(IAdapter *adapter,int iItem)
-        {
-            return iItem * m_nItemHeight;
-        }
-        
-        virtual int Position2Item(IAdapter *adapter,int position,bool bTop)
-        {
-            if(!adapter) return -1;
-            int nRet = (position+(bTop?0:(m_nItemHeight-1)))/m_nItemHeight;
-            
-            if(nRet<0) nRet =0;
-            if(nRet>adapter->getCount()) nRet = adapter->getCount();
-            return nRet;
-        }
-        
-        virtual void SetItemHeight(int iItem,int nHeight){}
-    protected:
-        int m_nItemHeight;
-    };
+    
     
     class SListViewDataSetObserver : public TObjRefImpl<IDataSetObserver>
     {
@@ -69,10 +34,14 @@ namespace SOUI
     :m_iSelItem(-1)
     ,m_pHoverItem(NULL)
     ,m_itemCapture(NULL)
+    ,m_bScrollUpdate(TRUE)
     {
         m_bFocusable = TRUE;
         m_observer.Attach(new SListViewDataSetObserver(this));
         m_lvItemLocator.Attach(new SListViewItemLocatorFix(50));
+        
+        m_evtSet.addEvent(EVENTID(EventListViewSelChanged));
+        m_evtSet.addEvent(EVENTID(EventListViewItemClick));
     }
 
     SListView::~SListView()
@@ -141,7 +110,7 @@ namespace SOUI
             m_siVer.nMin  = 0;
             m_siVer.nMax  = szView.cy-1;
             m_siVer.nPage = size.cy;
-            m_siVer.nPos = min(m_siVer.nPos,m_siVer.nMax-m_siVer.nPage);
+            m_siVer.nPos = min(m_siVer.nPos,m_siVer.nMax-(int)m_siVer.nPage);
         }
         else
         {
@@ -168,16 +137,12 @@ namespace SOUI
         int iLastVisible = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos + m_siVer.nPage,false);
         if(m_iSelItem!=-1 && m_iSelItem>=iFirstVisible && m_iSelItem < iLastVisible)
         {
-            SPOSITION pos = m_lstItems.GetHeadPosition();
-            while(pos)
+            SItemPanel *pItem=GetItemPanel(m_iSelItem);
+            if(pItem)
             {
-                ItemInfo ii = m_lstItems.GetNext(pos);
-                if(ii.pItem->GetItemIndex()==m_iSelItem)
-                {
-                    ii.pItem->ModifyItemState(0,WndState_Check);
-                    break;
-                }
+                pItem->ModifyItemState(0,WndState_Check);
             }
+            m_iSelItem = -1;
         }
         if(m_pHoverItem)
         {
@@ -251,7 +216,7 @@ namespace SOUI
         //加速滚动时UI的刷新
         static DWORD dwTime1=0;
         DWORD dwTime=GetTickCount();
-        if(dwTime-dwTime1>50)
+        if(dwTime-dwTime1>50 && m_bScrollUpdate)
         {
             UpdateWindow();
             dwTime1=dwTime;
@@ -262,7 +227,7 @@ namespace SOUI
 
     void SListView::RemoveVisibleItems(int nItems,bool bHeader)
     {
-        SASSERT(nItems<=m_lstItems.GetCount());
+        SASSERT(nItems<=(int)m_lstItems.GetCount());
         if(bHeader)        
         {//hide head items
             for(int i=0;i<nItems;i++)
@@ -332,13 +297,6 @@ namespace SOUI
             {
                 pItemPanel->ModifyItemState(WndState_Check,0);
             }
-            /*
-            if(!m_lvItemLocator->IsFixHeight())
-            {
-                int nHei=0;
-                m_lvItemLocator->SetItemHeight(i,nHei);//防止死循环
-            }
-            */
             ItemInfo ii;
             ii.nType = nItemType;
             ii.pItem = pItemPanel;
@@ -503,27 +461,9 @@ namespace SOUI
             if(uMsg==WM_LBUTTONDOWN )
             {//选择一个新行的时候原有行失去焦点
                 int nSelNew = m_pHoverItem?m_pHoverItem->GetItemIndex():-1;
-                if(m_iSelItem!=-1 && m_iSelItem != nSelNew)
-                {
-                    SPOSITION pos = m_lstItems.GetHeadPosition();
-                    while(pos)
-                    {
-                        ItemInfo ii = m_lstItems.GetNext(pos);
-                        if(ii.pItem->GetItemIndex() == m_iSelItem)
-                        {
-                            ii.pItem->ModifyItemState(0,WndState_Check);
-                            ii.pItem->GetFocusManager()->SetFocusedHwnd(0);
-                            RedrawItem(ii.pItem);
-                            break;
-                        }
-                    }
-                }
-                m_iSelItem = nSelNew;
-                if(m_iSelItem!=-1)
-                {
-                    m_pHoverItem->ModifyItemState(WndState_Check,0);
-                    RedrawItem(m_pHoverItem);
-                }
+                EventListViewItemClick evt(this);
+                evt.iClick = nSelNew;
+                SetSel(nSelNew,TRUE);
             }
             if(m_pHoverItem)
             {
@@ -535,7 +475,17 @@ namespace SOUI
 
     LRESULT SListView::OnKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
     {
-        return 0;
+        LRESULT lRet=0;
+        SItemPanel *pItem = GetItemPanel(m_iSelItem);
+        if(pItem)
+        {
+            lRet=pItem->DoFrameEvent(uMsg,wParam,lParam);
+            SetMsgHandled(pItem->IsMsgHandled());
+        }else
+        {
+            SetMsgHandled(FALSE);
+        }
+        return lRet;
     }
 
     void SListView::OnMouseLeave()
@@ -547,12 +497,135 @@ namespace SOUI
         }
 
     }
+    
+    void SListView::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
+    {
+        int  nNewSelItem = -1;
+        SWindow *pOwner = GetOwner();
+        if (pOwner && (nChar == VK_ESCAPE))
+        {
+            pOwner->SSendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
+            return;
+        }
 
+        m_bScrollUpdate=FALSE;
+        if (nChar == VK_DOWN && m_iSelItem < m_adapter->getCount() - 1)
+            nNewSelItem = m_iSelItem+1;
+        else if (nChar == VK_UP && m_iSelItem > 0)
+            nNewSelItem = m_iSelItem-1;
+        else if (pOwner && nChar == VK_RETURN)
+            nNewSelItem = m_iSelItem;
+        else if(nChar == VK_PRIOR)
+        {
+            OnScroll(TRUE,SB_PAGEUP,0);
+            if(!m_lstItems.IsEmpty())
+            {
+                nNewSelItem = m_lstItems.GetHead().pItem->GetItemIndex();
+            }
+        }else if(nChar == VK_NEXT)
+        {
+            OnScroll(TRUE,SB_PAGEDOWN,0);
+            if(!m_lstItems.IsEmpty())
+            {
+                nNewSelItem = m_lstItems.GetTail().pItem->GetItemIndex();
+            }
+        }
+
+        if(nNewSelItem!=-1)
+        {
+            EnsureVisible(nNewSelItem);
+            SetSel(nNewSelItem);
+        }
+        m_bScrollUpdate=TRUE;
+    }
+    
+    void SListView::EnsureVisible( int iItem )
+    {
+        if(iItem<0 || iItem>=m_adapter->getCount()) return;
+        
+        int iFirstVisible= m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos,true);
+        int iLastVisible = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos+m_siVer.nPage,false);
+        
+        if(iItem>=iFirstVisible && iItem<iLastVisible)
+            return;
+            
+        int pos = m_lvItemLocator->Item2Position(m_adapter,iItem);
+        
+        if(iItem < iFirstVisible)
+        {//scroll up
+            OnScroll(TRUE,SB_THUMBPOSITION,pos);
+        }else // if(iItem >= iLastVisible)
+        {//scroll down
+            int iTop = iItem;
+            int pos2 = pos;
+            int topSize = m_siVer.nPage - m_lvItemLocator->GetItemHeight(m_adapter,iItem);
+            while(iTop>=0 && (pos - pos2) < topSize)
+            {
+                pos2 = m_lvItemLocator->Item2Position(m_adapter,--iTop);
+            }
+            OnScroll(TRUE,SB_THUMBPOSITION,pos2);
+        }
+    }
+    
     BOOL SListView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
     {
+        SItemPanel *pSelItem = GetItemPanel(m_iSelItem);
+        if(pSelItem)
+        {
+            CRect rcItem = pSelItem->GetItemRect();
+            CPoint pt2=pt-rcItem.TopLeft();
+            if(pSelItem->SSendMessage(WM_MOUSEWHEEL,MAKEWPARAM(nFlags,zDelta),MAKELPARAM(pt2.x,pt2.y)))
+                return TRUE;
+        }
         return __super::OnMouseWheel(nFlags, zDelta, pt);
+    }
+
+    int SListView::GetScrollLineSize(BOOL bVertical)
+    {
+        return m_lvItemLocator->GetScrollLineSize();
+    }
+
+    SItemPanel * SListView::GetItemPanel(int iItem)
+    {
+        if(iItem<0 || iItem>=m_adapter->getCount()) 
+            return NULL; 
+        SPOSITION pos = m_lstItems.GetHeadPosition();
+        while(pos)
+        {
+            ItemInfo ii = m_lstItems.GetNext(pos);
+            if((int)ii.pItem->GetItemIndex() == m_iSelItem)
+                return ii.pItem;
+        }
+        return NULL;
+    }
+
+    void SListView::SetSel(int iItem,BOOL bNotify/*=FALSE*/)
+    {
+        if(iItem>=m_adapter->getCount() || iItem == m_iSelItem)
+            return;
+        SItemPanel *pItem = GetItemPanel(m_iSelItem);
+        if(pItem)
+        {
+            pItem->ModifyItemState(0,WndState_Check);
+            RedrawItem(pItem);
+        }
+        if(iItem<0) iItem = -1;
         
-        //return FALSE;
+        EventListViewSelChanged evt(this);
+        evt.iOldSel = m_iSelItem;
+        evt.iNewSel = iItem;
+
+        m_iSelItem = iItem;
+        pItem = GetItemPanel(iItem);
+        if(pItem)
+        {
+            pItem->ModifyItemState(WndState_Check,0);
+            RedrawItem(pItem);
+        }
+        if(bNotify)
+        {
+            FireEvent(evt);
+        }
     }
 
 
