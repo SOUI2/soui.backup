@@ -40,7 +40,6 @@ namespace SOUI
         m_observer.Attach(new SListViewDataSetObserver(this));
         
         m_evtSet.addEvent(EVENTID(EventListViewSelChanged));
-        m_evtSet.addEvent(EVENTID(EventListViewItemClick));
     }
 
     SListView::~SListView()
@@ -474,8 +473,6 @@ namespace SOUI
             if(uMsg==WM_LBUTTONDOWN )
             {//选择一个新行的时候原有行失去焦点
                 int nSelNew = m_pHoverItem?m_pHoverItem->GetItemIndex():-1;
-                EventListViewItemClick evt(this);
-                evt.iClick = nSelNew;
                 SetSel(nSelNew,TRUE);
             }
             if(m_pHoverItem)
@@ -673,6 +670,13 @@ namespace SOUI
     pugi::xml_node SListView::GetTemplate()
     {
         return m_xmlTemplate.first_child();
+    }
+
+    BOOL SListView::OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo)
+    {
+        if(!m_pHoverItem)
+            return __super::OnUpdateToolTip(pt,tipInfo);
+        return m_pHoverItem->OnUpdateToolTip(pt,tipInfo);
     }
 
 

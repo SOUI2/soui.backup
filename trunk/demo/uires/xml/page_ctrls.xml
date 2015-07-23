@@ -230,8 +230,8 @@
         <page title="listview">
           <listview pos="5,[0,-5,-5" name="lv_test" itemHeight="50">
             <template itemHeight="50" colorHover="#cccccc" colorSelected="#0000ff">
-              <button pos="10,5,@150,@25" name="btn_test">btn</button>
-              <animateimg pos="[10,{0" skin="skin_busy" name="ani_test"/>
+              <button pos="10,5,@150,@25" name="btn_test" tip="click the button to see how to writing the response function">btn</button>
+              <animateimg pos="[10,{0" skin="skin_busy" name="ani_test" tip="animateimg is used here" msgTransparent="0" />
               <text pos="-20,{0" offset="-1,0" colorText="#ff0000">text item</text>
             </template>
           </listview>
