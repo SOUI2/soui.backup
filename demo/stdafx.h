@@ -19,7 +19,6 @@
 
 #include "../controls.extend/SWkeWebkit.h"
 #include "../controls.extend/gif/SGifPlayer.h"
-#include "../controls.extend/gif/SGifPlayer2.h"
 #include "../controls.extend/SIPAddressCtrl.h"
 #include "../controls.extend/SImageMaskWnd.h"
 
