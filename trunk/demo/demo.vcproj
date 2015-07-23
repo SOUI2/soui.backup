@@ -281,10 +281,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\controls.extend\gif\SGifPlayer2.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\controls.extend\SIECtrl.cpp"
 				>
 			</File>
@@ -428,10 +424,6 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\gif\SGifPlayer.h"
-				>
-			</File>
-			<File
-				RelativePath="..\controls.extend\gif\SGifPlayer2.h"
 				>
 			</File>
 			<File
