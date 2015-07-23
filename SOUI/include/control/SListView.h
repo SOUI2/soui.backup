@@ -60,16 +60,6 @@ namespace SOUI
         int iOldSel;
         int iNewSel;
     };
-
-    class SOUI_EXP EventListViewItemClick : public TplEventArgs<EventListViewItemClick>
-    {
-        SOUI_CLASS_NAME(EventListViewItemClick,L"on_listview_item_click")
-    public:
-        EventListViewItemClick(SObject *pSender):TplEventArgs<EventListViewItemClick>(pSender){}
-        enum{EventID=EVT_LV_ITEMCLICK};
-
-        int iClick;
-    };
     
     class SOUI_EXP SListView : public SPanel
         , protected IItemContainer
@@ -103,6 +93,9 @@ namespace SOUI
         virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
         virtual int  GetScrollLineSize(BOOL bVertical);
         virtual BOOL CreateChildren(pugi::xml_node xmlNode);
+
+        virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo);
+
     protected:
         void UpdateScrollBar();
         void RedrawItem(SItemPanel *pItem);

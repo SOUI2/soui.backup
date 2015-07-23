@@ -42,30 +42,6 @@ namespace SOUI
         */
         virtual int getCount() PURE;   
 
-        /**
-        * Get the data item associated with the specified position in the data set.
-        * 
-        * @param position Position of the item whose data we want within the adapter's 
-        * data set.
-        * @return The data at the specified position.
-        */
-        virtual SObject * getItem(int position) PURE;
-
-        /**
-        * Get the row id associated with the specified position in the list.
-        * 
-        * @param position The position of the item within the adapter's data set whose row id we want.
-        * @return The id of the item at the specified position.
-        */
-        virtual long getItemId(int position) PURE;
-
-        /**
-        * Indicates whether the item ids are stable across changes to the
-        * underlying data.
-        * 
-        * @return True if the same id always refers to the same object.
-        */
-        virtual bool hasStableIds() PURE;
 
         /**
         * Get a View that displays the data at the specified position in the data set. You can either
