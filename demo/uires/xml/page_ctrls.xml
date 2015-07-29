@@ -308,10 +308,7 @@
       <sliderbar name="slider_test4" thumbInRail="1" vertical="1" pos="[10,10" alpha="200" height="200" value="20" min="0" max="100"/>
     </page>
     <page title="calendar">
-      <calendar pos="0,0,-0,-0" name="mp_test" daySkin="_skin.sys.btn.normal" footerHeight="30">
-        <text name="label_today" pos="10,-20"/>
-        <button name="btn_today" pos="-50,-25,-5,-0" skin="_skin.sys.btn.normal">today</button>
-      </calendar>
+      <calendar pos="0,0,-0,-0" name="mp_test" daySkin="_skin.sys.btn.normal" footerHeight="30"/>
     </page>
     <page title="split">
       <splitrow name="split_row" pos="10,0,-10,-10" sepSize="6">

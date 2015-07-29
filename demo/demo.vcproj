@@ -542,6 +542,10 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath=".\uires\xml\calendar.xml"
+			>
+		</File>
+		<File
 			RelativePath="demo.rc"
 			>
 		</File>

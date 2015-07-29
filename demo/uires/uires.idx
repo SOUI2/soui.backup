@@ -23,6 +23,7 @@
     <file name="treectrl" path="xml\treectrl.xml" />
     <file name="page_script" path="xml\page_script.xml"/>
     <file name="dlg_formatmsg" path="xml\dlg_formatmsg.xml"/>
+    <file name="template_calendar" path="xml\calendar.xml"/>
   </LAYOUT>
   <IMGX>
     <file name="img_busy" path="image\img_busy.png"/>
