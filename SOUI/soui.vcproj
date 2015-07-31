@@ -279,7 +279,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\control\SComboBase.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\control\SComboBox.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\control\SComboView.cpp"
 				>
 			</File>
 			<File
@@ -605,7 +613,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\control\SComboBase.h"
+				>
+			</File>
+			<File
 				RelativePath="include\control\SComboBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\control\SComboView.h"
 				>
 			</File>
 			<File

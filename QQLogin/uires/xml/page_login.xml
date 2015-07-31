@@ -13,25 +13,21 @@
     <caption pos="0,30,-0,-0">
       <!--body-->
       <caption pos="0,80,-0,-0">
-            <img pos="23,37,101,115" skin="img_head" />
-            <img pos="22,36,102,116" skin="img_head_mask" />
+        <img pos="23,37,101,115" skin="img_avatars" name="img_avatar"/>
+        <img pos="22,36,102,116" skin="img_head_mask" />
 
-        <comboboxex name="cbx_account" pos="114,36,300,64" dropDown="0" dropHeight="200" class="cls_edit" curSel="0" id_text="3">
-          <liststyle class="cls_edit"   itemHeight="44" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd1="#FFFFFF" colorItemSelBkgnd="#3991D1" colorBkgnd="#ffffff">
-            <template>
-              <img id="1" pos="1,|-20,41,|20" skin="img_head_small" /><!---->
+        <comboview name="cbx_account" pos="114,36,300,64" dropDown="0" dropHeight="200" class="cls_edit" curSel="0" id_text="3">
+          <liststyle class="cls_edit" colorBkgnd="#ffffff">
+            <template itemHeight="44" colorHover="#cccccc" colorSelected="#0000ff">
+              <img id="1" pos="1,|-20,@32,@32" skin="img_avatars" />
               <text id="2" pos="49,9">想象元素</text>
-              <text id="3" pos="48,26" colorText="#FFFFFF"/>
+              <text id="3" pos="48,26" colorText="#ff0000"/>
               <imgbtn id="4" pos="-24,|-8,-10,|7" skin="btn_list_close" tip="删除账号信息"/>
             </template>
           </liststyle>
           <editstyle vcenter="1" colorText="#000000" align="left" colorBkgnd="#FFFFFF" cueText="输入帐号"/>
-          <items>
-            <item text="276883782"/>
-			<item text="276883782"/>
-			<item text="276883782"/>
-          </items>
-        </comboboxex>
+
+        </comboview>
 
 
         <window pos="114,70,300,98" class="cls_edit" colorBkgnd="#ffffff">

@@ -19,6 +19,7 @@
     <file name="BTN_LOGIN_2DCODE" path="image\login_2dcode.png"/>
     <file name="IMG_HEAD_MASK" path="image\head_mask.png"/>
     <file name="IMG_HEAD" path="image\head.png"/>
+    <file name="IMG_AVATARS" path="image\avatars.png"/>
   </IMGX>
   <jpg>
     <file name="IMG_HEAD_SMALL" path="image\small_head.jpg"/>

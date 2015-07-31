@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unknown/obj-ref-i.h>
+#include <string/tstring.h>
 
 namespace SOUI
 {
@@ -98,6 +99,16 @@ namespace SOUI
         * adapters might want a different behavior.
         */
         virtual bool isEmpty() PURE;
+        
+        /**
+        * @return a custom defined data that associate with the specified item.
+        */
+        virtual ULONG_PTR getItemData(int position) PURE;
+        
+        /**
+        * @return a string object that associate with the specified item.
+        */
+        virtual SStringT getItemDesc(int positoin) PURE;
     };
     
 }
