@@ -50,16 +50,6 @@ namespace SOUI
         int m_nItemHeight;
     };
     
-    class SOUI_EXP EventListViewSelChanged : public TplEventArgs<EventListViewSelChanged>
-    {
-        SOUI_CLASS_NAME(EventListViewSelChanged,L"on_listview_select_changed")
-    public:
-        EventListViewSelChanged(SObject *pSender):TplEventArgs<EventListViewSelChanged>(pSender){}
-        enum{EventID=EVT_LV_SELCHANGED};
-        
-        int iOldSel;
-        int iNewSel;
-    };
     
     class SOUI_EXP SListView : public SPanel
         , protected IItemContainer
@@ -72,6 +62,15 @@ namespace SOUI
         ~SListView();
 
         BOOL SetAdapter(IAdapter * adapter);
+        
+        IAdapter * GetAdapter() {
+            return m_adapter;
+        }
+        
+        IListViewItemLocator * GetItemLocator(){
+            return m_lvItemLocator;
+        }
+        
         void SetItemLocator(IListViewItemLocator *pItemLocator);
         void EnsureVisible( int iItem );
         
@@ -97,6 +96,8 @@ namespace SOUI
         virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo);
 
     protected:
+        void _SetSel(int iItem,BOOL bNotify, SWND hHitWnd);
+
         void UpdateScrollBar();
         void RedrawItem(SItemPanel *pItem);
         SItemPanel * HitTest(CPoint & pt);

@@ -21,6 +21,7 @@
     <imglist name="img_head" src="imgx:IMG_HEAD"/>
     <imglist name="img_head_mask" src="imgx:IMG_HEAD_MASK"/>
     <imglist name="img_head_small" src="jpg:IMG_HEAD_SMALL"/>
+    <imglist name="img_avatars" src="imgx:img_avatars" states="8"/>
   </skin>
 
   <style>

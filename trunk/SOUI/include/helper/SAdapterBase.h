@@ -102,19 +102,9 @@ namespace SOUI
 
         virtual int getCount() PURE;   
 
-        virtual SObject * getItem(int position)
-        {
-            return NULL;
-        }
-
         virtual long getItemId(int position)
         {
             return position;
-        }
-
-        virtual bool hasStableIds()
-        {
-            return false;
         }
 
         virtual int getItemViewType(int position)
@@ -132,6 +122,13 @@ namespace SOUI
             return getCount()>0;
         }
 
+        virtual ULONG_PTR getItemData(int position){
+            return 0;
+        }
+        
+        virtual SStringT getItemDesc(int position){
+            return SStringT();
+        }
     protected:
         SObserverMgr    m_obzMgr;
     };

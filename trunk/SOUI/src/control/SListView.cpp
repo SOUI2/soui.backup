@@ -39,7 +39,7 @@ namespace SOUI
         m_bFocusable = TRUE;
         m_observer.Attach(new SListViewDataSetObserver(this));
         
-        m_evtSet.addEvent(EVENTID(EventListViewSelChanged));
+        m_evtSet.addEvent(EVENTID(EventLVSelChanged));
     }
 
     SListView::~SListView()
@@ -169,8 +169,7 @@ namespace SOUI
 
     void SListView::onDataSetInvalidated()
     {
-        //todo:
-        onDataSetChanged();
+        Invalidate();
     }
 
     void SListView::OnPaint(IRenderTarget *pRT)
@@ -274,7 +273,7 @@ namespace SOUI
 
     void SListView::AddVisibleItems(int iItem1,int iItem2,bool bHeader)
     {
-        SASSERT(iItem2 > iItem1);
+        SASSERT(iItem2 >= iItem1);
         //将先增加的可见项保存到临时列表中
         SList<ItemInfo> lstItems;
         for(int i=iItem1;i<iItem2;i++)
@@ -442,6 +441,9 @@ namespace SOUI
 
         LRESULT lRet=0;
         CPoint pt(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+        
+        if(uMsg == WM_LBUTTONDOWN)
+            __super::OnLButtonDown(wParam,pt);
 
         if(m_itemCapture)
         {
@@ -472,14 +474,24 @@ namespace SOUI
             }
             if(uMsg==WM_LBUTTONDOWN )
             {//选择一个新行的时候原有行失去焦点
-                int nSelNew = m_pHoverItem?m_pHoverItem->GetItemIndex():-1;
-                SetSel(nSelNew,TRUE);
+                SWND hHitWnd = 0;
+                int nSelNew = -1;
+                if(m_pHoverItem)
+                {
+                    nSelNew = m_pHoverItem->GetItemIndex();
+                    hHitWnd = m_pHoverItem->SwndFromPoint(pt,FALSE);
+                }
+                
+                _SetSel(nSelNew,TRUE,hHitWnd);
             }
             if(m_pHoverItem)
             {
                 m_pHoverItem->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
             }
         }
+        if(uMsg == WM_LBUTTONUP)
+            __super::OnLButtonUp(wParam,pt);
+
         return 0;
     }
 
@@ -616,33 +628,7 @@ namespace SOUI
 
     void SListView::SetSel(int iItem,BOOL bNotify/*=FALSE*/)
     {
-        if(!m_adapter) return;
-        
-        if(iItem>=m_adapter->getCount() || iItem == m_iSelItem)
-            return;
-        SItemPanel *pItem = GetItemPanel(m_iSelItem);
-        if(pItem)
-        {
-            pItem->ModifyItemState(0,WndState_Check);
-            RedrawItem(pItem);
-        }
-        if(iItem<0) iItem = -1;
-        
-        EventListViewSelChanged evt(this);
-        evt.iOldSel = m_iSelItem;
-        evt.iNewSel = iItem;
-
-        m_iSelItem = iItem;
-        pItem = GetItemPanel(iItem);
-        if(pItem)
-        {
-            pItem->ModifyItemState(WndState_Check,0);
-            RedrawItem(pItem);
-        }
-        if(bNotify)
-        {
-            FireEvent(evt);
-        }
+        _SetSel(iItem,bNotify,0);
     }
 
     BOOL SListView::CreateChildren(pugi::xml_node xmlNode)
@@ -677,6 +663,52 @@ namespace SOUI
         if(!m_pHoverItem)
             return __super::OnUpdateToolTip(pt,tipInfo);
         return m_pHoverItem->OnUpdateToolTip(pt,tipInfo);
+    }
+
+    void SListView::_SetSel(int iItem,BOOL bNotify, SWND hHitWnd)
+    {
+        if(!m_adapter) return;
+
+        if(iItem>=m_adapter->getCount())
+            return;
+            
+        if(iItem<0) iItem = -1;
+
+        int nOldSel = m_iSelItem;
+        int nNewSel = iItem;
+        
+        m_iSelItem = nNewSel;
+        if(bNotify)
+        {
+            EventLVSelChanged evt(this);
+            evt.iOldSel = nOldSel;
+            evt.iNewSel = nNewSel;
+            evt.hHitWnd =hHitWnd;
+            FireEvent(evt);
+            if(evt.bCancel) 
+            {//Cancel SetSel and restore selection state
+                m_iSelItem = nOldSel;
+                return;
+            }
+        }
+        
+        if(nOldSel == nNewSel)
+            return;
+        
+        m_iSelItem = nOldSel;
+        SItemPanel *pItem = GetItemPanel(nOldSel);
+        if(pItem)
+        {
+            pItem->ModifyItemState(0,WndState_Check);
+            RedrawItem(pItem);
+        }
+        m_iSelItem = nNewSel;
+        pItem = GetItemPanel(nNewSel);
+        if(pItem)
+        {
+            pItem->ModifyItemState(WndState_Check,0);
+            RedrawItem(pItem);
+        }
     }
 
 

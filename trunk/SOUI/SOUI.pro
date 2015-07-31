@@ -41,7 +41,9 @@ HEADERS += include/SApp.h \
            include/control/SCalendar.h \
            include/control/SCaption.h \
            include/control/SCmnCtrl.h \
+           include/control/SComboBase.h \
            include/control/SComboBox.h \
+           include/control/SComboView.h \
            include/control/SDropDown.h \
            include/control/SHeaderCtrl.h \
            include/control/SHotKeyCtrl.h \
@@ -138,7 +140,9 @@ SOURCES += src/SApp.cpp \
            src/control/SCalendar.cpp \
            src/control/SCaption.cpp \
            src/control/SCmnCtrl.cpp \
+           src/control/SComboBase.cpp \
            src/control/SComboBox.cpp \
+           src/control/SComboView.cpp \
            src/control/SDropDown.cpp \
            src/control/SHeaderCtrl.cpp \
            src/control/SHotKeyCtrl.cpp \
