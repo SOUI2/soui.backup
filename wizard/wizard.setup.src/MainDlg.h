@@ -234,17 +234,22 @@ public:
 				
 				CopyFile(szFrom,szTo,FALSE);
 								
-				FILE *f=_tfopen(szTo,_T("r+"));
+				FILE *f=_tfopen(szTo,_T("r"));
 				if(f)
 				{
 				    char szBuf[4096];
 				    int nReaded=fread(szBuf,1,4096,f);
 				    szBuf[nReaded]=0;
-				    CStringA str=szBuf;
-				    str.Replace("%SOUIPATH%",CT2A(szSouiDir));
-				    fseek(f,0,SEEK_SET);
-				    fwrite((LPCSTR)str,1,str.GetLength(),f);
-				    fclose(f);				    
+				    fclose(f);
+				    
+				    f=_tfopen(szTo,_T("w"));
+				    if(f)
+                    {//清空原数据再重新写入新数据
+                        CStringA str=szBuf;
+                        str.Replace("%SOUIPATH%",CT2A(szSouiDir));
+                        fwrite((LPCSTR)str,1,str.GetLength(),f);
+                        fclose(f);
+                    }
 				}
 			}
 
