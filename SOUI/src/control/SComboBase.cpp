@@ -69,7 +69,7 @@ namespace SOUI
         ,m_bDropdown(TRUE)
         ,m_nDropHeight(200)
         ,m_dwBtnState(WndState_Normal)
-        ,m_iAnimTime(200)
+        ,m_nAnimTime(200)
         ,m_pDropDownWnd(NULL)
         ,m_iInitSel(-1)
         ,m_nTextOffset(0)
@@ -306,7 +306,10 @@ namespace SOUI
             CRect rcPopup;
             BOOL bDown=CalcPopupRect(GetListBoxHeight(),rcPopup);
             m_pDropDownWnd->Create(rcPopup,0);
-            m_pDropDownWnd->AnimateHostWindow(m_iAnimTime,AW_SLIDE|(bDown?AW_VER_POSITIVE:AW_VER_NEGATIVE));
+            if(m_nAnimTime>0)
+                m_pDropDownWnd->AnimateHostWindow(m_nAnimTime,AW_SLIDE|(bDown?AW_VER_POSITIVE:AW_VER_NEGATIVE));
+            else
+                m_pDropDownWnd->SetWindowPos(HWND_TOP,0,0,0,0,SWP_SHOWWINDOW|SWP_NOMOVE|SWP_NOZORDER|SWP_NOSIZE);
         }
     }
 

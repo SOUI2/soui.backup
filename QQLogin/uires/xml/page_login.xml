@@ -16,7 +16,7 @@
         <img pos="23,37,101,115" skin="img_avatars" name="img_avatar"/>
         <img pos="22,36,102,116" skin="img_head_mask" />
 
-        <comboview name="cbx_account" pos="114,36,300,64" dropDown="0" dropHeight="200" class="cls_edit" curSel="0" id_text="3">
+        <comboview name="cbx_account" pos="114,36,300,64" dropDown="0" dropHeight="200" animateTime="0" class="cls_edit" curSel="0" id_text="3">
           <liststyle class="cls_edit" colorBkgnd="#ffffff">
             <template itemHeight="44" colorHover="#cccccc" colorSelected="#0000ff">
               <img id="1" pos="1,|-20,@32,@32" skin="img_avatars" />
