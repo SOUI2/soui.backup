@@ -79,7 +79,6 @@ HEADERS += include/SApp.h \
            include/core/SSkinObjBase.h \
            include/core/SSkin.h \
            include/core/SSkinFactoryMgr.h \
-           include/core/SThreadActiveWndMgr.h \
            include/core/SWindowMgr.h \
            include/core/Swnd.h \
            include/core/SwndContainer-i.h \
@@ -171,7 +170,6 @@ SOURCES += src/SApp.cpp \
            src/core/SPanel.cpp \
            src/core/SSkin.cpp \
            src/core/SSkinFactoryMgr.cpp \
-           src/core/SThreadActiveWndMgr.cpp \
            src/core/SWindowMgr.cpp \
            src/core/Swnd.cpp \
            src/core/SwndContainerImpl.cpp \
