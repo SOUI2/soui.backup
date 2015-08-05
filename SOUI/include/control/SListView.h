@@ -2,54 +2,110 @@
 
 #include "core/Swnd.h"
 #include "interface/Adapter-i.h"
+#include "stree.hpp"
 
 namespace SOUI
 {
     interface IListViewItemLocator : public IObjRef
     {
-        virtual int GetItemHeight(IAdapter *adapter,int iItem) PURE;
-        virtual int GetTotalHeight(IAdapter *adapter) PURE;
-        virtual int Item2Position(IAdapter *adapter,int iItem) PURE;
-        virtual int Position2Item(IAdapter *adapter,int position,bool bTop) PURE;
+        virtual void SetAdapter(IAdapter *pAdapter) PURE;
+        virtual bool IsFixHeight() const PURE;
+        virtual int GetItemHeight(int iItem) PURE;
+        virtual void SetItemHeight(int iItem,int nHeight) PURE;
+        virtual int GetTotalHeight() PURE;
+        virtual int Item2Position(int iItem) PURE;
+        virtual int Position2Item(int position) PURE;
         virtual int GetScrollLineSize() const PURE;
     };
     
     class SOUI_EXP SListViewItemLocatorFix : public TObjRefImpl<IListViewItemLocator>
     {
     public:
-        SListViewItemLocatorFix(int nItemHei):m_nItemHeight(nItemHei){}
+        SListViewItemLocatorFix(int nItemHei);
+        
+        virtual void SetAdapter(IAdapter *pAdapter);
 
-        virtual int GetItemHeight(IAdapter *adapter,int iItem){
-            return m_nItemHeight;
-        }
-        virtual int GetTotalHeight(IAdapter *adapter)
-        {
-            if(!adapter) return 0;
-            return m_nItemHeight * adapter->getCount();
-        }
-        virtual int Item2Position(IAdapter *adapter,int iItem)
-        {
-            return iItem * m_nItemHeight;
-        }
+        virtual bool IsFixHeight() const;
+        
+        virtual int GetItemHeight(int iItem);
+        
+        virtual void SetItemHeight(int iItem,int nHeight);
+        
 
-        virtual int Position2Item(IAdapter *adapter,int position,bool bTop)
-        {
-            if(!adapter) return -1;
-            int nRet = (position+(bTop?0:(m_nItemHeight-1)))/m_nItemHeight;
+        virtual int GetTotalHeight();
+        virtual int Item2Position(int iItem);
 
-            if(nRet<0) nRet =0;
-            if(nRet>adapter->getCount()) nRet = adapter->getCount();
-            return nRet;
-        }
+        virtual int Position2Item(int position);
 
-        virtual int GetScrollLineSize() const 
-        {
-            return m_nItemHeight;
-        }        
+        virtual int GetScrollLineSize() const;        
     protected:
         int m_nItemHeight;
+        CAutoRefPtr<IAdapter> m_adapter;
     };
     
+    class SOUI_EXP SListViewItemLocatorFlex : public TObjRefImpl<IListViewItemLocator>
+    {
+    
+    public:
+        
+        SListViewItemLocatorFlex(int nItemHei);
+        ~SListViewItemLocatorFlex();
+        
+        
+        virtual void SetAdapter(IAdapter *pAdapter);
+
+        virtual bool IsFixHeight() const;
+
+        virtual int GetItemHeight(int iItem);
+
+        virtual void SetItemHeight(int iItem,int nHeight);
+
+
+        virtual int GetTotalHeight();
+        virtual int Item2Position(int iItem);
+
+        virtual int Position2Item(int position);
+
+        virtual int GetScrollLineSize() const;        
+    protected:
+        void InitIndex(HSTREEITEM hParent,int nItems,int nSubBranchSize);
+
+        int GetIndexDeep() const;
+        void Clear();
+        int Branch2Offset(HSTREEITEM hBranch) const;
+        int Branch2Index(HSTREEITEM hBranch) const;
+        HSTREEITEM Offset2Branch(HSTREEITEM hParent,int nOffset);
+        
+        int m_nItemHeight;  //默认表项高度
+        
+        struct BranchInfo
+        {
+            int nBranchHei; //分枝高度
+            int nBranchSize;//分枝中包含的节点数量
+        };
+        
+        CSTree<BranchInfo>    m_itemPosIndex;//记录分枝高度
+        class SegmentInfo
+        {
+        public:
+            SegmentInfo(int nItems,HSTREEITEM hBranch):hItem(hBranch){
+                this->nItems = nItems;
+                pItemHeight = new int[nItems];
+                memset(pItemHeight,0,nItems*sizeof(int));
+            }
+            ~SegmentInfo()
+            {
+                if(pItemHeight) delete[] pItemHeight;
+            }
+        
+            HSTREEITEM hItem;
+            int        nItems;
+            int*       pItemHeight;//段中每一个表项的高度
+        };
+        
+        SArray<SegmentInfo*>     m_segments;
+        CAutoRefPtr<IAdapter>   m_adapter;
+    };
     
     class SOUI_EXP SListView : public SPanel
         , protected IItemContainer
@@ -103,10 +159,7 @@ namespace SOUI
         SItemPanel * HitTest(CPoint & pt);
         SItemPanel * GetItemPanel(int iItem);
         
-        void UpdateVisibleItems(int minOld,int maxOld,int minNew,int maxNew);
-        
-        void RemoveVisibleItems(int nItems,bool bHeader);
-        void AddVisibleItems(int iItem1,int iItem2,bool bHeader);
+        void UpdateVisibleItems();
         
         void OnPaint(IRenderTarget *pRT);
         void OnSize(UINT nType, CSize size);
@@ -143,6 +196,7 @@ namespace SOUI
             int nType;
         };
         
+        int                             m_iFirstVisible;//第一个显示项索引
         SList<ItemInfo>                 m_lstItems; //当前正在显示的项
         SItemPanel*                     m_itemCapture;//The item panel that has been set capture.
         
