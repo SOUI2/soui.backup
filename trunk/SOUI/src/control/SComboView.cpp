@@ -39,7 +39,7 @@ namespace SOUI
         {
             IListViewItemLocator * pItemLocator = m_pListBox->GetItemLocator();
             SASSERT(pItemLocator);
-            nDropHeight = min(nDropHeight,pItemLocator->GetTotalHeight(m_pListBox->GetAdapter())+m_pListBox->GetStyle().m_nMarginY*2);
+            nDropHeight = min(nDropHeight,pItemLocator->GetTotalHeight()+m_pListBox->GetStyle().m_nMarginY*2);
         }
         return nDropHeight;    
     }

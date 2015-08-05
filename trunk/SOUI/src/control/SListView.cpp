@@ -1,5 +1,6 @@
 #include "souistd.h"
 #include "control/SListView.h"
+#include <math.h>
 
 namespace SOUI
 {
@@ -30,8 +31,287 @@ namespace SOUI
     }
 
     //////////////////////////////////////////////////////////////////////////
+    // SListViewItemLocatorFix
+    SListViewItemLocatorFix::SListViewItemLocatorFix(int nItemHei) :m_nItemHeight(nItemHei)
+    {
+
+    }
+
+    int SListViewItemLocatorFix::GetScrollLineSize() const
+    {
+        return m_nItemHeight;
+    }
+
+    int SListViewItemLocatorFix::Position2Item(int position)
+    {
+        if(!m_adapter) return -1;
+        int nRet = position/m_nItemHeight;
+
+        if(nRet<0) nRet =0;
+        if(nRet>m_adapter->getCount()) nRet = m_adapter->getCount();
+        return nRet;
+    }
+
+    int SListViewItemLocatorFix::Item2Position(int iItem)
+    {
+        return iItem * m_nItemHeight;
+    }
+
+    int SListViewItemLocatorFix::GetTotalHeight()
+    {
+        if(!m_adapter) return 0;
+        return m_nItemHeight * m_adapter->getCount();
+    }
+
+    void SListViewItemLocatorFix::SetItemHeight(int iItem,int nHeight)
+    {
+    }
+
+    int SListViewItemLocatorFix::GetItemHeight(int iItem)
+    {
+        return m_nItemHeight;
+    }
+
+    bool SListViewItemLocatorFix::IsFixHeight() const
+    {
+        return true;
+    }
+
+    void SListViewItemLocatorFix::SetAdapter(IAdapter *pAdapter)
+    {
+        m_adapter = pAdapter;
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////
+    //  SListViewItemLocatorFlex
+    double logbase(double a, double base)
+    {
+        return log(a) / log(base);
+    }
+    
+    #define SEGMENT_SIZE    50  //数据分组最大长度
+    #define INDEX_WIDTH     10  //索引表一级最大节点数
+    
+    SListViewItemLocatorFlex::SListViewItemLocatorFlex(int nItemHei) :m_nItemHeight(nItemHei)
+    {
+
+    }
+
+    int SListViewItemLocatorFlex::GetScrollLineSize() const
+    {
+        return m_nItemHeight;
+    }
+
+    int SListViewItemLocatorFlex::Position2Item(int position)
+    {
+        if(!m_adapter) return -1;
+        if(position<0 || position>=GetTotalHeight()) 
+            return -1;
+        HSTREEITEM hItem = Offset2Branch(STVI_ROOT,position);
+        SASSERT(hItem);
+        int idx = Branch2Index(hItem);
+        int offset = Branch2Offset(hItem);
+        BranchInfo &bi = m_itemPosIndex.GetItemRef(hItem);
+        SASSERT(bi.nBranchHei>=position-offset);
+        
+        int iSeg = idx/SEGMENT_SIZE;
+        int nRemain = position - offset;
+        
+        SegmentInfo *psi = m_segments[iSeg];
+        
+        for(int i=0;i<psi->nItems;i++)
+        {
+            int nItemHei = psi->pItemHeight[i]==0?m_nItemHeight:psi->pItemHeight[i];
+            if(nRemain<=nItemHei) return idx + i;
+            nRemain -= nItemHei;
+        }
+        
+        SASSERT(FALSE);
+        return -1;
+    }
+
+    int SListViewItemLocatorFlex::Item2Position(int iItem)
+    {
+        if(!m_adapter) return 0;
+        int iSeg = iItem/SEGMENT_SIZE;
+        int iSubItem = iItem%SEGMENT_SIZE;
+        SegmentInfo *psi = m_segments[iSeg];
+        
+        int nPos = Branch2Offset(psi->hItem);
+        for(int i=0;i<iSubItem;i++)
+        {
+            nPos += psi->pItemHeight[i]==0?m_nItemHeight:psi->pItemHeight[i];
+        }
+        return nPos;
+    }
+
+    int SListViewItemLocatorFlex::GetTotalHeight()
+    {
+        if(!m_adapter) return 0;
+        HSTREEITEM hItem = m_itemPosIndex.GetRootItem();
+        return m_itemPosIndex.GetItem(hItem).nBranchHei;
+    }
+
+    void SListViewItemLocatorFlex::SetItemHeight(int iItem,int nHeight)
+    {
+        if(!m_adapter) return;
+        int iSeg = iItem/SEGMENT_SIZE;
+        int iSubItem = iItem%SEGMENT_SIZE;
+        SegmentInfo *psi = m_segments[iSeg];
+        int nOldHei = psi->pItemHeight[iSubItem];
+        if(nOldHei==0) nOldHei = m_nItemHeight;
+        psi->pItemHeight[iSubItem] = nHeight;
+        if(nOldHei != nHeight)
+        {
+            int nHeiDif = nHeight - nOldHei;
+            HSTREEITEM hBranch = psi->hItem;
+            while(hBranch)
+            {
+                BranchInfo & bi = m_itemPosIndex.GetItemRef(hBranch);
+                bi.nBranchHei += nHeiDif;
+                hBranch = m_itemPosIndex.GetParentItem(hBranch);
+            }
+        }
+    }
+
+    int SListViewItemLocatorFlex::GetItemHeight(int iItem)
+    {
+        if(!m_adapter) return 0;
+        int iSeg = iItem/SEGMENT_SIZE;
+        int iSubItem = iItem%SEGMENT_SIZE;
+        SegmentInfo *psi = m_segments[iSeg];
+        int nRet = psi->pItemHeight[iSubItem];
+        if(nRet == 0) nRet = m_nItemHeight;
+        return nRet;
+    }
+
+    bool SListViewItemLocatorFlex::IsFixHeight() const
+    {
+        return false;
+    }
+
+    void SListViewItemLocatorFlex::SetAdapter(IAdapter *pAdapter)
+    {
+        Clear();
+        m_adapter = pAdapter;
+        if(m_adapter)
+        {
+            int nTreeSize =  m_adapter->getCount();
+            int nBranchSize = SEGMENT_SIZE;
+            int nTreeDeep = GetIndexDeep();
+            for(int i=0;i<nTreeDeep;i++)
+                nBranchSize *= INDEX_WIDTH;
+            InitIndex(STVI_ROOT,nTreeSize,nBranchSize);
+        }
+    }
+
+
+    void SListViewItemLocatorFlex::InitIndex(HSTREEITEM hParent,int nItems,int nBranchSize)
+    {
+        BranchInfo bi;
+        bi.nBranchHei = nItems*m_nItemHeight;
+        bi.nBranchSize = nItems;
+        
+        HSTREEITEM hBranch = m_itemPosIndex.InsertItem(bi,hParent);
+        if(nItems > SEGMENT_SIZE)
+        {//插入子节点
+            int nRemain = nItems;
+            int nSubBranchSize = nBranchSize/INDEX_WIDTH;
+            while(nRemain>0)
+            {
+                int nItems2 = nSubBranchSize;
+                if(nItems2>nRemain) nItems2 = nRemain;
+                InitIndex(hBranch,nItems2,nSubBranchSize);
+                nRemain -= nItems2;
+            }
+        }else
+        {
+            m_segments.Add(new SegmentInfo(nItems,hBranch));
+        }
+    }
+
+    int SListViewItemLocatorFlex::GetIndexDeep() const
+    {
+        if(!m_adapter) return 0;
+        if(m_adapter->getCount()==0) return 0;
+        return (int)ceil(logbase((m_adapter->getCount()+SEGMENT_SIZE-1)/SEGMENT_SIZE,INDEX_WIDTH));
+    }
+
+    void SListViewItemLocatorFlex::Clear()
+    {
+        m_itemPosIndex.DeleteAllItems();
+        for(int i=0;i<m_segments.GetCount();i++)
+        {
+            delete m_segments[i];
+        }
+        m_segments.RemoveAll();
+    }
+
+    SListViewItemLocatorFlex::~SListViewItemLocatorFlex()
+    {
+        Clear();
+    }
+
+    int SListViewItemLocatorFlex::Branch2Offset(HSTREEITEM hBranch) const
+    {
+        int nOffset = 0;
+        HSTREEITEM hPrev = m_itemPosIndex.GetPrevSiblingItem(hBranch);
+        while(hPrev)
+        {
+            nOffset += m_itemPosIndex.GetItem(hPrev).nBranchHei;
+            hPrev = m_itemPosIndex.GetPrevSiblingItem(hPrev);
+        }
+        HSTREEITEM hParent = m_itemPosIndex.GetParentItem(hBranch);
+        if(hParent)
+        {
+            nOffset += Branch2Offset(hParent);
+        }
+        return nOffset;
+    }
+    
+    int SListViewItemLocatorFlex::Branch2Index(HSTREEITEM hBranch) const
+    {
+        int iIndex = 0;
+        HSTREEITEM hPrev = m_itemPosIndex.GetPrevSiblingItem(hBranch);
+        while(hPrev)
+        {
+            iIndex += m_itemPosIndex.GetItem(hPrev).nBranchSize;
+            hPrev = m_itemPosIndex.GetPrevSiblingItem(hPrev);
+        }
+        HSTREEITEM hParent = m_itemPosIndex.GetParentItem(hBranch);
+        if(hParent)
+        {
+            iIndex += Branch2Index(hParent);
+        }
+        return iIndex;
+    }
+    
+    HSTREEITEM SListViewItemLocatorFlex::Offset2Branch(HSTREEITEM hParent,int nOffset)
+    {
+        HSTREEITEM hItem = m_itemPosIndex.GetChildItem(hParent);
+        if(!hItem) return hParent;
+        
+        while(hItem)
+        {
+            BranchInfo bi = m_itemPosIndex.GetItem(hItem);
+            if(nOffset>bi.nBranchHei)
+            {
+                nOffset -= bi.nBranchHei;
+                hItem = m_itemPosIndex.GetNextSiblingItem(hItem);
+            }else
+            {
+                return Offset2Branch(hItem,nOffset);
+            }
+        }
+        return NULL;
+    }
+
+    
+    //////////////////////////////////////////////////////////////////////////
     SListView::SListView()
     :m_iSelItem(-1)
+    ,m_iFirstVisible(-1)
     ,m_pHoverItem(NULL)
     ,m_itemCapture(NULL)
     ,m_bScrollUpdate(TRUE)
@@ -85,6 +365,8 @@ namespace SOUI
         }
         
         m_adapter = adapter;
+        if(m_lvItemLocator)
+            m_lvItemLocator->SetAdapter(adapter);
         if(m_adapter) 
         {
             m_adapter->registerDataSetObserver(m_observer);
@@ -103,7 +385,7 @@ namespace SOUI
         CSize size = rcClient.Size();
         CSize szView;
         szView.cx = rcClient.Width();
-        szView.cy = m_lvItemLocator->GetTotalHeight(m_adapter);
+        szView.cy = m_lvItemLocator->GetTotalHeight();
 
         //  关闭滚动条
         m_wBarVisible = SSB_NULL;
@@ -138,38 +420,12 @@ namespace SOUI
     {
         if(!m_adapter) return;
         UpdateScrollBar();
-
-        int iFirstVisible = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos,true);
-        int iLastVisible = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos + m_siVer.nPage,false);
-        if(m_iSelItem!=-1 && m_iSelItem>=iFirstVisible && m_iSelItem < iLastVisible)
-        {
-            SItemPanel *pItem=GetItemPanel(m_iSelItem);
-            if(pItem)
-            {
-                pItem->ModifyItemState(0,WndState_Check);
-            }
-            m_iSelItem = -1;
-        }
-        if(m_pHoverItem)
-        {
-            m_pHoverItem->DoFrameEvent(WM_MOUSELEAVE,0,0);
-            m_pHoverItem=NULL;
-        }
-        
-        SPOSITION pos = m_lstItems.GetHeadPosition();
-        while(pos)
-        {
-            ItemInfo ii = m_lstItems.GetNext(pos);
-            m_itemRecycle[ii.nType]->AddTail(ii.pItem);
-        }
-        m_lstItems.RemoveAll();
-        
-        AddVisibleItems(iFirstVisible,iLastVisible,true);
+        UpdateVisibleItems();
     }
 
     void SListView::onDataSetInvalidated()
     {
-        Invalidate();
+        UpdateVisibleItems();
     }
 
     void SListView::OnPaint(IRenderTarget *pRT)
@@ -177,186 +433,174 @@ namespace SOUI
         SPainter duiDC;
         BeforePaint(pRT,duiDC);
 
-        CRect rcClient;
-        GetClientRect(&rcClient);
-        pRT->PushClipRect(&rcClient,RGN_AND);
 
-        CRect rcClip,rcInter;
-        pRT->GetClipBox(&rcClip);
-
-        int iFirst = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos,true);
-        int nOffset = m_lvItemLocator->Item2Position(m_adapter,iFirst)-m_siVer.nPos;
-        
-        CRect rcItem(rcClient);
-        rcItem.bottom = rcItem.top + nOffset;
-        
-        SPOSITION pos= m_lstItems.GetHeadPosition();
-        int i=0;
-        for(;pos;i++)
+        int iFirst = m_iFirstVisible;
+        if(iFirst!=-1)
         {
-            ItemInfo ii = m_lstItems.GetNext(pos);
-            rcItem.top=rcItem.bottom;
-            rcItem.bottom += ii.pItem->GetWindowRect().Height();
-            rcInter.IntersectRect(&rcClip,&rcItem);
-            if(!rcInter.IsRectEmpty())
-                ii.pItem->Draw(pRT,rcItem);
+            CRect rcClient;
+            GetClientRect(&rcClient);
+            pRT->PushClipRect(&rcClient,RGN_AND);
+
+            CRect rcClip,rcInter;
+            pRT->GetClipBox(&rcClip);
+
+            int nOffset = m_lvItemLocator->Item2Position(iFirst)-m_siVer.nPos;
+
+            CRect rcItem(rcClient);
+            rcItem.bottom = rcItem.top + nOffset;
+
+            SPOSITION pos= m_lstItems.GetHeadPosition();
+            int i=0;
+            for(;pos;i++)
+            {
+                ItemInfo ii = m_lstItems.GetNext(pos);
+                rcItem.top=rcItem.bottom;
+                rcItem.bottom += ii.pItem->GetWindowRect().Height();
+                rcInter.IntersectRect(&rcClip,&rcItem);
+                if(!rcInter.IsRectEmpty())
+                    ii.pItem->Draw(pRT,rcItem);
+            }
+
+            pRT->PopClip();
         }
-        pRT->PopClip();
         AfterPaint(pRT,duiDC);
     }
 
     BOOL SListView::OnScroll(BOOL bVertical,UINT uCode,int nPos)
     {
-        CRect rgnOld(0,0,1,0);
-        rgnOld.top = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos,true);
-        rgnOld.bottom = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos + m_siVer.nPage,false);
-        
+        int nOldPos = m_siVer.nPos;
         __super::OnScroll(bVertical, uCode, nPos);
-        CRect rgnNew(0,0,1,0);
-        rgnNew.top = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos,true);
-        rgnNew.bottom = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos + m_siVer.nPage,false);
-        
-        UpdateVisibleItems(rgnOld.top,rgnOld.bottom,rgnNew.top,rgnNew.bottom);
-        
-        //加速滚动时UI的刷新
-        static DWORD dwTime1=0;
-        DWORD dwTime=GetTickCount();
-        if(dwTime-dwTime1>50 && m_bScrollUpdate)
+        int nNewPos = m_siVer.nPos;
+        if(nOldPos != nNewPos)
         {
-            UpdateWindow();
-            dwTime1=dwTime;
-        }
+            UpdateVisibleItems();
 
+            //加速滚动时UI的刷新
+            static DWORD dwTime1=0;
+            DWORD dwTime=GetTickCount();
+            if(dwTime-dwTime1>50 && m_bScrollUpdate)
+            {
+                UpdateWindow();
+                dwTime1=dwTime;
+            }
+
+        }
         return TRUE;
     }
 
-    void SListView::RemoveVisibleItems(int nItems,bool bHeader)
-    {
-        SASSERT(nItems<=(int)m_lstItems.GetCount());
-        if(bHeader)        
-        {//hide head items
-            for(int i=0;i<nItems;i++)
-            {
-                ItemInfo ii=m_lstItems.RemoveHead();
-                if(ii.pItem == m_pHoverItem)
-                {
-                    m_pHoverItem->SSendMessage(WM_MOUSELEAVE);
-                    m_pHoverItem=NULL;
-                }
-                if(ii.pItem->GetItemIndex() == m_iSelItem)
-                {
-                    ii.pItem->ModifyItemState(0,WndState_Check);
-                    ii.pItem->GetFocusManager()->SetFocusedHwnd(0);
-                }
-                m_itemRecycle[ii.nType]->AddTail(ii.pItem);
-            }
-        }else
-        {//hide tail items;
-            for(int i=0;i<nItems;i++)
-            {
-                ItemInfo ii = m_lstItems.RemoveTail();
-                if(ii.pItem == m_pHoverItem)
-                {
-                    m_pHoverItem->SSendMessage(WM_MOUSELEAVE);
-                    m_pHoverItem=NULL;
-                }
-                if(ii.pItem->GetItemIndex() == m_iSelItem)
-                {
-                    ii.pItem->ModifyItemState(0,WndState_Check);
-                    ii.pItem->GetFocusManager()->SetFocusedHwnd(0);
-                }
 
-                m_itemRecycle[ii.nType]->AddTail(ii.pItem);
-            }
-        }
-    }
-
-    void SListView::AddVisibleItems(int iItem1,int iItem2,bool bHeader)
+    void SListView::UpdateVisibleItems()
     {
-        SASSERT(iItem2 >= iItem1);
-        //将先增加的可见项保存到临时列表中
-        SList<ItemInfo> lstItems;
-        for(int i=iItem1;i<iItem2;i++)
+        if(!m_adapter) return;
+        int iOldFirstVisible = m_iFirstVisible;
+        int iOldLastVisible = m_iFirstVisible + m_lstItems.GetCount();
+        int nOldTotalHeight = m_lvItemLocator->GetTotalHeight();
+        
+        int iNewFirstVisible = m_lvItemLocator->Position2Item(m_siVer.nPos);
+        int iNewLastVisible = iNewFirstVisible;
+        int pos = m_lvItemLocator->Item2Position(iNewFirstVisible);
+        
+        
+        ItemInfo *pItemInfos = new ItemInfo[m_lstItems.GetCount()];
+        SPOSITION spos = m_lstItems.GetHeadPosition();
+        int i=0;
+        while(spos)
         {
-            int nItemType = m_adapter->getItemViewType(i);
-            SList<SItemPanel *> *lstRecycle = m_itemRecycle.GetAt(nItemType);
-
-            SItemPanel * pItemPanel = NULL;
-            if(lstRecycle->IsEmpty())
-            {//创建一个新的列表项
-                pItemPanel = SItemPanel::Create(this,pugi::xml_node(),this);
-            }else
-            {
-                pItemPanel = lstRecycle->RemoveHead();
-            }
-            CRect rcItem = GetClientRect();
-            rcItem.MoveToXY(0,0);
-            rcItem.bottom=m_lvItemLocator->GetItemHeight(m_adapter,i);
-            pItemPanel->Move(rcItem);
-            pItemPanel->SetItemIndex(i);
-
-            m_adapter->getView(i,pItemPanel);
-            
-            pItemPanel->UpdateChildrenPosition();
-            if(i == m_iSelItem)
-            {
-                pItemPanel->ModifyItemState(WndState_Check,0);
-            }
-            ItemInfo ii;
-            ii.nType = nItemType;
-            ii.pItem = pItemPanel;
-            lstItems.AddTail(ii);
+            pItemInfos[i++]=m_lstItems.GetNext(spos);
         }
         
-        //从临时列表中获取数据连接到显示列表中
-        if(bHeader)
-        {
-            SPOSITION pos=lstItems.GetTailPosition();
-            while(pos)
-            {
-                ItemInfo ii=lstItems.GetPrev(pos);
-                m_lstItems.AddHead(ii);
-            }
-        }else
-        {
-            SPOSITION pos=lstItems.GetHeadPosition();
-            while(pos)
-            {
-                ItemInfo ii=lstItems.GetNext(pos);
-                m_lstItems.AddTail(ii);
-            }
-        }
-    }
-
-    void SListView::UpdateVisibleItems(int minOld,int maxOld,int minNew,int maxNew)
-    {
-        CRect rcOld(0,minOld,1,maxOld);
-        CRect rcNew(0,minNew,1,maxNew);
+        m_lstItems.RemoveAll();
         
-        CRect rgnHide;
-        rgnHide.SubtractRect(rcOld,rcNew);
-        if(!rgnHide.IsRectEmpty())
+        if(iNewFirstVisible!=-1)
         {
-            RemoveVisibleItems(rgnHide.bottom-rgnHide.top,rgnHide.top==minOld);
+            while(pos < m_siVer.nPos + m_siVer.nPage && iNewLastVisible < m_adapter->getCount())
+            {
+                if(iNewLastVisible>=iOldLastVisible && iNewLastVisible < iOldLastVisible)
+                {//use the old visible item
+                    int iItem = iNewLastVisible-(iNewFirstVisible-iOldFirstVisible);
+                    SASSERT(iItem>=0 && iItem <= (iOldLastVisible-iOldFirstVisible));
+                    m_lstItems.AddTail(pItemInfos[iItem]);
+                    pos += m_lvItemLocator->GetItemHeight(iNewLastVisible);
+                    pItemInfos[iItem].pItem = NULL;//标记该行已经被重用
+                }else
+                {//create new visible item
+                    int nItemType = m_adapter->getItemViewType(iNewLastVisible);
+                    SList<SItemPanel *> *lstRecycle = m_itemRecycle.GetAt(nItemType);
+
+                    SItemPanel * pItemPanel = NULL;
+                    if(lstRecycle->IsEmpty())
+                    {//创建一个新的列表项
+                        pItemPanel = SItemPanel::Create(this,pugi::xml_node(),this);
+                    }else
+                    {
+                        pItemPanel = lstRecycle->RemoveHead();
+                    }
+                    pItemPanel->SetItemIndex(iNewLastVisible);
+
+                    CRect rcItem = GetClientRect();
+                    rcItem.MoveToXY(0,0);
+                    if(m_lvItemLocator->IsFixHeight())
+                    {
+                        rcItem.bottom=m_lvItemLocator->GetItemHeight(iNewLastVisible);
+                        pItemPanel->Move(rcItem);
+                    }
+                    m_adapter->getView(iNewLastVisible,pItemPanel);
+                    if(!m_lvItemLocator->IsFixHeight())
+                    {
+                        rcItem.bottom=0;
+                        CSize szItem = pItemPanel->GetDesiredSize(rcItem);
+                        rcItem.bottom = rcItem.top + szItem.cy;
+                        pItemPanel->Move(rcItem);
+                        m_lvItemLocator->SetItemHeight(iNewLastVisible,szItem.cy);
+                    }                
+                    pItemPanel->UpdateChildrenPosition();
+                    if(iNewLastVisible == m_iSelItem)
+                    {
+                        pItemPanel->ModifyItemState(WndState_Check,0);
+                    }
+                    ItemInfo ii;
+                    ii.nType = nItemType;
+                    ii.pItem = pItemPanel;
+                    m_lstItems.AddTail(ii);
+                    pos += pItemPanel->GetWindowRect().Height();
+                }
+                iNewLastVisible ++;
+            }
         }
         
-        CRect rgnShow;
-        rgnShow.SubtractRect(rcNew,rcOld);
-        if(!rgnShow.IsRectEmpty())
+        //move old visible items which were not reused to recycle
+        for(int i=0;i<(iOldLastVisible-iOldFirstVisible);i++)
         {
-            AddVisibleItems(rgnShow.top,rgnShow.bottom,rgnShow.bottom == minOld);
-        }
+            ItemInfo ii = pItemInfos[i];
+            if(!ii.pItem) continue;
 
+            if(ii.pItem == m_pHoverItem)
+            {
+                m_pHoverItem->SSendMessage(WM_MOUSELEAVE);
+                m_pHoverItem=NULL;
+            }
+            if(ii.pItem->GetItemIndex() == m_iSelItem)
+            {
+                ii.pItem->ModifyItemState(0,WndState_Check);
+                ii.pItem->GetFocusManager()->SetFocusedHwnd(0);
+            }
+            m_itemRecycle[ii.nType]->AddTail(ii.pItem);    
+        }
+        delete [] pItemInfos;
+        
+        m_iFirstVisible = iNewFirstVisible;
+        
+        if(!m_lvItemLocator->IsFixHeight() && m_lvItemLocator->GetTotalHeight() != nOldTotalHeight)
+        {//update scroll range
+            UpdateScrollBar();
+        }
     }
 
     void SListView::OnSize(UINT nType, CSize size)
     {
-        CRect rgnOld(0,0,1,0);
-        rgnOld.top = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos,true);
-        rgnOld.bottom = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos + m_siVer.nPage,false);
-
         __super::OnSize(nType,size);
         UpdateScrollBar();
+        
         //update item window
         CRect rcClient=GetClientRect();
         SPOSITION pos = m_lstItems.GetHeadPosition();
@@ -364,16 +608,12 @@ namespace SOUI
         {
             ItemInfo ii = m_lstItems.GetNext(pos);
             int idx = (int)ii.pItem->GetItemIndex();
-            int nHei = m_lvItemLocator->GetItemHeight(m_adapter,idx);
+            int nHei = m_lvItemLocator->GetItemHeight(idx);
             CRect rcItem(0,0,rcClient.Width(),nHei);
             ii.pItem->Move(rcItem);
         }
         
-        CRect rgnNew(0,0,1,0);
-        rgnNew.top = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos,true);
-        rgnNew.bottom = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos + m_siVer.nPage,false);
-
-        UpdateVisibleItems(rgnOld.top,rgnOld.bottom,rgnNew.top,rgnNew.bottom);
+        UpdateVisibleItems();
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -390,10 +630,10 @@ namespace SOUI
     BOOL SListView::OnItemGetRect(SItemPanel *pItem,CRect &rcItem)
     {
         int iPosition = (int)pItem->GetItemIndex();
-        int nOffset = m_lvItemLocator->Item2Position(m_adapter,iPosition)-m_siVer.nPos;
+        int nOffset = m_lvItemLocator->Item2Position(iPosition)-m_siVer.nPos;
         rcItem = GetClientRect();
         rcItem.top += nOffset;
-        rcItem.bottom = rcItem.top + m_lvItemLocator->GetItemHeight(m_adapter,iPosition);
+        rcItem.bottom = rcItem.top + m_lvItemLocator->GetItemHeight(iPosition);
         return TRUE;
     }
 
@@ -570,13 +810,13 @@ namespace SOUI
     {
         if(iItem<0 || iItem>=m_adapter->getCount()) return;
         
-        int iFirstVisible= m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos,true);
-        int iLastVisible = m_lvItemLocator->Position2Item(m_adapter,m_siVer.nPos+m_siVer.nPage,false);
+        int iFirstVisible= m_iFirstVisible;
+        int iLastVisible = m_iFirstVisible + m_lstItems.GetCount();
         
         if(iItem>=iFirstVisible && iItem<iLastVisible)
             return;
             
-        int pos = m_lvItemLocator->Item2Position(m_adapter,iItem);
+        int pos = m_lvItemLocator->Item2Position(iItem);
         
         if(iItem < iFirstVisible)
         {//scroll up
@@ -585,10 +825,10 @@ namespace SOUI
         {//scroll down
             int iTop = iItem;
             int pos2 = pos;
-            int topSize = m_siVer.nPage - m_lvItemLocator->GetItemHeight(m_adapter,iItem);
+            int topSize = m_siVer.nPage - m_lvItemLocator->GetItemHeight(iItem);
             while(iTop>=0 && (pos - pos2) < topSize)
             {
-                pos2 = m_lvItemLocator->Item2Position(m_adapter,--iTop);
+                pos2 = m_lvItemLocator->Item2Position(--iTop);
             }
             OnScroll(TRUE,SB_THUMBPOSITION,pos2);
         }
@@ -639,8 +879,12 @@ namespace SOUI
             m_xmlTemplate.append_copy(xmlTemplate);
             int nItemHei = xmlTemplate.attribute(L"itemHeight").as_int();
             if(nItemHei>0)
-            {
+            {//指定了itemHeight属性时创建一个固定行高的定位器
                 IListViewItemLocator * pItemLocator = new  SListViewItemLocatorFix(nItemHei);
+                SetItemLocator(pItemLocator);
+            }else
+            {//创建一个行高可变的行定位器，从defHeight属性中获取默认行高
+                IListViewItemLocator * pItemLocator = new  SListViewItemLocatorFlex(xmlTemplate.attribute(L"defHeight").as_int(30));
                 SetItemLocator(pItemLocator);
             }
         }
@@ -650,6 +894,7 @@ namespace SOUI
     void SListView::SetItemLocator(IListViewItemLocator *pItemLocator)
     {
         m_lvItemLocator = pItemLocator;
+        if(m_lvItemLocator) m_lvItemLocator->SetAdapter(GetAdapter());
         onDataSetChanged();
     }
 
@@ -710,6 +955,7 @@ namespace SOUI
             RedrawItem(pItem);
         }
     }
+
 
 
 }
