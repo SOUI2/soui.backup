@@ -15,7 +15,7 @@
 #include "skia2rop2.h"
 
 #define getTotalClip internal_private_getTotalClip
-
+// #include <vld.h>
 
 namespace SOUI
 {
@@ -121,6 +121,8 @@ namespace SOUI
         ,m_uGetDCFlag(0)
 	{
         m_ptOrg.fX=m_ptOrg.fY=0.0f;
+        
+        m_SkCanvas = new SkCanvas();
 
         CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&m_defPen);
         SelectObject(m_defPen);
@@ -141,7 +143,7 @@ namespace SOUI
 		CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&pPen);
 		SelectObject(pPen);
         
-        m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
+//        m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
 	}
 	
 	SRenderTarget_Skia::~SRenderTarget_Skia()
@@ -666,6 +668,7 @@ namespace SOUI
             pRet=m_curBmp;
             m_curBmp=(SBitmap_Skia*)pObj;
             //重新生成clip
+            SASSERT(m_SkCanvas);
             delete m_SkCanvas;
             m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
             break;
