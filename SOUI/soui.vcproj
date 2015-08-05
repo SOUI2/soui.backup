@@ -423,10 +423,6 @@
 				>
 			</File>
 			<File
-				RelativePath="src\core\SThreadActiveWndMgr.cpp"
-				>
-			</File>
-			<File
 				RelativePath="src\helper\STimerEx.cpp"
 				>
 			</File>
@@ -822,10 +818,6 @@
 			</File>
 			<File
 				RelativePath="include\control\STabCtrl.h"
-				>
-			</File>
-			<File
-				RelativePath="include\core\SThreadActiveWndMgr.h"
 				>
 			</File>
 			<File
