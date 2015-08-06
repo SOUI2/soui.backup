@@ -184,8 +184,6 @@ namespace SOUI
             MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
         SOUI_MSG_MAP_END()
 
-        HRESULT OnAttrItemHeight(const SStringW &strValue,BOOL bLoading);
-
     protected:
         CAutoRefPtr<IAdapter>           m_adapter;
         CAutoRefPtr<IDataSetObserver>   m_observer;
