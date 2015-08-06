@@ -241,7 +241,7 @@ namespace SOUI
     void SListViewItemLocatorFlex::Clear()
     {
         m_itemPosIndex.DeleteAllItems();
-        for(int i=0;i<m_segments.GetCount();i++)
+        for(int i=0;i<(int)m_segments.GetCount();i++)
         {
             delete m_segments[i];
         }
@@ -513,7 +513,7 @@ namespace SOUI
         
         if(iNewFirstVisible!=-1)
         {
-            while(pos < m_siVer.nPos + m_siVer.nPage && iNewLastVisible < m_adapter->getCount())
+            while(pos < m_siVer.nPos + (int)m_siVer.nPage && iNewLastVisible < m_adapter->getCount())
             {
                 if(iNewLastVisible>=iOldLastVisible && iNewLastVisible < iOldLastVisible)
                 {//use the old visible item
