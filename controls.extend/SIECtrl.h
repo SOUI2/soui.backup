@@ -121,6 +121,8 @@ namespace SOUI
 
         SIECtrlEvtDispatch	m_eventDispatch;
         SComQIPtr<IWebBrowser2> m_pIE;
+        
+        HWND    m_hIEWnd;
     };
 
 }
