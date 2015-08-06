@@ -540,7 +540,7 @@ namespace SOUI
     {
         DCBuffer dcBuf(m_hdc,pRect,GetAValue(m_curPen->GetColor()));
         HGDIOBJ oldBr=::SelectObject(dcBuf,GetStockObject(NULL_BRUSH));
-        ::RoundRect(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt.x,pt.y);
+        ::RoundRect(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt.x*2,pt.y*2);
         ::SelectObject(dcBuf,oldBr);
         return S_OK;
     }
