@@ -193,8 +193,13 @@ namespace SOUI
 
     void SListViewItemLocatorFlex::SetAdapter(IAdapter *pAdapter)
     {
-        Clear();
         m_adapter = pAdapter;
+        OnDataSetChanged();
+    }
+
+    void SListViewItemLocatorFlex::OnDataSetChanged()
+    {
+        Clear();
         if(m_adapter)
         {
             int nTreeSize =  m_adapter->getCount();
@@ -205,7 +210,6 @@ namespace SOUI
             InitIndex(STVI_ROOT,nTreeSize,nBranchSize);
         }
     }
-
 
     void SListViewItemLocatorFlex::InitIndex(HSTREEITEM hParent,int nItems,int nBranchSize)
     {
@@ -385,7 +389,7 @@ namespace SOUI
         CSize size = rcClient.Size();
         CSize szView;
         szView.cx = rcClient.Width();
-        szView.cy = m_lvItemLocator->GetTotalHeight();
+        szView.cy = m_lvItemLocator?m_lvItemLocator->GetTotalHeight():0;
 
         //  ¹Ø±Õ¹ö¶¯Ìõ
         m_wBarVisible = SSB_NULL;
@@ -419,6 +423,7 @@ namespace SOUI
     void SListView::onDataSetChanged()
     {
         if(!m_adapter) return;
+        if(m_lvItemLocator) m_lvItemLocator->OnDataSetChanged();
         UpdateScrollBar();
         UpdateVisibleItems();
     }
@@ -576,7 +581,7 @@ namespace SOUI
 
             if(ii.pItem == m_pHoverItem)
             {
-                m_pHoverItem->SSendMessage(WM_MOUSELEAVE);
+                m_pHoverItem->DoFrameEvent(WM_MOUSELEAVE,0,0);
                 m_pHoverItem=NULL;
             }
             if(ii.pItem->GetItemIndex() == m_iSelItem)
@@ -841,7 +846,7 @@ namespace SOUI
         {
             CRect rcItem = pSelItem->GetItemRect();
             CPoint pt2=pt-rcItem.TopLeft();
-            if(pSelItem->SSendMessage(WM_MOUSEWHEEL,MAKEWPARAM(nFlags,zDelta),MAKELPARAM(pt2.x,pt2.y)))
+            if(pSelItem->DoFrameEvent(WM_MOUSEWHEEL,MAKEWPARAM(nFlags,zDelta),MAKELPARAM(pt2.x,pt2.y)))
                 return TRUE;
         }
         return __super::OnMouseWheel(nFlags, zDelta, pt);
