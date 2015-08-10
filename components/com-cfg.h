@@ -5,7 +5,7 @@
 #include <com-def.h>
 #include <string/tstring.h>
 
-#define COM_IMGDECODER  _T("imgdecoder-png")
+#define COM_IMGDECODER  _T("imgdecoder-gdip")
 
 #ifdef _DEBUG
 #define COM_RENDER_GDI  _T("render-gdid.dll")
