@@ -887,10 +887,12 @@ namespace SOUI
             {//指定了itemHeight属性时创建一个固定行高的定位器
                 IListViewItemLocator * pItemLocator = new  SListViewItemLocatorFix(nItemHei);
                 SetItemLocator(pItemLocator);
+                pItemLocator->Release();
             }else
             {//创建一个行高可变的行定位器，从defHeight属性中获取默认行高
                 IListViewItemLocator * pItemLocator = new  SListViewItemLocatorFlex(xmlTemplate.attribute(L"defHeight").as_int(30));
                 SetItemLocator(pItemLocator);
+                pItemLocator->Release();
             }
         }
         return TRUE;
