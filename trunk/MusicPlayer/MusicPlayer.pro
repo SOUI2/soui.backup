@@ -35,6 +35,9 @@ HEADERS += MainDlg.h \
 			DropEx.h \
 			Macro.h \
 			MusicOperat.h \
+			lrcdowl.h \
+			lrcParse.h \
+			SScrollLrc.h \
            ../controls.extend/STurn3DView.h \
            ../controls.extend/image3d/3dlib.h \
            ../controls.extend/image3d/3dmatrix.h \
@@ -49,6 +52,9 @@ SOURCES += MainDlg.cpp \
            BassMusic.cpp \
 		   MusicPlayer.cpp \
 		   MusicOperat.cpp \
+		   lrcdowl.cpp \
+		   lrcParse.cpp \
+		   SScrollLrc.cpp \
            ../controls.extend/STurn3DView.cpp \
            ../controls.extend/image3d/3dlib.cpp \
            ../controls.extend/image3d/3dmatrix.cpp \
