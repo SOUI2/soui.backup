@@ -55,3 +55,5 @@ SOURCES += 2UnicodeHandler.cpp \
            SImgCanvas.cpp \
            SoTool.cpp \
            STreeList.cpp
+
+RC_FILE += sotool.rc
