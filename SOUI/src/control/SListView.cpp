@@ -549,7 +549,7 @@ namespace SOUI
                         rcItem.bottom=m_lvItemLocator->GetItemHeight(iNewLastVisible);
                         pItemPanel->Move(rcItem);
                     }
-                    m_adapter->getView(iNewLastVisible,pItemPanel);
+                    m_adapter->getView(iNewLastVisible,pItemPanel,m_xmlTemplate.first_child());
                     if(!m_lvItemLocator->IsFixHeight())
                     {
                         rcItem.bottom=0;
@@ -903,11 +903,6 @@ namespace SOUI
         m_lvItemLocator = pItemLocator;
         if(m_lvItemLocator) m_lvItemLocator->SetAdapter(GetAdapter());
         onDataSetChanged();
-    }
-
-    pugi::xml_node SListView::GetTemplate()
-    {
-        return m_xmlTemplate.first_child();
     }
 
     BOOL SListView::OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo)

@@ -237,7 +237,7 @@
           </listview>
         </page>
         <page title="listview(flex)">
-          <listview pos="5,[0,-5,-5" name="lv_test_flex" itemHeight="50">
+          <listview pos="5,0,-5,-5" name="lv_test_flex" itemHeight="50">
             <template defHeight="50">
               <itemOdd colorHover="#cccccc" colorSelected="#0000ff">
                 <button pos="10,5,@150,@25" name="btn_test" tip="click the button to see how to writing the response function">btn</button>
@@ -249,6 +249,7 @@
               </itemEven>
             </template>
           </listview>
+
         </page>
       </tabctrl>
     </page>
