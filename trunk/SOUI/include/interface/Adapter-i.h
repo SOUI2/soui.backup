@@ -3,6 +3,10 @@
 #include <unknown/obj-ref-i.h>
 #include <string/tstring.h>
 
+namespace{
+    class xml_node;
+}
+
 namespace SOUI
 {
     interface  IDataSetObserver : public IObjRef{
@@ -59,8 +63,9 @@ namespace SOUI
         *        Heterogeneous lists can specify their number of view types, so that this View is
         *        always of the right type (see {@link #getViewTypeCount()} and
         *        {@link #getItemViewType(int)}).
+        * @param xmlTemplate the xml template provided by its owner
         */
-        virtual void getView(int position, SWindow * pItem) PURE;
+        virtual void getView(int position, SWindow * pItem, pugi::xml_node xmlTemplate) PURE;
 
 
         /**

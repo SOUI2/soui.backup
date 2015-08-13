@@ -137,7 +137,6 @@ namespace SOUI
         void SetSel(int iItem,BOOL bNotify=FALSE);
         int  GetSel()const{return m_iSelItem;}
         
-        pugi::xml_node GetTemplate();
     protected:
         virtual void OnItemSetCapture(SItemPanel *pItem,BOOL bCapture);
         virtual BOOL OnItemGetRect(SItemPanel *pItem,CRect &rcItem);
