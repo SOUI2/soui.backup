@@ -556,10 +556,21 @@ namespace SOUI
             m_SkCanvas->drawBitmapRectToRect(bmp,&rcSrc,rcDest,&paint);
         }else
         {
-            SkBitmap bmpSub;
-            bmp.extractSubset(&bmpSub,toSkIRect(pRcSrc));
-            paint.setShader(SkShader::CreateBitmapShader(bmpSub,SkShader::kRepeat_TileMode,SkShader::kRepeat_TileMode))->unref();
-            m_SkCanvas->drawRect(rcDest,paint);
+            PushClipRect(pRcDest,RGN_AND);
+            
+            SkIRect rcSrc = toSkIRect(pRcSrc);
+            SkRect rcSubDest={0.0f,0.0f,(float)rcSrc.width(),(float)rcSrc.height()};
+            for(float y=rcDest.fTop;y<rcDest.fBottom;y+=rcSrc.height())
+            {
+                rcSubDest.offsetTo(rcDest.fLeft,y);               
+                for(float x=rcDest.fLeft;x<rcDest.fRight;x += rcSrc.width())
+                {
+                    m_SkCanvas->drawBitmapRect(bmp,&rcSrc,rcSubDest,&paint);
+                    rcSubDest.offset((float)rcSrc.width(),0.0f);
+                }
+            }
+            
+            PopClip();
         }
         return S_OK;
 
