@@ -557,6 +557,15 @@ namespace SOUI
         return S_OK;
     }
 
+    HRESULT SRenderTarget_GDI::FillSolidRoundRect(LPCRECT pRect,POINT pt,COLORREF cr)
+    {
+        DCBuffer dcBuf(m_hdc,pRect,GetAValue(cr),FALSE);
+        HBRUSH br=::CreateSolidBrush(cr&0x00ffffff);
+        ::RoundRect(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt.x,pt.y);
+        ::DeleteObject(br);
+        return S_OK;    
+    }
+
     HRESULT SRenderTarget_GDI::DrawLines(LPPOINT pPt,size_t nCount)
     {
         RECT rc={100000,100000,0,0};
@@ -907,7 +916,16 @@ namespace SOUI
         ::Ellipse(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom);
         return S_OK;
     }
-    
+
+    HRESULT SRenderTarget_GDI::FillSolidEllipse(LPCRECT pRect,COLORREF cr)
+    {
+        DCBuffer dcBuf(m_hdc,pRect,GetAValue(cr),FALSE);
+        HBRUSH br=::CreateSolidBrush(cr&0x00ffffff);
+        ::Ellipse(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom);
+        ::DeleteObject(br);
+        return S_OK;    
+    }
+
     const float PI = 3.1415926f;
 
     HRESULT SRenderTarget_GDI::DrawArc( LPCRECT pRect,float startAngle,float sweepAngle,bool useCenter )

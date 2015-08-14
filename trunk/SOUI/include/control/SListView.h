@@ -11,18 +11,19 @@ namespace SOUI
         virtual void SetAdapter(IAdapter *pAdapter) PURE;
         virtual void OnDataSetChanged() PURE;
         virtual bool IsFixHeight() const PURE;
-        virtual int GetItemHeight(int iItem) PURE;
+        virtual int GetItemHeight(int iItem) const PURE;
         virtual void SetItemHeight(int iItem,int nHeight) PURE;
         virtual int GetTotalHeight() PURE;
         virtual int Item2Position(int iItem) PURE;
         virtual int Position2Item(int position) PURE;
         virtual int GetScrollLineSize() const PURE;
+        virtual int GetDividerSize() const PURE;
     };
     
     class SOUI_EXP SListViewItemLocatorFix : public TObjRefImpl<IListViewItemLocator>
     {
     public:
-        SListViewItemLocatorFix(int nItemHei);
+        SListViewItemLocatorFix(int nItemHei,int nDividerSize=0);
         
         virtual void SetAdapter(IAdapter *pAdapter);
         
@@ -30,7 +31,7 @@ namespace SOUI
 
         virtual bool IsFixHeight() const;
         
-        virtual int GetItemHeight(int iItem);
+        virtual int GetItemHeight(int iItem) const ;
         
         virtual void SetItemHeight(int iItem,int nHeight);
         
@@ -40,9 +41,19 @@ namespace SOUI
 
         virtual int Position2Item(int position);
 
-        virtual int GetScrollLineSize() const;        
+        virtual int GetScrollLineSize() const;
+        
+        virtual int GetDividerSize() const
+        {
+            return m_nDividerSize;
+        }
+    
     protected:
+        int GetFixItemHeight() const {return m_nItemHeight+m_nDividerSize;}
+    
         int m_nItemHeight;
+        int m_nDividerSize;
+        
         CAutoRefPtr<IAdapter> m_adapter;
     };
     
@@ -51,7 +62,7 @@ namespace SOUI
     
     public:
         
-        SListViewItemLocatorFlex(int nItemHei);
+        SListViewItemLocatorFlex(int nItemHei,int nDividerSize=0);
         ~SListViewItemLocatorFlex();
         
         
@@ -60,7 +71,7 @@ namespace SOUI
 
         virtual bool IsFixHeight() const;
 
-        virtual int GetItemHeight(int iItem);
+        virtual int GetItemHeight(int iItem) const;
 
         virtual void SetItemHeight(int iItem,int nHeight);
 
@@ -70,10 +81,16 @@ namespace SOUI
 
         virtual int Position2Item(int position);
 
-        virtual int GetScrollLineSize() const;        
+        virtual int GetScrollLineSize() const;   
+        
+        virtual int GetDividerSize() const
+        {
+            return m_nDividerSize;
+        }
+     
     protected:
         void InitIndex(HSTREEITEM hParent,int nItems,int nSubBranchSize);
-
+        int GetFixItemHeight() const {return m_nItemHeight+m_nDividerSize;}
         int GetIndexDeep() const;
         void Clear();
         int Branch2Offset(HSTREEITEM hBranch) const;
@@ -81,6 +98,7 @@ namespace SOUI
         HSTREEITEM Offset2Branch(HSTREEITEM hParent,int nOffset);
         
         int m_nItemHeight;  //默认表项高度
+        int m_nDividerSize;
         
         struct BranchInfo
         {
@@ -95,7 +113,7 @@ namespace SOUI
             SegmentInfo(int nItems,HSTREEITEM hBranch):hItem(hBranch){
                 this->nItems = nItems;
                 pItemHeight = new int[nItems];
-                memset(pItemHeight,0,nItems*sizeof(int));
+                memset(pItemHeight,0xff,nItems*sizeof(int));
             }
             ~SegmentInfo()
             {
@@ -187,6 +205,10 @@ namespace SOUI
             MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
         SOUI_MSG_MAP_END()
 
+        SOUI_ATTRS_BEGIN()
+            ATTR_SKIN(L"dividerSkin",m_pSkinDivider,TRUE)
+            ATTR_INT(L"dividerSize",m_nDividerSize,FALSE)
+        SOUI_ATTRS_END()
     protected:
         CAutoRefPtr<IAdapter>           m_adapter;
         CAutoRefPtr<IDataSetObserver>   m_observer;
@@ -209,5 +231,7 @@ namespace SOUI
         BOOL                            m_bScrollUpdate; //滚动时更新窗口标志
         
         pugi::xml_document              m_xmlTemplate;
+        ISkinObj*                       m_pSkinDivider;
+        int                             m_nDividerSize;
     };
 }

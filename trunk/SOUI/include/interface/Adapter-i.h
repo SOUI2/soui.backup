@@ -3,9 +3,6 @@
 #include <unknown/obj-ref-i.h>
 #include <string/tstring.h>
 
-namespace{
-    class xml_node;
-}
 
 namespace SOUI
 {
