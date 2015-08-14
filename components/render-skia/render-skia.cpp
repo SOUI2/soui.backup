@@ -436,6 +436,24 @@ namespace SOUI
         m_SkCanvas->drawRoundRect(skrc,(SkScalar)pt.x,(SkScalar)pt.y,paint);
         return S_OK;
     }
+    
+    HRESULT SRenderTarget_Skia::FillSolidRoundRect(LPCRECT pRect,POINT pt,COLORREF cr)
+    {
+        SkPaint paint;
+        paint.setAntiAlias(true);
+
+        paint.setFilterBitmap(false);
+        paint.setColor(SColor(cr).toARGB());
+        paint.setStyle(SkPaint::kFill_Style);
+
+        SkRect skrc=toSkRect(pRect);
+        InflateSkRect(&skrc,-0.5f,-0.5f);//要缩小0.5显示效果才和GDI一致。
+        skrc.offset(m_ptOrg);
+
+        m_SkCanvas->drawRoundRect(skrc,(SkScalar)pt.x,(SkScalar)pt.y,paint);
+        return S_OK;
+    }
+
 
     HRESULT SRenderTarget_Skia::DrawLines(LPPOINT pPt,size_t nCount)
     {
@@ -903,6 +921,19 @@ namespace SOUI
             paint.setFilterBitmap(false);
             paint.setColor(SColor(m_curBrush->GetColor()).toARGB());
         }
+        paint.setStyle(SkPaint::kFill_Style);
+
+        SkRect skrc=toSkRect(pRect);
+        skrc.offset(m_ptOrg);
+        m_SkCanvas->drawOval(skrc,paint);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_Skia::FillSolidEllipse(LPCRECT pRect,COLORREF cr)
+    {
+        SkPaint paint;
+        paint.setFilterBitmap(false);
+        paint.setColor(SColor(cr).toARGB());
         paint.setStyle(SkPaint::kFill_Style);
 
         SkRect skrc=toSkRect(pRect);
