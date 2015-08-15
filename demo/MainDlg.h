@@ -43,7 +43,7 @@ protected:
 	void OnClose()
 	{
 		AnimateHostWindow(200,AW_CENTER|AW_HIDE);
-        PostMessage(WM_QUIT);
+        DestroyWindow();
 	}
 	void OnMaximize()
 	{
