@@ -184,7 +184,8 @@ namespace SOUI
         
         void OnPaint(IRenderTarget *pRT);
         void OnSize(UINT nType, CSize size);
-        
+        void OnDestroy();
+
         LRESULT OnMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
         LRESULT OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam );
@@ -194,9 +195,11 @@ namespace SOUI
 
         BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
     
+
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
             MSG_WM_SIZE(OnSize)
+            MSG_WM_DESTROY(OnDestroy)
             MSG_WM_MOUSEWHEEL(OnMouseWheel)
             MSG_WM_MOUSELEAVE(OnMouseLeave)
             MSG_WM_KEYDOWN(OnKeyDown)

@@ -639,6 +639,33 @@ namespace SOUI
         UpdateVisibleItems();
     }
 
+    void SListView::OnDestroy()
+    {
+        //destroy all itempanel
+        SPOSITION pos = m_lstItems.GetHeadPosition();
+        while(pos)
+        {
+            ItemInfo ii = m_lstItems.GetNext(pos);
+            ii.pItem->Release();
+        }
+        m_lstItems.RemoveAll();
+
+        for(int i=0;i<m_itemRecycle.GetCount();i++)
+        {
+            SList<SItemPanel*> *pLstTypeItems = m_itemRecycle[i];
+            SPOSITION pos = pLstTypeItems->GetHeadPosition();
+            while(pos)
+            {
+                SItemPanel *pItem = pLstTypeItems->GetNext(pos);
+                pItem->Release();
+            }
+            delete pLstTypeItems;
+        }
+        m_itemRecycle.RemoveAll();
+        __super::OnDestroy();
+    }
+
+
     //////////////////////////////////////////////////////////////////////////
     void SListView::OnItemRequestRelayout(SItemPanel *pItem)
     {
