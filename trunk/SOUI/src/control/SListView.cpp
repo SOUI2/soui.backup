@@ -650,7 +650,7 @@ namespace SOUI
         }
         m_lstItems.RemoveAll();
 
-        for(int i=0;i<m_itemRecycle.GetCount();i++)
+        for(int i=0;i<(int)m_itemRecycle.GetCount();i++)
         {
             SList<SItemPanel*> *pLstTypeItems = m_itemRecycle[i];
             SPOSITION pos = pLstTypeItems->GetHeadPosition();
