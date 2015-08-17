@@ -487,7 +487,7 @@ namespace SOUI
 
     int SChromeTabCtrl::GetTabOrder( int iTabIndex ) const
     {
-        for(int i= 0;i<m_lstTabOrder.GetCount();i++)
+        for(int i= 0;i<(int)m_lstTabOrder.GetCount();i++)
         {
             if(m_lstTabOrder[i]->m_iTabIndex == iTabIndex) return i;
         }
