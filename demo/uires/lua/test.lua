@@ -14,7 +14,7 @@ prog_all = {0,0,0,0} --马匹进度
 function on_init(args)
 	--初始化全局对象
 	win = toHostWnd(args.sender);
-	gamewnd = win:FindChildByNameA("game_wnd",-1);
+	gamewnd = win:GetRoot():FindChildByNameA("game_wnd",-1);
 	gamecanvas = gamewnd:FindChildByNameA("game_canvas",-1);
 	flag_win = gamewnd:FindChildByNameA("flag_win",-1);
 	players = {
