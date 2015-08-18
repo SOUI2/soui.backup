@@ -67,6 +67,16 @@ if %selected%==1 (
 	goto error
 )
 
+rem 选择WCHAR支持
+SET /p selected=5.将WCHAR作为内建类型[1=是;2=否]:
+if %selected%==1 (
+	rem do nothing
+) else if %selected%==2 (
+	SET cfg=!cfg! DISABLE_WCHAR
+) else (
+	goto error
+)
+
 rem CRT
 SET /p selected=6.选择CRT链接模式[1=静态链接(MT);2=动态链接(MD)]:
 if %selected%==1 (
