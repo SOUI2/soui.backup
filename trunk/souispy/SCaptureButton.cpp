@@ -16,7 +16,7 @@ namespace SOUI
     void SCaptureButton::OnLButtonDown( UINT nFlags, CPoint point )
     {
         SWindow::OnLButtonDown(nFlags,point);
-        HCURSOR hCursor=GETRESPROVIDER->LoadCursor(MAKEINTRESOURCE(IDC_HELP));
+        HCURSOR hCursor=GETRESPROVIDER->LoadCursor(_T("target"));
         ::SetCursor(hCursor);
     }
 
