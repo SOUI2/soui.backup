@@ -167,9 +167,12 @@ namespace SOUI
         {
             SStrMap ** pMap=(SStrMap**)bsearch(&strSrc,(*pEntry)->m_arrStrMap.GetData(),(*pEntry)->m_arrStrMap.GetCount(),sizeof(SStrMap*),SStrMap::CompareInSearch);
             if(pMap)
-            {
+            {//从指定的上下文中查找翻译
                 strRet=(*pMap)->strTranslation;
                 return TRUE;
+            }else if(!strCtx.IsEmpty())
+            {//从空白上下文中查找
+                return tr(strSrc,SStringW(),strRet);
             }
         }
         return FALSE;
