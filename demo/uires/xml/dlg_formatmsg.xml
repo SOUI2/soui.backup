@@ -13,6 +13,9 @@
       &lt;color value="#ff0000"&gt;abc&lt;link color="#0000ff"&gt;home&lt;/link&gt;&lt;smiley id="1"/&gt;&lt;underline&gt;efg&lt;italic&gt;abc&lt;bold&gt;abc&lt;strike&gt;afc&lt;font value="华文行楷"&gt;启程软件SOUI&lt;/font&gt;&lt;/strike&gt;&lt;/bold&gt;&lt;/italic&gt;&lt;/underline&gt;&lt;/color&gt;
     </richedit>
 
-    <button id="IDOK" pos="-10,[5,@100,@25" offset="-1,0">OK</button>
+    <text pos="5,[5">重复次数:</text>
+    <edit pos="[5,{0,@50,@25" name="edit_repeat">1</edit>
+    
+    <button id="IDOK" pos="-10,{0,@100,@25" offset="-1,0">OK</button>
   </root>
 </SOUI>

@@ -8,7 +8,8 @@ public:
     
     void OnOK();
     
-    SStringT m_strMsg;
+    SStringT m_strMsg;  //消息XML
+    int      m_nRepeat; //重复次数
     
     EVENT_MAP_BEGIN()
         EVENT_ID_COMMAND(IDOK,OnOK)
