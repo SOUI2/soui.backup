@@ -121,7 +121,7 @@ protected:
     
     void OnChromeTabNew(EventArgs *pEvt);
 
-    void OnTabPageRadioSwitch(int nID);
+    void OnTabPageRadioSwitch(EventArgs *pEvt);
     
     void OnBtnFileWnd();
 
@@ -151,7 +151,7 @@ protected:
         EVENT_NAME_HANDLER(L"lbe_test",EVT_OFPANEL,OnListBoxExEvent)//响应EVT_OFPANEL事件
         EVENT_NAME_HANDLER(L"tb_test",EVT_OFPANEL,OnTreeBoxEvent)//响应EVT_OFPANEL事件
         EVENT_NAME_HANDLER(L"tb_test",EVT_TB_QUERYITEMHEIGHT,OnTreeBoxQueryItemHeight)//响应动态查询高度事件
-        EVENT_ID_COMMAND_RANGE(10000,10005,OnTabPageRadioSwitch)    //10000-10005是XML中定义的radio2的ID
+        EVENT_ID_RANGE_HANDLER(10000,10005,EventSwndStateChanged::EventID,OnTabPageRadioSwitch)    //10000-10005是XML中定义的radio2的ID
         EVENT_NAME_HANDLER(L"chromeTab",EVT_CHROMETAB_NEW,OnChromeTabNew)
         EVENT_NAME_COMMAND(L"btn_filewnd",OnBtnFileWnd)
         EVENT_NAME_HANDLER(L"edit_url",EVT_RE_NOTIFY,OnUrlReNotify)
