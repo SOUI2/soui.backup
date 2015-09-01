@@ -8,6 +8,7 @@
       margin="5,5,5,5"  
       resizable="1" 
       translucent="1" 
+      sendWheel2Hover="1"
       alpha="255">
   <skin>
     <!--局部skin对象-->
