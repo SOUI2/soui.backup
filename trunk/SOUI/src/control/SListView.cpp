@@ -615,11 +615,8 @@ namespace SOUI
 
         if(!m_lvItemLocator->IsFixHeight() && m_lvItemLocator->GetTotalHeight() != nOldTotalHeight)
         {//update scroll range
-            BOOL hasVertBar1 = m_wBarVisible & SSB_VERT;
             UpdateScrollBar();
-            BOOL hasVertBar2 = m_wBarVisible & SSB_VERT;
-            if(hasVertBar1 != hasVertBar2)
-                UpdateVisibleItems();//根据新的滚动条状态重新记录显示列表项
+            UpdateVisibleItems();//根据新的滚动条状态重新记录显示列表项
         }
     }
 
