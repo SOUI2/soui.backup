@@ -47,7 +47,7 @@
   <root class="cls_dlg_frame" cache="1" on_init="on_init" on_exit="on_exit">
     <caption pos="0,0,-0,30" show="1" font="adding:8">
       <icon pos="10,8" src="LOGO:16"/>
-      <text class="cls_txt_red">SOUI-DEMO version:%ver%</text>
+      <text class="cls_txt_red">%title% version:%ver%</text>
       <imgbtn id="1" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
       <imgbtn id="2" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
       <imgbtn id="3" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
