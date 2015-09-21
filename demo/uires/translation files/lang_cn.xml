@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <language name="ch" guid="{0DAEDE3C-6B94-4a81-9A55-C304FDD69D98}">
   <context>
-    <!--没有上下文的翻译-->
+    <!--没有上下文的翻译及字符串表的翻译-->
+    <message>
+      <source>soui demo</source>
+      <translation>SOUI演示</translation>
+    </message>
   </context>
   <context name="editmenu">
     <message>
