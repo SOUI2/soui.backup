@@ -65,17 +65,9 @@ namespace SOUI
         SList<IDataSetObserver *> m_lstObserver;
     };
     
-    class SAdapterBase : public TObjRefImpl<IAdapter>
+    template<class BaseClass>
+    class AdatperImpl : public BaseClass
     {
-    public:
-        SAdapterBase()
-        {
-        }
-
-        ~SAdapterBase()
-        {
-        }
-
     public:
         void notifyDataSetChanged() {
             m_obzMgr.notifyChanged();
@@ -131,5 +123,29 @@ namespace SOUI
         }
     protected:
         SObserverMgr    m_obzMgr;
+    };
+    
+    class SAdapterBase : public TObjRefImpl<AdatperImpl<IAdapter>>
+    {
+    public:
+        SAdapterBase()
+        {
+        }
+
+        ~SAdapterBase()
+        {
+        }
+    };
+    
+    class SMcAdapterBase : public TObjRefImpl<AdatperImpl<IMcAdapter>>
+    {
+    public:
+        SMcAdapterBase()
+        {
+        }
+
+        ~SMcAdapterBase()
+        {
+        }
     };
 }

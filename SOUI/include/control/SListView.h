@@ -2,132 +2,10 @@
 
 #include "core/Swnd.h"
 #include "interface/Adapter-i.h"
-#include "stree.hpp"
+#include "interface/LvItemLocator-i.h"
 
 namespace SOUI
 {
-    interface IListViewItemLocator : public IObjRef
-    {
-        virtual void SetAdapter(IAdapter *pAdapter) PURE;
-        virtual void OnDataSetChanged() PURE;
-        virtual bool IsFixHeight() const PURE;
-        virtual int GetItemHeight(int iItem) const PURE;
-        virtual void SetItemHeight(int iItem,int nHeight) PURE;
-        virtual int GetTotalHeight() PURE;
-        virtual int Item2Position(int iItem) PURE;
-        virtual int Position2Item(int position) PURE;
-        virtual int GetScrollLineSize() const PURE;
-        virtual int GetDividerSize() const PURE;
-    };
-    
-    class SOUI_EXP SListViewItemLocatorFix : public TObjRefImpl<IListViewItemLocator>
-    {
-    public:
-        SListViewItemLocatorFix(int nItemHei,int nDividerSize=0);
-        
-        virtual void SetAdapter(IAdapter *pAdapter);
-        
-        virtual void OnDataSetChanged(){}
-
-        virtual bool IsFixHeight() const;
-        
-        virtual int GetItemHeight(int iItem) const ;
-        
-        virtual void SetItemHeight(int iItem,int nHeight);
-        
-
-        virtual int GetTotalHeight();
-        virtual int Item2Position(int iItem);
-
-        virtual int Position2Item(int position);
-
-        virtual int GetScrollLineSize() const;
-        
-        virtual int GetDividerSize() const
-        {
-            return m_nDividerSize;
-        }
-    
-    protected:
-        int GetFixItemHeight() const {return m_nItemHeight+m_nDividerSize;}
-    
-        int m_nItemHeight;
-        int m_nDividerSize;
-        
-        CAutoRefPtr<IAdapter> m_adapter;
-    };
-    
-    class SOUI_EXP SListViewItemLocatorFlex : public TObjRefImpl<IListViewItemLocator>
-    {
-    
-    public:
-        
-        SListViewItemLocatorFlex(int nItemHei,int nDividerSize=0);
-        ~SListViewItemLocatorFlex();
-        
-        
-        virtual void SetAdapter(IAdapter *pAdapter);
-        virtual void OnDataSetChanged();
-
-        virtual bool IsFixHeight() const;
-
-        virtual int GetItemHeight(int iItem) const;
-
-        virtual void SetItemHeight(int iItem,int nHeight);
-
-
-        virtual int GetTotalHeight();
-        virtual int Item2Position(int iItem);
-
-        virtual int Position2Item(int position);
-
-        virtual int GetScrollLineSize() const;   
-        
-        virtual int GetDividerSize() const
-        {
-            return m_nDividerSize;
-        }
-     
-    protected:
-        void InitIndex(HSTREEITEM hParent,int nItems,int nSubBranchSize);
-        int GetFixItemHeight() const {return m_nItemHeight+m_nDividerSize;}
-        int GetIndexDeep() const;
-        void Clear();
-        int Branch2Offset(HSTREEITEM hBranch) const;
-        int Branch2Index(HSTREEITEM hBranch) const;
-        HSTREEITEM Offset2Branch(HSTREEITEM hParent,int nOffset);
-        
-        int m_nItemHeight;  //默认表项高度
-        int m_nDividerSize;
-        
-        struct BranchInfo
-        {
-            int nBranchHei; //分枝高度
-            int nBranchSize;//分枝中包含的节点数量
-        };
-        
-        CSTree<BranchInfo>    m_itemPosIndex;//记录分枝高度
-        class SegmentInfo
-        {
-        public:
-            SegmentInfo(int nItems,HSTREEITEM hBranch):hItem(hBranch){
-                this->nItems = nItems;
-                pItemHeight = new int[nItems];
-                memset(pItemHeight,0xff,nItems*sizeof(int));
-            }
-            ~SegmentInfo()
-            {
-                if(pItemHeight) delete[] pItemHeight;
-            }
-        
-            HSTREEITEM hItem;
-            int        nItems;
-            int*       pItemHeight;//段中每一个表项的高度
-        };
-        
-        SArray<SegmentInfo*>     m_segments;
-        CAutoRefPtr<IAdapter>   m_adapter;
-    };
     
     class SOUI_EXP SListView : public SPanel
         , protected IItemContainer
@@ -211,6 +89,7 @@ namespace SOUI
         SOUI_ATTRS_BEGIN()
             ATTR_SKIN(L"dividerSkin",m_pSkinDivider,TRUE)
             ATTR_INT(L"dividerSize",m_nDividerSize,FALSE)
+            ATTR_INT(L"updateInterval",m_nUpdateInterval,FALSE)
         SOUI_ATTRS_END()
     protected:
         CAutoRefPtr<IAdapter>           m_adapter;
@@ -236,5 +115,6 @@ namespace SOUI
         pugi::xml_document              m_xmlTemplate;
         ISkinObj*                       m_pSkinDivider;
         int                             m_nDividerSize;
+        UINT                            m_nUpdateInterval;
     };
 }

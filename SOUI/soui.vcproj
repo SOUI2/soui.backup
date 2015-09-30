@@ -194,6 +194,8 @@
 			<File
 				RelativePath="src\control\SListView.cpp" />
 			<File
+				RelativePath="src\helper\SListViewItemLocator.cpp" />
+			<File
 				RelativePath="src\control\SListbox.cpp" />
 			<File
 				RelativePath="src\control\SListboxex.cpp" />
@@ -287,6 +289,8 @@
 			<File
 				RelativePath="include\core\FocusManager.h" />
 			<File
+				RelativePath="include\interface\LvItemLocator-i.h" />
+			<File
 				RelativePath="include\helper\MemDC.h" />
 			<File
 				RelativePath="include\helper\MenuWndHook.h" />
@@ -294,6 +298,8 @@
 				RelativePath="include\control\RealWndHandler-i.h" />
 			<File
 				RelativePath="include\control\SActiveX.h" />
+			<File
+				RelativePath="include\helper\SAdapterBase.h" />
 			<File
 				RelativePath="include\SApp.h" />
 			<File
@@ -342,6 +348,8 @@
 				RelativePath="include\control\SListCtrl.h" />
 			<File
 				RelativePath="include\control\SListView.h" />
+			<File
+				RelativePath="include\helper\SListViewItemLocator.h" />
 			<File
 				RelativePath="include\control\SListbox.h" />
 			<File
@@ -438,6 +446,8 @@
 				RelativePath="include\helper\SwndMsgCracker.h" />
 			<File
 				RelativePath="include\core\SwndStyle.h" />
+			<File
+				RelativePath="include\interface\adapter-i.h" />
 			<File
 				RelativePath="include\helper\auto_reset.h" />
 			<File

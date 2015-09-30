@@ -111,6 +111,8 @@ HEADERS += include/SApp.h \
            include/helper/SwndMsgCracker.h \
            include/helper/SCriticalSection.h \
 		   include/helper/AppDir.h \
+		   include/helper/SAdapterBase.h \
+		   include/helper/SListViewItemLocator.h \
            include/interface/imgdecoder-i.h \
            include/interface/render-i.h \
            include/interface/SResProvider-i.h \
@@ -118,6 +120,8 @@ HEADERS += include/SApp.h \
            include/interface/SSkinobj-i.h \
            include/interface/STranslator-i.h \
            include/interface/stooltip-i.h \
+           include/interface/adapter-i.h \
+           include/interface/LvItemLocator-i.h \
            include/res.mgr/SFontPool.h \
            include/res.mgr/SObjDefAttr.h \
            include/res.mgr/SResProvider.h \
@@ -187,6 +191,7 @@ SOURCES += src/SApp.cpp \
            src/helper/SScriptTimer.cpp \
            src/helper/stooltip.cpp \
 		   src/helper/AppDir.cpp \
+		   src/helper/SListViewItemLocator.cpp \
            src/res.mgr/SFontPool.cpp \
            src/res.mgr/SObjDefAttr.cpp \
            src/res.mgr/SResProvider.cpp \

@@ -112,5 +112,9 @@ namespace SOUI
         */
         virtual SStringT getItemDesc(int positoin) PURE;
     };
-    
+ 
+    interface IMcAdapter : public IAdapter
+    {
+        virtual SStringW GetColumnName(int iCol) const PURE;
+    };
 }
