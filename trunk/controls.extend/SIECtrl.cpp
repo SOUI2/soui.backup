@@ -91,6 +91,8 @@ namespace SOUI
         if(m_pIE)
         {
             RegisterEventHandler(TRUE);
+            m_pIE->put_Silent(VARIANT_TRUE);//
+            
             m_pIE->Navigate(bstr_t(m_strUrl),NULL,NULL,NULL,NULL);
             
             SComQIPtr<IOleWindow> ole_window=m_pIE;

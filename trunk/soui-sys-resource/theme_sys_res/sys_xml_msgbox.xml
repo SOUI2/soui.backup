@@ -11,7 +11,7 @@
     <no>否</no>
     <ignore>忽略</ignore>
   </buttonText>
-  
+
   <root skin="_skin.sys.wnd.bkgnd">
     <caption id="101" pos="0,0,-0,29">
       <text pos="11,9" class="cls_txt_red" name="msgtitle" >title</text>
@@ -19,8 +19,8 @@
     </caption>
 
     <window pos="5,30,-5,-50">
-      <icon name="msgicon" pos="0,0,32,32" display="0"/>
-      <text name="msgtext" pos="[0,0" colorText="#0000FF" multilines="1" maxWidth="300"/>
+      <icon name="msgicon" pos="8,|-16,@32,@32" display="0"/>
+      <text name="msgtext" pos="[5,10" colorText="#0000FF" multilines="1" maxWidth="300"/>
     </window>
     <tabctrl name="btnSwitch" pos="0,-50,-0,-0" tabHeight="0">
       <page>
