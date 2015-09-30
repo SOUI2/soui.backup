@@ -113,8 +113,15 @@ namespace SOUI
         virtual SStringT getItemDesc(int positoin) PURE;
     };
  
+    enum SHDSORTFLAG;
     interface IMcAdapter : public IAdapter
     {
+        //获取列名
         virtual SStringW GetColumnName(int iCol) const PURE;
+        //排序接口
+        // int iCol:排序列
+        // SHDSORTFLAG * stFlags [in, out]:当前列排序标志
+        // int nCols:总列数,stFlags数组长度
+        virtual bool OnSort(int iCol,SHDSORTFLAG * stFlags,int nCols) PURE;
     };
 }
