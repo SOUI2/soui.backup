@@ -63,6 +63,7 @@ HEADERS += include/SApp.h \
            include/control/STreeBox.h \
            include/control/STreeCtrl.h \
            include/control/SListView.h \
+           include/control/SMcListView.h \
            include/core/Accelerator.h \
            include/core/FocusManager.h \
            include/core/SDefine.h \
@@ -162,6 +163,7 @@ SOURCES += src/SApp.cpp \
            src/control/STreeBox.cpp \
            src/control/STreeCtrl.cpp \
            src/control/SListView.cpp \
+           src/control/SMcListView.cpp \
            src/core/Accelerator.cpp \
            src/core/FocusManager.cpp \
            src/core/SDropTargetDispatcher.cpp \
