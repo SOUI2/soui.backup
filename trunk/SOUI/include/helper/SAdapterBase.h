@@ -147,5 +147,7 @@ namespace SOUI
         ~SMcAdapterBase()
         {
         }
+        
+        virtual bool OnSort(int iCol,SHDSORTFLAG * stFlags,int nCols){return false;}
     };
 }
