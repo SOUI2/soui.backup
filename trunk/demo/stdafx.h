@@ -21,6 +21,7 @@
 #include "../controls.extend/gif/SGifPlayer.h"
 #include "../controls.extend/SIPAddressCtrl.h"
 #include "../controls.extend/SImageMaskWnd.h"
+#include "../controls.extend/SRatingBar.h"
 
 using namespace SOUI;
 

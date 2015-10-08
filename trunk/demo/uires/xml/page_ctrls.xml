@@ -33,11 +33,7 @@
                 <text name="txt_desc" pos="70,36,-10,-10" font="bold:1,adding:-4" dotted="1">速度最快的浏览器</text>
               </window>
               <window name="col2">
-                <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
-                <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
-                <img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
-                <img skin="skin_star1" iconIndex="1" msgTransparent="0" pos="55,16"  />
-                <img skin="skin_star1" iconIndex="2" msgTransparent="0" pos="70,16"  />
+                <ratingbar name="rating_score" starSkin="skin_star1" starNum="5" value="3.5" pos="10,16"  />
                 <text name="txt_score" pos="15,36,50,-16" font="adding:-5"  >8.5分</text>
                 <link pos="[5,36,@30,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
               </window>
