@@ -19,8 +19,8 @@
     </caption>
 
     <window pos="5,30,-5,-50">
-      <icon name="msgicon" pos="8,|-16,@32,@32" display="0"/>
-      <text name="msgtext" pos="[5,10" colorText="#0000FF" multilines="1" maxWidth="300"/>
+      <icon name="msgicon" pos="8,10,@32,@32" display="0"/>
+      <text name="msgtext" pos="[5,0" colorText="#0000FF" multilines="1" valign="middle" maxWidth="300"/>
     </window>
     <tabctrl name="btnSwitch" pos="0,-50,-0,-0" tabHeight="0">
       <page>
