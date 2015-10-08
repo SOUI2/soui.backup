@@ -1,4 +1,4 @@
-﻿<SOUI title="mesagebox" width="200" height="100" appwin="0" frameSize="40,30,10,80" minSize="300,100" resize="0" translucent="1" trCtx="messagebox">
+﻿<SOUI title="mesagebox" width="200" height="100" appwin="0" frameSize="40,40,10,60" minSize="300,132" resize="0" translucent="1" trCtx="messagebox">
   <style>
     <class name="normalbtn" skin="_skin.sys.btn.normal" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
   </style>
@@ -18,8 +18,8 @@
       <imgbtn id="2" skin="_skin.sys.btn.close"    pos="-45,0" tip="close"/>
     </caption>
 
-    <window pos="5,30,-5,-50">
-      <icon name="msgicon" pos="8,10,@32,@32" display="0"/>
+    <window pos="5,40,-5,-60">
+      <icon name="msgicon" pos="8,0,@32,@32" display="0"/>
       <text name="msgtext" pos="[5,0" colorText="#0000FF" multilines="1" valign="middle" maxWidth="300"/>
     </window>
     <tabctrl name="btnSwitch" pos="0,-50,-0,-0" tabHeight="0">
