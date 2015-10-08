@@ -49,6 +49,7 @@
               </window>
               <window name="col5">
                 <text name="txt_usetime" pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+                <animateimg pos="|0,|0" offset="-0.5,-0.5" skin="skin_busy" name="ani_test" tip="animateimg is used here" msgTransparent="0" />
               </window>
               <window name="col6">
                 <imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
