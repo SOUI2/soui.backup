@@ -29,8 +29,9 @@
             <template itemHeight="80" colorHover="#cccccc" colorSelected="#0000ff" id="30000">
               <window name="col1">
                 <img name="img_icon" skin="skin_icon6" pos="10,8,@64,@64"/>
-                <text name="txt_name" pos="70,16" font="bold:1,adding:-1">火狐浏览器</text>
-                <text name="txt_desc" pos="70,36,-10,-10" font="bold:1,adding:-4" dotted="1">速度最快的浏览器</text>
+                <text name="txt_name" pos="[5,16" font="bold:1,adding:-1">火狐浏览器</text>
+                <text name="txt_desc" pos="{0,36,-10,-10" font="bold:1,adding:-4" dotted="1">速度最快的浏览器</text>
+                <text name="txt_index" pos="|0,|0" offset="-0.5,-0.5" font="adding:10" colorText="#ff000088">10</text>
               </window>
               <window name="col2">
                 <ratingbar name="rating_score" starSkin="skin_star1" starNum="5" value="3.5" pos="10,16"  />
