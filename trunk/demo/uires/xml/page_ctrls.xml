@@ -49,7 +49,7 @@
                 <animateimg pos="|0,|0" offset="-0.5,-0.5" skin="skin_busy" name="ani_test" tip="animateimg is used here" msgTransparent="0" />
               </window>
               <window name="col6">
-                <imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+                <imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" name="btn_uninstall">卸载</imgbtn>
               </window>            
             </template>
 
