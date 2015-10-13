@@ -12,6 +12,9 @@
   <text pos="10,[10">GIT.github：</text><edit pos="150,{0,@300,@30" readOnly="1"> https://github.com/setoutsoft/soui</edit>
   <text pos="10,[5">SOUI教程:</text>
   <link href="http://www.cnblogs.com/setoutsoft/" class="cls_btn_weblink">http://www.cnblogs.com/setoutsoft/</link>
+  <text pos="10,[5">SOUI Forum:</text>
+  <link href="http://lumaba.cn/forum.php?mod=forumdisplay&fid=2" class="cls_btn_weblink">http://lumaba.cn/forum.php?mod=forumdisplay&fid=2</link>
+
   <group pos="10,[5,-10,@100" align="left">
     支持SOUI，支持启程软件，欢迎捐助
     <text pos="10,8">户名：</text>
