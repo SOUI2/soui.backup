@@ -622,7 +622,7 @@ namespace SOUI
         while(pos)
         {
             ItemInfo ii = m_lstItems.GetNext(pos);
-            if((int)ii.pItem->GetItemIndex() == m_iSelItem)
+            if((int)ii.pItem->GetItemIndex() == iItem)
                 return ii.pItem;
         }
         return NULL;
