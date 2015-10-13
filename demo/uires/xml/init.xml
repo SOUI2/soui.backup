@@ -82,7 +82,7 @@
 
     <class name="cls_btn_link"    cursor="hand" colorHover="#0A84D2" />
     <!--定义文字按钮的样式-->
-    <class name="cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" font="italic:1" fontHover="underline:1,italic:1" />
+    <class name="cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" fontHover="underline:1,italic:1" />
 
     <class name="cls_txt_red"     font="face:宋体,bold:1"  colorText="#FF0000" />
     <!--定义白色粗体宋体-->
