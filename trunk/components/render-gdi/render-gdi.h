@@ -282,6 +282,7 @@ namespace SOUI
         virtual HRESULT FillRectangle(LPCRECT pRect);
         virtual HRESULT FillSolidRect(LPCRECT pRect,COLORREF cr);
         virtual HRESULT ClearRect(LPCRECT pRect,COLORREF cr);
+        virtual HRESULT InvertRect(LPCRECT pRect);
 
         virtual HRESULT DrawEllipse(LPCRECT pRect);
         virtual HRESULT FillEllipse(LPCRECT pRect);

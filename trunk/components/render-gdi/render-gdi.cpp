@@ -900,7 +900,12 @@ namespace SOUI
         ::DeleteObject(hBmp);
         return S_OK;    
     }
-    
+
+    HRESULT SRenderTarget_GDI::InvertRect(LPCRECT pRect)
+    {
+        return ::InvertRect(m_hdc,pRect)?S_OK:E_UNEXPECTED;
+    }
+
     HRESULT SRenderTarget_GDI::DrawEllipse( LPCRECT pRect )
     {
         DCBuffer dcBuf(m_hdc,pRect,GetAValue(m_curPen->GetColor()));

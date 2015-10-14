@@ -29,12 +29,14 @@ namespace SOUI
         
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"speed",m_nSpeed,FALSE)
+			ATTR_INT(L"rolltype",m_nRollType,FALSE)
         SOUI_ATTRS_END()
         
         int m_nSpeed;
         int m_nOffset;
         int m_nScrollWidth;
         int m_nNextInterval;
+		int m_nRollType;//0首位衔接 1 非衔接
     };
 
 }

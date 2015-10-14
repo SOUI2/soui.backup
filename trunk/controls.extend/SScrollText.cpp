@@ -3,7 +3,7 @@
 
 namespace SOUI
 {
-    SScrollText::SScrollText(void):m_nSpeed(20),m_nOffset(0),m_nScrollWidth(0)
+    SScrollText::SScrollText(void):m_nSpeed(20),m_nOffset(0),m_nScrollWidth(0),m_nRollType(0)
     {
     }
 
@@ -26,12 +26,16 @@ namespace SOUI
             CRect rcText = rcClient;
             rcText.left -= m_nOffset;
             pRT->DrawText(m_strText,m_strText.GetLength(),&rcText,DT_SINGLELINE|DT_VCENTER);
-            if(m_nScrollWidth - m_nOffset < rcClient.Width())
-            {
-                rcText.left += m_nScrollWidth;
-//                 pRT->SetTextColor(RGBA(0,0,0,255));
-                pRT->DrawText(m_strText,m_strText.GetLength(),&rcText,DT_SINGLELINE|DT_VCENTER);
-            }
+			if (m_nRollType==0)
+			{
+				if(m_nScrollWidth - m_nOffset < rcClient.Width())
+				{
+					rcText.left += m_nScrollWidth;
+					//                 pRT->SetTextColor(RGBA(0,0,0,255));
+					pRT->DrawText(m_strText,m_strText.GetLength(),&rcText,DT_SINGLELINE|DT_VCENTER);
+				}
+			}
+            
             
             pRT->PopClip();
         }
@@ -77,12 +81,14 @@ namespace SOUI
 
         if(sz.cx - size.cx>0)
         {
-            if(IsVisible(TRUE)) SetTimer(1,m_nSpeed);
             m_nScrollWidth = sz.cx;
+			if (m_nRollType==1)
+			{
+				m_nOffset=-size.cx;
+			}
         }
         else
         {
-            KillTimer(1);
             m_nOffset = 0;
             m_nScrollWidth = 0;
         }
@@ -94,10 +100,22 @@ namespace SOUI
         if(m_nNextInterval < 0)
         {
             m_nNextInterval = m_nSpeed;
-            m_nOffset ++;
-            if(m_nOffset>m_nScrollWidth)
-                m_nOffset = 0;
-            Invalidate();
+			if (m_nScrollWidth>0)
+			{ 
+				m_nOffset ++;
+				if(m_nOffset>m_nScrollWidth)
+				{
+					if (m_nRollType==0)
+					{
+						m_nOffset = 0;
+					}
+					else if(m_nRollType==1)
+					{
+						m_nOffset = -GetClientRect().Width();
+					}
+				}
+				Invalidate();
+			}
         }
     }
 

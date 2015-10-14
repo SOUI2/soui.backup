@@ -905,6 +905,17 @@ namespace SOUI
         return S_OK;    
     }
 
+    HRESULT SRenderTarget_Skia::InvertRect(LPCRECT pRect)
+    {
+        SkPaint paint;
+        paint.setStyle(SkPaint::kFill_Style);
+        paint.setXfermode(new ProcXfermode(ProcXfermode::Rop2_Invert));
+        SkRect skrc = toSkRect(pRect);
+        skrc.offset(m_ptOrg);
+        m_SkCanvas->drawRect(skrc,paint);
+        return S_OK;  
+    }
+
     HRESULT SRenderTarget_Skia::DrawEllipse( LPCRECT pRect )
     {
         SkPaint paint;
@@ -998,7 +1009,6 @@ namespace SOUI
         }
         return E_NOINTERFACE;
     }
-
 
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
@@ -1167,7 +1177,7 @@ namespace SOUI
         GetRegionData(hRgn,dwSize,pData);
         SkIRect *pRcs= new SkIRect[pData->rdh.nCount];
         LPRECT pRcsSrc = (LPRECT)pData->Buffer;
-        for(int i = 0 ;i< pData->rdh.nCount;i++)
+        for(unsigned int i = 0 ;i< pData->rdh.nCount;i++)
         {
             pRcs[i].fLeft = pRcsSrc[i].left;
             pRcs[i].fTop = pRcsSrc[i].top;
