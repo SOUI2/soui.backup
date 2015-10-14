@@ -107,9 +107,10 @@ APNGDATA * loadPng(IPngReader *pSrc)
     apng->nWid  = png_ptr_read->width;
     apng->nHei = png_ptr_read->height;
     
+    //图像帧数据
     dataFrame = (png_bytep)malloc(bytesPerRow * apng->nHei);
     memset(dataFrame,0,bytesPerFrame);
-    
+    //获得扫描行指针
     rowPointers = (png_bytepp)malloc(sizeof(png_bytep)* apng->nHei);
     for(int i=0;i<apng->nHei;i++)
         rowPointers[i] = dataFrame + bytesPerRow * i;
@@ -123,20 +124,19 @@ APNGDATA * loadPng(IPngReader *pSrc)
         apng->nFrames =1;
 	}else
 	{//load apng
-        apng->nFrames  = png_get_num_frames(png_ptr_read, info_ptr_read);
+        apng->nFrames  = png_get_num_frames(png_ptr_read, info_ptr_read);//获取总帧数
 
-        png_bytep data = (png_bytep)malloc( bytesPerFrame * apng->nFrames);
-        png_bytep dataCur = (png_bytep)malloc(bytesPerFrame);
-        
-        memset(dataCur,0,bytesPerFrame);
+        png_bytep data = (png_bytep)malloc( bytesPerFrame * apng->nFrames);//为每一帧分配内存
                
         apng->nLoops = png_get_num_plays(png_ptr_read, info_ptr_read);
         apng->pDelay = (unsigned short*)malloc(sizeof(unsigned short)*apng->nFrames);
         
         for(int iFrame = 0;iFrame<apng->nFrames;iFrame++)
         {
+            //读帧信息头
             png_read_frame_head(png_ptr_read, info_ptr_read);
             
+            //计算出帧延时信息
             if (png_get_valid(png_ptr_read, info_ptr_read, PNG_INFO_fcTL))
             {
                 png_uint_16 delay_num = info_ptr_read->next_frame_delay_num,
@@ -156,90 +156,79 @@ APNGDATA * loadPng(IPngReader *pSrc)
             {
                 apng->pDelay[iFrame] = 0;
             }
+            //读取PNG帧到dataFrame中，不含偏移数据
             png_read_image(png_ptr_read, rowPointers);
-            
-            png_bytep lineDst=dataCur+info_ptr_read->next_frame_y_offset*bytesPerRow;
-            //准备好背景
-            switch(info_ptr_read->next_frame_dispose_op)
-            {
-            case PNG_DISPOSE_OP_BACKGROUND://clear background
-                for(int y=0;y<info_ptr_read->next_frame_height;y++)
+            {//将当前帧数据绘制到当前显示帧中:1)获得绘制的背景；2)计算出绘制位置; 3)使用指定的绘制方式与背景混合
+                //1)获得绘制的背景
+                png_bytep targetFrame = data + bytesPerFrame * iFrame;
+                switch(info_ptr_read->next_frame_dispose_op)
                 {
-                    memset(lineDst+y*bytesPerRow+info_ptr_read->next_frame_x_offset*4,0,info_ptr_read->next_frame_width*4);
-                }
-                break;
-            case PNG_DISPOSE_OP_PREVIOUS://copy previous frame
-                {
-                    SASSERT(iFrame>=2);
-                    png_bytep lineSour = data + (iFrame-1)*bytesPerFrame + info_ptr_read->next_frame_y_offset*bytesPerRow;
-                    for(int y=0;y<info_ptr_read->next_frame_height;y++)
+                case PNG_DISPOSE_OP_BACKGROUND://clear background
+                    memset(targetFrame,0,bytesPerFrame);
+                    break;
+                case PNG_DISPOSE_OP_PREVIOUS://copy previous frame
                     {
-                        memcpy(lineDst+y*bytesPerRow+info_ptr_read->next_frame_x_offset*4,
-                            lineSour+y*bytesPerRow+info_ptr_read->next_frame_x_offset*4,
-                            info_ptr_read->next_frame_width*4
-                            );
+                        if(iFrame>1)
+                            memcpy(targetFrame,targetFrame-bytesPerFrame*2,bytesPerFrame);
+                        else if(iFrame>0)
+                            memcpy(targetFrame,targetFrame-bytesPerFrame,bytesPerFrame);                            
                     }
-                }
-                break;
-            case PNG_DISPOSE_OP_NONE://using current frame, doing nothing
-                break;
-            default:
-                SASSERT(0);
-                break;
-            }
-
-            png_bytep lineSour=dataFrame;
-
-            //根据指定的混合方式，和背景和混合
-            switch(info_ptr_read->next_frame_blend_op)
-            {
-            case PNG_BLEND_OP_OVER:
-                {
-                    for(int y=0;y<info_ptr_read->next_frame_height;y++)
+                    break;
+                case PNG_DISPOSE_OP_NONE://using current frame, doing nothing
+                    if(iFrame>0)
                     {
-                        png_bytep lineDst1=lineDst + info_ptr_read->next_frame_x_offset*4;
-                        png_bytep lineSour1=lineSour;
-                        for(int x=0;x<info_ptr_read->next_frame_width;x++)
+                        memcpy(targetFrame,targetFrame-bytesPerFrame,bytesPerFrame);
+                    }
+                    break;
+                default:
+                    SASSERT(0);
+                    break;
+                }
+                //2)计算出绘制位置
+                png_bytep lineDst=targetFrame+info_ptr_read->next_frame_y_offset*bytesPerRow + 4 * info_ptr_read->next_frame_x_offset;
+                png_bytep lineSour=dataFrame;
+                //3)使用指定的绘制方式与背景混合
+                switch(info_ptr_read->next_frame_blend_op)
+                {
+                case PNG_BLEND_OP_OVER:
+                    {
+                        for(unsigned int y=0;y<info_ptr_read->next_frame_height;y++)
                         {
-                            png_byte alpha = lineSour1[3];
-                            lineDst1[0] = (lineDst1[0]*(255-alpha) +lineSour1[0]*alpha)/255;
-                            lineDst1[1] = (lineDst1[1]*(255-alpha) +lineSour1[1]*alpha)/255;
-                            lineDst1[2] = (lineDst1[2]*(255-alpha) +lineSour1[2]*alpha)/255;
-                            lineDst1[3] = alpha;
-                            
-                            lineDst1 += 4;
-                            lineSour1 += 4;
-//                             *lineDst1++ = ((*lineDst1)*(255-alpha)+(*lineSour1++)*alpha)>>8;
-//                             *lineDst1++ = ((*lineDst1)*(255-alpha)+(*lineSour1++)*alpha)>>8;
-//                             *lineDst1++ = ((*lineDst1)*(255-alpha)+(*lineSour1++)*alpha)>>8;
-//                             *lineDst1++ = *lineSour1++;
+                            png_bytep lineDst1=lineDst;
+                            png_bytep lineSour1=lineSour;
+                            for(unsigned int x=0;x<info_ptr_read->next_frame_width;x++)
+                            {
+                                png_byte alpha = lineSour1[3];
+                                *lineDst1++ = ((*lineDst1)*(255-alpha)+(*lineSour1++)*alpha)>>8;
+                                *lineDst1++ = ((*lineDst1)*(255-alpha)+(*lineSour1++)*alpha)>>8;
+                                *lineDst1++ = ((*lineDst1)*(255-alpha)+(*lineSour1++)*alpha)>>8;
+                                *lineDst1++ = *lineSour1++;
+                            }
+                            lineDst += bytesPerRow;
+                            lineSour+= bytesPerRow;
                         }
-                        lineDst += bytesPerRow;
-                        lineSour+= bytesPerRow;
                     }
-                }
-                break;
-            case PNG_BLEND_OP_SOURCE:
-                {
-                    for(int y=0;y<info_ptr_read->next_frame_height;y++)
+                    break;
+                case PNG_BLEND_OP_SOURCE:
                     {
-                        png_bytep lineDst1=lineDst + info_ptr_read->next_frame_x_offset*4;
-                        png_bytep lineSour1=lineSour;
-                        memcpy(lineDst1,lineSour1,info_ptr_read->next_frame_width*4);
-                        lineDst += bytesPerRow;
-                        lineSour+= bytesPerRow;
+                        for(unsigned int  y=0;y<info_ptr_read->next_frame_height;y++)
+                        {
+                            png_bytep lineDst1=lineDst;
+                            png_bytep lineSour1=lineSour;
+                            memcpy(lineDst1,lineSour1,info_ptr_read->next_frame_width*4);
+                            lineDst += bytesPerRow;
+                            lineSour+= bytesPerRow;
+                        }
                     }
+                    break;
+                default:
+                    SASSERT(FALSE);
+                    break;
                 }
-                break;
-            default:
-                SASSERT(FALSE);
-                break;
             }
-            memcpy(data + iFrame*bytesPerFrame, dataCur, bytesPerFrame);       
-            //*/     
+
         }
         free(dataFrame);
-        free(dataCur);
         apng->pdata =data;
 	}
     free(rowPointers);
