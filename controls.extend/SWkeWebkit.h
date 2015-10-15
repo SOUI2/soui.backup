@@ -61,7 +61,6 @@ namespace SOUI
         BOOL OnAttrUrl(SStringW strValue, BOOL bLoading);
         SOUI_ATTRS_BEGIN()
             ATTR_CUSTOM(L"url",OnAttrUrl)
-            ATTR_INT(L"alpha",m_byAlpha,TRUE)
         SOUI_ATTRS_END()
 
         SOUI_MSG_MAP_BEGIN()
@@ -83,6 +82,5 @@ namespace SOUI
     protected:
         wkeWebView m_pWebView;
         SStringW m_strUrl;
-        BYTE     m_byAlpha;
     };
 }
