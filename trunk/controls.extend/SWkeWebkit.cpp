@@ -52,7 +52,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     // SWkeWebkit
     
-    SWkeWebkit::SWkeWebkit(void):m_pWebView(NULL),m_byAlpha(0xFF)
+    SWkeWebkit::SWkeWebkit(void):m_pWebView(NULL)
     {
     }
 
@@ -69,9 +69,9 @@ namespace SOUI
         CRect rcInvalid;
         rcInvalid.IntersectRect(&rcClip,&rcClient);
         HDC hdc=pRT->GetDC();
-        if(m_byAlpha!=0xff)
+        if(GetStyle().m_byAlpha!=0xff)
         {
-            BLENDFUNCTION bf={AC_SRC_OVER,0,m_byAlpha,AC_SRC_ALPHA };
+            BLENDFUNCTION bf={AC_SRC_OVER,0,GetStyle().m_byAlpha,AC_SRC_ALPHA };
             AlphaBlend(hdc,rcInvalid.left,rcInvalid.top,rcInvalid.Width(),rcInvalid.Height(),m_pWebView->getViewDC(),rcInvalid.left-rcClient.left,rcInvalid.top-rcClient.top,rcInvalid.Width(),rcInvalid.Height(),bf);
         }else
         {
