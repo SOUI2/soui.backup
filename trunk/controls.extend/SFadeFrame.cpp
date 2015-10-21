@@ -5,7 +5,7 @@
 #define TIMER_HIDE  2
 
 namespace SOUI{
-    SFadeFrame::SFadeFrame(void):m_nAniTime(200),m_nDelayTime(200),m_byAlphaShow(0xFF),m_byAlphaCurrent(0xFF)
+    SFadeFrame::SFadeFrame(void):m_nAniTime(200),m_nDelayTime(200),m_byAlphaShow(0xFF),m_byAlphaCurrent(0xFF),m_bInitShow(TRUE)
     {
         m_style.m_bTrackMouseEvent = true;
     }
@@ -74,6 +74,13 @@ namespace SOUI{
             pTarget->SetAttribute(L"alpha",SStringW().Format(L"%d",byAlpha));
         }
         m_byAlphaCurrent = byAlpha;
+    }
+
+    int SFadeFrame::OnCreate(LPVOID)
+    {
+        SWindow::OnCreate(NULL);
+        if(!m_bInitShow) OnTimer(TIMER_HIDE);
+        return 0;
     }
 
 }
