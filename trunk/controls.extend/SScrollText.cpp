@@ -86,6 +86,7 @@ namespace SOUI
 			{
 				m_nOffset=-size.cx;
 			}
+			OnShowWindow(IsVisible(TRUE), 0);
         }
         else
         {
