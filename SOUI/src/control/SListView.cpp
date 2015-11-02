@@ -446,6 +446,8 @@ namespace SOUI
 
         if(uMsg == WM_LBUTTONDOWN)
             __super::OnLButtonDown(wParam,pt);
+        else if(uMsg == WM_RBUTTONDOWN)
+            __super::OnRButtonDown(uMsg, pt);
 
         if(m_itemCapture)
         {
