@@ -495,6 +495,8 @@ namespace SOUI
         }
         if(uMsg == WM_LBUTTONUP)
             __super::OnLButtonUp(wParam,pt);
+        else if(uMsg == WM_RBUTTONUP)
+            __super::OnRButtonUp(uMsg, pt);
 
         return 0;
     }
