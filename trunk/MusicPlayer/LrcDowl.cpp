@@ -23,7 +23,7 @@ void CLrcDownload::download(const char *Url,const char *save_as)  //½«UrlÖ¸ÏòµÄµ
 	byte Temp[MAXBLOCKSIZE];   
 	ULONG Number = 1;   
 	FILE *stream;   
-	HINTERNET hSession = InternetOpen(L"RookIE/1.0", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0); 
+	HINTERNET hSession = InternetOpen(_T("RookIE/1.0"), INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0); 
 	if (hSession != NULL)
 	{  
 		HINTERNET handle2 = InternetOpenUrl(hSession, (LPCWSTR)Url, NULL, 0, INTERNET_FLAG_DONT_CACHE, 0);  
