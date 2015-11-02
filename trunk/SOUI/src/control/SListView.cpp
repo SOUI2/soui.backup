@@ -446,8 +446,6 @@ namespace SOUI
 
         if(uMsg == WM_LBUTTONDOWN)
             __super::OnLButtonDown(wParam,pt);
-        else if(uMsg == WM_RBUTTONDOWN)
-            __super::OnRButtonDown(uMsg, pt);
 
         if(m_itemCapture)
         {
@@ -495,8 +493,8 @@ namespace SOUI
         }
         if(uMsg == WM_LBUTTONUP)
             __super::OnLButtonUp(wParam,pt);
-        else if(uMsg == WM_RBUTTONUP)
-            __super::OnRButtonUp(uMsg, pt);
+        else if(uMsg == WM_RBUTTONDOWN)
+            __super::OnRButtonDown(uMsg, pt);
 
         return 0;
     }
