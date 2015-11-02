@@ -491,10 +491,12 @@ namespace SOUI
                 m_pHoverItem->DoFrameEvent(uMsg,wParam,MAKELPARAM(pt.x,pt.y));
             }
         }
+        
+        CPoint pt2(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
         if(uMsg == WM_LBUTTONUP)
-            __super::OnLButtonUp(wParam,pt);
+            __super::OnLButtonUp(wParam,pt2);
         else if(uMsg == WM_RBUTTONDOWN)
-            __super::OnRButtonDown(uMsg, pt);
+            __super::OnRButtonDown(uMsg, pt2);
 
         return 0;
     }

@@ -10,9 +10,12 @@
     <file name="ANI_ARROW"  path="image\021.ani" />
     <file name="CUR_TST" path="image\camera_capture.cur"/>
   </CURSOR>
+  <SMENU>
+    <file name="menu_test" path="xml\menu_test.xml"  />
+    <file name="menu_lv" path="xml\menu_lv.xml"  />
+  </SMENU>
   <LAYOUT>
     <file name="maindlg" path="xml\dlg_main.xml"  />
-    <file name="menu_test" path="xml\menu_test.xml"  />
     <file name="page_layout" path="xml\page_layout.xml"  />
     <file name="page_treebox" path="xml\page_treebox.xml"  />
     <file name="page_skia" path="xml\page_skia.xml"  />
