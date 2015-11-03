@@ -266,8 +266,9 @@ namespace SOUI
 
     BOOL SComboBase::CalcPopupRect( int nHeight,CRect & rcPopup )
     {
-        CRect rcWnd;
-        GetWindowRect(&rcWnd);
+        CRect rcWnd=GetWindowRect();
+        GetContainer()->FrameToHost(rcWnd);
+        
         ClientToScreen(GetContainer()->GetHostHwnd(),(LPPOINT)&rcWnd);
         ClientToScreen(GetContainer()->GetHostHwnd(),((LPPOINT)&rcWnd)+1);
 
