@@ -27,28 +27,28 @@
               </items>
             </header>
             <template itemHeight="80" colorHover="#cccccc" colorSelected="#0000ff" id="30000">
-              <window name="col1">
+              <window name="col1" clipClient="1">
                 <img name="img_icon" skin="skin_icon6" pos="10,8,@64,@64"/>
                 <text name="txt_name" pos="[5,16" font="bold:1,adding:-1">火狐浏览器</text>
                 <text name="txt_desc" pos="{0,36,-10,-10" font="bold:1,adding:-4" dotted="1">速度最快的浏览器</text>
                 <text name="txt_index" pos="|0,|0" offset="-0.5,-0.5" font="adding:10" colorText="#ff000088">10</text>
               </window>
-              <window name="col2">
+              <window name="col2" clipClient="1">
                 <ratingbar name="rating_score" starSkin="skin_star1" starNum="5" value="3.5" pos="10,16"  />
-                <text name="txt_score" pos="15,36,50,-16" font="adding:-5"  >8.5分</text>
-                <link pos="[5,36,@30,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+                <text name="txt_score" pos="10,36" font="adding:-5"  >8.5分</text>
+                <link pos="[5,36" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
               </window>
-              <window name="col3">
+              <window name="col3" clipClient="1">
                 <text name="txt_size" pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
               </window>
-              <window  name="col4">
+              <window  name="col4" clipClient="1">
                 <text name="txt_installtime" pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
               </window>
-              <window name="col5">
+              <window name="col5" clipClient="1">
                 <text name="txt_usetime" pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
                 <animateimg pos="|0,|0" offset="-0.5,-0.5" skin="skin_busy" name="ani_test" tip="animateimg is used here" msgTransparent="0" />
               </window>
-              <window name="col6">
+              <window name="col6" clipClient="1">
                 <imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" name="btn_uninstall">卸载</imgbtn>
               </window>            
             </template>
