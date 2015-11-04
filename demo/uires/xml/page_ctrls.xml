@@ -57,7 +57,7 @@
         </page>
         <page title="listview(fix)">
           <listview pos="5,[0,-5,-5" name="lv_test_fix" dividerSize="5" wantTab="1">
-            <template itemHeight="50" colorHover="#cccccc" colorSelected="#0000ff">
+            <template itemHeight="50" colorHover="#cccccc" colorSelected="#0000ff" trackMouseEvent="1">
               <button pos="10,5,@150,@25" name="btn_test" tip="click the button to see how to writing the response function">btn</button>
               <animateimg pos="[10,{0" skin="skin_busy" name="ani_test" tip="animateimg is used here" msgTransparent="0" />
               <combobox name="cbx_in_lv" pos="[10,{0,@200,@30"  dropDown="1" dropHeight="100" class="cls_edit" dotted="0" animateTime="200" curSel="2">
