@@ -254,7 +254,7 @@ namespace SOUI
                     int iItem = iNewLastVisible-iOldFirstVisible;//(iNewLastVisible-iNewFirstVisible) + (iNewFirstVisible-iOldFirstVisible);
                     SASSERT(iItem>=0 && iItem <= (iOldLastVisible-iOldFirstVisible));
                     m_lstItems.AddTail(pItemInfos[iItem]);
-                    pos += m_lvItemLocator->GetItemHeight(iNewLastVisible);
+                    pos += m_lvItemLocator->GetItemHeight(iNewLastVisible)+m_lvItemLocator->GetDividerSize();
                     pItemInfos[iItem].pItem = NULL;//标记该行已经被重用
                 }else
                 {//create new visible item
