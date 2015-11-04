@@ -53,7 +53,7 @@ namespace SOUI
         __super::OnShowWindow(bShow,nStatus);
         if(m_nScrollWidth>0)
         {
-            if(bShow)
+            if(IsVisible(TRUE))
             {
                 GetContainer()->RegisterTimelineHandler(this);
                 m_nNextInterval = m_nSpeed;
@@ -86,7 +86,19 @@ namespace SOUI
 			{
 				m_nOffset=-size.cx;
 			}
-			OnShowWindow(IsVisible(TRUE), 0);
+            if(m_nScrollWidth>0)
+            {
+                if(IsVisible(TRUE))
+                {
+                    GetContainer()->RegisterTimelineHandler(this);
+                    m_nNextInterval = m_nSpeed;
+                }
+                else
+                {
+                    GetContainer()->UnregisterTimelineHandler(this);
+                }
+            }
+
         }
         else
         {
