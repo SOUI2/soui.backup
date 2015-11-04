@@ -249,9 +249,9 @@ namespace SOUI
         {
             while(pos < m_siVer.nPos + (int)m_siVer.nPage && iNewLastVisible < m_adapter->getCount())
             {
-                if(iNewLastVisible>=iOldLastVisible && iNewLastVisible < iOldLastVisible)
+                if(iNewLastVisible>=iOldFirstVisible && iNewLastVisible < iOldLastVisible)
                 {//use the old visible item
-                    int iItem = iNewLastVisible-(iNewFirstVisible-iOldFirstVisible);
+                    int iItem = iNewLastVisible-iOldFirstVisible;//(iNewLastVisible-iNewFirstVisible) + (iNewFirstVisible-iOldFirstVisible);
                     SASSERT(iItem>=0 && iItem <= (iOldLastVisible-iOldFirstVisible));
                     m_lstItems.AddTail(pItemInfos[iItem]);
                     pos += m_lvItemLocator->GetItemHeight(iNewLastVisible);
