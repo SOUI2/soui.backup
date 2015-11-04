@@ -534,7 +534,7 @@ namespace SOUI
             return;
         }
         
-        if(m_iSelItem!=-1)
+        if(m_iSelItem!=-1 && m_bWantTab)
         {
             SItemPanel *pItem = GetItemPanel(m_iSelItem);
             if(pItem)
