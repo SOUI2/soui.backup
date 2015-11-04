@@ -41,11 +41,11 @@ namespace SOUI
         ,m_bScrollUpdate(TRUE)
         ,m_pSkinDivider(NULL)
         ,m_nDividerSize(0)
-        ,m_nUpdateInterval(40)
+        ,m_bWantTab(FALSE)
     {
         m_bFocusable = TRUE;
         m_observer.Attach(new SListViewDataSetObserver(this));
-
+        m_dwUpdateInterval= 40;
         m_evtSet.addEvent(EVENTID(EventLVSelChanged));
     }
 
@@ -212,7 +212,7 @@ namespace SOUI
             //加速滚动时UI的刷新
             static DWORD dwTime1=0;
             DWORD dwTime=GetTickCount();
-            if(dwTime-dwTime1>=m_nUpdateInterval && m_bScrollUpdate)
+            if(dwTime-dwTime1>=m_dwUpdateInterval && m_bScrollUpdate)
             {
                 UpdateWindow();
                 dwTime1=dwTime;
@@ -533,6 +533,17 @@ namespace SOUI
             SetMsgHandled(FALSE);
             return;
         }
+        
+        if(m_iSelItem!=-1)
+        {
+            SItemPanel *pItem = GetItemPanel(m_iSelItem);
+            if(pItem)
+            {
+                pItem->DoFrameEvent(WM_KEYDOWN,nChar, MAKELONG(nFlags, nRepCnt));
+                if(pItem->IsMsgHandled()) return;
+            }
+        }
+        
         int  nNewSelItem = -1;
         SWindow *pOwner = GetOwner();
         if (pOwner && (nChar == VK_ESCAPE))
@@ -546,7 +557,7 @@ namespace SOUI
             nNewSelItem = m_iSelItem+1;
         else if (nChar == VK_UP && m_iSelItem > 0)
             nNewSelItem = m_iSelItem-1;
-        else if (pOwner && nChar == VK_RETURN)
+        else if (pOwner && nChar == VK_RETURN)//提供combobox响应回车选中
             nNewSelItem = m_iSelItem;
         else if(nChar == VK_PRIOR)
         {
@@ -568,8 +579,8 @@ namespace SOUI
         {
             EnsureVisible(nNewSelItem);
             SetSel(nNewSelItem);
+            m_bScrollUpdate=TRUE;
         }
-        m_bScrollUpdate=TRUE;
     }
 
     void SListView::EnsureVisible( int iItem )
@@ -707,6 +718,7 @@ namespace SOUI
         SItemPanel *pItem = GetItemPanel(nOldSel);
         if(pItem)
         {
+            pItem->GetFocusManager()->SetFocusedHwnd(-1);
             pItem->ModifyItemState(0,WndState_Check);
             RedrawItem(pItem);
         }
@@ -718,4 +730,30 @@ namespace SOUI
             RedrawItem(pItem);
         }
     }
+
+    UINT SListView::OnGetDlgCode()
+    {
+        if(m_bWantTab) return SC_WANTALLKEYS;
+        else return SC_WANTARROWS|SC_WANTSYSKEY;
+    }
+
+    void SListView::OnKillFocus()
+    {
+        __super::OnKillFocus();
+        
+        if(m_iSelItem==-1) return;
+        
+        SItemPanel *pSelPanel = GetItemPanel(m_iSelItem);
+        if(pSelPanel) pSelPanel->GetFocusManager()->StoreFocusedView();
+    }
+
+    void SListView::OnSetFocus()
+    {
+        __super::OnSetFocus();
+        if(m_iSelItem==-1) return;
+
+        SItemPanel *pSelPanel = GetItemPanel(m_iSelItem);
+        if(pSelPanel) pSelPanel->GetFocusManager()->RestoreFocusedView();
+    }
+
 }
