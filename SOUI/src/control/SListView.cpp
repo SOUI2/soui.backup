@@ -249,56 +249,51 @@ namespace SOUI
         {
             while(pos < m_siVer.nPos + (int)m_siVer.nPage && iNewLastVisible < m_adapter->getCount())
             {
+                ItemInfo ii={NULL,-1};
                 if(iNewLastVisible>=iOldFirstVisible && iNewLastVisible < iOldLastVisible)
                 {//use the old visible item
                     int iItem = iNewLastVisible-iOldFirstVisible;//(iNewLastVisible-iNewFirstVisible) + (iNewFirstVisible-iOldFirstVisible);
                     SASSERT(iItem>=0 && iItem <= (iOldLastVisible-iOldFirstVisible));
-                    m_lstItems.AddTail(pItemInfos[iItem]);
-                    m_adapter->getView(iNewLastVisible,pItemInfos[iItem].pItem,m_xmlTemplate.first_child());//重新执行getView，更新view中的数据
-                    pos += m_lvItemLocator->GetItemHeight(iNewLastVisible)+m_lvItemLocator->GetDividerSize();
+                    ii = pItemInfos[iItem];
                     pItemInfos[iItem].pItem = NULL;//标记该行已经被重用
                 }else
                 {//create new visible item
-                    int nItemType = m_adapter->getItemViewType(iNewLastVisible);
-                    SList<SItemPanel *> *lstRecycle = m_itemRecycle.GetAt(nItemType);
-
-                    SItemPanel * pItemPanel = NULL;
+                    ii.nType = m_adapter->getItemViewType(iNewLastVisible);
+                    SList<SItemPanel *> *lstRecycle = m_itemRecycle.GetAt(ii.nType);
                     if(lstRecycle->IsEmpty())
                     {//创建一个新的列表项
-                        pItemPanel = SItemPanel::Create(this,pugi::xml_node(),this);
+                        ii.pItem = SItemPanel::Create(this,pugi::xml_node(),this);
                     }else
                     {
-                        pItemPanel = lstRecycle->RemoveHead();
+                        ii.pItem = lstRecycle->RemoveHead();
                     }
-                    pItemPanel->SetItemIndex(iNewLastVisible);
-
-                    CRect rcItem = GetClientRect();
-                    rcItem.MoveToXY(0,0);
-                    if(m_lvItemLocator->IsFixHeight())
-                    {
-                        rcItem.bottom=m_lvItemLocator->GetItemHeight(iNewLastVisible);
-                        pItemPanel->Move(rcItem);
-                    }
-                    m_adapter->getView(iNewLastVisible,pItemPanel,m_xmlTemplate.first_child());
-                    if(!m_lvItemLocator->IsFixHeight())
-                    {
-                        rcItem.bottom=0;
-                        CSize szItem = pItemPanel->GetDesiredSize(rcItem);
-                        rcItem.bottom = rcItem.top + szItem.cy;
-                        pItemPanel->Move(rcItem);
-                        m_lvItemLocator->SetItemHeight(iNewLastVisible,szItem.cy);
-                    }                
-                    pItemPanel->UpdateChildrenPosition();
-                    if(iNewLastVisible == m_iSelItem)
-                    {
-                        pItemPanel->ModifyItemState(WndState_Check,0);
-                    }
-                    ItemInfo ii;
-                    ii.nType = nItemType;
-                    ii.pItem = pItemPanel;
-                    m_lstItems.AddTail(ii);
-                    pos += rcItem.bottom + m_lvItemLocator->GetDividerSize();
+                    ii.pItem->SetItemIndex(iNewLastVisible);
                 }
+                CRect rcItem = GetClientRect();
+                rcItem.MoveToXY(0,0);
+                if(m_lvItemLocator->IsFixHeight())
+                {
+                    rcItem.bottom=m_lvItemLocator->GetItemHeight(iNewLastVisible);
+                    ii.pItem->Move(rcItem);
+                }
+                m_adapter->getView(iNewLastVisible,ii.pItem,m_xmlTemplate.first_child());
+                if(!m_lvItemLocator->IsFixHeight())
+                {
+                    rcItem.bottom=0;
+                    CSize szItem = ii.pItem->GetDesiredSize(rcItem);
+                    rcItem.bottom = rcItem.top + szItem.cy;
+                    ii.pItem->Move(rcItem);
+                    m_lvItemLocator->SetItemHeight(iNewLastVisible,szItem.cy);
+                }                
+                ii.pItem->UpdateLayout();
+                if(iNewLastVisible == m_iSelItem)
+                {
+                    ii.pItem->ModifyItemState(WndState_Check,0);
+                }
+                
+                m_lstItems.AddTail(ii);
+                pos += rcItem.bottom + m_lvItemLocator->GetDividerSize();
+
                 iNewLastVisible ++;
             }
         }
