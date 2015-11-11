@@ -8,6 +8,7 @@
 #include <unknown/obj-ref-impl.hpp>
 
 #include <interface/imgdecoder-i.h>
+#include <interface/render-i.h>
 
 struct APNGDATA;
 
