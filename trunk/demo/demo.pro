@@ -13,6 +13,8 @@ INCLUDEPATH += . \
 			   
 dir = ..
 include($$dir/common.pri)
+#demo中使用了#import，不支持MP编译
+QMAKE_CXXFLAGS -= /MP
 
 
 CONFIG(debug,debug|release){
@@ -21,6 +23,7 @@ CONFIG(debug,debug|release){
 else{
 	LIBS += utilities.lib soui.lib
 }
+
 
 PRECOMPILED_HEADER = stdafx.h
 
