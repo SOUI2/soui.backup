@@ -114,9 +114,7 @@ namespace SOUI
         SItemPanel*                     m_pHoverItem;
         
         SArray<SList<SItemPanel*> *>    m_itemRecycle;//item回收站,每一种样式在回收站中保持一个列表，以便重复利用
-        
-        BOOL                            m_bScrollUpdate; //滚动时更新窗口标志
-        
+                
         pugi::xml_document              m_xmlTemplate;
         ISkinObj*                       m_pSkinDivider;
         int                             m_nDividerSize;
