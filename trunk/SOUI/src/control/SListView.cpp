@@ -38,7 +38,6 @@ namespace SOUI
         ,m_iFirstVisible(-1)
         ,m_pHoverItem(NULL)
         ,m_itemCapture(NULL)
-        ,m_bScrollUpdate(TRUE)
         ,m_pSkinDivider(NULL)
         ,m_nDividerSize(0)
         ,m_bWantTab(FALSE)
@@ -210,13 +209,8 @@ namespace SOUI
             UpdateVisibleItems();
 
             //加速滚动时UI的刷新
-            static DWORD dwTime1=0;
-            DWORD dwTime=GetTickCount();
-            if(dwTime-dwTime1>=m_dwUpdateInterval && m_bScrollUpdate)
-            {
-                UpdateWindow();
-                dwTime1=dwTime;
-            }
+            if (uCode==SB_THUMBTRACK)
+                ScrollUpdate();
 
         }
         return TRUE;
@@ -548,26 +542,41 @@ namespace SOUI
             return;
         }
 
-        m_bScrollUpdate=FALSE;
         if (nChar == VK_DOWN && m_iSelItem < m_adapter->getCount() - 1)
             nNewSelItem = m_iSelItem+1;
         else if (nChar == VK_UP && m_iSelItem > 0)
             nNewSelItem = m_iSelItem-1;
         else if (pOwner && nChar == VK_RETURN)//提供combobox响应回车选中
             nNewSelItem = m_iSelItem;
-        else if(nChar == VK_PRIOR)
+        else
         {
-            OnScroll(TRUE,SB_PAGEUP,0);
-            if(!m_lstItems.IsEmpty())
+            switch(nChar)
             {
-                nNewSelItem = m_lstItems.GetHead().pItem->GetItemIndex();
+            case VK_PRIOR:
+                OnScroll(TRUE,SB_PAGEUP,0);
+                break;
+            case VK_NEXT:
+                OnScroll(TRUE,SB_PAGEDOWN,0);
+                break;
+            case VK_HOME:
+                OnScroll(TRUE,SB_TOP,0);
+                break;
+            case VK_END:
+                OnScroll(TRUE,SB_BOTTOM,0);
+                break;
             }
-        }else if(nChar == VK_NEXT)
-        {
-            OnScroll(TRUE,SB_PAGEDOWN,0);
-            if(!m_lstItems.IsEmpty())
+            if(nChar == VK_PRIOR || nChar == VK_HOME)
             {
-                nNewSelItem = m_lstItems.GetTail().pItem->GetItemIndex();
+                if(!m_lstItems.IsEmpty())
+                {
+                    nNewSelItem = m_lstItems.GetHead().pItem->GetItemIndex();
+                }
+            }else if(nChar == VK_NEXT || nChar == VK_END)
+            {
+                if(!m_lstItems.IsEmpty())
+                {
+                    nNewSelItem = m_lstItems.GetTail().pItem->GetItemIndex();
+                }
             }
         }
 
@@ -575,7 +584,6 @@ namespace SOUI
         {
             EnsureVisible(nNewSelItem);
             SetSel(nNewSelItem);
-            m_bScrollUpdate=TRUE;
         }
     }
 
