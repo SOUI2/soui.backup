@@ -28,7 +28,7 @@ if %selected%==1 (
 )
 
 rem 选择开发环境
-SET /p selected=2.选择开发环境[1=vs2008;2=vs2010;3=vs2012;4=vs2013]:
+SET /p selected=2.选择开发环境[1=vs2008;2=vs2010;3=vs2012;4=vs2013;5=2005]:
 if %selected%==1 (
 	SET specs=win32-msvc2008
 	call "%VS90COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
@@ -41,6 +41,9 @@ if %selected%==1 (
 ) else if %selected%==4 (
 	SET specs=win32-msvc2010
 	call "%VS120COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
+) else if %selected%==5 (
+	SET specs=win32-msvc2005
+	call "%VS80COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
 ) else (
 	goto error
 )
