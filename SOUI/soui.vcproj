@@ -467,6 +467,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\helper\SwndFinder.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\core\SwndLayout.cpp"
 				>
 			</File>
@@ -890,6 +894,10 @@
 			</File>
 			<File
 				RelativePath="include\core\SwndFactoryMgr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\helper\SwndFinder.h"
 				>
 			</File>
 			<File
