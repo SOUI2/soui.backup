@@ -1,4 +1,4 @@
-﻿<SOUI trCtx="dlg_main" title="UIEditor For SOUI ver:%ver%" width="600" height="400" appwin="1" margin="5,5,5,5"  resize="1" translucent="0" >
+﻿<SOUI trCtx="dlg_main" title="UIEditor For SOUI ver:%ver%" width="600" height="400" appwin="1" margin="5,5,5,5"  resizable="1" translucent="0" >
   <root>
     <window name="maindlg" pos="0,0,-0,-0" class="cls_dlg_frame">
       <caption id="101" pos="0,0,-0,29">
@@ -10,7 +10,7 @@
       </caption>
       <window pos="5,29,-5,-5">
         <splitcol pos="0,0,-0,-0" sepsize="6">
-          <pane name="pane_project" idealsize="350" minsize="200" priority="0">
+          <pane name="pane_project" idealsize="350" minsize="200" priority="2">
             <window name="prj_toolbar" height="30" width="full">
               <!--项目工具栏-->
               <button name="prg_btn_open" width="100" height="full">打开项目</button>
@@ -51,11 +51,11 @@
               <page title="image_view">
                 <splitcol pos="0,0,-0,-0" skinsep="skin_split_vert" sepsize="6">
                   <!--采用split分割出一个类9宫表格-->
-                  <pane ideasize="0" minsize="0" priority="0"/>
-                  <pane ideasize="100" minsize="20" priority="3">
+                  <pane ideasize="0" minsize="0" priority="1"/>
+                  <pane ideasize="100" minsize="20" priority="0">
                     <splitrow pos="0,0,-0,-0" skinsep="skin_split_horz" sepsize="6">
-                      <pane ideasize="0" minsize="0" priority="0"/>
-                      <pane ideasize="100" minsize="20" priority="3" skin="_skin.trans.bkgnd">
+                      <pane ideasize="0" minsize="0" priority="1"/>
+                      <pane ideasize="100" minsize="20" priority="0" skin="_skin.trans.bkgnd">
                         <!--容纳一个自定义的图片预览控件-->
                         <tabctrl name="skinview_tab" pos="0,0,-0,-0" tabheight="0">
                           <page title="imglist">
@@ -72,10 +72,10 @@
                           </page>
                         </tabctrl>
                       </pane>
-                      <pane ideasize="0" minsize="0" priority="0"/>
+                      <pane ideasize="0" minsize="0" priority="1"/>
                     </splitrow>
                   </pane>
-                  <pane ideasize="0" minsize="0" priority="0"/>
+                  <pane ideasize="0" minsize="0" priority="1"/>
                 </splitcol>
               </page>
               <page title="xml_view">
