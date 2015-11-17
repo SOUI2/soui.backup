@@ -29,7 +29,7 @@ TEMPLATE = $$SAVE_TEMPLATE
 #-->
 
 DEFINES += _CRT_SECURE_NO_WARNINGS
-DEFINES += _WIN32_WINNT=0x0502
+#DEFINES += _WIN32_WINNT=0x0502 #ª·µº÷¬vs2013±‡“Îskia ß∞‹£¨ªπ «…æµÙ∞…°£
 
 #∂‡∫À±‡“Î
 QMAKE_CXXFLAGS += /MP
