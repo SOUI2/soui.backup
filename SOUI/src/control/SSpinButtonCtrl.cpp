@@ -37,6 +37,8 @@ namespace SOUI
         m_btnDown->SetAttribute(L"focusable",L"0");
         m_btnUp->GetEventSet()->subscribeEvent(EventCmd::EventID,Subscriber(&SSpinButtonCtrl::OnUpDownClick,this));
         m_btnDown->GetEventSet()->subscribeEvent(EventCmd::EventID,Subscriber(&SSpinButtonCtrl::OnUpDownClick,this));
+        
+        OnValueChanged();
         return TRUE;        
     }
 
