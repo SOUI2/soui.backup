@@ -2,6 +2,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 #pragma once
+#include "wtlhelper/whwindow.h"
 
 struct SkinInfo
 {
@@ -30,6 +31,7 @@ struct SkinInfo
 };
 
 class CMainDlg : public SHostDialog
+               , public CWHRoundRectFrameHelper<CMainDlg>
 {
 	friend class CNewSkinDlg;
 	friend class CNewFileDlg;
@@ -104,6 +106,7 @@ protected:
 	BEGIN_MSG_MAP_EX(CMainDlg)
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_DESTROY(OnDestroy)
+		CHAIN_MSG_MAP(CWHRoundRectFrameHelper<CMainDlg>)
 		CHAIN_MSG_MAP(SHostDialog)
 		REFLECT_NOTIFICATIONS_EX()
 	END_MSG_MAP()

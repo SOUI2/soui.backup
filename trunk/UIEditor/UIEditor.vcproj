@@ -260,6 +260,10 @@
 				RelativePath=".\stdafx.h"
 				>
 			</File>
+			<File
+				RelativePath=".\wtlhelper\whwindow.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
