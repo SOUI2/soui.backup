@@ -415,6 +415,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\control\SSpinButtonCtrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\control\SSplitWnd.cpp"
 				>
 			</File>
@@ -822,6 +826,10 @@
 			</File>
 			<File
 				RelativePath="include\control\SSliderBar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\control\SSpinButtonCtrl.h"
 				>
 			</File>
 			<File
