@@ -1,4 +1,6 @@
-﻿<SOUI name="dlg_newskin" title="new skin" width="500" height="300" appwin="0" margin="5,5,5,5" resize="1">
+﻿<SOUI name="dlg_newskin" title="new skin" width="500" height="300" appwin="0" margin="5,5,5,5" 
+      resizable="1"
+      translucent="1">
   <root>
     <window name="maindlg" pos="0,0,-0,-0" class="cls_dlg_frame">
       <caption id="101" pos="0,0,-0,29">

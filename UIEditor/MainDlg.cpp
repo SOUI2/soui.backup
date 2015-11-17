@@ -74,6 +74,10 @@ BOOL CMainDlg::OnListCtrl_Skin_SelChanged( EventArgs *pEvt )
 {
     EventLCSelChanged *pEvt2 = (EventLCSelChanged*)pEvt;
     SListCtrl * pListSkin=FindChildByName2<SListCtrl >(L"prj_list_skin");
+    
+    STabCtrl * pTabView=FindChildByName2<STabCtrl >(L"tab_view");
+    pTabView->SetCurSel(0);
+    
     if(pEvt2->nNewSel!=-1 && pListSkin)
     {
         SkinInfo *pSkinInfo=(SkinInfo *)pListSkin->GetItemData(pEvt2->nNewSel);
