@@ -5,6 +5,10 @@
 const GUID __declspec(selectany) CLSID_CSoSmileyCtrl =
 {0xd29e0bde,0xcfda,0x4b93,{0x92,0x9a,0x87,0x7a,0xb4,0x55,0x7b,0xd8}};
 
+#ifndef LY_PER_INCH
+#define LY_PER_INCH 1440
+#endif
+
 namespace SOUI{
 
     const SStringW KLabelColor      = L"color";
@@ -14,6 +18,7 @@ namespace SOUI{
     const SStringW KLabelItalic     = L"italic";
     const SStringW KLabelBold       = L"bold";
     const SStringW KLabelStrike     = L"strike";
+    const SStringW KLabelSize       = L"size";
     const SStringW KLabelSmiley     = L"smiley";
 
     SChatEdit::SChatEdit(void)
@@ -170,6 +175,14 @@ namespace SOUI{
                 cfNew.dwMask |= CFM_COLOR;
                 cfNew.crTextColor = cr & 0x00ffffff;
             }
+        }else if(xmlText.name() == KLabelSize)
+        {
+            cfNew.dwMask |= CFM_SIZE;
+            
+            HDC hdc=GetDC(NULL);
+            LONG yPixPerInch = GetDeviceCaps(hdc, LOGPIXELSY);
+            ReleaseDC(NULL,hdc);
+            cfNew.yHeight = abs(MulDiv(xmlText.attribute(L"value").as_uint(12), LY_PER_INCH, yPixPerInch));
         }
         
         int nRet = strText.GetLength();
