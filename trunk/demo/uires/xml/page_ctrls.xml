@@ -26,7 +26,7 @@
                 <item width="100">操作</item>
               </items>
             </header>
-            <template itemHeight="80" colorHover="#cccccc" colorSelected="#0000ff" id="30000">
+            <template itemHeight="80" colorHover="#cccccc" colorSelected="#0000ff">
               <window name="col1" clipClient="1">
                 <img name="img_icon" skin="skin_icon6" pos="10,8,@64,@64"/>
                 <text name="txt_name" pos="[5,16" font="bold:1,adding:-1">火狐浏览器</text>
