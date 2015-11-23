@@ -63,7 +63,10 @@
       </deskdock>
     </page>
     <page title="SetWindowRgn">
-      <window name="wnd_rgn" pos="|0,|0,@100,@50" offset="-0.5,-0.5" colorBkgnd="#ff000088" cursor="hand">Region</window>
+      <scrollview pos="0,0,-0,-0" viewSize="700,1000">
+        <window name="wnd_rgn" pos="|0,|0,@100,@50" offset="-0.5,-0.5" colorBkgnd="#ff000088" cursor="hand">Region</window>
+        <img pos="0,0" skin="skin_bkgnd"/>
+      </scrollview>
     </page>
   </tabctrl>
 </include>
