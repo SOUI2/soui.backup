@@ -8,6 +8,7 @@
 
 #include "decoder-apng.h"
 #include <assert.h>
+#include <tchar.h>
 
 #define SASSERT(x) assert(x)
 
@@ -127,6 +128,8 @@ APNGDATA * loadPng(IPngReader *pSrc)
         apng->nFrames  = png_get_num_frames(png_ptr_read, info_ptr_read);//获取总帧数
 
         png_bytep data = (png_bytep)malloc( bytesPerFrame * apng->nFrames);//为每一帧分配内存
+        png_bytep curFrame = (png_bytep)malloc(bytesPerFrame);
+        memset(curFrame,0,bytesPerFrame);
                
         apng->nLoops = png_get_num_plays(png_ptr_read, info_ptr_read);
         apng->pDelay = (unsigned short*)malloc(sizeof(unsigned short)*apng->nFrames);
@@ -159,35 +162,12 @@ APNGDATA * loadPng(IPngReader *pSrc)
             //读取PNG帧到dataFrame中，不含偏移数据
             png_read_image(png_ptr_read, rowPointers);
             {//将当前帧数据绘制到当前显示帧中:1)获得绘制的背景；2)计算出绘制位置; 3)使用指定的绘制方式与背景混合
-                //1)获得绘制的背景
-                png_bytep targetFrame = data + bytesPerFrame * iFrame;
-                switch(info_ptr_read->next_frame_dispose_op)
-                {
-                case PNG_DISPOSE_OP_BACKGROUND://clear background
-                    memset(targetFrame,0,bytesPerFrame);
-                    break;
-                case PNG_DISPOSE_OP_PREVIOUS://copy previous frame
-                    {
-                        if(iFrame>1)
-                            memcpy(targetFrame,targetFrame-bytesPerFrame*2,bytesPerFrame);
-                        else if(iFrame>0)
-                            memcpy(targetFrame,targetFrame-bytesPerFrame,bytesPerFrame);                            
-                    }
-                    break;
-                case PNG_DISPOSE_OP_NONE://using current frame, doing nothing
-                    if(iFrame>0)
-                    {
-                        memcpy(targetFrame,targetFrame-bytesPerFrame,bytesPerFrame);
-                    }
-                    break;
-                default:
-                    SASSERT(0);
-                    break;
-                }
-                //2)计算出绘制位置
-                png_bytep lineDst=targetFrame+info_ptr_read->next_frame_y_offset*bytesPerRow + 4 * info_ptr_read->next_frame_x_offset;
+
+
+                //1)计算出绘制位置
+                png_bytep lineDst=curFrame+info_ptr_read->next_frame_y_offset*bytesPerRow + 4 * info_ptr_read->next_frame_x_offset;
                 png_bytep lineSour=dataFrame;
-                //3)使用指定的绘制方式与背景混合
+                //2)使用指定的绘制方式与背景混合
                 switch(info_ptr_read->next_frame_blend_op)
                 {
                 case PNG_BLEND_OP_OVER:
@@ -225,9 +205,46 @@ APNGDATA * loadPng(IPngReader *pSrc)
                     SASSERT(FALSE);
                     break;
                 }
+                
+                png_bytep targetFrame = data + bytesPerFrame * iFrame;
+                memcpy(targetFrame,curFrame,bytesPerFrame);
+
+                lineDst=curFrame+info_ptr_read->next_frame_y_offset*bytesPerRow + 4 * info_ptr_read->next_frame_x_offset;
+
+                //3)处理当前帧绘制区域
+                switch(info_ptr_read->next_frame_dispose_op)
+                {
+                case PNG_DISPOSE_OP_BACKGROUND://clear background
+                    {
+                        for(unsigned int y=0;y<info_ptr_read->next_frame_height;y++)
+                        {
+                            png_bytep lineDst1=lineDst;
+                            for(unsigned int x=0;x<info_ptr_read->next_frame_width;x++)
+                            {
+                                memset(lineDst1,0,4);
+                                *lineDst1+=4;
+                            }
+                            lineDst += bytesPerRow;
+                        }
+
+                    }
+                    break;
+                case PNG_DISPOSE_OP_PREVIOUS://copy previous frame
+                    if(iFrame>0)
+                    {
+                        memcpy(curFrame,targetFrame-bytesPerFrame,bytesPerFrame);
+                    }
+                    break;
+                case PNG_DISPOSE_OP_NONE://using current frame, doing nothing
+                    break;
+                default:
+                    SASSERT(0);
+                    break;
+                }
             }
 
         }
+        free(curFrame);
         free(dataFrame);
         apng->pdata =data;
 	}
@@ -270,4 +287,3 @@ bool SavePng(const unsigned char *pData, int nWid,int nHei,int nStride,const wch
     
     return false;
 }
-
