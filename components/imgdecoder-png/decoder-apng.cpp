@@ -202,7 +202,7 @@ APNGDATA * loadPng(IPngReader *pSrc)
                                 *lineDst1++ = ((*lineDst1)*(255-alpha)+(*lineSour1++)*alpha)>>8;
                                 *lineDst1++ = ((*lineDst1)*(255-alpha)+(*lineSour1++)*alpha)>>8;
                                 *lineDst1++ = ((*lineDst1)*(255-alpha)+(*lineSour1++)*alpha)>>8;
-                                *lineDst1++ = *lineSour1++;
+                                *lineDst1++ = ((*lineDst1)*(255-alpha)+(*lineSour1++)*alpha)>>8;
                             }
                             lineDst += bytesPerRow;
                             lineSour+= bytesPerRow;
