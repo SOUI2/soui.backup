@@ -73,6 +73,8 @@
     <imglist name="skin_png_icon_9" src="img.dock:PNG_ICON_9"/>
     <imglist name="skin_png_icon_10" src="img.dock:PNG_ICON_10"/>
 
+    <imglist name="skin_avatar_none" src="imgx:png_avatar" filterLevel="none"/>
+    <imglist name="skin_avatar_high" src="imgx:png_avatar" filterLevel="high"/>
 
   </skin>
 

@@ -630,9 +630,11 @@ namespace SOUI
         return bOK?S_OK:E_FAIL;
     }
 
-    HRESULT SRenderTarget_GDI::DrawBitmapEx( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,EXPEND_MODE expendMode, BYTE byAlpha/*=0xFF*/ )
+    HRESULT SRenderTarget_GDI::DrawBitmapEx( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,UINT expendMode, BYTE byAlpha/*=0xFF*/ )
     {
-        if(expendMode == EM_NULL)
+        UINT expandModeLow = LOWORD(expendMode);
+        
+        if(expandModeLow == EM_NULL)
             return DrawBitmap(pRcDest,pBitmap,pRcSrc->left,pRcSrc->top,byAlpha);
 
         SBitmap_GDI *pBmp = (SBitmap_GDI*)pBitmap;
@@ -641,7 +643,7 @@ namespace SOUI
         ::SelectObject(hmemdc,bmp);
 
         BLENDFUNCTION bf={ AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
-        if(expendMode == EM_STRETCH)
+        if(expandModeLow == EM_STRETCH)
         {
             ::AlphaBlend(m_hdc,pRcDest->left,pRcDest->top,pRcDest->right-pRcDest->left,pRcDest->bottom-pRcDest->top,
                 hmemdc,pRcSrc->left,pRcSrc->top,pRcSrc->right-pRcSrc->left,pRcSrc->bottom-pRcSrc->top,bf);
@@ -668,7 +670,7 @@ namespace SOUI
     }
 
 
-    HRESULT SRenderTarget_GDI::DrawBitmap9Patch( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,LPCRECT pRcSourMargin,EXPEND_MODE expendMode,BYTE byAlpha/*=0xFF*/ )
+    HRESULT SRenderTarget_GDI::DrawBitmap9Patch( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,LPCRECT pRcSourMargin,UINT expendMode,BYTE byAlpha/*=0xFF*/ )
     {
         int xDest[4] = {pRcDest->left,pRcDest->left+pRcSourMargin->left,pRcDest->right-pRcSourMargin->right,pRcDest->right};
         int xSrc[4] = {pRcSrc->left,pRcSrc->left+pRcSourMargin->left,pRcSrc->right-pRcSourMargin->right,pRcSrc->right};
@@ -720,7 +722,7 @@ namespace SOUI
         }
 
         //定义绘制模式
-        EXPEND_MODE mode[3][3]={
+        UINT mode[3][3]={
             {EM_NULL,expendMode,EM_NULL},
             {expendMode,expendMode,expendMode},
             {EM_NULL,expendMode,EM_NULL}

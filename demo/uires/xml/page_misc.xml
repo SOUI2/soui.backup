@@ -68,5 +68,15 @@
         <img pos="0,0" skin="skin_bkgnd"/>
       </scrollview>
     </page>
+    <page title="filter level">
+      <tabctrl pos="0,0,-0,-0" tabAlign="top" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabHeight="30">
+        <page title="none">
+          <img pos="0,0,-0,-0" skin="skin_avatar_none"/>
+        </page>
+        <page title="high">
+          <img pos="0,0,-0,-0" skin="skin_avatar_high"/>
+        </page>
+      </tabctrl>
+    </page>
   </tabctrl>
 </include>
