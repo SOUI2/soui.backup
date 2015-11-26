@@ -533,9 +533,11 @@ namespace SOUI
         return DrawBitmapEx(pRcDest,pBmp,&rcSrc,EM_STRETCH,byAlpha);
     }
 
-    HRESULT SRenderTarget_Skia::DrawBitmapEx( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,EXPEND_MODE expendMode, BYTE byAlpha/*=0xFF*/ )
+    HRESULT SRenderTarget_Skia::DrawBitmapEx( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,UINT expendMode, BYTE byAlpha/*=0xFF*/ )
     {
-        if(expendMode == EM_NULL || (RectWid(pRcDest)==RectWid(pRcSrc) && RectHei(pRcDest)==RectHei(pRcSrc)))
+        UINT expendModeLow = LOWORD(expendMode);
+
+        if(expendModeLow == EM_NULL || (RectWid(pRcDest)==RectWid(pRcSrc) && RectHei(pRcDest)==RectHei(pRcSrc)))
             return DrawBitmap(pRcDest,pBitmap,pRcSrc->left,pRcSrc->top,byAlpha);
             
         SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
@@ -550,8 +552,13 @@ namespace SOUI
         SkPaint paint;
         paint.setAntiAlias(true);
         if(byAlpha != 0xFF) paint.setAlpha(byAlpha);
-
-        if(expendMode == EM_STRETCH)
+        
+        SkPaint::FilterLevel fl = SkPaint::kNone_FilterLevel;
+        if(HIWORD(expendMode)!=0) fl=SkPaint::kHigh_FilterLevel;
+        //skia 中实现的kLow_FilterLevel, kMedium_FilterLevel有问题，自动变为kHigh_FilterLevel
+        paint.setFilterLevel(fl);
+                
+        if(expendModeLow == EM_STRETCH)
         {
             m_SkCanvas->drawBitmapRectToRect(bmp,&rcSrc,rcDest,&paint);
         }else
@@ -577,7 +584,7 @@ namespace SOUI
     }
 
 
-    HRESULT SRenderTarget_Skia::DrawBitmap9Patch( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,LPCRECT pRcSourMargin,EXPEND_MODE expendMode,BYTE byAlpha/*=0xFF*/ )
+    HRESULT SRenderTarget_Skia::DrawBitmap9Patch( LPCRECT pRcDest,IBitmap *pBitmap,LPCRECT pRcSrc,LPCRECT pRcSourMargin,UINT expendMode,BYTE byAlpha/*=0xFF*/ )
     {
         int xDest[4] = {pRcDest->left,pRcDest->left+pRcSourMargin->left,pRcDest->right-pRcSourMargin->right,pRcDest->right};
         int xSrc[4] = {pRcSrc->left,pRcSrc->left+pRcSourMargin->left,pRcSrc->right-pRcSourMargin->right,pRcSrc->right};
@@ -629,7 +636,7 @@ namespace SOUI
         }
         
         //定义绘制模式
-        EXPEND_MODE mode[3][3]={
+        UINT mode[3][3]={
         {EM_NULL,expendMode,EM_NULL},
         {expendMode,expendMode,expendMode},
         {EM_NULL,expendMode,EM_NULL}
