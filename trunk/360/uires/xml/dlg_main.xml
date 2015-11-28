@@ -10,47 +10,47 @@
 				<imgbtn name="btn_feedback" skin="_skin.feedback" pos="-143,0" animate="1" />
 				<imgbtn name="btn_skin" skin="_skin.skin" pos="-170,0" animate="1" />
 			</caption>
-			<tabctrl name="tab_main" font="face:微软雅黑,adding:-2" tabPos="10" tabAlign="top" colorText="#ffffff" pos="0,40,-0,-0" show="1" curSel="0" focusable="0" tabHeight="75" tabSkin="_skin.tab.main" iconSkin="_skin.tab.icon" text-y="50" icon-x="12" tabInterSize="5">
-				<page title="电脑体验" tip="电脑体验">
+			<tabctrl2 name="tab_main" font="face:微软雅黑,adding:-2" tabPos="10" tabAlign="top" colorText="#ffffff" pos="0,25,-0,-0" show="1" curSel="0" focusable="0" tabHeight="75" tabSkin="_skin.tab.main" iconSkin="_skin.tab.icon" text-y="50" icon-x="12" tabInterSize="5">
+				<page2 title="电脑体验" tip="电脑体验" ani_in="skin.anim.tj1" ani_out="skin.anim.tj2" interval="50">
 					<include src="layout:check_page"/>
-				</page>
-				<page title="木马查杀" tip="木马查杀">
+				</page2>
+				<page2 title="木马查杀" tip="木马查杀" ani_in="skin.anim.mm1" ani_out="skin.anim.mm2" >
 					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
 						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
 					</window>
-				</page>
-				<page title="系统修复" tip="系统修复">
+				</page2>
+				<page2 title="系统修复" tip="系统修复" ani_in="skin.anim.xfie1" ani_out="skin.anim.xfie2" >
 					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
 						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
 					</window>
-				</page>
-				<page title="电脑清理" tip="电脑清理">
+				</page2>
+				<page2 title="电脑清理" tip="电脑清理" ani_in="skin.anim.ql1" ani_out="skin.anim.ql2" interval="50">
 					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
 						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
 					</window>
-				</page>
-				<page title="优化加速" tip="优化加速">
+				</page2>
+				<page2 title="优化加速" tip="优化加速" ani_in="skin.anim.yh1" ani_out="skin.anim.yh2">
+					<include src="layout:check_page2"/>
+				</page2>
+				<page2 title="人工服务" tip="人工服务" ani_in="skin.anim.yy1" ani_out="skin.anim.yy2">
 					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
 						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
 					</window>
-				</page>
-				<page title="电脑专家" tip="电脑专家">
+				</page2>
+				<page2 title="手机助手" tip="手机助手" ani_in="skin.anim.sj1" ani_out="skin.anim.sj2">	
 					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
 						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
 					</window>
-				</page>
-				<page title="电脑门诊" tip="电脑门诊">	
+				</page2>
+				<page2 title="软件管家" tip="软件管家" ani_in="skin.anim.gj1" ani_out="skin.anim.gj2" >
 					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
 						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
 					</window>
-				</page>
-				<page title="软件管家" tip="软件管家">
-					<window pos="0,0,-0,-0" skin="_skin.white.bg" >
-						<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
-					</window>
-				</page>
-			</tabctrl>
-			<img skin="_skin.logo" pos="-178,40" />
+				</page2>
+			</tabctrl2>
+ 
+			<anmimg name="abc" ani_in="skin.anim.logo1" interval="50" pos="-178,25" autorun="2"/><!--注意autorun，-1为默认，不自动播放，鼠标移上才播放，0表示无间隔循环播放，大于0表示暂停xx秒循环播放-->
+			<anmimg name="def" ani_in="skin.anim.logo2" interval="120" pos="-178,25" autorun="0"/>
 		</window>
 	</root>
 </SOUI>
