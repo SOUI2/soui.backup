@@ -5,6 +5,7 @@
 	<LAYOUT>
 		<file name="XML_MAINWND" path="xml\dlg_main.xml"  />
 		<file name="check_page" path="xml\check_page.xml" />
+		<file name="check_page2" path="xml\check_page2.xml" />
 	</LAYOUT>
 	<IMG>
 	</IMG>
@@ -30,6 +31,36 @@
     <file name="ID_SKIN_FEEDBACK" path="image\skin_feedback.png"/>
     <file name="ID_SKIN_SKIN" path="image\skin_skin.png"/>
     <file name="ID_SKIN_MENU" path="image\skin_menu.png"/>
+	
+	
+    <file name="ID_SUBTAB_BG" path="image\subtab\subtab_bg.png"/>
+    <file name="ID_SUBTAB_BTN" path="image\subtab\subtab_btn.png"/>
+	<file name="ID_SUBTAB_SPLIT" path="image\subtab\subtab_split.png"/>
+	<file name="ID_ANIM_LOGO1" path="image\anim_logo1.png"/>
+	<file name="ID_ANIM_LOGO2" path="image\anim_logo2.png"/>
+ 
+	
+	<file name="ID_ANIM_TJ_1" path="image\tj_hover.png"/>
+	<file name="ID_ANIM_TJ_2" path="image\tj_leave.png"/>
+	<file name="ID_ANIM_MM_1" path="image\mm_hover.png"/>
+	<file name="ID_ANIM_MM_2" path="image\mm_leave.png"/>
+	<file name="ID_ANIM_SJ_1" path="image\sj_hover.png"/>
+	<file name="ID_ANIM_SJ_2" path="image\sj_leave.png"/>
+	<file name="ID_ANIM_YH_1" path="image\yh_hover.png"/>
+	<file name="ID_ANIM_YH_2" path="image\yh_leave.png"/>
+	<file name="ID_ANIM_GJ_1" path="image\gj_hover.png"/>
+	<file name="ID_ANIM_GJ_2" path="image\gj_leave.png"/>
+	<file name="ID_ANIM_YY_1" path="image\yy_hover.png"/>
+	<file name="ID_ANIM_YY_2" path="image\yy_leave.png"/>
+	<file name="ID_ANIM_XF_1" path="image\xf_hover.png"/>
+	<file name="ID_ANIM_XF_2" path="image\xf_leave.png"/>
+	<file name="ID_ANIM_QL_1" path="image\ql_hover.png"/>
+	<file name="ID_ANIM_QL_2" path="image\ql_leave.png"/>
+	<file name="ID_ANIM_YJQL_1" path="image\yjql_hover.png"/>
+	<file name="ID_ANIM_YJQL_2" path="image\yjql_leave.png"/>
+	<file name="ID_ANIM_XFIE_1" path="image\xfie_hover.png"/>
+	<file name="ID_ANIM_XFIE_2" path="image\xfie_leave.png"/>
+
   </png>
 	<ICON>
 		<file name="ICON_LOGO"  path="image\soui.ico"    />

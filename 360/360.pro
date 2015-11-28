@@ -24,7 +24,7 @@ else{
 PRECOMPILED_HEADER = stdafx.h
 
 # Input
-HEADERS += MainDlg.h resource.h
-SOURCES += 360.cpp MainDlg.cpp
+HEADERS += MainDlg.h resource.h sanimimg.h stabctrl2.h
+SOURCES += 360.cpp MainDlg.cpp sanimimg.cpp stabctrl2.cpp
 
 RC_FILE += 360.rc
