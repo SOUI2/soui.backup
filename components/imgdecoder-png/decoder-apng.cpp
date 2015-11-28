@@ -222,7 +222,7 @@ APNGDATA * loadPng(IPngReader *pSrc)
                             for(unsigned int x=0;x<info_ptr_read->next_frame_width;x++)
                             {
                                 memset(lineDst1,0,4);
-                                *lineDst1+=4;
+                                lineDst1+=4;
                             }
                             lineDst += bytesPerRow;
                         }
