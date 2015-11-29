@@ -1,8 +1,10 @@
 <SOUI name="mainWindow" title="SOUI-DEMO version:%ver%" bigIcon="ICON_LOGO:32" maxInset="5,3,10,10" smallIcon="ICON_LOGO:16" width="910" height="610" minsize="910,610" margin="5,3,5,7" appWnd="1" resizable="1" translucent="1" >
 	<root skin="_skin.shadow">
 		<window pos="5,3,-5,-7" skin="_skin.bg" >
-			<caption pos="0,0,-0,40" show="1" font="adding:8">
-				<imgbtn name="btn_close" skin="_skin.btn.close" pos="-35,0" tip="close" animate="1"/>
+			<caption pos="0,0,-0,40">
+        <icon pos="10,8" src="ICON_LOGO:16"/>
+        <text pos="[5,8" colorText="#ff0000">SOUI高仿360动画tabctrl</text>
+        <imgbtn name="btn_close" skin="_skin.btn.close" pos="-35,0" tip="close" animate="1"/>
 				<imgbtn name="btn_max" skin="_skin.btn.max"  pos="-62,0" animate="1" />
 				<imgbtn name="btn_restore" skin="_skin.btn.restore"  pos="-62,0" show="0" animate="1" />
 				<imgbtn name="btn_min" skin="_skin.btn.min" pos="-89,0" animate="1" />
