@@ -355,6 +355,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\helper\SMenuEx.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\control\SMessageBox.cpp"
 				>
 			</File>
@@ -665,7 +669,7 @@
 				>
 			</File>
 			<File
-				RelativePath="include\core\SHostWnd.h"
+				RelativePath=".\include\core\SHostWnd.h"
 				>
 			</File>
 			<File
@@ -706,6 +710,10 @@
 			</File>
 			<File
 				RelativePath="include\helper\SMenu.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\helper\SMenuEx.h"
 				>
 			</File>
 			<File

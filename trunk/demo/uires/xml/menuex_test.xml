@@ -1,0 +1,17 @@
+﻿<menuRoot skin="_skin.sys.wnd.bkgnd" cache="1" itemHeight="26" iconMargin="4" textMargin="8" maxWidth="90">
+  <menuItem itemid="1" check="1" size="90,26">导出配置</menuItem>
+  <menuItem itemid="2" radio="1" size="90,26">导入配置</menuItem>
+  <menuItem itemid="3" disable="1" size="90,26">检查更新</menuItem>
+  <menuItem itemid="4" size="90,26">更新日志
+    <button pos="5,1,@100,@25">button</button>
+  </menuItem>
+  <sep/>
+  <menuItem size="90,26">帮助与反馈
+    <menuItem itemid="51" icon="0" size="90,26">访问官网</menuItem>
+    <menuItem itemid="52" icon="1" size="90,26">帮助指南</menuItem>
+    <menuItem itemid="53" icon="2" size="90,26">错误提交</menuItem>
+    <menuItem itemid="54" icon="3" size="90,26">关于SOUI</menuItem>
+  </menuItem>
+  <sep/>
+  <menuItem itemid="6" size="90,26">退出(&X)</menuItem>
+</menuRoot>
