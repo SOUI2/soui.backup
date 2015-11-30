@@ -116,6 +116,7 @@ HEADERS += include/SApp.h \
 		   include/helper/SAdapterBase.h \
 		   include/helper/SwndFinder.h \
 		   include/helper/SListViewItemLocator.h \
+		   include/helper/smenuex.h \
            include/interface/imgdecoder-i.h \
            include/interface/render-i.h \
            include/interface/SResProvider-i.h \
@@ -198,6 +199,7 @@ SOURCES += src/SApp.cpp \
 		   src/helper/AppDir.cpp \
 		   src/helper/SListViewItemLocator.cpp \
    		   src/helper/SwndFinder.cpp \
+   		   src/helper/smenuex.cpp \
            src/res.mgr/SFontPool.cpp \
            src/res.mgr/SObjDefAttr.cpp \
            src/res.mgr/SResProvider.cpp \

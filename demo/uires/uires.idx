@@ -14,6 +14,9 @@
     <file name="menu_test" path="xml\menu_test.xml"  />
     <file name="menu_lv" path="xml\menu_lv.xml"  />
   </SMENU>
+  <SMENUEX>
+    <file name="menuex_test" path="xml\menuex_test.xml"/>
+  </SMENUEX>
   <LAYOUT>
     <file name="maindlg" path="xml\dlg_main.xml"  />
     <file name="page_layout" path="xml\page_layout.xml"  />

@@ -144,7 +144,7 @@ protected:
         EVENT_NAME_COMMAND(L"btn_webkit_fore",OnBtnWebkitForeward)
         EVENT_NAME_COMMAND(L"btn_webkit_refresh",OnBtnWebkitRefresh)
         EVENT_NAME_COMMAND(L"btn_hidetst",OnBtnHideTest)
-//      EVENT_NAME_COMMAND(L"btn_insert_gif",OnBtnInsertGif2RE)
+        //EVENT_NAME_COMMAND(L"btn_insert_gif",OnBtnInsertGif2RE)
         EVENT_ID_COMMAND(STR2ID(L"id_test1"),OnBtnInsertGif2RE) //在init.xml中增加支持id表，这一行和上面一行效果一样。
         EVENT_NAME_COMMAND(L"btn_append_msg",OnBtnAppendMsg)
         EVENT_NAME_COMMAND(L"btn_richedit_save",OnBtnRtfSave)
