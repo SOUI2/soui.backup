@@ -198,8 +198,8 @@ namespace SOUI
 
     BOOL SMenuEx::LoadMenu(LPCTSTR pszMenu)
     {
-        SStringWList strMenu;
-        if(1==SplitString<SStringT,TCHAR>(pszMenu,L':',strMenu))
+        SStringTList strMenu;
+        if(1==SplitString<SStringT,TCHAR>(pszMenu,_T(':'),strMenu))
             strMenu.InsertAt(0,_T("SMENUEX"));
         
         pugi::xml_document xmlMenu;

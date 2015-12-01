@@ -56,7 +56,7 @@ float StrToSS(LPCSTR lpszTag)
 	int minutes;
 	float seconds;
 	USES_CONVERSION;
-	paramNums = _stscanf(A2W(lpszTag), L"%d:%f", &minutes, &seconds);
+	paramNums = sscanf(lpszTag, "%d:%f", &minutes, &seconds);
 	if(paramNums != 2)
 	{
 		return 1000000.f;
@@ -155,15 +155,15 @@ BOOL CLrcParse::ReadFile(LPCSTR lpszFile)
 ====================================================================*/
 BOOL CLrcParse::ParseLine( LPCSTR lpsz, int lineNumber)
 {
-	CString str(lpsz);
-	CString sz_time_tag;
-	CString strHead;
+	CStringA str(lpsz);
+	CStringA sz_time_tag;
+	CStringA strHead;
 
 	str.TrimLeft();
 	str.TrimRight();
 
 	int pos, pos2;
-	pos = str.Find(L"[");
+	pos = str.Find("[");
 	if(pos == -1)
 		return FALSE;
 
@@ -173,12 +173,12 @@ BOOL CLrcParse::ParseLine( LPCSTR lpsz, int lineNumber)
 	{
 
 		str = str.Mid(pos+1);
-		pos = str.Find(L"]");
+		pos = str.Find("]");
 		if(pos!=-1)
 		{
 			if(lineNumber<5)
 			{
-				if( (pos2 = str.Find(L":")) != -1)
+				if( (pos2 = str.Find(":")) != -1)
 				{
 					strHead = str.Left(pos2);
 
@@ -191,7 +191,7 @@ BOOL CLrcParse::ParseLine( LPCSTR lpsz, int lineNumber)
 				}  
 			}
 			USES_CONVERSION;
-			AddTimeTag(T2A(str.Left(pos)),lineNumber);
+			AddTimeTag(str.Left(pos),lineNumber);
 			str = str.Mid(pos+1);
 		}
 		else
@@ -200,7 +200,7 @@ BOOL CLrcParse::ParseLine( LPCSTR lpsz, int lineNumber)
 			return bAddStr;
 		}
 
-		pos = str.Find(L"[");
+		pos = str.Find("[");
 
 	}//end while
 
@@ -210,7 +210,7 @@ BOOL CLrcParse::ParseLine( LPCSTR lpsz, int lineNumber)
 		str.TrimLeft();
 		str.TrimRight();
 		USES_CONVERSION;
-		AddWord(T2A(str));
+		AddWord(str);
 	}
 
 	//STRACE("%d, %d \n", m_vTimeTags.size(), m_vWords.size());
