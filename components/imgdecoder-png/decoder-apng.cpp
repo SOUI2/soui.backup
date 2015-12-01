@@ -193,9 +193,7 @@ APNGDATA * loadPng(IPngReader *pSrc)
                     {
                         for(unsigned int  y=0;y<info_ptr_read->next_frame_height;y++)
                         {
-                            png_bytep lineDst1=lineDst;
-                            png_bytep lineSour1=lineSour;
-                            memcpy(lineDst1,lineSour1,info_ptr_read->next_frame_width*4);
+                            memcpy(lineDst,lineSour,info_ptr_read->next_frame_width*4);
                             lineDst += bytesPerRow;
                             lineSour+= bytesPerRow;
                         }
@@ -218,12 +216,7 @@ APNGDATA * loadPng(IPngReader *pSrc)
                     {
                         for(unsigned int y=0;y<info_ptr_read->next_frame_height;y++)
                         {
-                            png_bytep lineDst1=lineDst;
-                            for(unsigned int x=0;x<info_ptr_read->next_frame_width;x++)
-                            {
-                                memset(lineDst1,0,4);
-                                lineDst1+=4;
-                            }
+                            memset(lineDst,0,info_ptr_read->next_frame_width*4);
                             lineDst += bytesPerRow;
                         }
 
