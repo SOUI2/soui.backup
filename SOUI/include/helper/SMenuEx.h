@@ -7,6 +7,7 @@ namespace SOUI
     class SOUI_EXP SMenuEx : protected SHostWnd
     {
     friend class SMenuExItem;
+    friend class SMenuExRunData;
     public:
         SMenuEx(void);
         ~SMenuEx(void);
@@ -16,6 +17,7 @@ namespace SOUI
         
         UINT TrackPopupMenu(UINT flag,int x,int y,HWND hOwner);
         
+        SMenuExItem * GetParentItem() {return m_pParent;}
     protected:
         int OnMouseActivate(HWND wndTopLevel, UINT nHitTest, UINT message);
         void OnTimer(UINT_PTR timeID);
@@ -30,13 +32,15 @@ namespace SOUI
         
         void ShowMenu(UINT uFlag,int x,int y);
         void HideMenu();
+        void HideSubMenu();
         void RunMenu(HWND hOwner);
         
         void PopupSubMenu(SMenuExItem * pItem);
         
-        SMenuEx(SMenuEx *pParent);
-        
-        SMenuEx * m_pParent;
+        SMenuEx(SMenuExItem *pParent);
+
+        SMenuExItem * m_pParent;
         SMenuExItem * m_pHoverItem;
+        SMenuExItem * m_pCheckItem;
     };
 }
