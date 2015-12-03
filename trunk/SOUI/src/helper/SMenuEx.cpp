@@ -19,6 +19,7 @@ namespace SOUI
         ISkinObj * m_pItemSkin;
         ISkinObj * m_pIconSkin;
         ISkinObj * m_pCheckSkin;
+        ISkinObj * m_pSepSkin;
         
         SMenuEx  * m_pMenuEx;
 
@@ -30,6 +31,7 @@ namespace SOUI
         SOUI_ATTRS_BEGIN()
             ATTR_SKIN(L"itemSkin",m_pItemSkin,FALSE)
             ATTR_SKIN(L"checkSkin",m_pCheckSkin,FALSE)
+            ATTR_SKIN(L"sepSkin",m_pSepSkin,FALSE)
             ATTR_INT(L"itemHeight",m_nItemHei,FALSE)
             ATTR_POINT(L"iconPos", m_ptIcon,FALSE)
             ATTR_SKIN(L"iconSkin",m_pIconSkin,FALSE)
@@ -39,7 +41,7 @@ namespace SOUI
     public:
         SMenuExRoot(SMenuEx * pMenuEx)
             :m_pItemSkin(GETBUILTINSKIN(SKIN_SYS_MENU_SKIN))
-            //,m_pSepSkin(GETBUILTINSKIN(SKIN_SYS_MENU_SEP))
+            ,m_pSepSkin(GETBUILTINSKIN(SKIN_SYS_MENU_SEP))
             ,m_nIconBarWidth(24)
             ,m_pCheckSkin(GETBUILTINSKIN(SKIN_SYS_MENU_CHECK))
             ,m_pIconSkin(NULL)
@@ -90,7 +92,22 @@ namespace SOUI
             return bRet;
         }    
 
-        virtual BOOL CreateChildren(pugi::xml_node xmlNode);
+        virtual BOOL CreateChildren(pugi::xml_node xmlNode)
+        {
+            pugi::xml_node xmlItem = xmlNode.first_child();
+            while(xmlItem)
+            {
+                SWindow *pMenuItem = CreateMenuItem(xmlItem.name());
+                if(pMenuItem)
+                {
+                    InsertChild(pMenuItem);
+                    pMenuItem->InitFromXml(xmlItem);
+                    pMenuItem->SetAttribute(L"pos",L"0,[0",TRUE);
+                }
+                xmlItem = xmlItem.next_sibling();
+            }
+            return TRUE;
+        }
 
         virtual void UpdateChildrenPosition()
         {
@@ -109,6 +126,8 @@ namespace SOUI
                 pChild = pChild->GetWindow(GSW_NEXTSIBLING);
             }
         }
+        
+        SWindow * CreateMenuItem(const SStringW & strItemName);
     };
 
     //////////////////////////////////////////////////////////////////////////
@@ -289,21 +308,63 @@ namespace SOUI
         TCHAR     m_cHotKey;
     };
     
-    //////////////////////////////////////////////////////////////////////////
-    BOOL SMenuExRoot::CreateChildren(pugi::xml_node xmlNode)
+    class SMenuExSep: public SMenuExItem
     {
-        pugi::xml_node xmlItem = xmlNode.child(SMenuExItem::GetClassName());
-        while(xmlItem)
+    SOUI_CLASS_NAME(SMenuExSep,L"sep")
+    public:
+        SMenuExSep(SMenuEx *pOwnerMenu,ISkinObj *pItemSkin)
+        :SMenuExItem(pOwnerMenu,pItemSkin)
         {
-            SMenuExItem *pMenuItem = new SMenuExItem(m_pMenuEx,m_pItemSkin);
-            InsertChild(pMenuItem);
-            pMenuItem->InitFromXml(xmlItem);
-            pMenuItem->SetAttribute(L"pos",L"0,[0",TRUE);
-            xmlItem = xmlItem.next_sibling(SMenuExItem::GetClassName());
+            m_dwState |= WndState_Disable;
         }
-        return TRUE;
-    }
 
+        virtual CSize GetDesiredSize(LPCRECT pRcContainer)
+        {
+            SMenuExRoot * pMenuRoot = sobj_cast<SMenuExRoot>(GetRoot()->GetWindow(GSW_FIRSTCHILD));
+            SASSERT(pMenuRoot);
+            CSize szRet;
+            szRet.cx = WIDTH_MENU_INIT;
+            if(!m_layout.IsSpecifySize(PD_Y))
+            {
+                if(m_pBgSkin)
+                    szRet.cy = m_pBgSkin->GetSkinSize().cy;
+                 else
+                    szRet.cy = 0;
+            }
+            return szRet;
+        }
+
+    protected:
+
+        BOOL OnEraseBkgnd(IRenderTarget *pRT)
+        {
+            if(!m_pBgSkin) return FALSE;
+            m_pBgSkin->Draw(pRT, GetClientRect(), 0); 
+
+            return TRUE;    
+        }
+        
+        SOUI_MSG_MAP_BEGIN()
+            MSG_WM_ERASEBKGND_EX(OnEraseBkgnd)
+        SOUI_MSG_MAP_END()
+    };
+    
+    //////////////////////////////////////////////////////////////////////////
+    
+    SWindow * SMenuExRoot::CreateMenuItem(const SStringW & strItemName)
+    {
+        if(strItemName == SMenuExItem::GetClassName())
+        {
+            return new SMenuExItem(m_pMenuEx,m_pItemSkin);
+        }else if(strItemName == SMenuExSep::GetClassName())
+        {
+            return new SMenuExSep(m_pMenuEx,m_pSepSkin);
+        }else
+        {
+            return NULL;
+        }
+    }
+    
     SMenuExItem * SMenuExRoot::GetNextMenuItem(SMenuExItem *pItem,BOOL bForword,int nCount)
     {
         if(nCount==GetChildrenCount()) return NULL;
