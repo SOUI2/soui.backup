@@ -553,6 +553,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\core\hostmsg.h"
+				>
+			</File>
+			<File
 				RelativePath="include\interface\imgdecoder-i.h"
 				>
 			</File>
