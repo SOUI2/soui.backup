@@ -1,5 +1,5 @@
 ﻿<menuRoot skin="_skin.sys.wnd.bkgnd" iconSkin="skin_small_icons" itemHeight="26" iconPos="4,4" iconBarWidth="24" maxWidth="150" margin="5,5,5,5" colorBkgnd="#ff0000">
-  <menuItem id="1" check="1" >导出配置</menuItem>
+  <menuItem hotKey="e" id="1" check="1" >导出配置</menuItem>
   <menuItem id="2" icon="1" >导入配置</menuItem>
   <menuItem id="3" radio="1" check="1" enable="0" colorTextDisable="#c0c0c0" >检查更新</menuItem>
   <menuItem height="50">
@@ -29,5 +29,5 @@
   </menuItem>
 
   <sep/>
-  <menuItem id="6" >退出(&X)</menuItem>
+  <menuItem id="6" hotKey="x">退出(&X)</menuItem>
 </menuRoot>
