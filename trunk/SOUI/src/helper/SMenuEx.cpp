@@ -49,6 +49,8 @@ namespace SOUI
 
         }
         
+        SMenuExItem * GetNextMenuItem(SMenuExItem *pItem,BOOL bForword,int nCount=0);
+        
         CSize CalcMenuSize()
         {
             CRect rcContainer(0,0,WIDTH_MENU_INIT,WIDTH_MENU_INIT);
@@ -121,7 +123,7 @@ namespace SOUI
         ,m_iIcon(-1)
         ,m_bCheck(FALSE)
         ,m_bRadio(FALSE)
-        ,m_bSubPopped(FALSE)
+        ,m_cHotKey(0)
         {
             m_pBgSkin = pItemSkin;
             m_style.m_bTrackMouseEvent=TRUE;
@@ -146,27 +148,25 @@ namespace SOUI
             return m_pOwnerMenu;
         }
         
-        void SetSubMenuFlag(BOOL bSubPopped){
-            m_bSubPopped = bSubPopped;
-            Invalidate();
-        }
-        
         void HideSubMenu()
         {
-            SASSERT(m_pSubMenu);
+            if(!m_pSubMenu) return;
             m_pSubMenu->HideMenu();
-            SetSubMenuFlag(FALSE);
-            if(m_pOwnerMenu) 
-            {
-                SASSERT(m_pOwnerMenu->m_pCheckItem);
-                m_pOwnerMenu->m_pCheckItem = NULL;
-            }
         }
         
         void ShowSubMenu()
         {
             SASSERT(m_pSubMenu);
             m_pOwnerMenu->PopupSubMenu(this);
+        }
+        
+        TCHAR GetHotKey() const {
+            return m_cHotKey;
+        }
+        
+        void OnSubMenuHided()
+        {
+            m_pOwnerMenu->OnSubMenuHided();
         }
     protected:
         virtual BOOL CreateChildren(pugi::xml_node xmlNode)
@@ -220,7 +220,7 @@ namespace SOUI
             {
                 nState=2;
             }
-            else if(m_bSubPopped || GetState()&WndState_Check || GetState()&WndState_PushDown || GetState()&WndState_Hover)
+            else if(GetState()&WndState_Check || GetState()&WndState_PushDown || GetState()&WndState_Hover)
             {
                 nState=1;
             }
@@ -278,6 +278,7 @@ namespace SOUI
             ATTR_INT(L"icon",m_iIcon,FALSE)
             ATTR_INT(L"check",m_bCheck,FALSE)
             ATTR_INT(L"radio",m_bRadio,FALSE)
+            ATTR_CHAR(L"hotKey",m_cHotKey,FALSE)
         SOUI_ATTRS_END()
         
         SMenuEx * m_pSubMenu;
@@ -285,7 +286,7 @@ namespace SOUI
         int       m_iIcon;
         BOOL      m_bCheck;
         BOOL      m_bRadio;    
-        BOOL      m_bSubPopped;  
+        TCHAR     m_cHotKey;
     };
     
     //////////////////////////////////////////////////////////////////////////
@@ -301,6 +302,27 @@ namespace SOUI
             xmlItem = xmlItem.next_sibling(SMenuExItem::GetClassName());
         }
         return TRUE;
+    }
+
+    SMenuExItem * SMenuExRoot::GetNextMenuItem(SMenuExItem *pItem,BOOL bForword,int nCount)
+    {
+        if(nCount==GetChildrenCount()) return NULL;
+        
+        SMenuExItem *pRet = NULL;
+        if(pItem)
+        {
+            SASSERT(pItem->GetParent() == this);
+            pRet = (SMenuExItem *)pItem->GetWindow(bForword?GSW_NEXTSIBLING:GSW_PREVSIBLING);
+        }
+        if(!pRet)
+        {
+            pRet = (SMenuExItem *)GetWindow(bForword?GSW_FIRSTCHILD:GSW_LASTCHILD);
+        }
+
+        if(!pRet->IsDisabled(TRUE)) 
+            return pRet;
+        else
+            return GetNextMenuItem(pRet,bForword,nCount+1);
     }
 
 
@@ -517,9 +539,18 @@ namespace SOUI
         if(!CSimpleWnd::IsWindowVisible()) return;
         HideSubMenu();
         ShowWindow(SW_HIDE);
+        if(m_pCheckItem)
+        {
+            m_pCheckItem->SetCheck(FALSE);
+            m_pCheckItem=NULL;
+        }
         s_MenuData->PopMenuEx();
+        if(m_pParent)
+        {
+            m_pParent->OnSubMenuHided();
+        }
     }
-    
+        
     void SMenuEx::HideSubMenu()
     {
         if(m_pCheckItem) m_pCheckItem->HideSubMenu();
@@ -563,7 +594,6 @@ namespace SOUI
                     || msg.message == WM_CHAR
                     || msg.message == WM_IME_CHAR)
                 {
-                    //transfer the message to menu window
                     msg.hwnd = s_MenuData->GetMenuEx()->m_hWnd;
                 }
                 else if(msg.message == WM_LBUTTONDOWN
@@ -644,10 +674,7 @@ namespace SOUI
                     CSimpleWnd::SetTimer(TIMERID_POPSUBMENU,TIME_PUPSUBMENU);
                     m_pHoverItem = pMenuItem;
                 }
-                if(m_pCheckItem)
-                {
-                    m_pCheckItem->HideSubMenu();
-                }
+                HideSubMenu();
                 return FALSE;
             }else if(pEvt->GetID() == EventSwndMouseLeave::EventID)
             {
@@ -691,6 +718,13 @@ namespace SOUI
         }
     }
 
+    void SMenuEx::OnSubMenuHided()
+    {
+        SASSERT(m_pCheckItem);
+        m_pCheckItem->SetCheck(FALSE);
+        m_pCheckItem = NULL;
+    }
+    
     void SMenuEx::PopupSubMenu(SMenuExItem * pItem)
     {
         CSimpleWnd::KillTimer(TIMERID_POPSUBMENU);
@@ -703,9 +737,68 @@ namespace SOUI
         ClientToScreen(&rcItem);
         
         m_pCheckItem = pItem;
-        pItem->SetSubMenuFlag(TRUE);
+        m_pCheckItem->SetCheck(TRUE);
         pSubMenu->ShowMenu(0,rcItem.right,rcItem.top);
         
+    }
+
+    void SMenuEx::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+    {
+        SMenuExRoot *pMenuRoot= sobj_cast<SMenuExRoot>(GetRoot()->GetWindow(GSW_FIRSTCHILD));
+        SASSERT(pMenuRoot);
+        switch(nChar)
+        {
+        case VK_UP:
+        case VK_DOWN:
+            if(m_pCheckItem)
+                m_pCheckItem->SetCheck(FALSE);
+            m_pCheckItem = pMenuRoot->GetNextMenuItem(m_pCheckItem,nChar==VK_DOWN);
+            if(m_pCheckItem)
+            {
+                m_pCheckItem->SetCheck(TRUE);
+                m_pCheckItem->Invalidate();
+            }
+            break;
+        case VK_ESCAPE:
+        case VK_LEFT:
+            if(m_pParent) 
+            {
+                HideMenu();
+            }else
+            {
+                s_MenuData->ExitMenu(0);
+            }
+            break;
+        case VK_RIGHT:
+            if(m_pCheckItem)
+            {
+                m_pCheckItem->ShowSubMenu();
+            }
+            break;
+        case VK_RETURN:
+            if(m_pCheckItem) m_pCheckItem->FireCommand();
+            break;
+            break;
+        default:
+            if(isprint(nChar))
+            {
+                nChar = tolower(nChar);
+                SMenuExItem *pMenuItem = (SMenuExItem*)pMenuRoot->GetWindow(GSW_FIRSTCHILD);
+                while(pMenuItem)
+                {
+                    if(tolower(pMenuItem->GetHotKey()) == nChar)
+                    {
+                        pMenuItem->FireCommand();
+                        return;
+                    }
+                    pMenuItem=(SMenuExItem*)pMenuItem->GetWindow(GSW_NEXTSIBLING);
+                }        
+            }else
+            {
+                SetMsgHandled(FALSE);
+            }
+            break;
+        }
     }
 
 }
