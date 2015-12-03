@@ -316,6 +316,7 @@ namespace SOUI
         :SMenuExItem(pOwnerMenu,pItemSkin)
         {
             m_dwState |= WndState_Disable;
+            m_bDisable = TRUE;
         }
 
         virtual CSize GetDesiredSize(LPCRECT pRcContainer)
