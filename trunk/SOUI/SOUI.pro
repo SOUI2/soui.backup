@@ -68,6 +68,7 @@ HEADERS += include/SApp.h \
            include/core/Accelerator.h \
            include/core/FocusManager.h \
            include/core/SDefine.h \
+           include/core/hostmsg.h \
            include/core/SDropTargetDispatcher.h \
            include/core/SHostDialog.h \
            include/core/SHostWnd.h \

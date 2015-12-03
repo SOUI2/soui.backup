@@ -310,7 +310,7 @@ namespace SOUI
     {
     friend class SMenuEx;
     public:
-        SMenuExRunData():m_bExit(FALSE),m_nCmdID(-1)
+        SMenuExRunData(HWND hOwner):m_hOwner(hOwner),m_bExit(FALSE),m_nCmdID(-1)
         {
         
         }
@@ -366,11 +366,14 @@ namespace SOUI
         }
         
         int GetCmdID(){return m_nCmdID;}
+        
+        HWND GetOwner(){return m_hOwner;}
     protected:
         SList<SMenuEx*> m_lstMenuEx;
         
         BOOL m_bExit;
         int  m_nCmdID;
+        HWND m_hOwner;
     };
     
     static SMenuExRunData * s_MenuData=NULL;
@@ -431,7 +434,7 @@ namespace SOUI
     UINT SMenuEx::TrackPopupMenu(UINT flag,int x,int y,HWND hOwner)
     {
         if(!IsWindow()) return -1;
-        s_MenuData = new SMenuExRunData;
+        s_MenuData = new SMenuExRunData(hOwner);
 
         ShowMenu(flag,x,y);
         RunMenu(hOwner);
@@ -476,13 +479,43 @@ namespace SOUI
         {
             y -= szMenu.cy;
         }
-        SetWindowPos(HWND_TOPMOST,x,y,szMenu.cx,szMenu.cy,SWP_NOZORDER|SWP_SHOWWINDOW|SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOSENDCHANGING);        
+        
+        HMONITOR hMor = MonitorFromWindow(m_hWnd,MONITOR_DEFAULTTOPRIMARY);
+        MONITORINFO mi={sizeof(MONITORINFO),0};
+        GetMonitorInfo(hMor,&mi);
+        CRect rcMenu(CPoint(x,y),szMenu);
+        CRect rcInter;
+        rcInter.IntersectRect(&rcMenu,&mi.rcWork);
+        if(rcInter!=rcMenu)
+        {
+            if(m_pParent)
+            {
+                SMenuEx *pParent = m_pParent->GetOwnerMenu();
+                CRect rcParent = pParent->GetWindowRect();
+                pParent->ClientToScreen(&rcParent);
+                if(rcMenu.right>mi.rcWork.right)
+                {
+                    rcMenu.MoveToX(x-szMenu.cx-rcParent.Width());
+                }           
+            }
+            
+            int xOffset=0,yOffset=0;
+            if(rcMenu.left<mi.rcWork.left) xOffset = mi.rcWork.left - rcMenu.left;
+            else if(rcMenu.right>mi.rcWork.right) xOffset = mi.rcWork.right - rcMenu.right;
+            if(rcMenu.top < mi.rcWork.top) yOffset = mi.rcWork.top - rcMenu.top;
+            else if(rcMenu.bottom> mi.rcWork.bottom) yOffset = mi.rcWork.bottom - rcMenu.bottom;
+
+            rcMenu.OffsetRect(xOffset,yOffset);
+        }
+        
+        SetWindowPos(HWND_TOPMOST,rcMenu.left,rcMenu.top,szMenu.cx,szMenu.cy,SWP_NOZORDER|SWP_SHOWWINDOW|SWP_NOACTIVATE|SWP_NOOWNERZORDER|SWP_NOSENDCHANGING);        
         s_MenuData->PushMenuEx(this);
     }
 
     void SMenuEx::HideMenu()
     {
         if(!CSimpleWnd::IsWindowVisible()) return;
+        HideSubMenu();
         ShowWindow(SW_HIDE);
         s_MenuData->PopMenuEx();
     }
@@ -638,9 +671,9 @@ namespace SOUI
             }
             s_MenuData->ExitMenu(pMenuItem->GetID());
             return TRUE;
-        }else if(m_pOwner)
+        }else if(s_MenuData && ::IsWindow(s_MenuData->GetOwner()))
         {
-            return m_pOwner->GetContainer()->OnFireEvent(*pEvt);
+            return ::SendMessage(s_MenuData->GetOwner(),UM_MENUEVENT,0,(LPARAM)pEvt);
         }else
         {
             return FALSE;
@@ -664,11 +697,10 @@ namespace SOUI
 
         SMenuEx * pSubMenu = pItem->GetSubMenu();
         SASSERT(pSubMenu);
+        CRect rcWnd = GetRoot()->GetWindowRect();
         CRect rcItem = pItem->GetWindowRect();
+        rcItem.left=rcWnd.left,rcItem.right=rcWnd.right;
         ClientToScreen(&rcItem);
-        HMONITOR hMor = MonitorFromWindow(m_hWnd,MONITOR_DEFAULTTOPRIMARY);
-        MONITORINFO mi={sizeof(MONITORINFO),0};
-        GetMonitorInfo(hMor,&mi);
         
         m_pCheckItem = pItem;
         pItem->SetSubMenuFlag(TRUE);
