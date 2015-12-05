@@ -33,12 +33,12 @@ namespace SOUI
         virtual BOOL _HandleEvent(EventArgs *pEvt);
         
         void ShowMenu(UINT uFlag,int x,int y);
-        void HideMenu();
+        void HideMenu(BOOL bUncheckParentItem);
         void HideSubMenu();
         void RunMenu(HWND hOwner);
         
-        void PopupSubMenu(SMenuExItem * pItem);
-        void OnSubMenuHided();
+        void PopupSubMenu(SMenuExItem * pItem,BOOL bCheckFirstItem);
+        void OnSubMenuHided(BOOL bUncheckItem);
         
         SMenuEx(SMenuExItem *pParent);
         SMenuExItem * m_pParent;

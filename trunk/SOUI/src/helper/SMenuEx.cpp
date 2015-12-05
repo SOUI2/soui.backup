@@ -51,6 +51,7 @@ namespace SOUI
 
         }
         
+
         SMenuExItem * GetNextMenuItem(SMenuExItem *pItem,BOOL bForword,int nCount=0);
         
         CSize CalcMenuSize()
@@ -170,22 +171,22 @@ namespace SOUI
         void HideSubMenu()
         {
             if(!m_pSubMenu) return;
-            m_pSubMenu->HideMenu();
+            m_pSubMenu->HideMenu(FALSE);
         }
         
-        void ShowSubMenu()
+        void ShowSubMenu(BOOL bCheckFirstItem)
         {
-            SASSERT(m_pSubMenu);
-            m_pOwnerMenu->PopupSubMenu(this);
+            if(!m_pSubMenu) return;
+            m_pOwnerMenu->PopupSubMenu(this,bCheckFirstItem);
         }
         
         TCHAR GetHotKey() const {
             return m_cHotKey;
         }
         
-        void OnSubMenuHided()
+        void OnSubMenuHided(BOOL bUncheckItem)
         {
-            m_pOwnerMenu->OnSubMenuHided();
+            m_pOwnerMenu->OnSubMenuHided(bUncheckItem);
         }
     protected:
         virtual BOOL CreateChildren(pugi::xml_node xmlNode)
@@ -522,7 +523,7 @@ namespace SOUI
 
         ShowMenu(flag,x,y);
         RunMenu(hOwner);
-        HideMenu();
+        HideMenu(FALSE);
         
         int nRet = s_MenuData->GetCmdID();
         delete s_MenuData;
@@ -596,7 +597,7 @@ namespace SOUI
         s_MenuData->PushMenuEx(this);
     }
 
-    void SMenuEx::HideMenu()
+    void SMenuEx::HideMenu(BOOL bUncheckParentItem)
     {
         if(!CSimpleWnd::IsWindowVisible()) return;
         HideSubMenu();
@@ -609,7 +610,7 @@ namespace SOUI
         s_MenuData->PopMenuEx();
         if(m_pParent)
         {
-            m_pParent->OnSubMenuHided();
+            m_pParent->OnSubMenuHided(bUncheckParentItem);
         }
     }
         
@@ -752,7 +753,7 @@ namespace SOUI
             SASSERT(pMenuItem);
             if(pMenuItem->GetSubMenu())
             {
-                PopupSubMenu(pMenuItem);
+                PopupSubMenu(pMenuItem,FALSE);
                 return FALSE;
             }else if(pMenuItem->GetID()==0)
             {
@@ -773,21 +774,24 @@ namespace SOUI
     {
         if(timeID == TIMERID_POPSUBMENU)
         {
-            PopupSubMenu(m_pHoverItem);
+            PopupSubMenu(m_pHoverItem,FALSE);
         }else
         {
             SetMsgHandled(FALSE);
         }
     }
 
-    void SMenuEx::OnSubMenuHided()
+    void SMenuEx::OnSubMenuHided(BOOL bUncheckItem)
     {
         SASSERT(m_pCheckItem);
-        m_pCheckItem->SetCheck(FALSE);
-        m_pCheckItem = NULL;
+        if(!bUncheckItem)
+        {
+            m_pCheckItem->SetCheck(FALSE);
+            m_pCheckItem = NULL;
+        }
     }
     
-    void SMenuEx::PopupSubMenu(SMenuExItem * pItem)
+    void SMenuEx::PopupSubMenu(SMenuExItem * pItem,BOOL bCheckFirstItem)
     {
         CSimpleWnd::KillTimer(TIMERID_POPSUBMENU);
 
@@ -801,7 +805,17 @@ namespace SOUI
         m_pCheckItem = pItem;
         m_pCheckItem->SetCheck(TRUE);
         pSubMenu->ShowMenu(0,rcItem.right,rcItem.top);
-        
+        if(bCheckFirstItem)
+        {
+            SMenuExRoot *pMenuRoot = sobj_cast<SMenuExRoot>(pSubMenu->GetRoot()->GetWindow(GSW_FIRSTCHILD));
+            SASSERT(pMenuRoot);
+            SMenuExItem *pFirstItem = pMenuRoot->GetNextMenuItem(NULL,TRUE);
+            if(pFirstItem)
+            {
+                pSubMenu->m_pCheckItem = pFirstItem;
+                pFirstItem->SetCheck(TRUE);
+            }
+        }
     }
 
     void SMenuEx::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -825,7 +839,7 @@ namespace SOUI
         case VK_LEFT:
             if(m_pParent) 
             {
-                HideMenu();
+                HideMenu(TRUE);
             }else
             {
                 s_MenuData->ExitMenu(0);
@@ -834,7 +848,7 @@ namespace SOUI
         case VK_RIGHT:
             if(m_pCheckItem)
             {
-                m_pCheckItem->ShowSubMenu();
+                m_pCheckItem->ShowSubMenu(TRUE);
             }
             break;
         case VK_RETURN:
