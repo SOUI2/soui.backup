@@ -633,7 +633,7 @@ namespace SOUI
         SetForegroundWindow(hOwner);
 
         BOOL bMsgQuit(FALSE);
-        
+
         for(;;)
         {
 
@@ -646,10 +646,11 @@ namespace SOUI
             {
                 break;
             }
-            BOOL bInterceptOther(FALSE);
             MSG msg = {0};
-            if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-            {
+            BOOL bInterceptOther(FALSE);
+
+            if(PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE))
+            {//获取消息，不从消息队列中移除。
                 if(msg.message == WM_KEYDOWN
                     || msg.message == WM_SYSKEYDOWN
                     || msg.message == WM_KEYUP
@@ -669,30 +670,23 @@ namespace SOUI
                     //click on other window
                     if(!s_MenuData->IsMenuWnd(msg.hwnd))
                     {
-                        bInterceptOther = true;
+                        s_MenuData->ExitMenu(0);
+                        break;
                     }else
                     {
                         SMenuEx *pMenu = s_MenuData->SMenuExFromHwnd(msg.hwnd);
                         pMenu->HideSubMenu();
                     }
-                }else if (msg.message == WM_LBUTTONUP
-                    ||msg.message==WM_RBUTTONUP
-                    ||msg.message==WM_NCLBUTTONUP
-                    ||msg.message==WM_NCRBUTTONUP
-                    ||msg.message==WM_CONTEXTMENU)
-                {
-                    if(!s_MenuData->IsMenuWnd(msg.hwnd))
-                    {
-                        break;
-                    }
-
                 }
                 else if(msg.message == WM_QUIT)
                 {
-
                     bMsgQuit = TRUE;
                 }
-
+                
+                //移除消息队列中当前的消息。
+                MSG msgT;
+                ::GetMessage(&msgT,0,0,0);
+                
                 //拦截非菜单窗口的MouseMove消息
                 if (msg.message == WM_MOUSEMOVE)
                 {
@@ -703,7 +697,7 @@ namespace SOUI
                     }
                 }
 
-
+                
                 if (!bInterceptOther)
                 {
                     TranslateMessage (&msg);
