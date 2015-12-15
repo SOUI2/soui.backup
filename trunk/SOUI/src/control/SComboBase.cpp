@@ -388,4 +388,11 @@ namespace SOUI
             m_pEdit->SetWindowText(pszText);
         }
     }
+
+    void SComboBase::OnKillFocus()
+    {
+        __super::OnKillFocus();
+        CloseUp();
+    }
+
 }

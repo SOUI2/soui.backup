@@ -367,6 +367,8 @@ namespace SOUI
         BOOL IsFocusable();
 
         void OnSetFocus();
+        
+        void OnKillFocus();
 
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"dropDown", m_bDropdown, FALSE)
@@ -386,6 +388,7 @@ namespace SOUI
             MSG_WM_CHAR(OnChar)
             MSG_WM_DESTROY(OnDestroy)
             MSG_WM_SETFOCUS_EX(OnSetFocus)
+            MSG_WM_KILLFOCUS_EX(OnKillFocus)
         SOUI_MSG_MAP_END()
 
     protected:
