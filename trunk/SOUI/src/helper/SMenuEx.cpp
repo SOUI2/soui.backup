@@ -36,6 +36,7 @@ namespace SOUI
             ATTR_POINT(L"iconPos", m_ptIcon,FALSE)
             ATTR_SKIN(L"iconSkin",m_pIconSkin,FALSE)
             ATTR_RECT(L"margin", m_rcMargin,FALSE)
+            ATTR_INT(L"iconBarWidth",m_nIconBarWidth,FALSE)
         SOUI_ATTRS_END()
 
     public:
