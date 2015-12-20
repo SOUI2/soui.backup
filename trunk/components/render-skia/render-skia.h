@@ -29,7 +29,7 @@ namespace SOUI
         }
         
 		virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei);
-        virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf);
+        virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf,LPCTSTR pszPropEx);
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
         virtual BOOL CreateRegion(IRegion **ppRgn);
         
@@ -102,7 +102,7 @@ namespace SOUI
 	class SFont_Skia: public TSkiaRenderObjImpl<IFont>
 	{
 	public:
-		SFont_Skia(IRenderFactory * pRenderFac,const LOGFONT * plf);
+		SFont_Skia(IRenderFactory * pRenderFac,const LOGFONT * plf,LPCTSTR pszPropEx);
 
         virtual ~SFont_Skia();
 
