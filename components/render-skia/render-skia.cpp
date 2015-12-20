@@ -4,6 +4,9 @@
 #include <core\SkDevice.h>
 #include <effects\SkDashPathEffect.h>
 #include <effects\SkGradientShader.h>
+#include <effects\SkBlurMaskFilter.h>
+#include "../skia/src/effects/SkBlurMask.h"
+
 #include <gdialpha.h>
 
 #include "drawtext-skia.h"
@@ -92,9 +95,9 @@ namespace SOUI
 		return TRUE;
 	}
 
-    BOOL SRenderFactory_Skia::CreateFont( IFont ** ppFont , const LOGFONT &lf )
+    BOOL SRenderFactory_Skia::CreateFont( IFont ** ppFont , const LOGFONT &lf ,LPCTSTR pszPropEx)
     {
-        *ppFont = new SFont_Skia(this,&lf);
+        *ppFont = new SFont_Skia(this,&lf,pszPropEx);
         return TRUE;
     }
 
@@ -133,7 +136,7 @@ namespace SOUI
         LOGFONT lf={0};
         lf.lfHeight=20;
         _tcscpy(lf.lfFaceName,_T("ËÎÌו"));
-        pRenderFactory->CreateFont(&m_defFont,lf);
+        pRenderFactory->CreateFont(&m_defFont,lf,NULL);
         SelectObject(m_defFont);
 
         GetRenderFactory_Skia()->CreateBitmap(&m_defBmp);
@@ -142,8 +145,6 @@ namespace SOUI
 		CAutoRefPtr<IPen> pPen;
 		CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&pPen);
 		SelectObject(pPen);
-        
-//        m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
 	}
 	
 	SRenderTarget_Skia::~SRenderTarget_Skia()
@@ -1260,8 +1261,29 @@ namespace SOUI
 
     //////////////////////////////////////////////////////////////////////////
     // SFont_Skia
+
+    SStringT FindPropValue(const SStringT & strProp, const SStringT & strKey)
+    {
+        SStringT strValue;
+        int nPos1 = strProp.Find(strKey);
+        if(nPos1!=-1)
+        {
+            nPos1+=strKey.GetLength();
+            if(nPos1<strProp.GetLength() && strProp[nPos1]==_T(':'))
+            {
+                nPos1++;
+                int nPos2=strProp.Find(_T(','),nPos1);
+                if(nPos2==-1) nPos2=strProp.GetLength();
+                strValue=strProp.Mid(nPos1,nPos2-nPos1);
+            }
+        }
+        return strValue;
+    }
+
     static int s_cFont =0;
-    SFont_Skia::SFont_Skia( IRenderFactory * pRenderFac,const LOGFONT * plf ) :TSkiaRenderObjImpl<IFont>(pRenderFac),m_skFont(NULL)
+    SFont_Skia::SFont_Skia( IRenderFactory * pRenderFac,const LOGFONT * plf ,LPCTSTR pszPropEx) 
+        :TSkiaRenderObjImpl<IFont>(pRenderFac)
+        ,m_skFont(NULL)
     {
         memcpy(&m_lf,plf,sizeof(LOGFONT));
         SStringA strFace=S_CT2A(plf->lfFaceName,CP_UTF8);
@@ -1277,7 +1299,44 @@ namespace SOUI
 
         m_skPaint.setTextEncoding(SkPaint::kUTF16_TextEncoding);
         m_skPaint.setAntiAlias(true);
-        m_skPaint.setLCDRenderText(true);
+        if(pszPropEx)
+        {
+            SStringT strPropEx(pszPropEx);
+            SStringT strValue = FindPropValue(strPropEx,_T("style"));
+            if(strValue==_T("strokeandfill"))
+                m_skPaint.setStyle(SkPaint::kStrokeAndFill_Style);
+            else if(strValue == _T("fill"))
+                m_skPaint.setStyle(SkPaint::kFill_Style);
+            else if(strValue == _T("stroke"))
+                m_skPaint.setStyle(SkPaint::kStroke_Style);
+
+            strValue = FindPropValue(strPropEx,_T("lcdtext"));
+            if(strValue!=_T("0"))
+                m_skPaint.setLCDRenderText(true);
+
+            
+            strValue = FindPropValue(strPropEx,_T("blurstyle"));
+            SkBlurStyle blurStyle = (SkBlurStyle)-1;
+            if(strValue == _T("normal"))
+                blurStyle = kNormal_SkBlurStyle;
+            else if(strValue == _T("solid"))
+                blurStyle = kSolid_SkBlurStyle;
+            else if(strValue == _T("outer"))
+                blurStyle = kOuter_SkBlurStyle;
+            else if(strValue == _T("inner"))
+                blurStyle = kInner_SkBlurStyle;
+            if(blurStyle!=-1)
+            {
+                strValue = FindPropValue(strPropEx,_T("blurradius"));
+                int nRadius = _ttoi(strValue);
+                if(nRadius>0)
+                {
+                    m_skPaint.setMaskFilter(SkBlurMaskFilter::Create(blurStyle,
+                        SkBlurMask::ConvertRadiusToSigma(SkIntToScalar(nRadius))))->unref();
+
+                }
+            }
+        }
 
 //         STRACE(L"font new: objects = %d", ++s_cFont);
     }

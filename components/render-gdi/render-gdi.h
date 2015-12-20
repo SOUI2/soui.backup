@@ -25,7 +25,7 @@ namespace SOUI
         virtual IImgDecoderFactory * GetImgDecoderFactory(){return m_imgDecoderFactory;}
         virtual void SetImgDecoderFactory(IImgDecoderFactory *pImgDecoderFac){ m_imgDecoderFactory=pImgDecoderFac;}
         virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei);
-        virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf);
+        virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf,LPCTSTR pszPropEx);
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
         virtual BOOL CreateRegion(IRegion **ppRgn);
 
@@ -103,7 +103,7 @@ namespace SOUI
     class SFont_GDI: public TGdiRenderObjImpl<IFont>
     {
     public:
-        SFont_GDI(IRenderFactory * pRenderFac,const LOGFONT * plf)
+        SFont_GDI(IRenderFactory * pRenderFac,const LOGFONT * plf,LPCTSTR pszPropEx)
             :TGdiRenderObjImpl<IFont>(pRenderFac),m_hFont(NULL)
         {
             memcpy(&m_lf,plf,sizeof(LOGFONT));
@@ -178,7 +178,7 @@ namespace SOUI
     {
     public:
         SBitmap_GDI(IRenderFactory *pRenderFac)
-            :TGdiRenderObjImpl<IBitmap>(pRenderFac),m_hBmp(0),m_nFrameDelay(0)
+            :TGdiRenderObjImpl<IBitmap>(pRenderFac),m_hBmp(0)
         {
             m_sz.cx=m_sz.cy=0;
         }
@@ -205,7 +205,6 @@ namespace SOUI
         HRESULT ImgFromDecoder(IImgX *imgDecoder);
         SIZE        m_sz;
         HBITMAP     m_hBmp;     //标准的32位位图，和m_bitmap共享内存
-        int         m_nFrameDelay;
     };
 
     //////////////////////////////////////////////////////////////////////////
