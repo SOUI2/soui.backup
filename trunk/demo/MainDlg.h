@@ -12,7 +12,6 @@
 */
 
 #pragma once
-
 #include "../controls.extend/SChromeTabCtrl.h"
 
 /**
@@ -109,6 +108,7 @@ protected:
     void OnBtnWebkitRefresh();
 
     void OnSkiaTest();
+	void OnBtnSkiaTextTest();
     
     //演示如何使用subscribeEvent来不使用事件映射表实现事件响应
     bool OnListHeaderClick(EventArgs *pEvt);
@@ -153,6 +153,7 @@ protected:
         EVENT_NAME_COMMAND(L"btn_richedit_save",OnBtnRtfSave)
         EVENT_NAME_COMMAND(L"btn_richedit_open",OnBtnRtfOpen)
         EVENT_NAME_COMMAND(L"btn_skiatest",OnSkiaTest)
+		EVENT_NAME_COMMAND(L"btn_skiatexttest",OnBtnSkiaTextTest)
         EVENT_NAME_HANDLER(L"lbe_test",EVT_OFPANEL,OnListBoxExEvent)//响应EVT_OFPANEL事件
         EVENT_NAME_HANDLER(L"tb_test",EVT_OFPANEL,OnTreeBoxEvent)//响应EVT_OFPANEL事件
         EVENT_NAME_HANDLER(L"tb_test",EVT_TB_QUERYITEMHEIGHT,OnTreeBoxQueryItemHeight)//响应动态查询高度事件
