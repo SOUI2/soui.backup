@@ -1,5 +1,5 @@
 ﻿<include>
-  <tabctrl pos="0,0,-0,-0" alpha="200" layeredWindow="1" font="style:StrokeAndFill,blurStyle:solid,blurRadius:3,adding:-5" animateSteps="10" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
+  <tabctrl pos="0,0,-0,-0" alpha="200" font="style:StrokeAndFill,blurStyle:solid,blurRadius:3" animateSteps="10" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
     <page title="listctrls">
       <tabctrl pos="0,0,-0,-0" animateSteps="10" curSel="2" colorBkgnd="#ffffff" tabAlign="top" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabHeight="30" tabWidth="150" iconSkin="skin_small_icons" icon-x="5" icon-y="4" colorText="#000000bb">
         <page title="listctrl">
