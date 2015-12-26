@@ -25,7 +25,7 @@
   <imglist name="_skin.sys.btn.restore" src="PNG:SYS_BTN_RESTORE" states="3" />
 
   <imglist name="_skin.sys.menu.check" src="PNG:SYS_MENU_CHECK" states="4" />
-  <imglist name="_skin.sys.menu.sep" src="PNG:SYS_MENU_SEP" />
+  <imgframe name="_skin.sys.menu.sep" src="PNG:SYS_MENU_SEP" left="25"/>
   <imgframe name="_skin.sys.menu.border" src="PNG:SYS_MENU_BORDER" margin-x="2" margin-y="2"/>
   <imgframe name="_skin.sys.menu.skin" src="PNG:SYS_MENU_SKIN" states="2" left="25" top="2" bottom="2"/>
   <imglist name="_skin.sys.icons" src="PNG:SYS_ICONS" states="12"/>
