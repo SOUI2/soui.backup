@@ -26,6 +26,7 @@ SYS_BTN_RESTORE         PNG                     "theme_sys_res\\sys_btn_restore.
 SYS_BTN_CLOSE           PNG                     "theme_sys_res\\sys_btn_close.png"
 SYS_BTN_MAXIMIZE        PNG                     "theme_sys_res\\sys_btn_maximize.png"
 SYS_MENU_CHECK          PNG                     "theme_sys_res\\sys_menu_check.png"
+SYS_MENU_ARROW          PNG                     "theme_sys_res\\sys_menu_arrow.png"
 SYS_MENU_BKGND          PNG                     "theme_sys_res\\sys_menu_bkgnd.png"
 SYS_MENU_SEP            PNG                     "theme_sys_res\\sys_menu_sep.png"
 SYS_MENU_BORDER         PNG                     "theme_sys_res\\sys_menu_border.png"
