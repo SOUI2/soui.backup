@@ -72,6 +72,8 @@
 	  <file name="png_install" path="image\icon\button_install.png"/>
     <file name="png_mask" path="image\mask.png"/>
     <file name="png_avatar" path="image\avatar.png"/>
+
+    <file name="png_img_bk" path="image\item_bk.png"/>
   </IMGX> 
   <img.calendar2>
     <file name="png_skin_btn_semiarc" path="img.calendar2\skin_btn_semiarc.png"/>
