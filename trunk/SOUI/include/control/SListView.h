@@ -50,6 +50,7 @@ namespace SOUI
 
         virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo);
         virtual UINT OnGetDlgCode();
+        virtual BOOL OnSetCursor(const CPoint &pt);
     protected:
         void _SetSel(int iItem,BOOL bNotify, SWND hHitWnd);
 
