@@ -819,4 +819,25 @@ void STileView::OnSetFocus()
     }
 }
 
+BOOL STileView::OnSetCursor(const CPoint &pt)
+{
+    BOOL bRet=FALSE;
+    if(m_itemCapture)
+    {
+        CRect rcItem=m_itemCapture->GetItemRect();
+        bRet=m_itemCapture->DoFrameEvent(WM_SETCURSOR,0,MAKELPARAM(pt.x-rcItem.left,pt.y-rcItem.top))!=0;
+    }
+    else if(m_pHoverItem)
+    {
+        CRect rcItem=m_pHoverItem->GetItemRect();
+        bRet=m_pHoverItem->DoFrameEvent(WM_SETCURSOR,0,MAKELPARAM(pt.x-rcItem.left,pt.y-rcItem.top))!=0;
+    }
+    if(!bRet)
+    {
+        bRet=__super::OnSetCursor(pt);
+    }
+    return bRet;
+
+}
+
 }
