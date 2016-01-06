@@ -63,9 +63,10 @@
       </deskdock>
     </page>
     <page title="SetWindowRgn">
-      <scrollview pos="0,0,-0,-0" viewSize="700,1000">
-        <window name="wnd_rgn" pos="|0,|0,@100,@50" offset="-0.5,-0.5" colorBkgnd="#ff000088" cursor="hand">Region</window>
-        <img pos="0,0" skin="skin_bkgnd"/>
+      <scrollview pos="0,0,-0,-0">
+        <!--viewSize 根据子窗口内容自动计算-->
+        <window name="wnd_rgn" pos="100,100,@100,@50" offset="-0.5,-0.5" colorBkgnd="#ff000088" cursor="hand">Region</window>
+        <img pos="0,[0" skin="skin_bkgnd"/>
       </scrollview>
     </page>
     <page title="filter level">
