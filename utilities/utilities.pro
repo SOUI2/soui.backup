@@ -31,7 +31,7 @@ HEADERS += include/gdialpha.h \
            include/soui_mem_wrapper.h \
            include/atl.mini/atldef.h \
            include/atl.mini/SComCli.h \
-           include/alt.mini/SComHelper.h \
+           include/atl.mini/SComHelper.h \
            include/pugixml/pugiconfig.hpp \
            include/pugixml/pugixml.hpp \
            include/string/strcpcvt.h \
@@ -40,7 +40,6 @@ HEADERS += include/gdialpha.h \
            include/unknown/obj-ref-impl.hpp \
            include/com-loader.hpp \
            include/wtl.mini/msgcrack.h \
-           include/wtl.mini/souigdi.h \
            include/wtl.mini/souimisc.h
            
 SOURCES += src/gdialpha.cpp \
