@@ -35,7 +35,6 @@ INCLUDEPATH += . \
 
 # Input
 HEADERS += include/SApp.h \
-           include/activex/SAxHost.h \
            include/activex/SBStr.h \
            include/control/SActiveX.h \
            include/control/SCalendar.h \
