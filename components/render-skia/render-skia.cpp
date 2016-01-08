@@ -499,7 +499,26 @@ namespace SOUI
     HRESULT SRenderTarget_Skia::DrawIconEx( int xLeft, int yTop, HICON hIcon, int cxWidth,int cyWidth,UINT diFlags )
     {
         HDC hdc=GetDC(0);
+        
+        ICONINFO ii;
+        ::GetIconInfo(hIcon,&ii);
+        SASSERT(ii.hbmColor);
+        BITMAP bm;
+        ::GetObject(ii.hbmColor,sizeof(bm),&bm);
+
+        ALPHAINFO ai;
+        RECT rc={xLeft,yTop,xLeft+cxWidth,yTop+cyWidth};
+        if(bm.bmBitsPixel!=32)
+        {
+            CGdiAlpha::AlphaBackup(hdc,&rc,ai);
+        }
         BOOL bRet=::DrawIconEx(hdc,xLeft,yTop,hIcon,cxWidth,cyWidth,0,NULL,diFlags);
+
+        if(bm.bmBitsPixel!=32)
+        {
+            CGdiAlpha::AlphaRestore(ai);
+        }
+
         ReleaseDC(hdc);
         return bRet?S_OK:S_FALSE;
     }
