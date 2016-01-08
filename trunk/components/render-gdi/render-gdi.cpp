@@ -599,7 +599,25 @@ namespace SOUI
 
     HRESULT SRenderTarget_GDI::DrawIconEx( int xLeft, int yTop, HICON hIcon, int cxWidth,int cyWidth,UINT diFlags )
     {
+        ICONINFO ii;
+        ::GetIconInfo(hIcon,&ii);
+        SASSERT(ii.hbmColor);
+        BITMAP bm;
+        ::GetObject(ii.hbmColor,sizeof(bm),&bm);
+        
+        ALPHAINFO ai;
+        RECT rc={xLeft,yTop,xLeft+cxWidth,yTop+cyWidth};
+        if(bm.bmBitsPixel!=32)
+        {
+            CGdiAlpha::AlphaBackup(m_hdc,&rc,ai);
+        }
         BOOL bRet=::DrawIconEx(m_hdc,xLeft,yTop,hIcon,cxWidth,cyWidth,0,NULL,diFlags);
+        
+        if(bm.bmBitsPixel!=32)
+        {
+            CGdiAlpha::AlphaRestore(ai);
+        }
+
         return bRet?S_OK:S_FALSE;
     }
 
