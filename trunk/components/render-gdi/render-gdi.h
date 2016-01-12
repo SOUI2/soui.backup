@@ -191,12 +191,13 @@ namespace SOUI
         virtual HRESULT LoadFromFile(LPCTSTR pszFileName);
         virtual HRESULT LoadFromMemory(LPBYTE pBuf,size_t szLen);
 
-        virtual UINT Width();
-        virtual UINT Height();
-        virtual SIZE Size();
+        virtual UINT Width() const;
+        virtual UINT Height() const;
+        virtual SIZE Size() const;
         virtual LPVOID  LockPixelBits();
         virtual void    UnlockPixelBits(LPVOID);
-
+        virtual const LPVOID GetPixelBits() const;
+        
         HBITMAP  GetBitmap(){return m_hBmp;}
 
         static HBITMAP CreateGDIBitmap(int nWid,int nHei,void ** ppBits);
@@ -331,6 +332,11 @@ namespace SOUI
         virtual void ReleaseDC(HDC hdc);
 
         virtual HRESULT QueryInterface(REFGUID iid,IObjRef ** ppObj){ return E_NOTIMPL;}
+
+        virtual HRESULT SetTransform(const IxForm * pXForm,IxForm *pOldXFrom=NULL);
+
+        virtual HRESULT GetTransform(IxForm * pXForm) const;
+
     protected:
         HDC               m_hdc;
         SColor            m_curColor;

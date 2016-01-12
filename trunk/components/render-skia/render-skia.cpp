@@ -1037,6 +1037,29 @@ namespace SOUI
         return E_NOINTERFACE;
     }
 
+    HRESULT SRenderTarget_Skia::SetTransform(const IxForm * pXForm,IxForm *pOldXFrom)
+    {
+        SASSERT(pXForm);
+        if(pOldXFrom) GetTransform(pOldXFrom);
+        SkMatrix m;
+        m.setAll(pXForm->eM11,pXForm->eM21,pXForm->eDx,pXForm->eM12,pXForm->eM22,pXForm->eDy,0.0f,0.0f,1.0f);
+        m_SkCanvas->setMatrix(m);
+        return S_OK;
+    }
+
+    HRESULT SRenderTarget_Skia::GetTransform(IxForm * pXForm) const
+    {
+        SASSERT(pXForm);
+        const SkMatrix m = m_SkCanvas->getTotalMatrix();
+        pXForm->eM11 = m.getScaleX();
+        pXForm->eM21 = m.getSkewX();
+        pXForm->eM12 = m.getScaleY();
+        pXForm->eM22 = m.getSkewY();
+        pXForm->eDx  = m.getTranslateX();
+        pXForm->eDy  = m.getTranslateY();
+        return S_OK;
+    }
+
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
     static int s_cBmp = 0;
@@ -1148,17 +1171,17 @@ namespace SOUI
         return S_OK;
     }
 
-    UINT SBitmap_Skia::Width()
+    UINT SBitmap_Skia::Width()  const
     {
         return m_bitmap.width();
     }
 
-    UINT SBitmap_Skia::Height()
+    UINT SBitmap_Skia::Height() const
     {
         return m_bitmap.height();
     }
 
-    SIZE SBitmap_Skia::Size()
+    SIZE SBitmap_Skia::Size() const
     {
         SIZE sz={m_bitmap.width(),m_bitmap.height()};
         return sz;
@@ -1171,6 +1194,11 @@ namespace SOUI
 
     void SBitmap_Skia::UnlockPixelBits( LPVOID )
     {
+    }
+
+    const LPVOID SBitmap_Skia::GetPixelBits() const
+    {
+        return m_bitmap.getPixels();
     }
 
     //////////////////////////////////////////////////////////////////////////

@@ -173,11 +173,12 @@ namespace SOUI
 		virtual HRESULT LoadFromFile(LPCTSTR pszFileName);
 		virtual HRESULT LoadFromMemory(LPBYTE pBuf,size_t szLen);
 
-        virtual UINT Width();
-        virtual UINT Height();
-        virtual SIZE Size();
+        virtual UINT Width() const;
+        virtual UINT Height() const;
+        virtual SIZE Size() const;
         virtual LPVOID  LockPixelBits();
         virtual void    UnlockPixelBits(LPVOID);
+        virtual const LPVOID  GetPixelBits() const;
         
 		SkBitmap & GetSkBitmap(){return m_bitmap;}
 		HBITMAP  GetGdiBitmap(){return m_hBmp;}
@@ -313,8 +314,14 @@ namespace SOUI
 
         virtual HRESULT QueryInterface(REFGUID iid,IObjRef ** ppObj);
         
+        virtual HRESULT SetTransform(const IxForm * pXForm,IxForm *pOldXFrom=NULL);
+
+        virtual HRESULT GetTransform(IxForm * pXForm) const;
+
     public:
         SkCanvas *GetCanvas(){return m_SkCanvas;}
+
+
     protected:
 		SkCanvas *m_SkCanvas;
         SColor            m_curColor;

@@ -129,17 +129,17 @@ namespace SOUI
         return S_OK;
     }
 
-    UINT SBitmap_GDI::Width()
+    UINT SBitmap_GDI::Width() const
     {
         return m_sz.cx;
     }
 
-    UINT SBitmap_GDI::Height()
+    UINT SBitmap_GDI::Height() const
     {
         return m_sz.cy;
     }
 
-    SIZE SBitmap_GDI::Size()
+    SIZE SBitmap_GDI::Size() const
     {
         return m_sz;
     }
@@ -154,6 +154,13 @@ namespace SOUI
     void SBitmap_GDI::UnlockPixelBits( LPVOID )
     {
 
+    }
+
+    const LPVOID SBitmap_GDI::GetPixelBits() const
+    {
+        BITMAP bm;
+        GetObject(m_hBmp,sizeof(bm),&bm);
+        return bm.bmBits;
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -345,7 +352,7 @@ namespace SOUI
         m_hdc = CreateCompatibleDC(hdc);
         ::ReleaseDC(NULL,hdc);
         ::SetBkMode(m_hdc,TRANSPARENT);
-        
+        ::SetGraphicsMode(m_hdc,GM_ADVANCED);
         CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&m_defPen);
         SelectObject(m_defPen);
 
@@ -994,6 +1001,22 @@ namespace SOUI
         ::Chord(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt1.x,pt1.y,pt2.x,pt2.y);
         ::SelectObject(dcBuf,oldPen);
         return S_OK;
+    }
+
+    HRESULT SRenderTarget_GDI::SetTransform(const IxForm * pXForm,IxForm *pOldXFrom/*=NULL*/)
+    {
+        const XFORM * pXFormGDI = (const XFORM*)pXForm;
+        if(pOldXFrom)
+        {
+            GetTransform(pOldXFrom);
+        }
+        return ::SetWorldTransform(m_hdc,pXFormGDI)?S_OK:E_FAIL;
+    }
+
+    HRESULT SRenderTarget_GDI::GetTransform(IxForm * pXForm) const
+    {
+        XFORM * pXFormGDI = (XFORM*)pXForm;
+        return ::GetWorldTransform(m_hdc,pXFormGDI)?S_OK:E_FAIL;
     }
 
 
