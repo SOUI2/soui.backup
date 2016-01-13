@@ -1051,9 +1051,10 @@ namespace SOUI
         const SkMatrix m = m_SkCanvas->getTotalMatrix();
         pXForm->eM11 = m.getScaleX();
         pXForm->eM21 = m.getSkewX();
-        pXForm->eM12 = m.getScaleY();
-        pXForm->eM22 = m.getSkewY();
         pXForm->eDx  = m.getTranslateX();
+        
+        pXForm->eM12 = m.getSkewY();
+        pXForm->eM22 = m.getScaleY();
         pXForm->eDy  = m.getTranslateY();
         return S_OK;
     }
