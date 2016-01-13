@@ -297,6 +297,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SMatrixWindow.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\controls.extend\propgrid\spropertygrid.cpp"
 				>
 			</File>
@@ -444,6 +448,10 @@
 			</File>
 			<File
 				RelativePath="..\controls.extend\slistctrlex.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SMatrixWindow.h"
 				>
 			</File>
 			<File
