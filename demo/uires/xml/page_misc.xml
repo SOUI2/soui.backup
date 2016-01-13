@@ -71,7 +71,7 @@
         <img pos="0,[0" skin="skin_bkgnd"/>
       </scrollview>
     </page>
-    <page title="2d transfrom">
+    <page title="2d transform">
       <matrixWindow pos="5,5,-5,-5" skin="skin_avatar_low" name="matrix_test" clipClient="1">
         <text pos="5,5">rotate:</text>
         <edit pos="100,{0,@100,@30" name="edit_rotate">0</edit>
