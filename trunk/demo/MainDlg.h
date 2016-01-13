@@ -107,8 +107,7 @@ protected:
     void OnBtnWebkitForeward();
     void OnBtnWebkitRefresh();
 
-    void OnSkiaTest();
-	void OnBtnSkiaTextTest();
+	void OnBtnLRC();
     
     //演示如何使用subscribeEvent来不使用事件映射表实现事件响应
     bool OnListHeaderClick(EventArgs *pEvt);
@@ -132,6 +131,8 @@ protected:
     //处理模拟菜单中控件的事件
     void OnMenuSliderPos(EventArgs *pEvt);
     
+    void OnMatrixWindowReNotify(EventArgs *pEvt);
+
     //UI控件的事件及响应函数映射表
 	EVENT_MAP_BEGIN()
 		EVENT_ID_COMMAND(1, OnClose)
@@ -152,8 +153,7 @@ protected:
         EVENT_NAME_COMMAND(L"btn_append_msg",OnBtnAppendMsg)
         EVENT_NAME_COMMAND(L"btn_richedit_save",OnBtnRtfSave)
         EVENT_NAME_COMMAND(L"btn_richedit_open",OnBtnRtfOpen)
-        EVENT_NAME_COMMAND(L"btn_skiatest",OnSkiaTest)
-		EVENT_NAME_COMMAND(L"btn_skiatexttest",OnBtnSkiaTextTest)
+		EVENT_NAME_COMMAND(L"btn_lrc",OnBtnLRC)
         EVENT_NAME_HANDLER(L"lbe_test",EVT_OFPANEL,OnListBoxExEvent)//响应EVT_OFPANEL事件
         EVENT_NAME_HANDLER(L"tb_test",EVT_OFPANEL,OnTreeBoxEvent)//响应EVT_OFPANEL事件
         EVENT_NAME_HANDLER(L"tb_test",EVT_TB_QUERYITEMHEIGHT,OnTreeBoxQueryItemHeight)//响应动态查询高度事件
@@ -162,6 +162,10 @@ protected:
         EVENT_NAME_COMMAND(L"btn_filewnd",OnBtnFileWnd)
         EVENT_NAME_HANDLER(L"edit_url",EVT_RE_NOTIFY,OnUrlReNotify)
         EVENT_NAME_HANDLER(L"mclv_test",EVT_CTXMENU,OnMclvCtxMenu)
+        EVENT_NAME_HANDLER(L"edit_rotate",EVT_RE_NOTIFY,OnMatrixWindowReNotify)
+        EVENT_NAME_HANDLER(L"edit_scale",EVT_RE_NOTIFY,OnMatrixWindowReNotify)
+        EVENT_NAME_HANDLER(L"edit_skew",EVT_RE_NOTIFY,OnMatrixWindowReNotify)
+        EVENT_NAME_HANDLER(L"edit_translate",EVT_RE_NOTIFY,OnMatrixWindowReNotify)
         
         EVENT_NAME_HANDLER(L"menu_slider",EventSliderPos::EventID,OnMenuSliderPos)
 	EVENT_MAP_END()	
