@@ -13,6 +13,7 @@
 
 #include "SkCanvas.h"
 #include "SkData.h"
+#include "SkDecodingImageGenerator.h"
 #include "SkDocument.h"
 #include "SkImage.h"
 #include "SkMatrix.h"
@@ -317,7 +318,7 @@ void SkLua::pushClipStack(const SkClipStack& stack, const char* key) {
     SkClipStack::B2TIter iter(stack);
     const SkClipStack::Element* element;
     int i = 0;
-    while (NULL != (element = iter.next())) {
+    while ((element = iter.next())) {
         this->pushClipStackElement(*element);
         lua_rawseti(fL, -2, ++i);
     }
@@ -455,7 +456,7 @@ static int lcanvas_drawImage(lua_State* L) {
         paint.setAlpha(SkScalarRoundToInt(lua2scalar(L, 5) * 255));
         paintPtr = &paint;
     }
-    image->draw(canvas, x, y, paintPtr);
+    canvas->drawImage(image, x, y, paintPtr);
     return 0;
 }
 
@@ -521,7 +522,7 @@ int SkLua::lcanvas_getReducedClipStack(lua_State* L) {
     GrReducedClip::ElementList::Iter iter(elements);
     int i = 0;
     lua_newtable(L);
-    while(NULL != iter.get()) {
+    while(iter.get()) {
         SkLua(L).pushClipStackElement(*iter.get());
         iter.next();
         lua_rawseti(L, -2, ++i);
@@ -1460,7 +1461,9 @@ static int lsk_loadImage(lua_State* L) {
         const char* name = lua_tolstring(L, 1, NULL);
         SkAutoDataUnref data(SkData::NewFromFileName(name));
         if (data.get()) {
-            SkImage* image = SkImage::NewEncodedData(data.get());
+            SkImage* image = SkImage::NewFromGenerator(
+                SkDecodingImageGenerator::Create(data, SkDecodingImageGenerator::Options()));
+
             if (image) {
                 push_ref(L, image);
                 image->unref();

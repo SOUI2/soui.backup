@@ -21,7 +21,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;.&quot;,&quot;include\config&quot;,&quot;include\core&quot;,&quot;src\core&quot;,&quot;include\gpu&quot;,&quot;src\gpu&quot;,&quot;include\images&quot;,&quot;include\utils&quot;,&quot;include\utils\win&quot;,&quot;src\utils&quot;,&quot;include\ports&quot;,&quot;include\text&quot;,&quot;include\effects&quot;,&quot;src\sfnt&quot;,&quot;include\pathops&quot;,&quot;src\image&quot;,&quot;src\opts&quot;,&quot;src\lazy&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\debug\skia\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996,4244,4800"
@@ -29,7 +29,7 @@
 				GeneratePreprocessedFile="0"
 				ObjectFile="..\..\obj\debug\skia\"
 				Optimization ="4"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,SK_IGNORE_ETC1_SUPPORT"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,SK_IGNORE_ETC1_SUPPORT,SK_CPU_SSE_LEVEL=31"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
@@ -57,7 +57,7 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,SK_IGNORE_ETC1_SUPPORT,_DEBUG"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,SK_IGNORE_ETC1_SUPPORT,SK_CPU_SSE_LEVEL=31,_DEBUG"
 				ResourceOutputFileName="$(OutDir)\$(InputName).res" />
 		</Configuration>
 		<Configuration
@@ -71,7 +71,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;.&quot;,&quot;include\config&quot;,&quot;include\core&quot;,&quot;src\core&quot;,&quot;include\gpu&quot;,&quot;src\gpu&quot;,&quot;include\images&quot;,&quot;include\utils&quot;,&quot;include\utils\win&quot;,&quot;src\utils&quot;,&quot;include\ports&quot;,&quot;include\text&quot;,&quot;include\effects&quot;,&quot;src\sfnt&quot;,&quot;include\pathops&quot;,&quot;src\image&quot;,&quot;src\opts&quot;,&quot;src\lazy&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\release\skia\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996,4244,4800"
@@ -79,7 +79,7 @@
 				GeneratePreprocessedFile="0"
 				ObjectFile="..\..\obj\release\skia\"
 				Optimization ="1"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,SK_IGNORE_ETC1_SUPPORT,NDEBUG"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,SK_IGNORE_ETC1_SUPPORT,SK_CPU_SSE_LEVEL=31,NDEBUG"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="0"
 				RuntimeTypeInfo="false"
@@ -107,7 +107,7 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,SK_IGNORE_ETC1_SUPPORT"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,SK_IGNORE_ETC1_SUPPORT,SK_CPU_SSE_LEVEL=31"
 				ResourceOutputFileName="$(OutDir)\$(InputName).res" />
 		</Configuration>
 	</Configurations>
@@ -175,8 +175,6 @@
 			<File
 				RelativePath="src\gpu\GrDrawTarget.cpp" />
 			<File
-				RelativePath="src\gpu\GrEffect.cpp" />
-			<File
 				RelativePath="src\gpu\GrFontScaler.cpp" />
 			<File
 				RelativePath="src\gpu\gl\debug\GrFrameBufferObj.cpp" />
@@ -199,7 +197,11 @@
 			<File
 				RelativePath="src\gpu\gl\GrGLExtensions.cpp" />
 			<File
+				RelativePath="src\gpu\gl\builders\GrGLFragmentOnlyProgramBuilder.cpp" />
+			<File
 				RelativePath="src\gpu\gl\builders\GrGLFragmentShaderBuilder.cpp" />
+			<File
+				RelativePath="src\gpu\gl\builders\GrGLFullProgramBuilder.cpp" />
 			<File
 				RelativePath="src\gpu\gl\builders\GrGLGeometryShaderBuilder.cpp" />
 			<File
@@ -259,6 +261,8 @@
 			<File
 				RelativePath="src\gpu\GrGpuResource.cpp" />
 			<File
+				RelativePath="src\gpu\GrGpuResourceRef.cpp" />
+			<File
 				RelativePath="src\gpu\GrInOrderDrawBuffer.cpp" />
 			<File
 				RelativePath="src\gpu\GrLayerCache.cpp" />
@@ -266,6 +270,8 @@
 				RelativePath="src\gpu\effects\GrMatrixConvolutionEffect.cpp" />
 			<File
 				RelativePath="src\gpu\GrMemoryPool.cpp" />
+			<File
+				RelativePath="src\gpu\GrOptDrawState.cpp" />
 			<File
 				RelativePath="src\gpu\effects\GrOvalEffect.cpp" />
 			<File
@@ -275,13 +281,21 @@
 			<File
 				RelativePath="src\gpu\GrPath.cpp" />
 			<File
+				RelativePath="src\gpu\GrPathRange.cpp" />
+			<File
 				RelativePath="src\gpu\GrPathRenderer.cpp" />
 			<File
 				RelativePath="src\gpu\GrPathRendererChain.cpp" />
 			<File
+				RelativePath="src\gpu\GrPathRendering.cpp" />
+			<File
 				RelativePath="src\gpu\GrPathUtils.cpp" />
 			<File
 				RelativePath="src\gpu\GrPictureUtils.cpp" />
+			<File
+				RelativePath="src\gpu\GrProcessor.cpp" />
+			<File
+				RelativePath="src\gpu\GrProgramElement.cpp" />
 			<File
 				RelativePath="src\gpu\gl\debug\GrProgramObj.cpp" />
 			<File
@@ -805,13 +819,9 @@
 			<File
 				RelativePath="src\core\SkPicturePlayback.cpp" />
 			<File
-				RelativePath="src\core\SkPictureRangePlayback.cpp" />
-			<File
 				RelativePath="src\core\SkPictureRecord.cpp" />
 			<File
 				RelativePath="src\core\SkPictureRecorder.cpp" />
-			<File
-				RelativePath="src\core\SkPictureReplacementPlayback.cpp" />
 			<File
 				RelativePath="src\core\SkPictureShader.cpp" />
 			<File
@@ -873,11 +883,11 @@
 			<File
 				RelativePath="src\fonts\SkRemotableFontMgr.cpp" />
 			<File
+				RelativePath="src\core\SkResourceCache.cpp" />
+			<File
 				RelativePath="src\utils\SkSHA1.cpp" />
 			<File
 				RelativePath="src\core\SkScalar.cpp" />
-			<File
-				RelativePath="src\core\SkScaledImageCache.cpp" />
 			<File
 				RelativePath="src\core\SkScalerContext.cpp" />
 			<File
@@ -1092,7 +1102,11 @@
 			<File
 				RelativePath="include\gpu\gl\GrGLExtensions.h" />
 			<File
+				RelativePath="src\gpu\gl\builders\GrGLFragmentOnlyProgramBuilder.h" />
+			<File
 				RelativePath="src\gpu\gl\builders\GrGLFragmentShaderBuilder.h" />
+			<File
+				RelativePath="src\gpu\gl\builders\GrGLFullProgramBuilder.h" />
 			<File
 				RelativePath="include\gpu\gl\GrGLFunctions.h" />
 			<File
@@ -1173,6 +1187,8 @@
 				RelativePath="src\gpu\effects\GrMatrixConvolutionEffect.h" />
 			<File
 				RelativePath="src\gpu\GrMemoryPool.h" />
+			<File
+				RelativePath="src\gpu\GrOptDrawState.h" />
 			<File
 				RelativePath="src\gpu\GrOrderedSet.h" />
 			<File
@@ -1690,13 +1706,9 @@
 			<File
 				RelativePath="src\core\SkPicturePlayback.h" />
 			<File
-				RelativePath="src\core\SkPictureRangePlayback.h" />
-			<File
 				RelativePath="src\core\SkPictureRecord.h" />
 			<File
 				RelativePath="include\core\SkPictureRecorder.h" />
-			<File
-				RelativePath="src\core\SkPictureReplacementPlayback.h" />
 			<File
 				RelativePath="src\core\SkPictureShader.h" />
 			<File
@@ -1751,6 +1763,8 @@
 				RelativePath="src\core\SkRegionPriv.h" />
 			<File
 				RelativePath="include\ports\SkRemotableFontMgr.h" />
+			<File
+				RelativePath="src\core\SkResourceCache.h" />
 			<File
 				RelativePath="src\utils\SkRunnable.h" />
 			<File

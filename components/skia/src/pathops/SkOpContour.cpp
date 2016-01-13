@@ -57,6 +57,21 @@ SkOpSegment* SkOpContour::nonVerticalSegment(int* start, int* end) {
     return NULL;
 }
 
+// if one is very large the smaller may have collapsed to nothing
+static void bump_out_close_span(double* startTPtr, double* endTPtr) {
+    double startT = *startTPtr;
+    double endT = *endTPtr;
+    if (approximately_negative(endT - startT)) {
+        if (endT <= 1 - FLT_EPSILON) {
+            *endTPtr += FLT_EPSILON;
+            SkASSERT(*endTPtr <= 1);
+        } else {
+            *startTPtr -= FLT_EPSILON;
+            SkASSERT(*startTPtr >= 0);
+        }
+    }
+}
+
 // first pass, add missing T values
 // second pass, determine winding values of overlaps
 void SkOpContour::addCoincidentPoints() {
@@ -82,15 +97,7 @@ void SkOpContour::addCoincidentPoints() {
         if ((cancelers = startSwapped = startT > endT)) {
             SkTSwap(startT, endT);
         }
-        if (startT == endT) { // if one is very large the smaller may have collapsed to nothing
-            if (endT <= 1 - FLT_EPSILON) {
-                endT += FLT_EPSILON;
-                SkASSERT(endT <= 1);
-            } else {
-                startT -= FLT_EPSILON;
-                SkASSERT(startT >= 0);
-            }
-        }
+        bump_out_close_span(&startT, &endT);
         SkASSERT(!approximately_negative(endT - startT));
         double oStartT = coincidence.fTs[1][0];
         double oEndT = coincidence.fTs[1][1];
@@ -98,6 +105,7 @@ void SkOpContour::addCoincidentPoints() {
             SkTSwap(oStartT, oEndT);
             cancelers ^= true;
         }
+        bump_out_close_span(&oStartT, &oEndT);
         SkASSERT(!approximately_negative(oEndT - oStartT));
         const SkPoint& startPt = coincidence.fPts[0][startSwapped];
         if (cancelers) {
@@ -259,7 +267,7 @@ bool SkOpContour::calcAngles() {
     return true;
 }
 
-void SkOpContour::calcCoincidentWinding() {
+bool SkOpContour::calcCoincidentWinding() {
     int count = fCoincidences.count();
 #if DEBUG_CONCIDENT
     if (count > 0) {
@@ -268,8 +276,11 @@ void SkOpContour::calcCoincidentWinding() {
 #endif
     for (int index = 0; index < count; ++index) {
         SkCoincidence& coincidence = fCoincidences[index];
-         calcCommonCoincidentWinding(coincidence);
+        if (!calcCommonCoincidentWinding(coincidence)) {
+            return false;
+        }
     }
+    return true;
 }
 
 void SkOpContour::calcPartialCoincidentWinding() {
@@ -463,11 +474,11 @@ void SkOpContour::checkCoincidentPair(const SkCoincidence& oneCoin, int oneIdx,
             addTo2->addTCancel(missingPt1, missingPt2, addOther2);
         }
     } else if (missingT1 >= 0) {
-        addTo1->addTCoincident(missingPt1, missingPt2, addTo1 == addTo2 ? missingT2 : otherT2,
-                addOther1);
+        SkAssertResult(addTo1->addTCoincident(missingPt1, missingPt2,
+                addTo1 == addTo2 ? missingT2 : otherT2, addOther1));
     } else {
-        addTo2->addTCoincident(missingPt2, missingPt1, addTo2 == addTo1 ? missingT1 : otherT1,
-                addOther2);
+        SkAssertResult(addTo2->addTCoincident(missingPt2, missingPt1,
+                addTo2 == addTo1 ? missingT1 : otherT1, addOther2));
     }
 }
 
@@ -535,20 +546,20 @@ void SkOpContour::joinCoincidence(const SkTArray<SkCoincidence, true>& coinciden
     }
 }
 
-void SkOpContour::calcCommonCoincidentWinding(const SkCoincidence& coincidence) {
+bool SkOpContour::calcCommonCoincidentWinding(const SkCoincidence& coincidence) {
     if (coincidence.fNearly[0] && coincidence.fNearly[1]) {
-        return;
+        return true;
     }
     int thisIndex = coincidence.fSegments[0];
     SkOpSegment& thisOne = fSegments[thisIndex];
     if (thisOne.done()) {
-        return;
+        return true;
     }
     SkOpContour* otherContour = coincidence.fOther;
     int otherIndex = coincidence.fSegments[1];
     SkOpSegment& other = otherContour->fSegments[otherIndex];
     if (other.done()) {
-        return;
+        return true;
     }
     double startT = coincidence.fTs[0][0];
     double endT = coincidence.fTs[0][1];
@@ -559,15 +570,7 @@ void SkOpContour::calcCommonCoincidentWinding(const SkCoincidence& coincidence) 
         SkTSwap<double>(startT, endT);
         SkTSwap<const SkPoint*>(startPt, endPt);
     }
-    if (startT == endT) { // if span is very large, the smaller may have collapsed to nothing
-        if (endT <= 1 - FLT_EPSILON) {
-            endT += FLT_EPSILON;
-            SkASSERT(endT <= 1);
-        } else {
-            startT -= FLT_EPSILON;
-            SkASSERT(startT >= 0);
-        }
-    }
+    bump_out_close_span(&startT, &endT);
     SkASSERT(!approximately_negative(endT - startT));
     double oStartT = coincidence.fTs[1][0];
     double oEndT = coincidence.fTs[1][1];
@@ -575,16 +578,19 @@ void SkOpContour::calcCommonCoincidentWinding(const SkCoincidence& coincidence) 
         SkTSwap<double>(oStartT, oEndT);
         cancelers ^= true;
     }
+    bump_out_close_span(&oStartT, &oEndT);
     SkASSERT(!approximately_negative(oEndT - oStartT));
+    bool success = true;
     if (cancelers) {
         thisOne.addTCancel(*startPt, *endPt, &other);
     } else {
-        thisOne.addTCoincident(*startPt, *endPt, endT, &other);
+        success = thisOne.addTCoincident(*startPt, *endPt, endT, &other);
     }
 #if DEBUG_CONCIDENT
     thisOne.debugShowTs("p");
     other.debugShowTs("o");
 #endif
+    return success;
 }
 
 void SkOpContour::resolveNearCoincidence() {

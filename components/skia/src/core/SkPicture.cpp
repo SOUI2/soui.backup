@@ -40,6 +40,7 @@
 
 #include "SkRecord.h"
 #include "SkRecordDraw.h"
+#include "SkRecordOpts.h"
 #include "SkRecorder.h"
 
 template <typename T> int SafeCount(const T* obj) {
@@ -141,14 +142,11 @@ struct SkPicture::PathCounter {
 
     // Recurse into nested pictures.
     void operator()(const SkRecords::DrawPicture& op) {
-        // If you're not also SkRecord-backed, tough luck.  Get on the bandwagon.
-        if (op.picture->fRecord.get() == NULL) {
-            return;
-        }
-        const SkRecord& nested = *op.picture->fRecord;
-        for (unsigned i = 0; i < nested.count(); i++) {
-            nested.visit<void>(i, *this);
-        }
+        const SkPicture::Analysis& analysis = op.picture->fAnalysis;
+        numPaintWithPathEffectUses += analysis.fNumPaintWithPathEffectUses;
+        numFastPathDashEffects     += analysis.fNumFastPathDashEffects;
+        numAAConcavePaths          += analysis.fNumAAConcavePaths;
+        numAAHairlineConcavePaths  += analysis.fNumAAHairlineConcavePaths;
     }
 
     void checkPaint(const SkPaint* paint) {
@@ -234,7 +232,7 @@ bool SkPicture::Analysis::suitableForGpuRasterization(const char** reason,
                (fNumAAConcavePaths - fNumAAHairlineConcavePaths)
                    < kNumAAConcavePathsTol;
 
-    if (!ret && NULL != reason) {
+    if (!ret && reason) {
         if (!suitableForDash) {
             if (0 != sampleCount) {
                 *reason = "Can't use multisample on dash effect.";
@@ -252,21 +250,12 @@ bool SkPicture::Analysis::suitableForGpuRasterization(const char** reason,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifdef SK_SUPPORT_LEGACY_DEFAULT_PICTURE_CTOR
 // fRecord OK
-SkPicture::SkPicture()
-    : fWidth(0)
-    , fHeight(0) {
-    this->needsNewGenID();
-}
-#endif
-
-// fRecord OK
-SkPicture::SkPicture(int width, int height,
+SkPicture::SkPicture(SkScalar width, SkScalar height,
                      const SkPictureRecord& record,
                      bool deepCopyOps)
-    : fWidth(width)
-    , fHeight(height)
+    : fCullWidth(width)
+    , fCullHeight(height)
     , fAnalysis() {
     this->needsNewGenID();
 
@@ -277,10 +266,11 @@ SkPicture::SkPicture(int width, int height,
 
 // Create an SkPictureData-backed SkPicture from an SkRecord.
 // This for compatibility with serialization code only.  This is not cheap.
-static SkPicture* backport(const SkRecord& src, int width, int height) {
+static SkPicture* backport(const SkRecord& src, const SkRect& cullRect) {
     SkPictureRecorder recorder;
     SkRecordDraw(src,
-                 recorder.DEPRECATED_beginRecording(width, height), NULL/*bbh*/, NULL/*callback*/);
+                 recorder.DEPRECATED_beginRecording(cullRect.width(), cullRect.height()),
+                 NULL/*bbh*/, NULL/*callback*/);
     return recorder.endRecording();
 }
 
@@ -304,7 +294,7 @@ void SkPicture::EXPERIMENTAL_addAccelData(const SkPicture::AccelData* data) cons
 // fRecord OK
 const SkPicture::AccelData* SkPicture::EXPERIMENTAL_getAccelData(
         SkPicture::AccelData::Key key) const {
-    if (NULL != fAccelData.get() && fAccelData->getKey() == key) {
+    if (fAccelData.get() && fAccelData->getKey() == key) {
         return fAccelData.get();
     }
     return NULL;
@@ -334,31 +324,22 @@ const SkMatrix& SkPicture::OperationList::matrix(int index) const {
     return *((SkPictureStateTree::Draw*)fOps[index])->fMatrix;
 }
 
-// fRecord TODO(robert) / kind of OK in a non-optimal sense
-const SkPicture::OperationList* SkPicture::EXPERIMENTAL_getActiveOps(const SkIRect& queryRect) const {
-    SkASSERT(NULL != fData.get());
-    if (NULL != fData.get()) {
-        return fData->getActiveOps(queryRect);
-    }
-    return NULL;
-}
-
 // fRecord OK
-void SkPicture::draw(SkCanvas* canvas, SkDrawPictureCallback* callback) const {
-    SkASSERT(NULL != canvas);
-    SkASSERT(NULL != fData.get() || NULL != fRecord.get());
+void SkPicture::playback(SkCanvas* canvas, SkDrawPictureCallback* callback) const {
+    SkASSERT(canvas);
+    SkASSERT(fData.get() || fRecord.get());
 
     // If the query contains the whole picture, don't bother with the BBH.
     SkRect clipBounds = { 0, 0, 0, 0 };
     (void)canvas->getClipBounds(&clipBounds);
-    const bool useBBH = !clipBounds.contains(SkRect::MakeWH(this->width(), this->height()));
+    const bool useBBH = !clipBounds.contains(this->cullRect());
 
-    if (NULL != fData.get()) {
+    if (fData.get()) {
         SkPicturePlayback playback(this);
         playback.setUseBBH(useBBH);
         playback.draw(canvas, callback);
     }
-    if (NULL != fRecord.get()) {
+    if (fRecord.get()) {
         SkRecordDraw(*fRecord, canvas, useBBH ? fBBH.get() : NULL, callback);
     }
 }
@@ -392,7 +373,32 @@ bool SkPicture::InternalOnly_StreamIsSKP(SkStream* stream, SkPictInfo* pInfo) {
     // Check magic bytes.
     SkPictInfo info;
     SkASSERT(sizeof(kMagic) == sizeof(info.fMagic));
-    if (!stream->read(&info, sizeof(info)) || !IsValidPictInfo(info)) {
+
+    if (!stream->read(&info.fMagic, sizeof(kMagic))) {
+        return false;
+    }
+
+    info.fVersion = stream->readU32();
+
+#ifndef V35_COMPATIBILITY_CODE
+    if (info.fVersion < 35) {
+        info.fCullRect.fLeft = 0;
+        info.fCullRect.fTop = 0;
+        info.fCullRect.fRight = SkIntToScalar(stream->readU32());
+        info.fCullRect.fBottom = SkIntToScalar(stream->readU32());
+    } else {
+#endif
+        info.fCullRect.fLeft = stream->readScalar();
+        info.fCullRect.fTop = stream->readScalar();
+        info.fCullRect.fRight = stream->readScalar();
+        info.fCullRect.fBottom = stream->readScalar();
+#ifndef V35_COMPATIBILITY_CODE
+    }
+#endif
+
+    info.fFlags = stream->readU32();
+
+    if (!IsValidPictInfo(info)) {
         return false;
     }
 
@@ -403,11 +409,33 @@ bool SkPicture::InternalOnly_StreamIsSKP(SkStream* stream, SkPictInfo* pInfo) {
 }
 
 // fRecord OK
-bool SkPicture::InternalOnly_BufferIsSKP(SkReadBuffer& buffer, SkPictInfo* pInfo) {
+bool SkPicture::InternalOnly_BufferIsSKP(SkReadBuffer* buffer, SkPictInfo* pInfo) {
     // Check magic bytes.
     SkPictInfo info;
     SkASSERT(sizeof(kMagic) == sizeof(info.fMagic));
-    if (!buffer.readByteArray(&info, sizeof(info)) || !IsValidPictInfo(info)) {
+
+    if (!buffer->readByteArray(&info.fMagic, sizeof(kMagic))) {
+        return false;
+    }
+
+    info.fVersion = buffer->readUInt();
+
+#ifndef V35_COMPATIBILITY_CODE
+    if (info.fVersion < 35) {
+        info.fCullRect.fLeft = 0;
+        info.fCullRect.fTop = 0;
+        info.fCullRect.fRight = SkIntToScalar(buffer->readUInt());
+        info.fCullRect.fBottom = SkIntToScalar(buffer->readUInt());
+    } else {
+#endif
+        buffer->readRect(&info.fCullRect);
+#ifndef V35_COMPATIBILITY_CODE
+    }
+#endif
+
+    info.fFlags = buffer->readUInt();
+
+    if (!IsValidPictInfo(info)) {
         return false;
     }
 
@@ -418,19 +446,20 @@ bool SkPicture::InternalOnly_BufferIsSKP(SkReadBuffer& buffer, SkPictInfo* pInfo
 }
 
 // fRecord OK
-SkPicture::SkPicture(SkPictureData* data, int width, int height)
+SkPicture::SkPicture(SkPictureData* data, SkScalar width, SkScalar height)
     : fData(data)
-    , fWidth(width)
-    , fHeight(height)
+    , fCullWidth(width)
+    , fCullHeight(height)
     , fAnalysis() {
     this->needsNewGenID();
 }
 
 SkPicture* SkPicture::Forwardport(const SkPicture& src) {
     SkAutoTDelete<SkRecord> record(SkNEW(SkRecord));
-    SkRecorder canvas(record.get(), src.width(), src.height());
-    src.draw(&canvas);
-    return SkNEW_ARGS(SkPicture, (src.width(), src.height(), record.detach(), NULL/*bbh*/));
+    SkRecorder canvas(record.get(), src.cullRect().width(), src.cullRect().height());
+    src.playback(&canvas);
+    return SkNEW_ARGS(SkPicture, (src.cullRect().width(), src.cullRect().height(),
+                                  record.detach(), NULL/*bbh*/));
 }
 
 // fRecord OK
@@ -447,7 +476,7 @@ SkPicture* SkPicture::CreateFromStream(SkStream* stream, InstallPixelRefProc pro
         if (NULL == data) {
             return NULL;
         }
-        const SkPicture src(data, info.fWidth, info.fHeight);
+        const SkPicture src(data, info.fCullRect.width(), info.fCullRect.height());
         return Forwardport(src);
     }
 
@@ -458,7 +487,7 @@ SkPicture* SkPicture::CreateFromStream(SkStream* stream, InstallPixelRefProc pro
 SkPicture* SkPicture::CreateFromBuffer(SkReadBuffer& buffer) {
     SkPictInfo info;
 
-    if (!InternalOnly_BufferIsSKP(buffer, &info)) {
+    if (!InternalOnly_BufferIsSKP(&buffer, &info)) {
         return NULL;
     }
 
@@ -468,7 +497,7 @@ SkPicture* SkPicture::CreateFromBuffer(SkReadBuffer& buffer) {
         if (NULL == data) {
             return NULL;
         }
-        const SkPicture src(data, info.fWidth, info.fHeight);
+        const SkPicture src(data, info.fCullRect.width(), info.fCullRect.height());
         return Forwardport(src);
     }
 
@@ -484,8 +513,7 @@ void SkPicture::createHeader(SkPictInfo* info) const {
 
     // Set picture info after magic bytes in the header
     info->fVersion = CURRENT_PICTURE_VERSION;
-    info->fWidth = fWidth;
-    info->fHeight = fHeight;
+    info->fCullRect = this->cullRect();
     info->fFlags = SkPictInfo::kCrossProcess_Flag;
     // TODO: remove this flag, since we're always float (now)
     info->fFlags |= SkPictInfo::kScalarIsFloat_Flag;
@@ -501,17 +529,18 @@ void SkPicture::serialize(SkWStream* stream, EncodeBitmap encoder) const {
 
     // If we're a new-format picture, backport to old format for serialization.
     SkAutoTDelete<SkPicture> oldFormat;
-    if (NULL == data && NULL != fRecord.get()) {
-        oldFormat.reset(backport(*fRecord, fWidth, fHeight));
+    if (NULL == data && fRecord.get()) {
+        oldFormat.reset(backport(*fRecord, this->cullRect()));
         data = oldFormat->fData.get();
-        SkASSERT(NULL != data);
+        SkASSERT(data);
     }
 
     SkPictInfo info;
     this->createHeader(&info);
+    SkASSERT(sizeof(SkPictInfo) == 32);
     stream->write(&info, sizeof(info));
 
-    if (NULL != data) {
+    if (data) {
         stream->writeBool(true);
         data->serialize(stream, encoder);
     } else {
@@ -525,17 +554,20 @@ void SkPicture::flatten(SkWriteBuffer& buffer) const {
 
     // If we're a new-format picture, backport to old format for serialization.
     SkAutoTDelete<SkPicture> oldFormat;
-    if (NULL == data && NULL != fRecord.get()) {
-        oldFormat.reset(backport(*fRecord, fWidth, fHeight));
+    if (NULL == data && fRecord.get()) {
+        oldFormat.reset(backport(*fRecord, this->cullRect()));
         data = oldFormat->fData.get();
-        SkASSERT(NULL != data);
+        SkASSERT(data);
     }
 
     SkPictInfo info;
     this->createHeader(&info);
-    buffer.writeByteArray(&info, sizeof(info));
+    buffer.writeByteArray(&info.fMagic, sizeof(info.fMagic));
+    buffer.writeUInt(info.fVersion);
+    buffer.writeRect(info.fCullRect);
+    buffer.writeUInt(info.fFlags);
 
-    if (NULL != data) {
+    if (data) {
         buffer.writeBool(true);
         data->flatten(buffer);
     } else {
@@ -550,7 +582,7 @@ bool SkPicture::suitableForGpuRasterization(GrContext* context, const char **rea
         return fAnalysis.suitableForGpuRasterization(reason, 0);
     }
     if (NULL == fData.get()) {
-        if (NULL != reason) {
+        if (reason) {
             *reason = "Missing internal data.";
         }
         return false;
@@ -604,16 +636,24 @@ uint32_t SkPicture::uniqueID() const {
     return fUniqueID;
 }
 
+
+static SkRecord* optimized(SkRecord* r) {
+#ifdef SK_PICTURE_OPTIMIZE_SK_RECORD
+    SkRecordOptimize(r);
+#endif
+    return r;
+}
+
 // fRecord OK
-SkPicture::SkPicture(int width, int height, SkRecord* record, SkBBoxHierarchy* bbh)
-    : fWidth(width)
-    , fHeight(height)
-    , fRecord(record)
+SkPicture::SkPicture(SkScalar width, SkScalar height, SkRecord* record, SkBBoxHierarchy* bbh)
+    : fCullWidth(width)
+    , fCullHeight(height)
+    , fRecord(optimized(record))
     , fBBH(SkSafeRef(bbh))
-    , fAnalysis(*record) {
+    , fAnalysis(*fRecord) {
     // TODO: delay as much of this work until just before first playback?
     if (fBBH.get()) {
-        SkRecordFillBounds(*record, fBBH.get());
+        SkRecordFillBounds(*fRecord, fBBH.get());
     }
     this->needsNewGenID();
 }
@@ -623,7 +663,7 @@ SkPicture::SkPicture(int width, int height, SkRecord* record, SkBBoxHierarchy* b
 // SkGpuDevice::EXPERIMENTAL_optimize which should be only called from a single
 // thread.
 void SkPicture::addDeletionListener(DeletionListener* listener) const {
-    SkASSERT(NULL != listener);
+    SkASSERT(listener);
 
     *fDeletionListeners.append() = SkRef(listener);
 }

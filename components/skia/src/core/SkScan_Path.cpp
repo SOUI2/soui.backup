@@ -432,7 +432,7 @@ static SkEdge* sort_edges(SkEdge* list[], int count, SkEdge** last) {
 void sk_fill_path(const SkPath& path, const SkIRect* clipRect, SkBlitter* blitter,
                   int start_y, int stop_y, int shiftEdgesUp,
                   const SkRegion& clipRgn) {
-    SkASSERT(&path && blitter);
+    SkASSERT(blitter);
 
     SkEdgeBuilder   builder;
 
@@ -727,7 +727,7 @@ void SkScan::FillTriangle(const SkPoint pts[], const SkRasterClip& clip,
 
     SkScanClipper clipper(blitter, clipRgn, ir);
     blitter = clipper.getBlitter();
-    if (NULL != blitter) {
+    if (blitter) {
         sk_fill_triangle(pts, clipper.getClipRect(), blitter, ir);
     }
 }

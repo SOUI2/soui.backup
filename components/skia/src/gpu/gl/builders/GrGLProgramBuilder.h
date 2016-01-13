@@ -9,13 +9,14 @@
 #define GrGLProgramBuilder_DEFINED
 
 #include "GrAllocator.h"
-#include "GrBackendEffectFactory.h"
+#include "GrBackendProcessorFactory.h"
 #include "GrColor.h"
-#include "GrEffect.h"
+#include "GrProcessor.h"
 #include "GrGLFragmentShaderBuilder.h"
 #include "GrGLGeometryShaderBuilder.h"
 #include "GrGLVertexShaderBuilder.h"
 #include "SkTypes.h"
+#include "gl/GrGLProcessor.h"
 #include "gl/GrGLProgramDesc.h"
 #include "gl/GrGLProgramEffects.h"
 #include "gl/GrGLSL.h"
@@ -24,7 +25,7 @@
 #include <stdarg.h>
 
 class GrGLContextInfo;
-class GrEffectStage;
+class GrProcessorStage;
 class GrGLProgramDesc;
 
 /**
@@ -84,11 +85,14 @@ public:
      * to be used.
      * @return true if generation was successful.
      */
-    bool genProgram(const GrEffectStage* inColorStages[],
-                    const GrEffectStage* inCoverageStages[]);
 
-    // Below are the results of the shader generation.
+    bool genProgram(const GrGeometryStage* inGeometryProcessor,
+                    const GrFragmentStage* inColorStages[],
+                    const GrFragmentStage* inCoverageStages[]);
 
+    GrGLProgramEffects* getGeometryProcessor() const {
+        SkASSERT(fProgramID); return fGeometryProcessor.get();
+    }
     GrGLProgramEffects* getColorEffects() const { SkASSERT(fProgramID); return fColorEffects.get(); }
     GrGLProgramEffects* getCoverageEffects() const { SkASSERT(fProgramID); return fCoverageEffects.get(); }
     const BuiltinUniformHandles& getBuiltinUniformHandles() const {
@@ -146,11 +150,28 @@ protected:
     const GrGLProgramDesc& desc() const { return fDesc; }
 
     // Helper for emitEffects().
-    void createAndEmitEffects(GrGLProgramEffectsBuilder*,
-                              const GrEffectStage* effectStages[],
+    void createAndEmitEffects(const GrFragmentStage* effectStages[],
                               int effectCnt,
                               const GrGLProgramDesc::EffectKeyProvider&,
                               GrGLSLExpr4* inOutFSColor);
+
+    /*
+     * A helper function called to emit the geometry processor as well as individual coverage
+     * and color stages.  this will call into subclasses emit effect
+     */
+    void emitEffect(const GrProcessorStage& effectStage,
+                    int effectIndex,
+                    const GrGLProgramDesc::EffectKeyProvider& keyProvider,
+                    GrGLSLExpr4* inColor,
+                    GrGLSLExpr4* outColor);
+
+    /**
+     * Helper for emitEffect() in subclasses. Emits uniforms for an effect's texture accesses and
+     * appends the necessary data to the TextureSamplerArray* object so effects can add texture
+     * lookups to their code. This method is only meant to be called during the construction phase.
+     */
+    void emitSamplers(const GrProcessor& effect,
+                      GrGLProcessor::TextureSamplerArray* outSamplers);
 
     // Generates a name for a variable. The generated string will be name prefixed by the prefix
     // char (unless the prefix is '\0'). It also mangles the name to be stage-specific if we're
@@ -165,25 +186,16 @@ protected:
     void appendDecls(const VarArray&, SkString*) const;
     void appendUniformDecls(ShaderVisibility, SkString*) const;
 
-    SkAutoTUnref<GrGLProgramEffects> fColorEffects;
-    SkAutoTUnref<GrGLProgramEffects> fCoverageEffects;
-    BuiltinUniformHandles            fUniformHandles;
-    bool                             fFragOnly;
-    int                              fTexCoordSetCnt;
-    GrGLuint                         fProgramID;
-    GrGLFragmentShaderBuilder        fFS;
-    SeparableVaryingInfoArray        fSeparableVaryingInfos;
-private:
     class CodeStage : SkNoncopyable {
     public:
         CodeStage() : fNextIndex(0), fCurrentIndex(-1), fEffectStage(NULL) {}
 
         bool inStageCode() const {
             this->validate();
-            return NULL != fEffectStage;
+            return SkToBool(fEffectStage);
         }
 
-        const GrEffectStage* effectStage() const {
+        const GrProcessorStage* effectStage() const {
             this->validate();
             return fEffectStage;
         }
@@ -195,8 +207,8 @@ private:
 
         class AutoStageRestore : SkNoncopyable {
         public:
-            AutoStageRestore(CodeStage* codeStage, const GrEffectStage* newStage) {
-                SkASSERT(NULL != codeStage);
+            AutoStageRestore(CodeStage* codeStage, const GrProcessorStage* newStage) {
+                SkASSERT(codeStage);
                 fSavedIndex = codeStage->fCurrentIndex;
                 fSavedEffectStage = codeStage->fEffectStage;
 
@@ -216,47 +228,103 @@ private:
         private:
             CodeStage*              fCodeStage;
             int                     fSavedIndex;
-            const GrEffectStage*    fSavedEffectStage;
+            const GrProcessorStage*    fSavedEffectStage;
         };
     private:
         void validate() const { SkASSERT((NULL == fEffectStage) == (-1 == fCurrentIndex)); }
         int                     fNextIndex;
         int                     fCurrentIndex;
-        const GrEffectStage*    fEffectStage;
-    } fCodeStage;
+        const GrProcessorStage*    fEffectStage;
+    };
 
-    /**
-     * The base class will emit the fragment code that precedes the per-effect code and then call
-     * this function. The subclass can use it to insert additional fragment code that should
-     * execute before the effects' code and/or emit other shaders (e.g. geometry, vertex).
-     *
-     * The subclass can modify the initial color or coverage 
+    class GrGLProcessorEmitterInterface {
+     public:
+        virtual ~GrGLProcessorEmitterInterface() {}
+        virtual GrGLProcessor* createGLInstance() = 0;
+        virtual void emit(const GrProcessorKey& key,
+                          const char* outColor,
+                          const char* inColor,
+                          const GrGLProcessor::TransformedCoordsArray& coords,
+                          const GrGLProcessor::TextureSamplerArray& samplers) = 0;
+    };
+
+    class GrGLFragmentProcessorEmitter  : public GrGLProcessorEmitterInterface {
+    public:
+        GrGLFragmentProcessorEmitter(GrGLProgramBuilder* builder)
+            : fBuilder(builder)
+            , fFragmentProcessor(NULL)
+            , fGLFragmentProcessor(NULL) {}
+        virtual ~GrGLFragmentProcessorEmitter() {}
+        void set(const GrFragmentProcessor* fp) {
+            SkASSERT(NULL == fFragmentProcessor);
+            fFragmentProcessor = fp;
+        }
+        virtual GrGLProcessor* createGLInstance() {
+            SkASSERT(fFragmentProcessor);
+            SkASSERT(NULL == fGLFragmentProcessor);
+            fGLFragmentProcessor =
+                    fFragmentProcessor->getFactory().createGLInstance(*fFragmentProcessor);
+            return fGLFragmentProcessor;
+        }
+        virtual void emit(const GrProcessorKey& key,
+                          const char* outColor,
+                          const char* inColor,
+                          const GrGLProcessor::TransformedCoordsArray& coords,
+                          const GrGLProcessor::TextureSamplerArray& samplers) {
+            SkASSERT(fFragmentProcessor);
+            SkASSERT(fGLFragmentProcessor);
+            fGLFragmentProcessor->emitCode(fBuilder, *fFragmentProcessor, key, outColor, inColor,
+                                           coords, samplers);
+            // this will not leak because it hasa already been used by createGLInstance
+            fGLFragmentProcessor = NULL;
+            fFragmentProcessor = NULL;
+        }
+    private:
+        GrGLProgramBuilder*         fBuilder;
+        const GrFragmentProcessor*  fFragmentProcessor;
+        GrGLFragmentProcessor*      fGLFragmentProcessor;
+    };
+
+    GrGLProcessorEmitterInterface*   fEffectEmitter;
+    CodeStage                        fCodeStage;
+    SkAutoTUnref<GrGLProgramEffects> fGeometryProcessor;
+    SkAutoTUnref<GrGLProgramEffects> fColorEffects;
+    SkAutoTUnref<GrGLProgramEffects> fCoverageEffects;
+    BuiltinUniformHandles            fUniformHandles;
+    bool                             fFragOnly;
+    int                              fTexCoordSetCnt;
+    GrGLuint                         fProgramID;
+    GrGLFragmentShaderBuilder        fFS;
+    SeparableVaryingInfoArray        fSeparableVaryingInfos;
+
+private:
+    virtual void createAndEmitEffects(const GrGeometryStage* geometryProcessor,
+                                      const GrFragmentStage* colorStages[],
+                                      const GrFragmentStage* coverageStages[],
+                                      GrGLSLExpr4* inputColor,
+                                      GrGLSLExpr4* inputCoverage) = 0;
+    /*
+     * Subclasses override emitEffect below to emit data and code for a specific single effect
      */
-    virtual void emitCodeBeforeEffects(GrGLSLExpr4* color, GrGLSLExpr4* coverage) = 0;
+    virtual void emitEffect(const GrProcessorStage&,
+                            const GrProcessorKey&,
+                            const char* outColor,
+                            const char* inColor,
+                            int stageIndex) = 0;
 
-    /**
-    * Adds code for effects and returns a GrGLProgramEffects* object. The caller is responsible for
-    * deleting it when finished. effectStages contains the effects to add. The effect key provider 
-    * is used to communicate the key each effect created in its GenKey function. inOutFSColor
-    * specifies the input color to the first stage and is updated to be the output color of the
-    * last stage. The handles to texture samplers for effectStage[i] are added to
-    * effectSamplerHandles[i].
-    */
-    virtual GrGLProgramEffects* createAndEmitEffects(const GrEffectStage* effectStages[],
-                                                     int effectCnt,
-                                                     const GrGLProgramDesc::EffectKeyProvider&,
-                                                     GrGLSLExpr4* inOutFSColor) = 0;
-
-    /**
-     * Similar to emitCodeBeforeEffects() but called after per-effect code is emitted.
+    /*
+     * Because we have fragment only builders, and those builders need to implement a subclass
+     * of program effects, we have to have base classes overload the program effects here
      */
-    virtual void emitCodeAfterEffects() = 0;
+    virtual GrGLProgramEffects* getProgramEffects() = 0;
 
     /**
      * Compiles all the shaders, links them into a program, and writes the program id to the output
      * struct.
      **/
     bool finish();
+
+    GrGLFragmentProcessorEmitter            fGrProcessorEmitter;
 
     const GrGLProgramDesc&                  fDesc;
     GrGpuGL*                                fGpu;
@@ -266,75 +334,6 @@ private:
     friend class GrGLVertexShaderBuilder;
     friend class GrGLFragmentShaderBuilder;
     friend class GrGLGeometryShaderBuilder;
-};
-
-////////////////////////////////////////////////////////////////////////////////
-
-class GrGLFullProgramBuilder : public GrGLProgramBuilder {
-public:
-    GrGLFullProgramBuilder(GrGpuGL*, const GrGLProgramDesc&);
-
-   /** Add a varying variable to the current program to pass values between vertex and fragment
-        shaders. If the last two parameters are non-NULL, they are filled in with the name
-        generated. */
-    void addVarying(GrSLType type,
-                    const char* name,
-                    const char** vsOutName = NULL,
-                    const char** fsInName = NULL);
-
-    /** Add a separable varying input variable to the current program.
-     * A separable varying (fragment shader input) is a varying that can be used also when vertex
-     * shaders are not used. With a vertex shader, the operation is same as with other
-     * varyings. Without a vertex shader, such as with NV_path_rendering, GL APIs are used to
-     * populate the variable. The APIs can refer to the variable through the returned handle.
-     */
-    VaryingHandle addSeparableVarying(GrSLType type,
-                                      const char* name,
-                                      const char** vsOutName,
-                                      const char** fsInName);
-
-    GrGLVertexShaderBuilder* getVertexShaderBuilder() { return &fVS; }
-
-private:
-    virtual void emitCodeBeforeEffects(GrGLSLExpr4* color, GrGLSLExpr4* coverage) SK_OVERRIDE;
-
-    virtual GrGLProgramEffects* createAndEmitEffects(const GrEffectStage* effectStages[],
-                                                     int effectCnt,
-                                                     const GrGLProgramDesc::EffectKeyProvider&,
-                                                     GrGLSLExpr4* inOutFSColor) SK_OVERRIDE;
-
-    virtual void emitCodeAfterEffects() SK_OVERRIDE;
-
-    virtual bool compileAndAttachShaders(GrGLuint programId,
-                                         SkTDArray<GrGLuint>* shaderIds) const SK_OVERRIDE;
-
-    virtual void bindProgramLocations(GrGLuint programId) SK_OVERRIDE;
-
-    GrGLGeometryShaderBuilder fGS;
-    GrGLVertexShaderBuilder   fVS;
-
-    typedef GrGLProgramBuilder INHERITED;
-};
-
-////////////////////////////////////////////////////////////////////////////////
-
-class GrGLFragmentOnlyProgramBuilder : public GrGLProgramBuilder {
-public:
-    GrGLFragmentOnlyProgramBuilder(GrGpuGL*, const GrGLProgramDesc&);
-
-    int addTexCoordSets(int count);
-
-private:
-    virtual void emitCodeBeforeEffects(GrGLSLExpr4* color, GrGLSLExpr4* coverage) SK_OVERRIDE {}
-
-    virtual GrGLProgramEffects* createAndEmitEffects(const GrEffectStage* effectStages[],
-                                                     int effectCnt,
-                                                     const GrGLProgramDesc::EffectKeyProvider&,
-                                                     GrGLSLExpr4* inOutFSColor) SK_OVERRIDE;
-
-    virtual void emitCodeAfterEffects() SK_OVERRIDE {}
-
-    typedef GrGLProgramBuilder INHERITED;
 };
 
 #endif

@@ -145,10 +145,7 @@ public:
      */
     void toggleCommand(int index, bool toggle);
 
-    void setBounds(int width, int height) {
-        fWidth = width;
-        fHeight = height;
-    }
+    void setWindowSize(int width, int height) { fWindowSize.set(width, height); }
 
     void setUserMatrix(SkMatrix matrix) {
         fUserMatrix = matrix;
@@ -211,15 +208,15 @@ public:
     virtual bool isClipEmpty() const SK_OVERRIDE { return false; }
     virtual bool isClipRect() const SK_OVERRIDE { return true; }
     virtual bool getClipBounds(SkRect* bounds) const SK_OVERRIDE {
-        if (NULL != bounds) {
+        if (bounds) {
             bounds->setXYWH(0, 0,
-                            SkIntToScalar(this->imageInfo().fWidth),
-                            SkIntToScalar(this->imageInfo().fHeight));
+                            SkIntToScalar(this->imageInfo().width()),
+                            SkIntToScalar(this->imageInfo().height()));
         }
         return true;
     }
     virtual bool getClipDeviceBounds(SkIRect* bounds) const SK_OVERRIDE {
-        if (NULL != bounds) {
+        if (bounds) {
             bounds->setLargest();
         }
         return true;
@@ -259,8 +256,7 @@ protected:
 private:
     SkTDArray<SkDrawCommand*> fCommandVector;
     SkPicture* fPicture;
-    int fWidth;
-    int fHeight;
+    SkISize fWindowSize;
     bool fFilter;
     bool fMegaVizMode;
     int fIndex;
@@ -312,7 +308,7 @@ private:
 
     size_t getOpID() const {
 #if 0
-        if (NULL != fPicture) {
+        if (fPicture) {
             return fPicture->EXPERIMENTAL_curOpID();
         }
 #endif

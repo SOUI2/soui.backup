@@ -74,7 +74,7 @@ public:
 #endif
 
 #if SK_SUPPORT_GPU
-    virtual GrEffect* asNewEffect(GrContext*) const SK_OVERRIDE;
+    virtual GrFragmentProcessor* asFragmentProcessor(GrContext*) const SK_OVERRIDE;
 #endif
     SK_DECLARE_PUBLIC_FLATTENABLE_DESERIALIZATION_PROCS(SkModeColorFilter)
 
@@ -123,10 +123,10 @@ SkFlattenable* SkModeColorFilter::CreateProc(SkReadBuffer& buffer) {
 ///////////////////////////////////////////////////////////////////////////////
 #if SK_SUPPORT_GPU
 #include "GrBlend.h"
-#include "GrEffect.h"
-#include "GrEffectUnitTest.h"
-#include "GrTBackendEffectFactory.h"
-#include "gl/GrGLEffect.h"
+#include "GrProcessor.h"
+#include "GrProcessorUnitTest.h"
+#include "GrTBackendProcessorFactory.h"
+#include "gl/GrGLProcessor.h"
 #include "gl/builders/GrGLProgramBuilder.h"
 #include "SkGr.h"
 
@@ -182,9 +182,9 @@ static inline ColorExpr color_filter_expression(const SkXfermode::Mode& mode,
 
 }
 
-class ModeColorFilterEffect : public GrEffect {
+class ModeColorFilterEffect : public GrFragmentProcessor {
 public:
-    static GrEffect* Create(const GrColor& c, SkXfermode::Mode mode) {
+    static GrFragmentProcessor* Create(const GrColor& c, SkXfermode::Mode mode) {
         // TODO: Make the effect take the coeffs rather than mode since we already do the
         // conversion here.
         SkXfermode::Coeff srcCoeff, dstCoeff;
@@ -207,8 +207,8 @@ public:
         return true;
     }
 
-    virtual const GrBackendEffectFactory& getFactory() const SK_OVERRIDE {
-        return GrTBackendEffectFactory<ModeColorFilterEffect>::getInstance();
+    virtual const GrBackendFragmentProcessorFactory& getFactory() const SK_OVERRIDE {
+        return GrTBackendFragmentProcessorFactory<ModeColorFilterEffect>::getInstance();
     }
 
     static const char* Name() { return "ModeColorFilterEffect"; }
@@ -216,47 +216,49 @@ public:
     SkXfermode::Mode mode() const { return fMode; }
     GrColor color() const { return fColor; }
 
-    class GLEffect : public GrGLEffect {
+    class GLProcessor : public GrGLFragmentProcessor {
     public:
-        GLEffect(const GrBackendEffectFactory& factory, const GrDrawEffect&)
+        GLProcessor(const GrBackendProcessorFactory& factory, const GrProcessor&)
             : INHERITED(factory) {
         }
 
         virtual void emitCode(GrGLProgramBuilder* builder,
-                              const GrDrawEffect& drawEffect,
-                              const GrEffectKey& key,
+                              const GrFragmentProcessor& fp,
+                              const GrProcessorKey&,
                               const char* outputColor,
                               const char* inputColor,
-                              const TransformedCoordsArray& coords,
-                              const TextureSamplerArray& samplers) SK_OVERRIDE {
-            SkXfermode::Mode mode = drawEffect.castEffect<ModeColorFilterEffect>().mode();
+                              const TransformedCoordsArray&,
+                              const TextureSamplerArray&) SK_OVERRIDE {
+            SkXfermode::Mode mode = fp.cast<ModeColorFilterEffect>().mode();
 
             SkASSERT(SkXfermode::kDst_Mode != mode);
             const char* colorFilterColorUniName = NULL;
-            if (drawEffect.castEffect<ModeColorFilterEffect>().willUseFilterColor()) {
+            if (fp.cast<ModeColorFilterEffect>().willUseFilterColor()) {
                 fFilterColorUni = builder->addUniform(GrGLProgramBuilder::kFragment_Visibility,
                                                       kVec4f_GrSLType, "FilterColor",
                                                       &colorFilterColorUniName);
             }
 
             GrGLSLExpr4 filter =
-                color_filter_expression(mode, GrGLSLExpr4(colorFilterColorUniName), GrGLSLExpr4(inputColor));
+                color_filter_expression(mode, GrGLSLExpr4(colorFilterColorUniName),
+                                        GrGLSLExpr4(inputColor));
 
             builder->getFragmentShaderBuilder()->
                     codeAppendf("\t%s = %s;\n", outputColor, filter.c_str());
         }
 
-        static void GenKey(const GrDrawEffect& drawEffect, const GrGLCaps&,
-                           GrEffectKeyBuilder* b) {
-            const ModeColorFilterEffect& colorModeFilter = drawEffect.castEffect<ModeColorFilterEffect>();
+        static void GenKey(const GrProcessor& fp, const GrGLCaps&,
+                           GrProcessorKeyBuilder* b) {
+            const ModeColorFilterEffect& colorModeFilter = fp.cast<ModeColorFilterEffect>();
             // The SL code does not depend on filter color at the moment, so no need to represent it
             // in the key.
             b->add32(colorModeFilter.mode());
         }
 
-        virtual void setData(const GrGLProgramDataManager& pdman, const GrDrawEffect& drawEffect) SK_OVERRIDE {
+        virtual void setData(const GrGLProgramDataManager& pdman,
+                             const GrProcessor& fp) SK_OVERRIDE {
             if (fFilterColorUni.isValid()) {
-                const ModeColorFilterEffect& colorModeFilter = drawEffect.castEffect<ModeColorFilterEffect>();
+                const ModeColorFilterEffect& colorModeFilter = fp.cast<ModeColorFilterEffect>();
                 GrGLfloat c[4];
                 GrColorToRGBAFloat(colorModeFilter.color(), c);
                 pdman.set4fv(fFilterColorUni, 1, c);
@@ -266,10 +268,10 @@ public:
     private:
 
         GrGLProgramDataManager::UniformHandle fFilterColorUni;
-        typedef GrGLEffect INHERITED;
+        typedef GrGLFragmentProcessor INHERITED;
     };
 
-    GR_DECLARE_EFFECT_TEST;
+    GR_DECLARE_FRAGMENT_PROCESSOR_TEST;
 
 private:
     ModeColorFilterEffect(GrColor color, SkXfermode::Mode mode)
@@ -280,20 +282,21 @@ private:
         SkXfermode::Coeff srcCoeff;
         SkAssertResult(SkXfermode::ModeAsCoeff(fMode, &srcCoeff, &dstCoeff));
         // These could be calculated from the blend equation with template trickery..
-        if (SkXfermode::kZero_Coeff == dstCoeff && !GrBlendCoeffRefsDst(sk_blend_to_grblend(srcCoeff))) {
+        if (SkXfermode::kZero_Coeff == dstCoeff &&
+                !GrBlendCoeffRefsDst(sk_blend_to_grblend(srcCoeff))) {
             this->setWillNotUseInputColor();
         }
     }
 
-    virtual bool onIsEqual(const GrEffect& other) const SK_OVERRIDE {
-        const ModeColorFilterEffect& s = CastEffect<ModeColorFilterEffect>(other);
+    virtual bool onIsEqual(const GrProcessor& other) const SK_OVERRIDE {
+        const ModeColorFilterEffect& s = other.cast<ModeColorFilterEffect>();
         return fMode == s.fMode && fColor == s.fColor;
     }
 
     SkXfermode::Mode fMode;
     GrColor fColor;
 
-    typedef GrEffect INHERITED;
+    typedef GrFragmentProcessor INHERITED;
 };
 
 namespace {
@@ -393,11 +396,11 @@ void ModeColorFilterEffect::getConstantColorComponents(GrColor* color, uint32_t*
     *validFlags = result.getValidComponents();
 }
 
-GR_DEFINE_EFFECT_TEST(ModeColorFilterEffect);
-GrEffect* ModeColorFilterEffect::TestCreate(SkRandom* rand,
-                                            GrContext*,
-                                            const GrDrawTargetCaps&,
-                                            GrTexture*[]) {
+GR_DEFINE_FRAGMENT_PROCESSOR_TEST(ModeColorFilterEffect);
+GrFragmentProcessor* ModeColorFilterEffect::TestCreate(SkRandom* rand,
+                                                       GrContext*,
+                                                       const GrDrawTargetCaps&,
+                                                       GrTexture*[]) {
     SkXfermode::Mode mode = SkXfermode::kDst_Mode;
     while (SkXfermode::kDst_Mode == mode) {
         mode = static_cast<SkXfermode::Mode>(rand->nextRangeU(0, SkXfermode::kLastCoeffMode));
@@ -406,7 +409,7 @@ GrEffect* ModeColorFilterEffect::TestCreate(SkRandom* rand,
     return ModeColorFilterEffect::Create(color, mode);
 }
 
-GrEffect* SkModeColorFilter::asNewEffect(GrContext*) const {
+GrFragmentProcessor* SkModeColorFilter::asFragmentProcessor(GrContext*) const {
     if (SkXfermode::kDst_Mode != fMode) {
         return ModeColorFilterEffect::Create(SkColor2GrColor(fColor), fMode);
     }

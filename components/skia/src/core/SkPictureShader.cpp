@@ -22,10 +22,9 @@ SkPictureShader::SkPictureShader(const SkPicture* picture, TileMode tmx, TileMod
                                  const SkMatrix* localMatrix, const SkRect* tile)
     : INHERITED(localMatrix)
     , fPicture(SkRef(picture))
+    , fTile(tile ? *tile : picture->cullRect())
     , fTmx(tmx)
     , fTmy(tmy) {
-    fTile = tile ? *tile : SkRect::MakeWH(SkIntToScalar(picture->width()),
-                                          SkIntToScalar(picture->height()));
 }
 
 #ifdef SK_SUPPORT_LEGACY_DEEPFLATTENING
@@ -43,8 +42,7 @@ SkPictureShader::~SkPictureShader() {
 
 SkPictureShader* SkPictureShader::Create(const SkPicture* picture, TileMode tmx, TileMode tmy,
                                          const SkMatrix* localMatrix, const SkRect* tile) {
-    if (!picture || 0 == picture->width() || 0 == picture->height()
-        || (NULL != tile && tile->isEmpty())) {
+    if (!picture || picture->cullRect().isEmpty() || (tile && tile->isEmpty())) {
         return NULL;
     }
     return SkNEW_ARGS(SkPictureShader, (picture, tmx, tmy, localMatrix, tile));
@@ -70,7 +68,7 @@ void SkPictureShader::flatten(SkWriteBuffer& buffer) const {
 }
 
 SkShader* SkPictureShader::refBitmapShader(const SkMatrix& matrix, const SkMatrix* localM) const {
-    SkASSERT(fPicture && fPicture->width() > 0 && fPicture->height() > 0);
+    SkASSERT(fPicture && !fPicture->cullRect().isEmpty());
 
     SkMatrix m;
     m.setConcat(matrix, this->getLocalMatrix());
@@ -109,7 +107,7 @@ SkShader* SkPictureShader::refBitmapShader(const SkMatrix& matrix, const SkMatri
 
     if (!fCachedBitmapShader || tileScale != fCachedTileScale) {
         SkBitmap bm;
-        if (!bm.allocN32Pixels(tileSize.width(), tileSize.height())) {
+        if (!bm.tryAllocN32Pixels(tileSize.width(), tileSize.height())) {
             return NULL;
         }
         bm.eraseColor(SK_ColorTRANSPARENT);
@@ -201,9 +199,11 @@ void SkPictureShader::toString(SkString* str) const {
         "clamp", "repeat", "mirror"
     };
 
-    str->appendf("PictureShader: [%d:%d] ",
-                 fPicture ? fPicture->width() : 0,
-                 fPicture ? fPicture->height() : 0);
+    str->appendf("PictureShader: [%f:%f:%f:%f] ",
+                 fPicture ? fPicture->cullRect().fLeft : 0,
+                 fPicture ? fPicture->cullRect().fTop : 0,
+                 fPicture ? fPicture->cullRect().fRight : 0,
+                 fPicture ? fPicture->cullRect().fBottom : 0);
 
     str->appendf("(%s, %s)", gTileModeName[fTmx], gTileModeName[fTmy]);
 
@@ -212,19 +212,18 @@ void SkPictureShader::toString(SkString* str) const {
 #endif
 
 #if SK_SUPPORT_GPU
-bool SkPictureShader::asNewEffect(GrContext* context, const SkPaint& paint,
-                                  const SkMatrix* localMatrix, GrColor* paintColor,
-                                  GrEffect** effect) const {
+bool SkPictureShader::asFragmentProcessor(GrContext* context, const SkPaint& paint,
+                                          const SkMatrix* localMatrix, GrColor* paintColor,
+                                          GrFragmentProcessor** fp) const {
     SkAutoTUnref<SkShader> bitmapShader(this->refBitmapShader(context->getMatrix(), localMatrix));
     if (!bitmapShader) {
         return false;
     }
-    return bitmapShader->asNewEffect(context, paint, NULL, paintColor, effect);
+    return bitmapShader->asFragmentProcessor(context, paint, NULL, paintColor, fp);
 }
 #else
-bool SkPictureShader::asNewEffect(GrContext* context, const SkPaint& paint,
-                                  const SkMatrix* localMatrix, GrColor* paintColor,
-                                  GrEffect** effect) const {
+bool SkPictureShader::asFragmentProcessor(GrContext*, const SkPaint&, const SkMatrix*, GrColor*,
+                                          GrFragmentProcessor**) const {
     SkDEBUGFAIL("Should not call in GPU-less build");
     return false;
 }

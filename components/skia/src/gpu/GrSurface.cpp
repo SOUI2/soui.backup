@@ -13,20 +13,16 @@
 #include <stdio.h>
 
 SkImageInfo GrSurface::info() const {
-    SkImageInfo info;
-    if (!GrPixelConfig2ColorType(this->config(), &info.fColorType)) {
+    SkColorType colorType;
+    if (!GrPixelConfig2ColorType(this->config(), &colorType)) {
         sk_throw();
     }
-    info.fWidth = this->width();
-    info.fHeight = this->height();
-    info.fAlphaType = kPremul_SkAlphaType;
-    return info;
+    return SkImageInfo::Make(this->width(), this->height(), colorType, kPremul_SkAlphaType);
 }
 
 bool GrSurface::savePixels(const char* filename) {
     SkBitmap bm;
-    if (!bm.allocPixels(SkImageInfo::MakeN32Premul(this->width(),
-                                                   this->height()))) {
+    if (!bm.tryAllocPixels(SkImageInfo::MakeN32Premul(this->width(), this->height()))) {
         return false;
     }
 
@@ -47,4 +43,40 @@ bool GrSurface::savePixels(const char* filename) {
     }
 
     return true;
+}
+
+bool GrSurface::hasPendingRead() const {
+    const GrTexture* thisTex = this->asTexture();
+    if (thisTex && thisTex->internalHasPendingRead()) {
+        return true;
+    }
+    const GrRenderTarget* thisRT = this->asRenderTarget();
+    if (thisRT && thisRT->internalHasPendingRead()) {
+        return true;
+    }
+    return false;
+}
+
+bool GrSurface::hasPendingWrite() const {
+    const GrTexture* thisTex = this->asTexture();
+    if (thisTex && thisTex->internalHasPendingWrite()) {
+        return true;
+    }
+    const GrRenderTarget* thisRT = this->asRenderTarget();
+    if (thisRT && thisRT->internalHasPendingWrite()) {
+        return true;
+    }
+    return false;
+}
+
+bool GrSurface::hasPendingIO() const {
+    const GrTexture* thisTex = this->asTexture();
+    if (thisTex && thisTex->internalHasPendingIO()) {
+        return true;
+    }
+    const GrRenderTarget* thisRT = this->asRenderTarget();
+    if (thisRT && thisRT->internalHasPendingIO()) {
+        return true;
+    }
+    return false;
 }

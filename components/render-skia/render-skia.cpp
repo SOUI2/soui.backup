@@ -573,9 +573,7 @@ namespace SOUI
         paint.setAntiAlias(true);
         if(byAlpha != 0xFF) paint.setAlpha(byAlpha);
         
-        SkPaint::FilterLevel fl = SkPaint::kNone_FilterLevel;
-        if(HIWORD(expendMode)!=0) fl=SkPaint::kHigh_FilterLevel;
-        //skia 中实现的kLow_FilterLevel, kMedium_FilterLevel有问题，自动变为kHigh_FilterLevel
+        SkPaint::FilterLevel fl = (SkPaint::FilterLevel)HIWORD(expendMode);//SkPaint::kNone_FilterLevel;
         paint.setFilterLevel(fl);
                 
         if(expendModeLow == EM_STRETCH)

@@ -12,6 +12,7 @@
 // not use GDI, undefing GetGlyphIndices makes things less confusing.
 #undef GetGlyphIndices
 
+#include "SkDWrite.h"
 #include "SkDWriteFontFileStream.h"
 #include "SkFontDescriptor.h"
 #include "SkFontStream.h"
@@ -24,22 +25,24 @@
 #include "SkTypeface_win_dw.h"
 #include "SkUtils.h"
 
+void DWriteFontTypeface::onGetFamilyName(SkString* familyName) const {
+    SkTScopedComPtr<IDWriteLocalizedStrings> familyNames;
+    HRV(fDWriteFontFamily->GetFamilyNames(&familyNames));
+
+    sk_get_locale_string(familyNames.get(), NULL/*fMgr->fLocaleName.get()*/, familyName);
+}
+
 void DWriteFontTypeface::onGetFontDescriptor(SkFontDescriptor* desc,
                                              bool* isLocalStream) const {
     // Get the family name.
     SkTScopedComPtr<IDWriteLocalizedStrings> familyNames;
     HRV(fDWriteFontFamily->GetFamilyNames(&familyNames));
 
-    UINT32 familyNamesLen;
-    HRV(familyNames->GetStringLength(0, &familyNamesLen));
-
-    SkSMallocWCHAR familyName(familyNamesLen+1);
-    HRV(familyNames->GetString(0, familyName.get(), familyNamesLen+1));
-
     SkString utf8FamilyName;
-    HRV(sk_wchar_to_skstring(familyName.get(), familyNamesLen, &utf8FamilyName));
+    sk_get_locale_string(familyNames.get(), NULL/*fMgr->fLocaleName.get()*/, &utf8FamilyName);
 
     desc->setFamilyName(utf8FamilyName.c_str());
+    desc->setFontIndex(fDWriteFontFace->GetIndex());
     *isLocalStream = SkToBool(fDWriteFontFileLoader.get());
 }
 
@@ -199,7 +202,7 @@ size_t DWriteFontTypeface::onGetTableData(SkFontTableTag tag, size_t offset,
         return 0;
     }
     size_t size = SkTMin(length, table.fSize - offset);
-    if (NULL != data) {
+    if (data) {
         memcpy(data, table.fData + offset, size);
     }
 

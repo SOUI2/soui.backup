@@ -12,16 +12,15 @@
 #include "gl/GrGLProgramEffects.h"
 #include "gl/GrGLSL.h"
 #include "gl/GrGLProgramDataManager.h"
-#include "GrAllocator.h"
-#include "GrBackendEffectFactory.h"
+#include "GrBackendProcessorFactory.h"
 #include "GrColor.h"
-#include "GrEffect.h"
+#include "GrProcessor.h"
 #include "SkTypes.h"
 
 #include <stdarg.h>
 
 class GrGLContextInfo;
-class GrEffectStage;
+class GrProcessorStage;
 class GrGLProgramDesc;
 class GrGLProgramBuilder;
 class GrGLFullProgramBuilder;
@@ -31,8 +30,8 @@ class GrGLFullProgramBuilder;
 */
 class GrGLShaderBuilder {
 public:
-    typedef GrGLProgramEffects::TransformedCoordsArray TransformedCoordsArray;
-    typedef GrGLProgramEffects::TextureSampler TextureSampler;
+    typedef GrGLProcessor::TransformedCoordsArray TransformedCoordsArray;
+    typedef GrGLProcessor::TextureSampler TextureSampler;
     GrGLShaderBuilder(GrGLProgramBuilder* program);
 
     void addInput(GrGLShaderVar i) { fInputs.push_back(i); }
@@ -76,7 +75,7 @@ public:
     static const GrGLenum* GetTexParamSwizzle(GrPixelConfig config, const GrGLCaps& caps);
 
     /**
-    * Called by GrGLEffects to add code to one of the shaders.
+    * Called by GrGLProcessors to add code to one of the shaders.
     */
     void codeAppendf(const char format[], ...) SK_PRINTF_LIKE(2, 3) {
        va_list args;
@@ -93,6 +92,11 @@ public:
        fCode.prependVAList(format, args);
        va_end(args);
     }
+
+    /**
+     * Appends a variable declaration to one of the shaders
+     */
+    void declAppend(const GrGLShaderVar& var);
 
     /** Emits a helper function outside of main() in the fragment shader. */
     void emitFunction(GrSLType returnType,
@@ -113,7 +117,7 @@ public:
     class ShaderBlock {
     public:
         ShaderBlock(GrGLShaderBuilder* builder) : fBuilder(builder) {
-            SkASSERT(NULL != builder);
+            SkASSERT(builder);
             fBuilder->codeAppend("{");
         }
 

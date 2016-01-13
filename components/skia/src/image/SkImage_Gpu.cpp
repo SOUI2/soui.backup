@@ -11,7 +11,6 @@
 #include "SkCanvas.h"
 #include "GrContext.h"
 #include "GrTexture.h"
-#include "SkGrPixelRef.h"
 
 class SkImage_Gpu : public SkImage_Base {
 public:
@@ -45,7 +44,7 @@ private:
 SkImage_Gpu::SkImage_Gpu(const SkBitmap& bitmap)
     : INHERITED(bitmap.width(), bitmap.height())
     , fBitmap(bitmap) {
-    SkASSERT(NULL != fBitmap.getTexture());
+    SkASSERT(fBitmap.getTexture());
 }
 
 SkImage_Gpu::~SkImage_Gpu() {

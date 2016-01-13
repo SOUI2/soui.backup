@@ -5,13 +5,13 @@
  * found in the LICENSE file.
  */
 
-#include "gl/builders/GrGLProgramBuilder.h"
 #include "GrDistanceFieldTextureEffect.h"
-#include "gl/GrGLEffect.h"
+#include "gl/builders/GrGLFullProgramBuilder.h"
+#include "gl/GrGLProcessor.h"
 #include "gl/GrGLSL.h"
 #include "gl/GrGLTexture.h"
-#include "gl/GrGLVertexEffect.h"
-#include "GrTBackendEffectFactory.h"
+#include "gl/GrGLGeometryProcessor.h"
+#include "GrTBackendProcessorFactory.h"
 #include "GrTexture.h"
 
 #include "SkDistanceFieldGen.h"
@@ -29,27 +29,31 @@
 // Assuming a radius of the diagonal of the fragment, hence a factor of sqrt(2)/2
 #define SK_DistanceFieldAAFactor     "0.7071"
 
-class GrGLDistanceFieldTextureEffect : public GrGLVertexEffect {
+class GrGLDistanceFieldTextureEffect : public GrGLGeometryProcessor {
 public:
-    GrGLDistanceFieldTextureEffect(const GrBackendEffectFactory& factory,
-                                   const GrDrawEffect& drawEffect)
+    GrGLDistanceFieldTextureEffect(const GrBackendProcessorFactory& factory,
+                                   const GrProcessor&)
         : INHERITED (factory)
-        , fTextureSize(SkISize::Make(-1,-1)) {}
+        , fTextureSize(SkISize::Make(-1,-1))
+#ifdef SK_GAMMA_APPLY_TO_A8
+        , fLuminance(-1.0f)
+#endif
+        {}
 
     virtual void emitCode(GrGLFullProgramBuilder* builder,
-                          const GrDrawEffect& drawEffect,
-                          const GrEffectKey& key,
+                          const GrGeometryProcessor& geometryProcessor,
+                          const GrProcessorKey& key,
                           const char* outputColor,
                           const char* inputColor,
                           const TransformedCoordsArray&,
                           const TextureSamplerArray& samplers) SK_OVERRIDE {
-        SkASSERT(1 == drawEffect.castEffect<GrDistanceFieldTextureEffect>().numVertexAttribs());
+        const GrDistanceFieldTextureEffect& dfTexEffect =
+                geometryProcessor.cast<GrDistanceFieldTextureEffect>();
+        SkASSERT(1 == dfTexEffect.getVertexAttribs().count());
 
-        GrGLFragmentShaderBuilder* fsBuilder = builder->getFragmentShaderBuilder();
+        GrGLProcessorFragmentShaderBuilder* fsBuilder = builder->getFragmentShaderBuilder();
         SkAssertResult(fsBuilder->enableFeature(
                 GrGLFragmentShaderBuilder::kStandardDerivatives_GLSLFeature));
-        const GrDistanceFieldTextureEffect& dfTexEffect =
-                                              drawEffect.castEffect<GrDistanceFieldTextureEffect>();
 
         SkString fsCoordName;
         const char* vsCoordName;
@@ -58,9 +62,7 @@ public:
         fsCoordName = fsCoordNamePtr;
 
         GrGLVertexShaderBuilder* vsBuilder = builder->getVertexShaderBuilder();
-        const SkString* attr0Name =
-            vsBuilder->getEffectAttributeName(drawEffect.getVertexAttribIndices()[0]);
-        vsBuilder->codeAppendf("\t%s = %s;\n", vsCoordName, attr0Name->c_str());
+        vsBuilder->codeAppendf("\t%s = %s;\n", vsCoordName, dfTexEffect.inTextureCoords().c_str());
 
         const char* textureSizeUniName = NULL;
         fTextureSizeUni = builder->addUniform(GrGLProgramBuilder::kFragment_Visibility,
@@ -129,10 +131,10 @@ public:
     }
 
     virtual void setData(const GrGLProgramDataManager& pdman,
-                         const GrDrawEffect& drawEffect) SK_OVERRIDE {
+                         const GrProcessor& effect) SK_OVERRIDE {
         SkASSERT(fTextureSizeUni.isValid());
 
-        GrTexture* texture = drawEffect.effect()->texture(0);
+        GrTexture* texture = effect.texture(0);
         if (texture->width() != fTextureSize.width() ||
             texture->height() != fTextureSize.height()) {
             fTextureSize = SkISize::Make(texture->width(), texture->height());
@@ -142,7 +144,7 @@ public:
         }
 #ifdef SK_GAMMA_APPLY_TO_A8
         const GrDistanceFieldTextureEffect& dfTexEffect =
-                                              drawEffect.castEffect<GrDistanceFieldTextureEffect>();
+                effect.cast<GrDistanceFieldTextureEffect>();
         float luminance = dfTexEffect.getLuminance();
         if (luminance != fLuminance) {
             pdman.set1f(fLuminanceUni, luminance);
@@ -151,10 +153,10 @@ public:
 #endif
     }
 
-    static inline void GenKey(const GrDrawEffect& drawEffect, const GrGLCaps&,
-                              GrEffectKeyBuilder* b) {
+    static inline void GenKey(const GrProcessor& processor, const GrGLCaps&,
+                              GrProcessorKeyBuilder* b) {
         const GrDistanceFieldTextureEffect& dfTexEffect =
-                                              drawEffect.castEffect<GrDistanceFieldTextureEffect>();
+                processor.cast<GrDistanceFieldTextureEffect>();
 
         b->add32(dfTexEffect.getFlags());
     }
@@ -165,7 +167,7 @@ private:
     GrGLProgramDataManager::UniformHandle fLuminanceUni;
     float                                 fLuminance;
 
-    typedef GrGLVertexEffect INHERITED;
+    typedef GrGLGeometryProcessor INHERITED;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -183,17 +185,19 @@ GrDistanceFieldTextureEffect::GrDistanceFieldTextureEffect(GrTexture* texture,
     , fGammaTextureAccess(gamma, gammaParams)
     , fLuminance(luminance)
 #endif
-    , fFlags(flags & kNonLCD_DistanceFieldEffectMask) {
+    , fFlags(flags & kNonLCD_DistanceFieldEffectMask)
+    , fInTextureCoords(this->addVertexAttrib(GrShaderVar("inTextureCoords",
+                                                         kVec2f_GrSLType,
+                                                         GrShaderVar::kAttribute_TypeModifier))) {
     SkASSERT(!(flags & ~kNonLCD_DistanceFieldEffectMask));
     this->addTextureAccess(&fTextureAccess);
 #ifdef SK_GAMMA_APPLY_TO_A8
     this->addTextureAccess(&fGammaTextureAccess);
 #endif
-    this->addVertexAttrib(kVec2f_GrSLType);
 }
 
-bool GrDistanceFieldTextureEffect::onIsEqual(const GrEffect& other) const {
-    const GrDistanceFieldTextureEffect& cte = CastEffect<GrDistanceFieldTextureEffect>(other);
+bool GrDistanceFieldTextureEffect::onIsEqual(const GrProcessor& other) const {
+    const GrDistanceFieldTextureEffect& cte = other.cast<GrDistanceFieldTextureEffect>();
     return fTextureAccess == cte.fTextureAccess &&
 #ifdef SK_GAMMA_APPLY_TO_A8
            fGammaTextureAccess == cte.fGammaTextureAccess &&
@@ -212,23 +216,23 @@ void GrDistanceFieldTextureEffect::getConstantColorComponents(GrColor* color,
     }
 }
 
-const GrBackendEffectFactory& GrDistanceFieldTextureEffect::getFactory() const {
-    return GrTBackendEffectFactory<GrDistanceFieldTextureEffect>::getInstance();
+const GrBackendGeometryProcessorFactory& GrDistanceFieldTextureEffect::getFactory() const {
+    return GrTBackendGeometryProcessorFactory<GrDistanceFieldTextureEffect>::getInstance();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-GR_DEFINE_EFFECT_TEST(GrDistanceFieldTextureEffect);
+GR_DEFINE_GEOMETRY_PROCESSOR_TEST(GrDistanceFieldTextureEffect);
 
-GrEffect* GrDistanceFieldTextureEffect::TestCreate(SkRandom* random,
-                                                   GrContext*,
-                                                   const GrDrawTargetCaps&,
-                                                   GrTexture* textures[]) {
-    int texIdx = random->nextBool() ? GrEffectUnitTest::kSkiaPMTextureIdx :
-                                      GrEffectUnitTest::kAlphaTextureIdx;
+GrGeometryProcessor* GrDistanceFieldTextureEffect::TestCreate(SkRandom* random,
+                                                              GrContext*,
+                                                              const GrDrawTargetCaps&,
+                                                              GrTexture* textures[]) {
+    int texIdx = random->nextBool() ? GrProcessorUnitTest::kSkiaPMTextureIdx :
+                                      GrProcessorUnitTest::kAlphaTextureIdx;
 #ifdef SK_GAMMA_APPLY_TO_A8
-    int texIdx2 = random->nextBool() ? GrEffectUnitTest::kSkiaPMTextureIdx :
-                                       GrEffectUnitTest::kAlphaTextureIdx;
+    int texIdx2 = random->nextBool() ? GrProcessorUnitTest::kSkiaPMTextureIdx :
+                                       GrProcessorUnitTest::kAlphaTextureIdx;
 #endif
     static const SkShader::TileMode kTileModes[] = {
         SkShader::kClamp_TileMode,
@@ -257,24 +261,24 @@ GrEffect* GrDistanceFieldTextureEffect::TestCreate(SkRandom* random,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-class GrGLDistanceFieldLCDTextureEffect : public GrGLVertexEffect {
+class GrGLDistanceFieldLCDTextureEffect : public GrGLGeometryProcessor {
 public:
-    GrGLDistanceFieldLCDTextureEffect(const GrBackendEffectFactory& factory,
-                                      const GrDrawEffect& drawEffect)
+    GrGLDistanceFieldLCDTextureEffect(const GrBackendProcessorFactory& factory,
+                                      const GrProcessor&)
     : INHERITED (factory)
-    , fTextureSize(SkISize::Make(-1,-1)) {}
+    , fTextureSize(SkISize::Make(-1,-1))
+    , fTextColor(GrColor_ILLEGAL) {}
 
     virtual void emitCode(GrGLFullProgramBuilder* builder,
-                          const GrDrawEffect& drawEffect,
-                          const GrEffectKey& key,
+                          const GrGeometryProcessor& geometryProcessor,
+                          const GrProcessorKey& key,
                           const char* outputColor,
                           const char* inputColor,
                           const TransformedCoordsArray&,
                           const TextureSamplerArray& samplers) SK_OVERRIDE {
-        SkASSERT(1 == drawEffect.castEffect<GrDistanceFieldLCDTextureEffect>().numVertexAttribs());
-
         const GrDistanceFieldLCDTextureEffect& dfTexEffect =
-                                           drawEffect.castEffect<GrDistanceFieldLCDTextureEffect>();
+                geometryProcessor.cast<GrDistanceFieldLCDTextureEffect>();
+        SkASSERT(1 == dfTexEffect.getVertexAttribs().count());
 
         SkString fsCoordName;
         const char* vsCoordName;
@@ -283,9 +287,7 @@ public:
         fsCoordName = fsCoordNamePtr;
 
         GrGLVertexShaderBuilder* vsBuilder = builder->getVertexShaderBuilder();
-        const SkString* attr0Name =
-            vsBuilder->getEffectAttributeName(drawEffect.getVertexAttribIndices()[0]);
-        vsBuilder->codeAppendf("\t%s = %s;\n", vsCoordName, attr0Name->c_str());
+        vsBuilder->codeAppendf("\t%s = %s;\n", vsCoordName, dfTexEffect.inTextureCoords().c_str());
 
         const char* textureSizeUniName = NULL;
         // width, height, 1/(3*width)
@@ -293,7 +295,7 @@ public:
                                               kVec3f_GrSLType, "TextureSize",
                                               &textureSizeUniName);
 
-        GrGLFragmentShaderBuilder* fsBuilder = builder->getFragmentShaderBuilder();
+        GrGLProcessorFragmentShaderBuilder* fsBuilder = builder->getFragmentShaderBuilder();
 
         SkAssertResult(fsBuilder->enableFeature(
                 GrGLFragmentShaderBuilder::kStandardDerivatives_GLSLFeature));
@@ -398,13 +400,13 @@ public:
     }
 
     virtual void setData(const GrGLProgramDataManager& pdman,
-                         const GrDrawEffect& drawEffect) SK_OVERRIDE {
+                         const GrProcessor& processor) SK_OVERRIDE {
         SkASSERT(fTextureSizeUni.isValid());
         SkASSERT(fTextColorUni.isValid());
 
         const GrDistanceFieldLCDTextureEffect& dfTexEffect =
-                                    drawEffect.castEffect<GrDistanceFieldLCDTextureEffect>();
-        GrTexture* texture = drawEffect.effect()->texture(0);
+                processor.cast<GrDistanceFieldLCDTextureEffect>();
+        GrTexture* texture = processor.texture(0);
         if (texture->width() != fTextureSize.width() ||
             texture->height() != fTextureSize.height()) {
             fTextureSize = SkISize::Make(texture->width(), texture->height());
@@ -429,10 +431,10 @@ public:
         }
     }
 
-    static inline void GenKey(const GrDrawEffect& drawEffect, const GrGLCaps&,
-                              GrEffectKeyBuilder* b) {
+    static inline void GenKey(const GrProcessor& processor, const GrGLCaps&,
+                              GrProcessorKeyBuilder* b) {
         const GrDistanceFieldLCDTextureEffect& dfTexEffect =
-                                           drawEffect.castEffect<GrDistanceFieldLCDTextureEffect>();
+                processor.cast<GrDistanceFieldLCDTextureEffect>();
 
         b->add32(dfTexEffect.getFlags());
     }
@@ -443,7 +445,7 @@ private:
     GrGLProgramDataManager::UniformHandle fTextColorUni;
     SkColor                               fTextColor;
 
-    typedef GrGLVertexEffect INHERITED;
+    typedef GrGLGeometryProcessor INHERITED;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -456,17 +458,18 @@ GrDistanceFieldLCDTextureEffect::GrDistanceFieldLCDTextureEffect(
     : fTextureAccess(texture, params)
     , fGammaTextureAccess(gamma, gParams)
     , fTextColor(textColor)
-    , fFlags(flags & kLCD_DistanceFieldEffectMask) {
+    , fFlags(flags & kLCD_DistanceFieldEffectMask)
+    , fInTextureCoords(this->addVertexAttrib(GrShaderVar("inTextureCoords",
+                                                         kVec2f_GrSLType,
+                                                         GrShaderVar::kAttribute_TypeModifier))) {
     SkASSERT(!(flags & ~kLCD_DistanceFieldEffectMask) && (flags & kUseLCD_DistanceFieldEffectFlag));
         
     this->addTextureAccess(&fTextureAccess);
     this->addTextureAccess(&fGammaTextureAccess);
-    this->addVertexAttrib(kVec2f_GrSLType);
 }
 
-bool GrDistanceFieldLCDTextureEffect::onIsEqual(const GrEffect& other) const {
-    const GrDistanceFieldLCDTextureEffect& cte = 
-                                            CastEffect<GrDistanceFieldLCDTextureEffect>(other);
+bool GrDistanceFieldLCDTextureEffect::onIsEqual(const GrProcessor& other) const {
+    const GrDistanceFieldLCDTextureEffect& cte = other.cast<GrDistanceFieldLCDTextureEffect>();
     return (fTextureAccess == cte.fTextureAccess &&
             fGammaTextureAccess == cte.fGammaTextureAccess &&
             fTextColor == cte.fTextColor &&
@@ -483,22 +486,22 @@ void GrDistanceFieldLCDTextureEffect::getConstantColorComponents(GrColor* color,
     }
 }
 
-const GrBackendEffectFactory& GrDistanceFieldLCDTextureEffect::getFactory() const {
-    return GrTBackendEffectFactory<GrDistanceFieldLCDTextureEffect>::getInstance();
+const GrBackendGeometryProcessorFactory& GrDistanceFieldLCDTextureEffect::getFactory() const {
+    return GrTBackendGeometryProcessorFactory<GrDistanceFieldLCDTextureEffect>::getInstance();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-GR_DEFINE_EFFECT_TEST(GrDistanceFieldLCDTextureEffect);
+GR_DEFINE_GEOMETRY_PROCESSOR_TEST(GrDistanceFieldLCDTextureEffect);
 
-GrEffect* GrDistanceFieldLCDTextureEffect::TestCreate(SkRandom* random,
-                                                      GrContext*,
-                                                      const GrDrawTargetCaps&,
-                                                      GrTexture* textures[]) {
-    int texIdx = random->nextBool() ? GrEffectUnitTest::kSkiaPMTextureIdx :
-                                      GrEffectUnitTest::kAlphaTextureIdx;
-    int texIdx2 = random->nextBool() ? GrEffectUnitTest::kSkiaPMTextureIdx :
-                                       GrEffectUnitTest::kAlphaTextureIdx;
+GrGeometryProcessor* GrDistanceFieldLCDTextureEffect::TestCreate(SkRandom* random,
+                                                                 GrContext*,
+                                                                 const GrDrawTargetCaps&,
+                                                                 GrTexture* textures[]) {
+    int texIdx = random->nextBool() ? GrProcessorUnitTest::kSkiaPMTextureIdx :
+                                      GrProcessorUnitTest::kAlphaTextureIdx;
+    int texIdx2 = random->nextBool() ? GrProcessorUnitTest::kSkiaPMTextureIdx :
+                                       GrProcessorUnitTest::kAlphaTextureIdx;
     static const SkShader::TileMode kTileModes[] = {
         SkShader::kClamp_TileMode,
         SkShader::kRepeat_TileMode,

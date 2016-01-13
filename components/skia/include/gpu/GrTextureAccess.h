@@ -8,11 +8,10 @@
 #ifndef GrTextureAccess_DEFINED
 #define GrTextureAccess_DEFINED
 
+#include "GrGpuResourceRef.h"
+#include "GrTexture.h"
 #include "SkRefCnt.h"
 #include "SkShader.h"
-#include "SkTypes.h"
-
-class GrTexture;
 
 /**
  * Represents the filtering and tile modes used to access a texture. It is mostly used with
@@ -109,14 +108,16 @@ private:
 /** A class representing the swizzle access pattern for a texture. Note that if the texture is
  *  an alpha-only texture then the alpha channel is substituted for other components. Any mangling
  *  to handle the r,g,b->a conversions for alpha textures is automatically included in the stage
- *  key. However, if a GrEffect uses different swizzles based on its input then it must
+ *  key. However, if a GrProcessor uses different swizzles based on its input then it must
  *  consider that variation in its key-generation.
  */
-class GrTextureAccess : SkNoncopyable {
+class GrTextureAccess : public SkNoncopyable {
 public:
+    SK_DECLARE_INST_COUNT_ROOT(GrTextureAccess);
+
     /**
-     * A default GrTextureAccess must have reset() called on it in a GrEffect subclass's
-     * constructor if it will be accessible via GrEffect::textureAccess().
+     * A default GrTextureAccess must have reset() called on it in a GrProcessor subclass's
+     * constructor if it will be accessible via GrProcessor::textureAccess().
      */
     GrTextureAccess();
 
@@ -155,13 +156,18 @@ public:
                  strcmp(fSwizzle, other.fSwizzle));
 #endif
         return fParams == other.fParams &&
-               (fTexture.get() == other.fTexture.get()) &&
+               (this->getTexture() == other.getTexture()) &&
                (0 == memcmp(fSwizzle, other.fSwizzle, sizeof(fSwizzle)-1));
     }
 
     bool operator!= (const GrTextureAccess& other) const { return !(*this == other); }
 
     GrTexture* getTexture() const { return fTexture.get(); }
+
+    /**
+     * For internal use by GrProcessor.
+     */
+    const GrGpuResourceRef* getProgramTexture() const { return &fTexture; }
 
     /**
      * Returns a string representing the swizzle. The string is is null-terminated.
@@ -177,10 +183,12 @@ public:
 private:
     void setSwizzle(const char*);
 
-    GrTextureParams         fParams;
-    SkAutoTUnref<GrTexture> fTexture;
-    uint32_t                fSwizzleMask;
-    char                    fSwizzle[5];
+    typedef GrTGpuResourceRef<GrTexture> ProgramTexture;
+
+    ProgramTexture                  fTexture;
+    GrTextureParams                 fParams;
+    uint32_t                        fSwizzleMask;
+    char                            fSwizzle[5];
 
     typedef SkNoncopyable INHERITED;
 };

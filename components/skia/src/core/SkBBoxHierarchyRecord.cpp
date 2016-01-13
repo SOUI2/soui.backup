@@ -20,10 +20,8 @@ SkBBoxHierarchyRecord::SkBBoxHierarchyRecord(const SkISize& size,
 }
 
 void SkBBoxHierarchyRecord::handleBBox(const SkRect& bounds) {
-    SkIRect r;
-    bounds.roundOut(&r);
     SkPictureStateTree::Draw* draw = fStateTree->appendDraw(this->writeStream().bytesWritten());
-    fBoundingHierarchy->insert(draw, r, true);
+    fBoundingHierarchy->insert(draw, bounds, true);
 }
 
 void SkBBoxHierarchyRecord::willSave() {
@@ -36,18 +34,45 @@ SkCanvas::SaveLayerStrategy SkBBoxHierarchyRecord::willSaveLayer(const SkRect* b
                                                                  SaveFlags flags) {
     // For now, assume all filters affect transparent black.
     // FIXME: This could be made less conservative as an optimization.
-    bool paintAffectsTransparentBlack = NULL != paint &&
-        ((NULL != paint->getImageFilter()) ||
-         (NULL != paint->getColorFilter()));
+    bool paintAffectsTransparentBlack = paint &&
+        ((paint->getImageFilter()) ||
+         (paint->getColorFilter()));
+    bool needToHandleBBox = paintAffectsTransparentBlack;
+    if (!needToHandleBBox && paint) {
+      // Unusual Xfermodes require us to process a saved layer
+      // even with operations outisde the clip.
+      // For example, DstIn is used by masking layers.
+      // https://code.google.com/p/skia/issues/detail?id=1291
+      SkXfermode* xfermode = paint->getXfermode();
+      SkXfermode::Mode mode;
+      // SrcOver is the common case with a NULL xfermode, so we should
+      // make that the fast path and bypass the mode extraction and test.
+      if (xfermode && xfermode->asMode(&mode)) {
+        switch (mode) {
+          case SkXfermode::kClear_Mode:
+          case SkXfermode::kSrc_Mode:
+          case SkXfermode::kSrcIn_Mode:
+          case SkXfermode::kDstIn_Mode:
+          case SkXfermode::kSrcOut_Mode:
+          case SkXfermode::kDstATop_Mode:
+          case SkXfermode::kModulate_Mode:
+            needToHandleBBox = true;
+            break;
+          default:
+            break;
+        }
+      }
+    }
+
     SkRect drawBounds;
-    if (paintAffectsTransparentBlack) {
+    if (needToHandleBBox) {
         SkIRect deviceBounds;
         this->getClipDeviceBounds(&deviceBounds);
         drawBounds.set(deviceBounds);
     }
     fStateTree->appendSaveLayer(this->writeStream().bytesWritten());
     SkCanvas::SaveLayerStrategy strategy = this->INHERITED::willSaveLayer(bounds, paint, flags);
-    if (paintAffectsTransparentBlack) {
+    if (needToHandleBBox) {
         this->handleBBox(drawBounds);
         this->addNoOp();
     }

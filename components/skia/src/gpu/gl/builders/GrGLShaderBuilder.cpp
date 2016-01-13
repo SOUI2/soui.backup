@@ -6,6 +6,7 @@
  */
 
 #include "GrGLShaderBuilder.h"
+#include "GrGLFullProgramBuilder.h"
 #include "GrGLProgramBuilder.h"
 #include "../GrGpuGL.h"
 #include "../GrGLShaderVar.h"
@@ -26,7 +27,7 @@ void append_texture_lookup(SkString* out,
                            uint32_t configComponentMask,
                            const char* swizzle,
                            GrSLType varyingType = kVec2f_GrSLType) {
-    SkASSERT(NULL != coordName);
+    SkASSERT(coordName);
 
     out->appendf("%s(%s, %s)",
                  sample_function_name(varyingType, gpu->glslGeneration()),
@@ -62,6 +63,12 @@ GrGLShaderBuilder::GrGLShaderBuilder(GrGLProgramBuilder* program)
     , fFeaturesAddedMask(0) {
 }
 
+void GrGLShaderBuilder::declAppend(const GrGLShaderVar& var) {
+    SkString tempDecl;
+    var.appendDecl(fProgramBuilder->ctxInfo(), &tempDecl);
+    this->codeAppendf("%s;", tempDecl.c_str());
+}
+
 void GrGLShaderBuilder::emitFunction(GrSLType returnType,
                                      const char* name,
                                      int argCnt,
@@ -90,7 +97,7 @@ void GrGLShaderBuilder::appendTextureLookup(SkString* out,
                                             GrSLType varyingType) const {
     append_texture_lookup(out,
                           fProgramBuilder->gpu(),
-                          fProgramBuilder->getUniformCStr(sampler.samplerUniform()),
+                          fProgramBuilder->getUniformCStr(sampler.fSamplerUniform),
                           coordName,
                           sampler.configComponentMask(),
                           sampler.swizzle(),

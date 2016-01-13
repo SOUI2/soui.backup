@@ -30,9 +30,10 @@
 /** The base SkTypeface implementation for the custom font manager. */
 class SkTypeface_Custom : public SkTypeface_FreeType {
 public:
-    SkTypeface_Custom(Style style, bool isFixedPitch, bool sysFont, const SkString familyName)
+    SkTypeface_Custom(Style style, bool isFixedPitch,
+                      bool sysFont, const SkString familyName, int index)
         : INHERITED(style, SkTypefaceCache::NewFontID(), isFixedPitch)
-        , fIsSysFont(sysFont), fFamilyName(familyName)
+        , fIsSysFont(sysFont), fFamilyName(familyName), fIndex(index)
     { }
 
     bool isSysFont() const { return fIsSysFont; }
@@ -40,15 +41,23 @@ public:
     virtual const char* getUniqueString() const = 0;
 
 protected:
+    virtual void onGetFamilyName(SkString* familyName) const SK_OVERRIDE {
+        *familyName = fFamilyName;
+    }
+
     virtual void onGetFontDescriptor(SkFontDescriptor* desc, bool* isLocal) const SK_OVERRIDE {
         desc->setFamilyName(fFamilyName.c_str());
         desc->setFontFileName(this->getUniqueString());
+        desc->setFontIndex(fIndex);
         *isLocal = !this->isSysFont();
     }
 
+    int getIndex() const { return fIndex; }
+
 private:
-    bool fIsSysFont;
-    SkString fFamilyName;
+    const bool fIsSysFont;
+    const SkString fFamilyName;
+    const int fIndex;
 
     typedef SkTypeface_FreeType INHERITED;
 };
@@ -58,7 +67,7 @@ private:
  */
 class SkTypeface_Empty : public SkTypeface_Custom {
 public:
-    SkTypeface_Empty() : INHERITED(SkTypeface::kNormal, false, true, SkString()) {}
+    SkTypeface_Empty() : INHERITED(SkTypeface::kNormal, false, true, SkString(), 0) {}
 
     virtual const char* getUniqueString() const SK_OVERRIDE { return NULL; }
 
@@ -74,21 +83,20 @@ class SkTypeface_Stream : public SkTypeface_Custom {
 public:
     SkTypeface_Stream(Style style, bool isFixedPitch, bool sysFont, const SkString familyName,
                       SkStream* stream, int ttcIndex)
-        : INHERITED(style, isFixedPitch, sysFont, familyName)
-        , fStream(SkRef(stream)), fTtcIndex(ttcIndex)
+        : INHERITED(style, isFixedPitch, sysFont, familyName, ttcIndex)
+        , fStream(SkRef(stream))
     { }
 
     virtual const char* getUniqueString() const SK_OVERRIDE { return NULL; }
 
 protected:
     virtual SkStream* onOpenStream(int* ttcIndex) const SK_OVERRIDE {
-        *ttcIndex = 0;
+        *ttcIndex = this->getIndex();
         return fStream->duplicate();
     }
 
 private:
-    SkAutoTUnref<SkStream> fStream;
-    int fTtcIndex;
+    const SkAutoTUnref<const SkStream> fStream;
 
     typedef SkTypeface_Custom INHERITED;
 };
@@ -97,8 +105,8 @@ private:
 class SkTypeface_File : public SkTypeface_Custom {
 public:
     SkTypeface_File(Style style, bool isFixedPitch, bool sysFont, const SkString familyName,
-                    const char path[])
-        : INHERITED(style, isFixedPitch, sysFont, familyName)
+                    const char path[], int index)
+        : INHERITED(style, isFixedPitch, sysFont, familyName, index)
         , fPath(path)
     { }
 
@@ -112,7 +120,7 @@ public:
 
 protected:
     virtual SkStream* onOpenStream(int* ttcIndex) const SK_OVERRIDE {
-        *ttcIndex = 0;
+        *ttcIndex = this->getIndex();
         return SkStream::NewFromFile(fPath.c_str());
     }
 
@@ -293,7 +301,7 @@ protected:
                                                  : SkFontStyle::kUpright_Slant);
         SkTypeface* tf = NULL;
 
-        if (NULL != familyName) {
+        if (familyName) {
             tf = this->onMatchFamilyStyle(familyName, style);
         }
 
@@ -339,7 +347,7 @@ private:
                                                 isFixedPitch,
                                                 true,  // system-font (cannot delete)
                                                 realname,
-                                                filename.c_str()));
+                                                filename.c_str(), 0));
 
             SkFontStyleSet_Custom* addTo = this->onMatchFamily(realname.c_str());
             if (NULL == addTo) {

@@ -30,22 +30,23 @@
 SK_CONF_DECLARE(bool, c_DumpFontCache, "gpu.dumpFontCache", false,
                 "Dump the contents of the font cache before every purge.");
 
-static const int kGlyphCoordsNoColorAttributeIndex = 1;
-static const int kGlyphCoordsWithColorAttributeIndex = 2;
-
 namespace {
 // position + texture coord
 extern const GrVertexAttrib gTextVertexAttribs[] = {
     {kVec2f_GrVertexAttribType, 0,               kPosition_GrVertexAttribBinding},
-    {kVec2f_GrVertexAttribType, sizeof(SkPoint) , kEffect_GrVertexAttribBinding}
+    {kVec2f_GrVertexAttribType, sizeof(SkPoint), kGeometryProcessor_GrVertexAttribBinding}
 };
+
+static const size_t kTextVASize = 2 * sizeof(SkPoint); 
 
 // position + color + texture coord
 extern const GrVertexAttrib gTextVertexWithColorAttribs[] = {
     {kVec2f_GrVertexAttribType,  0,                                 kPosition_GrVertexAttribBinding},
     {kVec4ub_GrVertexAttribType, sizeof(SkPoint),                   kColor_GrVertexAttribBinding},
-    {kVec2f_GrVertexAttribType,  sizeof(SkPoint) + sizeof(GrColor), kEffect_GrVertexAttribBinding}
+    {kVec2f_GrVertexAttribType,  sizeof(SkPoint) + sizeof(GrColor), kGeometryProcessor_GrVertexAttribBinding}
 };
+
+static const size_t kTextVAColorSize = 2 * sizeof(SkPoint) + sizeof(GrColor); 
 
 };
 
@@ -97,15 +98,14 @@ void GrBitmapTextContext::flushGlyphs() {
         uint32_t textureUniqueID = fCurrTexture->getUniqueID();
         
         if (textureUniqueID != fEffectTextureUniqueID) {
-            fCachedEffect.reset(GrCustomCoordsTextureEffect::Create(fCurrTexture, params));
+            fCachedGeometryProcessor.reset(GrCustomCoordsTextureEffect::Create(fCurrTexture,
+                                                                               params));
             fEffectTextureUniqueID = textureUniqueID;
         }
 
         // This effect could be stored with one of the cache objects (atlas?)
-        int coordsIdx = drawState->hasColorVertexAttribute() ? kGlyphCoordsWithColorAttributeIndex :
-                                                               kGlyphCoordsNoColorAttributeIndex;
-        drawState->addCoverageEffect(fCachedEffect.get(), coordsIdx);
-        SkASSERT(NULL != fStrike);
+        drawState->setGeometryProcessor(fCachedGeometryProcessor.get());
+        SkASSERT(fStrike);
         switch (fStrike->getMaskFormat()) {
             // Color bitmap text
             case kARGB_GrMaskFormat:
@@ -455,30 +455,32 @@ void GrBitmapTextContext::drawPackedGlyph(GrGlyph::PackedID packed,
     }
 
     if (NULL == glyph->fPlot) {
-        if (fStrike->addGlyphToAtlas(glyph, scaler)) {
-            goto HAS_ATLAS;
-        }
+        if (!fStrike->glyphTooLargeForAtlas(glyph)) {
+            if (fStrike->addGlyphToAtlas(glyph, scaler)) {
+                goto HAS_ATLAS;
+            }
 
-        // try to clear out an unused plot before we flush
-        if (fContext->getFontCache()->freeUnusedPlot(fStrike) &&
-            fStrike->addGlyphToAtlas(glyph, scaler)) {
-            goto HAS_ATLAS;
-        }
+            // try to clear out an unused plot before we flush
+            if (fContext->getFontCache()->freeUnusedPlot(fStrike) &&
+                fStrike->addGlyphToAtlas(glyph, scaler)) {
+                goto HAS_ATLAS;
+            }
 
-        if (c_DumpFontCache) {
+            if (c_DumpFontCache) {
 #ifdef SK_DEVELOPER
-            fContext->getFontCache()->dump();
+                fContext->getFontCache()->dump();
 #endif
-        }
+            }
 
-        // flush any accumulated draws to allow us to free up a plot
-        this->flushGlyphs();
-        fContext->flush();
+            // flush any accumulated draws to allow us to free up a plot
+            this->flushGlyphs();
+            fContext->flush();
 
-        // we should have an unused plot now
-        if (fContext->getFontCache()->freeUnusedPlot(fStrike) &&
-            fStrike->addGlyphToAtlas(glyph, scaler)) {
-            goto HAS_ATLAS;
+            // we should have an unused plot now
+            if (fContext->getFontCache()->freeUnusedPlot(fStrike) &&
+                fStrike->addGlyphToAtlas(glyph, scaler)) {
+                goto HAS_ATLAS;
+            }
         }
 
         if (NULL == glyph->fPath) {
@@ -528,10 +530,10 @@ HAS_ATLAS:
         fMaxVertices = kMinRequestedVerts;
         if (useColorVerts) {
             fDrawTarget->drawState()->setVertexAttribs<gTextVertexWithColorAttribs>(
-                SK_ARRAY_COUNT(gTextVertexWithColorAttribs));
+                SK_ARRAY_COUNT(gTextVertexWithColorAttribs), kTextVAColorSize);
         } else {
             fDrawTarget->drawState()->setVertexAttribs<gTextVertexAttribs>(
-                SK_ARRAY_COUNT(gTextVertexAttribs));
+                SK_ARRAY_COUNT(gTextVertexAttribs), kTextVASize);
         }
         bool flush = fDrawTarget->geometryHints(&fMaxVertices, NULL);
         if (flush) {
@@ -539,10 +541,10 @@ HAS_ATLAS:
             fContext->flush();
             if (useColorVerts) {
                 fDrawTarget->drawState()->setVertexAttribs<gTextVertexWithColorAttribs>(
-                  SK_ARRAY_COUNT(gTextVertexWithColorAttribs));
+                    SK_ARRAY_COUNT(gTextVertexWithColorAttribs), kTextVAColorSize);
             } else {
                 fDrawTarget->drawState()->setVertexAttribs<gTextVertexAttribs>(
-                  SK_ARRAY_COUNT(gTextVertexAttribs));
+                    SK_ARRAY_COUNT(gTextVertexAttribs), kTextVASize);
             }
         }
         fMaxVertices = kDefaultRequestedVerts;
@@ -577,7 +579,7 @@ HAS_ATLAS:
     size_t vertSize = useColorVerts ? (2 * sizeof(SkPoint) + sizeof(GrColor)) :
                                       (2 * sizeof(SkPoint));
 
-    SkASSERT(vertSize == fDrawTarget->getDrawState().getVertexSize());
+    SkASSERT(vertSize == fDrawTarget->getDrawState().getVertexStride());
 
     SkPoint* positions = reinterpret_cast<SkPoint*>(
         reinterpret_cast<intptr_t>(fVertices) + vertSize * fCurrVertex);

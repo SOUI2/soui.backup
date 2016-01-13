@@ -44,7 +44,14 @@ SkRTree::~SkRTree() {
     this->clear();
 }
 
-void SkRTree::insert(void* data, const SkIRect& bounds, bool defer) {
+void SkRTree::insert(void* data, const SkRect& fbounds, bool defer) {
+    SkIRect bounds;
+    if (fbounds.isLargest()) {
+        bounds.setLargest();
+    } else {
+        fbounds.roundOut(&bounds);
+    }
+
     this->validate();
     if (bounds.isEmpty()) {
         SkASSERT(false);
@@ -68,7 +75,7 @@ void SkRTree::insert(void* data, const SkIRect& bounds, bool defer) {
     Branch* newSibling = insert(fRoot.fChild.subtree, &newBranch);
     fRoot.fBounds = this->computeBounds(fRoot.fChild.subtree);
 
-    if (NULL != newSibling) {
+    if (newSibling) {
         Node* oldRoot = fRoot.fChild.subtree;
         Node* newRoot = this->allocateNode(oldRoot->fLevel + 1);
         newRoot->fNumChildren = 2;
@@ -102,7 +109,9 @@ void SkRTree::flushDeferredInserts() {
     this->validate();
 }
 
-void SkRTree::search(const SkIRect& query, SkTDArray<void*>* results) const {
+void SkRTree::search(const SkRect& fquery, SkTDArray<void*>* results) const {
+    SkIRect query;
+    fquery.roundOut(&query);
     this->validate();
     SkASSERT(0 == fDeferredInserts.count());  // If this fails, you should have flushed.
     if (!this->isEmpty() && SkIRect::IntersectsNoEmptyCheck(fRoot.fBounds, query)) {
@@ -134,7 +143,7 @@ SkRTree::Branch* SkRTree::insert(Node* root, Branch* branch, uint16_t level) {
         root->child(childIndex)->fBounds = this->computeBounds(
             root->child(childIndex)->fChild.subtree);
     }
-    if (NULL != toInsert) {
+    if (toInsert) {
         if (root->fNumChildren == fMaxChildren) {
             // handle overflow by splitting. TODO: opportunistic reinsertion
 

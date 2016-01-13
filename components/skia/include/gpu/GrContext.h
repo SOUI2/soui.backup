@@ -22,8 +22,8 @@ class GrAARectRenderer;
 class GrAutoScratchTexture;
 class GrDrawState;
 class GrDrawTarget;
-class GrEffect;
 class GrFontCache;
+class GrFragmentProcessor;
 class GrGpu;
 class GrGpuTraceMarker;
 class GrIndexBuffer;
@@ -745,7 +745,7 @@ public:
             fContext = context;
         }
         ~AutoRenderTarget() {
-            if (NULL != fContext) {
+            if (fContext) {
                 fContext->setRenderTarget(fPrevTarget);
             }
             SkSafeUnref(fPrevTarget);
@@ -759,7 +759,7 @@ public:
      * Save/restore the view-matrix in the context. It can optionally adjust a paint to account
      * for a coordinate system change. Here is an example of how the paint param can be used:
      *
-     * A GrPaint is setup with GrEffects. The stages will have access to the pre-matrix source
+     * A GrPaint is setup with GrProcessors. The stages will have access to the pre-matrix source
      * geometry positions when the draw is executed. Later on a decision is made to transform the
      * geometry to device space on the CPU. The effects now need to know that the space in which
      * the geometry will be specified has changed.
@@ -779,7 +779,7 @@ public:
          * Initializes by pre-concat'ing the context's current matrix with the preConcat param.
          */
         void setPreConcat(GrContext* context, const SkMatrix& preConcat, GrPaint* paint = NULL) {
-            SkASSERT(NULL != context);
+            SkASSERT(context);
 
             this->restore();
 
@@ -793,11 +793,11 @@ public:
          * update a paint but the matrix cannot be inverted.
          */
         bool setIdentity(GrContext* context, GrPaint* paint = NULL) {
-            SkASSERT(NULL != context);
+            SkASSERT(context);
 
             this->restore();
 
-            if (NULL != paint) {
+            if (paint) {
                 if (!paint->localCoordChangeInverse(context->getMatrix())) {
                     return false;
                 }
@@ -813,7 +813,7 @@ public:
          * required to update a paint but the matrix cannot be inverted.
          */
         bool set(GrContext* context, const SkMatrix& newMatrix, GrPaint* paint = NULL) {
-            if (NULL != paint) {
+            if (paint) {
                 if (!this->setIdentity(context, paint)) {
                     return false;
                 }
@@ -835,7 +835,7 @@ public:
          * performs an incremental update of the paint.
          */
         void preConcat(const SkMatrix& preConcat, GrPaint* paint = NULL) {
-            if (NULL != paint) {
+            if (paint) {
                 paint->localCoordChange(preConcat);
             }
             fContext->concatMatrix(preConcat);
@@ -845,13 +845,13 @@ public:
          * Returns false if never initialized or the inverse matrix was required to update a paint
          * but the matrix could not be inverted.
          */
-        bool succeeded() const { return NULL != fContext; }
+        bool succeeded() const { return SkToBool(fContext); }
 
         /**
          * If this has been initialized then the context's original matrix is restored.
          */
         void restore() {
-            if (NULL != fContext) {
+            if (fContext) {
                 fContext->setMatrix(fMatrix);
                 fContext = NULL;
             }
@@ -890,7 +890,7 @@ public:
         }
 
         ~AutoClip() {
-            if (NULL != fContext) {
+            if (fContext) {
                 fContext->setClip(fOldClip);
             }
         }
@@ -958,6 +958,30 @@ public:
 
 #if GR_CACHE_STATS
     void printCacheStats() const;
+#endif
+
+    class GPUStats {
+    public:
+#if GR_GPU_STATS
+        GPUStats() { this->reset(); }
+
+        void reset() { fRenderTargetBinds = 0; fShaderCompilations = 0; }
+
+        int renderTargetBinds() const { return fRenderTargetBinds; }
+        void incRenderTargetBinds() { fRenderTargetBinds++; }
+        int shaderCompilations() const { return fShaderCompilations; }
+        void incShaderCompilations() { fShaderCompilations++; }
+    private:
+        int fRenderTargetBinds;
+        int fShaderCompilations;
+#else
+        void incRenderTargetBinds() {}
+        void incShaderCompilations() {}
+#endif
+    };
+
+#if GR_GPU_STATS
+    const GPUStats* gpuStats() const;
 #endif
 
 private:
@@ -1042,27 +1066,14 @@ private:
      * of effects that make a readToUPM->writeToPM->readToUPM cycle invariant. Otherwise, they
      * return NULL.
      */
-    const GrEffect* createPMToUPMEffect(GrTexture* texture,
-                                        bool swapRAndB,
-                                        const SkMatrix& matrix);
-    const GrEffect* createUPMToPMEffect(GrTexture* texture,
-                                        bool swapRAndB,
-                                        const SkMatrix& matrix);
+    const GrFragmentProcessor* createPMToUPMEffect(GrTexture*, bool swapRAndB, const SkMatrix&);
+    const GrFragmentProcessor* createUPMToPMEffect(GrTexture*, bool swapRAndB, const SkMatrix&);
 
     /**
      *  This callback allows the resource cache to callback into the GrContext
      *  when the cache is still overbudget after a purge.
      */
     static bool OverbudgetCB(void* data);
-
-    /** Creates a new gpu path, based on the specified path and stroke and returns it.
-     * The caller owns a ref on the returned path which must be balanced by a call to unref.
-     *
-     * @param skPath the path geometry.
-     * @param stroke the path stroke.
-     * @return a new path or NULL if the operation is not supported by the backend.
-     */
-    GrPath* createPath(const SkPath& skPath, const SkStrokeRec& stroke);
 
     typedef SkRefCnt INHERITED;
 };
@@ -1091,7 +1102,7 @@ public:
     }
 
     void reset() {
-        if (NULL != fContext && NULL != fTexture) {
+        if (fContext && fTexture) {
             fContext->unlockScratchTexture(fTexture);
             fTexture->unref();
             fTexture = NULL;
@@ -1124,7 +1135,7 @@ public:
         SkASSERT(!texture->unique());
         texture->impl()->setFlag((GrTextureFlags) GrTextureImpl::kReturnToCache_FlagBit);
         texture->unref();
-        SkASSERT(NULL != texture->getCacheEntry());
+        SkASSERT(texture->getCacheEntry());
 
         return texture;
     }
@@ -1135,7 +1146,7 @@ public:
         this->reset();
 
         fContext = context;
-        if (NULL != fContext) {
+        if (fContext) {
             fTexture = fContext->lockAndRefScratchTexture(desc, match);
             if (NULL == fTexture) {
                 fContext = NULL;

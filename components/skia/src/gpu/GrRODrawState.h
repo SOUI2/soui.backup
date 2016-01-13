@@ -8,13 +8,14 @@
 #ifndef GrRODrawState_DEFINED
 #define GrRODrawState_DEFINED
 
+#include "GrProcessorStage.h"
+#include "GrRenderTarget.h"
 #include "GrStencil.h"
-#include "GrEffectStage.h"
 #include "SkMatrix.h"
 
+class GrDrawState;
 class GrDrawTargetCaps;
 class GrPaint;
-class GrRenderTarget;
 class GrTexture;
 
 /**
@@ -25,6 +26,10 @@ class GrTexture;
 class GrRODrawState : public SkRefCnt {
 public:
     SK_DECLARE_INST_COUNT(GrRODrawState)
+
+    GrRODrawState() {}
+
+    GrRODrawState& operator= (const GrRODrawState& that);
 
     ///////////////////////////////////////////////////////////////////////////
     /// @name Vertex Attributes
@@ -37,7 +42,7 @@ public:
     const GrVertexAttrib* getVertexAttribs() const { return fVAPtr; }
     int getVertexAttribCount() const { return fVACount; }
 
-    size_t getVertexSize() const { return fVertexSize; }
+    size_t getVertexStride() const { return fVAStride; }
 
     /**
      * Getters for index into getVertexAttribs() for particular bindings. -1 is returned if the
@@ -66,6 +71,10 @@ public:
     }
     bool hasCoverageVertexAttribute() const {
         return -1 != fFixedFunctionVertexAttribIndices[kCoverage_GrVertexAttribBinding];
+    }
+
+    const int* getFixedFunctionVertexAttribIndices() const {
+        return fFixedFunctionVertexAttribIndices;
     }
 
     bool validateVertexAttribs() const;
@@ -101,8 +110,8 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////
     /// @name Effect Stages
-    /// Each stage hosts a GrEffect. The effect produces an output color or coverage in the fragment
-    /// shader. Its inputs are the output from the previous stage as well as some variables
+    /// Each stage hosts a GrProcessor. The effect produces an output color or coverage in the
+    /// fragment shader. Its inputs are the output from the previous stage as well as some variables
     /// available to it in the fragment and vertex shader (e.g. the vertex position, the dst color,
     /// the fragment position, local coordinates).
     ///
@@ -121,10 +130,15 @@ public:
 
     int numColorStages() const { return fColorStages.count(); }
     int numCoverageStages() const { return fCoverageStages.count(); }
-    int numTotalStages() const { return this->numColorStages() + this->numCoverageStages(); }
+    int numTotalStages() const {
+         return this->numColorStages() + this->numCoverageStages() +
+                 (this->hasGeometryProcessor() ? 1 : 0);
+    }
 
-    const GrEffectStage& getColorStage(int stageIdx) const { return fColorStages[stageIdx]; }
-    const GrEffectStage& getCoverageStage(int stageIdx) const { return fCoverageStages[stageIdx]; }
+    bool hasGeometryProcessor() const { return SkToBool(fGeometryProcessor.get()); }
+    const GrGeometryStage* getGeometryProcessor() const { return fGeometryProcessor.get(); }
+    const GrFragmentStage& getColorStage(int stageIdx) const { return fColorStages[stageIdx]; }
+    const GrFragmentStage& getCoverageStage(int stageIdx) const { return fCoverageStages[stageIdx]; }
 
     /**
      * Checks whether any of the effects will read the dst pixel color.
@@ -158,40 +172,6 @@ public:
      * will not as coverage is applied after blending.
      */
     bool canTweakAlphaForCoverage() const;
-
-    /**
-     * Optimizations for blending / coverage to that can be applied based on the current state.
-     */
-    enum BlendOptFlags {
-        /**
-         * No optimization
-         */
-        kNone_BlendOpt                  = 0,
-        /**
-         * Don't draw at all
-         */
-        kSkipDraw_BlendOptFlag          = 0x1,
-        /**
-         * The coverage value does not have to be computed separately from alpha, the output
-         * color can be the modulation of the two.
-         */
-        kCoverageAsAlpha_BlendOptFlag   = 0x2,
-        /**
-         * Instead of emitting a src color, emit coverage in the alpha channel and r,g,b are
-         * "don't cares".
-         */
-        kEmitCoverage_BlendOptFlag      = 0x4,
-        /**
-         * Emit transparent black instead of the src color, no need to compute coverage.
-         */
-        kEmitTransBlack_BlendOptFlag    = 0x8,
-        /**
-         * Flag used to invalidate the cached BlendOptFlags, OptSrcCoeff, and OptDstCoeff cached by
-         * the get BlendOpts function.
-         */
-        kInvalid_BlendOptFlag           = 1 << 31,
-    };
-    GR_DECL_BITFIELD_OPS_FRIENDS(BlendOptFlags);
 
     /// @}
 
@@ -238,8 +218,9 @@ public:
      *
      * @return    The currently set render target.
      */
-    const GrRenderTarget* getRenderTarget() const { return fRenderTarget.get(); }
-    GrRenderTarget* getRenderTarget() { return fRenderTarget.get(); }
+    GrRenderTarget* getRenderTarget() const {
+        return static_cast<GrRenderTarget*>(fRenderTarget.getResource());
+    }
 
     /// @}
 
@@ -295,6 +276,8 @@ public:
         kLastPublicStateBit = kDummyStateBit-1,
     };
 
+    uint32_t getFlagBits() const { return fFlagBits; }
+
     bool isStateFlagEnabled(uint32_t stateBit) const { return 0 != (stateBit & fFlagBits); }
 
     bool isDitherState() const { return 0 != (fFlagBits & kDither_StateBit); }
@@ -327,6 +310,17 @@ public:
     /// @}
 
     ///////////////////////////////////////////////////////////////////////////
+    /// @name Hints
+    /// Hints that when provided can enable optimizations.
+    ////
+
+    enum Hints { kVertexColorsAreOpaque_Hint = 0x1, };
+
+    bool vertexColorsAreOpaque() const { return kVertexColorsAreOpaque_Hint & fHints; }
+
+    /// @}
+
+    ///////////////////////////////////////////////////////////////////////////
 
     /** Return type for CombineIfPossible. */
     enum CombinedState {
@@ -340,39 +334,102 @@ public:
         kB_CombinedState,
     };
 
-    GrRODrawState& operator= (const GrRODrawState& that);
-
 protected:
+    /**
+     * Converts refs on GrGpuResources owned directly or indirectly by this GrRODrawState into
+     * pending reads and writes. This should be called when a GrDrawState is recorded into
+     * a GrDrawTarget for later execution. Subclasses of GrRODrawState may add setters. However,
+     * once this call has been made the GrRODrawState is immutable. It is also no longer copyable.
+     * In the future this conversion will automatically happen when converting a GrDrawState into
+     * an optimized draw state.
+     */
+    void convertToPendingExec();
+
+    friend class GrDrawTarget;
+
+    explicit GrRODrawState(const GrRODrawState& drawState);
+
     bool isEqual(const GrRODrawState& that) const;
 
+    /**
+     * Optimizations for blending / coverage to that can be applied based on the current state.
+     */
+    enum BlendOptFlags {
+        /**
+         * No optimization
+         */
+        kNone_BlendOpt                  = 0,
+        /**
+         * Don't draw at all
+         */
+        kSkipDraw_BlendOptFlag          = 0x1,
+        /**
+         * The coverage value does not have to be computed separately from alpha, the the output
+         * color can be the modulation of the two.
+         */
+        kCoverageAsAlpha_BlendOptFlag   = 0x2,
+        /**
+         * Instead of emitting a src color, emit coverage in the alpha channel and r,g,b are
+         * "don't cares".
+         */
+        kEmitCoverage_BlendOptFlag      = 0x4,
+        /**
+         * Emit transparent black instead of the src color, no need to compute coverage.
+         */
+        kEmitTransBlack_BlendOptFlag    = 0x8,
+    };
+    GR_DECL_BITFIELD_OPS_FRIENDS(BlendOptFlags);
+
+    /**
+     * Determines what optimizations can be applied based on the blend. The coefficients may have
+     * to be tweaked in order for the optimization to work. srcCoeff and dstCoeff are optional
+     * params that receive the tweaked coefficients. Normally the function looks at the current
+     * state to see if coverage is enabled. By setting forceCoverage the caller can speculatively
+     * determine the blend optimizations that would be used if there was partial pixel coverage.
+     *
+     * Subclasses of GrDrawTarget that actually draw (as opposed to those that just buffer for
+     * playback) must call this function and respect the flags that replace the output color.
+     *
+     * If the cached BlendOptFlags does not have the invalidate bit set, then getBlendOpts will
+     * simply returned the cached flags and coefficients. Otherwise it will calculate the values. 
+     */
+    BlendOptFlags getBlendOpts(bool forceCoverage = false,
+                               GrBlendCoeff* srcCoeff = NULL,
+                               GrBlendCoeff* dstCoeff = NULL) const;
+
+    typedef GrTGpuResourceRef<GrRenderTarget> ProgramRenderTarget;
     // These fields are roughly sorted by decreasing likelihood of being different in op==
-    SkAutoTUnref<GrRenderTarget>        fRenderTarget;
+    ProgramRenderTarget                 fRenderTarget;
     GrColor                             fColor;
     SkMatrix                            fViewMatrix;
     GrColor                             fBlendConstant;
     uint32_t                            fFlagBits;
     const GrVertexAttrib*               fVAPtr;
     int                                 fVACount;
-    size_t                              fVertexSize;
+    size_t                              fVAStride;
     GrStencilSettings                   fStencilSettings;
     uint8_t                             fCoverage;
     DrawFace                            fDrawFace;
     GrBlendCoeff                        fSrcBlend;
     GrBlendCoeff                        fDstBlend;
 
-    typedef SkSTArray<4, GrEffectStage> EffectStageArray;
-    EffectStageArray                    fColorStages;
-    EffectStageArray                    fCoverageStages;
+    typedef SkSTArray<4, GrFragmentStage>   FragmentStageArray;
+    SkAutoTDelete<GrGeometryStage>          fGeometryProcessor;
+    FragmentStageArray                      fColorStages;
+    FragmentStageArray                      fCoverageStages;
 
-    mutable GrBlendCoeff                fOptSrcBlend;
-    mutable GrBlendCoeff                fOptDstBlend;
-    mutable BlendOptFlags               fBlendOptFlags;
+    uint32_t                            fHints;
 
     // This is simply a different representation of info in fVertexAttribs and thus does
     // not need to be compared in op==.
     int fFixedFunctionVertexAttribIndices[kGrFixedFunctionVertexAttribBindingCnt];
 
 private:
+    /**
+     * Determines whether src alpha is guaranteed to be one for all src pixels
+     */
+    bool srcAlphaWillBeOne() const;
+
     typedef SkRefCnt INHERITED;
 };
 

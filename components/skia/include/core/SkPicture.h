@@ -62,10 +62,6 @@ public:
         typedef SkRefCnt INHERITED;
     };
 
-#ifdef SK_SUPPORT_LEGACY_DEFAULT_PICTURE_CTOR
-    SkPicture();
-#endif
-
     /**  PRIVATE / EXPERIMENTAL -- do not call */
     void EXPERIMENTAL_addAccelData(const AccelData*) const;
 
@@ -115,24 +111,31 @@ public:
     SkPicture* clone() const;
 #endif
 
-    /** Replays the drawing commands on the specified canvas.
+    /** Replays the drawing commands on the specified canvas. Note that
+        this has the effect of unfurling this picture into the destination
+        canvas. Using the SkCanvas::drawPicture entry point gives the destination
+        canvas the option of just taking a ref.
         @param canvas the canvas receiving the drawing commands.
+        @param callback a callback that allows interruption of playback
     */
-    void draw(SkCanvas* canvas, SkDrawPictureCallback* = NULL) const;
+    void playback(SkCanvas* canvas, SkDrawPictureCallback* = NULL) const;
 
-    /** Return the width of the picture's recording canvas. This
-        value reflects what was passed to setSize(), and does not necessarily
-        reflect the bounds of what has been recorded into the picture.
-        @return the width of the picture's recording canvas
-    */
-    int width() const { return fWidth; }
+#ifdef SK_LEGACY_PICTURE_DRAW_API
+    void draw(SkCanvas* canvas, SkDrawPictureCallback* callback = NULL) const {
+        this->playback(canvas, callback);
+    }
+#endif
 
-    /** Return the height of the picture's recording canvas. This
-        value reflects what was passed to setSize(), and does not necessarily
-        reflect the bounds of what has been recorded into the picture.
-        @return the height of the picture's recording canvas
+#ifdef SK_LEGACY_PICTURE_SIZE_API
+    int width() const  { return SkScalarCeilToInt(fCullWidth); }
+    int height() const { return SkScalarCeilToInt(fCullHeight); }
+#endif
+
+    /** Return the cull rect used when creating this picture: { 0, 0, cullWidth, cullHeight }.
+        It does not necessarily reflect the bounds of what has been recorded into the picture.
+        @return the cull rect used to create this picture
     */
-    int height() const { return fHeight; }
+    const SkRect cullRect() const { return SkRect::MakeWH(fCullWidth, fCullHeight); }
 
     /** Return a non-zero, unique value representing the picture. This call is
         only valid when not recording. Between a beginRecording/endRecording
@@ -180,7 +183,7 @@ public:
         If false is returned, SkPictInfo is unmodified.
     */
     static bool InternalOnly_StreamIsSKP(SkStream*, SkPictInfo*);
-    static bool InternalOnly_BufferIsSKP(SkReadBuffer&, SkPictInfo*);
+    static bool InternalOnly_BufferIsSKP(SkReadBuffer*, SkPictInfo*);
 
     /** Return true if the picture is suitable for rendering on the GPU.
      */
@@ -244,19 +247,21 @@ private:
     // V32: Removed SkPaintOptionsAndroid from SkPaint
     // V33: Serialize only public API of effects.
     // V34: Add SkTextBlob serialization.
+    // V35: Store SkRect (rather then width & height) in header
 
     // Note: If the picture version needs to be increased then please follow the
     // steps to generate new SKPs in (only accessible to Googlers): http://goo.gl/qATVcw
 
     // Only SKPs within the min/current picture version range (inclusive) can be read.
     static const uint32_t MIN_PICTURE_VERSION = 19;
-    static const uint32_t CURRENT_PICTURE_VERSION = 34;
+    static const uint32_t CURRENT_PICTURE_VERSION = 35;
 
     mutable uint32_t      fUniqueID;
 
     // TODO: make SkPictureData const when clone method goes away
     SkAutoTDelete<SkPictureData> fData;
-    int                   fWidth, fHeight;
+    const SkScalar                        fCullWidth;
+    const SkScalar                        fCullHeight;
     mutable SkAutoTUnref<const AccelData> fAccelData;
 
     mutable SkTDArray<DeletionListener*> fDeletionListeners;  // pointers are refed
@@ -266,9 +271,9 @@ private:
 
     // Create a new SkPicture from an existing SkPictureData. The new picture
     // takes ownership of 'data'.
-    SkPicture(SkPictureData* data, int width, int height);
+    SkPicture(SkPictureData* data, SkScalar width, SkScalar height);
 
-    SkPicture(int width, int height, const SkPictureRecord& record, bool deepCopyOps);
+    SkPicture(SkScalar width, SkScalar height, const SkPictureRecord& record, bool deepCopyOps);
 
     // An OperationList encapsulates a set of operation offsets into the picture byte
     // stream along with the CTMs needed for those operation.
@@ -285,25 +290,21 @@ private:
         SkTDArray<void*> fOps;
     };
 
-    /** PRIVATE / EXPERIMENTAL -- do not call
-        Return the operations required to render the content inside 'queryRect'.
-    */
-    const OperationList* EXPERIMENTAL_getActiveOps(const SkIRect& queryRect) const;
-
     void createHeader(SkPictInfo* info) const;
     static bool IsValidPictInfo(const SkPictInfo& info);
 
     friend class SkPictureData;                // to access OperationList
     friend class SkPictureRecorder;            // just for SkPicture-based constructor
-    friend class SkGpuDevice;                  // for EXPERIMENTAL_getActiveOps/OperationList
-    friend class GrGatherCanvas;               // needs to know if old or new picture
+    friend class SkGpuDevice;                  // for fData access
+    friend class GrLayerHoister;               // access to fRecord
+    friend class CollectLayers;                // access to fRecord
     friend class SkPicturePlayback;            // to get fData & OperationList
     friend class SkPictureReplacementPlayback; // to access OperationList
 
     typedef SkRefCnt INHERITED;
 
     // Takes ownership of the SkRecord, refs the (optional) BBH.
-    SkPicture(int width, int height, SkRecord*, SkBBoxHierarchy*);
+    SkPicture(SkScalar width, SkScalar height, SkRecord*, SkBBoxHierarchy*);
     // Return as a new SkPicture that's backed by SkRecord.
     static SkPicture* Forwardport(const SkPicture&);
 

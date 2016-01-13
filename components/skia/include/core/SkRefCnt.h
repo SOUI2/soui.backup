@@ -168,7 +168,7 @@ template <typename T> static inline void SkSafeUnref(T* obj) {
 }
 
 template<typename T> static inline void SkSafeSetNull(T*& obj) {
-    if (NULL != obj) {
+    if (obj) {
         obj->unref();
         obj = NULL;
     }
@@ -234,7 +234,7 @@ public:
     BlockRefType *operator->() const {
         return static_cast<BlockRefType*>(fObj);
     }
-    operator T*() { return fObj; }
+    operator T*() const { return fObj; }
 
 private:
     T*  fObj;

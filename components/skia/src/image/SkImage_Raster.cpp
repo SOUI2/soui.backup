@@ -11,7 +11,6 @@
 #include "SkCanvas.h"
 #include "SkData.h"
 #include "SkDecodingImageGenerator.h"
-#include "SkMallocPixelRef.h"
 
 class SkImage_Raster : public SkImage_Base {
 public:
@@ -19,16 +18,16 @@ public:
         const int maxDimension = SK_MaxS32 >> 2;
         const size_t kMaxPixelByteSize = SK_MaxS32;
 
-        if (info.fWidth < 0 || info.fHeight < 0) {
+        if (info.width() < 0 || info.height() < 0) {
             return false;
         }
-        if (info.fWidth > maxDimension || info.fHeight > maxDimension) {
+        if (info.width() > maxDimension || info.height() > maxDimension) {
             return false;
         }
-        if ((unsigned)info.fColorType > (unsigned)kLastEnum_SkColorType) {
+        if ((unsigned)info.colorType() > (unsigned)kLastEnum_SkColorType) {
             return false;
         }
-        if ((unsigned)info.fAlphaType > (unsigned)kLastEnum_SkAlphaType) {
+        if ((unsigned)info.alphaType() > (unsigned)kLastEnum_SkAlphaType) {
             return false;
         }
 
@@ -42,7 +41,7 @@ public:
             return false;
         }
 
-        int64_t size = (int64_t)info.fHeight * rowBytes;
+        int64_t size = (int64_t)info.height() * rowBytes;
         if (size > (int64_t)kMaxPixelByteSize) {
             return false;
         }
@@ -102,7 +101,7 @@ static void release_data(void* addr, void* context) {
 }
 
 SkImage_Raster::SkImage_Raster(const Info& info, SkData* data, size_t rowBytes)
-    : INHERITED(info.fWidth, info.fHeight)
+    : INHERITED(info.width(), info.height())
 {
     data->ref();
     void* addr = const_cast<void*>(data->data());
@@ -114,7 +113,7 @@ SkImage_Raster::SkImage_Raster(const Info& info, SkData* data, size_t rowBytes)
 }
 
 SkImage_Raster::SkImage_Raster(const Info& info, SkPixelRef* pr, size_t rowBytes)
-    : INHERITED(info.fWidth, info.fHeight)
+    : INHERITED(info.width(), info.height())
 {
     fBitmap.setInfo(info, rowBytes);
     fBitmap.setPixelRef(pr);
@@ -170,7 +169,7 @@ SkImage* SkImage::NewRasterCopy(const SkImageInfo& info, const void* pixels, siz
     if (!SkImage_Raster::ValidArgs(info, rowBytes)) {
         return NULL;
     }
-    if (0 == info.fWidth && 0 == info.fHeight) {
+    if (0 == info.width() && 0 == info.height()) {
         return SkImage_Raster::NewEmpty();
     }
     // check this after empty-check
@@ -179,7 +178,7 @@ SkImage* SkImage::NewRasterCopy(const SkImageInfo& info, const void* pixels, siz
     }
 
     // Here we actually make a copy of the caller's pixel data
-    SkAutoDataUnref data(SkData::NewWithCopy(pixels, info.fHeight * rowBytes));
+    SkAutoDataUnref data(SkData::NewWithCopy(pixels, info.height() * rowBytes));
     return SkNEW_ARGS(SkImage_Raster, (info, data, rowBytes));
 }
 
@@ -188,7 +187,7 @@ SkImage* SkImage::NewRasterData(const SkImageInfo& info, SkData* data, size_t ro
     if (!SkImage_Raster::ValidArgs(info, rowBytes)) {
         return NULL;
     }
-    if (0 == info.fWidth && 0 == info.fHeight) {
+    if (0 == info.width() && 0 == info.height()) {
         return SkImage_Raster::NewEmpty();
     }
     // check this after empty-check
@@ -197,7 +196,7 @@ SkImage* SkImage::NewRasterData(const SkImageInfo& info, SkData* data, size_t ro
     }
 
     // did they give us enough data?
-    size_t size = info.fHeight * rowBytes;
+    size_t size = info.height() * rowBytes;
     if (data->size() < size) {
         return NULL;
     }

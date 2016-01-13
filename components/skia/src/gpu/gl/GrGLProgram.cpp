@@ -7,15 +7,17 @@
 
 #include "GrGLProgram.h"
 
+#include "builders/GrGLFullProgramBuilder.h"
+#include "builders/GrGLFragmentOnlyProgramBuilder.h"
 #include "GrAllocator.h"
-#include "GrEffect.h"
+#include "GrProcessor.h"
 #include "GrCoordTransform.h"
-#include "GrDrawEffect.h"
-#include "GrGLEffect.h"
+#include "GrGLProcessor.h"
 #include "GrGpuGL.h"
 #include "GrGLPathRendering.h"
 #include "GrGLShaderVar.h"
 #include "GrGLSL.h"
+#include "GrOptDrawState.h"
 #include "SkXfermode.h"
 
 #define GL_CALL(X) GR_GL_CALL(fGpu->glInterface(), X)
@@ -23,17 +25,20 @@
 
 GrGLProgram* GrGLProgram::Create(GrGpuGL* gpu,
                                  const GrGLProgramDesc& desc,
-                                 const GrEffectStage* colorStages[],
-                                 const GrEffectStage* coverageStages[]) {
+                                 const GrGeometryStage* geometryProcessor,
+                                 const GrFragmentStage* colorStages[],
+                                 const GrFragmentStage* coverageStages[]) {
     SkAutoTDelete<GrGLProgramBuilder> builder;
-    if (!desc.getHeader().fRequiresVertexShader &&
-        gpu->glCaps().pathRenderingSupport() &&
-        gpu->glPathRendering()->texturingMode() == GrGLPathRendering::FixedFunction_TexturingMode) {
+    if (desc.getHeader().fUseFragShaderOnly) {
+        SkASSERT(gpu->glCaps().pathRenderingSupport());
+        SkASSERT(gpu->glPathRendering()->texturingMode() ==
+                 GrGLPathRendering::FixedFunction_TexturingMode);
+        SkASSERT(NULL == geometryProcessor);
         builder.reset(SkNEW_ARGS(GrGLFragmentOnlyProgramBuilder, (gpu, desc)));
     } else {
         builder.reset(SkNEW_ARGS(GrGLFullProgramBuilder, (gpu, desc)));
     }
-    if (builder->genProgram(colorStages, coverageStages)) {
+    if (builder->genProgram(geometryProcessor, colorStages, coverageStages)) {
         SkASSERT(0 != builder->getProgramID());
         return SkNEW_ARGS(GrGLProgram, (gpu, desc, *builder));
     }
@@ -47,6 +52,7 @@ GrGLProgram::GrGLProgram(GrGpuGL* gpu,
     , fCoverage(GrColor_ILLEGAL)
     , fDstCopyTexUnit(-1)
     , fBuiltinUniformHandles(builder.getBuiltinUniformHandles())
+    , fGeometryProcessor(SkSafeRef(builder.getGeometryProcessor()))
     , fColorEffects(SkRef(builder.getColorEffects()))
     , fCoverageEffects(SkRef(builder.getCoverageEffects()))
     , fProgramID(builder.getProgramID())
@@ -68,28 +74,6 @@ void GrGLProgram::abandon() {
     fProgramID = 0;
 }
 
-void GrGLProgram::overrideBlend(GrBlendCoeff* srcCoeff,
-                                GrBlendCoeff* dstCoeff) const {
-    switch (fDesc.getHeader().fCoverageOutput) {
-        case GrGLProgramDesc::kModulate_CoverageOutput:
-            break;
-        // The prog will write a coverage value to the secondary
-        // output and the dst is blended by one minus that value.
-        case GrGLProgramDesc::kSecondaryCoverage_CoverageOutput:
-        case GrGLProgramDesc::kSecondaryCoverageISA_CoverageOutput:
-        case GrGLProgramDesc::kSecondaryCoverageISC_CoverageOutput:
-            *dstCoeff = (GrBlendCoeff)GrGpu::kIS2C_GrBlendCoeff;
-            break;
-        case GrGLProgramDesc::kCombineWithDst_CoverageOutput:
-            // We should only have set this if the blend was specified as (1, 0)
-            SkASSERT(kOne_GrBlendCoeff == *srcCoeff && kZero_GrBlendCoeff == *dstCoeff);
-            break;
-        default:
-            SkFAIL("Unexpected coverage output");
-            break;
-    }
-}
-
 void GrGLProgram::initSamplerUniforms() {
     GL_CALL(UseProgram(fProgramID));
     GrGLint texUnitIdx = 0;
@@ -97,38 +81,30 @@ void GrGLProgram::initSamplerUniforms() {
         fProgramDataManager.setSampler(fBuiltinUniformHandles.fDstCopySamplerUni, texUnitIdx);
         fDstCopyTexUnit = texUnitIdx++;
     }
+    if (fGeometryProcessor.get()) {
+        fGeometryProcessor->initSamplers(fProgramDataManager, &texUnitIdx);
+    }
     fColorEffects->initSamplers(fProgramDataManager, &texUnitIdx);
     fCoverageEffects->initSamplers(fProgramDataManager, &texUnitIdx);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void GrGLProgram::setData(GrGpu::DrawType drawType,
-                          GrDrawState::BlendOptFlags blendOpts,
-                          const GrEffectStage* colorStages[],
-                          const GrEffectStage* coverageStages[],
+void GrGLProgram::setData(const GrOptDrawState& optState,
+                          GrGpu::DrawType drawType,
+                          const GrGeometryStage* geometryProcessor,
+                          const GrFragmentStage* colorStages[],
+                          const GrFragmentStage* coverageStages[],
                           const GrDeviceCoordTexture* dstCopy,
                           SharedGLState* sharedState) {
-    const GrDrawState& drawState = fGpu->getDrawState();
+    GrColor color = optState.getColor();
+    GrColor coverage = optState.getCoverageColor();
 
-    GrColor color;
-    GrColor coverage;
-    if (blendOpts & GrDrawState::kEmitTransBlack_BlendOptFlag) {
-        color = 0;
-        coverage = 0;
-    } else if (blendOpts & GrDrawState::kEmitCoverage_BlendOptFlag) {
-        color = 0xffffffff;
-        coverage = drawState.getCoverageColor();
-    } else {
-        color = drawState.getColor();
-        coverage = drawState.getCoverageColor();
-    }
+    this->setColor(optState, color, sharedState);
+    this->setCoverage(optState, coverage, sharedState);
+    this->setMatrixAndRenderTargetHeight(drawType, optState);
 
-    this->setColor(drawState, color, sharedState);
-    this->setCoverage(drawState, coverage, sharedState);
-    this->setMatrixAndRenderTargetHeight(drawType, drawState);
-
-    if (NULL != dstCopy) {
+    if (dstCopy) {
         if (fBuiltinUniformHandles.fDstCopyTopLeftUni.isValid()) {
             fProgramDataManager.set2f(fBuiltinUniformHandles.fDstCopyTopLeftUni,
                                        static_cast<GrGLfloat>(dstCopy->offset().fX),
@@ -149,8 +125,12 @@ void GrGLProgram::setData(GrGpu::DrawType drawType,
         SkASSERT(!fBuiltinUniformHandles.fDstCopySamplerUni.isValid());
     }
 
-    fColorEffects->setData(fGpu, drawType,fProgramDataManager, colorStages);
-    fCoverageEffects->setData(fGpu, drawType,fProgramDataManager, coverageStages);
+    if (fGeometryProcessor.get()) {
+        SkASSERT(geometryProcessor);
+        fGeometryProcessor->setData(fGpu, drawType, fProgramDataManager, geometryProcessor);
+    }
+    fColorEffects->setData(fGpu, drawType, fProgramDataManager, colorStages);
+    fCoverageEffects->setData(fGpu, drawType, fProgramDataManager, coverageStages);
 
     // PathTexGen state applies to the the fixed function vertex shader. For
     // custom shaders, it's ignored, so we don't need to change the texgen
@@ -160,11 +140,11 @@ void GrGLProgram::setData(GrGpu::DrawType drawType,
     }
 }
 
-void GrGLProgram::setColor(const GrDrawState& drawState,
+void GrGLProgram::setColor(const GrOptDrawState& optState,
                            GrColor color,
                            SharedGLState* sharedState) {
     const GrGLProgramDesc::KeyHeader& header = fDesc.getHeader();
-    if (!drawState.hasColorVertexAttribute() || drawState.canIgnoreColorAttribute()) {
+    if (!optState.hasColorVertexAttribute()) {
         switch (header.fColorInput) {
             case GrGLProgramDesc::kAttribute_ColorInput:
                 SkASSERT(-1 != header.fColorAttributeIndex);
@@ -188,6 +168,9 @@ void GrGLProgram::setColor(const GrDrawState& drawState,
                 }
                 sharedState->fConstAttribColorIndex = -1;
                 break;
+            case GrGLProgramDesc::kAllOnes_ColorInput:
+                sharedState->fConstAttribColorIndex = -1;
+                break;
             default:
                 SkFAIL("Unexpected color type.");
         }
@@ -196,11 +179,11 @@ void GrGLProgram::setColor(const GrDrawState& drawState,
     }
 }
 
-void GrGLProgram::setCoverage(const GrDrawState& drawState,
+void GrGLProgram::setCoverage(const GrOptDrawState& optState,
                               GrColor coverage,
                               SharedGLState* sharedState) {
     const GrGLProgramDesc::KeyHeader& header = fDesc.getHeader();
-    if (!drawState.hasCoverageVertexAttribute()) {
+    if (!optState.hasCoverageVertexAttribute()) {
         switch (header.fCoverageInput) {
             case GrGLProgramDesc::kAttribute_ColorInput:
                 if (sharedState->fConstAttribCoverage != coverage ||
@@ -223,7 +206,7 @@ void GrGLProgram::setCoverage(const GrDrawState& drawState,
                 }
                 sharedState->fConstAttribCoverageIndex = -1;
                 break;
-            case GrGLProgramDesc::kSolidWhite_ColorInput:
+            case GrGLProgramDesc::kAllOnes_ColorInput:
                 sharedState->fConstAttribCoverageIndex = -1;
                 break;
             default:
@@ -235,8 +218,8 @@ void GrGLProgram::setCoverage(const GrDrawState& drawState,
 }
 
 void GrGLProgram::setMatrixAndRenderTargetHeight(GrGpu::DrawType drawType,
-                                                 const GrDrawState& drawState) {
-    const GrRenderTarget* rt = drawState.getRenderTarget();
+                                                 const GrOptDrawState& optState) {
+    const GrRenderTarget* rt = optState.getRenderTarget();
     SkISize size;
     size.set(rt->width(), rt->height());
 
@@ -248,13 +231,13 @@ void GrGLProgram::setMatrixAndRenderTargetHeight(GrGpu::DrawType drawType,
     }
 
     if (GrGpu::IsPathRenderingDrawType(drawType)) {
-        fGpu->glPathRendering()->setProjectionMatrix(drawState.getViewMatrix(), size, rt->origin());
+        fGpu->glPathRendering()->setProjectionMatrix(optState.getViewMatrix(), size, rt->origin());
     } else if (fMatrixState.fRenderTargetOrigin != rt->origin() ||
                fMatrixState.fRenderTargetSize != size ||
-               !fMatrixState.fViewMatrix.cheapEqualTo(drawState.getViewMatrix())) {
+               !fMatrixState.fViewMatrix.cheapEqualTo(optState.getViewMatrix())) {
         SkASSERT(fBuiltinUniformHandles.fViewMatrixUni.isValid());
 
-        fMatrixState.fViewMatrix = drawState.getViewMatrix();
+        fMatrixState.fViewMatrix = optState.getViewMatrix();
         fMatrixState.fRenderTargetSize = size;
         fMatrixState.fRenderTargetOrigin = rt->origin();
 
