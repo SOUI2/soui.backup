@@ -300,6 +300,9 @@ static inline bool SkIsU16(long x) {
 #define SkAlign8(x)     (((x) + 7) >> 3 << 3)
 #define SkIsAlign8(x)   (0 == ((x) & 7))
 
+#define SkAlignPtr(x)   (sizeof(void*) == 8 ?   SkAlign8(x) :   SkAlign4(x))
+#define SkIsAlignPtr(x) (sizeof(void*) == 8 ? SkIsAlign8(x) : SkIsAlign4(x))
+
 typedef uint32_t SkFourByteTag;
 #define SkSetFourByteTag(a, b, c, d)    (((a) << 24) | ((b) << 16) | ((c) << 8) | (d))
 
@@ -536,7 +539,7 @@ public:
      */
     void* reset(size_t size, OnShrink shrink = kAlloc_OnShrink,  bool* didChangeAlloc = NULL) {
         if (size == fSize || (kReuse_OnShrink == shrink && size < fSize)) {
-            if (NULL != didChangeAlloc) {
+            if (didChangeAlloc) {
                 *didChangeAlloc = false;
             }
             return fPtr;
@@ -545,7 +548,7 @@ public:
         sk_free(fPtr);
         fPtr = size ? sk_malloc_throw(size) : NULL;
         fSize = size;
-        if (NULL != didChangeAlloc) {
+        if (didChangeAlloc) {
             *didChangeAlloc = true;
         }
 
@@ -640,7 +643,7 @@ public:
                 bool* didChangeAlloc = NULL) {
         size = (size < kSize) ? kSize : size;
         bool alloc = size != fSize && (SkAutoMalloc::kAlloc_OnShrink == shrink || size > fSize);
-        if (NULL != didChangeAlloc) {
+        if (didChangeAlloc) {
             *didChangeAlloc = alloc;
         }
         if (alloc) {

@@ -69,7 +69,7 @@ public:
     virtual bool allocPixelRef(SkBitmap* bm, SkColorTable* ct) {
         if (NULL == fTarget || !equal_modulo_alpha(fInfo, bm->info())) {
             // Call default allocator.
-            return bm->allocPixels(NULL, ct);
+            return bm->tryAllocPixels(NULL, ct);
         }
 
         // TODO(halcanary): verify that all callers of this function
@@ -132,21 +132,17 @@ DecodingImageGenerator::~DecodingImageGenerator() {
 SkData* DecodingImageGenerator::onRefEncodedData() {
     // This functionality is used in `gm --serialize`
     // Does not encode options.
-    if (fData != NULL) {
-        return SkSafeRef(fData);
+    if (NULL == fData) {
+        // TODO(halcanary): SkStreamRewindable needs a refData() function
+        // which returns a cheap copy of the underlying data.
+        if (!fStream->rewind()) {
+            return NULL;
+        }
+        size_t length = fStream->getLength();
+        if (length) {
+            fData = SkData::NewFromStream(fStream, length);
+        }
     }
-    // TODO(halcanary): SkStreamRewindable needs a refData() function
-    // which returns a cheap copy of the underlying data.
-    if (!fStream->rewind()) {
-        return NULL;
-    }
-    size_t length = fStream->getLength();
-    if (0 == length) {
-        return NULL;
-    }
-    void* buffer = sk_malloc_flags(length, 0);
-    SkCheckResult(fStream->read(buffer, length), length);
-    fData = SkData::NewFromMalloc(buffer, length);
     return SkSafeRef(fData);
 }
 
@@ -167,8 +163,7 @@ bool DecodingImageGenerator::onGetPixels(const SkImageInfo& info,
     }
     decoder->setDitherImage(fDitherImage);
     decoder->setSampleSize(fSampleSize);
-    decoder->setRequireUnpremultipliedColors(
-            info.fAlphaType == kUnpremul_SkAlphaType);
+    decoder->setRequireUnpremultipliedColors(info.alphaType() == kUnpremul_SkAlphaType);
 
     SkBitmap bitmap;
     TargetAllocator allocator(fInfo, pixels, rowBytes);
@@ -240,19 +235,20 @@ SkImageGenerator* CreateDecodingImageGenerator(
             SkASSERT(bitmap.colorType() != opts.fRequestedColorType);
             return NULL;  // Can not translate to needed config.
         }
-        info.fColorType = opts.fRequestedColorType;
+        info = info.makeColorType(opts.fRequestedColorType);
     }
 
-    if (opts.fRequireUnpremul && info.fAlphaType != kOpaque_SkAlphaType) {
-        info.fAlphaType = kUnpremul_SkAlphaType;
+    if (opts.fRequireUnpremul && info.alphaType() != kOpaque_SkAlphaType) {
+        info = info.makeAlphaType(kUnpremul_SkAlphaType);
     }
 
-    if (!SkColorTypeValidateAlphaType(info.fColorType, info.fAlphaType, &info.fAlphaType)) {
+    SkAlphaType newAlphaType = info.alphaType();
+    if (!SkColorTypeValidateAlphaType(info.colorType(), info.alphaType(), &newAlphaType)) {
         return NULL;
     }
 
     return SkNEW_ARGS(DecodingImageGenerator,
-                      (data, autoStream.detach(), info,
+                      (data, autoStream.detach(), info.makeAlphaType(newAlphaType),
                        opts.fSampleSize, opts.fDitherImage));
 }
 

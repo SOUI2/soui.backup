@@ -11,18 +11,28 @@
 #include "GrResourceCache2.h"
 #include "GrGpu.h"
 
+GrIORef::~GrIORef() {
+    SkASSERT(0 == fRefCnt);
+    SkASSERT(0 == fPendingReads);
+    SkASSERT(0 == fPendingWrites);
+    // Set to invalid values.
+    SkDEBUGCODE(fRefCnt = fPendingReads = fPendingWrites = -10;)
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 static inline GrResourceCache2* get_resource_cache2(GrGpu* gpu) {
-    SkASSERT(NULL != gpu);
-    SkASSERT(NULL != gpu->getContext());
-    SkASSERT(NULL != gpu->getContext()->getResourceCache2());
+    SkASSERT(gpu);
+    SkASSERT(gpu->getContext());
+    SkASSERT(gpu->getContext()->getResourceCache2());
     return gpu->getContext()->getResourceCache2();
 }
 
 GrGpuResource::GrGpuResource(GrGpu* gpu, bool isWrapped)
     : fGpu(gpu)
-    , fRefCnt(1)
     , fCacheEntry(NULL)
-    , fUniqueID(CreateUniqueID()) {
+    , fUniqueID(CreateUniqueID())
+    , fScratchKey(GrResourceKey::NullScratchKey()) {
     if (isWrapped) {
         fFlags = kWrapped_FlagBit;
     } else {
@@ -35,13 +45,12 @@ void GrGpuResource::registerWithCache() {
 }
 
 GrGpuResource::~GrGpuResource() {
-    SkASSERT(0 == fRefCnt);
     // subclass should have released this.
     SkASSERT(this->wasDestroyed());
 }
 
 void GrGpuResource::release() { 
-    if (NULL != fGpu) {
+    if (fGpu) {
         this->onRelease();
         get_resource_cache2(fGpu)->removeResource(this);
         fGpu = NULL;
@@ -49,7 +58,7 @@ void GrGpuResource::release() {
 }
 
 void GrGpuResource::abandon() {
-    if (NULL != fGpu) {
+    if (fGpu) {
         this->onAbandon();
         get_resource_cache2(fGpu)->removeResource(this);
         fGpu = NULL;
@@ -57,7 +66,7 @@ void GrGpuResource::abandon() {
 }
 
 const GrContext* GrGpuResource::getContext() const {
-    if (NULL != fGpu) {
+    if (fGpu) {
         return fGpu->getContext();
     } else {
         return NULL;
@@ -65,11 +74,18 @@ const GrContext* GrGpuResource::getContext() const {
 }
 
 GrContext* GrGpuResource::getContext() {
-    if (NULL != fGpu) {
+    if (fGpu) {
         return fGpu->getContext();
     } else {
         return NULL;
     }
+}
+
+void GrGpuResource::setScratchKey(const GrResourceKey& scratchKey) {
+    SkASSERT(fScratchKey.isNullScratch());
+    SkASSERT(scratchKey.isScratch());
+    SkASSERT(!scratchKey.isNullScratch());
+    fScratchKey = scratchKey;
 }
 
 uint32_t GrGpuResource::CreateUniqueID() {

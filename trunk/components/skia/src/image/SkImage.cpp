@@ -94,9 +94,9 @@ SkData* SkImage::encode(SkImageEncoder::Type type, int quality) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 static bool raster_canvas_supports(const SkImageInfo& info) {
-    switch (info.fColorType) {
+    switch (info.colorType()) {
         case kN32_SkColorType:
-            return kUnpremul_SkAlphaType != info.fAlphaType;
+            return kUnpremul_SkAlphaType != info.alphaType();
         case kRGB_565_SkColorType:
             return true;
         case kAlpha_8_SkColorType:
@@ -117,9 +117,8 @@ bool SkImage_Base::onReadPixels(SkBitmap* bitmap, const SkIRect& subset) const {
             return false;
         }
     } else {
-        const SkImageInfo info = SkImageInfo::MakeN32Premul(subset.width(), subset.height());
         SkBitmap tmp;
-        if (!tmp.allocPixels(info)) {
+        if (!tmp.tryAllocN32Pixels(subset.width(), subset.height())) {
             return false;
         }
         *bitmap = tmp;

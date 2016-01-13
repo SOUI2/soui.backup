@@ -204,16 +204,15 @@ static SkData* handle_type1_stream(SkStream* srcStream, size_t* headerLen,
         SkASSERT(length > 0);
         SkASSERT(length + (2 * kPFBSectionHeaderLength) <= srcLen);
 
-        SkAutoTMalloc<uint8_t> buffer(length);
+        SkData* data = SkData::NewUninitialized(length);
 
         const uint8_t* const srcHeader = src + kPFBSectionHeaderLength;
         // There is a six-byte section header before header and data
         // (but not trailer) that we're not going to copy.
-        const uint8_t* const srcData
-            = srcHeader + *headerLen + kPFBSectionHeaderLength;
+        const uint8_t* const srcData = srcHeader + *headerLen + kPFBSectionHeaderLength;
         const uint8_t* const srcTrailer = srcData + *headerLen;
 
-        uint8_t* const resultHeader = buffer.get();
+        uint8_t* const resultHeader = (uint8_t*)data->writable_data();
         uint8_t* const resultData = resultHeader + *headerLen;
         uint8_t* const resultTrailer = resultData + *dataLen;
 
@@ -223,7 +222,7 @@ static SkData* handle_type1_stream(SkStream* srcStream, size_t* headerLen,
         memcpy(resultData,    srcData,    *dataLen);
         memcpy(resultTrailer, srcTrailer, *trailerLen);
 
-        return SkData::NewFromMalloc(buffer.detach(), length);
+        return data;
     }
 
     // A PFA has to be converted for PDF.
@@ -1028,7 +1027,7 @@ bool SkPDFFont::addCommonFontDescriptorEntries(int16_t defaultWidth) {
     return true;
 }
 
-void SkPDFFont::adjustGlyphRangeForSingleByteEncoding(int16_t glyphID) {
+void SkPDFFont::adjustGlyphRangeForSingleByteEncoding(uint16_t glyphID) {
     // Single byte glyph encoding supports a max of 255 glyphs.
     fFirstGlyphID = glyphID - (glyphID - 1) % 255;
     if (fLastGlyphID > fFirstGlyphID + 255 - 1) {
@@ -1312,13 +1311,13 @@ bool SkPDFType1Font::addFontDescriptor(int16_t defaultWidth) {
     size_t data SK_INIT_TO_AVOID_WARNING;
     size_t trailer SK_INIT_TO_AVOID_WARNING;
     SkAutoTUnref<SkStream> rawFontData(typeface()->openStream(&ttcIndex));
-    SkData* fontData = handle_type1_stream(rawFontData.get(), &header, &data,
-                                           &trailer);
-    if (fontData == NULL) {
+    SkAutoTUnref<SkData> fontData(handle_type1_stream(rawFontData.get(), &header,
+                                                      &data, &trailer));
+    if (fontData.get() == NULL) {
         return false;
     }
     if (canEmbed()) {
-        SkAutoTUnref<SkPDFStream> fontStream(new SkPDFStream(fontData));
+        SkAutoTUnref<SkPDFStream> fontStream(new SkPDFStream(fontData.get()));
         addResource(fontStream.get());
         fontStream->insertInt("Length1", header);
         fontStream->insertInt("Length2", data);
@@ -1425,7 +1424,7 @@ SkPDFType3Font::SkPDFType3Font(const SkAdvancedTypefaceMetrics* info,
 
 SkPDFType3Font::~SkPDFType3Font() {}
 
-bool SkPDFType3Font::populate(int16_t glyphID) {
+bool SkPDFType3Font::populate(uint16_t glyphID) {
     SkPaint paint;
     paint.setTypeface(typeface());
     paint.setTextSize(1000);

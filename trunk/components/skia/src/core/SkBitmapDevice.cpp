@@ -61,20 +61,23 @@ SkBitmapDevice::SkBitmapDevice(const SkBitmap& bitmap) : fBitmap(bitmap) {
     SkASSERT(valid_for_bitmap_device(bitmap.info(), NULL));
 }
 
+#if 0
 SkBitmapDevice::SkBitmapDevice(const SkBitmap& bitmap, const SkDeviceProperties& deviceProperties)
     : SkBaseDevice(deviceProperties)
     , fBitmap(bitmap)
 {
     SkASSERT(valid_for_bitmap_device(bitmap.info(), NULL));
 }
+#endif
 
 SkBitmapDevice* SkBitmapDevice::Create(const SkImageInfo& origInfo,
                                        const SkDeviceProperties* props) {
-    SkImageInfo info = origInfo;
-    if (!valid_for_bitmap_device(info, &info.fAlphaType)) {
+    SkAlphaType newAT = origInfo.alphaType();
+    if (!valid_for_bitmap_device(origInfo, &newAT)) {
         return NULL;
     }
 
+    const SkImageInfo info = origInfo.makeAlphaType(newAT);
     SkBitmap bitmap;
 
     if (kUnknown_SkColorType == info.colorType()) {
@@ -82,7 +85,7 @@ SkBitmapDevice* SkBitmapDevice::Create(const SkImageInfo& origInfo,
             return NULL;
         }
     } else {
-        if (!bitmap.allocPixels(info)) {
+        if (!bitmap.tryAllocPixels(info)) {
             return NULL;
         }
         if (!bitmap.info().isOpaque()) {
@@ -90,8 +93,8 @@ SkBitmapDevice* SkBitmapDevice::Create(const SkImageInfo& origInfo,
         }
     }
 
-    if (props) {
-        return SkNEW_ARGS(SkBitmapDevice, (bitmap, *props));
+    if (props && false) {
+//        return SkNEW_ARGS(SkBitmapDevice, (bitmap, *props));
     } else {
         return SkNEW_ARGS(SkBitmapDevice, (bitmap));
     }
@@ -109,7 +112,7 @@ void SkBitmapDevice::replaceBitmapBackendForRasterSurface(const SkBitmap& bm) {
 }
 
 SkBaseDevice* SkBitmapDevice::onCreateDevice(const SkImageInfo& info, Usage usage) {
-    return SkBitmapDevice::Create(info, &this->getDeviceProperties());
+    return SkBitmapDevice::Create(info);// &this->getDeviceProperties());
 }
 
 void SkBitmapDevice::lockPixels() {
@@ -142,6 +145,7 @@ void* SkBitmapDevice::onAccessPixels(SkImageInfo* info, size_t* rowBytes) {
 }
 
 #include "SkConfig8888.h"
+#include "SkPixelRef.h"
 
 bool SkBitmapDevice::onWritePixels(const SkImageInfo& srcInfo, const void* srcPixels,
                                    size_t srcRowBytes, int x, int y) {
@@ -150,9 +154,7 @@ bool SkBitmapDevice::onWritePixels(const SkImageInfo& srcInfo, const void* srcPi
         return false;
     }
 
-    SkImageInfo dstInfo = fBitmap.info();
-    dstInfo.fWidth = srcInfo.width();
-    dstInfo.fHeight = srcInfo.height();
+    const SkImageInfo dstInfo = fBitmap.info().makeWH(srcInfo.width(), srcInfo.height());
 
     void* dstPixels = fBitmap.getAddr(x, y);
     size_t dstRowBytes = fBitmap.rowBytes();
@@ -260,8 +262,14 @@ void SkBitmapDevice::drawBitmapRect(const SkDraw& draw, const SkBitmap& bitmap,
         // the bitmap, we extract a subset.
         SkIRect srcIR;
         tmpSrc.roundOut(&srcIR);
-        if (!bitmap.extractSubset(&tmpBitmap, srcIR)) {
-            return;
+        if(bitmap.pixelRef()->getTexture()) {
+            // Accelerated source canvas, don't use extractSubset but readPixels to get the subset.
+            // This way, the pixels are copied in CPU memory instead of GPU memory.
+            bitmap.pixelRef()->readPixels(&tmpBitmap, &srcIR);
+        } else {
+            if (!bitmap.extractSubset(&tmpBitmap, srcIR)) {
+                return;
+            }
         }
         bitmapPtr = &tmpBitmap;
 
@@ -349,8 +357,8 @@ void SkBitmapDevice::drawDevice(const SkDraw& draw, SkBaseDevice* device,
     draw.drawSprite(src, x, y, paint);
 }
 
-SkSurface* SkBitmapDevice::newSurface(const SkImageInfo& info) {
-    return SkSurface::NewRaster(info);
+SkSurface* SkBitmapDevice::newSurface(const SkImageInfo& info, const SkSurfaceProps& props) {
+    return SkSurface::NewRaster(info, &props);
 }
 
 const void* SkBitmapDevice::peekPixels(SkImageInfo* info, size_t* rowBytes) {
@@ -387,9 +395,9 @@ bool SkBitmapDevice::filterTextFlags(const SkPaint& paint, TextFlags* flags) {
         paint.isFakeBoldText() ||
         paint.getStyle() != SkPaint::kFill_Style ||
         !SkXfermode::IsMode(paint.getXfermode(), SkXfermode::kSrcOver_Mode)) {
-        // turn off lcd
+        // turn off lcd, but turn on kGenA8
         flags->fFlags = paint.getFlags() & ~SkPaint::kLCDRenderText_Flag;
-        flags->fHinting = paint.getHinting();
+        flags->fFlags |= SkPaint::kGenA8FromLCD_Flag;
         return true;
     }
     // we're cool with the paint as is

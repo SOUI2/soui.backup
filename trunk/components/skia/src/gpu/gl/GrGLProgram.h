@@ -20,7 +20,7 @@
 #include "SkString.h"
 #include "SkXfermode.h"
 
-class GrGLEffect;
+class GrGLProcessor;
 class GrGLProgramEffects;
 class GrGLProgramBuilder;
 
@@ -41,8 +41,9 @@ public:
 
     static GrGLProgram* Create(GrGpuGL* gpu,
                                const GrGLProgramDesc& desc,
-                               const GrEffectStage* colorStages[],
-                               const GrEffectStage* coverageStages[]);
+                               const GrGeometryStage* geometryProcessor,
+                               const GrFragmentStage* colorStages[],
+                               const GrFragmentStage* coverageStages[]);
 
     virtual ~GrGLProgram();
 
@@ -50,11 +51,6 @@ public:
      * Call to abandon GL objects owned by this program.
      */
     void abandon();
-
-    /**
-     * The shader may modify the blend coefficients. Params are in/out.
-     */
-    void overrideBlend(GrBlendCoeff* srcCoeff, GrBlendCoeff* dstCoeff) const;
 
     const GrGLProgramDesc& getDesc() { return fDesc; }
 
@@ -151,15 +147,16 @@ public:
     };
 
     /**
-     * This function uploads uniforms and calls each GrGLEffect's setData. It is called before a
+     * This function uploads uniforms and calls each GrGLProcessor's setData. It is called before a
      * draw occurs using the program after the program has already been bound. It also uses the
-     * GrGpuGL object to bind the textures required by the GrGLEffects. The color and coverage
+     * GrGpuGL object to bind the textures required by the GrGLProcessors. The color and coverage
      * stages come from GrGLProgramDesc::Build().
      */
-    void setData(GrGpu::DrawType,
-                 GrDrawState::BlendOptFlags,
-                 const GrEffectStage* colorStages[],
-                 const GrEffectStage* coverageStages[],
+    void setData(const GrOptDrawState&,
+                 GrGpu::DrawType,
+                 const GrGeometryStage* geometryProcessor,
+                 const GrFragmentStage* colorStages[],
+                 const GrFragmentStage* coverageStages[],
                  const GrDeviceCoordTexture* dstCopy, // can be NULL
                  SharedGLState*);
 
@@ -175,14 +172,14 @@ private:
 
     // Helper for setData(). Makes GL calls to specify the initial color when there is not
     // per-vertex colors.
-    void setColor(const GrDrawState&, GrColor color, SharedGLState*);
+    void setColor(const GrOptDrawState&, GrColor color, SharedGLState*);
 
     // Helper for setData(). Makes GL calls to specify the initial coverage when there is not
     // per-vertex coverages.
-    void setCoverage(const GrDrawState&, GrColor coverage, SharedGLState*);
+    void setCoverage(const GrOptDrawState&, GrColor coverage, SharedGLState*);
 
     // Helper for setData() that sets the view matrix and loads the render target height uniform
-    void setMatrixAndRenderTargetHeight(GrGpu::DrawType drawType, const GrDrawState&);
+    void setMatrixAndRenderTargetHeight(GrGpu::DrawType drawType, const GrOptDrawState&);
 
     // these reflect the current values of uniforms (GL uniform values travel with program)
     MatrixState                         fMatrixState;
@@ -191,6 +188,7 @@ private:
     int                                 fDstCopyTexUnit;
 
     BuiltinUniformHandles               fBuiltinUniformHandles;
+    SkAutoTUnref<GrGLProgramEffects>    fGeometryProcessor;
     SkAutoTUnref<GrGLProgramEffects>    fColorEffects;
     SkAutoTUnref<GrGLProgramEffects>    fCoverageEffects;
     GrGLuint                            fProgramID;

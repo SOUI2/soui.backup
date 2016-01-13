@@ -71,22 +71,19 @@ const SkPicture::OperationList* SkPicturePlayback::getActiveOps(const SkCanvas* 
     if (fUseBBH) {
         SkRect clipBounds;
         if (canvas->getClipBounds(&clipBounds)) {
-            SkIRect query;
-            clipBounds.roundOut(&query);
-
-            return fPictureData->getActiveOps(query);
+            return fPictureData->getActiveOps(clipBounds);
         }
-    } 
+    }
 
     return NULL;
 }
 
 // Initialize the state tree iterator. Return false if there is nothing left to draw.
-bool SkPicturePlayback::initIterator(SkPictureStateTree::Iterator* iter, 
+bool SkPicturePlayback::initIterator(SkPictureStateTree::Iterator* iter,
                                      SkCanvas* canvas,
                                      const SkPicture::OperationList *activeOpsList) {
 
-    if (NULL != activeOpsList) {
+    if (activeOpsList) {
         if (0 == activeOpsList->numOps()) {
             return false;  // nothing to draw
         }
@@ -153,7 +150,7 @@ void SkPicturePlayback::draw(SkCanvas* canvas, SkDrawPictureCallback* callback) 
     SkAutoCanvasRestore acr(canvas, false);
 
     while (!reader.eof()) {
-        if (NULL != callback && callback->abortDrawing()) {
+        if (callback && callback->abortDrawing()) {
             return;
         }
 
@@ -172,9 +169,9 @@ void SkPicturePlayback::draw(SkCanvas* canvas, SkDrawPictureCallback* callback) 
     }
 }
 
-void SkPicturePlayback::handleOp(SkReader32* reader, 
-                                 DrawType op, 
-                                 uint32_t size, 
+void SkPicturePlayback::handleOp(SkReader32* reader,
+                                 DrawType op,
+                                 uint32_t size,
                                  SkCanvas* canvas,
                                  const SkMatrix& initialMatrix) {
     switch (op) {
@@ -310,7 +307,7 @@ void SkPicturePlayback::handleOp(SkReader32* reader,
             break;
         case DRAW_PATCH: {
             const SkPaint& paint = *fPictureData->getPaint(reader);
-            
+
             const SkPoint* cubics = (const SkPoint*)reader->skip(SkPatchUtils::kNumCtrlPts *
                                                                  sizeof(SkPoint));
             uint32_t flag = reader->readInt();

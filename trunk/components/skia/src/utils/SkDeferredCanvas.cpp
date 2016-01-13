@@ -46,7 +46,7 @@ static bool should_draw_immediately(const SkBitmap* bitmap, const SkPaint* paint
         if (shader && !shader->asAGradient(NULL)) {
             SkBitmap bm;
             if (shader->asABitmap(&bm, NULL, NULL) &&
-                NULL != bm.getTexture()) {
+                bm.getTexture()) {
                 return true;
             }
         }
@@ -161,7 +161,7 @@ public:
 
     virtual SkBaseDevice* onCreateDevice(const SkImageInfo&, Usage) SK_OVERRIDE;
 
-    virtual SkSurface* newSurface(const SkImageInfo&) SK_OVERRIDE;
+    virtual SkSurface* newSurface(const SkImageInfo&, const SkSurfaceProps&) SK_OVERRIDE;
 
 protected:
     virtual const SkBitmap& onAccessBitmap() SK_OVERRIDE;
@@ -336,11 +336,11 @@ bool SkDeferredDevice::hasPendingCommands() {
 
 void SkDeferredDevice::aboutToDraw()
 {
-    if (NULL != fNotificationClient) {
+    if (fNotificationClient) {
         fNotificationClient->prepareForDraw();
     }
     if (fCanDiscardCanvasContents) {
-        if (NULL != fSurface) {
+        if (fSurface) {
             fSurface->notifyContentWillChange(SkSurface::kDiscard_ContentChangeMode);
         }
         fCanDiscardCanvasContents = false;
@@ -474,8 +474,8 @@ SkBaseDevice* SkDeferredDevice::onCreateDevice(const SkImageInfo& info, Usage us
     return immediateDevice()->createCompatibleDevice(info);
 }
 
-SkSurface* SkDeferredDevice::newSurface(const SkImageInfo& info) {
-    return this->immediateDevice()->newSurface(info);
+SkSurface* SkDeferredDevice::newSurface(const SkImageInfo& info, const SkSurfaceProps& props) {
+    return this->immediateDevice()->newSurface(info, props);
 }
 
 bool SkDeferredDevice::onReadPixels(const SkImageInfo& info, void* pixels, size_t rowBytes,
@@ -526,6 +526,8 @@ SkDeferredCanvas::SkDeferredCanvas(SkDeferredDevice* device) : SkCanvas (device)
 void SkDeferredCanvas::init() {
     fBitmapSizeThreshold = kDeferredCanvasBitmapSizeThreshold;
     fDeferredDrawing = true; // On by default
+    fCachedCanvasSize.setEmpty();
+    fCachedCanvasSizeDirty = true;
 }
 
 void SkDeferredCanvas::setMaxRecordingStorage(size_t maxStorage) {
@@ -589,6 +591,14 @@ bool SkDeferredCanvas::isFreshFrame() const {
     return this->getDeferredDevice()->isFreshFrame();
 }
 
+SkISize SkDeferredCanvas::getCanvasSize() const {
+    if (fCachedCanvasSizeDirty) {
+        fCachedCanvasSize = this->getBaseLayerSize();
+        fCachedCanvasSizeDirty = false;
+    }
+    return fCachedCanvasSize;
+}
+
 bool SkDeferredCanvas::hasPendingCommands() const {
     return this->getDeferredDevice()->hasPendingCommands();
 }
@@ -604,11 +614,12 @@ SkDeferredCanvas::~SkDeferredCanvas() {
 
 SkSurface* SkDeferredCanvas::setSurface(SkSurface* surface) {
     SkDeferredDevice* deferredDevice = this->getDeferredDevice();
-    SkASSERT(NULL != deferredDevice);
+    SkASSERT(deferredDevice);
     // By swapping the surface into the existing device, we preserve
     // all pending commands, which can help to seamlessly recover from
     // a lost accelerated graphics context.
     deferredDevice->setSurface(surface);
+    fCachedCanvasSizeDirty = true;
     return surface;
 }
 
@@ -632,7 +643,7 @@ SkImage* SkDeferredCanvas::newImageSnapshot() {
 bool SkDeferredCanvas::isFullFrame(const SkRect* rect,
                                    const SkPaint* paint) const {
     SkCanvas* canvas = this->drawingCanvas();
-    SkISize canvasSize = this->getDeviceSize();
+    SkISize canvasSize = this->getCanvasSize();
     if (rect) {
         if (!canvas->getTotalMatrix().rectStaysRect()) {
             return false; // conservative

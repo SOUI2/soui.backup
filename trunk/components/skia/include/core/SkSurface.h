@@ -10,6 +10,7 @@
 
 #include "SkRefCnt.h"
 #include "SkImage.h"
+#include "SkSurfaceProps.h"
 
 class SkCanvas;
 class SkPaint;
@@ -35,7 +36,8 @@ public:
      *  If the requested surface cannot be created, or the request is not a
      *  supported configuration, NULL will be returned.
      */
-    static SkSurface* NewRasterDirect(const SkImageInfo&, void* pixels, size_t rowBytes);
+    static SkSurface* NewRasterDirect(const SkImageInfo&, void* pixels, size_t rowBytes,
+                                      const SkSurfaceProps* = NULL);
 
     /**
      *  The same as NewRasterDirect, but also accepts a call-back routine, which is invoked
@@ -43,7 +45,7 @@ public:
      */
     static SkSurface* NewRasterDirectReleaseProc(const SkImageInfo&, void* pixels, size_t rowBytes,
                                                  void (*releaseProc)(void* pixels, void* context),
-                                                 void* context);
+                                                 void* context, const SkSurfaceProps* = NULL);
 
     /**
      *  Return a new surface, with the memory for the pixels automatically
@@ -52,54 +54,36 @@ public:
      *  If the requested surface cannot be created, or the request is not a
      *  supported configuration, NULL will be returned.
      */
-    static SkSurface* NewRaster(const SkImageInfo&);
+    static SkSurface* NewRaster(const SkImageInfo&, const SkSurfaceProps* = NULL);
 
     /**
      *  Helper version of NewRaster. It creates a SkImageInfo with the
      *  specified width and height, and populates the rest of info to match
      *  pixels in SkPMColor format.
      */
-    static SkSurface* NewRasterPMColor(int width, int height) {
-        return NewRaster(SkImageInfo::MakeN32Premul(width, height));
+    static SkSurface* NewRasterPMColor(int width, int height, const SkSurfaceProps* props = NULL) {
+        return NewRaster(SkImageInfo::MakeN32Premul(width, height), props);
     }
-
-    /**
-     *  Text rendering modes that can be passed to NewRenderTarget*
-     */
-    enum TextRenderMode {
-        /**
-         *  This will use the standard text rendering method
-         */
-        kStandard_TextRenderMode,
-        /**
-         *  This will use signed distance fields for text rendering when possible
-         */
-        kDistanceField_TextRenderMode,
-    };
-
-    enum RenderTargetFlags {
-        kNone_RenderTargetFlag      = 0x0,
-        /*
-         * By default a RenderTarget-based surface will be cleared on creation.
-         * Pass in this flag to prevent the clear from happening.
-         */
-        kDontClear_RenderTargetFlag = 0x01,
-    };
 
     /**
      *  Return a new surface using the specified render target.
      */
-    static SkSurface* NewRenderTargetDirect(GrRenderTarget*,
-                                            TextRenderMode trm = kStandard_TextRenderMode,
-                                            RenderTargetFlags flags = kNone_RenderTargetFlag);
-
+    static SkSurface* NewRenderTargetDirect(GrRenderTarget*, const SkSurfaceProps*);
+    
+    static SkSurface* NewRenderTargetDirect(GrRenderTarget* target) {
+        return NewRenderTargetDirect(target, NULL);
+    }
+    
     /**
      *  Return a new surface whose contents will be drawn to an offscreen
      *  render target, allocated by the surface.
      */
-    static SkSurface* NewRenderTarget(GrContext*, const SkImageInfo&, int sampleCount = 0,
-                                      TextRenderMode trm = kStandard_TextRenderMode,
-                                      RenderTargetFlags flags = kNone_RenderTargetFlag);
+    static SkSurface* NewRenderTarget(GrContext*, const SkImageInfo&, int sampleCount,
+                                      const SkSurfaceProps* = NULL);
+
+    static SkSurface* NewRenderTarget(GrContext* gr, const SkImageInfo& info) {
+        return NewRenderTarget(gr, info, 0, NULL);
+    }
 
     /**
      *  Return a new surface whose contents will be drawn to an offscreen
@@ -113,9 +97,33 @@ public:
      *  Note: Scratch textures count against the GrContext's cached resource
      *  budget.
      */
-    static SkSurface* NewScratchRenderTarget(GrContext*, const SkImageInfo&, int sampleCount = 0,
-                                             TextRenderMode trm = kStandard_TextRenderMode,
-                                             RenderTargetFlags flags = kNone_RenderTargetFlag);
+    static SkSurface* NewScratchRenderTarget(GrContext*, const SkImageInfo&, int sampleCount,
+                                             const SkSurfaceProps* = NULL);
+
+    static SkSurface* NewScratchRenderTarget(GrContext* gr, const SkImageInfo& info) {
+        return NewScratchRenderTarget(gr, info, 0, NULL);
+    }
+
+#ifdef SK_SUPPORT_LEGACY_TEXTRENDERMODE
+    /**
+     *  Text rendering modes that can be passed to NewRenderTarget*
+     */
+    enum TextRenderMode {
+        /**
+         *  This will use the standard text rendering method
+         */
+        kStandard_TextRenderMode,
+        /**
+         *  This will use signed distance fields for text rendering when possible
+         */
+        kDistanceField_TextRenderMode,
+    };
+    static SkSurface* NewRenderTargetDirect(GrRenderTarget*, TextRenderMode);
+    static SkSurface* NewRenderTarget(GrContext*, const SkImageInfo&, int sampleCount,
+                                      TextRenderMode);
+    static SkSurface* NewScratchRenderTarget(GrContext*, const SkImageInfo&, int sampleCount,
+                                             TextRenderMode);
+#endif
 
     int width() const { return fWidth; }
     int height() const { return fHeight; }
@@ -204,9 +212,11 @@ public:
      */
     const void* peekPixels(SkImageInfo* info, size_t* rowBytes);
 
+    const SkSurfaceProps& props() const { return fProps; }
+
 protected:
-    SkSurface(int width, int height);
-    SkSurface(const SkImageInfo&);
+    SkSurface(int width, int height, const SkSurfaceProps*);
+    SkSurface(const SkImageInfo&, const SkSurfaceProps*);
 
     // called by subclass if their contents have changed
     void dirtyGenerationID() {
@@ -214,9 +224,10 @@ protected:
     }
 
 private:
-    const int   fWidth;
-    const int   fHeight;
-    uint32_t    fGenerationID;
+    const SkSurfaceProps fProps;
+    const int            fWidth;
+    const int            fHeight;
+    uint32_t             fGenerationID;
 
     typedef SkRefCnt INHERITED;
 };

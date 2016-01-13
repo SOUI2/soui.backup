@@ -20,7 +20,7 @@ class SkPath;
 class SkPicture;
 class SkXfermode;
 class GrContext;
-class GrEffect;
+class GrFragmentProcessor;
 
 /** \class SkShader
  *
@@ -184,6 +184,9 @@ public:
         bool canCallShadeSpan16() {
             return SkShader::CanCallShadeSpan16(this->getFlags());
         }
+
+        // Notification from blitter::blitMask in case we need to see the non-alpha channels
+        virtual void set3DMask(const SkMask*) {}
 
     protected:
         // Reference to shader, so we don't have to dupe information.
@@ -382,9 +385,8 @@ public:
      *  The GrContext may be used by the effect to create textures. The GPU device does not
      *  call createContext. Instead we pass the SkPaint here in case the shader needs paint info.
      */
-    virtual bool asNewEffect(GrContext* context, const SkPaint& paint,
-                             const SkMatrix* localMatrixOrNull, GrColor* paintColor,
-                             GrEffect** effect) const;
+    virtual bool asFragmentProcessor(GrContext*, const SkPaint&, const SkMatrix*, GrColor*,
+                                     GrFragmentProcessor**) const;
 
     /**
      *  If the shader can represent its "average" luminance in a single color, return true and

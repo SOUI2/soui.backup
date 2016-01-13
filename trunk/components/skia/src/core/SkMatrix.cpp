@@ -176,20 +176,16 @@ bool SkMatrix::isSimilarity(SkScalar tol) const {
         return false;
     }
 
-    // it has scales and skews, but it could also be rotation, check it out.
-    SkVector vec[2];
-    vec[0].set(mx, sx);
-    vec[1].set(sy, my);
-
-    return SkScalarNearlyZero(vec[0].dot(vec[1]), SkScalarSquare(tol)) &&
-           SkScalarNearlyEqual(vec[0].lengthSqd(), vec[1].lengthSqd(),
-                               SkScalarSquare(tol));
+    // upper 2x2 is rotation/reflection + uniform scale if basis vectors
+    // are 90 degree rotations of each other
+    return (SkScalarNearlyEqual(mx, my, tol) && SkScalarNearlyEqual(sx, -sy, tol))
+        || (SkScalarNearlyEqual(mx, -my, tol) && SkScalarNearlyEqual(sx, sy, tol));
 }
 
 bool SkMatrix::preservesRightAngles(SkScalar tol) const {
     TypeMask mask = this->getType();
 
-    if (mask <= (SkMatrix::kTranslate_Mask | SkMatrix::kScale_Mask)) {
+    if (mask <= kTranslate_Mask) {
         // identity, translate and/or scale
         return true;
     }
@@ -197,7 +193,7 @@ bool SkMatrix::preservesRightAngles(SkScalar tol) const {
         return false;
     }
 
-    SkASSERT(mask & kAffine_Mask);
+    SkASSERT(mask & (kAffine_Mask | kScale_Mask));
 
     SkScalar mx = fMat[kMScaleX];
     SkScalar my = fMat[kMScaleY];
@@ -208,14 +204,12 @@ bool SkMatrix::preservesRightAngles(SkScalar tol) const {
         return false;
     }
 
-    // it has scales and skews, but it could also be rotation, check it out.
+    // upper 2x2 is scale + rotation/reflection if basis vectors are orthogonal
     SkVector vec[2];
-    vec[0].set(mx, sx);
-    vec[1].set(sy, my);
+    vec[0].set(mx, sy);
+    vec[1].set(sx, my);
 
-    return SkScalarNearlyZero(vec[0].dot(vec[1]), SkScalarSquare(tol)) &&
-           SkScalarNearlyEqual(vec[0].lengthSqd(), vec[1].lengthSqd(),
-                               SkScalarSquare(tol));
+    return SkScalarNearlyZero(vec[0].dot(vec[1]), SkScalarSquare(tol));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1067,7 +1061,7 @@ void SkMatrix::mapVectors(SkPoint dst[], const SkPoint src[], int count) const {
 }
 
 bool SkMatrix::mapRect(SkRect* dst, const SkRect& src) const {
-    SkASSERT(dst && &src);
+    SkASSERT(dst);
 
     if (this->rectStaysRect()) {
         this->mapPoints((SkPoint*)dst, (const SkPoint*)&src, 2);
@@ -1772,15 +1766,15 @@ bool SkDecomposeUpper2x2(const SkMatrix& matrix,
         sin1 = -sin1;
     }
 
-    if (NULL != scale) {
+    if (scale) {
         scale->fX = SkDoubleToScalar(w1);
         scale->fY = SkDoubleToScalar(w2);
     }
-    if (NULL != rotation1) {
+    if (rotation1) {
         rotation1->fX = cos1;
         rotation1->fY = sin1;
     }
-    if (NULL != rotation2) {
+    if (rotation2) {
         rotation2->fX = cos2;
         rotation2->fY = sin2;
     }

@@ -62,8 +62,8 @@ public:
     // Called by GrContext when the underlying backend context has been destroyed.
     // GrGpu should use this to ensure that no backend API calls will be made from
     // here onward, including in its destructor. Subclasses should call
-    // INHERITED::contextAbandonded() if they override this.
-    virtual void contextAbandonded();
+    // INHERITED::contextAbandoned() if they override this.
+    virtual void contextAbandoned();
 
     /**
      * The GrGpu object normally assumes that no outsider is setting state
@@ -141,19 +141,6 @@ public:
      * @return The index buffer if successful, otherwise NULL.
      */
     GrIndexBuffer* createIndexBuffer(size_t size, bool dynamic);
-
-    /**
-     * Creates a path object that can be stenciled using stencilPath(). It is
-     * only legal to call this if the caps report support for path stenciling.
-     */
-    GrPath* createPath(const SkPath& path, const SkStrokeRec& stroke);
-
-    /**
-     * Creates a path range object that can be used to draw multiple paths via
-     * drawPaths(). It is only legal to call this if the caps report support for
-     * path rendering.
-     */
-    GrPathRange* createPathRange(size_t size, const SkStrokeRec&);
 
     /**
      * Returns an index buffer that can be used to render quads.
@@ -315,7 +302,7 @@ public:
     // GrGpu subclass sets clip bit in the stencil buffer. The subclass is
     // free to clear the remaining bits to zero if masked clears are more
     // expensive than clearing all bits.
-    virtual void clearStencilClip(const SkIRect& rect, bool insideClip) = 0;
+    virtual void clearStencilClip(GrRenderTarget*, const SkIRect& rect, bool insideClip) = 0;
 
     enum PrivateDrawStateStateBits {
         kFirstBit = (GrDrawState::kLastPublicStateBit << 1),
@@ -339,6 +326,8 @@ public:
     static bool IsPathRenderingDrawType(DrawType type) {
         return kDrawPath_DrawType == type || kDrawPaths_DrawType == type;
     }
+
+    GrContext::GPUStats* gpuStats() { return &fGPUStats; }
 
 protected:
     DrawType PrimTypeToDrawType(GrPrimitiveType type) {
@@ -376,6 +365,8 @@ protected:
                                           unsigned int* mask);
 
     GrClipMaskManager           fClipMaskManager;
+
+    GrContext::GPUStats         fGPUStats;
 
     struct GeometryPoolState {
         const GrVertexBuffer* fPoolVertexBuffer;
@@ -435,7 +426,8 @@ private:
     // overridden by backend-specific derived class to perform the clear and
     // clearRect. NULL rect means clear whole target. If canIgnoreRect is
     // true, it is okay to perform a full clear instead of a partial clear
-    virtual void onClear(const SkIRect* rect, GrColor color, bool canIgnoreRect) = 0;
+    virtual void onClear(GrRenderTarget*, const SkIRect* rect, GrColor color,
+                         bool canIgnoreRect) = 0;
 
     // overridden by backend-specific derived class to perform the draw call.
     virtual void onGpuDraw(const DrawInfo&) = 0;
@@ -470,8 +462,8 @@ private:
     // returns false if current state is unsupported.
     virtual bool flushGraphicsState(DrawType, const GrDeviceCoordTexture* dstCopy) = 0;
 
-    // clears the entire stencil buffer to 0
-    virtual void clearStencil() = 0;
+    // clears target's entire stencil buffer to 0
+    virtual void clearStencil(GrRenderTarget* target) = 0;
 
     // Given a rt, find or create a stencil buffer and attach it
     bool attachStencilBufferToRenderTarget(GrRenderTarget* target);

@@ -30,7 +30,7 @@ public:
     GrGpuGL(const GrGLContext& ctx, GrContext* context);
     virtual ~GrGpuGL();
 
-    virtual void contextAbandonded() SK_OVERRIDE;
+    virtual void contextAbandoned() SK_OVERRIDE;
 
     const GrGLContext& glContext() const { return fGLContext; }
 
@@ -125,7 +125,8 @@ private:
         GrStencilBuffer* sb,
         GrRenderTarget* rt) SK_OVERRIDE;
 
-    virtual void onClear(const SkIRect* rect, GrColor color, bool canIgnoreRect) SK_OVERRIDE;
+    virtual void onClear(GrRenderTarget*, const SkIRect* rect, GrColor color,
+                         bool canIgnoreRect) SK_OVERRIDE;
 
     virtual bool onReadPixels(GrRenderTarget* target,
                               int left, int top,
@@ -144,12 +145,12 @@ private:
     virtual void onGpuDraw(const DrawInfo&) SK_OVERRIDE;
 
 
-    virtual void clearStencil() SK_OVERRIDE;
-    virtual void clearStencilClip(const SkIRect& rect,
+    virtual void clearStencil(GrRenderTarget*) SK_OVERRIDE;
+    virtual void clearStencilClip(GrRenderTarget*, const SkIRect& rect,
                                   bool insideClip) SK_OVERRIDE;
     virtual bool flushGraphicsState(DrawType, const GrDeviceCoordTexture* dstCopy) SK_OVERRIDE;
 
-    // GrDrawTarget ovverides
+    // GrDrawTarget overrides
     virtual void didAddGpuTraceMarker() SK_OVERRIDE;
     virtual void didRemoveGpuTraceMarker() SK_OVERRIDE;
 
@@ -165,7 +166,8 @@ private:
     // The params should be the final coefficients to apply
     // (after any blending optimizations or dual source blending considerations
     // have been accounted for).
-    void flushBlend(bool isLines, GrBlendCoeff srcCoeff, GrBlendCoeff dstCoeff);
+    void flushBlend(const GrOptDrawState& optState, bool isLines,
+                    GrBlendCoeff srcCoeff, GrBlendCoeff dstCoeff);
 
     bool hasExtension(const char* ext) const { return fGLContext.hasExtension(ext); }
 
@@ -178,8 +180,9 @@ private:
 
         void abandon();
         GrGLProgram* getProgram(const GrGLProgramDesc& desc,
-                                const GrEffectStage* colorStages[],
-                                const GrEffectStage* coverageStages[]);
+                                const GrGeometryStage* geometryProcessor,
+                                const GrFragmentStage* colorStages[],
+                                const GrFragmentStage* coverageStages[]);
 
     private:
         enum {
@@ -214,11 +217,11 @@ private:
     };
 
     // flushes dithering, color-mask, and face culling stat
-    void flushMiscFixedFunctionState();
+    void flushMiscFixedFunctionState(const GrOptDrawState&);
 
     // flushes the scissor. see the note on flushBoundTextureAndParams about
     // flushing the scissor after that function is called.
-    void flushScissor();
+    void flushScissor(const GrGLIRect& rtViewport, GrSurfaceOrigin rtOrigin);
 
     void initFSAASupport();
 
@@ -229,11 +232,12 @@ private:
     // ensures that such operations don't negatively interact with tracking bound textures.
     void setScratchTextureUnit();
 
-    // bound is region that may be modified and therefore has to be resolved.
+    // bounds is region that may be modified and therefore has to be resolved.
     // NULL means whole target. Can be an empty rect.
-    void flushRenderTarget(const SkIRect* bound);
+    void flushRenderTarget(GrGLRenderTarget*, const SkIRect* bounds);
+
     void flushStencil(DrawType);
-    void flushAAState(DrawType);
+    void flushAAState(const GrOptDrawState&, DrawType);
 
     bool configToGLFormats(GrPixelConfig config,
                            bool getSizedInternal,
@@ -263,6 +267,8 @@ private:
     bool createRenderTargetObjects(int width, int height,
                                    GrGLuint texID,
                                    GrGLRenderTarget::Desc* desc);
+
+    GrGLuint bindSurfaceAsFBO(GrSurface* surface, GrGLenum fboTarget, GrGLIRect* viewport);
 
     GrGLContext fGLContext;
 
@@ -311,7 +317,7 @@ private:
             fDefaultVertexArrayBoundIndexBufferID = false;
             fDefaultVertexArrayBoundIndexBufferIDIsValid = false;
             fDefaultVertexArrayAttribState.invalidate();
-            if (NULL != fVBOVertexArray) {
+            if (fVBOVertexArray) {
                 fVBOVertexArray->invalidateCachedState();
             }
         }
@@ -339,7 +345,7 @@ private:
             if (fBoundVertexBufferIDIsValid && id == fBoundVertexBufferID) {
                 fBoundVertexBufferID = 0;
             }
-            if (NULL != fVBOVertexArray) {
+            if (fVBOVertexArray) {
                 fVBOVertexArray->notifyVertexBufferDelete(id);
             }
             fDefaultVertexArrayAttribState.notifyVertexBufferDelete(id);
@@ -350,7 +356,7 @@ private:
                 id == fDefaultVertexArrayBoundIndexBufferID) {
                 fDefaultVertexArrayBoundIndexBufferID = 0;
             }
-            if (NULL != fVBOVertexArray) {
+            if (fVBOVertexArray) {
                 fVBOVertexArray->notifyIndexBufferDelete(id);
             }
         }

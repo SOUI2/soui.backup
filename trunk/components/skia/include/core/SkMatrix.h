@@ -60,6 +60,10 @@ public:
         return this->getType() == 0;
     }
 
+    bool isScaleTranslate() const {
+        return !(this->getType() & ~(kScale_Mask | kTranslate_Mask));
+    }
+
     /** Returns true if will map a rectangle to another rectangle. This can be
         true if the matrix is identity, scale-only, or rotates a multiple of
         90 degrees.
@@ -81,12 +85,12 @@ public:
                         kPerspective_Mask);
     }
 
-    /** Returns true if the matrix contains only translation, rotation or uniform scale
+    /** Returns true if the matrix contains only translation, rotation/reflection or uniform scale
         Returns false if other transformation types are included or is degenerate
      */
     bool isSimilarity(SkScalar tol = SK_ScalarNearlyZero) const;
 
-    /** Returns true if the matrix contains only translation, rotation or scale
+    /** Returns true if the matrix contains only translation, rotation/reflection or scale
         (non-uniform scale is allowed).
         Returns false if other transformation types are included or is degenerate
      */
@@ -349,7 +353,7 @@ public:
     bool SK_WARN_UNUSED_RESULT invert(SkMatrix* inverse) const {
         // Allow the trivial case to be inlined.
         if (this->isIdentity()) {
-            if (NULL != inverse) {
+            if (inverse) {
                 inverse->reset();
             }
             return true;

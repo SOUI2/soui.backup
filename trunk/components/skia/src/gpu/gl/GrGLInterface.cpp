@@ -61,6 +61,7 @@ const GrGLInterface* GrGLInterfaceRemoveNVPR(const GrGLInterface* interface) {
     newInterface->fFunctions.fStencilThenCoverFillPathInstanced = NULL;
     newInterface->fFunctions.fStencilThenCoverStrokePathInstanced = NULL;
     newInterface->fFunctions.fProgramPathFragmentInputGen = NULL;
+    newInterface->fFunctions.fPathMemoryGlyphIndexArray = NULL;
     return newInterface;
 }
 
@@ -74,7 +75,7 @@ GrGLInterface::GrGLInterface() {
 }
 
 GrGLInterface* GrGLInterface::NewClone(const GrGLInterface* interface) {
-    SkASSERT(NULL != interface);
+    SkASSERT(interface);
 
     GrGLInterface* clone = SkNEW(GrGLInterface);
     clone->fStandard = interface->fStandard;
@@ -485,7 +486,8 @@ bool GrGLInterface::validate() const {
                 NULL == fFunctions.fStencilThenCoverStrokePath ||
                 NULL == fFunctions.fStencilThenCoverFillPathInstanced ||
                 NULL == fFunctions.fStencilThenCoverStrokePathInstanced ||
-                NULL == fFunctions.fProgramPathFragmentInputGen) {
+                NULL == fFunctions.fProgramPathFragmentInputGen ||
+                NULL == fFunctions.fPathMemoryGlyphIndexArray) {
                 RETURN_FALSE_INTERFACE
             }
         }

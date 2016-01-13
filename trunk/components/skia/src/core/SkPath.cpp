@@ -671,6 +671,8 @@ void SkPath::moveTo(SkScalar x, SkScalar y) {
     fLastMoveToIndex = fPathRef->countPoints();
 
     ed.growForVerb(kMove_Verb)->set(x, y);
+
+    DIRTY_AFTER_EDIT;
 }
 
 void SkPath::rMoveTo(SkScalar x, SkScalar y) {
@@ -1912,7 +1914,7 @@ void SkPath::RawIter::setPath(const SkPath& path) {
 }
 
 SkPath::Verb SkPath::RawIter::next(SkPoint pts[4]) {
-    SkASSERT(NULL != pts);
+    SkASSERT(pts);
     if (fVerbs == fVerbStop) {
         return kDone_Verb;
     }
@@ -2005,7 +2007,7 @@ size_t SkPath::readFromMemory(const void* storage, size_t length) {
         SkDEBUGCODE(this->validate();)
         buffer.skipToAlign4();
         sizeRead = buffer.pos();
-    } else if (NULL != pathRef) {
+    } else if (pathRef) {
         // If the buffer is not valid, pathRef should be NULL
         sk_throw();
     }
@@ -2017,7 +2019,11 @@ size_t SkPath::readFromMemory(const void* storage, size_t length) {
 #include "SkString.h"
 #include "SkStream.h"
 
-static void append_scalar(SkString* str, SkScalar value) {
+static void append_scalar(SkString* str, SkScalar value, bool dumpAsHex) {
+    if (dumpAsHex) {
+        str->appendf("SkBits2Float(0x%08x)", SkFloat2Bits(value));
+        return;
+    }
     SkString tmp;
     tmp.printf("%g", value);
     if (tmp.contains('.')) {
@@ -2027,7 +2033,7 @@ static void append_scalar(SkString* str, SkScalar value) {
 }
 
 static void append_params(SkString* str, const char label[], const SkPoint pts[],
-                          int count, SkScalar conicWeight = -1) {
+                          int count, bool dumpAsHex, SkScalar conicWeight = -1) {
     str->append(label);
     str->append("(");
 
@@ -2035,19 +2041,19 @@ static void append_params(SkString* str, const char label[], const SkPoint pts[]
     count *= 2;
 
     for (int i = 0; i < count; ++i) {
-        append_scalar(str, values[i]);
+        append_scalar(str, values[i], dumpAsHex);
         if (i < count - 1) {
             str->append(", ");
         }
     }
     if (conicWeight >= 0) {
         str->append(", ");
-        append_scalar(str, conicWeight);
+        append_scalar(str, conicWeight, dumpAsHex);
     }
     str->append(");\n");
 }
 
-void SkPath::dump(SkWStream* wStream, bool forceClose) const {
+void SkPath::dump(SkWStream* wStream, bool forceClose, bool dumpAsHex) const {
     Iter    iter(*this, forceClose);
     SkPoint pts[4];
     Verb    verb;
@@ -2060,19 +2066,19 @@ void SkPath::dump(SkWStream* wStream, bool forceClose) const {
     while ((verb = iter.next(pts, false)) != kDone_Verb) {
         switch (verb) {
             case kMove_Verb:
-                append_params(&builder, "path.moveTo", &pts[0], 1);
+                append_params(&builder, "path.moveTo", &pts[0], 1, dumpAsHex);
                 break;
             case kLine_Verb:
-                append_params(&builder, "path.lineTo", &pts[1], 1);
+                append_params(&builder, "path.lineTo", &pts[1], 1, dumpAsHex);
                 break;
             case kQuad_Verb:
-                append_params(&builder, "path.quadTo", &pts[1], 2);
+                append_params(&builder, "path.quadTo", &pts[1], 2, dumpAsHex);
                 break;
             case kConic_Verb:
-                append_params(&builder, "path.conicTo", &pts[1], 2, iter.conicWeight());
+                append_params(&builder, "path.conicTo", &pts[1], 2, dumpAsHex, iter.conicWeight());
                 break;
             case kCubic_Verb:
-                append_params(&builder, "path.cubicTo", &pts[1], 3);
+                append_params(&builder, "path.cubicTo", &pts[1], 3, dumpAsHex);
                 break;
             case kClose_Verb:
                 builder.append("path.close();\n");
@@ -2091,7 +2097,11 @@ void SkPath::dump(SkWStream* wStream, bool forceClose) const {
 }
 
 void SkPath::dump() const {
-    this->dump(NULL, false);
+    this->dump(NULL, false, false);
+}
+
+void SkPath::dumpHex() const {
+    this->dump(NULL, false, true);
 }
 
 #ifdef SK_DEBUG
@@ -2132,6 +2142,16 @@ void SkPath::validate() const {
 static int sign(SkScalar x) { return x < 0; }
 #define kValueNeverReturnedBySign   2
 
+enum DirChange {
+    kLeft_DirChange,
+    kRight_DirChange,
+    kStraight_DirChange,
+    kBackwards_DirChange,
+
+    kInvalid_DirChange
+};
+
+
 static bool almost_equal(SkScalar compA, SkScalar compB) {
     // The error epsilon was empirically derived; worse case round rects
     // with a mid point outset by 2x float epsilon in tests had an error
@@ -2146,13 +2166,37 @@ static bool almost_equal(SkScalar compA, SkScalar compB) {
     return aBits < bBits + epsilon && bBits < aBits + epsilon;
 }
 
+static DirChange direction_change(const SkPoint& lastPt, const SkVector& curPt,
+                                  const SkVector& lastVec, const SkVector& curVec) {
+    SkScalar cross = SkPoint::CrossProduct(lastVec, curVec);
+
+    SkScalar smallest = SkTMin(curPt.fX, SkTMin(curPt.fY, SkTMin(lastPt.fX, lastPt.fY)));
+    SkScalar largest = SkTMax(curPt.fX, SkTMax(curPt.fY, SkTMax(lastPt.fX, lastPt.fY)));
+    largest = SkTMax(largest, -smallest);
+
+    if (!almost_equal(largest, largest + cross)) {
+        int sign = SkScalarSignAsInt(cross);
+        if (sign) {
+            return (1 == sign) ? kRight_DirChange : kLeft_DirChange;
+        }
+    }
+
+    if (!SkScalarNearlyZero(lastVec.lengthSqd(), SK_ScalarNearlyZero*SK_ScalarNearlyZero) &&
+        !SkScalarNearlyZero(curVec.lengthSqd(), SK_ScalarNearlyZero*SK_ScalarNearlyZero) &&
+        lastVec.dot(curVec) < 0.0f) {
+        return kBackwards_DirChange;
+    }
+
+    return kStraight_DirChange;
+}
+
 // only valid for a single contour
 struct Convexicator {
     Convexicator()
     : fPtCount(0)
     , fConvexity(SkPath::kConvex_Convexity)
     , fDirection(SkPath::kUnknown_Direction) {
-        fSign = 0;
+        fExpectedDir = kInvalid_DirChange;
         // warnings
         fLastPt.set(0, 0);
         fCurrPt.set(0, 0);
@@ -2211,20 +2255,28 @@ struct Convexicator {
 private:
     void addVec(const SkVector& vec) {
         SkASSERT(vec.fX || vec.fY);
-        SkScalar cross = SkPoint::CrossProduct(fLastVec, vec);
-        SkScalar smallest = SkTMin(fCurrPt.fX, SkTMin(fCurrPt.fY, SkTMin(fLastPt.fX, fLastPt.fY)));
-        SkScalar largest = SkTMax(fCurrPt.fX, SkTMax(fCurrPt.fY, SkTMax(fLastPt.fX, fLastPt.fY)));
-        largest = SkTMax(largest, -smallest);
-        if (!almost_equal(largest, largest + cross)) {
-            int sign = SkScalarSignAsInt(cross);
-            if (0 == fSign) {
-                fSign = sign;
-                fDirection = (1 == sign) ? SkPath::kCW_Direction : SkPath::kCCW_Direction;
-            } else if (sign && fSign != sign) {
-                fConvexity = SkPath::kConcave_Convexity;
-                fDirection = SkPath::kUnknown_Direction;
-            }
-            fLastVec = vec;
+        DirChange dir = direction_change(fLastPt, fCurrPt, fLastVec, vec);
+        switch (dir) {
+            case kLeft_DirChange:       // fall through
+            case kRight_DirChange:
+                if (kInvalid_DirChange == fExpectedDir) {
+                    fExpectedDir = dir;
+                    fDirection = (kRight_DirChange == dir) ? SkPath::kCW_Direction
+                                                           : SkPath::kCCW_Direction;
+                } else if (dir != fExpectedDir) {
+                    fConvexity = SkPath::kConcave_Convexity;
+                    fDirection = SkPath::kUnknown_Direction;
+                }
+                fLastVec = vec;
+                break;
+            case kStraight_DirChange:
+                break;
+            case kBackwards_DirChange:
+                fLastVec = vec;
+                break;
+            case kInvalid_DirChange:
+                SkFAIL("Use of invalid direction change flag");
+                break;
         }
     }
 
@@ -2234,7 +2286,7 @@ private:
     // value with the current vec is deemed to be of a significant value.
     SkVector            fLastVec, fFirstVec;
     int                 fPtCount;   // non-degenerate points
-    int                 fSign;
+    DirChange           fExpectedDir;
     SkPath::Convexity   fConvexity;
     SkPath::Direction   fDirection;
     int                 fDx, fDy, fSx, fSy;

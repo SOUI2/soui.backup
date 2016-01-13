@@ -622,11 +622,8 @@ const SkPMColor* SkGradientShaderBase::GradientShaderCache::getCache32() {
 }
 
 void SkGradientShaderBase::GradientShaderCache::initCache32(GradientShaderCache* cache) {
-    SkImageInfo info;
-    info.fWidth = kCache32Count;
-    info.fHeight = 4;   // for our 4 dither rows
-    info.fAlphaType = kPremul_SkAlphaType;
-    info.fColorType = kN32_SkColorType;
+    const int kNumberOfDitherRows = 4;
+    const SkImageInfo info = SkImageInfo::MakeN32Premul(kCache32Count, kNumberOfDitherRows);
 
     SkASSERT(NULL == cache->fCache32PixelRef);
     cache->fCache32PixelRef = SkMallocPixelRef::NewAllocate(info, 0, NULL);
@@ -948,11 +945,11 @@ SK_DEFINE_FLATTENABLE_REGISTRAR_GROUP_END
 #if SK_SUPPORT_GPU
 
 #include "effects/GrTextureStripAtlas.h"
-#include "GrTBackendEffectFactory.h"
+#include "GrTBackendProcessorFactory.h"
 #include "gl/builders/GrGLProgramBuilder.h"
 #include "SkGr.h"
 
-GrGLGradientEffect::GrGLGradientEffect(const GrBackendEffectFactory& factory)
+GrGLGradientEffect::GrGLGradientEffect(const GrBackendProcessorFactory& factory)
     : INHERITED(factory)
     , fCachedYCoord(SK_ScalarMax) {
 }
@@ -1004,9 +1001,9 @@ static inline void set_mul_color_uni(const GrGLProgramDataManager& pdman,
 }
 
 void GrGLGradientEffect::setData(const GrGLProgramDataManager& pdman,
-                                 const GrDrawEffect& drawEffect) {
+                                 const GrProcessor& processor) {
 
-    const GrGradientEffect& e = drawEffect.castEffect<GrGradientEffect>();
+    const GrGradientEffect& e = processor.cast<GrGradientEffect>();
 
 
     if (SkGradientShaderBase::kTwo_GpuColorType == e.getColorType()){
@@ -1041,8 +1038,8 @@ void GrGLGradientEffect::setData(const GrGLProgramDataManager& pdman,
 }
 
 
-uint32_t GrGLGradientEffect::GenBaseGradientKey(const GrDrawEffect& drawEffect) {
-    const GrGradientEffect& e = drawEffect.castEffect<GrGradientEffect>();
+uint32_t GrGLGradientEffect::GenBaseGradientKey(const GrProcessor& processor) {
+    const GrGradientEffect& e = processor.cast<GrGradientEffect>();
 
     uint32_t key = 0;
 
@@ -1153,7 +1150,7 @@ GrGradientEffect::GrGradientEffect(GrContext* ctx,
         desc.fContext = ctx;
         desc.fConfig = SkImageInfo2GrPixelConfig(bitmap.info());
         fAtlas = GrTextureStripAtlas::GetAtlas(desc);
-        SkASSERT(NULL != fAtlas);
+        SkASSERT(fAtlas);
 
         // We always filter the gradient table. Each table is one row of a texture, always y-clamp.
         GrTextureParams params;
@@ -1188,8 +1185,8 @@ GrGradientEffect::~GrGradientEffect() {
     }
 }
 
-bool GrGradientEffect::onIsEqual(const GrEffect& effect) const {
-    const GrGradientEffect& s = CastEffect<GrGradientEffect>(effect);
+bool GrGradientEffect::onIsEqual(const GrProcessor& processor) const {
+    const GrGradientEffect& s = processor.cast<GrGradientEffect>();
 
     if (this->fColorType == s.getColorType()){
 
@@ -1242,7 +1239,7 @@ int GrGradientEffect::RandomGradientParams(SkRandom* random,
     SkScalar stop = 0.f;
     for (int i = 0; i < outColors; ++i) {
         colors[i] = random->nextU();
-        if (NULL != *stops) {
+        if (*stops) {
             (*stops)[i] = stop;
             stop = i < outColors - 1 ? stop + random->nextUScalar1() * (1.f - stop) : 1.f;
         }

@@ -62,7 +62,7 @@ public:
         stream->ref();
     }
     ~SkPNGImageIndex() {
-        if (NULL != fPng_ptr) {
+        if (fPng_ptr) {
             png_destroy_read_struct(&fPng_ptr, &fInfo_ptr, png_infopp_NULL);
         }
     }
@@ -823,7 +823,7 @@ bool SkPNGImageDecoder::onDecodeSubset(SkBitmap* bm, const SkIRect& region) {
             return false;
         }
     } else {
-        if (!decodedBitmap.allocPixels(NULL, needColorTable ? colorTable : NULL)) {
+        if (!decodedBitmap.tryAllocPixels(NULL, needColorTable ? colorTable : NULL)) {
             return false;
         }
     }
@@ -1161,7 +1161,7 @@ bool SkPNGImageEncoder::onEncode(SkWStream* stream, const SkBitmap& bitmap, int 
 
     // we must do this after we have locked the pixels
     SkColorTable* ctable = bitmap.getColorTable();
-    if (NULL != ctable) {
+    if (ctable) {
         if (ctable->count() == 0) {
             return false;
         }

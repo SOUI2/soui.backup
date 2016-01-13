@@ -61,6 +61,24 @@ public:
     }
 
     /**
+     * Remove the last item, only call if count() != 0
+     */
+    void pop_back() {
+        SkASSERT(fCount);
+        SkASSERT(fInsertionIndexInBlock > 0);
+        --fInsertionIndexInBlock;
+        --fCount;
+        if (0 == fInsertionIndexInBlock) {
+            // Never delete the first block
+            if (fBlocks.count() > 1) {
+                sk_free(fBlocks.back());
+                fBlocks.pop_back();
+                fInsertionIndexInBlock = fItemsPerBlock;
+            }
+        }
+    }
+
+    /**
      * Removes all added items.
      */
     void reset() {
@@ -108,7 +126,6 @@ public:
         SkASSERT(fInsertionIndexInBlock > 0);
         return (const char*)(fBlocks.back()) + (fInsertionIndexInBlock - 1) * fItemSize;
     }
-
 
     /**
      * Iterates through the allocator. This is faster than using operator[] when walking linearly
@@ -207,8 +224,10 @@ private:
     typedef SkNoncopyable INHERITED;
 };
 
-template <typename T>
-class GrTAllocator : SkNoncopyable {
+template <typename T> class GrTAllocator;
+template <typename T> void* operator new(size_t, GrTAllocator<T>*);
+
+template <typename T> class GrTAllocator : SkNoncopyable {
 public:
     virtual ~GrTAllocator() { this->reset(); };
 
@@ -227,16 +246,24 @@ public:
      */
     T& push_back() {
         void* item = fAllocator.push_back();
-        SkASSERT(NULL != item);
+        SkASSERT(item);
         SkNEW_PLACEMENT(item, T);
         return *(T*)item;
     }
 
     T& push_back(const T& t) {
         void* item = fAllocator.push_back();
-        SkASSERT(NULL != item);
+        SkASSERT(item);
         SkNEW_PLACEMENT_ARGS(item, T, (t));
         return *(T*)item;
+    }
+
+    /**
+     * Remove the last item, only call if count() != 0
+     */
+    void pop_back() {
+        this->back().~T();
+        fAllocator.pop_back();
     }
 
     /**
@@ -335,6 +362,8 @@ protected:
     }
 
 private:
+    friend void* operator new<T>(size_t, GrTAllocator*);
+
     GrAllocator fAllocator;
     typedef SkNoncopyable INHERITED;
 };
@@ -351,5 +380,19 @@ public:
 private:
     SkAlignedSTStorage<N, T> fStorage;
 };
+
+template <typename T> void* operator new(size_t size, GrTAllocator<T>* allocator) {
+    return allocator->fAllocator.push_back();
+}
+
+// Skia doesn't use C++ exceptions but it may be compiled with them enabled. Having an op delete
+// to match the op new silences warnings about missing op delete when a constructor throws an
+// exception.
+template <typename T> void operator delete(void*, GrTAllocator<T>*) {
+    SK_CRASH();
+}
+
+#define GrNEW_APPEND_TO_ALLOCATOR(allocator_ptr, type_name, args) \
+    new (allocator_ptr) type_name args
 
 #endif

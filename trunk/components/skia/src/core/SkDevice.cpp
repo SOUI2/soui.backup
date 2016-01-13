@@ -6,22 +6,15 @@
  */
 
 #include "SkDevice.h"
+#include "SkDeviceProperties.h"
 #include "SkDraw.h"
 #include "SkMetaData.h"
 #include "SkPatchUtils.h"
+#include "SkShader.h"
+#include "SkTextBlob.h"
 
 SkBaseDevice::SkBaseDevice()
-    : fLeakyProperties(SkDeviceProperties::MakeDefault())
-#ifdef SK_DEBUG
-    , fAttachedToCanvas(false)
-#endif
-{
-    fOrigin.setZero();
-    fMetaData = NULL;
-}
-
-SkBaseDevice::SkBaseDevice(const SkDeviceProperties& deviceProperties)
-    : fLeakyProperties(deviceProperties)
+    : fLeakyProperties(SkNEW_ARGS(SkDeviceProperties, (SkDeviceProperties::kLegacyLCD_InitType)))
 #ifdef SK_DEBUG
     , fAttachedToCanvas(false)
 #endif
@@ -31,7 +24,8 @@ SkBaseDevice::SkBaseDevice(const SkDeviceProperties& deviceProperties)
 }
 
 SkBaseDevice::~SkBaseDevice() {
-    delete fMetaData;
+    SkDELETE(fLeakyProperties);
+    SkDELETE(fMetaData);
 }
 
 SkBaseDevice* SkBaseDevice::createCompatibleDevice(const SkImageInfo& info) {
@@ -40,6 +34,10 @@ SkBaseDevice* SkBaseDevice::createCompatibleDevice(const SkImageInfo& info) {
 
 SkBaseDevice* SkBaseDevice::createCompatibleDeviceForSaveLayer(const SkImageInfo& info) {
     return this->onCreateDevice(info, kSaveLayer_Usage);
+}
+
+SkBaseDevice* SkBaseDevice::createCompatibleDeviceForImageFilter(const SkImageInfo& info) {
+    return this->onCreateDevice(info, kImageFilter_Usage);
 }
 
 SkMetaData& SkBaseDevice::getMetaData() {
@@ -63,7 +61,11 @@ const SkBitmap& SkBaseDevice::accessBitmap(bool changePixels) {
     return bitmap;
 }
 
-SkSurface* SkBaseDevice::newSurface(const SkImageInfo&) { return NULL; }
+void SkBaseDevice::setPixelGeometry(SkPixelGeometry geo) {
+    fLeakyProperties->fPixelGeometry = geo;
+}
+
+SkSurface* SkBaseDevice::newSurface(const SkImageInfo&, const SkSurfaceProps&) { return NULL; }
 
 const void* SkBaseDevice::peekPixels(SkImageInfo*, size_t*) { return NULL; }
 
@@ -91,6 +93,57 @@ void SkBaseDevice::drawPatch(const SkDraw& draw, const SkPoint cubics[12], const
         this->drawVertices(draw, SkCanvas::kTriangles_VertexMode, data.fVertexCount, data.fPoints,
                            data.fTexCoords, data.fColors, xmode, data.fIndices, data.fIndexCount,
                            paint);
+    }
+}
+
+void SkBaseDevice::drawTextBlob(const SkDraw& draw, const SkTextBlob* blob, SkScalar x, SkScalar y,
+                                const SkPaint &paint) {
+
+    SkPaint runPaint = paint;
+    SkMatrix localMatrix;
+    SkDraw localDraw(draw);
+
+    if (x || y) {
+        localMatrix = *draw.fMatrix;
+        localMatrix.preTranslate(x, y);
+        localDraw.fMatrix = &localMatrix;
+
+        if (paint.getShader()) {
+            // FIXME: We need to compensate for the translate above. This is suboptimal but
+            // temporary -- until we get proper derived class drawTextBlob implementations.
+
+            // TODO: pass x,y down to the other methods so they can handle the additional
+            // translate without needing to allocate a new shader.
+            SkMatrix shaderMatrix;
+            shaderMatrix.setTranslate(-x, -y);
+            SkAutoTUnref<SkShader> wrapper(
+                SkShader::CreateLocalMatrixShader(paint.getShader(), shaderMatrix));
+            runPaint.setShader(wrapper);
+        }
+    }
+
+    SkTextBlob::RunIterator it(blob);
+    while (!it.done()) {
+        size_t textLen = it.glyphCount() * sizeof(uint16_t);
+        const SkPoint& offset = it.offset();
+        // applyFontToPaint() always overwrites the exact same attributes,
+        // so it is safe to not re-seed the paint.
+        it.applyFontToPaint(&runPaint);
+
+        switch (it.positioning()) {
+        case SkTextBlob::kDefault_Positioning:
+            this->drawText(localDraw, it.glyphs(), textLen, offset.x(), offset.y(), runPaint);
+            break;
+        case SkTextBlob::kHorizontal_Positioning:
+        case SkTextBlob::kFull_Positioning:
+            this->drawPosText(localDraw, it.glyphs(), textLen, it.pos(), offset.y(),
+                              SkTextBlob::ScalarsPerGlyph(it.positioning()), runPaint);
+            break;
+        default:
+            SkFAIL("unhandled positioning mode");
+        }
+
+        it.next();
     }
 }
 

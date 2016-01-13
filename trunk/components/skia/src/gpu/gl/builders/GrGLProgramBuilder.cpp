@@ -9,7 +9,6 @@
 #include "gl/GrGLSLPrettyPrint.h"
 #include "gl/GrGLUniformHandle.h"
 #include "GrCoordTransform.h"
-#include "GrDrawEffect.h"
 #include "../GrGpuGL.h"
 #include "GrGLFragmentShaderBuilder.h"
 #include "GrGLProgramBuilder.h"
@@ -31,8 +30,9 @@ static const GrGLShaderVar::Precision kDefaultFragmentPrecision = GrGLShaderVar:
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool GrGLProgramBuilder::genProgram(const GrEffectStage* colorStages[],
-                                    const GrEffectStage* coverageStages[]) {
+bool GrGLProgramBuilder::genProgram(const GrGeometryStage* geometryProcessor,
+                                    const GrFragmentStage* colorStages[],
+                                    const GrFragmentStage* coverageStages[]) {
     const GrGLProgramDesc::KeyHeader& header = this->desc().getHeader();
 
     fFS.emitCodeBeforeEffects();
@@ -51,6 +51,8 @@ bool GrGLProgramBuilder::genProgram(const GrEffectStage* colorStages[],
                              "Color",
                              &name);
         inputColor = GrGLSLExpr4(name);
+    } else if (GrGLProgramDesc::kAllOnes_ColorInput == header.fColorInput) {
+        inputColor = GrGLSLExpr4(1);
     }
 
     if (GrGLProgramDesc::kUniform_ColorInput == header.fCoverageInput) {
@@ -61,30 +63,13 @@ bool GrGLProgramBuilder::genProgram(const GrEffectStage* colorStages[],
                              "Coverage",
                              &name);
         inputCoverage = GrGLSLExpr4(name);
-    } else if (GrGLProgramDesc::kSolidWhite_ColorInput == header.fCoverageInput) {
+    } else if (GrGLProgramDesc::kAllOnes_ColorInput == header.fCoverageInput) {
         inputCoverage = GrGLSLExpr4(1);
     }
 
-    this->emitCodeBeforeEffects(&inputColor, &inputCoverage);
-
-    ///////////////////////////////////////////////////////////////////////////
-    // emit the per-effect code for both color and coverage effects
-
-    GrGLProgramDesc::EffectKeyProvider colorKeyProvider(
-        &this->desc(), GrGLProgramDesc::EffectKeyProvider::kColor_EffectType);
-    fColorEffects.reset(this->createAndEmitEffects(colorStages,
-                                                   this->desc().numColorEffects(),
-                                                   colorKeyProvider,
-                                                   &inputColor));
-
-    GrGLProgramDesc::EffectKeyProvider coverageKeyProvider(
-        &this->desc(), GrGLProgramDesc::EffectKeyProvider::kCoverage_EffectType);
-    fCoverageEffects.reset(this->createAndEmitEffects(coverageStages,
-                                                      this->desc().numCoverageEffects(),
-                                                      coverageKeyProvider,
-                                                      &inputCoverage));
-
-    this->emitCodeAfterEffects();
+    // Subclasses drive effect emitting
+    this->createAndEmitEffects(geometryProcessor, colorStages, coverageStages, &inputColor,
+                               &inputCoverage);
 
     fFS.emitCodeAfterEffects(inputColor, inputCoverage);
 
@@ -99,13 +84,13 @@ bool GrGLProgramBuilder::genProgram(const GrEffectStage* colorStages[],
 
 GrGLProgramBuilder::GrGLProgramBuilder(GrGpuGL* gpu,
                                        const GrGLProgramDesc& desc)
-    : fFragOnly(!desc.getHeader().fRequiresVertexShader &&
-                gpu->glCaps().pathRenderingSupport() &&
-                gpu->glPathRendering()->texturingMode() == GrGLPathRendering::FixedFunction_TexturingMode)
+    : fEffectEmitter(NULL)
+    , fFragOnly(SkToBool(desc.getHeader().fUseFragShaderOnly))
     , fTexCoordSetCnt(0)
     , fProgramID(0)
     , fFS(this, desc)
     , fSeparableVaryingInfos(kVarsPerBlock)
+    , fGrProcessorEmitter(this)
     , fDesc(desc)
     , fGpu(gpu)
     , fUniforms(kVarsPerBlock) {
@@ -151,7 +136,7 @@ GrGLProgramDataManager::UniformHandle GrGLProgramBuilder::addUniformArray(uint32
         uni.fVariable.setPrecision(kDefaultFragmentPrecision);
     }
 
-    if (NULL != outName) {
+    if (outName) {
         *outName = uni.fVariable.c_str();
     }
     return GrGLProgramDataManager::UniformHandle::CreateFromUniformIndex(fUniforms.count() - 1);
@@ -174,8 +159,7 @@ void GrGLProgramBuilder::appendUniformDecls(ShaderVisibility visibility,
     }
 }
 
-void GrGLProgramBuilder::createAndEmitEffects(GrGLProgramEffectsBuilder* programEffectsBuilder,
-                                              const GrEffectStage* effectStages[],
+void GrGLProgramBuilder::createAndEmitEffects(const GrFragmentStage* effectStages[],
                                               int effectCnt,
                                               const GrGLProgramDesc::EffectKeyProvider& keyProvider,
                                               GrGLSLExpr4* fsInOutColor) {
@@ -185,39 +169,61 @@ void GrGLProgramBuilder::createAndEmitEffects(GrGLProgramEffectsBuilder* program
     GrGLSLExpr4 outColor;
 
     for (int e = 0; e < effectCnt; ++e) {
-        SkASSERT(NULL != effectStages[e] && NULL != effectStages[e]->getEffect());
-        const GrEffectStage& stage = *effectStages[e];
-
-        CodeStage::AutoStageRestore csar(&fCodeStage, &stage);
-
-        if (inColor.isZeros()) {
-            SkString inColorName;
-
-            // Effects have no way to communicate zeros, they treat an empty string as ones.
-            this->nameVariable(&inColorName, '\0', "input");
-            fFS.codeAppendf("\tvec4 %s = %s;\n", inColorName.c_str(), inColor.c_str());
-            inColor = inColorName;
-        }
-
-        // create var to hold stage result
-        SkString outColorName;
-        this->nameVariable(&outColorName, '\0', "output");
-        fFS.codeAppendf("\tvec4 %s;\n", outColorName.c_str());
-        outColor = outColorName;
-
-
-        programEffectsBuilder->emitEffect(stage,
-                                          keyProvider.get(e),
-                                          outColor.c_str(),
-                                          inColor.isOnes() ? NULL : inColor.c_str(),
-                                          fCodeStage.stageIndex());
-
-        inColor = outColor;
+        fGrProcessorEmitter.set(effectStages[e]->getFragmentProcessor());
+        fEffectEmitter = &fGrProcessorEmitter;
+        // calls into the subclass to emit the actual effect into the program effect object
+        this->emitEffect(*effectStages[e], e, keyProvider, &inColor, &outColor);
         effectEmitted = true;
     }
 
     if (effectEmitted) {
         *fsInOutColor = outColor;
+    }
+}
+
+void GrGLProgramBuilder::emitEffect(const GrProcessorStage& effectStage,
+                                    int effectIndex,
+                                    const GrGLProgramDesc::EffectKeyProvider& keyProvider,
+                                    GrGLSLExpr4* inColor,
+                                    GrGLSLExpr4* outColor) {
+    SkASSERT(effectStage.getProcessor());
+    CodeStage::AutoStageRestore csar(&fCodeStage, &effectStage);
+
+    if (inColor->isZeros()) {
+        SkString inColorName;
+
+        // Effects have no way to communicate zeros, they treat an empty string as ones.
+        this->nameVariable(&inColorName, '\0', "input");
+        fFS.codeAppendf("\tvec4 %s = %s;\n", inColorName.c_str(), inColor->c_str());
+        *inColor = inColorName;
+    }
+
+    // create var to hold stage result
+    SkString outColorName;
+    this->nameVariable(&outColorName, '\0', "output");
+    fFS.codeAppendf("\tvec4 %s;\n", outColorName.c_str());
+    *outColor = outColorName;
+
+    this->emitEffect(effectStage, keyProvider.get(effectIndex), outColor->c_str(),
+                     inColor->isOnes() ? NULL : inColor->c_str(), fCodeStage.stageIndex());
+
+    *inColor = *outColor;
+}
+
+void GrGLProgramBuilder::emitSamplers(const GrProcessor& effect,
+                                      GrGLProcessor::TextureSamplerArray* outSamplers) {
+    SkTArray<GrGLProgramEffects::Sampler, true>& samplers =
+            this->getProgramEffects()->addSamplers();
+    int numTextures = effect.numTextures();
+    samplers.push_back_n(numTextures);
+    SkString name;
+    for (int t = 0; t < numTextures; ++t) {
+        name.printf("Sampler%d", t);
+        samplers[t].fUniform = this->addUniform(GrGLProgramBuilder::kFragment_Visibility,
+                                                kSampler2D_GrSLType,
+                                                name.c_str());
+        SkNEW_APPEND_TO_TARRAY(outSamplers, GrGLProcessor::TextureSampler,
+                               (samplers[t].fUniform, effect.textureAccess(t)));
     }
 }
 
@@ -321,114 +327,4 @@ void GrGLProgramBuilder::resolveProgramLocations(GrGLuint programId) {
 
 const GrGLContextInfo& GrGLProgramBuilder::ctxInfo() const {
     return fGpu->ctxInfo();
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-GrGLFullProgramBuilder::GrGLFullProgramBuilder(GrGpuGL* gpu,
-                                              const GrGLProgramDesc& desc)
-    : INHERITED(gpu, desc)
-    , fGS(this)
-    , fVS(this) {
-}
-
-void GrGLFullProgramBuilder::emitCodeBeforeEffects(GrGLSLExpr4* color, GrGLSLExpr4* coverage) {
-    fVS.emitCodeBeforeEffects(color, coverage);
-}
-
-void GrGLFullProgramBuilder::emitCodeAfterEffects() {
-    fVS.emitCodeAfterEffects();
-}
-
-void GrGLFullProgramBuilder::addVarying(GrSLType type,
-                                        const char* name,
-                                        const char** vsOutName,
-                                        const char** fsInName) {
-    fVS.addVarying(type, name, vsOutName);
-
-    SkString* fsInputName = fVS.fOutputs.back().accessName();
-
-#if GR_GL_EXPERIMENTAL_GS
-    if (desc().getHeader().fExperimentalGS) {
-       // TODO let the caller use these names
-       fGS.addVarying(type, fsInputName->c_str(), NULL);
-       fsInputName = fGS.fOutputs.back().accessName();
-    }
-#endif
-    fFS.addVarying(type, fsInputName->c_str(), fsInName);
-}
-
-GrGLFullProgramBuilder::VaryingHandle
-GrGLFullProgramBuilder::addSeparableVarying(GrSLType type,
-                                            const char* name,
-                                            const char** vsOutName,
-                                            const char** fsInName) {
-    addVarying(type, name, vsOutName, fsInName);
-    SeparableVaryingInfo& varying = fSeparableVaryingInfos.push_back();
-    varying.fVariable = fFS.fInputs.back();
-    return VaryingHandle::CreateFromSeparableVaryingIndex(fSeparableVaryingInfos.count() - 1);
-}
-
-
-GrGLProgramEffects* GrGLFullProgramBuilder::createAndEmitEffects(
-        const GrEffectStage* effectStages[],
-        int effectCnt,
-        const GrGLProgramDesc::EffectKeyProvider& keyProvider,
-        GrGLSLExpr4* inOutFSColor) {
-
-    GrGLVertexProgramEffectsBuilder programEffectsBuilder(this, effectCnt);
-    this->INHERITED::createAndEmitEffects(&programEffectsBuilder,
-                                          effectStages,
-                                          effectCnt,
-                                          keyProvider,
-                                          inOutFSColor);
-    return programEffectsBuilder.finish();
-}
-
-bool GrGLFullProgramBuilder::compileAndAttachShaders(GrGLuint programId,
-                                                     SkTDArray<GrGLuint>* shaderIds) const {
-    return INHERITED::compileAndAttachShaders(programId, shaderIds)
-         && fVS.compileAndAttachShaders(programId, shaderIds)
-#if GR_GL_EXPERIMENTAL_GS
-         && (!desc().getHeader().fExperimentalGS
-                 || fGS.compileAndAttachShaders(programId, shaderIds))
-#endif
-         ;
-}
-
-void GrGLFullProgramBuilder::bindProgramLocations(GrGLuint programId) {
-    fVS.bindProgramLocations(programId);
-    INHERITED::bindProgramLocations(programId);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-GrGLFragmentOnlyProgramBuilder::GrGLFragmentOnlyProgramBuilder(GrGpuGL* gpu,
-                                                               const GrGLProgramDesc& desc)
-    : INHERITED(gpu, desc) {
-    SkASSERT(!desc.getHeader().fRequiresVertexShader);
-    SkASSERT(gpu->glCaps().pathRenderingSupport());
-    SkASSERT(GrGLProgramDesc::kAttribute_ColorInput != desc.getHeader().fColorInput);
-    SkASSERT(GrGLProgramDesc::kAttribute_ColorInput != desc.getHeader().fCoverageInput);
-}
-
-int GrGLFragmentOnlyProgramBuilder::addTexCoordSets(int count) {
-    int firstFreeCoordSet = fTexCoordSetCnt;
-    fTexCoordSetCnt += count;
-    SkASSERT(gpu()->glCaps().maxFixedFunctionTextureCoords() >= fTexCoordSetCnt);
-    return firstFreeCoordSet;
-}
-
-GrGLProgramEffects* GrGLFragmentOnlyProgramBuilder::createAndEmitEffects(
-        const GrEffectStage* effectStages[], int effectCnt,
-        const GrGLProgramDesc::EffectKeyProvider& keyProvider, GrGLSLExpr4* inOutFSColor) {
-
-    GrGLPathTexGenProgramEffectsBuilder pathTexGenEffectsBuilder(this,
-                                                                 effectCnt);
-    this->INHERITED::createAndEmitEffects(&pathTexGenEffectsBuilder,
-                                          effectStages,
-                                          effectCnt,
-                                          keyProvider,
-                                          inOutFSColor);
-    return pathTexGenEffectsBuilder.finish();
 }

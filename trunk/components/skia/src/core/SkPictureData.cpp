@@ -30,7 +30,7 @@ SkPictureData::SkPictureData(const SkPictInfo& info)
 
 void SkPictureData::initForPlayback() const {
     // ensure that the paths bounds are pre-computed
-    if (NULL != fPathHeap.get()) {
+    if (fPathHeap.get()) {
         for (int i = 0; i < fPathHeap->count(); i++) {
             (*fPathHeap.get())[i].updateBoundsCache();
         }
@@ -53,7 +53,7 @@ SkPictureData::SkPictureData(const SkPictureRecord& record,
     SkSafeRef(fStateTree);
     fContentInfo.set(record.fContentInfo);
 
-    if (NULL != fBoundingHierarchy) {
+    if (fBoundingHierarchy) {
         fBoundingHierarchy->flushDeferredInserts();
     }
 
@@ -390,14 +390,13 @@ bool SkPictureData::parseStreamTag(SkStream* stream,
     SkDEBUGCODE(bool haveBuffer = false;)
 
     switch (tag) {
-        case SK_PICT_READER_TAG: {
-            SkAutoMalloc storage(size);
-            if (stream->read(storage.get(), size) != size) {
+        case SK_PICT_READER_TAG:
+            SkASSERT(NULL == fOpData);
+            fOpData = SkData::NewFromStream(stream, size);
+            if (!fOpData) {
                 return false;
             }
-            SkASSERT(NULL == fOpData);
-            fOpData = SkData::NewFromMalloc(storage.detach(), size);
-        } break;
+            break;
         case SK_PICT_FACTORY_TAG: {
             SkASSERT(!haveBuffer);
         // Remove this code when v21 and below are no longer supported. At the
@@ -538,13 +537,13 @@ bool SkPictureData::parseBufferTag(SkReadBuffer& buffer,
             }
         } break;
         case SK_PICT_READER_TAG: {
-            SkAutoMalloc storage(size);
-            if (!buffer.readByteArray(storage.get(), size) ||
+            SkAutoDataUnref data(SkData::NewUninitialized(size));
+            if (!buffer.readByteArray(data->writable_data(), size) ||
                 !buffer.validate(NULL == fOpData)) {
                 return false;
             }
             SkASSERT(NULL == fOpData);
-            fOpData = SkData::NewFromMalloc(storage.detach(), size);
+            fOpData = data.detach();
         } break;
         case SK_PICT_PICTURE_TAG: {
             if (!buffer.validate((0 == fPictureCount) && (NULL == fPictureRefs))) {
@@ -635,7 +634,7 @@ bool SkPictureData::parseBuffer(SkReadBuffer& buffer) {
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-const SkPicture::OperationList* SkPictureData::getActiveOps(const SkIRect& query) const {
+const SkPicture::OperationList* SkPictureData::getActiveOps(const SkRect& query) const {
     if (NULL == fStateTree || NULL == fBoundingHierarchy) {
         return NULL;
     }

@@ -22,16 +22,18 @@ public:
      *  any drawing to this device will have no effect.
     */
     SkBitmapDevice(const SkBitmap& bitmap);
-
+private:
     /**
      *  Construct a new device with the specified bitmap as its backend. It is
      *  valid for the bitmap to have no pixels associated with it. In that case,
      *  any drawing to this device will have no effect.
     */
     SkBitmapDevice(const SkBitmap& bitmap, const SkDeviceProperties& deviceProperties);
-
-    static SkBitmapDevice* Create(const SkImageInfo&,
-                                  const SkDeviceProperties* = NULL);
+    static SkBitmapDevice* Create(const SkImageInfo&, const SkDeviceProperties*);
+public:
+    static SkBitmapDevice* Create(const SkImageInfo& info) {
+        return Create(info, NULL);
+    }
 
     virtual SkImageInfo imageInfo() const SK_OVERRIDE;
 
@@ -153,7 +155,7 @@ private:
 
     virtual SkBaseDevice* onCreateDevice(const SkImageInfo&, Usage) SK_OVERRIDE;
 
-    virtual SkSurface* newSurface(const SkImageInfo&) SK_OVERRIDE;
+    virtual SkSurface* newSurface(const SkImageInfo&, const SkSurfaceProps&) SK_OVERRIDE;
     virtual const void* peekPixels(SkImageInfo*, size_t* rowBytes) SK_OVERRIDE;
 
     virtual SkImageFilter::Cache* getImageFilterCache() SK_OVERRIDE;

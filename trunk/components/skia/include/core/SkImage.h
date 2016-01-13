@@ -39,7 +39,6 @@ public:
 
     static SkImage* NewRasterCopy(const Info&, const void* pixels, size_t rowBytes);
     static SkImage* NewRasterData(const Info&, SkData* pixels, size_t rowBytes);
-    static SkImage* NewEncodedData(SkData*);
 
     /**
      * GrTexture is a more logical parameter for this factory, but its
@@ -72,17 +71,6 @@ public:
                                 SkShader::TileMode,
                                 const SkMatrix* localMatrix = NULL) const;
 
-    void draw(SkCanvas*, SkScalar x, SkScalar y, const SkPaint*) const;
-
-    /**
-     *  Draw the image, cropped to the src rect, to the dst rect of a canvas.
-     *  If src is larger than the bounds of the image, the rest of the image is
-     *  filled with transparent black pixels.
-     *
-     *  See SkCanvas::drawBitmapRectToRect for similar behavior.
-     */
-    void draw(SkCanvas*, const SkRect* src, const SkRect& dst, const SkPaint*) const;
-
     /**
      *  If the image has direct access to its pixels (i.e. they are in local
      *  RAM) return the (const) address of those pixels, and if not null, return
@@ -103,6 +91,17 @@ public:
      */
     SkData* encode(SkImageEncoder::Type t = SkImageEncoder::kPNG_Type,
                    int quality = 80) const;
+
+    void draw(SkCanvas*, SkScalar x, SkScalar y, const SkPaint*) const;
+
+    /**
+     *  Draw the image, cropped to the src rect, to the dst rect of a canvas.
+     *  If src is larger than the bounds of the image, the rest of the image is
+     *  filled with transparent black pixels.
+     *
+     *  See SkCanvas::drawBitmapRectToRect for similar behavior.
+     */
+    void draw(SkCanvas*, const SkRect* src, const SkRect& dst, const SkPaint*) const;
 
 protected:
     SkImage(int width, int height) :

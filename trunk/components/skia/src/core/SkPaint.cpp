@@ -190,8 +190,10 @@ SkPaint& SkPaint::operator=(const SkPaint& src) {
 
 bool operator==(const SkPaint& a, const SkPaint& b) {
 #define EQUAL(field) (a.field == b.field)
-    // Don't check fGenerationID or fDirtyBits, which can be different for logically equal paints.
-    return EQUAL(fTypeface)
+    // Don't check fGenerationID, which can be different for logically equal paints.
+    // fDirtyBits is a very quick check for non-equality, so check it first.
+    return EQUAL(fDirtyBits)
+        && EQUAL(fTypeface)
         && EQUAL(fPathEffect)
         && EQUAL(fShader)
         && EQUAL(fXfermode)
@@ -315,7 +317,7 @@ void SkPaint::setStyle(Style style) {
 void SkPaint::setColor(SkColor color) {
     GEN_ID_INC_EVAL(color != fColor);
     fColor = color;
-    fDirtyBits |= kColor_DirtyBit;
+    fDirtyBits = SkSetClearMask(fDirtyBits, color != SK_ColorBLACK, kColor_DirtyBit);
 }
 
 void SkPaint::setAlpha(U8CPU a) {
@@ -331,7 +333,7 @@ void SkPaint::setStrokeWidth(SkScalar width) {
     if (width >= 0) {
         GEN_ID_INC_EVAL(width != fWidth);
         fWidth = width;
-        fDirtyBits |= kStrokeWidth_DirtyBit;
+        fDirtyBits = SkSetClearMask(fDirtyBits, width != 0, kStrokeWidth_DirtyBit);
     } else {
 #ifdef SK_REPORT_API_RANGE_CHECK
         SkDebugf("SkPaint::setStrokeWidth() called with negative value\n");
@@ -343,7 +345,9 @@ void SkPaint::setStrokeMiter(SkScalar limit) {
     if (limit >= 0) {
         GEN_ID_INC_EVAL(limit != fMiterLimit);
         fMiterLimit = limit;
-        fDirtyBits |= kStrokeMiter_DirtyBit;
+        fDirtyBits = SkSetClearMask(fDirtyBits,
+                                    limit != SkPaintDefaults_MiterLimit,
+                                    kStrokeMiter_DirtyBit);
     } else {
 #ifdef SK_REPORT_API_RANGE_CHECK
         SkDebugf("SkPaint::setStrokeMiter() called with negative value\n");
@@ -390,7 +394,7 @@ void SkPaint::setTextSize(SkScalar ts) {
     if (ts >= 0) {
         GEN_ID_INC_EVAL(ts != fTextSize);
         fTextSize = ts;
-        fDirtyBits |= kTextSize_DirtyBit;
+        fDirtyBits = SkSetClearMask(fDirtyBits, ts != SkPaintDefaults_TextSize, kTextSize_DirtyBit);
     } else {
 #ifdef SK_REPORT_API_RANGE_CHECK
         SkDebugf("SkPaint::setTextSize() called with negative value\n");
@@ -401,13 +405,13 @@ void SkPaint::setTextSize(SkScalar ts) {
 void SkPaint::setTextScaleX(SkScalar scaleX) {
     GEN_ID_INC_EVAL(scaleX != fTextScaleX);
     fTextScaleX = scaleX;
-    fDirtyBits |= kTextScaleX_DirtyBit;
+    fDirtyBits = SkSetClearMask(fDirtyBits, scaleX != SK_Scalar1, kTextScaleX_DirtyBit);
 }
 
 void SkPaint::setTextSkewX(SkScalar skewX) {
     GEN_ID_INC_EVAL(skewX != fTextSkewX);
     fTextSkewX = skewX;
-    fDirtyBits |= kTextSkewX_DirtyBit;
+    fDirtyBits = SkSetClearMask(fDirtyBits, skewX != 0, kTextSkewX_DirtyBit);
 }
 
 void SkPaint::setTextEncoding(TextEncoding encoding) {
@@ -423,43 +427,38 @@ void SkPaint::setTextEncoding(TextEncoding encoding) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// Returns dst with the given bitmask enabled or disabled, depending on value.
-inline static uint32_t set_mask(uint32_t dst, uint32_t bitmask, bool value) {
-    return value ? (dst | bitmask) : (dst & ~bitmask);
-}
-
 SkTypeface* SkPaint::setTypeface(SkTypeface* font) {
     SkRefCnt_SafeAssign(fTypeface, font);
     GEN_ID_INC;
-    fDirtyBits = set_mask(fDirtyBits, kTypeface_DirtyBit, font != NULL);
+    fDirtyBits = SkSetClearMask(fDirtyBits, font != NULL, kTypeface_DirtyBit);
     return font;
 }
 
 SkRasterizer* SkPaint::setRasterizer(SkRasterizer* r) {
     SkRefCnt_SafeAssign(fRasterizer, r);
     GEN_ID_INC;
-    fDirtyBits = set_mask(fDirtyBits, kRasterizer_DirtyBit, r != NULL);
+    fDirtyBits = SkSetClearMask(fDirtyBits, r != NULL, kRasterizer_DirtyBit);
     return r;
 }
 
 SkDrawLooper* SkPaint::setLooper(SkDrawLooper* looper) {
     SkRefCnt_SafeAssign(fLooper, looper);
     GEN_ID_INC;
-    fDirtyBits = set_mask(fDirtyBits, kLooper_DirtyBit, looper != NULL);
+    fDirtyBits = SkSetClearMask(fDirtyBits, looper != NULL, kLooper_DirtyBit);
     return looper;
 }
 
 SkImageFilter* SkPaint::setImageFilter(SkImageFilter* imageFilter) {
     SkRefCnt_SafeAssign(fImageFilter, imageFilter);
     GEN_ID_INC;
-    fDirtyBits = set_mask(fDirtyBits, kImageFilter_DirtyBit, imageFilter != NULL);
+    fDirtyBits = SkSetClearMask(fDirtyBits, imageFilter != NULL, kImageFilter_DirtyBit);
     return imageFilter;
 }
 
 SkAnnotation* SkPaint::setAnnotation(SkAnnotation* annotation) {
     SkRefCnt_SafeAssign(fAnnotation, annotation);
     GEN_ID_INC;
-    fDirtyBits = set_mask(fDirtyBits, kAnnotation_DirtyBit, annotation != NULL);
+    fDirtyBits = SkSetClearMask(fDirtyBits, annotation != NULL, kAnnotation_DirtyBit);
     return annotation;
 }
 
@@ -1040,7 +1039,7 @@ SkScalar SkPaint::measure_text(SkGlyphCache* cache,
 
     SkMeasureCacheProc glyphCacheProc;
     glyphCacheProc = this->getMeasureCacheProc(kForward_TextBufferDirection,
-                                               NULL != bounds);
+                                               bounds);
 
     int xyIndex;
     JoinBoundsProc joinBoundsProc;
@@ -1298,7 +1297,7 @@ int SkPaint::getTextWidths(const void* textData, size_t byteLength,
         return 0;
     }
 
-    SkASSERT(NULL != textData);
+    SkASSERT(textData);
 
     if (NULL == widths && NULL == bounds) {
         return this->countText(textData, byteLength);
@@ -1312,7 +1311,7 @@ int SkPaint::getTextWidths(const void* textData, size_t byteLength,
     SkGlyphCache*       cache = autoCache.getCache();
     SkMeasureCacheProc  glyphCacheProc;
     glyphCacheProc = paint.getMeasureCacheProc(kForward_TextBufferDirection,
-                                               NULL != bounds);
+                                               bounds);
 
     const char* text = (const char*)textData;
     const char* stop = text + byteLength;
@@ -1607,19 +1606,33 @@ void SkScalerContext::MakeRec(const SkPaint& paint,
 
     rec->fMaskFormat = SkToU8(computeMaskFormat(paint));
 
-    SkDeviceProperties::Geometry geometry = deviceProperties
-                                          ? deviceProperties->fGeometry
-                                          : SkDeviceProperties::Geometry::MakeDefault();
     if (SkMask::kLCD16_Format == rec->fMaskFormat || SkMask::kLCD32_Format == rec->fMaskFormat) {
-        if (!geometry.isOrientationKnown() || !geometry.isLayoutKnown() || tooBigForLCD(*rec)) {
-            // eeek, can't support LCD
+        if (tooBigForLCD(*rec)) {
             rec->fMaskFormat = SkMask::kA8_Format;
+            flags |= SkScalerContext::kGenA8FromLCD_Flag;
         } else {
-            if (SkDeviceProperties::Geometry::kVertical_Orientation == geometry.getOrientation()) {
-                flags |= SkScalerContext::kLCD_Vertical_Flag;
-            }
-            if (SkDeviceProperties::Geometry::kBGR_Layout == geometry.getLayout()) {
-                flags |= SkScalerContext::kLCD_BGROrder_Flag;
+            SkPixelGeometry geometry = deviceProperties
+                                     ? deviceProperties->fPixelGeometry
+                                     : SkSurfacePropsDefaultPixelGeometry();
+            switch (geometry) {
+                case kUnknown_SkPixelGeometry:
+                    // eeek, can't support LCD
+                    rec->fMaskFormat = SkMask::kA8_Format;
+                    flags |= SkScalerContext::kGenA8FromLCD_Flag;
+                    break;
+                case kRGB_H_SkPixelGeometry:
+                    // our default, do nothing.
+                    break;
+                case kBGR_H_SkPixelGeometry:
+                    flags |= SkScalerContext::kLCD_BGROrder_Flag;
+                    break;
+                case kRGB_V_SkPixelGeometry:
+                    flags |= SkScalerContext::kLCD_Vertical_Flag;
+                    break;
+                case kBGR_V_SkPixelGeometry:
+                    flags |= SkScalerContext::kLCD_Vertical_Flag;
+                    flags |= SkScalerContext::kLCD_BGROrder_Flag;
+                    break;
             }
         }
     }
@@ -1650,13 +1663,13 @@ void SkScalerContext::MakeRec(const SkPaint& paint,
         rec->setDeviceGamma(SK_GAMMA_EXPONENT);
         rec->setPaintGamma(SK_GAMMA_EXPONENT);
     } else {
-        rec->setDeviceGamma(deviceProperties->fGamma);
+        rec->setDeviceGamma(deviceProperties->getGamma());
 
         //For now always set the paint gamma equal to the device gamma.
         //The math in SkMaskGamma can handle them being different,
         //but it requires superluminous masks when
         //Ex : deviceGamma(x) < paintGamma(x) and x is sufficiently large.
-        rec->setPaintGamma(deviceProperties->fGamma);
+        rec->setPaintGamma(deviceProperties->getGamma());
     }
 
 #ifdef SK_GAMMA_CONTRAST
@@ -2192,21 +2205,21 @@ void SkPaint::unflatten(SkReadBuffer& buffer) {
 SkShader* SkPaint::setShader(SkShader* shader) {
     GEN_ID_INC_EVAL(shader != fShader);
     SkRefCnt_SafeAssign(fShader, shader);
-    fDirtyBits = set_mask(fDirtyBits, kShader_DirtyBit, shader != NULL);
+    fDirtyBits = SkSetClearMask(fDirtyBits, shader != NULL, kShader_DirtyBit);
     return shader;
 }
 
 SkColorFilter* SkPaint::setColorFilter(SkColorFilter* filter) {
     GEN_ID_INC_EVAL(filter != fColorFilter);
     SkRefCnt_SafeAssign(fColorFilter, filter);
-    fDirtyBits = set_mask(fDirtyBits, kColorFilter_DirtyBit, filter != NULL);
+    fDirtyBits = SkSetClearMask(fDirtyBits, filter != NULL, kColorFilter_DirtyBit);
     return filter;
 }
 
 SkXfermode* SkPaint::setXfermode(SkXfermode* mode) {
     GEN_ID_INC_EVAL(mode != fXfermode);
     SkRefCnt_SafeAssign(fXfermode, mode);
-    fDirtyBits = set_mask(fDirtyBits, kXfermode_DirtyBit, mode != NULL);
+    fDirtyBits = SkSetClearMask(fDirtyBits, mode != NULL, kXfermode_DirtyBit);
     return mode;
 }
 
@@ -2214,21 +2227,21 @@ SkXfermode* SkPaint::setXfermodeMode(SkXfermode::Mode mode) {
     SkSafeUnref(fXfermode);
     fXfermode = SkXfermode::Create(mode);
     GEN_ID_INC;
-    fDirtyBits = set_mask(fDirtyBits, kXfermode_DirtyBit, fXfermode != NULL);
+    fDirtyBits = SkSetClearMask(fDirtyBits, fXfermode != NULL, kXfermode_DirtyBit);
     return fXfermode;
 }
 
 SkPathEffect* SkPaint::setPathEffect(SkPathEffect* effect) {
     GEN_ID_INC_EVAL(effect != fPathEffect);
     SkRefCnt_SafeAssign(fPathEffect, effect);
-    fDirtyBits = set_mask(fDirtyBits, kPathEffect_DirtyBit, effect != NULL);
+    fDirtyBits = SkSetClearMask(fDirtyBits, effect != NULL, kPathEffect_DirtyBit);
     return effect;
 }
 
 SkMaskFilter* SkPaint::setMaskFilter(SkMaskFilter* filter) {
     GEN_ID_INC_EVAL(filter != fMaskFilter);
     SkRefCnt_SafeAssign(fMaskFilter, filter);
-    fDirtyBits = set_mask(fDirtyBits, kMaskFilter_DirtyBit, filter != NULL);
+    fDirtyBits = SkSetClearMask(fDirtyBits, filter != NULL, kMaskFilter_DirtyBit);
     return filter;
 }
 
@@ -2307,17 +2320,16 @@ const SkRect& SkPaint::doComputeFastBounds(const SkRect& origSrc,
 }
 
 #ifndef SK_IGNORE_TO_STRING
+
 void SkPaint::toString(SkString* str) const {
     str->append("<dl><dt>SkPaint:</dt><dd><dl>");
 
     SkTypeface* typeface = this->getTypeface();
-    if (NULL != typeface) {
+    if (typeface) {
         SkDynamicMemoryWStream ostream;
         typeface->serialize(&ostream);
-        SkAutoTUnref<SkData> data(ostream.copyToData());
-
-        SkMemoryStream stream(data);
-        SkFontDescriptor descriptor(&stream);
+        SkAutoTUnref<SkStreamAsset> istream(ostream.detachAsStream());
+        SkFontDescriptor descriptor(istream);
 
         str->append("<dt>Font Family Name:</dt><dd>");
         str->append(descriptor.getFamilyName());
@@ -2343,60 +2355,60 @@ void SkPaint::toString(SkString* str) const {
     str->append("</dd>");
 
     SkPathEffect* pathEffect = this->getPathEffect();
-    if (NULL != pathEffect) {
+    if (pathEffect) {
         str->append("<dt>PathEffect:</dt><dd>");
         str->append("</dd>");
     }
 
     SkShader* shader = this->getShader();
-    if (NULL != shader) {
+    if (shader) {
         str->append("<dt>Shader:</dt><dd>");
         shader->toString(str);
         str->append("</dd>");
     }
 
     SkXfermode* xfer = this->getXfermode();
-    if (NULL != xfer) {
+    if (xfer) {
         str->append("<dt>Xfermode:</dt><dd>");
         xfer->toString(str);
         str->append("</dd>");
     }
 
     SkMaskFilter* maskFilter = this->getMaskFilter();
-    if (NULL != maskFilter) {
+    if (maskFilter) {
         str->append("<dt>MaskFilter:</dt><dd>");
         maskFilter->toString(str);
         str->append("</dd>");
     }
 
     SkColorFilter* colorFilter = this->getColorFilter();
-    if (NULL != colorFilter) {
+    if (colorFilter) {
         str->append("<dt>ColorFilter:</dt><dd>");
         colorFilter->toString(str);
         str->append("</dd>");
     }
 
     SkRasterizer* rasterizer = this->getRasterizer();
-    if (NULL != rasterizer) {
+    if (rasterizer) {
         str->append("<dt>Rasterizer:</dt><dd>");
         str->append("</dd>");
     }
 
     SkDrawLooper* looper = this->getLooper();
-    if (NULL != looper) {
+    if (looper) {
         str->append("<dt>DrawLooper:</dt><dd>");
         looper->toString(str);
         str->append("</dd>");
     }
 
     SkImageFilter* imageFilter = this->getImageFilter();
-    if (NULL != imageFilter) {
+    if (imageFilter) {
         str->append("<dt>ImageFilter:</dt><dd>");
         str->append("</dd>");
     }
 
     SkAnnotation* annotation = this->getAnnotation();
-    if (NULL != annotation) {
+    if (annotation) {
         str->append("<dt>Annotation:</dt><dd>");
         str->append("</dd>");
     }

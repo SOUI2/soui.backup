@@ -28,7 +28,9 @@ INCLUDEPATH += . \
 dir = ../..
 include($$dir/common.pri)
 
-DEFINES += SK_IGNORE_ETC1_SUPPORT
+DEFINES += SK_IGNORE_ETC1_SUPPORT 
+#指定支持SSE3优化，skia自动检测CPU指令集，不支持SSE3时自动使用SSE2,SSE2是最低要求。
+DEFINES += SK_CPU_SSE_LEVEL=31
 
 win32-msvc*{
     QMAKE_CXXFLAGS += /wd4244 /wd4800
@@ -236,13 +238,9 @@ SOURCES += src\core\SkPictureFlat.cpp
 HEADERS += src\core\SkPictureFlat.h
 SOURCES += src\core\SkPicturePlayback.cpp
 HEADERS += src\core\SkPicturePlayback.h
-SOURCES += src\core\SkPictureRangePlayback.cpp
-HEADERS += src\core\SkPictureRangePlayback.h
 SOURCES += src\core\SkPictureRecord.cpp
 HEADERS += src\core\SkPictureRecord.h
 SOURCES += src\core\SkPictureRecorder.cpp
-SOURCES += src\core\SkPictureReplacementPlayback.cpp
-HEADERS += src\core\SkPictureReplacementPlayback.h
 SOURCES += src\core\SkPictureShader.cpp
 HEADERS += src\core\SkPictureShader.h
 SOURCES += src\core\SkPictureStateTree.cpp
@@ -271,7 +269,6 @@ SOURCES += src\core\SkRRect.cpp
 SOURCES += src\core\SkRTree.cpp
 HEADERS += src\core\SkRTree.h
 SOURCES += src\core\SkScalar.cpp
-SOURCES += src\core\SkScaledImageCache.cpp
 SOURCES += src\core\SkScalerContext.cpp
 HEADERS += src\core\SkScalerContext.h
 SOURCES += src\core\SkScan.cpp
@@ -316,6 +313,9 @@ SOURCES += src\core\SkVertState.cpp
 SOURCES += src\core\SkWriteBuffer.cpp
 SOURCES += src\core\SkWriter32.cpp
 SOURCES += src\core\SkXfermode.cpp
+SOURCES += src\core\SkResourceCache.cpp
+HEADERS += src\core\SkResourceCache.h
+
 SOURCES += src\doc\SkDocument.cpp
 SOURCES += src\image\SkImage.cpp
 SOURCES += src\image\SkImage_Raster.cpp
@@ -509,7 +509,6 @@ HEADERS += src\gpu\GrDrawState.h
 SOURCES += src\gpu\GrDrawTarget.cpp
 HEADERS += src\gpu\GrDrawTarget.h
 HEADERS += src\gpu\GrDrawTargetCaps.h
-SOURCES += src\gpu\GrEffect.cpp
 SOURCES += src\gpu\GrFontScaler.cpp
 HEADERS += src\gpu\GrGeometryBuffer.h
 SOURCES += src\gpu\GrGpu.cpp
@@ -583,8 +582,15 @@ HEADERS += src\gpu\GrTracing.h
 HEADERS += src\gpu\GrVertexBuffer.h
 SOURCES += src\gpu\SkGpuDevice.cpp
 SOURCES += src\gpu\SkGr.cpp
+SOURCES += src\gpu\GrProcessor.cpp
+SOURCES += src\gpu\GrProgramElement.cpp
+SOURCES += src\gpu\GrGpuResourceRef.cpp
 SOURCES += src\gpu\SkGrPixelRef.cpp
 SOURCES += src\gpu\SkGrTexturePixelRef.cpp
+SOURCES += src\gpu\GrPathRendering.cpp
+SOURCES += src\gpu\GrOptDrawState.cpp
+HEADERS += src\gpu\GrOptDrawState.h
+SOURCES += src\gpu\GrPathRange.cpp
 SOURCES += src\gpu\gl\GrGLAssembleInterface.cpp
 HEADERS += src\gpu\gl\GrGLAssembleInterface.h
 SOURCES += src\gpu\gl\GrGLBufferImpl.cpp
@@ -678,6 +684,11 @@ HEADERS += src\gpu\gl\builders\GrGLShaderStringBuilder.h
 SOURCES += src\gpu\gl\builders\GrGLSLPrettyPrint.cpp
 SOURCES += src\gpu\gl\builders\GrGLVertexShaderBuilder.cpp
 HEADERS += src\gpu\gl\builders\GrGLVertexShaderBuilder.h
+SOURCES += src\gpu\gl\builders\GrGLFullProgramBuilder.cpp
+HEADERS += src\gpu\gl\builders\GrGLFullProgramBuilder.h
+SOURCES += src\gpu\gl\builders\GrGLFragmentOnlyProgramBuilder.cpp
+HEADERS += src\gpu\gl\builders\GrGLFragmentOnlyProgramBuilder.h
+
 HEADERS += src\gpu\effects\Gr1DKernelEffect.h
 SOURCES += src\gpu\effects\GrBezierEffect.cpp
 HEADERS += src\gpu\effects\GrBezierEffect.h

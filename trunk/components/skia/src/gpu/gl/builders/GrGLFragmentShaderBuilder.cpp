@@ -48,7 +48,7 @@ GrGLFragmentShaderBuilder::DstReadKey GrGLFragmentShaderBuilder::KeyForDstRead(
     if (caps.fbFetchSupport()) {
         return key;
     }
-    SkASSERT(NULL != dstCopy);
+    SkASSERT(dstCopy);
     if (!caps.textureSwizzleSupport() && GrPixelConfigIsAlphaOnly(dstCopy->config())) {
         // The fact that the config is alpha-only must be considered when generating code.
         key |= kUseAlphaConfig_DstReadKeyBit;
@@ -80,9 +80,13 @@ GrGLFragmentShaderBuilder::GrGLFragmentShaderBuilder(GrGLProgramBuilder* program
 
 const char* GrGLFragmentShaderBuilder::dstColor() {
     if (fProgramBuilder->fCodeStage.inStageCode()) {
-        const GrEffect* effect = fProgramBuilder->fCodeStage.effectStage()->getEffect();
-        if (!effect->willReadDstColor()) {
-            SkDEBUGFAIL("GrGLEffect asked for dst color but its generating GrEffect "
+        const GrProcessor* effect = fProgramBuilder->fCodeStage.effectStage()->getProcessor();
+        // TODO GPs can't read dst color, and full program builder only returns a pointer to the
+        // base fragment shader builder which does not have this function.  Unfortunately,
+        // the code stage class only has a GrProcessor pointer so this is required for the time
+        // being
+        if (!static_cast<const GrFragmentProcessor*>(effect)->willReadDstColor()) {
+            SkDEBUGFAIL("GrGLProcessor asked for dst color but its generating GrProcessor "
                         "did not request access.");
             return "";
         }
@@ -119,9 +123,10 @@ bool GrGLFragmentShaderBuilder::enableFeature(GLSLFeature feature) {
     }
 }
 
-SkString GrGLFragmentShaderBuilder::ensureFSCoords2D(const TransformedCoordsArray& coords, int index) {
-    if (kVec3f_GrSLType != coords[index].type()) {
-        SkASSERT(kVec2f_GrSLType == coords[index].type());
+SkString GrGLFragmentShaderBuilder::ensureFSCoords2D(
+        const GrGLProcessor::TransformedCoordsArray& coords, int index) {
+    if (kVec3f_GrSLType != coords[index].getType()) {
+        SkASSERT(kVec2f_GrSLType == coords[index].getType());
         return coords[index].getName();
     }
 
@@ -137,9 +142,9 @@ SkString GrGLFragmentShaderBuilder::ensureFSCoords2D(const TransformedCoordsArra
 const char* GrGLFragmentShaderBuilder::fragmentPosition() {
     GrGLProgramBuilder::CodeStage* cs = &fProgramBuilder->fCodeStage;
     if (cs->inStageCode()) {
-        const GrEffect* effect = cs->effectStage()->getEffect();
+        const GrProcessor* effect = cs->effectStage()->getProcessor();
         if (!effect->willReadFragmentPosition()) {
-            SkDEBUGFAIL("GrGLEffect asked for frag position but its generating GrEffect "
+            SkDEBUGFAIL("GrGLProcessor asked for frag position but its generating GrProcessor "
                         "did not request access.");
             return "";
         }
@@ -195,8 +200,9 @@ const char* GrGLFragmentShaderBuilder::fragmentPosition() {
 
 void GrGLFragmentShaderBuilder::addVarying(GrSLType type,
                const char* name,
-               const char** fsInName) {
-    fInputs.push_back().set(type, GrGLShaderVar::kVaryingIn_TypeModifier, name);
+               const char** fsInName,
+               GrGLShaderVar::Precision fsPrecision) {
+    fInputs.push_back().set(type, GrGLShaderVar::kVaryingIn_TypeModifier, name, fsPrecision);
     if (fsInName) {
         *fsInName = name;
     }
@@ -230,8 +236,9 @@ bool GrGLFragmentShaderBuilder::compileAndAttachShaders(GrGLuint programId,
     fragShaderSrc.append(fCode);
     fragShaderSrc.append("}\n");
 
-    GrGLuint fragShaderId = GrGLCompileAndAttachShader(gpu->glContext(),
-            programId, GR_GL_FRAGMENT_SHADER, fragShaderSrc);
+    GrGLuint fragShaderId = GrGLCompileAndAttachShader(gpu->glContext(), programId,
+                                                       GR_GL_FRAGMENT_SHADER, fragShaderSrc,
+                                                       gpu->gpuStats());
     if (!fragShaderId) {
         return false;
     }
@@ -302,18 +309,22 @@ void GrGLFragmentShaderBuilder::emitCodeAfterEffects(const GrGLSLExpr4& inputCol
 
     ///////////////////////////////////////////////////////////////////////////
     // write the secondary color output if necessary
-    if (GrGLProgramDesc::CoverageOutputUsesSecondaryOutput(header.fCoverageOutput)) {
+    if (GrOptDrawState::kNone_SecondaryOutputType != header.fSecondaryOutputType) {
         const char* secondaryOutputName = this->enableSecondaryOutput();
-
-        // default coeff to ones for kCoverage_DualSrcOutput
         GrGLSLExpr4 coeff(1);
-        if (GrGLProgramDesc::kSecondaryCoverageISA_CoverageOutput == header.fCoverageOutput) {
-            // Get (1-A) into coeff
-            coeff = GrGLSLExpr4::VectorCast(GrGLSLExpr1(1) - inputColor.a());
-        } else if (GrGLProgramDesc::kSecondaryCoverageISC_CoverageOutput ==
-                   header.fCoverageOutput){
-            // Get (1-RGBA) into coeff
-            coeff = GrGLSLExpr4(1) - inputColor;
+        switch (header.fSecondaryOutputType) {
+            case GrOptDrawState::kCoverage_SecondaryOutputType:
+                break;
+            case GrOptDrawState::kCoverageISA_SecondaryOutputType:
+                // Get (1-A) into coeff
+                coeff = GrGLSLExpr4::VectorCast(GrGLSLExpr1(1) - inputColor.a());
+                break;
+            case GrOptDrawState::kCoverageISC_SecondaryOutputType:
+                // Get (1-RGBA) into coeff
+                coeff = GrGLSLExpr4(1) - inputColor;
+                break;
+            default:
+                SkFAIL("Unexpected Secondary Output");
         }
         // Get coeff * coverage into modulate and then write that to the dual source output.
         codeAppendf("\t%s = %s;\n", secondaryOutputName, (coeff * inputCoverage).c_str());
@@ -324,13 +335,19 @@ void GrGLFragmentShaderBuilder::emitCodeAfterEffects(const GrGLSLExpr4& inputCol
 
     // Get "color * coverage" into fragColor
     GrGLSLExpr4 fragColor = inputColor * inputCoverage;
-    // Now tack on "+(1-coverage)dst onto the frag color if we were asked to do so.
-    if (GrGLProgramDesc::kCombineWithDst_CoverageOutput == header.fCoverageOutput) {
-        GrGLSLExpr4 dstCoeff = GrGLSLExpr4(1) - inputCoverage;
-
-        GrGLSLExpr4 dstContribution = dstCoeff * GrGLSLExpr4(dstColor());
-
-        fragColor = fragColor + dstContribution;
+    switch (header.fPrimaryOutputType) {
+        case GrOptDrawState::kModulate_PrimaryOutputType:
+            break;
+        case GrOptDrawState::kCombineWithDst_PrimaryOutputType:
+            {
+                // Tack on "+(1-coverage)dst onto the frag color.
+                GrGLSLExpr4 dstCoeff = GrGLSLExpr4(1) - inputCoverage;
+                GrGLSLExpr4 dstContribution = dstCoeff * GrGLSLExpr4(dstColor());
+                fragColor = fragColor + dstContribution;
+            }
+            break;
+        default:
+            SkFAIL("Unknown Primary Output");
     }
     codeAppendf("\t%s = %s;\n", this->getColorOutputName(), fragColor.c_str());
 }

@@ -31,7 +31,8 @@ public:
     SK_DECLARE_PUBLIC_FLATTENABLE_DESERIALIZATION_PROCS(SkBitmapProcShader)
 
 
-    bool asNewEffect(GrContext*, const SkPaint&, const SkMatrix*, GrColor*, GrEffect**)
+    bool asFragmentProcessor(GrContext*, const SkPaint&, const SkMatrix*, GrColor*,
+                             GrFragmentProcessor**)
             const SK_OVERRIDE;
 
     class BitmapProcShaderContext : public SkShader::Context {
@@ -73,7 +74,7 @@ private:
 // an Sk3DBlitter in SkDraw.cpp
 // Note that some contexts may contain other contexts (e.g. for compose shaders), but we've not
 // yet found a situation where the size below isn't big enough.
-typedef SkSmallAllocator<3, 768> SkTBlitterAllocator;
+typedef SkSmallAllocator<3, 1024> SkTBlitterAllocator;
 
 // If alloc is non-NULL, it will be used to allocate the returned SkShader, and MUST outlive
 // the SkShader.

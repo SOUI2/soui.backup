@@ -37,8 +37,7 @@ struct SkPictInfo {
 
     char        fMagic[8];
     uint32_t    fVersion;
-    uint32_t    fWidth;
-    uint32_t    fHeight;
+    SkRect      fCullRect;
     uint32_t    fFlags;
 };
 
@@ -84,7 +83,7 @@ public:
 
     virtual ~SkPictureData();
 
-    const SkPicture::OperationList* getActiveOps(const SkIRect& queryRect) const;
+    const SkPicture::OperationList* getActiveOps(const SkRect& queryRect) const;
 
     void serialize(SkWStream*, SkPicture::EncodeBitmap) const;
     void flatten(SkWriteBuffer&) const;
@@ -143,7 +142,7 @@ public:
     void initIterator(SkPictureStateTree::Iterator* iter,
                       const SkTDArray<void*>& draws,
                       SkCanvas* canvas) const {
-        if (NULL != fStateTree) {
+        if (fStateTree) {
             fStateTree->initIterator(iter, draws, canvas);
         }
     }

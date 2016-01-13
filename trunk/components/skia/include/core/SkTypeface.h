@@ -114,13 +114,13 @@ public:
     /** Return a new typeface given a file. If the file does not exist, or is
         not a valid font file, returns null.
     */
-    static SkTypeface* CreateFromFile(const char path[]);
+    static SkTypeface* CreateFromFile(const char path[], int index = 0);
 
     /** Return a new typeface given a stream. If the stream is
         not a valid font file, returns null. Ownership of the stream is
         transferred, so the caller must not reference it again.
     */
-    static SkTypeface* CreateFromStream(SkStream* stream);
+    static SkTypeface* CreateFromStream(SkStream* stream, int index = 0);
 
     /** Write a unique signature to a stream, sufficient to reconstruct a
         typeface referencing the same font when Deserialize is called.
@@ -312,6 +312,12 @@ protected:
     virtual bool onGetKerningPairAdjustments(const uint16_t glyphs[], int count,
                                              int32_t adjustments[]) const;
 
+    /** Returns the family name of the typeface as known by its font manager.
+     *  This name may or may not be produced by the family name iterator.
+     */
+    virtual void onGetFamilyName(SkString* familyName) const = 0;
+
+    /** Returns an iterator over the family names in the font. */
     virtual LocalizedStrings* onCreateFamilyNameIterator() const = 0;
 
     virtual int onGetTableTags(SkFontTableTag tags[]) const = 0;
@@ -322,6 +328,8 @@ private:
     friend class SkGTypeface;
     friend class SkPDFFont;
     friend class SkPDFCIDFont;
+    friend class GrPathRendering;
+    friend class GrGLPathRendering;
 
     /** Retrieve detailed typeface metrics.  Used by the PDF backend.
      @param perGlyphInfo Indicate what glyph specific information (advances,

@@ -452,6 +452,7 @@ protected:
 
     virtual int onGetUPEM() const SK_OVERRIDE;
     virtual SkStream* onOpenStream(int* ttcIndex) const SK_OVERRIDE;
+    virtual void onGetFamilyName(SkString* familyName) const SK_OVERRIDE;
     virtual SkTypeface::LocalizedStrings* onCreateFamilyNameIterator() const SK_OVERRIDE;
     virtual int onGetTableTags(SkFontTableTag tags[]) const SK_OVERRIDE;
     virtual size_t onGetTableData(SkFontTableTag, size_t offset,
@@ -897,7 +898,7 @@ uint16_t SkScalerContext_Mac::getFBoundingBoxesGlyphOffset() {
 
 bool SkScalerContext_Mac::generateBBoxes() {
     if (fGeneratedFBoundingBoxes) {
-        return NULL != fFBoundingBoxes.get();
+        return SkToBool(fFBoundingBoxes.get());
     }
     fGeneratedFBoundingBoxes = true;
 
@@ -1900,6 +1901,10 @@ static const char* get_str(CFStringRef ref, SkString* str) {
     return str->c_str();
 }
 
+void SkTypeface_Mac::onGetFamilyName(SkString* familyName) const {
+    get_str(CTFontCopyFamilyName(fFontRef), familyName);
+}
+
 void SkTypeface_Mac::onGetFontDescriptor(SkFontDescriptor* desc,
                                          bool* isLocalStream) const {
     SkString tmpStr;
@@ -1976,10 +1981,10 @@ int SkTypeface_Mac::onCharsToGlyphs(const void* chars, Encoding encoding,
     if (srcCount > glyphCount) {
         int extra = 0;
         for (int i = 0; i < glyphCount; ++i) {
+            compactedGlyphs[i] = macGlyphs[i + extra];
             if (SkUTF16_IsHighSurrogate(src[i + extra])) {
                 ++extra;
             }
-            compactedGlyphs[i] = macGlyphs[i + extra];
         }
     }
 

@@ -10,11 +10,11 @@
 #include "GrContext.h"
 #include "GrDrawState.h"
 #include "GrDrawTargetCaps.h"
-#include "GrEffect.h"
+#include "GrProcessor.h"
 #include "GrGpu.h"
 #include "GrIndexBuffer.h"
 #include "GrPathUtils.h"
-#include "GrTBackendEffectFactory.h"
+#include "GrTBackendProcessorFactory.h"
 #include "SkGeometry.h"
 #include "SkStroke.h"
 #include "SkTemplates.h"
@@ -684,7 +684,7 @@ void add_line(const SkPoint p[2],
         (*vert)[5].fPos = b + vec - ortho;
         (*vert)[5].fCoverage = 0;
 
-        if (NULL != toSrc) {
+        if (toSrc) {
             toSrc->mapPointsWithStride(&(*vert)->fPos,
                                        sizeof(LineVertex),
                                        kVertsPerLineSeg);
@@ -708,7 +708,7 @@ namespace {
 // position + edge
 extern const GrVertexAttrib gHairlineBezierAttribs[] = {
     {kVec2f_GrVertexAttribType, 0,                  kPosition_GrVertexAttribBinding},
-    {kVec4f_GrVertexAttribType, sizeof(SkPoint),    kEffect_GrVertexAttribBinding}
+    {kVec4f_GrVertexAttribType, sizeof(SkPoint),    kGeometryProcessor_GrVertexAttribBinding}
 };
 
 // position + coverage
@@ -731,8 +731,8 @@ bool GrAAHairLinePathRenderer::createLineGeom(const SkPath& path,
 
     int vertCnt = kVertsPerLineSeg * lineCnt;
 
-    drawState->setVertexAttribs<gHairlineLineAttribs>(SK_ARRAY_COUNT(gHairlineLineAttribs));
-    SkASSERT(sizeof(LineVertex) == drawState->getVertexSize());
+    drawState->setVertexAttribs<gHairlineLineAttribs>(SK_ARRAY_COUNT(gHairlineLineAttribs),
+                                                      sizeof(LineVertex));
 
     if (!arg->set(target, vertCnt, 0)) {
         return false;
@@ -778,8 +778,8 @@ bool GrAAHairLinePathRenderer::createBezierGeom(
 
     int vertCnt = kVertsPerQuad * quadCnt + kVertsPerQuad * conicCnt;
 
-    target->drawState()->setVertexAttribs<gHairlineBezierAttribs>(SK_ARRAY_COUNT(gHairlineBezierAttribs));
-    SkASSERT(sizeof(BezierVertex) == target->getDrawState().getVertexSize());
+    int vAttribCnt = SK_ARRAY_COUNT(gHairlineBezierAttribs);
+    target->drawState()->setVertexAttribs<gHairlineBezierAttribs>(vAttribCnt, sizeof(BezierVertex));
 
     if (!arg->set(target, vertCnt, 0)) {
         return false;
@@ -808,7 +808,7 @@ bool GrAAHairLinePathRenderer::createBezierGeom(
         seedPts[0] = conics[0];
         seedPts[1] = conics[2];
     }
-    if (NULL != toDevice) {
+    if (toDevice) {
         toDevice->mapPoints(seedPts, 2);
     }
     devBounds->set(seedPts[0], seedPts[1]);
@@ -990,19 +990,17 @@ bool GrAAHairLinePathRenderer::onDrawPath(const SkPath& path,
         }
         GrDrawState* drawState = target->drawState();
 
-        static const int kEdgeAttrIndex = 1;
-
         // Check devBounds
         SkASSERT(check_bounds<BezierVertex>(drawState, devBounds, arg.vertices(),
                                             kVertsPerQuad * quadCnt + kVertsPerQuad * conicCnt));
 
         if (quadCnt > 0) {
-            GrEffect* hairQuadEffect = GrQuadEffect::Create(kHairlineAA_GrEffectEdgeType,
-                                                            *target->caps());
-            SkASSERT(NULL != hairQuadEffect);
+            GrGeometryProcessor* hairQuadProcessor =
+                    GrQuadEffect::Create(kHairlineAA_GrProcessorEdgeType, *target->caps());
+            SkASSERT(hairQuadProcessor);
             GrDrawState::AutoRestoreEffects are(drawState);
             target->setIndexSourceToBuffer(fQuadsIndexBuffer);
-            drawState->addCoverageEffect(hairQuadEffect, kEdgeAttrIndex)->unref();
+            drawState->setGeometryProcessor(hairQuadProcessor)->unref();
             int quads = 0;
             while (quads < quadCnt) {
                 int n = SkTMin(quadCnt - quads, kNumQuadsInIdxBuffer);
@@ -1018,10 +1016,10 @@ bool GrAAHairLinePathRenderer::onDrawPath(const SkPath& path,
 
         if (conicCnt > 0) {
             GrDrawState::AutoRestoreEffects are(drawState);
-            GrEffect* hairConicEffect = GrConicEffect::Create(kHairlineAA_GrEffectEdgeType,
-                                                              *target->caps());
-            SkASSERT(NULL != hairConicEffect);
-            drawState->addCoverageEffect(hairConicEffect, 1, 2)->unref();
+            GrGeometryProcessor* hairConicProcessor = GrConicEffect::Create(
+                    kHairlineAA_GrProcessorEdgeType, *target->caps());
+            SkASSERT(hairConicProcessor);
+            drawState->setGeometryProcessor(hairConicProcessor)->unref();
             int conics = 0;
             while (conics < conicCnt) {
                 int n = SkTMin(conicCnt - conics, kNumQuadsInIdxBuffer);

@@ -32,12 +32,28 @@ public:
      */
     uint32_t uniqueID() const;
 
+    /**
+     *  Serialize to a buffer.
+     */
+    void flatten(SkWriteBuffer&) const;
+
+    /**
+     *  Recreate an SkTextBlob that was serialized into a buffer.
+     *
+     *  @param  SkReadBuffer Serialized blob data.
+     *  @return A new SkTextBlob representing the serialized data, or NULL if the buffer is
+     *          invalid.
+     */
+    static const SkTextBlob* CreateFromBuffer(SkReadBuffer&);
+
 private:
     enum GlyphPositioning {
         kDefault_Positioning      = 0, // Default glyph advances -- zero scalars per glyph.
         kHorizontal_Positioning   = 1, // Horizontal positioning -- one scalar per glyph.
         kFull_Positioning         = 2  // Point positioning -- two scalars per glyph.
     };
+
+    class RunRecord;
 
     class RunIterator {
     public:
@@ -54,40 +70,31 @@ private:
         GlyphPositioning positioning() const;
 
     private:
-        const SkTextBlob* fBlob;
-        int               fIndex;
+        const RunRecord* fCurrentRun;
+        int              fRemainingRuns;
+
+        SkDEBUGCODE(uint8_t* fStorageTop;)
     };
 
-    // A run is a sequence of glyphs sharing the same font metrics and positioning mode.
-    struct Run {
-        uint32_t         count;
-        uint32_t         glyphStart; // index into fGlyphBuffer
-        uint32_t         posStart;   // index into fPosBuffer
-        SkPoint          offset;     // run offset (unsued for fully positioned glyphs)
-        SkPaint          font;
-        GlyphPositioning positioning;
-    };
+    SkTextBlob(int runCount, const SkRect& bounds);
 
-    SkTextBlob(uint16_t* glyphs, SkScalar* pos, const SkTArray<Run>* runs, const SkRect& bounds);
-
-    void flatten(SkWriteBuffer&) const;
-    static const SkTextBlob* CreateFromBuffer(SkReadBuffer&);
+    virtual ~SkTextBlob();
+    virtual void internal_dispose() const SK_OVERRIDE;
 
     static unsigned ScalarsPerGlyph(GlyphPositioning pos);
 
-    friend class SkCanvas;
-    friend class SkPictureData;
+    friend class SkBaseDevice;
     friend class SkTextBlobBuilder;
     friend class TextBlobTester;
 
-    const SkAutoTMalloc<uint16_t>       fGlyphBuffer;
-    const SkAutoTMalloc<SkScalar>       fPosBuffer;
+    const int        fRunCount;
+    const SkRect     fBounds;
+    mutable uint32_t fUniqueID;
 
-    // SkTArray required here for run font destruction.
-    SkAutoTDelete<const SkTArray<Run> > fRuns;
-    const SkRect                        fBounds;
+    SkDEBUGCODE(size_t fStorageSize;)
 
-    mutable uint32_t                    fUniqueID;
+    // The actual payload resides in externally-managed storage, following the object.
+    // (see the .cpp for more details)
 
     typedef SkRefCnt INHERITED;
 };
@@ -98,11 +105,7 @@ private:
  */
 class SK_API SkTextBlobBuilder {
 public:
-    /**
-     *  @param runs The number of runs to be added, if known. This is a storage hint and
-     *              not a limit.
-     */
-    SkTextBlobBuilder(unsigned runs = 0);
+    SkTextBlobBuilder();
 
     ~SkTextBlobBuilder();
 
@@ -170,20 +173,23 @@ public:
     const RunBuffer& allocRunPos(const SkPaint& font, int count, const SkRect* bounds = NULL);
 
 private:
+    void reserve(size_t size);
     void allocInternal(const SkPaint& font, SkTextBlob::GlyphPositioning positioning,
                        int count, SkPoint offset, const SkRect* bounds);
-    void ensureRun(const SkPaint& font, SkTextBlob::GlyphPositioning positioning,
-                   const SkPoint& offset);
+    bool mergeRun(const SkPaint& font, SkTextBlob::GlyphPositioning positioning,
+                  int count, SkPoint offset);
     void updateDeferredBounds();
 
-    SkTDArray<uint16_t>        fGlyphBuffer;
-    SkTDArray<SkScalar>        fPosBuffer;
-    SkTArray<SkTextBlob::Run>* fRuns;
+    SkAutoTMalloc<uint8_t> fStorage;
+    size_t                 fStorageSize;
+    size_t                 fStorageUsed;
 
-    SkRect                     fBounds;
-    bool                       fDeferredBounds;
+    SkRect                 fBounds;
+    int                    fRunCount;
+    bool                   fDeferredBounds;
+    size_t                 fLastRun; // index into fStorage
 
-    RunBuffer                  fCurrentRunBuffer;
+    RunBuffer              fCurrentRunBuffer;
 };
 
 #endif // SkTextBlob_DEFINED

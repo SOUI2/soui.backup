@@ -143,13 +143,13 @@ static bool InitFreetype() {
 #elif defined(SK_CAN_USE_DLOPEN) && SK_CAN_USE_DLOPEN == 1
         //The FreeType library is already loaded, so symbols are available in process.
         void* self = dlopen(NULL, RTLD_LAZY);
-        if (NULL != self) {
+        if (self) {
             FT_Library_SetLcdFilterWeightsProc setLcdFilterWeights;
             //The following cast is non-standard, but safe for POSIX.
             *reinterpret_cast<void**>(&setLcdFilterWeights) = dlsym(self, "FT_Library_SetLcdFilterWeights");
             dlclose(self);
 
-            if (NULL != setLcdFilterWeights) {
+            if (setLcdFilterWeights) {
                 err = setLcdFilterWeights(gFTLibrary, gGaussianLikeHeavyWeights);
             }
         }
@@ -316,7 +316,7 @@ static SkFaceRec* ref_ft_face(const SkTypeface* typeface) {
     memset(&args, 0, sizeof(args));
     const void* memoryBase = strm->getMemoryBase();
 
-    if (NULL != memoryBase) {
+    if (memoryBase) {
 //printf("mmap(%s)\n", keyString.c_str());
         args.flags = FT_OPEN_MEMORY;
         args.memory_base = (const FT_Byte*)memoryBase;
@@ -1301,7 +1301,9 @@ void SkScalerContext_FreeType::generateMetrics(SkGlyph* glyph) {
         }
     }
 
-    if (fFace->glyph->format == FT_GLYPH_FORMAT_BITMAP && fScaleY && fFace->size->metrics.y_ppem) {
+    // If the font isn't scalable, scale the metrics from the non-scalable strike.
+    // This means do not try to scale embedded bitmaps; only scale bitmaps in bitmap only fonts.
+    if (!FT_IS_SCALABLE(fFace) && fScaleY && fFace->size->metrics.y_ppem) {
         // NOTE: both dimensions are scaled by y_ppem. this is WAI.
         scaleGlyphMetrics(*glyph, SkScalarDiv(SkFixedToScalar(fScaleY),
                                               SkIntToScalar(fFace->size->metrics.y_ppem)));
@@ -1341,7 +1343,7 @@ void SkScalerContext_FreeType::generatePath(const SkGlyph& glyph,
                                             SkPath* path) {
     SkAutoMutexAcquire  ac(gFTMutex);
 
-    SkASSERT(&glyph && path);
+    SkASSERT(path);
 
     if (this->setupSize()) {
         path->reset();
@@ -1654,7 +1656,7 @@ size_t SkTypeface_FreeType::onGetTableData(SkFontTableTag tag, size_t offset,
         return 0;
     }
     FT_ULong size = SkTMin((FT_ULong)length, tableLength - (FT_ULong)offset);
-    if (NULL != data) {
+    if (data) {
         error = FT_Load_Sfnt_Table(face, tag, offset, reinterpret_cast<FT_Byte*>(data), &size);
         if (error) {
             return 0;
@@ -1681,7 +1683,7 @@ size_t SkTypeface_FreeType::onGetTableData(SkFontTableTag tag, size_t offset,
     const void* memoryBase = stream->getMemoryBase();
     FT_StreamRec    streamRec;
 
-    if (NULL != memoryBase) {
+    if (memoryBase) {
         args.flags = FT_OPEN_MEMORY;
         args.memory_base = (const FT_Byte*)memoryBase;
         args.memory_size = stream->getLength();

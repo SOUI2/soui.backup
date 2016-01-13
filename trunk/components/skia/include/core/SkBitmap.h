@@ -14,6 +14,16 @@
 #include "SkPoint.h"
 #include "SkRefCnt.h"
 
+#ifdef SK_SUPPORT_LEGACY_ALLOCPIXELS_BOOL
+    #define SK_ALLOCPIXELS_RETURN_TYPE  bool
+    #define SK_ALLOCPIXELS_RETURN_TRUE  return true
+    #define SK_ALLOCPIXELS_RETURN_FAIL  return false
+#else
+    #define SK_ALLOCPIXELS_RETURN_TYPE  void
+    #define SK_ALLOCPIXELS_RETURN_TRUE  return
+    #define SK_ALLOCPIXELS_RETURN_FAIL  sk_throw()
+#endif
+
 struct SkMask;
 struct SkIRect;
 struct SkRect;
@@ -68,10 +78,10 @@ public:
 
     const SkImageInfo& info() const { return fInfo; }
 
-    int width() const { return fInfo.fWidth; }
-    int height() const { return fInfo.fHeight; }
-    SkColorType colorType() const { return fInfo.fColorType; }
-    SkAlphaType alphaType() const { return fInfo.fAlphaType; }
+    int width() const { return fInfo.width(); }
+    int height() const { return fInfo.height(); }
+    SkColorType colorType() const { return fInfo.colorType(); }
+    SkAlphaType alphaType() const { return fInfo.alphaType(); }
 
     /**
      *  Return the number of bytes per pixel based on the colortype. If the colortype is
@@ -132,7 +142,7 @@ public:
         Note this truncates the result to 32bits. Call getSize64() to detect
         if the real size exceeds 32bits.
     */
-    size_t getSize() const { return fInfo.fHeight * fRowBytes; }
+    size_t getSize() const { return fInfo.height() * fRowBytes; }
 
     /** Return the number of bytes from the pointer returned by getPixels()
         to the end of the allocated space in the buffer. Required in
@@ -144,7 +154,7 @@ public:
      *  Return the full size of the bitmap, in bytes.
      */
     int64_t computeSize64() const {
-        return sk_64_mul(fInfo.fHeight, fRowBytes);
+        return sk_64_mul(fInfo.height(), fRowBytes);
     }
 
     /**
@@ -218,7 +228,15 @@ public:
      *  a colortable, then ColorTable must be non-null, and will be ref'd.
      *  On failure, the bitmap will be set to empty and return false.
      */
-    bool allocPixels(const SkImageInfo&, SkPixelRefFactory*, SkColorTable*);
+    bool SK_WARN_UNUSED_RESULT tryAllocPixels(const SkImageInfo&, SkPixelRefFactory*, SkColorTable*);
+
+    SK_ALLOCPIXELS_RETURN_TYPE allocPixels(const SkImageInfo& info, SkPixelRefFactory* factory,
+                                           SkColorTable* ctable) {
+        if (!this->tryAllocPixels(info, factory, ctable)) {
+            SK_ALLOCPIXELS_RETURN_FAIL;
+        }
+        SK_ALLOCPIXELS_RETURN_TRUE;
+    }
 
     /**
      *  Allocate the bitmap's pixels to match the requested image info and
@@ -228,26 +246,35 @@ public:
      *  the pixel size specified by info.colorType()) then false is returned
      *  and the bitmap is set to empty.
      */
-    bool allocPixels(const SkImageInfo& info, size_t rowBytes);
+    bool SK_WARN_UNUSED_RESULT tryAllocPixels(const SkImageInfo& info, size_t rowBytes);
 
-    /**
-     *  Allocate a pixelref to match the specified image info, using the default
-     *  allocator.
-     *  On success, the bitmap's pixels will be "locked", and return true.
-     *  On failure, the bitmap will be set to empty and return false.
-     */
-    bool allocPixels(const SkImageInfo& info) {
+    SK_ALLOCPIXELS_RETURN_TYPE allocPixels(const SkImageInfo& info, size_t rowBytes) {
+        if (!this->tryAllocPixels(info, rowBytes)) {
+            SK_ALLOCPIXELS_RETURN_FAIL;
+        }
+        SK_ALLOCPIXELS_RETURN_TRUE;
+    }
+
+    bool SK_WARN_UNUSED_RESULT tryAllocPixels(const SkImageInfo& info) {
+        return this->tryAllocPixels(info, info.minRowBytes());
+    }
+
+    SK_ALLOCPIXELS_RETURN_TYPE allocPixels(const SkImageInfo& info) {
         return this->allocPixels(info, info.minRowBytes());
     }
 
-    bool allocN32Pixels(int width, int height, bool isOpaque = false) {
-        SkImageInfo info = SkImageInfo::MakeN32Premul(width, height);
-        if (isOpaque) {
-            info.fAlphaType = kOpaque_SkAlphaType;
-        }
+    bool SK_WARN_UNUSED_RESULT tryAllocN32Pixels(int width, int height, bool isOpaque = false) {
+        SkImageInfo info = SkImageInfo::MakeN32(width, height,
+                                            isOpaque ? kOpaque_SkAlphaType : kPremul_SkAlphaType);
+        return this->tryAllocPixels(info);
+    }
+    
+    SK_ALLOCPIXELS_RETURN_TYPE allocN32Pixels(int width, int height, bool isOpaque = false) {
+        SkImageInfo info = SkImageInfo::MakeN32(width, height,
+                                            isOpaque ? kOpaque_SkAlphaType : kPremul_SkAlphaType);
         return this->allocPixels(info);
     }
-
+    
     /**
      *  Install a pixelref that wraps the specified pixels and rowBytes, and
      *  optional ReleaseProc and context. When the pixels are no longer
@@ -320,7 +347,11 @@ public:
         @return true if the allocation succeeds. If not the pixelref field of
                      the bitmap will be unchanged.
     */
-    bool allocPixels(SkColorTable* ctable = NULL) {
+    bool SK_WARN_UNUSED_RESULT tryAllocPixels(SkColorTable* ctable = NULL) {
+        return this->tryAllocPixels(NULL, ctable);
+    }
+
+    SK_ALLOCPIXELS_RETURN_TYPE allocPixels(SkColorTable* ctable = NULL) {
         return this->allocPixels(NULL, ctable);
     }
 
@@ -342,7 +373,14 @@ public:
         @return true if the allocation succeeds. If not the pixelref field of
                      the bitmap will be unchanged.
     */
-    bool allocPixels(Allocator* allocator, SkColorTable* ctable);
+    bool SK_WARN_UNUSED_RESULT tryAllocPixels(Allocator* allocator, SkColorTable* ctable);
+
+    SK_ALLOCPIXELS_RETURN_TYPE allocPixels(Allocator* allocator, SkColorTable* ctable) {
+        if (!this->tryAllocPixels(allocator, ctable)) {
+            SK_ALLOCPIXELS_RETURN_FAIL;
+        }
+        SK_ALLOCPIXELS_RETURN_TRUE;
+    }
 
     /**
      *  Return the current pixelref object or NULL if there is none. This does
@@ -406,7 +444,7 @@ public:
     */
     bool readyToDraw() const {
         return this->getPixels() != NULL &&
-               (this->colorType() != kIndex_8_SkColorType || NULL != fColorTable);
+               (this->colorType() != kIndex_8_SkColorType || fColorTable);
     }
 
     /** Returns the pixelRef's texture, or NULL

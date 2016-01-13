@@ -676,21 +676,18 @@ bool SkXfermode::asMode(Mode* mode) const {
     return false;
 }
 
-bool SkXfermode::asNewEffect(GrEffect** effect, GrTexture* background) const {
+bool SkXfermode::asFragmentProcessor(GrFragmentProcessor**, GrTexture*) const {
     return false;
 }
 
-bool SkXfermode::AsNewEffectOrCoeff(SkXfermode* xfermode,
-                                    GrEffect** effect,
-                                    Coeff* src,
-                                    Coeff* dst,
-                                    GrTexture* background) {
+bool SkXfermode::asFragmentProcessorOrCoeff(SkXfermode* xfermode, GrFragmentProcessor** fp,
+                                            Coeff* src, Coeff* dst, GrTexture* background) {
     if (NULL == xfermode) {
         return ModeAsCoeff(kSrcOver_Mode, src, dst);
     } else if (xfermode->asCoeff(src, dst)) {
         return true;
     } else {
-        return xfermode->asNewEffect(effect, background);
+        return xfermode->asFragmentProcessor(fp, background);
     }
 }
 
@@ -778,23 +775,23 @@ void SkXfermode::xferA8(SkAlpha* SK_RESTRICT dst,
 
 #if SK_SUPPORT_GPU
 
-#include "GrEffect.h"
+#include "GrProcessor.h"
 #include "GrCoordTransform.h"
-#include "GrEffectUnitTest.h"
-#include "GrTBackendEffectFactory.h"
-#include "gl/GrGLEffect.h"
+#include "GrProcessorUnitTest.h"
+#include "GrTBackendProcessorFactory.h"
+#include "gl/GrGLProcessor.h"
 #include "gl/builders/GrGLProgramBuilder.h"
 
 /**
- * GrEffect that implements the all the separable xfer modes that cannot be expressed as Coeffs.
+ * GrProcessor that implements the all the separable xfer modes that cannot be expressed as Coeffs.
  */
-class XferEffect : public GrEffect {
+class XferEffect : public GrFragmentProcessor {
 public:
     static bool IsSupportedMode(SkXfermode::Mode mode) {
         return mode > SkXfermode::kLastCoeffMode && mode <= SkXfermode::kLastMode;
     }
 
-    static GrEffect* Create(SkXfermode::Mode mode, GrTexture* background) {
+    static GrFragmentProcessor* Create(SkXfermode::Mode mode, GrTexture* background) {
         if (!IsSupportedMode(mode)) {
             return NULL;
         } else {
@@ -807,8 +804,8 @@ public:
         *validFlags = 0;
     }
 
-    virtual const GrBackendEffectFactory& getFactory() const SK_OVERRIDE {
-        return GrTBackendEffectFactory<XferEffect>::getInstance();
+    virtual const GrBackendFragmentProcessorFactory& getFactory() const SK_OVERRIDE {
+        return GrTBackendFragmentProcessorFactory<XferEffect>::getInstance();
     }
 
     static const char* Name() { return "XferEffect"; }
@@ -816,31 +813,32 @@ public:
     SkXfermode::Mode mode() const { return fMode; }
     const GrTextureAccess&  backgroundAccess() const { return fBackgroundAccess; }
 
-    class GLEffect : public GrGLEffect {
+    class GLProcessor : public GrGLFragmentProcessor {
     public:
-        GLEffect(const GrBackendEffectFactory& factory, const GrDrawEffect&)
-            : GrGLEffect(factory) {
+        GLProcessor(const GrBackendProcessorFactory& factory, const GrProcessor&)
+            : INHERITED(factory) {
         }
         virtual void emitCode(GrGLProgramBuilder* builder,
-                              const GrDrawEffect& drawEffect,
-                              const GrEffectKey& key,
+                              const GrFragmentProcessor& fp,
+                              const GrProcessorKey& key,
                               const char* outputColor,
                               const char* inputColor,
                               const TransformedCoordsArray& coords,
                               const TextureSamplerArray& samplers) SK_OVERRIDE {
-            SkXfermode::Mode mode = drawEffect.castEffect<XferEffect>().mode();
-            const GrTexture* backgroundTex = drawEffect.castEffect<XferEffect>().backgroundAccess().getTexture();
+            SkXfermode::Mode mode = fp.cast<XferEffect>().mode();
+            const GrTexture* backgroundTex =
+                    fp.cast<XferEffect>().backgroundAccess().getTexture();
             GrGLFragmentShaderBuilder* fsBuilder = builder->getFragmentShaderBuilder();
             const char* dstColor;
             if (backgroundTex) {
                 dstColor = "bgColor";
                 fsBuilder->codeAppendf("\t\tvec4 %s = ", dstColor);
-                fsBuilder->appendTextureLookup(samplers[0], coords[0].c_str(), coords[0].type());
+                fsBuilder->appendTextureLookup(samplers[0], coords[0].c_str(), coords[0].getType());
                 fsBuilder->codeAppendf(";\n");
             } else {
                 dstColor = fsBuilder->dstColor();
             }
-            SkASSERT(NULL != dstColor);
+            SkASSERT(dstColor);
 
             // We don't try to optimize for this case at all
             if (NULL == inputColor) {
@@ -970,12 +968,12 @@ public:
             }
         }
 
-        static inline void GenKey(const GrDrawEffect& drawEffect, const GrGLCaps&,
-                                  GrEffectKeyBuilder* b) {
+        static inline void GenKey(const GrProcessor& proc, const GrGLCaps&,
+                                  GrProcessorKeyBuilder* b) {
             // The background may come from the dst or from a texture.
-            uint32_t key = drawEffect.effect()->numTextures();
+            uint32_t key = proc.numTextures();
             SkASSERT(key <= 1);
-            key |= drawEffect.castEffect<XferEffect>().mode() << 1;
+            key |= proc.cast<XferEffect>().mode() << 1;
             b->add32(key);
         }
 
@@ -1196,10 +1194,10 @@ public:
 
         }
 
-        typedef GrGLEffect INHERITED;
+        typedef GrGLFragmentProcessor INHERITED;
     };
 
-    GR_DECLARE_EFFECT_TEST;
+    GR_DECLARE_FRAGMENT_PROCESSOR_TEST;
 
 private:
     XferEffect(SkXfermode::Mode mode, GrTexture* background)
@@ -1213,8 +1211,8 @@ private:
             this->setWillReadDstColor();
         }
     }
-    virtual bool onIsEqual(const GrEffect& other) const SK_OVERRIDE {
-        const XferEffect& s = CastEffect<XferEffect>(other);
+    virtual bool onIsEqual(const GrProcessor& other) const SK_OVERRIDE {
+        const XferEffect& s = other.cast<XferEffect>();
         return fMode == s.fMode &&
                fBackgroundAccess.getTexture() == s.fBackgroundAccess.getTexture();
     }
@@ -1223,14 +1221,14 @@ private:
     GrCoordTransform fBackgroundTransform;
     GrTextureAccess  fBackgroundAccess;
 
-    typedef GrEffect INHERITED;
+    typedef GrFragmentProcessor INHERITED;
 };
 
-GR_DEFINE_EFFECT_TEST(XferEffect);
-GrEffect* XferEffect::TestCreate(SkRandom* rand,
-                                 GrContext*,
-                                 const GrDrawTargetCaps&,
-                                 GrTexture*[]) {
+GR_DEFINE_FRAGMENT_PROCESSOR_TEST(XferEffect);
+GrFragmentProcessor* XferEffect::TestCreate(SkRandom* rand,
+                                            GrContext*,
+                                            const GrDrawTargetCaps&,
+                                            GrTexture*[]) {
     int mode = rand->nextRangeU(SkXfermode::kLastCoeffMode + 1, SkXfermode::kLastSeparableMode);
 
     return SkNEW_ARGS(XferEffect, (static_cast<SkXfermode::Mode>(mode), NULL));
@@ -1260,7 +1258,7 @@ SkProcCoeffXfermode::SkProcCoeffXfermode(SkReadBuffer& buffer) : INHERITED(buffe
 
 SkFlattenable* SkProcCoeffXfermode::CreateProc(SkReadBuffer& buffer) {
     uint32_t mode32 = buffer.read32();
-    if (!buffer.validate(mode32 >= SK_ARRAY_COUNT(gProcCoeffs))) {
+    if (!buffer.validate(mode32 < SK_ARRAY_COUNT(gProcCoeffs))) {
         return NULL;
     }
     return SkXfermode::Create((SkXfermode::Mode)mode32);
@@ -1298,7 +1296,7 @@ void SkProcCoeffXfermode::xfer32(SkPMColor* SK_RESTRICT dst,
 
     SkXfermodeProc proc = fProc;
 
-    if (NULL != proc) {
+    if (proc) {
         if (NULL == aa) {
             for (int i = count - 1; i >= 0; --i) {
                 dst[i] = proc(src[i], dst[i]);
@@ -1326,7 +1324,7 @@ void SkProcCoeffXfermode::xfer16(uint16_t* SK_RESTRICT dst,
 
     SkXfermodeProc proc = fProc;
 
-    if (NULL != proc) {
+    if (proc) {
         if (NULL == aa) {
             for (int i = count - 1; i >= 0; --i) {
                 SkPMColor dstC = SkPixel16ToPixel32(dst[i]);
@@ -1355,7 +1353,7 @@ void SkProcCoeffXfermode::xferA8(SkAlpha* SK_RESTRICT dst,
 
     SkXfermodeProc proc = fProc;
 
-    if (NULL != proc) {
+    if (proc) {
         if (NULL == aa) {
             for (int i = count - 1; i >= 0; --i) {
                 SkPMColor res = proc(src[i], dst[i] << SK_A32_SHIFT);
@@ -1379,11 +1377,12 @@ void SkProcCoeffXfermode::xferA8(SkAlpha* SK_RESTRICT dst,
 }
 
 #if SK_SUPPORT_GPU
-bool SkProcCoeffXfermode::asNewEffect(GrEffect** effect, GrTexture* background) const {
+bool SkProcCoeffXfermode::asFragmentProcessor(GrFragmentProcessor** fp,
+                                              GrTexture* background) const {
     if (XferEffect::IsSupportedMode(fMode)) {
-        if (NULL != effect) {
-            *effect = XferEffect::Create(fMode, background);
-            SkASSERT(NULL != *effect);
+        if (fp) {
+            *fp = XferEffect::Create(fMode, background);
+            SkASSERT(*fp);
         }
         return true;
     }
@@ -1594,7 +1593,7 @@ void SkDstInXfermode::xfer32(SkPMColor* SK_RESTRICT dst,
     if (count <= 0) {
         return;
     }
-    if (NULL != aa) {
+    if (aa) {
         return this->INHERITED::xfer32(dst, src, count, aa);
     }
 
@@ -1641,7 +1640,7 @@ void SkDstOutXfermode::xfer32(SkPMColor* SK_RESTRICT dst,
     if (count <= 0) {
         return;
     }
-    if (NULL != aa) {
+    if (aa) {
         return this->INHERITED::xfer32(dst, src, count, aa);
     }
 

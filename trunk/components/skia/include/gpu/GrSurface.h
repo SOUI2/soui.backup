@@ -80,11 +80,11 @@ public:
      */
     bool isSameAs(const GrSurface* other) const {
         const GrRenderTarget* thisRT = this->asRenderTarget();
-        if (NULL != thisRT) {
+        if (thisRT) {
             return thisRT == other->asRenderTarget();
         } else {
             const GrTexture* thisTex = this->asTexture();
-            SkASSERT(NULL != thisTex); // We must be one or the other
+            SkASSERT(thisTex); // We must be one or the other
             return thisTex == other->asTexture();
         }
     }
@@ -134,6 +134,10 @@ public:
      * @param filename      Full path to desired file
      */
     bool savePixels(const char* filename);
+
+    bool hasPendingRead() const;
+    bool hasPendingWrite() const;
+    bool hasPendingIO() const;
 
 protected:
     GrSurface(GrGpu* gpu, bool isWrapped, const GrTextureDesc& desc)
