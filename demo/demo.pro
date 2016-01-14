@@ -57,6 +57,7 @@ HEADERS += MainDlg.h \
            httpsvr/filereader-i.h \
            httpsvr/genericserver.h \
            httpsvr/httpserver.h \
+           smatrixwindow.h \
            memflash.h \
 		   uianimation/uianimation.h \
 		   uianimation/uianimationwnd.h\
@@ -93,8 +94,9 @@ SOURCES += demo.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \
            memflash.cpp	\
+           smatrixwindow.cpp \
 		   uianimation/uianimationwnd.cpp \
-			appledock/sdesktopdock.cpp
+		   appledock/sdesktopdock.cpp
 			
 RC_FILE += demo.rc
 
