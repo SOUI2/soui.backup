@@ -73,7 +73,6 @@ protected:
 	}
     
 	int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	void OnShowWindow(BOOL bShow, UINT nStatus);
     
     //演示如何在应用层使用定时器
     void OnTimer(UINT_PTR idEvent);
@@ -178,7 +177,6 @@ protected:
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_COMMAND(OnCommand)
-		MSG_WM_SHOWWINDOW(OnShowWindow)
 		CHAIN_MSG_MAP(SHostWnd)
 		REFLECT_NOTIFICATIONS_EX()
 	END_MSG_MAP()
