@@ -1,4 +1,4 @@
-﻿<include>
+<include>
   <!--login settings-->
   <window name="set_form" pos="0,0,-0,-0" colorBkgnd="#008888">
     <caption pos="5,5,-5,34">

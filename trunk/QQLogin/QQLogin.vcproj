@@ -21,7 +21,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;.&quot;,&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
 				AssemblerListingLocation="..\obj\debug\qqlogin\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
@@ -83,7 +83,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;.&quot;,&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
 				AssemblerListingLocation="..\obj\release\qqlogin\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
@@ -150,11 +150,49 @@
 			<File
 				RelativePath="..\controls.extend\image3d\3dtransform.cpp" />
 			<File
+				RelativePath="extend.ctrls\ExtendCtrls.cpp" />
+			<File
+				RelativePath="extend.skins\ExtendSkins.cpp" />
+			<File
+				RelativePath="GroupChatFrame.cpp" />
+			<File
+				RelativePath="extend.ctrls\imre\ImgProvider.cpp" />
+			<File
 				RelativePath="MainDlg.cpp" />
 			<File
 				RelativePath="QQLogin.cpp" />
 			<File
+				RelativePath="extend.ctrls\imre\RichEditObj.cpp" />
+			<File
+				RelativePath="extend.ctrls\imre\RichEditObjFactory.cpp" />
+			<File
+				RelativePath="extend.ctrls\imre\RichEditOleBase.cpp" />
+			<File
+				RelativePath="extend.ctrls\imre\RichEditOleCallback.cpp" />
+			<File
+				RelativePath="extend.ctrls\imre\RichEditOleCtrls.cpp" />
+			<File
+				RelativePath="extend.ctrls\SButtonEx.cpp" />
+			<File
+				RelativePath="..\controls.extend\SChromeTabCtrl.cpp" />
+			<File
+				RelativePath="extend.ctrls\imre\SImRichedit.cpp" />
+			<File
+				RelativePath="extend.ctrls\SImageEx.cpp" />
+			<File
+				RelativePath="..\controls.extend\SImageMaskWnd.cpp" />
+			<File
+				RelativePath="extend.ctrls\SImagePlayer.cpp" />
+			<File
+				RelativePath="extend.skins\SSkinMutiFrameImg.cpp" />
+			<File
+				RelativePath="extend.ctrls\SText.cpp" />
+			<File
 				RelativePath="..\controls.extend\STurn3DView.cpp" />
+			<File
+				RelativePath="extend.ctrls\SplitBar.cpp" />
+			<File
+				RelativePath="utils.cpp" />
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -167,11 +205,53 @@
 			<File
 				RelativePath="..\controls.extend\image3d\3dmatrix.h" />
 			<File
+				RelativePath="extend.ctrls\ExtendCtrls.h" />
+			<File
+				RelativePath="extend.skins\ExtendSkins.h" />
+			<File
+				RelativePath="..\controls.extend\FileHelper.h" />
+			<File
+				RelativePath="GroupChatFrame.h" />
+			<File
+				RelativePath="extend.ctrls\imre\IRichEditObjHost.h" />
+			<File
+				RelativePath="extend.ctrls\imre\ImgProvider.h" />
+			<File
 				RelativePath="MainDlg.h" />
 			<File
-				RelativePath="..\controls.extend\image3d\PerspectiveTransform.h" />
+				RelativePath="extend.ctrls\imre\RichEditObj.h" />
+			<File
+				RelativePath="extend.ctrls\imre\RichEditObjFactory.h" />
+			<File
+				RelativePath="extend.ctrls\imre\RichEditOleBase.h" />
+			<File
+				RelativePath="extend.ctrls\imre\RichEditOleCallback.h" />
+			<File
+				RelativePath="extend.ctrls\imre\RichEditOleCtrls.h" />
+			<File
+				RelativePath="extend.skins\SAniImgFrame.h" />
+			<File
+				RelativePath="extend.ctrls\SButtonEx.h" />
+			<File
+				RelativePath="..\controls.extend\SChromeTabCtrl.h" />
+			<File
+				RelativePath="extend.ctrls\imre\SImRichEdit.h" />
+			<File
+				RelativePath="extend.ctrls\SImageEx.h" />
+			<File
+				RelativePath="..\controls.extend\SImageMaskWnd.h" />
+			<File
+				RelativePath="extend.ctrls\SImagePlayer.h" />
+			<File
+				RelativePath="extend.skins\SSkinMutiFrameImg.h" />
+			<File
+				RelativePath="extend.ctrls\SSplitBar.h" />
+			<File
+				RelativePath="extend.ctrls\SText.h" />
 			<File
 				RelativePath="..\controls.extend\STurn3DView.h" />
+			<File
+				RelativePath="extend.ctrls\imre\TOM2.h" />
 			<File
 				RelativePath="resource.h" />
 			<File
@@ -193,6 +273,8 @@
 						Outputs="stdafx.h.cpp" />
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath="utils.h" />
 		</Filter>
 		<Filter
 			Name="Generated Files"
