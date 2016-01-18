@@ -51,7 +51,6 @@
 	<file name="ID_SYSBTN_MAX" path="image\sysbtn_max.png"/>
 	<file name="ID_SYSBTN_MIN" path="image\sysbtn_min.png"/>
 	<file name="ID_SYSBTN_RESTORE" path="image\sysbtn_restore.png"/>
-	<file name="ID_TAB_SESSION" path="image\tab_session.png"/>
 	<file name="ID_TAB_FADE_EFF" path="image\fadeeffect_mask.png"/>
 	<file name="ID_SHADOW" path="image\stroke.gft.png"/>
 	<file name="ID_TAB_SCROLL" path="image\tabscroll.png"/>
@@ -79,7 +78,6 @@
 	<file name="ID_GROUP_APP_TABBTN" path="image\group_app_tabbtn.png"/>
 	<file name="ID_GROUP_EXPAND_BTN" path="image\group_expandbtn.png"/>
 	<file name="ID_GROUP_SEARCH_CHK" path="image\group_search_chk.png"/>
-	<file name="ID_GROUP_SEARCH_CHK_FOCUS" path="image\group_search_chk_focus.png"/>
 	<file name="ID_SENDBTN_LEFT" path="image\roundcorner_left.png"/>
 	<file name="ID_SENDBTN_RIGHT" path="image\roundcorner_right.png"/>
 	<file name="ID_SENDBTN_SPLITLINE" path="image\sendbtn_splitline.png"/>
