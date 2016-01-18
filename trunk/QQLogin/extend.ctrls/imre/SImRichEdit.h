@@ -38,7 +38,7 @@ public:
     ISwndContainer * GetHostContainer() { return GetContainer(); }
     CRect           GetHostRect()       { return GetClientRect(); }
     CRect           GetAdjustedRect();
-    ITextDocument2* GetTextDoc()        { return m_pTxtDoc; }
+    ITextDocument * GetTextDoc()        { return m_pTxtDoc; }
 
     //
     // richedit message wrapper
@@ -116,7 +116,7 @@ private:
     CAutoRefPtr<IRenderTarget> m_prtBackground;  /**< 缓存窗口绘制的RT */
     BOOL                m_bBkgndDirty;
 
-    ITextDocument2*     m_pTxtDoc;
+    ITextDocument*     m_pTxtDoc;
     RichContentArray    m_arrContent;
     RichEditObj*        m_pLastOverOle;
     CRect               m_rcDelayDraw;      // 延迟刷新的叠加区域

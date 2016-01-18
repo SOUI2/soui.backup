@@ -313,15 +313,11 @@ LRESULT SImRichEdit::OnCreate( LPVOID )
 {
     if(0 != __super::OnCreate(NULL)) return 1;
 
-    //HRESULT hr;
-    //hr = m_pTxtHost->GetTextService()->QueryInterface(IID_ITextDocument,(void **)&m_pTxtDoc);
-    //SASSERT(SUCCEEDED(hr));
 
     HRESULT hr;
-    GUID guid = __uuidof(ITextDocument2);
     IRichEditOle* pOle = NULL;
     SSendMessage(EM_GETOLEINTERFACE,0, (LPARAM)&pOle);
-    hr = pOle->QueryInterface(guid, (void**)&m_pTxtDoc);
+    hr = pOle->QueryInterface(__uuidof(ITextDocument), (void**)&m_pTxtDoc);
     SASSERT(SUCCEEDED(hr));
     pOle->Release();
 

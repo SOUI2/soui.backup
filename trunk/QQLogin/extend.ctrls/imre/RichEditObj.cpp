@@ -823,7 +823,7 @@ BOOL RichEditPara::GetLineRect(int nLineNo, CRect& rcLine)
     m_pObjectHost->SendMessage(EM_LINELENGTH, ncpStart, 0, (LRESULT*)&nLength);
 
     SComPtr<ITextRange>  spRangeLine;
-    ITextDocument2 * pdoc = m_pObjectHost->GetTextDoc();
+    ITextDocument * pdoc = m_pObjectHost->GetTextDoc();
     pdoc->Range(ncpStart, ncpStart + nLength, &spRangeLine);
     if (!spRangeLine)
     {
@@ -942,7 +942,7 @@ void RichEditPara::UpdatePosition()
 
     CComPtr<ITextPara>   ppara;
     CComPtr<ITextRange>  prange;
-    ITextDocument2* pdoc = m_pObjectHost->GetTextDoc();
+    ITextDocument* pdoc = m_pObjectHost->GetTextDoc();
 
     CHARRANGE chr = m_chrContent;
     if (m_bBreakAtTheEnd)
