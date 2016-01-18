@@ -1,4 +1,4 @@
-﻿<include>
+<include>
   <!--login page-->
   <caption pos="0,0,-0,-55">
     <flash name="flash_bkgnd" pos="0,0,-0,-0" />
@@ -46,7 +46,7 @@
   </caption>
   <window pos="0,-55,-0,-0" colorBkgnd="#ffffff">
     <imgbtn pos="15,|-12,39,|12" skin="btn_login2" />
-    <imgbtn pos="|-80,|-18,|80,|18" skin="btn_login">登      录</imgbtn>
+    <imgbtn name="btn_login" pos="|-80,|-18,|80,|18" skin="btn_login">登      录</imgbtn>
     <imgbtn pos="-45,|-19,-7,|19" skin="btn_login_2dcode" />
   </window>
 </include>

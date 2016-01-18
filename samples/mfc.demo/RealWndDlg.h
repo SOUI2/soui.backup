@@ -16,7 +16,7 @@ public:
     }
 
     //œ˚œ¢”≥…‰±Ì
-    BEGIN_MSG_MAP_EX(CMainDlg)
+    BEGIN_MSG_MAP_EX(CRealWndDlg)
         MSG_WM_COMMAND(OnBtnClick)
         CHAIN_MSG_MAP(SOUI::SHostDialog)
         REFLECT_NOTIFICATIONS_EX()
