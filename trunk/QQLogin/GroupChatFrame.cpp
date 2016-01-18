@@ -495,6 +495,6 @@ void GroupChatFrame::OnShowSendTypeMenu()
     GetCursorPos(&pt);
 
     SMenuEx menu;
-    menu.LoadMenu(_T("MENU:menu_send"));
+    menu.LoadMenu(_T("SMENU:menu_send"));
     menu.TrackPopupMenu(0,pt.x,pt.y,m_hWnd);
 }

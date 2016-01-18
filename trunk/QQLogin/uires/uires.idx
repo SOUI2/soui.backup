@@ -105,8 +105,8 @@
 	<file name="ID_RICH_SYSMSG_BK" path="image\aio_sys_bg.png"/>
   </PNG>
   
-  <MENU>
+  <SMENU>
 	<file name="menu_send" path="xml\menu_send_type.xml"  />
-  </MENU>
+  </SMENU>
   
 </resource>
