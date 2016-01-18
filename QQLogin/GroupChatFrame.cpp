@@ -104,7 +104,7 @@ BOOL GroupChatFrame::GetEditorCursorRect(SImRichEdit * pRichEdit, LONG cpStart, 
     {
         return FALSE;
     }
-    ITextDocument2     * pdoc = pRichEdit->GetTextDoc();
+    ITextDocument     * pdoc = pRichEdit->GetTextDoc();
     SComPtr<ITextRange>  prange;
 
     rcCursor.SetRectEmpty();

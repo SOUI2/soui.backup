@@ -12,5 +12,5 @@ public:
     virtual void    DirectDraw(const CRect& rc) = 0;
     virtual void    DelayDraw(const CRect& rc) = 0;
     virtual HRESULT SendMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT *pRet=NULL) = 0;
-    virtual ITextDocument2* GetTextDoc() = 0;
+    virtual ITextDocument* GetTextDoc() = 0;
 };
