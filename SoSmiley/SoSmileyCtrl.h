@@ -94,7 +94,7 @@ __interface  ISoSmileyCtrl : IDispatch{
 
 class ATL_NO_VTABLE CSoSmileyCtrl :
 	public CComControl<CSoSmileyCtrl>,
-	public CStockPropImpl<CSoSmileyCtrl, ISoSmileyCtrl>,
+	public IDispatchImpl< ISoSmileyCtrl, &_ATL_IIDOF(ISoSmileyCtrl), NULL, 1, 1, CComTypeInfoHolder >,
     public IOleObjectImpl<CSoSmileyCtrl>,
     public IOleInPlaceObjectWindowlessImpl<CSoSmileyCtrl>,
 	public IViewObjectExImpl<CSoSmileyCtrl>,
