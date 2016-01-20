@@ -33,8 +33,10 @@
         #define SK_BUILD_FOR_PALM
     #elif defined(UNDER_CE)
         #define SK_BUILD_FOR_WINCE
-    #elif defined(WIN32)
-        #define SK_BUILD_FOR_WIN32
+    #elif defined(_WIN64)
+		#define SK_BUILD_FOR_WIN32
+	#elif defined(WIN32)
+		#define SK_BUILD_FOR_WIN32
     #elif defined(__SYMBIAN32__)
         #define SK_BUILD_FOR_WIN32
     #elif defined(ANDROID)
