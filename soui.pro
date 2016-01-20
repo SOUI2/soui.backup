@@ -20,7 +20,7 @@ SUBDIRS += MusicPlayer
 SUBDIRS += PcManager
 SUBDIRS += SoTool
 
-soui.depends += utilities
+soui.depends += utilities soui-sys-resource
 
 360.depends += utilities soui
 360Preview.depends += utilities soui
