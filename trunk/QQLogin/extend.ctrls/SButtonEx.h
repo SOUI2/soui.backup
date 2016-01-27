@@ -21,7 +21,6 @@ protected:
     SOUI_MSG_MAP_END()
 
     HRESULT OnAttrImage(const SStringW & strValue,BOOL bLoading);
-    void MakeCacheApha(ISkinObj *pSkin);
 
     SOUI_ATTRS_BEGIN()
         ATTR_SKIN(L"bkgndSkin", m_pbkgndSkin, TRUE)
