@@ -63,7 +63,7 @@ int STileViewItemLocator::GetItemHeight(int iItem) const
     return m_nItemHeight;
 }
 
-void STileViewItemLocator::SetAdapter(IAdapter *pAdapter)
+void STileViewItemLocator::SetAdapter(ILvAdapter *pAdapter)
 {
     m_adapter = pAdapter;
 }

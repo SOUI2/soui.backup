@@ -17,9 +17,9 @@ public:
     STileView();
     ~STileView();
     
-    BOOL SetAdapter(IAdapter *adapter);
+    BOOL SetAdapter(ILvAdapter *adapter);
     
-    IAdapter *GetAdapter()
+    ILvAdapter *GetAdapter()
     {
         return m_adapter;
     }
@@ -104,8 +104,8 @@ protected:
     ATTR_INT(L"wantTab", m_bWantTab, FALSE)
     SOUI_ATTRS_END()
 protected:
-    CAutoRefPtr<IAdapter>           m_adapter;
-    CAutoRefPtr<IDataSetObserver>   m_observer;
+    CAutoRefPtr<ILvAdapter>           m_adapter;
+    CAutoRefPtr<ILvDataSetObserver>   m_observer;
     CAutoRefPtr<STileViewItemLocator>  m_tvItemLocator;//列表项定位接口
     struct ItemInfo
     {

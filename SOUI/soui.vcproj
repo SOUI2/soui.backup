@@ -371,6 +371,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\res.mgr\SNamedValue.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\res.mgr\SObjDefAttr.cpp"
 				>
 			</File>
@@ -431,10 +435,6 @@
 				>
 			</File>
 			<File
-				RelativePath="src\res.mgr\SStringPool.cpp"
-				>
-			</File>
-			<File
 				RelativePath="src\res.mgr\SStylePool.cpp"
 				>
 			</File>
@@ -464,6 +464,10 @@
 			</File>
 			<File
 				RelativePath="src\control\STreeCtrl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\control\STreeView.cpp"
 				>
 			</File>
 			<File
@@ -745,6 +749,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\res.mgr\SNamedValue.h"
+				>
+			</File>
+			<File
 				RelativePath="include\res.mgr\SObjDefAttr.h"
 				>
 			</File>
@@ -865,10 +873,6 @@
 				>
 			</File>
 			<File
-				RelativePath="include\res.mgr\SStringPool.h"
-				>
-			</File>
-			<File
 				RelativePath="include\res.mgr\SStylePool.h"
 				>
 			</File>
@@ -917,6 +921,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\control\STreeView.h"
+				>
+			</File>
+			<File
 				RelativePath="src\updatelayeredwindow\SUpdateLayeredWindow.h"
 				>
 			</File>
@@ -962,6 +970,10 @@
 			</File>
 			<File
 				RelativePath="include\core\SwndStyle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\interface\TvItemLocator-i.h"
 				>
 			</File>
 			<File

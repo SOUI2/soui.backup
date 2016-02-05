@@ -142,8 +142,12 @@ namespace SOUI{
         cfNew.dwMask = 0;
         if(xmlText.name() == KLabelColor)
         {
-            cfNew.crTextColor = StringToColor(xmlText.attribute(L"value").value()) & 0x00ffffff;
-            cfNew.dwMask |= CFM_COLOR;
+            cfNew.crTextColor = SColorParser::ParseValue(xmlText.attribute(L"value").value());
+            if(cfNew.crTextColor!=CR_INVALID)
+            {
+                cfNew.crTextColor &= 0x00ffffff;
+                cfNew.dwMask |= CFM_COLOR;
+            }
         }else if(xmlText.name()== KLabelFont)
         {
             wcscpy(cf.szFaceName,cfNew.szFaceName);
@@ -169,8 +173,8 @@ namespace SOUI{
         {
             cfNew.dwMask |= CFM_LINK;
             cfNew.dwEffects |= CFE_LINK;
-            COLORREF cr = StringToColor(xmlText.attribute(L"color").value());
-            if(cr!=0)
+            COLORREF cr = SColorParser::ParseValue(xmlText.attribute(L"color").value());
+            if(cr!=CR_INVALID)
             {
                 cfNew.dwMask |= CFM_COLOR;
                 cfNew.crTextColor = cr & 0x00ffffff;

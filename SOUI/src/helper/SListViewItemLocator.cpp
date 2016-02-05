@@ -53,7 +53,7 @@ namespace SOUI
         return true;
     }
 
-    void SListViewItemLocatorFix::SetAdapter(IAdapter *pAdapter)
+    void SListViewItemLocatorFix::SetAdapter(ILvAdapter *pAdapter)
     {
         m_adapter = pAdapter;
     }
@@ -180,7 +180,7 @@ namespace SOUI
         return false;
     }
 
-    void SListViewItemLocatorFlex::SetAdapter(IAdapter *pAdapter)
+    void SListViewItemLocatorFlex::SetAdapter(ILvAdapter *pAdapter)
     {
         m_adapter = pAdapter;
         OnDataSetChanged();

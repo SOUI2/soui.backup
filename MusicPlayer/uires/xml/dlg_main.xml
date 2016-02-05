@@ -4,7 +4,7 @@
 <!-- 版本类型：初始版本                   -->
 <!-- 联系方式：QQ-1035144170              -->
 
-<SOUI name="mainWindow" title="SOUI-DEMO ver:%ver%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="400" height="700" minsize="400,700" appWnd="1" margin="20,5,5,5"  resizable="0" translucent="1" toolWindow="1" alpha="255">
+<SOUI name="mainWindow" title="MusicPlayer" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="400" height="700" minsize="400,700" appWnd="1" margin="20,5,5,5"  resizable="0" translucent="1" toolWindow="1" alpha="255">
   <style>
     <!--局部style对象-->
     <class name="cls_edit" ncSkin="_skin.sys.border" margin-x="2" margin-y="2" />

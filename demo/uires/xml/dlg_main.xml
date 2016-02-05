@@ -1,13 +1,13 @@
-﻿<SOUI trCtx="dlg_main" 
-      title="SOUI-DEMO version:%ver%" 
-      bigIcon="LOGO:32" 
-      smallIcon="LOGO:16" 
-      width="600" 
-      height="400" 
-      wndType="appMain" 
-      margin="10,10,10,10"  
-      resizable="1" 
-      translucent="1" 
+﻿<SOUI trCtx="dlg_main"
+      title="SOUI-DEMO"
+      bigIcon="LOGO:32"
+      smallIcon="LOGO:16"
+      width="600"
+      height="400"
+      wndType="appMain"
+      margin="10,10,10,10"
+      resizable="1"
+      translucent="1"
       sendWheel2Hover="1"
       alpha="255">
   <skin>
@@ -45,9 +45,13 @@
     ]]>
   </script>
   <root class="cls_dlg_frame" cache="1" on_init="on_init" on_exit="on_exit">
-    <caption pos="0,0,-0,30" show="1" font="adding:8" focusable="1" drawfocusrect="0">
+    <caption pos="0,0,-0,30" class="cls_txt_red" font="adding:8" focusable="1" drawfocusrect="0">
       <icon pos="10,8" src="LOGO:16"/>
-      <text class="cls_txt_red">%title% version:%ver%</text>
+
+      <text pos="[5,4">@string/title</text>
+      <text pos="[5,4">version:</text>
+      <text pos="[0,4">@string/ver</text>
+
       <imgbtn id="1" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
       <imgbtn id="2" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
       <imgbtn id="3" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
@@ -67,7 +71,7 @@
       <page title="animate" tip="play gif and apng">
         <gifplayer pos="10,10" skin="gif_horse" name="giftest" cursor="ANI_ARROW" show="1"/>
         <button width="250" height="30" name="btnSelectGif">load gif file</button>
-        <gifplayer pos="10,150" skin="gif_penguin" show="1"/>
+        <gifplayer pos="10,150" skin="gif_penguin" show="1" id="1000" name="gif_test"/>
         <icon pos="[10,{0" src="LOGO:64"/>
         <gifplayer pos="[10,{0" skin="apng_haha" />
         <animateimg pos="[10,{0" skin="skin_page_icons" autoStart="1"/>
@@ -76,8 +80,8 @@
       <page title="layout" tip="show layout capability in soui">
         <include src="layout:page_layout"/>
       </page>
-      <page title="treebox">
-        <include src="layout:page_treebox"/>
+      <page title="treeview">
+        <include src="layout:page_treeview"/>
       </page>
       <page title ="misc." tip="many features, just find it.">
         <include src="layout:page_misc"/>

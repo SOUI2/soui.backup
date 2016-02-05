@@ -4,7 +4,7 @@
 namespace SOUI
 {
 
-class STileViewDataSetObserver : public TObjRefImpl<IDataSetObserver>
+class STileViewDataSetObserver : public TObjRefImpl<ILvDataSetObserver>
 {
 public:
     STileViewDataSetObserver(STileView *pView): m_pOwner(pView)
@@ -50,7 +50,7 @@ STileView::~STileView()
     m_tvItemLocator = NULL;
 }
 
-BOOL STileView::SetAdapter(IAdapter *adapter)
+BOOL STileView::SetAdapter(ILvAdapter *adapter)
 {
     if(!m_tvItemLocator)
     {

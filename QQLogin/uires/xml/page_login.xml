@@ -5,7 +5,9 @@
     <caption pos="0,0,-0,30">
       <!--title bar-->
       <icon pos="10,8" src="ICON_LOGO:16"/>
-      <text pos="[5,4">%title% ver:%ver%</text>
+      <text pos="[5,4">@string/title</text>
+      <text pos="[0,4"> ver:</text>
+      <text pos="[0,4">@string/ver</text>
       <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-40,0" tip="close" animate="1"/>
       <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-75,0" animate="1" />
       <imgbtn name="btn_setting" skin="btn_login_setting" pos="-105,0" animate="1" />

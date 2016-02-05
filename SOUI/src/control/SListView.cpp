@@ -6,7 +6,7 @@ namespace SOUI
 {
 
 
-    class SListViewDataSetObserver : public TObjRefImpl<IDataSetObserver>
+    class SListViewDataSetObserver : public TObjRefImpl<ILvDataSetObserver>
     {
     public:
         SListViewDataSetObserver(SListView *pView):m_pOwner(pView)
@@ -54,7 +54,7 @@ namespace SOUI
         m_lvItemLocator=NULL;
     }
 
-    BOOL SListView::SetAdapter(IAdapter * adapter)
+    BOOL SListView::SetAdapter(ILvAdapter * adapter)
     {
         if(!m_lvItemLocator)
         {

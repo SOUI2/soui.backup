@@ -66,12 +66,11 @@ __interface  ISmileyHost : IUnknown{
 [
     object,
     uuid(3286141B-C87F-4052-B6A2-376391DCDAF6),
-    dual,
     nonextensible,
     helpstring("ISoSmileyCtrl Interface"),
     pointer_default(unique)
 ]
-__interface  ISoSmileyCtrl : IDispatch{
+__interface  ISoSmileyCtrl: IUnknown{
     [id(1), helpstring("method Insert2Richedit")] HRESULT Insert2Richedit([in] DWORD_PTR ole);
     [id(2), helpstring("method SetSource")] HRESULT SetSource([in] ISmileySource * pSource);
     [id(3), helpstring("method GetSource")] HRESULT GetSource([out] ISmileySource ** ppSource);
@@ -82,7 +81,6 @@ __interface  ISoSmileyCtrl : IDispatch{
 [
 	coclass,
 	control,
-	default(ISoSmileyCtrl),
 	threading(apartment),
 	vi_progid("SoSmiley.SoSmileyCtrl"),
 	progid("SoSmiley.SoSmileyCtrl.1"),
@@ -94,23 +92,23 @@ __interface  ISoSmileyCtrl : IDispatch{
 
 class ATL_NO_VTABLE CSoSmileyCtrl :
 	public CComControl<CSoSmileyCtrl>,
-	public IDispatchImpl< ISoSmileyCtrl, &_ATL_IIDOF(ISoSmileyCtrl), NULL, 1, 1, CComTypeInfoHolder >,
     public IOleObjectImpl<CSoSmileyCtrl>,
     public IOleInPlaceObjectWindowlessImpl<CSoSmileyCtrl>,
 	public IViewObjectExImpl<CSoSmileyCtrl>,
 	public IPersistStreamInitImpl<CSoSmileyCtrl>,
 	public IPersistStorageImpl<CSoSmileyCtrl>,
 	public IOleControlImpl<CSoSmileyCtrl>,
-    public ITimerHandler
+    public ITimerHandler,
+    public ISoSmileyCtrl
 {
 public:
 
 	DECLARE_OLEMISC_STATUS(OLEMISC_RECOMPOSEONRESIZE |
-	OLEMISC_CANTLINKINSIDE |
-		OLEMISC_INSIDEOUT |
-		OLEMISC_ACTIVATEWHENVISIBLE |
-		OLEMISC_SETCLIENTSITEFIRST
-		)
+	                        OLEMISC_CANTLINKINSIDE |
+		                    OLEMISC_INSIDEOUT |
+		                    OLEMISC_ACTIVATEWHENVISIBLE |
+		                    OLEMISC_SETCLIENTSITEFIRST
+		                    )
 
 		BEGIN_COM_MAP(CSoSmileyCtrl)
 			COM_INTERFACE_ENTRY(ITimerHandler)

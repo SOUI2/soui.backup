@@ -1,8 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resource>
   <UIDEF>
-    <file name="xml_init" path="xml\init.xml"  />
+    <file name="xml_init" path="uidef\init.xml"  />
   </UIDEF>
+  
+  <values>
+  	<file name="string" path="values\string.xml" />
+  	<file name="color" path="values\color.xml" />
+    <file name="skin" path="values\skin.xml" />
+  </values>
+
   <ICON>
     <file name="LOGO"  path="image\img_logo.ico" />
   </ICON>
@@ -31,6 +38,7 @@
     <file name="dlg_formatmsg" path="xml\dlg_formatmsg.xml"/>
     <file name="template_calendar" path="xml\calendar.xml"/>
     <file name="dlg_skiatext" path="xml\dlg_skiatext.xml"/>
+	<file name="page_treeview" path="xml\page_treeview.xml"/>
   </LAYOUT>
   <IMGX>
     <file name="img_busy" path="image\img_busy.png"/>

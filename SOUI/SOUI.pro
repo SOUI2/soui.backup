@@ -65,6 +65,7 @@ HEADERS += include/SApp.h \
            include/control/SMcListView.h \
            include/control/SSpinButtonCtrl.h \
            include/control/STileView.h \
+		   include/control/STreeView.h \
            include/core/Accelerator.h \
            include/core/FocusManager.h \
            include/core/SDefine.h \
@@ -134,8 +135,8 @@ HEADERS += include/SApp.h \
            include/res.mgr/SResProvider.h \
            include/res.mgr/SResProviderMgr.h \
            include/res.mgr/SSkinPool.h \
-           include/res.mgr/SStringPool.h \
            include/res.mgr/SStylePool.h \
+           include/res.mgr/SNamedValue.h \
            src/activex/SAxContainer.h \
            src/activex/SAxUtil.h \
            src/updatelayeredwindow/SUpdateLayeredWindow.h \
@@ -172,6 +173,7 @@ SOURCES += src/SApp.cpp \
            src/control/SMcListView.cpp \
            src/control/SSpinButtonCtrl.cpp \
            src/control/STileView.cpp \
+		   src/control/STreeView.cpp \
            src/core/Accelerator.cpp \
            src/core/FocusManager.cpp \
            src/core/SDropTargetDispatcher.cpp \
@@ -211,6 +213,6 @@ SOURCES += src/SApp.cpp \
            src/res.mgr/SResProvider.cpp \
            src/res.mgr/SResProviderMgr.cpp \
            src/res.mgr/SSkinPool.cpp \
-           src/res.mgr/SStringPool.cpp \
            src/res.mgr/SStylePool.cpp \
+           src/res.mgr/SNamedValue.cpp \
            src/updatelayeredwindow/SUpdateLayeredWindow.cpp
