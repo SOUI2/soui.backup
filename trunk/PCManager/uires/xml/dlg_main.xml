@@ -6,7 +6,7 @@ translucent="1" >
       <window pos="0,0,-0,-0" skin="skin.main_mask" cache="1" name="img_bg">
         <caption pos="0,0,-0,106" show="1">
           <img name="main_icon" skin="skin.main_icon" pos="8,9"></img>
-          <text pos="29,9" class="cls_title">%title%</text>
+          <text pos="29,9" class="cls_title">@string/title</text>
           <imgbtn name="btn_close" skin="skin.btn_close"    pos="-51,6" tip="close" animate="1"/>
           <imgbtn name="btn_max" skin="skin.btn_max"  pos="{-31,6" animate="1" />
           <imgbtn name="btn_restore" skin="skin.btn_restore"  pos="{0,6" show="0" animate="1" />

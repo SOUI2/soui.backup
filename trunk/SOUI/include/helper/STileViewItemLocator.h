@@ -7,7 +7,7 @@ class SOUI_EXP STileViewItemLocator : public TObjRefImpl<IObjRef>
 public:
     STileViewItemLocator(int nItemHei, int nItemWid, int nMarginSize = 0);
     
-    void SetAdapter(IAdapter *pAdapter);
+    void SetAdapter(ILvAdapter *pAdapter);
     
     void OnDataSetChanged() {}
     
@@ -56,7 +56,7 @@ protected:
     int m_nItemMargin;     //块间距
     int m_nCountInRow;     //每行的item个数
     
-    CAutoRefPtr<IAdapter> m_adapter;
+    CAutoRefPtr<ILvAdapter> m_adapter;
 };
 
 }

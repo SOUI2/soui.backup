@@ -9,7 +9,7 @@ namespace SOUI
     public:
         SListViewItemLocatorFix(int nItemHei,int nDividerSize=0);
 
-        virtual void SetAdapter(IAdapter *pAdapter);
+        virtual void SetAdapter(ILvAdapter *pAdapter);
 
         virtual void OnDataSetChanged(){}
 
@@ -38,7 +38,7 @@ namespace SOUI
         int m_nItemHeight;
         int m_nDividerSize;
 
-        CAutoRefPtr<IAdapter> m_adapter;
+        CAutoRefPtr<ILvAdapter> m_adapter;
     };
 
     class SOUI_EXP SListViewItemLocatorFlex : public TObjRefImpl<IListViewItemLocator>
@@ -50,7 +50,7 @@ namespace SOUI
         ~SListViewItemLocatorFlex();
 
 
-        virtual void SetAdapter(IAdapter *pAdapter);
+        virtual void SetAdapter(ILvAdapter *pAdapter);
         virtual void OnDataSetChanged();
 
         virtual bool IsFixHeight() const;
@@ -110,7 +110,7 @@ namespace SOUI
         };
 
         SArray<SegmentInfo*>     m_segments;
-        CAutoRefPtr<IAdapter>   m_adapter;
+        CAutoRefPtr<ILvAdapter>   m_adapter;
     };
 
 }

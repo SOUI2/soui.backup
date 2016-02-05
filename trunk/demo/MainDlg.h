@@ -140,15 +140,18 @@ protected:
 		EVENT_ID_COMMAND(5, OnMinimize)
 		EVENT_NAME_CONTEXTMENU(L"edit_1140",OnEditMenu)
 		EVENT_NAME_COMMAND(L"btn_msgbox",OnBtnMsgBox)
-		EVENT_NAME_COMMAND(L"btnSelectGif",OnBtnSelectGIF)
-        EVENT_NAME_COMMAND(L"btn_menu",OnBtnMenu)
-        EVENT_NAME_COMMAND(L"btn_webkit_go",OnBtnWebkitGo)
+		
+		//<--在新版本的uiresbuilder生成的resource.h中定义了R.id, R.name两个对象，可以使用如下方式来关联变量。
+		EVENT_ID_COMMAND(R.id.btnSelectGif,OnBtnSelectGIF)
+        EVENT_ID_RANGE_HANDLER(R.id.radio2_1,R.id.radio2_6,EventSwndStateChanged::EventID,OnTabPageRadioSwitch)    //10000-10005是XML中定义的radio2的ID
+        EVENT_NAME_COMMAND(R.name.btn_menu,OnBtnMenu)
+        EVENT_NAME_COMMAND(R.name.btn_webkit_go,OnBtnWebkitGo)
+        //-->
         EVENT_NAME_COMMAND(L"btn_webkit_back",OnBtnWebkitBackward)
         EVENT_NAME_COMMAND(L"btn_webkit_fore",OnBtnWebkitForeward)
         EVENT_NAME_COMMAND(L"btn_webkit_refresh",OnBtnWebkitRefresh)
         EVENT_NAME_COMMAND(L"btn_hidetst",OnBtnHideTest)
-        //EVENT_NAME_COMMAND(L"btn_insert_gif",OnBtnInsertGif2RE)
-        EVENT_ID_COMMAND(STR2ID(L"id_test1"),OnBtnInsertGif2RE) //在init.xml中增加支持id表，这一行和上面一行效果一样。
+        EVENT_NAME_COMMAND(L"btn_insert_gif",OnBtnInsertGif2RE)
         EVENT_NAME_COMMAND(L"btn_append_msg",OnBtnAppendMsg)
         EVENT_NAME_COMMAND(L"btn_richedit_save",OnBtnRtfSave)
         EVENT_NAME_COMMAND(L"btn_richedit_open",OnBtnRtfOpen)
@@ -156,7 +159,6 @@ protected:
         EVENT_NAME_HANDLER(L"lbe_test",EVT_OFPANEL,OnListBoxExEvent)//响应EVT_OFPANEL事件
         EVENT_NAME_HANDLER(L"tb_test",EVT_OFPANEL,OnTreeBoxEvent)//响应EVT_OFPANEL事件
         EVENT_NAME_HANDLER(L"tb_test",EVT_TB_QUERYITEMHEIGHT,OnTreeBoxQueryItemHeight)//响应动态查询高度事件
-        EVENT_ID_RANGE_HANDLER(10000,10005,EventSwndStateChanged::EventID,OnTabPageRadioSwitch)    //10000-10005是XML中定义的radio2的ID
         EVENT_NAME_HANDLER(L"chromeTab",EVT_CHROMETAB_NEW,OnChromeTabNew)
         EVENT_NAME_COMMAND(L"btn_filewnd",OnBtnFileWnd)
         EVENT_NAME_HANDLER(L"edit_url",EVT_RE_NOTIFY,OnUrlReNotify)

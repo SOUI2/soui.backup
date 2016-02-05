@@ -4,12 +4,17 @@
 #include "stdafx.h"
 #include "tinyxml/tinyxml.h"
 
-const wchar_t  RB_HEADER[]=
+const wchar_t  RB_HEADER_RC[]=
 L"/*<------------------------------------------------------------------------------------------------->*/\n"\
 L"/*该文件由uiresbuilder生成，请不要手动修改*/\n"\
 L"/*<------------------------------------------------------------------------------------------------->*/\n"
 L"#define DEFINE_UIRES(name, type, file_path)\\\n"
 L"    name type file_path\n\n";
+
+const wchar_t  RB_HEADER_ID[]=
+L"/*<------------------------------------------------------------------------------------------------->*/\n"\
+L"/*该文件由uiresbuilder生成，请不要手动修改*/\n"\
+L"/*<------------------------------------------------------------------------------------------------->*/\n";
 
 
 struct IDMAPRECORD
@@ -18,6 +23,12 @@ struct IDMAPRECORD
 	WCHAR szName[200];
 	WCHAR szPath[MAX_PATH];
 };
+
+//解析为布局的文件类型
+const wchar_t KXML_LAYOUT[]= L"layout";
+
+//自动编号开始ID
+const int KStartID = 0x00010000; 
 
 //获得文件的最后修改时间
 __int64 GetLastWriteTime(LPCSTR pszFileName)
@@ -31,6 +42,20 @@ __int64 GetLastWriteTime(LPCSTR pszFileName)
 		FindClose(hFind);
 	}
 	return tmFile;
+}
+
+//获得文件的最后修改时间
+__int64 GetLastWriteTime(LPCWSTR pszFileName)
+{
+    __int64 tmFile=0;
+    WIN32_FIND_DATAW findFileData;
+    HANDLE hFind = FindFirstFileW(pszFileName, &findFileData);
+    if (hFind != INVALID_HANDLE_VALUE)
+    {
+        tmFile= *(__int64*)&findFileData.ftLastWriteTime;
+        FindClose(hFind);
+    }
+    return tmFile;
 }
 
 //将单反斜扛转换成双反斜扛
@@ -102,33 +127,262 @@ public:
 };
 #pragma  pack(pop)
 
-//uiresbuilder -p skin -i skin\index.xml -r .\duires\winres.rc2
+void WriteFile(__int64 tmIdx, const std::string &strRes, const std::wstring &strOut, BOOL bWithHead = FALSE)
+{
+	//__int64 tmIdx=GetLastWriteTime(strIndexFile.c_str());
+	__int64 tmSave=FILEHEAD::ExactTimeStamp(strRes.c_str());
+	//write output string to target res file
+	if(tmIdx!=tmSave)
+	{
+		FILE * f=_tfopen(strRes.c_str(),_T("wb"));
+		if(f)
+		{
+			FILEHEAD tmStamp(tmIdx);
+			fwrite(&tmStamp,sizeof(FILEHEAD)-sizeof(WCHAR),1,f);//写UTF16文件头及时间。-sizeof(WCHAR)用来去除stamp最后一个\0
+			if (bWithHead)
+				fwrite(RB_HEADER_RC,sizeof(WCHAR),wcslen(RB_HEADER_RC),f);
+			fwrite(strOut.c_str(),sizeof(WCHAR),strOut.length(),f);
+			fclose(f);
+			printf("build %s succeed!\n",strRes.c_str());
+		}
+	}else
+	{
+		printf("%s not need to update\n",strRes.c_str());
+	}
+}
+
+//C++关键字
+wchar_t* szCppKey[] =
+{
+    L"__asm",
+    L"__assume",
+    L"__based",
+    L"__cdecl",
+    L"__declspec",
+    L"__event",
+    L"__except",
+    L"__except",
+    L"__fastcall",
+    L"__finally",
+    L"__finally",
+    L"__forceinline",
+    L"__if_exists",
+    L"__if_not_exists",
+    L"__inline",
+    L"__int16",
+    L"__int32",
+    L"__int64",
+    L"__int8",
+    L"__interface",
+    L"__leave",
+    L"__m128",
+    L"__m128d",
+    L"__m128i",
+    L"__m64",
+    L"__multiple_inheritance",
+    L"__noop",
+    L"__single_inheritance",
+    L"__stdcall",
+    L"__super",
+    L"__try",
+    L"__try",
+    L"__uuidof",
+    L"__w64",
+    L"__wchar_t",
+    L"abstract",
+    L"array",
+    L"bool",
+    L"break",
+    L"case",
+    L"catch",
+    L"char",
+    L"class",
+    L"const",
+    L"const_cast",
+    L"continue",
+    L"default",
+    L"delegate",
+    L"delete",
+    L"dllexport",
+    L"dllimport",
+    L"do",
+    L"double",
+    L"dynamic_cast",
+    L"else",
+    L"enum",
+    L"event",
+    L"explicit",
+    L"extern",
+    L"false",
+    L"finally",
+    L"float",
+    L"for",
+    L"friend",
+    L"friend_as",
+    L"goto",
+    L"if",
+    L"initonly",
+    L"inline",
+    L"int",
+    L"interface",
+    L"interior_ptr",
+    L"literal",
+    L"long",
+    L"mutable",
+    L"namespace",
+    L"new",
+    L"nullptr",
+    L"operator",
+    L"private",
+    L"protected",
+    L"public",
+    L"register",
+    L"reinterpret_cast",
+    L"return",
+    L"safecast",
+    L"selectany",
+    L"short",
+    L"signed",
+    L"sizeof",
+    L"static",
+    L"static_cast",
+    L"struct",
+    L"switch",
+    L"template",
+    L"this",
+    L"throw",
+    L"true",
+    L"try",
+    L"typedef",
+    L"typeid",
+    L"typename",
+    L"union",
+    L"unsigned",
+    L"virtual",
+    L"void",
+    L"volatile",
+    L"wchar_t",
+    L"while"
+};
+
+int wcscmp2(const void * p1,const void* p2)
+{
+    const wchar_t *psz1 = (const wchar_t *) p1;
+    const wchar_t *psz2 = *(const wchar_t **) p2;
+    return wcscmp(psz1,psz2);
+}
+
+void MakeNameValid(const wchar_t * pszName,wchar_t * pszOut)
+{
+    const wchar_t * p1 = pszName;
+    wchar_t * p2 = pszOut;
+    while(*p1)
+    {
+        if (*p1 == L'.')
+            *p2 = L'_';
+        else
+            *p2 = *p1;
+        ++p1;
+        ++p2;
+    }
+    
+    *p2=0;
+    if(wcscmp(pszOut,L"switch")==0)
+    {
+        int a=0;
+    }
+    void *pFind = bsearch(pszOut,szCppKey,ARRAYSIZE(szCppKey),sizeof(wchar_t*),wcscmp2);
+    if(pFind)
+    {
+        wcscpy(p2,L"_cpp");
+    }
+}
+
+void ParseLayout(TiXmlElement *xmlNode,map<wstring,int> &vecName2ID,int & nStartId)
+{
+    if(!xmlNode) return;
+    
+    const char * pszAttrName = xmlNode->Attribute("name");
+    if(pszAttrName)
+    {//有name属性才解析id
+        wchar_t szName[100];
+        int nID = nStartId;
+        MultiByteToWideChar(CP_ACP,0,pszAttrName,-1,szName,100);
+        
+        if(vecName2ID.find(szName) == vecName2ID.end())
+        {
+            if(!xmlNode->Attribute("id",&nID))
+            {
+                nStartId++;
+            }
+            vecName2ID[szName] = nID;
+        }
+    }
+    TiXmlElement *pChild = xmlNode->FirstChildElement();
+    while(pChild)
+    {
+        ParseLayout(pChild,vecName2ID,nStartId);
+        pChild=pChild->NextSiblingElement();
+    }
+}
+
+void ParseLayoutFile(const wchar_t * pszFileName,map<wstring,int> &vecName2ID,int & nStartId)
+{
+    TiXmlDocument xmlLayout;
+    FILE *f = _wfopen(pszFileName,L"rb");
+    if(!f) return;
+    
+    if(xmlLayout.LoadFile(f))
+    {
+        TiXmlElement *pXmlNode = xmlLayout.RootElement();
+        //避免解析到skin结点
+        if(stricmp(pXmlNode->Value(),"soui") == 0)
+            ParseLayout(pXmlNode->FirstChildElement("root"),vecName2ID,nStartId);
+        else if(stricmp(pXmlNode->Value(),"include") == 0)
+            ParseLayout(pXmlNode,vecName2ID,nStartId);
+    }
+    fclose(f);
+}
+
+//uiresbuilder -p uires -i uires\uires.idx -r .\uires\winres.rc2 -h .\uires\resource.h idtable
 int _tmain(int argc, _TCHAR* argv[])
 {
 	string strSkinPath;	//皮肤路径,相对于程序的.rc文件
 	string strIndexFile;
 	string strRes;		//rc2文件名
-
+	string strHeadFile; // head file
+    BOOL bBuildIDMap=FALSE;  //Build ID map
 	int c;
 
 	printf("%s\n",GetCommandLineA());
-	while ((c = getopt(argc, argv, _T("i:r:p:"))) != EOF)
+	while ((c = getopt(argc, argv, _T("i:r:p:h:"))) != EOF || optarg!=NULL)
 	{
 		switch (c)
 		{
 		case 'i':strIndexFile=optarg;break;
 		case 'r':strRes=optarg;break;
 		case 'p':strSkinPath=optarg;break;
+		case 'h':strHeadFile=optarg;break;
+        case EOF:
+            if(_tcscmp(optarg ,_T("idtable"))==0) bBuildIDMap = TRUE;
+            optind ++;
+            break;
 		}
 	}
 
 	if(strIndexFile.empty())
 	{
-		printf("not specify input file, using -i to define the input file");
+		printf("not specify input file, using -i to define the input file\n");
+		printf("usage: uiresbuilder -p uires -i uires\\uires.idx -r .\\uires\\winres.rc2 -h .\\uires\\resource.h idtable\n");
+        printf("\tparam -i : define uires.idx path\n");
+        printf("\tparam -p : define path of uires folder\n");
+        printf("\tparam -r : define path of output .rc2 file\n");
+        printf("\tparam -h : define path of output resource.h file\n");
+        printf("\tparam idtable : define idtable is needed for resource.h. no id table for default.\n");
 		return 1;
 	}
 
-	//打开index.xml文件
+	//打开uirex.idx文件
 	TiXmlDocument xmlIndexFile;
 	if(!xmlIndexFile.LoadFile(strIndexFile.c_str()))
 	{
@@ -173,11 +427,11 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 		pXmlType=pXmlType->NextSiblingElement();
 	}
+
 	if(strRes.length())
 	{//编译资源.rc2文件
 		//build output string by wide char
 		wstring strOut;
-
 		vector<IDMAPRECORD>::iterator it2=vecIdMapRecord.begin();
 		while(it2!=vecIdMapRecord.end())
 		{
@@ -187,28 +441,100 @@ int _tmain(int argc, _TCHAR* argv[])
 			strOut+=szRec;
 			it2++;
 		}
-
-		__int64 tmIdx=GetLastWriteTime(strIndexFile.c_str());
-		__int64 tmSave=FILEHEAD::ExactTimeStamp(strRes.c_str());
-		//write output string to target res file
-		if(tmIdx!=tmSave)
-		{
-			FILE * f=_tfopen(strRes.c_str(),_T("wb"));
-			if(f)
-			{
-				FILEHEAD tmStamp(tmIdx);
-				fwrite(&tmStamp,sizeof(FILEHEAD)-sizeof(WCHAR),1,f);//写UTF16文件头及时间。-sizeof(WCHAR)用来去除stamp最后一个\0
-				fwrite(RB_HEADER,sizeof(WCHAR),wcslen(RB_HEADER),f);
-				fwrite(strOut.c_str(),sizeof(WCHAR),strOut.length(),f);
-				fclose(f);
-				printf("build resource succeed!\n");
-			}
-		}else
-		{
-			printf("%s has not been modified\n",strIndexFile.c_str());
-		}
-
+        __int64 tmIdx=GetLastWriteTime(strIndexFile.c_str());
+		WriteFile(tmIdx, strRes, strOut, TRUE);
 	}
+
+    //输入name,id定义,只解析资源中layout资源的XML资源
+	if (!strHeadFile.empty())
+	{
+	    map<wstring,int> mapNameID;
+
+        __int64 tmLayout = bBuildIDMap;
+        
+        int nStartID = KStartID;
+        vector<IDMAPRECORD>::iterator it2=vecIdMapRecord.begin();
+        while(it2!=vecIdMapRecord.end())
+        {
+            if(wcsicmp(it2->szType,KXML_LAYOUT)==0)
+            {//发现布局文件
+                tmLayout += GetLastWriteTime(it2->szPath);
+                ParseLayoutFile(it2->szPath,mapNameID,nStartID);
+            }
+            it2 ++;
+        }
+
+		wstring strName, strId , strNamedID;
+		wstring strNameConstrutor;  //.name的构造函数
+		wstring strNameVariables;    //.name的成员变量
+		
+        strNamedID = L"\tconst SNamedID::NAMEDVALUE namedXmlID[]={\r\n";
+        strNameConstrutor = L"_name(){\r\n";
+        strId = L"\t\tclass _id{\r\n\t\tpublic:\r\n";
+        
+		map<wstring,int>::iterator it=mapNameID.begin();
+		int idx = 0;
+		while(it!=mapNameID.end())
+		{
+			WCHAR szName[200],szBuf[2000] = { 0 };
+			MakeNameValid(it->first.c_str(),szName);
+            
+            if(!bBuildIDMap)
+            {
+                swprintf(szBuf,L"\t\t\t%s = L\"%s\";\r\n",szName, it->first.c_str());
+                strNameConstrutor += szBuf;
+            }else
+            {
+                swprintf(szBuf,L"\t\t\t%s = namedXmlID[%d].strName;\r\n",szName, idx);
+                strNameConstrutor += szBuf;
+            }
+			
+			swprintf(szBuf,L"\t\t const wchar_t * %s;\r\n",szName);
+			strNameVariables += szBuf;
+			
+			swprintf(szBuf, L"\t\tconst static int %s\t=\t%d;\r\n", szName, it->second);
+			strId += szBuf;
+			
+			swprintf(szBuf,L"\t\t{L\"%s\",%d},\r\n",it->first.c_str(),it->second);
+			strNamedID += szBuf;
+			it ++;
+			idx ++;
+		}
+		strNameConstrutor += L"\t\t}\r\n";
+		strName = L"\t\tclass _name{\r\n\t\tpublic:\r\n\t\t";
+		strName += strNameConstrutor;
+		strName += strNameVariables;
+		strName += L"\t\t}name;\r\n";
+		
+		strId += L"\t\t}id;\r\n";
+		
+		if(mapNameID.size()>0)
+		{
+		    strNamedID = strNamedID.substr(0,strNamedID.size()-3); //去除数组最后一个","
+		}
+		strNamedID += L"\t\t};\r\n";
+		
+		wstring strOut = RB_HEADER_ID;
+		strOut += L"#pragma once\r\n#include <res.mgr/snamedvalue.h>\r\nnamespace SOUI\r\n{\r\n";
+				
+		if(bBuildIDMap)
+		    strOut += strNamedID;
+		
+		strOut += L"\tclass _R{\r\n\tpublic:\r\n";
+		strOut += strName;
+		if(bBuildIDMap)
+        {
+            strOut += L"\r\n";
+            strOut += strId;
+        }
+        strOut += L"\r\n\t};\r\n\r\n\t const _R R;\r\n";
+
+        strOut += L"}\r\n";
+
+		WriteFile(tmLayout, strHeadFile, strOut, FALSE);
+	}
+
 	return 0;
 }
+
 

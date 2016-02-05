@@ -77,7 +77,7 @@ BOOL GroupChatFrame::OnInitDialog( HWND hWnd, LPARAM lParam )
     SListView *pLstViewFix = FindChildByName2<SListView>("group_member_list");
     if(pLstViewFix)
     {
-        IAdapter *pAdapter = new MemberListAdapter;
+        ILvAdapter *pAdapter = new MemberListAdapter;
         pLstViewFix->SetAdapter(pAdapter);
         pAdapter->Release();
     }

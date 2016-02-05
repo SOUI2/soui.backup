@@ -109,14 +109,14 @@ namespace SOUI
 
     SOUI::SStringT SComboView::GetLBText(int iItem)
     {
-        IAdapter *pAdapter = m_pListBox->GetAdapter();
+        ILvAdapter *pAdapter = m_pListBox->GetAdapter();
         if(!pAdapter || iItem == -1) return SStringT();
         return pAdapter->getItemDesc(iItem);
     }
 
     int SComboView::GetCount() const
     {
-        IAdapter *pAdapter = m_pListBox->GetAdapter();
+        ILvAdapter *pAdapter = m_pListBox->GetAdapter();
         if(!pAdapter) return 0;
         return pAdapter->getCount();
     }

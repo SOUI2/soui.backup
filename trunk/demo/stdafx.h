@@ -16,6 +16,7 @@
 #include <com-cfg.h>
 
 #include "resource.h"	//APP×ÊÔ´
+#include "res/resource.h"
 
 #include "../controls.extend/SWkeWebkit.h"
 #include "../controls.extend/gif/SGifPlayer.h"

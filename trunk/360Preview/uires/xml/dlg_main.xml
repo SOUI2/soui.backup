@@ -1,4 +1,4 @@
-﻿<SOUI name="mainWindow" title="%title%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="680" height="370"  margin="20,5,5,5"  resizable="1" appWnd="1" translucent="1" alpha="255">
+﻿<SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="680" height="370"  margin="20,5,5,5"  resizable="1" appWnd="1" translucent="1" alpha="255">
   <root cache="1">
    <viewswitch name="vw_switch" pos="1,3,-1,-1" skinlightlevel="skin_bg_light_level"   skin="skin_bg_main" skin1="skin_bg_softmgr" skin2="skin_bg_desktop" skin3="skin_bg_diagnoscan" skin4="skin_bg_guard" skin5="skin_bg_ucenter" skin6="skin_bg_shishihaohu" >
      <caption pos="0,0,-0,30">

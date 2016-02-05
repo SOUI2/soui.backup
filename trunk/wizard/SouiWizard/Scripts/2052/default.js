@@ -376,9 +376,9 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		//Ö¸¶¨uires.idxµÄ±àÒëÃüÁî
 		var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
 		if(WizardVersion >= 10.0)
-			cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\\res\\soui_res.rc2';
+			cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
 		else
-			cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p uires -r .\\res\\soui_res.rc2';
+			cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p uires -r .\\res\\soui_res.rc2 .\\res\\resource.h idtable';
 		
 		var file = files.Item('uires.idx');
 		var fileConfig = file.FileConfigurations('Debug');

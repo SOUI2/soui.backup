@@ -11,7 +11,8 @@ stdafx.h
 res\soui_res.rc2
 
 [uires]uires.idx
-[uires]xml\init.xml
+[uires]uidef\init.xml
+[uires]values\*.xml
 [uires]xml\dlg_main.xml
 [!if WIN_STYLES_TAB]
 [uires]xml\page.xml

@@ -7,7 +7,7 @@ namespace SOUI
 {
     interface IListViewItemLocator : public IObjRef
     {
-        virtual void SetAdapter(IAdapter *pAdapter) PURE;
+        virtual void SetAdapter(ILvAdapter *pAdapter) PURE;
         virtual void OnDataSetChanged() PURE;
         virtual bool IsFixHeight() const PURE;
         virtual int GetItemHeight(int iItem) const PURE;
