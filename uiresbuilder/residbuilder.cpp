@@ -26,6 +26,8 @@ struct IDMAPRECORD
 
 //解析为布局的文件类型
 const wchar_t KXML_LAYOUT[]= L"layout";
+//全局资源定义
+const wchar_t KXML_UIDEF[] = L"uidef";
 
 //自动编号开始ID
 const int KStartID = 0x00010000; 
@@ -298,6 +300,13 @@ void MakeNameValid(const wchar_t * pszName,wchar_t * pszOut)
     }
 }
 
+void MakeNameValid(const char * pszName,wchar_t * pszOut)
+{
+    wchar_t szNameW[300];
+    MultiByteToWideChar(CP_UTF8,0,pszName,-1,szNameW,300);
+    MakeNameValid(szNameW,pszOut);
+}
+
 void ParseLayout(TiXmlElement *xmlNode,map<wstring,int> &vecName2ID,int & nStartId)
 {
     if(!xmlNode) return;
@@ -326,7 +335,7 @@ void ParseLayout(TiXmlElement *xmlNode,map<wstring,int> &vecName2ID,int & nStart
     }
 }
 
-void ParseLayoutFile(const wchar_t * pszFileName,map<wstring,int> &vecName2ID,int & nStartId)
+void ParseLayoutFile(const wchar_t * pszFileName,map<wstring,int> &mapName2ID,int & nStartId)
 {
     TiXmlDocument xmlLayout;
     FILE *f = _wfopen(pszFileName,L"rb");
@@ -337,11 +346,90 @@ void ParseLayoutFile(const wchar_t * pszFileName,map<wstring,int> &vecName2ID,in
         TiXmlElement *pXmlNode = xmlLayout.RootElement();
         //避免解析到skin结点
         if(stricmp(pXmlNode->Value(),"soui") == 0)
-            ParseLayout(pXmlNode->FirstChildElement("root"),vecName2ID,nStartId);
+            ParseLayout(pXmlNode->FirstChildElement("root"),mapName2ID,nStartId);
         else if(stricmp(pXmlNode->Value(),"include") == 0)
-            ParseLayout(pXmlNode,vecName2ID,nStartId);
+            ParseLayout(pXmlNode,mapName2ID,nStartId);
     }
     fclose(f);
+}
+
+//从UIDef中解析String,Color Table
+__int64 ParseUIDefFile(map<string,string> &mapFiles, const wchar_t * pszFileName,map<string,int> &mapString,map<string,int> &mapColor)
+{
+    TiXmlDocument xmlUidef;
+    __int64 tmStamp  = 0;
+
+    if(xmlUidef.LoadFile(pszFileName))
+    {
+        TiXmlElement *pXmlNode = xmlUidef.RootElement();
+        if(stricmp(pXmlNode->Value(),"uidef")==0)
+        {
+            //解析 string table
+            TiXmlElement *pXmlString = pXmlNode->FirstChildElement("string");
+            if(pXmlString)
+            {
+                TiXmlDocument docString;
+                if(pXmlString->Attribute("src")!=NULL)
+                {
+                    map<string,string>::iterator it = mapFiles.find(pXmlString->Attribute("src"));
+                    if(it == mapFiles.end())
+                    {
+                        printf("error: can't find string table file that specified by src attribute");
+                        pXmlString = NULL;
+                    }else
+                    {
+                        tmStamp += GetLastWriteTime(it->second.c_str());
+                        docString.LoadFile(it->second.c_str());
+                        pXmlString = docString.FirstChildElement("string");
+                    }
+                }
+                if(pXmlString)
+                {
+                    TiXmlElement *pStrEle = pXmlString->FirstChildElement();
+                    while(pStrEle)
+                    {
+                        string strName = pStrEle->Value();
+                        mapString[strName] = 1;
+                        pStrEle = pStrEle->NextSiblingElement();
+                    }
+                }
+            }
+            
+            //解析 color table
+            TiXmlElement *pXmlColor = pXmlNode->FirstChildElement("color");
+            if(pXmlColor)
+            {
+                TiXmlDocument docColor;
+                if(pXmlColor->Attribute("src")!=NULL)
+                {
+                    map<string,string>::iterator it = mapFiles.find(pXmlColor->Attribute("src"));
+                    if(it == mapFiles.end())
+                    {
+                        printf("error: can't find color table file that specified by src attribute");
+                        pXmlColor = NULL;
+                    }else
+                    {
+                        docColor.LoadFile(it->second.c_str());
+                        tmStamp += GetLastWriteTime(it->second.c_str());
+                        pXmlColor = docColor.FirstChildElement("color");
+                    }
+                }
+                if(pXmlColor)
+                {
+                    TiXmlElement *pColorEle = pXmlColor->FirstChildElement();
+                    while(pColorEle)
+                    {
+                        string strName = pColorEle->Value();
+                        mapColor[strName] = 1;
+                        
+                        pColorEle = pColorEle->NextSiblingElement();
+                    }
+                }
+            }
+        }
+    }
+    
+    return tmStamp;
 }
 
 //uiresbuilder -p uires -i uires\uires.idx -r .\uires\winres.rc2 -h .\uires\resource.h idtable
@@ -397,6 +485,8 @@ int _tmain(int argc, _TCHAR* argv[])
         }
 
 	vector<IDMAPRECORD> vecIdMapRecord;
+	map<string,string>  mapFiles;
+	
 	//load xml description of resource to vector
     TiXmlElement *pXmlType=xmlResource->FirstChildElement();
 	while(pXmlType)
@@ -410,19 +500,21 @@ int _tmain(int argc, _TCHAR* argv[])
             {
             IDMAPRECORD rec={0};
             wcscpy(rec.szType,szType);
-            const char *pszValue;
-            pszValue=pXmlFile->Attribute("name");
-            if(pszValue) MultiByteToWideChar(CP_UTF8,0,pszValue,-1,rec.szName,200);
-            pszValue=pXmlFile->Attribute("path");
-            if(pszValue)
+            const char *pszName=pXmlFile->Attribute("name");
+            if(pszName) MultiByteToWideChar(CP_UTF8,0,pszName,-1,rec.szName,200);
+            const char *pszPath=pXmlFile->Attribute("path");
+            string strPath;
+            if(pszPath)
                 {
-                string str;
-                if(!strSkinPath.empty()){ str=strSkinPath+"\\"+pszValue;}
-                else str=pszValue;
-                MultiByteToWideChar(CP_UTF8,0,str.c_str(),str.length(),rec.szPath,MAX_PATH);
+                if(!strSkinPath.empty()){ strPath=strSkinPath+"\\"+pszPath;}
+                else strPath=pszPath;
+                MultiByteToWideChar(CP_UTF8,0,strPath.c_str(),strPath.length(),rec.szPath,MAX_PATH);
                 }
 
             vecIdMapRecord.push_back(rec);
+            string strKey = string(pszType)+":"+pszName;
+            mapFiles[strKey] = strPath;
+            
             pXmlFile=pXmlFile->NextSiblingElement();
 		}
 		pXmlType=pXmlType->NextSiblingElement();
@@ -449,8 +541,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	if (!strHeadFile.empty())
 	{
 	    map<wstring,int> mapNameID;
+        map<string,int> mapString;
+        map<string,int> mapColor;
 
-        __int64 tmLayout = bBuildIDMap;
+
+        __int64 tmResource = bBuildIDMap;
         
         int nStartID = KStartID;
         vector<IDMAPRECORD>::iterator it2=vecIdMapRecord.begin();
@@ -458,13 +553,19 @@ int _tmain(int argc, _TCHAR* argv[])
         {
             if(wcsicmp(it2->szType,KXML_LAYOUT)==0)
             {//发现布局文件
-                tmLayout += GetLastWriteTime(it2->szPath);
+                tmResource += GetLastWriteTime(it2->szPath);
                 ParseLayoutFile(it2->szPath,mapNameID,nStartID);
+            }else if(wcsicmp(it2->szType,KXML_UIDEF)==0)
+            {//找到UIDEF
+                tmResource += GetLastWriteTime(it2->szPath);
+                tmResource += ParseUIDefFile(mapFiles,it2->szPath,mapString,mapColor);
             }
             it2 ++;
         }
 
-		wstring strName, strId , strNamedID;
+		wstring strName, 
+		        strId ,     //.id
+		        strNamedID; //{name,id}数组
 		wstring strNameConstrutor;  //.name的构造函数
 		wstring strNameVariables;    //.name的成员变量
 		
@@ -514,6 +615,38 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 		strNamedID += L"\t\t};\r\n";
 		
+        wstring strString;          //.string
+        {
+            int idx = 0;
+            strString = L"\t\tclass _string{\r\n\t\tpublic:\r\n";
+            map<string,int>::iterator it = mapString.begin();
+            while(it != mapString.end())
+            {
+                WCHAR szName[200],szBuf[2000] = { 0 };
+                MakeNameValid(it->first.c_str(),szName);
+                swprintf(szBuf, L"\t\tconst static int %s\t=\t%d;\r\n", szName, idx++);
+                strString += szBuf;
+                it ++;
+            }
+            strString += L"\t\t}string;\r\n";
+        }
+
+        wstring strColor;           //.color
+        {
+            int idx = 0;
+            strColor = L"\t\tclass _color{\r\n\t\tpublic:\r\n";
+            map<string,int>::iterator it = mapColor.begin();
+            while(it != mapColor.end())
+            {
+                WCHAR szName[200],szBuf[2000] = { 0 };
+                MakeNameValid(it->first.c_str(),szName);
+                swprintf(szBuf, L"\t\tconst static int %s\t=\t%d;\r\n", szName, idx++);
+                strColor += szBuf;
+                it ++;
+            }
+            strColor += L"\t\t}color;\r\n";
+        }
+
 		wstring strOut = RB_HEADER_ID;
 		strOut += L"#pragma once\r\n#include <res.mgr/snamedvalue.h>\r\nnamespace SOUI\r\n{\r\n";
 				
@@ -526,12 +659,19 @@ int _tmain(int argc, _TCHAR* argv[])
         {
             strOut += L"\r\n";
             strOut += strId;
+
+            strOut += L"\r\n";
+            strOut += strString;
+            
+            strOut += L"\r\n";
+            strOut += strColor;
+
         }
         strOut += L"\r\n\t};\r\n\r\n\t const _R R;\r\n";
 
         strOut += L"}\r\n";
 
-		WriteFile(tmLayout, strHeadFile, strOut, FALSE);
+		WriteFile(tmResource, strHeadFile, strOut, FALSE);
 	}
 
 	return 0;
