@@ -659,14 +659,13 @@ int _tmain(int argc, _TCHAR* argv[])
         {
             strOut += L"\r\n";
             strOut += strId;
-
-            strOut += L"\r\n";
-            strOut += strString;
-            
-            strOut += L"\r\n";
-            strOut += strColor;
-
         }
+        strOut += L"\r\n";
+        strOut += strString;
+
+        strOut += L"\r\n";
+        strOut += strColor;
+
         strOut += L"\r\n\t};\r\n\r\n\t const _R R;\r\n";
 
         strOut += L"}\r\n";
