@@ -962,6 +962,24 @@ bool TiXmlDocument::SaveFile() const
 	return SaveFile( Value() );
 }
 
+bool TiXmlDocument::LoadFile( const wchar_t* _filename, TiXmlEncoding encoding )
+{
+    // reading in binary mode so that tinyxml can normalize the EOL
+    FILE* file = _wfopen( _filename, L"rb" );	
+
+    if ( file )
+    {
+        bool result = LoadFile( file, encoding );
+        fclose( file );
+        return result;
+    }
+    else
+    {
+        SetError( TIXML_ERROR_OPENING_FILE, 0, 0, TIXML_ENCODING_UNKNOWN );
+        return false;
+    }
+}
+
 bool TiXmlDocument::LoadFile( const char* _filename, TiXmlEncoding encoding )
 {
 	TIXML_STRING filename( _filename );
