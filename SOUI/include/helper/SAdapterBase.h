@@ -195,7 +195,7 @@ namespace SOUI
             while(pos)
             {
                 ITvDataSetObserver *pObserver = m_lstObserver.GetNext(pos);
-                pObserver->onChanged(hBranch);
+                pObserver->onBranchChanged(hBranch);
             }
         }
         
@@ -205,7 +205,17 @@ namespace SOUI
             while(pos)
             {
                 ITvDataSetObserver *pObserver = m_lstObserver.GetNext(pos);
-                pObserver->onInvalidated(hBranch);
+                pObserver->onBranchInvalidated(hBranch);
+            }
+        }
+        
+        void notifyExpandChanged(HTREEITEM hBranch,BOOL bExpandedOld,BOOL bExpandedNew)
+        {
+            SPOSITION pos = m_lstObserver.GetHeadPosition();
+            while(pos)
+            {
+                ITvDataSetObserver *pObserver = m_lstObserver.GetNext(pos);
+                pObserver->onBranchExpandedChanged(hBranch,bExpandedOld,bExpandedNew);
             }
         }
     protected:
@@ -217,7 +227,7 @@ namespace SOUI
     class TvAdatperImpl : public BaseClass
     {
     public:
-        void notifyDataSetChanged(HTREEITEM hBranch) {
+        void notifyBranchChanged(HTREEITEM hBranch) {
             m_obzMgr.notifyChanged(hBranch);
         }
 
@@ -226,8 +236,12 @@ namespace SOUI
         * or available. Once invoked this adapter is no longer valid and should
         * not report further data set changes.
         */
-        void notifyDataSetInvalidated(HTREEITEM hBranch) {
+        void notifyBranchInvalidated(HTREEITEM hBranch) {
             m_obzMgr.notifyInvalidated(hBranch);
+        }
+
+        void notifyBranchExpandChanged(HTREEITEM hBranch,BOOL bExpandedOld,BOOL bExpandedNew) {
+            m_obzMgr.notifyExpandChanged(hBranch,bExpandedOld,bExpandedNew);
         }
 
         virtual void registerDataSetObserver(ITvDataSetObserver * observer)
@@ -287,6 +301,11 @@ namespace SOUI
             return (HTREEITEM)hParent;
         }
         
+        virtual BOOL HasChildren(HTREEITEM hItem) const
+        {
+            return GetFirstChildItem(hItem)!=ITEM_NULL;
+        }
+        
         virtual HTREEITEM GetFirstChildItem(HTREEITEM hItem) const
         {
             SASSERT(hItem != ITvAdapter::ITEM_NULL);
@@ -311,17 +330,6 @@ namespace SOUI
             return (HTREEITEM)m_tree.GetNextSiblingItem((HSTREEITEM)hItem);
         }
         
-        virtual int GetChildrenCount(HTREEITEM hItem) const
-        {
-            return -1;
-        }
-        
-        virtual HTREEITEM GetChildAt(HTREEITEM hItem,int iChild) const
-        {
-            return ITvAdapter::ITEM_NULL;
-        }
-        
-        
         virtual int getViewType(HTREEITEM hItem) const
         {
             return 0;
@@ -332,6 +340,94 @@ namespace SOUI
 		    return 1;
 		}
 		
+
+        virtual void ExpandItem(HTREEITEM hItem,UINT uCode)
+        {
+            BOOL bExpandedOld = IsItemExpanded(hItem);
+            BOOL bExpandedNew = bExpandedOld;
+            switch(uCode)
+            {
+                case TVC_COLLAPSE: bExpandedNew = FALSE;break;
+                case TVC_EXPAND: bExpandedNew = TRUE;break;
+                case TVC_TOGGLE: bExpandedNew = !bExpandedOld;break;
+            }
+            if(bExpandedOld == bExpandedNew)
+                return ;
+            
+            SetItemExpanded(hItem,bExpandedNew);
+            notifyBranchExpandChanged(hItem,bExpandedOld,bExpandedNew);
+        }
+
+        virtual BOOL IsItemExpanded(HTREEITEM hItem) const
+        {
+            return (BOOL)GetItemDataByIndex(hItem,DATA_INDEX_ITEM_EXPANDED);
+        }
+        
+        virtual void SetItemExpanded(HTREEITEM hItem,BOOL bExpanded)
+        {
+            SetItemDataByIndex(hItem,DATA_INDEX_ITEM_EXPANDED,bExpanded);
+        }
+        
+        virtual BOOL IsItemVisible(HTREEITEM hItem) const
+        {
+            HTREEITEM hParent = GetParentItem(hItem);
+            while(hParent != ITEM_NULL)
+            {
+                if(!IsItemExpanded(hParent)) return FALSE;
+                hParent = GetParentItem(hParent);
+            }
+            return TRUE;
+        }
+
+        virtual HTREEITEM GetFirstVisibleItem() const
+        {
+            return GetFirstChildItem(ITEM_ROOT);
+        }
+        
+        virtual HTREEITEM GetLastVisibleItem() const
+        {
+            HTREEITEM hItem = GetLastChildItem(ITEM_ROOT);
+            if(hItem == ITEM_NULL) return hItem;
+            for(;IsItemExpanded(hItem);)
+            {
+                HTREEITEM hChild = GetLastChildItem(hItem);
+                if(hChild == ITEM_NULL) break;
+                hItem = hChild;
+            }
+            return hItem;
+        }
+
+        virtual HTREEITEM GetPrevVisibleItem(HTREEITEM hItem) const
+        {
+            SASSERT(IsItemVisible(hItem));
+            HSTREEITEM hRet = GetPrevSiblingItem(hItem);
+            if(hRet == ITEM_NULL)
+            {
+                hRet = GetParentItem(hItem);
+                if(hRet == ITEM_ROOT) hRet = ITEM_NULL;
+            }
+            return hRet;
+        }
+
+        virtual HTREEITEM GetNextVisibleItem(HTREEITEM hItem) const
+        {
+            SASSERT(IsItemVisible(hItem));
+            if(IsItemExpanded(hItem))
+            {
+                HTREEITEM hChild = GetFirstChildItem(hItem);
+                if(hChild!=ITEM_NULL) return hChild;
+            }
+
+            HTREEITEM hParent = hItem;
+            while(hParent!=ITEM_NULL && hParent!=ITEM_ROOT)
+            {
+                HTREEITEM hRet=GetNextSiblingItem(hParent);
+                if(hRet) return hRet;
+                hParent=GetParentItem(hParent);
+            }
+            return ITEM_NULL;
+        }
+
     public:
         HSTREEITEM InsertItem(const T & data,HSTREEITEM hParent = STVI_ROOT,HSTREEITEM hInsertAfter = STVI_LAST)
         {
@@ -339,7 +435,9 @@ namespace SOUI
             ii.data = data;
             return m_tree.InsertItem(ii,hParent,hInsertAfter);
         }
-        
+
+
+
     protected:
 		CSTree<ItemInfo> m_tree;
 		ULONG_PTR        m_rootUserData[DATA_INDEX_NUMBER];

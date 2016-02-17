@@ -276,6 +276,7 @@ void STileView::UpdateVisibleItems()
                 }
                 ii.pItem->SetItemIndex(iNewLastVisible);
             }
+            ii.pItem->SetVisible(TRUE);
             CRect rcItem = m_tvItemLocator->GetItemRect(iNewLastVisible);
             rcItem.MoveToXY(0, 0);
             ii.pItem->Move(rcItem);
@@ -315,6 +316,7 @@ void STileView::UpdateVisibleItems()
             ii.pItem->ModifyItemState(0, WndState_Check);
             ii.pItem->GetFocusManager()->SetFocusedHwnd(0);
         }
+        ii.pItem->SetVisible(FALSE);
         m_itemRecycle[ii.nType]->AddTail(ii.pItem);
     }
     delete [] pItemInfos;

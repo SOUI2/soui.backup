@@ -12,7 +12,9 @@ res\soui_res.rc2
 
 [uires]uires.idx
 [uires]uidef\init.xml
-[uires]values\*.xml
+[uires]values\color.xml
+[uires]values\skin.xml
+[uires]values\string.xml
 [uires]xml\dlg_main.xml
 [!if WIN_STYLES_TAB]
 [uires]xml\page.xml

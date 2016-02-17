@@ -263,6 +263,7 @@ namespace SOUI
                     }
                     ii.pItem->SetItemIndex(iNewLastVisible);
                 }
+                ii.pItem->SetVisible(TRUE);
                 CRect rcItem = GetClientRect();
                 rcItem.MoveToXY(0,0);
                 if(m_lvItemLocator->IsFixHeight())
@@ -308,6 +309,7 @@ namespace SOUI
                 ii.pItem->ModifyItemState(0,WndState_Check);
                 ii.pItem->GetFocusManager()->SetFocusedHwnd(0);
             }
+            ii.pItem->SetVisible(FALSE);
             m_itemRecycle[ii.nType]->AddTail(ii.pItem);    
         }
         delete [] pItemInfos;

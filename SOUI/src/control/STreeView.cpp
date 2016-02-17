@@ -10,23 +10,24 @@ namespace SOUI
 		STreeViewDataSetObserver(STreeView *pView):m_pOwner(pView)
 		{
 		}
-		virtual void onChanged(HTREEITEM hBranch);
-		virtual void onInvalidated(HTREEITEM hBranch);
-
+		virtual void onBranchChanged(HTREEITEM hBranch)
+		{
+		    m_pOwner->onBranchChanged(hBranch);
+		}
+		
+		virtual void onBranchInvalidated(HTREEITEM hBranch)
+		{
+		    m_pOwner->onBranchInvalidated(hBranch);
+		}
+		
+        virtual void onBranchExpandedChanged(HTREEITEM hBranch,BOOL bExpandedOld,BOOL bExpandedNew)
+        {
+            m_pOwner->onBranchExpandedChanged(hBranch,bExpandedOld,bExpandedNew);
+        }
 	protected:
 		STreeView * m_pOwner;
 	};
 
-
-	void STreeViewDataSetObserver::onChanged(HTREEITEM hBranch)
-	{
-		m_pOwner->onDataSetChanged(hBranch);
-	}
-
-	void STreeViewDataSetObserver::onInvalidated(HTREEITEM hBranch)
-	{
-		m_pOwner->onDataSetInvalidated(hBranch);
-	}
 	
 	//////////////////////////////////////////////////////////////////////////
     class STreeViewItemLocator : public TObjRefImpl<ITreeViewItemLocator>
@@ -47,11 +48,39 @@ namespace SOUI
             m_adapter = pAdapter;
         }
 
-        virtual void OnDataSetChanged(HTREEITEM hItem)
+        virtual void OnBranchChanged(HTREEITEM hItem)
         {//初始化列表项高度等数据
-            _InitTreeView(hItem);
+            int nVisibleHeightOld = _GetItemVisibleHeight(hItem);
+            _InitBranch(hItem);
+            int nVisibleHeightNew = _GetItemVisibleHeight(hItem);
+            int nDiff = nVisibleHeightNew - nVisibleHeightOld;
+            if(nDiff == 0 || hItem == ITvAdapter::ITEM_ROOT) 
+                return;
+            
+            HTREEITEM hParent = m_adapter->GetParentItem(hItem);
+            while(hParent!=ITvAdapter::ITEM_NULL)
+            {
+                _SetBranchHeight(hParent,_GetBranchHeight(hParent)+nDiff);
+                hParent = m_adapter->GetParentItem(hParent);    
+            }
+            _UpdateSiblingsOffset(hItem);
         }
 
+        virtual void OnBranchExpandedChanged(HTREEITEM hItem,BOOL bExpandedOld,BOOL bExpandedNew)
+        {
+            if(bExpandedNew == bExpandedOld) return;
+            
+            int nBranchHei = _GetBranchHeight(hItem);
+            HTREEITEM hParent = m_adapter->GetParentItem(hItem);
+            while(hParent != ITvAdapter::ITEM_NULL)
+            {
+                _SetBranchHeight(hParent,_GetBranchHeight(hParent)+nBranchHei*(bExpandedNew?1:-1));
+                if(!IsItemExpanded(hParent)) break;
+                hParent = m_adapter->GetParentItem(hParent);
+            }
+            _UpdateSiblingsOffset(hItem);
+        }
+        
         virtual int GetTotalHeight() const
         {
             return (int)m_adapter->GetItemDataByIndex(ITvAdapter::ITEM_ROOT,ITvAdapter::DATA_INDEX_BRANCH_HEIGHT);
@@ -117,49 +146,6 @@ namespace SOUI
             }
         }
 
-        virtual void ExpendItem(HTREEITEM hItem)
-        {
-            if(IsItemExpanded(hItem)) return;
-            SetItemExpanded(hItem,TRUE);
-            _UpdateSiblingsOffset(hItem);
-        }
-
-        virtual void CollapseItem(HTREEITEM hItem)
-        {
-            if(!IsItemExpanded(hItem)) return;
-            SetItemExpanded(hItem,FALSE);
-            _UpdateSiblingsOffset(hItem);        
-        }
-
-        virtual HTREEITEM GetNextVisibleItem(HTREEITEM hItem)
-        {
-            SASSERT(_IsItemVisible(hItem));
-            if(IsItemExpanded(hItem))
-            {
-                HTREEITEM hChild = m_adapter->GetFirstChildItem(hItem);
-                if(hChild!=ITvAdapter::ITEM_NULL) return hChild;
-            }
-
-            HTREEITEM hParent = hItem;
-            while(hParent!=ITvAdapter::ITEM_NULL && hParent!=ITvAdapter::ITEM_ROOT)
-            {
-                HTREEITEM hRet=m_adapter->GetNextSiblingItem(hParent);
-                if(hRet) return hRet;
-                hParent=m_adapter->GetParentItem(hParent);
-            }
-            return ITvAdapter::ITEM_NULL;
-        }
-
-        virtual BOOL IsItemExpanded(HTREEITEM hItem) const
-        {
-            return (BOOL)m_adapter->GetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_EXPANDED);
-        }
-
-        virtual void SetItemExpanded(HTREEITEM hItem,BOOL bExpended)
-        {
-            m_adapter->SetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_EXPANDED,bExpended);
-        }
-
         virtual int GetItemWidth(HTREEITEM hItem) const
         {
             return (int)m_adapter->GetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_WIDTH);
@@ -182,6 +168,11 @@ namespace SOUI
             return nRet;
         }
     protected:
+        BOOL IsItemExpanded(HTREEITEM hItem) const
+        {
+            return (BOOL)m_adapter->IsItemExpanded(hItem);
+        }
+
         //更新hItem所在的父窗口中分枝宽度数据
         //hItem:显示宽度发生变化的节点，可以是节点本身宽度变化，也可能是子节点宽度发生了变化
         //nOldWidth：原显示宽度
@@ -274,10 +265,9 @@ namespace SOUI
                 nOffset += _GetItemVisibleHeight(hSib);
                 hSib = m_adapter->GetNextSiblingItem(hSib);
             }
-
             //注意更新各级父节点的偏移量
             HTREEITEM hParent = m_adapter->GetParentItem(hItem);
-            if(hParent != ITvAdapter::ITEM_NULL && hParent != ITvAdapter::ITEM_ROOT)
+            if(hParent != ITvAdapter::ITEM_NULL && hParent != ITvAdapter::ITEM_ROOT && IsItemExpanded(hParent))
             {
                 _UpdateSiblingsOffset(hParent);
             }
@@ -368,16 +358,10 @@ namespace SOUI
 
         BOOL _IsItemVisible(HTREEITEM hItem) const
         {
-            HTREEITEM hParent = m_adapter->GetParentItem(hItem);
-            while(hParent != ITvAdapter::ITEM_NULL)
-            {
-                if(!IsItemExpanded(hParent)) return FALSE;
-                hParent = m_adapter->GetParentItem(hParent);
-            }
-            return TRUE;
+            return m_adapter->IsItemVisible(hItem);
         }
 
-        void _InitTreeView(HTREEITEM hItem)
+        void _InitBranch(HTREEITEM hItem)
         {
             if(hItem != ITvAdapter::ITEM_ROOT)
             {
@@ -388,7 +372,7 @@ namespace SOUI
                 _SetItemHeight(hItem,0);
                 _SetItemWidth(hItem,0);
             }
-            if(m_adapter->GetFirstChildItem(hItem)!=ITvAdapter::ITEM_NULL)
+            if(m_adapter->HasChildren(hItem))
             {//有子节点
                 HTREEITEM hChild = m_adapter->GetFirstChildItem(hItem);
                 int nBranchHeight = 0;
@@ -396,13 +380,11 @@ namespace SOUI
                 {
                     //设置偏移
                     _SetItemOffset(hChild,nBranchHeight);
-                    _InitTreeView(hChild);
+                    _InitBranch(hChild);
                     nBranchHeight += _GetItemVisibleHeight(hChild);
                     hChild = m_adapter->GetNextSiblingItem(hChild);
                 }
                 _SetBranchHeight(hItem,nBranchHeight);
-                //自动展开
-                SetItemExpanded(hItem,TRUE);
                 //设置默认宽度
                 _SetBranchWidth(hItem,m_szDef.cx + m_nIndent);
             }else
@@ -481,13 +463,10 @@ namespace SOUI
             }
 
 		}
-		onDataSetChanged(ITvAdapter::ITEM_ROOT);
+		onBranchChanged(ITvAdapter::ITEM_ROOT);
 		return TRUE;
 	}
-	void STreeView::onDataSetInvalidated(HTREEITEM hItem)
-	{
-		onDataSetChanged(hItem);
-	}
+	
 	
 	BOOL STreeView::CreateChildren(pugi::xml_node xmlNode) {
 		pugi::xml_node xmlTemplate = xmlNode.child(L"template");
@@ -575,8 +554,117 @@ namespace SOUI
 
 	void STreeView::EnsureVisible(HTREEITEM hItem)
 	{
-
+	    //保证hItem被正确展开
+	    HTREEITEM hParent = m_adapter->GetParentItem(hItem);
+	    while(hParent!=ITvAdapter::ITEM_ROOT)
+	    {
+	        m_adapter->ExpandItem(hParent,ITvAdapter::TVC_EXPAND);
+	        hParent = m_adapter->GetParentItem(hParent);
+	    }
+	    //滚动视图
+        int nPos = m_tvItemLocator->Item2Position(hItem);
+        OnScroll(TRUE,SB_THUMBPOSITION,nPos);
+        int nIndent = m_tvItemLocator->GetItemIndent(hItem);
+        OnScroll(FALSE,SB_THUMBPOSITION,nIndent);
 	}
+
+    void STreeView::SetSel(HTREEITEM hItem,BOOL bNotify/*=FALSE*/)
+    {
+        if(!m_adapter) return;
+
+        if(bNotify)
+        {
+            EventTVSelChanged evt(this);
+            evt.hOldSel = m_hSelected;
+            evt.hNewSel = hItem;
+            FireEvent(evt);
+            if(evt.bCancel) 
+            {//Cancel SetSel and restore selection state
+                return;
+            }
+        }
+        
+        if(m_hSelected == hItem)
+            return;
+
+        SItemPanel *pItem = GetItemPanel(m_hSelected);
+        if(pItem)
+        {
+            pItem->GetFocusManager()->SetFocusedHwnd(-1);
+            pItem->ModifyItemState(0,WndState_Check);
+            RedrawItem(pItem);
+        }
+        m_hSelected = hItem;
+        pItem = GetItemPanel(m_hSelected);
+        if(pItem)
+        {
+            pItem->ModifyItemState(WndState_Check,0);
+            RedrawItem(pItem);
+        }        
+    }
+
+    void STreeView::OnKeyDown(TCHAR nChar, UINT nRepCnt, UINT nFlags)
+    {
+        if(!m_adapter)
+        {
+            SetMsgHandled(FALSE);
+            return;
+        }
+SASSERT(TRUE);
+        if(m_hSelected != ITvAdapter::ITEM_NULL)
+        {
+            SItemPanel *pItem = GetItemPanel(m_hSelected);
+            if(pItem)
+            {
+                pItem->DoFrameEvent(WM_KEYDOWN,nChar, MAKELONG(nFlags, nRepCnt));
+                if(pItem->IsMsgHandled()) return;
+            }
+        }
+
+        SWindow *pOwner = GetOwner();
+        if (pOwner && (nChar == VK_ESCAPE))
+        {
+            pOwner->SSendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
+            return;
+        }
+        
+        HTREEITEM  nNewSelItem = ITvAdapter::ITEM_NULL;
+        switch(nChar)
+        {
+        case VK_DOWN:   nNewSelItem = (m_hSelected == ITvAdapter::ITEM_NULL)? m_adapter->GetFirstVisibleItem():m_adapter->GetNextVisibleItem(m_hSelected);break;
+        case VK_UP:     nNewSelItem = (m_hSelected == ITvAdapter::ITEM_NULL)? m_adapter->GetFirstVisibleItem():m_adapter->GetPrevVisibleItem(m_hSelected);break;
+        case VK_PRIOR:  OnScroll(TRUE,SB_PAGEUP,0);         break;
+        case VK_NEXT:   OnScroll(TRUE,SB_PAGEDOWN,0);       break;
+        case VK_HOME:   OnScroll(TRUE,SB_TOP,0);            break;
+        case VK_END:    OnScroll(TRUE,SB_BOTTOM,0);         break;
+        case VK_LEFT:
+            if(m_hSelected != ITvAdapter::ITEM_NULL)
+            {
+                if(m_adapter->HasChildren(m_hSelected) && m_adapter->IsItemExpanded(m_hSelected))
+                    m_adapter->ExpandItem(m_hSelected,ITvAdapter::TVC_COLLAPSE);//collapse the selected item
+                else
+                    nNewSelItem = m_adapter->GetPrevVisibleItem(m_hSelected);
+            }
+            break;
+        case VK_RIGHT:
+            if(m_hSelected != ITvAdapter::ITEM_NULL)
+            {
+                if(m_adapter->HasChildren(m_hSelected) && !m_adapter->IsItemExpanded(m_hSelected))
+                    m_adapter->ExpandItem(m_hSelected,ITvAdapter::TVC_EXPAND);//collapse the selected item
+                else
+                    nNewSelItem = m_adapter->GetNextVisibleItem(m_hSelected);
+            }
+            break;
+        }        
+
+        
+
+        if(nNewSelItem!= ITvAdapter::ITEM_NULL)
+        {
+            EnsureVisible(nNewSelItem);
+            SetSel(nNewSelItem);
+        }
+    }
 
 	LRESULT STreeView::OnKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 	{
@@ -711,6 +799,7 @@ namespace SOUI
                 ii.pItem->SetItemIndex(hItem);
             }
             m_pVisibleMap->SetAt(hItem,ii);
+            ii.pItem->SetVisible(TRUE);
             
             if(hItem == m_hSelected)
                 ii.pItem->ModifyItemState(WndState_Check,0);
@@ -734,13 +823,14 @@ namespace SOUI
             nOffset += szItem.cy;
             if(nOffset>=rcClient.Height())
                 break;
-            hItem = m_tvItemLocator->GetNextVisibleItem(hItem);
+            hItem = m_adapter->GetNextVisibleItem(hItem);
         }
 
         SPOSITION pos = pMapOld->GetStartPosition();
         while(pos)
         {
             ItemInfo ii = pMapOld->GetNextValue(pos);
+            ii.pItem->SetVisible(FALSE);//防止执行SItemPanel::OnTimeFrame()
             m_itemRecycle[ii.nType]->AddTail(ii.pItem);    
         }
         delete pMapOld;
@@ -751,7 +841,7 @@ namespace SOUI
         if(szOldView != szNewView)
         {//update scroll range
             UpdateScrollBar();
-            UpdateVisibleItems();//根据新的滚动条状态重新记录显示列表项
+            UpdateVisibleItems();//根据新的滚动条状态重新记算显示列表项
         }
 	}
 
@@ -792,26 +882,33 @@ namespace SOUI
 		  pItem->UpdateChildrenPosition();
 	}
 
-	void STreeView::onDataSetChanged(HTREEITEM hItem)
+	void STreeView::onBranchChanged(HTREEITEM hBranch)
 	{
 		if (m_adapter == NULL)
 		{
 			return; 
 		}
-        if(m_tvItemLocator) m_tvItemLocator->OnDataSetChanged(hItem);
-
-		UpdateScrollBar();
-		UpdateVisibleItems();
-	}
-
-	void STreeView::OnLButtonDbClick(UINT nFlags,CPoint pt)
-	{
+        if(m_tvItemLocator) m_tvItemLocator->OnBranchChanged(hBranch);
+        UpdateScrollBar();
+        UpdateVisibleItems();
 	}
 	
-	void STreeView::OnLButtonDown(UINT nFlags,CPoint pt)
-	{
-		
-	}
+    void STreeView::onBranchInvalidated(HTREEITEM hBranch)
+    {
+        onBranchChanged(hBranch);
+    }
+
+    void STreeView::onBranchExpandedChanged(HTREEITEM hBranch,BOOL bExpandedOld,BOOL bExpandedNew)
+    {
+        if (m_adapter == NULL)
+        {
+            return; 
+        }
+        if(m_tvItemLocator) m_tvItemLocator->OnBranchExpandedChanged(hBranch,bExpandedOld,bExpandedNew);
+        UpdateScrollBar();
+        UpdateVisibleItems();
+    }
+
 	
 	LRESULT STreeView::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 	{
@@ -829,7 +926,7 @@ namespace SOUI
 			lRet = m_itemCapture->DoFrameEvent(uMsg, wParam, MAKELPARAM(pt.x, pt.y));
 		}
 		else {
-			if (m_bFocusable && uMsg == WM_RBUTTONDOWN)
+            if(m_bFocusable && (uMsg==WM_LBUTTONDOWN || uMsg== WM_RBUTTONDOWN || uMsg==WM_LBUTTONDBLCLK))
 			{
 				SetFocus();
 			}
@@ -968,48 +1065,6 @@ namespace SOUI
 // 			}
 // 		}
 		return __super::FireEvent(evt);
-	}
-
-	BOOL STreeView::Expand(HTREEITEM hItem , UINT nCode)
-	{
-// 		if (m_current_list.GetCount() < nItem) return FALSE;
-// 		SPOSITION pos = m_current_list.FindIndex(nItem);
-// 		HSTREEITEM loc = m_current_list.GetAt(pos);
-// 		int itemTreeState = m_node_state[loc];
-// 		BOOL bRet = FALSE;
-// 
-// 		if (itemTreeState == TS_Single)
-// 		{
-// 			return FALSE;
-// 		}
-// 
-// 		if(itemTreeState == TS_Expanded)
-// 		{
-// 			if(nCode==TVE_COLLAPSE || nCode == TVE_TOGGLE)
-// 			{
-// 				//collapse it
-// 				m_node_state[loc]= TS_Collapsed;
-// 				CurrentTree2List();
-// 				UpdateScrollBar();
-// 				UpdateVisibleItems();
-// 				bRet = TRUE;
-// 			}
-// 		}
-// 		else
-// 		{
-// 			if(nCode==TVE_TOGGLE || nCode == TVE_EXPAND)
-// 			{//expand it
-// 				m_node_state[loc]= TS_Expanded;
-// 
-// 				CurrentTree2List();
-// 				UpdateScrollBar();
-// 				UpdateVisibleItems();
-// 				bRet = TRUE;
-// 			}
-// 		}
-
-// 		return bRet;
-    return FALSE;
 	}
 
 }
