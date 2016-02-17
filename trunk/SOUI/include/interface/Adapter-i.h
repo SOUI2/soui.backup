@@ -134,14 +134,16 @@ namespace SOUI
         * This method is called when the entire data set has changed,
         * most likely through a call to {@link Cursor#requery()} on a {@link Cursor}.
         */
-        virtual void onChanged(HTREEITEM hBranch)  PURE;
+        virtual void onBranchChanged(HTREEITEM hBranch)  PURE;
 
         /**
         * This method is called when the entire data becomes invalid,
         * most likely through a call to {@link Cursor#deactivate()} or {@link Cursor#close()} on a
         * {@link Cursor}.
         */
-        virtual void onInvalidated(HTREEITEM hBranch)  PURE;
+        virtual void onBranchInvalidated(HTREEITEM hBranch)  PURE;
+        
+        virtual void onBranchExpandedChanged(HTREEITEM hBranch,BOOL bExpandedOld,BOOL bExpandedNew) PURE;
     };
    
 	interface ITvAdapter : public IObjRef{
@@ -149,19 +151,22 @@ namespace SOUI
         static const HTREEITEM ITEM_NULL=0;
         static const HTREEITEM ITEM_ROOT=0xFFFF0000;
         
-
-        
         enum DATA_INDEX{
         DATA_INDEX_ITEM_HEIGHT=0,   //行高
         DATA_INDEX_ITEM_WIDTH,      //行宽度
         DATA_INDEX_BRANCH_HEIGHT,   //分枝高度
         DATA_INDEX_BRANCH_WIDTH,    //分枝宽度,不包含indent
-        DATA_INDEX_ITEM_OFFSET,     //节点显示在所有兄弟结点的相对位置,与父结点无关
         DATA_INDEX_ITEM_EXPANDED,   //子项展开状态
+        DATA_INDEX_ITEM_OFFSET,     //当前节点在父节点中的Y方向偏移
         DATA_INDEX_ITEM_USER,       //自定义数据
-        
         DATA_INDEX_NUMBER
         };    
+    
+        enum{
+            TVC_COLLAPSE   =         0x0001,
+            TVC_EXPAND     =         0x0002,
+            TVC_TOGGLE     =         0x0003,
+        };
         
         /**
         * Register an observer that is called when changes happen to the data used by this adapter.
@@ -191,10 +196,21 @@ namespace SOUI
         virtual HTREEITEM GetLastChildItem(HTREEITEM hItem) const PURE;
         virtual HTREEITEM GetPrevSiblingItem(HTREEITEM hItem) const PURE;
         virtual HTREEITEM GetNextSiblingItem(HTREEITEM hItem) const PURE;
+        virtual BOOL HasChildren(HTREEITEM hItem) const PURE;
         
-        virtual int GetChildrenCount(HTREEITEM hItem) const PURE;
+        virtual BOOL IsItemVisible(HTREEITEM hItem) const PURE;
         
-        virtual HTREEITEM GetChildAt(HTREEITEM hItem,int iChild) const PURE;  
+        virtual HTREEITEM GetFirstVisibleItem() const PURE;
+        virtual HTREEITEM GetLastVisibleItem() const PURE;
+        virtual HTREEITEM GetPrevVisibleItem(HTREEITEM hItem) const PURE;
+        virtual HTREEITEM GetNextVisibleItem(HTREEITEM hItem) const PURE;
+        
+        virtual void ExpandItem(HTREEITEM hItem,UINT code) PURE;
+        
+        virtual BOOL IsItemExpanded(HTREEITEM hItem) const PURE;
+        
+        virtual void SetItemExpanded(HTREEITEM hItem,BOOL bExpanded) PURE;
+
        /**
         * Get a View that displays the data at the specified position in the data set. You can either
         * create a View manually or inflate it from an XML layout file. When the View is inflated, the

@@ -26,17 +26,20 @@ namespace SOUI
 		    return m_tvItemLocator;
 		}
 		
-		void onDataSetChanged(HTREEITEM hItem);
-		void onDataSetInvalidated(HTREEITEM hItem);
-
+		void onBranchChanged(HTREEITEM hBranch);
+		void onBranchInvalidated(HTREEITEM hBranch);
+        void onBranchExpandedChanged(HTREEITEM hBranch,BOOL bExpandedOld,BOOL bExpandedNew);
+        
+        void SetSel(HTREEITEM hItem,BOOL bNotify=FALSE);
+        HTREEITEM  GetSel()const{return m_hSelected;}
+        
+    protected:
 		void OnPaint(IRenderTarget * pRT);
 		void OnSize(UINT nType, CSize size);
 		void OnDestroy();
-// 		void OnKeyDown(TCHAR nChar, UINT nRepCnt, UINT nFlags);
+ 		void OnKeyDown(TCHAR nChar, UINT nRepCnt, UINT nFlags);// µœ÷º¸≈Ã—°‘Ò
 		LRESULT OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam );
 		
-		void OnLButtonDown(UINT nFlags,CPoint pt);
-		void OnLButtonDbClick(UINT nFlags,CPoint pt);
 		void OnMouseLeave();
 		BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 		LRESULT OnMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
@@ -48,16 +51,14 @@ namespace SOUI
 			MSG_WM_PAINT_EX(OnPaint)
 			MSG_WM_SIZE(OnSize)
 			MSG_WM_DESTROY(OnDestroy)
-			//MSG_WM_KEYDOWN(OnKeyDown)
+			MSG_WM_KEYDOWN(OnKeyDown)
 			MSG_WM_KILLFOCUS_EX(OnKillFocus)
 			MSG_WM_SETFOCUS_EX(OnSetFocus)
-			MSG_WM_LBUTTONDOWN(OnLButtonDown)
-			MSG_WM_LBUTTONDBLCLK(OnLButtonDbClick)
 			MSG_WM_MOUSEWHEEL(OnMouseWheel)
 			MSG_WM_MOUSELEAVE(OnMouseLeave)
 			MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST,WM_MOUSELAST,OnMouseEvent)
  			MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
-// 			MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
+ 			MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
 		SOUI_MSG_MAP_END()
 	protected:
 		virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
@@ -80,8 +81,6 @@ namespace SOUI
 		SItemPanel * GetItemPanel(HTREEITEM hItem);
 		SItemPanel * HitTest(CPoint & pt);
 
-
-		BOOL Expand(HTREEITEM hItem , UINT nCode);
 		void EnsureVisible(HTREEITEM hItem);
 
 	protected:

@@ -9,7 +9,9 @@ namespace SOUI
     interface ITreeViewItemLocator : public IObjRef
     {
         virtual void SetAdapter(ITvAdapter *pAdapter) PURE;
-        virtual void OnDataSetChanged(HTREEITEM hItem) PURE;
+        virtual void OnBranchChanged(HTREEITEM hItem) PURE;
+        virtual void OnBranchExpandedChanged(HTREEITEM hItem,BOOL bExpandedOld,BOOL bExpandedNew) PURE;
+
         virtual int GetTotalHeight() const PURE;
         virtual int GetTotalWidth() const PURE;
         virtual int Item2Position(HTREEITEM hItem) const PURE;
@@ -22,13 +24,6 @@ namespace SOUI
         virtual int GetItemHeight(HTREEITEM hItem) const PURE;
         virtual int GetItemIndent(HTREEITEM hItem) const PURE;
         
-        virtual void ExpendItem(HTREEITEM hItem) PURE;
-        virtual void CollapseItem(HTREEITEM hItem) PURE;
-        virtual HTREEITEM GetNextVisibleItem(HTREEITEM hItem) PURE;
-        
-        virtual BOOL IsItemExpanded(HTREEITEM hItem) const PURE;
-
-        virtual void SetItemExpanded(HTREEITEM hItem,BOOL bExpended) PURE;
     };
     
 }
