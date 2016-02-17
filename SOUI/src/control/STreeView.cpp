@@ -830,6 +830,19 @@ SASSERT(TRUE);
         while(pos)
         {
             ItemInfo ii = pMapOld->GetNextValue(pos);
+            
+            if(ii.pItem == m_pHoverItem)
+            {
+                m_pHoverItem->DoFrameEvent(WM_MOUSELEAVE, 0, 0);
+                m_pHoverItem = NULL;
+            }
+            
+            if((HTREEITEM)ii.pItem->GetItemIndex() == m_hSelected)
+            {
+                ii.pItem->ModifyItemState(0, WndState_Check);
+                ii.pItem->GetFocusManager()->SetFocusedHwnd(0);
+            }
+
             ii.pItem->SetVisible(FALSE);//·ÀÖ¹Ö´ÐÐSItemPanel::OnTimeFrame()
             m_itemRecycle[ii.nType]->AddTail(ii.pItem);    
         }
@@ -948,6 +961,17 @@ SASSERT(TRUE);
 				}
 			}
 			
+            if(uMsg==WM_LBUTTONDOWN )
+            {
+                HTREEITEM hSelNew = ITvAdapter::ITEM_NULL;
+                if(m_pHoverItem)
+                {
+                    hSelNew = (HTREEITEM)m_pHoverItem->GetItemIndex();
+                }
+
+                SetSel(hSelNew,TRUE);
+            }
+
 			if (m_pHoverItem)
 			{
 				m_pHoverItem->DoFrameEvent(uMsg, wParam, MAKELPARAM(pt.x, pt.y));
