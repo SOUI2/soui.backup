@@ -574,7 +574,7 @@ namespace SOUI
 
         if(bNotify)
         {
-            EventTVSelChanged evt(this);
+            EventTVSelChanging evt(this);
             evt.hOldSel = m_hSelected;
             evt.hNewSel = hItem;
             FireEvent(evt);
@@ -600,7 +600,16 @@ namespace SOUI
         {
             pItem->ModifyItemState(WndState_Check,0);
             RedrawItem(pItem);
-        }        
+        }   
+        
+        if(bNotify)
+        {
+            EventTVSelChanged evt(this);
+            evt.hOldSel = m_hSelected;
+            evt.hNewSel = hItem;
+            FireEvent(evt);
+        }
+     
     }
 
     void STreeView::OnKeyDown(TCHAR nChar, UINT nRepCnt, UINT nFlags)
@@ -792,6 +801,7 @@ SASSERT(TRUE);
                 if(lstRecycle->IsEmpty())
                 {//创建一个新的列表项
                     ii.pItem = SItemPanel::Create(this,pugi::xml_node(),this);
+                    ii.pItem->GetEventSet()->subscribeEvent(EventItemPanelClick::EventID,Subscriber(&STreeView::OnItemClick,this));
                 }else
                 {
                     ii.pItem = lstRecycle->RemoveHead();
@@ -925,8 +935,8 @@ SASSERT(TRUE);
 	
 	LRESULT STreeView::OnMouseEvent( UINT uMsg,WPARAM wParam,LPARAM lParam )
 	{
+        SetMsgHandled(FALSE);
 		if(m_adapter == NULL) {
-			SetMsgHandled(FALSE);
 			return 0;
 		}
 
@@ -939,9 +949,9 @@ SASSERT(TRUE);
 			lRet = m_itemCapture->DoFrameEvent(uMsg, wParam, MAKELPARAM(pt.x, pt.y));
 		}
 		else {
-            if(m_bFocusable && (uMsg==WM_LBUTTONDOWN || uMsg== WM_RBUTTONDOWN || uMsg==WM_LBUTTONDBLCLK))
-			{
-				SetFocus();
+            if(uMsg==WM_LBUTTONDOWN || uMsg== WM_RBUTTONDOWN || uMsg==WM_MBUTTONDOWN)
+			{//交给panel处理
+				__super::ProcessSwndMessage(uMsg,wParam,lParam,lRet);
 			}
 
 			SItemPanel * pHover = HitTest(pt);
@@ -960,17 +970,6 @@ SASSERT(TRUE);
 					m_pHoverItem->InvalidateRect(NULL);
 				}
 			}
-			
-            if(uMsg==WM_LBUTTONDOWN )
-            {
-                HTREEITEM hSelNew = ITvAdapter::ITEM_NULL;
-                if(m_pHoverItem)
-                {
-                    hSelNew = (HTREEITEM)m_pHoverItem->GetItemIndex();
-                }
-
-                SetSel(hSelNew,TRUE);
-            }
 
 			if (m_pHoverItem)
 			{
@@ -978,11 +977,11 @@ SASSERT(TRUE);
 			}
 		}
 
-		CPoint pt2(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-		if(uMsg == WM_LBUTTONUP)
-			__super::OnLButtonUp(wParam,pt2);
-		else if(uMsg == WM_RBUTTONDOWN)
-			__super::OnRButtonDown(uMsg, pt2);
+        if(uMsg==WM_LBUTTONUP || uMsg== WM_RBUTTONUP || uMsg==WM_MBUTTONUP)
+        {//交给panel处理
+            __super::ProcessSwndMessage(uMsg,wParam,lParam,lRet);
+        }
+        SetMsgHandled(TRUE);
 		return 0;
 	}
 
@@ -1075,20 +1074,17 @@ SASSERT(TRUE);
         return NULL;
     }
     
-	BOOL STreeView::FireEvent(EventArgs &evt)
-	{
-// 		if(evt.GetID()==EventOfPanel::EventID)
-// 		{
-// 			EventOfPanel *pEvt = (EventOfPanel *)&evt;
-// 			if(pEvt->pOrgEvt->GetID()==EVT_CMD 
-// 				&& wcscmp(pEvt->pOrgEvt->nameFrom , NAME_SWITCH)==0)
-// 			{
-// 				int index =pEvt->pPanel->GetItemIndex();
-// 				Expand(index,TVE_TOGGLE);
-// 				return TRUE;
-// 			}
-// 		}
-		return __super::FireEvent(evt);
-	}
+
+    bool STreeView::OnItemClick(EventArgs *pEvt)
+    {
+        SItemPanel *pItemPanel = sobj_cast<SItemPanel>(pEvt->sender);
+        SASSERT(pItemPanel);
+        HTREEITEM hItem = (HTREEITEM)pItemPanel->GetItemIndex();
+        if(hItem != m_hSelected)
+        {
+            SetSel(hItem,TRUE);
+        }
+        return true;
+    }
 
 }

@@ -269,6 +269,7 @@ void STileView::UpdateVisibleItems()
                 {
                     //创建一个新的列表项
                     ii.pItem = SItemPanel::Create(this, pugi::xml_node(), this);
+                    ii.pItem->GetEventSet()->subscribeEvent(EventItemPanelClick::EventID,Subscriber(&STileView::OnItemClick,this));
                 }
                 else
                 {
@@ -430,19 +431,15 @@ SItemPanel *STileView::HitTest(CPoint &pt)
 
 LRESULT STileView::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+    SetMsgHandled(FALSE);
     if(!m_adapter)
     {
-        SetMsgHandled(FALSE);
         return 0;
     }
     
     LRESULT lRet = 0;
     CPoint pt(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
     
-    if(uMsg == WM_LBUTTONDOWN)
-    {
-        __super::OnLButtonDown(wParam, pt);
-    }
     
     if(m_itemCapture)
     {
@@ -452,9 +449,9 @@ LRESULT STileView::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
     }
     else
     {
-        if(m_bFocusable && (uMsg == WM_LBUTTONDOWN || uMsg == WM_RBUTTONDOWN || uMsg == WM_LBUTTONDBLCLK))
-        {
-            SetFocus();
+        if(uMsg==WM_LBUTTONDOWN || uMsg== WM_RBUTTONDOWN || uMsg==WM_MBUTTONDOWN)
+        {//交给panel处理
+            __super::ProcessSwndMessage(uMsg,wParam,lParam,lRet);
         }
         
         SItemPanel *pHover = HitTest(pt);
@@ -473,34 +470,17 @@ LRESULT STileView::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
                 RedrawItem(m_pHoverItem);
             }
         }
-        if(uMsg == WM_LBUTTONDOWN)
-        {
-            //选择一个新行的时候原有行失去焦点
-            SWND hHitWnd = 0;
-            int nSelNew = -1;
-            if(m_pHoverItem)
-            {
-                nSelNew = m_pHoverItem->GetItemIndex();
-                hHitWnd = m_pHoverItem->SwndFromPoint(pt, FALSE);
-            }
-            
-            _SetSel(nSelNew, TRUE, hHitWnd);
-        }
         if(m_pHoverItem)
         {
             m_pHoverItem->DoFrameEvent(uMsg, wParam, MAKELPARAM(pt.x, pt.y));
         }
     }
     
-    CPoint pt2(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-    if(uMsg == WM_LBUTTONUP)
-    {
-        __super::OnLButtonUp(wParam, pt2);
+    if(uMsg==WM_LBUTTONUP || uMsg== WM_RBUTTONUP || uMsg==WM_MBUTTONUP)
+    {//交给panel处理
+        __super::ProcessSwndMessage(uMsg,wParam,lParam,lRet);
     }
-    else if(uMsg == WM_RBUTTONDOWN)
-    {
-        __super::OnRButtonDown(uMsg, pt2);
-    }
+    SetMsgHandled(TRUE);
     
     return 0;
 }
@@ -677,10 +657,6 @@ SItemPanel *STileView::GetItemPanel(int iItem)
     return NULL;
 }
 
-void STileView::SetSel(int iItem, BOOL bNotify/*=FALSE*/)
-{
-    _SetSel(iItem, bNotify, 0);
-}
 
 BOOL STileView::CreateChildren(pugi::xml_node xmlNode)
 {
@@ -720,7 +696,7 @@ BOOL STileView::OnUpdateToolTip(CPoint pt, SwndToolTipInfo &tipInfo)
     return m_pHoverItem->OnUpdateToolTip(pt, tipInfo);
 }
 
-void STileView::_SetSel(int iItem, BOOL bNotify, SWND hHitWnd)
+void STileView::SetSel(int iItem, BOOL bNotify)
 {
     if(!m_adapter)
     {
@@ -743,10 +719,9 @@ void STileView::_SetSel(int iItem, BOOL bNotify, SWND hHitWnd)
     m_iSelItem = nNewSel;
     if(bNotify)
     {
-        EventLVSelChanged evt(this);
+        EventLVSelChanging evt(this);
         evt.iOldSel = nOldSel;
         evt.iNewSel = nNewSel;
-        evt.hHitWnd = hHitWnd;
         FireEvent(evt);
         if(evt.bCancel)
         {
@@ -776,6 +751,15 @@ void STileView::_SetSel(int iItem, BOOL bNotify, SWND hHitWnd)
         pItem->ModifyItemState(WndState_Check, 0);
         RedrawItem(pItem);
     }
+    
+    if(bNotify)
+    {
+        EventLVSelChanged evt(this);
+        evt.iOldSel = nOldSel;
+        evt.iNewSel = nNewSel;
+        FireEvent(evt);
+    }
+
 }
 
 UINT STileView::OnGetDlgCode()
@@ -839,6 +823,19 @@ BOOL STileView::OnSetCursor(const CPoint &pt)
         bRet=__super::OnSetCursor(pt);
     }
     return bRet;
+
+}
+
+bool STileView::OnItemClick(EventArgs *pEvt)
+{
+    SItemPanel *pItemPanel = sobj_cast<SItemPanel>(pEvt->sender);
+    SASSERT(pItemPanel);
+    int iItem = (int)pItemPanel->GetItemIndex();
+    if(iItem != m_iSelItem)
+    {
+        SetSel(iItem,TRUE);
+    }
+    return true;
 
 }
 

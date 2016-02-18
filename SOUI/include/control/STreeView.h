@@ -34,6 +34,9 @@ namespace SOUI
         HTREEITEM  GetSel()const{return m_hSelected;}
         
     protected:
+        bool OnItemClick(EventArgs *pEvt);
+        
+    protected:
 		void OnPaint(IRenderTarget * pRT);
 		void OnSize(UINT nType, CSize size);
 		void OnDestroy();
@@ -69,7 +72,6 @@ namespace SOUI
 		virtual BOOL OnItemGetRect(SItemPanel *pItem,CRect &rcItem);    //获得表项的显示位置
 		virtual BOOL IsItemRedrawDelay();                               //指示表项的更新方式
 		virtual void OnItemRequestRelayout(SItemPanel *pItem);          //列表项请求重新布局
-		virtual BOOL FireEvent(EventArgs &evt);
 	protected:
 
 		void UpdateScrollBar();

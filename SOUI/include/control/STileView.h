@@ -49,6 +49,9 @@ protected:
     void onDataSetInvalidated();
     
 protected:
+    bool OnItemClick(EventArgs *pEvt);
+
+protected:
     virtual BOOL OnScroll(BOOL bVertical, UINT uCode, int nPos);
     virtual int  GetScrollLineSize(BOOL bVertical);
     virtual BOOL CreateChildren(pugi::xml_node xmlNode);
@@ -58,7 +61,6 @@ protected:
     virtual BOOL OnSetCursor(const CPoint &pt);
 
 protected:
-    void _SetSel(int iItem, BOOL bNotify, SWND hHitWnd);
     
     void UpdateScrollBar();
     void RedrawItem(SItemPanel *pItem);
