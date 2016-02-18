@@ -5,11 +5,6 @@
 
 namespace SOUI
 {
-    interface ICVSelChangedHandler
-    {
-        virtual BOOL onLVSelChanged(EventLVSelChanged *pEvt) PURE;
-    };
-    
     class SOUI_EXP SComboView : public SComboBase
     {
         SOUI_CLASS_NAME(SComboView,L"comboview")
@@ -45,6 +40,7 @@ namespace SOUI
         * Describe  获取文本
         */
         SStringT GetLBText(int iItem);
+        
         /**
         * SComboView::GetListBox
         * @brief    获取下拉列表指针
@@ -54,7 +50,6 @@ namespace SOUI
         */
         SListView * GetListView();
 
-        void SetCVSelChangedHandler(ICVSelChangedHandler *pHandler);
     protected:
         /**
         * SComboView::FireEvent
@@ -113,9 +108,6 @@ namespace SOUI
     protected:
 
         SListView *m_pListBox;  /**< SListBox指针 */
-        
-        BOOL       m_bKeepDropList;
-        ICVSelChangedHandler * m_lvSelChangeHandler;
     };
 
 }

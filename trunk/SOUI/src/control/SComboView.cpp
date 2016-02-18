@@ -3,7 +3,7 @@
 
 namespace SOUI
 {
-    SComboView::SComboView(void):m_lvSelChangeHandler(NULL),m_bKeepDropList(FALSE)
+    SComboView::SComboView(void)
     {
     }
 
@@ -49,7 +49,6 @@ namespace SOUI
         __super::OnDropDown(pDropDown);
         pDropDown->InsertChild(m_pListBox);
         pDropDown->UpdateChildrenPosition();
-        m_bKeepDropList = FALSE;
         
         m_pListBox->SetVisible(TRUE);
         m_pListBox->SetFocus();
@@ -84,16 +83,10 @@ namespace SOUI
         {
             if(evt.GetID()==EventLVSelChanged::EventID)
             {
-                if(m_lvSelChangeHandler)
-                {//由应用去判断是不是执行comboview的OnSelChanged();
-                    EventLVSelChanged *pEvtLVSelChanged = sobj_cast<EventLVSelChanged>(&evt);
-                    m_bKeepDropList = m_lvSelChangeHandler->onLVSelChanged(pEvtLVSelChanged);
-                    if(pEvtLVSelChanged->bCancel) return TRUE;
-                }
                 OnSelChanged();
                 return TRUE;
             }
-            if(!m_bKeepDropList && evt.GetID() == EventCmd::EventID)
+            if(evt.GetID() == EventCmd::EventID)
             {
                 CloseUp();
                 return TRUE;
@@ -133,11 +126,6 @@ namespace SOUI
         m_pListBox->SetSel(iSel);
         OnSelChanged();
         return TRUE;
-    }
-
-    void SComboView::SetCVSelChangedHandler(ICVSelChangedHandler *pHandler)
-    {
-        m_lvSelChangeHandler = pHandler;
     }
 
 }
