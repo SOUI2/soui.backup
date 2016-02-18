@@ -13,7 +13,7 @@
   </skin>
 
   <style>
-    <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
+    <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="0x25" cursor="hand" margin-x="0"/>
     <class name="cls_border"  margin-x="2" margin-y="2" ncSkin="_skin.sys.border"/>
   </style>
 

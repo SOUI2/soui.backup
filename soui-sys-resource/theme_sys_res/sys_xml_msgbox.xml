@@ -1,6 +1,6 @@
 ﻿<SOUI title="mesagebox" width="200" height="100" appwin="0" frameSize="40,40,10,60" minSize="300,132" resize="0" translucent="1" trCtx="messagebox">
   <style>
-    <class name="normalbtn" skin="_skin.sys.btn.normal" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
+    <class name="normalbtn" skin="_skin.sys.btn.normal" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="0x25" cursor="hand" margin-x="0"/>
   </style>
   <buttonText>
     <ok>确定</ok>
