@@ -36,7 +36,8 @@ namespace SOUI
         
     protected:
         bool OnItemClick(EventArgs *pEvt);
-        
+        bool OnItemDblClick(EventArgs *pEvt);
+
     protected:
 		void OnPaint(IRenderTarget * pRT);
 		void OnSize(UINT nType, CSize size);
@@ -50,6 +51,7 @@ namespace SOUI
 
 		void OnKillFocus();
 		void OnSetFocus();
+		
 
 		SOUI_MSG_MAP_BEGIN()
 			MSG_WM_PAINT_EX(OnPaint)
@@ -65,6 +67,11 @@ namespace SOUI
  			MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
 		SOUI_MSG_MAP_END()
 	protected:
+        virtual UINT OnGetDlgCode();
+        virtual BOOL OnSetCursor(const CPoint &pt);
+        virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo);
+
+
 		virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
 		virtual int  GetScrollLineSize(BOOL bVertical);
 		virtual BOOL CreateChildren(pugi::xml_node xmlNode);
@@ -110,10 +117,10 @@ namespace SOUI
         HTREEITEM    m_hSelected;               /**< 当前选择项 */ 
         
 		int				m_nIndent;             /**< 缩进 */ 
-
+        BOOL            m_bWantTab;             /**< want tab */ 
 		SOUI_ATTRS_BEGIN()
 			ATTR_INT(L"indent", m_nIndent, TRUE)
+			ATTR_INT(L"wantTab", m_bWantTab,FALSE)
 		SOUI_ATTRS_END()
-
-	};
+    };
 }

@@ -406,6 +406,7 @@ namespace SOUI
 		, m_pHoverItem(NULL)
 		, m_hSelected(ITvAdapter::ITEM_NULL)
 		, m_pVisibleMap(new VISIBLEITEMSMAP)
+		, m_bWantTab(FALSE)
 	{
 		m_bFocusable = TRUE;
 		m_evtSet.addEvent(EVENTID(EventTVSelChanged));
@@ -802,6 +803,7 @@ namespace SOUI
                 {//创建一个新的列表项
                     ii.pItem = SItemPanel::Create(this,pugi::xml_node(),this);
                     ii.pItem->GetEventSet()->subscribeEvent(EventItemPanelClick::EventID,Subscriber(&STreeView::OnItemClick,this));
+                    ii.pItem->GetEventSet()->subscribeEvent(EventItemPanelDbclick::EventID,Subscriber(&STreeView::OnItemDblClick,this));
                 }else
                 {
                     ii.pItem = lstRecycle->RemoveHead();
@@ -1085,6 +1087,53 @@ namespace SOUI
             SetSel(hItem,TRUE);
         }
         return true;
+    }
+
+    bool STreeView::OnItemDblClick(EventArgs *pEvt)
+    {
+        SItemPanel *pItemPanel = sobj_cast<SItemPanel>(pEvt->sender);
+        SASSERT(pItemPanel);
+        HTREEITEM hItem = (HTREEITEM)pItemPanel->GetItemIndex();
+        if(m_adapter->HasChildren(hItem))
+        {
+            m_adapter->ExpandItem(hItem,ITvAdapter::TVC_TOGGLE);
+        }
+        return true;
+    }
+
+    UINT STreeView::OnGetDlgCode()
+    {
+        if(m_bWantTab) return SC_WANTALLKEYS;
+        else return SC_WANTARROWS|SC_WANTSYSKEY;
+    }
+
+    BOOL STreeView::OnSetCursor(const CPoint &pt)
+    {
+        BOOL bRet=FALSE;
+        if(m_itemCapture)
+        {
+            CRect rcItem=m_itemCapture->GetItemRect();
+            bRet=m_itemCapture->DoFrameEvent(WM_SETCURSOR,0,MAKELPARAM(pt.x-rcItem.left,pt.y-rcItem.top))!=0;
+        }
+        else if(m_pHoverItem)
+        {
+            CRect rcItem=m_pHoverItem->GetItemRect();
+            bRet=m_pHoverItem->DoFrameEvent(WM_SETCURSOR,0,MAKELPARAM(pt.x-rcItem.left,pt.y-rcItem.top))!=0;
+        }
+        if(!bRet)
+        {
+            bRet=__super::OnSetCursor(pt);
+        }
+        return bRet;
+
+    }
+
+
+    BOOL STreeView::OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo)
+    {
+        if(!m_pHoverItem)
+            return __super::OnUpdateToolTip(pt,tipInfo);
+        return m_pHoverItem->OnUpdateToolTip(pt,tipInfo);
     }
 
 }
