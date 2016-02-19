@@ -46,7 +46,9 @@ HEADERS += MainDlg.h \
 		   ../controls.extend/trayicon/SShellNotifyIcon.h \
 		   ../controls.extend/sflywnd.h \
 		   ../controls.extend/sfadeframe.h \
-		   ../controls.extend/sscrolltext.h
+		   ../controls.extend/sscrolltext.h \
+		   ../controls.extend/streebox.h \
+		   ../controls.extend/slistboxex.h
 		   
 SOURCES += MainDlg.cpp \
            BassMusic.cpp \
@@ -62,6 +64,8 @@ SOURCES += MainDlg.cpp \
  		   ../controls.extend/trayicon/SShellNotifyIcon.cpp \
 		   ../controls.extend/sflywnd.cpp \
 		   ../controls.extend/sfadeframe.cpp \
-		   ../controls.extend/sscrolltext.cpp
+		   ../controls.extend/sscrolltext.cpp \
+		   ../controls.extend/streebox.cpp \
+		   ../controls.extend/slistboxex.cpp
           
 RC_FILE += musicplayer.rc

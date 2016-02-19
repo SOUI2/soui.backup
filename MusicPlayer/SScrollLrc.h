@@ -7,6 +7,8 @@
 ****************************************************************************/
 #pragma once
 
+#include "../controls.extend/STreeBox.h"
+
 namespace SOUI
 {
 	typedef BOOL(__stdcall *pCallBackLrc)(void *pUser);// 回调函数原型

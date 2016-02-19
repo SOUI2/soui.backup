@@ -11,11 +11,6 @@ SComboBox * toSCombobox(SObject *pObj)
     return sobj_cast<SComboBox>(pObj);
 }
 
-SComboBoxEx * toSComboboxEx(SObject *pObj)
-{
-    return sobj_cast<SComboBoxEx>(pObj);
-}
-
 
 BOOL ExpLua_Ctrls(lua_State *L)
 {
@@ -43,17 +38,6 @@ BOOL ExpLua_Ctrls(lua_State *L)
         lua_tinker::class_def<SComboBox>(L,"SetItemData",&SComboBox::SetItemData);
         lua_tinker::def(L,"toCombobox",toSCombobox);
 
-
-        lua_tinker::class_add<SComboBoxEx>(L,"SComboBoxEx");
-        lua_tinker::class_inh<SComboBoxEx,SComboBase>(L);
-        lua_tinker::class_def<SComboBoxEx>(L,"InsertItem",&SComboBoxEx::InsertItem);
-        lua_tinker::class_def<SComboBoxEx>(L,"DeleteString",&SComboBoxEx::DeleteString);
-        lua_tinker::class_def<SComboBoxEx>(L,"ResetContent",&SComboBoxEx::ResetContent);
-        lua_tinker::class_def<SComboBoxEx>(L,"GetLBText",&SComboBoxEx::GetLBText);
-        lua_tinker::class_def<SComboBoxEx>(L,"GetListBox",&SComboBoxEx::GetListBox);
-        lua_tinker::class_def<SComboBoxEx>(L,"GetItemData",&SComboBoxEx::GetItemData);
-        lua_tinker::class_def<SComboBoxEx>(L,"SetItemData",&SComboBoxEx::SetItemData);
-        lua_tinker::def(L,"toComboboxEx",toSComboboxEx);
         
 		return TRUE;
 	}catch(...)
