@@ -619,7 +619,7 @@ namespace SOUI
             SetMsgHandled(FALSE);
             return;
         }
-SASSERT(TRUE);
+
         if(m_hSelected != ITvAdapter::ITEM_NULL)
         {
             SItemPanel *pItem = GetItemPanel(m_hSelected);
@@ -631,7 +631,7 @@ SASSERT(TRUE);
         }
 
         SWindow *pOwner = GetOwner();
-        if (pOwner && (nChar == VK_ESCAPE))
+        if (pOwner && (nChar == VK_ESCAPE || nChar == VK_RETURN))
         {
             pOwner->SSendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
             return;

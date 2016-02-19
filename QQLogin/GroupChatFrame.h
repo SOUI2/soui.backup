@@ -4,7 +4,7 @@
 #pragma once
 #include "extend.ctrls\imre\SImRichedit.h"
 #include "helper\SMenuEx.h"
-#include "control\SListboxex.h"
+#include "../controls.extend/SListboxex.h"
 #include "control\SDropDown.h"
 #include <wtypes.h>
 #include <vector>

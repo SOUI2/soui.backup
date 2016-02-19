@@ -300,6 +300,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\controls.extend\SListboxex.cpp"
+				>
+			</File>
+			<File
 				RelativePath="extend.ctrls\SplitBar.cpp"
 				>
 			</File>
@@ -415,6 +419,10 @@
 			</File>
 			<File
 				RelativePath="extend.ctrls\imre\SImRichEdit.h"
+				>
+			</File>
+			<File
+				RelativePath="..\controls.extend\SListboxex.h"
 				>
 			</File>
 			<File

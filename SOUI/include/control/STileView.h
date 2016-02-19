@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/Swnd.h"
+#include "core/SItemPanel.h"
 #include "interface/Adapter-i.h"
 #include "helper/STileViewItemLocator.h"
 

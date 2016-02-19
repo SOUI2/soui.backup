@@ -533,7 +533,7 @@ void STileView::OnKeyDown(TCHAR nChar, UINT nRepCnt, UINT nFlags)
     
     int  nNewSelItem = -1;
     SWindow *pOwner = GetOwner();
-    if(pOwner && (nChar == VK_ESCAPE))
+    if(pOwner && (nChar == VK_ESCAPE || nChar == VK_RETURN))
     {
         pOwner->SSendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
         return;
@@ -554,10 +554,6 @@ void STileView::OnKeyDown(TCHAR nChar, UINT nRepCnt, UINT nFlags)
     else if(nChar == VK_DOWN && m_iSelItem < m_adapter->getCount() - 1)
     {
         nNewSelItem = m_tvItemLocator->GetDownItem(m_iSelItem);
-    }
-    else if(pOwner && nChar == VK_RETURN) //提供combobox响应回车选中
-    {
-        nNewSelItem = m_iSelItem;
     }
     else
     {

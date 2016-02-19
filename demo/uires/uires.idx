@@ -27,7 +27,6 @@
   <LAYOUT>
     <file name="maindlg" path="xml\dlg_main.xml"  />
     <file name="page_layout" path="xml\page_layout.xml"  />
-    <file name="page_treebox" path="xml\page_treebox.xml"  />
     <file name="page_skia" path="xml\page_skia.xml"  />
     <file name="page_misc" path="xml\page_misc.xml"  />
     <file name="page_ctrls" path="xml\page_ctrls.xml"  />

@@ -331,10 +331,6 @@
 				>
 			</File>
 			<File
-				RelativePath="src\control\SListboxex.cpp"
-				>
-			</File>
-			<File
 				RelativePath="src\control\SListCtrl.cpp"
 				>
 			</File>
@@ -456,10 +452,6 @@
 			</File>
 			<File
 				RelativePath="src\helper\stooltip.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\control\STreeBox.cpp"
 				>
 			</File>
 			<File
@@ -910,10 +902,6 @@
 			</File>
 			<File
 				RelativePath="include\control\stree.hpp"
-				>
-			</File>
-			<File
-				RelativePath="include\control\STreeBox.h"
 				>
 			</File>
 			<File

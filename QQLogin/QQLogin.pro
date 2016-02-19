@@ -54,7 +54,8 @@ HEADERS += GroupChatFrame.h \
            ../controls.extend/image3d/3dlib.h \
            ../controls.extend/image3d/3dmatrix.h \
            ../controls.extend/image3d/3dTransform.h \
-           ../controls.extend/FileHelper.h
+           ../controls.extend/FileHelper.h \
+           ../controls.extend/slistboxex.h
 
 SOURCES += GroupChatFrame.cpp \
            MainDlg.cpp \
@@ -80,5 +81,7 @@ SOURCES += GroupChatFrame.cpp \
            ../controls.extend/STurn3DView.cpp \
            ../controls.extend/image3d/3dlib.cpp \
            ../controls.extend/image3d/3dmatrix.cpp \
-           ../controls.extend/image3d/3dtransform.cpp
+           ../controls.extend/image3d/3dtransform.cpp \
+           ../controls.extend/slistboxex.cpp
+
 RC_FILE += qqlogin.rc

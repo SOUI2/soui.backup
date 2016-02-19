@@ -526,7 +526,7 @@ namespace SOUI
         
         int  nNewSelItem = -1;
         SWindow *pOwner = GetOwner();
-        if (pOwner && (nChar == VK_ESCAPE))
+        if (pOwner && (nChar == VK_ESCAPE || nChar == VK_RETURN))
         {
             pOwner->SSendMessage(WM_KEYDOWN, nChar, MAKELONG(nFlags, nRepCnt));
             return;
@@ -536,8 +536,6 @@ namespace SOUI
             nNewSelItem = m_iSelItem+1;
         else if (nChar == VK_UP && m_iSelItem > 0)
             nNewSelItem = m_iSelItem-1;
-        else if (pOwner && nChar == VK_RETURN)//提供combobox响应回车选中
-            nNewSelItem = m_iSelItem;
         else
         {
             switch(nChar)
