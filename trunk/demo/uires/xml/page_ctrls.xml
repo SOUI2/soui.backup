@@ -224,56 +224,6 @@
         </items>
       </listbox>
     </page>
-    <page title="comboboxex">
-      <comboboxex pos="10,10,250,40" textOffset="50"  name="cbx_test2" dropDown="0" dropHeight="250" class="cls_edit" dotted="0" curSel="3" id_text="1" id_icon="2">
-        <liststyle  class="cls_edit" colorBkgnd="#FFFFFF" itemHeight="50" itemSkin="skin_tab_left"   >
-          <template  >
-            <text id="1" pos="5,2" colorText="#ff0000"/>
-            <img id="2" skin="skin_page_icons" msgTransparent="0" tip="this is an img control"/>
-            <button id="3" pos="5,20,100,43" tip="delete cur item">delete</button>
-            <link id="4" maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
-          </template>
-        </liststyle>
-        <editstyle colorText="#000000" align="left" x-margin="0" y-margin="0"/>
-        <items>
-          <item text="combobox.item1" icon="1" data="100"/>
-          <item text="combobox.item2" icon="2" data="100"/>
-          <item text="combobox.item3" icon="3" data="103"/>
-          <item text="combobox.item4" icon="4" data="100"/>
-          <item text="combobox.item5" icon="5" data="105"/>
-          <item text="combobox.item6" icon="6" data="100"/>
-        </items>
-      </comboboxex>
-      <button pos="[10,{0,@150,@25" on_command="on_btn_select_cbx">setcursel(-1)</button>
-      <listboxex name="lbe_test" pos="10,50,250,-10" class="cls_edit" itemSkin="skin_tab_left" itemHeight="50">
-        <items>
-          <item>
-            <text pos="5,2" colorText="#ff0000">text item text item 1</text>
-            <img skin="skin_page_icons" iconIndex="0" msgTransparent="0" tip="this is an img control"/>
-            <button pos="5,20,100,43">item 1</button>
-            <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
-          </item>
-          <item>
-            <text pos="5,2" colorText="#ff0000" >中文字体显示 2</text>
-            <img skin="skin_page_icons" iconIndex="1" msgTransparent="0" tip="this is an img control"/>
-            <button pos="5,20,100,43">item 2</button>
-            <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
-          </item>
-          <item>
-            <text pos="5,2" colorText="#ff0000">text item text item 3</text>
-            <img skin="skin_page_icons" iconIndex="2" msgTransparent="0" tip="this is an img control"/>
-            <button pos="5,20,100,43">item 3</button>
-            <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
-          </item>
-          <item>
-            <text pos="5,2" colorText="#ff0000">text item text item 4</text>
-            <img skin="skin_page_icons" iconIndex="3" msgTransparent="0" tip="this is an img control"/>
-            <button pos="5,20,100,43">item 4</button>
-            <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
-          </item>
-        </items>        
-      </listboxex>
-    </page>
     <page title="treectrl">
       <include src="layout:treectrl"/>
     </page>

@@ -47,7 +47,6 @@ HEADERS += include/SApp.h \
            include/control/SHeaderCtrl.h \
            include/control/SHotKeyCtrl.h \
            include/control/SListbox.h \
-           include/control/SListboxex.h \
            include/control/SListCtrl.h \
            include/control/SMessageBox.h \
            include/control/SouiCtrls.h \
@@ -59,7 +58,6 @@ HEADERS += include/SApp.h \
            include/control/SSplitWnd.h \
            include/control/STabCtrl.h \
            include/control/stree.hpp \
-           include/control/STreeBox.h \
            include/control/STreeCtrl.h \
            include/control/SListView.h \
            include/control/SMcListView.h \
@@ -158,7 +156,6 @@ SOURCES += src/SApp.cpp \
            src/control/SHeaderCtrl.cpp \
            src/control/SHotKeyCtrl.cpp \
            src/control/SListbox.cpp \
-           src/control/SListboxex.cpp \
            src/control/SListCtrl.cpp \
            src/control/SMessageBox.cpp \
            src/control/SRealWnd.cpp \
@@ -167,7 +164,6 @@ SOURCES += src/SApp.cpp \
            src/control/SSliderBar.cpp \
            src/control/SSplitWnd.cpp \
            src/control/STabCtrl.cpp \
-           src/control/STreeBox.cpp \
            src/control/STreeCtrl.cpp \
            src/control/SListView.cpp \
            src/control/SMcListView.cpp \

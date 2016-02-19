@@ -111,12 +111,7 @@ protected:
     //演示如何使用subscribeEvent来不使用事件映射表实现事件响应
     bool OnListHeaderClick(EventArgs *pEvt);
 
-    //演示如何响应如listboxex,treeboxex中的item中包含控件的事件。
-    void OnListBoxExEvent(EventArgs *pEvt);
-    void OnTreeBoxEvent(EventArgs *pEvt);
-    
-    void OnTreeBoxQueryItemHeight(EventArgs * pEvt);
-    
+        
     void OnChromeTabNew(EventArgs *pEvt);
 
     void OnTabPageRadioSwitch(EventArgs *pEvt);
@@ -156,9 +151,6 @@ protected:
         EVENT_NAME_COMMAND(L"btn_richedit_save",OnBtnRtfSave)
         EVENT_NAME_COMMAND(L"btn_richedit_open",OnBtnRtfOpen)
 		EVENT_NAME_COMMAND(L"btn_lrc",OnBtnLRC)
-        EVENT_NAME_HANDLER(L"lbe_test",EVT_OFPANEL,OnListBoxExEvent)//响应EVT_OFPANEL事件
-        EVENT_NAME_HANDLER(L"tb_test",EVT_OFPANEL,OnTreeBoxEvent)//响应EVT_OFPANEL事件
-        EVENT_NAME_HANDLER(L"tb_test",EVT_TB_QUERYITEMHEIGHT,OnTreeBoxQueryItemHeight)//响应动态查询高度事件
         EVENT_NAME_HANDLER(L"chromeTab",EVT_CHROMETAB_NEW,OnChromeTabNew)
         EVENT_NAME_COMMAND(L"btn_filewnd",OnBtnFileWnd)
         EVENT_NAME_HANDLER(L"edit_url",EVT_RE_NOTIFY,OnUrlReNotify)

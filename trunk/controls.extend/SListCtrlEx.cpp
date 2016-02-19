@@ -5,10 +5,10 @@
 //     Version: 2015.2.5 - 1.0 - Create
 //////////////////////////////////////////////////////////////////////////
 
-#pragma  once
 #include "stdafx.h"
 #include "SlistCtrlex.h"
 #include "helper/mybuffer.h"
+#include "SListboxex.h"
 
 #pragma warning(disable:4018)
 #pragma warning(disable:4267)
