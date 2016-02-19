@@ -753,6 +753,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\soui-version.h"
+				>
+			</File>
+			<File
 				RelativePath="include\control\SouiCtrls.h"
 				>
 			</File>

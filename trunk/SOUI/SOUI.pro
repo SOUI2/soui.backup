@@ -35,6 +35,7 @@ INCLUDEPATH += . \
 
 # Input
 HEADERS += include/SApp.h \
+		   include/soui-version.h \
            include/activex/SBStr.h \
            include/control/SActiveX.h \
            include/control/SCalendar.h \
