@@ -21,7 +21,8 @@
 #include "../controls.extend/SScrollText.h"
 #include "../controls.extend/SVscrollbar.h"
 #include "../controls.extend/SFadeFrame.h"
-
+#include "../controls.extend/slistboxex.h"
+#include "../controls.extend/streebox.h"
 
 #include "SScrollLrc.h"
 #include <bass.h>
