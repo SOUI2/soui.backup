@@ -263,7 +263,9 @@ namespace SOUI
 	class STreeAdapterBase: public TObjRefImpl<TvAdatperImpl<ITvAdapter>>
 	{
 	public:
-		STreeAdapterBase() {}
+		STreeAdapterBase() {
+			memset(m_rootUserData, 0, sizeof(m_rootUserData));
+		}
 		~STreeAdapterBase(){}
 		
 		struct ItemInfo
@@ -360,6 +362,7 @@ namespace SOUI
 
         virtual BOOL IsItemExpanded(HTREEITEM hItem) const
         {
+			if (hItem == ITEM_ROOT) return TRUE;//虚拟根节点自动展开
             return (BOOL)GetItemDataByIndex(hItem,DATA_INDEX_ITEM_EXPANDED);
         }
         
