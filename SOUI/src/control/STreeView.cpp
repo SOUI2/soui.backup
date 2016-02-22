@@ -170,7 +170,6 @@ namespace SOUI
     protected:
         BOOL IsItemExpanded(HTREEITEM hItem) const
         {
-			if (hItem == ITvAdapter::ITEM_ROOT) return TRUE;//虚拟根节点自动展开
             return (BOOL)m_adapter->IsItemExpanded(hItem);
         }
 
