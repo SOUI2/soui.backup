@@ -1,6 +1,20 @@
+/**
+* Copyright (C) 2014-2050 
+* All rights reserved.
+* 
+* @file       soui-version.h
+* @brief      
+* @version    v1.0      
+* @author     SOUI group   
+* @date       2016/02/23
+* 
+* Describe    SOUI∞Ê±æ∂®“Â
+*/
+
+
 #pragma once
 
-#define SOUI_VER1   1
-#define SOUI_VER2   9
-#define SOUI_VER3   1
+#define SOUI_VER1   2
+#define SOUI_VER2   0
+#define SOUI_VER3   0
 #define SOUI_VER4   1

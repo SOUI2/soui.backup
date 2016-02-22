@@ -22,11 +22,11 @@ SUBDIRS += SoTool
 
 soui.depends += utilities soui-sys-resource
 
-360.depends += utilities soui
-360Preview.depends += utilities soui
-demo.depends += utilities soui SoSmiley
-qqlogin.depends += utilities soui
-souispy.depends += utilities soui
-MusicPlayer.depends += utilities soui
-PcManager.depends += utilities soui
-SoTool.depends += utilities soui
+360.depends += soui
+360Preview.depends += soui
+demo.depends += soui SoSmiley
+qqlogin.depends += soui
+souispy.depends += soui
+MusicPlayer.depends += soui
+PcManager.depends += soui
+SoTool.depends += soui
