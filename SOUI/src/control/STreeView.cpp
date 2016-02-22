@@ -564,9 +564,25 @@ namespace SOUI
 	    }
 	    //¹ö¶¯ÊÓÍ¼
         int nPos = m_tvItemLocator->Item2Position(hItem);
-        OnScroll(TRUE,SB_THUMBPOSITION,nPos);
+        int nHeight = m_tvItemLocator->GetItemHeight(hItem);
+        if(nPos + nHeight <= m_siVer.nPos)// && nPos < m_siVer.nPos + m_siVer.nPage) 
+        {
+            OnScroll(TRUE,SB_THUMBPOSITION,nPos);
+        }
+        else if(nPos > m_siVer.nPos + (int)m_siVer.nPage)
+        {
+            OnScroll(TRUE,SB_THUMBPOSITION,nPos + nHeight - m_siVer.nPage);
+        }
         int nIndent = m_tvItemLocator->GetItemIndent(hItem);
-        OnScroll(FALSE,SB_THUMBPOSITION,nIndent);
+        int nWidth = m_tvItemLocator->GetItemWidth(hItem);
+        
+        if(nIndent + nWidth <= m_siVer.nPos)
+        {
+            OnScroll(FALSE,SB_THUMBPOSITION,nIndent);        
+        }else if(nIndent < m_siHoz.nPos + (int)m_siHoz.nPage)
+        {
+            OnScroll(FALSE,SB_THUMBPOSITION,nIndent + nWidth - m_siHoz.nPage);
+        }
 	}
 
     void STreeView::SetSel(HTREEITEM hItem,BOOL bNotify/*=FALSE*/)
