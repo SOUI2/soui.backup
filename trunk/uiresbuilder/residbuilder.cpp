@@ -666,7 +666,7 @@ int _tmain(int argc, _TCHAR* argv[])
         strOut += L"\r\n";
         strOut += strColor;
 
-        strOut += L"\r\n\t};\r\n\r\n\t extern __declspec(selectany) const _R R;\r\n";
+        strOut += L"\r\n\t};\r\n\r\n\t const _R R;\r\n";
 
         strOut += L"}\r\n";
 
