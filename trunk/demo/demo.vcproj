@@ -44,7 +44,7 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utilitiesd.lib souid.lib mhookd.lib"
+				AdditionalDependencies="utilitiesd.lib souid.lib mhookd.lib smileyd.lib"
 				AdditionalLibraryDirectories="..\bin"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				GenerateDebugInformation="true"
@@ -106,7 +106,7 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utilities.lib soui.lib mhook.lib"
+				AdditionalDependencies="utilities.lib soui.lib mhook.lib smiley.lib"
 				AdditionalLibraryDirectories="..\bin"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				EnableCOMDATFolding="2"
@@ -159,8 +159,6 @@
 				RelativePath="..\controls.extend\gif\SSkinGif.cpp" />
 			<File
 				RelativePath="..\controls.extend\SSkinImgFrame2.cpp" />
-			<File
-				RelativePath="..\controls.extend\smiley\SSmileyCtrl.cpp" />
 			<File
 				RelativePath="..\controls.extend\SWkeWebkit.cpp" />
 			<File

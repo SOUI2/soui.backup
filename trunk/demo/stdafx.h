@@ -28,5 +28,5 @@
 #include "../controls.extend/SChatEdit.h"
 
 
-
+using namespace SOUI;
 
