@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="richedit"
+	Name="riched20"
 	ProjectGUID="{CD0F7406-BF47-4BC6-B7E3-E64F42FB6A46}"
 	RootNamespace="richedit"
 	Keyword="Win32Proj"
