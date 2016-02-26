@@ -1,9 +1,9 @@
-// SSmileyCtrl.cpp : Implementation of CSoSmileyCtrl
-#include "stdafx.h"
-#include "SSmileyCtrl.h"
+// SSmileyCtrl.cpp : Implementation of SSmileyCtrl
+#include <Windows.h>
+#include "../controls.extend/smiley/SSmileyCtrl.h"
+
 #include <TOM.h>
 #include <richedit.h>
-#include <richole.h>
 
 #include <atlbase.h>
 #include <atlcom.h>
@@ -359,6 +359,7 @@ HRESULT SSmileyCtrl::Load( IStorage* pStorage )
 
 STDMETHODIMP SSmileyCtrl::GetMiscStatus(DWORD dwAspect, DWORD *pdwStatus)
 {
+    (dwAspect);
     *pdwStatus = OLEMISC_RECOMPOSEONRESIZE |
         OLEMISC_CANTLINKINSIDE |
         OLEMISC_INSIDEOUT |

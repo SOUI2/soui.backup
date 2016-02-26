@@ -20,12 +20,13 @@ SUBDIRS += MusicPlayer
 SUBDIRS += PcManager
 SUBDIRS += SoTool
 SUBDIRS += mhook
+SUBDIRS += smiley
 
 soui.depends += utilities soui-sys-resource
 
 360.depends += soui
 360Preview.depends += soui
-demo.depends += soui mhook
+demo.depends += soui mhook smiley
 qqlogin.depends += soui
 souispy.depends += soui
 MusicPlayer.depends += soui

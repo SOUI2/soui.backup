@@ -19,10 +19,10 @@ QMAKE_CXXFLAGS -= /MP
 
 
 CONFIG(debug,debug|release){
-	LIBS += utilitiesd.lib souid.lib mhookd.lib
+	LIBS += utilitiesd.lib souid.lib mhookd.lib smileyd.lib
 }
 else{
-	LIBS += utilities.lib soui.lib mhook.lib
+	LIBS += utilities.lib soui.lib mhook.lib smiley.lib
 }
 
 
@@ -102,7 +102,6 @@ SOURCES += demo.cpp \
            SmileyCreateHook.cpp \
 		   uianimation/uianimationwnd.cpp \
 		   appledock/sdesktopdock.cpp \
-		   ../controls.extend/smiley/SSmileyCtrl.cpp
 			
 RC_FILE += demo.rc
 

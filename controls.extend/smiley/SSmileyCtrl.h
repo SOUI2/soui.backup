@@ -3,8 +3,8 @@
 
 // SoSmileyCtrl.h : Declaration of the CSoSmileyCtrl
 #pragma once
-
-interface IRichEditOle;
+#include <Richedit.h>
+#include <RichOle.h>
 
 //ITimerHandler
 interface  __declspec( uuid("8A0E5678-792F-439b-AEDD-E8D4AB602041") ) ITimerHandler : IUnknown{
