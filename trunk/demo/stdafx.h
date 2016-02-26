@@ -23,8 +23,10 @@
 #include "../controls.extend/SIPAddressCtrl.h"
 #include "../controls.extend/SImageMaskWnd.h"
 #include "../controls.extend/SRatingBar.h"
+#include "../controls.extend/SChromeTabCtrl.h"
+#include "../controls.extend/smiley/SSmileyCtrl.h"
+#include "../controls.extend/SChatEdit.h"
 
-using namespace SOUI;
 
 
 

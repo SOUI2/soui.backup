@@ -2,8 +2,6 @@
 #include "SChatEdit.h"
 #include "reole/RichEditOle.h"
 
-const GUID __declspec(selectany) CLSID_CSoSmileyCtrl =
-{0xd29e0bde,0xcfda,0x4b93,{0x92,0x9a,0x87,0x7a,0xb4,0x55,0x7b,0xd8}};
 
 #ifndef LY_PER_INCH
 #define LY_PER_INCH 1440
@@ -104,8 +102,8 @@ namespace SOUI{
         SStringW strText = xmlText.value();
         if(xmlText.name() == KLabelSmiley)
         {//insert smiley
-            SComPtr<ISoSmileyCtrl> pSmiley;
-            HRESULT hr=::CoCreateInstance(CLSID_CSoSmileyCtrl,NULL,CLSCTX_INPROC,__uuidof(ISoSmileyCtrl),(LPVOID*)&pSmiley); 
+            SComPtr<ISmileyCtrl> pSmiley;
+            HRESULT hr=::CoCreateInstance(CLSID_SSmileyCtrl,NULL,CLSCTX_INPROC,__uuidof(ISmileyCtrl),(LPVOID*)&pSmiley); 
             if(FAILED(hr)) return 0;
             
             SComPtr<IRichEditOle> ole;
@@ -131,7 +129,7 @@ namespace SOUI{
                     {
                         pSmiley->SetSource(pSource);
                         SSendMessage(EM_SETSEL,iCaret,iCaret);
-                        pSmiley->Insert2Richedit((DWORD_PTR)(void*)ole);
+                        pSmiley->Insert2Richedit(ole);
                     }
                 }
             }
@@ -266,10 +264,10 @@ namespace SOUI{
                 HRESULT hr = ole->GetObject( REO_IOB_USE_CP , &reobj, REO_GETOBJ_POLEOBJ);
                 if(SUCCEEDED(hr) && reobj.poleobj)
                 {
-                    if(reobj.clsid == CLSID_CSoSmileyCtrl)
+                    if(reobj.clsid == CLSID_SSmileyCtrl)
                     {
-                        SComPtr<ISoSmileyCtrl> smiley;
-                        hr = reobj.poleobj->QueryInterface(__uuidof(ISoSmileyCtrl), (void**)&smiley);
+                        SComPtr<ISmileyCtrl> smiley;
+                        hr = reobj.poleobj->QueryInterface(__uuidof(ISmileyCtrl), (void**)&smiley);
                         if(SUCCEEDED(hr))
                         {
                             SComPtr<ISmileySource> source;

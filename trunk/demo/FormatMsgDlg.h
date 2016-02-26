@@ -1,19 +1,22 @@
 #pragma once
 
-class CFormatMsgDlg : public SHostDialog
+namespace SOUI
 {
-public:
-    CFormatMsgDlg(void);
-    ~CFormatMsgDlg(void);
-    
-    void OnOK();
-    
-    SStringT m_strMsg;  //消息XML
-    int      m_nRepeat; //重复次数
-    
-    EVENT_MAP_BEGIN()
-        EVENT_ID_COMMAND(IDOK,OnOK)
-    EVENT_MAP_END()
-        
-};
+    class CFormatMsgDlg : public SHostDialog
+    {
+    public:
+        CFormatMsgDlg(void);
+        ~CFormatMsgDlg(void);
 
+        void OnOK();
+
+        SStringT m_strMsg;  //消息XML
+        int      m_nRepeat; //重复次数
+
+        EVENT_MAP_BEGIN()
+            EVENT_ID_COMMAND(IDOK,OnOK)
+            EVENT_MAP_END()
+
+    };
+
+}

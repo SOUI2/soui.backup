@@ -6,6 +6,7 @@
 by ¶àµã
 @20150510 qq:4361031
 */
+using namespace SOUI;
 
 class SDesktopDock : public SWindow
 {
