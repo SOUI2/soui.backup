@@ -8,8 +8,10 @@
 
 #include <richole.h>
 
-#include "../sosmiley/_sosmiley.h"
+#include "../smiley/ssmileyctrl.h"
 #include <control/srichedit.h>
+
+using namespace SOUI;
 
 #define ID_INVALID  -1
 class ImageID
@@ -236,8 +238,10 @@ public://ISmileyHost
     virtual HRESULT STDMETHODCALLTYPE GetHostRect( 
         /* [out] */ LPRECT prcHost);
 
-    virtual HRESULT STDMETHODCALLTYPE InvalidateRect( 
-        /* [in] */ LPCRECT pRect);
+//     virtual HRESULT STDMETHODCALLTYPE InvalidateRect( LPCRECT pRect);
+
+//     virtual HRESULT STDMETHODCALLTYPE InvalidateRect( 
+//         /* [in] */ LPCRECT pRect);
 
     virtual HRESULT STDMETHODCALLTYPE CreateSource(
         /* [in,out] */ ISmileySource ** ppSource);
@@ -252,6 +256,7 @@ public://ISmileyHost
     virtual HRESULT STDMETHODCALLTYPE  OnTimer(int nInterval);
 
     virtual HRESULT STDMETHODCALLTYPE  ClearTimer();
+    virtual HRESULT STDMETHODCALLTYPE InvalidateRect(LPCRECT pRect);
 
 public://ITimelineHandler
     virtual void OnNextFrame(){OnTimer(10);}

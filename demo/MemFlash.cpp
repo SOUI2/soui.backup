@@ -7,6 +7,8 @@
 #define HOMEHEADER_SIZE (sizeof(HOMEHEADER)-1)
 #define NAME_SEP '/'
 
+using namespace SOUI;
+
 class FileID
 {
 public:

@@ -12,7 +12,8 @@
 */
 
 #pragma once
-#include "../controls.extend/SChromeTabCtrl.h"
+
+using namespace SOUI;
 
 /**
 * @class      CMainDlg

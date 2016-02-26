@@ -237,7 +237,7 @@ HRESULT CSmileySource::Draw( /* [in] */ HDC hdc, /* [in] */ LPCRECT pRect , int 
     return S_OK;
 }
 
-SStringW CSmileySource::ImageID2Path(UINT nID)
+SOUI::SStringW CSmileySource::ImageID2Path(UINT nID)
 {
     return L"";
 }
@@ -725,6 +725,7 @@ bool CSmileyHost::OnHostUpdate(SOUI::EventArgs *pEvt)
     }
     return false; 
 }
+
 
 
 //////////////////////////////////////////////////////////////////////////

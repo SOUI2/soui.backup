@@ -10,6 +10,7 @@ INCLUDEPATH += . \
 			   ../soui/include \
 			   ../third-part/wke/include \
 			   ../components \
+			   ../mhook/mhook-lib
 			   
 dir = ..
 include($$dir/common.pri)
@@ -18,10 +19,10 @@ QMAKE_CXXFLAGS -= /MP
 
 
 CONFIG(debug,debug|release){
-	LIBS += utilitiesd.lib souid.lib
+	LIBS += utilitiesd.lib souid.lib mhookd.lib
 }
 else{
-	LIBS += utilities.lib soui.lib
+	LIBS += utilities.lib soui.lib mhook.lib
 }
 
 
@@ -59,9 +60,12 @@ HEADERS += MainDlg.h \
            httpsvr/httpserver.h \
            smatrixwindow.h \
            memflash.h \
+           SmileyCreateHook.h \
 		   uianimation/uianimation.h \
 		   uianimation/uianimationwnd.h\
-		   appledock/sdesktopdock.h
+		   appledock/sdesktopdock.h \
+		   ../controls.extend/smiley/SSmileyCtrl.h
+		   
 		   
 SOURCES += demo.cpp \
            MainDlg.cpp \
@@ -95,8 +99,10 @@ SOURCES += demo.cpp \
            httpsvr/httpserver.cpp \
            memflash.cpp	\
            smatrixwindow.cpp \
+           SmileyCreateHook.cpp \
 		   uianimation/uianimationwnd.cpp \
-		   appledock/sdesktopdock.cpp
+		   appledock/sdesktopdock.cpp \
+		   ../controls.extend/smiley/SSmileyCtrl.cpp
 			
 RC_FILE += demo.rc
 
