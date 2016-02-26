@@ -163,7 +163,6 @@ private:
     CComPtr<ISmileySource>  m_pSmileySource;
     int                     m_iFrameIndex;
     DWORD                   m_dwID;
-    RECT                    m_rcPos;
     
     DWORD                   m_dwDrawFlag;
 };
