@@ -487,39 +487,61 @@ int _tmain(int argc, _TCHAR* argv[])
 	vector<IDMAPRECORD> vecIdMapRecord;
 	map<string,string>  mapFiles;
 	
+	wstring strFiles = L"\tclass _UIRES{\r\n\t\tpublic:\r\n";
+	
 	//load xml description of resource to vector
     TiXmlElement *pXmlType=xmlResource->FirstChildElement();
 	while(pXmlType)
 	{
-        WCHAR szType[100];
+        WCHAR szType[100],szType2[100];
         const char *pszType=pXmlType->Value();
         MultiByteToWideChar(CP_UTF8,0,pszType,-1,szType,100);
-
+        MakeNameValid(szType,szType2);
+        
+        wstring strClassName = wstring(L"_")+szType2;
+        wstring strFileType = wstring(L"\t\tclass ") + strClassName +L"{\r\n\t\t\tpublic:\r\n";
+        wstring strFileTypeConstructor = wstring(L"\t\t\t") + strClassName + L"(){\r\n";
+        wstring strFileTypeMember;
+        
         TiXmlElement *pXmlFile=pXmlType->FirstChildElement();
         while(pXmlFile)
             {
             IDMAPRECORD rec={0};
             wcscpy(rec.szType,szType);
             const char *pszName=pXmlFile->Attribute("name");
-            if(pszName) MultiByteToWideChar(CP_UTF8,0,pszName,-1,rec.szName,200);
-            const char *pszPath=pXmlFile->Attribute("path");
-            string strPath;
-            if(pszPath)
+            if(pszName)
+            {
+                wchar_t wszName[200];
+                MultiByteToWideChar(CP_UTF8,0,pszName,-1,rec.szName,200);
+                MakeNameValid(rec.szName,wszName);
+                
+                const char *pszPath=pXmlFile->Attribute("path");
+                string strPath;
+                if(pszPath)
                 {
-                if(!strSkinPath.empty()){ strPath=strSkinPath+"\\"+pszPath;}
-                else strPath=pszPath;
-                MultiByteToWideChar(CP_UTF8,0,strPath.c_str(),strPath.length(),rec.szPath,MAX_PATH);
+                    if(!strSkinPath.empty()){ strPath=strSkinPath+"\\"+pszPath;}
+                    else strPath=pszPath;
+                    MultiByteToWideChar(CP_UTF8,0,strPath.c_str(),strPath.length(),rec.szPath,MAX_PATH);
                 }
 
-            vecIdMapRecord.push_back(rec);
-            string strKey = string(pszType)+":"+pszName;
-            mapFiles[strKey] = strPath;
-            
+                vecIdMapRecord.push_back(rec);
+                string strKey = string(pszType)+":"+pszName;
+                mapFiles[strKey] = strPath;
+
+                strFileTypeConstructor += wstring(L"\t\t\t\t") + wszName + L" = _T(\"" + szType2 + L":" + wszName + L"\");\r\n";
+                strFileTypeMember += wstring(L"\t\t\tconst TCHAR * ") + wszName + L";\r\n";
+            }
             pXmlFile=pXmlFile->NextSiblingElement();
 		}
+		
+		strFileTypeConstructor += L"\t\t\t}\r\n";
+		strFileType += strFileTypeConstructor + strFileTypeMember + L"\t\t}" + szType2 + L";\r\n";
+		strFiles += strFileType;
 		pXmlType=pXmlType->NextSiblingElement();
 	}
-
+    
+    strFiles += L"\t};\r\n";
+    
 	if(strRes.length())
 	{//编译资源.rc2文件
 		//build output string by wide char
@@ -649,6 +671,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		wstring strOut = RB_HEADER_ID;
 		strOut += L"#pragma once\r\n#include <res.mgr/snamedvalue.h>\r\nnamespace SOUI\r\n{\r\n";
+		strOut += strFiles;
 				
 		if(bBuildIDMap)
 		    strOut += strNamedID;
@@ -666,7 +689,9 @@ int _tmain(int argc, _TCHAR* argv[])
         strOut += L"\r\n";
         strOut += strColor;
 
-        strOut += L"\r\n\t};\r\n\r\n\t const _R R;\r\n";
+        strOut += L"\r\n\t};\r\n\r\n";
+        strOut += L"\t const _R R;\r\n";
+        strOut += L"\t const _UIRES UIRES;\r\n";
 
         strOut += L"}\r\n";
 
