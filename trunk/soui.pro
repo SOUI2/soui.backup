@@ -10,13 +10,11 @@ SUBDIRS += soui
 SUBDIRS += components
 
 SUBDIRS += soui-sys-resource
-SUBDIRS += SoSmiley
 SUBDIRS += demo
 SUBDIRS += qqlogin
 SUBDIRS += 360
 SUBDIRS += 360Preview
 SUBDIRS += souispy
-SUBDIRS += MusicPlayer
 SUBDIRS += PcManager
 SUBDIRS += SoTool
 SUBDIRS += mhook

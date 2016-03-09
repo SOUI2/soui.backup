@@ -1,5 +1,6 @@
 ﻿<include>
-  <text pos="10,10">SOUI小工具 版本:%ver%</text>
+  <text pos="10,10">SOUI小工具 版本</text>
+  <text pos="[5,{0">@string/ver</text>
   <text pos="10,[5">版权所有：启程软件</text>
   <group pos="10,[10,-10,-10">
     关于SOUI

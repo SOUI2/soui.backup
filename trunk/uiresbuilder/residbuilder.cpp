@@ -267,6 +267,22 @@ wchar_t* szCppKey[] =
     L"while"
 };
 
+//需要转义的无效字符,以下符号都自动转换成"_"
+const wchar_t g_CharEscape[] =L".+-*/~\'\"^%#!@?;|{[]}=";
+void EscapeChar(wchar_t &c)
+{
+    const wchar_t *p = g_CharEscape;
+    while(*p)
+    {
+        if( *p == c)
+        {
+            c = L'_';
+            break;
+        }
+        p++;
+    }
+}
+
 int wcscmp2(const void * p1,const void* p2)
 {
     const wchar_t *psz1 = (const wchar_t *) p1;
@@ -278,21 +294,26 @@ void MakeNameValid(const wchar_t * pszName,wchar_t * pszOut)
 {
     const wchar_t * p1 = pszName;
     wchar_t * p2 = pszOut;
+    
+    //数字开头，前面加上name前缀
+    if(*p1 >= L'0' && *p1 <= L'9')
+    {
+        wcscpy(p2,L"name_");
+        p2+=5;
+    }
+    
+    //转义pszName中的不能用于name的字符
     while(*p1)
     {
-        if (*p1 == L'.')
-            *p2 = L'_';
-        else
-            *p2 = *p1;
+        *p2 = *p1;
+        EscapeChar(*p2);
         ++p1;
         ++p2;
     }
     
     *p2=0;
-    if(wcscmp(pszOut,L"switch")==0)
-    {
-        int a=0;
-    }
+    
+    //防止name是C++关键字
     void *pFind = bsearch(pszOut,szCppKey,ARRAYSIZE(szCppKey),sizeof(wchar_t*),wcscmp2);
     if(pFind)
     {
