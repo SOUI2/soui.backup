@@ -40,8 +40,8 @@ BOOL ExpLua_pugixml(lua_State *L)
         lua_tinker::class_def<xml_node>(L,"last_child",&xml_node::last_child);
         lua_tinker::class_def<xml_node>(L,"next_sibling",(xml_node (xml_node::*)()const)&xml_node::next_sibling);
         lua_tinker::class_def<xml_node>(L,"previous_sibling",(xml_node (xml_node::*)()const)&xml_node::previous_sibling);
-        lua_tinker::class_def<xml_node>(L,"next_siblingByName",(xml_node (xml_node::*)(const wchar_t *)const)&xml_node::next_sibling);
-        lua_tinker::class_def<xml_node>(L,"previous_siblingByName",(xml_node (xml_node::*)(const wchar_t *)const)&xml_node::previous_sibling);
+        lua_tinker::class_def<xml_node>(L,"next_siblingByName",(xml_node (xml_node::*)(const wchar_t *,bool)const)&xml_node::next_sibling);
+        lua_tinker::class_def<xml_node>(L,"previous_siblingByName",(xml_node (xml_node::*)(const wchar_t *,bool)const)&xml_node::previous_sibling);
         lua_tinker::class_def<xml_node>(L,"parent",&xml_node::parent);
         lua_tinker::class_def<xml_node>(L,"root",&xml_node::root);
         lua_tinker::class_def<xml_node>(L,"text",&xml_node::text);

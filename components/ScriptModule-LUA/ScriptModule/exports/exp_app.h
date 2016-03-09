@@ -8,7 +8,6 @@ BOOL ExpLua_App(lua_State *L)
 		lua_tinker::class_add<SApplication>(L,"SApplication");
 		lua_tinker::class_def<SApplication>(L,"AddResProvider",&SApplication::AddResProvider);
 		lua_tinker::class_def<SApplication>(L,"RemoveResProvider",&SApplication::RemoveResProvider);
-		lua_tinker::class_def<SApplication>(L,"Init",&SApplication::Init);
 		lua_tinker::class_def<SApplication>(L,"GetInstance",&SApplication::GetInstance);
 		lua_tinker::class_def<SApplication>(L,"CreateScriptModule",&SApplication::CreateScriptModule);
 		lua_tinker::class_def<SApplication>(L,"SetScriptModule",&SApplication::SetScriptFactory);

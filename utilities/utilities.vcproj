@@ -21,7 +21,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;.&quot;,&quot;include&quot;,&quot;..\config&quot;,..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
 				AssemblerListingLocation="..\obj\debug\utilities\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
@@ -81,7 +81,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;.&quot;,&quot;include&quot;,&quot;..\config&quot;,..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
 				AssemblerListingLocation="..\obj\release\utilities\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
@@ -161,7 +161,7 @@
 			<File
 				RelativePath="include\atl.mini\SComCli.h" />
 			<File
-				RelativePath="include\alt.mini\SComHelper.h" />
+				RelativePath="include\atl.mini\SComHelper.h" />
 			<File
 				RelativePath="include\atl.mini\atldef.h" />
 			<File
@@ -184,8 +184,6 @@
 				RelativePath="include\soui_mem_wrapper.h" />
 			<File
 				RelativePath="include\souicoll.h" />
-			<File
-				RelativePath="include\wtl.mini\souigdi.h" />
 			<File
 				RelativePath="include\wtl.mini\souimisc.h" />
 			<File

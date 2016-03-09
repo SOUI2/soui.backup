@@ -52,8 +52,15 @@
         <include src="layout:template_calendar"/>
       </calendar2>
     </page>
-    <page title="file resource">
-      <button name="btn_filewnd" pos="|0,|0,@150,@30" offset="-0.5,-0.5">从文件创建窗口</button>
+    <page title="create window">
+      <button name="btn_filewnd" pos="0,0,@150,@30">从文件创建窗口</button>
+      <button name="btn_createchildren" pos="|0,0,@150,@30">CreateChildren</button>
+      <window pos="0,[5,-0,-0">
+        <richedit name="edit_xml" pos="0,0,|0,-0" multilines="1" autovscroll="1" wordwrap="1"  margin-x="2" margin-y="2" cueText="输入待插入的XML字符串">
+          &lt;button pos="|0,|0,@150,@30" offset="-0.5,-0.5"&gt;new button&lt;/button&gt;
+        </richedit>
+        <window name="wnd_container" pos="|0,0,-0,-0" colorBkgnd="@color/gray"/>
+      </window>
     </page>
     <page title="apple dock">
       <deskdock pos="0,0,-0,-0" skin="skin_dock_bg"  skin1="skin_png_icon_1" skin2="skin_png_icon_2" skin3="skin_png_icon_3" skin4="skin_png_icon_4"
