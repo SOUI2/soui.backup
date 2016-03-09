@@ -128,6 +128,8 @@ protected:
     
     void OnMatrixWindowReNotify(EventArgs *pEvt);
 
+    void OnBtnCreateChildren();
+    
     //UI控件的事件及响应函数映射表
 	EVENT_MAP_BEGIN()
 		EVENT_ID_COMMAND(1, OnClose)
@@ -142,6 +144,7 @@ protected:
         EVENT_ID_RANGE_HANDLER(R.id.radio2_1,R.id.radio2_6,EventSwndStateChanged::EventID,OnTabPageRadioSwitch)    //10000-10005是XML中定义的radio2的ID
         EVENT_NAME_COMMAND(R.name.btn_menu,OnBtnMenu)
         EVENT_NAME_COMMAND(R.name.btn_webkit_go,OnBtnWebkitGo)
+        EVENT_ID_COMMAND(R.id.btn_createchildren,OnBtnCreateChildren)
         //-->
         EVENT_NAME_COMMAND(L"btn_webkit_back",OnBtnWebkitBackward)
         EVENT_NAME_COMMAND(L"btn_webkit_fore",OnBtnWebkitForeward)
