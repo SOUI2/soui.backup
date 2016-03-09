@@ -15,6 +15,9 @@
   <text pos="10,[5">SOUI Forum:</text>
   <link href="http://lumaba.cn/forum.php?mod=forumdisplay&fid=2" class="cls_btn_weblink">http://lumaba.cn/forum.php?mod=forumdisplay&fid=2</link>
 
+  <text pos="10,[5">SOUI 官网:</text>
+  <link href="http://www.ui520.cn" class="cls_btn_weblink">http://www.ui520.cn</link>
+
   <group pos="10,[5,-10,@100" align="left">
     支持SOUI，支持启程软件，欢迎捐助
     <text pos="10,8">户名：</text>

@@ -95,6 +95,7 @@ namespace SOUI
         {
             SIZE szBtn=m_pSkinBtn->GetSkinSize();
             m_pEdit=new SComboEdit(this);
+            SApplication::getSingleton().SetSwndDefAttr(m_pEdit);
 
             InsertChild(m_pEdit);
             pugi::xml_node xmlEditStyle=xmlNode.child(L"editstyle");

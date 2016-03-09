@@ -140,7 +140,7 @@ namespace SOUI{
         cfNew.dwMask = 0;
         if(xmlText.name() == KLabelColor)
         {
-            cfNew.crTextColor = SColorParser::ParseValue(xmlText.attribute(L"value").value());
+            cfNew.crTextColor = GETCOLOR(xmlText.attribute(L"value").value());
             if(cfNew.crTextColor!=CR_INVALID)
             {
                 cfNew.crTextColor &= 0x00ffffff;
@@ -171,7 +171,7 @@ namespace SOUI{
         {
             cfNew.dwMask |= CFM_LINK;
             cfNew.dwEffects |= CFE_LINK;
-            COLORREF cr = SColorParser::ParseValue(xmlText.attribute(L"color").value());
+            COLORREF cr = GETCOLOR(xmlText.attribute(L"color").value());
             if(cr!=CR_INVALID)
             {
                 cfNew.dwMask |= CFM_COLOR;

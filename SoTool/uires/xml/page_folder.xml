@@ -2,7 +2,7 @@
 <include>
   <window pos="0,0,-0,@30">
     <text pos="0,|0" offset="0,-0.5">源代码目录:</text>
-    <edit2 pos="[5,0,-5,-0" name="edit_dir" inset="5,0,5,0" cueText="输入或者拖动文件夹到此"/>
+    <edit2 pos="[5,0,-5,-0" name="edit_dir" id="1000" inset="5,0,5,0" cueText="输入或者拖动文件夹到此"/>
   </window>
   <window pos="0,[5,-0,@30">
     <text pos="0,|0" offset="0,-0.5">源文件类型:</text>

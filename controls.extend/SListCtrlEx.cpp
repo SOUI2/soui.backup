@@ -415,6 +415,7 @@ namespace SOUI
 
 		//创建矩形选择框
 		m_pWndRectangle=new SWindow();
+		SApplication::getSingleton().SetSwndDefAttr(m_pWndRectangle);
 		InsertChild(m_pWndRectangle,ICWND_FIRST);
 		m_pWndRectangle->SetID(IDC_LSTCEX_SELECT);
 		m_pWndRectangle->SetVisible(FALSE);

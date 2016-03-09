@@ -51,7 +51,7 @@ namespace SOUI
     void SRatingBar::SetValue(float fValue)
     {
         m_fValue = fValue;
-        if(m_fValue>m_nStars) m_fValue = m_nStars;
+        if(m_fValue>(float)m_nStars) m_fValue = (float)m_nStars;
         Invalidate();
     }
 
