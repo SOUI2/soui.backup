@@ -26,6 +26,8 @@ struct IDMAPRECORD
 
 //解析为布局的文件类型
 const wchar_t KXML_LAYOUT[]= L"layout";
+const wchar_t KXML_SMENU[]= L"smenu";
+const wchar_t KXML_SMENUEX[]= L"smenuex";
 //全局资源定义
 const wchar_t KXML_UIDEF[] = L"uidef";
 
@@ -368,7 +370,10 @@ void ParseLayoutFile(const wchar_t * pszFileName,map<wstring,int> &mapName2ID,in
         //避免解析到skin结点
         if(stricmp(pXmlNode->Value(),"soui") == 0)
             ParseLayout(pXmlNode->FirstChildElement("root"),mapName2ID,nStartId);
-        else if(stricmp(pXmlNode->Value(),"include") == 0)
+        else if(stricmp(pXmlNode->Value(),"include") == 0 
+            || stricmp(pXmlNode->Value(),"menu") == 0   //smenu
+            || stricmp(pXmlNode->Value(),"menuRoot") == 0 //smenuex
+            )
             ParseLayout(pXmlNode,mapName2ID,nStartId);
     }
     fclose(f);
@@ -594,8 +599,8 @@ int _tmain(int argc, _TCHAR* argv[])
         vector<IDMAPRECORD>::iterator it2=vecIdMapRecord.begin();
         while(it2!=vecIdMapRecord.end())
         {
-            if(wcsicmp(it2->szType,KXML_LAYOUT)==0)
-            {//发现布局文件
+            if(wcsicmp(it2->szType,KXML_LAYOUT)==0 || wcsicmp(it2->szType,KXML_SMENU) == 0 || wcsicmp(it2->szType,KXML_SMENUEX) == 0)
+            {//发现布局或者菜单文件
                 tmResource += GetLastWriteTime(it2->szPath);
                 ParseLayoutFile(it2->szPath,mapNameID,nStartID);
             }else if(wcsicmp(it2->szType,KXML_UIDEF)==0)
