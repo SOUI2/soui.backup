@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resource>
+  <uidef>
+    <file name="xml_init"  path="xml\init.xml"  />
+  </uidef>
   <xml>
-    <file name="INIT"  path="xml\init.xml"  />
     <file name="MAIN_DIALOG" path="xml\dlg_main.xml"/>
   </xml>
 

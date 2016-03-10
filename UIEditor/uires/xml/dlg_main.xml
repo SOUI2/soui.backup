@@ -3,7 +3,8 @@
     <window name="maindlg" pos="0,0,-0,-0" class="cls_dlg_frame">
       <caption id="101" pos="0,0,-0,29">
         <icon pos="8,9" src="logo:16"/>
-        <text pos="[3,9" class="cls_txt_red">UIEditor For SOUI ver:%ver%</text>
+        <text pos="[3,9" class="cls_txt_red">UIEditor For SOUI ver:</text>
+        <text pos="[0,{0">@string/ver</text>
         <imgbtn id="1" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
         <imgbtn name="btn_sys_maximize" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
         <imgbtn name="btn_sys_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resource>
   <uidef>
-    <file name="IDR_DUI_INIT"  path="xml\init.xml"  />
+    <file name="xml_init"  path="xml\init.xml"  />
   </uidef>
   <layout>
     <file name="dlg_main"   path="xml\dlg_main.xml"/>

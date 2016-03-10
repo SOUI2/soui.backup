@@ -276,7 +276,7 @@ BOOL CMainDlg::InitIndexList(LPCTSTR pszIndexFile)
 COLORREF Hex2Color(const SStringW & strColor,COLORREF crDef)
 {
 	if(strColor.IsEmpty()) return crDef;
-	return StringToColor(strColor);
+	return GETCOLOR(strColor);
 }
 
 void CMainDlg::InitSkinList()

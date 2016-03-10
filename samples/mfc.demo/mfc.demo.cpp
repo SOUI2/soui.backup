@@ -95,8 +95,6 @@ BOOL CmfcdemoApp::InitInstance()
         pSouiApp->SetRealWndHandler(pRealWndHandler);
         pRealWndHandler->Release();
 
-        pSouiApp->Init(_T("uidef"),_T("xml")); //初始化SOUI全局资源
-
 	    CmfcdemoDlg dlg;
 	    m_pMainWnd = &dlg;
 	    dlg.DoModal();
