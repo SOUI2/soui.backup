@@ -27,6 +27,5 @@ soui.depends += utilities soui-sys-resource
 demo.depends += soui mhook smiley
 qqlogin.depends += soui
 souispy.depends += soui
-MusicPlayer.depends += soui
 PcManager.depends += soui
 SoTool.depends += soui
