@@ -26,6 +26,7 @@
 #include "../controls.extend/SChromeTabCtrl.h"
 #include "../controls.extend/smiley/SSmileyCtrl.h"
 #include "../controls.extend/SChatEdit.h"
+#include "../controls.extend/SFreeMoveWindow.h"
 
 
 using namespace SOUI;

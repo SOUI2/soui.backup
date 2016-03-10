@@ -150,6 +150,8 @@
 			<File
 				RelativePath="..\controls.extend\SChromeTabCtrl.cpp" />
 			<File
+				RelativePath="..\controls.extend\SFreeMoveWindow.cpp" />
+			<File
 				RelativePath="..\controls.extend\gif\SGifPlayer.cpp" />
 			<File
 				RelativePath="..\controls.extend\SRatingBar.cpp" />
@@ -228,6 +230,8 @@
 				RelativePath="..\controls.extend\gif\SAniImgFrame.h" />
 			<File
 				RelativePath="..\controls.extend\SChromeTabCtrl.h" />
+			<File
+				RelativePath="..\controls.extend\SFreeMoveWindow.h" />
 			<File
 				RelativePath="..\controls.extend\gif\SGifPlayer.h" />
 			<File
