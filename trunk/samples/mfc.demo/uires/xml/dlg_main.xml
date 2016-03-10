@@ -1,7 +1,9 @@
 ﻿<SOUI title="DUI-DEMO" width="600" height="400" appwin="0" ncRect="5,5,5,5"  resize="1" translucent="0">
   <root skin="skin.bkframe" cache="1">
     <caption pos="0,0,-0,29">
-      <text pos="11,9" >%title% ver:%ver%</text>
+      <text pos="26,2">@string/title</text>
+      <text pos="[0,{0">ver:</text>
+      <text pos="[0,{0">@string/ver</text>
       <imgbtn id="1" name="btn_close" skin="skin.btnclose" pos="-45,0" tip="close" animate="0"/>
     </caption>
     <window pos="0,29,-0,-0">
