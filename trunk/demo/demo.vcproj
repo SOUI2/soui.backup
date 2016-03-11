@@ -174,6 +174,8 @@
 			<File
 				RelativePath="httpsvr\httpserver.cpp" />
 			<File
+				RelativePath="magnet\magnetframe.cpp" />
+			<File
 				RelativePath="memflash.cpp" />
 			<File
 				RelativePath="..\controls.extend\reole\richeditole.cpp" />
@@ -258,6 +260,8 @@
 				RelativePath="httpsvr\genericserver.h" />
 			<File
 				RelativePath="httpsvr\httpserver.h" />
+			<File
+				RelativePath="magnet\magnetframe.h" />
 			<File
 				RelativePath="memflash.h" />
 			<File

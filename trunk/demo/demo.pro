@@ -59,6 +59,7 @@ HEADERS += MainDlg.h \
            httpsvr/filereader-i.h \
            httpsvr/genericserver.h \
            httpsvr/httpserver.h \
+           magnet/magnetframe.h \
            smatrixwindow.h \
            memflash.h \
            SmileyCreateHook.h \
@@ -99,6 +100,7 @@ SOURCES += demo.cpp \
            ../controls.extend/SFreeMoveWindow.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \
+           magnet/magnetframe.cpp \
            memflash.cpp	\
            smatrixwindow.cpp \
            SmileyCreateHook.cpp \
