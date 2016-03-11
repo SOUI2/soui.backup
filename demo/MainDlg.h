@@ -15,13 +15,15 @@
 
 using namespace SOUI;
 
+#include "magnet/MagnetFrame.h"
+
 /**
 * @class      CMainDlg
 * @brief      主窗口实现
 * 
 * Describe    非模式窗口从SHostWnd派生，模式窗口从SHostDialog派生
 */
-class CMainDlg : public SHostWnd
+class CMainDlg : public SHostWnd, public CMagnetFrame
 {
 public:
 
