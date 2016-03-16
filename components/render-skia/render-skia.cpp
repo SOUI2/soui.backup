@@ -500,7 +500,7 @@ namespace SOUI
     {
         HDC hdc=GetDC(0);
         
-        ICONINFO ii;
+        ICONINFO ii={0};
         ::GetIconInfo(hIcon,&ii);
         SASSERT(ii.hbmColor);
         BITMAP bm;
@@ -518,6 +518,8 @@ namespace SOUI
         {
             CGdiAlpha::AlphaRestore(ai);
         }
+        if(ii.hbmColor) DeleteObject(ii.hbmColor);
+        if(ii.hbmMask) DeleteObject(ii.hbmMask);
 
         ReleaseDC(hdc);
         return bRet?S_OK:S_FALSE;
