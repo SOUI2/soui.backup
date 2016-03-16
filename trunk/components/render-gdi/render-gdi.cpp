@@ -606,7 +606,7 @@ namespace SOUI
 
     HRESULT SRenderTarget_GDI::DrawIconEx( int xLeft, int yTop, HICON hIcon, int cxWidth,int cyWidth,UINT diFlags )
     {
-        ICONINFO ii;
+        ICONINFO ii={0};
         ::GetIconInfo(hIcon,&ii);
         SASSERT(ii.hbmColor);
         BITMAP bm;
@@ -624,7 +624,10 @@ namespace SOUI
         {
             CGdiAlpha::AlphaRestore(ai);
         }
-
+        
+        if(ii.hbmColor) DeleteObject(ii.hbmColor);
+        if(ii.hbmMask) DeleteObject(ii.hbmMask);
+        
         return bRet?S_OK:S_FALSE;
     }
 
