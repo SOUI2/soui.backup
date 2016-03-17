@@ -56,6 +56,7 @@ HEADERS += MainDlg.h \
            ../controls.extend/simagemaskwnd.h \
            ../controls.extend/SRatingBar.h \
            ../controls.extend/SFreeMoveWindow.h \
+		   ../controls.extend/smiley/SSmileyCtrl.h \
            httpsvr/filereader-i.h \
            httpsvr/genericserver.h \
            httpsvr/httpserver.h \
@@ -66,8 +67,7 @@ HEADERS += MainDlg.h \
 		   uianimation/uianimation.h \
 		   uianimation/uianimationwnd.h\
 		   appledock/sdesktopdock.h \
-		   ../controls.extend/smiley/SSmileyCtrl.h
-		   
+		   clock/sclock.h
 		   
 SOURCES += demo.cpp \
            MainDlg.cpp \
@@ -106,6 +106,7 @@ SOURCES += demo.cpp \
            SmileyCreateHook.cpp \
 		   uianimation/uianimationwnd.cpp \
 		   appledock/sdesktopdock.cpp \
-			
+		   clock/sclock.cpp 
+
 RC_FILE += demo.rc
 
