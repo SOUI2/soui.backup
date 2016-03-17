@@ -4,9 +4,6 @@
 namespace SOUI{
 
 SClock::SClock()
-	: pointer_hour(NULL)
-	, pointer_minute(NULL)
-	, pointer_second(NULL)
 {
 }
 

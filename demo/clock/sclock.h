@@ -34,14 +34,14 @@ protected:
 
 protected:
 	SOUI_ATTRS_BEGIN()
-		ATTR_IMAGE(L"pointer_hour",   pointer_hour, TRUE)
-		ATTR_IMAGE(L"pointer_minute", pointer_minute, TRUE)
-		ATTR_IMAGE(L"pointer_second", pointer_second, TRUE)
+		ATTR_IMAGEAUTOREF(L"pointer_hour",   pointer_hour, TRUE)
+		ATTR_IMAGEAUTOREF(L"pointer_minute", pointer_minute, TRUE)
+		ATTR_IMAGEAUTOREF(L"pointer_second", pointer_second, TRUE)
 	SOUI_ATTRS_END()
 
-	SOUI::IBitmap* pointer_hour;
-	SOUI::IBitmap* pointer_minute;
-	SOUI::IBitmap* pointer_second;
+	CAutoRefPtr<IBitmap> pointer_hour;
+	CAutoRefPtr<IBitmap> pointer_minute;
+	CAutoRefPtr<IBitmap> pointer_second;
 };
 
 }
