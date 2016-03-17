@@ -38,6 +38,8 @@
     <file name="template_calendar" path="xml\calendar.xml"/>
     <file name="dlg_skiatext" path="xml\dlg_skiatext.xml"/>
 	<file name="page_treeview" path="xml\page_treeview.xml"/>
+	
+	<file name="dlg_clock" path="xml\dlg_clock.xml"/>
   </LAYOUT>
   <IMGX>
     <file name="img_busy" path="image\img_busy.png"/>
@@ -109,6 +111,13 @@
     <file name="gif_win" path="image\win.gif"/>
     <file name="gif_horse"	path="image\horse.gif"/>
   </img.game>
+  <img.clock>
+    <file name="background" path="img.clock\background.png"/>
+    <file name="pointer_hour" path="img.clock\pointer_hour.png"/>
+    <file name="pointer_minute" path="img.clock\pointer_minute.png"/>
+    <file name="pointer_second" path="img.clock\pointer_second.png"/>
+  </img.clock>
+
   <GIF>
     <file name="gif_penguin"	path="image\penguin.gif"/>
   </GIF>

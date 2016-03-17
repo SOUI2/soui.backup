@@ -131,7 +131,7 @@ protected:
     void OnMatrixWindowReNotify(EventArgs *pEvt);
 
     void OnBtnCreateChildren();
-    
+    void OnBtnClock();
     //UI控件的事件及响应函数映射表
 	EVENT_MAP_BEGIN()
 		EVENT_ID_COMMAND(1, OnClose)
@@ -147,6 +147,7 @@ protected:
         EVENT_NAME_COMMAND(R.name.btn_menu,OnBtnMenu)
         EVENT_NAME_COMMAND(R.name.btn_webkit_go,OnBtnWebkitGo)
         EVENT_ID_COMMAND(R.id.btn_createchildren,OnBtnCreateChildren)
+        EVENT_ID_COMMAND(R.id.btn_clock,OnBtnClock)
         //-->
         EVENT_NAME_COMMAND(L"btn_webkit_back",OnBtnWebkitBackward)
         EVENT_NAME_COMMAND(L"btn_webkit_fore",OnBtnWebkitForeward)
