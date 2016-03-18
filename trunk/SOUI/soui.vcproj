@@ -489,6 +489,10 @@
 			<File
 				RelativePath="include\core\scaret.h" />
 			<File
+				RelativePath="include\interface\slog-i.h" />
+			<File
+				RelativePath="include\helper\slog.h" />
+			<File
 				RelativePath="include\helper\smatrix.h" />
 			<File
 				RelativePath="include\helper\smenuex.h" />

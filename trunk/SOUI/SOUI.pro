@@ -120,6 +120,7 @@ HEADERS += include/SApp.h \
 		   include/helper/STileViewItemLocator.h \
 		   include/helper/smenuex.h \
 		   include/helper/smatrix.h \
+		   include/helper/slog.h \
            include/interface/imgdecoder-i.h \
            include/interface/render-i.h \
            include/interface/SResProvider-i.h \
@@ -129,6 +130,7 @@ HEADERS += include/SApp.h \
            include/interface/stooltip-i.h \
            include/interface/adapter-i.h \
            include/interface/LvItemLocator-i.h \
+           include/interface/slog-i.h \
            include/res.mgr/SFontPool.h \
            include/res.mgr/SObjDefAttr.h \
            include/res.mgr/SResProvider.h \

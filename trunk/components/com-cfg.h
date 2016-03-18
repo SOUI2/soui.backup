@@ -13,12 +13,14 @@
 #define COM_SCRIPT_LUA _T("scriptmodule-luad.dll")
 #define COM_TRANSLATOR _T("translatord.dll")
 #define COM_ZIPRESPROVIDER _T("resprovider-zipd.dll")
+#define COM_LOG4Z   _T("log4zd.dll")
 #else
 #define COM_RENDER_GDI  _T("render-gdi.dll")
 #define COM_RENDER_SKIA _T("render-skia.dll")
 #define COM_SCRIPT_LUA _T("scriptmodule-lua.dll")
 #define COM_TRANSLATOR _T("translator.dll")
 #define COM_ZIPRESPROVIDER _T("resprovider-zip.dll")
+#define COM_LOG4Z   _T("log4z.dll")
 #endif
 
 #ifdef LIB_SOUI_COM
@@ -43,6 +45,7 @@
     #pragma comment(lib,"imgdecoder-gdipd")
     #pragma comment(lib,"translatord")
     #pragma comment(lib,"resprovider-zipd")
+    #pragma comment(lib,"log4zd")
 #else//_DEBUG
 
     #pragma comment(lib,"skia")
@@ -61,6 +64,7 @@
     #pragma comment(lib,"render-skia")
     #pragma comment(lib,"translator")
     #pragma comment(lib,"resprovider-zip")
+    #pragma comment(lib,"log4z")
 #endif//_DEBUG
 
 namespace SOUI
@@ -99,6 +103,10 @@ namespace SOUI
         BOOL SCreateInstance(IObjRef **);
     }
     namespace RESPROVIDER_ZIP
+    {
+        BOOL SCreateInstance(IObjRef **);
+    }
+    namespace LOG4Z
     {
         BOOL SCreateInstance(IObjRef **);
     }
@@ -152,6 +160,11 @@ public:
     {
         return SOUI::RESPROVIDER_ZIP::SCreateInstance(ppObj);
     }
+    
+    BOOL CreateLog4z(IObjRef **ppObj)
+    {
+        return LOG4Z::SCreateInstance(ppObj);
+    }
 
     SOUI::SStringT    m_strImgDecoder;
 };
@@ -202,6 +215,11 @@ public:
     {
         return zipResLoader.CreateInstance(COM_ZIPRESPROVIDER,ppObj);
     }
+
+    BOOL CreateLog4z(IObjRef **ppObj)
+    {
+        return log4zLoader.CreateInstance(COM_LOG4Z,ppObj);
+    }
 protected:
     //SComLoader实现从DLL的指定函数创建符号SOUI要求的类COM组件。
     SComLoader imgDecLoader;
@@ -209,6 +227,8 @@ protected:
     SComLoader transLoader;
     SComLoader scriptLoader;
     SComLoader zipResLoader;
+    SComLoader log4zLoader;
+    
     SOUI::SStringT m_strImgDecoder;
 };
 #endif

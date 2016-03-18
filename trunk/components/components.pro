@@ -15,6 +15,7 @@ SUBDIRS += imgdecoder-stb
 SUBDIRS += imgdecoder-png
 SUBDIRS += imgdecoder-gdip
 SUBDIRS += ScriptModule-LUA
+SUBDIRS += log4z
 
 imgdecoder-png.depends += zlib png
 render-skia.depends += skia
