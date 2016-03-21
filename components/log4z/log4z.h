@@ -196,10 +196,12 @@ const bool LOG4Z_DEFAULT_SHOWSUFFIX = true;
 //////////////////////////////////////////////////////////////////////////
 
 
-
-namespace LOG4Z
+namespace SOUI
 {
-    SOUI_COM_C BOOL SOUI_COM_API SCreateInstance(IObjRef **ppLogMgr);
+    namespace LOG4Z
+    {
+        SOUI_COM_C BOOL SOUI_COM_API SCreateInstance(IObjRef **ppLogMgr);
+    }
 }
 
 

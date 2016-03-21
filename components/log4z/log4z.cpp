@@ -375,7 +375,10 @@ public:
     virtual bool start();
     virtual bool stop();
     virtual bool prePushLog(LoggerId id, int level);
+    virtual bool prePushLog(const char * name, int level);
+
     virtual bool pushLog(LoggerId id, int level,const char * filter, const char * log, const char * file, int line, const char *func, const void * pRetAddr);
+    virtual bool pushLog(const char * name, int level, const char * filter, const char * log, const char * file, int line, const char *func, const void * pRetAddr);
     //! 查找ID
     virtual LoggerId findLogger(const char*  key);
 
@@ -398,6 +401,8 @@ public:
     virtual unsigned int getStatusActiveLoggers();
 protected:
     void showColorText(const char *text, int level = LOG_LEVEL_DEBUG);
+    LoggerId getLoggerId(const char * name);
+    
     bool openLogger(LogData * log);
     bool closeLogger(LoggerId id);
     bool popLog(LogData *& log);
@@ -1158,12 +1163,20 @@ LogerManager::LogerManager()
     _loggers[LOG4Z_MAIN_LOGGER_ID]._name = _proName;
 
 }
+
 LogerManager::~LogerManager()
 {
     stop();
 }
 
 
+LoggerId LogerManager::getLoggerId(const char * name)
+{
+    if(_ids.find(name) == _ids.end())
+        return LOG4Z_INVALID_LOGGER_ID;
+    else
+        return _ids[name];
+}
 
 
 void LogerManager::showColorText(const char *text, int level)
@@ -1338,6 +1351,14 @@ bool LogerManager::stop()
     }
     return false;
 }
+
+bool LogerManager::prePushLog(const char * name, int level)
+{
+    LoggerId id = getLoggerId(name);
+    if(id == LOG4Z_INVALID_LOGGER_ID) return false;
+    return prePushLog(id,level);
+}
+
 bool LogerManager::prePushLog(LoggerId id, int level)
 {
     if (id < 0 || id > _lastId || !_runing || !_loggers[id]._enable)
@@ -1349,6 +1370,13 @@ bool LogerManager::prePushLog(LoggerId id, int level)
         return false;
     }
     return true;
+}
+
+bool LogerManager::pushLog(const char * name, int level, const char * filter, const char * log, const char * file, int line, const char *func, const void * pRetAddr)
+{
+    LoggerId id = getLoggerId(name);
+    if(id == LOG4Z_INVALID_LOGGER_ID) return false;
+    return pushLog(id,level,filter,log,file,line,func,pRetAddr);
 }
 
 bool LogerManager::pushLog(LoggerId id, int level, const char * filter, const char * log, const char * file, int line, const char *func, const void * pRetAddr)
@@ -1892,7 +1920,7 @@ void LogerManager::run()
 
 
 
-SOUI_COM_C BOOL SOUI_COM_API LOG4Z::SCreateInstance(IObjRef **ppLogMgr)
+SOUI_COM_C BOOL SOUI_COM_API SOUI::LOG4Z::SCreateInstance(IObjRef **ppLogMgr)
 {
      *ppLogMgr = new LogerManager;
      return TRUE;

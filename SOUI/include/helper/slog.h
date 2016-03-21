@@ -1,6 +1,7 @@
 #pragma once
 #include "SApp.h"
 #include <intrin.h>
+#include <trace.h>
 
 namespace SOUI
 {
@@ -23,28 +24,31 @@ namespace SOUI
 #endif
 
 //! base micro.
-#define LOG_STREAM(id, filter, level,  log)\
+#define LOG_STREAM(id_or_name, filter, level,  log)\
     do{\
     SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingleton().GetLogManager(); \
-    if (pLogMgr && pLogMgr->prePushLog(id,level)) \
-    {\
     char logBuf[LOG4Z_LOG_BUF_SIZE];\
     SOUI::Log4zStream ss(logBuf, LOG4Z_LOG_BUF_SIZE);\
     ss << log;\
+    if (pLogMgr && pLogMgr->prePushLog(id_or_name,level)) \
+    {\
     const void *pAddr = _ReturnAddress(); \
-    pLogMgr->pushLog(id, level, filter, logBuf, __FILE__, __LINE__, __FUNCTION__, pAddr);\
+    pLogMgr->pushLog(id_or_name, level, filter, logBuf, __FILE__, __LINE__, __FUNCTION__, pAddr);\
+    }else\
+    {\
+    STRACEA(logBuf);\
     }\
     } while (0)
 
 
 //! fast micro
-#define LOG_TRACE(id, filter, log) LOG_STREAM(id, filter, LOG_LEVEL_TRACE, log)
-#define LOG_DEBUG(id, filter, log) LOG_STREAM(id, filter, LOG_LEVEL_DEBUG, log)
-#define LOG_INFO(id, filter, log)  LOG_STREAM(id, filter, LOG_LEVEL_INFO, log)
-#define LOG_WARN(id, filter, log)  LOG_STREAM(id, filter, LOG_LEVEL_WARN, log)
-#define LOG_ERROR(id, filter, log) LOG_STREAM(id, filter, LOG_LEVEL_ERROR, log)
-#define LOG_ALARM(id, filter, log) LOG_STREAM(id, filter, LOG_LEVEL_ALARM, log)
-#define LOG_FATAL(id, filter, log) LOG_STREAM(id, filter, LOG_LEVEL_FATAL, log)
+#define LOG_TRACE(id_or_name, filter, log) LOG_STREAM(id_or_name, filter, LOG_LEVEL_TRACE, log)
+#define LOG_DEBUG(id_or_name, filter, log) LOG_STREAM(id_or_name, filter, LOG_LEVEL_DEBUG, log)
+#define LOG_INFO(id_or_name, filter, log)  LOG_STREAM(id_or_name, filter, LOG_LEVEL_INFO, log)
+#define LOG_WARN(id_or_name, filter, log)  LOG_STREAM(id_or_name, filter, LOG_LEVEL_WARN, log)
+#define LOG_ERROR(id_or_name, filter, log) LOG_STREAM(id_or_name, filter, LOG_LEVEL_ERROR, log)
+#define LOG_ALARM(id_or_name, filter, log) LOG_STREAM(id_or_name, filter, LOG_LEVEL_ALARM, log)
+#define LOG_FATAL(id_or_name, filter, log) LOG_STREAM(id_or_name, filter, LOG_LEVEL_FATAL, log)
 
 //! super micro.
 #define LOGT(filter, log ) LOG_TRACE(LOG4Z_MAIN_LOGGER_ID,filter, log )
@@ -58,37 +62,39 @@ namespace SOUI
 
 //! format input log.
 #ifdef LOG4Z_FORMAT_INPUT_ENABLE
-#if defined (WIN32) || defined(_WIN64)
-#define LOG_FORMAT(id, level, filter, logformat, ...) \
+#define LOG_FORMAT(id_or_name, level, filter, logformat, ...) \
     do{ \
     SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingleton().GetLogManager(); \
-    if (pLogMgr && pLogMgr->prePushLog(id,level)) \
-    {\
     char logbuf[LOG4Z_LOG_BUF_SIZE]; \
-    _snprintf_s(logbuf, LOG4Z_LOG_BUF_SIZE, _TRUNCATE, logformat, ##__VA_ARGS__); \
-    pLogMgr->pushLog(id, level,filter, logbuf, __FILE__, __LINE__, __FUNCTION__,_ReturnAddress()); \
+    if(sizeof(logformat[0]) == sizeof(char))\
+        _snprintf_s(logbuf, LOG4Z_LOG_BUF_SIZE, _TRUNCATE, (const char*)logformat, ##__VA_ARGS__); \
+    else \
+    {\
+        wchar_t logbufw[LOG4Z_LOG_BUF_SIZE]; \
+        _snwprintf_s(logbufw, LOG4Z_LOG_BUF_SIZE, _TRUNCATE, (const wchar_t*)logformat, ##__VA_ARGS__); \
+        DWORD dwLen = WideCharToMultiByte(CP_ACP, 0, logbufw, -1, NULL, 0, NULL, NULL);\
+        if (dwLen < LOG4Z_LOG_BUF_SIZE)\
+        {\
+            WideCharToMultiByte(CP_ACP, 0, logbufw, -1, logbuf, dwLen, NULL, NULL);\
+        }\
+    }\
+    if (pLogMgr && pLogMgr->prePushLog(id_or_name,level)) \
+    {\
+    pLogMgr->pushLog(id_or_name, level,filter, logbuf, __FILE__, __LINE__, __FUNCTION__,_ReturnAddress()); \
+    }else\
+    {\
+    STRACEA(logbuf);\
     }\
     } while (0)
-#else
-#define LOG_FORMAT(id, level, filter, logformat, ...) \
-    do{ \
-    SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingleton().GetLogManager(); \
-    if (pLogMgr && pLogMgr->prePushLog(id,level)) \
-    {\
-    char logbuf[LOG4Z_LOG_BUF_SIZE]; \
-    snprintf(logbuf, LOG4Z_LOG_BUF_SIZE,logformat, ##__VA_ARGS__); \
-    pLogMgr->pushLog(id, level,filter, logbuf, __FILE__, __LINE__, __FUNCTION__,NULL); \
-    } \
-    }while(0)
-#endif
+
 //!format string
-#define LOGFMT_TRACE(id, filter, fmt, ...)  LOG_FORMAT(id, LOG_LEVEL_TRACE, filter, fmt, ##__VA_ARGS__)
-#define LOGFMT_DEBUG(id, filter, fmt, ...)  LOG_FORMAT(id, LOG_LEVEL_DEBUG, filter, fmt, ##__VA_ARGS__)
-#define LOGFMT_INFO(id, filter, fmt, ...)  LOG_FORMAT(id, LOG_LEVEL_INFO,  filter,fmt, ##__VA_ARGS__)
-#define LOGFMT_WARN(id, filter, fmt, ...)  LOG_FORMAT(id, LOG_LEVEL_WARN,  filter,fmt, ##__VA_ARGS__)
-#define LOGFMT_ERROR(id, filter, fmt, ...)  LOG_FORMAT(id, LOG_LEVEL_ERROR, filter, fmt, ##__VA_ARGS__)
-#define LOGFMT_ALARM(id, filter, fmt, ...)  LOG_FORMAT(id, LOG_LEVEL_ALARM, filter, fmt, ##__VA_ARGS__)
-#define LOGFMT_FATAL(id, filter, fmt, ...)  LOG_FORMAT(id, LOG_LEVEL_FATAL, filter, fmt, ##__VA_ARGS__)
+#define LOGFMT_TRACE(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_TRACE, filter, fmt, ##__VA_ARGS__)
+#define LOGFMT_DEBUG(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_DEBUG, filter, fmt, ##__VA_ARGS__)
+#define LOGFMT_INFO(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_INFO,  filter,fmt, ##__VA_ARGS__)
+#define LOGFMT_WARN(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_WARN,  filter,fmt, ##__VA_ARGS__)
+#define LOGFMT_ERROR(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_ERROR, filter, fmt, ##__VA_ARGS__)
+#define LOGFMT_ALARM(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_ALARM, filter, fmt, ##__VA_ARGS__)
+#define LOGFMT_FATAL(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_FATAL, filter, fmt, ##__VA_ARGS__)
 #define LOGFMTT( filter, fmt, ...) LOGFMT_TRACE(LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
 #define LOGFMTD( filter, fmt, ...) LOGFMT_DEBUG(LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
 #define LOGFMTI( filter, fmt, ...) LOGFMT_INFO(LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
