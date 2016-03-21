@@ -60,8 +60,12 @@ struct  ILog4zManager : public IObjRef
 
     //pre-check the log filter. if filter out return false. 
     virtual bool prePushLog(LoggerId id, int level) = 0;
+    virtual bool prePushLog(const char * name, int level) = 0;
+    
     //! Push log, thread safe.
     virtual bool pushLog(LoggerId id, int level, const char * filter, const char * log, const char * file , int line , const char * func , const void *pRetAddr) = 0;
+
+    virtual bool pushLog(const char * name, int level, const char * filter, const char * log, const char * file , int line , const char * func , const void *pRetAddr) = 0;
 
     //! set logger's attribute, thread safe.
     virtual bool enableLogger(LoggerId id, bool enable) = 0;
