@@ -343,9 +343,37 @@ void ParseLayout(TiXmlElement *xmlNode,map<wstring,int> &vecName2ID,int & nStart
         
         if(vecName2ID.find(szName) == vecName2ID.end())
         {
-            if(!xmlNode->Attribute("id",&nID))
+            const char *pszID = xmlNode->Attribute("id");
+            if(!pszID)
             {
                 nStartId++;
+            }else if(strnicmp(pszID,"ID",2) == 0)
+            {//IDÎªÃüÃûID£¬ÈçIDOK£¬IDCANCEL
+                if(stricmp(pszID,"IDOK")==0)
+                    nID = IDOK;
+                if(stricmp(pszID,"IDCANCEL")==0)
+                    nID = IDCANCEL;
+                if(stricmp(pszID,"IDABORT")==0)
+                    nID = IDABORT;
+                if(stricmp(pszID,"IDRETRY")==0)
+                    nID = IDRETRY;
+                if(stricmp(pszID,"IDIGNORE")==0)
+                    nID = IDIGNORE;
+                if(stricmp(pszID,"IDYES")==0)
+                    nID = IDYES;
+                if(stricmp(pszID,"IDNO")==0)
+                    nID = IDNO;
+                if(stricmp(pszID,"IDCLOSE")==0)
+                    nID = IDCLOSE;
+                if(stricmp(pszID,"IDHELP")==0)
+                    nID = IDHELP;
+                if(stricmp(pszID,"IDTRYAGAIN")==0)
+                    nID = IDTRYAGAIN;
+                if(stricmp(pszID,"IDCONTINUE")==0)
+                    nID = IDCONTINUE;
+            }else
+            {
+                nID = atoi(pszID);
             }
             vecName2ID[szName] = nID;
         }
