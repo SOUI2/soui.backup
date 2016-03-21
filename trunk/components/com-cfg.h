@@ -163,7 +163,7 @@ public:
     
     BOOL CreateLog4z(IObjRef **ppObj)
     {
-        return LOG4Z::SCreateInstance(ppObj);
+        return SOUI::LOG4Z::SCreateInstance(ppObj);
     }
 
     SOUI::SStringT    m_strImgDecoder;
