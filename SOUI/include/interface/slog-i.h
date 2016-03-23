@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unknown/obj-ref-i.h>
+#include <time.h>
 
 namespace SOUI{
 
@@ -32,6 +33,19 @@ enum ENUM_LOG_LEVEL
     LOG_LEVEL_ERROR,
     LOG_LEVEL_ALARM,
     LOG_LEVEL_FATAL,
+};
+
+struct IOutputFileBuilder
+{
+    //每个月创建log文件夹
+    virtual bool monthDir() const = 0;
+    
+    //每天创建log文件
+    virtual bool dayLog() const = 0;
+    
+    //生成LOG文件名
+    //至少应该包含pszLogName，及curFileIndex这两个参数
+    virtual bool buildOutputFile(char *pszFileName,int nLen,tm time,const char * pszLogName,unsigned long pid,int curFileIndex) const =0;
 };
 
 //! log4z class
@@ -76,8 +90,9 @@ struct  ILog4zManager : public IObjRef
     virtual bool setLoggerDisplay(LoggerId id, bool enable) = 0;
     virtual bool setLoggerOutFile(LoggerId id, bool enable) = 0;
     virtual bool setLoggerLimitsize(LoggerId id, unsigned int limitsize) = 0;
-    virtual bool setLoggerMonthdir(LoggerId id, bool enable) = 0;
-
+    
+    //设置LOG输出到文件的规则
+    virtual void setOutputFileBuilder(IOutputFileBuilder *pOutputFileBuilder) = 0;
 
     //! Update logger's attribute from config file, thread safe.
     virtual bool setAutoUpdate(int interval/*per second, 0 is disable auto update*/) = 0;
