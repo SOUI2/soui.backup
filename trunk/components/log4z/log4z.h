@@ -184,8 +184,6 @@ const int LOG4Z_DEFAULT_LEVEL = SOUI::LOG_LEVEL_DEBUG;
 const bool LOG4Z_DEFAULT_DISPLAY = true;
 //! default logger output to file
 const bool LOG4Z_DEFAULT_OUTFILE = true;
-//! default logger month dir used status
-const bool LOG4Z_DEFAULT_MONTHDIR = false;
 //! default logger output file limit size, unit M byte.
 const int LOG4Z_DEFAULT_LIMITSIZE = 100;
 //! default logger show suffix (file name and line number) 

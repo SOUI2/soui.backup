@@ -191,7 +191,7 @@ static std::pair<std::string, std::string> splitPairString(const std::string & s
 
 static bool isDirectory(std::string path);
 static bool createRecursionDir(std::string path);
-static std::string getProcessID();
+static unsigned int getProcessID();
 static std::string getProcessName();
 
 
@@ -321,7 +321,6 @@ struct LoggerInfo
     int  _level;        //filter level
     bool _display;        //display to screen 
     bool _outfile;        //output to file
-    bool _monthdir;        //create directory per month 
     unsigned int _limitsize; //limit file's size, unit Million byte.
     bool _enable;        //logger is enable 
     bool _fileLine;        //enable/disable the log's suffix.(file name:line number)
@@ -343,7 +342,6 @@ struct LoggerInfo
         _display = LOG4Z_DEFAULT_DISPLAY; 
         _outfile = LOG4Z_DEFAULT_OUTFILE;
 
-        _monthdir = LOG4Z_DEFAULT_MONTHDIR; 
         _limitsize = LOG4Z_DEFAULT_LIMITSIZE;
         _fileLine = LOG4Z_DEFAULT_SHOWSUFFIX;
 
@@ -355,6 +353,26 @@ struct LoggerInfo
     }
 };
 
+class COutoutFileBuilder : public IOutputFileBuilder
+{
+public:
+    virtual bool monthDir() const
+    {
+        return false;
+    }
+
+    virtual bool dayLog() const
+    {
+        return false;
+    }
+
+    virtual bool buildOutputFile(char *pszFileName,int nLen,tm time,const char * pszLogName,unsigned long pid,int curFileIndex) const
+    {
+        sprintf_s(pszFileName,nLen,"%s-%d.log",pszLogName,curFileIndex);
+        return true;
+    }
+
+}s_defOutputFileBuilder;
 
 //////////////////////////////////////////////////////////////////////////
 //! LogerManager
@@ -390,7 +408,7 @@ public:
     virtual bool setLoggerDisplay(LoggerId id, bool enable);
     virtual bool setLoggerOutFile(LoggerId id, bool enable);
     virtual bool setLoggerLimitsize(LoggerId id, unsigned int limitsize);
-    virtual bool setLoggerMonthdir(LoggerId id, bool enable);
+    virtual void setOutputFileBuilder(IOutputFileBuilder *pOutputFileBuilder);
 
     virtual bool setAutoUpdate(int interval);
     virtual bool updateConfig();
@@ -407,6 +425,8 @@ protected:
     bool closeLogger(LoggerId id);
     bool popLog(LogData *& log);
     virtual void run();
+
+
 private:
 
     //! thread status.
@@ -420,7 +440,7 @@ private:
     unsigned int _checksum;
 
     //! the process info.
-    std::string _pid;
+    unsigned int _pid;
     std::string _proName;
 
     //! config file name
@@ -449,6 +469,7 @@ private:
     unsigned long long _ullStatusTotalPushLog;
     unsigned long long _ullStatusTotalPopLog;
 
+    IOutputFileBuilder * m_pOutputFileBuilder;
 };
 
 
@@ -716,18 +737,7 @@ static bool parseConfigLine(const std::string& line, int curLineNum, std::string
             iter->second._outfile = true;
         }
     }
-    //! monthdir
-    else if (kv.first == "monthdir")
-    {
-        if (kv.second == "false" || kv.second == "0")
-        {
-            iter->second._monthdir = false;
-        }
-        else
-        {
-            iter->second._monthdir = true;
-        }
-    }
+
     //! limit file size
     else if (kv.first == "limitsize")
     {
@@ -851,19 +861,13 @@ bool createRecursionDir(std::string path)
     return true;
 }
 
-std::string getProcessID()
+unsigned int getProcessID()
 {
-    std::string pid = "0";
-    char buf[260] = {0};
 #if defined (WIN32) || defined(_WIN64)
-    DWORD winPID = GetCurrentProcessId();
-    sprintf(buf, "%06d", winPID);
-    pid = buf;
+    return GetCurrentProcessId();
 #else
-    sprintf(buf, "%06d", getpid());
-    pid = buf;
+    return getpid();
 #endif
-    return pid;
 }
 
 
@@ -1161,7 +1165,8 @@ LogerManager::LogerManager()
     
     _loggers[LOG4Z_MAIN_LOGGER_ID]._key = LOG4Z_MAIN_LOGGER_KEY;
     _loggers[LOG4Z_MAIN_LOGGER_ID]._name = _proName;
-
+    
+    m_pOutputFileBuilder = & s_defOutputFileBuilder;
 }
 
 LogerManager::~LogerManager()
@@ -1257,7 +1262,6 @@ bool LogerManager::configFromStringImpl(std::string content, bool isUpdate)
         setLoggerDisplay(id, iter->second._display);
         setLoggerOutFile(id, iter->second._outfile);
         setLoggerLimitsize(id, iter->second._limitsize);
-        setLoggerMonthdir(id, iter->second._monthdir);
     }
     return true;
 }
@@ -1586,12 +1590,12 @@ bool LogerManager::setLoggerOutFile(LoggerId id, bool enable)
     _loggers[id]._outfile = enable;
     return true;
 }
-bool LogerManager::setLoggerMonthdir(LoggerId id, bool enable)
+
+void LogerManager::setOutputFileBuilder(IOutputFileBuilder *pOutputFileBuilder)
 {
-    if (id <0 || id > _lastId) return false;
-    _loggers[id]._monthdir = enable;
-    return true;
+    m_pOutputFileBuilder = pOutputFileBuilder;
 }
+
 bool LogerManager::setLoggerLimitsize(LoggerId id, unsigned int limitsize)
 {
     if (id <0 || id > _lastId) return false;
@@ -1715,7 +1719,7 @@ bool LogerManager::openLogger(LogData * pLog)
 
     bool sameday = isSameDay(pLog->_time, pLogger->_curFileCreateTime);
     bool needChangeFile = pLogger->_curWriteLen > pLogger->_limitsize * 1024 * 1024;
-    if (!sameday || needChangeFile || pLogger->_hotChange)
+    if ((!sameday && m_pOutputFileBuilder->dayLog()) || needChangeFile || pLogger->_hotChange)
     {
         if (!sameday || pLogger->_hotChange)
         {
@@ -1745,7 +1749,7 @@ bool LogerManager::openLogger(LogData * pLog)
         _hotLock.unLock();
         
         char buf[100] = { 0 };
-        if (pLogger->_monthdir)
+        if (m_pOutputFileBuilder->monthDir())
         {
             sprintf(buf, "%04d_%02d/", t.tm_year + 1900, t.tm_mon + 1);
             path += buf;
@@ -1755,10 +1759,9 @@ bool LogerManager::openLogger(LogData * pLog)
         {
             createRecursionDir(path);
         }
-
-        sprintf(buf, "%s_%04d%02d%02d%02d%02d_%s_%03d.log",
-            name.c_str(), t.tm_year + 1900, t.tm_mon + 1, t.tm_mday,
-            t.tm_hour, t.tm_min, _pid.c_str(), pLogger->_curFileIndex);
+        
+        m_pOutputFileBuilder->buildOutputFile(buf,100,t,name.c_str(),_pid,pLogger->_curFileIndex);
+        
         path += buf;
         pLogger->_handle.open(path.c_str(), "ab");
         if (!pLogger->_handle.isOpen())
