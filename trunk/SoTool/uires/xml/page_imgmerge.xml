@@ -7,6 +7,8 @@
       <radio name="radio_horz" pos="0,|0" offset="0,-0.5" checked="1">水平排列</radio>
       <radio name="radio_vert" pos="[10,|0" offset="0,-0.5">垂直排列</radio>
     </window>
+    <button pos="]-5,|0,@80,@25" offset="-1,-0.5" name="btn_split">拆分</button>
+    <edit pos="-5,|0,@30,@25" offset="-1,-0.5" name="edit_number"/>
   </window>
   <imgcanvas pos="0,0,-0,{0" name="wnd_canvas" skin="skin_transbkgnd" clipClient="1" colorText="#0000cc">
     拖动图片到本窗口,支持多个图片
