@@ -7,7 +7,6 @@ by ∂‡µ„√‚∑—WIFI
 
 namespace SOUI
 {
-    #define TIMER_MOVE		1
 	class SImageSwitcher : public SWindow
 	{
 		SOUI_CLASS_NAME(SImageSwitcher,L"imageSwitcher")
@@ -17,15 +16,13 @@ namespace SOUI
 
 	public:
 		void  Switch(int iSelect);
-		void  InsertImage(UINT iTo, IBitmap * pImage);
+		void  InsertImage(int iTo, IBitmap * pImage);
 		void  RemoveAll();
 		
 	private:
 	    
 	    SArray<IBitmap *> m_lstImages;
 	    
-		ISkinObj *m_pSkinLightLevel;
-
 		BOOL m_bWantMove;
 		int  m_iDownX;
 		BOOL m_bTimerMove;
@@ -51,7 +48,6 @@ namespace SOUI
         HRESULT OnAttrImages(const SStringW strValue,BOOL bLoading);
         
 		SOUI_ATTRS_BEGIN()
-			ATTR_SKIN(L"skinlightlevel", m_pSkinLightLevel, TRUE)
 			ATTR_CUSTOM(L"images",OnAttrImages)
 		SOUI_ATTRS_END()
 	};
