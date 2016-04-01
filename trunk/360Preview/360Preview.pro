@@ -24,8 +24,8 @@ else{
 PRECOMPILED_HEADER = stdafx.h
 
 # Input
-HEADERS += MainDlg.h resource.h SToolbox.h SViewSwitch.h
-SOURCES += 360Preview.cpp MainDlg.cpp SToolbox.cpp SViewSwitch.cpp
+HEADERS += MainDlg.h resource.h SToolbox.h SImageSwitcher.h
+SOURCES += 360Preview.cpp MainDlg.cpp SToolbox.cpp SImageSwitcher.cpp
 
 RC_FILE += 360Preview.rc
 
