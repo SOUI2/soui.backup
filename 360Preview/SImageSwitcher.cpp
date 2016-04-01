@@ -2,6 +2,8 @@
 #include "SImageSwitcher.h"
 #include <helper/SplitString.h>
 
+#define TIMER_MOVE		1
+
 namespace SOUI
 {
 	SImageSwitcher::SImageSwitcher()
@@ -21,8 +23,6 @@ namespace SOUI
 	
 	void SImageSwitcher::OnPaint(IRenderTarget *pRT)
 	{
-		SPainter painter;
-		BeforePaint(pRT,painter);
         CRect rcWnd = GetClientRect();
 		for(UINT i = 0; i < m_lstImages.GetCount(); i++)
 		{
@@ -31,17 +31,12 @@ namespace SOUI
             CRect rct;
 
             rct.left = (i*rcWnd.Width() - (m_iSelected * rcWnd.Width())+m_iMoveWidth) ;
+            rct.right = rct.left + rcWnd.Width();
             rct.top = rcWnd.top +2; 
-            rct.bottom = szImg.cy;
-            rct.right = rct.left + szImg.cx;
+            rct.bottom = rct.top + rcWnd.Height();
 
-            pRT->DrawBitmapEx(rct,pBmp,CRect(CPoint(),szImg),0);
+            pRT->DrawBitmapEx(rct,pBmp,CRect(CPoint(),szImg),EM_STRETCH);
         }
-
-		if (m_pSkinLightLevel)
-			m_pSkinLightLevel->Draw(pRT,rcWnd,0);
-
-		AfterPaint(pRT,painter);
 	}
 	
 	void  SImageSwitcher::Switch(int iSelect)
@@ -174,10 +169,12 @@ namespace SOUI
 		}
 	}
 
-    void SImageSwitcher::InsertImage(UINT iTo, IBitmap * pImage)
+    void SImageSwitcher::InsertImage(int iTo, IBitmap * pImage)
     {
+        if(iTo<0) iTo = m_lstImages.GetCount();
         m_lstImages.InsertAt(iTo,pImage);
         pImage->AddRef();
+        Invalidate();
     }
 
     void SImageSwitcher::RemoveAll()
