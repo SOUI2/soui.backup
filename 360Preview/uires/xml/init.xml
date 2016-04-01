@@ -11,11 +11,6 @@
     <imglist name="skin_traymenu_icons"	src="img:traymenu_icons" states="9"/>
     <imgframe name="skin_bg_light_level" src="img:IMG_BG_LIGHT_LEVEL"/>
     <imgframe name="skin_bg_main" src="img:IMG_BG_MAIN" />
-    <imgframe name="skin_bg_softmgr" src="img:IMG_BG_SOFTMGR" />
-    <imgframe name="skin_bg_desktop" src="img:IMG_BG_DESKTOP" />
-    <imgframe name="skin_bg_diagnoscan" src="img:IMG_BG_DIAGNOSCAN" />
-    <imgframe name="skin_bg_guard" src="img:IMG_BG_GUARD" />
-    <imgframe name="skin_bg_ucenter" src="img:IMG_BG_UCENTER" />
     <imgframe name="skin_bg_shishihaohu" src="img:IMG_BG_SHISHIHAOHU" />
     <imglist name="skin_bg_toolbox" src="img:IMG_BG_TOOLBOX" states="3"/>
     <imgframe name="skin_ico_sotfmgr" src="img:IMG_ICO_SOFTMGR" />

@@ -7,20 +7,23 @@ by ∂‡µ„√‚∑—WIFI
 
 namespace SOUI
 {
-#define MAX_VEIWPAGE_COUNT 6
-#define TIMER_MOVE		1
-	class SViewSwitch : public SWindow
+    #define TIMER_MOVE		1
+	class SImageSwitcher : public SWindow
 	{
-		SOUI_CLASS_NAME(SViewSwitch,L"viewswitch")
+		SOUI_CLASS_NAME(SImageSwitcher,L"imageSwitcher")
 	public:
-		SViewSwitch();
-		virtual ~SViewSwitch();
+		SImageSwitcher();
+		virtual ~SImageSwitcher();
 
 	public:
-		void  SWitch(int nSelect);
+		void  Switch(int iSelect);
+		void  InsertImage(UINT iTo, IBitmap * pImage);
+		void  RemoveAll();
+		
 	private:
-		DWORD   m_dwPageCount;
-		ISkinObj *m_pSkin[MAX_VEIWPAGE_COUNT];
+	    
+	    SArray<IBitmap *> m_lstImages;
+	    
 		ISkinObj *m_pSkinLightLevel;
 
 		BOOL m_bWantMove;
@@ -29,7 +32,6 @@ namespace SOUI
 		int  m_iMoveWidth;
 		int  m_iSelected;
 		int m_iTimesMove;
-		int m_SelButton;
 
 	protected:
 		void OnPaint(IRenderTarget *pRT);
@@ -44,16 +46,13 @@ namespace SOUI
 			MSG_WM_LBUTTONUP(OnLButtonUp)
 			MSG_WM_MOUSEMOVE(OnMouseMove)
 			MSG_WM_TIMER_EX(OnTimer)
-			SOUI_MSG_MAP_END()
+		SOUI_MSG_MAP_END()
 
-			SOUI_ATTRS_BEGIN()
+        HRESULT OnAttrImages(const SStringW strValue,BOOL bLoading);
+        
+		SOUI_ATTRS_BEGIN()
 			ATTR_SKIN(L"skinlightlevel", m_pSkinLightLevel, TRUE)
-			ATTR_SKIN(L"skin1", m_pSkin[0], TRUE)
-			ATTR_SKIN(L"skin2", m_pSkin[1], TRUE)
-			ATTR_SKIN(L"skin3", m_pSkin[2], TRUE)
-			ATTR_SKIN(L"skin4", m_pSkin[3], TRUE)
-			ATTR_SKIN(L"skin5", m_pSkin[4], TRUE)
-			ATTR_SKIN(L"skin6", m_pSkin[5], TRUE)
-			SOUI_ATTRS_END()
+			ATTR_CUSTOM(L"images",OnAttrImages)
+		SOUI_ATTRS_END()
 	};
 }
