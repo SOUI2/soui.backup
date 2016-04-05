@@ -16,13 +16,13 @@ CMagnetFrame::~CMagnetFrame(void)
 
 BOOL CMagnetFrame::SubclassWnd(HWND hWnd)
 {
-    if(GetWindowLongPtr(hWnd,GWL_USERDATA)!=0)
+    if(GetWindowLongPtr(hWnd,GWLP_USERDATA)!=0)
         return FALSE;//在吸附框架中的窗口不能使用了USERDATA，因为这个值要被吸附框架占用.
-    WNDPROC pWndProc = (WNDPROC)GetWindowLongPtr(hWnd,GWL_WNDPROC);
+    WNDPROC pWndProc = (WNDPROC)GetWindowLongPtr(hWnd,GWLP_WNDPROC);
     if(pWndProc == &CMagnetFrame::MagnetWndProc) return FALSE;
     
-    SetWindowLongPtr(hWnd,GWL_USERDATA,(ULONG_PTR)this);
-    SetWindowLongPtr(hWnd,GWL_WNDPROC,(ULONG_PTR)&CMagnetFrame::MagnetWndProc);
+    SetWindowLongPtr(hWnd,GWLP_USERDATA,(ULONG_PTR)this);
+    SetWindowLongPtr(hWnd,GWLP_WNDPROC,(ULONG_PTR)&CMagnetFrame::MagnetWndProc);
     WndData wd={pWndProc,{AM_NULL,AA_NULL,0},0};
     m_mapOldProc[hWnd] = wd;
     return TRUE;
@@ -33,8 +33,8 @@ BOOL CMagnetFrame::UnsubclassWnd(HWND hWnd)
     SASSERT(m_mapOldProc.Lookup(hWnd));
     WNDPROC pWndProc = m_mapOldProc[hWnd].pProc;
     m_mapOldProc.RemoveKey(hWnd);
-    SetWindowLongPtr(hWnd,GWL_WNDPROC,(ULONG_PTR)pWndProc);
-    SetWindowLongPtr(hWnd,GWL_USERDATA,0);
+    SetWindowLongPtr(hWnd,GWLP_WNDPROC,(ULONG_PTR)pWndProc);
+    SetWindowLongPtr(hWnd,GWLP_USERDATA,0);
     return TRUE;
 }
 
@@ -189,7 +189,7 @@ void CMagnetFrame::UpdateSubWndPos(HWND hSubWnd,AtatchInfo ai)
 
 LRESULT CALLBACK CMagnetFrame::MagnetWndProc(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp)
 {
-    CMagnetFrame *pThis = (CMagnetFrame*)GetWindowLongPtr(hWnd,GWL_USERDATA);
+    CMagnetFrame *pThis = (CMagnetFrame*)GetWindowLongPtr(hWnd,GWLP_USERDATA);
     
     SASSERT(pThis->m_mapOldProc.Lookup(hWnd));
     
