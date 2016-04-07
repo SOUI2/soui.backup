@@ -342,6 +342,10 @@ namespace SOUI
 		    return 1;
 		}
 		
+		virtual SIZE getViewDesiredSize(HTREEITEM hItem,SWindow * pItem, LPCRECT prcContainer)
+		{
+		    return pItem->GetDesiredSize(prcContainer);
+		}
 
         virtual void ExpandItem(HTREEITEM hItem,UINT uCode)
         {

@@ -28,377 +28,360 @@ namespace SOUI
 		STreeView * m_pOwner;
 	};
 
-	
 	//////////////////////////////////////////////////////////////////////////
-    class STreeViewItemLocator : public TObjRefImpl<ITreeViewItemLocator>
+    STreeViewItemLocator::STreeViewItemLocator() :m_nLineHeight(50),m_nIndent(10),m_szDef(10,50)
     {
-    public:
-        STreeViewItemLocator():m_nLineHeight(50),m_nIndent(10),m_szDef(10,50)
+
+    }
+
+    STreeViewItemLocator::~STreeViewItemLocator()
+    {
+
+    }
+
+    void STreeViewItemLocator::SetAdapter(ITvAdapter *pAdapter)
+    {
+        m_adapter = pAdapter;
+    }
+
+    void STreeViewItemLocator::_InitBranch(HTREEITEM hItem)
+    {
+        if(hItem != ITvAdapter::ITEM_ROOT)
         {
-
-        }
-
-        ~STreeViewItemLocator()
+            _SetItemHeight(hItem,m_szDef.cy);
+            _SetItemWidth(hItem,m_szDef.cx);
+        }else
         {
-
+            _SetItemHeight(hItem,0);
+            _SetItemWidth(hItem,0);
         }
-
-        virtual void SetAdapter(ITvAdapter *pAdapter)
-        {
-            m_adapter = pAdapter;
-        }
-
-        virtual void OnBranchChanged(HTREEITEM hItem)
-        {//初始化列表项高度等数据
-            int nVisibleHeightOld = _GetItemVisibleHeight(hItem);
-            _InitBranch(hItem);
-            int nVisibleHeightNew = _GetItemVisibleHeight(hItem);
-            int nDiff = nVisibleHeightNew - nVisibleHeightOld;
-            if(nDiff == 0 || hItem == ITvAdapter::ITEM_ROOT) 
-                return;
-            
-            HTREEITEM hParent = m_adapter->GetParentItem(hItem);
-            while(hParent!=ITvAdapter::ITEM_NULL)
+        if(m_adapter->HasChildren(hItem))
+        {//有子节点
+            HTREEITEM hChild = m_adapter->GetFirstChildItem(hItem);
+            int nBranchHeight = 0;
+            while(hChild != ITvAdapter::ITEM_NULL)
             {
-                _SetBranchHeight(hParent,_GetBranchHeight(hParent)+nDiff);
-                hParent = m_adapter->GetParentItem(hParent);    
+                //设置偏移
+                _SetItemOffset(hChild,nBranchHeight);
+                _InitBranch(hChild);
+                nBranchHeight += _GetItemVisibleHeight(hChild);
+                hChild = m_adapter->GetNextSiblingItem(hChild);
             }
-            _UpdateSiblingsOffset(hItem);
+            _SetBranchHeight(hItem,nBranchHeight);
+            //设置默认宽度
+            _SetBranchWidth(hItem,m_szDef.cx + m_nIndent);
+        }else
+        {//无子节点
+            _SetBranchHeight(hItem,0);
+            _SetBranchWidth(hItem,0);
         }
+    }
 
-        virtual void OnBranchExpandedChanged(HTREEITEM hItem,BOOL bExpandedOld,BOOL bExpandedNew)
-        {
-            if(bExpandedNew == bExpandedOld) return;
-            
-            int nBranchHei = _GetBranchHeight(hItem);
-            HTREEITEM hParent = m_adapter->GetParentItem(hItem);
-            while(hParent != ITvAdapter::ITEM_NULL)
-            {
-                _SetBranchHeight(hParent,_GetBranchHeight(hParent)+nBranchHei*(bExpandedNew?1:-1));
-                if(!IsItemExpanded(hParent)) break;
-                hParent = m_adapter->GetParentItem(hParent);
-            }
-            _UpdateSiblingsOffset(hItem);
-        }
-        
-        virtual int GetTotalHeight() const
-        {
-            return (int)m_adapter->GetItemDataByIndex(ITvAdapter::ITEM_ROOT,ITvAdapter::DATA_INDEX_BRANCH_HEIGHT);
-        }
+    BOOL STreeViewItemLocator::_IsItemVisible(HTREEITEM hItem) const
+    {
+        return m_adapter->IsItemVisible(hItem);
+    }
 
-        virtual int GetTotalWidth() const
-        {
-            return (int)m_adapter->GetItemDataByIndex(ITvAdapter::ITEM_ROOT,ITvAdapter::DATA_INDEX_BRANCH_WIDTH);
-        }
-
-        virtual int GetScrollLineSize() const
-        {
-            return m_nLineHeight;
-        }
-
-        virtual int Item2Position(HTREEITEM hItem) const
-        {
-            if(!_IsItemVisible(hItem))
-            {
-                SASSERT(FALSE);
-                return -1;
-            }
-
-            int nRet = 0;
-            //获得父节点开始位置
-            HTREEITEM hParent = m_adapter->GetParentItem(hItem);
-            if(hParent!=ITvAdapter::ITEM_NULL && hParent != ITvAdapter::ITEM_ROOT)
-            {
-                nRet = Item2Position(hParent);
-                //越过父节点
-                nRet += GetItemHeight(hParent);
-            }
-            //越过前面兄弟结点
-            nRet += _GetItemOffset(hItem);
-
-            return nRet;
-        }
-
-        virtual HTREEITEM Position2Item(int position) const
-        {
-            return _Position2Item(position,ITvAdapter::ITEM_ROOT,0);
-        }
-
-        virtual void SetItemWidth(HTREEITEM hItem,int nWidth)
-        {
-            int nOldWidth = GetItemWidth(hItem);
-            if(nOldWidth == nWidth) return;
-            int nOldBranchWidth = _GetItemVisibleWidth(hItem);
-            _SetItemWidth(hItem,nWidth);
-            int nNewBranchWidth = _GetItemVisibleWidth(hItem);
-            if(nOldBranchWidth == nNewBranchWidth) return;
-            _UpdateBranchWidth(hItem,nOldBranchWidth,nNewBranchWidth);
-        }
-
-        virtual void SetItemHeight(HTREEITEM hItem,int nHeight)
-        {
-            int nOldHeight = GetItemHeight(hItem);
-            _SetItemHeight(hItem,nHeight);
-            if(nOldHeight != nHeight)
-            {
-                _UpdateBranchHeight(hItem,nHeight-nOldHeight);
-                _UpdateSiblingsOffset(hItem);
-            }
-        }
-
-        virtual int GetItemWidth(HTREEITEM hItem) const
-        {
-            return (int)m_adapter->GetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_WIDTH);
-        }
-        
-        virtual int GetItemHeight(HTREEITEM hItem) const
-        {
-            return (int)m_adapter->GetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_HEIGHT);
-        }
-
-        virtual int GetItemIndent(HTREEITEM hItem) const
-        {
-            int nRet = 0;
-            for(;;)
-            {
-                hItem = m_adapter->GetParentItem(hItem);
-                if(hItem == ITvAdapter::ITEM_ROOT) break;
-                nRet += m_nIndent;
-            }
-            return nRet;
-        }
-    protected:
-        BOOL IsItemExpanded(HTREEITEM hItem) const
-        {
-            return (BOOL)m_adapter->IsItemExpanded(hItem);
-        }
-
-        //更新hItem所在的父窗口中分枝宽度数据
-        //hItem:显示宽度发生变化的节点，可以是节点本身宽度变化，也可能是子节点宽度发生了变化
-        //nOldWidth：原显示宽度
-        //nNewWidth: 新显示宽度
-        void _UpdateBranchWidth(HTREEITEM hItem,int nOldWidth,int nNewWidth)
-        {
-            HTREEITEM hParent = m_adapter->GetParentItem(hItem);
-            if(hParent == ITvAdapter::ITEM_NULL)
-                return;
-            int nCurBranchWidth = _GetBranchWidth(hParent);
-
-            int nIndent = hParent==ITvAdapter::ITEM_ROOT?0:m_nIndent;
-            if(nCurBranchWidth != nOldWidth+nIndent) 
-            {//父节点的宽度不是由当前结点控制的
-                if(nCurBranchWidth < nNewWidth+nIndent)
-                {//新宽度扩展了父节点的显示宽度
-                    _SetBranchWidth(hParent,nNewWidth + nIndent);
-                    if(IsItemExpanded(hParent)) _UpdateBranchWidth(hParent,nCurBranchWidth,nNewWidth + nIndent);
-                }
-            }else
-            {//父节点的宽度正好是由hItem的显示宽度
-                int nNewBranchWidth;
-                if(nNewWidth>nOldWidth)
-                {
-                    nNewBranchWidth = nNewWidth + nIndent;
-                }else
-                {
-                    HTREEITEM hSib = m_adapter->GetFirstChildItem(hParent);
-                    nNewBranchWidth = 0;
-                    while(hSib!=ITvAdapter::ITEM_NULL)
-                    {
-                        nNewBranchWidth = max(nNewBranchWidth,_GetItemVisibleWidth(hSib));
-                        hSib = m_adapter->GetNextSiblingItem(hSib);
-                    }
-                    nNewBranchWidth += nIndent;
-                }
-                _SetBranchWidth(hParent,nNewBranchWidth);
-                if(IsItemExpanded(hParent)) _UpdateBranchWidth(hParent,nCurBranchWidth,nNewBranchWidth);
-            }
-        }
-
-        int _GetBranchWidth(HTREEITEM hBranch) const
-        {
-            return m_adapter->GetItemDataByIndex(hBranch,ITvAdapter::DATA_INDEX_BRANCH_WIDTH);
-        }
-
-        void _SetBranchWidth(HTREEITEM hBranch,int nWidth)
-        {
-            m_adapter->SetItemDataByIndex(hBranch,ITvAdapter::DATA_INDEX_BRANCH_WIDTH,nWidth);
-        }
-
-        void _SetItemWidth(HTREEITEM hItem,int nWidth)
-        {
-            m_adapter->SetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_WIDTH,nWidth);
-        }
-
-
-        int _GetBranchHeight(HTREEITEM hItem) const
-        {
-            return (int)m_adapter->GetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_BRANCH_HEIGHT);
-        }
-
-        void _SetBranchHeight(HTREEITEM hItem ,int nHeight)
-        {
-            m_adapter->SetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_BRANCH_HEIGHT,nHeight);
-        }
-
-        void _UpdateBranchHeight(HTREEITEM hItem,int nDiff)
-        {
-            HTREEITEM hParent = m_adapter->GetParentItem(hItem);
-            while(hParent != ITvAdapter::ITEM_NULL)
-            {
-                int nBranchHeight = _GetBranchHeight(hParent);
-                _SetBranchHeight(hParent,nBranchHeight+nDiff);
-                hParent = m_adapter->GetParentItem(hParent);
-            }
-        }
-
-        //向后更新兄弟结点的偏移量
-        void _UpdateSiblingsOffset(HTREEITEM hItem)
-        {
-
-            int nOffset = _GetItemOffset(hItem);
-            nOffset += _GetItemVisibleHeight(hItem);
-
-            HTREEITEM hSib = m_adapter->GetNextSiblingItem(hItem);
-            while(hSib != ITvAdapter::ITEM_NULL)
-            {
-                _SetItemOffset(hSib,nOffset);
-                nOffset += _GetItemVisibleHeight(hSib);
-                hSib = m_adapter->GetNextSiblingItem(hSib);
-            }
-            //注意更新各级父节点的偏移量
-            HTREEITEM hParent = m_adapter->GetParentItem(hItem);
-            if(hParent != ITvAdapter::ITEM_NULL && hParent != ITvAdapter::ITEM_ROOT && IsItemExpanded(hParent))
-            {
-                _UpdateSiblingsOffset(hParent);
-            }
-        }
-
-        int _GetItemOffset(HTREEITEM hItem) const
-        {
-            return (int)m_adapter->GetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_OFFSET);
-        }
-
-        void _SetItemOffset(HTREEITEM hItem, int nOffset)
-        {
-            m_adapter->SetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_OFFSET,nOffset);
-        }
-
-        void _SetItemHeight(HTREEITEM hItem,int nHeight)
-        {
-            m_adapter->SetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_HEIGHT,nHeight);
-        }
-
-
-        int _GetItemVisibleHeight(HTREEITEM hItem) const
-        {
-            int nRet = GetItemHeight(hItem);
-            if(IsItemExpanded(hItem)) nRet += _GetBranchHeight(hItem);
-            return nRet;
-        }
-
-        int _GetItemVisibleWidth(HTREEITEM hItem) const
-        {
-            int nRet = GetItemWidth(hItem);
-            if(m_adapter->GetFirstChildItem(hItem)!=ITvAdapter::ITEM_NULL)
-            {
-                int nIndent = m_adapter->GetParentItem(hItem) == ITvAdapter::ITEM_ROOT?0:m_nIndent;
-                nRet = max(nRet,_GetBranchWidth(hItem)+nIndent);
-            }
-            return nRet;
-        }
-
-        HTREEITEM _Position2Item(int position,HTREEITEM hParent,int nParentPosition) const
-        {
-            if(position<nParentPosition || position>=(nParentPosition+_GetItemVisibleHeight(hParent)))
-                return ITvAdapter::ITEM_NULL;
-
-            int nItemHeight = GetItemHeight(hParent);
-            int nPos = nParentPosition + nItemHeight;
-
-            if(nPos>position) return hParent;
-
-            SASSERT(IsItemExpanded(hParent));
-
-            int nParentBranchHeight = _GetBranchHeight(hParent);
-
-            if(position-nPos < nParentBranchHeight/2)
-            {//从first开始查找
-                HTREEITEM hItem = m_adapter->GetFirstChildItem(hParent);
-                while(hItem)
-                {
-                    int nBranchHeight = _GetItemVisibleHeight(hItem);
-                    if(nPos + nBranchHeight > position)
-                    {
-                        return _Position2Item(position,hItem,nPos);
-                    }
-                    nPos += nBranchHeight;
-                    hItem = m_adapter->GetNextSiblingItem(hItem);
-                }
-            }else
-            {//从last开始查找
-                nPos += nParentBranchHeight;
-
-                HTREEITEM hItem = m_adapter->GetLastChildItem(hParent);
-                while(hItem)
-                {
-                    int nBranchHeight = _GetItemVisibleHeight(hItem);
-                    nPos -= nBranchHeight;
-                    if(nPos <= position)
-                    {
-                        return _Position2Item(position,hItem,nPos);
-                    }
-                    hItem = m_adapter->GetPrevSiblingItem(hItem);
-                }
-
-            }
-
-            SASSERT(FALSE);//不应该走到这里来
+    HTREEITEM STreeViewItemLocator::_Position2Item(int position,HTREEITEM hParent,int nParentPosition) const
+    {
+        if(position<nParentPosition || position>=(nParentPosition+_GetItemVisibleHeight(hParent)))
             return ITvAdapter::ITEM_NULL;
-        }
 
-        BOOL _IsItemVisible(HTREEITEM hItem) const
-        {
-            return m_adapter->IsItemVisible(hItem);
-        }
+        int nItemHeight = GetItemHeight(hParent);
+        int nPos = nParentPosition + nItemHeight;
 
-        void _InitBranch(HTREEITEM hItem)
-        {
-            if(hItem != ITvAdapter::ITEM_ROOT)
+        if(nPos>position) return hParent;
+
+        SASSERT(IsItemExpanded(hParent));
+
+        int nParentBranchHeight = _GetBranchHeight(hParent);
+
+        if(position-nPos < nParentBranchHeight/2)
+        {//从first开始查找
+            HTREEITEM hItem = m_adapter->GetFirstChildItem(hParent);
+            while(hItem)
             {
-                _SetItemHeight(hItem,m_szDef.cy);
-                _SetItemWidth(hItem,m_szDef.cx);
-            }else
-            {
-                _SetItemHeight(hItem,0);
-                _SetItemWidth(hItem,0);
-            }
-            if(m_adapter->HasChildren(hItem))
-            {//有子节点
-                HTREEITEM hChild = m_adapter->GetFirstChildItem(hItem);
-                int nBranchHeight = 0;
-                while(hChild != ITvAdapter::ITEM_NULL)
+                int nBranchHeight = _GetItemVisibleHeight(hItem);
+                if(nPos + nBranchHeight > position)
                 {
-                    //设置偏移
-                    _SetItemOffset(hChild,nBranchHeight);
-                    _InitBranch(hChild);
-                    nBranchHeight += _GetItemVisibleHeight(hChild);
-                    hChild = m_adapter->GetNextSiblingItem(hChild);
+                    return _Position2Item(position,hItem,nPos);
                 }
-                _SetBranchHeight(hItem,nBranchHeight);
-                //设置默认宽度
-                _SetBranchWidth(hItem,m_szDef.cx + m_nIndent);
-            }else
-            {//无子节点
-                _SetBranchHeight(hItem,0);
-                _SetBranchWidth(hItem,0);
+                nPos += nBranchHeight;
+                hItem = m_adapter->GetNextSiblingItem(hItem);
             }
+        }else
+        {//从last开始查找
+            nPos += nParentBranchHeight;
+
+            HTREEITEM hItem = m_adapter->GetLastChildItem(hParent);
+            while(hItem)
+            {
+                int nBranchHeight = _GetItemVisibleHeight(hItem);
+                nPos -= nBranchHeight;
+                if(nPos <= position)
+                {
+                    return _Position2Item(position,hItem,nPos);
+                }
+                hItem = m_adapter->GetPrevSiblingItem(hItem);
+            }
+
         }
 
-        CAutoRefPtr<ITvAdapter> m_adapter;
-        int                     m_nLineHeight;
-        int                     m_nIndent;
-        CSize                   m_szDef;
-    };
+        SASSERT(FALSE);//不应该走到这里来
+        return ITvAdapter::ITEM_NULL;
+    }
+
+    int STreeViewItemLocator::_GetItemVisibleWidth(HTREEITEM hItem) const
+    {
+        int nRet = GetItemWidth(hItem);
+        if(m_adapter->GetFirstChildItem(hItem)!=ITvAdapter::ITEM_NULL)
+        {
+            int nIndent = m_adapter->GetParentItem(hItem) == ITvAdapter::ITEM_ROOT?0:m_nIndent;
+            nRet = max(nRet,_GetBranchWidth(hItem)+nIndent);
+        }
+        return nRet;
+    }
+
+    int STreeViewItemLocator::_GetItemVisibleHeight(HTREEITEM hItem) const
+    {
+        int nRet = GetItemHeight(hItem);
+        if(IsItemExpanded(hItem)) nRet += _GetBranchHeight(hItem);
+        return nRet;
+    }
+
+    void STreeViewItemLocator::_SetItemHeight(HTREEITEM hItem,int nHeight)
+    {
+        m_adapter->SetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_HEIGHT,nHeight);
+    }
+
+    void STreeViewItemLocator::_SetItemOffset(HTREEITEM hItem, int nOffset)
+    {
+        m_adapter->SetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_OFFSET,nOffset);
+    }
+
+    int STreeViewItemLocator::_GetItemOffset(HTREEITEM hItem) const
+    {
+        return (int)m_adapter->GetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_OFFSET);
+    }
+
+    void STreeViewItemLocator::_UpdateSiblingsOffset(HTREEITEM hItem)
+    {
+        int nOffset = _GetItemOffset(hItem);
+        nOffset += _GetItemVisibleHeight(hItem);
+
+        HTREEITEM hSib = m_adapter->GetNextSiblingItem(hItem);
+        while(hSib != ITvAdapter::ITEM_NULL)
+        {
+            _SetItemOffset(hSib,nOffset);
+            nOffset += _GetItemVisibleHeight(hSib);
+            hSib = m_adapter->GetNextSiblingItem(hSib);
+        }
+        //注意更新各级父节点的偏移量
+        HTREEITEM hParent = m_adapter->GetParentItem(hItem);
+        if(hParent != ITvAdapter::ITEM_NULL && hParent != ITvAdapter::ITEM_ROOT && IsItemExpanded(hParent))
+        {
+            _UpdateSiblingsOffset(hParent);
+        }
+    }
+
+    void STreeViewItemLocator::_UpdateBranchHeight(HTREEITEM hItem,int nDiff)
+    {
+        HTREEITEM hParent = m_adapter->GetParentItem(hItem);
+        while(hParent != ITvAdapter::ITEM_NULL)
+        {
+            int nBranchHeight = _GetBranchHeight(hParent);
+            _SetBranchHeight(hParent,nBranchHeight+nDiff);
+            hParent = m_adapter->GetParentItem(hParent);
+        }
+    }
+
+    void STreeViewItemLocator::_SetBranchHeight(HTREEITEM hItem ,int nHeight)
+    {
+        m_adapter->SetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_BRANCH_HEIGHT,nHeight);
+    }
+
+    int STreeViewItemLocator::_GetBranchHeight(HTREEITEM hItem) const
+    {
+        return (int)m_adapter->GetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_BRANCH_HEIGHT);
+    }
+
+    void STreeViewItemLocator::_SetItemWidth(HTREEITEM hItem,int nWidth)
+    {
+        m_adapter->SetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_WIDTH,nWidth);
+    }
+
+    void STreeViewItemLocator::_SetBranchWidth(HTREEITEM hBranch,int nWidth)
+    {
+        m_adapter->SetItemDataByIndex(hBranch,ITvAdapter::DATA_INDEX_BRANCH_WIDTH,nWidth);
+    }
+
+    int STreeViewItemLocator::_GetBranchWidth(HTREEITEM hBranch) const
+    {
+        return m_adapter->GetItemDataByIndex(hBranch,ITvAdapter::DATA_INDEX_BRANCH_WIDTH);
+    }
+
+    void STreeViewItemLocator::_UpdateBranchWidth(HTREEITEM hItem,int nOldWidth,int nNewWidth)
+    {
+        HTREEITEM hParent = m_adapter->GetParentItem(hItem);
+        if(hParent == ITvAdapter::ITEM_NULL)
+            return;
+        int nCurBranchWidth = _GetBranchWidth(hParent);
+
+        int nIndent = hParent==ITvAdapter::ITEM_ROOT?0:m_nIndent;
+        if(nCurBranchWidth != nOldWidth+nIndent) 
+        {//父节点的宽度不是由当前结点控制的
+            if(nCurBranchWidth < nNewWidth+nIndent)
+            {//新宽度扩展了父节点的显示宽度
+                _SetBranchWidth(hParent,nNewWidth + nIndent);
+                if(IsItemExpanded(hParent)) _UpdateBranchWidth(hParent,nCurBranchWidth,nNewWidth + nIndent);
+            }
+        }else
+        {//父节点的宽度正好是由hItem的显示宽度
+            int nNewBranchWidth;
+            if(nNewWidth>nOldWidth)
+            {
+                nNewBranchWidth = nNewWidth + nIndent;
+            }else
+            {
+                HTREEITEM hSib = m_adapter->GetFirstChildItem(hParent);
+                nNewBranchWidth = 0;
+                while(hSib!=ITvAdapter::ITEM_NULL)
+                {
+                    nNewBranchWidth = max(nNewBranchWidth,_GetItemVisibleWidth(hSib));
+                    hSib = m_adapter->GetNextSiblingItem(hSib);
+                }
+                nNewBranchWidth += nIndent;
+            }
+            _SetBranchWidth(hParent,nNewBranchWidth);
+            if(IsItemExpanded(hParent)) _UpdateBranchWidth(hParent,nCurBranchWidth,nNewBranchWidth);
+        }
+    }
+
+    BOOL STreeViewItemLocator::IsItemExpanded(HTREEITEM hItem) const
+    {
+        return (BOOL)m_adapter->IsItemExpanded(hItem);
+    }
+
+    int STreeViewItemLocator::GetItemIndent(HTREEITEM hItem) const
+    {
+        int nRet = 0;
+        for(;;)
+        {
+            hItem = m_adapter->GetParentItem(hItem);
+            if(hItem == ITvAdapter::ITEM_ROOT) break;
+            nRet += m_nIndent;
+        }
+        return nRet;
+    }
+
+    int STreeViewItemLocator::GetItemHeight(HTREEITEM hItem) const
+    {
+        return (int)m_adapter->GetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_HEIGHT);
+    }
+
+    int STreeViewItemLocator::GetItemWidth(HTREEITEM hItem) const
+    {
+        return (int)m_adapter->GetItemDataByIndex(hItem,ITvAdapter::DATA_INDEX_ITEM_WIDTH);
+    }
+
+    void STreeViewItemLocator::SetItemHeight(HTREEITEM hItem,int nHeight)
+    {
+        int nOldHeight = GetItemHeight(hItem);
+        _SetItemHeight(hItem,nHeight);
+        if(nOldHeight != nHeight)
+        {
+            _UpdateBranchHeight(hItem,nHeight-nOldHeight);
+            _UpdateSiblingsOffset(hItem);
+        }
+    }
+
+    void STreeViewItemLocator::SetItemWidth(HTREEITEM hItem,int nWidth)
+    {
+        int nOldWidth = GetItemWidth(hItem);
+        if(nOldWidth == nWidth) return;
+        int nOldBranchWidth = _GetItemVisibleWidth(hItem);
+        _SetItemWidth(hItem,nWidth);
+        int nNewBranchWidth = _GetItemVisibleWidth(hItem);
+        if(nOldBranchWidth == nNewBranchWidth) return;
+        _UpdateBranchWidth(hItem,nOldBranchWidth,nNewBranchWidth);
+    }
+
+    HTREEITEM STreeViewItemLocator::Position2Item(int position) const
+    {
+        return _Position2Item(position,ITvAdapter::ITEM_ROOT,0);
+    }
+
+    int STreeViewItemLocator::Item2Position(HTREEITEM hItem) const
+    {
+        if(!_IsItemVisible(hItem))
+        {
+            SASSERT(FALSE);
+            return -1;
+        }
+
+        int nRet = 0;
+        //获得父节点开始位置
+        HTREEITEM hParent = m_adapter->GetParentItem(hItem);
+        if(hParent!=ITvAdapter::ITEM_NULL && hParent != ITvAdapter::ITEM_ROOT)
+        {
+            nRet = Item2Position(hParent);
+            //越过父节点
+            nRet += GetItemHeight(hParent);
+        }
+        //越过前面兄弟结点
+        nRet += _GetItemOffset(hItem);
+
+        return nRet;
+    }
+
+    int STreeViewItemLocator::GetScrollLineSize() const
+    {
+        return m_nLineHeight;
+    }
+
+    int STreeViewItemLocator::GetTotalWidth() const
+    {
+        return (int)m_adapter->GetItemDataByIndex(ITvAdapter::ITEM_ROOT,ITvAdapter::DATA_INDEX_BRANCH_WIDTH);
+    }
+
+    int STreeViewItemLocator::GetTotalHeight() const
+    {
+        return (int)m_adapter->GetItemDataByIndex(ITvAdapter::ITEM_ROOT,ITvAdapter::DATA_INDEX_BRANCH_HEIGHT);
+    }
+
+    void STreeViewItemLocator::OnBranchExpandedChanged(HTREEITEM hItem,BOOL bExpandedOld,BOOL bExpandedNew)
+    {
+        if(bExpandedNew == bExpandedOld) return;
+
+        int nBranchHei = _GetBranchHeight(hItem);
+        HTREEITEM hParent = m_adapter->GetParentItem(hItem);
+        while(hParent != ITvAdapter::ITEM_NULL)
+        {
+            _SetBranchHeight(hParent,_GetBranchHeight(hParent)+nBranchHei*(bExpandedNew?1:-1));
+            if(!IsItemExpanded(hParent)) break;
+            hParent = m_adapter->GetParentItem(hParent);
+        }
+        _UpdateSiblingsOffset(hItem);
+    }
+
+    void STreeViewItemLocator::OnBranchChanged(HTREEITEM hItem)
+    {
+        //初始化列表项高度等数据
+        int nVisibleHeightOld = _GetItemVisibleHeight(hItem);
+        _InitBranch(hItem);
+        int nVisibleHeightNew = _GetItemVisibleHeight(hItem);
+        int nDiff = nVisibleHeightNew - nVisibleHeightOld;
+        if(nDiff == 0 || hItem == ITvAdapter::ITEM_ROOT) 
+            return;
+
+        HTREEITEM hParent = m_adapter->GetParentItem(hItem);
+        while(hParent!=ITvAdapter::ITEM_NULL)
+        {
+            _SetBranchHeight(hParent,_GetBranchHeight(hParent)+nDiff);
+            hParent = m_adapter->GetParentItem(hParent);    
+        }
+        _UpdateSiblingsOffset(hItem);
+    }
 
 	//////////////////////////////////////////////////////////////////////////
 	STreeView::STreeView()
@@ -842,7 +825,7 @@ namespace SOUI
             m_adapter->getView(hItem,ii.pItem,m_xmlTemplate.first_child());
             
             rcContainer.left = m_tvItemLocator->GetItemIndent(hItem);
-            CSize szItem = ii.pItem->GetDesiredSize(&rcContainer);
+            CSize szItem = m_adapter->getViewDesiredSize(hItem,ii.pItem,rcContainer);
             ii.pItem->Move(CRect(0,0,szItem.cx,szItem.cy));
             m_tvItemLocator->SetItemWidth(hItem,szItem.cx);
             m_tvItemLocator->SetItemHeight(hItem,szItem.cy);
@@ -1151,5 +1134,6 @@ namespace SOUI
             return __super::OnUpdateToolTip(pt,tipInfo);
         return m_pHoverItem->OnUpdateToolTip(pt,tipInfo);
     }
+
 
 }

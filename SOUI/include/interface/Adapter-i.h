@@ -233,5 +233,7 @@ namespace SOUI
         virtual int getViewType(HTREEITEM hItem) const PURE;
         
         virtual int getViewTypeCount() const PURE;
+        
+        virtual SIZE getViewDesiredSize(HTREEITEM hItem,SWindow * pItem, LPCRECT prcContainer) PURE;
     };
 }
