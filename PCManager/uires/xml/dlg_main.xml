@@ -1,4 +1,4 @@
-﻿<SOUI name="mainWindow" title="%title%" width="850" height="610"  margin="20,5,5,5"  resizable="1" 
+﻿<SOUI name="mainWindow" title="@string/title" width="850" height="610"  margin="20,5,5,5"  resizable="1" 
 appWnd="1"
 translucent="1" >
   <root >
