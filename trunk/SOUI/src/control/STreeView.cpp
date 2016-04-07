@@ -29,7 +29,7 @@ namespace SOUI
 	};
 
 	//////////////////////////////////////////////////////////////////////////
-    STreeViewItemLocator::STreeViewItemLocator() :m_nLineHeight(50),m_nIndent(10),m_szDef(10,50)
+    STreeViewItemLocator::STreeViewItemLocator(int nIndent) :m_nLineHeight(50),m_nIndent(nIndent),m_szDef(10,50)
     {
 
     }
@@ -1133,6 +1133,13 @@ namespace SOUI
         if(!m_pHoverItem)
             return __super::OnUpdateToolTip(pt,tipInfo);
         return m_pHoverItem->OnUpdateToolTip(pt,tipInfo);
+    }
+
+    HRESULT STreeView::OnAttrIndent(const SStringW & strValue,BOOL bLoading)
+    {
+        if(!bLoading) return E_FAIL;
+        m_tvItemLocator.Attach(new STreeViewItemLocator(_wtoi(strValue)));
+        return S_OK;
     }
 
 
