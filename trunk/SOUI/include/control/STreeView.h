@@ -7,6 +7,89 @@
 
 namespace SOUI
 {
+    //////////////////////////////////////////////////////////////////////////
+    class SOUI_EXP STreeViewItemLocator : public TObjRefImpl<ITreeViewItemLocator>
+    {
+    public:
+        STreeViewItemLocator();
+
+        ~STreeViewItemLocator();
+
+        virtual void SetAdapter(ITvAdapter *pAdapter);
+
+        virtual void OnBranchChanged(HTREEITEM hItem);
+
+        virtual void OnBranchExpandedChanged(HTREEITEM hItem,BOOL bExpandedOld,BOOL bExpandedNew);
+
+        virtual int GetTotalHeight() const;
+
+        virtual int GetTotalWidth() const;
+
+        virtual int GetScrollLineSize() const;
+
+        virtual int Item2Position(HTREEITEM hItem) const;
+
+        virtual HTREEITEM Position2Item(int position) const;
+
+        virtual void SetItemWidth(HTREEITEM hItem,int nWidth);
+
+        virtual void SetItemHeight(HTREEITEM hItem,int nHeight);
+
+        virtual int GetItemWidth(HTREEITEM hItem) const;
+
+        virtual int GetItemHeight(HTREEITEM hItem) const;
+
+        virtual int GetItemIndent(HTREEITEM hItem) const;
+    protected:
+        BOOL IsItemExpanded(HTREEITEM hItem) const;
+
+        //更新hItem所在的父窗口中分枝宽度数据
+        //hItem:显示宽度发生变化的节点，可以是节点本身宽度变化，也可能是子节点宽度发生了变化
+        //nOldWidth：原显示宽度
+        //nNewWidth: 新显示宽度
+        void _UpdateBranchWidth(HTREEITEM hItem,int nOldWidth,int nNewWidth);
+
+        int _GetBranchWidth(HTREEITEM hBranch) const;
+
+        void _SetBranchWidth(HTREEITEM hBranch,int nWidth);
+
+        void _SetItemWidth(HTREEITEM hItem,int nWidth);
+
+
+        int _GetBranchHeight(HTREEITEM hItem) const;
+
+        void _SetBranchHeight(HTREEITEM hItem ,int nHeight);
+
+        void _UpdateBranchHeight(HTREEITEM hItem,int nDiff);
+
+        //向后更新兄弟结点的偏移量
+        void _UpdateSiblingsOffset(HTREEITEM hItem);
+
+        int _GetItemOffset(HTREEITEM hItem) const;
+
+        void _SetItemOffset(HTREEITEM hItem, int nOffset);
+
+        void _SetItemHeight(HTREEITEM hItem,int nHeight);
+
+
+        int _GetItemVisibleHeight(HTREEITEM hItem) const;
+
+        int _GetItemVisibleWidth(HTREEITEM hItem) const;
+
+        HTREEITEM _Position2Item(int position,HTREEITEM hParent,int nParentPosition) const;
+
+        BOOL _IsItemVisible(HTREEITEM hItem) const;
+
+        void _InitBranch(HTREEITEM hItem);
+
+
+        CAutoRefPtr<ITvAdapter> m_adapter;
+        int                     m_nLineHeight;
+        int                     m_nIndent;
+        CSize                   m_szDef;
+    };
+
+
 	class SOUI_EXP STreeView : public SPanel, protected IItemContainer
 	{
 		SOUI_CLASS_NAME(STreeView, L"treeview")
@@ -66,6 +149,13 @@ namespace SOUI
  			MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST,WM_KEYLAST,OnKeyEvent)
  			MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION,WM_IME_KEYLAST,OnKeyEvent)
 		SOUI_MSG_MAP_END()
+		
+    protected:
+        
+        SOUI_ATTRS_BEGIN()
+            ATTR_INT(L"indent", m_nIndent, TRUE)
+            ATTR_INT(L"wantTab", m_bWantTab,FALSE)
+        SOUI_ATTRS_END()
 	protected:
         virtual UINT OnGetDlgCode();
         virtual BOOL OnSetCursor(const CPoint &pt);
@@ -118,9 +208,5 @@ namespace SOUI
         
 		int				m_nIndent;             /**< 缩进 */ 
         BOOL            m_bWantTab;             /**< want tab */ 
-		SOUI_ATTRS_BEGIN()
-			ATTR_INT(L"indent", m_nIndent, TRUE)
-			ATTR_INT(L"wantTab", m_bWantTab,FALSE)
-		SOUI_ATTRS_END()
     };
 }
