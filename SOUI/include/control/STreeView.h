@@ -11,7 +11,7 @@ namespace SOUI
     class SOUI_EXP STreeViewItemLocator : public TObjRefImpl<ITreeViewItemLocator>
     {
     public:
-        STreeViewItemLocator();
+        STreeViewItemLocator(int nIndent=10);
 
         ~STreeViewItemLocator();
 
@@ -151,9 +151,10 @@ namespace SOUI
 		SOUI_MSG_MAP_END()
 		
     protected:
+        HRESULT OnAttrIndent(const SStringW & strValue,BOOL bLoading);
         
         SOUI_ATTRS_BEGIN()
-            ATTR_INT(L"indent", m_nIndent, TRUE)
+            ATTR_CUSTOM(L"indent",OnAttrIndent)
             ATTR_INT(L"wantTab", m_bWantTab,FALSE)
         SOUI_ATTRS_END()
 	protected:
@@ -206,7 +207,6 @@ namespace SOUI
         
         HTREEITEM    m_hSelected;               /**< 当前选择项 */ 
         
-		int				m_nIndent;             /**< 缩进 */ 
         BOOL            m_bWantTab;             /**< want tab */ 
     };
 }
