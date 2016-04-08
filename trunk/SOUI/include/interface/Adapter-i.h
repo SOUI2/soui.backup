@@ -235,5 +235,8 @@ namespace SOUI
         virtual int getViewTypeCount() const PURE;
         
         virtual SIZE getViewDesiredSize(HTREEITEM hItem,SWindow * pItem, LPCRECT prcContainer) PURE;
+        
+        //定义行宽度和treeview客户区宽度相同
+        virtual bool isViewWidthMatchParent() const PURE;
     };
 }

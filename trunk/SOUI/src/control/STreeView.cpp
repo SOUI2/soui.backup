@@ -685,7 +685,7 @@ namespace SOUI
         CSize szView;
         szView.cx = m_tvItemLocator->GetTotalWidth();
         szView.cy = m_tvItemLocator->GetTotalHeight();
-
+        
         CRect rcClient;
         SWindow::GetClientRect(&rcClient);//不计算滚动条大小
         CSize size = rcClient.Size();
@@ -700,7 +700,7 @@ namespace SOUI
             m_siVer.nMax  = szView.cy-1;
             m_siVer.nPage = rcClient.Height();
 
-            if (size.cx-m_nSbWid < szView.cx)
+            if (size.cx-m_nSbWid < szView.cx && !m_adapter->isViewWidthMatchParent())
             {
                 //  需要横向滚动条
                 m_wBarVisible |= SSB_HORZ;
@@ -727,7 +727,7 @@ namespace SOUI
             m_siVer.nMax  = size.cy-1;
             m_siVer.nPos  = 0;
 
-            if (size.cx < szView.cx)
+            if (size.cx < szView.cx && !m_adapter->isViewWidthMatchParent())
             {
                 //  需要横向滚动条
                 m_wBarVisible |= SSB_HORZ;
