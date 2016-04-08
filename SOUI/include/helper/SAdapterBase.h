@@ -346,7 +346,12 @@ namespace SOUI
 		{
 		    return pItem->GetDesiredSize(prcContainer);
 		}
-
+        
+        virtual bool isViewWidthMatchParent() const
+        {
+            return false;
+        }
+        
         virtual void ExpandItem(HTREEITEM hItem,UINT uCode)
         {
             BOOL bExpandedOld = IsItemExpanded(hItem);
