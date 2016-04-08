@@ -252,18 +252,21 @@ void STileView::UpdateVisibleItems()
         while(pos < m_siVer.nPos + (int)m_siVer.nPage && iNewLastVisible < m_adapter->getCount())
         {
             ItemInfo ii = {NULL, -1};
+            ii.nType = m_adapter->getItemViewType(iNewLastVisible);
             if(iNewLastVisible >= iOldFirstVisible && iNewLastVisible < iOldLastVisible)
             {
                 //use the old visible item
                 int iItem = iNewLastVisible - iOldFirstVisible;
                 SASSERT(iItem >= 0 && iItem <= (iOldLastVisible - iOldFirstVisible));
-                ii = pItemInfos[iItem];
-                pItemInfos[iItem].pItem = NULL;//标记该行已经被重用
+                if(ii.nType == pItemInfos[iItem].nType)
+                {
+                    ii = pItemInfos[iItem];
+                    pItemInfos[iItem].pItem = NULL;//标记该行已经被重用
+                }
             }
-            else
+            if(!ii.pItem)
             {
                 //create new visible item
-                ii.nType = m_adapter->getItemViewType(iNewLastVisible);
                 SList<SItemPanel *> *lstRecycle = m_itemRecycle.GetAt(ii.nType);
                 if(lstRecycle->IsEmpty())
                 {
