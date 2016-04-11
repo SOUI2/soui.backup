@@ -178,8 +178,8 @@ public:
 
 protected:
     virtual SWindow * GetDropDownOwner();
-    virtual void OnDropDown(SDropDownWnd *pDropDown);
-    virtual void OnCloseUp(SDropDownWnd *pDropDown,UINT uCode);
+    virtual void OnCreateDropDown(SDropDownWnd *pDropDown);
+    virtual void OnDestroyDropDown(SDropDownWnd *pDropDown);
 
     BOOL GetEditorCursorRect(SImRichEdit * pRichEdit, LONG cpStart, LONG cpEnd, CRect &rc);
     void ShowMemberSelectionWnd(const CRect& rcCursor, const SStringW& strKeyWord);

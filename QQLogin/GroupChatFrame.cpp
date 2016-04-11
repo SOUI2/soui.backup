@@ -145,11 +145,11 @@ SWindow* GroupChatFrame::GetDropDownOwner()
     return this;
 }
 
-void GroupChatFrame::OnDropDown(SDropDownWnd *pDropDown)
+void GroupChatFrame::OnCreateDropDown(SDropDownWnd *pDropDown)
 {
 }
 
-void GroupChatFrame::OnCloseUp(SDropDownWnd *pDropDown,UINT uCode)
+void GroupChatFrame::OnDestroyDropDown(SDropDownWnd *pDropDown)
 {
     m_pMemberSelWnd=NULL;
 }
