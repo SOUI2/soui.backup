@@ -79,23 +79,23 @@ namespace SOUI
         virtual int  GetListBoxHeight();
 
         /**
-        * SComboView::OnDropDown
+        * SComboView::OnCreateDropDown
         * @brief    下拉列表事件
         * @param    SDropDownWnd *pDropDown -- 下拉列表指针
         *
         * Describe  下拉列表事件
         */
-        virtual void OnDropDown(SDropDownWnd *pDropDown);
+        virtual void OnCreateDropDown(SDropDownWnd *pDropDown);
 
         /**
-        * SComboView::OnCloseUp
+        * SComboView::OnDestroyDropDown
         * @brief    下拉列表关闭事件
         * @param    SDropDownWnd *pDropDown -- 下拉列表指针
         * @param    UINT uCode -- 消息码
         *
         * Describe  获取下拉列表指针
         */
-        virtual void OnCloseUp(SDropDownWnd *pDropDown,UINT uCode);
+        virtual void OnDestroyDropDown(SDropDownWnd *pDropDown);
 
         /**
         * SComboView::OnSelChanged

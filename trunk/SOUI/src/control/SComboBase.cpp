@@ -49,8 +49,8 @@ namespace SOUI
     // SDropDownWnd_ComboBox
     BOOL SDropDownWnd_ComboBox::PreTranslateMessage( MSG* pMsg )
     {
-        SDropDownWnd::PreTranslateMessage(pMsg);
-
+        if(SDropDownWnd::PreTranslateMessage(pMsg))
+            return TRUE;
         if(pMsg->message==WM_MOUSEWHEEL 
             || ((pMsg->message == WM_KEYDOWN || pMsg->message==WM_KEYUP) && (pMsg->wParam == VK_UP || pMsg->wParam==VK_DOWN || pMsg->wParam==VK_RETURN || pMsg->wParam==VK_ESCAPE)))
         {//截获滚轮及上下键消息
@@ -229,16 +229,15 @@ namespace SOUI
     }
 
 
-    void SComboBase::OnDropDown( SDropDownWnd *pDropDown )
+    void SComboBase::OnCreateDropDown( SDropDownWnd *pDropDown )
     {
         m_dwBtnState=WndState_PushDown;
         CRect rcBtn;
         GetDropBtnRect(&rcBtn);
         InvalidateRect(rcBtn);
-        ((CSimpleWnd*)pDropDown)->SetCapture();
     }
 
-    void SComboBase::OnCloseUp(SDropDownWnd *pDropDown,UINT uCode)
+    void SComboBase::OnDestroyDropDown(SDropDownWnd *pDropDown)
     {
         if (!m_bDropdown && m_pEdit)
         {
@@ -257,7 +256,7 @@ namespace SOUI
         ScreenToClient(GetContainer()->GetHostHwnd(),&pt);
         ::PostMessage(GetContainer()->GetHostHwnd(),WM_MOUSEMOVE,0,MAKELPARAM(pt.x,pt.y));
 
-        if(uCode==IDOK)
+        if(pDropDown->GetExitCode()==IDOK)
         {
             OnSelChanged();
         }
@@ -311,6 +310,8 @@ namespace SOUI
                 m_pDropDownWnd->AnimateHostWindow(m_nAnimTime,AW_SLIDE|(bDown?AW_VER_POSITIVE:AW_VER_NEGATIVE));
             else
                 m_pDropDownWnd->SetWindowPos(HWND_TOP,0,0,0,0,SWP_SHOWWINDOW|SWP_NOMOVE|SWP_NOZORDER|SWP_NOSIZE|SWP_NOACTIVATE);
+                
+            m_pDropDownWnd->CSimpleWnd::SetCapture();
         }
     }
 

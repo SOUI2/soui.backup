@@ -44,9 +44,9 @@ namespace SOUI
         return nDropHeight;    
     }
 
-    void SComboView::OnDropDown( SDropDownWnd *pDropDown)
+    void SComboView::OnCreateDropDown( SDropDownWnd *pDropDown)
     {
-        __super::OnDropDown(pDropDown);
+        __super::OnCreateDropDown(pDropDown);
         pDropDown->InsertChild(m_pListBox);
         pDropDown->UpdateChildrenPosition();
         
@@ -55,12 +55,12 @@ namespace SOUI
         m_pListBox->EnsureVisible(GetCurSel());
     }
 
-    void SComboView::OnCloseUp( SDropDownWnd *pDropDown ,UINT uCode)
+    void SComboView::OnDestroyDropDown( SDropDownWnd *pDropDown)
     {
         pDropDown->RemoveChild(m_pListBox);
         m_pListBox->SetVisible(FALSE);
         m_pListBox->SetContainer(GetContainer());
-        __super::OnCloseUp(pDropDown,uCode);
+        __super::OnDestroyDropDown(pDropDown);
     }
 
     void SComboView::OnSelChanged()

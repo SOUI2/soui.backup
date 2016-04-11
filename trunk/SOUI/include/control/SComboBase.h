@@ -189,23 +189,23 @@ namespace SOUI
         virtual SWindow* GetDropDownOwner();
 
         /**
-        * SComboBoxBase::OnDropDown
+        * SComboBoxBase::OnCreateDropDown
         * @brief    下拉事件
         * @param     SDropDownWnd *pDropDown -- 下拉窗口指针
         *
         * Describe  下拉事件
         */
-        virtual void OnDropDown(SDropDownWnd *pDropDown);
+        virtual void OnCreateDropDown(SDropDownWnd *pDropDown);
 
         /**
-        * SComboBoxBase::OnCloseUp
+        * SComboBoxBase::OnDestroyDropDown
         * @brief    下拉事件
         * @param     SDropDownWnd *pDropDown -- 下拉窗口指针
         * @param     UINT uCode -- 消息码
         *
         * Describe  下拉关闭
         */
-        virtual void OnCloseUp(SDropDownWnd *pDropDown,UINT uCode);
+        virtual void OnDestroyDropDown(SDropDownWnd *pDropDown);
 
         /**
         * SComboBoxBase::OnSelChanged
