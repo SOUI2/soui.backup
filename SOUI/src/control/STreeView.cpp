@@ -392,7 +392,9 @@ namespace SOUI
 		, m_bWantTab(FALSE)
 	{
 		m_bFocusable = TRUE;
-		m_evtSet.addEvent(EVENTID(EventTVSelChanged));
+		
+		m_evtSet.addEvent(EVENTID(EventTVSelChanging));
+        m_evtSet.addEvent(EVENTID(EventTVSelChanged));
 		m_observer.Attach(new STreeViewDataSetObserver(this));
 		m_tvItemLocator.Attach(new STreeViewItemLocator);
 	}

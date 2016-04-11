@@ -45,6 +45,7 @@ namespace SOUI
         m_bFocusable = TRUE;
         m_observer.Attach(new SListViewDataSetObserver(this));
         m_dwUpdateInterval= 40;
+        m_evtSet.addEvent(EVENTID(EventLVSelChanging));
         m_evtSet.addEvent(EVENTID(EventLVSelChanged));
     }
 
@@ -587,23 +588,40 @@ namespace SOUI
         int iLastVisible = m_iFirstVisible + m_lstItems.GetCount();
 
         if(iItem>=iFirstVisible && iItem<iLastVisible)
-            return;
+        {
+            if(iItem == iFirstVisible)
+            {
+                int pos = m_lvItemLocator->Item2Position(iItem);
+                OnScroll(TRUE,SB_THUMBPOSITION,pos);
+            }else if(iItem == iLastVisible-1)
+            {
+                if(iItem == m_adapter->getCount()-1)
+                    OnScroll(TRUE,SB_BOTTOM,0);
+                else
+                {
+                    int pos = m_lvItemLocator->Item2Position(iItem+1) - m_siVer.nPage;
+                    OnScroll(TRUE,SB_THUMBPOSITION,pos);
+                }
+            }
 
-        int pos = m_lvItemLocator->Item2Position(iItem);
+            return;
+        }
+
 
         if(iItem < iFirstVisible)
         {//scroll up
+            int pos = m_lvItemLocator->Item2Position(iItem);
             OnScroll(TRUE,SB_THUMBPOSITION,pos);
         }else // if(iItem >= iLastVisible)
         {//scroll down
-            int iTop = iItem;
-            int pos2 = pos;
-            int topSize = m_siVer.nPage - m_lvItemLocator->GetItemHeight(iItem);
-            while(iTop>=0 && (pos - pos2) < topSize)
+            if(iItem == m_adapter->getCount()-1)
             {
-                pos2 = m_lvItemLocator->Item2Position(--iTop);
+                OnScroll(TRUE,SB_BOTTOM,0);
+            }else
+            {
+                int pos = m_lvItemLocator->Item2Position(iItem+1)-m_siVer.nPage;
+                OnScroll(TRUE,SB_THUMBPOSITION,pos);
             }
-            OnScroll(TRUE,SB_THUMBPOSITION,pos2);
         }
     }
 

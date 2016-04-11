@@ -41,6 +41,7 @@ STileView::STileView()
     m_bFocusable = TRUE;
     m_observer.Attach(new STileViewDataSetObserver(this));
     m_dwUpdateInterval = 40;
+    m_evtSet.addEvent(EVENTID(EventLVSelChanging));
     m_evtSet.addEvent(EVENTID(EventLVSelChanged));
 }
 
