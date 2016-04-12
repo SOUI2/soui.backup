@@ -19,6 +19,7 @@ SUBDIRS += PcManager
 SUBDIRS += SoTool
 SUBDIRS += mhook
 SUBDIRS += smiley
+SUBDIRS += mclistview_demo
 
 soui.depends += utilities soui-sys-resource
 
@@ -29,3 +30,4 @@ qqlogin.depends += soui
 souispy.depends += soui
 PcManager.depends += soui
 SoTool.depends += soui
+mclistview_demo.depends += soui

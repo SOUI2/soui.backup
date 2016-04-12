@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="360Preview"
-	ProjectGUID="{A6E02C40-2AD4-3919-8B68-26228414DFC3}"
+	Name="mclistview_demo"
+	ProjectGUID="{9431B766-485B-3688-8C3E-7C32EA85C3B4}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -16,21 +16,21 @@
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="1"
-			IntermediateDirectory="..\obj\debug\360Preview\"
+			IntermediateDirectory="..\obj\debug\mclistview_demo\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
-				AssemblerListingLocation="..\obj\debug\360Preview\"
+				AssemblerListingLocation="..\obj\debug\mclistview_demo\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="1"
 				ForcedIncludeFiles="stdafx.h"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\obj\debug\360Preview\"
+				ObjectFile="..\obj\debug\mclistview_demo\"
 				Optimization ="4"
-				PrecompiledHeaderFile="$(IntDir)\360Previewd.pch"
+				PrecompiledHeaderFile="$(IntDir)\mclistview_demod.pch"
 				PrecompiledHeaderThrough="stdafx.h"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
 				ProgramDataBaseFileName="$(IntDir)"
@@ -50,7 +50,7 @@
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkTimeCodeGeneration="0"
-				OutputFile="$(OutDir)\360Previewd.exe"
+				OutputFile="$(OutDir)\mclistview_demod.exe"
 				ProgramDatabaseFile=""
 				SubSystem="2"
 				SuppressStartupBanner="true"
@@ -78,21 +78,21 @@
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
 			ConfigurationType="1"
-			IntermediateDirectory="..\obj\release\360Preview\"
+			IntermediateDirectory="..\obj\release\mclistview_demo\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\utilities\include&quot;,&quot;..\soui\include&quot;,&quot;..\components&quot;,&quot;..\config&quot;,..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
-				AssemblerListingLocation="..\obj\release\360Preview\"
+				AssemblerListingLocation="..\obj\release\mclistview_demo\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="1"
 				ForcedIncludeFiles="stdafx.h"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\obj\release\360Preview\"
+				ObjectFile="..\obj\release\mclistview_demo\"
 				Optimization ="1"
-				PrecompiledHeaderFile="$(IntDir)\360Preview.pch"
+				PrecompiledHeaderFile="$(IntDir)\mclistview_demo.pch"
 				PrecompiledHeaderThrough="stdafx.h"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,NDEBUG"
 				ProgramDataBaseFileName="$(IntDir)"
@@ -115,7 +115,7 @@
 				LinkIncremental="1"
 				LinkTimeCodeGeneration="0"
 				OptimizeReferences="2"
-				OutputFile="$(OutDir)\360Preview.exe"
+				OutputFile="$(OutDir)\mclistview_demo.exe"
 				ProgramDatabaseFile=""
 				SubSystem="2"
 				SuppressStartupBanner="true"
@@ -144,24 +144,22 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="360Preview.cpp" />
+				RelativePath="SSearchDropdownList.cpp" />
 			<File
-				RelativePath="MainDlg.cpp" />
+				RelativePath="StudentSmsDlg.cpp" />
 			<File
-				RelativePath="SImageSwitcher.cpp" />
-			<File
-				RelativePath="SToolbox.cpp" />
+				RelativePath="mclistview_demo.cpp" />
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="MainDlg.h" />
+				RelativePath="SSearchDropdownList.h" />
 			<File
-				RelativePath="SImageSwitcher.h" />
+				RelativePath="StudentSmsDlg.h" />
 			<File
-				RelativePath="SToolbox.h" />
+				RelativePath="res\resource.h" />
 			<File
 				RelativePath="resource.h" />
 			<File
@@ -209,7 +207,7 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="360Preview.rc" />
+			RelativePath="mclistview_demo.rc" />
 	</Files>
 	<Globals>
 	</Globals>

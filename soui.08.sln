@@ -114,6 +114,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "smiley", "smiley\smiley.vcp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "log4z", "components\log4z\log4z.vcproj", "{3365DBCE-679B-34FE-A347-E1E69217BBF0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mclistview_demo", "mclistview_demo\mclistview_demo.vcproj", "{9431B766-485B-3688-8C3E-7C32EA85C3B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -222,6 +224,10 @@ Global
 		{3365DBCE-679B-34FE-A347-E1E69217BBF0}.Debug|Win32.Build.0 = Debug|Win32
 		{3365DBCE-679B-34FE-A347-E1E69217BBF0}.Release|Win32.ActiveCfg = Release|Win32
 		{3365DBCE-679B-34FE-A347-E1E69217BBF0}.Release|Win32.Build.0 = Release|Win32
+		{9431B766-485B-3688-8C3E-7C32EA85C3B4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9431B766-485B-3688-8C3E-7C32EA85C3B4}.Debug|Win32.Build.0 = Debug|Win32
+		{9431B766-485B-3688-8C3E-7C32EA85C3B4}.Release|Win32.ActiveCfg = Release|Win32
+		{9431B766-485B-3688-8C3E-7C32EA85C3B4}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -251,5 +257,6 @@ Global
 		{307EFC7E-DD20-3E9D-8097-54A9D5C4E35D} = {8506B0EA-AB34-4358-8054-4516A081C148}
 		{3CFC2B4F-8F78-3631-AADA-C728AB7F3DE5} = {8506B0EA-AB34-4358-8054-4516A081C148}
 		{A6E02C40-2AD4-3919-8B68-26228414DFC3} = {8506B0EA-AB34-4358-8054-4516A081C148}
+		{9431B766-485B-3688-8C3E-7C32EA85C3B4} = {8506B0EA-AB34-4358-8054-4516A081C148}
 	EndGlobalSection
 EndGlobal

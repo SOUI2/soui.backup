@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skin>
+  <imglist name="skin_sms_search" src="img:sms.search"/>
+  <imglist name="skin_sms_record" src="img:sms.record"/>
+  <imglist name="skin_sms_help" src="img:sms.help"/>
+  <colorrect name="skin_sms_header" normal="@color/sms_header"/>
+  <imgframe name="bg_setting" src="img:bg.setting" margin="2,37,2,2"/>
+  <imgframe name="cmn_border" src="img:cmn.border" margin="2,2,2,2" states="2"/>
+  <scrollbar name="cmn_scrollbar" src="img:cmn.scrollbar" margin="2"/>
+</skin>
