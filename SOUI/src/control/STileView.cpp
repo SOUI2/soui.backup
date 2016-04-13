@@ -152,6 +152,9 @@ void STileView::onDataSetChanged()
     {
         m_tvItemLocator->OnDataSetChanged();
     }
+    if(m_iSelItem != -1 && m_iSelItem >= m_adapter->getCount())
+        m_iSelItem = -1;
+
     UpdateScrollBar();
     UpdateVisibleItems();
 }
@@ -311,9 +314,10 @@ void STileView::UpdateVisibleItems()
         {
             continue;
         }
+        ii.pItem->GetEventSet()->setMutedState(true);
         if(ii.pItem == m_pHoverItem)
         {
-            m_pHoverItem->DoFrameEvent(WM_MOUSELEAVE, 0, 0);
+            ii.pItem->DoFrameEvent(WM_MOUSELEAVE, 0, 0);
             m_pHoverItem = NULL;
         }
         if(ii.pItem->GetItemIndex() == m_iSelItem)
@@ -321,6 +325,8 @@ void STileView::UpdateVisibleItems()
             ii.pItem->ModifyItemState(0, WndState_Check);
             ii.pItem->GetFocusManager()->SetFocusedHwnd(0);
         }
+        ii.pItem->GetEventSet()->setMutedState(false);
+
         ii.pItem->SetVisible(FALSE);
         m_itemRecycle[ii.nType]->AddTail(ii.pItem);
     }
