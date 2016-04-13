@@ -503,6 +503,7 @@ void CStudentSmsDlg::OnSearchFillList(EventArgs *e)
     {
         SListView *pLvSearch = e2->pDropdownWnd->FindChildByID2<SListView>(R.id.lv_dropdown);
         pLvSearch->SetAdapter(pSearchAdapter);
+        pLvSearch->SetSel(0);
         e2->bPopup = true;
     }
     pSearchAdapter->Release();
@@ -513,6 +514,8 @@ void CStudentSmsDlg::OnSearchValue(EventArgs *e)
     EventDropdownListSelected * e2 = sobj_cast<EventDropdownListSelected>(e);
     SListView *pListView = e2->pDropdownWnd->FindChildByID2<SListView>(R.id.lv_dropdown);
     SStudentSearchAdapter *pAdapter = (SStudentSearchAdapter*)pListView->GetAdapter();
+    if(e2->nValue == -1) return;
+    
     SStudentSearchAdapter::StudentInfo2 searchResult = pAdapter->GetItem(e2->nValue);
     CStudentAdapter * pStudentAdapter = (CStudentAdapter*)m_tvStudent->GetAdapter();
     int iItem = pStudentAdapter->EnsureKeyVisible(searchResult.bExpired,searchResult.nPos);
