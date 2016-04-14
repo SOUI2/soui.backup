@@ -24,19 +24,28 @@ namespace SOUI
 	void SImageSwitcher::OnPaint(IRenderTarget *pRT)
 	{
         CRect rcWnd = GetClientRect();
-		for(UINT i = 0; i < m_lstImages.GetCount(); i++)
+		if (1 == m_lstImages.GetCount())
 		{
-            IBitmap *pBmp = m_lstImages[i];
-            SIZE szImg = pBmp->Size();
-            CRect rct;
+			IBitmap *pBmp = m_lstImages[0];
+			SIZE szImg = pBmp->Size();
+			pRT->DrawBitmapEx(rcWnd,pBmp,CRect(CPoint(),szImg),EM_STRETCH);
+		}
+		else
+		{
+			for(UINT i = 0; i < m_lstImages.GetCount(); i++)
+			{
+				IBitmap *pBmp = m_lstImages[i];
+				SIZE szImg = pBmp->Size();
+				CRect rct;
 
-            rct.left = (i*rcWnd.Width() - (m_iSelected * rcWnd.Width())+m_iMoveWidth) ;
-            rct.right = rct.left + rcWnd.Width();
-            rct.top = rcWnd.top +2; 
-            rct.bottom = rct.top + rcWnd.Height();
+				rct.left = rcWnd.left + (i*rcWnd.Width() - (m_iSelected * rcWnd.Width())+m_iMoveWidth) ;
+				rct.right = rct.left + rcWnd.Width();
+				rct.top = rcWnd.top; 
+				rct.bottom = rct.top + rcWnd.Height();
 
-            pRT->DrawBitmapEx(rct,pBmp,CRect(CPoint(),szImg),EM_STRETCH);
-        }
+				pRT->DrawBitmapEx(rct,pBmp,CRect(CPoint(),szImg),EM_STRETCH);
+			}
+		}
 	}
 	
 	void  SImageSwitcher::Switch(int iSelect)
