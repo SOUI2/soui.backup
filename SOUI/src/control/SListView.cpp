@@ -41,6 +41,7 @@ namespace SOUI
         ,m_pSkinDivider(NULL)
         ,m_nDividerSize(0)
         ,m_bWantTab(FALSE)
+        ,m_bDataSetInvalidated(FALSE)
     {
         m_bFocusable = TRUE;
         m_observer.Attach(new SListViewDataSetObserver(this));
@@ -96,6 +97,7 @@ namespace SOUI
             m_lvItemLocator->SetAdapter(adapter);
         if(m_adapter) 
         {
+            m_adapter->InitByTemplate(m_xmlTemplate.first_child());
             m_adapter->registerDataSetObserver(m_observer);
             for(int i=0;i<m_adapter->getViewTypeCount();i++)
             {
@@ -155,11 +157,18 @@ namespace SOUI
 
     void SListView::onDataSetInvalidated()
     {
-        UpdateVisibleItems();
+        m_bDataSetInvalidated = TRUE;
+        Invalidate();
     }
 
     void SListView::OnPaint(IRenderTarget *pRT)
     {
+        if(m_bDataSetInvalidated)
+        {
+            UpdateVisibleItems();
+            m_bDataSetInvalidated = FALSE;
+        }
+        
         SPainter duiDC;
         BeforePaint(pRT,duiDC);
 
@@ -230,7 +239,8 @@ namespace SOUI
         int iNewFirstVisible = m_lvItemLocator->Position2Item(m_siVer.nPos);
         int iNewLastVisible = iNewFirstVisible;
         int pos = m_lvItemLocator->Item2Position(iNewFirstVisible);
-
+        int iHoverItem = m_pHoverItem?(int)m_pHoverItem->GetItemIndex():-1;
+        m_pHoverItem = NULL;
 
         ItemInfo *pItemInfos = new ItemInfo[m_lstItems.GetCount()];
         SPOSITION spos = m_lstItems.GetHeadPosition();
@@ -246,8 +256,12 @@ namespace SOUI
         {
             while(pos < m_siVer.nPos + (int)m_siVer.nPage && iNewLastVisible < m_adapter->getCount())
             {
+                DWORD dwState = WndState_Normal;
+                if(iHoverItem == iNewLastVisible) dwState |= WndState_Hover;
+                if(m_iSelItem == iNewLastVisible) dwState |= WndState_Check;
+
                 ItemInfo ii={NULL,-1};
-                ii.nType = m_adapter->getItemViewType(iNewLastVisible);
+                ii.nType = m_adapter->getItemViewType(iNewLastVisible,dwState);
                 if(iNewLastVisible>=iOldFirstVisible && iNewLastVisible < iOldLastVisible)
                 {//use the old visible item
                     int iItem = iNewLastVisible-iOldFirstVisible;//(iNewLastVisible-iNewFirstVisible) + (iNewFirstVisible-iOldFirstVisible);
@@ -279,21 +293,25 @@ namespace SOUI
                     rcItem.bottom=m_lvItemLocator->GetItemHeight(iNewLastVisible);
                     ii.pItem->Move(rcItem);
                 }
+
+                //设置状态，同时暂时禁止应用响应statechanged事件。
+                ii.pItem->GetEventSet()->setMutedState(true);
+                ii.pItem->ModifyItemState(dwState,0);
+                ii.pItem->GetEventSet()->setMutedState(false);
+                if(dwState & WndState_Hover)
+                    m_pHoverItem = ii.pItem;
+
                 m_adapter->getView(iNewLastVisible,ii.pItem,m_xmlTemplate.first_child());
                 if(!m_lvItemLocator->IsFixHeight())
                 {
                     rcItem.bottom=0;
-                    CSize szItem = ii.pItem->GetDesiredSize(rcItem);
+                    CSize szItem = m_adapter->getViewDesiredSize(iNewLastVisible,ii.pItem,&rcItem);
                     rcItem.bottom = rcItem.top + szItem.cy;
                     ii.pItem->Move(rcItem);
                     m_lvItemLocator->SetItemHeight(iNewLastVisible,szItem.cy);
                 }                
                 ii.pItem->UpdateLayout();
-                if(iNewLastVisible == m_iSelItem)
-                {
-                    ii.pItem->ModifyItemState(WndState_Check,0);
-                }
-                
+                    
                 m_lstItems.AddTail(ii);
                 pos += rcItem.bottom + m_lvItemLocator->GetDividerSize();
 
@@ -307,18 +325,17 @@ namespace SOUI
             ItemInfo ii = pItemInfos[i];
             if(!ii.pItem) continue;
             ii.pItem->GetEventSet()->setMutedState(true);
-            if(ii.pItem == m_pHoverItem)
+            if(ii.pItem->GetState() & WndState_Hover)
             {
                 ii.pItem->DoFrameEvent(WM_MOUSELEAVE,0,0);
-                m_pHoverItem=NULL;
             }
-            if(ii.pItem->GetItemIndex() == m_iSelItem)
+            if(ii.pItem->GetState() & WndState_Check)
             {
                 ii.pItem->ModifyItemState(0,WndState_Check);
                 ii.pItem->GetFocusManager()->SetFocusedHwnd(0);
             }
-            ii.pItem->GetEventSet()->setMutedState(false);
             ii.pItem->SetVisible(FALSE);
+            ii.pItem->GetEventSet()->setMutedState(false);
             m_itemRecycle[ii.nType]->AddTail(ii.pItem);    
         }
         delete [] pItemInfos;

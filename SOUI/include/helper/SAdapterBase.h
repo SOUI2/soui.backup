@@ -104,6 +104,12 @@ namespace SOUI
         {
             return 0;
         }
+        
+        //增加这个函数来自动转换不需要处理状态变化的View
+        virtual int getItemViewType(int position,DWORD dwState)
+        {
+            return getItemViewType(position);
+        }
 
         virtual int getViewTypeCount()
         {
@@ -121,6 +127,16 @@ namespace SOUI
         
         virtual SStringT getItemDesc(int position){
             return SStringT();
+        }
+        
+        virtual void InitByTemplate(pugi::xml_node xmlTemplate)
+        {
+        
+        }
+        
+        virtual SIZE getViewDesiredSize(int position,SWindow *pItem, LPCRECT prcContainer)
+        {
+            return pItem->GetDesiredSize(prcContainer);
         }
     protected:
         SLvObserverMgr    m_obzMgr;
@@ -254,6 +270,10 @@ namespace SOUI
             m_obzMgr.unregisterObserver(observer);
         }
 
+        virtual void InitByTemplate(pugi::xml_node xmlTemplate)
+        {
+
+        }
 
     protected:
         STvObserverMgr    m_obzMgr;

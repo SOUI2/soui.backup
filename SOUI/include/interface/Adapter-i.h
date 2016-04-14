@@ -61,7 +61,7 @@ namespace SOUI
         *        this view to display the correct data, this method can create a new view.
         *        Heterogeneous lists can specify their number of view types, so that this View is
         *        always of the right type (see {@link #getViewTypeCount()} and
-        *        {@link #getItemViewType(int)}).
+        *        {@link #getItemViewType(int,DWORD)}).
         * @param xmlTemplate the xml template provided by its owner
         */
         virtual void getView(int position, SWindow * pItem, pugi::xml_node xmlTemplate) PURE;
@@ -72,13 +72,14 @@ namespace SOUI
         * 
         * @param position The position of the item within the adapter's data set whose view type we
         *        want.
+        * @param dwState the state of view.
         * @return An integer representing the type of View. Two views should share the same type if one
         *         can be converted to the other in {@link #getView}. Note: Integers must be in the
         *         range 0 to {@link #getViewTypeCount} - 1. {@link #IGNORE_ITEM_VIEW_TYPE} can
         *         also be returned.
         * @see #IGNORE_ITEM_VIEW_TYPE
         */
-        virtual int getItemViewType(int position) PURE;
+        virtual int getItemViewType(int position,DWORD dwState) PURE;
 
         /**
         * <p>
@@ -95,6 +96,8 @@ namespace SOUI
         * @return The number of types of Views that will be created by this adapter
         */
         virtual int getViewTypeCount() PURE;
+
+        virtual SIZE getViewDesiredSize(int position,SWindow *pItem, LPCRECT prcContainer) PURE;
 
         /**
         * @return true if this adapter doesn't contain any data.  This is used to determine
@@ -113,6 +116,12 @@ namespace SOUI
         * @return a string object that associate with the specified item.
         */
         virtual SStringT getItemDesc(int positoin) PURE;
+        
+        /**
+        * init adapter from the specified template xml data
+        */
+        virtual void InitByTemplate(pugi::xml_node xmlTemplate) PURE;
+        
     };
  
     enum SHDSORTFLAG;
@@ -225,7 +234,7 @@ namespace SOUI
         *        this view to display the correct data, this method can create a new view.
         *        Heterogeneous lists can specify their number of view types, so that this View is
         *        always of the right type (see {@link #getViewTypeCount()} and
-        *        {@link #getItemViewType(int)}).
+        *        {@link #getItemViewType(int,DWORD)}).
         * @param xmlTemplate the xml template provided by its owner
         */
         virtual void getView( HTREEITEM hItem, SWindow * pContainer, pugi::xml_node xmlTemplate) PURE;
@@ -238,5 +247,10 @@ namespace SOUI
         
         //定义行宽度和treeview客户区宽度相同
         virtual bool isViewWidthMatchParent() const PURE;
+        
+        /**
+        * init adapter from the specified template xml data
+        */
+        virtual void InitByTemplate(pugi::xml_node xmlTemplate) PURE;
     };
 }

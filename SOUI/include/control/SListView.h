@@ -115,6 +115,7 @@ namespace SOUI
         
         int                             m_iSelItem;
         SItemPanel*                     m_pHoverItem;
+        BOOL                            m_bDataSetInvalidated;
         
         SArray<SList<SItemPanel*> *>    m_itemRecycle;//item回收站,每一种样式在回收站中保持一个列表，以便重复利用
                 

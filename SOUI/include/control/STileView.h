@@ -128,5 +128,6 @@ protected:
     pugi::xml_document              m_xmlTemplate;
     int                             m_nMarginSize;
     BOOL                            m_bWantTab;
+    BOOL                            m_bDatasetInvalidated;
 };
 }
