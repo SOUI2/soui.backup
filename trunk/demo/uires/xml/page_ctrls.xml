@@ -78,15 +78,19 @@
         </page>
         <page title="listview(flex)">
           <listview pos="5,0,-5,-5" name="lv_test_flex" dividerSize="5">
-            <template defHeight="50">
+            <template defHeight="50" oddHeight="50" evenHeight="60" evenSelHeight="90">
               <itemOdd colorHover="#cccccc" colorSelected="#0000ff">
                 <button pos="10,5,@150,@25" name="btn_test" tip="click the button to see how to writing the response function">btn</button>
-                <text pos="10,[10" colorText="#ff0000" multiLines="1" maxWidth="500" name="txt_dream"/>
+                <text pos="10,[0" colorText="#ff0000" multiLines="1" maxWidth="500" colorText="@color/red">text in odd item</text>
               </itemOdd>
               <itemEven colorHover="#cccccc" colorSelected="#0000ff">
                 <button pos="10,5,@150,@25" name="btn_test" tip="click the button to see how to writing the response function">btn</button>
-                <text pos="20,[20" colorText="#000000">text item of even</text>
+                <text pos="20,[0" colorText="#000000">text in even item</text>
               </itemEven>
+              <itemEvenHover colorHover="#cccccc" colorSelected="#0000ff">
+                <button pos="10,5,@150,@25" name="btn_test" tip="click the button to see how to writing the response function">btn</button>
+                <text pos="20,[0" colorText="#000000" multilines="1">text in even item been hovered.\n the second line</text>
+              </itemEvenHover>
             </template>
           </listview>
 

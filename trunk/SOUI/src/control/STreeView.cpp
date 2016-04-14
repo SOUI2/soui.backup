@@ -441,6 +441,8 @@ namespace SOUI
 		
 		if(m_tvItemLocator)
 		{
+            m_adapter->InitByTemplate(m_xmlTemplate.first_child());
+
 		    m_tvItemLocator->SetAdapter(adapter);
 		    
             for(int i=0;i<m_adapter->getViewTypeCount();i++)

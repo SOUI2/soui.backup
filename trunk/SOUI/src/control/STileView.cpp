@@ -95,6 +95,7 @@ BOOL STileView::SetAdapter(ILvAdapter *adapter)
     }
     if(m_adapter)
     {
+        m_adapter->InitByTemplate(m_xmlTemplate.first_child());
         m_adapter->registerDataSetObserver(m_observer);
         for(int i = 0; i < m_adapter->getViewTypeCount(); i++)
         {
@@ -161,11 +162,17 @@ void STileView::onDataSetChanged()
 
 void STileView::onDataSetInvalidated()
 {
-    UpdateVisibleItems();
+    m_bDatasetInvalidated = TRUE;
+    Invalidate();
 }
 
 void STileView::OnPaint(IRenderTarget *pRT)
 {
+    if(m_bDatasetInvalidated)
+    {
+        UpdateVisibleItems();
+        m_bDatasetInvalidated=FALSE;
+    }
     SPainter duiDC;
     BeforePaint(pRT, duiDC);
     
@@ -240,7 +247,8 @@ void STileView::UpdateVisibleItems()
     int iNewLastVisible = iNewFirstVisible;
     
     int pos = m_tvItemLocator->Item2Position(iNewFirstVisible);
-    
+    int iHoverItem = m_pHoverItem?(int)m_pHoverItem->GetItemIndex():-1;
+
     ItemInfo *pItemInfos = new ItemInfo[m_lstItems.GetCount()];
     SPOSITION spos = m_lstItems.GetHeadPosition();
     int i = 0;
@@ -255,8 +263,12 @@ void STileView::UpdateVisibleItems()
     {
         while(pos < m_siVer.nPos + (int)m_siVer.nPage && iNewLastVisible < m_adapter->getCount())
         {
+            DWORD dwState = WndState_Normal;
+            if(iHoverItem == iNewLastVisible) dwState |= WndState_Hover;
+            if(m_iSelItem == iNewLastVisible) dwState |= WndState_Check;
+
             ItemInfo ii = {NULL, -1};
-            ii.nType = m_adapter->getItemViewType(iNewLastVisible);
+            ii.nType = m_adapter->getItemViewType(iNewLastVisible,dwState);
             if(iNewLastVisible >= iOldFirstVisible && iNewLastVisible < iOldLastVisible)
             {
                 //use the old visible item
@@ -288,6 +300,12 @@ void STileView::UpdateVisibleItems()
             CRect rcItem = m_tvItemLocator->GetItemRect(iNewLastVisible);
             rcItem.MoveToXY(0, 0);
             ii.pItem->Move(rcItem);
+
+            //设置状态，同时暂时禁止应用响应statechanged事件。
+            ii.pItem->GetEventSet()->setMutedState(true);
+            ii.pItem->ModifyItemState(dwState,0);
+            ii.pItem->GetEventSet()->setMutedState(false);
+
             m_adapter->getView(iNewLastVisible, ii.pItem, m_xmlTemplate.first_child());
             ii.pItem->UpdateLayout();
             if(iNewLastVisible == m_iSelItem)
