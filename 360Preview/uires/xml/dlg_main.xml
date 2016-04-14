@@ -6,8 +6,9 @@
     <imgframe name="skin_bg_guard" src="img:IMG_BG_GUARD" />
     <imgframe name="skin_bg_ucenter" src="img:IMG_BG_UCENTER" />
 
-    <imageSwitcher name="vw_switch" pos="1,3,-1,-1" skinlightlevel="skin_bg_light_level" 
+    <imageSwitcher name="vw_switch" pos="1,3,-1,-1"
                    images="img:IMG_BG_SOFTMGR|img:IMG_BG_DESKTOP|img:IMG_BG_DIAGNOSCAN|img:IMG_BG_GUARD|img:IMG_BG_UCENTER">
+      <img pos="0,0,-0,-0" skin="skin_bg_light_level"/>
       <caption pos="0,0,-0,30">
         <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-40,2" tip="close" animate="1"/>
       </caption>
