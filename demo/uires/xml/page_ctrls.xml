@@ -81,7 +81,7 @@
             <template defHeight="50" oddHeight="50" evenHeight="60" evenSelHeight="90">
               <itemOdd colorHover="#cccccc" colorSelected="#0000ff">
                 <button pos="10,5,@150,@25" name="btn_test" tip="click the button to see how to writing the response function">btn</button>
-                <text pos="10,[0" colorText="#ff0000" multiLines="1" maxWidth="500" colorText="@color/red">text in odd item</text>
+                <text pos="10,[0" multiLines="1" maxWidth="500" colorText="@color/red">text in odd item</text>
               </itemOdd>
               <itemEven colorHover="#cccccc" colorSelected="#0000ff">
                 <button pos="10,5,@150,@25" name="btn_test" tip="click the button to see how to writing the response function">btn</button>
@@ -227,6 +227,7 @@
           <item text="item6" icon="0" data="100"/>
         </items>
       </listbox>
+      <button pos="[10,{0,@100,@30" name="btn_init_listbox">init listbox</button>
     </page>
     <page title="treectrl">
       <include src="layout:treectrl"/>
