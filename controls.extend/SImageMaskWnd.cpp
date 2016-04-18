@@ -85,7 +85,7 @@ namespace SOUI
             BYTE byAlpha = *pSrc;
             pSrc += 4;
             //源半透明，mask不透明时使用源的半透明属性
-            if(pDst[3] == 0xff || byAlpha == 0)
+            if(pDst[3] == 0xff || (pDst[3]!=0xFF &&byAlpha == 0))
             {//源不透明,或者mask全透明
                 *pDst++ = ((*pDst) * byAlpha)>>8;//做premultiply
                 *pDst++ = ((*pDst) * byAlpha)>>8;//做premultiply
