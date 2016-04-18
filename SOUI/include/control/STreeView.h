@@ -132,8 +132,8 @@ namespace SOUI
 		BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 		LRESULT OnMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
 
-		void OnKillFocus();
-		void OnSetFocus();
+		void OnKillFocus(SWND wndFocus);
+		void OnSetFocus(SWND wndOld);
 		
 
 		SOUI_MSG_MAP_BEGIN()

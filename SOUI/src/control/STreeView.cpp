@@ -1017,16 +1017,16 @@ namespace SOUI
 		return __super::OnMouseWheel(nFlags, zDelta, pt);
 	}
 	
-	void STreeView::OnKillFocus()
+	void STreeView::OnKillFocus(SWND wndFocus)
 	{
-		__super::OnKillFocus();
+		__super::OnKillFocus(wndFocus);
 		SItemPanel * itemPanel = GetItemPanel(m_hSelected);
 		if (itemPanel) itemPanel->GetFocusManager()->StoreFocusedView();
 	}
 
-	void STreeView::OnSetFocus()
+	void STreeView::OnSetFocus(SWND wndOld)
 	{
-		__super::OnSetFocus();
+		__super::OnSetFocus(wndOld);
 		SItemPanel * itemPanel = GetItemPanel(m_hSelected);
 		if (itemPanel)
 		{

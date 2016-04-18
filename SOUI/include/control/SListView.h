@@ -76,9 +76,9 @@ namespace SOUI
 
         BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
         
-        void OnKillFocus();
+        void OnKillFocus(SWND wndFocus);
         
-        void OnSetFocus();
+        void OnSetFocus(SWND wndOld);
 
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)

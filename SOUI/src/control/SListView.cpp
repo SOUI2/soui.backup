@@ -775,9 +775,9 @@ namespace SOUI
         else return SC_WANTARROWS|SC_WANTSYSKEY;
     }
 
-    void SListView::OnKillFocus()
+    void SListView::OnKillFocus(SWND wndFocus)
     {
-        __super::OnKillFocus();
+        __super::OnKillFocus(wndFocus);
         
         if(m_iSelItem==-1) return;
         
@@ -785,9 +785,9 @@ namespace SOUI
         if(pSelPanel) pSelPanel->GetFocusManager()->StoreFocusedView();
     }
 
-    void SListView::OnSetFocus()
+    void SListView::OnSetFocus(SWND wndOld)
     {
-        __super::OnSetFocus();
+        __super::OnSetFocus(wndOld);
         if(m_iSelItem==-1) return;
 
         SItemPanel *pSelPanel = GetItemPanel(m_iSelItem);
