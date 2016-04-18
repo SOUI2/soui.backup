@@ -28,8 +28,8 @@ namespace SOUI
             delete this;
         }
         void OnChar(UINT nChar,UINT nRepCnt,UINT nFlags);
-        void OnSetFocus();
-        void OnKillFocus();
+        void OnSetFocus(SWND wndOld);
+        void OnKillFocus(SWND wndFocus);
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_CHAR(OnChar)
             MSG_WM_SETFOCUS_EX(OnSetFocus)
@@ -67,17 +67,17 @@ namespace SOUI
 	}
 	
 
-    void SEditIP::OnSetFocus()
+    void SEditIP::OnSetFocus(SWND wndOld)
     {
-        __super::OnSetFocus();
+        __super::OnSetFocus(wndOld);
         HWND hHost = GetContainer()->GetHostHwnd();
         m_hImcCopy = ImmGetContext(hHost);
         ImmAssociateContext(hHost,NULL);
     }
 
-    void SEditIP::OnKillFocus()
+    void SEditIP::OnKillFocus(SWND wndFocus)
     {
-        __super::OnKillFocus();
+        __super::OnKillFocus(wndFocus);
         HWND hHost = GetContainer()->GetHostHwnd();
         ImmAssociateContext(hHost,m_hImcCopy);
         m_hImcCopy = 0;

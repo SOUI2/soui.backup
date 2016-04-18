@@ -839,16 +839,16 @@ lblEnd:
 		}
 	}
 
-	void SListCtrlEx::OnSetFocus()
+	void SListCtrlEx::OnSetFocus(SWND wndOld)
 	{
-		__super::OnSetFocus();
+		__super::OnSetFocus(wndOld);
 		if(m_iSelItem!=-1) m_arrItems[m_iSelItem]->DoFrameEvent(WM_SETFOCUS,0,0);
 
 	}
 
-	void SListCtrlEx::OnKillFocus()
+	void SListCtrlEx::OnKillFocus(SWND wndFocus)
 	{
-		__super::OnKillFocus();
+		__super::OnKillFocus(wndFocus);
 		if(m_iSelItem!=-1) m_arrItems[m_iSelItem]->DoFrameEvent(WM_KILLFOCUS,0,0);
 		if(m_iSelItem!=-1) RedrawItem(m_iSelItem);
 	}

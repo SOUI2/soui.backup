@@ -23,10 +23,10 @@ namespace SOUI
             }
         }
 
-        void OnKillFocus()
+        void OnKillFocus(SWND wndFocus)
         {
             if(m_bUpdateData) T::UpdateData();
-            T::OnKillFocus();
+            T::OnKillFocus(wndFocus);
             T::GetOwner()->OnInplaceActive(false);
         }
 

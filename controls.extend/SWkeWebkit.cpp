@@ -237,14 +237,16 @@ namespace SOUI
 		return 0;
 	}
 
-	void SWkeWebkit::OnSetFocus()
+	void SWkeWebkit::OnSetFocus(SWND wndOld)
 	{
+	    __super::OnSetCursor(wndOld);
 		m_pWebView->focus();
 	}
 
-	void SWkeWebkit::OnKillFocus()
+	void SWkeWebkit::OnKillFocus(SWND wndFocus)
 	{
 		m_pWebView->unfocus();
+		__super::OnKillFocus(wndFocus);
 	}
 
 	void SWkeWebkit::OnTimer( char cTimerID )
