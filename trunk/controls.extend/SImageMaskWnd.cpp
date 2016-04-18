@@ -84,11 +84,13 @@ namespace SOUI
         {
             BYTE byAlpha = *pSrc;
             pSrc += 4;
-
-            *pDst++ = ((*pDst) * byAlpha)>>8;//做premutiply
-            *pDst++ = ((*pDst) * byAlpha)>>8;//做premutiply
-            *pDst++ = ((*pDst) * byAlpha)>>8;//做premutiply
-            *pDst++ = byAlpha;
+            if(pDst[3] != 0)
+            {//源不透明
+                *pDst++ = ((*pDst) * byAlpha)>>8;//做premultiply
+                *pDst++ = ((*pDst) * byAlpha)>>8;//做premultiply
+                *pDst++ = ((*pDst) * byAlpha)>>8;//做premultiply
+                *pDst++ = byAlpha;
+            }
         }
         m_bmpCache->UnlockPixelBits(pBitCache);
         m_bmpMask->UnlockPixelBits(pBitMask);
