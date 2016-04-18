@@ -366,9 +366,9 @@ namespace SOUI
         */  
         BOOL IsFocusable();
 
-        void OnSetFocus();
+        void OnSetFocus(SWND wndOld);
         
-        void OnKillFocus();
+        void OnKillFocus(SWND wndFocus);
 
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"dropDown", m_bDropdown, FALSE)

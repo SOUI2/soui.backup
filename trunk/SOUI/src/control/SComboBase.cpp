@@ -324,12 +324,12 @@ namespace SOUI
     }
 
 
-    void SComboBase::OnSetFocus()
+    void SComboBase::OnSetFocus(SWND wndOld)
     {
         if(m_pEdit) 
             m_pEdit->SetFocus();
         else
-            __super::OnSetFocus();
+            __super::OnSetFocus(wndOld);
     }
 
 
@@ -390,9 +390,9 @@ namespace SOUI
         }
     }
 
-    void SComboBase::OnKillFocus()
+    void SComboBase::OnKillFocus(SWND wndFocus)
     {
-        __super::OnKillFocus();
+        __super::OnKillFocus(wndFocus);
         CloseUp();
     }
 

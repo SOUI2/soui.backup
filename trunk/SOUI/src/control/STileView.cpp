@@ -798,9 +798,9 @@ UINT STileView::OnGetDlgCode()
     }
 }
 
-void STileView::OnKillFocus()
+void STileView::OnKillFocus(SWND wndFocus)
 {
-    __super::OnKillFocus();
+    __super::OnKillFocus(wndFocus);
     
     if(m_iSelItem == -1)
     {
@@ -814,9 +814,9 @@ void STileView::OnKillFocus()
     }
 }
 
-void STileView::OnSetFocus()
+void STileView::OnSetFocus(SWND wndOld)
 {
-    __super::OnSetFocus();
+    __super::OnSetFocus(wndOld);
     if(m_iSelItem == -1)
     {
         return;
