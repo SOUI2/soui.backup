@@ -52,8 +52,8 @@ namespace SOUI
         LRESULT OnKeyUp(UINT uMsg, WPARAM wParam,LPARAM lParam);
         LRESULT OnChar(UINT uMsg, WPARAM wParam,LPARAM lParam);
         LRESULT OnImeStartComposition(UINT uMsg, WPARAM wParam,LPARAM lParam);
-        void OnSetFocus();
-        void OnKillFocus();
+        void OnSetFocus(SWND wndOld);
+        void OnKillFocus(SWND wndFocus);
         void OnTimer(char cTimerID);
 
         virtual BOOL OnSetCursor(const CPoint &pt);

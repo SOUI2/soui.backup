@@ -418,7 +418,7 @@ protected:
      *
      * Describe  获得焦点
      */
-    void OnSetFocus();
+    void OnSetFocus(SWND wndOld);
 
     /**
      * SListCtrlEx::OnKillFocus
@@ -426,7 +426,7 @@ protected:
      *
      * Describe  失去焦点
      */
-    void OnKillFocus();
+    void OnKillFocus(SWND wndFocus);
 
     /**
      * SListCtrlEx::OnNcCalcSize
