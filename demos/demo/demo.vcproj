@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="resprovider-zip"
-	ProjectGUID="{E52A3642-02A7-38FA-964D-9D4321F7BEA9}"
+	Name="demo"
+	ProjectGUID="{39E1FC7D-BC6C-3773-9777-8BEE43A315CC}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -15,24 +15,24 @@
 			OutputDirectory="..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			ConfigurationType="2"
-			IntermediateDirectory="..\..\obj\debug\resprovider-zip\"
+			ConfigurationType="1"
+			IntermediateDirectory="..\..\obj\debug\demo\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\third-part\zlib&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
-				AssemblerListingLocation="..\..\obj\debug\resprovider-zip\"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\third-part\wke\include&quot;,&quot;..\..\third-part\mhook\mhook-lib&quot;,&quot;..\..\components&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AssemblerListingLocation="..\..\obj\debug\demo\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="1"
 				ForcedIncludeFiles="stdafx.h"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\obj\debug\resprovider-zip\"
+				ObjectFile="..\..\obj\debug\demo\"
 				Optimization ="4"
-				PrecompiledHeaderFile="$(IntDir)\resprovider-zipd.pch"
+				PrecompiledHeaderFile="$(IntDir)\demod.pch"
 				PrecompiledHeaderThrough="stdafx.h"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,RESPROVIDERZIP_EXPORTS,_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
@@ -44,14 +44,15 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlibd.lib utilitiesd.lib"
+				AdditionalDependencies="utilitiesd.lib souid.lib mhookd.lib smileyd.lib"
 				AdditionalLibraryDirectories="..\..\bin"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkTimeCodeGeneration="0"
-				OutputFile="$(OutDir)\resprovider-zipd.dll"
+				OutputFile="$(OutDir)\demod.exe"
 				ProgramDatabaseFile=""
-				SubSystem="0"
+				SubSystem="2"
 				SuppressStartupBanner="true"
 				TargetMachine="1" />
 			<Tool
@@ -69,31 +70,31 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,RESPROVIDERZIP_EXPORTS,_CRT_SECURE_NO_WARNINGS,_DEBUG" />
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_DEBUG" />
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			ConfigurationType="2"
-			IntermediateDirectory="..\..\obj\release\resprovider-zip\"
+			ConfigurationType="1"
+			IntermediateDirectory="..\..\obj\release\demo\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\third-part\zlib&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
-				AssemblerListingLocation="..\..\obj\release\resprovider-zip\"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\third-part\wke\include&quot;,&quot;..\..\third-part\mhook\mhook-lib&quot;,&quot;..\..\components&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AssemblerListingLocation="..\..\obj\release\demo\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="1"
 				ForcedIncludeFiles="stdafx.h"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\obj\release\resprovider-zip\"
+				ObjectFile="..\..\obj\release\demo\"
 				Optimization ="1"
-				PrecompiledHeaderFile="$(IntDir)\resprovider-zip.pch"
+				PrecompiledHeaderFile="$(IntDir)\demo.pch"
 				PrecompiledHeaderThrough="stdafx.h"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,RESPROVIDERZIP_EXPORTS,_CRT_SECURE_NO_WARNINGS,NDEBUG"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,NDEBUG"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="0"
 				RuntimeTypeInfo="false"
@@ -105,17 +106,18 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib.lib utilities.lib"
+				AdditionalDependencies="utilities.lib soui.lib mhook.lib smiley.lib"
 				AdditionalLibraryDirectories="..\..\bin"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				EnableCOMDATFolding="2"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkIncremental="1"
 				LinkTimeCodeGeneration="0"
 				OptimizeReferences="2"
-				OutputFile="$(OutDir)\resprovider-zip.dll"
+				OutputFile="$(OutDir)\demo.exe"
 				ProgramDatabaseFile=""
-				SubSystem="0"
+				SubSystem="2"
 				SuppressStartupBanner="true"
 				TargetMachine="1" />
 			<Tool
@@ -133,7 +135,7 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,RESPROVIDERZIP_EXPORTS,_CRT_SECURE_NO_WARNINGS" />
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS" />
 		</Configuration>
 	</Configurations>
 	<Files>
@@ -142,20 +144,158 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="SResProviderZip.cpp" />
+				RelativePath="FormatMsgDlg.cpp" />
 			<File
-				RelativePath="cursoricon.cpp" />
+				RelativePath="MainDlg.cpp" />
 			<File
-				RelativePath="zipArchive.cpp" />
+				RelativePath="..\..\controls.extend\SChromeTabCtrl.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\SFreeMoveWindow.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\gif\SGifPlayer.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\SRatingBar.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\gif\SSkinAPNG.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\gif\SSkinGif.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\SSkinImgFrame2.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\SWkeWebkit.cpp" />
+			<File
+				RelativePath="SmileyCreateHook.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\reole\dataobject.cpp" />
+			<File
+				RelativePath="demo.cpp" />
+			<File
+				RelativePath="httpsvr\genericserver.cpp" />
+			<File
+				RelativePath="httpsvr\httpserver.cpp" />
+			<File
+				RelativePath="magnet\magnetframe.cpp" />
+			<File
+				RelativePath="memflash.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\reole\richeditole.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\scalendar2.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\schatedit.cpp" />
+			<File
+				RelativePath="clock\sclock.cpp" />
+			<File
+				RelativePath="appledock\sdesktopdock.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\sfadeframe.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\sflywnd.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\siectrl.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\simagemaskwnd.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\sipaddressctrl.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\slistctrlex.cpp" />
+			<File
+				RelativePath="smatrixwindow.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\propgrid\spropertygrid.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\propgrid\propitem\spropertyitem-color.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\propgrid\propitem\spropertyitem-option.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\propgrid\propitem\spropertyitem-size.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\propgrid\propitem\spropertyitem-text.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\propgrid\spropertyitembase.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\sradiobox2.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\sscrolltext.cpp" />
+			<File
+				RelativePath="uianimation\uianimationwnd.cpp" />
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="SResProviderZip.h" />
+				RelativePath="..\..\controls.extend\FileHelper.h" />
 			<File
-				RelativePath="ZipArchive.h" />
+				RelativePath="FormatMsgDlg.h" />
+			<File
+				RelativePath="MainDlg.h" />
+			<File
+				RelativePath="..\..\controls.extend\gif\SAniImgFrame.h" />
+			<File
+				RelativePath="..\..\controls.extend\SChromeTabCtrl.h" />
+			<File
+				RelativePath="..\..\controls.extend\SFreeMoveWindow.h" />
+			<File
+				RelativePath="..\..\controls.extend\gif\SGifPlayer.h" />
+			<File
+				RelativePath="..\..\controls.extend\propgrid\SPropertyGrid.h" />
+			<File
+				RelativePath="..\..\controls.extend\SRatingBar.h" />
+			<File
+				RelativePath="..\..\controls.extend\gif\SSkinAPNG.h" />
+			<File
+				RelativePath="..\..\controls.extend\gif\SSkinGif.h" />
+			<File
+				RelativePath="..\..\controls.extend\SSkinImgFrame2.h" />
+			<File
+				RelativePath="..\..\controls.extend\smiley\SSmileyCtrl.h" />
+			<File
+				RelativePath="..\..\controls.extend\SWkeWebkit.h" />
+			<File
+				RelativePath="SmileyCreateHook.h" />
+			<File
+				RelativePath="..\..\controls.extend\reole\dataobject.h" />
+			<File
+				RelativePath="httpsvr\filereader-i.h" />
+			<File
+				RelativePath="httpsvr\genericserver.h" />
+			<File
+				RelativePath="httpsvr\httpserver.h" />
+			<File
+				RelativePath="magnet\magnetframe.h" />
+			<File
+				RelativePath="memflash.h" />
+			<File
+				RelativePath="resource.h" />
+			<File
+				RelativePath="..\..\controls.extend\reole\richeditole.h" />
+			<File
+				RelativePath="..\..\controls.extend\scalendar2.h" />
+			<File
+				RelativePath="..\..\controls.extend\schatedit.h" />
+			<File
+				RelativePath="clock\sclock.h" />
+			<File
+				RelativePath="appledock\sdesktopdock.h" />
+			<File
+				RelativePath="..\..\controls.extend\sfadeframe.h" />
+			<File
+				RelativePath="..\..\controls.extend\sflywnd.h" />
+			<File
+				RelativePath="..\..\controls.extend\siectrl.h" />
+			<File
+				RelativePath="..\..\controls.extend\simagemaskwnd.h" />
+			<File
+				RelativePath="..\..\controls.extend\sipaddressctrl.h" />
+			<File
+				RelativePath="..\..\controls.extend\slistctrlex.h" />
+			<File
+				RelativePath="smatrixwindow.h" />
+			<File
+				RelativePath="..\..\controls.extend\sradiobox2.h" />
+			<File
+				RelativePath="..\..\controls.extend\sscrolltext.h" />
 			<File
 				RelativePath="stdafx.h">
 				<FileConfiguration
@@ -175,6 +315,12 @@
 						Outputs="stdafx.h.cpp" />
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath="uianimation\uianimation.h" />
+			<File
+				RelativePath="uianimation\uianimationwnd.h" />
+			<File
+				RelativePath="wtlhelper\whwindow.h" />
 		</Filter>
 		<Filter
 			Name="Generated Files"
@@ -201,7 +347,7 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="ResProvider-Zip.rc" />
+			RelativePath="demo.rc" />
 	</Files>
 	<Globals>
 	</Globals>

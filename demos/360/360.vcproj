@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="resprovider-zip"
-	ProjectGUID="{E52A3642-02A7-38FA-964D-9D4321F7BEA9}"
+	Name="360"
+	ProjectGUID="{A7A6D7DF-611F-3E0D-A107-DE085846A359}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -15,24 +15,24 @@
 			OutputDirectory="..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			ConfigurationType="2"
-			IntermediateDirectory="..\..\obj\debug\resprovider-zip\"
+			ConfigurationType="1"
+			IntermediateDirectory="..\..\obj\debug\360\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\third-part\zlib&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\components&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
-				AssemblerListingLocation="..\..\obj\debug\resprovider-zip\"
+				AssemblerListingLocation="..\..\obj\debug\360\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="1"
 				ForcedIncludeFiles="stdafx.h"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\obj\debug\resprovider-zip\"
+				ObjectFile="..\..\obj\debug\360\"
 				Optimization ="4"
-				PrecompiledHeaderFile="$(IntDir)\resprovider-zipd.pch"
+				PrecompiledHeaderFile="$(IntDir)\360d.pch"
 				PrecompiledHeaderThrough="stdafx.h"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,RESPROVIDERZIP_EXPORTS,_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="1"
 				RuntimeTypeInfo="false"
@@ -44,14 +44,15 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlibd.lib utilitiesd.lib"
+				AdditionalDependencies="utilitiesd.lib souid.lib"
 				AdditionalLibraryDirectories="..\..\bin"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkTimeCodeGeneration="0"
-				OutputFile="$(OutDir)\resprovider-zipd.dll"
+				OutputFile="$(OutDir)\360d.exe"
 				ProgramDatabaseFile=""
-				SubSystem="0"
+				SubSystem="2"
 				SuppressStartupBanner="true"
 				TargetMachine="1" />
 			<Tool
@@ -69,31 +70,31 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,RESPROVIDERZIP_EXPORTS,_CRT_SECURE_NO_WARNINGS,_DEBUG" />
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_DEBUG" />
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			ConfigurationType="2"
-			IntermediateDirectory="..\..\obj\release\resprovider-zip\"
+			ConfigurationType="1"
+			IntermediateDirectory="..\..\obj\release\360\"
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\third-part\zlib&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\components&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
-				AssemblerListingLocation="..\..\obj\release\resprovider-zip\"
+				AssemblerListingLocation="..\..\obj\release\360\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
 				ExceptionHandling="1"
 				ForcedIncludeFiles="stdafx.h"
 				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\obj\release\resprovider-zip\"
+				ObjectFile="..\..\obj\release\360\"
 				Optimization ="1"
-				PrecompiledHeaderFile="$(IntDir)\resprovider-zip.pch"
+				PrecompiledHeaderFile="$(IntDir)\360.pch"
 				PrecompiledHeaderThrough="stdafx.h"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,RESPROVIDERZIP_EXPORTS,_CRT_SECURE_NO_WARNINGS,NDEBUG"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,NDEBUG"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="0"
 				RuntimeTypeInfo="false"
@@ -105,17 +106,18 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib.lib utilities.lib"
+				AdditionalDependencies="utilities.lib soui.lib"
 				AdditionalLibraryDirectories="..\..\bin"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				EnableCOMDATFolding="2"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkIncremental="1"
 				LinkTimeCodeGeneration="0"
 				OptimizeReferences="2"
-				OutputFile="$(OutDir)\resprovider-zip.dll"
+				OutputFile="$(OutDir)\360.exe"
 				ProgramDatabaseFile=""
-				SubSystem="0"
+				SubSystem="2"
 				SuppressStartupBanner="true"
 				TargetMachine="1" />
 			<Tool
@@ -133,7 +135,7 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,RESPROVIDERZIP_EXPORTS,_CRT_SECURE_NO_WARNINGS" />
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS" />
 		</Configuration>
 	</Configurations>
 	<Files>
@@ -142,20 +144,26 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="SResProviderZip.cpp" />
+				RelativePath="360.cpp" />
 			<File
-				RelativePath="cursoricon.cpp" />
+				RelativePath="MainDlg.cpp" />
 			<File
-				RelativePath="zipArchive.cpp" />
+				RelativePath="sanimimg.cpp" />
+			<File
+				RelativePath="stabctrl2.cpp" />
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="SResProviderZip.h" />
+				RelativePath="MainDlg.h" />
 			<File
-				RelativePath="ZipArchive.h" />
+				RelativePath="resource.h" />
+			<File
+				RelativePath="sanimimg.h" />
+			<File
+				RelativePath="stabctrl2.h" />
 			<File
 				RelativePath="stdafx.h">
 				<FileConfiguration
@@ -201,7 +209,7 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="ResProvider-Zip.rc" />
+			RelativePath="360.rc" />
 	</Files>
 	<Globals>
 	</Globals>

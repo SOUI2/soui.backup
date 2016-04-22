@@ -5,29 +5,11 @@ INCLUDEPATH += .
 
 include(cpy-cfg.pri)
 
+SUBDIRS += third-part
 SUBDIRS += utilities
+SUBDIRS += soui-sys-resource
 SUBDIRS += soui
 SUBDIRS += components
-
-SUBDIRS += soui-sys-resource
-SUBDIRS += demo
-SUBDIRS += qqlogin
-SUBDIRS += 360
-SUBDIRS += 360Preview
-SUBDIRS += souispy
-SUBDIRS += PcManager
-SUBDIRS += SoTool
-SUBDIRS += mhook
-SUBDIRS += smiley
-SUBDIRS += mclistview_demo
+SUBDIRS += demos
 
 soui.depends += utilities soui-sys-resource
-
-360.depends += soui
-360Preview.depends += soui
-demo.depends += soui mhook smiley
-qqlogin.depends += soui
-souispy.depends += soui
-PcManager.depends += soui
-SoTool.depends += soui
-mclistview_demo.depends += soui
