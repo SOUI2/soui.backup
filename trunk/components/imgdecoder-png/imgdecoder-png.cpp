@@ -3,7 +3,7 @@
 #include <windows.h>
 #include "imgdecoder-png.h"
 #include "decoder-apng.h"
-#include "../png/png.h"
+#include <png.h>
 
 namespace SOUI
 {

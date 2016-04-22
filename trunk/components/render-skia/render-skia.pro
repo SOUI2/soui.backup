@@ -16,10 +16,10 @@ DEPENDPATH += .
 INCLUDEPATH += . \
 			   ../../soui/include \
 			   ../../utilities/include \
-			   ../skia \
-			   ../skia/include \
-			   ../skia/include/config \
-			   ../skia/include/core \
+			   ../../third-part/skia \
+			   ../../third-part/skia/include \
+			   ../../third-part/skia/include/config \
+			   ../../third-part/skia/include/core \
 
 dir = ../..
 include($$dir/common.pri)

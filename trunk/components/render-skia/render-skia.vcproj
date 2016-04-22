@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\skia&quot;,&quot;..\skia\include&quot;,&quot;..\skia\include\config&quot;,&quot;..\skia\include\core&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\third-part\skia&quot;,&quot;..\..\third-part\skia\include&quot;,&quot;..\..\third-part\skia\include\config&quot;,&quot;..\..\third-part\skia\include\core&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\debug\render-skia\"
 				DebugInformationFormat="3"
@@ -81,7 +81,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\skia&quot;,&quot;..\skia\include&quot;,&quot;..\skia\include\config&quot;,&quot;..\skia\include\core&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\third-part\skia&quot;,&quot;..\..\third-part\skia\include&quot;,&quot;..\..\third-part\skia\include\config&quot;,&quot;..\..\third-part\skia\include\core&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
 				AssemblerListingLocation="..\..\obj\release\render-skia\"
 				DebugInformationFormat="3"

@@ -1,0 +1,13 @@
+pid=1408 tid=9236 2016-04-22 16:17:10.638 ERROR demod.exe soui-lib "log output using ansi format,str=test, tick=973924959" wWinMain (demo.cpp):137 
+pid=1408 tid=9236 2016-04-22 16:17:10.638 ERROR demod.exe soui-lib "log output using unicode format,str=ÖÐÎÄ, tick=973924959" wWinMain (demo.cpp):138 
+pid=1408 tid=9236 2016-04-22 16:17:11.263 WARN  souid.dll soui-lib "Warning: no window type:template in SOUI!!" SOUI::SWindowFactoryMgr::CreateWindowByName (SWndFactoryMgr.cpp):74 
+pid=1408 tid=9236 2016-04-22 16:17:11.273 WARN  souid.dll soui-lib "BaseClassNameFromClassName, Warning: no window type:combobase in SOUI!!" SOUI::SWindowFactoryMgr::BaseClassNameFromClassName (SWndFactoryMgr.cpp):87 
+pid=1408 tid=9236 2016-04-22 16:17:12.001 WARN  souid.dll soui-lib "BaseClassNameFromClassName, Warning: no window type:combobase in SOUI!!" SOUI::SWindowFactoryMgr::BaseClassNameFromClassName (SWndFactoryMgr.cpp):87 
+pid=1408 tid=9236 2016-04-22 16:17:12.065 WARN  souid.dll soui-lib "BaseClassNameFromClassName, Warning: no window type:combobase in SOUI!!" SOUI::SWindowFactoryMgr::BaseClassNameFromClassName (SWndFactoryMgr.cpp):87 
+pid=1408 tid=9236 2016-04-22 16:17:12.068 WARN  souid.dll soui-lib "BaseClassNameFromClassName, Warning: no window type:combobase in SOUI!!" SOUI::SWindowFactoryMgr::BaseClassNameFromClassName (SWndFactoryMgr.cpp):87 
+pid=1408 tid=9236 2016-04-22 16:17:12.070 WARN  souid.dll soui-lib "BaseClassNameFromClassName, Warning: no window type:combobase in SOUI!!" SOUI::SWindowFactoryMgr::BaseClassNameFromClassName (SWndFactoryMgr.cpp):87 
+pid=1408 tid=9236 2016-04-22 16:17:12.071 WARN  souid.dll soui-lib "BaseClassNameFromClassName, Warning: no window type:combobase in SOUI!!" SOUI::SWindowFactoryMgr::BaseClassNameFromClassName (SWndFactoryMgr.cpp):87 
+pid=1408 tid=9236 2016-04-22 16:17:12.073 WARN  souid.dll soui-lib "BaseClassNameFromClassName, Warning: no window type:combobase in SOUI!!" SOUI::SWindowFactoryMgr::BaseClassNameFromClassName (SWndFactoryMgr.cpp):87 
+pid=1408 tid=9236 2016-04-22 16:17:12.075 WARN  souid.dll soui-lib "BaseClassNameFromClassName, Warning: no window type:combobase in SOUI!!" SOUI::SWindowFactoryMgr::BaseClassNameFromClassName (SWndFactoryMgr.cpp):87 
+pid=1408 tid=9236 2016-04-22 16:17:12.077 WARN  souid.dll soui-lib "BaseClassNameFromClassName, Warning: no window type:combobase in SOUI!!" SOUI::SWindowFactoryMgr::BaseClassNameFromClassName (SWndFactoryMgr.cpp):87 
+pid=1408 tid=9236 2016-04-22 16:17:12.079 WARN  souid.dll soui-lib "BaseClassNameFromClassName, Warning: no window type:combobase in SOUI!!" SOUI::SWindowFactoryMgr::BaseClassNameFromClassName (SWndFactoryMgr.cpp):87 

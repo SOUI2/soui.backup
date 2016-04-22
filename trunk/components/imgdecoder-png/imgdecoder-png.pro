@@ -21,8 +21,8 @@ else{
 
 DEPENDPATH += .
 INCLUDEPATH += . \
-			   ../png \
-			   ../zlib \
+			   ../../third-part/png \
+			   ../../third-part/zlib \
 			   ../../utilities/include \
 			   ../../soui/include \
 

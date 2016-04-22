@@ -14,7 +14,7 @@ else{
 
 DEPENDPATH += .
 INCLUDEPATH += . \
-			   ../zlib \
+			   ../../third-part/zlib \
 			   ../../soui/include \
 			   ../../utilities/include \
 
