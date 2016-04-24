@@ -582,7 +582,7 @@ int _tmain(int argc, _TCHAR* argv[])
                 string strKey = string(pszType)+":"+pszName;
                 mapFiles[strKey] = strPath;
 
-                strFileTypeConstructor += wstring(L"\t\t\t\t") + wszName + L" = _T(\"" + szType2 + L":" + wszName + L"\");\r\n";
+                strFileTypeConstructor += wstring(L"\t\t\t\t") + wszName + L" = _T(\"" + szType2 + L":" + rec.szName + L"\");\r\n";
                 strFileTypeMember += wstring(L"\t\t\tconst TCHAR * ") + wszName + L";\r\n";
             }
             pXmlFile=pXmlFile->NextSiblingElement();

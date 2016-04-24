@@ -14,7 +14,7 @@
 
   <objattr>
     <link class="cls_weblink"/>
-    <div sbSkin="cmn_scrollbar"/>
+    <div sbSkin="cmn.scrollbar"/>
     <edit margin="2"/>
   </objattr>
 </UIDEF>
