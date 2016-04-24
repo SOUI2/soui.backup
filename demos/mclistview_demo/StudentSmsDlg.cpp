@@ -447,7 +447,7 @@ protected:
 };
 
 CStudentSmsDlg::CStudentSmsDlg(void)
-: SOUI::SHostDialog(UIRES.LAYOUT.dlg_student_sms)
+: SOUI::SHostDialog(UIRES.layout.dlg_student_sms)
 {
 }
 
