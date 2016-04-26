@@ -1,4 +1,0 @@
-pid=1408 tid=7284 2016-04-22 16:17:10.593 ALARM  logger "-----------------  log4z thread started!   ----------------------------" 
-pid=1408 tid=7284 2016-04-22 16:17:10.593 ALARM  logger "logger id=0 key=Main name=demod path=./log/ level=1 display=1" 
-pid=1408 tid=7284 2016-04-22 16:17:10.593 ALARM  logger "logger id=1 key=soui name=soui path=./log/ level=1 display=1" 
-pid=1408 tid=9236 2016-04-22 16:17:10.638 FATAL demod.exe demo "test 100wchar" wWinMain (demo.cpp):136 
