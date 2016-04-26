@@ -302,6 +302,7 @@ namespace SOUI
                     m_pHoverItem = ii.pItem;
 
                 m_adapter->getView(iNewLastVisible,ii.pItem,m_xmlTemplate.first_child());
+				ii.pItem->DoColorize(GetColorizeColor());
                 if(!m_lvItemLocator->IsFixHeight())
                 {
                     rcItem.bottom=0;
@@ -827,5 +828,11 @@ namespace SOUI
         return true;
 
     }
+
+	void SListView::OnColorize( COLORREF cr )
+	{
+		__super::OnColorize(cr);
+		m_crColorize = cr;
+	}
 
 }

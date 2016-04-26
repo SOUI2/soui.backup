@@ -827,7 +827,8 @@ namespace SOUI
                 ii.pItem->ModifyItemState(0,WndState_Hover);
                 
             m_adapter->getView(hItem,ii.pItem,m_xmlTemplate.first_child());
-            
+			ii.pItem->DoColorize(GetColorizeColor());
+
             rcContainer.left = m_tvItemLocator->GetItemIndent(hItem);
             CSize szItem = m_adapter->getViewDesiredSize(hItem,ii.pItem,rcContainer);
             ii.pItem->Move(CRect(0,0,szItem.cx,szItem.cy));

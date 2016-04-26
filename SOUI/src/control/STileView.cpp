@@ -307,6 +307,8 @@ void STileView::UpdateVisibleItems()
             ii.pItem->GetEventSet()->setMutedState(false);
 
             m_adapter->getView(iNewLastVisible, ii.pItem, m_xmlTemplate.first_child());
+			ii.pItem->DoColorize(GetColorizeColor());
+
             ii.pItem->UpdateLayout();
             if(iNewLastVisible == m_iSelItem)
             {
