@@ -121,6 +121,7 @@ HEADERS += include/SApp.h \
 		   include/helper/smenuex.h \
 		   include/helper/smatrix.h \
 		   include/helper/slog.h \
+		   include/helper/sdibhelper.h \
            include/interface/imgdecoder-i.h \
            include/interface/render-i.h \
            include/interface/SResProvider-i.h \
@@ -207,6 +208,7 @@ SOURCES += src/SApp.cpp \
    		   src/helper/SwndFinder.cpp \
    		   src/helper/smenuex.cpp \
    		   src/helper/smatrix.cpp \
+		   src/helper/sdibhelper.cpp \
            src/res.mgr/SFontPool.cpp \
            src/res.mgr/SObjDefAttr.cpp \
            src/res.mgr/SResProvider.cpp \
