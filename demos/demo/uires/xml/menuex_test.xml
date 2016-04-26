@@ -29,5 +29,6 @@
   </menuItem>
 
   <sep/>
+  <menuItem id="7" hotKey="c">红色调</menuItem>
   <menuItem id="6" hotKey="x">退出(&X)</menuItem>
 </menuRoot>

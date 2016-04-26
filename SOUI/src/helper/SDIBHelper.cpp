@@ -91,6 +91,14 @@ namespace SOUI
 		return bRet;
 	}
 
+    bool SDIBHelper::AdjustHue(IBitmap *pBmp,COLORREF cr)
+    {
+        float h,s,l;
+        BYTE r=GetRValue(cr),g=GetGValue(cr),b=GetBValue(cr);
+        RGBtoHSL(r,g,b,h,s,l);
+        return AdjustHSL32(pBmp,(int)h,100,100);
+    }
+
 	bool SDIBHelper::GrayImage(IBitmap * pBmp)
 	{
 	    DIBINFO di={(LPBYTE)pBmp->LockPixelBits(),pBmp->Width(),pBmp->Height()};
@@ -100,7 +108,7 @@ namespace SOUI
 	}
 	
 
-	void SDIBHelper::RGBtoHSL(BYTE &red, BYTE &green, BYTE &blue,
+	void SDIBHelper::RGBtoHSL(const BYTE &red, const BYTE &green, const BYTE &blue,
 		                      float &hue, float &saturation, float &lightness)
 	{
 		float mn  = 0.0f;
@@ -198,11 +206,11 @@ namespace SOUI
 	}
 
 
-	void SDIBHelper::HSLtoRGB(float &hue, float &saturation, float &lightness,
+	void SDIBHelper::HSLtoRGB(const float &hue, const float &_saturation, const float &_lightness,
 		                      BYTE &red, BYTE &green, BYTE &blue)
 	{
-		lightness = min(1.0f, lightness);
-		saturation = min(1.0f, saturation);
+		float lightness = min(1.0f, _lightness);
+		float saturation = min(1.0f, _saturation);
 
 		if (saturation == 0)
 		{
