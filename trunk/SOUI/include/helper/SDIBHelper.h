@@ -19,11 +19,13 @@ namespace SOUI
 		/// </remarks>
 		static bool AdjustHSL32(IBitmap * pBmp, int H, int S, int L);
 		
+		static bool AdjustHue(IBitmap *pBmp,COLORREF cr);
+		
 		static bool GrayImage(IBitmap * pBmp); 
 
 	public:// ¸¨Öú
-		static void RGBtoHSL(BYTE &R, BYTE &G, BYTE &B, float &H, float &S, float &L);
-		static void HSLtoRGB(float &H, float &S, float &L, BYTE &R, BYTE &G, BYTE &B);
+		static void RGBtoHSL(const BYTE &R, const BYTE &G, const BYTE &B, float &H, float &S, float &L);
+		static void HSLtoRGB(const float &H, const float &S, const float &L, BYTE &R, BYTE &G, BYTE &B);
     };
 
 }//namespace SOUI
