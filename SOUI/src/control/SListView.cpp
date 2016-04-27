@@ -832,7 +832,12 @@ namespace SOUI
 	void SListView::OnColorize( COLORREF cr )
 	{
 		__super::OnColorize(cr);
-		m_crColorize = cr;
+        SPOSITION pos = m_lstItems.GetHeadPosition();
+        while(pos)
+        {
+            ItemInfo ii = m_lstItems.GetNext(pos);
+            ii.pItem->DoColorize(cr);
+        }
 	}
 
 }

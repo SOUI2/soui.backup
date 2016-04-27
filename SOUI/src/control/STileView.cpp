@@ -865,4 +865,15 @@ bool STileView::OnItemClick(EventArgs *pEvt)
 
 }
 
+void STileView::OnColorize(COLORREF cr)
+{
+    __super::OnColorize(cr);
+    SPOSITION pos = m_lstItems.GetHeadPosition();
+    while(pos)
+    {
+        ItemInfo ii = m_lstItems.GetNext(pos);
+        ii.pItem->DoColorize(cr);
+    }
+}
+
 }
