@@ -60,7 +60,7 @@ protected:
     virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo &tipInfo);
     virtual UINT OnGetDlgCode();
     virtual BOOL OnSetCursor(const CPoint &pt);
-
+    virtual void OnColorize(COLORREF cr);
 protected:
     
     void UpdateScrollBar();

@@ -19,8 +19,10 @@ namespace SOUI
 		/// </remarks>
 		static bool AdjustHSL32(IBitmap * pBmp, int H, int S, int L);
 		
-		static bool AdjustHue(IBitmap *pBmp,COLORREF cr);
+		static bool AdjustHue(IBitmap *pBmp,COLORREF crRef);
 		
+        static bool AdjustHue(COLORREF & crTarget,COLORREF crRef);
+
 		static bool GrayImage(IBitmap * pBmp); 
 
 	public:// ¸¨Öú

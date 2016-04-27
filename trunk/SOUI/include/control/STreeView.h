@@ -161,7 +161,7 @@ namespace SOUI
         virtual UINT OnGetDlgCode();
         virtual BOOL OnSetCursor(const CPoint &pt);
         virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo);
-
+        virtual void OnColorize(COLORREF cr);
 
 		virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
 		virtual int  GetScrollLineSize(BOOL bVertical);

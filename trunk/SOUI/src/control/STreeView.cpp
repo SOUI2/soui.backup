@@ -1147,5 +1147,16 @@ namespace SOUI
         return S_OK;
     }
 
+    void STreeView::OnColorize(COLORREF cr)
+    {
+        __super::OnColorize(cr);
+        SPOSITION pos = m_visible_items.GetHeadPosition();
+        while(pos)
+        {
+            ItemInfo ii = m_visible_items.GetNext(pos);
+            ii.pItem->DoColorize(cr);
+        }
+    }
+
 
 }

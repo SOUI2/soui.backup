@@ -91,13 +91,30 @@ namespace SOUI
 		return bRet;
 	}
 
-    bool SDIBHelper::AdjustHue(IBitmap *pBmp,COLORREF cr)
+    bool SDIBHelper::AdjustHue(IBitmap *pBmp,COLORREF crRef)
     {
         float h,s,l;
-        BYTE r=GetRValue(cr),g=GetGValue(cr),b=GetBValue(cr);
+        BYTE r=GetRValue(crRef),g=GetGValue(crRef),b=GetBValue(crRef);
         RGBtoHSL(r,g,b,h,s,l);
         return AdjustHSL32(pBmp,(int)h,100,100);
     }
+
+    bool SDIBHelper::AdjustHue(COLORREF & crTarget,COLORREF crRef)
+    {
+        float h,s,l;
+        BYTE r=GetRValue(crRef),g=GetGValue(crRef),b=GetBValue(crRef);
+        RGBtoHSL(r,g,b,h,s,l);
+        if(h == 0) return true;// 未作调整，直接返回
+
+        HSL32PARAM param={h,100,100};
+
+        r=GetRValue(crTarget),g=GetGValue(crTarget),b=GetBValue(crTarget);
+
+        AdjustPixelHSL(r,g,b,param);
+        crTarget = RGBA(r,g,b,GetAValue(crTarget));
+
+        return true;
+    }   
 
 	bool SDIBHelper::GrayImage(IBitmap * pBmp)
 	{
