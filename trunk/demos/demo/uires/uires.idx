@@ -40,6 +40,7 @@
 	<file name="page_treeview" path="xml\page_treeview.xml"/>
 	
 	<file name="dlg_clock" path="xml\dlg_clock.xml"/>
+    <file name="dlg_set_skin" path="xml\dlg_set_skin.xml"/>
   </LAYOUT>
   <IMGX>
     <file name="img_busy" path="image\img_busy.png"/>
@@ -83,6 +84,7 @@
     <file name="png_avatar" path="image\avatar.png"/>
 
     <file name="png_img_bk" path="image\item_bk.png"/>
+    <file name="png_btn_skin" path="image\btn_skin.png"/>
   </IMGX> 
   <img.calendar2>
     <file name="png_skin_btn_semiarc" path="img.calendar2\skin_btn_semiarc.png"/>
@@ -117,7 +119,16 @@
     <file name="pointer_minute" path="img.clock\pointer_minute.png"/>
     <file name="pointer_second" path="img.clock\pointer_second.png"/>
   </img.clock>
-
+  <bkimg>
+  	<file name="skin_pic_0" path="bkimg\skin_pic_0.png"/>
+  	<file name="skin_pic_1" path="bkimg\skin_pic_1.png"/>
+  	<file name="skin_pic_2" path="bkimg\skin_pic_2.png"/>
+  	<file name="skin_pic_3" path="bkimg\skin_pic_3.png"/>
+  	<file name="skin_pic_4" path="bkimg\skin_pic_4.png"/>
+  	<file name="skin_pic_5" path="bkimg\skin_pic_5.png"/>
+  	<file name="skin_pic_6" path="bkimg\skin_pic_6.png"/>
+  	<file name="skin_pic_7" path="bkimg\skin_pic_7.png"/>
+  </bkimg>
   <GIF>
     <file name="gif_penguin"	path="image\penguin.gif"/>
   </GIF>

@@ -188,6 +188,8 @@
 			<File
 				RelativePath="appledock\sdesktopdock.cpp" />
 			<File
+				RelativePath="setskinwnd.cpp" />
+			<File
 				RelativePath="..\..\controls.extend\sfadeframe.cpp" />
 			<File
 				RelativePath="..\..\controls.extend\sflywnd.cpp" />
@@ -278,6 +280,8 @@
 				RelativePath="clock\sclock.h" />
 			<File
 				RelativePath="appledock\sdesktopdock.h" />
+			<File
+				RelativePath="setskinwnd.h" />
 			<File
 				RelativePath="..\..\controls.extend\sfadeframe.h" />
 			<File
