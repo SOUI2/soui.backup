@@ -284,6 +284,8 @@ namespace SOUI
         */
         virtual void SetWindowText(LPCTSTR pszText);
 
+        virtual void OnColorize(COLORREF cr);
+        
         /**
         * SComboBoxBase::OnPaint
         * @brief    »æÖÆÏûÏ¢

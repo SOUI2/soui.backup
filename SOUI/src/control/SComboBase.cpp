@@ -396,4 +396,10 @@ namespace SOUI
         CloseUp();
     }
 
+    void SComboBase::OnColorize(COLORREF cr)
+    {
+        __super::OnColorize(cr);
+        if(m_pSkinBtn) m_pSkinBtn->OnColorize(cr);
+    }
+
 }
