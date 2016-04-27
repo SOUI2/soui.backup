@@ -16,6 +16,7 @@
 using namespace SOUI;
 
 #include "magnet/MagnetFrame.h"
+#include "SetSkinWnd.h"
 
 /**
 * @class      CMainDlg
@@ -23,7 +24,7 @@ using namespace SOUI;
 * 
 * Describe    非模式窗口从SHostWnd派生，模式窗口从SHostDialog派生
 */
-class CMainDlg : public SHostWnd, public CMagnetFrame
+class CMainDlg : public SHostWnd, public CMagnetFrame, public ISetSkinHandler
 {
 public:
 
@@ -83,7 +84,10 @@ protected:
     //DUI菜单响应函数
     void OnCommand(UINT uNotifyCode, int nID, HWND wndCtl);
         
+
 protected:
+    virtual void OnSetSkin(int iSkin);
+
     //////////////////////////////////////////////////////////////////////////
     // SOUI事件处理函数
 	//演示屏蔽指定edit控件的右键菜单
@@ -132,7 +136,7 @@ protected:
 
     void OnBtnCreateChildren();
     void OnBtnClock();
-
+    void OnBtnSkin();
 	void OnInitListBox();
 
     //UI控件的事件及响应函数映射表
@@ -152,6 +156,7 @@ protected:
         EVENT_ID_COMMAND(R.id.btn_createchildren,OnBtnCreateChildren)
         EVENT_ID_COMMAND(R.id.btn_clock,OnBtnClock)
 		EVENT_ID_COMMAND(R.id.btn_init_listbox,OnInitListBox)
+		EVENT_ID_COMMAND(R.id.btn_skin,OnBtnSkin)
         //-->
         EVENT_NAME_COMMAND(L"btn_webkit_back",OnBtnWebkitBackward)
         EVENT_NAME_COMMAND(L"btn_webkit_fore",OnBtnWebkitForeward)
@@ -190,6 +195,8 @@ protected:
     //////////////////////////////////////////////////////////////////////////
     //  辅助函数
     void InitListCtrl();
+
+
 private:
 	BOOL			m_bLayoutInited;/**<UI完成布局标志 */
 };

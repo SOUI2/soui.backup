@@ -24,7 +24,12 @@ namespace SOUI
         static bool AdjustHue(COLORREF & crTarget,COLORREF crRef);
 
 		static bool GrayImage(IBitmap * pBmp); 
-
+        
+        //计算图片的平均色
+        //IBitmap *pBmp:图片源
+        //int nPercent:有效值百分比，90代表最高和最低5%的值会丢掉，不参与平均。
+        //int int nBlockSize:分块大小, 每次计算一个块的颜色平均值。
+        static COLORREF CalcAvarageColor(IBitmap *pBmp,int nPercent=90,int nBlockSize=5);
 	public:// 辅助
 		static void RGBtoHSL(const BYTE &R, const BYTE &G, const BYTE &B, float &H, float &S, float &L);
 		static void HSLtoRGB(const float &H, const float &S, const float &L, BYTE &R, BYTE &G, BYTE &B);

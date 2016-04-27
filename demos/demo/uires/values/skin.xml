@@ -65,4 +65,15 @@
   <imglist name="skin_avatar_medium" src="imgx:png_avatar" filterLevel="medium"/>
   <imglist name="skin_avatar_high" src="imgx:png_avatar" filterLevel="high"/>
   <imgframe name="skin_item_bk" src="imgx:png_img_bk" states="3" margin="3,3,3,3"/>
+
+  <imglist name="skin_btn_skin" src="imgx:png_btn_skin" states="3"/>
+  <!--背景图不允许调色-->
+  <imglist name="skin_bkimg_0" src="bkimg:skin_pic_0" colorizeEnable="0" autoFit="0"/>
+  <imglist name="skin_bkimg_1" src="bkimg:skin_pic_1" colorizeEnable="0" autoFit="0"/>
+  <imglist name="skin_bkimg_2" src="bkimg:skin_pic_2" colorizeEnable="0" autoFit="0"/>
+  <imglist name="skin_bkimg_3" src="bkimg:skin_pic_3" colorizeEnable="0" autoFit="0"/>
+  <imglist name="skin_bkimg_4" src="bkimg:skin_pic_4" colorizeEnable="0" autoFit="0"/>
+  <imglist name="skin_bkimg_5" src="bkimg:skin_pic_5" colorizeEnable="0" autoFit="0"/>
+  <imglist name="skin_bkimg_6" src="bkimg:skin_pic_6" colorizeEnable="0" autoFit="0"/>
+  <imglist name="skin_bkimg_7" src="bkimg:skin_pic_7" colorizeEnable="0" autoFit="0"/>
 </skin>

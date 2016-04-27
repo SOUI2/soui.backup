@@ -106,7 +106,7 @@ namespace SOUI
         RGBtoHSL(r,g,b,h,s,l);
         if(h == 0) return true;// 未作调整，直接返回
 
-        HSL32PARAM param={h,100,100};
+        HSL32PARAM param={(int)h,100,100};
 
         r=GetRValue(crTarget),g=GetGValue(crTarget),b=GetBValue(crTarget);
 
@@ -253,5 +253,91 @@ namespace SOUI
 			blue  = Value(m1, m2, hue - 120);
 		}
 	}
+
+    COLORREF CalcAvarageRectColor(const DIBINFO &di, RECT rc)
+    {
+        LPBYTE pLine= di.pBits + di.nWid * rc.top *4;
+        if(rc.right > di.nWid) rc.right=di.nWid;
+        if(rc.bottom > di.nHei) rc.bottom = di.nHei;
+        int nWid = rc.right-rc.left;
+        int nHei = rc.bottom -rc.top;
+        
+        int r=0,g=0,b=0;
+        for(int y=0;y<nHei;y++)
+        {
+            LPBYTE p = pLine + rc.left * 4;
+            for(int x=0;x<nWid;x++)
+            {
+                r += *p++;
+                g += *p++;
+                b += *p++;
+                p++;//skip alpha
+            }
+            pLine += di.nWid*4;
+        }
+        int nPixels = (nWid*nHei);
+        r /= nPixels;
+        g /= nPixels;
+        b /= nPixels;
+        return RGB(r,g,b);
+    }
+    
+    int __cdecl RgbCmp(const void *p1,const void *p2)
+    {
+        const BYTE * cr1 = (const BYTE*)p1;
+        const BYTE * cr2 = (const BYTE*)p2;
+        int deltaR = ((int)cr2[0] - (int)cr1[0]);
+        int deltaG = ((int)cr2[1] - (int)cr1[1]);
+        int deltaB = ((int)cr2[2] - (int)cr1[2]);
+        return deltaR + deltaG + deltaB;
+    }
+    
+    COLORREF SDIBHelper::CalcAvarageColor(IBitmap *pBmp,int nPercent,int nBlockSize/*=5*/)
+    {
+        DIBINFO di={(LPBYTE)pBmp->LockPixelBits(),pBmp->Width(),pBmp->Height()};
+        
+        int xBlocks = (di.nWid + nBlockSize -1)/nBlockSize;
+        int yBlocks = (di.nHei + nBlockSize -1)/nBlockSize;
+        
+        int nBlocks = xBlocks*yBlocks;
+        COLORREF *pAvgColors = new COLORREF[nBlocks];
+        
+        CRect rcBlock(0,0,nBlockSize,nBlockSize);
+        int iBlock = 0;
+        for(int y=0;y<yBlocks;y++)
+        {
+            for(int x=0;x<xBlocks;x++)
+            {
+                pAvgColors[iBlock++] = CalcAvarageRectColor(di,rcBlock);
+                rcBlock.OffsetRect(nBlockSize,0);
+            }
+            rcBlock.MoveToX(0);
+            rcBlock.OffsetRect(0,nBlockSize);
+        }
+        //RGB排序
+        qsort(pAvgColors,nBlocks,sizeof(COLORREF),RgbCmp);
+        
+        int nThrows = nBlocks * (100-nPercent)/200;//一端丢弃数量
+        int iBegin = nThrows;
+        int iEnd = nBlocks - nThrows;
+        
+        int r = 0, g= 0, b=0;
+        for(int i= iBegin;i<iEnd;i++)
+        {
+            BYTE *p = (BYTE*)(pAvgColors+i);
+            r += p[0];
+            g += p[1];
+            b += p[2];
+        }
+        
+        r /= (iEnd - iBegin);
+        g /= (iEnd - iBegin);
+        b /= (iEnd - iBegin);
+                        
+        delete []pAvgColors;
+        pBmp->UnlockPixelBits(di.pBits);
+        
+        return RGB(r,g,b);
+    }
 
 }//namespace SOUI
