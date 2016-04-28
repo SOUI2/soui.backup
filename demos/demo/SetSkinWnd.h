@@ -26,7 +26,7 @@ protected:
     
     void OnSetSkin(EventArgs *e);
     EVENT_MAP_BEGIN()
-        EVENT_ID_RANGE_HANDLER(10,17,EVT_CMD,OnSetSkin)
+        EVENT_ID_RANGE_HANDLER(R.id.img_skin_0,R.id.img_skin_7,EVT_CMD,OnSetSkin)
     EVENT_MAP_END()
     
     

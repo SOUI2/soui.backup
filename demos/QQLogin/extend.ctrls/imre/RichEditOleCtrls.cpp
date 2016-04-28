@@ -336,8 +336,7 @@ void RichEditReminderOle::InitAttributes()
         pText->GetStyle().SetTextColor(0, m_crText);
         pText->GetStyle().m_crBorder = m_crBorder;
         pText->GetStyle().m_crBg     = m_crBk;
-        pText->GetStyle().m_nMarginX = m_nBorderWidth;
-        pText->GetStyle().m_nMarginY = m_nBorderWidth;
+        pText->GetStyle().m_rcMargin.SetRect(m_nBorderWidth,m_nBorderWidth,m_nBorderWidth,m_nBorderWidth);
     }
 }
 

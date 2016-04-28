@@ -72,7 +72,6 @@ namespace SOUI
         ,m_nAnimTime(200)
         ,m_pDropDownWnd(NULL)
         ,m_iInitSel(-1)
-        ,m_nTextOffset(0)
     {
         m_bFocusable=TRUE;
         m_style.SetAttribute(L"align",L"left",TRUE);
@@ -106,7 +105,7 @@ namespace SOUI
                 m_pEdit->SSendMessage(WM_CREATE);
             m_pEdit->GetEventSet()->setMutedState(false);
             SStringW strPos;
-            strPos.Format(L"%d,0,-%d,-0",m_nTextOffset,szBtn.cx);
+            strPos.Format(L"%d,%d,-%d,-%d",m_style.m_rcInset.left,m_style.m_rcInset.top,m_style.m_rcInset.right+szBtn.cx,m_style.m_rcInset.bottom);
             m_pEdit->SetAttribute(L"pos",strPos,TRUE);
             m_pEdit->SetID(IDC_CB_EDIT);
             m_pEdit->SSendMessage(EM_SETEVENTMASK,0 ,ENM_CHANGE );
@@ -125,10 +124,11 @@ namespace SOUI
 
     void SComboBase::GetTextRect( LPRECT pRect )
     {
-        GetClientRect(pRect);
-        pRect->left += m_nTextOffset;
+        CRect rc = GetClientRect();
+        rc.DeflateRect(m_style.m_rcInset);
         SIZE szBtn=m_pSkinBtn->GetSkinSize();
-        pRect->right-=szBtn.cx;
+        rc.right-=szBtn.cx;
+        *pRect = rc;
     }
 
     void SComboBase::OnPaint(IRenderTarget * pRT )
