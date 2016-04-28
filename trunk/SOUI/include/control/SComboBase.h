@@ -378,7 +378,6 @@ namespace SOUI
             ATTR_INT(L"curSel", m_iInitSel, FALSE)
             ATTR_SKIN(L"btnSkin", m_pSkinBtn, FALSE)
             ATTR_INT(L"animateTime", m_nAnimTime, FALSE)
-            ATTR_INT(L"textOffset",m_nTextOffset,TRUE)
         SOUI_ATTRS_END()
 
         SOUI_MSG_MAP_BEGIN()
@@ -420,7 +419,6 @@ namespace SOUI
         int  m_nDropHeight;      /**< 下拉框高度 */
         int  m_nAnimTime;        /**< 动画时间   */
         int  m_iInitSel;         /**< 默认选中索引 */
-        int  m_nTextOffset;      /**< 文本显示的偏移 */
         SDropDownWnd *m_pDropDownWnd;  /**< DropDown指针 */
     };
 
