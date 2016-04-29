@@ -21,8 +21,8 @@
           <img pos="6,6" skin="sms.search"/>
           <edit pos="[0,0,-0,-0" name="edit_input"  cueText="@string/cue_search" margin="0"/>
           <popupStyle translucent="1" resizable="0" sendWheel2Hover="1">
-            <root colorBorder="@color/border" margin="1">
-              <listview pos="0,0,-0,-0" name="lv_dropdown" colorBkgnd="@color/white">
+            <root colorBorder="@color/border" margin="1" colorBkgnd="@color/white">
+              <listview pos="0,0,-0,-0" name="lv_dropdown" >
                 <template itemHeight="30" colorNormal="@color/white" colorSelected="#e4f0fc" colorHover="#e4f0fc">
                   <text pos="6,|0" offset="0,-0.5" name="txt_key"/>
                 </template>

@@ -306,6 +306,8 @@ namespace SOUI
             CRect rcPopup;
             BOOL bDown=CalcPopupRect(GetListBoxHeight(),rcPopup);
             m_pDropDownWnd->Create(rcPopup,0);
+            m_pDropDownWnd->GetRoot()->GetStyle().m_crBg = RGBA(0xFF,0xFF,0xFF,0xFF);//设置一个主窗口的背景色,以保证窗口在绘制列表滚动条前先绘制一个不透明的背景
+            
             if(m_nAnimTime>0)
                 m_pDropDownWnd->AnimateHostWindow(m_nAnimTime,AW_SLIDE|(bDown?AW_VER_POSITIVE:AW_VER_NEGATIVE));
             else
