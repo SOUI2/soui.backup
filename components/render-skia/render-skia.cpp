@@ -530,10 +530,16 @@ namespace SOUI
         SBitmap_Skia *pBmp = (SBitmap_Skia*)pBitmap;
         SkBitmap bmp=pBmp->GetSkBitmap();
 
-        RECT rcSrc={xSrc,ySrc,xSrc+pRcDest->right-pRcDest->left,ySrc+pRcDest->bottom-pRcDest->top};
+        SIZE szBmp = pBmp->Size();
+        int nWid= min(pRcDest->right-pRcDest->left,szBmp.cx);
+        int nHei= min(pRcDest->bottom-pRcDest->top,szBmp.cy);
 
-        SkRect skrcDst = toSkRect(pRcDest);
+        RECT rcSrc={xSrc,ySrc,xSrc+nWid,ySrc+nHei};
+        RECT rcDst={pRcDest->left,pRcDest->top,pRcDest->left+nWid,pRcDest->top+nHei};
+        
         SkRect skrcSrc= toSkRect(&rcSrc);
+        SkRect skrcDst = toSkRect(&rcDst);
+        
         skrcDst.offset(m_ptOrg);
 
         SkPaint paint;
