@@ -12,6 +12,8 @@ typedef std::string  tstring;
 void printUsage();
 void ImportResource(xml_node xmlNode, const tstring & strUiresDir,const tstring & strNamePrefix,xml_node xmlSkin);
 
+bool g_bEnableColorize = true;//默认皮肤允许着色
+
 int _tmain(int argc, _TCHAR* argv[])
 {
     tstring strUiresDir;    //uires路径，相对于当前路径
@@ -22,7 +24,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
     _tprintf(_T("%s\n"),GetCommandLine());
 
-    while ((c = getopt(argc, argv, _T("p:s:i:b:"))) != EOF || optarg!=NULL)
+    while ((c = getopt(argc, argv, _T("p:s:i:b:c:"))) != EOF || optarg!=NULL)
     {
         switch (c)
         {
@@ -30,6 +32,7 @@ int _tmain(int argc, _TCHAR* argv[])
         case 's':strSubDirs=optarg;break;
         case 'i':strImgDir=optarg;break;
         case 'b': bBackup = _tcsicmp(optarg,_T("no"))==0?false:true;
+        case 'c': g_bEnableColorize = _tcsicmp(optarg,_T("no"))==0?false:true;
         default: break;
         }
     }
@@ -96,7 +99,7 @@ void printUsage()
 {
     LPCTSTR  szUsage[] =
     {
-        _T("UiresImporter Usage: uiresImporter -p path -s subdirs -i image -b backup\n"),
+        _T("UiresImporter Usage: uiresImporter -p path -s subdirs -i image -b backup -c enableColorize\n"),
         _T("\tpath: specify uires path\n"),
         _T("\tsubdirs: specify subdirectorys that will be auto imported.\n"),
         _T("\timage: specify directory that will be auto imported as skin objects.\n"),
@@ -104,6 +107,9 @@ void printUsage()
         _T("\tbackup: specify backup operating.\n"),
         _T("\t\t yes (defult) - backup\n"),
         _T("\t\t no - ignore backup\n"),
+        _T("\tenableColorize: specify default skin enable colorize attibute.\n"),
+        _T("\t\t yes (defult) - enable colorize\n"),
+        _T("\t\t no - disable colorize\n"),
     };
     for(int i= 0;i< ARRAYSIZE(szUsage);i++)
     {
@@ -144,27 +150,59 @@ void ImportResource(xml_node xmlNode, const tstring & strUiresDir,const tstring 
                         src += strName;
                         
                         xml_node node = xmlSkin.find_child_by_attribute(_T("name"),strName.c_str());
-                        if(!node)
-                        {//防止重复添加。
-                            int nStates=1, left=-1,top=-1,right=-1,bottom=-1;
-                            int nValues = !p?0:_stscanf(p+1,_T("%d{%d,%d,%d,%d}]"),&nStates,&left,&top,&right,&bottom);
-                            if(nValues==0 || nValues == 1)
-                            {//imglist
-                                xml_node il = xmlSkin.append_child(_T("imglist"));
-                                il.append_attribute(_T("name")).set_value(strName.c_str());
-                                il.append_attribute(_T("src")).set_value(src.c_str());
-                                il.append_attribute(_T("states")).set_value(nStates);
-                            }else if(nValues==3 || nValues == 5)
-                            {//imgframe
-                                xml_node il = xmlSkin.append_child(_T("imgframe"));
-                                il.append_attribute(_T("name")).set_value(strName.c_str());
-                                il.append_attribute(_T("src")).set_value(src.c_str());
-                                il.append_attribute(_T("states")).set_value(nStates);
+                        if(node) xmlSkin.remove_child(node);//自动使用新的皮肤替换原有皮肤。
 
-                                TCHAR szMargin[100];
-                                _stprintf(szMargin,_T("%d,%d,%d,%d"),left,top,right==-1?left:right,bottom==-1?top:bottom);
-                                il.append_attribute(_T("margin")).set_value(szMargin);
-                            }
+                        int nStates=1, left=-1,top=-1,right=-1,bottom=-1;
+                        int nValues = 0;
+
+                        int nColorize = g_bEnableColorize?1:0, //着色标志 {ec=0/1}
+                            nAutoFit = 0,  //自适应标志{fit=0/1}
+                            nTile = 0,     //平铺标志{tile=0/1}
+                            nVertical = 0, //子图垂直排列标志{vert=0/1}
+                            nFilter=0;     //绘制滤镜:{filter=0/1/2/3} 0=null,1=low,2=midium,3=high
+                        
+                        if(p)
+                        {
+                            nValues = _stscanf(p+1,_T("%d{%d,%d,%d,%d}]"),&nStates,&left,&top,&right,&bottom);
+
+                            LPCTSTR pszFind = _tcsstr(p+1,_T("{ec="));
+                            if(pszFind) nColorize = _ttoi(pszFind+4);
+                            pszFind = _tcsstr(p+1,_T("{fit="));
+                            if(pszFind) nAutoFit = _ttoi(pszFind+5);
+                            pszFind = _tcsstr(p+1,_T("{filter="));
+                            if(pszFind) nFilter = _ttoi(pszFind+8);
+                            pszFind = _tcsstr(p+1,_T("{tile="));
+                            if(pszFind) nTile = _ttoi(pszFind+6);
+                            pszFind = _tcsstr(p+1,_T("{vert="));
+                            if(pszFind) nVertical = _ttoi(pszFind+6);
+                        }
+
+                        xml_node il = xmlSkin.append_child();
+                        if(nValues==0 || nValues == 1)
+                        {//imglist
+                            il.set_name(_T("imglist"));
+                        }else if(nValues==3 || nValues == 5)
+                        {//imgframe
+                            il.set_name(_T("imgframe"));
+
+                            TCHAR szMargin[100];
+                            _stprintf(szMargin,_T("%d,%d,%d,%d"),left,top,right==-1?left:right,bottom==-1?top:bottom);
+                            il.append_attribute(_T("margin")).set_value(szMargin);
+                        }
+                        il.append_attribute(_T("name")).set_value(strName.c_str());
+                        il.append_attribute(_T("src")).set_value(src.c_str());
+                        il.append_attribute(_T("states")).set_value(nStates);
+
+                        //设置各种可先属性
+                        if(nColorize == 0) il.append_attribute(_T("enableColorize")).set_value(0);
+                        if(nAutoFit == 0) il.append_attribute(_T("autoFit")).set_value(0);
+                        if(nTile !=0 ) il.append_attribute(_T("tile")).set_value(1);
+                        if(nVertical != 0 ) il.append_attribute(_T("vertical")).set_value(1);
+                        switch(nFilter)
+                        {
+                        case 1:il.append_attribute(_T("filterLevel")).set_value(_T("low"));break;
+                        case 2:il.append_attribute(_T("filterLevel")).set_value(_T("midium"));break;
+                        case 3:il.append_attribute(_T("filterLevel")).set_value(_T("high"));break;
                         }
                     }
                 }
