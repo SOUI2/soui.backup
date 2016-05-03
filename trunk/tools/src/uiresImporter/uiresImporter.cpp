@@ -156,7 +156,7 @@ void ImportResource(xml_node xmlNode, const tstring & strUiresDir,const tstring 
                         int nValues = 0;
 
                         int nColorize = g_bEnableColorize?1:0, //着色标志 {ec=0/1}
-                            nAutoFit = 0,  //自适应标志{fit=0/1}
+                            nAutoFit = 1,  //自适应标志{fit=0/1}
                             nTile = 0,     //平铺标志{tile=0/1}
                             nVertical = 0, //子图垂直排列标志{vert=0/1}
                             nFilter=0;     //绘制滤镜:{filter=0/1/2/3} 0=null,1=low,2=midium,3=high
