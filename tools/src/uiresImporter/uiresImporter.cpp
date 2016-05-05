@@ -178,6 +178,9 @@ void ImportResource(xml_node xmlNode, const tstring & strUiresDir,const tstring 
                         }
 
                         xml_node il = xmlSkin.append_child();
+                        il.append_attribute(_T("name")).set_value(strName.c_str());
+                        il.append_attribute(_T("src")).set_value(src.c_str());
+                        il.append_attribute(_T("states")).set_value(nStates);
                         if(nValues==0 || nValues == 1)
                         {//imglist
                             il.set_name(_T("imglist"));
@@ -189,9 +192,6 @@ void ImportResource(xml_node xmlNode, const tstring & strUiresDir,const tstring 
                             _stprintf(szMargin,_T("%d,%d,%d,%d"),left,top,right==-1?left:right,bottom==-1?top:bottom);
                             il.append_attribute(_T("margin")).set_value(szMargin);
                         }
-                        il.append_attribute(_T("name")).set_value(strName.c_str());
-                        il.append_attribute(_T("src")).set_value(src.c_str());
-                        il.append_attribute(_T("states")).set_value(nStates);
 
                         //设置各种可先属性
                         if(nColorize == 0) il.append_attribute(_T("enableColorize")).set_value(0);
