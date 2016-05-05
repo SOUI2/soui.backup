@@ -19,10 +19,9 @@ namespace SOUI
         ~SButtonEx(void);
         
         HICON SetIcon(HICON hIcon,int nIconSize);
-        
+        void  SetIconVisible(bool bVisible);
     public:
         SOUI_ATTRS_BEGIN()
-            ATTR_RECT(L"padding",m_rcPadding,TRUE)
             ATTR_POINT(L"pushOffset",m_ptPushOffet,TRUE)//下压状态整体偏移
             ATTR_SKIN(L"icon",m_pIcon,TRUE) //图标SKIN
             ATTR_INT(L"iconIndex",m_iIcon,TRUE)//图标在Skin中的索引
@@ -56,13 +55,13 @@ namespace SOUI
         int         m_nIconSize;
         
         ISkinObj * m_pIcon;
-        int        m_iIcon;
+        int        m_iIcon;//-1代表m_pIcon是一个独占的皮肤
         CPoint     m_ptIcon;
         CPoint     m_ptText;
         CPoint     m_ptPushOffet;
         int        m_nSepSize;
         int         m_drawMode;
-        CRect       m_rcPadding;
+        bool        m_bIconVisible;
     };
 
 }

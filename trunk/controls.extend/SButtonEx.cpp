@@ -3,7 +3,7 @@
 
 namespace SOUI
 {
-    SButtonEx::SButtonEx(void):m_ptPushOffet(2,2),m_drawMode(HORZ_ICON_TEXT),m_nSepSize(5),m_hIcon(0)
+    SButtonEx::SButtonEx(void):m_ptPushOffet(2,2),m_drawMode(HORZ_ICON_TEXT),m_nSepSize(5),m_hIcon(0),m_nIconSize(32),m_iIcon(0),m_bIconVisible(true),m_pIcon(NULL)
     {
         m_bClipClient = TRUE;
     }
@@ -49,8 +49,8 @@ namespace SOUI
             SASSERT(FALSE);
             break;
         }
-        szRet.cx += m_rcPadding.left + m_rcPadding.right;
-        szRet.cy += m_rcPadding.top + m_rcPadding.bottom;
+        szRet.cx += m_style.m_rcInset.left + m_style.m_rcInset.right;
+        szRet.cy += m_style.m_rcInset.top + m_style.m_rcInset.bottom;
         return szRet;
     }
 
@@ -63,27 +63,30 @@ namespace SOUI
         GetClientRect(&rcClient);
 
         //draw background, copy from SButton
-        if(m_byAlphaAni==0xFF)
-        {//不在动画过程中
-            m_pBgSkin->Draw(
-                pRT, rcClient,
-                IIF_STATE4(GetState(), 0, 1, 2, 3)
-                );
-        }
-        else
-        {//在动画过程中
-            BYTE byNewAlpha=(BYTE)(((UINT)m_byAlphaAni*m_pBgSkin->GetAlpha())>>8);
-            if(GetState()&WndState_Hover)
-            {
-                //get hover
-                m_pBgSkin->Draw(pRT, rcClient, 0, m_pBgSkin->GetAlpha());
-                m_pBgSkin->Draw(pRT, rcClient, 1, byNewAlpha);
+        if(m_pBgSkin)
+        {
+            if(m_byAlphaAni==0xFF)
+            {//不在动画过程中
+                m_pBgSkin->Draw(
+                    pRT, rcClient,
+                    IIF_STATE4(GetState(), 0, 1, 2, 3)
+                    );
             }
             else
-            {
-                //lose hover
-                m_pBgSkin->Draw(pRT, rcClient,0, m_pBgSkin->GetAlpha());
-                m_pBgSkin->Draw(pRT, rcClient, 1, m_pBgSkin->GetAlpha()-byNewAlpha);
+            {//在动画过程中
+                BYTE byNewAlpha=(BYTE)(((UINT)m_byAlphaAni*m_pBgSkin->GetAlpha())>>8);
+                if(GetState()&WndState_Hover)
+                {
+                    //get hover
+                    m_pBgSkin->Draw(pRT, rcClient, 0, m_pBgSkin->GetAlpha());
+                    m_pBgSkin->Draw(pRT, rcClient, 1, byNewAlpha);
+                }
+                else
+                {
+                    //lose hover
+                    m_pBgSkin->Draw(pRT, rcClient,0, m_pBgSkin->GetAlpha());
+                    m_pBgSkin->Draw(pRT, rcClient, 1, m_pBgSkin->GetAlpha()-byNewAlpha);
+                }
             }
         }
         
@@ -91,14 +94,14 @@ namespace SOUI
         {
             rcClient.OffsetRect(m_ptPushOffet);
         }
-        rcClient.DeflateRect(m_rcPadding);
+        rcClient.DeflateRect(m_style.m_rcInset);
         
         //draw icon and text
         CPoint ptIcon = rcClient.TopLeft(),ptText=ptIcon;
         CSize szIcon = GetIconSize();
         CSize szDesired = GetDesiredSize(pRT,&rcClient);
-        szDesired.cx -= m_rcPadding.left + m_rcPadding.right;
-        szDesired.cy -= m_rcPadding.top + m_rcPadding.bottom;
+        szDesired.cx -= m_style.m_rcInset.left + m_style.m_rcInset.right;
+        szDesired.cy -= m_style.m_rcInset.top + m_style.m_rcInset.bottom;
         
         CSize szText;
         pRT->MeasureText(GetWindowText(),GetWindowText().GetLength(),&szText);
@@ -164,13 +167,21 @@ namespace SOUI
 
     void SButtonEx::DrawIcon(IRenderTarget *pRT,CRect rcIcon)
     {
+        if(!m_bIconVisible) return;
         if(m_hIcon)
         {
             pRT->DrawIconEx(rcIcon.left,rcIcon.top,m_hIcon,rcIcon.Width(),rcIcon.Height(),DI_NORMAL);
         }else
         {
-            m_pIcon->Draw(pRT,rcIcon,m_iIcon);
+            int iState = m_iIcon!=-1?m_iIcon:IIF_STATE4(GetState(),0,1,2,3);
+            m_pIcon->Draw(pRT,rcIcon,iState);
         }
+    }
+
+    void SButtonEx::SetIconVisible(bool bVisible)
+    {
+        m_bIconVisible = bVisible;
+        Invalidate();
     }
 
 }
