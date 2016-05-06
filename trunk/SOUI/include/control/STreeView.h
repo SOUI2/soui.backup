@@ -116,7 +116,8 @@ namespace SOUI
         
         void SetSel(HTREEITEM hItem,BOOL bNotify=FALSE);
         HTREEITEM  GetSel()const{return m_hSelected;}
-        
+        SItemPanel * HitTest(CPoint & pt);
+
     protected:
         bool OnItemClick(EventArgs *pEvt);
         bool OnItemDblClick(EventArgs *pEvt);
@@ -180,7 +181,6 @@ namespace SOUI
 		void RedrawItem(SItemPanel *pItem);
 		void _SetSel(int iItem,BOOL bNotify, SWND hHitWnd);
 		SItemPanel * GetItemPanel(HTREEITEM hItem);
-		SItemPanel * HitTest(CPoint & pt);
 
 		void EnsureVisible(HTREEITEM hItem);
 

@@ -33,6 +33,7 @@ namespace SOUI
         void SetSel(int iItem,BOOL bNotify=FALSE);
         int  GetSel()const{return m_iSelItem;}
         
+        SItemPanel * HitTest(CPoint & pt);
     protected:
         virtual void OnItemSetCapture(SItemPanel *pItem,BOOL bCapture);
         virtual BOOL OnItemGetRect(SItemPanel *pItem,CRect &rcItem);
@@ -60,7 +61,6 @@ namespace SOUI
 
         void UpdateScrollBar();
         void RedrawItem(SItemPanel *pItem);
-        SItemPanel * HitTest(CPoint & pt);
         SItemPanel * GetItemPanel(int iItem);
         
         void UpdateVisibleItems();
