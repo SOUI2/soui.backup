@@ -87,7 +87,7 @@ namespace SOUI
         if(GetCount()) 
         {
             int nItemHeight=m_pListBox->GetItemHeight();
-            nDropHeight = min(nDropHeight,nItemHeight*GetCount()+m_pListBox->GetStyle().m_nMarginY*2);
+            nDropHeight = min(nDropHeight,nItemHeight*GetCount()+m_pListBox->GetStyle().m_rcMargin.top + m_pListBox->GetStyle().m_rcMargin.bottom);
         }
         return nDropHeight;    
     }

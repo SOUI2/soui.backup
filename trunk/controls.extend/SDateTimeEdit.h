@@ -189,7 +189,7 @@ protected:
      * 
      * Describe  此函数是消息响应函数
      */
-    void  OnSetFocus();
+    void  OnSetFocus(SWND wndOld);
 protected:
     int             m_nStartChar;       // Current position of the first character in the current selection.
     int             m_nEndChar;         // Current position of the first non-selected character past the end of the current selection.

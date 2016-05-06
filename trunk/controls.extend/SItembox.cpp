@@ -34,7 +34,8 @@ SWindow* SItemBox::InsertItem(LPCWSTR pszXml,int iItem/*=-1*/,BOOL bEnsureVisibl
 
     pPanel->CreateChildren(xmlDoc.first_child());
     pPanel->SetVisible(TRUE);
-    pPanel->SetFixSize(m_nItemWid,m_nItemHei);
+    pPanel->GetLayout()->SetWidth(m_nItemWid);
+    pPanel->GetLayout()->SetHeight(m_nItemHei);
 
     UpdateScroll();
     ReLayout();
@@ -62,7 +63,8 @@ SWindow* SItemBox::InsertItem(pugi::xml_node xmlNode,int iItem/*=-1*/,BOOL bEnsu
 
     pPanel->CreateChildren(xmlNode);
     pPanel->SetVisible(TRUE);
-    pPanel->SetFixSize(m_nItemWid,m_nItemHei);
+    pPanel->GetLayout()->SetWidth(m_nItemWid);
+    pPanel->GetLayout()->SetHeight(m_nItemHei);
 
     UpdateScroll();
     ReLayout();
@@ -209,24 +211,24 @@ void SItemBox::PageDown()
 void SItemBox::EnsureVisible(SWindow *pItem)
 {
     if(!HasScrollBar(TRUE)) return;
-    ASSERT(pItem);
+    SASSERT(pItem);
     CRect rcItem;
     pItem->GetWindowRect(&rcItem);
     int yOffset=0;
-    if(rcItem.bottom>m_rcWindow.bottom)
+    if(rcItem.bottom>GetWindowRect().bottom)
     {
-        yOffset=rcItem.bottom-m_rcWindow.bottom;
+        yOffset=rcItem.bottom-GetWindowRect().bottom;
     }
-    else if(rcItem.top<m_rcWindow.top)
+    else if(rcItem.top<GetWindowRect().top)
     {
-        yOffset=rcItem.top-m_rcWindow.top;
+        yOffset=rcItem.top-GetWindowRect().top;
     }
     SetScrollPos(TRUE,GetScrollPos(TRUE)+yOffset,TRUE);
 }
 
 void SItemBox::UpdateScroll()
 {
-    CRect rcClient=m_rcWindow;
+    CRect rcClient=GetWindowRect();
 
     int nPageCols=(rcClient.Width()+m_nSepWid)/(m_nItemWid+m_nSepWid);
     int nPageRows=(rcClient.Height()+m_nSepHei)/(m_nItemHei+m_nSepHei);
@@ -255,7 +257,7 @@ void SItemBox::UpdateScroll()
 
 CRect SItemBox::GetItemRect(int iItem)
 {
-    CRect rcClient=m_rcWindow;
+    CRect rcClient=GetWindowRect();
 
     int nPageCols=(rcClient.Width()+m_nSepWid)/(m_nItemWid+m_nSepWid);
     int nPageRows=(rcClient.Height()+m_nSepHei)/(m_nItemHei+m_nSepHei);
@@ -280,7 +282,7 @@ CRect SItemBox::GetItemRect(int iItem)
 void SItemBox::OnSize(UINT nType, CSize size)
 {
     __super::OnSize(nType,size);
-    if(m_rcWindow.IsRectEmpty()) return;
+    if(GetWindowRect().IsRectEmpty()) return;
 
     m_ptOrigin=CPoint(0,0);
     m_siVer.nPos=0;
@@ -296,7 +298,7 @@ void SItemBox::ReLayout()
     while(pChild)
     {
         rcItem=GetItemRect(iItem);
-        rcItem.OffsetRect(m_rcWindow.TopLeft()-m_ptOrigin);
+        rcItem.OffsetRect(GetWindowRect().TopLeft()-m_ptOrigin);
         pChild->Move(rcItem);
         pChild=pChild->GetWindow(GSW_NEXTSIBLING);
         iItem++;
@@ -334,7 +336,8 @@ BOOL SItemBox::CreateChildren(pugi::xml_node xmlNode)
 
         pChild->InitFromXml(xmlItem);
         pChild->SetVisible(TRUE);
-        pChild->SetFixSize(m_nItemWid,m_nItemHei);
+        pChild->GetLayout()->SetWidth(m_nItemWid);
+        pChild->GetLayout()->SetHeight(m_nItemHei);
 
 
         xmlItem=xmlItem.next_sibling(L"item");

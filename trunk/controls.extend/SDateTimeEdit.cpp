@@ -107,7 +107,7 @@ BOOL SMaskEdit::MaskCopy()
 
 void SMaskEdit::MaskReplaceSel(LPCTSTR lpszNewText)
 {
-    ASSERT(CanUseMask());
+    SASSERT(CanUseMask());
 
     if (m_nStartChar != m_nEndChar)
         MaskDeleteSel();
@@ -247,14 +247,14 @@ void SMaskEdit::SetMaskedText(LPCTSTR lpszMaskedText, int nPos, BOOL bUpdateWind
 
 BOOL SMaskEdit::SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lpszDefault)
 {
-    ASSERT(lpszMask);
-    ASSERT(lpszLiteral);
+    SASSERT(lpszMask);
+    SASSERT(lpszLiteral);
 
     // initialize the mask for the control.
     m_strMask    = lpszMask;
     m_strLiteral = lpszLiteral;
 
-    ASSERT(m_strMask.GetLength() == m_strLiteral.GetLength());
+    SASSERT(m_strMask.GetLength() == m_strLiteral.GetLength());
 
     if (m_strMask.GetLength() != m_strLiteral.GetLength())
         return FALSE;
@@ -274,7 +274,7 @@ BOOL SMaskEdit::SetEditMask(LPCTSTR lpszMask, LPCTSTR lpszLiteral, LPCTSTR lpszD
         }
     }
 
-    ASSERT(m_strWindowText.GetLength() == m_strLiteral.GetLength());
+    SASSERT(m_strWindowText.GetLength() == m_strLiteral.GetLength());
 
     // set the window text for the control.
     m_bModified = FALSE;
@@ -316,7 +316,7 @@ BOOL SMaskEdit::CheckChar(TCHAR& nChar, int nPos)
 
 BOOL SMaskEdit::ProcessMask(TCHAR& nChar, int nEndPos)
 {
-    ASSERT(nEndPos < m_strMask.GetLength());
+    SASSERT(nEndPos < m_strMask.GetLength());
     if (nEndPos < 0 || nEndPos >= m_strMask.GetLength())
         return FALSE;
 
@@ -440,7 +440,7 @@ BOOL CDxMaskEdit::PreTranslateMessage(MSG* pMsg)
 
 void SMaskEdit::DeleteCharAt(int nPos)
 {
-    ASSERT(PosInRange(nPos));
+    SASSERT(PosInRange(nPos));
 
     if (!PosInRange(nPos))
         return;
@@ -452,7 +452,7 @@ void SMaskEdit::DeleteCharAt(int nPos)
 
 void SMaskEdit::InsertCharAt(int nPos, TCHAR nChar)
 {
-    ASSERT(PosInRange(nPos));
+    SASSERT(PosInRange(nPos));
 
     if (!PosInRange(nPos))
         return;
@@ -677,7 +677,7 @@ void SMaskEdit::ProcessChar(TCHAR nChar)
         MaskDeleteSel();
     }
 
-    ASSERT(m_nStartChar == m_nEndChar);
+    SASSERT(m_nStartChar == m_nEndChar);
 
     CorrectPosition(m_nStartChar);
 
@@ -750,9 +750,9 @@ void SMaskEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     }
 }
 
-void SMaskEdit::OnSetFocus()
+void SMaskEdit::OnSetFocus(SWND wndOld)
 {
-    __super::OnSetFocus();
+    __super::OnSetFocus(wndOld);
 
     if (!CanUseMask())
     {
@@ -862,13 +862,13 @@ void SMaskEdit::CorrectWindowText()
 
 void SMaskEdit::GetMaskState(BOOL bCorrectSelection)
 {
-    ASSERT(m_bUseMask);
+    SASSERT(m_bUseMask);
 
     MaskGetSel();
     m_strWindowText = GetWindowText();
 
-    ASSERT(m_strDefault.GetLength() == m_strLiteral.GetLength());
-    ASSERT(m_strMask.GetLength() == m_strLiteral.GetLength());
+    SASSERT(m_strDefault.GetLength() == m_strLiteral.GetLength());
+    SASSERT(m_strMask.GetLength() == m_strLiteral.GetLength());
 
     CorrectWindowText();
 
@@ -889,12 +889,12 @@ void SMaskEdit::MaskGetSel()
 
 void SMaskEdit::SetMaskState()
 {
-    ASSERT(m_bUseMask);
+    SASSERT(m_bUseMask);
 
     SStringT strWindowText = GetWindowText();
 
     CorrectWindowText();
-    GetContainer()->SwndShowCaret(FALSE);
+    GetContainer()->OnShowCaret(FALSE);
 
     if (strWindowText != m_strWindowText)
     {
@@ -904,7 +904,7 @@ void SMaskEdit::SetMaskState()
     }
 
     SetSel(MAKELONG(m_nStartChar, m_nEndChar), FALSE);
-    GetContainer()->SwndShowCaret(TRUE);
+    GetContainer()->OnShowCaret(TRUE);
 }
 
 /////////////////////////////////////////////////////////////////////////////
