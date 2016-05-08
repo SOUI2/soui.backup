@@ -34,7 +34,7 @@
     #pragma comment(lib,"zlibd")
     #pragma comment(lib,"pngd")
     #ifdef DLL_CORE
-    #pragma comment(lib,"lua-51d")
+    #pragma comment(lib,"lua-52d")
     #pragma comment(lib,"scriptmodule-luad")
     #endif
     #pragma comment(lib,"render-gdid")
@@ -52,7 +52,7 @@
     #pragma comment(lib,"zlib")
     #pragma comment(lib,"png")
     #ifdef DLL_CORE
-    #pragma comment(lib,"lua-51")
+    #pragma comment(lib,"lua-52")
     #pragma comment(lib,"scriptmodule-lua")
     #endif
 
