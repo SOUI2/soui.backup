@@ -334,20 +334,19 @@ void STileView::UpdateVisibleItems()
         {
             continue;
         }
-        ii.pItem->GetEventSet()->setMutedState(true);
         if(ii.pItem == m_pHoverItem)
         {
             ii.pItem->DoFrameEvent(WM_MOUSELEAVE, 0, 0);
             m_pHoverItem = NULL;
         }
+        ii.pItem->GetEventSet()->setMutedState(true);
         if(ii.pItem->GetItemIndex() == m_iSelItem)
         {
             ii.pItem->ModifyItemState(0, WndState_Check);
             ii.pItem->GetFocusManager()->SetFocusedHwnd(0);
         }
-        ii.pItem->GetEventSet()->setMutedState(false);
-
         ii.pItem->SetVisible(FALSE);
+        ii.pItem->GetEventSet()->setMutedState(false);
         m_itemRecycle[ii.nType]->AddTail(ii.pItem);
     }
     delete [] pItemInfos;
