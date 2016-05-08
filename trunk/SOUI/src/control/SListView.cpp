@@ -325,11 +325,11 @@ namespace SOUI
         {
             ItemInfo ii = pItemInfos[i];
             if(!ii.pItem) continue;
-            ii.pItem->GetEventSet()->setMutedState(true);
             if(ii.pItem->GetState() & WndState_Hover)
             {
                 ii.pItem->DoFrameEvent(WM_MOUSELEAVE,0,0);
             }
+            ii.pItem->GetEventSet()->setMutedState(true);
             if(ii.pItem->GetState() & WndState_Check)
             {
                 ii.pItem->ModifyItemState(0,WndState_Check);

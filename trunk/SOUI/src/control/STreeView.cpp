@@ -853,13 +853,15 @@ namespace SOUI
                 m_pHoverItem = NULL;
             }
             
+            ii.pItem->GetEventSet()->setMutedState(true);
             if((HTREEITEM)ii.pItem->GetItemIndex() == m_hSelected)
             {
                 ii.pItem->ModifyItemState(0, WndState_Check);
                 ii.pItem->GetFocusManager()->SetFocusedHwnd(0);
             }
-
             ii.pItem->SetVisible(FALSE);//·ÀÖ¹Ö´ÐÐSItemPanel::OnTimeFrame()
+            ii.pItem->GetEventSet()->setMutedState(false);
+
             m_itemRecycle[ii.nType]->AddTail(ii.pItem);    
         }
         delete pMapOld;
