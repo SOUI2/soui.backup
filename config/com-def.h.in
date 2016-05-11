@@ -1,7 +1,7 @@
 //
 // cmake configure.h.in
 //
-#define ENABLE_SOUI_COM_LIB 0
+#cmakedefine01 ENABLE_SOUI_COM_LIB
 
 #if ENABLE_SOUI_COM_LIB
     #define LIB_SOUI_COM
