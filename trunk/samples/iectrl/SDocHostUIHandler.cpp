@@ -23,7 +23,15 @@ namespace SOUI
 
     HRESULT STDMETHODCALLTYPE SDocHostUIHandler::GetHostInfo(DOCHOSTUIINFO *pInfo)
     {
-        return E_NOTIMPL;
+        if(!pInfo) return E_INVALIDARG;;
+        pInfo->cbSize = sizeof(DOCHOSTUIINFO);
+        pInfo->dwFlags = DOCHOSTUIFLAG_NO3DBORDER
+            | DOCHOSTUIFLAG_DISABLE_HELP_MENU
+            | DOCHOSTUIFLAG_DIALOG
+            //| DOCHOSTUIFLAG_SCROLL_NO
+            ;    
+        pInfo->dwDoubleClick = DOCHOSTUIDBLCLK_DEFAULT;
+        return S_OK;
     }
 
     HRESULT STDMETHODCALLTYPE SDocHostUIHandler::ShowUI(DWORD dwID, IOleInPlaceActiveObject *pActiveObject, IOleCommandTarget *pCommandTarget, IOleInPlaceFrame *pFrame, IOleInPlaceUIWindow *pDoc)
