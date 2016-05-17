@@ -16,6 +16,7 @@
 #include <com-cfg.h>
 
 #include "resource.h"	//APP×ÊÔ´
+#define R_IN_CPP
 #include "res/resource.h"
 
 #include "../controls.extend/SWkeWebkit.h"

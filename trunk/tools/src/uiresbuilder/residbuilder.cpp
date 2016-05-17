@@ -16,6 +16,13 @@ L"/*<---------------------------------------------------------------------------
 L"/*该文件由uiresbuilder生成，请不要手动修改*/\n"\
 L"/*<------------------------------------------------------------------------------------------------->*/\n";
 
+const wchar_t ROBJ_DEF[] =
+L"#define ROBJ_IN_CPP \\\n"
+L"namespace SOUI \\\n"
+L"{\\\n"
+L"    const _R R;\\\n"
+L"    const _UIRES UIRES;\\\n"
+L"}\n";
 
 struct IDMAPRECORD
 {
@@ -724,7 +731,9 @@ int _tmain(int argc, _TCHAR* argv[])
         }
 
 		wstring strOut = RB_HEADER_ID;
-		strOut += L"#pragma once\r\n#include <res.mgr/snamedvalue.h>\r\nnamespace SOUI\r\n{\r\n";
+		strOut += L"#pragma once\r\n#include <res.mgr/snamedvalue.h>\r\n";
+		strOut += ROBJ_DEF;
+		strOut += L"namespace SOUI\r\n{\r\n";
 		strOut += strFiles;
 				
 		if(bBuildIDMap)
@@ -744,8 +753,14 @@ int _tmain(int argc, _TCHAR* argv[])
         strOut += strColor;
 
         strOut += L"\r\n\t};\r\n\r\n";
+        
+        strOut += L"#ifdef R_IN_CPP\r\n";
+        strOut += L"\t extern const _R R;\r\n";
+        strOut += L"\t extern const _UIRES UIRES;\r\n";
+        strOut += L"#else\r\n";
         strOut += L"\t extern const __declspec(selectany) _R & R = _R();\r\n";
         strOut += L"\t extern const __declspec(selectany) _UIRES & UIRES = _UIRES();\r\n";
+        strOut += L"#endif//R_IN_CPP\r\n";
 
         strOut += L"}\r\n";
 
