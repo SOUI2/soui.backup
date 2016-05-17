@@ -744,8 +744,8 @@ int _tmain(int argc, _TCHAR* argv[])
         strOut += strColor;
 
         strOut += L"\r\n\t};\r\n\r\n";
-        strOut += L"\t extern \"C\" const __declspec(selectany) _R & R = _R();\r\n";
-        strOut += L"\t extern \"C\" const __declspec(selectany) _UIRES & UIRES = _UIRES();\r\n";
+        strOut += L"\t extern const __declspec(selectany) _R & R = _R();\r\n";
+        strOut += L"\t extern const __declspec(selectany) _UIRES & UIRES = _UIRES();\r\n";
 
         strOut += L"}\r\n";
 
