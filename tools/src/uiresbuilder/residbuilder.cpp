@@ -410,6 +410,9 @@ void ParseLayoutFile(const wchar_t * pszFileName,map<wstring,int> &mapName2ID,in
             || stricmp(pXmlNode->Value(),"menuRoot") == 0 //smenuex
             )
             ParseLayout(pXmlNode,mapName2ID,nStartId);
+    }else
+    {
+        wprintf(L"!!!err: Load Layout XML Failed! file name: %s\n",pszFileName);
     }
     fclose(f);
 }
@@ -657,6 +660,11 @@ int _tmain(int argc, _TCHAR* argv[])
         strId = L"\t\tclass _id{\r\n\t\tpublic:\r\n";
         
 		map<wstring,int>::iterator it=mapNameID.begin();
+		
+		if(it == mapNameID.end())
+		{
+		    printf("!!!err: name-id map is empty!");
+		}
 		int idx = 0;
 		while(it!=mapNameID.end())
 		{
