@@ -420,6 +420,7 @@ namespace SOUI
         int  m_nAnimTime;        /**< 动画时间   */
         int  m_iInitSel;         /**< 默认选中索引 */
         SDropDownWnd *m_pDropDownWnd;  /**< DropDown指针 */
+		pugi::xml_document	m_xmlDropdownStyle;/**< DropDown的style */
     };
 
 }
