@@ -4,6 +4,9 @@
 namespace SOUI
 {
 
+	const wchar_t * KStyle_Dropdown = L"dropdownStyle";//下拉列表风格，只包含root节点
+	const wchar_t * KStyle_Edit		= L"editStyle";		//编辑框风格
+
     //////////////////////////////////////////////////////////////////////////
     // CComboEdit
     SComboEdit::SComboEdit( SWindow *pOwner )
@@ -89,6 +92,7 @@ namespace SOUI
     BOOL SComboBase::CreateChildren( pugi::xml_node xmlNode )
     {
         SASSERT(m_pSkinBtn);
+		m_xmlDropdownStyle.append_copy(xmlNode.child(KStyle_Dropdown));
         //创建edit对象
         if(!m_bDropdown)
         {
@@ -97,7 +101,7 @@ namespace SOUI
             SApplication::getSingleton().SetSwndDefAttr(m_pEdit);
 
             InsertChild(m_pEdit);
-            pugi::xml_node xmlEditStyle=xmlNode.child(L"editstyle");
+            pugi::xml_node xmlEditStyle=xmlNode.child(KStyle_Edit);
             m_pEdit->GetEventSet()->setMutedState(true);
             if(xmlEditStyle)
                 m_pEdit->InitFromXml(xmlEditStyle);
@@ -231,7 +235,13 @@ namespace SOUI
 
     void SComboBase::OnCreateDropDown( SDropDownWnd *pDropDown )
     {
-        m_dwBtnState=WndState_PushDown;
+		pugi::xml_node xmlDropdownStyleNode = m_xmlDropdownStyle.child(KStyle_Dropdown);
+		if(xmlDropdownStyleNode)
+		{
+			pDropDown->InitFromXml(xmlDropdownStyleNode);
+		}
+
+		m_dwBtnState=WndState_PushDown;
         CRect rcBtn;
         GetDropBtnRect(&rcBtn);
         InvalidateRect(rcBtn);
@@ -306,7 +316,6 @@ namespace SOUI
             CRect rcPopup;
             BOOL bDown=CalcPopupRect(GetListBoxHeight(),rcPopup);
             m_pDropDownWnd->Create(rcPopup,0);
-            m_pDropDownWnd->GetRoot()->GetStyle().m_crBg = RGBA(0xFF,0xFF,0xFF,0xFF);//设置一个主窗口的背景色,以保证窗口在绘制列表滚动条前先绘制一个不透明的背景
             
             if(m_nAnimTime>0)
                 m_pDropDownWnd->AnimateHostWindow(m_nAnimTime,AW_SLIDE|(bDown?AW_VER_POSITIVE:AW_VER_NEGATIVE));
