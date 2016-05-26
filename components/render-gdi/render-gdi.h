@@ -337,6 +337,10 @@ namespace SOUI
 
         virtual HRESULT GetTransform(IxForm * pXForm) const;
 
+		virtual COLORREF GetPixel( int x, int y );
+
+		virtual COLORREF SetPixel( int x, int y, COLORREF cr );
+
     protected:
         HDC               m_hdc;
         SColor            m_curColor;

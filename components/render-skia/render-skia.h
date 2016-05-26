@@ -310,7 +310,8 @@ namespace SOUI
 		}
 		
         virtual HDC GetDC(UINT uFlag);
-        virtual void ReleaseDC(HDC hdc);
+
+		virtual void ReleaseDC(HDC hdc);
 
         virtual HRESULT QueryInterface(REFGUID iid,IObjRef ** ppObj);
         
@@ -318,8 +319,12 @@ namespace SOUI
 
         virtual HRESULT GetTransform(IxForm * pXForm) const;
 
+		virtual COLORREF GetPixel( int x, int y );
+
+		virtual COLORREF SetPixel( int x, int y, COLORREF cr );
     public:
         SkCanvas *GetCanvas(){return m_SkCanvas;}
+
 
 
     protected:
