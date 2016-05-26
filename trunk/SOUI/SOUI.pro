@@ -95,6 +95,7 @@ HEADERS += include/SApp.h \
            include/event/Events.h \
            include/event/EventSet.h \
            include/event/EventSubscriber.h \
+           include/event/NotifyCenter.h \
            include/helper/auto_reset.h \
            include/helper/color.h \
            include/helper/mybuffer.h \
@@ -195,6 +196,7 @@ SOURCES += src/SApp.cpp \
            src/core/SwndStyle.cpp \
            src/core/scaret.cpp \
            src/event/EventSet.cpp \
+           src/event/NotifyCenter.cpp \
            src/helper/DragWnd.cpp \
            src/helper/MemDC.cpp \
            src/helper/MenuWndHook.cpp \

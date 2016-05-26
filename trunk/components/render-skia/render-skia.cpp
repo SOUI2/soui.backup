@@ -1067,6 +1067,41 @@ namespace SOUI
         return S_OK;
     }
 
+	COLORREF SRenderTarget_Skia::GetPixel( int x, int y )
+	{
+		if(!m_curBmp) return CR_INVALID;
+		const COLORREF *pBits = (const COLORREF*)m_curBmp->GetPixelBits();
+		POINT pt;
+		GetViewportOrg(&pt);
+		x += pt.x;
+		y += pt.y;
+		if(x<0 || x >= (int)m_curBmp->Width() || y<0 || y>= (int)m_curBmp->Height())
+			return CR_INVALID;
+		
+		return pBits[y*m_curBmp->Width()+x];
+	}
+
+	COLORREF SRenderTarget_Skia::SetPixel( int x, int y, COLORREF cr )
+	{
+		if(!m_curBmp) return CR_INVALID;
+		COLORREF *pBits = (COLORREF*)m_curBmp->LockPixelBits();
+		POINT pt;
+		GetViewportOrg(&pt);
+		x += pt.x;
+		y += pt.y;
+
+		if(x >= (int)m_curBmp->Width() || y>= (int)m_curBmp->Height())
+			return CR_INVALID;
+
+		COLORREF crRet = pBits[y*m_curBmp->Width()+x];
+
+		pBits[y*m_curBmp->Width()+x] = cr;
+
+		m_curBmp->UnlockPixelBits(pBits);
+
+		return crRet;
+	}
+
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
     static int s_cBmp = 0;
