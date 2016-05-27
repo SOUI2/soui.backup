@@ -11,7 +11,7 @@ VOID SNotifyCenter::OnTimer( HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTim
 	getSingleton().ExecutePendingEvents();
 }
 
-SNotifyCenter::SNotifyCenter(void)
+SNotifyCenter::SNotifyCenter(void):m_evtPending(NULL)
 {
 	m_dwMainTrdID = GetCurrentThreadId();
 	m_timerID = ::SetTimer(NULL,0,20,OnTimer);
@@ -20,6 +20,17 @@ SNotifyCenter::SNotifyCenter(void)
 SNotifyCenter::~SNotifyCenter(void)
 {
 	::KillTimer(NULL,m_timerID);
+	SAutoLock lock(m_cs);
+	if(m_evtPending)
+	{
+		SPOSITION pos = m_evtPending->GetTailPosition();
+		while(pos)
+		{
+			EventArgs *e = m_evtPending->GetPrev(pos);
+			delete e;
+		}
+		delete m_evtPending;
+	}
 }
 
 void SNotifyCenter::FireEventSync( EventArgs *e )
@@ -31,21 +42,36 @@ void SNotifyCenter::FireEventSync( EventArgs *e )
 void SNotifyCenter::FireEventAsync( EventArgs *e )
 {
 	SAutoLock lock(m_cs);
-	m_evtPending.AddTail(e);
+	if(!m_evtPending)
+	{
+		m_evtPending = new SList<EventArgs*>;
+	}
+	m_evtPending->AddTail(e);
 }
 
 void SNotifyCenter::ExecutePendingEvents()
 {
 	SASSERT(m_dwMainTrdID == GetCurrentThreadId());
-	SAutoLock lock(m_cs);
-	SPOSITION pos = m_evtPending.GetHeadPosition();
+	SList<EventArgs*> *pEvtList = NULL;
+	{
+		SAutoLock lock(m_cs);
+		if(m_evtPending)
+		{
+			pEvtList = m_evtPending;
+			m_evtPending = NULL;
+		}
+	}
+	
+	if(!pEvtList) return;
+
+	SPOSITION pos = pEvtList->GetHeadPosition();
 	while(pos)
 	{
-		EventArgs *e = m_evtPending.GetNext(pos);
+		EventArgs *e = pEvtList->GetNext(pos);
 		OnFireEvent(e);
 		delete e;
 	}
-	m_evtPending.RemoveAll();
+	delete pEvtList;
 }
 
 void SNotifyCenter::OnFireEvent( EventArgs *e )

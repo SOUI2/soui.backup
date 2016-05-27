@@ -50,7 +50,7 @@ namespace SOUI
 			);
 
 		SCriticalSection	m_cs;			//线程同步对象
-		SList<EventArgs*>	m_evtPending;//挂起的等待执行的事件
+		SList<EventArgs*>	*m_evtPending;//挂起的等待执行的事件
 		DWORD				m_dwMainTrdID;//主线程ID
 		
 		UINT_PTR			m_timerID;	//定时器ID，用来执行异步事件
