@@ -27,7 +27,7 @@ SNotifyCenter::~SNotifyCenter(void)
 		while(pos)
 		{
 			EventArgs *e = m_evtPending->GetPrev(pos);
-			delete e;
+			e->Release();
 		}
 		delete m_evtPending;
 	}
@@ -69,7 +69,7 @@ void SNotifyCenter::ExecutePendingEvents()
 	{
 		EventArgs *e = pEvtList->GetNext(pos);
 		OnFireEvent(e);
-		delete e;
+        e->Release();
 	}
 	delete pEvtList;
 }
