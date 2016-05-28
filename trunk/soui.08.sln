@@ -121,8 +121,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "imgdecoder", "imgdecoder", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "render", "render", "{F1E33A5E-A347-40F8-A34A-5EB534D84C77}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SouiWizard1", "SouiWizard1\SouiWizard1.vcproj", "{3B24F636-E568-4A49-9A62-AE366628E174}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -237,10 +235,6 @@ Global
 		{A46DB461-A695-3F8C-9861-46494EB25051}.Debug|Win32.Build.0 = Debug|Win32
 		{A46DB461-A695-3F8C-9861-46494EB25051}.Release|Win32.ActiveCfg = Release|Win32
 		{A46DB461-A695-3F8C-9861-46494EB25051}.Release|Win32.Build.0 = Release|Win32
-		{3B24F636-E568-4A49-9A62-AE366628E174}.Debug|Win32.ActiveCfg = Debug|Win32
-		{3B24F636-E568-4A49-9A62-AE366628E174}.Debug|Win32.Build.0 = Debug|Win32
-		{3B24F636-E568-4A49-9A62-AE366628E174}.Release|Win32.ActiveCfg = Release|Win32
-		{3B24F636-E568-4A49-9A62-AE366628E174}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
