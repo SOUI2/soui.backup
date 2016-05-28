@@ -47,6 +47,7 @@ void SNotifyCenter::FireEventAsync( EventArgs *e )
 		m_evtPending = new SList<EventArgs*>;
 	}
 	m_evtPending->AddTail(e);
+    e->AddRef();
 }
 
 void SNotifyCenter::ExecutePendingEvents()
