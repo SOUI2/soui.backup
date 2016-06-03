@@ -39,9 +39,11 @@ void SNotifyCenter::FireEventSync( EventArgs *e )
 	OnFireEvent(e);
 }
 
+//把事件抛到事件队列，不检查事件是否注册，执行事件时再检查。
 void SNotifyCenter::FireEventAsync( EventArgs *e )
 {
 	SAutoLock lock(m_cs);
+
 	if(!m_evtPending)
 	{
 		m_evtPending = new SList<EventArgs*>;
@@ -77,9 +79,11 @@ void SNotifyCenter::ExecutePendingEvents()
 
 void SNotifyCenter::OnFireEvent( EventArgs *e )
 {
+	if(!GetEventObject(e->GetID())) return;//确保事件是已经注册过的已经事件。
+
 	FireEvent(*e);
 	if(!e->bubbleUp) return ;
-	
+
 	SPOSITION pos = m_evtHandlerMap.GetTailPosition();
 	while(pos)
 	{
