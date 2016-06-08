@@ -74,6 +74,7 @@ public:
     BOOL            OnShowCaret(BOOL bShow) {return FALSE;}
     BOOL            OnSetCaretPos(int x,int y) {return FALSE;}
     BOOL            UpdateWindow();
+	void            UpdateTooltip();
     BOOL            RegisterTimelineHandler(ITimelineHandler *pHandler);
     BOOL            UnregisterTimelineHandler(ITimelineHandler *pHandler);
     SMessageLoop *  GetMsgLoop();

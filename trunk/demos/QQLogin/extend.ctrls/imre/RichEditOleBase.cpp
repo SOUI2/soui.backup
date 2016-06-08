@@ -86,6 +86,12 @@ BOOL OleWindow::UpdateWindow()
     return m_pHostContainer->UpdateWindow();
 }
 
+
+void OleWindow::UpdateTooltip()
+{
+	m_pHostContainer->UpdateTooltip();
+}
+
 BOOL OleWindow::RegisterTimelineHandler(ITimelineHandler *pHandler)
 {
     if (!m_bTiemrRegistered)
