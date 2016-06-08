@@ -14,6 +14,7 @@
 #include <control/souictrls.h>
 #include <res.mgr/sobjdefattr.h>
 #include <com-cfg.h>
+#include <event/notifycenter.h>
 
 #include "resource.h"	//APP×ÊÔ´
 #define R_IN_CPP

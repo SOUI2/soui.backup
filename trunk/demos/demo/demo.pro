@@ -64,6 +64,7 @@ HEADERS += MainDlg.h \
            smatrixwindow.h \
            memflash.h \
            setskinwnd.h \
+           threadObject.h \
            SmileyCreateHook.h \
 		   uianimation/uianimation.h \
 		   uianimation/uianimationwnd.h\
@@ -105,6 +106,7 @@ SOURCES += demo.cpp \
            memflash.cpp	\
            smatrixwindow.cpp \
            setskinwnd.cpp \
+           threadObject.cpp \
            SmileyCreateHook.cpp \
 		   uianimation/uianimationwnd.cpp \
 		   appledock/sdesktopdock.cpp \

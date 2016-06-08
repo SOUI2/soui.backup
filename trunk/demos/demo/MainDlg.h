@@ -17,6 +17,37 @@ using namespace SOUI;
 
 #include "magnet/MagnetFrame.h"
 #include "SetSkinWnd.h"
+#include "ThreadObject.h"
+
+//演示使用SNotifyCenter的异步事件
+class EventThread : public TplEventArgs<EventThread>
+{
+	SOUI_CLASS_NAME(EventThread,L"on_event_thread")
+public:
+	EventThread(SObject *pSender):TplEventArgs<EventThread>(pSender){}
+	enum{EventID=EVT_EXTERNAL_BEGIN+30000};
+	
+	int nData;
+};
+
+//演示使用SNotifyCenter的同步事件
+class EventThreadStart : public TplEventArgs<EventThreadStart>
+{
+	SOUI_CLASS_NAME(EventThreadStart,L"on_event_thread_start")
+public:
+	EventThreadStart(SObject *pSender):TplEventArgs<EventThreadStart>(pSender){}
+	enum{EventID=EVT_EXTERNAL_BEGIN+30001};
+};
+
+//演示使用SNotifyCenter的同步事件
+class EventThreadStop : public TplEventArgs<EventThreadStop>
+{
+	SOUI_CLASS_NAME(EventThreadStop,L"on_event_thread_stop")
+public:
+	EventThreadStop(SObject *pSender):TplEventArgs<EventThreadStop>(pSender){}
+	enum{EventID=EVT_EXTERNAL_BEGIN+30002};
+};
+
 
 /**
 * @class      CMainDlg
@@ -24,7 +55,11 @@ using namespace SOUI;
 * 
 * Describe    非模式窗口从SHostWnd派生，模式窗口从SHostDialog派生
 */
-class CMainDlg : public SHostWnd, public CMagnetFrame, public ISetSkinHandler
+class CMainDlg : public SHostWnd
+			   , public CMagnetFrame	//磁力吸附
+			   , public ISetSkinHandler	//皮肤处理
+			   , public CThreadObject	//线程对象
+			   , public TAutoEventMapReg<CMainDlg>//通知中心自动注册
 {
 public:
 
@@ -139,6 +174,20 @@ protected:
     void OnBtnSkin();
 	void OnInitListBox();
 
+
+	virtual UINT Run();
+
+	//Event Sender ID
+	enum {SENDER_ID = 30000};
+	virtual int GetID() const {return SENDER_ID;}
+
+	void OnBtnStartNotifyThread();
+	void OnBtnStopNotifyThread();
+
+	bool OnEventThreadStart(EventArgs *e);
+	bool OnEventThreadStop(EventArgs *e);
+	bool OnEventThread(EventArgs *e);
+	
     //UI控件的事件及响应函数映射表
 	EVENT_MAP_BEGIN()
 		EVENT_ID_COMMAND(1, OnClose)
@@ -157,7 +206,15 @@ protected:
         EVENT_ID_COMMAND(R.id.btn_clock,OnBtnClock)
 		EVENT_ID_COMMAND(R.id.btn_init_listbox,OnInitListBox)
 		EVENT_ID_COMMAND(R.id.btn_skin,OnBtnSkin)
+		EVENT_ID_COMMAND(R.id.btn_start_notify_thread,OnBtnStartNotifyThread)
+		EVENT_ID_COMMAND(R.id.btn_stop_notify_thread,OnBtnStopNotifyThread)
         //-->
+		//<--通知中心事件
+		EVENT_ID_HANDLER(SENDER_ID,EventThreadStart::EventID,OnEventThreadStart)
+		EVENT_ID_HANDLER(SENDER_ID,EventThreadStop::EventID,OnEventThreadStop)
+		EVENT_ID_HANDLER(SENDER_ID,EventThread::EventID,OnEventThread)
+		//-->
+
         EVENT_NAME_COMMAND(L"btn_webkit_back",OnBtnWebkitBackward)
         EVENT_NAME_COMMAND(L"btn_webkit_fore",OnBtnWebkitForeward)
         EVENT_NAME_COMMAND(L"btn_webkit_refresh",OnBtnWebkitRefresh)
