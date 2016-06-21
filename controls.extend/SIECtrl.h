@@ -14,6 +14,7 @@ namespace SOUI
         virtual void ProgressChange(LONG nProgress, LONG nProgressMax){}
         virtual void CommandStateChange(long Command,VARIANT_BOOL Enable){}
         virtual void DocumentComplete(IDispatch *pDisp, VARIANT* &url){}
+		virtual void StatusTextChange(IDispatch *pDisp, VARIANT* &url){}
     };
 
     class SIECtrlEvtDispatch : public IDispatch
@@ -29,7 +30,7 @@ namespace SOUI
             m_pEventHandler=pEventHandler;
         }
 
-        // IUnknown
+    public:// IUnknown
         STDMETHOD_(ULONG,AddRef)()
         {
             return ++m_cRef;
@@ -41,7 +42,8 @@ namespace SOUI
 
         STDMETHOD(QueryInterface)(REFIID riid, LPVOID *ppvObject)
         {
-            if(IsEqualGUID(riid,__uuidof(IUnknown)) || IsEqualGUID(riid,__uuidof(IDispatch)))
+            if(IsEqualGUID(riid,__uuidof(IUnknown)) 
+            || IsEqualGUID(riid,__uuidof(IDispatch)))
             {
                 *ppvObject=this;
                 AddRef();
@@ -50,7 +52,7 @@ namespace SOUI
             return E_NOINTERFACE;
         }
 
-        //IDispatch
+    public: //IDispatch
         virtual HRESULT STDMETHODCALLTYPE GetTypeInfoCount( 
             /* [out] */ __RPC__out UINT *pctinfo){ return E_NOTIMPL;}
 
@@ -84,7 +86,7 @@ namespace SOUI
         ULONG m_cRef;
     };
 
-
+        
     class SIECtrl :	public SActiveX, public IMessageFilter
     {
         SOUI_CLASS_NAME(SIECtrl, L"iectrl")
@@ -96,6 +98,7 @@ namespace SOUI
 
         SIECtrlEvtDispatch * GetEventDispatch(){return &m_eventDispatch;}
 
+		BOOL Navigate(const SStringW & strUrl);
     protected:
         virtual void OnAxActivate(IUnknown *pUnknwn);
         virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -113,6 +116,10 @@ namespace SOUI
 
         SOUI_ATTRS_BEGIN()
             ATTR_STRINGW(L"url",m_strUrl,FALSE)
+			ATTR_INT(L"disableScrollbar",m_bDisableScrollbar,FALSE)
+			ATTR_INT(L"disable3DBorder",m_bDisable3DBorder,FALSE)
+            ATTR_INT(L"disableContextMenu",m_bDisableContextMenu,FALSE)
+			ATTR_INT(L"disableTextSelect",m_bDisableTextSelect,FALSE)
         SOUI_ATTRS_END()
 
         SStringW m_strUrl;
@@ -122,6 +129,10 @@ namespace SOUI
         SIECtrlEvtDispatch	m_eventDispatch;
         SComQIPtr<IWebBrowser2> m_pIE;
         
+		BOOL				m_bDisableScrollbar;
+		BOOL				m_bDisable3DBorder;
+        BOOL                m_bDisableContextMenu;
+		BOOL				m_bDisableTextSelect;
         HWND    m_hIEWnd;
     };
 
