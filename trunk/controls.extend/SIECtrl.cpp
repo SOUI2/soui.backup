@@ -1,10 +1,14 @@
 #include "StdAfx.h"
 #include "SIECtrl.h"
-
+#include "SDocHostUIHandler.h"
 namespace SOUI
 {
 
     SIECtrl::SIECtrl(void):m_dwCookie(0),m_eventDispatch(NULL),m_hIEWnd(NULL)
+        ,m_bDisableScrollbar(FALSE)
+        ,m_bDisable3DBorder(FALSE)
+        ,m_bDisableContextMenu(FALSE)
+		,m_bDisableTextSelect(FALSE)
     {
         m_clsid=CLSID_WebBrowser;
     }
@@ -73,7 +77,13 @@ namespace SOUI
                 pDispParams->rgvarg[1].pdispVal,
                 pDispParams->rgvarg[0].pvarVal);
             break;
-        case DISPID_STATUSTEXTCHANGE:
+        case DISPID_STATUSTEXTCHANGE:		
+			m_pEventHandler->StatusTextChange(
+				pDispParams->rgvarg->pdispVal,
+				pDispParams->rgvarg);
+           /* m_pEventHandler->StatusTextChange(
+                pDispParams->rgvarg[1].pdispVal,
+                pDispParams->rgvarg[0].pvarVal);*/
             break;
         case DISPID_NEWWINDOW2:
             break;
@@ -91,10 +101,16 @@ namespace SOUI
         if(m_pIE)
         {
             RegisterEventHandler(TRUE);
-            m_pIE->put_Silent(VARIANT_TRUE);//
-            
-            m_pIE->Navigate(bstr_t(m_strUrl),NULL,NULL,NULL,NULL);
-            
+
+			SDocHostUIHandler *pDocHostUIHandler = new SDocHostUIHandler;
+			pDocHostUIHandler->SetDisableScrollBar(m_bDisableScrollbar);
+			pDocHostUIHandler->SetDisable3DBorder(m_bDisable3DBorder);
+            pDocHostUIHandler->SetDisableContextMenu(m_bDisableContextMenu);
+			pDocHostUIHandler->SetDisableTextSelect(m_bDisableTextSelect);
+			SetExternalUIHandler(pDocHostUIHandler);
+			pDocHostUIHandler->Release();
+
+			Navigate(m_strUrl);            
             SComQIPtr<IOleWindow> ole_window=m_pIE;
             SASSERT(ole_window);
             ole_window->GetWindow(&m_hIEWnd);
@@ -107,7 +123,6 @@ namespace SOUI
         if(GetContainer()->IsTranslucent())
         {
             STRACE(_T("warning!!! create iectrl failed bacause of host is translucent!"));
-//          SASSERT_FMT(FALSE,_T("iectrl can't used in translucent host"));
             return -1;
         }
         GetContainer()->GetMsgLoop()->AddMessageFilter(this);
@@ -123,8 +138,8 @@ namespace SOUI
     {
         BOOL bRet = FALSE;
         if(!m_pIE) return FALSE;
-        if(!IsVisible(TRUE)) return FALSE;
-        
+        if(!IsVisible(TRUE)) return FALSE;       
+
         HWND hHost = GetContainer()->GetHostHwnd();
         //检查宿主窗口可见
         if(!::IsWindowVisible(hHost)) return FALSE;
@@ -147,4 +162,12 @@ namespace SOUI
         }
         return bRet;
     }
+
+	BOOL SIECtrl::Navigate( const SStringW & strUrl )
+	{
+		m_strUrl = strUrl;
+		m_pIE->put_Silent(VARIANT_TRUE);//
+		return S_OK == m_pIE->Navigate(bstr_t(strUrl),NULL,NULL,NULL,NULL);
+	}
+
 }

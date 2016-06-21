@@ -276,6 +276,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\controls.extend\SDocHostUIHandler.cpp"
+				>
+			</File>
+			<File
 				RelativePath="setskinwnd.cpp"
 				>
 			</File>
@@ -451,6 +455,10 @@
 			</File>
 			<File
 				RelativePath="appledock\sdesktopdock.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\controls.extend\SDocHostUIHandler.h"
 				>
 			</File>
 			<File
