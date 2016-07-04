@@ -33,10 +33,45 @@ namespace SOUI
 		SNotifyCenter(void);
 		~SNotifyCenter(void);
 
+        /**
+        * FireEventSync
+        * @brief    触发一个同步通知事件
+        * @param    EventArgs *e -- 事件对象
+        * @return    
+        *
+        * Describe  只能在UI线程中调用
+        */
 		void FireEventSync(EventArgs *e);
+
+        /**
+        * FireEventAsync
+        * @brief    触发一个异步通知事件
+        * @param    EventArgs *e -- 事件对象
+        * @return    
+        *
+        * Describe  可以在非UI线程中调用，EventArgs *e必须是从堆上分配的内存，调用后使用Release释放引用计数
+        */
 		void FireEventAsync(EventArgs *e);
 
+
+        /**
+        * RegisterEventMap
+        * @brief    注册一个处理通知的对象
+        * @param    const ISlotFunctor &slot -- 事件处理对象
+        * @return    
+        *
+        * Describe 
+        */
 		bool RegisterEventMap(const ISlotFunctor &slot);
+
+        /**
+        * RegisterEventMap
+        * @brief    注销一个处理通知的对象
+        * @param    const ISlotFunctor &slot -- 事件处理对象
+        * @return    
+        *
+        * Describe 
+        */
 		bool UnregisterEventMap(const ISlotFunctor & slot);
 	protected:
 		void OnFireEvent(EventArgs *e);
