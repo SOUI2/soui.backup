@@ -169,6 +169,11 @@ namespace SOUI
 		pt.x = GET_X_LPARAM(lParam);
 		pt.y = GET_Y_LPARAM(lParam);
 
+		CRect rc;
+		GetWindowRect(&rc);
+		pt.x -= rc.left;
+		pt.y -= rc.top;
+
 		int delta = GET_WHEEL_DELTA_WPARAM(wParam);
 
 		unsigned int flags = 0;
