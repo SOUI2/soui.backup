@@ -367,6 +367,7 @@ namespace SOUI
  		paint.setPathEffect(skDash.Get());
 		paint.setStrokeWidth((SkScalar)m_curPen->GetWidth()-0.5f);
 		paint.setStyle(SkPaint::kStroke_Style);
+        paint.setAntiAlias(true);
 
         SkRect skrc=toSkRect(pRect);
         skrc.offset(m_ptOrg);
@@ -957,6 +958,7 @@ namespace SOUI
         paint.setPathEffect(skDash.Get());
         paint.setStrokeWidth((SkScalar)m_curPen->GetWidth()-0.5f);
         paint.setStyle(SkPaint::kStroke_Style);
+        paint.setAntiAlias(true);
 
         SkRect skrc = toSkRect(pRect);
         skrc.offset(m_ptOrg);
@@ -977,6 +979,7 @@ namespace SOUI
             paint.setColor(SColor(m_curBrush->GetColor()).toARGB());
         }
         paint.setStyle(SkPaint::kFill_Style);
+        paint.setAntiAlias(true);
 
         SkRect skrc=toSkRect(pRect);
         skrc.offset(m_ptOrg);
@@ -1005,6 +1008,7 @@ namespace SOUI
         paint.setPathEffect(skDash.Get());
         paint.setStrokeWidth((SkScalar)m_curPen->GetWidth()-0.5f);
         paint.setStyle(SkPaint::kStroke_Style);
+        paint.setAntiAlias(true);
 
         SkRect skrc = toSkRect(pRect);
         skrc.offset(m_ptOrg);
