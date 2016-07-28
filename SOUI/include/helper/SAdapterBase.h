@@ -469,6 +469,15 @@ namespace SOUI
         }
 
 
+		void DeleteItem(HTREEITEM hItem)
+		{
+			m_tree.DeleteItem(hItem);
+		}
+
+		BOOL DeleteItemEx(HTREEITEM hItem)
+		{
+			return m_tree.DeleteItemEx(hItem);
+		}
 
     protected:
 		CSTree<ItemInfo> m_tree;

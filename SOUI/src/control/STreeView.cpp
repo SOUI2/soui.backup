@@ -894,6 +894,8 @@ namespace SOUI
 	BOOL STreeView::OnItemGetRect( SItemPanel *pItem,CRect &rcItem )
 	{
         HTREEITEM hItem = (HTREEITEM)pItem->GetItemIndex();
+		if(m_pVisibleMap->Lookup(hItem) == NULL) return FALSE;
+
         int nOffset = m_tvItemLocator->Item2Position(hItem) - m_siVer.nPos;
         rcItem = GetClientRect();
         rcItem.top += nOffset;
