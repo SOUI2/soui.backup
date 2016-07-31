@@ -681,8 +681,19 @@ namespace SOUI
 
 	LRESULT STreeView::OnKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 	{
-	    return 0;
-	}
+        LRESULT lRet = 0;
+        SItemPanel *pItem = GetItemPanel(m_hSelected);
+        if (pItem)
+        {
+            lRet = pItem->DoFrameEvent(uMsg, wParam, lParam);
+            SetMsgHandled(pItem->IsMsgHandled());
+        }
+        else
+        {
+            SetMsgHandled(FALSE);
+        }
+        return lRet;
+    }
 
 	void STreeView::UpdateScrollBar()
 	{
