@@ -805,13 +805,13 @@ namespace SOUI
         {
             VISIBLEITEMSMAP::CPair *pFind = pMapOld->Lookup(hItem);
             ItemInfo ii;
-            if(pFind)
+			ii.nType = m_adapter->getViewType(hItem);
+            if(pFind && pFind->m_value.nType == ii.nType)
             {//re use the previous item;
-                ii = pFind->m_value;
-                pMapOld->RemoveKey(hItem);
+					ii = pFind->m_value;
+					pMapOld->RemoveKey(hItem);
             }else
             {
-                ii.nType = m_adapter->getViewType(hItem);
                 SList<SItemPanel *> *lstRecycle = m_itemRecycle.GetAt(ii.nType);
                 if(lstRecycle->IsEmpty())
                 {//创建一个新的列表项
@@ -972,6 +972,14 @@ namespace SOUI
 		else {
             if(uMsg==WM_LBUTTONDOWN || uMsg== WM_RBUTTONDOWN || uMsg==WM_MBUTTONDOWN)
 			{//交给panel处理
+				SItemPanel* pPanel = HitTest(pt);
+				if (!pPanel && m_hSelected)  //hit in none-item area,so make item to killfocus 
+				{
+					SItemPanel *pSelItem = GetItemPanel(m_hSelected);
+					if (pSelItem) pSelItem->DoFrameEvent(WM_KILLFOCUS, 0, 0);
+					m_hSelected = NULL;
+				}
+
 				__super::ProcessSwndMessage(uMsg,wParam,lParam,lRet);
 			}
 
