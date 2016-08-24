@@ -119,9 +119,12 @@ function AddConfig(proj, strProjectName)
 		var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
 		var SysResBuiltin = wizard.FindSymbol('CHECKBOX_SYSRES_BUILTIN');
 		
+		var unicodeSet = wizard.FindSymbol('UNICODE');
+		var wcharSet = wizard.FindSymbol('WCHAR');
+		var mtSet = wizard.FindSymbol('MT');
         // Debug设置
 	    var config = proj.Object.Configurations('Debug');
-	    config.CharacterSet = charSetUNICODE;
+	    config.CharacterSet = (unicodeSet == 1) ? charSetUNICODE : charSetMBCS;
 	    if(WizardVersion >= 10.0)
 		{
 	    		config.IntermediateDirectory = '$(Configuration)\\';
@@ -137,11 +140,11 @@ function AddConfig(proj, strProjectName)
 		//添加编译器设置
 		CLTool.UsePrecompiledHeader = 2;    // 2-使用预编译头,1-创建,0-不使用
 		CLTool.SuppressStartupBanner = true;
-		CLTool.TreatWChar_tAsBuiltInType=true;
+		CLTool.TreatWChar_tAsBuiltInType = (wcharSet==1);
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
 		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\config";"$(SOUIPATH)\\components";"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
 		CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;STRICT;_DEBUG';
-		CLTool.RuntimeLibrary = 1; // 0=MT, 1=MTd, 2=MTD (DLL), 3=MTDd
+		CLTool.RuntimeLibrary =(mtSet==1)? 1:3; // 0=MT, 1=MTd, 2=MD (DLL), 3=MDd
 		CLTool.BrowseInformation = browseInfoOption.brAllInfo;// FR
 		CLTool.Optimization = optimizeOption.optimizeDisabled;// Od
 		CLTool.DebugInformationFormat = debugOption.debugEditAndContinue;//Edit and continue
@@ -162,7 +165,7 @@ function AddConfig(proj, strProjectName)
 		}
 		// Release设置
 		var config = proj.Object.Configurations('Release');
-		config.CharacterSet = charSetUNICODE;
+		config.CharacterSet = (unicodeSet == 1) ? charSetUNICODE : charSetMBCS;
 		if(WizardVersion >= 10.0)
 		{
 	    		config.IntermediateDirectory = '$(Configuration)\\';
@@ -177,11 +180,11 @@ function AddConfig(proj, strProjectName)
 		//添加编译器设置
 		CLTool.UsePrecompiledHeader = 2;    // 2-使用预编译头,1-创建,0-不使用
 		CLTool.SuppressStartupBanner = true;
-		CLTool.TreatWChar_tAsBuiltInType=true;
+		CLTool.TreatWChar_tAsBuiltInType = (wcharSet == 1);
 		CLTool.WarningLevel = warningLevelOption.warningLevel_3;
 		CLTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\config";"$(SOUIPATH)\\components";"$(SOUIPATH)\\SOUI\\include";"$(SOUIPATH)\\utilities\\include"';
 		CLTool.PreprocessorDefinitions = 'WIN32;_WINDOWS;NDEBUG';
-		CLTool.RuntimeLibrary = 0; // 0=MT, 1=MTd, 2=MTD (DLL), 3=MTDd
+		CLTool.RuntimeLibrary = (mtSet == 1) ? 0 :2;; // 0=MT, 1=MTd, 2=MD (DLL), 3=MDd
 		CLTool.WholeProgramOptimization = true;	//全程序优化：启动链接时代码生成
 		
 		var LinkTool = config.Tools('VCLinkerTool');

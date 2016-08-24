@@ -31,6 +31,10 @@
     <symbol name='CHECKBOX_SYSRES_BUILTIN' type=checkbox value=false></symbol>
     <!-- 主窗口半透明。-->
     <symbol name='CHECKBOX_TRANSLUCENT' type=checkbox value=true></symbol>
+    <!--编译选项-->
+    <SYMBOL NAME="UNICODE" TYPE=select-one VALUE=0></SYMBOL>
+    <SYMBOL NAME="WCHAR" TYPE=select-one VALUE=0></SYMBOL>
+    <SYMBOL NAME="MT" TYPE=select-one VALUE=0></SYMBOL>
 
     <style type="text/css">
         body {
@@ -185,7 +189,7 @@
                                             <table width="100%" height="28" border="0" cellpadding="0" cellspacing="0" class="LINKTEXT">
                                                 <tr valign="MIDDLE">
                                                     <td width="100%">
-                                                        <span class="ACTIVELINK" id="UIFeatures" title="指定控制应用程序外观的选项。" onclick="Next(document, 'UIFeatures.htm');" tabindex="5">用户界面功能</span>
+                                                        <span class="ACTIVELINK" id="UIFeatures" title="指定控制应用程序外观的选项。" onclick="Next(document, 'UIFeatures.htm');" tabindex="2">用户界面功能</span>
                                                     </td>
                                                     <td width="4">
                                                         <img src="../../2052/Images/spacer.gif" height="1" width="4">
@@ -198,7 +202,7 @@
                                             <table width="100%" height="28" border="0" cellpadding="0" cellspacing="0" class="LINKTEXT">
                                                 <tr valign="MIDDLE">
                                                     <td width="100%">
-                                                        <span class="ACTIVELINK" id="Advanced" title="指定将置入应用程序中的附加支持。" onclick="Next(document, 'Advanced.htm');" tabindex="6">高级功能</span>
+                                                        <span class="ACTIVELINK" id="Advanced" title="指定将置入应用程序中的附加支持。" onclick="Next(document, 'Advanced.htm');" tabindex="3">高级功能</span>
                                                     </td>
                                                     <td width="4">
                                                         <img src="../../2052/Images/spacer.gif" height="1" width="4">
@@ -207,7 +211,18 @@
                                             </table>
                                         </div>
 
-
+                                        <div class="LINK">
+                                            <table width="100%" height="28" border="0" cellpadding="0" cellspacing="0" class="LINKTEXT">
+                                                <tr valign="MIDDLE">
+                                                    <td width="100%">
+                                                        <span class="ACTIVELINK" id="ProjectOption" title="指定将程序的编译选项。" onclick="Next(document, 'ProjectOption.htm');" tabindex="4">编译选项</span>
+                                                    </td>
+                                                    <td width="4">
+                                                        <img src="../../2052/Images/spacer.gif" height="1" width="4">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                         <!--CLOSE OF NAVIGATIONAL LINKS//-->
                                     </td>
                                     <td width="1">
@@ -277,7 +292,7 @@
                                                     <label for="TRANSLUCENT_SUMMARY"></label>
                                                 </span>
                                             </li>
-                                            
+
                                         </ul>
 
                                         <span class="ItemText" id="FinishText">在任一窗口中单击“完成”<b></b>，接受当前设置。</span>
@@ -384,7 +399,7 @@
     tab_array[1] = AppType;
     tab_array[2] = UIFeatures;
     tab_array[3] = Advanced;
-
+    tab_array[4] = ProjectOption;
 
     function InitControls() {
         if (window.external.FindSymbol("RADIO_RANDER_GDI")) {
@@ -411,8 +426,8 @@
             L_TRA_Text = "不使用语言翻译";
             TRANSLATOR_SUMMARY.innerText = L_TRA_Text;
         }
-        
-        if(window.external.FindSymbol("CHECKBOX_SYSRES_BUILTIN")){
+
+        if (window.external.FindSymbol("CHECKBOX_SYSRES_BUILTIN")) {
             L_SYSRES_Text = "将系统资源编译到EXE中";
             SYSRES_SUMMARY.innerText = L_SYSRES_Text;
         }
@@ -421,17 +436,47 @@
             SYSRES_SUMMARY.innerText = L_SYSRES_Text;
         }
 
-        if(window.external.FindSymbol("CHECKBOX_TRANSLUCENT")){
+        if (window.external.FindSymbol("CHECKBOX_TRANSLUCENT")) {
             L_SYSRES_Text = "主窗口半透明（不能在主窗口上放置真窗口，如IE控件）";
             TRANSLUCENT_SUMMARY.innerText = L_SYSRES_Text;
         }
         else {
             L_SYSRES_Text = "主窗口不透明（可以在主窗口上放置真窗口，如IE控件）";
             TRANSLUCENT_SUMMARY.innerText = L_SYSRES_Text;
-        }
-        
-        
+        }       
     }
+
+    function LoadConfig(configFile)
+    {
+        try {
+            var fso = new ActiveXObject("Scripting.FileSystemObject");
+            var keyValue = {};
+			keyValue["UNICODE"] = 1;//unicode
+			keyValue["WCHAR"] = 1;//wchar
+			keyValue["MT"] = 1;//static linked to CRT
+            var reg2 = /(\w+)=(\d+)/;
+
+            if (fso.FileExists(configFile)) {
+                var f = fso.OpenTextFile(configFile, 1);
+                var s = "";
+                while (!f.AtEndOfStream) {
+                    s = f.ReadLine();
+                    s.replace(reg2, function (a, b, c) {
+                        keyValue[b] = c;
+                    });
+                    }
+                f.Close();
+                }
+            window.external.AddSymbol('UNICODE', keyValue["UNICODE"]);
+            window.external.AddSymbol('WCHAR', keyValue["WCHAR"]);
+            window.external.AddSymbol('MT', keyValue["MT"]);
+
+        }
+        catch (e) {
+            throw e;
+        }
+    }
+
     // 这是一个初始化页面的函数的示例
     //
     function InitDocument(document) {
@@ -442,6 +487,12 @@
             // 标记中指定的值设置默认符号
             //
             window.external.SetDefaults(document);
+            //从文件加载编译选项
+
+            var wsh = new ActiveXObject("WScript.Shell");
+            var strConfigPath = wsh.Environment("system").Item("SOUIPATH");
+            var strConfigFile = strConfigPath + '\\config\\build.cfg';
+            LoadConfig(strConfigFile);
         }
 
         // 加载文档并用合适的
