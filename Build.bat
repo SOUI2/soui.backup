@@ -16,6 +16,9 @@ SET cfg=
 SET specs=
 SET target=x86
 SET selected=
+SET mt=1
+SET unicode=1
+SET wchar=1
 rem 选择编译版本
 SET /p selected=1.选择编译版本[1=x86;2=x64]:
 if %selected%==1 (
@@ -62,9 +65,12 @@ if %selected%==1 (
 
 rem 选择字符集
 SET /p selected=4.选择字符集[1=UNICODE;2=MBCS]:
+
 if %selected%==1 (
 	rem do nothing
+	set unicode=1
 ) else if %selected%==2 (
+	SET unicode=0
 	SET cfg=!cfg! MBCS
 ) else (
 	goto error
@@ -74,8 +80,10 @@ rem 选择WCHAR支持
 SET /p selected=5.将WCHAR作为内建类型[1=是;2=否]:
 if %selected%==1 (
 	rem do nothing
+	SET wchar=1
 ) else if %selected%==2 (
 	SET cfg=!cfg! DISABLE_WCHAR
+	SET wchar=0
 ) else (
 	goto error
 )
@@ -83,8 +91,10 @@ if %selected%==1 (
 rem CRT
 SET /p selected=6.选择CRT链接模式[1=静态链接(MT);2=动态链接(MD)]:
 if %selected%==1 (
+	SET mt=1
 	SET cfg=!cfg! USING_MT
 ) else if %selected%==2 (
+	SET mt=0
 	rem do nothing
 ) else (
 	goto error
@@ -99,6 +109,16 @@ if %selected%==1 (
 ) else (
 	goto error
 )
+rem 保存项目默认配置
+if exist .\config\build.cfg del .\config\build.cfg
+set configStr=[BuiltConfig]
+echo !configStr!>>.\config\build.cfg
+set configStr=UNICODE=%unicode%
+echo !configStr!>>.\config\build.cfg
+set configStr=WCHAR=%wchar%
+echo !configStr!>>.\config\build.cfg
+set configStr=MT=%mt%
+echo !configStr!>>.\config\build.cfg
 
 rem 参数配置完成
 
