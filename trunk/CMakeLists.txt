@@ -109,6 +109,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_DEBUG_POSTFIX "d")
 set(CMAKE_RELEASE_POSTFIX "")
 
+add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 
 include(__cmake/cotire.cmake)
 include(__cmake/internal_utils.cmake)
