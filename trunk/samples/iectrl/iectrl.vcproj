@@ -179,7 +179,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SDocHostUIHandler.cpp"
+				RelativePath="..\..\controls.extend\SDocHostUIHandler.cpp"
 				>
 			</File>
 			<File
@@ -220,7 +220,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SDocHostUIHandler.h"
+				RelativePath="..\..\controls.extend\SDocHostUIHandler.h"
 				>
 			</File>
 			<File
