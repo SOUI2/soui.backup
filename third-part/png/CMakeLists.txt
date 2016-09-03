@@ -30,31 +30,35 @@ add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
 
 
 # OUR SOURCES
-set(libpng_public_hdrs
-  png.h
-  pngconf.h
-)
-set(libpng_sources
-  ${libpng_public_hdrs}
-  pngdebug.h
-  pnginfo.h
-  pngpriv.h
-  pngstruct.h
-  png.c
-  pngerror.c
-  pngget.c
-  pngmem.c
-  pngpread.c
-  pngread.c
-  pngrio.c
-  pngrtran.c
-  pngrutil.c
-  pngset.c
-  pngtrans.c
-  pngwio.c
-  pngwrite.c
-  pngwtran.c
-  pngwutil.c
+set(libpng_headers
+	png.h
+	pngconf.h
+	pngdebug.h
+	pnginfo.h
+	pnglibconf.h
+	pngpriv.h
+	pngstruct.h
 )
 
-add_library(png STATIC ${libpng_sources})
+set(libpng_sources
+	png.c
+	pngerror.c
+	pngget.c
+	pngmem.c
+	pngpread.c
+	pngread.c
+	pngrio.c
+	pngrtran.c
+	pngrutil.c
+	pngset.c
+	pngtrans.c
+	pngwio.c
+	pngwrite.c
+	pngwtran.c
+	pngwutil.c
+)
+
+source_group("Header Files" FILES ${libpng_headers})
+source_group("Source Files" FILES ${libpng_sources})
+
+add_library(png STATIC ${libpng_sources} ${libpng_headers})
