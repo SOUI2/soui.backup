@@ -58,7 +58,8 @@
     <file name="png_menu_border"  path="image\menuborder.png" />
 
     <file name="png_vscroll"  path="image\vscrollbar.png" />
-    
+    <file name="png_hscroll"  path="image\hscrollbar.png" />
+
     <file name="png_tab_left"  path="image\tab_left.png" />
     <file name="png_tab_left_splitter"  path="image\tab_left_splitter.png" />
     <file name="png_tab_main"  path="image\tab_main.png" />
