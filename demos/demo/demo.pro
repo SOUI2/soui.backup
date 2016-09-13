@@ -39,7 +39,7 @@ HEADERS += MainDlg.h \
            ../../controls.extend/gif/SSkinGif.h \
            ../../controls.extend/gif/SSkinAPNG.h \
            ../../controls.extend/SSkinImgFrame2.h \
-           ../../controls.extend/SSkinVScrollbar.h \
+           ../../controls.extend/SVscrollbar.h \
            ../../controls.extend/SSkinNewScrollbar.h \
            ../../controls.extend/FileHelper.h \
            ../../controls.extend/sipaddressctrl.h \
