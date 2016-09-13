@@ -20,7 +20,7 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinGif.h
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinAPNG.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SSkinImgFrame2.h
-	${CMAKE_SOURCE_DIR}/controls.extend/SSkinVScrollbar.h
+	${CMAKE_SOURCE_DIR}/controls.extend/SVscrollbar.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SSkinNewScrollbar.h
 	${CMAKE_SOURCE_DIR}/controls.extend/FileHelper.h
 	${CMAKE_SOURCE_DIR}/controls.extend/sipaddressctrl.h
