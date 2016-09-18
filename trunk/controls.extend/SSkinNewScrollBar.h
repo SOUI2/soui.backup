@@ -30,6 +30,9 @@ public:
         return m_pImgVert->Width()/m_nStates;
     }
 protected:
+	virtual void OnColorize(COLORREF cr){
+
+	}
 
     virtual void _Draw(IRenderTarget *pRT, LPCRECT prcDraw, DWORD dwState,BYTE byAlpha)
     {
