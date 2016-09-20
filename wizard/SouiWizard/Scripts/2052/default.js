@@ -157,6 +157,7 @@ function AddConfig(proj, strProjectName)
 		LinkTool.GenerateDebugInformation = true;
 		LinkTool.AdditionalLibraryDirectories = '"$(SOUIPATH)\\bin"';
 		LinkTool.AdditionalDependencies = 'utilitiesd.lib souid.lib'
+		LinkTool.SubSystem = subSystemOption.subSystemWindows;
 		
 		var resCplTool = config.Tools('VCResourceCompilerTool');
 		if(SysResBuiltin)
@@ -195,6 +196,7 @@ function AddConfig(proj, strProjectName)
 		LinkTool.AdditionalLibraryDirectories = '"$(SOUIPATH)\\bin"';
 		LinkTool.AdditionalDependencies = 'utilities.lib soui.lib'
 		LinkTool.LinkIncremental=1;
+		LinkTool.SubSystem = subSystemOption.subSystemWindows;
 		
 		var resCplTool = config.Tools('VCResourceCompilerTool');
 		if(SysResBuiltin)
