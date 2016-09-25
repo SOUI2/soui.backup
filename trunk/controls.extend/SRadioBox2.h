@@ -20,6 +20,7 @@ namespace SOUI
         virtual void GetTextRect(LPRECT pRect)
         {
             SWindow::GetTextRect(pRect);
+            pRect->left+=m_nTextOffset;
         }
         virtual void DrawFocus(IRenderTarget *pRT)
         {
@@ -31,6 +32,16 @@ namespace SOUI
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
         SOUI_MSG_MAP_END()
+
+        ISkinObj *  m_pIcon;
+        CPoint      m_ptIcon;
+        int         m_nTextOffset;
+        SOUI_ATTRS_BEGIN() 
+            ATTR_SKIN(L"iconSkin",m_pIcon,TRUE)
+            ATTR_POINT(L"iconPos",m_ptIcon,TRUE)
+            ATTR_INT(L"textOffset",m_nTextOffset,TRUE)
+        SOUI_ATTRS_END()
+
     };
 
 }
