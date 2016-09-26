@@ -624,7 +624,7 @@ namespace SOUI
             return;
         }
 
-        if(m_hSelected != ITvAdapter::ITEM_NULL)
+        if(m_hSelected != ITvAdapter::ITEM_NULL  && m_bWantTab)
         {
             SItemPanel *pItem = GetItemPanel(m_hSelected);
             if(pItem)
