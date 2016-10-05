@@ -6,7 +6,7 @@ namespace SOUI
 {
     class SPropertyItemText : public SPropertyItemBase
     {
-        SOUI_CLASS_NAME(SPropertyGroup,L"proptext")
+        SOUI_CLASS_NAME(SPropertyItemText,L"proptext")
     public:
         virtual void DrawItem(IRenderTarget *pRT,CRect rc);
         
