@@ -7,7 +7,7 @@ namespace SOUI
     class SPropertyItemColor : public SPropertyItemText
     {
         friend class SPropColorEdit;
-        SOUI_CLASS_NAME(SPropertyGroup,L"propcolor")
+        SOUI_CLASS_NAME(SPropertyItemColor,L"propcolor")
     public:
         virtual BOOL HasButton() const {return TRUE;}
         virtual void DrawItem(IRenderTarget *pRT,CRect rc);

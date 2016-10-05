@@ -7,7 +7,7 @@ namespace SOUI
 {
     class SPropertyItemOption : public SPropertyItemBase
     {
-        SOUI_CLASS_NAME(SPropertyGroup,L"propoption")
+        SOUI_CLASS_NAME(SPropertyItemOption,L"propoption")
     public:
         virtual void DrawItem(IRenderTarget *pRT,CRect rc);
         
