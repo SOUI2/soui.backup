@@ -5,32 +5,58 @@ namespace SOUI{
 
 template<> SNotifyCenter * SSingleton<SNotifyCenter>::ms_Singleton = 0;
 
-
-VOID SNotifyCenter::OnTimer( HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime )
+//////////////////////////////////////////////////////////////////////////
+class SNotifyReceiver:public CSimpleWnd
 {
-	getSingleton().ExecutePendingEvents();
+public:
+	enum{
+		UM_NOTIFYEVENT = (WM_USER+1000)
+	};
+
+	SNotifyReceiver(INotifyCallback * pCallback) :m_pCallback(pCallback)
+	{
+		SASSERT(m_pCallback);
+	}
+
+	~SNotifyReceiver()
+	{
+
+	}
+
+	LRESULT OnNotifyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam);
+
+	BEGIN_MSG_MAP_EX(SNotifyReceiver)
+		MESSAGE_HANDLER_EX(UM_NOTIFYEVENT, OnNotifyEvent)
+	END_MSG_MAP()
+
+protected:
+	INotifyCallback * m_pCallback;
+};
+
+
+LRESULT SNotifyReceiver::OnNotifyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
+{
+	EventArgs *e = (EventArgs*)lParam;
+	m_pCallback->OnFireEvent(e);
+	e->Release();
+	return 0;
 }
 
-SNotifyCenter::SNotifyCenter(void):m_evtPending(NULL)
+
+//////////////////////////////////////////////////////////////////////////
+SNotifyCenter::SNotifyCenter(void):m_pReceiver(NULL)
 {
 	m_dwMainTrdID = GetCurrentThreadId();
-	m_timerID = ::SetTimer(NULL,0,20,OnTimer);
+	m_pReceiver = new SNotifyReceiver(this);
+	m_pReceiver->Create(_T("NotifyReceiver"),WS_POPUP,0,0,0,0,0,HWND_MESSAGE,0);
+	SASSERT(m_pReceiver->IsWindow());
 }
 
 SNotifyCenter::~SNotifyCenter(void)
 {
-	::KillTimer(NULL,m_timerID);
-	SAutoLock lock(m_cs);
-	if(m_evtPending)
-	{
-		SPOSITION pos = m_evtPending->GetTailPosition();
-		while(pos)
-		{
-			EventArgs *e = m_evtPending->GetPrev(pos);
-			e->Release();
-		}
-		delete m_evtPending;
-	}
+	m_pReceiver->DestroyWindow();
+	delete m_pReceiver;
+	m_pReceiver = NULL;
 }
 
 void SNotifyCenter::FireEventSync( EventArgs *e )
@@ -42,40 +68,10 @@ void SNotifyCenter::FireEventSync( EventArgs *e )
 //把事件抛到事件队列，不检查事件是否注册，执行事件时再检查。
 void SNotifyCenter::FireEventAsync( EventArgs *e )
 {
-	SAutoLock lock(m_cs);
-
-	if(!m_evtPending)
-	{
-		m_evtPending = new SList<EventArgs*>;
-	}
-	m_evtPending->AddTail(e);
-    e->AddRef();
+	e->AddRef();
+	m_pReceiver->PostMessage(SNotifyReceiver::UM_NOTIFYEVENT,0,(LPARAM)e);
 }
 
-void SNotifyCenter::ExecutePendingEvents()
-{
-	SASSERT(m_dwMainTrdID == GetCurrentThreadId());
-	SList<EventArgs*> *pEvtList = NULL;
-	{
-		SAutoLock lock(m_cs);
-		if(m_evtPending)
-		{
-			pEvtList = m_evtPending;
-			m_evtPending = NULL;
-		}
-	}
-	
-	if(!pEvtList) return;
-
-	SPOSITION pos = pEvtList->GetHeadPosition();
-	while(pos)
-	{
-		EventArgs *e = pEvtList->GetNext(pos);
-		OnFireEvent(e);
-        e->Release();
-	}
-	delete pEvtList;
-}
 
 void SNotifyCenter::OnFireEvent( EventArgs *e )
 {
