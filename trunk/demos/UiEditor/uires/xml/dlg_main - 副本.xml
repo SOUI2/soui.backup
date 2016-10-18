@@ -1,0 +1,17 @@
+﻿<SOUI name="mainWindow" title="@string/title" 
+      bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" 
+      width="1024" height="700"  margin="1,5,5,5"  
+      resizable="1" wndType="appMain"
+toolWindow="1"
+>
+	<root skin="SKIN_UIDESIGNER_main_center" cache="1">
+		<caption pos="0,0,-0,30" show="1" font="adding:0">
+			<icon name="NAME_UIDESIGNER_main_icon" skin="SKIN_UIDESIGNER_main_icon" pos="8,9"/>
+		</caption> 
+		<text pos="29,6" class="CLASS_UIDESIGNER_cls_title">新建Dialog</text>
+		<imgbtn name="NAME_UIDESIGNER_btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+	
+
+
+	</root>
+</SOUI>

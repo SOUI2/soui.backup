@@ -1,0 +1,426 @@
+<root>
+	<!--     ButtonType="skin"  该属性表示可以通过资源管理器选择资源
+   值：skin class font
+-->
+
+	<通用样式>
+		<id style="proptext" name ="窗口ID(id)" value="" />
+		<name style="proptext" name ="控件名称(name)" value="" />	
+		<skin style="proptext" name ="皮肤(skin)" value="" ButtonType="skin"/>		
+		<ncskin style="proptext" name ="皮肤NC(ncskin)" value="" ButtonType="skin"/>		
+		<class style="proptext" name ="样式(class)" value="" ButtonType="class"/>			
+		<data style="proptext" name ="用户数据(data)" value="" />			
+		<!-- 	<enable style="propoption" name ="可用(enable)" value="0" options="不可用(0)|可用(1)"/>	 -->	
+		<enable style="proptext" name ="可用(enable)" value="" />		
+		<!-- 	<visible style="propoption" name ="可见(visible)" value="0" options="隐藏(0)|可见(1)"/> -->
+		<visible style="proptext" name ="可见(visible)" value=""/>	
+
+
+		<!-- 	<cache style="propoption" name ="缓存(cache)" value="0" options="不用(0)|使用(1)"/>		 -->
+		<cache style="proptext" name ="缓存(cache)" value="" />		
+
+		<!-- 	<display style="propoption" name ="显示(display)" value="0" options="隐藏不占位(0)|隐藏占位(1)"/>	 -->
+
+		<display style="proptext" name ="显示(display)" value=""/>	
+
+		<tip style="proptext" name ="提示(tip)" value="" />	
+
+
+		<!-- 	<msgTransparent style="propoption" name ="消息穿透(msgTransparent)" value="0" options="不穿透(0)|穿透(1)"/>	 -->
+		<msgTransparent style="proptext" name ="消息穿透(msgTransparent)" value=""/>	
+
+		<!--  整形-->	
+		<sep style="proptext" name ="间距(sep)" value="0"/>   	
+
+		<!--  整形-->
+		<maxWidth style="proptext" name ="最大宽度(maxWidth)" value=""/>   	
+
+		<!-- 	<clipClient style="propoption" name ="裁剪(clipClient)" value="0" options="不剪裁(0)|剪裁(1)"/>	 -->
+		<clipClient style="proptext" name ="裁剪(clipClient)" value=""/>	
+
+		<!-- 	<focusable style="propoption" name ="焦点(focusable)" value="1" options="不接受(0)|接受(1)"/>
+ -->
+
+		<focusable style="proptext" name ="焦点(focusable)" value="" />
+
+		<!--  CanEmpty 不可空-->
+		<pos style="proptext" name ="位置(pos)" value="0,0" CanEmpty="0"/>
+
+
+		<!-- 	<size style="propsize" name ="尺寸(size)" value="0,0" childrenNames="宽|高"/>  	 -->
+		<size style="proptext" name ="尺寸(size)" value="" />  		
+
+		<!-- 	<offset style="propsize" name ="偏移(offset)" value="0,0" childrenNames="水平|垂直"/> 	 -->
+		<offset style="proptext" name ="偏移(offset)" value="0,0" /> 	
+
+
+		<pos2type style="proptext" name ="pos2type" value="" />  
+
+		<!--  整形--> 	
+		<alpha style="proptext" name ="透明度(alpha)" value="255"/>  	
+
+		<colorBkgnd style="proptext" name="背景色(colorBkgnd)" value="#00ff00"/>
+		<colorText style="proptext" name="文本颜色(colorText)" value="#FFFFFF"/>
+
+		<font style="proptext" name="字体(font)" value="" ButtonType="font"/>	
+
+		<colorBorder style="proptext" name ="边框颜色(colorBorder)" value=""/>
+		<colorUp style="proptext" name ="按起颜色(colorUp)" value=""/>
+		<colorDown style="proptext" name ="按下颜色(colorDown)" value=""/>
+		<colorUpHover style="proptext" name ="悬停颜色(colorUpHover)" value=""/>
+		<colorDownHover style="proptext" name ="colorDownHover" value=""/>
+		<colorUpPush style="proptext" name ="colorUpPush" value=""/>
+		<colorDownPush style="proptext" name ="colorDownPush" value=""/>		
+
+		<!-- 编辑器特殊属性，用于设置button edit window等内容
+	  如 <button>我是按钮</button> 
+      如果有这个属性，就可以设置 "我是按钮"这里的值
+	-->
+		<UiEdit_windowText style="proptext" name="窗口文本" value=""/>	
+
+
+
+	</通用样式>
+
+
+	<!--
+	1、加一个整形的propint,有最大和最小值限制
+	
+
+	
+1、选中控件的时候
+	1）创建Grid
+	2）把XML的值更新到Grid
+	
+2、移动控件的时候
+	1）更新XML的值
+	2）把XML的值更新到Grid
+	
+3、设置Grid的值的时候
+	1）把值更新到XML
+	2）Setattr	
+-->
+
+	<属性列表>
+		<hostwnd>
+			<!--hostwnd这里为编辑器特殊处理，两个分组的顺序不要修改，分组里的节点顺序可以修改
+			    不要添加删除新的分组-->
+			<分组 name="属性:  SOUI">
+				<title style="proptext" name ="标题(title)" value="" />
+				<width style="proptext" name ="宽度(width)" value=""/>	
+				<height style="proptext" name ="高度(height)" value=""/>	
+				<margin style="proptext" name ="边距(margin)" value=""/>	
+				<minsize style="proptext" name ="最小宽高(minsize)" value=""/>									
+				<wndStyle style="proptext" name ="样式(wndStyle)" value=""/>	
+				<resizable style="proptext" name ="大小可变(resizable)" value=""/>	
+				<translucent style="proptext" name ="半透明(translucent)" value=""/>	
+				<appWnd style="proptext" name ="appWnd(appWnd)" value=""/>									
+				<toolWindow style="proptext" name ="toolWindow(toolWindow)" value=""/>	
+				<smallIcon style="proptext" name ="小图标(smallIcon)" value=""/>	
+				<bigIcon style="proptext" name ="大图标(bigIcon)" value=""/>										
+			</分组>
+
+			<分组 name="属性:  root">
+				<id/>
+				<name/>
+				<skin/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+				<cache/>
+			</分组>
+		</hostwnd>
+
+		<button>
+			<分组 name="属性:  button">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>
+				<tip/>
+				<colorText/>
+			</分组>
+
+			<分组 name="拓展">
+				<accel style="proptext" name ="快捷键(accel)" value="ctrl+alt+f9" />
+				<!-- 			<animate style="propoption" name ="动画(animate)" value="0" options="无(0)|有(1)"/>	 -->
+
+				<animate style="proptext" name ="动画(animate)" value="0"/>	
+
+				<UiEdit_windowText/>
+			</分组>
+
+		</button>
+
+		<toolbox>
+			<分组 name="属性:  toolbox">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>
+				<tip/>
+				<colorText/>
+				<text style="proptext" name ="文本内容(text)" value="" />
+				<accel style="proptext" name ="快捷键(accel)" value="ctrl+alt+f9" />
+				<animate style="proptext" name ="动画(animate)" value="0"/>	
+				<icon style="proptext" name ="图标(icon)" value="" ButtonType="skin"/>
+			</分组>
+
+		</toolbox>		
+
+		<imgbtn>
+			<分组 name="属性:  imgbtn">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>
+				<tip/>
+				<colorText/>
+			</分组>
+
+			<分组 name="拓展">
+				<accel style="proptext" name ="快捷键(accel)" value="ctrl+alt+f9" />
+				<!-- 			<animate style="propoption" name ="动画(animate)" value="0" options="无(0)|有(1)"/>	 -->
+
+				<animate style="proptext" name ="动画(animate)" value="0"/>	
+				<UiEdit_windowText/>
+			</分组>
+
+		</imgbtn>		
+
+		<radio>
+			<分组 name="属性:  radio">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>
+				<tip/>
+				<colorText/>
+				<UiEdit_windowText/>				
+			</分组>
+		</radio>		
+
+		<check>
+			<分组 name="属性:  check">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>	
+				<tip/>				
+				<colorText/>
+
+				<UiEdit_windowText/>				
+			</分组>
+		</check>	
+
+
+		<group>
+			<分组 name="属性:  group">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+
+				<UiEdit_windowText/>				
+			</分组>
+		</group>			
+
+		<window>
+			<分组 name="属性:  window">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+				
+
+				<UiEdit_windowText/>				
+			</分组>
+		</window>	
+
+		<realwnd>
+			<分组 name="属性:  realwnd">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+
+				<UiEdit_windowText/>				
+			</分组>
+			<分组 name="拓展:  realwnd">
+				<wndclass style="proptext" name ="类名(wndclass)" value=""/>	
+				<wndname style="proptext" name ="wndname" value=""/>
+			</分组>
+		</realwnd>					
+
+		<text>
+			<分组 name="属性:  text">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>			
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+				<UiEdit_windowText/>
+				<multiLines style="proptext" name ="多行(multiLines)" value=""/>	
+				<interHeight style="proptext" name ="行间距(interHeight)" value=""/>			
+			</分组>
+		</text>		
+
+		<edit>
+			<分组 name="属性:  edit">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>			
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>			
+				<UiEdit_windowText/>	
+				<cueText style="proptext" name ="cueText(cueText)" value=""/>				
+			</分组>
+		</edit>	
+
+
+		<caption>
+			<分组 name="属性:  caption">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>			
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>			
+				<UiEdit_windowText/>				
+			</分组>
+		</caption>		
+
+		<listbox>
+			<分组 name="属性:  listbox">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>			
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>	
+
+				<itemHeight style="proptext" name ="行高(itemHeight)" value=""/>	
+				<colorSelText style="proptext" name ="选中文本颜色(colorSelText)" value=""/>	
+				<colorItemSelBkgnd style="proptext" name ="选中背景色(colorItemSelBkgnd)" value=""/>	
+				<text-x style="proptext" name ="text-x(text-x)" value=""/>				
+			</分组>
+		</listbox>		
+		<tabctrl>
+			<分组 name="属性:  tabctrl">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>			
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>	
+
+				<tabAlign style="proptext" name ="对齐方式(tabAlign)" value=""/>				
+				<tabSkin style="proptext" name ="tab皮肤(tabSkin)" value="" ButtonType="skin"/>				
+				<tabInterSize style="proptext" name ="tabInterSize" value=""/>				
+				<tabWidth style="proptext" name ="tab宽(tabWidth)" value=""/>				
+				<tabHeight style="proptext" name ="tab高(tabHeight)" value=""/>				
+				<textDir style="proptext" name ="文本方向(textDir)" value=""/>				
+				<curSel style="proptext" name ="当前页索引(curSel)" value=""/>				
+			</分组>
+		</tabctrl>	
+		<page>
+			<分组 name="属性:  page">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>			
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>	
+
+				<title style="proptext" name ="标题(title)" value=""/>		
+				<colorBorder style="proptext" name ="边框颜色(colorBorder)" value=""/>		
+			</分组>
+		</page>	
+
+
+		<icon>
+			<分组 name="属性:  icon">
+				<id/>
+				<name/>
+				<pos/>		
+				<src style="proptext" name ="图标资源句柄(src)" value=""/>	
+			</分组>
+		</icon>
+
+	</属性列表>
+</root>
