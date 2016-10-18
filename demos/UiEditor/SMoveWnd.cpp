@@ -5,6 +5,9 @@
 
 #define  POINT_SIZE      4     //元素拖动点大小
 
+#define HORZ_LT 0
+#define VERT_LT 1
+
 #define HORZ 2
 #define VERT 3
 
@@ -137,9 +140,6 @@ namespace SOUI
 			return;
 		}
 
-		//m_Desiner->m_CurSelCtrl = this;
-
-
 		if (m_pRealWnd != m_Desiner->m_pRealWndRoot)
 		{
 			m_Desiner->SetCurrentCtrl(m_Desiner->FindNodeByAttr(m_Desiner->m_CurrentLayoutNode, L"name", m_pRealWnd->GetName()), this);
@@ -161,6 +161,31 @@ namespace SOUI
 		Oldx = pt.x;
 		Oldy = pt.y;
 
+		if(m_rcPos8.PtInRect(pt))
+		{
+			SetCursor(LoadCursor(NULL,IDC_SIZEWE));
+			m_downWindow=8;
+
+		}else 
+
+		if(m_rcPos1.PtInRect(pt))
+		{
+			SetCursor(LoadCursor(NULL,IDC_SIZENWSE));
+			m_downWindow=1;
+
+		}else 
+		if(m_rcPos2.PtInRect(pt))
+		{
+			SetCursor(LoadCursor(NULL,IDC_SIZENS));
+			m_downWindow=2;
+
+		}else 
+		if(m_rcPos3.PtInRect(pt))
+		{
+			//SetCursor(LoadCursor(NULL,IDC_SIZEWE));
+			m_downWindow=3;
+
+		}else 
 		if(m_rcPos4.PtInRect(pt))
 		{
 			SetCursor(LoadCursor(NULL,IDC_SIZEWE));
@@ -178,7 +203,7 @@ namespace SOUI
 		}else if(m_rcCenter.PtInRect(pt))
 		{
 			//SetCursor(LoadCursor(NULL,IDC_SIZEALL));
-			m_downWindow=7;
+			m_downWindow=9;
 		}
 	}
 
@@ -254,62 +279,170 @@ namespace SOUI
 		{
 
 			int x = pt.x - Oldx;
-			int y = pt.y - Oldy;;
+			int y = pt.y - Oldy;
+			int x1;
+			int y1;
 
-			if (Oldx == pt.x && Oldy == pt.y)
+
+			BOOL bx = FALSE;
+			BOOL by = FALSE;
+
+			if (abs(pt.x - Oldx) >= 8  || abs(pt.y - Oldy) >= 8)
+			{
+				SwndLayout *layout = GetLayout();
+				SwndLayout *layout1 = m_pRealWnd->GetLayout();
+
+				x1 = abs(pt.x - Oldx);
+				x1 = x1 / 8;
+
+				y1 = abs(pt.y - Oldy);
+				y1 = y1 / 8;
+
+				if (abs(pt.x - Oldx) >= 8)
+				{
+
+
+					if (x > 0)
+					{
+						x = 8;
+					}else
+					{
+						x = -8;
+					}
+
+					bx = TRUE;
+
+				}else
+				{
+					x = 0;
+				}
+
+				if (abs(pt.y - Oldy) >= 8)
+				{
+					if (y > 0)
+					{
+						y = 8;
+					}else
+					{
+						y = -8;
+					}
+
+					by = TRUE;
+
+
+				}else
+				{
+					y = 0;
+				}
+
+
+
+			}else
 			{
 				return;
 			}
 
 
 
-			if(4==m_downWindow) //右边框
-			{	
-
-				MoveWndSize(x, HORZ);
-
-
-
-			}else if(5==m_downWindow) //右下角
+			switch (m_downWindow)
 			{
-
-				MoveWndSize(x, HORZ);
-
-				MoveWndSize(y, VERT);
-
-
-
-
-			}else if(6==m_downWindow) //下边框
-			{
-
-				MoveWndSize(y, VERT);
-
-
-
-			}else if((7==m_downWindow) && (m_Desiner->m_pMoveWndRoot != this)) //中间
-			{
-
-				if (abs(pt.x - Oldx) > 4  || abs(pt.y - Oldy) > 4)
+		    /*左边框*/
+			case 8:
 				{
-				}else
-				{
-					return;
+					if (bx)
+					{
+						MoveWndSizeLT(x*x1, HORZ_LT);
+					}
 				}
+				break;;
 
-				SwndLayout *layout = GetLayout();
-				SwndLayout *layout1 = m_pRealWnd->GetLayout();
-				int x = pt.x - Oldx;
-				MoveWndHorz(x);
+            /*左上角*/
+			case 1:
+				{
+					if (bx)
+					{
+						MoveWndSizeLT(x*x1, HORZ_LT);
+					}
+					if (by)
+					{
+						MoveWndSizeLT(y*y1, VERT_LT);
+					}
+				}
+				break;
 
-				x = pt.y - Oldy;
-				MoveWndVert(x);
+            /*上边框*/
+			case 2:
+				{
+					if (by)
+					{
+						MoveWndSizeLT(y*y1, VERT_LT);
+					}
+				}
+				break;;
+            
+			/*右上角*/
+			case 3:
+				return;
 
+            /*右边框*/
+			case 4:
+				{
+					if (bx)
+					{
+						MoveWndSize(x*x1, HORZ);
+					}
+				}
+				break;
 
+            /*右下角*/
+			case 5:
+				{
+					if (bx)
+					{
+						MoveWndSize(x*x1, HORZ);
+					}
+					if (by)
+					{
+						MoveWndSize(y*y1, VERT);
+					}
+				}
+				break;
+
+			/*下边框*/
+			case 6:
+				{
+					if (by)
+					{
+						MoveWndSize(y*y1, VERT);
+					}
+				}
+				break;
+
+            /*左下角*/
+			case 7:
+				return;
+
+            /*中间拖动*/
+			case 9:
+				{
+					if (bx)
+					{
+						MoveWndHorz(x*x1);
+					}
+					if (by)
+					{
+						MoveWndVert(y*y1);
+					}
+				}
+				break;
+
+			default:
+				return;
 			}
 
-			Oldx = pt.x;
-			Oldy = pt.y;
+
+			Oldx = Oldx + x*x1;
+			Oldy = Oldy + y*y1; 
 
 			m_pRealWnd->GetParent()->UpdateChildrenPosition();	
 			GetParent()->UpdateChildrenPosition();	
@@ -821,7 +954,7 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 }
 
 
-void SMoveWnd::MoveWndSize(int x, int PosN)
+void SMoveWnd::MoveWndSizeLT(int x, int PosN)
 {
 	SwndLayout *layout = GetLayout();
 	SwndLayout *layout1 = m_pRealWnd->GetLayout();
@@ -830,19 +963,152 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 	m_pRealWnd->GetWindowRect(rcReal);
 	m_pRealWnd->GetParent()->GetWindowRect(rcRealParent);
 
+	//往左、上拖动大小，left、top不能小于0
+	if (layout->pos[PosN].nPos + x < 0)
+	{
+		return;
+	}
+
+	//往右拖动大小,left 不能大于 right
+	if (layout->GetSpecifySize(PD_X) - x < 1 && PosN == 0)
+	{
+		return;
+	}
+
+	//往下拖动大小,top 不能大于 buttom
+	if (layout->GetSpecifySize(PD_Y) - x < 1 && PosN == 1 )
+	{
+		return;
+	}
+
+	layout->pos[PosN].nPos = layout->pos[PosN].nPos + x;
+	if (PosN == 0)
+	{
+		layout->SetWidth(layout->GetSpecifySize(PD_X) - x);
+	}else
+	{
+		layout->SetHeight(layout->GetSpecifySize(PD_Y) - x);
+	}
+
+
+
 	if(layout1->nCount == 2) //只有两个坐标点，自动计算大小
 	{
 		if (layout1->IsSpecifySize(PD_Y)||layout1->IsSpecifySize(PD_Y))//用size指定大小的时候
 		{
-			//往左拉的时候右边距不能超过自己的左边距
-			if (layout1->GetSpecifySize(PD_X) + x < 1 && PosN == 2 )
-			{
-				return;
+		
+			layout1->pos[PosN].nPos = layout1->pos[PosN].nPos + x;
+			if (PosN==0)
+			{   //宽
+				layout1->SetWidth(layout1->GetSpecifySize(PD_X) - x);
+			}else
+			{   //高
+				layout1->SetHeight(layout1->GetSpecifySize(PD_Y) - x);
 			}
-			if (layout1->GetSpecifySize(PD_Y) + x < 1 && PosN == 3 )
+		}
+		else
+		{
+			return;
+		}
+	}else
+	{
+		//-100, -100, @20,@20
+		if (layout1->pos[PosN].cMinus == -1)// 坐标为负数的情况
+		{
+
+			layout1->pos[PosN].nPos = layout1->pos[PosN].nPos - x;
+		}else
+		{
+			layout1->pos[PosN].nPos = layout1->pos[PosN].nPos + x;
+		}
+			
+		if (layout1->pos[PosN + 2].pit == PIT_SIZE)  //@5这种情况
+		{
+
+			layout1->pos[PosN + 2].nPos = layout1->pos[PosN + 2].nPos - x;
+			if (PosN==0)
 			{
-				return;
+				layout1->SetWidth(layout1->GetSpecifySize(PD_X) - x);
+			}else
+			{
+				layout1->SetHeight(layout1->GetSpecifySize(PD_Y) - x);
 			}
+
+
+		}else  //描点坐标
+		{
+			//80,100,50,80 这种情况，top < buttom  right < reft的暂时不考虑 
+			//
+			//layout1->pos[PosN].nPos = layout1->pos[PosN].nPos + x;
+		}
+
+
+	}
+
+}
+
+
+void SMoveWnd::MoveWndSize(int x, int PosN)
+{
+	SwndLayout *layout = GetLayout();
+	SwndLayout *layout1 = m_pRealWnd->GetLayout();
+
+	CRect rcReal, rcRealParent, rcMovParent;
+	m_pRealWnd->GetWindowRect(rcReal);
+	m_pRealWnd->GetParent()->GetWindowRect(rcRealParent);
+	GetParent()->GetWindowRect(rcMovParent);
+
+
+
+
+	//右拖动不能超过父控件的右边距
+	if (PosN == 2)
+	{
+		if (layout->pos[PosN - 2].nPos + layout->GetSpecifySize(PD_X) + x > rcMovParent.right - rcMovParent.left)
+		{
+			return;
+		}
+	}
+
+
+	//下拖动不能超过父控件的下边距
+	if (PosN == 3)
+	{
+		if (layout->pos[PosN - 2].nPos + layout->GetSpecifySize(PD_Y) + x > rcMovParent.bottom - rcMovParent.top)
+		{
+			return;
+		}	
+	}
+
+
+	//往左拖动大小,left 不能大于 right
+	if (layout->GetSpecifySize(PD_X) + x < 1 && PosN == 2)
+	{
+		return;
+	}
+
+	//往上拖动大小,top 不能大于 buttom
+	if (layout->GetSpecifySize(PD_Y) + x < 1 && PosN == 3 )
+	{
+		return;
+	}
+
+	layout->pos[PosN].nPos = layout->pos[PosN].nPos + x;
+	if (PosN == 0)
+	{
+		layout->SetWidth(layout->GetSpecifySize(PD_X) - x);
+	}else
+	{
+		layout->SetHeight(layout->GetSpecifySize(PD_Y) - x);
+	}
+
+
+
+	if(layout1->nCount == 2) //只有两个坐标点，自动计算大小
+	{
+		if (layout1->IsSpecifySize(PD_Y)||layout1->IsSpecifySize(PD_Y))//用size指定大小的时候
+		{
+
 
 			layout->pos[PosN].nPos = layout->pos[PosN].nPos + x;
 			if (PosN==2)
@@ -863,41 +1129,12 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 		//5,3,@5,@7
 		if (layout1->pos[PosN].cMinus == -1)// 坐标3为负数的情况
 		{
-			if (layout1->pos[PosN].nPos - x <0)//往右拉的时候右边距不能超过父控件的右边距
-			{
-				return;
-			}
-
-			int nWidthOrHeight;
-			if (PosN == 2) 
-			{
-				nWidthOrHeight = rcRealParent.right - rcReal.left -1;
-			}
-			else
-			{
-				nWidthOrHeight = rcRealParent.bottom - rcReal.top -1;
-			}
-
-			if (layout1->pos[PosN].nPos - x > nWidthOrHeight)//往左拉的时候右边距不能超过自己的左边距
-			{
-				return;
-			}
-			/////////////////////////////////////////////////////////////
-			if (layout1->pos[PosN].nPos - x <=0)
-			{
-				return;
-			}
 
 			layout->pos[PosN].nPos = layout->pos[PosN].nPos + x;
 			layout1->pos[PosN].nPos = layout1->pos[PosN].nPos - x;
 		}else if (layout1->pos[PosN].pit == PIT_SIZE)  //@5这种情况
 		{
 
-			//往左拉的时候右边距不能超过自己的左边距
-			if (layout1->pos[PosN].nPos + x < 1)
-			{
-				return;
-			}
 			layout->pos[PosN].nPos = layout->pos[PosN].nPos + x;
 			layout1->pos[PosN].nPos = layout1->pos[PosN].nPos + x;
 			if (PosN==2)
@@ -912,21 +1149,13 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 		}else  //描点坐标
 		{
 			//80,100,50,80 这种情况，top < buttom  right < reft的暂时不考虑 
-			//
 
-
-			//往左拉的时候右边距不能超过自己的左边距
-			if (layout1->pos[PosN].nPos + x < layout1->pos[PosN -2].nPos + 1)
-			{
-				return;
-			}
 			layout->pos[PosN].nPos = layout->pos[PosN].nPos + x;
 			layout1->pos[PosN].nPos = layout1->pos[PosN].nPos + x;
 		}
 
 
 	}
-
 }
 
 

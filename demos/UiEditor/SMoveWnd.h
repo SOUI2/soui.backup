@@ -34,7 +34,8 @@ namespace SOUI
 		void NewWnd(CPoint pt);
 		void Click(UINT nFlags,CPoint pt);
 
-        void MoveWndSize(int x, int PosN);
+        void MoveWndSize(int x, int PosN);   //拉动右边框或下边框
+		void MoveWndSizeLT(int x, int PosN); //拉动左边框或上边框
 
 		void MoveWndHorz(int x);
 		void MoveWndVert(int x);
@@ -55,7 +56,7 @@ namespace SOUI
 		HCURSOR m_hNormal;
 
 		//移动元素
-		int      m_downIndex; //拖动选择元素 -1空 0在空处 1左上角 2上 3右上角 4右 5右下角 6下 7左下角 8左
+		int      m_downIndex; //拖动选择元素 -1空 0在空处 1左上角 2上 3右上角 4右 5右下角 6下 7左下角 8左 9中间
 		POINT    m_downPt;   //按下相对位置
 		CRect     m_rcPos1,m_rcPos2,m_rcPos3,m_rcPos4,m_rcPos5,m_rcPos6,m_rcPos7,m_rcPos8; //八个角点,从左上角顺时针旋转
 
