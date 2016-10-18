@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<skin>
+	<imgframe name="SKIN_UIDESIGNER_main_center" src="PNG:UIDESIGNER_ID_PNG_MAIN_CENTER" left="0" top="0" right="10" bottom="40" />
+	<imglist name="SKIN_UIDESIGNER_home_tiyan" src="PNG:UIDESIGNER_ID_PNG_HOME_TIYAN" states="3" />
+	<imglist name="SKIN_UIDESIGNER_switch_back" src="PNG:UIDESIGNER_ID_PNG_SWITCH_BACK" states="1" />
+	<imglist name="SKIN_UIDESIGNER_switch_force" src="PNG:UIDESIGNER_ID_PNG_SWITCH_FORCE" states="8" />
+	<imglist name="SKIN_UIDESIGNER_main_icon" src="PNG:UIDESIGNER_ID_ICON_MAIN" states="1" />
+	<imgframe name="SKIN_UIDESIGNER_home_new_icon" src="PNG:UIDESIGNER_ID_PNG_HOME_NEW_ICON" />
+	<imgframe name="SKIN_UIDESIGNER_home_edit_icon" src="PNG:UIDESIGNER_ID_PNG_HOME_EDIT_ICON" />
+	<imglist name="SKIN_UIDESIGNER_home_new" src="PNG:UIDESIGNER_ID_PNG_HOME_NEW" states="3" />
+	<imglist name="SKIN_UIDESIGNER_home_tree" src="PNG:UIDESIGNER_ID_PNG_HOME_TREE" states="3" />
+	<imglist name="SKIN_UIDESIGNER_center.bk" src="PNG:UIDESIGNER_ID_PNG_CENTER_BK" states="1" tile="2" />
+	<imglist name="SKIN_UIDESIGNER_TAB_LEFT" src="PNG:UIDESIGNER_ID_PNG_TAB_LEFT" states="3" top="3" left="3" right="3" bottom="3" />
+	<imglist name="SKIN_UIDESIGNER_PROPGRID_SWITCH" src="PNG:UIDESIGNER_ID_PNG_PROPGRID_SWITCH" states="4" />
+</skin>

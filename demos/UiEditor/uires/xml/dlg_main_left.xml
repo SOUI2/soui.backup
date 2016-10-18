@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<include>
+	<tabctrl name="NAME_UIDESIGNER_LEFT_MAIN_TAB" pos="0,0,-0,-0" tabAlign="left" tabSkin="SKIN_UIDESIGNER_TAB_LEFT" tabInterSize="2" tabWidth="30" tabHeight="70" colorText="#FFFFFF" focusable="0" textDir="vert" show="1" curSel="0">
+		<page title="工程" colorBorder="#ffff00">
+			<treectrl pos="1,0,-1,-1" name="NAME_UIDESIGNER_mytree" itemHeight="30" iconSkin="SKIN_UIDESIGNER_home_tree" colorItemText="#FFFFFF" colorItemSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" />
+		</page>
+		<page name="NAME_UIDESIGNER_PROPERTY_PAGE" title="属性" colorBorder="#ffff00" />
+	</tabctrl>
+</include>

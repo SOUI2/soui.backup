@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <!--<font face="宋体" size="15"/>-->
+  <font face="微软雅黑" size="12" colorText="#ffffff"/>
+
+  <string src="values:string" />
+  <skin src="values:skin"/>
+  <color src="values:color"/>
+
+
+  <style>
+    <class name="CLASS_UIDESIGNER_normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="0x25" cursor="hand" margin-x="0"/>
+    <class name="CLASS_UIDESIGNER_cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" font="italic:1" fontHover="underline:1,italic:1" />
+
+    <class name="CLASS_UIDESIGNER_cls_title" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13" />
+    <class name="CLASS_UIDESIGNER_font:bold" colorText="#000000" font="face:微软雅黑;bold:1;size:13" />
+    <class name="CLASS_UIDESIGNER_font:label" colorText="#000000" font="face:微软雅黑;bold:0;size:13" />
+  </style>
+  
+<!--
+  <skin>
+        <imglist name="skin.home_new" src="PNG:ID_PNG_HOME_NEW" states="1"/>
+		<imgframe name="skin.shadow" src="PNG:ID_PNG_SHADOW" left="5" top="3" right="5" bottom="7"/>
+  </skin>
+-->  
+
+
+  <objattr>
+  
+<!--      imgbtn的基类是button
+	 如果imgbtn的类和基类都在这里，那么将基类button的属性更新到imgbtn
+	 如果基类和button和子类imgbtn都有相同的属性，则不更新
+	 如：button有class属性，imgbtn也有，那么imgbtn的class不变，
+	 但imgbtn没有font属性，而button有，那么imgbtn将增加font属性
+	 最后imgbtn的属性变成:
+	 <imgbtn class="linkimage" font="" colorText="#385e81"/> -->
+	 
+<!--      <button class="UIDESIGNER_normalbtn1" font="" colorText="#385e81"/>
+     <imgbtn class="UIDESIGNER_linkimage"/>
+     <tabctrl colorText="#000000" align="top" tabWidth="70" tabHeight="38" tabSpacing="0" tabPos="10" dotted="1"/> -->
+  
+  </objattr>
+</UIDEF>

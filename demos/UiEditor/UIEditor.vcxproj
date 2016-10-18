@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{539C46FD-C394-43FB-B9B0-7927AE3455A3}</ProjectGuid>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>..\..\obj\release\demo\</IntDir>
+    <OutDir>..\..\bin\</OutDir>
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>$(ProjectName)d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>..\..\obj\release\demo\</IntDir>
+    <OutDir>..\..\bin\</OutDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>.;.;..\..\utilities\include;..\..\soui\include;..\..\components;..\..\config;..\..\tools\mkspecs\win32-msvc2008;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BrowseInformation>true</BrowseInformation>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AssemblerListingLocation>..\..\obj\release\demo\</AssemblerListingLocation>
+      <ObjectFileName>..\..\obj\release\demo\</ObjectFileName>
+      <DisableSpecificWarnings>4100;4101;4102;4189;4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>-Zm200 /MP -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>utilitiesd.lib;souid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..\..\soui-sys-resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>.;..\..\utilities\include;..\..\soui\include;..\..\components;..\..\config;..\..\tools\mkspecs\win32-msvc2008;C:\Python35\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AssemblerListingLocation>..\..\obj\release\demo\</AssemblerListingLocation>
+      <ObjectFileName>..\..\obj\release\demo\</ObjectFileName>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\bin;C:\Python35\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>utilities.lib;soui.lib;python35.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..\..\soui-sys-resource;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\controls.extend\image3d\3dlib.cpp" />
+    <ClCompile Include="..\..\controls.extend\image3d\3dmatrix.cpp" />
+    <ClCompile Include="..\..\controls.extend\image3d\3dtransform.cpp" />
+    <ClCompile Include="..\..\controls.extend\SChromeTabCtrl.cpp" />
+    <ClCompile Include="..\..\controls.extend\SFreeMoveWindow.cpp" />
+    <ClCompile Include="..\..\controls.extend\SImageMaskWnd.cpp" />
+    <ClCompile Include="..\..\controls.extend\SListboxex.cpp" />
+    <ClCompile Include="..\..\controls.extend\STurn3DView.cpp" />
+    <ClCompile Include="DesignerView.cpp" />
+    <ClCompile Include="DlgAbout.cpp" />
+    <ClCompile Include="DlgCreatePro.cpp" />
+    <ClCompile Include="DlgInput.cpp" />
+    <ClCompile Include="DlgNewLayout.cpp" />
+    <ClCompile Include="DlgNewSkin.cpp" />
+    <ClCompile Include="DlgSkinSelect.cpp" />
+    <ClCompile Include="DlgStyleManage.cpp" />
+    <ClCompile Include="extend.ctrls\ExtendCtrls.cpp" />
+    <ClCompile Include="extend.ctrls\GroupChatFrame.cpp" />
+    <ClCompile Include="extend.ctrls\imre\ImgProvider.cpp" />
+    <ClCompile Include="extend.ctrls\imre\RichEditObj.cpp" />
+    <ClCompile Include="extend.ctrls\imre\RichEditObjFactory.cpp" />
+    <ClCompile Include="extend.ctrls\imre\RichEditOleBase.cpp" />
+    <ClCompile Include="extend.ctrls\imre\RichEditOleCallback.cpp" />
+    <ClCompile Include="extend.ctrls\imre\RichEditOleCtrls.cpp" />
+    <ClCompile Include="extend.ctrls\imre\SImRichedit.cpp" />
+    <ClCompile Include="extend.ctrls\SAnimImg.cpp" />
+    <ClCompile Include="extend.ctrls\SButtonEx.cpp" />
+    <ClCompile Include="extend.ctrls\SImageEx.cpp" />
+    <ClCompile Include="extend.ctrls\SImagePlayer.cpp" />
+    <ClCompile Include="extend.ctrls\SplitBar.cpp" />
+    <ClCompile Include="extend.ctrls\STabCtrl2.cpp" />
+    <ClCompile Include="extend.ctrls\SText.cpp" />
+    <ClCompile Include="extend.ctrls\utils.cpp" />
+    <ClCompile Include="extend.skins\ExtendSkins.cpp" />
+    <ClCompile Include="extend.skins\SSkinMutiFrameImg.cpp" />
+    <ClCompile Include="MainDlg.cpp" />
+    <ClCompile Include="propgrid\propitem\SPropertyItem-Color.cpp" />
+    <ClCompile Include="propgrid\propitem\SPropertyItem-Option.cpp" />
+    <ClCompile Include="propgrid\propitem\SPropertyItem-Size.cpp" />
+    <ClCompile Include="propgrid\propitem\SPropertyItem-Text.cpp" />
+    <ClCompile Include="propgrid\SPropertyGrid.cpp" />
+    <ClCompile Include="propgrid\SPropertyItemBase.cpp" />
+    <ClCompile Include="ScintillaWnd.cpp" />
+    <ClCompile Include="SImageSwitcher.cpp" />
+    <ClCompile Include="SMoveWnd.cpp" />
+    <ClCompile Include="SMyButton.cpp" />
+    <ClCompile Include="SouiRealWndHandler.cpp" />
+    <ClCompile Include="SSwitch.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="SToolbox.cpp" />
+    <ClCompile Include="trayicon\SShellNotifyIcon.cpp" />
+    <ClCompile Include="UIEditor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="UIEditor.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\controls.extend\image3d\3dlib.h" />
+    <ClInclude Include="..\..\controls.extend\image3d\3dmatrix.h" />
+    <ClInclude Include="..\..\controls.extend\image3d\3dTransform.h" />
+    <ClInclude Include="..\..\controls.extend\image3d\PerspectiveTransform.h" />
+    <ClInclude Include="..\..\controls.extend\SChromeTabCtrl.h" />
+    <ClInclude Include="..\..\controls.extend\SFreeMoveWindow.h" />
+    <ClInclude Include="..\..\controls.extend\SImageMaskWnd.h" />
+    <ClInclude Include="..\..\controls.extend\SListboxex.h" />
+    <ClInclude Include="..\..\controls.extend\STurn3DView.h" />
+    <ClInclude Include="CDebug.h" />
+    <ClInclude Include="CNewGuid.h" />
+    <ClInclude Include="DesignerView.h" />
+    <ClInclude Include="DlgAbout.h" />
+    <ClInclude Include="DlgCreatePro.h" />
+    <ClInclude Include="DlgInput.h" />
+    <ClInclude Include="DlgNewLayout.h" />
+    <ClInclude Include="DlgNewSkin.h" />
+    <ClInclude Include="DlgSkinSelect.h" />
+    <ClInclude Include="DlgStyleManage.h" />
+    <ClInclude Include="extend.ctrls\ExtendCtrls.h" />
+    <ClInclude Include="extend.ctrls\GroupChatFrame.h" />
+    <ClInclude Include="extend.ctrls\imre\ImgProvider.h" />
+    <ClInclude Include="extend.ctrls\imre\IRichEditObjHost.h" />
+    <ClInclude Include="extend.ctrls\imre\RichEditObj.h" />
+    <ClInclude Include="extend.ctrls\imre\RichEditObjFactory.h" />
+    <ClInclude Include="extend.ctrls\imre\RichEditOleBase.h" />
+    <ClInclude Include="extend.ctrls\imre\RichEditOleCallback.h" />
+    <ClInclude Include="extend.ctrls\imre\RichEditOleCtrls.h" />
+    <ClInclude Include="extend.ctrls\imre\SImRichEdit.h" />
+    <ClInclude Include="extend.ctrls\SAnimImg.h" />
+    <ClInclude Include="extend.ctrls\SButtonEx.h" />
+    <ClInclude Include="extend.ctrls\SImageEx.h" />
+    <ClInclude Include="extend.ctrls\SImagePlayer.h" />
+    <ClInclude Include="extend.ctrls\SSplitBar.h" />
+    <ClInclude Include="extend.ctrls\STabCtrl2.h" />
+    <ClInclude Include="extend.ctrls\SText.h" />
+    <ClInclude Include="extend.ctrls\utils.h" />
+    <ClInclude Include="extend.skins\ExtendSkins.h" />
+    <ClInclude Include="extend.skins\SAniImgFrame.h" />
+    <ClInclude Include="extend.skins\SSkinMutiFrameImg.h" />
+    <ClInclude Include="MainDlg.h" />
+    <ClInclude Include="propgrid\propitem\SPropertyItem-Color.h" />
+    <ClInclude Include="propgrid\propitem\SPropertyItem-Option.h" />
+    <ClInclude Include="propgrid\propitem\SPropertyItem-Size.h" />
+    <ClInclude Include="propgrid\propitem\SPropertyItem-Text.h" />
+    <ClInclude Include="propgrid\SPropertyEmbedWndHelper.hpp" />
+    <ClInclude Include="propgrid\SPropertyGrid.h" />
+    <ClInclude Include="propgrid\SPropertyItem-i.h" />
+    <ClInclude Include="propgrid\SPropertyItemBase.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="SciLexer.h" />
+    <ClInclude Include="Scintilla.h" />
+    <ClInclude Include="ScintillaWnd.h" />
+    <ClInclude Include="SImageSwitcher.h" />
+    <ClInclude Include="SMoveWnd.h" />
+    <ClInclude Include="SMyButton.h" />
+    <ClInclude Include="SouiRealWndHandler.h" />
+    <ClInclude Include="SSwitch.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SToolbox.h" />
+    <ClInclude Include="trayicon\SShellNotifyIcon.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\soui_res.rc2" />
+    <CustomBuild Include="uires\uires.idx">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(SOUIPATH)\tools\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\res\soui_res.rc2 -h .\res\resource.h idtable</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building SoUI Resource</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\res\soui_res.rc2;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SOUIPATH)\tools\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\res\soui_res.rc2 -h .\res\resource.h idtable</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building SoUI Resource</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\res\soui_res.rc2;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="uires\Translator\lang_cn.xml" />
+    <Xml Include="uires\uidef\init.xml" />
+    <Xml Include="uires\values\color.xml" />
+    <Xml Include="uires\values\skin.xml" />
+    <Xml Include="uires\values\string.xml" />
+    <Xml Include="uires\xml\dlg_main.xml" />
+    <Xml Include="uires\xml\menu_tray.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="uires\image\soui.ico" />
+    <Image Include="uires\image\traymenu_icons.png" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
