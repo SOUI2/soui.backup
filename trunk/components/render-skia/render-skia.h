@@ -29,7 +29,7 @@ namespace SOUI
         }
         
 		virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei);
-        virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf,LPCTSTR pszPropEx);
+        virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf,const IPropBag * pPropBag);
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
         virtual BOOL CreateRegion(IRegion **ppRgn);
         
@@ -102,7 +102,7 @@ namespace SOUI
 	class SFont_Skia: public TSkiaRenderObjImpl<IFont>
 	{
 	public:
-		SFont_Skia(IRenderFactory * pRenderFac,const LOGFONT * plf,LPCTSTR pszPropEx);
+		SFont_Skia(IRenderFactory * pRenderFac,const LOGFONT * plf);
 
         virtual ~SFont_Skia();
 
@@ -120,6 +120,8 @@ namespace SOUI
 
         const SkPaint  GetPaint() const {return m_skPaint;}
         SkTypeface *GetFont()const {return m_skFont;}
+
+		virtual void SetProps(const IPropBag *pPropBag);
 	protected:
         SkTypeface *m_skFont;   //定义字体
         SkPaint     m_skPaint;  //定义文字绘制属性
@@ -322,6 +324,8 @@ namespace SOUI
 		virtual COLORREF GetPixel( int x, int y );
 
 		virtual COLORREF SetPixel( int x, int y, COLORREF cr );
+
+		virtual void SetProps(const IPropBag * pProps);
     public:
         SkCanvas *GetCanvas(){return m_SkCanvas;}
 
@@ -345,6 +349,8 @@ namespace SOUI
 
         HDC m_hGetDC;
         UINT m_uGetDCFlag;
+
+		bool			m_bAntiAlias;
 	};
 	
 	namespace RENDER_SKIA
