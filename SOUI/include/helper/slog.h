@@ -103,8 +103,12 @@ namespace SOUI
 #define LOGFMTA( filter, fmt, ...) LOGFMT_ALARM(LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
 #define LOGFMTF( filter, fmt, ...) LOGFMT_FATAL(LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
 #else
-inline void empty_log_format_function1(LoggerId , const char *, const char*, ...){}
-inline void empty_log_format_function2(const char *, const char*, ...){}
+inline void empty_log_format_function1(LoggerId id, const char * tag, const char* fmt, ...){}
+inline void empty_log_format_function1(const char * name, const char * tag, const char* fmt, ...){}
+inline void empty_log_format_function1(LoggerId id, const char * tag, const wchar_t* fmt, ...){}
+inline void empty_log_format_function1(const char * name, const char * tag, const wchar_t* fmt, ...){}
+inline void empty_log_format_function2(const char * tag, const char* fmt, ...){}
+inline void empty_log_format_function2(const char * tag, const wchar_t* fmt, ...){}
 #define LOGFMT_TRACE empty_log_format_function1
 #define LOGFMT_DEBUG LOGFMT_TRACE
 #define LOGFMT_INFO LOGFMT_TRACE

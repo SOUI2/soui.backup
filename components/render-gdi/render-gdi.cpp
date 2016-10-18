@@ -10,6 +10,7 @@
 namespace SOUI
 {
 
+
     //////////////////////////////////////////////////////////////////////////
     // SRenderFactory_GDI
     BOOL SRenderFactory_GDI::CreateRenderTarget( IRenderTarget ** ppRenderTarget ,int nWid,int nHei)
@@ -18,9 +19,10 @@ namespace SOUI
         return TRUE;
     }
 
-    BOOL SRenderFactory_GDI::CreateFont( IFont ** ppFont , const LOGFONT &lf ,LPCTSTR pszPropEx)
+    BOOL SRenderFactory_GDI::CreateFont( IFont ** ppFont , const LOGFONT &lf ,const IPropBag * pPropBag)
     {
-        *ppFont = new SFont_GDI(this,&lf,pszPropEx);
+        *ppFont = new SFont_GDI(this,&lf);
+		(*ppFont)->SetProps(pPropBag);
         return TRUE;
     }
 
