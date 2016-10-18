@@ -39,7 +39,6 @@ SDesignerView::SDesignerView(SHostDialog *pMainHost, SWindow *pContainer, STreeC
 	m_treeXmlStruct = pTreeXmlStruct;
 
 	m_treeXmlStruct->GetEventSet()->subscribeEvent(EVT_TC_SELCHANGED,Subscriber(&SDesignerView::OnTCSelChanged,this));
-	//m_treeXmlStruct->GetEventSet()->removeEvent(EVT_TC_SELCHANGED);
 
 
 	pugi::xml_document doc;
@@ -1678,7 +1677,10 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 		pMoveWnd->GetWindowRect(rect);
 
 		SStringT strPos;
-		strPos.Format(_T("%d,%d"), pt.x - rect.left, pt.y - rect.top);
+		/*strPos.Format(_T("%d,%d"), pt.x - rect.left, pt.y - rect.top);*/
+
+		//8 ¶ÔÆë
+		strPos.Format(_T("%d,%d"), (pt.x - rect.left)/8*8, (pt.y - rect.top)/8*8);
 
 		if (!m_xmlNode.attribute(L"pos"))
 		{
@@ -1847,16 +1849,7 @@ bool SDesignerView::OnTCSelChanged(EventArgs *pEvt)
 			m_xmlNode = xmlNode;
 			m_CurSelCtrl = p->m_value;
 
-			if (wnd != m_pRealWndRoot)
-			{
-				
-				CreatePropGrid(m_xmlNode.name());
-				UpdatePropGrid(m_xmlNode);
-			}else
-			{	
-				CreatePropGrid(_T("hostwnd"));
-				UpdatePropGrid(m_xmlNode);
-			}
+			m_CurSelCtrl->Click(0,CPoint(0,0));
 		}
 
 
@@ -1889,13 +1882,15 @@ void SDesignerView::Preview()
 	//SMap<SWindow*, SMoveWnd*>::CPair *p = m_mapMoveRealWnd.GetNext();
 
 	SMoveWnd *wnd;
-	SPOSITION pos = m_mapMoveRealWnd.GetStartPosition();
-	while (pos)
-	{
-		SMap<SWindow*, SMoveWnd*>::CPair *p = m_mapMoveRealWnd.GetNext(pos);
-		wnd = p->m_value;
-		wnd->SetVisible(FALSE);
-	}
+
+	m_pMoveWndRoot->SetVisible(FALSE);
+	//SPOSITION pos = m_mapMoveRealWnd.GetStartPosition();
+	//while (pos)
+	//{
+	//	SMap<SWindow*, SMoveWnd*>::CPair *p = m_mapMoveRealWnd.GetNext(pos);
+	//	wnd = p->m_value;
+	//	wnd->SetVisible(FALSE);
+	//}
 	
 }
 
