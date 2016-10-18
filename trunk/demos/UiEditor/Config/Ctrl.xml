@@ -3,8 +3,9 @@
 <root>
 	<控件列表>
 		<!-- pos和size都不是必须的，设计器根据鼠标按下的位置设置pos -->
+		<!-- 控件的大小最好是8的倍数，方便对齐 -->
 
-		<caption pos="0,0" size="300, 30" show="1" font="adding:0">
+		<caption pos="0,0" size="288, 32" show="1" font="adding:0">
 			<text pos="29,9">标题</text>
 			<imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
 			<imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
@@ -13,26 +14,26 @@
 		</caption>	
 		<icon pos="0,0" src="LOGO:16"/>
 		<text pos="0,0">文本</text>
-		<edit pos="0,0" size="100,25"  colorBkgnd="#FFFFFF" cueText="" colorText="#000000"/>
-		<button pos="0,0" size="90,30" colorText="#000000"
+		<edit pos="0,0" size="96,24"  colorBkgnd="#FFFFFF" cueText="" colorText="#000000"/>
+		<button pos="0,0" size="96,32" colorText="#000000"
 		skin="_skin.sys.btn.normal">按钮</button> 
-		<imgbtn pos="0,0" size="90,30"  tip="" animate="1"/>
+		<imgbtn pos="0,0" size="96,32"  tip="" animate="1"/>
 
-		<toolbox pos="0,0" size="120,30"  skin="" icon=""
+		<toolbox pos="0,0" size="120,32"  skin="" icon=""
                  text="toolbox" animate="1"
                  class=""/>		
-		<radio pos="0,0" size="90,30" skin="_skin.sys.radio">单选框</radio>  	
+		<radio pos="0,0" size="96,32" skin="_skin.sys.radio">单选框</radio>  	
 
 
-		<check pos="0,0" size="90,30" skin="_skin.sys.checkbox">复选框</check>  	
+		<check pos="0,0" size="96,32" skin="_skin.sys.checkbox">复选框</check>  	
 
-		<group pos="0,0" size="100,100" align="left">组合框</group>
+		<group pos="0,0" size="120,120" align="left">组合框</group>
 
-		<window pos="0,0" size="100,100">	
+		<window pos="0,0" size="120,120">	
 
 		</window>	
 		
-		<realwnd pos="0,0" size="100,100" name="" wndclass="" id="" wndname="" />
+		<realwnd pos="0,0" size="120,120" name="" wndclass="" id="" wndname="" />
 		
 		<include src=""/>
 
