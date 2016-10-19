@@ -1159,6 +1159,15 @@ namespace SOUI
 		}
 	}
 
+	SStringT SRenderTarget_Skia::GetProp(LPCTSTR pszProp) const
+	{
+		if(_tcsicmp(pszProp,_T("antiAlias"))==0)
+		{
+			return SStringT().Format(_T("%d"),m_bAntiAlias?1:0);
+		}
+		return __super::GetProp(pszProp);
+	}
+
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
     static int s_cBmp = 0;
