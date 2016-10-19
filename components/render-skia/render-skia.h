@@ -326,6 +326,8 @@ namespace SOUI
 		virtual COLORREF SetPixel( int x, int y, COLORREF cr );
 
 		virtual void SetProps(const IPropBag * pProps);
+
+		virtual SStringT GetProp(LPCTSTR pszProp) const ;
     public:
         SkCanvas *GetCanvas(){return m_SkCanvas;}
 
