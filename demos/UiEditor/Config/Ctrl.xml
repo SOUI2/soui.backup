@@ -5,6 +5,11 @@
 		<!-- pos和size都不是必须的，设计器根据鼠标按下的位置设置pos -->
 		<!-- 控件的大小最好是8的倍数，方便对齐 -->
 
+		<animateimg pos="0,0" size="96,96" skin="_skin.sys.tree.checkbox" autostart="1"  speed = "100"/>
+
+		<button pos="0,0" size="96,32" colorText="#000000"
+		skin="_skin.sys.btn.normal">按钮</button> 
+
 		<caption pos="0,0" size="288, 32" show="1" font="adding:0">
 			<text pos="29,9">标题</text>
 			<imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
@@ -12,30 +17,26 @@
 			<imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
 			<imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
 		</caption>	
-		<icon pos="0,0" src="LOGO:16"/>
-		<text pos="0,0">文本</text>
-		<edit pos="0,0" size="96,24"  colorBkgnd="#FFFFFF" cueText="" colorText="#000000"/>
-		<button pos="0,0" size="96,32" colorText="#000000"
-		skin="_skin.sys.btn.normal">按钮</button> 
-		<imgbtn pos="0,0" size="96,32"  tip="" animate="1"/>
-
-		<toolbox pos="0,0" size="120,32"  skin="" icon=""
-                 text="toolbox" animate="1"
-                 class=""/>		
-		<radio pos="0,0" size="96,32" skin="_skin.sys.radio">单选框</radio>  	
+		<check pos="0,0" size="96,32" skin="_skin.sys.checkbox">复选框</check>  
 
 
-		<check pos="0,0" size="96,32" skin="_skin.sys.checkbox">复选框</check>  	
+		<div pos="0,0" size="120,120" >div控件</div>
+
+		<edit pos="0,0" size="96,24"  colorBkgnd="#FFFFFF" cueText="" colorText="#000000"/>		
+
+		<flash pos="0,0" size="200,200"  url="http://127.0.0.1:82/flash/apple.swf" delay="1"/>
+
 
 		<group pos="0,0" size="120,120" align="left">组合框</group>
 
-		<window pos="0,0" size="120,120">	
+		<hr pos="0,0" size="200,1" mode="horizontal" colorLine="#ffFFFF"/>		
 
-		</window>	
-		
-		<realwnd pos="0,0" size="120,120" name="" wndclass="" id="" wndname="" />
-		
-		<include src=""/>
+		<icon pos="0,0" src="LOGO:16"/>
+		<img pos="0,0" size="120,120"/>		
+		<imgbtn pos="0,0" size="96,32"  tip="" animate="1"/>	
+		<include src=""/>	
+
+		<link pos="0,0" size="200,24"  href="www.baidu.com"   cursor="hand" colorText="#FFFFFF" colorTextHover="rgb(231,155,64)" font="italic:1" fontHover="underline:1,italic:1" >点击进入百度</link>
 
 		<listbox pos="0,0" size="200,200" hotTrack="1"   itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20">
 			<items>
@@ -46,7 +47,58 @@
 				<item text="item5" icon="5" data="105" />
 				<item text="item6" icon="0" data="100" />
 			</items>
-		</listbox>
+		</listbox>		
+
+		<mediaplayer pos="0,0" size="200,200"  url="http://127.0.0.1:82/flash/apple.swf" delay="1"/>
+
+
+
+
+		<progress  pos="0,0" size="200,15" value="20" min="0" max="100" showPercent="1"/>
+
+
+
+
+		<text pos="0,0">文本</text>
+
+
+
+
+		<toolbox pos="0,0" size="120,32"  skin="" icon=""
+                 text="toolbox" animate="1"
+                 class=""/>		
+		<radio pos="0,0" size="96,32" skin="_skin.sys.radio">单选框</radio>  	
+
+		<realwnd pos="0,0" size="120,120" name="" wndclass="" id="" wndname="" />
+		
+		
+		<scrollbar size="200,16" min="0" max="100" value="10" page="10" vertical="0"/>
+		
+		<scrollview pos="0,0" size="200,200" viewSize="-1,-1"/>
+
+
+
+		<sliderbar size="100,20" thumbInRail="0"  alpha="200" width="200" value="20" min="0" max="100"/>
+
+
+		<splitcol  size="300,300" sepSize="6">
+			<pane idealSize="50" minSize="30" priority="1" clipClient="1">
+			</pane>
+			<pane idealSize="100" minSize="30" priority="0" clipClient="1">
+			</pane>
+			<pane idealSize="100" minSize="30" priority="1" clipClient="1">
+			</pane>
+		</splitcol>
+
+		<splitrow  size="300,300" sepSize="6">
+			<pane idealSize="50" minSize="30" priority="1" clipClient="1">
+			</pane>
+			<pane idealSize="100" minSize="30" priority="0" clipClient="1">
+			</pane>
+			<pane idealSize="100" minSize="30" priority="1" clipClient="1">
+			</pane>
+		</splitrow>
+
 
 		<tabctrl  pos="0,0" size="200,200"  tabAlign="left" tabSkin="" tabInterSize="2" tabWidth="70" tabHeight="30" colorText="#FFFFFF" focusable="0" show="1" curSel="0" >
 
@@ -55,6 +107,36 @@
 			<page title="页2" tip="提示2">
 			</page>
 		</tabctrl>  	
+
+		<toggle pos="0,0" />
+
+  <treectrl size="200,200"  itemHeight="30" checkBox="1" font="underline:1">
+    <item text="组织机构" img="0" selImg="1"  expand="1">
+      <item text="市场部" img="0" selImg="1">
+        <item text="南一区" img="2"/>
+        <item text="北二区" img="2"/>
+        <item text="西三区" img="2">
+          <item text="第一分队" img="0" selImg="1" expand="0">
+            <item text="张三组" img="2"/>
+            <item text="李四组" img="2"/>
+            <item text="王五组" img="2"/>
+          </item>
+        </item>
+      </item>
+    </item>
+    <item text="宣传部" img="0" selImg="1" expand="0">
+      <item text="南一区" img="2"/>
+      <item text="北二区" img="2"/>
+      <item text="西三区" img="2"/>
+    </item>
+  </treectrl>
+
+
+
+		<window pos="0,0" size="120,120">	
+
+		</window>	
+
 
 
 	</控件列表>
@@ -67,6 +149,10 @@
 		<group/>
 		<window/>
 		<page/>
+		
+		<div/>
+
+		<pane/>
 	</容器控件>
 </root>	
 
