@@ -1337,7 +1337,8 @@
 				<colorText/>	
 
 				<tabAlign style="proptext" name ="对齐方式(tabAlign)" value=""/>				
-				<tabSkin style="proptext" name ="tab皮肤(tabSkin)" value="" ButtonType="skin"/>				
+				<tabSkin style="proptext" name ="tab皮肤(tabSkin)" value="" ButtonType="skin"/>			
+				<iconSkin style="proptext" name ="iconSkin" value="" ButtonType="skin"/>						
 				<tabInterSize style="proptext" name ="tabInterSize" value=""/>				
 				<tabWidth style="proptext" name ="tab宽(tabWidth)" value=""/>				
 				<tabHeight style="proptext" name ="tab高(tabHeight)" value=""/>				
