@@ -12,7 +12,8 @@ purpose:	自定义皮肤对象
 #include <interface/SSkinobj-i.h>
 #include <unknown/obj-ref-impl.hpp>
 
-#include "SAniImgFrame.h"
+//#include "SAniImgFrame.h"
+#include "../controls.extend/gif/SAniImgFrame.h"
 
 namespace Gdiplus
 {
