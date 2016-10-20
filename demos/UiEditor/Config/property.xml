@@ -1,6 +1,6 @@
 <root>
 	<!--     ButtonType="skin"  该属性表示可以通过资源管理器选择资源
-   值：skin class font
+   值：skin class font 目前只实现了skin
 -->
 
 	<通用样式>
@@ -88,24 +88,6 @@
 	</通用样式>
 
 
-	<!--
-	1、加一个整形的propint,有最大和最小值限制
-	
-
-	
-1、选中控件的时候
-	1）创建Grid
-	2）把XML的值更新到Grid
-	
-2、移动控件的时候
-	1）更新XML的值
-	2）把XML的值更新到Grid
-	
-3、设置Grid的值的时候
-	1）把值更新到XML
-	2）Setattr	
--->
-
 	<属性列表>
 		<hostwnd>
 			<!--hostwnd这里为编辑器特殊处理，两个分组的顺序不要修改，分组里的节点顺序可以修改
@@ -190,6 +172,41 @@
 
 		</button>
 
+		<calendar>
+			<分组 name="基本属性:  calendar ">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+
+				<UiEdit_windowText/>					
+			</分组>
+			<分组 name="属性:  calendar">
+				<titleHeight style="proptext" name ="titleHeight" value=""/>	
+				<footerHeight style="proptext" name ="footerHeight" value=""/>	
+				<colorWeekend style="proptext" name ="colorWeekend" value=""/>	
+				<colorTitleBack style="proptext" name ="colorTitleBack" value=""/>	
+				<colorDay style="proptext" name ="colorDay" value=""/>	
+				<daySkin style="proptext" name ="daySkin" value="" ButtonType="skin"/>	
+				<titleSkin style="proptext" name ="titleSkin" value="" ButtonType="skin"/>	
+				<title-1 style="proptext" name ="title-1" value=""/>	
+				<title-2 style="proptext" name ="title-2" value=""/>	
+				<title-3 style="proptext" name ="title-3" value=""/>	
+				<title-4 style="proptext" name ="title-4" value=""/>	
+				<title-5 style="proptext" name ="title-5" value=""/>	
+				<title-6 style="proptext" name ="title-6" value=""/>	
+				<title-7 style="proptext" name ="title-7" value=""/>	
+			</分组>	
+
+		</calendar >			
+
 		<caption>
 			<分组 name="属性:  caption">
 				<id/>
@@ -224,6 +241,60 @@
 			</分组>
 		</check>	
 
+		<combobox >
+			<分组 name="基本属性:  combobox ">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+
+				<UiEdit_windowText/>					
+			</分组>
+			<分组 name="属性:  combobase">
+
+				<dropDown style="proptext" name ="dropDown" value=""/>	
+				<dropHeight style="proptext" name ="dropHeight" value=""/>	
+				<curSel style="proptext" name ="curSel" value=""/>	
+				<btnSkin style="proptext" name ="btnSkin" value="" ButtonType="skin"/>	
+				<animateTime style="proptext" name ="animateTime" value=""/>	
+			</分组>	
+
+		</combobox >		
+
+		<comboview >
+			<分组 name="基本属性:  comboview ">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+
+				<UiEdit_windowText/>					
+			</分组>
+			<分组 name="属性:  combobase">
+
+				<dropDown style="proptext" name ="dropDown" value=""/>	
+				<dropHeight style="proptext" name ="dropHeight" value=""/>	
+				<curSel style="proptext" name ="curSel" value=""/>	
+				<btnSkin style="proptext" name ="btnSkin" value="" ButtonType="skin"/>	
+				<animateTime style="proptext" name ="animateTime" value=""/>	
+			</分组>	
+
+		</comboview >	
+
 		<div>
 			<分组 name="属性:  div">
 				<id/>
@@ -241,7 +312,7 @@
 				<UiEdit_windowText/>					
 			</分组>
 			<分组 name="属性:  div">
-				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)" value=""/>	
+				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)" value="" ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" value=""/>	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" value=""/>	
 				<sbEnable style="proptext" name ="滚动条可用(sbEnable)" value=""/>	
@@ -257,10 +328,8 @@
 
 
 
-
-
 		<edit>
-			<分组 name="属性:  edit">
+			<分组 name="基本属性:  edit">
 				<id/>
 				<name/>
 				<skin/>
@@ -268,14 +337,113 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>			
+				<font/>		
 				<tip/>				
 				<colorBkgnd/>
-				<colorText/>			
-				<UiEdit_windowText/>	
-				<cueText style="proptext" name ="cueText(cueText)" value=""/>				
+				<!--<colorText/>-->
+
+				<UiEdit_windowText/>					
 			</分组>
-		</edit>	
+			<分组 name="属性:  div">
+				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)" value="" ButtonType="skin"/>	
+				<sbArrowSize style="proptext" name ="sbArrowSize" value=""/>	
+				<sbWid style="proptext" name ="滚动条宽度(sbWid)" value=""/>	
+				<sbEnable style="proptext" name ="滚动条可用(sbEnable)" value=""/>	
+				<updateInterval style="proptext" name ="updateInterval" value=""/>	
+				<scrollSpeed style="proptext" name ="滚动速度(scrollSpeed)" value=""/>	
+				<sbLeft style="proptext" name ="sbLeft" value=""/>	
+				<sbRight style="proptext" name ="sbRight" value=""/>	
+				<sbTop style="proptext" name ="sbTop" value=""/>	
+				<sbBottom style="proptext" name ="sbBottom" value=""/>	
+
+			</分组>
+
+			<分组 name="属性:  richedit">
+				<style style="proptext" name ="style" value=""/>	
+				<maxBuf style="proptext" name ="maxBuf" value=""/>	
+				<transparent style="proptext" name ="transparent" value=""/>	
+				<rich style="proptext" name ="rich" value=""/>	
+				<vertical style="proptext" name ="vertical" value=""/>	
+				<wordWrap style="proptext" name ="wordWrap" value=""/>	
+				<allowBeep style="proptext" name ="allowBeep" value=""/>	
+				<autoWordSel style="proptext" name ="autoWordSel" value=""/>	
+				<vcenter style="proptext" name ="vcenter" value=""/>	
+				<inset style="proptext" name ="inset" value=""/>	
+				<colorText style="proptext" name ="colorText" value=""/>	
+				<rtf style="proptext" name ="rtf" value=""/>	
+				<align style="proptext" name ="align" value=""/>	
+				<notifyChange style="proptext" name ="notifyChange" value=""/>	
+				<hscrollBar style="proptext" name ="hscrollBar" value=""/>	
+				<vscrollBar style="proptext" name ="vscrollBar" value=""/>	
+				<autoHscroll style="proptext" name ="autoHscroll" value=""/>	
+				<autoVscroll style="proptext" name ="autoVscroll" value=""/>	
+				<multiLines style="proptext" name ="multiLines" value=""/>	
+				<readOnly style="proptext" name ="readOnly" value=""/>	
+				<wantReturn style="proptext" name ="wantReturn" value=""/>	
+				<password style="proptext" name ="password" value=""/>	
+				<number style="proptext" name ="number" value=""/>	
+				<passwordChar style="proptext" name ="passwordChar" value=""/>	
+				<enableDragdrop style="proptext" name ="enableDragdrop" value=""/>	
+				<autoSel style="proptext" name ="autoSel" value=""/>					
+			</分组>		
+			<分组 name="属性:  edit">
+				<cueText style="proptext" name ="cueText(cueText)" value=""/>
+			</分组>	
+
+		</edit>		
+		
+		<editstyle>
+			<分组 name="基本属性:  editstyle">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+
+				<UiEdit_windowText/>					
+			</分组>
+			<分组 name="属性:  div">
+				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)" value="" ButtonType="skin"/>	
+				<sbArrowSize style="proptext" name ="sbArrowSize" value=""/>	
+				<sbWid style="proptext" name ="滚动条宽度(sbWid)" value=""/>	
+				<sbEnable style="proptext" name ="滚动条可用(sbEnable)" value=""/>	
+				<updateInterval style="proptext" name ="updateInterval" value=""/>	
+				<scrollSpeed style="proptext" name ="滚动速度(scrollSpeed)" value=""/>	
+				<sbLeft style="proptext" name ="sbLeft" value=""/>	
+				<sbRight style="proptext" name ="sbRight" value=""/>	
+				<sbTop style="proptext" name ="sbTop" value=""/>	
+				<sbBottom style="proptext" name ="sbBottom" value=""/>	
+
+			</分组>
+
+			<分组 name="属性:  richedit">
+				<style style="proptext" name ="style" value=""/>	
+				<maxBuf style="proptext" name ="maxBuf" value=""/>	
+				<transparent style="proptext" name ="transparent" value=""/>	
+				<rich style="proptext" name ="rich" value=""/>	
+				<vertical style="proptext" name ="vertical" value=""/>	
+				<wordWrap style="proptext" name ="wordWrap" value=""/>	
+				<allowBeep style="proptext" name ="allowBeep" value=""/>	
+				<autoWordSel style="proptext" name ="autoWordSel" value=""/>	
+				<vcenter style="proptext" name ="vcenter" value=""/>	
+				<inset style="proptext" name ="inset" value=""/>	
+				<colorText style="proptext" name ="colorText" value=""/>	
+				<rtf style="proptext" name ="rtf" value=""/>	
+				<colorText style="proptext" name ="colorText" value=""/>	
+				<align style="proptext" name ="align" value=""/>	
+				<notifyChange style="proptext" name ="notifyChange" value=""/>	
+			</分组>		
+			<分组 name="属性:  edit">
+				<cueText style="proptext" name ="cueText(cueText)" value=""/>
+			</分组>	
+		</editstyle>		
+		
 
 
 		<flash>
@@ -318,6 +486,62 @@
 				<UiEdit_windowText/>				
 			</分组>
 		</group>	
+
+
+
+		<header>
+			<分组 name="基本属性:  header ">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+
+				<UiEdit_windowText/>					
+			</分组>
+			<分组 name="属性:  header">
+
+				<itemSkin style="proptext" name ="itemSkin" value="" ButtonType="skin"/>	
+				<sortSkin style="proptext" name ="sortSkin" value="" ButtonType="skin"/>	
+				<fixWidth style="proptext" name ="fixWidth" value=""/>	
+				<itemSwapEnable style="proptext" name ="itemSwapEnable" value=""/>	
+				<sortHeader style="proptext" name ="sortHeader" value=""/>	
+			</分组>	
+
+		</header >			
+
+
+		<hotkey>
+			<分组 name="基本属性:  hotkey">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+
+				<UiEdit_windowText/>					
+			</分组>
+			<分组 name="属性:  hotkey">
+
+				<invalidComb style="proptext" name ="invalidComb" value=""/>	
+				<defCombKey style="proptext" name ="defCombKey" value=""/>	
+				<combKey style="proptext" name ="combKey" value=""/>	
+				<hotKey style="proptext" name ="hotKey" value=""/>	
+			</分组>
+
+		</hotkey>				
 
 		<hr>
 			<分组 name="基本属性:  hr">
@@ -438,7 +662,103 @@
 				<colorItemSelBkgnd style="proptext" name ="选中背景色(colorItemSelBkgnd)" value=""/>	
 				<text-x style="proptext" name ="text-x(text-x)" value=""/>				
 			</分组>
-		</listbox>		
+		</listbox>	
+
+
+		<listctrl>
+			<分组 name="基本属性:  listctrl">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+
+				<UiEdit_windowText/>					
+			</分组>
+			<分组 name="属性:  div">
+				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)" value="" ButtonType="skin"/>	
+				<sbArrowSize style="proptext" name ="sbArrowSize" value=""/>	
+				<sbWid style="proptext" name ="滚动条宽度(sbWid)" value=""/>	
+				<sbEnable style="proptext" name ="滚动条可用(sbEnable)" value=""/>	
+				<updateInterval style="proptext" name ="updateInterval" value=""/>	
+				<scrollSpeed style="proptext" name ="滚动速度(scrollSpeed)" value=""/>	
+				<sbLeft style="proptext" name ="sbLeft" value=""/>	
+				<sbRight style="proptext" name ="sbRight" value=""/>	
+				<sbTop style="proptext" name ="sbTop" value=""/>	
+				<sbBottom style="proptext" name ="sbBottom" value=""/>	
+
+			</分组>
+
+			<分组 name="属性:  listctrl">
+				<headerHeight style="proptext" name ="headerHeight" value=""/>	
+				<itemHeight style="proptext" name ="itemHeight" value=""/>	
+				<checkBox style="proptext" name ="checkBox" value=""/>	
+				<multiSelection style="proptext" name ="multiSelection" value=""/>	
+				<itemSkin style="proptext" name ="itemSkin" value="" ButtonType="skin"/>	
+				<iconSkin style="proptext" name ="iconSkin" value="" ButtonType="skin"/>	
+				<checkSkin style="proptext" name ="checkSkin" value="" ButtonType="skin"/>	
+				<colorItemBkgnd style="proptext" name ="colorItemBkgnd" value=""/>	
+				<colorItemBkgnd2 style="proptext" name ="colorItemBkgnd2" value=""/>	
+				<colorItemHotBkgnd style="proptext" name ="colorItemHotBkgnd" value=""/>	
+				<colorItemSelBkgnd style="proptext" name ="colorItemSelBkgnd" value=""/>	
+				<colorText style="proptext" name ="colorText" value=""/>
+				<colorSelText style="proptext" name ="colorSelText" value=""/>
+				<icon-x style="proptext" name ="icon-x" value=""/>
+				<icon-y style="proptext" name ="icon-y" value=""/>
+				<text-x style="proptext" name ="text-x" value=""/>
+				<text-y style="proptext" name ="text-y" value=""/>
+				<hotTrack style="proptext" name ="hotTrack" value=""/>
+
+			</分组>			
+		</listctrl>		
+
+
+		<listview>
+			<分组 name="属性:  listview">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+
+				<UiEdit_windowText/>					
+			</分组>
+			<分组 name="属性:  div">
+				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)" value="" ButtonType="skin"/>	
+				<sbArrowSize style="proptext" name ="sbArrowSize" value=""/>	
+				<sbWid style="proptext" name ="滚动条宽度(sbWid)" value=""/>	
+				<sbEnable style="proptext" name ="滚动条可用(sbEnable)" value=""/>	
+				<updateInterval style="proptext" name ="updateInterval" value=""/>	
+				<scrollSpeed style="proptext" name ="滚动速度(scrollSpeed)" value=""/>	
+				<sbLeft style="proptext" name ="sbLeft" value=""/>	
+				<sbRight style="proptext" name ="sbRight" value=""/>	
+				<sbTop style="proptext" name ="sbTop" value=""/>	
+				<sbBottom style="proptext" name ="sbBottom" value=""/>	
+
+			</分组>
+
+			<分组 name="属性:  listview">
+				<dividerSkin style="proptext" name ="dividerSkin" value="" ButtonType="skin"/>	
+				<dividerSize style="proptext" name ="dividerSize" value=""/>	
+				<wantTab style="proptext" name ="wantTab" value=""/>	
+
+			</分组>			
+		</listview>		
+
+
+
 
 		<mediaplayer>
 			<分组 name="属性:  mediaplayer">
@@ -462,6 +782,71 @@
 			</分组>			
 		</mediaplayer>	
 
+		<richedit>
+			<分组 name="基本属性:  richedit">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<!--<colorText/>-->
+
+				<UiEdit_windowText/>					
+			</分组>
+			<分组 name="属性:  div">
+				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)" value="" ButtonType="skin"/>	
+				<sbArrowSize style="proptext" name ="sbArrowSize" value=""/>	
+				<sbWid style="proptext" name ="滚动条宽度(sbWid)" value=""/>	
+				<sbEnable style="proptext" name ="滚动条可用(sbEnable)" value=""/>	
+				<updateInterval style="proptext" name ="updateInterval" value=""/>	
+				<scrollSpeed style="proptext" name ="滚动速度(scrollSpeed)" value=""/>	
+				<sbLeft style="proptext" name ="sbLeft" value=""/>	
+				<sbRight style="proptext" name ="sbRight" value=""/>	
+				<sbTop style="proptext" name ="sbTop" value=""/>	
+				<sbBottom style="proptext" name ="sbBottom" value=""/>	
+
+			</分组>
+
+			<分组 name="属性:  richedit">
+				<style style="proptext" name ="style" value=""/>	
+				<maxBuf style="proptext" name ="maxBuf" value=""/>	
+				<transparent style="proptext" name ="transparent" value=""/>	
+				<rich style="proptext" name ="rich" value=""/>	
+				<vertical style="proptext" name ="vertical" value=""/>	
+				<wordWrap style="proptext" name ="wordWrap" value=""/>	
+				<allowBeep style="proptext" name ="allowBeep" value=""/>	
+				<autoWordSel style="proptext" name ="autoWordSel" value=""/>	
+				<vcenter style="proptext" name ="vcenter" value=""/>	
+				<inset style="proptext" name ="inset" value=""/>	
+				<colorText style="proptext" name ="colorText" value=""/>	
+				<rtf style="proptext" name ="rtf" value=""/>	
+				<align style="proptext" name ="align" value=""/>	
+				<notifyChange style="proptext" name ="notifyChange" value=""/>	
+				<hscrollBar style="proptext" name ="hscrollBar" value=""/>	
+				<vscrollBar style="proptext" name ="vscrollBar" value=""/>	
+				<autoHscroll style="proptext" name ="autoHscroll" value=""/>	
+				<autoVscroll style="proptext" name ="autoVscroll" value=""/>	
+				<multiLines style="proptext" name ="multiLines" value=""/>	
+				<readOnly style="proptext" name ="readOnly" value=""/>	
+				<wantReturn style="proptext" name ="wantReturn" value=""/>	
+				<password style="proptext" name ="password" value=""/>	
+				<number style="proptext" name ="number" value=""/>	
+				<passwordChar style="proptext" name ="passwordChar" value=""/>	
+				<enableDragdrop style="proptext" name ="enableDragdrop" value=""/>	
+				<autoSel style="proptext" name ="autoSel" value=""/>	
+				
+				
+				              
+			</分组>			
+		</richedit>			
+
+
+
 
 		<sliderbar>
 			<分组 name="基本属性:  sliderbar">
@@ -477,8 +862,8 @@
 				<colorBkgnd/>		
 			</分组>
 			<分组 name="属性:  progress">
-				<bkgndSkin style="proptext" name ="bkgndSkin" value=""/>
-				<posSkin style="proptext" name ="posSkin" value=""/>
+				<bkgndSkin style="proptext" name ="bkgndSkin" value="" ButtonType="skin"/>
+				<posSkin style="proptext" name ="posSkin" value="" ButtonType="skin"/>
 				<min style="proptext" name ="min" value=""/>
 				<max style="proptext" name ="max" value=""/>
 				<value style="proptext" name ="value" value=""/>
@@ -488,7 +873,7 @@
 			</分组>		
 
 			<分组 name="属性:  sliderbar">
-				<thumbSkin style="proptext" name ="thumbSkin" value=""/>
+				<thumbSkin style="proptext" name ="thumbSkin" value="" ButtonType="skin"/>
 				<thumbInRail style="proptext" name ="thumbInRail" value=""/>
 
 			</分组>				
@@ -514,7 +899,7 @@
 
 			<分组 name="属性:  splitwnd">			
 				<sepSize style="proptext" name ="sepSize" value=""/>	
-				<sepSkin style="proptext" name ="sepSkin" value=""/>	
+				<sepSkin style="proptext" name ="sepSkin" value="" ButtonType="skin"/>	
 				<adjustable style="proptext" name ="adjustable" value=""/>	
 				<vertical style="proptext" name ="vertical" value=""/>				
 			</分组>			
@@ -539,7 +924,7 @@
 
 			<分组 name="属性:  splitcol">			
 				<sepSize style="proptext" name ="sepSize" value=""/>	
-				<sepSkin style="proptext" name ="sepSkin" value=""/>	
+				<sepSkin style="proptext" name ="sepSkin" value="" ButtonType="skin"/>	
 				<adjustable style="proptext" name ="adjustable" value=""/>			
 			</分组>			
 		</splitcol>	
@@ -563,7 +948,7 @@
 
 			<分组 name="属性:  splitrow">			
 				<sepSize style="proptext" name ="sepSize" value=""/>	
-				<sepSkin style="proptext" name ="sepSkin" value=""/>	
+				<sepSkin style="proptext" name ="sepSkin" value="" ButtonType="skin"/>	
 				<adjustable style="proptext" name ="adjustable" value=""/>			
 			</分组>			
 		</splitrow>			
@@ -607,8 +992,8 @@
 				<colorBkgnd/>		
 			</分组>
 			<分组 name="属性:  progress">
-				<bkgndSkin style="proptext" name ="bkgndSkin" value=""/>
-				<posSkin style="proptext" name ="posSkin" value=""/>
+				<bkgndSkin style="proptext" name ="bkgndSkin" value="" ButtonType="skin"/>
+				<posSkin style="proptext" name ="posSkin" value="" ButtonType="skin"/>
 				<min style="proptext" name ="min" value=""/>
 				<max style="proptext" name ="max" value=""/>
 				<value style="proptext" name ="value" value=""/>
@@ -635,7 +1020,7 @@
 				<UiEdit_windowText/>					
 			</分组>
 			<分组 name="属性:  scrollview">
-				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)" value=""/>	
+				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)" value="" ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" value=""/>	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" value=""/>	
 				<sbEnable style="proptext" name ="滚动条可用(sbEnable)" value=""/>	
@@ -653,7 +1038,43 @@
 				<viewSize style="proptext" name ="viewSize" value=""/>	          
 
 			</分组>			
-		</scrollview>				
+		</scrollview>	
+
+		<tileview>
+			<分组 name="属性:  tileview">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+
+				<UiEdit_windowText/>					
+			</分组>
+			<分组 name="属性:  div">
+				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)" value="" ButtonType="skin"/>	
+				<sbArrowSize style="proptext" name ="sbArrowSize" value=""/>	
+				<sbWid style="proptext" name ="滚动条宽度(sbWid)" value=""/>	
+				<sbEnable style="proptext" name ="滚动条可用(sbEnable)" value=""/>	
+				<updateInterval style="proptext" name ="updateInterval" value=""/>	
+				<scrollSpeed style="proptext" name ="滚动速度(scrollSpeed)" value=""/>	
+				<sbLeft style="proptext" name ="sbLeft" value=""/>	
+				<sbRight style="proptext" name ="sbRight" value=""/>	
+				<sbTop style="proptext" name ="sbTop" value=""/>	
+				<sbBottom style="proptext" name ="sbBottom" value=""/>	
+
+			</分组>
+
+			<分组 name="属性:  tileview">
+				<marginSize style="proptext" name ="marginSize" value=""/>	
+				<wantTab style="proptext" name ="wantTab" value=""/>	
+			</分组>			
+		</tileview>				
 
 		<toggle>
 			<分组 name="基本属性:  toggle">
@@ -716,7 +1137,7 @@
 				<UiEdit_windowText/>					
 			</分组>
 			<分组 name="属性:  scrollview">
-				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)" value=""/>	
+				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)" value="" ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" value=""/>	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" value=""/>	
 				<sbEnable style="proptext" name ="滚动条可用(sbEnable)" value=""/>	
@@ -734,18 +1155,56 @@
 				<itemMargin style="proptext" name ="itemMargin" value=""/>	
 				<checkBox style="proptext" name ="checkBox" value=""/>	
 				<rightClickSel style="proptext" name ="rightClickSel" value=""/>	
-				<itemBkgndSkin style="proptext" name ="itemBkgndSkin" value=""/>	
-				<itemSelSkin style="proptext" name ="itemSelSkin" value=""/>	
-				<toggleSkin style="proptext" name ="toggleSkin" value=""/>	
-				<iconSkin style="proptext" name ="iconSkin" value=""/>	
-				<checkSkin style="proptext" name ="checkSkin" value=""/>	
+				<itemBkgndSkin style="proptext" name ="itemBkgndSkin" value="" ButtonType="skin"/>	
+				<itemSelSkin style="proptext" name ="itemSelSkin" value="" ButtonType="skin"/>	
+				<toggleSkin style="proptext" name ="toggleSkin" value="" ButtonType="skin"/>	
+				<iconSkin style="proptext" name ="iconSkin" value="" ButtonType="skin"/>	
+				<checkSkin style="proptext" name ="checkSkin" value="" ButtonType="skin"/>	
 				<colorItemBkgnd style="proptext" name ="colorItemBkgnd" value=""/>	
 				<colorItemSelBkgnd style="proptext" name ="colorItemSelBkgnd" value=""/>	
 				<colorItemText style="proptext" name ="colorItemText" value=""/>	
 				<colorItemSelText style="proptext" name ="colorItemSelText" value=""/>	
 
 			</分组>			
-		</treectrl>			
+		</treectrl>	
+
+
+		<treeview>
+			<分组 name="属性:  treeview">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+
+				<UiEdit_windowText/>					
+			</分组>
+			<分组 name="属性:  div">
+				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)" value="" ButtonType="skin"/>	
+				<sbArrowSize style="proptext" name ="sbArrowSize" value=""/>	
+				<sbWid style="proptext" name ="滚动条宽度(sbWid)" value=""/>	
+				<sbEnable style="proptext" name ="滚动条可用(sbEnable)" value=""/>	
+				<updateInterval style="proptext" name ="updateInterval" value=""/>	
+				<scrollSpeed style="proptext" name ="滚动速度(scrollSpeed)" value=""/>	
+				<sbLeft style="proptext" name ="sbLeft" value=""/>	
+				<sbRight style="proptext" name ="sbRight" value=""/>	
+				<sbTop style="proptext" name ="sbTop" value=""/>	
+				<sbBottom style="proptext" name ="sbBottom" value=""/>	
+
+			</分组>
+
+			<分组 name="属性:  treeview">
+				<indent style="proptext" name ="indent" value=""/>	
+				<wantTab style="proptext" name ="wantTab" value=""/>	
+
+			</分组>			
+		</treeview>				
 
 
 
