@@ -7,6 +7,7 @@ TARGET = log4z
 
 !LIB_ALL:!COM_LIB{
 	RC_FILE += log4z.rc
+	CONFIG += dll
 }
 else{
 	CONFIG += staticlib

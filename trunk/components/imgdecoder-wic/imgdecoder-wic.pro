@@ -7,6 +7,7 @@ TARGET = imgdecoder-wic
 
 !LIB_ALL:!COM_LIB{
 	RC_FILE += imgdecoder-wic.rc
+	CONFIG += dll
 }
 else{
 	CONFIG += staticlib

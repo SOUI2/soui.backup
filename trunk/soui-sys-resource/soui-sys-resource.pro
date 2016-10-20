@@ -4,6 +4,7 @@
 
 TEMPLATE = lib
 TARGET = soui-sys-resource
+CONFIG += dll
 
 dir = ..
 include($$dir/common.pri)

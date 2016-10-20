@@ -7,6 +7,7 @@ TARGET = scriptmodule-lua
 
 !LIB_ALL:!COM_LIB{
 	RC_FILE += src/ScriptModule-Lua.rc
+	CONFIG += dll
 }
 else{
 	CONFIG += staticlib

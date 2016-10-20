@@ -7,6 +7,7 @@ TARGET =  resprovider-zip
 
 !LIB_ALL:!COM_LIB{
 	RC_FILE += ResProvider-Zip.rc
+	CONFIG += dll
 }
 else{
 	CONFIG += staticlib

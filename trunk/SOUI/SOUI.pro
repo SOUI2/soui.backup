@@ -8,6 +8,7 @@ TARGET = soui
 !LIB_ALL:!LIB_CORE{
     DEFINES += SOUI_EXPORTS
 	RC_FILE += soui.rc
+	CONFIG += dll
 }
 else{
     CONFIG += staticlib

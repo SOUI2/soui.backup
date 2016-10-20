@@ -7,6 +7,7 @@ TARGET = render-gdi
 
 !LIB_ALL:!COM_LIB{
 	RC_FILE += render-gdi.rc
+	CONFIG += dll
 }
 else{
 	CONFIG += staticlib

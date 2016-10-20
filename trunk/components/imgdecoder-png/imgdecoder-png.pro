@@ -7,6 +7,7 @@ TARGET = imgdecoder-png
 
 !LIB_ALL:!COM_LIB{
 	RC_FILE += imgdecoder-png.rc
+	CONFIG += dll
 }
 else{
 	CONFIG += staticlib

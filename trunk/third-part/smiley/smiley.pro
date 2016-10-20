@@ -13,8 +13,6 @@ CONFIG += staticlib
 dir = ../..
 include($$dir/common.pri)
 
-CONFIG += staticlib
-
 # Input
 HEADERS += ../controls.extend/smiley/SSmileyCtrl.h
 SOURCES += SSmileyCtrl.cpp

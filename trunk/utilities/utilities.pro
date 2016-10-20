@@ -13,6 +13,7 @@ include($$dir/common.pri)
 !LIB_ALL:!LIB_CORE{
 	DEFINES += UTILITIES_EXPORTS
 	RC_FILE += utilities.rc
+	CONFIG += dll
 }
 else{
     CONFIG += staticlib

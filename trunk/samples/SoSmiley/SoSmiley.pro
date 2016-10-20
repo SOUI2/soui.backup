@@ -5,6 +5,7 @@
 TEMPLATE = lib
 TARGET = SoSmiley
 INCLUDEPATH += .
+CONFIG += dll
 
 dir = ..
 include($$dir/common.pri)
