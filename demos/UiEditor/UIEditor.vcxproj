@@ -105,6 +105,9 @@
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\controls.extend\gif\SGifPlayer.cpp" />
+    <ClCompile Include="..\..\controls.extend\gif\SSkinAPNG.cpp" />
+    <ClCompile Include="..\..\controls.extend\gif\SSkinGif.cpp" />
     <ClCompile Include="..\..\controls.extend\image3d\3dlib.cpp" />
     <ClCompile Include="..\..\controls.extend\image3d\3dmatrix.cpp" />
     <ClCompile Include="..\..\controls.extend\image3d\3dtransform.cpp" />
@@ -165,6 +168,10 @@
     <ResourceCompile Include="UIEditor.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\controls.extend\gif\SAniImgFrame.h" />
+    <ClInclude Include="..\..\controls.extend\gif\SGifPlayer.h" />
+    <ClInclude Include="..\..\controls.extend\gif\SSkinAPNG.h" />
+    <ClInclude Include="..\..\controls.extend\gif\SSkinGif.h" />
     <ClInclude Include="..\..\controls.extend\image3d\3dlib.h" />
     <ClInclude Include="..\..\controls.extend\image3d\3dmatrix.h" />
     <ClInclude Include="..\..\controls.extend\image3d\3dTransform.h" />
