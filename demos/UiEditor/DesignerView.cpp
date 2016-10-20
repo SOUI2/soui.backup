@@ -467,6 +467,8 @@ void SDesignerView::RemoveWndName(pugi::xml_node xmlNode)
 		attr = NodeChild.attribute(L"uidesiner_name",false);
 		attr1 = NodeChild.attribute(L"name", false);
 
+
+
 		SMap<SStringT, SStringT>::CPair *p = m_mapInclude.Lookup(attr1.value());
 		
 
@@ -504,7 +506,30 @@ void SDesignerView::RemoveWndName(pugi::xml_node xmlNode)
 
 			}
 
-			RemoveWndName(NodeChild);
+
+			//spinButton_微调按钮
+			if (_wcsicmp(NodeChild.name(),L"edit")==0)
+			{
+				if (NodeChild.next_sibling() && _wcsicmp(NodeChild.next_sibling().name(),L"spinButton")==0 )
+				{
+
+					RemoveWndName(NodeChild);
+
+					NodeChild.next_sibling().attribute(_T("buddy")).set_value(NodeChild.attribute(_T("name")).value());
+
+					NodeChild = NodeChild.next_sibling();
+
+					continue;
+
+				}
+			}
+
+			if (_wcsicmp(NodeChild.name(),L"spinButton")!=0)
+			{
+
+				RemoveWndName(NodeChild);
+			}
+
 
 			NodeChild = NodeChild.next_sibling();
 		}
@@ -546,6 +571,26 @@ void SDesignerView::RenameChildeWnd(pugi::xml_node xmlNode, BOOL force)
 
 		}
 
+		//spinButton_微调按钮
+		if(_wcsicmp(NodeChild.name(),L"edit")==0)
+		{
+			if (NodeChild.next_sibling() && _wcsicmp(NodeChild.next_sibling().name(),L"spinButton")==0 )
+			{
+
+				RenameWnd(NodeChild);
+
+				NodeChild.next_sibling().attribute(_T("buddy")).set_value(NodeChild.attribute(_T("name")).value());
+
+				NodeChild = NodeChild.next_sibling();
+
+				continue;
+
+			}
+
+		}
+
+
+
 
 		////判断NodeChild.name()类型的控件是否注册
   //      if (!static_cast<SWindowFactoryMgr*>(SApplication::getSingletonPtr())->HasKey(NodeChild.name()))
@@ -560,8 +605,12 @@ void SDesignerView::RenameChildeWnd(pugi::xml_node xmlNode, BOOL force)
 		//  <button name = "sdfasf_asdf_sdfmij_dfwef" uidesiner_name = "XXX"/> 
 		RenameWnd(NodeChild);
 
+		if (_wcsicmp(NodeChild.name(),L"spinButton")!=0)
+		{
+					RenameChildeWnd(NodeChild);
+		}
 
-		RenameChildeWnd(NodeChild);
+
 
 		NodeChild = NodeChild.next_sibling();
 	}
@@ -1552,7 +1601,13 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* pSciWnd)//从代码编辑器获取x
 		return;
 	}
 
-	RenameChildeWnd(doc.root());
+	if (m_xmlNode != m_CurrentLayoutNode && _wcsicmp(m_xmlNode.parent().name(), _T("spinButton")) == 0)
+	{
+
+	}else
+	{
+		RenameChildeWnd(doc.root());
+	}
 
 
 	BOOL bRoot = FALSE;
@@ -1621,7 +1676,7 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 {
 	BOOL bIsInclude = FALSE;
 
-	m_xmlNode = m_xmlSelCtrlNode;
+	m_xmlNode = m_xmlSelCtrlNode.first_child();
 
 	//替换Include
 	if(_wcsicmp(m_xmlNode.name(),L"include")==0 && m_xmlNode.attribute(L"src"))
