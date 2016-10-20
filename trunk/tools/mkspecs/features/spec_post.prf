@@ -13,14 +13,12 @@ isEmpty(QMAKE_PLATFORM) {
             else: \
                 TARGET_PLATFORM = unix
         } else:if(equals(MAKEFILE_GENERATOR, MSVC.NET) \
-                 |equals(MAKEFILE_GENERATOR, BMAKE) \
                  |equals(MAKEFILE_GENERATOR, MSBUILD) \
                  |equals(MAKEFILE_GENERATOR, MINGW)) {
             TARGET_PLATFORM = win32
         } else:if(equals(MAKEFILE_GENERATOR, PROJECTBUILDER) \
                  |equals(MAKEFILE_GENERATOR, XCODE)) {
-        } else:equals(MAKEFILE_GENERATOR, GBUILD) {
-            TARGET_PLATFORM = unix
+            TARGET_PLATFORM = macx
         } else {
             error("Qmake spec sets an invalid MAKEFILE_GENERATOR.")
         }
@@ -56,3 +54,64 @@ isEmpty(QMAKE_COMPILER) {
     warning("qmake spec does not announce the compiler family. Guessed $${QMAKE_COMPILER}.")
 }
 CONFIG += $$QMAKE_COMPILER
+
+equals(MAKEFILE_GENERATOR, MSBUILD) \
+|equals(MAKEFILE_GENERATOR, MSVC.NET) \
+|isEmpty(QMAKE_SH) {
+    QMAKE_ZIP               = zip -r -9
+
+    QMAKE_COPY              = copy /y
+    QMAKE_COPY_FILE         = $$QMAKE_COPY
+    QMAKE_COPY_DIR          = xcopy /s /q /y /i
+    # xcopy copies the contained files if source is a directory. Deal with it.
+    CONFIG                 += copy_dir_files
+    QMAKE_MOVE              = move
+    QMAKE_DEL_FILE          = del
+    QMAKE_DEL_DIR           = rmdir
+    QMAKE_DEL_TREE          = rmdir /s /q
+    QMAKE_CHK_EXISTS        = if not exist %1
+    QMAKE_CHK_DIR_EXISTS    = if not exist   # legacy
+    QMAKE_MKDIR             = mkdir          # legacy
+    QMAKE_MKDIR_CMD         = if not exist %1 mkdir %1 & if not exist %1 exit 1
+    QMAKE_STREAM_EDITOR     = $(QMAKE) -install sed
+    QMAKE_INSTALL_FILE      = copy /y
+    QMAKE_INSTALL_PROGRAM   = copy /y
+} else {
+    QMAKE_TAR               = tar -cf
+    QMAKE_GZIP              = gzip -9f
+
+    QMAKE_COPY              = cp -f
+    QMAKE_COPY_FILE         = $$QMAKE_COPY
+    QMAKE_COPY_DIR          = $$QMAKE_COPY -R
+    QMAKE_MOVE              = mv -f
+    QMAKE_DEL_FILE          = rm -f
+    QMAKE_DEL_DIR           = rmdir
+    QMAKE_DEL_TREE          = rm -rf
+    QMAKE_CHK_EXISTS        = test -e %1 ||
+    QMAKE_CHK_DIR_EXISTS    = test -d    # legacy
+    QMAKE_MKDIR             = mkdir -p   # legacy
+    QMAKE_MKDIR_CMD         = test -d %1 || mkdir -p %1
+    QMAKE_STREAM_EDITOR     = sed
+
+    equals(QMAKE_HOST.os, Windows) {
+        MINGW_IN_SHELL = 1   # legacy
+        # Override built-ins.
+        QMAKE_DIR_SEP = /
+        QMAKE_DIRLIST_SEP = :
+        # Because install's ability to set permissions is not relevant on Windows,
+        # and git's msys does not provide it to start with.
+        QMAKE_INSTALL_FILE      = cp -f
+        QMAKE_INSTALL_PROGRAM   = cp -f
+    } else {
+        QMAKE_INSTALL_FILE      = install -m 644 -p
+        QMAKE_INSTALL_PROGRAM   = install -m 755 -p
+    }
+}
+QMAKE_INSTALL_DIR = $$QMAKE_COPY_DIR
+equals(QMAKE_HOST.os, Windows) {
+    QMAKE_SYMBOLIC_LINK     = $(QMAKE) -install ln -f -s
+    QMAKE_LN_SHLIB          = $(QMAKE) -install ln -s
+} else {
+    QMAKE_SYMBOLIC_LINK     = ln -f -s
+    QMAKE_LN_SHLIB          = ln -s
+}
