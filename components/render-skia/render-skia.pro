@@ -6,6 +6,7 @@ TARGET = render-skia
 
 !LIB_ALL:!COM_LIB{
 	RC_FILE += render-skia.rc
+	CONFIG += dll
 }
 else{
 	CONFIG += staticlib

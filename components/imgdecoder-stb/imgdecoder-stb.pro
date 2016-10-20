@@ -7,6 +7,7 @@ TARGET = imgdecoder-stb
 
 !LIB_ALL:!COM_LIB{
 	RC_FILE += imgdecoder-stb.rc
+	CONFIG += dll
 }
 else{
 	CONFIG += staticlib
