@@ -14,12 +14,22 @@ file(GLOB_RECURSE CURRENT_SRCS  *.cpp)
 file(GLOB_RECURSE CURRENT_SOUIS  *.xml *.idx *.ico)
 file(GLOB_RECURSE CURRENT_RC *.rc *.rc2)
 
+set(EXTENDCOTROLS ${EXTENDCOTROLS}
+	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinGif.h
+	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinAPNG.h
+)
+set(EXTENDCOTROLS ${EXTENDCOTROLS}
+	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinGif.cpp
+	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinAPNG.cpp
+)
+
+source_group("Extend Cotrols" FILES ${EXTENDCOTROLS})
 source_group("Header Files" FILES ${CURRENT_HEADERS})
 source_group("Source Files" FILES ${CURRENT_SRCS})
 source_group("SoUI Resouece" FILES ${CURRENT_SOUIS})
 source_group("Resource Files" FILES ${CURRENT_RC})
 
-add_executable(UiEditor WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
+add_executable(UiEditor WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC} ${EXTENDCOTROLS})
 
 target_link_libraries(UiEditor utilities soui)
 
