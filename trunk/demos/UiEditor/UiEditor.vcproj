@@ -349,6 +349,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\controls.extend\gif\SSkinAPNG.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\controls.extend\gif\SSkinGif.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\extend.skins\SSkinMutiFrameImg.cpp"
 				>
 			</File>
