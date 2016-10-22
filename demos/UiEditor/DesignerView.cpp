@@ -8,6 +8,8 @@
 #include "core/SWnd.h"
 #include "MainDlg.h"
 
+#define  MARGIN 20
+
 BOOL SDesignerView::NewLayout(SStringT strResName, SStringT strPath)
 {
 	SStringT strShortPath = strPath.Mid(m_strProPath.GetLength() + 1);
@@ -183,12 +185,42 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 	
 	if (!bIsInclude)
 	{
+		int nWidth, nHeight;
+		SStringT strSize(_T("size"));
+		SStringT strWidth(_T("width"));
+		SStringT strHeight(_T("height"));
+		SStringT strMargin(_T("margin"));
+		BOOL bHasSize = FALSE;
+
 		pugi::xml_attribute attr = m_CurrentLayoutNode.first_attribute();
 		while (attr)
 		{
-			s1.Format(L" %s=\"%s\" ", attr.name(), attr.value());
-			s2 = s2 + s1;
+			// width height单独处理，解决margin的问题
+			if (strSize.CompareNoCase(attr.name()) == 0)
+			{
+				//size属性
+				SStringT strVal = attr.value();
+				swscanf(strVal,L"%d,%d",&nWidth,&nHeight);
 
+				bHasSize = TRUE;
+			}else if (strWidth.CompareNoCase(attr.name()) == 0)
+			{     
+				//width属性
+				::StrToIntExW(attr.value(),STIF_SUPPORT_HEX,&nWidth);               
+			}else if (strHeight.CompareNoCase(attr.name()) == 0)
+			{  
+				//height属性
+				::StrToIntExW(attr.value(),STIF_SUPPORT_HEX,&nHeight);
+			}else if (strMargin.CompareNoCase(attr.name()) == 0)
+			{  
+				//忽略margin属性
+
+			}else
+			{
+				s1.Format(L" %s=\"%s\" ", attr.name(), attr.value());
+				s2 = s2 + s1;
+
+			}
 			attr = attr.next_attribute();
 		}
 
@@ -201,11 +233,67 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 			attr = attr.next_attribute();
 		}
 
-		s2 = L"<window pos=\"20,20\" " +  s2 + L"></window>";
+		SStringW strAttrSize;
+		strAttrSize.Format(L" margin= \"%d\" width = \"%d\" height = \"%d\" ", MARGIN, nWidth + MARGIN * 2, nHeight + MARGIN * 2);
+
+		s2 = L"<window pos=\"20,20\" " +  s2 + strAttrSize + L"></window>";
+
+
+		//删除size 改成width height
+		if (bHasSize)
+		{
+			m_CurrentLayoutNode.remove_attribute(_T("size"));
+
+			pugi::xml_attribute attrWorH = m_CurrentLayoutNode.attribute(_T("width"));
+
+			if (attrWorH)
+			{
+				attrWorH.set_value(nWidth);
+			}
+
+			attrWorH = m_CurrentLayoutNode.attribute(_T("height"));
+
+			if (attrWorH)
+			{
+				attrWorH.set_value(nHeight);
+			}
+
+		}
+
 
 	}else
 	{
-    	s2 = L"<window pos=\"20,20,-20,-20\" colorBkgnd=\"#d0d0d0\"></window>";
+		//include文件
+
+		int nWidth, nHeight;
+
+		pugi::xml_attribute attrWorH = m_CurrentLayoutNode.attribute(_T("width"));
+
+		if (attrWorH)
+		{
+			::StrToIntExW(attrWorH.value(),STIF_SUPPORT_HEX,&nWidth);
+		}else
+		{
+			nWidth = 500;
+			m_CurrentLayoutNode.append_attribute(_T("width")).set_value(nWidth);
+		}
+
+		attrWorH = m_CurrentLayoutNode.attribute(_T("height"));
+
+		if (attrWorH)
+		{
+			::StrToIntExW(attrWorH.value(),STIF_SUPPORT_HEX,&nHeight);
+		}else
+		{
+			nHeight = 500;
+			m_CurrentLayoutNode.append_attribute(_T("height")).set_value(nHeight);
+		}
+
+		SStringW strAttrSize;
+		strAttrSize.Format(L" margin= \"%d\" width = \"%d\" height = \"%d\" ", MARGIN, nWidth + MARGIN * 2, nHeight + MARGIN * 2);
+
+
+    	s2 = L"<window pos=\"20,20\" " + strAttrSize + L" colorBkgnd=\"#d0d0d0\"></window>";
 	}
 
 	//wchar_t *s = L"<window pos=\"20,20,@500,@500\" colorBkgnd=\"#d0d0d0\"></window>";
@@ -712,6 +800,18 @@ void SDesignerView::SetCurrentCtrl(pugi::xml_node xmlNode, SMoveWnd *pWnd)
 
 void SDesignerView::UpdatePosToXmlNode(SWindow *pRealWnd, SMoveWnd* pMoveWnd)
 {
+	if (m_CurSelCtrl == m_pMoveWndRoot)
+	{
+		SwndLayout *pLayout = pRealWnd->GetLayout();
+		CRect r;
+		pMoveWnd->GetWindowRect(r);
+		m_CurrentLayoutNode.attribute(_T("height")).set_value(pLayout->GetSpecifySize(PD_Y) - MARGIN*2);
+		m_CurrentLayoutNode.attribute(_T("width")).set_value(pLayout->GetSpecifySize(PD_X) - MARGIN*2);
+
+		return;
+	}
+
+
 	SwndLayout *pLayout = pRealWnd->GetLayout();
 
 	pugi::xml_node xmlNode = FindNodeByAttr(m_CurrentLayoutNode, L"name", pRealWnd->GetName());
@@ -1045,7 +1145,9 @@ void SDesignerView::CreatePropGrid(SStringT strCtrlType)
 
 			if (strCtrlType.CompareNoCase(_T("hostwnd")) == 0 && strTemp.CompareNoCase(_T("SOUI")) !=0 )
 			{   //include 文件
-				return;
+
+				strCtrlType = _T("include");
+				//return;
 			}
 
 			SMap<SStringT, pugi::xml_document*>::CPair *p = m_mapCtrlProperty.Lookup(strCtrlType.MakeLower());
@@ -1080,10 +1182,9 @@ void SDesignerView::UpdatePropGrid(pugi::xml_node xmlNode)
 
 	m_pPropgrid->ClearAllGridItemValue();
 
-	if (xmlNode == m_CurrentLayoutNode)
+	if (xmlNode == m_CurrentLayoutNode && _wcsicmp(xmlNode.name(), _T("SOUI")) == 0)
 	{
-		if (_wcsicmp(xmlNode.name(), _T("SOUI")) == 0)
-		{
+
 			pugi::xml_attribute xmlAttr = xmlNode.first_attribute();
 
 			while (xmlAttr)
@@ -1136,11 +1237,6 @@ void SDesignerView::UpdatePropGrid(pugi::xml_node xmlNode)
 
 				xmlAttr = xmlAttr.next_attribute();
 			}
-
-		}else
-		{
-			return;
-		}
 
 	}else
 	{
@@ -1455,12 +1551,40 @@ BOOL SDesignerView::ReLoadLayout()
 
 	if (!bIsInclude)
 	{
+
+		int nWidth, nHeight;
+		SStringT strSize(_T("size"));
+		SStringT strWidth(_T("width"));
+		SStringT strHeight(_T("height"));
+		SStringT strMargin(_T("margin"));
+
 		pugi::xml_attribute attr = m_CurrentLayoutNode.first_attribute();
 		while (attr)
 		{
-			s1.Format(L" %s=\"%s\" ", attr.name(), attr.value());
-			s2 = s2 + s1;
+			// width height单独处理，解决margin的问题
+			if (strSize.CompareNoCase(attr.name()) == 0)
+			{
+				//size属性
+				SStringT strVal = attr.value();
+				swscanf(strVal,L"%d,%d",&nWidth,&nHeight);
+			}else if (strWidth.CompareNoCase(attr.name()) == 0)
+			{     
+				//width属性
+				::StrToIntExW(attr.value(),STIF_SUPPORT_HEX,&nWidth);               
+			}else if (strHeight.CompareNoCase(attr.name()) == 0)
+			{  
+				//height属性
+				::StrToIntExW(attr.value(),STIF_SUPPORT_HEX,&nHeight);
+			}else if (strMargin.CompareNoCase(attr.name()) == 0)
+			{  
+				//忽略margin属性
 
+			}else
+			{
+				s1.Format(L" %s=\"%s\" ", attr.name(), attr.value());
+				s2 = s2 + s1;
+
+			}
 			attr = attr.next_attribute();
 		}
 
@@ -1473,12 +1597,44 @@ BOOL SDesignerView::ReLoadLayout()
 			attr = attr.next_attribute();
 		}
 
-		s2 = L"<window pos=\"20,20\" " +  s2 + L"></window>";
+		SStringW strAttrSize;
+		strAttrSize.Format(L" margin= \"%d\" width = \"%d\" height = \"%d\" ", MARGIN, nWidth + MARGIN * 2, nHeight + MARGIN * 2);
+
+		s2 = L"<window pos=\"20,20\" " +  s2 + strAttrSize + L"></window>";
 
 	}else
 	{
+		int nWidth, nHeight;
 
-			s2 = L"<window pos=\"20,20,-20,-20\" colorBkgnd=\"#d0d0d0\"></window>";
+		pugi::xml_attribute attrWorH = m_CurrentLayoutNode.attribute(_T("width"));
+
+		if (attrWorH)
+		{
+			::StrToIntExW(attrWorH.value(),STIF_SUPPORT_HEX,&nWidth);
+		}else
+		{
+			nWidth = 500;
+			m_CurrentLayoutNode.append_attribute(_T("width")).set_value(nWidth);
+		}
+
+		attrWorH = m_CurrentLayoutNode.attribute(_T("height"));
+
+		if (attrWorH)
+		{
+			::StrToIntExW(attrWorH.value(),STIF_SUPPORT_HEX,&nHeight);
+		}else
+		{
+			nHeight = 500;
+			m_CurrentLayoutNode.append_attribute(_T("height")).set_value(nHeight);
+		}
+
+		SStringW strAttrSize;
+		strAttrSize.Format(L" margin= \"%d\" width = \"%d\" height = \"%d\" ", MARGIN, nWidth + MARGIN * 2, nHeight + MARGIN * 2);
+
+
+		s2 = L"<window pos=\"20,20\" " + strAttrSize + L" colorBkgnd=\"#d0d0d0\"></window>";
+
+			//s2 = L"<window pos=\"20,20,-20,-20\" colorBkgnd=\"#d0d0d0\"></window>";
 	}
 
 	//wchar_t *s = L"<window pos=\"20,20,@500,@500\" colorBkgnd=\"#d0d0d0\"></window>";
