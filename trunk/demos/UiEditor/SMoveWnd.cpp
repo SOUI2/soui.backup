@@ -214,12 +214,12 @@ namespace SOUI
 
 		if (StateMove)
 		{
-			if (m_pRealWnd != m_Desiner->m_pRealWndRoot)
-			{
+			//if (m_pRealWnd != m_Desiner->m_pRealWndRoot)
+			//{
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 				m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
 				StateMove = 1;
-			}
+			//}
 		}
 
 
@@ -444,11 +444,12 @@ namespace SOUI
 
 			m_pRealWnd->GetParent()->UpdateChildrenPosition();	
 			GetParent()->UpdateChildrenPosition();	
+	
 			StateMove = 1;
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
 
-			GetParent()->Invalidate(); //刷新父窗口
+	    	GetParent()->Invalidate(); //刷新父窗口
 
 
 		}
