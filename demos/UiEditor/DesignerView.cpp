@@ -1939,6 +1939,9 @@ void SDesignerView::Preview()
 	SMoveWnd *wnd;
 
 	m_pMoveWndRoot->SetVisible(FALSE);
+
+    m_pMoveWndRoot->GetParent()->Invalidate();
+
 	//SPOSITION pos = m_mapMoveRealWnd.GetStartPosition();
 	//while (pos)
 	//{
@@ -1954,6 +1957,8 @@ void SDesignerView::unPreview()
 	ReLoadLayout();
 	m_nState = 0;
 	GetMoveWndRoot()->Click(0, CPoint(0,0));
+	m_pMoveWndRoot->GetParent()->Invalidate();
+
 }
 
 void SDesignerView::ShowZYGLDlg()
