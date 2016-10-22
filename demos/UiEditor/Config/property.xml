@@ -119,6 +119,13 @@
 				<cache/>
 			</分组>
 		</hostwnd>
+		
+		<include>
+			<分组 name="属性:  include">
+				<width style="proptext" name ="宽(width)" value="" />
+				<height style="proptext" name ="高(height)" value="" />				
+			</分组>
+		</include>
 
 
 		<animateimg>
