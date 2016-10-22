@@ -156,7 +156,6 @@ namespace SOUI
 
 
 		SWindow::OnLButtonDown(nFlags, pt);
-		AdjustRect();
 
 		Oldx = pt.x;
 		Oldy = pt.y;
@@ -235,7 +234,7 @@ namespace SOUI
 			return;
 		}
 
-		AdjustRect();
+
 
 		if(0==m_downWindow) //当前控件没有被按下
 		{
@@ -277,7 +276,6 @@ namespace SOUI
 		}
 		else//控件被按下拖动大小和位置的情况
 		{
-
 			int x = pt.x - Oldx;
 			int y = pt.y - Oldy;
 			int x1;
@@ -450,6 +448,9 @@ namespace SOUI
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
 
+			GetParent()->Invalidate(); //刷新父窗口
+
+
 		}
 
 	}
@@ -457,14 +458,11 @@ namespace SOUI
 
 	void SMoveWnd::AdjustRect()
 	{
-
 		CRect rect;
 		GetWindowRect(rect);
 
 
-		CRect r;
-		GetParent()->GetWindowRect(r);
-		GetParent()->InvalidateRect(r); //刷新父窗口
+
 
 
 		m_rcPos1.left=rect.left;
