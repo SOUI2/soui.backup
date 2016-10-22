@@ -955,6 +955,11 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void SMoveWnd::MoveWndSizeLT(int x, int PosN)
 {
+	if (m_pRealWnd == m_Desiner->m_pRealWndRoot)
+	{
+		return;
+	}
+
 	SwndLayout *layout = GetLayout();
 	SwndLayout *layout1 = m_pRealWnd->GetLayout();
 
@@ -963,19 +968,19 @@ void SMoveWnd::MoveWndSizeLT(int x, int PosN)
 	m_pRealWnd->GetParent()->GetWindowRect(rcRealParent);
 
 	//往左、上拖动大小，left、top不能小于0
-	if (layout->pos[PosN].nPos + x < 0)
+	if (layout->pos[PosN].nPos + x < 0 && x < 0)
 	{
 		return;
 	}
 
 	//往右拖动大小,left 不能大于 right
-	if (layout->GetSpecifySize(PD_X) - x < 1 && PosN == 0)
+	if (layout->GetSpecifySize(PD_X) - x < 1 && PosN == 0 && x > 0)
 	{
 		return;
 	}
 
 	//往下拖动大小,top 不能大于 buttom
-	if (layout->GetSpecifySize(PD_Y) - x < 1 && PosN == 1 )
+	if (layout->GetSpecifySize(PD_Y) - x < 1 && PosN == 1 && x > 0)
 	{
 		return;
 	}
@@ -1061,7 +1066,7 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 
 
 	//右拖动不能超过父控件的右边距
-	if (PosN == 2)
+	if (PosN == 2 && x > 0)
 	{
 		if (layout->pos[PosN - 2].nPos + layout->GetSpecifySize(PD_X) + x > rcMovParent.right - rcMovParent.left)
 		{
@@ -1071,7 +1076,7 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 
 
 	//下拖动不能超过父控件的下边距
-	if (PosN == 3)
+	if (PosN == 3 && x > 0)
 	{
 		if (layout->pos[PosN - 2].nPos + layout->GetSpecifySize(PD_Y) + x > rcMovParent.bottom - rcMovParent.top)
 		{
@@ -1081,13 +1086,13 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 
 
 	//往左拖动大小,left 不能大于 right
-	if (layout->GetSpecifySize(PD_X) + x < 1 && PosN == 2)
+	if (layout->GetSpecifySize(PD_X) + x < 1 && PosN == 2 && x < 0)
 	{
 		return;
 	}
 
 	//往上拖动大小,top 不能大于 buttom
-	if (layout->GetSpecifySize(PD_Y) + x < 1 && PosN == 3 )
+	if (layout->GetSpecifySize(PD_Y) + x < 1 && PosN == 3 && x < 0)
 	{
 		return;
 	}
