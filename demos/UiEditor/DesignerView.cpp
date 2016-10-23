@@ -1825,7 +1825,22 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* pSciWnd)//从代码编辑器获取x
 void SDesignerView::SetSelCtrlNode(pugi::xml_node xmlNode)
 {
 	m_nState = 1;
-	m_xmlSelCtrlNode = xmlNode;
+
+	pugi::xml_writer_buff writer;
+	xmlNode.print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
+	SStringW *strxmlWnd= new SStringW(writer.buffer(),writer.size());
+
+	if(m_xmlSelCtrlDoc.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) 
+	{
+
+		m_xmlSelCtrlNode = m_xmlSelCtrlDoc.first_child();
+
+		delete strxmlWnd;
+	}else
+	{
+		Debug(_T("选择控件异常"));
+	}
+
 	return;
 }
 
