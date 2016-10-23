@@ -113,7 +113,9 @@ namespace SOUI
 
 			SStringW *m_strxml;
 			pugi::xml_node m_xmlNode;   //当前选中的控件的xmlnode 
-			pugi::xml_document m_xmlDoc;//鼠标选择控件列表要创建的控件的xml
+
+			pugi::xml_document m_xmlSelCtrlDoc;//鼠标选择控件列表要创建的控件的xml
+
 			pugi::xml_node m_xmlSelCtrlNode;  //鼠标选择控件列表要创建的控件的xml
 
 			SMap<SStringT, pugi::xml_node> m_mapLayoutFile;  
