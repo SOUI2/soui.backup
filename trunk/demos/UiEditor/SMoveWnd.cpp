@@ -534,8 +534,42 @@ void SMoveWnd::MoveWndHorz(int x)
 {
 	//水平移动
 
+
+	if (m_pRealWnd == m_Desiner->m_pRealWndRoot)
+	{
+		return;
+	}
+
 	SwndLayout *layout = GetLayout();
 	SwndLayout *layout1 = m_pRealWnd->GetLayout();
+
+
+	//有margin的情况
+	SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
+	int nMargin = 0;
+
+	nMargin = style.m_rcMargin.left;
+
+	//往左拖动，left不能小于0
+	if (layout->pos[0].nPos + x - nMargin < 0 && x < 0)
+	{
+		return;
+	}
+
+
+	//往右拖动，right不能大于父控件的right
+	if (x > 0)
+	{
+		CRect r;
+		GetParent()->GetWindowRect(r);
+
+		if (layout->pos[0].nPos + layout->GetSpecifySize(PD_X) + x + style.m_rcMargin.right > r.right - r.left)
+		{
+			return;
+		}
+	}
+
+
 
 	if (layout1->nCount == 2) //两个坐标的情况
 	{
@@ -569,6 +603,7 @@ void SMoveWnd::MoveWndHorz(int x)
 
 		int nPosTop, nPosTop1;
 		int nPosButtom, nPosButtom1;
+
 
 
 		/************************* 移动top点 **************************************/
@@ -649,8 +684,50 @@ void SMoveWnd::MoveWndVert(int x)
 {
 	//垂直移动
 
+	if (m_pRealWnd == m_Desiner->m_pRealWndRoot)
+	{
+		return;
+	}
+
 	SwndLayout *layout = GetLayout();
 	SwndLayout *layout1 = m_pRealWnd->GetLayout();
+
+	////有margin的情况
+	//SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
+	//int nMargin = 0;
+
+	//if (PosN == HORZ)
+	//{
+	//	nMargin = style.m_rcMargin.right;
+	//}else
+	//{
+	//	nMargin = style.m_rcMargin.bottom;
+	//}
+
+	//有margin的情况
+	SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
+	int nMargin = 0;
+
+	nMargin = style.m_rcMargin.top;
+
+	//往上拖动，top不能小于0
+	if (layout->pos[1].nPos + x - nMargin < 0 && x < 0)
+	{
+		return;
+	}
+
+
+	//往下拖动，bottom不能大于父控件的bottom
+	if (x > 0)
+	{
+		CRect r;
+		GetParent()->GetWindowRect(r);
+
+		if (layout->pos[1].nPos + layout->GetSpecifySize(PD_Y) + x + style.m_rcMargin.bottom > r.bottom - r.top)
+		{
+			return;
+		}
+	}
 
 	if (layout1->nCount == 2) //两个坐标的情况
 	{
@@ -794,6 +871,7 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			GetParent()->UpdateChildrenPosition();	
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+		    GetParent()->Invalidate(); //刷新父窗口
 
 		}else if (bShift)
 		{
@@ -804,6 +882,7 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			GetParent()->UpdateChildrenPosition();	
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+		    GetParent()->Invalidate(); //刷新父窗口
 
 		}else
 		{
@@ -813,6 +892,7 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				SMoveWnd *pMovWnd = p->m_value;
 				pMovWnd->Click(0, CPoint(0, 0));
 			}
+
 		}
 
 		break;
@@ -827,6 +907,7 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			GetParent()->UpdateChildrenPosition();	
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+			GetParent()->Invalidate(); //刷新父窗口
 
 		}else if (bShift)
 		{
@@ -837,6 +918,7 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			GetParent()->UpdateChildrenPosition();	
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+		    GetParent()->Invalidate(); //刷新父窗口
 
 		}else
 		{
@@ -861,6 +943,7 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			GetParent()->UpdateChildrenPosition();	
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+			GetParent()->Invalidate(); //刷新父窗口
 
 
 		}else if (bShift)
@@ -872,6 +955,7 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			GetParent()->UpdateChildrenPosition();	
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+		    GetParent()->Invalidate(); //刷新父窗口
 
 
 		}else
@@ -895,6 +979,7 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			GetParent()->UpdateChildrenPosition();	
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+			GetParent()->Invalidate(); //刷新父窗口
 
 
 		}else if (bShift)
@@ -906,6 +991,7 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			GetParent()->UpdateChildrenPosition();	
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+			GetParent()->Invalidate(); //刷新父窗口
 
 
 		}else
@@ -967,8 +1053,21 @@ void SMoveWnd::MoveWndSizeLT(int x, int PosN)
 	m_pRealWnd->GetWindowRect(rcReal);
 	m_pRealWnd->GetParent()->GetWindowRect(rcRealParent);
 
+
+	//有margin的情况
+	SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
+	int nMargin = 0;
+	
+	if (PosN == HORZ_LT)
+	{
+	    nMargin = style.m_rcMargin.left;
+	}else
+	{
+		nMargin = style.m_rcMargin.top;
+	}
+
 	//往左、上拖动大小，left、top不能小于0
-	if (layout->pos[PosN].nPos + x < 0 && x < 0)
+	if (layout->pos[PosN].nPos + x - nMargin < 0 && x < 0)
 	{
 		return;
 	}
@@ -1063,12 +1162,22 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 	GetParent()->GetWindowRect(rcMovParent);
 
 
+	//有margin的情况
+	SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
+	int nMargin = 0;
 
+	if (PosN == HORZ)
+	{
+		nMargin = style.m_rcMargin.right;
+	}else
+	{
+		nMargin = style.m_rcMargin.bottom;
+	}
 
 	//右拖动不能超过父控件的右边距
 	if (PosN == 2 && x > 0)
 	{
-		if (layout->pos[PosN - 2].nPos + layout->GetSpecifySize(PD_X) + x > rcMovParent.right - rcMovParent.left)
+		if (layout->pos[PosN - 2].nPos + layout->GetSpecifySize(PD_X) + x + nMargin > rcMovParent.right - rcMovParent.left)
 		{
 			return;
 		}
@@ -1078,7 +1187,7 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 	//下拖动不能超过父控件的下边距
 	if (PosN == 3 && x > 0)
 	{
-		if (layout->pos[PosN - 2].nPos + layout->GetSpecifySize(PD_Y) + x > rcMovParent.bottom - rcMovParent.top)
+		if (layout->pos[PosN - 2].nPos + layout->GetSpecifySize(PD_Y) + x + nMargin> rcMovParent.bottom - rcMovParent.top)
 		{
 			return;
 		}	
