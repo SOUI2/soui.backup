@@ -1467,9 +1467,15 @@ bool SDesignerView::OnPropGridItemClick( EventArgs *pEvt )
 		SDlgSkinSelect DlgSkin(_T("layout:UIDESIGNER_XML_SKIN_SELECT"), pItem->GetString(), m_strUIResFile);
 		if (DlgSkin.DoModal(m_pMainHost->m_hWnd) == IDOK)
 		{
-			RefreshRes();
-			pItem->SetString(DlgSkin.m_strSkinName);
-			//ReLoadLayout();
+			SStringT s1 = pItem->GetString();   //ÊôÐÔµÄÖµ
+
+			if (s1.CompareNoCase(DlgSkin.m_strSkinName) != 0)
+			{
+				RefreshRes();
+				pItem->SetString(DlgSkin.m_strSkinName);
+				//ReLoadLayout();
+			}
+
 		}
 		
 	    
