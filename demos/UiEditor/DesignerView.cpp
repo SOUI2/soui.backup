@@ -1793,6 +1793,8 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* pSciWnd)//从代码编辑器获取x
 
 	ReLoadLayout();
 
+	m_pMoveWndRoot->Click(0,CPoint(0,0));
+
 	//SStringT strName = ((SMoveWnd*)m_CurSelCtrl)->m_pRealWnd->GetName();
 
 	//ReLoadLayout();
