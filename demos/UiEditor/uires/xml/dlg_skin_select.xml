@@ -39,8 +39,8 @@
 					<window pos="%52,0,-0,-2" name="NAME_UIDESIGNER_GRID_CONTAINER" class="CLASS_UIDESIGNER_cls_title" />
 					<hr pos="2,[1,-2,@1" mode="horizontal" colorLine="#FFFFFF" />
 				</window>
-				<window pos="[0,2,-2,-2" colorBkgnd="#FFFFFF">
-					<img name="NAME_UIDESIGNER_IMG_VIEW" margin-x="1" margin-y="1" colorBorder="#c5c5c5" colorBkgnd="rgb(87,104,132)" pos="|0,|0" size="1,1" offset="-0.5,-0.5" />
+				<window pos="[0,2,-2,-2" colorBkgnd="#FFFFFF" >
+					<img name="NAME_UIDESIGNER_IMG_VIEW" margin-x="1" margin-y="1" colorBorder="#c5c5c5" pos="|0,|0" size="1,1" offset="-0.5,-0.5" colorBkgnd="rgb(234,128,16)"/>
 				</window>
 			</window>
 			<button id="IDOK" pos="-150,-40,@100,@30">确定</button>
