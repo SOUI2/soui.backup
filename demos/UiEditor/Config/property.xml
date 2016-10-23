@@ -76,6 +76,8 @@
 		<fontHover style="proptext" name ="字体Hover(fontHover)" value=""/>							
 		<cursor style="proptext" name ="光标(cursor)" value=""/>			
 		<colorTextHover style="proptext" name ="文本颜色Hover(colorTextHover)" value=""/>		
+		
+		<margin style="proptext" name ="边距(margin)" value=""/>
 
 		<!-- 编辑器特殊属性，用于设置button edit window等内容
 	  如 <button>我是按钮</button> 
@@ -1310,11 +1312,13 @@
 				<pos/>
 				<size/>
 				<offset/>
+				<margin/>
 				<class/>
 				<font/>		
 				<tip/>				
 				<colorBkgnd/>
 				<colorText/>
+				
 
 
 				<UiEdit_windowText/>				
