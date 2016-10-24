@@ -115,7 +115,6 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 BOOL SDesignerView::LoadLayout(SStringT strFileName)
 {
 
-
 	pugi::xml_node xmlroot;
 	pugi::xml_node xmlnode;
 
@@ -169,9 +168,8 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 	if(!xmlnode) return FALSE;
 
 
-
-	//这个地方可能要修改，。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。
-
+	m_pContainer->SSendMessage(WM_DESTROY);
+	/*
 	SWindow *pChild = m_pContainer->GetWindow(GSW_FIRSTCHILD);
 	while(pChild)
 	{
@@ -179,6 +177,7 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 		pChild->DestroyWindow();
 		pChild = pNext;
 	}
+	*/
 
 
 	SStringW s1, s2;
@@ -302,15 +301,13 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 	////创建布局窗口的根窗口
 
 	m_pRealWndRoot = m_pContainer->CreateChildren(s2);
-	m_pMoveWndRoot = (SMoveWnd *)m_pContainer->CreateChildren(s3);
-	m_pMoveWndRoot->m_pRealWnd = m_pRealWndRoot;
+ 	m_pMoveWndRoot = (SMoveWnd *)m_pContainer->CreateChildren(s3);
+ 	m_pMoveWndRoot->m_pRealWnd = m_pRealWndRoot;
+ 	m_pMoveWndRoot->m_Desiner = this;	
+
 
 	m_mapMoveRealWnd.RemoveAll();
 	m_mapMoveRealWnd[m_pMoveWndRoot->m_pRealWnd] = m_pMoveWndRoot;
-
-
-	m_pMoveWndRoot->m_Desiner = this;	
-
 
 
 
