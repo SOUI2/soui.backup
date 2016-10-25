@@ -2162,3 +2162,23 @@ void SDesignerView::ShowYSGLDlg()
 		RefreshRes();
 	}
 }
+
+void SDesignerView::ShowMovWndChild(BOOL bShow, SMoveWnd* pMovWnd)
+{
+	if (bShow)
+	{
+		for (; pMovWnd; pMovWnd = (SMoveWnd*)pMovWnd->GetWindow(GSW_NEXTSIBLING))
+		{
+			SWindow* pRealWnd = pMovWnd->m_pRealWnd;
+			pMovWnd->SetVisible(pRealWnd->IsVisible());
+			ShowMovWndChild(bShow, (SMoveWnd*)pMovWnd->GetWindow(GSW_FIRSTCHILD));
+		}
+	}else
+	{
+		for (; pMovWnd; pMovWnd = (SMoveWnd*)pMovWnd->GetWindow(GSW_NEXTSIBLING))
+		{
+			pMovWnd->SetVisible(FALSE);
+            ShowMovWndChild(bShow, (SMoveWnd*)pMovWnd->GetWindow(GSW_FIRSTCHILD));
+		}
+	}
+}
