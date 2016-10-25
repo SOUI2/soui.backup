@@ -304,6 +304,10 @@ namespace SOUI
 		EventLBSelChanged *pEvt =(EventLBSelChanged*)pEvtBase;
 		SListBox *listbox=(SListBox*)pEvt->sender;
 		pugi::xml_node xmlNode;
+		if (pEvt->nNewSel == -1)
+		{
+			return false;
+		}
 		SStringT *s  = (SStringT *)listbox->GetItemData(pEvt->nNewSel);
 
 		SStringT strTemp(*s);
