@@ -19,6 +19,7 @@ namespace SOUI
 		void OnPaint(IRenderTarget *pRT);
 
 		void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+		void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 
 		SOUI_MSG_MAP_BEGIN()
 			MSG_WM_LBUTTONDOWN(OnLButtonDown)
@@ -26,6 +27,7 @@ namespace SOUI
 			MSG_WM_MOUSEMOVE(OnMouseMove)
 		    MSG_WM_PAINT_EX(OnPaint)   
 			MSG_WM_KEYDOWN(OnKeyDown)
+			MSG_WM_KEYUP(OnKeyUp)
 			SOUI_MSG_MAP_END()
 
 	public:
@@ -70,7 +72,7 @@ namespace SOUI
 	public:
 		SDesignerView *m_Desiner;
 		SWindow *m_pRealWnd;  //与这个窗口相关的实际窗口
-
+		BOOL m_bCtrlShift;
 
 
 	};

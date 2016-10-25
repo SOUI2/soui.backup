@@ -98,6 +98,8 @@ namespace SOUI
 		 void ShowZYGLDlg();
 		 void ShowYSGLDlg();
 
+		 void ShowMovWndChild(BOOL bShow, SMoveWnd* pMovWnd);
+
 
 	public:
 		    SWindow *m_pRealWndRoot;       //²¼¾ÖÈÝÆ÷´°¿Ú;

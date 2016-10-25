@@ -837,8 +837,14 @@ void SMoveWnd::MoveWndVert(int x)
 
 	
 }
-
-
+void SMoveWnd::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	if (m_bCtrlShift)
+	{
+		m_Desiner->ShowMovWndChild(TRUE, (SMoveWnd*)this->GetWindow(GSW_FIRSTCHILD));
+		m_bCtrlShift = FALSE;
+	}
+}
 void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 
@@ -853,11 +859,29 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	//ctrl  + 方向键   上下左右移动1个点的位置
 	//Shift + 方向键   增减控件的尺寸
 	//delete           删除当前控件
+	//CTRL + SHIFT 当控件被子控件挡住了，这时候是无法移动控件的，因为无论怎么选都只能选中子控件，这时按住ctrl+ shift可以隐藏子控件，使控件可以选中从而移动
 
 	m_bMsgHandled = FALSE;
 
 	BOOL bShift = (::GetKeyState(VK_SHIFT) < 0);
 	BOOL bCtrl  = (::GetKeyState(VK_CONTROL) < 0);
+
+
+	if (bShift&&bCtrl)
+	{
+	    m_Desiner->ShowMovWndChild(FALSE, (SMoveWnd*)this->GetWindow(GSW_FIRSTCHILD));
+		m_bCtrlShift = TRUE;
+		return ;
+	}else
+	{
+		if (m_bCtrlShift)
+		{
+			m_Desiner->ShowMovWndChild(TRUE, (SMoveWnd*)this->GetWindow(GSW_FIRSTCHILD));
+			m_bCtrlShift = FALSE;
+		}
+	}
+
+
 
 	switch (nChar)
 	{
