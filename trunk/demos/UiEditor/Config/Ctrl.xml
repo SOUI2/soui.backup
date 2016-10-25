@@ -9,18 +9,19 @@
 		<group/>
 		<window/>
 		<page/>
+		<page2/>		
 
 		<div/>
 
 		<pane/>
 		<scrollview/>
 	</容器控件>
-	
-	
+
+
 	<控件列表>
 		<!-- pos和size都不是必须的，设计器根据鼠标按下的位置设置pos -->
 		<!-- 控件的大小最好是8的倍数，方便对齐 -->
-		
+
 		<window>
 			<window pos="0,0" size="120,120">	
 
@@ -256,7 +257,7 @@
 			<sliderbar size="120,24" thumbInRail="0"  alpha="200" width="200" value="20" min="0" max="100"/>
 		</sliderbar>
 
-		
+
 		<spinButton_微调按钮>
 			<window size="100,30" class="cls_edit" trackMouseEvent="1">
 				<edit pos="0,0,-16,-0" name="edit_spin" margin-x="0" margin-y="0"/>
@@ -299,6 +300,17 @@
 				</page>
 			</tabctrl>  
 		</tabctrl>
+		
+		<tabctrl2>			
+			<tabctrl2 size = "200, 200" font="face:微软雅黑,adding:-2" tabPos="10" tabAlign="top" colorText="#ffffff" pos="0,25,-0,-0" show="1" curSel="0" focusable="0" tabHeight="75" tabSkin="" iconSkin="" text-y="50" icon-x="12" tabInterSize="5">
+				<page2 title="页1" tip="页1" interval="50">
+				</page2>
+				<page2 title="页2" tip="页2">
+				</page2>
+			</tabctrl2>
+
+		</tabctrl2>	
+
 
 		<text>
 			<text pos="0,0">文本</text>

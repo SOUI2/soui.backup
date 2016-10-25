@@ -1357,6 +1357,34 @@
 				<curSel style="proptext" name ="当前页索引(curSel)" value=""/>				
 			</分组>
 		</tabctrl>	
+		
+
+		<tabctrl2>
+			<分组 name="属性:  tabctrl2">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>			
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>	
+
+				<tabAlign style="proptext" name ="对齐方式(tabAlign)" value=""/>				
+				<tabSkin style="proptext" name ="tab皮肤(tabSkin)" value="" ButtonType="skin"/>			
+				<iconSkin style="proptext" name ="iconSkin" value="" ButtonType="skin"/>						
+				<tabInterSize style="proptext" name ="tabInterSize" value=""/>				
+				<tabWidth style="proptext" name ="tab宽(tabWidth)" value=""/>				
+				<tabHeight style="proptext" name ="tab高(tabHeight)" value=""/>				
+				<textDir style="proptext" name ="文本方向(textDir)" value=""/>		
+				<tabHeadBgSkin style="proptext" name ="tabHeadBgSkin" value="" ButtonType="skin"/>			
+				<curSel style="proptext" name ="当前页索引(curSel)" value=""/>			
+				
+			</分组>
+		</tabctrl2>			
 		<page>
 			<分组 name="属性:  page">
 				<id/>
@@ -1377,7 +1405,26 @@
 		</page>	
 
 
+		<page2>
+			<分组 name="属性:  page2">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>			
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>	
 
+				<title style="proptext" name ="标题(title)" value=""/>		
+				<colorBorder style="proptext" name ="边框颜色(colorBorder)" value=""/>		
+				<ani_in style="proptext" name ="ani_in" value="" ButtonType="skin"/>	
+				<ani_out style="proptext" name ="ani_out" value="" ButtonType="skin"/>					
+			</分组>
+		</page2>	
 
 
 
