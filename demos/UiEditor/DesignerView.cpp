@@ -1735,6 +1735,10 @@ void SDesignerView::AddCodeToEditor(CScintillaWnd* pSciWnd)  //复制xml代码到代码
 
 void SDesignerView::GetCodeFromEditor(CScintillaWnd* pSciWnd)//从代码编辑器获取xml代码
 {
+	if (m_strCurFile.IsEmpty())
+	{
+		return;
+	}
 
 	if (m_strCurFileEditor.CompareNoCase(m_strCurFile) != 0)
 	{
