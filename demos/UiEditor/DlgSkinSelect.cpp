@@ -738,6 +738,9 @@ namespace SOUI
 		if (IDOK == DlgNewSkin.DoModal(m_hWnd))
 		{
 			strSkinTypeName = DlgNewSkin.m_strSkinName;
+		}else
+		{
+			return;
 		}
 
 

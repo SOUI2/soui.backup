@@ -11,7 +11,7 @@ namespace SOUI
 	}
 
 	//TODO:œ˚œ¢”≥…‰
-	void SDlgNewSkin::OnClose()
+	void SDlgNewSkin::OnCancel()
 	{
 		SHostDialog::OnCancel();
 	}

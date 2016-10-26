@@ -18,8 +18,6 @@ namespace SOUI
 
 		}
 
-
-		void OnClose();
 		void OnBtnDlgOpenFile();
 
 		BOOL OnInitDialog(HWND wndFocus, LPARAM lInitParam);
@@ -31,13 +29,13 @@ namespace SOUI
 	protected:
 		//void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 		void OnOK();
-		//void OnCancel();
+		void OnCancel();
 		//virtual SMessageLoop * GetMsgLoop(){return m_MsgLoop;}
 
 		EVENT_MAP_BEGIN()
 
 			EVENT_ID_COMMAND(IDOK,OnOK)
-			//EVENT_ID_COMMAND(IDCANCEL,OnCancel)
+			EVENT_ID_COMMAND(IDCANCEL,OnCancel)
 			EVENT_MAP_END()
 
 			BEGIN_MSG_MAP_EX(SDlgNewSkin)

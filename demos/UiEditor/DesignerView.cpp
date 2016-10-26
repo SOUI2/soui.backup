@@ -435,8 +435,14 @@ BOOL SDesignerView::SaveAll()
 }
 
 //保存当前打开的布局文件
-BOOL SDesignerView::SaveLayoutFile(SStringT strFile)
+BOOL SDesignerView::SaveLayoutFile()
 {
+	if (m_strCurFile.IsEmpty())
+	{
+		return FALSE;
+	}
+
+	SStringT strFile = m_strCurFile;
 	SStringT strFileName;
 	SStringT FullFileName;
 
@@ -1445,7 +1451,7 @@ void SDesignerView::RefreshRes()
 	CreateResProvider(RES_FILE, (IObjRef**)&pResProvider1);
 	if (!pResProvider1->Init((LPARAM)s, 0))
 	{
-		Debug(_T("ResProvider初始化失败"));
+		Debug(_T("ResProvider初始化失败")); 
 		return ;
 	}
 	SApplication::getSingletonPtr()->AddResProvider(pResProvider1);
