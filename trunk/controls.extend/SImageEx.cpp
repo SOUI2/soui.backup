@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "SImageEx.h"
-#include "../extend.skins\SSkinMutiFrameImg.h"
+#include "SSkinMutiFrameImg.h"
 
 SImageEx::SImageEx()
 {

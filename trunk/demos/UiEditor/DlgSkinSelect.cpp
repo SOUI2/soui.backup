@@ -4,7 +4,7 @@
 #include "CDebug.h"
 #include "interface/SSkinobj-i.h"
 
-#include "extend.skins\SSkinMutiFrameImg.h"
+#include "SSkinMutiFrameImg.h"
 #include "helper\mybuffer.h"
 #include "DlgNewSkin.h"
 #include "DlgInput.h"
