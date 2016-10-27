@@ -5,6 +5,7 @@ INCLUDEPATH += .
 
 include(../cpy-cfg.pri)
 
+SUBDIRS += UiEditor
 SUBDIRS += demo
 SUBDIRS += qqlogin
 SUBDIRS += 360
@@ -22,3 +23,4 @@ souispy.depends += soui skia
 PcManager.depends += soui skia
 SoTool.depends += soui skia
 mclistview_demo.depends += soui skia
+UiEditor.depends += soui skia

@@ -3,7 +3,7 @@
 #include "core/smsgloop.h"
 #include "core/SHostDialog.h"
 #include "control/SRichEdit.h"
-#include "extend.ctrls/SImageEx.h"
+#include "SImageEx.h"
 
 namespace SOUI
 {

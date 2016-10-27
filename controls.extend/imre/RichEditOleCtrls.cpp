@@ -5,7 +5,6 @@
 #include "SImRichedit.h"
 #include <Gdiplus.h>
 #include "..\SImageEx.h"
-#include "..\..\extend.ctrls\utils.h"
 
 // {9A7A5798-AB0E-4083-AE09-F21F4CC57486}
 static const GUID IID_ImageOleCtrl = 

@@ -1,741 +1,419 @@
-<?xml version="1.0" encoding="gb2312"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="UiEditor"
-	ProjectGUID="{37B704F8-1912-484C-AF2B-796FE06E678D}"
-	TargetFrameworkVersion="196613"
-	>
+	ProjectGUID="{38878C39-9EAE-3D7C-A3C8-D7DF0DEAAE34}"
+	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
-			Name="Win32"
-		/>
+			Name="Win32" />
 	</Platforms>
-	<ToolFiles>
-	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
-			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SOUIPATH)\config&quot;;&quot;$(SOUIPATH)\components&quot;;&quot;$(SOUIPATH)\SOUI\include&quot;;&quot;$(SOUIPATH)\utilities\include&quot;"
-				PreprocessorDefinitions="WIN32;_WINDOWS;STRICT;_DEBUG"
-				RuntimeLibrary="1"
-				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="2"
-				BrowseInformation="1"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="$(SOUIPATH)\soui-sys-resource"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="utilitiesd.lib souid.lib"
-				LinkIncremental="2"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(SOUIPATH)\bin&quot;"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			OutputDirectory="..\..\bin\"
+			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			ConfigurationType="1"
+			IntermediateDirectory="..\..\obj\release\UiEditor\"
+			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="&quot;$(SOUIPATH)\config&quot;;&quot;$(SOUIPATH)\components&quot;;&quot;$(SOUIPATH)\SOUI\include&quot;;&quot;$(SOUIPATH)\utilities\include&quot;"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
+				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\controls.extend,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalOptions="/MP -w34100 -w34189 -w44996"
+				AssemblerListingLocation="..\..\obj\release\UiEditor\"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4100,4101,4102,4189,4996"
+				ExceptionHandling="1"
+				ForcedIncludeFiles="stdafx.h"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\..\obj\release\UiEditor\"
+				Optimization ="1"
+				PrecompiledHeaderFile="$(IntDir)\UiEditor.pch"
+				PrecompiledHeaderThrough="stdafx.h"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST,NDEBUG"
+				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="0"
+				SuppressStartupBanner="true"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
-			/>
+				WarningLevel="3" />
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="$(SOUIPATH)\soui-sys-resource"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="utilities.lib soui.lib"
-				LinkIncremental="1"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(SOUIPATH)\bin&quot;"
+				AdditionalLibraryDirectories="..\..\bin"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				DataExecutionPrevention="true"
+				EnableCOMDATFolding="2"
 				GenerateDebugInformation="true"
+				IgnoreImportLibrary="true"
+				LinkIncremental="1"
+				LinkTimeCodeGeneration="0"
+				OptimizeReferences="2"
+				OutputFile="$(OutDir)\UiEditor.exe"
+				ProgramDatabaseFile=""
+				RandomizedBaseAddress="true"
 				SubSystem="2"
-			/>
+				SuppressStartupBanner="true"
+				TargetMachine="1" />
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCManifestTool" />
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPostBuildEventTool" />
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreBuildEventTool" />
 			<Tool
-				Name="VCFxCopTool"
-			/>
+				Name="VCPreLinkEventTool" />
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST" />
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="..\..\bin\"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			ConfigurationType="1"
+			IntermediateDirectory="..\..\obj\debug\UiEditor\"
+			UseOfMfc="0">
 			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\controls.extend,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalOptions="/MP -w34100 -w34189 -w44996"
+				AssemblerListingLocation="..\..\obj\debug\UiEditor\"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4100,4101,4102,4189,4996"
+				ExceptionHandling="1"
+				ForcedIncludeFiles="stdafx.h"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\..\obj\debug\UiEditor\"
+				Optimization ="4"
+				PrecompiledHeaderFile="$(IntDir)\UiEditord.pch"
+				PrecompiledHeaderThrough="stdafx.h"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST"
+				ProgramDataBaseFileName="$(IntDir)"
+				RuntimeLibrary="1"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="2"
+				WarningLevel="3" />
+			<Tool
+				Name="VCCustomBuildTool" />
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="utilitiesd.lib souid.lib"
+				AdditionalLibraryDirectories="..\..\bin"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				DataExecutionPrevention="true"
+				GenerateDebugInformation="true"
+				IgnoreImportLibrary="true"
+				LinkTimeCodeGeneration="0"
+				OutputFile="$(OutDir)\UiEditord.exe"
+				ProgramDatabaseFile=""
+				RandomizedBaseAddress="true"
+				SubSystem="2"
+				SuppressStartupBanner="true"
+				TargetMachine="1" />
+			<Tool
+				Name="VCManifestTool" />
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
+			<Tool
+				Name="VCPostBuildEventTool" />
+			<Tool
+				Name="VCPreBuildEventTool" />
+			<Tool
+				Name="VCPreLinkEventTool" />
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST,_DEBUG" />
 		</Configuration>
 	</Configurations>
-	<References>
-	</References>
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm"
-			>
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath=".\extend.ctrls\image3d\3dlib.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\image3d\3dTransform.h" />
 			<File
-				RelativePath=".\extend.ctrls\image3d\3dmatrix.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\image3d\3dlib.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\image3d\3dtransform.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\image3d\3dmatrix.cpp" />
 			<File
-				RelativePath=".\DesignerView.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\image3d\3dtransform.cpp" />
 			<File
-				RelativePath=".\DlgAbout.cpp"
-				>
-			</File>
+				RelativePath="DesignerView.cpp" />
 			<File
-				RelativePath=".\DlgCreatePro.cpp"
-				>
-			</File>
+				RelativePath="DlgAbout.cpp" />
 			<File
-				RelativePath=".\DlgInput.cpp"
-				>
-			</File>
+				RelativePath="DlgCreatePro.cpp" />
 			<File
-				RelativePath=".\DlgNewLayout.cpp"
-				>
-			</File>
+				RelativePath="DlgInput.cpp" />
 			<File
-				RelativePath=".\DlgNewSkin.cpp"
-				>
-			</File>
+				RelativePath="DlgNewLayout.cpp" />
 			<File
-				RelativePath=".\DlgSkinSelect.cpp"
-				>
-			</File>
+				RelativePath="DlgNewSkin.cpp" />
 			<File
-				RelativePath=".\DlgStyleManage.cpp"
-				>
-			</File>
+				RelativePath="DlgSkinSelect.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\ExtendCtrls.cpp"
-				>
-			</File>
+				RelativePath="DlgStyleManage.cpp" />
 			<File
-				RelativePath=".\extend.skins\ExtendSkins.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\ExtendSkins.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\GroupChatFrame.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\imre\ImgProvider.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\imre\ImgProvider.cpp"
-				>
-			</File>
+				RelativePath="MainDlg.cpp" />
 			<File
-				RelativePath=".\MainDlg.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\imre\RichEditObj.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\imre\RichEditObj.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\imre\RichEditObjFactory.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\imre\RichEditObjFactory.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\imre\RichEditOleBase.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\imre\RichEditOleBase.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\imre\RichEditOleCallback.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\imre\RichEditOleCallback.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\imre\RichEditOleCtrls.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\imre\RichEditOleCtrls.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\SAnimImg.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\SAnimImg.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\SButtonEx.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\SButtonEx.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\SChromeTabCtrl.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\SChromeTabCtrl.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\SFreeMoveWindow.cpp" />
 			<File
-				RelativePath=".\ScintillaWnd.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\gif\SGifPlayer.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\SFreeMoveWindow.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\imre\SImRichedit.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\SImageEx.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\SImageEx.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\SImageMaskWnd.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\SImageMaskWnd.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\SImagePlayer.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\SImagePlayer.cpp" />
 			<File
-				RelativePath=".\SImageSwitcher.cpp"
-				>
-			</File>
+				RelativePath="SImageSwitcher.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\imre\SImRichedit.cpp"
-				>
-			</File>
+				RelativePath="SMoveWnd.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\SListboxex.cpp"
-				>
-			</File>
+				RelativePath="SMyButton.cpp" />
 			<File
-				RelativePath=".\SMoveWnd.cpp"
-				>
-			</File>
+				RelativePath="propgrid\SPropertyGrid.cpp" />
 			<File
-				RelativePath=".\SMyButton.cpp"
-				>
-			</File>
+				RelativePath="SPropertyGridEx.cpp" />
 			<File
-				RelativePath=".\SouiRealWndHandler.cpp"
-				>
-			</File>
+				RelativePath="propgrid\propitem\SPropertyItem-Color.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\SplitBar.cpp"
-				>
-			</File>
+				RelativePath="propgrid\propitem\SPropertyItem-Option.cpp" />
 			<File
-				RelativePath=".\propgrid\SPropertyGrid.cpp"
-				>
-			</File>
+				RelativePath="propgrid\propitem\SPropertyItem-Size.cpp" />
 			<File
-				RelativePath=".\SPropertyGridEx.cpp"
-				>
-			</File>
+				RelativePath="propgrid\propitem\SPropertyItem-Text.cpp" />
 			<File
-				RelativePath=".\propgrid\propitem\SPropertyItem-Color.cpp"
-				>
-			</File>
+				RelativePath="propgrid\SPropertyItemBase.cpp" />
 			<File
-				RelativePath=".\propgrid\propitem\SPropertyItem-Option.cpp"
-				>
-			</File>
+				RelativePath="trayicon\SShellNotifyIcon.cpp" />
 			<File
-				RelativePath=".\propgrid\propitem\SPropertyItem-Size.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\gif\SSkinAPNG.cpp" />
 			<File
-				RelativePath=".\propgrid\propitem\SPropertyItem-Text.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\gif\SSkinGif.cpp" />
 			<File
-				RelativePath=".\propgrid\SPropertyItemBase.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\SSkinMutiFrameImg.cpp" />
 			<File
-				RelativePath=".\trayicon\SShellNotifyIcon.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\SSplitBar.cpp" />
 			<File
-				RelativePath="..\..\controls.extend\gif\SSkinAPNG.cpp"
-				>
-			</File>
+				RelativePath="SSwitch.cpp" />
 			<File
-				RelativePath="..\..\controls.extend\gif\SSkinGif.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\STabCtrl2.cpp" />
 			<File
-				RelativePath=".\extend.skins\SSkinMutiFrameImg.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\SText.cpp" />
 			<File
-				RelativePath=".\SSwitch.cpp"
-				>
-			</File>
+				RelativePath="SToolbox.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\STabCtrl2.cpp"
-				>
-			</File>
+				RelativePath="..\..\controls.extend\STurn3DView.cpp" />
 			<File
-				RelativePath=".\stdafx.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-			</File>
+				RelativePath="ScintillaWnd.cpp" />
 			<File
-				RelativePath=".\extend.ctrls\SText.cpp"
-				>
-			</File>
+				RelativePath="SouiRealWndHandler.cpp" />
 			<File
-				RelativePath=".\SToolbox.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\STurn3DView.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\UiEditor.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\utils.cpp"
-				>
-			</File>
+				RelativePath="UIEditor.cpp" />
 		</Filter>
 		<Filter
 			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc"
-			>
-			<File
-				RelativePath=".\extend.ctrls\image3d\3dlib.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\image3d\3dmatrix.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\image3d\3dTransform.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CDebug.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CNewGuid.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DesignerView.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DlgAbout.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DlgCreatePro.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DlgInput.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DlgNewLayout.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DlgNewSkin.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DlgSkinSelect.h"
-				>
-			</File>
-			<File
-				RelativePath=".\DlgStyleManage.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\ExtendCtrls.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.skins\ExtendSkins.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\GroupChatFrame.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\imre\ImgProvider.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\imre\IRichEditObjHost.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MainDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\image3d\PerspectiveTransform.h"
-				>
-			</File>
-			<File
-				RelativePath=".\resource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\imre\RichEditObj.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\imre\RichEditObjFactory.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\imre\RichEditOleBase.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\imre\RichEditOleCallback.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\imre\RichEditOleCtrls.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.skins\SAniImgFrame.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\SAnimImg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\SButtonEx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\SChromeTabCtrl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SciLexer.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Scintilla.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ScintillaWnd.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\SFreeMoveWindow.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\SImageEx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\SImageMaskWnd.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\SImagePlayer.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SImageSwitcher.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\imre\SImRichEdit.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\SListboxex.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SMoveWnd.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SMyButton.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SouiRealWndHandler.h"
-				>
-			</File>
-			<File
-				RelativePath=".\propgrid\SPropertyEmbedWndHelper.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\propgrid\SPropertyGrid.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SPropertyGridEx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\propgrid\propitem\SPropertyItem-Color.h"
-				>
-			</File>
-			<File
-				RelativePath=".\propgrid\SPropertyItem-i.h"
-				>
-			</File>
-			<File
-				RelativePath=".\propgrid\propitem\SPropertyItem-Option.h"
-				>
-			</File>
-			<File
-				RelativePath=".\propgrid\propitem\SPropertyItem-Size.h"
-				>
-			</File>
-			<File
-				RelativePath=".\propgrid\propitem\SPropertyItem-Text.h"
-				>
-			</File>
-			<File
-				RelativePath=".\propgrid\SPropertyItemBase.h"
-				>
-			</File>
-			<File
-				RelativePath=".\trayicon\SShellNotifyIcon.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.skins\SSkinMutiFrameImg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\SSplitBar.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SSwitch.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\STabCtrl2.h"
-				>
-			</File>
-			<File
-				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\SText.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SToolbox.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\STurn3DView.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\imre\TOM2.h"
-				>
-			</File>
-			<File
-				RelativePath=".\extend.ctrls\utils.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest"
-			>
-			<File
-				RelativePath=".\res\soui_res.rc2"
-				>
-			</File>
-			<File
-				RelativePath=".\UiEditor.rc"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="SoUI Resouece"
-			Filter="idx;xml;png;gif;jpg;ico;lua;bmp"
-			>
-			<File
-				RelativePath=".\uires\values\color.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\uires\xml\dlg_main.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\uires\uidef\init.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\uires\values\skin.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\uires\image\soui.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\uires\values\string.xml"
-				>
-			</File>
-			<File
-				RelativePath=".\uires\uires.idx"
-				>
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="CDebug.h" />
+			<File
+				RelativePath="CNewGuid.h" />
+			<File
+				RelativePath="DesignerView.h" />
+			<File
+				RelativePath="DlgAbout.h" />
+			<File
+				RelativePath="DlgCreatePro.h" />
+			<File
+				RelativePath="DlgInput.h" />
+			<File
+				RelativePath="DlgNewLayout.h" />
+			<File
+				RelativePath="DlgNewSkin.h" />
+			<File
+				RelativePath="DlgSkinSelect.h" />
+			<File
+				RelativePath="DlgStyleManage.h" />
+			<File
+				RelativePath="..\..\controls.extend\ExtendSkins.h" />
+			<File
+				RelativePath="..\..\controls.extend\imre\IRichEditObjHost.h" />
+			<File
+				RelativePath="..\..\controls.extend\imre\ImgProvider.h" />
+			<File
+				RelativePath="MainDlg.h" />
+			<File
+				RelativePath="..\..\controls.extend\image3d\PerspectiveTransform.h" />
+			<File
+				RelativePath="..\..\controls.extend\imre\RichEditObj.h" />
+			<File
+				RelativePath="..\..\controls.extend\imre\RichEditObjFactory.h" />
+			<File
+				RelativePath="..\..\controls.extend\imre\RichEditOleBase.h" />
+			<File
+				RelativePath="..\..\controls.extend\imre\RichEditOleCallback.h" />
+			<File
+				RelativePath="..\..\controls.extend\imre\RichEditOleCtrls.h" />
+			<File
+				RelativePath="..\..\controls.extend\gif\SAniImgFrame.h" />
+			<File
+				RelativePath="..\..\controls.extend\SAnimImg.h" />
+			<File
+				RelativePath="..\..\controls.extend\SButtonEx.h" />
+			<File
+				RelativePath="..\..\controls.extend\SChromeTabCtrl.h" />
+			<File
+				RelativePath="..\..\controls.extend\SFreeMoveWindow.h" />
+			<File
+				RelativePath="..\..\controls.extend\gif\SGifPlayer.h" />
+			<File
+				RelativePath="..\..\controls.extend\imre\SImRichEdit.h" />
+			<File
+				RelativePath="..\..\controls.extend\SImageEx.h" />
+			<File
+				RelativePath="..\..\controls.extend\SImageMaskWnd.h" />
+			<File
+				RelativePath="..\..\controls.extend\SImagePlayer.h" />
+			<File
+				RelativePath="SImageSwitcher.h" />
+			<File
+				RelativePath="SMoveWnd.h" />
+			<File
+				RelativePath="SMyButton.h" />
+			<File
+				RelativePath="propgrid\SPropertyEmbedWndHelper.hpp" />
+			<File
+				RelativePath="propgrid\SPropertyGrid.h" />
+			<File
+				RelativePath="SPropertyGridEx.h" />
+			<File
+				RelativePath="propgrid\propitem\SPropertyItem-Color.h" />
+			<File
+				RelativePath="propgrid\propitem\SPropertyItem-Option.h" />
+			<File
+				RelativePath="propgrid\propitem\SPropertyItem-Size.h" />
+			<File
+				RelativePath="propgrid\propitem\SPropertyItem-Text.h" />
+			<File
+				RelativePath="propgrid\SPropertyItem-i.h" />
+			<File
+				RelativePath="propgrid\SPropertyItemBase.h" />
+			<File
+				RelativePath="trayicon\SShellNotifyIcon.h" />
+			<File
+				RelativePath="..\..\controls.extend\gif\SSkinAPNG.h" />
+			<File
+				RelativePath="..\..\controls.extend\gif\SSkinGif.h" />
+			<File
+				RelativePath="..\..\controls.extend\SSkinMutiFrameImg.h" />
+			<File
+				RelativePath="..\..\controls.extend\SSplitBar.h" />
+			<File
+				RelativePath="SSwitch.h" />
+			<File
+				RelativePath="..\..\controls.extend\STabCtrl2.h" />
+			<File
+				RelativePath="..\..\controls.extend\SText.h" />
+			<File
+				RelativePath="SToolbox.h" />
+			<File
+				RelativePath="..\..\controls.extend\STurn3DView.h" />
+			<File
+				RelativePath="SciLexer.h" />
+			<File
+				RelativePath="Scintilla.h" />
+			<File
+				RelativePath="ScintillaWnd.h" />
+			<File
+				RelativePath="SouiRealWndHandler.h" />
+			<File
+				RelativePath="resource.h" />
+			<File
+				RelativePath="stdafx.h">
 				<FileConfiguration
-					Name="Debug|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Building SoUI Resource"
-						CommandLine="&quot;$(SOUIPATH)\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2 -h .\res\resource.h idtable&#x0D;&#x0A;"
-						Outputs=".\res\soui_res.rc2;"
-					/>
+						CommandLine="echo /*-------------------------------------------------------------------- >stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * Precompiled header source file used by Visual Studio.NET to generate>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * the .pch file.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * Due to issues with the dependencies checker within the IDE, it>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * sometimes fails to recompile the PCH file, if we force the IDE to>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * create the PCH file directly from the header file.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * This file is auto-generated by qmake since no PRECOMPILED_SOURCE was>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * specified, and is used as the common stdafx.cpp. The file is only>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * generated when creating .vcproj project files, and is not used for>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * command line compilations by nmake.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * WARNING: All changes made in this file will be lost.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo --------------------------------------------------------------------*/>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo #include &quot;stdafx.h&quot;>>stdafx.h.cpp"
+						Description="Generating precompiled header source file &apos;stdafx.h.cpp&apos; ..."
+						Outputs="stdafx.h.cpp" />
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Debug|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Building SoUI Resource"
-						CommandLine="&quot;$(SOUIPATH)\tools\uiresbuilder.exe&quot; -i &quot;$(InputPath)&quot; -p uires -r .\res\soui_res.rc2 -h .\res\resource.h idtable&#x0D;&#x0A;"
-						Outputs=".\res\soui_res.rc2;"
-					/>
+						CommandLine="echo /*-------------------------------------------------------------------- >stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * Precompiled header source file used by Visual Studio.NET to generate>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * the .pch file.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * Due to issues with the dependencies checker within the IDE, it>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * sometimes fails to recompile the PCH file, if we force the IDE to>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * create the PCH file directly from the header file.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * This file is auto-generated by qmake since no PRECOMPILED_SOURCE was>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * specified, and is used as the common stdafx.cpp. The file is only>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * generated when creating .vcproj project files, and is not used for>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * command line compilations by nmake.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * WARNING: All changes made in this file will be lost.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo --------------------------------------------------------------------*/>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo #include &quot;stdafx.h&quot;>>stdafx.h.cpp"
+						Description="Generating precompiled header source file &apos;stdafx.h.cpp&apos; ..."
+						Outputs="stdafx.h.cpp" />
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated Files"
+			Filter="cpp;c;cxx;moc;h;def;odl;idl;res;"
+			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}">
+			<File
+				RelativePath="stdafx.h.cpp">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ForcedIncludeFiles="$(NOINHERIT)"
+						PrecompiledHeaderThrough="stdafx.h"
+						UsePrecompiledHeader="1" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ForcedIncludeFiles="$(NOINHERIT)"
+						PrecompiledHeaderThrough="stdafx.h"
+						UsePrecompiledHeader="1" />
 				</FileConfiguration>
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\readme.txt"
-			>
-		</File>
+			RelativePath="uieditor.rc" />
 	</Files>
 	<Globals>
 	</Globals>
