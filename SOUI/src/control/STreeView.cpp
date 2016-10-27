@@ -675,7 +675,7 @@ namespace SOUI
         if(nNewSelItem!= ITvAdapter::ITEM_NULL)
         {
             EnsureVisible(nNewSelItem);
-            SetSel(nNewSelItem);
+            SetSel(nNewSelItem,TRUE);
         }
     }
 
