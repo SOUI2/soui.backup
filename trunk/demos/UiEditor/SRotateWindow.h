@@ -1,5 +1,7 @@
 #pragma once
 
+//作者：望天涯
+
 #include "helper/SMatrix.h"
 class SRotateWindow :
 	public SWindow
