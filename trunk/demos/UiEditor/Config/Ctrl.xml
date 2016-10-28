@@ -242,9 +242,21 @@
 			<realwnd pos="0,0" size="120,120" name="" wndclass="" id="" wndname="" />
 		</realwnd>  	
 
+		<RotateWindow>
+			<RotateWindow AnimImg="png:image_animation_foreground_png" size="270,270" msgTransparent="1" speed="2" turn="right">
+				<window skin="image_animation_bk_png" pos="0,0,-0,-0" msgTransparent="1">
+					<text name="percent_wnd" colorText="#ffffff" font="size:40" pos="| -50,|-50" align="center" height="100" width="100">1%</text>
+				</window>
+			</RotateWindow>
+		</RotateWindow>
+
 		<scrollbar>
 			<scrollbar size="200,16" min="0" max="100" value="10" page="10" vertical="0"/>
-		</scrollbar>		
+		</scrollbar>
+
+		<scrolltext_滚动文本>
+			<scrolltext size="200,24" show="1"  rollType="1" colorText="#ffffff" speed="10">落花是飘在风里的一首诗 无声却叫人心动 是否你能明白它的心思 它的温柔不休不止 落花是飘在风里的一首诗 写下秋天的心事 它只想留下最美的样子</scrolltext>
+		</scrolltext_滚动文本>
 
 
 		<scrollview>
@@ -300,7 +312,7 @@
 				</page>
 			</tabctrl>  
 		</tabctrl>
-		
+
 		<tabctrl2>			
 			<tabctrl2 size = "200, 200" font="face:微软雅黑,adding:-2" tabPos="10" tabAlign="top" colorText="#ffffff" pos="0,25,-0,-0" show="1" curSel="0" focusable="0" tabHeight="75" tabSkin="" iconSkin="" text-y="50" icon-x="12" tabInterSize="5">
 				<page2 title="页1" tip="页1" interval="50">

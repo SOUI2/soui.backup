@@ -167,7 +167,9 @@
 				<class/>
 				<font/>
 				<tip/>
+				<data/>
 				<colorText/>
+
 			</分组>
 
 			<分组 name="拓展">
@@ -1254,7 +1256,37 @@
 				<wndclass style="proptext" name ="类名(wndclass)" value=""/>	
 				<wndname style="proptext" name ="wndname" value=""/>
 			</分组>
-		</realwnd>		
+		</realwnd>	
+
+<RotateWindow>
+			<分组 name="属性:  RotateWindow">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<margin/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+				
+
+
+				<UiEdit_windowText/>	
+
+				
+			</分组>
+			
+			<分组 name="拓展:  RotateWindow">
+				<AnimImg style="proptext" name ="AnimImg" value="" ButtonType="skin"/>
+				<speed style="proptext" name ="speed" value="" />
+			    <turn style="proptext" name ="turn" value="" />
+			</分组>
+		</RotateWindow>	
+		
 
 
 		<scrollbar>
@@ -1281,7 +1313,28 @@
 				<page style="proptext" name ="page" value=""/>
 				<vertical style="proptext" name ="vertical" value=""/>
 			</分组>
-		</scrollbar>	
+		</scrollbar>
+
+		<scrolltext>
+			<分组 name="属性:  scrolltext">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>			
+				<tip/>				
+				<colorBkgnd/>
+				<colorText/>
+				<UiEdit_windowText/>
+				<multiLines style="proptext" name ="多行(multiLines)" value=""/>	
+				<interHeight style="proptext" name ="行间距(interHeight)" value=""/>
+				<speed style="proptext" name ="速度(speed)" value=""/>
+				<rolltype style="proptext" name ="首位衔接(rolltype)" value=""/>		
+			</分组>
+		</scrolltext>			
 
 		<text>
 			<分组 name="属性:  text">

@@ -186,6 +186,7 @@
     <ClInclude Include="propgrid\propitem\SPropertyItem-Text.h" />
     <ClInclude Include="propgrid\SPropertyItem-i.h" />
     <ClInclude Include="propgrid\SPropertyItemBase.h" />
+    <ClInclude Include="SRotateWindow.h" />
     <ClInclude Include="trayicon\SShellNotifyIcon.h" />
     <ClInclude Include="..\..\controls.extend\gif\SSkinAPNG.h" />
     <ClInclude Include="..\..\controls.extend\gif\SSkinGif.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Scintilla.h" />
     <ClInclude Include="ScintillaWnd.h" />
     <ClInclude Include="SouiRealWndHandler.h" />
+    <ClInclude Include="..\..\controls.extend\SScrollText.h" />
     <ClInclude Include="resource.h" />
     <CustomBuild Include="stdafx.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">echo /*-------------------------------------------------------------------- &gt;stdafx.h.cpp
@@ -321,6 +323,7 @@ echo #include "stdafx.h"&gt;&gt;stdafx.h.cpp</Command>
     <ClCompile Include="..\..\controls.extend\STurn3DView.cpp" />
     <ClCompile Include="ScintillaWnd.cpp" />
     <ClCompile Include="SouiRealWndHandler.cpp" />
+    <ClCompile Include="..\..\controls.extend\SScrollText.cpp" />
     <ClCompile Include="UIEditor.cpp" />
     <ClCompile Include="stdafx.h.cpp">
       <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

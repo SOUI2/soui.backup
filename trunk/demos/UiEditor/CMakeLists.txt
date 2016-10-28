@@ -41,6 +41,7 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/STurn3DView.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SAnimImg.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SSkinImgFrame2.h
+	${CMAKE_SOURCE_DIR}/controls.extend/SScrollText.h	
 )
 set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinGif.cpp
@@ -69,6 +70,7 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/STurn3DView.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SAnimImg.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SSkinImgFrame2.cpp
+	${CMAKE_SOURCE_DIR}/controls.extend/SScrollText.cpp		
 )
 
 source_group("Extend Cotrols" FILES ${EXTENDCOTROLS})
