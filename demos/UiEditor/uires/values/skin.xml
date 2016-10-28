@@ -12,4 +12,6 @@
 	<imglist name="SKIN_UIDESIGNER_center.bk" src="PNG:UIDESIGNER_ID_PNG_CENTER_BK" states="1" tile="2" />
 	<imglist name="SKIN_UIDESIGNER_TAB_LEFT" src="PNG:UIDESIGNER_ID_PNG_TAB_LEFT" states="3" top="3" left="3" right="3" bottom="3" />
 	<imglist name="SKIN_UIDESIGNER_PROPGRID_SWITCH" src="PNG:UIDESIGNER_ID_PNG_PROPGRID_SWITCH" states="4" />
+	<imgframe src="PNG:image_animation_bk_png" name="image_animation_bk_png" />
+	<imgframe src="PNG:image_animation_foreground_png" name="image_animation_foreground_png" />
 </skin>

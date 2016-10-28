@@ -45,5 +45,7 @@
 		<file name="UIDESIGNER_ID_PNG_CENTER_BK" path="image\transbkgnd.png" />
 		<file name="UIDESIGNER_ID_PNG_TAB_LEFT" path="image\TAB_left.png" />
 		<file name="UIDESIGNER_ID_PNG_PROPGRID_SWITCH" path="image\propswitch.png" />
+		<file name="image_animation_bk_png" path="image\animation_bk.png" />
+		<file name="image_animation_foreground_png" path="image\animation_foreground.png" />
 	</PNG>
 </resource>
