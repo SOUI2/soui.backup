@@ -39,6 +39,7 @@ SDesignerView::SDesignerView(SHostDialog *pMainHost, SWindow *pContainer, STreeC
 	m_pContainer = pContainer;
 	m_pMainHost = pMainHost;
 	m_treeXmlStruct = pTreeXmlStruct;
+	m_ndata = 0;
 
 	m_treeXmlStruct->GetEventSet()->subscribeEvent(EVT_TC_SELCHANGED,Subscriber(&SDesignerView::OnTCSelChanged,this));
 
@@ -108,6 +109,10 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 
 	m_mapLayoutFile1[strFileName] = xmlDoc1;  
 
+	m_mapInclude1[strFileName]= new SMap<int, SStringT>;
+
+
+	m_strCurFile = strFileName;
 	RenameChildeWnd(xmlDoc1->first_child());
 	return TRUE;
 }
@@ -415,7 +420,7 @@ BOOL SDesignerView::SaveAll()
 		if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) 
 		{
 			pugi::xml_node NodeSave = DocSave.first_child();
-			RemoveWndName(NodeSave);
+			RemoveWndName(NodeSave, FALSE, strFileName);
 
 			FullFileName = m_strProPath + _T("\\") + strFileName;
 			DocSave.save_file(FullFileName);
@@ -458,8 +463,8 @@ BOOL SDesignerView::SaveLayoutFile()
 	pugi::xml_document DocSave;
 	if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16))
 	{
-		pugi::xml_node NodeSave = DocSave.first_child();
-	    RemoveWndName(NodeSave);
+		pugi::xml_node NodeSave = DocSave.root();
+	    RemoveWndName(NodeSave, FALSE);
 
 		FullFileName = m_strProPath + _T("\\") + strFileName;
 		DocSave.save_file(FullFileName);
@@ -494,59 +499,62 @@ SMoveWnd* SDesignerView::CreateWnd(SWindow *pContainer,LPCWSTR pszXml)
 
 void SDesignerView::RenameWnd(pugi::xml_node xmlNode, BOOL force)
 {
-	pugi::xml_attribute xmlAttr = xmlNode.attribute(L"name", false);
-	pugi::xml_attribute xmlAttr1 = xmlNode.attribute(L"uidesiner_name", false);
+	pugi::xml_attribute xmlAttr = xmlNode.attribute(L"data", false);
+	pugi::xml_attribute xmlAttr1 = xmlNode.attribute(L"uidesiner_data", false);
 
-	SStringT strNameValue;
-
-	if (force)
+	SStringT strName = _T("item"); //不处理item节点
+	if (strName.CompareNoCase(xmlNode.name()) == 0)
 	{
-		if (!xmlAttr)
-		{
-			strNameValue = CNewGuid::Get();
-			xmlNode.append_attribute(L"name").set_value(strNameValue);
-		}else
-		{
-			strNameValue = CNewGuid::Get();
-			xmlAttr.set_value(strNameValue);
-		}
-
-		if (!xmlAttr1)
-		{
-			xmlNode.append_attribute(L"uidesiner_name").set_value(strNameValue);
-		}else
-		{
-			xmlAttr1.set_value(strNameValue);
-		}
+		return;
 	}
-	else
-	{
+
+	//if (force)
+	//{
+	//	if (!xmlAttr)
+	//	{
+
+	//		xmlNode.append_attribute(L"data").set_value(GetIndexData());
+	//	}else
+	//	{
+	//		xmlAttr.set_value(GetIndexData());
+	//	}
+
+	//	if (!xmlAttr1)
+	//	{
+	//		xmlNode.append_attribute(L"uidesiner_data").set_value(GetIndexData());
+	//	}else
+	//	{
+	//		xmlAttr1.set_value(GetIndexData());
+	//	}
+	//}
+	//else
+	//{
 		if (!xmlAttr)
 		{
-			strNameValue = CNewGuid::Get();
-			xmlNode.append_attribute(L"name").set_value(strNameValue);
-			xmlNode.append_attribute(L"uidesiner_name").set_value(strNameValue);
+
+			xmlNode.append_attribute(L"data").set_value(GetIndexData());
+			xmlNode.append_attribute(L"uidesiner_data").set_value(_T(""));
 		}else
 		{
-			strNameValue = xmlAttr.value();
+			int data = xmlAttr.as_int();
 
 			if (!xmlAttr1)
 			{
-				xmlNode.append_attribute(L"uidesiner_name").set_value(strNameValue);
+				xmlNode.append_attribute(L"uidesiner_data").set_value(data);
 			}
 			else
 			{
-				xmlAttr1.set_value(strNameValue);
+				xmlAttr1.set_value(data);
 			}
 
-			xmlAttr.set_value(CNewGuid::Get());
+			xmlAttr.set_value(GetIndexData());
 		}
-	}
+	//}
 }
 
 
 
-void SDesignerView::RemoveWndName(pugi::xml_node xmlNode)
+void SDesignerView::RemoveWndName(pugi::xml_node xmlNode, BOOL bClear, SStringT strFileName)
 {
 	pugi::xml_node NodeChild = xmlNode.first_child();
 
@@ -555,18 +563,37 @@ void SDesignerView::RemoveWndName(pugi::xml_node xmlNode)
 
 	while (NodeChild)
 	{  
-		attr = NodeChild.attribute(L"uidesiner_name",false);
-		attr1 = NodeChild.attribute(L"name", false);
+		attr = NodeChild.attribute(L"uidesiner_data",false);
+		attr1 = NodeChild.attribute(L"data", false);
+		
+		if (strFileName.IsEmpty())
+		{
+			strFileName = m_strCurFile;
+		}
+
+		SMap<SStringT, SMap<int, SStringT>* >::CPair *p = m_mapInclude1.Lookup(strFileName);
+		SMap<int, SStringT>* pMap;
+		SMap<int, SStringT>::CPair *p1;
+		if (p)
+		{
+			pMap = p->m_value;
+			p1 = pMap->Lookup(attr1.as_int());
 
 
 
-		SMap<SStringT, SStringT>::CPair *p = m_mapInclude.Lookup(attr1.value());
+		}else
+		{
+			Debug(_T("替换include出错"));
+		}
+
+
+
 		
 
-		if (p)
+		if (p1)
 		{//如果这个控件是include
 
-			if(!doc.load_buffer(p->m_value,wcslen(p->m_value)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) 
+			if(!doc.load_buffer(p1->m_value,wcslen(p1->m_value)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) 
 			{	
 				Debug(_T("RemoveWndName出错了"));
 			}
@@ -576,49 +603,37 @@ void SDesignerView::RemoveWndName(pugi::xml_node xmlNode)
 				nodeNew = NodeChild.parent().insert_copy_after(doc.first_child(), NodeChild);
 				NodeChild.parent().remove_child(NodeChild);
 				NodeChild = nodeNew.next_sibling();
+				if (bClear)
+				{
+					pMap->RemoveKey(attr1.as_int());
+				}
+
 			}
 
 		}else
 		{
-			if (attr)
+			if (attr && _wcsicmp(NodeChild.name(),L"item") !=0 )
 			{
+
 				SStringT str;
 				str = attr.value();
-				if (0 == str.CompareNoCase(attr1.value()))
+				if (str.IsEmpty())
 				{
-					NodeChild.remove_attribute(L"uidesiner_name");
-					NodeChild.remove_attribute(L"name");
+					NodeChild.remove_attribute(L"uidesiner_data");
+					NodeChild.remove_attribute(L"data");
 				}
 				else
 				{
 					attr1.set_value(str);
-					NodeChild.remove_attribute(L"uidesiner_name");
+					NodeChild.remove_attribute(L"uidesiner_data");
 				}
 
 			}
 
-
-			//spinButton_微调按钮
-			if (_wcsicmp(NodeChild.name(),L"edit")==0)
-			{
-				if (NodeChild.next_sibling() && _wcsicmp(NodeChild.next_sibling().name(),L"spinButton")==0 )
-				{
-
-					RemoveWndName(NodeChild);
-
-					NodeChild.next_sibling().attribute(_T("buddy")).set_value(NodeChild.attribute(_T("name")).value());
-
-					NodeChild = NodeChild.next_sibling();
-
-					continue;
-
-				}
-			}
-
-			if (_wcsicmp(NodeChild.name(),L"spinButton")!=0)
+			if (_wcsicmp(NodeChild.name(),L"item")!=0)
 			{
 
-				RemoveWndName(NodeChild);
+				RemoveWndName(NodeChild, bClear, strFileName);
 			}
 
 
@@ -628,19 +643,13 @@ void SDesignerView::RemoveWndName(pugi::xml_node xmlNode)
 
 }
 
-void SDesignerView::RenameChildeWnd(pugi::xml_node xmlNode, BOOL force)
+void SDesignerView::RenameChildeWnd(pugi::xml_node xmlNode)
 {
-
 	pugi::xml_node NodeChild = xmlNode.first_child();
 	
 
 	while (NodeChild)
 	{  
-		if (_wcsicmp(NodeChild.name(), L"style") == 0 || _wcsicmp(NodeChild.name(), L"skin") == 0)
-		{
-			NodeChild = NodeChild.next_sibling();
-			continue;
-		}
 		//替换Include
 		if(_wcsicmp(NodeChild.name(),L"include")==0 && NodeChild.attribute(L"src"))
 		{
@@ -653,7 +662,19 @@ void SDesignerView::RenameChildeWnd(pugi::xml_node xmlNode, BOOL force)
 			NodeChild.text().set(strInclude);
 
 			RenameWnd(NodeChild);
-			m_mapInclude[NodeChild.attribute(L"name").value()] = strInclude;
+		
+
+			SMap<SStringT, SMap<int, SStringT>* >::CPair *p = m_mapInclude1.Lookup(m_strCurFile);
+			if (p)
+			{
+				SMap<int, SStringT>* pMap = p->m_value;
+				(*pMap)[NodeChild.attribute(L"data").as_int()] = strInclude;
+			}else
+			{
+				Debug(_T("替换include出错"));
+			}
+
+
 			
 			NodeChild = NodeChild.next_sibling();
 
@@ -662,23 +683,7 @@ void SDesignerView::RenameChildeWnd(pugi::xml_node xmlNode, BOOL force)
 
 		}
 
-		//spinButton_微调按钮
-		if(_wcsicmp(NodeChild.name(),L"edit")==0)
-		{
-			if (NodeChild.next_sibling() && _wcsicmp(NodeChild.next_sibling().name(),L"spinButton")==0 )
-			{
 
-				RenameWnd(NodeChild);
-
-				NodeChild.next_sibling().attribute(_T("buddy")).set_value(NodeChild.attribute(_T("name")).value());
-
-				NodeChild = NodeChild.next_sibling();
-
-				continue;
-
-			}
-
-		}
 
 
 
@@ -692,14 +697,13 @@ void SDesignerView::RenameChildeWnd(pugi::xml_node xmlNode, BOOL force)
 		//	continue;
 		//}
 
-		//将<button name = "XXX"/> 修改为
-		//  <button name = "sdfasf_asdf_sdfmij_dfwef" uidesiner_name = "XXX"/> 
+		//将<button data = "1"/> 修改为
+		//  <button data = "xxx" uidesiner_data = "1"/> 
 		RenameWnd(NodeChild);
 
-		if (_wcsicmp(NodeChild.name(),L"spinButton")!=0)
-		{
-					RenameChildeWnd(NodeChild);
-		}
+
+		RenameChildeWnd(NodeChild);
+
 
 
 
@@ -720,6 +724,7 @@ void SDesignerView::RenameAllLayoutWnd()
 
 pugi::xml_node SDesignerView::FindNodeByAttr(pugi::xml_node NodeRoot, SStringT attrName, SStringT attrValue)
 {
+
 	pugi::xml_node NodeChild = NodeRoot.first_child();
 
 	pugi::xml_attribute attr;
@@ -727,7 +732,11 @@ pugi::xml_node SDesignerView::FindNodeByAttr(pugi::xml_node NodeRoot, SStringT a
 
 	while (NodeChild)
 	{   
-
+		if (_wcsicmp(NodeChild.name(), _T("item")) == 0)
+		{
+		    NodeChild = NodeChild.next_sibling();
+			continue;
+		}
 		
 		attr = NodeChild.attribute(attrName, false);
 		if (attr)
@@ -796,7 +805,7 @@ void SDesignerView::SetCurrentCtrl(pugi::xml_node xmlNode, SMoveWnd *pWnd)
 	m_CurSelCtrl = pWnd;
 	
 	m_treeXmlStruct->GetEventSet()->unsubscribeEvent(EVT_TC_SELCHANGED,Subscriber(&SDesignerView::OnTCSelChanged,this));
-    GoToXmlStructItem(m_CurSelCtrl->m_pRealWnd->GetName(), m_treeXmlStruct->GetRootItem());
+	GoToXmlStructItem(m_CurSelCtrl->m_pRealWnd->GetUserData(), m_treeXmlStruct->GetRootItem());
 	m_treeXmlStruct->GetEventSet()->subscribeEvent(EVT_TC_SELCHANGED,Subscriber(&SDesignerView::OnTCSelChanged,this));
 }
 
@@ -817,7 +826,10 @@ void SDesignerView::UpdatePosToXmlNode(SWindow *pRealWnd, SMoveWnd* pMoveWnd)
 
 	SwndLayout *pLayout = pRealWnd->GetLayout();
 
-	pugi::xml_node xmlNode = FindNodeByAttr(m_CurrentLayoutNode, L"name", pRealWnd->GetName());
+	
+	SStringT s;
+	s.Format(_T("%d"), pRealWnd->GetUserData());
+	pugi::xml_node xmlNode = FindNodeByAttr(m_CurrentLayoutNode, L"data", s);
 	if(!xmlNode)
 	{
 		return;
@@ -1196,15 +1208,9 @@ void SDesignerView::UpdatePropGrid(pugi::xml_node xmlNode)
 				IPropertyItem *pItem = m_pPropgrid->GetGridItem(str.MakeLower());
 				if (pItem)
 				{
-					if (str.CompareNoCase(_T("name")) == 0)
+					if (str.CompareNoCase(_T("data")) == 0)
 					{
-						SStringT sTemp = xmlAttr.value();
-						SStringT sTemp1 = xmlNode.attribute(L"uidesiner_name").value();
-
-						if (_wcsicmp(xmlAttr.value(), xmlNode.attribute(L"uidesiner_name").value()) != 0)
-						{
-							pItem->SetStringOnly(xmlNode.attribute(L"uidesiner_name").value());
-						}
+							pItem->SetStringOnly(xmlNode.attribute(L"uidesiner_data").value());
 					}else
 					{
 						pItem->SetStringOnly(xmlAttr.value());
@@ -1222,15 +1228,9 @@ void SDesignerView::UpdatePropGrid(pugi::xml_node xmlNode)
 				IPropertyItem *pItem = m_pPropgrid->GetGridItem(str.MakeLower());
 				if (pItem)
 				{
-					if (str.CompareNoCase(_T("name")) == 0)
+					if (str.CompareNoCase(_T("data")) == 0)
 					{
-						SStringT sTemp = xmlAttr.value();
-						SStringT sTemp1 = xmlNode.attribute(L"uidesiner_name").value();
-
-						if (_wcsicmp(xmlAttr.value(), xmlNode.attribute(L"uidesiner_name").value()) != 0)
-						{
-							pItem->SetStringOnly(xmlNode.attribute(L"uidesiner_name").value());
-						}
+							pItem->SetStringOnly(xmlNode.attribute(L"uidesiner_data").value());
 					}else
 					{
 						pItem->SetStringOnly(xmlAttr.value());
@@ -1257,15 +1257,9 @@ void SDesignerView::UpdatePropGrid(pugi::xml_node xmlNode)
 			IPropertyItem *pItem = m_pPropgrid->GetGridItem(str.MakeLower());
 			if (pItem)
 			{
-				if (str.CompareNoCase(_T("name")) == 0)
+				if (str.CompareNoCase(_T("data")) == 0)
 				{
-					SStringT sTemp = xmlAttr.value();
-					SStringT sTemp1 = xmlNode.attribute(L"uidesiner_name").value();
-
-					if (_wcsicmp(xmlAttr.value(), xmlNode.attribute(L"uidesiner_name").value()) != 0)
-					{
-						pItem->SetStringOnly(xmlNode.attribute(L"uidesiner_name").value());
-					}
+						pItem->SetStringOnly(xmlNode.attribute(L"uidesiner_data").value());
 				}else
 				{
 					pItem->SetStringOnly(xmlAttr.value());
@@ -1356,9 +1350,9 @@ bool SDesignerView::OnPropGridValueChanged( EventArgs *pEvt )
 	{
 		if (s1.IsEmpty())
 		{
-			if (s.CompareNoCase(_T("name")) == 0)
+			if (s.CompareNoCase(_T("data")) == 0)
 			{
-				xmlNode.attribute(_T("uidesiner_name")).set_value(xmlNode.attribute(_T("name")).value());
+				xmlNode.attribute(_T("uidesiner_data")).set_value(_T(""));
 
 			}else
 			{
@@ -1366,9 +1360,9 @@ bool SDesignerView::OnPropGridValueChanged( EventArgs *pEvt )
 			}
 		}else
 		{
-			if (s.CompareNoCase(_T("name")) == 0)
+			if (s.CompareNoCase(_T("data")) == 0)
 			{
-				xmlNode.attribute(_T("uidesiner_name")).set_value(s1);
+				xmlNode.attribute(_T("uidesiner_data")).set_value(s1);
 
 			}else
 			{
@@ -1410,7 +1404,7 @@ bool SDesignerView::OnPropGridValueChanged( EventArgs *pEvt )
 	}*/
 
 
-	SStringT strName = ((SMoveWnd*)m_CurSelCtrl)->m_pRealWnd->GetName();
+	int data = ((SMoveWnd*)m_CurSelCtrl)->m_pRealWnd->GetUserData();
 
     ReLoadLayout();
 
@@ -1419,7 +1413,7 @@ bool SDesignerView::OnPropGridValueChanged( EventArgs *pEvt )
 		m_CurSelCtrl = m_pMoveWndRoot;
 	}else
 	{
-		SWindow *pRealWnd =m_pRealWndRoot->FindChildByName2<SWindow>(strName);
+		SWindow *pRealWnd =FindChildByUserData(m_pRealWndRoot, data);
 
 		SMap<SWindow*,SMoveWnd*>::CPair *p = m_mapMoveRealWnd.Lookup(pRealWnd);
 		if (p)
@@ -1504,6 +1498,7 @@ bool SDesignerView::OnPropGridItemClick( EventArgs *pEvt )
 
 BOOL SDesignerView::ReLoadLayout()
 {
+
 	pugi::xml_node xmlnode;
 		BOOL bIsInclude = FALSE;
 
@@ -1707,7 +1702,7 @@ void SDesignerView::AddCodeToEditor(CScintillaWnd* pSciWnd)  //复制xml代码到代码
 
 	if (m_xmlNode == m_CurrentLayoutNode && strNodeName.CompareNoCase(m_xmlNode.name()) == 0)
 	{
-		return;
+		doc.append_copy(m_xmlNode);
 	}else
 	if (m_xmlNode == m_CurrentLayoutNode)
 	{
@@ -1719,7 +1714,7 @@ void SDesignerView::AddCodeToEditor(CScintillaWnd* pSciWnd)  //复制xml代码到代码
 
 	//Debug(doc.root().first_child());
 
-	RemoveWndName(doc.root());
+	RemoveWndName(doc.root(), TRUE);
 
 
 	pugi::xml_writer_buff writer;
@@ -1770,38 +1765,40 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* pSciWnd)//从代码编辑器获取x
 		return;
 	}
 
-	if (m_xmlNode != m_CurrentLayoutNode && _wcsicmp(m_xmlNode.parent().name(), _T("spinButton")) == 0)
-	{
+	RenameChildeWnd(doc.root());
 
-	}else
-	{
-		RenameChildeWnd(doc.root());
-	}
 
 
 	BOOL bRoot = FALSE;
 
 	SStringT strNodeName(_T("include"));
+
 	if (m_xmlNode == m_CurrentLayoutNode && strNodeName.CompareNoCase(m_xmlNode.name()) == 0)
 	{
-		return;
+		pugi::xml_node xmlPNode;
+		xmlPNode = m_xmlNode.parent();
+		pugi::xml_node xmlNode = xmlPNode.insert_copy_after(doc.root().first_child(), m_xmlNode);
+
+		xmlPNode.remove_child(m_xmlNode);
+		m_xmlNode = xmlNode;
+		m_CurrentLayoutNode = m_xmlNode;
 	}else
-		if (m_xmlNode == m_CurrentLayoutNode)
-		{
+	if (m_xmlNode == m_CurrentLayoutNode && strNodeName.CompareNoCase(m_xmlNode.name()) != 0)
+	{
 			pugi::xml_node fristNode = m_xmlNode.child(_T("root"));
 			pugi::xml_node xmlNode = m_xmlNode.insert_copy_after(doc.root().first_child(), fristNode);
 			m_xmlNode.remove_child(fristNode);
 			bRoot = TRUE;
 
-		}else
-		{
+	}else
+	{
 			pugi::xml_node xmlPNode;
 			xmlPNode = m_xmlNode.parent();
 			pugi::xml_node xmlNode = xmlPNode.insert_copy_after(doc.root().first_child(), m_xmlNode);
 
 			xmlPNode.remove_child(m_xmlNode);
 			m_xmlNode = xmlNode;
-		}
+	}
 
 
 	ReLoadLayout();
@@ -1877,14 +1874,25 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 		m_xmlNode.text().set(strInclude);
 
 		RenameWnd(m_xmlNode, TRUE);
-		m_mapInclude[m_xmlNode.attribute(L"name").value()] = strInclude;
+
+
+		SMap<SStringT, SMap<int, SStringT>* >::CPair *p = m_mapInclude1.Lookup(m_strCurFile);
+		if (p)
+		{
+			SMap<int, SStringT>* pMap = p->m_value;
+			(*pMap)[m_xmlNode.attribute(L"data").as_int()] = strInclude;
+		}else
+		{
+			Debug(_T("替换include出错"));
+		}
+
 
 	}else
 	{
 
 		//重命名控件
 		RenameWnd(m_xmlNode, TRUE);
-		RenameChildeWnd(m_xmlNode, TRUE);
+		RenameChildeWnd(m_xmlNode);
 
 	}
 
@@ -1899,7 +1907,9 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 		pMoveWnd = pM;
 	}else
 	{
-		pugi::xml_node xmlNodeRealWnd = FindNodeByAttr(m_CurrentLayoutNode, L"name", pM->m_pRealWnd->GetName());
+		SStringT s;
+		s.Format(_T("%d"), pM->m_pRealWnd->GetUserData());
+		pugi::xml_node xmlNodeRealWnd = FindNodeByAttr(m_CurrentLayoutNode, L"data", s);
 		if (bIsContainerCtrl(xmlNodeRealWnd.name()))
 		{
 			pRealWnd = pM->m_pRealWnd;
@@ -1974,8 +1984,11 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 	}
 	else
 	{
+
 		//找到m_realWnd控件对应的xml节点
-		pugi::xml_node xmlNodeRealWnd = FindNodeByAttr(m_CurrentLayoutNode, L"name", pRealWnd->GetName());
+		SStringT s;
+		s.Format(_T("%d"), pRealWnd->GetUserData());
+		pugi::xml_node xmlNodeRealWnd = FindNodeByAttr(m_CurrentLayoutNode, L"data", s);
 
 		//将新创建的控件写入父控件的xml节点
 		SetCurrentCtrl(xmlNodeRealWnd.append_copy(m_xmlNode), Wnd1);
@@ -1998,15 +2011,11 @@ void SDesignerView::InitXMLStruct(pugi::xml_node xmlNode, HSTREEITEM item)
 	pugi::xml_node NodeSib = xmlNode;
 	while (NodeSib)
 	{
-		SStringT strName;
-		if (NodeSib.attribute(_T("name")))
+		int data = 0;
+		if (NodeSib.attribute(_T("data")))
 		{
-			strName = NodeSib.attribute(_T("name")).value();
-		}else
-		{
-			strName = _T("");
+			data = NodeSib.attribute(_T("data")).as_int();
 		}
-		SStringT *strName1 = new SStringT(strName);
 
 		SStringT strNodeName = NodeSib.name();
 		if (strNodeName.IsEmpty())
@@ -2015,7 +2024,7 @@ void SDesignerView::InitXMLStruct(pugi::xml_node xmlNode, HSTREEITEM item)
 		}
 
 		HSTREEITEM itemChild = m_treeXmlStruct->InsertItem(strNodeName, item);  
-		m_treeXmlStruct->SetItemData(itemChild, (LPARAM)strName1);  
+		m_treeXmlStruct->SetItemData(itemChild, data);  
 
 
 		InitXMLStruct(NodeSib.first_child(), itemChild);
@@ -2027,15 +2036,15 @@ void SDesignerView::InitXMLStruct(pugi::xml_node xmlNode, HSTREEITEM item)
 
 
 
-BOOL SDesignerView::GoToXmlStructItem(SStringT strCtrlName, HSTREEITEM item)
+BOOL SDesignerView::GoToXmlStructItem(int  data, HSTREEITEM item)
 {
 	    HSTREEITEM SibItem = item;
 
 		while (SibItem)
 		{
-			SStringT *s  = (SStringT*)m_treeXmlStruct->GetItemData(SibItem);
+			int data1  = m_treeXmlStruct->GetItemData(SibItem);
 
-			if (s->CompareNoCase(strCtrlName) == 0)
+			if (data1 == data)
 			{
 				m_treeXmlStruct->SelectItem(SibItem);
 				m_treeXmlStruct->Invalidate();
@@ -2046,7 +2055,7 @@ BOOL SDesignerView::GoToXmlStructItem(SStringT strCtrlName, HSTREEITEM item)
 
 
 
-		    BOOL Result = GoToXmlStructItem(strCtrlName, ChildItem);
+		    BOOL Result = GoToXmlStructItem(data, ChildItem);
 			if (Result)
 			{
 				return TRUE;
@@ -2070,17 +2079,18 @@ bool SDesignerView::OnTCSelChanged(EventArgs *pEvt)
 
 	HSTREEITEM item =  m_treeXmlStruct->GetSelectedItem();
 
-	SStringT *s = (SStringT*)m_treeXmlStruct->GetItemData(item);
+	int data = m_treeXmlStruct->GetItemData(item);
 
-	pugi::xml_node xmlNode = FindNodeByAttr(m_CurrentLayoutNode, L"name", *s);
+	SStringT s;
+	s.Format(_T("%d"), data);
+	pugi::xml_node xmlNode = FindNodeByAttr(m_CurrentLayoutNode, L"data", s);
 
     if (!xmlNode)
     {
 		return true;
     }
 
-	
-	SWindow *wnd = m_pRealWndRoot->FindChildByName(*s);
+	SWindow *wnd = FindChildByUserData(m_pRealWndRoot, data);
 
 	if (wnd)
 	{
@@ -2191,4 +2201,31 @@ void SDesignerView::ShowMovWndChild(BOOL bShow, SMoveWnd* pMovWnd)
             ShowMovWndChild(bShow, (SMoveWnd*)pMovWnd->GetWindow(GSW_FIRSTCHILD));
 		}
 	}
+}
+int SDesignerView::GetIndexData()
+{
+	m_ndata = m_ndata + 1;
+	return m_ndata;
+}
+
+SWindow* SDesignerView::FindChildByUserData(SWindow* pWnd, int data)
+{
+
+	SWindow *pChild = pWnd->GetWindow(GSW_FIRSTCHILD);
+	while(pChild)
+	{
+		if (pChild->GetUserData() == data)
+			return pChild;
+		pChild = pChild->GetWindow(GSW_NEXTSIBLING);
+	}
+
+	pChild = pWnd->GetWindow(GSW_FIRSTCHILD);
+	while(pChild)
+	{
+		SWindow *pChildFind=FindChildByUserData(pChild,data);
+		if(pChildFind) return pChildFind;
+		pChild = pChild->GetWindow(GSW_NEXTSIBLING);
+	}
+
+	return NULL;
 }

@@ -39,10 +39,10 @@ namespace SOUI
          void UpdateAllLayout(SMoveWnd* pMoveWndRoot);
 
 		 //重命名每一个控件的名字
-		 void RenameChildeWnd(pugi::xml_node xmlNode,  BOOL force = FALSE);
+		 void RenameChildeWnd(pugi::xml_node xmlNode);
          void RenameWnd(pugi::xml_node xmlNode, BOOL force = FALSE);
          void RenameAllLayoutWnd();
-		 void RemoveWndName(pugi::xml_node xmlNode);
+		 void RemoveWndName(pugi::xml_node xmlNode,BOOL bClear, SStringT strFileName = _T(""));
 
 		 void UpdatePosToXmlNode(SWindow *pRealWnd, SMoveWnd* pMoveWnd);//移动控件的同时将控件位置写入xml节点
 
@@ -88,7 +88,7 @@ namespace SOUI
 
 
 		 void InitXMLStruct(pugi::xml_node xmlNode, HSTREEITEM item);
-         BOOL GoToXmlStructItem(SStringT strCtrlName, HSTREEITEM item);
+         BOOL GoToXmlStructItem(int data, HSTREEITEM item);
 
 		 void DeleteCtrl();
 		 void Preview();
@@ -100,6 +100,9 @@ namespace SOUI
 
 		 void ShowMovWndChild(BOOL bShow, SMoveWnd* pMovWnd);
 
+		 int GetIndexData();
+
+		 SWindow* FindChildByUserData(SWindow* pWnd, int data);
 
 	public:
 		    SWindow *m_pRealWndRoot;       //布局容器窗口;
@@ -122,7 +125,8 @@ namespace SOUI
 
 			SMap<SStringT, pugi::xml_node> m_mapLayoutFile;  
 			SMap<SStringT, pugi::xml_document *> m_mapLayoutFile1;  
-			SMap<SStringT, SStringT> m_mapInclude;    //保存include节点
+			//SMap<int, SStringT> m_mapInclude;    //保存include节点
+			SMap<SStringT, SMap<int, SStringT>* > m_mapInclude1;    //保存每一个布局文件对应的include map;
 
 			SMap<SWindow*, SMoveWnd*> m_mapMoveRealWnd;
 
@@ -151,6 +155,8 @@ namespace SOUI
             SList<SStringT> m_lstContainerCtrl;  //容器控件列表，非容器控件，上面不能摆放控件 在Ctrl.xml中定义
 
 			STreeCtrl *m_treeXmlStruct; //显示xml文档结构的tree控件
+
+			int m_ndata; //这个值用来标识xmlnode的每一个节点，节点属性为data,xmlnode的这个属性值是唯一的;
 
 
 	};
