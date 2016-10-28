@@ -142,7 +142,9 @@ namespace SOUI
 
 		if (m_pRealWnd != m_Desiner->m_pRealWndRoot)
 		{
-			m_Desiner->SetCurrentCtrl(m_Desiner->FindNodeByAttr(m_Desiner->m_CurrentLayoutNode, L"name", m_pRealWnd->GetName()), this);
+			SStringT s;
+			s.Format(_T("%d"), m_pRealWnd->GetUserData());
+			m_Desiner->SetCurrentCtrl(m_Desiner->FindNodeByAttr(m_Desiner->m_CurrentLayoutNode, L"data", s), this);
 			m_Desiner->CreatePropGrid(m_Desiner->m_xmlNode.name());
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
 		}else
