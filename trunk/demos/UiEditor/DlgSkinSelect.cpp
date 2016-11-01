@@ -682,6 +682,12 @@ namespace SOUI
 	}
 	void SDlgSkinSelect::OnZYDel()
 	{
+		if (m_lbResType->GetCurSel() == 0)
+		{
+			CDebug::Debug(_T("内置资源不能删除"));
+			return;
+		}
+
 
 		SStringT strResText = GetLBCurSelText(m_lbRes);
 		if (strResText.IsEmpty())
@@ -727,6 +733,13 @@ namespace SOUI
 	//新建皮肤
 	void SDlgSkinSelect::OnSkinNew()
 	{
+		if (m_lbResType->GetCurSel() == 0)
+		{
+			CDebug::Debug(_T("内置皮肤不能修改"));
+			return;
+		}
+
+
 		if (m_lbRes->GetCurSel() < 0)
 		{
 			CDebug::Debug(_T("请先选择资源"));
@@ -786,6 +799,13 @@ namespace SOUI
 	//删除皮肤
 	void SDlgSkinSelect::OnSkinDel()
 	{
+
+		if (m_lbResType->GetCurSel() == 0)
+		{
+			CDebug::Debug(_T("内置皮肤不能删除"));
+			return;
+		}
+
 		if (m_lbSkin->GetCurSel() < 0)
 		{
 			return;
