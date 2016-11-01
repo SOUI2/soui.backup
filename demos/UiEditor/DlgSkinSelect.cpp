@@ -767,12 +767,28 @@ namespace SOUI
 			xmlNode = m_xmlDocSkin.child(L"UIDEF").child(L"skin");
 		}
 
-		xmlNode = xmlNode.append_child(strSkinTypeName);
 
 		SStringT strSrc;
 		strSrc = GetLBCurSelText(m_lbResType) + _T(":");
 		SStringT *s  = (SStringT *)m_lbRes->GetItemData(m_lbRes->GetCurSel());
 		strSrc = strSrc + *s;
+
+
+		//判断当前资源已被其他皮肤引用
+		pugi::xml_node NodeTemp = xmlNode.find_child_by_attribute(_T("name"), *s);
+		if (NodeTemp)
+		{
+
+			CDebug::Debug(_T("当前资源已被其他皮肤引用:") + CDebug::Debug1(NodeTemp));
+			
+			return;
+
+		}
+		
+
+
+	    xmlNode = xmlNode.append_child(strSkinTypeName);
+
 
 
 		xmlNode.append_attribute(_T("src")).set_value(strSrc);
