@@ -13,7 +13,6 @@
  * SSSE3 functions and enable the caller to determine SSSE3 support.  However for
  * compilers that do not support SSSE3 we provide a stub implementation.
  */
-#if SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_SSSE3
 
 #include <tmmintrin.h>  // SSSE3
 
@@ -731,30 +730,3 @@ void S32_alpha_D32_filter_DXDY_SSSE3(const SkBitmapProcState& s,
     S32_generic_D32_filter_DXDY_SSSE3<true>(s, xy, count, colors);
 }
 
-#else // SK_CPU_SSE_LEVEL >= SK_CPU_SSE_LEVEL_SSSE3
-
-void S32_opaque_D32_filter_DX_SSSE3(const SkBitmapProcState& s,
-                                    const uint32_t* xy,
-                                    int count, uint32_t* colors) {
-    sk_throw();
-}
-
-void S32_alpha_D32_filter_DX_SSSE3(const SkBitmapProcState& s,
-                                   const uint32_t* xy,
-                                   int count, uint32_t* colors) {
-    sk_throw();
-}
-
-void S32_opaque_D32_filter_DXDY_SSSE3(const SkBitmapProcState& s,
-                                    const uint32_t* xy,
-                                    int count, uint32_t* colors) {
-    sk_throw();
-}
-
-void S32_alpha_D32_filter_DXDY_SSSE3(const SkBitmapProcState& s,
-                                   const uint32_t* xy,
-                                   int count, uint32_t* colors) {
-    sk_throw();
-}
-
-#endif
