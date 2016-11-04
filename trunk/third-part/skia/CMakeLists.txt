@@ -28,7 +28,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/views)
 add_definitions (
     -D_CRT_SECURE_NO_WARNINGS
     -DSK_IGNORE_ETC1_SUPPORT
-    -DSK_CPU_SSE_LEVEL=31)
+    )
 
 #
 # TODO
