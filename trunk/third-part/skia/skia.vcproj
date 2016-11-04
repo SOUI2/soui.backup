@@ -125,7 +125,7 @@
 				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
 				Optimization="1"
 				AdditionalIncludeDirectories="&quot;.&quot;,&quot;include\config&quot;,&quot;include\core&quot;,&quot;src\core&quot;,&quot;include\gpu&quot;,&quot;src\gpu&quot;,&quot;include\images&quot;,&quot;include\utils&quot;,&quot;include\utils\win&quot;,&quot;src\utils&quot;,&quot;include\ports&quot;,&quot;include\text&quot;,&quot;include\effects&quot;,&quot;src\sfnt&quot;,&quot;include\pathops&quot;,&quot;src\image&quot;,&quot;src\opts&quot;,&quot;src\lazy&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,SK_IGNORE_ETC1_SUPPORT,SK_CPU_SSE_LEVEL=31,NDEBUG"
+				PreprocessorDefinitions="_WINDOWS;UNICODE;WIN32;_CRT_SECURE_NO_WARNINGS;SK_IGNORE_ETC1_SUPPORT;NDEBUG"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
