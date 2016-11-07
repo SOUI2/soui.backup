@@ -2020,7 +2020,8 @@ void SDesignerView::InitXMLStruct(pugi::xml_node xmlNode, HSTREEITEM item)
 		SStringT strNodeName = NodeSib.name();
 		if (strNodeName.IsEmpty())
 		{
-			return;
+			NodeSib = NodeSib.next_sibling();
+			continue;
 		}
 
 		HSTREEITEM itemChild = m_treeXmlStruct->InsertItem(strNodeName, item);  
