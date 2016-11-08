@@ -1,4 +1,4 @@
-//SOUI×é¼şÅäÖÃ
+ï»¿//SOUIç»„ä»¶é…ç½®
 
 #pragma  once
 
@@ -14,6 +14,7 @@
 #define COM_TRANSLATOR _T("translatord.dll")
 #define COM_ZIPRESPROVIDER _T("resprovider-zipd.dll")
 #define COM_LOG4Z   _T("log4zd.dll")
+#define COM_7ZIPRESPROVIDER _T("resprovider-7zipd.dll")
 #else
 #define COM_RENDER_GDI  _T("render-gdi.dll")
 #define COM_RENDER_SKIA _T("render-skia.dll")
@@ -21,7 +22,8 @@
 #define COM_TRANSLATOR _T("translator.dll")
 #define COM_ZIPRESPROVIDER _T("resprovider-zip.dll")
 #define COM_LOG4Z   _T("log4z.dll")
-#endif
+#define COM_7ZIPRESPROVIDER _T("resprovider-7zip.dll")
+
 
 #ifdef LIB_SOUI_COM
 #pragma message("LIB_SOUI_COM")
@@ -45,6 +47,7 @@
     #pragma comment(lib,"imgdecoder-gdipd")
     #pragma comment(lib,"translatord")
     #pragma comment(lib,"resprovider-zipd")
+    #pragma comment(lib,"resprovider-7zipd")
     #pragma comment(lib,"log4zd")
 #else//_DEBUG
 
@@ -64,6 +67,7 @@
     #pragma comment(lib,"render-skia")
     #pragma comment(lib,"translator")
     #pragma comment(lib,"resprovider-zip")
+    #pragma comment(lib,"resprovider-7zip")
     #pragma comment(lib,"log4z")
 #endif//_DEBUG
 
@@ -106,6 +110,12 @@ namespace SOUI
     {
         BOOL SCreateInstance(IObjRef **);
     }
+#if _MSC_VER >= 1700 //MSVC >= VS2012
+	namespace RESPROVIDER_7ZIP
+	{
+		BOOL SCreateInstance(IObjRef **);
+	} 
+#endif
     namespace LOG4Z
     {
         BOOL SCreateInstance(IObjRef **);
@@ -160,6 +170,14 @@ public:
     {
         return SOUI::RESPROVIDER_ZIP::SCreateInstance(ppObj);
     }
+
+#if _MSC_VER >= 1700 //MSVC >= VS2012
+
+	BOOL CreateResProvider_7ZIP(IObjRef **ppObj)
+	{
+		return SOUI::RESPROVIDER_7ZIP::SCreateInstance(ppObj);
+	}
+#endif
     
     BOOL CreateLog4z(IObjRef **ppObj)
     {
@@ -216,18 +234,26 @@ public:
         return zipResLoader.CreateInstance(COM_ZIPRESPROVIDER,ppObj);
     }
 
+#if _MSC_VER >= 1700 //MSVC >= VS2012
+	BOOL CreateResProvider_7ZIP(IObjRef **ppObj)
+	{
+		return zip7ResLoader.CreateInstance(COM_7ZIPRESPROVIDER, ppObj);
+	}
+#endif
+	
     BOOL CreateLog4z(IObjRef **ppObj)
     {
         return log4zLoader.CreateInstance(COM_LOG4Z,ppObj);
     }
 protected:
-    //SComLoaderÊµÏÖ´ÓDLLµÄÖ¸¶¨º¯Êı´´½¨·ûºÅSOUIÒªÇóµÄÀàCOM×é¼ş¡£
+    //SComLoaderå®ç°ä»DLLçš„æŒ‡å®šå‡½æ•°åˆ›å»ºç¬¦å·SOUIè¦æ±‚çš„ç±»COMç»„ä»¶ã€‚
     SComLoader imgDecLoader;
     SComLoader renderLoader;
     SComLoader transLoader;
     SComLoader scriptLoader;
     SComLoader zipResLoader;
     SComLoader log4zLoader;
+    SComLoader zip7ResLoader;
     
     SOUI::SStringT m_strImgDecoder;
 };
