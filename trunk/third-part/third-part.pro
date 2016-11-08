@@ -5,6 +5,7 @@ INCLUDEPATH += .
 
 include(../cpy-cfg.pri)
 
+SUBDIRS += gtest
 SUBDIRS += png
 SUBDIRS += skia
 SUBDIRS += zlib

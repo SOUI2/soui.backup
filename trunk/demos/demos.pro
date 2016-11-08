@@ -14,6 +14,7 @@ SUBDIRS += souispy
 SUBDIRS += PcManager
 SUBDIRS += SoTool
 SUBDIRS += mclistview_demo
+SUBDIRS += souitest
 
 360.depends += soui skia
 360Preview.depends += soui skia

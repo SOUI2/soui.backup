@@ -1,5 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtest", "E:/soui.taobao/third-part/gtest\gtest.vcproj", "{97432D12-8ECD-3AA2-B921-0BBCD25FD61A}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "png", "E:/soui.taobao/third-part/png\png.vcproj", "{56476EA3-21CB-3578-B986-9A2A160FEF06}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "skia", "E:/soui.taobao/third-part/skia\skia.vcproj", "{022D2356-8EF6-3EA3-A0D2-F1786190B6E1}"
@@ -18,6 +20,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97432D12-8ECD-3AA2-B921-0BBCD25FD61A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{97432D12-8ECD-3AA2-B921-0BBCD25FD61A}.Debug|Win32.Build.0 = Debug|Win32
+		{97432D12-8ECD-3AA2-B921-0BBCD25FD61A}.Release|Win32.ActiveCfg = Release|Win32
+		{97432D12-8ECD-3AA2-B921-0BBCD25FD61A}.Release|Win32.Build.0 = Release|Win32
 		{56476EA3-21CB-3578-B986-9A2A160FEF06}.Debug|Win32.ActiveCfg = Debug|Win32
 		{56476EA3-21CB-3578-B986-9A2A160FEF06}.Debug|Win32.Build.0 = Debug|Win32
 		{56476EA3-21CB-3578-B986-9A2A160FEF06}.Release|Win32.ActiveCfg = Release|Win32
