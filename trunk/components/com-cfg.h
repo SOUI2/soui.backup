@@ -23,6 +23,7 @@
 #define COM_ZIPRESPROVIDER _T("resprovider-zip.dll")
 #define COM_LOG4Z   _T("log4z.dll")
 #define COM_7ZIPRESPROVIDER _T("resprovider-7zip.dll")
+#endif	// _DEBUG
 
 
 #ifdef LIB_SOUI_COM
