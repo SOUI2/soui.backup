@@ -20,7 +20,12 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 
 add_executable(SoTool WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-target_link_libraries(SoTool utilities soui)
+add_dependencies(SoTool render-gdi imgdecoder-gdip soui-sys-resource)
+if (NOT ENABLE_SOUI_CORE_LIB)
+	target_link_libraries(SoTool utilities soui)
+else()
+	target_link_libraries(SoTool utilities soui skia zlib png render-skia imgdecoder-wic imgdecoder-stb imgdecoder-png translator resprovider-zip log4z)
+endif()
 
 set_target_properties(SoTool PROPERTIES DEBUG_POSTFIX d)
 set_target_properties(SoTool PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")

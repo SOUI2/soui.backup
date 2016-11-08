@@ -19,7 +19,12 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 
 add_executable(mclistview_demo WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-target_link_libraries(mclistview_demo utilities soui)
+add_dependencies(mclistview_demo render-skia imgdecoder-gdip soui-sys-resource)
+if (NOT ENABLE_SOUI_CORE_LIB)
+	target_link_libraries(mclistview_demo utilities soui)
+else()
+	target_link_libraries(mclistview_demo utilities soui skia zlib png render-gdi imgdecoder-wic imgdecoder-stb imgdecoder-png translator resprovider-zip log4z)
+endif()
 
 set_target_properties(mclistview_demo PROPERTIES DEBUG_POSTFIX d)
 set_target_properties(mclistview_demo PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
