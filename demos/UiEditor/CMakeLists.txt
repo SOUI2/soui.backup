@@ -81,12 +81,8 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 
 add_executable(UiEditor WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC} ${EXTENDCOTROLS})
 
-add_dependencies(UiEditor render-gdi imgdecoder-gdip soui-sys-resource)
-if (NOT ENABLE_SOUI_CORE_LIB)
-	target_link_libraries(UiEditor utilities soui)
-else()
-	target_link_libraries(UiEditor utilities soui skia zlib png render-skia imgdecoder-wic imgdecoder-stb imgdecoder-png translator resprovider-zip log4z)
-endif()
+add_dependencies(UiEditor soui-sys-resource ${COM_LIBS})
+target_link_libraries(UiEditor utilities soui)
 
 set_target_properties(UiEditor PROPERTIES DEBUG_POSTFIX d)
 set_target_properties(UiEditor PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")

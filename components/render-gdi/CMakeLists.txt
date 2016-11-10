@@ -25,3 +25,5 @@ if (NOT ENABLE_SOUI_COM_LIB)
 else()
     add_library(render-gdi STATIC ${render-gdi_src} ${render-gdi_header})
 endif()
+
+set(COM_LIBS ${COM_LIBS} render-gdi CACHE INTERNAL "com_lib")

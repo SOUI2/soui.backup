@@ -937,3 +937,4 @@ source_group("Header Files" FILES ${headers})
 source_group("Source Files" FILES ${srcs})
 
 add_library(skia STATIC ${srcs} ${headers})
+set(COM_LIBS ${COM_LIBS} skia CACHE INTERNAL "com_lib")

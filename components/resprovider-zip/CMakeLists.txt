@@ -27,3 +27,5 @@ if (NOT ENABLE_SOUI_COM_LIB)
 else()
     add_library(resprovider-zip STATIC ${resprovider-zip_src} ${resprovider-zip_header})
 endif()
+
+set(COM_LIBS ${COM_LIBS} resprovider-zip CACHE INTERNAL "com_lib")

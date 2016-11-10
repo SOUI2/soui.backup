@@ -21,3 +21,5 @@ if (NOT ENABLE_SOUI_COM_LIB)
 else()
     add_library(log4z STATIC ${log4z_src} ${log4z_header})
 endif()
+
+set(COM_LIBS ${COM_LIBS} log4z CACHE INTERNAL "com_lib")
