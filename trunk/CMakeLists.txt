@@ -109,8 +109,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_DEBUG_POSTFIX "d")
 set(CMAKE_RELEASE_POSTFIX "")
 
-add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-
 include(__cmake/cotire.cmake)
 include(__cmake/internal_utils.cmake)
 config_compiler_and_linker()
@@ -125,6 +123,9 @@ if (ENABLE_SOUI_COM_LIB)
 else()
     message("---Building [soui components] with DLL_SOUI_COM")
 endif()
+
+set(CORE_LIBS CACHE INTERNAL "core_lib")
+set(COM_LIBS CACHE INTERNAL "com_lib")
 
 #
 #
@@ -151,5 +152,7 @@ add_subdirectory(components)
 #
 add_subdirectory(demos)
 
+message(STATUS "COM_LIBS: ${COM_LIBS}")
+message(STATUS "CORE_LIBS: ${CORE_LIBS}")
 ##
 ##

@@ -81,10 +81,6 @@ source_group("Extend Cotrols" FILES ${EXTENDCOTROLS})
 add_executable(demo WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC} ${EXTENDCOTROLS})
 
 set_target_properties(demo PROPERTIES DEBUG_POSTFIX d)
-add_dependencies(demo render-gdi render-skia imgdecoder-png translator soui-sys-resource)
-if (NOT ENABLE_SOUI_CORE_LIB)
-	add_dependencies(demo ScriptModule-Lua)
-	target_link_libraries(demo soui utilities mhook smiley)
-else()
-	target_link_libraries(demo soui utilities mhook smiley skia zlib png imgdecoder-wic imgdecoder-stb imgdecoder-gdip resprovider-zip log4z)
-endif()
+
+add_dependencies(demo soui-sys-resource ${COM_LIBS})
+target_link_libraries(demo soui utilities mhook smiley)

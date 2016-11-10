@@ -19,3 +19,5 @@ if (NOT ENABLE_SOUI_COM_LIB)
 else()
     add_library(imgdecoder-gdip STATIC ${imgdecoder-gdip_src} ${imgdecoder-gdip_header})
 endif()
+
+set(COM_LIBS ${COM_LIBS} imgdecoder-gdip CACHE INTERNAL "com_lib")

@@ -20,3 +20,5 @@ if (NOT ENABLE_SOUI_COM_LIB)
 else()
     add_library(imgdecoder-wic STATIC ${imgdecoder-wic_src} ${imgdecoder-wic_header})
 endif()
+
+set(COM_LIBS ${COM_LIBS} imgdecoder-wic CACHE INTERNAL "com_lib")

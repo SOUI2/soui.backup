@@ -15,3 +15,12 @@ add_subdirectory(translator)
 add_subdirectory(ScriptModule-Lua)
 
 add_subdirectory(log4z)
+
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+if(COMPILER_SUPPORTS_CXX11)
+	add_subdirectory(resprovider-7zip)
+	message(STATUS "build resprovider-7zip ON")
+else()
+	message(STATUS "build resprovider-7zip OFF")
+endif()

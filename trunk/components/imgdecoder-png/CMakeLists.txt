@@ -33,3 +33,5 @@ if (NOT ENABLE_SOUI_COM_LIB)
 else()
     add_library(imgdecoder-png STATIC ${imgdecoder-png_src} ${imgdecoder-png_header})
 endif()
+
+set(COM_LIBS ${COM_LIBS} imgdecoder-png CACHE INTERNAL "com_lib")

@@ -48,7 +48,10 @@
     #pragma comment(lib,"imgdecoder-gdipd")
     #pragma comment(lib,"translatord")
     #pragma comment(lib,"resprovider-zipd")
+#if _MSC_VER >= 1700 //MSVC >= VS2012
+    #pragma comment(lib,"7zd")
     #pragma comment(lib,"resprovider-7zipd")
+#endif	//  _MSC_VER >= 1700 //MSVC >= VS2012
     #pragma comment(lib,"log4zd")
 #else//_DEBUG
 
@@ -68,7 +71,10 @@
     #pragma comment(lib,"render-skia")
     #pragma comment(lib,"translator")
     #pragma comment(lib,"resprovider-zip")
+#if _MSC_VER >= 1700 //MSVC >= VS2012
+    #pragma comment(lib,"7z")
     #pragma comment(lib,"resprovider-7zip")
+#endif	// _MSC_VER >= 1700 //MSVC >= VS2012
     #pragma comment(lib,"log4z")
 #endif//_DEBUG
 

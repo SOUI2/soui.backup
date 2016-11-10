@@ -19,12 +19,8 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 
 add_executable(PCManager WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-add_dependencies(PCManager render-skia imgdecoder-gdip soui-sys-resource)
-if (NOT ENABLE_SOUI_CORE_LIB)
-	target_link_libraries(PCManager utilities soui)
-else()
-	target_link_libraries(PCManager utilities soui skia zlib png render-gdi imgdecoder-wic imgdecoder-stb imgdecoder-png translator resprovider-zip log4z)
-endif()
+add_dependencies(PCManager soui-sys-resource ${COM_LIBS})
+target_link_libraries(PCManager utilities soui)
 
 set_target_properties(PCManager PROPERTIES DEBUG_POSTFIX d)
 set_target_properties(PCManager PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")

@@ -32,3 +32,5 @@ if (NOT ENABLE_SOUI_COM_LIB)
 else()
     add_library(render-skia STATIC ${render-skia_src} ${render-skia_header})
 endif()
+
+set(COM_LIBS ${COM_LIBS} render-skia CACHE INTERNAL "com_lib")
