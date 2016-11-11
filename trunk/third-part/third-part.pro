@@ -15,5 +15,7 @@ SUBDIRS += mhook
 
 CONFIG(c++11){
 #7z需要c11支持
+!CONFIG(x64){
 	SUBDIRS += 7z
+}
 }
