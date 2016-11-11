@@ -472,13 +472,22 @@ SOURCES+=CPP/7zip/Crypto/ZipCrypto.cpp
 SOURCES+=CPP/7zip/Crypto/ZipStrong.cpp   
 
 #asm sources
-ASMS+=Asm/x86/7zCrcOpt.asm
 ASMS+=Asm/x86/AesOpt.asm
+ASMS+=Asm/x86/7zCrcOpt.asm
+CONFIG(x64){
+ASMS+=Asm/x86/XzCrc64Opt.asm
+}
 
 # asm
 asm.name = asm build
 asm.input = ASMS
+
+CONFIG(x64){
+asm.commands = ml64.exe -c -WX -W3 /Dx64 -Fo$(IntDir)%(Filename).obj ${QMAKE_FILE_NAME}
+}
+else{
 asm.commands = ml.exe -c -WX -W3 -Fo$(IntDir)%(Filename).obj ${QMAKE_FILE_NAME}
+}
 asm.output = $(IntDir)%(Filename).obj
 asm.CONFIG += no_link
 QMAKE_EXTRA_COMPILERS += asm

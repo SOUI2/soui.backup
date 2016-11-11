@@ -17,9 +17,7 @@ SUBDIRS += ScriptModule-LUA
 SUBDIRS += log4z
 CONFIG(c++11){
 #7z需要c11支持
-!CONFIG(x64){
 	SUBDIRS += resprovider-7zip
-}
 }
 
 imgdecoder-png.depends += zlib png
