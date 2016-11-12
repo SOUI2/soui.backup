@@ -36,8 +36,12 @@
 
 		<button_按钮>
 			<button pos="0,0" size="96,32" colorText="#000000"
-			skin="_skin.sys.btn.normal">按钮</button> 
+			skin="_skin.sys.btn.normal" >按钮</button> 
 		</button_按钮>
+		
+		<buttonex_按钮>
+			<buttonex pos="0,0" size="96,32" animate="1" colorText="#000000" icon="_skin.sys.checkbox" iconIndex="1" drawMode="horzIconText">按钮</buttonex>
+		</buttonex_按钮>
 
 		<calendar_日历> 
 			<calendar size="96,96" daySkin="_skin.sys.btn.normal" footerHeight="30"/>
