@@ -224,6 +224,8 @@
 			<File
 				RelativePath="propgrid\SPropertyItemBase.cpp" />
 			<File
+				RelativePath="..\..\controls.extend\SScrollText.cpp" />
+			<File
 				RelativePath="trayicon\SShellNotifyIcon.cpp" />
 			<File
 				RelativePath="..\..\controls.extend\gif\SSkinAPNG.cpp" />
@@ -246,9 +248,7 @@
 			<File
 				RelativePath="ScintillaWnd.cpp" />
 			<File
-				RelativePath="SouiRealWndHandler.cpp" /> 
-			<File
-				RelativePath="..\..\controls.extend\SScrollText.cpp" />				
+				RelativePath="SouiRealWndHandler.cpp" />
 			<File
 				RelativePath="UIEditor.cpp" />
 		</Filter>
@@ -341,7 +341,7 @@
 			<File
 				RelativePath="propgrid\SPropertyItemBase.h" />
 			<File
-				RelativePath="SRotateWindow.h" />				
+				RelativePath="..\..\controls.extend\SScrollText.h" />
 			<File
 				RelativePath="trayicon\SShellNotifyIcon.h" />
 			<File
@@ -370,8 +370,6 @@
 				RelativePath="ScintillaWnd.h" />
 			<File
 				RelativePath="SouiRealWndHandler.h" />
-			<File
-				RelativePath="..\..\controls.extend\SScrollText.h" />				
 			<File
 				RelativePath="resource.h" />
 			<File
