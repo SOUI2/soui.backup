@@ -382,6 +382,10 @@ namespace SOUI
 		pugi::xml_node xmlNode;
 
 		int n = m_lbSkin->GetCurSel();
+		if (n < 0)
+		{
+			return true;
+		}
 
 		SStringT strSkinName;
 
