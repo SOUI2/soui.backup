@@ -1756,6 +1756,7 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* pSciWnd)//从代码编辑器获取x
 
 	SStringA s(chText);
 	SStringW s1 = S_CA2W(s, CP_UTF8);
+	delete chText;
 
 
 	pugi::xml_document doc;
@@ -1764,6 +1765,8 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* pSciWnd)//从代码编辑器获取x
 		Debug(_T("XML有语法错误！"));
 		return;
 	}
+
+
 
 	RenameChildeWnd(doc.root());
 
