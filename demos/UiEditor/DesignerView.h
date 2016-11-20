@@ -104,6 +104,9 @@ namespace SOUI
 
 		 SWindow* FindChildByUserData(SWindow* pWnd, int data);
 
+		 
+		 void TrimXmlNodeTextBlank(pugi::xml_node xmlNode);
+
 	public:
 		    SWindow *m_pRealWndRoot;       //布局容器窗口;
 		    SMoveWnd  *m_pMoveWndRoot; //布局窗口的根窗口
