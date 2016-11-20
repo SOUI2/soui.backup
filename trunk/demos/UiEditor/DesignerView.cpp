@@ -59,12 +59,6 @@ SDesignerView::SDesignerView(SHostDialog *pMainHost, SWindow *pContainer, STreeC
 		node = node.next_sibling();
 	}
 
-	SPOSITION pos = m_lstContainerCtrl.GetHeadPosition();
-	while (pos)
-	{
-		SStringT strTemp = m_lstContainerCtrl.GetNext(pos);
-
-	}
 	m_privateStylePool.Attach(new SStylePool);
 	m_privateSkinPool.Attach(new SSkinPool);
 }
@@ -1715,6 +1709,7 @@ void SDesignerView::AddCodeToEditor(CScintillaWnd* pSciWnd)  //复制xml代码到代码
 	//Debug(doc.root().first_child());
 
 	RemoveWndName(doc.root(), TRUE);
+	TrimXmlNodeTextBlank(doc.root());
 
 
 	pugi::xml_writer_buff writer;
@@ -1769,6 +1764,7 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* pSciWnd)//从代码编辑器获取x
 
 
 	RenameChildeWnd(doc.root());
+	TrimXmlNodeTextBlank(doc.root());
 
 
 
@@ -2232,4 +2228,29 @@ SWindow* SDesignerView::FindChildByUserData(SWindow* pWnd, int data)
 	}
 
 	return NULL;
+}
+
+
+void SDesignerView::TrimXmlNodeTextBlank(pugi::xml_node xmlNode)
+{
+	if (!xmlNode)
+	{
+		return;
+	}
+
+	pugi::xml_node NodeSib = xmlNode;
+	while (NodeSib)
+	{
+
+		SStringT strText = NodeSib.text().get();
+		strText.TrimBlank();
+		if (!strText.IsEmpty())
+		{
+			NodeSib.text().set(strText);
+		}
+
+		TrimXmlNodeTextBlank(NodeSib.first_child());
+		NodeSib = NodeSib.next_sibling();
+
+	}
 }
