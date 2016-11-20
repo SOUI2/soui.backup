@@ -1242,7 +1242,9 @@ void SDesignerView::UpdatePropGrid(pugi::xml_node xmlNode)
 		IPropertyItem *pItem = m_pPropgrid->GetGridItem(_T("UiEdit_windowText"));
 		if (pItem)
 		{
-			pItem->SetStringOnly(xmlNode.text().get());
+			SStringT strTemp = xmlNode.text().get();
+			strTemp.TrimBlank();
+			pItem->SetStringOnly(strTemp);
 		};
 
 		while (xmlAttr)
