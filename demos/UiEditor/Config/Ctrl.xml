@@ -106,7 +106,7 @@
 		</edit>
 
 		<flash>
-			<flash pos="0,0" size="200,200"  url="http://127.0.0.1:82/flash/apple.swf" delay="1"/>
+			<flash pos="0,0" size="200,200"  url="" delay="1"/>
 		</flash>
 
 
@@ -128,7 +128,7 @@
 		</hr_垂直线>		
 
 		<icon>
-			<icon pos="0,0" src="LOGO:16"/>
+			<icon pos="0,0" src="ICON_LOGO:16"/>
 		</icon>
 
 
@@ -219,7 +219,7 @@
 		</mclistview>
 
 		<mediaplayer>
-			<mediaplayer pos="0,0" size="200,200"  url="http://127.0.0.1:82/flash/apple.swf" delay="1"/>
+			<mediaplayer pos="0,0" size="200,200"  url="" delay="1"/>
 		</mediaplayer>			
 
 
