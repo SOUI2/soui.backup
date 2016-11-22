@@ -41,7 +41,11 @@ HEADERS += include/gdialpha.h \
            include/unknown/obj-ref-impl.hpp \
            include/com-loader.hpp \
            include/wtl.mini/msgcrack.h \
-           include/wtl.mini/souimisc.h
+           include/wtl.mini/souimisc.h \
+           include/sobject/sobject-i.h \
+           include/sobject/sobject.hpp \
+           include/sobject/sobject-state-i.h \
+           include/sobject/sobject-state-impl.hpp \
            
 SOURCES += src/gdialpha.cpp \
            src/trace.cpp \
@@ -50,3 +54,4 @@ SOURCES += src/gdialpha.cpp \
            src/pugixml/pugixml.cpp \
            src/string/strcpcvt.cpp \
            src/string/tstring.cpp \
+           src/sobject/sobject.cpp \

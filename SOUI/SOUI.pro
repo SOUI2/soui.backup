@@ -76,7 +76,6 @@ HEADERS += include/SApp.h \
            include/core/SimpleWnd.h \
            include/core/SItemPanel.h \
            include/core/SMsgLoop.h \
-           include/core/Sobject.h \
            include/core/SPanel.h \
            include/core/SSingleton.h \
            include/core/SSingletonMap.h \
@@ -187,7 +186,6 @@ SOURCES += src/SApp.cpp \
            src/core/SimpleWnd.cpp \
            src/core/SItemPanel.cpp \
            src/core/SMsgLoop.cpp \
-           src/core/SObject.cpp \
            src/core/SPanel.cpp \
            src/core/SSkin.cpp \
            src/core/SSkinFactoryMgr.cpp \
