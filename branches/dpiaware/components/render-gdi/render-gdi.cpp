@@ -99,7 +99,7 @@ namespace SOUI
     HRESULT SBitmap_GDI::LoadFromFile( LPCTSTR pszFileName)
     {
         CAutoRefPtr<IImgX> imgDecoder;
-        GetRenderFactory_GDI()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
+        GetRenderFactory()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
         if(imgDecoder->LoadFromFile(S_CT2W(pszFileName))==0) return S_FALSE;
         return ImgFromDecoder(imgDecoder);
     }
@@ -107,7 +107,7 @@ namespace SOUI
     HRESULT SBitmap_GDI::LoadFromMemory(LPBYTE pBuf,size_t szLen)
     {
         CAutoRefPtr<IImgX> imgDecoder;
-        GetRenderFactory_GDI()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
+        GetRenderFactory()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
         if(imgDecoder->LoadFromMemory(pBuf,szLen)==0) return S_FALSE;
         return ImgFromDecoder(imgDecoder);
     }
@@ -343,11 +343,12 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     
     SRenderTarget_GDI::SRenderTarget_GDI( IRenderFactory* pRenderFactory ,int nWid,int nHei)
-        :TGdiRenderObjImpl<IRenderTarget>(pRenderFactory)
-        ,m_hdc(NULL)
+        :m_hdc(NULL)
         ,m_curColor(0xFF000000)//Ä¬ÈÏºÚÉ«
         ,m_uGetDCFlag(0)
     {
+		m_pRenderFactory = pRenderFactory;
+
         m_ptOrg.x=m_ptOrg.y=0;
                 
         HDC hdc=::GetDC(NULL);
@@ -367,7 +368,7 @@ namespace SOUI
         pRenderFactory->CreateFont(&m_defFont,lf,NULL);
         SelectObject(m_defFont);
 
-        GetRenderFactory_GDI()->CreateBitmap(&m_defBmp);
+        pRenderFactory->CreateBitmap(&m_defBmp);
         m_defBmp->Init(nWid,nHei);
         SelectObject(m_defBmp);
     }
@@ -379,27 +380,27 @@ namespace SOUI
 
     HRESULT SRenderTarget_GDI::CreateCompatibleRenderTarget( SIZE szTarget,IRenderTarget **ppRenderTarget )
     {
-        SRenderTarget_GDI *pRT = new SRenderTarget_GDI(GetRenderFactory_GDI(),szTarget.cx,szTarget.cy);
+        SRenderTarget_GDI *pRT = new SRenderTarget_GDI(m_pRenderFactory,szTarget.cx,szTarget.cy);
         *ppRenderTarget = pRT;
         return S_OK;
     }
 
     HRESULT SRenderTarget_GDI::CreatePen( int iStyle,COLORREF cr,int cWidth,IPen ** ppPen )
     {
-        *ppPen = new SPen_GDI(GetRenderFactory_GDI(),iStyle,cr,cWidth);
+        *ppPen = new SPen_GDI(m_pRenderFactory,iStyle,cr,cWidth);
         return S_OK;
     }
 
     HRESULT SRenderTarget_GDI::CreateSolidColorBrush( COLORREF cr,IBrush ** ppBrush )
     {
-        *ppBrush = SBrush_GDI::CreateSolidBrush(GetRenderFactory_GDI(),cr);
+        *ppBrush = SBrush_GDI::CreateSolidBrush(m_pRenderFactory,cr);
         return S_OK;
     }
 
     HRESULT SRenderTarget_GDI::CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush )
     {
         SBitmap_GDI *pBmpSkia = (SBitmap_GDI*)pBmp;
-        *ppBrush = SBrush_GDI::CreateBitmapBrush(GetRenderFactory_GDI(),pBmpSkia->GetBitmap());
+        *ppBrush = SBrush_GDI::CreateBitmapBrush(m_pRenderFactory,pBmpSkia->GetBitmap());
         return S_OK;
     }
 
@@ -469,7 +470,7 @@ namespace SOUI
 
     HRESULT SRenderTarget_GDI::GetClipRegion( IRegion **ppRegion )
     {
-        SRegion_GDI *pRgn=new SRegion_GDI(GetRenderFactory_GDI());
+        SRegion_GDI *pRgn=new SRegion_GDI(m_pRenderFactory);
         ::GetClipRgn(m_hdc,pRgn->GetRegion());
         POINT pt={-m_ptOrg.x,-m_ptOrg.y};
         pRgn->Offset(pt);

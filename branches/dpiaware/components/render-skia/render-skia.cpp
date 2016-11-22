@@ -123,15 +123,15 @@ namespace SOUI
 	// SRenderTarget_Skia
 
 	SRenderTarget_Skia::SRenderTarget_Skia( IRenderFactory* pRenderFactory ,int nWid,int nHei)
-		:TSkiaRenderObjImpl<IRenderTarget>(pRenderFactory)
-		,m_SkCanvas(NULL)
+		:m_SkCanvas(NULL)
         ,m_curColor(0xFF000000)//默认黑色
         ,m_hGetDC(0)
         ,m_uGetDCFlag(0)
 		,m_bAntiAlias(true)
 	{
         m_ptOrg.fX=m_ptOrg.fY=0.0f;
-        
+        m_pRenderFactory = pRenderFactory;
+
         m_SkCanvas = new SkCanvas();
 
         CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&m_defPen);
@@ -146,7 +146,7 @@ namespace SOUI
         pRenderFactory->CreateFont(&m_defFont,lf,NULL);
         SelectObject(m_defFont);
 
-        GetRenderFactory_Skia()->CreateBitmap(&m_defBmp);
+        pRenderFactory->CreateBitmap(&m_defBmp);
         m_defBmp->Init(nWid,nHei);
         SelectObject(m_defBmp);
 		CAutoRefPtr<IPen> pPen;
@@ -161,27 +161,27 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::CreateCompatibleRenderTarget( SIZE szTarget,IRenderTarget **ppRenderTarget )
 	{
-        SRenderTarget_Skia *pRT = new SRenderTarget_Skia(GetRenderFactory_Skia(),szTarget.cx,szTarget.cy);
+        SRenderTarget_Skia *pRT = new SRenderTarget_Skia(m_pRenderFactory,szTarget.cx,szTarget.cy);
         *ppRenderTarget = pRT;
 		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::CreatePen( int iStyle,COLORREF cr,int cWidth,IPen ** ppPen )
 	{
-		*ppPen = new SPen_Skia(GetRenderFactory_Skia(),iStyle,cr,cWidth);
+		*ppPen = new SPen_Skia(m_pRenderFactory,iStyle,cr,cWidth);
 		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::CreateSolidColorBrush( COLORREF cr,IBrush ** ppBrush )
 	{
-		*ppBrush = SBrush_Skia::CreateSolidBrush(GetRenderFactory_Skia(),cr);
+		*ppBrush = SBrush_Skia::CreateSolidBrush(m_pRenderFactory,cr);
 		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush )
 	{
 		SBitmap_Skia *pBmpSkia = (SBitmap_Skia*)pBmp;
-		*ppBrush = SBrush_Skia::CreateBitmapBrush(GetRenderFactory_Skia(),pBmpSkia->GetSkBitmap());
+		*ppBrush = SBrush_Skia::CreateBitmapBrush(m_pRenderFactory,pBmpSkia->GetSkBitmap());
 		return S_OK;
 	}
 
@@ -254,7 +254,7 @@ namespace SOUI
 
     HRESULT SRenderTarget_Skia::GetClipRegion( IRegion **ppRegion )
     {
-        SRegion_Skia *pRgn=new SRegion_Skia(GetRenderFactory_Skia());
+        SRegion_Skia *pRgn=new SRegion_Skia(m_pRenderFactory);
         SkRegion rgn = m_SkCanvas->getTotalClip();
         //需要将rect的viewOrg还原
         rgn.translate((int)-m_ptOrg.fX,(int)-m_ptOrg.fY);
@@ -1245,7 +1245,7 @@ namespace SOUI
 	HRESULT SBitmap_Skia::LoadFromFile( LPCTSTR pszFileName)
 	{
 	    CAutoRefPtr<IImgX> imgDecoder;
-	    GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
+	    GetRenderFactory()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
 		if(imgDecoder->LoadFromFile(S_CT2W(pszFileName))==0) return S_FALSE;
 		return ImgFromDecoder(imgDecoder);
 	}
@@ -1253,7 +1253,7 @@ namespace SOUI
 	HRESULT SBitmap_Skia::LoadFromMemory(LPBYTE pBuf,size_t szLen)
 	{
         CAutoRefPtr<IImgX> imgDecoder;
-        GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
+        GetRenderFactory()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
 		if(imgDecoder->LoadFromMemory(pBuf,szLen)==0) return S_FALSE;
         return ImgFromDecoder(imgDecoder);
 	}

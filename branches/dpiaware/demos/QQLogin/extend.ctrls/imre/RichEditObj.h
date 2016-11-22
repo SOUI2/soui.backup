@@ -4,7 +4,7 @@
 
 #pragma once
 #include <TOM.h>
-#include "core/Sobject.h"
+#include <sobject/Sobject.hpp>
 #include "unknown/obj-ref-impl.hpp"
 #include "res.mgr/SFontPool.h"
 #include "interface/render-i.h"

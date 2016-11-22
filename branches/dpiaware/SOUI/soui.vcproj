@@ -382,10 +382,6 @@
 				>
 			</File>
 			<File
-				RelativePath="src\core\SObject.cpp"
-				>
-			</File>
-			<File
 				RelativePath="src\core\SPanel.cpp"
 				>
 			</File>
@@ -765,10 +761,6 @@
 			</File>
 			<File
 				RelativePath="include\res.mgr\SObjDefAttr.h"
-				>
-			</File>
-			<File
-				RelativePath="include\core\Sobject.h"
 				>
 			</File>
 			<File

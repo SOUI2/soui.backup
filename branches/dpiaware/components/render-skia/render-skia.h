@@ -3,6 +3,7 @@
 
 #include <helper/color.h>
 #include <unknown/obj-ref-impl.hpp>
+#include <sobject/sobject-state-impl.hpp>
 
 #include <core\SkCanvas.h>
 #include <core\SkBitmap.h>
@@ -11,7 +12,7 @@
 #include <string\tstring.h>
 #include <string\strcpcvt.h>
 #include <interface/render-i.h>
-
+#include <souicoll.h>
 
 namespace SOUI
 {
@@ -44,7 +45,7 @@ namespace SOUI
 	//////////////////////////////////////////////////////////////////////////
 	// TSkiaRenderObjImpl
 	template<class T>
-	class TSkiaRenderObjImpl : public TObjRefImpl<T>
+	class TSkiaRenderObjImpl : public TObjRefImpl<SObjectStateImpl<SObjectImpl<T>>>
 	{
 	public:
 		TSkiaRenderObjImpl(IRenderFactory * pRenderFac):m_pRenderFactory(pRenderFac)
@@ -59,10 +60,7 @@ namespace SOUI
 			return m_pRenderFactory;
 		}
 
-		virtual IRenderFactory * GetRenderFactory_Skia() const
-		{
-			return m_pRenderFactory;
-		}
+
 	protected:
 		IRenderFactory *m_pRenderFactory;
 	};
@@ -72,6 +70,7 @@ namespace SOUI
 	// SPen_Skia
 	class SPen_Skia : public TSkiaRenderObjImpl<IPen>
 	{
+		SOUI_CLASS_NAME(SPen_Skia,L"pen")
 	public:
 		SPen_Skia(IRenderFactory * pRenderFac,int iStyle=PS_SOLID,COLORREF cr=0xFF000000,int cWidth=1)
 			:TSkiaRenderObjImpl<IPen>(pRenderFac)
@@ -101,6 +100,7 @@ namespace SOUI
 	// SFont_Skia
 	class SFont_Skia: public TSkiaRenderObjImpl<IFont>
 	{
+		SOUI_CLASS_NAME(SFont_Skia,L"font")
 	public:
 		SFont_Skia(IRenderFactory * pRenderFac,const LOGFONT * plf);
 
@@ -130,6 +130,8 @@ namespace SOUI
 
 	class SBrush_Skia : public TSkiaRenderObjImpl<IBrush>
 	{
+		SOUI_CLASS_NAME(SBrush_Skia,L"brush")
+
 	public:
 		static SBrush_Skia * CreateSolidBrush(IRenderFactory * pRenderFac,COLORREF cr){
 			return new SBrush_Skia(pRenderFac,cr);
@@ -166,6 +168,8 @@ namespace SOUI
 	// SBitmap_Skia
 	class SBitmap_Skia : public TSkiaRenderObjImpl<IBitmap>
 	{
+		SOUI_CLASS_NAME(SBitmap_Skia,L"bitmap")
+
 	public:
 		SBitmap_Skia(IRenderFactory *pRenderFac);
         ~SBitmap_Skia();
@@ -197,6 +201,8 @@ namespace SOUI
 	//	SRegion_Skia
 	class SRegion_Skia: public TSkiaRenderObjImpl<IRegion>
 	{
+		SOUI_CLASS_NAME(SRegion_Skia,L"region")
+
 	public:
 		SRegion_Skia(IRenderFactory *pRenderFac);
         virtual ~SRegion_Skia();
@@ -224,7 +230,7 @@ namespace SOUI
 	//////////////////////////////////////////////////////////////////////////
 	//	SRenderTarget_Skia
 	//////////////////////////////////////////////////////////////////////////
-	class SRenderTarget_Skia: public TSkiaRenderObjImpl<IRenderTarget>
+	class SRenderTarget_Skia: public TObjRefImpl<IRenderTarget>
 	{
 	public:
 		SRenderTarget_Skia(IRenderFactory* pRenderFactory,int nWid,int nHei);
@@ -348,6 +354,8 @@ namespace SOUI
         CAutoRefPtr<IPen> m_defPen;
         CAutoRefPtr<IBrush> m_defBrush;
         CAutoRefPtr<IFont> m_defFont;
+
+		CAutoRefPtr<IRenderFactory> m_pRenderFactory;
 
         HDC m_hGetDC;
         UINT m_uGetDCFlag;
