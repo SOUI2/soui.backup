@@ -1,0 +1,84 @@
+﻿<resource>
+  <UIDEF>
+    <file name="XML_INIT" path="xml\init.xml"  />
+  </UIDEF>
+  <LAYOUT>
+    <file name="XML_MAINWND" path="xml\dlg_main.xml"  />
+    <file name="page_home" path="xml\page_home.xml" />
+    <file name="page_trojan" path="xml\page_trojan.xml"/>
+  </LAYOUT>
+  <IMG>
+  </IMG>
+  <PNG>
+    <file name="ID_PNG_BTN_CLOSE" path="image\btn_close.png"/>
+    <file name="ID_PNG_BTN_MAX" path="image\btn_max.png"/>
+    <file name="ID_PNG_BTN_RESTORE" path="image\btn_restore.png"/>
+    <file name="ID_PNG_BTN_MIN" path="image\btn_min.png"/>
+    
+    <file name="ID_PNG_SHADOW" path="image\shadow.png"/>
+    <file name="ID_PNG_MAIN_CENTER" path="image\main_center.png"/>
+    <file name="ID_PNG_MAIN_MASK" path="image\main_mask.png"/>
+    <file name="ID_PNG_LOGO" path="image\main_icon.png"/>
+    <file name="ID_PNG_BTN_MENU" path="image\btn_menu.png"/>
+    <file name="ID_PNG_BTN_SKIN" path="image\btn_skin.png"/>
+
+    <file name="ID_PNG_TAB_MAIN" path="image\tab_main.png"/>
+    <file name="ID_PNG_TAB_ICON" path="image\tab_icon.png"/>
+    <file name="ID_PNG_HOME_ICON" path="image\home_icon.png"/>
+    
+    <!-- page main-->
+    <file name="ID_PNG_HOME_TIYAN" path="image\home_tiyan.png"/>
+    <file name="ID_PNG_SWITCH_BACK" path="image\switch_back.png"/>
+    <file name="ID_PNG_SWITCH_FORCE" path="image\switch_force.png"/>
+    <file name="ID_PNG_QQ_LOGO" path="image\qq_logo.png"/>
+    <file name="ID_PNG_HOME_1" path="image\home_1.png"/>
+    <file name="ID_PNG_HOME_2" path="image\home_2.png"/>
+    <file name="ID_PNG_HOME_3" path="image\home_3.png"/>
+    <file name="ID_PNG_HOME_4" path="image\home_4.png"/>
+    <file name="ID_PNG_HOME_5" path="image\home_5.png"/>
+    <file name="ID_PNG_HOME_RADIO0" path="image\home_radio0.png"/>
+    <file name="ID_PNG_HOME_RADIO1" path="image\home_radio1.png"/>
+    <file name="ID_PNG_TOOL_BOX" path="image\tool_box.png"/>
+    <file name="ID_PNG_HOME_ICON_0" path="image\home_icon_0.png"/>
+    <file name="ID_PNG_HOME_ICON_1" path="image\home_icon_1.png"/>
+    <file name="ID_PNG_HOME_ICON_2" path="image\home_icon_2.png"/>
+    <file name="ID_PNG_HOME_ICON_3" path="image\home_icon_3.png"/>
+    <file name="ID_PNG_HOME_ICON_4" path="image\home_icon_4.png"/>
+    <file name="ID_PNG_HOME_ICON_5" path="image\home_icon_5.png"/>
+    <file name="ID_PNG_HOME_ICON_6" path="image\home_icon_6.png"/>
+    <file name="ID_PNG_HOME_ICON_7" path="image\home_icon_7.png"/>
+    <file name="ID_PNG_HOME_ICON_8" path="image\home_icon_8.png"/>
+    <file name="ID_PNG_HOME_ICON_9" path="image\home_icon_9.png"/>
+    <file name="ID_PNG_HOME_ICON_10" path="image\home_icon_10.png"/>
+    <file name="ID_PNG_HOME_ICON_11" path="image\home_icon_11.png"/>
+    <file name="ID_PNG_HOME_ICON_12" path="image\home_icon_12.png"/>
+    <file name="ID_PNG_HOME_ICON_13" path="image\home_icon_13.png"/>
+    <file name="ID_PNG_HOME_ICON_14" path="image\home_icon_14.png"/>
+    <file name="ID_PNG_HOME_ICON_15" path="image\home_icon_15.png"/>
+    <file name="ID_PNG_HOME_ICON_16" path="image\home_icon_16.png"/>
+    <file name="ID_PNG_HOME_ICON_17" path="image\home_icon_17.png"/>
+    <file name="ID_PNG_HOME_ICON_18" path="image\home_icon_18.png"/>
+    <file name="ID_PNG_HOME_ICON_19" path="image\home_icon_19.png"/>
+    <file name="ID_PNG_HOME_ICON_20" path="image\home_icon_20.png"/>
+    <file name="ID_PNG_HOME_ICON_21" path="image\home_icon_21.png"/>
+    <file name="ID_PNG_HOME_ICON_22" path="image\home_icon_22.png"/>
+    <file name="ID_PNG_HOME_ICON_23" path="image\home_icon_23.png"/>
+    <file name="ID_PNG_HOME_ICON_24" path="image\home_icon_24.png"/>
+    <file name="ID_PNG_HOME_ICON_25" path="image\home_icon_25.png"/>
+    <file name="ID_PNG_HOME_ICON_26" path="image\home_icon_26.png"/>
+    <file name="ID_PNG_HOME_ICON_27" path="image\home_icon_27.png"/>
+    <!-- page horse -->
+    <file name="ID_PNG_TROJAN_ICO" path="image\trojan_ico.png"/>
+    <file name="ID_PNG_TROJAN_FASESCAN" path="image\trojan_fastscan.png"/>
+    <file name="ID_PNG_TROJAN_PATHSCAN" path="image\trojan_pathscan.png"/>
+    <file name="ID_PNG_TROJAN_SCAN" path="image\trojan_scan.png"/>
+    <file name="ID_PNG_TROJAN_BTN" path="image\trojan_btn.png"/>
+    <file name="ID_PNG_TROJAN_ENGINE1" path="image\trojan_engine1.png"/>
+    <file name="ID_PNG_TROJAN_ENGINE2" path="image\trojan_engine2.png"/>
+    <file name="ID_PNG_TROJAN_ENGINE3" path="image\trojan_engine3.png"/>
+    <file name="ID_PNG_TROJAN_ENGINE4" path="image\trojan_engine4.png"/>
+  </PNG>
+  <ICON>
+    <file name="ICON_LOGO"  path="image\logo.ico" />
+  </ICON>
+</resource>

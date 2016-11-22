@@ -1,0 +1,28 @@
+﻿<resource>
+  <UIDEF>
+    <file name="XML_INIT" path="xml\init.xml"  />
+  </UIDEF>
+  <LAYOUT>
+    <file name="XML_MAINWND" path="xml\dlg_main.xml"  />
+      </LAYOUT>
+  <IMG>
+  <file name="IMG_BG_LIGHT_LEVEL"  path="image\bg_light-level_02.png"    />
+   <file name="IMG_BG_MAIN"  path="image\bg_02.png"    />
+   <file name="IMG_BG_SOFTMGR"  path="image\360SoftMgr.png"    />
+   <file name="IMG_BG_DESKTOP"  path="image\pic_360Desktop.png"    />
+   <file name="IMG_BG_DIAGNOSCAN"  path="image\pic_360DiagnoseScan.png"    />
+   <file name="IMG_BG_GUARD"  path="image\pic_360Guard.png"    />
+   <file name="IMG_BG_UCENTER"  path="image\pic_360ucenter.png"    />
+   <file name="IMG_BG_SHISHIHAOHU"  path="image\pic_shishibaohu.png"    />
+    <file name="IMG_BG_TOOLBOX"  path="image\btn_bg.png"    />
+    <file name="IMG_ICO_SOFTMGR"  path="image\360SoftMgr_icon.png"    />
+    <file name="IMG_ICO_DESKTOP"  path="image\icon_360Desktop.png"    />
+    <file name="IMG_ICO_DIAGNOSESCAN"  path="image\icon_360DiagnoseScan.png"    />
+    <file name="IMG_ICO_GUARD"  path="image\icon_360Guard.png"    />
+    <file name="IMG_ICO_UCENTER"  path="image\icon_360ucenter.png"    />
+    <file name="IMG_ICO_SHISHIBAOHU"  path="image\icon_shishibaohu.png"    />
+  </IMG>
+  <ICON>
+    <file name="ICON_LOGO"  path="image\soui.ico"    />
+  </ICON>
+    </resource>

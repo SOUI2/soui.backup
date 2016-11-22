@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<include>
+  <treectrl pos="1,[5,-1,-1"  name="UIDESIGNER_mytree" itemHeight="30" 
+            iconSkin="UIDESIGNER_home_tree" class="cls_title"
+            colorItemSelBkgnd="#5C6C87"
+
+    >
+    <item text="组织机构" img="0" selImg="1"  expand="1">
+      <item text="市场部" img="0" selImg="1">
+        <item text="南一区" img="2"/>
+        <item text="北二区" img="2"/>
+        <item text="西三区" img="2">
+          <item text="第一分队" img="0" selImg="1" expand="0">
+            <item text="张三组" img="2"/>
+            <item text="李四组" img="2"/>
+            <item text="王五组" img="2"/>
+            <item text="第一分队" img="0" selImg="1" expand="0">
+              <item text="张三组" img="2"/>
+              <item text="李四组" img="2"/>
+              <item text="王五组" img="2"/>
+              <item text="第一分队" img="0" selImg="1" expand="0">
+                <item text="张三组" img="2"/>
+                <item text="李四组" img="2"/>
+                <item text="王五组" img="2"/>
+                  <item text="第一分队" img="0" selImg="1" expand="0">
+                    <item text="张三组" img="2"/>
+                    <item text="李四组" img="2"/>
+                    <item text="王五组" img="2"/>
+                  </item>   
+              </item>   
+            
+            </item>          
+          </item>
+        </item>
+      </item>
+    </item>
+    <item text="宣传部" img="0" selImg="1" expand="0">
+      <item text="南一区" img="2"/>
+      <item text="北二区" img="2"/>
+      <item text="西三区" img="2"/>
+    </item>
+    <item text="宣传部" img="0" selImg="1" expand="0">
+      <item text="南一区" img="2"/>
+      <item text="北二区" img="2"/>
+      <item text="西三区" img="2"/>
+    </item>  
+  </treectrl>
+
+</include>

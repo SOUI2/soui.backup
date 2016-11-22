@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<SOUI name="window" title="布局" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="400" height="300" margin="1,5,5,5" wndType="8" toolWindow="1">
+	<root cache="1">
+		<window pos="0,0,-0,-0" colorBkgnd="rgb(50,126,173)" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13">
+			<caption pos="0,0,-0,30" focusable="1" drawfocusrect="0">
+				<text pos="|0,|0" name="txt_title" offset="-0.5,-0.5">关于 SOUI界面设计器 V1.0 beta</text>
+				<imgbtn id="1" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />
+			</caption>
+			<text pos="41,69">作者：指尖</text>
+			<text pos="41,96">QQ：229259139</text>
+			<text pos="40,123" size="322, 69" multiLines="1">本软件使用SOUI界面库进行开发，部分代码借鉴或直接使用SOUI Demo，感谢SOUI界面库作者启程软件以及Demo提供者，SOUI交流QQ群：229313785，385438344</text>
+		</window>
+	</root>
+</SOUI>
