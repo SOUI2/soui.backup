@@ -10,6 +10,7 @@ by 多点
 //初始化DOCK工具栏小图标的矩形区域，初始图标大小为65×65，工具栏长度：m_DockLen = 650
 SDesktopDock::SDesktopDock()
 {
+	memset(m_pSkin,0,sizeof(m_pSkin));
 	m_Width = 50;        //初始宽度
 	m_Height = 50;
 	m_DockLen = 500;

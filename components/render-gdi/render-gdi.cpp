@@ -19,10 +19,9 @@ namespace SOUI
         return TRUE;
     }
 
-    BOOL SRenderFactory_GDI::CreateFont( IFont ** ppFont , const LOGFONT &lf ,const IPropBag * pPropBag)
+    BOOL SRenderFactory_GDI::CreateFont( IFont ** ppFont , const LOGFONT &lf)
     {
         *ppFont = new SFont_GDI(this,&lf);
-		(*ppFont)->SetProps(pPropBag);
         return TRUE;
     }
 
@@ -365,7 +364,7 @@ namespace SOUI
         LOGFONT lf={0};
         lf.lfHeight=20;
         _tcscpy(lf.lfFaceName,_T("ËÎÌו"));
-        pRenderFactory->CreateFont(&m_defFont,lf,NULL);
+        pRenderFactory->CreateFont(&m_defFont,lf);
         SelectObject(m_defFont);
 
         pRenderFactory->CreateBitmap(&m_defBmp);

@@ -4,11 +4,11 @@
 #include <helper/color.h>
 #include <unknown/obj-ref-impl.hpp>
 #include <sobject/sobject-state-impl.hpp>
-
+#include <Shlwapi.h>
 #include <core\SkCanvas.h>
 #include <core\SkBitmap.h>
 #include <core\SkTypeface.h>
-
+#include <helper\SAttrCracker.h>
 #include <string\tstring.h>
 #include <string\strcpcvt.h>
 #include <interface/render-i.h>
@@ -30,7 +30,7 @@ namespace SOUI
         }
         
 		virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei);
-        virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf,const IPropBag * pPropBag);
+        virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf);
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
         virtual BOOL CreateRegion(IRegion **ppRgn);
         
@@ -121,11 +121,23 @@ namespace SOUI
         const SkPaint  GetPaint() const {return m_skPaint;}
         SkTypeface *GetFont()const {return m_skFont;}
 
-		virtual void SetProps(const IPropBag *pPropBag);
+		virtual HRESULT DefAttributeProc(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading);
+		virtual void OnInitFinished(pugi::xml_node xmlNode); 
+		SOUI_ATTRS_BEGIN()
+			ATTR_ENUM_BEGIN(L"blurStyle",SkBlurStyle,FALSE)
+				ATTR_ENUM_VALUE(L"normal",kNormal_SkBlurStyle)
+				ATTR_ENUM_VALUE(L"solid",kSolid_SkBlurStyle)
+				ATTR_ENUM_VALUE(L"outer",kOuter_SkBlurStyle)
+				ATTR_ENUM_VALUE(L"inner",kInner_SkBlurStyle)
+			ATTR_ENUM_END(m_blurStyle)
+			ATTR_FLOAT(L"blurRadius",m_blurRadius,FALSE)
+		SOUI_ATTRS_END()
 	protected:
         SkTypeface *m_skFont;   //定义字体
         SkPaint     m_skPaint;  //定义文字绘制属性
         LOGFONT     m_lf;
+		SkBlurStyle m_blurStyle;
+		SkScalar	m_blurRadius;
 	};
 
 	class SBrush_Skia : public TSkiaRenderObjImpl<IBrush>
@@ -331,13 +343,19 @@ namespace SOUI
 
 		virtual COLORREF SetPixel( int x, int y, COLORREF cr );
 
-		virtual void SetProps(const IPropBag * pProps);
-
-		virtual SStringT GetProp(LPCTSTR pszProp) const ;
     public:
         SkCanvas *GetCanvas(){return m_SkCanvas;}
 
+		virtual SStringW GetAttribute(const SStringW & strAttr) const
+		{
+			if(strAttr.CompareNoCase(L"antiAlias") == 0)
+				return m_bAntiAlias?L"1":L"0";
+			return __super::GetAttribute(strAttr);
+		}
 
+		SOUI_ATTRS_BEGIN()
+			ATTR_BOOL(L"antiAlias",m_bAntiAlias,FALSE)
+		SOUI_ATTRS_END()
 
     protected:
 		SkCanvas *m_SkCanvas;

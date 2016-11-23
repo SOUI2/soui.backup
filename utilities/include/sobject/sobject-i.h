@@ -151,6 +151,8 @@ namespace SOUI
          * Describe  
          */    
         virtual void OnInitFinished(pugi::xml_node xmlNode) = 0;
+
+		virtual SStringW GetAttribute(const SStringW & strAttr) const = 0;
     };
 
     /**

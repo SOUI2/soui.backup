@@ -66,7 +66,7 @@
       <deskdock pos="0,0,-0,-0" skin="skin_dock_bg"  skin1="skin_png_icon_1" skin2="skin_png_icon_2" skin3="skin_png_icon_3" skin4="skin_png_icon_4"
  skin5="skin_png_icon_5" skin6="skin_png_icon_6" skin7="skin_png_icon_7" skin8="skin_png_icon_8" skin9="skin_png_icon_9" skin10="skin_png_icon_10" >
 
-        <text pos="|0,|0" offset="-0.5,-0.5" font="font:黑体,bold:2,adding:20" colorText="#ff000066">多点桌面 dock演示 </text>
+        <text pos="|0,|0" offset="-0.5,-0.5" font="face:黑体,bold:2,adding:20" colorText="#ff000066">多点桌面 dock演示 </text>
       </deskdock>
     </page>
     <page title="SetWindowRgn">
