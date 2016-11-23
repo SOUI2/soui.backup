@@ -386,10 +386,6 @@
 				>
 			</File>
 			<File
-				RelativePath="src\helper\spropbag.cpp"
-				>
-			</File>
-			<File
 				RelativePath="src\control\SRealWnd.cpp"
 				>
 			</File>
