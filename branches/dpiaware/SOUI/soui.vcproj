@@ -334,6 +334,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\layout\SLinearLayout.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\control\SListbox.cpp"
 				>
 			</File>
@@ -701,6 +705,14 @@
 			</File>
 			<File
 				RelativePath="include\core\SItemPanel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\interface\slayout-i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\layout\SLinearLayout.h"
 				>
 			</File>
 			<File
