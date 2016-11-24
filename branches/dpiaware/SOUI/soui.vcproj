@@ -386,6 +386,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\layout\SouiLayout.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\core\SPanel.cpp"
 				>
 			</File>
@@ -777,6 +781,10 @@
 			</File>
 			<File
 				RelativePath="include\control\SouiCtrls.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\layout\SouiLayout.h"
 				>
 			</File>
 			<File
