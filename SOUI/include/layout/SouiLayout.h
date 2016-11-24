@@ -5,9 +5,9 @@
 
 namespace SOUI{
 
-	class SoutLayoutParam: public SObjectImpl<ILayoutParam>
+	class SouiLayoutParam: public SObjectImpl<ILayoutParam>
 	{
-		SOUI_CLASS_NAME(SoutLayoutParam,L"SouiLayoutParam")
+		SOUI_CLASS_NAME(SouiLayoutParam,L"SouiLayoutParam")
 
 	public:
 		virtual bool IsMatchParent(ORIENTATION orientation) const;
@@ -17,54 +17,15 @@ namespace SOUI{
 		virtual int GetSpecifiedSize(ORIENTATION orientation) const;
 
 	protected:
-		HRESULT OnAttrWidth(const SStringW & strValue,BOOL bLoading)
-		{
-			if(strValue.CompareNoCase(L"matchParent") == 0 || strValue.CompareNoCase(L"full") == 0)
-				m_width = SIZE_MATCH_PARENT;
-			else if(strValue.CompareNoCase(L"wrapContent") == 0)
-				m_width = SIZE_WRAP_CONTENT;
-			else
-				m_width = _wtoi(strValue);
-			return S_OK;
-		}
+		HRESULT OnAttrWidth(const SStringW & strValue,BOOL bLoading);
 
-		HRESULT OnAttrHeight(const SStringW & strValue,BOOL bLoading)
-		{
-			if(strValue.CompareNoCase(L"matchParent") == 0 || strValue.CompareNoCase(L"full") == 0)
-				m_height = SIZE_MATCH_PARENT;
-			else if(strValue.CompareNoCase(L"wrapContent") == 0)
-				m_height = SIZE_WRAP_CONTENT;
-			else
-				m_height = _wtoi(strValue);
-			return S_OK;
-		}
+		HRESULT OnAttrHeight(const SStringW & strValue,BOOL bLoading);
 
-		HRESULT OnAttrSize(const SStringW & strValue,BOOL bLoading)
-		{
-			SStringWList values;
-			if(2!=SplitString(strValue,L",",values))
-				return E_FAIL;
-			OnAttrWidth(values[0],bLoading);
-			OnAttrHeight(values[1],bLoading);
-			return S_OK;
-		}
+		HRESULT OnAttrSize(const SStringW & strValue,BOOL bLoading);
 
-		HRESULT OnAttrPos(const SStringW & strValue,BOOL bLoading)
-		{
-			return S_OK;
-		}
+		HRESULT OnAttrPos(const SStringW & strValue,BOOL bLoading);
 
-		HRESULT OnAttrOffset(const SStringW & strValue,BOOL bLoading)
-		{
-			float fx,fy;
-			if(2!=swscanf(strValue,L"%f,%f",&fx,&fy))
-			{
-				return E_FAIL;
-			}
-			fOffsetX = fx;
-			fOffsetY = fy;
-			return S_OK;
-		}
+		HRESULT OnAttrOffset(const SStringW & strValue,BOOL bLoading);
 
 		SOUI_ATTRS_BEGIN()
             ATTR_CUSTOM(L"width",OnAttrWidth)
@@ -74,8 +35,20 @@ namespace SOUI{
 			ATTR_CUSTOM(L"offset",OnAttrOffset)
         SOUI_ATTRS_BREAK()
 
+    protected:
+        //将字符串描述的坐标转换成POSITION_ITEM
+        BOOL StrPos2ItemPos(const SStringW &strPos,POSITION_ITEM & posItem);
+
+        //解析在pos中定义的前两个位置
+        BOOL ParsePosition12(const SStringW & pos1, const SStringW &pos2);
+
+        //解析在pos中定义的后两个位置
+        BOOL ParsePosition34(const SStringW & pos3, const SStringW &pos4);
 
 	protected:
+        int  nCount;                /**< 定义的坐标个数 */
+        POSITION_ITEM pos[4];       /**< 由pos属性定义的值, nCount >0 时有效*/
+
 		float fOffsetX,fOffsetY;    /**< 窗口坐标偏移量, x += fOffsetX * width, y += fOffsetY * height  */
 
 		int  m_width;        /**<使用width属性定义的宽 nCount==0 时有效*/
@@ -89,7 +62,35 @@ namespace SOUI{
 	public:
 		SouiLayout(void);
 		~SouiLayout(void);
-	};
+
+        virtual bool IsParamAcceptable(ILayoutParam *pLayoutParam) const;
+
+        virtual void CalcPostionOfChildren(SWindow * pParent);
+
+        virtual ILayoutParam * CreateLayoutParam() const;
+
+        virtual CSize MeasureChildren(SWindow * pParent,int nWidth,int nHeight) const;
+    protected:
+        struct WndPos{
+            SWindow *pWnd;
+            CRect    rc;
+        };
+
+        void _MeasureChildren(SList<WndPos> *pListChildren,int nWidth,int nHeight,int & nNewWidth,int & nNewHeight);
+        
+        int CalcChildLeft(SWindow *pWindow,SouiLayoutParam *pParam);
+        int CalcChildRight(SWindow *pWindow,SouiLayoutParam *pParam);
+        int CalcChildTop(SWindow *pWindow,SouiLayoutParam *pParam);
+        int CalcChildBottom(SWindow *pWindow,SouiLayoutParam *pParam);
+
+
+        BOOL CalcChildrenPosition(SList<SWindowRepos*> *pListChildren,int nWidth,int nHeight);
+        int CalcPosition(SWindow *pWnd,const CRect & rcContainer,CRect & rcWindow, const SwndLayout * pSwndLayout=NULL);
+        BOOL IsWaitingPos( int nPos );
+        int PositionItem2Value(SWindow *pWindow,const POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX);
+        SWindow * GetRefSibling(SWindow *pCurWnd,int uCode);
+        CRect GetWindowLayoutRect(SWindow *pWindow);
+    };
 
 
 }
