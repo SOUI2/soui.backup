@@ -11,15 +11,11 @@ namespace SOUI
         G_Right=2,G_Bottom=2,
     };
 
-    class SLinearLayoutParam : SObjectImpl<ILayoutParam>
+
+	class SLinearLayoutParam : public SObjectImpl<ILayoutParam>
     {
         SOUI_CLASS_NAME(SLinearLayoutParam,L"LinearLayoutParam")
 
-        enum{
-           SIZE_MATCH_PARENT=-1,
-           SIZE_MATCH_CONTENT=-2,
-           SIZE_SPEC = 0,
-        };
     public:
         virtual bool IsMatchParent(ORIENTATION orientation) const;
 
@@ -33,7 +29,7 @@ namespace SOUI
         SOUI_ATTRS_BEGIN()
             ATTR_CUSTOM(L"width",OnAttrWidth)
             ATTR_CUSTOM(L"height",OnAttrHeight)
-            ATTR_FLOAT(L"weight",m_weight)
+            ATTR_FLOAT(L"weight",m_weight,FALSE)
             ATTR_ENUM_BEGIN(L"gravity",Gravity,FALSE)
                 ATTR_ENUM_VALUE(L"left",G_Left)
                 ATTR_ENUM_VALUE(L"top",G_Top)
@@ -49,14 +45,17 @@ namespace SOUI
         Gravity m_gravity;
     };
 
-    class SLinearLayout : SObjectImpl<ILayout>
+    class SLinearLayout : public SObjectImpl<ILayout>
     {
+		SOUI_CLASS_NAME(SLinearLayout,L"linearLayout")
     public:
         SLinearLayout(void);
         ~SLinearLayout(void);
 
         virtual void CalcPostionOfChildren(SWindow * pParent);
         virtual ILayoutParam * CreateLayoutParam() const;
+		virtual CSize MeasureChildren(SWindow * pParent,int nWidth,int nHeight) const;
+		virtual bool IsParamAcceptable(ILayoutParam *pLayoutParam) const;
 
         
         SOUI_ATTRS_BEGIN()
@@ -66,7 +65,8 @@ namespace SOUI
             ATTR_ENUM_END(m_orientation)
         SOUI_ATTRS_BREAK()
 
-        ORIENTATION m_orientation;
+
+		ORIENTATION m_orientation;
     };
 
 }

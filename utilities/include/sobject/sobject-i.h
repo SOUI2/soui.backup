@@ -30,19 +30,20 @@ public:                                                 \
     }                                                   \
     \
 	static LPCWSTR BaseClassName()                      \
-	{return __super::GetClassName();                                                   \
-	}                                                   \
-	\
-	virtual LPCWSTR GetObjectClass()                    \
 	{                                                   \
-	return classname;                               \
+		return __super::GetClassName();                 \
 	}                                                   \
 	\
-	virtual BOOL IsClass(LPCWSTR lpszName)              \
+	virtual LPCWSTR GetObjectClass()  const             \
+	{                                                   \
+		return classname;                               \
+	}                                                   \
+	\
+	virtual BOOL IsClass(LPCWSTR lpszName) const        \
 	{                                                   \
 		if(wcscmp(GetClassName(), lpszName)  == 0)      \
 			return TRUE;                                \
-		return __super::IsClass(lpszName);             \
+		return __super::IsClass(lpszName);              \
 	}                                                   \
 
 
@@ -76,7 +77,7 @@ namespace SOUI
          * @return   BOOL -- true是测试类型
          * Describe  
          */    
-        virtual BOOL IsClass(LPCWSTR lpszName) = 0;
+        virtual BOOL IsClass(LPCWSTR lpszName) const = 0;
 
         /**
          * GetObjectClass
@@ -84,7 +85,7 @@ namespace SOUI
          * @return   LPCWSTR -- 类型名
          * Describe  这是一个虚函数，注意与GetClassName的区别。
          */    
-        virtual LPCWSTR GetObjectClass() = 0;
+        virtual LPCWSTR GetObjectClass() const = 0;
 
 
         virtual HRESULT SetAttribute(const char*  strAttribName, const char*  strValue, BOOL bLoading) = 0;

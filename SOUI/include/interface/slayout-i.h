@@ -13,6 +13,12 @@ namespace SOUI{
         Horz,Vert
     };
     
+	enum{
+		SIZE_WRAP_CONTENT=-1,
+		SIZE_MATCH_PARENT=-2,
+		SIZE_SPEC = 0,
+	};
+
     struct ILayoutParam : IObject
     {
         virtual bool IsMatchParent(ORIENTATION orientation) const = 0;
@@ -21,7 +27,9 @@ namespace SOUI{
     };
 
     struct ILayout : IObject{
+		virtual bool IsParamAcceptable(ILayoutParam *pLayoutParam) const = 0;
         virtual void CalcPostionOfChildren(SWindow * pParent) = 0;
         virtual ILayoutParam * CreateLayoutParam() const = 0;
+		virtual CSize MeasureChildren(SWindow * pParent,int nWidth,int nHeight) const =0;
     };
 }
