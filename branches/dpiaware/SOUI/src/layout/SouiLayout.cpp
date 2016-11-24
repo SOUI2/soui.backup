@@ -2,6 +2,12 @@
 #include "layout\SouiLayout.h"
 
 namespace SOUI{
+    enum
+    {
+        POS_INIT=0x11000000,    //坐标的初始化值
+        POS_WAIT=0x12000000,    //坐标的计算依赖于其它窗口的布局
+    };
+
 	SouiLayout::SouiLayout(void)
 	{
 	}
@@ -10,23 +16,393 @@ namespace SOUI{
 	{
 	}
 
+    bool SouiLayout::IsParamAcceptable(ILayoutParam *pLayoutParam) const
+    {
+        return pLayoutParam->IsClass(SouiLayoutParam::GetClassName());
+    }
 
-	bool SoutLayoutParam::IsMatchParent(ORIENTATION orientation) const
+    ILayoutParam * SouiLayout::CreateLayoutParam() const
+    {
+        return new SouiLayoutParam;
+    }
+
+    void SouiLayout::CalcPostionOfChildren(SWindow * pParent)
+    {
+        //throw std::logic_error("The method or operation is not implemented.");
+    }
+
+    BOOL SouiLayout::IsWaitingPos( int nPos )
+    {
+        return nPos == POS_INIT || nPos == POS_WAIT;
+    }
+
+    SWindow * SouiLayout::GetRefSibling(SWindow *pCurWnd,int uCode)
+    {
+        SASSERT(uCode == GSW_NEXTSIBLING || uCode == GSW_PREVSIBLING);
+        SWindow *pRet = pCurWnd->GetWindow(uCode);
+        while(pRet)
+        {
+            if(pRet->IsVisible(FALSE) || pRet->IsDisplay()) break;
+            pRet = pRet->GetWindow(uCode);
+        }
+        return pRet;
+    }
+
+    CRect SouiLayout::GetWindowLayoutRect(SWindow *pWindow)
+    {
+        return pWindow->GetWindowRect();
+    }
+
+    int SouiLayout::PositionItem2Value(SWindow *pWindow,const POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX)
+    {
+        int nRet=0;
+        int nSize=nMax-nMin;
+
+        switch(pos.pit)
+        {
+        case PIT_CENTER: 
+            nRet=(int)pos.nPos * pos.cMinus + nSize/2 + nMin;
+            break;
+        case PIT_NORMAL: 
+            if(pos.cMinus == -1)
+                nRet=nMax-(int)pos.nPos;
+            else
+                nRet=nMin+(int)pos.nPos;
+            break;
+        case PIT_PERCENT: 
+            if(pos.cMinus == -1)
+                nRet=nMin+(int)((100.0f-pos.nPos)*nSize/100);
+            else
+                nRet=nMin+(int)(pos.nPos*nSize/100);
+            if(nRet>nMax) nRet=nMax;
+            break;
+        case PIT_PREV_NEAR:
+        case PIT_PREV_FAR:
+            {
+                CRect rcRef;
+                SWindow *pRefWnd=GetRefSibling(pWindow,GSW_PREVSIBLING);
+                if(pRefWnd)
+                {
+                    rcRef = GetWindowLayoutRect(pRefWnd);
+                }else
+                {
+                    pRefWnd=pWindow->GetWindow(GSW_PARENT);
+                    SASSERT(pRefWnd);
+                    rcRef = pRefWnd->GetClientRect();
+                    //将parent看成一个虚拟的prev sibling
+                    rcRef.right = rcRef.left;
+                    rcRef.bottom = rcRef.top;
+                }
+                if(bX)
+                {
+                    LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.right:rcRef.left;
+                    if(IsWaitingPos(refPos))
+                        nRet=POS_WAIT;
+                    else
+                        nRet=refPos+(int)pos.nPos*pos.cMinus;
+                }else
+                {
+                    LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.bottom:rcRef.top;
+                    if(IsWaitingPos(refPos))
+                        nRet=POS_WAIT;
+                    else
+                        nRet=refPos+(int)pos.nPos*pos.cMinus;
+                }
+            }
+            break;
+        case PIT_NEXT_NEAR:
+        case PIT_NEXT_FAR:
+            {
+                CRect rcRef;
+                SWindow *pRefWnd=GetRefSibling(pWindow,GSW_NEXTSIBLING);
+                if(pRefWnd)
+                {
+                    rcRef = GetWindowLayoutRect(pRefWnd);
+                }else
+                {
+                    pRefWnd=pWindow->GetWindow(GSW_PARENT);
+                    SASSERT(pRefWnd);
+                    rcRef = pRefWnd->GetClientRect();
+                    //将parent看成一个虚拟的next sibling
+                    rcRef.left = rcRef.right;
+                    rcRef.top = rcRef.bottom;
+                }
+
+                if(bX)
+                {
+                    LONG refPos = (pos.pit == PIT_NEXT_NEAR)?rcRef.left:rcRef.right;
+                    if(IsWaitingPos(refPos))
+                        nRet=POS_WAIT;
+                    else
+                        nRet=refPos+(int)pos.nPos*pos.cMinus;
+                }else
+                {
+                    LONG refPos = (pos.pit == PIT_NEXT_NEAR)?rcRef.top:rcRef.bottom;
+                    if(IsWaitingPos(refPos))
+                        nRet=POS_WAIT;
+                    else
+                        nRet=refPos+(int)pos.nPos*pos.cMinus;
+                }
+            }
+            break;
+        case PIT_SIB_LEFT:// PIT_SIB_LEFT == PIT_SIB_TOP
+        case PIT_SIB_RIGHT://PIT_SIB_RIGHT == PIT_SIB_BOTTOM
+            {
+                SASSERT(pos.nRefID>0);
+                SWindow *pParent=pWindow->GetParent();
+                SASSERT(pParent);
+                SWindow *pRefWnd = pParent->FindChildByID(pos.nRefID);
+                SASSERT(pRefWnd);
+                CRect rcRef = GetWindowLayoutRect(pRefWnd);
+
+                if(bX)
+                {
+                    LONG refPos = (pos.pit == PIT_SIB_LEFT)?rcRef.left:rcRef.right;
+                    if(IsWaitingPos(refPos))
+                        nRet=POS_WAIT;
+                    else
+                        nRet=refPos+(int)pos.nPos*pos.cMinus;
+                }else
+                {
+                    LONG refPos = (pos.pit == PIT_SIB_TOP)?rcRef.top:rcRef.bottom;//PIT_SIB_TOP == PIT_SIB_LEFT
+                    if(IsWaitingPos(refPos))
+                        nRet=POS_WAIT;
+                    else
+                        nRet=refPos+(int)pos.nPos*pos.cMinus;
+                }
+            }       
+            break;
+        }
+
+        return nRet;
+
+    }
+
+    int SouiLayout::CalcPosition(SWindow *pWnd,const CRect & rcContainer,CRect & rcWindow, const SwndLayout * pSwndLayout/*=NULL*/)
+    {
+        int nRet=0;
+
+        if(pSwndLayout == NULL) pSwndLayout = pWnd->GetLayout();
+
+        if(pSwndLayout->nCount==4)
+        {//指定了4个坐标
+            if(IsWaitingPos(rcWindow.left))
+                rcWindow.left=PositionItem2Value(pWnd,pSwndLayout->pos[PI_LEFT],rcContainer.left,rcContainer.right,TRUE);
+            if(rcWindow.left==POS_WAIT) nRet++;
+
+            if(IsWaitingPos(rcWindow.top))
+                rcWindow.top=PositionItem2Value(pWnd,pSwndLayout->pos[PI_TOP],rcContainer.top,rcContainer.bottom,FALSE);
+            if(rcWindow.top==POS_WAIT) nRet++;
+
+            if(IsWaitingPos(rcWindow.right))
+            {
+                if(pSwndLayout->pos[PI_RIGHT].pit == PIT_SIZE)
+                {
+                    if(!IsWaitingPos(rcWindow.left))
+                    {
+                        if(pSwndLayout->pos[PI_RIGHT].cMinus == -1)
+                        {
+                            CSize szWnd=pWnd->GetDesiredSize(&rcContainer);
+                            rcWindow.right = rcWindow.left + szWnd.cx;
+                        }else
+                        {
+                            rcWindow.right = rcWindow.left + (int)pSwndLayout->pos[PI_RIGHT].nPos;
+                        }
+                    }
+                }else
+                {
+                    rcWindow.right=PositionItem2Value(pWnd,pSwndLayout->pos[PI_RIGHT],rcContainer.left,rcContainer.right,TRUE);
+                }
+            }
+            if(rcWindow.right==POS_WAIT) nRet++;
+
+            if(IsWaitingPos(rcWindow.bottom ))
+            {
+                if(pSwndLayout->pos[PI_BOTTOM].pit == PIT_SIZE)
+                {
+                    if(!IsWaitingPos(rcWindow.top))
+                    {
+                        if(pSwndLayout->pos[PI_BOTTOM].cMinus  == -1)
+                        {
+                            CSize szWnd=pWnd->GetDesiredSize(&rcContainer);
+                            rcWindow.bottom = rcWindow.top + szWnd.cy;
+                        }else
+                        {
+                            rcWindow.bottom = rcWindow.top + (int)pSwndLayout->pos[PI_BOTTOM].nPos;
+                        }
+                    }
+                }else
+                {
+                    rcWindow.bottom=PositionItem2Value(pWnd,pSwndLayout->pos[PI_BOTTOM],rcContainer.top,rcContainer.bottom,FALSE);
+                }
+            }
+            if(rcWindow.bottom==POS_WAIT) nRet++;
+        }else 
+        {
+            CPoint pt = pWnd->m_rcWindow.TopLeft();
+            if(pSwndLayout->nCount==2)
+            {//指定了两个坐标
+                if(IsWaitingPos(pt.x)) pt.x=PositionItem2Value(pWnd,pSwndLayout->pos[PI_LEFT],rcContainer.left,rcContainer.right,TRUE);
+                if(pt.x==POS_WAIT) nRet++;
+                if(IsWaitingPos(pt.y)) pt.y=PositionItem2Value(pWnd,pSwndLayout->pos[PI_TOP],rcContainer.top,rcContainer.bottom,FALSE);
+                if(pt.y==POS_WAIT) nRet++;
+            }else //if(nCount==0)
+            {
+                if(IsWaitingPos(pt.x) && pSwndLayout->IsFitParent(PD_X))
+                {
+                    pt.x=rcContainer.left;
+                }
+                if(IsWaitingPos(pt.y) && pSwndLayout->IsFitParent(PD_Y))
+                {
+                    pt.y=rcContainer.top;
+                }
+                //自动排版
+                SWindow *pSibling=GetRefSibling(pWnd,GSW_PREVSIBLING);
+                if(!pSibling)
+                {//没有兄弟窗口，从父窗口左上角开始
+                    if(IsWaitingPos(pt.x)) pt.x=rcContainer.left;
+                    if(IsWaitingPos(pt.y)) pt.y=rcContainer.top;
+                }else
+                {
+                    CRect rcSib = pSibling->m_rcWindow;
+                    if(IsWaitingPos(pt.x))
+                    {
+                        if(!IsWaitingPos(rcSib.right))
+                        {
+                            SWindow *pParent = pWnd->GetParent();
+                            SASSERT(pParent);
+                            pt.x=rcSib.right+pParent->m_style.m_bySepSpace;
+                        }else
+                        {
+                            pt.x=POS_WAIT,nRet++;
+                        }
+                    }
+                    if(IsWaitingPos(pt.y))
+                    {
+                        if(!IsWaitingPos(rcSib.top))
+                        {
+                            pt.y=rcSib.top;
+                        }else
+                        {
+                            pt.y=POS_WAIT,nRet++;
+                        }
+                    }
+                }
+            }
+            if(nRet==0)
+                rcWindow=CRect(pt,CalcSize(pWnd,rcContainer,pSwndLayout));
+            else 
+                rcWindow.left=pt.x,rcWindow.top=pt.y;
+        }
+
+        if(nRet==0)
+        {//没有坐标等待计算了
+            rcWindow.NormalizeRect();
+            //处理窗口的偏移(offset)属性
+            CSize sz = rcWindow.Size();
+            CPoint ptOffset;
+            ptOffset.x = (LONG)(sz.cx * pSwndLayout->fOffsetX);
+            ptOffset.y = (LONG)(sz.cy * pSwndLayout->fOffsetY);
+            rcWindow.OffsetRect(ptOffset);
+        }
+        return nRet;
+    }
+
+    BOOL SouiLayout::CalcChildrenPosition(SList<SWindowRepos*> *pListChildren,const CRect & rcContainer)
+    {
+        SPOSITION pos=pListChildren->GetHeadPosition();
+        int nChildrenCount=pListChildren->GetCount();
+        while(pos)
+        {
+            SPOSITION posOld=pos;
+            SWindow *pChild=pListChildren->GetNext(pos)->GetWindow();
+            if(0 == CalcPosition(pChild,rcContainer,pChild->m_rcWindow))
+            {
+                delete pListChildren->GetAt(posOld);
+                pListChildren->RemoveAt(posOld);
+            }
+        }
+        if(0==pListChildren->GetCount())
+            return TRUE;
+        if(nChildrenCount == pListChildren->GetCount())
+        {//窗口布局依赖死锁
+            SASSERT_FMTW(FALSE,L"窗口布局依赖死锁");
+            return FALSE;
+        }else
+        {
+            return CalcChildrenPosition(pListChildren,rcContainer);
+        }
+    }
+
+    CSize SouiLayout::MeasureChildren(SWindow * pParent,int nWidth,int nHeight) const
+    {
+        struct SWNDPOS{
+            SWindow *pWnd;
+            CRect    rcWnd;
+        };
+        SList<SWindowRepos*> lstWnd;
+        SList<SWNDPOS>       lstWndPos;
+
+        SWindow *pChild=GetWindow(GSW_FIRSTCHILD);
+        while(pChild)
+        {
+            if(!pChild->IsFloat() && (pChild->IsVisible(FALSE) || pChild->IsDisplay()))
+            {//不显示且不占位的窗口不参与计算
+                SWNDPOS wndPos;
+                wndPos.pWnd = pChild;
+                wndPos.rcWnd = pChild->m_rcWindow;
+                lstWndPos.AddTail(wndPos);
+                lstWnd.AddTail(new SWindowRepos(pChild,TRUE));
+            }
+            pChild=pChild->GetWindow(GSW_NEXTSIBLING);
+        }
+        CalcChildrenPosition(&lstWnd,nWidth,nHeight);
+
+        pChild = GetWindow(GSW_FIRSTCHILD);
+
+        CRect rcContainer;
+
+        while(pChild)
+        {
+            CRect rcWnd = pChild->GetWindowRect();
+            int nReqWid = rcWnd.right;
+            if(nReqWid<0) nReqWid = -rcWnd.right + rcWnd.Width();
+            int nReqHei = rcWnd.bottom;
+            if(nReqHei<0) nReqHei = -rcWnd.bottom + rcWnd.Height();
+
+            rcContainer.right = max(rcContainer.right,max(nReqWid,rcWnd.right));
+            rcContainer.bottom = max(rcContainer.bottom,max(nReqHei,rcWnd.bottom));
+
+            pChild = pChild->GetWindow(GSW_NEXTSIBLING);
+        }
+
+        SPOSITION pos = lstWndPos.GetHeadPosition();
+        while(pos)
+        {
+            SWNDPOS wndPos = lstWndPos.GetNext(pos);
+            wndPos.pWnd->m_rcWindow = wndPos.rcWnd;
+        }
+
+        return rcContainer;
+    }
+
+
+	bool SouiLayoutParam::IsMatchParent(ORIENTATION orientation) const
 	{
 		return orientation == Vert ?(m_height == SIZE_MATCH_PARENT):(m_width == SIZE_MATCH_PARENT);
 	}
 
-	bool SoutLayoutParam::IsSpecifiedSize(ORIENTATION orientation) const
+	bool SouiLayoutParam::IsSpecifiedSize(ORIENTATION orientation) const
 	{
 		return orientation == Vert ?(m_height > SIZE_SPEC):(m_width > SIZE_SPEC);
 	}
 
-	int SoutLayoutParam::GetSpecifiedSize(ORIENTATION orientation) const
+	int SouiLayoutParam::GetSpecifiedSize(ORIENTATION orientation) const
 	{
 		return orientation == Vert ?(m_height):(m_width);
 	}
 
-	HRESULT SoutLayoutParam::OnAttrOffset(const SStringW & strValue,BOOL bLoading)
+	HRESULT SouiLayoutParam::OnAttrOffset(const SStringW & strValue,BOOL bLoading)
 	{
 		float fx,fy;
 		if(2!=swscanf(strValue,L"%f,%f",&fx,&fy))
@@ -38,7 +414,7 @@ namespace SOUI{
 		return S_OK;
 	}
 
-	BOOL SoutLayoutParam::ParsePosition12( const SStringW & strPos1, const SStringW &strPos2 )
+	BOOL SouiLayoutParam::ParsePosition12( const SStringW & strPos1, const SStringW &strPos2 )
 	{
 		if(strPos1.IsEmpty() || strPos2.IsEmpty()) 
 			return FALSE;
@@ -53,7 +429,7 @@ namespace SOUI{
 		return TRUE;
 	}
 
-	BOOL SoutLayoutParam::ParsePosition34( const SStringW & strPos3, const SStringW &strPos4 )
+	BOOL SouiLayoutParam::ParsePosition34( const SStringW & strPos3, const SStringW &strPos4 )
 	{
 		if(strPos3.IsEmpty() || strPos4.IsEmpty()) return FALSE;
 		POSITION_ITEM pos3,pos4;
@@ -65,7 +441,7 @@ namespace SOUI{
 		return TRUE;
 	}
 
-	BOOL SoutLayoutParam::StrPos2ItemPos( const SStringW &strPos,POSITION_ITEM & pos )
+	BOOL SouiLayoutParam::StrPos2ItemPos( const SStringW &strPos,POSITION_ITEM & pos )
 	{
 		if(strPos.IsEmpty()) return FALSE;
 
@@ -141,7 +517,7 @@ namespace SOUI{
 		return TRUE;
 	}
 
-	HRESULT SoutLayoutParam::OnAttrPos(const SStringW & strValue,BOOL bLoading)
+	HRESULT SouiLayoutParam::OnAttrPos(const SStringW & strValue,BOOL bLoading)
 	{
 		SStringWList strLst;
 		SplitString(strValue,L',',strLst);
@@ -193,7 +569,7 @@ namespace SOUI{
 		return S_OK;
 	}
 
-	HRESULT SoutLayoutParam::OnAttrSize(const SStringW & strValue,BOOL bLoading)
+	HRESULT SouiLayoutParam::OnAttrSize(const SStringW & strValue,BOOL bLoading)
 	{
 		SStringWList values;
 		if(2!=SplitString(strValue,L',',values))
@@ -203,7 +579,7 @@ namespace SOUI{
 		return S_OK;
 	}
 
-	HRESULT SoutLayoutParam::OnAttrHeight(const SStringW & strValue,BOOL bLoading)
+	HRESULT SouiLayoutParam::OnAttrHeight(const SStringW & strValue,BOOL bLoading)
 	{
 		if(strValue.CompareNoCase(L"matchParent") == 0 || strValue.CompareNoCase(L"full") == 0)
 			m_height = SIZE_MATCH_PARENT;
@@ -214,7 +590,7 @@ namespace SOUI{
 		return S_OK;
 	}
 
-	HRESULT SoutLayoutParam::OnAttrWidth(const SStringW & strValue,BOOL bLoading)
+	HRESULT SouiLayoutParam::OnAttrWidth(const SStringW & strValue,BOOL bLoading)
 	{
 		if(strValue.CompareNoCase(L"matchParent") == 0 || strValue.CompareNoCase(L"full") == 0)
 			m_width = SIZE_MATCH_PARENT;
@@ -224,5 +600,44 @@ namespace SOUI{
 			m_width = _wtoi(strValue);
 		return S_OK;
 	}
+
+
+
+    void SouiLayout::_MeasureChildren(SList<WndPos> *pListChildren,int nWidth,int nHeight,int & nNewWidth,int & nNewHeight)
+    {
+        if(pListChildren->IsEmpty()) return;
+        int nResolved = 0;
+        for(SPOSITION pos = pListChildren->GetHeadPosition();pos;)
+        {
+            WndPos wndPos = pListChildren->GetNext(pos);
+            SouiLayoutParam *pLayoutParam = wndPos.pWnd->GetLayoutParam<SouiLayoutParam>();
+            if(wndPos.rc.left == POS_INIT || wndPos.rc.left == POS_WAIT) 
+            {
+                wndPos.rc.left = CalcChildLeft(wndPos.pWnd,pLayoutParam);
+                if(wndPos.rc.left != POS_WAIT) nResolved ++;
+            }
+            if(wndPos.rc.right == POS_INIT || wndPos.rc.right == POS_WAIT) 
+            {
+                wndPos.rc.right = CalcChildRight(wndPos.pWnd,pLayoutParam);
+                if(wndPos.rc.right != POS_WAIT) nResolved ++;
+            }
+            if(wndPos.rc.top == POS_INIT || wndPos.rc.top == POS_WAIT) 
+            {
+                wndPos.rc.top = CalcChildTop(wndPos.pWnd,pLayoutParam);
+                if(wndPos.rc.top != POS_WAIT) nResolved ++;
+            }
+            if(wndPos.rc.bottom == POS_INIT || wndPos.rc.bottom == POS_WAIT) 
+            {
+                wndPos.rc.bottom = CalcChildBottom(wndPos.pWnd,pLayoutParam);
+                if(wndPos.rc.bottom != POS_WAIT) nResolved ++;
+            }
+        }
+        if(nResolved == 0)
+        {
+            return;//error
+        }
+
+    }
+
 
 }
