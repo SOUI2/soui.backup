@@ -18,6 +18,7 @@ namespace SOUI
 
     public:
         virtual bool IsMatchParent(ORIENTATION orientation) const;
+		virtual bool IsWrapContent(ORIENTATION orientation) const;
 
         virtual bool IsSpecifiedSize(ORIENTATION orientation) const;
 

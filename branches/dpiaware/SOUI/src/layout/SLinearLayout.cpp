@@ -8,6 +8,11 @@ namespace SOUI
         return orientation==Vert?(m_width == SIZE_MATCH_PARENT) : (m_height == SIZE_MATCH_PARENT);
     }
 
+	bool SLinearLayoutParam::IsWrapContent(ORIENTATION orientation) const
+	{
+		return orientation == Vert ?(m_height == SIZE_WRAP_CONTENT):(m_width == SIZE_WRAP_CONTENT);
+	}
+
     bool SLinearLayoutParam::IsSpecifiedSize(ORIENTATION orientation) const
     {
         return orientation==Vert?(m_width > SIZE_SPEC) : (m_height > SIZE_SPEC);

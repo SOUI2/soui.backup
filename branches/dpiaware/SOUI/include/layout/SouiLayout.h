@@ -14,7 +14,12 @@ namespace SOUI{
 
 		virtual bool IsSpecifiedSize(ORIENTATION orientation) const;
 
+		virtual bool IsWrapContent(ORIENTATION orientation) const;
+
 		virtual int GetSpecifiedSize(ORIENTATION orientation) const;
+
+	public:
+		bool IsOffsetRequired(ORIENTATION orientation) const;
 
 	protected:
 		HRESULT OnAttrWidth(const SStringW & strValue,BOOL bLoading);
@@ -74,9 +79,12 @@ namespace SOUI{
         struct WndPos{
             SWindow *pWnd;
             CRect    rc;
+			bool     bWaitOffsetX;
+			bool	 bWaitOffsetY;
         };
 
-        void _MeasureChildren(SList<WndPos> *pListChildren,int nWidth,int nHeight,int & nNewWidth,int & nNewHeight);
+        void _MeasureChildren1(SList<WndPos> *pListChildren,int nWidth,int nHeight);
+		int PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POSITION_ITEM &pos , int nMax,BOOL bX);
         
         int CalcChildLeft(SWindow *pWindow,SouiLayoutParam *pParam);
         int CalcChildRight(SWindow *pWindow,SouiLayoutParam *pParam);
@@ -88,7 +96,7 @@ namespace SOUI{
         int CalcPosition(SWindow *pWnd,const CRect & rcContainer,CRect & rcWindow, const SwndLayout * pSwndLayout=NULL);
         BOOL IsWaitingPos( int nPos );
         int PositionItem2Value(SWindow *pWindow,const POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX);
-        SWindow * GetRefSibling(SWindow *pCurWnd,int uCode);
+		SWindow * GetRefSibling(SWindow *pCurWnd,int uCode);
         CRect GetWindowLayoutRect(SWindow *pWindow);
     };
 
