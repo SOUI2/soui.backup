@@ -7,6 +7,7 @@
 #include "DlgStyleManage.h"
 #include "core/SWnd.h"
 #include "MainDlg.h"
+#include "colorpicker/ColourPopup.h"
 
 #define  MARGIN 20
 
@@ -108,6 +109,7 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 
 	m_strCurFile = strFileName;
 	RenameChildeWnd(xmlDoc1->first_child());
+	m_strCurFile.Empty();
 	return TRUE;
 }
 
@@ -993,7 +995,8 @@ void SDesignerView::InitProperty(SWindow *pPropertyContainer)   //初始化属性列表
 	SStringW s = L"<propgrid name=\"NAME_UIDESIGNER_PROPGRID_MAIN\" pos=\"0,0,-4,-4\" switchSkin=\"SKIN_UIDESIGNER_PROPGRID_SWITCH\"                      \
 		nameWidth=\"100\" orderType=\"group\"   itemHeight=\"30\"   ColorGroup=\"RGB(96,112,138)\"                                          \
 		ColorItemSel=\"rgb(234,128,16)\" colorItemSelText=\"#FF0000\" EditBkgndColor=\"rgb(87,104,132)\"                                    \
-		autoWordSel=\"1\"> <cmdbtnstyle skin=\"_skin.sys.btn.normal\">...</cmdbtnstyle> </propgrid>";
+		autoWordSel=\"1\"> <cmdbtnstyle skin=\"_skin.sys.btn.normal\" colorText=\"RGB(96,112,138)\">...</cmdbtnstyle> </propgrid>";
+
 
 
 	pugi::xml_document m_xmlDocProperty;
@@ -1172,6 +1175,7 @@ void SDesignerView::CreatePropGrid(SStringT strCtrlType)
 
 				m_pPropgrid-> GetEventSet()->subscribeEvent(EventPropGridValueChanged::EventID,Subscriber(&SDesignerView::OnPropGridValueChanged,this));
 				m_pPropgrid-> GetEventSet()->subscribeEvent(EventPropGridItemClick::EventID,Subscriber(&SDesignerView::OnPropGridItemClick,this));
+				m_pPropgrid-> GetEventSet()->subscribeEvent(EventPropGridItemActive::EventID,Subscriber(&SDesignerView::OnPropGridItemActive,this));
 
 
 			}
@@ -1188,6 +1192,9 @@ void SDesignerView::UpdatePropGrid(pugi::xml_node xmlNode)
 	{
 		return;
 	}
+
+	((CMainDlg*)m_pMainHost)->m_wndDescContainer->SetAttribute(L"show", L"0");
+	((CMainDlg*)m_pMainHost)->m_wndDescContainer->SetAttribute(L"display", L"0");
 
 	m_pPropgrid->ClearAllGridItemValue();
 
@@ -1455,6 +1462,8 @@ bool SDesignerView::OnPropGridItemClick( EventArgs *pEvt )
 	IPropertyItem* pItem = pEvent->pItem;
 	SStringT strType = pEvent->strType;
 
+
+
 	if (strType.CompareNoCase(_T("skin")) == 0)
 	{
 		SDlgSkinSelect DlgSkin(_T("layout:UIDESIGNER_XML_SKIN_SELECT"), pItem->GetString(), m_strUIResFile);
@@ -1485,6 +1494,7 @@ bool SDesignerView::OnPropGridItemClick( EventArgs *pEvt )
 
 	}	else if (strType.CompareNoCase(_T("class")) == 0)
 	{
+
 	}
 
 
@@ -2178,7 +2188,7 @@ void SDesignerView::ShowYSGLDlg()
 	{
 		return;
 	}
-	SDlgStyleManage dlg;
+	SDlgStyleManage dlg(_T(""), m_strUIResFile, FALSE);
 	if (dlg.DoModal(m_pMainHost->m_hWnd) == IDOK)
 	{
 		RefreshRes();
@@ -2255,4 +2265,27 @@ void SDesignerView::TrimXmlNodeTextBlank(pugi::xml_node xmlNode)
 		NodeSib = NodeSib.next_sibling();
 
 	}
+}
+
+
+bool SDesignerView::OnPropGridItemActive( EventArgs *pEvt )
+{
+	EventPropGridItemActive *pEvent = (EventPropGridItemActive*)pEvt;
+	IPropertyItem* pItem = pEvent->pItem;
+
+	SStringT strDesc = pItem->GetDescription();
+
+	if (strDesc.IsEmpty())
+	{
+		((CMainDlg*)m_pMainHost)->m_wndDescContainer->SetAttribute(L"show", L"0");
+		((CMainDlg*)m_pMainHost)->m_wndDescContainer->SetAttribute(L"display", L"0");
+	}else
+	{
+		((CMainDlg*)m_pMainHost)->m_wndDescContainer->SetAttribute(L"show", L"1");
+		((CMainDlg*)m_pMainHost)->m_wndDescContainer->SetAttribute(L"display", L"1");
+
+		((CMainDlg*)m_pMainHost)->m_edtDesc->SetWindowText(strDesc);
+	}
+
+	return true;
 }

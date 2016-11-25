@@ -82,6 +82,7 @@ namespace SOUI
 		//2、Sel改变的时候响应
         GetEventSet()->addEvent(EVENTID(EventPropGridValueChanged));
         GetEventSet()->addEvent(EVENTID(EventPropGridItemClick));
+        GetEventSet()->addEvent(EVENTID(EventPropGridItemActive));
         GetEventSet()->subscribeEvent(EventLBSelChanged::EventID,Subscriber(&SPropertyGrid::OnSelChanged,this));
     }
 
@@ -419,7 +420,15 @@ namespace SOUI
                 }else if(ip==IP_VALUE)
                 {
                     IPropertyItem *pItem = (IPropertyItem*)GetItemData(iItem);
+
+					
+					EventPropGridItemActive evt(this);
+					evt.pItem = pItem;
+					FireEvent(evt);
+
                     pItem->OnInplaceActive(true);
+
+
                 }
             }
         }

@@ -1,26 +1,74 @@
 <?xml version="1.0"?>
-<SOUI name="window" title="布局" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="800" height="600" margin="1,5,5,5" wndType="8" toolWindow="1">
+<SOUI name="window" title="布局" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="800" height="656" margin="1,5,5,5" wndType="8" toolWindow="1">
 	<root cache="1">
-		<window pos="0,0,-0,-0" colorBkgnd="rgb(50,126,173)" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13">
+		<window pos="0,0,-0,-0" colorBkgnd="rgb(50,126,173)" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13" skin="SKIN_UIDESIGNER_image_bg_png">
 			<caption pos="0,0,-0,30" focusable="1" drawfocusrect="0">
 				<text pos="|0,|0" name="txt_title" offset="-0.5,-0.5">样式管理</text>
-				<imgbtn id="1" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />
-				<imgbtn id="2" skin="_skin.sys.btn.maximize" pos="-83,0" animate="1" />
-				<imgbtn id="3" skin="_skin.sys.btn.restore" pos="-83,0" show="0" animate="1" />
-				<imgbtn id="5" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+				<imgbtn skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" name="btnClose" />
 			</caption>
-			<tabctrl name="NAME_UIDESIGNER_LEFT_MAIN_TAB" pos="0,[0,-0,-0" tabAlign="left" tabSkin="SKIN_UIDESIGNER_TAB_LEFT" tabInterSize="2" tabWidth="40" tabHeight="70" colorText="#FFFFFF" focusable="0" show="1" curSel="1">
-				<page title="class" colorBorder="#ffff00">
-					<listbox pos="4,3,150,-0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" name="lbClass" />
-					<realwnd pos="154,3,-5,-5" wndclass="ClassEditor" id="" wndname="ClassEditor" />
-					<window pos="7,{0,@1,-5" colorBkgnd="#FFFFFF" />
-				</page>
-				<page name="NAME_UIDESIGNER_PROPERTY_PAGE" title="objattr" colorBorder="#ffff00">
-					<listbox pos="13,3,195,-0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" name="lbObjAttr" />
-					<realwnd pos="199,4,-3,-4" wndclass="ObjAttrEditor" id="" wndname="ObjAttrEditor" />
-					<window pos="7,{0,@1,-5" colorBkgnd="#FFFFFF" />
-				</page>
-			</tabctrl>
+			<group pos="8,40" size="224, 552" align="left">
+				
+				
+				
+				
+				
+				样式列表
+				
+				
+				
+				
+				
+				<button pos="8,8" size="88, 24" colorText="#000000" skin="_skin.sys.btn.normal" name="btnAdd">添加</button>
+				<button pos="128,8" size="88, 24" colorText="#000000" skin="_skin.sys.btn.normal" name="btnDel">删除</button>
+				<listbox pos="8,72" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" colorBkgnd="#FFFFFF12" name="lbStyle" size="208, 452">
+					<items>
+						<item text="item1" icon="1" data="100" />
+						<item text="item2" icon="2" data="100" />
+						<item text="item3" icon="3" data="103" />
+						<item text="item4" icon="4" data="100" />
+						<item text="item5" icon="5" data="105" />
+						<item text="item6" icon="0" data="100" />
+					</items>
+				</listbox>
+				<edit pos="8,40" size="208, 24" colorBkgnd="#FFFFFF" cueText="查找过滤" colorText="#000000" name="edtSearch" />
+			</group>
+			<group pos="240,40" size="552, 336" align="left">
+				
+				
+				
+				
+				
+				代码
+				
+				
+				
+				
+				
+				<realwnd pos="8,32" name="wndReal" wndclass="scintilla1" id="" wndname="" size="536, 276" />
+				<buttonex pos="232,0" size="64, 24" animate="1" colorText="#000000" icon="_skin.sys.icons" iconIndex="2" drawMode="horzIconText" name="btnSave">保存</buttonex>
+			</group>
+			<group pos="240,384" size="552, 208" align="left">
+				
+				
+				
+				
+				
+				样式预览
+				
+				
+				
+				
+				
+				<window pos="8,32" size="536, 140" name="wndView" />
+				<combobox size="152, 24" dropDown="1" dropHeight="100" dotted="0" animateTime="200" curSel="-1" pos="104,0" colorBkgnd="#FFFFFF" colorText="#000000" focusable="0" drawfocusrect="0" name="cmbCtrl">
+					<liststyle iconSkin="" itemSkin="" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088" />
+					<editstyle inset="5,0,5,0" colorText="#000000" align="left" colorBkgnd="#FFFFFF" />
+					<items>
+						<item text="111" icon="1" data="100" />
+					</items>
+				</combobox>
+			</group>
+			<button pos="696,608" size="96, 32" colorText="#000000" skin="_skin.sys.btn.normal" name="btnOK">确定</button>
 		</window>
 	</root>
 </SOUI>

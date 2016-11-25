@@ -47,5 +47,7 @@
 		<file name="UIDESIGNER_ID_PNG_PROPGRID_SWITCH" path="image\propswitch.png" />
 		<file name="image_animation_bk_png" path="image\animation_bk.png" />
 		<file name="image_animation_foreground_png" path="image\animation_foreground.png" />
+		<file name="SKIN_UIDESIGNER_image_bg_png" path="image\bg.png" />
+		<file name="SKIN_UIDESIGNER_image_btn_skin_png" path="image\btn_skin.png" />
 	</PNG>
 </resource>
