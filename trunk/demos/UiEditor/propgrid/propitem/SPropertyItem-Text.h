@@ -10,8 +10,6 @@ namespace SOUI
     public:
         virtual void DrawItem(IRenderTarget *pRT,CRect rc);
         
-        virtual void SetValue(void *pValue);
-        virtual const void* GetValue(){return (LPCTSTR)m_strValue;}
         virtual void SetString(const SStringT & strValue);
         virtual SStringT GetString() const {return m_strValue;}
 		virtual BOOL HasButton() const;

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SOUI name="window" title="布局" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="200" height="300" wndType="8" toolWindow="1">
 	<root cache="1">
-		<window pos="0,0,-1,-1" colorBkgnd="rgb(50,126,173)" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13">
+		<window pos="0,0,-1,-1" colorBkgnd="rgb(50,126,173)" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13" skin="SKIN_UIDESIGNER_image_bg_png">
 			<caption pos="0,0,-0,30" focusable="1" drawfocusrect="0">
 				<text pos="5,4" name="txt_title">选择皮肤</text>
 				<imgbtn id="IDCANCEL" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />

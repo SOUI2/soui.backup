@@ -72,11 +72,6 @@ namespace SOUI
         }
     }
 
-    void SPropertyItemText::SetValue( void *pValue)
-    {
-        m_strValue = *(SStringT*)pValue;
-        OnValueChanged();
-    }
 
     void SPropertyItemText::SetString( const SStringT & strValue )
     {

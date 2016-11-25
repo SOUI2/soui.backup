@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SOUI name="NAME_UIDESIGNER_mainWindow1" title="皮肤选择" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="1024" height="550" margin="1,5,5,5" resizable="1" wndType="8" toolWindow="1" translucent="1">
-	<root colorbkgnd="rgb(234,128,16)" cache="1">
-		<window pos="2,2,-2,-2" colorBkgnd="rgb(50,126,173)" show="1">
+	<root cache="1" >
+		<window pos="2,2,-2,-2" colorBkgnd="rgb(50,126,173)" show="1" skin="SKIN_UIDESIGNER_image_bg_png">
 			<window>
 				<caption pos="0,0,-0,30" show="1" font="adding:0">
 					<icon name="NAME_UIDESIGNER_main_icon" skin="SKIN_UIDESIGNER_main_icon" pos="8,9" />

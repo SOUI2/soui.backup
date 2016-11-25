@@ -69,8 +69,8 @@ namespace SOUI
 
 		 bool OnPropGridValueChanged( EventArgs *pEvt );
 		 bool OnPropGridItemClick( EventArgs *pEvt );
+		 bool OnPropGridItemActive( EventArgs *pEvt );
 		 bool OnTCSelChanged(EventArgs *pEvt);
-
 		 
 
 		 BOOL ReLoadLayout(); 
@@ -148,6 +148,7 @@ namespace SOUI
 
 			SStringT m_strCurrentCtrlType; //当前选中的控件类型 "button" "check"等等
 			SPropertyGrid *m_pPropgrid;    //属性面板
+
 			SHostDialog* m_pMainHost;
 
 			pugi::xml_document m_xmlDocUiRes;  //uires文件
@@ -160,6 +161,7 @@ namespace SOUI
 			STreeCtrl *m_treeXmlStruct; //显示xml文档结构的tree控件
 
 			int m_ndata; //这个值用来标识xmlnode的每一个节点，节点属性为data,xmlnode的这个属性值是唯一的;
+
 
 
 	};

@@ -8,8 +8,7 @@ namespace SOUI
     {
         SOUI_CLASS_NAME(SPropertyGroup,L"propsize")
     public:
-        virtual void SetValue(void *pValue);
-        virtual const void* GetValue() const;
+
         virtual void SetString(const SStringT & strValue);
 		//add
 		virtual void SetStringOnly( const SStringT & strValue );

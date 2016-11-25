@@ -44,8 +44,6 @@ namespace SOUI
         //add
         virtual void SetStringOnly(const SStringT & strValue)=0;
 
-        virtual const void* GetValue() const =0;
-        virtual void SetValue(void *pValue)=0;
         virtual void DrawItem(IRenderTarget *pRT,CRect rc) =0;
         virtual void AdjustInplaceActiveWndRect(CRect & rc)=0;
         virtual bool IsInplaceActive()=0;

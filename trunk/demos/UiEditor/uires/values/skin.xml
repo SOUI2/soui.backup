@@ -14,4 +14,6 @@
 	<imglist name="SKIN_UIDESIGNER_PROPGRID_SWITCH" src="PNG:UIDESIGNER_ID_PNG_PROPGRID_SWITCH" states="4" />
 	<imgframe src="PNG:image_animation_bk_png" name="image_animation_bk_png" />
 	<imgframe src="PNG:image_animation_foreground_png" name="image_animation_foreground_png" />
+	<imgframe src="PNG:SKIN_UIDESIGNER_image_bg_png" name="SKIN_UIDESIGNER_image_bg_png" />
+	<imglist src="PNG:SKIN_UIDESIGNER_image_btn_skin_png" name="SKIN_UIDESIGNER_image_btn_skin_png" states="3" />
 </skin>

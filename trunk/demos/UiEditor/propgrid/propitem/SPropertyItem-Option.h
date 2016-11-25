@@ -14,8 +14,6 @@ namespace SOUI
 		//add
         virtual void SetStringOnly(const SStringT & strValue);
 
-        virtual void SetValue(void *pValue);
-        virtual const void * GetValue() const;
         virtual void SetString(const SStringT & strValue);
         virtual SStringT GetString() const;
 
@@ -23,16 +21,23 @@ namespace SOUI
             ATTR_CUSTOM(L"options",OnAttrOptions)
             ATTR_INT(L"dropHeight",m_nDropHeight,FALSE)
             ATTR_INT(L"value",m_nValue,FALSE)
+			ATTR_INT(L"CanEmpty",m_bCanEmpty, 1,FALSE)
         SOUI_ATTRS_END()
 
     protected:
         virtual void OnInplaceActive(bool bActive);
     protected:
         HRESULT OnAttrOptions(const SStringW & strValue,BOOL bLoading);
-        
+
+
         int      m_nDropHeight;
         int      m_nValue;
-        SArray<SStringT>    m_options;        
+		SStringT      m_strValue;
+		bool     m_bCanEmpty:  1;
+
+		SStringT m_strDisplay;
+        //SArray<SStringT>    m_options;     
+		SMap<SStringT, SStringT> m_options;
 
         SComboBox  * m_pCombobox;
         
@@ -41,6 +46,8 @@ namespace SOUI
         {
             return new SPropertyItemOption(pOwner);
         }
+
+		bool OnCBSelChange(EventArgs *pEvt);
     protected:
         SPropertyItemOption(SPropertyGrid *pOwner):SPropertyItemBase(pOwner),m_pCombobox(NULL),m_nValue(-1),m_nDropHeight(200)
         {
