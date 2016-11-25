@@ -22,6 +22,7 @@ namespace SOUI{
     struct ILayoutParam : IObject
     {
         virtual bool IsMatchParent(ORIENTATION orientation) const = 0;
+		virtual bool IsWrapContent(ORIENTATION orientation) const;
         virtual bool IsSpecifiedSize(ORIENTATION orientation) const = 0;
         virtual int GetSpecifiedSize(ORIENTATION orientation) const = 0;
     };
