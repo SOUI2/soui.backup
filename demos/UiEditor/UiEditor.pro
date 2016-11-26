@@ -81,7 +81,8 @@ SOURCES+=./propgrid/propitem/SPropertyItem-Size.cpp
 SOURCES+=./propgrid/propitem/SPropertyItem-Text.cpp
 SOURCES+=./propgrid/SPropertyItemBase.cpp
 SOURCES+=./trayicon/SShellNotifyIcon.cpp
-
+SOURCES+=./colorpicker/ColourPopup.cpp
+SOURCES+=./colorpicker/SColorPicker.cpp
 
 HEADERS+=./CDebug.h
 HEADERS+=./CNewGuid.h
@@ -114,6 +115,9 @@ HEADERS+=./propgrid/propitem/SPropertyItem-Size.h
 HEADERS+=./propgrid/propitem/SPropertyItem-Text.h
 HEADERS+=./propgrid/SPropertyItemBase.h
 HEADERS+=./trayicon/SShellNotifyIcon.h
+HEADERS+=./colorpicker/ColourPopup.h
+HEADERS+=./colorpicker/SColorPicker.h
+HEADERS+=./colorpicker/Tooltipctrl.h
 HEADERS+=../../controls.extend/ExtendSkins.h
 HEADERS+=../../controls.extend/imre/ImgProvider.h
 HEADERS+=../../controls.extend/imre/IRichEditObjHost.h
