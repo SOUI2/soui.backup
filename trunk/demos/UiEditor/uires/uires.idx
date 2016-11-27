@@ -14,6 +14,7 @@
 		<file name="UIDESIGNER_XML_ABOUT" path="xml\dlg_about.xml" />
 		<file name="样式管理" path="xml\dlg_style_manage" />
 		<file name="布局测试" path="xml\test.xml" />
+		<file name="字体选择" path="xml\dlg_font_select.xml" />
 	</LAYOUT>
 	<values>
 		<file name="string" path="values\string.xml" />

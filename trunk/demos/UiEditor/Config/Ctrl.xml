@@ -38,7 +38,7 @@
 			<button pos="0,0" size="96,32" colorText="#000000"
 			skin="_skin.sys.btn.normal" >按钮</button> 
 		</button_按钮>
-		
+
 		<buttonex_按钮>
 			<buttonex pos="0,0" size="96,32" animate="1" colorText="#000000" icon="_skin.sys.checkbox" iconIndex="1" drawMode="horzIconText">按钮</buttonex>
 		</buttonex_按钮>
@@ -65,19 +65,20 @@
 		</check_复选框>
 
 
-		<combobox_组合框>
-			<combobox size="120,24"   dropDown="1" dropHeight="100"  dotted="0" animateTime="200" curSel="2">
-				<liststyle iconSkin="" itemSkin="" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088"/>
-				<editstyle inset="5,0,5,0" colorText="#000000" align="left" colorBkgnd="#FFFFFF"/>
+		<combobox_组合框> 
+			<combobox size="120, 24" dropDown="1" dropHeight="150" dotted="0" animateTime="200" curSel="0" drawFocusRect="0" colorText="#000000ff" colorBkgnd="#FFFFFF">
+				<liststyle iconSkin="" itemSkin="" itemHeight="24" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="rgb(51,153,255)" />
+				<editstyle inset="5,0,5,0" colorText="#000000" align="left" colorBkgnd="#FFFFFF" />
 				<items>
-					<item text="combobox.item1" icon="1" data="100"/>
-					<item text="combobox.item2" icon="2" data="100"/>
-					<item text="combobox.item3" icon="3" data="103"/>
-					<item text="combobox.item4" icon="4" data="100"/>
-					<item text="combobox.item5" icon="5" data="105"/>
-					<item text="combobox.item6" icon="0" data="100"/>
+					<item text="" />
+					<item text="5" icon="2" data="100" />
+					<item text="6" icon="3" data="103" />
+					<item text="7" icon="4" data="100" />
+					<item text="8" icon="5" data="105" />
+					<item text="9" icon="0" data="100" />
 				</items>
-			</combobox>			
+			</combobox>
+
 		</combobox_组合框>
 
 
@@ -399,7 +400,6 @@
 
 
 	</控件列表>
-
 
 
 </root>	

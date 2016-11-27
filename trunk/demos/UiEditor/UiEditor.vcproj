@@ -170,6 +170,8 @@
 			<File
 				RelativePath="DlgStyleManage.cpp" />
 			<File
+				RelativePath="DlgFontSelect.cpp" />				
+			<File
 				RelativePath="..\..\controls.extend\ExtendSkins.cpp" />
 			<File
 				RelativePath="..\..\controls.extend\imre\ImgProvider.cpp" />
@@ -280,6 +282,8 @@
 				RelativePath="DlgSkinSelect.h" />
 			<File
 				RelativePath="DlgStyleManage.h" />
+			<File
+				RelativePath="DlgFontSelect.h" />				
 			<File
 				RelativePath="..\..\controls.extend\ExtendSkins.h" />
 			<File
