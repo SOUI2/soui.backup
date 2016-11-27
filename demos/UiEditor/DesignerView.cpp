@@ -7,7 +7,7 @@
 #include "DlgStyleManage.h"
 #include "core/SWnd.h"
 #include "MainDlg.h"
-#include "colorpicker/ColourPopup.h"
+#include "DlgFontSelect.h"
 
 #define  MARGIN 20
 
@@ -416,6 +416,7 @@ BOOL SDesignerView::SaveAll()
 		if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) 
 		{
 			pugi::xml_node NodeSave = DocSave.first_child();
+			TrimXmlNodeTextBlank(NodeSave);
 			RemoveWndName(NodeSave, FALSE, strFileName);
 
 			FullFileName = m_strProPath + _T("\\") + strFileName;
@@ -460,6 +461,7 @@ BOOL SDesignerView::SaveLayoutFile()
 	if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16))
 	{
 		pugi::xml_node NodeSave = DocSave.root();
+		TrimXmlNodeTextBlank(NodeSave);
 	    RemoveWndName(NodeSave, FALSE);
 
 		FullFileName = m_strProPath + _T("\\") + strFileName;
@@ -1487,9 +1489,13 @@ bool SDesignerView::OnPropGridItemClick( EventArgs *pEvt )
 	else if (strType.CompareNoCase(_T("font")) == 0)
 	{
 	
-		//调用类型对话框
-	
-			//((CMainDlg*)m_pMainHost)->test();
+		//调用字体对话框
+			SDlgFontSelect DlgFont(pItem->GetString());
+			if (DlgFont.DoModal(m_pMainHost->m_hWnd) == IDOK)
+			{
+				pItem->SetString(DlgFont.m_strFont);
+			}
+
 
 
 	}	else if (strType.CompareNoCase(_T("class")) == 0)

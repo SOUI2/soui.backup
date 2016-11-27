@@ -7,17 +7,7 @@
 				<imgbtn skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" name="btnClose" />
 			</caption>
 			<group pos="8,40" size="224, 552" align="left">
-				
-				
-				
-				
-				
 				样式列表
-				
-				
-				
-				
-				
 				<button pos="8,8" size="88, 24" colorText="#000000" skin="_skin.sys.btn.normal" name="btnAdd">添加</button>
 				<button pos="128,8" size="88, 24" colorText="#000000" skin="_skin.sys.btn.normal" name="btnDel">删除</button>
 				<listbox pos="8,72" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" colorBkgnd="#FFFFFF12" name="lbStyle" size="208, 452">
@@ -33,32 +23,12 @@
 				<edit pos="8,40" size="208, 24" colorBkgnd="#FFFFFF" cueText="查找过滤" colorText="#000000" name="edtSearch" />
 			</group>
 			<group pos="240,40" size="552, 336" align="left">
-				
-				
-				
-				
-				
 				代码
-				
-				
-				
-				
-				
 				<realwnd pos="8,32" name="wndReal" wndclass="scintilla1" id="" wndname="" size="536, 276" />
 				<buttonex pos="232,0" size="64, 24" animate="1" colorText="#000000" icon="_skin.sys.icons" iconIndex="2" drawMode="horzIconText" name="btnSave">保存</buttonex>
 			</group>
 			<group pos="240,384" size="552, 208" align="left">
-				
-				
-				
-				
-				
 				样式预览
-				
-				
-				
-				
-				
 				<window pos="8,32" size="536, 140" name="wndView" />
 				<combobox size="152, 24" dropDown="1" dropHeight="100" dotted="0" animateTime="200" curSel="-1" pos="104,0" colorBkgnd="#FFFFFF" colorText="#000000" focusable="0" drawfocusrect="0" name="cmbCtrl">
 					<liststyle iconSkin="" itemSkin="" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088" />

@@ -83,6 +83,7 @@ SOURCES+=./propgrid/SPropertyItemBase.cpp
 SOURCES+=./trayicon/SShellNotifyIcon.cpp
 SOURCES+=./colorpicker/ColourPopup.cpp
 SOURCES+=./colorpicker/SColorPicker.cpp
+SOURCES+=./DlgFontSelect.cpp
 
 HEADERS+=./CDebug.h
 HEADERS+=./CNewGuid.h
@@ -118,6 +119,7 @@ HEADERS+=./trayicon/SShellNotifyIcon.h
 HEADERS+=./colorpicker/ColourPopup.h
 HEADERS+=./colorpicker/SColorPicker.h
 HEADERS+=./colorpicker/Tooltipctrl.h
+HEADERS+=./DlgFontSelect.h
 HEADERS+=../../controls.extend/ExtendSkins.h
 HEADERS+=../../controls.extend/imre/ImgProvider.h
 HEADERS+=../../controls.extend/imre/IRichEditObjHost.h
