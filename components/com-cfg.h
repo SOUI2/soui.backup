@@ -36,10 +36,6 @@
     #pragma comment(lib,"skiad")
     #pragma comment(lib,"zlibd")
     #pragma comment(lib,"pngd")
-    #ifdef DLL_CORE
-    #pragma comment(lib,"lua-52d")
-    #pragma comment(lib,"scriptmodule-luad")
-    #endif
     #pragma comment(lib,"render-gdid")
     #pragma comment(lib,"render-skiad")
     #pragma comment(lib,"imgdecoder-wicd")
@@ -58,11 +54,6 @@
     #pragma comment(lib,"skia")
     #pragma comment(lib,"zlib")
     #pragma comment(lib,"png")
-    #ifdef DLL_CORE
-    #pragma comment(lib,"lua-52")
-    #pragma comment(lib,"scriptmodule-lua")
-    #endif
-
     #pragma comment(lib,"imgdecoder-wic")
     #pragma comment(lib,"imgdecoder-stb")
     #pragma comment(lib,"imgdecoder-png")
