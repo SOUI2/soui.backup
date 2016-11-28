@@ -578,101 +578,167 @@ namespace SOUI{
 	}
 
 
-    void SouiLayout::_MeasureChildren1(SList<WndPos> *pListChildren,int nWidth,int nHeight)
+    void SouiLayout::_MeasureChildren(SList<WndPos> *pListChildren,int nWidth,int nHeight)
     {
-		//step 1:计算出所有不需要计算窗口大小就可以确定的坐标
-		int nResolved = 0;
-		do{
-			nResolved = 0;
-			for(SPOSITION pos = pListChildren->GetHeadPosition();pos;pListChildren->GetNext(pos))
-			{
-				WndPos &wndPos = pListChildren->GetAt(pos);
-				SouiLayoutParam *pLayoutParam = wndPos.pWnd->GetLayoutParam<SouiLayoutParam>();
-				if(IsWaitingPos(wndPos.rc.left)) 
-				{
-					wndPos.rc.left = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[0],nWidth,TRUE);
-					if(wndPos.rc.left != POS_WAIT) nResolved ++;
-				}
-				if(IsWaitingPos(wndPos.rc.top)) 
-				{
-					wndPos.rc.top = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[1],nHeight,FALSE);
-					if(wndPos.rc.top != POS_WAIT) nResolved ++;
-				}
-				if(IsWaitingPos(wndPos.rc.right)) 
-				{
-					if(pLayoutParam->IsSpecifiedSize(Horz))
-					{
-						if(!IsWaitingPos(wndPos.rc.left))
-						{
-							wndPos.rc.right = wndPos.rc.left + pLayoutParam->GetSpecifiedSize(Horz);
-							nResolved ++;
-						}
-					}else if(!pLayoutParam->IsWrapContent(Horz))
-					{
-						wndPos.rc.right = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[2],nWidth,TRUE);
-						if(wndPos.rc.right != POS_WAIT) nResolved ++;
-					}
-				}
-				if(IsWaitingPos(wndPos.rc.bottom)) 
-				{
-					if(pLayoutParam->IsSpecifiedSize(Vert))
-					{
-						if(!IsWaitingPos(wndPos.rc.top))
-						{
-							wndPos.rc.bottom = wndPos.rc.top + pLayoutParam->GetSpecifiedSize(Vert);
-							nResolved ++;
-						}
-					}else if(!pLayoutParam->IsWrapContent(Vert))
-					{
-						wndPos.rc.bottom = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[3],nHeight,FALSE);
-						if(wndPos.rc.bottom != POS_WAIT) nResolved ++;
-					}
-				}
+        _MeasureChildrenStep1(pListChildren,nWidth,nHeight);
+        //将参考父窗口右边或者底边的子窗口设置为wrap_content并计算出大小
 
-			}
-		}while(nResolved);
+        int nResolved = 0;
+        for(SPOSITION pos = pListChildren->GetHeadPosition();pos;pListChildren->GetNext(pos))
+        {
+            WndPos &wndPos = pListChildren->GetAt(pos);
+            SouiLayoutParam *pLayoutParam = wndPos.pWnd->GetLayoutParam<SouiLayoutParam>();
+            if(!IsWaitingPos(wndPos.rc.left) &&
+                !IsWaitingPos(wndPos.rc.top) &&
+                (IsWaitingPos(wndPos.rc.right) && IsWaitingPos(nWidth) || 
+                IsWaitingPos(wndPos.rc.bottom) && IsWaitingPos(nHeight)))
+            {
+                int nWid = IsWaitingPos(wndPos.rc.right)? SIZE_WRAP_CONTENT : (wndPos.rc.right - wndPos.rc.left);
+                int nHei = IsWaitingPos(wndPos.rc.bottom)? SIZE_WRAP_CONTENT : (wndPos.rc.bottom - wndPos.rc.top);
+                CSize szWnd = wndPos.pWnd->GetDesiredSize(nWid,nHei);
+                if(pLayoutParam->IsWrapContent(Horz)) 
+                {
+                    wndPos.rc.right = wndPos.rc.left + szWnd.cx;
+                    if(wndPos.bWaitOffsetX)
+                    {
+                        wndPos.rc.OffsetRect(wndPos.rc.Width()*pLayoutParam->fOffsetX,0);
+                        wndPos.bWaitOffsetX=false;
+                    }
+                    nResolved ++;
+                }
+                if(pLayoutParam->IsWrapContent(Vert)) 
+                {
+                    wndPos.rc.bottom = wndPos.rc.top + szWnd.cy;
+                    if(wndPos.bWaitOffsetY)
+                    {
+                        wndPos.rc.OffsetRect(wndPos.rc.Height()*pLayoutParam->fOffsetY,0);
+                        wndPos.bWaitOffsetY=false;
+                    }
+                    nResolved ++;
+                }
+            }
+        }
 
-		//step 2:计算出自适应大小窗口的Size,对于可以确定的窗口完成offset操作
-		do{
-			nResolved = 0;
-			for(SPOSITION pos = pListChildren->GetHeadPosition();pos;pListChildren->GetNext(pos))
-			{
-				WndPos &wndPos = pListChildren->GetAt(pos);
-				SouiLayoutParam *pLayoutParam = wndPos.pWnd->GetLayoutParam<SouiLayoutParam>();
-				if(IsWaitingPos(wndPos.rc.left) || IsWaitingPos(wndPos.rc.top)) continue;//至少确定了一个点后才开始计算
+        if(nResolved)
+        {
+            _MeasureChildrenStep1(pListChildren,nWidth,nHeight);
+        }
 
-				if(pLayoutParam->IsWrapContent(Horz) || pLayoutParam->IsWrapContent(Vert))
-				{//
-					int nWid = IsWaitingPos(wndPos.rc.right)? SIZE_WRAP_CONTENT : (wndPos.rc.right - wndPos.rc.left);
-					int nHei = IsWaitingPos(wndPos.rc.bottom)? SIZE_WRAP_CONTENT : (wndPos.rc.bottom - wndPos.rc.top);
-					CSize szWnd = wndPos.pWnd->GetDesiredSize(nWid,nHei);
-					if(pLayoutParam->IsWrapContent(Horz)) 
-					{
-						wndPos.rc.right = wndPos.rc.left + szWnd.cx;
-						nResolved ++;
-					}
-					if(pLayoutParam->IsWrapContent(Vert)) 
-					{
-						wndPos.rc.bottom = wndPos.rc.top + szWnd.cy;
-						nResolved ++;
-					}
-				}
-				if(!IsWaitingPos(wndPos.rc.right) && wndPos.bWaitOffsetX)
-				{
-					wndPos.rc.OffsetRect(wndPos.rc.Width()*pLayoutParam->fOffsetX,0);
-					wndPos.bWaitOffsetX=false;
-				}
-				if(!IsWaitingPos(wndPos.rc.bottom) && wndPos.bWaitOffsetY)
-				{
-					wndPos.rc.OffsetRect(wndPos.rc.Height()*pLayoutParam->fOffsetY,0);
-					wndPos.bWaitOffsetY=false;
-				}
-			}
-		}while(nResolved);
-
-		//step 3:重复step 1
+        //检查是否存在不能计算的坐标，并查找最右边及最下边的窗口。
     }
 
 
+    int SouiLayout::_MeasureChildrenStep1(SList<WndPos> *pListChildren,int nWidth,int nHeight)
+    {
+        int nResolvedAll=0;
+
+        int nResolvedStep1 = 0;
+        int nResolvedStep2 = 0;
+        do{
+            nResolvedStep1 = 0;
+            nResolvedStep2 = 0;
+
+            //step 1:计算出所有不需要计算窗口大小就可以确定的坐标
+            int nResolved = 0;
+            do{
+                nResolved = 0;
+                for(SPOSITION pos = pListChildren->GetHeadPosition();pos;pListChildren->GetNext(pos))
+                {
+                    WndPos &wndPos = pListChildren->GetAt(pos);
+                    SouiLayoutParam *pLayoutParam = wndPos.pWnd->GetLayoutParam<SouiLayoutParam>();
+                    if(IsWaitingPos(wndPos.rc.left)) 
+                    {
+                        wndPos.rc.left = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[0],nWidth,TRUE);
+                        if(wndPos.rc.left != POS_WAIT) nResolved ++;
+                    }
+                    if(IsWaitingPos(wndPos.rc.top)) 
+                    {
+                        wndPos.rc.top = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[1],nHeight,FALSE);
+                        if(wndPos.rc.top != POS_WAIT) nResolved ++;
+                    }
+                    if(IsWaitingPos(wndPos.rc.right)) 
+                    {
+                        if(pLayoutParam->IsSpecifiedSize(Horz))
+                        {
+                            if(!IsWaitingPos(wndPos.rc.left))
+                            {
+                                wndPos.rc.right = wndPos.rc.left + pLayoutParam->GetSpecifiedSize(Horz);
+                                nResolved ++;
+                            }
+                        }else if(!pLayoutParam->IsWrapContent(Horz))
+                        {
+                            wndPos.rc.right = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[2],nWidth,TRUE);
+                            if(wndPos.rc.right != POS_WAIT) nResolved ++;
+                        }
+                    }
+                    if(IsWaitingPos(wndPos.rc.bottom)) 
+                    {
+                        if(pLayoutParam->IsSpecifiedSize(Vert))
+                        {
+                            if(!IsWaitingPos(wndPos.rc.top))
+                            {
+                                wndPos.rc.bottom = wndPos.rc.top + pLayoutParam->GetSpecifiedSize(Vert);
+                                nResolved ++;
+                            }
+                        }else if(!pLayoutParam->IsWrapContent(Vert))
+                        {
+                            wndPos.rc.bottom = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[3],nHeight,FALSE);
+                            if(wndPos.rc.bottom != POS_WAIT) nResolved ++;
+                        }
+                    }
+
+                }
+
+                nResolvedStep1 += nResolved;
+            }while(nResolved);
+
+            if(nResolvedStep1>0)
+            {
+                int nResolved = 0;
+                //step 2:计算出自适应大小窗口的Size,对于可以确定的窗口完成offset操作
+                do{
+                    nResolved = 0;
+                    for(SPOSITION pos = pListChildren->GetHeadPosition();pos;pListChildren->GetNext(pos))
+                    {
+                        WndPos &wndPos = pListChildren->GetAt(pos);
+                        SouiLayoutParam *pLayoutParam = wndPos.pWnd->GetLayoutParam<SouiLayoutParam>();
+                        if(IsWaitingPos(wndPos.rc.left) || IsWaitingPos(wndPos.rc.top)) continue;//至少确定了一个点后才开始计算
+
+                        if(pLayoutParam->IsWrapContent(Horz) || pLayoutParam->IsWrapContent(Vert))
+                        {//
+                            int nWid = IsWaitingPos(wndPos.rc.right)? SIZE_WRAP_CONTENT : (wndPos.rc.right - wndPos.rc.left);
+                            int nHei = IsWaitingPos(wndPos.rc.bottom)? SIZE_WRAP_CONTENT : (wndPos.rc.bottom - wndPos.rc.top);
+                            CSize szWnd = wndPos.pWnd->GetDesiredSize(nWid,nHei);
+                            if(pLayoutParam->IsWrapContent(Horz)) 
+                            {
+                                wndPos.rc.right = wndPos.rc.left + szWnd.cx;
+                                nResolved ++;
+                            }
+                            if(pLayoutParam->IsWrapContent(Vert)) 
+                            {
+                                wndPos.rc.bottom = wndPos.rc.top + szWnd.cy;
+                                nResolved ++;
+                            }
+                        }
+                        if(!IsWaitingPos(wndPos.rc.right) && wndPos.bWaitOffsetX)
+                        {
+                            wndPos.rc.OffsetRect(wndPos.rc.Width()*pLayoutParam->fOffsetX,0);
+                            wndPos.bWaitOffsetX=false;
+                        }
+                        if(!IsWaitingPos(wndPos.rc.bottom) && wndPos.bWaitOffsetY)
+                        {
+                            wndPos.rc.OffsetRect(wndPos.rc.Height()*pLayoutParam->fOffsetY,0);
+                            wndPos.bWaitOffsetY=false;
+                        }
+                    }
+                    nResolvedStep2 += nResolved;
+                }while(nResolved);
+            }//end if(nResolvedStep1>0)
+
+            nResolvedAll += nResolvedStep1 + nResolvedStep2;
+        }while(nResolvedStep2 && nResolvedStep1);
+        
+        return nResolvedAll;
+    }
 
 }

@@ -83,7 +83,9 @@ namespace SOUI{
 			bool	 bWaitOffsetY;
         };
 
-        void _MeasureChildren1(SList<WndPos> *pListChildren,int nWidth,int nHeight);
+        void _MeasureChildren(SList<WndPos> *pListChildren,int nWidth,int nHeight);
+        int _MeasureChildrenStep1(SList<WndPos> *pListChildren,int nWidth,int nHeight);
+
 		int PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POSITION_ITEM &pos , int nMax,BOOL bX);
         
         int CalcChildLeft(SWindow *pWindow,SouiLayoutParam *pParam);
