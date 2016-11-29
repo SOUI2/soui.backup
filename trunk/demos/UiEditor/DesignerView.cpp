@@ -1184,6 +1184,8 @@ void SDesignerView::CreatePropGrid(SStringT strCtrlType)
 
 			m_strCurrentCtrlType = strCtrlType;
 
+			((CMainDlg*)m_pMainHost)->m_edtDesc->SetWindowText(_T(""));
+
 	//}
 }
 
@@ -1195,8 +1197,6 @@ void SDesignerView::UpdatePropGrid(pugi::xml_node xmlNode)
 		return;
 	}
 
-	((CMainDlg*)m_pMainHost)->m_wndDescContainer->SetAttribute(L"show", L"0");
-	((CMainDlg*)m_pMainHost)->m_wndDescContainer->SetAttribute(L"display", L"0");
 
 	m_pPropgrid->ClearAllGridItemValue();
 
@@ -2280,15 +2280,13 @@ bool SDesignerView::OnPropGridItemActive( EventArgs *pEvt )
 	IPropertyItem* pItem = pEvent->pItem;
 
 	SStringT strDesc = pItem->GetDescription();
+	SStringT strName = pItem->GetName1();
 
 	if (strDesc.IsEmpty())
 	{
-		((CMainDlg*)m_pMainHost)->m_wndDescContainer->SetAttribute(L"show", L"0");
-		((CMainDlg*)m_pMainHost)->m_wndDescContainer->SetAttribute(L"display", L"0");
+		((CMainDlg*)m_pMainHost)->m_edtDesc->SetWindowText(strName);
 	}else
 	{
-		((CMainDlg*)m_pMainHost)->m_wndDescContainer->SetAttribute(L"show", L"1");
-		((CMainDlg*)m_pMainHost)->m_wndDescContainer->SetAttribute(L"display", L"1");
 
 		((CMainDlg*)m_pMainHost)->m_edtDesc->SetWindowText(strDesc);
 	}
