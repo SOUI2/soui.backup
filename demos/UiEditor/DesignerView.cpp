@@ -1146,7 +1146,7 @@ void SDesignerView::CreatePropGrid(SStringT strCtrlType)
 			{
 				//这是一个坑啊，要先这样才不报错，因为点按钮的时候，PropGrid并没有失去焦点，
 				//没有执行Killfocus操作销毁Edit,在DestroyChild以后PropGrid已经销毁了，这时候在执行PropGrid中edit的killfocus会报错		
-				
+				m_pPropgrid-> GetEventSet()->unsubscribeEvent(EventPropGridValueChanged::EventID,Subscriber(&SDesignerView::OnPropGridValueChanged,this));
 				m_pPropgrid->SetFocus();
 
 
