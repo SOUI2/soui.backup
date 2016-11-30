@@ -20,7 +20,7 @@ namespace SOUI{
 
 	public:
 		bool IsOffsetRequired(ORIENTATION orientation) const;
-
+        int  GetExtraSize(ORIENTATION orientation) const;
 	protected:
 		HRESULT OnAttrWidth(const SStringW & strValue,BOOL bLoading);
 
