@@ -1,5 +1,6 @@
 #include "souistd.h"
 #include "layout\SouiLayout.h"
+#include <math.h>
 
 namespace SOUI{
     enum
@@ -269,7 +270,6 @@ namespace SOUI{
 
     void SouiLayout::CalcPostionOfChildren(SWindow * pParent)
     {
-        //throw std::logic_error("The method or operation is not implemented.");
     }
 
     BOOL SouiLayout::IsWaitingPos( int nPos )
@@ -285,7 +285,7 @@ namespace SOUI{
         switch(pos.pit)
         {
         case PIT_CENTER: //²Î¿¼ÖÐÐÄ
-            if(nMax != SIZE_WRAP_CONTENT) nRet=(int)pos.nPos * pos.cMinus + nSize/2;
+            if(nMax != SIZE_WRAP_CONTENT) nRet=(int)pos.nPos * pos.cMinus + nMax/2;
             break;
         case PIT_NORMAL: 
             if(pos.cMinus == -1)
