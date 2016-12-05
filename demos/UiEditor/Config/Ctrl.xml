@@ -33,6 +33,10 @@
 			<animateimg pos="0,0" size="96,96" skin="_skin.sys.tree.checkbox" autostart="1"  speed = "100"/>
 		</animateimg_动画>
 
+		<anmimg_动画>		
+			<anmimg size="50,50" ani_in="_skin.sys.checkbox" ani_out="_skin.sys.radio" interval="50"  />
+		</anmimg_动画>
+
 
 		<button_按钮>
 			<button pos="0,0" size="96,32" colorText="#000000"
