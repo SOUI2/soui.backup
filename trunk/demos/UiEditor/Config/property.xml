@@ -235,7 +235,7 @@ Tab (& #x0009;)
 
 
 		<animateimg>
-			<分组 name="基本属性:  animateimg">
+			<分组 name="属性: animateimg">
 
 
 				<id/>
@@ -244,15 +244,9 @@ Tab (& #x0009;)
 				<pos/>
 				<size/>
 				<offset/>
-				<class/>
-				<font/>	
-				<fontHover/>				
+				<class/>			
 				<tip/>			
-				<cursor/>				
-				<colorBkgnd/>
-				<colorText/>
-
-				<UiEdit_windowText/>				
+				<cursor/>								
 			</分组>
 			<分组 name="属性:  animateimg">
 				<speed style="proptext" name ="速度(speed)" />
@@ -260,6 +254,28 @@ Tab (& #x0009;)
 				<repeat style="proptext" name ="重复次数" description="动画重复次数"/>
 			</分组>			
 		</animateimg>	
+
+		<anmimg>
+			<分组 name="属性: anmimg">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>			
+				<tip/>			
+				<cursor/>						
+			</分组>
+			<分组 name="属性:  anmimg">
+				<interval style="proptext" name ="动画间隔(interval)" description="interval：动画间隔，单位毫秒"/>
+				<autorun style="proptext" name ="autorun" description="-1:默认，不自动运行
+				&#x000A;0:连续动画（使用ani_in）;
+				&#x000A;大于0：间隔动画的暂停时间，单位秒"/>
+				<ani_in style="proptext" name ="ani_in" ButtonType="Skin" description="鼠标进入时的动画" />
+				<ani_out style="proptext" name ="ani_out" ButtonType="Skin" description="鼠标离开时的动画" />				
+			</分组>			
+		</anmimg>			
 
 		<button>
 			<分组 name="属性:  button">
