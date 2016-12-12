@@ -357,15 +357,19 @@ namespace SevenZip
 //         myAvailableFormats.push_back(CompressionFormat::Tar);
 //         myAvailableFormats.push_back(CompressionFormat::Iso);
 
-        auto it = std::find(myAvailableFormats.rbegin(), myAvailableFormats.rend(), archiveCompressionFormat);
-        ++it;
-        myAvailableFormats.erase(it.base());
+        for (size_t i = myAvailableFormats.size(); i > 0; --i)             {
+            if (myAvailableFormats[i - 1] == archiveCompressionFormat) {
+                myAvailableFormats.erase(myAvailableFormats.begin()+(i-1));
+                break;
+            }
+        }
 
         // Check each format for one that works
         CMyComPtr< ArchiveOpenCallback > openCallback = new ArchiveOpenCallback();
-        for (auto a : myAvailableFormats)
+        
+        for (size_t i =0; i< myAvailableFormats.size(); ++i)
         {
-            archiveCompressionFormat = a;
+            archiveCompressionFormat = myAvailableFormats[i];
 
             CMyComPtr< IInArchive > archive = UsefulFunctions::GetArchiveReader(archiveCompressionFormat);
 
