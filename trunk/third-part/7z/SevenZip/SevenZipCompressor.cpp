@@ -109,8 +109,10 @@ HRESULT SevenZipCompressor::FindAndCompressFiles(const TString& directory, const
             itemNames.reserve(files.size());
             std::vector<unsigned __int64> itemSizes;
             itemSizes.reserve(files.size());
-            for (auto&a : files)
+
+            for (size_t i = 0; i< files.size(); ++i)
             {
+                FilePathInfo& a = files[i];
                 itemNames.push_back(a.FilePath);
                 itemSizes.push_back(a.Size);
             }

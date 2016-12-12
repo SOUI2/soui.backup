@@ -482,12 +482,19 @@ ASMS+=Asm/x86/XzCrc64Opt.asm
 asm.name = asm build
 asm.input = ASMS
 
-CONFIG(x64){
-asm.commands = ml64.exe -c -WX -W3 /Dx64 -Fo$(IntDir)%(Filename).obj ${QMAKE_FILE_NAME}
+eval(VCPROJ_EXTENSION = .vcxproj){
+	ASMOUTPUT = $(IntDir)%(FileName).obj
 }
 else{
-asm.commands = ml.exe -c -WX -W3 -Fo$(IntDir)%(Filename).obj ${QMAKE_FILE_NAME}
+	ASMOUTPUT = $(IntDir)$(InputName).obj
 }
-asm.output = $(IntDir)%(Filename).obj
+
+CONFIG(x64){
+asm.commands = ml64.exe -c -WX -W3 /Dx64 -Fo$$ASMOUTPUT ${QMAKE_FILE_NAME}
+}
+else{
+asm.commands = ml.exe -c -WX -W3 -Fo$$ASMOUTPUT ${QMAKE_FILE_NAME}
+}
+asm.output = $$ASMOUTPUT
 asm.CONFIG += no_link
 QMAKE_EXTRA_COMPILERS += asm

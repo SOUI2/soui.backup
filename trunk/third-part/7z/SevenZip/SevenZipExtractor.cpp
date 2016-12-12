@@ -1,4 +1,4 @@
-ï»¿#include "SevenZipExtractor.h"
+#include "SevenZipExtractor.h"
 #include "GUIDs.h"
 #include "FileSys.h"
 #include "ArchiveOpenCallback.h"
@@ -121,7 +121,7 @@ namespace SevenZip
 
                 if (!callback->OnFileItems(itemnames, origsizes))
                 {
-                    //åªä¸ºäº†å–å¾—æ–‡ä»¶ä¿¡æ¯,æ‰€ä»¥ç›´æŽ¥è¿”å›ž.
+                    //Ö»ÎªÁËÈ¡µÃÎÄ¼þÐÅÏ¢,ËùÒÔÖ±½Ó·µ»Ø.
                     archive->Close();
                     return S_OK;
                 }
