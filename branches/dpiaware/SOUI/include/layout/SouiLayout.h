@@ -9,6 +9,7 @@ namespace SOUI{
 	{
 		SOUI_CLASS_NAME(SouiLayoutParam,L"SouiLayoutParam")
 
+		friend class SouiLayout;
 	public:
 		virtual bool IsMatchParent(ORIENTATION orientation) const;
 
@@ -70,7 +71,7 @@ namespace SOUI{
 
         virtual bool IsParamAcceptable(ILayoutParam *pLayoutParam) const;
 
-        virtual void CalcPostionOfChildren(SWindow * pParent);
+        virtual void LayoutChildren(SWindow * pParent);
 
         virtual ILayoutParam * CreateLayoutParam() const;
 
@@ -83,10 +84,10 @@ namespace SOUI{
 			bool	 bWaitOffsetY;
         };
 
-        void _MeasureChildren(SList<WndPos> *pListChildren,int nWidth,int nHeight);
-        int _MeasureChildrenStep1(SList<WndPos> *pListChildren,int nWidth,int nHeight);
+        void CalcPositionEx(SList<WndPos> *pListChildren,int nWidth,int nHeight) const;
+        int CalcPostion(SList<WndPos> *pListChildren,int nWidth,int nHeight) const;
 
-		int PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POSITION_ITEM &pos , int nMax,BOOL bX);
+		int PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POSITION_ITEM &pos , int nMax,BOOL bX) const;
         
         int CalcChildLeft(SWindow *pWindow,SouiLayoutParam *pParam);
         int CalcChildRight(SWindow *pWindow,SouiLayoutParam *pParam);
@@ -94,10 +95,7 @@ namespace SOUI{
         int CalcChildBottom(SWindow *pWindow,SouiLayoutParam *pParam);
 
 
-        BOOL CalcChildrenPosition(SList<SWindowRepos*> *pListChildren,int nWidth,int nHeight);
-        int CalcPosition(SWindow *pWnd,const CRect & rcContainer,CRect & rcWindow, const SwndLayout * pSwndLayout=NULL);
-        BOOL IsWaitingPos( int nPos );
-        int PositionItem2Value(SWindow *pWindow,const POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX);
+        BOOL IsWaitingPos( int nPos ) const;
 		SWindow * GetRefSibling(SWindow *pCurWnd,int uCode);
         CRect GetWindowLayoutRect(SWindow *pWindow);
     };
