@@ -55,7 +55,7 @@ namespace SOUI
     {
     }
 
-    void SLinearLayout::CalcPostionOfChildren(SWindow * pParent)
+    void SLinearLayout::LayoutChildren(SWindow * pParent)
     {
         CRect rcParent = pParent->GetClientRect();
 
@@ -159,7 +159,7 @@ namespace SOUI
                     else if(pLinearLayoutParam->m_gravity == G_Right)
                         rcChild.OffsetRect(rcParent.Width()-rcChild.Width(),0);
                     
-                    pChild->OnRelayout(pChild->GetWindowRect(),rcChild);
+                    pChild->OnRelayout(rcChild);
 
                     offset += rcChild.Height();
                 }else
@@ -171,7 +171,7 @@ namespace SOUI
                     else if(pLinearLayoutParam->m_gravity == G_Right)
                         rcChild.OffsetRect(0,rcParent.Height()-rcChild.Height());
 
-                    pChild->OnRelayout(pChild->GetWindowRect(),rcChild);
+                    pChild->OnRelayout(rcChild);
 
                     offset += rcChild.Width();
                 }

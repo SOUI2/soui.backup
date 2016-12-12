@@ -53,7 +53,7 @@ namespace SOUI
         SLinearLayout(void);
         ~SLinearLayout(void);
 
-        virtual void CalcPostionOfChildren(SWindow * pParent);
+        virtual void LayoutChildren(SWindow * pParent);
         virtual ILayoutParam * CreateLayoutParam() const;
 		virtual CSize MeasureChildren(SWindow * pParent,int nWidth,int nHeight) const;
 		virtual bool IsParamAcceptable(ILayoutParam *pLayoutParam) const;
