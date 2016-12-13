@@ -115,9 +115,9 @@ unsigned long BlobBuffer::GetBlobBufferLength()
  
 void BlobBuffer::AllocBuffer(unsigned long nBufSize)
 {
-	if (nBufSize <= this->GetBlobBufferLength())
+	if (nBufSize > this->GetBlobBufferLength())
 	{
-		IncreaseBufferSize(this->GetBlobBufferLength() - nBufSize,false);
+		IncreaseBufferSize(nBufSize - this->GetBlobBufferLength(), false);
 		m_lBlobLen = nBufSize;
 	}
 	else
@@ -218,13 +218,13 @@ void BlobBuffer::AppendBlobContent(const unsigned char *BlobPtr,unsigned long nB
 
 bool BlobBuffer::LoadBlobFromFile(const wchar_t *sFileName)
 {
-	std::string fileName = ConvertWStringToString(sFileName, wcslen(sFileName), CP_ACP);
+	std::string fileName = ConvertWStringToString(sFileName, (int)wcslen(sFileName), CP_ACP);
 	return LoadBlobFromFile(fileName.c_str());
 }
 
 bool BlobBuffer::SaveBlobToFile(const wchar_t *sFileName)
 {
-	std::string fileName = ConvertWStringToString(sFileName, wcslen(sFileName), CP_ACP);
+	std::string fileName = ConvertWStringToString(sFileName, (int)wcslen(sFileName), CP_ACP);
 	return SaveBlobToFile(fileName.c_str());
 }
 
@@ -253,7 +253,7 @@ bool BlobBuffer::LoadBlobFromFile(const char *sFileName)
 		return false;
 	}
 
-  nReadCnt = fread(m_BlobPtr,1,file_size,fp);
+	nReadCnt = (long)fread(m_BlobPtr, 1, file_size, fp);
 	if( nReadCnt<file_size )
 	{
            if(ferror(fp))
@@ -279,7 +279,7 @@ bool BlobBuffer::SaveBlobToFile(const char *sFileName)
 		return false;
 	}
 
-	WCnt = fwrite( m_BlobPtr,1,m_lBlobLen, fp );
+	WCnt = (long)fwrite( m_BlobPtr,1,m_lBlobLen, fp );
 	if(WCnt<m_lBlobLen)
 	{
 		fclose(fp); 
