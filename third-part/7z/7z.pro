@@ -482,7 +482,7 @@ ASMS+=Asm/x86/XzCrc64Opt.asm
 asm.name = asm build
 asm.input = ASMS
 
-eval(VCPROJ_EXTENSION = .vcxproj){
+equals(VCPROJ_EXTENSION, ".vcxproj"){
 	ASMOUTPUT = $(IntDir)%(FileName).obj
 }
 else{
