@@ -1,10 +1,12 @@
 #pragma once
 
 #include "SPropertyItem-Text.h"
+#include "colorpicker/SColorPicker.h"
+#include "colorpicker/ColourPopup.h"
 
 namespace SOUI
 {
-    class SPropertyItemColor : public SPropertyItemText
+    class SPropertyItemColor : public SPropertyItemText,public IColorPicker
     {
         friend class SPropColorEdit;
         SOUI_CLASS_NAME(SPropertyGroup,L"propcolor")
@@ -13,15 +15,20 @@ namespace SOUI
         virtual void DrawItem(IRenderTarget *pRT,CRect rc);
         virtual void AdjustInplaceActiveWndRect(CRect & rc);
         
-        virtual void SetValue(void *pValue);
-        virtual const void* GetValue();
         virtual void SetString(const SStringT & strValue);
 
 
 		//add
 		virtual void SetStringOnly(const SStringT & strValue);
+		bool ParseValue(const SStringT & strValue, COLORREF & value);
+
         
         virtual SStringT GetString() const {
+			if (m_crValue == CR_INVALID)
+			{
+				return _T("");
+			}
+
             SStringT str;
             int r,g,b,a;
             r = GetRValue(m_crValue);
@@ -54,7 +61,13 @@ namespace SOUI
 
         SPropertyItemColor(SPropertyGrid *pOwner):SPropertyItemText(pOwner)
         {
-            m_strFormat = _T("RGB(%d,%d,%d,%d)");
+            //m_strFormat = _T("RGBA(%d,%d,%d,%d)");
+			m_strFormat = _T("#%02x%02x%02x%02x");
         }
+
+	protected://IColorPicker
+		virtual void OnColorChanged(COLORREF cr);
+		virtual void OnColorEnd(BOOL bCancel,COLORREF cr);
+		virtual SMessageLoop * GetMsgLoop();
     };
 }

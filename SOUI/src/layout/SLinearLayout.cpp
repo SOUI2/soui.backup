@@ -252,4 +252,9 @@ namespace SOUI
 		return !!pLayoutParam->IsClass(SLinearLayoutParam::GetClassName());
 	}
 
+	ILayoutParam * SLinearLayout::CreateLayoutParam() const
+	{
+		return new SLinearLayoutParam();
+	}
+
 }

@@ -183,7 +183,7 @@ namespace SevenZip
                 return HRESULT_FROM_WIN32(GetLastError());
             }
 
-            auto stream = new OutStreamWrapperMemory(fileStream);
+            OutStreamWrapperMemory * stream = new OutStreamWrapperMemory(fileStream);
             if (!stream)
             {
                 wprintf_s(L"内存不足\n");
@@ -430,8 +430,9 @@ namespace SevenZip
         bool ArchiveExtractCallbackMemory::ProcessRollBack()
         {
             bool succ = true;
-            for (auto &a : m_rollbacks)
+            for (size_t i = 0; i< m_rollbacks.size(); ++i)
             {
+                RollBack_Info& a = m_rollbacks[0];
                 if (m_callback)
                     m_callback->OnRollBack(a.original_path);
 

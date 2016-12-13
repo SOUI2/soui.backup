@@ -7,6 +7,7 @@
 #include "DlgStyleManage.h"
 #include "core/SWnd.h"
 #include "MainDlg.h"
+#include "DlgFontSelect.h"
 
 #define  MARGIN 20
 
@@ -108,6 +109,7 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 
 	m_strCurFile = strFileName;
 	RenameChildeWnd(xmlDoc1->first_child());
+	m_strCurFile.Empty();
 	return TRUE;
 }
 
@@ -414,6 +416,7 @@ BOOL SDesignerView::SaveAll()
 		if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) 
 		{
 			pugi::xml_node NodeSave = DocSave.first_child();
+			TrimXmlNodeTextBlank(NodeSave);
 			RemoveWndName(NodeSave, FALSE, strFileName);
 
 			FullFileName = m_strProPath + _T("\\") + strFileName;
@@ -458,6 +461,7 @@ BOOL SDesignerView::SaveLayoutFile()
 	if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16))
 	{
 		pugi::xml_node NodeSave = DocSave.root();
+		TrimXmlNodeTextBlank(NodeSave);
 	    RemoveWndName(NodeSave, FALSE);
 
 		FullFileName = m_strProPath + _T("\\") + strFileName;
@@ -993,7 +997,8 @@ void SDesignerView::InitProperty(SWindow *pPropertyContainer)   //初始化属性列表
 	SStringW s = L"<propgrid name=\"NAME_UIDESIGNER_PROPGRID_MAIN\" pos=\"0,0,-4,-4\" switchSkin=\"SKIN_UIDESIGNER_PROPGRID_SWITCH\"                      \
 		nameWidth=\"100\" orderType=\"group\"   itemHeight=\"30\"   ColorGroup=\"RGB(96,112,138)\"                                          \
 		ColorItemSel=\"rgb(234,128,16)\" colorItemSelText=\"#FF0000\" EditBkgndColor=\"rgb(87,104,132)\"                                    \
-		autoWordSel=\"1\"> <cmdbtnstyle skin=\"_skin.sys.btn.normal\">...</cmdbtnstyle> </propgrid>";
+		autoWordSel=\"1\"> <cmdbtnstyle skin=\"_skin.sys.btn.normal\" colorText=\"RGB(96,112,138)\">...</cmdbtnstyle> </propgrid>";
+
 
 
 	pugi::xml_document m_xmlDocProperty;
@@ -1141,7 +1146,7 @@ void SDesignerView::CreatePropGrid(SStringT strCtrlType)
 			{
 				//这是一个坑啊，要先这样才不报错，因为点按钮的时候，PropGrid并没有失去焦点，
 				//没有执行Killfocus操作销毁Edit,在DestroyChild以后PropGrid已经销毁了，这时候在执行PropGrid中edit的killfocus会报错		
-				
+				m_pPropgrid-> GetEventSet()->unsubscribeEvent(EventPropGridValueChanged::EventID,Subscriber(&SDesignerView::OnPropGridValueChanged,this));
 				m_pPropgrid->SetFocus();
 
 
@@ -1172,11 +1177,14 @@ void SDesignerView::CreatePropGrid(SStringT strCtrlType)
 
 				m_pPropgrid-> GetEventSet()->subscribeEvent(EventPropGridValueChanged::EventID,Subscriber(&SDesignerView::OnPropGridValueChanged,this));
 				m_pPropgrid-> GetEventSet()->subscribeEvent(EventPropGridItemClick::EventID,Subscriber(&SDesignerView::OnPropGridItemClick,this));
+				m_pPropgrid-> GetEventSet()->subscribeEvent(EventPropGridItemActive::EventID,Subscriber(&SDesignerView::OnPropGridItemActive,this));
 
 
 			}
 
 			m_strCurrentCtrlType = strCtrlType;
+
+			((CMainDlg*)m_pMainHost)->m_edtDesc->SetWindowText(_T(""));
 
 	//}
 }
@@ -1188,6 +1196,7 @@ void SDesignerView::UpdatePropGrid(pugi::xml_node xmlNode)
 	{
 		return;
 	}
+
 
 	m_pPropgrid->ClearAllGridItemValue();
 
@@ -1455,6 +1464,8 @@ bool SDesignerView::OnPropGridItemClick( EventArgs *pEvt )
 	IPropertyItem* pItem = pEvent->pItem;
 	SStringT strType = pEvent->strType;
 
+
+
 	if (strType.CompareNoCase(_T("skin")) == 0)
 	{
 		SDlgSkinSelect DlgSkin(_T("layout:UIDESIGNER_XML_SKIN_SELECT"), pItem->GetString(), m_strUIResFile);
@@ -1478,13 +1489,18 @@ bool SDesignerView::OnPropGridItemClick( EventArgs *pEvt )
 	else if (strType.CompareNoCase(_T("font")) == 0)
 	{
 	
-		//调用类型对话框
-	
-			//((CMainDlg*)m_pMainHost)->test();
+		//调用字体对话框
+			SDlgFontSelect DlgFont(pItem->GetString());
+			if (DlgFont.DoModal(m_pMainHost->m_hWnd) == IDOK)
+			{
+				pItem->SetString(DlgFont.m_strFont);
+			}
+
 
 
 	}	else if (strType.CompareNoCase(_T("class")) == 0)
 	{
+
 	}
 
 
@@ -2178,7 +2194,7 @@ void SDesignerView::ShowYSGLDlg()
 	{
 		return;
 	}
-	SDlgStyleManage dlg;
+	SDlgStyleManage dlg(_T(""), m_strUIResFile, FALSE);
 	if (dlg.DoModal(m_pMainHost->m_hWnd) == IDOK)
 	{
 		RefreshRes();
@@ -2255,4 +2271,25 @@ void SDesignerView::TrimXmlNodeTextBlank(pugi::xml_node xmlNode)
 		NodeSib = NodeSib.next_sibling();
 
 	}
+}
+
+
+bool SDesignerView::OnPropGridItemActive( EventArgs *pEvt )
+{
+	EventPropGridItemActive *pEvent = (EventPropGridItemActive*)pEvt;
+	IPropertyItem* pItem = pEvent->pItem;
+
+	SStringT strDesc = pItem->GetDescription();
+	SStringT strName = pItem->GetName1();
+
+	if (strDesc.IsEmpty())
+	{
+		((CMainDlg*)m_pMainHost)->m_edtDesc->SetWindowText(strName);
+	}else
+	{
+
+		((CMainDlg*)m_pMainHost)->m_edtDesc->SetWindowText(strDesc);
+	}
+
+	return true;
 }

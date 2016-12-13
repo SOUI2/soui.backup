@@ -9,6 +9,7 @@ namespace SOUI
     #define EVT_PG_VALUECHANGED (EVT_EXTERNAL_BEGIN+100)
 	//ADD
     #define EVT_PG_ITEMCLICK (EVT_EXTERNAL_BEGIN+110)
+    #define EVT_PG_ITEMACTIVE (EVT_EXTERNAL_BEGIN+101)
 
     class EventPropGridValueChanged : public TplEventArgs<EventPropGridValueChanged>
     {
@@ -20,6 +21,8 @@ namespace SOUI
         IPropertyItem * pItem;
     };
 
+
+
 	class EventPropGridItemClick : public TplEventArgs<EventPropGridItemClick>
 	{
 		SOUI_CLASS_NAME(EventPropGridItemClick,L"on_propgrid_item_click")
@@ -29,6 +32,17 @@ namespace SOUI
 
 		IPropertyItem * pItem;
 		SStringT strType;
+	};
+
+
+	class EventPropGridItemActive : public TplEventArgs<EventPropGridItemActive>
+	{
+		SOUI_CLASS_NAME(EventPropGridItemActive,L"on_propgrid_item_active")
+	public:
+		EventPropGridItemActive(SObject *pWnd):TplEventArgs<EventPropGridItemActive>(pWnd){}
+		enum{EventID=EVT_PG_ITEMACTIVE};
+
+		IPropertyItem * pItem;
 	};
 
     class SPropertyGroup : public SPropertyItemBase

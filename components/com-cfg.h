@@ -36,10 +36,6 @@
     #pragma comment(lib,"skiad")
     #pragma comment(lib,"zlibd")
     #pragma comment(lib,"pngd")
-    #ifdef DLL_CORE
-    #pragma comment(lib,"lua-52d")
-    #pragma comment(lib,"scriptmodule-luad")
-    #endif
     #pragma comment(lib,"render-gdid")
     #pragma comment(lib,"render-skiad")
     #pragma comment(lib,"imgdecoder-wicd")
@@ -48,21 +44,14 @@
     #pragma comment(lib,"imgdecoder-gdipd")
     #pragma comment(lib,"translatord")
     #pragma comment(lib,"resprovider-zipd")
-#if _MSC_VER >= 1700 //MSVC >= VS2012
     #pragma comment(lib,"7zd")
     #pragma comment(lib,"resprovider-7zipd")
-#endif	//  _MSC_VER >= 1700 //MSVC >= VS2012
     #pragma comment(lib,"log4zd")
 #else//_DEBUG
 
     #pragma comment(lib,"skia")
     #pragma comment(lib,"zlib")
     #pragma comment(lib,"png")
-    #ifdef DLL_CORE
-    #pragma comment(lib,"lua-52")
-    #pragma comment(lib,"scriptmodule-lua")
-    #endif
-
     #pragma comment(lib,"imgdecoder-wic")
     #pragma comment(lib,"imgdecoder-stb")
     #pragma comment(lib,"imgdecoder-png")
@@ -71,10 +60,8 @@
     #pragma comment(lib,"render-skia")
     #pragma comment(lib,"translator")
     #pragma comment(lib,"resprovider-zip")
-#if _MSC_VER >= 1700 //MSVC >= VS2012
     #pragma comment(lib,"7z")
     #pragma comment(lib,"resprovider-7zip")
-#endif	// _MSC_VER >= 1700 //MSVC >= VS2012
     #pragma comment(lib,"log4z")
 #endif//_DEBUG
 
@@ -117,12 +104,10 @@ namespace SOUI
     {
         BOOL SCreateInstance(IObjRef **);
     }
-#if _MSC_VER >= 1700 //MSVC >= VS2012
 	namespace RESPROVIDER_7ZIP
 	{
 		BOOL SCreateInstance(IObjRef **);
 	} 
-#endif
     namespace LOG4Z
     {
         BOOL SCreateInstance(IObjRef **);
@@ -178,13 +163,11 @@ public:
         return SOUI::RESPROVIDER_ZIP::SCreateInstance(ppObj);
     }
 
-#if _MSC_VER >= 1700 //MSVC >= VS2012
 
 	BOOL CreateResProvider_7ZIP(IObjRef **ppObj)
 	{
 		return SOUI::RESPROVIDER_7ZIP::SCreateInstance(ppObj);
 	}
-#endif
     
     BOOL CreateLog4z(IObjRef **ppObj)
     {
@@ -241,12 +224,10 @@ public:
         return zipResLoader.CreateInstance(COM_ZIPRESPROVIDER,ppObj);
     }
 
-#if _MSC_VER >= 1700 //MSVC >= VS2012
 	BOOL CreateResProvider_7ZIP(IObjRef **ppObj)
 	{
 		return zip7ResLoader.CreateInstance(COM_7ZIPRESPROVIDER, ppObj);
 	}
-#endif
 	
     BOOL CreateLog4z(IObjRef **ppObj)
     {

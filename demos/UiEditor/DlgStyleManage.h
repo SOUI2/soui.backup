@@ -9,7 +9,7 @@ namespace SOUI
 	{
 		SOUI_CLASS_NAME(SDlgStyleManage,L"dlgstylemanage")
 	public:
-		SDlgStyleManage();
+		SDlgStyleManage(SStringT strClassName, SStringT strPath, BOOL bGetClass);
 
 		~SDlgStyleManage(void)
 		{
@@ -17,9 +17,9 @@ namespace SOUI
 		}
 
 		void OnClose();
-		void OnMaximize();
-		void OnRestore();
-		void OnMinimize();
+		void OnBtnAdd();
+		void OnBtnDel();
+		void OnBtnSave();
 
 
 
@@ -32,14 +32,11 @@ namespace SOUI
 
 
 		EVENT_MAP_BEGIN()
-			EVENT_NAME_COMMAND(L"NAME_UIDESIGNER_btn_close", OnClose)
-			EVENT_NAME_COMMAND(L"NAME_UIDESIGNER_btn_min", OnMinimize)
-			EVENT_NAME_COMMAND(L"NAME_UIDESIGNER_btn_max", OnMaximize)
-			EVENT_NAME_COMMAND(L"NAME_UIDESIGNER_btn_restore", OnRestore)
-
-
-
-			EVENT_ID_COMMAND(IDOK,OnOK)
+			EVENT_NAME_COMMAND(L"btnClose", OnClose)
+			EVENT_NAME_COMMAND(L"btnOK", OnOK)
+			EVENT_NAME_COMMAND(L"btnAdd", OnBtnAdd)
+			EVENT_NAME_COMMAND(L"btnDel", OnBtnDel)
+			EVENT_NAME_COMMAND(L"btnSave", OnBtnSave)
 
 			EVENT_MAP_END()
 
@@ -51,8 +48,25 @@ namespace SOUI
 
 	protected:
 
+	public:
+		void LoadStyleFile();
+		void InitStyleLB();
+		SStringT GetLBCurSelText(SListBox * lb);
 
 	public:
+
+		pugi::xml_document m_xmlDocStyle;
+
+		SListBox*  m_lbStyle;
+		SEdit*     m_edtSearch;
+		SRealWnd*  m_RealWnd;
+		SWindow*   m_wndView;
+
+		SStringT m_strProPath;
+		SStringT m_strUIResFile;
+		SStringT m_strStyleName;
+		SStringT m_strStyleFile;
+		BOOL m_bGetStyle;
 
 	};
 
