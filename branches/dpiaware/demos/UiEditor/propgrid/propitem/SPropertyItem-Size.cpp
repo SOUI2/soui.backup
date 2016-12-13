@@ -24,16 +24,6 @@ namespace SOUI
         m_szValue.cx=m_szValue.cy=0;
     }
 
-    void SPropertyItemSize::SetValue( void *pValue)
-    {
-        m_szValue = *(SIZE*)pValue;
-        OnValueChanged();
-    }
-
-    const void* SPropertyItemSize::GetValue() const
-    {
-        return &m_szValue;
-    }
 
     void SPropertyItemSize::SetString( const SStringT & strValue )
     {

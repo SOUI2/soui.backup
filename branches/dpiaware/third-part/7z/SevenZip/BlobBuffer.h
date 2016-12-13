@@ -13,9 +13,9 @@
 
 #pragma once
 
-#ifndef __BLOBBUFFER_H
-#define __BLOBBUFFER_H 
-
+#ifndef __MEMORY_BUFFER_H
+#define __MEMORY_BUFFER_H 
+ 
 #pragma warning(disable: 4786)
 
 

@@ -231,15 +231,15 @@ bool FileSys::BackupFile(const TString&orignal, const TString&backup)
 
 static std::wstring path_without_extension(const std::wstring& lpszOriginalPath)
 {
-    auto pos_base_name = lpszOriginalPath.find_last_of(L"/\\");
-    auto pos_dot = lpszOriginalPath.find(L'.', pos_base_name);
+    size_t pos_base_name = lpszOriginalPath.find_last_of(L"/\\");
+    size_t pos_dot = lpszOriginalPath.find(L'.', pos_base_name);
     return lpszOriginalPath.substr(0, pos_dot);
 }
 
 static std::wstring path_without_extension(const std::wstring& lpszOriginalPath, std::wstring& ext)
 {
-    auto pos_base_name = lpszOriginalPath.find_last_of(L"/\\");
-    auto pos_dot = lpszOriginalPath.find(L'.', pos_base_name);
+    size_t pos_base_name = lpszOriginalPath.find_last_of(L"/\\");
+    size_t pos_dot = lpszOriginalPath.find(L'.', pos_base_name);
     ext =
         (pos_dot != std::wstring::npos)
         ? lpszOriginalPath.substr(pos_dot) : L"";

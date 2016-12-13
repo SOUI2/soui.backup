@@ -187,7 +187,10 @@ namespace SevenZip
                     if (!FileSys::BackupFile(m_absPath, BackupPath))
                         return HRESULT_FROM_WIN32(GetLastError());
                 }
-                m_rollbacks.emplace_back(RollBack_Info{ m_absPath, BackupPath });
+                RollBack_Info info;
+                info.backup_path = BackupPath;
+                info.original_path = m_absPath;
+                m_rollbacks.push_back(info);
             }
             else if (FileSys::PathExists(m_absPath))
             {
@@ -239,7 +242,7 @@ namespace SevenZip
                 return HRESULT_FROM_WIN32(GetLastError());
             }
 
-            auto stream = new OutStreamWrapper(fileStream);
+            OutStreamWrapper* stream = new OutStreamWrapper(fileStream);
             if (!stream)
             {
                 wprintf_s(L"内存不足\n");
@@ -503,8 +506,9 @@ namespace SevenZip
         bool ArchiveExtractCallback::ProcessRollBack()
         {
             bool succ = true;
-            for (auto &a : m_rollbacks)
+            for (size_t i = 0;i<m_rollbacks.size();++i)
             {
+                RollBack_Info& a = m_rollbacks[i];
                 if (m_callback)
                     m_callback->OnRollBack(a.original_path);
 
