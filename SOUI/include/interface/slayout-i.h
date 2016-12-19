@@ -19,7 +19,7 @@ namespace SOUI{
 		SIZE_SPEC = 0,
 	};
 
-    struct ILayoutParam : IObject
+    struct ILayoutParam : IObject,IObjRef
     {
         virtual bool IsMatchParent(ORIENTATION orientation) const = 0;
 		virtual bool IsWrapContent(ORIENTATION orientation) const = 0;
@@ -27,7 +27,7 @@ namespace SOUI{
         virtual int GetSpecifiedSize(ORIENTATION orientation) const = 0;
     };
 
-    struct ILayout : IObject{
+    struct ILayout : IObject , IObjRef{
 		virtual bool IsParamAcceptable(ILayoutParam *pLayoutParam) const = 0;
         virtual void LayoutChildren(SWindow * pParent) = 0;
         virtual ILayoutParam * CreateLayoutParam() const = 0;

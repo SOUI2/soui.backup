@@ -265,8 +265,16 @@ namespace SOUI{
 
     ILayoutParam * SouiLayout::CreateLayoutParam() const
     {
-        return new SouiLayoutParam;
+		ILayoutParam * pRet = NULL;
+		CreateLayoutParam((IObjRef**)&pRet);
+        return pRet;
     }
+
+	HRESULT SouiLayout::CreateLayoutParam(IObjRef ** ppObj)
+	{
+		* ppObj = new SouiLayoutParam();
+		return S_OK;
+	}
 
 
     BOOL SouiLayout::IsWaitingPos( int nPos ) const

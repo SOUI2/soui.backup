@@ -12,7 +12,7 @@ namespace SOUI
     };
 
 
-	class SLinearLayoutParam : public SObjectImpl<ILayoutParam>
+	class SLinearLayoutParam : public SObjectImpl<TObjRefImpl<ILayoutParam>>
     {
         SOUI_CLASS_NAME(SLinearLayoutParam,L"LinearLayoutParam")
 
@@ -46,12 +46,14 @@ namespace SOUI
         Gravity m_gravity;
     };
 
-    class SLinearLayout : public SObjectImpl<ILayout>
+    class SLinearLayout : public SObjectImpl<TObjRefImpl<ILayout>>
     {
 		SOUI_CLASS_NAME(SLinearLayout,L"linearLayout")
     public:
         SLinearLayout(void);
         ~SLinearLayout(void);
+
+		static HRESULT CreateLayoutParam(IObjRef ** ppObj);
 
         virtual void LayoutChildren(SWindow * pParent);
         virtual ILayoutParam * CreateLayoutParam() const;
