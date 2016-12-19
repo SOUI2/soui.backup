@@ -58,8 +58,7 @@ namespace SOUI
     void SLinearLayout::LayoutChildren(SWindow * pParent)
     {
         CRect rcParent = pParent->GetClientRect();
-
-        
+		        
         CSize *pSize = new CSize [pParent->GetChildrenCount()];
 
         int offset = 0;
@@ -254,7 +253,15 @@ namespace SOUI
 
 	ILayoutParam * SLinearLayout::CreateLayoutParam() const
 	{
-		return new SLinearLayoutParam();
+		SLinearLayoutParam *pRet = NULL;
+		CreateLayoutParam((IObjRef**)&pRet);
+		return pRet;
+	}
+
+	HRESULT SLinearLayout::CreateLayoutParam(IObjRef ** ppObj)
+	{
+		*ppObj = new SLinearLayoutParam();
+		return S_OK;
 	}
 
 }

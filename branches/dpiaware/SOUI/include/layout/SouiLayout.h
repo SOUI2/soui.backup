@@ -5,7 +5,7 @@
 
 namespace SOUI{
 
-	class SouiLayoutParam: public SObjectImpl<ILayoutParam>
+	class SouiLayoutParam: public SObjectImpl<TObjRefImpl<ILayoutParam>>
 	{
 		SOUI_CLASS_NAME(SouiLayoutParam,L"SouiLayoutParam")
 
@@ -61,13 +61,15 @@ namespace SOUI{
 		int  m_height;       /**<使用height属性定义的高 nCount==0 时有效*/
 	};
 
-	class SouiLayout: public SObjectImpl<ILayout>
+	class SouiLayout: public SObjectImpl<TObjRefImpl<ILayout>>
 	{
 		SOUI_CLASS_NAME(SouiLayout,L"SouiLayout")
 
 	public:
 		SouiLayout(void);
 		~SouiLayout(void);
+
+		static HRESULT CreateLayoutParam(IObjRef ** ppObj);
 
         virtual bool IsParamAcceptable(ILayoutParam *pLayoutParam) const;
 
