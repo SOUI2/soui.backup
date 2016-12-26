@@ -8,7 +8,7 @@
 #include "core/SWnd.h"
 #include "MainDlg.h"
 #include "DlgFontSelect.h"
-
+#include "adapter.h"
 #define  MARGIN 20
 
 BOOL SDesignerView::NewLayout(SStringT strResName, SStringT strPath)
@@ -329,24 +329,38 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 
 void SDesignerView::CreateAllChildWnd(SWindow *pRealWnd, SMoveWnd *pMoveWnd)
 {
+	//view系列加上适配器
+	if (pRealWnd->IsClass(SMCListView::GetClassNameW()))
+	{
+		CBaseMcAdapterFix *mcAdapter = new CBaseMcAdapterFix();
+		((SMCListView*)pRealWnd)->SetAdapter(mcAdapter);
+		mcAdapter->Release();
+	}
+	//listview(flex)需要重新处理，有空再来
+	if (pRealWnd->IsClass(SListView::GetClassNameW()))
+	{
+		CBaseAdapterFix *listAdapter = new CBaseAdapterFix();
+		((SListView*)pRealWnd)->SetAdapter(listAdapter);
+		listAdapter->Release();
+	}
+	if (pRealWnd->IsClass(STileView::GetClassNameW()))
+	{
+		CBaseAdapterFix *listAdapter = new CBaseAdapterFix();
+		((STileView*)pRealWnd)->SetAdapter(listAdapter);
+		listAdapter->Release();
+	}
 	////得到第一个子窗口
 	SWindow *pSibReal = pRealWnd->GetWindow(GSW_FIRSTCHILD);
 	for (; pSibReal; pSibReal = pSibReal->GetWindow(GSW_NEXTSIBLING))
 	{
 		wchar_t *s1 = L"<movewnd pos=\"0,0,@100,@100\" ></movewnd>";
-
 		//创建布局窗口的根窗口
 		SMoveWnd *pSibMove = (SMoveWnd *)pMoveWnd->CreateChildren(s1);
 		pSibMove->m_pRealWnd = pSibReal;
 		pSibMove->SetVisible(pSibReal->IsVisible());
-
 		m_mapMoveRealWnd[pSibReal] = pSibMove;
-
-		pSibMove->m_Desiner = this;	
-
+		pSibMove->m_Desiner = this;
 		CreateAllChildWnd(pSibReal, pSibMove);
-
-
 	}
 }
 
