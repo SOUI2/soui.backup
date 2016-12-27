@@ -110,7 +110,7 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 
 	m_strCurFile = strFileName;
 	//RenameChildeWnd(xmlDoc1->first_child());
-	RenameChildeWnd(xmlDoc1->document_element());
+	RenameChildeWnd(xmlDoc1->root());
 	m_strCurFile.Empty();
 	return TRUE;
 }
@@ -431,8 +431,8 @@ BOOL SDesignerView::SaveAll()
 
 		if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_full,pugi::encoding_utf16)) 
 		{
-			pugi::xml_node NodeSave = DocSave.document_element();
-			TrimXmlNodeTextBlank(NodeSave);
+			pugi::xml_node NodeSave = DocSave.root();
+			TrimXmlNodeTextBlank(DocSave.document_element());
 			RemoveWndName(NodeSave, FALSE, strFileName);
 
 			FullFileName = m_strProPath + _T("\\") + strFileName;
@@ -476,8 +476,8 @@ BOOL SDesignerView::SaveLayoutFile()
 	pugi::xml_document DocSave;
 	if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_full,pugi::encoding_utf16))
 	{
-		pugi::xml_node NodeSave = DocSave.document_element();
-		TrimXmlNodeTextBlank(NodeSave);
+		pugi::xml_node NodeSave = DocSave.root();
+		TrimXmlNodeTextBlank(DocSave.document_element());
 	    RemoveWndName(NodeSave, FALSE);
 
 		FullFileName = m_strProPath + _T("\\") + strFileName;
@@ -575,10 +575,6 @@ void SDesignerView::RenameWnd(pugi::xml_node xmlNode, BOOL force)
 
 void SDesignerView::RemoveWndName(pugi::xml_node xmlNode, BOOL bClear, SStringT strFileName)
 {
-	if (xmlNode.type() != pugi::node_element)
-	{
-		return;
-	}
 
 	pugi::xml_node NodeChild = xmlNode.first_child();
 
@@ -676,10 +672,6 @@ void SDesignerView::RemoveWndName(pugi::xml_node xmlNode, BOOL bClear, SStringT 
 
 void SDesignerView::RenameChildeWnd(pugi::xml_node xmlNode)
 {
-	if (xmlNode.type() != pugi::node_element)
-	{
-		return;
-	}
 
 	pugi::xml_node NodeChild = xmlNode.first_child();
 	
@@ -766,11 +758,6 @@ void SDesignerView::RenameAllLayoutWnd()
 
 pugi::xml_node SDesignerView::FindNodeByAttr(pugi::xml_node NodeRoot, SStringT attrName, SStringT attrValue)
 {
-	if (NodeRoot.type() != pugi::node_element)
-	{	
-		pugi::xml_node node;
-		return node;
-	}
 
 	pugi::xml_node NodeChild = NodeRoot.first_child();
 
@@ -1780,10 +1767,10 @@ void SDesignerView::AddCodeToEditor(CScintillaWnd* pSciWnd)  //复制xml代码到代码
 		doc.append_copy(m_xmlNode);
 	}
 
-	//Debug(doc.root().first_child());
-
+	
 	RemoveWndName(doc.root(), TRUE);
-	TrimXmlNodeTextBlank(doc.root());
+	//Debug(doc.root());
+	TrimXmlNodeTextBlank(doc.document_element());
 
 
 	pugi::xml_writer_buff writer;
@@ -1838,7 +1825,7 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* pSciWnd)//从代码编辑器获取x
 
 
 	RenameChildeWnd(doc.root());
-	TrimXmlNodeTextBlank(doc.root());
+	TrimXmlNodeTextBlank(doc.document_element());
 
 
 
@@ -2318,11 +2305,13 @@ void SDesignerView::TrimXmlNodeTextBlank(pugi::xml_node xmlNode)
 		return;
 	}
 
+
+
 	pugi::xml_node NodeSib = xmlNode;
 	while (NodeSib)
 	{
 
-		if (xmlNode.type() != pugi::node_element)
+		if (NodeSib.type() != pugi::node_element)
 		{
 			NodeSib = NodeSib.next_sibling();
 			continue;
