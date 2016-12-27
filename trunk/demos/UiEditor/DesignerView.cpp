@@ -66,7 +66,7 @@ SDesignerView::SDesignerView(SHostDialog *pMainHost, SWindow *pContainer, STreeC
 
 BOOL SDesignerView::OpenProject(SStringT strFileName)
 {
-	m_xmlDocUiRes.load_file(strFileName);
+	m_xmlDocUiRes.load_file(strFileName, pugi::parse_full);
 
 
 
@@ -97,10 +97,11 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 	pugi::xml_document *xmlDoc1 = new pugi::xml_document();
 
 	//if(!xmlDoc1->load_file(FullFileName,pugi::parse_default,pugi::encoding_utf8))
-	if(!xmlDoc1->load_file(FullFileName))
+	if(!xmlDoc1->load_file(FullFileName, pugi::parse_full))
 		return FALSE;
 
-	m_mapLayoutFile[strFileName] = xmlDoc1->first_child();
+	//m_mapLayoutFile[strFileName] = xmlDoc1->first_child();
+	m_mapLayoutFile[strFileName] = xmlDoc1->document_element();
 
 	m_mapLayoutFile1[strFileName] = xmlDoc1;  
 
@@ -108,7 +109,8 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 
 
 	m_strCurFile = strFileName;
-	RenameChildeWnd(xmlDoc1->first_child());
+	//RenameChildeWnd(xmlDoc1->first_child());
+	RenameChildeWnd(xmlDoc1->document_element());
 	m_strCurFile.Empty();
 	return TRUE;
 }
@@ -427,9 +429,9 @@ BOOL SDesignerView::SaveAll()
 		doc->print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
 		SStringW *strxmlWnd= new SStringW(writer.buffer(),writer.size());
 
-		if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) 
+		if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_full,pugi::encoding_utf16)) 
 		{
-			pugi::xml_node NodeSave = DocSave.first_child();
+			pugi::xml_node NodeSave = DocSave.document_element();
 			TrimXmlNodeTextBlank(NodeSave);
 			RemoveWndName(NodeSave, FALSE, strFileName);
 
@@ -472,9 +474,9 @@ BOOL SDesignerView::SaveLayoutFile()
 
 
 	pugi::xml_document DocSave;
-	if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16))
+	if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_full,pugi::encoding_utf16))
 	{
-		pugi::xml_node NodeSave = DocSave.root();
+		pugi::xml_node NodeSave = DocSave.document_element();
 		TrimXmlNodeTextBlank(NodeSave);
 	    RemoveWndName(NodeSave, FALSE);
 
@@ -510,7 +512,12 @@ SMoveWnd* SDesignerView::CreateWnd(SWindow *pContainer,LPCWSTR pszXml)
 }
 
 void SDesignerView::RenameWnd(pugi::xml_node xmlNode, BOOL force)
-{
+{  
+	if (xmlNode.type() != pugi::node_element)
+	{
+		return;
+	}
+	
 	pugi::xml_attribute xmlAttr = xmlNode.attribute(L"data", false);
 	pugi::xml_attribute xmlAttr1 = xmlNode.attribute(L"uidesiner_data", false);
 
@@ -568,6 +575,11 @@ void SDesignerView::RenameWnd(pugi::xml_node xmlNode, BOOL force)
 
 void SDesignerView::RemoveWndName(pugi::xml_node xmlNode, BOOL bClear, SStringT strFileName)
 {
+	if (xmlNode.type() != pugi::node_element)
+	{
+		return;
+	}
+
 	pugi::xml_node NodeChild = xmlNode.first_child();
 
 	pugi::xml_attribute attr, attr1;
@@ -575,6 +587,13 @@ void SDesignerView::RemoveWndName(pugi::xml_node xmlNode, BOOL bClear, SStringT 
 
 	while (NodeChild)
 	{  
+		if (NodeChild.type() != pugi::node_element)
+		{
+			NodeChild = NodeChild.next_sibling();
+			continue;
+		}
+
+
 		attr = NodeChild.attribute(L"uidesiner_data",false);
 		attr1 = NodeChild.attribute(L"data", false);
 		
@@ -657,11 +676,22 @@ void SDesignerView::RemoveWndName(pugi::xml_node xmlNode, BOOL bClear, SStringT 
 
 void SDesignerView::RenameChildeWnd(pugi::xml_node xmlNode)
 {
+	if (xmlNode.type() != pugi::node_element)
+	{
+		return;
+	}
+
 	pugi::xml_node NodeChild = xmlNode.first_child();
 	
 
 	while (NodeChild)
 	{  
+		if (NodeChild.type() != pugi::node_element)
+		{
+			NodeChild = NodeChild.next_sibling();
+			continue;;
+		}
+
 		//替换Include
 		if(_wcsicmp(NodeChild.name(),L"include")==0 && NodeChild.attribute(L"src"))
 		{
@@ -736,6 +766,11 @@ void SDesignerView::RenameAllLayoutWnd()
 
 pugi::xml_node SDesignerView::FindNodeByAttr(pugi::xml_node NodeRoot, SStringT attrName, SStringT attrValue)
 {
+	if (NodeRoot.type() != pugi::node_element)
+	{	
+		pugi::xml_node node;
+		return node;
+	}
 
 	pugi::xml_node NodeChild = NodeRoot.first_child();
 
@@ -744,6 +779,13 @@ pugi::xml_node SDesignerView::FindNodeByAttr(pugi::xml_node NodeRoot, SStringT a
 
 	while (NodeChild)
 	{   
+		if (NodeChild.type() != pugi::node_element)
+		{	
+			NodeChild = NodeChild.next_sibling();
+			continue;
+		}
+
+
 		if (_wcsicmp(NodeChild.name(), _T("item")) == 0)
 		{
 		    NodeChild = NodeChild.next_sibling();
@@ -1451,7 +1493,7 @@ bool SDesignerView::OnPropGridValueChanged( EventArgs *pEvt )
 
 void SDesignerView::RefreshRes()
 {
-	m_xmlDocUiRes.load_file(m_strUIResFile);
+	m_xmlDocUiRes.load_file(m_strUIResFile, pugi::parse_full);
 
 
 	CAutoRefPtr<IResProvider>   pResProvider1;
@@ -1745,7 +1787,7 @@ void SDesignerView::AddCodeToEditor(CScintillaWnd* pSciWnd)  //复制xml代码到代码
 
 
 	pugi::xml_writer_buff writer;
-	doc.first_child().print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
+	doc.document_element().print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
 	SStringW *strDebug= new SStringW(writer.buffer(),writer.size());
 
 	str=S_CW2A(*strDebug,CP_UTF8);
@@ -1787,7 +1829,7 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* pSciWnd)//从代码编辑器获取x
 
 
 	pugi::xml_document doc;
-	if(!doc.load_buffer(s1,wcslen(s1)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16))
+	if(!doc.load_buffer(s1,wcslen(s1)*sizeof(wchar_t),pugi::parse_full,pugi::encoding_utf16))
 	{
 		Debug(_T("XML有语法错误！"));
 		return;
@@ -2042,6 +2084,12 @@ void SDesignerView::InitXMLStruct(pugi::xml_node xmlNode, HSTREEITEM item)
 	pugi::xml_node NodeSib = xmlNode;
 	while (NodeSib)
 	{
+		if (NodeSib.type() != pugi::node_element)
+		{			
+			NodeSib = NodeSib.next_sibling();
+			continue;
+		}
+
 		int data = 0;
 		if (NodeSib.attribute(_T("data")))
 		{
@@ -2273,6 +2321,13 @@ void SDesignerView::TrimXmlNodeTextBlank(pugi::xml_node xmlNode)
 	pugi::xml_node NodeSib = xmlNode;
 	while (NodeSib)
 	{
+
+		if (xmlNode.type() != pugi::node_element)
+		{
+			NodeSib = NodeSib.next_sibling();
+			continue;
+		}
+
 
 		SStringT strText = NodeSib.text().get();
 		strText.TrimBlank();
