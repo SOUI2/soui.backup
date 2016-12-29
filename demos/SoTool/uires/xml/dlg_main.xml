@@ -19,7 +19,7 @@ translucent="1"
       <page title="代码行数" name="page_codeline" tip="统计代码行数">
         <include src="layout:page_codeline"/>
       </page>
-      <page title="2Unicode" name="page_2unicode" tip="将文本文件转换为Unicode存储">
+      <page title="utf8转换" name="page_2unicode" tip="将文本文件转换为UTF8存储">
         <include src="layout:page_2unicode"/>
       </page>
       <page title="文件扫描" name="page_folderscan" tip="扫描文件夹中文件占用比例">
