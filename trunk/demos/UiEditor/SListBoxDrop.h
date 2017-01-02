@@ -189,8 +189,11 @@ public:
 			SWND pChild = m_pDesignerView->m_pMoveWndRoot->SwndFromPoint(pt, FALSE);			
 			SWindow *pSChild = SWindowMgr::GetWindow(pChild);
 			if (pSChild == 0)
+			{
+				m_pDesignerView->m_nState = 0;
 				return;
-			if (pSChild->GetParent() == m_pDesignerView->m_pMoveWndRoot)
+			}
+			if (pSChild == m_pDesignerView->m_pMoveWndRoot)
 				pt -= CPoint(20, 20);
 			m_pDesignerView->NewWnd(pt,(SMoveWnd*)pSChild);
 			m_pDesignerView->CreatePropGrid(m_pDesignerView->m_xmlNode.name());
