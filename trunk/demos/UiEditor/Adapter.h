@@ -42,14 +42,15 @@ public:
 };
 
 
-const wchar_t * KAttrName_Height[] = {
+
+
+class CBaseAdapterFix : public SAdapterBase
+{		
+	const wchar_t * KAttrName_Height[3] = {
 	L"oddHeight",
 	L"evenHeight",
 	L"evenSelHeight"
-};
-
-class CBaseAdapterFix : public SAdapterBase
-{	
+	};
 	SArray<SStringT> m_TemplateNames;
 	int m_nItemHeight[3];
 public:
