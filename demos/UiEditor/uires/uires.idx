@@ -1,54 +1,57 @@
 <?xml version="1.0"?>
 <resource>
-	<UIDEF>
-		<file name="UIDESIGNER_XML_INIT" path="uidef\init.xml" />
-	</UIDEF>
-	<LAYOUT>
-		<file name="UIDESIGNER_XML_MAINWND" path="xml\dlg_main.xml" />
-		<file name="UIDESIGNER_XML_MAINWND_LEFT" path="xml\dlg_main_left.xml" />
-		<file name="UIDESIGNER_XML_MAINWND_RIGHT" path="xml\dlg_main_right.xml" />
-		<file name="UIDESIGNER_XML_SKIN_SELECT" path="xml\dlg_skin_select.xml" />
-		<file name="UIDESIGNER_XML_NEW_LAYOUT" path="xml\dlg_new_layout.xml" />
-		<file name="UIDESIGNER_XML_NEW_SKIN" path="xml\dlg_new_skin.xml" />
-		<file name="UIDESIGNER_XML_INPUT" path="xml\dlg_input.xml" />
-		<file name="UIDESIGNER_XML_ABOUT" path="xml\dlg_about.xml" />
-		<file name="样式管理" path="xml\dlg_style_manage" />
-		<file name="布局测试" path="xml\test.xml" />
-		<file name="字体选择" path="xml\dlg_font_select.xml" />
-	</LAYOUT>
-	<values>
-		<file name="string" path="values\string.xml" />
-		<file name="color" path="values\color.xml" />
-		<file name="skin" path="values\skin.xml" />
-	</values>
-	<IMG>
-		<file name="traymenu_icons" path="image\traymenu_icons.png" />
-	</IMG>
-	<ICON>
-		<file name="ICON_LOGO" path="image\soui.ico" />
-	</ICON>
-	<translator>
-		<file name="lang_cn" path="translator\lang_cn.xml" />
-	</translator>
-	<SMENU>
-		<file name="menu_tray" path="xml\menu_tray.xml" />
-	</SMENU>
-	<PNG>
-		<file name="UIDESIGNER_ID_PNG_MAIN_CENTER" path="image\main_center.png" />
-		<file name="UIDESIGNER_ID_PNG_HOME_TIYAN" path="image\home_tiyan.png" />
-		<file name="UIDESIGNER_ID_PNG_SWITCH_BACK" path="image\switch_back.png" />
-		<file name="UIDESIGNER_ID_PNG_SWITCH_FORCE" path="image\switch_force.png" />
-		<file name="UIDESIGNER_ID_PNG_HOME_NEW" path="image\btn_bg.png" />
-		<file name="UIDESIGNER_ID_PNG_HOME_NEW_ICON" path="image\home_menu_new.png" />
-		<file name="UIDESIGNER_ID_PNG_HOME_EDIT_ICON" path="image\home_menu_edit.png" />
-		<file name="UIDESIGNER_ID_PNG_HOME_TREE" path="image\treeicon.png" />
-		<file name="UIDESIGNER_ID_ICON_MAIN" path="image\main_icon.ico" />
-		<file name="UIDESIGNER_ID_PNG_CENTER_BK" path="image\transbkgnd.png" />
-		<file name="UIDESIGNER_ID_PNG_TAB_LEFT" path="image\TAB_left.png" />
-		<file name="UIDESIGNER_ID_PNG_PROPGRID_SWITCH" path="image\propswitch.png" />
-		<file name="image_animation_bk_png" path="image\animation_bk.png" />
-		<file name="image_animation_foreground_png" path="image\animation_foreground.png" />
-		<file name="SKIN_UIDESIGNER_image_bg_png" path="image\bg.png" />
-		<file name="SKIN_UIDESIGNER_image_btn_skin_png" path="image\btn_skin.png" />
-	</PNG>
+  <UIDEF>
+    <file name="UIDESIGNER_XML_INIT" path="uidef\init.xml" />
+  </UIDEF>
+  <LAYOUT>
+    <file name="UIDESIGNER_XML_MAINWND" path="xml\dlg_main.xml" />
+    <file name="UIDESIGNER_XML_MAINWND_LEFT" path="xml\dlg_main_left.xml" />
+    <file name="UIDESIGNER_XML_MAINWND_RIGHT" path="xml\dlg_main_right.xml" />
+    <file name="UIDESIGNER_XML_SKIN_SELECT" path="xml\dlg_skin_select.xml" />
+    <file name="UIDESIGNER_XML_NEW_LAYOUT" path="xml\dlg_new_layout.xml" />
+    <file name="UIDESIGNER_XML_NEW_SKIN" path="xml\dlg_new_skin.xml" />
+    <file name="UIDESIGNER_XML_INPUT" path="xml\dlg_input.xml" />
+    <file name="UIDESIGNER_XML_ABOUT" path="xml\dlg_about.xml" />
+    <file name="样式管理" path="xml\dlg_style_manage" />
+    <file name="布局测试" path="xml\test.xml" />
+    <file name="字体选择" path="xml\dlg_font_select.xml" />
+  </LAYOUT>
+  <values>
+    <file name="string" path="values\string.xml" />
+    <file name="color" path="values\color.xml" />
+    <file name="skin" path="values\skin.xml" />
+  </values>
+  <IMG>
+    <file name="traymenu_icons" path="image\traymenu_icons.png" />
+  </IMG>
+  <ICON>
+    <file name="ICON_LOGO" path="image\soui.ico" />
+  </ICON>
+  <translator>
+    <file name="lang_cn" path="translator\lang_cn.xml" />
+  </translator>
+  <SMENU>
+    <file name="menu_tray" path="xml\menu_tray.xml" />
+  </SMENU>
+  <PNG>
+    <file name="UIDESIGNER_ID_PNG_MAIN_CENTER" path="image\main_center.png" />
+    <file name="UIDESIGNER_ID_PNG_HOME_TIYAN" path="image\home_tiyan.png" />
+    <file name="UIDESIGNER_ID_PNG_SWITCH_BACK" path="image\switch_back.png" />
+    <file name="UIDESIGNER_ID_PNG_SWITCH_FORCE" path="image\switch_force.png" />
+    <file name="UIDESIGNER_ID_PNG_HOME_NEW" path="image\btn_bg.png" />
+    <file name="UIDESIGNER_ID_PNG_HOME_NEW_ICON" path="image\home_menu_new.png" />
+    <file name="UIDESIGNER_ID_PNG_HOME_EDIT_ICON" path="image\home_menu_edit.png" />
+    <file name="UIDESIGNER_ID_PNG_HOME_TREE" path="image\treeicon.png" />
+    <file name="UIDESIGNER_ID_ICON_MAIN" path="image\main_icon.ico" />
+    <file name="UIDESIGNER_ID_PNG_CENTER_BK" path="image\transbkgnd.png" />
+    <file name="UIDESIGNER_ID_PNG_TAB_LEFT" path="image\TAB_left.png" />
+    <file name="UIDESIGNER_ID_PNG_PROPGRID_SWITCH" path="image\propswitch.png" />
+    <file name="image_animation_bk_png" path="image\animation_bk.png" />
+    <file name="image_animation_foreground_png" path="image\animation_foreground.png" />
+    <file name="SKIN_UIDESIGNER_image_bg_png" path="image\bg.png" />
+    <file name="SKIN_UIDESIGNER_image_btn_skin_png" path="image\btn_skin.png" />
+  </PNG>
+  <Cursor>
+    <file name="move_piao" path="image\piaopiao.ani"/>
+  </Cursor>  
 </resource>

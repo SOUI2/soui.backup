@@ -85,6 +85,7 @@ SOURCES+=./colorpicker/ColourPopup.cpp
 SOURCES+=./colorpicker/SColorPicker.cpp
 SOURCES+=./DlgFontSelect.cpp
 
+HEADERS+=./SListBoxDrop.h
 HEADERS+=./Adapter.h
 HEADERS+=./CDebug.h
 HEADERS+=./CNewGuid.h

@@ -2,7 +2,7 @@
 <include>
 	<tabctrl name="NAME_UIDESIGNER_Right_MAIN_TAB" pos="0,0,-0,-0" tabAlign="right" tabSkin="SKIN_UIDESIGNER_TAB_LEFT" tabInterSize="2" tabWidth="30" tabHeight="70" colorText="#FFFFFF" focusable="false" textDir="vert">
 		<page title="控件" colorBorder="#ffff00">
-			<listbox name="NAME_UIDESIGNER_LB_CONTROL" pos="0,5,-0,-0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
+      <listboxdrop name="NAME_UIDESIGNER_LB_CONTROL" pos="0,5,-0,-0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
 		</page>
 		<page title="结构" colorBorder="#ffff00">
 			<treectrl pos="1,0,-1,-1" name="NAME_UIDESIGNER_xmltree" itemHeight="30" iconSkin="SKIN_UIDESIGNER_home_tree" colorItemText="#FFFFFF" colorItemSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" />
