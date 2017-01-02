@@ -180,16 +180,18 @@ public:
 	}
 	void OnLButtonUp(UINT nFlags, CPoint pt)
 	{
-		bLdown = false;		
+		bLdown = false;
 		__super::OnLButtonUp(nFlags, pt);
 		if (m_pCDropWnd->IsVisible())
 		{
 			m_pCDropWnd->SetVisible(FALSE, TRUE);
-			m_pDesignerView->SetSelCtrlNode(ctrlNode);			
-			SWND pChild = m_pDesignerView->m_pMoveWndRoot->SwndFromPoint(pt, FALSE);
-			if (pChild == 0)
-				return;
+			m_pDesignerView->SetSelCtrlNode(ctrlNode);
+			SWND pChild = m_pDesignerView->m_pMoveWndRoot->SwndFromPoint(pt, FALSE);			
 			SWindow *pSChild = SWindowMgr::GetWindow(pChild);
+			if (pSChild == 0)
+				return;
+			if (pSChild->GetParent() == m_pDesignerView->m_pMoveWndRoot)
+				pt -= CPoint(20, 20);
 			m_pDesignerView->NewWnd(pt,(SMoveWnd*)pSChild);
 			m_pDesignerView->CreatePropGrid(m_pDesignerView->m_xmlNode.name());
 			m_pDesignerView->UpdatePropGrid(m_pDesignerView->m_xmlNode);
