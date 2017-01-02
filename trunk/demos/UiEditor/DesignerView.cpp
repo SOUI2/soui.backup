@@ -503,8 +503,6 @@ BOOL SDesignerView::CloseLayoutFile()
 //创建窗口
 SMoveWnd* SDesignerView::CreateWnd(SWindow *pContainer,LPCWSTR pszXml)
 {
-
-
 	SWindow *pChild = pContainer->CreateChildren(pszXml);
 	((SMoveWnd*)pChild)->m_Desiner = this;
 	m_CurSelCtrl = (SMoveWnd*)pChild;
@@ -1965,7 +1963,8 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 	{
 		pRealWnd = pM->m_pRealWnd;
 		pMoveWnd = pM;
-	}else
+	}
+	else
 	{
 		SStringT s;
 		s.Format(_T("%d"), pM->m_pRealWnd->GetUserData());
@@ -1980,8 +1979,7 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 			pMoveWnd = (SMoveWnd*)pM->GetParent();
 		}
 	}
-
-
+	
 	if (!bIsInclude)
 	{
 		CRect rect;
@@ -1997,44 +1995,30 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 		{
 			m_xmlNode.append_attribute(L"pos");
 		}
-
 		m_xmlNode.attribute(L"pos").set_value(strPos);
-
 		if (m_xmlNode.attribute(L"size"))
 		{
 			SStringT strSize;
 			strSize = m_xmlNode.attribute(L"size", false).value();
 		}
 	}
-
-
-
 	SStringT strMoveWnd;
 	strMoveWnd = _T("<movewnd pos=\"0,0,@120,@30\"></movewnd>");
-
-
 	pugi::xml_writer_buff writer;
 	//m_Desiner->m_xmlNode.print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
 	m_xmlNode.print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
 	SStringW *strxmlWnd= new SStringW(writer.buffer(),writer.size());
-
-
-
 	pRealWnd->CreateChildren(*strxmlWnd);
 	SWindow *Wnd = pRealWnd->GetWindow(GSW_LASTCHILD);
 	SMoveWnd *Wnd1 = (SMoveWnd *)CreateWnd(pMoveWnd, strMoveWnd);
 	Wnd1->m_pRealWnd = Wnd;
-
 	m_mapMoveRealWnd[Wnd] = Wnd1;
 	CreateAllChildWnd(Wnd, Wnd1);
-
-
 	//找到m_realWnd控件对应的xml节点
 	if(pRealWnd == m_pRealWndRoot)
 	{
 		SStringT s(_T("SOUI"));
-		pugi::xml_node firstNode = m_CurrentLayoutNode;
-		
+		pugi::xml_node firstNode = m_CurrentLayoutNode;		
 		if (s.CompareNoCase(firstNode.name()) == 0)
 		{
 			firstNode = firstNode.child(_T("root"));
@@ -2044,20 +2028,15 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 	}
 	else
 	{
-
 		//找到m_realWnd控件对应的xml节点
 		SStringT s;
 		s.Format(_T("%d"), pRealWnd->GetUserData());
 		pugi::xml_node xmlNodeRealWnd = FindNodeByAttr(m_CurrentLayoutNode, L"data", s);
-
 		//将新创建的控件写入父控件的xml节点
 		SetCurrentCtrl(xmlNodeRealWnd.append_copy(m_xmlNode), Wnd1);
 		//m_Desiner->m_xmlNode = xmlNodeRealWnd.append_copy(m_Desiner->m_xmlNode);
 	}
-
 	m_nState = 0;
-
-
 	delete strxmlWnd;
 }
 

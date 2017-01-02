@@ -185,9 +185,12 @@ public:
 		if (m_pCDropWnd->IsVisible())
 		{
 			m_pCDropWnd->SetVisible(FALSE, TRUE);
-			m_pDesignerView->SetSelCtrlNode(ctrlNode);
-			pt -= CPoint(20, 20);
-			m_pDesignerView->NewWnd(pt, m_pDesignerView->m_pMoveWndRoot);
+			m_pDesignerView->SetSelCtrlNode(ctrlNode);			
+			SWND pChild = m_pDesignerView->m_pMoveWndRoot->SwndFromPoint(pt, FALSE);
+			if (pChild == 0)
+				return;
+			SWindow *pSChild = SWindowMgr::GetWindow(pChild);
+			m_pDesignerView->NewWnd(pt,(SMoveWnd*)pSChild);
 			m_pDesignerView->CreatePropGrid(m_pDesignerView->m_xmlNode.name());
 			m_pDesignerView->UpdatePropGrid(m_pDesignerView->m_xmlNode);
 		}
