@@ -42,21 +42,18 @@ public:
 };
 
 
-
-
 class CBaseAdapterFix : public SAdapterBase
-{		
-	const wchar_t * KAttrName_Height[3] = {
-	L"oddHeight",
-	L"evenHeight",
-	L"evenSelHeight"
-	};
+{	
+	const wchar_t*  KAttrName_Height[3];
 	SArray<SStringT> m_TemplateNames;
 	int m_nItemHeight[3];
 public:
 
 	CBaseAdapterFix()
-	{		
+	{
+		KAttrName_Height[0] = L"oddHeight";
+		KAttrName_Height[1] = L"evenHeight";
+		KAttrName_Height[2] = L"evenSelHeight";
 	}
 
 	~CBaseAdapterFix()
@@ -131,3 +128,5 @@ public:
 		}
 	}	
 };
+
+
