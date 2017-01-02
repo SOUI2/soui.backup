@@ -1989,7 +1989,19 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 		/*strPos.Format(_T("%d,%d"), pt.x - rect.left, pt.y - rect.top);*/
 
 		//8 ¶ÔÆë
-		strPos.Format(_T("%d,%d"), (pt.x - rect.left)/8*8, (pt.y - rect.top)/8*8);
+		int x,y;
+		x = (pt.x - rect.left)/8*8; 
+		y = (pt.y - rect.top)/8*8;
+		if (x < 0)
+		{
+			x = 0;
+		}
+
+		if (y < 0)
+		{
+			y = 0;
+		}
+		strPos.Format(_T("%d,%d"), x, y);
 
 		if (!m_xmlNode.attribute(L"pos"))
 		{
