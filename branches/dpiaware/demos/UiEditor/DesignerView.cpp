@@ -8,7 +8,7 @@
 #include "core/SWnd.h"
 #include "MainDlg.h"
 #include "DlgFontSelect.h"
-
+#include "adapter.h"
 #define  MARGIN 20
 
 BOOL SDesignerView::NewLayout(SStringT strResName, SStringT strPath)
@@ -66,7 +66,7 @@ SDesignerView::SDesignerView(SHostDialog *pMainHost, SWindow *pContainer, STreeC
 
 BOOL SDesignerView::OpenProject(SStringT strFileName)
 {
-	m_xmlDocUiRes.load_file(strFileName);
+	m_xmlDocUiRes.load_file(strFileName, pugi::parse_full);
 
 
 
@@ -97,10 +97,11 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 	pugi::xml_document *xmlDoc1 = new pugi::xml_document();
 
 	//if(!xmlDoc1->load_file(FullFileName,pugi::parse_default,pugi::encoding_utf8))
-	if(!xmlDoc1->load_file(FullFileName))
+	if(!xmlDoc1->load_file(FullFileName, pugi::parse_full))
 		return FALSE;
 
-	m_mapLayoutFile[strFileName] = xmlDoc1->first_child();
+	//m_mapLayoutFile[strFileName] = xmlDoc1->first_child();
+	m_mapLayoutFile[strFileName] = xmlDoc1->document_element();
 
 	m_mapLayoutFile1[strFileName] = xmlDoc1;  
 
@@ -108,7 +109,8 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 
 
 	m_strCurFile = strFileName;
-	RenameChildeWnd(xmlDoc1->first_child());
+	//RenameChildeWnd(xmlDoc1->first_child());
+	RenameChildeWnd(xmlDoc1->root());
 	m_strCurFile.Empty();
 	return TRUE;
 }
@@ -329,24 +331,38 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 
 void SDesignerView::CreateAllChildWnd(SWindow *pRealWnd, SMoveWnd *pMoveWnd)
 {
+	//view系列加上适配器
+	if (pRealWnd->IsClass(SMCListView::GetClassNameW()))
+	{
+		CBaseMcAdapterFix *mcAdapter = new CBaseMcAdapterFix();
+		((SMCListView*)pRealWnd)->SetAdapter(mcAdapter);
+		mcAdapter->Release();
+	}
+	//listview(flex)需要重新处理，有空再来
+	if (pRealWnd->IsClass(SListView::GetClassNameW()))
+	{
+		CBaseAdapterFix *listAdapter = new CBaseAdapterFix();
+		((SListView*)pRealWnd)->SetAdapter(listAdapter);
+		listAdapter->Release();
+	}
+	if (pRealWnd->IsClass(STileView::GetClassNameW()))
+	{
+		CBaseAdapterFix *listAdapter = new CBaseAdapterFix();
+		((STileView*)pRealWnd)->SetAdapter(listAdapter);
+		listAdapter->Release();
+	}
 	////得到第一个子窗口
 	SWindow *pSibReal = pRealWnd->GetWindow(GSW_FIRSTCHILD);
 	for (; pSibReal; pSibReal = pSibReal->GetWindow(GSW_NEXTSIBLING))
 	{
 		wchar_t *s1 = L"<movewnd pos=\"0,0,@100,@100\" ></movewnd>";
-
 		//创建布局窗口的根窗口
 		SMoveWnd *pSibMove = (SMoveWnd *)pMoveWnd->CreateChildren(s1);
 		pSibMove->m_pRealWnd = pSibReal;
 		pSibMove->SetVisible(pSibReal->IsVisible());
-
 		m_mapMoveRealWnd[pSibReal] = pSibMove;
-
-		pSibMove->m_Desiner = this;	
-
+		pSibMove->m_Desiner = this;
 		CreateAllChildWnd(pSibReal, pSibMove);
-
-
 	}
 }
 
@@ -413,10 +429,10 @@ BOOL SDesignerView::SaveAll()
 		doc->print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
 		SStringW *strxmlWnd= new SStringW(writer.buffer(),writer.size());
 
-		if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16)) 
+		if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_full,pugi::encoding_utf16)) 
 		{
-			pugi::xml_node NodeSave = DocSave.first_child();
-			TrimXmlNodeTextBlank(NodeSave);
+			pugi::xml_node NodeSave = DocSave.root();
+			TrimXmlNodeTextBlank(DocSave.document_element());
 			RemoveWndName(NodeSave, FALSE, strFileName);
 
 			FullFileName = m_strProPath + _T("\\") + strFileName;
@@ -458,10 +474,10 @@ BOOL SDesignerView::SaveLayoutFile()
 
 
 	pugi::xml_document DocSave;
-	if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16))
+	if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_full,pugi::encoding_utf16))
 	{
 		pugi::xml_node NodeSave = DocSave.root();
-		TrimXmlNodeTextBlank(NodeSave);
+		TrimXmlNodeTextBlank(DocSave.document_element());
 	    RemoveWndName(NodeSave, FALSE);
 
 		FullFileName = m_strProPath + _T("\\") + strFileName;
@@ -487,8 +503,6 @@ BOOL SDesignerView::CloseLayoutFile()
 //创建窗口
 SMoveWnd* SDesignerView::CreateWnd(SWindow *pContainer,LPCWSTR pszXml)
 {
-
-
 	SWindow *pChild = pContainer->CreateChildren(pszXml);
 	((SMoveWnd*)pChild)->m_Desiner = this;
 	m_CurSelCtrl = (SMoveWnd*)pChild;
@@ -496,7 +510,12 @@ SMoveWnd* SDesignerView::CreateWnd(SWindow *pContainer,LPCWSTR pszXml)
 }
 
 void SDesignerView::RenameWnd(pugi::xml_node xmlNode, BOOL force)
-{
+{  
+	if (xmlNode.type() != pugi::node_element)
+	{
+		return;
+	}
+	
 	pugi::xml_attribute xmlAttr = xmlNode.attribute(L"data", false);
 	pugi::xml_attribute xmlAttr1 = xmlNode.attribute(L"uidesiner_data", false);
 
@@ -554,6 +573,7 @@ void SDesignerView::RenameWnd(pugi::xml_node xmlNode, BOOL force)
 
 void SDesignerView::RemoveWndName(pugi::xml_node xmlNode, BOOL bClear, SStringT strFileName)
 {
+
 	pugi::xml_node NodeChild = xmlNode.first_child();
 
 	pugi::xml_attribute attr, attr1;
@@ -561,6 +581,13 @@ void SDesignerView::RemoveWndName(pugi::xml_node xmlNode, BOOL bClear, SStringT 
 
 	while (NodeChild)
 	{  
+		if (NodeChild.type() != pugi::node_element)
+		{
+			NodeChild = NodeChild.next_sibling();
+			continue;
+		}
+
+
 		attr = NodeChild.attribute(L"uidesiner_data",false);
 		attr1 = NodeChild.attribute(L"data", false);
 		
@@ -643,11 +670,18 @@ void SDesignerView::RemoveWndName(pugi::xml_node xmlNode, BOOL bClear, SStringT 
 
 void SDesignerView::RenameChildeWnd(pugi::xml_node xmlNode)
 {
+
 	pugi::xml_node NodeChild = xmlNode.first_child();
 	
 
 	while (NodeChild)
 	{  
+		if (NodeChild.type() != pugi::node_element)
+		{
+			NodeChild = NodeChild.next_sibling();
+			continue;;
+		}
+
 		//替换Include
 		if(_wcsicmp(NodeChild.name(),L"include")==0 && NodeChild.attribute(L"src"))
 		{
@@ -730,6 +764,13 @@ pugi::xml_node SDesignerView::FindNodeByAttr(pugi::xml_node NodeRoot, SStringT a
 
 	while (NodeChild)
 	{   
+		if (NodeChild.type() != pugi::node_element)
+		{	
+			NodeChild = NodeChild.next_sibling();
+			continue;
+		}
+
+
 		if (_wcsicmp(NodeChild.name(), _T("item")) == 0)
 		{
 		    NodeChild = NodeChild.next_sibling();
@@ -1437,7 +1478,7 @@ bool SDesignerView::OnPropGridValueChanged( EventArgs *pEvt )
 
 void SDesignerView::RefreshRes()
 {
-	m_xmlDocUiRes.load_file(m_strUIResFile);
+	m_xmlDocUiRes.load_file(m_strUIResFile, pugi::parse_full);
 
 
 	CAutoRefPtr<IResProvider>   pResProvider1;
@@ -1724,14 +1765,14 @@ void SDesignerView::AddCodeToEditor(CScintillaWnd* pSciWnd)  //复制xml代码到代码
 		doc.append_copy(m_xmlNode);
 	}
 
-	//Debug(doc.root().first_child());
-
+	
 	RemoveWndName(doc.root(), TRUE);
-	TrimXmlNodeTextBlank(doc.root());
+	//Debug(doc.root());
+	TrimXmlNodeTextBlank(doc.document_element());
 
 
 	pugi::xml_writer_buff writer;
-	doc.first_child().print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
+	doc.document_element().print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
 	SStringW *strDebug= new SStringW(writer.buffer(),writer.size());
 
 	str=S_CW2A(*strDebug,CP_UTF8);
@@ -1773,7 +1814,7 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* pSciWnd)//从代码编辑器获取x
 
 
 	pugi::xml_document doc;
-	if(!doc.load_buffer(s1,wcslen(s1)*sizeof(wchar_t),pugi::parse_default,pugi::encoding_utf16))
+	if(!doc.load_buffer(s1,wcslen(s1)*sizeof(wchar_t),pugi::parse_full,pugi::encoding_utf16))
 	{
 		Debug(_T("XML有语法错误！"));
 		return;
@@ -1782,7 +1823,7 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* pSciWnd)//从代码编辑器获取x
 
 
 	RenameChildeWnd(doc.root());
-	TrimXmlNodeTextBlank(doc.root());
+	TrimXmlNodeTextBlank(doc.document_element());
 
 
 
@@ -1922,7 +1963,8 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 	{
 		pRealWnd = pM->m_pRealWnd;
 		pMoveWnd = pM;
-	}else
+	}
+	else
 	{
 		SStringT s;
 		s.Format(_T("%d"), pM->m_pRealWnd->GetUserData());
@@ -1937,8 +1979,7 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 			pMoveWnd = (SMoveWnd*)pM->GetParent();
 		}
 	}
-
-
+	
 	if (!bIsInclude)
 	{
 		CRect rect;
@@ -1948,50 +1989,48 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 		/*strPos.Format(_T("%d,%d"), pt.x - rect.left, pt.y - rect.top);*/
 
 		//8 对齐
-		strPos.Format(_T("%d,%d"), (pt.x - rect.left)/8*8, (pt.y - rect.top)/8*8);
+		int x,y;
+		x = (pt.x - rect.left)/8*8; 
+		y = (pt.y - rect.top)/8*8;
+		if (x < 0)
+		{
+			x = 0;
+		}
+
+		if (y < 0)
+		{
+			y = 0;
+		}
+		strPos.Format(_T("%d,%d"), x, y);
 
 		if (!m_xmlNode.attribute(L"pos"))
 		{
 			m_xmlNode.append_attribute(L"pos");
 		}
-
 		m_xmlNode.attribute(L"pos").set_value(strPos);
-
 		if (m_xmlNode.attribute(L"size"))
 		{
 			SStringT strSize;
 			strSize = m_xmlNode.attribute(L"size", false).value();
 		}
 	}
-
-
-
 	SStringT strMoveWnd;
 	strMoveWnd = _T("<movewnd pos=\"0,0,@120,@30\"></movewnd>");
-
-
 	pugi::xml_writer_buff writer;
 	//m_Desiner->m_xmlNode.print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
 	m_xmlNode.print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
 	SStringW *strxmlWnd= new SStringW(writer.buffer(),writer.size());
-
-
-
 	pRealWnd->CreateChildren(*strxmlWnd);
 	SWindow *Wnd = pRealWnd->GetWindow(GSW_LASTCHILD);
 	SMoveWnd *Wnd1 = (SMoveWnd *)CreateWnd(pMoveWnd, strMoveWnd);
 	Wnd1->m_pRealWnd = Wnd;
-
 	m_mapMoveRealWnd[Wnd] = Wnd1;
 	CreateAllChildWnd(Wnd, Wnd1);
-
-
 	//找到m_realWnd控件对应的xml节点
 	if(pRealWnd == m_pRealWndRoot)
 	{
 		SStringT s(_T("SOUI"));
-		pugi::xml_node firstNode = m_CurrentLayoutNode;
-		
+		pugi::xml_node firstNode = m_CurrentLayoutNode;		
 		if (s.CompareNoCase(firstNode.name()) == 0)
 		{
 			firstNode = firstNode.child(_T("root"));
@@ -2001,20 +2040,15 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 	}
 	else
 	{
-
 		//找到m_realWnd控件对应的xml节点
 		SStringT s;
 		s.Format(_T("%d"), pRealWnd->GetUserData());
 		pugi::xml_node xmlNodeRealWnd = FindNodeByAttr(m_CurrentLayoutNode, L"data", s);
-
 		//将新创建的控件写入父控件的xml节点
 		SetCurrentCtrl(xmlNodeRealWnd.append_copy(m_xmlNode), Wnd1);
 		//m_Desiner->m_xmlNode = xmlNodeRealWnd.append_copy(m_Desiner->m_xmlNode);
 	}
-
 	m_nState = 0;
-
-
 	delete strxmlWnd;
 }
 
@@ -2028,6 +2062,12 @@ void SDesignerView::InitXMLStruct(pugi::xml_node xmlNode, HSTREEITEM item)
 	pugi::xml_node NodeSib = xmlNode;
 	while (NodeSib)
 	{
+		if (NodeSib.type() != pugi::node_element)
+		{			
+			NodeSib = NodeSib.next_sibling();
+			continue;
+		}
+
 		int data = 0;
 		if (NodeSib.attribute(_T("data")))
 		{
@@ -2256,9 +2296,18 @@ void SDesignerView::TrimXmlNodeTextBlank(pugi::xml_node xmlNode)
 		return;
 	}
 
+
+
 	pugi::xml_node NodeSib = xmlNode;
 	while (NodeSib)
 	{
+
+		if (NodeSib.type() != pugi::node_element)
+		{
+			NodeSib = NodeSib.next_sibling();
+			continue;
+		}
+
 
 		SStringT strText = NodeSib.text().get();
 		strText.TrimBlank();

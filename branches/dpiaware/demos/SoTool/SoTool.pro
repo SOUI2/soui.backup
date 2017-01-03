@@ -40,7 +40,10 @@ HEADERS += 2UnicodeHandler.h \
            SEdit2.h \
            SFolderList.h \
            SImgCanvas.h \
-           STreeList.h
+           STreeList.h \
+           FileMap.h \
+           IconvWorker.h
+           
 SOURCES += 2UnicodeHandler.cpp \
            CalcMd5Handler.cpp \
            CodeLineCounter.cpp \
@@ -54,6 +57,8 @@ SOURCES += 2UnicodeHandler.cpp \
            SFolderList.cpp \
            SImgCanvas.cpp \
            SoTool.cpp \
-           STreeList.cpp
+           STreeList.cpp \
+           FileMap.cpp \
+           IconvWorker.cpp
 
 RC_FILE += sotool.rc

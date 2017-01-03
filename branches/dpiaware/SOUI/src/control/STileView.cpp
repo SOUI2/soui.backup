@@ -229,8 +229,9 @@ BOOL STileView::OnScroll(BOOL bVertical, UINT uCode, int nPos)
         {
             ScrollUpdate();
         }
+        return TRUE;
     }
-    return TRUE;
+    return FALSE;
 }
 
 void STileView::UpdateVisibleItems()

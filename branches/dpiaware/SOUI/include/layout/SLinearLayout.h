@@ -69,8 +69,24 @@ namespace SOUI
         SOUI_ATTRS_BREAK()
 
 
+	protected:
 		ORIENTATION m_orientation;
     };
 
+	class SVBox : public SLinearLayout
+	{
+		SOUI_CLASS_NAME(SVBox,L"vbox")
+
+	public:
+		SVBox(){m_orientation = Vert;}
+	};
+
+	class SHBox : public SLinearLayout
+	{
+		SOUI_CLASS_NAME(SHBox,L"hbox")
+
+	public:
+		SHBox(){m_orientation = Horz;}
+	};
 }
 

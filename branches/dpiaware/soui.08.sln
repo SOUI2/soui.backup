@@ -131,6 +131,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "7z", "third-part\7z\7z.vcpr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "resprovider-7zip", "components\resprovider-7zip\resprovider-7zip.vcproj", "{FA228556-4788-3B89-BCE1-365AA36F89F7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VUI", "demos\VUI\VUI.vcproj", "{225ED1EE-B1BB-31B9-B8F2-49BD66F0468F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -265,6 +267,10 @@ Global
 		{FA228556-4788-3B89-BCE1-365AA36F89F7}.Debug|Win32.Build.0 = Debug|Win32
 		{FA228556-4788-3B89-BCE1-365AA36F89F7}.Release|Win32.ActiveCfg = Release|Win32
 		{FA228556-4788-3B89-BCE1-365AA36F89F7}.Release|Win32.Build.0 = Release|Win32
+		{225ED1EE-B1BB-31B9-B8F2-49BD66F0468F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{225ED1EE-B1BB-31B9-B8F2-49BD66F0468F}.Debug|Win32.Build.0 = Debug|Win32
+		{225ED1EE-B1BB-31B9-B8F2-49BD66F0468F}.Release|Win32.ActiveCfg = Release|Win32
+		{225ED1EE-B1BB-31B9-B8F2-49BD66F0468F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -301,5 +307,6 @@ Global
 		{39E1FC7D-BC6C-3773-9777-8BEE43A315CC} = {BF356269-06FC-400F-A653-FA6F9404A5DE}
 		{38878C39-9EAE-3D7C-A3C8-D7DF0DEAAE34} = {BF356269-06FC-400F-A653-FA6F9404A5DE}
 		{F8964DE3-2FE2-32AD-BD76-261028C8456E} = {BF356269-06FC-400F-A653-FA6F9404A5DE}
+		{225ED1EE-B1BB-31B9-B8F2-49BD66F0468F} = {BF356269-06FC-400F-A653-FA6F9404A5DE}
 	EndGlobalSection
 EndGlobal

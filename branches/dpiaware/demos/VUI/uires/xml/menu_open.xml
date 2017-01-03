@@ -1,0 +1,9 @@
+<menu sepSkin="_skin_menu_sep" itemSkin="_skin_menu_skin" font="adding:-2" itemHeight="26"  textMargin="8" >
+    <item id="101">打开文件夹</item>
+    <item id="102">打开URL</item>
+    <item id="103">打开3D视频</item>
+    <item id="104" disable="1">打开碟片/DVD
+      <item id="1041">打开碟片</item>
+      <item id="1042">打开DVD</item>
+    </item>
+</menu>
