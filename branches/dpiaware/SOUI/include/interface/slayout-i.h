@@ -10,7 +10,7 @@ namespace SOUI{
 
 
     enum ORIENTATION{
-        Horz,Vert
+        Horz,Vert,Any,Both,
     };
     
 	enum{
@@ -21,10 +21,14 @@ namespace SOUI{
 
     struct ILayoutParam : IObject,IObjRef
     {
+		virtual void Clear() = 0;
         virtual bool IsMatchParent(ORIENTATION orientation) const = 0;
 		virtual bool IsWrapContent(ORIENTATION orientation) const = 0;
         virtual bool IsSpecifiedSize(ORIENTATION orientation) const = 0;
         virtual int GetSpecifiedSize(ORIENTATION orientation) const = 0;
+		virtual void SetMatchParent(ORIENTATION orientation) = 0;
+		virtual void SetWrapContent(ORIENTATION orientation) = 0;
+		virtual void SetSpecifiedSize(ORIENTATION orientation, int nSize) = 0;
     };
 
     struct ILayout : IObject , IObjRef{

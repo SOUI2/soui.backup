@@ -117,11 +117,11 @@ namespace SOUI
          * @brief    属性处理后调用的方法
          * @param    const SStringW & strAttribName --  属性名
          * @param    const SStringW & strValue --  属性名
+		 * @param    BOOL bLoading --  对象创建时由系统调用标志
          * @param    HRESULT hr --  属性处理结果
-         * @return   HRESULT -- 属性处理结果
          * Describe  不做处理，直接返回
          */    
-        virtual HRESULT AfterAttribute(const SStringW & strAttribName,const SStringW & strValue,HRESULT hr) = 0;
+        virtual HRESULT AfterAttribute(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading,HRESULT hr) = 0;
 
 		/**
          * GetID

@@ -16,6 +16,7 @@ namespace SOUI
     {
         SOUI_CLASS_NAME(SLinearLayoutParam,L"LinearLayoutParam")
 
+		friend class SLinearLayout;
     public:
         virtual bool IsMatchParent(ORIENTATION orientation) const;
 		virtual bool IsWrapContent(ORIENTATION orientation) const;
@@ -24,8 +25,14 @@ namespace SOUI
 
         virtual int GetSpecifiedSize(ORIENTATION orientation) const;
 
-        HRESULT OnAttrWidth(const SStringW & strValue,BOOL bLoading);
-        HRESULT OnAttrHeight(const SStringW & strValue,BOOL bLoading);
+		virtual void Clear();
+
+		virtual void SetMatchParent(ORIENTATION orientation);
+
+		virtual void SetWrapContent(ORIENTATION orientation);
+
+		virtual void SetSpecifiedSize(ORIENTATION orientation, int nSize);
+
 
         SOUI_ATTRS_BEGIN()
             ATTR_CUSTOM(L"width",OnAttrWidth)
@@ -40,7 +47,11 @@ namespace SOUI
             ATTR_ENUM_END(m_gravity)
         SOUI_ATTRS_BREAK()
 
-    public:
+
+	protected:
+		HRESULT OnAttrWidth(const SStringW & strValue,BOOL bLoading);
+		HRESULT OnAttrHeight(const SStringW & strValue,BOOL bLoading);
+
         int m_width,m_height;
         float m_weight;
         Gravity m_gravity;
