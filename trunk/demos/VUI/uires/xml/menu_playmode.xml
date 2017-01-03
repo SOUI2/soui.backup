@@ -1,0 +1,7 @@
+<menu sepSkin="_skin_menu_sep" itemSkin="_skin_menu_skin" font="adding:-2" itemHeight="26"  textMargin="8" >
+    <item id="11101" radio="1">顺序播放(&O)</item>
+    <item id="11102" radio="1">单个播放(&S)</item>
+    <item id="11103" radio="1">随机播放(&R)</item>
+    <item id="11104" radio="1">单个循环(&C)</item>
+    <item id="11105" radio="1">列表循环(&G)</item>
+</menu>
