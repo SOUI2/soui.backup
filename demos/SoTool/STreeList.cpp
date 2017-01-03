@@ -36,7 +36,7 @@ namespace SOUI
         if(m_nItemWid<0)
         {
             m_nItemWid = m_nTreeWidth;
-            for(int i=0;i<m_arrColWidth.GetCount();i++)
+            for(UINT i=0;i<m_arrColWidth.GetCount();i++)
                 m_nItemWid += m_arrColWidth[i];
         }
         return m_nItemWid;
@@ -66,7 +66,7 @@ namespace SOUI
 
     BOOL SMCTreeCtrl::DeleteColumn(int iCol)
     {
-        if(iCol<0 || iCol>=m_arrColWidth.GetCount()) 
+        if(iCol<0 || iCol>=(int)m_arrColWidth.GetCount()) 
             return FALSE;
         HSTREEITEM hItem = GetRootItem();
         while(hItem)
@@ -75,7 +75,7 @@ namespace SOUI
             pMcItem->arrText.RemoveAt(iCol);
             hItem = GetNextItem(hItem);
         }
-        int nColWid = m_arrColWidth[iCol];
+        //int nColWid = m_arrColWidth[iCol];
         m_arrColWidth.RemoveAt(iCol);
         
         m_nItemWid = -1;
@@ -91,7 +91,7 @@ namespace SOUI
 
     BOOL SMCTreeCtrl::SetItemText(HSTREEITEM hItem,int iCol,const SStringT strText)
     {
-        if(iCol<0 || iCol>=m_arrColWidth.GetCount()) 
+        if(iCol<0 || iCol>=(int)m_arrColWidth.GetCount()) 
             return FALSE;
             
         MCITEM *pMcItem = (MCITEM*)STreeCtrl::GetItemData(hItem);
@@ -122,7 +122,7 @@ namespace SOUI
         CRect rcItem = rc;
         rcItem.right=rcItem.left;
         
-        for(int i=0;i<m_arrColWidth.GetCount();i++)
+        for(UINT i=0;i<m_arrColWidth.GetCount();i++)
         {
             rcItem.left = rcItem.right;
             rcItem.right += m_arrColWidth[i];
@@ -132,7 +132,7 @@ namespace SOUI
 
     BOOL SMCTreeCtrl::SetColWidth(int iCol,int nWid)
     {
-        if(iCol<0 || iCol>=m_arrColWidth.GetCount()) 
+        if(iCol<0 || iCol>=(int)m_arrColWidth.GetCount()) 
             return FALSE;
         m_arrColWidth.SetAt(iCol,nWid);
         m_nItemWid = -1;
@@ -210,7 +210,7 @@ namespace SOUI
         m_pTreeCtrl->GetEventSet()->subscribeEvent(EventScroll::EventID,Subscriber(&STreeList::OnScrollEvent,this));
 
         m_pHeader->InsertItem(0,m_strTreeLabel,m_pTreeCtrl->m_nTreeWidth,ST_NULL,0);
-        for(int i=1;i<m_pHeader->GetItemCount();i++)
+        for(UINT i=1;i<m_pHeader->GetItemCount();i++)
         {
             int nWid = m_pHeader->GetItemWidth(i);
             m_pTreeCtrl->InsertColumn(i-1,nWid);

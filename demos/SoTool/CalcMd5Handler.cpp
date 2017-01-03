@@ -87,7 +87,7 @@ void CCalcMd5Handler::CalcFileMd5( const SStringT &strFileName )
     SASSERT(pEditOutput);
     if(pEditOutput->GetWindowTextLength()!=0)
     {
-        pEditOutput->SetSel(-1);
+        pEditOutput->SetSel((UINT)-1);
         pEditOutput->ReplaceSel(L"\r\n");
     }
     pEditOutput->ReplaceSel(S_CT2W(strMd5));

@@ -60,6 +60,13 @@ namespace SOUI
 				return;
 			}
 
+
+			n = strFileName.Find(_T(".xml"));
+			if(n == -1)
+			{
+				strFileName = strFileName + _T(".xml");
+			}
+
 			m_edtPath->SetWindowText(strFileName);
 
 		}

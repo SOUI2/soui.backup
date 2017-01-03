@@ -69,6 +69,8 @@ namespace SOUI{
 		SouiLayout(void);
 		~SouiLayout(void);
 
+		static HRESULT CreateLayout(IObjRef ** ppObj);
+
 		static HRESULT CreateLayoutParam(IObjRef ** ppObj);
 
         virtual bool IsParamAcceptable(ILayoutParam *pLayoutParam) const;

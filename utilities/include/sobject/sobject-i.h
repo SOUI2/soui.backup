@@ -154,6 +154,32 @@ namespace SOUI
         virtual void OnInitFinished(pugi::xml_node xmlNode) = 0;
 
 		virtual SStringW GetAttribute(const SStringW & strAttr) const = 0;
+
+
+		/**
+         * MarkAttributeHandled
+         * @brief    标志一个属性已经被处理
+         * @param    pugi::xml_node xmlNode --  属性节点
+         * @return   void
+         * Describe  
+         */
+		static void MarkAttributeHandled(pugi::xml_attribute xmlAttr, boolean bHandled)
+		{
+			xmlAttr.set_userdata(bHandled?1:0);
+		}
+
+
+		/**
+         * IsAttributeHandled
+         * @brief    检测一个属性是否已经被处理
+         * @param    pugi::xml_node xmlNode --  属性节点
+         * @return   bool true-已经处理过
+         * Describe  
+         */
+		static bool IsAttributeHandled(pugi::xml_attribute xmlAttr)
+		{
+			return xmlAttr.get_userdata()!=0;
+		}
     };
 
     /**

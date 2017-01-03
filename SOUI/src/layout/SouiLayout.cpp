@@ -276,6 +276,11 @@ namespace SOUI{
 		return S_OK;
 	}
 
+	HRESULT SouiLayout::CreateLayout(IObjRef ** ppObj)
+	{
+		* ppObj = new SouiLayout();
+		return S_OK;
+	}
 
     BOOL SouiLayout::IsWaitingPos( int nPos ) const
     {
@@ -494,7 +499,7 @@ namespace SOUI{
                     wndPos.rc.right = wndPos.rc.left + szWnd.cx;
                     if(wndPos.bWaitOffsetX)
                     {
-                        wndPos.rc.OffsetRect(wndPos.rc.Width()*pLayoutParam->fOffsetX,0);
+                        wndPos.rc.OffsetRect((int)(wndPos.rc.Width()*pLayoutParam->fOffsetX),0);
                         wndPos.bWaitOffsetX=false;
                     }
                     nResolved ++;
@@ -504,7 +509,7 @@ namespace SOUI{
                     wndPos.rc.bottom = wndPos.rc.top + szWnd.cy;
                     if(wndPos.bWaitOffsetY)
                     {
-                        wndPos.rc.OffsetRect(wndPos.rc.Height()*pLayoutParam->fOffsetY,0);
+                        wndPos.rc.OffsetRect(0,(int)(wndPos.rc.Height()*pLayoutParam->fOffsetY));
                         wndPos.bWaitOffsetY=false;
                     }
                     nResolved ++;
@@ -609,12 +614,12 @@ namespace SOUI{
                         }
                         if(!IsWaitingPos(wndPos.rc.right) && wndPos.bWaitOffsetX)
                         {
-                            wndPos.rc.OffsetRect(wndPos.rc.Width()*pLayoutParam->fOffsetX,0);
+                            wndPos.rc.OffsetRect((int)(wndPos.rc.Width()*pLayoutParam->fOffsetX),0);
                             wndPos.bWaitOffsetX=false;
                         }
                         if(!IsWaitingPos(wndPos.rc.bottom) && wndPos.bWaitOffsetY)
                         {
-                            wndPos.rc.OffsetRect(wndPos.rc.Height()*pLayoutParam->fOffsetY,0);
+                            wndPos.rc.OffsetRect(0,(int)(wndPos.rc.Height()*pLayoutParam->fOffsetY));
                             wndPos.bWaitOffsetY=false;
                         }
                     }
@@ -661,4 +666,6 @@ namespace SOUI{
 			wp.pWnd->OnRelayout(wp.rc);
 		}
 	}
+
+
 }
