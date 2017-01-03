@@ -45,6 +45,22 @@ namespace SOUI
         return S_OK;
     }
 
+	void SLinearLayoutParam::Clear()
+	{
+	}
+
+	void SLinearLayoutParam::SetMatchParent(ORIENTATION orientation)
+	{
+	}
+
+	void SLinearLayoutParam::SetWrapContent(ORIENTATION orientation)
+	{
+	}
+
+	void SLinearLayoutParam::SetSpecifiedSize(ORIENTATION orientation, int nSize)
+	{
+	}
+
 
 	//////////////////////////////////////////////////////////////////////////
     SLinearLayout::SLinearLayout(void)
@@ -77,7 +93,7 @@ namespace SOUI
 					continue;
 				}
 
-				SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParam<SLinearLayoutParam>();
+				SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
 
                 CSize szChild(SIZE_WRAP_CONTENT,SIZE_WRAP_CONTENT);
                 if(pLinearLayoutParam->IsMatchParent(Horz))
@@ -122,7 +138,7 @@ namespace SOUI
 					continue;
 				}
 
-				SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParam<SLinearLayoutParam>();
+				SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
 
                 if(pLinearLayoutParam->m_weight > 0.0f)
                 {
@@ -147,7 +163,7 @@ namespace SOUI
 					continue;
 				}
 
-                SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParam<SLinearLayoutParam>();
+                SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
 
                 if(m_orientation == Vert)
                 {
@@ -204,7 +220,7 @@ namespace SOUI
 				continue;
 			}
 
-			SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParam<SLinearLayoutParam>();
+			SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
 
 			CSize szChild(SIZE_WRAP_CONTENT,SIZE_WRAP_CONTENT);
 			if(pLinearLayoutParam->IsMatchParent(Horz))

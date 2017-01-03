@@ -498,14 +498,6 @@
 				>
 			</File>
 			<File
-				RelativePath="src\core\SwndLayout.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\core\SwndLayoutBuilder.cpp"
-				>
-			</File>
-			<File
 				RelativePath="src\core\SwndStyle.cpp"
 				>
 			</File>
@@ -977,14 +969,6 @@
 			</File>
 			<File
 				RelativePath="include\helper\SwndFinder.h"
-				>
-			</File>
-			<File
-				RelativePath="include\core\SwndLayout.h"
-				>
-			</File>
-			<File
-				RelativePath="include\core\SwndLayoutBuilder.h"
 				>
 			</File>
 			<File
