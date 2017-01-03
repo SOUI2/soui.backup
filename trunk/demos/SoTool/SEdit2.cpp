@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "SEdit2.h"
 
 namespace SOUI
