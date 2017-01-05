@@ -13,13 +13,9 @@
 					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
 				</propgroup>			
 				<propgroup name="属性:  imglist"  description="属性">
-					<proptext name="alpha" name2="alpha" value=""/>	
-					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
-					<proptext name="src" name2="src" value=""/>	
 					<propoption name="autoFit" name2="autoFit" value="" options="是:1|否:0"/>						
-					
 					<propoption name="平铺(tile)" name2="tile" value="" options="拉伸:1|平铺:0"/>
-					<proptext name="垂直排列(vertical)" name2="vertical" value=""/>
+					<propoption name="垂直排列(vertical)" name2="vertical" value="" options="垂直:1|水平:0"/>
 					<proptext name="子图数量(states)" name2="states" value=""/>
 					<propoption name="filterLevel" name2="filterLevel" value="" options="none|low|medium|high"/>
 				</propgroup>
@@ -41,10 +37,9 @@
 					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
 				</propgroup>
 				<propgroup name="属性:  imglist"  description="属性">
-					<proptext name="src" name2="src" value=""/>	
 					<propoption name="autoFit" name2="autoFit" value="" options="是:1|否:0"/>						
 					<propoption name="平铺(tile)" name2="tile" value="" options="拉伸:1|平铺:0"/>
-					<proptext name="垂直排列(vertical)" name2="vertical" value=""/>
+					<propoption name="垂直排列(vertical)" name2="vertical" value="" options="垂直:1|水平:0"/>
 					<proptext name="子图数量(states)" name2="states" value=""/>
 					<propoption name="filterLevel" name2="filterLevel" value="" options="none|low|medium|high"/>
 				</propgroup>
@@ -98,10 +93,9 @@
 					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
 				</propgroup>
 				<propgroup name="属性:  imglist"  description="属性">
-					<proptext name="src" name2="src" value=""/>	
 					<propoption name="autoFit" name2="autoFit" value="" options="是:1|否:0"/>						
 					<propoption name="平铺(tile)" name2="tile" value="" options="拉伸:1|平铺:0"/>
-					<proptext name="垂直排列(vertical)" name2="vertical" value=""/>
+					<propoption name="垂直排列(vertical)" name2="vertical" value="" options="垂直:1|水平:0"/>
 					<proptext name="子图数量(states)" name2="states" value=""/>
 					<propoption name="filterLevel" name2="filterLevel" value="" options="none|low|medium|high"/>
 				</propgroup>				
