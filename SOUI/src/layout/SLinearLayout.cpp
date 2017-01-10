@@ -47,18 +47,35 @@ namespace SOUI
 
 	void SLinearLayoutParam::Clear()
 	{
+		m_width = SIZE_WRAP_CONTENT;
+		m_height = SIZE_WRAP_CONTENT;
+		m_weight = 0.0f;
+		m_gravity = G_Left;
 	}
 
 	void SLinearLayoutParam::SetMatchParent(ORIENTATION orientation)
 	{
+		if(orientation == Horz)
+			m_width = SIZE_MATCH_PARENT;
+		else
+			m_height = SIZE_MATCH_PARENT;
 	}
 
 	void SLinearLayoutParam::SetWrapContent(ORIENTATION orientation)
 	{
+		if(orientation == Horz)
+			m_width = SIZE_WRAP_CONTENT;
+		else
+			m_height = SIZE_WRAP_CONTENT;
 	}
 
 	void SLinearLayoutParam::SetSpecifiedSize(ORIENTATION orientation, int nSize)
 	{
+		if(orientation == Horz)
+			m_width = nSize;
+		else
+			m_height = nSize;
+
 	}
 
 

@@ -250,18 +250,34 @@ namespace SOUI{
 
 	void SouiLayoutParam::Clear()
 	{
+		nCount = 0;
+		fOffsetX = fOffsetY = 0.0f;
+
+		m_width = m_height = SIZE_WRAP_CONTENT;
 	}
 
 	void SouiLayoutParam::SetMatchParent(ORIENTATION orientation)
 	{
+		if(orientation == Horz)
+			m_width = SIZE_MATCH_PARENT;
+		else
+			m_height = SIZE_MATCH_PARENT;
 	}
 
 	void SouiLayoutParam::SetWrapContent(ORIENTATION orientation)
 	{
+		if(orientation == Horz)
+			m_width = SIZE_WRAP_CONTENT;
+		else
+			m_height = SIZE_WRAP_CONTENT;
 	}
 
 	void SouiLayoutParam::SetSpecifiedSize(ORIENTATION orientation, int nSize)
 	{
+		if(orientation == Horz)
+			m_width = nSize;
+		else
+			m_height = nSize;
 	}
 
     //////////////////////////////////////////////////////////////////////////
