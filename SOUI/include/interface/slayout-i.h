@@ -14,6 +14,7 @@ namespace SOUI{
     };
     
 	enum{
+		SIZE_UNDEF = -3,
 		SIZE_WRAP_CONTENT=-1,
 		SIZE_MATCH_PARENT=-2,
 		SIZE_SPEC = 0,
