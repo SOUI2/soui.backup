@@ -9,6 +9,12 @@ namespace SOUI{
         POS_WAIT=0x12000000,    //坐标的计算依赖于其它窗口的布局
     };
 
+
+	SouiLayoutParam::SouiLayoutParam()
+	{
+		Clear();
+	}
+
     bool SouiLayoutParam::IsMatchParent(ORIENTATION orientation) const
     {
         return orientation == Vert ?(m_height == SIZE_MATCH_PARENT):(m_width == SIZE_MATCH_PARENT);

@@ -18,6 +18,8 @@ namespace SOUI
 
 		friend class SLinearLayout;
     public:
+		SLinearLayoutParam();
+
         virtual bool IsMatchParent(ORIENTATION orientation) const;
 		virtual bool IsWrapContent(ORIENTATION orientation) const;
 
