@@ -243,7 +243,7 @@ namespace SOUI{
 
     bool SouiLayoutParam::IsOffsetRequired(ORIENTATION orientation) const
     {
-        return fabs(orientation==Vert?fOffsetY:fOffsetX) < 0.0000001f;
+        return fabs(orientation==Vert?fOffsetY:fOffsetX) > 0.00000001f;
     }
 
     int GetPosExtra(const POSITION_ITEM &pos)
@@ -500,8 +500,8 @@ namespace SOUI{
             }
         }
 
-        if(IsWaitingPos(nWidth)) nWidth = nMaxX;
-        if(IsWaitingPos(nHeight)) nHeight = nMaxY;
+        if(!IsWaitingPos(nWidth)) nWidth = nMaxX;
+        if(!IsWaitingPos(nHeight)) nHeight = nMaxY;
         return CSize(nWidth,nHeight);
     }
 
