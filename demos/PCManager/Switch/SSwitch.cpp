@@ -4,7 +4,7 @@
 namespace SOUI
 {
 
-SSwitch::SSwitch(): m_BOpen(FALSE), m_BChangeing(FALSE), m_Iinterval(20), m_FrameCount(5), m_FrameNow(5)
+SSwitch::SSwitch(): m_BOpen(FALSE), m_BChangeing(FALSE), m_Iinterval(20), m_FrameCount(5), m_FrameNow(5),m_pSkin(NULL),m_pSkinForce(NULL)
 {
 
 }

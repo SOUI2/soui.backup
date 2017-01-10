@@ -725,7 +725,8 @@ Tab (& #x0009;)
 				<colorLine1 style="propcolor" name ="colorLine1" />
 				<colorLine2 style="propcolor" name ="colorLine2" />			
 				<round style="proptext" name ="round" />			
-				<headerHeight style="proptext" name ="headerHeight" />			
+				<headerHeight style="proptext" name ="headerHeight" />	
+                <align style="propoption" name ="align" options="left|center|right"/>					
 			</分组>
 
 
@@ -1033,7 +1034,44 @@ Tab (& #x0009;)
 				<wantTab style="proptext" name ="wantTab" />	
 
 			</分组>			
-		</listview>		
+		</listview>	
+
+
+		<mclistview>
+			<分组 name="属性:  mclistview">
+				<id/>
+				<name/>
+				<skin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<font/>		
+				<tip/>				
+				<colorBkgnd/>				
+			</分组>
+			<分组 name="属性:  div">
+				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)"  ButtonType="skin"/>	
+				<sbArrowSize style="proptext" name ="sbArrowSize" />	
+				<sbWid style="proptext" name ="滚动条宽度(sbWid)" />	
+				<sbEnable style="proptext" name ="滚动条可用(sbEnable)" />	
+				<updateInterval style="proptext" name ="updateInterval" value="1111"/>	
+				<scrollSpeed style="proptext" name ="滚动速度(scrollSpeed)" />	
+				<sbLeft style="proptext" name ="sbLeft" />	
+				<sbRight style="proptext" name ="sbRight" />	
+				<sbTop style="proptext" name ="sbTop" />	
+				<sbBottom style="proptext" name ="sbBottom" />	
+
+			</分组>
+			<分组 name="属性:  mclistview">
+				<headerHeight style="proptext" name ="headerHeight"  />	
+				<hotTrack style="propoption" name ="hotTrack" options="是:1|否:0"/>	
+				<dividerSkin style="proptext" name ="dividerSkin" ButtonType="skin"/>	
+				<dividerSize style="proptext" name ="dividerSize" />	
+				<wantTab style="propoption" name ="wantTab" options="是:1|否:0"/>	
+
+			</分组>			
+		</mclistview>		
 
 
 

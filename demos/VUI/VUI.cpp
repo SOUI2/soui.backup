@@ -3,20 +3,12 @@
 
 #include "stdafx.h"
 #include "MainWnd.h"
-
-#include <com-loader.hpp>
-
-
+#include <com-cfg.h>
 #ifdef _DEBUG
-#define COM_IMGDECODER  _T("imgdecoder-wicd.dll")
-#define COM_RENDER_GDI  _T("render-gdid.dll")
 #define SYS_NAMED_RESOURCE _T("soui-sys-resourced.dll")
 #else
-#define COM_IMGDECODER  _T("imgdecoder-wic.dll")
-#define COM_RENDER_GDI  _T("render-gdi.dll")
 #define SYS_NAMED_RESOURCE _T("soui-sys-resource.dll")
 #endif
-
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
@@ -25,9 +17,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 
 	int nRet = 0; 
 
-	SComLoader imgDecLoader;
-	SComLoader renderLoader;
-	SComLoader transLoader;
 	//将程序的运行路径修改到项目所在目录所在的目录
 	TCHAR szCurrentDir[MAX_PATH]={0};
 	GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
@@ -35,12 +24,14 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	_tcscpy(lpInsertPos+1,_T("\\..\\VUI"));
 	SetCurrentDirectory(szCurrentDir);
 
+	SComMgr *pComMgr = new SComMgr();
 	{
 
 		CAutoRefPtr<SOUI::IImgDecoderFactory> pImgDecoderFactory;
 		CAutoRefPtr<SOUI::IRenderFactory> pRenderFactory;
-		imgDecLoader.CreateInstance(COM_IMGDECODER,(IObjRef**)&pImgDecoderFactory);
-		renderLoader.CreateInstance(COM_RENDER_GDI,(IObjRef**)&pRenderFactory);
+
+		pComMgr->CreateImgDecoder((IObjRef**)&pImgDecoderFactory);
+		pComMgr->CreateRender_GDI((IObjRef**)&pRenderFactory);
 
 		pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
 
@@ -78,7 +69,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 		}
 
 		delete theApp;
+
 	}
+	delete pComMgr;
 
 	OleUninitialize();
 	return nRet;
