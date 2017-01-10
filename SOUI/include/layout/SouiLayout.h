@@ -69,6 +69,8 @@ namespace SOUI{
 
 		friend class SouiLayout;
 	public:
+		SouiLayoutParam();
+
 		virtual bool IsMatchParent(ORIENTATION orientation) const;
 
 		virtual bool IsSpecifiedSize(ORIENTATION orientation) const;

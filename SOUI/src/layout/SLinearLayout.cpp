@@ -3,6 +3,12 @@
 
 namespace SOUI
 {
+
+	SLinearLayoutParam::SLinearLayoutParam()
+	{
+		Clear();
+	}
+
     bool SLinearLayoutParam::IsMatchParent(ORIENTATION orientation) const
     {
         return orientation==Vert?(m_width == SIZE_MATCH_PARENT) : (m_height == SIZE_MATCH_PARENT);

@@ -19,7 +19,7 @@ namespace SOUI{
 		SIZE_SPEC = 0,
 	};
 
-    struct ILayoutParam : IObject,IObjRef
+    struct ILayoutParam :IObjRef, IObject
     {
 		virtual void Clear() = 0;
         virtual bool IsMatchParent(ORIENTATION orientation) const = 0;
