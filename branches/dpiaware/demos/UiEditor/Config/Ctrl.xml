@@ -116,7 +116,7 @@
 
 
 		<group_组合框>
-			<group pos="0,0" size="120,120" align="left">组合框</group>
+			<group pos="0,0" size="120,120" align="left" headerHeight="0">组合框</group>
 		</group_组合框>
 
 
@@ -192,7 +192,7 @@
 
 		<mclistview>
 			<mclistview size="120,120" headerHeight="30">
-				<header align="center" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+				<header align="center" itemSwapEnable="1" fixWidth="0" sortHeader="1" colorText="#000000ff">
 					<items>
 						<item width="50">姓名</item>
 						<item width="50">年龄</item>

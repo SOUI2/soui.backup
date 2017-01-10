@@ -84,6 +84,7 @@ SOURCES+=./trayicon/SShellNotifyIcon.cpp
 SOURCES+=./colorpicker/ColourPopup.cpp
 SOURCES+=./colorpicker/SColorPicker.cpp
 SOURCES+=./DlgFontSelect.cpp
+SOURCES+=./helpapi.cpp
 
 HEADERS+=./SListBoxDrop.h
 HEADERS+=./Adapter.h
@@ -122,6 +123,7 @@ HEADERS+=./colorpicker/ColourPopup.h
 HEADERS+=./colorpicker/SColorPicker.h
 HEADERS+=./colorpicker/Tooltipctrl.h
 HEADERS+=./DlgFontSelect.h
+HEADERS+=./helpapi.h
 HEADERS+=../../controls.extend/ExtendSkins.h
 HEADERS+=../../controls.extend/imre/ImgProvider.h
 HEADERS+=../../controls.extend/imre/IRichEditObjHost.h

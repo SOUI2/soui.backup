@@ -19,7 +19,7 @@ namespace SOUI
 		 SList<SWindow*> m_CopyList;  
 
 		 //保存当前打开的布局文件
-		 BOOL SaveLayoutFile();
+		 bool SaveLayoutFile();
 		 BOOL SaveAll();
 
 		 //关闭当前打开的布局文件

@@ -453,13 +453,13 @@ BOOL SDesignerView::SaveAll()
 }
 
 //保存当前打开的布局文件
-BOOL SDesignerView::SaveLayoutFile()
+bool SDesignerView::SaveLayoutFile()
 {
 	if (m_strCurFile.IsEmpty())
 	{
-		return FALSE;
+		return false;
 	}
-
+	bool bRet=false;
 	SStringT strFile = m_strCurFile;
 	SStringT strFileName;
 	SStringT FullFileName;
@@ -471,27 +471,23 @@ BOOL SDesignerView::SaveLayoutFile()
 	pugi::xml_writer_buff writer;
 	doc->print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
 	SStringW *strxmlWnd= new SStringW(writer.buffer(),writer.size());
-
-
 	pugi::xml_document DocSave;
 	if(DocSave.load_buffer(*strxmlWnd,wcslen(*strxmlWnd)*sizeof(wchar_t),pugi::parse_full,pugi::encoding_utf16))
 	{
 		pugi::xml_node NodeSave = DocSave.root();
 		TrimXmlNodeTextBlank(DocSave.document_element());
 	    RemoveWndName(NodeSave, FALSE);
-
 		FullFileName = m_strProPath + _T("\\") + strFileName;
-		DocSave.save_file(FullFileName);
-	}else
+		bRet=DocSave.save_file(FullFileName);
+	}
+	else
 	{
 		Debug(_T("保存失败"));
 	}
-
 	delete strxmlWnd;
-
-	m_xmlDocUiRes.save_file(m_strUIResFile);
-
-	return TRUE;
+	if(bRet)
+		bRet = m_xmlDocUiRes.save_file(m_strUIResFile);
+	return bRet;
 }
 
 //关闭当前打开的布局文件
