@@ -173,33 +173,38 @@ namespace SOUI{
         {
             bRet = ParsePosition34(strLst[2],strLst[3]);
         }
-        if(bRet && nCount == 4)
-        {//检测X,Y方向上是否为充满父窗口
-            if((pos[0].pit == PIT_NORMAL && pos[0].nPos == 0 && pos[0].cMinus==1)
-                &&(pos[2].pit == PIT_NORMAL && pos[2].nPos == 0 && pos[2].cMinus==-1))
-            {
-                m_width = SIZE_MATCH_PARENT;
-            }else if(pos[2].pit == PIT_SIZE)
-            {   
-                if(pos[2].cMinus == -1)
-                    m_width = SIZE_WRAP_CONTENT;
-                else
-                    m_width = (int)pos[2].nPos;
-            }
+		if(bRet && nCount == 4)
+		{//检测X,Y方向上是否为充满父窗口
+			if((pos[0].pit == PIT_NORMAL && pos[0].nPos == 0 && pos[0].cMinus==1)
+				&&(pos[2].pit == PIT_NORMAL && pos[2].nPos == 0 && pos[2].cMinus==-1))
+			{
+				m_width = SIZE_MATCH_PARENT;
+			}else if(pos[2].pit == PIT_SIZE)
+			{   
+				if(pos[2].cMinus == -1)
+					m_width = SIZE_WRAP_CONTENT;
+				else
+					m_width = (int)pos[2].nPos;
+			}
 
-            if((pos[1].pit == PIT_NORMAL && pos[1].nPos == 0 && pos[1].cMinus==1)
-                &&(pos[3].pit == PIT_NORMAL && pos[3].nPos == 0 && pos[3].cMinus==-1))
-            {
-                m_height = SIZE_MATCH_PARENT;
-            }
-            else if(pos[3].pit == PIT_SIZE)
-            {
-                if(pos[3].cMinus == -1)
-                    m_height = SIZE_WRAP_CONTENT;
-                else
-                    m_height = (int)pos[3].nPos;
-            }
-        }
+			if((pos[1].pit == PIT_NORMAL && pos[1].nPos == 0 && pos[1].cMinus==1)
+				&&(pos[3].pit == PIT_NORMAL && pos[3].nPos == 0 && pos[3].cMinus==-1))
+			{
+				m_height = SIZE_MATCH_PARENT;
+			}
+			else if(pos[3].pit == PIT_SIZE)
+			{
+				if(pos[3].cMinus == -1)
+					m_height = SIZE_WRAP_CONTENT;
+				else
+					m_height = (int)pos[3].nPos;
+			}
+		}else
+		{
+			SetWrapContent(Horz);
+			SetWrapContent(Vert);
+		}
+
 
         return S_OK;
     }
@@ -259,7 +264,7 @@ namespace SOUI{
 		nCount = 0;
 		fOffsetX = fOffsetY = 0.0f;
 
-		m_width = m_height = SIZE_WRAP_CONTENT;
+		m_width = m_height = SIZE_UNDEF;
 	}
 
 	void SouiLayoutParam::SetMatchParent(ORIENTATION orientation)
@@ -529,8 +534,8 @@ namespace SOUI{
                 (IsWaitingPos(wndPos.rc.right) && IsWaitingPos(nWidth) || 
                 IsWaitingPos(wndPos.rc.bottom) && IsWaitingPos(nHeight)))
             {
-                int nWid = IsWaitingPos(wndPos.rc.right)? SIZE_WRAP_CONTENT : (wndPos.rc.right - wndPos.rc.left);
-                int nHei = IsWaitingPos(wndPos.rc.bottom)? SIZE_WRAP_CONTENT : (wndPos.rc.bottom - wndPos.rc.top);
+                int nWid = IsWaitingPos(wndPos.rc.right)? nWidth : (wndPos.rc.right - wndPos.rc.left);
+                int nHei = IsWaitingPos(wndPos.rc.bottom)? nHeight : (wndPos.rc.bottom - wndPos.rc.top);
                 CSize szWnd = wndPos.pWnd->GetDesiredSize(nWid,nHei);
                 if(pLayoutParam->IsWrapContent(Horz)) 
                 {
@@ -634,10 +639,11 @@ namespace SOUI{
                         SouiLayoutParam *pLayoutParam = wndPos.pWnd->GetLayoutParamT<SouiLayoutParam>();
                         if(IsWaitingPos(wndPos.rc.left) || IsWaitingPos(wndPos.rc.top)) continue;//至少确定了一个点后才开始计算
 
-                        if(pLayoutParam->IsWrapContent(Horz) || pLayoutParam->IsWrapContent(Vert))
+                        if((IsWaitingPos(wndPos.rc.right) && pLayoutParam->IsWrapContent(Horz)) 
+							|| (IsWaitingPos(wndPos.rc.bottom) && pLayoutParam->IsWrapContent(Vert)))
                         {//
-                            int nWid = IsWaitingPos(wndPos.rc.right)? SIZE_WRAP_CONTENT : (wndPos.rc.right - wndPos.rc.left);
-                            int nHei = IsWaitingPos(wndPos.rc.bottom)? SIZE_WRAP_CONTENT : (wndPos.rc.bottom - wndPos.rc.top);
+                            int nWid = IsWaitingPos(wndPos.rc.right)? nWidth : (wndPos.rc.right - wndPos.rc.left);
+                            int nHei = IsWaitingPos(wndPos.rc.bottom)? nHeight : (wndPos.rc.bottom - wndPos.rc.top);
                             CSize szWnd = wndPos.pWnd->GetDesiredSize(nWid,nHei);
                             if(pLayoutParam->IsWrapContent(Horz)) 
                             {
@@ -666,7 +672,7 @@ namespace SOUI{
             }//end if(nResolvedStep1>0)
 
             nResolvedAll += nResolvedStep1 + nResolvedStep2;
-        }while(nResolvedStep2 && nResolvedStep1);
+        }while(nResolvedStep2 || nResolvedStep1);
         
         return nResolvedAll;
     }
@@ -690,6 +696,9 @@ namespace SOUI{
 			}
 			pChild=pChild->GetWindow(GSW_NEXTSIBLING);
 		}
+
+		if(lstWndPos.IsEmpty())
+			return;
 
 		CRect rcParent = pParent->GetClientRect();
 		//计算子窗口位置
