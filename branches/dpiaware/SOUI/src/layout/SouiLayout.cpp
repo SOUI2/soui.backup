@@ -396,11 +396,11 @@ namespace SOUI{
 					WndPos wndPos = pLstChilds->GetAt(positionNext);
 					if(bX)
 					{
-						if(!wndPos.bWaitOffsetX) nRef = (pos.pit == PIT_PREV_NEAR)?wndPos.rc.left:wndPos.rc.right;
+						if(!wndPos.bWaitOffsetX) nRef = (pos.pit == PIT_NEXT_NEAR)?wndPos.rc.left:wndPos.rc.right;
 					}
 					else
 					{
-						if(!wndPos.bWaitOffsetY) nRef = (pos.pit == PIT_PREV_NEAR)?wndPos.rc.top:wndPos.rc.bottom;
+						if(!wndPos.bWaitOffsetY) nRef = (pos.pit == PIT_NEXT_NEAR)?wndPos.rc.top:wndPos.rc.bottom;
 					}
 				}
 				if(!IsWaitingPos(nRef))
