@@ -163,7 +163,7 @@ namespace SOUI
          * @return   void
          * Describe  
          */
-		static void MarkAttributeHandled(pugi::xml_attribute xmlAttr, boolean bHandled)
+		static void MarkAttributeHandled(pugi::xml_attribute xmlAttr, bool bHandled)
 		{
 			xmlAttr.set_userdata(bHandled?1:0);
 		}
