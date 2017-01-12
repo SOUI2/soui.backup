@@ -47,6 +47,11 @@ namespace SOUI
                 ATTR_ENUM_VALUE(L"right",G_Right)
                 ATTR_ENUM_VALUE(L"bottom",G_Bottom)
             ATTR_ENUM_END(m_gravity)
+			ATTR_RECT(L"extend",m_rcExtend,FALSE)
+			ATTR_INT(L"extend_left",m_rcExtend.left,FALSE)
+			ATTR_INT(L"extend_top",m_rcExtend.top,FALSE)
+			ATTR_INT(L"extend_right",m_rcExtend.right,FALSE)
+			ATTR_INT(L"extend_bottom",m_rcExtend.bottom,FALSE)
         SOUI_ATTRS_BREAK()
 
 
@@ -57,6 +62,7 @@ namespace SOUI
         int m_width,m_height;
         float m_weight;
         Gravity m_gravity;
+		CRect m_rcExtend;//相当于android的margin属性
     };
 
     class SLinearLayout : public SObjectImpl<TObjRefImpl<ILayout>>
