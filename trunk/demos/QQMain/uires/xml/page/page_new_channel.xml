@@ -1,0 +1,31 @@
+<include>
+  <!--login settings-->
+  <window name="set_form" pos="0,0,-0,-0" >
+    
+      <mclistview pos="0,[0,-10,]0" name="new_channel_list" headerHeight="0">
+        <header align="center"  itemSwapEnable="1" fixWidth="0" sortHeader="1" itemSkin="friendlist.item.header" >          
+          <items>
+            <item width="245"></item> 
+          </items>
+        </header>
+        <template itemHeight="0" defHeight="30" friendItemHeight="60">
+          <item_group  colorHover="#e4f0fc" colorSelected="#e4e0ec">
+            <!--分组的模板-->
+            <window name="col_nick" clipClient="1"> 
+              <toggle_ex pos="[0,|0" offset="0,-0.5" skin="_skin.sys.tree.toggle" name="tgl_tv_expand"/>
+              <text pos="[5,|0" offset="0,-0.5" font="bold:1" name="txt_group"/>
+            </window>
+          </item_group>
+          <item_data  colorHover="#e4f0fc" colorSelected="#e4e0ec">
+            <!--列表项模板-->
+            <window name="col_nick" clipClient="1">
+                <img name="img_icon" skin="skin_user_header" pos="10,8,@50,@50"/>
+                <text name="txt_name" pos="[5,16" font="bold:1,adding:-1">火狐浏览器</text>
+                <text name="txt_desc" pos="{0,36,-10,-10" font="bold:1,adding:-4" dotted="1">速度最快的浏览器</text>          
+            </window>           
+          </item_data>
+        </template>
+      </mclistview> 
+  </window>
+
+</include>
