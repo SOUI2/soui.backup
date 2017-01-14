@@ -39,6 +39,7 @@ namespace SOUI
         SOUI_ATTRS_BEGIN()
             ATTR_CUSTOM(L"width",OnAttrWidth)
             ATTR_CUSTOM(L"height",OnAttrHeight)
+            ATTR_CUSTOM(L"size",OnAttrSize)
             ATTR_FLOAT(L"weight",m_weight,FALSE)
             ATTR_ENUM_BEGIN(L"gravity",Gravity,FALSE)
                 ATTR_ENUM_VALUE(L"left",G_Left)
@@ -56,6 +57,7 @@ namespace SOUI
 
 
 	protected:
+        HRESULT OnAttrSize(const SStringW & strValue,BOOL bLoading);
 		HRESULT OnAttrWidth(const SStringW & strValue,BOOL bLoading);
 		HRESULT OnAttrHeight(const SStringW & strValue,BOOL bLoading);
 

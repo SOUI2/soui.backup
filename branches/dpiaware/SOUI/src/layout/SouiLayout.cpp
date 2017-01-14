@@ -22,7 +22,7 @@ namespace SOUI{
 
     bool SouiLayoutParam::IsSpecifiedSize(ORIENTATION orientation) const
     {
-        return orientation == Vert ?(m_height > SIZE_SPEC):(m_width > SIZE_SPEC);
+        return orientation == Vert ?(m_height >= SIZE_SPEC):(m_width >= SIZE_SPEC);
     }
 
     bool SouiLayoutParam::IsWrapContent(ORIENTATION orientation) const
@@ -211,11 +211,10 @@ namespace SOUI{
 
     HRESULT SouiLayoutParam::OnAttrSize(const SStringW & strValue,BOOL bLoading)
     {
-        SStringWList values;
-        if(2!=SplitString(strValue,L',',values))
-            return E_FAIL;
-        OnAttrWidth(values[0],bLoading);
-        OnAttrHeight(values[1],bLoading);
+        SIZE sz;
+        if(2!=swscanf(strValue,L"%d,%d",&sz.cx,&sz.cy)) return E_FAIL;
+        m_width = sz.cx;
+        m_height = sz.cy;
         return S_OK;
     }
 
