@@ -11,22 +11,32 @@ namespace SOUI
 
     bool SLinearLayoutParam::IsMatchParent(ORIENTATION orientation) const
     {
-        return orientation==Vert?(m_width == SIZE_MATCH_PARENT) : (m_height == SIZE_MATCH_PARENT);
+        return orientation==Horz?(m_width == SIZE_MATCH_PARENT) : (m_height == SIZE_MATCH_PARENT);
     }
 
 	bool SLinearLayoutParam::IsWrapContent(ORIENTATION orientation) const
 	{
-		return orientation == Vert ?(m_height == SIZE_WRAP_CONTENT):(m_width == SIZE_WRAP_CONTENT);
+		return orientation == Horz ?(m_width == SIZE_WRAP_CONTENT):(m_height == SIZE_WRAP_CONTENT);
 	}
 
     bool SLinearLayoutParam::IsSpecifiedSize(ORIENTATION orientation) const
     {
-        return orientation==Vert?(m_width > SIZE_SPEC) : (m_height > SIZE_SPEC);
+        return orientation==Horz?(m_width >= SIZE_SPEC) : (m_height >= SIZE_SPEC);
     }
 
     int SLinearLayoutParam::GetSpecifiedSize(ORIENTATION orientation) const
     {
-        return orientation==Vert?m_width : m_height;
+        return orientation==Horz?m_width : m_height;
+    }
+
+
+    HRESULT SLinearLayoutParam::OnAttrSize(const SStringW & strValue,BOOL bLoading)
+    {
+        SIZE sz;
+        if(2!=swscanf(strValue,L"%d,%d",&sz.cx,&sz.cy)) return E_FAIL;
+        m_width = sz.cx;
+        m_height = sz.cy;
+        return S_OK;
     }
 
     HRESULT SLinearLayoutParam::OnAttrWidth(const SStringW & strValue,BOOL bLoading)
@@ -122,12 +132,18 @@ namespace SOUI
                 if(pLinearLayoutParam->IsMatchParent(Horz))
                     szChild.cx = rcParent.Width();
                 else if(pLinearLayoutParam->IsSpecifiedSize(Horz))
+                {
                     szChild.cx = pLinearLayoutParam->GetSpecifiedSize(Horz);
+                    szChild.cx += pLinearLayoutParam->m_rcExtend.left + pLinearLayoutParam->m_rcExtend.right;
+                }
 
                 if(pLinearLayoutParam->IsMatchParent(Vert))
                     szChild.cy = rcParent.Height();
                 else if(pLinearLayoutParam->IsSpecifiedSize(Vert))
+                {
                     szChild.cy = pLinearLayoutParam->GetSpecifiedSize(Vert);
+                    szChild.cy += pLinearLayoutParam->m_rcExtend.top + pLinearLayoutParam->m_rcExtend.bottom;
+                }
                 
                 if(pLinearLayoutParam->m_weight > 0.0f)
                 {
@@ -137,8 +153,16 @@ namespace SOUI
                 if(szChild.cx == SIZE_WRAP_CONTENT || szChild.cy == SIZE_WRAP_CONTENT)
                 {
                     CSize szCalc = pChild->GetDesiredSize(szChild.cx,szChild.cy);
-                    if(szChild.cx == SIZE_WRAP_CONTENT) szChild.cx = szCalc.cx;
-                    if(szChild.cy == SIZE_WRAP_CONTENT) szChild.cy = szCalc.cy;
+                    if(szChild.cx == SIZE_WRAP_CONTENT)
+                    {
+                        szChild.cx = szCalc.cx;
+                        szChild.cx += pLinearLayoutParam->m_rcExtend.left + pLinearLayoutParam->m_rcExtend.right;
+                    }
+                    if(szChild.cy == SIZE_WRAP_CONTENT) 
+                    {
+                        szChild.cy = szCalc.cy;
+                        szChild.cy += pLinearLayoutParam->m_rcExtend.top + pLinearLayoutParam->m_rcExtend.bottom;
+                    }
                 }
 
                 pSize [iChild++] = szChild;
@@ -197,7 +221,10 @@ namespace SOUI
                     else if(pLinearLayoutParam->m_gravity == G_Right)
                         rcChild.OffsetRect(rcParent.Width()-rcChild.Width(),0);
                     
-                    pChild->OnRelayout(rcChild);
+                    CRect rcChild2 = rcChild;
+                    rcChild2.DeflateRect(pLinearLayoutParam->m_rcExtend);
+
+                    pChild->OnRelayout(rcChild2);
 
                     offset += rcChild.Height();
                 }else
@@ -209,7 +236,10 @@ namespace SOUI
                     else if(pLinearLayoutParam->m_gravity == G_Right)
                         rcChild.OffsetRect(0,rcParent.Height()-rcChild.Height());
 
-                    pChild->OnRelayout(rcChild);
+                    CRect rcChild2 = rcChild;
+                    rcChild2.DeflateRect(pLinearLayoutParam->m_rcExtend);
+
+                    pChild->OnRelayout(rcChild2);
 
                     offset += rcChild.Width();
                 }
@@ -228,7 +258,6 @@ namespace SOUI
 	//nWidth,nHeight == -1:wrap_content
 	CSize SLinearLayout::MeasureChildren(SWindow * pParent,int nWidth,int nHeight) const
 	{
-		if(nWidth > 0 && nHeight > 0) return CSize(nWidth,nHeight);
 		CSize *pSize = new CSize [pParent->GetChildrenCount()];
 
 
@@ -249,18 +278,30 @@ namespace SOUI
 			if(pLinearLayoutParam->IsMatchParent(Horz))
 				szChild.cx = nWidth;
 			else if(pLinearLayoutParam->IsSpecifiedSize(Horz))
-				szChild.cx = pLinearLayoutParam->GetSpecifiedSize(Horz);
-
+            {
+                szChild.cx = pLinearLayoutParam->GetSpecifiedSize(Horz);
+                szChild.cx += pLinearLayoutParam->m_rcExtend.left + pLinearLayoutParam->m_rcExtend.right;
+            }
 			if(pLinearLayoutParam->IsMatchParent(Vert))
 				szChild.cy = nHeight;
 			else if(pLinearLayoutParam->IsSpecifiedSize(Vert))
-				szChild.cy = pLinearLayoutParam->GetSpecifiedSize(Vert);
-
+            {
+                szChild.cy = pLinearLayoutParam->GetSpecifiedSize(Vert);
+                szChild.cy += pLinearLayoutParam->m_rcExtend.top + pLinearLayoutParam->m_rcExtend.bottom;
+            }
 			if(szChild.cx == SIZE_WRAP_CONTENT || szChild.cy == SIZE_WRAP_CONTENT)
 			{
 				CSize szCalc = pChild->GetDesiredSize(szChild.cx,szChild.cy);
-				if(szChild.cx == SIZE_WRAP_CONTENT) szChild.cx = szCalc.cx;
-				if(szChild.cy == SIZE_WRAP_CONTENT) szChild.cy = szCalc.cy;
+				if(szChild.cx == SIZE_WRAP_CONTENT) 
+                {
+                    szChild.cx = szCalc.cx;
+                    szChild.cx += pLinearLayoutParam->m_rcExtend.left + pLinearLayoutParam->m_rcExtend.right;
+                }
+				if(szChild.cy == SIZE_WRAP_CONTENT) 
+                {
+                    szChild.cy = szCalc.cy;
+                    szChild.cy += pLinearLayoutParam->m_rcExtend.top + pLinearLayoutParam->m_rcExtend.bottom;
+                }
 			}
 
 			pSize [iChild++] = szChild;
