@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "SFlyWnd.h"
-#include <core/SwndLayoutBuilder.h>
 
 namespace SOUI
 {

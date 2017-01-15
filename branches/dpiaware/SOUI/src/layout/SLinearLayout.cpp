@@ -11,22 +11,67 @@ namespace SOUI
 
     bool SLinearLayoutParam::IsMatchParent(ORIENTATION orientation) const
     {
-        return orientation==Horz?(m_width == SIZE_MATCH_PARENT) : (m_height == SIZE_MATCH_PARENT);
+        switch(orientation)
+        {
+        case Horz:
+            return m_width == SIZE_MATCH_PARENT;
+        case Vert:
+            return m_height == SIZE_MATCH_PARENT;
+        case Any:
+            return IsMatchParent(Horz)|| IsMatchParent(Vert);
+        case Both:
+        default:
+            return IsMatchParent(Horz) && IsMatchParent(Vert);
+        }
     }
 
 	bool SLinearLayoutParam::IsWrapContent(ORIENTATION orientation) const
 	{
-		return orientation == Horz ?(m_width == SIZE_WRAP_CONTENT):(m_height == SIZE_WRAP_CONTENT);
+        switch(orientation)
+        {
+        case Horz:
+            return m_width == SIZE_WRAP_CONTENT;
+        case Vert:
+            return m_height == SIZE_WRAP_CONTENT;
+        case Any:
+            return IsWrapContent(Horz)|| IsWrapContent(Vert);
+        case Both:
+        default:
+            return IsWrapContent(Horz) && IsWrapContent(Vert);
+        }
 	}
 
     bool SLinearLayoutParam::IsSpecifiedSize(ORIENTATION orientation) const
     {
-        return orientation==Horz?(m_width >= SIZE_SPEC) : (m_height >= SIZE_SPEC);
+        switch(orientation)
+        {
+        case Horz:
+            return m_width >= SIZE_SPEC;
+        case Vert:
+            return m_height >= SIZE_SPEC;
+        case Any:
+            return IsSpecifiedSize(Horz)|| IsSpecifiedSize(Vert);
+        case Both:
+        default:
+            return IsSpecifiedSize(Horz) && IsSpecifiedSize(Vert);
+        }
+
     }
 
     int SLinearLayoutParam::GetSpecifiedSize(ORIENTATION orientation) const
     {
-        return orientation==Horz?m_width : m_height;
+        switch(orientation)
+        {
+        case Horz:
+            return m_width;
+        case Vert:
+            return m_height;
+        case Any: 
+        case Both:
+        default:
+            SASSERT_FMTA(FALSE,"GetSpecifiedSize can only be applyed for Horz or Vert");
+            return 0;
+        }
     }
 
 
@@ -71,26 +116,50 @@ namespace SOUI
 
 	void SLinearLayoutParam::SetMatchParent(ORIENTATION orientation)
 	{
-		if(orientation == Horz)
-			m_width = SIZE_MATCH_PARENT;
-		else
-			m_height = SIZE_MATCH_PARENT;
+        switch(orientation)
+        {
+        case Horz:
+            m_width = SIZE_MATCH_PARENT;
+            break;
+        case Vert:
+            m_height = SIZE_MATCH_PARENT;
+            break;
+        case Both:
+            m_width = m_height = SIZE_MATCH_PARENT;
+            break;
+        }
 	}
 
 	void SLinearLayoutParam::SetWrapContent(ORIENTATION orientation)
 	{
-		if(orientation == Horz)
-			m_width = SIZE_WRAP_CONTENT;
-		else
-			m_height = SIZE_WRAP_CONTENT;
+        switch(orientation)
+        {
+        case Horz:
+            m_width = SIZE_WRAP_CONTENT;
+            break;
+        case Vert:
+            m_height = SIZE_WRAP_CONTENT;
+            break;
+        case Both:
+            m_width = m_height = SIZE_WRAP_CONTENT;
+            break;
+        }
 	}
 
 	void SLinearLayoutParam::SetSpecifiedSize(ORIENTATION orientation, int nSize)
 	{
-		if(orientation == Horz)
-			m_width = nSize;
-		else
-			m_height = nSize;
+        switch(orientation)
+        {
+        case Horz:
+            m_width = nSize;
+            break;
+        case Vert:
+            m_height = nSize;
+            break;
+        case Both:
+            m_width = m_height = nSize;
+            break;
+        }
 
 	}
 
@@ -264,6 +333,8 @@ namespace SOUI
 		CSize *pSize = new CSize [pParent->GetChildrenCount()];
 
 
+        ILayoutParam * pParentLayoutParam = pParent->GetLayoutParam();
+
 		SWindow *pChild = pParent->GetWindow(GSW_FIRSTCHILD);
 		int iChild = 0;
 
@@ -279,14 +350,20 @@ namespace SOUI
 
 			CSize szChild(SIZE_WRAP_CONTENT,SIZE_WRAP_CONTENT);
 			if(pLinearLayoutParam->IsMatchParent(Horz))
-				szChild.cx = nWidth;
+            {
+                if(!pParentLayoutParam->IsWrapContent(Horz))
+                    szChild.cx = nWidth;
+            }
 			else if(pLinearLayoutParam->IsSpecifiedSize(Horz))
             {
                 szChild.cx = pLinearLayoutParam->GetSpecifiedSize(Horz);
                 szChild.cx += pLinearLayoutParam->m_rcExtend.left + pLinearLayoutParam->m_rcExtend.right;
             }
 			if(pLinearLayoutParam->IsMatchParent(Vert))
-				szChild.cy = nHeight;
+            {
+                if(!pParentLayoutParam->IsWrapContent(Vert))
+                    szChild.cy = nHeight;
+            }
 			else if(pLinearLayoutParam->IsSpecifiedSize(Vert))
             {
                 szChild.cy = pLinearLayoutParam->GetSpecifiedSize(Vert);
@@ -294,7 +371,13 @@ namespace SOUI
             }
 			if(szChild.cx == SIZE_WRAP_CONTENT || szChild.cy == SIZE_WRAP_CONTENT)
 			{
-				CSize szCalc = pChild->GetDesiredSize(szChild.cx,szChild.cy);
+                int nWid = szChild.cx, nHei = szChild.cy;
+                if(nWid == SIZE_WRAP_CONTENT)
+                    nWid = nWidth * pParentLayoutParam->IsWrapContent(Horz)?-1:1; //把父窗口的WrapContent属性通过-1标志传递给GetDesiredSize
+                if(nHei == SIZE_WRAP_CONTENT)
+                    nHei = nHeight * pParentLayoutParam->IsWrapContent(Vert)?-1:1;//把父窗口的WrapContent属性通过-1标志传递给GetDesiredSize
+
+				CSize szCalc = pChild->GetDesiredSize(nWid,nHei);
 				if(szChild.cx == SIZE_WRAP_CONTENT) 
                 {
                     szChild.cx = szCalc.cx;
