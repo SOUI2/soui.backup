@@ -6,6 +6,7 @@
 namespace SOUI
 {
     enum Gravity{
+        G_Undefined=-1,
         G_Left=0,G_Top=0,
         G_Center=1,
         G_Right=2,G_Bottom=2,
@@ -41,7 +42,7 @@ namespace SOUI
             ATTR_CUSTOM(L"height",OnAttrHeight)
             ATTR_CUSTOM(L"size",OnAttrSize)
             ATTR_FLOAT(L"weight",m_weight,FALSE)
-            ATTR_ENUM_BEGIN(L"gravity",Gravity,FALSE)
+            ATTR_ENUM_BEGIN(L"layout_gravity",Gravity,FALSE)
                 ATTR_ENUM_VALUE(L"left",G_Left)
                 ATTR_ENUM_VALUE(L"top",G_Top)
                 ATTR_ENUM_VALUE(L"center",G_Center)
@@ -87,11 +88,20 @@ namespace SOUI
                 ATTR_ENUM_VALUE(L"horizontal",Horz)
                 ATTR_ENUM_VALUE(L"vertical",Vert)
             ATTR_ENUM_END(m_orientation)
+            ATTR_ENUM_BEGIN(L"gravity",Gravity,FALSE)
+                ATTR_ENUM_VALUE(L"left",G_Left)
+                ATTR_ENUM_VALUE(L"top",G_Top)
+                ATTR_ENUM_VALUE(L"center",G_Center)
+                ATTR_ENUM_VALUE(L"right",G_Right)
+                ATTR_ENUM_VALUE(L"bottom",G_Bottom)
+            ATTR_ENUM_END(m_gravity)
+
         SOUI_ATTRS_BREAK()
 
 
 	protected:
 		ORIENTATION m_orientation;
+        Gravity     m_gravity;
     };
 
 	class SVBox : public SLinearLayout

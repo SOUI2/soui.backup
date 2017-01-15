@@ -4,7 +4,7 @@
 namespace SOUI
 {
 
-	SLinearLayoutParam::SLinearLayoutParam()
+    SLinearLayoutParam::SLinearLayoutParam()
 	{
 		Clear();
 	}
@@ -66,7 +66,7 @@ namespace SOUI
 		m_width = SIZE_WRAP_CONTENT;
 		m_height = SIZE_WRAP_CONTENT;
 		m_weight = 0.0f;
-		m_gravity = G_Left;
+		m_gravity = G_Undefined;
 	}
 
 	void SLinearLayoutParam::SetMatchParent(ORIENTATION orientation)
@@ -96,7 +96,7 @@ namespace SOUI
 
 
 	//////////////////////////////////////////////////////////////////////////
-    SLinearLayout::SLinearLayout(void)
+    SLinearLayout::SLinearLayout(void):m_gravity(G_Undefined)
     {
     }
 
@@ -212,13 +212,16 @@ namespace SOUI
 
                 SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
 
+                Gravity gravity = pLinearLayoutParam->m_gravity == G_Undefined? m_gravity:pLinearLayoutParam->m_gravity;
+                if(gravity == G_Undefined) gravity = G_Left;
+
                 if(m_orientation == Vert)
                 {
                     CRect rcChild(CPoint(0,offset),pSize[iChild]);
                     rcChild.OffsetRect(rcParent.TopLeft());
-                    if(pLinearLayoutParam->m_gravity == G_Center)
+                    if(gravity == G_Center)
                         rcChild.OffsetRect((rcParent.Width()-rcChild.Width())/2,0);
-                    else if(pLinearLayoutParam->m_gravity == G_Right)
+                    else if(gravity == G_Right)
                         rcChild.OffsetRect(rcParent.Width()-rcChild.Width(),0);
                     
                     CRect rcChild2 = rcChild;
@@ -231,9 +234,9 @@ namespace SOUI
                 {
                     CRect rcChild(CPoint(offset,0),pSize[iChild]);
                     rcChild.OffsetRect(rcParent.TopLeft());
-                    if(pLinearLayoutParam->m_gravity == G_Center)
+                    if(gravity == G_Center)
                         rcChild.OffsetRect(0,(rcParent.Height()-rcChild.Height())/2);
-                    else if(pLinearLayoutParam->m_gravity == G_Right)
+                    else if(gravity == G_Right)
                         rcChild.OffsetRect(0,rcParent.Height()-rcChild.Height());
 
                     CRect rcChild2 = rcChild;
