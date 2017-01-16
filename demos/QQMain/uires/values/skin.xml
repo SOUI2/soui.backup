@@ -27,9 +27,12 @@
     <imglist name="img_avatars" src="imgx:img_avatars" states="8"/>
     
     <!--全局skin对象-->
+  <!--
     <colormask name="skin.color_btn" colorNormal="#069dd5" colorHover="#4bcaff" colorDown="#069dd5" colorDisable="#069dd5" width="252" height="24"  mask="PNG:ID_SENDBTN_LEFT.a"/>
     <colormask name="skin.sendbtn_right" colorNormal="#069dd5" colorHover="#4bcaff" colorDown="#069dd5" colorDisable="#069dd5" width="128" height="24" mask="PNG:ID_SENDBTN_RIGHT.a"/>
     <colormask name="skin.chatbtn_close" colorNormal="#069dd5" colorHover="#4bcaff" colorDown="#069dd5" colorDisable="#069dd5" width="280" height="24" mask="PNG:ID_CHATBTN_CLOSE.a"/>
+    <imgMutiFrame name="skin.loading" src="PNG:ID_LOADING" />
+    -->
     <imglist name="skin.sysbtn_close"   src="PNG:ID_SYSBTN_CLOSE" states="3"/>
     <imglist name="skin.sysbtn_max" src="PNG:ID_SYSBTN_MAX" states="3"/>
     <imglist name="skin_sysbtn_min" src="PNG:ID_SYSBTN_MIN" states="3"/>
@@ -75,7 +78,6 @@
     <imgframe name="skin.rich_file_bk" src="PNG:ID_RICH_FILE_BK" left="14" top="20" right="14" bottom="20"/>
     <imgframe name="skin.file_icon_text" src="PNG:ID_FILE_ICON_TEXT" />
     <imgframe name="skin.fetch_more_msg" src="PNG:ID_FETCH_MORE" />
-    <imgMutiFrame name="skin.loading" src="PNG:ID_LOADING" />
     <imgframe name="skin.news_bg" src="PNG:ID_NEW_BG" left="10" top="10" right="10" bottom="10"/>
     <imgframe name="skin.news_bg_alpha" src="PNG:ID_NEWS_BG_ALPHA" />
     <imgframe name="skin.menu_bkg" src="PNG:ID_MENU_BKG" left="10" top="10" right="10" bottom="10"/>

@@ -1,4 +1,5 @@
-﻿#include "ui/adapter/HotChannelListItemAdapter.h"
+﻿#include "stdafx.h"
+#include "ui/adapter/HotChannelListItemAdapter.h"
 #include "ui/SToggleEx.h"
 
 #include "res/R.h" 

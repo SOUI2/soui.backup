@@ -1,4 +1,5 @@
-﻿#include "NodeMgr.h"
+﻿#include "stdafx.h"
+#include "NodeMgr.h"
 #include "ui/adapter/SimpleListDef.h"
 #include <Windows.h>
 #include <algorithm>
