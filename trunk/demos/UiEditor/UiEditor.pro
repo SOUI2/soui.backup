@@ -11,6 +11,7 @@ INCLUDEPATH += . \
 		../../components \
 		../../config \
 		../../controls.extend \
+		../../third-part/SciLexer \
 
 
 dir = ../..
@@ -100,8 +101,6 @@ HEADERS+=./DlgSkinSelect.h
 HEADERS+=./DlgStyleManage.h
 HEADERS+=./MainDlg.h
 HEADERS+=./resource.h
-HEADERS+=./SciLexer.h
-HEADERS+=./Scintilla.h
 HEADERS+=./ScintillaWnd.h
 HEADERS+=./SImageSwitcher.h
 HEADERS+=./SMoveWnd.h
