@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP -w34100 -w34189 -w44996"
 				Optimization="1"
-				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\controls.extend,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories=".;..\..\utilities\include;..\..\soui\include;..\..\components;..\..\config;&quot;..\..\third-part\SciLexer\include&quot;;..\..\controls.extend;&quot;..\..\tools\mkspecs\win32-msvc2008&quot;"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST,NDEBUG"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -144,7 +144,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP -w34100 -w34189 -w44996"
 				Optimization="4"
-				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\controls.extend,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories=".;..\..\utilities\include;..\..\soui\include;..\..\components;..\..\config;&quot;..\..\third-part\SciLexer\include&quot;;..\..\controls.extend;&quot;..\..\tools\mkspecs\win32-msvc2008&quot;"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -561,14 +561,6 @@
 			</File>
 			<File
 				RelativePath="..\..\controls.extend\SChromeTabCtrl.h"
-				>
-			</File>
-			<File
-				RelativePath="SciLexer.h"
-				>
-			</File>
-			<File
-				RelativePath="Scintilla.h"
 				>
 			</File>
 			<File
