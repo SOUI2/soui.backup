@@ -1975,6 +1975,15 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 			pMoveWnd = (SMoveWnd*)pM->GetParent();
 		}
 	}
+
+	//有margin的情况
+	SwndStyle &style = pRealWnd->GetStyle();
+	int nMarginLeft = 0;
+	int nMarginTop = 0;
+	nMarginLeft = style.m_rcMargin.left;
+	nMarginTop = style.m_rcMargin.top;
+	pt.x -= nMarginLeft;
+	pt.y -= nMarginTop;
 	
 	if (!bIsInclude)
 	{
