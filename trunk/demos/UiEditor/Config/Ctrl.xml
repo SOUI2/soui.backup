@@ -114,7 +114,10 @@
 			<flash pos="0,0" size="200,200"  url="" delay="1"/>
 		</flash>
 
-
+		<gif_动画>
+			<gifplayer pos="0,0" size="96,96" />
+		</gif_动画>
+		
 		<group_组合框>
 			<group pos="0,0" size="120,120" align="left" headerHeight="0">组合框</group>
 		</group_组合框>

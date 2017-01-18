@@ -7,7 +7,7 @@
 			<cmdbtnstyle skin="_skin.sys.btn.normal">...</cmdbtnstyle>
 			<groups>
 				<propgroup name="属性:  base"  description="属性">
-<!-- 					<proptext name="皮肤名(name)" name2="name" value=""/>	 -->
+					<!-- 					<proptext name="皮肤名(name)" name2="name" value=""/>	 -->
 
 					<proptext name="alpha" name2="alpha" value=""/>	
 					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
@@ -31,7 +31,7 @@
 			<cmdbtnstyle skin="_skin.sys.btn.normal">...</cmdbtnstyle>
 			<groups>
 				<propgroup name="属性:  base"  description="属性">
-<!-- 					<proptext name="皮肤名(name)" name2="name" value=""/>	 -->
+					<!-- 					<proptext name="皮肤名(name)" name2="name" value=""/>	 -->
 
 					<proptext name="alpha" name2="alpha" value=""/>	
 					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
@@ -55,8 +55,8 @@
 			</groups>
 		</propgrid>
 	</imgframe>
-	
-	
+
+
 	<gradation>
 		<propgrid pos="0,0,-4,-4" switchSkin="SKIN_UIDESIGNER_PROPGRID_SWITCH"                      
 			nameWidth="100" orderType="group"   itemHeight="30"   ColorGroup="RGB(96,112,138)"                                          
@@ -65,13 +65,13 @@
 			<cmdbtnstyle skin="_skin.sys.btn.normal">...</cmdbtnstyle>
 			<groups>
 				<propgroup name="属性:  base"  description="属性">
-<!-- 					<proptext name="皮肤名(name)" name2="name" value=""/>	 -->
+					<!-- 					<proptext name="皮肤名(name)" name2="name" value=""/>	 -->
 
 					<proptext name="alpha" name2="alpha" value=""/>	
 					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
 				</propgroup>			
 				<propgroup name="属性:  gradation"  description="属性">
-<!-- 					<proptext name="皮肤名(name)" name2="name" value=""/> -->				
+					<!-- 					<proptext name="皮肤名(name)" name2="name" value=""/> -->				
 					<proptext name="渐变起始颜色(colorFrom)" name2="colorFrom" value=""/>
 					<proptext name="渐变终止颜色(colorTo)" name2="colorTo" value=""/>
 					<propoption name="渐变方向(vertical)" name2="vertical" value="" options="水平:0|垂直:1"/>					
@@ -88,7 +88,7 @@
 			<cmdbtnstyle skin="_skin.sys.btn.normal">...</cmdbtnstyle>
 			<groups>
 				<propgroup name="属性:  base"  description="属性">
-<!-- 					<proptext name="皮肤名(name)" name2="name" value=""/>	 -->
+					<!-- 					<proptext name="皮肤名(name)" name2="name" value=""/>	 -->
 					<proptext name="alpha" name2="alpha" value=""/>	
 					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
 				</propgroup>
@@ -107,5 +107,24 @@
 			</groups>
 		</propgrid>
 	</scrollbar>		
+
+
+
+	<gif>
+		<propgrid pos="0,0,-4,-4" switchSkin="SKIN_UIDESIGNER_PROPGRID_SWITCH"                      
+			nameWidth="100" orderType="group"   itemHeight="30"   ColorGroup="RGB(96,112,138)"                                          
+			ColorItemSel="rgb(234,128,16)" colorItemSelText="#FF0000" EditBkgndColor="rgb(87,104,132)"                                    
+			autoWordSel="1">
+			<cmdbtnstyle skin="_skin.sys.btn.normal">...</cmdbtnstyle>
+			<groups>
+				<propgroup name="属性:  base"  description="属性">
+					<!-- 					<proptext name="皮肤名(name)" name2="name" value=""/>	 -->
+					<proptext name="alpha" name2="alpha" value=""/>	
+					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
+				</propgroup>
+			</groups>
+		</propgrid>
+	</gif>	
+
 
 </root>

@@ -702,6 +702,63 @@ Tab (& #x0009;)
 			</分组>			
 		</flash>		
 
+		<gifplayer>
+			<分组 name="属性:  gifplayer">
+				<id/>
+				<name/>
+				<skin/>
+				<ncskin/>
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<data/>
+				<enable/>
+				<visible/>
+				<show/>
+				<display/>
+				<cache/>
+				<alpha/>
+				<tip/>				
+				<layeredWindow style="proptext" name ="layeredWindow" />
+				<trackMouseEvent style="proptext" name ="trackMouseEvent" />
+				<msgTransparent/>
+				<maxWidth style="proptext" name ="maxWidth" />
+				<clipClient style="proptext" name ="clipClient" />
+				<focusable/>
+				<drawFocusRect/>
+				<float/>
+				<UiEdit_windowText/>				
+			</分组>
+
+			<分组 name="属性:  style">
+				<textMode style="proptext" name ="textMode" />						
+				<align style="propoption" name ="align" options="left|center|right"/>						
+				<valign style="propoption" name ="valign" options="top|middle|bottom"/>						
+				<colorBkgnd/>						
+				<colorBorder style="propcolor" name ="colorBorder" />
+				<font/>						
+				<fontHover/>						
+				<fontPush/>
+				<fontDisable/>
+				<colorText/>				
+				<colorTextHover style="propcolor" name ="colorTextHover" />				
+				<colorTextPush style="propcolor" name ="colorTextPush" />				
+				<colorTextDisable style="propcolor" name ="colorTextDisable" />				
+				<margin-x style="proptext" name ="margin-x" />				
+				<margin-y style="proptext" name ="margin-y" />				
+				<margin style="proptext" name ="margin" />				
+				<inset style="proptext" name ="inset" description="文字区4个方向的内边距 和padding一样"/>				
+				<padding style="proptext" name ="padding" description="文字区4个方向的内边距 和inset一样"/>				
+				<cursor/>				
+				<dotted style="propoption" name ="dotted" options="是:1|否:0" description="是否支持省略号显示文本"/>				
+				<bkgndBlend style="proptext" name ="bkgndBlend" />				
+
+				<sepSpace style="proptext" name ="sepSpace" />				
+			</分组>
+
+		</gifplayer>	
+
 
 		<group>
 			<分组 name="属性:  group">
@@ -726,7 +783,7 @@ Tab (& #x0009;)
 				<colorLine2 style="propcolor" name ="colorLine2" />			
 				<round style="proptext" name ="round" />			
 				<headerHeight style="proptext" name ="headerHeight" />	
-                <align style="propoption" name ="align" options="left|center|right"/>					
+				<align style="propoption" name ="align" options="left|center|right"/>					
 			</分组>
 
 
