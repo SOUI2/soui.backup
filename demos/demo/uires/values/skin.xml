@@ -77,4 +77,6 @@
   <imglist name="skin_bkimg_5" src="bkimg:skin_pic_5" colorizeEnable="0" autoFit="0"/>
   <imglist name="skin_bkimg_6" src="bkimg:skin_pic_6" colorizeEnable="0" autoFit="0"/>
   <imglist name="skin_bkimg_7" src="bkimg:skin_pic_7" colorizeEnable="0" autoFit="0"/>
+
+  <demoskin name="demoskinbk"/>
 </skin>

@@ -16,9 +16,10 @@
 using namespace SOUI;
 
 #include "magnet/MagnetFrame.h"
-#include "SetSkinWnd.h"
 #include "ThreadObject.h"
+#include "skin/SDemoSkin.h"
 
+extern UINT g_dwSkinChangeMessage;
 //演示使用SNotifyCenter的异步事件
 class EventThread : public TplEventArgs<EventThread>
 {
@@ -57,9 +58,10 @@ public:
 */
 class CMainDlg : public SHostWnd
 			   , public CMagnetFrame	//磁力吸附
-			   , public ISetSkinHandler	//皮肤处理
+			   //, public ISetSkinHandler	//皮肤处理
 			   , public CThreadObject	//线程对象
 			   , public TAutoEventMapReg<CMainDlg>//通知中心自动注册
+			   , public ISetOrLoadSkinHandler
 {
 public:
 
@@ -121,7 +123,7 @@ protected:
         
 
 protected:
-    virtual void OnSetSkin(int iSkin);
+    //virtual void OnSetSkin(int iSkin);
 
     //////////////////////////////////////////////////////////////////////////
     // SOUI事件处理函数
@@ -150,7 +152,9 @@ protected:
 
 	void OnBtnLRC();
     
-    //演示如何使用subscribeEvent来不使用事件映射表实现事件响应
+	bool LoadSkin();
+
+	//演示如何使用subscribeEvent来不使用事件映射表实现事件响应
     bool OnListHeaderClick(EventArgs *pEvt);
 
         
@@ -187,7 +191,7 @@ protected:
 	bool OnEventThreadStart(EventArgs *e);
 	bool OnEventThreadStop(EventArgs *e);
 	bool OnEventThread(EventArgs *e);
-	
+	HRESULT OnSkinChangeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL bHandled);
     //UI控件的事件及响应函数映射表
 	EVENT_MAP_BEGIN()
 		EVENT_ID_COMMAND(1, OnClose)
@@ -244,6 +248,7 @@ protected:
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_COMMAND(OnCommand)
+		MESSAGE_HANDLER(g_dwSkinChangeMessage, OnSkinChangeMessage)
 		CHAIN_MSG_MAP(SHostWnd)
 		REFLECT_NOTIFICATIONS_EX()
 	END_MSG_MAP()
@@ -253,7 +258,10 @@ protected:
     //  辅助函数
     void InitListCtrl();
 
+	virtual bool SaveSkin(SkinType skinType, SkinSaveInf & skinSaveInf);
+
 
 private:
 	BOOL			m_bLayoutInited;/**<UI完成布局标志 */
+	HWND			m_hSetSkinWnd;
 };
