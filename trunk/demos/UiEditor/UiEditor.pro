@@ -11,7 +11,7 @@ INCLUDEPATH += . \
 		../../components \
 		../../config \
 		../../controls.extend \
-		../../third-part/SciLexer \
+		../../third-part/SciLexer/include \
 
 
 dir = ../..
