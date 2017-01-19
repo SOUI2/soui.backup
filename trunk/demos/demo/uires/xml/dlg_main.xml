@@ -44,13 +44,11 @@
     end
     ]]>
   </script>
-  <root class="cls_dlg_frame" cache="1" on_init="on_init" on_exit="on_exit">
-    <img pos="0,0,-0,-0" name="img_skin_layer"/>
+  <root colorBkgnd="#eeeeee" cache="1" on_init="on_init" on_exit="on_exit">
+    <window pos="1,1,-1,-1" id="9527" skin="demoskinbk" cache="1" colorBkgnd="#169ada"/>
     <caption pos="0,0,-0,30" class="cls_txt_red" font="adding:8" focusable="1" drawfocusrect="0">
       <icon pos="10,8" src="LOGO:16"/>
-
       <text pos="[5,4" name="txt_title"/>
-
       <imgbtn id="1" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
       <imgbtn id="2" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
       <imgbtn id="3" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
