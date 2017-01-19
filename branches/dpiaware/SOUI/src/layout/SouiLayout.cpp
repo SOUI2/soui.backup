@@ -52,9 +52,9 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            return m_width == SIZE_WRAP_CONTENT;
+            return m_width == SIZE_WRAP_CONTENT || nCount == 0;
         case Vert:
-            return m_height == SIZE_WRAP_CONTENT;
+            return m_height == SIZE_WRAP_CONTENT|| nCount == 0;
         case Any:
             return IsWrapContent(Horz) || IsWrapContent(Vert);
         case Both:
@@ -619,6 +619,9 @@ namespace SOUI{
     }
 
 
+	static const POSITION_ITEM posRefLeft={PIT_PREV_NEAR,-1,1,0};
+	static const POSITION_ITEM posRefTop={PIT_PREV_FAR,-1,1,0};
+
     int SouiLayout::CalcPostion(SList<WndPos> *pListChildren,int nWidth,int nHeight) const
     {
         int nResolvedAll=0;
@@ -639,12 +642,14 @@ namespace SOUI{
                     SouiLayoutParam *pLayoutParam = wndPos.pWnd->GetLayoutParamT<SouiLayoutParam>();
                     if(IsWaitingPos(wndPos.rc.left)) 
                     {
-                        wndPos.rc.left = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[0],nWidth,TRUE);
+						const POSITION_ITEM &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->pos[0]:posRefLeft;
+                        wndPos.rc.left = PositionItem2Value(pListChildren,pos,posRef,nWidth,TRUE);
                         if(wndPos.rc.left != POS_WAIT) nResolved ++;
                     }
                     if(IsWaitingPos(wndPos.rc.top)) 
                     {
-                        wndPos.rc.top = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[1],nHeight,FALSE);
+						const POSITION_ITEM &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->pos[1]:posRefTop;
+                        wndPos.rc.top = PositionItem2Value(pListChildren,pos,posRef,nHeight,FALSE);
                         if(wndPos.rc.top != POS_WAIT) nResolved ++;
                     }
                     if(IsWaitingPos(wndPos.rc.right)) 
@@ -656,7 +661,7 @@ namespace SOUI{
                                 wndPos.rc.right = wndPos.rc.left + pLayoutParam->GetSpecifiedSize(Horz);
                                 nResolved ++;
                             }
-                        }else if(!pLayoutParam->IsWrapContent(Horz))
+                        }else if(!pLayoutParam->IsWrapContent(Horz) && pLayoutParam->nCount==4)
                         {
                             wndPos.rc.right = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[2],nWidth,TRUE);
                             if(wndPos.rc.right != POS_WAIT) nResolved ++;
@@ -671,7 +676,7 @@ namespace SOUI{
                                 wndPos.rc.bottom = wndPos.rc.top + pLayoutParam->GetSpecifiedSize(Vert);
                                 nResolved ++;
                             }
-                        }else if(!pLayoutParam->IsWrapContent(Vert))
+                        }else if(!pLayoutParam->IsWrapContent(Vert) && pLayoutParam->nCount==4)
                         {
                             wndPos.rc.bottom = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[3],nHeight,FALSE);
                             if(wndPos.rc.bottom != POS_WAIT) nResolved ++;
