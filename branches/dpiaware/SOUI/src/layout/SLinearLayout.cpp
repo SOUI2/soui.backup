@@ -175,7 +175,7 @@ namespace SOUI
 
     void SLinearLayout::LayoutChildren(SWindow * pParent)
     {
-        CRect rcParent = pParent->GetClientRect();
+        CRect rcParent = pParent->GetChildrenLayoutRect();
 		        
         CSize *pSize = new CSize [pParent->GetChildrenCount()];
 

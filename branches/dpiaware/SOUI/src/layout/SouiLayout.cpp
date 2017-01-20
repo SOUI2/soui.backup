@@ -52,9 +52,9 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            return m_width == SIZE_WRAP_CONTENT || nCount == 0;
+            return m_width == SIZE_WRAP_CONTENT || (nCount == 0 && m_width == SIZE_UNDEF);
         case Vert:
-            return m_height == SIZE_WRAP_CONTENT|| nCount == 0;
+            return m_height == SIZE_WRAP_CONTENT|| (nCount == 0 && m_width == SIZE_UNDEF);
         case Any:
             return IsWrapContent(Horz) || IsWrapContent(Vert);
         case Both:
@@ -761,7 +761,7 @@ namespace SOUI{
 		if(lstWndPos.IsEmpty())
 			return;
 
-		CRect rcParent = pParent->GetClientRect();
+		CRect rcParent = pParent->GetChildrenLayoutRect();
 		//计算子窗口位置
 		CalcPostion(&lstWndPos,rcParent.Width(),rcParent.Height());
 
