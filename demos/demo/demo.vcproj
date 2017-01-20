@@ -284,10 +284,6 @@
 				>
 			</File>
 			<File
-				RelativePath="setskinwnd.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\skin\SetSkinWnd2.cpp"
 				>
 			</File>
@@ -471,10 +467,6 @@
 			</File>
 			<File
 				RelativePath="..\..\controls.extend\SDocHostUIHandler.h"
-				>
-			</File>
-			<File
-				RelativePath="setskinwnd.h"
 				>
 			</File>
 			<File
