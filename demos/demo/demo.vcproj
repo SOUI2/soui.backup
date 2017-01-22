@@ -272,6 +272,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\skin\SDemoSkin.cpp"
+				>
+			</File>
+			<File
 				RelativePath="appledock\sdesktopdock.cpp"
 				>
 			</File>
@@ -280,7 +284,7 @@
 				>
 			</File>
 			<File
-				RelativePath="setskinwnd.cpp"
+				RelativePath=".\skin\SetSkinWnd2.cpp"
 				>
 			</File>
 			<File
@@ -450,6 +454,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\skin\SDemoSkin.h"
+				>
+			</File>
+			<File
 				RelativePath="appledock\sdesktopdock.h"
 				>
 			</File>
@@ -458,7 +466,7 @@
 				>
 			</File>
 			<File
-				RelativePath="setskinwnd.h"
+				RelativePath=".\skin\SetSkinWnd2.h"
 				>
 			</File>
 			<File

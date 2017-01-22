@@ -37,29 +37,23 @@
     <file name="dlg_formatmsg" path="xml\dlg_formatmsg.xml"/>
     <file name="template_calendar" path="xml\calendar.xml"/>
     <file name="dlg_skiatext" path="xml\dlg_skiatext.xml"/>
-	<file name="page_treeview" path="xml\page_treeview.xml"/>
-	
-	<file name="dlg_clock" path="xml\dlg_clock.xml"/>
-    <file name="dlg_set_skin" path="xml\dlg_set_skin.xml"/>
+	<file name="page_treeview" path="xml\page_treeview.xml"/>	
+	<file name="dlg_clock" path="xml\dlg_clock.xml"/>    
+     <file name="dlg_set_skin" path="xml\dlg_skinset.xml"/>
   </LAYOUT>
   <IMGX>
     <file name="img_busy" path="image\img_busy.png"/>
-
     <file name="btn_expand" path="image\btn_expand.png"/>
 	  <file name="jpg_bkgnd" path="image\Tulips.png"/>
     <file name="png_page_icons"   path="image\page_icons.png" />
     <file name="png_small_icons"  path="image\small_icons.png" />
-
     <file name="webbtn_back"  path="image\webbtn_back.png" />
     <file name="webbtn_forward"  path="image\webbtn_forward.png" />
-    <file name="webbtn_refresh"  path="image\webbtn_refresh.png" />
-    
+    <file name="webbtn_refresh"  path="image\webbtn_refresh.png" />    
     <file name="png_treeicon"			 path="image\TreeIcon.png"/>
     <file name="png_menu_border"  path="image\menuborder.png" />
-
     <file name="png_vscroll"  path="image\vscrollbar.png" />
     <file name="png_hscroll"  path="image\hscrollbar.png" />
-
     <file name="png_tab_left"  path="image\tab_left.png" />
     <file name="png_tab_left_splitter"  path="image\tab_left_splitter.png" />
     <file name="png_tab_main"  path="image\tab_main.png" />
@@ -67,8 +61,7 @@
     <file name="png_propswitch" path="image\propswitch.png"/>
     <file name="png_animode" path="image\animode.png"/>
     <file name="png_chrome_tab_new" path="image\chromeTabNew.png"/>
-    <file name="png_chrome_tab_close" path="image\chromeTabClose.png"/>
-	
+    <file name="png_chrome_tab_close" path="image\chromeTabClose.png"/>	
 	  <file name="png_lcex_header" path="image\lcex_header.png"/>
 	  <file name="png_lcex_header_arrow" path="image\lcex_header_arrow.png"/>
 	  <file name="png_lcex_selectrange" path="image\lcex_selectrange.png"/>
@@ -121,14 +114,24 @@
     <file name="pointer_second" path="img.clock\pointer_second.png"/>
   </img.clock>
   <bkimg>
-  	<file name="skin_pic_0" path="bkimg\skin_pic_0.png"/>
-  	<file name="skin_pic_1" path="bkimg\skin_pic_1.png"/>
-  	<file name="skin_pic_2" path="bkimg\skin_pic_2.png"/>
-  	<file name="skin_pic_3" path="bkimg\skin_pic_3.png"/>
-  	<file name="skin_pic_4" path="bkimg\skin_pic_4.png"/>
-  	<file name="skin_pic_5" path="bkimg\skin_pic_5.png"/>
-  	<file name="skin_pic_6" path="bkimg\skin_pic_6.png"/>
-  	<file name="skin_pic_7" path="bkimg\skin_pic_7.png"/>
+  	<file name="skin_pic_0" path="bkimg\1fix.png"/>
+  	<file name="skin_pic_1" path="bkimg\2fix.png"/>
+  	<file name="skin_pic_2" path="bkimg\3fix.png"/>
+  	<file name="skin_pic_3" path="bkimg\4fix.png"/>
+  	<file name="skin_pic_4" path="bkimg\5fix.png"/>
+  	<file name="skin_pic_5" path="bkimg\6fix.png"/>
+  	<file name="skin_pic_6" path="bkimg\7fix.png"/>
+  	<file name="skin_pic_7" path="bkimg\8fix.png"/>
+    <file name="skin_pic_8" path="bkimg\9fix.png"/>
+    <file name="skin_pic_9" path="bkimg\10fix.png"/>
+    <file name="skin_pic_10" path="bkimg\11fix.png"/>
+    <file name="skin_pic_11" path="bkimg\12fix.png"/>
+    <file name="skin_pic_12" path="bkimg\13fix.png"/>
+    <file name="skin_pic_13" path="bkimg\14fix.png"/>
+    <file name="skin_pic_14" path="bkimg\15fix.png"/>
+    <file name="skin_pic_15" path="bkimg\16fix.png"/>
+    <file name="skin_pic_16" path="bkimg\17fix.png"/>
+    <file name="skin_pic_17" path="bkimg\18fix.png"/>
   </bkimg>
   <GIF>
     <file name="gif_penguin"	path="image\penguin.gif"/>

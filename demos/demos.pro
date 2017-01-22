@@ -16,6 +16,8 @@ SUBDIRS += SoTool
 SUBDIRS += mclistview_demo
 SUBDIRS += souitest
 SUBDIRS += VUI
+SUBDIRS += BesLyric
+SUBDIRS += QQMain
 
 360.depends += soui skia
 360Preview.depends += soui skia
@@ -26,4 +28,6 @@ PcManager.depends += soui skia
 SoTool.depends += soui skia
 mclistview_demo.depends += soui skia
 UiEditor.depends += soui skia
+BesLyric.depends += soui skia
+QQMain.depends += soui skia
 VUI.depends += soui skia

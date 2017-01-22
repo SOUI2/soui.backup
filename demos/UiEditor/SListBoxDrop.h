@@ -193,27 +193,6 @@ public:
 				m_pDesignerView->m_nState = 0;
 				return;
 			}
-			//if (pSChild == m_pDesignerView->m_pMoveWndRoot)
-			//	pt -= CPoint(20, 20);
-			SStringT s;
-			s.Format(_T("%d"), ((SMoveWnd*)pSChild)->m_pRealWnd->GetUserData());
-			pugi::xml_node xmlNodeRealWnd = m_pDesignerView->FindNodeByAttr(m_pDesignerView->m_CurrentLayoutNode, L"data", s);
-			// 判断当前控件是否是容器，如果不是就取当前控件的父控件
-			if (!m_pDesignerView->bIsContainerCtrl(xmlNodeRealWnd.name()))
-			{
-				if(pSChild != m_pDesignerView->m_pMoveWndRoot)
-				{
-					pSChild = pSChild->GetParent();
-				}
-			}
-			//有margin的情况
-			SwndStyle &style = ((SMoveWnd*)pSChild)->m_pRealWnd->GetStyle();
-			int nMarginLeft = 0;
-			int nMarginTop = 0;
-			nMarginLeft = style.m_rcMargin.left;
-			nMarginTop = style.m_rcMargin.top;
-			pt.x -= nMarginLeft;
-			pt.y -= nMarginTop;
 
 			m_pDesignerView->NewWnd(pt,(SMoveWnd*)pSChild);
 			m_pDesignerView->CreatePropGrid(m_pDesignerView->m_xmlNode.name());

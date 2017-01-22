@@ -1,0 +1,7 @@
+<root >
+	<window name="parent" pos="0,0,-0,-0">
+		<img name="icon" skin="skin.fetch_more_msg" pos="|-45,3"/>
+		<link  name="fetchmore" pos="[5,0" class="cls_rich_link">查看更多消息</link>
+		<imgplayer name="loading" skin="skin.loading" pos="|-8,0" visible="0"/>
+	</window>
+</root>

@@ -64,14 +64,15 @@ HEADERS += MainDlg.h \
            httpsvr/httpserver.h \
            magnet/magnetframe.h \
            smatrixwindow.h \
-           memflash.h \
-           setskinwnd.h \
+           memflash.h \          
            threadObject.h \
            SmileyCreateHook.h \
 		   uianimation/uianimation.h \
 		   uianimation/uianimationwnd.h\
 		   appledock/sdesktopdock.h \
-		   clock/sclock.h
+		   clock/sclock.h \
+		skin/SDemoSkin.h \
+		skin/SetSkinWnd2.h
 		   
 SOURCES += demo.cpp \
            MainDlg.cpp \
@@ -106,13 +107,14 @@ SOURCES += demo.cpp \
            httpsvr/httpserver.cpp \
            magnet/magnetframe.cpp \
            memflash.cpp	\
-           smatrixwindow.cpp \
-           setskinwnd.cpp \
+           smatrixwindow.cpp \           
            threadObject.cpp \
            SmileyCreateHook.cpp \
 		   uianimation/uianimationwnd.cpp \
 		   appledock/sdesktopdock.cpp \
-		   clock/sclock.cpp 
+		   clock/sclock.cpp \
+	skin/SDemoSkin.cpp \
+	skin/SetSkinWnd2.cpp
 
 RC_FILE += demo.rc
 
