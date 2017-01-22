@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+  <string>
+    <title value="PC客户端"/>
+    <ver value="1.0"/>
+    <friends value="好友"/>
+    <new_channels value="最新"/>
+    <hot_channels value="热门"/>
+    <cue_search value="搜索好友，搜索喜欢的频道"/>
+    <main_menu value="主菜单"/>
+    <search_friend value="搜索好友"/>
+    <msg_manager value="消息管理"/>
+    <file_manager value="文件管理"/> 
+    <close value="关闭" />
+  </string> 

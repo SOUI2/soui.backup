@@ -6,6 +6,7 @@ include_directories(${PROJECT_SOURCE_DIR}/components)
 include_directories(${PROJECT_SOURCE_DIR}/utilities/include)
 include_directories(${PROJECT_SOURCE_DIR}/SOUI/include)
 include_directories(${PROJECT_SOURCE_DIR}/controls.extend)
+include_directories(${PROJECT_SOURCE_DIR}/third-part/SciLexer/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/soui-sys-resource)
 
@@ -15,6 +16,7 @@ file(GLOB_RECURSE CURRENT_SOUIS  *.xml *.idx *.ico)
 file(GLOB_RECURSE CURRENT_RC *.rc *.rc2)
 
 set(EXTENDCOTROLS ${EXTENDCOTROLS}
+	${CMAKE_SOURCE_DIR}/controls.extend/gif/SGifPlayer.h
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinGif.h
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinAPNG.h
 	${CMAKE_SOURCE_DIR}/controls.extend/STabCtrl2.h
@@ -41,9 +43,10 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/STurn3DView.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SAnimImg.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SSkinImgFrame2.h
-	${CMAKE_SOURCE_DIR}/controls.extend/SScrollText.h	
+	${CMAKE_SOURCE_DIR}/controls.extend/SScrollText.h
 )
 set(EXTENDCOTROLS ${EXTENDCOTROLS}
+	${CMAKE_SOURCE_DIR}/controls.extend/gif/SGifPlayer.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinGif.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinAPNG.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/STabCtrl2.cpp

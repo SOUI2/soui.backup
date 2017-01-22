@@ -280,12 +280,13 @@ namespace SOUI{
 
     int GetPosExtra(const POSITION_ITEM &pos)
     {
-        return pos.cMinus?(int)pos.nPos:0;
+        return pos.cMinus==-1?(int)pos.nPos:0;
     }
 
     int SouiLayoutParam::GetExtraSize(ORIENTATION orientation) const
     {
-        if(orientation == Vert)
+		if(nCount!=4) return 0;
+        if(orientation == Horz)
             return GetPosExtra(pos[2]);
         else
             return GetPosExtra(pos[3]);
@@ -552,7 +553,7 @@ namespace SOUI{
             }
             if(!IsWaitingPos(wndPos.rc.bottom))
             {
-                nMaxY = max(nMaxX,wndPos.rc.bottom + pParam->GetExtraSize(Vert));
+                nMaxY = max(nMaxY,wndPos.rc.bottom + pParam->GetExtraSize(Vert));
             }
         }
 
