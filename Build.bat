@@ -19,6 +19,7 @@ SET selected=
 SET mt=1
 SET unicode=1
 SET wchar=1
+SET supportxp=0
 rem 选择编译版本
 SET /p selected=1.选择编译版本[1=x86;2=x64]:
 if %selected%==1 (
@@ -32,28 +33,41 @@ if %selected%==1 (
 
 rem 选择开发环境
 SET /p selected=2.选择开发环境[1=2008;2=2010;3=2012;4=2013;5=2015;6=2005]:
+
 if %selected%==1 (
 	SET specs=win32-msvc2008
 	call "%VS90COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
+	goto built
 ) else if %selected%==2 (
 	SET specs=win32-msvc2010
 	call "%VS100COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
+	goto built
 ) else if %selected%==3 (
 	SET specs=win32-msvc2012
 	call "%VS110COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
+	goto toolsetxp
 ) else if %selected%==4 (
 	SET specs=win32-msvc2013
 	call "%VS120COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
+	goto toolsetxp
 ) else if %selected%==5 (
 	SET specs=win32-msvc2015
 	call "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
+	goto toolsetxp
 ) else if %selected%==6 (
 	SET specs=win32-msvc2005
 	call "%VS80COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
+	goto built
 ) else (
 	goto error
 )
-
+:toolsetxp
+rem XP支持
+SET /p selected=2.是否支持xp[1=支持;2=不支持]:
+		if %selected%==1 (
+		SET cfg=!cfg! TOOLSET_XP 
+		SET supportxp=1)
+:built
 rem 选择编译类型
 SET /p selected=3.选择SOUI编译模式[1=全模块DLL;2=全模块LIB;3=内核LIB,组件DLL(不能使用LUA脚本模块)]:
 if %selected%==1 (
@@ -112,6 +126,7 @@ if %selected%==1 (
 ) else (
 	goto error
 )
+rem @echo %cfg%
 rem 保存项目默认配置
 if exist .\config\build.cfg del .\config\build.cfg
 set configStr=[BuiltConfig]
@@ -122,7 +137,8 @@ set configStr=WCHAR=%wchar%
 echo !configStr!>>.\config\build.cfg
 set configStr=MT=%mt%
 echo !configStr!>>.\config\build.cfg
-
+set configStr=SUPPORT_XP=%supportxp%
+echo !configStr!>>.\config\build.cfg
 rem 参数配置完成
 
 tools\qmake -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
