@@ -45,7 +45,7 @@ if %selected%==1 (
 ) else if %selected%==3 (
 	SET specs=win32-msvc2012
 	call "%VS110COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
-	goto toolsetxp
+	goto built
 ) else if %selected%==4 (
 	SET specs=win32-msvc2013
 	call "%VS120COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
