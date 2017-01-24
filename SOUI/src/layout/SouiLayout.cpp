@@ -1,7 +1,7 @@
 #include "souistd.h"
 #include "layout\SouiLayout.h"
 #include <math.h>
-
+#include "helper/SplitString.h"
 namespace SOUI{
     enum
     {
@@ -244,10 +244,11 @@ namespace SOUI{
 
     HRESULT SouiLayoutParam::OnAttrSize(const SStringW & strValue,BOOL bLoading)
     {
-        SIZE sz;
-        if(2!=swscanf(strValue,L"%d,%d",&sz.cx,&sz.cy)) return E_FAIL;
-        m_width = sz.cx;
-        m_height = sz.cy;
+		SStringWList szStr ;
+		if(2!=SplitString(strValue,L',',szStr)) return E_FAIL;
+
+		OnAttrWidth(szStr[0],bLoading);
+		OnAttrHeight(szStr[1],bLoading);
         return S_OK;
     }
 
@@ -644,18 +645,21 @@ namespace SOUI{
                     if(IsWaitingPos(wndPos.rc.left)) 
                     {
 						const POSITION_ITEM &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->pos[0]:posRefLeft;
-                        wndPos.rc.left = PositionItem2Value(pListChildren,pos,posRef,nWidth,TRUE);
+						wndPos.rc.left = PositionItem2Value(pListChildren,pos,posRef,nWidth,TRUE);
                         if(wndPos.rc.left != POS_WAIT) nResolved ++;
                     }
                     if(IsWaitingPos(wndPos.rc.top)) 
                     {
 						const POSITION_ITEM &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->pos[1]:posRefTop;
-                        wndPos.rc.top = PositionItem2Value(pListChildren,pos,posRef,nHeight,FALSE);
+						wndPos.rc.top = PositionItem2Value(pListChildren,pos,posRef,nHeight,FALSE);
                         if(wndPos.rc.top != POS_WAIT) nResolved ++;
                     }
                     if(IsWaitingPos(wndPos.rc.right)) 
                     {
-                        if(pLayoutParam->IsSpecifiedSize(Horz))
+						if(pLayoutParam->IsMatchParent(Horz))
+						{
+							wndPos.rc.right = nWidth;
+						}else if(pLayoutParam->IsSpecifiedSize(Horz))
                         {
                             if(!IsWaitingPos(wndPos.rc.left))
                             {
@@ -670,7 +674,10 @@ namespace SOUI{
                     }
                     if(IsWaitingPos(wndPos.rc.bottom)) 
                     {
-                        if(pLayoutParam->IsSpecifiedSize(Vert))
+						if(pLayoutParam->IsMatchParent(Vert))
+						{
+							wndPos.rc.bottom = nHeight;
+						}else if(pLayoutParam->IsSpecifiedSize(Vert))
                         {
                             if(!IsWaitingPos(wndPos.rc.top))
                             {
