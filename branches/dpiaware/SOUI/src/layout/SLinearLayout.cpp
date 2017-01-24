@@ -1,5 +1,6 @@
 #include "souistd.h"
 #include "layout\SLinearLayout.h"
+#include "helper\SplitString.h"
 
 namespace SOUI
 {
@@ -77,10 +78,11 @@ namespace SOUI
 
     HRESULT SLinearLayoutParam::OnAttrSize(const SStringW & strValue,BOOL bLoading)
     {
-        SIZE sz;
-        if(2!=swscanf(strValue,L"%d,%d",&sz.cx,&sz.cy)) return E_FAIL;
-        m_width = sz.cx;
-        m_height = sz.cy;
+		SStringWList szStr ;
+		if(2!=SplitString(strValue,L',',szStr)) return E_FAIL;
+
+		OnAttrWidth(szStr[0],bLoading);
+		OnAttrHeight(szStr[1],bLoading);
         return S_OK;
     }
 
