@@ -10,6 +10,8 @@
 #include "res.mgr/SObjDefAttr.h"
 #include "res.mgr/SNamedValue.h"
 
+#define GETCSS(p1) SUiDef::getSingleton().GetUiDef()->GetObjDefAttr().GetDefAttribute(p1)
+
 namespace SOUI
 {
 
@@ -19,6 +21,7 @@ namespace SOUI
 		virtual SStylePool * GetStylePool() =0;
 		virtual SNamedColor & GetNamedColor()  =0;
 		virtual SNamedString & GetNamedString()  =0;
+		virtual SObjDefAttr & GetObjDefAttr() = 0;
 	};
 
 
