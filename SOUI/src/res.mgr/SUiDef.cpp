@@ -47,6 +47,8 @@ namespace SOUI{
 		virtual SStylePool * GetStylePool(){return pStylePool;}
 		virtual SNamedColor & GetNamedColor() {return namedColor;}
 		virtual SNamedString & GetNamedString() {return namedString;}
+		virtual SObjDefAttr & GetObjDefAttr(){return objDefAttr;}
+
 	protected:
 
 		CAutoRefPtr<SSkinPool>    pSkinPool;
@@ -54,6 +56,7 @@ namespace SOUI{
 
 		SNamedColor   namedColor;
 		SNamedString  namedString;
+		SObjDefAttr   objDefAttr;
 	};
 
 	SUiDefInfo::SUiDefInfo(IResProvider *pResProvider,LPCTSTR pszUidef)
@@ -142,13 +145,12 @@ namespace SOUI{
 						}
 					}
 					//load SWindow default attribute
-					if(SObjDefAttr::getSingleton().IsEmpty())
-					{//style只能加载一次
+					{
 						pugi::xml_document docData;
 						pugi::xml_node     nodeData = GetSourceXmlNode(root,docData,pResProvider,KNodeObjAttr);
 						if(nodeData)
 						{
-							SObjDefAttr::getSingleton().Init(nodeData);
+							objDefAttr.Init(nodeData);
 						}
 					}
 
