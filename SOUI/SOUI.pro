@@ -134,6 +134,7 @@ HEADERS += include/SApp.h \
            include/interface/LvItemLocator-i.h \
            include/interface/slog-i.h \
            include/interface/TvItemLocator-i.h \
+           include/res.mgr/SUiDef.h \
            include/res.mgr/SFontPool.h \
            include/res.mgr/SObjDefAttr.h \
            include/res.mgr/SResProvider.h \
@@ -211,6 +212,7 @@ SOURCES += src/SApp.cpp \
    		   src/helper/smenuex.cpp \
    		   src/helper/smatrix.cpp \
 		   src/helper/sdibhelper.cpp \
+		   src/res.mgr/SUiDef.cpp \
            src/res.mgr/SFontPool.cpp \
            src/res.mgr/SObjDefAttr.cpp \
            src/res.mgr/SResProvider.cpp \

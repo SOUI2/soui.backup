@@ -474,6 +474,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\res.mgr\SUiDef.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\updatelayeredwindow\SUpdateLayeredWindow.cpp"
 				>
 			</File>
@@ -941,6 +945,10 @@
 			</File>
 			<File
 				RelativePath="include\control\STreeView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\SUiDef.h"
 				>
 			</File>
 			<File
