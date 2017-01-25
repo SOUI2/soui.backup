@@ -41,17 +41,21 @@
 
       <window pos="0,[5,@-1,@200" layout="vbox" colorBkgnd="#cccccc">
         <!--线性布局的weight属性-->
-        <text extend_bottom="20">vbox + gravity + weight</text>
+        <text extend_bottom="10">vbox + gravity + weight</text>
         <window size="100,30" colorBkgnd="#ff0000"/>
         <window size="200,30" extend="10,5,10,5" colorBkgnd="#ff0000" weight="1"/>
         <window size="120,30" layout_gravity="right" colorBkgnd="#ff0000" weight="1"/>
       </window>
 
-      <window pos="0,[5" layout="linearLayout" orientation="horizontal" colorBkgnd="#cccccc">
-        <button size="100,30">button1</button>
-        <button size="100,30" extend_left="10">button2</button>
-        <button size="100,30" extend_left="10">button3</button>
-        <button size="100,30" extend_left="10">button4</button>
+      <window pos="0,[5" layout="vbox" colorBkgnd="#cccccc">
+        <text extend_bottom="10" layout_gravity="center">hbox demo</text>
+        <window size="-1,-1" layout="hbox" colorBkgnd="#888888">
+          <!--线性布局之hbox-->
+          <button size="100,30">button1</button>
+          <button size="100,30" extend_left="10">button2</button>
+          <button size="100,30" extend_left="10">button3</button>
+          <button size="100,30" extend_left="10">button4</button>
+        </window>
       </window>
     </page>
   </tabctrl>

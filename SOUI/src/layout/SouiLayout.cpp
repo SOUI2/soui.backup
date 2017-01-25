@@ -750,20 +750,18 @@ namespace SOUI{
 	{
 		SList<WndPos>       lstWndPos;
 
-		SWindow *pChild=pParent->GetWindow(GSW_FIRSTCHILD);
+		SWindow *pChild=pParent->GetNextLayoutDirtyChild(NULL);
 		while(pChild)
 		{
-			if(!pChild->IsFloat() && (pChild->IsVisible(FALSE) || pChild->IsDisplay()))
-			{//不显示且不占位的窗口不参与计算
-				WndPos wndPos;
-				wndPos.pWnd = pChild;
-				wndPos.rc = CRect(POS_INIT,POS_INIT,POS_INIT,POS_INIT);
-				SouiLayoutParam *pParam = pChild->GetLayoutParamT<SouiLayoutParam>();
-				wndPos.bWaitOffsetX = pParam->IsOffsetRequired(Horz);
-				wndPos.bWaitOffsetY = pParam->IsOffsetRequired(Vert);
-				lstWndPos.AddTail(wndPos);
-			}
-			pChild=pChild->GetWindow(GSW_NEXTSIBLING);
+			WndPos wndPos;
+			wndPos.pWnd = pChild;
+			wndPos.rc = CRect(POS_INIT,POS_INIT,POS_INIT,POS_INIT);
+			SouiLayoutParam *pParam = pChild->GetLayoutParamT<SouiLayoutParam>();
+			wndPos.bWaitOffsetX = pParam->IsOffsetRequired(Horz);
+			wndPos.bWaitOffsetY = pParam->IsOffsetRequired(Vert);
+			lstWndPos.AddTail(wndPos);
+
+			pChild=pParent->GetNextLayoutDirtyChild(pChild);
 		}
 
 		if(lstWndPos.IsEmpty())
