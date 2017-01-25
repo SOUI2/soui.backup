@@ -180,23 +180,19 @@ namespace SOUI
         CRect rcParent = pParent->GetChildrenLayoutRect();
 		        
         CSize *pSize = new CSize [pParent->GetChildrenCount()];
-
+		SWindow ** pChilds = new SWindow * [pParent->GetChildrenCount()];
+		int nChilds = 0;
+		
         int offset = 0;
         float fWeight= 0.0f;
 
         {//assign width or height
 
-            SWindow *pChild = pParent->GetWindow(GSW_FIRSTCHILD);
             int iChild = 0;
 
+			SWindow *pChild=pParent->GetNextLayoutDirtyChild(NULL);
             while(pChild)
             {
-				if(pChild->IsFloat() || !(pChild->IsVisible(FALSE)||pChild->IsDisplay()))
-				{
-					pChild = pChild->GetWindow(GSW_NEXTSIBLING);
-					continue;
-				}
-
 				SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
 
                 CSize szChild(SIZE_WRAP_CONTENT,SIZE_WRAP_CONTENT);
@@ -236,25 +232,24 @@ namespace SOUI
                     }
                 }
 
-                pSize [iChild++] = szChild;
+				pChilds[iChild] = pChild;
+                pSize [iChild] = szChild;
                 offset += m_orientation == Vert ? szChild.cy:szChild.cx;
-                pChild = pChild->GetWindow(GSW_NEXTSIBLING);
+
+				iChild++;
+				pChild=pParent->GetNextLayoutDirtyChild(pChild);
             }
+
+			nChilds = iChild;
         }
 
         int size = m_orientation == Vert? rcParent.Height():rcParent.Width();
         if(fWeight > 0.0f && size > offset)
         {//assign size by weight
             int nRemain = size - offset;
-            SWindow *pChild = pParent->GetWindow(GSW_FIRSTCHILD);
-            int iChild = 0;
-            while(pChild)
+			for(int iChild = 0;iChild < nChilds;iChild ++)
             {
-				if(pChild->IsFloat() || !(pChild->IsVisible(FALSE)||pChild->IsDisplay()))
-				{
-					pChild = pChild->GetWindow(GSW_NEXTSIBLING);
-					continue;
-				}
+				SWindow *pChild = pChilds[iChild];
 
 				SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
 
@@ -263,23 +258,16 @@ namespace SOUI
                     LONG & szChild = m_orientation == Vert? pSize[iChild].cy:pSize[iChild].cx;
                     szChild += (int)(nRemain*pLinearLayoutParam->m_weight/fWeight);
                 }
-                iChild ++;
-                pChild = pChild->GetWindow(GSW_NEXTSIBLING);
             }
         }
         {//assign position
             int nRemain = size - offset;
-            SWindow *pChild = pParent->GetWindow(GSW_FIRSTCHILD);
-            int iChild = 0;
             
             offset = 0;
-            while(pChild)
-            {
-				if(pChild->IsFloat() || !(pChild->IsVisible(FALSE)||pChild->IsDisplay()))
-				{
-					pChild = pChild->GetWindow(GSW_NEXTSIBLING);
-					continue;
-				}
+			for(int iChild = 0;iChild < nChilds;iChild ++)
+			{
+				SWindow *pChild = pChilds[iChild];
+
 
                 SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
 
@@ -318,13 +306,11 @@ namespace SOUI
                     offset += rcChild.Width();
                 }
 
-
-                iChild ++;
-                pChild = pChild->GetWindow(GSW_NEXTSIBLING);
             }
 
         }
 
+		delete []pChilds;
 		delete []pSize;
 
     }
@@ -337,17 +323,11 @@ namespace SOUI
 
         ILayoutParam * pParentLayoutParam = pParent->GetLayoutParam();
 
-		SWindow *pChild = pParent->GetWindow(GSW_FIRSTCHILD);
 		int iChild = 0;
 
+		SWindow *pChild = pParent->GetNextLayoutDirtyChild(NULL);
 		while(pChild)
 		{
-			if(pChild->IsFloat() || !(pChild->IsVisible(FALSE)||pChild->IsDisplay()))
-			{
-				pChild = pChild->GetWindow(GSW_NEXTSIBLING);
-				continue;
-			}
-
 			SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
 
 			CSize szChild(SIZE_WRAP_CONTENT,SIZE_WRAP_CONTENT);
@@ -393,7 +373,8 @@ namespace SOUI
 			}
 
 			pSize [iChild++] = szChild;
-			pChild = pChild->GetWindow(GSW_NEXTSIBLING);
+
+			pChild = pParent->GetNextLayoutDirtyChild(pChild);
 		}
 		
 
