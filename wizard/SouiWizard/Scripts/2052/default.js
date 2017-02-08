@@ -33,7 +33,7 @@ function CreateCustomProject(strProjectName, strProjectPath)
 	    var strProjTemplatePath = '';
 	    var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
 	    strProjTemplatePath = wizard.FindSymbol('PROJECT_TEMPLATE_PATH');
-	    if (supportXp)
+	    if (supportXp=="1")
 	    {
 	        strProjTemplatePath = wizard.FindSymbol('TEMPLATES_PATH');
 	        strProjTemplatePath += '\\porjectTemplates';
