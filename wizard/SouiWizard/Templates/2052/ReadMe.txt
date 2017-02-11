@@ -11,26 +11,30 @@ ReadMe.txt
 些项目的简要说明。
 
 [!output PROJECT_NAME].cpp
-程序主入口，SOUI的各种资源初使化及在些文件。
+程序主入口，SOUI的各种资源初使化及在此文件。
 
 MainDlg.h
 这是一个示例的默认窗口模板文件的头定义文件。
+
 MainDlg.cpp
 这是一个示例的默认窗口模板文件的实现文件。
+
 [!if CHECKBOX_SHELLNOTIFYICON]
 SShellNotifyIcon.h
 一个托盘的示例头文件。
+
 SShellNotifyIcon.cpp
 一个托盘示例实现文件。
 [!endif]
+
 stdafx.h
 预处理头文件。
+
 stdafx.cpp
 为了预处理头文件被编译器编译而生。
+
 /////////////////////////////////////////////////////////////////////////////
 其他注释：
-
-
 uires 文件夹下保存所有SOUI的资源定义与资源文件！
 res/soui_res.rc2 该文件由uiresbuilder生成，请不要手动修改!
 /////////////////////////////////////////////////////////////////////////////
