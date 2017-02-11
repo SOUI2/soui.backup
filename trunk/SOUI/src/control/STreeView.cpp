@@ -1021,6 +1021,8 @@ namespace SOUI
 
 	void STreeView::OnMouseLeave()
 	{
+		__super::OnMouseLeave();
+
 		if(m_pHoverItem)
 		{
 			m_pHoverItem->DoFrameEvent(WM_MOUSELEAVE,0,0);
