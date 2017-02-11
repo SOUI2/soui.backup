@@ -202,32 +202,40 @@
         </pane>
       </splitrow>
     </page>
-    <page title="combobox and listbox">
-      <combobox name="cbx_test" pos="10,10,250,40"  dropDown="1" dropHeight="100" class="cls_edit" dotted="0" animateTime="200" curSel="2">
-        <liststyle class="cls_edit"  iconSkin="skin_menuicon" itemSkin="skin_tab_left" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088"/>
-        <editstyle inset="5,0,5,0" colorText="#000000" align="left" colorBkgnd="#FFFFFF"/>
-        <items>
-          <item text="combobox.item1" icon="1" data="100"/>
-          <item text="combobox.item2" icon="2" data="100"/>
-          <item text="combobox.item3" icon="3" data="103"/>
-          <item text="combobox.item4" icon="4" data="100"/>
-          <item text="combobox.item5" icon="5" data="105"/>
-          <item text="combobox.item6" icon="0" data="100"/>
-        </items>
-      </combobox>
-      <button pos="[10,{0,@150,@25" on_command="on_btn_select_cbx">setcursel(-1)</button>
+    <page title="combobox and listbox" layout="hbox" padding="10,10,10,10">
+      <group text="combobox" size="-1,-1" layout="vbox" padding="10,10,10,10">
+        <combobox name="cbx_test" size="250,30"  dropDown="1" dropHeight="100" class="cls_edit" dotted="0" animateTime="200" curSel="2">
+          <liststyle class="cls_edit"  iconSkin="skin_menuicon" itemSkin="skin_tab_left" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088"/>
+          <editstyle inset="5,0,5,0" colorText="#000000" align="left" colorBkgnd="#FFFFFF"/>
+          <items>
+            <item text="combobox.item1" icon="1" data="100"/>
+            <item text="combobox.item2" icon="2" data="100"/>
+            <item text="combobox.item3" icon="3" data="103"/>
+            <item text="combobox.item4" icon="4" data="100"/>
+            <item text="combobox.item5" icon="5" data="105"/>
+            <item text="combobox.item6" icon="0" data="100"/>
+          </items>
+        </combobox>
+        
+        <!--on_btn_select_cbx 在lua脚本中运行-->
+        <button size="-2,25" extend_top="10" on_command="on_btn_select_cbx">setcursel(-1)</button>
+      </group>
 
-      <listbox name="lb_test" pos="10,50,250,-10" hotTrack="1" itemSkin="skin_tab_left" class="cls_edit"  iconSkin="skin_menuicon" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088">
-        <items>
-          <item text="item1" icon="1" data="100"/>
-          <item text="item2" icon="2" data="100"/>
-          <item text="item3" icon="3" data="103"/>
-          <item text="item4" icon="4" data="100"/>
-          <item text="item5" icon="5" data="105"/>
-          <item text="item6" icon="0" data="100"/>
-        </items>
-      </listbox>
-      <button pos="[10,{0,@100,@30" name="btn_init_listbox">init listbox</button>
+      <group text="listbox" size="-1,-2" layout="vbox" extend_left="20" padding="10,10,10,10">
+        <listbox name="lb_test" size="250,0" weight="1" hotTrack="1" itemSkin="skin_tab_left" class="cls_edit"  iconSkin="skin_menuicon" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088">
+          <items>
+            <item text="item1" icon="1" data="100"/>
+            <item text="item2" icon="2" data="100"/>
+            <item text="item3" icon="3" data="103"/>
+            <item text="item4" icon="4" data="100"/>
+            <item text="item5" icon="5" data="105"/>
+            <item text="item6" icon="0" data="100"/>
+          </items>
+        </listbox>
+        <button size="-2,30" extend_top="10" name="btn_init_listbox">init listbox</button>        
+      </group>
+
+      
     </page>
     <page title="treectrl">
       <include src="layout:treectrl"/>
