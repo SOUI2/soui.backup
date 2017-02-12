@@ -1,3 +1,0 @@
-2014-05-10  启程软件
-修改wke\wke.h;wke\wkeWebview.h;wke\wkeWebview.cpp，增加几个接口：tick(),paint()等。
-修改Source\WebCore\plugins\win\PluginViewWin.cpp:997 将原flags=WS_CHILD;改为 flags=WS_POPUP;由于没有指定父窗口，使用CHILD属性时创建窗口失败。
