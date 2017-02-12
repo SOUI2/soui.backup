@@ -146,6 +146,23 @@ Tab (& #x0009;)
 
 		<margin style="proptext" name ="边距(margin)" />
 		<float style="propoption" name ="float" options="是:1|否:0" description="窗口位置固定不动的标志"/>
+		
+		<layout style="propoption" name ="线性布局" options="水平:hbox|垂直:vbox" description="线性布局"/>		
+		
+		<gravity style="propoption" name ="gravity" options="左:left|上:top|中:center|右:right|下:bottom" description="子控件的对齐方式"/>	
+
+		<layout_gravity style="propoption" name ="layout_gravity" options="左:left|上:top|中:center|右:right|下:bottom" description="相对于父控件的对齐方式"/>	
+		
+		
+		
+		<extend style="proptext" name ="外边距" description='extend = "0,0,0,0"
+		&#x000A;四个点分别表示左上右下的间距，与margin类似;' />	
+		
+		<weight style="proptext" name ="weight" description="" />	
+		<width style="proptext" name ="宽度(width)" />	
+		<height style="proptext" name ="高度(height)" />
+		
+		
 
 		<!-- 编辑器特殊属性，用于设置button edit window等内容
 	  如 <button>我是按钮</button> 
@@ -193,6 +210,12 @@ Tab (& #x0009;)
 				<name/>
 				<skin/>
 				<ncskin/>
+				<layout/>
+				<gravity/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>
 				<pos/>
 				<size/>
 				<offset/>
@@ -255,7 +278,7 @@ Tab (& #x0009;)
 			</分组>			
 		</animateimg>	
 
-		<anmimg>
+	<!-- 	<anmimg>
 			<分组 name="属性: anmimg">
 				<id/>
 				<name/>
@@ -276,12 +299,16 @@ Tab (& #x0009;)
 				<ani_out style="proptext" name ="ani_out" ButtonType="Skin" description="鼠标离开时的动画" />				
 			</分组>			
 		</anmimg>			
-
+ -->
 		<button>
 			<分组 name="属性:  button">
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>
 				<pos/>
 				<size/>
 				<offset/>
@@ -312,6 +339,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>
 				<pos/>
 				<size/>
 				<offset/>
@@ -347,6 +378,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>
 				<pos/>
 				<size/>
 				<offset/>
@@ -383,6 +418,12 @@ Tab (& #x0009;)
 				<name/>
 				<skin/>
 				<ncskin/>
+				<layout/>
+				<gravity/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -438,6 +479,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -469,7 +514,11 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
-				<pos/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
+				<pos/>				
 				<size/>
 				<offset/>
 				<class/>
@@ -496,6 +545,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -523,6 +576,12 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout/>
+				<gravity/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -556,6 +615,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -619,7 +682,7 @@ Tab (& #x0009;)
 			<分组 name="基本属性:  editstyle">
 				<id/>
 				<name/>
-				<skin/>
+				<skin/>			
 				<pos/>
 				<size/>
 				<offset/>
@@ -685,6 +748,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -708,6 +775,10 @@ Tab (& #x0009;)
 				<name/>
 				<skin/>
 				<ncskin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -765,6 +836,12 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout/>
+				<gravity/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -824,6 +901,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -850,6 +931,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -870,7 +955,11 @@ Tab (& #x0009;)
 			<分组 name="属性:  icon">
 				<id/>
 				<name/>
-				<pos/>		
+				<pos/>	
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<src style="proptext" name ="图标资源句柄(src)" />	
 			</分组>
 		</icon>
@@ -880,6 +969,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -905,6 +998,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -924,6 +1021,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -949,6 +1050,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1007,6 +1112,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1060,6 +1169,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1099,6 +1212,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1138,6 +1255,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1160,6 +1281,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1226,6 +1351,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1258,6 +1387,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1283,6 +1416,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1307,6 +1444,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1331,6 +1472,12 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout/>
+				<gravity/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1356,6 +1503,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1381,6 +1532,12 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout/>
+				<gravity/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1418,6 +1575,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1454,6 +1615,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1477,6 +1642,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1498,6 +1667,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1556,6 +1729,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1595,6 +1772,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1616,6 +1797,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1638,6 +1823,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1669,6 +1858,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1692,6 +1885,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1713,6 +1910,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1742,6 +1943,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1780,6 +1985,10 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1821,6 +2030,12 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout/>
+				<gravity/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1844,6 +2059,12 @@ Tab (& #x0009;)
 				<id/>
 				<name/>
 				<skin/>
+				<layout/>
+				<gravity/>
+				<layout_gravity/>
+				<weight/>
+				<width/>
+				<height/>				
 				<pos/>
 				<size/>
 				<offset/>
@@ -1871,8 +2092,15 @@ Tab (& #x0009;)
 				<name/>
 				<skin/>
 				<ncskin/>
+				<layout/>
+				<gravity/>
+				<layout_gravity/>
+				<weight/>
+				<extend/>
 				<pos/>
 				<size/>
+				<width/>
+				<height/>
 				<offset/>
 				<class/>
 				<data/>

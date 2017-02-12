@@ -1,6 +1,8 @@
 #pragma once
 #include "ScintillaWnd.h"
 #include "Scintilla.h"
+#include "layout/SouiLayout.h"
+#include "layout/SLinearLayout.h"
 
 namespace SOUI
 {
@@ -36,7 +38,7 @@ namespace SOUI
 		 //创建Root窗口
 		 SMoveWnd* CreateWnd(SWindow *pContainer,LPCWSTR pszXml);
          void CreateAllChildWnd(SWindow *pRealWnd, SMoveWnd *pMoveWnd);
-         void UpdateAllLayout(SMoveWnd* pMoveWndRoot);
+        
 
 		 //重命名每一个控件的名字
 		 void RenameChildeWnd(pugi::xml_node xmlNode);
@@ -56,7 +58,7 @@ namespace SOUI
 
 		 void SetCurrentCtrl(pugi::xml_node xmlNode, SMoveWnd *pWnd); //设置当前选中的控件
 
-         SStringW GetPosFromLayout(SwndLayout *pLayout, INT nPosIndex);
+         SStringW GetPosFromLayout(SouiLayoutParam *pLayoutParam, INT nPosIndex);
 
 		 //通过控件的属性值找到该控件对应的xml节点
 		 pugi::xml_node FindNodeByAttr(pugi::xml_node NodeRoot, SStringT attrName, SStringT attrValue);
