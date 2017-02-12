@@ -1,0 +1,9 @@
+<root>
+	<window name="notifyWnd0" skin="skin.news_bg" pos="|-215,0,@450,-0" trackMouseEvent="1" data="0" cursor="hand">
+		<text pos="10,10" colorText="#111111" font="size:14">这是一条测试新闻</text>
+		<imgex name="newsImg" pos="10,[10,-10,@238" margin-x="1" margin-y="1" colorBorder="#c5c5c5" />
+		<textex pos="10,[5,-10,@40" font="size:12" multiLines="1" align="left" valign="top" dotted="1" colorText="#9a9a9a">这是一条测试新闻测试新闻测试新闻</textex>
+		<hr size="1" pos="0,[0,-0,[1" colorLine="#c5c5c5"/>
+		<text font="size:14" pos="10,[0,-10,-0" colorText="#111111">查看全文</text>
+	</window>
+</root>

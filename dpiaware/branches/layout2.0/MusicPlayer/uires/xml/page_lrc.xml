@@ -1,0 +1,15 @@
+﻿<!-- 功    能：使用SOUI自主设计音乐播放器 -->
+<!-- 作    者：小可                       -->
+<!-- 添加时间：2015.01.09 17：00          -->
+<!-- 版本类型：初始版本                   -->
+<!-- 联系方式：QQ-1035144170              -->
+
+<include>
+  <window pos="0,0,-1,-0" skin="_skin.shadow.bkg">
+    <!--<imgbtn name="btn_TEST" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />-->
+    <text pos="10,5" colorText="#000000">歌词面板</text>
+    <text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#000000">歌词面板</text>
+    <scrolllrc pos="5,50,-5,-50" name="music_lrc" itemHeight="60" indent="10" vscrollBar="1" sbSkin="_skin.vscrollbar" autoVscroll="1" hscrollBar="0">
+    </scrolllrc>
+  </window>
+</include>

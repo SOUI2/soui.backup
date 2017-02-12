@@ -1,0 +1,9 @@
+﻿<include>
+  <text pos="0,0" colorText="#ff0000">buttons in the page would be valid only if render-skia is in used.</text>
+  <button pos="0,[5,@100,@30" name="btn_skiatest">skia test</button>
+  <window pos="10,[10,@200,@200" name="skia_canvas" colorBkgnd="#ffffff" alpha="100" layeredWindow="1">skia canvas
+    <!--注意:在应用中使用GetRenderTarget来操作的窗口，只有指定了layeredWindow属性时alpha才会有效-->
+    <icon pos="%25,5" offset="-0.5,0" src="logo:32"/>
+    <icon pos="%75,{0" offset="-0.5,0" src="logo:32"/>
+  </window>
+</include>

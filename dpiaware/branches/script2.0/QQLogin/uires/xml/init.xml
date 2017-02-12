@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="宋体" size="12"/>
+
+  <string>
+    <title value="QQLogin"/>
+    <ver value="1.0"/>
+  </string>
+  
+  <skin>
+    <imgframe name="img_login_border" src="imgx:IMG_LOGIN_BORDER" left="9" top="9" right="9" bottom="9"/>
+    <imglist name="btn_login_setting" src="imgx:BTN_LOGIN_SETTING" states="3"/>
+    <imglist name="btn_list_close" src="imgx:BTN_USERLISTCLOSE" states="4"/>
+    <imglist name="btn_getpswback" src="imgx:BTN_GETPSWBACK" states="3"/>
+    <imglist name="btn_register" src="imgx:BTN_REGISTER" states="3"/>
+    <imglist name="btn_keyboard" src="imgx:BTN_KEYBOARD" states="4"/>
+    <imgframe name="btn_login" src="imgx:BTN_LOGIN" states="3" margin-x="4" margin-y="4"/>
+    <imglist name="btn_login2" src="imgx:BTN_LOGIN2" states="3"/>
+    <imglist name="btn_login_2dcode" src="imgx:BTN_LOGIN_2DCODE" states="3"/>
+
+    <imglist name="img_head" src="imgx:IMG_HEAD"/>
+    <imglist name="img_head_mask" src="imgx:IMG_HEAD_MASK"/>
+    <imglist name="img_head_small" src="jpg:IMG_HEAD_SMALL"/>
+  </skin>
+
+  <style>
+    <class name="cls_edit" ncSkin="_skin.sys.border" margin-x="2" margin-y="2" />
+  </style>
+
+  <objattr>
+  </objattr>
+</UIDEF>

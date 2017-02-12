@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="宋体" size="15"/>
+
+  <string>
+    <title value="360"/>
+    <ver value="1.0"/>
+  </string>
+
+  <skin>
+    <imglist name="_skin.bg" src="PNG:ID_PNG_BG"/>
+    <imgframe name="_skin.shadow" src="PNG:ID_PNG_SHADOW" left="5" top="3" right="5" bottom="7"/>
+    <imglist name="_skin.btn.close" src="PNG:ID_SYS_BTN_CLOSE" states="3" />
+    <imglist name="_skin.btn.max" src="PNG:ID_SYS_BTN_MAX" states="3" />
+    <imglist name="_skin.btn.restore" src="PNG:ID_SYS_BTN_RESTORE" states="3" />
+    <imglist name="_skin.btn.min" src="PNG:ID_SYS_BTN_MIN" states="3" />
+    <imglist name="_skin.tab.main" src="PNG:ID_TAB_MAIN" states="3" />
+    <imglist name="_skin.tab.icon" src="PNG:ID_TAB_ICON" states="8" />
+    <imglist name="_skin.white.bg" src="PNG:ID_WHITE_BG"  alpha="100"/>
+    <imglist name="_skin.logo" src="PNG:ID_SKIN_LOGO" />
+    <imglist name="_skin.ver.line" src="PNG:ID_SKIN_VER_LINE" />
+    <imglist name="_skin.hor.line" src="PNG:ID_SKIN_HOR_LINE" />
+    <imglist name="_skin.reg.bg" src="PNG:ID_SKIN_REG_BG" />
+    <imglist name="_skin.firewall" src="PNG:ID_SKIN_FIREWALL" states="3" />
+    <imglist name="_skin.guard" src="PNG:ID_SKIN_GUARD" states="3" />
+    <imglist name="_skin.payinsure" src="PNG:ID_SKIN_PAYINSURE" states="3" />
+    <imglist name="_skin.check.btn" src="PNG:ID_SKIN_CHECK_BTN" states="3" />
+    <imglist name="_skin.error" src="PNG:ID_SKIN_ERROR" />
+    <imglist name="_skin.feedback" src="PNG:ID_SKIN_FEEDBACK" states="3" />
+    <imglist name="_skin.skin" src="PNG:ID_SKIN_SKIN" states="3" />
+    <imglist name="_skin.menu" src="PNG:ID_SKIN_MENU" states="3" />
+  </skin>
+
+  <style>
+    <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
+  </style>
+
+  <objattr>
+  </objattr>
+</UIDEF>

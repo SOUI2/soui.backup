@@ -1,0 +1,34 @@
+﻿<menuRoot skin="_skin.sys.wnd.bkgnd" iconSkin="skin_small_icons" itemHeight="26" iconPos="4,4" textOffset="5" iconBarWidth="24" maxWidth="180" minWidth="170" margin="5,5,5,5" colorBkgnd="#ff0000">
+  <menuItem hotKey="e" id="1" check="1" >导出配置</menuItem>
+  <menuItem id="2" icon="1" >导入配置</menuItem>
+  <menuItem id="3" radio="1" check="1" enable="0" colorTextDisable="#c0c0c0" >检查更新</menuItem>
+  <menuItem height="50">
+    <sliderbar pos="5,0,-5,@20" min="0" max="100" value="30" name="menu_slider"/>
+    <text pos="|0,[5" offset="-0.5,0" name="menu_text">50</text>
+  </menuItem>
+  <sep/>
+  <menuItem colorTextHover="#ff0000">帮助与反馈
+    <menuItem id="51" icon="0" >访问官网</menuItem>
+    <menuItem id="52" icon="1" >帮助指南</menuItem>
+    <menuItem id="53" icon="2" >错误提交</menuItem>
+    <menuItem id="54" icon="3" >关于SOUI</menuItem>
+  </menuItem>
+  <menuItem >
+    帮助与反馈2
+    <menuItem id="51" icon="0" >访问官网</menuItem>
+    <menuItem id="52" icon="1" >帮助指南</menuItem>
+    <menuItem id="53" icon="2" >错误提交</menuItem>
+    <menuItem id="54" icon="3" >关于SOUI</menuItem>
+    <menuItem>
+      三级菜单
+      <menuItem id="551" icon="0" >访问官网</menuItem>
+      <menuItem id="552" icon="1" >帮助指南</menuItem>
+      <menuItem id="553" icon="2" >错误提交</menuItem>
+      <menuItem id="554" icon="3" >关于SOUI</menuItem>
+    </menuItem>
+  </menuItem>
+
+  <sep/>
+  <menuItem id="7" hotKey="c">红色调</menuItem>
+  <menuItem id="6" hotKey="x">退出(&X)</menuItem>
+</menuRoot>

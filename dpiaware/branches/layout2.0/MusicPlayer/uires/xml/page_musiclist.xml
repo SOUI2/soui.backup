@@ -1,0 +1,115 @@
+﻿<!-- 功    能：使用SOUI自主设计音乐播放器 -->
+<!-- 作    者：小可                       -->
+<!-- 添加时间：2015.01.09 17：00          -->
+<!-- 版本类型：初始版本                   -->
+<!-- 联系方式：QQ-1035144170              -->
+
+<include>
+  <window name="win_music" pos="0,0,-1,-0" skin="_skin.shadow.bkg">
+    <!--<imgbtn name="btn_TEST" skin="_skin.sys.btn.restore" pos="-121,0" animate="1" />-->
+    <text pos="10,5" colorText="#ff0000">音乐列表</text>
+    <!--<text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#ff0000">本地音乐</text>-->
+
+    <!-- SOUI的treebox实现音乐列表 -->
+    <!--<treebox pos="5,50,-5,-50" name="music_tree_box" itemHeight="60" colorItemBkgnd="#6E96C8" colorItemSelBkgnd="#065DED" indent="10" vscrollBar="1" sbSkin="_skin.vscrollbar" autoVscroll="1" hscrollBar="0">
+      <item>
+        <img skin="_skin.logo.skin" pos="5,5,55,55" />
+        <text pos="70,5, " valign="middle" align="left" colorText="#CDD7E1" >歌曲：BEYOND - 不再犹豫</text>
+        <text pos="70,20 " valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
+        <text pos="70,35 " valign="middle" align="left" colorText="#CDD7E1" >时长：05:01 </text>
+        --><!--交流群:229313785--><!--
+      </item>
+
+      <item check="1">
+        <img skin="_skin.spectrum" pos="5,5,55,55" />
+        <text pos="70,5"  valign="middle" align="left" colorText="#CDD7E1" >歌曲：本兮 - 寂夜</text>
+        <text pos="70,20" valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
+        <text pos="70,35" valign="middle" align="left" colorText="#CDD7E1" >时长：03:39 </text>
+      </item>
+
+      <item>
+        <img skin="_skin.logo.skin" pos="5,5,55,55" />
+        <text pos="70,5  " valign="middle" align="left" colorText="#CDD7E1" >歌曲：刘德华 - 暗里着迷 (粤)</text>
+        <text pos="70,20 " valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
+        <text pos="70,35 " valign="middle" align="left" colorText="#CDD7E1" >时长：04:50 QQ:1035144170 </text>
+      </item>
+    </treebox>-->
+
+    <fadeframe pos="70,10,-70,45" targetName="webkit_toolbar" showAlpha="200">
+      <!--一个实现渐显渐隐动画的工具栏控件-->
+    </fadeframe>
+    <window pos="70,10,-70,45" name="webkit_toolbar" size="full,full" colorBkgnd="#cccccc" layeredWindow="1">
+      <!--这个窗口是前面的fadeframe的作用对象-->
+      <button pos="{15,5"   height="25" width="50" name="btn_webkit_back"  >本地音乐</button>
+      <button pos="[5,5," height="25" width="50" name="btn_webkit_fore"    >在线音乐</button>
+      <button pos="[5,5," height="25" width="50" name="btn_webkit_refresh" >音乐电台</button>
+      <button pos="[5,5," height="25" width="50" name="btn_webkit_go"      >音乐-MV</button>
+    </window>
+
+    <tabctrl name="tab_music" pos="5,50,-5,-50" alpha="200" layeredWindow="0" animateSteps="10"  colorBkgnd="#cccccc" tabAlign="left" tabSkin="_skin.tab.main" iconSkin="_skin.tab.icon"  tabInterSize="5" tabHeight="70" tabWidth="50" icon-x="5" icon-y="5" colorText="#000000bb">
+      <page title="本地音乐">
+        <window pos="0,0,-0,-0" skin="_skin.white.bkg" cache="1">
+          <text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#ff0000">本地音乐</text>
+          <!-- SOUI的listboxex实现音乐列表 -->
+          <listboxex name="music_lbe" pos="0,0,-0,-0" itemHeight="60" vscrollBar="1" sbSkin="_skin.vscrollbar" autoVscroll="1" hscrollBar="0" class="cls_edit">
+            <items>
+              <item>
+                <img skin="_skin.logo.skin" pos="5,5,55,55" />
+                <text pos="70,5, " valign="middle" align="left" colorText="#CDD7E1" >歌曲：BEYOND - 不再犹豫</text>
+                <text pos="70,20 " valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
+                <text pos="70,35 " valign="middle" align="left" colorText="#CDD7E1" >时长：05:01 </text>
+                <!--交流群:229313785-->
+              </item>
+
+              <item check="1">
+                <img skin="_skin.spectrum" pos="5,5,55,55" />
+                <text pos="70,5"  valign="middle" align="left" colorText="#CDD7E1" >歌曲：本兮 - 寂夜</text>
+                <text pos="70,20" valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
+                <text pos="70,35" valign="middle" align="left" colorText="#CDD7E1" >时长：03:39 </text>
+              </item>
+
+              <item>
+                <img skin="_skin.logo.skin" pos="5,5,55,55" />
+                <text pos="70,5  " valign="middle" align="left" colorText="#CDD7E1" >歌曲：刘德华 - 暗里着迷 (粤)</text>
+                <text pos="70,20 " valign="middle" align="left" colorText="#CDD7E1" >歌手：小可 </text>
+                <text pos="70,35 " valign="middle" align="left" colorText="#CDD7E1" >时长：04:50 QQ:1035144170 </text>
+              </item>
+            </items>
+          </listboxex>
+        </window>
+      </page>
+      
+      <page title="在线音乐">
+        <text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#ff0000">在线音乐</text>
+      </page>
+      <page title="音乐电台">
+        <text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#ff0000">音乐电台</text>
+      </page>
+      <page title="音乐-MV">
+        <text pos="|0,|5" pos2type="center" font="face:微软雅黑,adding:9" colorText="#ff0000">音乐-MV</text>
+      </page>
+      
+    </tabctrl>
+    
+    
+
+    
+    <!--<text name="play_title" pos="15,-35" colorText="#000000" font="underline:1">当前播放: 无 </text>-->
+    <scrolltext name="play_title" show="1" pos="{90,[10,@200,@30" colorText="#ff0000" speed="10">Pay attention! apng would be played only if imgdecoder-png is used here!</scrolltext>
+  </window>
+  
+  <!--<group pos="0,0,-0,-0">
+    I'm a group
+    <text pos="100,10" pos2type="center">center align1</text>
+    <text pos="100,30" pos2type="center">center align align</text>
+    <text pos="250,50" pos2type="rightTop">align right top</text>
+    <text pos="250,70" pos2type="rightTop">align right top 2</text>
+    <check pos="250,90" pos2type="rightTop">check right top</check>
+    <check pos="250,110" pos2type="rightTop" font="adding:-5">check right top1235</check>
+    <text pos="250,130" class="cls_txt_red">text left top</text>
+    <button pos="10,150,@150,@30">button 1 using @</button>
+    <button pos="10,200" width="150" height="30">button 1 using width</button>
+
+    <button name="btn_hidetst" pos="300,150,@100,@30" display="0" tip="click me to hide me and see how the next image will move">hide test</button>
+  </group>-->
+</include>

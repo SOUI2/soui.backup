@@ -1,0 +1,28 @@
+﻿<include>
+  <group pos="0,0,-0,-0" id="10000">
+    I'm a group
+    <text pos="100,10" offset="-0.5,-0.5">center align1</text>
+    <text pos="100,30" offset="-0.5,-0.5">center align align</text>
+    <text pos="250,50" offset="-1,0">align right top</text>
+    <text pos="250,70" offset="-1,0">align right top 2</text>
+    <check pos="250,90" offset="-1,0">check right top</check>
+    <check pos="250,110" offset="-1,0" font="adding:-5">check right top1235</check>
+    <text pos="250,130" class="cls_txt_red">text left top</text>
+    <button pos="10,150,@150,@30">button 1 using @</button>
+    <button id="4321" pos="10,200" width="150" height="30">button 1 using width</button>
+
+    <text pos="%50,20,%90,@50" colorBkgnd="#ff0000">pos="%50,100,%90,@50"</text>
+    
+    <button name="btn_display" pos="300,150,@100,@30" display="0" >Image Ref</button>
+    <window skin="skin_page_icons" pos="[5,150,-10,-10" id="1236">
+      <text pos="|0,|0" offset="-0.5,-0.5" font="adding:20" colorText="#ff000066">alpha test</text>
+      <text pos="5,5" id="100" visible="0">ref text</text>
+      <button pos="sib.left@100:10,sib.bottom@100:10,@100,@25" name="btn_hidetst" tip="click me to hide me and see how the next image will move">ref id:100</button>
+    </window>
+
+    <window pos="10,300" colorBkgnd="#cccccc">
+      <text pos="5,5" >child1</text>
+      <text pos="-30,20" offset="-1,0" multilines="1">parent position is determined by childs\npos="-30,60" offset="-1,-1"</text>
+    </window>
+  </group>
+</include>

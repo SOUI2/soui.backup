@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="宋体" size="15"/>
+
+  <string>
+    <title value="IECTRL"/>
+    <ver value="1.0"/>
+  </string>
+  
+  <skin>
+  </skin>
+
+  <style>
+    <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
+  </style>
+
+  <objattr>
+  </objattr>
+</UIDEF>

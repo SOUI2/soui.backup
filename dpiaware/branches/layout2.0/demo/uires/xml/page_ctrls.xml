@@ -1,0 +1,430 @@
+﻿<include>
+  <tabctrl pos="0,0,-0,-0" alpha="200" layeredWindow="1" animateSteps="10"  colorBkgnd="#cccccc" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
+    <page title="listctrl">
+      <listctrl name="lc_test" hotTrack="1" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cursor="CUR_TST" font="underline:1" itemSkin="skin_tab_left">
+        <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+          <items>
+            <item width="150">name</item>
+            <item width="150">gender</item>
+            <item width="150">age</item>
+            <item width="150">score</item>
+          </items>
+        </header>
+      </listctrl>
+    </page>
+    <page title="listctrlex">
+		<listctrlex name="lcex_test2" colorBkgnd="#ffffff" hotTrack="1" multiSelection="1" pos="10,10,-10,-10" itemHeight="70" headerHeight="30"  itemSkin="skin_tab_left" colorItemSelBkgnd="#f7f7f7ff" colorItemHotBkgnd="#f7f7f777" selectRangeSkin="skin_lcex_selectrange">
+			<header align="center"  sortSkin="skin_lcex_header_arrow" itemSkin="skin_lcex_header" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" colorBkgnd="#ffffff" >
+			  <items>
+				<item width="480">软件名称</item>
+				<item width="95">软件评分</item>
+				<item width="100">大小</item>
+				<item width="100">安装时间</item>
+				<item width="100">使用频率</item>
+				<item width="100">操作</item>
+			  </items>
+			</header>
+			<items>
+			  <item>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_icon1" pos="10,8" height="54" width="54" msgTransparent="0" /> 
+					<text pos="70,16" font="bold:1,adding:-1">鲁大师</text>
+					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">鲁大师是一款专业的硬件检测，驱动安装工具</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="10,16"  />
+					<img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="25,16"  />
+					<img skin="skin_star2" iconIndex="1" msgTransparent="0" pos="40,16"  />
+					<img skin="skin_star2" iconIndex="2" msgTransparent="0" pos="55,16"  />
+					<img skin="skin_star2" iconIndex="2" msgTransparent="0" pos="70,16"  />
+					<text pos="15,36,50,-16" font="adding:-5"  >5.4分</text>
+					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >20.92M</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<imgbtn animate="1" pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+				</window>
+			  </item>
+			  <item>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_icon2" pos="10,8" height="54" width="54" msgTransparent="0" /> 
+					<text pos="70,16" font="bold:1,adding:-1">Photoshop</text>
+					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">强大的图片处理工具</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
+					<img skin="skin_star1" iconIndex="1" msgTransparent="0" pos="55,16"  />
+					<img skin="skin_star1" iconIndex="2" msgTransparent="0" pos="70,16"  />
+					<text pos="15,36,50,-16" font="adding:-5"  >8.9分</text>
+					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >520.54M</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-02-09</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+				</window>
+			  </item>
+			  <item>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_icon3" pos="10,8" height="54" width="54" msgTransparent="0" /> 
+					<text pos="70,16" font="bold:1,adding:-1">QQ6.8</text>
+					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">腾讯公司出品的即时聊天工具</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
+					<img skin="skin_star1" iconIndex="1" msgTransparent="0" pos="55,16"  />
+					<img skin="skin_star1" iconIndex="2" msgTransparent="0" pos="70,16"  />
+					<text pos="15,36,50,-16" font="adding:-5"  >8.3分</text>
+					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+				</window>
+			  </item>
+			  <item>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_icon4" pos="10,8" height="54" width="54" msgTransparent="0" /> 
+					<text pos="70,16" font="bold:1,adding:-1">Visual Studio 2008</text>
+					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">Microsoft公司的程序开发套件</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
+					<img skin="skin_star1" iconIndex="1" msgTransparent="0" pos="55,16"  />
+					<img skin="skin_star1" iconIndex="2" msgTransparent="0" pos="70,16"  />
+					<text pos="15,36,50,-16" font="adding:-5"  >8.2分</text>
+					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2085.92M</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+				</window>
+			  </item> 
+			  <item>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_icon5" pos="10,8" height="54" width="54" msgTransparent="0" /> 
+					<text pos="70,16" font="bold:1,adding:-1">YY</text>
+					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">YY语音</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="55,16"  />
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="70,16"  />
+					<text pos="15,36,50,-16" font="adding:-5"  >10.0分</text>
+					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+				</window>
+			  </item>
+			  <item>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_icon6" pos="10,8" height="54" width="54" msgTransparent="0" /> 
+					<text pos="70,16" font="bold:1,adding:-1">火狐浏览器</text>
+					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">速度最快的浏览器</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="10,16"  />
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="25,16"  />
+					<img skin="skin_star1" iconIndex="0" msgTransparent="0" pos="40,16"  />
+					<img skin="skin_star1" iconIndex="1" msgTransparent="0" pos="55,16"  />
+					<img skin="skin_star1" iconIndex="2" msgTransparent="0" pos="70,16"  />
+					<text pos="15,36,50,-16" font="adding:-5"  >8.5分</text>
+					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+				</window>
+			  </item>
+			  <item>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_icon7" pos="10,8" height="54" width="54" msgTransparent="0" /> 
+					<text pos="70,16" font="bold:1,adding:-1">迅雷</text>
+					<text pos="70,36,-10,-16" font="bold:1,adding:-4" dotted="1">迅雷下载软件</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="10,16"  />
+					<img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="25,16"  />
+					<img skin="skin_star2" iconIndex="0" msgTransparent="0" pos="40,16"  />
+					<img skin="skin_star2" iconIndex="1" msgTransparent="0" pos="55,16"  />
+					<img skin="skin_star2" iconIndex="2" msgTransparent="0" pos="70,16"  />
+					<text pos="15,36,50,-16" font="adding:-5"  >7.3分</text>
+					<link pos="55,36,85,-16" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<text pos="0,26,-0,-26" font="adding:-4" align="center" >今天</text>
+				</window>
+				<window clipClient="1" cache="1" >
+					<imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" >卸载</imgbtn>
+				</window>
+			  </item>
+			</items>  
+			
+		  </listctrlex>
+    </page>
+    <page title="edit and hotkey" colorBorder="#ffff00" margin-x="5" margin-y="5">
+      <text pos="50,20">hotkey 1:</text>
+      <hotkey name="ctrl_hk1" width="200" height="25" class="cls_edit"/>
+      <text pos="50,[5">hotkey 2:</text>
+      <hotkey name="ctrl_hk2" width="200" height="25" class="cls_edit"/>
+      <text pos="50,[5">ip address control:</text>
+      <ipctrl name="ip_test" width="200" height="25" class="cls_edit"/>
+      <text pos="50,[5" multiLines="1">single line edit in window, \nshow how attribute "trackMouseEvent" will work:</text>
+      <window class="cls_edit" pos="50,[5,@200,@35" trackMouseEvent="1">
+        <edit pos="0,0,-30,-0" font="adding:10" margin="0" cueText="cue text" cueColor="rgb(255,0,0)" password="1">scroll edit</edit>
+        <button pos="-30,0,-0,-0" >:)</button>
+      </window>
+    </page>
+    <page title="buttons" colorBorder="#ffff00" margin-x="15" margin-y="15">
+      <button name="btn_msgbox" pos="10,50" width="200" height="30" accel="ctrl+alt+f9" font="bold:1" animate="0">show msg box</button>
+      <text pos="10,[5">press "ctrl+alt+f9" to activate the msgbox button</text>
+      <link pos="10,130" maxWidth="100" class="cls_btn_weblink" dotted="1" href="www.setoutsoft.cn">www.setoutsoft.cn</link>
+      <img pos="10,[10,@100,@100" skin="skin_page_icons" iconIndex="2" tip="img tip" msgTransparent="0"/>
+      <text pos="10,[5" multiLines="1">the image show how to handle message in SImageWnd,\n you can do it by simply setting msgTransparent to 0</text>
+
+      <hr pos="10,[20,-10,@1" lineStyle="dashdotdot" mode="horizontal" colorLine="#ff0000"/>
+      <hr pos="10,{0,-10,-10" lineStyle="dash" mode="tilt" colorLine="#00ff00"/>
+      <hr pos="10,{0,@2,-10" lineStyle="solid" mode="vertical" colorLine="#0000ff" size="2"/>
+    </page>
+    <page title="radiobox">
+      <group pos="10,10,@200,@90">
+        radio
+        <radio pos="10,0" name="radio_1">radio 1</radio>
+        <radio pos="[10,{0" name="radio_2">radio 2</radio>
+        <radio pos="10,[10" name="radio_3" checked="1">radio 3</radio>
+        <radio pos="[10,{0" name="radio_4">radio 4</radio>
+      </group>
+      <group pos="[50,{0,@180,@100">
+        radio2
+        <radio2 pos="10,0" id="10000" name="radio2_1"  skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="[20,{0" id="10001" name="radio2_2"  skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="[20,{0" id="10002" name="radio2_3" skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="10,[10" id="10003" name="radio2_4" checked="1" skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="[20,{0" id="10004" name="radio2_5" skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="[20,{0" id="10005" name="radio2_6" skin="skin_webbtn_forward"></radio2>
+      </group>
+      <tabctrl pos="{0,[10,@300,@200" name="tab_radio2" tabHeight="0" cursel="3" colorBkgnd="#00cc00">
+        <page>
+          <text pos="|0,|0" offset="-0.5,-0.5">page1</text>
+        </page>
+        <page>
+          <text pos="|0,|0" offset="-0.5,-0.5">page2</text>
+        </page>
+        <page>
+          <text pos="|0,|0" offset="-0.5,-0.5">page3</text>
+        </page>
+        <page>
+          <text pos="|0,|0" offset="-0.5,-0.5">page4</text>
+        </page>
+        <page>
+          <text pos="|0,|0" offset="-0.5,-0.5">page5</text>
+        </page>
+        <page>
+          <text pos="|0,|0" offset="-0.5,-0.5">page6</text>
+        </page>
+      </tabctrl>
+    </page>
+    <page title="prog and slider" colorBorder="#ff0000" margin-x="1" margin-y="1">
+      <progress name="prog_test" pos="100,100,@200,@15" font="adding:-8" value="20" min="0" max="100" showPercent="1"/>
+      <sliderbar name="slider_test" thumbInRail="0" pos="100,[10" alpha="200" width="200" value="20" min="0" max="100"/>
+      <sliderbar name="slider_test2" thumbInRail="1" pos="100,[10" alpha="200" width="200" value="20" min="0" max="100"/>
+      <sliderbar name="slider_test3" thumbInRail="0" vertical="1" pos="10,10" alpha="200" height="200" value="20" min="0" max="100"/>
+      <sliderbar name="slider_test4" thumbInRail="1" vertical="1" pos="[10,10" alpha="200" height="200" value="20" min="0" max="100"/>
+    </page>
+    <page title="calendar">
+      <calendar pos="0,0,-0,-0" name="mp_test" daySkin="_skin.sys.btn.normal" footerHeight="30">
+        <text name="label_today" pos="10,-20"/>
+        <button name="btn_today" pos="-50,-25,-5,-0" skin="_skin.sys.btn.normal">today</button>
+      </calendar>
+    </page>
+    <page title="split">
+      <splitrow name="split_row" pos="10,0,-10,-10" sepSize="6">
+        <pane idealSize="250" minSize="30" priority="2" colorBkgnd="#880000" clipClient="1">
+          <text pos="|-50,|-20" colorText="#ffffff">pane1 priority=2</text>
+        </pane>
+        <pane idealSize="400" minSize="30" priority="1">
+          <splitcol name="split_col" pos="0,0,-0,-0" sepSize="6">
+            <pane idealSize="200" minSize="30" priority="0" colorBkgnd="#000088" clipClient="1">
+              <text pos="|-50,|-20" colorText="#ffffff">pane2.1 priority=0</text>
+            </pane>
+            <pane idealSize="400" minSize="30" priority="1" colorBkgnd="#008800" clipClient="1">
+              <text pos="|-50,|-20" colorText="#ff0000">pane2.2 priority=1</text>
+            </pane>
+          </splitcol>
+        </pane>
+      </splitrow>
+    </page>
+    <page title="combobox and listbox">
+      <combobox name="cbx_test" pos="10,10,250,40"  dropDown="1" dropHeight="100" class="cls_edit" dotted="0" animateTime="200" curSel="2">
+        <liststyle class="cls_edit"  iconSkin="skin_menuicon" itemSkin="skin_tab_left" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088"/>
+        <editstyle inset="5,0,5,0" colorText="#000000" align="left" colorBkgnd="#FFFFFF"/>
+        <items>
+          <item text="combobox.item1" icon="1" data="100"/>
+          <item text="combobox.item2" icon="2" data="100"/>
+          <item text="combobox.item3" icon="3" data="103"/>
+          <item text="combobox.item4" icon="4" data="100"/>
+          <item text="combobox.item5" icon="5" data="105"/>
+          <item text="combobox.item6" icon="0" data="100"/>
+        </items>
+      </combobox>
+      <button pos="[10,{0,@150,@25" on_command="on_btn_select_cbx">setcursel(-1)</button>
+
+      <listbox name="lb_test" pos="10,50,250,-10" hotTrack="1" itemSkin="skin_tab_left" class="cls_edit"  iconSkin="skin_menuicon" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088">
+        <items>
+          <item text="item1" icon="1" data="100"/>
+          <item text="item2" icon="2" data="100"/>
+          <item text="item3" icon="3" data="103"/>
+          <item text="item4" icon="4" data="100"/>
+          <item text="item5" icon="5" data="105"/>
+          <item text="item6" icon="0" data="100"/>
+        </items>
+      </listbox>
+    </page>
+    <page title="comboboxex">
+      <comboboxex pos="10,10,250,40" textOffset="50"  name="cbx_test2" dropDown="0" dropHeight="250" class="cls_edit" dotted="0" curSel="3" id_text="1" id_icon="2">
+        <liststyle  class="cls_edit" colorBkgnd="#FFFFFF" itemHeight="50" itemSkin="skin_tab_left"   >
+          <template  >
+            <text id="1" pos="5,2" colorText="#ff0000"/>
+            <img id="2" skin="skin_page_icons" msgTransparent="0" tip="this is an img control"/>
+            <button id="3" pos="5,20,100,43" tip="delete cur item">delete</button>
+            <link id="4" maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
+          </template>
+        </liststyle>
+        <editstyle colorText="#000000" align="left" x-margin="0" y-margin="0"/>
+        <items>
+          <item text="combobox.item1" icon="1" data="100"/>
+          <item text="combobox.item2" icon="2" data="100"/>
+          <item text="combobox.item3" icon="3" data="103"/>
+          <item text="combobox.item4" icon="4" data="100"/>
+          <item text="combobox.item5" icon="5" data="105"/>
+          <item text="combobox.item6" icon="6" data="100"/>
+        </items>
+      </comboboxex>
+      <button pos="[10,{0,@150,@25" on_command="on_btn_select_cbx">setcursel(-1)</button>
+      <listboxex name="lbe_test" pos="10,50,250,-10" class="cls_edit" itemSkin="skin_tab_left" itemHeight="50">
+        <items>
+          <item>
+            <text pos="5,2" colorText="#ff0000">text item text item 1</text>
+            <img skin="skin_page_icons" iconIndex="0" msgTransparent="0" tip="this is an img control"/>
+            <button pos="5,20,100,43">item 1</button>
+            <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
+          </item>
+          <item>
+            <text pos="5,2" colorText="#ff0000" >中文字体显示 2</text>
+            <img skin="skin_page_icons" iconIndex="1" msgTransparent="0" tip="this is an img control"/>
+            <button pos="5,20,100,43">item 2</button>
+            <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
+          </item>
+          <item>
+            <text pos="5,2" colorText="#ff0000">text item text item 3</text>
+            <img skin="skin_page_icons" iconIndex="2" msgTransparent="0" tip="this is an img control"/>
+            <button pos="5,20,100,43">item 3</button>
+            <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
+          </item>
+          <item>
+            <text pos="5,2" colorText="#ff0000">text item text item 4</text>
+            <img skin="skin_page_icons" iconIndex="3" msgTransparent="0" tip="this is an img control"/>
+            <button pos="5,20,100,43">item 4</button>
+            <link maxwidth="50" class="cls_btn_weblink" dotted="1" href="www.yy.com">link test</link>
+          </item>
+        </items>        
+      </listboxex>
+    </page>
+    <page title="treectrl">
+      <include src="layout:treectrl"/>
+    </page>
+    <page title="propertygrid">
+      <propgrid pos="10,50,-100,-10" nameWidth="180" orderType="group" switchSkin="skin_propswitch" colorBkgnd="#ffffff" itemHeight="30">
+        <cmdbtnstyle skin="_skin.sys.btn.normal">...</cmdbtnstyle>
+        <groups>
+          <propgroup name="group1" description="desc of group1">
+            <proptext name="text1.1" value="value 1.1">
+              <proptext name="text1.1.3" value="value 1.1.3"/>
+              <proptext name="text1.1.1" value="value 1.1.1"/>
+              <proptext name="text1.1.2" value="value 1.1.2">
+                <proptext name="text1.1.2" value="value 1.1.2"/>
+              </proptext>
+            </proptext>
+            <proptext name="text1.2" value="value 1.2"></proptext>
+          </propgroup>
+          <propgroup name="group2" description="desc of group2">
+            <propoption name="option2.1" value="1" options="true|false|empty"/>
+            <propsize name="size2.1" value="200,300" childrenNames="宽|高"/>
+            <proptext name="text2.2" value="value 2.2"></proptext>
+            <propcolor name="color2.1" value="#00ff00" format="#%02x%02x%02x%02x"/>
+            <proptext name="text2.1" value="value 2.1"/>
+            <proptext name="text2.3" value="value 2.3"/>
+            <proptext name="text2.4" value="value 2.4"/>
+            <proptext name="text2.5" value="value 2.5"/>
+            <proptext name="text2.6" value="value 2.6"/>
+            <proptext name="text2.7" value="value 2.7"/>
+            <proptext name="text2.8" value="value 2.8"/>
+          </propgroup>
+        </groups>
+      </propgrid>
+    </page>
+  </tabctrl>
+</include>

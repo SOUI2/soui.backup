@@ -1,0 +1,14 @@
+﻿<include>
+  <window pos="0,-30,-0,-0" name="toolbar">
+    <button pos="0,|0,@100,@25" offset="0,-0.5" name="btn_save">保存</button>
+    <button pos="[10,|0,@100,@25" offset="0,-0.5" name="btn_clear">清空</button>
+    <window pos="[10,0,-0,-0">
+      <!--arrange mode-->
+      <radio name="radio_horz" pos="0,|0" offset="0,-0.5" checked="1">水平排列</radio>
+      <radio name="radio_vert" pos="[10,|0" offset="0,-0.5">垂直排列</radio>
+    </window>
+  </window>
+  <imgcanvas pos="0,0,-0,{0" name="wnd_canvas" skin="skin_transbkgnd" clipClient="1" colorText="#0000cc">
+    拖动图片到本窗口,支持多个图片
+  </imgcanvas>
+</include>

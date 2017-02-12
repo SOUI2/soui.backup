@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="微软雅黑" size="18"/>
+  
+  <string>
+    <ver value="1.5"/>
+  </string>
+  
+  <id>
+    <id_test1 value="100"/>
+    <id_test2 value="101"/>
+    <id_test3 value="102"/>
+  </id> 
+  
+  <skin>
+    <!--全局skin对象-->
+    <imglist name="skin_page_icons"	src="imgx:png_page_icons" states="9" alpha="100"/>
+    <imglist name="skin_small_icons" src="imgx:png_small_icons" states="12"/>
+    <imglist name="skin_tree_icon"		src="imgx:png_treeicon" states="3"/>
+
+    <imglist name="skin_menuicon" src="imgx:png_small_icons" states="12"/>
+    <imglist name="skin_webbtn_back" src="imgx:webbtn_back" states="4"/>
+    <imglist name="skin_webbtn_forward" src="imgx:webbtn_forward" states="4"/>
+    <imglist name="skin_webbtn_refresh" src="imgx:webbtn_refresh" states="4"/>
+    <imgframe name="skin_tab_left" src="imgx:png_tab_left" states="3" margin="1,1,1,1"/>
+    <imglist name="skin_tab_left_splitter" src="imgx:png_tab_left_splitter"/>
+    <imglist name="skin_tab_main" src="imgx:png_tab_main" states="3"/>
+    <imglist name="skin_btn_menu" src="imgx:btn_menu" states="3"/>
+    <imglist name="skin_propswitch" src="imgx:png_propswitch" states="4"/>
+	  <imglist name="skin_bkgnd" src="IMGX:jpg_bkgnd"/>
+	  <imglist name="skin_btn_expand" src="imgx:btn_expand" states="6"/>
+    <vscrollbar name="skin_vscrollbar" src="imgx:png_vscroll" states="3" margin="4"/>
+    <imglist name="skin_chrome_tab_new" src="imgx:png_chrome_tab_new" states="3"/>
+    <imglist name="skin_chrome_tab_close" src="imgx:png_chrome_tab_close" states="3"/>
+
+    <imgframe name="skin_btn_curve" src="img.calendar2:png_skin_btn_curve"    />
+    <imgframe name="skin_btn_semiarc" src="img.calendar2:png_skin_btn_semiarc"     />
+    <imgframe name="skin_png_line_1px" src="img.calendar2:png_line_1px"      />
+    <imgframe  name="skin_png_radio_button" src="img.calendar2:png_radio_button" states="8"    margin="3" />
+    <imgframe name="cal_arrow_left" src="img.calendar2:cal_arrow_left"  states="3" />
+    <imgframe name="cal_arrow_right" src="img.calendar2:cal_arrow_right"  states="3"   />
+    <imgframe name="cal_btn_day" src="img.calendar2:cal_btn_day"  states="3"   />
+
+	  <imgframe name="skin_lcex_header" src="imgx:png_lcex_header" states="4" margin-x="2" margin-y="2"/>
+	  <imgframe name="skin_lcex_header_arrow" src="imgx:png_lcex_header_arrow" states="2"  />
+	  <imgframe name="skin_lcex_selectrange" src="imgx:png_lcex_selectrange" margin-x="1" margin-y="1"/>
+	  <imgframe name="skin_icon1" src="imgx:png_icon1" />
+	  <imgframe name="skin_icon2" src="imgx:png_icon2" />
+	  <imgframe name="skin_icon3" src="imgx:png_icon3" />
+	  <imgframe name="skin_icon4" src="imgx:png_icon4" />
+	  <imgframe name="skin_icon5" src="imgx:png_icon5" />
+	  <imgframe name="skin_icon6" src="imgx:png_icon6" />
+	  <imgframe name="skin_icon7" src="imgx:png_icon7" />
+	  <imgframe name="skin_star1" src="imgx:png_star1" states="3" />
+	  <imgframe name="skin_star2" src="imgx:png_star2" states="3" />
+	  <imgframe name="skin_install" src="imgx:png_install" states="3" />
+
+    <gif name="gif_horse" src="img.game:gif_horse"/>
+    <gif name="gif_win" src="img.game:gif_win"/>
+    <imglist name="img_coin" src="img.game:img_coin"/>
+  </skin>
+
+  <style>
+    <!--全局style对象-->
+    <class name="cls_dlg_frame" skin="_skin.sys.wnd.bkgnd" font="" colorText="#000000" margin-x="0"/>
+
+    <class name="cls_btn_link"    cursor="hand" colorHover="#0A84D2" />
+    <!--定义文字按钮的样式-->
+    <class name="cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" font="italic:1" fontHover="underline:1,italic:1" />
+
+    <class name="cls_txt_red"     font="face:宋体,bold:1"  colorText="#FF0000" />
+    <!--定义白色粗体宋体-->
+    <class name="cls_txt_black"   font="face:宋体,bold:1"  colorText="#000000" />
+    <!--定义黑色粗体宋体-->
+    <class name="cls_txt_white"   font="face:宋体,bold:1"  colorText="#FFFFFF" />
+    <!--定义白色粗体宋体-->
+
+    <class name="normalbtn" font="" alpha="200" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
+
+    <class name="toptext" textMode="20" />
+    <class name="vcentertext" textMode="24"/>
+    <class name="rightvcentertext" textMode="26"/>
+    <class name="centertext" textMode="25"/>
+    <class name="righttext" textMode="22"/>
+
+    <class name="linkimage" cursor="hand"/>
+
+  </style>
+
+  <objattr>
+    <!--控件默认属性-->
+    <button class="normalbtn"/>
+    <imgbtn class="linkimage"/>
+    <tabctrl colorText="#000000" tabAlign="top" tabWidth="70" tabHeight="38" tabInterSize="0" tabPos="10" dotted="1"/>
+    <edit transParent="1" margin-x="2" margin-y="2"/>
+    <treectrl colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088" colorItemText="#000000" colorItemSelText="#FFFFFF" indent="17" itemMargin="4"/>
+  </objattr>
+</UIDEF>

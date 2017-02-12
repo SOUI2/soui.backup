@@ -1,0 +1,54 @@
+<SOUI name="ChatFrmae" width="900" height="600" minsize="600,500" margin="10,10,10,10" appWnd="1" resizable="1" translucent="1" sendWheel2Hover="1">
+	<root skin="skin.shadow">
+		<window pos="6,6,-6,-6" name="bkwindow" colorBkgnd="#dfecf6" >
+			<include src="layout:chatframe-sessionlist"/>
+			
+			<splitbar  name="split-vert" pos="100,0,@5,-0" vertical="1" resizeHostWnd="1" maxSize="200" minSize="65" skin="skin.splitbar_ver" colorBkgnd="#ced9e2" />
+
+			<include src="layout:chatframe-caption"/>
+			
+			<tabctrl name="tab_main" tabPos="5" tabAlign="top" font="face:微软雅黑,size:12"
+					pos="{0,[10,-0,-0" 
+					show="1" curSel="0" focusable="0" tabHeight="35" tabWidth="65" tabInterSize="2"
+					tabSkin="skin.group_tabbtn" iconSkin="skin.group_top_toolbar" 
+					text-x="32"
+					icon-x="5" icon-y="5">
+				
+				<page title="聊天" tip="聊天"  margin-y="1" colorBorder="#ced9e2">
+					<imrichedit name="re-message" pos="5,[0,}0,]0" bkgndBlend="1"  enableDragdrop="1" readOnly="1" autoSel="0" multiLines="1" autoWordSel="0" vscrollBar="1" wordWrap="1"  autoVscroll="0" hscrollBar="0" wantReturn="1" scrollSpeed="60"/>
+					
+					<splitbar pos="0,-150,}0,@5" vertical="0" resizeHostWnd="0" maxSize="250" minSize="65">
+						<hr size="1" colorLine="#ced9e2" pos="0,[2,-0,@1" msgTransparent="1" />
+					</splitbar>
+
+					<window pos="0,[0,}0,@24">
+						<check pos="5,0,@24,@22" focusable="0" skin="skin.chatbtn_font" />
+						<imgbtn name="send-pic" pos="[5,0" focusable="0" skin="skin.chat_toolbtn_sendpic" cursor="hand" />
+						<windowex pos="[5,0,@34,@22" skin="skin.chat_toolbar_bk" trackMouseEvent="1">
+							<imgbtn pos="[0,0" skin="skin.chatbtn_cut" />
+							<imgbtn pos="[0,0" skin="skin.chat_toolbtn_arrow" />
+						</windowex>
+					</window>
+					
+					<imrichedit name="re-input" pos="5,[0,}0,-30" bkgndBlend="1"  enableDragdrop="1" autoSel="0" multiLines="1" autoWordSel="0" vscrollBar="1" wordWrap="1"  autoVscroll="1" hscrollBar="0" wantReturn="1" cursor=""/>
+					<!-- 聊天框的底栏,放置发送/关闭按钮,等公司做大了,以后可能还有广告,哈哈 -->
+					<include src="layout:chatframe-bottombar"/>
+					
+					<!-- 群聊侧边栏,放置群公告、群应用、群成员等内容 -->
+					<include src="layout:chatframe-sidebar-group"/>
+				</page>
+				
+				<page title="公告" tip="公告"  margin-y="1" colorBorder="#ced9e2">
+				</page>
+				
+				<page title="相册" tip="相册"  margin-y="1" colorBorder="#ced9e2">
+				</page>
+				
+				<page title="文件" tip="文件"  margin-y="1" colorBorder="#ced9e2">
+				</page>
+			</tabctrl>
+		
+			<img skin="skin.ad" pos="-200,44,-0,@40" />
+		</window>
+	</root>
+</SOUI>

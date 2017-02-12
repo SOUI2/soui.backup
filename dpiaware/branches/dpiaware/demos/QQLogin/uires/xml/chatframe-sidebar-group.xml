@@ -1,0 +1,47 @@
+<include>
+	<!--群组聊天框的侧边栏,根窗口的pos不要依赖于上一个兄弟节点,否则有可能会循环依赖-->
+	
+	<window pos="-200,0,-0,-0" margin-x="1" colorBorder="#ced9e2">
+		<window pos="[0,0,-0,@25" colorBkgnd="#d8e8f6">
+			<text pos="10,0,80,-0" font="size:12">群通知</text>
+		</window>
+		<img pos="0,[0,-0,@140" skin="skin.no_annouce" />
+		<window pos="0,[0,-0,@25" colorBkgnd="#d8e8f6">
+			<text pos="10,0,80,-0" font="size:12">群应用</text>
+			<link  pos="-30,0,-0,-0" cursor="hand" font="size:12" fontPush="underline:1,size:12" fontHover="underline:1,size:12" colorText="#1e78d5" colorTextHover="#1e78d5">更多</link>
+		</window>
+		<window pos="0,[0,-0,@70">
+			<tabctrl pos="0,0,-0,-5" tabPos="89" animateSteps="10"  tabAlign="bottom" 
+				tabSkin="skin.group_app_tabbtn"  iconSkin="skin.group_app_tabicon"  focusable="0" 
+				tabInterSize="2" curSel="0" tabWidth="10" tabHeight="3" colorBkgnd="#e8f1f9" cursor="hand">
+				<page >
+					<window pos="0,0,-0,-0" >
+						<imgbtn pos="13,|-12"  skin="skin.group_app1" />
+						<imgbtn pos="63,|-12" skin="skin.group_app2" />
+						<imgbtn pos="113,|-12" skin="skin.group_app3" />
+						<imgbtn pos="163,|-12" skin="skin.group_app4" />
+					</window>
+				</page>
+				<page iconIndex="0">
+					<window pos="0,0,-0,-0">
+						<imgbtn pos="13,|-12" skin="skin.group_app5" />
+						<imgbtn pos="63,|-12" skin="skin.group_app6" />
+					</window>
+				</page>
+			</tabctrl>
+		</window>
+		<window pos="0,[0,-0,-0" colorBkgnd="#d8e8f6">
+			<imgbtn pos="0,0,-0,@24" skin="skin.group_expandbtn" tip="展开群组" font="size:12">群成员(366/686)</imgbtn>
+			<check pos="-20,2,-0,@20" focusable="0"  skin="skin.group_searchchk" />
+			<window pos="0,[5,-2,@24" colorBkgnd="#b7c5d1" name="search_group" show="0">
+				<edit pos="5,5,-5,-5" cueText="搜索群成员" cueColor="#7f7f7f" font="size:12"/>
+			</window>
+			<listview pos="0,[2,-0,-0" name="group_member_list" dividerSize="1" wantTab="1">
+				<template itemHeight="20" colorHover="#cccccc" colorSelected="#f2ebcd" trackMouseEvent="1">
+					<imageMask pos="10,|-8,@16,@16" skin="skin.icon5" mask="PNG:ID_ICON_MASK.g" name="member_avatar"/>
+					<text pos="25,0" colorText="#ff0000" name="nickname" font="size:12">【传说】蓝先生(563992016)</text>
+				</template>
+			</listview>
+		</window>
+	</window>
+</include>

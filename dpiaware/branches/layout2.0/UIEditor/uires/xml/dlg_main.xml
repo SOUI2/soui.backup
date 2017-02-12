@@ -1,0 +1,90 @@
+﻿<SOUI trCtx="dlg_main" title="UIEditor For SOUI ver:%ver%" width="600" height="400" appwin="1" margin="5,5,5,5"  resize="1" translucent="0" >
+  <root>
+    <window name="maindlg" pos="0,0,-0,-0" class="cls_dlg_frame">
+      <caption id="101" pos="0,0,-0,29">
+        <text pos="11,9" class="cls_txt_red">UIEditor For SOUI ver:%ver%</text>
+        <imgbtn id="1" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+        <imgbtn name="btn_sys_maximize" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
+        <imgbtn name="btn_sys_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
+        <imgbtn name="btn_sys_minimize" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+      </caption>
+      <window pos="5,29,-5,-5">
+        <splitcol pos="0,0,-0,-0" sepsize="6">
+          <pane name="pane_project" idealsize="350" minsize="200" priority="0">
+            <window name="prj_toolbar" height="30" width="full">
+              <!--项目工具栏-->
+              <button name="prg_btn_open" width="100" height="full">打开项目</button>
+              <button name="prg_btn_save" width="100" height="full">保存项目</button>
+            </window>
+            <tabctrl name="tab_prj" pos="0,30,-0,-0" align="top" tabwidth="70" tabheight="30" tabspacing="0" tabpos="10">
+              <page title="files view">
+                <!--项目文件列表-->
+                <listctrl name="prj_list_file" pos="0,0,-0,-30" itemHeight="20" headerHeight="30" tabstop="1">
+                  <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+                    <items>
+                      <item width="60">type</item>
+                      <item width="50">name</item>
+                      <item width="70">file</item>
+                    </items>
+                  </header>
+                </listctrl>
+                <button name="prg_btn_add_file" pos="0,-25,100,-0">增加文件</button>
+              </page>
+              <page title="skins view">
+                <!--项目皮肤列表-->
+                <listctrl name="prj_list_skin" pos="0,0,-0,-30" itemHeight="20" headerHeight="30" tabstop="1">
+                  <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+                    <items>
+                      <item width="60">type</item>
+                      <item width="50">name</item>
+                      <item width="70">src</item>
+                    </items>
+                  </header>
+                </listctrl>
+                <button name="prg_btn_add_skin" pos="0,-25,100,-0">增加皮肤</button>
+              </page>
+            </tabctrl>
+          </pane>
+          <pane name="pane_view" idealsize="250" minsize="30" priority="1">
+            <!--文件预览窗口-->
+            <tabctrl pos="0,0,-0,-0" name="tab_view" tabheight="0">
+              <page title="image_view">
+                <splitcol pos="0,0,-0,-0" skinsep="skin_split_vert" sepsize="6">
+                  <!--采用split分割出一个类9宫表格-->
+                  <pane ideasize="0" minsize="0" priority="0"/>
+                  <pane ideasize="100" minsize="20" priority="3">
+                    <splitrow pos="0,0,-0,-0" skinsep="skin_split_horz" sepsize="6">
+                      <pane ideasize="0" minsize="0" priority="0"/>
+                      <pane ideasize="100" minsize="20" priority="3" skin="_skin.trans.bkgnd">
+                        <!--容纳一个自定义的图片预览控件-->
+                        <tabctrl name="skinview_tab" pos="0,0,-0,-0" tabheight="0">
+                          <page title="imglist">
+                            <skinview_imglist pos="0,0,-0,-0" name="skinview_imglist" clipclient="1"/>
+                          </page>
+                          <page title="imgframe">
+                            <skinview_imgframe pos="0,0,-0,-0" name="skinview_imgframe" clipclient="1"/>
+                          </page>
+                          <page title="button">
+                            <skinview_button pos="0,0,-0,-0" name="skinview_button" clipclient="1"/>
+                          </page>
+                          <page title="gradation">
+                            <skinview_gradation pos="0,0,-0,-0" name="skinview_gradation" clipclient="1"/>
+                          </page>
+                        </tabctrl>
+                      </pane>
+                      <pane ideasize="0" minsize="0" priority="0"/>
+                    </splitrow>
+                  </pane>
+                  <pane ideasize="0" minsize="0" priority="0"/>
+                </splitcol>
+              </page>
+              <page title="xml_view">
+                <realwnd pos="0,0,-0,-0" wndclass="scintilla" name="xmleditor"/>
+              </page>
+            </tabctrl>
+          </pane>
+        </splitcol>
+      </window>
+    </window>
+  </root>
+</SOUI>

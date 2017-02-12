@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<resource>
+	<UIDEF>
+		<file name="XML_INIT" path="uidef\init.xml" />
+	</UIDEF>
+	<values>
+		<file name="string" path="values\string.xml" />
+		<file name="color" path="values\color.xml" />
+		<file name="skin" path="values\skin.xml" />
+	</values>
+	<layout>
+		<file name="dlg.student.sms" path="layout\dlg.student.sms.xml" />
+	</layout>
+	<icon>
+		<file name="logo" path="icon\logo.ico" />
+	</icon>
+	<imgx>
+		<file name="cmn.scrollbar" path="imgx\cmn.scrollbar.png" />
+	</imgx>
+	<image>
+		<file name="bg.setting" path="image\bg.setting[1{2,37,2,2}].png" />
+		<file name="cmn.border" path="image\cmn.border[2{2,2}].png" />
+		<file name="sms.help" path="image\sms.help.png" />
+		<file name="sms.record" path="image\sms.record.png" />
+		<file name="sms.search" path="image\sms.search.png" />
+	</image>
+</resource>

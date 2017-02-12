@@ -1,0 +1,1 @@
+将plugins复制到wke同一级目录，可以播放flash

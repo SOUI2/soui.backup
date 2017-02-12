@@ -1,0 +1,36 @@
+﻿<SOUI trCtx="dlg_newfile" title="Insert New File" width="400" height="300" appwin="0" margin="5,5,5,5" resize="1">
+  <root>
+    <window name="maindlg" pos="0,0,-0,-0" class="cls_dlg_frame">
+      <caption id="101" pos="0,0,-0,29">
+        <text pos="11,9" class="cls_txt_red">Insert New File</text>
+        <imgbtn id="2" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+      </caption>
+      <window pos="5,29,-5,-5">
+        <text pos="0,0" height="25">文件名:</text>
+        <edit name="edit_src_file" pos="[5,0,-80,25" readonly="1" colorBkgnd="#888888"/>
+        <button name="btn_sel_file" pos="-75,0,-0,25">...</button>
+        <text pos="0,40" height="25">资源名:</text>
+        <edit name="edit_res_name" pos="[5,40" width="200" height="25"/>
+        <text pos="0,80" height="25">资源类型:</text>
+        <combobox name="cbx_res_type" pos="[5,80" width="100" align="left" height="25" dropdown="0" dropheight="250">
+          <liststyle class="cls_border"  itemheight="30" colortext="#000000" colorseltext="#FFFFFF" coloritembkgnd="#FFFFFF" coloritemselbkgnd="#000088"/>
+          <items>
+            <item text="layout" icon="1"/>
+            <item text="xml" icon="2"/>
+            <item text="icon" icon="3"/>
+            <item text="cursor" icon="4"/>
+            <item text="translator" icon="5"/>
+            <item text="lua" icon="6"/>
+          </items>
+        </combobox>
+
+        <text pos="0,120" height="25">资源路径:</text>
+        <edit name="edit_res_path" pos="[5,120,-80,145"/>
+        
+        <hr pos="0,-50,-0,-48"/>
+        <button id="1" pos="|-100,-25" pos2type="center" width="100" height="25">确定</button>
+        <button id="2" pos="|100,-25" pos2type="center" width="100" height="25">取消</button>
+      </window>
+    </window>
+  </root>
+</SOUI>

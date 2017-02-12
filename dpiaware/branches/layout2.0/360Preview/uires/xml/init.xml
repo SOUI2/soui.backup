@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="宋体" size="15"/>
+
+  <string>
+    <title value="360Preview"/>
+    <ver value="1.0"/>
+  </string>
+
+  <skin>
+    <imglist name="skin_traymenu_icons"	src="img:traymenu_icons" states="9"/>
+    <imgframe name="skin_bg_light_level" src="img:IMG_BG_LIGHT_LEVEL"/>
+    <imgframe name="skin_bg_main" src="img:IMG_BG_MAIN" />
+    <imgframe name="skin_bg_softmgr" src="img:IMG_BG_SOFTMGR" />
+    <imgframe name="skin_bg_desktop" src="img:IMG_BG_DESKTOP" />
+    <imgframe name="skin_bg_diagnoscan" src="img:IMG_BG_DIAGNOSCAN" />
+    <imgframe name="skin_bg_guard" src="img:IMG_BG_GUARD" />
+    <imgframe name="skin_bg_ucenter" src="img:IMG_BG_UCENTER" />
+    <imgframe name="skin_bg_shishihaohu" src="img:IMG_BG_SHISHIHAOHU" />
+    <imglist name="skin_bg_toolbox" src="img:IMG_BG_TOOLBOX" states="3"/>
+    <imgframe name="skin_ico_sotfmgr" src="img:IMG_ICO_SOFTMGR" />
+    <imgframe name="skin_ico_desktop" src="img:IMG_ICO_DESKTOP" />
+    <imgframe name="skin_ico_diagnosescan" src="img:IMG_ICO_DIAGNOSESCAN" />
+    <imgframe name="skin_ico_guard" src="img:IMG_ICO_GUARD" />
+    <imgframe name="skin_ico_ucenter" src="img:IMG_ICO_UCENTER" />
+    <imgframe name="skin_ico_shishibaohu" src="img:IMG_ICO_SHISHIBAOHU" />
+  </skin>
+
+  <style>
+    <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
+    <class name="cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" font="italic:1" fontHover="underline:1,italic:1" />
+  </style>
+
+  <objattr>
+  </objattr>
+</UIDEF>

@@ -1,0 +1,32 @@
+﻿<SOUI title="ani_demo" width="600" height="400" appwin="1" margin="5,5,5,5"  resizable="1" translucent="1" >
+  <root>
+    <window name="mainwindow" pos="0,0,-0,-0" class="cls_dlg_frame">
+      <caption pos="0,0,-0,29">
+        <text pos="11,9" class="cls_txt_red">ani_demo</text>
+        <imgbtn id="1" name="btn_close" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1"/>
+      </caption>
+      <group pos="5,29,%40,80" name="grp_animode">
+        动画类型
+        <radio pos="5,5" name="ani_slide" checked="1">滑动</radio>
+        <radio name="ani_center">中心辐射</radio>
+        <radio name="ani_blend">混合</radio>
+      </group>
+      <group pos="%41,29,%70,80" name="grp_hor_mode" sep="5">
+        水平滑动类型
+        <radio pos="5,5" name="slide_hor_nagetive" checked="1">右->左</radio>
+        <radio name="slide_hor_positive">左->右</radio>
+      </group>
+      <group pos="%71,29,-5,80" name="grp_ver_mode" sep="5">
+        垂直滑动类型
+        <radio pos="5,5" name="slide_ver_nagetive">下->上</radio>
+        <radio name="slide_ver_positive">上->下</radio>
+      </group>
+
+      <window pos="|0,|10" width="320" height="240" offset="-0.5,-0.5" skin="skin_haha">
+        <text pos="0,0,-0,-0" name="img_tst" skin="skin_girl" font="adding:20" colorText="#ff0000">text</text>
+        <animateimg pos="|0,|0" offset="-0.5,-0.5" skin="img_busy" autostart="1"/>
+      </window>
+      <button pos="|-100,[20,|100,@30" name="btn_ani" class="normalbtn">animator</button>
+    </window>
+  </root>
+</SOUI>

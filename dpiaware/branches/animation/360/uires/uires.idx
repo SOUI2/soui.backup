@@ -1,0 +1,40 @@
+﻿<resource>  
+	<UIDEF>
+		<file name="XML_INIT" path="xml\init.xml"  />
+	</UIDEF>
+	<LAYOUT>
+		<file name="XML_MAINWND" path="xml\dlg_main.xml"  />
+		<file name="check_page" path="xml\check_page.xml" />
+	</LAYOUT>
+	<IMG>
+	</IMG>
+  <png>
+    <file name="ID_PNG_BG" path="image\bg.png"/>
+    <file name="ID_SYS_BTN_CLOSE" path="image\sys_btn_close.png"/>
+    <file name="ID_SYS_BTN_MAX" path="image\sys_btn_max.png"/>
+    <file name="ID_SYS_BTN_RESTORE" path="image\sys_btn_restore.png"/>
+    <file name="ID_SYS_BTN_MIN" path="image\sys_btn_min.png"/>
+    <file name="ID_PNG_SHADOW" path="image\shadow.png"/>
+    <file name="ID_TAB_MAIN" path="image\skin_tab_main.png"/>
+    <file name="ID_TAB_ICON" path="image\skin_tab_icon.png"/>
+    <file name="ID_WHITE_BG" path="image\white_bg.png"/>
+    <file name="ID_SKIN_LOGO" path="image\skin_logo.png"/>
+    <file name="ID_SKIN_VER_LINE" path="image\skin_vertical_line.png"/>
+    <file name="ID_SKIN_HOR_LINE" path="image\skin_horizontal_line.png"/>
+    <file name="ID_SKIN_REG_BG" path="image\skin_register_bg.png"/>
+    <file name="ID_SKIN_FIREWALL" path="image\skin_firewall.png"/>
+    <file name="ID_SKIN_GUARD" path="image\skin_guard.png"/>
+    <file name="ID_SKIN_PAYINSURE" path="image\skin_payinsure.png"/>
+    <file name="ID_SKIN_CHECK_BTN" path="image\skin_check_btn.png"/>
+    <file name="ID_SKIN_ERROR" path="image\skin_error.png"/>
+    <file name="ID_SKIN_FEEDBACK" path="image\skin_feedback.png"/>
+    <file name="ID_SKIN_SKIN" path="image\skin_skin.png"/>
+    <file name="ID_SKIN_MENU" path="image\skin_menu.png"/>
+  </png>
+	<ICON>
+		<file name="ICON_LOGO"  path="image\soui.ico"    />
+	</ICON>
+	<translator>
+		<file name="lang_cn"  path="translator\lang_cn.xml"    />
+	</translator>
+</resource>

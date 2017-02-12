@@ -1,0 +1,4 @@
+<menuRoot skin="skin.shadow" iconSkin="skin_small_icons" itemHeight="25" iconBarWidth="30" maxWidth="350" margin="6,6,6,6" colorBkgnd="#ff0000">
+  <menuItem id="1" check="1" font="size:12">按Enter键发送消息</menuItem>
+  <menuItem id="2" font="size:12">按Ctrl+Enter键发送消息</menuItem>
+</menuRoot>

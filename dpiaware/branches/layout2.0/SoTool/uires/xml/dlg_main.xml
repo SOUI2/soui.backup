@@ -1,0 +1,36 @@
+﻿<SOUI name="mainWindow" title="%title%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="600" height="400"  margin="5,5,5,5"  resizable="1"
+appWnd="1"
+translucent="1"
+>
+  <root skin="_skin.sys.wnd.bkgnd" cache="1">
+    <caption pos="0,0,-0,30" show="1" font="adding:0">
+      <icon pos="10,8" src="ICON_LOGO:16"/>
+      <text pos="29,9">%title%</text>
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+      <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
+      <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
+      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+    </caption>
+
+    <tabctrl name="tab_main" pos="5,[2,-5,-5" curSel="0" focusable="0" animateSteps="10" tabHeight="75" tabSkin="skin_tab_main" text-y="50" iconSkin="skin_page_icons" icon-x="10" colorTextHover="#ff0000" fontHover="italic:1">
+      <page title="图片合并" name="page_imagemerge" tip="多个相同尺寸的图片合并成一个">
+        <include src="layout:page_imgmerge"/>
+      </page>
+      <page title="代码行数" name="page_codeline" tip="统计代码行数">
+        <include src="layout:page_codeline"/>
+      </page>
+      <page title="2Unicode" name="page_2unicode" tip="将文本文件转换为Unicode存储">
+        <include src="layout:page_2unicode"/>
+      </page>
+      <page title="文件扫描" name="page_folderscan" tip="扫描文件夹中文件占用比例">
+        <include src="layout:page_folderscan"/>
+      </page>
+      <page title="MD5" name="page_md5" tip="计算文件的MD5值">
+        <include src="layout:page_md5"/>
+      </page>
+      <page title="关于" iconIndex="8" tip="关于本工具">
+        <include src="layout:page_about"/>
+      </page>
+    </tabctrl>
+  </root>
+</SOUI>

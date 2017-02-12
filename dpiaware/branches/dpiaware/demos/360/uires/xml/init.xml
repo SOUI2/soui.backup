@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="宋体" size="15"/>
+
+  <string>
+    <title value="360"/>
+    <ver value="1.0"/>
+  </string>
+
+  <skin>
+    <imglist name="_skin.bg" src="PNG:ID_PNG_BG"/>
+    <imgframe name="_skin.shadow" src="PNG:ID_PNG_SHADOW" left="5" top="3" right="5" bottom="7"/>
+    <imglist name="_skin.btn.close" src="PNG:ID_SYS_BTN_CLOSE" states="3" />
+    <imglist name="_skin.btn.max" src="PNG:ID_SYS_BTN_MAX" states="3" />
+    <imglist name="_skin.btn.restore" src="PNG:ID_SYS_BTN_RESTORE" states="3" />
+    <imglist name="_skin.btn.min" src="PNG:ID_SYS_BTN_MIN" states="3" />
+    <imglist name="_skin.tab.main" src="PNG:ID_TAB_MAIN" states="3" />
+    <imglist name="_skin.tab.icon" src="PNG:ID_TAB_ICON" states="8" />
+    <imglist name="_skin.white.bg" src="PNG:ID_WHITE_BG"  alpha="255"/>
+    <imglist name="_skin.logo" src="PNG:ID_SKIN_LOGO" />
+    <imglist name="_skin.ver.line" src="PNG:ID_SKIN_VER_LINE" />
+    <imglist name="_skin.hor.line" src="PNG:ID_SKIN_HOR_LINE" />
+    <imglist name="_skin.reg.bg" src="PNG:ID_SKIN_REG_BG" />
+    <imglist name="_skin.firewall" src="PNG:ID_SKIN_FIREWALL" states="3" />
+    <imglist name="_skin.guard" src="PNG:ID_SKIN_GUARD" states="3" />
+    <imglist name="_skin.payinsure" src="PNG:ID_SKIN_PAYINSURE" states="3" />
+    <imglist name="_skin.check.btn" src="PNG:ID_SKIN_CHECK_BTN" states="3" />
+    <imglist name="_skin.error" src="PNG:ID_SKIN_ERROR" />
+    <imglist name="_skin.feedback" src="PNG:ID_SKIN_FEEDBACK" states="3" />
+    <imglist name="_skin.skin" src="PNG:ID_SKIN_SKIN" states="3" />
+    <imglist name="_skin.menu" src="PNG:ID_SKIN_MENU" states="3" />
+	
+	<imglist name="skin.subtab.bg" src="PNG:ID_SUBTAB_BG" states="1" tile="0" margin="1,1,1,1" />
+	<imglist name="skin.subtab.btn" src="PNG:ID_SUBTAB_BTN" states="3" margin="1,1,1,1" />
+	<imglist name="skin.subtab.split" src="PNG:ID_SUBTAB_SPLIT" states="1" margin="1,1,1,1"/>
+	<imglist name="skin.anim.logo1" src="PNG:ID_ANIM_LOGO1" states="13" />
+	<imglist name="skin.anim.logo2" src="PNG:ID_ANIM_LOGO2" states="12" />
+	
+	<imglist name="skin.anim.tj1" src="PNG:ID_ANIM_TJ_1" states="10" />
+	<imglist name="skin.anim.tj2" src="PNG:ID_ANIM_TJ_2" states="10" />
+	<imglist name="skin.anim.mm1" src="PNG:ID_ANIM_MM_1" states="10" />
+	<imglist name="skin.anim.mm2" src="PNG:ID_ANIM_MM_2" states="10" />
+	<imglist name="skin.anim.sj1" src="PNG:ID_ANIM_SJ_1" states="10" />
+	<imglist name="skin.anim.sj2" src="PNG:ID_ANIM_SJ_2" states="10" />
+	<imglist name="skin.anim.yh1" src="PNG:ID_ANIM_YH_1" states="10" />
+	<imglist name="skin.anim.yh2" src="PNG:ID_ANIM_YH_2" states="10" />
+	<imglist name="skin.anim.gj1" src="PNG:ID_ANIM_GJ_1" states="10" />
+	<imglist name="skin.anim.gj2" src="PNG:ID_ANIM_GJ_2" states="10" />
+	<imglist name="skin.anim.yy1" src="PNG:ID_ANIM_YY_1" states="10" />
+	<imglist name="skin.anim.yy2" src="PNG:ID_ANIM_YY_2" states="10" />
+	<imglist name="skin.anim.xf1" src="PNG:ID_ANIM_XF_1" states="10" />
+	<imglist name="skin.anim.xf2" src="PNG:ID_ANIM_XF_2" states="10" />
+	<imglist name="skin.anim.ql1" src="PNG:ID_ANIM_QL_1" states="10" />
+	<imglist name="skin.anim.ql2" src="PNG:ID_ANIM_QL_2" states="10" />
+	<imglist name="skin.anim.yjql1" src="PNG:ID_ANIM_YJQL_1" states="10" />
+	<imglist name="skin.anim.yjql2" src="PNG:ID_ANIM_YJQL_2" states="10" />
+	<imglist name="skin.anim.xfie1" src="PNG:ID_ANIM_XFIE_1" states="10" />
+	<imglist name="skin.anim.xfie2" src="PNG:ID_ANIM_XFIE_2" states="10" />
+  </skin>
+
+  <style>
+    <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="0x25" cursor="hand" margin-x="0"/>
+  </style>
+
+  <objattr>
+  </objattr>
+</UIDEF>

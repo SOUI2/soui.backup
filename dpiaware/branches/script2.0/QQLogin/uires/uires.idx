@@ -1,0 +1,29 @@
+﻿<resource>  
+  <UIDEF>
+    <file name="XML_INIT" path="xml\init.xml"  />
+  </UIDEF>
+  <LAYOUT>
+    <file name="XML_MAINWND" path="xml\dlg_main.xml"  />
+    <file name="PAGE_LOGIN" path="xml\page_login.xml"  />
+    <file name="PAGE_SETTINGS" path="xml\page_settings.xml"  />
+  </LAYOUT>
+  <IMGX>
+    <file name="IMG_LOGIN_BORDER" path="image\login_border.png"/>
+    <file name="BTN_LOGIN_SETTING" path="image\login_setting.png"/>
+    <file name="BTN_USERLISTCLOSE" path="image\user_list_close.png"  />
+    <file name="BTN_REGISTER" path="image\register.png"  />
+    <file name="BTN_GETPSWBACK" path="image\getpswback.png"  />
+    <file name="BTN_KEYBOARD" path="image\keyboard.png"  />
+    <file name="BTN_LOGIN" path="image\login.png"/>
+    <file name="BTN_LOGIN2" path="image\login2.png"/>
+    <file name="BTN_LOGIN_2DCODE" path="image\login_2dcode.png"/>
+    <file name="IMG_HEAD_MASK" path="image\head_mask.png"/>
+    <file name="IMG_HEAD" path="image\head.png"/>
+  </IMGX>
+  <jpg>
+    <file name="IMG_HEAD_SMALL" path="image\small_head.jpg"/>
+  </jpg>
+  <ICON>
+    <file name="ICON_LOGO"  path="image\soui.ico"    />
+  </ICON>
+</resource>
