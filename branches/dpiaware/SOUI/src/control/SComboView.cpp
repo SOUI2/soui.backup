@@ -24,7 +24,6 @@ namespace SOUI
         m_pListBox->SetContainer(GetContainer());
 
         m_pListBox->InitFromXml(xmlNode.child(L"liststyle"));
-        m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
         m_pListBox->SetAttribute(L"hotTrack",L"1",TRUE);
         m_pListBox->SetOwner(this);    //chain notify message to combobox
         m_pListBox->SetID(IDC_DROPDOWN_LIST);
@@ -48,6 +47,8 @@ namespace SOUI
     {
         __super::OnCreateDropDown(pDropDown);
         pDropDown->InsertChild(m_pListBox);
+		m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
+		m_pListBox->GetParent()->RequestRelayout();
         pDropDown->UpdateChildrenPosition();
         
         m_pListBox->SetVisible(TRUE);
