@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <UIDEF>
-  <!--<font face="宋体" size="15"/>-->
   <font face="微软雅黑" size="12" colorText="#ffffff"/>
 
   <string src="values:string" />

@@ -8,7 +8,7 @@
 #include "helper\mybuffer.h"
 #include "DlgNewSkin.h"
 #include "DlgInput.h"
-
+#include "layout/SouiLayout.h"
 namespace SOUI
 {
 
@@ -1307,11 +1307,12 @@ namespace SOUI
 			nHeight = (float)nHeight * bl;
 		}
 		m_imgView->SetAttribute(L"skin", strImgname);
-		SwndLayout *playout = m_imgView->GetLayout();
-		playout->SetWidth(nWidth);
-		playout->SetHeight(nHeight);
+		//SwndLayout *playout = m_imgView->GetLayout();
+		SouiLayoutParam *pLayout = m_imgView->GetLayoutParamT<SouiLayoutParam>();
+		pLayout->SetSpecifiedSize(Horz, nWidth);
+		pLayout->SetSpecifiedSize(Vert, nHeight);
 
-
+		m_imgView->GetParent()->RequestRelayout();
 		m_imgView->GetParent()->UpdateChildrenPosition();
 	}
 
@@ -1344,11 +1345,12 @@ namespace SOUI
 			nHeight = (float)nHeight * bl;
 		}
 
-		SwndLayout *playout = m_imgView->GetLayout();
-		playout->SetWidth(nWidth);
-		playout->SetHeight(nHeight);
+		SouiLayoutParam *pLayout = m_imgView->GetLayoutParamT<SouiLayoutParam>();
+		pLayout->SetSpecifiedSize(Horz, nWidth);
+		pLayout->SetSpecifiedSize(Vert, nHeight);
 
 		m_imgView->SetAttribute(L"skin", strImgname);
+		m_imgView->GetParent()->RequestRelayout();
 		m_imgView->GetParent()->UpdateChildrenPosition();
 	}
 
