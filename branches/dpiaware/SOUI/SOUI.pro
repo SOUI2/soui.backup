@@ -87,8 +87,6 @@ HEADERS += include/SApp.h \
            include/core/SwndContainer-i.h \
            include/core/SwndContainerImpl.h \
            include/core/SwndFactoryMgr.h \
-           include/core/SwndLayout.h \
-           include/core/SwndLayoutBuilder.h \
            include/core/SwndStyle.h \
            include/core/scaret.h \
            include/event/eventcrack.h \
@@ -134,6 +132,9 @@ HEADERS += include/SApp.h \
            include/interface/LvItemLocator-i.h \
            include/interface/slog-i.h \
            include/interface/TvItemLocator-i.h \
+           include/interface/slayout-i.h \
+           include/layout/SLinearLayout.h \
+           include/layout/SouiLayout.h \
            include/res.mgr/SUiDef.h \
            include/res.mgr/SFontPool.h \
            include/res.mgr/SObjDefAttr.h \
@@ -192,10 +193,10 @@ SOURCES += src/SApp.cpp \
            src/core/Swnd.cpp \
            src/core/SwndContainerImpl.cpp \
            src/core/SWndFactoryMgr.cpp \
-           src/core/SwndLayout.cpp \
-           src/core/SwndLayoutBuilder.cpp \
            src/core/SwndStyle.cpp \
            src/core/scaret.cpp \
+           src/layout/SLinearLayout.cpp \
+           src/layout/SouiLayout.cpp \
            src/event/EventSet.cpp \
            src/event/NotifyCenter.cpp \
            src/helper/DragWnd.cpp \
