@@ -35,7 +35,7 @@
     <SYMBOL NAME="UNICODE" TYPE=select-one VALUE=1></SYMBOL>
     <SYMBOL NAME="WCHAR" TYPE=select-one VALUE=1></SYMBOL>
     <SYMBOL NAME="MT" TYPE=select-one VALUE=1></SYMBOL>
-
+    <SYMBOL NAME="SUPPORT_XP" TYPE="select-one" VALUE="0"></SYMBOL>
     <style type="text/css">
         body {
             background-image: url(../../Images/leftbanner2.png);
@@ -454,6 +454,7 @@
 			keyValue["UNICODE"] = 1;//unicode
 			keyValue["WCHAR"] = 1;//wchar
 			keyValue["MT"] = 1;//static linked to CRT
+			keyValue["SUPPORT_XP"] = 0;//dont support XP
             var reg2 = /(\w+)=(\d+)/;
 
             if (fso.FileExists(configFile)) {
@@ -470,7 +471,7 @@
             window.external.AddSymbol('UNICODE', keyValue["UNICODE"]);
             window.external.AddSymbol('WCHAR', keyValue["WCHAR"]);
             window.external.AddSymbol('MT', keyValue["MT"]);
-
+            window.external.AddSymbol('SUPPORT_XP', keyValue["SUPPORT_XP"]);
         }
         catch (e) {
             throw e;

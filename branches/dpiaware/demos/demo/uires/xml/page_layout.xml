@@ -45,9 +45,10 @@
         <window size="100,30" colorBkgnd="#ff0000"/>
         <window size="200,30" extend="10,5,10,5" colorBkgnd="#ff0000" weight="1"/>
         <window size="120,30" layout_gravity="right" colorBkgnd="#ff0000" weight="1"/>
+        <button size="100,30" extend_top="10">button test</button>
       </window>
 
-      <window pos="0,[5" layout="vbox" colorBkgnd="#cccccc">
+      <window pos="0,[5" layout="vbox" colorBkgnd="#cccccc" id="10000">
         <text extend_bottom="10" layout_gravity="center">hbox demo</text>
         <window size="-1,-1" layout="hbox" colorBkgnd="#888888">
           <!--线性布局之hbox-->

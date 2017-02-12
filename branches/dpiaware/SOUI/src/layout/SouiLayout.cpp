@@ -522,7 +522,7 @@ namespace SOUI{
     {
         SList<WndPos>       lstWndPos;
 
-        SWindow *pChild= pParent->GetWindow(GSW_FIRSTCHILD);
+        SWindow *pChild= pParent->GetNextLayoutChild(NULL,FALSE);
         while(pChild)
         {
             if(!pChild->IsFloat() && (pChild->IsVisible(FALSE) || pChild->IsDisplay()))
@@ -535,7 +535,7 @@ namespace SOUI{
 				wndPos.bWaitOffsetY = pParam->IsOffsetRequired(Vert);
                 lstWndPos.AddTail(wndPos);
             }
-            pChild=pChild->GetWindow(GSW_NEXTSIBLING);
+            pChild=pParent->GetNextLayoutChild(pChild,FALSE);
         }
         
         //计算子窗口位置
@@ -750,7 +750,7 @@ namespace SOUI{
 	{
 		SList<WndPos>       lstWndPos;
 
-		SWindow *pChild=pParent->GetNextLayoutDirtyChild(NULL);
+		SWindow *pChild=pParent->GetNextLayoutChild(NULL,TRUE);
 		while(pChild)
 		{
 			WndPos wndPos;
@@ -761,7 +761,7 @@ namespace SOUI{
 			wndPos.bWaitOffsetY = pParam->IsOffsetRequired(Vert);
 			lstWndPos.AddTail(wndPos);
 
-			pChild=pParent->GetNextLayoutDirtyChild(pChild);
+			pChild=pParent->GetNextLayoutChild(pChild,TRUE);
 		}
 
 		if(lstWndPos.IsEmpty())

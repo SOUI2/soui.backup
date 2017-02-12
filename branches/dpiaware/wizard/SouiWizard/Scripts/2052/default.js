@@ -29,10 +29,22 @@ function CreateCustomProject(strProjectName, strProjectPath)
 {
 	try
 	{
-		var strProjTemplatePath = wizard.FindSymbol('PROJECT_TEMPLATE_PATH');
+	    var supportXp = wizard.FindSymbol('SUPPORT_XP');
+	    var strProjTemplatePath = '';
+	    var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
+	    strProjTemplatePath = wizard.FindSymbol('PROJECT_TEMPLATE_PATH');
+	    if (supportXp == 1 && WizardVersion>11)
+	    {
+	        strProjTemplatePath = wizard.FindSymbol('TEMPLATES_PATH');
+	        strProjTemplatePath += '\\porjectTemplates';
+	        if (WizardVersion == 12)
+	            strProjTemplatePath += '\\2013';
+	        else if(WizardVersion==14)
+                strProjTemplatePath+='\\2015'
+	    }
 
 		var strProjTemplate = '';
-		var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
+		
 		if(WizardVersion >= 10.0)
 			strProjTemplate = strProjTemplatePath + '\\default.vcxproj';
 		else

@@ -533,6 +533,8 @@ LRESULT STileView::OnKeyEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 void STileView::OnMouseLeave()
 {
+	__super::OnMouseLeave();
+
     if(m_pHoverItem)
     {
         m_pHoverItem->DoFrameEvent(WM_MOUSELEAVE, 0, 0);
