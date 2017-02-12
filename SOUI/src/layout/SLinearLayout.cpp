@@ -190,7 +190,7 @@ namespace SOUI
 
             int iChild = 0;
 
-			SWindow *pChild=pParent->GetNextLayoutDirtyChild(NULL);
+			SWindow *pChild=pParent->GetNextLayoutChild(NULL,FALSE);
             while(pChild)
             {
 				SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
@@ -237,7 +237,7 @@ namespace SOUI
                 offset += m_orientation == Vert ? szChild.cy:szChild.cx;
 
 				iChild++;
-				pChild=pParent->GetNextLayoutDirtyChild(pChild);
+				pChild=pParent->GetNextLayoutChild(pChild,FALSE);
             }
 
 			nChilds = iChild;
@@ -325,7 +325,7 @@ namespace SOUI
 
 		int iChild = 0;
 
-		SWindow *pChild = pParent->GetNextLayoutDirtyChild(NULL);
+		SWindow *pChild = pParent->GetNextLayoutChild(NULL,FALSE);
 		while(pChild)
 		{
 			SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
@@ -374,7 +374,7 @@ namespace SOUI
 
 			pSize [iChild++] = szChild;
 
-			pChild = pParent->GetNextLayoutDirtyChild(pChild);
+			pChild = pParent->GetNextLayoutChild(pChild,FALSE);
 		}
 		
 

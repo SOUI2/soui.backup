@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <DEMO_SKIN_CONFIG>
-	<skinInf type="0" color="-2450922" />
+	<skinInf type="1" skin_path="d:\soui2.dpiaware\bin\..\demos\demo\themes\14.png" skin_margin="1920,1200,0,0" />
 </DEMO_SKIN_CONFIG>
