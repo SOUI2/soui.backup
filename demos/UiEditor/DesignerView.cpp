@@ -326,6 +326,8 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 
 	m_treeXmlStruct->RemoveAllItems();
 	InitXMLStruct(m_CurrentLayoutNode, STVI_ROOT);
+
+
 	return TRUE;
 }
 
@@ -855,6 +857,8 @@ void SDesignerView::UpdatePosToXmlNode(SWindow *pRealWnd, SMoveWnd* pMoveWnd)
 	if (pRealWnd->GetLayoutParam()->IsClass(SouiLayoutParam::GetClassName()))
 	{
 		SouiLayoutParam *pSouiLayoutParam = pRealWnd->GetLayoutParamT<SouiLayoutParam>();
+		SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pSouiLayoutParam->GetRawData();
+
 
 
 	
@@ -878,18 +882,18 @@ void SDesignerView::UpdatePosToXmlNode(SWindow *pRealWnd, SMoveWnd* pMoveWnd)
 
 		if (attrOffset)
 		{
-			strTemp.Format(_T("%g, %g"), pSouiLayoutParam->fOffsetX, pSouiLayoutParam->fOffsetY);
+			strTemp.Format(_T("%g, %g"), pSouiLayoutParamStruct->fOffsetX, pSouiLayoutParamStruct->fOffsetY);
 			attrOffset.set_value(strTemp);
 		}
 
 		if (attrPos)
 		{   
-			if (pSouiLayoutParam->nCount == 2)
+			if (pSouiLayoutParamStruct->nCount == 2)
 			{
 				strTemp = GetPosFromLayout(pSouiLayoutParam, 0) + _T(",");
 				strTemp = strTemp + GetPosFromLayout(pSouiLayoutParam, 1);
 				attrPos.set_value(strTemp);
-			}else if (pSouiLayoutParam->nCount == 4)
+			}else if (pSouiLayoutParamStruct->nCount == 4)
 			{
 				strTemp = GetPosFromLayout(pSouiLayoutParam, 0) + _T(",");
 				strTemp = strTemp + GetPosFromLayout(pSouiLayoutParam, 1) + _T(",");
@@ -928,10 +932,11 @@ void SDesignerView::UpdatePosToXmlNode(SWindow *pRealWnd, SMoveWnd* pMoveWnd)
 
 SStringW SDesignerView::GetPosFromLayout(SouiLayoutParam *pLayoutParam, INT nPosIndex)
 {
+	SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pLayoutParam->GetRawData();
 
 		SStringW strPos;
 
-		switch (pLayoutParam->pos[nPosIndex].pit)
+		switch (pSouiLayoutParamStruct->pos[nPosIndex].pit)
 		{
 		case PIT_NULL: 
 			strPos = L"";        //无效定义
@@ -963,11 +968,11 @@ SStringW SDesignerView::GetPosFromLayout(SouiLayoutParam *pLayoutParam, INT nPos
 		case PIT_SIB_LEFT:      //兄弟结点的left,用于X
 			if (0 == nPosIndex)
 			{
-				strPos = strPos.Format(L"sib.left@%d:", pLayoutParam->pos[nPosIndex].nRefID);
+				strPos = strPos.Format(L"sib.left@%d:", pSouiLayoutParamStruct->pos[nPosIndex].nRefID);
 			}
 			else
 			{
-				strPos = strPos.Format(L"sib.top@%d:", pLayoutParam->pos[nPosIndex].nRefID);
+				strPos = strPos.Format(L"sib.top@%d:", pSouiLayoutParamStruct->pos[nPosIndex].nRefID);
 			}
 
 			break;
@@ -978,11 +983,11 @@ SStringW SDesignerView::GetPosFromLayout(SouiLayoutParam *pLayoutParam, INT nPos
 		case PIT_SIB_RIGHT:      //兄弟结点的right,用于X 
 			if (2 == nPosIndex)
 			{
-				strPos = strPos.Format(L"sib.right@%d:", pLayoutParam->pos[nPosIndex].nRefID);
+				strPos = strPos.Format(L"sib.right@%d:", pSouiLayoutParamStruct->pos[nPosIndex].nRefID);
 			}
 			else
 			{
-				strPos = strPos.Format(L"sib.bottom@%d:", pLayoutParam->pos[nPosIndex].nRefID);
+				strPos = strPos.Format(L"sib.bottom@%d:", pSouiLayoutParamStruct->pos[nPosIndex].nRefID);
 			}
 
 			break;
@@ -994,12 +999,12 @@ SStringW SDesignerView::GetPosFromLayout(SouiLayoutParam *pLayoutParam, INT nPos
 			break;
 		}
 
-		if (pLayoutParam->pos[nPosIndex].cMinus == -1)
+		if (pSouiLayoutParamStruct->pos[nPosIndex].cMinus == -1)
 		{
 			strPos = strPos + L"-";
 		}
 		SStringW strTemp;
-		int n = (int)pLayoutParam->pos[nPosIndex].nPos;
+		int n = (int)pSouiLayoutParamStruct->pos[nPosIndex].nPos;
 		strTemp.Format(L"%d", n);
 		strPos = strPos + strTemp;
 		return strPos;
@@ -1258,6 +1263,7 @@ void SDesignerView::UpdatePropGrid(pugi::xml_node xmlNode)
 							pItem->SetStringOnly(xmlNode.attribute(L"uidesiner_data").value());
 					}else
 					{
+						SStringT s = xmlAttr.value();
 						pItem->SetStringOnly(xmlAttr.value());
 					}
 
