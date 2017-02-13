@@ -10,21 +10,6 @@
 
 namespace SOUI{
 
-	enum SWNDPOSMASK//坐标属性
-	{
-		// Specify by "width" attribute
-		SizeX_Mask          = 0x000fUL,
-		SizeX_Specify       = 0x0001UL, // width > 0
-		SizeX_FitContent    = 0x0002UL, // width <= 0
-		SizeX_FitParent     = 0x0004UL, // width = "full" default
-
-		// Specify by "height" attribute
-		SizeY_Mask          = 0x00f0UL,
-		SizeY_Specify       = 0x0010UL, // height > 0
-		SizeY_FitContent    = 0x0020UL, // height <= 0 default
-		SizeY_FitParent     = 0x0040UL, // height = "full" default
-	};
-
 	//坐标类型
 	enum PIT{
 
