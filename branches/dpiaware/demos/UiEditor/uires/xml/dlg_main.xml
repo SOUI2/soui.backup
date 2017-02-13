@@ -28,9 +28,9 @@
 			<pane idealSize="800" minSize="30" priority="0" clipClient="1">
 				<tabctrl name="NAME_UIDESIGNER_DESIGNER_MAIN_TAB" pos="0,0,-0,-0" tabAlign="top" tabSkin="SKIN_UIDESIGNER_TAB_LEFT" tabInterSize="2" tabWidth="70" tabHeight="30" focusable="0" show="1" curSel="0">
 					<page title="窗体" colorBorder="#ffff00">
-            <dropwindow name="dropwindow" show="0"/>
-            <scrollview pos="0,1, -0, -0" viewSize="-1,-1" name="NAME_UIDESIGNER_wnd_layout" colorBkgnd="#FFFFFF">             
-            </scrollview>
+						<dropwindow name="dropwindow" show="0"/>
+						<scrollview pos="0,1, -0, -0" viewSize="-1,-1" name="NAME_UIDESIGNER_wnd_layout" colorBkgnd="#FFFFFF">             
+						</scrollview>
 					</page>
 					<page title="代码" colorBorder="#ffff00">
 						<realwnd pos="0,0,-0,-0" name="SKIN_UIDESIGNER_scintilla" wndclass="scintilla" id="100000" wndname="scintilla" />
