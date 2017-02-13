@@ -20,9 +20,9 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            return m_width == SIZE_MATCH_PARENT;
+            return width == SIZE_MATCH_PARENT;
         case Vert:
-            return m_height == SIZE_MATCH_PARENT;
+            return height == SIZE_MATCH_PARENT;
         case Any:
             return IsMatchParent(Horz) || IsMatchParent(Vert);
         case Both:
@@ -36,9 +36,9 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            return m_width >= SIZE_SPEC;
+            return width >= SIZE_SPEC;
         case Vert:
-            return m_height >= SIZE_SPEC;
+            return height >= SIZE_SPEC;
         case Any:
             return IsSpecifiedSize(Horz) || IsSpecifiedSize(Vert);
         case Both:
@@ -52,9 +52,9 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            return m_width == SIZE_WRAP_CONTENT || (nCount == 0 && m_width == SIZE_UNDEF);
+            return width == SIZE_WRAP_CONTENT || (nCount == 0 && width == SIZE_UNDEF);
         case Vert:
-            return m_height == SIZE_WRAP_CONTENT|| (nCount == 0 && m_width == SIZE_UNDEF);
+            return height == SIZE_WRAP_CONTENT|| (nCount == 0 && width == SIZE_UNDEF);
         case Any:
             return IsWrapContent(Horz) || IsWrapContent(Vert);
         case Both:
@@ -65,7 +65,7 @@ namespace SOUI{
 
     int SouiLayoutParam::GetSpecifiedSize(ORIENTATION orientation) const
     {
-        return orientation == Vert ?(m_height):(m_width);
+        return orientation == Vert ?(height):(width);
     }
 
 
@@ -211,26 +211,26 @@ namespace SOUI{
 			if((pos[0].pit == PIT_NORMAL && pos[0].nPos == 0 && pos[0].cMinus==1)
 				&&(pos[2].pit == PIT_NORMAL && pos[2].nPos == 0 && pos[2].cMinus==-1))
 			{
-				m_width = SIZE_MATCH_PARENT;
+				width = SIZE_MATCH_PARENT;
 			}else if(pos[2].pit == PIT_SIZE)
 			{   
 				if(pos[2].cMinus == -1)
-					m_width = SIZE_WRAP_CONTENT;
+					width = SIZE_WRAP_CONTENT;
 				else
-					m_width = (int)pos[2].nPos;
+					width = (int)pos[2].nPos;
 			}
 
 			if((pos[1].pit == PIT_NORMAL && pos[1].nPos == 0 && pos[1].cMinus==1)
 				&&(pos[3].pit == PIT_NORMAL && pos[3].nPos == 0 && pos[3].cMinus==-1))
 			{
-				m_height = SIZE_MATCH_PARENT;
+				height = SIZE_MATCH_PARENT;
 			}
 			else if(pos[3].pit == PIT_SIZE)
 			{
 				if(pos[3].cMinus == -1)
-					m_height = SIZE_WRAP_CONTENT;
+					height = SIZE_WRAP_CONTENT;
 				else
-					m_height = (int)pos[3].nPos;
+					height = (int)pos[3].nPos;
 			}
 		}else
 		{
@@ -255,22 +255,22 @@ namespace SOUI{
     HRESULT SouiLayoutParam::OnAttrHeight(const SStringW & strValue,BOOL bLoading)
     {
         if(strValue.CompareNoCase(L"matchParent") == 0 || strValue.CompareNoCase(L"full") == 0)
-            m_height = SIZE_MATCH_PARENT;
+            height = SIZE_MATCH_PARENT;
         else if(strValue.CompareNoCase(L"wrapContent") == 0)
-            m_height = SIZE_WRAP_CONTENT;
+            height = SIZE_WRAP_CONTENT;
         else
-            m_height = _wtoi(strValue);
+            height = _wtoi(strValue);
         return S_OK;
     }
 
     HRESULT SouiLayoutParam::OnAttrWidth(const SStringW & strValue,BOOL bLoading)
     {
         if(strValue.CompareNoCase(L"matchParent") == 0 || strValue.CompareNoCase(L"full") == 0)
-            m_width = SIZE_MATCH_PARENT;
+            width = SIZE_MATCH_PARENT;
         else if(strValue.CompareNoCase(L"wrapContent") == 0)
-            m_width = SIZE_WRAP_CONTENT;
+            width = SIZE_WRAP_CONTENT;
         else
-            m_width = _wtoi(strValue);
+            width = _wtoi(strValue);
         return S_OK;
     }
 
@@ -298,7 +298,7 @@ namespace SOUI{
 		nCount = 0;
 		fOffsetX = fOffsetY = 0.0f;
 
-		m_width = m_height = SIZE_UNDEF;
+		width = height = SIZE_UNDEF;
 	}
 
 	void SouiLayoutParam::SetMatchParent(ORIENTATION orientation)
@@ -306,13 +306,13 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            m_width = SIZE_MATCH_PARENT;
+            width = SIZE_MATCH_PARENT;
             break;
         case Vert:
-            m_height = SIZE_MATCH_PARENT;
+            height = SIZE_MATCH_PARENT;
             break;
         case Both:
-            m_width = m_height = SIZE_MATCH_PARENT;
+            width = height = SIZE_MATCH_PARENT;
             break;
         }
 	}
@@ -322,13 +322,13 @@ namespace SOUI{
 		switch(orientation)
         {
         case Horz:
-			m_width = SIZE_WRAP_CONTENT;
+			width = SIZE_WRAP_CONTENT;
             break;
         case Vert:
-			m_height = SIZE_WRAP_CONTENT;
+			height = SIZE_WRAP_CONTENT;
             break;
         case Both:
-            m_width = m_height = SIZE_WRAP_CONTENT;
+            width = height = SIZE_WRAP_CONTENT;
             break;
         }
 	}
@@ -338,15 +338,20 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            m_width = nSize;
+            width = nSize;
             break;
         case Vert:
-            m_height = nSize;
+            height = nSize;
             break;
         case Both:
-            m_width = m_height = nSize;
+            width = height = nSize;
             break;
         }
+	}
+
+	void * SouiLayoutParam::GetRawData()
+	{
+		return (SouiLayoutParamStruct*)this;
 	}
 
     //////////////////////////////////////////////////////////////////////////
