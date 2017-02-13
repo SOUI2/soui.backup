@@ -15,9 +15,9 @@ namespace SOUI
         switch(orientation)
         {
         case Horz:
-            return m_width == SIZE_MATCH_PARENT;
+            return width == SIZE_MATCH_PARENT;
         case Vert:
-            return m_height == SIZE_MATCH_PARENT;
+            return height == SIZE_MATCH_PARENT;
         case Any:
             return IsMatchParent(Horz)|| IsMatchParent(Vert);
         case Both:
@@ -31,9 +31,9 @@ namespace SOUI
         switch(orientation)
         {
         case Horz:
-            return m_width == SIZE_WRAP_CONTENT;
+            return width == SIZE_WRAP_CONTENT;
         case Vert:
-            return m_height == SIZE_WRAP_CONTENT;
+            return height == SIZE_WRAP_CONTENT;
         case Any:
             return IsWrapContent(Horz)|| IsWrapContent(Vert);
         case Both:
@@ -47,9 +47,9 @@ namespace SOUI
         switch(orientation)
         {
         case Horz:
-            return m_width >= SIZE_SPEC;
+            return width >= SIZE_SPEC;
         case Vert:
-            return m_height >= SIZE_SPEC;
+            return height >= SIZE_SPEC;
         case Any:
             return IsSpecifiedSize(Horz)|| IsSpecifiedSize(Vert);
         case Both:
@@ -64,9 +64,9 @@ namespace SOUI
         switch(orientation)
         {
         case Horz:
-            return m_width;
+            return width;
         case Vert:
-            return m_height;
+            return height;
         case Any: 
         case Both:
         default:
@@ -89,31 +89,31 @@ namespace SOUI
     HRESULT SLinearLayoutParam::OnAttrWidth(const SStringW & strValue,BOOL bLoading)
     {
         if(strValue.CompareNoCase(L"matchParent") == 0)
-            m_width = SIZE_MATCH_PARENT;
+            width = SIZE_MATCH_PARENT;
         else if(strValue.CompareNoCase(L"wrapContent") == 0)
-            m_width = SIZE_WRAP_CONTENT;
+            width = SIZE_WRAP_CONTENT;
         else
-            m_width = _wtoi(strValue);
+            width = _wtoi(strValue);
         return S_OK;
     }
 
     HRESULT SLinearLayoutParam::OnAttrHeight(const SStringW & strValue,BOOL bLoading)
     {
         if(strValue.CompareNoCase(L"matchParent") == 0)
-            m_height = SIZE_MATCH_PARENT;
+            height = SIZE_MATCH_PARENT;
         else if(strValue.CompareNoCase(L"wrapContent") == 0)
-            m_height = SIZE_WRAP_CONTENT;
+            height = SIZE_WRAP_CONTENT;
         else
-            m_height = _wtoi(strValue);
+            height = _wtoi(strValue);
         return S_OK;
     }
 
 	void SLinearLayoutParam::Clear()
 	{
-		m_width = SIZE_WRAP_CONTENT;
-		m_height = SIZE_WRAP_CONTENT;
-		m_weight = 0.0f;
-		m_gravity = G_Undefined;
+		width = SIZE_WRAP_CONTENT;
+		height = SIZE_WRAP_CONTENT;
+		weight = 0.0f;
+		gravity = G_Undefined;
 	}
 
 	void SLinearLayoutParam::SetMatchParent(ORIENTATION orientation)
@@ -121,13 +121,13 @@ namespace SOUI
         switch(orientation)
         {
         case Horz:
-            m_width = SIZE_MATCH_PARENT;
+            width = SIZE_MATCH_PARENT;
             break;
         case Vert:
-            m_height = SIZE_MATCH_PARENT;
+            height = SIZE_MATCH_PARENT;
             break;
         case Both:
-            m_width = m_height = SIZE_MATCH_PARENT;
+            width = height = SIZE_MATCH_PARENT;
             break;
         }
 	}
@@ -137,13 +137,13 @@ namespace SOUI
         switch(orientation)
         {
         case Horz:
-            m_width = SIZE_WRAP_CONTENT;
+            width = SIZE_WRAP_CONTENT;
             break;
         case Vert:
-            m_height = SIZE_WRAP_CONTENT;
+            height = SIZE_WRAP_CONTENT;
             break;
         case Both:
-            m_width = m_height = SIZE_WRAP_CONTENT;
+            width = height = SIZE_WRAP_CONTENT;
             break;
         }
 	}
@@ -153,16 +153,21 @@ namespace SOUI
         switch(orientation)
         {
         case Horz:
-            m_width = nSize;
+            width = nSize;
             break;
         case Vert:
-            m_height = nSize;
+            height = nSize;
             break;
         case Both:
-            m_width = m_height = nSize;
+            width = height = nSize;
             break;
         }
 
+	}
+
+	void * SLinearLayoutParam::GetRawData()
+	{
+		return (SLinearLayoutParamStruct*)this;
 	}
 
 
@@ -201,7 +206,7 @@ namespace SOUI
                 else if(pLinearLayoutParam->IsSpecifiedSize(Horz))
                 {
                     szChild.cx = pLinearLayoutParam->GetSpecifiedSize(Horz);
-                    szChild.cx += pLinearLayoutParam->m_rcExtend.left + pLinearLayoutParam->m_rcExtend.right;
+                    szChild.cx += pLinearLayoutParam->rcExtend.left + pLinearLayoutParam->rcExtend.right;
                 }
 
                 if(pLinearLayoutParam->IsMatchParent(Vert))
@@ -209,12 +214,12 @@ namespace SOUI
                 else if(pLinearLayoutParam->IsSpecifiedSize(Vert))
                 {
                     szChild.cy = pLinearLayoutParam->GetSpecifiedSize(Vert);
-                    szChild.cy += pLinearLayoutParam->m_rcExtend.top + pLinearLayoutParam->m_rcExtend.bottom;
+                    szChild.cy += pLinearLayoutParam->rcExtend.top + pLinearLayoutParam->rcExtend.bottom;
                 }
                 
-                if(pLinearLayoutParam->m_weight > 0.0f)
+                if(pLinearLayoutParam->weight > 0.0f)
                 {
-                    fWeight += pLinearLayoutParam->m_weight;
+                    fWeight += pLinearLayoutParam->weight;
                 }
 
                 if(szChild.cx == SIZE_WRAP_CONTENT || szChild.cy == SIZE_WRAP_CONTENT)
@@ -223,12 +228,12 @@ namespace SOUI
                     if(szChild.cx == SIZE_WRAP_CONTENT)
                     {
                         szChild.cx = szCalc.cx;
-                        szChild.cx += pLinearLayoutParam->m_rcExtend.left + pLinearLayoutParam->m_rcExtend.right;
+                        szChild.cx += pLinearLayoutParam->rcExtend.left + pLinearLayoutParam->rcExtend.right;
                     }
                     if(szChild.cy == SIZE_WRAP_CONTENT) 
                     {
                         szChild.cy = szCalc.cy;
-                        szChild.cy += pLinearLayoutParam->m_rcExtend.top + pLinearLayoutParam->m_rcExtend.bottom;
+                        szChild.cy += pLinearLayoutParam->rcExtend.top + pLinearLayoutParam->rcExtend.bottom;
                     }
                 }
 
@@ -253,10 +258,10 @@ namespace SOUI
 
 				SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
 
-                if(pLinearLayoutParam->m_weight > 0.0f)
+                if(pLinearLayoutParam->weight > 0.0f)
                 {
                     LONG & szChild = m_orientation == Vert? pSize[iChild].cy:pSize[iChild].cx;
-                    szChild += (int)(nRemain*pLinearLayoutParam->m_weight/fWeight);
+                    szChild += (int)(nRemain*pLinearLayoutParam->weight/fWeight);
                 }
             }
         }
@@ -271,7 +276,7 @@ namespace SOUI
 
                 SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
 
-                Gravity gravity = pLinearLayoutParam->m_gravity == G_Undefined? m_gravity:pLinearLayoutParam->m_gravity;
+                Gravity gravity = pLinearLayoutParam->gravity == G_Undefined? m_gravity:pLinearLayoutParam->gravity;
                 if(gravity == G_Undefined) gravity = G_Left;
 
                 if(m_orientation == Vert)
@@ -284,7 +289,7 @@ namespace SOUI
                         rcChild.OffsetRect(rcParent.Width()-rcChild.Width(),0);
                     
                     CRect rcChild2 = rcChild;
-                    rcChild2.DeflateRect(pLinearLayoutParam->m_rcExtend);
+                    rcChild2.DeflateRect(pLinearLayoutParam->rcExtend);
 
                     pChild->OnRelayout(rcChild2);
 
@@ -299,7 +304,7 @@ namespace SOUI
                         rcChild.OffsetRect(0,rcParent.Height()-rcChild.Height());
 
                     CRect rcChild2 = rcChild;
-                    rcChild2.DeflateRect(pLinearLayoutParam->m_rcExtend);
+                    rcChild2.DeflateRect(pLinearLayoutParam->rcExtend);
 
                     pChild->OnRelayout(rcChild2);
 
@@ -339,7 +344,7 @@ namespace SOUI
 			else if(pLinearLayoutParam->IsSpecifiedSize(Horz))
             {
                 szChild.cx = pLinearLayoutParam->GetSpecifiedSize(Horz);
-                szChild.cx += pLinearLayoutParam->m_rcExtend.left + pLinearLayoutParam->m_rcExtend.right;
+                szChild.cx += pLinearLayoutParam->rcExtend.left + pLinearLayoutParam->rcExtend.right;
             }
 			if(pLinearLayoutParam->IsMatchParent(Vert))
             {
@@ -349,7 +354,7 @@ namespace SOUI
 			else if(pLinearLayoutParam->IsSpecifiedSize(Vert))
             {
                 szChild.cy = pLinearLayoutParam->GetSpecifiedSize(Vert);
-                szChild.cy += pLinearLayoutParam->m_rcExtend.top + pLinearLayoutParam->m_rcExtend.bottom;
+                szChild.cy += pLinearLayoutParam->rcExtend.top + pLinearLayoutParam->rcExtend.bottom;
             }
 			if(szChild.cx == SIZE_WRAP_CONTENT || szChild.cy == SIZE_WRAP_CONTENT)
 			{
@@ -363,12 +368,12 @@ namespace SOUI
 				if(szChild.cx == SIZE_WRAP_CONTENT) 
                 {
                     szChild.cx = szCalc.cx;
-                    szChild.cx += pLinearLayoutParam->m_rcExtend.left + pLinearLayoutParam->m_rcExtend.right;
+                    szChild.cx += pLinearLayoutParam->rcExtend.left + pLinearLayoutParam->rcExtend.right;
                 }
 				if(szChild.cy == SIZE_WRAP_CONTENT) 
                 {
                     szChild.cy = szCalc.cy;
-                    szChild.cy += pLinearLayoutParam->m_rcExtend.top + pLinearLayoutParam->m_rcExtend.bottom;
+                    szChild.cy += pLinearLayoutParam->rcExtend.top + pLinearLayoutParam->rcExtend.bottom;
                 }
 			}
 

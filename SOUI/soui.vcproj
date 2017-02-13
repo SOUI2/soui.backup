@@ -716,6 +716,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\layout\SLinearLayoutParamStruct.h"
+				>
+			</File>
+			<File
 				RelativePath="include\control\SListbox.h"
 				>
 			</File>
@@ -781,6 +785,10 @@
 			</File>
 			<File
 				RelativePath=".\include\layout\SouiLayout.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\layout\SouiLayoutParamStruct.h"
 				>
 			</File>
 			<File

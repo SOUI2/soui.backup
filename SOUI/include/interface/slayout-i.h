@@ -30,6 +30,7 @@ namespace SOUI{
 		virtual void SetMatchParent(ORIENTATION orientation) = 0;
 		virtual void SetWrapContent(ORIENTATION orientation) = 0;
 		virtual void SetSpecifiedSize(ORIENTATION orientation, int nSize) = 0;
+		virtual void * GetRawData() = 0;
     };
 
     struct ILayout : IObject , IObjRef{

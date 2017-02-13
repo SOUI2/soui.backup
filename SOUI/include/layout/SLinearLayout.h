@@ -2,18 +2,13 @@
 
 #include "interface/slayout-i.h"
 #include <sobject/sobject-state-impl.hpp>
+#include "SLinearLayoutParamStruct.h"
 
 namespace SOUI
 {
-    enum Gravity{
-        G_Undefined=-1,
-        G_Left=0,G_Top=0,
-        G_Center=1,
-        G_Right=2,G_Bottom=2,
-    };
-
 
 	class SLinearLayoutParam : public SObjectImpl<TObjRefImpl<ILayoutParam>>
+							 , protected SLinearLayoutParamStruct
     {
         SOUI_CLASS_NAME(SLinearLayoutParam,L"LinearLayoutParam")
 
@@ -36,24 +31,25 @@ namespace SOUI
 
 		virtual void SetSpecifiedSize(ORIENTATION orientation, int nSize);
 
+		virtual void * GetRawData();
 
         SOUI_ATTRS_BEGIN()
             ATTR_CUSTOM(L"width",OnAttrWidth)
             ATTR_CUSTOM(L"height",OnAttrHeight)
             ATTR_CUSTOM(L"size",OnAttrSize)
-            ATTR_FLOAT(L"weight",m_weight,FALSE)
+            ATTR_FLOAT(L"weight",weight,FALSE)
             ATTR_ENUM_BEGIN(L"layout_gravity",Gravity,FALSE)
                 ATTR_ENUM_VALUE(L"left",G_Left)
                 ATTR_ENUM_VALUE(L"top",G_Top)
                 ATTR_ENUM_VALUE(L"center",G_Center)
                 ATTR_ENUM_VALUE(L"right",G_Right)
                 ATTR_ENUM_VALUE(L"bottom",G_Bottom)
-            ATTR_ENUM_END(m_gravity)
-			ATTR_RECT(L"extend",m_rcExtend,FALSE)
-			ATTR_INT(L"extend_left",m_rcExtend.left,FALSE)
-			ATTR_INT(L"extend_top",m_rcExtend.top,FALSE)
-			ATTR_INT(L"extend_right",m_rcExtend.right,FALSE)
-			ATTR_INT(L"extend_bottom",m_rcExtend.bottom,FALSE)
+            ATTR_ENUM_END(gravity)
+			ATTR_RECT(L"extend",rcExtend,FALSE)
+			ATTR_INT(L"extend_left",rcExtend.left,FALSE)
+			ATTR_INT(L"extend_top",rcExtend.top,FALSE)
+			ATTR_INT(L"extend_right",rcExtend.right,FALSE)
+			ATTR_INT(L"extend_bottom",rcExtend.bottom,FALSE)
         SOUI_ATTRS_BREAK()
 
 
@@ -62,10 +58,6 @@ namespace SOUI
 		HRESULT OnAttrWidth(const SStringW & strValue,BOOL bLoading);
 		HRESULT OnAttrHeight(const SStringW & strValue,BOOL bLoading);
 
-        int m_width,m_height;
-        float m_weight;
-        Gravity m_gravity;
-		CRect m_rcExtend;//相当于android的margin属性
     };
 
     class SLinearLayout : public SObjectImpl<TObjRefImpl<ILayout>>
