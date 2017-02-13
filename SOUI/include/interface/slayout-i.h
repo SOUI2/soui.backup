@@ -20,6 +20,12 @@ namespace SOUI{
 		SIZE_SPEC = 0,
 	};
 
+	enum LayoutType
+	{
+		Layout_Soui,	//SOUI 布局
+		Layout_Linear,  //线性布局
+	};
+
     struct ILayoutParam :IObjRef, IObject
     {
 		virtual void Clear() = 0;
@@ -38,5 +44,6 @@ namespace SOUI{
         virtual void LayoutChildren(SWindow * pParent) = 0;
         virtual ILayoutParam * CreateLayoutParam() const = 0;
 		virtual CSize MeasureChildren(SWindow * pParent,int nWidth,int nHeight) const =0;
+		virtual LayoutType GetLayoutType() const = 0;
     };
 }

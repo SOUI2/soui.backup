@@ -80,6 +80,8 @@ namespace SOUI{
 
 		static HRESULT CreateLayoutParam(IObjRef ** ppObj);
 
+		virtual LayoutType GetLayoutType() const {return Layout_Soui;}
+
         virtual bool IsParamAcceptable(ILayoutParam *pLayoutParam) const;
 
         virtual void LayoutChildren(SWindow * pParent);
