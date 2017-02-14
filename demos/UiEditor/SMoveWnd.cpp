@@ -613,10 +613,10 @@ void SMoveWnd::MoveWndHorz(int x)
 		return;
 	}
 
-	SouiLayoutParam *pSouiLayoutParam = GetLayoutParamT<SouiLayoutParam>();
+	ILayoutParam *pSouiLayoutParam = GetLayoutParam();
 	SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pSouiLayoutParam->GetRawData();
 	
-	SouiLayoutParam *pSouiLayoutParam1 = m_pRealWnd->GetLayoutParamT<SouiLayoutParam>();
+	ILayoutParam *pSouiLayoutParam1 = m_pRealWnd->GetLayoutParam();
 	SouiLayoutParamStruct *pSouiLayoutParamStruct1 = (SouiLayoutParamStruct*)pSouiLayoutParam1->GetRawData();
 
 
