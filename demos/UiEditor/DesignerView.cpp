@@ -84,7 +84,10 @@ BOOL SDesignerView::OpenProject(SStringT strFileName)
 		Debug(_T("CreateResProvider失败"));
 		return FALSE;
 	}
-	SApplication::getSingletonPtr()->AddResProvider(pResProvider);
+	SApplication::getSingletonPtr()->AddResProvider(pResProvider,NULL);//param2 = null时不自动加载uidef
+
+	//将皮肤中的uidef保存起来.
+	m_pUiDef.Attach(SUiDef::getSingleton().CreateUiDefInfo(pResProvider,_T("uidef:xml_init")));
 
 	return TRUE;
 }
@@ -117,6 +120,10 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 
 BOOL SDesignerView::LoadLayout(SStringT strFileName)
 {
+
+	CAutoRefPtr<IUiDefInfo> pOldUiDef = SUiDef::getSingleton().GetUiDef();
+	//设置uidef为当前皮肤的uidef
+	SUiDef::getSingleton().SetUiDef(m_pUiDef);
 
 	pugi::xml_node xmlroot;
 	pugi::xml_node xmlnode;
@@ -328,6 +335,8 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 	InitXMLStruct(m_CurrentLayoutNode, STVI_ROOT);
 
 
+	//恢复uidef为编辑器的uidef
+	SUiDef::getSingleton().SetUiDef(pOldUiDef);
 	return TRUE;
 }
 
