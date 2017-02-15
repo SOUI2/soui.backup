@@ -28,6 +28,7 @@ namespace SOUI
 		m_downWindow = 0;
 		m_bFocusable = TRUE;
 		m_pRealWnd = NULL;
+		m_bDrawFocusRect = FALSE;
 		StateMove = 0;
 
 	}

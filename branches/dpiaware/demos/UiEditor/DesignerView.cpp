@@ -179,15 +179,6 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 
 
 	m_pContainer->SSendMessage(WM_DESTROY);
-	/*
-	SWindow *pChild = m_pContainer->GetWindow(GSW_FIRSTCHILD);
-	while(pChild)
-	{
-		SWindow *pNext = pChild->GetWindow(GSW_NEXTSIBLING);
-		pChild->DestroyWindow();
-		pChild = pNext;
-	}
-	*/
 
 
 	SStringW s1, s2;
