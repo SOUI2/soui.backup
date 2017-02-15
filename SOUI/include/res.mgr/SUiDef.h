@@ -22,6 +22,7 @@ namespace SOUI
 		virtual SNamedColor & GetNamedColor()  =0;
 		virtual SNamedString & GetNamedString()  =0;
 		virtual SObjDefAttr & GetObjDefAttr() = 0;
+		virtual FontInfo & GetDefFontInfo() = 0;
 	};
 
 
@@ -36,7 +37,7 @@ namespace SOUI
 		
 		IUiDefInfo * GetUiDef(){return m_pCurUiDef;}
 		
-		void SetUiDef(IUiDefInfo* pUiDefInfo){m_pCurUiDef = pUiDefInfo;}
+		void SetUiDef(IUiDefInfo* pUiDefInfo);
 	protected:
 		CAutoRefPtr<IUiDefInfo> m_pCurUiDef;
 	};

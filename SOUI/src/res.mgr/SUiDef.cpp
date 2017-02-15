@@ -48,6 +48,7 @@ namespace SOUI{
 		virtual SNamedColor & GetNamedColor() {return namedColor;}
 		virtual SNamedString & GetNamedString() {return namedString;}
 		virtual SObjDefAttr & GetObjDefAttr(){return objDefAttr;}
+		virtual FontInfo & GetDefFontInfo() { return defFontInfo;}
 
 	protected:
 
@@ -57,6 +58,8 @@ namespace SOUI{
 		SNamedColor   namedColor;
 		SNamedString  namedString;
 		SObjDefAttr   objDefAttr;
+
+		FontInfo	  defFontInfo;
 	};
 
 	SUiDefInfo::SUiDefInfo(IResProvider *pResProvider,LPCTSTR pszUidef)
@@ -92,14 +95,29 @@ namespace SOUI{
 					SLOGFMTW(_T("warning!!! \"uidef\" element is not the root element of uidef xml"));
 				}else
 				{
-					//set default font
+					//parse default font
 					pugi::xml_node xmlFont;
 					xmlFont=root.child(L"font",false);
+
+					FONTSTYLE fontStyle(0);
 					if(xmlFont)
 					{
-						int nSize=xmlFont.attribute(L"size").as_int(12);
-						BYTE byCharset=(BYTE)xmlFont.attribute(L"charset").as_int(DEFAULT_CHARSET);
-						SFontPool::getSingleton().SetDefaultFont(S_CW2T(xmlFont.attribute(L"face").value()),nSize,byCharset);
+						fontStyle.cSize=xmlFont.attribute(L"size").as_int(12);
+						fontStyle.byCharset =(BYTE)xmlFont.attribute(L"charset").as_int(DEFAULT_CHARSET);
+						fontStyle.fBold = xmlFont.attribute(L"bold").as_bool(false);
+						fontStyle.fUnderline = xmlFont.attribute(L"underline").as_bool(false);
+						fontStyle.fStrike = xmlFont.attribute(L"strike").as_bool(false);
+						fontStyle.fItalic = xmlFont.attribute(L"italic").as_bool(false);
+						
+						defFontInfo.dwStyle = fontStyle.dwStyle;
+						defFontInfo.strFaceName = S_CW2T(xmlFont.attribute(L"face").value());
+					}else
+					{
+						fontStyle.cSize = 20;
+						fontStyle.byCharset =DEFAULT_CHARSET;
+
+						defFontInfo.dwStyle = fontStyle.dwStyle;
+						defFontInfo.strFaceName = _T("ËÎÌו");
 					}
 
 					//load named string
@@ -174,6 +192,12 @@ namespace SOUI{
 	IUiDefInfo * SUiDef::CreateUiDefInfo(IResProvider *pResProvider, LPCTSTR pszUiDef)
 	{
 		return new SUiDefInfo(pResProvider,pszUiDef);
+	}
+
+	void SUiDef::SetUiDef( IUiDefInfo* pUiDefInfo )
+	{
+		m_pCurUiDef = pUiDefInfo;
+		SFontPool::getSingleton().SetDefaultFont(pUiDefInfo->GetDefFontInfo());
 	}
 
 }
