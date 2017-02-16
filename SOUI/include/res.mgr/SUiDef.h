@@ -25,6 +25,7 @@ namespace SOUI
 		virtual FontInfo & GetDefFontInfo() = 0;
 	};
 
+	typedef BOOL (*FunFontCheck)(const SStringT & strFontName);
 
 	class SOUI_EXP SUiDef : public SSingleton<SUiDef>
 	{
@@ -38,7 +39,14 @@ namespace SOUI
 		IUiDefInfo * GetUiDef(){return m_pCurUiDef;}
 		
 		void SetUiDef(IUiDefInfo* pUiDefInfo);
+
+		static void SetFontChecker(FunFontCheck fontCheck);
+
+		static BOOL CheckFont(const SStringT & strFontName);
 	protected:
+
+		static FunFontCheck	s_funFontCheck;
+
 		CAutoRefPtr<IUiDefInfo> m_pCurUiDef;
 	};
 
