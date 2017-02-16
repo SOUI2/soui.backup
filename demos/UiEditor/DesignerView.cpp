@@ -238,7 +238,7 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 		SStringW strAttrSize;
 		strAttrSize.Format(L" margin= \"%d\" width = \"%d\" height = \"%d\" ", MARGIN, nWidth + MARGIN * 2, nHeight + MARGIN * 2);
 
-		s2 = L"<window pos=\"20,20\" " +  s2 + strAttrSize + L"></window>";
+		s2 = L"<designerRoot pos=\"20,20\" " +  s2 + strAttrSize + L"></designerRoot>";
 
 
 		//É¾³ýsize ¸Ä³Éwidth height
@@ -1669,7 +1669,7 @@ BOOL SDesignerView::ReLoadLayout()
 		SStringW strAttrSize;
 		strAttrSize.Format(L" margin= \"%d\" width = \"%d\" height = \"%d\" ", MARGIN, nWidth + MARGIN * 2, nHeight + MARGIN * 2);
 
-		s2 = L"<window pos=\"20,20\" " +  s2 + strAttrSize + L"></window>";
+		s2 = L"<designerRoot pos=\"20,20\" " +  s2 + strAttrSize + L"></designerRoot>";
 
 	}else
 	{
