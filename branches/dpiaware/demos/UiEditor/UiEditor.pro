@@ -48,7 +48,9 @@ SOURCES+=../../controls.extend/SScrollText.cpp
 SOURCES+=../../controls.extend/image3d/3dlib.h
 SOURCES+=../../controls.extend/image3d/3dmatrix.h
 SOURCES+=../../controls.extend/image3d/3dTransform.h
+
 SOURCES+=./DesignerView.cpp
+SOURCES+=./SDesignerRoot.cpp
 SOURCES+=./DlgAbout.cpp
 SOURCES+=./DlgCreatePro.cpp
 SOURCES+=./DlgInput.cpp
@@ -81,6 +83,7 @@ HEADERS+=./Adapter.h
 HEADERS+=./CDebug.h
 HEADERS+=./CNewGuid.h
 HEADERS+=./DesignerView.h
+HEADERS+=./SDesignerRoot.h
 HEADERS+=./DlgAbout.h
 HEADERS+=./DlgCreatePro.h
 HEADERS+=./DlgInput.h

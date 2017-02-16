@@ -3,6 +3,7 @@
 #include "Scintilla.h"
 #include "layout/SouiLayout.h"
 #include "layout/SLinearLayout.h"
+#include "SDesignerRoot.h"
 
 namespace SOUI
 {
@@ -110,7 +111,11 @@ namespace SOUI
 		 void TrimXmlNodeTextBlank(pugi::xml_node xmlNode);
 
 	public:
-		    SWindow *m_pRealWndRoot;       //布局容器窗口;
+			CAutoRefPtr<IFont> m_defFont;
+	
+			SDesignerRoot *m_pRealWndRoot;       //布局容器窗口;
+
+
 		    SMoveWnd  *m_pMoveWndRoot; //布局窗口的根窗口
 
 			BOOL     m_bChange;    //文件是否被修改,如果被修改需要保存
