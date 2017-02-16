@@ -289,7 +289,6 @@
 				RelativePath="MainDlg.cpp"
 				>
 			</File>
-			
 			<File
 				RelativePath="..\..\controls.extend\SButtonEx.cpp"
 				>
@@ -304,6 +303,10 @@
 			</File>
 			<File
 				RelativePath="colorpicker\SColorPicker.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SDesignerRoot.cpp"
 				>
 			</File>
 			<File
@@ -322,17 +325,14 @@
 				RelativePath="..\..\controls.extend\SImageMaskWnd.cpp"
 				>
 			</File>
-
 			<File
 				RelativePath="SImageSwitcher.cpp"
 				>
 			</File>
-
 			<File
 				RelativePath="SMoveWnd.cpp"
 				>
 			</File>
-
 			<File
 				RelativePath="SouiRealWndHandler.cpp"
 				>
@@ -381,7 +381,6 @@
 				RelativePath="..\..\controls.extend\SSkinMutiFrameImg.cpp"
 				>
 			</File>
-
 			<File
 				RelativePath="SSwitch.cpp"
 				>
@@ -505,6 +504,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SDesignerRoot.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\controls.extend\SFreeMoveWindow.h"
 				>
 			</File>
@@ -520,17 +523,14 @@
 				RelativePath="..\..\controls.extend\SImageMaskWnd.h"
 				>
 			</File>
-
 			<File
 				RelativePath="SImageSwitcher.h"
 				>
 			</File>
-
 			<File
 				RelativePath="SMoveWnd.h"
 				>
 			</File>
-
 			<File
 				RelativePath="SouiRealWndHandler.h"
 				>

@@ -125,6 +125,8 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 	//设置uidef为当前皮肤的uidef
 	SUiDef::getSingleton().SetUiDef(m_pUiDef);
 
+	m_defFont = SFontPool::getSingleton().GetFont(FF_DEFAULTFONT);
+
 	pugi::xml_node xmlroot;
 	pugi::xml_node xmlnode;
 
@@ -293,7 +295,7 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 		strAttrSize.Format(L" margin= \"%d\" width = \"%d\" height = \"%d\" ", MARGIN, nWidth + MARGIN * 2, nHeight + MARGIN * 2);
 
 
-    	s2 = L"<window pos=\"20,20\" " + strAttrSize + L" colorBkgnd=\"#d0d0d0\"></window>";
+    	s2 = L"<designerRoot pos=\"20,20\" " + strAttrSize + L" colorBkgnd=\"#d0d0d0\"/>";
 	}
 
 	//wchar_t *s = L"<window pos=\"20,20,@500,@500\" colorBkgnd=\"#d0d0d0\"></window>";
@@ -301,7 +303,10 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 
 	////创建布局窗口的根窗口
 
-	m_pRealWndRoot = m_pContainer->CreateChildren(s2);
+	m_pRealWndRoot = (SDesignerRoot*)m_pContainer->CreateChildren(s2);
+
+	m_pRealWndRoot->SetRootFont(m_defFont);
+
  	m_pMoveWndRoot = (SMoveWnd *)m_pContainer->CreateChildren(s3);
  	m_pMoveWndRoot->m_pRealWnd = m_pRealWndRoot;
  	m_pMoveWndRoot->m_Desiner = this;	
@@ -1696,7 +1701,7 @@ BOOL SDesignerView::ReLoadLayout()
 		strAttrSize.Format(L" margin= \"%d\" width = \"%d\" height = \"%d\" ", MARGIN, nWidth + MARGIN * 2, nHeight + MARGIN * 2);
 
 
-		s2 = L"<window pos=\"20,20\" " + strAttrSize + L" colorBkgnd=\"#d0d0d0\"></window>";
+		s2 = L"<designerRoot pos=\"20,20\" " + strAttrSize + L" colorBkgnd=\"#d0d0d0\"/>";
 
 			//s2 = L"<window pos=\"20,20,-20,-20\" colorBkgnd=\"#d0d0d0\"></window>";
 	}
@@ -1706,7 +1711,9 @@ BOOL SDesignerView::ReLoadLayout()
 
 	////创建布局窗口的根窗口
 
-	m_pRealWndRoot = m_pContainer->CreateChildren(s2);
+	m_pRealWndRoot = (SDesignerRoot*)m_pContainer->CreateChildren(s2);
+	m_pRealWndRoot->SetRootFont(m_defFont);
+
 	m_pMoveWndRoot = (SMoveWnd *)m_pContainer->CreateChildren(s3);
 	m_pMoveWndRoot->m_pRealWnd = m_pRealWndRoot;
 
