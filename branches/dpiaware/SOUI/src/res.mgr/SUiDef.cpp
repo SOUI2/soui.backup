@@ -11,6 +11,7 @@ namespace SOUI{
 	const static WCHAR KNodeSkin[]      = L"skin";
 	const static WCHAR KNodeStyle[]     = L"style";
 	const static WCHAR KNodeObjAttr[]   = L"objattr";
+	const static TCHAR KDefFontFace[]   = _T("宋体");
 
 
 	static pugi::xml_node GetSourceXmlNode(pugi::xml_node nodeRoot,pugi::xml_document &docInit,IResProvider *pResProvider, const wchar_t * pszName)
@@ -62,6 +63,7 @@ namespace SOUI{
 		FontInfo	  defFontInfo;
 	};
 
+
 	SUiDefInfo::SUiDefInfo(IResProvider *pResProvider,LPCTSTR pszUidef)
 	{
 		SStringTList strUiDef;
@@ -111,13 +113,18 @@ namespace SOUI{
 						
 						defFontInfo.dwStyle = fontStyle.dwStyle;
 						defFontInfo.strFaceName = S_CW2T(xmlFont.attribute(L"face").value());
+
+						if(defFontInfo.strFaceName.IsEmpty() || !SUiDef::CheckFont(defFontInfo.strFaceName))
+						{
+							defFontInfo.strFaceName = KDefFontFace;
+						}
 					}else
 					{
-						fontStyle.cSize = 20;
+						fontStyle.cSize = 12;
 						fontStyle.byCharset =DEFAULT_CHARSET;
 
 						defFontInfo.dwStyle = fontStyle.dwStyle;
-						defFontInfo.strFaceName = _T("宋体");
+						defFontInfo.strFaceName = KDefFontFace;
 					}
 
 					//load named string
@@ -181,6 +188,28 @@ namespace SOUI{
 
 	template<> SUiDef * SSingleton<SUiDef>::ms_Singleton = NULL;
 
+	#define HASFONT 2
+	int CALLBACK DefFontsEnumProc(  CONST LOGFONT *lplf,     // logical-font data
+		CONST TEXTMETRIC *lptm,  // physical-font data
+		DWORD dwType,            // font type
+		LPARAM lpData            // application-defined data
+		)
+	{
+		return HASFONT;
+	}
+
+	static BOOL DefFontCheck(const SStringT & strFontName)
+	{
+		//确保字体存在
+		HDC hdc = GetDC(NULL);
+		int hasFont = EnumFonts(hdc,strFontName,DefFontsEnumProc,0);
+		ReleaseDC(NULL,hdc);
+		return hasFont == HASFONT;
+	}
+
+	FunFontCheck SUiDef::s_funFontCheck = DefFontCheck;
+
+
 	SUiDef::SUiDef(void)
 	{
 	}
@@ -197,7 +226,16 @@ namespace SOUI{
 	void SUiDef::SetUiDef( IUiDefInfo* pUiDefInfo )
 	{
 		m_pCurUiDef = pUiDefInfo;
-		SFontPool::getSingleton().SetDefaultFont(pUiDefInfo->GetDefFontInfo());
+	}
+
+	void SUiDef::SetFontChecker(FunFontCheck fontCheck)
+	{
+		s_funFontCheck = fontCheck;
+	}
+
+	BOOL SUiDef::CheckFont(const SStringT & strFontName)
+	{
+		return s_funFontCheck(strFontName);
 	}
 
 }
