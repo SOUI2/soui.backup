@@ -10,7 +10,7 @@
 			<edit pos="10,5,-30,@20" name="NAME_UIDESIGNER_edit_ZY" colorBkgnd="#FFFFFF" cueText="资源名" />
 			<edit pos="10,[5,-30,@20" name="NAME_UIDESIGNER_edit_Path" colorBkgnd="#FFFFFF" cueText="保存路径" />
 			<button name="NAME_UIDESIGNER_btn_dlg" pos="[5, {0, @20,@20">...</button>
-			<button name="NAME_UIDESIGNER_btn_OK" id="IDOK" pos="-100,60,@70,@30">确定</button>
+			<button name="NAME_UIDESIGNER_btn_OK" pos="-100,60,@70,@30">确定</button>
 		</window>
 	</root>
 </SOUI>

@@ -1377,14 +1377,28 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 	}
 
 
+	//有margin的情况  
+	SwndStyle &style1 = m_pRealWnd->GetStyle();
+	int nMarginLeft, nMarginTop, nMarginBottom, nMarginRight;
+
+	if (PosN == HORZ)
+	{
+		nMarginRight = style1.m_rcMargin.right;
+		nMarginLeft = style1.m_rcMargin.left;
+	}else
+	{
+		nMarginBottom = style1.m_rcMargin.bottom;
+		nMarginTop = style1.m_rcMargin.top;
+	}
+
 	//往左拖动大小,left 不能大于 right
-	if (pSouiLayoutParam->GetSpecifiedSize(Horz) + x < 1 && PosN == 2 && x < 0)
+	if (pSouiLayoutParam->GetSpecifiedSize(Horz) + x - (nMarginRight + nMarginLeft) < 1 && PosN == 2 && x < 0)
 	{
 		return;
 	}
 
 	//往上拖动大小,top 不能大于 buttom
-	if (pSouiLayoutParam->GetSpecifiedSize(Vert) + x < 1 && PosN == 3 && x < 0)
+	if (pSouiLayoutParam->GetSpecifiedSize(Vert) + x - ((nMarginBottom + nMarginTop)) < 1 && PosN == 3 && x < 0)
 	{
 		return;
 	}
