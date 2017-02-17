@@ -415,6 +415,7 @@ BOOL SDesignerView::SaveAll()
 	SStringT FullFileName;
 	pugi::xml_document *doc;
 	pugi::xml_document DocSave;
+	bool bRet = true;
 
 
 	SPOSITION pos = m_mapLayoutFile1.GetStartPosition();
@@ -436,17 +437,35 @@ BOOL SDesignerView::SaveAll()
 			RemoveWndName(NodeSave, FALSE, strFileName);
 
 			FullFileName = m_strProPath + _T("\\") + strFileName;
-			DocSave.save_file(FullFileName);
+			if(!DocSave.save_file(FullFileName))
+			{
+				Debug(_T("保存文件失败：") + FullFileName);
+				bRet = false;
+			}
 		}else
 		{
-			Debug(_T("保存文件失败：") + FullFileName);
+			Debug(_T("保存失败：DocSave.load_buffer"));
+			bRet = false;
 		}
 		delete strxmlWnd;
 
 	}
 
-	m_xmlDocUiRes.save_file(m_strUIResFile);
-	Debug(_T("保存成功"));
+	if(!m_xmlDocUiRes.save_file(m_strUIResFile))
+	{
+		Debug(_T("保存文件失败：") + m_strUIResFile);
+		bRet = false;
+	}
+
+	if(bRet)
+	{
+	  Debug(_T("保存成功"));
+	}
+	else
+	{
+		Debug(_T("保存失败"));
+	}
+		
 
 
 	return TRUE;
@@ -479,14 +498,24 @@ bool SDesignerView::SaveLayoutFile()
 	    RemoveWndName(NodeSave, FALSE);
 		FullFileName = m_strProPath + _T("\\") + strFileName;
 		bRet=DocSave.save_file(FullFileName);
+		if (!bRet)
+		{
+			Debug(_T("保存文件失败：") + FullFileName);
+		}
 	}
 	else
 	{
-		Debug(_T("保存失败"));
+		Debug(_T("保存失败:DocSave.load_buffer失败"));
 	}
 	delete strxmlWnd;
 	if(bRet)
+	{
 		bRet = m_xmlDocUiRes.save_file(m_strUIResFile);
+		if (!bRet)
+		{
+			Debug(_T("保存失败:") + m_strUIResFile);
+		}
+	}
 	return bRet;
 }
 
