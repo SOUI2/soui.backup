@@ -1,0 +1,10 @@
+<include>
+	<caption pos="[0,0,-0,@40" show="1" >
+		<imgbtn name="btn_close" skin="skin.sysbtn_close" pos="-30,0" tip="close" animate="1"/>
+		<imgbtn name="btn_restore" skin="skin.sysbtn_restore"  pos="-60,0" show="0" animate="1" />
+		<imgbtn name="btn_max" skin="skin.sysbtn_max"  pos="-60,0" animate="1" />
+		<imgbtn name="btn_min" skin="skin_sysbtn_min" pos="-90,0" animate="1" />
+		<link  pos="5, 5" class="cls_btn_weblink">SOUI讨论#1</link>
+		<text pos="5, [0" font="size:12" cursor="hand" >(1000人群) 行业交流-IT/互联网</text>
+	</caption>
+</include>

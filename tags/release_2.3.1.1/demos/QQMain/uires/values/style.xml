@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<style>
+    <class name="cls_edit" ncSkin="_skin.sys.border" margin-x="2" margin-y="2" />
+    <!--全局style对象-->
+    <class name="cls_dlg_frame" skin="_skin.sys.wnd.bkgnd" font="" colorText="#000000" margin-x="0"/>
+    <class name="cls_btn_link"    cursor="hand" colorHover="#0A84D2" />
+    <class name="cls_btn_weblink" cursor="hand" font="size:17" fontPush="underline:1,size:17" fontHover="underline:1,size:17" />
+    <class name="cls_rich_link" cursor="hand" font="size:12" fontPush="underline:1,size:12" fontHover="underline:1,size:12" colorText="#1670eb" colorHover="#1670eb"/>
+    <class name="font:tab_button_normal" colorText="#000000" font="face:微软雅黑,bold:0,italic:0,underline:0,size:15" />
+    <class name="font:tab_button_hover" colorText="#ff8800" font="face:微软雅黑,bold:0,italic:0,underline:0,size:15" />
+    
+</style>

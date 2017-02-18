@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Untitled Page</title>
+    <style type="text/css">
+        #button1
+        {
+            width: 306px;
+        }
+        #button2
+        {
+            width: 306px;
+        }
+    </style>
+    <script language="javascript" type="text/javascript">
+    function Test(p)
+    {
+        alert("你调用了Test" + p);
+    }
+    
+    function GlobalObject()
+    {
+        this.Test=function()
+        {
+            alert("你调用了GlobalObject.Test");
+        }
+    }
+    
+    var globalObject = new GlobalObject();
+    </script>
+</head>
+<body>
+测试页面<br />
+<br />
+<input id="button2" type="button" value="点击调用客户端的CppCall函数" onclick="return window.external.CppCall('param from js')" />
+<br />
+<div id="size_info"></div>
+</body>
+</html>

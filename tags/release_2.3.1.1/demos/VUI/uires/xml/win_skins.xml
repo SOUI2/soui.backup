@@ -1,0 +1,37 @@
+<SOUI name="win_skins" title="SkinsMgr" bigIcon="ICON_LOGO:32" maxInset="5,3,10,10" smallIcon="ICON_LOGO:16" width="360" height="350" minsize="350,350" margin="5,3,5,7" appWnd="0" resizable="1" translucent="1" >
+	<root skin="_skin.shadow" cache="1">
+		<window  pos="5,3,-5,-7" colorBkgnd="#ffffff" cache="1">
+			<caption pos="0,0,-0,22" skin="_skin_box_caption" colorBkgnd="#000000">
+				<imgbtn name="btn_skin_close" skin="_skin.btn.close"    pos="-23,1" tip="关闭" animate="1"/>
+			</caption>
+			<imgbtn name="btn_skinmgr_maxspeed" skin="_skin_skinmgr_s1" pos="17,25" tip="默认极速" animate="1" />
+			<imgbtn name="btn_skinmgr_deepblue" skin="_skin_skinmgr_s2" pos="[0,25" tip="深湖蓝" animate="1" />
+			<imgbtn name="btn_skinmgr_selfdefine" skin="_skin_skinmgr_s3" pos="[5,25" tip="自定义皮肤" animate="1" />
+			<imgbtn name="btn_skinmgr_bigbang" skin="_skin_skinmgr_s4" pos="[5,25" tip="大片暴风" animate="1" />
+			<img pos="5,[5,-5,[6" skin="_skin_skinmgr_bar_line"/>
+			<img pos="0,-88,-0,-0" skin="_skin_skinmgr_bar" />
+			<text pos="7,-65" font="adding:-2">我的皮肤</text>
+			<imgbtn name="btn_skinmgr_prev" skin="_skin_skinmgr_prev" pos="[5,-82" animate="1" />
+			<img pos="[3,-74" skin="_skin_skinmgr_maxspeed"/>
+			<imgbtn name="btn_skinmgr_choosing1" skin="_skin_skinmgr_chooosing" pos="[-33,-78" animate="1" />
+			<img pos="[3,-74" skin="_skin_skinmgr_blue"/>
+			<imgbtn name="btn_skinmgr_choosing2" skin="_skin_skinmgr_chooosing" pos="[-33,-78" animate="1" />
+			<imgbtn name="btn_skinmgr_next" skin="_skin_skinmgr_next" pos="-11,-82" animate="1" />
+			<img pos="5,-35,-5,-33" skin="_skin_skinmgr_bar_line"/>
+			<text pos="7,-21" font="adding:-2">配色方案</text>
+			<imgbtn name="btn_skinmgr_color1" skin="_skin_skinmgr_color1" pos="[2,-26" animate="1" />
+			<imgbtn name="btn_skinmgr_color2" skin="_skin_skinmgr_color2" pos="[2,-26" animate="1" />
+			<imgbtn name="btn_skinmgr_color3" skin="_skin_skinmgr_color3" pos="[2,-26" animate="1" />
+			<imgbtn name="btn_skinmgr_color4" skin="_skin_skinmgr_color4" pos="[2,-26" animate="1" />
+			<imgbtn name="btn_skinmgr_color5" skin="_skin_skinmgr_color5" pos="[2,-26" animate="1" />
+			<imgbtn name="btn_skinmgr_color6" skin="_skin_skinmgr_color6" pos="[2,-26" animate="1" />
+			<imgbtn name="btn_skinmgr_color7" skin="_skin_skinmgr_color7" pos="[2,-26" animate="1" />
+			<imgbtn name="btn_skinmgr_color8" skin="_skin_skinmgr_color8" pos="[2,-26" animate="1" />
+			<imgbtn name="btn_skinmgr_color9" skin="_skin_skinmgr_color9" pos="[2,-26" animate="1" />
+			<imgbtn name="btn_skinmgr_color10" skin="_skin_skinmgr_color10" pos="[2,-26" animate="1" />
+			<imgbtn name="btn_skinmgr_color11" skin="_skin_skinmgr_color11" pos="[2,-26" animate="1" />
+			<imgbtn name="btn_skinmgr_color12" skin="_skin_skinmgr_color12" pos="[2,-26" animate="1" />
+		</window>
+	</root>
+</SOUI>
+
