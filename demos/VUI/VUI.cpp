@@ -21,7 +21,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
 	TCHAR szCurrentDir[MAX_PATH]={0};
 	GetModuleFileName( NULL, szCurrentDir, sizeof(szCurrentDir) );
 	LPTSTR lpInsertPos = _tcsrchr( szCurrentDir, _T('\\') );
-	_tcscpy(lpInsertPos+1,_T("\\..\\VUI"));
+	_tcscpy(lpInsertPos+1,_T("..\\demos\\VUI"));
 	SetCurrentDirectory(szCurrentDir);
 
 	SComMgr *pComMgr = new SComMgr();
