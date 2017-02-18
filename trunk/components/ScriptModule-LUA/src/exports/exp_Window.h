@@ -1,7 +1,7 @@
 #include <core/swnd.h>
 
 //定义一个从SObject转换成SWindow的方法
-SWindow * toSWindow(SObject * pObj)
+SWindow * toSWindow(IObject * pObj)
 {
     return sobj_cast<SWindow>(pObj);
 }
@@ -12,7 +12,7 @@ BOOL ExpLua_Window(lua_State *L)
         lua_tinker::def(L,"toSWindow",toSWindow);
 
 		lua_tinker::class_add<SWindow>(L,"SWindow");
-        lua_tinker::class_inh<SWindow,SObject>(L);
+        lua_tinker::class_inh<SWindow,IObject>(L);
 		lua_tinker::class_con<SWindow>(L,lua_tinker::constructor<SWindow>);
         lua_tinker::class_def<SWindow>(L,"GetContainer",&SWindow::GetContainer);
         lua_tinker::class_def<SWindow>(L,"GetRoot",&SWindow::GetRoot);
@@ -55,7 +55,7 @@ BOOL ExpLua_Window(lua_State *L)
         lua_tinker::class_def<SWindow>(L,"Move2",(void (SWindow::*)(int,int,int,int))&SWindow::Move);
         lua_tinker::class_def<SWindow>(L,"Move",(void (SWindow::*)(LPCRECT))&SWindow::Move);
         lua_tinker::class_def<SWindow>(L,"FireCommand",&SWindow::FireCommand);
-        lua_tinker::class_def<SWindow>(L,"GetDesiredSize",&SWindow::GetDesiredSize);
+		lua_tinker::class_def<SWindow>(L,"GetDesiredSize",(CSize (SWindow::*)(int, int))&SWindow::GetDesiredSize);
         lua_tinker::class_def<SWindow>(L,"GetWindow",&SWindow::GetWindow);
         lua_tinker::class_def<SWindow>(L,"SetWindowRgn",&SWindow::SetWindowRgn);
         lua_tinker::class_def<SWindow>(L,"GetWindowRgn",&SWindow::GetWindowRgn);

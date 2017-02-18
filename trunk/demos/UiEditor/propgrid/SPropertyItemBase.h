@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SPropertyItem-i.h"
-#include <core/sobject.h>
+#include <sobject/sobject.hpp>
 #include <unknown/obj-ref-i.h>
 #include <unknown/obj-ref-impl.hpp>
 

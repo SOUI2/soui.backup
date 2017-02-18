@@ -3,15 +3,16 @@
 
 #include <helper/color.h>
 #include <unknown/obj-ref-impl.hpp>
-
+#include <sobject/sobject-state-impl.hpp>
+#include <Shlwapi.h>
 #include <core\SkCanvas.h>
 #include <core\SkBitmap.h>
 #include <core\SkTypeface.h>
-
+#include <helper\SAttrCracker.h>
 #include <string\tstring.h>
 #include <string\strcpcvt.h>
 #include <interface/render-i.h>
-
+#include <souicoll.h>
 
 namespace SOUI
 {
@@ -29,7 +30,7 @@ namespace SOUI
         }
         
 		virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei);
-        virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf,const IPropBag * pPropBag);
+        virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf);
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
         virtual BOOL CreateRegion(IRegion **ppRgn);
         
@@ -44,7 +45,7 @@ namespace SOUI
 	//////////////////////////////////////////////////////////////////////////
 	// TSkiaRenderObjImpl
 	template<class T>
-	class TSkiaRenderObjImpl : public TObjRefImpl<T>
+	class TSkiaRenderObjImpl : public TObjRefImpl<SObjectStateImpl<SObjectImpl<T>>>
 	{
 	public:
 		TSkiaRenderObjImpl(IRenderFactory * pRenderFac):m_pRenderFactory(pRenderFac)
@@ -59,10 +60,7 @@ namespace SOUI
 			return m_pRenderFactory;
 		}
 
-		virtual IRenderFactory * GetRenderFactory_Skia() const
-		{
-			return m_pRenderFactory;
-		}
+
 	protected:
 		IRenderFactory *m_pRenderFactory;
 	};
@@ -72,6 +70,7 @@ namespace SOUI
 	// SPen_Skia
 	class SPen_Skia : public TSkiaRenderObjImpl<IPen>
 	{
+		SOUI_CLASS_NAME(SPen_Skia,L"pen")
 	public:
 		SPen_Skia(IRenderFactory * pRenderFac,int iStyle=PS_SOLID,COLORREF cr=0xFF000000,int cWidth=1)
 			:TSkiaRenderObjImpl<IPen>(pRenderFac)
@@ -101,6 +100,7 @@ namespace SOUI
 	// SFont_Skia
 	class SFont_Skia: public TSkiaRenderObjImpl<IFont>
 	{
+		SOUI_CLASS_NAME(SFont_Skia,L"font")
 	public:
 		SFont_Skia(IRenderFactory * pRenderFac,const LOGFONT * plf);
 
@@ -121,15 +121,29 @@ namespace SOUI
         const SkPaint  GetPaint() const {return m_skPaint;}
         SkTypeface *GetFont()const {return m_skFont;}
 
-		virtual void SetProps(const IPropBag *pPropBag);
+		virtual HRESULT DefAttributeProc(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading);
+		virtual void OnInitFinished(pugi::xml_node xmlNode); 
+		SOUI_ATTRS_BEGIN()
+			ATTR_ENUM_BEGIN(L"blurStyle",SkBlurStyle,FALSE)
+				ATTR_ENUM_VALUE(L"normal",kNormal_SkBlurStyle)
+				ATTR_ENUM_VALUE(L"solid",kSolid_SkBlurStyle)
+				ATTR_ENUM_VALUE(L"outer",kOuter_SkBlurStyle)
+				ATTR_ENUM_VALUE(L"inner",kInner_SkBlurStyle)
+			ATTR_ENUM_END(m_blurStyle)
+			ATTR_FLOAT(L"blurRadius",m_blurRadius,FALSE)
+		SOUI_ATTRS_END()
 	protected:
         SkTypeface *m_skFont;   //定义字体
         SkPaint     m_skPaint;  //定义文字绘制属性
         LOGFONT     m_lf;
+		SkBlurStyle m_blurStyle;
+		SkScalar	m_blurRadius;
 	};
 
 	class SBrush_Skia : public TSkiaRenderObjImpl<IBrush>
 	{
+		SOUI_CLASS_NAME(SBrush_Skia,L"brush")
+
 	public:
 		static SBrush_Skia * CreateSolidBrush(IRenderFactory * pRenderFac,COLORREF cr){
 			return new SBrush_Skia(pRenderFac,cr);
@@ -166,6 +180,8 @@ namespace SOUI
 	// SBitmap_Skia
 	class SBitmap_Skia : public TSkiaRenderObjImpl<IBitmap>
 	{
+		SOUI_CLASS_NAME(SBitmap_Skia,L"bitmap")
+
 	public:
 		SBitmap_Skia(IRenderFactory *pRenderFac);
         ~SBitmap_Skia();
@@ -197,6 +213,8 @@ namespace SOUI
 	//	SRegion_Skia
 	class SRegion_Skia: public TSkiaRenderObjImpl<IRegion>
 	{
+		SOUI_CLASS_NAME(SRegion_Skia,L"region")
+
 	public:
 		SRegion_Skia(IRenderFactory *pRenderFac);
         virtual ~SRegion_Skia();
@@ -224,7 +242,7 @@ namespace SOUI
 	//////////////////////////////////////////////////////////////////////////
 	//	SRenderTarget_Skia
 	//////////////////////////////////////////////////////////////////////////
-	class SRenderTarget_Skia: public TSkiaRenderObjImpl<IRenderTarget>
+	class SRenderTarget_Skia: public TObjRefImpl<IRenderTarget>
 	{
 	public:
 		SRenderTarget_Skia(IRenderFactory* pRenderFactory,int nWid,int nHei);
@@ -325,13 +343,19 @@ namespace SOUI
 
 		virtual COLORREF SetPixel( int x, int y, COLORREF cr );
 
-		virtual void SetProps(const IPropBag * pProps);
-
-		virtual SStringT GetProp(LPCTSTR pszProp) const ;
     public:
         SkCanvas *GetCanvas(){return m_SkCanvas;}
 
+		virtual SStringW GetAttribute(const SStringW & strAttr) const
+		{
+			if(strAttr.CompareNoCase(L"antiAlias") == 0)
+				return m_bAntiAlias?L"1":L"0";
+			return __super::GetAttribute(strAttr);
+		}
 
+		SOUI_ATTRS_BEGIN()
+			ATTR_BOOL(L"antiAlias",m_bAntiAlias,FALSE)
+		SOUI_ATTRS_END()
 
     protected:
 		SkCanvas *m_SkCanvas;
@@ -348,6 +372,8 @@ namespace SOUI
         CAutoRefPtr<IPen> m_defPen;
         CAutoRefPtr<IBrush> m_defBrush;
         CAutoRefPtr<IFont> m_defFont;
+
+		CAutoRefPtr<IRenderFactory> m_pRenderFactory;
 
         HDC m_hGetDC;
         UINT m_uGetDCFlag;

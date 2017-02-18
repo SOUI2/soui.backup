@@ -76,7 +76,6 @@ HEADERS += include/SApp.h \
            include/core/SimpleWnd.h \
            include/core/SItemPanel.h \
            include/core/SMsgLoop.h \
-           include/core/Sobject.h \
            include/core/SPanel.h \
            include/core/SSingleton.h \
            include/core/SSingletonMap.h \
@@ -88,8 +87,6 @@ HEADERS += include/SApp.h \
            include/core/SwndContainer-i.h \
            include/core/SwndContainerImpl.h \
            include/core/SwndFactoryMgr.h \
-           include/core/SwndLayout.h \
-           include/core/SwndLayoutBuilder.h \
            include/core/SwndStyle.h \
            include/core/scaret.h \
            include/event/eventcrack.h \
@@ -124,7 +121,6 @@ HEADERS += include/SApp.h \
 		   include/helper/smatrix.h \
 		   include/helper/slog.h \
 		   include/helper/sdibhelper.h \
-		   include/helper/spropbag.h \
            include/interface/imgdecoder-i.h \
            include/interface/render-i.h \
            include/interface/SResProvider-i.h \
@@ -135,8 +131,13 @@ HEADERS += include/SApp.h \
            include/interface/adapter-i.h \
            include/interface/LvItemLocator-i.h \
            include/interface/slog-i.h \
-           include/interface/spropbag-i.h \
            include/interface/TvItemLocator-i.h \
+           include/interface/slayout-i.h \
+           include/layout/SLinearLayoutParamStruct.h \
+           include/layout/SLinearLayout.h \
+           include/layout/SouiLaoutParamStruct.h \
+           include/layout/SouiLayout.h \
+           include/res.mgr/SUiDef.h \
            include/res.mgr/SFontPool.h \
            include/res.mgr/SObjDefAttr.h \
            include/res.mgr/SResProvider.h \
@@ -187,7 +188,6 @@ SOURCES += src/SApp.cpp \
            src/core/SimpleWnd.cpp \
            src/core/SItemPanel.cpp \
            src/core/SMsgLoop.cpp \
-           src/core/SObject.cpp \
            src/core/SPanel.cpp \
            src/core/SSkin.cpp \
            src/core/SSkinFactoryMgr.cpp \
@@ -195,10 +195,10 @@ SOURCES += src/SApp.cpp \
            src/core/Swnd.cpp \
            src/core/SwndContainerImpl.cpp \
            src/core/SWndFactoryMgr.cpp \
-           src/core/SwndLayout.cpp \
-           src/core/SwndLayoutBuilder.cpp \
            src/core/SwndStyle.cpp \
            src/core/scaret.cpp \
+           src/layout/SLinearLayout.cpp \
+           src/layout/SouiLayout.cpp \
            src/event/EventSet.cpp \
            src/event/NotifyCenter.cpp \
            src/helper/DragWnd.cpp \
@@ -215,7 +215,7 @@ SOURCES += src/SApp.cpp \
    		   src/helper/smenuex.cpp \
    		   src/helper/smatrix.cpp \
 		   src/helper/sdibhelper.cpp \
-		   src/helper/spropbag.cpp \
+		   src/res.mgr/SUiDef.cpp \
            src/res.mgr/SFontPool.cpp \
            src/res.mgr/SObjDefAttr.cpp \
            src/res.mgr/SResProvider.cpp \

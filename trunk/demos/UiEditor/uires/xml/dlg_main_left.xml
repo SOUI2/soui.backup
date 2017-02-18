@@ -5,10 +5,11 @@
 			<treectrl pos="1,0,-1,-1" name="NAME_UIDESIGNER_mytree" itemHeight="30" iconSkin="SKIN_UIDESIGNER_home_tree" colorItemText="#FFFFFF" colorItemSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" />
 		</page>
 		<page name="NAME_UIDESIGNER_PROPERTY_PAGE" title="属性" colorBorder="#ffff00">
-			<window pos="0,0,-0,]0" name="NAME_UIDESIGNER_propContainer" colorBkgnd="#FFFFFF12" />
+			
 			<window pos="0,-92,-0,@92"  colorBkgnd="#FFFFFF20"  >
 				<richedit multilines="1" autovscroll="1" wordwrap="1" margin-x="2" margin-y="2" cueText="" pos="1,1,-1,-1" autoHscroll="0" vscrollBar="1" readOnly="1" wantReturn="1" name="NAME_UIDESIGNER_edtDesc" margin="0"></richedit>
 			</window>
+			<window pos="0,0,-0,-92" name="NAME_UIDESIGNER_propContainer" colorBkgnd="#FFFFFF12" />
 		</page>
 	</tabctrl>
 </include>

@@ -37,7 +37,7 @@
       </caption>
       <window pos="0,30,-0,-0" colorBkgnd="#edeeee" alpha="70">
         <window pos="0,1,-0,-0" colorBkgnd="#ffffff">
-  <window pos="4,7">
+  <window pos="4,7,-4,@100">
     <img pos="2,0,@120,@120" class="cls_border" name="img_skin_0" id="10" msgTransparent="0" skin="skin_bkimg_0_fit"/>
     <img pos="[3,0,@120,@120" class="cls_border" name="img_skin_1" id="11" msgTransparent="0" skin="skin_bkimg_1_fit"/>
     <img pos="[3,0,@120,@120" class="cls_border" name="img_skin_2" id="12" msgTransparent="0" skin="skin_bkimg_2_fit"/>

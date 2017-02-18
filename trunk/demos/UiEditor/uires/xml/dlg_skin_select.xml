@@ -43,7 +43,7 @@
 					<img name="NAME_UIDESIGNER_IMG_VIEW" margin-x="1" margin-y="1" colorBorder="#c5c5c5" pos="|0,|0" size="1,1" offset="-0.5,-0.5" colorBkgnd="rgb(234,128,16)" />
 				</window>
 			</window>
-			<button id="IDOK" pos="-150,-40,@100,@30">确定</button>
+			<button name="btnOK" pos="-150,-40,@100,@30">确定</button>
 		</window>
 	</root>
 </SOUI>

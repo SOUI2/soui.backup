@@ -292,10 +292,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\controls.extend\sflywnd.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\controls.extend\SFreeMoveWindow.cpp"
 				>
 			</File>
@@ -475,10 +471,6 @@
 			</File>
 			<File
 				RelativePath="..\..\controls.extend\sfadeframe.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\sflywnd.h"
 				>
 			</File>
 			<File

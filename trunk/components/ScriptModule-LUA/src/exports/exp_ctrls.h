@@ -1,12 +1,12 @@
 #include <control/souictrls.h>
 
 
-SComboBase * toSComboboxBase(SObject *pObj)
+SComboBase * toSComboboxBase(IObject *pObj)
 {
     return sobj_cast<SComboBase>(pObj);
 }
 
-SComboBox * toSCombobox(SObject *pObj)
+SComboBox * toSCombobox(IObject *pObj)
 {
     return sobj_cast<SComboBox>(pObj);
 }

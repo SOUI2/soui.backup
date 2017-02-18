@@ -100,10 +100,9 @@ namespace SOUI
 		return TRUE;
 	}
 
-    BOOL SRenderFactory_Skia::CreateFont( IFont ** ppFont , const LOGFONT &lf ,const IPropBag * pPropBag)
+    BOOL SRenderFactory_Skia::CreateFont( IFont ** ppFont , const LOGFONT &lf )
     {
         *ppFont = new SFont_Skia(this,&lf);
-		(*ppFont)->SetProps(pPropBag);
         return TRUE;
     }
 
@@ -123,15 +122,15 @@ namespace SOUI
 	// SRenderTarget_Skia
 
 	SRenderTarget_Skia::SRenderTarget_Skia( IRenderFactory* pRenderFactory ,int nWid,int nHei)
-		:TSkiaRenderObjImpl<IRenderTarget>(pRenderFactory)
-		,m_SkCanvas(NULL)
+		:m_SkCanvas(NULL)
         ,m_curColor(0xFF000000)//默认黑色
         ,m_hGetDC(0)
         ,m_uGetDCFlag(0)
 		,m_bAntiAlias(true)
 	{
         m_ptOrg.fX=m_ptOrg.fY=0.0f;
-        
+        m_pRenderFactory = pRenderFactory;
+
         m_SkCanvas = new SkCanvas();
 
         CreatePen(PS_SOLID,SColor(0,0,0).toCOLORREF(),1,&m_defPen);
@@ -143,10 +142,10 @@ namespace SOUI
         LOGFONT lf={0};
         lf.lfHeight=20;
         _tcscpy(lf.lfFaceName,_T("宋体"));
-        pRenderFactory->CreateFont(&m_defFont,lf,NULL);
+        pRenderFactory->CreateFont(&m_defFont,lf);
         SelectObject(m_defFont);
 
-        GetRenderFactory_Skia()->CreateBitmap(&m_defBmp);
+        pRenderFactory->CreateBitmap(&m_defBmp);
         m_defBmp->Init(nWid,nHei);
         SelectObject(m_defBmp);
 		CAutoRefPtr<IPen> pPen;
@@ -161,27 +160,27 @@ namespace SOUI
 
 	HRESULT SRenderTarget_Skia::CreateCompatibleRenderTarget( SIZE szTarget,IRenderTarget **ppRenderTarget )
 	{
-        SRenderTarget_Skia *pRT = new SRenderTarget_Skia(GetRenderFactory_Skia(),szTarget.cx,szTarget.cy);
+        SRenderTarget_Skia *pRT = new SRenderTarget_Skia(m_pRenderFactory,szTarget.cx,szTarget.cy);
         *ppRenderTarget = pRT;
 		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::CreatePen( int iStyle,COLORREF cr,int cWidth,IPen ** ppPen )
 	{
-		*ppPen = new SPen_Skia(GetRenderFactory_Skia(),iStyle,cr,cWidth);
+		*ppPen = new SPen_Skia(m_pRenderFactory,iStyle,cr,cWidth);
 		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::CreateSolidColorBrush( COLORREF cr,IBrush ** ppBrush )
 	{
-		*ppBrush = SBrush_Skia::CreateSolidBrush(GetRenderFactory_Skia(),cr);
+		*ppBrush = SBrush_Skia::CreateSolidBrush(m_pRenderFactory,cr);
 		return S_OK;
 	}
 
 	HRESULT SRenderTarget_Skia::CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush )
 	{
 		SBitmap_Skia *pBmpSkia = (SBitmap_Skia*)pBmp;
-		*ppBrush = SBrush_Skia::CreateBitmapBrush(GetRenderFactory_Skia(),pBmpSkia->GetSkBitmap());
+		*ppBrush = SBrush_Skia::CreateBitmapBrush(m_pRenderFactory,pBmpSkia->GetSkBitmap());
 		return S_OK;
 	}
 
@@ -254,7 +253,7 @@ namespace SOUI
 
     HRESULT SRenderTarget_Skia::GetClipRegion( IRegion **ppRegion )
     {
-        SRegion_Skia *pRgn=new SRegion_Skia(GetRenderFactory_Skia());
+        SRegion_Skia *pRgn=new SRegion_Skia(m_pRenderFactory);
         SkRegion rgn = m_SkCanvas->getTotalClip();
         //需要将rect的viewOrg还原
         rgn.translate((int)-m_ptOrg.fX,(int)-m_ptOrg.fY);
@@ -1149,24 +1148,6 @@ namespace SOUI
 		return crRet;
 	}
 
-	void SRenderTarget_Skia::SetProps(const IPropBag * pPropBag)
-	{
-		if(!pPropBag) return;
-		LPCTSTR pszAntiAlias = pPropBag->GetValue(_T("antiAlias"));
-		if(pszAntiAlias)
-		{
-			m_bAntiAlias = String2Bool(pszAntiAlias);
-		}
-	}
-
-	SStringT SRenderTarget_Skia::GetProp(LPCTSTR pszProp) const
-	{
-		if(_tcsicmp(pszProp,_T("antiAlias"))==0)
-		{
-			return SStringT().Format(_T("%d"),m_bAntiAlias?1:0);
-		}
-		return __super::GetProp(pszProp);
-	}
 
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia
@@ -1245,7 +1226,7 @@ namespace SOUI
 	HRESULT SBitmap_Skia::LoadFromFile( LPCTSTR pszFileName)
 	{
 	    CAutoRefPtr<IImgX> imgDecoder;
-	    GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
+	    GetRenderFactory()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
 		if(imgDecoder->LoadFromFile(S_CT2W(pszFileName))==0) return S_FALSE;
 		return ImgFromDecoder(imgDecoder);
 	}
@@ -1253,7 +1234,7 @@ namespace SOUI
 	HRESULT SBitmap_Skia::LoadFromMemory(LPBYTE pBuf,size_t szLen)
 	{
         CAutoRefPtr<IImgX> imgDecoder;
-        GetRenderFactory_Skia()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
+        GetRenderFactory()->GetImgDecoderFactory()->CreateImgX(&imgDecoder);
 		if(imgDecoder->LoadFromMemory(pBuf,szLen)==0) return S_FALSE;
         return ImgFromDecoder(imgDecoder);
 	}
@@ -1439,6 +1420,8 @@ namespace SOUI
     SFont_Skia::SFont_Skia( IRenderFactory * pRenderFac,const LOGFONT * plf) 
         :TSkiaRenderObjImpl<IFont>(pRenderFac)
         ,m_skFont(NULL)
+		,m_blurStyle((SkBlurStyle)-1)
+		,m_blurRadius(0.0f)
     {
         memcpy(&m_lf,plf,sizeof(LOGFONT));
         SStringA strFace=S_CT2A(plf->lfFaceName,CP_UTF8);
@@ -1464,61 +1447,36 @@ namespace SOUI
 //         STRACE(L"font delete: objects = %d", --s_cFont);
     }
 
-
-	void SFont_Skia::SetProps(const IPropBag *pPropBag)
+	HRESULT SFont_Skia::DefAttributeProc(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading)
 	{
-		if(!pPropBag) return;
-		SStringT strValue = pPropBag->GetValue(_T("antiAlias"));
-		if(!strValue.IsEmpty())
+		if(strAttribName.CompareNoCase(L"antiAlias")==0)
 		{
 			m_skPaint.setAntiAlias(String2Bool(strValue));
-		}
-		strValue = pPropBag->GetValue(_T("style"));
-		if(!strValue.IsEmpty())
+		}else if(strAttribName.CompareNoCase(L"style")==0)
 		{
-			if(strValue.CompareNoCase(_T("strokeAndFill"))==0)
+			if(strValue.CompareNoCase(L"strokeAndFill")==0)
 				m_skPaint.setStyle(SkPaint::kStrokeAndFill_Style);
-			else if(strValue.CompareNoCase(_T("fill"))!=0)
+			else if(strValue.CompareNoCase(L"fill")!=0)
 				m_skPaint.setStyle(SkPaint::kFill_Style);
-			else if(strValue.CompareNoCase( _T("stroke"))==0)
+			else if(strValue.CompareNoCase(L"stroke")==0)
 				m_skPaint.setStyle(SkPaint::kStroke_Style);
-		}
-
-		strValue = pPropBag->GetValue(_T("lcdtext"));
-		if(!strValue.IsEmpty())
+		}else if(strAttribName.CompareNoCase(L"lcdText")==0)
 		{
 			m_skPaint.setLCDRenderText(String2Bool(strValue));
 		}
+		return S_OK;
+	}
 
-		strValue = pPropBag->GetValue(_T("blurstyle"));
-		if(!strValue.IsEmpty())
+	void SFont_Skia::OnInitFinished(pugi::xml_node xmlNode)
+	{
+		if(m_blurStyle != -1 && m_blurRadius > 0.0f)
 		{
-			SkBlurStyle blurStyle = (SkBlurStyle)-1;
-			if(strValue.CompareNoCase( _T("normal"))==0)
-				blurStyle = kNormal_SkBlurStyle;
-			else if(strValue .CompareNoCase(_T("solid"))==0)
-				blurStyle = kSolid_SkBlurStyle;
-			else if(strValue.CompareNoCase( _T("outer"))==0)
-				blurStyle = kOuter_SkBlurStyle;
-			else if(strValue.CompareNoCase(_T("inner"))==0)
-				blurStyle = kInner_SkBlurStyle;
-			if(blurStyle!=-1)
-			{
-				strValue = pPropBag->GetValue(_T("blurradius"));
-				int nRadius = _ttoi(strValue);
-				if(nRadius>0)
-				{
-					m_skPaint.setMaskFilter(SkBlurMaskFilter::Create(blurStyle,
-						SkBlurMask::ConvertRadiusToSigma(SkIntToScalar(nRadius))))->unref();
-
-				}
-			}
+			m_skPaint.setMaskFilter(SkBlurMaskFilter::Create(m_blurStyle,
+				SkBlurMask::ConvertRadiusToSigma(m_blurRadius)))->unref();
 		}
 	}
 
-
-//////////////////////////////////////////////////////////////////////////
-    namespace RENDER_SKIA
+	namespace RENDER_SKIA
     {
         BOOL SCreateInstance( IObjRef ** ppRenderFactory )
         {

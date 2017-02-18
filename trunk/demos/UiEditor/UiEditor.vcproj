@@ -282,35 +282,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\controls.extend\imre\ImgProvider.cpp"
-				>
-			</File>
-			<File
 				RelativePath="MainDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\imre\RichEditObj.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\imre\RichEditObjFactory.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\imre\RichEditOleBase.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\imre\RichEditOleCallback.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\imre\RichEditOleCtrls.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\SAnimImg.cpp"
 				>
 			</File>
 			<File
@@ -330,6 +302,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SDesignerRoot.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\controls.extend\SFreeMoveWindow.cpp"
 				>
 			</File>
@@ -346,23 +322,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\controls.extend\SImagePlayer.cpp"
-				>
-			</File>
-			<File
 				RelativePath="SImageSwitcher.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\controls.extend\imre\SImRichedit.cpp"
-				>
-			</File>
-			<File
 				RelativePath="SMoveWnd.cpp"
-				>
-			</File>
-			<File
-				RelativePath="SMyButton.cpp"
 				>
 			</File>
 			<File
@@ -371,10 +335,6 @@
 			</File>
 			<File
 				RelativePath="propgrid\SPropertyGrid.cpp"
-				>
-			</File>
-			<File
-				RelativePath="SPropertyGridEx.cpp"
 				>
 			</File>
 			<File
@@ -415,10 +375,6 @@
 			</File>
 			<File
 				RelativePath="..\..\controls.extend\SSkinMutiFrameImg.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\SSplitBar.cpp"
 				>
 			</File>
 			<File
@@ -508,14 +464,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\controls.extend\imre\ImgProvider.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\imre\IRichEditObjHost.h"
-				>
-			</File>
-			<File
 				RelativePath="MainDlg.h"
 				>
 			</File>
@@ -528,31 +476,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\controls.extend\imre\RichEditObj.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\imre\RichEditObjFactory.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\imre\RichEditOleBase.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\imre\RichEditOleCallback.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\imre\RichEditOleCtrls.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\controls.extend\gif\SAniImgFrame.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\SAnimImg.h"
 				>
 			</File>
 			<File
@@ -572,6 +496,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SDesignerRoot.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\controls.extend\SFreeMoveWindow.h"
 				>
 			</File>
@@ -588,23 +516,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\controls.extend\SImagePlayer.h"
-				>
-			</File>
-			<File
 				RelativePath="SImageSwitcher.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\controls.extend\imre\SImRichEdit.h"
-				>
-			</File>
-			<File
 				RelativePath="SMoveWnd.h"
-				>
-			</File>
-			<File
-				RelativePath="SMyButton.h"
 				>
 			</File>
 			<File
@@ -617,10 +533,6 @@
 			</File>
 			<File
 				RelativePath="propgrid\SPropertyGrid.h"
-				>
-			</File>
-			<File
-				RelativePath="SPropertyGridEx.h"
 				>
 			</File>
 			<File
@@ -665,10 +577,6 @@
 			</File>
 			<File
 				RelativePath="..\..\controls.extend\SSkinMutiFrameImg.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\SSplitBar.h"
 				>
 			</File>
 			<File
