@@ -28,6 +28,7 @@ namespace SOUI
 		m_downWindow = 0;
 		m_bFocusable = TRUE;
 		m_pRealWnd = NULL;
+		m_bDrawFocusRect = FALSE;
 		StateMove = 0;
 		m_bFocusable = false;
 
@@ -44,20 +45,34 @@ namespace SOUI
 		__super::OnPaint(pRT);
 
 
-
+		//这里将实际控件和覆盖在实际控件上面的布局控件的位置更新为一样的
 		if (m_pRealWnd == m_Desiner->m_pRealWndRoot)
 		{
 			CRect rectR;
 			CRect rectRP;
 			m_pRealWnd->GetWindowRect(rectR);
 			m_pRealWnd->GetParent()->GetWindowRect(rectRP);
-			SwndLayout *pMoveWndLayout = GetLayout();
-			pMoveWndLayout->pos[0].nPos = 20;
-			pMoveWndLayout->pos[1].nPos = 20;
-			pMoveWndLayout->pos[2].nPos = rectR.right - rectR.left;
-			pMoveWndLayout->pos[3].nPos = rectR.bottom - rectR.top;
 
-			GetParent()->UpdateChildrenPosition();
+			SouiLayoutParam *pMoveWndLayout = GetLayoutParamT<SouiLayoutParam>();
+			SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pMoveWndLayout->GetRawData();
+			pSouiLayoutParamStruct->pos[0].nPos = 20;
+			pSouiLayoutParamStruct->pos[1].nPos = 20;
+			pSouiLayoutParamStruct->pos[2].nPos = rectR.right - rectR.left;
+			pSouiLayoutParamStruct->pos[3].nPos = rectR.bottom - rectR.top;
+
+			pMoveWndLayout->SetSpecifiedSize(Horz, rectR.right - rectR.left);
+			pMoveWndLayout->SetSpecifiedSize(Vert, rectR.bottom - rectR.top);
+
+			CRect rect;
+			GetWindowRect(rect);
+
+			if (!rect.EqualRect(rectR))
+			{
+				GetParent()->RequestRelayout();
+				GetParent()->UpdateLayout();
+			}
+
+
 		}
 		else
 		{
@@ -67,24 +82,30 @@ namespace SOUI
 				CRect rectRP;
 				m_pRealWnd->GetWindowRect(rectR);
 				m_pRealWnd->GetParent()->GetWindowRect(rectRP);
-				SwndLayout *pMoveWndLayout = GetLayout();
-				pMoveWndLayout->pos[0].nPos = rectR.left - rectRP.left;
-				pMoveWndLayout->pos[1].nPos = rectR.top - rectRP.top;
-				pMoveWndLayout->pos[2].nPos = rectR.right - rectR.left;
-				pMoveWndLayout->pos[3].nPos = rectR.bottom - rectR.top;
 
-				GetParent()->UpdateChildrenPosition();
+				SouiLayoutParam *pMoveWndLayout = GetLayoutParamT<SouiLayoutParam>();
+				SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pMoveWndLayout->GetRawData();
+				pSouiLayoutParamStruct->pos[0].nPos = rectR.left - rectRP.left;
+				pSouiLayoutParamStruct->pos[1].nPos = rectR.top - rectRP.top;
+				pSouiLayoutParamStruct->pos[2].nPos = rectR.right - rectR.left;
+				pSouiLayoutParamStruct->pos[3].nPos = rectR.bottom - rectR.top;
+
+				pMoveWndLayout->SetSpecifiedSize(Horz, rectR.right - rectR.left);
+				pMoveWndLayout->SetSpecifiedSize(Vert, rectR.bottom - rectR.top);
+
+
+				CRect rect;
+				GetWindowRect(rect);
+
+				if (!rect.EqualRect(rectR))
+				{
+					GetParent()->RequestRelayout();
+					GetParent()->UpdateLayout();
+				}
 		}
 		
 		CRect rect;
 		GetWindowRect(rect);
-
-
-		//if (!IsSelect() && m_Desiner->m_pMoveWndRoot != this)
-		//if (!IsSelect() )
-		//{
-		//	return;
-		//}
 
 		SPainter painter;
 		BeforePaint(pRT, painter);
@@ -118,7 +139,7 @@ namespace SOUI
 		}
 		else
 		{
-			//pRT->CreatePen(PS_SOLID,RGBA(234,128,16,00),1,&pen);
+			pRT->CreatePen(PS_SOLID,RGB(172,172,172),1,&pen);
 			pRT->CreatePen(PS_SOLID,RGBA(172,172,172,255),1,&pen);
 			pRT->SelectObject(pen,(IRenderObj**)&oldpen);
 
@@ -131,6 +152,8 @@ namespace SOUI
 
 	void SMoveWnd::OnLButtonDown(UINT nFlags,CPoint pt)
 	{
+
+
 		if(m_Desiner->m_nState == 1)//如果是创建控件状态
 		{
 
@@ -140,6 +163,7 @@ namespace SOUI
 			m_Desiner->CreatePropGrid(m_Desiner->m_xmlNode.name());
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
 			OnLButtonUp(nFlags, pt);
+
 			return;
 		}
 
@@ -217,6 +241,7 @@ namespace SOUI
 
 		//将控件的位置更新到xml节点;
 
+
 		if (StateMove)
 		{
 			//if (m_pRealWnd != m_Desiner->m_pRealWndRoot)
@@ -292,8 +317,6 @@ namespace SOUI
 
 			if (abs(pt.x - Oldx) >= 8  || abs(pt.y - Oldy) >= 8)
 			{
-				SwndLayout *layout = GetLayout();
-				SwndLayout *layout1 = m_pRealWnd->GetLayout();
 
 				x1 = abs(pt.x - Oldx);
 				x1 = x1 / 8;
@@ -354,7 +377,12 @@ namespace SOUI
 				{
 					if (bx)
 					{
+						if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+						{
+							return; //线性布局不能拖动左边框
+						}
 						MoveWndSizeLT(x*x1, HORZ_LT);
+
 					}
 				}
 				break;;
@@ -362,6 +390,11 @@ namespace SOUI
             /*左上角*/
 			case 1:
 				{
+					if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+					{
+						return; //线性布局不能拖动左上角
+					}
+
 					if (bx)
 					{
 						MoveWndSizeLT(x*x1, HORZ_LT);
@@ -378,6 +411,10 @@ namespace SOUI
 				{
 					if (by)
 					{
+						if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+						{
+							return; //线性布局不能拖动上边框
+						}
 						MoveWndSizeLT(y*y1, VERT_LT);
 					}
 				}
@@ -392,7 +429,15 @@ namespace SOUI
 				{
 					if (bx)
 					{
-						MoveWndSize(x*x1, HORZ);
+						if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+						{
+						    MoveWndSize_Linear(x*x1, Horz);
+						}
+						else
+						{
+							MoveWndSize(x*x1, HORZ);
+						}
+						
 					}
 				}
 				break;
@@ -402,11 +447,25 @@ namespace SOUI
 				{
 					if (bx)
 					{
-						MoveWndSize(x*x1, HORZ);
+						if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+						{
+							MoveWndSize_Linear(x*x1, Horz);
+						}
+						else
+						{
+							MoveWndSize(x*x1, HORZ);
+						}
 					}
 					if (by)
 					{
-						MoveWndSize(y*y1, VERT);
+						if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+						{
+							MoveWndSize_Linear(y*y1, Vert);
+						}
+						else
+						{
+							MoveWndSize(y*y1, VERT);
+						}
 					}
 				}
 				break;
@@ -416,7 +475,14 @@ namespace SOUI
 				{
 					if (by)
 					{
-						MoveWndSize(y*y1, VERT);
+						if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+						{
+							MoveWndSize_Linear(y*y1, Vert);
+						}
+						else
+						{
+							MoveWndSize(y*y1, VERT);
+						}
 					}
 				}
 				break;
@@ -428,6 +494,10 @@ namespace SOUI
             /*中间拖动*/
 			case 9:
 				{
+					if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+					{
+						return; //线性布局不能拖动
+					}
 					if (bx)
 					{
 						MoveWndHorz(x*x1);
@@ -446,9 +516,11 @@ namespace SOUI
 
 			Oldx = Oldx + x*x1;
 			Oldy = Oldy + y*y1; 
+			m_pRealWnd->GetParent()->RequestRelayout();
+			m_pRealWnd->GetParent()->UpdateLayout();	
 
-			m_pRealWnd->GetParent()->UpdateChildrenPosition();	
-			GetParent()->UpdateChildrenPosition();	
+			GetParent()->RequestRelayout();
+			GetParent()->UpdateLayout();	
 	
 			StateMove = 1;
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
@@ -545,8 +617,11 @@ void SMoveWnd::MoveWndHorz(int x)
 		return;
 	}
 
-	SwndLayout *layout = GetLayout();
-	SwndLayout *layout1 = m_pRealWnd->GetLayout();
+	ILayoutParam *pSouiLayoutParam = GetLayoutParam();
+	SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pSouiLayoutParam->GetRawData();
+	
+	ILayoutParam *pSouiLayoutParam1 = m_pRealWnd->GetLayoutParam();
+	SouiLayoutParamStruct *pSouiLayoutParamStruct1 = (SouiLayoutParamStruct*)pSouiLayoutParam1->GetRawData();
 
 
 	//有margin的情况
@@ -556,7 +631,7 @@ void SMoveWnd::MoveWndHorz(int x)
 	nMargin = style.m_rcMargin.left;
 
 	//往左拖动，left不能小于0
-	if (layout->pos[0].nPos + x - nMargin < 0 && x < 0)
+	if (pSouiLayoutParamStruct->pos[0].nPos + x - nMargin < 0 && x < 0)
 	{
 		return;
 	}
@@ -568,7 +643,7 @@ void SMoveWnd::MoveWndHorz(int x)
 		CRect r;
 		GetParent()->GetWindowRect(r);
 
-		if (layout->pos[0].nPos + layout->GetSpecifySize(PD_X) + x + style.m_rcMargin.right > r.right - r.left)
+		if (pSouiLayoutParamStruct->pos[0].nPos + pSouiLayoutParam->GetSpecifiedSize(Horz) + x + style.m_rcMargin.right > r.right - r.left)
 		{
 			return;
 		}
@@ -576,33 +651,33 @@ void SMoveWnd::MoveWndHorz(int x)
 
 
 
-	if (layout1->nCount == 2) //两个坐标的情况
+	if (pSouiLayoutParamStruct1->nCount == 2) //两个坐标的情况
 	{
-		if (layout1->pos[0].cMinus == -1)// 坐标1为负数的情况
+		if (pSouiLayoutParamStruct1->pos[0].cMinus == -1)// 坐标1为负数的情况
 		{
-			if (layout1->pos[0].nPos - x<0)
+			if (pSouiLayoutParamStruct1->pos[0].nPos - x<0)
 			{
 				return ;
 			}
 
-			layout->pos[0].nPos = layout->pos[0].nPos + x;
-			layout1->pos[0].nPos = layout1->pos[0].nPos - x;
+			pSouiLayoutParamStruct->pos[0].nPos = pSouiLayoutParamStruct->pos[0].nPos + x;
+			pSouiLayoutParamStruct1->pos[0].nPos = pSouiLayoutParamStruct1->pos[0].nPos - x;
 
 		}
 		else//坐标1为正数
 		{
-			if (layout1->pos[2].cMinus == -1)
+			if (pSouiLayoutParamStruct1->pos[2].cMinus == -1)
 			{
-				if (layout1->pos[2].nPos - x <0)
+				if (pSouiLayoutParamStruct1->pos[2].nPos - x <0)
 				{
 					return;
 				}
 			}
 
-			layout->pos[0].nPos = layout->pos[0].nPos + x;
-			layout1->pos[0].nPos = layout1->pos[0].nPos + x;
+			pSouiLayoutParamStruct->pos[0].nPos = pSouiLayoutParamStruct->pos[0].nPos + x;
+			pSouiLayoutParamStruct1->pos[0].nPos = pSouiLayoutParamStruct1->pos[0].nPos + x;
 		}
-	}else if (layout1->nCount == 4)
+	}else if (pSouiLayoutParamStruct1->nCount == 4)
 	{
 
 
@@ -613,29 +688,29 @@ void SMoveWnd::MoveWndHorz(int x)
 
 		/************************* 移动top点 **************************************/
 
-		if (layout1->pos[0].cMinus == -1)// 坐标1为负数的情况
+		if (pSouiLayoutParamStruct1->pos[0].cMinus == -1)// 坐标1为负数的情况
 		{
-			if (layout1->pos[0].nPos - x<0)
+			if (pSouiLayoutParamStruct1->pos[0].nPos - x<0)
 			{
 				return ;
 			}
 
-			nPosTop = layout->pos[0].nPos + x; //layout->pos[1].nPos = layout->pos[1].nPos + x;   
-			nPosTop1 = layout1->pos[0].nPos - x; //layout1->pos[1].nPos = layout1->pos[1].nPos - x;
+			nPosTop = pSouiLayoutParamStruct->pos[0].nPos + x; //layout->pos[1].nPos = layout->pos[1].nPos + x;   
+			nPosTop1 = pSouiLayoutParamStruct1->pos[0].nPos - x; //layout1->pos[1].nPos = layout1->pos[1].nPos - x;
 
 		}
 		else//坐标1为正数
 		{
-			if (layout1->pos[2].cMinus == -1)
+			if (pSouiLayoutParamStruct1->pos[2].cMinus == -1)
 			{
-				if (layout1->pos[2].nPos - x <0)
+				if (pSouiLayoutParamStruct1->pos[2].nPos - x <0)
 				{
 					return;
 				}
 			}
 
-			nPosTop = layout->pos[0].nPos + x;    //layout->pos[1].nPos = layout->pos[1].nPos + x;
-			nPosTop1 = layout1->pos[0].nPos + x;  //layout1->pos[1].nPos = layout1->pos[1].nPos + x;
+			nPosTop = pSouiLayoutParamStruct->pos[0].nPos + x;    //layout->pos[1].nPos = layout->pos[1].nPos + x;
+			nPosTop1 = pSouiLayoutParamStruct1->pos[0].nPos + x;  //layout1->pos[1].nPos = layout1->pos[1].nPos + x;
 		}
 
 		/************************* 移动 top **************************************/
@@ -644,37 +719,37 @@ void SMoveWnd::MoveWndHorz(int x)
 
 
 		/************************* 移动 buttom  **************************************/
-		if (layout1->pos[2].pit == PIT_SIZE)  //100, 100 ,@5, @5这种情况
+		if (pSouiLayoutParamStruct1->pos[2].pit == PIT_SIZE)  //100, 100 ,@5, @5这种情况
 		{
 			//
 
-			layout->pos[0].nPos = nPosTop;
-			layout1->pos[0].nPos = nPosTop1;
+			pSouiLayoutParamStruct->pos[0].nPos = nPosTop;
+			pSouiLayoutParamStruct1->pos[0].nPos = nPosTop1;
 
 		}else
 		{
-			if (layout1->pos[2].cMinus == -1)// 坐标1为负数的情况
+			if (pSouiLayoutParamStruct1->pos[2].cMinus == -1)// 坐标1为负数的情况
 			{
-				if (layout1->pos[2].nPos - x <0)
+				if (pSouiLayoutParamStruct1->pos[2].nPos - x <0)
 				{
 					return ;
 				}
 
-				nPosButtom = layout->pos[2].nPos + x;  //layout->pos[3].nPos = layout->pos[3].nPos + x;
-				nPosButtom1 = layout1->pos[2].nPos - x; //layout1->pos[3].nPos = layout1->pos[3].nPos - x;
+				nPosButtom = pSouiLayoutParamStruct->pos[2].nPos + x;  //layout->pos[3].nPos = layout->pos[3].nPos + x;
+				nPosButtom1 = pSouiLayoutParamStruct1->pos[2].nPos - x; //layout1->pos[3].nPos = layout1->pos[3].nPos - x;
 
 			}
 			else//坐标1为正数
 			{
-				nPosButtom = layout->pos[2].nPos + x; //layout->pos[3].nPos = layout->pos[3].nPos + x;
-				nPosButtom1 = layout1->pos[2].nPos + x; //layout1->pos[3].nPos = layout1->pos[3].nPos + x;
+				nPosButtom = pSouiLayoutParamStruct->pos[2].nPos + x; //layout->pos[3].nPos = layout->pos[3].nPos + x;
+				nPosButtom1 = pSouiLayoutParamStruct1->pos[2].nPos + x; //layout1->pos[3].nPos = layout1->pos[3].nPos + x;
 			}
 
 
-			layout->pos[0].nPos = nPosTop;
-			layout1->pos[0].nPos = nPosTop1;
-			layout->pos[2].nPos = nPosButtom;
-			layout1->pos[2].nPos = nPosButtom1; 
+			pSouiLayoutParamStruct->pos[0].nPos = nPosTop;
+			pSouiLayoutParamStruct1->pos[0].nPos = nPosTop1;
+			pSouiLayoutParamStruct->pos[2].nPos = nPosButtom;
+			pSouiLayoutParamStruct1->pos[2].nPos = nPosButtom1; 
 
 		}
 		/************************* 移动 buttom **************************************/
@@ -694,20 +769,13 @@ void SMoveWnd::MoveWndVert(int x)
 		return;
 	}
 
-	SwndLayout *layout = GetLayout();
-	SwndLayout *layout1 = m_pRealWnd->GetLayout();
+	SouiLayoutParam *pSouiLayoutParam = GetLayoutParamT<SouiLayoutParam>();
+	SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pSouiLayoutParam->GetRawData();
 
-	////有margin的情况
-	//SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
-	//int nMargin = 0;
+	SouiLayoutParam *pSouiLayoutParam1 = m_pRealWnd->GetLayoutParamT<SouiLayoutParam>();
+	SouiLayoutParamStruct *pSouiLayoutParamStruct1 = (SouiLayoutParamStruct*)pSouiLayoutParam1->GetRawData();
 
-	//if (PosN == HORZ)
-	//{
-	//	nMargin = style.m_rcMargin.right;
-	//}else
-	//{
-	//	nMargin = style.m_rcMargin.bottom;
-	//}
+
 
 	//有margin的情况
 	SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
@@ -716,7 +784,7 @@ void SMoveWnd::MoveWndVert(int x)
 	nMargin = style.m_rcMargin.top;
 
 	//往上拖动，top不能小于0
-	if (layout->pos[1].nPos + x - nMargin < 0 && x < 0)
+	if (pSouiLayoutParamStruct->pos[1].nPos + x - nMargin < 0 && x < 0)
 	{
 		return;
 	}
@@ -728,39 +796,39 @@ void SMoveWnd::MoveWndVert(int x)
 		CRect r;
 		GetParent()->GetWindowRect(r);
 
-		if (layout->pos[1].nPos + layout->GetSpecifySize(PD_Y) + x + style.m_rcMargin.bottom > r.bottom - r.top)
+		if (pSouiLayoutParamStruct->pos[1].nPos + pSouiLayoutParam->GetSpecifiedSize(Vert) + x + style.m_rcMargin.bottom > r.bottom - r.top)
 		{
 			return;
 		}
 	}
 
-	if (layout1->nCount == 2) //两个坐标的情况
+	if (pSouiLayoutParamStruct1->nCount == 2) //两个坐标的情况
 	{
-		if (layout1->pos[1].cMinus == -1)// 坐标1为负数的情况
+		if (pSouiLayoutParamStruct1->pos[1].cMinus == -1)// 坐标1为负数的情况
 		{
-			if (layout1->pos[1].nPos - x<0)
+			if (pSouiLayoutParamStruct1->pos[1].nPos - x<0)
 			{
 				return ;
 			}
 
-			layout->pos[1].nPos = layout->pos[1].nPos + x;
-			layout1->pos[1].nPos = layout1->pos[1].nPos - x;
+			pSouiLayoutParamStruct->pos[1].nPos = pSouiLayoutParamStruct->pos[1].nPos + x;
+			pSouiLayoutParamStruct1->pos[1].nPos = pSouiLayoutParamStruct1->pos[1].nPos - x;
 
 		}
 		else//坐标1为正数
 		{
-			if (layout1->pos[1 + 2].cMinus == -1)
+			if (pSouiLayoutParamStruct1->pos[1 + 2].cMinus == -1)
 			{
-				if (layout1->pos[1 + 2].nPos - x <0)
+				if (pSouiLayoutParamStruct1->pos[1 + 2].nPos - x <0)
 				{
 					return;
 				}
 			}
 
-			layout->pos[1].nPos = layout->pos[1].nPos + x;
-			layout1->pos[1].nPos = layout1->pos[1].nPos + x;
+			pSouiLayoutParamStruct->pos[1].nPos = pSouiLayoutParamStruct->pos[1].nPos + x;
+			pSouiLayoutParamStruct1->pos[1].nPos = pSouiLayoutParamStruct1->pos[1].nPos + x;
 		}
-	}else if (layout1->nCount == 4)
+	}else if (pSouiLayoutParamStruct1->nCount == 4)
 	{
 
 
@@ -770,29 +838,29 @@ void SMoveWnd::MoveWndVert(int x)
 
 		/************************* 移动top点 **************************************/
 
-		if (layout1->pos[1].cMinus == -1)// 坐标1为负数的情况
+		if (pSouiLayoutParamStruct1->pos[1].cMinus == -1)// 坐标1为负数的情况
 		{
-			if (layout1->pos[1].nPos - x<0)
+			if (pSouiLayoutParamStruct1->pos[1].nPos - x<0)
 			{
 				return ;
 			}
 
-			nPosTop = layout->pos[1].nPos + x; //layout->pos[1].nPos = layout->pos[1].nPos + x;   
-			nPosTop1 = layout1->pos[1].nPos - x; //layout1->pos[1].nPos = layout1->pos[1].nPos - x;
+			nPosTop = pSouiLayoutParamStruct->pos[1].nPos + x; //layout->pos[1].nPos = layout->pos[1].nPos + x;   
+			nPosTop1 = pSouiLayoutParamStruct1->pos[1].nPos - x; //layout1->pos[1].nPos = layout1->pos[1].nPos - x;
 
 		}
 		else//坐标1为正数
 		{
-			if (layout1->pos[3].cMinus == -1)
+			if (pSouiLayoutParamStruct1->pos[3].cMinus == -1)
 			{
-				if (layout1->pos[3].nPos - x <0)
+				if (pSouiLayoutParamStruct1->pos[3].nPos - x <0)
 				{
 					return;
 				}
 			}
 
-			nPosTop = layout->pos[1].nPos + x;    //layout->pos[1].nPos = layout->pos[1].nPos + x;
-			nPosTop1 = layout1->pos[1].nPos + x;  //layout1->pos[1].nPos = layout1->pos[1].nPos + x;
+			nPosTop = pSouiLayoutParamStruct->pos[1].nPos + x;    //layout->pos[1].nPos = layout->pos[1].nPos + x;
+			nPosTop1 = pSouiLayoutParamStruct1->pos[1].nPos + x;  //layout1->pos[1].nPos = layout1->pos[1].nPos + x;
 		}
 
 		/************************* 移动 top **************************************/
@@ -801,37 +869,37 @@ void SMoveWnd::MoveWndVert(int x)
 
 
 		/************************* 移动 buttom  **************************************/
-		if (layout1->pos[3].pit == PIT_SIZE)  //100, 100 ,@5, @5这种情况
+		if (pSouiLayoutParamStruct1->pos[3].pit == PIT_SIZE)  //100, 100 ,@5, @5这种情况
 		{
 			//
 
-			layout->pos[1].nPos = nPosTop;
-			layout1->pos[1].nPos = nPosTop1;
+			pSouiLayoutParamStruct->pos[1].nPos = nPosTop;
+			pSouiLayoutParamStruct1->pos[1].nPos = nPosTop1;
 
 		}else
 		{
-			if (layout1->pos[3].cMinus == -1)// 坐标1为负数的情况
+			if (pSouiLayoutParamStruct1->pos[3].cMinus == -1)// 坐标1为负数的情况
 			{
-				if (layout1->pos[3].nPos - x <0)
+				if (pSouiLayoutParamStruct1->pos[3].nPos - x <0)
 				{
 					return ;
 				}
 
-				nPosButtom = layout->pos[3].nPos + x;  //layout->pos[3].nPos = layout->pos[3].nPos + x;
-				nPosButtom1 = layout1->pos[3].nPos - x; //layout1->pos[3].nPos = layout1->pos[3].nPos - x;
+				nPosButtom = pSouiLayoutParamStruct->pos[3].nPos + x;  //layout->pos[3].nPos = layout->pos[3].nPos + x;
+				nPosButtom1 = pSouiLayoutParamStruct1->pos[3].nPos - x; //layout1->pos[3].nPos = layout1->pos[3].nPos - x;
 
 			}
 			else//坐标1为正数
 			{
-				nPosButtom = layout->pos[3].nPos + x; //layout->pos[3].nPos = layout->pos[3].nPos + x;
-				nPosButtom1 = layout1->pos[3].nPos + x; //layout1->pos[3].nPos = layout1->pos[3].nPos + x;
+				nPosButtom = pSouiLayoutParamStruct->pos[3].nPos + x; //layout->pos[3].nPos = layout->pos[3].nPos + x;
+				nPosButtom1 = pSouiLayoutParamStruct1->pos[3].nPos + x; //layout1->pos[3].nPos = layout1->pos[3].nPos + x;
 			}
 
 
-			layout->pos[1].nPos = nPosTop;
-			layout1->pos[1].nPos = nPosTop1;
-			layout->pos[3].nPos = nPosButtom;
-			layout1->pos[3].nPos = nPosButtom1; 
+			pSouiLayoutParamStruct->pos[1].nPos = nPosTop;
+			pSouiLayoutParamStruct1->pos[1].nPos = nPosTop1;
+			pSouiLayoutParamStruct->pos[3].nPos = nPosButtom;
+			pSouiLayoutParamStruct1->pos[3].nPos = nPosButtom1; 
 
 		}
 		/************************* 移动 buttom **************************************/
@@ -893,21 +961,39 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case VK_UP:
 		if (bCtrl)
 		{
+
+			if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+			{
+				return; //线性布局不能移动
+			}
 			MoveWndVert(-1);
 			m_bMsgHandled = TRUE;
 
+			m_pRealWnd->GetParent()->RequestRelayout();
 			m_pRealWnd->GetParent()->UpdateChildrenPosition();	
-			GetParent()->UpdateChildrenPosition();	
+
+			GetParent()->RequestRelayout();
+			GetParent()->UpdateChildrenPosition();
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
 		    GetParent()->Invalidate(); //刷新父窗口
 
 		}else if (bShift)
 		{
-			MoveWndSize(-1, VERT);
+			if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+			{
+				MoveWndSize_Linear(-1, Vert); 
+			}
+			else
+			{
+				MoveWndSize(-1, VERT);
+			}
 			m_bMsgHandled = TRUE;
 
+			m_pRealWnd->GetParent()->RequestRelayout();
 			m_pRealWnd->GetParent()->UpdateChildrenPosition();	
+
+			GetParent()->RequestRelayout();
 			GetParent()->UpdateChildrenPosition();	
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
@@ -929,21 +1015,41 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case VK_LEFT:
 		if (bCtrl)
 		{
-		    MoveWndHorz(-1);
+			if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+			{
+				return; 
+			}
+			else
+			{
+				MoveWndHorz(-1);
+			}
 			m_bMsgHandled = TRUE;
 
+			m_pRealWnd->GetParent()->RequestRelayout();
 			m_pRealWnd->GetParent()->UpdateChildrenPosition();	
-			GetParent()->UpdateChildrenPosition();	
+
+			GetParent()->RequestRelayout();
+			GetParent()->UpdateChildrenPosition();
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
 			GetParent()->Invalidate(); //刷新父窗口
 
 		}else if (bShift)
 		{
-			MoveWndSize(-1, HORZ);
+			if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+			{
+				MoveWndSize_Linear(-1, Horz); 
+			}
+			else
+			{
+				MoveWndSize(-1, HORZ);
+			}
 		    m_bMsgHandled = TRUE;
 
+			m_pRealWnd->GetParent()->RequestRelayout();
 			m_pRealWnd->GetParent()->UpdateChildrenPosition();	
+
+			GetParent()->RequestRelayout();
 			GetParent()->UpdateChildrenPosition();	
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
@@ -965,10 +1071,20 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case VK_DOWN:
 		if (bCtrl)
 		{
-			MoveWndVert(1);
+			if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+			{
+				return; 
+			}
+			else
+			{
+				MoveWndVert(1);
+			}
 			m_bMsgHandled = TRUE;
 
+			m_pRealWnd->GetParent()->RequestRelayout();
 			m_pRealWnd->GetParent()->UpdateChildrenPosition();	
+
+			GetParent()->RequestRelayout();
 			GetParent()->UpdateChildrenPosition();	
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
@@ -977,11 +1093,21 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 		}else if (bShift)
 		{
-			MoveWndSize(1, VERT);
+			if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+			{
+				MoveWndSize_Linear(1, Vert); 
+			}
+			else
+			{
+				MoveWndSize(1, VERT);
+			}
 			m_bMsgHandled = TRUE;
 
+			m_pRealWnd->GetParent()->RequestRelayout();
 			m_pRealWnd->GetParent()->UpdateChildrenPosition();	
-			GetParent()->UpdateChildrenPosition();	
+
+			GetParent()->RequestRelayout();
+			GetParent()->UpdateChildrenPosition();
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
 		    GetParent()->Invalidate(); //刷新父窗口
@@ -1001,11 +1127,18 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case VK_RIGHT:
 		if (bCtrl)
 		{
+			if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+			{
+				return; 
+			}
 			MoveWndHorz(1);
 			m_bMsgHandled = TRUE;
 
+			m_pRealWnd->GetParent()->RequestRelayout();
 			m_pRealWnd->GetParent()->UpdateChildrenPosition();	
-			GetParent()->UpdateChildrenPosition();	
+
+			GetParent()->RequestRelayout();
+			GetParent()->UpdateChildrenPosition();
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
 			GetParent()->Invalidate(); //刷新父窗口
@@ -1013,11 +1146,21 @@ void SMoveWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 		}else if (bShift)
 		{
-			MoveWndSize(1, HORZ);
+			if(m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
+			{
+				MoveWndSize_Linear(1, Horz); 
+			}
+			else
+			{
+				MoveWndSize(1, HORZ);
+			}
 			m_bMsgHandled = TRUE;
 
+			m_pRealWnd->GetParent()->RequestRelayout();
 			m_pRealWnd->GetParent()->UpdateChildrenPosition();	
-			GetParent()->UpdateChildrenPosition();	
+
+			GetParent()->RequestRelayout();
+			GetParent()->UpdateChildrenPosition();
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
 			GetParent()->Invalidate(); //刷新父窗口
@@ -1075,8 +1218,14 @@ void SMoveWnd::MoveWndSizeLT(int x, int PosN)
 		return;
 	}
 
-	SwndLayout *layout = GetLayout();
-	SwndLayout *layout1 = m_pRealWnd->GetLayout();
+
+	SouiLayoutParam *pSouiLayoutParam = GetLayoutParamT<SouiLayoutParam>();
+	SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pSouiLayoutParam->GetRawData();
+
+	SouiLayoutParam *pSouiLayoutParam1 = m_pRealWnd->GetLayoutParamT<SouiLayoutParam>();
+	SouiLayoutParamStruct *pSouiLayoutParamStruct1 = (SouiLayoutParamStruct*)pSouiLayoutParam1->GetRawData();
+
+
 
 	CRect rcReal, rcRealParent;
 	m_pRealWnd->GetWindowRect(rcReal);
@@ -1096,46 +1245,46 @@ void SMoveWnd::MoveWndSizeLT(int x, int PosN)
 	}
 
 	//往左、上拖动大小，left、top不能小于0
-	if (layout->pos[PosN].nPos + x - nMargin < 0 && x < 0)
+	if (pSouiLayoutParamStruct->pos[PosN].nPos + x - nMargin < 0 && x < 0)
 	{
 		return;
 	}
 
 	//往右拖动大小,left 不能大于 right
-	if (layout->GetSpecifySize(PD_X) - x < 1 && PosN == 0 && x > 0)
+	if (pSouiLayoutParam->GetSpecifiedSize(Horz) - x < 1 && PosN == 0 && x > 0)
 	{
 		return;
 	}
 
 	//往下拖动大小,top 不能大于 buttom
-	if (layout->GetSpecifySize(PD_Y) - x < 1 && PosN == 1 && x > 0)
+	if (pSouiLayoutParam->GetSpecifiedSize(Vert) - x < 1 && PosN == 1 && x > 0)
 	{
 		return;
 	}
 
-	layout->pos[PosN].nPos = layout->pos[PosN].nPos + x;
+	pSouiLayoutParamStruct->pos[PosN].nPos = pSouiLayoutParamStruct->pos[PosN].nPos + x;
 	if (PosN == 0)
 	{
-		layout->SetWidth(layout->GetSpecifySize(PD_X) - x);
+		pSouiLayoutParam->SetSpecifiedSize(Horz, pSouiLayoutParam->GetSpecifiedSize(Horz) - x);
 	}else
 	{
-		layout->SetHeight(layout->GetSpecifySize(PD_Y) - x);
+		pSouiLayoutParam->SetSpecifiedSize(Vert, pSouiLayoutParam->GetSpecifiedSize(Vert) - x);
 	}
 
 
 
-	if(layout1->nCount == 2) //只有两个坐标点，自动计算大小
+	if(pSouiLayoutParamStruct1->nCount == 2) //只有两个坐标点，自动计算大小
 	{
-		if (layout1->IsSpecifySize(PD_Y)||layout1->IsSpecifySize(PD_Y))//用size指定大小的时候
+		if (pSouiLayoutParam1->IsSpecifiedSize(Both))//用size指定大小的时候
 		{
 		
-			layout1->pos[PosN].nPos = layout1->pos[PosN].nPos + x;
+			pSouiLayoutParamStruct1->pos[PosN].nPos = pSouiLayoutParamStruct1->pos[PosN].nPos + x;
 			if (PosN==0)
 			{   //宽
-				layout1->SetWidth(layout1->GetSpecifySize(PD_X) - x);
+				pSouiLayoutParam1->SetSpecifiedSize(Horz, pSouiLayoutParam1->GetSpecifiedSize(Horz) - x);
 			}else
 			{   //高
-				layout1->SetHeight(layout1->GetSpecifySize(PD_Y) - x);
+				pSouiLayoutParam1->SetSpecifiedSize(Vert, pSouiLayoutParam1->GetSpecifiedSize(Vert) - x);
 			}
 		}
 		else
@@ -1145,25 +1294,25 @@ void SMoveWnd::MoveWndSizeLT(int x, int PosN)
 	}else
 	{
 		//-100, -100, @20,@20
-		if (layout1->pos[PosN].cMinus == -1)// 坐标为负数的情况
+		if (pSouiLayoutParamStruct1->pos[PosN].cMinus == -1)// 坐标为负数的情况
 		{
 
-			layout1->pos[PosN].nPos = layout1->pos[PosN].nPos - x;
+			pSouiLayoutParamStruct1->pos[PosN].nPos = pSouiLayoutParamStruct1->pos[PosN].nPos - x;
 		}else
 		{
-			layout1->pos[PosN].nPos = layout1->pos[PosN].nPos + x;
+			pSouiLayoutParamStruct1->pos[PosN].nPos = pSouiLayoutParamStruct1->pos[PosN].nPos + x;
 		}
 			
-		if (layout1->pos[PosN + 2].pit == PIT_SIZE)  //@5这种情况
+		if (pSouiLayoutParamStruct1->pos[PosN + 2].pit == PIT_SIZE)  //@5这种情况
 		{
 
-			layout1->pos[PosN + 2].nPos = layout1->pos[PosN + 2].nPos - x;
+			pSouiLayoutParamStruct1->pos[PosN + 2].nPos = pSouiLayoutParamStruct1->pos[PosN + 2].nPos - x;
 			if (PosN==0)
 			{
-				layout1->SetWidth(layout1->GetSpecifySize(PD_X) - x);
+				pSouiLayoutParam1->SetSpecifiedSize(Horz, pSouiLayoutParam1->GetSpecifiedSize(Horz) - x);
 			}else
 			{
-				layout1->SetHeight(layout1->GetSpecifySize(PD_Y) - x);
+				pSouiLayoutParam1->SetSpecifiedSize(Vert, pSouiLayoutParam1->GetSpecifiedSize(Vert) - x);
 			}
 
 
@@ -1182,8 +1331,16 @@ void SMoveWnd::MoveWndSizeLT(int x, int PosN)
 
 void SMoveWnd::MoveWndSize(int x, int PosN)
 {
-	SwndLayout *layout = GetLayout();
-	SwndLayout *layout1 = m_pRealWnd->GetLayout();
+	//SwndLayout *layout = GetLayout();
+	//SwndLayout *layout1 = m_pRealWnd->GetLayout();
+
+	SouiLayoutParam *pSouiLayoutParam = GetLayoutParamT<SouiLayoutParam>();
+	SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pSouiLayoutParam->GetRawData();
+
+	SouiLayoutParam *pSouiLayoutParam1 = m_pRealWnd->GetLayoutParamT<SouiLayoutParam>();
+	SouiLayoutParamStruct *pSouiLayoutParamStruct1 = (SouiLayoutParamStruct*)pSouiLayoutParam1->GetRawData();
+
+
 
 	CRect rcReal, rcRealParent, rcMovParent;
 	m_pRealWnd->GetWindowRect(rcReal);
@@ -1206,7 +1363,7 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 	//右拖动不能超过父控件的右边距
 	if (PosN == 2 && x > 0)
 	{
-		if (layout->pos[PosN - 2].nPos + layout->GetSpecifySize(PD_X) + x + nMargin > rcMovParent.right - rcMovParent.left)
+		if (pSouiLayoutParamStruct->pos[PosN - 2].nPos + pSouiLayoutParam->GetSpecifiedSize(Horz) + x + nMargin > rcMovParent.right - rcMovParent.left)
 		{
 			return;
 		}
@@ -1216,7 +1373,7 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 	//下拖动不能超过父控件的下边距
 	if (PosN == 3 && x > 0)
 	{
-		if (layout->pos[PosN - 2].nPos + layout->GetSpecifySize(PD_Y) + x + nMargin> rcMovParent.bottom - rcMovParent.top)
+		if (pSouiLayoutParamStruct->pos[PosN - 2].nPos + pSouiLayoutParam->GetSpecifiedSize(Vert) + x + nMargin> rcMovParent.bottom - rcMovParent.top)
 		{
 			return;
 		}	
@@ -1238,45 +1395,55 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 	}
 
 	//往左拖动大小,left 不能大于 right
-	if (layout->GetSpecifySize(PD_X) + x - (nMarginRight + nMarginLeft)< 1 && PosN == 2 && x < 0)
+	if (pSouiLayoutParam->GetSpecifiedSize(Horz) + x - (nMarginRight + nMarginLeft) < 1 && PosN == 2 && x < 0)
 	{
 		return;
 	}
 
 	//往上拖动大小,top 不能大于 buttom
-	if (layout->GetSpecifySize(PD_Y) + x - (nMarginBottom + nMarginTop)< 1 && PosN == 3 && x < 0)
+	if (pSouiLayoutParam->GetSpecifiedSize(Vert) + x - ((nMarginBottom + nMarginTop)) < 1 && PosN == 3 && x < 0)
 	{
 		return;
 	}
 
-	layout->pos[PosN].nPos = layout->pos[PosN].nPos + x;
+	pSouiLayoutParamStruct->pos[PosN].nPos = pSouiLayoutParamStruct->pos[PosN].nPos + x;
 
-
-	if (layout1->nCount == 0)   
+	if (PosN == 2)
 	{
-		if (layout1->IsSpecifySize(PD_Y))//用size指定大小的时候
+		pSouiLayoutParam->SetSpecifiedSize(Horz, pSouiLayoutParam->GetSpecifiedSize(Horz) + x);
+	}else
+	{
+		pSouiLayoutParam->SetSpecifiedSize(Vert, pSouiLayoutParam->GetSpecifiedSize(Vert) + x);
+	}
+
+	if (pSouiLayoutParamStruct1->nCount == 0)   
+	{
+		if (pSouiLayoutParam1->IsSpecifiedSize(Both))//用size指定大小的时候
 		{
 			if(PosN == 2) 
 			{
-				layout1->SetWidth(layout1->GetSpecifySize(PD_X) + x);
+				pSouiLayoutParam1->SetSpecifiedSize(Horz, pSouiLayoutParam1->GetSpecifiedSize(Horz) + x);
 			}
 			else
 			{
-				layout1->SetHeight(layout1->GetSpecifySize(PD_Y) + x);
+				pSouiLayoutParam1->SetSpecifiedSize(Vert, pSouiLayoutParam1->GetSpecifiedSize(Vert) + x);
 			}
-
+		
 		}
 	}
-	else if(layout1->nCount == 2) //只有两个坐标点，自动计算大小
+	else if(pSouiLayoutParamStruct1->nCount == 2) //只有两个坐标点，自动计算大小
 	{
-		if (layout1->IsSpecifySize(PD_Y)||layout1->IsSpecifySize(PD_Y))//用size指定大小的时候
+		if (pSouiLayoutParam1->IsSpecifiedSize(Both))//用size指定大小的时候
 		{
+
+
+			pSouiLayoutParamStruct->pos[PosN].nPos = pSouiLayoutParamStruct->pos[PosN].nPos + x;
 			if (PosN==2)
 			{   //宽
-				layout1->SetWidth(layout1->GetSpecifySize(PD_X) + x);
+				pSouiLayoutParam1->SetSpecifiedSize(Horz, pSouiLayoutParam1->GetSpecifiedSize(Horz) + x);
 			}else
 			{   //高
-				layout1->SetHeight(layout1->GetSpecifySize(PD_Y) + x);
+				pSouiLayoutParam1->SetSpecifiedSize(Vert, pSouiLayoutParam1->GetSpecifiedSize(Vert) + x);
 			}
 		}
 		else
@@ -1287,20 +1454,22 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 	{
 		//5,3,-5,-7
 		//5,3,@5,@7
-		if (layout1->pos[PosN].cMinus == -1)// 坐标3为负数的情况
+		if (pSouiLayoutParamStruct1->pos[PosN].cMinus == -1)// 坐标3为负数的情况
 		{
 
-			layout1->pos[PosN].nPos = layout1->pos[PosN].nPos - x;
-		}else if (layout1->pos[PosN].pit == PIT_SIZE)  //@5这种情况
+			//layout->pos[PosN].nPos = layout->pos[PosN].nPos + x;
+			pSouiLayoutParamStruct1->pos[PosN].nPos = pSouiLayoutParamStruct1->pos[PosN].nPos - x;
+		}else if (pSouiLayoutParamStruct1->pos[PosN].pit == PIT_SIZE)  //@5这种情况
 		{
 
-			layout1->pos[PosN].nPos = layout1->pos[PosN].nPos + x;
+			//layout->pos[PosN].nPos = layout->pos[PosN].nPos + x;
+			pSouiLayoutParamStruct1->pos[PosN].nPos = pSouiLayoutParamStruct1->pos[PosN].nPos + x;
 			if (PosN==2)
 			{
-				layout1->SetWidth(layout1->pos[PosN].nPos);
+				pSouiLayoutParam1->SetSpecifiedSize(Horz, pSouiLayoutParamStruct1->pos[PosN].nPos);
 			}else
 			{
-				layout1->SetHeight(layout1->pos[PosN].nPos);
+				pSouiLayoutParam1->SetSpecifiedSize(Vert, pSouiLayoutParamStruct1->pos[PosN].nPos);
 			}
 
 
@@ -1308,11 +1477,61 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 		{
 			//80,100,50,80 这种情况，top < buttom  right < reft的暂时不考虑 
 
-			layout1->pos[PosN].nPos = layout1->pos[PosN].nPos + x;
+			//layout->pos[PosN].nPos = layout->pos[PosN].nPos + x;
+			pSouiLayoutParamStruct1->pos[PosN].nPos = pSouiLayoutParamStruct1->pos[PosN].nPos + x;
 		}
 
 
 	}
+}
+
+void SMoveWnd::MoveWndSize_Linear(int x , ORIENTATION orientation)
+{
+	SouiLayoutParam *pSouiLayoutParam = GetLayoutParamT<SouiLayoutParam>();
+	SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pSouiLayoutParam->GetRawData();
+
+	SLinearLayoutParam *pLinearLayoutParam = m_pRealWnd->GetLayoutParamT<SLinearLayoutParam>();
+	SLinearLayoutParamStruct *pSLinearLayoutParamStruct = (SLinearLayoutParamStruct*)pLinearLayoutParam->GetRawData();
+
+
+
+	CRect rcReal, rcRealParent, rcMovParent;
+	m_pRealWnd->GetWindowRect(rcReal);
+	m_pRealWnd->GetParent()->GetWindowRect(rcRealParent);
+	GetParent()->GetWindowRect(rcMovParent);
+
+
+	//不能拖出父控件边界
+
+
+	if(orientation == Horz)  //向左右拉动右边的边框
+	{
+		if (pLinearLayoutParam->IsMatchParent(Horz))  //匹配父窗口时不能改变大小
+		{
+			return;
+		}
+
+		if (pSLinearLayoutParamStruct->width + x > 0)
+		{
+           pSLinearLayoutParamStruct->width =  pSLinearLayoutParamStruct->width + x; 
+		   pSouiLayoutParamStruct->pos[2].nPos = pSouiLayoutParamStruct->pos[2].nPos + x;
+		}
+	}
+	else  ////向上下拉动下边的边框
+	{
+		if (pLinearLayoutParam->IsMatchParent(Vert))  //匹配父窗口时不能改变大小
+		{
+			return;
+		}
+
+		if (pSLinearLayoutParamStruct->height + x > 0)
+		{
+			pSLinearLayoutParamStruct->height =  pSLinearLayoutParamStruct->height + x;
+			pSouiLayoutParamStruct->pos[3].nPos = pSouiLayoutParamStruct->pos[3].nPos + x;
+		}
+	}
+
+
 }
 
 

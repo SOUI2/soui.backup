@@ -45,16 +45,16 @@ namespace SOUI
     CSize SSpinButtonCtrl::GetDesiredSize(LPCRECT pRcContainer)
     {
         CSize szRet;
-        if(m_layout.IsSpecifySize(PD_X))
+        if(GetLayoutParam()->IsSpecifiedSize(Horz))
         {
-            szRet.cx = m_layout.GetSpecifySize(PD_X);
+            szRet.cx = GetLayoutParam()->GetSpecifiedSize(Horz);
         }else
         {
             szRet.cx = 16;
         }
-        if(m_layout.IsSpecifySize(PD_Y))
+        if(GetLayoutParam()->IsSpecifiedSize(Vert))
         {
-            szRet.cy = m_layout.GetSpecifySize(PD_Y);
+            szRet.cy = GetLayoutParam()->GetSpecifiedSize(Vert);
         }else
         {
             szRet.cy = pRcContainer->bottom-pRcContainer->top;

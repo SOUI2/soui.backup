@@ -334,6 +334,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\layout\SLinearLayout.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\control\SListbox.cpp"
 				>
 			</File>
@@ -382,15 +386,11 @@
 				>
 			</File>
 			<File
-				RelativePath="src\core\SObject.cpp"
+				RelativePath=".\src\layout\SouiLayout.cpp"
 				>
 			</File>
 			<File
 				RelativePath="src\core\SPanel.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\helper\spropbag.cpp"
 				>
 			</File>
 			<File
@@ -474,6 +474,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\res.mgr\SUiDef.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\updatelayeredwindow\SUpdateLayeredWindow.cpp"
 				>
 			</File>
@@ -495,14 +499,6 @@
 			</File>
 			<File
 				RelativePath="src\helper\SwndFinder.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\core\SwndLayout.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\core\SwndLayoutBuilder.cpp"
 				>
 			</File>
 			<File
@@ -712,6 +708,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\interface\slayout-i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\layout\SLinearLayout.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\layout\SLinearLayoutParamStruct.h"
+				>
+			</File>
+			<File
 				RelativePath="include\control\SListbox.h"
 				>
 			</File>
@@ -768,15 +776,19 @@
 				>
 			</File>
 			<File
-				RelativePath="include\core\Sobject.h"
-				>
-			</File>
-			<File
 				RelativePath="include\soui-version.h"
 				>
 			</File>
 			<File
 				RelativePath="include\control\SouiCtrls.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\layout\SouiLayout.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\layout\SouiLayoutParamStruct.h"
 				>
 			</File>
 			<File
@@ -944,6 +956,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\res.mgr\SUiDef.h"
+				>
+			</File>
+			<File
 				RelativePath="src\updatelayeredwindow\SUpdateLayeredWindow.h"
 				>
 			</File>
@@ -969,14 +985,6 @@
 			</File>
 			<File
 				RelativePath="include\helper\SwndFinder.h"
-				>
-			</File>
-			<File
-				RelativePath="include\core\SwndLayout.h"
-				>
-			</File>
-			<File
-				RelativePath="include\core\SwndLayoutBuilder.h"
 				>
 			</File>
 			<File

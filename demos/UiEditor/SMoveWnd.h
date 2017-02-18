@@ -39,6 +39,8 @@ namespace SOUI
         void MoveWndSize(int x, int PosN);   //拉动右边框或下边框
 		void MoveWndSizeLT(int x, int PosN); //拉动左边框或上边框
 
+		void MoveWndSize_Linear(int x , ORIENTATION orientation); //线性布局 拉动右边框或下边框
+
 		void MoveWndHorz(int x);
 		void MoveWndVert(int x);
 

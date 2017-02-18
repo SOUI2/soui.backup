@@ -17,7 +17,7 @@ namespace SOUI
 
     void SFreeMoveWindow::OnUpdateFloatPosition(const CRect & rcParent)
     {
-        CSize sz(m_layout.GetSpecifySize(PD_X),m_layout.GetSpecifySize(PD_Y));
+        CSize sz(GetLayoutParam()->GetSpecifiedSize(Horz),GetLayoutParam()->GetSpecifiedSize(Vert));
         CRect rcWnd(CPoint(),sz);
         
         if(m_nFloatHAlign & HALIGN_LEFT)

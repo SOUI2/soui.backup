@@ -1,6 +1,6 @@
-#include <core/sobject.h>
+#include <sobject/sobject.hpp>
 
-void SetObjAttr(SObject *pObj,LPCSTR pszAttr,LPCSTR pszValue)
+void SetObjAttr(IObject *pObj,LPCSTR pszAttr,LPCSTR pszValue)
 {
     pObj->SetAttribute(pszAttr,pszValue,FALSE);
 }
@@ -8,20 +8,16 @@ void SetObjAttr(SObject *pObj,LPCSTR pszAttr,LPCSTR pszValue)
 BOOL ExpLua_SObject(lua_State *L)
 {
 	try{
-		lua_tinker::class_add<SObject>(L,"SObject");
-		lua_tinker::class_def<SObject>(L,"IsClass",&SObject::IsClass);
-        lua_tinker::class_def<SObject>(L,"GetObjectClass",&SObject::GetObjectClass);
-        lua_tinker::class_def<SObject>(L,"InitFromXml",&SObject::InitFromXml);
-        lua_tinker::class_def<SObject>(L,"SetAttribute",(HRESULT (SObject::*)(const char *, const char *, BOOL))&SObject::SetAttribute);
-        lua_tinker::class_def<SObject>(L,"SetAttributeA",(HRESULT (SObject::*)(const SStringA &, const SStringA &, BOOL))&SObject::SetAttribute);
-        lua_tinker::class_def<SObject>(L,"SetAttributeW",(HRESULT (SObject::*)(const SStringW &, const SStringW &, BOOL))&SObject::SetAttribute);
-        lua_tinker::class_def<SObject>(L,"tr",&SObject::tr);
-        lua_tinker::class_def<SObject>(L,"GetID",&SObject::GetID);
-        lua_tinker::class_def<SObject>(L,"GetName",&SObject::GetName);
+		lua_tinker::class_add<IObject>(L,"IObject");
+		lua_tinker::class_def<IObject>(L,"IsClass",&IObject::IsClass);
+        lua_tinker::class_def<IObject>(L,"GetObjectClass",&IObject::GetObjectClass);
+        lua_tinker::class_def<IObject>(L,"InitFromXml",&IObject::InitFromXml);
+        lua_tinker::class_def<IObject>(L,"SetAttribute",(HRESULT (IObject::*)(const char *, const char *, BOOL))&IObject::SetAttribute);
+        lua_tinker::class_def<IObject>(L,"SetAttributeA",(HRESULT (IObject::*)(const SStringA &, const SStringA &, BOOL))&IObject::SetAttribute);
+        lua_tinker::class_def<IObject>(L,"SetAttributeW",(HRESULT (IObject::*)(const SStringW &, const SStringW &, BOOL))&IObject::SetAttribute);
+        lua_tinker::class_def<IObject>(L,"GetID",&IObject::GetID);
+        lua_tinker::class_def<IObject>(L,"GetName",&IObject::GetName);
         lua_tinker::def(L,"SetObjAttr",SetObjAttr);
-#ifdef _DEBUG
-        lua_tinker::class_mem<SObject>(L,"m_strXml",&SObject::m_strXml);
-#endif
 		return TRUE;
 	}catch(...)
 	{

@@ -6,6 +6,8 @@
 #include <string/tstring.h>
 #include <string/strcpcvt.h>
 #include <interface/render-i.h>
+#include <souicoll.h>
+#include <sobject/sobject-state-impl.hpp>
 
 namespace SOUI
 {
@@ -27,7 +29,7 @@ namespace SOUI
         virtual IImgDecoderFactory * GetImgDecoderFactory(){return m_imgDecoderFactory;}
         virtual void SetImgDecoderFactory(IImgDecoderFactory *pImgDecoderFac){ m_imgDecoderFactory=pImgDecoderFac;}
         virtual BOOL CreateRenderTarget(IRenderTarget ** ppRenderTarget,int nWid,int nHei);
-        virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf,const IPropBag * pPropBag);
+        virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf);
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
         virtual BOOL CreateRegion(IRegion **ppRgn);
 
@@ -39,7 +41,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     // TGdiRenderObjImpl
     template<class T>
-    class TGdiRenderObjImpl : public TObjRefImpl<T>
+    class TGdiRenderObjImpl : public TObjRefImpl< SObjectStateImpl<SObjectImpl<T> >>
     {
     public:
         TGdiRenderObjImpl(IRenderFactory * pRenderFac):m_pRenderFactory(pRenderFac)
@@ -54,12 +56,9 @@ namespace SOUI
             return m_pRenderFactory;
         }
 
-        virtual IRenderFactory * GetRenderFactory_GDI() const
-        {
-            return m_pRenderFactory;
-        }
     protected:
         IRenderFactory *m_pRenderFactory;
+
     };
 
 
@@ -67,7 +66,8 @@ namespace SOUI
     // SPen_GDI
     class SPen_GDI : public TGdiRenderObjImpl<IPen>
     {
-    public:
+		SOUI_CLASS_NAME(SPen_GDI,L"pen")
+	public:
         SPen_GDI(IRenderFactory * pRenderFac,int iStyle=PS_SOLID,COLORREF cr=0,int cWidth=1)
             :TGdiRenderObjImpl<IPen>(pRenderFac)
             ,m_nWidth(cWidth),m_style(iStyle),m_cr(cr)
@@ -104,6 +104,7 @@ namespace SOUI
     // SFont_GDI
     class SFont_GDI: public TGdiRenderObjImpl<IFont>
     {
+		SOUI_CLASS_NAME(SFont_GDI,L"font")
     public:
         SFont_GDI(IRenderFactory * pRenderFac,const LOGFONT * plf)
             :TGdiRenderObjImpl<IFont>(pRenderFac),m_hFont(NULL)
@@ -136,6 +137,7 @@ namespace SOUI
 
     class SBrush_GDI : public TGdiRenderObjImpl<IBrush>
     {
+		SOUI_CLASS_NAME(SBrush_GDI,L"brush")
     public:
         static SBrush_GDI * CreateSolidBrush(IRenderFactory * pRenderFac,COLORREF cr){
             return new SBrush_GDI(pRenderFac,cr);
@@ -178,6 +180,7 @@ namespace SOUI
     // SBitmap_GDI
     class SBitmap_GDI : public TGdiRenderObjImpl<IBitmap>
     {
+		SOUI_CLASS_NAME(SBitmap_GDI,L"bitmap")
     public:
         SBitmap_GDI(IRenderFactory *pRenderFac)
             :TGdiRenderObjImpl<IBitmap>(pRenderFac),m_hBmp(0)
@@ -214,7 +217,8 @@ namespace SOUI
     //	SRegion_GDI
     class SRegion_GDI: public TGdiRenderObjImpl<IRegion>
     {
-    friend class SRenderTarget_GDI;
+		SOUI_CLASS_NAME(SRegion_GDI,L"region")
+		friend class SRenderTarget_GDI;
     public:
         SRegion_GDI(IRenderFactory *pRenderFac);
         ~SRegion_GDI(){
@@ -242,7 +246,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     //	SRenderTarget_GDI
     //////////////////////////////////////////////////////////////////////////
-    class SRenderTarget_GDI: public TGdiRenderObjImpl<IRenderTarget>
+    class SRenderTarget_GDI: public TObjRefImpl<IRenderTarget>
     {
     public:
         SRenderTarget_GDI(IRenderFactory* pRenderFactory,int nWid,int nHei);
@@ -357,7 +361,7 @@ namespace SOUI
         CAutoRefPtr<IPen> m_defPen;
         CAutoRefPtr<IBrush> m_defBrush;
         CAutoRefPtr<IFont> m_defFont;
-
+		CAutoRefPtr<IRenderFactory> m_pRenderFactory;
         UINT m_uGetDCFlag;
     };
     

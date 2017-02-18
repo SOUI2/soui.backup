@@ -1,28 +1,63 @@
 ﻿<include>
-  <group pos="0,0,-0,-0" id="10000">
-    I'm a group
-    <text pos="100,10" offset="-0.5,-0.5">center align1</text>
-    <text pos="100,30" offset="-0.5,-0.5">center align align</text>
-    <text pos="250,50" offset="-1,0">align right top</text>
-    <text pos="250,70" offset="-1,0">align right top 2</text>
-    <check pos="250,90" offset="-1,0">check right top</check>
-    <check pos="250,110" offset="-1,0" font="adding:-5">check right top1235</check>
-    <text pos="250,130" class="cls_txt_red">text left top</text>
-    <button pos="10,150,@150,@30">button 1 using @</button>
-    <button id="4321" pos="10,200" width="150" height="30">button 1 using width</button>
+  <tabctrl pos="0,0,-0,-0" animateSteps="10" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="150" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
 
-    <text pos="%50,20,%90,@50" colorBkgnd="#ff0000">pos="%50,100,%90,@50"</text>
-    
-    <button name="btn_display" pos="300,150,@100,@30" display="0" >Image Ref</button>
-    <window skin="skin_page_icons" pos="[5,150,-10,-10" id="1236">
-      <text pos="|0,|0" offset="-0.5,-0.5" font="adding:20" colorText="#ff000066">alpha test</text>
-      <text pos="5,5" id="100" visible="0">ref text</text>
-      <button pos="sib.left@100:10,sib.bottom@100:10,@100,@25" name="btn_hidetst" tip="click me to hide me and see how the next image will move">ref id:100</button>
-    </window>
+    <page title="soui layout">
+      <group pos="0,0,-0,-0" id="10000">
+        I'm a group
+        <text pos="100,10" offset="-0.5,-0.5">center align1</text>
+        <text pos="100,30" offset="-0.5,-0.5">center align align</text>
+        <text pos="250,50" offset="-1,0">align right top</text>
+        <text pos="250,70" offset="-1,0">align right top 2</text>
+        <check pos="250,90" offset="-1,0">check right top</check>
+        <check pos="250,110" offset="-1,0" font="adding:-5">check right top1235</check>
+        <text pos="250,130" class="cls_txt_red">text left top</text>
+        <button pos="10,150,@150,@30">button 1 using @</button>
+        <button id="4321" pos="10,200" width="150" height="30">button 1 using width</button>
 
-    <window pos="10,300" colorBkgnd="#cccccc">
-      <text pos="5,5" >child1</text>
-      <text pos="-30,20" offset="-1,0" multilines="1">parent position is determined by childs\npos="-30,60" offset="-1,-1"</text>
-    </window>
-  </group>
+        <text pos="%50,20,%90,@50" colorBkgnd="#ff0000">pos="%50,100,%90,@50"</text>
+
+        <button name="btn_display" pos="300,150,@100,@30" display="0" >Image Ref</button>
+        <window skin="skin_page_icons" pos="[5,150,-10,-10" id="1236">
+          <text pos="|0,|0" offset="-0.5,-0.5" font="adding:20" colorText="#ff000066">alpha test</text>
+          <text pos="5,5" id="100" visible="0">ref text</text>
+          <button pos="sib.left@100:10,sib.bottom@100:10,@100,@25" name="btn_hidetst" tip="click me to hide me and see how the next image will move">ref id:100</button>
+        </window>
+
+        <window pos="10,300" colorBkgnd="#cccccc">
+          <text pos="5,5" >child1</text>
+          <text pos="-30,20" offset="-1,0" multilines="1">parent position is determined by childs\npos="-30,60" offset="-1,-1"</text>
+        </window>
+      </group>
+    </page>
+    <page title="linear layout">
+      <!--这里演示在SOUI中使用线性布局,在window中指定layout="vbox,hbox,linearLayout"时窗口的子窗口布局变成自动布局模式-->
+      <window layout="vbox" size="-1,-1" colorBkgnd="#cccccc" gravity="center">
+        <!--线性布局的自适应子窗口大小-->
+        <text>vbox + gravity + wrapContent</text>
+        <window size="100,30" colorBkgnd="#ff0000"/>
+        <window size="200,30" extend="10,5,10,5" colorBkgnd="#ff0000"/>
+        <window size="120,30" layout_gravity="right" colorBkgnd="#ff0000"/>
+      </window>
+
+      <window pos="0,[5,@-1,@200" layout="vbox" colorBkgnd="#cccccc">
+        <!--线性布局的weight属性-->
+        <text extend_bottom="10">vbox + gravity + weight</text>
+        <window size="100,30" colorBkgnd="#ff0000"/>
+        <window size="200,30" extend="10,5,10,5" colorBkgnd="#ff0000" weight="1"/>
+        <window size="120,30" layout_gravity="right" colorBkgnd="#ff0000" weight="1"/>
+        <button size="100,30" extend_top="10">button test</button>
+      </window>
+
+      <window pos="0,[5" layout="vbox" colorBkgnd="#cccccc" id="10000">
+        <text extend_bottom="10" layout_gravity="center">hbox demo</text>
+        <window size="-1,-1" layout="hbox" colorBkgnd="#888888">
+          <!--线性布局之hbox-->
+          <button size="100,30">button1</button>
+          <button size="100,30" extend_left="10">button2</button>
+          <button size="100,30" extend_left="10">button3</button>
+          <button size="100,30" extend_left="10">button4</button>
+        </window>
+      </window>
+    </page>
+  </tabctrl>
 </include>
