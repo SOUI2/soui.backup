@@ -33,9 +33,9 @@ namespace SOUI
 		//virtual SMessageLoop * GetMsgLoop(){return m_MsgLoop;}
 
 		EVENT_MAP_BEGIN()
-
-			EVENT_ID_COMMAND(IDOK,OnOK)
-			EVENT_ID_COMMAND(IDCANCEL,OnCancel)
+			
+			EVENT_NAME_COMMAND(L"btnOK", OnOK)
+			EVENT_NAME_COMMAND(L"btnCancel",OnCancel)
 			EVENT_MAP_END()
 
 			BEGIN_MSG_MAP_EX(SDlgNewSkin)
