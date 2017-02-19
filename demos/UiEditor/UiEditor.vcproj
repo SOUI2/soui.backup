@@ -282,10 +282,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\controls.extend\imre\ImgProvider.cpp"
-				>
-			</File>
-			<File
 				RelativePath="MainDlg.cpp"
 				>
 			</File>
@@ -465,10 +461,6 @@
 			</File>
 			<File
 				RelativePath=".\helpapi.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\controls.extend\imre\ImgProvider.h"
 				>
 			</File>
 			<File

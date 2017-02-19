@@ -30,7 +30,6 @@ namespace SOUI
 		m_pRealWnd = NULL;
 		m_bDrawFocusRect = FALSE;
 		StateMove = 0;
-		m_bFocusable = false;
 
 	}
 
@@ -139,7 +138,6 @@ namespace SOUI
 		}
 		else
 		{
-			pRT->CreatePen(PS_SOLID,RGB(172,172,172),1,&pen);
 			pRT->CreatePen(PS_SOLID,RGBA(172,172,172,255),1,&pen);
 			pRT->SelectObject(pen,(IRenderObj**)&oldpen);
 

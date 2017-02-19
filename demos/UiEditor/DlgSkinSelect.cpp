@@ -714,10 +714,7 @@ namespace SOUI
 						evt.nNewSel = i;
 						m_lbRes->FireEvent(evt);
 
-						int nMinPos, nMaxPos;
-						m_lbRes->GetScrollRange(TRUE, &nMinPos, &nMaxPos);
-
-						m_lbRes->SetScrollPos(TRUE, nMaxPos /m_lbRes->GetCount() * i, TRUE );				 
+						m_lbRes->EnsureVisible(i);				 
 
 
 						if (m_lbSkin->GetCount()>0)
@@ -982,14 +979,7 @@ namespace SOUI
 		evt.nOldSel = lb->GetCurSel();
 		evt.nNewSel = nIndex;
 		lb->FireEvent(evt);
-
-		int nMinPos, nMaxPos;
-		lb->GetScrollRange(TRUE, &nMinPos, &nMaxPos);
-
-		lb->SetScrollPos(TRUE, nMaxPos /lb->GetCount() * nIndex, TRUE );
-
-
-
+		lb->EnsureVisible(nIndex);
 
 	}
 
