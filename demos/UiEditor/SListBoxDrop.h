@@ -137,6 +137,9 @@ public:
 					{
 						SPrintWindow *pPrintWindow = new SPrintWindow();						
 						m_pDesignerView->m_pContainer->GetParent()->InsertChild(pChild);
+
+						SUiDef::getSingleton().SetUiDef(m_pDesignerView->m_pUiDef);
+
 						pChild->InitFromXml(p->m_value.first_child());
 						//view系列加上适配器
 						if (pChild->IsClass(SMCListView::GetClassNameW()))
@@ -158,6 +161,9 @@ public:
 							((STileView*)pChild)->SetAdapter(listAdapter);
 							listAdapter->Release();
 						}
+
+						SUiDef::getSingleton().SetUiDef(m_pDesignerView->m_pOldUiDef);
+
 						m_pDesignerView->m_pContainer->BringWindowToTop();
 						m_pDesignerView->m_pContainer->GetParent()->UpdateChildrenPosition();
 						pPrintWindow->Attach(pChild);
