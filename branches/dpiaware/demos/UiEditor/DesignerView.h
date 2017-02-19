@@ -169,8 +169,9 @@ namespace SOUI
 
 			int m_ndata; //这个值用来标识xmlnode的每一个节点，节点属性为data,xmlnode的这个属性值是唯一的;
 
-			CAutoRefPtr<IUiDefInfo> m_pUiDef;
+			CAutoRefPtr<IUiDefInfo> m_pUiDef;  //加载工程的UIdef
 
+			CAutoRefPtr<IUiDefInfo>  m_pOldUiDef;//编辑器自身的UiDef
 
 	};
 

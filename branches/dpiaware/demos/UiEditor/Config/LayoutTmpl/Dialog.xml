@@ -5,15 +5,15 @@
 toolWindow="1"
 >
 	<root  cache="1">
-	<window pos="0,0,-0,-0" colorBkgnd="rgb(50,126,173)" colorText="#ffffff" font="face:微软雅黑,bold:0,size:12">
+	<window pos="0,0,-0,-0" colorBkgnd="rgb(50,126,173)" colorText="#ffffff">
 		<caption pos="0,0,-0,30"  focusable="1" drawfocusrect="0">
  
 			<text pos="5,4" name="txt_title">标题</text>
 
-			<imgbtn id="1" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
-			<imgbtn id="2" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
-			<imgbtn id="3" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
-			<imgbtn id="5" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+			<imgbtn  skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+			<imgbtn  skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
+			<imgbtn  skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
+			<imgbtn  skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
 
 		</caption>		
 	</window>

@@ -173,10 +173,7 @@ namespace SOUI
 
 		m_LbFont->SetCurSel(n);
 
-		int nMinPos, nMaxPos;
-		m_LbFont->GetScrollRange(TRUE, &nMinPos, &nMaxPos);
-
-		m_LbFont->SetScrollPos(TRUE, nMaxPos /m_LbFont->GetCount() * n, TRUE );
+		m_LbFont->EnsureVisible(n);
 
 		m_chkBold->SetCheck(ft->IsBold());
 		m_chkItalic->SetCheck(ft->IsItalic());
