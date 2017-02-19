@@ -1535,7 +1535,10 @@ void SDesignerView::RefreshRes()
 		Debug(_T("ResProvider初始化失败")); 
 		return ;
 	}
-	SApplication::getSingletonPtr()->AddResProvider(pResProvider1);
+	SApplication::getSingletonPtr()->AddResProvider(pResProvider1,NULL);
+
+	//将皮肤中的uidef保存起来.
+	m_pUiDef.Attach(SUiDef::getSingleton().CreateUiDefInfo(pResProvider1,_T("uidef:xml_init")));
 }
 
 
