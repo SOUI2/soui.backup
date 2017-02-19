@@ -234,8 +234,8 @@ namespace SOUI{
 			}
 		}else
 		{
-			SetWrapContent(Horz);
-			SetWrapContent(Vert);
+			if(width == SIZE_UNDEF) SetWrapContent(Horz);
+			if(height == SIZE_UNDEF) SetWrapContent(Vert);
 		}
 
 
