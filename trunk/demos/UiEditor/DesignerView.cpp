@@ -89,6 +89,8 @@ BOOL SDesignerView::OpenProject(SStringT strFileName)
 	//将皮肤中的uidef保存起来.
 	m_pUiDef.Attach(SUiDef::getSingleton().CreateUiDefInfo(pResProvider,_T("uidef:xml_init")));
 
+	m_pOldUiDef = SUiDef::getSingleton().GetUiDef();
+
 	return TRUE;
 }
 
@@ -120,8 +122,6 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 
 BOOL SDesignerView::LoadLayout(SStringT strFileName)
 {
-
-	CAutoRefPtr<IUiDefInfo> pOldUiDef = SUiDef::getSingleton().GetUiDef();
 	//设置uidef为当前皮肤的uidef
 	SUiDef::getSingleton().SetUiDef(m_pUiDef);
 
@@ -332,7 +332,7 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 
 
 	//恢复uidef为编辑器的uidef
-	SUiDef::getSingleton().SetUiDef(pOldUiDef);
+	SUiDef::getSingleton().SetUiDef(m_pOldUiDef);
 	return TRUE;
 }
 
@@ -1559,6 +1559,7 @@ bool SDesignerView::OnPropGridItemClick( EventArgs *pEvt )
 			{
 				RefreshRes();
 				pItem->SetString(DlgSkin.m_strSkinName);
+				m_pPropgrid->Invalidate();
 				//ReLoadLayout();
 			}
 
@@ -1576,6 +1577,7 @@ bool SDesignerView::OnPropGridItemClick( EventArgs *pEvt )
 			if (DlgFont.DoModal(m_pMainHost->m_hWnd) == IDOK)
 			{
 				pItem->SetString(DlgFont.m_strFont);
+				m_pPropgrid->Invalidate();
 			}
 
 
@@ -1592,6 +1594,9 @@ bool SDesignerView::OnPropGridItemClick( EventArgs *pEvt )
 
 BOOL SDesignerView::ReLoadLayout()
 {
+
+	//设置uidef为当前皮肤的uidef
+	SUiDef::getSingleton().SetUiDef(m_pUiDef);
 
 	pugi::xml_node xmlnode;
 		BOOL bIsInclude = FALSE;
@@ -1762,6 +1767,9 @@ BOOL SDesignerView::ReLoadLayout()
 
 	m_treeXmlStruct->RemoveAllItems();
 	InitXMLStruct(m_CurrentLayoutNode, STVI_ROOT);
+
+	//恢复uidef为编辑器的uidef
+	SUiDef::getSingleton().SetUiDef(m_pOldUiDef);
 
 	return TRUE;
 }
@@ -1998,6 +2006,7 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 	}
 
 
+	SUiDef::getSingleton().SetUiDef(m_pUiDef);
 
 	SWindow* pRealWnd;
 	SMoveWnd* pMoveWnd;
@@ -2100,6 +2109,8 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 		SetCurrentCtrl(xmlNodeRealWnd.append_copy(m_xmlNode), Wnd1);
 		//m_Desiner->m_xmlNode = xmlNodeRealWnd.append_copy(m_Desiner->m_xmlNode);
 	}
+
+    SUiDef::getSingleton().SetUiDef(m_pOldUiDef);
 
 	pRealWnd->RequestRelayout();
 	pRealWnd->Invalidate();
