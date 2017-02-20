@@ -25,23 +25,13 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SFreeMoveWindow.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SButtonEx.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SSkinMutiFrameImg.h
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/SImRichEdit.h
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/RichEditObj.h
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/RichEditOleCallback.h
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/RichEditObjFactory.h
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/RichEditOleCtrls.h
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/RichEditOleBase.h
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/ImgProvider.h
 	${CMAKE_SOURCE_DIR}/controls.extend/image3d/3dTransform.h
 	${CMAKE_SOURCE_DIR}/controls.extend/image3d/3dlib.h
 	${CMAKE_SOURCE_DIR}/controls.extend/image3d/3dmatrix.h
 	${CMAKE_SOURCE_DIR}/controls.extend/ExtendSkins.h
-	${CMAKE_SOURCE_DIR}/controls.extend/SImagePlayer.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SText.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SImageEx.h
-	${CMAKE_SOURCE_DIR}/controls.extend/SSplitBar.h
 	${CMAKE_SOURCE_DIR}/controls.extend/STurn3DView.h
-	${CMAKE_SOURCE_DIR}/controls.extend/SAnimImg.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SSkinImgFrame2.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SScrollText.h
 )
@@ -55,23 +45,13 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SFreeMoveWindow.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SButtonEx.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SSkinMutiFrameImg.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/SImRichEdit.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/RichEditObj.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/RichEditOleCallback.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/RichEditObjFactory.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/RichEditOleCtrls.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/RichEditOleBase.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/imre/ImgProvider.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/image3d/3dtransform.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/image3d/3dlib.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/image3d/3dmatrix.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/ExtendSkins.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/SImagePlayer.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SText.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SImageEx.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/SSplitBar.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/STurn3DView.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/SAnimImg.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SSkinImgFrame2.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SScrollText.cpp		
 )

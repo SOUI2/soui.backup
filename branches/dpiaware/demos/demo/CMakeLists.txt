@@ -25,7 +25,6 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/FileHelper.h
 	${CMAKE_SOURCE_DIR}/controls.extend/sipaddressctrl.h
 	${CMAKE_SOURCE_DIR}/controls.extend/propgrid/SPropertyGrid.h
-	${CMAKE_SOURCE_DIR}/controls.extend/sflywnd.h
 	${CMAKE_SOURCE_DIR}/controls.extend/sfadeframe.h
 	${CMAKE_SOURCE_DIR}/controls.extend/sradiobox2.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SChromeTabCtrl.h
@@ -56,7 +55,6 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/propgrid/propitem/spropertyitem-option.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/propgrid/propitem/spropertyitem-color.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/propgrid/propitem/spropertyitem-size.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/sflywnd.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/sfadeframe.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/sradiobox2.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SChromeTabCtrl.cpp
