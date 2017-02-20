@@ -390,7 +390,7 @@ namespace SOUI{
 
     BOOL SouiLayout::IsWaitingPos( int nPos ) const
     {
-        return nPos == POS_INIT || nPos == POS_WAIT || nPos == SIZE_WRAP_CONTENT;
+        return nPos == POS_INIT || nPos == POS_WAIT;
     }
 
 
