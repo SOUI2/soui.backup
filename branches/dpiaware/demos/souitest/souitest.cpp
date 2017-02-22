@@ -22,7 +22,27 @@
 
 #include <gtest/gtest.h>  
 
+#include <souistd.h>
+#include <string/tstring.h>
+#include <layout/SLayoutSize.h>
+
 int Add(int a,int b){return a+b;}
+
+namespace SOUI
+{
+	bool LayoutSize(SStringW str)
+	{
+		SLayoutSize ls = SLayoutSize::fromString(str);
+		SStringW str2 = ls.toString();
+		return str.CompareNoCase(str2) == 0;
+	}
+}
+
+TEST(LayoutSize, parse) {
+	EXPECT_EQ(SOUI::LayoutSize(L"15.3dp"),true);
+	EXPECT_EQ(SOUI::LayoutSize(L"15dp"),true);
+}  
+
 
 TEST(Add, ¸ºÊý) {  
 	EXPECT_EQ(Add(-1,-2), -3);  

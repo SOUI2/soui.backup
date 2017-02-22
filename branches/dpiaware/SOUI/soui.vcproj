@@ -334,6 +334,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\layout\SLayoutSize.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\layout\SLinearLayout.cpp"
 				>
 			</File>
@@ -709,6 +713,10 @@
 			</File>
 			<File
 				RelativePath=".\include\interface\slayout-i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\layout\SLayoutSize.h"
 				>
 			</File>
 			<File
