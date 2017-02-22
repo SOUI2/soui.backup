@@ -10,6 +10,8 @@ namespace SOUI
 			px=0,dp,sp
 		};
 
+		SLayoutSize();
+
 		float fSize;
 		Unit  unit;
 

@@ -8,6 +8,11 @@ namespace SOUI
 		L"px",L"dp",L"sp"
 	};
 
+	SLayoutSize::SLayoutSize() :fSize(0.0f),unit(px)
+	{
+
+	}
+
 	SStringW SLayoutSize::toString() const
 	{
 		SStringW strValue = SStringW().Format(L"%f",fSize);
@@ -42,5 +47,6 @@ namespace SOUI
 		ret.fSize = (float)_wtof(strSize);
 		return ret;
 	}
+
 
 }
