@@ -31,9 +31,20 @@ HEADERS += MainDlg.h \
            utils.h \
 
 
+
 SOURCES += MainDlg.cpp \
            QQLogin.cpp \
            utils.cpp \
+
+HEADERS+=../../controls.extend/image3d/3dlib.h
+HEADERS+=../../controls.extend/image3d/3dmatrix.h
+HEADERS+=../../controls.extend/image3d/3dTransform.h
+HEADERS+=../../controls.extend/STurn3DView.h
+
+SOURCES+=../../controls.extend/image3d/3dlib.cpp
+SOURCES+=../../controls.extend/image3d/3dmatrix.cpp
+SOURCES+=../../controls.extend/image3d/3dtransform.cpp
+SOURCES+=../../controls.extend/STurn3DView.cpp
 
 
 RC_FILE += qqlogin.rc
