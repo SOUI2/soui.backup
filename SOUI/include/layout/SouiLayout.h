@@ -30,7 +30,7 @@ namespace SOUI{
 
 		virtual void SetWrapContent(ORIENTATION orientation);
 
-		virtual void SetSpecifiedSize(ORIENTATION orientation, int nSize);
+		virtual void SetSpecifiedSize(ORIENTATION orientation, const SLayoutSize& layoutSize);
 
 		virtual void * GetRawData();
 	public:

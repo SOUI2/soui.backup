@@ -29,7 +29,7 @@ namespace SOUI
 
 		virtual void SetWrapContent(ORIENTATION orientation);
 
-		virtual void SetSpecifiedSize(ORIENTATION orientation, int nSize);
+		virtual void SetSpecifiedSize(ORIENTATION orientation, const SLayoutSize& layoutSize);
 
 		virtual void * GetRawData();
 
@@ -45,11 +45,11 @@ namespace SOUI
                 ATTR_ENUM_VALUE(L"right",G_Right)
                 ATTR_ENUM_VALUE(L"bottom",G_Bottom)
             ATTR_ENUM_END(gravity)
-			ATTR_RECT(L"extend",rcExtend,FALSE)
-			ATTR_INT(L"extend_left",rcExtend.left,FALSE)
-			ATTR_INT(L"extend_top",rcExtend.top,FALSE)
-			ATTR_INT(L"extend_right",rcExtend.right,FALSE)
-			ATTR_INT(L"extend_bottom",rcExtend.bottom,FALSE)
+			ATTR_CUSTOM(L"extend",OnAttrExtend)
+			ATTR_LAYOUTSIZE(L"extend_left",extend_left,FALSE)
+			ATTR_LAYOUTSIZE(L"extend_top",extend_top,FALSE)
+			ATTR_LAYOUTSIZE(L"extend_right",extend_right,FALSE)
+			ATTR_LAYOUTSIZE(L"extend_bottom",extend_bottom,FALSE)
         SOUI_ATTRS_BREAK()
 
 
@@ -57,6 +57,7 @@ namespace SOUI
         HRESULT OnAttrSize(const SStringW & strValue,BOOL bLoading);
 		HRESULT OnAttrWidth(const SStringW & strValue,BOOL bLoading);
 		HRESULT OnAttrHeight(const SStringW & strValue,BOOL bLoading);
+		HRESULT OnAttrExtend(const SStringW & strValue,BOOL bLoading);
 
     };
 
