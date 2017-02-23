@@ -54,7 +54,7 @@ namespace SOUI{
         case Horz:
             return width == SIZE_WRAP_CONTENT || (nCount == 0 && width == SIZE_UNDEF);
         case Vert:
-            return height == SIZE_WRAP_CONTENT|| (nCount == 0 && width == SIZE_UNDEF);
+            return height == SIZE_WRAP_CONTENT|| (nCount == 0 && height == SIZE_UNDEF);
         case Any:
             return IsWrapContent(Horz) || IsWrapContent(Vert);
         case Both:
