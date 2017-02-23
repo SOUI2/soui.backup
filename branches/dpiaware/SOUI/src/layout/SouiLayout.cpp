@@ -20,9 +20,9 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            return width == SIZE_MATCH_PARENT;
+            return width.isMatchParent();
         case Vert:
-            return height == SIZE_MATCH_PARENT;
+            return height.isMatchParent();
         case Any:
             return IsMatchParent(Horz) || IsMatchParent(Vert);
         case Both:
@@ -36,9 +36,9 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            return width >= SIZE_SPEC;
+            return width.isSpecifiedSize();
         case Vert:
-            return height >= SIZE_SPEC;
+            return height.isSpecifiedSize();
         case Any:
             return IsSpecifiedSize(Horz) || IsSpecifiedSize(Vert);
         case Both:
@@ -52,9 +52,9 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            return width == SIZE_WRAP_CONTENT || (nCount == 0 && width == SIZE_UNDEF);
+            return width.isWrapContent() || (nCount == 0 && !width.isValid());
         case Vert:
-            return height == SIZE_WRAP_CONTENT|| (nCount == 0 && width == SIZE_UNDEF);
+            return height.isWrapContent()|| (nCount == 0 && !height.isValid());
         case Any:
             return IsWrapContent(Horz) || IsWrapContent(Vert);
         case Both:
@@ -65,7 +65,7 @@ namespace SOUI{
 
     int SouiLayoutParam::GetSpecifiedSize(ORIENTATION orientation) const
     {
-        return orientation == Vert ?(height):(width);
+        return orientation == Vert ?height.toPixelSize():width.toPixelSize();
     }
 
 
@@ -333,7 +333,7 @@ namespace SOUI{
         }
 	}
 
-	void SouiLayoutParam::SetSpecifiedSize(ORIENTATION orientation, int nSize)
+	void SouiLayoutParam::SetSpecifiedSize(ORIENTATION orientation, const SLayoutSize& layoutSize)
 	{
         switch(orientation)
         {

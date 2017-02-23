@@ -7,6 +7,7 @@
 
 namespace SOUI{
     class SWindow;
+	class SLayoutSize;
 
 
     enum ORIENTATION{
@@ -35,7 +36,7 @@ namespace SOUI{
         virtual int GetSpecifiedSize(ORIENTATION orientation) const = 0;
 		virtual void SetMatchParent(ORIENTATION orientation) = 0;
 		virtual void SetWrapContent(ORIENTATION orientation) = 0;
-		virtual void SetSpecifiedSize(ORIENTATION orientation, int nSize) = 0;
+		virtual void SetSpecifiedSize(ORIENTATION orientation, const SLayoutSize& layoutSize) = 0;
 		virtual void * GetRawData() = 0;
     };
 

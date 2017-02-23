@@ -7,7 +7,7 @@ namespace SOUI
 	{
 	public:
 		enum Unit{
-			px=0,dp,sp
+			px=0,dp
 		};
 
 		SLayoutSize();
@@ -15,8 +15,44 @@ namespace SOUI
 		float fSize;
 		Unit  unit;
 
+		void setWrapContent();
+		bool isWrapContent() const;
+
+		void setMatchParent();
+		bool isMatchParent() const;
+
+		bool isSpecifiedSize() const;
+		bool isValid() const;
+
+		int  toPixelSize() const;
+
 		SStringW toString() const;
 
-		static SLayoutSize fromString(const SStringW & strSize);
+
+		void parseString(const SStringW & strSize);
+	protected:
+		virtual bool isVert() const = 0;
+
+	};
+
+
+	class SOUI_EXP SLayoutWidth : public SLayoutSize
+	{
+	public:
+		static SLayoutWidth fromString(const SStringW & strSize);
+		SLayoutSize & operator = (const SLayoutSize& src);
+
+	protected:
+		virtual bool isVert() const;
+	};
+
+	class SOUI_EXP SLayoutHeight : public SLayoutSize
+	{
+	public:
+		static SLayoutHeight fromString(const SStringW & strSize);
+
+		SLayoutSize & operator = (const SLayoutSize& src);
+	protected:
+		virtual bool isVert() const;
 	};
 }
