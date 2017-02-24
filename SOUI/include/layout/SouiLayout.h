@@ -57,7 +57,7 @@ namespace SOUI{
 
     protected:
         //将字符串描述的坐标转换成POSITION_ITEM
-        BOOL StrPos2ItemPos(const SStringW &strPos,POSITION_ITEM & posItem);
+        BOOL StrPos2ItemPos(const SStringW &strPos,POS_INFO & posItem);
 
         //解析在pos中定义的前两个位置
         BOOL ParsePosition12(const SStringW & pos1, const SStringW &pos2);
@@ -100,7 +100,7 @@ namespace SOUI{
         void CalcPositionEx(SList<WndPos> *pListChildren,int nWidth,int nHeight) const;
         int CalcPostion(SList<WndPos> *pListChildren,int nWidth,int nHeight) const;
 
-		int PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POSITION_ITEM &pos , int nMax,BOOL bX) const;
+		int PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POS_INFO &pos , int nMax,BOOL bX) const;
         
         int CalcChildLeft(SWindow *pWindow,SouiLayoutParam *pParam);
         int CalcChildRight(SWindow *pWindow,SouiLayoutParam *pParam);
