@@ -137,22 +137,21 @@ namespace SOUI{
             {
                 return FALSE;
             }
-            int nSibID = 0;
-            int nValue = 0;
             SStringW strValue = strPos.Mid(4+nOffset);
-            if(2 != swscanf(strValue,L"%d:%d",&nSibID,&nValue))
+			SStringWList values;
+			if(SplitString(strValue,L':',values) != 2)
                 return FALSE;
-            if(nSibID == 0) 
+			pos.nRefID = _wtoi(values[0]);
+            if(pos.nRefID == 0) 
                 return FALSE;
+			pos.nPos.parseString(values[1]);
 
-            pos.nRefID = nSibID;
-            if(nValue < 0)
+            if(pos.nPos.fSize < 0)
             {
-                pos.nPos = (float)(-nValue);
+                pos.nPos.fSize *= -1;
                 pos.cMinus = -1;
             }else
             {
-                pos.nPos = (float)nValue;
                 pos.cMinus = 1;
             }
         }else
@@ -179,7 +178,7 @@ namespace SOUI{
             {
                 pos.cMinus = 1;
             }
-            pos.nPos=(float)_wtof(pszPos);
+            pos.nPos.parseString(pszPos);
         }
 
         return TRUE;
