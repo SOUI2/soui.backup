@@ -9,7 +9,7 @@ namespace SOUI
 		L"px",L"dp"
 	};
 
-	SLayoutSize::SLayoutSize() :fSize(0.0f),unit(px)
+	SLayoutSize::SLayoutSize() :fSize(0.0f),unit(px),orientation(Horz)
 	{
 
 	}
@@ -74,6 +74,22 @@ namespace SOUI
 			return SDp2Px(fSize,isVert());
 	}
 
+	void SLayoutSize::setInvalid()
+	{
+		fSize = SIZE_UNDEF;
+	}
+
+	bool SLayoutSize::isValid() const
+	{
+		return fequal(fSize,SIZE_UNDEF);
+	}
+
+	bool SLayoutSize::isVert() const
+	{
+		return orientation == Vert;
+	}
+
+
 	void SLayoutSize::parseString(const SStringW & strSize)
 	{
 		SStringW strUnit = strSize.Right(2);
@@ -90,53 +106,39 @@ namespace SOUI
 		fSize = (float)_wtof(strSize);
 	}
 
-	bool SLayoutSize::isValid() const
+	//只复制数值,不复制方向
+	SLayoutSize & SLayoutSize::operator=(const SLayoutSize & src)
 	{
-		return fequal(fSize,SIZE_UNDEF);
+		fSize = src.fSize;
+		unit = src.unit;
+		return *this;
 	}
 
-
-	template<class T>
-	T LayoutSizeFromString(const SStringW & strSize)
-	{
-		T ret;
-		ret.parseString(strSize);
-		return ret;			
-	}
-
-	bool SLayoutWidth::isVert() const
-	{
-		return false;
-	}
 
 	SLayoutWidth SLayoutWidth::fromString(const SStringW & strSize)
 	{
-		return LayoutSizeFromString<SLayoutWidth>(strSize);
+		SLayoutWidth ret;
+		ret.parseString(strSize);
+		return ret;
 	}
 
-	SLayoutSize & SLayoutWidth::operator=(const SLayoutSize& src)
+	SLayoutSize & SLayoutWidth::operator=(const SLayoutSize & src)
 	{
-		fSize = src.fSize;
-		unit = src.unit;
-		return *this;
+		return SLayoutSize::operator =(src);
 	}
 
-
-	bool SLayoutHeight::isVert() const
-	{
-		return true;
-	}
 
 	SLayoutHeight SLayoutHeight::fromString(const SStringW & strSize)
 	{
-		return LayoutSizeFromString<SLayoutHeight>(strSize);
+		SLayoutHeight ret;
+		ret.parseString(strSize);
+		return ret;
+
 	}
 
-	SLayoutSize & SLayoutHeight::operator=(const SLayoutSize& src)
+	SLayoutSize & SLayoutHeight::operator=(const SLayoutSize & src)
 	{
-		fSize = src.fSize;
-		unit = src.unit;
-		return *this;
+		return SLayoutSize::operator =(src);
 	}
 
 }

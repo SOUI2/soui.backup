@@ -86,13 +86,13 @@ namespace SOUI{
     {
         if(strPos1.IsEmpty() || strPos2.IsEmpty()) 
             return FALSE;
-        POSITION_ITEM pos1,pos2;
+        POS_INFO pos1,pos2;
         if(!StrPos2ItemPos(strPos1,pos1) || !StrPos2ItemPos(strPos2,pos2) )
             return FALSE;
         if(pos1.pit == PIT_SIZE || pos2.pit == PIT_SIZE)//前面2个属性不能是size类型
             return FALSE;
-        pos [PI_LEFT] = pos1;
-        pos [PI_TOP] = pos2;
+        posLeft = pos1;
+        posTop = pos2;
         nCount = 2;
         return TRUE;
     }
@@ -100,16 +100,16 @@ namespace SOUI{
     BOOL SouiLayoutParam::ParsePosition34( const SStringW & strPos3, const SStringW &strPos4 )
     {
         if(strPos3.IsEmpty() || strPos4.IsEmpty()) return FALSE;
-        POSITION_ITEM pos3,pos4;
+        POS_INFO pos3,pos4;
         if(!StrPos2ItemPos(strPos3,pos3) || !StrPos2ItemPos(strPos4,pos4) ) return FALSE;
 
-        pos [PI_RIGHT] = pos3;
-        pos [PI_BOTTOM] = pos4;
+        posRight = pos3;
+        posBottom = pos4;
         nCount = 4;
         return TRUE;
     }
 
-    BOOL SouiLayoutParam::StrPos2ItemPos( const SStringW &strPos,POSITION_ITEM & pos )
+    BOOL SouiLayoutParam::StrPos2ItemPos( const SStringW &strPos,POS_INFO & pos )
     {
         if(strPos.IsEmpty()) return FALSE;
 
@@ -279,7 +279,7 @@ namespace SOUI{
         return fabs(orientation==Vert?fOffsetY:fOffsetX) > 0.00000001f;
     }
 
-    int GetPosExtra(const POSITION_ITEM &pos)
+    int GetPosExtra(const POS_INFO &pos)
     {
         return pos.cMinus==-1?(int)pos.nPos:0;
     }
@@ -394,7 +394,7 @@ namespace SOUI{
     }
 
 
-    int SouiLayout::PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POSITION_ITEM &pos , int nMax,BOOL bX) const
+    int SouiLayout::PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POS_INFO &pos , int nMax,BOOL bX) const
     {
         int nRet=POS_WAIT;
 
@@ -626,8 +626,8 @@ namespace SOUI{
     }
 
 
-	static const POSITION_ITEM posRefLeft={PIT_PREV_NEAR,-1,1,0};
-	static const POSITION_ITEM posRefTop={PIT_PREV_FAR,-1,1,0};
+	static const POS_INFO posRefLeft={PIT_PREV_NEAR,-1,1,0};
+	static const POS_INFO posRefTop={PIT_PREV_FAR,-1,1,0};
 
     int SouiLayout::CalcPostion(SList<WndPos> *pListChildren,int nWidth,int nHeight) const
     {
@@ -649,13 +649,13 @@ namespace SOUI{
                     SouiLayoutParam *pLayoutParam = wndPos.pWnd->GetLayoutParamT<SouiLayoutParam>();
                     if(IsWaitingPos(wndPos.rc.left)) 
                     {
-						const POSITION_ITEM &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->pos[0]:posRefLeft;
+						const POS_INFO &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->pos[0]:posRefLeft;
 						wndPos.rc.left = PositionItem2Value(pListChildren,pos,posRef,nWidth,TRUE);
                         if(wndPos.rc.left != POS_WAIT) nResolved ++;
                     }
                     if(IsWaitingPos(wndPos.rc.top)) 
                     {
-						const POSITION_ITEM &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->pos[1]:posRefTop;
+						const POS_INFO &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->pos[1]:posRefTop;
 						wndPos.rc.top = PositionItem2Value(pListChildren,pos,posRef,nHeight,FALSE);
                         if(wndPos.rc.top != POS_WAIT) nResolved ++;
                     }

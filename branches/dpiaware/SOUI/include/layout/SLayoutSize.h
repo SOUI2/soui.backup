@@ -15,6 +15,8 @@ namespace SOUI
 		float fSize;
 		Unit  unit;
 
+		ORIENTATION orientation;
+
 		void setWrapContent();
 		bool isWrapContent() const;
 
@@ -22,16 +24,19 @@ namespace SOUI
 		bool isMatchParent() const;
 
 		bool isSpecifiedSize() const;
+
+		void setInvalid();
 		bool isValid() const;
 
 		int  toPixelSize() const;
 
 		SStringW toString() const;
 
+		bool isVert() const ;
 
 		void parseString(const SStringW & strSize);
-	protected:
-		virtual bool isVert() const = 0;
+
+		SLayoutSize & operator = (const SLayoutSize & src);
 
 	};
 
@@ -39,20 +44,19 @@ namespace SOUI
 	class SOUI_EXP SLayoutWidth : public SLayoutSize
 	{
 	public:
-		static SLayoutWidth fromString(const SStringW & strSize);
-		SLayoutSize & operator = (const SLayoutSize& src);
+		SLayoutWidth(){orientation = Horz;}
 
-	protected:
-		virtual bool isVert() const;
+		SLayoutSize & operator = (const SLayoutSize & src);
+		static SLayoutWidth fromString(const SStringW & strSize);
 	};
 
 	class SOUI_EXP SLayoutHeight : public SLayoutSize
 	{
 	public:
-		static SLayoutHeight fromString(const SStringW & strSize);
+		SLayoutHeight(){orientation = Vert;}
 
-		SLayoutSize & operator = (const SLayoutSize& src);
-	protected:
-		virtual bool isVert() const;
+		SLayoutSize & operator = (const SLayoutSize & src);
+
+		static SLayoutHeight fromString(const SStringW & strSize);
 	};
 }
