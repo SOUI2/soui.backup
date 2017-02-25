@@ -419,9 +419,9 @@ namespace SOUI{
 				if(fPercent<0.0f) fPercent = 0.0f;
 				if(fPercent>1.0f) fPercent = 1.0f;
 				if(pos.cMinus == -1)
-					nRet=(int)((100.0f-pos.nPos)*nMax/100);
+					nRet=(int)((100.0f-fPercent)*nMax/100);
 				else
-					nRet=(int)(pos.nPos*nMax/100);
+					nRet=(int)(fPercent*nMax/100);
 			}
             break;
         case PIT_PREV_NEAR:
