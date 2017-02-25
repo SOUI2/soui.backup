@@ -114,6 +114,11 @@ namespace SOUI
 		return *this;
 	}
 
+	void SLayoutSize::setOrientation(ORIENTATION orientation)
+	{
+		this->orientation = orientation;
+	}
+
 
 	SLayoutWidth SLayoutWidth::fromString(const SStringW & strSize)
 	{

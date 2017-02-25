@@ -12,6 +12,8 @@ namespace SOUI{
 
 	SouiLayoutParam::SouiLayoutParam()
 	{
+		posTop.nPos.setOrientation(Vert);
+		posBottom.nPos.setOrientation(Vert);
 		Clear();
 	}
 
@@ -217,6 +219,9 @@ namespace SOUI{
 					width.setWrapContent();
 				else
 					width = posRight.nPos;
+			}else
+			{
+				width.setInvalid();
 			}
 
 			if((posTop.pit == PIT_NORMAL && posTop.nPos.toPixelSize() == 0 && posTop.cMinus==1)
@@ -230,6 +235,9 @@ namespace SOUI{
 					height.setWrapContent();
 				else
 					height = posBottom.nPos;
+			}else
+			{
+				height.setInvalid();
 			}
 		}else
 		{
@@ -297,8 +305,8 @@ namespace SOUI{
 		nCount = 0;
 		fOffsetX = fOffsetY = 0.0f;
 
-		width.setInvalid();
-		height.setInvalid();
+		width.setWrapContent();
+		height.setWrapContent();
 	}
 
 	void SouiLayoutParam::SetMatchParent(ORIENTATION orientation)

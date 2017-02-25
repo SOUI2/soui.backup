@@ -46,7 +46,7 @@ namespace SOUI{
 
 		float fOffsetX,fOffsetY;    /**< 窗口坐标偏移量, x += fOffsetX * width, y += fOffsetY * height  */
 
-		SLayoutSize  width;        /**<使用width属性定义的宽 nCount==0 时有效*/
-		SLayoutSize  height;       /**<使用height属性定义的高 nCount==0 时有效*/
+		SLayoutWidth  width;        /**<使用width属性定义的宽 nCount==0 时有效*/
+		SLayoutHeight  height;       /**<使用height属性定义的高 nCount==0 时有效*/
 	};
 }

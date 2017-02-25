@@ -32,7 +32,10 @@ namespace SOUI
 
 		SStringW toString() const;
 
+		void setOrientation(ORIENTATION orientation);
 		bool isVert() const ;
+		
+
 
 		void parseString(const SStringW & strSize);
 
