@@ -59,6 +59,7 @@ HEADERS += MainDlg.h \
            ../../controls.extend/SRatingBar.h \
            ../../controls.extend/SFreeMoveWindow.h \
 		   ../../controls.extend/smiley/SSmileyCtrl.h \
+		   ../../controls.extend/tipwnd.h \
            httpsvr/filereader-i.h \
            httpsvr/genericserver.h \
            httpsvr/httpserver.h \
@@ -103,6 +104,7 @@ SOURCES += demo.cpp \
            ../../controls.extend/simagemaskwnd.cpp \
            ../../controls.extend/SRatingBar.cpp \
            ../../controls.extend/SFreeMoveWindow.cpp \
+		   ../../controls.extend/tipwnd.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \
            magnet/magnetframe.cpp \

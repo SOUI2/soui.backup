@@ -29,6 +29,7 @@
 #include "../controls.extend/smiley/SSmileyCtrl.h"
 #include "../controls.extend/SChatEdit.h"
 #include "../controls.extend/SFreeMoveWindow.h"
+#include "../controls.extend/tipwnd.h"
 
 
 using namespace SOUI;
