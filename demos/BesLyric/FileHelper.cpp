@@ -89,7 +89,7 @@ UINT_PTR __stdcall  MyFolderProc(  HWND hdlg, UINT uiMsg, WPARAM wParam, LPARAM 
         if (lpOfNotify->hdr.code == CDN_INITDONE )
         {
             SetPropW(GetParent(hdlg), L"OPENFILENAME", (HANDLE)(lpOfNotify->lpOFN));
-            g_lOriWndProc  = ::SetWindowLongW( ::GetParent( hdlg ), GWL_WNDPROC , (LONG)_WndProc );    
+            g_lOriWndProc  = ::SetWindowLongW( ::GetParent( hdlg ), GWLP_WNDPROC , (LONG)_WndProc );    
         }
         if (lpOfNotify->hdr.code == CDN_SELCHANGE)
         {

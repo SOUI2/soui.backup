@@ -32,7 +32,6 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SText.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SImageEx.h
 	${CMAKE_SOURCE_DIR}/controls.extend/STurn3DView.h
-	${CMAKE_SOURCE_DIR}/controls.extend/SSkinImgFrame2.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SScrollText.h
 )
 set(EXTENDCOTROLS ${EXTENDCOTROLS}
@@ -52,7 +51,6 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SText.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SImageEx.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/STurn3DView.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/SSkinImgFrame2.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SScrollText.cpp		
 )
 
