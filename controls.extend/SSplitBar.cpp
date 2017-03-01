@@ -20,9 +20,8 @@ SSplitBar::~SSplitBar()
 LRESULT SSplitBar::OnCreate( LPVOID )
 {
     if(0 != __super::OnCreate(NULL)) return 1;
-
-    int pi = m_bVertical?PI_LEFT:PI_TOP;
-    m_nOrginPos = GetLayout()->pos[pi].nPos;
+    int pi = m_bVertical ? PI_LEFT : PI_TOP;
+    m_nOrginPos = static_cast<SouiLayoutParamStruct*>(GetLayoutParam()->GetRawData())->pos[pi].nPos;
     m_nTrackingPos = m_nOrginPos;
 
     return 0;
@@ -48,8 +47,8 @@ void SSplitBar::OnLButtonUp(UINT nFlags,CPoint pt)
     SWindow::OnLButtonUp(nFlags, pt);
 
     m_bDragging = FALSE;
-    int pi = m_bVertical?PI_LEFT:PI_TOP;
-    m_nOrginPos = GetLayout()->pos[pi].nPos;
+    int pi = m_bVertical ? PI_LEFT : PI_TOP;
+    m_nOrginPos = static_cast<SouiLayoutParamStruct*>(GetLayoutParam()->GetRawData())->pos[pi].nPos;
     m_nTrackingPos = m_nOrginPos;
 }
 
@@ -78,7 +77,9 @@ void SSplitBar::OnMouseMove(UINT nFlags,CPoint pt)
 
     // 计算分隔栏新的位置
 
-    SwndLayout * pLayout = GetLayout();
+    //SwndLayout * pLayout = GetLayout();
+    SouiLayoutParam *pSouiLayoutParam = GetLayoutParamT<SouiLayoutParam>();
+    SouiLayoutParamStruct *pLayout = (SouiLayoutParamStruct*)pSouiLayoutParam->GetRawData();
     int pi = m_bVertical?PI_LEFT:PI_TOP;
     int nNewPos = m_nOrginPos + nOffset * pLayout->pos[pi].cMinus;
 
