@@ -48,8 +48,8 @@ HEADERS += GroupChatFrame.h \
            extend.ctrls/imre/RichEditOleCtrls.h \
            extend.ctrls/imre/SImRichEdit.h \
            extend.ctrls/imre/TOM2.h \
-		   ../../controls.extend/SChromeTabCtrl.h \
-		   ../../controls.extend/SImageMaskWnd.h \
+           ../../controls.extend/SChromeTabCtrl.h \
+           ../../controls.extend/SImageMaskWnd.h \
            ../../controls.extend/STurn3DView.h \
            ../../controls.extend/image3d/3dlib.h \
            ../../controls.extend/image3d/3dmatrix.h \
@@ -76,23 +76,12 @@ SOURCES += GroupChatFrame.cpp \
            extend.ctrls/imre/RichEditOleCallback.cpp \
            extend.ctrls/imre/RichEditOleCtrls.cpp \
            extend.ctrls/imre/SImRichedit.cpp \
-		   ../../controls.extend/SChromeTabCtrl.cpp \
-		   ../../controls.extend/SImageMaskWnd.cpp \
+           ../../controls.extend/SChromeTabCtrl.cpp \
+           ../../controls.extend/SImageMaskWnd.cpp \
            ../../controls.extend/STurn3DView.cpp \
            ../../controls.extend/image3d/3dlib.cpp \
            ../../controls.extend/image3d/3dmatrix.cpp \
            ../../controls.extend/image3d/3dtransform.cpp \
            ../../controls.extend/slistboxex.cpp
-
-HEADERS+=../../controls.extend/image3d/3dlib.h
-HEADERS+=../../controls.extend/image3d/3dmatrix.h
-HEADERS+=../../controls.extend/image3d/3dTransform.h
-HEADERS+=../../controls.extend/STurn3DView.h
-
-SOURCES+=../../controls.extend/image3d/3dlib.cpp
-SOURCES+=../../controls.extend/image3d/3dmatrix.cpp
-SOURCES+=../../controls.extend/image3d/3dtransform.cpp
-SOURCES+=../../controls.extend/STurn3DView.cpp
-
 
 RC_FILE += qqlogin.rc

@@ -15,7 +15,7 @@ SImagePlayer::~SImagePlayer()
 
 
 void SImagePlayer::OnPaint( IRenderTarget *pRT )
-{	
+{
 	__super::OnPaint(pRT);
 	if(m_aniSkin)
 	{		
@@ -104,7 +104,7 @@ SIZE SImagePlayer::GetImageSize()
 
 void SImagePlayer::Pause()
 {
-    if (m_aniSkin->GetStates() > 1)
+    if (m_aniSkin && m_aniSkin->GetStates() > 1)
     {
         GetContainer()->UnregisterTimelineHandler(this);
     }
@@ -112,7 +112,7 @@ void SImagePlayer::Pause()
 
 void SImagePlayer::Resume()
 {
-    if (m_aniSkin->GetStates() > 1)
+    if (m_aniSkin && m_aniSkin->GetStates() > 1)
     {
         GetContainer()->RegisterTimelineHandler(this);
     }
@@ -140,7 +140,7 @@ BOOL SImagePlayer::_PlayFile( LPCTSTR pszFileName, BOOL bGif )
         pBuiltinSkinPool->AddKeyObject(key,pGifSkin);//将创建的skin交给skinpool管理
         m_aniSkin = pGifSkin;
     }
-    if(m_layout.IsFitContent())
+    if (GetLayoutParam()->IsWrapContent(Any))
     {
         GetParent()->UpdateChildrenPosition();
     }
