@@ -76,9 +76,9 @@ namespace SOUI
 	public:
 		SGetLineDashEffect(int iStyle):pDashPathEffect(NULL)
 		{
-			if(iStyle>PS_SOLID && iStyle<=PS_DASHDOTDOT)
+			if(iStyle>=PS_SOLID && iStyle<=PS_DASHDOTDOT)
 			{
-				const LineDashEffect *pEff=&LINEDASHEFFECT[iStyle-1];
+				const LineDashEffect *pEff=&LINEDASHEFFECT[iStyle];
 				pDashPathEffect=SkDashPathEffect::Create(pEff->fDash,pEff->nCount,0.0f);
 			}
 		}
