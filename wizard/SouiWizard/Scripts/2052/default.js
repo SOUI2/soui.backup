@@ -40,7 +40,9 @@ function CreateCustomProject(strProjectName, strProjectPath)
 	        if (WizardVersion == 12)
 	            strProjTemplatePath += '\\2013';
 	        else if(WizardVersion==14)
-                strProjTemplatePath+='\\2015'
+	            strProjTemplatePath += '\\2015'
+	        else if (WizardVersion == 15)
+	            strProjTemplatePath += '\\2017'
 	    }
 
 		var strProjTemplate = '';
