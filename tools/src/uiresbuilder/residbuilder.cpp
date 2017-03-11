@@ -469,6 +469,13 @@ __int64 ParseUIDefFile(map<string,string> &mapFiles, const wchar_t * pszFileName
                     while(pStrEle)
                     {
                         string strName = pStrEle->Value();
+						//要保证字符串表中名字唯一
+						if(mapString.find(strName)!=mapString.end())
+						{
+							mapString.clear();
+							printf("error: two string nodes in string table have the same name of [%s]!!!",strName.c_str());
+							break;
+						}
                         mapString[strName] = 1;
                         pStrEle = pStrEle->NextSiblingElement();
                     }
@@ -500,6 +507,14 @@ __int64 ParseUIDefFile(map<string,string> &mapFiles, const wchar_t * pszFileName
                     while(pColorEle)
                     {
                         string strName = pColorEle->Value();
+						//要保证颜色表中名字唯一
+						if(mapColor.find(strName)!=mapColor.end())
+						{
+							mapColor.clear();
+							printf("error: two color nodes in color table have the same name of [%s]!!!",strName.c_str());
+							break;
+						}
+
                         mapColor[strName] = 1;
                         
                         pColorEle = pColorEle->NextSiblingElement();
