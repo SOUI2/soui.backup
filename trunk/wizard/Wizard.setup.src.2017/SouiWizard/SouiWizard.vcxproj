@@ -94,6 +94,7 @@
       <AdditionalLibraryDirectories>$(SOUIPATH)\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>utilitiesd.lib;souid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(SOUIPATH)\soui-sys-resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -116,6 +117,7 @@
       <AdditionalLibraryDirectories>$(SOUIPATH)\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>utilities.lib;soui.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(SOUIPATH)\soui-sys-resource;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
