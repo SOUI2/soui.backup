@@ -1,6 +1,6 @@
 <root>
 	<imglist>
-		<propgrid pos="0,0,-4,-4" switchSkin="SKIN_UIDESIGNER_PROPGRID_SWITCH"                      
+		<propgrid pos="0,0,-0,-0" switchSkin="SKIN_UIDESIGNER_PROPGRID_SWITCH"                      
 			nameWidth="100" orderType="group"   itemHeight="30"   ColorGroup="RGB(96,112,138)"                                          
 			ColorItemSel="rgb(234,128,16)" colorItemSelText="#FF0000" EditBkgndColor="rgb(87,104,132)"                                    
 			autoWordSel="1">
@@ -24,7 +24,7 @@
 	</imglist>
 
 	<imgframe>
-		<propgrid pos="0,0,-4,-4" switchSkin="SKIN_UIDESIGNER_PROPGRID_SWITCH"                      
+		<propgrid pos="0,0,-0,-0" switchSkin="SKIN_UIDESIGNER_PROPGRID_SWITCH"                      
 			nameWidth="100" orderType="group"   itemHeight="30"   ColorGroup="RGB(96,112,138)"                                          
 			ColorItemSel="rgb(234,128,16)" colorItemSelText="#FF0000" EditBkgndColor="rgb(87,104,132)"                                    
 			autoWordSel="1" class="CLASS_UIDESIGNER_cls_title">
@@ -58,7 +58,7 @@
 
 
 	<gradation>
-		<propgrid pos="0,0,-4,-4" switchSkin="SKIN_UIDESIGNER_PROPGRID_SWITCH"                      
+		<propgrid pos="0,0,-0,-0" switchSkin="SKIN_UIDESIGNER_PROPGRID_SWITCH"                      
 			nameWidth="100" orderType="group"   itemHeight="30"   ColorGroup="RGB(96,112,138)"                                          
 			ColorItemSel="rgb(234,128,16)" colorItemSelText="#FF0000" EditBkgndColor="rgb(87,104,132)"                                    
 			autoWordSel="1">
@@ -81,7 +81,7 @@
 	</gradation>	
 
 	<scrollbar>
-		<propgrid pos="0,0,-4,-4" switchSkin="SKIN_UIDESIGNER_PROPGRID_SWITCH"                      
+		<propgrid pos="0,0,-0,-0" switchSkin="SKIN_UIDESIGNER_PROPGRID_SWITCH"                      
 			nameWidth="100" orderType="group"   itemHeight="30"   ColorGroup="RGB(96,112,138)"                                          
 			ColorItemSel="rgb(234,128,16)" colorItemSelText="#FF0000" EditBkgndColor="rgb(87,104,132)"                                    
 			autoWordSel="1">
@@ -111,7 +111,7 @@
 
 
 	<gif>
-		<propgrid pos="0,0,-4,-4" switchSkin="SKIN_UIDESIGNER_PROPGRID_SWITCH"                      
+		<propgrid pos="0,0,-0,-0" switchSkin="SKIN_UIDESIGNER_PROPGRID_SWITCH"                      
 			nameWidth="100" orderType="group"   itemHeight="30"   ColorGroup="RGB(96,112,138)"                                          
 			ColorItemSel="rgb(234,128,16)" colorItemSelText="#FF0000" EditBkgndColor="rgb(87,104,132)"                                    
 			autoWordSel="1">
