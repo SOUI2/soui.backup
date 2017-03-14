@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <skin>
   <!--全局skin对象-->
-  <imglist name="skin_page_icons"	src="imgx:png_page_icons" states="9" alpha="100"/>
+  <!--imglist name="skin_page_icons"	src="imgx:png_page_icons" states="9" alpha="100"/-->
   <imglist name="skin_small_icons" src="imgx:png_small_icons" states="12"/>
   <imglist name="skin_tree_icon"		src="imgx:png_treeicon" states="3"/>
 

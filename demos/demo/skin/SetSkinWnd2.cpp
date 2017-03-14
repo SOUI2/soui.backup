@@ -96,7 +96,7 @@ void CSetSkinWnd::OnSetSkin(EventArgs * e)
 {
 	SWindow *sender = (SWindow*) e->sender;
 	int nIndex = sender->GetID();
-	SDemoSkin *skin = (SDemoSkin *) GETSKIN(_T("demoskinbk"));	
+	SDemoSkin *skin = (SDemoSkin *) GETSKIN(_T("demoskinbk"));
 	SStringT strSkinFile;
 	SStringT strSkinPath = SApplication::getSingleton().GetAppDir() + _T("\\themes\\");
 	strSkinFile.Format(_T("%s%d.png"), strSkinPath, nIndex - 9);
