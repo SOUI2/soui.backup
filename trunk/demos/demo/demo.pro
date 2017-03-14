@@ -73,7 +73,8 @@ HEADERS += MainDlg.h \
 		   appledock/sdesktopdock.h \
 		   clock/sclock.h \
 		skin/SDemoSkin.h \
-		skin/SetSkinWnd2.h
+		skin/SetSkinWnd2.h \
+		skin/SSkinLoader.h 
 		   
 SOURCES += demo.cpp \
            MainDlg.cpp \
@@ -116,7 +117,8 @@ SOURCES += demo.cpp \
 		   appledock/sdesktopdock.cpp \
 		   clock/sclock.cpp \
 	skin/SDemoSkin.cpp \
-	skin/SetSkinWnd2.cpp
+	skin/SetSkinWnd2.cpp \
+	skin/SSkinLoader.cpp
 
 RC_FILE += demo.rc
 

@@ -14,10 +14,10 @@
     <menuItem id="54" icon="3" >关于SOUI</menuItem>
   </menuItem>
   <menuItem >
-    帮助与反馈2
-    <menuItem id="51" icon="0" >访问官网</menuItem>
-    <menuItem id="52" icon="1" >帮助指南</menuItem>
-    <menuItem id="53" icon="2" >错误提交</menuItem>
+    换图标
+    <menuItem id="51" icon="0" >skin1</menuItem>
+    <menuItem id="52" icon="1" >skin2</menuItem>
+    <menuItem id="53" icon="2" >skin3</menuItem>
     <menuItem id="54" icon="3" >关于SOUI</menuItem>
     <menuItem>
       三级菜单
