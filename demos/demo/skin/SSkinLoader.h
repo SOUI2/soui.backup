@@ -2,7 +2,8 @@
 #include "pugixml\pugixml.hpp"
 #include "res.mgr\SSkinPool.h"
 #include "helper\SplitString.h"
-#include "..\components\resprovider-zip\zipresprovider-param.h"
+#include "resprovider-zip\zipresprovider-param.h"
+#include "resprovider-zip\SResProviderZip.h"
 namespace SOUI
 {
 #define RT_SKIN _T("SkinXml")
@@ -13,7 +14,7 @@ namespace SOUI
 		SApplication *m_theApp;
 		BOOL CreateResProvider_ZIP(IObjRef **ppObj)
 		{
-			return SOUI::RESPROVIDER_ZIP::SCreateInstance(ppObj);
+			return RESPROVIDER_ZIP::SCreateInstance(ppObj);
 		}
 	public:
 		SSkinLoader(SApplication*);
