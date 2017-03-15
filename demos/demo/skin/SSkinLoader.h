@@ -22,9 +22,10 @@ namespace SOUI
 		{
 			if (m_pResProvider == NULL)
 			{
-				CreateResProvider_ZIP((IObjRef**)&m_pResProvider);
-				m_theApp->AddResProvider(m_pResProvider,NULL);
+				if(CreateResProvider_ZIP((IObjRef**)&m_pResProvider))
+					m_theApp->AddResProvider(m_pResProvider,NULL);
 			}
+			SASSERT(m_pResProvider);
 			ZIPRES_PARAM param;
 			param.ZipFile(m_theApp->GetRenderFactory(), respath, "www.bukengnikengshui.com");
 			if (!m_pResProvider->Init((WPARAM)&param, 0))
@@ -87,9 +88,10 @@ namespace SOUI
 // 			m_theApp->AddResProvider(m_pResProvider,NULL);			
 			if (m_pResProvider == NULL)
 			{
-				CreateResProvider(RES_FILE, (IObjRef**)&m_pResProvider);
-				m_theApp->AddResProvider(m_pResProvider, NULL);
+				if(CreateResProvider(RES_FILE, (IObjRef**)&m_pResProvider))
+					m_theApp->AddResProvider(m_pResProvider, NULL);
 			}
+			SASSERT(m_pResProvider);
 			if (!m_pResProvider->Init((WPARAM)respath.GetBuffer(0), NULL))
 			{
 				SASSERT(0);
