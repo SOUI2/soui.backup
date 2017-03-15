@@ -2,6 +2,7 @@
 #include "SetSkinWnd2.h"
 #include "SDemoSkin.h"
 #include <winuser.h>
+#include "SSkinLoader.h"
 
 #define SKIN_CHANGE_MSG _T("{D17D208B-25FD-412C-8071-68816D4B1F9B}")
 //注册皮肤改变消息
@@ -100,7 +101,10 @@ void CSetSkinWnd::OnSetSkin(EventArgs * e)
 	SStringT strSkinFile;
 	SStringT strSkinPath = SApplication::getSingleton().GetAppDir() + _T("\\themes\\");
 	strSkinFile.Format(_T("%s%d.png"), strSkinPath, nIndex - 9);
-	
+	SStringT strLoadSkin;
+	strLoadSkin.Format(_T("themes\\skin%d"), ((nIndex - 9)%3)+1);
+	SSkinLoader::getSingleton().LoadSkin(strLoadSkin);
+
 	if (_taccess(strSkinFile, 0) != 0){
 		SMessageBox(NULL, _T("无法设置当前主题,找不到系统主题文件。复制demos\\demo\\themes\\文件夹到soui根目录!"), _T("警告"), NULL);
 		return;
