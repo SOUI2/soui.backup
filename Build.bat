@@ -65,7 +65,7 @@ if %selected%==1 (
  set value=!value!\VC\Auxiliary\Build\vcvarsall.bat
  ECHO Vs2017 path is:!value! 
 	call "!value!" %target%
-	goto toolsetxp
+	goto built
 )
  else if %selected%==7 (
 	SET specs=win32-msvc2005
@@ -154,7 +154,12 @@ set configStr=SUPPORT_XP=%supportxp%
 echo !configStr!>>.\config\build.cfg
 rem 参数配置完成
 
-tools\qmake -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
+if %specs%==win32-msvc2017 (
+	tools\qmake2017 -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
+) else (
+	tools\qmake -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
+)
+
 
 SET /p selected=open[o], compile[c] "soui.sln" or quit(q) [o,c or q]?
 if "%selected%" == "o" (
