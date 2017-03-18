@@ -12,7 +12,7 @@
 !contains(QMAKE_INTERNAL_INCLUDED_FILES, .*qmodule\\.pri) {
     QMAKE_QT_MODULE = $$[QT_HOST_DATA/get]/mkspecs/qmodule.pri
     !exists($$QMAKE_QT_MODULE)|!include($$QMAKE_QT_MODULE, "", true) {
-        error("Cannot load qmodule.pri!")
+        debug(1, "Cannot load qmodule.pri!")
     } else {
         debug(1, "Loaded qmodule.pri from ($$QMAKE_QT_MODULE)")
     }
@@ -52,6 +52,22 @@ QMAKE_DIR_REPLACE_SANE = PRECOMPILED_DIR OBJECTS_DIR MOC_DIR RCC_DIR UI_DIR
     unset(modpath)
 }
 
+defineTest(qtSetQmlPath) {
+    !qtConfig(static)|host_build|no_import_scan: \
+        return()
+    deps = $$replace(QT, -private$, _private)
+    deps = $$resolve_depends(deps, "QT.")
+    !contains(deps, qml): \
+        return()
+
+    isEmpty(QTREPOS): \
+        QTREPOS = $$shadowed($$dirname(_QMAKE_CONF_))
+    for (qrep, QTREPOS): \
+        exists($$qrep/qml): \
+            QMLPATHS += $$qrep/qml
+    export(QMLPATHS)
+}
+
 # Apply extra compiler flags passed via configure last.
 CONFIG = qt_build_extra $$CONFIG
 
@@ -64,7 +80,7 @@ CONFIG = qt_build_extra $$CONFIG
 cross_compile: \
     CONFIG += force_bootstrap
 
-android|ios|winrt: \
+android|uikit|winrt: \
     CONFIG += builtin_testdata
 
 CONFIG += \
@@ -94,4 +110,27 @@ defineTest(qtNomakeTools) {
         $${d}.CONFIG += no_default_target no_default_install
         export($${d}.CONFIG)
     }
+}
+
+# This overloads the same function from qt_functions.prf.
+# This is not in qt_module.prf, as that gets loaded too late.
+defineTest(qtConfig) {
+    modules = $$QT $$QT_PRIVATE $$QT_FOR_PRIVATE $$QT_FOR_CONFIG
+    modules ~= s,-private$,_private,g
+    modules = $$resolve_depends(modules, "QT.", ".depends")
+    isEmpty(MODULE): \
+        MODULE = $$section($$list($$basename(_PRO_FILE_)), ., 0, 0)
+    exists($$OUT_PWD/qt$${MODULE}-config.pri) {
+        include($$OUT_PWD/qt$${MODULE}-config.pri)
+        modules += $${MODULE} $${MODULE}_private
+    }
+    modules += global global_private
+    modules = $$reverse(modules)
+    for (module, modules) {
+        contains(QT.$${module}.enabled_features, $$1): \
+            return(true)
+        contains(QT.$${module}.disabled_features, $$1): \
+            return(false)
+    }
+    error("Could not find feature $${1}.")
 }
