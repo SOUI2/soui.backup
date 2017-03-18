@@ -13,7 +13,7 @@ equals(TEMPLATE, subdirs): return()
 
 # It's likely that these extra flags will be wrong for host builds,
 # and the bootstrapped tools usually don't need them anyway.
-host_build:force_bootstrap: return()
+host_build:cross_compile: return()
 
 # The headersclean check needs defines and includes even for
 # header-only modules.
@@ -23,7 +23,8 @@ INCLUDEPATH += $$EXTRA_INCLUDEPATH
 # The other flags are relevant only for actual libraries.
 equals(TEMPLATE, aux): return()
 
-LIBS += $$EXTRA_LIBS
+QMAKE_LIBDIR += $$EXTRA_LIBDIR
+QMAKE_FRAMEWORKPATH += $$EXTRA_FRAMEWORKPATH
 
 # Static libs need no rpaths
 static: return()

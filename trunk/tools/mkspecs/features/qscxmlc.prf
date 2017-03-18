@@ -9,13 +9,12 @@ debug_and_release {
 
 QSCXMLC_DIR = $$QSCXMLC_DIR$$SUFFIX
 
-msvc:lessThan(MSC_VER,1800):QMAKE_QSCXMLC=$$QMAKE_QSCXMLC --no-c++11 # VS2012 cannot handle initializer lists.
-
 {
 qscxmlc.name = QSCXMLC ${QMAKE_FILE_IN}.h
 qscxmlc.input = STATECHARTS
 qscxmlc.variable_out = QSCXMLC_HEADERS
 qscxmlc.commands = $$QMAKE_QSCXMLC ${QMAKE_FILE_IN} --header ${QMAKE_FILE_OUT} --impl $$QSCXMLC_DIR/${QMAKE_FILE_BASE}$${first(QMAKE_EXT_CPP)}
+!isEmpty(QSCXMLC_NAMESPACE): qscxmlc.commands = $${qscxmlc.commands} --namespace $$QSCXMLC_NAMESPACE
 qscxmlc.output = $$QSCXMLC_DIR/${QMAKE_FILE_BASE}$${first(QMAKE_EXT_H)}
 qscxmlc.CONFIG += target_predeps
 qscxmlc.depends += $$QMAKE_QSCXMLC_EXE

@@ -78,7 +78,7 @@ contains(CMAKE_PLUGIN_DIR, "^\\.\\./.*") {
     CMAKE_PLUGIN_DIR_IS_ABSOLUTE = True
 }
 
-win32:!wince:!static:!staticlib {
+win32:!static:!staticlib {
     CMAKE_DLL_DIR = $$cmakeRelativePath($$[QT_INSTALL_BINS], $$[QT_INSTALL_PREFIX])
     contains(CMAKE_DLL_DIR, "^\\.\\./.*") {
         CMAKE_DLL_DIR = $$[QT_INSTALL_BINS]/
@@ -208,7 +208,7 @@ mac {
         CMAKE_PRL_FILE_LOCATION_DEBUG = lib$${CMAKE_QT_STEM}_debug.prl
         CMAKE_PRL_FILE_LOCATION_RELEASE = lib$${CMAKE_QT_STEM}.prl
     } else {
-        CONFIG(qt_framework, qt_framework|qt_no_framework) {
+        qt_framework {
             CMAKE_LIB_FILE_LOCATION_DEBUG = Qt$${CMAKE_MODULE_NAME}$${QT_LIBINFIX}.framework/Qt$${CMAKE_MODULE_NAME}$${QT_LIBINFIX}
             CMAKE_LIB_FILE_LOCATION_RELEASE = Qt$${CMAKE_MODULE_NAME}$${QT_LIBINFIX}.framework/Qt$${CMAKE_MODULE_NAME}$${QT_LIBINFIX}
             CMAKE_BUILD_IS_FRAMEWORK = "true"
