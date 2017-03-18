@@ -63,8 +63,7 @@ if %selected%==1 (
    if not "!var:~-1!"=="=" set value=!str:~-1!:!var!
  )
  set value=!value!\VC\Auxiliary\Build\vcvarsall.bat
- ECHO Vs2017 path is:!value!
- pause
+ ECHO Vs2017 path is:!value! 
 	call "!value!" %target%
 	goto toolsetxp
 )
