@@ -32,7 +32,7 @@ if %selected%==1 (
 )
 
 rem 选择开发环境
-SET /p selected=2.选择开发环境[1=2008;2=2010;3=2012;4=2013;5=2015;6=2005]:
+SET /p selected=2.选择开发环境[1=2008;2=2010;3=2012;4=2013;5=2015;6=2017;7=2005]:
 
 if %selected%==1 (
 	SET specs=win32-msvc2008
@@ -54,7 +54,21 @@ if %selected%==1 (
 	SET specs=win32-msvc2015
 	call "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
 	goto toolsetxp
-) else if %selected%==6 (
+)else if %selected%==6 (
+	SET specs=win32-msvc2017
+	for /f "skip=2 delims=: tokens=1,*" %%i in ('reg query "HKLM\SOFTWARE\Microsoft\VisualStudio\SxS\VS7" /v "15.0" /reg:32') do ( 
+    set str=%%i
+   set var=%%j
+   set "var=!var:"=!"
+   if not "!var:~-1!"=="=" set value=!str:~-1!:!var!
+ )
+ set value=!value!\VC\Auxiliary\Build\vcvarsall.bat
+ ECHO Vs2017 path is:!value!
+ pause
+	call "!value!" %target%
+	goto toolsetxp
+)
+ else if %selected%==7 (
 	SET specs=win32-msvc2005
 	call "%VS80COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
 	goto built
