@@ -12,6 +12,19 @@
 	long long is longest type
  */
 
+#if (_MSC_VER>=1910)
+#define _C_STD_BEGIN
+#define _C_STD_END
+#define _CSTD	::
+#define _LONGLONG	long long
+#define _ULONGLONG	unsigned long long
+#define _LLONG_MAX	0x7fffffffffffffff
+#define _ULLONG_MAX	0xffffffffffffffff
+typedef _LONGLONG _Longlong;
+typedef _ULONGLONG _ULonglong;
+#endif
+
+
 _C_STD_BEGIN
 		/* TYPE DEFINITIONS */
 typedef signed char int8_t;
