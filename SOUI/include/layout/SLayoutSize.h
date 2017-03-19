@@ -7,7 +7,7 @@ namespace SOUI
 	{
 	public:
 		enum Unit{
-			px=0,dp
+			px=0,dp,dip,sp
 		};
 
 		SLayoutSize();
@@ -23,8 +23,9 @@ namespace SOUI
 		void setMatchParent();
 		bool isMatchParent() const;
 
+		void setSize(float fSize, Unit unit);
 		bool isSpecifiedSize() const;
-
+		
 		void setInvalid();
 		bool isValid() const;
 
