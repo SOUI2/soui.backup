@@ -299,7 +299,7 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 	}
 
 	//wchar_t *s = L"<window pos=\"20,20,@500,@500\" colorBkgnd=\"#d0d0d0\"></window>";
-	wchar_t *s3 = L"<movewnd pos=\"20,20,@500,@500\" ></movewnd>";
+	const wchar_t *s3 = L"<movewnd pos=\"20,20,@500,@500\" ></movewnd>";
 
 	////创建布局窗口的根窗口
 
@@ -365,7 +365,7 @@ void SDesignerView::CreateAllChildWnd(SWindow *pRealWnd, SMoveWnd *pMoveWnd)
 	SWindow *pSibReal = pRealWnd->GetWindow(GSW_FIRSTCHILD);
 	for (; pSibReal; pSibReal = pSibReal->GetWindow(GSW_NEXTSIBLING))
 	{
-		wchar_t *s1 = L"<movewnd pos=\"0,0,@100,@100\" ></movewnd>";
+		const wchar_t *s1 = L"<movewnd pos=\"0,0,@100,@100\" ></movewnd>";
 		//创建布局窗口的根窗口
 		SMoveWnd *pSibMove = (SMoveWnd *)pMoveWnd->CreateChildren(s1);
 		pSibMove->m_pRealWnd = pSibReal;
@@ -1744,7 +1744,7 @@ BOOL SDesignerView::ReLoadLayout()
 	}
 
 	//wchar_t *s = L"<window pos=\"20,20,@500,@500\" colorBkgnd=\"#d0d0d0\"></window>";
-	wchar_t *s3 = L"<movewnd pos=\"20,20,@500,@500\" ></movewnd>";
+	const wchar_t *s3 = L"<movewnd pos=\"20,20,@500,@500\" ></movewnd>";
 
 	////创建布局窗口的根窗口
 
