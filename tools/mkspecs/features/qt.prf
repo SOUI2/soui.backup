@@ -2,14 +2,14 @@ CONFIG *= thread
 
 #handle defines
 win32 {
-   contains(QT_CONFIG, shared) {
+   qtConfig(shared) {
       # this variable is read by qmake in qmake/generators/win32/msvc_vcproj.cpp
       # function VcprojGenerator::initDeploymentTool()
       QMAKE_DLL_PATHS += $$[QT_INSTALL_BINS/get]
    }
 }
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG
-contains(QT_CONFIG, force_asserts):DEFINES += QT_FORCE_ASSERTS
+qtConfig(force_asserts): DEFINES += QT_FORCE_ASSERTS
 no_keywords:DEFINES += QT_NO_KEYWORDS
 plugin { #Qt plugins
    static:DEFINES += QT_STATICPLUGIN
@@ -71,6 +71,7 @@ for(ever) {
         MODULE_INCLUDES = $$eval(QT.$${QTLIB}.includes)
         MODULE_LIBS = $$eval(QT.$${QTLIB}.libs)
         MODULE_FRAMEWORKS = $$eval(QT.$${QTLIB}.frameworks)
+        MODULE_USES = $$eval(QT.$${QTLIB}.uses)
         MODULE_CONFIG = $$eval(QT.$${QTLIB}.module_config)
 
         isEmpty(MODULE_NAME) {
@@ -141,6 +142,7 @@ for(ever) {
                 }
             }
         }
+        QMAKE_USE$$var_sfx += $$MODULE_USES
         # Add capabilities as defined by modules used in the project
         winrt {
             MODULE_WINRT_CAPABILITIES = $$eval(QT.$${QTLIB}.winrt_capabilities)
@@ -156,7 +158,7 @@ for(ever) {
     !isEmpty(var_sfx): break()
     var_sfx = _PRIVATE
 }
-!isEmpty(using_privates):!no_private_qt_headers_warning:if(!debug_and_release|!build_pass) {
+!isEmpty(using_privates):!no_private_qt_headers_warning:!build_pass {
     message("This project is using private headers and will therefore be tied to this specific Qt module build version.")
     message("Running this project against other versions of the Qt modules may crash at any arbitrary point.")
     message("This is not a bug, but a result of using Qt internals. You have been warned!")
@@ -165,7 +167,7 @@ for(ever) {
 qt_module_deps = $$CLEAN_QT $$CLEAN_QT_PRIVATE
 qt_module_deps = $$resolve_depends(qt_module_deps, "QT.")
 
-!no_qt_rpath:!static:contains(QT_CONFIG, rpath):!contains(QT_CONFIG, static):\
+!no_qt_rpath:!static:qtConfig(rpath):!qtConfig(static):\
         contains(qt_module_deps, core) {
     relative_qt_rpath:!isEmpty(QMAKE_REL_RPATH_BASE):contains(INSTALLS, target):\
             isEmpty(target.files):isEmpty(target.commands):isEmpty(target.extra) {
@@ -176,7 +178,7 @@ qt_module_deps = $$resolve_depends(qt_module_deps, "QT.")
     }
 }
 
-!isEmpty(QMAKE_LFLAGS_RPATHLINK):!contains(QT_CONFIG, static) {
+!isEmpty(QMAKE_LFLAGS_RPATHLINK):!qtConfig(static) {
     # -rpath-link is used by the linker to find dependencies of dynamic
     # libraries which were NOT specified on the command line.
     # This means that paths of direct dependencies (QT & QT_PRIVATE)
@@ -191,22 +193,17 @@ qt_module_deps = $$resolve_depends(qt_module_deps, "QT.")
 
 # static builds: link qml import plugins into the app.
 contains(qt_module_deps, qml): \
-        contains(QT_CONFIG, static):contains(TEMPLATE, .*app):!host_build:!no_import_scan {
-    !isEmpty(QTREPOS) {
-        for (qrep, QTREPOS): \
-            exists($$qrep/qml): \
-                QMLPATHS += $$qrep/qml
-    } else {
-        QMLPATHS += $$[QT_INSTALL_QML/get]
-    }
+        qtConfig(static):contains(TEMPLATE, .*app):!host_build:!no_import_scan {
+    exists($$[QT_INSTALL_QML/get]): \
+        QMLPATHS *= $$[QT_INSTALL_QML/get]
 
     # run qmlimportscanner
     qtPrepareTool(QMLIMPORTSCANNER, qmlimportscanner, , system)
     for (QMLPATH, QMLPATHS): \
-        IMPORTPATHS += -importPath $$QMLPATH
+        IMPORTPATHS += -importPath $$system_quote($$QMLPATH)
 
     #message(run $$QMLIMPORTSCANNER $$_PRO_FILE_PWD_  $$IMPORTPATHS)
-    JSON = $$system($$QMLIMPORTSCANNER $$_PRO_FILE_PWD_ $$IMPORTPATHS)
+    JSON = $$system($$QMLIMPORTSCANNER $$system_quote($$_PRO_FILE_PWD_) $$IMPORTPATHS)
 
     parseJson(JSON, IMPORTS)| error("Failed to parse qmlimportscanner output.")
 
@@ -238,7 +235,7 @@ contains(qt_module_deps, qml): \
             }
         }
         QML_IMPORT_CPP = $$OUT_PWD/$$lower($$basename(TARGET))_qml_plugin_import.cpp
-        write_file($$QML_IMPORT_CPP, IMPORT_FILE_CONT)|error("Aborting.")
+        write_file($$QML_IMPORT_CPP, IMPORT_FILE_CONT)|error()
         GENERATED_SOURCES += $$QML_IMPORT_CPP
         QMAKE_DISTCLEAN += $$QML_IMPORT_CPP
 
@@ -261,19 +258,19 @@ contains(qt_module_deps, qml): \
                 "[Paths]" \
                 "Imports = $$QMAKE_QML_BUNDLE_PATH" \
                 "Qml2Imports = $$QMAKE_QML_BUNDLE_PATH"
-            write_file("$$OUT_PWD/qt.conf", QT_CONF_CONTENTS)|error("Aborting.")
+            write_file("$$OUT_PWD/qt.conf", QT_CONF_CONTENTS)|error()
 
             # write qt.conf and copy each qml import dir into the bundle.
             # But strip away archives and other files that are not needed:
             !isEmpty(QMAKE_POST_LINK): QMAKE_POST_LINK += ";"
             QMAKE_POST_LINK += \
-                "cp $$OUT_PWD/qt.conf $$qtconfTargetPath; " \
-                "test -d $$qmlTargetPath && rm -r $$qmlTargetPath; " \
-                "mkdir -p $$qmlTargetPath && " \
+                "cp $$shell_quote($$OUT_PWD/qt.conf) \"$$qtconfTargetPath\"; " \
+                "test -d \"$$qmlTargetPath\" && rm -r \"$$qmlTargetPath\"; " \
+                "mkdir -p \"$$qmlTargetPath\" && " \
                 "for p in $$QMLPATHS; do" \
                     "rsync -r --exclude='*.a' --exclude='*.prl' --exclude='*.qmltypes' "
-            macx-xcode: QMAKE_POST_LINK += "$p/ $$qmlTargetPath; done"
-            else: QMAKE_POST_LINK += "\$\$p/ $$qmlTargetPath; done"
+            macx-xcode: QMAKE_POST_LINK += "$p/ \"$$qmlTargetPath\"; done"
+            else: QMAKE_POST_LINK += "\$\$p/ \"$$qmlTargetPath\"; done"
         }
     }
 }
@@ -290,7 +287,8 @@ contains(TEMPLATE, .*app) {
     autoplugs =
     for (qtmod, qt_module_deps) {
         for (ptype, QT.$${qtmod}.plugin_types) {
-            isEmpty(QTPLUGIN.$$ptype) {
+            nptype = $$replace(ptype, [-/], _)
+            isEmpty(QTPLUGIN.$$nptype) {
                 for (plug, QT_PLUGINS) {
                     equals(QT_PLUGIN.$${plug}.TYPE, $$ptype) {
                         for (dep, QT_PLUGIN.$${plug}.EXTENDS) {
@@ -303,7 +301,7 @@ contains(TEMPLATE, .*app) {
                     }
                 }
             } else {
-                plug = $$eval(QTPLUGIN.$$ptype)
+                plug = $$eval(QTPLUGIN.$$nptype)
                 !equals(plug, -): \
                     autoplugs += $$plug
             }
@@ -318,7 +316,7 @@ contains(TEMPLATE, .*app) {
 }
 
 QT_PLUGIN_VERIFY = DEPLOYMENT_PLUGIN
-contains(QT_CONFIG, static) {
+qtConfig(static) {
     QT_PLUGIN_VERIFY += QTPLUGIN
     force_import_plugins|contains(TEMPLATE, .*app) {
         import_plugins:!isEmpty(QTPLUGIN) {
@@ -334,7 +332,7 @@ contains(QT_CONFIG, static) {
                     warning("Plugin class name could not be determined for $$IMPORT_PLUG plugin.")
             }
             IMPORT_CPP = $$OUT_PWD/$$lower($$basename(TARGET))_plugin_import.cpp
-            write_file($$IMPORT_CPP, IMPORT_FILE_CONT)|error("Aborting.")
+            write_file($$IMPORT_CPP, IMPORT_FILE_CONT)|error()
             GENERATED_SOURCES += $$IMPORT_CPP
             QMAKE_DISTCLEAN += $$IMPORT_CPP
         }
@@ -365,7 +363,7 @@ for(QT_CURRENT_VERIFY, $$list($$QT_PLUGIN_VERIFY)) {
 
         # The following block is currently broken, because qt_plugin_XXX.prf files
         # are not generated for dynamic builds.
-        false:isEqual(QT_CURRENT_VERIFY, DEPLOYMENT_PLUGIN):shared:if(wince*|winrt) {
+        false:isEqual(QT_CURRENT_VERIFY, DEPLOYMENT_PLUGIN):shared:winrt {
             QT_ITEM =
             debug: QT_ITEM = $${QTPLUG}d4.dll
             else: QT_ITEM = $${QTPLUG}4.dll

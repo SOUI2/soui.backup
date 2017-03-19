@@ -26,16 +26,23 @@ isEmpty(QMAKE_PLATFORM) {
     equals(TARGET_PLATFORM, unix): \
         QMAKE_PLATFORM = unix
     else:equals(TARGET_PLATFORM, macx): \
-        QMAKE_PLATFORM = osx macx mac darwin unix
+        QMAKE_PLATFORM = macos osx macx mac darwin unix
     else:equals(TARGET_PLATFORM, win32): \
         QMAKE_PLATFORM = win32
     else: \
         error("Qmake spec sets an invalid TARGET_PLATFORM.")
 }
 
-contains(QMAKE_PLATFORM, macx):!contains(QMAKE_PLATFORM, osx) {
-    warning("qmake spec specifies platform macx, but not osx.")
-    QMAKE_PLATFORM = osx $$QMAKE_PLATFORM
+contains(QMAKE_PLATFORM, macx) {
+    !contains(QMAKE_PLATFORM, osx) {
+        warning("qmake spec specified platform macx, but not osx.");
+        QMAKE_PLATFORM = osx $$QMAKE_PLATFORM
+    }
+
+    !contains(QMAKE_PLATFORM, macos) {
+        warning("qmake spec specifies platform macx, but not macos.")
+        QMAKE_PLATFORM = macos $$QMAKE_PLATFORM
+    }
 }
 
 CONFIG += $$QMAKE_PLATFORM
@@ -60,6 +67,7 @@ equals(MAKEFILE_GENERATOR, MSBUILD) \
 |isEmpty(QMAKE_SH) {
     QMAKE_ZIP               = zip -r -9
 
+    QMAKE_CD                = cd /d
     QMAKE_COPY              = copy /y
     QMAKE_COPY_FILE         = $$QMAKE_COPY
     QMAKE_COPY_DIR          = xcopy /s /q /y /i
@@ -80,6 +88,7 @@ equals(MAKEFILE_GENERATOR, MSBUILD) \
     QMAKE_TAR               = tar -cf
     QMAKE_GZIP              = gzip -9f
 
+    QMAKE_CD                = cd
     QMAKE_COPY              = cp -f
     QMAKE_COPY_FILE         = $$QMAKE_COPY
     QMAKE_COPY_DIR          = $$QMAKE_COPY -R

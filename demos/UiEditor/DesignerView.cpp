@@ -123,7 +123,7 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 BOOL SDesignerView::LoadLayout(SStringT strFileName)
 {
 	//设置uidef为当前皮肤的uidef
-	SUiDef::getSingleton().SetUiDef(m_pUiDef);
+	UseEditorUIDef(false);
 
 	m_defFont = SFontPool::getSingleton().GetFont(FF_DEFAULTFONT);
 
@@ -332,7 +332,7 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 
 
 	//恢复uidef为编辑器的uidef
-	SUiDef::getSingleton().SetUiDef(m_pOldUiDef);
+	UseEditorUIDef(true);
 	return TRUE;
 }
 
@@ -1576,7 +1576,7 @@ bool SDesignerView::OnPropGridItemClick( EventArgs *pEvt )
 	{
 	
 		//调用字体对话框
-			SDlgFontSelect DlgFont(pItem->GetString());
+			SDlgFontSelect DlgFont(pItem->GetString(), this);
 			if (DlgFont.DoModal(m_pMainHost->m_hWnd) == IDOK)
 			{
 				pItem->SetString(DlgFont.m_strFont);
@@ -1599,7 +1599,7 @@ BOOL SDesignerView::ReLoadLayout()
 {
 
 	//设置uidef为当前皮肤的uidef
-	SUiDef::getSingleton().SetUiDef(m_pUiDef);
+	UseEditorUIDef(false);
 
 	pugi::xml_node xmlnode;
 		BOOL bIsInclude = FALSE;
@@ -1772,7 +1772,7 @@ BOOL SDesignerView::ReLoadLayout()
 	InitXMLStruct(m_CurrentLayoutNode, STVI_ROOT);
 
 	//恢复uidef为编辑器的uidef
-	SUiDef::getSingleton().SetUiDef(m_pOldUiDef);
+	UseEditorUIDef(true);
 
 	return TRUE;
 }
@@ -2009,7 +2009,7 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 	}
 
 
-	SUiDef::getSingleton().SetUiDef(m_pUiDef);
+	UseEditorUIDef(false);
 
 	SWindow* pRealWnd;
 	SMoveWnd* pMoveWnd;
@@ -2113,7 +2113,7 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 		//m_Desiner->m_xmlNode = xmlNodeRealWnd.append_copy(m_Desiner->m_xmlNode);
 	}
 
-    SUiDef::getSingleton().SetUiDef(m_pOldUiDef);
+    UseEditorUIDef(true);
 
 	pRealWnd->RequestRelayout();
 	pRealWnd->Invalidate();
@@ -2410,4 +2410,16 @@ bool SDesignerView::OnPropGridItemActive( EventArgs *pEvt )
 	}
 
 	return true;
+}
+
+void SDesignerView::UseEditorUIDef(bool bYes) //使用编辑器自身的UIDef还是使用所打开的工程的UIDef
+{
+	if (bYes)
+	{
+		SUiDef::getSingleton().SetUiDef(m_pOldUiDef);
+	}
+	else
+	{
+		SUiDef::getSingleton().SetUiDef(m_pUiDef);
+	}
 }

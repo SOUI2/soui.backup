@@ -12,12 +12,12 @@ namespace SOUI{
 
 	void SDesignerRoot::BeforePaint(IRenderTarget *pRT, SPainter &painter)
 	{
-		pRT->SelectObject(m_defFont,(IRenderObj**)&painter.pOldPen);
+		pRT->SelectObject(m_defFont,(IRenderObj**)&painter.oldFont);
 	}
 
 	void SDesignerRoot::AfterPaint(IRenderTarget *pRT, SPainter &painter)
 	{
-		pRT->SelectObject(painter.pOldPen);
+		pRT->SelectObject(painter.oldFont);
 	}
 
 }

@@ -141,7 +141,7 @@ Tab (& #x0009;)
 
 
 
-		<cursor style="proptext" name ="光标(cursor)"  description="鼠标形状"/>			
+		<cursor style="propoption" name ="光标(cursor)" options="arrow|ibeam|wait|cross|uparrow|size|sizenwse|sizenesw|sizewe|sizens|sizeall|no|hand|help" description="鼠标形状"/>			
 		<colorTextHover style="propcolor" name ="文本颜色Hover(colorTextHover)" />		
 
 		<margin style="proptext" name ="边距(margin)" />

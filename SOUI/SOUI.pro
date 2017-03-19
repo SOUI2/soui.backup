@@ -65,7 +65,7 @@ HEADERS += include/SApp.h \
            include/control/SMcListView.h \
            include/control/SSpinButtonCtrl.h \
            include/control/STileView.h \
-		   include/control/STreeView.h \
+           include/control/STreeView.h \
            include/core/Accelerator.h \
            include/core/FocusManager.h \
            include/core/SDefine.h \
@@ -112,15 +112,15 @@ HEADERS += include/SApp.h \
            include/helper/swndspy.h \
            include/helper/SwndMsgCracker.h \
            include/helper/SCriticalSection.h \
-		   include/helper/AppDir.h \
-		   include/helper/SAdapterBase.h \
-		   include/helper/SwndFinder.h \
-		   include/helper/SListViewItemLocator.h \
-		   include/helper/STileViewItemLocator.h \
-		   include/helper/smenuex.h \
-		   include/helper/smatrix.h \
-		   include/helper/slog.h \
-		   include/helper/sdibhelper.h \
+           include/helper/AppDir.h \
+           include/helper/SAdapterBase.h \
+           include/helper/SwndFinder.h \
+           include/helper/SListViewItemLocator.h \
+           include/helper/STileViewItemLocator.h \
+           include/helper/smenuex.h \
+           include/helper/smatrix.h \
+           include/helper/slog.h \
+           include/helper/sdibhelper.h \
            include/interface/imgdecoder-i.h \
            include/interface/render-i.h \
            include/interface/SResProvider-i.h \
@@ -137,6 +137,7 @@ HEADERS += include/SApp.h \
            include/layout/SLinearLayout.h \
            include/layout/SouiLaoutParamStruct.h \
            include/layout/SouiLayout.h \
+           include/layout/SLayoutSize.h \
            include/res.mgr/SUiDef.h \
            include/res.mgr/SFontPool.h \
            include/res.mgr/SObjDefAttr.h \
@@ -179,7 +180,7 @@ SOURCES += src/SApp.cpp \
            src/control/SMcListView.cpp \
            src/control/SSpinButtonCtrl.cpp \
            src/control/STileView.cpp \
-		   src/control/STreeView.cpp \
+           src/control/STreeView.cpp \
            src/core/Accelerator.cpp \
            src/core/FocusManager.cpp \
            src/core/SDropTargetDispatcher.cpp \
@@ -199,6 +200,7 @@ SOURCES += src/SApp.cpp \
            src/core/scaret.cpp \
            src/layout/SLinearLayout.cpp \
            src/layout/SouiLayout.cpp \
+           src/layout/SLayoutSize.cpp \
            src/event/EventSet.cpp \
            src/event/NotifyCenter.cpp \
            src/helper/DragWnd.cpp \
@@ -208,14 +210,14 @@ SOURCES += src/SApp.cpp \
            src/helper/STimerEx.cpp \
            src/helper/SScriptTimer.cpp \
            src/helper/stooltip.cpp \
-		   src/helper/AppDir.cpp \
-		   src/helper/SListViewItemLocator.cpp \
-		   src/helper/STileViewItemLocator.cpp \
-   		   src/helper/SwndFinder.cpp \
-   		   src/helper/smenuex.cpp \
-   		   src/helper/smatrix.cpp \
-		   src/helper/sdibhelper.cpp \
-		   src/res.mgr/SUiDef.cpp \
+           src/helper/AppDir.cpp \
+           src/helper/SListViewItemLocator.cpp \
+           src/helper/STileViewItemLocator.cpp \
+           src/helper/SwndFinder.cpp \
+           src/helper/smenuex.cpp \
+           src/helper/smatrix.cpp \
+           src/helper/sdibhelper.cpp \
+           src/res.mgr/SUiDef.cpp \
            src/res.mgr/SFontPool.cpp \
            src/res.mgr/SObjDefAttr.cpp \
            src/res.mgr/SResProvider.cpp \

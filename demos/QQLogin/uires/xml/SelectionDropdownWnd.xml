@@ -1,0 +1,8 @@
+<SOUI width="172" height="172" translucent="1" >
+	<root skin="skin.shadow">
+		<window pos="6,6,-6,-6"  colorBkgnd="#ffffff">
+		<listboxex name="selectionlist" pos="0,0,-0,-0" itemHeight="20">
+		</listboxex>
+		</window>
+	</root>
+</SOUI>

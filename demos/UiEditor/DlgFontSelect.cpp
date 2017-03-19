@@ -5,10 +5,11 @@
 namespace SOUI
 {
 
-	SDlgFontSelect::SDlgFontSelect(SStringT strFont):SHostDialog(_T("LAYOUT:字体选择"))
+	SDlgFontSelect::SDlgFontSelect(SStringT strFont,SDesignerView *pDesignerView):SHostDialog(_T("LAYOUT:字体选择"))
 	{
 		strFont.TrimBlank();
 		m_strFont = strFont;
+		m_pDesignerView = pDesignerView;
 	}
 
 	//TODO:消息映射
@@ -64,12 +65,16 @@ namespace SOUI
 
 		if (!m_strFont.IsEmpty())
 		{
+			m_pDesignerView->UseEditorUIDef(false);
 			IFontPtr ft = SFontPool::getSingleton().GetFont(m_strFont);
+			m_pDesignerView->UseEditorUIDef(true);
 			InitInfo(ft);
 		}
 		else
 		{
+			m_pDesignerView->UseEditorUIDef(false);
 			IFontPtr ft = SFontPool::getSingleton().GetFont(_T(""));
+			m_pDesignerView->UseEditorUIDef(true);
 			InitInfo(ft);
 		}
 

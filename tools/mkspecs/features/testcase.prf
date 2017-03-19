@@ -1,4 +1,4 @@
-have_target {
+!have_target: return()
 
 # qt_build_config.prf disables execptions for all Qt modules which don't
 # explicitly turn it on again, while the qmake default is to build with
@@ -49,7 +49,7 @@ unix {
 $${type}.commands += $(TESTARGS)
 
 !isEmpty(TESTRUN_CWD):!contains(TESTRUN_CWD, ^\\./?): \
-    $${type}.commands = cd $$shell_path($$TESTRUN_CWD) && $$eval($${type}.commands)
+    $${type}.commands = $$QMAKE_CD $$shell_path($$TESTRUN_CWD) && $$eval($${type}.commands)
 
 # If the test is marked as insignificant, discard the exit code
 insignificant_test: $${type}.commands = -$$eval($${type}.commands)
@@ -181,6 +181,11 @@ isEmpty(BUILDS)|build_pass {
 
 builtin_testdata {
     ALL_TESTDATA = $$TESTDATA $$GENERATED_TESTDATA
+
+    # BLACKLIST needs to be added to the testdata
+    BLACKLISTPATH = $$_PRO_FILE_PWD_/BLACKLIST
+    exists($$BLACKLISTPATH): ALL_TESTDATA *= $$BLACKLISTPATH
+
     # RESOURCES does not support wildcards (for good reasons)
     for(td, ALL_TESTDATA): \
         testdata.files += $$files($$absolute_path($$td, $$_PRO_FILE_PWD_))
@@ -198,6 +203,4 @@ macx-xcode:bundle:isEmpty(QMAKE_BUNDLE_EXTENSION) {
     QMAKE_PBX_BUNDLE_TYPE = wrapper.cfbundle
     QMAKE_BUNDLE_EXTENSION = .xctest
 }
-
-} # have_target
 

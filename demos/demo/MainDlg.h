@@ -178,6 +178,7 @@ protected:
     void OnBtnSkin();
 	void OnInitListBox();
 
+	void OnBtnTip();
 
 	virtual UINT Run();
 
@@ -198,6 +199,7 @@ protected:
 		EVENT_ID_COMMAND(2, OnMaximize)
 		EVENT_ID_COMMAND(3, OnRestore)
 		EVENT_ID_COMMAND(5, OnMinimize)
+		EVENT_ID_COMMAND(R.id.btn_tip,OnBtnTip)
 		EVENT_NAME_CONTEXTMENU(L"edit_1140",OnEditMenu)
 		EVENT_NAME_COMMAND(L"btn_msgbox",OnBtnMsgBox)
 		
