@@ -6,7 +6,7 @@ namespace SOUI
 {
 	static const wchar_t* s_pszUnit[] =
 	{
-		L"px",L"dp"
+		L"px",L"dp",L"dip",L"sp"
 	};
 
 	SLayoutSize::SLayoutSize() :fSize(0.0f),unit(px),orientation(Horz)
@@ -57,6 +57,12 @@ namespace SOUI
 		fSize = SIZE_WRAP_CONTENT;
 	}
 
+	void SLayoutSize::setSize(float fSize, Unit unit)
+	{
+		this->fSize = fSize;
+		this->unit = unit;
+	}
+
 	bool SLayoutSize::isSpecifiedSize() const
 	{
 		return fSize>=SIZE_SPEC;
@@ -68,9 +74,11 @@ namespace SOUI
 			return SIZE_MATCH_PARENT;
 		else if(isWrapContent()) 
 			return SIZE_WRAP_CONTENT;
-		else if(unit == px)
+		else if (unit == px)
 			return (int)fSize;
-		else
+		else if (unit == sp)
+			return SDp2Px(fSize, isVert());//暂时等同于dp
+		else//if(unit == dp || unit == dip)
 			return SDp2Px(fSize,isVert());
 	}
 
