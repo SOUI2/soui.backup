@@ -12,15 +12,14 @@
 QMAKE_DIR_REPLACE_SANE += DESTDIR
 CONFIG -= debug_and_release_target
 
-contains(QT_CONFIG, c++11): CONFIG += c++11 strict_c++
-contains(QT_CONFIG, c++14): CONFIG += c++14
-contains(QT_CONFIG, c++1z): CONFIG += c++1z
+qtConfig(c++11): CONFIG += c++11 strict_c++
+qtConfig(c++14): CONFIG += c++14
+qtConfig(c++1z): CONFIG += c++1z
 contains(TEMPLATE, .*lib) {
     # module and plugins
-    !host_build:contains(QT_CONFIG, reduce_exports): CONFIG += hide_symbols
-    unix:contains(QT_CONFIG, reduce_relocations): CONFIG += bsymbolic_functions
-    contains(QT_CONFIG, largefile): CONFIG += largefile
-    contains(QT_CONFIG, separate_debug_info): CONFIG += separate_debug_info
+    !host_build:qtConfig(reduce_exports): CONFIG += hide_symbols
+    unix:qtConfig(reduce_relocations): CONFIG += bsymbolic_functions
+    qtConfig(separate_debug_info): CONFIG += separate_debug_info
 
     !isEmpty(_QMAKE_SUPER_CACHE_): \
         rplbase = $$dirname(_QMAKE_SUPER_CACHE_)/[^/][^/]*
@@ -44,9 +43,9 @@ contains(TEMPLATE, .*lib) {
     QMAKE_PRL_INSTALL_REPLACE += lib_replace
 }
 
-# The remainder of this file must not apply to bootstrapped tools,
+# The remainder of this file must not apply to host tools/libraries,
 # as the host compiler's version and capabilities are not checked.
-host_build:force_bootstrap: return()
+host_build:cross_compile: return()
 
 # Extra warnings for Qt non-example code, to ensure cleanliness of the sources.
 # The block below may turn these warnings into errors for some Qt targets.
@@ -61,18 +60,20 @@ clang {
     QMAKE_CXXFLAGS_WARN_ON += -Wvla
     # GCC 5 introduced -Wdate-time
     greaterThan(QT_GCC_MAJOR_VERSION, 4): QMAKE_CXXFLAGS_WARN_ON += -Wdate-time
+    # GCC 6 introduced these
+    greaterThan(QT_GCC_MAJOR_VERSION, 5): QMAKE_CXXFLAGS_WARN_ON += -Wshift-overflow=2 -Wduplicated-cond
 }
 
 warnings_are_errors:warning_clean {
     # If the module declares that it has does its clean-up of warnings, enable -Werror.
     # This setting is compiler-dependent anyway because it depends on the version of the
     # compiler.
-    clang:!ios {
-        # Apple clang 4.0-4.2,5.0-5.1,6.0-6.4
-        # Regular clang 3.3-3.8
+    clang {
+        # Apple clang 4.0-4.2,5.0-5.1,6.0-6.4,7.0-7.3
+        # Regular clang 3.3-3.9
         apple_ver = $${QT_APPLE_CLANG_MAJOR_VERSION}.$${QT_APPLE_CLANG_MINOR_VERSION}
         reg_ver = $${QT_CLANG_MAJOR_VERSION}.$${QT_CLANG_MINOR_VERSION}
-        contains(apple_ver, "4\\.[012]|5\\.[01]|6\\.[01234]")|contains(reg_ver, "3\\.[3-8]") {
+        contains(apple_ver, "4\\.[012]|5\\.[01]|6\\.[01234]|7\\.[0123]")|contains(reg_ver, "3\\.[3-9]") {
             QMAKE_CXXFLAGS_WARN_ON += -Werror -Wno-error=\\$${LITERAL_HASH}warnings -Wno-error=deprecated-declarations $$WERROR
         }
     } else:intel_icc:linux {
@@ -100,9 +101,9 @@ warnings_are_errors:warning_clean {
             # Work-around for bug https://code.google.com/p/android/issues/detail?id=58135
             android: QMAKE_CXXFLAGS_WARN_ON += -Wno-error=literal-suffix
         }
-    } else:msvc {
-        # enable for MSVC 2012, MSVC 2013
-        equals(MSVC_VER, "11.0")|equals(MSVC_VER, "12.0"): QMAKE_CXXFLAGS_WARN_ON += -WX
+    } else:msvc:!intel_icl {
+        # enable for MSVC 2012, MSVC 2013, MSVC 2015
+        contains(MSVC_VER, "1[124].0"): QMAKE_CXXFLAGS_WARN_ON += -WX
     }
     unset(ver)
 }

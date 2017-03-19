@@ -11,6 +11,7 @@
 #include <control/souictrls.h>
 #include <res.mgr/sobjdefattr.h>
 #include <com-cfg.h>
+#include "layout/SouiLayout.h"
 
 #include "resource.h"
 

@@ -14,26 +14,6 @@
       <uianimationwnd pos="0,0,-0,-0" icon="skin_small_icons" aniMode="imgx:png_animode"  colorBkgnd="#cccccc" bkgndBlend="0"/>
       <text pos="|0,20" offset="-0.5,0" colorText="#ff0000">SOUI动画演示</text>
     </page>
-    <page title="flywnd">
-      <window pos="0,0,-0,-0" clipClient="1" skin="skin_bkgnd" cache="1">
-        <flywnd name="leftpane" pos="0,10,@210,-10" posEnd="0,10,@210,-10" offsetEnd="-0.9524,0" alpha="100" layeredWindow="1">
-          <!--左边自动隐藏窗口,200/210=0.9524-->
-          <window pos="0,0,-10,-0" colorBkgnd="#ff0000">
-            <include src="layout:treectrl"/>
-            <text pos="10,-100,-0,@100" multilines="1">click the right grip to \nshow or hide the \npane</text>
-          </window>
-          <toggle pos="-10,|-15,-0,@30" skin="skin_btn_expand" name="switch" cursor="hand" tip="click me to show the animator that show or hide the pane"></toggle>
-        </flywnd>
-        <flywnd name="rightpane" pos="-210,10,-0,-10" posEnd="-10,10,@210,-10" alpha="100" layeredWindow="1">
-          <!--右边自动隐藏窗口-->
-          <toggle pos="0,|-15,@10,@30" skin="skin_btn_expand" name="switch" cursor="hand" tip="click me to show the animator that show or hide the pane"></toggle>
-          <window pos="10,0,-0,-0" colorBkgnd="#ff0000">
-            <include src="layout:treectrl"/>
-            <text pos="10,-100,-0,@100" multilines="1">click the left grip to \nshow or hide the \npane</text>
-          </window>
-        </flywnd>
-      </window>
-    </page>
     <page title="smiley" >
       <window pos="0,5,-0,@30">
         <button name="btn_insert_gif" pos="5,0,@120,@25" id="#id_test1">insert gif</button>

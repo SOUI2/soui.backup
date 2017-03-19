@@ -342,48 +342,64 @@ void ParseLayout(TiXmlElement *xmlNode,map<wstring,int> &vecName2ID,int & nStart
     if(!xmlNode) return;
     
     const char * pszAttrName = xmlNode->Attribute("name");
+
     if(pszAttrName)
     {//有name属性才解析id
-        wchar_t szName[100];
+		wchar_t szName[100]={0};
         int nID = nStartId;
+
         MultiByteToWideChar(CP_ACP,0,pszAttrName,-1,szName,100);
-        
-        if(vecName2ID.find(szName) == vecName2ID.end())
-        {
-            const char *pszID = xmlNode->Attribute("id");
-            if(!pszID)
-            {
-                nStartId++;
-            }else if(strnicmp(pszID,"ID",2) == 0)
-            {//ID为命名ID，如IDOK，IDCANCEL
-                if(stricmp(pszID,"IDOK")==0)
-                    nID = IDOK;
-                if(stricmp(pszID,"IDCANCEL")==0)
-                    nID = IDCANCEL;
-                if(stricmp(pszID,"IDABORT")==0)
-                    nID = IDABORT;
-                if(stricmp(pszID,"IDRETRY")==0)
-                    nID = IDRETRY;
-                if(stricmp(pszID,"IDIGNORE")==0)
-                    nID = IDIGNORE;
-                if(stricmp(pszID,"IDYES")==0)
-                    nID = IDYES;
-                if(stricmp(pszID,"IDNO")==0)
-                    nID = IDNO;
-                if(stricmp(pszID,"IDCLOSE")==0)
-                    nID = IDCLOSE;
-                if(stricmp(pszID,"IDHELP")==0)
-                    nID = IDHELP;
-                if(stricmp(pszID,"IDTRYAGAIN")==0)
-                    nID = IDTRYAGAIN;
-                if(stricmp(pszID,"IDCONTINUE")==0)
-                    nID = IDCONTINUE;
-            }else
-            {
-                nID = atoi(pszID);
-            }
-            vecName2ID[szName] = nID;
-        }
+		bool isNameEmpty=true;
+        for(wchar_t *p=szName;*p;p++)
+		{
+			if(*p != L' ' && *p != L'\t')
+			{
+				isNameEmpty = false;
+				break;
+			}
+		}
+		if(!isNameEmpty)
+		{
+			if(vecName2ID.find(szName) == vecName2ID.end())
+			{
+				const char *pszID = xmlNode->Attribute("id");
+				if(!pszID)
+				{
+					nStartId++;
+				}else if(strnicmp(pszID,"ID",2) == 0)
+				{//ID为命名ID，如IDOK，IDCANCEL
+					if(stricmp(pszID,"IDOK")==0)
+						nID = IDOK;
+					if(stricmp(pszID,"IDCANCEL")==0)
+						nID = IDCANCEL;
+					if(stricmp(pszID,"IDABORT")==0)
+						nID = IDABORT;
+					if(stricmp(pszID,"IDRETRY")==0)
+						nID = IDRETRY;
+					if(stricmp(pszID,"IDIGNORE")==0)
+						nID = IDIGNORE;
+					if(stricmp(pszID,"IDYES")==0)
+						nID = IDYES;
+					if(stricmp(pszID,"IDNO")==0)
+						nID = IDNO;
+					if(stricmp(pszID,"IDCLOSE")==0)
+						nID = IDCLOSE;
+					if(stricmp(pszID,"IDHELP")==0)
+						nID = IDHELP;
+					if(stricmp(pszID,"IDTRYAGAIN")==0)
+						nID = IDTRYAGAIN;
+					if(stricmp(pszID,"IDCONTINUE")==0)
+						nID = IDCONTINUE;
+				}else
+				{
+					nID = atoi(pszID);
+				}
+				vecName2ID[szName] = nID;
+			}
+		}else
+		{
+			printf("Warning!!! a empty name was assigned to a window object!");
+		}
     }
     TiXmlElement *pChild = xmlNode->FirstChildElement();
     while(pChild)
@@ -453,6 +469,13 @@ __int64 ParseUIDefFile(map<string,string> &mapFiles, const wchar_t * pszFileName
                     while(pStrEle)
                     {
                         string strName = pStrEle->Value();
+						//要保证字符串表中名字唯一
+						if(mapString.find(strName)!=mapString.end())
+						{
+							mapString.clear();
+							printf("error: two string nodes in string table have the same name of [%s]!!!",strName.c_str());
+							break;
+						}
                         mapString[strName] = 1;
                         pStrEle = pStrEle->NextSiblingElement();
                     }
@@ -484,6 +507,14 @@ __int64 ParseUIDefFile(map<string,string> &mapFiles, const wchar_t * pszFileName
                     while(pColorEle)
                     {
                         string strName = pColorEle->Value();
+						//要保证颜色表中名字唯一
+						if(mapColor.find(strName)!=mapColor.end())
+						{
+							mapColor.clear();
+							printf("error: two color nodes in color table have the same name of [%s]!!!",strName.c_str());
+							break;
+						}
+
                         mapColor[strName] = 1;
                         
                         pColorEle = pColorEle->NextSiblingElement();
@@ -668,7 +699,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		int idx = 0;
 		while(it!=mapNameID.end())
 		{
-			WCHAR szName[200],szBuf[2000] = { 0 };
+			WCHAR szName[200]={0},szBuf[2000] = { 0 };
 			MakeNameValid(it->first.c_str(),szName);
             
             if(!bBuildIDMap)

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<SOUI name="NAME_UIDESIGNER_mainWindow1" title="皮肤选择" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="1024" height="550" margin="1,5,5,5" resizable="1" wndType="8" toolWindow="1" translucent="1">
+<SOUI name="NAME_UIDESIGNER_mainWindow1" title="皮肤选择" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="900" height="500" margin="1,5,5,5" resizable="1" wndType="8" toolWindow="1" translucent="1">
 	<root cache="1">
-		<window pos="2,2,-2,-2" colorBkgnd="rgb(50,126,173)" show="1" skin="SKIN_UIDESIGNER_image_bg_png">
-			<window>
+		<window pos="2,2,-2,-2" layout="vbox" colorBkgnd="rgb(50,126,173)" show="1" skin="SKIN_UIDESIGNER_image_bg_png">
+			<window size="-2,30" colorBkgnd="#ffffff20">
 				<caption pos="0,0,-0,30" show="1" font="adding:0">
 					<icon name="NAME_UIDESIGNER_main_icon" skin="SKIN_UIDESIGNER_main_icon" pos="8,9" />
 				</caption>
@@ -12,38 +12,46 @@
 				<imgbtn name="NAME_UIDESIGNER_btn_restore" skin="_skin.sys.btn.restore" pos="-83,0" show="0" animate="1" />
 				<imgbtn name="NAME_UIDESIGNER_btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
 			</window>
-			<hr pos="2,[0,-2,@1" mode="horizontal" colorLine="#FFFFFF" />
-			<window pos="2,[0,-2,-50">
-				<window pos="2,0,@650,@200">
-					<window pos="0,0,%48,-2">
-						<button name="NAME_UIDESIGNER_btn_ZYLX_new" pos="10,10, @110, @30" animate="1">新建资源类型</button>
-						<button name="NAME_UIDESIGNER_btn_ZYLX_DEL" pos="[30,10, @110, @30" animate="1">移除资源类型</button>
-						<listbox name="NAME_UIDESIGNER_LB_ZYLX" pos="0,60,-0,-0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
+			<!-- 			<hr size="-2,2" mode="horizontal" colorLine="#FFFFFF" /> -->
+			<window size="-2,400" layout="hbox" extend="20,5,0,0" >
+				<window size="650,-2" layout="vbox">
+					<window size ="-2,200" layout="hbox">
+						<window size="300,-2" layout="vbox" colorBkgnd="#ffffff20">
+							<window>
+								<button name="NAME_UIDESIGNER_btn_ZYLX_new" size="92,30" animate="1">新建资源类型</button>
+								<button name="NAME_UIDESIGNER_btn_ZYLX_DEL" size="92,30" animate="1">移除资源类型</button>
+							</window>
+							<listbox name="NAME_UIDESIGNER_LB_ZYLX" width="-2" weight="1" extend="0,5,0,0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
+						</window>
+						<!-- 						<hr pos="%50,20,@1,-20" mode="vertical" colorLine="#FFFFFF" /> -->
+						<window size="300,-2" layout="vbox" extend="20,0,0,0" colorBkgnd="#ffffff20">
+							<window>
+								<button name="NAME_UIDESIGNER_btn_ZY_NEW" size="92,30" animate="1">新建资源</button>
+								<button name="NAME_UIDESIGNER_btn_ZY_DEL" size="92,30" animate="1">移除资源</button>
+							</window>
+							<edit size="-2,20" extend="0,5,0,5" name="NAME_UIDESIGNER_edit_SEARCH" colorBkgnd="#FFFFFF" cueText="过滤" />
+							<listbox name="NAME_UIDESIGNER_LB_ZY" width="-2" weight="1" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
+						</window>
+						<!-- 						<hr pos="2,[1,-2,@1" mode="horizontal" colorLine="#FFFFFF" /> -->
 					</window>
-					<hr pos="%50,20,@1,-20" mode="vertical" colorLine="#FFFFFF" />
-					<window pos="%52,0,-0,-2">
-						<button name="NAME_UIDESIGNER_btn_ZY_NEW" pos="10,10, @110, @30" animate="1">新建资源</button>
-						<button name="NAME_UIDESIGNER_btn_ZY_DEL" pos="[30,{0, @110, @30" animate="1">移除资源</button>
-						<edit pos="10,[5,-10,@20" name="NAME_UIDESIGNER_edit_SEARCH" colorBkgnd="#FFFFFF" cueText="过滤" />
-						<listbox name="NAME_UIDESIGNER_LB_ZY" pos="0,[5,-0,-0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
+					<window size="-2,200" layout="hbox" extend="0,5,0,0">
+						<window size="300,-2"  layout="vbox" colorBkgnd="#ffffff20">
+							<window>
+								<button name="NAME_UIDESIGNER_btn_SKIN_new" size="92,30" animate="1">新建皮肤</button>
+								<button name="NAME_UIDESIGNER_btn_SKIN_DEL" size="92,30" animate="1">移除皮肤</button>
+							</window>
+							<listbox name="NAME_UIDESIGNER_LB_SKIN" width="-2" weight="1" extend="0,5,0,0"  hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
+						</window>
+						<!-- 						<hr pos="%50,20,@1,-20" mode="vertical" colorLine="#FFFFFF" /> -->
+						<window size="300,-2" extend="20,0,0,0"  name="NAME_UIDESIGNER_GRID_CONTAINER" class="CLASS_UIDESIGNER_cls_title" colorBkgnd="#ffffff20"/>
+						<!-- 						<hr pos="2,[1,-2,@1" mode="horizontal" colorLine="#FFFFFF" /> -->
 					</window>
-					<hr pos="2,[1,-2,@1" mode="horizontal" colorLine="#FFFFFF" />
 				</window>
-				<window pos="2,[1,@650,-2">
-					<window pos="0,0,%48,-2">
-						<button name="NAME_UIDESIGNER_btn_SKIN_new" pos="10,10, @110, @30" animate="1">新建皮肤</button>
-						<button name="NAME_UIDESIGNER_btn_SKIN_DEL" pos="[30,10, @110, @30" animate="1">移除皮肤</button>
-						<listbox name="NAME_UIDESIGNER_LB_SKIN" pos="0,60,-0,-0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
-					</window>
-					<hr pos="%50,20,@1,-20" mode="vertical" colorLine="#FFFFFF" />
-					<window pos="%52,0,-0,-2" name="NAME_UIDESIGNER_GRID_CONTAINER" class="CLASS_UIDESIGNER_cls_title" />
-					<hr pos="2,[1,-2,@1" mode="horizontal" colorLine="#FFFFFF" />
-				</window>
-				<window pos="[0,2,-2,-2" colorBkgnd="#FFFFFF">
+				<window height="-2" weight="1" colorBkgnd="#FFFFFF" extend="0,0,10,0">
 					<img name="NAME_UIDESIGNER_IMG_VIEW" margin-x="1" margin-y="1" colorBorder="#c5c5c5" pos="|0,|0" size="1,1" offset="-0.5,-0.5" colorBkgnd="rgb(234,128,16)" />
 				</window>
 			</window>
-			<button name="btnOK" pos="-150,-40,@100,@30">确定</button>
+			<button name="btnOK" size="90,30" layout_gravity="right" extend="0,5,20,0">确定</button>
 		</window>
 	</root>
 </SOUI>

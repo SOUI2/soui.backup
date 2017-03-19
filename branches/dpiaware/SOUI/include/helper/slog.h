@@ -26,18 +26,18 @@ namespace SOUI
 //! base micro.
 #define LOG_STREAM(id_or_name, filter, level,  log)\
     do{\
-    SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingleton().GetLogManager(); \
-    char logBuf[LOG4Z_LOG_BUF_SIZE];\
-    SOUI::Log4zStream ss(logBuf, LOG4Z_LOG_BUF_SIZE);\
-    ss << log;\
-    if (pLogMgr && pLogMgr->prePushLog(id_or_name,level)) \
-    {\
-    const void *pAddr = _ReturnAddress(); \
-    pLogMgr->pushLog(id_or_name, level, filter, logBuf, __FILE__, __LINE__, __FUNCTION__, pAddr);\
-    }else\
-    {\
-    STRACEA(logBuf);\
-    }\
+		SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingleton().GetLogManager(); \
+		char logBuf[LOG4Z_LOG_BUF_SIZE];\
+		SOUI::Log4zStream ss(logBuf, LOG4Z_LOG_BUF_SIZE);\
+		ss << log;\
+		if (pLogMgr && pLogMgr->prePushLog(id_or_name,level)) \
+		{\
+			const void *pAddr = _ReturnAddress(); \
+			pLogMgr->pushLog(id_or_name, level, filter, logBuf, __FILE__, __LINE__, __FUNCTION__, pAddr);\
+		}else\
+		{\
+			STRACEA(logBuf);\
+		}\
     } while (0)
 
 
@@ -64,27 +64,27 @@ namespace SOUI
 #ifdef LOG4Z_FORMAT_INPUT_ENABLE
 #define LOG_FORMAT(id_or_name, level, filter, logformat, ...) \
     do{ \
-    SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingleton().GetLogManager(); \
-    char logbuf[LOG4Z_LOG_BUF_SIZE]; \
-    if(sizeof(logformat[0]) == sizeof(char))\
-        _snprintf_s(logbuf, LOG4Z_LOG_BUF_SIZE, _TRUNCATE, (const char*)logformat, ##__VA_ARGS__); \
-    else \
-    {\
-        wchar_t logbufw[LOG4Z_LOG_BUF_SIZE]; \
-        _snwprintf_s(logbufw, LOG4Z_LOG_BUF_SIZE, _TRUNCATE, (const wchar_t*)logformat, ##__VA_ARGS__); \
-        DWORD dwLen = WideCharToMultiByte(CP_ACP, 0, logbufw, -1, NULL, 0, NULL, NULL);\
-        if (dwLen < LOG4Z_LOG_BUF_SIZE)\
-        {\
-            WideCharToMultiByte(CP_ACP, 0, logbufw, -1, logbuf, dwLen, NULL, NULL);\
-        }\
-    }\
-    if (pLogMgr && pLogMgr->prePushLog(id_or_name,level)) \
-    {\
-    pLogMgr->pushLog(id_or_name, level,filter, logbuf, __FILE__, __LINE__, __FUNCTION__,_ReturnAddress()); \
-    }else\
-    {\
-    STRACEA(logbuf);\
-    }\
+		SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingleton().GetLogManager(); \
+		char logbuf[LOG4Z_LOG_BUF_SIZE]; \
+		if(sizeof(logformat[0]) == sizeof(char))\
+			_snprintf_s(logbuf, LOG4Z_LOG_BUF_SIZE, _TRUNCATE, (const char*)logformat, ##__VA_ARGS__); \
+		else \
+		{\
+			wchar_t logbufw[LOG4Z_LOG_BUF_SIZE]; \
+			_snwprintf_s(logbufw, LOG4Z_LOG_BUF_SIZE, _TRUNCATE, (const wchar_t*)logformat, ##__VA_ARGS__); \
+			DWORD dwLen = WideCharToMultiByte(CP_ACP, 0, logbufw, -1, NULL, 0, NULL, NULL);\
+			if (dwLen < LOG4Z_LOG_BUF_SIZE)\
+			{\
+				WideCharToMultiByte(CP_ACP, 0, logbufw, -1, logbuf, dwLen, NULL, NULL);\
+			}\
+		}\
+		if (pLogMgr && pLogMgr->prePushLog(id_or_name,level)) \
+		{\
+			pLogMgr->pushLog(id_or_name, level,filter, logbuf, __FILE__, __LINE__, __FUNCTION__,_ReturnAddress()); \
+		}else\
+		{\
+			STRACEA(logbuf);\
+		}\
     } while (0)
 
 //!format string

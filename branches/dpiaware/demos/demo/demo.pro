@@ -59,6 +59,7 @@ HEADERS += MainDlg.h \
            ../../controls.extend/SRatingBar.h \
            ../../controls.extend/SFreeMoveWindow.h \
 		   ../../controls.extend/smiley/SSmileyCtrl.h \
+		   ../../controls.extend/tipwnd.h \
            httpsvr/filereader-i.h \
            httpsvr/genericserver.h \
            httpsvr/httpserver.h \
@@ -72,7 +73,8 @@ HEADERS += MainDlg.h \
 		   appledock/sdesktopdock.h \
 		   clock/sclock.h \
 		skin/SDemoSkin.h \
-		skin/SetSkinWnd2.h
+		skin/SetSkinWnd2.h \
+		skin/SSkinLoader.h 
 		   
 SOURCES += demo.cpp \
            MainDlg.cpp \
@@ -103,6 +105,7 @@ SOURCES += demo.cpp \
            ../../controls.extend/simagemaskwnd.cpp \
            ../../controls.extend/SRatingBar.cpp \
            ../../controls.extend/SFreeMoveWindow.cpp \
+		   ../../controls.extend/tipwnd.cpp \
            httpsvr/genericserver.cpp \
            httpsvr/httpserver.cpp \
            magnet/magnetframe.cpp \
@@ -114,7 +117,8 @@ SOURCES += demo.cpp \
 		   appledock/sdesktopdock.cpp \
 		   clock/sclock.cpp \
 	skin/SDemoSkin.cpp \
-	skin/SetSkinWnd2.cpp
+	skin/SetSkinWnd2.cpp \
+	skin/SSkinLoader.cpp
 
 RC_FILE += demo.rc
 

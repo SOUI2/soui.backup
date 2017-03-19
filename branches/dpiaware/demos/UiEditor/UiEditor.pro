@@ -44,9 +44,10 @@ SOURCES+=../../controls.extend/STabCtrl2.cpp
 SOURCES+=../../controls.extend/SText.cpp
 SOURCES+=../../controls.extend/STurn3DView.cpp
 SOURCES+=../../controls.extend/SScrollText.cpp
-SOURCES+=../../controls.extend/image3d/3dlib.h
-SOURCES+=../../controls.extend/image3d/3dmatrix.h
-SOURCES+=../../controls.extend/image3d/3dTransform.h
+
+HEADERS+=../../controls.extend/image3d/3dlib.h
+HEADERS+=../../controls.extend/image3d/3dmatrix.h
+HEADERS+=../../controls.extend/image3d/3dTransform.h
 
 SOURCES+=./DesignerView.cpp
 SOURCES+=./SDesignerRoot.cpp

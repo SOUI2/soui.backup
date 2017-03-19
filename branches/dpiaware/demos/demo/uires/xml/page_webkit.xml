@@ -15,7 +15,7 @@
       <!--一个实现渐显渐隐动画的工具栏控件-->
     </fadeframe>
     <wkeWebkit pos="0,0,-0,-0" url="http://www.cnblogs.com/setoutsoft/" name="wke_test"/>
-    <window pos="0,0,-16,28" name="webkit_toolbar" size="full,full" colorBkgnd="#ff0000" layeredWindow="1">
+    <window pos="0,0,-16,28" name="webkit_toolbar" colorBkgnd="#ff0000" layeredWindow="1">
       <!--这个窗口是前面的fadeframe的作用对象-->
       <imgbtn pos="0,0" name="btn_webkit_back" skin="skin_webbtn_back" alpha="128"/>
       <imgbtn pos="[5,0," name="btn_webkit_fore" skin="skin_webbtn_forward"/>

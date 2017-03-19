@@ -69,8 +69,9 @@ for (dep, dependentmodules): \
         mod_deps += $$cmakeModuleName($$dep)
 dependentmodules = $$join(mod_deps, ";")
 
-contains(QT_CONFIG, angle): CMAKE_GL_DEFINES = -DQT_WITH_ANGLE=True
-!contains(QT_CONFIG, egl): CMAKE_GL_DEFINES += -DNO_EGL=True
+QT_FOR_CONFIG += gui-private
+qtConfig(angle): CMAKE_GL_DEFINES = -DQT_WITH_ANGLE=True
+!qtConfig(egl): CMAKE_GL_DEFINES += -DNO_EGL=True
 
 CMAKE_MODULE_VERSIONS =
 CMAKE_MODULES_UNDER_TEST =
@@ -85,7 +86,7 @@ for (MODULE_UNDER_TEST, CMAKE_QT_MODULES_UNDER_TEST) {
 CMAKE_MODULES_UNDER_TEST = $$join(CMAKE_MODULES_UNDER_TEST, ;)
 
 check.commands = \
-    $(MKDIR) $$BUILD_DIR && cd $$BUILD_DIR && \
+    $(MKDIR) $$BUILD_DIR && $$QMAKE_CD $$BUILD_DIR && \
     cmake $$CMAKE_TEST_LOCATION $$CMAKE_GENERATOR \
         -DCMAKE_C_COMPILER=$$QMAKE_CC \
         -DCMAKE_CXX_COMPILER=$$QMAKE_CXX \
