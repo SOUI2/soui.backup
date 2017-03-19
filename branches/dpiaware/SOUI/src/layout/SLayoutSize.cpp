@@ -81,7 +81,7 @@ namespace SOUI
 
 	bool SLayoutSize::isValid() const
 	{
-		return fequal(fSize,SIZE_UNDEF);
+		return !fequal(fSize,SIZE_UNDEF);
 	}
 
 	bool SLayoutSize::isVert() const
