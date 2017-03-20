@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "SDocHostUIHandler.h"
-#include <mshtml.h>
+#include "mshtml.h"
 #include <activex/SBStr.h>
 
 namespace SOUI
