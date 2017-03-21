@@ -7,8 +7,8 @@ namespace SOUI
 {
     struct DIBINFO{
         LPBYTE  pBits;
-        int     nWid;
-        int     nHei;
+        UINT     nWid;
+		UINT     nHei;
     };
 
 	// ------------------------------------------------------------
@@ -263,8 +263,8 @@ namespace SOUI
     COLORREF CalcAvarageRectColor(const DIBINFO &di, RECT rc)
     {
         LPBYTE pLine= di.pBits + di.nWid * rc.top *4;
-        if(rc.right > di.nWid) rc.right=di.nWid;
-        if(rc.bottom > di.nHei) rc.bottom = di.nHei;
+        if(rc.right > (int)di.nWid) rc.right=di.nWid;
+        if(rc.bottom > (int)di.nHei) rc.bottom = di.nHei;
         int nWid = rc.right-rc.left;
         int nHei = rc.bottom -rc.top;
         

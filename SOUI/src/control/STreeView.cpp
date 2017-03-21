@@ -472,7 +472,6 @@ namespace SOUI
 		
         CRect rcClient;
         GetClientRect(&rcClient);
-        int width = rcClient.Width();
         pRT->PushClipRect(&rcClient, RGN_AND);
 
         CRect rcClip, rcInter;

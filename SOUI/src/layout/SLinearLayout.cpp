@@ -266,8 +266,6 @@ namespace SOUI
             }
         }
         {//assign position
-            int nRemain = size - offset;
-            
             offset = 0;
 			for(int iChild = 0;iChild < nChilds;iChild ++)
 			{
