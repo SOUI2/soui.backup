@@ -242,7 +242,6 @@ void STileView::UpdateVisibleItems()
     }
     int iOldFirstVisible = m_iFirstVisible;
     int iOldLastVisible = m_iFirstVisible + m_lstItems.GetCount();
-    int nOldTotalHeight = m_tvItemLocator->GetTotalHeight();
     
     int iNewFirstVisible = m_tvItemLocator->Position2Item(m_siVer.nPos);
     int iNewLastVisible = iNewFirstVisible;
