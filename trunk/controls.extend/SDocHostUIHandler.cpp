@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "SDocHostUIHandler.h"
 #if defined(_MSC_VER) && (_MSC_VER == 1910)
-#include "mshtml.h"
+#include "mshtml.hpp"
 #else
 #include <mshtml.h>
 #endif
