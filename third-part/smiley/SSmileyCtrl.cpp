@@ -1,9 +1,7 @@
 // SSmileyCtrl.cpp : Implementation of SSmileyCtrl
 #include <Windows.h>
 #if defined(_MSC_VER) && (_MSC_VER == 1910)
-#include "mshtml.h"
-#else
-#include <mshtml.h>
+#include "mshtml.hpp"
 #endif
 #include "../controls.extend/smiley/SSmileyCtrl.h"
 
