@@ -26,6 +26,8 @@ else{
 CONFIG += console
 
 # Input
-SOURCES += souitest.cpp
+SOURCES += souitest.cpp \
+           slog-test.cpp
+
 
 
