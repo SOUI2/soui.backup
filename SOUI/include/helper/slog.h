@@ -5,8 +5,8 @@
 
 namespace SOUI
 {
-    class Log4zBinary;
-    class Log4zStream;
+	class Log4zBinary;
+	class Log4zStream;
 }
 
 #ifndef E_RANGE
@@ -125,196 +125,120 @@ inline void empty_log_format_function2(const char * tag, const wchar_t* fmt, ...
 #define LOGFMTF LOGFMTT
 #endif
 
-namespace SOUI{
-//! optimze from std::stringstream to Log4zStream
+namespace SOUI {
+	//! optimze from std::stringstream to Log4zStream
 #if defined (WIN32) || defined(_WIN64)
 #pragma warning(push)
 #pragma warning(disable:4996)
 #endif
-class Log4zBinary
-{
-public:
-    Log4zBinary(const char * buf, int len)
-    {
-        _buf = buf;
-        _len = len;
-    }
-    const char * _buf;
-    int  _len;
-};
-class Log4zStream
-{
-public:
-    inline Log4zStream(char * buf, int len);
-    inline int getCurrentLen(){return (int)(_cur - _begin);}
-private:
-    template<class T>
-    inline Log4zStream & writeData(const char * ft, T t);
-    inline Log4zStream & writeLongLong(long long t);
-    inline Log4zStream & writeULongLong(unsigned long long t);
-    inline Log4zStream & writePointer(const void * t);
-    inline Log4zStream & writeString(const char* t);
-    inline Log4zStream & writeWString(const wchar_t* t);
-    inline Log4zStream & writeBinary(const Log4zBinary & t);
-public:
-    inline Log4zStream & operator <<(const void * t){ return  writePointer(t); }
 
-    inline Log4zStream & operator <<(const char * t){return writeString(t);}
+	class SOUI_EXP Log4zBinary
+	{
+	public:
+		Log4zBinary(const char * buf, int len)
+		{
+			_buf = buf;
+			_len = len;
+		}
+		const char * _buf;
+		int  _len;
+	};
+
+
+	class SOUI_EXP Log4zStream
+	{
+	public:
+		Log4zStream(char * buf, int len);
+		int getCurrentLen() { return (int)(_cur - _begin); }
+	private:
+		template<class T>
+		Log4zStream & writeData(const char * ft, T t);
+		Log4zStream & writeLongLong(long long t);
+		Log4zStream & writeULongLong(unsigned long long t);
+		Log4zStream & writePointer(const void * t);
+		Log4zStream & writeString(const char* t);
+		Log4zStream & writeWString(const wchar_t* t);
+		Log4zStream & writeBinary(const Log4zBinary & t);
+	public:
+		Log4zStream & operator <<(const void * t) { return  writePointer(t); }
+
+		Log4zStream & operator <<(const char * t) { return writeString(t); }
 #if defined (WIN32) || defined(_WIN64)
-    inline Log4zStream & operator <<(const wchar_t * t){ return writeWString(t);}
+		Log4zStream & operator <<(const wchar_t * t) { return writeWString(t); }
 #endif
-    inline Log4zStream & operator <<(bool t){ return (t ? writeData("%s", "true") : writeData("%s", "false"));}
+		Log4zStream & operator <<(bool t) { return (t ? writeData("%s", "true") : writeData("%s", "false")); }
 
-    inline Log4zStream & operator <<(char t){return writeData("%c", t);}
+		Log4zStream & operator <<(char t) { return writeData("%c", t); }
 
-    inline Log4zStream & operator <<(unsigned char t){return writeData("%u",(unsigned int)t);}
+		Log4zStream & operator <<(unsigned char t) { return writeData("%u", (unsigned int)t); }
 
-    inline Log4zStream & operator <<(short t){ return writeData("%d", (int)t); }
+		Log4zStream & operator <<(short t) { return writeData("%d", (int)t); }
 
-    inline Log4zStream & operator <<(unsigned short t){ return writeData("%u", (unsigned int)t); }
+		Log4zStream & operator <<(unsigned short t) { return writeData("%u", (unsigned int)t); }
 
-    inline Log4zStream & operator <<(int t){return writeData("%d", t);}
+		Log4zStream & operator <<(int t) { return writeData("%d", t); }
 
-    inline Log4zStream & operator <<(unsigned int t){return writeData("%u", t);}
+		Log4zStream & operator <<(unsigned int t) { return writeData("%u", t); }
 
-    inline Log4zStream & operator <<(long t) { return writeLongLong(t); }
+		Log4zStream & operator <<(long t) { return writeLongLong(t); }
 
-    inline Log4zStream & operator <<(unsigned long t){ return writeULongLong(t); }
+		Log4zStream & operator <<(unsigned long t) { return writeULongLong(t); }
 
-    inline Log4zStream & operator <<(long long t) { return writeLongLong(t); }
+		Log4zStream & operator <<(long long t) { return writeLongLong(t); }
 
-    inline Log4zStream & operator <<(unsigned long long t){ return writeULongLong(t); }
+		Log4zStream & operator <<(unsigned long long t) { return writeULongLong(t); }
 
-    inline Log4zStream & operator <<(float t){return writeData("%.4f", t);}
+		Log4zStream & operator <<(float t) { return writeData("%.4f", t); }
 
-    inline Log4zStream & operator <<(double t){return writeData("%.4lf", t);}
+		Log4zStream & operator <<(double t) { return writeData("%.4lf", t); }
 
-    inline Log4zStream & operator << (const Log4zBinary & binary){ return writeBinary(binary); }
+		Log4zStream & operator << (const Log4zBinary & binary) { return writeBinary(binary); }
 
-private:
-    Log4zStream(){}
-    Log4zStream(Log4zStream &){}
-    char *  _begin;
-    char *  _end;
-    char *  _cur;
-};
+	private:
+		Log4zStream() {}
+		Log4zStream(Log4zStream &) {}
+		char *  _begin;
+		char *  _end;
+		char *  _cur;
+	};
 
-inline Log4zStream::Log4zStream(char * buf, int len)
-{
-    _begin = buf;
-    _end = buf + len;
-    _cur = _begin;
-}
 
-template<class T>
-inline Log4zStream& Log4zStream::writeData(const char * ft, T t)
-{
-    if (_cur < _end)
-    {
-        int len = 0;
-        int count = (int)(_end - _cur);
+	template<class T>
+	Log4zStream& Log4zStream::writeData(const char * ft, T t)
+	{
+		if (_cur < _end)
+		{
+			int len = 0;
+			int count = (int)(_end - _cur);
 #if defined (WIN32) || defined(_WIN64)
-        len = _snprintf(_cur, count, ft, t);
-        if (len == count || (len == -1 && errno == E_RANGE))
-        {
-            len = count;
-            *(_end - 1) = '\0';
-        }
-        else if (len < 0)
-        {
-            *_cur = '\0';
-            len = 0;
-        }
+			len = _snprintf(_cur, count, ft, t);
+			if (len == count || (len == -1 && errno == E_RANGE))
+			{
+				len = count;
+				*(_end - 1) = '\0';
+			}
+			else if (len < 0)
+			{
+				*_cur = '\0';
+				len = 0;
+			}
 #else
-        len = snprintf(_cur, count, ft, t);
-        if (len < 0)
-        {
-            *_cur = '\0';
-            len = 0;
-        }
-        else if (len >= count)
-        {
-            len = count;
-            *(_end - 1) = '\0';
-        }
+			len = snprintf(_cur, count, ft, t);
+			if (len < 0)
+			{
+				*_cur = '\0';
+				len = 0;
+			}
+			else if (len >= count)
+			{
+				len = count;
+				*(_end - 1) = '\0';
+			}
 #endif
-        _cur += len;
-    }
-    return *this;
-}
-
-inline Log4zStream & Log4zStream::writeLongLong(long long t)
-{
-#if defined (WIN32) || defined(_WIN64) 
-    writeData("%I64d", t);
-#else
-    writeData("%lld", t);
-#endif
-    return *this;
-}
-
-inline Log4zStream & Log4zStream::writeULongLong(unsigned long long t)
-{
-#if defined (WIN32) || defined(_WIN64) 
-    writeData("%I64u", t);
-#else
-    writeData("%llu", t);
-#endif
-    return *this;
-}
-
-inline Log4zStream & Log4zStream::writePointer(const void * t)
-{
-#if defined (WIN32) || defined(_WIN64)
-    sizeof(t) == 8 ? writeData("%016I64x", (unsigned long long)t) : writeData("%08I64x", (unsigned long long)t);
-#else
-    sizeof(t) == 8 ? writeData("%016llx", (unsigned long long)t) : writeData("%08llx", (unsigned long long)t);
-#endif
-    return *this;
-}
-
-inline Log4zStream & Log4zStream::writeBinary(const Log4zBinary & t)
-{
-    writeData("%s", "\r\n\t[");
-    for (int i = 0; i < t._len; i++)
-    {
-        if (i % 16 == 0)
-        {
-            writeData("%s", "\r\n\t");
-            *this << (void*)(t._buf + i);
-            writeData("%s", ": ");
-        }
-        writeData("%02x ", (unsigned char)t._buf[i]);
-    }
-    writeData("%s", "\r\n\t]\r\n\t");
-    return *this;
-}
-
-inline Log4zStream & Log4zStream::writeString(const char* t)
-{
-    writeData("%s", t);
-    return *this;
-}
-
-inline Log4zStream & Log4zStream::writeWString(const wchar_t* t)
-{
-#if defined (WIN32) || defined(_WIN64)
-    DWORD dwLen = WideCharToMultiByte(CP_ACP, 0, t, -1, NULL, 0, NULL, NULL);
-    if (dwLen < LOG4Z_LOG_BUF_SIZE)
-    {
-        char buf[LOG4Z_LOG_BUF_SIZE];
-        dwLen = WideCharToMultiByte(CP_ACP, 0, t, -1, buf, dwLen, NULL, NULL);
-        if (dwLen > 0)
-        {
-            buf[dwLen] = 0;
-            writeData("%s", buf);
-        }
-    }
-#else
-    //not support
-#endif
-    return *this;
-}
+			_cur += len;
+		}
+		return *this;
+	}
 
 
 #if defined (WIN32) || defined(_WIN64)
