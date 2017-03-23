@@ -22,7 +22,7 @@ namespace SOUI{
 
 	enum LayoutType
 	{
-		Layout_Soui,	//SOUI 布局
+		Layout_Soui=0,	//SOUI 布局
 		Layout_Linear,  //线性布局
 	};
 

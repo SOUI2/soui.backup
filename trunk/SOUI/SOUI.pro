@@ -36,7 +36,7 @@ INCLUDEPATH += . \
 
 # Input
 HEADERS += include/SApp.h \
-		   include/soui-version.h \
+           include/soui-version.h \
            include/activex/SBStr.h \
            include/control/SActiveX.h \
            include/control/SCalendar.h \
@@ -65,7 +65,8 @@ HEADERS += include/SApp.h \
            include/control/SMcListView.h \
            include/control/SSpinButtonCtrl.h \
            include/control/STileView.h \
-		   include/control/STreeView.h \
+           include/control/STreeView.h \
+           include/core/SObjectFactory.h \
            include/core/Accelerator.h \
            include/core/FocusManager.h \
            include/core/SDefine.h \
@@ -81,12 +82,10 @@ HEADERS += include/SApp.h \
            include/core/SSingletonMap.h \
            include/core/SSkinObjBase.h \
            include/core/SSkin.h \
-           include/core/SSkinFactoryMgr.h \
            include/core/SWindowMgr.h \
            include/core/Swnd.h \
            include/core/SwndContainer-i.h \
            include/core/SwndContainerImpl.h \
-           include/core/SwndFactoryMgr.h \
            include/core/SwndStyle.h \
            include/core/scaret.h \
            include/event/eventcrack.h \
@@ -112,15 +111,15 @@ HEADERS += include/SApp.h \
            include/helper/swndspy.h \
            include/helper/SwndMsgCracker.h \
            include/helper/SCriticalSection.h \
-		   include/helper/AppDir.h \
-		   include/helper/SAdapterBase.h \
-		   include/helper/SwndFinder.h \
-		   include/helper/SListViewItemLocator.h \
-		   include/helper/STileViewItemLocator.h \
-		   include/helper/smenuex.h \
-		   include/helper/smatrix.h \
-		   include/helper/slog.h \
-		   include/helper/sdibhelper.h \
+           include/helper/AppDir.h \
+           include/helper/SAdapterBase.h \
+           include/helper/SwndFinder.h \
+           include/helper/SListViewItemLocator.h \
+           include/helper/STileViewItemLocator.h \
+           include/helper/smenuex.h \
+           include/helper/smatrix.h \
+           include/helper/slog.h \
+           include/helper/sdibhelper.h \
            include/interface/imgdecoder-i.h \
            include/interface/render-i.h \
            include/interface/SResProvider-i.h \
@@ -135,7 +134,7 @@ HEADERS += include/SApp.h \
            include/interface/slayout-i.h \
            include/layout/SLinearLayoutParamStruct.h \
            include/layout/SLinearLayout.h \
-           include/layout/SouiLaoutParamStruct.h \
+           include/layout/SouiLayoutParamStruct.h \
            include/layout/SouiLayout.h \
            include/res.mgr/SUiDef.h \
            include/res.mgr/SFontPool.h \
@@ -151,7 +150,7 @@ HEADERS += include/SApp.h \
            include/activex/flash10t.tlh \
            include/activex/flash10t.tli \
            include/activex/wmp.tlh
-		   
+           
 SOURCES += src/SApp.cpp \
            src/activex/SAxContainer.cpp \
            src/activex/SBStr.cpp \
@@ -179,7 +178,8 @@ SOURCES += src/SApp.cpp \
            src/control/SMcListView.cpp \
            src/control/SSpinButtonCtrl.cpp \
            src/control/STileView.cpp \
-		   src/control/STreeView.cpp \
+           src/control/STreeView.cpp \
+           src/core/SObjectFactory.cpp \
            src/core/Accelerator.cpp \
            src/core/FocusManager.cpp \
            src/core/SDropTargetDispatcher.cpp \
@@ -190,11 +190,9 @@ SOURCES += src/SApp.cpp \
            src/core/SMsgLoop.cpp \
            src/core/SPanel.cpp \
            src/core/SSkin.cpp \
-           src/core/SSkinFactoryMgr.cpp \
            src/core/SWindowMgr.cpp \
            src/core/Swnd.cpp \
            src/core/SwndContainerImpl.cpp \
-           src/core/SWndFactoryMgr.cpp \
            src/core/SwndStyle.cpp \
            src/core/scaret.cpp \
            src/layout/SLinearLayout.cpp \
@@ -208,15 +206,15 @@ SOURCES += src/SApp.cpp \
            src/helper/STimerEx.cpp \
            src/helper/SScriptTimer.cpp \
            src/helper/stooltip.cpp \
-	src/helper/slog.cpp \
-		   src/helper/AppDir.cpp \
-		   src/helper/SListViewItemLocator.cpp \
-		   src/helper/STileViewItemLocator.cpp \
-   		   src/helper/SwndFinder.cpp \
-   		   src/helper/smenuex.cpp \
-   		   src/helper/smatrix.cpp \
-		   src/helper/sdibhelper.cpp \
-		   src/res.mgr/SUiDef.cpp \
+           src/helper/AppDir.cpp \
+           src/helper/SListViewItemLocator.cpp \
+           src/helper/STileViewItemLocator.cpp \
+           src/helper/SwndFinder.cpp \
+           src/helper/smenuex.cpp \
+           src/helper/smatrix.cpp \
+           src/helper/sdibhelper.cpp \
+           src/helper/slog.cpp \
+           src/res.mgr/SUiDef.cpp \
            src/res.mgr/SFontPool.cpp \
            src/res.mgr/SObjDefAttr.cpp \
            src/res.mgr/SResProvider.cpp \

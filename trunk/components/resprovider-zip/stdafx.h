@@ -9,5 +9,3 @@
 // Windows Header Files:
 #include <windows.h>
 #include <tchar.h>
-
-// TODO: reference additional headers your program requires here
