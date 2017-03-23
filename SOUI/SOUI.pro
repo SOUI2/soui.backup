@@ -208,6 +208,7 @@ SOURCES += src/SApp.cpp \
            src/helper/STimerEx.cpp \
            src/helper/SScriptTimer.cpp \
            src/helper/stooltip.cpp \
+	src/helper/slog.cpp \
 		   src/helper/AppDir.cpp \
 		   src/helper/SListViewItemLocator.cpp \
 		   src/helper/STileViewItemLocator.cpp \
