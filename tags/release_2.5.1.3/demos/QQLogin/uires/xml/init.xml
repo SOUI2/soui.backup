@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="微软雅黑" size="14"/>
+
+  <string>
+    <title value="QQLogin"/>
+    <ver value="1.0"/>
+  </string>
+  
+  <skin>
+    <imgframe name="img_login_border" src="imgx:IMG_LOGIN_BORDER" left="9" top="9" right="9" bottom="9"/>
+    <imglist name="btn_login_setting" src="imgx:BTN_LOGIN_SETTING" states="3"/>
+    <imglist name="btn_list_close" src="imgx:BTN_USERLISTCLOSE" states="4"/>
+    <imglist name="btn_getpswback" src="imgx:BTN_GETPSWBACK" states="3"/>
+    <imglist name="btn_register" src="imgx:BTN_REGISTER" states="3"/>
+    <imglist name="btn_keyboard" src="imgx:BTN_KEYBOARD" states="4"/>
+    <imgframe name="btn_login" src="imgx:BTN_LOGIN" states="3" margin-x="4" margin-y="4"/>
+    <imglist name="btn_login2" src="imgx:BTN_LOGIN2" states="3"/>
+    <imglist name="btn_login_2dcode" src="imgx:BTN_LOGIN_2DCODE" states="3"/>
+
+    <imglist name="img_head" src="imgx:IMG_HEAD"/>
+    <imglist name="img_head_mask" src="imgx:IMG_HEAD_MASK"/>
+    <imglist name="img_head_small" src="jpg:IMG_HEAD_SMALL"/>
+    <imglist name="img_avatars" src="imgx:img_avatars" states="8"/>
+	
+	<!--全局skin对象-->
+	<colormask name="skin.color_btn" colorNormal="#069dd5" colorHover="#4bcaff" colorDown="#069dd5" colorDisable="#069dd5" width="252" height="24"  mask="PNG:ID_SENDBTN_LEFT.a"/>
+	<colormask name="skin.sendbtn_right" colorNormal="#069dd5" colorHover="#4bcaff" colorDown="#069dd5" colorDisable="#069dd5" width="128" height="24" mask="PNG:ID_SENDBTN_RIGHT.a"/>
+	<colormask name="skin.chatbtn_close" colorNormal="#069dd5" colorHover="#4bcaff" colorDown="#069dd5" colorDisable="#069dd5" width="280" height="24" mask="PNG:ID_CHATBTN_CLOSE.a"/>
+	<imglist name="skin.sysbtn_close"	src="PNG:ID_SYSBTN_CLOSE" states="3"/>
+	<imglist name="skin.sysbtn_max"	src="PNG:ID_SYSBTN_MAX" states="3"/>
+	<imglist name="skin_sysbtn_min"	src="PNG:ID_SYSBTN_MIN" states="3"/>
+	<imglist name="skin.sysbtn_restore"	src="PNG:ID_SYSBTN_RESTORE" states="3"/>
+	<imglist name="skin.tab_session"	src="PNG:ID_TAB_SESSION" states="2"/>
+	<imgframe name="skin.tab_fade_eff"	src="PNG:ID_TAB_FADE_EFF"/>
+	<imgframe name="skin.shadow"	src="PNG:ID_SHADOW" left="10" top="10" right="10" bottom="10"/>
+	<imglist name="skin.tab_scroll"	src="PNG:ID_TAB_SCROLL" states="2 "/>
+	<imglist name="skin.tabbtn_close"	src="PNG:ID_TABBTN_CLOSE" states="3 "/>
+	<imgframe name="skin.splitbar_ver"	src="PNG:ID_SPLITBAR_VER"/>
+	<imgframe name="skin.tab_btn"	src="PNG:ID_TABBTN"  states="3" left="10" top="10" right="10" bottom="10"/>
+	<imgframe name="skin.icon1"	src="PNG:ID_ICON1"/>
+	<imgframe name="skin.icon2"	src="PNG:ID_ICON2"/>
+	<imgframe name="skin.icon3"	src="PNG:ID_ICON3"/>
+	<imgframe name="skin.icon4"	src="PNG:ID_ICON4"/>
+	<imgframe name="skin.icon5"	src="PNG:ID_ICON5"/>
+	<imgframe name="skin.icon_mask"	src="PNG:ID_ICON_MASK"/>
+	<imgframe name="skin.group_top_toolbar"	src="PNG:ID_GROUP_TOPTOOLBAR" states="4"/>
+	<imgframe name="skin.group_tabbtn"	src="PNG:ID_GROUP_TABBTN" states="4" left="3" top="5" right="3" bottom="5"/>
+	<imgframe name="skin.ad"	src="PNG:ID_AD"/>
+	<imgframe name="skin.empty"	src="PNG:ID_EMPTY"/>
+	<imgframe name="skin.no_annouce" src="PNG:ID_NO_ANNOUCE" />
+	<imgframe name="skin.group_app1" src="PNG:ID_GROUP_APP1" />
+	<imgframe name="skin.group_app2" src="PNG:ID_GROUP_APP2" />
+	<imgframe name="skin.group_app3" src="PNG:ID_GROUP_APP3" />
+	<imgframe name="skin.group_app4" src="PNG:ID_GROUP_APP4" />
+	<imgframe name="skin.group_app5" src="PNG:ID_GROUP_APP5" />
+	<imgframe name="skin.group_app6" src="PNG:ID_GROUP_APP6" />
+	<imgframe name="skin.group_app_tabicon" src="PNG:ID_GROUP_APP_TABICON" />
+	<imgframe name="skin.group_app_tabbtn" src="PNG:ID_GROUP_APP_TABBTN" states="4"/>
+	<imglist name="skin.group_expandbtn" src="PNG:ID_GROUP_EXPAND_BTN" states="3"/>
+	<imglist name="skin.group_searchchk" src="PNG:ID_GROUP_SEARCH_CHK" states="8"/>
+	<imglist name="skin.group_searchchk_focus" src="PNG:ID_GROUP_SEARCH_CHK_FOCUS" states="3"/>
+	<imgframe name="skin.send_btn_left" src="PNG:ID_SENDBTN_LEFT" />
+	<imgframe name="skin.send_btn_split_line" src="PNG:ID_SENDBTN_SPLITLINE" />
+	<imgframe name="skin.send_btn_arrow" src="PNG:ID_SENDBTN_ARROW" states="3"/>
+	<imglist name="skin.chatbtn_font" src="PNG:ID_CHATBTN_FONT" states="8"/>
+	<imgframe name="skin.chat_toolbar_bk" src="PNG:ID_CHAT_TOOLBAT_BK" states="3"/>
+	<imgframe name="skin.chatbtn_cut" src="PNG:ID_CHATBTN_CUT" states="3"/>
+	<imgframe name="skin.chat_toolbtn_arrow" src="PNG:ID_CHAT_TOOLBTN_ARROW" states="3"/>
+	<imgframe name="skin.chat_toolbtn_uploadfile" src="PNG:ID_CHAT_QUICKBAR_UPLOADFILE" states="3"/>
+	<imgframe name="skin.chat_toolbtn_sendpic" src="PNG:ID_CHAT_QUICKBAR_SENDPIC" states="3"/>
+	<imgframe name="skin.rich_file_bk" src="PNG:ID_RICH_FILE_BK" left="14" top="20" right="14" bottom="20"/>
+	<imgframe name="skin.file_icon_text" src="PNG:ID_FILE_ICON_TEXT" />
+	<imgframe name="skin.fetch_more_msg" src="PNG:ID_FETCH_MORE" />
+	<imgMutiFrame name="skin.loading" src="PNG:ID_LOADING" />
+	<imgframe name="skin.news_bg" src="PNG:ID_NEW_BG" left="10" top="10" right="10" bottom="10"/>
+	<imgframe name="skin.news_bg_alpha" src="PNG:ID_NEWS_BG_ALPHA" />
+	<imgframe name="skin.menu_bkg" src="PNG:ID_MENU_BKG" left="10" top="10" right="10" bottom="10"/>
+	<imglist name="skin_small_icons" src="PNG:ID_SMALL_ICON" states="12"/>
+	<imgframe name="skin.bkgnd_mask" src="PNG:ID_BKGND_MASK" />
+	<imgframe name="skin.background" src="PNG:ID_BACKGROUND" />
+	<imgframe name="skin.rich_warning" src="PNG:ID_RICH_WARNING" />
+	<imgframe name="skin.rich_left_bubble" src="PNG:ID_RICH_LEFT_BUBBLE" left="15" top="19" right="15" bottom="19"/>
+	<imgframe name="skin.rich_right_bubble" src="PNG:ID_RICH_RIGHT_BUBBLE" left="15" top="19" right="15" bottom="19"/>
+	<imgframe name="skin.rich_sysmsg_bk" src="PNG:ID_RICH_SYSMSG_BK" left="9" top="9" right="9" bottom="9"/>
+  </skin>
+
+  <style>
+    <class name="cls_edit" ncSkin="_skin.sys.border" margin-x="2" margin-y="2" />
+	<!--全局style对象-->
+	<class name="cls_dlg_frame" skin="_skin.sys.wnd.bkgnd" font="" colorText="#000000" margin-x="0"/>
+	<class name="cls_btn_link"    cursor="hand" colorHover="#0A84D2" />
+	<class name="cls_btn_weblink" cursor="hand" font="size:17" fontPush="underline:1,size:17" fontHover="underline:1,size:17" />
+	<class name="cls_rich_link" cursor="hand" font="size:12" fontPush="underline:1,size:12" fontHover="underline:1,size:12" colorText="#1670eb" colorHover="#1670eb"/>
+  </style>
+
+  <objattr>
+  </objattr>
+</UIDEF>

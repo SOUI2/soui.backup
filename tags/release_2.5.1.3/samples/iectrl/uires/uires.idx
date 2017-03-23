@@ -1,0 +1,16 @@
+﻿<resource>  
+  <UIDEF>
+    <file name="XML_INIT" path="xml\init.xml"  />
+  </UIDEF>
+  <LAYOUT>
+    <file name="XML_MAINWND" path="xml\dlg_main.xml"  />
+  </LAYOUT>
+  <IMG>
+  </IMG>
+  <ICON>
+    <file name="ICON_LOGO"  path="image\soui.ico"    />
+  </ICON>
+  <html>
+    <file name="test.htm" path="html\test.htm"/>
+  </html>
+</resource>

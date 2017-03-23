@@ -1,0 +1,31 @@
+﻿<SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="640" height="480" appWnd="1" margin="5,5,5,5"  resizable="1" translucent="1" >
+  <root skin="_skin.sys.wnd.bkgnd" cache="1">
+    <caption pos="0,0,-0,30" show="1" font="adding:2">
+      <icon pos="10,8" src="ICON_LOGO:16"/>
+      <text pos="28,8">@string/title</text>
+      <text pos="[5,{0">ver:</text>
+      <text pos="[0,{0">@string/ver</text>
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+      <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
+      <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
+      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+    </caption>
+    <window name="toolbar" pos="5,[0,-5,@30">
+      <captureButton name="img_capture_host" pos="0,0" skin="skin_spyhost" tip="定位待SPY的SOUI窗口"/>
+      <captureButton name="img_capture_swnd" pos="[10,0" skin="skin_spyhost" tip="定位SWND在TREECTRL中的位置"/>
+      <text name="txt_hosthwnd" pos="[10,0,@100,@30">0x00000000</text>
+      <text name="txt_hostclass" pos="[10,0,@150,@30"/>
+      <button name="btn_search" pos="]-105,0,@100,@30">查找</button>
+      <edit name="edit_search"  pos="-105,0,@100,@30" />
+    </window>
+    <splitrow name="split_row" pos="5,[5,-5,-5" sepSize="6">
+      <pane idealSize="250" minSize="30" priority="1">
+        <treectrl pos="0,0,-0,-0" name="tree_swnd" itemHeight="25" iconSkin="skin_icons" checkBox="0"/>
+      </pane>
+      <pane idealSize="200" minSize="30" priority="0">
+        <richedit pos="0,0,-0,-0" name="edit_xml" readOnly="1" multiLines="1" wordWrap="0" autoVScroll="1" vscrollBar="1" hscrollBar="1" autoHScroll="1"/>
+      </pane>
+    </splitrow>
+    
+  </root>
+</SOUI>

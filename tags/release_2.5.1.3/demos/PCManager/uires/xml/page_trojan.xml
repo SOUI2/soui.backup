@@ -1,0 +1,37 @@
+<include>
+  <window pos="0,0,-266,-0">
+    <img pos="26,26" skin="skin.trojan_ico"/>
+    <text pos="[10,34" class="font:bold" font="size:16">您3小时前进行过木马扫描，未发现木马</text>
+    <imgbtn pos="|0,100" offset="-0.5,0" skin="skin.trojan_fastscan" animate="1"/>
+    <imgbtn pos="{0,[20" skin="skin.trojan_pathscan" animate="1"/>
+    <imgbtn pos="{0,[20" skin="skin.trojan_scan" animate="1"/>
+  </window>
+  <window pos="[0,0,-0,-0" textColor="#000000">
+    <hr pos="0,0,@1,-0" size="1" mode="vertical" colorLine="#d0d0d0"></hr>
+    <link pos="60,10" class="cls_link">举报木马</link>
+    <link pos="[10,{0" class="cls_link">文件恢复</link>
+    <link pos="[10,{0" class="cls_link">已信任</link>
+    <link pos="[10,{0" class="cls_link">设置</link>
+    <text pos="34,60" class="font:bold">查杀引擎状态:</text>
+    <imgbtn pos="16,[8" skin="skin.trojan_btn" animate="1">
+      <img pos="18,18" skin="skin.trojan_engine1"></img>
+      <text pos="[8,{0" class="font:label" >电脑管家云查杀引擎</text>
+      <text pos="{0,[8" class="font:bold" colorText="#00a246">正常连接</text>
+    </imgbtn>
+    <imgbtn pos="16,[2" skin="skin.trojan_btn" animate="1">
+      <img pos="18,18" skin="skin.trojan_engine2"></img>
+      <text pos="[8,{0" class="font:label" >金山云查杀引擎</text>
+      <text pos="{0,[8" class="font:bold" colorText="#00a246">正常连接</text>
+    </imgbtn>
+    <imgbtn pos="16,[2" skin="skin.trojan_btn" animate="1">
+      <img pos="18,18" skin="skin.trojan_engine3"></img>
+      <text pos="[8,{0" class="font:label" >Avira本地查杀引擎</text>
+      <text pos="{0,[8" class="font:bold" colorText="#00a246">正常连接</text>
+    </imgbtn>
+    <imgbtn pos="16,[2" skin="skin.trojan_btn" animate="1">
+      <img pos="18,18" skin="skin.trojan_engine4"></img>
+      <text pos="[8,{0" class="font:label" >趋势本地查杀引擎</text>
+      <text pos="{0,[8" class="font:bold" colorText="#e25b26">未开启</text>
+    </imgbtn>
+  </window>
+</include>

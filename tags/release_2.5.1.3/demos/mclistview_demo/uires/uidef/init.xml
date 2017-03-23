@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="宋体" size="15"/>
+
+  <string src="values:string" />
+  <skin src="values:skin"/>
+  <color src="values:color"/>
+
+
+  <style>
+    <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="0x25" cursor="hand" margin-x="0"/>
+    <class name="cls_weblink" cursor="hand" colorText="@color/theme" fontHover="underline:1" />
+  </style>
+
+  <objattr>
+    <link class="cls_weblink"/>
+    <div sbSkin="cmn.scrollbar"/>
+    <edit margin="2"/>
+  </objattr>
+</UIDEF>

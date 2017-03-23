@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<color>
+  <red value="rgb(255,0,0)"/>
+  <green value="rgb(0,255,0)"/>
+  <blue value="rgb(0,0,255)"/>
+  <white value="rgb(255,255,255)"/>
+  <black_light value="#202020"/>
+  <gray value="#808080"/>
+  <warning value="#fb6d74"/>
+  <helper value="#999999" />
+  <text_disable value="#cecece"/>
+  <border value="#d1d1d1"/>
+  <theme value="#4cb9ea"/>
+  <prompt value="#ff9b0d"/> 
+  <text_body value="#333333"/>
+  <text_slave value="#666666"/>
+  <sms_header value="#f5f5f5"/>
+</color>

@@ -1,0 +1,5 @@
+<root>
+	<window name="parent" pos="0,0,-0,-0">
+		<text name="txt" pos="0,0,-0,-0" dotted="1"></text>
+	</window>
+</root>

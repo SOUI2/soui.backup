@@ -1,0 +1,44 @@
+﻿<menu iconSkin="_skin_menu_icon" iconMargin="6" sepSkin="_skin_menu_sep" itemSkin="_skin_menu_skin" font="adding:-2" itemHeight="26" textMargin="0">
+  <item id="1"  icon="0">文件(&F)
+    <item id="11">打开文件(&O)</item>
+    <item id="12">打开文件夹</item>
+    <item id="13">打开URL</item>
+    <item id="14">打开3D视频</item>
+    <item id="15" disable="1">打开碟片/DVD
+      <item id="151">打开碟片</item>
+      <item id="152">打开DVD</item>
+    </item>
+  </item>
+
+  <item id="2" icon="1">播放(&P)
+    <item id="21" disable="1">播放</item>
+    <item id="22" disable="1">停止(&S)</item>
+    <sep/>
+    <item id="23" disable="1">全屏</item>
+    <item id="24" disable="1">最小界面</item>
+    <sep/>
+    <item id="25">播放控制</item>
+    <item id="26" disable="1">AB点重复</item>
+    <item id="27">循环模式</item>
+    <item id="28">显示比例/尺寸</item>
+    <item id="29">置顶显示</item>
+    <item id="210">声道/音量</item>
+    <sep/>
+    <item id="211">播放后操作</item>
+  </item>
+
+  <item id="3" disable="1">DVD导航(&D)
+    <item id="31">我也不知道里面有什么  lalala</item>
+  </item>
+
+  <item id="4">帮助(&H)
+    <item id="41">官方论坛(&F)</item>
+    <item id="42">检查更新</item>
+    <item id="43">关于(&A)</item>
+  </item>
+  <sep/>
+    <item id="5" icon="2">高级选项</item>
+    <item id="6" icon="3">开启VIP去广告模式</item>
+  <sep/>
+  <item id="7" icon="4">退出</item>
+</menu>
