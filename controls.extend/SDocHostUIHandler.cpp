@@ -1,11 +1,6 @@
 #include "StdAfx.h"
 #include "SDocHostUIHandler.h"
-#if defined(_MSC_VER) && (_MSC_VER == 1910)
-#include "mshtml.hpp"
-#else
 #include <mshtml.h>
-#endif
-
 #include <activex/SBStr.h>
 
 namespace SOUI
