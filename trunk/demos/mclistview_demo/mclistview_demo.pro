@@ -4,6 +4,9 @@
 
 TEMPLATE = app
 TARGET = mclistview_demo
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 INCLUDEPATH += . \
 			   ../../utilities/include \
 			   ../../soui/include \

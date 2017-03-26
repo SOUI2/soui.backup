@@ -4,7 +4,9 @@
 
 TEMPLATE = lib
 TARGET = soui
-
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 !LIB_ALL:!LIB_CORE{
     DEFINES += SOUI_EXPORTS
 	RC_FILE += soui.rc

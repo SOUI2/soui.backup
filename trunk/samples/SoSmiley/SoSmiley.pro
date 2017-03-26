@@ -4,6 +4,9 @@
 
 TEMPLATE = lib
 TARGET = SoSmiley
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 INCLUDEPATH += .
 CONFIG += dll
 
