@@ -163,12 +163,21 @@ if %specs%==win32-msvc2017 (
 
 SET /p selected=open[o], compile[c] "soui.sln" or quit(q) [o,c or q]?
 if "%selected%" == "o" (
+if target==x86 (
 	soui.sln
+) else soui64.sln
 ) else if "%selected%" == "c" (
+if target==x86 (
 	call devenv soui.sln /Clean Debug
 	call devenv soui.sln /build Debug
 	call devenv soui.sln /Clean Release
 	call devenv soui.sln /build Release
+) else (
+	call devenv soui64.sln /Clean Debug
+	call devenv soui64.sln /build Debug
+	call devenv soui64.sln /Clean Release
+	call devenv soui64.sln /build Release
+)
 ) else (
 	goto final
 )
