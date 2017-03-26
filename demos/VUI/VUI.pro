@@ -4,7 +4,9 @@
 
 TEMPLATE = app
 TARGET = VUI
-
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 DEPENDPATH += .
 INCLUDEPATH += . \
 			   ../../utilities/include \

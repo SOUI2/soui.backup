@@ -4,6 +4,9 @@
 
 TEMPLATE = app
 TARGET = SoTool
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 DEPENDPATH += .
 INCLUDEPATH += .
 

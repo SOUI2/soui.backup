@@ -4,6 +4,9 @@
 
 TEMPLATE = lib
 TARGET = utilities
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 INCLUDEPATH += .
 INCLUDEPATH += ./include
 

@@ -4,7 +4,9 @@
 
 TEMPLATE = app
 TARGET = 360Preview
-
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 DEPENDPATH += .
 INCLUDEPATH += . \
 			   ../../utilities/include \

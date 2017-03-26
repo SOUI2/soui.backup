@@ -4,7 +4,9 @@
 
 TEMPLATE = lib
 TARGET = lua-52
-
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 DEPENDPATH += . src
 INCLUDEPATH += .
 
