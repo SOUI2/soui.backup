@@ -30,6 +30,9 @@ CONFIG(x64){
 #<--下面这段代码为debug和release生成不同的文件名
 SAVE_TEMPLATE = $$TEMPLATE
 TEMPLATE = fakelib
+CONFIG(x64){
+	TARGET ~= s,64,,
+}
 TARGET = $$qtLibraryTarget($$TARGET)
 TEMPLATE = $$SAVE_TEMPLATE
 #-->
