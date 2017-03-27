@@ -1438,6 +1438,7 @@ namespace SOUI
         m_skPaint.setTextEncoding(SkPaint::kUTF16_TextEncoding);
         m_skPaint.setAntiAlias(true);
 		m_skPaint.setLCDRenderText(true);
+		m_skPaint.setStyle(SkPaint::kStrokeAndFill_Style);
 //         STRACE(L"font new: objects = %d", ++s_cFont);
     }
 

@@ -8,8 +8,8 @@
   <text pos="[10,{0">QQ群#2(2000人)：</text>
   <edit readOnly="1">385438344</edit>
   <link href="http://jq.qq.com/?_wv=1027&k=VRATCo"  class="cls_btn_weblink">申请群#2</link>
-  <text pos="10,[10">SVN.taobao：</text><edit pos="150,{0,@300,@30" readOnly="1">http://code.taobao.org/svn/soui2/trunk</edit>
-  <text pos="10,[10">GIT.github：</text><edit pos="150,{0,@300,@30" readOnly="1"> https://github.com/setoutsoft/soui</edit>
+  <text pos="10,[10">SVN.taobao：</text><edit pos="150,{0,@-1,@30" readOnly="1">http://code.taobao.org/svn/soui2/trunk</edit>
+  <text pos="10,[10">GIT.github：</text><edit pos="150,{0,@-1,@30" readOnly="1"> https://github.com/setoutsoft/soui</edit>
   <text pos="10,[5">SOUI教程:</text>
   <link href="http://www.cnblogs.com/setoutsoft/" class="cls_btn_weblink">http://www.cnblogs.com/setoutsoft/</link>
   <text pos="10,[5">SOUI Forum:</text>
