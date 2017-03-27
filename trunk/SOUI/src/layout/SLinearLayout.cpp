@@ -1,6 +1,7 @@
 #include "souistd.h"
 #include "layout\SLinearLayout.h"
 #include "helper\SplitString.h"
+#include <algorithm>
 
 namespace SOUI
 {
@@ -387,10 +388,10 @@ namespace SOUI
 			if(m_orientation == Horz)
 			{
 				szRet.cx += pSize[i].cx;
-				szRet.cy = max(szRet.cy,pSize[i].cy);
+				szRet.cy = (std::max)(szRet.cy,pSize[i].cy);
 			}else
 			{
-				szRet.cx = max(szRet.cx,pSize[i].cx);
+				szRet.cx = (std::max)(szRet.cx,pSize[i].cx);
 				szRet.cy += pSize[i].cy;
 			}
 		}

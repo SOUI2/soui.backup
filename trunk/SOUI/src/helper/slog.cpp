@@ -1,10 +1,3 @@
-#include "..\..\include\helper\slog.h"
-#include "..\..\include\helper\slog.h"
-#include "..\..\include\helper\slog.h"
-#include "..\..\include\helper\slog.h"
-#include "..\..\include\helper\slog.h"
-#include "..\..\include\helper\slog.h"
-#pragma once
 #include "souistd.h"
 #include <helper/slog.h>
 

@@ -2,6 +2,8 @@
 #include "layout\SouiLayout.h"
 #include <math.h>
 #include "helper/SplitString.h"
+#include <algorithm>
+
 namespace SOUI{
     enum
     {
@@ -555,11 +557,11 @@ namespace SOUI{
             SouiLayoutParam *pParam = wndPos.pWnd->GetLayoutParamT<SouiLayoutParam>();
             if(!IsWaitingPos(wndPos.rc.right))
             {
-                nMaxX = max(nMaxX,wndPos.rc.right + pParam->GetExtraSize(Horz));
+                nMaxX = (std::max)(nMaxX,(int)(wndPos.rc.right + pParam->GetExtraSize(Horz)));
             }
             if(!IsWaitingPos(wndPos.rc.bottom))
             {
-                nMaxY = max(nMaxY,wndPos.rc.bottom + pParam->GetExtraSize(Vert));
+                nMaxY = (std::max)(nMaxY,(int)(wndPos.rc.bottom + pParam->GetExtraSize(Vert)));
             }
         }
 

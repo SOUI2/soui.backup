@@ -252,7 +252,7 @@ namespace SOUI
         if (!m_bDropdown && m_pEdit)
         {
             m_pEdit->SetFocus();
-            m_pEdit->SetSel(MAKELONG(0,-1));
+            m_pEdit->SetSel((DWORD)MAKELONG(0,-1));
         }
 
         m_dwBtnState = WndState_Normal;
