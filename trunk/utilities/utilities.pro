@@ -22,8 +22,6 @@ else{
     CONFIG += staticlib
 }
 
-PRECOMPILED_HEADER = stdafx.h
-
 
 # Input
 HEADERS += include/gdialpha.h \
