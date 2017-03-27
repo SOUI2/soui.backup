@@ -32,7 +32,7 @@ public:                                                 \
 	static int GetClassType()                           \
     {                                                   \
         int ret = clsType;                              \
-		if(ret == 0)                                    \
+		if(ret == Undef)                                \
 			ret = __super::GetClassType();              \
 		return ret;                                     \
     }                                                   \
@@ -45,6 +45,14 @@ public:                                                 \
 	virtual LPCWSTR GetObjectClass()  const             \
 	{                                                   \
 		return classname;                               \
+	}                                                   \
+	\
+	virtual int GetObjectType()  const              \
+	{                                                   \
+        int ret = clsType;                              \
+		if(ret == Undef)                                \
+			ret = __super::GetObjectType();             \
+		return ret;                                     \
 	}                                                   \
 	\
 	virtual BOOL IsClass(LPCWSTR lpszName) const        \
@@ -113,6 +121,14 @@ namespace SOUI
          * Describe  这是一个虚函数，注意与GetClassName的区别。
          */    
         virtual LPCWSTR GetObjectClass() const = 0;
+
+        /**
+         * GetObjectType
+         * @brief    获得对象类型
+         * @return   int -- 对象类型
+         * Describe  这是一个虚函数，注意与GetClassType的区别。
+         */    
+		virtual int GetObjectType()  const = 0;
 
 
         virtual HRESULT SetAttribute(const char*  strAttribName, const char*  strValue, BOOL bLoading) = 0;
