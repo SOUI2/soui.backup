@@ -13,7 +13,7 @@
 */
 
 #pragma once
-#include "../utilities-def.h"
+#include "utilities-def.h"
 
 #include "string/tstring.h"
 #include "pugixml/pugixml.hpp"
