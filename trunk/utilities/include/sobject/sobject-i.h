@@ -32,7 +32,7 @@ public:                                                 \
 	static int GetClassType()                           \
     {                                                   \
         int ret = clsType;                              \
-		if(ret == Undef)                                \
+		if(ret == SOUI::Undef)                                \
 			ret = __super::GetClassType();              \
 		return ret;                                     \
     }                                                   \
@@ -50,7 +50,7 @@ public:                                                 \
 	virtual int GetObjectType()  const              \
 	{                                                   \
         int ret = clsType;                              \
-		if(ret == Undef)                                \
+		if(ret == SOUI::Undef)                                \
 			ret = __super::GetObjectType();             \
 		return ret;                                     \
 	}                                                   \
