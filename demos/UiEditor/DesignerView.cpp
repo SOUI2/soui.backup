@@ -86,8 +86,21 @@ BOOL SDesignerView::OpenProject(SStringT strFileName)
 	}
 	SApplication::getSingletonPtr()->AddResProvider(pResProvider,NULL);//param2 = null时不自动加载uidef
 
+	SStringT strXMLInit;
+	pugi::xml_node xmlNode = m_xmlDocUiRes.child(_T("resource")).child(_T("UIDEF")).child(_T("file"));
+
+	if (xmlNode)
+	{
+		strXMLInit = xmlNode.attribute(_T("name")).as_string();
+	}
+
+	if (strXMLInit.IsEmpty())
+	{
+		strXMLInit = _T("xml_init");
+	}
+
 	//将皮肤中的uidef保存起来.
-	m_pUiDef.Attach(SUiDef::getSingleton().CreateUiDefInfo(pResProvider,_T("uidef:xml_init")));
+	m_pUiDef.Attach(SUiDef::getSingleton().CreateUiDefInfo(pResProvider,_T("uidef:") + strXMLInit));
 
 	m_pOldUiDef = SUiDef::getSingleton().GetUiDef();
 
