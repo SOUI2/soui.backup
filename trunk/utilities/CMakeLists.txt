@@ -26,6 +26,5 @@ endif()
 # add_library(utilities SHARED ${CURRENT_SRCS} ${CURRENT_HEADERS})
 
 set_target_properties(utilities PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
-cotire(utilities)
 
 set(CORE_LIBS ${CORE_LIBS} utilities CACHE INTERNAL "core_lib")
