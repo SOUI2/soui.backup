@@ -24,7 +24,7 @@ namespace SOUI
 #endif
 
 //! base micro.
-#define LOG_STREAM(id_or_name, filter, level,  log)\
+#define SOUI_LOG_STREAM(id_or_name, filter, level,  log)\
     do{\
 		SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingleton().GetLogManager(); \
 		char logBuf[LOG4Z_LOG_BUF_SIZE];\
@@ -42,13 +42,13 @@ namespace SOUI
 
 
 //! fast micro
-#define LOG_TRACE(id_or_name, filter, log) LOG_STREAM(id_or_name, filter, LOG_LEVEL_TRACE, log)
-#define LOG_DEBUG(id_or_name, filter, log) LOG_STREAM(id_or_name, filter, LOG_LEVEL_DEBUG, log)
-#define LOG_INFO(id_or_name, filter, log)  LOG_STREAM(id_or_name, filter, LOG_LEVEL_INFO, log)
-#define LOG_WARN(id_or_name, filter, log)  LOG_STREAM(id_or_name, filter, LOG_LEVEL_WARN, log)
-#define LOG_ERROR(id_or_name, filter, log) LOG_STREAM(id_or_name, filter, LOG_LEVEL_ERROR, log)
-#define LOG_ALARM(id_or_name, filter, log) LOG_STREAM(id_or_name, filter, LOG_LEVEL_ALARM, log)
-#define LOG_FATAL(id_or_name, filter, log) LOG_STREAM(id_or_name, filter, LOG_LEVEL_FATAL, log)
+#define LOG_TRACE(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_TRACE, log)
+#define LOG_DEBUG(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_DEBUG, log)
+#define LOG_INFO(id_or_name, filter, log)  SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_INFO, log)
+#define LOG_WARN(id_or_name, filter, log)  SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_WARN, log)
+#define LOG_ERROR(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_ERROR, log)
+#define LOG_ALARM(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_ALARM, log)
+#define LOG_FATAL(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_FATAL, log)
 
 //! super micro.
 #define LOGT(filter, log ) LOG_TRACE(LOG4Z_MAIN_LOGGER_ID,filter, log )
