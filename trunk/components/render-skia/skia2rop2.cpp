@@ -1,4 +1,3 @@
-#include "stdafx.h"
 
 #include "skia2rop2.h"
 #include <core/skcolorpriv.h>

@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "GradientFillHelper.h"
 #include <Wingdi.h>
 #pragma comment(lib,"msimg32.lib")

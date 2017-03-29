@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include <core\SkShader.h>
 #include <core\SkDevice.h>
 #include <effects\SkDashPathEffect.h>
@@ -16,6 +14,8 @@
 #include "trace.h"
 
 #include "skia2rop2.h"
+#include <tchar.h>
+#include <algorithm>
 
 #define getTotalClip internal_private_getTotalClip
 // #include <vld.h>
@@ -560,8 +560,8 @@ namespace SOUI
         SkBitmap bmp=pBmp->GetSkBitmap();
 
         SIZE szBmp = pBmp->Size();
-        int nWid= min(pRcDest->right-pRcDest->left,szBmp.cx);
-        int nHei= min(pRcDest->bottom-pRcDest->top,szBmp.cy);
+        int nWid= (std::min)(pRcDest->right-pRcDest->left,szBmp.cx);
+        int nHei= (std::min)(pRcDest->bottom-pRcDest->top,szBmp.cy);
 
         RECT rcSrc={xSrc,ySrc,xSrc+nWid,ySrc+nHei};
         RECT rcDst={pRcDest->left,pRcDest->top,pRcDest->left+nWid,pRcDest->top+nHei};
@@ -1177,7 +1177,7 @@ namespace SOUI
         bmi.bmiHeader.biSizeImage   = 0;
 
         HDC hdc=GetDC(NULL);
-        LPVOID pBits=NULL;
+        //LPVOID pBits=NULL;
         HBITMAP hBmp=CreateDIBSection(hdc,&bmi,DIB_RGB_COLORS,ppBits,0,0);
         ReleaseDC(NULL,hdc);
         return hBmp;
@@ -1201,6 +1201,41 @@ namespace SOUI
         }
 		m_bitmap.setPixels(pBmpBits);
 		return S_OK;
+	}
+
+    HRESULT SBitmap_Skia::InitEx(int nWid, int nHei, const LPVOID pBits)
+	{
+		if (m_bitmap.width() == nWid &&  m_bitmap.height() == nHei)
+		{
+			if (m_hBmp)
+			{
+				DeleteObject(m_hBmp);
+				m_hBmp = NULL;
+			}
+
+			m_bitmap.setPixels(pBits);
+			return S_OK;
+		}
+		else
+		{
+			m_bitmap.reset();
+			m_bitmap.setInfo(SkImageInfo::Make(nWid, nHei, kN32_SkColorType, kPremul_SkAlphaType));
+			if (m_hBmp) DeleteObject(m_hBmp);
+
+			LPVOID pBmpBits = NULL;
+			m_hBmp = CreateGDIBitmap(nWid, nHei, &pBmpBits);
+			if (!m_hBmp) return E_OUTOFMEMORY;
+			if (pBits)
+			{
+				memcpy(pBmpBits, pBits, nWid*nHei * 4);
+			}
+			else
+			{
+				memset(pBmpBits, 0, nWid*nHei * 4);
+			}
+			m_bitmap.setPixels(pBmpBits);
+			return S_OK;
+		}
 	}
 
     HRESULT SBitmap_Skia::Init( IImgFrame *pFrame )
@@ -1376,7 +1411,7 @@ namespace SOUI
 
     SkRegion::Op SRegion_Skia::RGNMODE2SkRgnOP( UINT mode )
     {
-        SkRegion::Op op;
+		SkRegion::Op op = SkRegion::kReplace_Op;
         switch(mode)
         {
         case RGN_COPY: op = SkRegion::kReplace_Op;break;
