@@ -30,15 +30,12 @@ CONFIG(x64){
 #<--下面这段代码为debug和release生成不同的文件名
 defineReplace(souiLibraryTarget) {
   unset(LIBRARY_NAME)
-   LIBRARY_NAME = $$1
-   CONFIG(debug, debug|release) {
+   LIBRARY_NAME = $$1  
       !debug_and_release|build_pass {
- CONFIG(x64){
 	LIBRARY_NAME~= s,64,,
-}
-              RET = $$LIBRARY_NAME
+	RET = $$LIBRARY_NAME
       }
-   }
+ 
    isEmpty(RET):RET = $$LIBRARY_NAME
    return($$RET)
 }
