@@ -2,8 +2,7 @@
 #include "skia2rop2.h"
 #include <core/skcolorpriv.h>
 #include <src/core/SkReadBuffer.h>
-
-#define SK_RESTRICT
+#include <include/core/SkPreConfig.h>
 
 // 扩展Skia, 实现Rop2操作
 static SkPMColor rdRop2Proc_Clear(SkPMColor src, SkPMColor dst)
@@ -137,9 +136,9 @@ ProcXfermode::ProcXfermode( int rop ) : rop2(rop)
     }
 }
 
-void ProcXfermode::xfer32(SK_RESTRICT SkPMColor dst[],
-                          const SK_RESTRICT SkPMColor src[], int count,
-                          const SK_RESTRICT SkAlpha aa[]) const 
+void ProcXfermode::xfer32( SkPMColor  dst[],
+                          const  SkPMColor  src[], int count,
+                          const  SkAlpha  aa[]) const 
 {
     SkASSERT(dst && src && count >= 0);
     SkXfermodeProc proc = fProc;
@@ -163,9 +162,9 @@ void ProcXfermode::xfer32(SK_RESTRICT SkPMColor dst[],
         }
     }
 }
-void ProcXfermode::xfer16(SK_RESTRICT uint16_t dst[],
-                          const SK_RESTRICT SkPMColor src[], int count,
-                          const SK_RESTRICT SkAlpha aa[]) const
+void ProcXfermode::xfer16( uint16_t dst[],
+                          const  SkPMColor src[], int count,
+                          const  SkAlpha aa[]) const
 {
     SkASSERT(dst && src && count >= 0);
     SkXfermodeProc proc = fProc;
@@ -191,9 +190,9 @@ void ProcXfermode::xfer16(SK_RESTRICT uint16_t dst[],
     }
 }
 
-void ProcXfermode::xferA8(SK_RESTRICT SkAlpha dst[],
-                          const SK_RESTRICT SkPMColor src[], int count,
-                          const SK_RESTRICT SkAlpha aa[]) const
+void ProcXfermode::xferA8( SkAlpha dst[],
+                          const  SkPMColor src[], int count,
+                          const  SkAlpha aa[]) const
 {
     SkASSERT(dst && src && count >= 0);
     SkXfermodeProc proc = fProc;
