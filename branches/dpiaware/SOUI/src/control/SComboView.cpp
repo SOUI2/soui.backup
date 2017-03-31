@@ -1,5 +1,6 @@
 #include "souistd.h"
 #include "control\SComboView.h"
+#include <algorithm>
 
 namespace SOUI
 {
@@ -40,7 +41,7 @@ namespace SOUI
         {
             IListViewItemLocator * pItemLocator = m_pListBox->GetItemLocator();
             SASSERT(pItemLocator);
-            nDropHeight = min(nDropHeight,pItemLocator->GetTotalHeight()+m_pListBox->GetStyle().m_rcMargin.top + m_pListBox->GetStyle().m_rcMargin.bottom);
+            nDropHeight = (std::min)(nDropHeight,(int)(pItemLocator->GetTotalHeight()+m_pListBox->GetStyle().m_rcMargin.top + m_pListBox->GetStyle().m_rcMargin.bottom));
         }
         return nDropHeight;    
     }

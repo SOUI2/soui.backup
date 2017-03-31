@@ -4,7 +4,9 @@
 
 TEMPLATE = lib
 TARGET = soui
-
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 !LIB_ALL:!LIB_CORE{
     DEFINES += SOUI_EXPORTS
 	RC_FILE += soui.rc
@@ -36,7 +38,7 @@ INCLUDEPATH += . \
 
 # Input
 HEADERS += include/SApp.h \
-		   include/soui-version.h \
+           include/soui-version.h \
            include/activex/SBStr.h \
            include/control/SActiveX.h \
            include/control/SCalendar.h \
@@ -81,14 +83,13 @@ HEADERS += include/SApp.h \
            include/core/SSingletonMap.h \
            include/core/SSkinObjBase.h \
            include/core/SSkin.h \
-           include/core/SSkinFactoryMgr.h \
            include/core/SWindowMgr.h \
            include/core/Swnd.h \
            include/core/SwndContainer-i.h \
            include/core/SwndContainerImpl.h \
-           include/core/SwndFactoryMgr.h \
            include/core/SwndStyle.h \
            include/core/scaret.h \
+           include/core/SObjectFactory.h \
            include/event/eventcrack.h \
            include/event/Events.h \
            include/event/EventSet.h \
@@ -135,7 +136,7 @@ HEADERS += include/SApp.h \
            include/interface/slayout-i.h \
            include/layout/SLinearLayoutParamStruct.h \
            include/layout/SLinearLayout.h \
-           include/layout/SouiLaoutParamStruct.h \
+           include/layout/SouiLayoutParamStruct.h \
            include/layout/SouiLayout.h \
            include/layout/SLayoutSize.h \
            include/res.mgr/SUiDef.h \
@@ -152,7 +153,7 @@ HEADERS += include/SApp.h \
            include/activex/flash10t.tlh \
            include/activex/flash10t.tli \
            include/activex/wmp.tlh
-		   
+           
 SOURCES += src/SApp.cpp \
            src/activex/SAxContainer.cpp \
            src/activex/SBStr.cpp \
@@ -191,13 +192,12 @@ SOURCES += src/SApp.cpp \
            src/core/SMsgLoop.cpp \
            src/core/SPanel.cpp \
            src/core/SSkin.cpp \
-           src/core/SSkinFactoryMgr.cpp \
            src/core/SWindowMgr.cpp \
            src/core/Swnd.cpp \
            src/core/SwndContainerImpl.cpp \
-           src/core/SWndFactoryMgr.cpp \
            src/core/SwndStyle.cpp \
            src/core/scaret.cpp \
+           src/core/SObjectFactory.cpp \
            src/layout/SLinearLayout.cpp \
            src/layout/SouiLayout.cpp \
            src/layout/SLayoutSize.cpp \
@@ -217,6 +217,7 @@ SOURCES += src/SApp.cpp \
            src/helper/smenuex.cpp \
            src/helper/smatrix.cpp \
            src/helper/sdibhelper.cpp \
+           src/helper/slog.cpp \
            src/res.mgr/SUiDef.cpp \
            src/res.mgr/SFontPool.cpp \
            src/res.mgr/SObjDefAttr.cpp \

@@ -70,7 +70,7 @@ namespace SOUI{
 
 	class SouiLayout: public SObjectImpl<TObjRefImpl<ILayout>>
 	{
-		SOUI_CLASS_NAME(SouiLayout,L"SouiLayout")
+		SOUI_CLASS_NAME_EX(SouiLayout,L"SouiLayout",Layout)
 
 	public:
 		SouiLayout(void);

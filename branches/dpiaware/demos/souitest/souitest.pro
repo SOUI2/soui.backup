@@ -4,7 +4,9 @@
 
 TEMPLATE = app
 TARGET = souitest
-
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 DEPENDPATH += .
 INCLUDEPATH += . \
 			   ../../utilities/include \
@@ -26,6 +28,8 @@ else{
 CONFIG += console
 
 # Input
-SOURCES += souitest.cpp
+SOURCES += souitest.cpp \
+           slog-test.cpp
+
 
 

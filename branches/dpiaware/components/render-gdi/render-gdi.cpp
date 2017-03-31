@@ -1,12 +1,14 @@
 // render-gdi.cpp : Defines the exported functions for the DLL application.
 //
 
-#include "stdafx.h"
 #include "render-gdi.h"
 #include "GradientFillHelper.h"
 #include <gdialpha.h>
 #include <math.h>
 #include <trace.h>
+#include <tchar.h>
+#include <algorithm>
+
 namespace SOUI
 {
 
@@ -77,6 +79,36 @@ namespace SOUI
         }
         return m_hBmp?S_OK:E_OUTOFMEMORY;
     }
+
+    HRESULT SBitmap_GDI::InitEx(int nWid, int nHei, const LPVOID pBits)
+	{
+		if (m_sz.cx == nWid  && m_sz.cy == nHei && m_hBmp)
+		{
+			const int stride = m_sz.cx * 4;
+			::SetBitmapBits(m_hBmp, stride*m_sz.cy, pBits);
+		}
+		else
+		{
+			LPVOID pBmpBits = NULL;
+			m_hBmp = CreateGDIBitmap(nWid, nHei, &pBmpBits);
+			if (m_hBmp)
+			{
+				m_sz.cx = nWid, m_sz.cy = nHei;
+				const int stride = m_sz.cx * 4;
+				if (pBits)
+				{
+					memcpy(pBmpBits, pBits, stride*m_sz.cy);
+				}
+				else
+				{
+					memset(pBmpBits, 0, stride*m_sz.cy);
+				}
+			}
+		}
+
+		return m_hBmp ? S_OK : E_OUTOFMEMORY;
+	}
+
 
     HRESULT SBitmap_GDI::Init(IImgFrame *pFrame )
     {
@@ -308,6 +340,7 @@ namespace SOUI
 			}
             BLENDFUNCTION bf={AC_SRC_OVER,0,m_byAlpha,AC_SRC_ALPHA };
             BOOL bRet=::AlphaBlend(m_hdc,m_pRc->left,m_pRc->top,m_nWid,m_nHei,m_hMemDC,m_pRc->left,m_pRc->top,m_nWid,m_nHei,bf);
+			(void)bRet;
             ::DeleteDC(m_hMemDC);
             ::DeleteObject(m_hBmp);
             
@@ -644,8 +677,8 @@ namespace SOUI
         SIZE szBmp = pBmp->Size();
         
         BLENDFUNCTION bf={ AC_SRC_OVER,0,byAlpha,AC_SRC_ALPHA};
-        int nWid= min(pRcDest->right-pRcDest->left,szBmp.cx);
-        int nHei= min(pRcDest->bottom-pRcDest->top,szBmp.cy);
+        int nWid= (std::min)(pRcDest->right-pRcDest->left,szBmp.cx);
+        int nHei= (std::min)(pRcDest->bottom-pRcDest->top,szBmp.cy);
         
         BOOL bOK=::AlphaBlend(m_hdc,pRcDest->left,pRcDest->top,nWid,nHei,
                    hmemdc,xSrc,ySrc,nWid,nHei,bf);
@@ -929,7 +962,7 @@ namespace SOUI
 
         SColor color(cr);
         DWORD dwColor=color.toARGB();
-        LPDWORD p=pBits;
+        //LPDWORD p=pBits;
         for(int i=0;i<nHei;i++)for(int j=0;j<nWid;j++) *pBits++ = dwColor;
         ::BitBlt(m_hdc,pRect->left,pRect->top,nWid,nHei,hMemDC,0,0,SRCCOPY);
         ::DeleteDC(hMemDC);

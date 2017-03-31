@@ -63,7 +63,7 @@ namespace SOUI
 
     class SLinearLayout : public SObjectImpl<TObjRefImpl<ILayout>>
     {
-		SOUI_CLASS_NAME(SLinearLayout,L"linearLayout")
+		SOUI_CLASS_NAME_EX(SLinearLayout,L"linearLayout",Layout)
     public:
         SLinearLayout(void);
         ~SLinearLayout(void);

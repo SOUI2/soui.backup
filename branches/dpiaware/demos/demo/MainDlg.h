@@ -192,6 +192,8 @@ protected:
 	bool OnEventThreadStart(EventArgs *e);
 	bool OnEventThreadStop(EventArgs *e);
 	bool OnEventThread(EventArgs *e);
+	void OnBtnOpenWrapContent();
+
 	HRESULT OnSkinChangeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL bHandled);
     //UI控件的事件及响应函数映射表
 	EVENT_MAP_BEGIN()
@@ -214,6 +216,7 @@ protected:
 		EVENT_ID_COMMAND(R.id.btn_skin,OnBtnSkin)
 		EVENT_ID_COMMAND(R.id.btn_start_notify_thread,OnBtnStartNotifyThread)
 		EVENT_ID_COMMAND(R.id.btn_stop_notify_thread,OnBtnStopNotifyThread)
+		EVENT_ID_COMMAND(R.id.btn_open_wrap_content,OnBtnOpenWrapContent)
         //-->
 		//<--通知中心事件
 		EVENT_ID_HANDLER(SENDER_ID,EventThreadStart::EventID,OnEventThreadStart)
@@ -261,7 +264,6 @@ protected:
     void InitListCtrl();
 
 	virtual bool SaveSkin(SkinType skinType, SkinSaveInf & skinSaveInf);
-
 
 private:
 	BOOL			m_bLayoutInited;/**<UI完成布局标志 */

@@ -14,6 +14,9 @@
 
 TEMPLATE = lib
 TARGET = skia
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 CONFIG += staticlib
 
 INCLUDEPATH += . \

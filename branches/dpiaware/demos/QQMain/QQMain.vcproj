@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="QQMain"
-	ProjectGUID="{16C78CAC-DE9D-3CF6-9DBF-E51419B002ED}"
+	ProjectGUID="{B4573D6E-D8E6-35B2-9323-15FE207EFB52}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

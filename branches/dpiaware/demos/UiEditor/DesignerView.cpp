@@ -86,8 +86,21 @@ BOOL SDesignerView::OpenProject(SStringT strFileName)
 	}
 	SApplication::getSingletonPtr()->AddResProvider(pResProvider,NULL);//param2 = null时不自动加载uidef
 
+	SStringT strXMLInit;
+	pugi::xml_node xmlNode = m_xmlDocUiRes.child(_T("resource")).child(_T("UIDEF")).child(_T("file"));
+
+	if (xmlNode)
+	{
+		strXMLInit = xmlNode.attribute(_T("name")).as_string();
+	}
+
+	if (strXMLInit.IsEmpty())
+	{
+		strXMLInit = _T("xml_init");
+	}
+
 	//将皮肤中的uidef保存起来.
-	m_pUiDef.Attach(SUiDef::getSingleton().CreateUiDefInfo(pResProvider,_T("uidef:xml_init")));
+	m_pUiDef.Attach(SUiDef::getSingleton().CreateUiDefInfo(pResProvider,_T("uidef:") + strXMLInit));
 
 	m_pOldUiDef = SUiDef::getSingleton().GetUiDef();
 
@@ -299,7 +312,7 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 	}
 
 	//wchar_t *s = L"<window pos=\"20,20,@500,@500\" colorBkgnd=\"#d0d0d0\"></window>";
-	wchar_t *s3 = L"<movewnd pos=\"20,20,@500,@500\" ></movewnd>";
+	const wchar_t *s3 = L"<movewnd pos=\"20,20,@500,@500\" ></movewnd>";
 
 	////创建布局窗口的根窗口
 
@@ -365,7 +378,7 @@ void SDesignerView::CreateAllChildWnd(SWindow *pRealWnd, SMoveWnd *pMoveWnd)
 	SWindow *pSibReal = pRealWnd->GetWindow(GSW_FIRSTCHILD);
 	for (; pSibReal; pSibReal = pSibReal->GetWindow(GSW_NEXTSIBLING))
 	{
-		wchar_t *s1 = L"<movewnd pos=\"0,0,@100,@100\" ></movewnd>";
+		const wchar_t *s1 = L"<movewnd pos=\"0,0,@100,@100\" ></movewnd>";
 		//创建布局窗口的根窗口
 		SMoveWnd *pSibMove = (SMoveWnd *)pMoveWnd->CreateChildren(s1);
 		pSibMove->m_pRealWnd = pSibReal;
@@ -1537,8 +1550,22 @@ void SDesignerView::RefreshRes()
 	}
 	SApplication::getSingletonPtr()->AddResProvider(pResProvider1,NULL);
 
+	SStringT strXMLInit;
+	pugi::xml_node xmlNode = m_xmlDocUiRes.child(_T("resource")).child(_T("UIDEF")).child(_T("file"));
+
+	if (xmlNode)
+	{
+		strXMLInit = xmlNode.attribute(_T("name")).as_string();
+	}
+
+	if (strXMLInit.IsEmpty())
+	{
+		strXMLInit = _T("xml_init");
+	}
+
 	//将皮肤中的uidef保存起来.
-	m_pUiDef.Attach(SUiDef::getSingleton().CreateUiDefInfo(pResProvider1,_T("uidef:xml_init")));
+	m_pUiDef.Attach(SUiDef::getSingleton().CreateUiDefInfo(pResProvider1,_T("uidef:") + strXMLInit));
+
 }
 
 
@@ -1744,7 +1771,7 @@ BOOL SDesignerView::ReLoadLayout()
 	}
 
 	//wchar_t *s = L"<window pos=\"20,20,@500,@500\" colorBkgnd=\"#d0d0d0\"></window>";
-	wchar_t *s3 = L"<movewnd pos=\"20,20,@500,@500\" ></movewnd>";
+	const wchar_t *s3 = L"<movewnd pos=\"20,20,@500,@500\" ></movewnd>";
 
 	////创建布局窗口的根窗口
 

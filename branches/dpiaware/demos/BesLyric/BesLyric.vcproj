@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="BesLyric"
-	ProjectGUID="{51EB3F8E-C07B-3F8A-A44F-8565A450382D}"
+	ProjectGUID="{7D39B015-D77E-3FBF-9985-E403A232207F}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
