@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Render-Skia2.h"
 
 namespace SOUI

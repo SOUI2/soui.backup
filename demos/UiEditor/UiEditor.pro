@@ -4,7 +4,9 @@
 
 TEMPLATE = app
 TARGET = UiEditor
-
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 INCLUDEPATH += . \
 		../../utilities/include \
 		../../soui/include \

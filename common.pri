@@ -13,18 +13,36 @@ else{
 CONFIG(debug, debug|release) {
 	OBJECTS_DIR =   $$dir/obj/debug/$$TARGET
 	DESTDIR = $$dir/bin
+CONFIG(x64){
+	DESTDIR = $$DESTDIR"64"
+}	
 	QMAKE_LIBDIR += $$DESTDIR
 }
 else {
 	OBJECTS_DIR =   $$dir/obj/release/$$TARGET
 	DESTDIR = $$dir/bin
+CONFIG(x64){
+	DESTDIR = $$DESTDIR"64"
+}
 	QMAKE_LIBDIR += $$DESTDIR
 }
 
 #<--下面这段代码为debug和release生成不同的文件名
+defineReplace(souiLibraryTarget) {
+  unset(LIBRARY_NAME)
+   LIBRARY_NAME = $$1  
+      !debug_and_release|build_pass {
+	LIBRARY_NAME~= s,64,,
+	RET = $$LIBRARY_NAME
+      }
+ 
+   isEmpty(RET):RET = $$LIBRARY_NAME
+   return($$RET)
+}
+
 SAVE_TEMPLATE = $$TEMPLATE
 TEMPLATE = fakelib
-TARGET = $$qtLibraryTarget($$TARGET)
+TARGET = $$qtLibraryTarget($$souiLibraryTarget($$TARGET))
 TEMPLATE = $$SAVE_TEMPLATE
 #-->
 

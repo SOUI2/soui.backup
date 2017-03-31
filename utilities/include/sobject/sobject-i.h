@@ -13,7 +13,7 @@
 */
 
 #pragma once
-#include "../utilities-def.h"
+#include "utilities-def.h"
 
 #include "string/tstring.h"
 #include "pugixml/pugixml.hpp"
@@ -22,14 +22,22 @@
 //////////////////////////////////////////////////////////////////////////
 
 // SObject Class Name Declaration
-#define SOUI_CLASS_NAME(theclass, classname)            \
+#define SOUI_CLASS_NAME_EX(theclass, classname,clsType) \
 public:                                                 \
     static LPCWSTR GetClassName()                       \
     {                                                   \
         return classname;                               \
     }                                                   \
     \
-	static LPCWSTR BaseClassName()                      \
+	static int GetClassType()                           \
+    {                                                   \
+        int ret = clsType;                              \
+		if(ret == SOUI::Undef)                                \
+			ret = __super::GetClassType();              \
+		return ret;                                     \
+    }                                                   \
+    \
+    static LPCWSTR BaseClassName()                      \
 	{                                                   \
 		return __super::GetClassName();                 \
 	}                                                   \
@@ -37,6 +45,14 @@ public:                                                 \
 	virtual LPCWSTR GetObjectClass()  const             \
 	{                                                   \
 		return classname;                               \
+	}                                                   \
+	\
+	virtual int GetObjectType()  const              \
+	{                                                   \
+        int ret = clsType;                              \
+		if(ret == SOUI::Undef)                                \
+			ret = __super::GetObjectType();             \
+		return ret;                                     \
 	}                                                   \
 	\
 	virtual BOOL IsClass(LPCWSTR lpszName) const        \
@@ -47,9 +63,20 @@ public:                                                 \
 	}                                                   \
 
 
+#define SOUI_CLASS_NAME(theclass, classname) \
+	SOUI_CLASS_NAME_EX(theclass,classname,0)
 
 namespace SOUI
 {
+
+	enum SObjectType
+	{
+		None = -1,
+		Undef = 0,
+		Window,
+		Skin,
+		Layout,
+	};
 
 	/**
 	* @class      SObject
@@ -61,11 +88,19 @@ namespace SOUI
     {
         /**
          * GetClassName
-         * @brief    获得类名
+         * @brief    获得对象类型名称
          * @return   LPCWSTR -- 类名
          * Describe  静态函数
          */    
 		static LPCWSTR GetClassName(){return L"object";}
+
+		/**
+		* GetClassType
+		* @brief    获得对象类型
+		* @return   int -- 类型
+		* Describe  静态函数
+		*/
+		static int     GetClassType() { return None; }
 
 		virtual ~IObject(){}
 
@@ -86,6 +121,14 @@ namespace SOUI
          * Describe  这是一个虚函数，注意与GetClassName的区别。
          */    
         virtual LPCWSTR GetObjectClass() const = 0;
+
+        /**
+         * GetObjectType
+         * @brief    获得对象类型
+         * @return   int -- 对象类型
+         * Describe  这是一个虚函数，注意与GetClassType的区别。
+         */    
+		virtual int GetObjectType()  const = 0;
 
 
         virtual HRESULT SetAttribute(const char*  strAttribName, const char*  strValue, BOOL bLoading) = 0;

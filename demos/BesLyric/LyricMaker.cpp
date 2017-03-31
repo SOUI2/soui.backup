@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "LyricMaker.h"
 #include "FileHelper.h"
-#include <mmsystem.h> 
 #pragma comment (lib, "winmm.lib")
 
 LyricMaker::LyricMaker():

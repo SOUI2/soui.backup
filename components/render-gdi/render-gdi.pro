@@ -4,7 +4,9 @@
 
 TEMPLATE = lib
 TARGET = render-gdi
-
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 !LIB_ALL:!COM_LIB{
 	RC_FILE += render-gdi.rc
 	CONFIG += dll

@@ -1,5 +1,6 @@
 #include "souistd.h"
 #include "helper/SDIBHelper.h"
+#include <algorithm>
 
 #define RGB2GRAY(r,g,b) (((b)*117 + (g)*601 + (r)*306) >> 10)
 
@@ -7,8 +8,8 @@ namespace SOUI
 {
     struct DIBINFO{
         LPBYTE  pBits;
-        int     nWid;
-        int     nHei;
+        UINT     nWid;
+		UINT     nHei;
     };
 
 	// ------------------------------------------------------------
@@ -77,8 +78,8 @@ namespace SOUI
         G = lRGBColor.rgbGreen;
         B = lRGBColor.rgbBlue;
 
-        cMax = max( max(R,G), B);	/* calculate lightness */
-        cMin = min( min(R,G), B);
+        cMax = (std::max)( (std::max)(R,G), B);	/* calculate lightness */
+        cMin = (std::min)( (std::min)(R,G), B);
         L = (BYTE)((((cMax+cMin)*HSLMAX)+RGBMAX)/(2*RGBMAX));
 
         if (cMax==cMin){			/* r=g=b --> achromatic case */
@@ -263,8 +264,8 @@ namespace SOUI
     COLORREF CalcAvarageRectColor(const DIBINFO &di, RECT rc)
     {
         LPBYTE pLine= di.pBits + di.nWid * rc.top *4;
-        if(rc.right > di.nWid) rc.right=di.nWid;
-        if(rc.bottom > di.nHei) rc.bottom = di.nHei;
+        if(rc.right > (int)di.nWid) rc.right=di.nWid;
+        if(rc.bottom > (int)di.nHei) rc.bottom = di.nHei;
         int nWid = rc.right-rc.left;
         int nHei = rc.bottom -rc.top;
         

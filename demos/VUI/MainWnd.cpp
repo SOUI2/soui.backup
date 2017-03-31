@@ -5,7 +5,7 @@
 
 #include<string>
 #include<iostream>
-
+#include <ShellAPI.h>
 
 CMainWnd::CMainWnd(void) : SHostWnd(_T("LAYOUT:XML_MAINWND"))
 {

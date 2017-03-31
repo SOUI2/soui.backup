@@ -57,6 +57,7 @@
           <button size="100,30" extend_left="10">button3</button>
           <button size="100,30" extend_left="10">button4</button>
         </window>
+        <button size="-1,-1" padding="10,5,10,5" name="btn_open_wrap_content" extend_top="10">打开自适应大小窗口</button>
       </window>
     </page>
   </tabctrl>

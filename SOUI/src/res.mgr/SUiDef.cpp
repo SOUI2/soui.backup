@@ -104,12 +104,12 @@ namespace SOUI{
 					FONTSTYLE fontStyle(0);
 					if(xmlFont)
 					{
-						fontStyle.cSize=xmlFont.attribute(L"size").as_int(12);
-						fontStyle.byCharset =(BYTE)xmlFont.attribute(L"charset").as_int(DEFAULT_CHARSET);
-						fontStyle.fBold = xmlFont.attribute(L"bold").as_bool(false);
-						fontStyle.fUnderline = xmlFont.attribute(L"underline").as_bool(false);
-						fontStyle.fStrike = xmlFont.attribute(L"strike").as_bool(false);
-						fontStyle.fItalic = xmlFont.attribute(L"italic").as_bool(false);
+						fontStyle.attr.cSize=xmlFont.attribute(L"size").as_int(12);
+						fontStyle.attr.byCharset =(BYTE)xmlFont.attribute(L"charset").as_int(DEFAULT_CHARSET);
+						fontStyle.attr.fBold = xmlFont.attribute(L"bold").as_bool(false);
+						fontStyle.attr.fUnderline = xmlFont.attribute(L"underline").as_bool(false);
+						fontStyle.attr.fStrike = xmlFont.attribute(L"strike").as_bool(false);
+						fontStyle.attr.fItalic = xmlFont.attribute(L"italic").as_bool(false);
 						
 						defFontInfo.dwStyle = fontStyle.dwStyle;
 						defFontInfo.strFaceName = S_CW2T(xmlFont.attribute(L"face").value());
@@ -120,8 +120,8 @@ namespace SOUI{
 						}
 					}else
 					{
-						fontStyle.cSize = 12;
-						fontStyle.byCharset =DEFAULT_CHARSET;
+						fontStyle.attr.cSize = 12;
+						fontStyle.attr.byCharset =DEFAULT_CHARSET;
 
 						defFontInfo.dwStyle = fontStyle.dwStyle;
 						defFontInfo.strFaceName = KDefFontFace;

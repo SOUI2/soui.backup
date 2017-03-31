@@ -51,7 +51,7 @@ namespace SOUI
     // To hold the colours and their names
     struct ColourTableEntry{
         COLORREF crColour;
-        TCHAR    *szName;
+        const TCHAR    *szName;
     } g_colorTable[] = 
 {
   /*  { RGB(0x00, 0x00, 0x00),    _T("Black")             },

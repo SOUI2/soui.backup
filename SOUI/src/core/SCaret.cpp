@@ -25,7 +25,8 @@ namespace SOUI{
         else
         {
             //创建一个黑色插入符的位图
-            pRT->FillSolidRect(&CRect(0,0,nWidth,nHeight),RGBA(0,0,0,0xFF));
+			CRect rc(0, 0, nWidth, nHeight);
+			pRT->FillSolidRect(&rc, RGBA(0, 0, 0, 0xFF));
         }
     }
 

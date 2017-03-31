@@ -29,6 +29,7 @@
     <symbol name="WIN_STYLES_DLG" type="radio" value="true"></symbol>
     <!-- 系统资源编译到EXE中。-->
     <symbol name='CHECKBOX_SYSRES_BUILTIN' type=checkbox value=false></symbol>
+     <symbol name='CHECKBOX_RES_PE' type=checkbox value=true></symbol>
     <!-- 主窗口半透明。-->
     <symbol name='CHECKBOX_TRANSLUCENT' type=checkbox value=true></symbol>
     <!--编译选项-->
@@ -288,6 +289,11 @@
                                                 </span>
                                             </li>
                                             <li class="LIST">
+                                                <span class="SideBtnHidden" id="USERRES_SUMMARY" title="">
+                                                    <label for="USERRES_SUMMARY"></label>
+                                                </span>
+                                            </li>
+                                            <li class="LIST">
                                                 <span class="SideBtnHidden" id="TRANSLUCENT_SUMMARY" title="">
                                                     <label for="TRANSLUCENT_SUMMARY"></label>
                                                 </span>
@@ -434,6 +440,15 @@
         else {
             L_SYSRES_Text = "从系统资源DLL中加载系统资源";
             SYSRES_SUMMARY.innerText = L_SYSRES_Text;
+        }
+
+        if (window.external.FindSymbol("CHECKBOX_RES_PE")) {
+            L_USERRES_Text = "将用户资源编译到EXE中";
+            USERRES_SUMMARY.innerText = L_USERRES_Text;
+        }
+        else {
+            L_USERRES_Text = "不把用户资源编译到EXE中（默认工程从文件加载资源）";
+            USERRES_SUMMARY.innerText = L_USERRES_Text;
         }
 
         if (window.external.FindSymbol("CHECKBOX_TRANSLUCENT")) {

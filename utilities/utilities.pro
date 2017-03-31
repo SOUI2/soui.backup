@@ -4,6 +4,9 @@
 
 TEMPLATE = lib
 TARGET = utilities
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 INCLUDEPATH += .
 INCLUDEPATH += ./include
 
@@ -18,8 +21,6 @@ include($$dir/common.pri)
 else{
     CONFIG += staticlib
 }
-
-PRECOMPILED_HEADER = stdafx.h
 
 
 # Input

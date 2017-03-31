@@ -4,7 +4,9 @@
 
 TEMPLATE = lib
 TARGET = imgdecoder-stb
-
+CONFIG(x64){
+TARGET = $$TARGET"64"
+}
 !LIB_ALL:!COM_LIB{
 	RC_FILE += imgdecoder-stb.rc
 	CONFIG += dll

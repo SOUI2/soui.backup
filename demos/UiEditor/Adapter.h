@@ -70,11 +70,14 @@ public:
 	{
 		for (xmlTemplate = xmlTemplate.first_child(); xmlTemplate; xmlTemplate = xmlTemplate.next_sibling())
 		{
-			//此法有待验证
+			//TODO: 此法有待验证
+			/*
 			if (static_cast<SWindowFactoryMgr*>(SApplication::getSingletonPtr())->HasKey(xmlTemplate.name()))
 			{
 				return 0;
 			}
+			*/
+
 			m_TemplateNames.Add(xmlTemplate.name());
 		}
 		return m_TemplateNames.GetCount();
