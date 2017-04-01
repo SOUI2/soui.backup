@@ -19,7 +19,8 @@ SET selected=
 SET mt=1
 SET unicode=1
 SET wchar=1
-SET supportxp=0
+SET supportxp=1
+
 rem 选择编译版本
 SET /p selected=1.选择编译版本[1=x86;2=x64]:
 if %selected%==1 (
@@ -65,7 +66,7 @@ if %selected%==1 (
  set value=!value!\VC\Auxiliary\Build\vcvarsall.bat
  ECHO Vs2017 path is:!value! 
 	call "!value!" %target%
-	goto built
+	goto toolsetxp
 )
  else if %selected%==7 (
 	SET specs=win32-msvc2005
@@ -156,6 +157,9 @@ rem 参数配置完成
 
 if %specs%==win32-msvc2017 (
 	tools\qmake2017 -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
+	if %supportxp%==1 (
+		tools\ConvertPlatformToXp -f souiprosubdir.xml
+		)
 ) else (
 	tools\qmake -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
 )
