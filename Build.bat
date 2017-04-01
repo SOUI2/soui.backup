@@ -178,7 +178,7 @@ rem 参数配置完成
 if %specs%==win32-msvc2017 (
 	tools\qmake2017 -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
 	if %targetx86andx64%==1 (
-	ECHO create x64 project
+		call !vsvarbat! x64
 		SET cfg=!cfg! x64
 		tools\qmake2017 -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += !cfg!"
 	)
@@ -187,14 +187,15 @@ if %specs%==win32-msvc2017 (
 		)
 ) else (
 	tools\qmake -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
-	if %targetx86andx64%==1 (		
+	if %targetx86andx64%==1 (
+		call !vsvarbat! x64
 		SET cfg=!cfg! x64
 		tools\qmake2017 -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += !cfg!"
 	)
 )
 
 SET /p selected=open[o], compile[c] "soui.sln" or quit(q) [o,c or q]?
-if "%selected%" == "o" (	
+if "%selected%" == "o" (
 	if %targetx86andx64%==1 (
 		soui.sln
 		soui64.sln
@@ -205,6 +206,7 @@ if "%selected%" == "o" (
 	)
 ) else if "%selected%" == "c" (
 		if %targetx86andx64%==1 (
+			call !vsvarbat! x86
 			call devenv soui.sln /Clean Debug
 			call devenv soui.sln /build Debug
 			call devenv soui.sln /Clean Release
@@ -214,7 +216,7 @@ if "%selected%" == "o" (
 			call devenv soui64.sln /build Debug
 			call devenv soui64.sln /Clean Release
 			call devenv soui64.sln /build Release
-		) else if "%target%"=="x86" (
+		) else if "%target%"=="x86" (			
 			call devenv soui.sln /Clean Debug
 			call devenv soui.sln /build Debug
 			call devenv soui.sln /Clean Release
