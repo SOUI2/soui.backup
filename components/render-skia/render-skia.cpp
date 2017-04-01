@@ -1203,41 +1203,6 @@ namespace SOUI
 		return S_OK;
 	}
 
-    HRESULT SBitmap_Skia::InitEx(int nWid, int nHei, const LPVOID pBits)
-	{
-		if (m_bitmap.width() == nWid &&  m_bitmap.height() == nHei)
-		{
-			if (m_hBmp)
-			{
-				DeleteObject(m_hBmp);
-				m_hBmp = NULL;
-			}
-
-			m_bitmap.setPixels(pBits);
-			return S_OK;
-		}
-		else
-		{
-			m_bitmap.reset();
-			m_bitmap.setInfo(SkImageInfo::Make(nWid, nHei, kN32_SkColorType, kPremul_SkAlphaType));
-			if (m_hBmp) DeleteObject(m_hBmp);
-
-			LPVOID pBmpBits = NULL;
-			m_hBmp = CreateGDIBitmap(nWid, nHei, &pBmpBits);
-			if (!m_hBmp) return E_OUTOFMEMORY;
-			if (pBits)
-			{
-				memcpy(pBmpBits, pBits, nWid*nHei * 4);
-			}
-			else
-			{
-				memset(pBmpBits, 0, nWid*nHei * 4);
-			}
-			m_bitmap.setPixels(pBmpBits);
-			return S_OK;
-		}
-	}
-
     HRESULT SBitmap_Skia::Init( IImgFrame *pFrame )
     {
         UINT uWid=0,uHei =0;
