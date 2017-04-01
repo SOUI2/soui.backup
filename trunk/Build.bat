@@ -177,9 +177,10 @@ rem 参数配置完成
 
 if %specs%==win32-msvc2017 (
 	tools\qmake2017 -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
-	if %targetx86andx64%==1 (		
+	if %targetx86andx64%==1 (
+	ECHO create x64 project
 		SET cfg=!cfg! x64
-		tools\qmake2017 -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
+		tools\qmake2017 -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += !cfg!"
 	)
 	if %supportxp%==1 (
 		tools\ConvertPlatformToXp -f souiprosubdir.xml
@@ -188,7 +189,7 @@ if %specs%==win32-msvc2017 (
 	tools\qmake -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
 	if %targetx86andx64%==1 (		
 		SET cfg=!cfg! x64
-		tools\qmake2017 -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
+		tools\qmake2017 -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += !cfg!"
 	)
 )
 
