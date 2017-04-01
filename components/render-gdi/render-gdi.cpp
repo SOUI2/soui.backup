@@ -80,36 +80,6 @@ namespace SOUI
         return m_hBmp?S_OK:E_OUTOFMEMORY;
     }
 
-    HRESULT SBitmap_GDI::InitEx(int nWid, int nHei, const LPVOID pBits)
-	{
-		if (m_sz.cx == nWid  && m_sz.cy == nHei && m_hBmp)
-		{
-			const int stride = m_sz.cx * 4;
-			::SetBitmapBits(m_hBmp, stride*m_sz.cy, pBits);
-		}
-		else
-		{
-			LPVOID pBmpBits = NULL;
-			m_hBmp = CreateGDIBitmap(nWid, nHei, &pBmpBits);
-			if (m_hBmp)
-			{
-				m_sz.cx = nWid, m_sz.cy = nHei;
-				const int stride = m_sz.cx * 4;
-				if (pBits)
-				{
-					memcpy(pBmpBits, pBits, stride*m_sz.cy);
-				}
-				else
-				{
-					memset(pBmpBits, 0, stride*m_sz.cy);
-				}
-			}
-		}
-
-		return m_hBmp ? S_OK : E_OUTOFMEMORY;
-	}
-
-
     HRESULT SBitmap_GDI::Init(IImgFrame *pFrame )
     {
         UINT nWid,nHei;
