@@ -7,6 +7,9 @@ SOUI向导 已创建此 [!output PROJECT_NAME] 项目作为起点。
 本文件概要介绍组成项目的每个文件的内容。
 
 
+license.txt
+SOUI license，发布请带上，tks！SOUI使用(MIT)协议，商业个人完全免费，使用请带上license.txt。感觉启程软件的无私！
+
 ReadMe.txt
 些项目的简要说明。
 
