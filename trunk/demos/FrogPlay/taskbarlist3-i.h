@@ -2,6 +2,9 @@
 
 #include <Shobjidl.h>
 
+#ifndef __ITaskbarList3_INTERFACE_DEFINED__
+#define __ITaskbarList3_INTERFACE_DEFINED__
+
 typedef /* [v1_enum] */ 
 enum TBPFLAG
 {	TBPF_NOPROGRESS	= 0,
@@ -106,3 +109,5 @@ public:
 		/* [in] */ __RPC__in RECT *prcClip) = 0;
 
 };
+
+#endif //__ITaskbarList3_INTERFACE_DEFINED__
