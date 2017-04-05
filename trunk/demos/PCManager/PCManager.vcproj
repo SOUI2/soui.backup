@@ -11,68 +11,6 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory="..\..\bin\"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="1"
-			ConfigurationType="1"
-			IntermediateDirectory="..\..\obj\debug\PCManager\"
-			UseOfMfc="0">
-			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\components&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
-				AssemblerListingLocation="..\..\obj\debug\PCManager\"
-				DebugInformationFormat="3"
-				DisableSpecificWarnings="4100,4101,4102,4189,4996"
-				ExceptionHandling="1"
-				ForcedIncludeFiles="stdafx.h"
-				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\obj\debug\PCManager\"
-				Optimization ="4"
-				PrecompiledHeaderFile="$(IntDir)\PCManagerd.pch"
-				PrecompiledHeaderThrough="stdafx.h"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS"
-				ProgramDataBaseFileName="$(IntDir)"
-				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				SuppressStartupBanner="true"
-				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="2"
-				WarningLevel="3" />
-			<Tool
-				Name="VCCustomBuildTool" />
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="utilitiesd.lib souid.lib"
-				AdditionalLibraryDirectories="..\..\bin,..\third-part\bass"
-				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
-				GenerateDebugInformation="true"
-				IgnoreImportLibrary="true"
-				LinkTimeCodeGeneration="0"
-				OutputFile="$(OutDir)\PCManagerd.exe"
-				ProgramDatabaseFile=""
-				SubSystem="2"
-				SuppressStartupBanner="true"
-				TargetMachine="1" />
-			<Tool
-				Name="VCManifestTool" />
-			<Tool
-				Name="VCMIDLTool"
-				DefaultCharType="0"
-				EnableErrorChecks="1"
-				WarningLevel="0" />
-			<Tool
-				Name="VCPostBuildEventTool" />
-			<Tool
-				Name="VCPreBuildEventTool" />
-			<Tool
-				Name="VCPreLinkEventTool" />
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_DEBUG" />
-		</Configuration>
-		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -82,8 +20,8 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\..\utilities\include&quot;,&quot;..\..\soui\include&quot;,&quot;..\..\components&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
+				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalOptions="/MP -w34100 -w34189 -w44996"
 				AssemblerListingLocation="..\..\obj\release\PCManager\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
@@ -94,10 +32,9 @@
 				Optimization ="1"
 				PrecompiledHeaderFile="$(IntDir)\PCManager.pch"
 				PrecompiledHeaderThrough="stdafx.h"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,NDEBUG"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST,NDEBUG"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="0"
-				RuntimeTypeInfo="false"
 				SuppressStartupBanner="true"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
@@ -109,6 +46,7 @@
 				AdditionalDependencies="utilities.lib soui.lib"
 				AdditionalLibraryDirectories="..\..\bin,..\third-part\bass"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				DataExecutionPrevention="true"
 				EnableCOMDATFolding="2"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
@@ -117,6 +55,7 @@
 				OptimizeReferences="2"
 				OutputFile="$(OutDir)\PCManager.exe"
 				ProgramDatabaseFile=""
+				RandomizedBaseAddress="true"
 				SubSystem="2"
 				SuppressStartupBanner="true"
 				TargetMachine="1" />
@@ -135,7 +74,70 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS" />
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST" />
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="..\..\bin\"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			ConfigurationType="1"
+			IntermediateDirectory="..\..\obj\debug\PCManager\"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalOptions="/MP -w34100 -w34189 -w44996"
+				AssemblerListingLocation="..\..\obj\debug\PCManager\"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4100,4101,4102,4189,4996"
+				ExceptionHandling="1"
+				ForcedIncludeFiles="stdafx.h"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\..\obj\debug\PCManager\"
+				Optimization ="4"
+				PrecompiledHeaderFile="$(IntDir)\PCManagerd.pch"
+				PrecompiledHeaderThrough="stdafx.h"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST"
+				ProgramDataBaseFileName="$(IntDir)"
+				RuntimeLibrary="1"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="2"
+				WarningLevel="3" />
+			<Tool
+				Name="VCCustomBuildTool" />
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="utilitiesd.lib souid.lib"
+				AdditionalLibraryDirectories="..\..\bin,..\third-part\bass"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				DataExecutionPrevention="true"
+				GenerateDebugInformation="true"
+				IgnoreImportLibrary="true"
+				LinkTimeCodeGeneration="0"
+				OutputFile="$(OutDir)\PCManagerd.exe"
+				ProgramDatabaseFile=""
+				RandomizedBaseAddress="true"
+				SubSystem="2"
+				SuppressStartupBanner="true"
+				TargetMachine="1" />
+			<Tool
+				Name="VCManifestTool" />
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
+			<Tool
+				Name="VCPostBuildEventTool" />
+			<Tool
+				Name="VCPreBuildEventTool" />
+			<Tool
+				Name="VCPreLinkEventTool" />
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST,_DEBUG" />
 		</Configuration>
 	</Configurations>
 	<Files>
@@ -167,7 +169,7 @@
 			<File
 				RelativePath="stdafx.h">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Release|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
 						CommandLine="echo /*-------------------------------------------------------------------- >stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * Precompiled header source file used by Visual Studio.NET to generate>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * the .pch file.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * Due to issues with the dependencies checker within the IDE, it>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * sometimes fails to recompile the PCH file, if we force the IDE to>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * create the PCH file directly from the header file.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * This file is auto-generated by qmake since no PRECOMPILED_SOURCE was>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * specified, and is used as the common stdafx.cpp. The file is only>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * generated when creating .vcproj project files, and is not used for>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * command line compilations by nmake.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * WARNING: All changes made in this file will be lost.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo --------------------------------------------------------------------*/>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo #include &quot;stdafx.h&quot;>>stdafx.h.cpp"
@@ -175,7 +177,7 @@
 						Outputs="stdafx.h.cpp" />
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Debug|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
 						CommandLine="echo /*-------------------------------------------------------------------- >stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * Precompiled header source file used by Visual Studio.NET to generate>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * the .pch file.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * Due to issues with the dependencies checker within the IDE, it>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * sometimes fails to recompile the PCH file, if we force the IDE to>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * create the PCH file directly from the header file.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * This file is auto-generated by qmake since no PRECOMPILED_SOURCE was>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * specified, and is used as the common stdafx.cpp. The file is only>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * generated when creating .vcproj project files, and is not used for>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * command line compilations by nmake.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo *>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo * WARNING: All changes made in this file will be lost.>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo --------------------------------------------------------------------*/>>stdafx.h.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;echo #include &quot;stdafx.h&quot;>>stdafx.h.cpp"
@@ -191,7 +193,7 @@
 			<File
 				RelativePath="stdafx.h.cpp">
 				<FileConfiguration
-					Name="Debug|Win32">
+					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						ForcedIncludeFiles="$(NOINHERIT)"
@@ -199,7 +201,7 @@
 						UsePrecompiledHeader="1" />
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32">
+					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						ForcedIncludeFiles="$(NOINHERIT)"

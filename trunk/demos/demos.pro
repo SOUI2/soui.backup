@@ -21,6 +21,7 @@ SUBDIRS += souitest
 SUBDIRS += VUI
 SUBDIRS += BesLyric
 SUBDIRS += QQMain
+SUBDIRS += FrogPlay
 
 CONFIG(x64){
 	36064.depends += soui64 skia64

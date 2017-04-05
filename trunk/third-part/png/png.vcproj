@@ -11,56 +11,6 @@
 	</Platforms>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory="..\..\bin\"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="1"
-			ConfigurationType="4"
-			IntermediateDirectory="..\..\obj\debug\png\"
-			UseOfMfc="0">
-			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\zlib&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
-				AssemblerListingLocation="..\..\obj\debug\png\"
-				DebugInformationFormat="3"
-				DisableSpecificWarnings="4100,4101,4102,4189,4996"
-				ExceptionHandling="1"
-				GeneratePreprocessedFile="0"
-				ObjectFile="..\..\obj\debug\png\"
-				Optimization ="4"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS"
-				ProgramDataBaseFileName="$(IntDir)"
-				RuntimeLibrary="1"
-				RuntimeTypeInfo="false"
-				SuppressStartupBanner="true"
-				TreatWChar_tAsBuiltInType="true"
-				WarningLevel="3" />
-			<Tool
-				Name="VCCustomBuildTool" />
-			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\pngd.lib"
-				SuppressStartupBanner="true" />
-			<Tool
-				Name="VCManifestTool" />
-			<Tool
-				Name="VCMIDLTool"
-				DefaultCharType="0"
-				EnableErrorChecks="1"
-				WarningLevel="0" />
-			<Tool
-				Name="VCPostBuildEventTool" />
-			<Tool
-				Name="VCPreBuildEventTool" />
-			<Tool
-				Name="VCPreLinkEventTool" />
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS,_DEBUG"
-				ResourceOutputFileName="$(OutDir)\$(InputName).res" />
-		</Configuration>
-		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -70,8 +20,8 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.&quot;,&quot;..\zlib&quot;,&quot;..\..\config&quot;,..\..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="-Zm200 /MP -w34100 -w34189"
+				AdditionalIncludeDirectories=".,.,..\zlib,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalOptions="/MP -w34100 -w34189 -w44996"
 				AssemblerListingLocation="..\..\obj\release\png\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
@@ -79,10 +29,9 @@
 				GeneratePreprocessedFile="0"
 				ObjectFile="..\..\obj\release\png\"
 				Optimization ="1"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS,NDEBUG"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST,NDEBUG"
 				ProgramDataBaseFileName="$(IntDir)"
 				RuntimeLibrary="0"
-				RuntimeTypeInfo="false"
 				SuppressStartupBanner="true"
 				TreatWChar_tAsBuiltInType="true"
 				WarningLevel="3" />
@@ -107,7 +56,56 @@
 				Name="VCPreLinkEventTool" />
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST"
+				ResourceOutputFileName="$(OutDir)\$(InputName).res" />
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="..\..\bin\"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			ConfigurationType="4"
+			IntermediateDirectory="..\..\obj\debug\png\"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories=".,.,..\zlib,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalOptions="/MP -w34100 -w34189 -w44996"
+				AssemblerListingLocation="..\..\obj\debug\png\"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4100,4101,4102,4189,4996"
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\..\obj\debug\png\"
+				Optimization ="4"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST"
+				ProgramDataBaseFileName="$(IntDir)"
+				RuntimeLibrary="1"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="true"
+				WarningLevel="3" />
+			<Tool
+				Name="VCCustomBuildTool" />
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)\pngd.lib"
+				SuppressStartupBanner="true" />
+			<Tool
+				Name="VCManifestTool" />
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
+			<Tool
+				Name="VCPostBuildEventTool" />
+			<Tool
+				Name="VCPreBuildEventTool" />
+			<Tool
+				Name="VCPreLinkEventTool" />
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST,_DEBUG"
 				ResourceOutputFileName="$(OutDir)\$(InputName).res" />
 		</Configuration>
 	</Configurations>
