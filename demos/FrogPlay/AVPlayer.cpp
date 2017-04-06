@@ -329,5 +329,5 @@ void OnVLC_Event( const libvlc_event_t *event, void *data )
 }
 int CAVPlayer::Save_snapshot(const char* filepath)
 {
-	return libvlc_video_take_snapshot(m_pVLC_Player, 0, filepath, libvlc_video_get_height(m_pVLC_Player), libvlc_video_get_width(m_pVLC_Player));
+	return libvlc_video_take_snapshot(m_pVLC_Player, 0, filepath, libvlc_video_get_width(m_pVLC_Player), libvlc_video_get_height(m_pVLC_Player));
 }
