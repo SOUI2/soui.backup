@@ -218,19 +218,22 @@ namespace SOUI
         return TRUE;
     }
 
-    void STreeList::OnRelayout(const CRect &rcOld, const CRect & rcNew)
+    BOOL STreeList::OnRelayout(const CRect &rcWnd)
     {
+		if (!__super::OnRelayout(rcWnd))
+			return FALSE;
         SASSERT(m_pHeader && m_pTreeCtrl);
-        CRect rcTreectrl = rcNew;
-        rcTreectrl.top = rcNew.top + m_nHeaderHeight;
+        CRect rcTreectrl = rcWnd;
+        rcTreectrl.top = rcWnd.top + m_nHeaderHeight;
         m_pTreeCtrl->Move(rcTreectrl);
         
         CPoint ptOrg = m_pTreeCtrl->GetViewOrigin();
-        CRect rcHeader = rcNew;
+        CRect rcHeader = rcWnd;
         rcHeader.left -= ptOrg.x;
-        rcHeader.right =rcHeader.left + max(rcNew.Width(),m_pTreeCtrl->GetViewSize().cx);
-        rcHeader.bottom = rcNew.top + m_nHeaderHeight;
+        rcHeader.right =rcHeader.left + max(rcWnd.Width(),m_pTreeCtrl->GetViewSize().cx);
+        rcHeader.bottom = rcWnd.top + m_nHeaderHeight;
         m_pHeader->Move(rcHeader);
+		return TRUE;
     }
 
     bool STreeList::OnHeaderClick(EventArgs *pEvt)
