@@ -209,7 +209,7 @@ namespace SOUI
         m_pTreeCtrl->InitFromXml(xmlTreectrl);
         m_pTreeCtrl->GetEventSet()->subscribeEvent(EventScroll::EventID,Subscriber(&STreeList::OnScrollEvent,this));
 
-        m_pHeader->InsertItem(0,m_strTreeLabel,m_pTreeCtrl->m_nTreeWidth,ST_NULL,0);
+        m_pHeader->InsertItem(0,m_strTreeLabel.GetText(),m_pTreeCtrl->m_nTreeWidth,ST_NULL,0);
         for(UINT i=1;i<m_pHeader->GetItemCount();i++)
         {
             int nWid = m_pHeader->GetItemWidth(i);

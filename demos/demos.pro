@@ -22,6 +22,7 @@ SUBDIRS += VUI
 SUBDIRS += BesLyric
 SUBDIRS += QQMain
 SUBDIRS += FrogPlay
+SUBDIRS += MultiLangs
 
 CONFIG(x64){
 	36064.depends += soui64 skia64
@@ -36,6 +37,7 @@ CONFIG(x64){
 	BesLyric64.depends += soui64 skia64
 	QQMain64.depends += soui64 skia64
 	VUI64.depends += soui64 skia64
+	MultiLangs.depends += soui64
 }
 else{
 	360.depends += soui skia
@@ -50,4 +52,5 @@ else{
 	BesLyric.depends += soui skia
 	QQMain.depends += soui skia
 	VUI.depends += soui skia
+	MultiLangs.depends += soui
 }
