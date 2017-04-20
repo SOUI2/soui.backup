@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<menu sepSkin="" itemSkin="_skin_page1_menu_itemskin" font="adding:-2" itemHeight="20" textMargin="0">
-	<item id="3000" >立即清除播放痕迹</item>
-	<item id="3001" >退出时清除播放痕迹</item>
-	<item id="3002" >退出时保留播放痕迹</item>
-	
-</menu>
