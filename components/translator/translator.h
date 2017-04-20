@@ -58,8 +58,16 @@ namespace SOUI
         BOOL UninstallTranslator(REFGUID id);
         /*virtual */
         SStringW tr(const SStringW & strSrc,const SStringW & strCtx);
-    protected:
+
+		void RegisterLanguageListener(ILanguageListener * pListener);
+
+		void UnregisterLanguageListener(ILanguageListener * pListener);
+
+	protected:
+		void onLanguageChanged();
+
         SList<ITranslator*> *m_lstLang;
+		SMap<ILanguageListener*,bool> m_mapListener;
     };
 
     namespace TRANSLATOR

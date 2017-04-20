@@ -194,6 +194,8 @@ namespace SOUI
         }
         m_lstLang->AddHead(pTranslator);
         pTranslator->AddRef();
+
+		onLanguageChanged();
         return TRUE;
     }
 
@@ -208,6 +210,8 @@ namespace SOUI
             {
                 m_lstLang->RemoveAt(posBackup);
                 p->Release();
+
+				onLanguageChanged();
                 return TRUE;
             }
         }
@@ -248,6 +252,28 @@ namespace SOUI
         *ppTranslator = new STranslator;
         return TRUE;
     }
+
+	void STranslatorMgr::RegisterLanguageListener(ILanguageListener * pListener)
+	{
+		if(m_mapListener.Lookup(pListener)!=NULL)
+			return;
+		m_mapListener[pListener] = true;
+	}
+
+	void STranslatorMgr::UnregisterLanguageListener(ILanguageListener * pListener)
+	{
+		m_mapListener.RemoveKey(pListener);
+	}
+
+	void STranslatorMgr::onLanguageChanged()
+	{
+		SPOSITION pos = m_mapListener.GetStartPosition();
+		while(pos)
+		{
+			ILanguageListener *pListener = m_mapListener.GetNextKey(pos);
+			pListener->onLanguageChanged();
+		}
+	}
 
     //////////////////////////////////////////////////////////////////////////
     //  
