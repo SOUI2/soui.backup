@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <SOUI trCtx="dlg_file res1" title="test" width="400" height="300" appWnd="1" resizable="0" translucent="1" alpha="255"> -->
+<!-- <SOUI name="ChatFrmae" width="900" height="600" minsize="600,500" margin="10,10,10,10" appWnd="1" resizable="1" translucent="1" sendWheel2Hover="1"> -->
+<SOUI name="UIDESIGNER_mainWindow1" title="@string/title" 
+      bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" 
+      width="1024" height="500"  margin="1,5,5,5"  
+      resizable="1" wndType="8"
+toolWindow="1"
+translucent="1" 
+>
+  <root skin="UIDESIGNER_main_center" cache="1">
+      <caption pos="0,0,-0,30" show="1" font="adding:0">
+        <icon name="UIDESIGNER_main_icon" skin="UIDESIGNER_main_icon" pos="8,9"></icon>
+      </caption>   
+    <text pos="5,[0" colorText="#ff0000">这是一个输入框</text>
+	 <edit pos="5,[0,-16,@50" name="UIDESIGNER_edit_input" margin-x="0" margin-y="0" colorBkgnd="#FFFFFF"/>
+    <button id="IDOK" pos="-10,-10,@100,@30" offset="-1,-1">close</button>
+  </root>
+</SOUI>

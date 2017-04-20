@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<skin>
+	<colorrect name="sms.header" normal="@color/sms_header" />
+	<scrollbar name="cmn.scrollbar" src="imgx:cmn.scrollbar" margin="2" />
+	<imgframe name="bg.setting" src="image:bg.setting" states="1" margin="2,37,2,2" />
+	<imgframe name="cmn.border" src="image:cmn.border" states="2" margin="2,2,2,2" />
+	<imglist name="sms.help" src="image:sms.help" states="1" />
+	<imglist name="sms.record" src="image:sms.record" states="1" />
+	<imglist name="sms.search" src="image:sms.search" states="1" />
+</skin>

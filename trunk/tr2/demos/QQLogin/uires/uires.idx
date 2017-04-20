@@ -1,0 +1,112 @@
+﻿<resource>  
+  <UIDEF>
+    <file name="XML_INIT" path="xml\init.xml"  />
+  </UIDEF>
+  <LAYOUT>
+    <file name="XML_MAINWND" path="xml\dlg_main.xml"  />
+    <file name="PAGE_LOGIN" path="xml\page_login.xml"  />
+    <file name="PAGE_SETTINGS" path="xml\page_settings.xml"  />
+	
+	<file name="SelectionDropDownWnd" path="xml\SelectionDropdownWnd.xml" />
+	
+	<!-- ole控件相关的布局文件 -->
+	<file name="FileOle" path="xml\richeditole\fileole.xml" />
+	<file name="SplitLineOle" path="xml\richeditole\splitlineole.xml" />
+	<file name="ImageOle" path="xml\richeditole\imageole.xml" />
+	<file name="FetchMoreOle" path="xml\richeditole\fetchmoreole.xml" />
+	<file name="RemainderOle" path="xml\richeditole\remainderole.xml" />
+	<file name="SingleNewsOle" path="xml\richeditole\singlenewsole.xml" />
+	<file name="MultiNewsOle" path="xml\richeditole\multinewsole.xml" />
+	
+	<!-- 会话框相关的布局文件 -->
+	<file name="group-chatframe" path="xml\group-chatframe.xml"  />
+	<file name="chatframe-sidebar-group" path="xml\chatframe-sidebar-group.xml" />
+	<file name="chatframe-bottombar" path="xml\chatframe-bottombar.xml" />
+	<file name="chatframe-sessionlist" path="xml\chatframe-sessionlist.xml" />
+	<file name="chatframe-caption" path="xml\chatframe-caption.xml" />
+	
+  </LAYOUT>
+  <IMGX>
+    <file name="IMG_LOGIN_BORDER" path="image\login_border.png"/>
+    <file name="BTN_LOGIN_SETTING" path="image\login_setting.png"/>
+    <file name="BTN_USERLISTCLOSE" path="image\user_list_close.png"  />
+    <file name="BTN_REGISTER" path="image\register.png"  />
+    <file name="BTN_GETPSWBACK" path="image\getpswback.png"  />
+    <file name="BTN_KEYBOARD" path="image\keyboard.png"  />
+    <file name="BTN_LOGIN" path="image\login.png"/>
+    <file name="BTN_LOGIN2" path="image\login2.png"/>
+    <file name="BTN_LOGIN_2DCODE" path="image\login_2dcode.png"/>
+    <file name="IMG_HEAD_MASK" path="image\head_mask.png"/>
+    <file name="IMG_HEAD" path="image\head.png"/>
+    <file name="IMG_AVATARS" path="image\avatars.png"/>
+  </IMGX>
+  <jpg>
+    <file name="IMG_HEAD_SMALL" path="image\small_head.jpg"/>
+  </jpg>
+  <ICON>
+    <file name="ICON_LOGO"  path="image\soui.ico"    />
+  </ICON>
+  <PNG>
+	<file name="ID_SYSBTN_CLOSE" path="image\sysbtn_close.png"/>
+	<file name="ID_SYSBTN_MAX" path="image\sysbtn_max.png"/>
+	<file name="ID_SYSBTN_MIN" path="image\sysbtn_min.png"/>
+	<file name="ID_SYSBTN_RESTORE" path="image\sysbtn_restore.png"/>
+	<file name="ID_TAB_FADE_EFF" path="image\fadeeffect_mask.png"/>
+	<file name="ID_SHADOW" path="image\stroke.gft.png"/>
+	<file name="ID_TAB_SCROLL" path="image\tabscroll.png"/>
+	<file name="ID_TABBTN_CLOSE" path="image\tabbtn_del.png"/>
+	<file name="ID_SPLITBAR_VER" path="image\splitbar_ver.png"/>
+	<file name="ID_TABBTN" path="image\tabbtn.png"/>
+	<file name="ID_ICON1" path="image\icon1.png"/>
+	<file name="ID_ICON2" path="image\icon2.png"/>
+	<file name="ID_ICON3" path="image\icon3.png"/>
+	<file name="ID_ICON4" path="image\icon4.png"/>
+	<file name="ID_ICON5" path="image\icon5.png"/>
+	<file name="ID_ICON_MASK" path="image\avatar_mask.png"/>
+	<file name="ID_GROUP_TOPTOOLBAR" path="image\group_toptoolbar.png"/>
+	<file name="ID_GROUP_TABBTN" path="image\group_toolbar_tabbutton.png"/>
+	<file name="ID_AD" path="image\ad.png"/>
+	<file name="ID_EMPTY" path="image\empty.png"/>
+	<file name="ID_NO_ANNOUCE" path="image\no_annoucement.png"/>
+	<file name="ID_GROUP_APP1" path="image\group_app1.png"/>
+	<file name="ID_GROUP_APP2" path="image\group_app2.png"/>
+	<file name="ID_GROUP_APP3" path="image\group_app3.png"/>
+	<file name="ID_GROUP_APP4" path="image\group_app4.png"/>
+	<file name="ID_GROUP_APP5" path="image\group_app5.png"/>
+	<file name="ID_GROUP_APP6" path="image\group_app6.png"/>
+	<file name="ID_GROUP_APP_TABICON" path="image\group_app_tabicon.png"/>
+	<file name="ID_GROUP_APP_TABBTN" path="image\group_app_tabbtn.png"/>
+	<file name="ID_GROUP_EXPAND_BTN" path="image\group_expandbtn.png"/>
+	<file name="ID_GROUP_SEARCH_CHK" path="image\group_search_chk.png"/>
+	<file name="ID_SENDBTN_LEFT" path="image\roundcorner_left.png"/>
+	<file name="ID_SENDBTN_RIGHT" path="image\roundcorner_right.png"/>
+	<file name="ID_SENDBTN_SPLITLINE" path="image\sendbtn_splitline.png"/>
+	<file name="ID_SENDBTN_ARROW" path="image\buttomctrl_arrow.png"/>
+	<file name="ID_CHATBTN_CLOSE" path="image\roundcorner.png"/>
+	<file name="ID_CHATBTN_FONT" path="image\quickbar_font.png"/>
+	<file name="ID_CHAT_TOOLBAT_BK" path="image\quickbar_sel_bk.png"/>
+	<file name="ID_CHATBTN_CUT" path="image\quickbar_cut.png"/>
+	<file name="ID_CHAT_TOOLBTN_ARROW" path="image\quickbar_arrow.png"/>
+	<file name="ID_CHAT_QUICKBAR_UPLOADFILE" path="image\quickbar_uploadfile.png"/>
+	<file name="ID_CHAT_QUICKBAR_SENDPIC" path="image\quickbar_sendpic.png"/>
+	<file name="ID_RICH_FILE_BK" path="image\richframe_bkg_no_spliter.png"/>
+	<file name="ID_FILE_ICON_TEXT" path="image\text.png"/>
+	<file name="ID_FETCH_MORE" path="image\more_msg.png"/>
+	<file name="ID_LOADING" path="image\loading_16x16.gif"/>
+	<file name="ID_NEW_BG" path="image\news_bg.png"/>
+	<file name="ID_NEWS_BG_ALPHA" path="image\bg_news_title.png"/>
+	<file name="ID_MENU_BKG" path="image\menu_bkg.png"/>
+	<file name="ID_SMALL_ICON" path="image\small_icons.png"/>
+	<file name="ID_BKGND_MASK" path="image\bkgnd-mask.png"/>
+	<file name="ID_BACKGROUND" path="image\background.png"/>
+	<file name="ID_RICH_WARNING" path="image\richframe_warning.png"/>
+	<file name="ID_RICH_LEFT_BUBBLE" path="image\aio_friend_bg_nor.png"/>
+	<file name="ID_RICH_RIGHT_BUBBLE" path="image\aio_user_bg_nor.png"/>
+	<file name="ID_RICH_SYSMSG_BK" path="image\aio_sys_bg.png"/>
+  </PNG>
+  
+  <SMENU>
+	<file name="menu_send" path="xml\menu_send_type.xml"  />
+  </SMENU>
+  
+</resource>

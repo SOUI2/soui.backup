@@ -1,0 +1,19 @@
+<SOUI name="win_box" title="Box" bigIcon="ICON_LOGO:32" maxInset="5,3,10,10" smallIcon="ICON_LOGO:16" width="250" height="610" minsize="250,610" margin="0,3,0,7" appWnd="0" resizable="1" translucent="1" >
+	<root skin="_skin.shadow" cache="1">
+		<window pos="5,3,-5,-7" skin="_skin.bk" cache="1">
+			<caption pos="0,0,-0,30" skin="_skin_box_caption">
+				<imgbtn name="btn_box_close" skin="_skin.btn.close"    pos="-23,1" tip="关闭" animate="1"/>
+			  <imgbtn name="btn_box_back" skin="_skin_box_back"    pos="0,1" tip="后退" animate="1"/>
+			  <imgbtn name="btn_box_forward" skin="_skin_box_forward"    pos="23,1" tip="前进" animate="1"/>
+			  <imgbtn name="btn_box_refresh" skin="_skin_box_refresh"    pos="46,1" tip="刷新" animate="1"/>
+			  <imgbtn name="btn_box_maximize" skin="_skin_box_maximize"    pos="-46,1" tip="最大化" animate="1"/>
+			  <imgbtn name="btn_box_restore" skin="_skin_box_restore"    pos="-46,1" tip="还原" animate="1" show="0"/>
+			</caption>
+		</window>
+		<window pos="5,30,-5,-50" colorBkgnd="#202F42" cache="1">
+		</window>
+		<window pos="5,-50,-5,-7" skin="_skin.bk_bar" cache="1" >
+		  <img pos="0,0,-0,4" skin="_skin.bk_transition"/>
+		</window>
+	</root>
+</SOUI>

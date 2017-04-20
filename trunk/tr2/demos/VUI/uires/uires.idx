@@ -1,0 +1,143 @@
+﻿<resource>  
+  <UIDEF>
+    <file name="XML_INIT" path="xml\init.xml"  />
+  </UIDEF>
+  <LAYOUT>
+    <file name="XML_MAINWND" path="xml\dlg_main.xml"  />
+	<file name="menu_test" path="xml\menu_test.xml"  />
+	<file name="XML_WINSKINS" path="xml\win_skins.xml"  />
+	<file name="XML_WINBOX" path="xml\win_box.xml"  />
+	<file name="page_playlist" path="xml\playlist.xml"  />
+	<file name="menu_open" path="xml\menu_open.xml"  />
+	<file name="menu_playlist_sortord" path="xml\menu_playlist_sortord.xml"  />
+	<file name="menu_playmode" path="xml\menu_playmode.xml"  />
+  </LAYOUT>
+  <png>
+    <file name="ID_PNG_BK" path="image\bg.png"/>
+	<file name="ID_PNG_SHADOW" path="image\shadow.png"/>
+	<file name="ID_PNG_THUMB" path="image\thumb.png"/>
+	<file name="ID_PNG_WIN_TOOLS" path="image\tools_window.png"/>
+	
+	<file name="ID_PNG_TOOLS_CLOSE" path="image\tools_close.png"/>
+	<file name="ID_PNG_SKINMGR" path="image\skinmgr.png"/>
+
+	<file name="ID_PNG_BG_PLAYER" path="image\bg_player.png"/>
+
+	<file name="png_tab_left"  path="image\tab_left.png" />
+
+	<file name="ID_PNG_MENU_SEL"  path="image\menu_sel.png" />
+	
+	<file name="ID_PNG_PAGE1_TOGGLE"  path="image\page1_toggle.png" />
+
+	<file name="ID_PNG_SKINMGR_BAR"  path="image\skinmgr_bar.png" />
+	<file name="ID_PNG_SKINMGR_S1"  path="image\skinmgr_s1.png" />
+	<file name="ID_PNG_SKINMGR_S2"  path="image\skinmgr_s2.png" />
+	<file name="ID_PNG_SKINMGR_S3"  path="image\skinmgr_s3.png" />
+	<file name="ID_PNG_SKINMGR_S4"  path="image\skinmgr_s4.png" />
+	<file name="ID_PNG_SKINMGR_BAR_LINE"  path="image\skinmgr_bar_line.png" />
+	<file name="ID_PNG_SKINMGR_PREV"  path="image\skinmgr_prev.png" />
+	<file name="ID_PNG_SKINMGR_NEXT"  path="image\skinmgr_next.png" />
+	<file name="ID_PNG_SKINMGR_MAXSPEED"  path="image\skinmgr_maxspeed.png" />
+	<file name="ID_PNG_SKINMGR_BLUE"  path="image\skinmgr_blue.png" />
+	<file name="ID_PNG_SKINMGR_CHOOSING"  path="image\skinmgr_choosing.png" />
+	<file name="ID_PNG_SKINMGR_COLOR1"  path="image\skinmgr_color1.png" />
+	<file name="ID_PNG_SKINMGR_COLOR2"  path="image\skinmgr_color2.png" />
+	<file name="ID_PNG_SKINMGR_COLOR3"  path="image\skinmgr_color3.png" />
+	<file name="ID_PNG_SKINMGR_COLOR4"  path="image\skinmgr_color4.png" />
+	<file name="ID_PNG_SKINMGR_COLOR5"  path="image\skinmgr_color5.png" />
+	<file name="ID_PNG_SKINMGR_COLOR6"  path="image\skinmgr_color6.png" />
+	<file name="ID_PNG_SKINMGR_COLOR7"  path="image\skinmgr_color7.png" />
+	<file name="ID_PNG_SKINMGR_COLOR8"  path="image\skinmgr_color8.png" />
+	<file name="ID_PNG_SKINMGR_COLOR9"  path="image\skinmgr_color9.png" />
+	<file name="ID_PNG_SKINMGR_COLOR10"  path="image\skinmgr_color10.png" />
+	<file name="ID_PNG_SKINMGR_COLOR11"  path="image\skinmgr_color11.png" />
+	<file name="ID_PNG_SKINMGR_COLOR12"  path="image\skinmgr_color12.png" />
+
+	<file name="ID_PNG_TOOL_3D"  path="image\tool_3D.png" />
+	<file name="ID_PNG_TOOL_LEFTEYE"  path="image\tool_lefteye.png" />
+	<file name="ID_PNG_TOOL_SURROUMD_SOUND"  path="image\tool_surround_sound.png" />
+	<file name="ID_PNG_TOOL_DOWNLOAD"  path="image\tool_download.png" />
+	<file name="ID_PNG_TOOL_FLYSCREEN"  path="image\tool_flyscreen.png" />
+	<file name="ID_PNG_TOOL_GAME"  path="image\tool_game.png" />
+	<file name="ID_PNG_TOOL_TRANSCODE"  path="image\tool_transcode.png" />
+	<file name="ID_PNG_TOOL_MOVIELIB"  path="image\tool_movielib.png" />
+	<file name="ID_PNG_TOOL_BARRAGE"  path="image\tool_barrage.png" />
+	<file name="ID_PNG_TOOL_DLNA"  path="image\tool_dlna.png" />
+	<file name="ID_PNG_TOOL_NEWS"  path="image\tool_news.png" />
+	<file name="ID_PNG_TOOL_PREV"  path="image\tool_prev.png" />
+	<file name="ID_PNG_TOOL_NEXT"  path="image\tool_next.png" />
+	<file name="ID_PNG_TOOL_SCREENSHOTS"  path="image\tool_screenshots.png" />
+	<file name="ID_PNG_TOOL_SHOOT"  path="image\tool_shoot.png" />
+
+	<file name="ID_PNG_PAGE1_ITEMSELSKIN"  path="image\page1_ItemSelSkin.png" />
+	<file name="ID_PNG_PAGE1_MENU_ITEMSKIN"  path="image\page1_menu_ItemSkin.png" />
+	<file name="ID_PNG_PAGE1_MENU_CHECK"  path="image\page1_menu_check.png" />
+	<file name="ID_PNG_PAGE1_MENU_UP"  path="image\page1_menu_up.png" />
+	<file name="ID_PNG_PAGE1_MENU_DOWN"  path="image\page1_menu_down.png" />
+	<file name="ID_PNG_PAGE1_CAPTION_SEP"  path="image\page1_caption_sep.png" />
+
+	<file name="ID_PNG_PAGE2_ORDERPLAY"  path="image\page2_OrderPlay.png" />
+	<file name="ID_PNG_PAGE2_SINGLEPLAY"  path="image\page2_SinglePlay.png" />
+	<file name="ID_PNG_PAGE2_RANDOMPLAY"  path="image\page2_RandomPlay.png" />
+	<file name="ID_PNG_PAGE2_SINGLECYCLE"  path="image\page2_SingleCycle.png" />
+	<file name="ID_PNG_PAGE2_LISTCYCLE"  path="image\page2_ListCycle.png" />
+  </png>
+  <bmp>
+    <file name="ID_BMP_BG_CAPTION" path="image\bk_caption.bmp"/>
+    <file name="ID_BMP_CLOSE" path="image\close.bmp"/>
+	<file name="ID_BMP_MAXIMIZE" path="image\max.bmp"/>
+	<file name="ID_BMP_RESTORE" path="image\restore.bmp"/>
+	<file name="ID_BMP_MINIMIZE" path="image\min.bmp"/>
+	<file name="ID_BMP_SKINS" path="image\skins.bmp"/>
+	<file name="ID_BMP_FEEDBACK" path="image\feedback.bmp"/>
+	<file name="ID_BMP_PLAY" path="image\play.bmp"/>
+	<file name="ID_BMP_PAUSE" path="image\pause.bmp"/>
+	<file name="ID_BMP_BG_OPEN" path="image\open.bmp"/>
+	<file name="ID_BMP_BG_OPENMENU" path="image\open_menu.bmp"/>
+	<file name="ID_BMP_BG_ICON" path="image\icon.bmp"/>
+	<file name="ID_BMP_BG_SLIDER" path="image\slider.bmp"/>
+	<file name="ID_BMP_POSSKIN" path="image\posSkin.bmp"/>
+	<file name="ID_BMP_BKGNDSKIN" path="image\bkgndSkin.bmp"/>
+	<file name="ID_BMP_BKGNDSKIN1" path="image\bkgndSkin1.bmp"/>
+	<file name="ID_BMP_BG_BK_TRANSITION" path="image\bk_transition.bmp"/>
+	<file name="ID_BMP_BG_BK_BAR" path="image\bk_bar.bmp"/>
+	<file name="ID_BMP_PAGE_UP" path="image\page_up.bmp"/>
+	<file name="ID_BMP_STOP" path="image\stop.bmp"/>
+	<file name="ID_BMP_PAGE_DOWN" path="image\page_down.bmp"/>
+	<file name="ID_BMP_OPEN" path="image\btnOpen.bmp"/>
+	<file name="ID_BMP_FULLSCREEN" path="image\fullscreen.bmp"/>
+	<file name="ID_BMP_QUIT_FULLSCREEN" path="image\quit_fullscreen.bmp"/>
+	<file name="ID_BMP_TOOLS" path="image\tools.bmp"/>
+	<file name="ID_BMP_DIVIDER_LINE" path="image\divider_line.bmp"/>
+	<file name="ID_BMP_LEFT_EYE" path="image\left_eye.bmp"/>
+	<file name="ID_BMP_LEFT_EYED" path="image\left_eyed.bmp"/>
+	<file name="ID_BMP_LIST_SHOW" path="image\list_show.bmp"/>
+	<file name="ID_BMP_LIST_SHOWED" path="image\list_showed.bmp"/>
+	<file name="ID_BMP_BOX" path="image\box.bmp"/>
+	<file name="ID_BMP_BOXED" path="image\boxed.bmp"/>
+	<file name="ID_BMP_VOLUME" path="image\volume.bmp"/>
+	<file name="ID_BMP_VOLUME_MUTE" path="image\volume_mute.bmp"/>
+
+	<file name="ID_BMP_PLAYLIST_BAR" path="image\playlist_bar.bmp"/>
+	<file name="ID_BMP_PAGE1_CAPTION" path="image\page1_caption.bmp"/>
+	<file name="ID_BMP_PAGE1_QUERY" path="image\page1_query.bmp"/>
+	<file name="ID_BMP_PAGE1_REFRESH" path="image\page1_refresh.bmp"/>
+	<file name="ID_BMP_PAGE1_SORTORD" path="image\page1_sortord.bmp"/>
+	<file name="ID_BMP_PAGE1_SORTORD_MENU" path="image\page1_sortord_menu.png"/>
+	<file name="ID_BMP_PAGE2_CAPTION" path="image\page2_caption.bmp"/>
+	<file name="ID_BMP_PAGE2_ADD" path="image\page2_add.bmp"/>
+	<file name="ID_BMP_PAGE2_DELETE" path="image\page2_delete.bmp"/>
+	<file name="ID_BMP_PAGE2_CLEAR" path="image\page2_clear.bmp"/>
+	<file name="ID_BMP_PAGE2_ALL" path="image\page2_all.bmp"/>
+
+	<file name="ID_BMP_MENU_ICON" path="image\menu_icon.png"/>
+	<file name="ID_BMP_MENU_SKIN" path="image\menu_skin.bmp"/>
+
+	<file name="ID_BMP_BOX_CAPTION" path="image\box_caption.bmp"/>
+	<file name="ID_BMP_BOX_BACK" path="image\box_back.bmp"/>
+	<file name="ID_BMP_BOX_FORWARD" path="image\box_forward.bmp"/>
+	<file name="ID_BMP_BOX_MAXIMIZE" path="image\box_maximize.bmp"/>
+	<file name="ID_BMP_BOX_RESTORE" path="image\box_restore.bmp"/>
+	<file name="ID_BMP_BOX_REFRESH" path="image\box_refresh.bmp"/>
+  </bmp>
+</resource>

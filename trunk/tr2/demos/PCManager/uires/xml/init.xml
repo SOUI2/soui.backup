@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="微软雅黑" size="12" colorText="#ffffff"/>
+  
+  <string>
+    <title value="电脑管家V6.0 [SOUI]"/>
+    <ver value="1.0"/>
+  </string>
+
+  <skin>
+    <imglist name="skin.btn_close" src="PNG:ID_PNG_BTN_CLOSE" states="4"/>
+    <imglist name="skin.btn_max" src="PNG:ID_PNG_BTN_MAX" states="4"/>
+    <imglist name="skin.btn_restore" src="PNG:ID_PNG_BTN_RESTORE" states="4"/>
+    <imglist name="skin.btn_min" src="PNG:ID_PNG_BTN_MIN" states="4"/>
+    
+	  <imglist name="skin_traymenu_icons"	src="img:traymenu_icons" states="9"/>
+    <imglist name="skin.bg" src="PNG:ID_PNG_BG" />
+    <imgframe name="skin.shadow" src="PNG:ID_PNG_SHADOW" left="5" top="3" right="5" bottom="7"/>
+    <imgframe name="skin.main_center" src="PNG:ID_PNG_MAIN_CENTER" left="10" top="120" right="10" bottom="40"/>
+    <imgframe name="skin.main_mask" src="PNG:ID_PNG_MAIN_MASK" left="10" top="120" right="10" bottom="40"/>
+    <imglist name="skin.main_icon" src="PNG:ID_PNG_LOGO" states="1"/>
+    <imglist name="skin.btn_menu" src="PNG:ID_PNG_BTN_MENU" states="4"/>
+    <imglist name="skin.btn_skin" src="PNG:ID_PNG_BTN_SKIN" states="3"/>
+    <imglist name="skin.tab_main" src="PNG:ID_PNG_TAB_MAIN" states="4"/>
+    <imglist name="skin.tab_icon" src="PNG:ID_PNG_TAB_ICON" states="7"/>
+    <imglist name="skin.home_icon" src="PNG:ID_PNG_HOME_ICON" states="1"/>
+    <!-- page main-->
+    <imglist name="skin.home_tiyan" src="PNG:ID_PNG_HOME_TIYAN" states="3"/>
+    <imglist name="skin.switch_back" src="PNG:ID_PNG_SWITCH_BACK" states="1"/>
+    <imglist name="skin.switch_force" src="PNG:ID_PNG_SWITCH_FORCE" states="8"/>
+    <imglist name="skin.qq_logo" src="PNG:ID_PNG_QQ_LOGO" states="1"/>
+    <imglist name="skin.home_1" src="PNG:ID_PNG_HOME_1" states="1"/>
+    <imglist name="skin.home_2" src="PNG:ID_PNG_HOME_2" states="1"/>
+    <imglist name="skin.home_3" src="PNG:ID_PNG_HOME_3" states="1"/>
+    <imglist name="skin.home_4" src="PNG:ID_PNG_HOME_4" states="1"/>
+    <imglist name="skin.home_5" src="PNG:ID_PNG_HOME_5" states="1"/>
+    <imglist name="skin.home_radio0" src="PNG:ID_PNG_HOME_RADIO0" states="1"/>
+    <imglist name="skin.home_radio1" src="PNG:ID_PNG_HOME_RADIO1" states="1"/>
+    <imglist name="skin.tool_box" src="PNG:ID_PNG_TOOL_BOX" states="4"/>
+    <imglist name="skin.home_icon_0" src="PNG:ID_PNG_HOME_ICON_0" states="1"/>
+    <imglist name="skin.home_icon_1" src="PNG:ID_PNG_HOME_ICON_1" states="1"/>
+    <imglist name="skin.home_icon_2" src="PNG:ID_PNG_HOME_ICON_2" states="1"/>
+    <imglist name="skin.home_icon_3" src="PNG:ID_PNG_HOME_ICON_3" states="1"/>
+    <imglist name="skin.home_icon_4" src="PNG:ID_PNG_HOME_ICON_4" states="1"/>
+    <imglist name="skin.home_icon_5" src="PNG:ID_PNG_HOME_ICON_5" states="1"/>
+    <imglist name="skin.home_icon_6" src="PNG:ID_PNG_HOME_ICON_6" states="1"/>
+    <imglist name="skin.home_icon_7" src="PNG:ID_PNG_HOME_ICON_7" states="1"/>
+    <imglist name="skin.home_icon_8" src="PNG:ID_PNG_HOME_ICON_8" states="1"/>
+    <imglist name="skin.home_icon_9" src="PNG:ID_PNG_HOME_ICON_9" states="1"/>
+    <imglist name="skin.home_icon_10" src="PNG:ID_PNG_HOME_ICON_10" states="1"/>
+    <imglist name="skin.home_icon_11" src="PNG:ID_PNG_HOME_ICON_11" states="1"/>
+    <imglist name="skin.home_icon_12" src="PNG:ID_PNG_HOME_ICON_12" states="1"/>
+    <imglist name="skin.home_icon_13" src="PNG:ID_PNG_HOME_ICON_13" states="1"/>
+    <imglist name="skin.home_icon_14" src="PNG:ID_PNG_HOME_ICON_14" states="1"/>
+    <imglist name="skin.home_icon_15" src="PNG:ID_PNG_HOME_ICON_15" states="1"/>
+    <imglist name="skin.home_icon_16" src="PNG:ID_PNG_HOME_ICON_16" states="1"/>
+    <imglist name="skin.home_icon_17" src="PNG:ID_PNG_HOME_ICON_17" states="1"/>
+    <imglist name="skin.home_icon_18" src="PNG:ID_PNG_HOME_ICON_18" states="1"/>
+    <imglist name="skin.home_icon_19" src="PNG:ID_PNG_HOME_ICON_19" states="1"/>
+    <imglist name="skin.home_icon_20" src="PNG:ID_PNG_HOME_ICON_20" states="1"/>
+    <imglist name="skin.home_icon_21" src="PNG:ID_PNG_HOME_ICON_21" states="1"/>
+    <imglist name="skin.home_icon_22" src="PNG:ID_PNG_HOME_ICON_22" states="1"/>
+    <imglist name="skin.home_icon_23" src="PNG:ID_PNG_HOME_ICON_23" states="1"/>
+    <imglist name="skin.home_icon_24" src="PNG:ID_PNG_HOME_ICON_24" states="1"/>
+    <imglist name="skin.home_icon_25" src="PNG:ID_PNG_HOME_ICON_25" states="1"/>
+    <imglist name="skin.home_icon_26" src="PNG:ID_PNG_HOME_ICON_26" states="1"/>
+    <imglist name="skin.home_icon_27" src="PNG:ID_PNG_HOME_ICON_27" states="1"/>
+    <!-- page trojan -->
+    <imglist name="skin.trojan_ico" src="PNG:ID_PNG_TROJAN_ICO" states="1"/>
+    <imglist name="skin.trojan_fastscan" src="PNG:ID_PNG_TROJAN_FASESCAN" states="3"/>
+    <imglist name="skin.trojan_pathscan" src="PNG:ID_PNG_TROJAN_PATHSCAN" states="3"/>
+    <imglist name="skin.trojan_scan" src="PNG:ID_PNG_TROJAN_SCAN" states="3"/>
+    <imglist name="skin.trojan_btn" src="PNG:ID_PNG_TROJAN_BTN" states="3"/>
+    <imglist name="skin.trojan_engine1" src="PNG:ID_PNG_TROJAN_ENGINE1" states="1"/>
+    <imglist name="skin.trojan_engine2" src="PNG:ID_PNG_TROJAN_ENGINE2" states="1"/>
+    <imglist name="skin.trojan_engine3" src="PNG:ID_PNG_TROJAN_ENGINE3" states="1"/>
+    <imglist name="skin.trojan_engine4" src="PNG:ID_PNG_TROJAN_ENGINE4" states="1"/>
+	</skin>
+
+  <style>
+    <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="0x25" cursor="hand" margin-x="0"/>
+    <class name="cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" font="italic:1" fontHover="underline:1,italic:1" />
+
+    <class name="cls_title" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13" />
+    <class name="font:bold" colorText="#000000" font="face:微软雅黑;bold:1;size:13" />
+    <class name="font:label" colorText="#000000" font="face:微软雅黑;bold:0;size:13" />
+
+    <class name="cls_link" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" font="" fontHover="underline:1"/>
+  </style>
+
+  <objattr>
+  </objattr>
+</UIDEF>

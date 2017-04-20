@@ -1,0 +1,36 @@
+﻿<include>
+  <tabctrl size="full,full" name="tab_codeline" tabWidth="100" tabAlign="bottom"  tabSkin="skin_tabskin">
+    <page title="扫描目录" name="page_dir">
+      <include src="layout:page_folder"/>
+    </page>
+    <page title="统计结果" name="page_result">
+      <text pos="0,[5,@100,@25" align="right">扫描目录数：</text>
+      <text pos="[5,{5" name="txt_folders">0</text>
+      
+      <text pos="0,[5,@100,@25" align="right">扫描文件数：</text>
+      <text pos="[5,{5" name="txt_files">0</text>
+
+      <text pos="0,[5,@100,@25" align="right">代码行数：</text>
+      <text pos="[5,{5" name="txt_codelines">0</text>
+
+      <text pos="0,[5,@100,@25" align="right">空行数：</text>
+      <text pos="[5,{5" name="txt_blanklines">0</text>
+      
+      <text pos="0,[5,@100,@25" align="right">注释行数：</text>
+      <text pos="[5,{5" name="txt_remarklines">0</text>
+
+      <listctrl pos="160,5,-0,-0" name="lst_linecounter_report" itemHeight="25" class="cls_border">
+        <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+          <items>
+            <item width="100">文件类型</item>
+            <item width="60">扩展名</item>
+            <item width="80">代码行</item>
+            <item width="80">空行</item>
+            <item width="80">注释行</item>
+          </items>
+        </header>
+
+      </listctrl>
+    </page>
+  </tabctrl>
+</include>

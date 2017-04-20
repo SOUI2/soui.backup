@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<SOUI width="-1" height="-1" resizable="0" wndType="normal" toolwindow="1" translucent="0">
+	<!--演示root大小自动计算,注意soui结点width,height的设置，哪一个值需要自动计算就设置为-1-->
+	<root size="-1,-1">
+		<window pos="|-220,|-20,@440,@40">
+			<edit id="8001" pos="0,3,-100,-3" cueText="输入视频下载地址或BT种子" colorText="#ff6820ff" skin="image_edit_bk_png" font="face:微软雅黑,bold:1,size:16" inset="10,5,10,5" />
+			<imgbtn id="8000" pos="[0,0,-0,-0" tip="" cursor="hand" animate="1" skin="image_btn_style_png" colorText="#ffad5bff" font="face:微软雅黑,bold:1,size:16">播放</imgbtn>
+		</window>
+	</root>
+</SOUI>

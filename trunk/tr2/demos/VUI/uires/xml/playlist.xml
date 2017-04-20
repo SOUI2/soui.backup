@@ -1,0 +1,48 @@
+<include>
+    <tabctrl pos="0,0,-0,-0" curSel="0" focusable="0" colorBkgnd="#595c67" tabAlign="top" tabSkin="skin_tab_left"  tabHeight="33" tabWidth="146" colorText="#ffffff">
+      <page title="在线影视">
+      	<window pos="0,0,-0,-0" colorBkgnd="#2b2d33" font="" cache="1">
+      		<caption pos="0,0,-0,57" skin="_skin_page1_caption">
+			   	<edit pos="2,6,-54,-29" margin="1" cueText="" cueColor="rgb(255,0,0)" colorBkgnd="#ffffff" colorText="#000000" />
+  				<button name="btn_query" pos="-49,6" skin="_skin_page1_query" tip="查询" focusable="0"/>
+  				<button name="btn_refresh" pos="2,37" skin="_skin_page1_refresh" tip="刷新" focusable="0"/>
+  				<text pos="20,38" font="adding:-2">暴风影视</text>
+          <img pos="-60,37" skin="_skin_page1_caption_sep" colorText="#ffffff"/>
+          <img name="sortord_up" pos="-57,37" skin="_skin_page1_menu_up" show="0"/>
+          <img name="sortord_down" pos="-57,37" skin="_skin_page1_menu_down" show="0"/>
+  				<button name="btn_sortord" pos="-50,37" skin="_skin_page1_sortord" font="adding:-2" align="left" focusable="0">观众</button>
+          <button name="btn_sortord_menu" pos="-20,37" skin="_skin_page1_sortord_menu" focusable="0"/>
+      		</caption>
+			
+			  <treectrl pos="0,57,-0,-0"  name="mytree1" itemHeight="22" toggleSkin="_skin_page1_toggle" colorItemText="#ffffff" itemSelSkin="_skin_page1_ItemSelSkin" indent="0" font="bold:1">
+  				<item text="热点资讯" expand="0">
+  				  <item text="市场部"/>
+  					<item text="南一区"/>
+  					<item text="北二区"/>
+  				</item>
+          <item text="会员专区" expand="0">
+            <item text="市场部"/>
+            <item text="南一区"/>
+            <item text="北二区"/>
+          </item>
+			  </treectrl>
+  
+      	</window>
+      </page>
+      <page title="正在播放"> 
+		    <window pos="0,0,-0,-0" colorBkgnd="#2b2d33" cache="1">
+      		<caption pos="0,0,-0,21" skin="_skin_page2_caption">
+             <button name="btn_all" pos="0,2" skin="_skin_page2_all" focusable="0"/>
+	           <button name="btn_add" pos="-80,2" skin="_skin_page2_add" tip="添加到播放列表" focusable="0"/>
+             <button name="btn_delete" pos="-60,2" skin="_skin_page2_delete" tip="从播放列表删除" focusable="0"/>
+             <button name="btn_clear" pos="-40,2" skin="_skin_page2_clear" tip="清空播放列表" focusable="0"/>
+             <button name="btn_OrderPlay" pos="-20,2" skin="_skin_page2_OrderPlay" tip="顺序播放" focusable="0"/>
+             <button name="btn_SinglePlay" pos="-20,2" skin="_skin_page2_SinglePlay" tip="单个播放" focusable="0" show="0"/>
+             <button name="btn_RandomPlay" pos="-20,2" skin="_skin_page2_RandomPlay" tip="随机播放" focusable="0" show="0"/>
+             <button name="btn_SingleCycle" pos="-20,2" skin="_skin_page2_SingleCycle" tip="单个循环" focusable="0" show="0"/>
+             <button name="btn_ListCycle" pos="-20,2" skin="_skin_page2_ListCycle" tip="列表循环" focusable="0" show="0"/>
+      		</caption>
+      	</window>
+      </page>
+    </tabctrl>
+</include>

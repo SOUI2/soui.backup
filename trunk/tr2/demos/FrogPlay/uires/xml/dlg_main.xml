@@ -1,0 +1,84 @@
+﻿<SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="1136" height="720" margin="5,5,5,5" resizable="1" wndType="appMain" appWnd="1" translucent="0">
+    <root skin="image_bk_main_png" cache="1">
+      <caption id="7000" pos="0,0,-0,46" show="1"  display="0" skin="image_bk_logo_light_png" font="style:StrokeAndFill,blurStyle:solid,blurRadius:4">
+        <text pos="29,9">@string/title</text>
+        <imgbtn name="btn_close" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />
+        <imgbtn name="btn_max" skin="_skin.sys.btn.maximize" pos="-83,0" animate="1" />
+        <imgbtn name="btn_restore" skin="_skin.sys.btn.restore" pos="-83,0" show="0" animate="1" />
+        <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+        <imgbtn id="501" pos="8,4" size="39,26" tip="" animate="1" cursor="hand" skin="image_btn_menu_png" />
+        <radio2 id="10000" pos="125,1" size="96, 32" tip="" cursor="hand" animate="1" colorText="#ffffffff" skin="image_light_top_png" align="center" checked="1" colorTextHover="#ff0000">播放</radio2>
+        <radio2 id="10001" pos="[20,1" size="96, 32" tip="" cursor="hand" animate="1" colorText="#ffffffff" skin="image_light_top_png" align="center" colorTextHover="#ff0000">片库</radio2>
+        <radio2 id="10002" pos="[20,1" size="96, 32" tip="" cursor="hand" animate="1" colorText="#ffffffff" skin="image_light_top_png" align="center" colorTextHover="#ff0000">皮肤</radio2>
+        <radio2 id="10003" pos="[20,1" size="96, 32" tip="" cursor="hand" animate="1" colorText="#ffffffff" skin="image_light_top_png" align="center" colorTextHover="#ff0000">云播</radio2>
+        <radio2 id="10004" pos="[20,1" size="96, 32" tip="" cursor="hand" animate="1" colorText="#ffffffff" skin="image_light_top_png" align="center" colorTextHover="#ff0000">关于</radio2>
+    </caption>
+        <window pos="0,[0,-0,-0" colorBkgnd="#000000ff">
+            <tabctrl pos="0,0,-0,-60" tabAlign="top" tabSkin="" tabInterSize="2" tabWidth="70" tabHeight="0" colorText="#FFFFFF" focusable="0" show="1" curSel="0" name="maintab">
+                <page>
+                    <window name="realplay_wnd" pos="0,0,]0,-0">
+                        <realwnd pos="0,0,-0,-0" name="vlcwnd"  focusable="0" wndclass="CRealWndDlg" wndname="mainWindow" />
+                    </window>
+                    <window id="123" pos="-200,0,-0,-0" display="0"   show="0" skin="image_bk_main_png">
+                        <window pos="0,0,-0,@30" skin="image_treeview_header_expand_png" align="left" valign="middle">
+                            历史播放
+                            <imgbtn id="700" pos="120,6" size="18,18" tip="增加" animate="1" skin="image_btn_add_png" />
+                            <imgbtn id="701" pos="[10,6" size="18,18" tip="删除" animate="1" skin="image_btn_delete_png" />
+                            <imgbtn id="300" pos="[15,6" size="18,18" tip="播放顺序" animate="1" skin="image_btn_play_mode_png" />
+                        </window>
+                        <listview pos="5,[5,-5,-5" sbSkin="music_list_scorllbar" name="lv_play_list" dividerSize="1">
+                            <template itemHeight="25" colorHover="#548B48" colorSelected="#DF861B">
+                                <text pos="0,0," font="face:微软雅黑,bold:1,size:16" colorText="#ffffffff" name="filename">btn</text>
+                            </template>
+                        </listview>
+                    </window>
+
+
+
+                </page>
+                <page >
+                    <window pos="0,0,-0,-0">
+                        <realwnd pos="0,0,-0,-0" name="depotwnd"  focusable="0" wndclass="CRealWndDlg_DEPOT" wndname="mainWindow" />
+                    </window>
+                </page>
+                <page >
+                    <window pos="0,0,-0,-0">
+                        <realwnd pos="0,0,-0,-0" name="skinwnd"  focusable="0" wndclass="CRealWndDlg_SKIN" wndname="mainWindow" />
+                    </window>
+                </page>
+                <page>
+                    <window pos="0,0,-0,-0">
+                        <realwnd pos="0,0,-0,-0" name="urlwnd"  focusable="0" wndclass="CRealWndDlg_URL" wndname="mainWindow" />
+                    </window>
+                </page>
+                <page>
+                    <window pos="0,0,-0,-0">
+                        <realwnd pos="0,0,-0,-0" name="aboutwnd"  focusable="0" wndclass="CRealWndDlg_ABOUT" wndname="mainWindow" />
+                    </window>
+                </page>
+            </tabctrl>
+            <window id="121" display="0" show="1" pos="0,-60,-0,@12">
+                <imgbtn id="610" pos="0,0" size="17,12" tip="" animate="1" skin="image_btn_fast_backward_png" />
+                <sliderbar name="sliderbarpos" thumbInRail="0" cursor="hand" value="0" min="0" max="1000" pos="[0,0,-17,-0" thumbSkin="image_SliderPlayThumb_png" posSkin="image_SliderForeVolume_png" bkgndSkin="image_SliderBackVolume_png" />
+                <imgbtn id="611" pos="[0,0" size="17,12" tip="" animate="1" skin="image_btn_fast_forward_png" />
+            </window>
+            <caption id="122" skin="image_caption_bk_png" pos="0,-48,-0,-0">
+                <imgbtn id="250" pos="40,20" size="16,16" cursor="hand"  tip="播放记忆" animate="1" skin="_skin_zhu" />
+                <imgbtn id="251" pos="[20,13" size="30,30" cursor="hand"  tip="抓拍" animate="1" skin="image_snapshotbtn_png" />
+                <text pos="[50,|" offset="0,-0.5" id="6000" font="face:微软雅黑,bold:1,size:16" colorText="#ffffff" />
+                <imgbtn id="203" pos="]-50,15" size="24,18" cursor="hand" tip="打开视频" animate="1" skin="image_btn_open_mini_png" />
+                <imgbtn id="202" pos="]-35,9" size="30,30" cursor="hand" tip="停止" animate="1" skin="image_btn_stop_png" />
+                <imgbtn id="204" pos="]-45,4" size="40,40" cursor="hand" tip="上一个" animate="1" skin="image_btn_previous_png" />
+                <imgbtn id="201" pos="|-24,0" size="48, 48" cursor="hand" tip="暂停" animate="1" skin="image_btn_pause_png" show="0" />
+                <imgbtn id="200" pos="|-24,0" size="48, 48" cursor="hand" tip="播放" animate="1" skin="image_btn_play_png" />
+                <imgbtn id="205" pos="[5,4" size="40, 40" cursor="hand" tip="下一个" animate="1" skin="image_btn_next_png" />
+                <imgbtn data="1" id="206" pos="[10,16" cursor="hand" size="16,16" tip="静音" animate="1" skin="image_btn_volume_png" />
+                <sliderbar name="volumeSlider" thumbInRail="0" cursor="hand" width="100" value="50" min="0" max="100" pos="[0,15" thumbSkin="image_SliderPlayvol_png" posSkin="image_SliderForeVolume_png" bkgndSkin="image_SliderBackVolume_png"  />
+                <imgbtn id="600" pos="[10,15" size="24,18" cursor="hand" tip="全屏" animate="1" skin="image_btn_screen_full_png" />
+                <imgbtn id="124" pos="-25,-30" size="18,18" cursor="hand" tip="播放列表" animate="1" skin="image_btn_playlist_png" />
+                <text pos="400,0" id="3500"  font="face:微软雅黑,bold:1,size:14" colorText="#ff00cc" ></text>
+            </caption>
+
+        </window>   
+      </root>
+</SOUI>

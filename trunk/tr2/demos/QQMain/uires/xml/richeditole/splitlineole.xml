@@ -1,0 +1,9 @@
+<root >
+	<window name="parent" pos="0,0,-0,-0">
+		<hr pos="|-112,9,@30,@1" size="1" colorLine="#d7dfe8"/>
+		<hr pos="[0,9,@35,@1" size="1" colorLine="#c6ced7"/>
+		<text  pos="[5,0" colorText="#808080" font="size:12">以上是历史消息</text>
+		<hr pos="[5,9,@35,@1" size="1" colorLine="#c6ced7"/>
+		<hr pos="[0,9,@30,@1" size="1" colorLine="#d7dfe8"/>
+	</window>
+</root>

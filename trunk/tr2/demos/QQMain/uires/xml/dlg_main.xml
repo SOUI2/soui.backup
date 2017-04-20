@@ -1,0 +1,58 @@
+﻿<SOUI title="%title%" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="282" height="630"  margin="20,5,5,5"  resizable="0" 
+appWnd="1" wndType="appMain"
+translucent="1" 
+>
+  <root skin="skin.main.background" cache="1">
+    <caption pos="0,0,-0,120" show="1" font="adding:0">
+      <caption pos="0,0,-1,@30"  >
+         <icon pos="5,5" src="ICON_LOGO:16"/>
+         <text pos="32,2" name="txt_title" >PC客户端1.0</text>
+         <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="@string/close" animate="1"/>
+         <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-83,0" animate="1" />
+      </caption>
+      <caption pos="{0,[0,-0,@60">
+        <imgbtn name="btn_user_header" skin="skin_user_header"  pos="2,2,@48,@48"  tip="设置头像" animate="1"/>
+        <imgbtn name="btn_user_online" pos="[2,{0,@48,@48" skin="skin_main_tab_group"  tip="在线状态" animate="1">在线</imgbtn>
+      </caption>
+      <caption pos="{0,[0,-0,@30"  >
+        <searchDropdownList pos="0,0,-0,@30"   name="edit_search" margin="1" colorBkgnd="#F3F7F2" colorBorder="@color/border">
+          <img pos="6,6,@18,@18" skin="skin.friends.search"/>
+          <edit pos="[2,0,-0,-0" name="edt_search_input"  cueText="@string/cue_search" margin="0"/>
+          <popupStyle translucent="1" resizable="0" sendWheel2Hover="1">
+            <root colorBorder="@color/border" margin="1" colorBkgnd="@color/white">
+              <listview pos="0,0,-0,-0" name="lv_dropdown" >
+                <template itemHeight="30" colorNormal="@color/white" colorSelected="#e4f0fc" colorHover="#e4f0fc">
+                  <text pos="6,|0" offset="0,-0.5" name="txt_key"/>
+                </template>
+              </listview>
+            </root>
+          </popupStyle>
+        </searchDropdownList>
+      </caption>
+    </caption>
+    <window pos="0,[0,-0,-0">
+      <window pos="1,1,-1,@38"  skin="skin_main_tab_group">
+        <imgbtn pos="0,0,@90,@30" name="btn_hot_channel" class="font:tab_button_normal" skin="skin.tabbtn_normal" tip="@string/hot_channels" animate="1" >@string/hot_channels</imgbtn>            
+        <imgbtn pos="[2,{0,@90,@30" name="btn_new_channel" class="font:tab_button_normal" skin="skin.tabbtn_normal" tip="@string/new_channels" animate="1" >@string/new_channels</imgbtn>            
+        <imgbtn pos="[2,{0,@90,@30" name="btn_friends" class="font:tab_button_hover" skin="skin.tabbtn_hover" tip="@string/friends" animate="1" >@string/friends</imgbtn>        
+      </window> 
+      <tabctrl name="tab_main" pos="1,38,-1,-30" tabHeight="0" colorBkgnd="#F3F7F2" >
+        <page title="hot">
+          <include src="LAYOUT:page_hot_channel"/>
+        </page>
+        <page title="new">
+          <include src="LAYOUT:page_new_channel"/>
+        </page>
+        <page title="friend">
+          <include src="LAYOUT:page_friendlist"/>
+        </page>        
+      </tabctrl>  
+      <window pos="{0,[0,-1,@38"  skin="skin_main_tab_group">
+        <imgbtn pos="0,0,@60,@30" name="btn_1" class="font:tab_button_hover" tip="@string/main_menu" animate="1" ></imgbtn>        
+        <imgbtn pos="[2,{0,@60,@30" name="btn_2" class="font:tab_button_normal"  tip="@string/search_friend" animate="1" ></imgbtn>            
+        <imgbtn pos="[2,{0,@60,@30" name="btn_3" class="font:tab_button_normal"  tip="@string/msg_manager" animate="1" ></imgbtn>            
+        <imgbtn pos="[2,{0,@60,@30" name="btn_4" class="font:tab_button_normal"  tip="@string/file_manager" animate="1" ></imgbtn>                    
+      </window> 
+    </window>
+      </root>
+</SOUI>

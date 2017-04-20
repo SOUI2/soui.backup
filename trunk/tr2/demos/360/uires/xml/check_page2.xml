@@ -1,0 +1,31 @@
+<include>
+	<window pos="0,0,-0,-0" skin="_skin.white.bg" id="1234">
+		<tabctrl2 name="tab_jiasu" font="face:微软雅黑,adding:-2" tabPos="0" tabOffset="0" tabAlign="top" colorText="#515151" pos="0,0,-0,-0" show="1" tile="1" curSel="0" focusable="0" tabHeight="30" tabSkin="skin.subtab.btn" tabInterSkin="skin.subtab.split" tabHeadBgSkin="skin.subtab.bg" text-y="6" icon-x="0" tabInterSize="2">
+			<page2 title="一键优化" tip="一键优化">
+				<window pos="0,0,-0,-0" skin="_skin.white.bg" >
+					<anmimg name="abc" ani_in="skin.anim.yjql1" ani_out="skin.anim.yjql2" interval="50" pos="-150,0"/>
+				</window>
+			</page2>
+			<page2 title="深度优化" tip="深度优化">
+				<window pos="0,0,-0,-0" skin="_skin.white.bg" >
+					<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#515151">暂时只能做这么多了,没资源了 ;P</text>
+				</window>
+			</page2>
+			<page2 title="我的开机时间" tip="我的开机时间">
+				<window pos="0,0,-0,-0" skin="_skin.white.bg" >
+					<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+				</window>
+			</page2>
+			<page2 title="启动项" tip="启动项">
+				<window pos="0,0,-0,-0" skin="_skin.white.bg" >
+					<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+				</window>
+			</page2>
+			<page2 title="优化记录与恢复" tip="优化记录与恢复">
+				<window pos="0,0,-0,-0" skin="_skin.white.bg" >
+					<text pos="|0,|5" offset="-0.5,-0.5" font="face:微软雅黑,adding:-3" colorText="#000000">暂时只能做这么多了,没资源了 ;P</text>
+				</window>
+			</page2>
+		</tabctrl2>
+	</window>
+</include>
