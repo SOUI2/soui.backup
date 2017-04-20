@@ -1,0 +1,18 @@
+﻿<SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="380" height="200"  margin="20,5,5,5"  resizable="1" wndType="appMain"
+appWnd="1"
+translucent="1"
+>
+  <root skin="_skin.sys.wnd.bkgnd" cache="1">
+    <caption pos="0,0,-0,30" show="1" font="adding:0">
+      <icon pos="10,8" src="ICON_LOGO:16"/>
+      <text pos="29,9">@string/title</text>
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-83,0" animate="1" />
+    </caption>
+    <window pos="5,[2,-5,-5">
+      <button name="btn_Install" enable="0" pos="|0,|0,@366,@22" offset="-0.5,-1.5">安装</button>
+      <button name="btn_UnInstall" enable="0" pos="{,[+5,@366,@22" >卸载</button>
+      <edit name="et_SouiPath" margin="2,2,2,2" pos="|,[+5,,@366,@22" offset="-0.5,0"/>
+    </window>
+  </root>
+</SOUI>

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0"?>
+<resource>
+    <UIDEF>
+        <file name="XML_INIT" path="uidef\init.xml" />
+    </UIDEF>
+    <LAYOUT>
+        <file name="XML_MAINWND" path="xml\dlg_main.xml" />
+        <file name="menu_playlistloop" path="xml\menu_test.xml" />
+        <file name="menu_open" path="xml\menu_open.xml" />
+        <file name="menu_main" path="xml\menu_main.xml" />
+        <file name="menu_history" path="xml\menu_history.xml" />
+        <file name="XML_RealwndDialog" path="xml\RealwndDialog.xml" />
+        <file name="dlg_tip" path="xml\dlg_tip.xml" />
+        <file name="XML_Readwnd_url" path="xml\Readwnd_url.xml" />
+        <file name="XML_Readwnd_about" path="xml\Readwnd_about.xml" />
+         <file name="XML_Readwnd_depot" path="xml\Readwnd_depot.xml" />
+    <file name="XML_Readwnd_skin" path="xml\Readwnd_skin.xml" />
+    </LAYOUT>
+    <values>
+        <file name="string" path="values\string.xml" />
+        <file name="color" path="values\color.xml" />
+        <file name="skin" path="values\skin.xml" />
+    </values>
+    <IMG>
+        <file name="image_bk_logo_light_png" path="image\bk_logo_light.png" />
+        <file name="image_btn_bk_png" path="image\btn_bk.png" />
+        <file name="image_caption_bk_png" path="image\caption_bk.png" />
+        <file name="image_btn_menu_png" path="image\btn_menu.png" />
+        <file name="image_btn_style_png" path="image\btn_style.png" />
+        <file name="image_bk_main_png" path="image\bk_main.png" />
+        <file name="image_light_top_png" path="image\light_top.png" />
+        <file name="image_bk_logo_image_png" path="image\bk_logo_image.png" />
+        <file name="image_bk_logo_text_png" path="image\bk_logo_text.png" />
+        <file name="image_btn_stop_png" path="image\btn_stop.png" />
+        <file name="image_btn_play_png" path="image\btn_play.png" />
+        <file name="image_btn_next_png" path="image\btn_next.png" />
+        <file name="image_btn_pause_png" path="image\btn_pause.png" />
+        <file name="image_btn_previous_png" path="image\btn_previous.png" />
+        <file name="image_btn_volume_png" path="image\btn_volume.png" />
+        <file name="image_btn_volume_zero_png" path="image\btn_volume_zero.png" />
+        <file name="image_SliderBackVolume_png" path="image\SliderBackVolume.png" />
+        <file name="image_SliderForeVolume_png" path="image\SliderForeVolume.png" />
+        <file name="image_SliderPlayThumb_png" path="image\SliderPlayThumb.png" />
+        <file name="image_SliderPlayvol_png" path="image\SliderPlayvolum.png" />
+        <file name="image_btn_fast_backward_png" path="image\btn_fast_backward.png" />
+        <file name="image_btn_fast_forward_png" path="image\btn_fast_forward.png" />
+        <file name="image_btn_open_mini_png" path="image\btn_open_mini.png" />
+        <file name="image_btn_screen_full_png" path="image\btn_screen_full.png" />
+        <file name="image_btn_playlist_png" path="image\btn_playlist.png" />
+        <file name="image_btn_open_png" path="image\btn_open.png" />
+        <file name="image_combo_open_png" path="image\combo_open.png" />
+        <file name="image_treeview_header_expand_png" path="image\treeview_header_expand.png" />
+        <file name="image_btn_play_mode_png" path="image\btn_play_mode.png" />
+        <file name="image_btn_add_png" path="image\btn_add.png" />
+        <file name="image_btn_delete_png" path="image\btn_delete.png" />
+        <file name="png_vscroll" path="image\vscrollbar.png" />
+        <file name="image_edit_bk_png" path="image\edit_bk.png" />
+        <file name="image_zhu_png" path="image\zhu.png" />
+        <file name="image_snapshotbtn_png" path="image\snapshotbtn.png" />
+        <file name="tip_bg" path="image\tip_bg.png" />
+    </IMG>
+    <PNG>
+        <file name="ID_PNG_PAGE1_MENU_ITEMSKIN" path="image\_menu_ItemSkin.png" />
+    </PNG>
+    <ICON>
+        <file name="ICON_LOGO" path="image\ico.ico" />
+    </ICON>
+</resource>

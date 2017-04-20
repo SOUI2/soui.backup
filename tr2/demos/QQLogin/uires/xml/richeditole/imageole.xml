@@ -1,0 +1,6 @@
+<root>
+	<window pos="0,0,-0,-0">
+		<imgplayer name="player" pos="0,0,-0,-0" />
+		<imgbtn name="btn_show_img" skin="skin.tabbtn_close" pos="-18,-18,@16,@16" />
+	</window>
+</root>

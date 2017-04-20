@@ -1,0 +1,30 @@
+﻿<SOUI title="@string/title" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" 
+    width="600" height="600"  margin="20,5,5,5"  resizable="1" wndType="normal"  translucent="1" >
+	
+	<root skin="_skin.sys.wnd.bkgnd">
+	
+		<caption pos="0,0,-0,30" show="1" font="adding:0">
+			<icon pos="10,8" src="ICON_LOGO:16"/>
+			<text pos="29,9">@string/title</text>
+			<imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+			<imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
+			<imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
+			<imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+		</caption>
+
+		<window pos="0,[1,-0,@30" >
+			<edit pos="5,2,]-5,@25" name="EditURL" colorBkgnd="#ffffff" inset="5,0,0,0"></edit>
+			<imgbtn pos="]-55,2,]-5,@25" name="BtnLoadURL">跳转</imgbtn>
+			<imgbtn pos="-125,2,-5,@25" name="BtnDebugJavaScript">频道信息</imgbtn>
+            <imgbtn pos="-65,2,-5,@25" name="btn_fetch_log">拿日志</imgbtn>
+		</window>
+		
+		<window pos="0,[1,-0,@30" name="WindowDeubg" visible="0" display="0">
+			<edit pos="5,2,-90,@25" name="edt_channel_info" colorBkgnd="#ffffff" inset="5,0,0,0"></edit>
+			<imgbtn pos="[5,2,-5,@25" name="btn_copy">复制</imgbtn>
+		</window>
+		
+		<cef3 pos="5,[5,-5,-5" name="CefBrowser"  colorBkgnd="#808080"/>
+	</root>
+	
+</SOUI>

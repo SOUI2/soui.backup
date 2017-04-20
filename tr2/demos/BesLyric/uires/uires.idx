@@ -1,0 +1,54 @@
+﻿<resource>
+  <UIDEF>
+    <file name="XML_INIT" path="uidef\init.xml"  />
+  </UIDEF>
+  <LAYOUT>
+    <file name="XML_MAINWND" path="xml\dlg_main.xml"  />
+    <file name="xml_messagebox" path="xml\messagebox.xml"/>
+  </LAYOUT>
+  
+  <values>
+  	<file name="string" path="values\string.xml"/>
+  	<file name="color" path="values\color.xml"/>
+  	<file name="skin" path="values\skin.xml"/>
+  </values>
+
+  <IMGX>
+    <file name="png_tab_main"  path="image\netease\netease_menu_tab.png" />
+    <file name="png_page_icons"   path="image\netease\netease_page_icon.png" />
+    <file name="png_key_up"   path="image\key_up.png" />
+    <file name="png_key_left"   path="image\key_left.png" />
+    <file name="png_key_right"   path="image\key_right.png" />
+    <file name="png_key_space"   path="image\key_space.png" />
+    <file name="png_key_return"   path="image\key_return.png" />
+    
+
+    <file name="png_netease_button"   path="image\netease\netease_button.png" />
+    <file name="png_blue_button"   path="image\netease\msg_btn_blue.png" />
+
+    <file name="png_progress_frontground"   path="image\netease\progress_frontground.png" />
+    <file name="png_progress_background"   path="image\netease\progress_background.png" />
+
+    <file name="png_slider_frontground"   path="image\netease\sound_slider_frontground.png" />
+    <file name="png_slider_background"   path="image\netease\sound_slider_background.png" />
+    <file name="png_slider_thumb" path="image\netease\slider_sound_thumb.png" />
+
+    <file name="png_sound_open" path="image\netease\sound_open.png" />
+    <file name="png_sound_close" path="image\netease\sound_close.png" />
+
+    <file name="img_information" path="image\music_48px.png"/>
+    <file name="img_question" path="image\question_48px.png"/>
+    <file name="img_exclamation" path="image\exclamation_48px.png"/>
+
+  </IMGX>
+  
+  <BackGround>
+    <file name="background_pic" path="image\netease\netease_background.png"/>
+    <file name="msg_background_1" path="image\netease\msg_background_1.png"/>
+    <file name="msg_background_2" path="image\netease\msg_background_2.png"/>
+    
+  </BackGround>
+  <ICON>
+    <file name="ICON_LOGO"  path="image\netease\netease_cloudmusic_48px.ico"    />
+  </ICON>
+</resource>

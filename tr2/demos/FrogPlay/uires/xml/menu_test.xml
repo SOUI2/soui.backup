@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<menu sepSkin="" itemSkin="_skin_page1_menu_itemskin" font="adding:-2" itemHeight="20" textMargin="0">
+	<item id="1101" check="1">顺序播放</item>
+	<item id="1102" check="0">单曲循环</item>
+	<item id="1103" check="0">随机播放</item>
+	
+	<item id="1104">按名字排序</item>
+	<item id="1105">按类型排序</item>
+	
+	<item id="1106">清空播放列表</item>
+</menu>

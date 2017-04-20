@@ -1,0 +1,36 @@
+﻿<resource>
+  <UIDEF>
+    <file name="XML_INIT" path="xml\init.xml"  />
+  </UIDEF>
+  <LAYOUT>
+    <file name="dlg_main" path="xml\dlg_main.xml"  />
+    <file name="page_imgmerge" path="xml\page_imgmerge.xml"/>
+    <file name="page_folder" path="xml\page_folder.xml"/>
+    <file name="page_codeline" path="xml\page_codeline.xml"/>
+    <file name="page_2unicode" path="xml\page_2unicode.xml"/>
+    <file name="page_folderscan" path="xml\page_folderscan.xml"/>
+    <file name="page_md5" path="xml\page_md5.xml"/>
+    <file name="page_about" path="xml\page_about.xml"/>
+  </LAYOUT>
+  <xml>
+    <file name="syntax" path="xml\syntax.xml"/>
+    <file name="menu_filetype" path="xml\menu_filetype.xml"/>
+  </xml>
+  <IMG>
+    <file name="png_page_icons"   path="image\page_icons.png" />
+    <file name="png_tab_main"  path="image\tab_main.png" />
+  </IMG>
+  <img.imagemerge>
+    <file name="png_transbkgnd" path="image\image-merge\transbkgnd.png"/>
+  </img.imagemerge>
+  <img.codeline>
+    <file name="png_foldericon"	path="image\code-line\folder.png"/>
+    <file name="png_tabskin" path="image\code-line\tab_page.png"/>
+  </img.codeline>
+  <img.folderscan>
+    <file name="png_scan" path="image\folder-scan\scan.png"/>
+  </img.folderscan>
+  <ICON>
+    <file name="ICON_LOGO"  path="image\soui.ico"    />
+  </ICON>
+</resource>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SOUI name="student_sms" title="@string/title" width="550" height="466"  margin="5,5,5,5"
+      resizable="1"
+      translucent="1"
+      minsize="320,254"
+      sendWheel2Hover="1"
+      trCtx="student_sms"
+>
+  <root skin="bg.setting" cache="1">
+    <caption pos="0,0,-0,@37">
+      <text pos="|0,6" offset="-0.5,0" font="size:14">@string/stuent_sms</text>
+      <imgbtn id="IDCANCEL" pos="-5,5" skin="_skin.sys.btn.close" offset="-1,0" tip="@string/close"/>
+    </caption>
+    <window pos="10,[0,-10,-5">
+      <window pos="0,0,-0,@47">
+        <text pos="12,|0" offset="0,-0.5">@string/sms_recv_head</text>
+        <text pos="[0,|0" offset="0,-0.5" name="txt_sms_checked_num" colorText="@color/theme">0</text>
+        <text pos="[0,|0" offset="0,-0.5">@string/sms_recv_tail</text>
+        
+        <searchDropdownList pos="-10,10,@210,@30" offset="-1,0" name="edit_search" margin="1" colorBorder="@color/border">
+          <img pos="6,6" skin="sms.search"/>
+          <edit pos="[0,0,-0,-0" name="edit_input"  cueText="@string/cue_search" margin="0"/>
+          <popupStyle translucent="1" resizable="0" sendWheel2Hover="1">
+            <root colorBorder="@color/border" margin="1" colorBkgnd="@color/white">
+              <listview pos="0,0,-0,-0" name="lv_dropdown" >
+                <template itemHeight="30" colorNormal="@color/white" colorSelected="#e4f0fc" colorHover="#e4f0fc">
+                  <text pos="6,|0" offset="0,-0.5" name="txt_key"/>
+                </template>
+              </listview>
+            </root>
+          </popupStyle>
+        </searchDropdownList>
+      </window>
+
+      <mclistview pos="10,[5,-10,]0" name="tv_student">
+        <header align="center"  itemSwapEnable="1" fixWidth="0" sortHeader="1" itemSkin="sms.header">
+          <items>
+            <item width="250">@string/col_sms_nick</item>
+            <item width="165">@string/col_sms_timespan</item>
+            <item width="75">@string/col_sms_loyal_degree</item>
+          </items>
+        </header>
+        <template itemHeight="26">
+          <item_group  colorHover="#e4f0fc" colorSelected="#e4e0ec">
+            <!--分组的模板-->
+            <window name="col_nick" clipClient="1">
+              <check pos="0,|0" offset="0,-0.5" name="chk_select_group"/>
+              <toggle pos="[6,|0" offset="0,-0.5" skin="_skin.sys.tree.toggle" name="tgl_tv_expand"/>
+              <text pos="[5,|0" offset="0,-0.5" font="bold:1" name="txt_group"/>
+            </window>
+            <window name="col_time_span"/>
+            <window name="col_loyal_degree"/>
+          </item_group>
+          <item_data  colorHover="#e4f0fc" colorSelected="#e4e0ec">
+            <!--列表项模板-->
+            <window name="col_nick" clipClient="1">
+              <check name="txt_nick" pos="24,|0" offset="0,-0.5" >sb01</check>
+            </window>
+            <window name="col_time_span" clipClient="1">
+              <text name="txt_time_span" pos="10,|0" offset="0,-0.5"  >2015/9 - 2028/9</text>
+            </window>
+            <window name="col_loyal_degree" clipClient="1">
+              <text name="txt_loyal_degree" pos="-15,|0" offset="-1,-0.5" >10000</text>
+            </window>            
+          </item_data>
+        </template>
+      </mclistview>
+      <window pos="0,]-16,-0,@1" colorBkgnd="@color/border"/>
+      <edit name="edit_sms_input" pos="10,]-15,-10,@70" offset="0,-1" multilines="1" autovscroll="1" hscrollBar="0" vscrollBar="1" cueText="@string/cue_sms" notifyChange="1">
+        <window pos="-10,-10" offset="-1,-1">
+          <text pos="0,0" name="txt_wordcount" colorText="@color/gray" colorTextDisable="@color/red">0</text>
+          <text pos="[0,0" colorText="@color/gray">/100</text>
+        </window>
+      </edit>
+      <window pos="0,-43,-0,-0">
+        <img pos="10,|0" offset="0,-0.5" skin="sms.record"/>
+        <link pos="[5,|0" offset="0,-0.5" name="btn_sms_record">@string/sms_record</link>
+        
+        <window pos="]-10,|0" offset="-1,-0.5">
+          <text pos="0,0">@string/sms_tip_head</text>
+          <text pos="[0,0" name="txt_sms_number" colorText="@color/theme">22</text>
+          <text pos="[0,0">@string/sms_tip_tail</text>
+          <img pos="[5,0" name="img_sms_help" skin="sms.help" msgTransparent="0" tip="@string/sms_help"/>
+        </window>
+        <button pos="-0,|0,@92,@27" offset="-1,-0.5" name="btn_send_sms">@string/send_sms</button>
+      </window>
+      <window pos ="0,0,-0,{5" name="wnd_record_frame" colorBkgnd="#cccccc80" visible="0">
+        <!--历史记录列表-->
+        <listview pos="0,30,-5,-5" name="lv_sms_record" colorBkgnd="@color/white">
+          <template itemHeight="60">
+            <text pos="5,2" name="txt_send_time">2015.9.3 16:32:01</text>
+            <text pos="10,[2">接收者</text>
+            <text pos="[5,{0" name="txt_sms_receiver" colorText="@color/theme"/>
+            <text pos="10,[2" name="txt_sms_content"/>
+          </template>
+        </listview>
+      </window>
+    </window>
+  </root>
+</SOUI>
