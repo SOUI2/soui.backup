@@ -419,7 +419,7 @@ namespace SOUI{
 			{
 				float fPercent = pos.nPos;
 				if(fPercent<0.0f) fPercent = 0.0f;
-				if(fPercent>1.0f) fPercent = 1.0f;
+				if(fPercent>100.0f) fPercent = 100.0f;
 				if(pos.cMinus == -1)
 					nRet=(int)((100.0f-fPercent)*nMax/100);
 				else
