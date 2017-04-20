@@ -1,0 +1,36 @@
+﻿<SOUI name="mainWindow"
+      trCtx="dlg_main"
+      title="@string/title" 
+      bigIcon="ICON_LOGO:32" 
+      smallIcon="ICON_LOGO:16" 
+      width="600" 
+      height="400"  
+      margin="5,5,5,5" 
+      resizable="1" 
+      wndType="appMain"
+    appWnd="1"
+    translucent="1"
+>
+  <root skin="_skin.sys.wnd.bkgnd" cache="1">
+    <caption pos="0,0,-0,30" show="1" font="adding:0">
+      <icon pos="10,8" src="ICON_LOGO:16"/>
+      <text pos="29,9">@string/title</text>
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+      <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
+      <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
+      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+    </caption>
+    <window pos="5,[2,-5,-5" layout="vbox">
+      <group size="-1,-1" layout="hbox" layout_gravity="center" text="language" padding="5,5,5,10">
+        <radio size="-1,-1" text="chinese" name="lang_cn" id="100" checked="1"/>
+        <radio size="-1,-1" text="english" extend_left="20" name="lang_en" id="101"/>
+      </group>
+      <window size="-1,-1" layout="hbox">
+        <button size="100,30" text="button1"/>
+        <button size="100,30" text="button2"/>
+        <button size="100,30" text="button3"/>
+      </window>
+      <text size="-1,-1" layout_gravity="center" name="txt_test" font="adding:5,underline:1" colorText="#ff0000"/>
+    </window>
+  </root>
+</SOUI>
