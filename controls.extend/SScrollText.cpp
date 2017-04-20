@@ -18,21 +18,21 @@ namespace SOUI
         CRect rcClient = GetClientRect();
         if(m_nScrollWidth==0)
         {
-            pRT->DrawText(m_strText,m_strText.GetLength(),&rcClient,DT_SINGLELINE|DT_CENTER|DT_VCENTER);
+            pRT->DrawText(m_strText.GetText(),m_strText.GetText().GetLength(),&rcClient,DT_SINGLELINE|DT_CENTER|DT_VCENTER);
         }else
         {
             pRT->PushClipRect(&rcClient);
                         
             CRect rcText = rcClient;
             rcText.left -= m_nOffset;
-            pRT->DrawText(m_strText,m_strText.GetLength(),&rcText,DT_SINGLELINE|DT_VCENTER);
+            pRT->DrawText(m_strText.GetText(),m_strText.GetText().GetLength(),&rcText,DT_SINGLELINE|DT_VCENTER);
 			if (m_nRollType==0)
 			{
 				if(m_nScrollWidth - m_nOffset < rcClient.Width())
 				{
 					rcText.left += m_nScrollWidth;
 					//                 pRT->SetTextColor(RGBA(0,0,0,255));
-					pRT->DrawText(m_strText,m_strText.GetLength(),&rcText,DT_SINGLELINE|DT_VCENTER);
+					pRT->DrawText(m_strText.GetText(),m_strText.GetText().GetLength(),&rcText,DT_SINGLELINE|DT_VCENTER);
 				}
 			}
             
@@ -67,7 +67,7 @@ namespace SOUI
 
     void SScrollText::SetWindowText(const SStringT & strText)
     {
-        m_strText = strText;
+		__super::SetWindowText(strText);
         UpdateScrollInfo(GetClientRect().Size());//重新计算滚动长度
     }
 
@@ -77,7 +77,7 @@ namespace SOUI
         GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
         BeforePaintEx(pRT);
         SIZE sz;
-        pRT->MeasureText(m_strText,m_strText.GetLength(),&sz);
+        pRT->MeasureText(m_strText.GetText(),m_strText.GetText().GetLength(),&sz);
 
         if(sz.cx - size.cx>0)
         {
