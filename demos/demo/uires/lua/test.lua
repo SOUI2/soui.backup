@@ -80,7 +80,7 @@ function on_timer(args)
 			flag_win:SetVisible(1,1);
 			flag_win:SetUserData(win_id);
 
-			for i= 1,4 do
+			for i= 101,104 do
 				gamewnd:FindChildByID(i,-1):SetWindowText(T("0"));
 			end
 		end
@@ -94,7 +94,8 @@ function on_bet(args)
 
 	local btn = toSWindow(args.sender);
 	if coins_all >= 10 then
-		id = btn:GetID();
+	    --id range from 101-104
+		id = btn:GetID()-100;
 		coins_bet[id] = coins_bet[id] + 10;
 		coins_all = coins_all -10;
 		btn:SetWindowText(T(coins_bet[id]));
