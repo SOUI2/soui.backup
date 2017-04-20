@@ -1,0 +1,55 @@
+﻿<SOUI name="mainWindow" title="@string/title" width="850" height="610"  margin="20,5,5,5"  resizable="1" 
+appWnd="1"
+translucent="1" >
+  <root >
+    <window pos="0,0,-0,-0" skin="skin.main_center" catch="1" name="main_center">
+      <window pos="0,0,-0,-0" skin="skin.main_mask" cache="1" name="img_bg">
+        <caption pos="0,0,-0,106" show="1">
+          <img name="main_icon" skin="skin.main_icon" pos="8,9"></img>
+          <text pos="29,9" class="cls_title">@string/title</text>
+          <imgbtn name="btn_close" skin="skin.btn_close"    pos="-51,6" tip="close" animate="1"/>
+          <imgbtn name="btn_max" skin="skin.btn_max"  pos="{-31,6" animate="1" />
+          <imgbtn name="btn_restore" skin="skin.btn_restore"  pos="{0,6" show="0" animate="1" />
+          <imgbtn name="btn_min" skin="skin.btn_min" pos="{-31,6" animate="1" />
+          <imgbtn name="btn_menu" skin="skin.btn_menu" pos="{-31,6" animate="1"/>
+          <imgbtn name="btn_skin" skin="skin.btn_skin" pos="{-27,6" animate="1"/>
+        </caption>
+        <tabctrl name="tab_main" tabPos="10" tabAlign="top" font="face:微软雅黑" colorText="#ffffff" pos="0,38,-0,-32" show="1" curSel="0" focusable="0" tabHeight="71" tabSkin="skin.tab_main" iconSkin="skin.tab_icon" text-y="55" icon-x="0" tabInterSize="5">
+          <page title="电脑体验" tip="电脑体验">
+            <include src="layout:page_home"/>
+          </page>
+          <page title="木马查杀" tip="木马查杀">
+            <include src="layout:page_trojan"/>
+          </page>
+          <page title="工具箱" tip="工具箱">
+            <window pos="0,0,-0,-0">
+              <text pos="|0,|5" offset="-0.5,-0.5" colorText="#000000">暂时木有了...</text>
+            </window>
+          </page>
+          <page title="系统优化" tip="系统优化">
+            <window pos="0,0,-0,-0">
+              <text pos="|0,|5" offset="-0.5,-0.5" colorText="#000000">暂时木有了...</text>
+            </window>
+          </page>
+          <page title="修复漏洞" tip="修复漏洞">
+            <window pos="0,0,-0,-0">
+              <text pos="|0,|5" offset="-0.5,-0.5" colorText="#000000">暂时木有了...</text>
+            </window>
+          </page>
+          <page title="软件管理" tip="软件管理">
+            <window pos="0,0,-0,-0">
+              <text pos="|0,|5" offset="-0.5,-0.5" colorText="#000000">暂时木有了...</text>
+            </window>
+          </page>
+          <page title="手机管理" tip="手机管理">
+            <window pos="0,0,-0,-0">
+              <text pos="|0,|5" offset="-0.5,-0.5" colorText="#000000">暂时木有了...</text>
+            </window>
+          </page>
+        </tabctrl>
+        <text pos="10,-10" offset="0,-1">主程序版本：4.6.12.330</text>
+        <link pos="[16,{0" class="cls_link">检查更新</link>
+      </window>
+    </window>
+  </root>
+</SOUI>

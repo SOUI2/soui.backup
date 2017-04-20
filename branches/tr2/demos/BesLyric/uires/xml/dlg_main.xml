@@ -1,0 +1,195 @@
+﻿<SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:48" smallIcon="ICON_LOGO:32" width="760" height="550" minSize="735,510" margin="20,5,5,5"  
+      resizable="1" wndType="appMain"
+appWnd="1"
+translucent="1" 
+>
+  
+  <root skin="_skin.sys.wnd.bkgnd" cache="1">
+    <img pos="0,0,-0,-0" name="img_skin_layer"/>
+    <caption pos="0,0,-0,50" show="1" font="adding:0">
+      <!--<icon pos="5,5" src="ICON_LOGO:24"/>-->
+      <text pos="38,10">@string/title</text>
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+      <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
+      <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
+      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+    </caption>
+    
+      <tabctrl name="tab_main" pos="0,50,-5,-5" tabAlign="left" show="1" curSel="0" focusable="0" animateSteps="10" tabHeight="40" tabWidth="120" tabSkin="skin_tab_main" 
+               text-x="40" text-y="12" iconSkin="skin_page_icons" icon-x="10" icon-y="12" colorText="@color/white" cursor="hand" >
+        <page title="歌词制作" tip="选择歌词和音乐文件 制作具有时间轴的歌词文件">
+          <window pos="10,5,-5,-5">
+              <text pos="5,5,@80,@30">选择音乐：</text>
+              <edit pos="[5,{0,-60,@30" font="adding:-1" readonly="1" name="edit_music_1" ></edit>
+              <imgbtn name="btn_select_music_1" pos="[5,{0,-5,@30" skin="app_button" class="normalbtn">选择</imgbtn>
+
+              <text pos="5,[5,@80,@30">选择歌词：</text>
+              <edit pos="[5,{0,-60,@30" font="adding:-1" readonly="1" name="edit_lyric_1"></edit>
+              <imgbtn name="btn_select_lyric_1" pos="[5,{0,-5,@30" skin="app_button" class="normalbtn">选择</imgbtn>
+
+              <text pos="5,[5,@80,@30">输出目录：</text>
+              <edit pos="[5,{0,-60,@30" font="adding:-1" readonly="1" name="edit_output" ></edit>
+              <imgbtn name="btn_select_output" pos="[5,{0,-5,@30" skin="app_button" class="normalbtn">选择</imgbtn>
+
+             <window pos="5,[30,-5,@30">
+                <text pos="5,0,@30,-0" valign="bottom">Tip:  </text>
+                <img skin="skin_key_up"></img>
+                <text pos="[5,0,@60,-0" valign="bottom">推上一行</text>
+               <img skin="skin_key_left"></img>
+               <text pos="[5,0,@80,-0" valign="bottom">空出一行</text>
+                <img skin="skin_key_return"></img>
+                <text pos="[5,0,@60,-0" valign="bottom">结束制作</text>
+
+                <imgbtn name="btn_load_1" pos="-105,0,@100,-0" skin="app_button" class="normalbtn" tip="从上面路径中载入最新的文件内容">载入最新</imgbtn>
+              </window>
+
+              <window pos="5,[8,-5,@80" colorBkgnd="#ffffff22" colorBorder="#000000"  margin-x="1" margin-y="1">
+                <text name="line_music_1" pos="80,|0,-8,@28" font="adding:-1" valign="center" colorBkgnd="#ffffff44"  colorBorder="@color/gray" margin-x="1" margin-y="1"  offset="0,-1.1" padding="5"></text>
+                <text name="line_lyric_1" pos="80,|0,-8,@28" font="adding:-1" valign="center" colorBkgnd="#ffffff44" colorBorder="@color/gray" margin-x="1" margin-y="1" offset="0,0.1" padding="5" ></text>
+
+                <text pos="5,|0,75,@25" align="center" valign="center" offset="0,-1.1">当前音乐：</text>
+                <text pos="5,|0,75,@25" align="center" valign="center" offset="0,0.1">当前歌词：</text>
+              </window>
+            
+              <window pos="5,[2,-5,@130" colorBkgnd="#ffffff22" colorBorder="#000000"  margin-x="1" margin-y="1">
+                <text name="highlight_bkgnd" pos="sib.left@65000:-2,sib.top@65000:-2,sib.right@65000:2,sib.bottom@65000:2"
+                      colorBkgnd="#3366ff44" visible="0"/>
+                
+                <text name="1_line_1" pos="80,|0,-8,@30" valign="center" colorBkgnd="#ffffff44" colorBorder="@color/gray" margin-x="1" margin-y="1"  offset="0,-1.8" padding="5"></text>
+                <text name="1_line_2" pos="80,|0,-8,@30" valign="center" colorBkgnd="#ffffff44" colorBorder="@color/gray" margin-x="1" margin-y="1" offset="0,-0.5" padding="5" id="65000"></text>
+                <text name="1_line_3" pos="80,|0,-8,@30" valign="center" colorBkgnd="#ffffff44" colorBorder="@color/gray" margin-x="1" margin-y="1" offset="0,0.8" padding="5"></text>
+
+                <text pos="5,|0,75,@30" align="center" valign="center" offset="0,-1.8" name="text_time_1">00:00.000</text>
+                <text pos="5,|0,75,@30" align="center" valign="center" offset="0,-0.5">当前行：</text>
+                <text pos="5,|0,75,@30" align="center" valign="center" offset="0,0.8">下一行：</text>
+
+                <text name="empty_tip_block" pos="sib.right@65000:-50,sib.top@65000:2,sib.right@65000:-2,sib.bottom@65000:-2"
+                      colorBkgnd="#00000088" colorText="#99aaffee" align="center" visible="0" >空行</text>
+              </window>
+            
+            <window pos="5,[5,-5,@15" >
+              <progress name="progress_music_1" bkgndSkin="skin_progress_background" posSkin="skin_progress_pos" pos="0,0,-0,4" offset="0,0" value="0" min="0" max="1000"/>
+            </window>
+
+              <window pos="5,[5,-5,@30">
+                <imgbtn name="btn_preview" pos="5,0,@100,-0" enable="0" skin="app_button" class="normalbtn" tip="进入 滚动预览 页面，预览 歌词制作效果">预览效果</imgbtn>
+                <imgbtn name="btn_open_output" pos="[5,0,@110,-0" enable="0" skin="app_button" class="normalbtn" tip="打开歌词文件夹，以及打开歌词文件">打开生成文件</imgbtn>
+                
+                <imgbtn name="btn_start_making" pos="-105,0,@100,-0" enable="0" skin="app_button" class="normalbtn">开始制作</imgbtn>
+                <imgbtn name="btn_restart" pos="{-105,0,@100,-0" enable="0" skin="app_button" class="normalbtn">我要重制</imgbtn>
+
+                <imgbtn name="btn_sound_open_1" pos="{-150,7" visible="1" skin="skin_btn_sound_open" class="normalbtn"></imgbtn>
+                <imgbtn name="btn_sound_close_1" pos="{0,7" visible="0" skin="skin_btn_sound_close" class="normalbtn"></imgbtn>
+
+                <sliderbar name="slider_sound_1" pos="[3,3,@120,30" thumbInRail="0" value="100" min="0" max="100"  thumbSkin="skin_slider_thumb"  bkgndSkin="skin_slider_background" posSkin="skin_slider_frontground"/>
+              </window>
+          </window>
+        </page>
+        
+        
+        <page title="滚动预览" tip="选择歌词和音乐文件 预览歌词滚动效果">
+          <window pos="10,5,-5,-5">
+            <text pos="5,5,@80,@30">选择音乐：</text>
+            <edit pos="[5,{0,-60,@30" font="adding:1" readonly="-1"  name="edit_music_2"></edit>
+            <imgbtn name="btn_select_music_2" pos="[5,{0,-5,@30" skin="app_button" class="normalbtn">选择</imgbtn>
+            <text pos="5,[5,@80,@30">滚动歌词：</text>
+            <edit pos="[5,{0,-60,@30" font="adding:1" readonly="-1"  name="edit_lyric_2"></edit>
+            <imgbtn name="btn_select_lyric_2" pos="[5,{0,-5,@30" skin="app_button" class="normalbtn">选择</imgbtn>
+
+            <window pos="5,[30,-5,@30">
+              <text pos="5,0,@30,-0" valign="bottom">Tip:  </text>
+              <img skin="skin_key_left"></img>
+              <text pos="[5,0,@70,-0" valign="bottom">倒退十秒</text>
+              <img skin="skin_key_space"></img>
+              <text pos="[5,0,@45,-0" valign="bottom">暂停</text>
+              <img skin="skin_key_right"></img>
+              <text pos="[5,0,@70,-0" valign="bottom">前进十秒</text>
+              
+              <imgbtn name="btn_load_2" pos="-105,0,@100,-0" skin="app_button" class="normalbtn" tip="从上面路径中载入最新的文件内容">载入最新</imgbtn>
+            </window>
+
+            <window pos="5,[10,-5,@80" colorBkgnd="#ffffff22" colorBorder="#000000"  margin-x="1" margin-y="1">
+              <text name="line_music_2" pos="80,|0,-8,@28" font="adding:-1" valign="center" colorBkgnd="#ffffff44"  colorBorder="@color/gray" margin-x="1" margin-y="1"  offset="0,-1.1" padding="5"></text>
+              <text name="line_lyric_2" pos="80,|0,-8,@28" font="adding:-1" valign="center" colorBkgnd="#ffffff44" colorBorder="@color/gray" margin-x="1" margin-y="1" offset="0,0.1" padding="5" ></text>
+
+              <text pos="5,|0,75,@25" align="center" valign="center" offset="0,-1.1">当前音乐：</text>
+              <text pos="5,|0,75,@25" align="center" valign="center" offset="0,0.1">当前歌词：</text>
+            </window>
+    
+            <window name ="wnd_lyric_display" pos="5,[2,-5,@130" colorBkgnd="#ffffff22" colorBorder="#000000"  margin-x="1" margin-y="1">
+              <text name="highlight_bkgnd_2" pos="sib.left@65001:-2,sib.top@65001:-2,sib.right@65001:2,sib.bottom@65001:2"
+                    colorBkgnd="#3366ff44" visible="0"/>
+
+              <text name="2_line_1" pos="80,|0,-8,@30" valign="center" colorBkgnd="#ffffff44" colorBorder="@color/gray" margin-x="1" margin-y="1"  offset="0,-1.8" padding="5"></text>
+              <text name="2_line_2" pos="80,|0,-8,@30" valign="center" colorBkgnd="#ffffff44" colorBorder="@color/gray" margin-x="1" margin-y="1" offset="0,-0.5" padding="5" id="65001"></text>
+              <text name="2_line_3" pos="80,|0,-8,@30" valign="center" colorBkgnd="#ffffff44" colorBorder="@color/gray" margin-x="1" margin-y="1" offset="0,0.8" padding="5"></text>
+
+              <text pos="5,|0,75,@30" align="center" valign="center" offset="0,-1.8" name="text_time_2" colorBkgnd="#ffffff44">00:00.000</text>
+              <text pos="5,|0,75,@30" align="center" valign="center" offset="0,-0.5">当前行：</text>
+              <text pos="5,|0,75,@30" align="center" valign="center" offset="0,0.8">下一行：</text>
+
+              <text name="empty_tip_block_2" pos="sib.right@65001:-50,sib.top@65001:2,sib.right@65001:-2,sib.bottom@65001:-2"
+                    colorBkgnd="#000000aa" colorText="#99aaffee" align="center" visible="0" >空行</text>
+            </window>
+            
+            <window pos="5,[5,-5,@15" >
+              <progress name="progress_music_2" bkgndSkin="skin_progress_background" posSkin="skin_progress_pos" pos="0,0,-0,4" offset="0,0" value="0" min="0" max="1000"/>
+            </window>
+            
+            <window pos="5,[5,-5,@30">
+              <imgbtn name="btn_manual_adjust" pos="5,0,@120,-0" enable="0" skin="app_button" class="normalbtn" tip="手动修改歌词文件">手动微调时间轴</imgbtn>
+              
+              <imgbtn name="btn_start_playing" pos="-105,0,@100,-0" enable="0" skin="app_button" class="normalbtn">开始播放</imgbtn>
+              <imgbtn name="btn_end_preview" pos="{-105,0,@100,-0" enable="0" skin="app_button" class="normalbtn">结束预览</imgbtn>
+
+              <imgbtn name="btn_sound_open_2" pos="{-150,7" visible="1" skin="skin_btn_sound_open" class="normalbtn"></imgbtn>
+              <imgbtn name="btn_sound_close_2" pos="{0,7" visible="0" skin="skin_btn_sound_close" class="normalbtn"></imgbtn>
+
+              <sliderbar name="slider_sound_2" pos="[3,3,@120,30" thumbInRail="0" value="100" min="0" max="100" thumbSkin="skin_slider_thumb"  bkgndSkin="skin_slider_background" posSkin="skin_slider_frontground"/>
+
+            </window>
+          </window>
+        </page>
+        
+        <page title="本软件" tip="关于本软件" >
+          <!--<group pos="20,10,-20,-40" headerHeight="20" round ="0" colorLine1 ="@color/yello" colorLine2="@color/gray">-->
+        <window pos="10,10,-10,-10">
+            <text pos="15,15,-5,@30">
+              本软件由 BensonLaur 倾情提供。
+            </text>
+               
+            <text pos="15,[15,-5,@30" multilines="1" maxWidth="550">
+                本软件名称：BesLyric  
+            </text>
+
+          <text pos="15,[15,-5,@40" multilines="1">
+            本软件 试图提供给用户一个 上手简单、功能实用的 滚动歌词制作软件，为广大网易云音乐爱好者提供一个良好的歌词制作体验。
+          </text>
+
+          <text pos="15,[10,120,@20">软件详细说明: </text>
+          <link href="http://www.cnblogs.com/BensonLaur/p/6262565.html" class="cls_btn_weblink">http://www.cnblogs.com/BensonLaur/p/6262565.html</link>
+          
+
+          <hr pos="10,[20,-10,@1" lineStyle="solid"      mode="horizontal" colorLine="#ffffff55"/>
+          
+          <text pos="15,[35,-5,@40" multilines="1">
+            本软件 自由开源，LICENSE 为GPL，对软件实现感兴趣的童鞋可以访问实现的代码。
+          </text>
+          
+          <text pos="15,[5,100,@20">Github 源码: </text>
+          <link href="https://github.com/BensonLaur/BesLyric" class="cls_btn_weblink">https://github.com/BensonLaur/BesLyric</link>
+
+          <text pos="15,[50,-5,@40" multilines="1">
+            本软件 使用SOUI开源界面库进行开发（一个基于win32 API的 C++ 开源界面库，LICENSE: MIT），没有这个库有就没有这个个人非常喜爱的界面，在此非常感谢SOUI group。
+          </text>
+          <text pos="15,[10,100,@25">SOUI 介绍: </text>
+          <link href="https://www.oschina.net/p/soui" class="cls_btn_weblink">https://www.oschina.net/p/soui</link>
+
+
+
+        </window>
+            <!--</group>-->
+         </page>
+      </tabctrl>
+      </root>
+</SOUI>

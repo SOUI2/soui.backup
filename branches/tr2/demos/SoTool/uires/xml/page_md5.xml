@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<include>
+  <window pos="0,0,-0,@30">
+    <text pos="0,|0" offset="0,-0.5">文件名:</text>
+    <edit2 pos="[5,0,-5,-0" name="edit_input" inset="5,0,5,0" cueText="输入或者拖动文件到此"/>
+  </window>
+  <splitrow pos="0,[5,-0,-0" name="split_frame" sepSize="0">
+    <pane min="20" ideaSize="100">
+      <richedit name="edit_output" size="full,full" multilines="1" hscrollbar="1" readonly="1"/>
+    </pane>
+    <pane minSize="20" ideaSize="20" maxSize="20" show="0">
+      <text pos="0,0">进度:</text>
+      <progress pos="[5,5,-5,@10" name="prog_run"/>
+    </pane>
+  </splitrow>
+</include>

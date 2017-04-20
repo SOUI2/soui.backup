@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<string>
+  <stuent_sms value="短信通知"/>
+  <cue_sms value="输入要发送给徒弟的信息，不超过100字"/>
+  <cue_search value="输入YY号或者昵称"/>
+  <current_student value="当前徒弟"/>
+  <expired_student value="已过期徒弟"/>
+  <send_sms value="发送信息"/>
+  <sms_record value="发送记录"/>
+  <sms_tip_head value="今天还可以免费发送"/>
+  <sms_tip_tail value="条"/>
+  <sms_help value="默认情况下，每天短信总数等于有效徒弟总数"/>
+  <col_sms_nick value="昵称"/>
+  <col_sms_timespan value="有效期"/>
+  <col_sms_loyal_degree value="忠诚度"/>
+  <sms_recv_head value="发送给(已选"/>
+  <sms_recv_tail value="人):"/>
+</string>

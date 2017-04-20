@@ -1,0 +1,13 @@
+<menuRoot skin=""  itemHeight="26" iconPos="4,4" textOffset="5" iconBarWidth="24" maxWidth="192" minWidth="192" margin="5,5,5,5" > 
+  <menuItem id="2000">打开文件夹</menuItem>
+  <sep/>
+  <menuItem id="2002">打开3D视频</menuItem>
+  <sep/>
+  
+  <menuItem enable="0" colorTextDisable="#c0c0c0">
+    打开碟片/DVD
+    <menuItem id="2004"  >打开碟片</menuItem>
+    <menuItem id="2005"  >打开DVD</menuItem>
+    
+  </menuItem>
+</menuRoot>

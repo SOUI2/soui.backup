@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="宋体" size="15"/>
+
+  <string>
+    <title value="Vplayer"/>
+    <ver value="1.0"/>
+  </string>
+
+  <skin>
+	<imgframe name="_skin.shadow" src="PNG:ID_PNG_SHADOW" left="5" top="3" right="5" bottom="7"/>
+	<imglist name="_skin.bk" src="PNG:ID_PNG_BK" />
+	<imglist name="_skin.win_tools" src="PNG:ID_PNG_WIN_TOOLS" />
+	
+	<imglist name="_skin.bg_caption" src="BMP:ID_BMP_BG_CAPTION" />
+	<imglist name="_skin.btn.close" src="BMP:ID_BMP_CLOSE" states="4" />
+	<imglist name="_skin.btn.maximize" src="BMP:ID_BMP_MAXIMIZE" states="4" />
+	<imglist name="_skin.btn.restore" src="BMP:ID_BMP_RESTORE" states="4" />
+	<imglist name="_skin.btn.minimize" src="BMP:ID_BMP_MINIMIZE" states="4" />
+	<imglist name="_skin.btn.skins" src="BMP:ID_BMP_SKINS" states="4" />
+	<imglist name="_skin.btn.feedback" src="BMP:ID_BMP_FEEDBACK" states="4" />
+	
+	<imglist name="_skin.btn.play" src="BMP:ID_BMP_PLAY" states="4" />
+	<imglist name="_skin.btn.pause" src="BMP:ID_BMP_PAUSE" states="4" />
+	<imglist name="_skin.bg_player" src="PNG:ID_PNG_BG_PLAYER" />
+	<imglist name="_skin.bg_slider" src="BMP:ID_BMP_BG_SLIDER" />
+	<imglist name="_skin.posSkin" src="BMP:ID_BMP_POSSKIN"/>
+	<imglist name="_skin.bkgndSkin" src="BMP:ID_BMP_BKGNDSKIN"/>
+	<imglist name="_skin.bkgndSkin1" src="BMP:ID_BMP_BKGNDSKIN1"/>
+	<imglist name="_skin.thumb" src="PNG:ID_PNG_THUMB"  states="3"/>
+	<imglist name="_skin.stn.bg_open" src="BMP:ID_BMP_BG_OPEN" states="4" />
+	<imglist name="_skin.stn.bg_openmenu" src="BMP:ID_BMP_BG_OPENMENU" states="4" />
+	<imglist name="_skin.bk_transition" src="BMP:ID_BMP_BG_BK_TRANSITION" />
+	<imglist name="_skin.bk_bar" src="BMP:ID_BMP_BG_BK_BAR" />
+	
+	<imglist name="_skin.btn.icon" src="BMP:ID_BMP_BG_ICON" states="4" />
+	<imglist name="_skin.btn.page_up" src="BMP:ID_BMP_PAGE_UP" states="4" />
+	<imglist name="_skin.btn.stop" src="BMP:ID_BMP_STOP" states="4" />
+	<imglist name="_skin.btn.page_down" src="BMP:ID_BMP_PAGE_DOWN" states="4" />
+	<imglist name="_skin.btn.open" src="BMP:ID_BMP_OPEN" states="4" />
+	<imglist name="_skin.btn.fullscreen" src="BMP:ID_BMP_FULLSCREEN" states="4" />
+	<imglist name="_skin.btn.quit_fullscreen" src="BMP:ID_BMP_QUIT_FULLSCREEN" states="4" />
+	<imglist name="_skin.btn.tools" src="BMP:ID_BMP_TOOLS" states="4" />
+	<imglist name="_skin.divider_line" src="BMP:ID_BMP_DIVIDER_LINE" />
+	<imglist name="_skin.btn.left_eye" src="BMP:ID_BMP_LEFT_EYE" states="4" />
+	<imglist name="_skin.btn.left_eyed" src="BMP:ID_BMP_LEFT_EYED" states="4" />
+	<imglist name="_skin.btn.list_show" src="BMP:ID_BMP_LIST_SHOW" states="4" />
+	<imglist name="_skin.btn.list_showed" src="BMP:ID_BMP_LIST_SHOWED" states="4" />
+	<imglist name="_skin.btn.box" src="BMP:ID_BMP_BOX" states="4" />
+	<imglist name="_skin.btn.boxed" src="BMP:ID_BMP_BOXED" states="4" />
+	<imglist name="_skin.btn.volume" src="BMP:ID_BMP_VOLUME" states="4" />
+	<imglist name="_skin.btn.volume_mute" src="BMP:ID_BMP_VOLUME_MUTE" states="4" />
+	
+	<imglist name="_skin.btn.tools_close" src="PNG:ID_PNG_TOOLS_CLOSE" states="4" />
+	<imglist name="_skin.skinmgr" src="PNG:ID_PNG_SKINMGR" />
+
+	<imgframe name="skin_tab_left" src="PNG:png_tab_left" states="4" margin="1,1,1,1"/>
+	<imglist name="_skin_playlist_bar" src="BMP:ID_BMP_PLAYLIST_BAR" />
+	<imglist name="_skin_page1_caption" src="BMP:ID_BMP_PAGE1_CAPTION" />
+	<imglist name="_skin_page1_caption_sep" src="PNG:ID_PNG_PAGE1_CAPTION_SEP" />
+	<imglist name="_skin_page1_query" src="BMP:ID_BMP_PAGE1_QUERY" states="4"/>
+	<imglist name="_skin_page1_refresh" src="BMP:ID_BMP_PAGE1_REFRESH" states="4"/>
+	<imglist name="_skin_page1_sortord" src="BMP:ID_BMP_PAGE1_SORTORD" states="4"/>
+	<imglist name="_skin_page1_sortord_menu" src="BMP:ID_BMP_PAGE1_SORTORD_MENU" states="4"/>
+	<imglist name="_skin_page1_menu_itemskin" src="PNG:ID_PNG_PAGE1_MENU_ITEMSKIN" states="2"/>
+	<imglist name="_skin_page1_menu_check" src="PNG:ID_PNG_PAGE1_MENU_CHECK" states="2"/>
+	<imglist name="_skin_page1_toggle" src="PNG:ID_PNG_PAGE1_TOGGLE" states="6"/>
+	<imglist name="_skin_page1_ItemSelSkin" src="PNG:ID_PNG_PAGE1_ITEMSELSKIN" />
+	<imglist name="_skin_page1_menu_up" src="PNG:ID_PNG_PAGE1_MENU_UP" />
+	<imglist name="_skin_page1_menu_down" src="PNG:ID_PNG_PAGE1_MENU_DOWN" />
+	<imglist name="_skin_page2_caption" src="BMP:ID_BMP_PAGE2_CAPTION" />
+	<imglist name="_skin_page2_add" src="BMP:ID_BMP_PAGE2_ADD" states="4" />
+	<imglist name="_skin_page2_delete" src="BMP:ID_BMP_PAGE2_DELETE" states="4" />
+	<imglist name="_skin_page2_clear" src="BMP:ID_BMP_PAGE2_CLEAR" states="4" />
+	<imglist name="_skin_page2_all" src="BMP:ID_BMP_PAGE2_ALL" states="4" />
+	<imglist name="_skin_page2_OrderPlay" src="PNG:ID_PNG_PAGE2_ORDERPLAY" states="4" />
+	<imglist name="_skin_page2_SinglePlay" src="PNG:ID_PNG_PAGE2_SINGLEPLAY" states="4" />
+	<imglist name="_skin_page2_RandomPlay" src="PNG:ID_PNG_PAGE2_RANDOMPLAY" states="4" />
+	<imglist name="_skin_page2_SingleCycle" src="PNG:ID_PNG_PAGE2_SINGLECYCLE" states="4" />
+	<imglist name="_skin_page2_ListCycle" src="PNG:ID_PNG_PAGE2_LISTCYCLE" states="4" />
+
+	<imglist name="_skin_menu_icon" src="BMP:ID_BMP_MENU_ICON" states="10" />
+	<imglist name="_skin_menu_sep" src="BMP:ID_BMP_MENU_SEP" />
+	<imglist name="_skin_menu_skin" src="BMP:ID_BMP_MENU_SKIN" states="2" />
+
+	<imglist name="_skin_skinmgr_bar" src="PNG:ID_PNG_SKINMGR_BAR" />
+	<imglist name="_skin_skinmgr_s1" src="PNG:ID_PNG_SKINMGR_S1" states="4" />
+	<imglist name="_skin_skinmgr_s2" src="PNG:ID_PNG_SKINMGR_S2" states="4" />
+	<imglist name="_skin_skinmgr_s3" src="PNG:ID_PNG_SKINMGR_S3" states="4" />
+	<imglist name="_skin_skinmgr_s4" src="PNG:ID_PNG_SKINMGR_S4" states="4" />
+	<imglist name="_skin_skinmgr_bar_line" src="PNG:ID_PNG_SKINMGR_BAR_LINE" />
+	<imglist name="_skin_skinmgr_prev" src="PNG:ID_PNG_SKINMGR_PREV" states="4" />
+	<imglist name="_skin_skinmgr_next" src="PNG:ID_PNG_SKINMGR_NEXT" states="4" />
+	<imglist name="_skin_skinmgr_maxspeed" src="PNG:ID_PNG_SKINMGR_MAXSPEED" />
+	<imglist name="_skin_skinmgr_blue" src="PNG:ID_PNG_SKINMGR_BLUE" />
+	<imglist name="_skin_skinmgr_chooosing" src="PNG:ID_PNG_SKINMGR_CHOOSING" states="4" />
+
+	<imglist name="_skin_skinmgr_color1" src="PNG:ID_PNG_SKINMGR_COLOR1" states="4" />
+	<imglist name="_skin_skinmgr_color2" src="PNG:ID_PNG_SKINMGR_COLOR2" states="4" />
+	<imglist name="_skin_skinmgr_color3" src="PNG:ID_PNG_SKINMGR_COLOR3" states="4" />
+	<imglist name="_skin_skinmgr_color4" src="PNG:ID_PNG_SKINMGR_COLOR4" states="4" />
+	<imglist name="_skin_skinmgr_color5" src="PNG:ID_PNG_SKINMGR_COLOR5" states="4" />
+	<imglist name="_skin_skinmgr_color6" src="PNG:ID_PNG_SKINMGR_COLOR6" states="4" />
+	<imglist name="_skin_skinmgr_color7" src="PNG:ID_PNG_SKINMGR_COLOR7" states="4" />
+	<imglist name="_skin_skinmgr_color8" src="PNG:ID_PNG_SKINMGR_COLOR8" states="4" />
+	<imglist name="_skin_skinmgr_color9" src="PNG:ID_PNG_SKINMGR_COLOR9" states="4" />
+	<imglist name="_skin_skinmgr_color10" src="PNG:ID_PNG_SKINMGR_COLOR10" states="4" />
+	<imglist name="_skin_skinmgr_color11" src="PNG:ID_PNG_SKINMGR_COLOR11" states="4" />
+	<imglist name="_skin_skinmgr_color12" src="PNG:ID_PNG_SKINMGR_COLOR12" states="4" />
+
+	<imglist name="_skin_tool_3D" src="PNG:ID_PNG_TOOL_3D" states="4" />
+	<imglist name="_skin_tool_lefteye" src="PNG:ID_PNG_TOOL_LEFTEYE" states="4" />
+	<imglist name="_skin_tool_surround_sound" src="PNG:ID_PNG_TOOL_SURROUMD_SOUND" states="4" />
+	<imglist name="_skin_tool_download" src="PNG:ID_PNG_TOOL_DOWNLOAD" states="4" />
+	<imglist name="_skin_tool_flyscreen" src="PNG:ID_PNG_TOOL_FLYSCREEN" states="4" />
+	<imglist name="_skin_tool_game" src="PNG:ID_PNG_TOOL_GAME" states="4" />
+	<imglist name="_skin_tool_transcode" src="PNG:ID_PNG_TOOL_TRANSCODE" states="4" />
+	<imglist name="_skin_tool_movielib" src="PNG:ID_PNG_TOOL_MOVIELIB" states="4" />
+	<imglist name="_skin_tool_barrage" src="PNG:ID_PNG_TOOL_BARRAGE" states="4" />
+	<imglist name="_skin_tool_dlna" src="PNG:ID_PNG_TOOL_DLNA" states="4" />
+	<imglist name="_skin_tool_news" src="PNG:ID_PNG_TOOL_NEWS" states="4" />
+	<imglist name="_skin_tool_prev" src="PNG:ID_PNG_TOOL_PREV" states="4" />
+	<imglist name="_skin_tool_next" src="PNG:ID_PNG_TOOL_NEXT" states="4" />
+	<imglist name="_skin_tool_screenshots" src="PNG:ID_PNG_TOOL_SCREENSHOTS" states="4" />
+	<imglist name="_skin_tool_shoot" src="PNG:ID_PNG_TOOL_SHOOT" states="4" />
+
+	<imglist name="_skin_box_caption" src="BMP:ID_BMP_BOX_CAPTION" />
+	<imglist name="_skin_box_back" src="BMP:ID_BMP_BOX_BACK" states="4" />
+	<imglist name="_skin_box_forward" src="BMP:ID_BMP_BOX_FORWARD" states="4" />
+	<imglist name="_skin_box_maximize" src="BMP:ID_BMP_BOX_MAXIMIZE" states="4" />
+	<imglist name="_skin_box_restore" src="BMP:ID_BMP_BOX_RESTORE" states="4" />
+	<imglist name="_skin_box_refresh" src="BMP:ID_BMP_BOX_REFRESH" states="4" />
+  </skin>
+
+  <style>
+    <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="25" cursor="hand" margin-x="0"/>
+  </style>
+
+  <objattr>
+  </objattr>
+</UIDEF>
