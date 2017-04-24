@@ -37,6 +37,10 @@
   </context>
   <context name="dlg_main">
     <message>
+      <source>multiLangDemo</source>
+      <translation>multiLangDemo</translation>
+    </message>
+    <message>
       <source>close</source>
       <translation>close</translation>
     </message>
@@ -64,7 +68,10 @@
       <source>button3</source>
       <translation>button3</translation>
     </message>
-
+    <message>
+      <source>menu</source>
+      <translation>menu</translation>
+    </message>
   </context>
   <context name="user">
     <message>
