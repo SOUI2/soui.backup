@@ -19,4 +19,7 @@
   <ICON>
     <file name="ICON_LOGO"  path="image\soui.ico"    />
   </ICON>
+  <smenu>
+    <file name="menu_lang" path="smenu\menu_lang.xml"/>
+  </smenu>
 </resource>
