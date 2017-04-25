@@ -69,6 +69,18 @@
       <translation>按钮3</translation>
     </message>
     <message>
+      <source>page1</source>
+      <translation>页面1</translation>
+    </message>
+    <message>
+      <source>page2</source>
+      <translation>页面2</translation>
+    </message>
+    <message>
+      <source>page3</source>
+      <translation>页面3</translation>
+    </message>
+    <message>
       <source>menu</source>
       <translation>菜单</translation>
     </message>
