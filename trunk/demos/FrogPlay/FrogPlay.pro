@@ -19,8 +19,16 @@ include($$dir/common.pri)
 
 QMAKE_LIBDIR += $$dir/third-part/vlc/lib
 
+QMAKE_LFLAGS_RELEASE += /SAFESEH:NO
+QMAKE_LFLAGS_DEBUG += /SAFESEH:NO
+
+#system(xcopy ..\..\third-part\vlc\bin\ ..\..\bin\ /Y/E)
+#system(copy "..\..\third-part\vlc\bin\libvlccore.dll" "..\..\bin\libvlccore.dll")
+
 CONFIG(debug,debug|release){
 	LIBS += utilitiesd.lib souid.lib
+	#放这让它只运行一次，否则会运行两次
+	system(Xcopy "..\..\third-part\vlc\bin" "..\..\bin" /Y/E)
 }
 else{
 	LIBS += utilities.lib soui.lib
