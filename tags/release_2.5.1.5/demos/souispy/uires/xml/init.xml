@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="宋体" size="15"/>
+
+  <string>
+    <title value="SOUI-SPY"/>
+    <ver value="1.0"/>
+  </string>
+  
+  <skin>
+    <imglist name="skin_spyhost" src="imgx:png_spyhost" states="2"/>
+    <imglist name="skin_icons" src="imgx:png_icons" states="4"/>
+  </skin>
+
+  <style>
+    <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="0x25" cursor="hand" margin-x="0"/>
+    <class name="cls_border"  margin-x="2" margin-y="2" ncSkin="_skin.sys.border"/>
+  </style>
+
+  <objattr>
+    <!--控件默认属性-->
+    <button class="normalbtn"/>
+    <edit transParent="1" class="cls_border"/>
+  </objattr>
+</UIDEF>

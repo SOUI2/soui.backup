@@ -1,0 +1,8 @@
+<include>
+	<window pos="0,-30,]0,-0">
+		<buttonex pos="-167,0,@70,@24" skin="skin.chatbtn_close" colorText="#ffffff" textShift="2,1" animate="1">关闭(C)</buttonex>
+		<buttonex pos="-93,0,@63,@24" name="btn_send" skin="skin.color_btn" colorText="#ffffff" textShift="2,1" animate="1">发送(S)</buttonex>
+		<img      pos="-31,0,@2,@24"  skin="skin.send_btn_split_line"/>
+		<buttonex pos="-30,0,@26,@24"  name="btn_showsendmenu" bkgndSkin="skin.sendbtn_right" skin="skin.send_btn_arrow" animate="1"/>
+	</window>
+</include>

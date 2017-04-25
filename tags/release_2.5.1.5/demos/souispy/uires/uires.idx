@@ -1,0 +1,18 @@
+﻿<resource>  
+  <UIDEF>
+    <file name="XML_INIT" path="xml\init.xml"  />
+  </UIDEF>
+  <LAYOUT>
+    <file name="XML_MAINWND" path="xml\dlg_main.xml"  />
+  </LAYOUT>
+  <IMGX>
+    <file name="png_spyhost" path="image\spyhost.png"/>
+    <file name="png_icons" path="image\icons.png"/>
+  </IMGX>
+  <ICON>
+    <file name="ICON_LOGO"  path="image\soui.ico"    />
+  </ICON>
+  <CURSOR>
+    <file name="target" path="cursor\target.cur"/>
+  </CURSOR>
+</resource>

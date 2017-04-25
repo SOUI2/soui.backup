@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<skin>
+  	<imglist name="skin_traymenu_icons"	src="img:traymenu_icons" states="9"/>
+
+  <imglist name="skin_tab_main" src="imgx:png_tab_main" states="3"/>
+  <imglist name="skin_page_icons"	src="imgx:png_page_icons" states="3" alpha="240"/>
+  <imgframe name="skin_key_up"	src="imgx:png_key_up" />
+  <imgframe name="skin_key_left"	src="imgx:png_key_left" />
+  <imgframe name="skin_key_right"	src="imgx:png_key_right" />
+  <imgframe name="skin_key_space"	src="imgx:png_key_space" />
+  <imgframe name="skin_key_return"	src="imgx:png_key_return" />
+
+  <imglist name="skin_bkimg" src="BackGround:background_pic" colorizeEnable="0" autoFit="0"/>
+  <imglist name="app_button" src="imgx:png_netease_button" states="3"/>
+  <imglist name="msg_button" src="imgx:png_blue_button" states="3"/>
+  
+  <imgframe name="skin_progress_pos"	src="imgx:png_progress_frontground" />
+  <imgframe name="skin_progress_background"	src="imgx:png_progress_background" />
+
+  <imgframe name="skin_slider_frontground"	src="imgx:png_slider_frontground" />
+  <imgframe name="skin_slider_background"	src="imgx:png_slider_background" />
+  <imglist name="skin_slider_thumb" src="imgx:png_slider_thumb" states="3"/>
+  
+  <imglist name="skin_btn_sound_open" src="imgx:png_sound_open" states="3"/>
+  <imglist name="skin_btn_sound_close" src="imgx:png_sound_close" states="3"/>
+
+  <imglist name="skin_msg_bkimg1" src="BackGround:msg_background_1" colorizeEnable="0" autoFit="0"/>
+  <imglist name="skin_msg_bkimg2" src="BackGround:msg_background_2" colorizeEnable="0" autoFit="0"/>
+  
+  <imgframe name="skin_icon_information"	src="imgx:img_information" />
+  <imgframe name="skin_icon_question"	src="imgx:img_question" />
+  <imgframe name="skin_icon_exclamation"	src="imgx:img_exclamation" />
+  
+</skin>
