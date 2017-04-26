@@ -5,7 +5,7 @@ namespace SOUI
 	class CTipWnd : public SHostWnd
 	{
 	public:
-		CTipWnd(const SStringW & strLayout);
+		CTipWnd(const SStringT & strLayout);
 		~CTipWnd();
 
 		enum AnchorType{
@@ -14,7 +14,7 @@ namespace SOUI
 			AT_RIGHT_TOP,
 			AT_RIGHT_BOTTOM,
 		};
-		static void SetLayout(LPCWSTR pszLayout);
+		static void SetLayout(LPCTSTR pszLayout);
 		static void ShowTip(int x, int y, AnchorType at, const SStringT & strTip);
 	protected:
 		virtual void OnFinalMessage(HWND hWnd);

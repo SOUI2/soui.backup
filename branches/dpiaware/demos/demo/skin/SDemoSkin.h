@@ -11,13 +11,13 @@ namespace SOUI
 	struct SkinSaveInf
 	{
 		COLORREF color;
-		SStringT filepath;
+		SStringW filepath;
 		RECT margin;
 	};
 	struct SkinLoadInf
 	{
 		COLORREF color;
-		SStringT filepath;
+		SStringW filepath;
 		RECT margin;
 	};
 	interface ISetOrLoadSkinHandler
@@ -35,7 +35,7 @@ namespace SOUI
 	public:
 		virtual bool SetImage(IBitmap *pImg);
 		///
-		bool SetImage(SStringT imgfile);
+		bool SetImage(SStringW imgfile);
 		bool SetColor(COLORREF bkColor);
 		void SetHander(ISetOrLoadSkinHandler*skinhander);
 		virtual SIZE GetSkinSize();
@@ -54,6 +54,6 @@ namespace SOUI
 		bool m_bIsColor;
 		COLORREF m_bkColor;
 		bool m_bAdaptiveImg;		
-		SStringT m_FilePath;	
+		SStringW m_FilePath;	
 	};
 }

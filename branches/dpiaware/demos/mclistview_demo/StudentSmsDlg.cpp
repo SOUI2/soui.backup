@@ -66,19 +66,19 @@ public:
         StudentInfo data[] =
         {
             {
-            L"sb no.1",100,
+            _T("sb no.1"),100,
             SOUI::CTime(2015,9,1,0,0,0),
             SOUI::CTime(2016,9,1,0,0,0),
             10000,0
             },
             {
-            L"sb no.2",200,
+            _T("sb no.2"),200,
             SOUI::CTime(2015,9,2,0,0,0),
             SOUI::CTime(2016,9,2,0,0,0),
             100000,0
             },
             {
-            L"sb no.3",300,
+            _T("sb no.3"),300,
             SOUI::CTime(2015,9,3,0,0,0),
             SOUI::CTime(2016,9,3,0,0,0),
             100000,0
@@ -92,19 +92,19 @@ public:
         StudentInfo data2[] =
         {
             {
-            L"nb no.1",400,
+            _T("nb no.1"),400,
             SOUI::CTime(2015,9,1,0,0,0),
             SOUI::CTime(2016,9,1,0,0,0),
             0,0
             },
             {
-            L"nb no.2",500,
+            _T("nb no.2"),500,
             SOUI::CTime(2015,9,2,0,0,0),
             SOUI::CTime(2016,9,2,0,0,0),
             0,0
             },
             {
-            L"nb no.3",600,
+            _T("nb no.3"),600,
             SOUI::CTime(2015,9,3,0,0,0),
             SOUI::CTime(2016,9,3,0,0,0),
             0,0
@@ -211,7 +211,7 @@ protected:
             SToggle * pSwitch=pItem->FindChildByID2<SToggle>(R.id.tgl_tv_expand);
             pSwitch->SetToggle(position==0?m_bCurrentExpand:m_bExpiredExpand);
             pSwitch->GetEventSet()->subscribeEvent(EVT_CMD,Subscriber(&CStudentAdapter::OnBtnGroupExpand,this));
-            pItem->FindChildByID(R.id.txt_group)->SetWindowText(TR(GETSTRING(position==0?R.string.current_student:R.string.expired_student),L""));
+            pItem->FindChildByID(R.id.txt_group)->SetWindowText(S_CW2T(TR(GETSTRING(position==0?R.string.current_student:R.string.expired_student),L"")));
             pItem->GetEventSet()->subscribeEvent(EVT_ITEMPANEL_DBCLICK,Subscriber(&CStudentAdapter::OnGroupDblClick,this));
             SCheckBox *pGroupCheck = pItem->FindChildByID2<SCheckBox>(R.id.chk_select_group);
             pGroupCheck->GetEventSet()->subscribeEvent(EVT_STATECHANGED,Subscriber(&CStudentAdapter::OnGroupSelectCheckChanged,this));

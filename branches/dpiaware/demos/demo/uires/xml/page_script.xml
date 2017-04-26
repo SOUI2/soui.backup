@@ -23,10 +23,10 @@
         <hr pos="-1,0,-0,-0" mode="vertical" colorLine="#ff0000"/>
       </window>
       <window pos="[0,0,-0,-0">
-        <window pos="0,%12.5,@64,@64" offset="0,-0.5" skin="img_coin" id="1" tip="下注1号马" on_command="on_bet">0</window>
-        <window pos="0,%37.5,@64,@64" offset="0,-0.5" skin="img_coin" id="2" tip="下注2号马" on_command="on_bet">0</window>
-        <window pos="0,%62.5,@64,@64" offset="0,-0.5" skin="img_coin" id="3" tip="下注3号马" on_command="on_bet">0</window>
-        <window pos="0,%87.5,@64,@64" offset="0,-0.5" skin="img_coin" id="4" tip="下注4号马" on_command="on_bet">0</window>
+        <window pos="0,%12.5,@64,@64" offset="0,-0.5" skin="img_coin" id="101" tip="下注1号马" on_command="on_bet">0</window>
+        <window pos="0,%37.5,@64,@64" offset="0,-0.5" skin="img_coin" id="102" tip="下注2号马" on_command="on_bet">0</window>
+        <window pos="0,%62.5,@64,@64" offset="0,-0.5" skin="img_coin" id="103" tip="下注3号马" on_command="on_bet">0</window>
+        <window pos="0,%87.5,@64,@64" offset="0,-0.5" skin="img_coin" id="104" tip="下注4号马" on_command="on_bet">0</window>
       </window>
     </window>
     <window pos="10,[5,-0,-0" name="game_toolbar">
