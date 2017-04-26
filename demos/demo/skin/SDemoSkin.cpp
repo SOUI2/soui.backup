@@ -22,7 +22,7 @@ namespace SOUI
 		return true;
 	}
 
-	bool SDemoSkin::SetImage(SStringT imgfile)
+	bool SDemoSkin::SetImage(SStringW imgfile)
 	{
 		m_bIsColor = false;
 		m_FilePath = imgfile;
