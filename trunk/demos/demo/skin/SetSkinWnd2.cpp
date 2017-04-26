@@ -3,6 +3,7 @@
 #include "SDemoSkin.h"
 #include <winuser.h>
 #include "SSkinLoader.h"
+#include <io.h>
 
 #define SKIN_CHANGE_MSG _T("{D17D208B-25FD-412C-8071-68816D4B1F9B}")
 //注册皮肤改变消息
@@ -17,7 +18,7 @@ HRESULT CSetSkinWnd::OnSkinChangeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam
 void CSetSkinWnd::OnColor(EventArgs * e)
 {
 	SWindow *sender = (SWindow*) e->sender;
-	SDemoSkin *skin = (SDemoSkin *) GETSKIN(_T("demoskinbk"));
+	SDemoSkin *skin = (SDemoSkin *) GETSKIN(L"demoskinbk");
 	if (skin)
 	{
 		skin->SetColor(sender->GetStyle().m_crBg);
@@ -41,13 +42,13 @@ void CSetSkinWnd::LoadSkinConfigFormXml()
 		pugi::xml_parse_result result = docLoad.load_file(strSkinConfigPath);
 		if (result)
 		{
-			pugi::xml_node skinInf = docLoad.child(_T("DEMO_SKIN_CONFIG")).child(_T("skinInf"));
+			pugi::xml_node skinInf = docLoad.child(L"DEMO_SKIN_CONFIG").child(L"skinInf");
 			while (skinInf)
 			{
 				SKIN_CONFIG_INF inf;
 				inf.id = (SkinType)skinInf.attribute(L"id").as_int();
 				int v1 = 0, v2 = 0, v3 = 0, v4 = 0;
-				swscanf(skinInf.attribute(_T("skin_margin")).as_string(), _T("%d,%d,%d,%d"), &v1, &v2, &v3, &v4);
+				swscanf(skinInf.attribute(L"skin_margin").as_string(), L"%d,%d,%d,%d", &v1, &v2, &v3, &v4);
 				inf.margin.left = v1;
 				inf.margin.top = v2;
 				inf.margin.right = v3;
@@ -97,7 +98,7 @@ void CSetSkinWnd::OnSetSkin(EventArgs * e)
 {
 	SWindow *sender = (SWindow*) e->sender;
 	int nIndex = sender->GetID();
-	SDemoSkin *skin = (SDemoSkin *) GETSKIN(_T("demoskinbk"));
+	SDemoSkin *skin = (SDemoSkin *) GETSKIN(L"demoskinbk");
 	SStringT strSkinFile;
 	SStringT strSkinPath = SApplication::getSingleton().GetAppDir() + _T("\\themes\\");
 	strSkinFile.Format(_T("%s%d.png"), strSkinPath, nIndex - 9);
@@ -111,7 +112,7 @@ void CSetSkinWnd::OnSetSkin(EventArgs * e)
 	}
 	if (skin)
 	{
-		skin->SetImage(strSkinFile);
+		skin->SetImage(S_CT2W(strSkinFile));
 		skin->SetMargin(GetMargin(nIndex-9));
 		NotifUpdataWindow();
 	}
