@@ -27,7 +27,9 @@ res\soui_res.rc2
 [!if CHECKBOX_TRANSLATOR_SUPPORT]
 [uires]\Translator\lang_cn.xml
 [!endif]
-
+[!if CHECKBOX_DYNAMIC_TRANSLATOR_SUPPORT]
+[uires]\Translator\lang_jp.xml
+[!endif]
 [!if CHECKBOX_SHELLNOTIFYICON]
 [uires]xml\menu_tray.xml
 [uires]image\traymenu_icons.png
