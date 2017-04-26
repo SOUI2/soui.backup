@@ -1,8 +1,8 @@
 /*
 	²âÊÔlogÄ£¿é
 */
-#include <gtest/gtest.h>  
 #include <souistd.h>
+#include <gtest/gtest.h>
 #include <com-cfg.h>
 
 using namespace SOUI;

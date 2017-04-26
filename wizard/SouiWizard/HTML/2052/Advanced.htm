@@ -242,12 +242,17 @@
                                                     <label id="CHECKBOX_RES_PE_TEXT" for="CHECKBOX_RES_PE">将用户资源编译到EXE中(<u>u</u>)</label>
                                                 </div>
                                                 <br>
-                                                <input type="checkbox" class="CheckBoxA" id="CHECKBOX_TRANSLATOR_SUPPORT" accesskey="t"
+                                                <input type="checkbox" class="CheckBoxA" id="CHECKBOX_TRANSLATOR_SUPPORT" accesskey="t" onclick="OnTranslator();"
                                                        title="使用语言翻译。" onpropertychange="">
                                                 <div class="itemTextCheckboxB" id="TRANSLATOR_SUPPORT_STR" title="使用语言翻译。">
-                                                    <label id="TRANSLATOR_SUPPORT_TEXT" for="CHECKBOX_TRANSLATOR_SUPPORT">支持语言翻译(<u>T</u>)</label>
+                                                    <label id="TRANSLATOR_SUPPORT_TEXT" for="CHECKBOX_TRANSLATOR_SUPPORT" onclick="OnTranslator();">支持语言翻译(<u>T</u>)</label>
                                                 </div>
-                                                <br>
+                                                <br>&nbsp;&nbsp;
+                                                <input type="checkbox" class="CheckBoxA" id="CHECKBOX_DYNAMIC_TRANSLATOR_SUPPORT" accesskey="d"
+                                                       title="支持动态语言翻译。" onpropertychange="">
+                                                <div class="itemTextCheckboxB" id="DYNAMIC_TRANSLATOR_SUPPORT_STR" title="支持动态语言翻译。">
+                                                    <label id="DYNAMIC_TRANSLATOR_SUPPORT_TEXT" for="CHECKBOX_DYNAMIC_TRANSLATOR_SUPPORT">&nbsp;&nbsp;&nbsp;&nbsp;支持动态语言翻译(<u>D</u>)</label>
+                                                </div>
                                                 <br>
                                                 <br>
                                         <p class="ItemText">
@@ -382,6 +387,14 @@
     }
 
     function InitControls() {
+        if (window.external.FindSymbol("CHECKBOX_TRANSLATOR_SUPPORT")) {
+            CHECKBOX_DYNAMIC_TRANSLATOR_SUPPORT.disabled = false;
+            DYNAMIC_TRANSLATOR_SUPPORT_TEXT.disabled = false;
+        }
+        else {
+            CHECKBOX_DYNAMIC_TRANSLATOR_SUPPORT.disabled = true;
+            DYNAMIC_TRANSLATOR_SUPPORT_TEXT.disabled = true;
+        }
     }
 
 
@@ -389,6 +402,17 @@
         OnWizFinish(document);
     }
 
+    function OnTranslator() {
+        if (CHECKBOX_TRANSLATOR_SUPPORT.checked) {
+            CHECKBOX_DYNAMIC_TRANSLATOR_SUPPORT.disabled = false;          
+            DYNAMIC_TRANSLATOR_SUPPORT_TEXT.disabled = false;
+        }
+        else {
+            CHECKBOX_DYNAMIC_TRANSLATOR_SUPPORT.checked = false;
+            CHECKBOX_DYNAMIC_TRANSLATOR_SUPPORT.disabled = true;
+            DYNAMIC_TRANSLATOR_SUPPORT_TEXT.disabled = true;            
+        }
+    }
 
 
     function ToggleImage() {

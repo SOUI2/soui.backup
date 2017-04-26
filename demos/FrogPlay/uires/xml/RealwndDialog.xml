@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<SOUI width="-1" height="-1" resizable="0" wndType="normal" toolwindow="1" translucent="0">
+	<!--演示root大小自动计算,注意soui结点width,height的设置，哪一个值需要自动计算就设置为-1-->
+	<root size="-1,-1">
+		<window  pos="0,0,-0,-0">
+			<img pos="|-168,|-82" skin="image_bk_logo_image_png" size="336,164" />
+			<img pos="|-192,|-192" skin="image_bk_logo_light_png" size="384, 384" />
+			<img pos="|-84,251" skin="image_bk_logo_text_png" size="168, 20" />
+			<window id="401" pos="|-96,|80" size="192,58">
+				<window pos="0,18" size="158,40" tip="" animate="1" skin="image_btn_bk_png" colorText="#ffffffff">
+					<imgbtn id="402" cursor="hand" pos="|-44,|-8" size="88,16" tip="" animate="1" skin="image_btn_open_png" />
+				</window>
+				<imgbtn id="400" pos="[-1,{0" size="34,58" tip="" animate="1" skin="image_combo_open_png" />
+			</window>
+		</window>
+	</root>
+</SOUI>
