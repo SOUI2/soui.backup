@@ -21,7 +21,7 @@ public:
 	void SetFiles(std::vector<std::wstring>* arrFiles);
     void SetOverwrite(BOOL bOverwrite);
     void SetWriteBom(BOOL bWriteBom);
-    void SetTargetPath(LPCTSTR szTargetPath);
+    void SetTargetPath(LPCWSTR szTargetPath);
 	BOOL Convert(std::vector<std::wstring>* failedFiles, std::vector<std::wstring>* outFiles);
 	int ConvertFile(const std::wstring &strSrcTemp, const std::wstring &sSrcFile);
 
@@ -30,9 +30,9 @@ public:
 	static std::wstring GetTempFilePath();
 
 private:
-	std::wstring GetDstPath(LPCTSTR szSrcPath);
+	std::wstring GetDstPath(LPCWSTR szSrcPath);
     CodePageValue GetFileCodepage(const BYTE *& pData, int& nSize);
-    BOOL    ConvFile(const BYTE *pData, int nSize, LPCTSTR szDstPath, CodePageValue nSrcCodepage, CodePageValue nDstCodepage);
+    BOOL    ConvFile(const BYTE *pData, int nSize, LPCWSTR szDstPath, CodePageValue nSrcCodepage, CodePageValue nDstCodepage);
     DWORD   GetRealCodepage(CodePageValue nSrcCodepage, CodePageValue nDstCodepage, BOOL& bMultiByteToWideChar);
 
     LPBYTE  GetBuffer(int nSize);

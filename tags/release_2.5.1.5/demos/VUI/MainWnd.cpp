@@ -190,9 +190,6 @@ void CMainWnd::OnBtnOpen()	//打开文件
 			lstrcat(szFileName, szPath);  //给文件名加上路径    
 			lstrcat(szFileName, p);    //加上文件名
 
-			//std::wstring file_name = szFileName;
-			char* file_name=THCAR2char(szFileName);
-
 			p += lstrlen(p) +1;     //移至下一个文件  
 			sum++;
 			//cout<<file_name<<endl ;
@@ -204,13 +201,6 @@ void CMainWnd::OnBtnOpen()	//打开文件
 	}
 }
 
-char* CMainWnd::THCAR2char(TCHAR* tchStr) 
-{ 
-	int iLen = 2*wcslen(tchStr);//CString,TCHAR汉字算一个字符，因此不用普通计算长度 
-	char* chRtn = new char[iLen+1] ;
-	wcstombs(chRtn,tchStr,iLen+1);//转换成功返回为非负值 
-	return chRtn; 
-}
 
 void CMainWnd::OnBtnVolume()	//静音
 {

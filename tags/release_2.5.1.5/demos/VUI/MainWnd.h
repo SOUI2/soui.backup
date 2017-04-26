@@ -97,7 +97,6 @@ public:
 	void OnBtnRandomPlay()	;		//随机播放
 	void OnBtnSingleCycle()	;		//单个循环
 	void OnBtnListCycle()	;		//列表循环
-	char * THCAR2char(TCHAR* tchStr) ;
 
 	//DUI菜单响应函数
 	void OnCommand(UINT uNotifyCode, int nID, HWND wndCtl);

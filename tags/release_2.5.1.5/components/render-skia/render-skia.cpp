@@ -42,10 +42,10 @@ namespace SOUI
 		{ps_dashdotdot,ARRAYSIZE(ps_dashdotdot)},
 	};
 
-	bool String2Bool(const SStringT & value)
+	bool String2Bool(const SStringW & value)
 	{
 		SASSERT(!value.IsEmpty());
-		return !(value == _T("false") || value == _T("0"));
+		return !(value == L"false" || value == L"0");
 	}
 
     SkIRect toSkIRect(LPCRECT pRc)

@@ -503,7 +503,12 @@ namespace SOUI
     {
         if(uFormat & DT_CALCRECT)
         {
-            ::DrawText(m_hdc,pszText,cchLen,pRc,uFormat);
+            int nRet = ::DrawText(m_hdc,pszText,cchLen,pRc,uFormat);
+			if(!nRet)
+			{
+				pRc->right = pRc->left;
+				pRc->bottom = pRc->top;
+			}
             return S_OK;
         }
         

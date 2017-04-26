@@ -32,6 +32,14 @@
         <button size="100,30" text="button3"/>
       </window>
       <text size="-1,-1" layout_gravity="center" name="txt_test" font="adding:5,underline:1" colorText="#ff0000"/>
+      <tabctrl size="-2,0" weight="1" animateSteps="10" curSel="2" colorBkgnd="#ffffff" tabAlign="top" tabInterSize="2" tabHeight="30" tabWidth="120">
+        <page title="page1">          
+        </page>
+        <page title="page2">
+        </page>
+        <page title="page3">
+        </page>
+      </tabctrl>
     </window>
   </root>
 </SOUI>
