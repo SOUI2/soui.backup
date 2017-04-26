@@ -6,7 +6,7 @@ public:
     CFileMap(void);
     ~CFileMap(void);
 
-    BOOL MapFile(LPCTSTR szFilePath);
+    BOOL MapFile(LPCWSTR szFilePath);
     void Close();
 
     DWORD   GetSize() const;

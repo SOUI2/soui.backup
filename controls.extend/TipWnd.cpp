@@ -5,9 +5,9 @@
 
 namespace SOUI{
 
-	static SStringW s_TipLayout;
+	static SStringT s_TipLayout;
 
-	CTipWnd::CTipWnd(const SStringW & strLayout) :SHostWnd(strLayout)
+	CTipWnd::CTipWnd(const SStringT & strLayout) :SHostWnd(strLayout)
 	{
 	}
 
@@ -28,7 +28,7 @@ namespace SOUI{
 		pText->SetWindowText(strTip);
 	}
 
-	void CTipWnd::SetLayout(LPCWSTR pszLayout)
+	void CTipWnd::SetLayout(LPCTSTR pszLayout)
 	{
 		s_TipLayout = pszLayout;
 	}

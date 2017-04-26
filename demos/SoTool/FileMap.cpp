@@ -14,11 +14,11 @@ CFileMap::~CFileMap(void)
     Close();
 }
 
-BOOL CFileMap::MapFile(LPCTSTR szFilePath)
+BOOL CFileMap::MapFile(LPCWSTR szFilePath)
 {
     Close();
 
-    m_hFile = ::CreateFile(szFilePath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+    m_hFile = ::CreateFileW(szFilePath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
     if(m_hFile == INVALID_HANDLE_VALUE)
         return FALSE;
     m_dwSize = ::GetFileSize(m_hFile, NULL);

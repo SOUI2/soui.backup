@@ -26,7 +26,7 @@ CIconvWorker::CIconvWorker(void)
 {
     m_arrFiles = NULL;
     m_bStop = FALSE;
-    m_strTargetPath = _T("");
+    m_strTargetPath = L"";
     m_bOverwrite = FALSE;
     m_bWriteBom = TRUE;
     m_nSrcCodepage = CodeAuto;
@@ -74,7 +74,7 @@ static void replace_all(std::wstring &str, const std::wstring &old_value, const 
 }
 
 
-void CIconvWorker::SetTargetPath(LPCTSTR szTargetPath)
+void CIconvWorker::SetTargetPath(LPCWSTR szTargetPath)
 {
     m_strTargetPath = szTargetPath;
 	replace_all(m_strTargetPath,L"/", L"\\");
@@ -126,7 +126,7 @@ int CIconvWorker::ConvertFile(const std::wstring &strSrcTemp,const std::wstring 
 		strDstPath = GetDstPath(strSrc.c_str());
 
 		m.Close();
-		if (!CopyFile(strSrcTemp.c_str(), strDstPath.c_str(), FALSE))
+		if (!CopyFileW(strSrcTemp.c_str(), strDstPath.c_str(), FALSE))
 			return bResult;
 
 		bResult = 1;
@@ -154,7 +154,7 @@ int CIconvWorker::ConvertFile(const std::wstring &strSrcTemp,const std::wstring 
 
 		strDstPath = GetDstPath(strSrc.c_str());
 		mTemp.Close();
-		if (!CopyFile(strDstTemp.c_str(), strDstPath.c_str(), FALSE))
+		if (!CopyFileW(strDstTemp.c_str(), strDstPath.c_str(), FALSE))
 			return bResult;
 
 		bResult = 1;
@@ -206,7 +206,7 @@ BOOL CIconvWorker::Convert(std::vector<std::wstring>* failedFiles, std::vector<s
             {
                 // Copy to dst
                 strDstPath = GetDstPath(strSrc.c_str());
-				if (CopyFile(strSrc.c_str(), strDstPath.c_str(), FALSE))
+				if (CopyFileW(strSrc.c_str(), strDstPath.c_str(), FALSE))
                 {
                     if(outFiles)
                         outFiles->push_back(strSrc);
@@ -233,7 +233,7 @@ BOOL CIconvWorker::Convert(std::vector<std::wstring>* failedFiles, std::vector<s
 				strDstPath = GetDstPath(strSrc.c_str());
 
                 m.Close();
-				if (!CopyFile(strSrcTemp.c_str(), strDstPath.c_str(), FALSE))
+				if (!CopyFileW(strSrcTemp.c_str(), strDstPath.c_str(), FALSE))
                     break;
                 if(outFiles)
                     outFiles->push_back(strDstPath);
@@ -262,7 +262,7 @@ BOOL CIconvWorker::Convert(std::vector<std::wstring>* failedFiles, std::vector<s
 
 				strDstPath = GetDstPath(strSrc.c_str());
                 mTemp.Close();
-				if (!CopyFile(strDstTemp.c_str(), strDstPath.c_str(), FALSE))
+				if (!CopyFileW(strDstTemp.c_str(), strDstPath.c_str(), FALSE))
                     break;
                 if(outFiles)
                     outFiles->push_back(strDstPath);
@@ -284,12 +284,12 @@ void CIconvWorker::Stop()
     m_bStop = TRUE;
 }
 
-std::wstring CIconvWorker::GetDstPath(LPCTSTR szSrcPath)
+std::wstring CIconvWorker::GetDstPath(LPCWSTR szSrcPath)
 {
     if(m_bOverwrite)
         return szSrcPath;
 
-    LPCTSTR szFileName = ::PathFindFileName(szSrcPath);
+    LPCWSTR szFileName = ::PathFindFileNameW(szSrcPath);
     std::wstring strResult = m_strTargetPath + szFileName;
     return strResult;
 }
@@ -316,14 +316,14 @@ CodePageValue CIconvWorker::GetFileCodepage(const BYTE *& pData, int& nSize)
 
 std::wstring CIconvWorker::GetTempFilePath()
 {
-    TCHAR szTmpPath[MAX_PATH];
-    TCHAR szTmpFile[MAX_PATH];
-    ::GetTempPath(MAX_PATH, szTmpPath);
-    ::GetTempFileName(szTmpPath, _T("iconv"), rand(), szTmpFile);
+    WCHAR szTmpPath[MAX_PATH];
+    WCHAR szTmpFile[MAX_PATH];
+    ::GetTempPathW(MAX_PATH, szTmpPath);
+    ::GetTempFileNameW(szTmpPath, L"iconv", rand(), szTmpFile);
     return szTmpFile;
 }
 
-BOOL CIconvWorker::ConvFile(const BYTE * pData, int nSize, LPCTSTR szDstPath, CodePageValue nSrcCodepage, CodePageValue nDstCodepage)
+BOOL CIconvWorker::ConvFile(const BYTE * pData, int nSize, LPCWSTR szDstPath, CodePageValue nSrcCodepage, CodePageValue nDstCodepage)
 {
     BOOL bMultiByteToWideChar = FALSE;
     DWORD dwCodepage = GetRealCodepage(nSrcCodepage, nDstCodepage, bMultiByteToWideChar);
@@ -363,7 +363,7 @@ BOOL CIconvWorker::ConvFile(const BYTE * pData, int nSize, LPCTSTR szDstPath, Co
     {
         nBufferSize = ::WideCharToMultiByte(dwCodepage,
             0,
-            (LPCTSTR)pData,
+            (LPCWSTR)pData,
             nSize / 2,
             0,
             0,
@@ -375,7 +375,7 @@ BOOL CIconvWorker::ConvFile(const BYTE * pData, int nSize, LPCTSTR szDstPath, Co
         pBuffer = GetBuffer(nBufferSize + 1);
         if(::WideCharToMultiByte(dwCodepage,
             0,
-            (LPCTSTR)pData,
+            (LPCWSTR)pData,
             nSize / 2,
             (LPSTR)pBuffer,
             nBufferSize,
@@ -386,7 +386,7 @@ BOOL CIconvWorker::ConvFile(const BYTE * pData, int nSize, LPCTSTR szDstPath, Co
         }
     }
 
-    HANDLE hFile = ::CreateFile(szDstPath, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+    HANDLE hFile = ::CreateFileW(szDstPath, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
     if(hFile == INVALID_HANDLE_VALUE)
         return FALSE;
 

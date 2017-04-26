@@ -126,8 +126,8 @@ void CFriendListAdapter::SetChildVisible(Node<FriendItemData>* node, bool visibl
 
     node->data().child_visible_ = visible;
 
-    TCHAR szBuf[MAX_PATH] = {0};
-    std::wstring html_text;
+    WCHAR szBuf[MAX_PATH] = {0};
+	std::wstring html_text;
     if (node->data().has_child_)
     {
         if (node->data().child_visible_)
@@ -279,7 +279,7 @@ void CFriendListAdapter::getView(int position, SWindow * pItem, pugi::xml_node x
 		
 		//因为点击toggle的时候，同时会触发EVT_ITEMPANEL_CLICK，因此，就直接用EVT_ITEMPANEL_CLICK就好了 
 		pItem->SetUserData((ULONG_PTR)pNode);
-		pItem->FindChildByID(R.id.txt_group)->SetWindowText(pNode->data().text_.c_str());
+		pItem->FindChildByID(R.id.txt_group)->SetWindowText(S_CW2T(pNode->data().text_.c_str()));
 		pItem->GetEventSet()->unsubscribeEvent(EVT_ITEMPANEL_CLICK, Subscriber(&CFriendListAdapter::OnGroupClick, this));
 		pItem->GetEventSet()->subscribeEvent(EVT_ITEMPANEL_CLICK, Subscriber(&CFriendListAdapter::OnGroupClick, this));
 		 
@@ -289,27 +289,27 @@ void CFriendListAdapter::getView(int position, SWindow * pItem, pugi::xml_node x
 		pItem->SetUserData((ULONG_PTR)pNode);
 		if(pNode->data().child_visible_)
 		{   
-			pItem->FindChildByID(R.id.txt_name)->SetWindowText(pNode->data().text_.c_str());
+			pItem->FindChildByID(R.id.txt_name)->SetWindowText(S_CW2T(pNode->data().text_.c_str()));
 
 			FriendItemData *pItemData = pNode->data().value;
 			wchar_t sUID[128];
 			swprintf(sUID, L"%d", pItemData->uid);
 
-			pItem->FindChildByID(R.id.txt_desc)->SetWindowText(sUID);
+			pItem->FindChildByID(R.id.txt_desc)->SetWindowText(S_CW2T(sUID));
 
 			pItem->GetEventSet()->unsubscribeEvent(EVT_ITEMPANEL_DBCLICK, Subscriber(&CFriendListAdapter::OnItemDblClick, this));
 			pItem->GetEventSet()->subscribeEvent(EVT_ITEMPANEL_DBCLICK, Subscriber(&CFriendListAdapter::OnItemDblClick, this));
 		}
 		else
 		{ 
-			pItem->FindChildByID(R.id.txt_name)->SetWindowText(pNode->data().text_.c_str());			
+			pItem->FindChildByID(R.id.txt_name)->SetWindowText(S_CW2T(pNode->data().text_.c_str()));			
 			
 
 			FriendItemData *pItemData = pNode->data().value;
 			wchar_t sUID[128];
 			swprintf(sUID, L"%d", pItemData->uid);
 
-			pItem->FindChildByID(R.id.txt_desc)->SetWindowText(sUID);
+			pItem->FindChildByID(R.id.txt_desc)->SetWindowText(S_CW2T(sUID));
 
 		}
     }

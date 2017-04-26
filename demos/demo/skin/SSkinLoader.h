@@ -19,7 +19,7 @@ namespace SOUI
 	public:
 		SSkinLoader(SApplication*);
 		~SSkinLoader();
-		void LoadSkinFormZip(SStringT respath, const WCHAR *m_strXmlSkin=L"LoadSkinXml")
+		void LoadSkinFormZip(SStringT respath, const TCHAR *strXmlSkin=_T("LoadSkinXml"))
 		{
 			if (m_pResProvider == NULL)
 			{
@@ -36,7 +36,7 @@ namespace SOUI
 			pugi::xml_document xmlDoc;
 			SStringTList strLst;
 			BOOL bLoad = FALSE;
-			if (2 == ParseResID(m_strXmlSkin, strLst))
+			if (2 == ParseResID(strXmlSkin, strLst))
 			{
 				bLoad = LOADXML(xmlDoc, strLst[1], strLst[0]);
 			}
@@ -48,7 +48,7 @@ namespace SOUI
 			{
 				if (m_privateSkinPool->GetCount() > 0)
 				{
-					pugi::xml_node xmlSkin = xmlDoc.child(_T("skin")).first_child();
+					pugi::xml_node xmlSkin = xmlDoc.child(L"skin").first_child();
 					SStringW strSkinName, strTypeName;
 					while (xmlSkin)
 					{
@@ -75,10 +75,10 @@ namespace SOUI
 					}
 				}
 				else
-					m_privateSkinPool->LoadSkins(xmlDoc.child(_T("skin")));
+					m_privateSkinPool->LoadSkins(xmlDoc.child(L"skin"));
 			}
 		}
-		void LoadSkin(SStringT respath,const WCHAR *m_strXmlSkin = L"LoadSkinXml")
+		void LoadSkin(SStringT respath,const TCHAR *strXmlSkin = _T("LoadSkinXml"))
 		{			
 // 			if (m_pResProvider)
 // 			{
@@ -100,7 +100,7 @@ namespace SOUI
 			pugi::xml_document xmlDoc;
 			SStringTList strLst;
 			BOOL bLoad=FALSE;
-			if (2 == ParseResID(m_strXmlSkin, strLst))
+			if (2 == ParseResID(strXmlSkin, strLst))
 			{
 				bLoad=LOADXML(xmlDoc, strLst[1], strLst[0]);
 			}
@@ -112,7 +112,7 @@ namespace SOUI
 			{
 				if (m_privateSkinPool->GetCount() > 0)
 				{
-					pugi::xml_node xmlSkin = xmlDoc.child(_T("skin")).first_child();
+					pugi::xml_node xmlSkin = xmlDoc.child(L"skin").first_child();
 					SStringW strSkinName, strTypeName;
 					while (xmlSkin)
 					{
@@ -139,7 +139,7 @@ namespace SOUI
 					}
 				}
 				else 
-					m_privateSkinPool->LoadSkins(xmlDoc.child(_T("skin")));
+					m_privateSkinPool->LoadSkins(xmlDoc.child(L"skin"));
 			}
 		}
 	};
