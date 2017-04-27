@@ -57,16 +57,16 @@
       <translation>english</translation>
     </message>
     <message>
-      <source>button1</source>
-      <translation>button1</translation>
+      <source>scale 1</source>
+      <translation>scale 100%</translation>
     </message>
     <message>
-      <source>button2</source>
-      <translation>button2</translation>
+      <source>scale 1.25</source>
+      <translation>scale 125%</translation>
     </message>
     <message>
-      <source>button3</source>
-      <translation>button3</translation>
+      <source>scale 1.5</source>
+      <translation>scale 150%</translation>
     </message>
     <message>
       <source>page1</source>
