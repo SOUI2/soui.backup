@@ -297,15 +297,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\res.mgr\SDpiAwareFont.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\res.mgr\SDpiAwareObject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\res.mgr\SDpiAwareSkin.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\control\SDropDown.cpp"
 				>
 			</File>
 			<File
 				RelativePath="src\core\SDropTargetDispatcher.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\res.mgr\SFontInfo.cpp"
 				>
 			</File>
 			<File
@@ -683,15 +691,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\res.mgr\SDpiAwareFont.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\SDpiAwareObject.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\res.mgr\SDpiAwareSkin.h"
+				>
+			</File>
+			<File
 				RelativePath="include\control\SDropDown.h"
 				>
 			</File>
 			<File
 				RelativePath="include\core\SDropTargetDispatcher.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\res.mgr\SFontInfo.h"
 				>
 			</File>
 			<File
