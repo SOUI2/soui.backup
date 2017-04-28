@@ -18,6 +18,6 @@ namespace SOUI
 
 	IObjRef * SDpiAwareSkin::OnGetObject(const SStringW & strDesc,int nScale)
 	{
-		return GETSKIN(strDesc);
+		return GETSKIN(strDesc,nScale);
 	}
 }
