@@ -68,7 +68,7 @@ namespace SOUI
 		return fSize>=SIZE_SPEC;
 	}
 
-	int SLayoutSize::toPixelSize() const
+	int SLayoutSize::toPixelSize(int scale) const
 	{
 		if(isMatchParent()) 
 			return SIZE_MATCH_PARENT;
@@ -77,9 +77,9 @@ namespace SOUI
 		else if (unit == px)
 			return (int)fSize;
 		else if (unit == sp)
-			return SDp2Px(fSize, isVert());//暂时等同于dp
+			return (int)(fSize*scale/100);//暂时等同于dp
 		else//if(unit == dp || unit == dip)
-			return SDp2Px(fSize,isVert());
+			return (int)(fSize*scale / 100);
 	}
 
 	void SLayoutSize::setInvalid()
@@ -97,6 +97,10 @@ namespace SOUI
 		return orientation == Vert;
 	}
 
+	bool SLayoutSize::isZero() const
+	{
+		return fequal(fSize, 0.0f);
+	}
 
 	void SLayoutSize::parseString(const SStringW & strSize)
 	{

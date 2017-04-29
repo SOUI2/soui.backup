@@ -21,7 +21,7 @@ namespace SOUI{
 
 		virtual bool IsWrapContent(ORIENTATION orientation) const;
 
-		virtual int GetSpecifiedSize(ORIENTATION orientation) const;
+		virtual SLayoutSize  GetSpecifiedSize(ORIENTATION orientation) const;
 
 		virtual void Clear();
 
@@ -34,7 +34,7 @@ namespace SOUI{
 		virtual void * GetRawData();
 	public:
 		bool IsOffsetRequired(ORIENTATION orientation) const;
-        int  GetExtraSize(ORIENTATION orientation) const;
+        int  GetExtraSize(ORIENTATION orientation,int nScale) const;
 	protected:
 		HRESULT OnAttrWidth(const SStringW & strValue,BOOL bLoading);
 
@@ -99,7 +99,7 @@ namespace SOUI{
         void CalcPositionEx(SList<WndPos> *pListChildren,int nWidth,int nHeight) const;
         int CalcPostion(SList<WndPos> *pListChildren,int nWidth,int nHeight) const;
 
-		int PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POS_INFO &pos , int nMax,BOOL bX) const;
+		int PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POS_INFO &pos , int nMax,BOOL bX,int nScale) const;
         
         int CalcChildLeft(SWindow *pWindow,SouiLayoutParam *pParam);
         int CalcChildRight(SWindow *pWindow,SouiLayoutParam *pParam);

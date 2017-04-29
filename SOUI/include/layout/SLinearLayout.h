@@ -20,7 +20,7 @@ namespace SOUI
 
         virtual bool IsSpecifiedSize(ORIENTATION orientation) const;
 
-        virtual int GetSpecifiedSize(ORIENTATION orientation) const;
+        virtual SLayoutSize GetSpecifiedSize(ORIENTATION orientation) const;
 
 		virtual void Clear();
 

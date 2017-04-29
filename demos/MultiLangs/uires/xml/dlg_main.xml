@@ -38,6 +38,7 @@
       <tabctrl size="-2,0" weight="1" animateSteps="10" curSel="2" colorBkgnd="#ffffff" tabAlign="top" tabInterSize="2" tabHeight="30" tabWidth="120">
         <page title="page1">
           <img skin="scale_pic" pos="|0,|0" offset="-0.5,-0.5"/>
+          <window pos="20,20,@100dp,@30dp" colorBkgnd="rgba(255,0,0,128)">100dp*30dp</window>
         </page>
         <page title="page2">
         </page>
