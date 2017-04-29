@@ -36,7 +36,8 @@
       </window>
       <text size="-1,-1" layout_gravity="center" name="txt_test" font="adding:5,underline:1" colorText="#ff0000"/>
       <tabctrl size="-2,0" weight="1" animateSteps="10" curSel="2" colorBkgnd="#ffffff" tabAlign="top" tabInterSize="2" tabHeight="30" tabWidth="120">
-        <page title="page1">          
+        <page title="page1">
+          <img skin="scale_pic" pos="|0,|0" offset="-0.5,-0.5"/>
         </page>
         <page title="page2">
         </page>
