@@ -12,14 +12,17 @@
     translucent="1"
 >
   <root skin="_skin.sys.wnd.bkgnd" cache="1">
-    <caption pos="0,0,-0,30" show="1" font="adding:0">
-      <icon pos="10,8" src="ICON_LOGO:16"/>
-      <text pos="29,9">@string/title</text>
-      <button pos="[5,2,@100,@26" name="btn_menu">menu</button>
-      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
-      <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
-      <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
-      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+    <caption pos="0,0,-0,@-1" font="adding:0" layout="hbox" gravity="center" padding="5,0,5,0">
+      <icon size="-1,-1" src="ICON_LOGO:16"/>
+      <text size="-1,-1" extend_left="5">@string/title</text>
+      <window size="0,0" weight="1" visible="0"/>
+      <button size="100,-1" padding="0,2,0,2" name="btn_menu">menu</button>
+      <imgbtn size="-1,-1" name="btn_min" skin="_skin.sys.btn.minimize"  animate="1" />
+      <window size="-1,-1">
+        <imgbtn pos="0,0" name="btn_max" skin="_skin.sys.btn.maximize"  animate="1" />
+        <imgbtn pos="0,0" name="btn_restore" skin="_skin.sys.btn.restore"  show="0" animate="1" />
+      </window>
+      <imgbtn size="-1,-1" name="btn_close" skin="_skin.sys.btn.close"  tip="close" animate="1"/>
     </caption>
     <window pos="5,[2,-5,-5" layout="vbox">
       <group size="-1,-1" layout="hbox" layout_gravity="center" text="language" padding="5,5,5,10">
