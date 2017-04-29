@@ -249,6 +249,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\impl\render.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\control\SActiveX.cpp"
 				>
 			</File>

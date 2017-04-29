@@ -233,4 +233,5 @@ SOURCES += src/SApp.cpp \
            src/res.mgr/SDpiAwareObject.cpp \
            src/res.mgr/SDpiAwareFont.cpp \
            src/res.mgr/SDpiAwareSkin.cpp \
-           src/updatelayeredwindow/SUpdateLayeredWindow.cpp
+           src/updatelayeredwindow/SUpdateLayeredWindow.cpp \
+           src/impl/render.cpp 
