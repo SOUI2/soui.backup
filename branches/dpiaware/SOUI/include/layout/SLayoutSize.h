@@ -29,14 +29,14 @@ namespace SOUI
 		void setInvalid();
 		bool isValid() const;
 
-		int  toPixelSize() const;
+		int  toPixelSize(int scale) const;
 
 		SStringW toString() const;
 
 		void setOrientation(ORIENTATION orientation);
 		bool isVert() const ;
 		
-
+		bool isZero() const ;
 
 		void parseString(const SStringW & strSize);
 

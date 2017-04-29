@@ -33,7 +33,7 @@ namespace SOUI{
         virtual bool IsMatchParent(ORIENTATION orientation) const = 0;
 		virtual bool IsWrapContent(ORIENTATION orientation) const = 0;
         virtual bool IsSpecifiedSize(ORIENTATION orientation) const = 0;
-        virtual int GetSpecifiedSize(ORIENTATION orientation) const = 0;
+        virtual SLayoutSize GetSpecifiedSize(ORIENTATION orientation) const = 0;
 		virtual void SetMatchParent(ORIENTATION orientation) = 0;
 		virtual void SetWrapContent(ORIENTATION orientation) = 0;
 		virtual void SetSpecifiedSize(ORIENTATION orientation, const SLayoutSize& layoutSize) = 0;

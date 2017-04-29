@@ -67,9 +67,12 @@ namespace SOUI{
         }
     }
 
-    int SouiLayoutParam::GetSpecifiedSize(ORIENTATION orientation) const
+	SLayoutSize SouiLayoutParam::GetSpecifiedSize(ORIENTATION orientation) const
     {
-        return orientation == Vert ?height.toPixelSize():width.toPixelSize();
+		if (orientation == Vert)
+			return height;
+		else
+			return width;
     }
 
 
@@ -211,8 +214,8 @@ namespace SOUI{
         }
 		if(bRet && nCount == 4)
 		{//检测X,Y方向上是否为充满父窗口
-			if((posLeft.pit == PIT_NORMAL && posLeft.nPos.toPixelSize() == 0 && posLeft.cMinus==1)
-				&&(posRight.pit == PIT_NORMAL && posRight.nPos.toPixelSize() == 0 && posRight.cMinus==-1))
+			if((posLeft.pit == PIT_NORMAL && posLeft.nPos.isZero() && posLeft.cMinus==1)
+				&&(posRight.pit == PIT_NORMAL && posRight.nPos.isZero() && posRight.cMinus==-1))
 			{
 				width.setMatchParent();
 			}else if(posRight.pit == PIT_SIZE)
@@ -226,8 +229,8 @@ namespace SOUI{
 				width.setInvalid();
 			}
 
-			if((posTop.pit == PIT_NORMAL && posTop.nPos.toPixelSize() == 0 && posTop.cMinus==1)
-				&&(posBottom.pit == PIT_NORMAL && posBottom.nPos.toPixelSize() == 0 && posBottom.cMinus==-1))
+			if((posTop.pit == PIT_NORMAL && posTop.nPos.isZero() && posTop.cMinus==1)
+				&&(posBottom.pit == PIT_NORMAL && posBottom.nPos.isZero() == 0 && posBottom.cMinus==-1))
 			{
 				height.setMatchParent();
 			}
@@ -288,18 +291,18 @@ namespace SOUI{
         return fabs(orientation==Vert?fOffsetY:fOffsetX) > 0.00000001f;
     }
 
-    int GetPosExtra(const POS_INFO &pos)
+    int GetPosExtra(const POS_INFO &pos,int nScale)
     {
-        return pos.cMinus==-1?pos.nPos.toPixelSize():0;
+        return pos.cMinus==-1?pos.nPos.toPixelSize(nScale):0;
     }
 
-    int SouiLayoutParam::GetExtraSize(ORIENTATION orientation) const
+    int SouiLayoutParam::GetExtraSize(ORIENTATION orientation,int nScale) const
     {
 		if(nCount!=4) return 0;
         if(orientation == Horz)
-            return GetPosExtra(posRight);
+            return GetPosExtra(posRight, nScale);
         else
-            return GetPosExtra(posBottom);
+            return GetPosExtra(posBottom, nScale);
     }
 
 	void SouiLayoutParam::Clear()
@@ -406,22 +409,22 @@ namespace SOUI{
     }
 
 
-    int SouiLayout::PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POS_INFO &pos , int nMax,BOOL bX) const
+    int SouiLayout::PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POS_INFO &pos , int nMax,BOOL bX,int nScale) const
     {
         int nRet=POS_WAIT;
 
         switch(pos.pit)
         {
         case PIT_CENTER: //参考中心
-            if(nMax != SIZE_WRAP_CONTENT) nRet=pos.nPos.toPixelSize() * pos.cMinus + nMax/2;
+            if(nMax != SIZE_WRAP_CONTENT) nRet=pos.nPos.toPixelSize(nScale) * pos.cMinus + nMax/2;
             break;
         case PIT_NORMAL: 
             if(pos.cMinus == -1)
 			{//参考右边或者下边
-				if(nMax != SIZE_WRAP_CONTENT) nRet=nMax-pos.nPos.toPixelSize();
+				if(nMax != SIZE_WRAP_CONTENT) nRet=nMax-pos.nPos.toPixelSize(nScale);
 			}else
 			{
-				nRet=pos.nPos.toPixelSize();
+				nRet=pos.nPos.toPixelSize(nScale);
 			}
             break;
         case PIT_PERCENT: 
@@ -457,7 +460,7 @@ namespace SOUI{
 					nRef = 0;
 				}
 				if(!IsWaitingPos(nRef))
-					nRet=nRef+pos.nPos.toPixelSize()*pos.cMinus;
+					nRet=nRef+pos.nPos.toPixelSize(nScale)*pos.cMinus;
             }
             break;
         case PIT_NEXT_NEAR:
@@ -479,7 +482,7 @@ namespace SOUI{
 					}
 				}
 				if(!IsWaitingPos(nRef))
-					nRet=nRef+pos.nPos.toPixelSize()*pos.cMinus;
+					nRet=nRef+pos.nPos.toPixelSize(nScale)*pos.cMinus;
 			}
             break;
         case PIT_SIB_LEFT:// PIT_SIB_LEFT == PIT_SIB_TOP
@@ -514,7 +517,7 @@ namespace SOUI{
 						if(IsWaitingPos(refPos))
 							nRet=POS_WAIT;
 						else
-							nRet=refPos+pos.nPos.toPixelSize()*pos.cMinus;
+							nRet=refPos+pos.nPos.toPixelSize(nScale)*pos.cMinus;
 					}
                 }else
                 {
@@ -524,7 +527,7 @@ namespace SOUI{
 						if(IsWaitingPos(refPos))
 							nRet=POS_WAIT;
 						else
-							nRet=refPos+pos.nPos.toPixelSize()*pos.cMinus;
+							nRet=refPos+pos.nPos.toPixelSize(nScale)*pos.cMinus;
 					}
                 }
             }       
@@ -565,13 +568,14 @@ namespace SOUI{
         {
             WndPos wndPos = lstWndPos.GetNext(pos);
             SouiLayoutParam *pParam = wndPos.pWnd->GetLayoutParamT<SouiLayoutParam>();
+			int nScale = wndPos.pWnd->GetScale();
             if(!IsWaitingPos(wndPos.rc.right))
             {
-                nMaxX = (std::max)(nMaxX,(int)(wndPos.rc.right + pParam->GetExtraSize(Horz)));
+                nMaxX = (std::max)(nMaxX,(int)(wndPos.rc.right + pParam->GetExtraSize(Horz,nScale)));
             }
             if(!IsWaitingPos(wndPos.rc.bottom))
             {
-                nMaxY = (std::max)(nMaxY,(int)(wndPos.rc.bottom + pParam->GetExtraSize(Vert)));
+                nMaxY = (std::max)(nMaxY,(int)(wndPos.rc.bottom + pParam->GetExtraSize(Vert, nScale)));
             }
         }
 
@@ -659,16 +663,17 @@ namespace SOUI{
                 {
                     WndPos &wndPos = pListChildren->GetAt(pos);
                     SouiLayoutParam *pLayoutParam = wndPos.pWnd->GetLayoutParamT<SouiLayoutParam>();
+					int nScale = wndPos.pWnd->GetScale();
                     if(IsWaitingPos(wndPos.rc.left)) 
                     {
 						const POS_INFO &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->posLeft:posRefLeft;
-						wndPos.rc.left = PositionItem2Value(pListChildren,pos,posRef,nWidth,TRUE);
+						wndPos.rc.left = PositionItem2Value(pListChildren,pos,posRef,nWidth,TRUE, nScale);
                         if(wndPos.rc.left != POS_WAIT) nResolved ++;
                     }
                     if(IsWaitingPos(wndPos.rc.top)) 
                     {
 						const POS_INFO &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->posTop:posRefTop;
-						wndPos.rc.top = PositionItem2Value(pListChildren,pos,posRef,nHeight,FALSE);
+						wndPos.rc.top = PositionItem2Value(pListChildren,pos,posRef,nHeight,FALSE, nScale);
                         if(wndPos.rc.top != POS_WAIT) nResolved ++;
                     }
                     if(IsWaitingPos(wndPos.rc.right)) 
@@ -680,12 +685,12 @@ namespace SOUI{
                         {
                             if(!IsWaitingPos(wndPos.rc.left))
                             {
-                                wndPos.rc.right = wndPos.rc.left + pLayoutParam->GetSpecifiedSize(Horz);
+                                wndPos.rc.right = wndPos.rc.left + pLayoutParam->GetSpecifiedSize(Horz).toPixelSize(nScale);
                                 nResolved ++;
                             }
                         }else if(!pLayoutParam->IsWrapContent(Horz) && pLayoutParam->nCount==4)
                         {
-                            wndPos.rc.right = PositionItem2Value(pListChildren,pos,pLayoutParam->posRight,nWidth,TRUE);
+                            wndPos.rc.right = PositionItem2Value(pListChildren,pos,pLayoutParam->posRight,nWidth,TRUE, nScale);
                             if(wndPos.rc.right != POS_WAIT) nResolved ++;
                         }
                     }
@@ -698,12 +703,12 @@ namespace SOUI{
                         {
                             if(!IsWaitingPos(wndPos.rc.top))
                             {
-                                wndPos.rc.bottom = wndPos.rc.top + pLayoutParam->GetSpecifiedSize(Vert);
+                                wndPos.rc.bottom = wndPos.rc.top + pLayoutParam->GetSpecifiedSize(Vert).toPixelSize(nScale);
                                 nResolved ++;
                             }
                         }else if(!pLayoutParam->IsWrapContent(Vert) && pLayoutParam->nCount==4)
                         {
-                            wndPos.rc.bottom = PositionItem2Value(pListChildren,pos,pLayoutParam->posBottom,nHeight,FALSE);
+                            wndPos.rc.bottom = PositionItem2Value(pListChildren,pos,pLayoutParam->posBottom,nHeight,FALSE, nScale);
                             if(wndPos.rc.bottom != POS_WAIT) nResolved ++;
                         }
                     }

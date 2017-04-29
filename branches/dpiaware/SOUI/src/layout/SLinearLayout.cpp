@@ -60,19 +60,19 @@ namespace SOUI
 
     }
 
-    int SLinearLayoutParam::GetSpecifiedSize(ORIENTATION orientation) const
+	SLayoutSize SLinearLayoutParam::GetSpecifiedSize(ORIENTATION orientation) const
     {
         switch(orientation)
         {
         case Horz:
-            return width.toPixelSize();
+            return width;
         case Vert:
-            return height.toPixelSize();
+            return height;
         case Any: 
         case Both:
         default:
             SASSERT_FMTA(FALSE,"GetSpecifiedSize can only be applyed for Horz or Vert");
-            return 0;
+            return SLayoutSize();
         }
     }
 
@@ -226,21 +226,23 @@ namespace SOUI
             {
 				SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
 
+				int nScale = pChild->GetScale();
+
                 CSize szChild(SIZE_WRAP_CONTENT,SIZE_WRAP_CONTENT);
                 if(pLinearLayoutParam->IsMatchParent(Horz))
                     szChild.cx = rcParent.Width();
                 else if(pLinearLayoutParam->IsSpecifiedSize(Horz))
                 {
-                    szChild.cx = pLinearLayoutParam->GetSpecifiedSize(Horz);
-                    szChild.cx += pLinearLayoutParam->extend_left.toPixelSize() + pLinearLayoutParam->extend_right.toPixelSize();
+                    szChild.cx = pLinearLayoutParam->GetSpecifiedSize(Horz).toPixelSize(nScale);
+                    szChild.cx += pLinearLayoutParam->extend_left.toPixelSize(nScale) + pLinearLayoutParam->extend_right.toPixelSize(nScale);
                 }
 
                 if(pLinearLayoutParam->IsMatchParent(Vert))
                     szChild.cy = rcParent.Height();
                 else if(pLinearLayoutParam->IsSpecifiedSize(Vert))
                 {
-                    szChild.cy = pLinearLayoutParam->GetSpecifiedSize(Vert);
-                    szChild.cy += pLinearLayoutParam->extend_top.toPixelSize() + pLinearLayoutParam->extend_bottom.toPixelSize();
+                    szChild.cy = pLinearLayoutParam->GetSpecifiedSize(Vert).toPixelSize(nScale);
+                    szChild.cy += pLinearLayoutParam->extend_top.toPixelSize(nScale) + pLinearLayoutParam->extend_bottom.toPixelSize(nScale);
                 }
                 
                 if(pLinearLayoutParam->weight > 0.0f)
@@ -254,12 +256,12 @@ namespace SOUI
                     if(szChild.cx == SIZE_WRAP_CONTENT)
                     {
                         szChild.cx = szCalc.cx;
-                        szChild.cx += pLinearLayoutParam->extend_left.toPixelSize() + pLinearLayoutParam->extend_right.toPixelSize();
+                        szChild.cx += pLinearLayoutParam->extend_left.toPixelSize(nScale) + pLinearLayoutParam->extend_right.toPixelSize(nScale);
                     }
                     if(szChild.cy == SIZE_WRAP_CONTENT) 
                     {
                         szChild.cy = szCalc.cy;
-                        szChild.cy += pLinearLayoutParam->extend_top.toPixelSize() + pLinearLayoutParam->extend_bottom.toPixelSize();
+                        szChild.cy += pLinearLayoutParam->extend_top.toPixelSize(nScale) + pLinearLayoutParam->extend_bottom.toPixelSize(nScale);
                     }
                 }
 
@@ -299,7 +301,7 @@ namespace SOUI
 
 
                 SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
-
+				int nScale = pChild->GetScale();
                 Gravity gravity = pLinearLayoutParam->gravity == G_Undefined? m_gravity:pLinearLayoutParam->gravity;
                 if(gravity == G_Undefined) gravity = G_Left;
 
@@ -313,10 +315,10 @@ namespace SOUI
                         rcChild.OffsetRect(rcParent.Width()-rcChild.Width(),0);
                     
                     CRect rcChild2 = rcChild;
-                    rcChild2.DeflateRect(pLinearLayoutParam->extend_left.toPixelSize(),
-						pLinearLayoutParam->extend_top.toPixelSize(),
-						pLinearLayoutParam->extend_right.toPixelSize(),
-						pLinearLayoutParam->extend_bottom.toPixelSize()
+                    rcChild2.DeflateRect(pLinearLayoutParam->extend_left.toPixelSize(nScale),
+						pLinearLayoutParam->extend_top.toPixelSize(nScale),
+						pLinearLayoutParam->extend_right.toPixelSize(nScale),
+						pLinearLayoutParam->extend_bottom.toPixelSize(nScale)
 						);
 
                     pChild->OnRelayout(rcChild2);
@@ -332,10 +334,10 @@ namespace SOUI
                         rcChild.OffsetRect(0,rcParent.Height()-rcChild.Height());
 
                     CRect rcChild2 = rcChild;
-					rcChild2.DeflateRect(pLinearLayoutParam->extend_left.toPixelSize(),
-						pLinearLayoutParam->extend_top.toPixelSize(),
-						pLinearLayoutParam->extend_right.toPixelSize(),
-						pLinearLayoutParam->extend_bottom.toPixelSize());
+					rcChild2.DeflateRect(pLinearLayoutParam->extend_left.toPixelSize(nScale),
+						pLinearLayoutParam->extend_top.toPixelSize(nScale),
+						pLinearLayoutParam->extend_right.toPixelSize(nScale),
+						pLinearLayoutParam->extend_bottom.toPixelSize(nScale));
 
                     pChild->OnRelayout(rcChild2);
 
@@ -365,7 +367,7 @@ namespace SOUI
 		while(pChild)
 		{
 			SLinearLayoutParam *pLinearLayoutParam = pChild->GetLayoutParamT<SLinearLayoutParam>();
-
+			int nScale = pChild->GetScale();
 			CSize szChild(SIZE_WRAP_CONTENT,SIZE_WRAP_CONTENT);
 			if(pLinearLayoutParam->IsMatchParent(Horz))
             {
@@ -374,8 +376,8 @@ namespace SOUI
             }
 			else if(pLinearLayoutParam->IsSpecifiedSize(Horz))
             {
-                szChild.cx = pLinearLayoutParam->GetSpecifiedSize(Horz);
-                szChild.cx += pLinearLayoutParam->extend_left.toPixelSize() + pLinearLayoutParam->extend_right.toPixelSize();
+                szChild.cx = pLinearLayoutParam->GetSpecifiedSize(Horz).toPixelSize(nScale);
+                szChild.cx += pLinearLayoutParam->extend_left.toPixelSize(nScale) + pLinearLayoutParam->extend_right.toPixelSize(nScale);
             }
 			if(pLinearLayoutParam->IsMatchParent(Vert))
             {
@@ -384,8 +386,8 @@ namespace SOUI
             }
 			else if(pLinearLayoutParam->IsSpecifiedSize(Vert))
             {
-                szChild.cy = pLinearLayoutParam->GetSpecifiedSize(Vert);
-                szChild.cy += pLinearLayoutParam->extend_top.toPixelSize() + pLinearLayoutParam->extend_bottom.toPixelSize();
+                szChild.cy = pLinearLayoutParam->GetSpecifiedSize(Vert).toPixelSize(nScale);
+                szChild.cy += pLinearLayoutParam->extend_top.toPixelSize(nScale) + pLinearLayoutParam->extend_bottom.toPixelSize(nScale);
             }
 			if(szChild.cx == SIZE_WRAP_CONTENT || szChild.cy == SIZE_WRAP_CONTENT)
 			{
@@ -399,12 +401,12 @@ namespace SOUI
 				if(szChild.cx == SIZE_WRAP_CONTENT) 
                 {
                     szChild.cx = szCalc.cx;
-                    szChild.cx += pLinearLayoutParam->extend_left.toPixelSize() + pLinearLayoutParam->extend_right.toPixelSize();
+                    szChild.cx += pLinearLayoutParam->extend_left.toPixelSize(nScale) + pLinearLayoutParam->extend_right.toPixelSize(nScale);
                 }
 				if(szChild.cy == SIZE_WRAP_CONTENT) 
                 {
                     szChild.cy = szCalc.cy;
-                    szChild.cy += pLinearLayoutParam->extend_top.toPixelSize() + pLinearLayoutParam->extend_bottom.toPixelSize();
+                    szChild.cy += pLinearLayoutParam->extend_top.toPixelSize(nScale) + pLinearLayoutParam->extend_bottom.toPixelSize(nScale);
                 }
 			}
 
