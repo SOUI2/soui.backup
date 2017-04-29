@@ -7,7 +7,6 @@
 #include <string/strcpcvt.h>
 #include <interface/render-i.h>
 #include <souicoll.h>
-#include <sobject/sobject-state-impl.hpp>
 
 namespace SOUI
 {
@@ -41,7 +40,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     // TGdiRenderObjImpl
     template<class T>
-    class TGdiRenderObjImpl : public TObjRefImpl< SObjectStateImpl<SObjectImpl<T> >>
+    class TGdiRenderObjImpl : public TObjRefImpl< SObjectImpl<T> >
     {
     public:
         TGdiRenderObjImpl(IRenderFactory * pRenderFac):m_pRenderFactory(pRenderFac)

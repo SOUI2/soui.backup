@@ -1,7 +1,6 @@
 #pragma once
 
 #include "interface/slayout-i.h"
-#include <sobject/sobject-state-impl.hpp>
 #include "SLinearLayoutParamStruct.h"
 
 namespace SOUI
