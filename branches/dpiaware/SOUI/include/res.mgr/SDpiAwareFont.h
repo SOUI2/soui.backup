@@ -1,10 +1,9 @@
 #pragma once
 
-#include "sdpiawareobject.h"
 
 namespace SOUI
 {
-	class SOUI_EXP SDpiAwareFont: public SDpiAwareObject
+	class SOUI_EXP SDpiAwareFont
 	{
 	public:
 		SDpiAwareFont(void);
@@ -13,8 +12,15 @@ namespace SOUI
 
 		IFont * GetFontPtr();
 
+		void SetFontDesc(const SStringW & strDesc, int nScale);
+
+		void SetScale(int nScale);
+
 	protected:
-		virtual IObjRef * OnGetObject(const SStringW & strDesc,int nScale);
+		IFont * OnGetFont(const SStringW & strDesc,int nScale);
+
+		SStringW m_strDesc;
+		CAutoRefPtr<IFont> m_object;
 	};
 
 }
