@@ -57,6 +57,7 @@ namespace SOUI
         virtual BOOL OnSetCursor(const CPoint &pt);
 
 		virtual void OnColorize(COLORREF cr);
+		virtual void onScaleChanged(int nScale);
     protected:
 
         void UpdateScrollBar();

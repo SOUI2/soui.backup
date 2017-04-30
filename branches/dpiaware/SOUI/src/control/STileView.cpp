@@ -878,4 +878,16 @@ void STileView::OnColorize(COLORREF cr)
     }
 }
 
+void STileView::onScaleChanged(int nScale)
+{
+	__super::onScaleChanged(nScale);
+	SPOSITION pos = m_lstItems.GetHeadPosition();
+	while (pos)
+	{
+		ItemInfo ii = m_lstItems.GetNext(pos);
+		ii.pItem->SDispatchMessage(UM_SETSCALE, nScale, 0);
+	}
+
+}
+
 }
