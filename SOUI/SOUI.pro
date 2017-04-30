@@ -133,7 +133,6 @@ HEADERS += include/SApp.h \
            include/interface/LvItemLocator-i.h \
            include/interface/slog-i.h \
            include/interface/TvItemLocator-i.h \
-           include/interface/sdpiaware-i.h \
            include/interface/slayout-i.h \
            include/layout/SLinearLayoutParamStruct.h \
            include/layout/SLinearLayout.h \
@@ -148,9 +147,7 @@ HEADERS += include/SApp.h \
            include/res.mgr/SSkinPool.h \
            include/res.mgr/SStylePool.h \
            include/res.mgr/SNamedValue.h \
-           include/res.mgr/SDpiAwareObject.h \
            include/res.mgr/SDpiAwareFont.h \
-           include/res.mgr/SDpiAwareSkin.h \
            src/activex/SAxContainer.h \
            src/activex/SAxUtil.h \
            src/updatelayeredwindow/SUpdateLayeredWindow.h \
@@ -230,7 +227,5 @@ SOURCES += src/SApp.cpp \
            src/res.mgr/SSkinPool.cpp \
            src/res.mgr/SStylePool.cpp \
            src/res.mgr/SNamedValue.cpp \
-           src/res.mgr/SDpiAwareObject.cpp \
            src/res.mgr/SDpiAwareFont.cpp \
-           src/res.mgr/SDpiAwareSkin.cpp \
            src/updatelayeredwindow/SUpdateLayeredWindow.cpp
