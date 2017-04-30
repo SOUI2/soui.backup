@@ -163,7 +163,7 @@ namespace SOUI
         virtual BOOL OnSetCursor(const CPoint &pt);
         virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo);
         virtual void OnColorize(COLORREF cr);
-
+		virtual void onScaleChanged(int nScale);
 		virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
 		virtual int  GetScrollLineSize(BOOL bVertical);
 		virtual BOOL CreateChildren(pugi::xml_node xmlNode);

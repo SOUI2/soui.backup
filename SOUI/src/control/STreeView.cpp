@@ -1183,5 +1183,17 @@ namespace SOUI
         }
     }
 
+	void STreeView::onScaleChanged(int nScale)
+	{
+		__super::onScaleChanged(nScale);
+		SPOSITION pos = m_visible_items.GetHeadPosition();
+		while (pos)
+		{
+			ItemInfo ii = m_visible_items.GetNext(pos);
+			ii.pItem->SDispatchMessage(UM_SETSCALE, nScale, 0);
+		}
+
+	}
+
 
 }
