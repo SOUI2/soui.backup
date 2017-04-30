@@ -30,9 +30,10 @@
         <radio size="-1,-1" text="english" extend_left="20" name="lang_en" id="101"/>
       </group>
       <window size="-1,-1" layout="hbox">
-        <button size="-1,-1" padding="10,5,10,5" text="scale 1" name="btn_scale_100"/>
-        <button size="-1,-1" padding="10,5,10,5" extend_left="10" text="scale 1.25" name="btn_scale_125"/>
-        <button size="-1,-1" padding="10,5,10,5" extend_left="10" text="scale 1.5" name="btn_scale_150"/>
+        <radio size="-1,-1" padding="10,5,10,5" checked="1" text="scale 1" name="btn_scale_100"/>
+        <radio size="-1,-1" padding="10,5,10,5" extend_left="10dp" text="scale 1.25" name="btn_scale_125"/>
+        <radio size="-1,-1" padding="10,5,10,5" extend_left="10dp" text="scale 1.5" name="btn_scale_150"/>
+        <radio size="-1,-1" padding="10,5,10,5" extend_left="10dp" text="scale 2.0" name="btn_scale_200"/>
       </window>
       <text size="-1,-1" layout_gravity="center" name="txt_test" font="adding:5,underline:1" colorText="#ff0000"/>
       <tabctrl size="-2,0" weight="1" animateSteps="10" curSel="2" colorBkgnd="#ffffff" tabAlign="top" tabInterSize="2" tabHeight="30" tabWidth="120">
