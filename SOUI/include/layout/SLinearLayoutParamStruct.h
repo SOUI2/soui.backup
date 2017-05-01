@@ -12,10 +12,10 @@ namespace SOUI
 
 	struct SLinearLayoutParamStruct
 	{
-		SLayoutWidth width;
-		SLayoutHeight height;
-		SLayoutWidth extend_left,extend_right;//相当于android的margin属性
-		SLayoutHeight extend_top,extend_bottom;//相当于android的margin属性
+		SLayoutSize width;
+		SLayoutSize height;
+		SLayoutSize extend_left,extend_right;//相当于android的margin属性
+		SLayoutSize extend_top,extend_bottom;//相当于android的margin属性
 		float weight;
 		Gravity gravity;
 	};

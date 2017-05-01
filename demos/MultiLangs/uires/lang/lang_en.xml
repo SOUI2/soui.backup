@@ -88,6 +88,22 @@
       <source>menu</source>
       <translation>menu</translation>
     </message>
+    <message>
+      <source>name</source>
+      <translation>name</translation>
+    </message>
+    <message>
+      <source>gender</source>
+      <translation>gender</translation>
+    </message>
+    <message>
+      <source>age</source>
+      <translation>age</translation>
+    </message>
+    <message>
+      <source>score</source>
+      <translation>score</translation>
+    </message>
   </context>
   <context name="user">
     <message>

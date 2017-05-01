@@ -27,17 +27,15 @@ namespace SOUI
 
         virtual int GetScrollLineSize() const;
 
-        virtual int GetDividerSize() const
-        {
-            return m_nDividerSize;
-        }
+		virtual int GetDividerSize() const;
 
+		virtual void SetScale(int nScale);
     protected:
-        int GetFixItemHeight() const {return m_nItemHeight+m_nDividerSize;}
+		int GetFixItemHeight() const;
 
         int m_nItemHeight;
         int m_nDividerSize;
-
+		int	m_nScale;
         CAutoRefPtr<ILvAdapter> m_adapter;
     };
 
@@ -67,14 +65,12 @@ namespace SOUI
 
         virtual int GetScrollLineSize() const;   
 
-        virtual int GetDividerSize() const
-        {
-            return m_nDividerSize;
-        }
+		virtual int GetDividerSize() const;
 
+		virtual void SetScale(int nScale);
     protected:
         void InitIndex(HSTREEITEM hParent,int nItems,int nSubBranchSize);
-        int GetFixItemHeight() const {return m_nItemHeight+m_nDividerSize;}
+		int GetFixItemHeight() const;
         int GetIndexDeep() const;
         void Clear();
         int Branch2Offset(HSTREEITEM hBranch) const;
@@ -83,7 +79,7 @@ namespace SOUI
 
         int m_nItemHeight;  //默认表项高度
         int m_nDividerSize;
-
+		int m_nScale;
         struct BranchInfo
         {
             int nBranchHei; //分枝高度

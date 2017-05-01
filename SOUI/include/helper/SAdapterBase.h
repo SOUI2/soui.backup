@@ -102,12 +102,14 @@ namespace SOUI
 
         virtual int getItemViewType(int position)
         {
+			(position);
             return 0;
         }
         
         //增加这个函数来自动转换不需要处理状态变化的View
         virtual int getItemViewType(int position,DWORD dwState)
         {
+			(dwState);
             return getItemViewType(position);
         }
 
@@ -122,20 +124,24 @@ namespace SOUI
         }
 
         virtual ULONG_PTR getItemData(int position){
+			(position);
             return 0;
         }
         
         virtual SStringT getItemDesc(int position){
+			(position);
             return SStringT();
         }
         
         virtual void InitByTemplate(pugi::xml_node xmlTemplate)
         {
-        
+			(xmlTemplate);
         }
         
         virtual SIZE getViewDesiredSize(int position,SWindow *pItem, LPCRECT prcContainer)
         {
+			(position);
+			(pItem);
             return pItem->GetDesiredSize(prcContainer);
         }
     protected:
@@ -165,7 +171,12 @@ namespace SOUI
         {
         }
         
-        virtual bool OnSort(int iCol,SHDSORTFLAG * stFlags,int nCols){return false;}
+        virtual bool OnSort(int iCol,SHDSORTFLAG * stFlags,int nCols){
+			(iCol);
+			(stFlags);
+			(nCols);
+			return false;
+		}
     };
 
 
@@ -272,7 +283,7 @@ namespace SOUI
 
         virtual void InitByTemplate(pugi::xml_node xmlTemplate)
         {
-
+			(xmlTemplate);
         }
 
     protected:

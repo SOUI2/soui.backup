@@ -9,7 +9,7 @@ namespace SOUI
 		L"px",L"dp",L"dip",L"sp"
 	};
 
-	SLayoutSize::SLayoutSize() :fSize(0.0f),unit(px),orientation(Horz)
+	SLayoutSize::SLayoutSize() :fSize(0.0f),unit(px)
 	{
 
 	}
@@ -92,11 +92,6 @@ namespace SOUI
 		return !fequal(fSize,SIZE_UNDEF);
 	}
 
-	bool SLayoutSize::isVert() const
-	{
-		return orientation == Vert;
-	}
-
 	bool SLayoutSize::isZero() const
 	{
 		return fequal(fSize, 0.0f);
@@ -126,36 +121,11 @@ namespace SOUI
 		return *this;
 	}
 
-	void SLayoutSize::setOrientation(ORIENTATION orientation)
+	SLayoutSize SLayoutSize::fromString(const SStringW & strSize)
 	{
-		this->orientation = orientation;
-	}
-
-
-	SLayoutWidth SLayoutWidth::fromString(const SStringW & strSize)
-	{
-		SLayoutWidth ret;
+		SLayoutSize ret;
 		ret.parseString(strSize);
 		return ret;
-	}
-
-	SLayoutSize & SLayoutWidth::operator=(const SLayoutSize & src)
-	{
-		return SLayoutSize::operator =(src);
-	}
-
-
-	SLayoutHeight SLayoutHeight::fromString(const SStringW & strSize)
-	{
-		SLayoutHeight ret;
-		ret.parseString(strSize);
-		return ret;
-
-	}
-
-	SLayoutSize & SLayoutHeight::operator=(const SLayoutSize & src)
-	{
-		return SLayoutSize::operator =(src);
 	}
 
 }

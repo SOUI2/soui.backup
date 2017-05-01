@@ -88,6 +88,22 @@
       <source>menu</source>
       <translation>菜单</translation>
     </message>
+    <message>
+      <source>name</source>
+      <translation>名称</translation>
+    </message>
+    <message>
+      <source>gender</source>
+      <translation>姓别</translation>
+    </message>
+    <message>
+      <source>age</source>
+      <translation>年龄</translation>
+    </message>
+    <message>
+      <source>score</source>
+      <translation>得分</translation>
+    </message>
   </context>
   <context name="user">
     <message>
