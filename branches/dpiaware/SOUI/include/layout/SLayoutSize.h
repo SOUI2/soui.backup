@@ -32,9 +32,6 @@ namespace SOUI
 		int  toPixelSize(int scale) const;
 
 		SStringW toString() const;
-
-		void setOrientation(ORIENTATION orientation);
-		bool isVert() const ;
 		
 		bool isZero() const ;
 
@@ -42,25 +39,8 @@ namespace SOUI
 
 		SLayoutSize & operator = (const SLayoutSize & src);
 
+		static SLayoutSize fromString(const SStringW & strSize);
 	};
 
 
-	class SOUI_EXP SLayoutWidth : public SLayoutSize
-	{
-	public:
-		SLayoutWidth(){orientation = Horz;}
-
-		SLayoutSize & operator = (const SLayoutSize & src);
-		static SLayoutWidth fromString(const SStringW & strSize);
-	};
-
-	class SOUI_EXP SLayoutHeight : public SLayoutSize
-	{
-	public:
-		SLayoutHeight(){orientation = Vert;}
-
-		SLayoutSize & operator = (const SLayoutSize & src);
-
-		static SLayoutHeight fromString(const SStringW & strSize);
-	};
 }

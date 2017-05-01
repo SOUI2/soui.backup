@@ -14,8 +14,6 @@ namespace SOUI{
 
 	SouiLayoutParam::SouiLayoutParam()
 	{
-		posTop.nPos.setOrientation(Vert);
-		posBottom.nPos.setOrientation(Vert);
 		Clear();
 	}
 

@@ -846,6 +846,7 @@ namespace SOUI
 	void SListView::onScaleChanged(int nScale)
 	{
 		__super::onScaleChanged(nScale);
+		m_lvItemLocator->SetScale(nScale);
 		SPOSITION pos = m_lstItems.GetHeadPosition();
 		while (pos)
 		{
