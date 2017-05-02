@@ -20,6 +20,10 @@
 
 class RichEditObj : public SObject
 {
+#define LEFT          0
+#define TOP           1
+#define RIGHT         2
+#define BOTTOM        3
 public:
     enum AlignType
     {

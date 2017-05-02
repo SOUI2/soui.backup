@@ -58,7 +58,7 @@ void SImagePlayer::OnNextFrame()
 
 HRESULT SImagePlayer::OnAttrSkin( const SStringW & strValue, BOOL bLoading )
 {
-	ISkinObj *pSkin = SSkinPoolMgr::getSingleton().GetSkin(strValue);
+    ISkinObj *pSkin = SSkinPoolMgr::getSingleton().GetSkin(strValue, GetScale());
 	if(!pSkin) return E_FAIL;
 	if(!pSkin->IsClass(SSkinAni::GetClassName())) return S_FALSE;
 	m_aniSkin=static_cast<SSkinAni*>(pSkin);

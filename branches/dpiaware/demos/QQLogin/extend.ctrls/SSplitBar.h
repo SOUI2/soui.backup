@@ -37,8 +37,8 @@ protected:
     BOOL        m_bResizeHostWnd;   /**< 是否缩放宿主窗口*/
     int         m_nSizeMin;         /**< 最小大小 */
     int         m_nSizeMax;         /**< 最大大小 */
-    int         m_nOrginPos;        /**< 最原始的left/top*/
-    int         m_nTrackingPos;
+    SLayoutSize m_nOrginPos;        /**< 最原始的left/top*/
+    SLayoutSize m_nTrackingPos;
     BOOL        m_bVertical;        /**< 是否垂直分割，默认是水平分割*/
 };
 
