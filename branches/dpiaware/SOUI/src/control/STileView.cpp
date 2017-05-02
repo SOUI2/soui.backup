@@ -395,7 +395,7 @@ void STileView::OnDestroy()
 //////////////////////////////////////////////////////////////////////////
 void STileView::OnItemRequestRelayout(SItemPanel *pItem)
 {
-    pItem->UpdateChildrenPosition();
+    //pItem->UpdateChildrenPosition();
 }
 
 BOOL STileView::IsItemRedrawDelay()

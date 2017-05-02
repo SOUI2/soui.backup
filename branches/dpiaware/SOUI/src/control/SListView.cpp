@@ -401,7 +401,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     void SListView::OnItemRequestRelayout(SItemPanel *pItem)
     {
-        pItem->UpdateChildrenPosition();
+        //pItem->UpdateChildrenPosition();
     }
 
     BOOL SListView::IsItemRedrawDelay()
