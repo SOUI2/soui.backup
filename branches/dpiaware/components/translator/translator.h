@@ -61,17 +61,12 @@ namespace SOUI
 
 		SStringW tr(const SStringW & strSrc,const SStringW & strCtx);
 
-		void RegisterLanguageListener(ILanguageListener * pListener);
-
-		void UnregisterLanguageListener(ILanguageListener * pListener);
 
 	protected:
-		void onLanguageChanged();
 
 		SStringW m_strLang;
 
         SList<ITranslator*> *m_lstLang;
-		SMap<ILanguageListener*,bool> m_mapListener;
 
 	};
 

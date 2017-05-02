@@ -104,6 +104,18 @@
       <source>score</source>
       <translation>score</translation>
     </message>
+    <message>
+      <source>male</source>
+      <translation>male</translation>
+    </message>
+    <message>
+      <source>female</source>
+      <translation>female</translation>
+    </message>
+    <message>
+      <source>unknown</source>
+      <translation>unknown</translation>
+    </message>
   </context>
   <context name="user">
     <message>
