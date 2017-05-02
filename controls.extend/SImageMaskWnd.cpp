@@ -57,7 +57,7 @@ namespace SOUI
         
         if(!m_strSkin.IsEmpty())
         {
-            ISkinObj * pSkin = GETSKIN(m_strSkin);
+            ISkinObj * pSkin = GETSKIN(m_strSkin,GetScale());
             if(pSkin) MakeCacheApha(pSkin);
         }
         return S_OK;
@@ -101,7 +101,7 @@ namespace SOUI
     {
         if(m_bmpCache)
         {
-            ISkinObj * pSkin = GETSKIN(strValue);
+            ISkinObj * pSkin = GETSKIN(strValue,GetScale());
             if(pSkin) MakeCacheApha(pSkin);
         }else
         {

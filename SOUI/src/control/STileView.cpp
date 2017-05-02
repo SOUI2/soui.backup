@@ -878,16 +878,37 @@ void STileView::OnColorize(COLORREF cr)
     }
 }
 
-void STileView::onScaleChanged(int nScale)
+void STileView::OnScaleChanged(int nScale)
 {
-	__super::onScaleChanged(nScale);
+	__super::OnScaleChanged(nScale);
+	DispatchMessage2Items(UM_SETSCALE,nScale,0);
+}
+
+HRESULT STileView::OnLanguageChanged()
+{
+	HRESULT hret =__super::OnLanguageChanged();
+	DispatchMessage2Items(UM_SETLANGUAGE,0,0);
+	return hret;
+}
+
+void STileView::DispatchMessage2Items(UINT uMsg,WPARAM wParam,LPARAM lParam)
+{
 	SPOSITION pos = m_lstItems.GetHeadPosition();
 	while (pos)
 	{
 		ItemInfo ii = m_lstItems.GetNext(pos);
-		ii.pItem->SDispatchMessage(UM_SETSCALE, nScale, 0);
+		ii.pItem->SDispatchMessage(uMsg, wParam, lParam);
 	}
-
+	for(UINT i=0;i<m_itemRecycle.GetCount();i++)
+	{
+		SList<SItemPanel*> *pLstTypeItems = m_itemRecycle[i];
+		SPOSITION pos = pLstTypeItems->GetHeadPosition();
+		while(pos)
+		{
+			SItemPanel *pItem = pLstTypeItems->GetNext(pos);
+			pItem->SDispatchMessage(uMsg, wParam, lParam);
+		}
+	}
 }
 
 }
