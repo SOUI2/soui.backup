@@ -922,7 +922,7 @@ namespace SOUI
 
 	void STreeView::OnItemRequestRelayout( SItemPanel *pItem )
 	{
-		  pItem->UpdateChildrenPosition();
+		  //pItem->UpdateChildrenPosition();
 	}
 
 	void STreeView::onBranchChanged(HTREEITEM hBranch)
