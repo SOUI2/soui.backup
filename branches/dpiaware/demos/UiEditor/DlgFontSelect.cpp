@@ -66,14 +66,14 @@ namespace SOUI
 		if (!m_strFont.IsEmpty())
 		{
 			m_pDesignerView->UseEditorUIDef(false);
-			IFontPtr ft = SFontPool::getSingleton().GetFont(m_strFont);
+			IFontPtr ft = SFontPool::getSingleton().GetFont(m_strFont, 0);
 			m_pDesignerView->UseEditorUIDef(true);
 			InitInfo(ft);
 		}
 		else
 		{
 			m_pDesignerView->UseEditorUIDef(false);
-			IFontPtr ft = SFontPool::getSingleton().GetFont(_T(""));
+			IFontPtr ft = SFontPool::getSingleton().GetFont(_T(""),0);
 			m_pDesignerView->UseEditorUIDef(true);
 			InitInfo(ft);
 		}

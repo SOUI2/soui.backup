@@ -1259,7 +1259,7 @@ namespace SOUI
 
 
 		SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-		ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(strImgname); // 以文件名作为KEY
+		ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(strImgname,0); // 以文件名作为KEY
 		SSkinAni *aniSkin;
 		if(pSkin)
 		{
@@ -1299,8 +1299,15 @@ namespace SOUI
 		m_imgView->SetAttribute(L"skin", strImgname);
 		//SwndLayout *playout = m_imgView->GetLayout();
 		SouiLayoutParam *pLayout = m_imgView->GetLayoutParamT<SouiLayoutParam>();
-		pLayout->SetSpecifiedSize(Horz, nWidth);
-		pLayout->SetSpecifiedSize(Vert, nHeight);
+		//pLayout->SetSpecifiedSize(Horz, nWidth);
+		//pLayout->SetSpecifiedSize(Vert, nHeight);
+		SLayoutSize LayoutSize = pLayout->GetSpecifiedSize(Horz);
+		LayoutSize.fSize = nWidth;
+		pLayout->SetSpecifiedSize(Horz, LayoutSize);
+
+		LayoutSize = pLayout->GetSpecifiedSize(Vert);
+		LayoutSize.fSize = nHeight;
+		pLayout->SetSpecifiedSize(Vert, LayoutSize);
 
 		m_imgView->GetParent()->RequestRelayout();
 		m_imgView->GetParent()->UpdateChildrenPosition();
@@ -1336,8 +1343,15 @@ namespace SOUI
 		}
 
 		SouiLayoutParam *pLayout = m_imgView->GetLayoutParamT<SouiLayoutParam>();
-		pLayout->SetSpecifiedSize(Horz, nWidth);
-		pLayout->SetSpecifiedSize(Vert, nHeight);
+		//pLayout->SetSpecifiedSize(Horz, nWidth);
+		//pLayout->SetSpecifiedSize(Vert, nHeight);
+		SLayoutSize LayoutSize = pLayout->GetSpecifiedSize(Horz);
+		LayoutSize.fSize = nWidth;
+		pLayout->SetSpecifiedSize(Horz, LayoutSize);
+
+		LayoutSize = pLayout->GetSpecifiedSize(Vert);
+		LayoutSize.fSize = nHeight;
+		pLayout->SetSpecifiedSize(Vert, LayoutSize);
 
 		m_imgView->SetAttribute(L"skin", strImgname);
 		m_imgView->GetParent()->RequestRelayout();
