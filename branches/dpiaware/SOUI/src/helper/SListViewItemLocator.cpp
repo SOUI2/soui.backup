@@ -6,7 +6,7 @@ namespace SOUI
 {
     //////////////////////////////////////////////////////////////////////////
     // SListViewItemLocatorFix
-    SListViewItemLocatorFix::SListViewItemLocatorFix(int nItemHei,int nDividerSize) 
+    SListViewItemLocatorFix::SListViewItemLocatorFix(SLayoutSize nItemHei,SLayoutSize nDividerSize) 
         :m_nItemHeight(nItemHei)
         ,m_nDividerSize(nDividerSize)
 		,m_nScale(100)
@@ -26,12 +26,12 @@ namespace SOUI
 
 	int SListViewItemLocatorFix::GetDividerSize() const
 	{
-		return m_nDividerSize*m_nScale/100;
+		return m_nDividerSize.toPixelSize(m_nScale);
 	}
 
 
 	int SListViewItemLocatorFix::GetFixItemHeight() const { 
-		return (m_nItemHeight + m_nDividerSize)*m_nScale/100; 
+		return m_nItemHeight.toPixelSize(m_nScale) + m_nDividerSize.toPixelSize(m_nScale); 
 	}
 
 
@@ -86,7 +86,7 @@ namespace SOUI
 #define SEGMENT_SIZE    50  //数据分组最大长度
 #define INDEX_WIDTH     10  //索引表一级最大节点数
 
-    SListViewItemLocatorFlex::SListViewItemLocatorFlex(int nItemHei,int nDividerSize) 
+    SListViewItemLocatorFlex::SListViewItemLocatorFlex(SLayoutSize nItemHei,SLayoutSize nDividerSize) 
         :m_nItemHeight(nItemHei)
         ,m_nDividerSize(nDividerSize)
 		,m_nScale(100)
@@ -107,12 +107,12 @@ namespace SOUI
 
 	int SListViewItemLocatorFlex::GetScrollLineSize() const
     {
-        return GetFixItemHeight()*m_nScale/100;
+        return GetFixItemHeight();
     }
 
 	int SListViewItemLocatorFlex::GetDividerSize() const
 	{
-		return m_nDividerSize*m_nScale/100;
+		return m_nDividerSize.toPixelSize(m_nScale);
 	}
 
     int SListViewItemLocatorFlex::Position2Item(int position)
@@ -255,7 +255,7 @@ namespace SOUI
     }
 
 	int SListViewItemLocatorFlex::GetFixItemHeight() const {
-		return (m_nItemHeight + m_nDividerSize)*m_nScale/100;
+		return m_nItemHeight.toPixelSize(m_nScale) + m_nDividerSize.toPixelSize(m_nScale);
 	}
 
     int SListViewItemLocatorFlex::GetIndexDeep() const

@@ -7,7 +7,7 @@ namespace SOUI
     class SOUI_EXP SListViewItemLocatorFix : public TObjRefImpl<IListViewItemLocator>
     {
     public:
-        SListViewItemLocatorFix(int nItemHei,int nDividerSize=0);
+        SListViewItemLocatorFix(SLayoutSize nItemHei,SLayoutSize nDividerSize=SLayoutSize());
 
         virtual void SetAdapter(ILvAdapter *pAdapter);
 
@@ -33,8 +33,8 @@ namespace SOUI
     protected:
 		int GetFixItemHeight() const;
 
-        int m_nItemHeight;
-        int m_nDividerSize;
+        SLayoutSize m_nItemHeight;
+        SLayoutSize m_nDividerSize;
 		int	m_nScale;
         CAutoRefPtr<ILvAdapter> m_adapter;
     };
@@ -44,7 +44,7 @@ namespace SOUI
 
     public:
 
-        SListViewItemLocatorFlex(int nItemHei,int nDividerSize=0);
+        SListViewItemLocatorFlex(SLayoutSize nItemHei,SLayoutSize nDividerSize=SLayoutSize());
         ~SListViewItemLocatorFlex();
 
 
@@ -77,8 +77,8 @@ namespace SOUI
         int Branch2Index(HSTREEITEM hBranch) const;
         HSTREEITEM Offset2Branch(HSTREEITEM hParent,int nOffset);
 
-        int m_nItemHeight;  //默认表项高度
-        int m_nDividerSize;
+        SLayoutSize m_nItemHeight;  //默认表项高度
+        SLayoutSize m_nDividerSize;
 		int m_nScale;
         struct BranchInfo
         {
