@@ -138,7 +138,7 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 	//设置uidef为当前皮肤的uidef
 	UseEditorUIDef(false);
 
-	m_defFont = SFontPool::getSingleton().GetFont(FF_DEFAULTFONT);
+	m_defFont = SFontPool::getSingleton().GetFont(FF_DEFAULTFONT,0);
 
 	pugi::xml_node xmlroot;
 	pugi::xml_node xmlnode;
@@ -875,8 +875,8 @@ void SDesignerView::UpdatePosToXmlNode(SWindow *pRealWnd, SMoveWnd* pMoveWnd)
 
 		CRect r;
 		pMoveWnd->GetWindowRect(r);
-		m_CurrentLayoutNode.attribute(_T("height")).set_value(pSouiLayoutParam->GetSpecifiedSize(Vert) - MARGIN*2);
-		m_CurrentLayoutNode.attribute(_T("width")).set_value(pSouiLayoutParam->GetSpecifiedSize(Horz) - MARGIN*2);
+		m_CurrentLayoutNode.attribute(_T("height")).set_value(pSouiLayoutParam->GetSpecifiedSize(Vert).fSize - MARGIN*2);
+		m_CurrentLayoutNode.attribute(_T("width")).set_value(pSouiLayoutParam->GetSpecifiedSize(Horz).fSize - MARGIN*2);
 
 		return;
 	}
@@ -981,9 +981,24 @@ SStringW SDesignerView::GetPosFromLayout(SouiLayoutParam *pLayoutParam, INT nPos
 {
 	SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pLayoutParam->GetRawData();
 
+	POS_INFO PI;
+
+	switch (nPosIndex)
+	{
+	case 0:
+		PI = pSouiLayoutParamStruct->posLeft;
+	case 1:
+		PI =  pSouiLayoutParamStruct->posTop;
+	case 2:
+		PI =  pSouiLayoutParamStruct->posRight;
+	case 3:
+		PI =  pSouiLayoutParamStruct->posBottom;
+	}
+
+
 		SStringW strPos;
 
-		switch (pSouiLayoutParamStruct->pos[nPosIndex].pit)
+		switch (PI.pit)
 		{
 		case PIT_NULL: 
 			strPos = L"";        //无效定义
@@ -1015,11 +1030,11 @@ SStringW SDesignerView::GetPosFromLayout(SouiLayoutParam *pLayoutParam, INT nPos
 		case PIT_SIB_LEFT:      //兄弟结点的left,用于X
 			if (0 == nPosIndex)
 			{
-				strPos = strPos.Format(L"sib.left@%d:", pSouiLayoutParamStruct->pos[nPosIndex].nRefID);
+				strPos = strPos.Format(L"sib.left@%d:", PI.nRefID);
 			}
 			else
 			{
-				strPos = strPos.Format(L"sib.top@%d:", pSouiLayoutParamStruct->pos[nPosIndex].nRefID);
+				strPos = strPos.Format(L"sib.top@%d:", PI.nRefID);
 			}
 
 			break;
@@ -1030,11 +1045,11 @@ SStringW SDesignerView::GetPosFromLayout(SouiLayoutParam *pLayoutParam, INT nPos
 		case PIT_SIB_RIGHT:      //兄弟结点的right,用于X 
 			if (2 == nPosIndex)
 			{
-				strPos = strPos.Format(L"sib.right@%d:", pSouiLayoutParamStruct->pos[nPosIndex].nRefID);
+				strPos = strPos.Format(L"sib.right@%d:", PI.nRefID);
 			}
 			else
 			{
-				strPos = strPos.Format(L"sib.bottom@%d:", pSouiLayoutParamStruct->pos[nPosIndex].nRefID);
+				strPos = strPos.Format(L"sib.bottom@%d:", PI.nRefID);
 			}
 
 			break;
@@ -1046,12 +1061,12 @@ SStringW SDesignerView::GetPosFromLayout(SouiLayoutParam *pLayoutParam, INT nPos
 			break;
 		}
 
-		if (pSouiLayoutParamStruct->pos[nPosIndex].cMinus == -1)
+		if (PI.cMinus == -1)
 		{
 			strPos = strPos + L"-";
 		}
 		SStringW strTemp;
-		int n = (int)pSouiLayoutParamStruct->pos[nPosIndex].nPos;
+		int n = (int)PI.nPos.fSize;
 		strTemp.Format(L"%d", n);
 		strPos = strPos + strTemp;
 		return strPos;
