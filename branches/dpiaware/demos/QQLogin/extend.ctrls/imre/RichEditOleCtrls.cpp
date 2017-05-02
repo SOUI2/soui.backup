@@ -310,7 +310,7 @@ void RichEditReminderOle::CalculateNatureSize()
 {
     CAutoRefPtr<IRenderTarget> pRT;
     GETRENDERFACTORY->CreateRenderTarget(&pRT, 0, 0);
-    pRT->SelectObject(SFontPool::getSingleton().GetFont(m_strFont));
+    pRT->SelectObject(SFontPool::getSingleton().GetFont(m_strFont,100));
     pRT->MeasureText(m_strText, m_strText.GetLength(), &m_sizeNatural);
 
     m_sizeNatural.cx += m_nBorderWidth * 2;

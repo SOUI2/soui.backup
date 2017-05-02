@@ -456,7 +456,7 @@ void RichEditBkImg::DrawObject(IRenderTarget * pRT)
     }
 }
 
-BOOL RichEditBkImg::StrPos2ItemPos(const SStringW &strPos, POSITION_ITEM & pos)
+BOOL RichEditBkImg::StrPos2ItemPos(const SStringW &strPos, POS_INFO& pos)
 {
     if(strPos.IsEmpty()) return FALSE;
 
@@ -487,10 +487,10 @@ BOOL RichEditBkImg::StrPos2ItemPos(const SStringW &strPos, POSITION_ITEM & pos)
     return TRUE;
 }
 
-BOOL RichEditBkImg::ParsePosition34(POSITION_ITEM* pPosItem, const SStringW & strPos3, const SStringW &strPos4 )
+BOOL RichEditBkImg::ParsePosition34(POS_INFO* pPosItem, const SStringW & strPos3, const SStringW &strPos4 )
 {
     if(strPos3.IsEmpty() || strPos4.IsEmpty()) return FALSE;
-    POSITION_ITEM pos3,pos4;
+    POS_INFO pos3,pos4;
     if(!StrPos2ItemPos(strPos3,pos3) || !StrPos2ItemPos(strPos4,pos4) ) return FALSE;
 
     pPosItem [PI_RIGHT] = pos3;
@@ -498,11 +498,11 @@ BOOL RichEditBkImg::ParsePosition34(POSITION_ITEM* pPosItem, const SStringW & st
     return TRUE;
 }
 
-BOOL RichEditBkImg::ParsePosition12(POSITION_ITEM* pPosItem, const SStringW & strPos1, const SStringW &strPos2 )
+BOOL RichEditBkImg::ParsePosition12(POS_INFO* pPosItem, const SStringW & strPos1, const SStringW &strPos2 )
 {
     if(strPos1.IsEmpty() || strPos2.IsEmpty()) 
         return FALSE;
-    POSITION_ITEM pos1,pos2;
+    POS_INFO pos1,pos2;
     if(!StrPos2ItemPos(strPos1,pos1) || !StrPos2ItemPos(strPos2,pos2) )
         return FALSE;
     if(pos1.pit == PIT_SIZE || pos2.pit == PIT_SIZE)//前面2个属性不能是size类型
@@ -517,7 +517,7 @@ HRESULT RichEditBkImg::OnAttrPos(const SStringW& strValue, BOOL bLoading)
     return OnInternalAttrPos(m_itemPos, m_nPosCount, strValue, bLoading);
 }
 
-HRESULT RichEditBkImg::OnInternalAttrPos(POSITION_ITEM* pPosItem, int& nPosCount, const SStringW& strValue, BOOL bLoading)
+HRESULT RichEditBkImg::OnInternalAttrPos(POS_INFO* pPosItem, int& nPosCount, const SStringW& strValue, BOOL bLoading)
 {
     SStringWList strLst;
     SplitString(strValue,L',',strLst);
@@ -552,7 +552,7 @@ HRESULT RichEditBkImg::OnInternalAttrPos(POSITION_ITEM* pPosItem, int& nPosCount
     return bRet && bRet2;
 }
 
-int RichEditBkImg::PositionItem2Value(const POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX)
+int RichEditBkImg::PositionItem2Value(const POS_INFO& pos ,int nMin, int nMax,BOOL bX)
 {
     int nRet=0;
 
@@ -632,7 +632,7 @@ CRect RichEditBkImg::GetRect()
     return m_rcObj;
 }
 
-void RichEditBkImg::CalcPosition(POSITION_ITEM * pItemsPos, int nPosCount)
+void RichEditBkImg::CalcPosition(POS_INFO * pItemsPos, int nPosCount)
 {
     if (nPosCount == 0 || !m_pObjectHost)
     {
