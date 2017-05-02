@@ -867,15 +867,11 @@ bool STileView::OnItemClick(EventArgs *pEvt)
 
 }
 
+
 void STileView::OnColorize(COLORREF cr)
 {
-    __super::OnColorize(cr);
-    SPOSITION pos = m_lstItems.GetHeadPosition();
-    while(pos)
-    {
-        ItemInfo ii = m_lstItems.GetNext(pos);
-        ii.pItem->DoColorize(cr);
-    }
+	__super::OnColorize(cr);
+	DispatchMessage2Items(UM_SETCOLORIZE,cr,0);
 }
 
 void STileView::OnScaleChanged(int nScale)
