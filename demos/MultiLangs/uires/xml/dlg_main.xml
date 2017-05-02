@@ -42,7 +42,7 @@
           <window pos="20,20,@100dp,@30dp" colorBkgnd="rgba(255,0,0,128)">100dp*30dp</window>
         </page>
         <page title="page2">
-          <mclistview name="mclv_test" colorBkgnd="@color/white" pos="10,10,-10,-10" headerHeight="30">
+          <mclistview name="mclv_test" colorBkgnd="@color/white" pos="10,10,-10,-10" headerHeight="30dp">
             <header align="center" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" colorBkgnd="#ffffff" >
               <items>
                 <item width="150">name</item>

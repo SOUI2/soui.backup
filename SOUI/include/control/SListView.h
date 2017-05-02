@@ -99,7 +99,7 @@ namespace SOUI
 
         SOUI_ATTRS_BEGIN()
             ATTR_SKIN(L"dividerSkin",m_pSkinDivider,TRUE)
-            ATTR_INT(L"dividerSize",m_nDividerSize,FALSE)
+            ATTR_LAYOUTSIZE(L"dividerSize",m_nDividerSize,FALSE)
             ATTR_INT(L"wantTab",m_bWantTab,FALSE)
         SOUI_ATTRS_END()
     protected:
@@ -124,7 +124,7 @@ namespace SOUI
                 
         pugi::xml_document              m_xmlTemplate;
         ISkinObj*                       m_pSkinDivider;
-        int                             m_nDividerSize;
+        SLayoutSize                     m_nDividerSize;
         BOOL                            m_bWantTab;
     };
 }
