@@ -844,6 +844,7 @@ namespace SOUI
 	void SListView::OnScaleChanged(int nScale)
 	{
 		__super::OnScaleChanged(nScale);
+		if(m_lvItemLocator) m_lvItemLocator->SetScale(nScale);
 		DispatchMessage2Items(UM_SETSCALE,nScale,0);
 	}
 

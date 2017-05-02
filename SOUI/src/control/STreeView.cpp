@@ -706,7 +706,7 @@ namespace SOUI
         //  关闭滚动条
         m_wBarVisible = SSB_NULL;
 
-        if (size.cy<szView.cy || (size.cy<szView.cy+m_nSbWid && size.cx<szView.cx))
+        if (size.cy<szView.cy || (size.cy<szView.cy+GetSbWidth() && size.cx<szView.cx))
         {
             //  需要纵向滚动条
             m_wBarVisible |= SSB_VERT;
@@ -714,15 +714,15 @@ namespace SOUI
             m_siVer.nMax  = szView.cy-1;
             m_siVer.nPage = rcClient.Height();
 
-            if (size.cx-m_nSbWid < szView.cx && !m_adapter->isViewWidthMatchParent())
+            if (size.cx-GetSbWidth() < szView.cx && !m_adapter->isViewWidthMatchParent())
             {
                 //  需要横向滚动条
                 m_wBarVisible |= SSB_HORZ;
-                m_siVer.nPage=size.cy-m_nSbWid > 0 ? size.cy-m_nSbWid : 0;//注意同时调整纵向滚动条page信息
+                m_siVer.nPage=size.cy-GetSbWidth() > 0 ? size.cy-GetSbWidth() : 0;//注意同时调整纵向滚动条page信息
 
                 m_siHoz.nMin  = 0;
                 m_siHoz.nMax  = szView.cx-1;
-                m_siHoz.nPage = (size.cx-m_nSbWid) > 0 ? (size.cx-m_nSbWid) : 0;
+                m_siHoz.nPage = (size.cx-GetSbWidth()) > 0 ? (size.cx-GetSbWidth()) : 0;
             }
             else
             {
