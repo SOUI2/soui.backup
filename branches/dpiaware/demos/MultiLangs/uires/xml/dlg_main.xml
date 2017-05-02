@@ -51,7 +51,7 @@
                 <item width="150">score</item>
               </items>
             </header>
-            <template itemHeight="30" colorHover="#cccccc" colorSelected="#0000ff">
+            <template itemHeight="30dp" colorHover="#cccccc" colorSelected="#0000ff">
               <window name="col1" clipClient="1">
                 <text name="txt_name" pos="5,|0" offset="0,-0.5" font="bold:1,adding:-1"/>
               </window>
