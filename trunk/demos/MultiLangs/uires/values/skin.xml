@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <skin>
-  	<imglist name="skin_traymenu_icons"	src="img:traymenu_icons" states="9"/>
-	</skin>
+  <imglist name="scale_pic" scale="100"	src="img:pic_100"/>
+  <imglist name="scale_pic" scale="125"	src="img:pic_125"/>
+  <imglist name="scale_pic" scale="150"	src="img:pic_150"/>
+  <imglist name="scale_pic" scale="200"	src="img:pic_200"/>
+</skin>

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="imgdecoder-png"
-	ProjectGUID="{CA87CA7E-F08D-3537-87A2-5E88B450DF36}"
+	ProjectGUID="{23906275-83F9-334F-8C01-223457796F71}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="SoTool"
-	ProjectGUID="{98C95D6F-AA62-339B-97EE-4E50C49A3A4C}"
+	ProjectGUID="{E10736A0-5E55-37E1-81D5-990BBD673B98}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

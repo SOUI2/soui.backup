@@ -163,6 +163,8 @@ namespace SOUI
         virtual BOOL OnSetCursor(const CPoint &pt);
         virtual BOOL OnUpdateToolTip(CPoint pt, SwndToolTipInfo & tipInfo);
         virtual void OnColorize(COLORREF cr);
+		virtual void OnScaleChanged(int nScale);
+		virtual HRESULT OnLanguageChanged();
 
 		virtual BOOL OnScroll(BOOL bVertical,UINT uCode,int nPos);
 		virtual int  GetScrollLineSize(BOOL bVertical);
@@ -183,7 +185,7 @@ namespace SOUI
 		SItemPanel * GetItemPanel(HTREEITEM hItem);
 
 		void EnsureVisible(HTREEITEM hItem);
-
+		void DispatchMessage2Items(UINT uMsg,WPARAM wParam,LPARAM lParam);
 	protected:
 		CAutoRefPtr<ITvAdapter>		m_adapter;
 		CAutoRefPtr<ITvDataSetObserver>   m_observer;

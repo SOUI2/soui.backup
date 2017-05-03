@@ -20,6 +20,10 @@
 
 class RichEditObj : public SObject
 {
+#define LEFT          0
+#define TOP           1
+#define RIGHT         2
+#define BOTTOM        3
 public:
     enum AlignType
     {
@@ -140,17 +144,17 @@ public:
     ~RichEditBkImg(){}
 
     void    DrawObject(IRenderTarget *);
-    void    CalcPosition(POSITION_ITEM * pItemsPos, int nPosCount);
+    void CalcPosition(POS_INFO * pItemsPos, int nPosCount);
     CRect   GetRect();
 
 protected:
-    HRESULT OnInternalAttrPos(POSITION_ITEM* pPosItem, int& nPosCount, const SStringW& strValue, BOOL bLoading);
+    HRESULT OnInternalAttrPos(POS_INFO* pPosItem, int& nPosCount, const SStringW& strValue, BOOL bLoading);
     HRESULT OnAttrPos(const SStringW& strValue, BOOL bLoading);
 
-    BOOL    ParsePosition34(POSITION_ITEM* pPosItem, const SStringW & strPos3, const SStringW &strPos4 );
-    BOOL    ParsePosition12(POSITION_ITEM* pPosItem, const SStringW & strPos1, const SStringW &strPos2 );
-    BOOL    StrPos2ItemPos(const SStringW &strPos, POSITION_ITEM & pos);
-    int     PositionItem2Value(const POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX);
+    BOOL ParsePosition34(POS_INFO* pPosItem, const SStringW & strPos3, const SStringW &strPos4 );
+    BOOL ParsePosition12(POS_INFO* pPosItem, const SStringW & strPos1, const SStringW &strPos2 );
+    BOOL StrPos2ItemPos(const SStringW &strPos, POS_INFO& pos);
+    int PositionItem2Value(const POS_INFO& pos ,int nMin, int nMax,BOOL bX);
 
     SOUI_ATTRS_BEGIN()
         ATTR_STRINGW(L"id", m_strId, TRUE)
@@ -159,7 +163,7 @@ protected:
     SOUI_ATTRS_END()
 
     int             m_nPosCount;        /**< 定义左/居中对齐时的坐标个数 */
-    POSITION_ITEM   m_itemPos[4];       /**< 由pos属性定义的值, m_nPosCount >0 时有效*/
+    POS_INFO        m_itemPos[4];       /**< 由pos属性定义的值, m_nPosCount >0 时有效*/
 
     SStringW        m_strId;
     SStringW        m_strSource;
@@ -187,10 +191,10 @@ protected:
     SOUI_ATTRS_END()
 
     int             m_nLeftPosCount;        /**< 定义左/居中对齐时的坐标个数 */
-    POSITION_ITEM   m_itemLeftPos[4];       /**< 由pos属性定义的值, m_nLeftPosCount >0 时有效*/
+    POS_INFO        m_itemLeftPos[4];       /**< 由pos属性定义的值, m_nLeftPosCount >0 时有效*/
 
     int             m_nRightPosCount;       /**< 定义右对齐时的坐标个数 */
-    POSITION_ITEM   m_itemRightPos[4];      /**< 由pos属性定义的值, m_nRightPosCount >0 时有效*/
+    POS_INFO        m_itemRightPos[4];      /**< 由pos属性定义的值, m_nRightPosCount >0 时有效*/
 
     SStringW        m_strLeftBubble;
     SStringW        m_strRightBubble;
@@ -217,10 +221,10 @@ protected:
     SOUI_ATTRS_END()
 
     int             m_nLeftPosCount;     /**< 定义左/居中对齐时的坐标个数 */
-    POSITION_ITEM   m_itemLeftPos[4];    /**< 由pos属性定义的值, m_nPosCount >0 时有效*/
+    POS_INFO        m_itemLeftPos[4];    /**< 由pos属性定义的值, m_nPosCount >0 时有效*/
 
     int             m_nRightPosCount;    /**< 定义右对齐时的坐标个数 */
-    POSITION_ITEM   m_itemRightPos[4];   /**< 由pos属性定义的值, m_nLeftPosCount >0 时有效*/
+    POS_INFO        m_itemRightPos[4];   /**< 由pos属性定义的值, m_nLeftPosCount >0 时有效*/
 };
 
 class RichEditPara : public RichEditObj

@@ -162,7 +162,7 @@ BOOL ImageProvider::IsExist(LPCWSTR pszImageId)
     }
 
     SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-    ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(pszImageId);
+    ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(pszImageId,100);
     
     return (pSkin != NULL) && (pSkin->IsClass(SSkinImgFrame::GetClassName()));
 }
@@ -194,7 +194,8 @@ BOOL ImageProvider::Insert(LPCWSTR pszImageId, LPCWSTR pszImagePath, const LPREC
     pSkin->SetMargin(rcMargin);
     
     SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-    pBuiltinSkinPool->AddKeyObject(pszImageId, pSkin);
+	SkinKey key = {pszImageId,100};
+    pBuiltinSkinPool->AddKeyObject(key, pSkin);
 
     pImg->Release();
     return TRUE;
@@ -228,7 +229,8 @@ BOOL ImageProvider::Insert(LPCWSTR pszImageId, LPBYTE pData, size_t sizeLen, con
     pSkin->SetMargin(rcMargin);
     
     SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-    pBuiltinSkinPool->AddKeyObject(pszImageId, pSkin);
+	SkinKey key = {pszImageId,100};
+    pBuiltinSkinPool->AddKeyObject(key, pSkin);
 
     pImg->Release();
     return TRUE;
@@ -262,11 +264,11 @@ SSkinImgFrame * ImageProvider::GetImage(LPCWSTR pszImageId)
     }
 
     SSkinPool * pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-    ISkinObj  * pSkin = pBuiltinSkinPool->GetSkin(pszImageId);
+    ISkinObj  * pSkin = pBuiltinSkinPool->GetSkin(pszImageId,100);
 
     if (pSkin == NULL)
     {
-        pSkin = SSkinPoolMgr::getSingletonPtr()->GetSkin(pszImageId);
+        pSkin = SSkinPoolMgr::getSingletonPtr()->GetSkin(pszImageId,100);
     }
 
     // NOT found
@@ -317,10 +319,11 @@ void ImageProvider::Remove(LPCWSTR pszImageId)
     }
 
     SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-    ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(pszImageId);
+    ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(pszImageId,100);
 
     if ((pSkin != NULL) && (pSkin->IsClass(SSkinImgFrame::GetClassName())))
     {
-        pBuiltinSkinPool->RemoveKeyObject(pszImageId);
+		SkinKey key ={pszImageId,100};
+        pBuiltinSkinPool->RemoveKeyObject(key);
     }
 }

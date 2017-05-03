@@ -3,7 +3,6 @@
 
 #include <helper/color.h>
 #include <unknown/obj-ref-impl.hpp>
-#include <sobject/sobject-state-impl.hpp>
 #include <Shlwapi.h>
 #include <core\SkCanvas.h>
 #include <core\SkBitmap.h>
@@ -45,7 +44,7 @@ namespace SOUI
 	//////////////////////////////////////////////////////////////////////////
 	// TSkiaRenderObjImpl
 	template<class T>
-	class TSkiaRenderObjImpl : public TObjRefImpl<SObjectStateImpl<SObjectImpl<T>>>
+	class TSkiaRenderObjImpl : public TObjRefImpl<SObjectImpl<T>>
 	{
 	public:
 		TSkiaRenderObjImpl(IRenderFactory * pRenderFac):m_pRenderFactory(pRenderFac)

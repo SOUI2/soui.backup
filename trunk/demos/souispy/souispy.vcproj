@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="souispy"
-	ProjectGUID="{6F334336-41E9-3EAC-AC40-DA4D4FFBE29D}"
+	ProjectGUID="{70BC83F6-CB88-38AA-9172-16D82E27FF08}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

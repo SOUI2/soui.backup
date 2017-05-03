@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="soui"
-	ProjectGUID="{BE284FD9-AF75-343E-BA08-D24FBCA14782}"
+	ProjectGUID="{0F2008C7-3A4E-339A-A1E9-AB14E9EB2D94}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -180,6 +180,8 @@
 			<File
 				RelativePath="src\control\SComboView.cpp" />
 			<File
+				RelativePath="src\res.mgr\SDpiAwareFont.cpp" />
+			<File
 				RelativePath="src\control\SDropDown.cpp" />
 			<File
 				RelativePath="src\core\SDropTargetDispatcher.cpp" />
@@ -193,6 +195,8 @@
 				RelativePath="src\control\SHotKeyCtrl.cpp" />
 			<File
 				RelativePath="src\core\SItemPanel.cpp" />
+			<File
+				RelativePath="src\layout\SLayoutSize.cpp" />
 			<File
 				RelativePath="src\layout\SLinearLayout.cpp" />
 			<File
@@ -347,6 +351,8 @@
 			<File
 				RelativePath="include\core\SDefine.h" />
 			<File
+				RelativePath="include\res.mgr\SDpiAwareFont.h" />
+			<File
 				RelativePath="include\control\SDropDown.h" />
 			<File
 				RelativePath="include\core\SDropTargetDispatcher.h" />
@@ -362,6 +368,8 @@
 				RelativePath="include\control\SHotKeyCtrl.h" />
 			<File
 				RelativePath="include\core\SItemPanel.h" />
+			<File
+				RelativePath="include\layout\SLayoutSize.h" />
 			<File
 				RelativePath="include\layout\SLinearLayout.h" />
 			<File

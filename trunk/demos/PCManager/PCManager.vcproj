@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="PCManager"
-	ProjectGUID="{E4722044-9277-3B74-B18E-0AB7230349A4}"
+	ProjectGUID="{0D0254E7-BBB8-3440-9B2C-77B705383214}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

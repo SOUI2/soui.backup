@@ -17,5 +17,6 @@ namespace SOUI
         virtual int Position2Item(int position) PURE;
         virtual int GetScrollLineSize() const PURE;
         virtual int GetDividerSize() const PURE;
+		virtual void SetScale(int nScale) PURE;
     };
 }

@@ -456,7 +456,7 @@ void RichEditBkImg::DrawObject(IRenderTarget * pRT)
     }
 }
 
-BOOL RichEditBkImg::StrPos2ItemPos(const SStringW &strPos, POSITION_ITEM & pos)
+BOOL RichEditBkImg::StrPos2ItemPos(const SStringW &strPos, POS_INFO& pos)
 {
     if(strPos.IsEmpty()) return FALSE;
 
@@ -482,33 +482,33 @@ BOOL RichEditBkImg::StrPos2ItemPos(const SStringW &strPos, POSITION_ITEM & pos)
     {
         pos.cMinus = 1;
     }
-    pos.nPos=(float)_wtof(pszPos);
+    pos.nPos.fSize=(float)_wtof(pszPos);
 
     return TRUE;
 }
 
-BOOL RichEditBkImg::ParsePosition34(POSITION_ITEM* pPosItem, const SStringW & strPos3, const SStringW &strPos4 )
+BOOL RichEditBkImg::ParsePosition34(POS_INFO* pPosItem, const SStringW & strPos3, const SStringW &strPos4 )
 {
     if(strPos3.IsEmpty() || strPos4.IsEmpty()) return FALSE;
-    POSITION_ITEM pos3,pos4;
+    POS_INFO pos3,pos4;
     if(!StrPos2ItemPos(strPos3,pos3) || !StrPos2ItemPos(strPos4,pos4) ) return FALSE;
 
-    pPosItem [PI_RIGHT] = pos3;
-    pPosItem [PI_BOTTOM] = pos4;
+    pPosItem [RIGHT] = pos3;
+    pPosItem [BOTTOM] = pos4;
     return TRUE;
 }
 
-BOOL RichEditBkImg::ParsePosition12(POSITION_ITEM* pPosItem, const SStringW & strPos1, const SStringW &strPos2 )
+BOOL RichEditBkImg::ParsePosition12(POS_INFO* pPosItem, const SStringW & strPos1, const SStringW &strPos2 )
 {
     if(strPos1.IsEmpty() || strPos2.IsEmpty()) 
         return FALSE;
-    POSITION_ITEM pos1,pos2;
+    POS_INFO pos1,pos2;
     if(!StrPos2ItemPos(strPos1,pos1) || !StrPos2ItemPos(strPos2,pos2) )
         return FALSE;
     if(pos1.pit == PIT_SIZE || pos2.pit == PIT_SIZE)//前面2个属性不能是size类型
         return FALSE;
-    pPosItem [PI_LEFT] = pos1;
-    pPosItem [PI_TOP] = pos2;
+    pPosItem [LEFT] = pos1;
+    pPosItem [TOP] = pos2;
     return TRUE;
 }
 
@@ -517,7 +517,7 @@ HRESULT RichEditBkImg::OnAttrPos(const SStringW& strValue, BOOL bLoading)
     return OnInternalAttrPos(m_itemPos, m_nPosCount, strValue, bLoading);
 }
 
-HRESULT RichEditBkImg::OnInternalAttrPos(POSITION_ITEM* pPosItem, int& nPosCount, const SStringW& strValue, BOOL bLoading)
+HRESULT RichEditBkImg::OnInternalAttrPos(POS_INFO* pPosItem, int& nPosCount, const SStringW& strValue, BOOL bLoading)
 {
     SStringWList strLst;
     SplitString(strValue,L',',strLst);
@@ -552,7 +552,7 @@ HRESULT RichEditBkImg::OnInternalAttrPos(POSITION_ITEM* pPosItem, int& nPosCount
     return bRet && bRet2;
 }
 
-int RichEditBkImg::PositionItem2Value(const POSITION_ITEM &pos ,int nMin, int nMax,BOOL bX)
+int RichEditBkImg::PositionItem2Value(const POS_INFO& pos ,int nMin, int nMax,BOOL bX)
 {
     int nRet=0;
 
@@ -560,9 +560,9 @@ int RichEditBkImg::PositionItem2Value(const POSITION_ITEM &pos ,int nMin, int nM
     {
     case PIT_NORMAL: 
         if(pos.cMinus == -1)
-            nRet=nMax-(int)pos.nPos;
+            nRet=nMax-(int)pos.nPos.fSize;
         else
-            nRet=nMin+(int)pos.nPos;
+            nRet=nMin+(int)pos.nPos.fSize;
         break;
 
     case PIT_PREV_NEAR: //“[”相对于前一兄弟窗口。用于X时，参考前一兄弟窗口的right，用于Y时参考前一兄弟窗口的bottom
@@ -582,11 +582,11 @@ int RichEditBkImg::PositionItem2Value(const POSITION_ITEM &pos ,int nMin, int nM
             if(bX)
             {
                 LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.right:rcRef.left;
-                nRet=refPos+(int)pos.nPos*pos.cMinus;
+                nRet=refPos+(int)pos.nPos.fSize*pos.cMinus;
             }else
             {
                 LONG refPos = (pos.pit == PIT_PREV_NEAR)?rcRef.bottom:rcRef.top;
-                nRet=refPos+(int)pos.nPos*pos.cMinus;
+                nRet=refPos+(int)pos.nPos.fSize*pos.cMinus;
             }
         }
         break;
@@ -609,11 +609,11 @@ int RichEditBkImg::PositionItem2Value(const POSITION_ITEM &pos ,int nMin, int nM
             if(bX)
             {
                 LONG refPos = (pos.pit == PIT_NEXT_NEAR)?rcRef.left:rcRef.right;
-                nRet=refPos+(int)pos.nPos*pos.cMinus;
+                nRet=refPos+(int)pos.nPos.fSize*pos.cMinus;
             }else
             {
                 LONG refPos = (pos.pit == PIT_NEXT_NEAR)?rcRef.top:rcRef.bottom;
-                nRet=refPos+(int)pos.nPos*pos.cMinus;
+                nRet=refPos+(int)pos.nPos.fSize*pos.cMinus;
             }
         }
         break;
@@ -632,7 +632,7 @@ CRect RichEditBkImg::GetRect()
     return m_rcObj;
 }
 
-void RichEditBkImg::CalcPosition(POSITION_ITEM * pItemsPos, int nPosCount)
+void RichEditBkImg::CalcPosition(POS_INFO * pItemsPos, int nPosCount)
 {
     if (nPosCount == 0 || !m_pObjectHost)
     {
@@ -642,29 +642,29 @@ void RichEditBkImg::CalcPosition(POSITION_ITEM * pItemsPos, int nPosCount)
     CRect rcHost=m_pObjectHost->GetAdjustedRect();
 
     // left
-    m_rcObj.left = PositionItem2Value(pItemsPos[PI_LEFT], rcHost.left, rcHost.right, TRUE);
+    m_rcObj.left = PositionItem2Value(pItemsPos[LEFT], rcHost.left, rcHost.right, TRUE);
 
     // top
-    m_rcObj.top = PositionItem2Value(pItemsPos[PI_TOP], rcHost.top, rcHost.bottom, FALSE);
+    m_rcObj.top = PositionItem2Value(pItemsPos[TOP], rcHost.top, rcHost.bottom, FALSE);
 
     // right
-    if (pItemsPos[PI_RIGHT].pit == PIT_SIZE)
+    if (pItemsPos[RIGHT].pit == PIT_SIZE)
     {
-        m_rcObj.right = m_rcObj.left + (LONG)pItemsPos[PI_RIGHT].nPos;
+        m_rcObj.right = m_rcObj.left + pItemsPos[RIGHT].nPos.fSize;
     }
     else
     {
-        m_rcObj.right = PositionItem2Value(pItemsPos[PI_RIGHT], rcHost.left, rcHost.right, TRUE);
+        m_rcObj.right = PositionItem2Value(pItemsPos[RIGHT], rcHost.left, rcHost.right, TRUE);
     }
 
     // bottom
-    if (pItemsPos[PI_BOTTOM].pit == PIT_SIZE)
+    if (pItemsPos[BOTTOM].pit == PIT_SIZE)
     {
-        m_rcObj.bottom = m_rcObj.top + (LONG)pItemsPos[PI_BOTTOM].nPos;
+        m_rcObj.bottom = m_rcObj.top + pItemsPos[BOTTOM].nPos.fSize;
     }
     else
     {
-        m_rcObj.bottom = PositionItem2Value(pItemsPos[PI_BOTTOM], rcHost.top, rcHost.bottom, FALSE);
+        m_rcObj.bottom = PositionItem2Value(pItemsPos[BOTTOM], rcHost.top, rcHost.bottom, FALSE);
     }
     m_bDirty = FALSE;
 }

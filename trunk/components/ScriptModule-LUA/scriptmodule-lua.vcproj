@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="scriptmodule-lua"
-	ProjectGUID="{0A4EA31C-364C-3E31-A40B-331C3CAD5E69}"
+	ProjectGUID="{2C066C58-C598-3598-B42E-5930C429294D}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

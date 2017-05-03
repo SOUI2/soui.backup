@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SLayoutSize.h"
+
 #define POSFLAG_REFCENTER      '|'        //参考父窗口中心
 #define POSFLAG_REFPREV_NEAR   '['        //参考前一个兄弟窗口与自己近的边
 #define POSFLAG_REFNEXT_NEAR   ']'        //参考下一个兄弟窗口与自己近的边
@@ -28,31 +30,23 @@ namespace SOUI{
 		PIT_SIB_BOTTOM=11,      //兄弟结点的bottom,与right相同,用于Y 
 	};
 
-	struct POSITION_ITEM
+	struct POS_INFO
 	{
 		PIT     pit;        /**<坐标类型 */
 		int     nRefID;     /**<根据ID引用兄弟窗口时使用的ID,-1代表不参考特定ID的兄弟,使用ID引用的格式为"sib.left@200:10"类似的格式 */
 		char    cMinus;     /**<定义的值包含"-", 由于-0不能直接做nPos表示，需要一个单独的标志位 */
-		float   nPos;       /**<坐标值*/
-	};
-
-
-	enum POSINDEX
-	{
-		PI_LEFT = 0,
-		PI_TOP,
-		PI_RIGHT,
-		PI_BOTTOM,
+		SLayoutSize   nPos; /**<坐标值*/
 	};
 
 	struct SouiLayoutParamStruct
 	{
 		int  nCount;                /**< 定义的坐标个数 */
-		POSITION_ITEM pos[4];       /**< 由pos属性定义的值, nCount >0 时有效*/
+		POS_INFO posLeft,posRight;       /**< 由pos属性定义的值, nCount >0 时有效*/
+		POS_INFO posTop,posBottom;       /**< 由pos属性定义的值, nCount >0 时有效*/
 
 		float fOffsetX,fOffsetY;    /**< 窗口坐标偏移量, x += fOffsetX * width, y += fOffsetY * height  */
 
-		int  width;        /**<使用width属性定义的宽 nCount==0 时有效*/
-		int  height;       /**<使用height属性定义的高 nCount==0 时有效*/
+		SLayoutSize  width;        /**<使用width属性定义的宽 nCount==0 时有效*/
+		SLayoutSize  height;       /**<使用height属性定义的高 nCount==0 时有效*/
 	};
 }

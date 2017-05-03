@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="qqlogin"
-	ProjectGUID="{B490FC2C-E4AB-3A6A-BC74-2BCC0F7FF597}"
+	ProjectGUID="{F2C6312F-FBC2-326E-9735-46544B83E962}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

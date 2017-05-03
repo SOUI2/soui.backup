@@ -1,6 +1,5 @@
 #pragma once
 #include "interface/slayout-i.h"
-#include <sobject/sobject-state-impl.hpp>
 #include "SouiLayoutParamStruct.h"
 
 namespace SOUI{
@@ -22,7 +21,7 @@ namespace SOUI{
 
 		virtual bool IsWrapContent(ORIENTATION orientation) const;
 
-		virtual int GetSpecifiedSize(ORIENTATION orientation) const;
+		virtual SLayoutSize  GetSpecifiedSize(ORIENTATION orientation) const;
 
 		virtual void Clear();
 
@@ -30,12 +29,12 @@ namespace SOUI{
 
 		virtual void SetWrapContent(ORIENTATION orientation);
 
-		virtual void SetSpecifiedSize(ORIENTATION orientation, int nSize);
+		virtual void SetSpecifiedSize(ORIENTATION orientation, const SLayoutSize& layoutSize);
 
 		virtual void * GetRawData();
 	public:
 		bool IsOffsetRequired(ORIENTATION orientation) const;
-        int  GetExtraSize(ORIENTATION orientation) const;
+        int  GetExtraSize(ORIENTATION orientation,int nScale) const;
 	protected:
 		HRESULT OnAttrWidth(const SStringW & strValue,BOOL bLoading);
 
@@ -57,7 +56,7 @@ namespace SOUI{
 
     protected:
         //将字符串描述的坐标转换成POSITION_ITEM
-        BOOL StrPos2ItemPos(const SStringW &strPos,POSITION_ITEM & posItem);
+        BOOL StrPos2ItemPos(const SStringW &strPos,POS_INFO & posItem);
 
         //解析在pos中定义的前两个位置
         BOOL ParsePosition12(const SStringW & pos1, const SStringW &pos2);
@@ -100,7 +99,7 @@ namespace SOUI{
         void CalcPositionEx(SList<WndPos> *pListChildren,int nWidth,int nHeight) const;
         int CalcPostion(SList<WndPos> *pListChildren,int nWidth,int nHeight) const;
 
-		int PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POSITION_ITEM &pos , int nMax,BOOL bX) const;
+		int PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POS_INFO &pos , int nMax,BOOL bX,int nScale) const;
         
         int CalcChildLeft(SWindow *pWindow,SouiLayoutParam *pParam);
         int CalcChildRight(SWindow *pWindow,SouiLayoutParam *pParam);

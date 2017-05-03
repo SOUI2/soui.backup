@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="imgdecoder-gdip"
-	ProjectGUID="{FA0369D5-46C3-38E7-AA69-475091BC7A70}"
+	ProjectGUID="{D961AEEF-FB0D-3127-9958-AD12584FEE40}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

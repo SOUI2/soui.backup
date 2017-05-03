@@ -47,14 +47,14 @@ namespace SOUI
         CSize szRet;
         if(GetLayoutParam()->IsSpecifiedSize(Horz))
         {
-            szRet.cx = GetLayoutParam()->GetSpecifiedSize(Horz);
+            szRet.cx = GetLayoutParam()->GetSpecifiedSize(Horz).toPixelSize(GetScale());
         }else
         {
             szRet.cx = 16;
         }
         if(GetLayoutParam()->IsSpecifiedSize(Vert))
         {
-            szRet.cy = GetLayoutParam()->GetSpecifiedSize(Vert);
+            szRet.cy = GetLayoutParam()->GetSpecifiedSize(Vert).toPixelSize(GetScale());
         }else
         {
             szRet.cy = pRcContainer->bottom-pRcContainer->top;

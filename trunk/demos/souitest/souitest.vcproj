@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="souitest"
-	ProjectGUID="{F8964DE3-2FE2-32AD-BD76-261028C8456E}"
+	ProjectGUID="{D66FAA3B-3410-3480-BA7E-54BD1FD967AD}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

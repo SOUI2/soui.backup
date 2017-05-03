@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="mclistview_demo"
-	ProjectGUID="{A46DB461-A695-3F8C-9861-46494EB25051}"
+	ProjectGUID="{D41B4C15-6308-316C-BB9A-082BCD051B0C}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

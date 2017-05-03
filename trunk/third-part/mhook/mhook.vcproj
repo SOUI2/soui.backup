@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="mhook"
-	ProjectGUID="{3391E9AE-8B7A-3B12-B313-CDE359888C3D}"
+	ProjectGUID="{96954A2E-CEE8-38BB-A476-71E1E8897FC6}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

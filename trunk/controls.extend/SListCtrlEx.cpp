@@ -88,7 +88,7 @@ namespace SOUI
 		CRect rcClient;
 		SWindow::GetClientRect(&rcClient);
 		CSize szView(rcClient.Width(),GetItemCount()*m_nItemHeight);
-		if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
+		if(szView.cy>rcClient.Height()) szView.cx-=GetSbWidth();
 		SetViewSize(szView);
 	}
 
@@ -115,7 +115,7 @@ namespace SOUI
 		CRect rcClient;
 		SWindow::GetClientRect(&rcClient);
 		CSize szView(rcClient.Width(),GetItemCount()*m_nItemHeight);
-		if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
+		if(szView.cy>rcClient.Height()) szView.cx-=GetSbWidth();
 		SetViewSize(szView);
 
 		return iItem;
@@ -229,7 +229,7 @@ namespace SOUI
 		CRect rcClient;
 		SWindow::GetClientRect(&rcClient);
 		CSize szView(rcClient.Width(),GetItemCount()*m_nItemHeight);
-		if(szView.cy>rcClient.Height()) szView.cx-=m_nSbWid;
+		if(szView.cy>rcClient.Height()) szView.cx-=GetSbWidth();
 		SetViewSize(szView);
 
 		return TRUE;
@@ -957,7 +957,7 @@ lblEnd:
 		//  关闭滚动条
 		m_wBarVisible = SSB_NULL;
 
-		if (size.cy<szView.cy || (size.cy<szView.cy+m_nSbWid && size.cx<szView.cx))
+		if (size.cy<szView.cy || (size.cy<szView.cy+GetSbWidth() && size.cx<szView.cx))
 		{
 			//  需要纵向滚动条
 			m_wBarVisible |= SSB_VERT;
@@ -965,14 +965,14 @@ lblEnd:
 			m_siVer.nMax  = szView.cy-1;
 			m_siVer.nPage = GetCountPerPage(FALSE)*m_nItemHeight;
 
-			if (size.cx-m_nSbWid < szView.cx)
+			if (size.cx-GetSbWidth() < szView.cx)
 			{
 				//  需要横向滚动条
 				m_wBarVisible |= SSB_HORZ;
 
 				m_siHoz.nMin  = 0;
 				m_siHoz.nMax  = szView.cx-1;
-				m_siHoz.nPage = size.cx-m_nSbWid > 0 ? size.cx-m_nSbWid : 0;
+				m_siHoz.nPage = size.cx-GetSbWidth() > 0 ? size.cx-GetSbWidth() : 0;
 			}
 			else
 			{

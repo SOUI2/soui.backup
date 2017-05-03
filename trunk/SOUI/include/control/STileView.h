@@ -63,8 +63,10 @@ protected:
     virtual UINT OnGetDlgCode();
     virtual BOOL OnSetCursor(const CPoint &pt);
     virtual void OnColorize(COLORREF cr);
+	virtual void OnScaleChanged(int nScale);
+	virtual HRESULT OnLanguageChanged();
 protected:
-    
+    void DispatchMessage2Items(UINT uMsg,WPARAM wParam,LPARAM lParam);
     void UpdateScrollBar();
     void RedrawItem(SItemPanel *pItem);
     SItemPanel *GetItemPanel(int iItem);

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SLayoutSize.h"
 namespace SOUI
 {
 	enum Gravity{
@@ -11,9 +12,11 @@ namespace SOUI
 
 	struct SLinearLayoutParamStruct
 	{
-		int width,height;
+		SLayoutSize width;
+		SLayoutSize height;
+		SLayoutSize extend_left,extend_right;//相当于android的margin属性
+		SLayoutSize extend_top,extend_bottom;//相当于android的margin属性
 		float weight;
 		Gravity gravity;
-		CRect rcExtend;//相当于android的margin属性
 	};
 }

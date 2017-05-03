@@ -40,7 +40,6 @@ namespace SOUI
         ,m_pHoverItem(NULL)
         ,m_itemCapture(NULL)
         ,m_pSkinDivider(NULL)
-        ,m_nDividerSize(0)
         ,m_bWantTab(FALSE)
         ,m_bDataSetInvalidated(FALSE)
     {
@@ -402,7 +401,7 @@ namespace SOUI
     //////////////////////////////////////////////////////////////////////////
     void SListView::OnItemRequestRelayout(SItemPanel *pItem)
     {
-        pItem->UpdateChildrenPosition();
+        //pItem->UpdateChildrenPosition();
     }
 
     BOOL SListView::IsItemRedrawDelay()
@@ -688,15 +687,15 @@ namespace SOUI
         if(xmlTemplate)
         {
             m_xmlTemplate.append_copy(xmlTemplate);
-            int nItemHei = xmlTemplate.attribute(L"itemHeight").as_int(-1);
-            if(nItemHei>0)
+			SLayoutSize nItemHei = SLayoutSize::fromString(xmlTemplate.attribute(L"itemHeight").value());
+            if(nItemHei.fSize>0.0f)
             {//指定了itemHeight属性时创建一个固定行高的定位器
                 IListViewItemLocator * pItemLocator = new  SListViewItemLocatorFix(nItemHei,m_nDividerSize);
                 SetItemLocator(pItemLocator);
                 pItemLocator->Release();
             }else
             {//创建一个行高可变的行定位器，从defHeight属性中获取默认行高
-                IListViewItemLocator * pItemLocator = new  SListViewItemLocatorFlex(xmlTemplate.attribute(L"defHeight").as_int(30),m_nDividerSize);
+				IListViewItemLocator * pItemLocator = new  SListViewItemLocatorFlex(SLayoutSize::fromString(xmlTemplate.attribute(L"defHeight").as_string(L"30dp")),m_nDividerSize);
                 SetItemLocator(pItemLocator);
                 pItemLocator->Release();
             }
@@ -707,7 +706,11 @@ namespace SOUI
     void SListView::SetItemLocator(IListViewItemLocator *pItemLocator)
     {
         m_lvItemLocator = pItemLocator;
-        if(m_lvItemLocator) m_lvItemLocator->SetAdapter(GetAdapter());
+        if(m_lvItemLocator) 
+		{
+			m_lvItemLocator->SetAdapter(GetAdapter());
+			m_lvItemLocator->SetScale(GetScale());
+		}
         onDataSetChanged();
     }
 
@@ -835,12 +838,40 @@ namespace SOUI
 	void SListView::OnColorize( COLORREF cr )
 	{
 		__super::OnColorize(cr);
-        SPOSITION pos = m_lstItems.GetHeadPosition();
-        while(pos)
-        {
-            ItemInfo ii = m_lstItems.GetNext(pos);
-            ii.pItem->DoColorize(cr);
-        }
+		DispatchMessage2Items(UM_SETCOLORIZE,cr,0);
 	}
 
+	void SListView::OnScaleChanged(int nScale)
+	{
+		__super::OnScaleChanged(nScale);
+		if(m_lvItemLocator) m_lvItemLocator->SetScale(nScale);
+		DispatchMessage2Items(UM_SETSCALE,nScale,0);
+	}
+
+	HRESULT SListView::OnLanguageChanged()
+	{
+		HRESULT hret =__super::OnLanguageChanged();
+		DispatchMessage2Items(UM_SETLANGUAGE,0,0);
+		return hret;
+	}
+
+	void SListView::DispatchMessage2Items(UINT uMsg,WPARAM wParam,LPARAM lParam)
+	{
+		SPOSITION pos = m_lstItems.GetHeadPosition();
+		while (pos)
+		{
+			ItemInfo ii = m_lstItems.GetNext(pos);
+			ii.pItem->SDispatchMessage(uMsg, wParam, lParam);
+		}
+		for(UINT i=0;i<m_itemRecycle.GetCount();i++)
+		{
+			SList<SItemPanel*> *pLstTypeItems = m_itemRecycle[i];
+			SPOSITION pos = pLstTypeItems->GetHeadPosition();
+			while(pos)
+			{
+				SItemPanel *pItem = pLstTypeItems->GetNext(pos);
+				pItem->SDispatchMessage(uMsg, wParam, lParam);
+			}
+		}
+	}
 }

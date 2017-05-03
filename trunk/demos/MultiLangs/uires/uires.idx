@@ -19,6 +19,12 @@
   <ICON>
     <file name="ICON_LOGO"  path="image\soui.ico"    />
   </ICON>
+  <img>
+    <file name="pic_100" path="image\pic_100.png"/>
+    <file name="pic_125" path="image\pic_125.png"/>
+    <file name="pic_150" path="image\pic_150.png"/>
+    <file name="pic_200" path="image\pic_200.png"/>
+  </img>
   <smenu>
     <file name="menu_lang" path="smenu\menu_lang.xml"/>
   </smenu>
