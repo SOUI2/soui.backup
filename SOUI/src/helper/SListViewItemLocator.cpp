@@ -31,14 +31,14 @@ namespace SOUI
 
 
 	int SListViewItemLocatorFix::GetFixItemHeight() const { 
-		return m_nItemHeight.toPixelSize(m_nScale); 
+		return m_nItemHeight.toPixelSize(m_nScale) + m_nDividerSize.toPixelSize(m_nScale); 
 	}
 
 
     int SListViewItemLocatorFix::Position2Item(int position)
     {
         if(!m_adapter) return -1;
-        int nRet = position/(GetFixItemHeight()+GetDividerSize());
+        int nRet = position/ GetFixItemHeight();
 
         if(nRet<0) nRet =0;
         if(nRet>m_adapter->getCount()) nRet = m_adapter->getCount();
@@ -47,13 +47,13 @@ namespace SOUI
 
     int SListViewItemLocatorFix::Item2Position(int iItem)
     {
-        return iItem * (GetFixItemHeight()+GetDividerSize());
+        return iItem * GetFixItemHeight();
     }
 
     int SListViewItemLocatorFix::GetTotalHeight()
     {
         if(!m_adapter || m_adapter->getCount() == 0) return 0;
-        return (GetFixItemHeight()+ GetDividerSize()) * m_adapter->getCount() - GetDividerSize();
+        return GetFixItemHeight() * m_adapter->getCount() - GetDividerSize();
     }
 
     void SListViewItemLocatorFix::SetItemHeight(int iItem,int nHeight)
@@ -62,7 +62,7 @@ namespace SOUI
 
     int SListViewItemLocatorFix::GetItemHeight(int iItem) const
     {
-        return GetFixItemHeight();
+        return m_nItemHeight.toPixelSize(m_nScale);
     }
 
     bool SListViewItemLocatorFix::IsFixHeight() const
