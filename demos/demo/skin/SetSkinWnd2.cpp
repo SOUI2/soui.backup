@@ -18,7 +18,7 @@ HRESULT CSetSkinWnd::OnSkinChangeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam
 void CSetSkinWnd::OnColor(EventArgs * e)
 {
 	SWindow *sender = (SWindow*) e->sender;
-	SDemoSkin *skin = (SDemoSkin *) GETSKIN(L"demoskinbk");
+	SDemoSkin *skin = (SDemoSkin *) GETSKIN(L"demoskinbk",GetScale());
 	if (skin)
 	{
 		skin->SetColor(sender->GetStyle().m_crBg);
@@ -98,7 +98,7 @@ void CSetSkinWnd::OnSetSkin(EventArgs * e)
 {
 	SWindow *sender = (SWindow*) e->sender;
 	int nIndex = sender->GetID();
-	SDemoSkin *skin = (SDemoSkin *) GETSKIN(L"demoskinbk");
+	SDemoSkin *skin = (SDemoSkin *) GETSKIN(L"demoskinbk",GetScale());
 	SStringT strSkinFile;
 	SStringT strSkinPath = SApplication::getSingleton().GetAppDir() + _T("\\themes\\");
 	strSkinFile.Format(_T("%s%d.png"), strSkinPath, nIndex - 9);

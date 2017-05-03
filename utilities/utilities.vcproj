@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="utilities"
-	ProjectGUID="{C2B034F6-3E66-3632-8CBF-452C2E6C9BA9}"
+	ProjectGUID="{1422B414-7C9C-3BFC-8659-0318FBB06CFA}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

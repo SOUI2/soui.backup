@@ -68,7 +68,6 @@ HEADERS += include/SApp.h \
            include/control/SSpinButtonCtrl.h \
            include/control/STileView.h \
            include/control/STreeView.h \
-           include/core/SObjectFactory.h \
            include/core/Accelerator.h \
            include/core/FocusManager.h \
            include/core/SDefine.h \
@@ -90,6 +89,7 @@ HEADERS += include/SApp.h \
            include/core/SwndContainerImpl.h \
            include/core/SwndStyle.h \
            include/core/scaret.h \
+           include/core/SObjectFactory.h \
            include/event/eventcrack.h \
            include/event/Events.h \
            include/event/EventSet.h \
@@ -138,6 +138,7 @@ HEADERS += include/SApp.h \
            include/layout/SLinearLayout.h \
            include/layout/SouiLayoutParamStruct.h \
            include/layout/SouiLayout.h \
+           include/layout/SLayoutSize.h \
            include/res.mgr/SUiDef.h \
            include/res.mgr/SFontPool.h \
            include/res.mgr/SObjDefAttr.h \
@@ -146,6 +147,7 @@ HEADERS += include/SApp.h \
            include/res.mgr/SSkinPool.h \
            include/res.mgr/SStylePool.h \
            include/res.mgr/SNamedValue.h \
+           include/res.mgr/SDpiAwareFont.h \
            src/activex/SAxContainer.h \
            src/activex/SAxUtil.h \
            src/updatelayeredwindow/SUpdateLayeredWindow.h \
@@ -181,7 +183,6 @@ SOURCES += src/SApp.cpp \
            src/control/SSpinButtonCtrl.cpp \
            src/control/STileView.cpp \
            src/control/STreeView.cpp \
-           src/core/SObjectFactory.cpp \
            src/core/Accelerator.cpp \
            src/core/FocusManager.cpp \
            src/core/SDropTargetDispatcher.cpp \
@@ -197,8 +198,10 @@ SOURCES += src/SApp.cpp \
            src/core/SwndContainerImpl.cpp \
            src/core/SwndStyle.cpp \
            src/core/scaret.cpp \
+           src/core/SObjectFactory.cpp \
            src/layout/SLinearLayout.cpp \
            src/layout/SouiLayout.cpp \
+           src/layout/SLayoutSize.cpp \
            src/event/EventSet.cpp \
            src/event/NotifyCenter.cpp \
            src/helper/DragWnd.cpp \
@@ -224,4 +227,5 @@ SOURCES += src/SApp.cpp \
            src/res.mgr/SSkinPool.cpp \
            src/res.mgr/SStylePool.cpp \
            src/res.mgr/SNamedValue.cpp \
+           src/res.mgr/SDpiAwareFont.cpp \
            src/updatelayeredwindow/SUpdateLayeredWindow.cpp

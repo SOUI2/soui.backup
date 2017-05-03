@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="UiEditor"
-	ProjectGUID="{38878C39-9EAE-3D7C-A3C8-D7DF0DEAAE34}"
+	ProjectGUID="{A06097EC-BE12-3641-8089-2BF39C6F156C}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

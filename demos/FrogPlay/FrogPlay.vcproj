@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="FrogPlay"
-	ProjectGUID="{A1D04FDE-BE2E-34B8-949F-7F5C087DE858}"
+	ProjectGUID="{0153CE51-8668-3232-B926-386C427F7B56}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -45,7 +45,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="utilities.lib soui.lib libvlc.lib libvlccore.lib"
 				AdditionalLibraryDirectories="..\..\bin,..\..\third-part\vlc\lib"
-				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				AdditionalOptions="/SAFESEH:NO &quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				DataExecutionPrevention="true"
 				EnableCOMDATFolding="2"
 				GenerateDebugInformation="true"
@@ -111,7 +111,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="utilitiesd.lib souid.lib libvlc.lib libvlccore.lib"
 				AdditionalLibraryDirectories="..\..\bin,..\..\third-part\vlc\lib"
-				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				AdditionalOptions="/SAFESEH:NO &quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				DataExecutionPrevention="true"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"

@@ -22,9 +22,9 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            return width == SIZE_MATCH_PARENT;
+            return width.isMatchParent();
         case Vert:
-            return height == SIZE_MATCH_PARENT;
+            return height.isMatchParent();
         case Any:
             return IsMatchParent(Horz) || IsMatchParent(Vert);
         case Both:
@@ -38,9 +38,9 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            return width >= SIZE_SPEC;
+            return width.isSpecifiedSize();
         case Vert:
-            return height >= SIZE_SPEC;
+            return height.isSpecifiedSize();
         case Any:
             return IsSpecifiedSize(Horz) || IsSpecifiedSize(Vert);
         case Both:
@@ -54,9 +54,9 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            return width == SIZE_WRAP_CONTENT || (nCount == 0 && width == SIZE_UNDEF);
+            return width.isWrapContent() || (nCount == 0 && !width.isValid());
         case Vert:
-            return height == SIZE_WRAP_CONTENT|| (nCount == 0 && height == SIZE_UNDEF);
+            return height.isWrapContent()|| (nCount == 0 && !height.isValid());
         case Any:
             return IsWrapContent(Horz) || IsWrapContent(Vert);
         case Both:
@@ -65,9 +65,12 @@ namespace SOUI{
         }
     }
 
-    int SouiLayoutParam::GetSpecifiedSize(ORIENTATION orientation) const
+	SLayoutSize SouiLayoutParam::GetSpecifiedSize(ORIENTATION orientation) const
     {
-        return orientation == Vert ?(height):(width);
+		if (orientation == Vert)
+			return height;
+		else
+			return width;
     }
 
 
@@ -88,13 +91,13 @@ namespace SOUI{
     {
         if(strPos1.IsEmpty() || strPos2.IsEmpty()) 
             return FALSE;
-        POSITION_ITEM pos1,pos2;
+        POS_INFO pos1,pos2;
         if(!StrPos2ItemPos(strPos1,pos1) || !StrPos2ItemPos(strPos2,pos2) )
             return FALSE;
         if(pos1.pit == PIT_SIZE || pos2.pit == PIT_SIZE)//前面2个属性不能是size类型
             return FALSE;
-        pos [PI_LEFT] = pos1;
-        pos [PI_TOP] = pos2;
+        posLeft = pos1;
+        posTop = pos2;
         nCount = 2;
         return TRUE;
     }
@@ -102,16 +105,16 @@ namespace SOUI{
     BOOL SouiLayoutParam::ParsePosition34( const SStringW & strPos3, const SStringW &strPos4 )
     {
         if(strPos3.IsEmpty() || strPos4.IsEmpty()) return FALSE;
-        POSITION_ITEM pos3,pos4;
+        POS_INFO pos3,pos4;
         if(!StrPos2ItemPos(strPos3,pos3) || !StrPos2ItemPos(strPos4,pos4) ) return FALSE;
 
-        pos [PI_RIGHT] = pos3;
-        pos [PI_BOTTOM] = pos4;
+        posRight = pos3;
+        posBottom = pos4;
         nCount = 4;
         return TRUE;
     }
 
-    BOOL SouiLayoutParam::StrPos2ItemPos( const SStringW &strPos,POSITION_ITEM & pos )
+    BOOL SouiLayoutParam::StrPos2ItemPos( const SStringW &strPos,POS_INFO & pos )
     {
         if(strPos.IsEmpty()) return FALSE;
 
@@ -139,22 +142,21 @@ namespace SOUI{
             {
                 return FALSE;
             }
-            int nSibID = 0;
-            int nValue = 0;
             SStringW strValue = strPos.Mid(4+nOffset);
-            if(2 != swscanf(strValue,L"%d:%d",&nSibID,&nValue))
+			SStringWList values;
+			if(SplitString(strValue,L':',values) != 2)
                 return FALSE;
-            if(nSibID == 0) 
+			pos.nRefID = _wtoi(values[0]);
+            if(pos.nRefID == 0) 
                 return FALSE;
+			pos.nPos.parseString(values[1]);
 
-            pos.nRefID = nSibID;
-            if(nValue < 0)
+            if(pos.nPos.fSize < 0)
             {
-                pos.nPos = (float)(-nValue);
+                pos.nPos.fSize *= -1;
                 pos.cMinus = -1;
             }else
             {
-                pos.nPos = (float)nValue;
                 pos.cMinus = 1;
             }
         }else
@@ -181,7 +183,7 @@ namespace SOUI{
             {
                 pos.cMinus = 1;
             }
-            pos.nPos=(float)_wtof(pszPos);
+            pos.nPos.parseString(pszPos);
         }
 
         return TRUE;
@@ -194,7 +196,7 @@ namespace SOUI{
         if(strLst.GetCount() != 2 && strLst.GetCount() != 4) 
         {
             SASSERT_FMTW(L"Parse pos attribute failed, strPos=%s",strValue);
-            return E_FAIL;
+            return E_INVALIDARG;
         }
         //增加pos属性中的空格兼容。
         for(size_t i=0;i<strLst.GetCount();i++)
@@ -210,34 +212,40 @@ namespace SOUI{
         }
 		if(bRet && nCount == 4)
 		{//检测X,Y方向上是否为充满父窗口
-			if((pos[0].pit == PIT_NORMAL && pos[0].nPos == 0 && pos[0].cMinus==1)
-				&&(pos[2].pit == PIT_NORMAL && pos[2].nPos == 0 && pos[2].cMinus==-1))
+			if((posLeft.pit == PIT_NORMAL && posLeft.nPos.isZero() && posLeft.cMinus==1)
+				&&(posRight.pit == PIT_NORMAL && posRight.nPos.isZero() && posRight.cMinus==-1))
 			{
-				width = SIZE_MATCH_PARENT;
-			}else if(pos[2].pit == PIT_SIZE)
+				width.setMatchParent();
+			}else if(posRight.pit == PIT_SIZE)
 			{   
-				if(pos[2].cMinus == -1)
-					width = SIZE_WRAP_CONTENT;
+				if(posRight.cMinus == -1)
+					width.setWrapContent();
 				else
-					width = (int)pos[2].nPos;
+					width = posRight.nPos;
+			}else
+			{
+				width.setInvalid();
 			}
 
-			if((pos[1].pit == PIT_NORMAL && pos[1].nPos == 0 && pos[1].cMinus==1)
-				&&(pos[3].pit == PIT_NORMAL && pos[3].nPos == 0 && pos[3].cMinus==-1))
+			if((posTop.pit == PIT_NORMAL && posTop.nPos.isZero() && posTop.cMinus==1)
+				&&(posBottom.pit == PIT_NORMAL && posBottom.nPos.isZero() == 0 && posBottom.cMinus==-1))
 			{
-				height = SIZE_MATCH_PARENT;
+				height.setMatchParent();
 			}
-			else if(pos[3].pit == PIT_SIZE)
+			else if(posBottom.pit == PIT_SIZE)
 			{
-				if(pos[3].cMinus == -1)
-					height = SIZE_WRAP_CONTENT;
+				if(posBottom.cMinus == -1)
+					height.setWrapContent();
 				else
-					height = (int)pos[3].nPos;
+					height = posBottom.nPos;
+			}else
+			{
+				height.setInvalid();
 			}
 		}else
 		{
-			if(width == SIZE_UNDEF) SetWrapContent(Horz);
-			if(height == SIZE_UNDEF) SetWrapContent(Vert);
+			if(!width.isValid()) SetWrapContent(Horz);
+			if(!height.isValid()) SetWrapContent(Vert);
 		}
 
 
@@ -257,22 +265,22 @@ namespace SOUI{
     HRESULT SouiLayoutParam::OnAttrHeight(const SStringW & strValue,BOOL bLoading)
     {
         if(strValue.CompareNoCase(L"matchParent") == 0 || strValue.CompareNoCase(L"full") == 0)
-            height = SIZE_MATCH_PARENT;
+            height.setMatchParent();
         else if(strValue.CompareNoCase(L"wrapContent") == 0)
-            height = SIZE_WRAP_CONTENT;
+            height.setWrapContent();
         else
-            height = _wtoi(strValue);
+			height.parseString(strValue);
         return S_OK;
     }
 
     HRESULT SouiLayoutParam::OnAttrWidth(const SStringW & strValue,BOOL bLoading)
     {
         if(strValue.CompareNoCase(L"matchParent") == 0 || strValue.CompareNoCase(L"full") == 0)
-            width = SIZE_MATCH_PARENT;
+            width.setMatchParent();
         else if(strValue.CompareNoCase(L"wrapContent") == 0)
-            width = SIZE_WRAP_CONTENT;
+            width.setWrapContent();
         else
-            width = _wtoi(strValue);
+			width.parseString(strValue);
         return S_OK;
     }
 
@@ -281,18 +289,18 @@ namespace SOUI{
         return fabs(orientation==Vert?fOffsetY:fOffsetX) > 0.00000001f;
     }
 
-    int GetPosExtra(const POSITION_ITEM &pos)
+    int GetPosExtra(const POS_INFO &pos,int nScale)
     {
-        return pos.cMinus==-1?(int)pos.nPos:0;
+        return pos.cMinus==-1?pos.nPos.toPixelSize(nScale):0;
     }
 
-    int SouiLayoutParam::GetExtraSize(ORIENTATION orientation) const
+    int SouiLayoutParam::GetExtraSize(ORIENTATION orientation,int nScale) const
     {
 		if(nCount!=4) return 0;
         if(orientation == Horz)
-            return GetPosExtra(pos[2]);
+            return GetPosExtra(posRight, nScale);
         else
-            return GetPosExtra(pos[3]);
+            return GetPosExtra(posBottom, nScale);
     }
 
 	void SouiLayoutParam::Clear()
@@ -300,7 +308,8 @@ namespace SOUI{
 		nCount = 0;
 		fOffsetX = fOffsetY = 0.0f;
 
-		width = height = SIZE_UNDEF;
+		width.setWrapContent();
+		height.setWrapContent();
 	}
 
 	void SouiLayoutParam::SetMatchParent(ORIENTATION orientation)
@@ -308,13 +317,14 @@ namespace SOUI{
         switch(orientation)
         {
         case Horz:
-            width = SIZE_MATCH_PARENT;
+            width.setMatchParent();
             break;
         case Vert:
-            height = SIZE_MATCH_PARENT;
+            height.setMatchParent();
             break;
         case Both:
-            width = height = SIZE_MATCH_PARENT;
+            width.setMatchParent();
+			height.setMatchParent();
             break;
         }
 	}
@@ -324,29 +334,30 @@ namespace SOUI{
 		switch(orientation)
         {
         case Horz:
-			width = SIZE_WRAP_CONTENT;
+			width.setWrapContent();
             break;
         case Vert:
-			height = SIZE_WRAP_CONTENT;
+			height.setWrapContent();
             break;
         case Both:
-            width = height = SIZE_WRAP_CONTENT;
+            width.setWrapContent();
+			height.setWrapContent();
             break;
         }
 	}
 
-	void SouiLayoutParam::SetSpecifiedSize(ORIENTATION orientation, int nSize)
+	void SouiLayoutParam::SetSpecifiedSize(ORIENTATION orientation, const SLayoutSize& layoutSize)
 	{
         switch(orientation)
         {
         case Horz:
-            width = nSize;
+            width = layoutSize;
             break;
         case Vert:
-            height = nSize;
+            height = layoutSize;
             break;
         case Both:
-            width = height = nSize;
+            width = height = layoutSize;
             break;
         }
 	}
@@ -396,28 +407,28 @@ namespace SOUI{
     }
 
 
-    int SouiLayout::PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POSITION_ITEM &pos , int nMax,BOOL bX) const
+    int SouiLayout::PositionItem2Value(SList<WndPos> *pLstChilds,SPOSITION position,const POS_INFO &pos , int nMax,BOOL bX,int nScale) const
     {
         int nRet=POS_WAIT;
 
         switch(pos.pit)
         {
         case PIT_CENTER: //参考中心
-            if(nMax != SIZE_WRAP_CONTENT) nRet=(int)pos.nPos * pos.cMinus + nMax/2;
+            if(nMax != SIZE_WRAP_CONTENT) nRet=pos.nPos.toPixelSize(nScale) * pos.cMinus + nMax/2;
             break;
         case PIT_NORMAL: 
             if(pos.cMinus == -1)
 			{//参考右边或者下边
-				if(nMax != SIZE_WRAP_CONTENT) nRet=nMax-(int)pos.nPos;
+				if(nMax != SIZE_WRAP_CONTENT) nRet=nMax-pos.nPos.toPixelSize(nScale);
 			}else
 			{
-				nRet=(int)pos.nPos;
+				nRet=pos.nPos.toPixelSize(nScale);
 			}
             break;
         case PIT_PERCENT: 
 			if(nMax != SIZE_WRAP_CONTENT)
 			{
-				float fPercent = pos.nPos;
+				float fPercent = pos.nPos.fSize;
 				if(fPercent<0.0f) fPercent = 0.0f;
 				if(fPercent>100.0f) fPercent = 100.0f;
 				if(pos.cMinus == -1)
@@ -447,7 +458,7 @@ namespace SOUI{
 					nRef = 0;
 				}
 				if(!IsWaitingPos(nRef))
-					nRet=nRef+(int)pos.nPos*pos.cMinus;
+					nRet=nRef+pos.nPos.toPixelSize(nScale)*pos.cMinus;
             }
             break;
         case PIT_NEXT_NEAR:
@@ -469,7 +480,7 @@ namespace SOUI{
 					}
 				}
 				if(!IsWaitingPos(nRef))
-					nRet=nRef+(int)pos.nPos*pos.cMinus;
+					nRet=nRef+pos.nPos.toPixelSize(nScale)*pos.cMinus;
 			}
             break;
         case PIT_SIB_LEFT:// PIT_SIB_LEFT == PIT_SIB_TOP
@@ -504,7 +515,7 @@ namespace SOUI{
 						if(IsWaitingPos(refPos))
 							nRet=POS_WAIT;
 						else
-							nRet=refPos+(int)pos.nPos*pos.cMinus;
+							nRet=refPos+pos.nPos.toPixelSize(nScale)*pos.cMinus;
 					}
                 }else
                 {
@@ -514,7 +525,7 @@ namespace SOUI{
 						if(IsWaitingPos(refPos))
 							nRet=POS_WAIT;
 						else
-							nRet=refPos+(int)pos.nPos*pos.cMinus;
+							nRet=refPos+pos.nPos.toPixelSize(nScale)*pos.cMinus;
 					}
                 }
             }       
@@ -555,13 +566,14 @@ namespace SOUI{
         {
             WndPos wndPos = lstWndPos.GetNext(pos);
             SouiLayoutParam *pParam = wndPos.pWnd->GetLayoutParamT<SouiLayoutParam>();
+			int nScale = wndPos.pWnd->GetScale();
             if(!IsWaitingPos(wndPos.rc.right))
             {
-                nMaxX = (std::max)(nMaxX,(int)(wndPos.rc.right + pParam->GetExtraSize(Horz)));
+                nMaxX = (std::max)(nMaxX,(int)(wndPos.rc.right + pParam->GetExtraSize(Horz,nScale)));
             }
             if(!IsWaitingPos(wndPos.rc.bottom))
             {
-                nMaxY = (std::max)(nMaxY,(int)(wndPos.rc.bottom + pParam->GetExtraSize(Vert)));
+                nMaxY = (std::max)(nMaxY,(int)(wndPos.rc.bottom + pParam->GetExtraSize(Vert, nScale)));
             }
         }
 
@@ -628,8 +640,8 @@ namespace SOUI{
     }
 
 
-	static const POSITION_ITEM posRefLeft={PIT_PREV_NEAR,-1,1,0};
-	static const POSITION_ITEM posRefTop={PIT_PREV_FAR,-1,1,0};
+	static const POS_INFO posRefLeft={PIT_PREV_NEAR,-1,1};
+	static const POS_INFO posRefTop={PIT_PREV_FAR,-1,1};
 
     int SouiLayout::CalcPostion(SList<WndPos> *pListChildren,int nWidth,int nHeight) const
     {
@@ -649,16 +661,17 @@ namespace SOUI{
                 {
                     WndPos &wndPos = pListChildren->GetAt(pos);
                     SouiLayoutParam *pLayoutParam = wndPos.pWnd->GetLayoutParamT<SouiLayoutParam>();
+					int nScale = wndPos.pWnd->GetScale();
                     if(IsWaitingPos(wndPos.rc.left)) 
                     {
-						const POSITION_ITEM &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->pos[0]:posRefLeft;
-						wndPos.rc.left = PositionItem2Value(pListChildren,pos,posRef,nWidth,TRUE);
+						const POS_INFO &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->posLeft:posRefLeft;
+						wndPos.rc.left = PositionItem2Value(pListChildren,pos,posRef,nWidth,TRUE, nScale);
                         if(wndPos.rc.left != POS_WAIT) nResolved ++;
                     }
                     if(IsWaitingPos(wndPos.rc.top)) 
                     {
-						const POSITION_ITEM &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->pos[1]:posRefTop;
-						wndPos.rc.top = PositionItem2Value(pListChildren,pos,posRef,nHeight,FALSE);
+						const POS_INFO &posRef = pLayoutParam->nCount>=2 ? pLayoutParam->posTop:posRefTop;
+						wndPos.rc.top = PositionItem2Value(pListChildren,pos,posRef,nHeight,FALSE, nScale);
                         if(wndPos.rc.top != POS_WAIT) nResolved ++;
                     }
                     if(IsWaitingPos(wndPos.rc.right)) 
@@ -670,12 +683,12 @@ namespace SOUI{
                         {
                             if(!IsWaitingPos(wndPos.rc.left))
                             {
-                                wndPos.rc.right = wndPos.rc.left + pLayoutParam->GetSpecifiedSize(Horz);
+                                wndPos.rc.right = wndPos.rc.left + pLayoutParam->GetSpecifiedSize(Horz).toPixelSize(nScale);
                                 nResolved ++;
                             }
                         }else if(!pLayoutParam->IsWrapContent(Horz) && pLayoutParam->nCount==4)
                         {
-                            wndPos.rc.right = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[2],nWidth,TRUE);
+                            wndPos.rc.right = PositionItem2Value(pListChildren,pos,pLayoutParam->posRight,nWidth,TRUE, nScale);
                             if(wndPos.rc.right != POS_WAIT) nResolved ++;
                         }
                     }
@@ -688,12 +701,12 @@ namespace SOUI{
                         {
                             if(!IsWaitingPos(wndPos.rc.top))
                             {
-                                wndPos.rc.bottom = wndPos.rc.top + pLayoutParam->GetSpecifiedSize(Vert);
+                                wndPos.rc.bottom = wndPos.rc.top + pLayoutParam->GetSpecifiedSize(Vert).toPixelSize(nScale);
                                 nResolved ++;
                             }
                         }else if(!pLayoutParam->IsWrapContent(Vert) && pLayoutParam->nCount==4)
                         {
-                            wndPos.rc.bottom = PositionItem2Value(pListChildren,pos,pLayoutParam->pos[3],nHeight,FALSE);
+                            wndPos.rc.bottom = PositionItem2Value(pListChildren,pos,pLayoutParam->posBottom,nHeight,FALSE, nScale);
                             if(wndPos.rc.bottom != POS_WAIT) nResolved ++;
                         }
                     }

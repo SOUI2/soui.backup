@@ -57,16 +57,20 @@
       <translation>英文</translation>
     </message>
     <message>
-      <source>button1</source>
-      <translation>按钮1</translation>
+      <source>scale 1</source>
+      <translation>放大 100%</translation>
     </message>
     <message>
-      <source>button2</source>
-      <translation>按钮2</translation>
+      <source>scale 1.25</source>
+      <translation>放大 125%</translation>
     </message>
     <message>
-      <source>button3</source>
-      <translation>按钮3</translation>
+      <source>scale 1.5</source>
+      <translation>放大 150%</translation>
+    </message>
+    <message>
+      <source>scale 2.0</source>
+      <translation>放大 200%</translation>
     </message>
     <message>
       <source>page1</source>
@@ -83,6 +87,34 @@
     <message>
       <source>menu</source>
       <translation>菜单</translation>
+    </message>
+    <message>
+      <source>name</source>
+      <translation>名称</translation>
+    </message>
+    <message>
+      <source>gender</source>
+      <translation>姓别</translation>
+    </message>
+    <message>
+      <source>age</source>
+      <translation>年龄</translation>
+    </message>
+    <message>
+      <source>score</source>
+      <translation>得分</translation>
+    </message>
+    <message>
+      <source>male</source>
+      <translation>男</translation>
+    </message>
+    <message>
+      <source>female</source>
+      <translation>女</translation>
+    </message>
+    <message>
+      <source>unknown</source>
+      <translation>人妖</translation>
     </message>
   </context>
   <context name="user">

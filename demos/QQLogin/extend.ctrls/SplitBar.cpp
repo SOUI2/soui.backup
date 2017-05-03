@@ -20,8 +20,14 @@ SSplitBar::~SSplitBar()
 LRESULT SSplitBar::OnCreate( LPVOID )
 {
     if(0 != __super::OnCreate(NULL)) return 1;
-    int pi = m_bVertical ? PI_LEFT : PI_TOP;
-    m_nOrginPos = static_cast<SouiLayoutParamStruct*>(GetLayoutParam()->GetRawData())->pos[pi].nPos;
+    if (m_bVertical)
+    {
+        m_nOrginPos = static_cast<SouiLayoutParamStruct*>(GetLayoutParam()->GetRawData())->posLeft.nPos;
+    }
+    else
+    {
+        m_nOrginPos = static_cast<SouiLayoutParamStruct*>(GetLayoutParam()->GetRawData())->posTop.nPos;
+    }
     m_nTrackingPos = m_nOrginPos;
 
     return 0;
@@ -47,8 +53,14 @@ void SSplitBar::OnLButtonUp(UINT nFlags,CPoint pt)
     SWindow::OnLButtonUp(nFlags, pt);
 
     m_bDragging = FALSE;
-    int pi = m_bVertical ? PI_LEFT : PI_TOP;
-    m_nOrginPos = static_cast<SouiLayoutParamStruct*>(GetLayoutParam()->GetRawData())->pos[pi].nPos;
+    if (m_bVertical)
+    {
+        m_nOrginPos = static_cast<SouiLayoutParamStruct*>(GetLayoutParam()->GetRawData())->posLeft.nPos;
+    }
+    else
+    {
+        m_nOrginPos = static_cast<SouiLayoutParamStruct*>(GetLayoutParam()->GetRawData())->posTop.nPos;
+    }
     m_nTrackingPos = m_nOrginPos;
 }
 
@@ -80,8 +92,17 @@ void SSplitBar::OnMouseMove(UINT nFlags,CPoint pt)
     //SwndLayout * pLayout = GetLayout();
     SouiLayoutParam *pSouiLayoutParam = GetLayoutParamT<SouiLayoutParam>();
     SouiLayoutParamStruct *pLayout = (SouiLayoutParamStruct*)pSouiLayoutParam->GetRawData();
-    int pi = m_bVertical?PI_LEFT:PI_TOP;
-    int nNewPos = m_nOrginPos + nOffset * pLayout->pos[pi].cMinus;
+    
+    POS_INFO tempPi;
+    if (m_bVertical)
+    {
+        tempPi = pLayout->posLeft;
+    }
+    else
+    {
+        tempPi = pLayout->posTop;
+    }
+    int nNewPos = m_nOrginPos.toPixelSize(GetScale()) + nOffset * tempPi.cMinus;
 
     /*
      *  - 有一种情况要特殊处理:既要修改hostwnd的尺寸,top/left又是以-XXX的方式定义。
@@ -100,7 +121,7 @@ void SSplitBar::OnMouseMove(UINT nFlags,CPoint pt)
     HWND hWnd = GetContainer()->GetHostHwnd();
     BOOL bZoomed = ::IsZoomed(hWnd);
     BOOL bResizeWnd = m_bResizeHostWnd && !bZoomed;
-    if (!(bResizeWnd && pLayout->pos[pi].cMinus < 0))
+    if (!(bResizeWnd && tempPi.cMinus < 0))
     {
         if (nNewPos > m_nSizeMax)
             nNewPos = m_nSizeMax;
@@ -108,17 +129,17 @@ void SSplitBar::OnMouseMove(UINT nFlags,CPoint pt)
         if (nNewPos < m_nSizeMin)
             nNewPos = m_nSizeMin;
 
-        if (nNewPos == pLayout->pos[pi].nPos)
+        if (nNewPos == tempPi.nPos.toPixelSize(GetScale()))
             return;
 
-        pLayout->pos[pi].nPos = nNewPos;
+        tempPi.nPos.fSize = nNewPos;
     }
 
     // 调整窗口
 
-    nWindowOffset = nNewPos - m_nTrackingPos;
-    nWindowOffset *= pLayout->pos[pi].cMinus;
-    m_nTrackingPos = nNewPos;
+    nWindowOffset = nNewPos - m_nTrackingPos.toPixelSize(GetScale());
+    nWindowOffset *= tempPi.cMinus;
+    m_nTrackingPos.fSize = nNewPos;
 
     if (bResizeWnd)
         ResizeHostWindow(nWindowOffset);

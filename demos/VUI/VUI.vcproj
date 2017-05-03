@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="VUI"
-	ProjectGUID="{225ED1EE-B1BB-31B9-B8F2-49BD66F0468F}"
+	ProjectGUID="{35DFC1B2-C090-32E0-8AB2-EA7BE01803BC}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

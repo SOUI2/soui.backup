@@ -79,6 +79,7 @@ public:
     BOOL            UnregisterTimelineHandler(ITimelineHandler *pHandler);
     SMessageLoop *  GetMsgLoop();
     IScriptModule * GetScriptModule() { return NULL; }
+    int             GetScale() const { return 0; }
 
     //
     // internal public methods

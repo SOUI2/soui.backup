@@ -12,14 +12,17 @@
     translucent="1"
 >
   <root skin="_skin.sys.wnd.bkgnd" cache="1">
-    <caption pos="0,0,-0,30" show="1" font="adding:0">
-      <icon pos="10,8" src="ICON_LOGO:16"/>
-      <text pos="29,9">@string/title</text>
-      <button pos="[5,2,@100,@26" name="btn_menu">menu</button>
-      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
-      <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
-      <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
-      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+    <caption pos="0,0,-0,@-1" font="adding:0" layout="hbox" gravity="center" padding="5,0,5,0">
+      <icon size="-1,-1" src="ICON_LOGO:16"/>
+      <text size="-1,-1" extend_left="5">@string/title</text>
+      <window size="0,0" weight="1" visible="0"/>
+      <button size="100,-1" padding="0,2,0,2" name="btn_menu">menu</button>
+      <imgbtn size="-1,-1" name="btn_min" skin="_skin.sys.btn.minimize"  animate="1" />
+      <window size="-1,-1">
+        <imgbtn pos="0,0" name="btn_max" skin="_skin.sys.btn.maximize"  animate="1" />
+        <imgbtn pos="0,0" name="btn_restore" skin="_skin.sys.btn.restore"  show="0" animate="1" />
+      </window>
+      <imgbtn size="-1,-1" name="btn_close" skin="_skin.sys.btn.close"  tip="close" animate="1"/>
     </caption>
     <window pos="5,[2,-5,-5" layout="vbox">
       <group size="-1,-1" layout="hbox" layout_gravity="center" text="language" padding="5,5,5,10">
@@ -27,15 +30,43 @@
         <radio size="-1,-1" text="english" extend_left="20" name="lang_en" id="101"/>
       </group>
       <window size="-1,-1" layout="hbox">
-        <button size="100,30" text="button1"/>
-        <button size="100,30" text="button2"/>
-        <button size="100,30" text="button3"/>
+        <radio size="-1,-1" padding="10,5,10,5" checked="1" text="scale 1" name="btn_scale_100"/>
+        <radio size="-1,-1" padding="10,5,10,5" extend_left="10dp" text="scale 1.25" name="btn_scale_125"/>
+        <radio size="-1,-1" padding="10,5,10,5" extend_left="10dp" text="scale 1.5" name="btn_scale_150"/>
+        <radio size="-1,-1" padding="10,5,10,5" extend_left="10dp" text="scale 2.0" name="btn_scale_200"/>
       </window>
       <text size="-1,-1" layout_gravity="center" name="txt_test" font="adding:5,underline:1" colorText="#ff0000"/>
-      <tabctrl size="-2,0" weight="1" animateSteps="10" curSel="2" colorBkgnd="#ffffff" tabAlign="top" tabInterSize="2" tabHeight="30" tabWidth="120">
-        <page title="page1">          
+      <tabctrl size="-2,0" weight="1" animateSteps="10" curSel="1" colorBkgnd="#ffffff" tabAlign="top" tabInterSize="2" tabHeight="30" tabWidth="120">
+        <page title="page1">
+          <img skin="scale_pic" pos="|0,|0" offset="-0.5,-0.5"/>
+          <window pos="20,20,@100dp,@30dp" colorBkgnd="rgba(255,0,0,128)">100dp*30dp</window>
         </page>
         <page title="page2">
+          <mclistview name="mclv_test" colorBkgnd="@color/white" pos="10,10,-10,-10" headerHeight="30dp">
+            <header align="center" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" colorBkgnd="#ffffff" >
+              <items>
+                <item width="150">name</item>
+                <item width="150">gender</item>
+                <item width="150">age</item>
+                <item width="150">score</item>
+              </items>
+            </header>
+            <template itemHeight="30dp" colorHover="#cccccc" colorSelected="#0000ff">
+              <window name="col1" clipClient="1">
+                <text name="txt_name" pos="5,|0" offset="0,-0.5" font="bold:1,adding:-1"/>
+              </window>
+              <window name="col2" clipClient="1">
+                <text name="txt_gender" pos="|0,|0" offset="-0.5,-0.5" />
+              </window>
+              <window name="col3" clipClient="1">
+                <text name="txt_age" pos="|0,|0" offset="-0.5,-0.5"/>
+              </window>
+              <window  name="col4" clipClient="1">
+                <text name="txt_score" pos="|0,|0" offset="-0.5,-0.5" colorText="#ff0000"/>
+              </window>
+            </template>
+
+          </mclistview>
         </page>
         <page title="page3">
         </page>

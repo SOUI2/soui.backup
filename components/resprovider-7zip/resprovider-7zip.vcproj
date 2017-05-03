@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="resprovider-7zip"
-	ProjectGUID="{FA228556-4788-3B89-BCE1-365AA36F89F7}"
+	ProjectGUID="{A7B2F3C9-B7A2-3C5F-9C8E-190F816D089F}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

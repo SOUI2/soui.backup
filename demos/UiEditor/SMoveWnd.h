@@ -44,6 +44,11 @@ namespace SOUI
 		void MoveWndHorz(int x);
 		void MoveWndVert(int x);
 
+		float GetLayoutSize(SouiLayoutParamStruct *pSouiLayoutParam, int PosN);
+		void SetLayoutSize(SouiLayoutParamStruct *pSouiLayoutParam, int PosN, float value);
+
+		POS_INFO GetPosInfo(SouiLayoutParamStruct *pSouiLayoutParam, int PosN);
+
 
 
 	protected:

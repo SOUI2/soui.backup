@@ -61,7 +61,7 @@ namespace SOUI
 							continue;
 						}
 						xmlSkin.attribute(L"name").set_userdata(1);
-						ISkinObj *pSkin = m_privateSkinPool->GetSkin(strSkinName);
+						ISkinObj *pSkin = m_privateSkinPool->GetSkin(strSkinName,100);
 						if (pSkin)
 						{
 							pSkin->InitFromXml(xmlSkin);
@@ -125,7 +125,7 @@ namespace SOUI
 							continue;
 						}
 						xmlSkin.attribute(L"name").set_userdata(1);
-						ISkinObj *pSkin = m_privateSkinPool->GetSkin(strSkinName);
+						ISkinObj *pSkin = m_privateSkinPool->GetSkin(strSkinName,100);
 						if (pSkin)
 						{
 							pSkin->InitFromXml(xmlSkin);

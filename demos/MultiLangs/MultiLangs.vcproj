@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="MultiLangs"
-	ProjectGUID="{CB03620D-94C2-3C55-BC1D-8B301DB46073}"
+	ProjectGUID="{08885EB6-57C3-3937-BC8A-9533C9D1C7A0}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

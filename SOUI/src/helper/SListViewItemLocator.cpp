@@ -6,9 +6,10 @@ namespace SOUI
 {
     //////////////////////////////////////////////////////////////////////////
     // SListViewItemLocatorFix
-    SListViewItemLocatorFix::SListViewItemLocatorFix(int nItemHei,int nDividerSize) 
+    SListViewItemLocatorFix::SListViewItemLocatorFix(SLayoutSize nItemHei,SLayoutSize nDividerSize) 
         :m_nItemHeight(nItemHei)
         ,m_nDividerSize(nDividerSize)
+		,m_nScale(100)
     {
 
     }
@@ -18,10 +19,26 @@ namespace SOUI
         return GetFixItemHeight();
     }
 
+	void SListViewItemLocatorFix::SetScale(int nScale)
+	{
+		m_nScale = nScale;
+	}
+
+	int SListViewItemLocatorFix::GetDividerSize() const
+	{
+		return m_nDividerSize.toPixelSize(m_nScale);
+	}
+
+
+	int SListViewItemLocatorFix::GetFixItemHeight() const { 
+		return m_nItemHeight.toPixelSize(m_nScale) + m_nDividerSize.toPixelSize(m_nScale); 
+	}
+
+
     int SListViewItemLocatorFix::Position2Item(int position)
     {
         if(!m_adapter) return -1;
-        int nRet = position/GetFixItemHeight();
+        int nRet = position/ GetFixItemHeight();
 
         if(nRet<0) nRet =0;
         if(nRet>m_adapter->getCount()) nRet = m_adapter->getCount();
@@ -36,7 +53,7 @@ namespace SOUI
     int SListViewItemLocatorFix::GetTotalHeight()
     {
         if(!m_adapter || m_adapter->getCount() == 0) return 0;
-        return m_nItemHeight * m_adapter->getCount() + (m_adapter->getCount()-1)*m_nDividerSize;
+        return GetFixItemHeight() * m_adapter->getCount() - GetDividerSize();
     }
 
     void SListViewItemLocatorFix::SetItemHeight(int iItem,int nHeight)
@@ -45,7 +62,7 @@ namespace SOUI
 
     int SListViewItemLocatorFix::GetItemHeight(int iItem) const
     {
-        return m_nItemHeight;
+        return m_nItemHeight.toPixelSize(m_nScale);
     }
 
     bool SListViewItemLocatorFix::IsFixHeight() const
@@ -69,9 +86,10 @@ namespace SOUI
 #define SEGMENT_SIZE    50  //数据分组最大长度
 #define INDEX_WIDTH     10  //索引表一级最大节点数
 
-    SListViewItemLocatorFlex::SListViewItemLocatorFlex(int nItemHei,int nDividerSize) 
+    SListViewItemLocatorFlex::SListViewItemLocatorFlex(SLayoutSize nItemHei,SLayoutSize nDividerSize) 
         :m_nItemHeight(nItemHei)
         ,m_nDividerSize(nDividerSize)
+		,m_nScale(100)
     {
 
     }
@@ -81,10 +99,21 @@ namespace SOUI
         Clear();
     }
 
-    int SListViewItemLocatorFlex::GetScrollLineSize() const
+	void SListViewItemLocatorFlex::SetScale(int nScale)
+	{
+		m_nScale = nScale;
+		OnDataSetChanged();
+	}
+
+	int SListViewItemLocatorFlex::GetScrollLineSize() const
     {
         return GetFixItemHeight();
     }
+
+	int SListViewItemLocatorFlex::GetDividerSize() const
+	{
+		return m_nDividerSize.toPixelSize(m_nScale);
+	}
 
     int SListViewItemLocatorFlex::Position2Item(int position)
     {
@@ -135,7 +164,7 @@ namespace SOUI
         if(!m_adapter) return 0;
         HSTREEITEM hItem = m_itemPosIndex.GetRootItem();
         int nRet = m_itemPosIndex.GetItem(hItem).nBranchHei;
-        if(m_adapter->getCount()>0) nRet -= m_nDividerSize;
+        if(m_adapter->getCount()>0) nRet -= GetDividerSize();
         return nRet;
     }
 
@@ -149,7 +178,7 @@ namespace SOUI
         int nOldHei = psi->pItemHeight[iSubItem];
         if(nOldHei==-1) nOldHei = GetFixItemHeight();
 
-        nHeight += m_nDividerSize;
+        nHeight += GetDividerSize();
         psi->pItemHeight[iSubItem] = nHeight;
         if(nOldHei != nHeight)
         {
@@ -172,7 +201,7 @@ namespace SOUI
         SegmentInfo *psi = m_segments[iSeg];
         int nRet = psi->pItemHeight[iSubItem];
         if(nRet == -1) nRet = GetFixItemHeight();
-        nRet -= m_nDividerSize;
+        nRet -= GetDividerSize();
         return nRet;
     }
 
@@ -224,6 +253,10 @@ namespace SOUI
             m_segments.Add(new SegmentInfo(nItems,hBranch));
         }
     }
+
+	int SListViewItemLocatorFlex::GetFixItemHeight() const {
+		return m_nItemHeight.toPixelSize(m_nScale) + m_nDividerSize.toPixelSize(m_nScale);
+	}
 
     int SListViewItemLocatorFlex::GetIndexDeep() const
     {
