@@ -1641,6 +1641,8 @@ float SMoveWnd::GetLayoutSize(SouiLayoutParamStruct *pSouiLayoutParam, int PosN)
 		return pSouiLayoutParam->posRight.nPos.fSize;
 	case 3:
 		return pSouiLayoutParam->posBottom.nPos.fSize;
+	default:
+		return 0.f;
 	}
 
 }
@@ -1673,7 +1675,8 @@ POS_INFO SMoveWnd::GetPosInfo(SouiLayoutParamStruct *pSouiLayoutParam, int PosN)
 	case 2:
 		return pSouiLayoutParam->posRight;
 	case 3:
-		return pSouiLayoutParam->posBottom;
+	default:
+		return pSouiLayoutParam->posBottom;	
 	}
 }
 

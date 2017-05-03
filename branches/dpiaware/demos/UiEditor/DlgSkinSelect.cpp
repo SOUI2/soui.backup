@@ -1268,7 +1268,6 @@ namespace SOUI
 		}else
 		{
 			SSkinAni *pSkin = (SSkinAni*)SApplication::getSingleton().CreateSkinByName(SSkinMutiFrameImg::GetClassName());
-			//pSkin = SApplication::getSingleton().CreateSkinByName(SSkinMutiFrameImg::GetClassName());
 			if(!pSkin) return ;
 			if(0==pSkin->LoadFromFile(strImgname))
 			{
@@ -1277,7 +1276,8 @@ namespace SOUI
 			}
 
 			pSkin->SetAttribute(L"filterLevel", L"high");
-			pBuiltinSkinPool->AddKeyObject(strImgname, pSkin);//将创建的skin交给skinpool管理
+			SkinKey key = {strImgname,100};
+			pBuiltinSkinPool->AddKeyObject(key, pSkin);//将创建的skin交给skinpool管理
 			aniSkin = pSkin;
 		}
 
@@ -1319,7 +1319,7 @@ namespace SOUI
 		SStringT strImgname = GetLBCurSelText(m_lbRes);
 
 		SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-		ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(strImgname); 
+		ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(strImgname,100); 
 		if(!pSkin)
 		{
 			return;
