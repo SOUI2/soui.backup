@@ -32,7 +32,7 @@ namespace SOUI
 {
 	bool LayoutSize(SStringW str)
 	{
-		SLayoutSize ls = SLayoutWidth::fromString(str);
+		SLayoutSize ls = SLayoutSize::fromString(str);
 		SStringW str2 = ls.toString();
 		return str.CompareNoCase(str2) == 0;
 	}
