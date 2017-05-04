@@ -1653,12 +1653,17 @@ void SMoveWnd::SetLayoutSize(SouiLayoutParamStruct *pSouiLayoutParam, int PosN, 
 	{
 	case 0:
 		 pSouiLayoutParam->posLeft.nPos.fSize = value;
+		 break;
 	case 1:
 		 pSouiLayoutParam->posTop.nPos.fSize  = value;
+		 break;
 	case 2:
 		 pSouiLayoutParam->posRight.nPos.fSize  = value;
+		 break;
 	case 3:
+	default:
 		 pSouiLayoutParam->posBottom.nPos.fSize  = value;
+
 	}
 
 }
