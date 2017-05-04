@@ -228,7 +228,7 @@ namespace SOUI{
 			}
 
 			if((posTop.pit == PIT_NORMAL && posTop.nPos.isZero() && posTop.cMinus==1)
-				&&(posBottom.pit == PIT_NORMAL && posBottom.nPos.isZero() == 0 && posBottom.cMinus==-1))
+				&&(posBottom.pit == PIT_NORMAL && posBottom.nPos.isZero() && posBottom.cMinus==-1))
 			{
 				height.setMatchParent();
 			}
