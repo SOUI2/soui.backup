@@ -875,8 +875,8 @@ void SDesignerView::UpdatePosToXmlNode(SWindow *pRealWnd, SMoveWnd* pMoveWnd)
 
 		CRect r;
 		pMoveWnd->GetWindowRect(r);
-		m_CurrentLayoutNode.attribute(_T("height")).set_value(pSouiLayoutParam->GetSpecifiedSize(Vert).fSize - MARGIN*2);
-		m_CurrentLayoutNode.attribute(_T("width")).set_value(pSouiLayoutParam->GetSpecifiedSize(Horz).fSize - MARGIN*2);
+		m_CurrentLayoutNode.attribute(_T("height")).set_value((int)pSouiLayoutParam->GetSpecifiedSize(Vert).fSize - MARGIN*2);
+		m_CurrentLayoutNode.attribute(_T("width")).set_value((int)pSouiLayoutParam->GetSpecifiedSize(Horz).fSize - MARGIN*2);
 
 		return;
 	}
@@ -908,11 +908,9 @@ void SDesignerView::UpdatePosToXmlNode(SWindow *pRealWnd, SMoveWnd* pMoveWnd)
 
 
 
-	
-
 		if (attrSize)
 		{
-			strTemp.Format(_T("%d, %d"), pSouiLayoutParam->GetSpecifiedSize(Horz), pSouiLayoutParam->GetSpecifiedSize(Vert));
+			strTemp.Format(_T("%d, %d"), (int)pSouiLayoutParam->GetSpecifiedSize(Horz).fSize, (int)pSouiLayoutParam->GetSpecifiedSize(Vert).fSize);
 			attrSize.set_value(strTemp);
 		}
 
@@ -956,18 +954,18 @@ void SDesignerView::UpdatePosToXmlNode(SWindow *pRealWnd, SMoveWnd* pMoveWnd)
 		SLinearLayoutParam *pSLinearLayoutParam = pRealWnd->GetLayoutParamT<SLinearLayoutParam>();
 		if (attrSize)
 		{
-			strTemp.Format(_T("%d, %d"), pSLinearLayoutParam->GetSpecifiedSize(Horz), pSLinearLayoutParam->GetSpecifiedSize(Vert));
+			strTemp.Format(_T("%d, %d"), (int)pSLinearLayoutParam->GetSpecifiedSize(Horz).fSize, (int)pSLinearLayoutParam->GetSpecifiedSize(Vert).fSize);
 			attrSize.set_value(strTemp);
 		}
 
 		if (attrWidth)
 		{
-			strTemp.Format(_T("%d"), pSLinearLayoutParam->GetSpecifiedSize(Horz));
+			strTemp.Format(_T("%d"), (int)pSLinearLayoutParam->GetSpecifiedSize(Horz).fSize);
 			attrWidth.set_value(strTemp);
 		}
 		if (attrHeight)
 		{
-			strTemp.Format(_T("%d"), pSLinearLayoutParam->GetSpecifiedSize(Vert));
+			strTemp.Format(_T("%d"), (int)pSLinearLayoutParam->GetSpecifiedSize(Vert).fSize);
 			attrHeight.set_value(strTemp);
 		}
 	}
@@ -987,11 +985,15 @@ SStringW SDesignerView::GetPosFromLayout(SouiLayoutParam *pLayoutParam, INT nPos
 	{
 	case 0:
 		PI = pSouiLayoutParamStruct->posLeft;
+		break;
 	case 1:
 		PI =  pSouiLayoutParamStruct->posTop;
+		break;
 	case 2:
 		PI =  pSouiLayoutParamStruct->posRight;
+		break;
 	case 3:
+	default:
 		PI =  pSouiLayoutParamStruct->posBottom;
 	}
 
