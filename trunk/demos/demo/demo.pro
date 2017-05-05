@@ -83,6 +83,7 @@ SOURCES += demo.cpp \
            MainDlg.cpp \
 		   FormatMsgDlg.cpp \
            ../../controls.extend/SWkeWebkit.cpp \
+	   ../../controls.extend/STabCtrlHeaderBinder.cpp \
            ../../controls.extend/gif/SGifPlayer.cpp \
            ../../controls.extend/gif/SSkinGif.cpp \
            ../../controls.extend/gif/SSkinAPNG.cpp \
