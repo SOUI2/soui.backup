@@ -41,6 +41,7 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SFreeMoveWindow.h
 	${CMAKE_SOURCE_DIR}/controls.extend/smiley/SSmileyCtrl.h
 	${CMAKE_SOURCE_DIR}/controls.extend/TipWnd.h
+	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/STabCtrlHeaderBinder.h
 )
 
 set(EXTENDCOTROLS ${EXTENDCOTROLS}
@@ -71,6 +72,7 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SRatingBar.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SFreeMoveWindow.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/TipWnd.cpp
+	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/STabCtrlHeaderBinder.cpp
 )
 source_group("Header Files" FILES ${CURRENT_HEADERS})
 source_group("Source Files" FILES ${CURRENT_SRCS})
