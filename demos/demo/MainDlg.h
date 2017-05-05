@@ -18,7 +18,7 @@ using namespace SOUI;
 #include "magnet/MagnetFrame.h"
 #include "ThreadObject.h"
 #include "skin/SDemoSkin.h"
-#include "../controls.extend/SMcListViewEx/STabCtrlHeaderBinder.h"
+#include "../../controls.extend/SMcListViewEx/STabCtrlHeaderBinder.h"
 
 extern UINT g_dwSkinChangeMessage;
 //演示使用SNotifyCenter的异步事件

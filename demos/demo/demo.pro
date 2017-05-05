@@ -63,6 +63,7 @@ HEADERS += MainDlg.h \
            ../../controls.extend/SFreeMoveWindow.h \
 		   ../../controls.extend/smiley/SSmileyCtrl.h \
 		   ../../controls.extend/tipwnd.h \
+		   ../../controls.extend/SMcListViewEx/STabCtrlHeaderBinder.h \
            httpsvr/filereader-i.h \
            httpsvr/genericserver.h \
            httpsvr/httpserver.h \
@@ -83,7 +84,7 @@ SOURCES += demo.cpp \
            MainDlg.cpp \
 		   FormatMsgDlg.cpp \
            ../../controls.extend/SWkeWebkit.cpp \
-	   ../../controls.extend/STabCtrlHeaderBinder.cpp \
+	   ../../controls.extend/SMcListViewEx/STabCtrlHeaderBinder.cpp \
            ../../controls.extend/gif/SGifPlayer.cpp \
            ../../controls.extend/gif/SSkinGif.cpp \
            ../../controls.extend/gif/SSkinAPNG.cpp \
