@@ -10,4 +10,5 @@ private:
 protected:
 	SMap<SWindow*,int> m_lstPages;
 	bool EvtHander(EventArgs *e);
+	bool TabSelChanged(EventTabSelChanged *evt_sel);
 };
