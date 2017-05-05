@@ -50,7 +50,7 @@
               </window>
               <window name="col6" clipClient="1">
                 <imgbtn animate="1"  pos="|-35,|-14" font="adding:-3" align="center" skin="skin_install" name="btn_uninstall">卸载</imgbtn>
-              </window>            
+              </window>
             </template>
 
           </mclistview>
@@ -153,7 +153,26 @@
         <radio2 pos="[20,{0" id="10004" name="radio2_5" skin="skin_webbtn_forward"></radio2>
         <radio2 pos="[20,{0" id="10005" name="radio2_6" skin="skin_webbtn_forward"></radio2>
       </group>
-      <tabctrl pos="{0,[10,@300,@200" name="tab_radio2" tabHeight="0" cursel="3" colorBkgnd="#00cc00">
+      <group pos="10,[0,@180,@100">
+        radio3
+        <radio2 pos="10,0" name="radio3_1"  skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="[20,{0" name="radio3_2"  skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="[20,{0" name="radio3_3" skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="10,[10" name="radio3_4" checked="1" skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="[20,{0" name="radio3_5" skin="skin_webbtn_forward"></radio2>
+        <radio2 pos="[20,{0" name="radio3_6" skin="skin_webbtn_forward"></radio2>
+      </group>
+      <group pos="10,[0,@180,@100">
+        Btn
+        <button pos="10,0" name="btn4_1" >1</button>
+        <button pos="[20,{0" name="btn4_2"  >2</button>
+        <button pos="[20,{0" name="btn4_3" >3</button>
+        <button pos="10,[10" name="btn4_4" checked="1" >4</button>
+        <button pos="[20,{0" name="btn4_5" >5</button>
+        <button pos="[20,{0" name="btn4_6" >6</button>
+
+      </group>
+      <tabctrl pos="[0,{-100,@300,@200" name="tab_radio2" tabHeight="0" cursel="3" colorBkgnd="#00cc00">
         <page>
           <text pos="|0,|0" offset="-0.5,-0.5">page1</text>
         </page>
@@ -217,7 +236,7 @@
             <item text="combobox.item6" icon="0" data="100"/>
           </items>
         </combobox>
-        
+
         <!--on_btn_select_cbx 在lua脚本中运行-->
         <button size="-2,25" extend_top="10" on_command="on_btn_select_cbx">setcursel(-1)</button>
       </group>
@@ -233,10 +252,10 @@
             <item text="item6" icon="0" data="100"/>
           </items>
         </listbox>
-        <button size="-2,30" extend_top="10" name="btn_init_listbox">init listbox</button>        
+        <button size="-2,30" extend_top="10" name="btn_init_listbox">init listbox</button>
       </group>
 
-      
+
     </page>
     <page title="treectrl">
       <include src="layout:treectrl"/>
