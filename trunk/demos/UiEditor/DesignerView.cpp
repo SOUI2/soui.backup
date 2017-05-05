@@ -2293,9 +2293,10 @@ void SDesignerView::DeleteCtrl()
 		m_xmlNode.parent().remove_child(m_xmlNode);
 
 		//Debug(m_CurrentLayoutNode);
+		GetMoveWndRoot()->Click(0, CPoint(0,0));
 		ReLoadLayout();
 		m_nState = 0;
-		GetMoveWndRoot()->Click(0, CPoint(0,0));
+
 	}
 }
 
