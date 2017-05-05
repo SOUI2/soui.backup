@@ -138,7 +138,7 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 	//设置uidef为当前皮肤的uidef
 	UseEditorUIDef(false);
 
-	m_defFont = SFontPool::getSingleton().GetFont(FF_DEFAULTFONT,0);
+	m_defFont = SFontPool::getSingleton().GetFont(FF_DEFAULTFONT,100);
 
 	pugi::xml_node xmlroot;
 	pugi::xml_node xmlnode;
