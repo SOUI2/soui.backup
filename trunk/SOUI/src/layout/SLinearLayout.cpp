@@ -124,8 +124,8 @@ namespace SOUI
 		}else if(nSeg == 4)
 		{
 			extend_left.parseString(strList[0]);
-			extend_right.parseString(strList[1]);
-			extend_top.parseString(strList[2]);
+			extend_top.parseString(strList[1]);
+			extend_right.parseString(strList[2]);
 			extend_bottom.parseString(strList[3]);
 			return S_OK;
 		}
