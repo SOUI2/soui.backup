@@ -818,8 +818,9 @@ namespace SOUI
 		xmlNode.append_attribute(_T("src")).set_value(strSrc);
 		xmlNode.append_attribute(_T("name")).set_value(*s);
 
+		SStringT *strData  = (SStringT *)m_lbRes->GetItemData(m_lbRes->GetCurSel());
 		
-		int n = m_lbSkin->AddString(strSkinTypeName + _T(": ") + *s);
+		int n = m_lbSkin->AddString(strSkinTypeName + _T(": ") + *s, -1, (LPARAM)strData);
 		SelectLBItem(m_lbSkin, n);
 
 
