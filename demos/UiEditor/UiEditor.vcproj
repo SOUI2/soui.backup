@@ -235,6 +235,8 @@
 				RelativePath="UIEditor.cpp" />
 			<File
 				RelativePath="helpapi.cpp" />
+			<File
+				RelativePath="SImgCanvas.cpp" />				
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -346,6 +348,8 @@
 				RelativePath="colorpicker\Tooltipctrl.h" />
 			<File
 				RelativePath="helpapi.h" />
+			<File
+				RelativePath="SImgCanvas.h" />	
 			<File
 				RelativePath="resource.h" />
 			<File

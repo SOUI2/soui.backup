@@ -81,6 +81,7 @@ SOURCES+=./colorpicker/ColourPopup.cpp
 SOURCES+=./colorpicker/SColorPicker.cpp
 SOURCES+=./DlgFontSelect.cpp
 SOURCES+=./helpapi.cpp
+SOURCES+=./SImgCanvas.cpp
 
 HEADERS+=./SListBoxDrop.h
 HEADERS+=./Adapter.h
@@ -117,6 +118,7 @@ HEADERS+=./colorpicker/SColorPicker.h
 HEADERS+=./colorpicker/Tooltipctrl.h
 HEADERS+=./DlgFontSelect.h
 HEADERS+=./helpapi.h
+SOURCES+=./SImgCanvas.h
 HEADERS+=../../controls.extend/ExtendSkins.h
 HEADERS+=../../controls.extend/image3d/PerspectiveTransform.h
 HEADERS+=../../controls.extend/gif/SAniImgFrame.h

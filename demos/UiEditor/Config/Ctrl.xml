@@ -147,6 +147,12 @@
 		<imgbtn>
 			<imgbtn pos="0,0" size="96,32"  tip="" animate="1"/>
 		</imgbtn>		
+		<imgcanvas>
+			<imgcanvas pos="0,0" size="120,120">	
+
+			</imgcanvas>	
+
+		</imgcanvas>	
 
 
 		<include>

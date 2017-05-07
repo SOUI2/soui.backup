@@ -8,7 +8,7 @@
 			</caption>
 			<edit pos="51,43" size="343, 24" colorBkgnd="#FFFFFF" cueText="" colorText="#000000" name="edtInput" />
 			<text pos="10,47">内容：</text>
-			<button name="btnOK" pos="275,86" size="106, 27" skin="_skin.sys.btn.normal" colorText="#000000" >确定1</button>
+			<button name="btnOK" pos="275,86" size="106, 27" skin="_skin.sys.btn.normal" colorText="#000000">确定1</button>
 		</window>
 	</root>
 </SOUI>

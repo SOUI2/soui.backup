@@ -135,6 +135,7 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 
 BOOL SDesignerView::LoadLayout(SStringT strFileName)
 {
+	m_CurSelCtrl = NULL;
 	//ÉèÖÃuidefÎªµ±Ç°Æ¤·ôµÄuidef
 	UseEditorUIDef(false);
 
@@ -854,11 +855,12 @@ SStringT SDesignerView::NodeToStr(pugi::xml_node xmlNode)
 
 void SDesignerView::SetCurrentCtrl(pugi::xml_node xmlNode, SMoveWnd *pWnd)
 {
-	//m_xmlDoc.remove_child(m_xmlDoc.first_child());
- //   m_xmlDoc.append_copy(xmlNode);
-	//m_xmlNode = m_xmlDoc.first_child();
 	m_xmlNode= xmlNode;
+	
 	m_CurSelCtrl = pWnd;
+
+	m_pContainer->Invalidate();
+
 	
 	m_treeXmlStruct->GetEventSet()->unsubscribeEvent(EVT_TC_SELCHANGED,Subscriber(&SDesignerView::OnTCSelChanged,this));
 	GoToXmlStructItem(m_CurSelCtrl->m_pRealWnd->GetUserData(), m_treeXmlStruct->GetRootItem());
@@ -910,7 +912,12 @@ void SDesignerView::UpdatePosToXmlNode(SWindow *pRealWnd, SMoveWnd* pMoveWnd)
 
 		if (attrSize)
 		{
-			strTemp.Format(_T("%d, %d"), (int)pSouiLayoutParam->GetSpecifiedSize(Horz).fSize, (int)pSouiLayoutParam->GetSpecifiedSize(Vert).fSize);
+			strTemp.Format(_T("%d%s, %d%s"), 
+				(int)pSouiLayoutParam->GetSpecifiedSize(Horz).fSize, 
+				UnitToStr(pSouiLayoutParam->GetSpecifiedSize(Horz).unit), 
+				(int)pSouiLayoutParam->GetSpecifiedSize(Vert).fSize,
+				UnitToStr(pSouiLayoutParam->GetSpecifiedSize(Vert).unit));
+
 			attrSize.set_value(strTemp);
 		}
 
@@ -954,18 +961,26 @@ void SDesignerView::UpdatePosToXmlNode(SWindow *pRealWnd, SMoveWnd* pMoveWnd)
 		SLinearLayoutParam *pSLinearLayoutParam = pRealWnd->GetLayoutParamT<SLinearLayoutParam>();
 		if (attrSize)
 		{
-			strTemp.Format(_T("%d, %d"), (int)pSLinearLayoutParam->GetSpecifiedSize(Horz).fSize, (int)pSLinearLayoutParam->GetSpecifiedSize(Vert).fSize);
+			strTemp.Format(_T("%d%s, %d%s"), 
+				(int)pSLinearLayoutParam->GetSpecifiedSize(Horz).fSize, 
+				UnitToStr(pSLinearLayoutParam->GetSpecifiedSize(Horz).unit), 
+				(int)pSLinearLayoutParam->GetSpecifiedSize(Vert).fSize,
+				UnitToStr(pSLinearLayoutParam->GetSpecifiedSize(Vert).unit));
 			attrSize.set_value(strTemp);
 		}
 
 		if (attrWidth)
 		{
-			strTemp.Format(_T("%d"), (int)pSLinearLayoutParam->GetSpecifiedSize(Horz).fSize);
+			strTemp.Format(_T("%d%s"), 
+				(int)pSLinearLayoutParam->GetSpecifiedSize(Horz).fSize,
+				UnitToStr(pSLinearLayoutParam->GetSpecifiedSize(Horz).unit));
 			attrWidth.set_value(strTemp);
 		}
 		if (attrHeight)
 		{
-			strTemp.Format(_T("%d"), (int)pSLinearLayoutParam->GetSpecifiedSize(Vert).fSize);
+			strTemp.Format(_T("%d"), 
+				(int)pSLinearLayoutParam->GetSpecifiedSize(Vert).fSize,
+				UnitToStr(pSLinearLayoutParam->GetSpecifiedSize(Vert).unit));
 			attrHeight.set_value(strTemp);
 		}
 	}
@@ -1069,7 +1084,7 @@ SStringW SDesignerView::GetPosFromLayout(SouiLayoutParam *pLayoutParam, INT nPos
 		}
 		SStringW strTemp;
 		int n = (int)PI.nPos.fSize;
-		strTemp.Format(L"%d", n);
+		strTemp.Format(L"%d%s", n, UnitToStr(PI.nPos.unit));
 		strPos = strPos + strTemp;
 		return strPos;
 }
@@ -1641,6 +1656,7 @@ bool SDesignerView::OnPropGridItemClick( EventArgs *pEvt )
 
 BOOL SDesignerView::ReLoadLayout()
 {
+	m_CurSelCtrl = NULL;
 
 	//ÉèÖÃuidefÎªµ±Ç°Æ¤·ôµÄuidef
 	UseEditorUIDef(false);
@@ -2466,5 +2482,23 @@ void SDesignerView::UseEditorUIDef(bool bYes) //Ê¹ÓÃ±à¼­Æ÷×ÔÉíµÄUIDef»¹ÊÇÊ¹ÓÃËù´
 	else
 	{
 		SUiDef::getSingleton().SetUiDef(m_pUiDef);
+	}
+}
+
+SStringT SDesignerView::UnitToStr(int nUnit)
+{
+	//	px=0,dp,dip,sp
+	switch (nUnit)
+	{
+	case 0:
+		return _T("");
+	case 1:
+		return _T("dp");
+	case 2:
+		return _T("dip");
+	case 3:
+		return _T("sp");
+	default:
+		return _T("");
 	}
 }

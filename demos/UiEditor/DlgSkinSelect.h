@@ -3,7 +3,7 @@
 #include "core/smsgloop.h"
 #include "core/SHostDialog.h"
 #include "control/SRichEdit.h"
-#include "SImageEx.h"
+#include "SImgCanvas.h"
 
 namespace SOUI
 {
@@ -93,8 +93,8 @@ namespace SOUI
          bool OnReNotify(EventArgs *pEvt);
 		 void GoToSkin();
 		 void ShowImage();
-		 void ShowSysImage();
 
+		 bool ChekSkin(SStringT strName, SStringT strScale);
 
 	public:
 		SStringT m_strinput;
@@ -133,7 +133,8 @@ namespace SOUI
 
 		SMap<SStringT, SStringT> m_mapSysSkin; 
 
-		SImageWnd *m_imgView;
+		//SImageWnd *m_imgView;
+		SImgCanvas *m_imgView;
 		BOOL m_bGetSkin; //
 
 		pugi::xml_node m_xmlNodeCurSkin;
