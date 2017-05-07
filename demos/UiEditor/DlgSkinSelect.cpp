@@ -333,10 +333,10 @@ namespace SOUI
 		{
 			m_lbSkin->DeleteAll();
 			m_lbSkin->AddString(strTemp + _T(":  ") + GetLBCurSelText(m_lbRes));
-			if (m_lbSkin->GetCount()>0)
-			{
-				SelectLBItem(m_lbSkin, 0);
-			}
+			//if (m_lbSkin->GetCount()>0)
+			//{
+			//	SelectLBItem(m_lbSkin, 0);
+			//}
 
 			ShowImage();
 			m_lbRes->SetFocus();
@@ -401,6 +401,10 @@ namespace SOUI
 
 	bool SDlgSkinSelect::OnLbSkinSelChanged(EventArgs *pEvtBase)
 	{
+		if (m_lbResType->GetCurSel() == 0)
+		{
+			return true;
+		}
 
 		EventLBSelChanged *pEvt =(EventLBSelChanged*)pEvtBase;
 		SListBox *listbox=(SListBox*)pEvt->sender;
@@ -412,7 +416,7 @@ namespace SOUI
 			return true;
 		}
 
-		SStringT *sSrc  = (SStringT *)listbox->GetItemData(pEvt->nNewSel);
+		SStringT *sSrc  = (SStringT *)m_lbSkin->GetItemData(n);
 
 		SStringT strSrc(*sSrc);
 
