@@ -2,13 +2,11 @@
 #include "DlgSkinSelect.h"
 #include "helper/SplitString.h"
 #include "CDebug.h"
-#include "interface/SSkinobj-i.h"
 
-#include "SSkinMutiFrameImg.h"
 #include "helper\mybuffer.h"
 #include "DlgNewSkin.h"
 #include "DlgInput.h"
-#include "layout/SouiLayout.h"
+
 namespace SOUI
 {
 
@@ -98,7 +96,7 @@ namespace SOUI
 
 		m_pEdit = (SEdit *)FindChildByName(L"NAME_UIDESIGNER_edit_SEARCH");
 
-		m_imgView = (SImageWnd  *)FindChildByName(L"NAME_UIDESIGNER_IMG_VIEW");
+		m_imgView = (SImgCanvas  *)FindChildByName(L"NAME_UIDESIGNER_IMG_VIEW");
 
 
 		LRESULT lr=m_pEdit->SSendMessage(EM_SETEVENTMASK,0,ENM_CHANGE);
@@ -318,17 +316,6 @@ namespace SOUI
 	bool SDlgSkinSelect::OnLbResSelChanged(EventArgs *pEvtBase)
 	{
 		DestroyGrid();
-		//if (m_lbResType->GetCurSel() == 0)
-		//{
-		//	ShowSysImage();
-		//	m_lbRes->SetFocus();
-		//	return true;
-		//}
-
-
-
-
-
 
 		EventLBSelChanged *pEvt =(EventLBSelChanged*)pEvtBase;
 		SListBox *listbox=(SListBox*)pEvt->sender;
@@ -388,8 +375,11 @@ namespace SOUI
 				SStringT s2, s3;
 				s2 = xmlNode.name();
 				s3 = xmlNode.attribute(L"name").value();
+				
+				SStringT *strData = new SStringT(xmlNode.attribute(L"src").value());
 
-				m_lbSkin->AddString(s2 + _T(":  ") + s3);
+				m_lbSkin->AddString(s2 + _T(":  ") + s3,-1, (LPARAM)strData);
+
 			}
 
 			xmlNode = xmlNode.next_sibling();
@@ -422,6 +412,10 @@ namespace SOUI
 			return true;
 		}
 
+		SStringT *sSrc  = (SStringT *)listbox->GetItemData(pEvt->nNewSel);
+
+		SStringT strSrc(*sSrc);
+
 		SStringT strSkinName;
 
 		m_lbSkin->GetText(n, strSkinName);
@@ -453,7 +447,8 @@ namespace SOUI
 			{
 				if (strSkinType.CompareNoCase(xmlNode.name()) == 0)
 				{
-					if (strSkin.CompareNoCase(xmlNode.attribute(L"name").value()) == 0)
+					if (strSkin.CompareNoCase(xmlNode.attribute(L"name").value()) == 0 &&
+						strSrc.CompareNoCase(xmlNode.attribute(L"src").value()) == 0)
 					{
 						m_xmlNodeCurSkin = xmlNode;
 					}
@@ -503,57 +498,12 @@ namespace SOUI
 			return;
 		}
 
+
+
 		m_pgGrid->ClearAllGridItemValue();
 
-		int n = m_lbSkin->GetCurSel();
-
-		SStringT strSkinName;
-
-		m_lbSkin->GetText(n, strSkinName);
-
-		SStringTList strLst;
-		SplitString(strSkinName,_T(':'),strLst);
-
-		for(size_t i=0;i<strLst.GetCount();i++)
-		{
-			strLst.GetAt(i).TrimBlank();
-		}
-
-		pugi::xml_node xmlNode;
-		if (m_xmlDocSkin.child(L"skin"))
-		{
-			xmlNode = m_xmlDocSkin.child(L"skin").first_child();
-		}else if(m_xmlDocSkin.child(L"UIDEF"))
-		{
-			xmlNode = m_xmlDocSkin.child(L"UIDEF").child(L"skin").first_child();
-		}
-
-		while (xmlNode)
-		{
-			if(xmlNode.type() != pugi::node_element)
-			{
-				xmlNode = xmlNode.next_sibling();
-				continue;
-			}
-
-			if (strLst[0].CompareNoCase(xmlNode.name()) == 0 && 
-				strLst[1].CompareNoCase(xmlNode.attribute(L"name").value()) == 0)
-			{
-				break;
-			}
-
-			xmlNode = xmlNode.next_sibling();
-		}
-
-
-		if (!xmlNode)
-		{
-			return;
-		}
-
-		pugi::xml_attribute xmlAttr = xmlNode.first_attribute();
-
-		//SStringT sTemp2 = Debug1(xmlNode);
+	
+		pugi::xml_attribute xmlAttr = m_xmlNodeCurSkin.first_attribute();
 
 
 		while (xmlAttr)
@@ -806,6 +756,12 @@ namespace SOUI
 			return;
 		}
 
+		if (m_lbSkin->GetCount() > 0)
+		{
+			CDebug::Debug(_T("一个资源只能对应一个皮肤"));
+			return;
+		}
+
 		SStringT strSkinTypeName;
 		SDlgNewSkin DlgNewSkin(_T("layout:UIDESIGNER_XML_NEW_SKIN"));
 		if (IDOK == DlgNewSkin.DoModal(m_hWnd))
@@ -815,6 +771,8 @@ namespace SOUI
 		{
 			return;
 		}
+
+
 
 
 		pugi::xml_node xmlNode;
@@ -828,6 +786,8 @@ namespace SOUI
 		}
 
 
+
+
 		SStringT strSrc;
 		strSrc = GetLBCurSelText(m_lbResType) + _T(":");
 		SStringT *s  = (SStringT *)m_lbRes->GetItemData(m_lbRes->GetCurSel());
@@ -835,7 +795,7 @@ namespace SOUI
 
 
 		//判断当前资源已被其他皮肤引用
-		pugi::xml_node NodeTemp = xmlNode.find_child_by_attribute(_T("name"), *s);
+		pugi::xml_node NodeTemp = xmlNode.find_child_by_attribute(_T("src"), strSrc);
 		if (NodeTemp)
 		{
 
@@ -858,17 +818,6 @@ namespace SOUI
 		int n = m_lbSkin->AddString(strSkinTypeName + _T(": ") + *s);
 		SelectLBItem(m_lbSkin, n);
 
-		//SStringT strSkinName(*s);
-
-		//SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-		//ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(strSkinName); // 
-		//if(!pSkin)
-		//{
-		//	pSkin = SApplication::getSingleton().CreateSkinByName(strSkinTypeName);
-		//	if(!pSkin) return ;
-
-		//	pBuiltinSkinPool->AddKeyObject(strSkinName, pSkin);//将创建的skin交给skinpool管理
-		//}
 
 	}
 
@@ -1255,108 +1204,10 @@ namespace SOUI
 					strImgname = m_strProPath + _T("\\")+ strImgname;
 		}
 
-
-
-
-		SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-		ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(strImgname,0); // 以文件名作为KEY
-		SSkinAni *aniSkin;
-		if(pSkin)
-		{
-			if(!pSkin->IsClass(SSkinAni::GetClassName())) return ;
-			aniSkin=static_cast<SSkinAni*>(pSkin);
-		}else
-		{
-			SSkinAni *pSkin = (SSkinAni*)SApplication::getSingleton().CreateSkinByName(SSkinMutiFrameImg::GetClassName());
-			if(!pSkin) return ;
-			if(0==pSkin->LoadFromFile(strImgname))
-			{
-				pSkin->Release();
-				return ;
-			}
-
-			pSkin->SetAttribute(L"filterLevel", L"high");
-			SkinKey key = {strImgname,100};
-			pBuiltinSkinPool->AddKeyObject(key, pSkin);//将创建的skin交给skinpool管理
-			aniSkin = pSkin;
-		}
-
-		int nWidth, nHeight, nPWidth, nPHeight;
-		nWidth = aniSkin->GetSkinSize().cx;
-		nHeight = aniSkin->GetSkinSize().cy;
-
-		CRect rect;
-		m_imgView->GetParent()->GetWindowRect(rect);
-		nPWidth = rect.right - rect.left;
-		nPHeight = rect.bottom - rect.top;
-		if (nWidth > nPWidth)
-		{
-			float bl = (float)nPWidth / (float)nWidth;
-
-			nWidth = (float)nWidth * bl;
-			nHeight = (float)nHeight * bl;
-		}
-		m_imgView->SetAttribute(L"skin", strImgname);
-		//SwndLayout *playout = m_imgView->GetLayout();
-		SouiLayoutParam *pLayout = m_imgView->GetLayoutParamT<SouiLayoutParam>();
-		//pLayout->SetSpecifiedSize(Horz, nWidth);
-		//pLayout->SetSpecifiedSize(Vert, nHeight);
-		SLayoutSize LayoutSize = pLayout->GetSpecifiedSize(Horz);
-		LayoutSize.fSize = nWidth;
-		pLayout->SetSpecifiedSize(Horz, LayoutSize);
-
-		LayoutSize = pLayout->GetSpecifiedSize(Vert);
-		LayoutSize.fSize = nHeight;
-		pLayout->SetSpecifiedSize(Vert, LayoutSize);
-
-		m_imgView->GetParent()->RequestRelayout();
-		m_imgView->GetParent()->UpdateChildrenPosition();
+		m_imgView->Clear();
+		m_imgView->AddFile(strImgname);
 	}
 
-
-	void SDlgSkinSelect::ShowSysImage()
-	{
-		SStringT strImgname = GetLBCurSelText(m_lbRes);
-
-		SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-		ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(strImgname,100); 
-		if(!pSkin)
-		{
-			return;
-		}
-
-
-		int nWidth, nHeight, nPWidth, nPHeight;
-		nWidth = pSkin->GetSkinSize().cx;
-		nHeight = pSkin->GetSkinSize().cy;
-
-		CRect rect;
-		m_imgView->GetParent()->GetWindowRect(rect);
-		nPWidth = rect.right - rect.left;
-		nPHeight = rect.bottom - rect.top;
-		if (nWidth > nPWidth)
-		{
-			float bl = (float)nPWidth / (float)nWidth;
-
-			nWidth = (float)nWidth * bl;
-			nHeight = (float)nHeight * bl;
-		}
-
-		SouiLayoutParam *pLayout = m_imgView->GetLayoutParamT<SouiLayoutParam>();
-		//pLayout->SetSpecifiedSize(Horz, nWidth);
-		//pLayout->SetSpecifiedSize(Vert, nHeight);
-		SLayoutSize LayoutSize = pLayout->GetSpecifiedSize(Horz);
-		LayoutSize.fSize = nWidth;
-		pLayout->SetSpecifiedSize(Horz, LayoutSize);
-
-		LayoutSize = pLayout->GetSpecifiedSize(Vert);
-		LayoutSize.fSize = nHeight;
-		pLayout->SetSpecifiedSize(Vert, LayoutSize);
-
-		m_imgView->SetAttribute(L"skin", strImgname);
-		m_imgView->GetParent()->RequestRelayout();
-		m_imgView->GetParent()->UpdateChildrenPosition();
-	}
 
 
 bool SDlgSkinSelect::OnPropGridValueChanged( EventArgs *pEvt )
@@ -1373,6 +1224,44 @@ bool SDlgSkinSelect::OnPropGridValueChanged( EventArgs *pEvt )
 	SStringT s = pItem->GetName2();  //属性名：pos skin name id 等等
 
 	SStringT s1 = pItem->GetString();   //属性的值
+
+	//修改name的时候判断是否存在
+	if (s.CompareNoCase(_T("name")) == 0)
+	{
+		pugi::xml_attribute attrScale = m_xmlNodeCurSkin.attribute(_T("scale"));
+		SStringT strScale = _T("");
+		if (attrScale)
+		{
+			strScale = attrScale.value();
+		}
+
+		if (ChekSkin(s1, strScale))
+		{
+			SStringT strError;
+			strError = strError.Format(_T("已经存在皮肤名:%s Scale:%s的皮肤"), s1, strScale);
+			CDebug::Debug(strError);
+			return false;
+		}
+	}
+
+	//修改scale的时候判断是否存在
+	if (s.CompareNoCase(_T("scale")) == 0)
+	{
+		pugi::xml_attribute attrName = m_xmlNodeCurSkin.attribute(_T("name"));
+		SStringT strName = _T("");
+		if (attrName)
+		{
+			strName = attrName.value();
+		}
+
+		if (ChekSkin(strName, s1))
+		{
+			SStringT strError;
+			strError = strError.Format(_T("已经存在皮肤名:%s Scale:%s的皮肤"), strName, s1);
+			CDebug::Debug(strError);
+			return false;
+		}
+	}
 
 	if (s.IsEmpty())
 	{
@@ -1406,6 +1295,57 @@ bool SDlgSkinSelect::OnPropGridValueChanged( EventArgs *pEvt )
 
 
 	return true;
+}
+
+
+bool SDlgSkinSelect::ChekSkin(SStringT strName, SStringT strScale)
+{
+	pugi::xml_node xmlNode;
+	if (m_xmlDocSkin.child(L"skin"))
+	{
+		xmlNode = m_xmlDocSkin.child(L"skin").first_child();
+	}else if(m_xmlDocSkin.child(L"UIDEF"))
+	{
+		xmlNode = m_xmlDocSkin.child(L"UIDEF").child(L"skin").first_child();
+	}
+
+	while (xmlNode)
+	{
+		if(xmlNode.type() != pugi::node_element)
+		{
+			xmlNode = xmlNode.next_sibling();
+			continue;
+		}
+
+		if (xmlNode == m_xmlNodeCurSkin)
+		{
+			xmlNode = xmlNode.next_sibling();
+			continue;
+		}
+
+
+		if (xmlNode.attribute(L"name"))
+		{
+			if (strName.CompareNoCase(xmlNode.attribute(L"name").value()) == 0)
+			{
+				SStringT strScale1 = _T("");
+				if (xmlNode.attribute(L"scale"))
+				{
+					strScale1 = xmlNode.attribute(L"scale").value();
+				}
+				if (strScale.CompareNoCase(strScale1) == 0)
+				{
+					return true;
+				}
+			}
+		}
+
+		xmlNode = xmlNode.next_sibling();
+
+	}
+
+	return false;
+
 }
 
 }

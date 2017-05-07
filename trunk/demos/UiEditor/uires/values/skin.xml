@@ -16,4 +16,5 @@
 	<imgframe src="PNG:image_animation_foreground_png" name="image_animation_foreground_png" />
 	<imgframe src="PNG:SKIN_UIDESIGNER_image_bg_png" name="SKIN_UIDESIGNER_image_bg_png" />
 	<imglist src="PNG:SKIN_UIDESIGNER_image_btn_skin_png" name="SKIN_UIDESIGNER_image_btn_skin_png" states="3" />
+	<imglist name="skin_transbkgnd" src="PNG:png_transbkgnd" tile="1" />
 </skin>

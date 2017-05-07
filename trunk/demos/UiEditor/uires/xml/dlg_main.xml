@@ -4,7 +4,7 @@
 		<caption pos="0,0,-0,30" show="1" font="adding:0">
 			<icon name="NAME_UIDESIGNER_main_icon" skin="SKIN_UIDESIGNER_main_icon" pos="8,9" />
 		</caption>
-		<text pos="29,6" class="CLASS_UIDESIGNER_cls_title">@string/title</text>
+		<text pos="29,6" class="CLASS_UIDESIGNER_cls_title">SOUI界面编辑器 v2.6.0.0</text>
 		<imgbtn name="NAME_UIDESIGNER_btn_close" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />
 		<imgbtn name="NAME_UIDESIGNER_btn_max" skin="_skin.sys.btn.maximize" pos="-83,0" animate="1" />
 		<imgbtn name="NAME_UIDESIGNER_btn_restore" skin="_skin.sys.btn.restore" pos="-83,0" show="0" animate="1" />
@@ -28,9 +28,8 @@
 			<pane idealSize="800" minSize="30" priority="0" clipClient="1">
 				<tabctrl name="NAME_UIDESIGNER_DESIGNER_MAIN_TAB" pos="0,0,-0,-0" tabAlign="top" tabSkin="SKIN_UIDESIGNER_TAB_LEFT" tabInterSize="2" tabWidth="70" tabHeight="30" focusable="0" show="1" curSel="0">
 					<page title="窗体" colorBorder="#ffff00">
-						<dropwindow name="dropwindow" show="0"/>
-						<scrollview pos="0,1, -0, -0" viewSize="-1,-1" name="NAME_UIDESIGNER_wnd_layout" colorBkgnd="#FFFFFF">             
-						</scrollview>
+						<dropwindow name="dropwindow" show="0" />
+						<scrollview pos="0,1, -0, -0" viewSize="-1,-1" name="NAME_UIDESIGNER_wnd_layout" colorBkgnd="#FFFFFF" />
 					</page>
 					<page title="代码" colorBorder="#ffff00">
 						<realwnd pos="0,0,-0,-0" name="SKIN_UIDESIGNER_scintilla" wndclass="scintilla" id="100000" wndname="scintilla" />

@@ -149,7 +149,7 @@ namespace SOUI
 
 		if (IsSelect() )
 		{
-			pRT->CreatePen(PS_SOLID,RGBA(255,0,0,255),1,&pen);
+			pRT->CreatePen(PS_SOLID,RGBA(255,0,0,255),2,&pen);
 			pRT->SelectObject(pen,(IRenderObj**)&oldpen);
 			pRT->DrawRectangle(m_rcPos1);
 			pRT->DrawRectangle(m_rcPos2);
