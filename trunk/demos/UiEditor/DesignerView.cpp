@@ -2099,8 +2099,9 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 	SwndStyle &style = pRealWnd->GetStyle();
 	int nMarginLeft = 0;
 	int nMarginTop = 0;
-	nMarginLeft = style.m_rcMargin.left;
-	nMarginTop = style.m_rcMargin.top;
+	CRect rcMargin = style.GetMargin();
+	nMarginLeft = rcMargin.left;
+	nMarginTop = rcMargin.top;
 	pt.x -= nMarginLeft;
 	pt.y -= nMarginTop;
 	

@@ -653,7 +653,9 @@ void SMoveWnd::MoveWndHorz(int x)
 	SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
 	int nMargin = 0;
 
-	nMargin = style.m_rcMargin.left;
+	CRect rcMargin = style.GetMargin();
+
+	nMargin = rcMargin.left;
 
 	//往左拖动，left不能小于0
 	if (pSouiLayoutParamStruct->posLeft.nPos.fSize + x - nMargin < 0 && x < 0)
@@ -668,7 +670,7 @@ void SMoveWnd::MoveWndHorz(int x)
 		CRect r;
 		GetParent()->GetWindowRect(r);
 
-		if (pSouiLayoutParamStruct->posLeft.nPos.fSize + pSouiLayoutParam->GetSpecifiedSize(Horz).fSize + x + style.m_rcMargin.right > r.right - r.left)
+		if (pSouiLayoutParamStruct->posLeft.nPos.fSize + pSouiLayoutParam->GetSpecifiedSize(Horz).fSize + x + rcMargin.right > r.right - r.left)
 		{
 			return;
 		}
@@ -806,7 +808,8 @@ void SMoveWnd::MoveWndVert(int x)
 	SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
 	int nMargin = 0;
 
-	nMargin = style.m_rcMargin.top;
+	CRect rcMargin = style.GetMargin();
+	nMargin = rcMargin.top;
 
 	//往上拖动，top不能小于0
 	if (pSouiLayoutParamStruct->posTop.nPos.fSize + x - nMargin < 0 && x < 0)
@@ -821,7 +824,7 @@ void SMoveWnd::MoveWndVert(int x)
 		CRect r;
 		GetParent()->GetWindowRect(r);
 
-		if (pSouiLayoutParamStruct->posTop.nPos.fSize + pSouiLayoutParam->GetSpecifiedSize(Vert).fSize + x + style.m_rcMargin.bottom > r.bottom - r.top)
+		if (pSouiLayoutParamStruct->posTop.nPos.fSize + pSouiLayoutParam->GetSpecifiedSize(Vert).fSize + x + rcMargin.bottom > r.bottom - r.top)
 		{
 			return;
 		}
@@ -1261,12 +1264,13 @@ void SMoveWnd::MoveWndSizeLT(int x, int PosN)
 	SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
 	int nMargin = 0;
 	
+	CRect rcMargin = style.GetMargin();
 	if (PosN == HORZ_LT)
 	{
-	    nMargin = style.m_rcMargin.left;
+	    nMargin = rcMargin.left;
 	}else
 	{
-		nMargin = style.m_rcMargin.top;
+		nMargin = rcMargin.top;
 	}
 
 	//往左、上拖动大小，left、top不能小于0
@@ -1401,12 +1405,13 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 	SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
 	int nMargin = 0;
 
+	CRect rcMargin = style.GetMargin();
 	if (PosN == HORZ)
 	{
-		nMargin = style.m_rcMargin.right;
+		nMargin =rcMargin.right;
 	}else
 	{
-		nMargin = style.m_rcMargin.bottom;
+		nMargin = rcMargin.bottom;
 	}
 
 	//右拖动不能超过父控件的右边距
@@ -1434,14 +1439,16 @@ void SMoveWnd::MoveWndSize(int x, int PosN)
 	SwndStyle &style1 = m_pRealWnd->GetStyle();
 	int nMarginLeft, nMarginTop, nMarginBottom, nMarginRight;
 
+	rcMargin = style1.GetMargin();
+
 	if (PosN == HORZ)
 	{
-		nMarginRight = style1.m_rcMargin.right;
-		nMarginLeft = style1.m_rcMargin.left;
+		nMarginRight = rcMargin.right;
+		nMarginLeft = rcMargin.left;
 	}else
 	{
-		nMarginBottom = style1.m_rcMargin.bottom;
-		nMarginTop = style1.m_rcMargin.top;
+		nMarginBottom = rcMargin.bottom;
+		nMarginTop = rcMargin.top;
 	}
 
 	//往左拖动大小,left 不能大于 right
