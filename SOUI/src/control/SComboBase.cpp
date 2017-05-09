@@ -109,7 +109,8 @@ namespace SOUI
                 m_pEdit->SSendMessage(WM_CREATE);
             m_pEdit->GetEventSet()->setMutedState(false);
             SStringW strPos;
-            strPos.Format(L"%d,%d,-%d,-%d",m_style.m_rcInset.left,m_style.m_rcInset.top,m_style.m_rcInset.right+szBtn.cx,m_style.m_rcInset.bottom);
+			CRect rcPadding = GetStyle().GetPadding();
+            strPos.Format(L"%d,%d,-%d,-%d",rcPadding.left,rcPadding.top,rcPadding.right+szBtn.cx,rcPadding.bottom);
             m_pEdit->SetAttribute(L"pos",strPos,TRUE);
             m_pEdit->SetID(IDC_CB_EDIT);
             m_pEdit->SSendMessage(EM_SETEVENTMASK,0 ,ENM_CHANGE );
@@ -129,7 +130,7 @@ namespace SOUI
     void SComboBase::GetTextRect( LPRECT pRect )
     {
         CRect rc = GetClientRect();
-        rc.DeflateRect(m_style.m_rcInset);
+        rc.DeflateRect(GetStyle().GetPadding());
         SIZE szBtn=m_pSkinBtn->GetSkinSize();
         rc.right-=szBtn.cx;
         *pRect = rc;

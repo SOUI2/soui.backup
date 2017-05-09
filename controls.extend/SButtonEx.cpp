@@ -49,8 +49,9 @@ namespace SOUI
             SASSERT(FALSE);
             break;
         }
-        szRet.cx += m_style.m_rcInset.left + m_style.m_rcInset.right;
-        szRet.cy += m_style.m_rcInset.top + m_style.m_rcInset.bottom;
+		CRect rcPadding = GetStyle().GetPadding();
+        szRet.cx += rcPadding.left + rcPadding.right;
+        szRet.cy += rcPadding.top + rcPadding.bottom;
         return szRet;
     }
 
@@ -94,14 +95,16 @@ namespace SOUI
         {
             rcClient.OffsetRect(m_ptPushOffet);
         }
-        rcClient.DeflateRect(m_style.m_rcInset);
+		CRect rcPadding = GetStyle().GetPadding();
+
+        rcClient.DeflateRect(rcPadding);
         
         //draw icon and text
         CPoint ptIcon = rcClient.TopLeft(),ptText=ptIcon;
         CSize szIcon = GetIconSize();
         CSize szDesired = GetDesiredSize(pRT,&rcClient);
-        szDesired.cx -= m_style.m_rcInset.left + m_style.m_rcInset.right;
-        szDesired.cy -= m_style.m_rcInset.top + m_style.m_rcInset.bottom;
+        szDesired.cx -= rcPadding.left + rcPadding.right;
+        szDesired.cy -= rcPadding.top + rcPadding.bottom;
         
         CSize szText;
         pRT->MeasureText(GetWindowText(),GetWindowText().GetLength(),&szText);
