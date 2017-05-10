@@ -1,5 +1,5 @@
-#include "stdafx.h"
 #include "STabCtrlHeaderBinder.h"
+using namespace SOUI;
 
 STabCtrlHeaderBinder::STabCtrlHeaderBinder(STabCtrl * _host) :m_pTabHost(_host)
 {
@@ -36,12 +36,12 @@ bool STabCtrlHeaderBinder::TabSelChanged(EventTabSelChanged *evt_sel)
 	while (pos)
 	{
 		pair= m_lstPages.GetNext(pos);
-		if (pair->m_value == evt_sel->uNewSel)
+		if (pair->m_value == (int)evt_sel->uNewSel)
 		{			
 			//pair->m_key->ModifyState(WndState_PushDown| WndState_Check,0,TRUE);
 			pair->m_key->SetCheck(TRUE);
 		}
-		else if (pair->m_value == evt_sel->uOldSel)
+		else if (pair->m_value == (int)evt_sel->uOldSel)
 		{
 			//pair->m_key->ModifyState(0, WndState_PushDown| WndState_Check, TRUE);
 			pair->m_key->SetCheck(FALSE);
