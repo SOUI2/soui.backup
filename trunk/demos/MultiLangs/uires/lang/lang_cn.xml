@@ -53,6 +53,10 @@
       <translation>中文</translation>
     </message>
     <message>
+      <source>exit</source>
+      <translation>退出</translation>
+    </message>
+    <message>
       <source>english</source>
       <translation>英文</translation>
     </message>
