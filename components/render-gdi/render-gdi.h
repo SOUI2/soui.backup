@@ -336,7 +336,11 @@ namespace SOUI
         virtual HDC GetDC(UINT uFlag=0);
         virtual void ReleaseDC(HDC hdc);
 
-        virtual HRESULT QueryInterface(REFGUID iid,IObjRef ** ppObj){ return E_NOTIMPL;}
+        virtual HRESULT QueryInterface(REFGUID iid,IObjRef ** ppObj){
+			(iid);
+			(ppObj);
+			return E_NOTIMPL;
+		}
 
         virtual HRESULT SetTransform(const IxForm * pXForm,IxForm *pOldXFrom=NULL);
 

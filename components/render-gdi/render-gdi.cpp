@@ -913,6 +913,12 @@ namespace SOUI
     
     HRESULT SRenderTarget_GDI::GradientFillEx( LPCRECT pRect,const POINT* pts,COLORREF *colors,float *pos,int nCount,BYTE byAlpha/*=0xFF */ )
     {
+		(pRect);
+		(pts);
+		(colors);
+		(pos);
+		(nCount);
+		(byAlpha);
         return E_NOTIMPL;
     }
 

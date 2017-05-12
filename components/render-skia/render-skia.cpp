@@ -1450,6 +1450,7 @@ namespace SOUI
 
 	HRESULT SFont_Skia::DefAttributeProc(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading)
 	{
+		(bLoading);
 		if(strAttribName.CompareNoCase(L"antiAlias")==0)
 		{
 			m_skPaint.setAntiAlias(String2Bool(strValue));
@@ -1470,6 +1471,7 @@ namespace SOUI
 
 	void SFont_Skia::OnInitFinished(pugi::xml_node xmlNode)
 	{
+		(xmlNode);
 		if(m_blurStyle != -1 && m_blurRadius > 0.0f)
 		{
 			m_skPaint.setMaskFilter(SkBlurMaskFilter::Create(m_blurStyle,
