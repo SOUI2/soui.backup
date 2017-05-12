@@ -76,10 +76,8 @@ namespace SOUI
 			return SIZE_WRAP_CONTENT;
 		else if (unit == px)
 			return (int)fSize;
-		else if (unit == sp)
-			return (int)(fSize*scale/100);//暂时等同于dp
-		else//if(unit == dp || unit == dip)
-			return (int)(fSize*scale / 100);
+		else//if(unit == dp || unit == dip || unit= sp)
+			return (int)round(fSize*scale / 100);
 	}
 
 	void SLayoutSize::setInvalid()
