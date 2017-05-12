@@ -16,7 +16,7 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 
 add_executable(360Preview WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-set_target_properties(360Preview PROPERTIES DEBUG_POSTFIX d)
+set_target_properties(360Preview PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 add_dependencies(360Preview soui-sys-resource ${COM_LIBS})
 target_link_libraries(360Preview soui utilities)
 set_target_properties (360Preview PROPERTIES

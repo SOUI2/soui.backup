@@ -5,7 +5,6 @@ include_directories(${PROJECT_SOURCE_DIR}/config)
 include_directories(${PROJECT_SOURCE_DIR}/components)
 include_directories(${PROJECT_SOURCE_DIR}/utilities/include)
 include_directories(${PROJECT_SOURCE_DIR}/SOUI/include)
-include_directories(${PROJECT_SOURCE_DIR}/controls.extend)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 file(GLOB_RECURSE CURRENT_HEADERS  *.h *.hpp)
@@ -18,14 +17,14 @@ source_group("Source Files" FILES ${CURRENT_SRCS})
 source_group("SoUI Resouece" FILES ${CURRENT_SOUIS})
 source_group("Resource Files" FILES ${CURRENT_RC})
 
-add_executable(SoTool WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
+add_executable(TXMgr WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-add_dependencies(SoTool soui-sys-resource ${COM_LIBS})
-target_link_libraries(SoTool utilities soui)
+add_dependencies(TXMgr soui-sys-resource ${COM_LIBS})
+target_link_libraries(TXMgr utilities soui)
 
-set_target_properties(SoTool PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
-set_target_properties(SoTool PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
-#cotire(SoTool)
-set_target_properties (SoTool PROPERTIES
+set_target_properties(TXMgr PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
+set_target_properties(TXMgr PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
+#cotire(TXMgr)
+set_target_properties (TXMgr PROPERTIES
     FOLDER demos
 )
