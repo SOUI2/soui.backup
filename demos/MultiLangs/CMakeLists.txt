@@ -21,3 +21,6 @@ add_executable(MultiLangs WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOU
 set_target_properties(MultiLangs PROPERTIES DEBUG_POSTFIX d)
 add_dependencies(MultiLangs soui-sys-resource ${COM_LIBS})
 target_link_libraries(MultiLangs soui utilities)
+set_target_properties (MultiLangs PROPERTIES
+    FOLDER demos
+)

@@ -18,3 +18,6 @@ source_group("Header Files" FILES ${MHOOK_HEADERS})
 source_group("Source Files" FILES ${MHOOK_SRCS})
 
 ADD_LIBRARY (mhook STATIC ${MHOOK_SRCS} ${MHOOK_HEADERS})
+set_target_properties (mhook PROPERTIES
+    FOLDER third-part
+)

@@ -25,4 +25,7 @@ target_link_libraries(mclistview_demo utilities soui)
 set_target_properties(mclistview_demo PROPERTIES DEBUG_POSTFIX d)
 set_target_properties(mclistview_demo PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
 set_target_properties(mclistview_demo PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
-cotire(mclistview_demo)
+#cotire(mclistview_demo)
+set_target_properties (mclistview_demo PROPERTIES
+    FOLDER demos
+)

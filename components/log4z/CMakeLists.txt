@@ -23,3 +23,6 @@ else()
 endif()
 
 set(COM_LIBS ${COM_LIBS} log4z CACHE INTERNAL "com_lib")
+set_target_properties (log4z PROPERTIES
+    FOLDER components
+)

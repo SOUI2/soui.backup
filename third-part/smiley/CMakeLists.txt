@@ -12,3 +12,6 @@ source_group("Header Files" FILES ${SMILEY_HEADERS})
 source_group("Source Files" FILES ${SMILEY_SRCS})
 
 ADD_LIBRARY (smiley STATIC ${SMILEY_SRCS} ${SMILEY_HEADERS})
+set_target_properties (smiley PROPERTIES
+    FOLDER third-part
+)

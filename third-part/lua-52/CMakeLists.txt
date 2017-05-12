@@ -73,3 +73,6 @@ source_group("Source Files" FILES ${sources})
 add_library(lua STATIC ${sources} ${headers})
 set_target_properties(lua PROPERTIES OUTPUT_NAME lua-52)
 # set_target_properties(lua PROPERTIES PREFIX lib)
+set_target_properties (lua PROPERTIES
+    FOLDER third-part
+)

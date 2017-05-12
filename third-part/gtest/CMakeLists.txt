@@ -33,3 +33,6 @@ SET(CMAKE_CXX_FLAGS_DEBUG "/D_DEBUG /MTd /Zi /Ob0 /Od /RTC1")# 直接抄gui的�
 SET(CMAKE_CXX_FLAGS_RELEASE "/MT /O2 /Ob2 /D NDEBUG")
 add_library(gtest STATIC src/gtest-all.cc src/gtest_main.cc)
 SET_TARGET_PROPERTIES(gtest PROPERTIES FOLDER 3rdParty)
+set_target_properties (gtest PROPERTIES
+    FOLDER third-part
+)

@@ -86,3 +86,6 @@ set_target_properties(demo PROPERTIES DEBUG_POSTFIX d)
 
 add_dependencies(demo soui-sys-resource ${COM_LIBS})
 target_link_libraries(demo soui utilities mhook smiley)
+set_target_properties (demo PROPERTIES
+    FOLDER demos
+)

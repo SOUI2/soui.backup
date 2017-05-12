@@ -19,3 +19,6 @@ add_executable(souispy WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS}
 set_target_properties(souispy PROPERTIES DEBUG_POSTFIX d)
 add_dependencies(souispy soui-sys-resource ${COM_LIBS})
 target_link_libraries(souispy soui utilities)
+set_target_properties (souispy PROPERTIES
+    FOLDER demos
+)

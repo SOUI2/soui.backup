@@ -21,3 +21,6 @@ add_executable(360 WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${C
 set_target_properties(360 PROPERTIES DEBUG_POSTFIX d)
 add_dependencies(360 soui-sys-resource ${COM_LIBS})
 target_link_libraries(360 soui utilities)
+set_target_properties (360 PROPERTIES
+    FOLDER demos
+)
