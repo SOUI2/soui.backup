@@ -65,7 +65,6 @@ add_executable(UiEditor WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS
 add_dependencies(UiEditor soui-sys-resource ${COM_LIBS})
 target_link_libraries(UiEditor utilities soui)
 
-set_target_properties(UiEditor PROPERTIES DEBUG_POSTFIX d)
 set_target_properties(UiEditor PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
 set_target_properties(UiEditor PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 #cotire(UiEditor)

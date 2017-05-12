@@ -82,7 +82,7 @@ source_group("Extend Cotrols" FILES ${EXTENDCOTROLS})
 
 add_executable(demo WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC} ${EXTENDCOTROLS})
 
-set_target_properties(demo PROPERTIES DEBUG_POSTFIX d)
+set_target_properties(demo PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 
 add_dependencies(demo soui-sys-resource ${COM_LIBS})
 target_link_libraries(demo soui utilities mhook smiley)

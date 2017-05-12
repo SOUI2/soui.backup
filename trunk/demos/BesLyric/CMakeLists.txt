@@ -22,7 +22,6 @@ add_executable(BesLyric WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS
 add_dependencies(BesLyric soui-sys-resource ${COM_LIBS})
 target_link_libraries(BesLyric utilities soui)
 
-set_target_properties(BesLyric PROPERTIES DEBUG_POSTFIX d)
 set_target_properties(BesLyric PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
 set_target_properties(BesLyric PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (BesLyric PROPERTIES
