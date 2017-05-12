@@ -40,10 +40,10 @@ if (NOT ENABLE_SOUI_COM_LIB)
     set (ScriptModule-Lua_src  ${ScriptModule-lua_src} ScriptModule-lua.rc)
     add_library(ScriptModule-Lua SHARED ${ScriptModule-lua_src} ${ScriptModule-lua_header})
     target_link_libraries(ScriptModule-Lua lua utilities soui)
-    cotire(ScriptModule-Lua)
+    #cotire(ScriptModule-Lua)
 else()
     add_library(ScriptModule-Lua STATIC ${ScriptModule-lua_src} ${ScriptModule-lua_header})
-    cotire(ScriptModule-Lua)
+    #cotire(ScriptModule-Lua)
 endif()
 
 if (NOT ENABLE_SOUI_CORE_LIB)
@@ -52,3 +52,7 @@ if (NOT ENABLE_SOUI_CORE_LIB)
 else()
 	message(STATUS "[LIB_CORE] ScriptModule-Lua: OFF")
 endif()
+
+set_target_properties (ScriptModule-Lua PROPERTIES
+    FOLDER components
+)

@@ -30,3 +30,6 @@ SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SAFESEH:NO")
 
 add_dependencies(FrogPlay soui-sys-resource ${COM_LIBS})
 target_link_libraries(FrogPlay soui utilities libvlc libvlccore)
+set_target_properties (FrogPlay PROPERTIES
+    FOLDER demos
+)

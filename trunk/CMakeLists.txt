@@ -94,6 +94,7 @@ option(ENABLE_SOUI_COM_LIB "Enable compile 'components' as static lib" OFF)
 cmake_minimum_required(VERSION 3.4.3)
 project(SOUI)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/__cmake/")
 
 #

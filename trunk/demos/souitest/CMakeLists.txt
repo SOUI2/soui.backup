@@ -15,3 +15,6 @@ add_executable(souitest ${CURRENT_HEADERS} ${CURRENT_SRCS})
 set_target_properties(souitest PROPERTIES DEBUG_POSTFIX d)
 target_link_libraries(souitest gtest soui utilities)
 add_dependencies(souitest gtest)
+set_target_properties (souitest PROPERTIES
+    FOLDER demos
+)

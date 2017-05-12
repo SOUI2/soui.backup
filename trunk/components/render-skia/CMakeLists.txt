@@ -34,3 +34,6 @@ else()
 endif()
 
 set(COM_LIBS ${COM_LIBS} render-skia CACHE INTERNAL "com_lib")
+set_target_properties (render-skia PROPERTIES
+    FOLDER components/render
+)

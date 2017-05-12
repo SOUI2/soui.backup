@@ -19,3 +19,6 @@ add_executable(360Preview WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOU
 set_target_properties(360Preview PROPERTIES DEBUG_POSTFIX d)
 add_dependencies(360Preview soui-sys-resource ${COM_LIBS})
 target_link_libraries(360Preview soui utilities)
+set_target_properties (360Preview PROPERTIES
+    FOLDER demos
+)
