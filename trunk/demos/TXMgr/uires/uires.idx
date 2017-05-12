@@ -1,0 +1,245 @@
+﻿<resource>
+  <UIDEF>
+    <file name="XML_INIT" path="uidef\init.xml"  />
+  </UIDEF>
+  <LAYOUT>
+    <file name="XML_MAINWND" path="xml\dlg_main.xml"  />
+  </LAYOUT>
+
+  <values>
+    <file name="string" path="values\string.xml"/>
+    <file name="color" path="values\color.xml"/>
+    <file name="skin" path="values\skin.xml"/>
+  </values>
+
+  <IMG>
+    <file name="window_inside_bkg" path="image\window_inside_bkg.png"  />
+    <file name="wnd_bg" path="image\wnd_bg.png"  />
+    <file name="logo" path="image\logo.png"  />
+    <file name="wnd_material" path="image\wnd_material.png"  />
+    <file name="clinic_inside_bkg2" path="image\clinic_inside_bkg2.png"  />
+
+    <file name="close_animation_01" path="image\CloseAnimation\close_animation_01.png"  />
+    <file name="close_animation_02" path="image\CloseAnimation\close_animation_02.png"  />
+    <file name="close_animation_03" path="image\CloseAnimation\close_animation_03.png"  />
+    <file name="close_animation_04" path="image\CloseAnimation\close_animation_04.png"  />
+    <file name="close_animation_05" path="image\CloseAnimation\close_animation_05.png"  />
+    <file name="close_animation_06" path="image\CloseAnimation\close_animation_06.png"  />
+    <file name="close_animation_07" path="image\CloseAnimation\close_animation_07.png"  />
+    <file name="close_animation_08" path="image\CloseAnimation\close_animation_08.png"  />
+    <file name="close_animation_09" path="image\CloseAnimation\close_animation_09.png"  />
+    <file name="close_animation_10" path="image\CloseAnimation\close_animation_10.png"  />
+    <file name="close_animation_11" path="image\CloseAnimation\close_animation_11.png"  />
+    <file name="close_animation_12" path="image\CloseAnimation\close_animation_12.png"  />
+    <file name="close_animation_13" path="image\CloseAnimation\close_animation_13.png"  />
+    <file name="close_animation_14" path="image\CloseAnimation\close_animation_14.png"  />
+    <file name="close_animation_15" path="image\CloseAnimation\close_animation_15.png"  />
+    <file name="close_animation_16" path="image\CloseAnimation\close_animation_16.png"  />
+    <file name="close_animation_17" path="image\CloseAnimation\close_animation_17.png"  />
+    <file name="close_animation_18" path="image\CloseAnimation\close_animation_18.png"  />
+    <file name="close_animation_19" path="image\CloseAnimation\close_animation_19.png"  />
+    <file name="close_animation_20" path="image\CloseAnimation\close_animation_20.png"  />
+    <file name="close_animation_21" path="image\CloseAnimation\close_animation_21.png"  />
+    <file name="close_animation_22" path="image\CloseAnimation\close_animation_22.png"  />
+    <file name="close_animation_23" path="image\CloseAnimation\close_animation_23.png"  />
+    <file name="close_animation_24" path="image\CloseAnimation\close_animation_24.png"  />
+    <file name="close_animation_25" path="image\CloseAnimation\close_animation_25.png"  />
+    <file name="close_animation_26" path="image\CloseAnimation\close_animation_26.png"  />
+    <file name="close_animation_27" path="image\CloseAnimation\close_animation_27.png"  />
+    <file name="close_animation_28" path="image\CloseAnimation\close_animation_28.png"  />
+    
+    
+
+    <file name="close_down" path="image\close\down.png"  />
+    <file name="close_hover1" path="image\close\hover1.png"  />
+    <file name="close_hover2" path="image\close\hover2.png"  />
+    <file name="close_hover3" path="image\close\hover3.png"  />
+    <file name="close_hover4" path="image\close\hover4.png"  />
+    <file name="close_normal" path="image\close\normal.png"  />
+
+    <file name="mini_down" path="image\mini\down.png"  />
+    <file name="mini_hover1" path="image\mini\hover1.png"  />
+    <file name="mini_hover2" path="image\mini\hover2.png"  />
+    <file name="mini_hover3" path="image\mini\hover3.png"  />
+    <file name="mini_hover4" path="image\mini\hover4.png"  />
+    <file name="mini_normal" path="image\mini\normal.png"  />
+
+    <file name="imsmenu_down" path="image\ImsMenu\down.png"  />
+    <file name="imsmenu_hover1" path="image\ImsMenu\hover1.png"  />
+    <file name="imsmenu_hover2" path="image\ImsMenu\hover2.png"  />
+    <file name="imsmenu_hover3" path="image\ImsMenu\hover3.png"  />
+    <file name="imsmenu_hover4" path="image\ImsMenu\hover4.png"  />
+    <file name="imsmenu_normal" path="image\ImsMenu\normal.png"  />
+
+    <file name="skin_down" path="image\skin\down.png"  />
+    <file name="skin_hover1" path="image\skin\hover1.png"  />
+    <file name="skin_hover2" path="image\skin\hover2.png"  />
+    <file name="skin_hover3" path="image\skin\hover3.png"  />
+    <file name="skin_hover4" path="image\skin\hover4.png"  />
+    <file name="skin_normal" path="image\skin\normal.png"  />
+
+    <file name="accprot_down" path="image\AccProt\down.png"  />
+    <file name="accprot_hover1" path="image\AccProt\hover1.png"  />
+    <file name="accprot_hover2" path="image\AccProt\hover2.png"  />
+    <file name="accprot_hover3" path="image\AccProt\hover3.png"  />
+    <file name="accprot_hover4" path="image\AccProt\hover4.png"  />    
+    <file name="accprot_normal" path="image\AccProt\normal.png"  />
+
+    <file name="phone_down" path="image\phone\down.png"  />
+    <file name="phone_hover1" path="image\phone\hover1.png"  />
+    <file name="phone_hover2" path="image\phone\hover2.png"  />
+    <file name="phone_hover3" path="image\phone\hover3.png"  />
+    <file name="phone_hover4" path="image\phone\hover4.png"  />
+    <file name="phone_hover5" path="image\phone\hover5.png"  />
+    <file name="phone_normal" path="image\phone\normal.png"  />
+
+    <file name="switchmode_classic_down" path="image\switchmode_classic_down.png"  />
+    <file name="switchmode_classic_hover" path="image\switchmode_classic_hover.png"  />
+    <file name="switchmode_classic_normal" path="image\switchmode_classic_normal.png"  />
+    <file name="switchmode_pioneer_down" path="image\switchmode_pioneer_down.png"  />
+    <file name="switchmode_pioneer_hover" path="image\switchmode_pioneer_hover.png"  />
+    <file name="switchmode_pioneer_normal" path="image\switchmode_pioneer_normal.png"  />
+
+
+    <file name="head_100" path="image\head_100.png"/>
+    <file name="head_40" path="image\head_40.png"/>
+    <file name="mouseover100" path="image\mouseover100.png"/>
+    <file name="large_frame" path="image\large_frame.png"/>
+    <file name="small_frame" path="image\small_frame.png"/>
+    <file name="small_progress_back" path="image\small_progress_back.png"/>
+    
+    <file name="coin_large" path="image\QMLevelFrame\coin_large.png"/>
+    <file name="coin_large_hover" path="image\QMLevelFrame\coin_large_hover.png"/>
+
+    <file name="lv_large" path="image\QMLevelFrame\lv_large.png"/>
+    <file name="lv_large_hover" path="image\QMLevelFrame\lv_large_hover.png"/>
+
+    <file name="task_large" path="image\QMLevelFrame\task_large.png"/>
+    <file name="task_large_hover" path="image\QMLevelFrame\task_large_hover.png"/>
+
+    <file name="lv_label" path="image\QMLevelFrame\lv_label.png"/>
+    <file name="lv_label_hover" path="image\QMLevelFrame\lv_label_hover.png"/>
+
+    <file name="coin_label" path="image\QMLevelFrame\coin_label.png"/>
+    <file name="coin_label_hover" path="image\QMLevelFrame\coin_label_hover.png"/>
+
+    <file name="task_label" path="image\QMLevelFrame\task_label.png"/>
+    <file name="task_label_hover" path="image\QMLevelFrame\task_label_hover.png"/>   
+
+
+    <file name="qmlv_large_0" path="image\QMLevelFrame\large_0.png"/>
+    <file name="qmlv_large_1" path="image\QMLevelFrame\large_1.png"/>
+    <file name="qmlv_large_2" path="image\QMLevelFrame\large_2.png"/>
+    <file name="qmlv_large_3" path="image\QMLevelFrame\large_3.png"/>
+    <file name="qmlv_large_4" path="image\QMLevelFrame\large_4.png"/>
+    <file name="qmlv_large_5" path="image\QMLevelFrame\large_5.png"/>
+    <file name="qmlv_large_6" path="image\QMLevelFrame\large_6.png"/>
+    <file name="qmlv_large_7" path="image\QMLevelFrame\large_7.png"/>
+    <file name="qmlv_large_8" path="image\QMLevelFrame\large_8.png"/>
+    <file name="qmlv_large_9" path="image\QMLevelFrame\large_9.png"/>
+
+    <file name="qmlv_0" path="image\QMLevelFrame\0.png"/>
+    <file name="qmlv_1" path="image\QMLevelFrame\1.png"/>
+    <file name="qmlv_2" path="image\QMLevelFrame\2.png"/>
+    <file name="qmlv_3" path="image\QMLevelFrame\3.png"/>
+    <file name="qmlv_4" path="image\QMLevelFrame\4.png"/>
+    <file name="qmlv_5" path="image\QMLevelFrame\5.png"/>
+    <file name="qmlv_6" path="image\QMLevelFrame\6.png"/>
+    <file name="qmlv_7" path="image\QMLevelFrame\7.png"/>
+    <file name="qmlv_8" path="image\QMLevelFrame\8.png"/>
+    <file name="qmlv_9" path="image\QMLevelFrame\9.png"/>
+
+
+    <file name="table_clean_normal" path="image\TabCtrl\normal\clean_normal.png"/>
+    <file name="table_home_normal" path="image\TabCtrl\normal\home_normal.png"/>
+    <file name="table_software_normal" path="image\TabCtrl\normal\software_normal.png"/>
+    <file name="table_speed_normal" path="image\TabCtrl\normal\speed_normal.png"/>
+    <file name="table_tools_normal" path="image\TabCtrl\normal\tools_normal.png"/>
+    <file name="table_virus_normal" path="image\TabCtrl\normal\virus_normal.png"/>
+
+    <file name="table_clean_hover" path="image\TabCtrl\hover\clean_hover.png"/>
+    <file name="table_home_hover" path="image\TabCtrl\hover\home_hover.png"/>
+    <file name="table_software_hover" path="image\TabCtrl\hover\software_hover.png"/>
+    <file name="table_speed_hover" path="image\TabCtrl\hover\speed_hover.png"/>
+    <file name="table_tools_hover" path="image\TabCtrl\hover\tools_hover.png"/>
+    <file name="table_virus_hover" path="image\TabCtrl\hover\virus_hover.png"/>
+
+    <file name="table_clean_pressed" path="image\TabCtrl\pressed\clean_pressed.png"/>
+    <file name="table_home_pressed" path="image\TabCtrl\pressed\home_pressed.png"/>
+    <file name="table_software_pressed" path="image\TabCtrl\pressed\software_pressed.png"/>
+    <file name="table_speed_pressed" path="image\TabCtrl\pressed\speed_pressed.png"/>
+    <file name="table_tools_pressed" path="image\TabCtrl\pressed\tools_pressed.png"/>
+    <file name="table_virus_pressed" path="image\TabCtrl\pressed\virus_pressed.png"/>
+
+    <file name="table_item_hover1" path="image\TabCtrl\PioneerHover\Hover_01.png"/>
+    <file name="table_item_hover2" path="image\TabCtrl\PioneerHover\Hover_02.png"/>
+    <file name="table_item_hover3" path="image\TabCtrl\PioneerHover\Hover_03.png"/>
+    <file name="table_item_hover4" path="image\TabCtrl\PioneerHover\Hover_04.png"/>
+    <file name="table_item_hover5" path="image\TabCtrl\PioneerHover\Hover_05.png"/>
+    <file name="table_item_hover6" path="image\TabCtrl\PioneerHover\Hover_06.png"/>
+    <file name="table_item_hover7" path="image\TabCtrl\PioneerHover\Hover_07.png"/>
+    <file name="table_item_hover8" path="image\TabCtrl\PioneerHover\Hover_08.png"/>
+
+    <file name="table_item_c_hover1" path="image\TabCtrl\ClassicHover\Hover_01.png"/>
+    <file name="table_item_c_hover2" path="image\TabCtrl\ClassicHover\Hover_02.png"/>
+    <file name="table_item_c_hover3" path="image\TabCtrl\ClassicHover\Hover_03.png"/>
+    <file name="table_item_c_hover4" path="image\TabCtrl\ClassicHover\Hover_04.png"/>
+    <file name="table_item_c_hover5" path="image\TabCtrl\ClassicHover\Hover_05.png"/>
+    <file name="table_item_c_hover6" path="image\TabCtrl\ClassicHover\Hover_06.png"/>
+    <file name="table_item_c_hover7" path="image\TabCtrl\ClassicHover\Hover_07.png"/>
+    <file name="table_item_c_hover8" path="image\TabCtrl\ClassicHover\Hover_08.png"/>
+
+    <file name="clean_initbrush_1" path="image\clean\initbrush\1.png"/>
+    <file name="clean_initbrush_2" path="image\clean\initbrush\2.png"/>
+    <file name="clean_initbrush_3" path="image\clean\initbrush\3.png"/>
+    <file name="clean_initbrush_4" path="image\clean\initbrush\4.png"/>
+    <file name="clean_initbrush_5" path="image\clean\initbrush\5.png"/>
+    <file name="clean_initbrush_6" path="image\clean\initbrush\6.png"/>
+    <file name="clean_initbrush_7" path="image\clean\initbrush\7.png"/>
+    <file name="clean_initbrush_8" path="image\clean\initbrush\8.png"/>
+    <file name="clean_initbrush_9" path="image\clean\initbrush\9.png"/>
+    <file name="clean_initbrush_10" path="image\clean\initbrush\10.png"/>
+    <file name="clean_initbrush_11" path="image\clean\initbrush\11.png"/>
+    <file name="clean_initbrush_12" path="image\clean\initbrush\12.png"/>
+    <file name="clean_initbrush_13" path="image\clean\initbrush\13.png"/>
+    <file name="clean_initbrush_14" path="image\clean\initbrush\14.png"/>
+    <file name="clean_initbrush_15" path="image\clean\initbrush\15.png"/>
+    <file name="clean_initbrush_16" path="image\clean\initbrush\16.png"/>
+
+    <file name="trojanscan_circle_1" path="image\TrojanScan\Circle\1.png"/>
+    <file name="trojanscan_circle_2" path="image\TrojanScan\Circle\2.png"/>
+    <file name="trojanscan_circle_3" path="image\TrojanScan\Circle\3.png"/>
+    <file name="trojanscan_circle_4" path="image\TrojanScan\Circle\4.png"/>
+    <file name="trojanscan_circle_5" path="image\TrojanScan\Circle\5.png"/>
+    <file name="trojanscan_circle_6" path="image\TrojanScan\Circle\6.png"/>
+    <file name="trojanscan_circle_7" path="image\TrojanScan\Circle\7.png"/>
+    <file name="trojanscan_circle_8" path="image\TrojanScan\Circle\8.png"/>
+    <file name="trojanscan_circle_9" path="image\TrojanScan\Circle\9.png"/>
+    <file name="trojanscan_circle_10" path="image\TrojanScan\Circle\10.png"/>
+    <file name="trojanscan_circle_11" path="image\TrojanScan\Circle\11.png"/>
+    <file name="trojanscan_circle_12" path="image\TrojanScan\Circle\12.png"/>
+    <file name="trojanscan_circle_13" path="image\TrojanScan\Circle\13.png"/>
+    <file name="trojanscan_circle_14" path="image\TrojanScan\Circle\14.png"/>
+    <file name="trojanscan_circle_15" path="image\TrojanScan\Circle\15.png"/>
+    <file name="trojanscan_circle_16" path="image\TrojanScan\Circle\16.png"/>
+    <file name="trojanscan_circle_17" path="image\TrojanScan\Circle\17.png"/>
+    <file name="trojanscan_circle_18" path="image\TrojanScan\Circle\18.png"/>
+    <file name="trojanscan_circle_19" path="image\TrojanScan\Circle\19.png"/>
+    <file name="trojanscan_circle_20" path="image\TrojanScan\Circle\20.png"/>
+    <file name="trojanscan_circle_21" path="image\TrojanScan\Circle\21.png"/>
+    <file name="trojanscan_circle_22" path="image\TrojanScan\Circle\22.png"/>
+    <file name="trojanscan_circle_23" path="image\TrojanScan\Circle\23.png"/>
+    <file name="trojanscan_circle_24" path="image\TrojanScan\Circle\24.png"/>
+    <file name="trojanscan_circle_25" path="image\TrojanScan\Circle\25.png"/>
+    <file name="trojanscan_circle_26" path="image\TrojanScan\Circle\26.png"/>
+    <file name="trojanscan_circle_27" path="image\TrojanScan\Circle\27.png"/>
+    <file name="trojanscan_circle_28" path="image\TrojanScan\Circle\28.png"/>
+    <file name="trojanscan_circle_29" path="image\TrojanScan\Circle\29.png"/>
+    <file name="trojanscan_circle_30" path="image\TrojanScan\Circle\30.png"/>
+    
+
+  </IMG>
+  <ICON>
+    <file name="ICON_LOGO"  path="image\soui.ico"    />
+  </ICON>
+</resource>
