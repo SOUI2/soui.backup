@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<skin>
+  <imglist name="skin_traymenu_icons"	src="img:traymenu_icons" states="9"/>
+  
+  <imgframe name="skin_window_inside_bkg" src="img:window_inside_bkg" left="9" top="305" right="9" bottom="305"/>
+  <imgframe name="skin_clinic_inside_bkg2" src="img:clinic_inside_bkg2" left="9" top="50" right="9" bottom="50"/>
+  <imgframe name="skin_wnd_material" src="img:wnd_material" left="26" top="26" right="26" bottom="26"/>  
+  <gsimglist name="skin_wnd_bg"	src="img:wnd_bg" tile="1" offset="0.32,0"/>
+  <imglist name="skin_logo"	src="img:logo"/>
+
+  <gsimglist name="skin_close"	imglist="img:close_normal;img:close_hover1;img:close_hover2;img:close_hover3;img:close_hover4;img:close_down" states="6"/>
+  <gsimglist name="skin_mini"	imglist="img:mini_normal;img:mini_hover1;img:mini_hover2;img:mini_hover3;img:mini_hover4;img:mini_down" states="6"/>
+  <gsimglist name="skin_imsmenu"	imglist="img:imsmenu_normal;img:imsmenu_hover1;img:imsmenu_hover2;img:imsmenu_hover3;img:imsmenu_hover4;img:imsmenu_down" states="6"/>
+  <gsimglist name="skin_skin"	imglist="img:skin_normal;img:skin_hover1;img:skin_hover2;img:skin_hover3;img:skin_hover4;img:skin_down" states="6"/>
+  <gsimglist name="skin_accprot"	imglist="img:accprot_normal;img:accprot_hover1;img:accprot_hover2;img:accprot_hover3;img:accprot_hover4;img:accprot_down" states="6"/>
+  <gsimglist name="skin_phone"	imglist="img:phone_normal;img:phone_hover1;img:phone_hover2;img:phone_hover3;img:phone_hover4;img:phone_hover5;img:phone_down" states="7"/>
+
+  <gsimglist name="skin_switchmode_pioneer"	imglist="img:switchmode_pioneer_normal;img:switchmode_pioneer_hover;img:switchmode_pioneer_down" states="3"/>
+  <gsimglist name="skin_switchmode_classic"	imglist="img:switchmode_classic_normal;img:switchmode_classic_hover;img:switchmode_classic_down" states="3"/>
+  <gsimglist name="skin_head_100"	src="img:head_100" mask="img:mouseover100"/>
+  <gsimglist name="skin_head_40"	src="img:head_40" mask="img:small_progress_back"/>
+  <imglist name="skin_large_frame"	src="img:large_frame"/>
+  <imglist name="skin_small_frame"	src="img:small_frame"/>
+  
+
+
+  <gsimglist name="skin_coin"	imglist="img:coin_large;img:coin_large_hover" states="2" left="40" top="0" right="2" bottom="20"/>
+  <gsimglist name="skin_lv"	imglist="img:lv_large;img:lv_large_hover" states="2" left="36" top="0" right="6" bottom="20"/>
+  <gsimglist name="skin_task"	imglist="img:task_large;img:task_large_hover" states="2"/>
+
+  <gsimglist name="skin_lv_label"	imglist="img:lv_label;img:lv_label_hover" states="2" />
+  <gsimglist name="skin_task_label"	imglist="img:task_label;img:task_label_hover" states="2" />
+  <gsimglist name="skin_coin_label"	imglist="img:coin_label;img:coin_label_hover" states="2" left="18" top="2" right="10" bottom="10"/>
+
+  <imglist name="skin_qmlv_large_0"	src="img:qmlv_large_0"/>
+  <imglist name="skin_qmlv_large_1"	src="img:qmlv_large_1"/>
+  <imglist name="skin_qmlv_large_2"	src="img:qmlv_large_2"/>
+  <imglist name="skin_qmlv_large_3"	src="img:qmlv_large_3"/>
+  <imglist name="skin_qmlv_large_4"	src="img:qmlv_large_4"/>
+  <imglist name="skin_qmlv_large_5"	src="img:qmlv_large_5"/>
+  <imglist name="skin_qmlv_large_6"	src="img:qmlv_large_6"/>
+  <imglist name="skin_qmlv_large_7"	src="img:qmlv_large_7"/>
+  <imglist name="skin_qmlv_large_8"	src="img:qmlv_large_8"/>
+  <imglist name="skin_qmlv_large_9"	src="img:qmlv_large_9"/>
+
+  <imglist name="skin_qmlv_0"	src="img:qmlv_0"/>
+  <imglist name="skin_qmlv_1"	src="img:qmlv_1"/>
+  <imglist name="skin_qmlv_2"	src="img:qmlv_2"/>
+  <imglist name="skin_qmlv_3"	src="img:qmlv_3"/>
+  <imglist name="skin_qmlv_4"	src="img:qmlv_4"/>
+  <imglist name="skin_qmlv_5"	src="img:qmlv_5"/>
+  <imglist name="skin_qmlv_6"	src="img:qmlv_6"/>
+  <imglist name="skin_qmlv_7"	src="img:qmlv_7"/>
+  <imglist name="skin_qmlv_8"	src="img:qmlv_8"/>
+  <imglist name="skin_qmlv_9"	src="img:qmlv_9"/>
+
+  <gsimglist name="skin_ico_table"	imglist="img:table_home_normal;img:table_virus_normal;img:table_clean_normal;img:table_speed_normal;img:table_software_normal;img:table_tools_normal;img:table_home_hover;img:table_virus_hover;img:table_clean_hover;img:table_speed_hover;img:table_software_hover;img:table_tools_hover;img:table_home_pressed;img:table_virus_pressed;img:table_clean_pressed;img:table_speed_pressed;img:table_software_pressed;img:table_tools_pressed" states="18"/>
+  <gsimglist name="skin_table_item_hover"	imglist="img:table_item_hover1;img:table_item_hover2;img:table_item_hover3;img:table_item_hover4;img:table_item_hover5;img:table_item_hover6;img:table_item_hover7;img:table_item_hover8" states="8"/>
+  <gsimglist name="skin_table_item_c_hover"	imglist="img:table_item_c_hover1;img:table_item_c_hover2;img:table_item_c_hover3;img:table_item_c_hover4;img:table_item_c_hover5;img:table_item_c_hover6;img:table_item_c_hover7;img:table_item_c_hover8" states="8"/>
+
+  <gsimglist name="skin_clean_initbrush"	imglist="img:clean_initbrush_1;img:clean_initbrush_2;img:clean_initbrush_3;img:clean_initbrush_4;img:clean_initbrush_5;img:clean_initbrush_6;img:clean_initbrush_7;img:clean_initbrush_8;img:clean_initbrush_9;img:clean_initbrush_10;img:clean_initbrush_11;img:clean_initbrush_12;img:clean_initbrush_13;img:clean_initbrush_14;img:clean_initbrush_15;img:clean_initbrush_16" states="16" />
+  <gsimglist name="skin_trojanscan_circle"	imglist="img:trojanscan_circle_1;img:trojanscan_circle_2;img:trojanscan_circle_3;img:trojanscan_circle_4;img:trojanscan_circle_5;img:trojanscan_circle_6;img:trojanscan_circle_7;img:trojanscan_circle_8;img:trojanscan_circle_9;img:trojanscan_circle_10;img:trojanscan_circle_11;img:trojanscan_circle_12;img:trojanscan_circle_13;img:trojanscan_circle_14;img:trojanscan_circle_15;img:trojanscan_circle_16;img:trojanscan_circle_17;img:trojanscan_circle_18;img:trojanscan_circle_19;img:trojanscan_circle_20;img:trojanscan_circle_21;img:trojanscan_circle_22;img:trojanscan_circle_23;img:trojanscan_circle_24;img:trojanscan_circle_25;img:trojanscan_circle_26;img:trojanscan_circle_27;img:trojanscan_circle_28;img:trojanscan_circle_29;img:trojanscan_circle_30" states="30" /> 
+
+  <button name="skin_btn_home" colorUp="#31D884" colorDown="#31D884" colorUpHover="#21EA84" colorDownHover="#21EA84" colorUpPush="#00C963" colorDownPush="#00C963"/>
+
+  <gsimglist name="skin_close_animation"	imglist="img:close_animation_01;img:close_animation_02;img:close_animation_03;img:close_animation_04;img:close_animation_05;img:close_animation_06;img:close_animation_07;img:close_animation_08;img:close_animation_09;img:close_animation_10;img:close_animation_11;img:close_animation_12;img:close_animation_13;img:close_animation_14;img:close_animation_15;img:close_animation_16;img:close_animation_17;img:close_animation_18;img:close_animation_19;img:close_animation_20;img:close_animation_21;img:close_animation_22;img:close_animation_23;img:close_animation_24;img:close_animation_25;img:close_animation_26;img:close_animation_27;img:close_animation_28" states="28"/>
+
+
+</skin>

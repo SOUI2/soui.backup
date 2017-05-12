@@ -1,0 +1,114 @@
+﻿<SOUI name="mainWindow" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="394" height="624"  translucent="1" >
+  <root cache="1" >
+
+    <window pos="0,0,-0,-0" name="main_wnd" skin="skin_wnd_material">
+
+
+      <window pos="13,13,-13,@598" offset="0,0" skin="skin_wnd_bg" name="main_wnd_show" alpha="250">
+
+      </window>
+      
+      <window pos="13,-83,-13,-13" colorBkgnd="#FFFFFF"/>
+      
+      <gstabctrl id="30000" pos="18,13,-18,-13" name="tab_main" icon-x="6" icon-y="11" text-x="56" text-y="30" iconSkin="skin_ico_table" anihover="skin_table_item_hover" 
+                 animateSteps="5" tabAlign="bottom" tabHeight="70" tabWidth="58" drawFocusRect="0" cursor="hand"
+                  colorText="#c1c1c1" colorTextHover="#5748EA" colorTextPush="#5748EA" colorTextDisable="#5748EA"  >
+        <page title="我的管家">
+          <window pos="|0,110,@124,@124" offset="-0.5,0">
+            <img pos="|0,8,@95,@95" offset="-0.5,0" skin="skin_head_100" />
+            <img pos="0,0"  skin="skin_large_frame" />
+          </window>
+
+          <window pos="0,[20,-0,@21">
+            <window pos="|-43,0,@50,@21" offset="-1.5,0" >
+              <imgbtn pos="0,0,@50,@21" skin="skin_lv"/>
+              <img pos="36,|-1" offset="0,-0.5" skin="skin_qmlv_large_8"/>
+            </window>
+            <window pos="|0,0,@43,@21" offset="-0.5,0" >
+              <imgbtn pos="0,0" skin="skin_task"/>
+              <img pos="|2,|-1" offset="-0.5,-0.5" skin="skin_qmlv_large_6"/>
+            </window>
+            <window pos="|43,0,@43,@21" offset="0.5,0" >
+              <imgbtn pos="0,0" skin="skin_coin"/>
+              <img pos="|2,|0" offset="-0.5,-0.5" skin="skin_qmlv_large_1"/>
+              <img pos="[0,{0" skin="skin_qmlv_large_9"/>
+              <img pos="[0,{0" skin="skin_qmlv_large_3"/>
+            </window>
+          </window>
+
+          <window pos="|0,[70"  offset="-0.5,0">
+            <text  colorText="#FFFFFF" font="size:28" >4 天未体检，风险上升</text>
+          </window>
+
+          <button pos="|0,[50,@180,@55" offset="-0.5,0" skin="skin_btn_home" colorText="#FFFFFF" font="size:30" drawFocusRect="0" >全面体检</button>
+        </page>
+        <page title="病毒查杀">
+          <gsanibtn pos="|0,80" offset="-0.5,0" skin="skin_trojanscan_circle" />
+        
+          <window pos="|0,[7"  offset="-0.5,0">
+            <text  colorText="#FFFFFF" font="size:28" >定期杀毒，清除风险</text>
+          </window>
+
+          <button pos="|0,[50,@180,@55" offset="-0.5,0" skin="skin_btn_home" colorText="#FFFFFF" font="size:30" drawFocusRect="0" >闪电杀毒</button>
+        
+        </page>
+        <page title="清理垃圾">
+          <gsanibtn pos="|0,80" offset="-0.5,0" skin="skin_clean_initbrush" />
+
+          <window pos="|0,[7"  offset="-0.5,0">
+            <text  colorText="#FFFFFF" font="size:28" >新清理，更全更强劲</text>
+          </window>
+
+          <button pos="|0,[50,@180,@55" offset="-0.5,0" skin="skin_btn_home" colorText="#FFFFFF" font="size:30" drawFocusRect="0" >立即体验</button>
+        
+        </page>
+        <page title="电脑加速"/>
+        <page title="软件分析"/>
+        <page title="工具箱"/>
+      </gstabctrl>
+
+      <caption pos="13,13,-13,120" show="1" font="adding:0">
+
+
+          <window name="logo_title_1" show="1">
+            <img pos="10,10" skin="skin_logo" />
+            <text pos="[5,{0" colorText="#F6FDFC" font="size:14">电脑管家</text>
+
+          </window>
+
+          <window name="logo_title_2" pos="0,0" show="0">
+            <window pos="5,5,@50,@50" >
+              <img pos="6,6,@37,@37" skin="skin_head_40" />
+              <img pos="0,0"  skin="skin_small_frame" />
+
+              <text pos="[5,8" colorText="#F6FDFC" font="size:12">电脑管家</text>
+              <window pos="{0,[5">
+                <imgbtn pos="0,0" skin="skin_lv_label">
+                  <img pos="20,|0" offset="0,-0.5" skin="skin_qmlv_8"/>
+                </imgbtn>
+                <imgbtn pos="[2,{0" skin="skin_task_label">
+                  <img pos="|5,|0" offset="-0.5,-0.5" skin="skin_qmlv_6"/>
+                </imgbtn>
+                <imgbtn pos="[2,{0,@40,@13" skin="skin_coin_label">
+                  <img pos="|-2,|0" offset="-0.5,-0.5" skin="skin_qmlv_1"/>
+                  <img pos="[0,{0" skin="skin_qmlv_9"/>
+                  <img pos="[0,{0" skin="skin_qmlv_3"/>
+                </imgbtn>
+              </window>
+            </window>
+          </window>
+        
+        <gsanibtn pos="-3,3" offset="-1,0" name="btn_close" skin="skin_close" tip="关闭"/>
+        <gsanibtn pos="{0,{0" offset="-1,0" name="btn_min" skin="skin_mini" tip="最小化"/>
+        <gsanibtn pos="{0,{0" offset="-1,0" skin="skin_imsmenu" tip="主菜单"/>
+        <gsanibtn pos="{0,{0" offset="-1,0" skin="skin_skin" tip="换肤"/>
+        <gsanibtn pos="{0,{0" offset="-1,0" skin="skin_accprot" tip="账号保"/>
+        <gsanibtn pos="{0,{0" offset="-1,0" skin="skin_phone" tip="我的手机"/>
+
+        <imgbtn pos="-20, 60" offset="-1,0" name="switchmode_pioneer" skin="skin_switchmode_pioneer"/>
+      </caption>
+    </window>
+    <img pos="-0,|0" name="close_animation" offset="-1,-0.5" skin="skin_close_animation" show="0"/>
+
+  </root>
+</SOUI>
