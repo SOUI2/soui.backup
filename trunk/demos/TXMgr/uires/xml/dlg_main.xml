@@ -11,7 +11,7 @@
       <window pos="13,-83,-13,-13" colorBkgnd="#FFFFFF"/>
       
       <gstabctrl id="30000" pos="18,13,-18,-13" name="tab_main" icon-x="6" icon-y="11" text-x="56" text-y="30" iconSkin="skin_ico_table" anihover="skin_table_item_hover" 
-                 animateSteps="5" tabAlign="bottom" tabHeight="70" tabWidth="58" drawFocusRect="0" cursor="hand"
+                 animateSteps="5" animateType="1" tabAlign="bottom" tabHeight="70" tabWidth="58" drawFocusRect="0" cursor="hand"
                   colorText="#c1c1c1" colorTextHover="#5748EA" colorTextPush="#5748EA" colorTextDisable="#5748EA"  >
         <page title="我的管家">
           <window pos="|0,110,@124,@124" offset="-0.5,0">
