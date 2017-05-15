@@ -14,6 +14,11 @@ namespace SOUI
 
 	}
 
+	static int fround(float v)
+	{
+		return (int)floor(v+0.5f);
+	}
+
 	static bool fequal(float a, float b)
 	{
 		return fabs(a-b)<0.00000001f;
@@ -77,7 +82,7 @@ namespace SOUI
 		else if (unit == px)
 			return (int)fSize;
 		else//if(unit == dp || unit == dip || unit= sp)
-			return (int)round(fSize*scale / 100);
+			return (int)fround(fSize*scale / 100);
 	}
 
 	void SLayoutSize::setInvalid()
