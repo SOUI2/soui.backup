@@ -95,8 +95,7 @@ namespace SOUI
 		m_xmlDropdownStyle.append_copy(xmlNode.child(KStyle_Dropdown));
         //创建edit对象
         if(!m_bDropdown)
-        {
-            SIZE szBtn=m_pSkinBtn->GetSkinSize();
+        {            
             m_pEdit=new SComboEdit(this);
             SApplication::getSingleton().SetSwndDefAttr(m_pEdit);
 
@@ -108,10 +107,7 @@ namespace SOUI
             else
                 m_pEdit->SSendMessage(WM_CREATE);
             m_pEdit->GetEventSet()->setMutedState(false);
-            SStringW strPos;
-			CRect rcPadding = GetStyle().GetPadding();
-            strPos.Format(L"%d,%d,-%d,-%d",rcPadding.left,rcPadding.top,rcPadding.right+szBtn.cx,rcPadding.bottom);
-            m_pEdit->SetAttribute(L"pos",strPos,TRUE);
+			
             m_pEdit->SetID(IDC_CB_EDIT);
             m_pEdit->SSendMessage(EM_SETEVENTMASK,0 ,ENM_CHANGE );
 
@@ -411,6 +407,22 @@ namespace SOUI
         CloseUp();
     }
 
+	void SComboBase::OnSize(UINT nType, CSize size)
+	{
+		__super::OnSize(nType, size);
+		if (m_pEdit)
+		{
+			SIZE szBtn = m_pSkinBtn->GetSkinSize();
+			SStringW strPos;
+			CRect rcPadding = GetStyle().GetPadding();
+			float nHei = GetClientRect().Height();
+			int nBtnWid = (nHei / szBtn.cy)*szBtn.cx;
+			strPos.Format(L"%d,%d,-%d,-%d", rcPadding.left, rcPadding.top, rcPadding.right + nBtnWid, rcPadding.bottom);
+			m_pEdit->SetAttribute(L"pos", strPos);
+			UpdateLayout();
+		}
+	}
+	
     void SComboBase::OnColorize(COLORREF cr)
     {
         __super::OnColorize(cr);

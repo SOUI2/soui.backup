@@ -371,7 +371,7 @@ namespace SOUI
         void OnSetFocus(SWND wndOld);
         
         void OnKillFocus(SWND wndFocus);
-
+		void OnSize(UINT nType, CSize size);
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"dropDown", m_bDropdown, FALSE)
             ATTR_INT(L"dropHeight", m_nDropHeight, FALSE)
@@ -382,6 +382,7 @@ namespace SOUI
 
         SOUI_MSG_MAP_BEGIN()
             MSG_WM_PAINT_EX(OnPaint)
+			MSG_WM_SIZE(OnSize)
             MSG_WM_LBUTTONDOWN(OnLButtonDown)        
             MSG_WM_MOUSEMOVE(OnMouseMove)
             MSG_WM_MOUSELEAVE(OnMouseLeave)
