@@ -976,7 +976,7 @@ namespace SOUI
 				{
 					SItemPanel *pSelItem = GetItemPanel(m_hSelected);
 					if (pSelItem) pSelItem->DoFrameEvent(WM_KILLFOCUS, 0, 0);
-					m_hSelected = NULL;
+					//m_hSelected = NULL;
 				}
 
 				__super::ProcessSwndMessage(uMsg,wParam,lParam,lRet);
