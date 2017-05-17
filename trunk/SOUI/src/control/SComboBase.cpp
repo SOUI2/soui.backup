@@ -124,15 +124,18 @@ namespace SOUI
     {
         SIZE szBtn=m_pSkinBtn->GetSkinSize();
         GetClientRect(prc);
-        prc->left=prc->right-szBtn.cx;
+		float nHei = prc->bottom - prc->top;
+        prc->left= prc->right-(nHei/szBtn.cy)*szBtn.cx;
     }
 
     void SComboBase::GetTextRect( LPRECT pRect )
     {
         CRect rc = GetClientRect();
         rc.DeflateRect(GetStyle().GetPadding());
-        SIZE szBtn=m_pSkinBtn->GetSkinSize();
-        rc.right-=szBtn.cx;
+        //SIZE szBtn=m_pSkinBtn->GetSkinSize();
+		CRect rcBtn;
+		GetDropBtnRect(&rcBtn);
+        rc.right-= rcBtn.Width();
         *pRect = rc;
     }
 
