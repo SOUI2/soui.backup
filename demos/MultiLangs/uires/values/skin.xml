@@ -9,6 +9,7 @@
     <corners radius="5dp"/>
     <size width="100dp" height="100dp"/>
     <solid color="#ff0000"/>
-    <stroke style="dashDotDot" width="1" color="#00ff00"/>    
+    <stroke style="dashDotDot" width="1" color="#00ff00"/>
+    <gradient type="linear" startColor="#ff0000" centerColor="#00ff00" endColor="#0000ff" angle="45"/>
   </shape>
 </skin>
