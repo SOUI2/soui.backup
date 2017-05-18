@@ -153,9 +153,10 @@ namespace SOUI{
 						pugi::xml_node     nodeData = GetSourceXmlNode(root,docData,pResProvider,KNodeSkin);
 						if(nodeData)
 						{
-							pSkinPool = new SSkinPool;
+							pSkinPool.Attach(new SSkinPool);
 							pSkinPool->LoadSkins(nodeData);
 							SSkinPoolMgr::getSingletonPtr()->PushSkinPool(pSkinPool);
+
 						}
 					}
 					//load named style
@@ -164,7 +165,7 @@ namespace SOUI{
 						pugi::xml_node     nodeData = GetSourceXmlNode(root,docData,pResProvider,KNodeStyle);
 						if(nodeData)
 						{
-							pStylePool = new SStylePool;
+							pStylePool.Attach(new SStylePool);
 							pStylePool->Init(nodeData);
 							SStylePoolMgr::getSingleton().PushStylePool(pStylePool);
 						}
