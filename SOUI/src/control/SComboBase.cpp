@@ -413,16 +413,15 @@ namespace SOUI
 		__super::UpdateChildrenPosition();
 		if (!m_pEdit)
 			return;
-		SIZE szBtn = m_pSkinBtn->GetSkinSize();
-		SStringW strPos;
+		SIZE szBtn = m_pSkinBtn->GetSkinSize();		
 		CRect rcPadding = GetStyle().GetPadding();
-		CRect rcClient = GetClientRect();
-		float nHei = rcClient.Height();
+		CRect rcEdit = GetClientRect();
+		float nHei = rcEdit.Height();
 		int nBtnWid = (nHei / szBtn.cy)*szBtn.cx;
-		rcPadding.right -= nBtnWid;
-		rcClient.InflateRect(rcPadding);
+		rcPadding.right += nBtnWid;
+		rcEdit.DeflateRect(rcPadding);
 		//strPos.Format(L"%d,%d,-%d,-%d", rcPadding.left, rcPadding.top, rcPadding.right + nBtnWid, rcPadding.bottom);
-		m_pEdit->Move(rcClient);
+		m_pEdit->Move(rcEdit);
 	}
 	
 	
