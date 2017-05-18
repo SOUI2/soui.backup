@@ -219,6 +219,8 @@ namespace SOUI
         virtual ~SRegion_Skia();
 
 		virtual void CombineRect(LPCRECT lprect,int nCombineMode);
+		virtual void CombineRoundRect(LPCRECT lprect, POINT ptRadius, int nCombineMode);
+		virtual void CombineEllipse(LPCRECT lprect , int nCombineMode);
         virtual void CombineRgn(const IRegion * pRgnSrc,int nCombineMode );
         virtual void SetRgn(const HRGN hRgn);
 		virtual BOOL PtInRegion(POINT pt);
@@ -233,6 +235,8 @@ namespace SOUI
         void SetRegion(const SkRegion & rgn);
         
         static SkRegion::Op RGNMODE2SkRgnOP(UINT mode);
+
+
 	protected:
         SkRegion    m_rgn;
 	};
@@ -253,6 +257,7 @@ namespace SOUI
 		virtual HRESULT CreatePen(int iStyle,COLORREF cr,int cWidth,IPen ** ppPen);
 		virtual HRESULT CreateSolidColorBrush(COLORREF cr,IBrush ** ppBrush);
 		virtual HRESULT CreateBitmapBrush( IBitmap *pBmp,IBrush ** ppBrush );
+		virtual HRESULT CreateRegion(IRegion ** ppRegion);
 
 		virtual HRESULT Resize(SIZE sz);
 
@@ -328,7 +333,7 @@ namespace SOUI
 			return crOld;
 		}
 		
-        virtual HDC GetDC(UINT uFlag);
+        virtual HDC GetDC(UINT uFlag=0);
 
 		virtual void ReleaseDC(HDC hdc);
 
@@ -341,6 +346,8 @@ namespace SOUI
 		virtual COLORREF GetPixel( int x, int y );
 
 		virtual COLORREF SetPixel( int x, int y, COLORREF cr );
+
+		virtual HRESULT GradientFill2(LPCRECT pRect,GradientType type,COLORREF crStart,COLORREF crCenter,COLORREF crEnd,float fLinearAngle,float fCenterX,float fCenterY,int nRadius,BYTE byAlpha=0xff);
 
     public:
         SkCanvas *GetCanvas(){return m_SkCanvas;}

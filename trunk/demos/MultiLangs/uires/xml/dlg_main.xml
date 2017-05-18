@@ -69,6 +69,7 @@
           </mclistview>
         </page>
         <page title="page3">
+          <img pos="5,5" skin="shape_test"/>
           <edit pos="|0,|0,@200dp,@30dp" offset="-0.5,-0.5" font="size:18dp">编辑窗口</edit>
         </page>
       </tabctrl>

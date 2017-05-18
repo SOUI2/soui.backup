@@ -225,7 +225,10 @@ namespace SOUI
         }
 
         virtual void CombineRect(LPCRECT lprect,int nCombineMode);
-        virtual void CombineRgn(const IRegion * pRgnSrc,int nCombineMode );
+		virtual void CombineRoundRect(LPCRECT lprect, POINT ptRadius, int nCombineMode);
+		virtual void CombineEllipse(LPCRECT lprect , int nCombineMode);
+
+		virtual void CombineRgn(const IRegion * pRgnSrc,int nCombineMode );
         virtual void SetRgn(const HRGN rgn);
 
         virtual BOOL PtInRegion(POINT pt);
@@ -238,7 +241,9 @@ namespace SOUI
     protected:
         HRGN GetRegion() const;
         void _CombineRgn(HRGN hRgn,int nCombineMode);
-        
+
+
+
         HRGN    m_hRgn;
     };
 
@@ -350,6 +355,9 @@ namespace SOUI
 
 		virtual COLORREF SetPixel( int x, int y, COLORREF cr );
 
+		virtual HRESULT GradientFill2(LPCRECT pRect,GradientType type,COLORREF crStart,COLORREF crCenter,COLORREF crEnd,float fLinearAngle,float fCenterX,float fCenterY,int nRadius,BYTE byAlpha=0xff);
+
+		virtual HRESULT CreateRegion( IRegion ** ppRegion );
     protected:
         HDC               m_hdc;
         SColor            m_curColor;
