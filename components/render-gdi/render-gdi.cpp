@@ -1093,6 +1093,7 @@ namespace SOUI
 
 	HRESULT SRenderTarget_GDI::GradientFill2(LPCRECT pRect,GradientType type,COLORREF crStart,COLORREF crCenter,COLORREF crEnd,float fLinearAngle,float fCenterX,float fCenterY,int nRadius,BYTE byAlpha/*=0xff*/)
 	{
+		(pRect), (type), (crStart), (crCenter), (crEnd), (fLinearAngle), (fCenterX), (fCenterY), (nRadius), (byAlpha);
 		return E_NOTIMPL;
 	}
 
