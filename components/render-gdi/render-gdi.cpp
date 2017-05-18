@@ -259,6 +259,20 @@ namespace SOUI
         ::SetRectRgn(m_hRgn,0,0,0,0);
     }
 
+	void SRegion_GDI::CombineRoundRect(LPCRECT lprect, POINT ptRadius, int nCombineMode)
+	{
+		HRGN hRgn = ::CreateRoundRectRgn(lprect->left,lprect->top,lprect->right,lprect->bottom,ptRadius.x,ptRadius.y);
+		::CombineRgn(m_hRgn,hRgn,NULL,nCombineMode);
+		DeleteObject(hRgn);
+	}
+
+	void SRegion_GDI::CombineEllipse(LPCRECT lprect , int nCombineMode)
+	{
+		HRGN hRgn = ::CreateEllipticRgnIndirect(lprect);
+		::CombineRgn(m_hRgn,hRgn,NULL,nCombineMode);
+		DeleteObject(hRgn);
+	}
+
     //////////////////////////////////////////////////////////////////////////
     //  DCBuffer
     //////////////////////////////////////////////////////////////////////////
@@ -1075,6 +1089,16 @@ namespace SOUI
 		m_curBmp->UnlockPixelBits(pBits);
 
 		return crRet;
+	}
+
+	HRESULT SRenderTarget_GDI::GradientFill2(LPCRECT pRect,GradientType type,COLORREF crStart,COLORREF crCenter,COLORREF crEnd,float fLinearAngle,float fCenterX,float fCenterY,int nRadius,BYTE byAlpha/*=0xff*/)
+	{
+		return E_NOTIMPL;
+	}
+
+	HRESULT SRenderTarget_GDI::CreateRegion(IRegion ** ppRegion)
+	{
+		return m_pRenderFactory->CreateRegion(ppRegion)?S_OK:E_OUTOFMEMORY;
 	}
 
 

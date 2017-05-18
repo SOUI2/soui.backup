@@ -102,6 +102,7 @@ namespace SOUI
 
 	void SLayoutSize::parseString(const SStringW & strSize)
 	{
+		if(strSize.IsEmpty()) return;
 		SStringW strUnit = strSize.Right(2);
 		strUnit.MakeLower();
 		unit = px;

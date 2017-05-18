@@ -5,4 +5,10 @@
   <imglist name="scale_pic" scale="125"	src="img:pic_125"/>
   <imglist name="scale_pic" scale="150"	src="img:pic_150"/>
   <imglist name="scale_pic" scale="200"	src="img:pic_200"/>
+  <shape name="shape_test" shape="rectangle">
+    <corners radius="5dp"/>
+    <size width="100dp" height="100dp"/>
+    <solid color="#ff0000"/>
+    <stroke style="dashDotDot" width="1" color="#00ff00"/>    
+  </shape>
 </skin>

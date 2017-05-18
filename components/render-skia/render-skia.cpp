@@ -184,6 +184,11 @@ namespace SOUI
 		return S_OK;
 	}
 
+	HRESULT SRenderTarget_Skia::CreateRegion(IRegion ** ppRegion)
+	{
+		return m_pRenderFactory->CreateRegion(ppRegion)?S_OK:E_OUTOFMEMORY;
+	}
+
 	HRESULT SRenderTarget_Skia::Resize( SIZE sz )
 	{
     	m_curBmp->Init(sz.cx,sz.cy);
@@ -909,6 +914,91 @@ namespace SOUI
         delete []skPts;
         return S_OK;
     }
+
+
+	HRESULT SRenderTarget_Skia::GradientFill2(LPCRECT pRect,GradientType type,COLORREF crStart,COLORREF crCenter,COLORREF crEnd,float fLinearAngle,float fCenterX,float fCenterY,int nRadius,BYTE byAlpha/*=0xff*/)
+	{
+		SkRect skrc = toSkRect(pRect);
+		skrc.offset(m_ptOrg);
+
+		SkColor *skColors= new SkColor[3];
+
+		skColors[0]=SColor(crStart,byAlpha).toARGB();
+		skColors[1]=SColor(crCenter,byAlpha).toARGB();
+		skColors[2]=SColor(crEnd,byAlpha).toARGB();
+
+		SkShader *pShader = NULL;
+		int wid = pRect->right - pRect->left;
+		int hei = pRect->bottom -pRect->top;
+		if(type == linear)
+		{
+			SkPoint *skPts = new SkPoint[3];
+			skPts[1].iset((pRect->left + pRect->right)/2,(pRect->top+pRect->bottom)/2);
+
+			if(fabs(fLinearAngle-90.0f)<0.000001)
+			{//90度
+				skPts[0].iset(pRect->left + wid/2,pRect->top);
+				skPts[2].iset(pRect->left + wid/2,pRect->bottom);
+			}else
+			{//其它角度
+				int halfWid = wid/2;
+				int halfHei = hei/2;
+
+				POINT pt1a,pt1b,pt2a,pt2b;
+				pt1a.x=-halfWid,pt2a.x=halfWid;
+				pt1b.y=-halfHei,pt2b.y=halfHei;
+				pt1a.y=(int)(-halfWid*tan(fLinearAngle));
+				pt2a.y = -pt1a.y;
+
+				pt1b.x =(int) (-halfHei*atan(fLinearAngle));
+				pt2b.x = -pt1b.x;
+
+				pt1a.x += pRect->left + halfWid;
+				pt1a.y += pRect->top + halfHei;
+				pt1b.x += pRect->left + halfWid;
+				pt1b.y += pRect->top + halfHei;
+				if(pt2a.y > halfHei)
+				{//using pt1a,pt1b
+					skPts[0].iset(pt1a.x,pt1a.y);
+					skPts[2].iset(pt1b.x,pt1b.y);
+				}else
+				{//using pt2a,pt2b
+					skPts[0].iset(pt2a.x,pt2a.y);
+					skPts[2].iset(pt2b.x,pt2b.y);
+				}
+			}
+
+
+			pShader = SkGradientShader::CreateLinear(skPts, skColors, NULL,3,SkShader::kMirror_TileMode);
+			delete []skPts;
+		}else if(type == radial)
+		{
+			SkPoint skCenter;
+			skCenter.iset(pRect->left + wid/2,pRect->top + hei/2);
+			pShader = SkGradientShader::CreateRadial(skCenter,SkScalar(nRadius),skColors,NULL,3,SkShader::kMirror_TileMode);
+		}else if(type==sweep)
+		{
+			SkPoint skCenter;
+			skCenter.iset(pRect->left + wid/2,pRect->top + hei/2);
+			pShader = SkGradientShader::CreateSweep(SkScalar(pRect->left+fCenterX*wid),SkScalar(pRect->top+fCenterY*hei),skColors,NULL,3);
+		}
+
+		delete []skColors;
+
+		if(!pShader)
+		{
+			return E_INVALIDARG;
+		}
+
+		SkPaint paint;
+		paint.setShader(pShader);
+		pShader->unref();
+
+		m_SkCanvas->drawRect(skrc,paint);
+
+		return S_OK;
+	}
+
     
     HRESULT SRenderTarget_Skia::GradientFill( LPCRECT pRect,BOOL bVert,COLORREF crBegin,COLORREF crEnd,BYTE byAlpha/*=0xFF*/ )
     {
@@ -1306,6 +1396,30 @@ namespace SOUI
 	void SRegion_Skia::CombineRect( LPCRECT lprect,int nCombineMode )
 	{
         m_rgn.op(toSkIRect(lprect),RGNMODE2SkRgnOP(nCombineMode));
+	}
+
+	void SRegion_Skia::CombineRoundRect(LPCRECT lprect, POINT ptRadius, int nCombineMode)
+	{
+		SkPath skPath;
+		skPath.addRoundRect(toSkRect(lprect),SkScalar(ptRadius.x),SkScalar(ptRadius.y));
+		SkRegion clip;
+		clip.setRect(lprect->left,lprect->top,lprect->right,lprect->bottom);
+		SkRegion rgn;
+		rgn.setPath(skPath,clip);
+
+		m_rgn.op(rgn,RGNMODE2SkRgnOP(nCombineMode));
+	}
+
+	void SRegion_Skia::CombineEllipse(LPCRECT lprect , int nCombineMode)
+	{
+		SkPath skPath;
+		skPath.addOval(toSkRect(lprect));
+		SkRegion clip;
+		clip.setRect(lprect->left,lprect->top,lprect->right,lprect->bottom);
+		SkRegion rgn;
+		rgn.setPath(skPath,clip);
+
+		m_rgn.op(rgn,RGNMODE2SkRgnOP(nCombineMode));
 	}
 
     void SRegion_Skia::CombineRgn(const IRegion * pRgnSrc,int nCombineMode)
