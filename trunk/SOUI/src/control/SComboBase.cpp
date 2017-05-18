@@ -407,21 +407,24 @@ namespace SOUI
         CloseUp();
     }
 
-	void SComboBase::OnSize(UINT nType, CSize size)
+	void SComboBase::UpdateChildrenPosition()
 	{
-		__super::OnSize(nType, size);
-		if (m_pEdit)
-		{
-			SIZE szBtn = m_pSkinBtn->GetSkinSize();
-			SStringW strPos;
-			CRect rcPadding = GetStyle().GetPadding();
-			float nHei = GetClientRect().Height();
-			int nBtnWid = (nHei / szBtn.cy)*szBtn.cx;
-			strPos.Format(L"%d,%d,-%d,-%d", rcPadding.left, rcPadding.top, rcPadding.right + nBtnWid, rcPadding.bottom);
-			m_pEdit->SetAttribute(L"pos", strPos);
-			UpdateLayout();
-		}
+		this;
+		__super::UpdateChildrenPosition();
+		if (!m_pEdit)
+			return;
+		SIZE szBtn = m_pSkinBtn->GetSkinSize();
+		SStringW strPos;
+		CRect rcPadding = GetStyle().GetPadding();
+		CRect rcClient = GetClientRect();
+		float nHei = rcClient.Height();
+		int nBtnWid = (nHei / szBtn.cy)*szBtn.cx;
+		rcPadding.right -= nBtnWid;
+		rcClient.InflateRect(rcPadding);
+		//strPos.Format(L"%d,%d,-%d,-%d", rcPadding.left, rcPadding.top, rcPadding.right + nBtnWid, rcPadding.bottom);
+		m_pEdit->Move(rcClient);
 	}
+	
 	
     void SComboBase::OnColorize(COLORREF cr)
     {
