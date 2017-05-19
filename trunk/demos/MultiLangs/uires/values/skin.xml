@@ -5,11 +5,11 @@
   <imglist name="scale_pic" scale="125"	src="img:pic_125"/>
   <imglist name="scale_pic" scale="150"	src="img:pic_150"/>
   <imglist name="scale_pic" scale="200"	src="img:pic_200"/>
-  <shape name="shape_test" shape="rectangle">
+  <shape name="shape_test" shape="oval">
     <corners radius="5dp"/>
     <size width="100dp" height="100dp"/>
-    <solid color="#ff0000"/>
-    <stroke style="dashDotDot" width="1" color="#00ff00"/>
-    <gradient type="linear" startColor="#ff0000" centerColor="#00ff00" endColor="#0000ff" angle="45"/>
+    <solid1 color="#ff0000"/>
+    <stroke style="solid" width="2dp" color="#00ff00"/>
+    <gradient type="radial" startColor="#ff0000" centerColor="#00ff00" endColor="#0000ff" angle="45" radius="20dp"/>
   </shape>
 </skin>
