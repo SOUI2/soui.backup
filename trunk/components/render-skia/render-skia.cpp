@@ -20,6 +20,10 @@
 #define getTotalClip internal_private_getTotalClip
 // #include <vld.h>
 
+#ifndef PI	//PI
+#define PI         ((float)3.141592654f)
+#endif
+
 namespace SOUI
 {
 	//PS_SOLID
@@ -915,6 +919,10 @@ namespace SOUI
         return S_OK;
     }
 
+	static bool fequal(float a,float b)
+	{
+		return fabs(a-b)< 0.0000001f;
+	}
 
 	HRESULT SRenderTarget_Skia::GradientFill2(LPCRECT pRect,GradientType type,COLORREF crStart,COLORREF crCenter,COLORREF crEnd,float fLinearAngle,float fCenterX,float fCenterY,int nRadius,BYTE byAlpha/*=0xff*/)
 	{
@@ -928,59 +936,64 @@ namespace SOUI
 		skColors[2]=SColor(crEnd,byAlpha).toARGB();
 
 		SkShader *pShader = NULL;
-		int wid = pRect->right - pRect->left;
-		int hei = pRect->bottom -pRect->top;
+		SkScalar wid = skrc.width();
+		SkScalar hei = skrc.height();
+		SkScalar halfWid = wid/2;
+		SkScalar halfHei = hei/2;
 		if(type == linear)
 		{
-			SkPoint *skPts = new SkPoint[3];
-			skPts[1].iset((pRect->left + pRect->right)/2,(pRect->top+pRect->bottom)/2);
 
-			if(fabs(fLinearAngle-90.0f)<0.000001)
+			SkPoint *skPts = new SkPoint[3];
+			skPts[1].set(halfWid,halfHei);
+
+			if(fequal(fLinearAngle,90.0f) || fequal(fLinearAngle,270.0f))
 			{//90度
-				skPts[0].iset(pRect->left + wid/2,pRect->top);
-				skPts[2].iset(pRect->left + wid/2,pRect->bottom);
+				skPts[0].set(halfWid,0.0f);
+				skPts[2].set(halfWid,hei);
+			}else if(fequal(fLinearAngle,0.0f) || fequal(fLinearAngle,180.0f))
+			{//水平方向
+				skPts[0].set(0.f ,halfHei);
+				skPts[2].set(wid,halfHei);
 			}else
 			{//其它角度
-				int halfWid = wid/2;
-				int halfHei = hei/2;
 
-				POINT pt1a,pt1b,pt2a,pt2b;
-				pt1a.x=-halfWid,pt2a.x=halfWid;
-				pt1b.y=-halfHei,pt2b.y=halfHei;
-				pt1a.y=(int)(-halfWid*tan(fLinearAngle));
-				pt2a.y = -pt1a.y;
+				float angleInRadians = PI*fLinearAngle/180;
+				double tanAngle = tan(angleInRadians);
 
-				pt1b.x =(int) (-halfHei*atan(fLinearAngle));
-				pt2b.x = -pt1b.x;
+				SkPoint pt1a,pt2a;//与左右两条边相交的位置
+				SkPoint pt1b,pt2b;//与上下两条边相关的位置
 
-				pt1a.x += pRect->left + halfWid;
-				pt1a.y += pRect->top + halfHei;
-				pt1b.x += pRect->left + halfWid;
-				pt1b.y += pRect->top + halfHei;
-				if(pt2a.y > halfHei)
-				{//using pt1a,pt1b
-					skPts[0].iset(pt1a.x,pt1a.y);
-					skPts[2].iset(pt1b.x,pt1b.y);
+				pt1a.fX=-halfWid,pt2a.fX=halfWid;
+				pt1b.fY=-halfHei,pt2b.fY=halfHei;
+
+				pt1a.fY= (SkScalar)(-halfWid*tanAngle);
+				pt2a.fY = -pt1a.fY;
+
+				pt1b.fX = (SkScalar)(-halfHei/tanAngle);
+				pt2b.fX = -pt1b.fX;
+
+				if(pt2a.fY > halfHei)
+				{//using pt1a,pt2a
+					skPts[0] = pt1a;
+					skPts[2] = pt2a;
 				}else
-				{//using pt2a,pt2b
-					skPts[0].iset(pt2a.x,pt2a.y);
-					skPts[2].iset(pt2b.x,pt2b.y);
+				{//using pt1b,pt2b
+					skPts[0]=pt1b;
+					skPts[2]=pt2b;
 				}
 			}
-
-
-			pShader = SkGradientShader::CreateLinear(skPts, skColors, NULL,3,SkShader::kMirror_TileMode);
+			pShader = SkGradientShader::CreateLinear(skPts, skColors, NULL,3,SkShader::kRepeat_TileMode);
 			delete []skPts;
 		}else if(type == radial)
 		{
 			SkPoint skCenter;
-			skCenter.iset(pRect->left + wid/2,pRect->top + hei/2);
-			pShader = SkGradientShader::CreateRadial(skCenter,SkScalar(nRadius),skColors,NULL,3,SkShader::kMirror_TileMode);
+			skCenter.set(halfWid,halfHei);
+			pShader = SkGradientShader::CreateRadial(skCenter,SkScalar(nRadius),skColors,NULL,3,SkShader::kRepeat_TileMode);
 		}else if(type==sweep)
 		{
 			SkPoint skCenter;
-			skCenter.iset(pRect->left + wid/2,pRect->top + hei/2);
-			pShader = SkGradientShader::CreateSweep(SkScalar(pRect->left+fCenterX*wid),SkScalar(pRect->top+fCenterY*hei),skColors,NULL,3);
+			skCenter.set(halfWid,halfHei);
+			pShader = SkGradientShader::CreateSweep(SkScalar(+fCenterX*wid),SkScalar(fCenterY*hei),skColors,NULL,3);
 		}
 
 		delete []skColors;
@@ -994,8 +1007,12 @@ namespace SOUI
 		paint.setShader(pShader);
 		pShader->unref();
 
-		m_SkCanvas->drawRect(skrc,paint);
+		SkPoint skOffset = {skrc.left(),skrc.top()};
 
+ 		m_SkCanvas->translate(skOffset.x(),skOffset.y());
+ 		skrc.offset(-skOffset.x(),-skOffset.y());
+		m_SkCanvas->drawRect(skrc,paint);
+		m_SkCanvas->translate(-skOffset.x(),-skOffset.y());
 		return S_OK;
 	}
 
