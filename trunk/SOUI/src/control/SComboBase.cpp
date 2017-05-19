@@ -409,7 +409,6 @@ namespace SOUI
 
 	void SComboBase::UpdateChildrenPosition()
 	{
-		this;
 		__super::UpdateChildrenPosition();
 		if (!m_pEdit)
 			return;
@@ -420,7 +419,6 @@ namespace SOUI
 		int nBtnWid = (nHei / szBtn.cy)*szBtn.cx;
 		rcPadding.right += nBtnWid;
 		rcEdit.DeflateRect(rcPadding);
-		//strPos.Format(L"%d,%d,-%d,-%d", rcPadding.left, rcPadding.top, rcPadding.right + nBtnWid, rcPadding.bottom);
 		m_pEdit->Move(rcEdit);
 	}
 	
