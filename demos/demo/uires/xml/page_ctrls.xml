@@ -1,7 +1,7 @@
 ﻿<include>
-  <tabctrl pos="0,0,-0,-0" font="style:StrokeAndFill,blurStyle:solid,blurRadius:3" animateSteps="10" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="150" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
+  <tabctrl pos="0,0,-0,-0" font="style:StrokeAndFill,blurStyle:solid,blurRadius:3" animateSteps="10" animateType="1" tabAlign="left" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="150" iconSkin="skin_small_icons" icon-x="5" icon-y="8" colorText="#000000bb">
     <page title="listctrls">
-      <tabctrl pos="0,0,-0,-0" animateSteps="10" curSel="2" colorBkgnd="#ffffff" tabAlign="top" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabHeight="30" tabWidth="120" iconSkin="skin_small_icons" icon-x="5" icon-y="4" colorText="#000000bb">
+      <tabctrl pos="0,0,-0,-0" animateSteps="10" animateType="1" curSel="2" colorBkgnd="#ffffff" tabAlign="top" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabHeight="30" tabWidth="120" iconSkin="skin_small_icons" icon-x="5" icon-y="4" colorText="#000000bb">
         <page title="listctrl">
           <listctrl name="lc_test" hotTrack="1" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cursor="CUR_TST" font="underline:1" itemSkin="skin_tab_left"  sbSkin="skin_new_scrollbar">
             <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
