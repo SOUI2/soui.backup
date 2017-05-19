@@ -10,6 +10,6 @@
     <size width="100dp" height="100dp"/>
     <solid1 color="#ff0000"/>
     <stroke style="solid" width="2dp" color="#00ff00"/>
-    <gradient type="radial" startColor="#ff0000" centerColor="#00ff00" endColor="#0000ff" angle="45" radius="20dp"/>
+    <gradient type="sweep" startColor="#ff0000" centerColor="#00ff00" endColor="#0000ff" angle="45" radius="20dp"/>
   </shape>
 </skin>
