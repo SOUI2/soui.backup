@@ -3,40 +3,55 @@
 
 #pragma once
 #include "souicoll.h"
+#include <map>
 
-class RichEditObj;
-class RichEditObjFactory
+namespace SOUI
 {
-public:
-    RichEditObjFactory();
-    ~RichEditObjFactory();
 
-    typedef RichEditObj * (*pfnCreateObj)(); 
-
-    RichEditObj * CreateObjectByName(LPCWSTR pszName)
+    class RichEditObj;
+    class RichEditObjFactory
     {
-        MapCreater::CPair * p = m_mapCreater.Lookup(pszName);
-        if (!p)return NULL;
-        return p->m_value();
-    }
+    public:
+        RichEditObjFactory();
+        ~RichEditObjFactory();
 
-    void Register(LPCWSTR pszName, pfnCreateObj pfn)
-    {
-        m_mapCreater[pszName] = pfn;
-    }
+        typedef RichEditObj * (*pfnCreateObj)();
 
-    void UnRegister(LPCWSTR pszName)
-    {
-        m_mapCreater.RemoveKey(pszName);
-    }
+        RichEditObj * CreateObjectByName(LPCWSTR pszName)
+        {
+            CreaterMap::iterator it = _creaters.find(pszName);
+            if (it == _creaters.end())
+            {
+                return NULL;
+            }
 
-    static RichEditObjFactory& GetInstance()
-    {
-        static RichEditObjFactory factory;
-        return factory;
-    }
+            return it->second();
+        }
 
-private:
-    typedef SMap<SStringW,pfnCreateObj> MapCreater;
-    MapCreater m_mapCreater;
-};
+        void Register(LPCWSTR pszName, pfnCreateObj pfn)
+        {
+            _creaters[pszName] = pfn;
+        }
+
+        void UnRegister(LPCWSTR pszName)
+        {
+            CreaterMap::iterator it = _creaters.find(pszName);
+            if (it == _creaters.end())
+            {
+                _creaters.erase(it);
+            }
+        }
+
+        static RichEditObjFactory& GetInstance()
+        {
+            static RichEditObjFactory factory;
+            return factory;
+        }
+
+    private:
+
+        typedef std::map<SStringW, pfnCreateObj> CreaterMap;
+        CreaterMap _creaters;
+    };
+
+}; // namespace SOUI

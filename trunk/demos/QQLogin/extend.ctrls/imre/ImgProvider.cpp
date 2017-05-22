@@ -8,41 +8,41 @@ using namespace Gdiplus;
 
 //////////////////////////////////////////////////////////////////////////
 // helpers
-int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)  
-{  
+int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
+{
     UINT  num = 0;          // number of image encoders  
     UINT  size = 0;         // size of the image encoder array in bytes  
 
-    ImageCodecInfo* pImageCodecInfo = NULL;  
+    ImageCodecInfo* pImageCodecInfo = NULL;
 
-    GetImageEncodersSize(&num, &size);  
-    if(size == 0)  
+    GetImageEncodersSize(&num, &size);
+    if (size == 0)
         return -1;  // Failure  
 
-    pImageCodecInfo = (ImageCodecInfo*)(malloc(size));  
-    if(pImageCodecInfo == NULL)  
+    pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
+    if (pImageCodecInfo == NULL)
         return -1;  // Failure  
 
-    GetImageEncoders(num, size, pImageCodecInfo);  
+    GetImageEncoders(num, size, pImageCodecInfo);
 
-    for(UINT j = 0; j < num; ++j)  
-    {  
-        if( wcscmp(pImageCodecInfo[j].MimeType, format) == 0 )  
-        {  
-            *pClsid = pImageCodecInfo[j].Clsid;  
-            free(pImageCodecInfo);  
+    for (UINT j = 0; j < num; ++j)
+    {
+        if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0)
+        {
+            *pClsid = pImageCodecInfo[j].Clsid;
+            free(pImageCodecInfo);
             return j;  // Success  
-        }  
-    }  
+        }
+    }
 
-    free(pImageCodecInfo);  
+    free(pImageCodecInfo);
     return -1;  // Failure  
-}  
+}
 
 Bitmap* CreateBitmapFromHBITMAP(IN HBITMAP hBitmap)
 {
     BITMAP bmp = { 0 };
-    if ( 0 == GetObject(hBitmap, sizeof(BITMAP), (LPVOID)&bmp) )
+    if (0 == GetObject(hBitmap, sizeof(BITMAP), (LPVOID)&bmp))
     {
         return NULL;
     }
@@ -59,13 +59,13 @@ Bitmap* CreateBitmapFromHBITMAP(IN HBITMAP hBitmap)
     bmpInfo.bmiHeader.biBitCount = bmp.bmBitsPixel;
     bmpInfo.bmiHeader.biCompression = BI_RGB;
 
-    HDC hdcScreen = CreateDC(L"DISPLAY", NULL, NULL,NULL);
+    HDC hdcScreen = CreateDC(L"DISPLAY", NULL, NULL, NULL);
     LONG cbCopied = GetDIBits(hdcScreen, hBitmap, 0,
         bmp.bmHeight, piexlsSrc, &bmpInfo, DIB_RGB_COLORS);
     DeleteDC(hdcScreen);
-    if ( 0 == cbCopied )
+    if (0 == cbCopied)
     {
-        delete [] piexlsSrc;
+        delete[] piexlsSrc;
         return NULL;
     }
 
@@ -73,10 +73,10 @@ Bitmap* CreateBitmapFromHBITMAP(IN HBITMAP hBitmap)
 
     BitmapData bitmapData;
     Rect rect(0, 0, bmp.bmWidth, bmp.bmHeight);
-    if ( Ok != pBitmap->LockBits(&rect, 
+    if (Ok != pBitmap->LockBits(&rect,
         ImageLockModeRead,
-        PixelFormat32bppPARGB, 
-        &bitmapData) )
+        PixelFormat32bppPARGB,
+        &bitmapData))
     {
         delete (pBitmap);
         return NULL;
@@ -86,18 +86,18 @@ Bitmap* CreateBitmapFromHBITMAP(IN HBITMAP hBitmap)
     int nLinesize = bmp.bmWidth * sizeof(UINT);
     int nHeight = bmp.bmHeight;
 
-    for ( int y = 0; y < nHeight; y++ )
+    for (int y = 0; y < nHeight; y++)
     {
-        memcpy_s( (pixelsDest + y * nLinesize), nLinesize,
+        memcpy_s((pixelsDest + y * nLinesize), nLinesize,
             (piexlsSrc + (nHeight - y - 1) * nLinesize), nLinesize);
     }
 
-    if ( Ok != pBitmap->UnlockBits(&bitmapData) )
+    if (Ok != pBitmap->UnlockBits(&bitmapData))
     {
         delete pBitmap;
     }
 
-    delete [] piexlsSrc;
+    delete[] piexlsSrc;
     return pBitmap;
 }
 
@@ -124,12 +124,12 @@ BOOL GetBitmapData(LPBYTE &pImageContent, DWORD& dwSize, HBITMAP hBMP)
 
     // Convert and save to png stream
     ULONG quality = 100;
-    EncoderParameters encoderParameters;  
-    encoderParameters.Count = 1;  
-    encoderParameters.Parameter[0].Guid = EncoderQuality;  
-    encoderParameters.Parameter[0].Type = EncoderParameterValueTypeLong;  
-    encoderParameters.Parameter[0].NumberOfValues = 1;  
-    encoderParameters.Parameter[0].Value = &quality;  
+    EncoderParameters encoderParameters;
+    encoderParameters.Count = 1;
+    encoderParameters.Parameter[0].Guid = EncoderQuality;
+    encoderParameters.Parameter[0].Type = EncoderParameterValueTypeLong;
+    encoderParameters.Parameter[0].NumberOfValues = 1;
+    encoderParameters.Parameter[0].Value = &quality;
     Status status = pBitmap->Save(pStream, &clsidPng);
 
     // get byte array
@@ -162,9 +162,19 @@ BOOL ImageProvider::IsExist(LPCWSTR pszImageId)
     }
 
     SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-    ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(pszImageId,100);
-    
-    return (pSkin != NULL) && (pSkin->IsClass(SSkinImgFrame::GetClassName()));
+
+    //
+    // 如果这里不先挡一把，下面的GetSkin找不到skin时会断言错误
+    //
+    SkinKey key = { pszImageId,100 };
+    if (!pBuiltinSkinPool->HasKey(key))
+    {
+        return FALSE;
+    }
+
+    ISkinObj *pSkin = pBuiltinSkinPool->GetSkin(pszImageId, 100);
+
+    return (pSkin != NULL);
 }
 
 BOOL ImageProvider::Insert(LPCWSTR pszImageId, LPCWSTR pszImagePath, const LPRECT lprcMargin/* = NULL*/)
@@ -180,10 +190,10 @@ BOOL ImageProvider::Insert(LPCWSTR pszImageId, LPCWSTR pszImagePath, const LPREC
         return FALSE;
     }
 
-    IBitmap * pImg=NULL;
+    IBitmap * pImg = NULL;
     GETRENDERFACTORY->CreateBitmap(&pImg);
     pImg->LoadFromFile(pszImagePath);
-    
+
     // load skin
     CRect rcMargin;
     if (lprcMargin)
@@ -192,10 +202,8 @@ BOOL ImageProvider::Insert(LPCWSTR pszImageId, LPCWSTR pszImagePath, const LPREC
     SSkinImgFrame * pSkin = new SSkinImgFrame();
     pSkin->SetImage(pImg);
     pSkin->SetMargin(rcMargin);
-    
-    SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-	SkinKey key = {pszImageId,100};
-    pBuiltinSkinPool->AddKeyObject(key, pSkin);
+
+    Insert(pszImageId, pSkin);
 
     pImg->Release();
     return TRUE;
@@ -215,7 +223,7 @@ BOOL ImageProvider::Insert(LPCWSTR pszImageId, LPBYTE pData, size_t sizeLen, con
     }
 
     // prepare image
-    IBitmap * pImg=NULL;
+    IBitmap * pImg = NULL;
     GETRENDERFACTORY->CreateBitmap(&pImg);
     pImg->LoadFromMemory(pData, sizeLen);
 
@@ -227,9 +235,9 @@ BOOL ImageProvider::Insert(LPCWSTR pszImageId, LPBYTE pData, size_t sizeLen, con
     SSkinImgFrame * pSkin = new SSkinImgFrame();
     pSkin->SetImage(pImg);
     pSkin->SetMargin(rcMargin);
-    
+
     SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-	SkinKey key = {pszImageId,100};
+    SkinKey key = { pszImageId,100 };
     pBuiltinSkinPool->AddKeyObject(key, pSkin);
 
     pImg->Release();
@@ -250,29 +258,37 @@ BOOL ImageProvider::Insert(LPCWSTR pszImageId, HBITMAP hImageHandle, const LPREC
     if (GetBitmapData(pBytes, dwTotalSize, hImageHandle))
     {
         bRet = Insert(pszImageId, pBytes, dwTotalSize);
-        delete []pBytes;
+        delete[]pBytes;
     }
 
     return TRUE;
 }
 
-SSkinImgFrame * ImageProvider::GetImage(LPCWSTR pszImageId)
+BOOL ImageProvider::Insert(LPCWSTR pszImageId, ISkinObj* pSkin)
 {
-    if (!pszImageId)
+    SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
+    SkinKey key = { pszImageId,100 };
+
+    return pBuiltinSkinPool->AddKeyObject(key, pSkin);
+}
+
+ISkinObj * ImageProvider::GetImage(LPCWSTR pszImageId)
+{
+    if (!pszImageId || !IsExist(pszImageId))
     {
         return NULL;
     }
 
     SSkinPool * pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-    ISkinObj  * pSkin = pBuiltinSkinPool->GetSkin(pszImageId,100);
+    ISkinObj  * pSkin = pBuiltinSkinPool->GetSkin(pszImageId, 100);
 
     if (pSkin == NULL)
     {
-        pSkin = SSkinPoolMgr::getSingletonPtr()->GetSkin(pszImageId,100);
+        pSkin = SSkinPoolMgr::getSingletonPtr()->GetSkin(pszImageId, 100);
     }
 
     // NOT found
-    return static_cast<SSkinImgFrame*>(pSkin);
+    return pSkin;
 }
 
 BOOL ImageProvider::Update(LPCWSTR pszImageId, LPCWSTR pszImagePath, const LPRECT lprcMargin/* = NULL*/)
@@ -319,11 +335,11 @@ void ImageProvider::Remove(LPCWSTR pszImageId)
     }
 
     SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
-    ISkinObj *pSkin=pBuiltinSkinPool->GetSkin(pszImageId,100);
+    ISkinObj *pSkin = pBuiltinSkinPool->GetSkin(pszImageId, 100);
 
     if ((pSkin != NULL) && (pSkin->IsClass(SSkinImgFrame::GetClassName())))
     {
-		SkinKey key ={pszImageId,100};
+        SkinKey key = { pszImageId,100 };
         pBuiltinSkinPool->RemoveKeyObject(key);
     }
 }
