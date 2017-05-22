@@ -2,7 +2,7 @@
       title="SOUI-DEMO"
       bigIcon="LOGO:32"
       smallIcon="LOGO:16"
-      width="600"
+      width="666"
       height="400"
       wndType="appMain"
       margin="10,10,10,10"

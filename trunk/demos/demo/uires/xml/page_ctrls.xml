@@ -103,6 +103,42 @@
             </template>
           </tileview>
         </page>
+        <page title="mclistviewex">
+          <mclistviewex name="musiclist" headerHeight="48" colorSwapLine="rgb(0,0,255)" colorDropBk="rgb(0,0,255)" pos="20,20,-20,-20" sbTop="48">
+            <header2 align="center" matchParent="1" sortSkin="skin_lcex_header_arrow" itemSkin="skin_lcex_header" cursor="hand" itemSwapEnable="1" sortHeader="0" colorText="#000000ff">
+              <items>
+                <item width="150">歌曲</item>
+                <item width="120">歌手</item>
+                <item width="120">专辑</item>
+                <item width="120">时长</item>
+              </items>
+            </header2>
+            <template itemHeight="48" colorHover="#666666" colorSelected="#555555" fond="adding:-4">
+              <window name="col1" clipClient="1">
+                <hr pos="0,0,-0,1" colorLine="#666666" />
+                <text name="songname" dotted="1" pos="5,|,]-30,-0" offset="0,-0.5" font="bold:1,adding:-1">天天想听</text>
+                <window pos="-0,|" name="playbtn" offset="-1.2,-0.5" display="0" show="0">
+                  <!--imgbtn name="btn_play" pos="0,|" offset="0,-0.5" skin="skin_btn_play" show="1" tip="播放" />
+                  <imgbtn name="btn_add" pos="[4,|" offset="0,-0.5" skin="skin_btn_add" show="1" tip="添加音乐" />
+                  <imgbtn name="btn_down" pos="[4,|" offset="0,-0.5" skin="skin_btn_down" show="1" tip="下载音乐" />
+                  <imgbtn name="btn_more" pos="[4,|" offset="0,-0.5" skin="skin_btn_more" show="1" tip="更多" /-->
+                </window>
+              </window>
+              <window name="col2" clipClient="1">
+                <hr pos="0,0,-0,1" colorLine="#666666" />
+                <text name="artist">卖炭翁</text>
+              </window>
+              <window name="col3" clipClient="1">
+                <hr pos="0,0,-0,1" colorLine="#666666" />
+                <text name="album" >SOUI就是棒</text>
+              </window>
+              <window name="col4" clipClient="1">
+                <hr pos="0,0,-0,1" colorLine="#666666" />
+                <text name="lasttime" pos="0,|" offset="0,-0.5" colorText="rgb(100,100,100)">00:00</text>
+              </window>
+            </template>
+          </mclistviewex>
+        </page>
       </tabctrl>
     </page>
     <page title="edit and hotkey" colorBorder="#ffff00" margin-x="5" margin-y="5">
