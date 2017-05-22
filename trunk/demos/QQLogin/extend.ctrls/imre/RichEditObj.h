@@ -11,8 +11,8 @@
 #include <atlcomcli.h>
 #include "IRichEditObjHost.h"
 
-#define REOBJ_FIRST   ((RichEditObj*)-1)    /*å­å¯¹è±¡æ’å…¥åœ¨å¼€å¤´*/
-#define REOBJ_LAST    NULL                  /*å­å¯¹è±¡æ’å…¥åœ¨æœ«å°¾*/
+#define REOBJ_FIRST   ((RichEditObj*)-1)    /*×Ó¶ÔÏó²åÈëÔÚ¿ªÍ·*/
+#define REOBJ_LAST    NULL                  /*×Ó¶ÔÏó²åÈëÔÚÄ©Î²*/
 
 #define DECLARE_REOBJ(obj,name) \
     SOUI_CLASS_NAME(obj,name) \
@@ -51,7 +51,7 @@ public:
     void                AdjustMessageParam(UINT msg, WPARAM& wParam, LPARAM& lParam);
 
     //
-    // æ ‘æ“ä½œ
+    // Ê÷²Ù×÷
     //
     UINT                GetChildrenCount();
     void                InsertChild(RichEditObj *pNewChild, RichEditObj *pInsertAfter=REOBJ_LAST);
@@ -81,22 +81,22 @@ protected:
         ATTR_ENUM_END(m_alignType)
     SOUI_ATTRS_END()
 
-    RichEditObj *       m_pParent;          /**< çˆ¶èŠ‚ç‚¹ */
-    RichEditObj *       m_pFirstChild;      /**< ç¬¬ä¸€å­èŠ‚ç‚¹ */
-    RichEditObj *       m_pLastChild;       /**< æœ€åèŠ‚ç‚¹ */
-    RichEditObj *       m_pNextSibling;     /**< å‰ä¸€å…„å¼ŸèŠ‚ç‚¹ */
-    RichEditObj *       m_pPrevSibling;     /**< åä¸€å…„å¼ŸèŠ‚ç‚¹ */
-    UINT                m_nChildrenCount;   /**< å­èŠ‚ç‚¹æ•°é‡ */
+    RichEditObj *       m_pParent;          /**< ¸¸½Úµã */
+    RichEditObj *       m_pFirstChild;      /**< µÚÒ»×Ó½Úµã */
+    RichEditObj *       m_pLastChild;       /**< ×îºó½Úµã */
+    RichEditObj *       m_pNextSibling;     /**< Ç°Ò»ĞÖµÜ½Úµã */
+    RichEditObj *       m_pPrevSibling;     /**< ºóÒ»ĞÖµÜ½Úµã */
+    UINT                m_nChildrenCount;   /**< ×Ó½ÚµãÊıÁ¿ */
 
     ULONG               m_ulRef;
     SStringW            m_strId;
     SStringW            m_strName;
-    IRichEditObjHost *  m_pObjectHost;      /**< å®¿ä¸»richedit           */
-    CHARRANGE           m_chrContent;       /**< åœ¨richedité‡Œé¢çš„å­—ç¬¦ä¸‹æ ‡,è¿™ä¸ªä¿¡æ¯å¾ˆé‡è¦*/
-    CRect               m_rcMargin;         /**< å¯¹è±¡çš„å¤–è¾¹è·         */
-    CRect               m_rcObj;            /**< åœ¨richedité‡Œé¢çš„ä½ç½®  */
-    BOOL                m_bDirty;           /**< ä½ç½®ä¿¡æ¯æ”¹å˜äº†       */
-    AlignType           m_alignType;        /**< å¯¹é½æ–¹å¼,ç‰¹æŒ‡æ¨ªå‘çš„å¯¹é½æ–¹å¼*/
+    IRichEditObjHost *  m_pObjectHost;      /**< ËŞÖ÷richedit           */
+    CHARRANGE           m_chrContent;       /**< ÔÚricheditÀïÃæµÄ×Ö·ûÏÂ±ê,Õâ¸öĞÅÏ¢ºÜÖØÒª*/
+    CRect               m_rcMargin;         /**< ¶ÔÏóµÄÍâ±ß¾à         */
+    CRect               m_rcObj;            /**< ÔÚricheditÀïÃæµÄÎ»ÖÃ  */
+    BOOL                m_bDirty;           /**< Î»ÖÃĞÅÏ¢¸Ä±äÁË       */
+    AlignType           m_alignType;        /**< ¶ÔÆë·½Ê½,ÌØÖ¸ºáÏòµÄ¶ÔÆë·½Ê½*/
 };
 
 class RichEditText : public RichEditObj
@@ -158,8 +158,8 @@ protected:
         ATTR_CUSTOM(L"pos", OnAttrPos)
     SOUI_ATTRS_END()
 
-    int             m_nPosCount;        /**< å®šä¹‰å·¦/å±…ä¸­å¯¹é½æ—¶çš„åæ ‡ä¸ªæ•° */
-    POS_INFO        m_itemPos[4];       /**< ç”±poså±æ€§å®šä¹‰çš„å€¼, m_nPosCount >0 æ—¶æœ‰æ•ˆ*/
+    int             m_nPosCount;        /**< ¶¨Òå×ó/¾ÓÖĞ¶ÔÆëÊ±µÄ×ø±ê¸öÊı */
+    POS_INFO        m_itemPos[4];       /**< ÓÉposÊôĞÔ¶¨ÒåµÄÖµ, m_nPosCount >0 Ê±ÓĞĞ§*/
 
     SStringW        m_strId;
     SStringW        m_strSource;
@@ -186,11 +186,11 @@ protected:
         ATTR_CUSTOM(L"pos-right", OnAttrPosRight)
     SOUI_ATTRS_END()
 
-    int             m_nLeftPosCount;        /**< å®šä¹‰å·¦/å±…ä¸­å¯¹é½æ—¶çš„åæ ‡ä¸ªæ•° */
-    POS_INFO        m_itemLeftPos[4];       /**< ç”±poså±æ€§å®šä¹‰çš„å€¼, m_nLeftPosCount >0 æ—¶æœ‰æ•ˆ*/
+    int             m_nLeftPosCount;        /**< ¶¨Òå×ó/¾ÓÖĞ¶ÔÆëÊ±µÄ×ø±ê¸öÊı */
+    POS_INFO        m_itemLeftPos[4];       /**< ÓÉposÊôĞÔ¶¨ÒåµÄÖµ, m_nLeftPosCount >0 Ê±ÓĞĞ§*/
 
-    int             m_nRightPosCount;       /**< å®šä¹‰å³å¯¹é½æ—¶çš„åæ ‡ä¸ªæ•° */
-    POS_INFO        m_itemRightPos[4];      /**< ç”±poså±æ€§å®šä¹‰çš„å€¼, m_nRightPosCount >0 æ—¶æœ‰æ•ˆ*/
+    int             m_nRightPosCount;       /**< ¶¨ÒåÓÒ¶ÔÆëÊ±µÄ×ø±ê¸öÊı */
+    POS_INFO        m_itemRightPos[4];      /**< ÓÉposÊôĞÔ¶¨ÒåµÄÖµ, m_nRightPosCount >0 Ê±ÓĞĞ§*/
 
     SStringW        m_strLeftBubble;
     SStringW        m_strRightBubble;
@@ -216,11 +216,11 @@ protected:
         ATTR_CUSTOM(L"pos-right", OnAttrPosRight)
     SOUI_ATTRS_END()
 
-    int             m_nLeftPosCount;     /**< å®šä¹‰å·¦/å±…ä¸­å¯¹é½æ—¶çš„åæ ‡ä¸ªæ•° */
-    POS_INFO        m_itemLeftPos[4];    /**< ç”±poså±æ€§å®šä¹‰çš„å€¼, m_nPosCount >0 æ—¶æœ‰æ•ˆ*/
+    int             m_nLeftPosCount;     /**< ¶¨Òå×ó/¾ÓÖĞ¶ÔÆëÊ±µÄ×ø±ê¸öÊı */
+    POS_INFO        m_itemLeftPos[4];    /**< ÓÉposÊôĞÔ¶¨ÒåµÄÖµ, m_nPosCount >0 Ê±ÓĞĞ§*/
 
-    int             m_nRightPosCount;    /**< å®šä¹‰å³å¯¹é½æ—¶çš„åæ ‡ä¸ªæ•° */
-    POS_INFO        m_itemRightPos[4];   /**< ç”±poså±æ€§å®šä¹‰çš„å€¼, m_nLeftPosCount >0 æ—¶æœ‰æ•ˆ*/
+    int             m_nRightPosCount;    /**< ¶¨ÒåÓÒ¶ÔÆëÊ±µÄ×ø±ê¸öÊı */
+    POS_INFO        m_itemRightPos[4];   /**< ÓÉposÊôĞÔ¶¨ÒåµÄÖµ, m_nLeftPosCount >0 Ê±ÓĞĞ§*/
 };
 
 class RichEditPara : public RichEditObj
@@ -248,20 +248,20 @@ protected:
         ATTR_INT(L"disable-layout", m_bDisableLayout, FALSE)
     SOUI_ATTRS_END()
 
-    BOOL    m_bWrapped;          /**< æ˜¯å¦ä¸€è¡Œæ˜¾ç¤ºä¸ä¸‹,è‡ªåŠ¨æ¢è¡Œäº†*/
-    BOOL    m_bNeedUpdateLayout; /**< æ ‡è®°æ˜¯å¦éœ€è¦é‡æ–°è®¾ç½®ç¼©è¿›*/
-    BOOL    m_bSimulateAlign;    /**< æ˜¯å¦æ¨¡æ‹Ÿå³å¯¹é½ã€‚å³è®¾ç½®å·¦ç¼©è¿›,è¾¾åˆ°å³å¯¹é½æ•ˆæœ*/
-    int     m_bBreakAtTheEnd;    /**< æ˜¯å¦åœ¨æ®µè½ååŠ ä¸Šä¸€ä¸ªå›è½¦*/
-    int     m_nLineCount;        /**< æ–‡æœ¬çš„è¡Œæ•°,ç”¨æ¥åˆ¤æ–­æ˜¯å¦è‡ªåŠ¨æ¢è¡Œäº†*/
+    BOOL    m_bWrapped;          /**< ÊÇ·ñÒ»ĞĞÏÔÊ¾²»ÏÂ,×Ô¶¯»»ĞĞÁË*/
+    BOOL    m_bNeedUpdateLayout; /**< ±ê¼ÇÊÇ·ñĞèÒªÖØĞÂÉèÖÃËõ½ø*/
+    BOOL    m_bSimulateAlign;    /**< ÊÇ·ñÄ£ÄâÓÒ¶ÔÆë¡£¼´ÉèÖÃ×óËõ½ø,´ïµ½ÓÒ¶ÔÆëĞ§¹û*/
+    int     m_bBreakAtTheEnd;    /**< ÊÇ·ñÔÚ¶ÎÂäºó¼ÓÉÏÒ»¸ö»Ø³µ*/
+    int     m_nLineCount;        /**< ÎÄ±¾µÄĞĞÊı,ÓÃÀ´ÅĞ¶ÏÊÇ·ñ×Ô¶¯»»ĞĞÁË*/
     BOOL    m_bInited;
-    BOOL    m_bDisableLayout;    /**< ä¸éœ€è¦å¸ƒå±€ */
+    BOOL    m_bDisableLayout;    /**< ²»ĞèÒª²¼¾Ö */
 };
 
 //////////////////////////////////////////////////////////////////////////
 // RichEditContent
 class RichEditContent : public RichEditObj
 {
-    #define THRESHOLD_FOR_AUTOLAYOUT 1024 // è‡ªåŠ¨å¸ƒå±€çš„é˜€å€¼
+    #define THRESHOLD_FOR_AUTOLAYOUT 1024 // ×Ô¶¯²¼¾ÖµÄ·§Öµ
 
     DECLARE_REOBJ(RichEditContent, L"RichEditContent")
 
@@ -276,7 +276,7 @@ public:
 protected:
     SOUI_ATTRS_BEGIN()
         ATTR_STRINGW(L"type", m_strType, FALSE)
-        ATTR_INT(L"auto-layout", m_bAutoLayout, TRUE) /**< æ˜¯å¦è‡ªåŠ¨å¸ƒå±€,è¯¥è®¾ç½®ä¼šè¦†ç›–alignå±æ€§*/
+        ATTR_INT(L"auto-layout", m_bAutoLayout, TRUE) /**< ÊÇ·ñ×Ô¶¯²¼¾Ö,¸ÃÉèÖÃ»á¸²¸ÇalignÊôĞÔ*/
     SOUI_ATTRS_END()
 
     SStringW    m_strType;
