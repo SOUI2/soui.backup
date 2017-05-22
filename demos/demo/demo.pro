@@ -37,8 +37,8 @@ HEADERS += MainDlg.h \
            resource.h \
 	   adapter.h\
            wtlhelper/whwindow.h \
-	   ../controls.extend/SMcListViewEx\SHeaderCtrlEx.h\
-  	   ../controls.extend/SMcListViewEx\SMcListViewEx.h\
+	   ../controls.extend/SMcListViewEx/SHeaderCtrlEx.h\
+  	   ../controls.extend/SMcListViewEx/SMcListViewEx.h\
            ../../controls.extend/SWkeWebkit.h \
            ../../controls.extend/gif/SAniImgFrame.h \
            ../../controls.extend/gif/SGifPlayer.h \
@@ -87,8 +87,8 @@ SOURCES += demo.cpp \
            MainDlg.cpp \
 		   FormatMsgDlg.cpp \
            ../../controls.extend/SWkeWebkit.cpp \
-           ../../controls.extend/SMCListViewEx.cpp \
-           ../../controls.extend/SHeaderCtrlEx.cpp \
+           ../../controls.extend/SMcListViewEx/SMCListViewEx.cpp \
+           ../../controls.extend/SMcListViewEx/SHeaderCtrlEx.cpp \
 	   ../../controls.extend/SMcListViewEx/STabCtrlHeaderBinder.cpp \
            ../../controls.extend/gif/SGifPlayer.cpp \
            ../../controls.extend/gif/SSkinGif.cpp \
