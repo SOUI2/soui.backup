@@ -11,6 +11,9 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 INCLUDEPATH += . \
+			   ./extend.ctrls \
+			   ./extend.events \
+			   ./extend.skins \
 			   ../../utilities/include \
 			   ../../soui/include \
 			   ../../components \
@@ -30,27 +33,32 @@ PRECOMPILED_HEADER = stdafx.h
 # Input
 HEADERS += GroupChatFrame.h \
            MainDlg.h \
+           MenuWrapper.h \
            resource.h \
            stdafx.h \
            utils.h \
            extend.ctrls/ExtendCtrls.h \
            extend.ctrls/SButtonEx.h \
-           extend.ctrls/SImageEx.h \
-           extend.ctrls/SImagePlayer.h \
+           extend.ctrls/SImageView.h \
            extend.ctrls/SSplitBar.h \
-           extend.ctrls/SText.h \
-           extend.skins/ExtendSkins.h \
-           extend.skins/SAniImgFrame.h \
-           extend.skins/SSkinMutiFrameImg.h \
+           extend.ctrls/imre/ClipboardConverter.h \
+           extend.ctrls/imre/dataobject.h \
+           extend.ctrls/imre/HTMLParser.h \
+           extend.ctrls/imre/HTTPDownloader.h \
            extend.ctrls/imre/ImgProvider.h \
            extend.ctrls/imre/IRichEditObjHost.h \
            extend.ctrls/imre/RichEditObj.h \
+           extend.ctrls/imre/RichEditObjEvents.h \
            extend.ctrls/imre/RichEditObjFactory.h \
            extend.ctrls/imre/RichEditOleBase.h \
            extend.ctrls/imre/RichEditOleCallback.h \
            extend.ctrls/imre/RichEditOleCtrls.h \
+           extend.ctrls/imre/RichEditUnitConverter.h \
            extend.ctrls/imre/SImRichEdit.h \
-           extend.ctrls/imre/TOM2.h \
+           extend.skins/ExtendSkins.h \
+           extend.skins/SAntialiasSkin.h \
+           extend.skins/SVscrollbar.h \	
+           extend.events/ExtendEvents.h \
            ../../controls.extend/SChromeTabCtrl.h \
            ../../controls.extend/SImageMaskWnd.h \
            ../../controls.extend/STurn3DView.h \
@@ -62,22 +70,26 @@ HEADERS += GroupChatFrame.h \
 
 SOURCES += GroupChatFrame.cpp \
            MainDlg.cpp \
+           MenuWrapper.cpp \
            QQLogin.cpp \
            utils.cpp \
            extend.ctrls/ExtendCtrls.cpp \
            extend.ctrls/SButtonEx.cpp \
-           extend.ctrls/SImageEx.cpp \
-           extend.ctrls/SImagePlayer.cpp \
+           extend.ctrls/SImageView.cpp \
            extend.ctrls/SplitBar.cpp \
-           extend.ctrls/SText.cpp \
            extend.skins/ExtendSkins.cpp \
-           extend.skins/SSkinMutiFrameImg.cpp \
+           extend.skins/SAntialiasSkin.cpp \
+           extend.ctrls/imre/ClipboardConverter.cpp \
+           extend.ctrls/imre/dataobject.cpp \
+           extend.ctrls/imre/HTMLParser.cpp \
+           extend.ctrls/imre/HTTPDownloader.cpp \
            extend.ctrls/imre/ImgProvider.cpp \
            extend.ctrls/imre/RichEditObj.cpp \
            extend.ctrls/imre/RichEditObjFactory.cpp \
            extend.ctrls/imre/RichEditOleBase.cpp \
            extend.ctrls/imre/RichEditOleCallback.cpp \
            extend.ctrls/imre/RichEditOleCtrls.cpp \
+           extend.ctrls/imre/RichEditUnitConverter.cpp \
            extend.ctrls/imre/SImRichedit.cpp \
            ../../controls.extend/SChromeTabCtrl.cpp \
            ../../controls.extend/SImageMaskWnd.cpp \
