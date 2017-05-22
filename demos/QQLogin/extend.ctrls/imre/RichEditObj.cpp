@@ -15,10 +15,15 @@
 #include "RichEditOleCtrls.h"
 #include "RichEditObjFactory.h"
 
-const int  LEFT    =      0;
-const int  TOP    =      1;
-const int  RIGHT    =      2;
-const int  BOTTOM    =      3;
+
+namespace
+{
+	const int  LEFT = 0;
+	const int  TOP = 1;
+	const int  RIGHT = 2;
+	const int  BOTTOM = 3;
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // helpers
