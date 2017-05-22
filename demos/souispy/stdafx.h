@@ -5,8 +5,6 @@
 
 #pragma once
 
-#define  _CRT_SECURE_NO_WARNINGS
-	
 #include <souistd.h>
 #include <core/SHostDialog.h>
 #include <control/SMessageBox.h>

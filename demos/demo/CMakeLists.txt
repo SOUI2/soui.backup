@@ -43,7 +43,7 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/TipWnd.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/STabCtrlHeaderBinder.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/SHeaderCtrlEx.h
-	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/SMcListViewEx.h
+	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/SMCListViewEx.h
 )
 
 set(EXTENDCOTROLS ${EXTENDCOTROLS}
@@ -76,7 +76,7 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/TipWnd.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/STabCtrlHeaderBinder.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/SHeaderCtrlEx.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/SMcListViewEx.cpp
+	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/SMCListViewEx.cpp
 )
 source_group("Header Files" FILES ${CURRENT_HEADERS})
 source_group("Source Files" FILES ${CURRENT_SRCS})

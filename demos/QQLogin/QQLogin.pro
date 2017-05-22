@@ -22,10 +22,10 @@ dir = ../..
 include($$dir/common.pri)
 
 CONFIG(debug,debug|release){
-	LIBS += utilitiesd.lib souid.lib
+	LIBS += utilitiesd.lib souid.lib imm32.lib
 }
 else{
-	LIBS += utilities.lib soui.lib
+	LIBS += utilities.lib soui.lib imm32.lib
 }
 
 PRECOMPILED_HEADER = stdafx.h
