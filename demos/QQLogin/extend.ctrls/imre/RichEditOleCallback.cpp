@@ -1,212 +1,263 @@
 #include "stdafx.h"
+#include "souistd.h"
 #include "RichEditOleCallback.h"
+#include "dataobject.h"
+#include "ClipboardConverter.h"
+#include "SImRichEdit.h"
+#include "helper\SMenuEx.h"
 
-//////////////////////////////////////////////////////////////////////////
-// RichEditOleCallback
-
-RichEditOleCallback::RichEditOleCallback()
-    :m_dwRef(1)
-    ,m_iStorage(0)
+namespace SOUI
 {
-    HRESULT hResult = ::StgCreateDocfile(NULL,
-        STGM_TRANSACTED | STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE| STGM_DELETEONRELEASE,
-        0, &m_stg );
 
-    if ( m_stg == NULL || hResult != S_OK )
+    //////////////////////////////////////////////////////////////////////////
+    // RichEditOleCallback
+
+    RichEditOleCallback::RichEditOleCallback(SImRichEdit * pHost)
+        :m_dwRef(1)
+        , m_iStorage(0)
     {
-//         AfxThrowOleException( hResult );
-    }
-}
+        HRESULT hResult = ::StgCreateDocfile(NULL,
+            STGM_TRANSACTED | STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE | STGM_DELETEONRELEASE,
+            0, &m_stg);
 
-RichEditOleCallback::~RichEditOleCallback()
-{
-}
+        if (m_stg == NULL || hResult != S_OK)
+        {
+            //         AfxThrowOleException( hResult );
+        }
 
-HRESULT RichEditOleCallback::GetNewStorage(LPSTORAGE* ppStg)
-{
-    WCHAR tName[150];
-    swprintf(tName, L"REStorage_%d", ++m_iStorage);
-
-    if(m_iStorage%100 == 0)
-    {//每100个对象提交一次,避免创建stream or storage由于内存不足而失败
-        m_stg->Commit(STGC_DEFAULT);
+        m_pHost = pHost;
     }
 
-    HRESULT hr = m_stg->CreateStorage(tName, 
-        STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE ,
-        0, 0, ppStg );    
-    if(FAILED(hr) && (hr & E_OUTOFMEMORY))
-    {//失败后向storage提交后重试
-        m_stg->Commit(STGC_DEFAULT);
-        hr = m_stg->CreateStorage(tName, 
-            STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE ,
-            0, 0, ppStg );    
+    RichEditOleCallback::~RichEditOleCallback()
+    {
     }
 
-    return hr;
-}
-
-HRESULT RichEditOleCallback::QueryInterface(REFIID iid, void ** ppvObject)
-{
-    HRESULT hr = S_OK;
-    *ppvObject = NULL;
-
-    if ( iid == IID_IUnknown ||
-        iid == IID_IRichEditOleCallback )
+    HRESULT RichEditOleCallback::GetNewStorage(LPSTORAGE* ppStg)
     {
-        *ppvObject = this;
-        AddRef();
-    }else
-    {
-        hr = E_NOINTERFACE;
-    }
+        WCHAR tName[150];
+        swprintf(tName, L"REStorage_%d", ++m_iStorage);
 
-    return hr;
-}
+        if (m_iStorage % 100 == 0)
+        {//每100个对象提交一次,避免创建stream or storage由于内存不足而失败
+            m_stg->Commit(STGC_DEFAULT);
+        }
 
-ULONG RichEditOleCallback::AddRef()
-{
-    return ++m_dwRef;
-}
-
-ULONG RichEditOleCallback::Release()
-{
-    if ( --m_dwRef == 0 )
-    {
-        delete this;
-        return 0;
-    }
-
-    return m_dwRef;
-}
-
-HRESULT RichEditOleCallback::GetInPlaceContext(
-    LPOLEINPLACEFRAME FAR *lplpFrame,
-    LPOLEINPLACEUIWINDOW FAR *lplpDoc, 
-    LPOLEINPLACEFRAMEINFO lpFrameInfo)
-{
-    return S_OK;
-}
-
-HRESULT RichEditOleCallback::ShowContainerUI(BOOL fShow)
-{
-    return S_OK;
-}
-
-HRESULT RichEditOleCallback::QueryInsertObject(
-    LPCLSID lpclsid, 
-    LPSTORAGE lpstg, 
-    LONG cp)
-{
-    return S_OK;
-}
-
-HRESULT RichEditOleCallback::DeleteObject(LPOLEOBJECT lpoleobj)
-{
-    return S_OK;
-}
-
-HRESULT RichEditOleCallback::GetClipboardData(
-    CHARRANGE FAR *lpchrg, 
-    DWORD reco, 
-    LPDATAOBJECT FAR *lplpdataobj)
-{
-    /*演示自定义剪贴板格式的复制
-    if(RECO_COPY == reco || RECO_CUT == reco)
-    {
-        wchar_t * pBuf = new WCHAR[lpchrg->cpMax - lpchrg->cpMin +1];
-        TEXTRANGE txtRng;
-        txtRng.chrg = *lpchrg;
-        txtRng.lpstrText = pBuf;
-        m_pRichedit->SSendMessage(EM_GETTEXTRANGE,0,(LPARAM)&txtRng);
-        pBuf[lpchrg->cpMax - lpchrg->cpMin] =0;
-        
-        int  strBytes=  (lpchrg->cpMax - lpchrg->cpMin +1) * 2;  
-        HGLOBAL hG = GlobalAlloc(GMEM_DDESHARE, strBytes);  
-        void* pBuffer = GlobalLock(hG);  
-        {  
-            memcpy(pBuffer, pBuf, strBytes);  
-            GlobalUnlock(hG);  
-        }  
-        delete []txtRng.lpstrText;
-
-        FORMATETC fmt;  
-        fmt.cfFormat = KCF_SMILEY;  
-        fmt.dwAspect = DVASPECT_CONTENT;  
-        fmt.lindex = -1;  
-        fmt.ptd = NULL;  
-        fmt.tymed = TYMED_HGLOBAL;  
-
-        STGMEDIUM stg;  
-        stg.tymed = TYMED_HGLOBAL;  
-        stg.hGlobal = hG;  
-        stg.pUnkForRelease = NULL;  
-
-        HRESULT hr =CreateDataObject(&fmt,&stg,1,lplpdataobj);
-
+        HRESULT hr = m_stg->CreateStorage(tName,
+            STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE,
+            0, 0, ppStg);
+        if (FAILED(hr) && (hr & E_OUTOFMEMORY))
+        {//失败后向storage提交后重试
+            m_stg->Commit(STGC_DEFAULT);
+            hr = m_stg->CreateStorage(tName,
+                STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE,
+                0, 0, ppStg);
+        }
 
         return hr;
     }
-    */
-    return E_NOTIMPL;
-}
 
-HRESULT RichEditOleCallback::QueryAcceptData(
-    LPDATAOBJECT lpdataobj, 
-    CLIPFORMAT FAR *lpcfFormat,
-    DWORD reco, 
-    BOOL fReally, 
-    HGLOBAL hMetaPict)
-{
-    if(!fReally) return S_OK;
-
-    /*演示自定义剪贴板格式的粘贴
-    if(RECO_DROP == reco || RECO_PASTE == reco)
+    HRESULT RichEditOleCallback::QueryInterface(REFIID iid, void ** ppvObject)
     {
-        FORMATETC fmt;  
-        fmt.cfFormat = KCF_SMILEY;  
-        fmt.dwAspect = DVASPECT_CONTENT;  
-        fmt.lindex = -1;  
-        fmt.ptd = NULL;  
-        fmt.tymed = TYMED_HGLOBAL;  
-        //如果KCF_SMILEY 剪贴板格式可用  
-        if (SUCCEEDED(lpdataobj->QueryGetData(&fmt)) )
-        {  
-            STGMEDIUM stg;  
-            HRESULT hr = lpdataobj->GetData(&fmt, &stg);  
+        HRESULT hr = S_OK;
+        *ppvObject = NULL;
 
-            int nSize = GlobalSize(stg.hGlobal);  
-            void* pBuffer = GlobalLock(stg.hGlobal);  
-            {  
+        if (iid == IID_IUnknown ||
+            iid == IID_IRichEditOleCallback)
+        {
+            *ppvObject = this;
+            AddRef();
+        }
+        else
+        {
+            hr = E_NOINTERFACE;
+        }
 
-                STRACE(L"QueryAcceptData:%s",(LPWSTR)pBuffer);
-                GlobalUnlock(stg.hGlobal);  
-            }  
-            return S_OK;  
-        } 
+        return hr;
     }
+
+    ULONG RichEditOleCallback::AddRef()
+    {
+        return ++m_dwRef;
+    }
+
+    ULONG RichEditOleCallback::Release()
+    {
+        if (--m_dwRef == 0)
+        {
+            delete this;
+            return 0;
+        }
+
+        return m_dwRef;
+    }
+
+    HRESULT RichEditOleCallback::GetInPlaceContext(
+        LPOLEINPLACEFRAME FAR *lplpFrame,
+        LPOLEINPLACEUIWINDOW FAR *lplpDoc,
+        LPOLEINPLACEFRAMEINFO lpFrameInfo)
+    {
+        return S_OK;
+    }
+
+    HRESULT RichEditOleCallback::ShowContainerUI(BOOL fShow)
+    {
+        return S_OK;
+    }
+
+    HRESULT RichEditOleCallback::QueryInsertObject(
+        LPCLSID lpclsid,
+        LPSTORAGE lpstg,
+        LONG cp)
+    {
+        if (lpclsid == NULL)
+        {
+            return E_INVALIDARG;
+        }
+
+        if (*lpclsid == IID_ImageOleCtrl ||
+            *lpclsid == IID_FileOleCtrl ||
+            *lpclsid == IID_FetchMoreOleCtrl ||
+            *lpclsid == IID_SeparatorBarCtrl ||
+            *lpclsid == IID_RichMetaFileOle ||
+            *lpclsid == IID_RemainderOleCtrl)
+        {
+            return S_OK;
+        }
+
+        return E_FAIL;
+    }
+
+    HRESULT RichEditOleCallback::DeleteObject(LPOLEOBJECT lpoleobj)
+    {
+        return S_OK;
+    }
+
+    HRESULT RichEditOleCallback::GetClipboardData(
+        CHARRANGE FAR *lpchrg,
+        DWORD reco,
+        LPDATAOBJECT FAR *lplpdataobj)
+    {
+        if (RECO_COPY != reco && RECO_CUT != reco)
+        {
+            return E_NOTIMPL;
+        }
+
+        SStringW str = m_pHost->GetSelectedContent(lpchrg);
+
+        RichFormatConv conv;
+        if (!conv.InitFromRichContent(str))
+        {
+            return E_NOTIMPL;
+        }
+
+        if (conv.ToDataObject(lplpdataobj))
+        {
+            return S_OK;
+        }
+
+        return E_NOTIMPL;
+    }
+
+    /*
+     * Notes:
+     *  - During a paste operation or a drag event, determines if the data that is pasted or dragged should be accepted.
+     *
+     * Parameters:
+     * @lpdataobj:
+     *  - The data object being pasted or dragged.
+     *
+     * @lpcfFormat:
+     *  - The clipboard format that will be used for the paste or drop operation.
+     *    If the value pointed to by lpcfFormat is zero, the best available format
+     *    will be used. If the callback changes the value pointed to by lpcfFormat,
+     *    the rich edit control only uses that format and the operation will fail
+     *    if the format is not available.
+     *
+     * @reco:
+     *  - A clipboard operation flag, which can be one of these values.
+     *    RECO_DROP: Drop operation (drag-and-drop).
+     *    RECO_PASTE: Paste from the clipboard.
+     *
+     * @fReally:
+     *  - Indicates whether the drag-drop is actually happening or if it is just a query.
+     *    A nonzero value indicates the paste or drop is actually happening.
+     *    A zero value indicates the operation is just a query, such as for EM_CANPASTE.
+     *
+     * @hMetaPict:
+     *  - Handle to a metafile containing the icon view of an object if DVASPECT_ICON
+     *    is being imposed on an object by a paste special operation.
+     *
+     * Returen Value:
+     *  - 成功返回S_OK。详见Remarks.
+     *
+     * Remarks:
+     *  - 如果返回失败，richedit会拒绝这次的数据操作，并终止拖拽/粘贴操作。否则，
+     *    richedit会检查lpdataobj里自身可以访问的数据格式，用作粘贴。
+     *  - 如果返回一个非S_OK的成功码,意味着callback需要自己检查数据能否给粘贴(fReally是FALSE的情况)，
+     *    而且需要自己做粘贴(fReally是TRUE的情况)。
+     *  - 如果返回一个非S_OK的成功码,richedit不会检查控件的read-only状态
     */
-    return E_NOTIMPL;
-}
 
-HRESULT RichEditOleCallback::ContextSensitiveHelp(BOOL fEnterMode)
-{
-    return S_OK;
-}
+    HRESULT RichEditOleCallback::QueryAcceptData(
+        LPDATAOBJECT lpdataobj,
+        CLIPFORMAT FAR *lpcfFormat,
+        DWORD reco,
+        BOOL fReally,
+        HGLOBAL hMetaPict)
+    {
+        if (!fReally)
+        {
+            return OLE_S_STATIC;
+        }
 
-HRESULT RichEditOleCallback::GetDragDropEffect(
-    BOOL fDrag, 
-    DWORD grfKeyState, 
-    LPDWORD pdwEffect)
-{
-    return S_OK;
-}
+        RichFormatConv conv;
+        if (conv.InitFromDataObject(lpdataobj) != 0)
+        {
+            //SStringW strContent;
+            //conv.ToRichContent(strContent);
+            //m_pHost->InsertContent(strContent, RECONTENT_CARET);
+            //m_pHost->SetFocus();
 
-HRESULT RichEditOleCallback::GetContextMenu(
-    WORD seltyp, 
-    LPOLEOBJECT lpoleobj, 
-    CHARRANGE FAR *lpchrg,
-    HMENU FAR *lphmenu)
-{
-    return S_OK;
-}
+            if (!m_pHost->AcceptContent(&conv) && !m_pHost->GetReadOnly())
+            {
+                SStringW strContent;
+                conv.ToRichContent(strContent);
+                m_pHost->InsertContent(strContent, RECONTENT_CARET);
+                m_pHost->SetFocus();
+            }
+
+            /*
+             * 我们自己已经完成了粘贴/拖拽工作，不希望richedit继续再进行一遍
+             *
+             * A success code other than S_OK means that the callback either checked the data
+             * itself (if fReally is FALSE) or imported the data itself (if fReally is TRUE).
+            */
+            return S_FALSE;
+        }
+
+        return E_NOTIMPL;
+    }
+
+    HRESULT RichEditOleCallback::ContextSensitiveHelp(BOOL fEnterMode)
+    {
+        return E_NOTIMPL;
+    }
+
+    HRESULT RichEditOleCallback::GetDragDropEffect(
+        BOOL fDrag,
+        DWORD grfKeyState,
+        LPDWORD pdwEffect)
+    {
+        return S_OK;
+    }
+
+    HRESULT RichEditOleCallback::GetContextMenu(
+        WORD seltyp,
+        LPOLEOBJECT lpoleobj,
+        CHARRANGE FAR *lpchrg,
+        HMENU FAR *lphmenu)
+    {
+        return S_OK;
+    }
+
+}; // namespace SOUI

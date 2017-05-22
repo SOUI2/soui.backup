@@ -1,24 +1,29 @@
 #include "stdafx.h"
+#include "souistd.h"
+
 #include "RichEditObjFactory.h"
 #include "RichEditObj.h"
 #include "RichEditOleCtrls.h"
 
-RichEditObjFactory::RichEditObjFactory()
+namespace SOUI
 {
-    m_mapCreater[RichEditText::GetClassName()]          = RichEditText::CreateObject;
-    m_mapCreater[RichEditBkImg::GetClassName()]         = RichEditBkImg::CreateObject;
-    m_mapCreater[RichEditBubble::GetClassName()]        = RichEditBubble::CreateObject;
-    m_mapCreater[RichEditAvatar::GetClassName()]        = RichEditAvatar::CreateObject;
-    m_mapCreater[RichEditPara::GetClassName()]          = RichEditPara::CreateObject;
-    m_mapCreater[RichEditContent::GetClassName()]       = RichEditContent::CreateObject;
-    m_mapCreater[RichEditImageOle::GetClassName()]      = RichEditImageOle::CreateObject;
-    m_mapCreater[RichEditFileOle::GetClassName()]       = RichEditFileOle::CreateObject;
-    m_mapCreater[RichEditFetchMoreOle::GetClassName()]  = RichEditFetchMoreOle::CreateObject;
-    m_mapCreater[RichEditSplitLineOle::GetClassName()]  = RichEditSplitLineOle::CreateObject;
-    m_mapCreater[RichEditNewsOle::GetClassName()]       = RichEditNewsOle::CreateObject;
-    m_mapCreater[RichEditReminderOle::GetClassName()]   = RichEditReminderOle::CreateObject;
-}
 
-RichEditObjFactory::~RichEditObjFactory()
-{
-}
+    RichEditObjFactory::RichEditObjFactory()
+    {
+        _creaters[RichEditText::GetClassName()] = RichEditText::CreateObject;
+        _creaters[RichEditBkElement::GetClassName()] = RichEditBkElement::CreateObject;
+        _creaters[RichEditPara::GetClassName()] = RichEditPara::CreateObject;
+        _creaters[RichEditContent::GetClassName()] = RichEditContent::CreateObject;
+        _creaters[RichEditFetchMoreOle::GetClassName()] = RichEditFetchMoreOle::CreateObject;
+        _creaters[RichEditImageOle::GetClassName()] = RichEditImageOle::CreateObject;
+        _creaters[RichEditFileOle::GetClassName()] = RichEditFileOle::CreateObject;
+        _creaters[RichEditSeparatorBar::GetClassName()] = RichEditSeparatorBar::CreateObject;
+        _creaters[RichEditMetaFileOle::GetClassName()] = RichEditMetaFileOle::CreateObject;
+        _creaters[RichEditReminderOle::GetClassName()] = RichEditReminderOle::CreateObject;
+    }
+
+    RichEditObjFactory::~RichEditObjFactory()
+    {
+    }
+
+} // namespace SOUI

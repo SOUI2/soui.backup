@@ -26,17 +26,17 @@ void SButtonEx::DrawSkin(ISkinObj * pSkin, IRenderTarget *pRT)
     CRect rcClient;
     GetClientRect(&rcClient);
 
-    if(m_byAlphaAni==0xFF)
+    if (m_byAlphaAni == 0xFF)
     {//不在动画过程中
         pSkin->Draw(
             pRT, rcClient,
             IIF_STATE4(GetState(), 0, 1, 2, 3)
-            );
+        );
     }
     else
     {//在动画过程中
-        BYTE byNewAlpha=(BYTE)(((UINT)m_byAlphaAni*pSkin->GetAlpha())>>8);
-        if(GetState()&WndState_Hover)
+        BYTE byNewAlpha = (BYTE)(((UINT)m_byAlphaAni*pSkin->GetAlpha()) >> 8);
+        if (GetState()&WndState_Hover)
         {
             //get hover
             pSkin->Draw(pRT, rcClient, 0, pSkin->GetAlpha());
@@ -45,20 +45,20 @@ void SButtonEx::DrawSkin(ISkinObj * pSkin, IRenderTarget *pRT)
         else
         {
             //lose hover
-            pSkin->Draw(pRT, rcClient,0, pSkin->GetAlpha());
-            pSkin->Draw(pRT, rcClient, 1, pSkin->GetAlpha()-byNewAlpha);
+            pSkin->Draw(pRT, rcClient, 0, pSkin->GetAlpha());
+            pSkin->Draw(pRT, rcClient, 1, pSkin->GetAlpha() - byNewAlpha);
         }
     }
 }
 
-void SButtonEx::DrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,UINT uFormat)
+void SButtonEx::DrawText(IRenderTarget *pRT, LPCTSTR pszBuf, int cchText, LPRECT pRect, UINT uFormat)
 {
-    if ((m_sizeTextShift.cx != 0 || m_sizeTextShift.cy != 0) && 
+    if ((m_sizeTextShift.cx != 0 || m_sizeTextShift.cy != 0) &&
         (GetState()&WndState_PushDown))
     {
         RECT rcNew = *pRect;
         rcNew.left += m_sizeTextShift.cx;
-        rcNew.top  += m_sizeTextShift.cy;
+        rcNew.top += m_sizeTextShift.cy;
         pRT->DrawText(pszBuf, cchText, &rcNew, uFormat);
     }
     else

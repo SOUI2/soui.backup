@@ -1,284 +1,392 @@
-//////////////////////////////////////////////////////////////////////////
-// RichEditObj.h
+Ôªø
+// ------------------------------------------------------------------------------
+//
+// RichEditObj.h : interface of the RichEditObj class
+//
+// SImRichEditÂØπË±°ÁöÑÂü∫Á±ªÂ§¥Êñá‰ª∂ÂÆö‰πâÔºåSImRichEditÂØπË±°ÂåÖÊã¨‰ΩÜ‰∏ç‰ªÖÈôê‰∫é‰ª•‰∏ãÂØπË±°
 // 
+// - Ê∞îÊ≥°, ÈùûOLEÂØπË±°
+// - Â§¥ÂÉè, ÈùûOLEÂØπË±°
+// - ÊñáÊú¨, ÈùûOLEÂØπË±°
+// - ÂõæÁâá, OLEÂØπË±°
+// - Êñá‰ª∂Ê∂àÊÅØ, OLEÂØπË±°
+// - ‰ª•‰∏äÊòØÂéÜÂè≤Ê∂àÊÅØ, OLEÂØπË±°
+// - Ëé∑ÂèñÊõ¥Â§ö, OLEÂØπË±°
+//
+// ËØ•Êñá‰ª∂Âè™ÂÆö‰πâ‰∫ÜÈùûOLEÂØπË±°ÁöÑRichEditÂØπË±°ÔºåOLEÂØπË±°ÁöÑÂÆö‰πâËßÅ RichEditOleCtrls.h
+// 
+// ------------------------------------------------------------------------------
 
 #pragma once
+#include <vector>
 #include <TOM.h>
-#include "sobject/Sobject.hpp"
 #include "unknown/obj-ref-impl.hpp"
 #include "res.mgr/SFontPool.h"
 #include "interface/render-i.h"
 #include <atlcomcli.h>
 #include "IRichEditObjHost.h"
 
-#define REOBJ_FIRST   ((RichEditObj*)-1)    /*◊”∂‘œÛ≤Â»Î‘⁄ø™Õ∑*/
-#define REOBJ_LAST    NULL                  /*◊”∂‘œÛ≤Â»Î‘⁄ƒ©Œ≤*/
+namespace SOUI
+{
+
+#define REOBJ_FIRST   ((RichEditObj*)-1)    /*Â≠êÂØπË±°ÊèíÂÖ•Âú®ÂºÄÂ§¥*/
+#define REOBJ_LAST    NULL                  /*Â≠êÂØπË±°ÊèíÂÖ•Âú®Êú´Â∞æ*/
 
 #define DECLARE_REOBJ(obj,name) \
     SOUI_CLASS_NAME(obj,name) \
     static RichEditObj* CreateObject(){ return new obj; }
 
-class RichEditObj : public SObject
-{
-public:
-    enum AlignType
+    class RichEditObj : public SObject
     {
-        ALIGN_LEFT,
-        ALIGN_CENTER,
-        ALIGN_RIGHT
+    public:
+
+        enum AlignType
+        {
+            ALIGN_LEFT,
+            ALIGN_CENTER,
+            ALIGN_RIGHT
+        };
+
+        // ------------------------------------------------------------------------------
+        //
+        // methods for user
+        //
+        // ------------------------------------------------------------------------------
+
+        RichEditObj();
+        virtual ~RichEditObj();
+
+        ULONG               AddRef();
+        ULONG               Release();
+
+        virtual BOOL        InitFromXml(pugi::xml_node xmlNode);
+        virtual void        DrawObject(IRenderTarget *);
+        virtual LRESULT     ProcessMessage(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+        virtual BOOL        OnUpdateToolTip(CPoint pt, SwndToolTipInfo &tipInfo);
+        virtual BOOL        InsertIntoHost(IRichEditObjHost * pHost);
+        virtual void        UpdatePosition();
+        virtual void        SetDirty(BOOL);
+        virtual void        OffsetCharRange(int nOffset, BOOL bUpdate = FALSE);
+        virtual void        ExpandCharRange(int startCp, int nOffset, BOOL bUpdate = FALSE);
+        virtual BOOL        NeedToProcessMessage() { return FALSE; }
+        virtual BOOL        GetHitTestable() { return TRUE; }
+        virtual AlignType   GetAlign() { return _alignType; }
+        virtual void        SetAlign(AlignType align);
+        virtual CRect       GetRect() { return _objRect; }
+        virtual BOOL        PointInObject(POINT pt) { return _objRect.PtInRect(pt); }
+        virtual SStringW    GetObjType() { return GetClassName(); }
+        CHARRANGE           GetCharRange() { return _contentChr; }
+        void                AdjustMessageParam(UINT msg, WPARAM& wParam, LPARAM& lParam);
+
+        SStringW            GetName() { return _objName; }
+        SStringW            GetId() { return _objId; }
+        SStringW            GetData() { return _userData; }
+        int                 GetScale() const { return 100; }
+
+        //
+        // Ê†ëÊìç‰Ωú
+        //
+
+        UINT                GetChildrenCount();
+        void                InsertChild(RichEditObj *pNewChild, RichEditObj *pInsertAfter = REOBJ_LAST);
+        BOOL                RemoveChild(RichEditObj *pChild);
+        BOOL                CreateChildren(pugi::xml_node xmlNode);
+        RichEditObj *       GetById(LPCWSTR lpszId);
+        RichEditObj *       GetByName(LPCWSTR lpszName);
+        RichEditObj *       FindChildByName(LPCWSTR pszName, int nDeep = -1);
+        RichEditObj *       GetParent()     const { return _pParent; }
+        RichEditObj *       GetNext()       const { return _pNextSibling; }
+        RichEditObj *       GetPrev()       const { return _pPrevSibling; }
+        RichEditObj *       GetLastChild()  const { return _pLastChild; }
+        RichEditObj *       GetFirstChild() const { return _pFirstChild; }
+        void                DestroyObject();
+        BOOL                DestroyChild(RichEditObj * pChild);
+        void                OnDestroy();
+
+    protected:
+
+        // ------------------------------------------------------------------------------
+        //
+        // internal event handlers
+        //
+        // ------------------------------------------------------------------------------
+
+        SOUI_ATTRS_BEGIN()
+            ATTR_RECT(L"margin", _marginRect, FALSE)
+            ATTR_STRINGW(L"id", _objId, FALSE)
+            ATTR_STRINGW(L"name", _objName, FALSE)
+            ATTR_STRINGW(L"cursor", _cursorName, FALSE)
+            ATTR_STRINGW(L"data", _userData, FALSE)
+            ATTR_ENUM_BEGIN(L"align", AlignType, FALSE)
+            ATTR_ENUM_VALUE(L"left", ALIGN_LEFT)
+            ATTR_ENUM_VALUE(L"center", ALIGN_CENTER)
+            ATTR_ENUM_VALUE(L"right", ALIGN_RIGHT)
+            ATTR_ENUM_END(_alignType)
+            SOUI_ATTRS_END()
+
+            RichEditObj *       _pParent;       // Áà∂ËäÇÁÇπ 
+        RichEditObj *       _pFirstChild;   // Á¨¨‰∏ÄÂ≠êËäÇÁÇπ 
+        RichEditObj *       _pLastChild;    // ÊúÄÂêéËäÇÁÇπ 
+        RichEditObj *       _pNextSibling;  // Ââç‰∏ÄÂÖÑÂºüËäÇÁÇπ 
+        RichEditObj *       _pPrevSibling;  // Âêé‰∏ÄÂÖÑÂºüËäÇÁÇπ 
+        UINT                _childrenCount; // Â≠êËäÇÁÇπÊï∞Èáè 
+        ULONG               _references;    // ÂºïÁî®ËÆ°Êï∞Âô®
+        SStringW            _objId;         // ÂØπË±°ID
+        SStringW            _objName;       // ÂØπË±°ÂêçÁß∞ 
+        SStringW            _userData;      // Áî®Êà∑Êï∞ÊçÆ
+        SStringW            _cursorName;    // ÂÖâÊ†áÂêçÁß∞ 
+        IRichEditObjHost *  _pObjHost;      // ÂÆø‰∏ªrichedit 
+        CHARRANGE           _contentChr;    // Âú®richeditÈáåÈù¢ÁöÑÂ≠óÁ¨¶‰∏ãÊ†á,Ëøô‰∏™‰ø°ÊÅØÂæàÈáçË¶Å
+        CRect               _marginRect;    // ÂØπË±°ÁöÑÂ§ñËæπË∑ù 
+        CRect               _objRect;       // Âú®richeditÈáåÈù¢ÁöÑ‰ΩçÁΩÆ 
+        BOOL                _isDirty;       // ‰ΩçÁΩÆ‰ø°ÊÅØÊîπÂèò‰∫Ü 
+        AlignType           _alignType;     // ÂØπÈΩêÊñπÂºè,ÁâπÊåáÊ®™ÂêëÁöÑÂØπÈΩêÊñπÂºè
     };
 
-    RichEditObj();
-    virtual ~RichEditObj();
-
-    ULONG               AddRef();
-    ULONG               Release();
-
-    virtual BOOL        InitFromXml(pugi::xml_node xmlNode);
-    virtual void        DrawObject(IRenderTarget *);
-    virtual LRESULT     ProcessMessage(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-    virtual BOOL        OnUpdateToolTip(CPoint pt, SwndToolTipInfo &tipInfo);
-    virtual BOOL        InsertIntoHost(IRichEditObjHost * pHost);
-    virtual void        UpdatePosition();
-    virtual void        SetDirty(BOOL);
-    virtual BOOL        NeedToProcessMessage()      {return FALSE; }
-    virtual AlignType   GetAlign()                  { return m_alignType; }
-    virtual void        SetAlign(AlignType align)   { m_alignType = align; }
-    virtual CRect       GetRect()                   { return m_rcObj; }
-    virtual void        OffsetCharRange(int nOffset);
-    CHARRANGE           GetCharRange()              { return m_chrContent; }
-    SStringW            GetId()                     { return m_strId; }
-    void                AdjustMessageParam(UINT msg, WPARAM& wParam, LPARAM& lParam);
-
+    // ------------------------------------------------------------------------------
     //
-    //  ˜≤Ÿ◊˜
+    // RichEditText interface
+    // 
+    // RichEditÊñáÊú¨ÔºåÂèØËÆæÂ≠ó‰Ωì„ÄÅÈ¢úËâ≤Á≠âÂ±ûÊÄß
     //
-    UINT                GetChildrenCount();
-    void                InsertChild(RichEditObj *pNewChild, RichEditObj *pInsertAfter=REOBJ_LAST);
-    BOOL                RemoveChild(RichEditObj *pChild);
-    BOOL                CreateChildren(pugi::xml_node xmlNode);
-    RichEditObj *       GetById(LPCWSTR lpszId);
-    RichEditObj *       FindChildByName(LPCWSTR pszName , int nDeep=-1);
-    RichEditObj *       GetParent()     const { return m_pParent; }
-    RichEditObj *       GetNext()       const { return m_pNextSibling; }
-    RichEditObj *       GetPrev()       const { return m_pPrevSibling; }
-    RichEditObj *       GetLastChild()  const { return m_pLastChild; }
-    RichEditObj *       GetFirstChild() const { return m_pFirstChild; }
-    void                DestroyObject();
-    BOOL                DestroyChild(RichEditObj * pChild);
-    void                OnDestroy();
+    // ------------------------------------------------------------------------------
 
-protected:
+    class RichEditText : public RichEditObj
+    {
+        DECLARE_REOBJ(RichEditText, L"text")
 
-    SOUI_ATTRS_BEGIN()
-        ATTR_RECT(L"margin", m_rcMargin, FALSE)
-        ATTR_STRINGW(L"id", m_strId, FALSE)
-        ATTR_STRINGW(L"name", m_strName, FALSE)
-        ATTR_ENUM_BEGIN(L"align",AlignType,FALSE)
-            ATTR_ENUM_VALUE(L"left",ALIGN_LEFT)
-            ATTR_ENUM_VALUE(L"center",ALIGN_CENTER)
-            ATTR_ENUM_VALUE(L"right",ALIGN_RIGHT)
-        ATTR_ENUM_END(m_alignType)
-    SOUI_ATTRS_END()
+    public:
 
-    RichEditObj *       m_pParent;          /**< ∏∏Ω⁄µ„ */
-    RichEditObj *       m_pFirstChild;      /**< µ⁄“ª◊”Ω⁄µ„ */
-    RichEditObj *       m_pLastChild;       /**< ◊Ó∫ÛΩ⁄µ„ */
-    RichEditObj *       m_pNextSibling;     /**< «∞“ª–÷µ‹Ω⁄µ„ */
-    RichEditObj *       m_pPrevSibling;     /**< ∫Û“ª–÷µ‹Ω⁄µ„ */
-    UINT                m_nChildrenCount;   /**< ◊”Ω⁄µ„ ˝¡ø */
+        RichEditText();
+        ~RichEditText() {}
 
-    ULONG               m_ulRef;
-    SStringW            m_strId;
-    SStringW            m_strName;
-    IRichEditObjHost *  m_pObjectHost;      /**< Àﬁ÷˜richedit           */
-    CHARRANGE           m_chrContent;       /**< ‘⁄richedit¿Ô√Êµƒ◊÷∑˚œ¬±Í,’‚∏ˆ–≈œ¢∫‹÷ÿ“™*/
-    CRect               m_rcMargin;         /**< ∂‘œÛµƒÕ‚±ﬂæ‡         */
-    CRect               m_rcObj;            /**< ‘⁄richedit¿Ô√ÊµƒŒª÷√  */
-    BOOL                m_bDirty;           /**< Œª÷√–≈œ¢∏ƒ±‰¡À       */
-    AlignType           m_alignType;        /**< ∂‘∆Î∑Ω Ω,Ãÿ÷∏∫·œÚµƒ∂‘∆Î∑Ω Ω*/
-};
+        static SStringW MakeFormatedText(const SStringW& text, int fontSize = 10);
 
-class RichEditText : public RichEditObj
-{
-    DECLARE_REOBJ(RichEditText, L"text")
+        virtual BOOL InitFromXml(pugi::xml_node xmlNode);
+        virtual void DrawObject(IRenderTarget *);
+        virtual void UpdatePosition();
+        virtual CRect GetRect();
+        virtual BOOL PointInObject(POINT pt);
+        virtual BOOL GetHitTestable();
+        virtual BOOL NeedToProcessMessage();
+        virtual LRESULT ProcessMessage(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+        virtual BOOL InsertIntoHost(IRichEditObjHost * pHost);
+        int GetLineCount() { return _lineCount; }
+        SStringW GetType() { return GetClassName(); }
+        SStringW GetText() { return _text; }
+        SStringW GetLinkData() { return _linkData; }
+        SStringW GetTextType() { return _textType; }
+        void SetText(LPCWSTR pszText);
+        void SetLink(BOOL isLink);
+        void SetTextStyle(BOOL underline, BOOL bold, BOOL italic, COLORREF color);
 
-public:
-    RichEditText();
-    ~RichEditText(){}
+    protected:
 
-    BOOL        InitFromXml(pugi::xml_node xmlNode);
-    BOOL        InsertIntoHost(IRichEditObjHost * pHost);
-    int         GetLineCount() { return m_nLineCount; }
+        void FixText();
 
-protected:
-    SOUI_ATTRS_BEGIN()
-        ATTR_STRINGW(L"font-face", m_strFont, FALSE)
-        ATTR_COLOR(L"color", m_crText, FALSE)
-        ATTR_INT(L"underline", m_bUnderline, FALSE)
-        ATTR_INT(L"bold", m_bBold, FALSE)
-        ATTR_INT(L"italic", m_bItalic, FALSE)
-        ATTR_INT(L"font-size", m_nFontSize, FALSE)
-    SOUI_ATTRS_END()
+        SOUI_ATTRS_BEGIN()
+            ATTR_STRINGW(L"font-face", _font, FALSE)
+            ATTR_COLOR(L"color", _textColor, FALSE)
+            ATTR_INT(L"underline", _isUnderline, FALSE)
+            ATTR_INT(L"bold", _isBold, FALSE)
+            ATTR_INT(L"italic", _isItalic, FALSE)
+            ATTR_INT(L"font-size", _fontSize, FALSE)
+            ATTR_INT(L"link", _isLink, FALSE)
+            ATTR_STRINGW(L"link-data", _linkData, FALSE)
+            ATTR_STRINGW(L"text-type", _textType, FALSE)
+            SOUI_ATTRS_END()
 
-    COLORREF    m_crText;
-    SStringW    m_strFont;
-    SStringW    m_strText;
-    int         m_nLineCount;
-    BOOL        m_bUnderline;
-    BOOL        m_bBold;
-    BOOL        m_bItalic;
-    int         m_nFontSize;
-};
+    private:
 
-class RichEditBkImg : public RichEditObj
-{
-    DECLARE_REOBJ(RichEditBkImg, L"bkimage")
+        typedef std::vector<CRect> RectVec;
 
-public:
-    RichEditBkImg();
-    ~RichEditBkImg(){}
+        RectVec     _objRects;
+        DWORD       _status;
+        COLORREF    _textColor;
+        SStringW    _font;
+        SStringW    _text;
+        SStringW    _linkData;
+        SStringW    _textType;
+        int         _lineCount;
+        BOOL        _isUnderline;
+        BOOL        _isBold;
+        BOOL        _isItalic;
+        BOOL        _isLink;
+        int         _fontSize;
+    };
 
-    void    DrawObject(IRenderTarget *);
-    void CalcPosition(POS_INFO * pItemsPos, int nPosCount);
-    CRect   GetRect();
+    //------------------------------------------------------------------------------
+    //
+    // RichEditBkElement interface
+    // 
+    // ËÉåÊôØÂÖÉÁ¥†
+    //
+    //------------------------------------------------------------------------------
+    class RichEditBkElement : public RichEditObj
+    {
+        DECLARE_REOBJ(RichEditBkElement, L"bkele")
+    public:
 
-protected:
-    HRESULT OnInternalAttrPos(POS_INFO* pPosItem, int& nPosCount, const SStringW& strValue, BOOL bLoading);
-    HRESULT OnAttrPos(const SStringW& strValue, BOOL bLoading);
+        RichEditBkElement();
+        ~RichEditBkElement();
 
-    BOOL ParsePosition34(POS_INFO* pPosItem, const SStringW & strPos3, const SStringW &strPos4 );
-    BOOL ParsePosition12(POS_INFO* pPosItem, const SStringW & strPos1, const SStringW &strPos2 );
-    BOOL StrPos2ItemPos(const SStringW &strPos, POS_INFO& pos);
-    int PositionItem2Value(const POS_INFO& pos ,int nMin, int nMax,BOOL bX);
+        void        SetVisible(BOOL visible) { _bVisible = visible; }
+        void        SetInteractive(BOOL b) { _isInteractive = b; }
+        SStringW    GetType() { return GetClassName(); }
+        BOOL        GetHitTestable() { return _bVisible && _hittestable; }
+        BOOL        NeedToProcessMessage() { return _bVisible && _isInteractive; }
+        void        CalcPosition(POS_INFO * pItemsPos, int nPosCount);
+        CRect       GetRect();
+        void        SetText(const SStringW& text);
+        void        SetSkin(ISkinObj* pSkin, BOOL bAutoFree = TRUE);
+        void        SetTextColor(COLORREF cr) { _textColor = cr; }
+    protected:
 
-    SOUI_ATTRS_BEGIN()
-        ATTR_STRINGW(L"id", m_strId, TRUE)
-        ATTR_STRINGW(L"src", m_strSource, TRUE)
-        ATTR_CUSTOM(L"pos", OnAttrPos)
-    SOUI_ATTRS_END()
+        LRESULT ProcessMessage(UINT msg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+        void    BeforePaint(IRenderTarget *pRT, SPainter &painter);
+        void    AfterPaint(IRenderTarget *pRT, SPainter &painter);
+        void    DrawObject(IRenderTarget *);
+        int     PositionItem2Value(const POS_INFO &pos, int nMin, int nMax, BOOL bX);
+        BOOL    ParsePosition34(POS_INFO* pPosItem, const SStringW & strPos3, const SStringW &strPos4);
+        BOOL    ParsePosition12(POS_INFO* pPosItem, const SStringW & strPos1, const SStringW &strPos2);
+        BOOL    StrPos2ItemPos(const SStringW &strPos, POS_INFO & pos);
+        HRESULT OnAttrSkin(const SStringW& strValue, BOOL bLoading);
+        HRESULT OnAttrPos(const SStringW& strValue, BOOL bLoading);
+        HRESULT OnAttrPosLeft(const SStringW& strValue, BOOL bLoading);
+        HRESULT OnAttrPosCenter(const SStringW& strValue, BOOL bLoading);
+        HRESULT OnAttrPosRight(const SStringW& strValue, BOOL bLoading);
+        HRESULT OnInternalAttrPos(POS_INFO* pPosItem, int& nPosCount, const SStringW& strValue, BOOL bLoading);
 
-    int             m_nPosCount;        /**< ∂®“Â◊Û/æ”÷–∂‘∆Î ±µƒ◊¯±Í∏ˆ ˝ */
-    POS_INFO        m_itemPos[4];       /**< ”…pos Ù–‘∂®“Âµƒ÷µ, m_nPosCount >0  ±”––ß*/
+        SOUI_ATTRS_BEGIN()
+            ATTR_INT(L"visible", _bVisible, FALSE)
+            ATTR_INT(L"interactive", _isInteractive, FALSE)
+            ATTR_INT(L"hittestable", _hittestable, FALSE)
+            ATTR_CUSTOM(L"pos", OnAttrPos)     // ËÆæÁΩÆ3‰∏™posÈÉΩ‰∏ÄÊ†∑
+            ATTR_CUSTOM(L"center-pos", OnAttrPosCenter)
+            ATTR_CUSTOM(L"left-pos", OnAttrPosLeft)
+            ATTR_CUSTOM(L"right-pos", OnAttrPosRight)
+            ATTR_CUSTOM(L"skin", OnAttrSkin)   // ËÆæÁΩÆ3‰∏™skinÈÉΩ‰∏ÄÊ†∑
+            ATTR_SKIN(L"left-skin", _pLeftSkin, FALSE)
+            ATTR_SKIN(L"center-skin", _pCenterSkin, FALSE)
+            ATTR_SKIN(L"right-skin", _pRightSkin, FALSE)
+            ATTR_STRINGW(L"font", _font, FALSE)
+            ATTR_COLOR(L"text-color", _textColor, FALSE)
+            ATTR_STRINGW(L"text", _text, FALSE)
+            ATTR_HEX(L"text-format", _textFormat, FALSE)
+            SOUI_ATTRS_END()
 
-    SStringW        m_strId;
-    SStringW        m_strSource;
-};
+    protected:
 
-class RichEditBubble : public RichEditBkImg
-{
-    DECLARE_REOBJ(RichEditBubble, L"bubble")
+        int             _textFormat;
+        SStringW        _font;
+        SStringW        _text;
+        COLORREF        _textColor;
+        BOOL            _bVisible;          // ÊòØÂê¶ÊòæÁ§∫
+        DWORD           _status;            // Ê†áËÆ∞Èº†Ê†áÁä∂ÊÄÅÔºåÁî®Êù•ËæÖÂä©Âà§Êñ≠ÊòØÂê¶ÁÇπÂáª‰∫ÜÂå∫Âüü
+        BOOL            _isInteractive;     // ÊòØÂê¶ÈúÄË¶ÅÊé•ÂèóÊ∂àÊÅØÔºåÊØîÂ¶ÇWM_MOUSEMOVE
+        BOOL            _hittestable;       // ËÉΩÂê¶Ë¢´hittest
 
-public:
-    RichEditBubble();
-    ~RichEditBubble(){}
-    void    DrawObject(IRenderTarget *);
-    CRect   GetRect();
+        int             _defPosCount;       // ÂÆö‰πâÂ∑¶ÂØπÈΩêÊó∂ÁöÑÂùêÊ†á‰∏™Êï∞ */
+        POS_INFO        _defPosItems[4];    // Áî±posÂ±ûÊÄßÂÆö‰πâÁöÑÂÄº, _defPosCount >0 Êó∂ÊúâÊïà*/
+        int             _centerPosCount;    // ÂÆö‰πâÂ±Ö‰∏≠ÂØπÈΩêÊó∂ÁöÑÂùêÊ†á‰∏™Êï∞ */
+        POS_INFO        _centerPosItems[4]; // Áî±posÂ±ûÊÄßÂÆö‰πâÁöÑÂÄº, _centerPosCount >0 Êó∂ÊúâÊïà*/
+        int             _rightPosCount;     // ÂÆö‰πâÂè≥ÂØπÈΩêÊó∂ÁöÑÂùêÊ†á‰∏™Êï∞ */
+        POS_INFO        _rightPosItems[4];  // Áî±posÂ±ûÊÄßÂÆö‰πâÁöÑÂÄº, _rightPosCount >0 Êó∂ÊúâÊïà*/
 
-protected:
-    HRESULT OnAttrPosRight(const SStringW& strValue, BOOL bLoading);
-    HRESULT OnAttrPosLeft(const SStringW& strValue, BOOL bLoading);
+        ISkinObj *      _pLeftSkin;         // ÈªòËÆ§ÂõæÁâáÔºå‰∏ÄËà¨ÊòØÂ∑¶ÂØπÈΩêÁöÑskin
+        ISkinObj *      _pCenterSkin;       // Â±Ö‰∏≠ÂØπÈΩêÁöÑskin
+        ISkinObj *      _pRightSkin;        // Âè≥ÂØπÈΩêÁöÑskin
 
-    SOUI_ATTRS_BEGIN()
-        ATTR_STRINGW(L"left-bubble", m_strLeftBubble, TRUE)
-        ATTR_STRINGW(L"right-bubble", m_strRightBubble, TRUE)
-        ATTR_CUSTOM(L"pos-left", OnAttrPosLeft)
-        ATTR_CUSTOM(L"pos-right", OnAttrPosRight)
-    SOUI_ATTRS_END()
+        SStringW        _data;              // Áî®Êà∑Êï∞ÊçÆ
+    };
 
-    int             m_nLeftPosCount;        /**< ∂®“Â◊Û/æ”÷–∂‘∆Î ±µƒ◊¯±Í∏ˆ ˝ */
-    POS_INFO        m_itemLeftPos[4];       /**< ”…pos Ù–‘∂®“Âµƒ÷µ, m_nLeftPosCount >0  ±”––ß*/
+    // ------------------------------------------------------------------------------
+    //
+    // RichEditPara interface
+    // 
+    // ÊÆµËêΩ„ÄÇ‰∏ªË¶ÅÂÆûÁé∞‰∫ÜÂ∑¶Âè≥Áº©ËøõÊïàÊûúÔºåÂè≥ÂØπÈΩêÊïàÊûúÈááÁî®Â∑¶Áº©ËøõÊ®°Êãü
+    //
+    // ------------------------------------------------------------------------------
 
-    int             m_nRightPosCount;       /**< ∂®“Â”“∂‘∆Î ±µƒ◊¯±Í∏ˆ ˝ */
-    POS_INFO        m_itemRightPos[4];      /**< ”…pos Ù–‘∂®“Âµƒ÷µ, m_nRightPosCount >0  ±”––ß*/
+    class RichEditPara : public RichEditObj
+    {
+        DECLARE_REOBJ(RichEditPara, L"para")
 
-    SStringW        m_strLeftBubble;
-    SStringW        m_strRightBubble;
-};
+    public:
 
+        RichEditPara();
+        ~RichEditPara() {}
 
-class RichEditAvatar : public RichEditBkImg
-{
-    DECLARE_REOBJ(RichEditAvatar, L"avatar")
+        SStringW    GetType() { return GetClassName(); }
+        BOOL        GetHitTestable() { return FALSE; }
+        CRect       GetRect();
+        void        UpdatePosition();
+        BOOL        InsertIntoHost(IRichEditObjHost * pHost);
+        void        SetAlign(AlignType align);
+        BOOL        IsWrapped();
+        void        OffsetCharRange(int nOffset, BOOL bUpdate = FALSE);
+        void        SetCharRange(const CHARRANGE& chr);
 
-public:
-    RichEditAvatar();
-    ~RichEditAvatar(){}
-    void    DrawObject(IRenderTarget *);
-    CRect   GetRect();
+    protected:
 
-protected:
-    HRESULT OnAttrPosRight(const SStringW& strValue, BOOL bLoading);
-    HRESULT OnAttrPosLeft(const SStringW& strValue, BOOL bLoading);
+        BOOL    GetAutoWrapped();
+        BOOL    CalculateRect();
+        BOOL    GetLineRect(int nLineNo, CRect& rcLine);
 
-    SOUI_ATTRS_BEGIN()
-        ATTR_CUSTOM(L"pos-left", OnAttrPosLeft)
-        ATTR_CUSTOM(L"pos-right", OnAttrPosRight)
-    SOUI_ATTRS_END()
+        SOUI_ATTRS_BEGIN()
+            ATTR_INT(L"break", _breakAtTheEnd, FALSE)
+            ATTR_INT(L"simulate-align", _simulateAlign, FALSE)
+            ATTR_INT(L"disable-layout", _disableLayout, FALSE)
+            SOUI_ATTRS_END()
 
-    int             m_nLeftPosCount;     /**< ∂®“Â◊Û/æ”÷–∂‘∆Î ±µƒ◊¯±Í∏ˆ ˝ */
-    POS_INFO        m_itemLeftPos[4];    /**< ”…pos Ù–‘∂®“Âµƒ÷µ, m_nPosCount >0  ±”––ß*/
+            BOOL    _autoWrapped;      /**< ÊòØÂê¶‰∏ÄË°åÊòæÁ§∫‰∏ç‰∏ã,Ëá™Âä®Êç¢Ë°å‰∫Ü*/
+        BOOL    _needUpdateLayout; /**< Ê†áËÆ∞ÊòØÂê¶ÈúÄË¶ÅÈáçÊñ∞ËÆæÁΩÆÁº©Ëøõ*/
+        BOOL    _simulateAlign;    /**< ÊòØÂê¶Ê®°ÊãüÂè≥ÂØπÈΩê„ÄÇÂç≥ËÆæÁΩÆÂ∑¶Áº©Ëøõ,ËææÂà∞Âè≥ÂØπÈΩêÊïàÊûú*/
+        int     _breakAtTheEnd;    /**< ÊòØÂê¶Âú®ÊÆµËêΩÂêéÂä†‰∏ä‰∏Ä‰∏™ÂõûËΩ¶*/
+        int     _lineCount;        /**< ÊñáÊú¨ÁöÑË°åÊï∞,Áî®Êù•Âà§Êñ≠ÊòØÂê¶Ëá™Âä®Êç¢Ë°å‰∫Ü*/
+        BOOL    _initialized;
+        BOOL    _disableLayout;    /**< ‰∏çÈúÄË¶ÅÂ∏ÉÂ±Ä */
+    };
 
-    int             m_nRightPosCount;    /**< ∂®“Â”“∂‘∆Î ±µƒ◊¯±Í∏ˆ ˝ */
-    POS_INFO        m_itemRightPos[4];   /**< ”…pos Ù–‘∂®“Âµƒ÷µ, m_nLeftPosCount >0  ±”––ß*/
-};
+    // ------------------------------------------------------------------------------
+    //
+    // RichEditContent interface
+    // 
+    // RichEditÂÜÖÂÆπÁöÑÂÆπÂô®„ÄÇÊâÄÊúâÁöÑÂØπË±°Âú®ÊèíÂÖ•RichEditÂâçÈúÄË¶ÅÊîæÁΩÆÂú®ËØ•ÂÆπÂô®‰∏ã„ÄÇ
+    //
+    // ------------------------------------------------------------------------------
 
-class RichEditPara : public RichEditObj
-{
-    DECLARE_REOBJ(RichEditPara, L"para")
+    class RichEditContent : public RichEditObj
+    {
+#define THRESHOLD_FOR_AUTOLAYOUT 1024 // Ëá™Âä®Â∏ÉÂ±ÄÁöÑÈòÄÂÄº
 
-public:
-    RichEditPara();
-    ~RichEditPara(){}
+        DECLARE_REOBJ(RichEditContent, L"RichEditContent")
 
-    CRect   GetRect();
-    void    UpdatePosition();
-    BOOL    InsertIntoHost(IRichEditObjHost * pHost);
-    void    SetAlign(AlignType align);
-    BOOL    IsWrapped();
-    void    OffsetCharRange(int nOffset);
+    public:
 
-protected:
-    BOOL    CalcParagraphRect();
-    BOOL    GetLineRect(int nLineNo, CRect& rcLine);
+        RichEditContent() :_autoLayout(FALSE) {}
+        ~RichEditContent() {}
 
-    SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"break", m_bBreakAtTheEnd, FALSE)
-        ATTR_INT(L"simulate-align", m_bSimulateAlign, FALSE)
-        ATTR_INT(L"disable-layout", m_bDisableLayout, FALSE)
-    SOUI_ATTRS_END()
+        virtual void  UpdatePosition();
+        virtual BOOL  GetHitTestable() { return FALSE; }
+        virtual CRect GetRect();
+        SStringW    GetObjType() { return GetClassName(); }
+        SStringW    GetContentType() { return _contentType; }
+        time_t      GetTimestamp() { return _timestamp; }
 
-    BOOL    m_bWrapped;          /**<  «∑Ò“ª––œ‘ æ≤ªœ¬,◊‘∂Øªª––¡À*/
-    BOOL    m_bNeedUpdateLayout; /**< ±Íº« «∑Ò–Ë“™÷ÿ–¬…Ë÷√ÀıΩ¯*/
-    BOOL    m_bSimulateAlign;    /**<  «∑Òƒ£ƒ‚”“∂‘∆Î°£º¥…Ë÷√◊ÛÀıΩ¯,¥ÔµΩ”“∂‘∆Î–ßπ˚*/
-    int     m_bBreakAtTheEnd;    /**<  «∑Ò‘⁄∂Œ¬‰∫Ûº”…œ“ª∏ˆªÿ≥µ*/
-    int     m_nLineCount;        /**< Œƒ±æµƒ–– ˝,”√¿¥≈–∂œ «∑Ò◊‘∂Øªª––¡À*/
-    BOOL    m_bInited;
-    BOOL    m_bDisableLayout;    /**< ≤ª–Ë“™≤ºæ÷ */
-};
+    protected:
 
-//////////////////////////////////////////////////////////////////////////
-// RichEditContent
-class RichEditContent : public RichEditObj
-{
-    #define THRESHOLD_FOR_AUTOLAYOUT 1024 // ◊‘∂Ø≤ºæ÷µƒ∑ß÷µ
+        BOOL OnTimestampAttr(const SStringW& attr, BOOL bLoading);
 
-    DECLARE_REOBJ(RichEditContent, L"RichEditContent")
+        SOUI_ATTRS_BEGIN()
+            ATTR_STRINGW(L"type", _contentType, FALSE)
+            ATTR_INT(L"auto-layout", _autoLayout, TRUE) /**< ÊòØÂê¶Ëá™Âä®Â∏ÉÂ±Ä,ËØ•ËÆæÁΩÆ‰ºöË¶ÜÁõñalignÂ±ûÊÄß*/
+            ATTR_CUSTOM(L"timestamp", OnTimestampAttr)
+            SOUI_ATTRS_END()
 
-public:
-    RichEditContent():m_bAutoLayout(FALSE){}
-    ~RichEditContent(){}
+            SStringW    _contentType;
+        BOOL        _autoLayout;
+        time_t      _timestamp;
+    };
 
-    void        UpdatePosition();
-    SStringW    GetType() { return m_strType; }
-    CRect       GetRect();
-
-protected:
-    SOUI_ATTRS_BEGIN()
-        ATTR_STRINGW(L"type", m_strType, FALSE)
-        ATTR_INT(L"auto-layout", m_bAutoLayout, TRUE) /**<  «∑Ò◊‘∂Ø≤ºæ÷,∏√…Ë÷√ª·∏≤∏«align Ù–‘*/
-    SOUI_ATTRS_END()
-
-    SStringW    m_strType;
-    BOOL        m_bAutoLayout;
-};
+} // namespace SOUI
