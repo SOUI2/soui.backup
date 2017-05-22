@@ -38,7 +38,7 @@ HEADERS += MainDlg.h \
 	   adapter.h\
            wtlhelper/whwindow.h \
 	   ../controls.extend/SMcListViewEx\SHeaderCtrlEx.h\
-  	   ../controls.extend/SMcListViewEx\SMcListViewEx.h
+  	   ../controls.extend/SMcListViewEx\SMcListViewEx.h\
            ../../controls.extend/SWkeWebkit.h \
            ../../controls.extend/gif/SAniImgFrame.h \
            ../../controls.extend/gif/SGifPlayer.h \
