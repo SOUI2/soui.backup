@@ -1,9 +1,9 @@
 /*
- * å„RichEditObjå¯¹è±¡çš„å®ç°æ–‡ä»¶
+ * ¸÷RichEditObj¶ÔÏóµÄÊµÏÖÎÄ¼ş
  *
- * ä½¿ç”¨richeditçš„é—®é¢˜æ³¨æ„:
- * 1.SetIndentsæ¯”è¾ƒè´¹æ—¶,èƒ½å°‘ç”¨å°½é‡å°‘ç”¨
- * 2.å¦‚æœè¡Œæœ«æœ‰å›è½¦,åœ¨è®¾ç½®æ®µè½ç¼©è¿›æ—¶éœ€è¦åœ¨è¡Œæœ«æ‰‹åŠ¨åŠ ä¸€ä¸ªå›è½¦,ç„¶åæŠŠå›è½¦ä¹Ÿé€‰è¿›æ®µè½è¿›è¡Œç¼©è¿›
+ * Ê¹ÓÃricheditµÄÎÊÌâ×¢Òâ:
+ * 1.SetIndents±È½Ï·ÑÊ±,ÄÜÉÙÓÃ¾¡Á¿ÉÙÓÃ
+ * 2.Èç¹ûĞĞÄ©ÓĞ»Ø³µ,ÔÚÉèÖÃ¶ÎÂäËõ½øÊ±ĞèÒªÔÚĞĞÄ©ÊÖ¶¯¼ÓÒ»¸ö»Ø³µ,È»ºó°Ñ»Ø³µÒ²Ñ¡½ø¶ÎÂä½øĞĞËõ½ø
  * 
 */
 
@@ -371,7 +371,7 @@ BOOL RichEditText::InitFromXml(pugi::xml_node xmlNode)
 {
     m_strText = xmlNode.text().get();
 
-    // è®¡ç®—è¡Œæ•°
+    // ¼ÆËãĞĞÊı
     for (int nlf = m_strText.Find(0x0a); nlf >= 0; ++m_nLineCount)
     {
         nlf = m_strText.Find(0x0a, nlf+1);
@@ -391,7 +391,7 @@ BOOL RichEditText::InsertIntoHost(IRichEditObjHost * pHost)
     m_chrContent.cpMax += m_pObjectHost->GetContentLength() - nLength;
     m_pObjectHost->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&m_chrContent);
 
-    // è®¾ç½®å­—ä½“æ ·å¼
+    // ÉèÖÃ×ÖÌåÑùÊ½
     CHARFORMATW cf = {0};
     cf.cbSize = sizeof(CHARFORMATW);
 
@@ -427,7 +427,7 @@ BOOL RichEditText::InsertIntoHost(IRichEditObjHost * pHost)
 
     m_pObjectHost->SendMessage(EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
 
-    // æŠŠå…‰æ ‡ç§»åˆ°æœ€å
+    // °Ñ¹â±êÒÆµ½×îºó
     CHARRANGE chr = {m_chrContent.cpMax, m_chrContent.cpMax};
     m_pObjectHost->SendMessage(EM_EXSETSEL, NULL, (LPARAM)&chr);
 
@@ -445,7 +445,7 @@ void RichEditBkImg::DrawObject(IRenderTarget * pRT)
 {
     if (m_bDirty)
     {
-        // ç­‰æ‰€ä¾èµ–çš„å‰ä¸€ä¸ª/åä¸€ä¸ªå…„å¼ŸèŠ‚ç‚¹å…ˆæ›´æ–°ä½ç½®ä¿¡æ¯å®Œæ¯•
+        // µÈËùÒÀÀµµÄÇ°Ò»¸ö/ºóÒ»¸öĞÖµÜ½ÚµãÏÈ¸üĞÂÎ»ÖÃĞÅÏ¢Íê±Ï
         CalcPosition(m_itemPos, m_nPosCount);
     }
 
@@ -510,7 +510,7 @@ BOOL RichEditBkImg::ParsePosition12(POS_INFO* pPosItem, const SStringW & strPos1
     POS_INFO pos1,pos2;
     if(!StrPos2ItemPos(strPos1,pos1) || !StrPos2ItemPos(strPos2,pos2) )
         return FALSE;
-    if(pos1.pit == PIT_SIZE || pos2.pit == PIT_SIZE)//å‰é¢2ä¸ªå±æ€§ä¸èƒ½æ˜¯sizeç±»å‹
+    if(pos1.pit == PIT_SIZE || pos2.pit == PIT_SIZE)//Ç°Ãæ2¸öÊôĞÔ²»ÄÜÊÇsizeÀàĞÍ
         return FALSE;
     pPosItem [LEFT] = pos1;
     pPosItem [TOP] = pos2;
@@ -532,7 +532,7 @@ HRESULT RichEditBkImg::OnInternalAttrPos(POS_INFO* pPosItem, int& nPosCount, con
         return FALSE;
     }
 
-    //å¢åŠ poså±æ€§ä¸­çš„ç©ºæ ¼å…¼å®¹ã€‚
+    //Ôö¼ÓposÊôĞÔÖĞµÄ¿Õ¸ñ¼æÈİ¡£
     for(size_t i=0;i<strLst.GetCount();i++)
     {
         strLst.GetAt(i).TrimBlank();
@@ -570,8 +570,8 @@ int RichEditBkImg::PositionItem2Value(const POS_INFO& pos ,int nMin, int nMax,BO
             nRet=nMin+(int)pos.nPos.fSize;
         break;
 
-    case PIT_PREV_NEAR: //â€œ[â€ç›¸å¯¹äºå‰ä¸€å…„å¼Ÿçª—å£ã€‚ç”¨äºXæ—¶ï¼Œå‚è€ƒå‰ä¸€å…„å¼Ÿçª—å£çš„rightï¼Œç”¨äºYæ—¶å‚è€ƒå‰ä¸€å…„å¼Ÿçª—å£çš„bottom
-    case PIT_PREV_FAR:  //â€œ{â€ç›¸å¯¹äºå‰ä¸€å…„å¼Ÿçª—å£ã€‚ç”¨äºXæ—¶ï¼Œå‚è€ƒå‰ä¸€å…„å¼Ÿçª—å£çš„leftï¼Œç”¨äºYæ—¶å‚è€ƒå‰ä¸€å…„å¼Ÿçª—å£çš„top
+    case PIT_PREV_NEAR: //¡°[¡±Ïà¶ÔÓÚÇ°Ò»ĞÖµÜ´°¿Ú¡£ÓÃÓÚXÊ±£¬²Î¿¼Ç°Ò»ĞÖµÜ´°¿ÚµÄright£¬ÓÃÓÚYÊ±²Î¿¼Ç°Ò»ĞÖµÜ´°¿ÚµÄbottom
+    case PIT_PREV_FAR:  //¡°{¡±Ïà¶ÔÓÚÇ°Ò»ĞÖµÜ´°¿Ú¡£ÓÃÓÚXÊ±£¬²Î¿¼Ç°Ò»ĞÖµÜ´°¿ÚµÄleft£¬ÓÃÓÚYÊ±²Î¿¼Ç°Ò»ĞÖµÜ´°¿ÚµÄtop
         {
             CRect rcRef;
             RichEditObj *pRefObj=GetPrev();
@@ -596,8 +596,8 @@ int RichEditBkImg::PositionItem2Value(const POS_INFO& pos ,int nMin, int nMax,BO
         }
         break;
 
-    case PIT_NEXT_NEAR: //â€œ]â€ç›¸å¯¹äºåä¸€å…„å¼Ÿçª—å£ã€‚ç”¨äºXæ—¶ï¼Œå‚è€ƒåä¸€å…„å¼Ÿçš„left,ç”¨äºYæ—¶å‚è€ƒåä¸€å…„å¼Ÿçš„top
-    case PIT_NEXT_FAR:  //â€œ}â€ç›¸å¯¹äºåä¸€å…„å¼Ÿçª—å£ã€‚ç”¨äºXæ—¶ï¼Œå‚è€ƒåä¸€å…„å¼Ÿçš„right,ç”¨äºYæ—¶å‚è€ƒåä¸€å…„å¼Ÿçš„bottom
+    case PIT_NEXT_NEAR: //¡°]¡±Ïà¶ÔÓÚºóÒ»ĞÖµÜ´°¿Ú¡£ÓÃÓÚXÊ±£¬²Î¿¼ºóÒ»ĞÖµÜµÄleft,ÓÃÓÚYÊ±²Î¿¼ºóÒ»ĞÖµÜµÄtop
+    case PIT_NEXT_FAR:  //¡°}¡±Ïà¶ÔÓÚºóÒ»ĞÖµÜ´°¿Ú¡£ÓÃÓÚXÊ±£¬²Î¿¼ºóÒ»ĞÖµÜµÄright,ÓÃÓÚYÊ±²Î¿¼ºóÒ»ĞÖµÜµÄbottom
         {
             CRect rcRef;
             RichEditObj *pRefObj = GetNext();
@@ -799,7 +799,7 @@ CRect RichEditPara::GetRect()
 
         if (m_bWrapped)
         {
-            // åœ¨è‡ªåŠ¨æ¢è¡Œçš„æƒ…å†µä¸‹,è®¤ä¸ºå·¦å³ç¼©è¿›éƒ½å¸–åˆ°å¤´
+            // ÔÚ×Ô¶¯»»ĞĞµÄÇé¿öÏÂ,ÈÏÎª×óÓÒËõ½ø¶¼Ìûµ½Í·
             CRect rcClient = m_pObjectHost->GetHostRect();
 
             if (m_alignType == RichEditObj::ALIGN_RIGHT)
@@ -836,8 +836,8 @@ BOOL RichEditPara::GetLineRect(int nLineNo, CRect& rcLine)
     }
 
     CHARRANGE chr = {ncpStart, ncpStart + nLength};
-    // http://technet.microsoft.com/zh-cn/hh768766(v=vs.90) æ–°ç±»å‹å®šä¹‰
-#define _tomClientCoord     256  // é»˜è®¤è·å–åˆ°çš„æ˜¯å±å¹•åæ ‡ï¼Œ Use client coordinates instead of screen coordinates.
+    // http://technet.microsoft.com/zh-cn/hh768766(v=vs.90) ĞÂÀàĞÍ¶¨Òå
+#define _tomClientCoord     256  // Ä¬ÈÏ»ñÈ¡µ½µÄÊÇÆÁÄ»×ø±ê£¬ Use client coordinates instead of screen coordinates.
 #define _tomAllowOffClient  512  // Allow points outside of the client area.
     long lTypeTopLeft     = _tomAllowOffClient|_tomClientCoord|tomStart|TA_TOP|TA_LEFT;
     long lTypeRightBottom = _tomAllowOffClient|_tomClientCoord|tomEnd|TA_BOTTOM|TA_RIGHT;
@@ -863,8 +863,8 @@ BOOL RichEditPara::CalcParagraphRect()
     m_pObjectHost->SendMessage(EM_EXLINEFROMCHAR, 0, m_chrContent.cpMax, (LRESULT*)&nLineEnd);
 
     /*
-     * è®¡ç®—cpMinå’ŒcpMaxä¹‹é—´çš„æ¯ä¸€è¡Œçš„rectï¼Œç„¶ååšå¹¶é›†
-     * å¦‚æœè¡Œæ•°è¾ƒå¤š,æ•ˆç‡æ˜¯æ¯”è¾ƒä½çš„,ä¸çŸ¥é“è¿˜æœ‰æ²¡æœ‰æ›´å¥½çš„åŠæ³•è®¡ç®—
+     * ¼ÆËãcpMinºÍcpMaxÖ®¼äµÄÃ¿Ò»ĞĞµÄrect£¬È»ºó×ö²¢¼¯
+     * Èç¹ûĞĞÊı½Ï¶à,Ğ§ÂÊÊÇ±È½ÏµÍµÄ,²»ÖªµÀ»¹ÓĞÃ»ÓĞ¸üºÃµÄ°ì·¨¼ÆËã
     */
     m_rcObj.SetRectEmpty();
     for (int n = nLineStart; n <= nLineEnd; ++n)
@@ -884,14 +884,14 @@ BOOL RichEditPara::InsertIntoHost(IRichEditObjHost * pHost)
     if (m_bBreakAtTheEnd)
     {
         /* 
-         * è¿™ä¸ªæ¢è¡Œä¸ç®—è¿›char rangeé‡Œï¼Œä½†æ˜¯åœ¨SetIndentsæ—¶è¦åŠ ä¸Šã€‚
-         * ä¸»è¦æ˜¯ä¸ºäº†ä¿è¯å†…å®¹é‡Œæœ€åä¸€è¡Œæ˜¯ç©ºè¡Œæ—¶,ç©ºè¡Œä¹Ÿèƒ½è®¾ç½®ç¼©è¿›
+         * Õâ¸ö»»ĞĞ²»Ëã½øchar rangeÀï£¬µ«ÊÇÔÚSetIndentsÊ±Òª¼ÓÉÏ¡£
+         * Ö÷ÒªÊÇÎªÁË±£Ö¤ÄÚÈİÀï×îºóÒ»ĞĞÊÇ¿ÕĞĞÊ±,¿ÕĞĞÒ²ÄÜÉèÖÃËõ½ø
         */
 
         pHost->SendMessage(EM_REPLACESEL, TRUE, (LPARAM)L"\r\n");
     }
 
-    // è®¡ç®—æ€»è¡Œæ•°
+    // ¼ÆËã×ÜĞĞÊı
     RichEditObj * pChild = GetFirstChild();
     for (; pChild; pChild = pChild->GetNext())
     {
@@ -914,7 +914,7 @@ BOOL RichEditPara::IsWrapped()
     m_pObjectHost->SendMessage(EM_EXLINEFROMCHAR, 0, m_chrContent.cpMin, (LRESULT*)&nLineStart);
     m_pObjectHost->SendMessage(EM_EXLINEFROMCHAR, 0, m_chrContent.cpMax, (LRESULT*)&nLineEnd);
 
-    // å¦‚æœæ˜¾ç¤ºçš„è¡Œæ•°æ¯”åŸå§‹æ’å…¥æ—¶çš„è¡Œæ•°è¦å¤š,è®¤ä¸ºè‡ªåŠ¨æ¢è¡Œäº†
+    // Èç¹ûÏÔÊ¾µÄĞĞÊı±ÈÔ­Ê¼²åÈëÊ±µÄĞĞÊıÒª¶à,ÈÏÎª×Ô¶¯»»ĞĞÁË
     return (nLineEnd - nLineStart + 1) > m_nLineCount;
 }
 
@@ -941,7 +941,7 @@ void RichEditPara::UpdatePosition()
 
     if (m_bDisableLayout)
     {
-        // å¦‚æœä¸éœ€è¦å¸ƒå±€,ç›´æ¥è¿”å›
+        // Èç¹û²»ĞèÒª²¼¾Ö,Ö±½Ó·µ»Ø
         return;
     }
 
@@ -969,9 +969,9 @@ void RichEditPara::UpdatePosition()
     CRect rcClient    = m_pObjectHost->GetHostRect();
     int nLeftIndents    = m_alignType==ALIGN_RIGHT? m_rcMargin.right : m_rcMargin.left;
     int nRightIndents   = m_alignType==ALIGN_RIGHT? m_rcMargin.left: m_rcMargin.right;
-    nRightIndents   += rcClient.Width() - rcAdjust.Width();// è®¡ç®—çœŸå®çš„å³è¾¹è·
+    nRightIndents   += rcClient.Width() - rcAdjust.Width();// ¼ÆËãÕæÊµµÄÓÒ±ß¾à
 
-    // å°½é‡ä¸è¦ä½¿ç”¨æ¨¡æ‹Ÿè®¡ç®—,èƒ½æé«˜é€Ÿåº¦
+    // ¾¡Á¿²»ÒªÊ¹ÓÃÄ£Äâ¼ÆËã,ÄÜÌá¸ßËÙ¶È
     if (!m_bSimulateAlign || m_alignType == ALIGN_LEFT)
     {
         m_bWrapped = IsWrapped();
@@ -991,13 +991,13 @@ void RichEditPara::UpdatePosition()
         return;
     }
 
-    /* æ¨¡æ‹Ÿè®¡ç®—å³å¯¹é½
-     * æ³¨æ„ï¼šSetIndentså’ŒCalcParagraphRectå¾ˆè€—æ—¶,æ‰€ä»¥å°½é‡ä¸ä½¿ç”¨æ¨¡æ‹Ÿè®¡ç®—é å³
+    /* Ä£Äâ¼ÆËãÓÒ¶ÔÆë
+     * ×¢Òâ£ºSetIndentsºÍCalcParagraphRectºÜºÄÊ±,ËùÒÔ¾¡Á¿²»Ê¹ÓÃÄ£Äâ¼ÆËã¿¿ÓÒ
      *
-     * 1.å…ˆæŒ‰æœ€é è¾¹çš„å·¦å³ç¼©è¿›è®¾ç½®
-     * 2.æŒ‰ç…§cpè®¡ç®—æ®µè½çš„rect
-     * 3.ç”¨richedit.width() - para.widht()è®¡ç®—å·¦ç¼©è¿›,æ¨¡æ‹Ÿå³å¯¹é½
-     * 4.æ ¹æ®è®¡ç®—å‡ºçš„å·¦/ç¼©è¿›é‡æ–°è®¾ç½®
+     * 1.ÏÈ°´×î¿¿±ßµÄ×óÓÒËõ½øÉèÖÃ
+     * 2.°´ÕÕcp¼ÆËã¶ÎÂäµÄrect
+     * 3.ÓÃrichedit.width() - para.widht()¼ÆËã×óËõ½ø,Ä£ÄâÓÒ¶ÔÆë
+     * 4.¸ù¾İ¼ÆËã³öµÄ×ó/Ëõ½øÖØĞÂÉèÖÃ
     */ 
 
     // step 1
@@ -1011,7 +1011,7 @@ void RichEditPara::UpdatePosition()
     // step 3
     if (m_alignType == ALIGN_RIGHT)
     {
-        nLeftIndents = rcClient.Width() - m_rcObj.Width() - nRightIndents - 1; // è¿™é‡Œä¸å‡1,æ®µè½å°±æ¢è¡Œäº†
+        nLeftIndents = rcClient.Width() - m_rcObj.Width() - nRightIndents - 1; // ÕâÀï²»¼õ1,¶ÎÂä¾Í»»ĞĞÁË
     }
     else
     {
