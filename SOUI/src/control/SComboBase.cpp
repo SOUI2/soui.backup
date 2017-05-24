@@ -120,7 +120,7 @@ namespace SOUI
     {
         SIZE szBtn=m_pSkinBtn->GetSkinSize();
         GetClientRect(prc);
-		float nHei = prc->bottom - prc->top;
+		int nHei = prc->bottom - prc->top;
         prc->left= prc->right-(nHei/szBtn.cy)*szBtn.cx;
     }
 
@@ -415,7 +415,7 @@ namespace SOUI
 		SIZE szBtn = m_pSkinBtn->GetSkinSize();		
 		CRect rcPadding = GetStyle().GetPadding();
 		CRect rcEdit = GetClientRect();
-		float nHei = rcEdit.Height();
+		int nHei = rcEdit.Height();
 		int nBtnWid = (nHei / szBtn.cy)*szBtn.cx;
 		rcPadding.right += nBtnWid;
 		rcEdit.DeflateRect(rcPadding);
