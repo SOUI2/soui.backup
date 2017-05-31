@@ -195,7 +195,7 @@ HRESULT GSSkinImgList::OnAttrMask(const SStringW& strValue, BOOL bLoading)
 	return S_OK;
 }
 
-static const TCHAR  KImgListPropSeprator = _T(';');   //字体属性之间的分隔符，不再支持其它符号。
+static const WCHAR  KImgListPropSeprator = (L';');   //字体属性之间的分隔符，不再支持其它符号。
 HRESULT GSSkinImgList::OnSetImgList(const SStringW & strValue, BOOL bLoading)
 {
 	for (int i = 0; i < m_arrBitMap.GetCount(); i++)
@@ -204,7 +204,7 @@ HRESULT GSSkinImgList::OnSetImgList(const SStringW & strValue, BOOL bLoading)
 	}
 	m_arrBitMap.RemoveAll();
 
-	SStringTList fontProp;
+	SStringWList fontProp;
 	SplitString(strValue, KImgListPropSeprator, fontProp);
 
 	for (int i = 0;i < fontProp.GetCount(); i++)
@@ -235,7 +235,7 @@ HRESULT GSSkinImgList::OnSetImgPath(const SStringW & strValue, BOOL bLoading)
 		SStringW strFile = strValue;
 		strFile.AppendFormat(L"\\%d.png", i);
 
-		SOUI::IBitmap *pImg = LOADIMAGE(L"file", strFile);
+		SOUI::IBitmap *pImg = LOADIMAGE2(SStringW(L"file:")+ strFile);
 		if (pImg)			m_arrBitMap.Add(pImg);
 		else    break;
 	}
