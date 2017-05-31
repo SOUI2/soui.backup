@@ -1,0 +1,18 @@
+<root>
+  <window pos="0,0,-0,-0" skin="skin.rich_file_bk">
+    <img name="ImgFileIcon" skin="skin.file_icon_text" pos="10,10,@40,@40" cursor="hand" />
+    <text name="LblFileName" skin="skin.empty" align="left" font="size:12" pos="55,10,-10,28" cursor="hand"/>
+    <text name="LblFileSize" font="size:12" colorText="#808080" pos="55,30,-10,50"/>
+    <hr pos="0,65,-0,66" size="1" colorLine="#ced9e2" />
+    <window name="WndLinksContainer" pos="0,[0,-0,-0" >
+      <link name="LnkOpenFile" pos="]-5,|0" offset="-1.0,-0.5" class="cls_rich_link" display="0" visible="1">打开</link>
+      <link name="LnkOpenFileDir" pos="]-5,|0" offset="-1.0,-0.5" class="cls_rich_link" display="0" visible="1">打开文件夹</link>
+      <link name="LnkContinueFile" pos="]-5,|0" offset="-1.0,-0.5" class="cls_rich_link" display="0" visible="1">继续</link>
+      <link name="LnkSaveFile" pos="]-5,|0" offset="-1.0,-0.5" class="cls_rich_link" display="0" visible="1">保存</link>
+      <link name="LnkSaveFileAs" pos="]-5,|0" offset="-1.0,-0.5" class="cls_rich_link" display="0" visible="1" >另存为</link>
+      <link name="LnkCancelFile" pos="]-5,|0" offset="-1.0,-0.5" class="cls_rich_link" display="0" visible="1">取消</link>
+      <link name="LnkForwardFile" pos="]-5,|0" offset="-1.0,-0.5" class="cls_rich_link" display="0" visible="1">转发</link>
+    </window>
+    <text name="LblState" font="size:12" colorText="#808080" pos="10,70,100,-5"/>
+  </window>
+</root>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language name="en" guid="{0DAEDE3C-6B94-4a81-9A55-C304FDD69D99}">
+  <context>
+    <!--没有上下文的翻译及字符串表的翻译-->
+    <message>
+      <source>soui demo</source>
+      <translation>soui demo</translation>
+    </message>
+  </context>
+  <context name="editmenu">
+    <message>
+      <source>copy</source>
+      <translation>copy</translation>
+    </message>
+    <message>
+      <source>cut</source>
+      <translation>cut</translation>
+    </message>
+    <message>
+      <source>paste</source>
+      <translation>paste</translation>
+    </message>
+  </context>
+  <context name="messagebox">
+    <message>
+      <source>ok</source>
+      <translation>ok</translation>
+    </message>
+    <message>
+      <source>cancel</source>
+      <translation>cancel</translation>
+    </message>
+    <message>
+      <source>retry</source>
+      <translation>retry</translation>
+    </message>
+  </context>
+  <context name="dlg_main">
+    <message>
+      <source>multiLangDemo</source>
+      <translation>multiLangDemo</translation>
+    </message>
+    <message>
+      <source>close</source>
+      <translation>close</translation>
+    </message>
+    <message>
+      <source>language</source>
+      <translation>language</translation>
+    </message>
+    <message>
+      <source>chinese</source>
+      <translation>chinese</translation>
+    </message>
+    <message>
+      <source>english</source>
+      <translation>english</translation>
+    </message>
+    <message>
+      <source>scale 1</source>
+      <translation>scale 100%</translation>
+    </message>
+    <message>
+      <source>scale 1.25</source>
+      <translation>scale 125%</translation>
+    </message>
+    <message>
+      <source>scale 1.5</source>
+      <translation>scale 150%</translation>
+    </message>
+    <message>
+      <source>scale 2.0</source>
+      <translation>scale 200%</translation>
+    </message>
+    <message>
+      <source>page1</source>
+      <translation>page1</translation>
+    </message>
+    <message>
+      <source>page2</source>
+      <translation>page2</translation>
+    </message>
+    <message>
+      <source>page3</source>
+      <translation>page3</translation>
+    </message>
+    <message>
+      <source>menu</source>
+      <translation>menu</translation>
+    </message>
+    <message>
+      <source>name</source>
+      <translation>name</translation>
+    </message>
+    <message>
+      <source>gender</source>
+      <translation>gender</translation>
+    </message>
+    <message>
+      <source>age</source>
+      <translation>age</translation>
+    </message>
+    <message>
+      <source>score</source>
+      <translation>score</translation>
+    </message>
+    <message>
+      <source>male</source>
+      <translation>male</translation>
+    </message>
+    <message>
+      <source>female</source>
+      <translation>female</translation>
+    </message>
+    <message>
+      <source>unknown</source>
+      <translation>unknown</translation>
+    </message>
+  </context>
+  <context name="user">
+    <message>
+      <source>test input</source>
+      <translation>test input</translation>
+    </message>
+  </context>
+</language>

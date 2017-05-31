@@ -1,0 +1,13 @@
+<root >
+  <window name="WndParent" pos="0,0,-0,-0">
+    <window name="WndFetchMore" pos="|0,|0" offset="-0.5,-0.5">
+      <img name="ImgIcon" skin="skin.fetch_more_msg" pos="0,3" offset="-1.0,0"/>
+      <link name="LnkFetchMore" pos="[5,0" class="cls_rich_link" >查看更多消息</link>
+    </window>
+    <window name="WndOpenHistory" pos="|0,|0" offset="-0.5,-0.5"  visible="0">
+      <window name="WndNoMoreMsg" pos="0,0" display="0" font="size:12">更多消息请在消息记录中查阅，</window>
+      <link name="LnkOpenHistory" pos="[0,0" class="cls_rich_link" >打开历史记录</link>
+    </window>
+    <image name="ImgLoadingMore" pos="|0,|0,@16,@16" offset="-0.5,-0.5" visible="0" />
+  </window>
+</root>

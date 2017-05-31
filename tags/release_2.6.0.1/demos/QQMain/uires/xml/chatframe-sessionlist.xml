@@ -1,0 +1,28 @@
+<include>
+	<chromeTabCtrl pos="0,0,]0,-0" name="chromeTab" tabDesiredSize="40" tabAlign="vertical" enableDrag="1" colorBkgnd="#059cd4">
+	<tabStyle skin="skin.tab_btn"/>
+	<closeBtnStyle pos="-20,13" skin="skin.tabbtn_close" />
+	<tabs>
+		<chromeTab tip="蓝先生" name="tab_chat1" trackMouseEvent="1">
+			<imageMask pos="5,5,@30,@30" skin="skin.icon1" mask="PNG:ID_ICON_MASK.g"/>
+			<text pos="40,0,-0,-0">蓝先生</text>
+		</chromeTab>
+		<chromeTab tip="黄先生" name="tab_chat1" trackMouseEvent="1">
+			<imageMask pos="5,5,@30,@30" skin="skin.icon2" mask="PNG:ID_ICON_MASK.g"/>
+			<text pos="40,0,-0,-0">黄先生</text>
+		</chromeTab>
+		<chromeTab tip="白先生" name="tab_chat1" trackMouseEvent="1">
+			<imageMask pos="5,5,@30,@30" skin="skin.icon3" mask="PNG:ID_ICON_MASK.g"/>
+			<text pos="40,0,-0,-0">白先生</text>
+		</chromeTab>
+		<chromeTab tip="陈小姐" name="tab_chat1" trackMouseEvent="1">
+			<imageMask pos="5,5,@30,@30" skin="skin.icon4" mask="PNG:ID_ICON_MASK.g"/>
+			<text pos="40,0,-0,-0">陈小姐</text>
+		</chromeTab>
+		<chromeTab tip="李大姐" name="tab_chat1" trackMouseEvent="1">
+			<imageMask pos="5,5,@30,@30" skin="skin.icon5" mask="PNG:ID_ICON_MASK.g"/>
+			<text pos="40,0,-0,-0">李大姐</text>
+		</chromeTab>
+	</tabs>
+</chromeTabCtrl>
+</include>

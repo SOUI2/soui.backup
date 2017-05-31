@@ -1,0 +1,6 @@
+<menu sepSkin="_skin_menu_sep" itemSkin="_skin_page1_menu_itemskin" font="adding:-2" itemHeight="20"  textMargin="0" >
+    <item id="1101" check="1">观众</item>
+    <item id="1102" check="0">名称</item>
+    <item id="1103" check="0">评分</item>
+    <item id="1104" check="0">评论</item>
+</menu>

@@ -1,0 +1,86 @@
+<SOUI name="mainWindow" title="Vplayer" bigIcon="ICON_LOGO:32" maxInset="5,3,10,10" smallIcon="ICON_LOGO:16" width="880" height="610" minsize="880,610" margin="5,3,5,7" appWnd="1" resizable="1" translucent="1" >
+	<root skin="_skin.shadow" cache="1">
+		<window name="mainWnd" pos="5,3,-5,-7">
+			<caption pos="0,0,-0,30" skin="_skin_box_caption" >
+			  <imgbtn name="btn_icon" skin="_skin.btn.icon"    pos="0,1" tip="主菜单" animate="1"/>
+			  <imgbtn name="btn_skins" skin="_skin.btn.skins"  pos="-92,1" tip="皮肤管理" animate="1" />
+			  <imgbtn name="btn_feedback" skin="_skin.btn.feedback" pos="-115,1" tip="意见反馈" animate="1" />
+			  <imgbtn name="btn_close" skin="_skin.btn.close"    pos="-23,1" tip="关闭" animate="1"/>
+			  <imgbtn name="btn_max" skin="_skin.btn.maximize"  pos="-46,1" tip="最大化" animate="1" />
+			  <imgbtn name="btn_restore" skin="_skin.btn.restore"  pos="-46,1" tip="还原" show="0" animate="1" />
+			  <imgbtn name="btn_min" skin="_skin.btn.minimize" pos="-69,1" tip="最小化" animate="1" />
+			</caption>
+		</window>
+    <window pos="5,30,-5,-50" colorBkgnd="#000000">
+      <window  name="player_area" pos="0,0,]0,-0">
+        <img pos="|0,|0" offset="-0.5,-0.5" skin="_skin.bg_player"/>
+        <imgbtn name="btn_bg_open" skin="_skin.stn.bg_open" pos="|-60,|50" tip="打开文件" animate="1"/>
+        <imgbtn name="btn_bg_openmenu" skin="_skin.stn.bg_openmenu" pos="|36,|50" tip="打开文件" animate="1" />
+        <img pos="0,-20,-0,-0" skin="_skin.bg_slider"/>
+        <sliderbar name="slider_video" thumbSkin="_skin.thumb" posSkin="_skin.posSkin" bkgndSkin="_skin.bkgndSkin" thumbInRail="0" pos="0,-20,-0,-0" alpha="200" width="200" value="0" min="0" max="100" show="0" />
+      </window>
+      <window name="play_list" pos="-300,0,-0,-0" colorBkgnd="#ffffff" display="0" show="0">
+        <include src="layout:page_playlist"/>
+        <img pos="0,-20,-0,-0" skin="_skin_playlist_bar" />
+      </window>
+    </window>
+		<window pos="5,-50,-5,-7" skin="_skin.bk_bar" cache="1" >
+		  <img pos="0,0,-0,4" skin="_skin.bk_transition"/>
+		  <imgbtn name="btn_tools" skin="_skin.btn.tools"  pos="10,|-10" tip="工具箱" animate="1" />
+		  <img pos="54,|-8" skin="_skin.divider_line" />
+		  <imgbtn name="btn_left_eye" skin="_skin.btn.left_eye"  pos="64,|-12" tip="左眼" animate="1" />
+		  <imgbtn name="btn_left_eyed" skin="_skin.btn.left_eyed"  pos="64,|-12" tip="关闭左眼" show="0" animate="1" />
+		  <imgbtn name="btn_stop" skin="_skin.btn.stop"  pos="|-106,|-7" tip="停止" animate="1" />
+		  <imgbtn name="btn_page_up" skin="_skin.btn.page_up"  pos="|-83,|-7" tip="上一个" animate="1" />
+		  <imgbtn name="btn_play" skin="_skin.btn.play"  pos="|-53,0" tip="播放" animate="1" />
+		  <imgbtn name="btn_pause" skin="_skin.btn.pause"  pos="|-53,0" tip="暂停" show="0" animate="1" />
+		  <imgbtn name="btn_page_down" skin="_skin.btn.page_down"  pos="|59,|-7" tip="下一个" animate="1" />
+		  <imgbtn name="btn_open" skin="_skin.btn.open"  pos="|81,|-7" tip="打开文件" animate="1" />
+		  <imgbtn name="btn_volume" skin="_skin.btn.volume"  pos="|108,|-7" tip="静音" animate="1" />
+		  <imgbtn name="btn_volume_mute" skin="_skin.btn.volume_mute"  pos="|108,|-7" tip="关闭静音" show="0" animate="1" />
+		  <sliderbar name="slider_video" thumbSkin="_skin.thumb" posSkin="_skin.posSkin" bkgndSkin="_skin.bkgndSkin1" thumbInRail="0" pos="|131,|-5" alpha="200" width="70" value="20" min="0" max="100" show="1" />
+		  <imgbtn name="btn_fullscreen" skin="_skin.btn.fullscreen"  pos="|211,|-7" tip="全屏" animate="1" />
+		  <imgbtn name="btn_quit_fullscreen" skin="_skin.btn.quit_fullscreen"  pos="|211,|-7" tip="全屏" animate="1" show="0" />
+		  <imgbtn name="btn_list_show" skin="_skin.btn.list_show"  pos="-94,|-10" tip="打开播放列表" animate="1" />
+		  <imgbtn name="btn_list_showed" skin="_skin.btn.list_showed"  pos="-94,|-10" tip="关闭播放列表" show="0" animate="1" />
+		  <img pos="-54,|-8" skin="_skin.divider_line" />
+		  <imgbtn name="btn_box" skin="_skin.btn.box"  pos="-44,|-10" tip="打开暴风盒子" animate="1" />
+		  <imgbtn name="btn_boxed" skin="_skin.btn.boxed"  pos="-44,|-10" tip="关闭暴风盒子" show="0" animate="1" />
+		</window>
+		<window name="win_tools" pos="5,-343,248,-50" skin="_skin.win_tools" show="0" cache="1">
+		  <imgbtn name="btn_tools_close" skin="_skin.btn.tools_close"    pos="-25,0" tip="关闭" animate="1"/>
+		  <imgbtn name="btn_tool_3D" skin="_skin_tool_3D"    pos="30,44" animate="1"/>
+		  <imgbtn name="btn_tool_lefteye" skin="_skin_tool_lefteye"    pos="[14,44" animate="1"/>
+		  <imgbtn name="btn_tool_surround_sound" skin="_skin_tool_surround_sound"    pos="[14,44" animate="1"/>
+		  <imgbtn name="btn_tool_prev" skin="_skin_tool_prev"    pos="4,195" animate="1"/>
+		  <imgbtn name="btn_tool_next" skin="_skin_tool_next"    pos="-14,195" animate="1"/>
+		  <text pos="51,85">3D</text>
+		  <text pos="108,85">左眼</text>
+		  <text pos="165,85">环绕声</text>
+		  <window name="tool_page1" pos="24,145,-25,-17">
+			  <imgbtn name="btn_tool_flyscreen" skin="_skin_tool_flyscreen"    pos="2,0" animate="1"/>
+			  <imgbtn name="btn_tool_game" skin="_skin_tool_game"    pos="[21,0" animate="1"/>
+			  <imgbtn name="btn_tool_download" skin="_skin_tool_download"    pos="[21,0" animate="1"/>
+			  <imgbtn name="btn_tool_transcode" skin="_skin_tool_transcode"    pos="[21,0" animate="1"/>
+			  <text pos="4,42" font="adding:-3">飞屏</text>
+			  <text pos="[28,42" font="adding:-3">游戏</text>
+			  <text pos="[18,42" font="adding:-3">下载管理</text>
+			  <text pos="[18,42" font="adding:-3">转码</text>
+			  <imgbtn name="btn_tool_movielib" skin="_skin_tool_movielib"    pos="2,75" animate="1"/>
+			  <imgbtn name="btn_tool_barrage" skin="_skin_tool_barrage"    pos="[21,75" animate="1"/>
+			  <imgbtn name="btn_tool_dlna" skin="_skin_tool_dlna"    pos="[21,75" animate="1"/>
+			  <imgbtn name="btn_tool_news" skin="_skin_tool_news"    pos="[21,75" animate="1"/>
+			  <text pos="0,117" font="adding:-3">影视库</text>
+			  <text pos="[24,117" font="adding:-3">弹幕</text>
+			  <text pos="[28,117" font="adding:-3">dlna</text>
+			  <text pos="[28,117" font="adding:-3">资讯</text>
+		  </window>
+		  <window name="tool_page2" pos="24,145,-25,-17" show="0">
+		  	  <imgbtn name="btn_tool_screenshots" skin="_skin_tool_screenshots"    pos="2,0" animate="1"/>
+			  <imgbtn name="btn_tool_shoot" skin="_skin_tool_shoot"    pos="[21,0" animate="1"/>
+			  <text pos="4,42" font="adding:-3">截图</text>
+			  <text pos="[28,42" font="adding:-3">连拍</text>
+		  </window>
+		</window>
+	</root>
+</SOUI>
