@@ -1555,8 +1555,12 @@ namespace SOUI
 		,m_blurRadius(0.0f)
     {
         memcpy(&m_lf,plf,sizeof(LOGFONT));
-        SStringA strFace=S_CT2A(plf->lfFaceName,CP_ACP);
-        BYTE style=SkTypeface::kNormal;
+#ifdef UNICODE
+        SStringA strFace=S_CT2A(plf->lfFaceName,CP_UTF8);
+#else
+		SStringA strFace=S_CT2A(plf->lfFaceName,CP_ACP);
+#endif
+		BYTE style=SkTypeface::kNormal;
         if(plf->lfItalic) style |= SkTypeface::kItalic;
         if(plf->lfWeight == FW_BOLD) style |= SkTypeface::kBold;
 
