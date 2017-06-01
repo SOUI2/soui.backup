@@ -121,7 +121,7 @@ namespace SOUI
         SIZE szBtn=m_pSkinBtn->GetSkinSize();
         GetClientRect(prc);
 		int nHei = prc->bottom - prc->top;
-        prc->left= prc->right-(nHei/szBtn.cy)*szBtn.cx;
+        prc->left= prc->right-nHei*szBtn.cx/szBtn.cy;
     }
 
     void SComboBase::GetTextRect( LPRECT pRect )
