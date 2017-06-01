@@ -416,7 +416,7 @@ namespace SOUI
 		CRect rcPadding = GetStyle().GetPadding();
 		CRect rcEdit = GetClientRect();
 		int nHei = rcEdit.Height();
-		int nBtnWid = (nHei / szBtn.cy)*szBtn.cx;
+		int nBtnWid = nHei *szBtn.cx/ szBtn.cy;
 		rcPadding.right += nBtnWid;
 		rcEdit.DeflateRect(rcPadding);
 		m_pEdit->Move(rcEdit);
