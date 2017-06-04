@@ -215,6 +215,7 @@ namespace SOUI
         */
         virtual void OnSelChanged();
 
+		//virtual HRESULT OnLanguageChanged();
 
         virtual BOOL FireEvent(EventArgs &evt);
     protected:
@@ -378,6 +379,7 @@ namespace SOUI
             ATTR_INT(L"curSel", m_iInitSel, FALSE)
             ATTR_SKIN(L"btnSkin", m_pSkinBtn, FALSE)
             ATTR_INT(L"animateTime", m_nAnimTime, FALSE)
+			ATTR_STRINGW(L"trCtx",m_TrCtx,FALSE)
         SOUI_ATTRS_END()
 
         SOUI_MSG_MAP_BEGIN()
@@ -420,6 +422,7 @@ namespace SOUI
         int  m_iInitSel;         /**< 默认选中索引 */
         SDropDownWnd *m_pDropDownWnd;  /**< DropDown指针 */
 		pugi::xml_document	m_xmlDropdownStyle;/**< DropDown的style */
+		SStringT m_TrCtx;
     };
 
 }
