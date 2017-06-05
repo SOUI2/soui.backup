@@ -51,7 +51,6 @@ namespace SOUI
     {
         __super::OnCreateDropDown(pDropDown);
         pDropDown->InsertChild(m_pListBox);
-		m_pListBox->SDispatchMessage(UM_SETLANGUAGE,0,0);
         pDropDown->UpdateChildrenPosition();
 
         m_pListBox->SetVisible(TRUE);
@@ -108,7 +107,7 @@ namespace SOUI
     {
         ILvAdapter *pAdapter = m_pListBox->GetAdapter();
         if(!pAdapter || iItem == -1) return SStringT();
-		return TR(pAdapter->getItemDesc(iItem),this->SComboBase::m_TrCtx);
+        return pAdapter->getItemDesc(iItem);
     }
 
     int SComboView::GetCount() const

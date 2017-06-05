@@ -240,7 +240,10 @@ namespace SOUI
 		{
 			pDropDown->InitFromXml(xmlDropdownStyleNode);
 		}
-
+		if (pDropDown->GetHostAttr().GetTrCtx().IsEmpty())
+		{
+			pDropDown->GetHostAttr().SetTrCtx(GetTrCtx());
+		}
 		m_dwBtnState=WndState_PushDown;
         CRect rcBtn;
         GetDropBtnRect(&rcBtn);
@@ -313,10 +316,10 @@ namespace SOUI
         if(!m_pDropDownWnd)
         {
             m_pDropDownWnd = new SDropDownWnd_ComboBox(this);
-
             CRect rcPopup;
             BOOL bDown=CalcPopupRect(GetListBoxHeight(),rcPopup);
-            m_pDropDownWnd->Create(rcPopup,0,m_TrCtx);			
+            m_pDropDownWnd->Create(rcPopup,0);
+            
             if(m_nAnimTime>0)
                 m_pDropDownWnd->AnimateHostWindow(m_nAnimTime,AW_SLIDE|(bDown?AW_VER_POSITIVE:AW_VER_NEGATIVE));
             else
@@ -427,6 +430,29 @@ namespace SOUI
     {
         __super::OnColorize(cr);
         if(m_pSkinBtn) m_pSkinBtn->OnColorize(cr);
+		if (m_pDropDownWnd)
+		{
+			m_pDropDownWnd->SDispatchMessage(UM_SETCOLORIZE, cr, 0);
+		}
     }
+
+	HRESULT SComboBase::OnLanguageChanged()
+	{
+		HRESULT hr =__super::OnLanguageChanged();
+		if (m_pDropDownWnd)
+		{
+			m_pDropDownWnd->SDispatchMessage(UM_SETLANGUAGE, 0, 0);
+		}
+		return hr;
+	}
+
+	void SComboBase::OnScaleChanged(int nScale)
+	{
+		__super::OnScaleChanged(nScale);
+		if (m_pDropDownWnd)
+		{
+			m_pDropDownWnd->SDispatchMessage(UM_SETSCALE, nScale, 0);
+		}
+	}
 
 }
