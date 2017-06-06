@@ -233,14 +233,19 @@ namespace SOUI
     }
 
 
+	static const wchar_t * KAttrTrCtx = L"trCtx";
     void SComboBase::OnCreateDropDown( SDropDownWnd *pDropDown )
     {
 		pugi::xml_node xmlDropdownStyleNode = m_xmlDropdownStyle.child(KStyle_Dropdown);
 		if(xmlDropdownStyleNode)
 		{
+			if(!xmlDropdownStyleNode.attribute(KAttrTrCtx))
+			{
+				xmlDropdownStyleNode.append_attribute(KAttrTrCtx).set_value(GetTrCtx());
+			}
 			pDropDown->InitFromXml(xmlDropdownStyleNode);
 		}
-		if (pDropDown->GetHostAttr().GetTrCtx().IsEmpty())
+		else
 		{
 			pDropDown->GetHostAttr().SetTrCtx(GetTrCtx());
 		}
