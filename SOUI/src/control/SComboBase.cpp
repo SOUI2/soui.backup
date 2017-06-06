@@ -396,7 +396,8 @@ namespace SOUI
             return GetEditText();
         }
         if(GetCurSel()==-1) return _T("");
-        return GetLBText(GetCurSel());
+        SStringT text = GetLBText(GetCurSel());
+		return S_CW2T(tr(S_CT2W(text)));
     }
 
     void SComboBase::SetWindowText(LPCTSTR pszText)
