@@ -10,7 +10,7 @@ struct musicItem
 
 class SMusicListAdapter :public SMcAdapterBaseEx
 {
-	SArray<SStringT> m_colNames;
+	SArray<SStringW> m_colNames;
 	SArray<musicItem> m_musicList;
 	SArray<musicItem> m_musicListBackup;
 	int m_id;
