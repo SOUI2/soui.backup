@@ -1011,10 +1011,10 @@ namespace SOUI
         pt1.y=ptCenter.y+(int)(b*sin(startAngle2));
         pt2.x=ptCenter.x+(int)(a*cos(endAngle2));
         pt2.y=ptCenter.y+(int)(b*sin(endAngle2));
-        if(useCenter)
-            ::Chord(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt1.x,pt1.y,pt2.x,pt2.y);
+		if (useCenter)
+			::Pie(dcBuf, pRect->left, pRect->top, pRect->right, pRect->bottom, pt2.x, pt2.y, pt1.x, pt1.y);
         else
-            ::Arc(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt1.x,pt1.y,pt2.x,pt2.y);
+			::Arc(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt2.x,pt2.y,pt1.x,pt1.y);
         ::SelectObject(dcBuf,oldBr);
         return S_OK;
     }
@@ -1035,7 +1035,7 @@ namespace SOUI
         pt1.y=ptCenter.y+(int)(b*sin(startAngle2));
         pt2.x=ptCenter.x+(int)(a*cos(endAngle2));
         pt2.y=ptCenter.y+(int)(b*sin(endAngle2));
-        ::Chord(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt1.x,pt1.y,pt2.x,pt2.y);
+        ::Pie(dcBuf,pRect->left,pRect->top,pRect->right,pRect->bottom,pt2.x,pt2.y,pt1.x,pt1.y);
         ::SelectObject(dcBuf,oldPen);
         return S_OK;
     }
