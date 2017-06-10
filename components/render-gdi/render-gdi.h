@@ -344,7 +344,7 @@ namespace SOUI
         virtual HRESULT QueryInterface(REFGUID iid,IObjRef ** ppObj){
 			(iid);
 			(ppObj);
-			return E_NOTIMPL;
+			return E_NOINTERFACE;
 		}
 
         virtual HRESULT SetTransform(const IxForm * pXForm,IxForm *pOldXFrom=NULL);
