@@ -664,6 +664,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
         __int64 tmResource = bBuildIDMap;
         
+		mapNameID[L"_name_start"] = KStartID-1;//增加一个_name_start的项，防止产生一个为空的name-id数组。
+
         int nStartID = KStartID;
         vector<IDMAPRECORD>::iterator it2=vecIdMapRecord.begin();
         while(it2!=vecIdMapRecord.end())
