@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<language name="简体中文" guid="{0DAEDE3C-6B94-4a81-9A55-C304FDD69D98}">
+  <context>
+    <!--没有上下文的翻译-->
+    <message>
+      <source>copy</source>
+      <translation>复制</translation>
+    </message>
+  </context>
+  <context name="messagebox">
+    <message>
+      <source>ok</source>
+      <translation>确定</translation>
+    </message>
+    <message>
+      <source>cancel</source>
+      <translation>取消</translation>
+    </message>
+    <message>
+      <source>retry</source>
+      <translation>重试</translation>
+    </message>
+  </context>
+  <context name="dlg_main">
+    <message>
+      <source>close</source>
+      <translation>关闭窗口</translation>
+    </message>
+    <message>
+      <source>chinese</source>
+      <translation>简体中文</translation>
+    </message>
+    <message>
+      <source>english</source>
+      <translation>英文</translation>
+    </message>
+
+    <message>
+      <source>open file</source>
+      <translation>打开文件</translation>
+    </message>
+    <message>
+      <source>tag filter</source>
+      <translation>标签</translation>
+    </message>
+    <message>
+      <source>pid filter</source>
+      <translation>进程</translation>
+    </message>
+    <message>
+      <source>tid filter</source>
+      <translation>线程</translation>
+    </message>
+
+    <message>
+      <source>line index</source>
+      <translation>行</translation>
+    </message>
+    <message>
+      <source>time</source>
+      <translation>时间</translation>
+    </message>
+    <message>
+      <source>level</source>
+      <translation>级别</translation>
+    </message>
+    <message>
+      <source>pid</source>
+      <translation>进程ID</translation>
+    </message>
+    <message>
+      <source>tid</source>
+      <translation>线程ID</translation>
+    </message>
+    <message>
+      <source>tag</source>
+      <translation>标签</translation>
+    </message>
+    <message>
+      <source>content</source>
+      <translation>正文</translation>
+    </message>
+    <message>
+      <source>filter</source>
+      <translation>过滤设置</translation>
+    </message>
+  </context>
+</language>

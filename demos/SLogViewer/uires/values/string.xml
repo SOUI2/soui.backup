@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+  <string>
+    <title value="SLogViewer"/>
+    <ver value="1.0"/>
+    <col_line value="line index"/>
+    <col_time value="time"/>
+    <col_level value="level"/>
+    <col_pid value="pid"/>
+    <col_tid value="tid"/>
+    <col_tag value="tag"/>
+    <col_content value="content"/>
+    <filter value="filter"/>
+    <tag_filter value="tag filter"/>
+    <pid_filter value="pid filter"/>
+    <tid_filter value="tid filter"/>
+    <level value="level"/>
+    <copy value="copy"/>
+  </string>

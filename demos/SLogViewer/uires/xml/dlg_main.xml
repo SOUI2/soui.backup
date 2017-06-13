@@ -1,0 +1,69 @@
+﻿<SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="800" height="400"  margin="20,5,5,5"  resizable="1" wndType="appMain"
+appWnd="1"
+translucent="1"
+trCtx="dlg_main"
+>
+  <root skin="_skin.sys.wnd.bkgnd" cache="1">
+    <caption pos="0,0,-0,30" show="1" font="adding:0">
+      <icon pos="10,8" src="ICON_LOGO:16"/>
+      <text pos="29,9">@string/title</text>
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+      <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
+      <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
+      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+    </caption>
+    <window pos="5,[2,-5,-5" layout="vbox">
+      <window size="-2,-1" layout="hbox" gravity="center">
+        <button size="-1,-1" name="btn_open_file" text="open file"/>
+        <button size="-1,-1" extend_left="10dp" name="btn_add_file" text="add file" visible="0"/>
+        <window size="0,0" weight="1" visible="0"/>
+
+        <text text="@string/level" extend_right="2dp"/>
+        <combobox name="cbx_levels" size="100dp,25dp" dropDown="1" dropHeight="200" animateTime="200" class="cls_border">
+          <liststyle class="cls_edit" colorBkgnd="#ffffff"/>
+        </combobox>
+
+        <text size="-1,-1" text="@string/filter"/>
+        <edit size="150dp,-2" extend_right="5dp" cueText="input filter string" name="edit_filter" notifyChange="1"/> 
+        <button size="-1,-1" name="btn_lang_cn" text="chinese"/>
+        <button size="-1,-1" extend_left="5dp" name="btn_lang_en" text="english"/>
+      </window>
+      <mclistview size="-2,0" extend_top="5dp" weight="1" name="lv_log" colorBkgnd="#cccccc" headerHeight="25dp">
+        <header align="center"  itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="0" colorBkgnd="#ffffff" >
+          <items>
+            <item width="100">@string/col_line</item>
+            <item width="170">@string/col_time</item>
+            <item width="50">@string/col_pid</item>
+            <item width="50">@string/col_tid</item>
+            <item width="50">@string/col_level</item>
+            <item width="100">@string/col_tag</item>
+            <item width="500">@string/col_content</item>
+          </items>
+        </header>
+        <template itemHeight="30dp" colorHover="#cccccc"  colorSelected="rgba(128,128,128,128)">
+          <window name="col_line_index" clipClient="1" layout="hbox" gravity="center">
+            <text name="txt_line" extend_left="5dp"/>
+          </window>
+          <window name="col_time" clipClient="1" layout="hbox" gravity="center">
+            <text name="txt_time" extend_left="5dp"/>
+          </window>
+          <window name="col_pid" clipClient="1" layout="hbox" gravity="center">
+            <text name="txt_pid" />
+          </window>
+          <window name="col_tid" clipClient="1" layout="hbox" gravity="center">
+            <text name="txt_tid" />
+          </window>
+          <window  name="col_level" clipClient="1" layout="hbox" gravity="center">
+            <text name="txt_level"/>
+          </window>
+          <window name="col_tag" clipClient="1" layout="hbox" gravity="center">
+            <text name="txt_tag"/>
+          </window>
+          <window name="col_content" clipClient="1" layout="hbox" gravity="center">
+            <colorizeText size="-2,20dp" name="txt_content" visible="1"/>
+          </window>
+        </template>
+      </mclistview>
+    </window>
+  </root>
+</SOUI>

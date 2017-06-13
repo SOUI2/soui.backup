@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="200" height="400"  wndType="toolwindow"
+translucent="1"
+trCtx="dlg_main"      
+>
+  <root skin="_skin.sys.wnd.bkgnd" cache="1" layout="vbox" padding="5,5,5,5">
+    <caption size="-2,-1" layout="hbox" gravity="center">
+      <icon src="ICON_LOGO:16"/>
+      <text >@string/filter</text>
+    </caption>
+    <tabctrl size="-2,0" weight="1" tabAlign="left" textDir="vert" tabWidth="25" tabHeight="80">
+      <page title="@string/tag_filter" layout="hbox">
+        <listview size="-2,-2" name="lv_tags">
+          <template itemHeight="25dp" colorSelected="rgba(128,128,128,128)">
+            <check pos="5,|0" offset="0,-0.5" name="chk_tag"/>
+          </template>
+        </listview>
+      </page>
+      <page title="@string/pid_filter" layout="hbox">
+        <listview size="-2,-2" name="lv_pid">
+          <template itemHeight="25dp" colorSelected="rgba(128,128,128,128)">
+            <check pos="5,|0" offset="0,-0.5" name="chk_pid"/>
+          </template>
+        </listview>
+      </page>
+      <page title="@string/tid_filter" layout="hbox">
+        <listview size="-2,-2" name="lv_tid">
+          <template itemHeight="25dp" colorSelected="rgba(128,128,128,128)">
+            <check pos="5,|0" offset="0,-0.5" name="chk_tid"/>
+          </template>
+        </listview>
+      </page>
+    </tabctrl>
+  </root>
+</SOUI>
