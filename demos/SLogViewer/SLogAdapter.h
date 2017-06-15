@@ -10,6 +10,7 @@ namespace SOUI
 	class SLogInfo : public TObjRefImpl<IObjRef>
 	{
 	public:
+		SLogInfo():iSourceLine(0){}
 		CTime    time;
 		SStringW strTime;
 		DWORD	 dwPid;
@@ -19,6 +20,10 @@ namespace SOUI
 		int	     iLevel;
 		SStringW strTag;
 		SStringW strContent;
+		SStringW strModule;
+		SStringW strSourceFile;
+		int      iSourceLine;
+		SStringW strFunction;
 	};
 
 	#define MAX_LEVEL_LENGTH  50
@@ -35,12 +40,28 @@ namespace SOUI
 		Level_Count,
 	};
 
+	enum Field
+	{
+		col_line_index=0,
+		col_time,
+		col_pid,
+		col_tid,
+		col_level,
+		col_tag,
+		col_moduel,
+		col_source_file,
+		col_source_line,
+		col_function,
+		col_content
+	};
+
 	struct ILogParse : public IObjRef
 	{
 		virtual SStringW GetName() const PURE;
 		virtual int GetLevels() const PURE;			
 		virtual void GetLevelText(wchar_t szLevels[][MAX_LEVEL_LENGTH]) const PURE;
 		virtual BOOL ParseLine(LPCWSTR pszLine,SLogInfo **ppLogInfo) const PURE;
+		virtual bool IsFieldValid(Field field) const PURE;
 	};
 	
 	struct IParserFactory: public IObjRef
@@ -172,6 +193,7 @@ namespace SOUI
 	protected:
 		virtual void getView(int position, SWindow * pItem,pugi::xml_node xmlTemplate);
 		virtual SStringW GetColumnName(int iCol) const;
+		virtual bool IsColumnVisible(int iCol) const;
 		virtual int getCount();
 	private:
 		SArray<SLogInfo*> m_lstLogs;

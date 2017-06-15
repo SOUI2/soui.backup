@@ -67,6 +67,25 @@ SStringW CAppLogParse::GetName() const
 	return L"AppLogParser";
 }
 
+bool CAppLogParse::IsFieldValid(Field field) const
+{
+	bool fieldValid[]=
+	{
+		true,//col_line_index,
+		true,//col_time,
+		true,//col_pid,
+		true,//col_tid,
+		true,//col_level,
+		true,//col_tag,
+		false,//col_moduel,
+		false,//col_source_file,
+		false,//col_source_line,
+		false,//col_function,
+		true,//col_content
+	};
+	return fieldValid[field];
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 static const wchar_t  kLevelsLogcat[kLevelNum][MAX_LEVEL_LENGTH]={
@@ -127,19 +146,140 @@ SOUI::SStringW CLogcatParse::GetName() const
 }
 
 
+bool CLogcatParse::IsFieldValid(Field field) const
+{
+	bool fieldValid[]=
+	{
+		true,//col_line_index,
+		true,//col_time,
+		true,//col_pid,
+		true,//col_tid,
+		true,//col_level,
+		true,//col_tag,
+		false,//col_moduel,
+		false,//col_source_file,
+		false,//col_source_line,
+		false,//col_function,
+		true,//col_content
+	};
+	return fieldValid[field];
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+static const int KSLogLevels = 7;
+static const wchar_t  kLevelsSouiLog[KSLogLevels][MAX_LEVEL_LENGTH]={
+	L"TRACE",
+	L"DEBUG",
+	L"INFO ",
+	L"WARN ",
+	L"ERROR",
+	L"ALARM",
+	L"FATAL",
+};
+
+//pid=1740 tid=11768 2017-06-12 10:14:49.803 WARN  soui.dll soui-lib "Warning: no ojbect menuItem of type:1 in SOUI!!" SOUI::SObjectFactoryMgr::CreateObject (SObjectFactory.cpp):61 
+
+BOOL CSouiLogParse::ParseLine(LPCWSTR pszLine,SLogInfo **ppLogInfo) const
+{
+	UINT year,month,day,hour,minute,second,millisec;
+	UINT pid,tid;
+	WCHAR level[300]={0}, tag[500]={0}, module[MAX_PATH];
+
+	if(12!= swscanf(pszLine,L"pid=%u tid=%u %04d-%2d-%2d %2d:%2d:%2d.%3d %s %s %s ",&pid,&tid,&year,&month,&day,&hour,&minute,&second,&millisec,level,module,tag))
+		return FALSE;
+	
+	if(ppLogInfo == NULL) return TRUE;
+	
+	LPCWSTR pContent = wcsstr(pszLine,L" \"");
+	SASSERT(pContent);
+	//find the reverse second blank space
+	LPCWSTR pContentEnd = NULL;
+	int nLen = wcslen(pContent);
+	int iSpace = 0;
+	for(int i=nLen-1;i>=0;i--)
+	{
+		if(pContent[i] == L' ')
+		{
+			iSpace++;
+			if(iSpace==2)
+			{
+				if(pContent[i-1]!=L'\"') return FALSE;
+				pContentEnd = pContent+i-1;
+				break;
+			}
+		}
+	}
+	if(iSpace!=2) return FALSE;
+	LPCWSTR pszFunction = pContentEnd+2;
+	LPCWSTR pSourceFile = wcsstr(pContentEnd,L" (")+2;
+	LPCWSTR pSourceLine = wcsstr(pSourceFile,L"):")+2;
+
+	SLogInfo * info = new SLogInfo;
+	info->strTime.Format(L"%04d-%02d-%02d %02d:%02d:%02d.%03d",year,month,day,hour,minute,second,millisec);
+	info->time = CTime(2017,month,day,hour,minute,second);
+	info->strLevel = level;
+	info->strTag = tag;
+	info->strContent = SStringW(pContent+2,pContentEnd-pContent-3);
+	info->strFunction = SStringW(pszFunction,pSourceFile-pszFunction-2);
+	info->strSourceFile = SStringW(pSourceFile,pSourceLine-pSourceFile-2);
+	info->strModule = module;
+	info->iSourceLine = _wtoi(pSourceLine);
+
+	info->dwPid = pid;
+	info->dwTid = tid;
+	info->iLevel = 0;
+	for(int i=0;i< kLevelNum;i++)
+	{
+		if(wcscmp(info->strLevel,kLevelsLogcat[i])==0)
+		{
+			info->iLevel = i;
+		}
+	}
+	*ppLogInfo = info;
+	return TRUE;
+}
+
+int CSouiLogParse::GetLevels() const
+{
+	return KSLogLevels;
+}
+
+
+void CSouiLogParse::GetLevelText(wchar_t szLevels[][50]) const
+{
+	memcpy(szLevels,kLevelsSouiLog,sizeof(kLevelsSouiLog));
+}
+
+SOUI::SStringW CSouiLogParse::GetName() const
+{
+	return L"SouilogParser";
+}
+
+bool CSouiLogParse::IsFieldValid(Field field) const
+{
+	return true;
+}
+
 //////////////////////////////////////////////////////////////////////////
 ILogParse * CParseFactory::CreateLogParser(int iParser) const
 {
-	if(iParser == 0)
+	switch(iParser)
 	{
+	case 0:
 		return new CAppLogParse;
-	}else
-	{
+	case 1:
 		return new CLogcatParse;
+	case 2:
+		return new CSouiLogParse;
+		break;
+	default:
+		return NULL;
 	}
 }
 
 int CParseFactory::GetLogParserCount() const
 {
-	return 2;
+	return 3;
 }
+

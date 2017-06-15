@@ -1445,7 +1445,7 @@ bool LogerManager::pushLog(LoggerId id, int level, const char * filter, const ch
         {
 #if defined (WIN32) || defined(_WIN64)
 
-            int ret = _snprintf_s(pLog->_content, LOG4Z_LOG_BUF_SIZE, _TRUNCATE, "pid=%u tid=%u %d-%02d-%02d %02d:%02d:%02d.%03d %s %s %s \"%s\" \r\n",
+            int ret = _snprintf_s(pLog->_content, LOG4Z_LOG_BUF_SIZE, _TRUNCATE, "pid=%u tid=%u %d-%02d-%02d %02d:%02d:%02d.%03d %s %s %s \"%s\"\r\n",
                 pid, tid,
                 tt.tm_year + 1900, tt.tm_mon + 1, tt.tm_mday, tt.tm_hour, tt.tm_min, tt.tm_sec, pLog->_precise,
                 LOG_STRING[pLog->_level], pModuleName, filter, log);
@@ -1481,7 +1481,7 @@ bool LogerManager::pushLog(LoggerId id, int level, const char * filter, const ch
             else pNameBegin ++;            
             
 #if defined (WIN32) || defined(_WIN64)
-            int ret = _snprintf_s(pLog->_content, LOG4Z_LOG_BUF_SIZE, _TRUNCATE, "pid=%u tid=%u %d-%02d-%02d %02d:%02d:%02d.%03d %s %s %s \"%s\" %s (%s):%d \r\n",
+            int ret = _snprintf_s(pLog->_content, LOG4Z_LOG_BUF_SIZE, _TRUNCATE, "pid=%u tid=%u %d-%02d-%02d %02d:%02d:%02d.%03d %s %s %s \"%s\" %s (%s):%d\r\n",
                 pid, tid,
                 tt.tm_year + 1900, tt.tm_mon + 1, tt.tm_mday, tt.tm_hour, tt.tm_min, tt.tm_sec, pLog->_precise,
                 LOG_STRING[pLog->_level], pModuleName, filter, log, func, pNameBegin, line);

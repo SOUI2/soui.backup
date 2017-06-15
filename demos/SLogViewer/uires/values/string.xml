@@ -8,6 +8,10 @@
     <col_pid value="pid"/>
     <col_tid value="tid"/>
     <col_tag value="tag"/>
+    <col_module value="module"/>
+    <col_source_file value="source file"/>
+    <col_source_line value="source line"/>
+    <col_function value="function"/>
     <col_content value="content"/>
     <filter value="filter"/>
     <tag_filter value="tag filter"/>

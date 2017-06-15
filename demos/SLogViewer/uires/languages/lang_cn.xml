@@ -84,5 +84,22 @@
       <source>filter</source>
       <translation>过滤设置</translation>
     </message>
+    
+    <message>
+      <source>module</source>
+      <translation>模块</translation>
+    </message>
+    <message>
+      <source>source file</source>
+      <translation>源文件</translation>
+    </message>
+    <message>
+      <source>source line</source>
+      <translation>代码行</translation>
+    </message>
+    <message>
+      <source>function</source>
+      <translation>函数</translation>
+    </message>
   </context>
 </language>

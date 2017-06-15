@@ -49,8 +49,13 @@ namespace SOUI
 		SLogInfo * pLogInfo = GetLogList()->GetAt(position);
 		pItem->FindChildByID(R.id.txt_line)->SetWindowText(SStringT().Format(_T("%d"),position+1));
 		pItem->FindChildByID(R.id.txt_time)->SetWindowText(S_CW2T(pLogInfo->strTime));
-		pItem->FindChildByID(R.id.txt_pid)->SetWindowText(S_CW2T(SStringW().Format(L"%u",pLogInfo->dwPid)));
-		pItem->FindChildByID(R.id.txt_tid)->SetWindowText(S_CW2T(SStringW().Format(L"%u",pLogInfo->dwTid)));
+		pItem->FindChildByID(R.id.txt_pid)->SetWindowText(SStringT().Format(_T("%u"),pLogInfo->dwPid));
+		pItem->FindChildByID(R.id.txt_tid)->SetWindowText(SStringT().Format(_T("%u"),pLogInfo->dwTid));
+		pItem->FindChildByID(R.id.txt_module)->SetWindowText(S_CW2T(pLogInfo->strModule));
+		pItem->FindChildByID(R.id.txt_function)->SetWindowText(S_CW2T(pLogInfo->strFunction));
+		pItem->FindChildByID(R.id.txt_source_file)->SetWindowText(S_CW2T(pLogInfo->strSourceFile));
+		pItem->FindChildByID(R.id.txt_source_line)->SetWindowText(SStringT().Format(_T("%d"),pLogInfo->iSourceLine));
+
 		SWindow * pTxtLevel = pItem->FindChildByID(R.id.txt_level);
 		pTxtLevel->SetWindowText(S_CW2T(pLogInfo->strLevel));
 		if(pLogInfo->iLevel>=Verbose && pLogInfo->iLevel< Level_Count)
@@ -80,6 +85,10 @@ namespace SOUI
 			L"col_tid",
 			L"col_level",
 			L"col_tag",
+			L"col_module",
+			L"col_source_file",
+			L"col_source_line",
+			L"col_function",
 			L"col_content"
 		};
 		return colNames[iCol];
@@ -340,5 +349,9 @@ namespace SOUI
 		doFilter();
 	}
 
-
+	bool SLogAdapter::IsColumnVisible(int iCol) const
+	{
+		if(!m_logParser) return true;
+		return m_logParser->IsFieldValid(Field(iCol));
+	}
 }
