@@ -62,6 +62,8 @@ namespace SOUI
 		virtual void GetLevelText(wchar_t szLevels[][MAX_LEVEL_LENGTH]) const PURE;
 		virtual BOOL ParseLine(LPCWSTR pszLine,SLogInfo **ppLogInfo) const PURE;
 		virtual bool IsFieldValid(Field field) const PURE;
+		virtual int  GetCodePage() const PURE;
+		virtual BOOL TestLogBuffer(LPCSTR pszBuf, int nLength) PURE;
 	};
 	
 	struct IParserFactory: public IObjRef

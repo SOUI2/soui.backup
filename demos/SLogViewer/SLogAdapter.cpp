@@ -129,19 +129,13 @@ namespace SOUI
 			fclose(file);
 			pBuf[len]=0;
 			
-			int uniLen = MultiByteToWideChar(CP_UTF8,0,pBuf,len,NULL,0);
-			WCHAR* pUniBuf = (WCHAR*) malloc((uniLen+1)*sizeof(WCHAR));
-			MultiByteToWideChar(CP_UTF8,0,pBuf,len,pUniBuf,uniLen);
-			free(pBuf);
-			pUniBuf[uniLen]=0;
 			
-			WCHAR *pLine = pUniBuf;
 			CAutoRefPtr<ILogParse> pMatchParser;
 
 			for(int i=0;i<m_parserFactory->GetLogParserCount() && !pMatchParser;i++)
 			{
 				ILogParse *pLogParser = m_parserFactory->CreateLogParser(i);
-				if(pLogParser->ParseLine(pLine,NULL))
+				if(pLogParser->TestLogBuffer(pBuf,len))
 				{
 					pMatchParser = pLogParser;
 				}
@@ -149,7 +143,19 @@ namespace SOUI
 			}
 
 			if(!pMatchParser)
+			{
+				free(pBuf);
 				return FALSE;
+			}
+
+			//目前只支持多字节的log
+			int uniLen = MultiByteToWideChar(pMatchParser->GetCodePage(),0,pBuf,len,NULL,0);
+			WCHAR* pUniBuf = (WCHAR*) malloc((uniLen+1)*sizeof(WCHAR));
+			MultiByteToWideChar(pMatchParser->GetCodePage(),0,pBuf,len,pUniBuf,uniLen);
+			free(pBuf);
+			pUniBuf[uniLen]=0;
+
+			WCHAR *pLine = pUniBuf;
 
 			if(m_logParser)
 			{

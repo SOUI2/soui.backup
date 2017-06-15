@@ -9,11 +9,15 @@ public:
 
 	virtual int GetLevels() const;
 
-	virtual void GetLevelText(wchar_t szLevels[][50]) const;
+	virtual void GetLevelText(wchar_t szLevels[][MAX_LEVEL_LENGTH]) const;
 
 	virtual SStringW GetName() const;
 
 	virtual bool IsFieldValid(Field field) const;
+
+	virtual int GetCodePage() const;
+
+	virtual BOOL TestLogBuffer(LPCSTR pszBuf, int nLength);
 
 };
 
@@ -24,11 +28,16 @@ public:
 
 	virtual int GetLevels() const;
 
-	virtual void GetLevelText(wchar_t szLevels[][50]) const;
+	virtual void GetLevelText(wchar_t szLevels[][MAX_LEVEL_LENGTH]) const;
 
 	virtual SStringW GetName() const;
 
 	virtual bool IsFieldValid(Field field) const;
+
+	virtual int GetCodePage() const;
+
+	virtual BOOL TestLogBuffer(LPCSTR pszBuf, int nLength);
+
 };
 
 class CSouiLogParse: public TObjRefImpl<ILogParse>
@@ -37,11 +46,16 @@ class CSouiLogParse: public TObjRefImpl<ILogParse>
 
 	virtual int GetLevels() const;
 
-	virtual void GetLevelText(wchar_t szLevels[][50]) const;
+	virtual void GetLevelText(wchar_t szLevels[][MAX_LEVEL_LENGTH]) const;
 
 	virtual SStringW GetName() const;
 
 	virtual bool IsFieldValid(Field field) const;
+
+	virtual int GetCodePage() const;
+
+	virtual BOOL TestLogBuffer(LPCSTR pszBuf, int nLength);
+
 };
 
 class CParseFactory : public TObjRefImpl<IParserFactory>

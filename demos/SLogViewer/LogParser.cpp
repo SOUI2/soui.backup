@@ -9,7 +9,7 @@ static const wchar_t  kLevelsApp[kLevelNum][MAX_LEVEL_LENGTH]={
 //////////////////////////////////////////////////////////////////////////
 //2017-05-22 10:10:18.794 (24894841) 32376 [D][RTCSDK] - 
 #define LOG_APP_SEP L" - "
-void CAppLogParse::GetLevelText(wchar_t szLevels[][50]) const
+void CAppLogParse::GetLevelText(wchar_t szLevels[][MAX_LEVEL_LENGTH]) const
 {
 	memcpy(szLevels,kLevelsApp,sizeof(kLevelsApp));
 }
@@ -84,6 +84,20 @@ bool CAppLogParse::IsFieldValid(Field field) const
 		true,//col_content
 	};
 	return fieldValid[field];
+}
+
+int CAppLogParse::GetCodePage() const
+{
+	return CP_UTF8;
+}
+
+BOOL CAppLogParse::TestLogBuffer(LPCSTR pszBuf, int nLength)
+{
+	LPCSTR pszNextLine = strstr(pszBuf,"\n");
+	if(!pszNextLine) return FALSE;
+	SStringA strLine(pszBuf,pszNextLine-pszBuf);
+	SStringW wstrLine = S_CA2W(strLine,GetCodePage());
+	return ParseLine(wstrLine,NULL);
 }
 
 
@@ -166,6 +180,20 @@ bool CLogcatParse::IsFieldValid(Field field) const
 }
 
 
+int CLogcatParse::GetCodePage() const
+{
+	return CP_UTF8;
+}
+
+BOOL CLogcatParse::TestLogBuffer(LPCSTR pszBuf, int nLength)
+{
+	LPCSTR pszNextLine = strstr(pszBuf,"\n");
+	if(!pszNextLine) return FALSE;
+	SStringA strLine(pszBuf,pszNextLine-pszBuf);
+	SStringW wstrLine = S_CA2W(strLine,GetCodePage());
+	return ParseLine(wstrLine,NULL);
+}
+
 //////////////////////////////////////////////////////////////////////////
 static const int KSLogLevels = 7;
 static const wchar_t  kLevelsSouiLog[KSLogLevels][MAX_LEVEL_LENGTH]={
@@ -246,7 +274,7 @@ int CSouiLogParse::GetLevels() const
 }
 
 
-void CSouiLogParse::GetLevelText(wchar_t szLevels[][50]) const
+void CSouiLogParse::GetLevelText(wchar_t szLevels[][MAX_LEVEL_LENGTH]) const
 {
 	memcpy(szLevels,kLevelsSouiLog,sizeof(kLevelsSouiLog));
 }
@@ -260,6 +288,21 @@ bool CSouiLogParse::IsFieldValid(Field field) const
 {
 	return true;
 }
+
+int CSouiLogParse::GetCodePage() const
+{
+	return CP_ACP;
+}
+
+BOOL CSouiLogParse::TestLogBuffer(LPCSTR pszBuf, int nLength)
+{
+	LPCSTR pszNextLine = strstr(pszBuf,"\n");
+	if(!pszNextLine) return FALSE;
+	SStringA strLine(pszBuf,pszNextLine-pszBuf);
+	SStringW wstrLine = S_CA2W(strLine,GetCodePage());
+	return ParseLine(wstrLine,NULL);
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 ILogParse * CParseFactory::CreateLogParser(int iParser) const
