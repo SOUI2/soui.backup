@@ -34,7 +34,8 @@
 							<include src="layout:xml_uidesigner_main" />
 						</page>
 						<page name="page_editor" title="XML编辑" colorBorder="#ffff00">
-							<realwnd pos="0,0,-0,-0" name="uidesigner_xml_scintilla" wndclass="scintilla" id="100000" wndname="scintilla" />
+							<text name="uidesigner_curfile" pos="1,0,-1,24" cueText="rsss"/>
+							<realwnd pos="0,[0,-0,-0" name="uidesigner_xml_scintilla" wndclass="scintilla" id="100000" wndname="scintilla" />
 						</page>
 					</tabctrl>
 				</pane>

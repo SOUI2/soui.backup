@@ -11,6 +11,7 @@
 #include "adapter.h"
 #define  MARGIN 20
 
+extern BOOL g_bHookCreateWnd;	//是否拦截窗口的建立
 
 BOOL SDesignerView::NewLayout(SStringT strResName, SStringT strPath)
 {
@@ -129,8 +130,8 @@ BOOL SDesignerView::CloseProject()
 	m_pScintillaWnd->SendEditor(SCI_CLEARALL);
 	m_pPropertyContainer->SSendMessage(WM_DESTROY);
 	m_treeXmlStruct->RemoveAllItems();
-	m_pRealWndRoot = NULL;
-	m_pMoveWndRoot = NULL;
+	m_pRealWndRoot = nullptr;
+	m_pMoveWndRoot = nullptr;
 	m_nState = 0;
 	m_ndata = 0;
 
@@ -338,7 +339,7 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 	//wchar_t *s = L"<window pos=\"20,20,@500,@500\" colorBkgnd=\"#d0d0d0\"></window>";
 	const wchar_t *s3 = L"<movewnd pos=\"20,20,@800,@500\" ></movewnd>";
 
-	SOUI::SApplication::getSingleton().SetCreateChildrenHandler((FN_CREATECHILDREN)(&SUIWindow::CreateChild));
+	g_bHookCreateWnd = TRUE;
 
 	////创建布局窗口的根窗口
 	m_pRealWndRoot = (SDesignerRoot*)m_pContainer->CreateChildren(s2);
@@ -354,12 +355,12 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 
 	if (!m_pRealWndRoot->CreateChildren(xmlnode))
 	{
-		SOUI::SApplication::getSingleton().SetCreateChildrenHandler(NULL);
+		g_bHookCreateWnd = FALSE;
 		return FALSE;
 	}
 
 	CreateAllChildWnd(m_pRealWndRoot, m_pMoveWndRoot);
-	SOUI::SApplication::getSingleton().SetCreateChildrenHandler(NULL);
+	g_bHookCreateWnd = FALSE;
 
 	m_nState = 0;
 	GetMoveWndRoot()->Click(0, CPoint(0, 0));
@@ -1490,7 +1491,7 @@ bool SDesignerView::OnPropGridValueChanged(EventArgs *pEvt)
 			m_pMoveWndRoot->Click(0, CPoint(0, 0));
 		}
 	}
-	AddCodeToEditor(NULL);
+	AddCodeToEditor(nullptr);
 
 	return true;
 }
@@ -1730,7 +1731,7 @@ BOOL SDesignerView::ReLoadLayout(BOOL bClearSel)
 	//wchar_t *s = L"<window pos=\"20,20,@500,@500\" colorBkgnd=\"#d0d0d0\"></window>";
 	const wchar_t *s3 = L"<movewnd pos=\"20,20,@500,@500\" ></movewnd>";
 
-	SOUI::SApplication::getSingleton().SetCreateChildrenHandler((FN_CREATECHILDREN)(&SUIWindow::CreateChild));
+	g_bHookCreateWnd = TRUE;
 	////创建布局窗口的根窗口
 	m_pRealWndRoot = (SDesignerRoot*)m_pContainer->CreateChildren(s2);
 	m_pRealWndRoot->SetRootFont(m_defFont);
@@ -1745,12 +1746,13 @@ BOOL SDesignerView::ReLoadLayout(BOOL bClearSel)
 
 	if (!m_pRealWndRoot->CreateChildren(xmlnode))
 	{
-		SOUI::SApplication::getSingleton().SetCreateChildrenHandler(NULL);
+		g_bHookCreateWnd = FALSE;
 		return FALSE;
 	}
 
 	CreateAllChildWnd(m_pRealWndRoot, m_pMoveWndRoot);
-	SOUI::SApplication::getSingleton().SetCreateChildrenHandler(NULL);
+	g_bHookCreateWnd = FALSE;
+
 	m_treeXmlStruct->RemoveAllItems();
 	InitXMLStruct(m_CurrentLayoutNode, STVI_ROOT);
 
