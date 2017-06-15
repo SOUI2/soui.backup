@@ -1,0 +1,25 @@
+﻿<?xml version="1.0"?>
+<SOUI name="window" title="布局" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="404" height="364" margin="1,5,5,5" wndType="8" toolWindow="1">
+	<root cache="1">
+		<window pos="0,0,-0,-0" colorBkgnd="rgb(50,126,173)" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13">
+			<caption pos="0,0,-0,30" focusable="1" drawfocusrect="0" colorBkgnd="#ffffff20">
+				<imgbtn skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" name="btnCancel" />
+				字体选择
+			</caption>
+			<window pos="6,32" size="392, 278" margin="1">
+				<listbox pos="2,33" size="175, 241" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" colorBkgnd="#ffffff20" name="lbFont">
+					<items />
+				</listbox>
+				<edit pos="2,7" size="175, 24" colorBkgnd="#ffffff20" cueText="查找" colorText="#ffffffff" name="edtSearch" notifyChange="1" />
+				<check pos="184,32" size="96, 32" skin="_skin.sys.checkbox" name="chkBold">粗体</check>
+				<check pos="184,64" size="96, 32" skin="_skin.sys.checkbox" name="chkItalic">斜体</check>
+				<check pos="280,32" size="96, 32" skin="_skin.sys.checkbox" name="chkUnderline">下划线</check>
+				<check pos="280,64" size="96, 32" skin="_skin.sys.checkbox" name="chkStrike">删除线</check>
+				<text pos="184,104">大小</text>
+				<window pos="184,136" size="200, 136" name="wndPreview" margin="1" colorBorder="#ffad5bff">预览</window>
+				<edit pos="213,102" size="35, 20" colorBkgnd="#FFFFFF" cueText="" colorText="#000000" name="edtSize" notifyChange="1" />
+			</window>
+			<button pos="296,320" size="88, 24" skin="skin_blue_button" class="normalbtn" name="btnOK">确定</button>
+		</window>
+	</root>
+</SOUI>

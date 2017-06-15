@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<SOUI name="skinSel_mainWindow" title="皮肤选择" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="1010" height="720" margin="5,5,5,5" resizable="1" wndType="8" toolWindow="1" >
+	<root colorBkgnd="#2d2d30" colorText="#FFFFFF" cache="1">
+		<window pos="0,0,-0,-0" show="1" skin="">
+			<window pos="0,0,-0,-0" layout="vbox" show="1" skin="">
+				<window size="-2,30" colorBkgnd="#0063b1" colorText="#FFFFFF">
+					<caption pos="0,0,-0,30" show="1" font="adding:0">
+						<icon name="NAME_UIDESIGNER_main_icon" skin="app_main_icon" pos="8,9" />
+					</caption>
+					<text pos="29,|0" offset="0, -0.5" class="CLASS_UIDESIGNER_cls_title">资源管理</text>
+					<imgbtn name="btn_close" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />
+					<imgbtn name="btn_max" skin="_skin.sys.btn.maximize" pos="-83,0" animate="1" />
+					<imgbtn name="btn_restore" skin="_skin.sys.btn.restore" pos="-83,0" show="0" animate="1" />
+					<imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+				</window>
+				<!-- 			<hr size="-2,2" mode="horizontal" colorLine="#FFFFFF" /> -->
+				<window size="-2, -2" layout="hbox" extend="10,5,10,80">
+					<window size="560, -2" layout="vbox">
+						<window size="-2, 440" layout="hbox">
+							<window size="220, -2" layout="vbox" colorBkgnd="#ffffff20">
+								<window colorText="#FFFFFF">
+									<imgbtn name="NAME_UIDESIGNER_btn_ZYLX_new" size="110,30" skin="skin_app_button2">新建资源类型</imgbtn>
+									<imgbtn name="NAME_UIDESIGNER_btn_ZYLX_DEL" size="110,30" skin="skin_app_button2">移除资源类型</imgbtn>
+								</window>
+								<listbox name="NAME_UIDESIGNER_LB_ZYLX" width="-2" weight="1" extend="0,5,0,0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
+							</window>
+							<!-- 						<hr pos="%50,20,@1,-20" mode="vertical" colorLine="#FFFFFF" /> -->
+							<window size="300,-2" layout="vbox" extend="20,0,0,0" colorBkgnd="#ffffff20">
+								<window colorText="#FFFFFF">
+									<imgbtn name="NAME_UIDESIGNER_btn_ZY_NEW" size="92,30" skin="skin_app_button2">新建资源</imgbtn>
+									<imgbtn name="NAME_UIDESIGNER_btn_ZY_DEL" size="92,30" skin="skin_app_button2">移除资源</imgbtn>
+									<imgbtn name="NAME_UIDESIGNER_btn_ZY_NEWALL" size="92,30" skin="skin_app_button2" visible="0">批量导入</imgbtn>
+								</window>
+								<edit size="-2,20" extend="0,5,0,5" name="NAME_UIDESIGNER_edit_SEARCH" colorBkgnd="#FFFFFF" cueText="过滤" />
+								<listbox name="NAME_UIDESIGNER_LB_ZY" width="-2" weight="1" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
+							</window>
+							<!-- 	<hr pos="2,[1,-2,@1" mode="horizontal" colorLine="#FFFFFF" /> -->
+						</window>
+						<group height="-2" weight="1" size="-2,100" colorText="#ffffffff">
+							<imgcanvas pos="20,20,-20,-20" name="NAME_UIDESIGNER_IMG_VIEW" clipClient="1" colorBkgnd="#ffffa0" colorText="#0000cc" />
+							图片预览
+							<text pos="10, 0" name="sel_image_size">900*900</text>
+						</group>
+					</window>
+					<window size="100,-2" layout="vbox" weight="1" colorBkgnd="#ffffff20">
+						<window size="-2, 76" layout="vbox">
+							<window colorText="#FFFFFF">
+								<imgbtn name="NAME_UIDESIGNER_btn_SKIN_new" size="92,30" skin="skin_app_button2">新建皮肤</imgbtn>
+								<imgbtn name="NAME_UIDESIGNER_btn_SKIN_DEL" size="92,30" skin="skin_app_button2">移除皮肤</imgbtn>
+							</window>
+							<listbox name="NAME_UIDESIGNER_LB_SKIN" width="-2" weight="1" extend="0,5,0,0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
+						</window>
+						<window size="-2,100" name="NAME_UIDESIGNER_GRID_CONTAINER" class="CLASS_UIDESIGNER_cls_title" weight="1" colorText="#FFFFFF" />
+					</window>
+				</window>
+			</window>
+			<imgbtn name="btnOK" pos="-100, -40" size="90,30" colorText="#FFFFFF" extend="0,5,20,0" skin="skin_app_button2">确定</imgbtn>
+		</window>
+	</root>
+</SOUI>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0"?>
+<include width="500" height="500">
+	<tabctrl name="NAME_UIDESIGNER_Right_MAIN_TAB" pos="0,0,-0,-0" tabAlign="right" tabInterSize="2" tabWidth="30" tabHeight="70" tabSkin="skin_tab_skin" colorText="#FFFFFF" focusable="false" textDir="vert">
+		<page title="控件" colorBorder="#ffff00" colorBkgnd="#FFFFFF12">
+			<listboxdrop name="uidesigner_control_list" pos="0,5,-0,-0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
+		</page>
+		<page title="结构" colorBorder="#ffff00" colorBkgnd="#FFFFFF12">
+			<text name="uidesigner_nodenum" pos="5,0,-1,24" />
+			<treectrl pos="1,[5,-1,-1" name="uidesigner_wnd_xmltree" toggleSkin="skin_tree_toggle_png" itemHeight="30" colorItemText="#FFFFFF" colorItemSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" />
+		</page>
+	</tabctrl>
+</include>

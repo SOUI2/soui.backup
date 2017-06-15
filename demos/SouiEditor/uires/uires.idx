@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<resource>
+	<UIDEF>
+		<file name="XML_INIT" path="uidef\init.xml" />
+	</UIDEF>
+	<LAYOUT>
+		<file name="xml_messagebox" path="xml\messagebox.xml" />
+		<file name="XML_MAINWND" path="xml\dlg_main.xml" />
+		<file name="xml_mainwnd_left" path="xml\dlg_main_left.xml" />
+		<file name="xml_mainwnd_right" path="xml\dlg_main_right.xml" />
+		<file name="xml_uidesigner_main" path="xml\dlg_uidesigner.xml" />
+		<file name="UIDESIGNER_XML_SKIN_SELECT" path="xml\dlg_skin_select.xml" />
+		<file name="UIDESIGNER_XML_NEW_LAYOUT" path="xml\dlg_new_layout.xml" />
+		<file name="UIDESIGNER_XML_NEW_SKIN" path="xml\dlg_new_skin.xml" />
+		<file name="UIDESIGNER_XML_INPUT" path="xml\dlg_input.xml" />
+		<file name="UIDESIGNER_XML_ABOUT" path="xml\dlg_about.xml" />
+		<file name="UIDESIGNER_XML_SYTLEMGR" path="xml\dlg_style_manage.xml" />
+		<file name="UIDESIGNER_XML_FONTSELECT" path="xml\dlg_font_select.xml" />
+	</LAYOUT>
+	<values>
+		<file name="string" path="values\string.xml" />
+		<file name="color" path="values\color.xml" />
+		<file name="skin" path="values\skin.xml" />
+	</values>
+	<IMG>
+		<file name="icon_main" path="image\soui.png" />
+		<file name="caption_line" path="image\caption_line.png" />
+		<file name="png_tool_button" path="image\tool_button.png" />
+		<file name="png_prop_switch" path="image\propswitch.png" />
+		<file name="png_tab_skin" path="image\tab_skin.png" />
+		<file name="png_btn_blue" path="image\msg_btn_blue.png" />
+		<file name="png_app_button" path="image\app_button.png" />
+		<file name="default.scrollbar" path="image\default.scrollbar.png" />
+		<file name="open_menu_png" path="image\open_menu.png" />
+		<file name="tree_toggle_png" path="image\tree_toggle.png" />
+	</IMG>
+	<ICON>
+		<file name="ICON_LOGO" path="image\soui.ico" />
+	</ICON>
+	<translator>
+		<file name="lang_cn" path="translator\lang_cn.xml" />
+		<file name="lang_jp" path="translator\lang_jp.xml" />
+	</translator>
+</resource>

@@ -1,0 +1,133 @@
+<root>
+	<imglist>
+		<propgrid pos="0,0,-0,-0" switchSkin="skin_prop_switch"                      
+			nameWidth="150" orderType="group" itemHeight="26" ColorGroup="RGB(96,112,138)"                                 
+			ColorItemSel="rgb(234,128,16)" colorItemSelText="#FF0000" EditBkgndColor="rgb(87,104,132)"                       
+			autoWordSel="1">
+			<cmdbtnstyle skin="_skin.sys.btn.normal">...</cmdbtnstyle>
+			<groups>
+				<propgroup name="属性:  base"  description="属性">
+					<proptext name="皮肤名(name)" name2="name" value=""/>	
+                    <proptext name="比例(scale)" name2="scale" value=""/>	
+					<proptext name="alpha" name2="alpha" value=""/>	
+					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
+				</propgroup>			
+				<propgroup name="属性:  imglist"  description="属性">
+					<propoption name="autoFit" name2="autoFit" value="" options="是:1|否:0"/>						
+					<propoption name="平铺(tile)" name2="tile" value="" options="拉伸:0|平铺:1"/>
+					<propoption name="垂直排列(vertical)" name2="vertical" value="" options="垂直:1|水平:0"/>
+					<proptext name="子图数量(states)" name2="states" value=""/>
+					<propoption name="filterLevel" name2="filterLevel" value="" options="none|low|medium|high"/>
+				</propgroup>
+			</groups>
+		</propgrid>
+	</imglist>
+
+	<imgframe>
+		<propgrid pos="0,0,-0,-0" switchSkin="skin_prop_switch"                      
+			nameWidth="150" orderType="group"   itemHeight="26"   ColorGroup="RGB(96,112,138)"                               
+			ColorItemSel="rgb(234,128,16)" colorItemSelText="#FF0000" EditBkgndColor="rgb(87,104,132)" autoWordSel="1" class="cls_title">
+			<cmdbtnstyle skin="_skin.sys.btn.normal">...</cmdbtnstyle>
+			<groups>
+				<propgroup name="属性:  base"  description="属性">
+					<proptext name="皮肤名(name)" name2="name" value=""/>	
+					                    <proptext name="比例(scale)" name2="scale" value=""/>	
+
+					<proptext name="alpha" name2="alpha" value=""/>	
+					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
+				</propgroup>
+				<propgroup name="属性:  imglist"  description="属性">
+					<propoption name="autoFit" name2="autoFit" value="" options="是:1|否:0"/>						
+					<propoption name="平铺(tile)" name2="tile" value="" options="拉伸:0|平铺:1"/>
+					<propoption name="垂直排列(vertical)" name2="vertical" value="" options="垂直:1|水平:0"/>
+					<proptext name="子图数量(states)" name2="states" value=""/>
+					<propoption name="filterLevel" name2="filterLevel" value="" options="none|low|medium|high"/>
+				</propgroup>
+				<propgroup name="属性:  imgframe"  description="属性">	
+					<proptext name="左边距(left)" name2="left" value=""/>
+					<proptext name="上边距(top)" name2="top" value=""/>
+					<proptext name="右边距(right)" name2="right" value=""/>
+					<proptext name="下边距(bottom)" name2="bottom" value=""/>
+					<proptext name="九宫格4周(margin)" name2="margin" value=""/>
+					<proptext name="左右边距(margin-x)" name2="margin-x" value=""/>
+					<proptext name="上下边距(margin-y)" name2="margin-y" value=""/>			
+				</propgroup>
+			</groups>
+		</propgrid>
+	</imgframe>
+
+
+	<gradation>
+		<propgrid pos="0,0,-0,-0" switchSkin="skin_prop_switch"                      
+			nameWidth="150" orderType="group" itemHeight="26" ColorGroup="RGB(96,112,138)"                                   
+			ColorItemSel="rgb(234,128,16)" colorItemSelText="#FF0000" EditBkgndColor="rgb(87,104,132)"
+			autoWordSel="1">
+			<cmdbtnstyle skin="_skin.sys.btn.normal">...</cmdbtnstyle>
+			<groups>
+				<propgroup name="属性:  base"  description="属性">
+					<proptext name="皮肤名(name)" name2="name" value=""/>
+                    <proptext name="比例(scale)" name2="scale" value=""/>						
+
+					<proptext name="alpha" name2="alpha" value=""/>	
+					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
+				</propgroup>			
+				<propgroup name="属性:  gradation"  description="属性">
+					<proptext name="皮肤名(name)" name2="name" value=""/>				
+					<proptext name="渐变起始颜色(colorFrom)" name2="colorFrom" value=""/>
+					<proptext name="渐变终止颜色(colorTo)" name2="colorTo" value=""/>
+					<propoption name="渐变方向(vertical)" name2="vertical" value="" options="水平:0|垂直:1"/>					
+				</propgroup>
+			</groups>
+		</propgrid>
+	</gradation>	
+
+	<scrollbar>
+		<propgrid pos="0,0,-0,-0" switchSkin="skin_prop_switch"                      
+			nameWidth="150" orderType="group"   itemHeight="26"   ColorGroup="RGB(96,112,138)"
+			ColorItemSel="rgb(234,128,16)" colorItemSelText="#FF0000" EditBkgndColor="rgb(87,104,132)"
+			autoWordSel="1">
+			<cmdbtnstyle skin="_skin.sys.btn.normal">...</cmdbtnstyle>
+			<groups>
+				<propgroup name="属性:  base"  description="属性">
+					<proptext name="皮肤名(name)" name2="name" value=""/>	
+					                    <proptext name="比例(scale)" name2="scale" value=""/>	
+					<proptext name="alpha" name2="alpha" value=""/>	
+					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
+				</propgroup>
+				<propgroup name="属性:  imglist"  description="属性">
+					<propoption name="autoFit" name2="autoFit" value="" options="是:1|否:0"/>						
+					<propoption name="平铺(tile)" name2="tile" value="" options="拉伸:0|平铺:1"/>
+					<propoption name="垂直排列(vertical)" name2="vertical" value="" options="垂直:1|水平:0"/>
+					<proptext name="子图数量(states)" name2="states" value=""/>
+					<propoption name="filterLevel" name2="filterLevel" value="" options="none|low|medium|high"/>
+				</propgroup>				
+				<propgroup name="属性:  gradation"  description="属性">					
+					<proptext name="边缘不拉伸大小(margin)" name2="margin" value=""/>
+					<propoption name="滑块帮手(hasGripper)" name2="hasGripper" value="" options="是:1|否:0"/>
+					<propoption name="是否有禁用态(hasInactive)" name2="hasInactive" value="" options="是:1|否:0"/>					
+				</propgroup>
+			</groups>
+		</propgrid>
+	</scrollbar>		
+
+
+
+	<gif>
+		<propgrid pos="0,0,-0,-0" switchSkin="skin_prop_switch"                      
+			nameWidth="150" orderType="group"   itemHeight="26"   ColorGroup="RGB(96,112,138)"
+			ColorItemSel="rgb(234,128,16)" colorItemSelText="#FF0000" EditBkgndColor="rgb(87,104,132)"
+			autoWordSel="1">
+			<cmdbtnstyle skin="_skin.sys.btn.normal">...</cmdbtnstyle>
+			<groups>
+				<propgroup name="属性:  base"  description="属性">
+					<proptext name="皮肤名(name)" name2="name" value=""/>
+                    <proptext name="比例(scale)" name2="scale" value=""/>						
+					<proptext name="alpha" name2="alpha" value=""/>	
+					<propoption name="enableColorize" name2="enableColorize" options="是:1|否:0"/>
+				</propgroup>
+			</groups>
+		</propgrid>
+	</gif>	
+
+
+</root>

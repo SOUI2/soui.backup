@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skin>
+	<imglist name="app_main_icon" src="icon:ICON_LOGO" states="1" />
+	<imglist name="sking_main_icon" src="IMG:icon_main" states="1" />
+	<imglist name="skin_open_menu_png" src="IMG:open_menu_png" states="4" tile="1" />
+	<scrollbar name="default.scrollbar" src="img:default.scrollbar" margin="2" />
+	<imglist name="skin_traymenu_icons" src="img:traymenu_icons" states="9" />
+	<imglist name="skin_caption_line" src="img:caption_line" />
+	<imglist name="skin_app_button" src="img:png_tool_button" states="3" />
+	<imglist name="skin_prop_switch" src="img:png_prop_switch" states="4" />
+	<imglist name="skin_tab_skin" src="img:png_tab_skin" states="3" />
+	<imglist name="skin_blue_button" src="img:png_btn_blue" states="3" />
+	<imglist name="skin_app_button2" src="img:png_app_button" states="3" />
+	<imglist name="skin_tree_toggle_png" src="IMG:tree_toggle_png" states="6" />
+</skin>

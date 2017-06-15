@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+
+
+	<容器控件>
+		<!--可以在上面摆放其他控件的控件，需要再这里声明，否则上面不能摆放控件-->
+		<caption/>
+		<group/>
+		<window/>
+		<page/>
+		<page2/>		
+
+		<div/>
+
+		<pane/>
+		<scrollview/>
+	</容器控件>
+
+
+	<控件列表>
+		<!-- pos和size都不是必须的，设计器根据鼠标按下的位置设置pos -->
+		<!-- 控件的大小最好是8的倍数，方便对齐 -->
+
+		<window>
+			<window pos="0,0" size="120,120">	
+
+			</window>	
+
+		</window>		
+
+		<animateimg_动画>
+			<animateimg pos="0,0" size="96,96" skin="_skin.sys.tree.checkbox" autostart="1"  speed = "100"/>
+		</animateimg_动画>
+
+<!-- 		<anmimg_动画>		
+			<anmimg size="50,50" ani_in="_skin.sys.checkbox" ani_out="_skin.sys.radio" interval="50"  />
+		</anmimg_动画> -->
+
+
+		<button_按钮>
+			<button pos="0,0" size="96,32" colorText="#000000"
+			skin="_skin.sys.btn.normal" >按钮</button> 
+		</button_按钮>
+
+		<buttonex_按钮>
+			<buttonex pos="0,0" size="96,32" animate="1" colorText="#000000" icon="_skin.sys.checkbox" iconIndex="1" drawMode="horzIconText">按钮</buttonex>
+		</buttonex_按钮>
+
+		<calendar_日历> 
+			<calendar size="96,96" daySkin="_skin.sys.btn.normal" footerHeight="30"/>
+		</calendar_日历>
+
+
+
+		<caption_标题>
+			<caption pos="0,0" size="288, 32" show="1" font="adding:0">
+				<text pos="29,9">标题</text>
+				<imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+				<imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
+				<imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
+				<imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+			</caption>			
+		</caption_标题>
+
+
+		<check_复选框>
+			<check pos="0,0" size="96,32" skin="_skin.sys.checkbox">复选框</check>  		
+		</check_复选框>
+
+
+		<combobox_组合框> 
+			<combobox size="120, 24" dropDown="1" dropHeight="150" dotted="0" animateTime="200" curSel="0" drawFocusRect="0" colorText="#000000ff" colorBkgnd="#FFFFFF">
+				<liststyle iconSkin="" itemSkin="" itemHeight="24" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="rgb(51,153,255)" />
+				<editstyle inset="5,0,5,0" colorText="#000000" align="left" colorBkgnd="#FFFFFF" />
+				<items>
+					<item text="" />
+					<item text="5" icon="2" data="100" />
+					<item text="6" icon="3" data="103" />
+					<item text="7" icon="4" data="100" />
+					<item text="8" icon="5" data="105" />
+					<item text="9" icon="0" data="100" />
+				</items>
+			</combobox>
+
+		</combobox_组合框>
+
+
+		<comboview>
+			<comboview size="120,24"  dropDown="0" dropHeight="200" animateTime="0"  ncSkin="_skin.sys.border" margin-x="2" margin-y="2" curSel="0" id_text="3">
+				<liststyle  ncSkin="_skin.sys.border" margin-x="2" margin-y="2" colorBkgnd="#ffffff">
+					<template itemHeight="44" colorHover="#cccccc" colorSelected="#0000ff">
+						<img id="1" pos="1,|-20,@32,@32" skin="img_avatars" />
+						<text id="2" pos="49,9">麻花藤</text>
+						<text id="3" pos="48,26" colorText="#ff0000"/>
+						<imgbtn id="4" pos="-24,|-8,-10,|7" skin="btn_list_close" tip="删除账号信息"/>
+					</template>
+				</liststyle>
+				<editstyle vcenter="1" colorText="#000000" align="left" colorBkgnd="#FFFFFF" cueText="输入帐号"/>
+
+			</comboview>
+		</comboview>
+
+
+		<div>
+			<div pos="0,0" size="120,120" >div控件</div>
+		</div>
+
+		<edit>
+			<edit pos="0,0" size="96,24"  colorBkgnd="#FFFFFF" cueText="" colorText="#000000"/>		
+		</edit>
+
+		<flash>
+			<flash pos="0,0" size="200,200"  url="" delay="1"/>
+		</flash>
+
+		<gif_动画>
+			<gifplayer pos="0,0" size="96,96" />
+		</gif_动画>
+		
+		<group_组合框>
+			<group pos="0,0" size="120,120" align="left" headerHeight="0">组合框</group>
+		</group_组合框>
+
+
+		<hotkey_热键>
+			<hotkey size="96,24"/>		
+		</hotkey_热键>
+
+		<hr_水平线>
+			<hr pos="0,0" size="200,1" mode="horizontal" colorLine="#ffFFFF"/>		
+		</hr_水平线>
+
+		<hr_垂直线>
+			<hr pos="0,0" size="1,200" mode="vertical" colorLine="#ffFFFF"/>		
+		</hr_垂直线>		
+
+		<icon>
+			<icon pos="0,0" src="ICON_LOGO:16"/>
+		</icon>
+
+
+		<img>
+			<img pos="0,0" size="120,120"/>
+		</img>
+
+		<imgbtn>
+			<imgbtn pos="0,0" size="96,32"  tip="" animate="1"/>
+		</imgbtn>		
+		<imgcanvas>
+			<imgcanvas pos="0,0" size="120,120">	
+
+			</imgcanvas>	
+
+		</imgcanvas>	
+
+
+		<include>
+			<include src=""/>	
+		</include>
+
+		<link>
+			<link pos="0,0" size="200,24"  href="www.baidu.com"   cursor="hand" colorText="#FFFFFF" colorTextHover="rgb(231,155,64)" font="italic:1" fontHover="underline:1,italic:1" >点击进入百度</link>
+		</link>
+
+
+		<listbox>
+			<listbox pos="0,0" size="200,200" hotTrack="1"   itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20">
+				<items>
+					<item text="item1" icon="1" data="100" />
+					<item text="item2" icon="2" data="100" />
+					<item text="item3" icon="3" data="103" />
+					<item text="item4" icon="4" data="100" />
+					<item text="item5" icon="5" data="105" />
+					<item text="item6" icon="0" data="100" />
+				</items>
+			</listbox>	
+		</listbox>
+
+		<listctrl>
+			<listctrl pos="0,0" size="200,200" hotTrack="1" itemHeight="20" headerHeight="30"  font="underline:1" > 
+				<header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
+					<items>
+						<item width="50">姓名</item>
+						<item width="50">年龄</item>
+						<item width="50">age</item>
+						<item width="50">score</item>
+					</items>
+				</header>
+			</listctrl>	
+		</listctrl>
+
+		<listview>
+			<listview size="120,120" dividerSize="5" wantTab="1">
+				<template itemHeight="50" colorHover="#cccccc" colorSelected="#0000ff" trackMouseEvent="1">
+
+					<button pos="10,5,@150,@25">按钮1</button>
+				</template>
+			</listview>
+		</listview>
+
+		<mclistview>
+			<mclistview size="120,120" headerHeight="30">
+				<header align="center" itemSwapEnable="1" fixWidth="0" sortHeader="1" colorText="#000000ff">
+					<items>
+						<item width="50">姓名</item>
+						<item width="50">年龄</item>
+						<item width="50">age</item>
+						<item width="50">score</item>
+					</items>
+				</header>
+				<template itemHeight="80" colorHover="#cccccc" colorSelected="#0000ff">
+					<window name="col1" clipClient="1">
+						<img name="img_icon" skin="" pos="10,8,@64,@64"/>
+						<text name="txt_name" pos="[5,16" font="bold:1,adding:-1">火狐浏览器</text>
+						<text name="txt_desc" pos="{0,36,-10,-10" font="bold:1,adding:-4" dotted="1">速度最快的浏览器</text>
+						<text name="txt_index" pos="|0,|0" offset="-0.5,-0.5" font="adding:10" colorText="#ff000088">10</text>
+					</window>
+					<window name="col2" clipClient="1">
+						<ratingbar name="rating_score" starSkin="skin_star1" starNum="5" value="3.5" pos="10,16"  />
+						<text name="txt_score" pos="10,36" font="adding:-5"  >8.5分</text>
+						<link pos="[5,36" cursor="hand" colorText="#1e78d5" href="www.163.com" font="adding:-5" >投票</link>
+					</window>
+					<window name="col3" clipClient="1">
+						<text name="txt_size" pos="0,26,-0,-26" font="adding:-4" align="center" >85.92M</text>
+					</window>
+					<window  name="col4" clipClient="1">
+						<text name="txt_installtime" pos="0,26,-0,-26" font="adding:-4" align="center" >2015-01-09</text>
+					</window>        
+				</template>
+
+			</mclistview>	
+		</mclistview>
+
+		<mediaplayer>
+			<mediaplayer pos="0,0" size="200,200"  url="" delay="1"/>
+		</mediaplayer>			
+
+
+
+		<progress>
+			<progress  pos="0,0" size="200,16" value="20" min="0" max="100" showPercent="1"/>
+		</progress>
+
+
+		<richedit>
+			<richedit  size="96,96" multilines="1" autovscroll="1" wordwrap="1"  margin-x="2" margin-y="2" cueText="">
+          Richedit
+			</richedit>	
+		</richedit>		
+
+
+
+
+		<radio>
+			<radio pos="0,0" size="96,32" skin="_skin.sys.radio">单选框</radio>
+		</radio>
+
+		<realwnd>
+			<realwnd pos="0,0" size="120,120" name="" wndclass="" id="" wndname="" />
+		</realwnd>  	
+
+		<RotateWindow>
+			<RotateWindow AnimImg="png:image_animation_foreground_png" size="270,270" msgTransparent="1" speed="2" turn="right">
+				<window skin="image_animation_bk_png" pos="0,0,-0,-0" msgTransparent="1">
+					<text name="percent_wnd" colorText="#ffffff" font="size:40" pos="| -50,|-50" align="center" height="100" width="100">1%</text>
+				</window>
+			</RotateWindow>
+		</RotateWindow>
+
+		<scrollbar>
+			<scrollbar size="200,16" min="0" max="100" value="10" page="10" vertical="0"/>
+		</scrollbar>
+
+		<scrolltext_滚动文本>
+			<scrolltext size="200,24" show="1"  rollType="1" colorText="#ffffff" speed="10">落花是飘在风里的一首诗 无声却叫人心动 是否你能明白它的心思 它的温柔不休不止 落花是飘在风里的一首诗 写下秋天的心事 它只想留下最美的样子</scrolltext>
+		</scrolltext_滚动文本>
+
+
+		<scrollview>
+			<scrollview pos="0,0" size="200,200" viewSize="-1,-1"/>
+		</scrollview>		
+
+
+		<sliderbar>
+
+			<sliderbar size="120,24" thumbInRail="0"  alpha="200" width="200" value="20" min="0" max="100"/>
+		</sliderbar>
+
+
+		<spinButton_微调按钮>
+			<window size="100,30" class="cls_edit" trackMouseEvent="1">
+				<edit pos="0,0,-16,-0" name="edit_spin" margin-x="0" margin-y="0"/>
+				<spinButton pos="[0,0,-0,-0" max="20" min="10" value="11" buddy="edit_spin">
+					<button name="btn_up"/>
+					<button name="btn_down"/>
+				</spinButton>
+			</window>
+		</spinButton_微调按钮>
+
+
+		<splitcol>
+			<splitcol  size="300,300" sepSize="6">
+				<pane idealSize="50" minSize="30" priority="1" clipClient="1">
+				</pane>
+				<pane idealSize="100" minSize="30" priority="0" clipClient="1">
+				</pane>
+				<pane idealSize="100" minSize="30" priority="1" clipClient="1">
+				</pane>
+			</splitcol>
+		</splitcol>
+
+		<splitrow>
+			<splitrow  size="300,300" sepSize="6">
+				<pane idealSize="50" minSize="30" priority="1" clipClient="1">
+				</pane>
+				<pane idealSize="100" minSize="30" priority="0" clipClient="1">
+				</pane>
+				<pane idealSize="100" minSize="30" priority="1" clipClient="1">
+				</pane>
+			</splitrow>
+		</splitrow>
+
+		<tabctrl>
+			<tabctrl  pos="0,0" size="200,200"  tabAlign="left" tabSkin="" tabInterSize="2" tabWidth="70" tabHeight="30" colorText="#FFFFFF" focusable="0" show="1" curSel="0" >
+
+				<page title="页1" tip="提示1">
+				</page>
+				<page title="页2" tip="提示2">
+				</page>
+			</tabctrl>  
+		</tabctrl>
+
+		<tabctrl2>			
+			<tabctrl2 size = "200, 200" font="face:微软雅黑,adding:-2" tabPos="10" tabAlign="top" colorText="#ffffff" pos="0,25,-0,-0" show="1" curSel="0" focusable="0" tabHeight="75" tabSkin="" iconSkin="" text-y="50" icon-x="12" tabInterSize="5">
+				<page2 title="页1" tip="页1" interval="50">
+				</page2>
+				<page2 title="页2" tip="页2">
+				</page2>
+			</tabctrl2>
+
+		</tabctrl2>	
+
+
+		<text>
+			<text pos="0,0">文本</text>
+		</text>
+
+		<tileview>
+			<tileview size="120,120"  wantTab="1" marginSize="5" >	
+				<template itemHeight="130" itemWidth="135" colorHover="#cccccc" colorSelected="#0000ff" trackMouseEvent="1" skin="">
+					<img pos="|0,0,@100,@100" offset="-0.5,0" name="img_file_icon"/>
+					<button pos="|0,[5,@115,@22" offset="-0.5,0" name="btn_test" tip="click the button to see how to writing the response function">btn</button>
+				</template>
+			</tileview>
+		</tileview>
+
+		<toggle>
+			<toggle pos="0,0" />
+		</toggle>
+
+		<toolbox>
+			<toolbox pos="0,0" size="120,32"  skin="" icon=""
+                 text="toolbox" animate="1"
+                 class=""/>	
+		</toolbox>
+
+
+
+		<treectrl>
+			<treectrl size="200,200"  itemHeight="30" checkBox="1" font="underline:1">
+				<item text="组织机构" img="0" selImg="1"  expand="1">
+					<item text="市场部" img="0" selImg="1">
+						<item text="南一区" img="2"/>
+						<item text="北二区" img="2"/>
+						<item text="西三区" img="2">
+							<item text="第一分队" img="0" selImg="1" expand="0">
+								<item text="张三组" img="2"/>
+								<item text="李四组" img="2"/>
+								<item text="王五组" img="2"/>
+							</item>
+						</item>
+					</item>
+				</item>
+				<item text="宣传部" img="0" selImg="1" expand="0">
+					<item text="南一区" img="2"/>
+					<item text="北二区" img="2"/>
+					<item text="西三区" img="2"/>
+				</item>
+			</treectrl>
+		</treectrl>
+
+
+
+		<treeview>
+
+			<treeview size="200,200"  itemHeight="-1" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#cccccc" indent="30">
+
+				<template height="60" colorHover="#cccccc" colorSelected="#0000ff" trackMouseEvent="1">
+					<toggle pos="[0,|0,@20,@20"  offset="0,-0.5" name="tgl_switch" skin="_skin.sys.tree.toggle" tip="show how to use switch"/>
+					<button pos="[0,5,@150,@25" name="btn_test" tip="click the button to see how to writing the response function">btn</button>
+					<animateimg pos="[10,{0" skin="skin_busy" name="ani_test" tip="animateimg is used here" msgTransparent="0" />
+					<text pos="[20,{0" colorText="#ff0000" name="txt_red">text item</text>
+				</template>
+
+			</treeview>
+		</treeview>
+
+
+
+
+
+
+
+	</控件列表>
+
+
+</root>	
+
+<!--
+ SKIN_SYS_CHECKBOX=0,            //L"_skin.sys.checkbox",
+        SKIN_SYS_RADIO,                 //L"_skin.sys.radio",
+        SKIN_SYS_FOCUSCHECKBOX,         //L"_skin.sys.focuscheckbox",
+        SKIN_SYS_FOCUSRADIO,            //L"_skin.sys.focusradio",
+        SKIN_SYS_BTN_NORMAL,            //L"_skin.sys.btn.normal",
+        SKIN_SYS_SCROLLBAR,             //L"_skin.sys.scrollbar",
+        SKIN_SYS_BORDER,                //L"_skin.sys.border",
+        SKIN_SYS_DROPBTN,               //L"_skin.sys.dropbtn",
+        SKIN_SYS_TREE_TOGGLE,           //L"_skin.sys.tree.toggle",
+        SKIN_SYS_TREE_CHECKBOX,         //L"_skin.sys.tree.checkbox"
+        SKIN_SYS_TAB_PAGE,              //L"_skin.sys.tab.page",
+        SKIN_SYS_HEADER,                //L"_skin.sys.header"
+        SKIN_SYS_SPLIT_VERT,            //L"_skin.sys.split.vert",
+        SKIN_SYS_SPLIT_HORZ,            //L"_skin.sys.split.horz",
+        SKIN_SYS_PROG_BKGND,            //L"_skin.sys.prog.bkgnd",
+        SKIN_SYS_PROG_BAR,              //L"_skin.sys.prog.bar",
+        SKIN_SYS_VERT_PROG_BKGND,       //L"_skin.sys.vert.prog.bkgnd",
+        SKIN_SYS_VERT_PROG_BAR,         //L"_skin.sys.vert.prog.bar",
+        SKIN_SYS_SLIDER_THUMB,          //L"_skin.sys.slider.thumb",
+
+        SKIN_SYS_BTN_CLOSE,             //L"_skin.sys.btn.close",
+        SKIN_SYS_BTN_MINIMIZE,          //L"_skin.sys.btn.minimize",
+        SKIN_SYS_BTN_MAXMIZE,           //L"_skin.sys.btn.maxmize",
+        SKIN_SYS_BTN_RESTORE,           //L"_skin.sys.btn.restore",
+
+        SKIN_SYS_MENU_CHECK,            //L"_skin.sys.menu.check",
+        SKIN_SYS_MENU_SEP,              //L"_skin.sys.menu.sep",
+        SKIN_SYS_MENU_ARROW,            //L"_skin.sys.menu.arrow",
+        SKIN_SYS_MENU_BORDER,           //L"_skin.sys.menu.border",
+        SKIN_SYS_MENU_SKIN,             //L"_skin.sys.menu.skin",
+        SKIN_SYS_ICONS,                 //L"_skin.sys.icons",
+        SKIN_SYS_WND_BKGND,             //L"_skin.sys.wnd.bkgnd",
+		
+-->		

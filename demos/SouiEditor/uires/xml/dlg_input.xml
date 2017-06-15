@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<SOUI name="window" title="布局" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="400" height="130" wndType="8" toolWindow="1">
+	<root cache="1">
+		<window pos="0,0,-0,-0" colorBkgnd="@color/bkBlack1" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13">
+			<caption pos="0,0,-0,30" focusable="1" drawfocusrect="0">
+				<text pos="5,4" name="txt_title">输入对话框</text>
+				<imgbtn name="btnCancel" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />
+			</caption>
+			<edit pos="51,43" size="343, 24" cueText="" colorText="#000000" name="edtInput" />
+			<text pos="10,47">内容：</text>
+			<button name="btnOK" pos="275,86" size="106, 27" skin="skin_blue_button" class="normalbtn">确定</button>
+		</window>
+	</root>
+</SOUI>

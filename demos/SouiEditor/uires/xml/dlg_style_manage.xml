@@ -1,0 +1,44 @@
+﻿<?xml version="1.0"?>
+<SOUI name="window" title="布局" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="800" height="656" margin="5,5,5,5" wndType="8" toolWindow="1">
+	<root cache="1">
+		<window pos="0,0,-0,-0" colorBkgnd="@color/bkBlack1" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13" skin="">
+			<caption pos="0,0,-0,30" focusable="1" colorBkgnd="#0063b1" drawfocusrect="0">
+				<text pos="|0,|0" name="txt_title" offset="-0.5,-0.5">样式管理</text>
+				<imgbtn skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" name="btnClose" />
+			</caption>
+			<group pos="8,40" size="224, 552" align="left">
+				样式列表
+				<button pos="8,8" size="88, 24" skin="skin_blue_button" class="normalbtn" name="btnAdd">添加</button>
+				<button pos="128,8" size="88, 24" skin="skin_blue_button" class="normalbtn" name="btnDel">删除</button>
+				<listbox pos="8,72" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" colorBkgnd="#FFFFFF12" name="lbStyle" size="208, 452">
+					<items>
+						<item text="item1" icon="1" data="100" />
+						<item text="item2" icon="2" data="100" />
+						<item text="item3" icon="3" data="103" />
+						<item text="item4" icon="4" data="100" />
+						<item text="item5" icon="5" data="105" />
+						<item text="item6" icon="0" data="100" />
+					</items>
+				</listbox>
+				<edit pos="8,40" size="208, 24" colorBkgnd="#FFFFFF" cueText="查找过滤" colorText="#000000" name="edtSearch" />
+			</group>
+			<group pos="240,40" size="552, 336" align="left">
+				代码
+				<realwnd pos="8,32" name="wndReal" wndclass="scintilla" id="" wndname="" size="536, 276" />
+				<buttonex pos="232,0" size="75, 24" animate="1" skin="skin_blue_button" class="normalbtn" icon="_skin.sys.icons" iconIndex="2" drawMode="horzIconText" name="btnSave">保存</buttonex>
+			</group>
+			<group pos="240,384" size="552, 208" align="left">
+				样式预览
+				<window pos="8,32" size="536, 140" name="wndView" />
+				<combobox size="152, 24" dropDown="1" dropHeight="100" dotted="0" animateTime="200" curSel="-1" pos="104,0" colorBkgnd="#FFFFFF" colorText="#000000" focusable="0" drawfocusrect="0" name="cmbCtrl">
+					<liststyle iconSkin="" itemSkin="" itemHeight="30" colorText="#000000" colorSelText="#FFFFFF" colorItemBkgnd="#FFFFFF" colorItemSelBkgnd="#000088" />
+					<editstyle inset="5,0,5,0" colorText="#000000" align="left" colorBkgnd="#FFFFFF" />
+					<items>
+						<item text="111" icon="1" data="100" />
+					</items>
+				</combobox>
+			</group>
+			<button pos="696,608" size="96, 32" skin="skin_blue_button" class="normalbtn" name="btnOK">确定</button>
+		</window>
+	</root>
+</SOUI>
