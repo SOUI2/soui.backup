@@ -34,6 +34,7 @@ BOOL SDesignerView::NewLayout(SStringT strResName, SStringT strPath)
 
 SDesignerView::SDesignerView(SHostDialog *pMainHost, SWindow *pContainer, STreeCtrl *pTreeXmlStruct)
 {
+	m_nSciCaretPos = 0;
 	m_nState = 0;
 	m_pMoveWndRoot = NULL;
 	m_pRealWndRoot = NULL;
@@ -130,10 +131,13 @@ BOOL SDesignerView::CloseProject()
 	m_pScintillaWnd->SendEditor(SCI_CLEARALL);
 	m_pPropertyContainer->SSendMessage(WM_DESTROY);
 	m_treeXmlStruct->RemoveAllItems();
-	m_pRealWndRoot = nullptr;
-	m_pMoveWndRoot = nullptr;
+	m_pRealWndRoot = NULL;
+	m_pMoveWndRoot = NULL;
 	m_nState = 0;
 	m_ndata = 0;
+	m_nSciCaretPos = 0;
+
+	ShowNoteInSciwnd();
 
 	return TRUE;
 }
@@ -177,6 +181,8 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 	pugi::xml_node xmlnode;
 
 	BOOL bIsInclude = FALSE;
+	if (m_strCurLayoutXmlFile != strFileName)
+		m_nSciCaretPos = 0;
 
 	m_strCurLayoutXmlFile = strFileName;
 
@@ -1062,7 +1068,26 @@ SStringW SDesignerView::GetPosFromLayout(SouiLayoutParam *pLayoutParam, INT nPos
 void SDesignerView::BindXmlcodeWnd(SWindow *pXmlTextCtrl)
 {
 	m_pScintillaWnd = (CScintillaWnd*)pXmlTextCtrl->GetUserData();
+	if (m_pScintillaWnd)
+	{
+		m_pScintillaWnd->SetSaveCallback((SCIWND_FN_CALLBACK)&CMainDlg::OnScintillaSave);
+
+		ShowNoteInSciwnd();
+	}
 }
+
+void SDesignerView::ShowNoteInSciwnd()
+{
+	SStringW strDebug = L"\r\n\r\n\r\n\t\t\tÐÞ¸Ä´úÂëºó°´Ctrl+S¿ÉÔÚ´°Ìå¿´µ½±ä»¯";
+
+	SStringA str = S_CW2A(strDebug, CP_UTF8);
+	m_pScintillaWnd->SendMessage(SCI_ADDTEXT, str.GetLength(),
+		reinterpret_cast<LPARAM>((LPCSTR)str));
+	m_pScintillaWnd->SetDirty(false);
+	m_pScintillaWnd->SendMessage(SCI_SETREADONLY, 1, 0);
+}
+
+
 void SDesignerView::InitProperty(SWindow *pPropertyContainer)   //³õÊ¼»¯ÊôÐÔÁÐ±í
 {
 	m_pPropertyContainer = pPropertyContainer;
@@ -1491,7 +1516,7 @@ bool SDesignerView::OnPropGridValueChanged(EventArgs *pEvt)
 			m_pMoveWndRoot->Click(0, CPoint(0, 0));
 		}
 	}
-	AddCodeToEditor(nullptr);
+	AddCodeToEditor(NULL);
 
 	return true;
 }
@@ -1778,6 +1803,15 @@ BOOL SDesignerView::bIsContainerCtrl(SStringT strCtrlName) //ÅÐ¶Ï¿Ø¼þÊÇ·ñÊÇÈÝÆ÷¿
 	return FALSE;
 }
 
+void SDesignerView::SaveEditorCaretPos()
+{
+	m_nSciCaretPos = m_pScintillaWnd->SendMessage(SCI_GETCURRENTPOS);
+}
+
+void SDesignerView::RestoreEditorCaretPos()
+{
+	m_pScintillaWnd->SendMessage(SCI_GOTOPOS, m_nSciCaretPos);
+}
 
 void SDesignerView::AddCodeToEditor(CScintillaWnd* _pSciWnd)  //¸´ÖÆxml´úÂëµ½´úÂë±à¼­Æ÷
 {
@@ -1787,6 +1821,7 @@ void SDesignerView::AddCodeToEditor(CScintillaWnd* _pSciWnd)  //¸´ÖÆxml´úÂëµ½´úÂ
 
 	m_strCurFileEditor = m_strCurLayoutXmlFile;
 
+	pSciWnd->SendMessage(SCI_SETREADONLY, 0, 0);
 	pSciWnd->SendMessage(SCI_CLEARALL, 0, 0);
 
 	SStringA str;
@@ -1821,6 +1856,8 @@ void SDesignerView::AddCodeToEditor(CScintillaWnd* _pSciWnd)  //¸´ÖÆxml´úÂëµ½´úÂ
 	pSciWnd->SendMessage(SCI_ADDTEXT, str.GetLength(),
 		reinterpret_cast<LPARAM>((LPCSTR)str));
 	pSciWnd->SetDirty(false);
+	pSciWnd->SetFocus();
+	RestoreEditorCaretPos();
 
 	delete strDebug;
 }
@@ -1862,6 +1899,8 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* _pSciWnd)//´Ó´úÂë±à¼­Æ÷»ñÈ¡
 		Debug(_T("XMLÓÐÓï·¨´íÎó£¡"));
 		return;
 	}
+
+	SaveEditorCaretPos();
 
 	RenameChildeWnd(doc.root());
 	TrimXmlNodeTextBlank(doc.document_element());

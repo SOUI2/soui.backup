@@ -151,7 +151,12 @@ BOOL CScintillaWnd::OpenFile(LPCTSTR lpFileName)
 
 void CScintillaWnd::DoSave()
 {
-	if (!m_strFileName.IsEmpty() && SaveFile(m_strFileName))
+	if (m_strFileName.IsEmpty())
+	{
+		return;
+	}
+
+	if (SaveFile(m_strFileName))
 		SetDirty(false);
 }
 
@@ -170,7 +175,7 @@ void CScintillaWnd::SetDirty(bool bDirty)
 		SetXmlLexer(white);
 	}
 
-	if (m_fnCallback)
+	if (m_fnCallback && !m_strFileName.IsEmpty())
 	{
 		(this->*m_fnCallback)(this, 1, bDirty ? _T("dirty") : _T(""));
 	}
@@ -421,11 +426,15 @@ LRESULT CScintillaWnd::OnNotify(int idCtrl, LPNMHDR pnmh)
 		if (pp)	//判断是否是文字改变
 			SetDirty(true);
 	}
-		break;
+	break;
 
 	case SCN_CHARADDED:
-		SetDirty(true);
-		break;
+	{
+		const char *pp = pSCNotification->text;
+		if (pp)	//判断是否是文字改变
+			SetDirty(true);
+	}
+	break;
 
 	case SCN_UPDATEUI:
 	{
