@@ -69,6 +69,8 @@ namespace SOUI
 
 		void BindXmlcodeWnd(SWindow *pXmlTextCtrl);   //绑定界面代码编辑窗口
 
+		void ShowNoteInSciwnd();		
+
 		void InitProperty(SWindow *pPropertyContainer);   //初始化属性列表
 		void InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCtrl);
 
@@ -82,6 +84,10 @@ namespace SOUI
 
 		BOOL ReLoadLayout(BOOL bClearSel=FALSE);
 		BOOL bIsContainerCtrl(SStringT strCtrlName); //判断控件是否是容器控件
+
+		void SaveEditorCaretPos();
+
+		void RestoreEditorCaretPos();
 
 		SMoveWnd* GetMoveWndRoot() { return m_pMoveWndRoot; };
 		SWindow* GetRealWndRoot() { return m_pRealWndRoot; };
@@ -121,6 +127,8 @@ namespace SOUI
 		SDesignerRoot *m_pRealWndRoot;       //布局容器窗口;
 
 		SMoveWnd  *m_pMoveWndRoot; //布局窗口的根窗口
+
+		int		 m_nSciCaretPos;		//代码编辑窗口光标位置
 
 		BOOL     m_bChange;    //文件是否被修改,如果被修改需要保存
 		BOOL     m_bPage;      //是否为页文件,否则为窗口文件
