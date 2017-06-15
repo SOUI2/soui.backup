@@ -8,18 +8,9 @@ namespace SOUI{
 //! the max log content length.
 const int LOG4Z_LOG_BUF_SIZE = 2048;
 
-//! the invalid logger id. DO NOT TOUCH
-const int LOG4Z_INVALID_LOGGER_ID = -1;
 
-//! the main logger id. DO NOT TOUCH
-//! can use this id to set the main logger's attribute.
-//! example:
-//! ILog4zManager::getPtr()->setLoggerLevel(LOG4Z_MAIN_LOGGER_ID, LOG_LEVEL_WARN);
-//! ILog4zManager::getPtr()->setLoggerDisplay(LOG4Z_MAIN_LOGGER_ID, false);
 const int LOG4Z_MAIN_LOGGER_ID = 0;
 
-//! the main logger name. DO NOT TOUCH
-const char*const LOG4Z_MAIN_LOGGER_KEY = "Main";
 
 typedef int LoggerId;
 

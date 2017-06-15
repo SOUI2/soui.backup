@@ -127,8 +127,18 @@ namespace SOUI
     enum SHDSORTFLAG;
     interface IMcAdapter : public ILvAdapter
     {
-        //获取列名
+        //获取一个列在模板中对应的窗口名称
+		//int iCol: 列序号
         virtual SStringW GetColumnName(int iCol) const PURE;
+
+		//由Adapter决定一列是否需要显示
+		//int iCol: 列序号
+		//remark:默认显示
+		virtual bool IsColumnVisible(int iCol) const
+		{
+			return true;
+		}
+
         //排序接口
         // int iCol:排序列
         // SHDSORTFLAG * stFlags [in, out]:当前列排序标志
