@@ -149,6 +149,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SLogViewer", "demos\SLogVie
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "soui-sys-resource", "soui-sys-resource\soui-sys-resource.vcproj", "{C783A0BF-9380-3AA3-BF8A-8C25B4F75EC8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "souieditor", "demos\SouiEditor\souieditor.vcproj", "{8439EECE-582A-3254-94E8-45A0B0F94128}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F2008C7-3A4E-339A-A1E9-AB14E9EB2D94} = {0F2008C7-3A4E-339A-A1E9-AB14E9EB2D94}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -311,6 +316,10 @@ Global
 		{C783A0BF-9380-3AA3-BF8A-8C25B4F75EC8}.Debug|Win32.Build.0 = Debug|Win32
 		{C783A0BF-9380-3AA3-BF8A-8C25B4F75EC8}.Release|Win32.ActiveCfg = Release|Win32
 		{C783A0BF-9380-3AA3-BF8A-8C25B4F75EC8}.Release|Win32.Build.0 = Release|Win32
+		{8439EECE-582A-3254-94E8-45A0B0F94128}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8439EECE-582A-3254-94E8-45A0B0F94128}.Debug|Win32.Build.0 = Debug|Win32
+		{8439EECE-582A-3254-94E8-45A0B0F94128}.Release|Win32.ActiveCfg = Release|Win32
+		{8439EECE-582A-3254-94E8-45A0B0F94128}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -354,5 +363,6 @@ Global
 		{08885EB6-57C3-3937-BC8A-9533C9D1C7A0} = {BF356269-06FC-400F-A653-FA6F9404A5DE}
 		{94EADB40-3A1F-33CC-B01E-6320B6594141} = {BF356269-06FC-400F-A653-FA6F9404A5DE}
 		{795564B1-E04C-3353-8C6F-156331311E47} = {BF356269-06FC-400F-A653-FA6F9404A5DE}
+		{8439EECE-582A-3254-94E8-45A0B0F94128} = {BF356269-06FC-400F-A653-FA6F9404A5DE}
 	EndGlobalSection
 EndGlobal
