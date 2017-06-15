@@ -199,8 +199,8 @@ static const int KSLogLevels = 7;
 static const wchar_t  kLevelsSouiLog[KSLogLevels][MAX_LEVEL_LENGTH]={
 	L"TRACE",
 	L"DEBUG",
-	L"INFO ",
-	L"WARN ",
+	L"INFO",
+	L"WARN",
 	L"ERROR",
 	L"ALARM",
 	L"FATAL",
@@ -259,7 +259,7 @@ BOOL CSouiLogParse::ParseLine(LPCWSTR pszLine,SLogInfo **ppLogInfo) const
 	info->iLevel = 0;
 	for(int i=0;i< kLevelNum;i++)
 	{
-		if(wcscmp(info->strLevel,kLevelsLogcat[i])==0)
+		if(wcscmp(info->strLevel,kLevelsSouiLog[i])==0)
 		{
 			info->iLevel = i;
 		}
