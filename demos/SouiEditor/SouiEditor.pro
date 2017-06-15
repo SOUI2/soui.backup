@@ -75,10 +75,9 @@ HEADERS += Adapter.h \
            propgrid/propitem/SPropertyItem-Option.h \
            propgrid/propitem/SPropertyItem-Size.h \
            propgrid/propitem/SPropertyItem-Text.h \
-           /SImgCanvas.h \
-           /propgrid/SPropertyGrid.h \
-           /colorpicker/SColorPicker.h \
-           /colorpicker/ColourPopup.h
+           propgrid/SPropertyGrid.h \
+           colorpicker/SColorPicker.h \
+           colorpicker/ColourPopup.h
 
 SOURCES += DesignerView.cpp \
            helpapi.cpp \
@@ -111,3 +110,42 @@ SOURCES += DesignerView.cpp \
            propgrid/propitem/SPropertyItem-Option.cpp \
            propgrid/propitem/SPropertyItem-Size.cpp \
            propgrid/propitem/SPropertyItem-Text.cpp
+
+
+SOURCES+=../../controls.extend/image3d/3dlib.cpp
+SOURCES+=../../controls.extend/image3d/3dmatrix.cpp
+SOURCES+=../../controls.extend/image3d/3dtransform.cpp
+SOURCES+=../../controls.extend/ExtendSkins.cpp
+SOURCES+=../../controls.extend/SButtonEx.cpp
+SOURCES+=../../controls.extend/SChromeTabCtrl.cpp
+SOURCES+=../../controls.extend/SFreeMoveWindow.cpp
+SOURCES+=../../controls.extend/gif/SGifPlayer.cpp
+SOURCES+=../../controls.extend/SImageEx.cpp
+SOURCES+=../../controls.extend/SImageMaskWnd.cpp
+SOURCES+=../../controls.extend/gif/SSkinAPNG.cpp
+SOURCES+=../../controls.extend/gif/SSkinGif.cpp
+SOURCES+=../../controls.extend/SSkinMutiFrameImg.cpp
+SOURCES+=../../controls.extend/STabCtrl2.cpp
+SOURCES+=../../controls.extend/SText.cpp
+SOURCES+=../../controls.extend/STurn3DView.cpp
+SOURCES+=../../controls.extend/SScrollText.cpp
+
+HEADERS+=../../controls.extend/image3d/3dlib.h
+HEADERS+=../../controls.extend/image3d/3dmatrix.h
+HEADERS+=../../controls.extend/image3d/3dTransform.h
+HEADERS+=../../controls.extend/ExtendSkins.h
+HEADERS+=../../controls.extend/image3d/PerspectiveTransform.h
+HEADERS+=../../controls.extend/gif/SAniImgFrame.h
+HEADERS+=../../controls.extend/SButtonEx.h
+HEADERS+=../../controls.extend/SChromeTabCtrl.h
+HEADERS+=../../controls.extend/SFreeMoveWindow.h
+HEADERS+=../../controls.extend/gif/SGifPlayer.h
+HEADERS+=../../controls.extend/SImageEx.h
+HEADERS+=../../controls.extend/SImageMaskWnd.h
+HEADERS+=../../controls.extend/gif/SSkinAPNG.h
+HEADERS+=../../controls.extend/gif/SSkinGif.h
+HEADERS+=../../controls.extend/SSkinMutiFrameImg.h
+HEADERS+=../../controls.extend/STabCtrl2.h
+HEADERS+=../../controls.extend/SText.h
+HEADERS+=../../controls.extend/STurn3DView.h
+HEADERS+=../../controls.extend/SScrollText.h
