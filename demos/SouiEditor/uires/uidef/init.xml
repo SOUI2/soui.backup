@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="微软雅黑" size="15"/>
+
+  <string src="values:string" />
+  <skin src="values:skin"/>
+  <color src="values:color"/>
+
+
+  <style>
+	<class name="normalbtn" font="" colorText="@color/white" colorTextDisable="#91a7c0" textMode="0x25" cursor="hand" margin-x="0"/>
+	<class name="cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" font="italic:1" fontHover="underline:1,italic:1" />
+	<class name="cls_title" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13" />
+  </style>
+
+  <objattr>
+	<div sbSkin="default.scrollbar" />
+	<edit transParent="0" margin-x="0" margin-y="0" colorBorder="@color/gray" colorBkgnd="#ffffff22" colorText="@color/white"/>
+	<text colorText="@color/white"></text>
+  </objattr>
+</UIDEF>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<SOUI title="mesagebox" width="200" height="200" appwin="0" frameSize="80,60,20,100" minSize="300,132" resize="0" translucent="1" trCtx="messagebox">
+	<buttonText>
+		<ok>确定</ok>
+		<cancel>取消</cancel>
+		<abort>中止</abort>
+		<retry>重试</retry>
+		<yes>是</yes>
+		<no>否</no>
+		<ignore>忽略</ignore>
+	</buttonText>
+	<root skin="" colorBkgnd="@color/red" colorText="#FFFFFF">
+		<img pos="1,1,-1,-1" colorBkgnd="#2d2f33" skin="" />
+		<caption id="101" pos="0,0,-0,29">
+			<text pos="11,9" class="cls_txt_red" name="msgtitle">title</text>
+			<imgbtn id="2" skin="_skin.sys.btn.close" pos="-45,0" tip="close" />
+		</caption>
+		<window pos="5,40,-5,-60">
+			<icon name="msgicon" pos="8,0,0,0" visible="0" display="0" />
+			<img name="img_icon_information" pos="9,|0, @48, @48" offset="0,-0.5" skin="sking_main_icon" display="0" />
+			<img name="img_icon_question" pos="9,|0,@48, @48" offset="0,-0.5" skin="sking_main_icon" display="0" />
+			<img name="img_icon_exclamation" pos="9,|0,@48, @48" offset="0,-0.5" skin="sking_main_icon" display="0" />
+			<text name="msgtext" pos="[5,0" colorText="@color/white" multilines="1" valign="middle" maxWidth="600" />
+		</window>
+		<img pos="1,-50,-1,-1" colorBkgnd="#292b2f" skin="" />
+		<tabctrl name="btnSwitch" pos="0,-50,-0,-0" tabHeight="0">
+			<page>
+				<button pos="|-50,10,|50,-10" name="button1st" skin="skin_blue_button" class="normalbtn">button1</button>
+			</page>
+			<page>
+				<button pos="|-100,10,|-10,-10" name="button1st" skin="skin_blue_button" class="normalbtn">button1</button>
+				<button pos="|10,10,|100,-10" name="button2nd" skin="skin_blue_button" class="normalbtn">button2</button>
+			</page>
+			<page>
+				<button pos="|-140,10,|-50,-10" name="button1st" skin="skin_blue_button" class="normalbtn">button1</button>
+				<button pos="|-45,10,|45,-10" name="button2nd" skin="skin_blue_button" class="normalbtn">button2</button>
+				<button pos="|50,10,|140,-10" name="button3rd" skin="skin_blue_button" class="normalbtn">button3</button>
+			</page>
+		</tabctrl>
+	</root>
+</SOUI>

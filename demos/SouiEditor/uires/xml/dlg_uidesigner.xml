@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<include width="500" height="400">
+	<splitrow name="NAME_UIDESIGNER_split_col" sepSkin="" pos="1,[0,-0,-0" sepSize="6">
+		<pane idealSize="380" minSize="30" priority="0" clipClient="1">
+			<dropwindow name="dropwindow" show="0" />
+			<scrollview pos="0, 1, -0, -0" viewSize="-1,-1" name="uidesigner_wnd_layout" colorBkgnd="#FFFFFF" />
+		</pane>
+		<pane idealSize="300" minSize="30" priority="1" clipClient="1">
+			<realwnd pos="0, 0, -0, -0" name="uidesigner_scintilla" wndclass="scintilla" id="100000" wndname="scintilla" />
+		</pane>
+	</splitrow>
+</include>

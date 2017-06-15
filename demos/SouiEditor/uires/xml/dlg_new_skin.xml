@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<SOUI name="window" title="布局" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="200" height="300" wndType="8" toolWindow="1">
+	<root cache="1">
+		<window pos="0,0,-1,-1" colorBkgnd="@color/bkBlack1" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13" skin="">
+			<caption pos="0,0,-0,30" focusable="1" drawfocusrect="0">
+				<text pos="5,4" name="txt_title">选择皮肤类型</text>
+				<imgbtn name="btnCancel" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />
+			</caption>
+			<listbox pos="0,[0,-0,-63" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" name="NAME_UIDESIGNER_NEW_SKIN_LB" />
+			<button pos="|0,253" size="92, 28" skin="skin_blue_button" class="normalbtn" offset="-0.5,-0" name="btnOK">确定</button>
+		</window>
+	</root>
+</SOUI>
