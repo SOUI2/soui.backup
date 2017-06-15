@@ -129,8 +129,8 @@ BOOL SDesignerView::CloseProject()
 	m_pScintillaWnd->SendEditor(SCI_CLEARALL);
 	m_pPropertyContainer->SSendMessage(WM_DESTROY);
 	m_treeXmlStruct->RemoveAllItems();
-	m_pRealWndRoot = nullptr;
-	m_pMoveWndRoot = nullptr;
+	m_pRealWndRoot = NULL;
+	m_pMoveWndRoot = NULL;
 	m_nState = 0;
 	m_ndata = 0;
 
@@ -1490,7 +1490,7 @@ bool SDesignerView::OnPropGridValueChanged(EventArgs *pEvt)
 			m_pMoveWndRoot->Click(0, CPoint(0, 0));
 		}
 	}
-	AddCodeToEditor(nullptr);
+	AddCodeToEditor(NULL);
 
 	return true;
 }

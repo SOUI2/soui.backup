@@ -25,6 +25,7 @@ SUBDIRS += FrogPlay
 SUBDIRS += MultiLangs
 SUBDIRS += TXMgr
 SUBDIRS += SLogViewer
+SUBDIRS += souieditor
 
 CONFIG(x64){
 	36064.depends += soui64 skia64
@@ -42,6 +43,7 @@ CONFIG(x64){
 	MultiLangs.depends += soui64
 	TXMgr.depends += soui64
 	SLogViewer.depends += soui64
+	souieditor.depends += soui64
 }
 else{
 	360.depends += soui skia
@@ -59,4 +61,5 @@ else{
 	MultiLangs.depends += soui
 	TXMgr.depends += soui
         SLogViewer.depends += soui
+	souieditor.depends += soui
 }
