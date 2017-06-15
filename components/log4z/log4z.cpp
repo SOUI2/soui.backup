@@ -1143,6 +1143,8 @@ bool ThreadHelper::wait()
     return true;
 }
 
+static const char * LOG4Z_MAIN_LOGGER_KEY = "main";
+static const LoggerId LOG4Z_INVALID_LOGGER_ID = -1;
 //////////////////////////////////////////////////////////////////////////
 //! LogerManager
 //////////////////////////////////////////////////////////////////////////
@@ -1803,7 +1805,7 @@ bool LogerManager::popLog(LogData *& log)
 void LogerManager::run()
 {
     _runing = true;
-    pushLog(0, LOG_LEVEL_ALARM, "logger", "-----------------  log4z thread started!   ----------------------------", NULL, 0 , NULL,NULL);
+    pushLog(0, LOG_LEVEL_ALARM, "logger", "-----------------  log4z thread started!   ----------------------------", __FILE__, __LINE__ , __FUNCTION__,_ReturnAddress());
     for (int i = 0; i <= _lastId; i++)
     {
         if (_loggers[i]._enable)
@@ -1815,7 +1817,7 @@ void LogerManager::run()
                 <<" path=" <<_loggers[i]._path
                 <<" level=" << _loggers[i]._level
                 <<" display=" << _loggers[i]._display;
-            pushLog(0, LOG_LEVEL_ALARM, "logger", ss.str().c_str(), NULL, 0 , NULL,NULL);
+            pushLog(0, LOG_LEVEL_ALARM, "logger", ss.str().c_str(), __FILE__, __LINE__ , __FUNCTION__,_ReturnAddress());
         }
     }
 
