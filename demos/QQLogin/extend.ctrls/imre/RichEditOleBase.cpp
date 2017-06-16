@@ -312,10 +312,12 @@ namespace SOUI
         ::BitBlt(hdc, 0, 0, _objRect.Width(), _objRect.Height(),
             hdcDraw, _objRect.left, _objRect.top,
             SRCCOPY);
+        pRT->ReleaseDC(hdc);
 
         // »­richedit
         _oleView.RedrawRegion(pRT, rgn);
 
+        hdc = pRT->GetDC(0);
         // Ìùµ½Ä¿±êDC
         ::BitBlt(hdcDraw, _objRect.left, _objRect.top, _objRect.Width(), _objRect.Height(),
             hdc, 0, 0,

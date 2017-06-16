@@ -889,14 +889,8 @@ namespace SOUI
         pRt->PushClipRegion(prgn);
         pRt->BitBlt(rcRegion, _pBackgroundRt, rcRegion.left, rcRegion.top);
 
-        HDC hdc = pRt->GetDC(0);
-        ALPHAINFO ai;
-        CGdiAlpha::AlphaBackup(hdc, &rcRegion, ai);
-
         DrawVisibleContents(pRt);
         DrawVisibleGifs(pRt, rcRegion);
-
-        CGdiAlpha::AlphaRestore(ai);
 
         GetContainer()->OnReleaseRenderTarget(pRt, rcRegion, 0);
         pRt->PopClip();
