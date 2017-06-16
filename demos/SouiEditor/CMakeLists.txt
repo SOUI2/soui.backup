@@ -1,4 +1,4 @@
-#
+﻿#
 # 1394020320@qq.com
 #
 
@@ -6,8 +6,8 @@ include_directories(${PROJECT_SOURCE_DIR}/config)
 include_directories(${PROJECT_SOURCE_DIR}/components)
 include_directories(${PROJECT_SOURCE_DIR}/utilities/include)
 include_directories(${PROJECT_SOURCE_DIR}/SOUI/include)
-include_directories(${PROJECT_SOURCE_DIR}/controls.extend)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/controls.extend)
 
 
 set(EXTENDCOTROLS ${EXTENDCOTROLS}
