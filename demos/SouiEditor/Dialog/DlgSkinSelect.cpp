@@ -20,7 +20,7 @@ namespace SOUI
 		//m_xmlNodeUiRes = m_xmlDocUiRes.append_copy(xmlNode);
 		//m_xmlNodeUiRes = xmlNode;
 		//CDebug::Debug(m_xmlDocUiRes);
-		m_pResFileManger = nullptr;
+		m_pResFileManger = NULL;
 		m_strProPath = strPath.Mid(0, strPath.ReverseFind(_T('\\')));
 		m_strUIResFile = strPath;
 		m_bGetSkin = bGetSkin;
@@ -228,7 +228,7 @@ namespace SOUI
 			SPOSITION pos = m_pResFileManger->m_mapResFile.GetStartPosition();
 			while (pos)
 			{
-				auto item = m_pResFileManger->m_mapResFile.GetAt(pos);
+				const SMap<SStringT, SStringT>::CPair * item = m_pResFileManger->m_mapResFile.GetAt(pos);
 				SStringT *strData = new SStringT(item->m_key);
 
 				m_lbRes->AddString(item->m_value, -1, (LPARAM)strData);
@@ -312,7 +312,7 @@ namespace SOUI
 		}
 		if (m_lbResType->GetCurSel() == 2)
 		{
-			auto strColor = GetLBCurSelText(m_lbRes);
+			SStringT strColor = GetLBCurSelText(m_lbRes);
 			strColor = ResManger::RemoveResTypename(strColor);
 			m_imgView->SetAttribute(_T("colorBkgnd"), strColor);
 			return true;

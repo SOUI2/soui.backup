@@ -40,7 +40,7 @@ static const int MARGIN_SCRIPT_FOLD_INDEX = 1;
 
 CScintillaWnd::CScintillaWnd()
 {
-	m_fnCallback = nullptr;
+	m_fnCallback = NULL;
 }
 
 CScintillaWnd::~CScintillaWnd()

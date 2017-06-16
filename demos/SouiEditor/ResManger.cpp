@@ -163,7 +163,7 @@ void ResManger::GetSubNodes(pugi::xml_node& parentNode, SStringT parentNodeName)
 		if (parentNode.type() == pugi::node_element)
 		{
 			SStringT strParentName = parentNode.name();
-			if (parentNode.first_child() != nullptr)
+			if (parentNode.first_child() != NULL)
 			{
 				GetSubNodes(parentNode.first_child(), strParentName + L":");
 			}
@@ -203,12 +203,12 @@ SStringT ResManger::RemoveResTypename(const SStringT& resname)
 
 SStringT ResManger::GetResPathByName(const SStringT& resname)
 {
-	const auto* pFilePair = m_mapXmlFile.Lookup(resname);
-	if (pFilePair == nullptr)
+	const SMap<SStringT, SStringT>::CPair * pFilePair = m_mapXmlFile.Lookup(resname);
+	if (pFilePair == NULL)
 	{
 		pFilePair = m_mapResFile.Lookup(resname);
 	}
-	if (pFilePair == nullptr)
+	if (pFilePair == NULL)
 		return _T("");
 
 	return m_strProPath + _T("\\") + pFilePair->m_value;
@@ -229,8 +229,8 @@ void ResManger::LoadResFileEx(SStringT& filepath, pugi::xml_document& xmlDoc, SS
 			if (xmlNode1.attribute(L"src"))
 			{
 				SStringT strSrc = xmlNode1.attribute(L"src").value();
-				const auto* pFilePair = m_mapXmlFile.Lookup(strSrc);
-				if (pFilePair == nullptr)
+				const SMap<SStringT, SStringT>::CPair * pFilePair = m_mapXmlFile.Lookup(strSrc);
+				if (pFilePair == NULL)
 				{
 					SASSERT_FMTW(L"Locating filepath failed, src=%s", strSrc);
 					return;

@@ -170,7 +170,7 @@ namespace SOUI
 			NewWnd(pt);
 			m_Desiner->CreatePropGrid(m_Desiner->m_xmlNode.name());
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
-			m_Desiner->AddCodeToEditor(nullptr);
+			m_Desiner->AddCodeToEditor(NULL);
 			OnLButtonUp(nFlags, pt);
 
 			return;
@@ -190,7 +190,7 @@ namespace SOUI
 			m_Desiner->CreatePropGrid(_T("hostwnd"));
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
 		}
-		m_Desiner->AddCodeToEditor(nullptr);
+		m_Desiner->AddCodeToEditor(NULL);
 
 		SWindow::OnLButtonDown(nFlags, pt);
 
@@ -256,7 +256,7 @@ namespace SOUI
 			//{
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
-			m_Desiner->AddCodeToEditor(nullptr);
+			m_Desiner->AddCodeToEditor(NULL);
 			m_StateMove = 1;
 			//}
 		}
