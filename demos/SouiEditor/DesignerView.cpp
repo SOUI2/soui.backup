@@ -9,6 +9,9 @@
 #include "core/SWnd.h"
 #include "MainDlg.h"
 #include "adapter.h"
+#include "Global.h"
+
+
 #define  MARGIN 20
 
 extern BOOL g_bHookCreateWnd;	//是否拦截窗口的建立
@@ -1347,7 +1350,7 @@ void SDesignerView::UpdatePropGrid(pugi::xml_node xmlNode)
 	{
 		pugi::xml_attribute xmlAttr = xmlNode.first_attribute();
 
-		IPropertyItem *pItem = m_pPropgrid->GetGridItem(_T("UiEdit_windowText"));
+		IPropertyItem *pItem = m_pPropgrid->GetGridItem(uiedit_SpecAttr);
 		if (pItem)
 		{
 			SStringT strTemp = xmlNode.text().get();
@@ -1428,7 +1431,7 @@ bool SDesignerView::OnPropGridValueChanged(EventArgs *pEvt)
 		xmlNode = m_xmlNode;
 	}
 
-	if (attr_name.CompareNoCase(_T("UiEdit_windowText")) == 0)
+	if (attr_name.CompareNoCase(uiedit_SpecAttr) == 0)
 	{
 		xmlNode.text().set(attr_value);
 	}
@@ -1462,7 +1465,7 @@ bool SDesignerView::OnPropGridValueChanged(EventArgs *pEvt)
 	}
 	else
 	{
-		if ((!attr_value.IsEmpty()) && (attr_name.CompareNoCase(_T("UiEdit_windowText")) != 0))
+		if ((!attr_value.IsEmpty()) && (attr_name.CompareNoCase(uiedit_SpecAttr) != 0))
 		{
 			xmlNode.append_attribute(attr_name).set_value(attr_value);
 		}

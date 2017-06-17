@@ -57,6 +57,11 @@ protected:
 
 	void findMatchingBracePos(int & braceAtCaret, int & braceOpposite);
 	bool doMatch(); //匹配括号并加亮缩进向导;
+
+	SStringT GetHtmlTagname();
+	SStringA GetNotePart();
+
+	void ShowAutoComplete(const char ch);
 	
 	void GetRange(int start, int end, char* text);
 

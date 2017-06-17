@@ -9,6 +9,7 @@
 #include "SciLexer.h"
 #include "DesignerView.h"
 #include "xpm_icons.h"
+#include "SysdataMgr.h"
 
 #define STR_SCINTILLAWND _T("Scintilla")
 #define STR_SCINTILLADLL _T("SciLexer.dll")
@@ -238,14 +239,19 @@ void CScintillaWnd::InitScintillaWnd(void)
 	SendEditor(SCI_ASSIGNCMDKEY, (WPARAM)('S' + (SCMOD_CTRL << 16)), (LPARAM)SCI_NULL);
 
 	//自动完成
-	SendEditor(SCI_AUTOCSETSEPARATOR, static_cast<WPARAM>(10), 0);
+	SendEditor(SCI_AUTOCSETSEPARATOR, static_cast<WPARAM>(' '), 0);	//设置自动完成列表单词分隔符
+	SendEditor(SCI_AUTOCSETMAXHEIGHT, static_cast<WPARAM>(15), 0);
+	SendEditor(SCI_AUTOCSETMAXWIDTH, static_cast<WPARAM>(0), 0);
+	SendEditor(SCI_AUTOCSETIGNORECASE, static_cast<WPARAM>(1), 0);
 
+	
 	//显示当前行的背景
 	SendEditor(SCI_SETCARETLINEVISIBLE, TRUE);
 	SendEditor(SCI_SETCARETLINEBACK, 0xa0ffff);
 	//SendEditor(SCI_SETCARETLINEBACKALPHA, 100, 0);
 
-	SendEditor(SCI_STYLESETFORE, STYLE_BRACELIGHT, 0x0000FF);       //代码框.置风格前景色 (#代码编辑框常量.风格_匹配括号, #红色)
+	// 括号匹配颜色
+	SendEditor(SCI_STYLESETFORE, STYLE_BRACELIGHT, RGB(0,255,0));       //代码框.置风格前景色 (#代码编辑框常量.风格_匹配括号, #红色)
 	SendEditor(SCI_STYLESETBOLD, STYLE_BRACELIGHT, true);           //风格.粗体
 
 	SetFold();
@@ -310,7 +316,6 @@ void CScintillaWnd::SetXmlLexer(COLORREF bkColor)
 	// 设置全局style. 这些属性会在无其它选择时被应用.
 	SetAStyle(STYLE_DEFAULT, black, bkColor, 9, "Verdana");
 	SendMessage(SCI_STYLECLEARALL);
-
 	const COLORREF CR_RED = RGB(0xFF, 0, 0);
 	const COLORREF CR_OFFWHITE = RGB(0xFF, 0xFB, 0xF0);
 	const COLORREF CR_DARKGREEN = RGB(0, 0x80, 0);
@@ -344,8 +349,7 @@ void CScintillaWnd::SetXmlLexer(COLORREF bkColor)
 	const COLORREF lightBlue = RGB(0xA6, 0xCA, 0xF0);
 
 	SendMessage(SCI_STYLESETBACK, SCE_HB_STRINGEOL, RGB(0x7F, 0x7F, 0xFF));
-	SendMessage(SCI_STYLESETFONT, SCE_HB_COMMENTLINE,
-		reinterpret_cast<LPARAM>("宋体"));
+	SendMessage(SCI_STYLESETFONT, SCE_HB_COMMENTLINE, reinterpret_cast<LPARAM>("宋体"));
 }
 
 void CScintillaWnd::findMatchingBracePos(int & braceAtCaret, int & braceOpposite)
@@ -406,6 +410,106 @@ bool CScintillaWnd::doMatch()           //匹配括号并加亮缩进向导
 	return (braceAtCaret != -1);
 }
 
+SStringT CScintillaWnd::GetHtmlTagname()
+{
+	int caretPos = int(SendEditor(SCI_GETCURRENTPOS));
+	TCHAR charBefore = '\0';
+	SStringT tagname;
+	int lengthDoc = int(SendEditor(SCI_GETLENGTH));
+
+	if ((lengthDoc > 0) && (caretPos > 0))
+	{
+		int namestart = caretPos;
+		int nameend = 0;
+		do
+		{
+			charBefore = TCHAR(SendEditor(SCI_GETCHARAT, --namestart, 0));
+		} while (charBefore != '<' && namestart >= 0);
+
+		if (namestart >= 0)
+		{
+			nameend = namestart + 1;
+			while (nameend <= caretPos)
+			{
+				charBefore = TCHAR(SendEditor(SCI_GETCHARAT, nameend++, 0));
+				if (charBefore == ' ')
+					break;
+
+				tagname += charBefore;
+			}
+			tagname.Trim();
+		}
+	}
+
+	return tagname;
+}
+
+SStringA CScintillaWnd::GetNotePart()
+{
+	int curPos = int(SendEditor(SCI_GETCURRENTPOS));
+	int startPos = SendEditor(SCI_WORDSTARTPOSITION, curPos, true);
+	SStringA tagname;
+	if (curPos == startPos)
+		return tagname;
+
+	const int wordMaxSize = 64;
+	char name[wordMaxSize] = {0};
+	int len = (curPos > startPos) ? (curPos - startPos) : (startPos - curPos);
+	if (len < wordMaxSize)
+	{
+		Sci_TextRange sci_tr;
+		if (curPos > startPos)
+		{
+			sci_tr.chrg.cpMin = startPos;
+			sci_tr.chrg.cpMax = curPos;
+		}
+		else
+		{
+			sci_tr.chrg.cpMin = curPos;
+			sci_tr.chrg.cpMax = startPos;
+		}
+
+		sci_tr.lpstrText = name;
+		SendEditor(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&sci_tr));
+
+		tagname = sci_tr.lpstrText;
+	}
+
+	tagname.Trim();
+
+	return tagname;
+}
+
+void CScintillaWnd::ShowAutoComplete(const char ch)
+{
+	if (SendEditor(SCI_AUTOCACTIVE, 0, 0) != 0)
+		return;
+
+	long lStart = SendEditor(SCI_GETCURRENTPOS, 0, 0);
+	int startPos = SendEditor(SCI_WORDSTARTPOSITION, lStart, true);
+
+	if (ch == '<')
+	{
+		SStringA str = g_SysDataMgr.GetCtrlAutos();
+		if (!str.IsEmpty())
+		{
+			SendEditor(SCI_AUTOCSHOW, lStart - startPos, (LPARAM)(LPCSTR)str);
+		}
+	}
+	else if (ch >= 'a' && ch <= 'z')
+	{
+		SStringT tagname = GetHtmlTagname();
+		if (!tagname.IsEmpty())
+		{
+			SStringA str = g_SysDataMgr.GetCtrlAttrAutos(tagname);
+			if (!str.IsEmpty())
+			{	// 自动完成字串要进行升充排列, 否则功能不正常
+				SendEditor(SCI_AUTOCSHOW, lStart - startPos, (LPARAM)(LPCSTR)str);
+			}
+		}		
+	}
+}
+
 LRESULT CScintillaWnd::OnNotify(int idCtrl, LPNMHDR pnmh)
 {
 	if (pnmh->hwndFrom != m_hWnd) return 0;
@@ -430,9 +534,12 @@ LRESULT CScintillaWnd::OnNotify(int idCtrl, LPNMHDR pnmh)
 
 	case SCN_CHARADDED:
 	{
-		const char *pp = pSCNotification->text;
-		if (pp)	//判断是否是文字改变
+		BOOL bReadonly = (BOOL)SendEditor(SCI_GETREADONLY);
+		if (!bReadonly)
 			SetDirty(true);
+
+		char pp = tolower(pSCNotification->ch);
+		ShowAutoComplete(pp);
 	}
 	break;
 
@@ -441,6 +548,7 @@ LRESULT CScintillaWnd::OnNotify(int idCtrl, LPNMHDR pnmh)
 		doMatch();
 	}
 	break;
+
 	default:
 		break;
 	}

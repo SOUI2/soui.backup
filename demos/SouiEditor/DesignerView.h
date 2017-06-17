@@ -5,6 +5,9 @@
 #include "layout/SLinearLayout.h"
 #include "SDesignerRoot.h"
 
+class CSysDataMgr;
+extern CSysDataMgr g_SysDataMgr;
+
 namespace SOUI
 {
 	class SMoveWnd;
@@ -58,7 +61,6 @@ namespace SOUI
 		SStringT Debug1(pugi::xml_node);
 
 		SStringT NodeToStr(pugi::xml_node xmlNode);
-		SStringT NodeToStr(pugi::xml_document xmlNode);
 
 		void SetCurrentCtrl(pugi::xml_node xmlNode, SMoveWnd *pWnd); //设置当前选中的控件
 
