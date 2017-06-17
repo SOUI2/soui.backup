@@ -13,19 +13,18 @@ INCLUDEPATH += . \
 		../../components \
 		../../config \
 		../../controls.extend \
-		../../third-part/SciLexer/include \
+		../../third-part/Scintilla/include \
 
 
 dir = ../..
 include($$dir/common.pri)
 
-system(copy "..\..\third-part\SciLexer\bin\SciLexer.dll" "..\..\bin\SciLexer.dll")
 
 CONFIG(debug,debug|release){
-	LIBS += utilitiesd.lib souid.lib
+	LIBS += utilitiesd.lib souid.lib Scintillad.lib imm32.lib
 }
 else{
-	LIBS += utilities.lib soui.lib
+	LIBS += utilities.lib soui.lib Scintilla.lib imm32.lib
 }
 
 PRECOMPILED_HEADER = stdafx.h
