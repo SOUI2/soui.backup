@@ -4,7 +4,126 @@
 
 namespace SOUI
 {
-	SLogAdapter::SLogAdapter(void):m_lstFilterResult(NULL),m_filterLevel(-1)
+
+	SLogBuffer::SLogBuffer(ILogParse *pLogParser) : m_logParser(pLogParser)
+	{
+
+	}
+
+	SLogBuffer::~SLogBuffer()
+	{
+		Clear();
+	}
+
+	void SLogBuffer::Insert(const SLogBuffer & src)
+	{
+		m_lstLogs.InsertArrayAt(0,&src.m_lstLogs);
+		for(int i=src.m_lstLogs.GetCount();i<m_lstLogs.GetCount();i++)
+		{
+			SLogInfo *pLogInfo = src.m_lstLogs[i];
+			pLogInfo->iLine += src.m_nLineCount;
+		}
+		m_nLineCount += src.m_nLineCount;
+
+		CopyMap(m_mapTags , src.m_mapTags);
+		CopyMap(m_mapPids , src.m_mapPids);
+		CopyMap(m_mapTids , src.m_mapTids);
+	}
+
+	void SLogBuffer::Append(const SLogBuffer & src)
+	{
+		for(int i=0;i<src.m_lstLogs.GetCount();i++)
+		{
+			SLogInfo *pLogInfo = src.m_lstLogs[i];
+			pLogInfo->iLine += m_nLineCount;
+			m_lstLogs.Add(pLogInfo);
+		}
+		m_nLineCount += src.m_nLineCount;
+
+		CopyMap(m_mapTags , src.m_mapTags);
+		CopyMap(m_mapPids , src.m_mapPids);
+		CopyMap(m_mapTids , src.m_mapTids);
+	}
+
+	SLogBuffer & SLogBuffer::operator=(const SLogBuffer & src)
+	{
+		Clear();
+		m_lstLogs.Copy(src.m_lstLogs);
+		
+		m_nLineCount = src.m_nLineCount;
+		CopyMap(m_mapTags , src.m_mapTags);
+		CopyMap(m_mapPids , src.m_mapPids);
+		CopyMap(m_mapTids , src.m_mapTids);
+		return *this;
+	}
+
+	SLogInfo * SLogBuffer::ParseLine(LPCWSTR pszLine)
+	{
+		SASSERT(m_logParser);
+		SLogInfo * pLogInfo=NULL;
+		if(!m_logParser->ParseLine(pszLine,&pLogInfo))
+		{
+			if(!m_lstLogs.IsEmpty())
+			{//将不满足一个LOG格式化的行加入上一个LOG行中。
+				pLogInfo = m_lstLogs.GetAt(m_lstLogs.GetCount()-1);
+				pLogInfo->strContent += SStringW(L"\\n")+pszLine;
+			}
+			return NULL;
+		}else
+		{
+			m_lstLogs.Add(pLogInfo);
+			m_mapTags[pLogInfo->strTag]=true;
+			m_mapPids[pLogInfo->dwPid]= true;
+			m_mapTids[pLogInfo->dwTid]=true;
+			return pLogInfo;
+		}
+	}
+
+	void SLogBuffer::ParseLog(LPWSTR pszBuffer)
+	{
+		Clear();
+
+		int nLines=0;
+		LPWSTR pLine = pszBuffer;
+		for(;;)
+		{
+			nLines ++;
+			WCHAR *pNextLine = wcschr(pLine,0x0A);
+			if(pNextLine)
+			{
+				if(pNextLine-pLine>1 && *(pNextLine-1) == 0x0D)
+				{
+					*(pNextLine-1)=0;
+				}else
+				{
+					*pNextLine = 0;
+				}
+			}
+			SLogInfo * logInfo = ParseLine(pLine);
+			if(logInfo) logInfo->iLine = nLines;
+
+			if(!pNextLine) break;
+			pLine = pNextLine+1;
+		}
+	}
+
+	void SLogBuffer::Clear()
+	{
+		for(int i=0;i<m_lstLogs.GetCount();i++)
+		{
+			m_lstLogs[i]->Release();
+		}
+		m_lstLogs.RemoveAll();
+		m_nLineCount = 0;
+
+		m_mapTags.RemoveAll();
+		m_mapPids.RemoveAll();
+		m_mapTids.RemoveAll();
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	SLogAdapter::SLogAdapter(void):m_lstFilterResult(NULL),m_filterLevel(-1),m_pScilexer(NULL)
 	{
 		m_crLevels[Verbose]=m_crLevels[Debug]=m_crLevels[Info]=RGBA(0,0,0,255);
 		m_crLevels[Warn]=RGBA(255,255,0,255);
@@ -24,15 +143,11 @@ namespace SOUI
 
 	void SLogAdapter::clear()
 	{
-		for(int i=0;i<m_lstLogs.GetCount();i++)
-		{
-			m_lstLogs[i]->Release();
-		}
-		m_lstLogs.RemoveAll();
+		SLogBuffer::Clear();
+
 		if(m_lstFilterResult) delete m_lstFilterResult;
 		m_lstFilterResult = NULL;
 		m_filterLevel = -1;
-
 		m_filterKeyInfo.Clear();
 		m_filterTags.RemoveAll();
 		m_filterTids.RemoveAll();
@@ -47,7 +162,7 @@ namespace SOUI
 		}
 
 		SLogInfo * pLogInfo = GetLogList()->GetAt(position);
-		pItem->FindChildByID(R.id.txt_line)->SetWindowText(SStringT().Format(_T("%d"),position+1));
+		pItem->FindChildByID(R.id.txt_line)->SetWindowText(SStringT().Format(_T("%d"),pLogInfo->iLine));
 		pItem->FindChildByID(R.id.txt_time)->SetWindowText(S_CW2T(pLogInfo->strTime));
 		pItem->FindChildByID(R.id.txt_pid)->SetWindowText(SStringT().Format(_T("%u"),pLogInfo->dwPid));
 		pItem->FindChildByID(R.id.txt_tid)->SetWindowText(SStringT().Format(_T("%u"),pLogInfo->dwTid));
@@ -74,6 +189,8 @@ namespace SOUI
 		{
 			pColorizeText->AddColorizeInfo(hilightRange[i].iBegin,hilightRange[i].iEnd,RGBA(255,0,0,255));
 		}
+
+		pItem->GetEventSet()->subscribeEvent(EventItemPanelDbclick::EventID,Subscriber(&SLogAdapter::OnItemDblClick,this));
 	}
 
 	SStringW SLogAdapter::GetColumnName(int iCol) const
@@ -94,27 +211,6 @@ namespace SOUI
 		return colNames[iCol];
 	}
 
-
-	BOOL SLogAdapter::AddLine(LPCWSTR pszLine)
-	{
-		SASSERT(m_logParser);
-		SLogInfo * pLogInfo=NULL;
-		if(!m_logParser->ParseLine(pszLine,&pLogInfo))
-		{
-			if(m_lstLogs.IsEmpty())
-				return FALSE;
-			pLogInfo = m_lstLogs.GetAt(m_lstLogs.GetCount()-1);
-			pLogInfo->strContent+= SStringW(L"\\n")+pszLine;
-			return TRUE;
-		}else
-		{
-			m_lstLogs.Add(pLogInfo);
-			m_mapTags[pLogInfo->strTag]=true;
-			m_mapPids[pLogInfo->dwPid]= true;
-			m_mapTids[pLogInfo->dwTid]=true;
-			return TRUE;
-		}
-	}
 
 	BOOL SLogAdapter::Load(const TCHAR *szFileName)
 	{
@@ -155,60 +251,44 @@ namespace SOUI
 			free(pBuf);
 			pUniBuf[uniLen]=0;
 
-			WCHAR *pLine = pUniBuf;
+			SStringA bufUtf8 = S_CW2A(pUniBuf,CP_UTF8);
+
+			SLogBuffer logBuffer(pMatchParser);
+			logBuffer.ParseLog(pUniBuf);
+			free(pUniBuf);
+
+			if(logBuffer.m_lstLogs.IsEmpty())
+				return FALSE;
 
 			if(m_logParser)
 			{
-				if(m_logParser->GetName()!=pMatchParser->GetName())
+				if(m_logParser->GetName()!=logBuffer.m_logParser->GetName())
 				{
-					clear();
+					Clear();
+					m_pScilexer->SendMessage(SCI_SETTEXT,0,(LPARAM)"");
 				}
 			}
-			m_logParser = pMatchParser;
 
-			SArray<SLogInfo*> logLines;
-			logLines.Copy(m_lstLogs);
-			m_lstLogs.RemoveAll();
 
-			for(;;)
+			if(m_lstLogs.IsEmpty())
+			{//原有LOG为空
+				*(SLogBuffer*)this = logBuffer;
+				m_pScilexer->SendMessage(SCI_SETTEXT,0,(LPARAM)(LPCSTR)bufUtf8);
+			}else
 			{
-				WCHAR *pNextLine = wcschr(pLine,0x0A);
-				if(!pNextLine)
-				{
-					AddLine(pLine);
-					break;
-				}
-				if(pNextLine-pLine>1 && *(pNextLine-1) == 0x0D)
-				{
-					*(pNextLine-1)=0;
+				SLogInfo *pLine1 = m_lstLogs[0];
+				SLogInfo *pLine2 = logBuffer.m_lstLogs[0];
+				if(pLine1->time<pLine2->time)
+				{//原有log的时间大于新LOG的时间，原log加(append)到新log后
+					Append(logBuffer);
+					m_pScilexer->SendMessage(SCI_APPENDTEXT,bufUtf8.GetLength(),(LPARAM)(LPCSTR)bufUtf8);
 				}else
 				{
-					*pNextLine = 0;
-				}
-				AddLine(pLine);
-				pLine = pNextLine+1;
-			}
-
-			free(pUniBuf);
-
-			if(!logLines.IsEmpty())
-			{
-				if(m_lstLogs.IsEmpty())
-				{
-					m_lstLogs.Copy(logLines);
-				}else
-				{
-					SLogInfo *pLine1 = logLines[0];
-					SLogInfo *pLine2 = m_lstLogs[0];
-					if(pLine1->time>pLine2->time)
-					{
-						m_lstLogs.Append(logLines);
-					}else
-					{
-						m_lstLogs.InsertArrayAt(0,&logLines);
-					}
+					Insert(logBuffer);
+					m_pScilexer->SendMessage(SCI_INSERTTEXT,0,(LPARAM)(LPCSTR)bufUtf8);
 				}
 			}
+
 			doFilter();
 			return TRUE;
 		}
@@ -360,4 +440,22 @@ namespace SOUI
 		if(!m_logParser) return true;
 		return m_logParser->IsFieldValid(Field(iCol));
 	}
+
+	void SLogAdapter::SetScintillaWnd(CScintillaWnd *pWnd)
+	{
+		m_pScilexer = pWnd;
+	}
+
+	bool SLogAdapter::OnItemDblClick(EventArgs *e)
+	{
+		SItemPanel * pItem = sobj_cast<SItemPanel>(e->sender);
+		int index = pItem->GetItemIndex();
+		SLogInfo * logInfo = GetLogList()->GetAt(index);
+		m_pScilexer->SendMessage(SCI_GOTOLINE,logInfo->iLine-1,0);
+		m_pScilexer->SetFocus();
+		return true;
+	}
+
+
+
 }

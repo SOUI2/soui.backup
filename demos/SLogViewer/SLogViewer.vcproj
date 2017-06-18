@@ -145,7 +145,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP -w34100 -w34189 -w44996"
 				Optimization="4"
-				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories=".;..\..\utilities\include;..\..\soui\include;..\..\components;..\..\config;&quot;..\..\tools\mkspecs\win32-msvc2008&quot;;&quot;..\..\third-part\scintilla\include&quot;;..\..\controls.extend"
 				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,_CRT_SECURE_NO_WARNINGS,QT_NO_DYNAMIC_CAST"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
@@ -177,7 +177,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
-				AdditionalDependencies="utilitiesd.lib souid.lib soui-sys-resource-staticd.lib"
+				AdditionalDependencies="utilitiesd.lib souid.lib scintillad.lib imm32.lib"
 				OutputFile="$(OutDir)\SLogViewerd.exe"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\..\bin"
@@ -235,6 +235,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\controls.extend\ScintillaWnd.cpp"
+				>
+			</File>
+			<File
 				RelativePath="SColorizeText.cpp"
 				>
 			</File>
@@ -244,6 +248,10 @@
 			</File>
 			<File
 				RelativePath="SLogViewer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\controls.extend\SRealWndHandler_Scintilla.cpp"
 				>
 			</File>
 		</Filter>
@@ -285,11 +293,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\controls.extend\ScintillaWnd.h"
+				>
+			</File>
+			<File
 				RelativePath="SColorizeText.h"
 				>
 			</File>
 			<File
 				RelativePath="SLogAdapter.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\controls.extend\SRealWndHandler_Scintilla.h"
 				>
 			</File>
 			<File
