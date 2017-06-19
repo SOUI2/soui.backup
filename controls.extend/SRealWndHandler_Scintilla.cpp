@@ -14,7 +14,7 @@ namespace SOUI
 
 	HWND SRealWndHandler_Scintilla::OnRealWndCreate( SRealWnd *pRealWnd )
 	{
-		if(pRealWnd->GetRealWndParam().m_strClassName==CScintillaWnd::GetScintillaWndClass())
+		if(pRealWnd->GetRealWndParam().m_strClassName.CompareNoCase(CScintillaWnd::GetScintillaWndClass())==0)
 		{
 			CScintillaWnd *pWnd=new CScintillaWnd;
 			BOOL bOK=pWnd->Create(pRealWnd->GetRealWndParam().m_strWindowName,WS_CHILD,CRect(0,0,0,0),pRealWnd->GetContainer()->GetHostHwnd(),pRealWnd->GetID(),SApplication::getSingleton().GetInstance());
@@ -34,7 +34,7 @@ namespace SOUI
 
 	void SRealWndHandler_Scintilla::OnRealWndDestroy( SRealWnd *pRealWnd )
 	{
-		if(pRealWnd->GetRealWndParam().m_strClassName==_T("scintilla"))
+		if(pRealWnd->GetRealWndParam().m_strClassName.CompareNoCase(CScintillaWnd::GetScintillaWndClass())==0)
 		{
 			CScintillaWnd *pWnd=(CScintillaWnd *)pRealWnd->GetUserData();
 			if(pWnd)
