@@ -56,4 +56,16 @@ namespace SOUI
 	{
 		return FALSE;
 	}
+
+	BOOL SRealWndHandler_Scintilla::OnRealWndPosition(SRealWnd *pRealWnd, const CRect &rcWnd)
+	{
+		HWND hRealWnd = pRealWnd->GetRealHwnd(TRUE);
+		if(IsWindow(hRealWnd))
+		{
+			::SetWindowPos(hRealWnd, 0, rcWnd.left,rcWnd.top, rcWnd.Width(), rcWnd.Height(), SWP_NOZORDER);
+			::UpdateWindow(hRealWnd);
+		}
+		return TRUE;
+	}
+
 }

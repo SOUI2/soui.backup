@@ -45,6 +45,9 @@ namespace SOUI
         * Describe  调整窗口大小, 从pRealWnd中获得窗口位置。
         */
         virtual BOOL OnRealWndSize(SRealWnd *pRealWnd);
-    };
+
+		virtual BOOL OnRealWndPosition(SRealWnd *pRealWnd, const CRect &rcWnd);
+
+	};
 
 }
