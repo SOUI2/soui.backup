@@ -10,7 +10,8 @@ namespace SOUI
 	class SLogInfo : public TObjRefImpl<IObjRef>
 	{
 	public:
-		SLogInfo():iSourceLine(0){}
+		SLogInfo():iSourceLine(0),iLine(0){}
+		int      iLine;
 		CTime    time;
 		SStringW strTime;
 		DWORD	 dwPid;
@@ -162,11 +163,72 @@ namespace SOUI
 		SStringWList m_lstExclude;
 	};
 
-	class SLogAdapter : public SMcAdapterBase
+	typedef SLogInfo * SLogInfoPtr;
+
+
+	template<>
+	class CElementTraits< SLogInfoPtr > :
+		public CElementTraitsBase< SLogInfoPtr >
+	{
+	public:
+		static void CopyElements( SLogInfoPtr* pDest, const SLogInfoPtr* pSrc, size_t nElements )
+		{
+			for( size_t iElement = 0; iElement < nElements; iElement++ )
+			{
+				pDest[iElement] = pSrc[iElement];
+				pDest[iElement]->AddRef();
+			}
+		}
+	};
+
+	class SLogBuffer
+	{
+		friend class SLogAdapter;
+	public:
+		SLogBuffer(ILogParse *pLogParser=NULL);
+
+		~SLogBuffer();
+
+		void Clear();
+
+		void ParseLog(LPWSTR pszBuffer);
+
+		SLogInfo * ParseLine(LPCWSTR pszLine);
+
+		SLogBuffer & operator = (const SLogBuffer & src);
+
+		void Append(const SLogBuffer & src);
+
+		void Insert(const SLogBuffer & src);
+	protected:
+		template<class KEY,class VALUE>
+		void CopyMap(SMap<KEY,VALUE> &dest, const SMap<KEY,VALUE> &src)
+		{
+			SPOSITION pos = src.GetStartPosition();
+			while(pos)
+			{
+				const SMap<KEY,VALUE>::CPair *pPair = src.GetNext(pos);
+				dest[pPair->m_key] = pPair->m_value;
+			}
+		}
+
+		SArray<SLogInfo*> m_lstLogs;	//log列表
+		int				  m_nLineCount;//代码总行数
+
+		SMap<SStringW,bool> m_mapTags;	//tag
+		SMap<UINT,bool> m_mapPids;		//pid
+		SMap<UINT,bool> m_mapTids;		//tid
+
+		CAutoRefPtr<ILogParse> m_logParser;
+	};
+
+	class SLogAdapter : public SMcAdapterBase, public SLogBuffer
 	{
 	public:
 		SLogAdapter(void);
 		~SLogAdapter(void);
+
+		void SetScintillaWnd(CScintillaWnd *pWnd);
 
 		BOOL Load(const TCHAR *szFileName);
 		void SetFilter(const SStringT& str);
@@ -187,25 +249,19 @@ namespace SOUI
 		SLogInfo* GetLogInfo(int iItem) const;
 
 	protected:
-		BOOL AddLine(LPCWSTR pszLine);		
 		const SArray<SLogInfo*> * GetLogList() const;
 
 		void doFilter();
 		void clear();
+
+		bool OnItemDblClick(EventArgs *e);
 	protected:
 		virtual void getView(int position, SWindow * pItem,pugi::xml_node xmlTemplate);
 		virtual SStringW GetColumnName(int iCol) const;
 		virtual bool IsColumnVisible(int iCol) const;
 		virtual int getCount();
 	private:
-		SArray<SLogInfo*> m_lstLogs;
 		SArray<SLogInfo*> *m_lstFilterResult;
-
-		CAutoRefPtr<ILogParse> m_logParser;
-	
-		SMap<SStringW,bool> m_mapTags;
-		SMap<UINT,bool> m_mapPids;
-		SMap<UINT,bool> m_mapTids;
 
 		SFilterKeyInfo m_filterKeyInfo;
 
@@ -218,6 +274,8 @@ namespace SOUI
 		COLORREF m_crLevels[Level_Count];
 
 		CAutoRefPtr<IParserFactory> m_parserFactory;
+
+		CScintillaWnd	*		 m_pScilexer;
 	};
 
 }

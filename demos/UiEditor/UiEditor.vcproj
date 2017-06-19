@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="UiEditor"
-	ProjectGUID="{A06097EC-BE12-3641-8089-2BF39C6F156C}"
+	ProjectGUID="{AE1B8103-4673-3D67-8549-45C2328FE821}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\controls.extend,..\..\third-part\SciLexer\include,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\controls.extend,..\..\third-part\Scintilla\include,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="/MP -w34100 -w34189 -w44996"
 				AssemblerListingLocation="..\..\obj\release\UiEditor\"
 				DebugInformationFormat="3"
@@ -43,7 +43,7 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utilities.lib soui.lib"
+				AdditionalDependencies="utilities.lib soui.lib Scintilla.lib imm32.lib"
 				AdditionalLibraryDirectories="..\..\bin"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				DataExecutionPrevention="true"
@@ -86,7 +86,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\controls.extend,..\..\third-part\SciLexer\include,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\controls.extend,..\..\third-part\Scintilla\include,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="/MP -w34100 -w34189 -w44996"
 				AssemblerListingLocation="..\..\obj\debug\UiEditor\"
 				DebugInformationFormat="3"
@@ -109,7 +109,7 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utilitiesd.lib souid.lib"
+				AdditionalDependencies="utilitiesd.lib souid.lib Scintillad.lib imm32.lib"
 				AdditionalLibraryDirectories="..\..\bin"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				DataExecutionPrevention="true"
@@ -194,6 +194,8 @@
 			<File
 				RelativePath="SImageSwitcher.cpp" />
 			<File
+				RelativePath="SImgCanvas.cpp" />
+			<File
 				RelativePath="SMoveWnd.cpp" />
 			<File
 				RelativePath="propgrid\SPropertyGrid.cpp" />
@@ -235,8 +237,6 @@
 				RelativePath="UIEditor.cpp" />
 			<File
 				RelativePath="helpapi.cpp" />
-			<File
-				RelativePath="SImgCanvas.cpp" />				
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -301,6 +301,8 @@
 			<File
 				RelativePath="SImageSwitcher.h" />
 			<File
+				RelativePath="SImgCanvas.h" />
+			<File
 				RelativePath="SListBoxDrop.h" />
 			<File
 				RelativePath="SMoveWnd.h" />
@@ -348,8 +350,6 @@
 				RelativePath="colorpicker\Tooltipctrl.h" />
 			<File
 				RelativePath="helpapi.h" />
-			<File
-				RelativePath="SImgCanvas.h" />	
 			<File
 				RelativePath="resource.h" />
 			<File
