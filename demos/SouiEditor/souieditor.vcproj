@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="souieditor"
-	ProjectGUID="{8439EECE-582A-3254-94E8-45A0B0F94128}"
+	ProjectGUID="{0D309078-6605-3D83-AC28-B6C62BE3C11A}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform

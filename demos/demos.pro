@@ -36,14 +36,14 @@ CONFIG(x64){
 	PcManager64.depends += soui64 skia64
 	SoTool64.depends += soui64 skia64
 	mclistview_demo64.depends += soui64 skia64
-	UiEditor64.depends += soui64 skia64
+	UiEditor64.depends += soui64 skia64 scintilla64
 	BesLyric64.depends += soui64 skia64
 	QQMain64.depends += soui64 skia64
 	VUI64.depends += soui64 skia64
 	MultiLangs.depends += soui64
 	TXMgr.depends += soui64
-	SLogViewer.depends += soui64
-	souieditor.depends += soui64
+	SLogViewer.depends += soui64 scintilla64
+	souieditor.depends += soui64 scintilla64
 }
 else{
 	360.depends += soui skia
@@ -54,12 +54,12 @@ else{
 	PcManager.depends += soui skia
 	SoTool.depends += soui skia
 	mclistview_demo.depends += soui skia
-	UiEditor.depends += soui skia
+	UiEditor.depends += soui skia scintilla
 	BesLyric.depends += soui skia
 	QQMain.depends += soui skia
 	VUI.depends += soui skia
 	MultiLangs.depends += soui
 	TXMgr.depends += soui
-        SLogViewer.depends += soui
-	souieditor.depends += soui
+        SLogViewer.depends += soui scintilla
+	souieditor.depends += soui scintilla
 }
