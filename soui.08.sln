@@ -151,6 +151,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "soui-sys-resource", "soui-s
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "souieditor", "demos\SouiEditor\souieditor.vcproj", "{8439EECE-582A-3254-94E8-45A0B0F94128}"
 	ProjectSection(ProjectDependencies) = postProject
+		{8E488E28-CB5B-3132-B76D-EA3B931AF3BE} = {8E488E28-CB5B-3132-B76D-EA3B931AF3BE}
 		{0F2008C7-3A4E-339A-A1E9-AB14E9EB2D94} = {0F2008C7-3A4E-339A-A1E9-AB14E9EB2D94}
 	EndProjectSection
 EndProject
