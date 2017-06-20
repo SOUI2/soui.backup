@@ -196,7 +196,7 @@ namespace SOUI
 		pColorizeText->ClearColorizeInfo();
 
 		SArray<SRange> hilightRange;
-		m_filterKeyInfo.FindKeyRange(pLogInfo->strContent,hilightRange);
+		m_filterKeyInfo.FindKeyRange(pLogInfo->strContentLower,hilightRange);
 
 		for(int i=0;i<hilightRange.GetCount();i++)
 		{
@@ -352,7 +352,12 @@ namespace SOUI
 
 			for(int i=0;i<m_lstLogs.GetCount();i++)
 			{
-				if(m_filterKeyInfo.TestExclude(m_lstLogs[i]->strContent) || !m_filterKeyInfo.TestInclude(m_lstLogs[i]->strContent) )
+				if(m_lstLogs[i]->strContentLower.GetLength()<m_lstLogs[i]->strContent.GetLength())
+				{
+					m_lstLogs[i]->strContentLower = m_lstLogs[i]->strContent;
+					m_lstLogs[i]->strContentLower.MakeLower();
+				}
+				if(m_filterKeyInfo.TestExclude(m_lstLogs[i]->strContentLower) || !m_filterKeyInfo.TestInclude(m_lstLogs[i]->strContentLower) )
 					continue;
 				if(m_lstLogs[i]->iLevel < m_filterLevel)
 					continue;

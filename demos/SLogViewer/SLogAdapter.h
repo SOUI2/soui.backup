@@ -21,6 +21,7 @@ namespace SOUI
 		int	     iLevel;
 		SStringW strTag;
 		SStringW strContent;
+		SStringW strContentLower;//–°–¥∞ÊContent
 		SStringW strModule;
 		SStringW strSourceFile;
 		int      iSourceLine;
