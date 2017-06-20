@@ -8,7 +8,7 @@ include_directories(${PROJECT_SOURCE_DIR}/components)
 include_directories(${PROJECT_SOURCE_DIR}/utilities/include)
 include_directories(${PROJECT_SOURCE_DIR}/SOUI/include)
 include_directories(${PROJECT_SOURCE_DIR}/controls.extend)
-include_directories(${PROJECT_SOURCE_DIR}/third-part/SciLexer/include)
+include_directories(${PROJECT_SOURCE_DIR}/third-part/Scintilla/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/soui-sys-resource)
 
@@ -35,6 +35,8 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SImageEx.h
 	${CMAKE_SOURCE_DIR}/controls.extend/STurn3DView.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SScrollText.h
+	${CMAKE_SOURCE_DIR}/controls.extend/SRealWndHandler_Scintilla.h
+	${CMAKE_SOURCE_DIR}/controls.extend/ScintillaWnd.h
 )
 set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SGifPlayer.cpp
@@ -53,7 +55,9 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SText.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SImageEx.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/STurn3DView.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/SScrollText.cpp		
+	${CMAKE_SOURCE_DIR}/controls.extend/SScrollText.cpp
+	${CMAKE_SOURCE_DIR}/controls.extend/SRealWndHandler_Scintilla.cpp
+	${CMAKE_SOURCE_DIR}/controls.extend/ScintillaWnd.cpp
 )
 
 source_group("Extend Cotrols" FILES ${EXTENDCOTROLS})
@@ -65,7 +69,7 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 add_executable(UiEditor WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC} ${EXTENDCOTROLS})
 
 add_dependencies(UiEditor soui-sys-resource ${COM_LIBS})
-target_link_libraries(UiEditor utilities soui)
+target_link_libraries(UiEditor utilities soui Scintilla imm32)
 
 set_target_properties(UiEditor PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
 set_target_properties(UiEditor PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})

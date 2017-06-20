@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="UiEditor"
-	ProjectGUID="{AE1B8103-4673-3D67-8549-45C2328FE821}"
+	ProjectGUID="{5D6B5086-1795-331A-8678-8030180C03B9}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -210,6 +210,8 @@
 			<File
 				RelativePath="propgrid\SPropertyItemBase.cpp" />
 			<File
+				RelativePath="..\..\controls.extend\SRealWndHandler_Scintilla.cpp" />
+			<File
 				RelativePath="..\..\controls.extend\SScrollText.cpp" />
 			<File
 				RelativePath="trayicon\SShellNotifyIcon.cpp" />
@@ -230,9 +232,7 @@
 			<File
 				RelativePath="..\..\controls.extend\STurn3DView.cpp" />
 			<File
-				RelativePath="ScintillaWnd.cpp" />
-			<File
-				RelativePath="SouiRealWndHandler.cpp" />
+				RelativePath="..\..\controls.extend\ScintillaWnd.cpp" />
 			<File
 				RelativePath="UIEditor.cpp" />
 			<File
@@ -323,6 +323,8 @@
 			<File
 				RelativePath="propgrid\SPropertyItemBase.h" />
 			<File
+				RelativePath="..\..\controls.extend\SRealWndHandler_Scintilla.h" />
+			<File
 				RelativePath="..\..\controls.extend\SScrollText.h" />
 			<File
 				RelativePath="trayicon\SShellNotifyIcon.h" />
@@ -343,9 +345,7 @@
 			<File
 				RelativePath="..\..\controls.extend\STurn3DView.h" />
 			<File
-				RelativePath="ScintillaWnd.h" />
-			<File
-				RelativePath="SouiRealWndHandler.h" />
+				RelativePath="..\..\controls.extend\ScintillaWnd.h" />
 			<File
 				RelativePath="colorpicker\Tooltipctrl.h" />
 			<File

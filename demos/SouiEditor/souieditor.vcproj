@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="souieditor"
-	ProjectGUID="{0D309078-6605-3D83-AC28-B6C62BE3C11A}"
+	ProjectGUID="{8439EECE-582A-3254-94E8-45A0B0F94128}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -20,7 +20,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\controls.extend,..\..\third-part\SciLexer\include,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\controls.extend,..\..\third-part\Scintilla\include,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="/MP -w34100 -w34189 -w44996"
 				AssemblerListingLocation="..\..\obj\release\souieditor\"
 				DebugInformationFormat="3"
@@ -43,7 +43,7 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utilities.lib soui.lib"
+				AdditionalDependencies="utilities.lib soui.lib Scintilla.lib imm32.lib"
 				AdditionalLibraryDirectories="..\..\bin"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				DataExecutionPrevention="true"
@@ -86,7 +86,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\controls.extend,..\..\third-part\SciLexer\include,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
+				AdditionalIncludeDirectories=".,.,..\..\utilities\include,..\..\soui\include,..\..\components,..\..\config,..\..\controls.extend,..\..\third-part\Scintilla\include,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
 				AdditionalOptions="/MP -w34100 -w34189 -w44996"
 				AssemblerListingLocation="..\..\obj\debug\souieditor\"
 				DebugInformationFormat="3"
@@ -109,7 +109,7 @@
 				Name="VCCustomBuildTool" />
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utilitiesd.lib souid.lib"
+				AdditionalDependencies="utilitiesd.lib souid.lib Scintillad.lib imm32.lib"
 				AdditionalLibraryDirectories="..\..\bin"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				DataExecutionPrevention="true"
@@ -352,10 +352,6 @@
 				RelativePath="..\..\controls.extend\SText.h" />
 			<File
 				RelativePath="..\..\controls.extend\STurn3DView.h" />
-			<File
-				RelativePath="SciLexer.h" />
-			<File
-				RelativePath="Scintilla.h" />
 			<File
 				RelativePath="ScintillaWnd.h" />
 			<File

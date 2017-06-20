@@ -6,6 +6,7 @@ include_directories(${PROJECT_SOURCE_DIR}/config)
 include_directories(${PROJECT_SOURCE_DIR}/components)
 include_directories(${PROJECT_SOURCE_DIR}/utilities/include)
 include_directories(${PROJECT_SOURCE_DIR}/SOUI/include)
+include_directories(${PROJECT_SOURCE_DIR}/third-part/Scintilla/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/controls.extend)
 
@@ -66,7 +67,7 @@ source_group("Extend Cotrols" FILES ${EXTENDCOTROLS})
 add_executable(SouiEditor WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC} ${EXTENDCOTROLS})
 
 add_dependencies(SouiEditor soui-sys-resource ${COM_LIBS})
-target_link_libraries(SouiEditor utilities soui)
+target_link_libraries(SouiEditor utilities soui Scintilla imm32)
 
 set_target_properties(SouiEditor PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (SouiEditor PROPERTIES

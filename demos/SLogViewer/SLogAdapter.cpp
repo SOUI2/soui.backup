@@ -54,6 +54,8 @@ namespace SOUI
 		CopyMap(m_mapTags , src.m_mapTags);
 		CopyMap(m_mapPids , src.m_mapPids);
 		CopyMap(m_mapTids , src.m_mapTids);
+
+		m_logParser = src.m_logParser;
 		return *this;
 	}
 
