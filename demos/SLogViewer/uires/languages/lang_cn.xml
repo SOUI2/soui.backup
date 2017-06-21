@@ -84,7 +84,14 @@
       <source>filter</source>
       <translation>过滤设置</translation>
     </message>
-    
+    <message>
+      <source>select all</source>
+      <translation>全选</translation>
+    </message>
+    <message>
+      <source>clear all</source>
+      <translation>全清</translation>
+    </message>
     <message>
       <source>module</source>
       <translation>模块</translation>
