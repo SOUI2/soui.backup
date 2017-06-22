@@ -1,0 +1,5 @@
+<menu itemHeight="26" iconMargin="4" textMargin="8" maxWidth="100">
+	<item id="1">显示主界面</item>
+	<sep/>
+	<item id="9">退出</item>
+</menu>

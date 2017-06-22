@@ -1,0 +1,27 @@
+<include >
+
+	<treeview pos="0,0,@210,-0" name="tv_contact" indent="0" colorBkgnd="@color/bg" sbWid="0" >
+		<template Height1="30" Height2="54">
+		    <item_group colorHover="@color/nullbg" colorSelected="#FFFFFF00">
+				<toggle pos="[0,|0" offset="0.5,-0.5" name="tv_switch" />
+				<text name="tv_text_user" pos="[6,|0" offset="0,-0.5" font="bold:1,adding:1" />
+		    </item_group>
+		    
+		    <item_data colorHover="@color/nullbg" colorSelected="@color/nullbg">
+				<img name="tv_img_user" pos="16,6,@42,@42" skin="default_42" />
+				<text name="tv_text_user" pos="[6,8" font="bold:1,adding:1" />
+				<text name="tv_text_content" pos="{0,[3" dotted="1" />
+			</item_data>
+		</template>
+	</treeview>
+	
+	<window pos="[0,0,-0,-0" >
+		<window pos="|0,20,@320,-0" offset="-0.5,0" name="lay_userinfo" show="0" layout="vbox" gravity="center" colorBkgnd="@color/bg" >
+			<img size="42,42" extend_top="40" name="pagec_img_user" skin="default_42" />
+			<imgbtn size="40,40" extend_top="10" layout_gravity="right" extend_right="10" name="pagec_img_talk" skin="btn_talk" />
+			<text size="-1,-1" font="bold:1,size:24" name="pagec_text_user" />
+			<text size="-1,-1" extend_top="40" padding="4,0,4,0" colorText="#FFFFFF" name="pagec_text_info" skin="icon_count" />
+		</window>
+	</window>
+
+</include>

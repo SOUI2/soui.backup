@@ -1,0 +1,51 @@
+<include >
+	<listview pos="0,0,@200,-0" name="lv_recent" headerHeight="0" focusable="0" sbWid="0" colorBkgnd="@color/bg">
+		<template itemHeight="54" colorHover="#FBEFBF" colorSelected="@color/nullbg" trackMouseEvent="1" >
+			
+			<img name="ml_img_user" pos="12,6,@42,@42" skin="default_42" />
+			<text name="ml_text_user" pos="[6,8" font="bold:1,adding:1" />
+			<text name="ml_text_msg" pos="{0,[3,-4,@20" dotted="1" />
+			<text name="ml_count" pos="-34,10" size="30,16" align="center" valign="middle" skin="icon_count" colorText="#FFFFFF" />
+			<imgbtn name="ml_btn_del" pos="-30,20" skin="btn_del" show="0" />  
+				
+		</template>
+	</listview>
+
+	<hr width="1" height="-2" size="1" mode="vertical" colorLine="#CED9E2" />
+
+	<window pos="[0,0,-0,-0" weight="1" name="lay_session" layout="vbox" gravity="center" show="0" colorBkgnd="@color/bg">
+		<window size="-2,36" colorBkgnd="@color/nullbg">
+			<text pos="20,8" name="si_text_title" class="cls_title" text="" />
+			<window pos="[6,12" name="si_level" size="-1,16" inset="3,0,3,0" align="center" valign="middle" skin="icon_count" colorText="#FFFFFF" />
+			
+		</window>
+		
+		<hr width="-2" height="1" size="1" colorLine="#CED9E2"/>
+		
+		<imrichedit size="-2,-1" extend="4,4,2,0" weight="3" name="chat_record" inset="5,0,12,0" sbSkin="vscroll_rich" bkgndBlend="1"  enableDragdrop="1" readOnly="1" autoSel="0" multiLines="1" wordWrap="1" autoWordSel="0" vscrollBar="1" autoVscroll="0" hscrollBar="0" wantReturn="1" scrollSpeed="60" />
+		
+		<hr width="-2" height="1" size="1" colorLine="#CED9E2" />
+		
+		<window size="-2,30" layout="hbox" gravity="center" >
+			<check size="-1,-1" name="chech_showfont" focusable="0" skin="check_chat_font" />
+			<imgbtn size="-1,-1" name="btn_chat_sendpic" extend_right="8" focusable="0" skin="btn_chat_sendpic" cursor="hand" tip="发送图片" />
+			<imgbtn size="-1,-1" name="btn_chat_upload" extend_right="8" focusable="0" skin="btn_chat_upload" cursor="hand" tip="添加附件" />
+			<imgbtn size="-1,-1" skin="btn_chat_cut" cursor="hand" tip="截屏" />
+		</window>
+		
+		<imrichedit size="-2,-1" extend_left="4" weight="1" name="chat_input" sbSkin="vscroll_rich" bkgndBlend="1"  enableDragdrop="1" autoSel="0" multiLines="1" wordWrap="1" autoWordSel="0" vscrollBar="1" autoVscroll="1" hscrollBar="0" wantReturn="1" cursor="" />
+		
+		<window size="-2,30" layout="hbox" gravity="center">
+			<text size="-1,-1" extend_left="2" weight="1" text="baiyi - etimes" />
+			<imgbtn size="60,24" extend_right="6" name="btn_send" skin="btn_reg" text="发送(S)" tip="按enter发送，Ctrl+Enter换行" />
+		</window>
+	</window>
+	<!--<window pos="0,0,-0,-0" colorBkgnd="@color/loadbg" >
+		<tileview pos="|0,|0" size="500,300" offset="-0.5,-0.8" name="tv_emotion" wantTab="1" marginSize="5" colorBkgnd="@color/bg" >
+			<template itemHeight="24" itemWidth="24" colorHover="#cccccc" colorSelected="#0000ff" trackMouseEvent="1">
+				<image pos="0,0" name="img_emoticons"/>
+			</template>
+		</tileview>
+	</window>
+	-->
+</include>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SOUI name="mainWindow" title="TIMDemo" width="940" height="620" minsize="800,500"  resizable="1" margin="4,8,8,8" appWnd="1" translucent="1" sendWheel2Hover="1" >
+
+<root skin="shadow" >
+	<caption pos="5,3,-5,@70" skin="bg" >
+		<img pos="20,|0" size="42,42" offset="0, -0.5" name="img_myuser" skin="my_42" />
+		
+		<iconradio pos="|0,-2" offset="-3,-1" size="30,30" name="radio_talk" skin="icon_talk" checked="1" tip="会话" />
+
+		<window pos="[-12,{-6" size="30,16" name="win_count" show="0" align="center" colorText="#FFFFFF" skin="icon_count" />
+
+		<iconradio pos="[20,-2" offset="-0,-1" size="30,30" name="radio_contact" skin="icon_contact" tip="联系人"/>
+		
+		<imgbtn pos="-27,0" name="btn_close" skin="btn_close" tip="关闭"/>
+	</caption>
+	
+	<!-- 主界面 -->
+	<tabctrl name="tab_main" pos="5,[0,-5,-7" colorBkgnd="@color/nullbg" curSel="0" focusable="0" animateSteps="0" tabHeight="0" >
+		<page title="会话" >
+			<include src="layout:page_talk" />
+		</page>
+		<page title="联系人" >
+			<include src="layout:page_contact" />
+		</page>
+	</tabctrl>
+	
+	<!-- 加载页面 透明 覆盖主界面-->
+	<window pos="5,{0,-5,-7" name="lay_loading" show="1" colorBkgnd="@color/loadbg">
+		<animateimg pos="|0,|0" offset="-0.5,-0.5" skin="img_busy" />
+	</window>
+</root>
+
+</SOUI>

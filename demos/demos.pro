@@ -27,6 +27,16 @@ SUBDIRS += TXMgr
 SUBDIRS += SLogViewer
 SUBDIRS += souieditor
 
+CONFIG(c++11){
+	SUBDIRS += timdemo	
+	CONFIG(x64){
+             	timdemo64.depends += soui64
+	}
+	else{
+		timdemo.depends += soui
+	}
+}
+
 CONFIG(x64){
 	36064.depends += soui64 skia64
 	360Preview64.depends += soui64 skia64
@@ -40,10 +50,10 @@ CONFIG(x64){
 	BesLyric64.depends += soui64 skia64
 	QQMain64.depends += soui64 skia64
 	VUI64.depends += soui64 skia64
-	MultiLangs.depends += soui64
-	TXMgr.depends += soui64
-	SLogViewer.depends += soui64 scintilla64
-	souieditor.depends += soui64 scintilla64
+	MultiLangs64.depends += soui64
+	TXMgr64.depends += soui64
+	SLogViewer64.depends += soui64 scintilla64
+	souieditor64.depends += soui64 scintilla64
 }
 else{
 	360.depends += soui skia
@@ -60,6 +70,6 @@ else{
 	VUI.depends += soui skia
 	MultiLangs.depends += soui
 	TXMgr.depends += soui
-        SLogViewer.depends += soui scintilla
+             SLogViewer.depends += soui scintilla
 	souieditor.depends += soui scintilla
 }

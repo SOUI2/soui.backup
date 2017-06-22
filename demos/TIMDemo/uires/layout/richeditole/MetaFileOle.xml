@@ -1,0 +1,6 @@
+<root>
+  <windowex name="WndParent" pos="0,0,-0,-0" cursor="hand">
+    <img name="ImgFile" pos="|0,5,@40,@40" offset="-0.5,0" msgTransparent="1"/>
+    <text name="LblFileName" pos="5,[5,-5,-0" font="size:12" dotted="1" msgTransparent="1" align="center" />
+  </windowex>
+</root>

@@ -1,0 +1,12 @@
+<include > <!-- 里面的只能 有一个 window 切记-->
+	<window pos="5,73,-5,-7" colorBkgnd="@color/loadbg" >
+		<window pos="|0,|0" size="300,140" offset="-0.5,-0.8" colorBkgnd="@color/bg" margin="1,1,1,1" colorBorder="@color/disable" >
+			<text pos="0,0,-0,@30" name="msgbox_title" inset="4,0,0,0" text="提示" colorBkgnd="@color/theme" class="cls_title" />
+			<imgbtn pos="-27,0" name="msgbox_btn_close" skin="btn_close" tip="关闭"/>
+
+			<icon pos="8,|-16,@32,@32" name="msgbox_icon" display="1"/>
+			<text name="msgbox_text" pos="[10,|0,-10,-1" offset="0,-0.5" colorText="#0000FF" multilines="1"  valign="middle" maxWidth="240" />
+			<imgbtn pos="|0,-36,@100,@28" offset="-0.5,0" name="msgbox_btn_ok" text="确定" skin="btn_reg" colorTextDisable="@color/disable" /> 
+		</window>
+	</window>
+</include>
