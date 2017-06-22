@@ -3,7 +3,13 @@
 #include <helper/SAdapterBase.h>
 #include "MainDlg.h"
 
-class CFilterTagAdapter: public SAdapterBase
+class SFilterAdapterBase : public SAdapterBase
+{
+public:
+	virtual void MarkAll(bool bSelected) PURE;
+};
+
+class CFilterTagAdapter: public SFilterAdapterBase
 {
 	struct TagCheck
 	{
@@ -26,6 +32,15 @@ public:
 			m_lstTagCheck.Add(obj);
 		}
 		qsort(m_lstTagCheck.GetData(),m_lstTagCheck.GetCount(),sizeof(TagCheck),TagCheckCmp);
+		notifyDataSetChanged();
+	}
+
+	void MarkAll(bool bSelected)
+	{
+		for(int i=0;i<m_lstTagCheck.GetCount();i++)
+		{
+			m_lstTagCheck[i].bSelected = bSelected;
+		}
 		notifyDataSetChanged();
 	}
 protected:
@@ -84,7 +99,7 @@ private:
 };
 
 
-class CFilterPidAdapter: public SAdapterBase
+class CFilterPidAdapter: public SFilterAdapterBase
 {
 	struct PidCheck
 	{
@@ -108,6 +123,15 @@ public:
 		}
 		qsort(m_lstPidCheck.GetData(),m_lstPidCheck.GetCount(),sizeof(PidCheck),PidCheckCmp);
 
+		notifyDataSetChanged();
+	}
+
+	void MarkAll(bool bSelected)
+	{
+		for(int i=0;i<m_lstPidCheck.GetCount();i++)
+		{
+			m_lstPidCheck[i].bSelected = bSelected;
+		}
 		notifyDataSetChanged();
 	}
 protected:
@@ -166,7 +190,7 @@ private:
 };
 
 
-class CFilterTidAdapter: public SAdapterBase
+class CFilterTidAdapter: public SFilterAdapterBase
 {
 	struct TidCheck
 	{
@@ -192,6 +216,14 @@ public:
 		notifyDataSetChanged();
 	}
 
+	void MarkAll(bool bSelected)
+	{
+		for(int i=0;i<m_lstTidCheck.GetCount();i++)
+		{
+			m_lstTidCheck[i].bSelected = bSelected;
+		}
+		notifyDataSetChanged();
+	}
 protected:
 
 	static int TidCheckCmp(const void * p1, const void*p2)
@@ -252,8 +284,9 @@ private:
 
 
 
-CFilterDlg::CFilterDlg(CMainDlg *pMainDlg):SHostWnd(UIRES.LAYOUT.dlg_filter),m_pMainDlg(pMainDlg)
+CFilterDlg::CFilterDlg(CMainDlg *pMainDlg):SHostWnd(UIRES.LAYOUT.dlg_filter),m_pMainDlg(pMainDlg),m_iTab(0)
 {
+	memset(m_lvFilters,0,sizeof(m_lvFilters));
 }
 
 CFilterDlg::~CFilterDlg(void)
@@ -269,46 +302,53 @@ void CFilterDlg::OnFinalMessage(HWND hWnd)
 void CFilterDlg::OnInit(EventArgs *e)
 {
 	{
-		m_lvTags = FindChildByID2<SListView>(R.id.lv_tags);
+		m_lvFilters[FilterTag] = FindChildByID2<SListView>(R.id.lv_tags);
 		CFilterTagAdapter *pAdapter = new CFilterTagAdapter;
 		pAdapter->SetListener(this);
-		m_lvTags->SetAdapter(pAdapter);
+		m_lvFilters[FilterTag]->SetAdapter(pAdapter);
 		pAdapter->Release();
 	}
 
 	{
-		m_lvPid = FindChildByID2<SListView>(R.id.lv_pid);
+		m_lvFilters[FilterPid]  = FindChildByID2<SListView>(R.id.lv_pid);
 		CFilterPidAdapter *pAdapter = new CFilterPidAdapter;
 		pAdapter->SetListener(this);
-		m_lvPid->SetAdapter(pAdapter);
+		m_lvFilters[FilterPid]->SetAdapter(pAdapter);
 		pAdapter->Release();
 	}
 
 	{
-		m_lvTid = FindChildByID2<SListView>(R.id.lv_tid);
+		m_lvFilters[FilterTid] = FindChildByID2<SListView>(R.id.lv_tid);
 		CFilterTidAdapter *pAdapter = new CFilterTidAdapter;
 		pAdapter->SetListener(this);
-		m_lvTid->SetAdapter(pAdapter);
+		m_lvFilters[FilterTid]->SetAdapter(pAdapter);
 		pAdapter->Release();
 	}
 
 }
 
+void CFilterDlg::OnTabChanged(EventArgs *e)
+{
+	EventTabSelChanged *e2 = sobj_cast<EventTabSelChanged>(e);
+	SASSERT(e2);
+	m_iTab = e2->uNewSel;
+}
+
 void CFilterDlg::UpdateTags(const SArray<SStringW> & lstTags)
 {
-	CFilterTagAdapter * pAdapter = (CFilterTagAdapter*)m_lvTags->GetAdapter();
+	CFilterTagAdapter * pAdapter = (CFilterTagAdapter*)m_lvFilters[FilterTag]->GetAdapter();
 	pAdapter->SetTags(lstTags);
 }
 
 void CFilterDlg::UpdatePids(const SArray<UINT> & lstPids)
 {
-	CFilterPidAdapter * pAdapter = (CFilterPidAdapter*)m_lvPid->GetAdapter();
+	CFilterPidAdapter * pAdapter = (CFilterPidAdapter*)m_lvFilters[FilterPid]->GetAdapter();
 	pAdapter->SetPids(lstPids);
 }
 
 void CFilterDlg::UpdateTids(const SArray<UINT> & lstTids)
 {
-	CFilterTidAdapter * pAdapter = (CFilterTidAdapter*)m_lvTid->GetAdapter();
+	CFilterTidAdapter * pAdapter = (CFilterTidAdapter*)m_lvFilters[FilterTid]->GetAdapter();
 	pAdapter->SetTids(lstTids);
 }
 
@@ -325,4 +365,18 @@ void CFilterDlg::OnPidChange(const SArray<UINT> & lstPid)
 void CFilterDlg::OnTidChange(const SArray<UINT> & lstTid)
 {
 	m_pMainDlg->UpdateFilterTids(lstTid);
+}
+
+void CFilterDlg::OnBtnSelectAll()
+{
+	SASSERT(m_iTab>=0 && m_iTab< FilterCount);
+	SFilterAdapterBase *pAdapter = (SFilterAdapterBase*)m_lvFilters[m_iTab]->GetAdapter();
+	pAdapter->MarkAll(true);
+}
+
+void CFilterDlg::OnBtnClearAll()
+{
+	SASSERT(m_iTab>=0 && m_iTab< FilterCount);
+	SFilterAdapterBase *pAdapter = (SFilterAdapterBase*)m_lvFilters[m_iTab]->GetAdapter();
+	pAdapter->MarkAll(false);
 }
