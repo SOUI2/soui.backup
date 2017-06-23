@@ -7,6 +7,7 @@ add_subdirectory(smiley)
 add_subdirectory(gtest)
 add_subdirectory(7z)
 add_subdirectory(Scintilla)
+add_subdirectory(sqlite3)
 
 #include(CheckCXXCompilerFlag)
 #CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
