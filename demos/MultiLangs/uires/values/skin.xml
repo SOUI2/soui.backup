@@ -5,6 +5,7 @@
   <imglist name="scale_pic" scale="125"	src="img:pic_125"/>
   <imglist name="scale_pic" scale="150"	src="img:pic_150"/>
   <imglist name="scale_pic" scale="200"	src="img:pic_200"/>
+  <imgframe2 name="chat_bg" src="img:chat.9"/>
   <shape name="shape_test" shape="oval">
     <corners radius="5dp"/>
     <size width="100dp" height="100dp"/>

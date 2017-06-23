@@ -194,7 +194,7 @@ namespace SOUI
         virtual UINT Height() const;
         virtual SIZE Size() const;
         virtual LPVOID  LockPixelBits();
-        virtual void    UnlockPixelBits(LPVOID);
+        virtual void    UnlockPixelBits(LPVOID pBuf);
         virtual const LPVOID  GetPixelBits() const;
         
 		SkBitmap & GetSkBitmap(){return m_bitmap;}

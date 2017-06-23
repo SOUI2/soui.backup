@@ -154,7 +154,7 @@ namespace SOUI
         return bm.bmBits;
     }
 
-    void SBitmap_GDI::UnlockPixelBits( LPVOID )
+    void SBitmap_GDI::UnlockPixelBits( LPVOID pBuf)
     {
 
     }
