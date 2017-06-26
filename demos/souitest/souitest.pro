@@ -27,6 +27,9 @@ else{
 #指定生成的exe是基于控制台的
 CONFIG += console
 
+# 解决'std::tuple' : too many template arguments问题
+DEFINES += _VARIADIC_MAX=10
+
 # Input
 SOURCES += souitest.cpp \
            slog-test.cpp
