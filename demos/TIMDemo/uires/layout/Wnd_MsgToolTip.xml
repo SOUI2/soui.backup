@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SOUI title="安全提示" width="250" height="120" translucent="1">
+
+<root skin="shadow">
+	<window pos="5,3,-5,@27" skin="bg">
+		<text pos="[6,[4" name="text_title" text="测试" font="bold:1,adding:1" />
+		<window name="win_totalcount" pos="[10,{0" text="67" size="30,16" align="center" valign="middle" skin="icon_count" colorText="#FFFFFF" />
+		<!--<imgbtn pos="-27,0" name="" skin="btn_menu"/>-->
+	</window>
+	
+	<window pos="5,[0,-5,-36" name="btn_viewall" colorBkgnd="@color/nullbg" cursor="hand" >
+		<img pos="2,[0" size="48,48" name="img_user" />
+		<text pos="[2,{8" name="text_sender" text="测试" font="bold:1,adding:1" />
+		<text pos="{0,[4" name="text_content" text="欢迎登陆Etimes安全客户端" />
+		<window name="win_count" pos="-36,10" size="30,16" align="center" valign="middle" skin="icon_count" colorText="#FFFFFF" />
+	</window>
+	<window pos="5,[0,-5,-8" colorBkgnd="@color/nullbg">
+		<hr width="-2" height="1" size="1" colorLine="#CED9E2" />
+		<window name="btn_ignore" pos="30,|2" offset="0,-0.5" text="忽略全部" class="cls_link" />
+		<window name="btn_viewall" pos="-80,|2" offset="0,-0.5" text="查看全部" class="cls_link" />
+	</window>
+</root>
+
+</SOUI>

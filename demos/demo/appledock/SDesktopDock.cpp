@@ -113,6 +113,23 @@ void SDesktopDock::initDockRect()
 	}
 
 }
+
+const LPCTSTR adUrls[MAX_COUNT]=
+{
+_T("http://www.ui520.cn"),
+_T("http://www.cnblogs.com/setoutsoft/"),
+_T("http://www.b5csgo.com"),
+_T("http://love.junzimu.com/"),
+_T("http://my.tv.sohu.com/pl/9259542/89333168.shtml"),
+
+_T("http://www.ui520.cn"),
+_T("http://www.cnblogs.com/setoutsoft/"),
+_T("http://www.b5csgo.com"),
+_T("http://love.junzimu.com/"),
+_T("http://my.tv.sohu.com/pl/9259542/89333168.shtml"),
+
+};
+
 void SDesktopDock::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	for (int i=0; i<MAX_COUNT; i++)
@@ -120,15 +137,8 @@ void SDesktopDock::OnLButtonUp(UINT nFlags, CPoint point)
 		if (m_RTRect[i].PtInRect(point))
 		{
 			SMessageBox(NULL,SStringT().Format(_T("Ë÷Òý===%dºÅ"),i),_T("¶àµãWIFI"),MB_OK);
-			if (i==0){
-				ShellExecute(NULL, _T("open"),_T("http://www.wf06.com"), NULL, NULL, SW_SHOWNORMAL);
 
-			}else if (i==1){
-
-				ShellExecute(NULL, _T("open"),_T("http://www.sk53.com"), NULL, NULL, SW_SHOWNORMAL);
-			}
-
-
+			ShellExecute(NULL, _T("open"),adUrls[i], NULL, NULL, SW_SHOWNORMAL);
 			return ;
 		}
 	}

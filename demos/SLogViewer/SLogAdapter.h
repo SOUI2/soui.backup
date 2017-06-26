@@ -21,6 +21,7 @@ namespace SOUI
 		int	     iLevel;
 		SStringW strTag;
 		SStringW strContent;
+		SStringW strContentLower;//–°–¥∞ÊContent
 		SStringW strModule;
 		SStringW strSourceFile;
 		int      iSourceLine;
@@ -163,23 +164,6 @@ namespace SOUI
 		SStringWList m_lstExclude;
 	};
 
-	typedef SLogInfo * SLogInfoPtr;
-
-
-	template<>
-	class CElementTraits< SLogInfoPtr > :
-		public CElementTraitsBase< SLogInfoPtr >
-	{
-	public:
-		static void CopyElements( SLogInfoPtr* pDest, const SLogInfoPtr* pSrc, size_t nElements )
-		{
-			for( size_t iElement = 0; iElement < nElements; iElement++ )
-			{
-				pDest[iElement] = pSrc[iElement];
-				pDest[iElement]->AddRef();
-			}
-		}
-	};
 
 	class SLogBuffer
 	{

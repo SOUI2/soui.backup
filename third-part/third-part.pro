@@ -17,6 +17,7 @@ SUBDIRS += smiley
 SUBDIRS += mhook
 SUBDIRS += 7z
 SUBDIRS += scintilla
+SUBDIRS += sqlite3
 CONFIG(c++11){
 #7z需要c11支持
 	

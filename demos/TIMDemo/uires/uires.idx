@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<resource>
+	<UIDEF>
+		<file name="xml_init" path="uidef\init.xml" />
+	</UIDEF>
+	<values>
+		<file name="string" path="values\string.xml" />
+		<file name="color" path="values\color.xml" />
+		<file name="skin" path="values\skin.xml" />
+	</values>
+	<layout>
+		<file name="wnd_main" path="layout\Wnd_Main.xml" />
+		<file name="layout_asyncmsgbox" path="\layout\Layout_AsyncMsgBox.xml" />
+		<file name="wnd_msgtooltip" path="layout\Wnd_MsgToolTip.xml" />
+		<file name="page_talk" path="layout\Page_Talk.xml" />
+		<file name="page_contact" path="layout\Page_Contact.xml" />
+		<file name="menu_tray" path="layout\Menu_Tray.xml" />
+		<file name="menu_template" path="layout\menu_template.xml" />
+		
+		<!-- ole控件相关的布局文件 -->
+		<file name="FileOleLayout" path="layout\richeditole\fileole.xml" />
+		<file name="SeperatorOleLayout" path="layout\richeditole\splitlineole.xml" />
+		<file name="ImageOleLayout" path="layout\richeditole\imageole.xml" />
+		<file name="FetchMoreOleLayout" path="layout\richeditole\fetchmoreole.xml" />
+		<file name="RemainderOleLayout" path="layout\richeditole\remainderole.xml" />
+		<file name="MetaFileOleLayout" path="layout\richeditole\MetaFileOle.xml" />
+	</layout>
+	
+	<image>
+		<file name="btn_close" path="image\btn_close[3].png" />
+		<file name="btn_menu" path="image\btn_menu[3].png" />
+		<file name="btn_min" path="image\btn_min[3].png" />
+		<file name="btn_reg" path="image\btn_reg[4{2,2}].png" />
+		<file name="img_busy" path="image\img_busy[8].png" />	
+		<file name="shadow" path="image\shadow[1{5,3,5,7}].png" />
+		<file name="bg" path="image\bg.png" />
+		<file name="menu_bk" path="image\menu_bk.png" />
+		<file name="vscrollbar" path="image\vscrollbar.png" />
+		<file name="btn_del" path="image\btn_del.png"/>
+		<file name="rich_left_bubble" path="image\rich_left_bubble.png"/>
+		<file name="rich_right_bubble" path="image\rich_right_bubble.png"/>
+		<file name="rich_center_bk" path="image\rich_center_bk.png"/>
+		<file name="rich_file_bk" path="image\rich_file_bk.png" />
+		<file name="fetch_more" path="image\fetch_more.png" />
+		<file name="check_chat_font" path="image\quickbar_font.png"/>
+		<file name="btn_chat_sendpic" path="image\quickbar_sendpic.png"/>
+		<file name="btn_chat_upload" path="image\quickbar_uploadfile.png" />
+		<file name="btn_chat_cut" path="image\quickbar_cut.png"/>
+		<file name="tab" path="image\tab.png" />
+		<file name="icon_talk" path="image\icon_talk.png" />
+		<file name="icon_contact" path="image\icon_contact.png" />
+		<file name="icon_count" path="image\icon_count.png" />
+		<file name="btn_talk" path="image\btn_talk.png" />
+		<file name="warning" path="image\warning.png" />
+		<file name="loading16" path="image\loading_16x16.gif" />
+		<file name="mask_30" path="image\mask_30.png" />
+		<file name="mask_42" path="image\mask_42.png" />
+		<file name="my" path="image\my.png" />
+		<file name="default" path="image\default.png" />
+	</image>
+</resource>

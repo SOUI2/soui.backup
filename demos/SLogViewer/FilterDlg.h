@@ -21,8 +21,14 @@ public:
 protected:
 
 	void OnInit(EventArgs *e);
+	void OnTabChanged(EventArgs *e);
+	void OnBtnSelectAll();
+	void OnBtnClearAll();
 
 	EVENT_MAP_BEGIN()
+		EVENT_ID_COMMAND(R.id.btn_select_all,OnBtnSelectAll)
+		EVENT_ID_COMMAND(R.id.btn_clear_all,OnBtnClearAll)
+		EVENT_HANDLER(EventTabSelChanged::EventID,OnTabChanged)
 		EVENT_HANDLER(EventInit::EventID,OnInit)
 	EVENT_MAP_END()
 
@@ -32,8 +38,14 @@ protected:
 	virtual void OnPidChange(const SArray<UINT> & lstPid);
 	virtual void OnTidChange(const SArray<UINT> & lstTid);
 
-	SListView * m_lvTags;
-	SListView * m_lvPid;
-	SListView * m_lvTid;
+	enum {
+		FilterTag=0,
+		FilterPid,
+		FilterTid,
+
+		FilterCount,
+	};
+	SListView * m_lvFilters[FilterCount];
+	int			m_iTab;
 	CMainDlg  * m_pMainDlg;
 };

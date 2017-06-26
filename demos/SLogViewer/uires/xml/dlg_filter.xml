@@ -8,6 +8,12 @@ trCtx="dlg_main"
       <icon src="ICON_LOGO:16"/>
       <text >@string/filter</text>
     </caption>
+    <window size="-2,-1" layout="vbox" gravity="center">
+      <window size="-1,-1" layout="hbox">
+        <button size="-1,-1" padding="10dp,5dp,10dp,5dp" name="btn_select_all" text="@string/select_all"/>
+        <button size="-1,-1" padding="10dp,5dp,10dp,5dp" extend_left="5dp" name="btn_clear_all" text="@string/clear_all"/>
+      </window>
+    </window>
     <tabctrl size="-2,0" weight="1" tabAlign="left" textDir="vert" tabWidth="25" tabHeight="80">
       <page title="@string/tag_filter" layout="hbox">
         <listview size="-2,-2" name="lv_tags">

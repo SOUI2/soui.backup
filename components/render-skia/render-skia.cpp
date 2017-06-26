@@ -1388,8 +1388,12 @@ namespace SOUI
         return m_bitmap.getPixels();
     }
 
-    void SBitmap_Skia::UnlockPixelBits( LPVOID )
+    void SBitmap_Skia::UnlockPixelBits( LPVOID pBuf)
     {
+		BITMAP bm;
+		GetObject(m_hBmp,sizeof(bm),&bm);
+		memcpy(bm.bmBits,pBuf,Width()*Height()*4);
+		m_bitmap.setPixels(pBuf);
     }
 
     const LPVOID SBitmap_Skia::GetPixelBits() const

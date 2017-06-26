@@ -18,9 +18,13 @@ namespace SOUI
 	void SLogBuffer::Insert(const SLogBuffer & src)
 	{
 		m_lstLogs.InsertArrayAt(0,&src.m_lstLogs);
+		for(int i=0;i<src.m_lstLogs.GetCount();i++)
+		{
+			m_lstLogs[i]->AddRef();
+		}
 		for(int i=src.m_lstLogs.GetCount();i<m_lstLogs.GetCount();i++)
 		{
-			SLogInfo *pLogInfo = src.m_lstLogs[i];
+			SLogInfo *pLogInfo = m_lstLogs[i];
 			pLogInfo->iLine += src.m_nLineCount;
 		}
 		m_nLineCount += src.m_nLineCount;
@@ -37,6 +41,7 @@ namespace SOUI
 			SLogInfo *pLogInfo = src.m_lstLogs[i];
 			pLogInfo->iLine += m_nLineCount;
 			m_lstLogs.Add(pLogInfo);
+			pLogInfo->AddRef();
 		}
 		m_nLineCount += src.m_nLineCount;
 
@@ -49,7 +54,10 @@ namespace SOUI
 	{
 		Clear();
 		m_lstLogs.Copy(src.m_lstLogs);
-		
+		for(int i=0;i<src.m_lstLogs.GetCount();i++)
+		{
+			m_lstLogs[i]->AddRef();
+		}
 		m_nLineCount = src.m_nLineCount;
 		CopyMap(m_mapTags , src.m_mapTags);
 		CopyMap(m_mapPids , src.m_mapPids);
@@ -107,6 +115,9 @@ namespace SOUI
 			if(!pNextLine) break;
 			pLine = pNextLine+1;
 		}
+		if(wcslen(pLine)==0) //处理最后一行是空行的问题.
+			nLines--;
+		m_nLineCount = nLines;
 	}
 
 	void SLogBuffer::Clear()
@@ -185,7 +196,7 @@ namespace SOUI
 		pColorizeText->ClearColorizeInfo();
 
 		SArray<SRange> hilightRange;
-		m_filterKeyInfo.FindKeyRange(pLogInfo->strContent,hilightRange);
+		m_filterKeyInfo.FindKeyRange(pLogInfo->strContentLower,hilightRange);
 
 		for(int i=0;i<hilightRange.GetCount();i++)
 		{
@@ -341,7 +352,12 @@ namespace SOUI
 
 			for(int i=0;i<m_lstLogs.GetCount();i++)
 			{
-				if(m_filterKeyInfo.TestExclude(m_lstLogs[i]->strContent) || !m_filterKeyInfo.TestInclude(m_lstLogs[i]->strContent) )
+				if(m_lstLogs[i]->strContentLower.GetLength()<m_lstLogs[i]->strContent.GetLength())
+				{
+					m_lstLogs[i]->strContentLower = m_lstLogs[i]->strContent;
+					m_lstLogs[i]->strContentLower.MakeLower();
+				}
+				if(m_filterKeyInfo.TestExclude(m_lstLogs[i]->strContentLower) || !m_filterKeyInfo.TestInclude(m_lstLogs[i]->strContentLower) )
 					continue;
 				if(m_lstLogs[i]->iLevel < m_filterLevel)
 					continue;

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<skin>
+	<imglist name="btn_close" src="image:btn_close" states="3" enableColorize="0" />
+	<imglist name="btn_menu" src="image:btn_menu" states="3" enableColorize="0" />
+	<imglist name="btn_min" src="image:btn_min" states="3" enableColorize="0" />
+	<imgframe name="btn_reg" src="image:btn_reg" states="4" margin="2,2,2,2" enableColorize="0" />
+	<imglist name="img_busy" src="image:img_busy" states="8" enableColorize="0" />
+	<imgframe name="shadow" src="image:shadow" states="1" margin="5,3,5,7" enableColorize="0" />
+	<imgframe name="bg" src="image:bg" states="1" enableColorize="0" />
+	<imgframe name="menu_bk" src="image:menu_bk" left="10" top="10" right="10" bottom="10"/>
+	<imglist name="btn_del" src="image:btn_del" states="3" />
+	<vscrollbar name="vscroll_rich" src="image:vscrollbar" states="1" margin="3" hasgripper="0" />
+	<colorrect name="broder_nor" normal="#7A7A7A" hover="#0078D7" pushdown="#610101" disable="#A0A0A0" cornerRadius="0" />
+	
+	<imgframe name="rich_left_bubble" src="image:rich_left_bubble" margin="15,19,15,19"/>
+	<imgframe name="rich_right_bubble" src="image:rich_right_bubble" margin="15,19,15,19"/>
+	<imgframe name="rich_center_bk" src="image:rich_center_bk" margin="9,9,9,9"/>
+	<imgframe name="rich_file_bk" src="image:rich_file_bk" margin="14,20,14,20" />
+	<imglist name="check_chat_font" src="image:check_chat_font" states="8"/>
+	<imglist name="btn_chat_sendpic" src="image:btn_chat_sendpic" states="3"/>
+	<imglist name="btn_chat_upload" src="image:btn_chat_upload" states="3" />
+	<imglist name="btn_chat_cut" src="image:btn_chat_cut" states="3"/>
+	<imglist name="tab" src="image:tab" states="3"/>
+	<imglist name="icon_talk" src="image:icon_talk" states="1"/>
+	<imglist name="icon_contact" src="image:icon_contact" states="1" />
+	<imglist name="icon_count" src="image:icon_count" />
+	
+	<imglist name="btn_talk" src="image:btn_talk" states="3" />
+	<imglist name="warning" src="image:warning" />
+	<imglist name="fetch_more" src="image:fetch_more" />
+	<antialias name="loading16" src="image:loading16"/>
+	<sysiconlist name="sysiconlist" flag="0" />
+	<masklist name="default_42" src="image:default" mask_a="1" mask="image:mask_42" />
+	<masklist name="my_42" src="image:my" mask_a="1" mask="image:mask_42" />
+	<masklist name="default" src="image:default" mask_a="1" mask="image:mask_30" />
+	<masklist name="my" src="image:my" mask_a="1" mask="image:mask_30" />
+</skin>
