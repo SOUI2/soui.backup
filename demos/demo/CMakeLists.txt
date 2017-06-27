@@ -19,7 +19,7 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SGifPlayer.h
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinGif.h
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinAPNG.h
-	${CMAKE_SOURCE_DIR}/controls.extend/SSkinImgFrame2.h
+	${CMAKE_SOURCE_DIR}/controls.extend/SSkinImgFrame3.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SVscrollbar.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SSkinNewScrollbar.h
 	${CMAKE_SOURCE_DIR}/controls.extend/FileHelper.h
@@ -51,7 +51,7 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SGifPlayer.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinGif.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/gif/SSkinAPNG.cpp
-	${CMAKE_SOURCE_DIR}/controls.extend/SSkinImgFrame2.cpp
+	${CMAKE_SOURCE_DIR}/controls.extend/SSkinImgFrame3.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/sipaddressctrl.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/propgrid/spropertygrid.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/propgrid/spropertyitembase.cpp
