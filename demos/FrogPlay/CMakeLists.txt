@@ -5,6 +5,7 @@ include_directories(${PROJECT_SOURCE_DIR}/components)
 include_directories(${PROJECT_SOURCE_DIR}/utilities/include)
 include_directories(${PROJECT_SOURCE_DIR}/SOUI/include)
 include_directories(${PROJECT_SOURCE_DIR}/third-part)
+include_directories(${PROJECT_SOURCE_DIR}/third-part/stdint)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 link_directories(${PROJECT_SOURCE_DIR}/third-part/vlc/lib)
 
