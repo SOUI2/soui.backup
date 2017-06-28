@@ -26,9 +26,9 @@ namespace SOUI
 //! base micro.
 #define SOUI_LOG_STREAM(id_or_name, filter, level,  log)\
     do{\
-		SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingleton().GetLogManager(); \
-		char logBuf[LOG4Z_LOG_BUF_SIZE];\
-		SOUI::Log4zStream ss(logBuf, LOG4Z_LOG_BUF_SIZE);\
+		SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingletonPtr()?SOUI::SApplication::getSingleton().GetLogManager():NULL; \
+		char logBuf[SOUI::LOG4Z_LOG_BUF_SIZE];\
+		SOUI::Log4zStream ss(logBuf, SOUI::LOG4Z_LOG_BUF_SIZE);\
 		ss << log;\
 		if (pLogMgr && pLogMgr->prePushLog(id_or_name,level)) \
 		{\
@@ -51,29 +51,29 @@ namespace SOUI
 #define LOG_FATAL(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_FATAL, log)
 
 //! super micro.
-#define LOGT(filter, log ) LOG_TRACE(LOG4Z_MAIN_LOGGER_ID,filter, log )
-#define LOGD(filter, log ) LOG_DEBUG(LOG4Z_MAIN_LOGGER_ID, filter,log )
-#define LOGI(filter, log ) LOG_INFO(LOG4Z_MAIN_LOGGER_ID,filter, log )
-#define LOGW(filter, log ) LOG_WARN(LOG4Z_MAIN_LOGGER_ID, filter,log )
-#define LOGE(filter, log ) LOG_ERROR(LOG4Z_MAIN_LOGGER_ID,filter, log )
-#define LOGA(filter, log ) LOG_ALARM(LOG4Z_MAIN_LOGGER_ID,filter, log )
-#define LOGF(filter, log ) LOG_FATAL(LOG4Z_MAIN_LOGGER_ID,filter, log )
+#define LOGT(filter, log ) LOG_TRACE(SOUI::LOG4Z_MAIN_LOGGER_ID,filter, log )
+#define LOGD(filter, log ) LOG_DEBUG(SOUI::LOG4Z_MAIN_LOGGER_ID, filter,log )
+#define LOGI(filter, log ) LOG_INFO(SOUI::LOG4Z_MAIN_LOGGER_ID,filter, log )
+#define LOGW(filter, log ) LOG_WARN(SOUI::LOG4Z_MAIN_LOGGER_ID, filter,log )
+#define LOGE(filter, log ) LOG_ERROR(SOUI::LOG4Z_MAIN_LOGGER_ID,filter, log )
+#define LOGA(filter, log ) LOG_ALARM(SOUI::LOG4Z_MAIN_LOGGER_ID,filter, log )
+#define LOGF(filter, log ) LOG_FATAL(SOUI::LOG4Z_MAIN_LOGGER_ID,filter, log )
 
 
 //! format input log.
 #ifdef LOG4Z_FORMAT_INPUT_ENABLE
 #define LOG_FORMAT(id_or_name, level, filter, logformat, ...) \
     do{ \
-		SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingleton().GetLogManager(); \
-		char logbuf[LOG4Z_LOG_BUF_SIZE]; \
+		SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingletonPtr()?SOUI::SApplication::getSingleton().GetLogManager():NULL; \
+		char logbuf[SOUI::LOG4Z_LOG_BUF_SIZE]; \
 		if(sizeof(logformat[0]) == sizeof(char))\
-			_snprintf_s(logbuf, LOG4Z_LOG_BUF_SIZE, _TRUNCATE, (const char*)logformat, ##__VA_ARGS__); \
+			_snprintf_s(logbuf, SOUI::LOG4Z_LOG_BUF_SIZE, _TRUNCATE, (const char*)logformat, ##__VA_ARGS__); \
 		else \
 		{\
-			wchar_t logbufw[LOG4Z_LOG_BUF_SIZE]; \
-			_snwprintf_s(logbufw, LOG4Z_LOG_BUF_SIZE, _TRUNCATE, (const wchar_t*)logformat, ##__VA_ARGS__); \
+			wchar_t logbufw[SOUI::LOG4Z_LOG_BUF_SIZE]; \
+			_snwprintf_s(logbufw, SOUI::LOG4Z_LOG_BUF_SIZE, _TRUNCATE, (const wchar_t*)logformat, ##__VA_ARGS__); \
 			DWORD dwLen = WideCharToMultiByte(CP_ACP, 0, logbufw, -1, NULL, 0, NULL, NULL);\
-			if (dwLen < LOG4Z_LOG_BUF_SIZE)\
+			if (dwLen < SOUI::LOG4Z_LOG_BUF_SIZE)\
 			{\
 				WideCharToMultiByte(CP_ACP, 0, logbufw, -1, logbuf, dwLen, NULL, NULL);\
 			}\
@@ -88,20 +88,20 @@ namespace SOUI
     } while (0)
 
 //!format string
-#define LOGFMT_TRACE(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_TRACE, filter, fmt, ##__VA_ARGS__)
-#define LOGFMT_DEBUG(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_DEBUG, filter, fmt, ##__VA_ARGS__)
-#define LOGFMT_INFO(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_INFO,  filter,fmt, ##__VA_ARGS__)
-#define LOGFMT_WARN(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_WARN,  filter,fmt, ##__VA_ARGS__)
-#define LOGFMT_ERROR(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_ERROR, filter, fmt, ##__VA_ARGS__)
-#define LOGFMT_ALARM(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_ALARM, filter, fmt, ##__VA_ARGS__)
-#define LOGFMT_FATAL(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, LOG_LEVEL_FATAL, filter, fmt, ##__VA_ARGS__)
-#define LOGFMTT( filter, fmt, ...) LOGFMT_TRACE(LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
-#define LOGFMTD( filter, fmt, ...) LOGFMT_DEBUG(LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
-#define LOGFMTI( filter, fmt, ...) LOGFMT_INFO(LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
-#define LOGFMTW( filter, fmt, ...) LOGFMT_WARN(LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
-#define LOGFMTE( filter, fmt, ...) LOGFMT_ERROR(LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
-#define LOGFMTA( filter, fmt, ...) LOGFMT_ALARM(LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
-#define LOGFMTF( filter, fmt, ...) LOGFMT_FATAL(LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
+#define LOGFMT_TRACE(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, SOUI::LOG_LEVEL_TRACE, filter, fmt, ##__VA_ARGS__)
+#define LOGFMT_DEBUG(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, SOUI::LOG_LEVEL_DEBUG, filter, fmt, ##__VA_ARGS__)
+#define LOGFMT_INFO(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, SOUI::LOG_LEVEL_INFO,  filter,fmt, ##__VA_ARGS__)
+#define LOGFMT_WARN(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, SOUI::LOG_LEVEL_WARN,  filter,fmt, ##__VA_ARGS__)
+#define LOGFMT_ERROR(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, SOUI::LOG_LEVEL_ERROR, filter, fmt, ##__VA_ARGS__)
+#define LOGFMT_ALARM(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, SOUI::LOG_LEVEL_ALARM, filter, fmt, ##__VA_ARGS__)
+#define LOGFMT_FATAL(id_or_name, filter, fmt, ...)  LOG_FORMAT(id_or_name, SOUI::LOG_LEVEL_FATAL, filter, fmt, ##__VA_ARGS__)
+#define LOGFMTT( filter, fmt, ...) LOGFMT_TRACE(SOUI::LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
+#define LOGFMTD( filter, fmt, ...) LOGFMT_DEBUG(SOUI::LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
+#define LOGFMTI( filter, fmt, ...) LOGFMT_INFO(SOUI::LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
+#define LOGFMTW( filter, fmt, ...) LOGFMT_WARN(SOUI::LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
+#define LOGFMTE( filter, fmt, ...) LOGFMT_ERROR(SOUI::LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
+#define LOGFMTA( filter, fmt, ...) LOGFMT_ALARM(SOUI::LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
+#define LOGFMTF( filter, fmt, ...) LOGFMT_FATAL(SOUI::LOG4Z_MAIN_LOGGER_ID, filter, fmt,  ##__VA_ARGS__)
 #else
 inline void empty_log_format_function1(LoggerId id, const char * tag, const char* fmt, ...){}
 inline void empty_log_format_function1(const char * name, const char * tag, const char* fmt, ...){}
