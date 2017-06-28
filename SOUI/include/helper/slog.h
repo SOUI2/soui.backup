@@ -26,7 +26,7 @@ namespace SOUI
 //! base micro.
 #define SOUI_LOG_STREAM(id_or_name, filter, level,  log)\
     do{\
-		SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingleton().GetLogManager(); \
+		SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingletonPtr()?SOUI::SApplication::getSingleton().GetLogManager():NULL; \
 		char logBuf[SOUI::LOG4Z_LOG_BUF_SIZE];\
 		SOUI::Log4zStream ss(logBuf, SOUI::LOG4Z_LOG_BUF_SIZE);\
 		ss << log;\
@@ -64,7 +64,7 @@ namespace SOUI
 #ifdef LOG4Z_FORMAT_INPUT_ENABLE
 #define LOG_FORMAT(id_or_name, level, filter, logformat, ...) \
     do{ \
-		SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingleton().GetLogManager(); \
+		SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingletonPtr()?SOUI::SApplication::getSingleton().GetLogManager():NULL; \
 		char logbuf[SOUI::LOG4Z_LOG_BUF_SIZE]; \
 		if(sizeof(logformat[0]) == sizeof(char))\
 			_snprintf_s(logbuf, SOUI::LOG4Z_LOG_BUF_SIZE, _TRUNCATE, (const char*)logformat, ##__VA_ARGS__); \
