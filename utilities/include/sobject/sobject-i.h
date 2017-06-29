@@ -47,10 +47,10 @@ public:                                                 \
 		return classname;                               \
 	}                                                   \
 	\
-	virtual int GetObjectType()  const              \
+	virtual int GetObjectType()  const                  \
 	{                                                   \
         int ret = clsType;                              \
-		if(ret == SOUI::Undef)                                \
+		if(ret == SOUI::Undef)                          \
 			ret = __super::GetObjectType();             \
 		return ret;                                     \
 	}                                                   \
