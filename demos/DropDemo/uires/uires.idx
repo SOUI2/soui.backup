@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<resource>
+	<UIDEF>
+		<file name="xml_init" path="uidef\init.xml" />
+	</UIDEF>
+	<values>
+		<file name="string" path="values\string.xml" />
+		<file name="color" path="values\color.xml" />
+		<file name="skin" path="values\skin.xml" />
+	</values>
+	<LAYOUT>
+		<file name="wnd_notify" path="layout\Wnd_NotifyMsg.xml" />
+		<file name="wnd_main" path="layout\Wnd_Main.xml" />
+		<file name="Menu_FileList" path="layout\Menu_FileList.xml" />
+		<file name="Menu_FileListItem" path="layout\Menu_FileListItem.xml" />
+	</LAYOUT>
+	<image>
+		<file name="bg" path="image\bg.png" />
+		<file name="btn_close" path="image\btn_close[3].png" />
+		<file name="btn_max" path="image\btn_max[3].png" />
+		<file name="btn_restore" path="image\btn_restore[3].png" />
+		<file name="btn_min" path="image\btn_min[3].png" />
+		<file name="btn_menu" path="image\btn_menu[3].png" />
+		<file name="btn_back" path="image\btn_back[4].png" />
+		<file name="btn_forward" path="image\btn_forward[4].png" />
+		<file name="btn_next" path="image\btn_next[3].png" />
+		<file name="btn_prev" path="image\btn_prev[3].png" />
+		<file name="btn_refresh" path="image\btn_refresh[4].png" />
+		<file name="btn_reg" path="image\btn_reg[4{2,2}].png" />
+		<file name="img_busy" path="image\img_busy[8].png" />
+		<file name="lcex_header" path="image\lcex_header[4{2,2}].png" />
+		<file name="lcex_header_arrow" path="image\lcex_header_arrow[2].png" />
+		<file name="lcex_selectrange" path="image\lcex_selectrange.png" />
+		<file name="shadow" path="image\shadow[1{5,3,5,7}].png" />
+		<file name="tab_left" path="image\tab_left[3{2,0}].png" />
+		<file name="tab_main" path="image\tab_main[4].png" />
+		<file name="tool_box" path="image\tool_box[4].png" />
+		<file name="tree_icon" path="image\tree_icon[3].png" />
+		
+	</image>
+</resource>

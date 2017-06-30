@@ -1,0 +1,16 @@
+<menu itemHeight="26" iconMargin="4" textMargin="8" maxWidth="200">
+	<item id="111">打开(&O)</item>
+	<item id="112">打印</item>
+	<sep/>
+	<item id="121">签入</item>
+	<item id="122">签出</item>
+	<sep/>
+	<item id="131">剪切(T)</item>
+	<item id="132" radio="1">复制(&C)</item>
+	<item id="133">粘贴(&P)</item>
+	<sep/>
+	<item id="141">删除(&D)</item>
+	<item id="142">重命名(&M)</item>
+	<sep/>
+	<item id="151">属性(&R)</item>
+</menu>

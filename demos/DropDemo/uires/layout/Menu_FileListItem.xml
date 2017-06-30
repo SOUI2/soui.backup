@@ -1,0 +1,16 @@
+<menuRoot skin="_skin.sys.wnd.bkgnd" itemHeight="26" iconPos="4,4" textOffset="5" iconBarWidth="24" maxWidth="180" minWidth="160" margin="3,3,3,3" colorBkgnd="#FF0000">
+	<menuItem id="1" >打开(&O)</menuItem>
+	<menuItem id="2" icon="1" >打印(&P)</menuItem>
+	
+	<sep/>
+	<menuItem id="3" >剪切(&T)</menuItem>
+	<menuItem id="51" icon="0" >复制(&C)</menuItem>
+	<menuItem id="52" icon="1" >粘贴(&P)</menuItem>
+	<sep/>
+	<menuItem id="53" icon="2" >删除(&D)</menuItem>
+	<menuItem id="54" icon="3" >重命名(&M)</menuItem>
+
+	<sep/>
+
+	<menuItem id="6" hotKey="x">属性(&R)</menuItem>
+</menuRoot>
