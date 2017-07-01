@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<skin>
+	<imgframe name="bg" src="image:bg" states="1" enableColorize="0" />
+	<imglist name="btn_close" src="image:btn_close" states="3" enableColorize="0" />
+	<imglist name="btn_max" src="image:btn_max" states="3" enableColorize="0" />
+	<imglist name="btn_restore" src="image:btn_restore" states="3" enableColorize="0" />
+	<imglist name="btn_min" src="image:btn_min" states="3" enableColorize="0" />
+	<imglist name="btn_menu" src="image:btn_menu" states="3" enableColorize="0" />
+	<imglist name="btn_back" src="image:btn_back" states="4" enableColorize="0" />
+	<imglist name="btn_forward" src="image:btn_forward" states="4" enableColorize="0" />
+	<imglist name="btn_next" src="image:btn_next" states="3" enableColorize="0" />
+	<imglist name="btn_prev" src="image:btn_prev" states="3" enableColorize="0" />
+	<imglist name="btn_refresh" src="image:btn_refresh" states="4" enableColorize="0" />
+	<imgframe name="btn_reg" src="image:btn_reg" states="4" margin="2,2,2,2" enableColorize="0" />
+	<imglist name="img_busy" src="image:img_busy" states="8" enableColorize="0" />
+	<imgframe name="lcex_header" src="image:lcex_header" states="4" margin="2,2,2,2" enableColorize="0" />
+	<imglist name="lcex_header_arrow" src="image:lcex_header_arrow" states="2" enableColorize="0" />
+	<imgframe name="lcex_selectrange" src="image:lcex_selectrange" states="1" margin="4,0,4,2" enableColorize="0" />
+	<imgframe name="shadow" src="image:shadow" states="1" margin="5,3,5,7" enableColorize="0" />
+	<imgframe name="tab_left" src="image:tab_left" states="3" margin="2,0,2,0" enableColorize="0" />
+	<imglist name="tab_main" src="image:tab_main" states="4" enableColorize="0" />
+	<imglist name="tool_box" src="image:tool_box" states="4" enableColorize="0" />
+	<imglist name="tree_icon" src="image:tree_icon" states="3" enableColorize="0" />
+	<sysiconlist name="sysiconlist" flag="1" />
+</skin>

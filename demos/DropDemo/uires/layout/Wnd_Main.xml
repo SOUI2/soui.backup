@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SOUI name="main" title="网盘" width="900" height="600" margin="5,5,8,10" resizable="1" appWnd="1" translucent="1" >
+
+<root skin="shadow" >
+	<window pos="5,3,-5,-7" colorBkgnd="@color/bg">
+		<caption pos="0,0,-0,@100" skin="bg"  > <!-- 标题栏 -->
+			<text pos="30,10" class="cls_title" >网盘</text>			
+			<imgbtn name="btn_menu" pos="-108,0" skin="btn_menu" />
+			<imgbtn name="btn_min" pos="[0,0" skin="btn_min" />
+			<imgbtn name="btn_restore" pos="[0,0" skin="btn_restore" show="0" />
+			<imgbtn name="btn_max" pos="{0,0" skin="btn_max"/>
+			<imgbtn name="btn_close" pos="[0,0" skin="btn_close" tip="close"/>
+		</caption>
+
+		<window pos="0,[0,-0,@30" > 	<!-- 导航 地址栏 -->
+			<imgbtn name="btn_back" pos="10,[5" skin="btn_back"  tip="后退" />
+			<imgbtn name="btn_forward" pos="[0,{0" skin="btn_forward" tip="前进" />
+			<imgbtn name="btn_refresh" pos="[0,{0" skin="btn_refresh" tip="刷新" />
+			<pathbar name="bar_dir" pos="[4,{1,]-10,@26" colorBorder="#D9D9D9" margin="1" />
+			<edit pos="-160,{0,-10,@26" name="edit_username" cueText="搜索"/>
+		</window>
+
+		<filelist pos="4,[0,-0,-24" name="lc_file" hotTrack="1" itemHeight="20" headerHeight="20" iconSkin="sysiconlist" multiSelection="1" checkBox="0">
+	        <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1" sortSkin="lcex_header_arrow" itemSkin="lcex_header">
+				<items>
+					<item width="500">文件名称</item>
+					<item width="140">修改时间</item>
+	                <item width="80">大小</item>
+				</items>
+	        </header>
+	    </filelist>
+      
+		<window pos="0,[,-0,-0" colorBorder="#D9D9D9" margin="0,1,0,0" > 	<!-- 状态栏-->
+			<text name="text_status1" pos="10,0,@80,-0" />
+			<text name="text_status2" pos="[0,{0" />
+			<text name="text_status3" pos="[0,{0,-80,-0" />
+		</window>
+		
+	</window>
+</root>
+
+</SOUI>

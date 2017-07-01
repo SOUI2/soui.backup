@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SOUI title="Etimes提示" width="350" height="200" >
+
+<root colorBkgnd="#007ACCE9">
+	
+	<caption pos="1,0,-1,@30" colorBkgnd="#007ACCE9">
+		<text pos="10,6" class="cls_title" >温馨提示</text>
+		<imgbtn id="2" skin="btn_close" pos="-45,0" tip="关闭" animate="1"/>
+	</caption>
+	
+	<window pos="1,[0,-1,-1" colorBkgnd="#FFFFFF" >
+		<linkex name="link_url" pos="20,[20" maxWidth="320" class="cls_link" dotted="0" font="1" href=""></linkex>
+
+		<hr pos="20,-35,-20,@1" colorLine="#007ACCE9" size="1" />
+		
+		<linkex name="link_more" pos="-120,[6" maxWidth="200" class="cls_link" dotted="0" font="1" href="">查看更多 >></linkex>
+	</window>
+	
+</root>
+
+</SOUI>

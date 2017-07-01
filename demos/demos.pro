@@ -26,6 +26,7 @@ SUBDIRS += MultiLangs
 SUBDIRS += TXMgr
 SUBDIRS += SLogViewer
 SUBDIRS += souieditor
+SUBDIRS += DropDemo
 
 CONFIG(c++11){
 	SUBDIRS += timdemo	
@@ -54,6 +55,7 @@ CONFIG(x64){
 	TXMgr64.depends += soui64
 	SLogViewer64.depends += soui64 scintilla64
 	souieditor64.depends += soui64 scintilla64
+	DropDemo64.depends += soui64
 }
 else{
 	360.depends += soui skia
@@ -72,4 +74,5 @@ else{
 	TXMgr.depends += soui
              SLogViewer.depends += soui scintilla
 	souieditor.depends += soui scintilla
+	DropDemo.depends += soui
 }
