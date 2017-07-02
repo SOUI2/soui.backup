@@ -27,5 +27,7 @@ namespace SOUI
 		GridGravityY yGravity;
 		SLayoutSize  width;
 		SLayoutSize  height;
+		float fColWeight;
+		float fRowWeight;
 	};
 }

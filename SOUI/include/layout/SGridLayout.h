@@ -49,6 +49,8 @@ namespace SOUI
 				ATTR_ENUM_VALUE(L"middle",gMiddle)
 				ATTR_ENUM_VALUE(L"bottom",gBottom)
 			ATTR_ENUM_END(yGravity)
+			ATTR_FLOAT(L"columnWeight",fColWeight,TRUE)
+			ATTR_FLOAT(L"rowWeight",fRowWeight,TRUE)
 		SOUI_ATTRS_BREAK()
 
 	protected:
