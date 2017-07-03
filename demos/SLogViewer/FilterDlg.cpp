@@ -60,6 +60,22 @@ public:
 		}
 	}
 
+	void OnlyTag(const SStringW & strTag)
+	{
+		for(int i=0;i<m_lstTagCheck.GetCount();i++)
+		{
+			if(m_lstTagCheck[i].tag == strTag)
+			{
+				m_lstTagCheck[i].bSelected = true;
+			}else
+			{
+				m_lstTagCheck[i].bSelected = false;
+			}
+		}
+		notifyDataSetChanged();
+		NotifyListener();
+	}
+
 protected:
 	static int TagCheckCmp(const void * p1, const void*p2)
 	{
@@ -404,4 +420,10 @@ void CFilterDlg::ExcludeTag(const SStringW & strTag)
 {
 	CFilterTagAdapter * pAdapter = (CFilterTagAdapter*)m_lvFilters[FilterTag]->GetAdapter();
 	pAdapter->ExcludeTag(strTag);
+}
+
+void CFilterDlg::OnlyTag(const SStringW & strTag)
+{
+	CFilterTagAdapter * pAdapter = (CFilterTagAdapter*)m_lvFilters[FilterTag]->GetAdapter();
+	pAdapter->OnlyTag(strTag);
 }

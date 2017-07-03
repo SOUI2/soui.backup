@@ -2,4 +2,5 @@
 <menu itemHeight="26" iconMargin="4" textMargin="8" >
   <item id="100">@string/copy</item>
   <item id="101">@string/exclude_tag</item>
+  <item id="102">@string/only_tag</item>
 </menu>
