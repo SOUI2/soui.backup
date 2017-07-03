@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu itemHeight="26" iconMargin="4" textMargin="8" maxWidth="90">
+<menu itemHeight="26" iconMargin="4" textMargin="8" >
   <item id="100">@string/copy</item>
+  <item id="101">@string/exclude_tag</item>
 </menu>

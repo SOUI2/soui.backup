@@ -6,6 +6,10 @@
       <source>copy</source>
       <translation>复制</translation>
     </message>
+    <message>
+      <source>exclude tag:</source>
+      <translation>排除标签:</translation>
+    </message>
   </context>
   <context name="messagebox">
     <message>
