@@ -504,7 +504,9 @@ namespace SOUI
 				case gBottom:pt2.y+=(szCell.cy-szDesired.cy);break;
 				}
 				CRect rcCell(pt,szDesired);
-				pCell->OnRelayout(rcCell);			
+				pCell->OnRelayout(rcCell);
+
+				pt.x += pCellsSize[iCell].cx;
 			}
 			pt.x=rcParent.left;
 			pt.y += pCellsHeight[y];

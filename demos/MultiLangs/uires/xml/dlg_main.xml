@@ -73,6 +73,11 @@
           <img pos="5,5" skin="shape_test" id="2000"/>          
           <edit pos="|0,|0,@200dp,@30dp" offset="-0.5,-0.5" font="size:18dp">编辑窗口</edit>
         </page>
+        <page title="page4" layout="gridLayout" columnCount="2" rowCount="2">
+          <window size="30,30" colorBkgnd="#ff0000"/>
+          <window size="30,30" colorBkgnd="#ffff00"/>
+          <window size="30,30" colorBkgnd="#ff00ff" columnSpan="2"/>
+        </page>
       </tabctrl>
     </window>
   </root>
