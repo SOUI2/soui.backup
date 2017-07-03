@@ -49,6 +49,8 @@ namespace SOUI
 		nColSpan=nRowSpan=1;
 		xGravity = gCenter;
 		yGravity = gMiddle;
+		fColWeight = 0.0f;
+		fRowWeight = 0.0f;
 	}
 
 	void SGridLayoutParam::SetMatchParent(ORIENTATION orientation)
@@ -400,7 +402,7 @@ namespace SOUI
 		int *pCellsWidth = new int[m_nCols];
 		int nTotalWidth=0;
 		float *pColsWeight = new float[m_nCols];
-		float totalColWeight =0.0f;
+		float totalColsWeight =0.0f;
 		//计算列宽及相应的weight
 		for(int x=0;x<m_nCols;x++)
 		{
@@ -415,7 +417,7 @@ namespace SOUI
 			pCellsWidth[x] = maxWid;
 			nTotalWidth += maxWid;
 			pColsWeight[x] = maxWeight;
-			totalColWeight += maxWeight;
+			totalColsWeight += maxWeight;
 		}
 		//计算列高
 		int *pCellsHeight = new int[m_nRows];
@@ -444,20 +446,20 @@ namespace SOUI
 		delete []pCellsRowWeight;
 
 		//分配weight
-		if(nTotalWidth<rcParent.Width())
+		if(nTotalWidth<rcParent.Width() && totalColsWeight>0.0f)
 		{
 			int nRemain = rcParent.Width() - nTotalWidth;
 			for(int i=0;i<m_nCols;i++)
 			{
-				pCellsWidth[i]+=(int)(nRemain*pColsWeight[i]/totalColWeight);
+				pCellsWidth[i]+=(int)(nRemain*pColsWeight[i]/totalColsWeight);
 			}
 		}
-		if(nTotalHeight < rcParent.Height())
+		if(nTotalHeight < rcParent.Height() && fTotalRowsWeight>0.0f)
 		{
 			int nRemain = rcParent.Height()-nTotalHeight;
 			for(int i=0;i<m_nRows;i++)
 			{
-				pCellsHeight[i]+=(int)(nRemain*pRowsWeight[i]/totalColWeight);
+				pCellsHeight[i]+=(int)(nRemain*pRowsWeight[i]/fTotalRowsWeight);
 			}
 		}
 		delete []pColsWeight;
@@ -471,6 +473,10 @@ namespace SOUI
 			{
 				int iCell = y*m_nCols+x;
 				if(pCellsSpan[iCell].x==0 || pCellsSpan[iCell].y==0) continue;
+				SWindow *pCell = pCellsChild[iCell];
+				if(!pCell) break;
+
+				SGridLayoutParam * pLayoutParam = pCell->GetLayoutParamT<SGridLayoutParam>();
 
 				CSize szCell;
 				for(int xx=0;xx<pCellsSpan[iCell].x;xx++)
@@ -478,8 +484,6 @@ namespace SOUI
 				for(int yy=0;yy<pCellsSpan[iCell].y;yy++)
 					szCell.cy += pCellsHeight[y+yy];
 
-				SWindow *pCell = pCellsChild[iCell];
-				SGridLayoutParam * pLayoutParam = pCell->GetLayoutParamT<SGridLayoutParam>();
 
 				CSize szDesired = pCellsSize[iCell];
 				if(pLayoutParam->IsMatchParent(Horz))

@@ -40,6 +40,7 @@ namespace SOUI
 		SLayoutSize & operator = (const SLayoutSize & src);
 
 		static SLayoutSize fromString(const SStringW & strSize);
+		static bool fequal(float a, float b);
 	};
 
 
