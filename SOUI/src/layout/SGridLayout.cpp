@@ -486,6 +486,9 @@ namespace SOUI
 
 
 				CSize szDesired = pCellsSize[iCell];
+				szDesired.cx *= pCellsSpan[iCell].x;
+				szDesired.cy *= pCellsSpan[iCell].y;
+
 				if(pLayoutParam->IsMatchParent(Horz))
 					szDesired.cx = szCell.cx;
 				if(pLayoutParam->IsMatchParent(Vert))

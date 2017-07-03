@@ -75,8 +75,8 @@
         </page>
         <page title="page4" layout="gridLayout" columnCount="2" rowCount="2">
           <window size="30,30" colorBkgnd="#ff0000"/>
-          <window size="30,30" colorBkgnd="#ffff00"/>
-          <window size="30,30" colorBkgnd="#ff00ff" columnSpan="2"/>
+          <window size="-2,-2" colorBkgnd="#ffff00" rowSpan="2" columnWeight="1"/>
+          <window size="-2,30" colorBkgnd="#ff00ff"/>
         </page>
       </tabctrl>
     </window>
