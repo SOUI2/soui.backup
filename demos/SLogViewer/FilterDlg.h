@@ -18,6 +18,7 @@ public:
 	void UpdateTags(const SArray<SStringW> & lstTags);
 	void UpdatePids(const SArray<UINT> & lstPids);
 	void UpdateTids(const SArray<UINT> & lstTids);
+	void ExcludeTag(const SStringW & strTag);
 protected:
 
 	void OnInit(EventArgs *e);

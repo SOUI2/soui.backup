@@ -352,23 +352,24 @@ namespace SOUI
 
 			for(int i=0;i<m_lstLogs.GetCount();i++)
 			{
-				if(m_lstLogs[i]->strContentLower.GetLength()<m_lstLogs[i]->strContent.GetLength())
+				SLogInfo * & pLogInfo = m_lstLogs[i];
+				if(pLogInfo->strContentLower.GetLength()<pLogInfo->strContent.GetLength())
 				{
-					m_lstLogs[i]->strContentLower = m_lstLogs[i]->strContent;
-					m_lstLogs[i]->strContentLower.MakeLower();
+					pLogInfo->strContentLower = pLogInfo->strContent;
+					pLogInfo->strContentLower.MakeLower();
 				}
-				if(m_filterKeyInfo.TestExclude(m_lstLogs[i]->strContentLower) || !m_filterKeyInfo.TestInclude(m_lstLogs[i]->strContentLower) )
+				if(m_filterKeyInfo.TestExclude(pLogInfo->strContentLower) || !m_filterKeyInfo.TestInclude(pLogInfo->strContentLower) )
 					continue;
-				if(m_lstLogs[i]->iLevel < m_filterLevel)
+				if(pLogInfo->iLevel < m_filterLevel)
 					continue;
-				if(!m_filterTags.IsEmpty() && !m_filterTags.Lookup(m_lstLogs[i]->strTag))
+				if(!m_filterTags.IsEmpty() && !m_filterTags.Lookup(pLogInfo->strTag))
 					continue;
-				if(!m_filterPids.IsEmpty() && !m_filterPids.Lookup(m_lstLogs[i]->dwPid))
+				if(!m_filterPids.IsEmpty() && !m_filterPids.Lookup(pLogInfo->dwPid))
 					continue;
-				if(!m_filterTids.IsEmpty() && !m_filterTids.Lookup(m_lstLogs[i]->dwTid))
+				if(!m_filterTids.IsEmpty() && !m_filterTids.Lookup(pLogInfo->dwTid))
 					continue;
 
-				m_lstFilterResult->Add(m_lstLogs[i]);
+				m_lstFilterResult->Add(pLogInfo);
 			}
 		}
 		notifyDataSetChanged();
@@ -475,5 +476,82 @@ namespace SOUI
 	}
 
 
+
+	//////////////////////////////////////////////////////////////////////////
+	int SFilterKeyInfo::FindKeyRange(const SStringW &strContent, SArray<SRange> &outRange) const
+	{
+		outRange.RemoveAll();
+		for(int i=0;i<m_lstInclude.GetCount();i++)
+		{
+			SStringW key = m_lstInclude[i];
+			int iEnd=0;
+			for(;;)
+			{
+				int iBegin= strContent.Find(key,iEnd);
+				if(iBegin == -1) break;
+				iEnd = iBegin + key.GetLength();
+				outRange.Add(SRange(iBegin,iEnd));
+			}
+		}
+		if(outRange.IsEmpty()) return 0;
+		qsort(outRange.GetData(),outRange.GetCount(),sizeof(SRange),SRangeCmp);		
+		return outRange.GetCount();
+	}
+
+	bool SFilterKeyInfo::TestInclude(const SStringW &strContent) const
+	{
+		if(m_lstInclude.IsEmpty()) return true;
+
+		for(int i=0;i<m_lstInclude.GetCount();i++)
+		{
+			SStringT key = m_lstInclude[i];
+			if(-1 != strContent.Find(key)) return true;
+		}
+		return false;
+	}
+
+	bool SFilterKeyInfo::TestExclude(const SStringW &strContent) const
+	{
+		for(int i=0;i<m_lstExclude.GetCount();i++)
+		{
+			if(strContent.Find(m_lstExclude[i])!=-1) return true;
+		}
+		return false;
+	}
+
+	void SFilterKeyInfo::SetFilterKeys(const SStringW & szFilter)
+	{
+		Clear();
+		SStringWList keys;
+		int nKeys = SplitString(szFilter,L'|',keys);
+		for(int i=0;i<nKeys;i++)
+		{
+			if(keys[i].GetAt(0)==_T('-'))
+			{
+				SStringW key = keys[i].Right(keys[i].GetLength()-1);
+				if(!key.IsEmpty()) m_lstExclude.Add(key.MakeLower());
+			}
+			else
+				m_lstInclude.Add(keys[i].MakeLower());
+		}
+	}
+
+	bool SFilterKeyInfo::IsEmpty() const
+	{
+		return m_lstExclude.IsEmpty() && m_lstInclude.IsEmpty();
+	}
+
+	void SFilterKeyInfo::Clear()
+	{
+		m_lstExclude.RemoveAll();
+		m_lstInclude.RemoveAll();
+	}
+
+	int SFilterKeyInfo::SRangeCmp(const void* p1, const void* p2)
+	{
+		const SRange *r1 = (const SRange *)p1;
+		const SRange *r2 = (const SRange *)p2;
+		return r1->iBegin - r2->iBegin;
+	}
 
 }

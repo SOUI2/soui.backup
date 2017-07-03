@@ -21,4 +21,5 @@
     <copy value="copy"/>
     <select_all value="select all"/>
     <clear_all value="clear all"/>
+    <exclude_tag value="exclude tag:"/>
   </string>
