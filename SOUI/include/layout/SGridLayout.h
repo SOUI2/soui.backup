@@ -39,16 +39,16 @@ namespace SOUI
 			ATTR_CUSTOM(L"width",OnAttrWidth)
 			ATTR_CUSTOM(L"height",OnAttrHeight)
 			ATTR_CUSTOM(L"size",OnAttrSize)
-			ATTR_ENUM_BEGIN(L"xGravity",GridGravityX,TRUE)
+			ATTR_ENUM_BEGIN(L"layout_gravityX",GridGravity,TRUE)
 				ATTR_ENUM_VALUE(L"left",gLeft)
 				ATTR_ENUM_VALUE(L"center",gCenter)
 				ATTR_ENUM_VALUE(L"right",gRight)
-			ATTR_ENUM_END(xGravity)
-			ATTR_ENUM_BEGIN(L"yGravity",GridGravityY,TRUE)
+			ATTR_ENUM_END(layoutGravityX)
+			ATTR_ENUM_BEGIN(L"layout_gravityY",GridGravity,TRUE)
 				ATTR_ENUM_VALUE(L"top",gTop)
 				ATTR_ENUM_VALUE(L"middle",gMiddle)
 				ATTR_ENUM_VALUE(L"bottom",gBottom)
-			ATTR_ENUM_END(yGravity)
+			ATTR_ENUM_END(layoutGravityY)
 			ATTR_FLOAT(L"columnWeight",fColWeight,TRUE)
 			ATTR_FLOAT(L"rowWeight",fRowWeight,TRUE)
 		SOUI_ATTRS_BREAK()
@@ -81,6 +81,16 @@ namespace SOUI
 			ATTR_INT(L"rowCount",m_nRows,TRUE)
 			ATTR_LAYOUTSIZE(L"xInterval",m_xInterval,TRUE)
 			ATTR_LAYOUTSIZE(L"yInterval",m_yInterval,TRUE)
+			ATTR_ENUM_BEGIN(L"gravityX",GridGravity,TRUE)
+				ATTR_ENUM_VALUE(L"left",gLeft)
+				ATTR_ENUM_VALUE(L"center",gCenter)
+				ATTR_ENUM_VALUE(L"right",gRight)
+			ATTR_ENUM_END(m_GravityX)
+			ATTR_ENUM_BEGIN(L"gravityY",GridGravity,TRUE)
+				ATTR_ENUM_VALUE(L"top",gTop)
+				ATTR_ENUM_VALUE(L"middle",gMiddle)
+				ATTR_ENUM_VALUE(L"bottom",gBottom)
+			ATTR_ENUM_END(m_GravityY)
 		SOUI_ATTRS_BREAK()
 	protected:
 
@@ -88,6 +98,10 @@ namespace SOUI
 		int m_nRows;
 		SLayoutSize m_xInterval;
 		SLayoutSize m_yInterval;
+
+		GridGravity m_GravityX;
+		GridGravity m_GravityY;
+
 	};
 
 }

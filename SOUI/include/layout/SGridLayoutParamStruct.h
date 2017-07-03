@@ -5,17 +5,16 @@
 namespace SOUI
 {
 
-	enum GridGravityX{
+	enum GridGravity{
+		gUndef=-1,
 		gLeft=0,
-		gCenter,
-		gRight,
+		gTop=0,
+		gCenter=1,
+		gMiddle=1,
+		gRight=2,
+		gBottom=2,
 	};
 
-	enum GridGravityY{
-		gTop=0,
-		gMiddle,
-		gBottom,
-	};
 
 	struct SGridLayoutParamStruct
 	{
@@ -23,8 +22,8 @@ namespace SOUI
 		int iRow;
 		int nColSpan;
 		int nRowSpan;
-		GridGravityX xGravity;
-		GridGravityY yGravity;
+		GridGravity layoutGravityX;
+		GridGravity layoutGravityY;
 		SLayoutSize  width;
 		SLayoutSize  height;
 		float fColWeight;

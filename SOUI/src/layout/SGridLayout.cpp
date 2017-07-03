@@ -47,8 +47,8 @@ namespace SOUI
 		height.setWrapContent();
 		iRow=iCol=-1;
 		nColSpan=nRowSpan=1;
-		xGravity = gCenter;
-		yGravity = gMiddle;
+		layoutGravityX = gUndef;
+		layoutGravityY = gUndef;
 		fColWeight = 0.0f;
 		fRowWeight = 0.0f;
 	}
@@ -176,7 +176,7 @@ namespace SOUI
 
 
 	//////////////////////////////////////////////////////////////////////////
-	SGridLayout::SGridLayout(void)
+	SGridLayout::SGridLayout(void):m_GravityX(gCenter),m_GravityY(gMiddle)
 	{
 	}
 
@@ -353,7 +353,7 @@ namespace SOUI
 				}
 			}
 
-			//计算出网络大小
+			//计算出网络大小,强制使用-1,-1代表自适应大小
 			CSize szCell = pCell->GetDesiredSize(-1,-1);
 			//填充网格,把大小平均分散到网格中。
 			szCell.cx/=colSpan;
@@ -494,13 +494,17 @@ namespace SOUI
 				if(pLayoutParam->IsMatchParent(Vert))
 					szDesired.cy = szCell.cy;
 				CPoint pt2=pt;
-				switch(pLayoutParam->xGravity)
+				GridGravity gx = pLayoutParam->layoutGravityX;
+				if(gx==gUndef) gx=m_GravityX;
+				switch(gx)
 				{
 				case gLeft:break;
 				case gCenter:pt2.x+=(szCell.cx-szDesired.cx)/2;break;
 				case gRight:pt2.x+=(szCell.cx-szDesired.cx);break;
 				}
-				switch(pLayoutParam->yGravity)
+				GridGravity gy = pLayoutParam->layoutGravityY;
+				if(gy==gUndef) gy = m_GravityY;
+				switch(gy)
 				{
 				case gTop:break;
 				case gMiddle:pt2.y+=(szCell.cy-szDesired.cy)/2;break;
