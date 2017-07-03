@@ -303,12 +303,18 @@ namespace SOUI
 
 		delete []pCellsSize;
 		delete []pCellsOccupy;
+
+		szRet.cx += m_xInterval.toPixelSize(pParent->GetScale()) * (m_nCols-1);
+		szRet.cy += m_yInterval.toPixelSize(pParent->GetScale()) * (m_nRows-1);
 		return szRet;
 	}
 
 	void SGridLayout::LayoutChildren(SWindow * pParent)
 	{
 		CRect rcParent = pParent->GetChildrenLayoutRect();
+		int xInter = m_xInterval.toPixelSize(pParent->GetScale());
+		int yInter = m_yInterval.toPixelSize(pParent->GetScale());
+
 		//先计算出每个格子的大小,算法和MeasureChildren一样，后面再考虑如何优化
 		int cells = m_nCols*m_nRows;
 		CSize * pCellsSize = new CSize[cells];
@@ -446,17 +452,19 @@ namespace SOUI
 		delete []pCellsRowWeight;
 
 		//分配weight
-		if(nTotalWidth<rcParent.Width() && totalColsWeight>0.0f)
+		int netParentWid = rcParent.Width()-(m_nCols-1)*xInter;
+		if(nTotalWidth<netParentWid && totalColsWeight>0.0f)
 		{
-			int nRemain = rcParent.Width() - nTotalWidth;
+			int nRemain = netParentWid - nTotalWidth;
 			for(int i=0;i<m_nCols;i++)
 			{
 				pCellsWidth[i]+=(int)(nRemain*pColsWeight[i]/totalColsWeight);
 			}
 		}
-		if(nTotalHeight < rcParent.Height() && fTotalRowsWeight>0.0f)
+		int netParentHei = rcParent.Height() - (m_nRows-1)*yInter;
+		if(nTotalHeight < netParentHei && fTotalRowsWeight>0.0f)
 		{
-			int nRemain = rcParent.Height()-nTotalHeight;
+			int nRemain = netParentHei-nTotalHeight;
 			for(int i=0;i<m_nRows;i++)
 			{
 				pCellsHeight[i]+=(int)(nRemain*pRowsWeight[i]/fTotalRowsWeight);
@@ -483,7 +491,8 @@ namespace SOUI
 					szCell.cx += pCellsWidth[x+xx];
 				for(int yy=0;yy<pCellsSpan[iCell].y;yy++)
 					szCell.cy += pCellsHeight[y+yy];
-
+				szCell.cx += xInter*(pCellsSpan[iCell].x-1);
+				szCell.cy += yInter*(pCellsSpan[iCell].y-1);
 
 				CSize szDesired = pCellsSize[iCell];
 				szDesired.cx *= pCellsSpan[iCell].x;
@@ -513,10 +522,10 @@ namespace SOUI
 				CRect rcCell(pt,szDesired);
 				pCell->OnRelayout(rcCell);
 
-				pt.x += pCellsSize[iCell].cx;
+				pt.x += pCellsSize[iCell].cx + xInter;
 			}
 			pt.x=rcParent.left;
-			pt.y += pCellsHeight[y];
+			pt.y += pCellsHeight[y] + yInter;
 		}
 
 		delete []pCellsSize;
