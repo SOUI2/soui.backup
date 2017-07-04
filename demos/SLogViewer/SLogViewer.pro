@@ -36,6 +36,7 @@ HEADERS += droptarget.h \
            resource.h \
            SColorizeText.h \
            SLogAdapter.h \
+           whwindow.h \
            magnet/MagnetFrame.h \
            res/resource.h \
            ../../controls.extend/SRealWndHandler_Scintilla.h \
