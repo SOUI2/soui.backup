@@ -86,79 +86,19 @@ namespace SOUI
 	{
 	public:
 
-		void Clear()
-		{
-			m_lstExclude.RemoveAll();
-			m_lstInclude.RemoveAll();
-		}
+		void Clear();
 
-		bool IsEmpty() const{
-			return m_lstExclude.IsEmpty() && m_lstInclude.IsEmpty();
-		}
+		bool IsEmpty() const;
 
-		void SetFilterKeys(const SStringW & szFilter)
-		{
-			Clear();
-			SStringWList keys;
-			int nKeys = SplitString(szFilter,L'|',keys);
-			for(int i=0;i<nKeys;i++)
-			{
-				if(keys[i].GetAt(0)==_T('-'))
-				{
-					SStringW key = keys[i].Right(keys[i].GetLength()-1);
-					if(!key.IsEmpty()) m_lstExclude.Add(key);
-				}
-				else
-					m_lstInclude.Add(keys[i]);
-			}
-		}
+		void SetFilterKeys(const SStringW & szFilter);
 
-		bool TestExclude(const SStringW &strContent) const
-		{
-			for(int i=0;i<m_lstExclude.GetCount();i++)
-			{
-				if(strContent.Find(m_lstExclude[i])!=-1) return true;
-			}
-			return false;
-		}
+		bool TestExclude(const SStringW &strContent) const;
 
-		bool TestInclude(const SStringW &strContent) const
-		{
-			if(m_lstInclude.IsEmpty()) return true;
+		bool TestInclude(const SStringW &strContent) const;
 
-			for(int i=0;i<m_lstInclude.GetCount();i++)
-			{
-				SStringT key = m_lstInclude[i];
-				if(-1 != strContent.Find(key)) return true;
-			}
-			return false;
-		}
-
-		int FindKeyRange(const SStringW &strContent, SArray<SRange> &outRange) const
-		{
-			outRange.RemoveAll();
-			for(int i=0;i<m_lstInclude.GetCount();i++)
-			{
-				SStringW key = m_lstInclude[i];
-				int iEnd=0;
-				for(;;)
-				{
-					int iBegin= strContent.Find(key,iEnd);
-					if(iBegin == -1) break;
-					iEnd = iBegin + key.GetLength();
-					outRange.Add(SRange(iBegin,iEnd));
-				}
-			}
-			if(outRange.IsEmpty()) return 0;
-			qsort(outRange.GetData(),outRange.GetCount(),sizeof(SRange),SRangeCmp);		
-			return outRange.GetCount();
-		}
+		int FindKeyRange(const SStringW &strContent, SArray<SRange> &outRange) const;
 	private:
-		static int SRangeCmp(const void* p1, const void* p2){
-			const SRange *r1 = (const SRange *)p1;
-			const SRange *r2 = (const SRange *)p2;
-			return r1->iBegin - r2->iBegin;
-		}
+		static int SRangeCmp(const void* p1, const void* p2);
 
 		SStringWList m_lstInclude;
 		SStringWList m_lstExclude;

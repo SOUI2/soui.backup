@@ -18,6 +18,7 @@ public:
 	void UpdateTags(const SArray<SStringW> & lstTags);
 	void UpdatePids(const SArray<UINT> & lstPids);
 	void UpdateTids(const SArray<UINT> & lstTids);
+	void ExcludeTag(const SStringW & strTag);
 protected:
 
 	void OnInit(EventArgs *e);
@@ -37,7 +38,7 @@ protected:
 	virtual void OnTagChange(const SArray<SStringW> & lstTags);
 	virtual void OnPidChange(const SArray<UINT> & lstPid);
 	virtual void OnTidChange(const SArray<UINT> & lstTid);
-
+	void OnlyTag(const SStringW & strTag);
 	enum {
 		FilterTag=0,
 		FilterPid,

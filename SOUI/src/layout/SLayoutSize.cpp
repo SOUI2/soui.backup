@@ -19,7 +19,7 @@ namespace SOUI
 		return (int)floor(v+0.5f);
 	}
 
-	static bool fequal(float a, float b)
+	bool SLayoutSize::fequal(float a, float b)
 	{
 		return fabs(a-b)<0.00000001f;
 	}

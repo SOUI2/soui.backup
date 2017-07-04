@@ -139,6 +139,8 @@ HEADERS += include/SApp.h \
            include/layout/SLinearLayout.h \
            include/layout/SouiLayoutParamStruct.h \
            include/layout/SouiLayout.h \
+           include/layout/SGridLayoutParamStruct.h \
+           include/layout/SGridLayout.h \           
            include/layout/SLayoutSize.h \
            include/res.mgr/SUiDef.h \
            include/res.mgr/SFontPool.h \
@@ -202,6 +204,7 @@ SOURCES += src/SApp.cpp \
            src/core/SObjectFactory.cpp \
            src/layout/SLinearLayout.cpp \
            src/layout/SouiLayout.cpp \
+           src/layout/SGridLayout.cpp \
            src/layout/SLayoutSize.cpp \
            src/event/EventSet.cpp \
            src/event/NotifyCenter.cpp \

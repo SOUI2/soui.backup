@@ -75,12 +75,6 @@ namespace SOUI{
 		SouiLayout(void);
 		~SouiLayout(void);
 
-		static HRESULT CreateLayout(IObjRef ** ppObj);
-
-		static HRESULT CreateLayoutParam(IObjRef ** ppObj);
-
-		virtual LayoutType GetLayoutType() const {return Layout_Soui;}
-
         virtual bool IsParamAcceptable(ILayoutParam *pLayoutParam) const;
 
         virtual void LayoutChildren(SWindow * pParent);
