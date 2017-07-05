@@ -1,0 +1,3 @@
+﻿<menuRoot itemSkin="skin_menu_skin_png" itemHeight="26" iconPos="4,4" textOffset="5" iconBarWidth="24" maxWidth="180" minWidth="170" margin="1,1,1,1" colorText="@color/white" colorBkgnd="@color/bkBlack1" >
+  <menuItem id="100" >@string/openincode</menuItem>
+</menuRoot>
