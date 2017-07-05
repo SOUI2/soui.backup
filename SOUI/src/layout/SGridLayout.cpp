@@ -3,6 +3,31 @@
 
 namespace SOUI
 {
+	GridGravity SGridLayoutParam::parseGridGravity(const SStringW & strValue)
+	{
+		struct ValueMap{
+			GridGravity gridGravity;
+			LPCWSTR pszGravity;
+		} map[] ={
+			{gLeft,L"left"},
+			{gTop,L"top"},
+			{gCenter,L"center"},
+			{gRight,L"right"},
+			{gBottom,L"bottom"},
+			{gFill,L"fill"},
+		};
+
+		for(int i=0;i<ARRAYSIZE(map);i++)
+		{
+			if(strValue.CompareNoCase(map[i].pszGravity)==0)
+			{
+				return map[i].gridGravity;
+			}
+		}
+		return gUndef;
+	}
+
+
 	HRESULT SGridLayoutParam::OnAttrSize(const SStringW & strValue,BOOL bLoading)
 	{
 		SStringWList szStr ;
@@ -173,6 +198,7 @@ namespace SOUI
 	{
 		return (SGridLayoutParam*)this;
 	}
+
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -516,31 +542,29 @@ namespace SOUI
 				szDesired.cx *= pCellsSpan[iCell].x;
 				szDesired.cy *= pCellsSpan[iCell].y;
 
-				if(pLayoutParam->IsMatchParent(Horz))
-					szDesired.cx = szCell.cx;
-				if(pLayoutParam->IsMatchParent(Vert))
-					szDesired.cy = szCell.cy;
 				CPoint pt2=pt;
 				GridGravity gx = pLayoutParam->layoutGravityX;
 				if(gx==gUndef) gx=m_GravityX;
 				switch(gx)
 				{
-				case gLeft:break;
+				case gUndef: case gLeft:break;
 				case gCenter:pt2.x+=(szCell.cx-szDesired.cx)/2;break;
 				case gRight:pt2.x+=(szCell.cx-szDesired.cx);break;
+				case gFill:szDesired.cx = szCell.cx;break;
 				}
 				GridGravity gy = pLayoutParam->layoutGravityY;
 				if(gy==gUndef) gy = m_GravityY;
 				switch(gy)
 				{
-				case gTop:break;
+				case gUndef: case gTop:break;
 				case gMiddle:pt2.y+=(szCell.cy-szDesired.cy)/2;break;
 				case gBottom:pt2.y+=(szCell.cy-szDesired.cy);break;
+				case gFill:szDesired.cy=szCell.cy;break;
 				}
 				CRect rcCell(pt,szDesired);
 				pCell->OnRelayout(rcCell);
 
-				pt.x += pCellsSize[iCell].cx + xInter;
+				pt.x += szCell.cx + xInter;
 			}
 			pt.x=rcParent.left;
 			pt.y += pCellsHeight[y] + yInter;

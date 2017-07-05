@@ -5,6 +5,17 @@
 
 namespace SOUI
 {
+
+	// Int = %d StringA
+	#define ATTR_GRIDGRAVITY(attribname, varname, allredraw)       \
+        if (0 == strAttribName.CompareNoCase(attribname))          \
+        {                                                          \
+		    varname=SGridLayoutParam::parseGridGravity(strValue);  \
+		    hRet = allredraw ? S_OK : S_FALSE;                     \
+        }                                                          \
+        else                                                       \
+
+
 	class SGridLayoutParam : public SObjectImpl<TObjRefImpl<ILayoutParam>>
 		, protected SGridLayoutParamStruct
 	{
@@ -12,6 +23,9 @@ namespace SOUI
 
 		friend class SGridLayout;
 	public:
+
+		static GridGravity parseGridGravity(const SStringW & strValue);
+
 		SGridLayoutParam();
 
 		virtual bool IsMatchParent(ORIENTATION orientation) const;
@@ -39,16 +53,8 @@ namespace SOUI
 			ATTR_CUSTOM(L"width",OnAttrWidth)
 			ATTR_CUSTOM(L"height",OnAttrHeight)
 			ATTR_CUSTOM(L"size",OnAttrSize)
-			ATTR_ENUM_BEGIN(L"layout_gravityX",GridGravity,TRUE)
-				ATTR_ENUM_VALUE(L"left",gLeft)
-				ATTR_ENUM_VALUE(L"center",gCenter)
-				ATTR_ENUM_VALUE(L"right",gRight)
-			ATTR_ENUM_END(layoutGravityX)
-			ATTR_ENUM_BEGIN(L"layout_gravityY",GridGravity,TRUE)
-				ATTR_ENUM_VALUE(L"top",gTop)
-				ATTR_ENUM_VALUE(L"middle",gMiddle)
-				ATTR_ENUM_VALUE(L"bottom",gBottom)
-			ATTR_ENUM_END(layoutGravityY)
+			ATTR_GRIDGRAVITY(L"layout_xGravity",layoutGravityX,TRUE)
+			ATTR_GRIDGRAVITY(L"layout_yGravity",layoutGravityY,TRUE)
 			ATTR_FLOAT(L"columnWeight",fColWeight,TRUE)
 			ATTR_FLOAT(L"rowWeight",fRowWeight,TRUE)
 		SOUI_ATTRS_BREAK()
@@ -81,16 +87,8 @@ namespace SOUI
 			ATTR_INT(L"rowCount",m_nRows,TRUE)
 			ATTR_LAYOUTSIZE(L"xInterval",m_xInterval,TRUE)
 			ATTR_LAYOUTSIZE(L"yInterval",m_yInterval,TRUE)
-			ATTR_ENUM_BEGIN(L"gravityX",GridGravity,TRUE)
-				ATTR_ENUM_VALUE(L"left",gLeft)
-				ATTR_ENUM_VALUE(L"center",gCenter)
-				ATTR_ENUM_VALUE(L"right",gRight)
-			ATTR_ENUM_END(m_GravityX)
-			ATTR_ENUM_BEGIN(L"gravityY",GridGravity,TRUE)
-				ATTR_ENUM_VALUE(L"top",gTop)
-				ATTR_ENUM_VALUE(L"middle",gMiddle)
-				ATTR_ENUM_VALUE(L"bottom",gBottom)
-			ATTR_ENUM_END(m_GravityY)
+			ATTR_GRIDGRAVITY(L"xGravity",m_GravityX,TRUE)
+			ATTR_GRIDGRAVITY(L"yGravity",m_GravityY,TRUE)
 		SOUI_ATTRS_BREAK()
 	protected:
 

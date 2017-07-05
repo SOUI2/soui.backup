@@ -13,8 +13,8 @@ namespace SOUI
 		gMiddle=1,
 		gRight=2,
 		gBottom=2,
+		gFill=3,
 	};
-
 
 	struct SGridLayoutParamStruct
 	{
