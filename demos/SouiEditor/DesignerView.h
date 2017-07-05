@@ -91,10 +91,13 @@ namespace SOUI
 
 		void RestoreEditorCaretPos();
 
+		void LocateControlXML();
+
 		SMoveWnd* GetMoveWndRoot() { return m_pMoveWndRoot; };
 		SWindow* GetRealWndRoot() { return m_pRealWndRoot; };
 
 		void AddCodeToEditor(CScintillaWnd* pSciWnd);  //复制xml代码到代码编辑器
+		void GetCodeFromEditor();
 		void GetCodeFromEditor(CScintillaWnd* pSciWnd);//从代码编辑器获取xml代码
 
 		void SetSelCtrlNode(pugi::xml_node xmlNode);
@@ -138,14 +141,12 @@ namespace SOUI
 		INT      m_nState;     //是否正在进行创建控件的鼠标动作； 1:是；0:否
 
 		SStringW *m_strxml;
-		pugi::xml_node m_xmlNode;   //当前选中的控件的xmlnode 
+		pugi::xml_node m_curSelXmlNode;   //当前选中的控件的xmlnode 
 		pugi::xml_document m_xmlSelCtrlDoc;//鼠标选择控件列表要创建的控件的xml
 		pugi::xml_node m_xmlSelCtrlNode;  //鼠标选择控件列表要创建的控件的xml
 
-		SMap<SStringT, pugi::xml_node> m_mapLayoutFile;
-		SMap<SStringT, pugi::xml_document *> m_mapLayoutFile1;
-		//SMap<int, SStringT> m_mapInclude;    //保存include节点
-		SMap<SStringT, SMap<int, SStringT>* > m_mapInclude1;    //保存每一个布局文件对应的include map;
+		SMap<SStringT, pugi::xml_document *> m_mapLayoutFile;
+		SMap<SStringT, SMap<int, SStringT>* > m_mapIncludeReplace;    //保存每一个布局文件对应的include map;
 
 		SMap<SWindow*, SMoveWnd*> m_mapMoveRealWnd;
 
@@ -157,7 +158,7 @@ namespace SOUI
 
 		//CAutoRefPtr<IResProvider>   pResProvider;
 		SUIWindow *m_pContainer;  //所有布局窗口根的容器 
-		pugi::xml_node m_CurrentLayoutNode;
+		pugi::xml_node m_CurrentLayoutNode;		//当前正在编辑布局的XML文档结点
 
 		SMap<SStringT, pugi::xml_document*> m_mapCtrlProperty;//所有控件的属性列表 <Button, xmlnode> <Check, xmlNode>
 		SWindow *m_pPropertyContainer;     //属性面板父窗口
@@ -178,6 +179,8 @@ namespace SOUI
 		STreeCtrl *m_treeXmlStruct; //显示xml文档结构的tree控件
 
 		int m_ndata; //这个值用来标识xmlnode的每一个节点，节点属性为data,xmlnode的这个属性值是唯一的;
+
+		CAutoRefPtr<IResProvider> m_pWsResProvider;		//工程的UI提供者
 
 		CAutoRefPtr<IUiDefInfo> m_pUiDef;  //加载工程的UIdef
 

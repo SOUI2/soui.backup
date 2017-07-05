@@ -167,6 +167,10 @@ SStringA CSysDataMgr::GetCtrlAutos()
 
 SStringA CSysDataMgr::GetCtrlAttrAutos(SStringT ctrlname)
 {
+	ctrlname.MakeLower();
+	if (ctrlname.CompareNoCase(_T("root")) == 0)
+		ctrlname = _T("window");
+
 	SMap<SStringT, CTRL_ATTR_VALUE*>::CPair* pNode = m_mapControl.Lookup(ctrlname);
 	if (!pNode)
 		return "";

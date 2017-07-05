@@ -4,7 +4,7 @@
 		<window pos="1,[1,-1,-1" colorBkgnd="@color/bkBlack1">
 			<caption pos="0,0,-0,40" show="1" font="adding:0" colorBkgnd="#FFFFFF20">
 				<icon name="" src="ICON_LOGO:32" pos="8,|0" offset="0,-0.5" />
-				<text name="apptitle" pos="[8,|0" offset="0, -0.5" class="cls_title">@string/title</text>
+				<text name="apptitle" pos="[8,|0" offset="0, -0.5" class="ue_cls_title">@string/title</text>
 				<imgbtn name="btn_close" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />
 				<imgbtn name="btn_max" skin="_skin.sys.btn.maximize" pos="-83,0" animate="1" />
 				<imgbtn name="btn_restore" skin="_skin.sys.btn.restore" pos="-83,0" show="0" animate="1" />
@@ -13,16 +13,17 @@
 			</caption>
 			<img pos="0,[0, -0, @2" skin="skin_caption_line" />
 			<window pos="1,[1,-1,@34" colorBkgnd="@color/bkBlack1" alpha="20">
-				<imgbtnex name="toolbar_btn_Open" skin="skin_app_button" text="打开工程" pos="8,|-15, @100, @30" animate="1" class="cls_title" />
-				<imgbtnex name="toolbar_btn_Close" skin="skin_app_button" text="关闭工程" pos="[0,{0, @110, @30" animate="1" class="cls_title" />
-				<imgbtnex name="toolbar_btn_NewDialog" skin="skin_app_button" text="新建Dialog" pos="[0,{0, @110, @30" animate="1" class="cls_title" />
-				<imgbtnex name="toolbar_btn_NewInclude" skin="skin_app_button" text="新建Include" pos="[0,{0, @120, @30" animate="1" class="cls_title" />
-				<imgbtnex name="toolbar_btn_SaveAll" skin="skin_app_button" text="全部保存" pos="[0,{0, @100, @30" animate="1" class="cls_title" />
-				<imgbtnex name="toolbar_btn_SaveLayout" skin="skin_app_button" text="保存布局" pos="[0,{0, @100, @30" animate="1" class="cls_title" />
-				<imgbtnex name="toolbar_btn_ZYGL" pos="[0,{0, @100, @30" skin="skin_app_button" text="资源管理" animate="1" class="cls_title" />
-				<imgbtnex name="toolbar_btn_YL" pos="[0,{0, @100, @30" skin="skin_app_button" text="预览" animate="1" class="cls_title" />
-				<imgbtnex name="toolbar_btn_YSGL" pos="[0,{0, @100, @30" skin="skin_app_button" text="样式管理" animate="1" class="cls_title" show="0" />
-				<imgbtnex name="toolbar_btn_about" pos="-102,{0, @100,@30" skin="skin_app_button" text="关于" animate="1" class="cls_title" />
+				<imgbtnex name="toolbar_btn_Open" skin="skin_app_button" text="打开工程" pos="8,|-15, @100, @30" animate="1" class="ue_cls_title" />
+				<imgbtnex name="toolbar_btn_Close" skin="skin_app_button" text="关闭工程" pos="[0,{0, @110, @30" animate="1" class="ue_cls_title" />
+				<imgbtnex name="toolbar_btn_reload" skin="skin_app_button" text="重新加载工程" pos="[0,{0, @110, @30" animate="1" class="ue_cls_title" />
+				<imgbtnex name="toolbar_btn_NewDialog" skin="skin_app_button" text="新建Dialog" pos="[0,{0, @110, @30" animate="1" class="ue_cls_title" />
+				<imgbtnex name="toolbar_btn_NewInclude" skin="skin_app_button" text="新建Include" pos="[0,{0, @120, @30" animate="1" class="ue_cls_title" />
+				<imgbtnex name="toolbar_btn_SaveAll" skin="skin_app_button" text="全部保存" pos="[0,{0, @100, @30" animate="1" class="ue_cls_title" />
+				<imgbtnex name="toolbar_btn_SaveLayout" skin="skin_app_button" text="保存布局" pos="[0,{0, @100, @30" animate="1" class="ue_cls_title" />
+				<imgbtnex name="toolbar_btn_ZYGL" pos="[0,{0, @100, @30" skin="skin_app_button" text="资源管理" animate="1" class="ue_cls_title" />
+				<imgbtnex name="toolbar_btn_YL" pos="[0,{0, @100, @30" skin="skin_app_button" text="预览" animate="1" class="ue_cls_title" />
+				<imgbtnex name="toolbar_btn_YSGL" pos="[0,{0, @100, @30" skin="skin_app_button" text="样式管理" animate="1" class="ue_cls_title" show="0" />
+				<imgbtnex name="toolbar_btn_about" pos="-102,{0, @100,@30" skin="skin_app_button" text="关于" animate="1" class="ue_cls_title" />
 			</window>
 			<splitcol name="NAME_UIDESIGNER_split_col" pos="0,[5,-0,-3" sepSkin="" sepSize="6">
 				<pane idealSize="380" minSize="30" priority="1" clipClient="1">

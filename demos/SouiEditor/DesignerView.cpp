@@ -10,9 +10,13 @@
 #include "MainDlg.h"
 #include "adapter.h"
 #include "Global.h"
+#include "pugixml_write.h"
 
+//±à¼­½çÃæÊ±XML´°¿ÚÖ»ÏÔÊ¾Ñ¡Ôñ¿Ø¼þµÄXMLÎÄ±¾
+//#define  ONLYSHOWSELXML
 
 #define  MARGIN 20
+extern CMainDlg* g_pMainDlg;
 
 extern BOOL g_bHookCreateWnd;	//ÊÇ·ñÀ¹½Ø´°¿ÚµÄ½¨Á¢
 
@@ -77,15 +81,16 @@ BOOL SDesignerView::OpenProject(SStringT strFileName)
 	PathRemoveFileSpec(s);
 	SStringT strTemp(s);
 	m_strProPath = strTemp;
-	CAutoRefPtr<IResProvider>   pResProvider;
 
+	CAutoRefPtr<IResProvider> pResProvider;
 	CreateResProvider(RES_FILE, (IObjRef**)&pResProvider);
 	if (!pResProvider->Init((LPARAM)s, 0))
 	{
 		Debug(_T("CreateResProviderÊ§°Ü"));
 		return FALSE;
 	}
-	SApplication::getSingletonPtr()->AddResProvider(pResProvider, NULL);//param2 = nullÊ±²»×Ô¶¯¼ÓÔØuidef
+	m_pWsResProvider = pResProvider;
+	SApplication::getSingletonPtr()->AddResProvider(m_pWsResProvider, NULL);//param2 = nullÊ±²»×Ô¶¯¼ÓÔØuidef
 
 	SStringT strXMLInit;
 	pugi::xml_node xmlNode = m_xmlDocUiRes.child(_T("resource")).child(_T("UIDEF")).child(_T("file"));
@@ -101,7 +106,7 @@ BOOL SDesignerView::OpenProject(SStringT strFileName)
 	}
 
 	//½«Æ¤·ôÖÐµÄuidef±£´æÆðÀ´.
-	m_pUiDef.Attach(SUiDef::getSingleton().CreateUiDefInfo(pResProvider, _T("uidef:") + strXMLInit));
+	m_pUiDef.Attach(SUiDef::getSingleton().CreateUiDefInfo(m_pWsResProvider, _T("uidef:") + strXMLInit));
 
 	m_pOldUiDef = SUiDef::getSingleton().GetUiDef();
 
@@ -140,6 +145,8 @@ BOOL SDesignerView::CloseProject()
 	m_ndata = 0;
 	m_nSciCaretPos = 0;
 
+	SApplication::getSingletonPtr()->RemoveResProvider(m_pWsResProvider);
+
 	ShowNoteInSciwnd();
 
 	return TRUE;
@@ -155,12 +162,8 @@ BOOL SDesignerView::InsertLayoutToMap(SStringT strFileName)
 	if (!xmlDoc1->load_file(FullFileName, pugi::parse_full))
 		return FALSE;
 
-	//m_mapLayoutFile[strFileName] = xmlDoc1->first_child();
-	m_mapLayoutFile[strFileName] = xmlDoc1->document_element();
-
-	m_mapLayoutFile1[strFileName] = xmlDoc1;
-
-	m_mapInclude1[strFileName] = new SMap<int, SStringT>;
+	m_mapLayoutFile[strFileName] = xmlDoc1;
+	m_mapIncludeReplace[strFileName] = new SMap<int, SStringT>;
 
 	m_strCurLayoutXmlFile = strFileName;
 	//RenameChildeWnd(xmlDoc1->first_child());
@@ -174,6 +177,7 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 	m_CurSelCtrl = NULL;
 	m_ndata = 0;
 	g_nUIElmIndex = 0;
+	m_nSciCaretPos = 0;
 
 	//ÉèÖÃuidefÎªµ±Ç°Æ¤·ôµÄuidef
 	UseEditorUIDef(false);
@@ -189,8 +193,8 @@ BOOL SDesignerView::LoadLayout(SStringT strFileName)
 
 	m_strCurLayoutXmlFile = strFileName;
 
-	SMap<SStringT, pugi::xml_node>::CPair *p = m_mapLayoutFile.Lookup(strFileName);
-	xmlroot = p->m_value;
+	SMap<SStringT, pugi::xml_document*>::CPair *p = m_mapLayoutFile.Lookup(strFileName);
+	xmlroot = p->m_value->document_element();
 
 	m_CurrentLayoutNode = xmlroot;
 
@@ -437,38 +441,27 @@ BOOL SDesignerView::SaveAll()
 	pugi::xml_document DocSave;
 	bool bRet = true;
 
-	SPOSITION pos = m_mapLayoutFile1.GetStartPosition();
+	SPOSITION pos = m_mapLayoutFile.GetStartPosition();
 
 	while (pos)
 	{
-		p = m_mapLayoutFile1.GetNext(pos);
+		p = m_mapLayoutFile.GetNext(pos);
 		strFileName = p->m_key;
 		doc = p->m_value;
 
-		pugi::xml_writer_buff writer;
-		doc->print(writer, L"\t", pugi::format_default, pugi::encoding_utf16);
-		SStringW *strxmlWnd = new SStringW(writer.buffer(), writer.size());
+		DocSave.reset();
+		DocSave.append_copy(doc->document_element());
 
-		if (DocSave.load_buffer(*strxmlWnd, wcslen(*strxmlWnd) * sizeof(wchar_t), pugi::parse_full, pugi::encoding_utf16))
-		{
-			pugi::xml_node NodeSave = DocSave.root();
-			TrimXmlNodeTextBlank(DocSave.document_element());
-			RemoveWndName(NodeSave, FALSE, strFileName);
+		pugi::xml_node NodeSave = DocSave.root();
+		TrimXmlNodeTextBlank(DocSave.document_element());
+		RemoveWndName(NodeSave, FALSE, strFileName);
 
-			FullFileName = m_strProPath + _T("\\") + strFileName;
-			if (!DocSave.save_file(FullFileName))
-			{
-				Debug(_T("±£´æÎÄ¼þÊ§°Ü£º") + FullFileName);
-				bRet = false;
-			}
-		}
-		else
+		FullFileName = m_strProPath + _T("\\") + strFileName;
+		if (!DocSave.save_file(FullFileName, L"\t", pugi::format_default, pugi::encoding_utf8))
 		{
-			Debug(_T("±£´æÊ§°Ü£ºDocSave.load_buffer"));
+			Debug(_T("±£´æÎÄ¼þÊ§°Ü£º") + FullFileName);
 			bRet = false;
 		}
-
-		delete strxmlWnd;
 	}
 
 	if (!m_xmlDocUiRes.save_file(m_strUIResFile))
@@ -501,31 +494,23 @@ bool SDesignerView::SaveLayoutFile()
 	SStringT strFileName;
 	SStringT FullFileName;
 
-	SMap<SStringT, pugi::xml_document*>::CPair *p = m_mapLayoutFile1.Lookup(strFile);
+	SMap<SStringT, pugi::xml_document*>::CPair *p = m_mapLayoutFile.Lookup(strFile);
 	strFileName = p->m_key;
 	pugi::xml_document *doc = p->m_value;
 
-	pugi::xml_writer_buff writer;
-	doc->print(writer, L"\t", pugi::format_default, pugi::encoding_utf16);
-	SStringW *strxmlWnd = new SStringW(writer.buffer(), writer.size());
 	pugi::xml_document DocSave;
-	if (DocSave.load_buffer(*strxmlWnd, wcslen(*strxmlWnd) * sizeof(wchar_t), pugi::parse_full, pugi::encoding_utf16))
+	DocSave.append_copy(doc->document_element());
+
+	pugi::xml_node NodeSave = DocSave.root();
+	TrimXmlNodeTextBlank(DocSave.document_element());
+	RemoveWndName(NodeSave, FALSE);
+	FullFileName = m_strProPath + _T("\\") + strFileName;
+	bRet = DocSave.save_file(FullFileName, L"\t", pugi::format_default, pugi::encoding_utf8);
+	if (!bRet)
 	{
-		pugi::xml_node NodeSave = DocSave.root();
-		TrimXmlNodeTextBlank(DocSave.document_element());
-		RemoveWndName(NodeSave, FALSE);
-		FullFileName = m_strProPath + _T("\\") + strFileName;
-		bRet = DocSave.save_file(FullFileName);
-		if (!bRet)
-		{
-			Debug(_T("±£´æÎÄ¼þÊ§°Ü£º") + FullFileName);
-		}
+		Debug(_T("±£´æÎÄ¼þÊ§°Ü£º") + FullFileName);
 	}
-	else
-	{
-		Debug(_T("±£´æÊ§°Ü:DocSave.load_bufferÊ§°Ü"));
-	}
-	delete strxmlWnd;
+
 	if (bRet)
 	{
 		bRet = m_xmlDocUiRes.save_file(m_strUIResFile);
@@ -636,7 +621,7 @@ void SDesignerView::RemoveWndName(pugi::xml_node xmlNode, BOOL bClear, SStringT 
 			strFileName = m_strCurLayoutXmlFile;
 		}
 
-		SMap<SStringT, SMap<int, SStringT>* >::CPair *p = m_mapInclude1.Lookup(strFileName);
+		SMap<SStringT, SMap<int, SStringT>* >::CPair *p = m_mapIncludeReplace.Lookup(strFileName);
 		SMap<int, SStringT>* pMap;
 		SMap<int, SStringT>::CPair *p1;
 		if (p)
@@ -719,7 +704,7 @@ void SDesignerView::RenameChildeWnd(pugi::xml_node xmlNode)
 
 			RenameWnd(NodeChild);
 
-			SMap<SStringT, SMap<int, SStringT>* >::CPair *p = m_mapInclude1.Lookup(m_strCurLayoutXmlFile);
+			SMap<SStringT, SMap<int, SStringT>* >::CPair *p = m_mapIncludeReplace.Lookup(m_strCurLayoutXmlFile);
 			if (p)
 			{
 				SMap<int, SStringT>* pMap = p->m_value;
@@ -759,8 +744,8 @@ void SDesignerView::RenameAllLayoutWnd()
 	SPOSITION pos = m_mapLayoutFile.GetStartPosition();
 	while (pos)
 	{
-		SMap<SStringT, pugi::xml_node>::CPair *p = m_mapLayoutFile.GetNext(pos);
-		RenameChildeWnd(p->m_value);
+		SMap<SStringT, pugi::xml_document*>::CPair *p = m_mapLayoutFile.GetNext(pos);
+		RenameChildeWnd(p->m_value->document_element());
 	}
 }
 
@@ -812,13 +797,13 @@ void SDesignerView::Debug(pugi::xml_node xmlNode)
 	pugi::xml_writer_buff writer;
 	xmlNode.print(writer, L"\t", pugi::format_default, pugi::encoding_utf16);
 	SStringW *strDebug = new SStringW(writer.buffer(), writer.size());
-	SMessageBox(NULL, *strDebug, _T(""), MB_OK);
+	SMessageBox(g_pMainDlg->m_hWnd, *strDebug, _T(""), MB_OK);
 	delete strDebug;
 }
 
 void SDesignerView::Debug(SStringT str)
 {
-	SMessageBox(NULL, str, _T(""), MB_OK);
+	SMessageBox(g_pMainDlg->m_hWnd, str, _T(""), MB_OK);
 }
 
 SStringT SDesignerView::Debug1(pugi::xml_node xmlNode)
@@ -833,18 +818,16 @@ SStringT SDesignerView::Debug1(pugi::xml_node xmlNode)
 
 SStringT SDesignerView::NodeToStr(pugi::xml_node xmlNode)
 {
-	pugi::xml_writer_buff writer;
+	SStringT writer_buf;
+	myxml_writer_stream writer(writer_buf);
 	xmlNode.print(writer, L"\t", pugi::format_default, pugi::encoding_utf16);
-	SStringW *strDebug = new SStringW(writer.buffer(), writer.size());
-	SStringT str(*strDebug);
-	delete strDebug;
-	return str;
+	return writer_buf;
 }
 
 // ÏìÓ¦¸÷ÊÂ¼þ, Ñ¡ÖÐÏàÓ¦ÔªËØ
 void SDesignerView::SetCurrentCtrl(pugi::xml_node xmlNode, SMoveWnd *pWnd)
 {
-	m_xmlNode = xmlNode;
+	m_curSelXmlNode = xmlNode;
 
 	m_CurSelCtrl = pWnd;
 
@@ -1120,7 +1103,7 @@ void SDesignerView::InitProperty(SWindow *pPropertyContainer)   //³õÊ¼»¯ÊôÐÔÁÐ±í
 	</Button>
 	*/
 
-	SStringW s = L"<propgrid name=\"NAME_UIDESIGNER_PROPGRID_MAIN\" pos=\"0, 0, -4, -4\" switchSkin=\"skin_prop_switch\"                \
+	SStringW s = L"<propgrid name=\"NAME_UIDESIGNER_PROPGRID_MAIN\" pos=\"0, 0, -4, -4\" sbSkin=\"skin_bb_scrollbar\" switchSkin=\"skin_prop_switch\"                \
 		nameWidth=\"150\" orderType=\"group\" itemHeight=\"26\" ColorGroup=\"RGB(96,112,138)\"  ColorBorder=\"#FFFFFF50\"                                        \
 		ColorItemSel=\"rgb(234,128,16)\" colorItemSelText=\"#FF0000\" EditBkgndColor=\"rgb(87,104,132)\"                                \
 		autoWordSel=\"1\"> <cmdbtnstyle skin=\"_skin.sys.btn.normal\" colorText=\"RGB(96,112,138)\">...</cmdbtnstyle> </propgrid>";
@@ -1405,7 +1388,7 @@ bool SDesignerView::OnPropGridValueChanged(EventArgs *pEvt)
 			SStringT strTemp = m_lstRootProperty.GetNext(pos);
 			if (strTemp.CompareNoCase(attr_name) == 0)
 			{
-				xmlNode = m_xmlNode.child(_T("root"));
+				xmlNode = m_curSelXmlNode.child(_T("root"));
 				bRoot = TRUE;
 				break;
 			}
@@ -1419,7 +1402,7 @@ bool SDesignerView::OnPropGridValueChanged(EventArgs *pEvt)
 				SStringT strTemp = m_lstSouiProperty.GetNext(pos);
 				if (strTemp.CompareNoCase(attr_name) == 0)
 				{
-					xmlNode = m_xmlNode;
+					xmlNode = m_curSelXmlNode;
 					bRoot = TRUE;
 					break;
 				}
@@ -1428,7 +1411,7 @@ bool SDesignerView::OnPropGridValueChanged(EventArgs *pEvt)
 	}
 	else
 	{
-		xmlNode = m_xmlNode;
+		xmlNode = m_curSelXmlNode;
 	}
 
 	if (attr_name.CompareNoCase(uiedit_SpecAttr) == 0)
@@ -1496,9 +1479,8 @@ bool SDesignerView::OnPropGridValueChanged(EventArgs *pEvt)
 		pLayout->InitSizeFromString(m_xmlNode.attribute(L"size").value());
 	}*/
 
-
-	int data = ((SMoveWnd*)m_CurSelCtrl)->m_pRealWnd->GetUserData();
-
+	// ÏÈ¼ÇÏÂÔ­À´Ñ¡µÄ¿Ø¼þÊÇµÚ¼¸¸öË³ÐòµÄ¿Ø¼þ, ÔÙ½øÐÐÖØ²¼¾Ö
+	int data = ((SMoveWnd*)m_CurSelCtrl)->GetUserData();
 	ReLoadLayout();
 
 	if (bRoot)
@@ -1507,19 +1489,18 @@ bool SDesignerView::OnPropGridValueChanged(EventArgs *pEvt)
 	}
 	else
 	{
-		SWindow *pRealWnd = FindChildByUserData(m_pRealWndRoot, data);
+		SMoveWnd *pMoveWnd = (SMoveWnd*)FindChildByUserData(m_pMoveWndRoot, data);
 
-		SMap<SWindow*, SMoveWnd*>::CPair *p = m_mapMoveRealWnd.Lookup(pRealWnd);
-		if (p)
+		if (pMoveWnd)
 		{
-			m_CurSelCtrl = p->m_value;
+			m_CurSelCtrl = pMoveWnd;
+			AddCodeToEditor(NULL);
 		}
 		else
 		{
 			m_pMoveWndRoot->Click(0, CPoint(0, 0));
 		}
 	}
-	AddCodeToEditor(NULL);
 
 	return true;
 }
@@ -1528,20 +1509,21 @@ void SDesignerView::RefreshRes()
 {
 	m_xmlDocUiRes.load_file(m_strUIResFile, pugi::parse_full);
 
-	CAutoRefPtr<IResProvider>   pResProvider1;
+	CAutoRefPtr<IResProvider> pResProvider;
 	TCHAR *s = m_strProPath.GetBuffer(m_strProPath.GetLength());
 
-	IResProvider*	pResProvider = SApplication::getSingletonPtr()->GetMatchResProvider(_T("UIDEF"), _T("XML_INIT"));
+	//IResProvider* pResProvider = SApplication::getSingletonPtr()->GetMatchResProvider(_T("UIDEF"), _T("XML_INIT"));
 
-	SApplication::getSingletonPtr()->RemoveResProvider(pResProvider);
+	SApplication::getSingletonPtr()->RemoveResProvider(m_pWsResProvider);
 
-	CreateResProvider(RES_FILE, (IObjRef**)&pResProvider1);
-	if (!pResProvider1->Init((LPARAM)s, 0))
+	CreateResProvider(RES_FILE, (IObjRef**)&pResProvider);
+	if (!pResProvider->Init((LPARAM)s, 0))
 	{
 		Debug(_T("ResProvider³õÊ¼»¯Ê§°Ü"));
 		return;
 	}
-	SApplication::getSingletonPtr()->AddResProvider(pResProvider1, NULL);
+	m_pWsResProvider = pResProvider;
+	SApplication::getSingletonPtr()->AddResProvider(pResProvider, NULL);
 
 	SStringT strXMLInit;
 	pugi::xml_node xmlNode = m_xmlDocUiRes.child(_T("resource")).child(_T("UIDEF")).child(_T("file"));
@@ -1557,7 +1539,7 @@ void SDesignerView::RefreshRes()
 	}
 
 	//½«Æ¤·ôÖÐµÄuidef±£´æÆðÀ´.
-	m_pUiDef.Attach(SUiDef::getSingleton().CreateUiDefInfo(pResProvider1, _T("uidef:") + strXMLInit));
+	m_pUiDef.Attach(SUiDef::getSingleton().CreateUiDefInfo(pResProvider, _T("uidef:") + strXMLInit));
 }
 
 bool SDesignerView::OnPropGridItemClick(EventArgs *pEvt)
@@ -1576,6 +1558,7 @@ bool SDesignerView::OnPropGridItemClick(EventArgs *pEvt)
 
 			if (s1.CompareNoCase(DlgSkin.m_strSkinName) != 0)
 			{
+				((CMainDlg*)m_pMainHost)->ReloadWorkspaceUIRes();
 				RefreshRes();
 				pItem->SetString(DlgSkin.m_strSkinName);
 				m_pPropgrid->Invalidate();
@@ -1814,36 +1797,85 @@ void SDesignerView::SaveEditorCaretPos()
 void SDesignerView::RestoreEditorCaretPos()
 {
 	m_pScintillaWnd->SendMessage(SCI_GOTOPOS, m_nSciCaretPos);
+	m_pScintillaWnd->GotoFoundLine();
+}
+
+void SDesignerView::LocateControlXML()
+{
+	CScintillaWnd* pSciWnd = m_pScintillaWnd;
+	m_strCurFileEditor = m_strCurLayoutXmlFile;
+
+	pugi::xml_document doc, doc_shadow;
+	SStringT strInclude(_T("include"));
+
+	if (m_curSelXmlNode != m_CurrentLayoutNode)
+	{
+		SStringT tmpName = m_curSelXmlNode.name();
+		m_curSelXmlNode.set_name(L"use_forfind");
+		doc_shadow.append_copy(m_CurrentLayoutNode);
+		m_curSelXmlNode.set_name(tmpName);
+
+		RemoveWndName(doc_shadow.root(), FALSE);
+		TrimXmlNodeTextBlank(doc_shadow.document_element());
+
+		SStringT writer_buf;
+		myxml_writer_stream writer(writer_buf);
+		doc_shadow.document_element().print(writer, L"\t", pugi::format_default, pugi::encoding_utf16);
+
+		SStringA str;
+		str = S_CW2A(writer_buf, CP_UTF8);
+		int pos = str.Find("use_forfind");
+		if (pos != -1)
+			m_nSciCaretPos = pos;
+	}
+
+	doc.append_copy(m_CurrentLayoutNode);
+
+	RemoveWndName(doc.root(), FALSE);
+	//Debug(doc.root());
+	TrimXmlNodeTextBlank(doc.document_element());
+
+	SStringT writer_buf;
+	myxml_writer_stream writer(writer_buf);
+	doc.document_element().print(writer, L"\t", pugi::format_default, pugi::encoding_utf16);
+
+	SStringA str;
+	str = S_CW2A(writer_buf, CP_UTF8);
+	pSciWnd->SendMessage(SCI_SETREADONLY, 0, 0);
+	pSciWnd->SendMessage(SCI_CLEARALL, 0, 0);
+	pSciWnd->SendMessage(SCI_ADDTEXT, str.GetLength(),
+		reinterpret_cast<LPARAM>((LPCSTR)str));
+	pSciWnd->SetDirty(false);
+	//pSciWnd->SetFocus();		//ÔÚÏìÓ¦ÊôÐÔÐÞ¸ÄÊ±, Õâ½«Òý·¢Òì³£
+	RestoreEditorCaretPos();
 }
 
 void SDesignerView::AddCodeToEditor(CScintillaWnd* _pSciWnd)  //¸´ÖÆxml´úÂëµ½´úÂë±à¼­Æ÷
 {
+#ifndef ONLYSHOWSELXML
+	LocateControlXML();
+#else
 	CScintillaWnd* pSciWnd = m_pScintillaWnd;
 	if (_pSciWnd)
 		pSciWnd = _pSciWnd;
 
 	m_strCurFileEditor = m_strCurLayoutXmlFile;
 
-	pSciWnd->SendMessage(SCI_SETREADONLY, 0, 0);
-	pSciWnd->SendMessage(SCI_CLEARALL, 0, 0);
-
-	SStringA str;
-
 	pugi::xml_document doc;
-	SStringT strNodeName(_T("include"));
+	SStringT strInclude(_T("include"));
 
-	if (m_xmlNode == m_CurrentLayoutNode && strNodeName.CompareNoCase(m_xmlNode.name()) == 0)
+	if (m_curSelXmlNode == m_CurrentLayoutNode && strInclude.CompareNoCase(m_curSelXmlNode.name()) == 0)
 	{
-		doc.append_copy(m_xmlNode);
+		doc.append_copy(m_curSelXmlNode);
 	}
 	else
-		if (m_xmlNode == m_CurrentLayoutNode)
+		if (m_curSelXmlNode == m_CurrentLayoutNode)
 		{
-			doc.append_copy(m_xmlNode.child(_T("root")));
+			doc.append_copy(m_curSelXmlNode.child(_T("root")));
 		}
 		else
 		{
-			doc.append_copy(m_xmlNode);
+			doc.append_copy(m_curSelXmlNode);
 		}
 
 
@@ -1851,23 +1883,102 @@ void SDesignerView::AddCodeToEditor(CScintillaWnd* _pSciWnd)  //¸´ÖÆxml´úÂëµ½´úÂ
 	//Debug(doc.root());
 	TrimXmlNodeTextBlank(doc.document_element());
 
-	pugi::xml_writer_buff writer;
+	SStringT writer_buf;
+	myxml_writer_stream writer(writer_buf);
 	doc.document_element().print(writer, L"\t", pugi::format_default, pugi::encoding_utf16);
-	SStringW *strDebug = new SStringW(writer.buffer(), writer.size());
 
-	str = S_CW2A(*strDebug, CP_UTF8);
+	SStringA str;
+	str = S_CW2A(writer_buf, CP_UTF8);
+	pSciWnd->SendMessage(SCI_SETREADONLY, 0, 0);
+	pSciWnd->SendMessage(SCI_CLEARALL, 0, 0);
 	pSciWnd->SendMessage(SCI_ADDTEXT, str.GetLength(),
 		reinterpret_cast<LPARAM>((LPCSTR)str));
 	pSciWnd->SetDirty(false);
-	pSciWnd->SetFocus();
+	//pSciWnd->SetFocus();		//ÔÚÏìÓ¦ÊôÐÔÐÞ¸ÄÊ±, Õâ½«Òý·¢Òì³£
 	RestoreEditorCaretPos();
+#endif // e
+}
 
-	delete strDebug;
+// °Ñ´úÂë±à¼­Æ÷ÐÞ¸ÄµÄ½á¹ûÖØÐÂ¼ÓÔØ, ¸üÐÂ²¼¾Ö´°¿Ú
+void SDesignerView::GetCodeFromEditor()
+{
+	if (m_strCurLayoutXmlFile.IsEmpty())
+	{
+		return;
+	}
+
+	if (m_strCurFileEditor.CompareNoCase(m_strCurLayoutXmlFile) != 0)
+	{
+		return;
+	}
+
+	CScintillaWnd* pSciWnd = m_pScintillaWnd;
+
+	int n = pSciWnd->SendMessage(SCI_GETTEXT, 0, 0);
+	if (n == 0)
+	{
+		return;
+	}
+
+	char *chText = new char[n];
+
+	pSciWnd->SendMessage(SCI_GETTEXT, n, (LPARAM)chText);
+
+	SStringA s(chText);
+	SStringW s1 = S_CA2W(s, CP_UTF8);
+	delete chText;
+
+	pugi::xml_document doc;
+	if (!doc.load_buffer(s1, wcslen(s1) * sizeof(wchar_t), pugi::parse_full, pugi::encoding_utf16))
+	{
+		g_pMainDlg->SendMessage(WM_MSG_SHOWBOX, (WPARAM)_T("XMLÓÐÓï·¨´íÎó£¡"), (LPARAM)_T(""));
+		return;
+	}
+
+	SaveEditorCaretPos();
+
+	RenameChildeWnd(doc.root());
+	TrimXmlNodeTextBlank(doc.document_element());
+
+	SMap<SStringT, pugi::xml_document*>::CPair *p = m_mapLayoutFile.Lookup(m_strCurLayoutXmlFile);
+	p->m_value->reset();
+	p->m_value->append_copy(doc.document_element());
+	pugi::xml_node xmlroot = p->m_value->document_element();
+
+	m_CurrentLayoutNode = xmlroot;
+
+	BOOL bRoot = FALSE;
+
+	// ÏÈ¼ÇÏÂÔ­À´Ñ¡µÄ¿Ø¼þÊÇµÚ¼¸¸öË³ÐòµÄ¿Ø¼þ, ÔÙ½øÐÐÖØ²¼¾Ö
+	int data = ((SMoveWnd*)m_CurSelCtrl)->GetUserData();
+	ReLoadLayout();
+
+	if (bRoot)
+	{
+		m_CurSelCtrl = m_pMoveWndRoot;
+	}
+	else
+	{
+		SMoveWnd *pMoveWnd = (SMoveWnd*)FindChildByUserData(m_pMoveWndRoot, data);
+
+		if (pMoveWnd)
+		{
+			m_CurSelCtrl = pMoveWnd;
+			//AddCodeToEditor(NULL);
+		}
+		else
+		{
+			m_pMoveWndRoot->Click(0, CPoint(0, 0));
+		}
+	}
 }
 
 // °Ñ´úÂë±à¼­Æ÷ÐÞ¸ÄµÄ½á¹ûÖØÐÂ¼ÓÔØ, ¸üÐÂ²¼¾Ö´°¿Ú
 void SDesignerView::GetCodeFromEditor(CScintillaWnd* _pSciWnd)//´Ó´úÂë±à¼­Æ÷»ñÈ¡xml´úÂë
 {
+#ifndef ONLYSHOWSELXML
+	GetCodeFromEditor();
+#else
 	if (m_strCurLayoutXmlFile.IsEmpty())
 	{
 		return;
@@ -1910,36 +2021,35 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* _pSciWnd)//´Ó´úÂë±à¼­Æ÷»ñÈ¡
 
 	BOOL bRoot = FALSE;
 
-	SStringT strNodeName(_T("include"));
+	SStringT strInclude(_T("include"));
 
-	if (m_xmlNode == m_CurrentLayoutNode && strNodeName.CompareNoCase(m_xmlNode.name()) == 0)
+	if (m_curSelXmlNode == m_CurrentLayoutNode && strInclude.CompareNoCase(m_curSelXmlNode.name()) == 0)
 	{
 		pugi::xml_node xmlPNode;
-		xmlPNode = m_xmlNode.parent();
-		pugi::xml_node xmlNode = xmlPNode.insert_copy_after(doc.root().first_child(), m_xmlNode);
+		xmlPNode = m_curSelXmlNode.parent();
+		pugi::xml_node xmlNode = xmlPNode.insert_copy_after(doc.root().first_child(), m_curSelXmlNode);
 
-		xmlPNode.remove_child(m_xmlNode);
-		m_xmlNode = xmlNode;
+		xmlPNode.remove_child(m_curSelXmlNode);
+		m_curSelXmlNode = xmlNode;
 
-		SStringT aa = Debug1(m_xmlNode);
-		m_CurrentLayoutNode = m_xmlNode;
+		m_CurrentLayoutNode = m_curSelXmlNode;
 	}
 	else
-		if (m_xmlNode == m_CurrentLayoutNode && strNodeName.CompareNoCase(m_xmlNode.name()) != 0)
+		if (m_curSelXmlNode == m_CurrentLayoutNode && strInclude.CompareNoCase(m_curSelXmlNode.name()) != 0)
 		{
- 			pugi::xml_node fristNode = m_xmlNode.child(_T("root"));
- 			pugi::xml_node xmlNode = m_xmlNode.insert_copy_after(doc.root().first_child(), fristNode);
- 			m_xmlNode.remove_child(fristNode);
+			pugi::xml_node fristNode = m_curSelXmlNode.child(_T("root"));
+			pugi::xml_node xmlNode = m_curSelXmlNode.insert_copy_after(doc.root().first_child(), fristNode);
+			m_curSelXmlNode.remove_child(fristNode);
 			bRoot = TRUE;
 		}
 		else
 		{
 			pugi::xml_node xmlPNode;
-			xmlPNode = m_xmlNode.parent();
-			pugi::xml_node xmlNode = xmlPNode.insert_copy_after(doc.root().first_child(), m_xmlNode);
+			xmlPNode = m_curSelXmlNode.parent();
+			pugi::xml_node xmlNode = xmlPNode.insert_copy_after(doc.root().first_child(), m_curSelXmlNode);
 
-			xmlPNode.remove_child(m_xmlNode);
-			m_xmlNode = xmlNode;
+			xmlPNode.remove_child(m_curSelXmlNode);
+			m_curSelXmlNode = xmlNode;
 		}
 
 
@@ -1968,21 +2078,20 @@ void SDesignerView::GetCodeFromEditor(CScintillaWnd* _pSciWnd)//´Ó´úÂë±à¼­Æ÷»ñÈ¡
 			m_pMoveWndRoot->Click(0, CPoint(0, 0));
 		}
 	}
+#endif
 }
 
 void SDesignerView::SetSelCtrlNode(pugi::xml_node xmlNode)
 {
 	m_nState = 1;
 
-	pugi::xml_writer_buff writer;
+	SStringW writer_buf;
+	myxml_writer_stream writer(writer_buf);
 	xmlNode.print(writer, L"\t", pugi::format_default, pugi::encoding_utf16);
-	SStringW *strxmlWnd = new SStringW(writer.buffer(), writer.size());
 
-	if (m_xmlSelCtrlDoc.load_buffer(*strxmlWnd, wcslen(*strxmlWnd) * sizeof(wchar_t), pugi::parse_default, pugi::encoding_utf16))
+	if (m_xmlSelCtrlDoc.load_buffer(writer_buf, wcslen(writer_buf) * sizeof(wchar_t), pugi::parse_default, pugi::encoding_utf16))
 	{
 		m_xmlSelCtrlNode = m_xmlSelCtrlDoc.first_child();
-
-		delete strxmlWnd;
 	}
 	else
 	{
@@ -1997,26 +2106,26 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 {
 	BOOL bIsInclude = FALSE;
 
-	m_xmlNode = m_xmlSelCtrlNode.first_child();
+	m_curSelXmlNode = m_xmlSelCtrlNode.first_child();
 
 	//Ìæ»»Include
-	if (_wcsicmp(m_xmlNode.name(), L"include") == 0 && m_xmlNode.attribute(L"src"))
+	if (_wcsicmp(m_curSelXmlNode.name(), L"include") == 0 && m_curSelXmlNode.attribute(L"src"))
 	{
 		bIsInclude = TRUE;
-		SStringT strInclude = NodeToStr(m_xmlNode);
-		m_xmlNode.set_name(L"window");
-		m_xmlNode.remove_attribute(L"src");
-		m_xmlNode.append_attribute(L"pos").set_value(L"10,10,-10,-10");
-		m_xmlNode.append_attribute(L"colorBkgnd").set_value(L"RGB(191,141,255)");
-		m_xmlNode.text().set(strInclude);
+		SStringT strInclude = NodeToStr(m_curSelXmlNode);
+		m_curSelXmlNode.set_name(L"window");
+		m_curSelXmlNode.remove_attribute(L"src");
+		m_curSelXmlNode.append_attribute(L"pos").set_value(L"10,10,-10,-10");
+		m_curSelXmlNode.append_attribute(L"colorBkgnd").set_value(L"RGB(191,141,255)");
+		m_curSelXmlNode.text().set(strInclude);
 
-		RenameWnd(m_xmlNode, TRUE);
+		RenameWnd(m_curSelXmlNode, TRUE);
 
-		SMap<SStringT, SMap<int, SStringT>* >::CPair *p = m_mapInclude1.Lookup(m_strCurLayoutXmlFile);
+		SMap<SStringT, SMap<int, SStringT>* >::CPair *p = m_mapIncludeReplace.Lookup(m_strCurLayoutXmlFile);
 		if (p)
 		{
 			SMap<int, SStringT>* pMap = p->m_value;
-			(*pMap)[m_xmlNode.attribute(L"data").as_int()] = strInclude;
+			(*pMap)[m_curSelXmlNode.attribute(L"data").as_int()] = strInclude;
 		}
 		else
 		{
@@ -2026,8 +2135,8 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 	else
 	{
 		//ÖØÃüÃû¿Ø¼þ
-		RenameWnd(m_xmlNode, TRUE);
-		RenameChildeWnd(m_xmlNode);
+		RenameWnd(m_curSelXmlNode, TRUE);
+		RenameChildeWnd(m_curSelXmlNode);
 	}
 
 	UseEditorUIDef(false);
@@ -2090,24 +2199,24 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 		}
 		strPos.Format(_T("%d,%d"), x, y);
 
-		if (!m_xmlNode.attribute(L"pos"))
+		if (!m_curSelXmlNode.attribute(L"pos"))
 		{
-			m_xmlNode.append_attribute(L"pos");
+			m_curSelXmlNode.append_attribute(L"pos");
 		}
-		m_xmlNode.attribute(L"pos").set_value(strPos);
-		if (m_xmlNode.attribute(L"size"))
+		m_curSelXmlNode.attribute(L"pos").set_value(strPos);
+		if (m_curSelXmlNode.attribute(L"size"))
 		{
 			SStringT strSize;
-			strSize = m_xmlNode.attribute(L"size", false).value();
+			strSize = m_curSelXmlNode.attribute(L"size", false).value();
 		}
 	}
 	SStringT strMoveWnd;
 	strMoveWnd = _T("<movewnd pos=\"0,0,@120,@30\"></movewnd>");
-	pugi::xml_writer_buff writer;
+	SStringW writer_buf;
+	myxml_writer_stream writer(writer_buf);
 	//m_Desiner->m_xmlNode.print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
-	m_xmlNode.print(writer, L"\t", pugi::format_default, pugi::encoding_utf16);
-	SStringW *strxmlWnd = new SStringW(writer.buffer(), writer.size());
-	pRealWnd->CreateChildren(*strxmlWnd);
+	m_curSelXmlNode.print(writer, L"\t", pugi::format_default, pugi::encoding_utf16);
+	pRealWnd->CreateChildren(writer_buf);
 	SWindow *Wnd = pRealWnd->GetWindow(GSW_LASTCHILD);
 	SMoveWnd *Wnd1 = (SMoveWnd *)CreateWnd(pMoveWnd, strMoveWnd);
 	Wnd1->m_pRealWnd = (SUIWindow*)Wnd;
@@ -2122,7 +2231,7 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 		{
 			firstNode = firstNode.child(_T("root"));
 		}
-		SetCurrentCtrl(firstNode.append_copy(m_xmlNode), Wnd1);
+		SetCurrentCtrl(firstNode.append_copy(m_curSelXmlNode), Wnd1);
 		//m_Desiner->m_xmlNode = firstNode.append_copy(m_Desiner->m_xmlNode);
 	}
 	else
@@ -2132,7 +2241,7 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 		s.Format(_T("%d"), pRealWnd->GetUserData());
 		pugi::xml_node xmlNodeRealWnd = FindNodeByAttr(m_CurrentLayoutNode, L"data", s);
 		//½«ÐÂ´´½¨µÄ¿Ø¼þÐ´Èë¸¸¿Ø¼þµÄxml½Úµã
-		SetCurrentCtrl(xmlNodeRealWnd.append_copy(m_xmlNode), Wnd1);
+		SetCurrentCtrl(xmlNodeRealWnd.append_copy(m_curSelXmlNode), Wnd1);
 		//m_Desiner->m_xmlNode = xmlNodeRealWnd.append_copy(m_Desiner->m_xmlNode);
 	}
 
@@ -2141,7 +2250,6 @@ void SDesignerView::NewWnd(CPoint pt, SMoveWnd *pM)
 	pRealWnd->RequestRelayout();
 	pRealWnd->Invalidate();
 	m_nState = 0;
-	delete strxmlWnd;
 }
 
 int SDesignerView::InitXMLStruct(pugi::xml_node xmlNode, HSTREEITEM item)
@@ -2249,7 +2357,7 @@ bool SDesignerView::OnTCSelChanged(EventArgs *pEvt)
 		SMap<SWindow*, SMoveWnd*>::CPair *p = m_mapMoveRealWnd.Lookup(wnd);
 		if (p)
 		{
-			m_xmlNode = xmlNode;
+			m_curSelXmlNode = xmlNode;
 			m_CurSelCtrl = p->m_value;
 
 			m_CurSelCtrl->Click(0, CPoint(0, 0));
@@ -2262,13 +2370,13 @@ bool SDesignerView::OnTCSelChanged(EventArgs *pEvt)
 
 void SDesignerView::DeleteCtrl()
 {
-	if (m_xmlNode == m_CurrentLayoutNode)
+	if (m_curSelXmlNode == m_CurrentLayoutNode)
 	{
 		return;
 	}
 	else
 	{
-		m_xmlNode.parent().remove_child(m_xmlNode);
+		m_curSelXmlNode.parent().remove_child(m_curSelXmlNode);
 
 		//Debug(m_CurrentLayoutNode);
 		GetMoveWndRoot()->Click(0, CPoint(0, 0));
@@ -2316,6 +2424,7 @@ void SDesignerView::ShowZYGLDlg()
 	DlgSkin.m_pResFileManger = &((CMainDlg*)m_pMainHost)->m_UIResFileMgr;
 	if (DlgSkin.DoModal(m_pMainHost->m_hWnd) == IDOK)
 	{
+		((CMainDlg*)m_pMainHost)->ReloadWorkspaceUIRes();
 		RefreshRes();
 	}
 }
@@ -2330,6 +2439,7 @@ void SDesignerView::ShowYSGLDlg()
 	dlg.m_pResFileManger = &((CMainDlg*)m_pMainHost)->m_UIResFileMgr;
 	if (dlg.DoModal(m_pMainHost->m_hWnd) == IDOK)
 	{
+		((CMainDlg*)m_pMainHost)->ReloadWorkspaceUIRes();
 		RefreshRes();
 	}
 }

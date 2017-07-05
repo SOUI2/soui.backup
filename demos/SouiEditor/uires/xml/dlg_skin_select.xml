@@ -7,7 +7,7 @@
 					<caption pos="0,0,-0,30" show="1" font="adding:0">
 						<icon name="NAME_UIDESIGNER_main_icon" skin="app_main_icon" pos="8,9" />
 					</caption>
-					<text pos="29,|0" offset="0, -0.5" class="CLASS_UIDESIGNER_cls_title">资源管理</text>
+					<text pos="29,|0" offset="0, -0.5" class="CLASS_UIDESIGNER_ue_cls_title">资源管理</text>
 					<imgbtn name="btn_close" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />
 					<imgbtn name="btn_max" skin="_skin.sys.btn.maximize" pos="-83,0" animate="1" />
 					<imgbtn name="btn_restore" skin="_skin.sys.btn.restore" pos="-83,0" show="0" animate="1" />
@@ -50,7 +50,7 @@
 							</window>
 							<listbox name="NAME_UIDESIGNER_LB_SKIN" width="-2" weight="1" extend="0,5,0,0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
 						</window>
-						<window size="-2,100" name="NAME_UIDESIGNER_GRID_CONTAINER" class="CLASS_UIDESIGNER_cls_title" weight="1" colorText="#FFFFFF" />
+						<window size="-2,100" name="NAME_UIDESIGNER_GRID_CONTAINER" class="CLASS_UIDESIGNER_ue_cls_title" weight="1" colorText="#FFFFFF" />
 					</window>
 				</window>
 			</window>

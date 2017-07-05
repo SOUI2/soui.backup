@@ -8,8 +8,8 @@
 			</caption>
 			<group pos="8,40" size="224, 552" align="left">
 				样式列表
-				<button pos="8,8" size="88, 24" skin="skin_blue_button" class="normalbtn" name="btnAdd">添加</button>
-				<button pos="128,8" size="88, 24" skin="skin_blue_button" class="normalbtn" name="btnDel">删除</button>
+				<button pos="8,8" size="88, 24" skin="skin_blue_button" class="ue_cls_whiltebtn" name="btnAdd">添加</button>
+				<button pos="128,8" size="88, 24" skin="skin_blue_button" class="ue_cls_whiltebtn" name="btnDel">删除</button>
 				<listbox pos="8,72" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" colorBkgnd="#FFFFFF12" name="lbStyle" size="208, 452">
 					<items>
 						<item text="item1" icon="1" data="100" />
@@ -25,7 +25,7 @@
 			<group pos="240,40" size="552, 336" align="left">
 				代码
 				<realwnd pos="8,32" name="wndReal" wndclass="scintilla" id="" wndname="" size="536, 276" />
-				<buttonex pos="232,0" size="75, 24" animate="1" skin="skin_blue_button" class="normalbtn" icon="_skin.sys.icons" iconIndex="2" drawMode="horzIconText" name="btnSave">保存</buttonex>
+				<buttonex pos="232,0" size="75, 24" animate="1" skin="skin_blue_button" class="ue_cls_whiltebtn" icon="_skin.sys.icons" iconIndex="2" drawMode="horzIconText" name="btnSave">保存</buttonex>
 			</group>
 			<group pos="240,384" size="552, 208" align="left">
 				样式预览
@@ -38,7 +38,7 @@
 					</items>
 				</combobox>
 			</group>
-			<button pos="696,608" size="96, 32" skin="skin_blue_button" class="normalbtn" name="btnOK">确定</button>
+			<button pos="696,608" size="96, 32" skin="skin_blue_button" class="ue_cls_whiltebtn" name="btnOK">确定</button>
 		</window>
 	</root>
 </SOUI>

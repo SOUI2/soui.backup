@@ -42,6 +42,7 @@ HEADERS += Adapter.h \
            helpapi.h \
            MainDlg.h \
            ResManger.h \
+		   pugixml_write.h \
            resource.h \
            ScintillaWnd.h \
            SDesignerRoot.h \
@@ -84,6 +85,7 @@ SOURCES += DesignerView.cpp \
            helpapi.cpp \
            MainDlg.cpp \
            ResManger.cpp \
+		   pugixml_write.cpp \
            ScintillaWnd.cpp \
            SDesignerRoot.cpp \
            SImageBtnEx.cpp \

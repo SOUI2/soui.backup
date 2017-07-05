@@ -2,4 +2,5 @@
   <string>
     <title value="SOUI界面编辑器2"/>
     <ver value="1.0"/>
+    <openincode value="在XML编辑中打开" />
   </string>

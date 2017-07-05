@@ -4,13 +4,13 @@
 		<caption pos="0,0,-0,30" show="1" font="adding:0">
 			<icon name="NAME_UIDESIGNER_main_icon" skin="app_main_icon" pos="8,9" />
 		</caption>
-		<text pos="29,6" class="CLASS_UIDESIGNER_cls_title">新建布局</text>
+		<text pos="29,6" class="CLASS_UIDESIGNER_ue_cls_title">新建布局</text>
 		<imgbtn name="NAME_UIDESIGNER_btn_close" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />
 		<window pos="10, [5, -10, -10">
 			<edit pos="5,5,-36,@24" name="new_layout_resname" cueText="资源名" />
 			<edit pos="5,[10,-36,@24" name="new_layout_path" cueText="保存路径" />
-			<button name="NAME_UIDESIGNER_btn_dlg" pos="[5,{0,@30,@24" skin="skin_blue_button" class="normalbtn">...</button>
-			<button name="NAME_UIDESIGNER_btn_OK" pos="-100,75,@70,@30" skin="skin_blue_button" class="normalbtn">确定</button>
+			<button name="NAME_UIDESIGNER_btn_dlg" pos="[5,{0,@30,@24" skin="skin_blue_button" class="ue_cls_whiltebtn">...</button>
+			<button name="NAME_UIDESIGNER_btn_OK" pos="-100,75,@70,@30" skin="skin_blue_button" class="ue_cls_whiltebtn">确定</button>
 		</window>
 	</root>
 </SOUI>

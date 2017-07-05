@@ -204,8 +204,8 @@ public:
 			((SMoveWnd*)pSChild)->m_pRealWnd->RequestRelayout();
 			((SMoveWnd*)pSChild)->m_pRealWnd->UpdateLayout();
 
-			m_pDesignerView->CreatePropGrid(m_pDesignerView->m_xmlNode.name());
-			m_pDesignerView->UpdatePropGrid(m_pDesignerView->m_xmlNode);
+			m_pDesignerView->CreatePropGrid(m_pDesignerView->m_curSelXmlNode.name());
+			m_pDesignerView->UpdatePropGrid(m_pDesignerView->m_curSelXmlNode);
 		}
 	}
 	SOUI_MSG_MAP_BEGIN()

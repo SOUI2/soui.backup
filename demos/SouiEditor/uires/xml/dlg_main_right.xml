@@ -8,5 +8,53 @@
 			<text name="uidesigner_nodenum" pos="5,0,-1,24" />
 			<treectrl pos="1,[5,-1,-1" name="uidesigner_wnd_xmltree" toggleSkin="skin_tree_toggle_png" itemHeight="30" colorItemText="#FFFFFF" colorItemSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" />
 		</page>
+		<page title="皮肤" colorBorder="#ffff00" colorBkgnd="#FFFFFF12">
+			<mclistview name="mclv_skin" colorBkgnd="#FFFFFF12" pos="1,1,-1,-1" headerHeight="0">
+				    
+					<header align="center" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" >
+				      <items>
+						<item width="300">皮肤</item>
+				      </items>
+				    </header>
+
+				    <template itemHeight="80" colorHover="#FFFFFF20" colorSelected="#FFFFFF50">
+				      <window name="col1" clipClient="1">
+						<text name="txt_name" pos="5,2" font="bold:1,adding:-1"></text>
+						<window clipClient="1" pos="2,[2,-2,-2">						
+							<img name="img_icon" pos="10,|0,-10,@-1" offset="0, -0.5" tile="1" />
+						</window>
+				      </window>
+				    
+				    </template>
+
+			</mclistview>
+		</page>
+		
+		<page title="颜色" colorBorder="#ffff00" colorBkgnd="#FFFFFF12">
+			<mclistview name="mclv_color" colorBkgnd="#FFFFFF12" pos="1,1,-1,-1" headerHeight="0">
+				    
+					<header align="center" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" >
+				      <items>
+						<item width="300">Color</item>
+				      </items>
+				    </header>
+
+				    <template itemHeight="30" colorHover="#FFFFFF20" colorSelected="#FFFFFF50">
+				      <window name="col1" clipClient="1">
+						<img name="img_icon" pos="5,1,@28,@28" tile="1" />
+						<text name="txt_name" pos="[5,|0" offset="0, -0.5" font="adding:-1"></text>
+				      </window>
+				    
+				    </template>
+
+			</mclistview>
+		</page>
+		<page title="样式" colorBorder="#ffff00" colorBkgnd="#FFFFFF12">
+			<listbox pos="0,0,-0,-0" name="lb_allStyle" weight="1" hotTrack="1" itemHeight="28" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" colorBkgnd="#FFFFFF12" text-x="20" />
+		</page>
+		<page title="字串" colorBorder="#ffff00" colorBkgnd="#FFFFFF12">
+			<listbox pos="0,0,-0,-0" name="lb_allString" weight="1" hotTrack="1" itemHeight="40" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" colorBkgnd="#FFFFFF12" text-x="20" />
+		</page>
+
 	</tabctrl>
 </include>

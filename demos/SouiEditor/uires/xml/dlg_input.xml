@@ -6,9 +6,9 @@
 				<text pos="5,4" name="txt_title">输入对话框</text>
 				<imgbtn name="btnCancel" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />
 			</caption>
-			<edit pos="51,43" size="343, 24" cueText="" colorText="#000000" name="edtInput" />
-			<text pos="10,47">内容：</text>
-			<button name="btnOK" pos="275,86" size="106, 27" skin="skin_blue_button" class="normalbtn">确定</button>
+			<edit pos="56,43" size="336, 24" cueText="" colorText="#000000" name="edtInput" />
+			<text pos="10,45">内容：</text>
+			<button name="btnOK" pos="275,86" size="106, 27" skin="skin_blue_button" class="ue_cls_whiltebtn">确定</button>
 		</window>
 	</root>
 </SOUI>
