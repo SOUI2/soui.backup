@@ -4,7 +4,7 @@
 
 运行后主界面如下图:
 
-![img](https://github.com/SOUI2/soui/tree/snow/souieditor/demos/SouiEditor//docimage//1.png)
+![img](https://github.com/SOUI2/soui/raw/snow/souieditor/demos/SouiEditor/docimage/1.png)
 
  
 
@@ -20,7 +20,7 @@
 
 在可视化编辑模式时，在窗体可视编辑窗口中点击控件，代码窗口会自动定位此控件代码。演示如下
 
-![img](https://github.com/SOUI2/soui/tree/snow/souieditor/demos/SouiEditor//docimage//1.gif)
+![img](https://github.com/SOUI2/soui/raw/snow/souieditor/demos/SouiEditor/docimage/1.gif)
 
 
 
@@ -28,7 +28,7 @@
 
 **SouiEditor也支持以命令行方式打开工程, 如VS中可设置如下, 方便随时编辑**.
 
-![img](https://github.com/SOUI2/soui/tree/snow/souieditor/demos/SouiEditor//docimage//2.png)
+![img](https://github.com/SOUI2/soui/raw/snow/souieditor/demos/SouiEditor/docimage/2.png)
 
  
 
@@ -64,4 +64,4 @@
 
 自动提示功能的演示参见下图：
 
-![img](https://github.com/SOUI2/soui/tree/snow/souieditor/demos/SouiEditor//docimage//3.gif)
+![img](https://github.com/SOUI2/soui/raw/snow/souieditor/demos/SouiEditor/docimage/3.gif)
