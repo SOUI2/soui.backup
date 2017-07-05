@@ -561,7 +561,7 @@ namespace SOUI
 				case gBottom:pt2.y+=(szCell.cy-szDesired.cy);break;
 				case gFill:szDesired.cy=szCell.cy;break;
 				}
-				CRect rcCell(pt,szDesired);
+				CRect rcCell(pt2,szDesired);
 				pCell->OnRelayout(rcCell);
 
 				pt.x += szCell.cx + xInter;

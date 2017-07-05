@@ -61,145 +61,164 @@
       </window>
     </page>
     <page title="grid layout">
-      <text pos="|0,10" offset="-0.5,0" text="soui grid layout calc"/>
-      <window pos="10,[5,-10,-10" layout="gridLayout" colorBkgnd="#888888" columnCount="4" rowCount="6" xInterval="5" yInterval="5" xGravity="fill" yGravity="fill">
-        <edit
-          size="0,0"
-        cueText="数值"
-        columnSpan="4"
-        rowWeight="2"
-        />
-
-        <button
-          size="0,0"
-        text="清除"
-        columnWeight="1"
-        rowWeight="1"
-        colorText="#0000ff"
-        />
-
-        <button
-          size="0,0"
-        text="后退"
-        columnWeight="1"
-        rowWeight="1"
-        />
-
-        <button
-          size="0,0"
-        text="/"
-        columnWeight="1"
-        rowWeight="1"
-        />
-        <!--//列 行权重为1-->
-        <button
-          size="0,0"
-            text="x"
-            columnWeight="1"
-            rowWeight="1"
-            />
-        <!--//列 行权重为1-->
-        <button
-          size="0,0"
-            text="7"
-            columnWeight="1"
-            rowWeight="1"
-            />
-        <!--//列 行权重为1-->
-        <button
-          size="0,0"
-            text="8"
-            columnWeight="1"
-            rowWeight="1"
-            />
-        <!--//列 行权重为1-->
-        <button
-          size="0,0"
-            text="9"
-            columnWeight="1"
-            rowWeight="1"
-            />
-        <!--//列 行权重为1-->
-        <button
-          size="0,0"
-            text="-"
-            columnWeight="1"
-            rowWeight="1"
-            />
-        <!--//列 行权重为1-->
-        <button
-          size="0,0"
-            text="4"
-            columnWeight="1"
-            rowWeight="1"
-            />
-        <!--//列 行权重为1-->
-        <button
-          size="0,0"
-            text="5"
-            columnWeight="1"
-            rowWeight="1"
-            />
-        <!--//列 行权重为1-->
-        <button
-          size="0,0"
-            text="6"
-            columnWeight="1"
-            rowWeight="1"
-            />
-        <!--//列 行权重为1-->
-        <button
-          size="0,0"
-            text="+"
-            columnWeight="1"
-            rowWeight="1"
-            />
-        <!--//列 行权重为1-->
-        <button
-          size="0,0"
-            text="1"
-            columnWeight="1"
-            rowWeight="1"
-            />
-        <!--//列 行权重为1-->
-        <button
-          size="0,0"
-            text="2"
-            columnWeight="1"
-            rowWeight="1"
-            />
-        <!--//列 行权重为1-->
-        <button
-          size="0,0"
-            text="3"
-            columnWeight="1"
-            rowWeight="1"
-            />
-        <!--//列 行权重为1-->
-        <button
-          size="0,0"
-            text="="
-            rowSpan="2"
-            columnWeight="1"
+      <tabctrl pos="0,0,-0,-0" tabAlign="bottom" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabWidth="200">
+        <page title="calc">
+          <text pos="|0,10" offset="-0.5,0" text="soui grid layout calc"/>
+          <window pos="10,[5,-10,-10" layout="gridLayout" colorBkgnd="#888888" columnCount="4" rowCount="6" xInterval="5" yInterval="5" xGravity="fill" yGravity="fill">
+            <edit
+              size="0,0"
+            cueText="数值"
+            columnSpan="4"
             rowWeight="2"
-            />
-        <button
-          size="0,0"
-            text="0"
-            columnSpan="2"
-            columnWeight="2"
-            rowWeight="1"
-            />
-        <!--跨两列 自动填充 列权重2 行权重1-->
-        <button
-          size="0,0"
-            text="."
+        />
+
+            <button
+              size="0,0"
+            text="清除"
             columnWeight="1"
             rowWeight="1"
-            />
-        <!--列 行 权重1-->
+            colorText="#0000ff"
+        />
 
-      </window>
+            <button
+              size="0,0"
+            text="后退"
+            columnWeight="1"
+            rowWeight="1"
+        />
+
+            <button
+              size="0,0"
+            text="/"
+            columnWeight="1"
+            rowWeight="1"
+        />
+            <!--//列 行权重为1-->
+            <button
+              size="0,0"
+                text="x"
+                columnWeight="1"
+                rowWeight="1"
+            />
+            <!--//列 行权重为1-->
+            <button
+              size="0,0"
+                text="7"
+                columnWeight="1"
+                rowWeight="1"
+            />
+            <!--//列 行权重为1-->
+            <button
+              size="0,0"
+                text="8"
+                columnWeight="1"
+                rowWeight="1"
+            />
+            <!--//列 行权重为1-->
+            <button
+              size="0,0"
+                text="9"
+                columnWeight="1"
+                rowWeight="1"
+            />
+            <!--//列 行权重为1-->
+            <button
+              size="0,0"
+                text="-"
+                columnWeight="1"
+                rowWeight="1"
+            />
+            <!--//列 行权重为1-->
+            <button
+              size="0,0"
+                text="4"
+                columnWeight="1"
+                rowWeight="1"
+            />
+            <!--//列 行权重为1-->
+            <button
+              size="0,0"
+                text="5"
+                columnWeight="1"
+                rowWeight="1"
+            />
+            <!--//列 行权重为1-->
+            <button
+              size="0,0"
+                text="6"
+                columnWeight="1"
+                rowWeight="1"
+            />
+            <!--//列 行权重为1-->
+            <button
+              size="0,0"
+                text="+"
+                columnWeight="1"
+                rowWeight="1"
+            />
+            <!--//列 行权重为1-->
+            <button
+              size="0,0"
+                text="1"
+                columnWeight="1"
+                rowWeight="1"
+            />
+            <!--//列 行权重为1-->
+            <button
+              size="0,0"
+                text="2"
+                columnWeight="1"
+                rowWeight="1"
+            />
+            <!--//列 行权重为1-->
+            <button
+              size="0,0"
+                text="3"
+                columnWeight="1"
+                rowWeight="1"
+            />
+            <!--//列 行权重为1-->
+            <button
+              size="0,0"
+                text="="
+                rowSpan="2"
+                columnWeight="1"
+                rowWeight="2"
+            />
+            <button
+              size="0,0"
+                text="0"
+                columnSpan="2"
+                columnWeight="2"
+                rowWeight="1"
+            />
+            <!--跨两列 自动填充 列权重2 行权重1-->
+            <button
+              size="0,0"
+                text="."
+                columnWeight="1"
+                rowWeight="1"
+            />
+            <!--列 行 权重1-->
+
+          </window>
+        </page>
+        <page title="test">
+          <text pos="|0,10" offset="-0.5,0" text="行列对齐"/>
+
+          <window pos="|0,[5" offset="-0.5,0" layout="gridLayout" columnCount="2" xInterval="5" yInterval="5" xGravity="right" colorBkgnd="#888888">
+            <text size="-1,-1">所在地:</text>
+            <edit size="200,50" layout_xGravity="fill">广东 广州</edit>
+
+            <text size="-1,-1">邮箱:</text>
+            <edit size="200,-1" layout_xGravity="fill">xx@qq.com</edit>
+
+            <text size="-1,-1">兴趣:</text>
+            <edit size="200,-1" layout_xGravity="fill">看小电影</edit>
+
+          </window>
+        </page>
+      </tabctrl>
     </page>
   </tabctrl>
 </include>
