@@ -79,7 +79,9 @@ HEADERS += Adapter.h \
            propgrid/propitem/SPropertyItem-Text.h \
            propgrid/SPropertyGrid.h \
            colorpicker/SColorPicker.h \
-           colorpicker/ColourPopup.h
+           colorpicker/ColourPopup.h \
+           pugixml_write.h \
+           SysdataMgr.h \
 
 SOURCES += DesignerView.cpp \
            helpapi.cpp \
@@ -113,7 +115,10 @@ SOURCES += DesignerView.cpp \
            propgrid/propitem/SPropertyItem-Color.cpp \
            propgrid/propitem/SPropertyItem-Option.cpp \
            propgrid/propitem/SPropertyItem-Size.cpp \
-           propgrid/propitem/SPropertyItem-Text.cpp
+           propgrid/propitem/SPropertyItem-Text.cpp \
+           pugixml_write.cpp \
+           SysdataMgr.cpp \
+
 
 
 SOURCES+=../../controls.extend/image3d/3dlib.cpp
