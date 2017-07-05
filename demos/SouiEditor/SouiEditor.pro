@@ -18,8 +18,6 @@ INCLUDEPATH += . \
 dir = ../..
 include($$dir/common.pri)
 
-system(copy "..\..\third-part\SciLexer\bin\SciLexer.dll" "..\..\bin\SciLexer.dll")
-
 CONFIG(debug,debug|release){
 	LIBS += utilitiesd.lib souid.lib Scintillad.lib imm32.lib
 }
