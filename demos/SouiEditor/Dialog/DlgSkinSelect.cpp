@@ -323,30 +323,18 @@ namespace SOUI
 		if (strTemp.Find(_T(":")) == -1)
 			strTemp = strResName + _T(":") + strTemp;
 
-		xmlNode = m_pResFileManger->GetResFirstNode(_T("skin"));
-
-		while (xmlNode)
+		ResManger::SkinItem matchSkin = m_pResFileManger->GetSkinByImg(strTemp);
+		if (!matchSkin.name.IsEmpty())
 		{
-			if (xmlNode.type() != pugi::node_element)
-			{
-				xmlNode = xmlNode.next_sibling();
-				continue;
-			}
+			SStringT s2, s3;
+			s2 = matchSkin.class_name;
+			s3 = matchSkin.name;
 
-			if (strTemp.CompareNoCase(xmlNode.attribute(L"src").value()) == 0)
-			{
-				SStringT s2, s3;
-				s2 = xmlNode.name();
-				s3 = xmlNode.attribute(L"name").value();
+			SStringT *strData = new SStringT(matchSkin.src);
 
-				SStringT *strData = new SStringT(xmlNode.attribute(L"src").value());
-
-				m_lbSkin->AddString(s2 + _T(":  ") + s3, -1, (LPARAM)strData);
-			}
-
-			xmlNode = xmlNode.next_sibling();
+			m_lbSkin->AddString(s2 + _T(":  ") + s3, -1, (LPARAM)strData);
 		}
-
+		
 		if (m_lbSkin->GetCount() > 0)
 		{
 			m_lbSkin->SetCurSel(0);

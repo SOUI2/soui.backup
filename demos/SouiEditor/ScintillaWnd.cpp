@@ -9,10 +9,13 @@
 #include "SciLexer.h"
 #include "DesignerView.h"
 #include "xpm_icons.h"
+#include "SysdataMgr.h"
+#include "MainDlg.h"
 
 #define STR_SCINTILLAWND _T("Scintilla")
 #define STR_SCINTILLADLL _T("SciLexer.dll")
 
+extern CMainDlg* g_pMainDlg;
 //////////////////////////////////////////////////////////////////////////
 CScintillaModule::CScintillaModule()
 {
@@ -151,7 +154,12 @@ BOOL CScintillaWnd::OpenFile(LPCTSTR lpFileName)
 
 void CScintillaWnd::DoSave()
 {
-	if (!m_strFileName.IsEmpty() && SaveFile(m_strFileName))
+	if (m_strFileName.IsEmpty())
+	{
+		return;
+	}
+
+	if (SaveFile(m_strFileName))
 		SetDirty(false);
 }
 
@@ -170,7 +178,7 @@ void CScintillaWnd::SetDirty(bool bDirty)
 		SetXmlLexer(white);
 	}
 
-	if (m_fnCallback)
+	if (m_fnCallback && !m_strFileName.IsEmpty())
 	{
 		(this->*m_fnCallback)(this, 1, bDirty ? _T("dirty") : _T(""));
 	}
@@ -209,10 +217,11 @@ BOOL CScintillaWnd::SaveFile(LPCTSTR lpFileName)
 
 void CScintillaWnd::InitScintillaWnd(void)
 {
-	SendMessage(SCI_SETCODEPAGE, SC_CP_UTF8);//UTF8
-	//SendMessage(SCI_USEPOPUP,0,0); //关闭右键菜单，改由父窗口view类响应
+	SendMessage(SCI_SETCODEPAGE, SC_CP_UTF8);		//UTF8
+	//SendMessage(SCI_USEPOPUP,0,0);				//关闭右键菜单，改由父窗口view类响应
 
-
+	SendMessage(SCI_SETWRAPMODE, SC_WRAP_WORD);		//自动换行
+	
 	//设置全局默认style，默认style只在没有明确的选择时会被应用
 	SetAStyle(STYLE_DEFAULT, black, white, 11, "宋体");
 	SendMessage(SCI_STYLECLEARALL);	// 将全局默认style应用到所有
@@ -233,14 +242,20 @@ void CScintillaWnd::InitScintillaWnd(void)
 	SendEditor(SCI_ASSIGNCMDKEY, (WPARAM)('S' + (SCMOD_CTRL << 16)), (LPARAM)SCI_NULL);
 
 	//自动完成
-	SendEditor(SCI_AUTOCSETSEPARATOR, static_cast<WPARAM>(10), 0);
+	SendEditor(SCI_AUTOCSETSEPARATOR, static_cast<WPARAM>(' '), 0);	//设置自动完成列表单词分隔符
+	SendEditor(SCI_AUTOCSETMAXHEIGHT, static_cast<WPARAM>(15), 0);
+	SendEditor(SCI_AUTOCSETMAXWIDTH, static_cast<WPARAM>(0), 0);
+	SendEditor(SCI_AUTOCSETIGNORECASE, static_cast<WPARAM>(1), 0);
 
+	
 	//显示当前行的背景
 	SendEditor(SCI_SETCARETLINEVISIBLE, TRUE);
+	SendEditor(SCI_SETCARETLINEVISIBLEALWAYS, TRUE);
 	SendEditor(SCI_SETCARETLINEBACK, 0xa0ffff);
 	//SendEditor(SCI_SETCARETLINEBACKALPHA, 100, 0);
 
-	SendEditor(SCI_STYLESETFORE, STYLE_BRACELIGHT, 0x0000FF);       //代码框.置风格前景色 (#代码编辑框常量.风格_匹配括号, #红色)
+	// 括号匹配颜色
+	SendEditor(SCI_STYLESETFORE, STYLE_BRACELIGHT, RGB(0,255,0));       //代码框.置风格前景色 (#代码编辑框常量.风格_匹配括号, #红色)
 	SendEditor(SCI_STYLESETBOLD, STYLE_BRACELIGHT, true);           //风格.粗体
 
 	SetFold();
@@ -305,7 +320,6 @@ void CScintillaWnd::SetXmlLexer(COLORREF bkColor)
 	// 设置全局style. 这些属性会在无其它选择时被应用.
 	SetAStyle(STYLE_DEFAULT, black, bkColor, 9, "Verdana");
 	SendMessage(SCI_STYLECLEARALL);
-
 	const COLORREF CR_RED = RGB(0xFF, 0, 0);
 	const COLORREF CR_OFFWHITE = RGB(0xFF, 0xFB, 0xF0);
 	const COLORREF CR_DARKGREEN = RGB(0, 0x80, 0);
@@ -339,8 +353,7 @@ void CScintillaWnd::SetXmlLexer(COLORREF bkColor)
 	const COLORREF lightBlue = RGB(0xA6, 0xCA, 0xF0);
 
 	SendMessage(SCI_STYLESETBACK, SCE_HB_STRINGEOL, RGB(0x7F, 0x7F, 0xFF));
-	SendMessage(SCI_STYLESETFONT, SCE_HB_COMMENTLINE,
-		reinterpret_cast<LPARAM>("宋体"));
+	SendMessage(SCI_STYLESETFONT, SCE_HB_COMMENTLINE, reinterpret_cast<LPARAM>("宋体"));
 }
 
 void CScintillaWnd::findMatchingBracePos(int & braceAtCaret, int & braceOpposite)
@@ -401,6 +414,131 @@ bool CScintillaWnd::doMatch()           //匹配括号并加亮缩进向导
 	return (braceAtCaret != -1);
 }
 
+SStringT CScintillaWnd::GetHtmlTagname()
+{
+	int caretPos = int(SendEditor(SCI_GETCURRENTPOS));
+	TCHAR charBefore = '\0';
+	SStringT tagname;
+	int lengthDoc = int(SendEditor(SCI_GETLENGTH));
+
+	if ((lengthDoc > 0) && (caretPos > 0))
+	{
+		int namestart = caretPos;
+		int nameend = 0;
+		do
+		{
+			charBefore = TCHAR(SendEditor(SCI_GETCHARAT, --namestart, 0));
+		} while (charBefore != '<' && namestart >= 0);
+
+		if (namestart >= 0)
+		{
+			nameend = namestart + 1;
+			while (nameend <= caretPos)
+			{
+				charBefore = TCHAR(SendEditor(SCI_GETCHARAT, nameend++, 0));
+				if (charBefore == ' ')
+					break;
+
+				tagname += charBefore;
+			}
+			tagname.Trim();
+		}
+	}
+
+	return tagname;
+}
+
+SStringA CScintillaWnd::GetNotePart(int curPos)
+{
+	// int(SendEditor(SCI_GETCURRENTPOS))
+	int startPos = SendEditor(SCI_WORDSTARTPOSITION, curPos, true);
+	SStringA tagname;
+	if (curPos == startPos)
+		return tagname;
+
+	const int wordMaxSize = 64;
+	char name[wordMaxSize] = {0};
+	int len = (curPos > startPos) ? (curPos - startPos) : (startPos - curPos);
+	if (len < wordMaxSize)
+	{
+		Sci_TextRange sci_tr;
+		if (curPos > startPos)
+		{
+			sci_tr.chrg.cpMin = startPos;
+			sci_tr.chrg.cpMax = curPos;
+		}
+		else
+		{
+			sci_tr.chrg.cpMin = curPos;
+			sci_tr.chrg.cpMax = startPos;
+		}
+
+		sci_tr.lpstrText = name;
+		SendEditor(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&sci_tr));
+
+		tagname = sci_tr.lpstrText;
+	}
+
+	tagname.Trim();
+
+	return tagname;
+}
+
+void CScintillaWnd::ShowAutoComplete(const char ch)
+{
+	if (SendEditor(SCI_AUTOCACTIVE, 0, 0) != 0)
+		return;
+
+	long lStart = SendEditor(SCI_GETCURRENTPOS, 0, 0);
+	int startPos = SendEditor(SCI_WORDSTARTPOSITION, lStart, true);
+
+	if (ch == '.')
+	{
+		SStringA str = g_pMainDlg->m_UIResFileMgr.GetSkinAutos();
+		if (!str.IsEmpty())
+		{
+			SendEditor(SCI_AUTOCSHOW, lStart - startPos, (LPARAM)(LPCSTR)str);
+		}
+	}
+	else if (ch == '/')
+	{
+		//int startPos = SendEditor(SCI_WORDSTARTPOSITION, lStart-1, true);
+		SStringA clsName = GetNotePart(lStart - 1);
+		SStringA str;
+		if (clsName.IsEmpty())
+			str = g_pMainDlg->m_UIResFileMgr.GetStyleAutos();
+		else if (clsName.CompareNoCase("color") == 0)
+			str = g_pMainDlg->m_UIResFileMgr.GetColorAutos();
+		else if (clsName.CompareNoCase("string") == 0)
+			str = g_pMainDlg->m_UIResFileMgr.GetStringAutos();
+
+		if (!str.IsEmpty())
+		{
+			SendEditor(SCI_AUTOCSHOW, lStart - startPos, (LPARAM)(LPCSTR)str);
+		}
+	}
+	else if (ch == '<')
+	{
+		SStringA str = g_SysDataMgr.GetCtrlAutos();
+		if (!str.IsEmpty())
+		{
+			SendEditor(SCI_AUTOCSHOW, lStart - startPos, (LPARAM)(LPCSTR)str);
+		}
+	}
+	else if (ch >= 'a' && ch <= 'z')
+	{
+		SStringT tagname = GetHtmlTagname();
+		if (!tagname.IsEmpty())
+		{
+			SStringA str = g_SysDataMgr.GetCtrlAttrAutos(tagname);
+			if (!str.IsEmpty())
+			{	// 自动完成字串要进行升充排列, 否则功能不正常
+				SendEditor(SCI_AUTOCSHOW, lStart - startPos, (LPARAM)(LPCSTR)str);
+			}
+		}		
+	}
+}
+
 LRESULT CScintillaWnd::OnNotify(int idCtrl, LPNMHDR pnmh)
 {
 	if (pnmh->hwndFrom != m_hWnd) return 0;
@@ -419,19 +557,53 @@ LRESULT CScintillaWnd::OnNotify(int idCtrl, LPNMHDR pnmh)
 	{
 		const char *pp = pSCNotification->text;
 		if (pp)	//判断是否是文字改变
+		{
+			UpdateLineNumberWidth();
 			SetDirty(true);
+		}
 	}
-		break;
+	break;
 
+#ifdef SCN_AUTOCCOMPLETED
+	// SOUI内核带Scintilla没实现这个, 需要 Scintilla 3.6.0 以上版本
+	case SCN_AUTOCCOMPLETED:
+	{
+		const char *pp = pSCNotification->text;
+		if (pp)
+		{
+			char name[8] = { 0 };
+			Sci_TextRange sci_tr;
+			sci_tr.chrg.cpMin = pSCNotification->position - 2;
+			sci_tr.chrg.cpMax = pSCNotification->position;
+			sci_tr.lpstrText = name;
+			SendEditor(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&sci_tr));
+			if ((strcmp(name, "\".") == 0) || (strcmp(name, "\"/") == 0))
+			{
+				SendEditor(SCI_DELETERANGE, pSCNotification->position - 1, 1);
+			}
+		}
+	}
+	break;
+#endif // SCN_AUTOCCOMPLETED
+
+	
 	case SCN_CHARADDED:
-		SetDirty(true);
-		break;
+	{
+		BOOL bReadonly = (BOOL)SendEditor(SCI_GETREADONLY);
+		if (!bReadonly)
+			SetDirty(true);
+
+		char pp = tolower(pSCNotification->ch);
+		ShowAutoComplete(pp);
+	}
+	break;
 
 	case SCN_UPDATEUI:
 	{
 		doMatch();
 	}
 	break;
+
 	default:
 		break;
 	}
@@ -467,4 +639,56 @@ void CScintillaWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	// 不加这个, 默认是Handled消息 Scintilla功能会不正常
 	SetMsgHandled(FALSE);
+}
+
+void CScintillaWnd::GotoFoundLine()
+{
+	int currentPos = SendEditor(SCI_GETCURRENTPOS);
+	int lno = SendEditor(SCI_LINEFROMPOSITION, currentPos);
+	int start = SendEditor(SCI_POSITIONFROMLINE, lno);
+	int end = SendEditor(SCI_GETLINEENDPOSITION, lno);
+	if (start + 2 >= end) return; // avoid empty lines
+
+	if (SendEditor(SCI_GETFOLDLEVEL, lno) & SC_FOLDLEVELHEADERFLAG)
+	{
+		SendEditor(SCI_TOGGLEFOLD, lno);
+		return;
+	}
+
+	displaySectionCentered(start, end);
+	displaySectionCentered(start, end);
+}
+
+void CScintillaWnd::displaySectionCentered(int posStart, int posEnd, bool isDownwards)
+{
+	int testPos = (isDownwards) ? posEnd : posStart;
+	SendEditor(SCI_SETCURRENTPOS, testPos);
+	int currentlineNumberDoc = (int)SendEditor(SCI_LINEFROMPOSITION, testPos);
+	int currentlineNumberVis = (int)SendEditor(SCI_VISIBLEFROMDOCLINE, currentlineNumberDoc);
+	SendEditor(SCI_ENSUREVISIBLE, currentlineNumberDoc);	// make sure target line is unfolded
+
+	int firstVisibleLineVis = (int)SendEditor(SCI_GETFIRSTVISIBLELINE);
+	int linesVisible = (int)SendEditor(SCI_LINESONSCREEN) - 1;	//-1 for the scrollbar
+	int lastVisibleLineVis = linesVisible + firstVisibleLineVis;
+
+	//if out of view vertically, scroll line into (center of) view
+	int linesToScroll = 0;
+	if (currentlineNumberVis <= firstVisibleLineVis)
+	{
+		linesToScroll = currentlineNumberVis - firstVisibleLineVis;
+		//use center
+		linesToScroll -= linesVisible / 2;
+	}
+	else if (currentlineNumberVis >= lastVisibleLineVis)
+	{
+		linesToScroll = currentlineNumberVis - lastVisibleLineVis;
+		//use center
+		linesToScroll += linesVisible / 2;
+	}
+	SendEditor(SCI_LINESCROLL, 0, linesToScroll);
+	//Make sure the caret is visible, scroll horizontally (this will also fix wrapping problems)
+	SendEditor(SCI_GOTOPOS, posStart);
+	//SendEditor(SCI_GOTOPOS, posEnd);
+
+	SendEditor(SCI_SETANCHOR, posStart);
 }

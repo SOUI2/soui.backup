@@ -33,6 +33,8 @@
 		<file name="default.scrollbar" path="image\default.scrollbar.png" />
 		<file name="open_menu_png" path="image\open_menu.png" />
 		<file name="tree_toggle_png" path="image\tree_toggle.png" />
+		<file name="menu_skin_png" path="image\menu_skin.png" />
+		<file name="menu_sep_png" path="image\menu_sep.png" />
 	</IMG>
 	<ICON>
 		<file name="ICON_LOGO" path="image\soui.ico" />
@@ -41,4 +43,7 @@
 		<file name="lang_cn" path="translator\lang_cn.xml" />
 		<file name="lang_jp" path="translator\lang_jp.xml" />
 	</translator>
+	<smenu>
+		<file name="menu_layoutfile" path="smenu\menu_layoutfile.xml" />
+	</smenu>
 </resource>

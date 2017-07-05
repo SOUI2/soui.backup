@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <skin>
 	<imglist name="app_main_icon" src="icon:ICON_LOGO" states="1" />
 	<imglist name="sking_main_icon" src="IMG:icon_main" states="1" />
 	<imglist name="skin_open_menu_png" src="IMG:open_menu_png" states="4" tile="1" />
-	<scrollbar name="default.scrollbar" src="img:default.scrollbar" margin="2" />
+	<scrollbar name="skin_bb_scrollbar" src="img:default.scrollbar" margin="2" />
 	<imglist name="skin_traymenu_icons" src="img:traymenu_icons" states="9" />
 	<imglist name="skin_caption_line" src="img:caption_line" />
 	<imglist name="skin_app_button" src="img:png_tool_button" states="3" />
@@ -12,4 +12,6 @@
 	<imglist name="skin_blue_button" src="img:png_btn_blue" states="3" />
 	<imglist name="skin_app_button2" src="img:png_app_button" states="3" />
 	<imglist name="skin_tree_toggle_png" src="IMG:tree_toggle_png" states="6" />
+	<imglist name="skin_menu_skin_png" src="IMG:menu_skin_png" states="2" />
+	<imglist name="skin_menu_sep_png" src="IMG:menu_sep_png" states="1" />
 </skin>

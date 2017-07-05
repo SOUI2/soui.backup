@@ -19,7 +19,7 @@
 				<window pos="184,136" size="200, 136" name="wndPreview" margin="1" colorBorder="#ffad5bff">预览</window>
 				<edit pos="213,102" size="35, 20" colorBkgnd="#FFFFFF" cueText="" colorText="#000000" name="edtSize" notifyChange="1" />
 			</window>
-			<button pos="296,320" size="88, 24" skin="skin_blue_button" class="normalbtn" name="btnOK">确定</button>
+			<button pos="296,320" size="88, 24" skin="skin_blue_button" class="ue_cls_whiltebtn" name="btnOK">确定</button>
 		</window>
 	</root>
 </SOUI>

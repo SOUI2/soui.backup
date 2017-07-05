@@ -2,6 +2,7 @@
 #include "ResManger.h"
 #include "CDebug.h"
 #include "helpapi.h"
+#include <vector>
 
 ResManger::ResManger()
 {
@@ -31,6 +32,10 @@ void ResManger::ReleaseUIRes()
 
 	m_mapResFile.RemoveAll();
 	m_mapXmlFile.RemoveAll();
+	m_mapSkins.RemoveAll();
+	m_mapStrings.RemoveAll();
+	m_mapColors.RemoveAll();
+	m_mapStyles.RemoveAll();
 
 	m_strSkinFile = L"";
 	m_strStringFile = L"";
@@ -88,6 +93,9 @@ void ResManger::LoadUIRes()
 	}
 
 	m_xmlNodeUiRes = m_xmlDocUiRes.root();
+
+	m_mapResFile.RemoveAll();
+	m_mapXmlFile.RemoveAll();
 
 	pugi::xml_node xmlNode = m_xmlNodeUiRes.child(L"resource").first_child();
 	GetSubNodes(xmlNode, L"");
@@ -176,14 +184,16 @@ void ResManger::GetSubNodes(pugi::xml_node& parentNode, SStringT parentNodeName)
 					strPath = parentNode.attribute(L"path").value();
 					if (!strName.IsEmpty() && !strPath.IsEmpty())
 					{
+						SStringT strKey = parentNodeName + strName;
+						strKey.MakeLower();
 						SStringT extname = GetFileExtname(strPath);
 						if (extname.CompareNoCase(_T(".xml")) == 0)
 						{
-							m_mapXmlFile[parentNodeName + strName] = strPath;
+							m_mapXmlFile[strKey] = strPath;
 						}
 						else
 						{
-							m_mapResFile[parentNodeName + strName] = strPath;
+							m_mapResFile[strKey] = strPath;
 						}
 					}
 				}
@@ -203,10 +213,12 @@ SStringT ResManger::RemoveResTypename(const SStringT& resname)
 
 SStringT ResManger::GetResPathByName(const SStringT& resname)
 {
-	const SMap<SStringT, SStringT>::CPair * pFilePair = m_mapXmlFile.Lookup(resname);
+	SStringT key = resname; 
+	key.MakeLower();
+	const SMap<SStringT, SStringT>::CPair * pFilePair = m_mapXmlFile.Lookup(key);
 	if (pFilePair == NULL)
 	{
-		pFilePair = m_mapResFile.Lookup(resname);
+		pFilePair = m_mapResFile.Lookup(key);
 	}
 	if (pFilePair == NULL)
 		return _T("");
@@ -252,24 +264,210 @@ void ResManger::LoadResFileEx(SStringT& filepath, pugi::xml_document& xmlDoc, SS
 void ResManger::LoadSkinFile()
 {
 	LoadResFileEx(m_strSkinFile, m_xmlDocSkin, _T("skin"));
+	m_mapSkins.RemoveAll();
+	pugi::xml_node xmlNode = GetResFirstNode(_T("skin"));
+	while (xmlNode)
+	{
+		if (xmlNode.type() != pugi::node_element)
+		{
+			xmlNode = xmlNode.next_sibling();
+			continue;
+		}
+
+		SStringT s1, s2, s3;
+		s1 = xmlNode.name();
+		s2 = xmlNode.attribute(L"name").value();
+		s3 = xmlNode.attribute(L"src").value();
+
+		m_mapSkins[s2] = SkinItem(s1, s2, s3, xmlNode);
+		xmlNode = xmlNode.next_sibling();
+	}
 }
 
 void ResManger::LoadStringFile()
 {
 	LoadResFileEx(m_strStringFile, m_xmlDocString, _T("string"));
+	m_mapStrings.RemoveAll();
+	pugi::xml_node xmlNode = GetResFirstNode(_T("string"));
+	while (xmlNode)
+	{
+		if (xmlNode.type() != pugi::node_element)
+		{
+			xmlNode = xmlNode.next_sibling();
+			continue;
+		}
+
+		SStringT s1, s2;
+		s1 = xmlNode.name();
+		s2 = xmlNode.attribute(L"value").value();
+
+		m_mapStrings[s1] = ValueItem(s1, s2);
+		xmlNode = xmlNode.next_sibling();
+	}
 }
 
 void ResManger::LoadColorFile()
 {
 	LoadResFileEx(m_strColorFile, m_xmlDocColor, _T("color"));
+	m_mapColors.RemoveAll();
+	pugi::xml_node xmlNode = GetResFirstNode(_T("color"));
+	while (xmlNode)
+	{
+		if (xmlNode.type() != pugi::node_element)
+		{
+			xmlNode = xmlNode.next_sibling();
+			continue;
+		}
+
+		SStringT s1, s2;
+		s1 = xmlNode.name();
+		s2 = xmlNode.attribute(L"value").value();
+
+		m_mapColors[s1] = ValueItem(s1, s2);
+		xmlNode = xmlNode.next_sibling();
+	}
 }
 
 void ResManger::LoadStyleFile()
 {
 	LoadResFileEx(m_strStyleFile, m_xmlDocStyle, _T("style"));
+	m_mapStyles.RemoveAll();
+	pugi::xml_node xmlNode = GetResFirstNode(_T("style"));
+	while (xmlNode)
+	{
+		if (xmlNode.type() != pugi::node_element)
+		{
+			xmlNode = xmlNode.next_sibling();
+			continue;
+		}
+
+		SStringT s1, s2;
+		s1 = xmlNode.name();
+		s2 = xmlNode.attribute(L"name").value();
+
+		m_mapStyles[s2] = StyleItem(s1, s2, xmlNode);
+		xmlNode = xmlNode.next_sibling();
+	}
 }
 
 void ResManger::LoadObjattrFile()
 {
 	LoadResFileEx(m_strObjattrFile, m_xmlDocObjattr, _T("objattr"));
+}
+
+ResManger::SkinItem ResManger::GetSkinByImg(SStringT srcimg)
+{
+	SPOSITION pos = m_mapSkins.GetStartPosition();
+	while (pos)
+	{
+		const SMap<SStringT, SkinItem>::CPair* item = m_mapSkins.GetAt(pos);
+		if (srcimg.CompareNoCase(item->m_value.src) == 0)
+		{
+			return item->m_value;
+		}
+
+		m_mapSkins.GetNext(pos);
+	}
+
+	return SkinItem();
+}
+
+SStringA ResManger::GetSkinAutos()
+{
+	std::vector<SStringT> vecTemp;
+	SPOSITION pos = m_mapSkins.GetStartPosition();
+	while (pos)
+	{
+		const SMap<SStringT, SkinItem>::CPair* item = m_mapSkins.GetAt(pos);
+		vecTemp.push_back(item->m_key);
+
+		m_mapSkins.GetNext(pos);
+	}
+	std::sort(vecTemp.begin(), vecTemp.end(), SortSStringNoCase);
+
+	SStringT strAuto;
+	std::vector<SStringT>::iterator it = vecTemp.begin();
+	for (; it != vecTemp.end(); it++)
+	{
+		strAuto += *it + _T(" ");
+	}
+	strAuto.TrimRight(' ');
+
+	SStringA str = S_CW2A(strAuto, CP_UTF8);
+	return str;
+}
+
+SStringA ResManger::GetStyleAutos()
+{
+	std::vector<SStringT> vecTemp;
+	SPOSITION pos = m_mapStyles.GetStartPosition();
+	while (pos)
+	{
+		const SMap<SStringT, StyleItem>::CPair* item = m_mapStyles.GetAt(pos);
+		vecTemp.push_back(item->m_key);
+
+		m_mapStyles.GetNext(pos);
+	}
+	std::sort(vecTemp.begin(), vecTemp.end(), SortSStringNoCase);
+
+	SStringT strAuto;
+	std::vector<SStringT>::iterator it = vecTemp.begin();
+	for (; it != vecTemp.end(); it++)
+	{
+		strAuto += *it + _T(" ");
+	}
+	strAuto.TrimRight(' ');
+
+	SStringA str = S_CW2A(strAuto, CP_UTF8);
+	return str;
+}
+
+SStringA ResManger::GetStringAutos()
+{
+	std::vector<SStringT> vecTemp;
+	SPOSITION pos = m_mapStrings.GetStartPosition();
+	while (pos)
+	{
+		const SMap<SStringT, ValueItem>::CPair* item = m_mapStrings.GetAt(pos);
+		vecTemp.push_back(item->m_key);
+
+		m_mapStrings.GetNext(pos);
+	}
+	std::sort(vecTemp.begin(), vecTemp.end(), SortSStringNoCase);
+
+	SStringT strAuto;
+	std::vector<SStringT>::iterator it = vecTemp.begin();
+	for (; it != vecTemp.end(); it++)
+	{
+		strAuto += *it + _T(" ");
+	}
+	strAuto.TrimRight(' ');
+
+	SStringA str = S_CW2A(strAuto, CP_UTF8);
+	return str;
+}
+
+SStringA ResManger::GetColorAutos()
+{
+	std::vector<SStringT> vecTemp;
+	SPOSITION pos = m_mapColors.GetStartPosition();
+	while (pos)
+	{
+		const SMap<SStringT, ValueItem>::CPair* item = m_mapColors.GetAt(pos);
+		vecTemp.push_back(item->m_key);
+
+		m_mapColors.GetNext(pos);
+	}
+	std::sort(vecTemp.begin(), vecTemp.end(), SortSStringNoCase);
+
+	SStringT strAuto;
+	std::vector<SStringT>::iterator it = vecTemp.begin();
+	for (; it != vecTemp.end(); it++)
+	{
+		strAuto += *it + _T(" ");
+	}
+	strAuto.TrimRight(' ');
+
+	SStringA str = S_CW2A(strAuto, CP_UTF8);
+	return str;
 }

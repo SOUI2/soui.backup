@@ -168,8 +168,8 @@ namespace SOUI
 		{
 			//鼠标按下时创建控件
 			NewWnd(pt);
-			m_Desiner->CreatePropGrid(m_Desiner->m_xmlNode.name());
-			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+			m_Desiner->CreatePropGrid(m_Desiner->m_curSelXmlNode.name());
+			m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 			m_Desiner->AddCodeToEditor(NULL);
 			OnLButtonUp(nFlags, pt);
 
@@ -181,14 +181,14 @@ namespace SOUI
 			SStringT s;
 			s.Format(_T("%d"), m_pRealWnd->GetUserData());
 			m_Desiner->SetCurrentCtrl(m_Desiner->FindNodeByAttr(m_Desiner->m_CurrentLayoutNode, L"data", s), this);
-			m_Desiner->CreatePropGrid(m_Desiner->m_xmlNode.name());
-			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+			m_Desiner->CreatePropGrid(m_Desiner->m_curSelXmlNode.name());
+			m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 		}
 		else
 		{
 			m_Desiner->SetCurrentCtrl(m_Desiner->m_CurrentLayoutNode, this);
 			m_Desiner->CreatePropGrid(_T("hostwnd"));
-			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+			m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 		}
 		m_Desiner->AddCodeToEditor(NULL);
 
@@ -255,7 +255,7 @@ namespace SOUI
 			//if (m_pRealWnd != m_Desiner->m_pRealWndRoot)
 			//{
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
-			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+			m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 			m_Desiner->AddCodeToEditor(NULL);
 			m_StateMove = 1;
 			//}
@@ -528,7 +528,7 @@ namespace SOUI
 
 			m_StateMove = 1;
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
-			m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+			m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 
 			GetParent()->Invalidate(); //刷新父窗口
 		}
@@ -955,7 +955,7 @@ namespace SOUI
 				GetParent()->RequestRelayout();
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
-				m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 				GetParent()->Invalidate(); //刷新父窗口
 
 			}
@@ -977,7 +977,7 @@ namespace SOUI
 				GetParent()->RequestRelayout();
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
-				m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 				GetParent()->Invalidate(); //刷新父窗口
 
 			}
@@ -1012,7 +1012,7 @@ namespace SOUI
 				GetParent()->RequestRelayout();
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
-				m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 				GetParent()->Invalidate(); //刷新父窗口
 			}
 			else if (bShift)
@@ -1033,7 +1033,7 @@ namespace SOUI
 				GetParent()->RequestRelayout();
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
-				m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 				GetParent()->Invalidate(); //刷新父窗口
 			}
 			else
@@ -1066,7 +1066,7 @@ namespace SOUI
 				GetParent()->RequestRelayout();
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
-				m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 				GetParent()->Invalidate(); //刷新父窗口
 			}
 			else if (bShift)
@@ -1087,7 +1087,7 @@ namespace SOUI
 				GetParent()->RequestRelayout();
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
-				m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 				GetParent()->Invalidate(); //刷新父窗口
 			}
 			else
@@ -1117,7 +1117,7 @@ namespace SOUI
 				GetParent()->RequestRelayout();
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
-				m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 				GetParent()->Invalidate(); //刷新父窗口
 			}
 			else if (bShift)
@@ -1138,7 +1138,7 @@ namespace SOUI
 				GetParent()->RequestRelayout();
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
-				m_Desiner->UpdatePropGrid(m_Desiner->m_xmlNode);
+				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 				GetParent()->Invalidate(); //刷新父窗口
 			}
 			else

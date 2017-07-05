@@ -7,7 +7,7 @@
 				<imgbtn name="btnCancel" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />
 			</caption>
 			<listbox pos="0,[0,-0,-63" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" name="NAME_UIDESIGNER_NEW_SKIN_LB" />
-			<button pos="|0,253" size="92, 28" skin="skin_blue_button" class="normalbtn" offset="-0.5,-0" name="btnOK">确定</button>
+			<button pos="|0,253" size="92, 28" skin="skin_blue_button" class="ue_cls_whiltebtn" offset="-0.5,-0" name="btnOK">确定</button>
 		</window>
 	</root>
 </SOUI>

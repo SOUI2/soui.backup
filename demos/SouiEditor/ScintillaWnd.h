@@ -43,6 +43,7 @@ public:
 	{
 		m_fnCallback = fun;
 	}
+	void GotoFoundLine();
 
 	bool m_bDirty;		//指示文档是否已修改
 
@@ -57,10 +58,18 @@ protected:
 
 	void findMatchingBracePos(int & braceAtCaret, int & braceOpposite);
 	bool doMatch(); //匹配括号并加亮缩进向导;
+
+	SStringT GetHtmlTagname();
+	SStringA GetNotePart(int curPos);
+
+	void ShowAutoComplete(const char ch);
 	
 	void GetRange(int start, int end, char* text);
 
 	void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+
+
+	void displaySectionCentered(int posStart, int posEnd, bool isDownwards = true);
 
 	LRESULT OnNotify(int idCtrl, LPNMHDR pnmh);
 

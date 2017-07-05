@@ -34,12 +34,15 @@ RC_FILE += souieditor.rc
 # Input
 HEADERS += Adapter.h \
            CDebug.h \
+		   Global.h \
+		   CmdLine.h \
            CNewGuid.h \
            DesignerView.h \
            FileHelper.h \
            helpapi.h \
            MainDlg.h \
            ResManger.h \
+		   pugixml_write.h \
            resource.h \
            ScintillaWnd.h \
            SDesignerRoot.h \
@@ -52,6 +55,7 @@ HEADERS += Adapter.h \
            SouiRealWndHandler.h \
            SRotateWindow.h \
            SSwitch.h \
+		   SysdataMgr.h \
            xpm_icons.h \
            colorpicker/ColourPopup.h \
            colorpicker/SColorPicker.h \
@@ -81,6 +85,7 @@ SOURCES += DesignerView.cpp \
            helpapi.cpp \
            MainDlg.cpp \
            ResManger.cpp \
+		   pugixml_write.cpp \
            ScintillaWnd.cpp \
            SDesignerRoot.cpp \
            SImageBtnEx.cpp \
@@ -91,6 +96,7 @@ SOURCES += DesignerView.cpp \
            SouiEditor.cpp \
            SouiRealWndHandler.cpp \
            SSwitch.cpp \
+		   SysdataMgr.cpp \
            stdafx.cpp \
            colorpicker/ColourPopup.cpp \
            colorpicker/SColorPicker.cpp \
