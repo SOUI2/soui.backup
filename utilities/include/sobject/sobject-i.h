@@ -219,7 +219,7 @@ namespace SOUI
          * @return   SStringW -- 属性值
          * Describe  默认返回空
          */    
-		virtual SStringW GetAttribute(const SStringW & strAttr) = 0;
+		virtual SStringW GetAttribute(const SStringW & strAttr) const = 0;
 
 
 		/**
