@@ -32,7 +32,7 @@
 	   只在style = "propoption" 时有效
 	   表示combobox可以选择空值
 	   
-   options:  
+   options: 
        必填
        只在style = "propoption" 时有效
 	   写法：
@@ -133,6 +133,9 @@
 		<fontPush style="proptext" name="字体(fontPush)" ButtonType="font"/>	
 		<fontDisable style="proptext" name="字体(fontDisable)" ButtonType="font"/>		
 
+		<align style="propoption" name ="水平对齐" options="left|center|right" description="控件内容水平对齐方式" />						
+		<valign style="propoption" name ="垂直对齐" options="top|middle|bottom"  description="控件内容垂直对齐方式" />
+
 		<colorBorder style="propcolor" name ="边框颜色(colorBorder)"/>
 		<colorUp style="propcolor" name ="按起颜色(colorUp)" />
 		<colorDown style="propcolor" name ="按下颜色(colorDown)" />
@@ -143,15 +146,34 @@
 
 		<cursor style="propoption" name ="光标(cursor)" options="arrow|ibeam|wait|cross|uparrow|size|sizenwse|sizenesw|sizewe|sizens|sizeall|no|hand|help" description="鼠标形状"/>			
 		<colorTextHover style="propcolor" name ="文本颜色Hover(colorTextHover)" />		
-
+		<colorTextPush style="propcolor" name ="colorTextPush" />				
+		<colorTextDisable style="propcolor" name ="colorTextDisable" />	
+		
+		<inset style="proptext" name ="inset" />
+		<padding style="proptext" name ="padding" />
+		
 		<margin style="proptext" name ="边距(margin)" />
 		<float style="propoption" name ="float" options="是:1|否:0" description="窗口位置固定不动的标志"/>
 
-		<layout style="propoption" name ="线性布局" options="水平:hbox|垂直:vbox" description="线性布局"/>		
+		<layout style="propoption" name ="布局形式" options="Grid布局:gridLayout|线性水平:hbox|线性垂直:vbox" description="布局形式"/>		
 
 		<gravity style="propoption" name ="gravity" options="左:left|上:top|中:center|右:right|下:bottom" description="子控件的对齐方式"/>	
 
 		<layout_gravity style="propoption" name ="layout_gravity" options="左:left|上:top|中:center|右:right|下:bottom" description="相对于父控件的对齐方式"/>	
+
+		<xInterval style="proptext" name ="xInterval" description="Grid布局子控件的水平间距"/>	
+		<yInterval style="proptext" name ="yInterval" description="Grid布局子控件的垂直间距"/>	
+		<xGravity style="propoption" name ="xGravity" options="左:left|上:top|中:center|右:right|下:bottom|填充:fill" description="Grid布局子控件的水平对齐方式"/>	
+		<yGravity style="propoption" name ="yGravity" options="左:left|上:top|中:center|右:right|下:bottom|填充:fill" description="Grid布局子控件的垂直对齐方式"/>	
+		<columnCount style="proptext" name ="columnCount" description="Grid布局列数"/>	
+		<rowCount style="proptext" name ="rowCount" description="Grid布局行数"/>
+
+		<rowSpan style="proptext" name ="rowSpan" description="Grid布局,子控件行合并" />
+		<columnSpan style="proptext" name ="columnSpan" description="Grid布局,子控件列合并" />
+		<layout_xGravity style="propoption" name ="layout_xGravity" options="左:left|上:top|中:center|右:right|下:bottom|填充:fill" description="Grid布局,相对于父控件的水平对齐方式" />
+		<layout_yGravity style="propoption" name ="layout_yGravity" options="左:left|上:top|中:center|右:right|下:bottom|填充:fill" description="Grid布局,相对于父控件的垂直对齐方式" />
+		<columnWeight style="proptext" name ="columnWeight" description="Grid布局,子控件占用几列" />
+		<rowWeight style="proptext" name ="rowWeight" description="Grid布局,子控件占用几行" />
 
 		<extend style="proptext" name ="外边距" description='extend = "0,0,0,0"
 		&#x000A;四个点分别表示左上右下的间距，与margin类似;' />	
@@ -169,12 +191,38 @@
 		<UiEdit_windowText style="proptext" name="窗口文本" />	
 	</通用样式>
 
+	<基本样式 name="属性: Style">
+		<textMode style="proptext" name ="textMode" />						
+		<align/>
+		<valign/>						
+		<colorBkgnd/>						
+		<colorBorder/>
+		<font/>						
+		<fontHover/>						
+		<fontPush/>
+		<fontDisable/>
+		<colorText/>				
+		<colorTextHover/>				
+		<colorTextPush/>				
+		<colorTextDisable/>				
+		<margin-x style="proptext" name ="margin-x" />				
+		<margin-y style="proptext" name ="margin-y" />				
+		<margin/>				
+		<inset/>				
+		<padding/>				
+		<cursor/>				
+		<dotted style="propoption" name ="dotted" options="是:1|否:0" description="是否支持省略号显示文本" />
+		<alpha style="proptext" name ="透明度(alpha)" description="数值在0-255之间"/>
+		<trackMouseEvent style="proptext" name ="trackMouseEvent" />		
+		<bkgndBlend style="proptext" name ="bkgndBlend" description="渲染窗口内容和背景混合标志" />				
+		<sepSpace style="proptext" name ="sepSpace" description="子窗口水平间隔" />				
+	</基本样式>
 
 	<属性列表>
 		<hostwnd>
 			<!--hostwnd这里为编辑器特殊处理，两个分组的顺序不要修改，分组里的节点顺序可以修改
 			    不要添加删除新的分组-->
-			<分组 name="属性:  SOUI">
+			<分组 name="属性: SOUI">
 				<trCtx style="proptext" name ="trCtx"  description="在语言翻译时作为context使用"/>
 				<title style="proptext" name ="标题(title)"  />
 				<width style="proptext" name ="宽度(width)" />	
@@ -200,7 +248,7 @@
 
 			</分组>
 
-			<分组 name="属性:  root">
+			<分组 name="属性: root">
 				<id/>
 				<name/>
 				<skin/>
@@ -213,7 +261,14 @@
 				<enable/>
 				<cache/>
 				<alpha/>
-				<tip/>				
+				<tip/>
+				<layout/>
+				<columnCount/>
+				<rowCount/>
+				<xInterval/>
+				<yInterval/>
+				<xGravity/>
+				<yGravity/>
 				<layeredWindow style="proptext" name ="layeredWindow" />
 				<trackMouseEvent style="proptext" name ="trackMouseEvent" />
 				<msgTransparent/>
@@ -222,9 +277,8 @@
 				<focusable/>
 				<drawFocusRect/>
 
-
 				<colorBkgnd/>						
-				<colorBorder style="propcolor" name ="colorBorder" />
+				<colorBorder/>
 				<font/>						
 
 				<colorText/>				
@@ -239,7 +293,7 @@
 
 		<!-- include 编辑器特殊处理 不要改 -->
 		<include>
-			<分组 name="属性:  include">
+			<分组 name="属性: include">
 				<width style="proptext" name ="宽(width)"  />
 				<height style="proptext" name ="高(height)"  />				
 			</分组>
@@ -251,6 +305,12 @@
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<pos/>
@@ -262,9 +322,9 @@
 				<enable/>
 				<visible/>
 				<show/>				
-				<display/>		
+				<display/>
 			</分组>
-			<分组 name="属性:  animateimg">
+			<分组 name="属性: animateimg">
 				<speed style="proptext" name ="速度(speed)" />
 				<autoStart style="propoption" name ="自动动画" options="是:1|否:0" description="autoStart：动画是否自动开始"/>
 				<repeat style="proptext" name ="重复次数" description="动画重复次数"/>
@@ -283,7 +343,7 @@
 				<tip/>			
 				<cursor/>						
 			</分组>
-			<分组 name="属性:  anmimg">
+			<分组 name="属性: anmimg">
 				<interval style="proptext" name ="动画间隔(interval)" description="interval：动画间隔，单位毫秒"/>
 				<autorun style="proptext" name ="autorun" description="-1:默认，不自动运行
 				&#x000A;0:连续动画（使用ani_in）;
@@ -294,11 +354,17 @@
 		</anmimg>			
  -->
 		<button>
-			<分组 name="属性:  button">
+			<分组 name="属性: button">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -329,11 +395,17 @@
 		</button>
 
 		<buttonex>
-			<分组 name="属性:  buttonex">
+			<分组 name="属性: buttonex">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -370,11 +442,17 @@
 		</buttonex>		
 
 		<calendar>
-			<分组 name="基本属性:  calendar ">
+			<分组 name="基本属性: calendar ">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -383,8 +461,9 @@
 				<size/>
 				<offset/>
 				<class/>
+				<tip/>	
+				
 				<font/>		
-				<tip/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -394,7 +473,7 @@
 				<show/>				
 				<display/>			
 			</分组>
-			<分组 name="属性:  calendar">
+			<分组 name="属性: calendar">
 				<titleHeight style="proptext" name ="titleHeight" />	
 				<footerHeight style="proptext" name ="footerHeight" />	
 				<colorWeekend style="propcolor" name ="colorWeekend" />	
@@ -414,14 +493,26 @@
 		</calendar >			
 
 		<caption>
-			<分组 name="属性:  caption">
+			<分组 name="属性: caption">
 				<id/>
 				<name/>
 				<skin/>
 				<ncskin/>
 				<layout/>
 				<gravity/>
+				<columnCount/>
+				<rowCount/>
+				<xInterval/>
+				<yInterval/>
+				<xGravity/>
+				<yGravity/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -432,10 +523,8 @@
 				<class/>
 				<data/>
 				<cache/>
-				<alpha/>
 				<tip/>				
 				<layeredWindow style="proptext" name ="layeredWindow" />
-				<trackMouseEvent style="proptext" name ="trackMouseEvent" />
 				<msgTransparent/>
 				<maxWidth style="proptext" name ="maxWidth" />
 				<clipClient style="proptext" name ="clipClient" />
@@ -449,39 +538,21 @@
 				<display/>			
 			</分组>
 
-			<分组 name="属性:  style">
-				<textMode style="proptext" name ="textMode" />						
-				<align style="propoption" name ="align" options="left|center|right"/>						
-				<valign style="propoption" name ="valign" options="top|middle|bottom"/>						
-				<colorBkgnd/>						
-				<colorBorder style="propcolor" name ="colorBorder" />
-				<font/>						
-				<fontHover/>						
-				<fontPush/>
-				<fontDisable/>
-				<colorText/>				
-				<colorTextHover style="propcolor" name ="colorTextHover" />				
-				<colorTextPush style="propcolor" name ="colorTextPush" />				
-				<colorTextDisable style="propcolor" name ="colorTextDisable" />				
-				<margin-x style="proptext" name ="margin-x" />				
-				<margin-y style="proptext" name ="margin-y" />				
-				<margin style="proptext" name ="margin" />				
-				<inset style="proptext" name ="inset" description="文字区4个方向的内边距 和padding一样"/>				
-				<padding style="proptext" name ="padding" description="文字区4个方向的内边距 和inset一样"/>				
-				<cursor/>				
-				<dotted style="propoption" name ="dotted" options="是:1|否:0" description="是否支持省略号显示文本"/>				
-				<bkgndBlend style="proptext" name ="bkgndBlend" />				
-
-				<sepSpace style="proptext" name ="sepSpace" />				
-			</分组>
+			<分组 name="基本样式" />
 		</caption>	
 
 		<check>
-			<分组 name="属性:  check">
+			<分组 name="属性: check">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -493,17 +564,19 @@
 				<alpha/>
 				<float/>
 				<msgTransparent/>
-				<font/>	
-				<tip/>				
-				<colorText/>	
+				<tip/>	
+				
+				<font/>		
 				<colorBkgnd/>
+				<colorText/>
+				
 				<enable/>
 				<visible/>
 				<show/>				
 				<display/>
 			</分组>
 
-			<分组 name="属性:  check">
+			<分组 name="属性: check">
 				<UiEdit_windowText/>
 				<focusSkin style="proptext" name ="focusSkin"  ButtonType="skin"/>
 				<checked style="propoption" name ="checked" options="是:1|否:0"/>
@@ -511,11 +584,17 @@
 		</check>	
 
 		<combobox >
-			<分组 name="基本属性:  combobox ">
+			<分组 name="基本属性: combobox ">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -524,18 +603,19 @@
 				<size/>
 				<offset/>
 				<class/>
+				<tip/>	
+				
 				<font/>		
-				<tip/>				
 				<colorBkgnd/>
 				<colorText/>
-				
+
 				<UiEdit_windowText/>	
 				<enable/>
 				<visible/>
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  combobase">
+			<分组 name="属性: combobase">
 				<dropDown style="propoption" name ="dropDown" options="下拉:1|编辑:0" description="下拉样式或编辑样式"/>	
 				<dropHeight style="proptext" name ="dropHeight" />	
 				<curSel style="proptext" name ="curSel" />	
@@ -545,11 +625,17 @@
 		</combobox >		
 
 		<comboview >
-			<分组 name="基本属性:  comboview ">
+			<分组 name="基本属性: comboview ">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -558,8 +644,9 @@
 				<size/>
 				<offset/>
 				<class/>
+				<tip/>	
+				
 				<font/>		
-				<tip/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -569,7 +656,7 @@
 				<show/>				
 				<display/>
 			</分组>
-			<分组 name="属性:  combobase">
+			<分组 name="属性: combobase">
 
 				<dropDown style="propoption" name ="dropDown" options="下拉:1|编辑:0" description="下拉样式或编辑样式"/>	
 				<dropHeight style="proptext" name ="dropHeight" />	
@@ -581,13 +668,25 @@
 		</comboview >	
 
 		<div>
-			<分组 name="属性:  div">
+			<分组 name="属性: div">
 				<id/>
 				<name/>
 				<skin/>
 				<layout/>
 				<gravity/>
+				<columnCount/>
+				<rowCount/>
+				<xInterval/>
+				<yInterval/>
+				<xGravity/>
+				<yGravity/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -596,8 +695,9 @@
 				<size/>
 				<offset/>
 				<class/>
+				<tip/>	
+				
 				<font/>		
-				<tip/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -607,7 +707,7 @@
 				<show/>				
 				<display/>
 			</分组>
-			<分组 name="属性:  div">
+			<分组 name="属性: div">
 				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)"  ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" />	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" />	
@@ -623,11 +723,17 @@
 		</div>		
 
 		<edit>
-			<分组 name="基本属性:  edit">
+			<分组 name="基本属性: edit">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -636,8 +742,9 @@
 				<size/>
 				<offset/>
 				<class/>
+				<tip/>
+				
 				<font/>		
-				<tip/>				
 				<colorBkgnd/>
 				<!--<colorText/>-->
 
@@ -647,7 +754,7 @@
 				<show/>				
 				<display/>
 			</分组>
-			<分组 name="属性:  div">
+			<分组 name="属性: div">
 				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)"  ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" />	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" />	
@@ -661,7 +768,7 @@
 
 			</分组>
 
-			<分组 name="属性:  richedit">
+			<分组 name="属性: richedit">
 				<style style="proptext" name ="style" />	
 				<maxBuf style="proptext" name ="maxBuf" />	
 				<transparent style="proptext" name ="transparent" />	
@@ -674,7 +781,8 @@
 				<inset style="proptext" name ="inset" />	
 				<colorText/>	
 				<rtf style="proptext" name ="rtf" />	
-				<align style="proptext" name ="align" />	
+				<align/>
+				<valign/>	
 				<notifyChange style="propoption" name ="notifyChange" options="是:1|否:0" description="内容改变时发送EN_CHANGE通知消息"/>	
 				<hscrollBar style="proptext" name ="hscrollBar" />	
 				<vscrollBar style="proptext" name ="vscrollBar" />	
@@ -689,17 +797,23 @@
 				<enableDragdrop style="proptext" name ="enableDragdrop" />	
 				<autoSel style="proptext" name ="autoSel" />					
 			</分组>		
-			<分组 name="属性:  edit">
+			<分组 name="属性: edit">
 				<cueText style="proptext" name ="cueText(cueText)" />
 			</分组>	
 		</edit>		
 
 		<editstyle>
-			<分组 name="基本属性:  editstyle">
+			<分组 name="基本属性: editstyle">
 				<id/>
 				<name/>
 				<skin/>	
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<pos/>
@@ -717,7 +831,7 @@
 				<show/>				
 				<display/>
 			</分组>
-			<分组 name="属性:  div">
+			<分组 name="属性: div">
 				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)"  ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" />	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" />	
@@ -731,7 +845,7 @@
 
 			</分组>
 
-			<分组 name="属性:  richedit">
+			<分组 name="属性: richedit">
 				<style style="proptext" name ="style" />	
 				<maxBuf style="proptext" name ="maxBuf" />	
 				<transparent style="proptext" name ="transparent" />	
@@ -744,7 +858,8 @@
 				<inset style="proptext" name ="inset" />	
 				<colorText/>	
 				<rtf style="proptext" name ="rtf" />	
-				<align style="proptext" name ="align" />	
+				<align/>
+				<valign/>	
 				<notifyChange style="propoption" name ="notifyChange" options="是:1|否:0" description="内容改变时发送EN_CHANGE通知消息"/>	
 				<hscrollBar style="proptext" name ="hscrollBar" />	
 				<vscrollBar style="proptext" name ="vscrollBar" />	
@@ -759,7 +874,7 @@
 				<enableDragdrop style="proptext" name ="enableDragdrop" />	
 				<autoSel style="proptext" name ="autoSel" />	
 			</分组>		
-			<分组 name="属性:  edit">
+			<分组 name="属性: edit">
 				<cueText style="proptext" name ="cueText(cueText)" />
 			</分组>	
 		</editstyle>		
@@ -767,11 +882,17 @@
 
 
 		<flash>
-			<分组 name="属性:  flash">
+			<分组 name="属性: flash">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -780,8 +901,9 @@
 				<size/>
 				<offset/>
 				<class/>
+				<tip/>
+				
 				<font/>		
-				<tip/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -792,18 +914,24 @@
 				<display/>
 			</分组>
 
-			<分组 name="属性:  flash">			
+			<分组 name="属性: flash">			
 				<url style="proptext" name ="地址(url)" />				
 			</分组>			
 		</flash>		
 
 		<gifplayer>
-			<分组 name="属性:  gifplayer">
+			<分组 name="属性: gifplayer">
 				<id/>
 				<name/>
 				<skin/>
 				<ncskin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -814,10 +942,8 @@
 				<class/>
 				<data/>
 				<cache/>
-				<alpha/>
 				<tip/>				
 				<layeredWindow style="proptext" name ="layeredWindow" />
-				<trackMouseEvent style="proptext" name ="trackMouseEvent" />
 				<msgTransparent/>
 				<maxWidth style="proptext" name ="maxWidth" />
 				<clipClient style="proptext" name ="clipClient" />
@@ -831,43 +957,29 @@
 				<display/>
 			</分组>
 
-			<分组 name="属性:  style">
-				<textMode style="proptext" name ="textMode" />						
-				<align style="propoption" name ="align" options="left|center|right"/>						
-				<valign style="propoption" name ="valign" options="top|middle|bottom"/>						
-				<colorBkgnd/>						
-				<colorBorder style="propcolor" name ="colorBorder" />
-				<font/>						
-				<fontHover/>						
-				<fontPush/>
-				<fontDisable/>
-				<colorText/>				
-				<colorTextHover style="propcolor" name ="colorTextHover" />				
-				<colorTextPush style="propcolor" name ="colorTextPush" />				
-				<colorTextDisable style="propcolor" name ="colorTextDisable" />				
-				<margin-x style="proptext" name ="margin-x" />				
-				<margin-y style="proptext" name ="margin-y" />				
-				<margin style="proptext" name ="margin" />				
-				<inset style="proptext" name ="inset" description="文字区4个方向的内边距 和padding一样"/>				
-				<padding style="proptext" name ="padding" description="文字区4个方向的内边距 和inset一样"/>				
-				<cursor/>				
-				<dotted style="propoption" name ="dotted" options="是:1|否:0" description="是否支持省略号显示文本"/>				
-				<bkgndBlend style="proptext" name ="bkgndBlend" />				
-
-				<sepSpace style="proptext" name ="sepSpace" />				
-			</分组>
-
+			<分组 name="基本样式" />
 		</gifplayer>	
 
-
 		<group>
-			<分组 name="属性:  group">
+			<分组 name="属性: group">
 				<id/>
 				<name/>
 				<skin/>
 				<layout/>
 				<gravity/>
+				<columnCount/>
+				<rowCount/>
+				<xInterval/>
+				<yInterval/>
+				<xGravity/>
+				<yGravity/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -876,8 +988,9 @@
 				<size/>
 				<offset/>
 				<class/>
+				<tip/>
+				
 				<font/>		
-				<tip/>				
 				<colorBkgnd/>
 				<colorText/>
 				<enable/>
@@ -887,18 +1000,19 @@
 
 			</分组>
 
-			<分组 name="属性:  group">
+			<分组 name="属性: group">
 				<UiEdit_windowText/>	
 				<colorLine1 style="propcolor" name ="colorLine1" />
 				<colorLine2 style="propcolor" name ="colorLine2" />			
 				<round style="proptext" name ="round" />			
 				<headerHeight style="proptext" name ="headerHeight" />	
-				<align style="propoption" name ="align" options="left|center|right"/>					
+				<align/>
+				<valign/>				
 			</分组>
 		</group>	
 
 		<header>
-			<分组 name="基本属性:  header ">
+			<分组 name="基本属性: header ">
 				<id/>
 				<name/>
 				<skin/>
@@ -909,8 +1023,9 @@
 				<size/>
 				<offset/>
 				<class/>
+				<tip/>
+				
 				<font/>		
-				<tip/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -920,7 +1035,7 @@
 				<show/>				
 				<display/>
 			</分组>
-			<分组 name="属性:  header">
+			<分组 name="属性: header">
 
 				<itemSkin style="proptext" name ="itemSkin"  ButtonType="skin"/>	
 				<sortSkin style="proptext" name ="sortSkin"  ButtonType="skin"/>	
@@ -933,11 +1048,17 @@
 
 
 		<hotkey>
-			<分组 name="基本属性:  hotkey">
+			<分组 name="基本属性: hotkey">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -946,8 +1067,9 @@
 				<size/>
 				<offset/>
 				<class/>
+				<tip/>
+
 				<font/>		
-				<tip/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -958,7 +1080,7 @@
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  hotkey">
+			<分组 name="属性: hotkey">
 
 				<invalidComb style="proptext" name ="invalidComb" />	
 				<defCombKey style="proptext" name ="defCombKey" />	
@@ -969,11 +1091,17 @@
 		</hotkey>				
 
 		<hr>
-			<分组 name="基本属性:  hr">
+			<分组 name="基本属性: hr">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -982,15 +1110,15 @@
 				<size/>
 				<offset/>
 				<class/>
+				<tip/>
 				<font/>		
-				<tip/>				
 				<colorBkgnd/>	
 				<enable/>
 				<visible/>
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  hr">
+			<分组 name="属性: hr">
 				<colorLine style="propcolor" name ="colorLine" />
 				<mode style="propoption" name ="mode" options="vertical|horizontal|tilt"/>
 				<lineStyle style="propoption" name ="lineStyle" options="solid|dash|dot|dashdot|dashdotdot"/>
@@ -999,10 +1127,16 @@
 
 
 		<icon>
-			<分组 name="属性:  icon">
+			<分组 name="属性: icon">
 				<id/>
 				<name/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>				
 				<pos/>	
@@ -1018,11 +1152,17 @@
 		</icon>
 
 		<imgbtn>
-			<分组 name="属性:  imgbtn">
+			<分组 name="属性: imgbtn">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1052,11 +1192,17 @@
 
 
 		<img>
-			<分组 name="基本属性:  img">
+			<分组 name="基本属性: img">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1073,14 +1219,14 @@
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  img">
+			<分组 name="属性: img">
 				<iconIndex style="proptext" name ="iconIndex" />
 				<tile style="proptext" name ="平铺方式" />					
 			</分组>			
 		</img>		
 
 		<imgcanvas>
-			<分组 name="属性:  imgcanvas">
+			<分组 name="属性: imgcanvas">
 				<id/>
 				<name/>
 				<skin/>
@@ -1088,6 +1234,12 @@
 				<layout/>
 				<gravity/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<pos/>
@@ -1115,41 +1267,23 @@
 				<UiEdit_windowText/>				
 			</分组>
 
-			<分组 name="属性:  style">
-				<textMode style="proptext" name ="textMode" />						
-				<align style="propoption" name ="align" options="left|center|right"/>						
-				<valign style="propoption" name ="valign" options="top|middle|bottom"/>						
-				<colorBkgnd/>						
-				<colorBorder style="propcolor" name ="colorBorder" />
-				<font/>						
-				<fontHover/>						
-				<fontPush/>
-				<fontDisable/>
-				<colorText/>				
-				<colorTextHover style="propcolor" name ="colorTextHover" />				
-				<colorTextPush style="propcolor" name ="colorTextPush" />				
-				<colorTextDisable style="propcolor" name ="colorTextDisable" />				
-				<margin-x style="proptext" name ="margin-x" />				
-				<margin-y style="proptext" name ="margin-y" />				
-				<margin style="proptext" name ="margin" />				
-				<inset style="proptext" name ="inset" description="文字区4个方向的内边距 和padding一样"/>				
-				<padding style="proptext" name ="padding" description="文字区4个方向的内边距 和inset一样"/>				
-				<cursor/>				
-				<dotted style="propoption" name ="dotted" options="是:1|否:0" description="是否支持省略号显示文本"/>				
-				<bkgndBlend style="proptext" name ="bkgndBlend" />				
-
-				<sepSpace style="proptext" name ="sepSpace" />				
-			</分组>
+			<分组 name="基本样式" />
 
 		</imgcanvas>
 
 
 		<link>
-			<分组 name="基本属性:  link">
+			<分组 name="基本属性: link">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1158,13 +1292,7 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>	
-				<fontHover/>				
-				<tip/>			
-				<cursor/>				
-				<colorBkgnd/>
-				<colorText/>
-				<colorTextHover/>
+				<tip/>
 
 				<UiEdit_windowText/>	
 				<enable/>
@@ -1172,18 +1300,25 @@
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  link">
+			<分组 name="属性: link">
 				<href style="proptext" name ="href" />
-			</分组>			
+			</分组>
+			<分组 name="基本样式" />
 		</link>	
 
 
 		<listbox>
-			<分组 name="属性:  listbox">
+			<分组 name="属性: listbox">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1192,16 +1327,18 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>			
-				<tip/>				
-				<colorBkgnd/>	
+				<tip/>
+
+				<font/>				
+				<colorBkgnd/>
+
 				<enable/>
 				<visible/>
 				<show/>				
 				<display/>
 
 			</分组>
-			<分组 name="属性:  div">
+			<分组 name="属性: div">
 				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)"  ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" />	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" />	
@@ -1214,14 +1351,14 @@
 				<sbBottom style="proptext" name ="sbBottom" />	
 
 			</分组>
-			<分组 name="属性:  scrollview">
+			<分组 name="属性: scrollview">
 				<origin-x style="proptext" name ="origin-x" />	
 				<origin-y style="proptext" name ="origin-y" />	
 				<viewSize style="proptext" name ="viewSize" />	          
 
 			</分组>	
 
-			<分组 name="属性:  listbox">
+			<分组 name="属性: listbox">
 				<itemHeight style="proptext" name ="行高(itemHeight)" />
 
 				<itemSkin style="proptext" name ="itemSkin"  ButtonType="skin"/>		
@@ -1245,11 +1382,17 @@
 
 
 		<listctrl>
-			<分组 name="基本属性:  listctrl">
+			<分组 name="基本属性: listctrl">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1258,8 +1401,9 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>		
-				<tip/>				
+				<tip/>
+
+				<font/>				
 				<colorBkgnd/>
 
 				<UiEdit_windowText/>	
@@ -1268,7 +1412,7 @@
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  div">
+			<分组 name="属性: div">
 				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)"  ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" />	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" />	
@@ -1282,7 +1426,7 @@
 
 			</分组>
 
-			<分组 name="属性:  listctrl">
+			<分组 name="属性: listctrl">
 				<headerHeight style="proptext" name ="headerHeight" />	
 				<itemHeight style="proptext" name ="itemHeight" />	
 				<checkBox style="proptext" name ="checkBox" />	
@@ -1307,11 +1451,17 @@
 
 
 		<listview>
-			<分组 name="属性:  listview">
+			<分组 name="属性: listview">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1320,8 +1470,9 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>		
-				<tip/>				
+				<tip/>
+
+				<font/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -1331,7 +1482,7 @@
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  div">
+			<分组 name="属性: div">
 				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)"  ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" />	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" />	
@@ -1345,7 +1496,7 @@
 
 			</分组>
 
-			<分组 name="属性:  listview">
+			<分组 name="属性: listview">
 				<dividerSkin style="proptext" name ="dividerSkin"  ButtonType="skin"/>	
 				<dividerSize style="proptext" name ="dividerSize" />	
 				<wantTab style="proptext" name ="wantTab" />	
@@ -1355,11 +1506,17 @@
 
 
 		<mclistview>
-			<分组 name="属性:  mclistview">
+			<分组 name="属性: mclistview">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1368,15 +1525,17 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>		
-				<tip/>				
-				<colorBkgnd/>	
+				<tip/>
+
+				<font/>				
+				<colorBkgnd/>
+
 				<enable/>
 				<visible/>
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  div">
+			<分组 name="属性: div">
 				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)"  ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" />	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" />	
@@ -1389,7 +1548,7 @@
 				<sbBottom style="proptext" name ="sbBottom" />	
 
 			</分组>
-			<分组 name="属性:  mclistview">
+			<分组 name="属性: mclistview">
 				<headerHeight style="proptext" name ="headerHeight"  />	
 				<hotTrack style="propoption" name ="hotTrack" options="是:1|否:0"/>	
 				<dividerSkin style="proptext" name ="dividerSkin" ButtonType="skin"/>	
@@ -1403,11 +1562,17 @@
 
 
 		<mediaplayer>
-			<分组 name="属性:  mediaplayer">
+			<分组 name="属性: mediaplayer">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1416,8 +1581,9 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>		
-				<tip/>				
+				<tip/>
+
+				<font/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -1428,17 +1594,23 @@
 				<display/>				
 			</分组>
 
-			<分组 name="属性:  mediaplayer">			
+			<分组 name="属性: mediaplayer">			
 				<url style="proptext" name ="地址(url)" />				
 			</分组>			
 		</mediaplayer>	
 
 		<richedit>
-			<分组 name="基本属性:  richedit">
+			<分组 name="基本属性: richedit">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<width/>
 				<height/>				
@@ -1446,8 +1618,9 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>		
-				<tip/>				
+				<tip/>
+
+				<font/>				
 				<colorBkgnd/>
 				<!--<colorText/>-->
 
@@ -1457,7 +1630,7 @@
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  div">
+			<分组 name="属性: div">
 				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)"  ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" />	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" />	
@@ -1471,7 +1644,7 @@
 
 			</分组>
 
-			<分组 name="属性:  richedit">
+			<分组 name="属性: richedit">
 				<style style="proptext" name ="style" />	
 				<maxBuf style="proptext" name ="maxBuf" />	
 				<transparent style="proptext" name ="transparent" />	
@@ -1484,7 +1657,8 @@
 				<inset style="proptext" name ="inset" />	
 				<colorText/>	
 				<rtf style="proptext" name ="rtf" />	
-				<align style="proptext" name ="align" />	
+				<align/>
+				<valign/>	
 				<notifyChange style="propoption" name ="notifyChange" options="是:1|否:0" description="内容改变时发送EN_CHANGE通知消息"/>	
 				<hscrollBar style="proptext" name ="hscrollBar" />	
 				<vscrollBar style="proptext" name ="vscrollBar" />	
@@ -1499,8 +1673,6 @@
 				<enableDragdrop style="proptext" name ="enableDragdrop" />	
 				<autoSel style="proptext" name ="autoSel" />	
 
-
-
 			</分组>			
 		</richedit>			
 
@@ -1508,11 +1680,17 @@
 
 
 		<sliderbar>
-			<分组 name="基本属性:  sliderbar">
+			<分组 name="基本属性: sliderbar">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1521,15 +1699,17 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>		
-				<tip/>				
-				<colorBkgnd/>	
+				<tip/>
+
+				<font/>				
+				<colorBkgnd/>
+
 				<enable/>
 				<visible/>
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  progress">
+			<分组 name="属性: progress">
 				<bkgndSkin style="proptext" name ="bkgndSkin"  ButtonType="skin"/>
 				<posSkin style="proptext" name ="posSkin"  ButtonType="skin"/>
 				<min style="proptext" name ="min" />
@@ -1540,7 +1720,7 @@
 
 			</分组>		
 
-			<分组 name="属性:  sliderbar">
+			<分组 name="属性: sliderbar">
 				<thumbSkin style="proptext" name ="thumbSkin"  ButtonType="skin"/>
 				<thumbInRail style="proptext" name ="thumbInRail" />
 
@@ -1549,7 +1729,7 @@
 
 
 		<splitwnd>
-			<分组 name="基本属性:  splitwnd">
+			<分组 name="基本属性: splitwnd">
 				<id/>
 				<name/>
 				<skin/>
@@ -1562,8 +1742,9 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>		
-				<tip/>				
+				<tip/>
+
+				<font/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -1574,7 +1755,7 @@
 				<display/>				
 			</分组>
 
-			<分组 name="属性:  splitwnd">			
+			<分组 name="属性: splitwnd">			
 				<sepSize style="proptext" name ="sepSize" />	
 				<sepSkin style="proptext" name ="sepSkin"  ButtonType="skin"/>	
 				<adjustable style="proptext" name ="adjustable" />	
@@ -1583,7 +1764,7 @@
 		</splitwnd>		
 
 		<splitcol>
-			<分组 name="基本属性:  splitcol">
+			<分组 name="基本属性: splitcol">
 				<id/>
 				<name/>
 				<skin/>
@@ -1596,8 +1777,9 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>		
-				<tip/>				
+				<tip/>
+
+				<font/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -1608,7 +1790,7 @@
 				<display/>				
 			</分组>
 
-			<分组 name="属性:  splitcol">			
+			<分组 name="属性: splitcol">			
 				<sepSize style="proptext" name ="sepSize" />	
 				<sepSkin style="proptext" name ="sepSkin"  ButtonType="skin"/>	
 				<adjustable style="proptext" name ="adjustable" />			
@@ -1616,7 +1798,7 @@
 		</splitcol>	
 
 		<splitrow>
-			<分组 name="基本属性:  splitrow">
+			<分组 name="基本属性: splitrow">
 				<id/>
 				<name/>
 				<skin/>
@@ -1629,8 +1811,9 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>		
-				<tip/>				
+				<tip/>
+
+				<font/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -1641,7 +1824,7 @@
 				<display/>				
 			</分组>
 
-			<分组 name="属性:  splitrow">			
+			<分组 name="属性: splitrow">			
 				<sepSize style="proptext" name ="sepSize" />	
 				<sepSkin style="proptext" name ="sepSkin"  ButtonType="skin"/>	
 				<adjustable style="proptext" name ="adjustable" />			
@@ -1649,13 +1832,25 @@
 		</splitrow>			
 
 		<pane>
-			<分组 name="基本属性:  pane">
+			<分组 name="基本属性: pane">
 				<id/>
 				<name/>
 				<skin/>
 				<layout/>
 				<gravity/>
+				<columnCount/>
+				<rowCount/>
+				<xInterval/>
+				<yInterval/>
+				<xGravity/>
+				<yGravity/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1664,8 +1859,9 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>		
-				<tip/>				
+				<tip/>
+
+				<font/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -1676,7 +1872,7 @@
 				<display/>				
 			</分组>
 
-			<分组 name="属性:  pane">			
+			<分组 name="属性: pane">			
 				<idealSize style="proptext" name ="理想大小(idealSize)" />	
 				<minSize style="proptext" name ="最小大小(minSize)" />	
 				<maxSize style="proptext" name ="最小大小(maxSize)" />	
@@ -1685,11 +1881,17 @@
 		</pane>			
 
 		<progress>
-			<分组 name="基本属性:  progress">
+			<分组 name="基本属性: progress">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1698,15 +1900,18 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>		
-				<tip/>				
-				<colorBkgnd/>	
+				<tip/>
+
+				<font/>				
+				<colorBkgnd/>
+				<colorText/>
+
 				<enable/>
 				<visible/>
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  progress">
+			<分组 name="属性: progress">
 				<bkgndSkin style="proptext" name ="bkgndSkin"  ButtonType="skin"/>
 				<posSkin style="proptext" name ="posSkin"  ButtonType="skin"/>
 				<min style="proptext" name ="min" />
@@ -1719,13 +1924,25 @@
 		</progress>		
 
 		<scrollview>
-			<分组 name="基本属性:  scrollview">
+			<分组 name="基本属性: scrollview">
 				<id/>
 				<name/>
 				<skin/>
 				<layout/>
 				<gravity/>
+				<columnCount/>
+				<rowCount/>
+				<xInterval/>
+				<yInterval/>
+				<xGravity/>
+				<yGravity/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1733,9 +1950,10 @@
 				<pos/>
 				<size/>
 				<offset/>
-				<class/>
-				<font/>		
-				<tip/>				
+				<class/>	
+				<tip/>
+
+				<font/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -1745,7 +1963,7 @@
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  div">
+			<分组 name="属性: div">
 				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)"  ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" />	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" />	
@@ -1758,7 +1976,7 @@
 				<sbBottom style="proptext" name ="sbBottom" />	
 
 			</分组>
-			<分组 name="属性:  scrollview">
+			<分组 name="属性: scrollview">
 				<origin-x style="proptext" name ="origin-x" />	
 				<origin-y style="proptext" name ="origin-y" />	
 				<viewSize style="proptext" name ="viewSize" />	          
@@ -1767,11 +1985,17 @@
 		</scrollview>	
 
 		<tileview>
-			<分组 name="属性:  tileview">
+			<分组 name="属性: tileview">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1780,8 +2004,9 @@
 				<size/>
 				<offset/>
 				<class/>
+				<tip/>
+
 				<font/>		
-				<tip/>				
 				<colorBkgnd/>
 				<colorText/>
 
@@ -1791,7 +2016,7 @@
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  div">
+			<分组 name="属性: div">
 				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)"  ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" />	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" />	
@@ -1805,18 +2030,24 @@
 
 			</分组>
 
-			<分组 name="属性:  tileview">
+			<分组 name="属性: tileview">
 				<marginSize style="proptext" name ="marginSize" />	
 				<wantTab style="proptext" name ="wantTab" />	
 			</分组>			
 		</tileview>				
 
 		<toggle>
-			<分组 name="基本属性:  toggle">
+			<分组 name="基本属性: toggle">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1836,7 +2067,7 @@
 				<display/>
 			</分组>
 
-			<分组 name="属性:  toggle">
+			<分组 name="属性: toggle">
 				<toggled style="proptext" name ="toggled(toggled)" />	
 			</分组>
 
@@ -1844,11 +2075,17 @@
 
 
 		<toolbox>
-			<分组 name="属性:  toolbox">
+			<分组 name="属性: toolbox">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1857,8 +2094,10 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>
 				<tip/>
+				<margin/>
+				<font/>
+				<colorBkgnd/>
 				<colorText/>
 				<text style="proptext" name ="文本内容(text)"  />
 				<accel style="proptext" name ="快捷键(accel)"  />
@@ -1874,11 +2113,17 @@
 
 
 		<treectrl>
-			<分组 name="基本属性:  treectrl">
+			<分组 name="基本属性: treectrl">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1886,9 +2131,11 @@
 				<pos/>
 				<size/>
 				<offset/>
-				<class/>
-				<font/>		
-				<tip/>				
+				<class/>	
+				<tip/>
+
+				<margin/>
+				<font/>
 				<colorBkgnd/>
 				<colorText/>
 
@@ -1898,7 +2145,7 @@
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  div">
+			<分组 name="属性: div">
 				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)"  ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" />	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" />	
@@ -1911,16 +2158,12 @@
 				<sbBottom style="proptext" name ="sbBottom" />	
 
 			</分组>
-			<分组 name="属性:  scrollview">
-
+			<分组 name="属性: scrollview">
 				<origin-x style="proptext" name ="origin-x" />	
 				<origin-y style="proptext" name ="origin-y" />	
 				<viewSize style="proptext" name ="viewSize" />	          
-
-
-
 			</分组>
-			<分组 name="属性:  treectrl">
+			<分组 name="属性: treectrl">
 				<indent style="proptext" name ="indent" />	
 				<itemHeight style="proptext" name ="itemHeight" />	
 				<itemMargin style="proptext" name ="itemMargin" />	
@@ -1935,17 +2178,22 @@
 				<colorItemSelBkgnd style="propcolor" name ="colorItemSelBkgnd" />	
 				<colorItemText style="propcolor" name ="colorItemText" />	
 				<colorItemSelText style="propcolor" name ="colorItemSelText" />	
-
 			</分组>			
 		</treectrl>	
 
 
 		<treeview>
-			<分组 name="属性:  treeview">
+			<分组 name="属性: treeview">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -1953,9 +2201,11 @@
 				<pos/>
 				<size/>
 				<offset/>
-				<class/>
-				<font/>		
-				<tip/>				
+				<class/>	
+				<tip/>	
+
+				<margin/>
+				<font/>
 				<colorBkgnd/>
 				<colorText/>
 
@@ -1965,7 +2215,7 @@
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  div">
+			<分组 name="属性: div">
 				<sbSkin style="proptext" name ="滚动条皮肤(sbSkin)"  ButtonType="skin"/>	
 				<sbArrowSize style="proptext" name ="sbArrowSize" />	
 				<sbWid style="proptext" name ="滚动条宽度(sbWid)" />	
@@ -1979,7 +2229,7 @@
 
 			</分组>
 
-			<分组 name="属性:  treeview">
+			<分组 name="属性: treeview">
 				<indent style="proptext" name ="indent" />	
 				<wantTab style="proptext" name ="wantTab" />	
 
@@ -1989,11 +2239,17 @@
 
 
 		<radio>
-			<分组 name="属性:  radio">
+			<分组 name="属性: radio">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -2002,8 +2258,9 @@
 				<size/>
 				<offset/>
 				<class/>
-				<font/>
 				<tip/>
+				<font/>
+				<colorBkgnd/>
 				<colorText/>
 				<UiEdit_windowText/>	
 				<enable/>
@@ -2011,7 +2268,7 @@
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="属性:  radio">
+			<分组 name="属性: radio">
 				<focusSkin style="proptext" name ="focusSkin"  ButtonType="skin"/>
 				<checked style="propoption" name ="checked" options="是:1|否:0"/>
 			</分组>
@@ -2019,11 +2276,17 @@
 
 
 		<realwnd>
-			<分组 name="属性:  realwnd">
+			<分组 name="属性: realwnd">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -2031,9 +2294,10 @@
 				<pos/>
 				<size/>
 				<offset/>
-				<class/>
-				<font/>		
+				<class/>	
 				<tip/>				
+
+				<font/>
 				<colorBkgnd/>
 				<colorText/>
 
@@ -2043,18 +2307,24 @@
 				<show/>				
 				<display/>				
 			</分组>
-			<分组 name="拓展:  realwnd">
+			<分组 name="拓展: realwnd">
 				<wndclass style="proptext" name ="类名(wndclass)" />	
 				<wndname style="proptext" name ="wndname" />
 			</分组>
 		</realwnd>	
 
 		<RotateWindow>
-			<分组 name="属性:  RotateWindow">
+			<分组 name="属性: RotateWindow">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -2062,25 +2332,22 @@
 				<pos/>
 				<size/>
 				<offset/>
-				<margin/>
 				<class/>
-				<font/>		
-				<tip/>				
+				<tip/>
+
+				<margin/>
+				<font/>
 				<colorBkgnd/>
 				<colorText/>
-
-
 
 				<UiEdit_windowText/>	
 				<enable/>
 				<visible/>
 				<show/>				
 				<display/>				
-
-
 			</分组>
 
-			<分组 name="拓展:  RotateWindow">
+			<分组 name="拓展: RotateWindow">
 				<AnimImg style="proptext" name ="AnimImg"  ButtonType="skin"/>
 				<speed style="proptext" name ="speed"  />
 				<turn style="proptext" name ="turn"  />
@@ -2090,7 +2357,7 @@
 
 
 		<scrollbar>
-			<分组 name="基本属性:  scrollbar">
+			<分组 name="基本属性: scrollbar">
 				<id/>
 				<name/>
 				<skin/>
@@ -2110,7 +2377,7 @@
 				<show/>				
 				<display/>
 			</分组>
-			<分组 name="拓展:  scrollbar">
+			<分组 name="拓展: scrollbar">
 				<arrowSize style="proptext" name ="arrowSize" />
 				<min style="proptext" name ="min" />
 				<max style="proptext" name ="max" />
@@ -2121,11 +2388,17 @@
 		</scrollbar>
 
 		<scrolltext>
-			<分组 name="属性:  scrolltext">
+			<分组 name="属性: scrolltext">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -2133,11 +2406,8 @@
 				<pos/>
 				<size/>
 				<offset/>
-				<class/>
-				<font/>			
+				<class/>		
 				<tip/>				
-				<colorBkgnd/>
-				<colorText/>
 				<UiEdit_windowText/>
 				<multiLines style="proptext" name ="多行(multiLines)" />	
 				<interHeight style="proptext" name ="行间距(interHeight)" />
@@ -2148,14 +2418,21 @@
 				<show/>				
 				<display/>				
 			</分组>
+			<分组 name="基本样式" />
 		</scrolltext>			
 
 		<text>
-			<分组 name="属性:  text">
+			<分组 name="属性: text">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -2163,27 +2440,31 @@
 				<pos/>
 				<size/>
 				<offset/>
-				<class/>
-				<font/>			
-				<tip/>				
-				<colorBkgnd/>
-				<colorText/>
+				<class/>		
+				<tip/>
 				<UiEdit_windowText/>
 				<multiLines style="proptext" name ="多行(multiLines)" />	
 				<interHeight style="proptext" name ="行间距(interHeight)" />	
 				<enable/>
 				<visible/>
 				<show/>				
-				<display/>				
+				<display/>			
 			</分组>
+			<分组 name="基本样式" />
 		</text>		
 
 		<tabctrl>
-			<分组 name="属性:  tabctrl">
+			<分组 name="属性: tabctrl">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -2203,7 +2484,7 @@
 
 			</分组>
 
-			<分组 name="属性:  tabctrl">
+			<分组 name="属性: tabctrl">
 				<curSel style="proptext" name ="当前页索引(curSel)" />
 				<tabSize style="proptext" name ="tabSize" />
 				<tabWidth style="proptext" name ="tabWidth" />
@@ -2226,11 +2507,17 @@
 
 
 		<tabctrl2>
-			<分组 name="属性:  tabctrl2">
+			<分组 name="属性: tabctrl2">
 				<id/>
 				<name/>
 				<skin/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<width/>
@@ -2250,7 +2537,7 @@
 
 			</分组>
 
-			<分组 name="属性:  tabctrl">
+			<分组 name="属性: tabctrl">
 				<curSel style="proptext" name ="当前页索引(curSel)" />
 				<tabSize style="proptext" name ="tabSize" />
 				<tabWidth style="proptext" name ="tabWidth" />
@@ -2269,18 +2556,24 @@
 
 			</分组>
 
-			<分组 name="属性:  tabctrl2">
+			<分组 name="属性: tabctrl2">
 				<tabHeadBgSkin style="proptext" name ="tabHeadBgSkin"  ButtonType="skin"/>	
 
 			</分组>
 		</tabctrl2>			
 		<page>
-			<分组 name="属性:  page">
+			<分组 name="属性: page">
 				<id/>
 				<name/>
 				<skin/>
 				<layout/>
 				<gravity/>
+				<columnCount/>
+				<rowCount/>
+				<xInterval/>
+				<yInterval/>
+				<xGravity/>
+				<yGravity/>
 				<layout_gravity/>
 				<weight/>
 				<extend/>
@@ -2301,7 +2594,7 @@
 
 			</分组>
 
-			<分组 name="属性:  page">		
+			<分组 name="属性: page">		
 				<iconIndex style="proptext" name ="iconIndex" />	
 				<title style="proptext" name ="标题(title)" />		
 			</分组>			
@@ -2309,12 +2602,18 @@
 
 
 		<page2>
-			<分组 name="属性:  page2">
+			<分组 name="属性: page2">
 				<id/>
 				<name/>
 				<skin/>
 				<layout/>
 				<gravity/>
+				<columnCount/>
+				<rowCount/>
+				<xInterval/>
+				<yInterval/>
+				<xGravity/>
+				<yGravity/>
 				<layout_gravity/>
 				<weight/>
 				<extend/>
@@ -2334,7 +2633,7 @@
 				<display/>				
 
 			</分组>
-			<分组 name="属性:  page2">
+			<分组 name="属性: page2">
 
 				<iconIndex style="proptext" name ="iconIndex" />		
 				<title style="proptext" name ="标题(title)" />			
@@ -2344,7 +2643,7 @@
 		</page2>	
 
 		<menu>
-			<分组 name="属性:  menu">
+			<分组 name="属性: menu">
 				<itemSkin  style="proptext" name ="itemSkin" />
 				<iconSkin style="proptext" name ="iconSkin" />
 				<sepSkin style="proptext" name ="sepSkin" />
@@ -2363,7 +2662,7 @@
 		</menu>
 
 		<menuRoot>
-			<分组 name="属性:  基本">
+			<分组 name="属性: 基本">
 				<id/>
 				<name/>
 				<skin/>
@@ -2385,8 +2684,8 @@
 				<show/>				
 				<display/>
 			</分组>
-			
-			<分组 name="属性:  menu">
+
+			<分组 name="属性: menu">
 				<itemSkin  style="proptext" name ="itemSkin" />
 				<iconSkin style="proptext" name ="iconSkin" />
 				<sepSkin style="proptext" name ="sepSkin" />
@@ -2401,9 +2700,9 @@
 				<subMenuOffset style="proptext" name ="subMenuOffset" />
 			</分组>
 		</menuRoot>
-		
+
 		<menuItem>
-			<分组 name="属性:  基本">
+			<分组 name="属性: 基本">
 				<id/>
 				<name/>
 				<skin/>
@@ -2426,24 +2725,36 @@
 				<show/>				
 				<display/>
 			</分组>
-			
-			<分组 name="属性:  menu">
+
+			<分组 name="属性: menu">
 				<icon  style="proptext" name ="itemSkin" />
 				<check style="proptext" name ="iconSkin" />
 				<radio style="proptext" name ="sepSkin" />
 				<hotKey style="proptext" name ="checkSkin" />
 			</分组>
 		</menuItem>
-		
+
 		<window>
-			<分组 name="属性:  window">
+			<分组 name="属性: window">
 				<id/>
 				<name/>
 				<skin/>
 				<ncskin/>
 				<layout/>
 				<gravity/>
+				<columnCount/>
+				<rowCount/>
+				<xInterval/>
+				<yInterval/>
+				<xGravity/>
+				<yGravity/>
 				<layout_gravity/>
+				<rowSpan/>
+				<columnSpan/>
+				<layout_xGravity/>
+				<layout_yGravity/>
+				<columnWeight/>
+				<rowWeight/>
 				<weight/>
 				<extend/>
 				<pos/>
@@ -2458,10 +2769,8 @@
 				<show/>
 				<display/>
 				<cache/>
-				<alpha/>
 				<tip/>				
 				<layeredWindow style="proptext" name ="layeredWindow" />
-				<trackMouseEvent style="proptext" name ="trackMouseEvent" />
 				<msgTransparent/>
 				<maxWidth style="proptext" name ="maxWidth" />
 				<clipClient style="proptext" name ="clipClient" />
@@ -2470,46 +2779,19 @@
 				<float/>
 				<UiEdit_windowText/>				
 			</分组>
-
-			<分组 name="属性:  style">
-				<textMode style="proptext" name ="textMode" />						
-				<align style="propoption" name ="align" options="left|center|right"/>						
-				<valign style="propoption" name ="valign" options="top|middle|bottom"/>						
-				<colorBkgnd/>						
-				<colorBorder style="propcolor" name ="colorBorder" />
-				<font/>						
-				<fontHover/>						
-				<fontPush/>
-				<fontDisable/>
-				<colorText/>				
-				<colorTextHover style="propcolor" name ="colorTextHover" />				
-				<colorTextPush style="propcolor" name ="colorTextPush" />				
-				<colorTextDisable style="propcolor" name ="colorTextDisable" />				
-				<margin-x style="proptext" name ="margin-x" />				
-				<margin-y style="proptext" name ="margin-y" />				
-				<margin style="proptext" name ="margin" />				
-				<inset style="proptext" name ="inset" description="文字区4个方向的内边距 和padding一样"/>				
-				<padding style="proptext" name ="padding" description="文字区4个方向的内边距 和inset一样"/>				
-				<cursor/>				
-				<dotted style="propoption" name ="dotted" options="是:1|否:0" description="是否支持省略号显示文本"/>				
-				<bkgndBlend style="proptext" name ="bkgndBlend" />				
-
-				<sepSpace style="proptext" name ="sepSpace" />				
-			</分组>
-
+			<分组 name="基本样式" />
 		</window>	
 
 		<soui>
 			<!--hostwnd这里为编辑器特殊处理，两个分组的顺序不要修改，分组里的节点顺序可以修改
 			    不要添加删除新的分组-->
-			<分组 name="属性:  SOUI">
+			<分组 name="属性: SOUI">
 				<trCtx style="proptext" name ="trCtx"  description="在语言翻译时作为context使用"/>
 				<title style="proptext" name ="标题(title)"  />
 				<width style="proptext" name ="宽度(width)" />	
 				<height style="proptext" name ="高度(height)" />	
 
 				<maxInset style="proptext" name ="maxInset"  />
-
 				<margin style="proptext" name ="边距(margin)" />	
 				<minsize style="proptext" name ="最小宽高(minsize)" />									
 				<wndStyle style="proptext" name ="样式(wndStyle)" />
@@ -2525,7 +2807,6 @@
 				<allowSpy style="proptext" name ="allowSpy" />
 				<appMainWnd style="proptext" name ="appMainWnd" />				
 				<wndType style="propoption" name ="wndType"  options="undefine|appMain|normal" description="主窗口标志,有该appMain标志的窗口关闭时自动发送WM_QUIT"/>
-
 			</分组>
 		</soui>
 

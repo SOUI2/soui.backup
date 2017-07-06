@@ -8,6 +8,7 @@ public:
 	{
 		SStringT attrname;
 		pugi::xml_node attrdoc;
+		CtrlAttrItem() { ; }
 		CtrlAttrItem(SStringT name, pugi::xml_node xmlnode)
 		{
 			attrname = name;
@@ -25,7 +26,7 @@ public:
 
 	void InitProperty();
 
-	void InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCtrl, CTRL_ATTR_VALUE* arr_attr);
+	void InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeComStyle, pugi::xml_node NodeCtrl, CTRL_ATTR_VALUE* arr_attr);
 
 	// 获取控件名称列表
 	SStringA GetCtrlAutos();
@@ -38,6 +39,12 @@ public:
 
 
 private:
+	static int textCmp(const void * p1, const void*p2)
+	{
+		const SStringT *tag1 = (const SStringT*)p1;
+		const SStringT *tag2 = (const SStringT*)p2;
+		return tag1->Compare(*tag2);
+	}
 	static int CtrlAttrCmp(const void * p1, const void*p2)
 	{
 		const CtrlAttrItem *tag1 = (const CtrlAttrItem*)p1;
@@ -55,4 +62,6 @@ private:
 
 	// 控件属性
 	SMap<SStringT, CTRL_ATTR_VALUE*> m_mapControl;
+	// 控件基本样式
+	CTRL_ATTR_VALUE m_arrControlStyle;
 };

@@ -73,8 +73,8 @@ namespace SOUI
 
 		void ShowNoteInSciwnd();		
 
-		void InitProperty(SWindow *pPropertyContainer);   //初始化属性列表
-		void InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCtrl);
+		void InitProperty(SStatic* textCtrl, SWindow *pPropertyContainer);   //初始化属性列表
+		void InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeComStyle, pugi::xml_node NodeCtrl);
 
 		void CreatePropGrid(SStringT strCtrlType);
 		void UpdatePropGrid(pugi::xml_node xmlNode);
@@ -162,6 +162,7 @@ namespace SOUI
 
 		SMap<SStringT, pugi::xml_document*> m_mapCtrlProperty;//所有控件的属性列表 <Button, xmlnode> <Check, xmlNode>
 		SWindow *m_pPropertyContainer;     //属性面板父窗口
+		SStatic* m_textCtrlTypename;	//显示选择的控件类型
 
 		CScintillaWnd *m_pScintillaWnd;	//XML代码编辑窗口
 

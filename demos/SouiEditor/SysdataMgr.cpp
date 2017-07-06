@@ -59,8 +59,11 @@ void CSysDataMgr::InitProperty()   //初始化属性列表
 		CDebug::Debug(_T("InitProperty失败"));
 	}
 
-	pugi::xml_node NodeCom = m_xmlDocProperty.child(L"root").child(L"通用样式");
-	pugi::xml_node NodeCtrlList = m_xmlDocProperty.child(L"root").child(L"属性列表");
+	pugi::xml_document xmlDocProperty;
+	xmlDocProperty.append_copy(m_xmlDocProperty.document_element());
+	pugi::xml_node NodeCom = xmlDocProperty.child(L"root").child(L"通用样式");
+	pugi::xml_node NodeComStyle = xmlDocProperty.child(L"root").child(L"基本样式");
+	pugi::xml_node NodeCtrlList = xmlDocProperty.child(L"root").child(L"属性列表");
 
 	pugi::xml_node NodeCtrl = NodeCtrlList.first_child();  //NodeCtrl = Button节点
 	while (NodeCtrl)
@@ -68,14 +71,45 @@ void CSysDataMgr::InitProperty()   //初始化属性列表
 		SStringT strCtrlname = NodeCtrl.name();
 		m_mapControl.SetAt(strCtrlname, new CTRL_ATTR_VALUE());
 
-		InitCtrlProperty(NodeCom, NodeCtrl, m_mapControl[strCtrlname]);
+		InitCtrlProperty(NodeCom, NodeComStyle, NodeCtrl, m_mapControl[strCtrlname]);
 
 		NodeCtrl = NodeCtrl.next_sibling();
+	}
+
+	pugi::xml_node NodeBasicStyle = NodeComStyle.first_child();  //NodeCtrl = Button节点
+	while (NodeBasicStyle)
+	{
+		if (!NodeBasicStyle.attribute(L"style"))
+		{
+			// 没有设置style的为通用属性, 从通用属性结点中获取信息
+			SStringT strName = NodeBasicStyle.name();
+			pugi::xml_node N = NodeCom.child(strName);
+			if (N)
+			{
+				pugi::xml_node NodeNew;
+
+				// 用通用属性进行替换
+				NodeNew = NodeBasicStyle.parent().insert_copy_before(N, NodeBasicStyle);
+				NodeBasicStyle.parent().remove_child(NodeBasicStyle);
+
+				NodeBasicStyle = NodeNew;
+			}
+			else
+			{
+				NodeBasicStyle.append_attribute(L"style").set_value(L"proptext");
+				NodeBasicStyle.append_attribute(L"name").set_value(strName);
+			}
+		}
+		pugi::xml_node ctrl_node;
+		ctrl_node.append_copy(NodeBasicStyle);
+		m_arrControlStyle.Add(CtrlAttrItem(NodeBasicStyle.name(), ctrl_node));
+
+		NodeBasicStyle = NodeBasicStyle.next_sibling();
 	}
 }
 
 
-void CSysDataMgr::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCtrl, CTRL_ATTR_VALUE* arr_attr)
+void CSysDataMgr::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeComStyle, pugi::xml_node NodeCtrl, CTRL_ATTR_VALUE* arr_attr)
 {
 	/*
 	<通用样式>
@@ -113,8 +147,16 @@ void CSysDataMgr::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCt
 		SStringT nodeName = NodeChild.name();
 		if (_wcsicmp(nodeName, L"分组") == 0)
 		{
+			SStringT nameAttr = NodeChild.attribute(L"name").as_string();
+			if (nameAttr.CompareNoCase(L"基本样式") == 0)
+			{
+				pugi::xml_node parentNode = NodeChild.parent();
+				pugi::xml_node nodeCopy = parentNode.insert_copy_after(NodeComStyle, NodeChild);
+				parentNode.remove_child(NodeChild);
+				NodeChild = nodeCopy;
+			}
 			NodeChild.set_name(L"propgroup");
-			InitCtrlProperty(NodeCom, NodeChild, arr_attr);
+			InitCtrlProperty(NodeCom, NodeComStyle, NodeChild, arr_attr);
 		}
 		else
 		{
@@ -173,16 +215,29 @@ SStringA CSysDataMgr::GetCtrlAttrAutos(SStringT ctrlname)
 
 	SMap<SStringT, CTRL_ATTR_VALUE*>::CPair* pNode = m_mapControl.Lookup(ctrlname);
 	if (!pNode)
+	{
+		pNode = m_mapControl.Lookup(_T("window"));
+	}
+	if (!pNode)
 		return "";
 
 	SStringT strAuto;
 	CTRL_ATTR_VALUE* ctrl_attr = pNode->m_value;
+	SArray<CtrlAttrItem> allAttr;
+	allAttr.Append(*ctrl_attr);
+	allAttr.Append(m_arrControlStyle);
 
-	qsort(ctrl_attr->GetData(), ctrl_attr->GetCount(), sizeof(CtrlAttrItem), CtrlAttrCmpNoCase);
-	for (int i = 0; i < ctrl_attr->GetCount(); i++)
+	SStringT strLastWord;
+	qsort(allAttr.GetData(), allAttr.GetCount(), sizeof(CtrlAttrItem), CtrlAttrCmpNoCase);
+	for (int i = 0; i < allAttr.GetCount(); i++)
 	{
-		if (ctrl_attr->GetAt(i).attrname.CompareNoCase(uiedit_SpecAttr) != 0)
-			strAuto += ctrl_attr->GetAt(i).attrname + _T(" ");
+		if (allAttr.GetAt(i).attrname.CompareNoCase(uiedit_SpecAttr) == 0)
+			continue;
+		if (strLastWord != allAttr.GetAt(i).attrname)
+		{
+			strLastWord = allAttr.GetAt(i).attrname;
+			strAuto += strLastWord + _T(" ");
+		}
 	}
 
 	strAuto.TrimRight(' ');

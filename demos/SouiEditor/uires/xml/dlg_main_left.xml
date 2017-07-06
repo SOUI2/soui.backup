@@ -6,16 +6,17 @@
 				<page title="Layout" colorBorder="#ffff00">
 					<treectrl pos="0,0,-0,-0" name="workspace_tree" itemHeight="28" colorItemText="#FFFFFF" colorItemSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" rightClickSel="1" colorBkgnd="#FFFFFF12" />
 				</page>
-				<page title="XML文件" colorBorder="#ffff00" >
+				<page title="XML文件" colorBorder="#ffff00">
 					<listbox pos="0,0,-0,-0" name="workspace_xmlfile_lb" weight="1" hotTrack="1" itemHeight="28" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" colorBkgnd="#FFFFFF12" text-x="20" />
 				</page>
 			</tabctrl>
 		</pane>
 		<pane idealSize="600" minSize="30" priority="1" clipClient="1">
+			<text pos="0,0,-0,30" name="uidesigner_CtrlTypename" inset="5,0,0,0" colorBkgnd="#FFFFFF12" colorText="#FFFFA0" />
+			<window pos="0,[0,-0,-92" name="uidesigner_propContainer" colorBkgnd="#FFFFFF12" colorText="#FFFFFF" />
 			<window pos="0,-92,-0,@92" colorBkgnd="#FFFFFF20" colorText="#FFFFFF">
 				<richedit multilines="1" autovscroll="1" wordwrap="1" margin-x="2" margin-y="2" cueText="" pos="1,1,-1,-1" autoHscroll="0" vscrollBar="1" readOnly="1" wantReturn="1" name="uidesigner_DescText" margin="0" />
 			</window>
-			<window pos="0,0,-0,-92" name="uidesigner_propContainer" colorBkgnd="#FFFFFF12" colorText="#FFFFFF" />
 		</pane>
 	</splitrow>
 </include>
