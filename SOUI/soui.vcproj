@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="soui"
 	ProjectGUID="{0F2008C7-3A4E-339A-A1E9-AB14E9EB2D94}"
+	RootNamespace="soui"
 	Keyword="Qt4VSv1.0"
 	TargetFrameworkVersion="0"
 	>
@@ -627,6 +628,10 @@
 			</File>
 			<File
 				RelativePath="include\helper\SAttrCracker.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\interface\SAttrStorage-i.h"
 				>
 			</File>
 			<File

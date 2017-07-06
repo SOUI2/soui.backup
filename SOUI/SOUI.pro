@@ -135,6 +135,7 @@ HEADERS += include/SApp.h \
            include/interface/slog-i.h \
            include/interface/TvItemLocator-i.h \
            include/interface/slayout-i.h \
+           include/interface/SAttrStorage-i.h \
            include/layout/SLinearLayoutParamStruct.h \
            include/layout/SLinearLayout.h \
            include/layout/SouiLayoutParamStruct.h \
