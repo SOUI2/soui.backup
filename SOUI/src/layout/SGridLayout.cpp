@@ -70,7 +70,6 @@ namespace SOUI
 	{
 		width.setWrapContent();
 		height.setWrapContent();
-		iRow=iCol=-1;
 		nColSpan=nRowSpan=1;
 		layoutGravityX = gUndef;
 		layoutGravityY = gUndef;
@@ -202,7 +201,7 @@ namespace SOUI
 
 
 	//////////////////////////////////////////////////////////////////////////
-	SGridLayout::SGridLayout(void):m_GravityX(gCenter),m_GravityY(gMiddle),m_nCols(-1),m_nRows(-1)
+	SGridLayout::SGridLayout(void):m_GravityX(gCenter),m_GravityY(gCenter),m_nCols(-1),m_nRows(-1)
 	{
 	}
 
@@ -557,11 +556,11 @@ namespace SOUI
 				switch(gy)
 				{
 				case gUndef: case gTop:break;
-				case gMiddle:pt2.y+=(szCell.cy-szDesired.cy)/2;break;
+				case gCenter:pt2.y+=(szCell.cy-szDesired.cy)/2;break;
 				case gBottom:pt2.y+=(szCell.cy-szDesired.cy);break;
 				case gFill:szDesired.cy=szCell.cy;break;
 				}
-				CRect rcCell(pt,szDesired);
+				CRect rcCell(pt2,szDesired);
 				pCell->OnRelayout(rcCell);
 
 				pt.x += szCell.cx + xInter;

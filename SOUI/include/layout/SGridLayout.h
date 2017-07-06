@@ -46,9 +46,7 @@ namespace SOUI
 		virtual void * GetRawData();
 
 		SOUI_ATTRS_BEGIN()
-			ATTR_INT(L"row",iRow,TRUE)
 			ATTR_INT(L"rowSpan",nRowSpan,TRUE)
-			ATTR_INT(L"column",iCol,TRUE)
 			ATTR_INT(L"columnSpan",nColSpan,TRUE)
 			ATTR_CUSTOM(L"width",OnAttrWidth)
 			ATTR_CUSTOM(L"height",OnAttrHeight)
@@ -92,13 +90,13 @@ namespace SOUI
 		SOUI_ATTRS_BREAK()
 	protected:
 
-		int m_nCols;
-		int m_nRows;
-		SLayoutSize m_xInterval;
-		SLayoutSize m_yInterval;
+		int m_nCols;				/**<行数 */
+		int m_nRows;				/**<列数 */
+		SLayoutSize m_xInterval;	/**<水平间距 */
+		SLayoutSize m_yInterval;	/**<垂直间距 */
 
-		GridGravity m_GravityX;
-		GridGravity m_GravityY;
+		GridGravity m_GravityX;		/**<水平排列方式 */
+		GridGravity m_GravityY;		/**<垂直排列方式 */
 
 	};
 
