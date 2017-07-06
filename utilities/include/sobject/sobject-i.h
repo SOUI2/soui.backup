@@ -182,9 +182,25 @@ namespace SOUI
          */    
         virtual LPCWSTR GetName() const = 0;
 
+		/**
+         * InitFromXml
+         * @brief    从XML结节初始化SObject对象
+         * @param    pugi::xml_node --  XML结节
+         * @return   BOOL -- 成功返回TRUE
+         * Describe  
+         */    
 		virtual BOOL InitFromXml( pugi::xml_node xmlNode ) = 0;
 
 
+		/**
+         * DefAttributeProc
+         * @brief    默认属性处理函数
+         * @param    const SStringW & strAttribName --  属性名
+		 * @param	 const SStringW & strValue --属性值
+		 * @param    BOOL bLoading -- 从XML初始化标志
+         * @return   HRESULT -- S_OK:刷新UI， S_FALSE:成功但不刷新UI，其它：失败
+         * Describe  在SetAttribute中没有处理一个属性时转到本方法处理。
+         */  
 		virtual HRESULT DefAttributeProc(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading) = 0;
 
 		/**
@@ -196,7 +212,14 @@ namespace SOUI
          */    
         virtual void OnInitFinished(pugi::xml_node xmlNode) = 0;
 
-		virtual SStringW GetAttribute(const SStringW & strAttr) const = 0;
+		/**
+         * GetAttribute
+         * @brief    通过属性名查询属性值
+         * @param    const SStringW & strAttr --  属性名
+         * @return   SStringW -- 属性值
+         * Describe  默认返回空
+         */    
+		virtual SStringW GetAttribute(const SStringW & strAttr) = 0;
 
 
 		/**

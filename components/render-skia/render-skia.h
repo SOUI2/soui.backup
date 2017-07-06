@@ -352,7 +352,7 @@ namespace SOUI
     public:
         SkCanvas *GetCanvas(){return m_SkCanvas;}
 
-		virtual SStringW GetAttribute(const SStringW & strAttr) const
+		virtual SStringW GetAttribute(const SStringW & strAttr)
 		{
 			if(strAttr.CompareNoCase(L"antiAlias") == 0)
 				return m_bAntiAlias?L"1":L"0";
