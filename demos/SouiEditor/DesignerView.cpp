@@ -11,6 +11,7 @@
 #include "adapter.h"
 #include "Global.h"
 #include "pugixml_write.h"
+#include "SysdataMgr.h"
 
 //编辑界面时XML窗口只显示选择控件的XML文本
 //#define  ONLYSHOWSELXML
@@ -19,6 +20,7 @@
 extern CMainDlg* g_pMainDlg;
 
 extern BOOL g_bHookCreateWnd;	//是否拦截窗口的建立
+extern CSysDataMgr g_SysDataMgr;
 
 BOOL SDesignerView::NewLayout(SStringT strResName, SStringT strPath)
 {
@@ -689,7 +691,7 @@ void SDesignerView::RenameChildeWnd(pugi::xml_node xmlNode)
 		if (NodeChild.type() != pugi::node_element)
 		{
 			NodeChild = NodeChild.next_sibling();
-			continue;;
+			continue;
 		}
 
 		//替换Include 成一个window
@@ -1074,8 +1076,9 @@ void SDesignerView::ShowNoteInSciwnd()
 }
 
 
-void SDesignerView::InitProperty(SWindow *pPropertyContainer)   //初始化属性列表
+void SDesignerView::InitProperty(SStatic* textCtrl, SWindow *pPropertyContainer)   //初始化属性列表
 {
+	m_textCtrlTypename = textCtrl;
 	m_pPropertyContainer = pPropertyContainer;
 	/*
 
@@ -1108,17 +1111,11 @@ void SDesignerView::InitProperty(SWindow *pPropertyContainer)   //初始化属性列表
 		ColorItemSel=\"rgb(234,128,16)\" colorItemSelText=\"#FF0000\" EditBkgndColor=\"rgb(87,104,132)\"                                \
 		autoWordSel=\"1\"> <cmdbtnstyle skin=\"_skin.sys.btn.normal\" colorText=\"RGB(96,112,138)\">...</cmdbtnstyle> </propgrid>";
 
-
-	pugi::xml_document m_xmlDocProperty;
-
-	pugi::xml_parse_result result = m_xmlDocProperty.load_file(g_CurDir + L"Config\\property.xml");
-	if (!result)
-	{
-		Debug(_T("InitProperty失败"));
-	}
-
-	pugi::xml_node NodeCom = m_xmlDocProperty.child(L"root").child(L"通用样式");
-	pugi::xml_node NodeCtrlList = m_xmlDocProperty.child(L"root").child(L"属性列表");
+	pugi::xml_document xmlDocProperty;
+	xmlDocProperty.append_copy(g_SysDataMgr.m_xmlDocProperty.document_element());
+	pugi::xml_node NodeCom = xmlDocProperty.child(L"root").child(L"通用样式");
+	pugi::xml_node NodeComStyle = xmlDocProperty.child(L"root").child(L"基本样式");
+	pugi::xml_node NodeCtrlList = xmlDocProperty.child(L"root").child(L"属性列表");
 
 	//hostwnd节点处理
 	pugi::xml_node NodeCtrl = NodeCtrlList.child(_T("hostwnd")).first_child();
@@ -1142,7 +1139,7 @@ void SDesignerView::InitProperty(SWindow *pPropertyContainer)   //初始化属性列表
 	NodeCtrl = NodeCtrlList.first_child();  //NodeCtrl = Button节点
 	while (NodeCtrl)
 	{
-		InitCtrlProperty(NodeCom, NodeCtrl);
+		InitCtrlProperty(NodeCom, NodeComStyle, NodeCtrl);
 
 		SStringT strName = NodeCtrl.name();
 		NodeCtrl.set_name(L"groups");
@@ -1163,7 +1160,7 @@ void SDesignerView::InitProperty(SWindow *pPropertyContainer)   //初始化属性列表
 }
 
 
-void SDesignerView::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCtrl)
+void SDesignerView::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeComStyle, pugi::xml_node NodeCtrl)
 {
 	/*
 	<通用样式>
@@ -1201,8 +1198,16 @@ void SDesignerView::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node Node
 	{
 		if (_wcsicmp(NodeChild.name(), L"分组") == 0)
 		{
+			SStringT nameAttr = NodeChild.attribute(L"name").as_string();
+			if (nameAttr.CompareNoCase(L"基本样式") == 0)
+			{
+				pugi::xml_node parentNode = NodeChild.parent();
+				pugi::xml_node nodeCopy = parentNode.insert_copy_after(NodeComStyle, NodeChild);
+				parentNode.remove_child(NodeChild);
+				NodeChild = nodeCopy;
+			}
 			NodeChild.set_name(L"propgroup");
-			InitCtrlProperty(NodeCom, NodeChild);
+			InitCtrlProperty(NodeCom, NodeComStyle, NodeChild);
 		}
 		else
 		{
@@ -1210,12 +1215,18 @@ void SDesignerView::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node Node
 			{
 				SStringT strName = NodeChild.name();
 				pugi::xml_node N = NodeCom.child(strName);
-				pugi::xml_node NodeNew;
-
-				NodeNew = NodeChild.parent().insert_copy_before(N, NodeChild);
-				NodeChild.parent().remove_child(NodeChild);
-
-				NodeChild = NodeNew;
+				if (N)
+				{
+					pugi::xml_node NodeNew;
+					NodeNew = NodeChild.parent().insert_copy_before(N, NodeChild);
+					NodeChild.parent().remove_child(NodeChild);
+					NodeChild = NodeNew;
+				}
+				else
+				{
+					NodeChild.append_attribute(L"style").set_value(L"proptext");
+					NodeChild.append_attribute(L"name").set_value(strName);
+				}
 			}
 			NodeChild.append_attribute(L"name2").set_value(NodeChild.name());
 
@@ -1254,7 +1265,11 @@ void SDesignerView::CreatePropGrid(SStringT strCtrlType)
 		//return;
 	}
 
+	m_textCtrlTypename->SetWindowText(_T("控件类型: ") + strCtrlType);
 	SMap<SStringT, pugi::xml_document*>::CPair *p = m_mapCtrlProperty.Lookup(strCtrlType.MakeLower());
+	if (!p)
+		p = m_mapCtrlProperty.Lookup(_T("window"));
+
 	if (p)
 	{
 		pugi::xml_document *tempDoc = p->m_value;
