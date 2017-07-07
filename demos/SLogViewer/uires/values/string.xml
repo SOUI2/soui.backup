@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
   <string>
-    <title value="SLogViewer"/>
+    <title value="SLogViewer[%s]"/>
+    <title_no_name value="SLogViewer"/>
     <ver value="1.0"/>
     <col_line value="line index"/>
     <col_time value="time"/>

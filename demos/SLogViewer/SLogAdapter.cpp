@@ -301,7 +301,8 @@ namespace SOUI
 					m_pScilexer->SendMessage(SCI_INSERTTEXT,0,(LPARAM)(LPCSTR)bufUtf8);
 				}
 			}
-
+			long charWidth = m_pScilexer->SendMessage( SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)("9") );  
+			m_pScilexer->SendMessage(SCI_SETMARGINWIDTHN,0,SStringA().Format("%d",m_lstLogs.GetCount()+1).GetLength()*charWidth+2);
 			doFilter();
 			return TRUE;
 		}
