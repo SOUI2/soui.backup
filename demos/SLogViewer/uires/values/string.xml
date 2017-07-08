@@ -24,4 +24,11 @@
     <clear_all value="clear all"/>
     <exclude_tag value="exclude tag:"/>
     <only_tag value="only tag:"/>
+    <find_text value="find text"/>
+    <search value="search:"/>
+    <match_case value="match case"/>
+    <match_whole_word value="match whole word"/>
+    <next value="next"/>
+    <prev value="previous"/>
+    <close value="close"/>
   </string>
