@@ -31,6 +31,10 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SText.h
 	${CMAKE_SOURCE_DIR}/controls.extend/STurn3DView.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SScrollText.h
+	${CMAKE_SOURCE_DIR}/controls.extend/SIPAddressCtrl.h
+	${CMAKE_SOURCE_DIR}/controls.extend/SListCtrlEx.h
+	${CMAKE_SOURCE_DIR}/controls.extend/SRatingBar.h
+	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/SHeaderCtrlEx.h
 )
 
 set(EXTENDCOTROLS ${EXTENDCOTROLS}
@@ -51,6 +55,10 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SText.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/STurn3DView.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SScrollText.cpp
+	${CMAKE_SOURCE_DIR}/controls.extend/SIPAddressCtrl.cpp
+	${CMAKE_SOURCE_DIR}/controls.extend/SListCtrlEx.cpp
+	${CMAKE_SOURCE_DIR}/controls.extend/SRatingBar.cpp
+	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/SHeaderCtrlEx.cpp
 )
 
 file(GLOB_RECURSE CURRENT_HEADERS  *.h *.hpp)
