@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <SOUI title="mesagebox" width="200" height="200" appwin="0" frameSize="80,60,20,100" minSize="300,132" resize="0" translucent="1" trCtx="messagebox">
 	<buttonText>
 		<ok>确定</ok>

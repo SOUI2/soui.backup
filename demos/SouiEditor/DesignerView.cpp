@@ -121,7 +121,7 @@ BOOL SDesignerView::CloseProject()
 	m_strCurFileEditor.Empty();
 	m_strProPath = m_strUIResFile = L"";
 	m_xmlDocUiRes.reset();
-	UseEditorUIDef(false);
+	UseEditorUIDef(true);
 
 
 	// 清空私有样式池
@@ -1108,13 +1108,12 @@ void SDesignerView::InitProperty(SStatic* textCtrl, SWindow *pPropertyContainer)
 
 	SStringW s = L"<propgrid name=\"NAME_UIDESIGNER_PROPGRID_MAIN\" pos=\"0, 0, -4, -4\" sbSkin=\"skin_bb_scrollbar\" switchSkin=\"skin_prop_switch\"                \
 		nameWidth=\"150\" orderType=\"group\" itemHeight=\"26\" ColorGroup=\"RGB(96,112,138)\"  ColorBorder=\"#FFFFFF50\"                                        \
-		ColorItemSel=\"rgb(234,128,16)\" colorItemSelText=\"#FF0000\" EditBkgndColor=\"rgb(87,104,132)\"                                \
+		ColorItemSel=\"rgb(234,128,16)\" colorItemSelText=\"#FF0000\" EditBkgndColor=\"rgb(87,104,132)\" class=\"ue_cls_text\"     \
 		autoWordSel=\"1\"> <cmdbtnstyle skin=\"_skin.sys.btn.normal\" colorText=\"RGB(96,112,138)\">...</cmdbtnstyle> </propgrid>";
 
 	pugi::xml_document xmlDocProperty;
 	xmlDocProperty.append_copy(g_SysDataMgr.m_xmlDocProperty.document_element());
 	pugi::xml_node NodeCom = xmlDocProperty.child(L"root").child(L"通用样式");
-	pugi::xml_node NodeComStyle = xmlDocProperty.child(L"root").child(L"基本样式");
 	pugi::xml_node NodeCtrlList = xmlDocProperty.child(L"root").child(L"属性列表");
 
 	//hostwnd节点处理
@@ -1139,7 +1138,7 @@ void SDesignerView::InitProperty(SStatic* textCtrl, SWindow *pPropertyContainer)
 	NodeCtrl = NodeCtrlList.first_child();  //NodeCtrl = Button节点
 	while (NodeCtrl)
 	{
-		InitCtrlProperty(NodeCom, NodeComStyle, NodeCtrl);
+		InitCtrlProperty(NodeCom, NodeCtrl);
 
 		SStringT strName = NodeCtrl.name();
 		NodeCtrl.set_name(L"groups");
@@ -1160,7 +1159,7 @@ void SDesignerView::InitProperty(SStatic* textCtrl, SWindow *pPropertyContainer)
 }
 
 
-void SDesignerView::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeComStyle, pugi::xml_node NodeCtrl)
+void SDesignerView::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCtrl)
 {
 	/*
 	<通用样式>
@@ -1201,13 +1200,24 @@ void SDesignerView::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node Node
 			SStringT nameAttr = NodeChild.attribute(L"name").as_string();
 			if (nameAttr.CompareNoCase(L"基本样式") == 0)
 			{
+				pugi::xml_document NodeComStyle; 
+				NodeComStyle.append_copy(g_SysDataMgr.m_xmlDocProperty.child(L"root").child(nameAttr));
 				pugi::xml_node parentNode = NodeChild.parent();
-				pugi::xml_node nodeCopy = parentNode.insert_copy_after(NodeComStyle, NodeChild);
+				pugi::xml_node nodeCopy = parentNode.insert_copy_after(NodeComStyle.document_element(), NodeChild);
+				parentNode.remove_child(NodeChild);
+				NodeChild = nodeCopy;
+			}
+			else if (nameAttr.CompareNoCase(L"ColorMask") == 0)
+			{
+				pugi::xml_document NodeComStyle;
+				NodeComStyle.append_copy(g_SysDataMgr.m_xmlDocProperty.child(L"root").child(nameAttr));
+				pugi::xml_node parentNode = NodeChild.parent();
+				pugi::xml_node nodeCopy = parentNode.insert_copy_after(NodeComStyle.document_element(), NodeChild);
 				parentNode.remove_child(NodeChild);
 				NodeChild = nodeCopy;
 			}
 			NodeChild.set_name(L"propgroup");
-			InitCtrlProperty(NodeCom, NodeComStyle, NodeChild);
+			InitCtrlProperty(NodeCom, NodeChild);
 		}
 		else
 		{
@@ -1216,7 +1226,7 @@ void SDesignerView::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node Node
 				SStringT strName = NodeChild.name();
 				pugi::xml_node N = NodeCom.child(strName);
 				if (N)
-				{
+				{	// 用通用属性进行替换
 					pugi::xml_node NodeNew;
 					NodeNew = NodeChild.parent().insert_copy_before(N, NodeChild);
 					NodeChild.parent().remove_child(NodeChild);

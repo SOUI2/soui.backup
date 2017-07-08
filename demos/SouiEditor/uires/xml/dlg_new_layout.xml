@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="500" height="150" margin="1,5,5,5" wndType="8" toolWindow="1">
 	<root colorBkgnd="@color/bkBlack1" cache="1" skin="">
 		<caption pos="0,0,-0,30" show="1" font="adding:0">

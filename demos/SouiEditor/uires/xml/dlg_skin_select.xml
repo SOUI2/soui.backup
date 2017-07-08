@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SOUI name="skinSel_mainWindow" title="皮肤选择" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="1010" height="720" margin="5,5,5,5" resizable="1" wndType="8" toolWindow="1" >
+<SOUI name="skinSel_mainWindow" title="皮肤选择" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="1010" height="720" margin="5,5,5,5" resizable="1" wndType="8" toolWindow="1">
 	<root colorBkgnd="#2d2d30" colorText="#FFFFFF" cache="1">
 		<window pos="0,0,-0,-0" show="1" skin="">
 			<window pos="0,0,-0,-0" layout="vbox" show="1" skin="">

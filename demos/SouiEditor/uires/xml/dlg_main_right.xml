@@ -1,60 +1,54 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <include width="500" height="500">
-	<tabctrl name="NAME_UIDESIGNER_Right_MAIN_TAB" pos="0,0,-0,-0" tabAlign="right" tabInterSize="2" tabWidth="30" tabHeight="70" tabSkin="skin_tab_skin" colorText="#FFFFFF" focusable="false" textDir="vert">
+	<tabctrl name="NAME_UIDESIGNER_Right_MAIN_TAB" pos="0,0,-0,-0" tabAlign="right" tabInterSize="2" tabWidth="30" tabHeight="70" tabSkin="skin_tab_skin" font="face:微软雅黑,size:15" colorText="#FFFFFF" focusable="false" textDir="vert">
 		<page title="控件" colorBorder="#ffff00" colorBkgnd="#FFFFFF12">
-			<listboxdrop name="uidesigner_control_list" pos="0,5,-0,-0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" text-x="20" />
+			<listboxdrop name="uidesigner_control_list" pos="0,5,-0,-0" hotTrack="1" itemHeight="30" colorText="#FFFFFF" colorSelText="#FFFFFF" colorItemSelBkgnd="@color/itemSelected" text-x="20" />
 		</page>
 		<page title="结构" colorBorder="#ffff00" colorBkgnd="#FFFFFF12">
 			<text name="uidesigner_nodenum" pos="5,0,-1,24" />
-			<treectrl pos="1,[5,-1,-1" name="uidesigner_wnd_xmltree" toggleSkin="skin_tree_toggle_png" itemHeight="30" colorItemText="#FFFFFF" colorItemSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" />
+			<treectrl pos="1,[5,-1,-1" name="uidesigner_wnd_xmltree" toggleSkin="skin_tree_toggle_png" itemHeight="30" colorItemText="#FFFFFF" colorItemSelText="#FFFFFF" colorItemSelBkgnd="@color/itemSelected" />
 		</page>
 		<page title="皮肤" colorBorder="#ffff00" colorBkgnd="#FFFFFF12">
 			<mclistview name="mclv_skin" colorBkgnd="#FFFFFF12" pos="1,1,-1,-1" headerHeight="0">
-				    
-					<header align="center" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" >
-				      <items>
+				<header2 align="center" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" matchParent="1">
+					<items>
 						<item width="300">皮肤</item>
-				      </items>
-				    </header>
-
-				    <template itemHeight="80" colorHover="#FFFFFF20" colorSelected="#FFFFFF50">
-				      <window name="col1" clipClient="1">
-						<text name="txt_name" pos="5,2" font="bold:1,adding:-1"></text>
-						<window clipClient="1" pos="2,[2,-2,-2">						
+					</items>
+				</header2>
+				<template itemHeight="80" colorHover="#FFFFFF20" colorSelected="#FFFFFF50">
+					<window name="col1" clipClient="1">
+						<text name="txt_name" pos="5,2" class="ue_cls_text" font="bold:1,adding:-1" />
+						<window clipClient="1" pos="2,[2,-2,-2">
 							<img name="img_icon" pos="10,|0,-10,@-1" offset="0, -0.5" tile="1" />
 						</window>
-				      </window>
-				    
-				    </template>
-
+					</window>
+				</template>
 			</mclistview>
 		</page>
-		
 		<page title="颜色" colorBorder="#ffff00" colorBkgnd="#FFFFFF12">
 			<mclistview name="mclv_color" colorBkgnd="#FFFFFF12" pos="1,1,-1,-1" headerHeight="0">
-				    
-					<header align="center" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" >
-				      <items>
+				<header2 align="center" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" matchParent="1">
+					<items>
 						<item width="300">Color</item>
-				      </items>
-				    </header>
-
-				    <template itemHeight="30" colorHover="#FFFFFF20" colorSelected="#FFFFFF50">
-				      <window name="col1" clipClient="1">
-						<img name="img_icon" pos="5,1,@28,@28" tile="1" />
-						<text name="txt_name" pos="[5,|0" offset="0, -0.5" font="adding:-1"></text>
-				      </window>
-				    
-				    </template>
-
+					</items>
+				</header2>
+				<template itemHeight="34" colorHover="@color/itemHover" colorSelected="#FFFFFF50">
+					<window name="col1" font="face:微软雅黑,size:15" clipClient="1">
+						<img name="img_icon" pos="5,3,@28,@28" tile="1" />
+						<text name="txt_name" class="ue_cls_text" pos="[5,|0" offset="0, -0.5" font="adding:-1" />
+					</window>
+				</template>
 			</mclistview>
 		</page>
 		<page title="样式" colorBorder="#ffff00" colorBkgnd="#FFFFFF12">
-			<listbox pos="0,0,-0,-0" name="lb_allStyle" weight="1" hotTrack="1" itemHeight="28" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" colorBkgnd="#FFFFFF12" text-x="20" />
+			<listbox pos="0,0,-0,-0" name="lb_allStyle" weight="1" hotTrack="1" itemHeight="28" colorSelText="#FFFFFF" colorItemSelBkgnd="@color/itemSelected" colorBkgnd="#FFFFFF12" text-x="20" font="face:微软雅黑,size:15" />
 		</page>
 		<page title="字串" colorBorder="#ffff00" colorBkgnd="#FFFFFF12">
-			<listbox pos="0,0,-0,-0" name="lb_allString" weight="1" hotTrack="1" itemHeight="40" colorSelText="#FFFFFF" colorItemSelBkgnd="rgb(234,128,16)" colorBkgnd="#FFFFFF12" text-x="20" />
+			<listview pos="0,0,-0,-0" name="lv_allString" colorBkgnd="#FFFFFF12" colorSelText="#FFFFFF" font="face:微软雅黑,size:15">
+				<template itemHeight="60" colorHover="@color/itemHover" colorSelected="@color/itemSelected">
+					<text pos="5,2" size="-2, 60" name="txt_string" multiLines="1" class="ue_cls_text" />
+				</template>
+			</listview>
 		</page>
-
 	</tabctrl>
 </include>

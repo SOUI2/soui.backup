@@ -1,6 +1,7 @@
 #pragma once
 #include "helper/SAdapterBase.h"
 
+extern BOOL g_bHookCreateWnd;
 #define DEFAULT_LINE 10
 class CBaseMcAdapterFix : public SMcAdapterBase
 {
@@ -19,8 +20,10 @@ public:
 	{
 		if (pItem->GetChildrenCount() == 0)
 		{
+			g_bHookCreateWnd = TRUE;
 			pItem->InitFromXml(xmlTemplate);
-		}		
+			g_bHookCreateWnd = FALSE;
+		}
 	}
 
 	SStringW GetColumnName(int iCol) const {
@@ -31,6 +34,18 @@ public:
 	{		
 		for (xmlTemplate = xmlTemplate.first_child(); xmlTemplate; xmlTemplate = xmlTemplate.next_sibling())
 		{
+			if (pugi::node_element != xmlTemplate.type())
+				continue;
+
+			while (xmlTemplate && !xmlTemplate.attribute(L"name"))
+			{
+				if (pugi::node_element != xmlTemplate.type())
+				{
+					xmlTemplate = xmlTemplate.next_sibling();
+					continue;
+				}
+				xmlTemplate = xmlTemplate.first_child();
+			}
 			m_colNames.Add(xmlTemplate.attribute(L"name").value());
 		}
 	}
@@ -77,8 +92,8 @@ public:
 				return 0;
 			}
 			*/
-
-			m_TemplateNames.Add(xmlTemplate.name());
+			if (pugi::node_element == xmlTemplate.type())
+				m_TemplateNames.Add(xmlTemplate.name());
 		}
 		return m_TemplateNames.GetCount();
 	}
@@ -121,6 +136,7 @@ public:
 	{
 		if (pItem->GetChildrenCount() == 0)
 		{
+			g_bHookCreateWnd = TRUE;
 			if(m_TemplateNames.GetCount()==0)
 				pItem->InitFromXml(xmlTemplate);
 			else
@@ -128,6 +144,7 @@ public:
 				int nViewType = getItemViewType(position, pItem->GetState());
 				pItem->InitFromXml(xmlTemplate.child(m_TemplateNames[nViewType<m_TemplateNames.GetCount()-1?nViewType: m_TemplateNames.GetCount() - 1]));
 			}
+			g_bHookCreateWnd = FALSE;
 		}
 	}	
 };

@@ -74,7 +74,7 @@ namespace SOUI
 		void ShowNoteInSciwnd();		
 
 		void InitProperty(SStatic* textCtrl, SWindow *pPropertyContainer);   //初始化属性列表
-		void InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeComStyle, pugi::xml_node NodeCtrl);
+		void InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCtrl);
 
 		void CreatePropGrid(SStringT strCtrlType);
 		void UpdatePropGrid(pugi::xml_node xmlNode);

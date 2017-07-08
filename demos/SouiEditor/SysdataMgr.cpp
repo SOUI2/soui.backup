@@ -62,33 +62,46 @@ void CSysDataMgr::InitProperty()   //初始化属性列表
 	pugi::xml_document xmlDocProperty;
 	xmlDocProperty.append_copy(m_xmlDocProperty.document_element());
 	pugi::xml_node NodeCom = xmlDocProperty.child(L"root").child(L"通用样式");
-	pugi::xml_node NodeComStyle = xmlDocProperty.child(L"root").child(L"基本样式");
 	pugi::xml_node NodeCtrlList = xmlDocProperty.child(L"root").child(L"属性列表");
 
 	pugi::xml_node NodeCtrl = NodeCtrlList.first_child();  //NodeCtrl = Button节点
 	while (NodeCtrl)
 	{
-		SStringT strCtrlname = NodeCtrl.name();
-		m_mapControl.SetAt(strCtrlname, new CTRL_ATTR_VALUE());
+		if (pugi::node_element == NodeCtrl.type())
+		{
+			SStringT strCtrlname = NodeCtrl.name();
+			m_mapControl.SetAt(strCtrlname, new CTRL_ATTR_VALUE());
 
-		InitCtrlProperty(NodeCom, NodeComStyle, NodeCtrl, m_mapControl[strCtrlname]);
+			InitCtrlProperty(NodeCom, NodeCtrl, m_mapControl[strCtrlname]);
+		}
 
 		NodeCtrl = NodeCtrl.next_sibling();
 	}
 
-	pugi::xml_node NodeBasicStyle = NodeComStyle.first_child();  //NodeCtrl = Button节点
+	pugi::xml_node NodeComStyle = xmlDocProperty.child(L"root").child(L"基本样式");
+	InitComAttr(NodeCom, NodeComStyle, m_arrControlStyle);
+	pugi::xml_node NodeCM = xmlDocProperty.child(L"root").child(L"ColorMask");
+	InitComAttr(NodeCom, NodeCM, m_arrColorMask);
+}
+
+void CSysDataMgr::InitComAttr(pugi::xml_node NodeCom, pugi::xml_node cNode, CTRL_ATTR_VALUE& arrControlStyle)
+{
+	pugi::xml_node NodeBasicStyle = cNode.first_child();  //NodeCtrl = Button节点
 	while (NodeBasicStyle)
 	{
+		if (pugi::node_element != NodeBasicStyle.type())
+		{
+			NodeBasicStyle = NodeBasicStyle.next_sibling();
+			continue;
+		}
 		if (!NodeBasicStyle.attribute(L"style"))
 		{
 			// 没有设置style的为通用属性, 从通用属性结点中获取信息
 			SStringT strName = NodeBasicStyle.name();
 			pugi::xml_node N = NodeCom.child(strName);
 			if (N)
-			{
+			{	// 用通用属性进行替换
 				pugi::xml_node NodeNew;
-
-				// 用通用属性进行替换
 				NodeNew = NodeBasicStyle.parent().insert_copy_before(N, NodeBasicStyle);
 				NodeBasicStyle.parent().remove_child(NodeBasicStyle);
 
@@ -100,16 +113,14 @@ void CSysDataMgr::InitProperty()   //初始化属性列表
 				NodeBasicStyle.append_attribute(L"name").set_value(strName);
 			}
 		}
-		pugi::xml_node ctrl_node;
-		ctrl_node.append_copy(NodeBasicStyle);
-		m_arrControlStyle.Add(CtrlAttrItem(NodeBasicStyle.name(), ctrl_node));
+
+		arrControlStyle.Add(CtrlAttrItem(NodeBasicStyle.name(), NodeBasicStyle));
 
 		NodeBasicStyle = NodeBasicStyle.next_sibling();
 	}
 }
 
-
-void CSysDataMgr::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeComStyle, pugi::xml_node NodeCtrl, CTRL_ATTR_VALUE* arr_attr)
+void CSysDataMgr::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCtrl, CTRL_ATTR_VALUE* arr_attr)
 {
 	/*
 	<通用样式>
@@ -144,19 +155,36 @@ void CSysDataMgr::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCo
 
 	while (NodeChild)
 	{
+		if (pugi::node_element != NodeChild.type())
+		{
+			NodeChild = NodeChild.next_sibling();
+			continue;
+		}
 		SStringT nodeName = NodeChild.name();
 		if (_wcsicmp(nodeName, L"分组") == 0)
 		{
 			SStringT nameAttr = NodeChild.attribute(L"name").as_string();
 			if (nameAttr.CompareNoCase(L"基本样式") == 0)
 			{
+				pugi::xml_document NodeComStyle;
+				NodeComStyle.append_copy(m_xmlDocProperty.child(L"root").child(nameAttr));
 				pugi::xml_node parentNode = NodeChild.parent();
-				pugi::xml_node nodeCopy = parentNode.insert_copy_after(NodeComStyle, NodeChild);
+				pugi::xml_node nodeCopy = parentNode.insert_copy_after(NodeComStyle.document_element(), NodeChild);
 				parentNode.remove_child(NodeChild);
 				NodeChild = nodeCopy;
 			}
+			else if (nameAttr.CompareNoCase(L"ColorMask") == 0)
+			{
+				pugi::xml_document NodeComStyle;
+				NodeComStyle.append_copy(m_xmlDocProperty.child(L"root").child(nameAttr));
+				pugi::xml_node parentNode = NodeChild.parent();
+				pugi::xml_node nodeCopy = parentNode.insert_copy_after(NodeComStyle.document_element(), NodeChild);
+				parentNode.remove_child(NodeChild);
+				NodeChild = nodeCopy;
+			}
+
 			NodeChild.set_name(L"propgroup");
-			InitCtrlProperty(NodeCom, NodeComStyle, NodeChild, arr_attr);
+			InitCtrlProperty(NodeCom, NodeChild, arr_attr);
 		}
 		else
 		{
@@ -167,15 +195,21 @@ void CSysDataMgr::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCo
 				pugi::xml_node N = NodeCom.child(strName);
 				pugi::xml_node NodeNew;
 
-				// 用通用属性进行替换
-				NodeNew = NodeChild.parent().insert_copy_before(N, NodeChild);
-				NodeChild.parent().remove_child(NodeChild);
-
-				NodeChild = NodeNew;
+				if (N)
+				{	// 用通用属性进行替换
+					pugi::xml_node NodeNew;
+					NodeNew = NodeChild.parent().insert_copy_before(N, NodeChild);
+					NodeChild.parent().remove_child(NodeChild);
+					NodeChild = NodeNew;
+				}
+				else
+				{
+					NodeChild.append_attribute(L"style").set_value(L"proptext");
+					NodeChild.append_attribute(L"name").set_value(strName);
+				}
 			}
-			pugi::xml_node ctrl_node;
-			ctrl_node.append_copy(NodeChild);
-			arr_attr->Add(CtrlAttrItem(NodeChild.name(), ctrl_node));
+
+			arr_attr->Add(CtrlAttrItem(NodeChild.name(), NodeChild));
 		}
 
 		NodeChild = NodeChild.next_sibling();
@@ -226,6 +260,7 @@ SStringA CSysDataMgr::GetCtrlAttrAutos(SStringT ctrlname)
 	SArray<CtrlAttrItem> allAttr;
 	allAttr.Append(*ctrl_attr);
 	allAttr.Append(m_arrControlStyle);
+	allAttr.Append(m_arrColorMask);
 
 	SStringT strLastWord;
 	qsort(allAttr.GetData(), allAttr.GetCount(), sizeof(CtrlAttrItem), CtrlAttrCmpNoCase);

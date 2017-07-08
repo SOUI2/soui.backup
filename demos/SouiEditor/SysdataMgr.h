@@ -7,12 +7,13 @@ public:
 	struct CtrlAttrItem
 	{
 		SStringT attrname;
-		pugi::xml_node attrdoc;
+		pugi::xml_document* attrdoc;
 		CtrlAttrItem() { ; }
 		CtrlAttrItem(SStringT name, pugi::xml_node xmlnode)
 		{
 			attrname = name;
-			attrdoc.append_copy(xmlnode);
+			attrdoc = new pugi::xml_document();
+			attrdoc->append_copy(xmlnode);
 		}
 	};
 
@@ -26,7 +27,9 @@ public:
 
 	void InitProperty();
 
-	void InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeComStyle, pugi::xml_node NodeCtrl, CTRL_ATTR_VALUE* arr_attr);
+	void InitComAttr(pugi::xml_node NodeCom, pugi::xml_node cNode, CTRL_ATTR_VALUE & arrControlStyle);
+
+	void InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCtrl, CTRL_ATTR_VALUE* arr_attr);
 
 	// 获取控件名称列表
 	SStringA GetCtrlAutos();
@@ -64,4 +67,6 @@ private:
 	SMap<SStringT, CTRL_ATTR_VALUE*> m_mapControl;
 	// 控件基本样式
 	CTRL_ATTR_VALUE m_arrControlStyle;
+	// ColorMask
+	CTRL_ATTR_VALUE m_arrColorMask;
 };
