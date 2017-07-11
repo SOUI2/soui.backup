@@ -24,5 +24,5 @@ imgdecoder-png.depends += zlib png
 render-skia.depends += skia
 resprovider-zip.depends += zlib utilities
 translator.depends += utilities
-resprovider-zip.depends += zlib utilities
+resprovider-7zip.depends += 7z utilities
 ScriptModule-LUA.depends += soui lua-52
