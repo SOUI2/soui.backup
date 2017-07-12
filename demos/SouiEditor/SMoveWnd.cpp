@@ -19,6 +19,24 @@
 
 namespace SOUI
 {
+	/**
+	* @brief 判断两个轴对齐的矩形是否重叠
+	* @param rc1 第一个矩阵的位置
+	* @param rc2 第二个矩阵的位置
+	* @return 两个矩阵是否重叠（边沿重叠，也认为是重叠）
+	*/
+	bool isOverlap(const LPRECT rc1, const LPRECT rc2)
+	{
+		if (rc1->right > rc2->left &&
+			rc2->right > rc1->left &&
+			rc1->bottom > rc2->top &&
+			rc2->bottom > rc1->top
+			)
+			return true;
+		else
+			return false;
+	}
+
 	SMoveWnd::SMoveWnd()
 	{
 		m_hLUpRDown = GETRESPROVIDER->LoadCursor(L"sizenwse");
@@ -39,23 +57,17 @@ namespace SOUI
 	{
 		__super::OnPaint(pRT);
 
+		CRect rectR;
+		CRect rectRP;
+		m_pRealWnd->GetWindowRect(rectR);
+		m_pRealWnd->GetParent()->GetWindowRect(rectRP);
+
 		//这里将实际控件和覆盖在实际控件上面的布局控件的位置更新为一样的
 		if (m_pRealWnd == m_Desiner->m_pRealWndRoot)
 		{
-			CRect rectR;
-			CRect rectRP;
-			m_pRealWnd->GetWindowRect(rectR);
-			m_pRealWnd->GetParent()->GetWindowRect(rectRP);
-
 			SouiLayoutParam *pMoveWndLayout = GetLayoutParamT<SouiLayoutParam>();
 			SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pMoveWndLayout->GetRawData();
-			//pSouiLayoutParamStruct->pos[0].nPos = 20;
-			//pSouiLayoutParamStruct->pos[1].nPos = 20;
-			//pSouiLayoutParamStruct->pos[2].nPos = rectR.right - rectR.left;
-			//pSouiLayoutParamStruct->pos[3].nPos = rectR.bottom - rectR.top;
 
-			//pMoveWndLayout->SetSpecifiedSize(Horz, rectR.right - rectR.left);
-			//pMoveWndLayout->SetSpecifiedSize(Vert, rectR.bottom - rectR.top);
 			pSouiLayoutParamStruct->posLeft.nPos.fSize = 20;
 			pSouiLayoutParamStruct->posTop.nPos.fSize = 20;
 			pSouiLayoutParamStruct->posRight.nPos.fSize = rectR.right - rectR.left;
@@ -81,22 +93,9 @@ namespace SOUI
 			}
 		}
 		else
-		{
-			//更新MoveWnd的位置和RealWnd一样
-			CRect rectR;
-			CRect rectRP;
-			m_pRealWnd->GetWindowRect(rectR);
-			m_pRealWnd->GetParent()->GetWindowRect(rectRP);
-
+		{	//更新MoveWnd的位置和RealWnd一样
 			SouiLayoutParam *pMoveWndLayout = GetLayoutParamT<SouiLayoutParam>();
 			SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pMoveWndLayout->GetRawData();
-			//pSouiLayoutParamStruct->pos[0].nPos = rectR.left - rectRP.left;
-			//pSouiLayoutParamStruct->pos[1].nPos = rectR.top - rectRP.top;
-			//pSouiLayoutParamStruct->pos[2].nPos = rectR.right - rectR.left;
-			//pSouiLayoutParamStruct->pos[3].nPos = rectR.bottom - rectR.top;
-
-			//pMoveWndLayout->SetSpecifiedSize(Horz, rectR.right - rectR.left);
-			//pMoveWndLayout->SetSpecifiedSize(Vert, rectR.bottom - rectR.top);
 
 			pSouiLayoutParamStruct->posLeft.nPos.fSize = rectR.left - rectRP.left;
 			pSouiLayoutParamStruct->posTop.nPos.fSize = rectR.top - rectRP.top;
@@ -152,7 +151,12 @@ namespace SOUI
 		}
 		else
 		{
-			pRT->CreatePen(PS_SOLID, RGBA(172, 172, 172, 255), 1, &pen);
+			if (isOverlap(&rectRP, &rectR))
+				pRT->CreatePen(PS_SOLID, RGBA(172, 172, 172, 255), 1, &pen);
+			else
+			{   // 不在父窗口范围, 无法选中, 用虚框表示
+				pRT->CreatePen(PS_DASH, RGBA(255, 0, 128, 255), 1, &pen);
+			}
 			pRT->SelectObject(pen, (IRenderObj**)&oldpen);
 
 			pRT->DrawRectangle(rect);

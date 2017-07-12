@@ -122,7 +122,8 @@ BOOL SDesignerView::CloseProject()
 	m_strProPath = m_strUIResFile = L"";
 	m_xmlDocUiRes.reset();
 	UseEditorUIDef(true);
-
+	m_textCtrlTypename->SetWindowText(L"");
+	((CMainDlg*)m_pMainHost)->m_textNodenum->SetWindowText(L"");
 
 	// 清空私有样式池
 	if (m_privateStylePool->GetCount())
