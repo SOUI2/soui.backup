@@ -35,6 +35,7 @@
     <class name="righttext" textMode="0x22"/>
 
     <class name="linkimage" cursor="hand"/>
+    <class name="cls_border" margin="2,2,2,2" ncSkin="_skin.sys.border"/>
 
   </style>
 

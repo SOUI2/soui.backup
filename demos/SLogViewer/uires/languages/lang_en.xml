@@ -42,6 +42,9 @@
       <source>tid filter</source>
       <translation>tid</translation>
     </message>
-
+    <message>
+      <source>filter</source>
+      <translation>filter:</translation>
+    </message>
   </context>
 </language>

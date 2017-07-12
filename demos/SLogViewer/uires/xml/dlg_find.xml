@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SOUI name="mainWindow" title="@string/find_text" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="400" height="120"  wndType="normal"
+translucent="1"
+trCtx="dlg_find"
+>
+  <root skin="_skin.sys.wnd.bkgnd" cache="1" layout="vbox" padding="5,5,5,5">
+    <caption size="-2,-1" layout="hbox">
+      <text size="-1,-1" text="@string/find_text"/>
+      <window size="0,0" visible="0" weight="1"/>
+      <imgbtn size="-1,-1" skin="_skin.sys.btn.close" name="btn_close" animate="1" tip="@string/close"/>
+    </caption>
+    <window size="-2,0" weight="1" padding="5,5,5,5" layout="hbox">
+      <window size="0,-2" weight="1" layout="gridLayout" columnCount="2" xGravity="fill" yGravity="fill">
+        <window columnSpan="2" layout="vbox" rowWeight="2">
+          <text size="-1,-1" text="@string/search"/>
+          <edit size="-2,30dp" name="edit_search" extend_top="5dp"/>
+        </window>
+        <check name="chk_match_case" text="@string/match_case" rowWeight="1" columnWeight="1"/>
+        <check name="chk_match_whole_word" text="@string/match_whole_word" rowWeight="1" columnWeight="1"/>
+      </window>
+      <window size="-1,-2" layout="vbox" extend_left="10">
+        <window size="0,0" weight="1" visible="0"/>
+        <button size="-2,-1" name="btn_next" text="@string/next" padding="10,5,10,5"/>
+        <button name="btn_prev" text="@string/prev" padding="10,5,10,5" extend_top="5"/>
+        <window size="0,0" weight="1" visible="0"/>
+      </window>
+    </window>
+  </root>
+</SOUI>

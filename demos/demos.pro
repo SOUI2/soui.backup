@@ -56,6 +56,7 @@ CONFIG(x64){
 	SLogViewer64.depends += soui64 scintilla64
 	souieditor64.depends += soui64 scintilla64
 	DropDemo64.depends += soui64
+	souitest64.depends += soui64
 }
 else{
 	360.depends += soui skia
@@ -75,4 +76,5 @@ else{
              SLogViewer.depends += soui scintilla
 	souieditor.depends += soui scintilla
 	DropDemo.depends += soui
+	souitest.depends += soui
 }

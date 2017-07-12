@@ -31,6 +31,7 @@ PRECOMPILED_HEADER = stdafx.h
 HEADERS += droptarget.h \
            FileHelper.h \
            FilterDlg.h \
+           FindDlg.h \
            LogParser.h \
            MainDlg.h \
            resource.h \
@@ -44,6 +45,7 @@ HEADERS += droptarget.h \
 
 SOURCES += FilterDlg.cpp \
            LogParser.cpp \
+           FindDlg.cpp \
            MainDlg.cpp \
            SColorizeText.cpp \
            SLogAdapter.cpp \

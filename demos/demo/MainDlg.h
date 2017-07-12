@@ -117,7 +117,7 @@ protected:
 	int OnCreate(LPCREATESTRUCT lpCreateStruct);
     
     //演示如何在应用层使用定时器
-    void OnTimer(UINT_PTR idEvent);
+	void OnTimer(UINT_PTR idEvent);
 
     //DUI菜单响应函数
     void OnCommand(UINT uNotifyCode, int nID, HWND wndCtl);
@@ -254,6 +254,7 @@ protected:
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_COMMAND(OnCommand)
+		MSG_WM_TIMER(OnTimer)
 		MESSAGE_HANDLER(g_dwSkinChangeMessage, OnSkinChangeMessage)
 		CHAIN_MSG_MAP(SHostWnd)
 		REFLECT_NOTIFICATIONS_EX()

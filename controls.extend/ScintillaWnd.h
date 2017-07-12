@@ -37,6 +37,8 @@ protected:
 
 	BEGIN_MSG_MAP_EX(CScintillaWnd)
 		MSG_OCM_NOTIFY(OnNotify)
+		CHAIN_MSG_MAP(CSimpleWnd)
+		REFLECT_NOTIFICATIONS_EX();
 	END_MSG_MAP()
 
 	SStringT m_strFileName;

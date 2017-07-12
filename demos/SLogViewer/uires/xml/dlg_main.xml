@@ -7,7 +7,7 @@ trCtx="dlg_main"
     <caption pos="0,0,-0,30">
       <icon pos="10,8" src="ICON_LOGO:16"/>
       <text pos="29,9" name="txt_title">@string/title_no_name</text>
-      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="@string/close" animate="1"/>
       <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
       <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
       <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
@@ -19,7 +19,7 @@ trCtx="dlg_main"
       <pane priority="1" minSize="200" idealSize="400" layout="vbox">
         <window size="-2,-1" layout="hbox" gravity="center">
           <button size="-1,-1" name="btn_open_file" text="open file"/>
-          <button size="-1,-1" extend_left="10dp" name="btn_add_file" text="add file" visible="0"/>
+          <button size="-1,-1" extend_left="10dp" name="btn_find" text="@string/find_text"/>
           <window size="0,0" weight="1" visible="0"/>
 
           <text text="@string/level" extend_right="2dp"/>
