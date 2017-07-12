@@ -2,7 +2,7 @@
 <SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:48" smallIcon="ICON_LOGO:32" width="1377" height="900" margin="5,5,5,5" resizable="1" wndType="appMain">
 	<root colorBkgnd="#6f1111" cache="1">
 		<window pos="1,[1,-1,-1" colorBkgnd="@color/bkBlack1">
-			<caption pos="0,0,-0,40" show="1" font="adding:0" colorBkgnd="#FFFFFF20">
+			<caption pos="0,0,-0,40" name="UI_main_caption" show="1" font="adding:0" colorBkgnd="#FFFFFF20">
 				<icon name="" src="ICON_LOGO:32" pos="8,|0" offset="0,-0.5" />
 				<text name="apptitle" pos="[8,|0" offset="0, -0.5" class="ue_cls_title">@string/title</text>
 				<imgbtn name="btn_close" skin="_skin.sys.btn.close" pos="-45,0" tip="close" animate="1" />
@@ -30,7 +30,7 @@
 					<include src="layout:xml_mainwnd_left" />
 				</pane>
 				<pane idealSize="800" minSize="30" priority="0" clipClient="1">
-					<tabctrl name="uidesigner_maintab" pos="0,0,-0,-0" tabAlign="top" tabSkin="skin_tab_skin" tabInterSize="2" tabWidth="120" tabHeight="30" focusable="0" show="1" curSel="0">
+					<tabctrl name="uidesigner_maintab" pos="0,0,-0,-0" tabAlign="top" tabSkin="skin_tab_skin" tabInterSize="2" tabWidth="120" tabHeight="30" focusable="0" show="1" curSel="0" font="face:微软雅黑,size:15">
 						<page title="窗体" colorBorder="#ffff00">
 							<include src="layout:xml_uidesigner_main" />
 						</page>

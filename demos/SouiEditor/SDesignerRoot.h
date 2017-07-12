@@ -15,7 +15,7 @@ namespace SOUI
 	public:
 		SUIWindow(void);
 
-		SWindow* CreateChild(LPCWSTR classname);
+		/*SWindow* CreateChild(LPCWSTR classname);*/
 	protected:
 
 	};

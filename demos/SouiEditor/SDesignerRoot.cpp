@@ -11,7 +11,7 @@ namespace SOUI{
 		
 	}
 
-	SWindow * SUIWindow::CreateChild(LPCWSTR classname)
+	/*SWindow * SUIWindow::CreateChild(LPCWSTR classname)
 	{
 		SStringT wndClassname = classname;
 		if (wndClassname.CompareNoCase(_T("realwnd")) == 0)
@@ -28,7 +28,7 @@ namespace SOUI{
 			pChild->SetUserData((ULONG_PTR)(GetUIElmIndex()));
 		}
 		return pChild;
-	}
+	}*/
 
 	//////////////////////////////////////////////////////////////////////////
 

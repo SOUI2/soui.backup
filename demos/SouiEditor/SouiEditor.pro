@@ -80,6 +80,7 @@ HEADERS += Adapter.h \
            colorpicker/ColourPopup.h \
            pugixml_write.h \
            SysdataMgr.h \
+		   DragDownMgr.h \
 
 SOURCES += DesignerView.cpp \
            helpapi.cpp \
@@ -136,6 +137,11 @@ SOURCES+=../../controls.extend/STabCtrl2.cpp
 SOURCES+=../../controls.extend/SText.cpp
 SOURCES+=../../controls.extend/STurn3DView.cpp
 SOURCES+=../../controls.extend/SScrollText.cpp
+SOURCES+=../../controls.extend/SIPAddressCtrl.cpp
+SOURCES+=../../controls.extend/SListCtrlEx.cpp
+SOURCES+=../../controls.extend/SRatingBar.cpp
+SOURCES+=../../controls.extend/SMcListViewEx/SHeaderCtrlEx.cpp
+
 
 HEADERS+=../../controls.extend/image3d/3dlib.h
 HEADERS+=../../controls.extend/image3d/3dmatrix.h
@@ -156,3 +162,8 @@ HEADERS+=../../controls.extend/STabCtrl2.h
 HEADERS+=../../controls.extend/SText.h
 HEADERS+=../../controls.extend/STurn3DView.h
 HEADERS+=../../controls.extend/SScrollText.h
+HEADERS+=../../controls.extend/SIPAddressCtrl.h
+HEADERS+=../../controls.extend/SListCtrlEx.h
+HEADERS+=../../controls.extend/SRatingBar.h
+HEADERS+=../../controls.extend/SMcListViewEx/SHeaderCtrlEx.h
+

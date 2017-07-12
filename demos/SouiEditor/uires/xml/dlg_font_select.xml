@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <SOUI name="window" title="布局" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="404" height="364" margin="1,5,5,5" wndType="8" toolWindow="1">
 	<root cache="1">
 		<window pos="0,0,-0,-0" colorBkgnd="rgb(50,126,173)" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13">

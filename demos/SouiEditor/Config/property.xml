@@ -142,7 +142,13 @@
 		<colorUpHover style="propcolor" name ="悬停颜色(colorUpHover)" />
 		<colorDownHover style="propcolor" name ="colorDownHover" />
 		<colorUpPush style="propcolor" name ="colorUpPush" />
-		<colorDownPush style="propcolor" name ="colorDownPush"/>	
+		<colorDownPush style="propcolor" name ="colorDownPush"/>
+
+		<colorNormal style="propcolor" name ="colorNormal"/>
+		<colorHover style="propcolor" name ="colorHover"/>
+		<colorDown style="propcolor" name ="colorDown"/>
+		<colorDisable style="propcolor" name ="colorDisable"/>
+		<colorSelected style="propcolor" name ="colorSelected"/>			
 
 		<cursor style="propoption" name ="光标(cursor)" options="arrow|ibeam|wait|cross|uparrow|size|sizenwse|sizenesw|sizewe|sizens|sizeall|no|hand|help" description="鼠标形状"/>			
 		<colorTextHover style="propcolor" name ="文本颜色Hover(colorTextHover)" />		
@@ -217,7 +223,15 @@
 		<bkgndBlend style="proptext" name ="bkgndBlend" description="渲染窗口内容和背景混合标志" />				
 		<sepSpace style="proptext" name ="sepSpace" description="子窗口水平间隔" />				
 	</基本样式>
-
+	
+	<ColorMask>
+		<colorNormal/>
+		<colorHover/>
+		<colorDown/>
+		<colorDisable/>
+		<mask style="proptext" name ="mask"/>
+	</ColorMask>
+	
 	<属性列表>
 		<hostwnd>
 			<!--hostwnd这里为编辑器特殊处理，两个分组的顺序不要修改，分组里的节点顺序可以修改
@@ -1044,7 +1058,42 @@
 				<sortHeader style="proptext" name ="sortHeader" />	
 			</分组>	
 
-		</header >			
+		</header>
+
+		<header2>
+			<分组 name="基本属性: header ">
+				<id/>
+				<name/>
+				<skin/>
+				<layout_gravity/>
+				<weight/>
+				<extend/>				
+				<pos/>
+				<size/>
+				<offset/>
+				<class/>
+				<tip/>
+				
+				<font/>		
+				<colorBkgnd/>
+				<colorText/>
+
+				<UiEdit_windowText/>	
+				<enable/>
+				<visible/>
+				<show/>				
+				<display/>
+			</分组>
+			<分组 name="属性: header">
+				<itemSkin style="proptext" name ="itemSkin"  ButtonType="skin"/>	
+				<sortSkin style="proptext" name ="sortSkin"  ButtonType="skin"/>	
+				<fixWidth style="proptext" name ="fixWidth" />	
+				<itemSwapEnable style="proptext" name ="itemSwapEnable" />	
+				<sortHeader style="proptext" name ="sortHeader" />
+				<matchParent style="propoption" name ="matchParent" options="是:1|否:0" />
+			</分组>	
+
+		</header2>
 
 
 		<hotkey>
@@ -1447,9 +1496,20 @@
 				<hotTrack style="proptext" name ="hotTrack" />
 
 			</分组>			
-		</listctrl>		
-
-
+		</listctrl>
+		
+		<!--仅为了自动提示 -->
+		<template>
+			<分组 name="属性: template">
+				<id/>
+				<name/>
+				<itemHeight/>
+				<class/>
+				<colorSelected/>
+			</分组>
+			<分组 name="ColorMask" />
+		</template>
+		
 		<listview>
 			<分组 name="属性: listview">
 				<id/>
@@ -1493,17 +1553,14 @@
 				<sbRight style="proptext" name ="sbRight" />	
 				<sbTop style="proptext" name ="sbTop" />	
 				<sbBottom style="proptext" name ="sbBottom" />	
-
 			</分组>
 
 			<分组 name="属性: listview">
 				<dividerSkin style="proptext" name ="dividerSkin"  ButtonType="skin"/>	
 				<dividerSize style="proptext" name ="dividerSize" />	
 				<wantTab style="proptext" name ="wantTab" />	
-
 			</分组>			
 		</listview>	
-
 
 		<mclistview>
 			<分组 name="属性: mclistview">
@@ -1546,7 +1603,6 @@
 				<sbRight style="proptext" name ="sbRight" />	
 				<sbTop style="proptext" name ="sbTop" />	
 				<sbBottom style="proptext" name ="sbBottom" />	
-
 			</分组>
 			<分组 name="属性: mclistview">
 				<headerHeight style="proptext" name ="headerHeight"  />	
@@ -1554,12 +1610,8 @@
 				<dividerSkin style="proptext" name ="dividerSkin" ButtonType="skin"/>	
 				<dividerSize style="proptext" name ="dividerSize" />	
 				<wantTab style="propoption" name ="wantTab" options="是:1|否:0"/>	
-
 			</分组>			
-		</mclistview>		
-
-
-
+		</mclistview>
 
 		<mediaplayer>
 			<分组 name="属性: mediaplayer">
@@ -1877,7 +1929,8 @@
 				<minSize style="proptext" name ="最小大小(minSize)" />	
 				<maxSize style="proptext" name ="最小大小(maxSize)" />	
 				<priority style="proptext" name ="优先级(priority)" />		
-			</分组>			
+			</分组>
+			<分组 name="ColorMask" />			
 		</pane>			
 
 		<progress>
@@ -1980,8 +2033,7 @@
 				<origin-x style="proptext" name ="origin-x" />	
 				<origin-y style="proptext" name ="origin-y" />	
 				<viewSize style="proptext" name ="viewSize" />	          
-
-			</分组>			
+			</分组>		
 		</scrollview>	
 
 		<tileview>
@@ -2033,7 +2085,8 @@
 			<分组 name="属性: tileview">
 				<marginSize style="proptext" name ="marginSize" />	
 				<wantTab style="proptext" name ="wantTab" />	
-			</分组>			
+			</分组>
+			<分组 name="ColorMask" />			
 		</tileview>				
 
 		<toggle>
@@ -2232,10 +2285,9 @@
 			<分组 name="属性: treeview">
 				<indent style="proptext" name ="indent" />	
 				<wantTab style="proptext" name ="wantTab" />	
-
-			</分组>			
+			</分组>
+			<分组 name="ColorMask" />			
 		</treeview>				
-
 
 
 		<radio>
@@ -2419,6 +2471,7 @@
 				<display/>				
 			</分组>
 			<分组 name="基本样式" />
+			<分组 name="ColorMask" />
 		</scrolltext>			
 
 		<text>
@@ -2634,13 +2687,12 @@
 
 			</分组>
 			<分组 name="属性: page2">
-
 				<iconIndex style="proptext" name ="iconIndex" />		
 				<title style="proptext" name ="标题(title)" />			
 				<ani_in style="proptext" name ="ani_in"  ButtonType="skin"/>	
 				<ani_out style="proptext" name ="ani_out"  ButtonType="skin"/>					
 			</分组>
-		</page2>	
+		</page2>
 
 		<menu>
 			<分组 name="属性: menu">
@@ -2699,6 +2751,7 @@
 				<iconBarWidth style="proptext" name ="iconBarWidth" />
 				<subMenuOffset style="proptext" name ="subMenuOffset" />
 			</分组>
+			<分组 name="ColorMask" />
 		</menuRoot>
 
 		<menuItem>
@@ -2732,6 +2785,7 @@
 				<radio style="proptext" name ="sepSkin" />
 				<hotKey style="proptext" name ="checkSkin" />
 			</分组>
+			<分组 name="ColorMask" />
 		</menuItem>
 
 		<window>
@@ -2780,6 +2834,7 @@
 				<UiEdit_windowText/>				
 			</分组>
 			<分组 name="基本样式" />
+			<分组 name="ColorMask" />
 		</window>	
 
 		<soui>

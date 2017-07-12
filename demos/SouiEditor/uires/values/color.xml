@@ -9,5 +9,7 @@
   <imgprviewbg value="#ffffa0" />
   <bkBlack1 value="#2d2d30"/>
   <bkBlack2 value="#292b2f"/>
+  <itemHover value="#3f6c8e" />
+  <itemSelected value="rgb(234,128,16)" />
 </color> 
  

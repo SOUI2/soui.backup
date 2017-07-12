@@ -12,14 +12,15 @@ public:
 		SStringT class_name;
 		SStringT name;
 		SStringT src;
-		pugi::xml_node attrdoc;
+		pugi::xml_document* attrdoc;
 		SkinItem() { ; }
 		SkinItem(SStringT _classname, SStringT _name, SStringT _src, pugi::xml_node xmlnode)
 		{
 			class_name = _classname;
 			name = _name;
 			src = _src;
-			attrdoc.append_copy(xmlnode);
+			attrdoc = new pugi::xml_document();
+			attrdoc->append_copy(xmlnode);
 		}
 	};
 
@@ -27,13 +28,14 @@ public:
 	{
 		SStringT class_name;
 		SStringT name;
-		pugi::xml_node attrdoc;
+		pugi::xml_document* attrdoc;
 		StyleItem() { ; }
 		StyleItem(SStringT _classname, SStringT _name, pugi::xml_node xmlnode)
 		{
 			class_name = _classname;
 			name = _name;
-			attrdoc.append_copy(xmlnode);
+			attrdoc = new pugi::xml_document();
+			attrdoc->append_copy(xmlnode);
 		}
 	};
 

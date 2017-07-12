@@ -11,6 +11,7 @@
 	<class name="ue_cls_whiltebtn" font="" colorText="@color/white" colorTextDisable="#91a7c0" textMode="0x25" cursor="hand" margin-x="0"/>
 	<class name="ue_cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" font="italic:1" fontHover="underline:1,italic:1" />
 	<class name="ue_cls_title" colorText="#ffffff" font="face:微软雅黑;bold:1;size:13" />
+	<class name="ue_cls_text" colorText="#ffffff" font="face:微软雅黑;size:14" />
   </style>
 
   <objattr>
