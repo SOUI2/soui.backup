@@ -34,7 +34,7 @@ namespace SOUI{
 		virtual void * GetRawData() = 0;
     };
 
-    struct ILayout : IObject , IObjRef{
+    struct SOUI_EXP ILayout : IObject , IObjRef{
 		virtual bool IsParamAcceptable(ILayoutParam *pLayoutParam) const = 0;
         virtual void LayoutChildren(SWindow * pParent) = 0;
         virtual ILayoutParam * CreateLayoutParam() const = 0;

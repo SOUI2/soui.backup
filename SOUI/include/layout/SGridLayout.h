@@ -64,7 +64,7 @@ namespace SOUI
 
 	};
 
-	class SGridLayout: public SObjectImpl<TObjRefImpl<ILayout>>
+	class SOUI_EXP SGridLayout: public SObjectImpl<TObjRefImpl<ILayout>>
 	{
 		SOUI_CLASS_NAME_EX(SGridLayout,L"gridLayout",Layout)
 	public:
