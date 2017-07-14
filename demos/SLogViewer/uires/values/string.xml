@@ -3,6 +3,11 @@
     <title value="SLogViewer[%s]"/>
     <title_no_name value="SLogViewer"/>
     <ver value="1.0"/>
+    <open_file value="&amp;Open file"/>
+    <clear value="Clear"/>
+    <lang_chinese value="chinese"/>
+    <lang_english value="english"/>
+    <cue_input_filter value="input filter string"/>
     <col_line value="line index"/>
     <col_time value="time"/>
     <col_level value="level"/>

@@ -18,8 +18,9 @@ trCtx="dlg_main"
       </pane>
       <pane priority="1" minSize="200" idealSize="400" layout="vbox">
         <window size="-2,-1" layout="hbox" gravity="center">
-          <button size="-1,-1" name="btn_open_file" text="open file"/>
-          <button size="-1,-1" extend_left="10dp" name="btn_find" text="@string/find_text"/>
+          <button size="-1,-1" name="btn_open_file" text="@string/open_file" accel="CTRL+O"/>
+          <button size="-1,-1" extend_left="5dp" name="btn_clear" text="@string/clear"/>
+          <button size="-1,-1" extend_left="10dp" name="btn_find" text="@string/find_text" accel="CTRL+F"/>
           <window size="0,0" weight="1" visible="0"/>
 
           <text text="@string/level" extend_right="2dp"/>
@@ -28,9 +29,9 @@ trCtx="dlg_main"
           </combobox>
 
           <text size="-1,-1" text="@string/filter"/>
-          <edit size="150dp,-2" extend_right="5dp" cueText="input filter string" name="edit_filter" notifyChange="1"/>
-          <button size="-1,-1" name="btn_lang_cn" text="chinese"/>
-          <button size="-1,-1" extend_left="5dp" name="btn_lang_en" text="english"/>
+          <edit size="150dp,-2" extend_right="5dp" cueText="@string/cue_input_filter" name="edit_filter" notifyChange="1"/>
+          <button size="-1,-1" name="btn_lang_cn" text="@string/lang_chinese"/>
+          <button size="-1,-1" extend_left="5dp" name="btn_lang_en" text="@string/lang_english"/>
         </window>
         <mclistview size="-2,0" extend_top="5dp" weight="1" name="lv_log" colorBkgnd="#cccccc" headerHeight="25dp">
           <header align="center"  itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="0" colorBkgnd="#ffffff" >

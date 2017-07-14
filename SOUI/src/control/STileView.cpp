@@ -368,6 +368,11 @@ void STileView::OnSize(UINT nType, CSize size)
 
 void STileView::OnDestroy()
 {
+	if(m_adapter)
+	{
+		m_adapter->unregisterDataSetObserver(m_observer);
+	}
+
     //destroy all itempanel
     SPOSITION pos = m_lstItems.GetHeadPosition();
     while(pos)

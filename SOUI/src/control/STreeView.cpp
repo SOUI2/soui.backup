@@ -514,6 +514,11 @@ namespace SOUI
 
 	void STreeView::OnDestroy()
 	{
+		if(m_adapter)
+		{
+			m_adapter->unregisterDataSetObserver(m_observer);
+		}
+
 		//destroy all itempanel
 		SPOSITION pos = m_visible_items.GetHeadPosition();
 		while(pos)

@@ -145,7 +145,7 @@ namespace SOUI
 
 	SLogAdapter::~SLogAdapter(void)
 	{
-		clear();
+		Clear();
 	}
 
 	int SLogAdapter::getCount()
@@ -154,7 +154,7 @@ namespace SOUI
 	}
 
 
-	void SLogAdapter::clear()
+	void SLogAdapter::Clear()
 	{
 		SLogBuffer::Clear();
 
@@ -165,6 +165,7 @@ namespace SOUI
 		m_filterTags.RemoveAll();
 		m_filterTids.RemoveAll();
 		m_filterPids.RemoveAll();
+		notifyDataSetChanged();
 	}
 
 	void SLogAdapter::getView(int position, SWindow * pItem,pugi::xml_node xmlTemplate)
