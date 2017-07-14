@@ -165,6 +165,7 @@ namespace SOUI
 		m_filterTags.RemoveAll();
 		m_filterTids.RemoveAll();
 		m_filterPids.RemoveAll();
+		m_logParser = NULL;
 		notifyDataSetChanged();
 	}
 
