@@ -46,5 +46,9 @@
       <source>filter</source>
       <translation>filter:</translation>
     </message>
+    <message>
+      <source>find text</source>
+      <translation>&amp;Find Text</translation>
+    </message>
   </context>
 </language>

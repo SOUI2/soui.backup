@@ -51,6 +51,7 @@ namespace SOUI
 		m_pEditTarget = FindChildByID2<SEdit>(R.id.edit_search);
 		m_pMatchCase = FindChildByID2<SCheckBox>(R.id.chk_match_case);
 		m_pMatchWholeWord = FindChildByID2<SCheckBox>(R.id.chk_match_whole_word);
+		m_pEditTarget->SetFocus();
 	}
 
 }

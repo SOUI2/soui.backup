@@ -373,6 +373,11 @@ namespace SOUI
 
     void SListView::OnDestroy()
     {
+		if(m_adapter)
+		{
+			m_adapter->unregisterDataSetObserver(m_observer);
+		}
+
         //destroy all itempanel
         SPOSITION pos = m_lstItems.GetHeadPosition();
         while(pos)

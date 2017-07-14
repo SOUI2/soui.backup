@@ -155,6 +155,7 @@ namespace SOUI
 		void SetScintillaWnd(CScintillaWnd *pWnd);
 
 		BOOL Load(const TCHAR *szFileName);
+		void Clear();
 		void SetFilter(const SStringT& str);
 		void SetLevel(int nCurSel);
 
@@ -176,7 +177,6 @@ namespace SOUI
 		const SArray<SLogInfo*> * GetLogList() const;
 
 		void doFilter();
-		void clear();
 
 		bool OnItemDblClick(EventArgs *e);
 	protected:

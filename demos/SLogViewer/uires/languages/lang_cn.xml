@@ -34,10 +34,6 @@
       <source>close</source>
       <translation>关闭窗口</translation>
     </message>
-    <message>
-      <source>find text</source>
-      <translation>查找</translation>
-    </message>
 
   </context>
   <context name="messagebox">
@@ -65,8 +61,16 @@
     </message>
 
     <message>
-      <source>open file</source>
-      <translation>打开文件</translation>
+      <source>&amp;Open file</source>
+      <translation>打开文件(&amp;O)</translation>
+    </message>
+    <message>
+      <source>find text</source>
+      <translation>查找(&amp;F)</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>清空</translation>
     </message>
     <message>
       <source>tag filter</source>
@@ -139,7 +143,10 @@
     </message>
   </context>
   <context name="dlg_find">
-
+    <message>
+      <source>find text</source>
+      <translation>查找</translation>
+    </message>
     <message>
       <source>search:</source>
       <translation>搜索:</translation>
