@@ -340,14 +340,14 @@
 					RelativePath=".\uires\xml\init.xml"
 					>
 				</File>
+				<File
+					RelativePath=".\uires\xml\subwnd.xml"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
-			>
-		</File>
-		<File
-			RelativePath=".\uires\xml\subwnd.xml"
 			>
 		</File>
 	</Files>

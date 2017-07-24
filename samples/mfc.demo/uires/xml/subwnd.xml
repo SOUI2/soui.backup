@@ -2,7 +2,7 @@
   <root skin="skin.bkframe" cache="1">
     <window pos="0,0,-0,-0">
       <text pos="|0,|0" offset="-0.5,-0.5">这是一个子窗口</text>
-      <button pos="|0,[30,@100,@30" offset="-0.5,-0.5" name="btn_open_soui">open soui</button>
+      <button pos="|0,[30,@100,@30" offset="-0.5,0" name="btn_open_soui">open soui</button>
     </window>
   </root>
 </SOUI>
