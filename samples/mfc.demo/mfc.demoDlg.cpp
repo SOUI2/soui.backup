@@ -6,6 +6,7 @@
 #include "mfc.demo.h"
 #include "mfc.demoDlg.h"
 #include "realwnddlg.h"
+#include "SouiSubWnd.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -48,6 +49,12 @@ BOOL CmfcdemoDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+
+	CSouiSubWnd * pSouiSubWnd = new CSouiSubWnd;
+	CRect rcClient;
+	GetClientRect(rcClient);
+	rcClient.bottom-=50;
+	pSouiSubWnd->Create(m_hWnd,WS_CHILD|WS_VISIBLE,0,rcClient.left,rcClient.top,rcClient.Width(),rcClient.Height());
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
