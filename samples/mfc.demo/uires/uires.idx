@@ -5,6 +5,7 @@
   </uidef>
   <xml>
     <file name="maindlg"  path="xml\dlg_main.xml"/>
+    <file name="subwnd" path="xml\subwnd.xml"/>
   </xml>
   <imgx>
     <file name="bk_frame"    path="image\dlg_bg_frame.png"  />

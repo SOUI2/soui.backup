@@ -20,7 +20,7 @@ SET selected=
 SET mt=1
 SET unicode=1
 SET wchar=1
-SET supportxp=1
+SET supportxp=0
 SET vsvarbat=
 
 rem —°‘Ò±‡“Î∞Ê±æ

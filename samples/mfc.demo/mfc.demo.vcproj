@@ -212,6 +212,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SouiSubWnd.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -255,6 +259,10 @@
 			</File>
 			<File
 				RelativePath=".\SouiRealWndHandler.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SouiSubWnd.h"
 				>
 			</File>
 			<File
@@ -330,6 +338,10 @@
 				</File>
 				<File
 					RelativePath=".\uires\xml\init.xml"
+					>
+				</File>
+				<File
+					RelativePath=".\uires\xml\subwnd.xml"
 					>
 				</File>
 			</Filter>

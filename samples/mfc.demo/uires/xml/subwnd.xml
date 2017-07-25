@@ -1,0 +1,8 @@
+﻿<SOUI title="DUI-DEMO" width="600" height="400" appwin="0" resize="1" translucent="0">
+  <root skin="skin.bkframe" cache="1">
+    <window pos="0,0,-0,-0">
+      <text pos="|0,|0" offset="-0.5,-0.5">这是一个子窗口</text>
+      <button pos="|0,[30,@100,@30" offset="-0.5,0" name="btn_open_soui">open soui</button>
+    </window>
+  </root>
+</SOUI>

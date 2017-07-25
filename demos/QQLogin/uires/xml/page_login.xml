@@ -27,7 +27,7 @@
               <imgbtn id="4" pos="-24,|-8,-10,|7" skin="btn_list_close" tip="删除账号信息"/>
             </template>
           </liststyle>
-          <editstyle vcenter="1" colorText="#000000" align="left" colorBkgnd="#FFFFFF" cueText="输入帐号"/>
+          <editstyle vcenter="1" colorText="#000000" align="left" colorBkgnd="#FFFFFF" cueText="输入帐号" autoSel="0"/>
 
         </comboview>
 
