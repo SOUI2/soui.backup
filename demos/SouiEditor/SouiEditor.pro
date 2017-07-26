@@ -82,7 +82,8 @@ HEADERS += Adapter.h \
            SysdataMgr.h \
 		   DragDownMgr.h \
 
-SOURCES += DesignerView.cpp \
+SOURCES += Adapter.cpp \
+		   DesignerView.cpp \
            helpapi.cpp \
            MainDlg.cpp \
            ResManger.cpp \
@@ -140,6 +141,7 @@ SOURCES+=../../controls.extend/SScrollText.cpp
 SOURCES+=../../controls.extend/SIPAddressCtrl.cpp
 SOURCES+=../../controls.extend/SListCtrlEx.cpp
 SOURCES+=../../controls.extend/SRatingBar.cpp
+SOURCES+=../../controls.extend/SRadioBox2.cpp
 SOURCES+=../../controls.extend/SMcListViewEx/SHeaderCtrlEx.cpp
 
 
@@ -165,5 +167,6 @@ HEADERS+=../../controls.extend/SScrollText.h
 HEADERS+=../../controls.extend/SIPAddressCtrl.h
 HEADERS+=../../controls.extend/SListCtrlEx.h
 HEADERS+=../../controls.extend/SRatingBar.h
+HEADERS+=../../controls.extend/SRadioBox2.h
 HEADERS+=../../controls.extend/SMcListViewEx/SHeaderCtrlEx.h
 
