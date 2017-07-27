@@ -924,7 +924,7 @@ namespace SOUI
 
         m_pCheckItem = pItem;
         m_pCheckItem->SetCheck(TRUE);
-		pSubMenu->SetWindowLongPtr(GWL_HWNDPARENT,(ULONG_PTR)m_hWnd);
+		pSubMenu->SetWindowLongPtr(GWLP_HWNDPARENT,(ULONG_PTR)m_hWnd);
         pSubMenu->ShowMenu(0,rcItem.right,rcItem.top);
         if(bCheckFirstItem)
         {
