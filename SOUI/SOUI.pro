@@ -68,6 +68,7 @@ HEADERS += include/SApp.h \
            include/control/SSpinButtonCtrl.h \
            include/control/STileView.h \
            include/control/STreeView.h \
+           include/control/SMenuBar.h \
            include/core/Accelerator.h \
            include/core/FocusManager.h \
            include/core/SDefine.h \
@@ -187,6 +188,7 @@ SOURCES += src/SApp.cpp \
            src/control/SSpinButtonCtrl.cpp \
            src/control/STileView.cpp \
            src/control/STreeView.cpp \
+           src/control/SMenuBar.cpp \
            src/core/Accelerator.cpp \
            src/core/FocusManager.cpp \
            src/core/SDropTargetDispatcher.cpp \
