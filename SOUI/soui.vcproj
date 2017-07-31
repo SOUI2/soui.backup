@@ -381,6 +381,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\control\SMenuBar.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\helper\smenuex.cpp"
 				>
 			</File>
@@ -784,6 +788,10 @@
 			</File>
 			<File
 				RelativePath="include\helper\SMenu.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\control\SMenuBar.h"
 				>
 			</File>
 			<File
