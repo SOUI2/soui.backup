@@ -1,0 +1,23 @@
+﻿<SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="600" height="400"  margin="20,5,5,5"  resizable="0"
+translucent="1"
+>
+  <root skin="_skin.sys.wnd.bkgnd" cache="1">
+    <caption pos="0,0,-0,30" show="1" font="adding:0">
+      <icon pos="10,8" src="ICON_LOGO:16"/>
+      <text pos="29,9">@string/title</text>
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+      <!--<imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
+      <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
+      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />-->
+      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-83,0" animate="1" />
+    </caption>
+    <window pos="5,[2,-5,-5">
+      <ProfilePic name="picchoose" pos="14,17,@270,@270" colorBkgnd="#FFff00"/>
+      <img name="HeadPic_Large" pos="324,16,@150,@150" colorBkgnd="#FF0000"/>
+      <img name="HeadPic_Middle" pos="324,177,@63,@63" colorBkgnd="#00FF00"/>
+      <img name="HeadPic_Small" pos="324,250,@40,@40" colorBkgnd="#0000FF"/>
+      <button name="btnChoose" pos="73,300,@67,@28" colorText="#000000" font="adding:-2">选择图片</button>
+      <button name="btnSave" pos="173,300,@67,@28" colorText="#000000" font="adding:-2">保存头像</button>
+    </window>
+  </root>
+</SOUI>

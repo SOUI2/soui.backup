@@ -28,10 +28,13 @@ PRECOMPILED_HEADER = stdafx.h
 
 # Input
 HEADERS += resource.h \
-           res/R.h \
+           res/resource.h \
            ui/MainDlg.h \
            ui/SHeaderCtrlEx.h \
            ui/SToggleEx.h \
+           ui/SProfilePicture.h \
+           ui/ChooseAvatar.h \
+           ui/FileHelper.h \
            ui/adapter/FirendListItemAdapter.h \
            ui/adapter/HotChannelListItemAdapter.h \
            ui/adapter/IListItemCallBack.h \
@@ -40,11 +43,14 @@ HEADERS += resource.h \
            ui/adapter/SimpleListDef.h \
            ui/drag/DragWnd.h \
            ui/adapter/FirendListItemAdapter.h
+           
 
 SOURCES += main.cpp \
            ui/MainDlg.cpp \
            ui/SHeaderCtrlEx.cpp \
            ui/SToggleEx.cpp \
+           ui/SProfilePicture.cpp \
+           ui/ChooseAvatar.cpp \
            ui/adapter/FirendListItemAdapter.cpp \
            ui/adapter/HotChannelListItemAdapter.cpp \
            ui/adapter/NewChannelListItemAdapter.cpp \

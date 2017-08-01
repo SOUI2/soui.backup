@@ -2,7 +2,6 @@
 #include "ui/adapter/FirendListItemAdapter.h"
 #include "ui/SToggleEx.h"
 
-#include "res/R.h" 
  
 namespace SOUI
 {  

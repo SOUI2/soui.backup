@@ -11,7 +11,7 @@ translucent="1"
          <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-83,0" animate="1" />
       </caption>
       <caption pos="{0,[0,-0,@60">
-        <imgbtn name="btn_user_header" skin="skin_user_header"  pos="2,2,@48,@48"  tip="设置头像" animate="1"/>
+        <img name="btn_user_header" skin="skin_user_header"  pos="2,2,@48,@48"  tip="设置头像" animate="1" msgTransparent="0"/>
         <imgbtn name="btn_user_online" pos="[2,{0,@48,@48" skin="skin_main_tab_group"  tip="在线状态" animate="1">在线</imgbtn>
       </caption>
       <caption pos="{0,[0,-0,@30"  >

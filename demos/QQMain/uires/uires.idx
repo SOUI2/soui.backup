@@ -44,7 +44,7 @@
 	<file name="chatframe-bottombar" path="xml\chatframe-bottombar.xml" />
 	<file name="chatframe-sessionlist" path="xml\chatframe-sessionlist.xml" />
 	<file name="chatframe-caption" path="xml\chatframe-caption.xml" />
-	
+	<file name="dlg_choose_avatar" path="xml\dlg_choose_avatar.xml"/>
   </LAYOUT>
 
   <IMGX> 
