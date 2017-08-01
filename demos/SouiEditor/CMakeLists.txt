@@ -34,6 +34,7 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SIPAddressCtrl.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SListCtrlEx.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SRatingBar.h
+	${CMAKE_SOURCE_DIR}/controls.extend/SRadioBox2.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/SHeaderCtrlEx.h
 )
 
@@ -58,6 +59,7 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SIPAddressCtrl.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SListCtrlEx.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SRatingBar.cpp
+	${CMAKE_SOURCE_DIR}/controls.extend/SRadioBox2.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/SHeaderCtrlEx.cpp
 )
 
