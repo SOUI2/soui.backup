@@ -57,7 +57,6 @@ namespace SOUI
     private:
         CAutoRefPtr<IBitmap> m_bmpHead;
         CAutoRefPtr<IRenderTarget> m_pScreenRT;
-        CAutoRefPtr<IRenderTarget> m_pBufferRT;
         CAutoRefPtr<IRenderTarget> m_pHuiRT;
         CPoint m_BeginPoint;
         CPoint m_EndPoint;

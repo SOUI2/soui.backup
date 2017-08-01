@@ -12,4 +12,5 @@
     <msg_manager value="消息管理"/>
     <file_manager value="文件管理"/> 
     <close value="关闭" />
+    <choose_avatar value="选择头像"/>
   </string> 

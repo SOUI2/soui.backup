@@ -83,15 +83,6 @@ namespace SOUI
             m_pHuiRT->Resize(CSize(nWidth, nHeight));
         }
 
-        if (!m_pBufferRT)
-        {
-            GETRENDERFACTORY->CreateRenderTarget(&m_pBufferRT, nMoveWH, nMoveWH);
-        }
-        else
-        {
-            m_pBufferRT->Resize(CSize(nMoveWH, nMoveWH));
-        }
-
         m_pScreenRT->BitBlt(CRect(0, 0, nWidth, nHeight), pTempRT, 0, 0);
         CAutoRefPtr<IBitmap> huiBmp;
         GETRENDERFACTORY->CreateBitmap(&huiBmp);
@@ -102,9 +93,14 @@ namespace SOUI
 
         if (!m_bmpSelHead)
             GETRENDERFACTORY->CreateBitmap(&m_bmpSelHead);
+
         m_bmpSelHead->Init(nMoveWH, nMoveWH);
-        m_pBufferRT->SelectObject(m_bmpSelHead);
-        m_pBufferRT->BitBlt(CRect(0, 0, nMoveWH, nMoveWH), m_pScreenRT, m_FrameRect.left, m_FrameRect.top);
+		IRenderTarget *pRT=NULL;
+		GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
+		pRT->SelectObject(m_bmpSelHead);
+        pRT->BitBlt(CRect(0, 0, nMoveWH, nMoveWH), m_pScreenRT, m_FrameRect.left, m_FrameRect.top);
+		pRT->SelectDefaultObject(OT_BITMAP);
+		pRT->Release();
 
         EventSelFrameChange evt(this);
         evt.iBmp = m_bmpSelHead;
@@ -247,8 +243,13 @@ namespace SOUI
             m_bmpSelHead->Init(m_EndPoint.x - m_BeginPoint.x, m_EndPoint.y - m_BeginPoint.y);
             m_FrameRect.SetRect(m_BeginPoint, m_EndPoint);
             m_FrameRect.OffsetRect(-m_PicRect.left, -m_PicRect.top);
-            m_pBufferRT->SelectObject(m_bmpSelHead);
-            m_pBufferRT->BitBlt(CRect(0, 0, m_FrameRect.Width(), m_FrameRect.Height()), m_pScreenRT, m_FrameRect.left, m_FrameRect.top);
+
+			IRenderTarget *pRT = NULL; ;
+			GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
+            pRT->SelectObject(m_bmpSelHead);
+            pRT->BitBlt(CRect(0, 0, m_FrameRect.Width(), m_FrameRect.Height()), m_pScreenRT, m_FrameRect.left, m_FrameRect.top);
+			pRT->SelectDefaultObject(OT_BITMAP);
+			pRT->Release();
 
             EventSelFrameChange evt(this);
             evt.iBmp = m_bmpSelHead;
@@ -271,7 +272,7 @@ namespace SOUI
 
             pRT->BitBlt(m_PicRect, m_pHuiRT, 0, 0);
             CRect temp(m_BeginPoint, m_EndPoint);
-            pRT->BitBlt(temp, m_pBufferRT, 0, 0);
+			pRT->DrawBitmap(temp,m_bmpSelHead,0,0);
 
             CPoint point[4] =
             {
@@ -301,7 +302,6 @@ namespace SOUI
                 pRT->CreateSolidColorBrush(RGBA(255, 255, 255, 255), &brush);
                 pRT->SelectObject(brush, (IRenderObj**)&oldBrush);
                 pRT->FillRectangle(CRect(point[i].x - 3, point[i].y - 3, point[i].x + 2, point[i].y + 2));
-                //pRT->FillRectangle(CRect(point[i].x - 1, point[i].y - 1, point[i].x + 1, point[i].y + 1));
                 pRT->SelectObject(oldBrush);
             }
         }

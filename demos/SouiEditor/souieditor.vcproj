@@ -152,6 +152,8 @@
 			<File
 				RelativePath="..\..\controls.extend\image3d\3dtransform.cpp" />
 			<File
+				RelativePath="Adapter.cpp" />
+			<File
 				RelativePath="colorpicker\ColourPopup.cpp" />
 			<File
 				RelativePath="DesignerView.cpp" />
@@ -221,6 +223,8 @@
 				RelativePath="propgrid\propitem\SPropertyItem-Text.cpp" />
 			<File
 				RelativePath="propgrid\SPropertyItemBase.cpp" />
+			<File
+				RelativePath="..\..\controls.extend\SRadioBox2.cpp" />
 			<File
 				RelativePath="..\..\controls.extend\SRatingBar.cpp" />
 			<File
@@ -358,6 +362,8 @@
 				RelativePath="propgrid\SPropertyItem-i.h" />
 			<File
 				RelativePath="propgrid\SPropertyItemBase.h" />
+			<File
+				RelativePath="..\..\controls.extend\SRadioBox2.h" />
 			<File
 				RelativePath="..\..\controls.extend\SRatingBar.h" />
 			<File
