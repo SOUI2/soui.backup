@@ -238,8 +238,13 @@
       <scrollbar name="sb_test1" pos="[10,10,@200,@16" min="0" max="100" value="10" page="10" vertical="0"/>
       <scrollbar name="sb_test2" pos="[50,10,@16,@200" min="0" max="100" value="10" page="10" vertical="1"/>
     </page>
-    <page title="calendar">
-      <calendar pos="0,0,-0,-0" name="mp_test" daySkin="_skin.sys.btn.normal" footerHeight="30"/>
+    <page title="calendar" layout="vbox">
+      <window size="-2,-1" layout="hbox" padding="5,5,5,5">
+        <dateTimePicker size="240,30" name="timepicker" padding="4,0,4,0" >
+          <calstyle ncSkin="_skin.sys.border" margin="1"/>
+        </dateTimePicker>
+      </window>
+      <calendar size="-2,0" weight="1" name="mp_test" daySkin="_skin.sys.btn.normal" footerHeight="30"/>
     </page>
     <page title="split">
       <splitrow name="split_row" pos="10,0,-10,-10" sepSize="6">
