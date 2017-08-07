@@ -8,6 +8,13 @@
 
 namespace SOUI
 {
+	// 按钮 宏定义
+#define HIT_NULL				-1				// 无
+#define HIT_LEFT				-10			// 上一个月 按钮
+#define HIT_RIGHT				-11			// 下一个月 按钮
+#define HIT_YEAR				-12			//  年月  还没用到
+#define HIT_TODAY				42				//  今天 
+
 class SOUI_EXP SCalendarEx : public SWindow
 {
 	SOUI_CLASS_NAME(SCalendarEx, L"calendarex")   //
@@ -19,7 +26,7 @@ public:
 	WORD GetMonth();
 	WORD GetDay();
 	void GetDate(WORD &iYear, WORD &iMonth, WORD &iDay);
-	BOOL SetDate(WORD iYear, WORD iMonth, WORD iDay, bool bNotify=false);
+	BOOL SetDate(WORD iYear, WORD iMonth, WORD iDay, int nBtnType=HIT_NULL, bool bNotify=false);
 protected:
 	void Init();
 	int OnCreate(LPVOID);
@@ -31,6 +38,9 @@ protected:
 	BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 
 	SOUI_ATTRS_BEGIN()
+		ATTR_LAYOUTSIZE(L"yearHeight", m_nYearMonthHeight, FALSE)
+		ATTR_LAYOUTSIZE(L"weekHeight", m_nWeekHeight, FALSE)
+		ATTR_LAYOUTSIZE(L"todayHeight", m_nFooterHeight, FALSE)
 		ATTR_COLOR(L"colorOther", m_crOtherDayText, TRUE)
 		ATTR_COLOR(L"colorSel", m_crSelDayBack, TRUE)
 		ATTR_COLOR(L"colorHover", m_crHoverText, TRUE)
@@ -109,6 +119,10 @@ public:
 public:
 	void CloseUp();
 	EnDateType HitTest(CPoint pt);
+	void SetTime(const SYSTEMTIME& sysTime);
+	void GetTime(SYSTEMTIME& sysTime);
+	void SetTime(WORD wYear, WORD wMonth, WORD wDay, WORD wHour, WORD wMinute, WORD wSecond);
+	SStringT GetWindowText();
 protected:		// 继承 
 	virtual SWindow* GetDropDownOwner();
 	virtual void OnCreateDropDown(SDropDownWnd* pDropDown);
@@ -138,6 +152,7 @@ protected:
 	
 	SOUI_ATTRS_BEGIN()
 		ATTR_SKIN(L"btnSkin", m_pSkinBtn, FALSE)
+		ATTR_INT(L"dropWidth", m_nDropWidth, FALSE)
 	SOUI_ATTRS_END()
 
 	SOUI_MSG_MAP_BEGIN()
@@ -168,6 +183,7 @@ protected:
 	SYSTEMTIME						m_sysTime;
 	SStringT								m_sKey;
 
+	int										m_nDropWidth;
 	SCalendarEx*						m_pCalendar;
 };
 }
