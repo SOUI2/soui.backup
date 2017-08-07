@@ -4,18 +4,11 @@
 
 namespace SOUI
 {
-#define HIT_NULL				-1
-#define HIT_LEFT				-10
-#define HIT_RIGHT				-11
-#define HIT_YEAR				-12
-#define HIT_TODAY				42
-
 	SCalendarEx::SCalendarEx(WORD iYeay, WORD iMonth, WORD iDay)
 	{
 		Init();
 		if (!SetDate(iYeay, iMonth, iDay))
 		{
-			//CTime tm = CTime::GetCurrentTime();
 			SetDate(m_Today.wYear, m_Today.wMonth, m_Today.wDay);
 		}
 	}
@@ -34,6 +27,7 @@ namespace SOUI
 
 	void SCalendarEx::Init()
 	{
+		m_bFocusable = TRUE;
 		GetLocalTime(&m_Today);
 
 		m_evtSet.addEvent(EVENTID(EventCalendarExChanged));
@@ -79,14 +73,14 @@ namespace SOUI
 		iDay = GetDay();
 	}
 
-	BOOL SCalendarEx::SetDate(WORD iYear, WORD iMonth, WORD iDay, bool bNotify)
+	BOOL SCalendarEx::SetDate(WORD iYear, WORD iMonth, WORD iDay, int nBtnType, bool bNotify)
 	{
 		short iWeek = SCalendarCore::GetDayOfWeek(iYear, iMonth, 1);		// 计算出 当月 1号 是星期几
 		if (iWeek < 0) return FALSE;
 
 		WORD nDayCount = SCalendarCore::GetDaysOfMonth(iYear, iMonth);
 				
-		if (7 != iWeek)				// 如果 不是星期天 先计算 上个月 的最后几天
+		if (iWeek > 0)				// 如果 不是星期天 先计算 上个月 的最后几天
 		{
 			WORD nFrontDayCount = 0;
 			if (1 == iMonth)
@@ -108,7 +102,6 @@ namespace SOUI
 		{
 			m_arrDays[iWeek + i].nType = 0;
 			m_arrDays[iWeek + i].iDay = i + 1;
-			//if(m_Today.)
 		}
 
 		int nNextDay = 1;
@@ -122,7 +115,7 @@ namespace SOUI
 		m_iMonth = iMonth;
 	
 		m_nHoverItem = HIT_NULL;
-		m_nSelItem = SCalendarCore::GetDayOfWeek(iYear, iMonth, iDay) % 7;
+		m_nSelItem = iWeek % 7 + iDay - 1;
 		Invalidate();
 
 		if (bNotify)
@@ -131,6 +124,7 @@ namespace SOUI
 			evt.iNewDay = iDay;
 			evt.iNewMonth = m_iMonth;
 			evt.iNewYear = m_iYear;
+			evt.nBtnType = nBtnType;
 			FireEvent(evt);
 		}
 		
@@ -147,7 +141,7 @@ namespace SOUI
 		else
 			--m_iMonth;
 
-		SetDate(m_iYear, m_iMonth, 1, true);
+		SetDate(m_iYear, m_iMonth, 1, HIT_LEFT, true);
 	}
 
 	void SCalendarEx::SetNextMonth()
@@ -160,7 +154,7 @@ namespace SOUI
 		else
 			++m_iMonth;
 
-		SetDate(m_iYear, m_iMonth, 1, true);
+		SetDate(m_iYear, m_iMonth, 1, HIT_RIGHT, true);
 	}
 	
 	int SCalendarEx::OnCreate(LPVOID)
@@ -284,7 +278,7 @@ namespace SOUI
 		m_rcToday = rcDay;
 		// 计算 文本 
 		pRT->DrawText(szToday, -1, m_rcToday, DT_SINGLELINE | DT_VCENTER | DT_CENTER | DT_CALCRECT);
-		
+		m_rcToday.bottom = m_rcToday.top + rcDay.Height();	//高度 不变
 		m_rcToday.OffsetRect((rcDay.Width() - m_rcToday.Width()) / 2, 0);
 		pRT->DrawText(szToday, -1, m_rcToday, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
 		pRT->SetTextColor(crText);
@@ -343,12 +337,7 @@ namespace SOUI
 		}
 		else if (HIT_TODAY == nItem)
 		{
-			SetDate(m_Today.wYear, m_Today.wMonth, m_Today.wDay);
-			EventCalendarExChanged evt(this);
-			evt.iNewDay = m_Today.wDay;
-			evt.iNewMonth = m_iMonth;
-			evt.iNewYear = m_iYear;
-			FireEvent(evt);
+			SetDate(m_Today.wYear, m_Today.wMonth, m_Today.wDay, HIT_TODAY, true);
 		}
 		else if (m_nSelItem != nItem)
 		{
@@ -356,6 +345,7 @@ namespace SOUI
 			
 			m_nSelItem = nItem;
 			EventCalendarExChanged evt(this);
+			evt.nBtnType = nItem;
 			evt.iNewDay = dayInfo.iDay;
 			if (dayInfo.nType < 0)		// 点击 上一个月 的天
 			{
@@ -493,6 +483,7 @@ namespace SOUI
 		, m_nNumWidth(0)
 		, m_nCharWidth(0)
 		, m_pCalendar(NULL)
+		, m_nDropWidth(220)
 	{
 		m_evtSet.addEvent(EVENTID(EventDateTimeChanged));
 		m_pNcSkin = GETBUILTINSKIN(SKIN_SYS_BORDER);
@@ -527,6 +518,7 @@ namespace SOUI
 		pugi::xml_node xmlCal = xmlNode.child(L"calstyle");
 		if(xmlCal)
 			m_pCalendar->InitFromXml(xmlCal);
+
 		m_pCalendar->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
 		m_pCalendar->SetOwner(this);    //chain notify message to combobox
 		//m_pCalendar->SetID(IDC_DROPDOWN_LIST);
@@ -567,6 +559,7 @@ namespace SOUI
 	void SDateTimePicker::OnCreateDropDown(SDropDownWnd* pDropDown)
 	{
 		m_pCalendar->SetDate(m_sysTime.wYear, m_sysTime.wMonth, m_sysTime.wDay);
+		//pDropDown->SetAttribute(L"sendWheel2Hover", L"1", TRUE);
 		pDropDown->InsertChild(m_pCalendar);
 		pDropDown->UpdateChildrenPosition();
 		
@@ -720,7 +713,7 @@ namespace SOUI
 		m_pSkinBtn->Draw(pRT, rcSkin, nState);
 	}
 
-	bool SDateTimePicker::CalcPopupRect(int nHeight, CRect& rcPopup)
+	bool SDateTimePicker::CalcPopupRect(int nWidth, CRect& rcPopup)
 	{
 		CRect rcWnd = GetWindowRect();
 		GetContainer()->FrameToHost(rcWnd);
@@ -742,14 +735,16 @@ namespace SOUI
 			rcMonitor.bottom = GetSystemMetrics(   SM_CYSCREEN   );
 		}
 
+		int nHeight = nWidth * 4 / 5;
+
 		if(rcWnd.bottom+nHeight <= rcMonitor.bottom)
 		{
-			rcPopup.SetRect(rcWnd.right-nHeight, rcWnd.bottom, rcWnd.right, rcWnd.bottom+nHeight-40);
+			rcPopup.SetRect(rcWnd.right-nWidth, rcWnd.bottom, rcWnd.right, rcWnd.bottom+nHeight);
 			return true;
 		}
 		
 
-		rcPopup.SetRect(rcWnd.right-nHeight, rcWnd.top-nHeight, rcWnd.right, rcWnd.top-40);
+		rcPopup.SetRect(rcWnd.right- nWidth, rcWnd.top-nHeight, rcWnd.right, rcWnd.top);
 		return false;		
 	}
 
@@ -775,6 +770,35 @@ namespace SOUI
 			eSelType = eDT_Second;			// second
 
 		return eSelType;
+	}
+
+	void SDateTimePicker::SetTime(const SYSTEMTIME& sysTime)
+	{
+		m_sysTime = sysTime;
+		Invalidate();
+	}
+
+	void SDateTimePicker::SetTime(WORD wYear, WORD wMonth, WORD wDay, WORD wHour, WORD wMinute, WORD wSecond)
+	{
+		m_sysTime.wYear;
+		m_sysTime.wMonth = wMonth;
+		m_sysTime.wDay = wDay;
+		m_sysTime.wHour = wHour;
+		m_sysTime.wMinute = wMinute;
+		m_sysTime.wSecond = wSecond;
+		Invalidate();
+	}
+
+	void SDateTimePicker::GetTime(SYSTEMTIME& sysTime)
+	{
+		sysTime = m_sysTime;
+	}
+
+	SStringT SDateTimePicker::GetWindowText()
+	{
+		return SStringT().Format(_T("%04d-%02d-%02d %02d:%02d:%02"),
+			m_sysTime.wYear, m_sysTime.wMonth, m_sysTime.wDay,
+			m_sysTime.wHour, m_sysTime.wMinute, m_sysTime.wSecond);
 	}
 
 	void SDateTimePicker::OnLButtonDown(UINT nFlags, CPoint pt)
@@ -804,10 +828,10 @@ namespace SOUI
 		if(NULL != m_pDropDownWnd)
 			return ;
 
-		m_pDropDownWnd = new SDropDownWnd(this);
+		m_pDropDownWnd = new SDropDownWnd_ComboBox(this);		// 直接 用这个 处理 wheel 滚动
 		CRect rcPopup;
 		SLayoutSize nWid;
-		nWid.setSize(220.f, SLayoutSize::dp);
+		nWid.setSize(m_nDropWidth, SLayoutSize::dp);
 		bool bDown = CalcPopupRect(nWid.toPixelSize(GetScale()), rcPopup);
 		m_pDropDownWnd->Create(rcPopup, 0);
 
