@@ -788,7 +788,13 @@ namespace SOUI
 	{
         if(!m_adapter) return;
         HTREEITEM hItem = m_tvItemLocator->Position2Item(m_siVer.nPos);
-        if(hItem == ITvAdapter::ITEM_NULL) return;
+		if (hItem == ITvAdapter::ITEM_NULL)
+		{
+			//如果没有可显示的，则移除所有item
+			m_visible_items.RemoveAll();
+			m_pVisibleMap->RemoveAll();
+			return;
+		}
         
         CSize szOldView;
         szOldView.cx = m_tvItemLocator->GetTotalWidth();
