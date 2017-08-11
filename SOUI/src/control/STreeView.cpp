@@ -217,7 +217,7 @@ namespace SOUI
 
     int STreeViewItemLocator::_GetBranchWidth(HTREEITEM hBranch) const
     {
-        return m_adapter->GetItemDataByIndex(hBranch,ITvAdapter::DATA_INDEX_BRANCH_WIDTH);
+        return (int)m_adapter->GetItemDataByIndex(hBranch,ITvAdapter::DATA_INDEX_BRANCH_WIDTH);
     }
 
     void STreeViewItemLocator::_UpdateBranchWidth(HTREEITEM hItem,int nOldWidth,int nNewWidth)
