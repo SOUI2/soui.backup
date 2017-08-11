@@ -486,7 +486,7 @@ namespace SOUI
 		    {
 		        pt.y = m_tvItemLocator->Item2Position(hItem)-m_siVer.nPos;
 		    }
-		    CSize szItem(m_tvItemLocator->GetItemWidth(hItem),m_tvItemLocator->GetItemWidth(hItem));
+		    CSize szItem(m_tvItemLocator->GetItemWidth(hItem),m_tvItemLocator->GetItemHeight(hItem));
 		    
 		    pt.x = m_tvItemLocator->GetItemIndent(hItem) - m_siHoz.nPos;
 		    
