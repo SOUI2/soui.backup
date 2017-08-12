@@ -831,7 +831,7 @@ namespace SOUI
 		m_pDropDownWnd = new SDropDownWnd_ComboBox(this);		// 直接 用这个 处理 wheel 滚动
 		CRect rcPopup;
 		SLayoutSize nWid;
-		nWid.setSize(m_nDropWidth, SLayoutSize::dp);
+		nWid.setSize((float)m_nDropWidth, SLayoutSize::dp);
 		bool bDown = CalcPopupRect(nWid.toPixelSize(GetScale()), rcPopup);
 		m_pDropDownWnd->Create(rcPopup, 0);
 
