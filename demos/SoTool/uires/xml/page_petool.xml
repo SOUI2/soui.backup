@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<include>
+  <tabctrl name="tab_list" pos="0,0,-0,-0" animateSteps="10" show="1" curSel="0" focusable="0" tabHeight="30" colorBkgnd="#ffffff">
+    <page title="导入表">
+      <include src="LAYOUT:XML_PAGE_IMPORT_TABLE"/>
+    </page>
+    <page title="导出函数">
+      <include src="LAYOUT:XML_PAGE_EXPORT_TABLE"/>
+    </page>
+  </tabctrl>
+</include>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<include>
+  <treeview pos="0,1,-0,-0" sbArrowSize="0,0" size="full,full"  name="import_table_treeview" itemHeight="20"  indent="0" sbWid="7"  >
+    <template >
+      <item_group  height="30" width="full" colorHover="#edf5faff" colorSelected="#edf5faff" trackMouseEvent="0" >
+        <toggle pos="5,|0,@17,@17"  offset="0,-0.5" name="tgl_switch" skin="_skin.sys.tree.toggle" tip="show how to use switch"/>
+        <text pos="[3,|0" offset="0,-0.5" colorText="#000000ff" name="txt_dll_name"></text>        
+        <hr size="1" mode="horizontal" colorLine="#555555" alpha="20" pos="0,-1,-0,-0" />
+      </item_group>
+      <item_data height="50" width="full" trackMouseEvent="0" colorHover="#fcf0c1ff" colorSelected="#fdedaeff">
+        <text  pos="8,|" offset="0,-0.50" name="txt_idx">idx</text>
+        <text pos="66,{" name="txt_fun_name" colorText="#666666">name</text>
+        <hr size="1" mode="horizontal" colorLine="#555555" alpha="10" pos="0,-1,-0,-0" />
+      </item_data>
+    </template>
+  </treeview>
+</include>
