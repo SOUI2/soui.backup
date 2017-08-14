@@ -28,6 +28,9 @@ translucent="1"
       <page title="MD5" name="page_md5" tip="计算文件的MD5值">
         <include src="layout:page_md5"/>
       </page>
+      <page title="PE Tool" iconIndex="8" tip="PE小助手">
+        <include src="layout:page_pe_tool"/>
+      </page>
       <page title="关于" iconIndex="8" tip="关于本工具">
         <include src="layout:page_about"/>
       </page>

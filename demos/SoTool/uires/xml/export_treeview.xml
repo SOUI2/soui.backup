@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<include>
+  <treeview pos="0,1,-0,-0" size="full,full" sbArrowSize="0,0" name="export_table_treeview" itemHeight="20"  indent="10" sbWid="7"  >
+    <template >      
+      <item_data height="50"  width="full" trackMouseEvent="0" colorHover="#fcf0c1ff" colorSelected="#fdedaeff">
+        <text pos="10,|" offset="0,-0.5" name="txt_fun_name" colorText="#666666">name</text>
+        <hr size="1" mode="horizontal" colorLine="#555555" alpha="10" pos="0,-1,-0,-0" />
+      </item_data>
+    </template>
+  </treeview>
+</include>
