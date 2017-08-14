@@ -5,8 +5,8 @@
 struct ImportTableItemData
 {	
 	bool bGroup;//是否是一个分组
-	SStringT strIdx = L"";//函数索引
-	SStringT strName = L"";//函数名
+	SStringT strIdx;//函数索引
+	SStringT strName;//函数名
 };
 class CImportTableTreeViewAdapter :public STreeAdapterBase<ImportTableItemData>
 {

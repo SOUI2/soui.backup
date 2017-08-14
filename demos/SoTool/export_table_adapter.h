@@ -4,7 +4,7 @@
 #include <helper/SAdapterBase.h>
 struct ExportTableItemData
 {		
-	SStringT strName = L"";//用户名
+	SStringT strName;//用户名
 };
 class CExportTableTreeViewAdapter :public STreeAdapterBase<ExportTableItemData>
 {
