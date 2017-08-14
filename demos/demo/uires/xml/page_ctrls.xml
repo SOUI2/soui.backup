@@ -240,7 +240,7 @@
     </page>
     <page title="calendar" layout="vbox">
       <window size="-2,-1" layout="hbox" padding="5,5,5,5">
-        <dateTimePicker size="240,30" name="timepicker" padding="4,0,4,0" >
+        <dateTimePicker size="240,30" name="timepicker" padding="4,0,4,0" dropWidth="300" timeEnable="1" >
           <calstyle ncSkin="_skin.sys.border" margin="1"/>
         </dateTimePicker>
       </window>

@@ -32,6 +32,8 @@ SYS_MENU_BORDER         PNG                     "theme_sys_res\\sys_menu_border.
 SYS_MENU_SKIN           PNG                     "theme_sys_res\\sys_menu_skin.png"
 SYS_ICONS               PNG                     "theme_sys_res\\sys_icons.png"
 SYS_WND_BKGND           PNG                     "theme_sys_res\\sys_wnd_bkgnd.png"
+SYS_BTN_PREV           	PNG                     "theme_sys_res\\sys_btn_prev.png"
+SYS_BTN_NEXT           	PNG                     "theme_sys_res\\sys_btn_next.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //

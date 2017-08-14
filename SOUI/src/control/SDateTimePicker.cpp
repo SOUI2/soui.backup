@@ -4,11 +4,13 @@
 
 namespace SOUI
 {
+
 	SCalendarEx::SCalendarEx(WORD iYeay, WORD iMonth, WORD iDay)
 	{
 		Init();
 		if (!SetDate(iYeay, iMonth, iDay))
 		{
+			//CTime tm = CTime::GetCurrentTime();
 			SetDate(m_Today.wYear, m_Today.wMonth, m_Today.wDay);
 		}
 	}
@@ -27,6 +29,11 @@ namespace SOUI
 
 	void SCalendarEx::Init()
 	{
+		//m_pSkinPrev = GETBUILTINSKIN(SKIN_SYS_BTN_NORMAL);
+		//m_pSkinNext = GETBUILTINSKIN(SKIN_SYS_BTN_NORMAL);
+		m_pSkinPrev = GETSKIN(_T("_skin.sys.btn.prev"), GetScale());
+		m_pSkinNext = GETSKIN(_T("_skin.sys.btn.next"), GetScale());
+
 		m_bFocusable = TRUE;
 		GetLocalTime(&m_Today);
 
@@ -36,6 +43,7 @@ namespace SOUI
 		m_nWeekHeight.setSize(20.f, SLayoutSize::dp);
 		m_nFooterHeight.setSize(20.f, SLayoutSize::dp);
 
+		m_crSelText = RGBA(0xFF, 0xFF, 0xFF, 255);
 		m_crSelDayBack = RGBA(0x0, 0x7A, 0xCC, 255);
 		m_crOtherDayText = RGBA(0xA0, 0xA0, 0xA0, 255);
 
@@ -173,16 +181,29 @@ namespace SOUI
 
 	void SCalendarEx::DrawYearMonth(IRenderTarget* pRT, const CRect& rect)
 	{
-		COLORREF crText = pRT->GetTextColor();
+		int nHeight = m_nYearMonthHeight.toPixelSize(GetScale());
+
+		// 绘制 上一个 按钮
+		DWORD dwPrevState = 0;
 		if (HIT_LEFT == m_nHoverItem)
 		{
-			pRT->SetTextColor(m_crHoverText);
+			dwPrevState = 1;
 		}
-
-		CRect rcItem = rect;
-		rcItem.right = rcItem.left + m_nYearMonthHeight.toPixelSize(GetScale()) ;
-		pRT->DrawText(_T("<"), -1, rcItem, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
-
+				
+		if (m_pSkinPrev)
+		{
+			SIZE si = m_pSkinPrev->GetSkinSize();
+			int n = (nHeight - si.cy) / 2;
+			CRect rcItem = rect;
+			rcItem.left += n;
+			rcItem.right = rcItem.left + si.cx;
+			rcItem.top += n;
+			rcItem.bottom = rcItem.top + si.cy;
+			m_pSkinPrev->Draw(pRT, rcItem, dwPrevState);
+		}
+		
+		// 绘制 年月
+		COLORREF crText = pRT->GetTextColor();
 		if (HIT_YEAR == m_nHoverItem)
 		{
 			pRT->SetTextColor(m_crHoverText);
@@ -195,17 +216,27 @@ namespace SOUI
 		CRect rc = rect;
 		pRT->DrawText(szYearMonth, -1, rc, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
 
+		pRT->SetTextColor(crText);
+
+		// 绘制 下一个 按钮
+		DWORD dwNextState = 0;
 		if (HIT_RIGHT == m_nHoverItem)
 		{
-			pRT->SetTextColor(m_crHoverText);
+			dwNextState = 1;
 		}
-		else
-			pRT->SetTextColor(crText);
-
-		rcItem.left = rect.right - m_nYearMonthHeight.toPixelSize(GetScale()) ;
-		rcItem.right = rect.right;
-		pRT->DrawText(_T(">"), -1, rcItem, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
-		pRT->SetTextColor(crText);
+				
+		if (m_pSkinNext)
+		{
+			SIZE si = m_pSkinNext->GetSkinSize();
+			int n = (nHeight - si.cy) / 2;
+			CRect rcItem = rect;
+			rcItem.right -= n;
+			rcItem.left = rcItem.right - si.cx;
+			rcItem.top += n;
+			rcItem.bottom = rcItem.top + si.cy;
+			
+			m_pSkinNext->Draw(pRT, rcItem, dwNextState);
+		}
 	}
 
 	void SCalendarEx::DrawWeek(IRenderTarget* pRT, const CRect& rect)
@@ -246,17 +277,26 @@ namespace SOUI
 			// today 框 就用 textcolor
 			pRT->DrawRoundRect(rcDay, ptRound);
 		}
-
+		DWORD dwState = 0;
 		if (m_nSelItem == nItem)
 		{
 			if (CR_INVALID != m_crSelDayBack)
 				pRT->FillSolidRoundRect(rcDay, ptRound, m_crSelDayBack);
+
+			if(CR_INVALID != m_crSelText)
+				pRT->SetTextColor(m_crSelText);
+
+			dwState = 2;
 		}
 		else if (m_nHoverItem == nItem)				// 
 		{
 			pRT->SetTextColor(m_crHoverText);
+			dwState = 1;
 		}
 		
+		if (NULL != m_pSkinDay)
+			m_pSkinDay->Draw(pRT, rcDay, dwState);
+
 		SStringT sDay;
 		sDay.Format(_T("%d"), dayInfo.iDay);
 		pRT->DrawText(sDay, -1, rcDay, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
@@ -345,7 +385,7 @@ namespace SOUI
 			
 			m_nSelItem = nItem;
 			EventCalendarExChanged evt(this);
-			evt.nBtnType = nItem;
+			evt.nBtnType = nItem;		// 天数 就是 0-41
 			evt.iNewDay = dayInfo.iDay;
 			if (dayInfo.nType < 0)		// 点击 上一个月 的天
 			{
@@ -484,6 +524,7 @@ namespace SOUI
 		, m_nCharWidth(0)
 		, m_pCalendar(NULL)
 		, m_nDropWidth(220)
+		, m_bTimeEnable(true)
 	{
 		m_evtSet.addEvent(EVENTID(EventDateTimeChanged));
 		m_pNcSkin = GETBUILTINSKIN(SKIN_SYS_BORDER);
@@ -671,32 +712,35 @@ namespace SOUI
 		//rcText.left = rcText.right;
 		//rcText.right = rcText.left + m_nCharWidth;
 		//pRT->DrawText(L" ", -1, rcText, GetTextAlign());
+		if (m_bTimeEnable)
+		{
+			// hour
+			rcText.left = rcText.right + m_nCharWidth;
+			rcText.right = rcText.left + m_nNumWidth * 2;
+			strText.Format(_T("%02d"), m_sysTime.wHour);
+			Draw(eDT_Hour, pRT, strText, rcText);
+
+			rcText.left = rcText.right;
+			rcText.right = rcText.left + m_nCharWidth;
+			pRT->DrawText(L":", -1, rcText, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+			// minute
+			rcText.left = rcText.right;
+			rcText.right = rcText.left + m_nNumWidth * 2;
+			strText.Format(_T("%02d"), m_sysTime.wMinute);
+			Draw(eDT_Minute, pRT, strText, rcText);
+
+			rcText.left = rcText.right;
+			rcText.right = rcText.left + m_nCharWidth;
+			pRT->DrawText(L":", -1, rcText, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+			// second
+			rcText.left = rcText.right;
+			rcText.right = rcText.left + m_nNumWidth * 2;
+			strText.Format(_T("%02d"), m_sysTime.wSecond);
+			Draw(eDT_Second, pRT, strText, rcText);
+		}
 		
-		// hour
-		rcText.left = rcText.right + m_nCharWidth;
-		rcText.right = rcText.left + m_nNumWidth * 2;
-		strText.Format(_T("%02d"), m_sysTime.wHour);
-		Draw(eDT_Hour, pRT, strText, rcText);
-	
-		rcText.left = rcText.right;
-		rcText.right = rcText.left + m_nCharWidth;
-		pRT->DrawText(L":", -1, rcText, DT_CENTER|DT_VCENTER|DT_SINGLELINE);
-	
-		// minute
-		rcText.left = rcText.right;
-		rcText.right = rcText.left + m_nNumWidth * 2;
-		strText.Format(_T("%02d"), m_sysTime.wMinute);
-		Draw(eDT_Minute, pRT, strText, rcText);
-		
-		rcText.left = rcText.right;
-		rcText.right = rcText.left + m_nCharWidth;
-		pRT->DrawText(L":", -1, rcText, DT_CENTER|DT_VCENTER|DT_SINGLELINE);
-				
-		// second
-		rcText.left = rcText.right;
-		rcText.right = rcText.left + m_nNumWidth * 2;
-		strText.Format(_T("%02d"), m_sysTime.wSecond);
-		Draw(eDT_Second, pRT, strText, rcText);
 	
 		
 		AfterPaint(pRT, painter);
@@ -756,18 +800,30 @@ namespace SOUI
 
 		EnDateType eSelType = eDT_NULL;
 
-		if(nWidth < (4 * m_nNumWidth + m_nCharWidth))
+		if (nWidth < (4 * m_nNumWidth + m_nCharWidth))
+		{
 			eSelType = eDT_Year;			// year
-		else if(nWidth < (6 * m_nNumWidth + 2 * m_nCharWidth))
+		}
+		else if (nWidth < (6 * m_nNumWidth + 2 * m_nCharWidth))
+		{
 			eSelType = eDT_Month;			// month
-		else if(nWidth < (8 * m_nNumWidth + 3 * m_nCharWidth))
+		}
+		else if (!m_bTimeEnable || nWidth < (8 * m_nNumWidth + 3 * m_nCharWidth))
+		{
 			eSelType = eDT_Day;			// day
-		else if(nWidth < (10 * m_nNumWidth + 4 * m_nCharWidth))
+		}
+		else if (nWidth < (10 * m_nNumWidth + 4 * m_nCharWidth))
+		{
 			eSelType = eDT_Hour;			// hour
-		else if(nWidth < (12 * m_nNumWidth + 5 * m_nCharWidth))
+		}
+		else if (nWidth < (12 * m_nNumWidth + 5 * m_nCharWidth))
+		{
 			eSelType = eDT_Minute;			// minute
+		}
 		else
+		{
 			eSelType = eDT_Second;			// second
+		}
 
 		return eSelType;
 	}
@@ -780,7 +836,7 @@ namespace SOUI
 
 	void SDateTimePicker::SetTime(WORD wYear, WORD wMonth, WORD wDay, WORD wHour, WORD wMinute, WORD wSecond)
 	{
-		m_sysTime.wYear;
+		m_sysTime.wYear = wYear;
 		m_sysTime.wMonth = wMonth;
 		m_sysTime.wDay = wDay;
 		m_sysTime.wHour = wHour;
@@ -796,9 +852,12 @@ namespace SOUI
 
 	SStringT SDateTimePicker::GetWindowText()
 	{
-		return SStringT().Format(_T("%04d-%02d-%02d %02d:%02d:%02"),
-			m_sysTime.wYear, m_sysTime.wMonth, m_sysTime.wDay,
-			m_sysTime.wHour, m_sysTime.wMinute, m_sysTime.wSecond);
+		SStringT szText;
+		szText.Format(_T("%04d-%02d-%02d"), m_sysTime.wYear, m_sysTime.wMonth, m_sysTime.wDay);
+		if(m_bTimeEnable)
+			szText.AppendFormat(_T(" %02d:%02d:%02d"), m_sysTime.wHour, m_sysTime.wMinute, m_sysTime.wSecond);
+
+		return szText;
 	}
 
 	void SDateTimePicker::OnLButtonDown(UINT nFlags, CPoint pt)
@@ -831,7 +890,7 @@ namespace SOUI
 		m_pDropDownWnd = new SDropDownWnd_ComboBox(this);		// 直接 用这个 处理 wheel 滚动
 		CRect rcPopup;
 		SLayoutSize nWid;
-		nWid.setSize((float)m_nDropWidth, SLayoutSize::dp);
+		nWid.setSize(m_nDropWidth, SLayoutSize::dp);
 		bool bDown = CalcPopupRect(nWid.toPixelSize(GetScale()), rcPopup);
 		m_pDropDownWnd->Create(rcPopup, 0);
 

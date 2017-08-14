@@ -1521,7 +1521,7 @@ bool LogerManager::pushLog(LoggerId id, int level, const char * filter, const ch
         showColorText(pLog->_content, pLog->_level);
     }
 
-    if (LOG4Z_ALL_DEBUGOUTPUT_DISPLAY && LOG4Z_ALL_SYNCHRONOUS_OUTPUT)
+    if (LOG4Z_ALL_DEBUGOUTPUT_DISPLAY)
     {
 #if defined (WIN32) || defined(_WIN64)
         OutputDebugStringA(pLog->_content);

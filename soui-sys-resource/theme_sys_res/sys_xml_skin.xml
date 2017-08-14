@@ -31,5 +31,6 @@
   <imgframe name="_skin.sys.menu.skin" src="PNG:SYS_MENU_SKIN" states="2" left="25" top="2" bottom="2"/>
   <imglist name="_skin.sys.icons" src="PNG:SYS_ICONS" states="12"/>
   <imgframe name="_skin.sys.wnd.bkgnd"  src="PNG:SYS_WND_BKGND" left="5" right="5" top="40" bottom="40"/>
-
+  <imglist name="_skin.sys.btn.prev" src="PNG:SYS_BTN_PREV" states="3" />
+  <imglist name="_skin.sys.btn.next" src="PNG:SYS_BTN_NEXT" states="3" />
 </skin>
