@@ -277,7 +277,7 @@ namespace SOUI
 			// today 框 就用 textcolor
 			pRT->DrawRoundRect(rcDay, ptRound);
 		}
-
+		DWORD dwState = 0;
 		if (m_nSelItem == nItem)
 		{
 			if (CR_INVALID != m_crSelDayBack)
@@ -285,12 +285,18 @@ namespace SOUI
 
 			if(CR_INVALID != m_crSelText)
 				pRT->SetTextColor(m_crSelText);
+
+			dwState = 2;
 		}
 		else if (m_nHoverItem == nItem)				// 
 		{
 			pRT->SetTextColor(m_crHoverText);
+			dwState = 1;
 		}
 		
+		if (NULL != m_pSkinDay)
+			m_pSkinDay->Draw(pRT, rcDay, dwState);
+
 		SStringT sDay;
 		sDay.Format(_T("%d"), dayInfo.iDay);
 		pRT->DrawText(sDay, -1, rcDay, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
