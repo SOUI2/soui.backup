@@ -41,9 +41,12 @@ protected:
 		ATTR_LAYOUTSIZE(L"yearHeight", m_nYearMonthHeight, FALSE)
 		ATTR_LAYOUTSIZE(L"weekHeight", m_nWeekHeight, FALSE)
 		ATTR_LAYOUTSIZE(L"todayHeight", m_nFooterHeight, FALSE)
-		ATTR_COLOR(L"colorOther", m_crOtherDayText, TRUE)
-		ATTR_COLOR(L"colorSel", m_crSelDayBack, TRUE)
-		ATTR_COLOR(L"colorHover", m_crHoverText, TRUE)
+		ATTR_COLOR(L"colorSelText", m_crOtherDayText, TRUE)
+		ATTR_COLOR(L"colorOtherText", m_crOtherDayText, TRUE)
+		ATTR_COLOR(L"colorSelBg", m_crSelDayBack, TRUE)
+		ATTR_COLOR(L"colorHoverText", m_crHoverText, TRUE)
+		ATTR_SKIN(L"prevSkin", m_pSkinPrev, FALSE)
+		ATTR_SKIN(L"nextSkin", m_pSkinNext, FALSE)
 		ATTR_SKIN(L"daySkin", m_pSkinDay, FALSE)
 	SOUI_ATTRS_END()
 
@@ -71,10 +74,13 @@ protected:
 	SLayoutSize			m_nWeekHeight;				//星期高度
 	SLayoutSize			m_nFooterHeight;			
 	
+	COLORREF				m_crSelText;
 	COLORREF				m_crOtherDayText;			//其他 天 的 字体颜色 
 	COLORREF				m_crSelDayBack;			// 选中 的 天 背颜色
 	COLORREF				m_crHoverText;
 	
+	ISkinObj*				m_pSkinPrev;
+	ISkinObj*				m_pSkinNext;
 	ISkinObj*				m_pSkinDay;					// 天 皮肤 
 
 	STrText					m_strWeek[7];  /**< 表头文本 */
@@ -152,6 +158,7 @@ protected:
 	
 	SOUI_ATTRS_BEGIN()
 		ATTR_SKIN(L"btnSkin", m_pSkinBtn, FALSE)
+		ATTR_BOOL(L"timeEnable", m_bTimeEnable, FALSE)
 		ATTR_INT(L"dropWidth", m_nDropWidth, FALSE)
 	SOUI_ATTRS_END()
 
@@ -184,6 +191,7 @@ protected:
 	SStringT								m_sKey;
 
 	int										m_nDropWidth;
+	bool									m_bTimeEnable;				// 是否 有 时 分 秒
 	SCalendarEx*						m_pCalendar;
 };
 }
