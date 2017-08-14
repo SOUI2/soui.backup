@@ -1,0 +1,4 @@
+﻿<menuRoot itemHeight="26" iconPos="4,4" textOffset="5" iconBarWidth="24" maxWidth="180" minWidth="170" margin="5,5,5,5" colorBkgnd="#ff0000">
+  <menuItem hotKey="e" id="2"  >删除</menuItem>
+  <menuItem id="1" icon="6" >添加</menuItem>
+</menuRoot>
