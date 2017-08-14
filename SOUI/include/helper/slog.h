@@ -1,7 +1,7 @@
 #pragma once
 #include <intrin.h>
 #include <trace.h>
-
+#include <stdio.h>
 
 #ifndef GETLOGMGR
 #include "SApp.h"
