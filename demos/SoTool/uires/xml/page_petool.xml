@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <include>
-  <tabctrl name="tab_list" pos="0,0,-0,-0" animateSteps="10" show="1" curSel="0" focusable="0" tabHeight="30" colorBkgnd="#ffffff">
+  <text pos="|,|" offset="-0.5,-0.5">拖动DLL或EXE到这来</text>
+  <tabctrl name="tab_list" pos="0,0,-0,-0" animateSteps="10" show="1" curSel="0" focusable="0" tabHeight="30">
     <page title="导入表">
       <include src="LAYOUT:XML_PAGE_IMPORT_TABLE"/>
     </page>

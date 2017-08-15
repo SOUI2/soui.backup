@@ -36,4 +36,9 @@
   <ICON>
     <file name="ICON_LOGO"  path="image\soui.ico"    />
   </ICON>
+  <SMENUEX>
+    <file name="menuex_group" path="xml\menu\menuex_group.xml"/>
+    <file name="menuex_item" path="xml\menu\menuex_item.xml"  />
+    <file name="menuex_none" path="xml\menu\menuex_none.xml"  />
+  </SMENUEX>
 </resource>

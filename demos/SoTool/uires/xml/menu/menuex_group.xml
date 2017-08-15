@@ -1,0 +1,7 @@
+﻿<menuRoot itemHeight="26" iconPos="4,4" textOffset="15" iconBarWidth="24" maxWidth="180" minWidth="170" margin="5,5,5,5" colorBkgnd="#ff0000">
+  <menuItem hotKey="e" id="1"  >插入分组</menuItem>
+  <menuItem id="2" icon="1" >删除分组</menuItem>
+  <sep/>
+  <menuItem id="3" icon="1" >添加一个子项</menuItem>
+  <menuItem id="4" icon="1" >添加一个子分组</menuItem>
+</menuRoot>

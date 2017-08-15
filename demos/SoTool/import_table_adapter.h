@@ -44,6 +44,21 @@ public:
 			pItem->FindChildByName(L"txt_idx")->SetWindowTextW(ii.data.strIdx);
 			pItem->FindChildByName(L"txt_fun_name")->SetWindowTextW(ii.data.strName);
 		}
+		SOUI::HTREEITEM hParent;
+		hParent = GetParentItem(loc);
+		int iDep = 0;
+		while (hParent != ITEM_ROOT)
+		{
+			++iDep;
+			hParent = GetParentItem(hParent);
+		}
+		SWindow *containerWnd = pItem->FindChildByName(L"container");
+		if (containerWnd)
+		{
+			SStringW strPos;
+			strPos.Format(L"%d,0,-0,-0", iDep *10);
+			containerWnd->SetAttribute(L"pos", strPos);			
+		}
 	}
 
 	bool OnItemPanleClick(EventArgs *pEvt)
