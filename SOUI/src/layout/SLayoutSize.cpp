@@ -14,6 +14,10 @@ namespace SOUI
 
 	}
 
+	SLayoutSize::SLayoutSize(float _fSize,Unit _unit):fSize(_fSize),unit(_unit)
+	{
+	}
+
 	static int fround(float v)
 	{
 		return (int)floor(v+0.5f);
