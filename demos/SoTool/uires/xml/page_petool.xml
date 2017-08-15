@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <include>
-  <text pos="|,|" offset="-0.5,-0.5">拖动DLL或EXE到这来</text>
-  <tabctrl name="tab_list" pos="0,0,-0,-0" animateSteps="10" show="1" curSel="0" focusable="0" tabHeight="30">
+  <tabctrl name="tab_list" pos="0,0,-0,-0" animateSteps="10" show="1" curSel="0" focusable="0" tabHeight="30" tabAlign="bottom" tabSkin="skin_tabskin">
     <page title="导入表">
       <include src="LAYOUT:XML_PAGE_IMPORT_TABLE"/>
     </page>
@@ -9,4 +8,5 @@
       <include src="LAYOUT:XML_PAGE_EXPORT_TABLE"/>
     </page>
   </tabctrl>
+  <text pos="|,|" offset="-0.5,-0.5" font="adding:20" colorText="#cccccc">拖动DLL或EXE到这来</text>
 </include>
