@@ -1,4 +1,4 @@
-﻿<menu iconSkin="skin_small_icons" itemHeight="26" iconMargin="4" textMargin="8" maxWidth="90">
+﻿<menu iconSkin="skin_small_icons" itemHeight="26" iconMargin="4" textMargin="8" maxWidth="190">
   <item id="1" check="1">导出配置</item>
   <item id="2" radio="1">导入配置</item>
   <item id="3" disable="1">检查更新</item>
