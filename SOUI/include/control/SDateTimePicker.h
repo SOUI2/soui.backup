@@ -169,7 +169,7 @@ protected:
 		MSG_WM_MOUSELEAVE(OnMouseLeave)
 		MSG_WM_MOUSEWHEEL(OnMouseWheel)
 		MSG_WM_KEYDOWN(OnKeyDown) 
-		//MSG_WM_CHAR(OnChar)
+		MSG_WM_CHAR(OnChar)
 		MSG_WM_DESTROY(OnDestroy)
 		MSG_WM_SETFOCUS_EX(OnSetFocus)
 		MSG_WM_KILLFOCUS_EX(OnKillFocus)

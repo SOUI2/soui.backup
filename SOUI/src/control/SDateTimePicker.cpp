@@ -1038,6 +1038,7 @@ namespace SOUI
 		Invalidate();
 	}
 
+
 	void SDateTimePicker::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 		if(nChar > '9' || nChar < '0')
@@ -1046,28 +1047,71 @@ namespace SOUI
 		if(eDT_NULL == m_eSelDateType)
 			return ;
 		// 这个 不写了   谁帮我写了吧
-		/*
+		
 		switch(m_eSelDateType)
 		{
 		case eDT_Year :
-		m_sKey.AppendFormat(_T("%c"), nChar);
-		m_sysTime.wYear = nChar - 48;
-		Invalidate();
+		//m_sKey.AppendFormat(_T("%c"), nChar);
+		//m_sysTime.wYear = (m_sysTime.wYear%1000)*10 +(nChar - 48);
+		//Invalidate();
 		break;
 		case eDT_Month :
+			m_sysTime.wMonth = (m_sysTime.wMonth % 10) * 10 + (nChar - 48);
+			if (m_sysTime.wMonth > 12 || m_sysTime.wMonth == 0)
+			{
+				if (nChar == 48)
+				{
+					m_sysTime.wMonth = 1;
+				}
+				else
+				{
+					m_sysTime.wMonth = nChar - 48;
+				}
+			}
 		break;
 		case eDT_Day :
+			m_sysTime.wDay = (m_sysTime.wDay % 10) * 10 + (nChar - 48);
+			if (!SCalendarCore::DateCheck(m_sysTime.wYear,m_sysTime.wMonth,m_sysTime.wDay))
+			{
+				if (nChar == 48)
+				{
+					m_sysTime.wDay = 1;
+				}
+				else
+				{
+					m_sysTime.wDay = nChar - 48;
+				}
+			}
 		break;
 		case eDT_Hour :
+			m_sysTime.wHour = (m_sysTime.wHour % 10) * 10 + (nChar - 48);
+			if (m_sysTime.wHour > 23 )
+			{
+				m_sysTime.wHour = nChar - 48;
+			}
 		break;
 		case eDT_Minute :
+			m_sysTime.wMinute = (m_sysTime.wMinute % 10) * 10 + (nChar - 48);
+			if (m_sysTime.wMinute > 59)
+			{
+				m_sysTime.wMinute = nChar - 48;
+			}
 		break;
 		case eDT_Second :
+			m_sysTime.wSecond = (m_sysTime.wSecond % 10) * 10 + (nChar - 48);
+			if (m_sysTime.wSecond > 59 )
+			{				
+				m_sysTime.wSecond = nChar - 48;
+			}
 		break;
 		default:
 		break;
 		}
-		*/
+		if (eDT_NULL != m_eSelDateType)
+		{
+			Invalidate();
+		}
+			
 		
 	}
 
