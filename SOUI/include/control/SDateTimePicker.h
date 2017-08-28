@@ -138,8 +138,9 @@ protected:
 	bool OnDateChanged(EventCalendarExChanged* pEvt);
 	bool OnDateCmd(EventCmd* pEvt);
 	void GetDropBtnRect(LPRECT pBtnRc, LPRECT pSkinRc = NULL);
+	SStringT ToFormatText(EnDateType eType, WORD wNum);
 	bool CalcPopupRect(int nHeight, CRect& rcPopup);
-	void Draw(EnDateType eType, IRenderTarget* pRT, SStringT& szText, CRect& rcText);
+	void Draw(EnDateType eType, IRenderTarget* pRT, WORD wNum, CRect& rcText);
 protected:
 	void OnPaint(IRenderTarget* pRT);
 	void OnLButtonDown(UINT nFlags, CPoint pt);
@@ -193,5 +194,6 @@ protected:
 	int										m_nDropWidth;
 	bool									m_bTimeEnable;				// 是否 有 时 分 秒
 	SCalendarEx*						m_pCalendar;
+	WORD								m_wCharNum;
 };
 }
