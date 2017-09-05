@@ -102,22 +102,26 @@ public:
 				return -1;
 			}
 			PIMAGE_IMPORT_DESCRIPTOR pImportTable = (PIMAGE_IMPORT_DESCRIPTOR)ImageRvaToVa(
-				pNtHeaders,
+				(PIMAGE_NT_HEADERS)pNtHeaders,
 				lpBaseAddress,
 				Rva_import_table,
 				NULL
 			);
 			IMAGE_IMPORT_DESCRIPTOR null_iid;
-			IMAGE_THUNK_DATA null_thunk;
+			IMAGE_THUNK_DATA32 null_thunk;
 			memset(&null_iid, 0, sizeof(null_iid));
 			memset(&null_thunk, 0, sizeof(null_thunk));
 			//每个元素代表了一个引入的DLL。
 			ImportTableItemData data;
+
+			data.bGroup = false;			
+			data.strName = L"32位PE";
+			InsertItem(data);
 			for (i = 0; memcmp(pImportTable + i, &null_iid, sizeof(null_iid)) != 0; i++)
 			{
 				//LPCSTR: 就是 const char*
 				LPCSTR szDllName = (LPCSTR)ImageRvaToVa(
-					pNtHeaders, lpBaseAddress,
+					(PIMAGE_NT_HEADERS)pNtHeaders, lpBaseAddress,
 					pImportTable[i].Name, //DLL名称的RVA
 					NULL);
 				data.bGroup = TRUE;
@@ -126,7 +130,7 @@ public:
 				// 		SetItemExpanded(hRoot, FALSE);			
 				//IMAGE_TRUNK_DATA 数组（IAT：导入地址表）前面
 				PIMAGE_THUNK_DATA32 pThunk = (PIMAGE_THUNK_DATA32)ImageRvaToVa(
-					pNtHeaders, lpBaseAddress,
+					(PIMAGE_NT_HEADERS)pNtHeaders, lpBaseAddress,
 					pImportTable[i].OriginalFirstThunk,
 					NULL);
 				int iFunCount = 0;
@@ -146,7 +150,7 @@ public:
 						//按名称导入，我们再次定向到函数序号和名称
 						//注意其地址不能直接用，因为仍然是RVA！
 						PIMAGE_IMPORT_BY_NAME pFuncName = (PIMAGE_IMPORT_BY_NAME)ImageRvaToVa(
-							pNtHeaders, lpBaseAddress,
+							(PIMAGE_NT_HEADERS)pNtHeaders, lpBaseAddress,
 							pThunk[j].u1.AddressOfData,
 							NULL);
 						data.bGroup = false;
@@ -162,7 +166,7 @@ public:
 			}
 			notifyBranchChanged(ITvAdapter::ITEM_ROOT);
 		}
-		if (pNtHeaders->FileHeader.Machine == IMAGE_FILE_MACHINE_IA64 ||
+		else if (pNtHeaders->FileHeader.Machine == IMAGE_FILE_MACHINE_IA64 ||
 			pNtHeaders->FileHeader.Machine == IMAGE_FILE_MACHINE_AMD64)
 		{
 			//PIMAGE_NT_HEADERS64 pNtHeaders64 = (PIMAGE_NT_HEADERS64)(lpBaseAddress + pDosHeader->e_lfanew);
@@ -174,7 +178,7 @@ public:
 				return -1;
 			}
 			PIMAGE_IMPORT_DESCRIPTOR pImportTable = (PIMAGE_IMPORT_DESCRIPTOR)ImageRvaToVa(
-				pNtHeaders,
+				(PIMAGE_NT_HEADERS)pNtHeaders,
 				lpBaseAddress,
 				Rva_import_table,
 				NULL
@@ -186,11 +190,14 @@ public:
 			memset(&null_thunk, 0, sizeof(null_thunk));
 			//每个元素代表了一个引入的DLL。
 			ImportTableItemData data;
+			data.bGroup = false;
+			data.strName = L"64位PE";
+			InsertItem(data);
 			for (i = 0; memcmp(pImportTable + i, &null_iid, sizeof(null_iid)) != 0; i++)
 			{
 				//LPCSTR: 就是 const char*
 				LPCSTR szDllName = (LPCSTR)ImageRvaToVa(
-					pNtHeaders, lpBaseAddress,
+					(PIMAGE_NT_HEADERS)pNtHeaders, lpBaseAddress,
 					pImportTable[i].Name, //DLL名称的RVA
 					NULL);
 				data.bGroup = TRUE;
@@ -199,7 +206,7 @@ public:
 				// 		SetItemExpanded(hRoot, FALSE);			
 				//IMAGE_TRUNK_DATA 数组（IAT：导入地址表）前面
 				PIMAGE_THUNK_DATA64 pThunk = (PIMAGE_THUNK_DATA64)ImageRvaToVa(
-					pNtHeaders, lpBaseAddress,
+					(PIMAGE_NT_HEADERS)pNtHeaders, lpBaseAddress,
 					pImportTable[i].OriginalFirstThunk,
 					NULL);
 				int iFunCount = 0;
@@ -219,7 +226,7 @@ public:
 						//按名称导入，我们再次定向到函数序号和名称
 						//注意其地址不能直接用，因为仍然是RVA！
 						PIMAGE_IMPORT_BY_NAME pFuncName = (PIMAGE_IMPORT_BY_NAME)ImageRvaToVa(
-							pNtHeaders, lpBaseAddress,
+							(PIMAGE_NT_HEADERS)pNtHeaders, lpBaseAddress,
 							pThunk[j].u1.AddressOfData,
 							NULL);
 						data.bGroup = false;
