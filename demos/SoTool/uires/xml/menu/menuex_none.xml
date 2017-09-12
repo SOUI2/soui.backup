@@ -1,0 +1,4 @@
+﻿<menuRoot itemHeight="26" iconPos="4,4" textOffset="5" iconBarWidth="24" maxWidth="180" minWidth="170" margin="5,5,5,5" colorBkgnd="#ff0000">
+  <menuItem hotKey="a" id="1" >添加分组</menuItem>
+  <sep/>
+</menuRoot>

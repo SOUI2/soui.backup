@@ -217,7 +217,7 @@ namespace SOUI
 
     int STreeViewItemLocator::_GetBranchWidth(HTREEITEM hBranch) const
     {
-        return m_adapter->GetItemDataByIndex(hBranch,ITvAdapter::DATA_INDEX_BRANCH_WIDTH);
+        return (int)m_adapter->GetItemDataByIndex(hBranch,ITvAdapter::DATA_INDEX_BRANCH_WIDTH);
     }
 
     void STreeViewItemLocator::_UpdateBranchWidth(HTREEITEM hItem,int nOldWidth,int nNewWidth)
@@ -486,7 +486,7 @@ namespace SOUI
 		    {
 		        pt.y = m_tvItemLocator->Item2Position(hItem)-m_siVer.nPos;
 		    }
-		    CSize szItem(m_tvItemLocator->GetItemWidth(hItem),m_tvItemLocator->GetItemWidth(hItem));
+		    CSize szItem(m_tvItemLocator->GetItemWidth(hItem),m_tvItemLocator->GetItemHeight(hItem));
 		    
 		    pt.x = m_tvItemLocator->GetItemIndent(hItem) - m_siHoz.nPos;
 		    
@@ -788,7 +788,13 @@ namespace SOUI
 	{
         if(!m_adapter) return;
         HTREEITEM hItem = m_tvItemLocator->Position2Item(m_siVer.nPos);
-        if(hItem == ITvAdapter::ITEM_NULL) return;
+		if (hItem == ITvAdapter::ITEM_NULL)
+		{
+			//如果没有可显示的，则移除所有item
+			m_visible_items.RemoveAll();
+			m_pVisibleMap->RemoveAll();
+			return;
+		}
         
         CSize szOldView;
         szOldView.cx = m_tvItemLocator->GetTotalWidth();

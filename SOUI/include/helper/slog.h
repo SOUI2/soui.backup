@@ -1,13 +1,11 @@
 #pragma once
-#include "SApp.h"
 #include <intrin.h>
-#include <trace.h>
+#include <stdio.h>
 
-namespace SOUI
-{
-	class Log4zBinary;
-	class Log4zStream;
-}
+#ifndef GETLOGMGR
+#include "SApp.h"
+#define GETLOGMGR() SOUI::SApplication::getSingletonPtr()?SOUI::SApplication::getSingleton().GetLogManager():NULL
+#endif
 
 #ifndef E_RANGE
 #define E_RANGE 9944
@@ -23,10 +21,16 @@ namespace SOUI
 #define LOG4Z_FORMAT_INPUT_ENABLE
 #endif
 
+namespace SOUI
+{
+	class Log4zBinary;
+	class Log4zStream;
+}
+
 //! base micro.
 #define SOUI_LOG_STREAM(id_or_name, filter, level,  log)\
     do{\
-		SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingletonPtr()?SOUI::SApplication::getSingleton().GetLogManager():NULL; \
+		SOUI::ILog4zManager * pLogMgr = GETLOGMGR(); \
 		char logBuf[SOUI::LOG4Z_LOG_BUF_SIZE];\
 		SOUI::Log4zStream ss(logBuf, SOUI::LOG4Z_LOG_BUF_SIZE);\
 		ss << log;\
@@ -36,19 +40,19 @@ namespace SOUI
 			pLogMgr->pushLog(id_or_name, level, filter, logBuf, __FILE__, __LINE__, __FUNCTION__, pAddr);\
 		}else\
 		{\
-			STRACEA(logBuf);\
+			OutputDebugStringA(logBuf);\
 		}\
     } while (0)
 
 
 //! fast micro
-#define LOG_TRACE(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_TRACE, log)
-#define LOG_DEBUG(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_DEBUG, log)
-#define LOG_INFO(id_or_name, filter, log)  SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_INFO, log)
-#define LOG_WARN(id_or_name, filter, log)  SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_WARN, log)
-#define LOG_ERROR(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_ERROR, log)
-#define LOG_ALARM(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_ALARM, log)
-#define LOG_FATAL(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, LOG_LEVEL_FATAL, log)
+#define LOG_TRACE(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, SOUI::LOG_LEVEL_TRACE, log)
+#define LOG_DEBUG(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, SOUI::LOG_LEVEL_DEBUG, log)
+#define LOG_INFO(id_or_name, filter, log)  SOUI_LOG_STREAM(id_or_name, filter, SOUI::LOG_LEVEL_INFO, log)
+#define LOG_WARN(id_or_name, filter, log)  SOUI_LOG_STREAM(id_or_name, filter, SOUI::LOG_LEVEL_WARN, log)
+#define LOG_ERROR(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, SOUI::LOG_LEVEL_ERROR, log)
+#define LOG_ALARM(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, SOUI::LOG_LEVEL_ALARM, log)
+#define LOG_FATAL(id_or_name, filter, log) SOUI_LOG_STREAM(id_or_name, filter, SOUI::LOG_LEVEL_FATAL, log)
 
 //! super micro.
 #define LOGT(filter, log ) LOG_TRACE(SOUI::LOG4Z_MAIN_LOGGER_ID,filter, log )
@@ -64,7 +68,7 @@ namespace SOUI
 #ifdef LOG4Z_FORMAT_INPUT_ENABLE
 #define LOG_FORMAT(id_or_name, level, filter, logformat, ...) \
     do{ \
-		SOUI::ILog4zManager * pLogMgr = SOUI::SApplication::getSingletonPtr()?SOUI::SApplication::getSingleton().GetLogManager():NULL; \
+		SOUI::ILog4zManager * pLogMgr = GETLOGMGR(); \
 		char logbuf[SOUI::LOG4Z_LOG_BUF_SIZE]; \
 		if(sizeof(logformat[0]) == sizeof(char))\
 			_snprintf_s(logbuf, SOUI::LOG4Z_LOG_BUF_SIZE, _TRUNCATE, (const char*)logformat, ##__VA_ARGS__); \
@@ -83,7 +87,7 @@ namespace SOUI
 			pLogMgr->pushLog(id_or_name, level,filter, logbuf, __FILE__, __LINE__, __FUNCTION__,_ReturnAddress()); \
 		}else\
 		{\
-			STRACEA(logbuf);\
+			OutputDebugStringA(logbuf);\
 		}\
     } while (0)
 

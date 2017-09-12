@@ -3,7 +3,6 @@
 #define ATLTRACE2           __noop
 
 #include <atl.mini/atldef.h>
-#include <atlconv.h>
 #include <WinReg.h>
 
 class CRegKey
@@ -24,10 +23,6 @@ public:
 
     // Operations
 public:
-    ATL_DEPRECATED("CRegKey::SetValue(DWORD, TCHAR *valueName) has been superseded by CRegKey::SetDWORDValue")
-        LONG SetValue(DWORD dwValue, LPCTSTR lpszValueName);
-    ATL_DEPRECATED("CRegKey::SetValue(TCHAR *value, TCHAR *valueName) has been superseded by CRegKey::SetStringValue and CRegKey::SetMultiStringValue")
-        LONG SetValue(LPCTSTR lpszValue, LPCTSTR lpszValueName = NULL, bool bMulti = false, int nValueLen = -1);
     LONG SetValue(LPCTSTR pszValueName, DWORD dwType, const void* pValue, ULONG nBytes) throw();
     LONG SetGUIDValue(LPCTSTR pszValueName, REFGUID guidValue) throw();
     LONG SetBinaryValue(LPCTSTR pszValueName, const void* pValue, ULONG nBytes) throw();
@@ -36,10 +31,6 @@ public:
     LONG SetStringValue(_In_opt_z_ LPCTSTR pszValueName, _In_opt_z_ LPCTSTR pszValue, _In_ DWORD dwType = REG_SZ) throw();
     LONG SetMultiStringValue(LPCTSTR pszValueName, LPCTSTR pszValue) throw();
 
-    ATL_DEPRECATED("CRegKey::QueryValue(DWORD, TCHAR *valueName) has been superseded by CRegKey::QueryDWORDValue")
-        LONG QueryValue(_Out_ DWORD& dwValue, _In_opt_z_ LPCTSTR lpszValueName);
-    ATL_DEPRECATED("CRegKey::QueryValue(TCHAR *value, TCHAR *valueName) has been superseded by CRegKey::QueryStringValue and CRegKey::QueryMultiStringValue")
-        LONG QueryValue(_Out_opt_z_cap_post_count_(*pdwCount, *pdwCount) LPTSTR szValue, _In_opt_z_ LPCTSTR lpszValueName, _Inout_ DWORD* pdwCount);
     LONG QueryValue(_In_opt_z_ LPCTSTR pszValueName, DWORD* pdwType, void* pData, ULONG* pnBytes) throw();
     LONG QueryGUIDValue(_In_opt_z_ LPCTSTR pszValueName, GUID& guidValue) throw();
     LONG QueryBinaryValue(_In_opt_z_ LPCTSTR pszValueName, void* pValue, ULONG* pnBytes) throw();
@@ -251,66 +242,6 @@ inline LONG CRegKey::Open(HKEY hKeyParent, LPCTSTR lpszKeyName, REGSAM samDesire
     return lRes;
 }
 
-#pragma warning(push)
-#pragma warning(disable: 4996)
-inline LONG CRegKey::QueryValue(DWORD& dwValue, LPCTSTR lpszValueName)
-{
-    DWORD dwType = NULL;
-    DWORD dwCount = sizeof(DWORD);
-    LONG lRes = RegQueryValueEx(m_hKey, lpszValueName, NULL, &dwType,
-        (LPBYTE)&dwValue, &dwCount);
-    ATLASSERT((lRes!=ERROR_SUCCESS) || (dwType == REG_DWORD));
-    ATLASSERT((lRes!=ERROR_SUCCESS) || (dwCount == sizeof(DWORD)));
-    if (dwType != REG_DWORD)
-        return ERROR_INVALID_DATA;
-    return lRes;
-}
-
-#pragma warning(disable: 6053 6385)
-inline LONG CRegKey::QueryValue(_Out_opt_z_cap_post_count_(*pdwCount, *pdwCount) LPTSTR pszValue, _In_opt_z_ LPCTSTR lpszValueName, _Inout_ DWORD* pdwCount)
-{
-    ATLENSURE(pdwCount != NULL);
-    DWORD dwType = NULL;
-    LONG lRes = RegQueryValueEx(m_hKey, lpszValueName, NULL, &dwType, (LPBYTE)pszValue, pdwCount);
-    ATLASSERT((lRes!=ERROR_SUCCESS) || (dwType == REG_SZ) ||
-        (dwType == REG_MULTI_SZ) || (dwType == REG_EXPAND_SZ));
-    if (pszValue != NULL)
-    {
-        if(*pdwCount>0)
-        {
-            switch(dwType)
-            {
-            case REG_SZ:
-            case REG_EXPAND_SZ:
-                if ((*pdwCount) % sizeof(TCHAR) != 0 || pszValue[(*pdwCount) / sizeof(TCHAR) - 1] != 0)
-                {
-                    pszValue[0]=_T('\0');
-                    return ERROR_INVALID_DATA;
-                }
-                break;
-            case REG_MULTI_SZ:
-                if ((*pdwCount) % sizeof(TCHAR) != 0 || (*pdwCount) / sizeof(TCHAR) < 1 || pszValue[(*pdwCount) / sizeof(TCHAR) -1] != 0 || (((*pdwCount) / sizeof(TCHAR))>1 && pszValue[(*pdwCount) / sizeof(TCHAR) - 2] != 0) )
-                {
-                    pszValue[0]=_T('\0');
-                    return ERROR_INVALID_DATA;
-                }
-                break;
-            default:
-                // Ensure termination
-                pszValue[0]=_T('\0');
-                return ERROR_INVALID_DATA;
-            }
-        }
-        else
-        {
-            // this is a blank one with no data yet
-            // Ensure termination
-            pszValue[0]=_T('\0');
-        }
-    }
-    return lRes;
-}
-#pragma warning(pop)	
 
 inline LONG CRegKey::QueryValue(LPCTSTR pszValueName, DWORD* pdwType, void* pData, ULONG* pnBytes) throw()
 {
@@ -476,14 +407,11 @@ inline LONG CRegKey::QueryGUIDValue(LPCTSTR pszValueName, GUID& guidValue) throw
     if(szGUID[0] != _T('{'))
         return ERROR_INVALID_DATA;
 
-    //USES_CONVERSION_EX;
-    LPOLESTR lpstr = T2OLE_EX(szGUID, _ATL_SAFE_ALLOCA_DEF_THRESHOLD);
-#ifndef _UNICODE
-    if(lpstr == NULL) 
-        return E_OUTOFMEMORY;
-#endif	
+	SStringW strGuid = S_CT2W(szGUID);
 
-    hr = ::CLSIDFromString(lpstr, &guidValue);
+	LPOLESTR oleGuid = strGuid.LockBuffer();
+    hr = ::CLSIDFromString(oleGuid, &guidValue);
+	strGuid.UnlockBuffer();
     if (FAILED(hr))
         return ERROR_INVALID_DATA;
 
@@ -510,31 +438,6 @@ inline LONG CRegKey::SetKeyValue(LPCTSTR lpszKeyName, LPCTSTR lpszValue, LPCTSTR
     return lRes;
 }
 
-#pragma warning(push)
-#pragma warning(disable: 4996)
-inline LONG CRegKey::SetValue(DWORD dwValue, LPCTSTR pszValueName)
-{
-    ATLASSUME(m_hKey != NULL);
-    return SetDWORDValue(pszValueName, dwValue);
-}
-
-inline LONG CRegKey::SetValue(LPCTSTR lpszValue, LPCTSTR lpszValueName, bool bMulti, int nValueLen)
-{
-    ATLENSURE(lpszValue != NULL);
-    ATLASSUME(m_hKey != NULL);
-
-    if (bMulti && nValueLen == -1)
-        return ERROR_INVALID_PARAMETER;
-
-    if (nValueLen == -1)
-        nValueLen = lstrlen(lpszValue) + 1;
-
-    DWORD dwType = bMulti ? REG_MULTI_SZ : REG_SZ;
-
-    return ::RegSetValueEx(m_hKey, lpszValueName, NULL, dwType,
-        reinterpret_cast<const BYTE*>(lpszValue), nValueLen*sizeof(TCHAR));
-}
-#pragma warning(pop)
 
 inline LONG CRegKey::SetValue(LPCTSTR pszValueName, DWORD dwType, const void* pValue, ULONG nBytes) throw()
 {
@@ -563,7 +466,7 @@ inline LONG CRegKey::SetQWORDValue(LPCTSTR pszValueName, ULONGLONG qwValue) thro
 inline LONG CRegKey::SetStringValue(_In_opt_z_ LPCTSTR pszValueName, _In_opt_z_ LPCTSTR pszValue, _In_ DWORD dwType) throw()
 {
     ATLASSUME(m_hKey != NULL);
-    ATLENSURE_RETURN_VAL(pszValue != NULL, ERROR_INVALID_DATA);
+    //ATLENSURE_RETURN_VAL(pszValue != NULL, ERROR_INVALID_DATA);
     ATLASSERT((dwType == REG_SZ) || (dwType == REG_EXPAND_SZ));
 
     return ::RegSetValueEx(m_hKey, pszValueName, NULL, dwType, reinterpret_cast<const BYTE*>(pszValue), (lstrlen(pszValue)+1)*sizeof(TCHAR));
@@ -576,7 +479,7 @@ inline LONG CRegKey::SetMultiStringValue(LPCTSTR pszValueName, LPCTSTR pszValue)
     ULONG nLength;
 
     ATLASSUME(m_hKey != NULL);
-    ATLENSURE_RETURN_VAL(pszValue != NULL, ERROR_INVALID_DATA);
+    //ATLENSURE_RETURN_VAL(pszValue != NULL, ERROR_INVALID_DATA);
 
     // Find the total length (in bytes) of all of the strings, including the
     // terminating '\0' of each string, and the second '\0' that terminates
@@ -602,13 +505,8 @@ inline LONG CRegKey::SetGUIDValue(LPCTSTR pszValueName, REFGUID guidValue) throw
 
     ::StringFromGUID2(guidValue, szGUID, 64);
 
-    USES_CONVERSION_EX;
-    LPCTSTR lpstr = OLE2CT_EX(szGUID, _ATL_SAFE_ALLOCA_DEF_THRESHOLD);
-#ifndef _UNICODE
-    if(lpstr == NULL) 
-        return E_OUTOFMEMORY;
-#endif	
-    return SetStringValue(pszValueName, lpstr);
+	SStringT strGuid = S_CW2T(szGUID);
+    return SetStringValue(pszValueName, strGuid);
 }
 
 inline LONG CRegKey::GetKeySecurity(SECURITY_INFORMATION si, PSECURITY_DESCRIPTOR psd, LPDWORD pnBytes) throw()

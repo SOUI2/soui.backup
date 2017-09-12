@@ -30,6 +30,9 @@ PRECOMPILED_HEADER = stdafx.h
 
 # Input
 HEADERS += 2UnicodeHandler.h \
+	   DragDrop.h\
+	   export_table_adapter.h\
+	   import_table_adapter.h\
            CalcMd5Handler.h \
            CodeLineCounter.h \
            CodeLineCounterHandler.h \

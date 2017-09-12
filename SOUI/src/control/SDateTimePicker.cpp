@@ -4,11 +4,6 @@
 
 namespace SOUI
 {
-#define HIT_NULL				-1
-#define HIT_LEFT				-10
-#define HIT_RIGHT				-11
-#define HIT_YEAR				-12
-#define HIT_TODAY				42
 
 	SCalendarEx::SCalendarEx(WORD iYeay, WORD iMonth, WORD iDay)
 	{
@@ -34,6 +29,12 @@ namespace SOUI
 
 	void SCalendarEx::Init()
 	{
+		//m_pSkinPrev = GETBUILTINSKIN(SKIN_SYS_BTN_NORMAL);
+		//m_pSkinNext = GETBUILTINSKIN(SKIN_SYS_BTN_NORMAL);
+		m_pSkinPrev = GETSKIN(_T("_skin.sys.btn.prev"), GetScale());
+		m_pSkinNext = GETSKIN(_T("_skin.sys.btn.next"), GetScale());
+
+		m_bFocusable = TRUE;
 		GetLocalTime(&m_Today);
 
 		m_evtSet.addEvent(EVENTID(EventCalendarExChanged));
@@ -42,6 +43,7 @@ namespace SOUI
 		m_nWeekHeight.setSize(20.f, SLayoutSize::dp);
 		m_nFooterHeight.setSize(20.f, SLayoutSize::dp);
 
+		m_crSelText = RGBA(0xFF, 0xFF, 0xFF, 255);
 		m_crSelDayBack = RGBA(0x0, 0x7A, 0xCC, 255);
 		m_crOtherDayText = RGBA(0xA0, 0xA0, 0xA0, 255);
 
@@ -79,14 +81,14 @@ namespace SOUI
 		iDay = GetDay();
 	}
 
-	BOOL SCalendarEx::SetDate(WORD iYear, WORD iMonth, WORD iDay, bool bNotify)
+	BOOL SCalendarEx::SetDate(WORD iYear, WORD iMonth, WORD iDay, int nBtnType, bool bNotify)
 	{
 		short iWeek = SCalendarCore::GetDayOfWeek(iYear, iMonth, 1);		// 计算出 当月 1号 是星期几
 		if (iWeek < 0) return FALSE;
 
 		WORD nDayCount = SCalendarCore::GetDaysOfMonth(iYear, iMonth);
 				
-		if (7 != iWeek)				// 如果 不是星期天 先计算 上个月 的最后几天
+		if (iWeek > 0)				// 如果 不是星期天 先计算 上个月 的最后几天
 		{
 			WORD nFrontDayCount = 0;
 			if (1 == iMonth)
@@ -108,7 +110,6 @@ namespace SOUI
 		{
 			m_arrDays[iWeek + i].nType = 0;
 			m_arrDays[iWeek + i].iDay = i + 1;
-			//if(m_Today.)
 		}
 
 		int nNextDay = 1;
@@ -122,7 +123,7 @@ namespace SOUI
 		m_iMonth = iMonth;
 	
 		m_nHoverItem = HIT_NULL;
-		m_nSelItem = SCalendarCore::GetDayOfWeek(iYear, iMonth, iDay) % 7;
+		m_nSelItem = iWeek % 7 + iDay - 1;
 		Invalidate();
 
 		if (bNotify)
@@ -131,6 +132,7 @@ namespace SOUI
 			evt.iNewDay = iDay;
 			evt.iNewMonth = m_iMonth;
 			evt.iNewYear = m_iYear;
+			evt.nBtnType = nBtnType;
 			FireEvent(evt);
 		}
 		
@@ -147,7 +149,7 @@ namespace SOUI
 		else
 			--m_iMonth;
 
-		SetDate(m_iYear, m_iMonth, 1, true);
+		SetDate(m_iYear, m_iMonth, 1, HIT_LEFT, true);
 	}
 
 	void SCalendarEx::SetNextMonth()
@@ -160,7 +162,7 @@ namespace SOUI
 		else
 			++m_iMonth;
 
-		SetDate(m_iYear, m_iMonth, 1, true);
+		SetDate(m_iYear, m_iMonth, 1, HIT_RIGHT, true);
 	}
 	
 	int SCalendarEx::OnCreate(LPVOID)
@@ -179,16 +181,29 @@ namespace SOUI
 
 	void SCalendarEx::DrawYearMonth(IRenderTarget* pRT, const CRect& rect)
 	{
-		COLORREF crText = pRT->GetTextColor();
+		int nHeight = m_nYearMonthHeight.toPixelSize(GetScale());
+
+		// 绘制 上一个 按钮
+		DWORD dwPrevState = 0;
 		if (HIT_LEFT == m_nHoverItem)
 		{
-			pRT->SetTextColor(m_crHoverText);
+			dwPrevState = 1;
 		}
-
-		CRect rcItem = rect;
-		rcItem.right = rcItem.left + m_nYearMonthHeight.toPixelSize(GetScale()) ;
-		pRT->DrawText(_T("<"), -1, rcItem, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
-
+				
+		if (m_pSkinPrev)
+		{
+			SIZE si = m_pSkinPrev->GetSkinSize();
+			int n = (nHeight - si.cy) / 2;
+			CRect rcItem = rect;
+			rcItem.left += n;
+			rcItem.right = rcItem.left + si.cx;
+			rcItem.top += n;
+			rcItem.bottom = rcItem.top + si.cy;
+			m_pSkinPrev->Draw(pRT, rcItem, dwPrevState);
+		}
+		
+		// 绘制 年月
+		COLORREF crText = pRT->GetTextColor();
 		if (HIT_YEAR == m_nHoverItem)
 		{
 			pRT->SetTextColor(m_crHoverText);
@@ -201,17 +216,27 @@ namespace SOUI
 		CRect rc = rect;
 		pRT->DrawText(szYearMonth, -1, rc, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
 
+		pRT->SetTextColor(crText);
+
+		// 绘制 下一个 按钮
+		DWORD dwNextState = 0;
 		if (HIT_RIGHT == m_nHoverItem)
 		{
-			pRT->SetTextColor(m_crHoverText);
+			dwNextState = 1;
 		}
-		else
-			pRT->SetTextColor(crText);
-
-		rcItem.left = rect.right - m_nYearMonthHeight.toPixelSize(GetScale()) ;
-		rcItem.right = rect.right;
-		pRT->DrawText(_T(">"), -1, rcItem, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
-		pRT->SetTextColor(crText);
+				
+		if (m_pSkinNext)
+		{
+			SIZE si = m_pSkinNext->GetSkinSize();
+			int n = (nHeight - si.cy) / 2;
+			CRect rcItem = rect;
+			rcItem.right -= n;
+			rcItem.left = rcItem.right - si.cx;
+			rcItem.top += n;
+			rcItem.bottom = rcItem.top + si.cy;
+			
+			m_pSkinNext->Draw(pRT, rcItem, dwNextState);
+		}
 	}
 
 	void SCalendarEx::DrawWeek(IRenderTarget* pRT, const CRect& rect)
@@ -252,17 +277,26 @@ namespace SOUI
 			// today 框 就用 textcolor
 			pRT->DrawRoundRect(rcDay, ptRound);
 		}
-
+		DWORD dwState = 0;
 		if (m_nSelItem == nItem)
 		{
 			if (CR_INVALID != m_crSelDayBack)
 				pRT->FillSolidRoundRect(rcDay, ptRound, m_crSelDayBack);
+
+			if(CR_INVALID != m_crSelText)
+				pRT->SetTextColor(m_crSelText);
+
+			dwState = 2;
 		}
 		else if (m_nHoverItem == nItem)				// 
 		{
 			pRT->SetTextColor(m_crHoverText);
+			dwState = 1;
 		}
 		
+		if (NULL != m_pSkinDay)
+			m_pSkinDay->Draw(pRT, rcDay, dwState);
+
 		SStringT sDay;
 		sDay.Format(_T("%d"), dayInfo.iDay);
 		pRT->DrawText(sDay, -1, rcDay, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
@@ -284,7 +318,7 @@ namespace SOUI
 		m_rcToday = rcDay;
 		// 计算 文本 
 		pRT->DrawText(szToday, -1, m_rcToday, DT_SINGLELINE | DT_VCENTER | DT_CENTER | DT_CALCRECT);
-		
+		m_rcToday.bottom = m_rcToday.top + rcDay.Height();	//高度 不变
 		m_rcToday.OffsetRect((rcDay.Width() - m_rcToday.Width()) / 2, 0);
 		pRT->DrawText(szToday, -1, m_rcToday, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
 		pRT->SetTextColor(crText);
@@ -343,12 +377,7 @@ namespace SOUI
 		}
 		else if (HIT_TODAY == nItem)
 		{
-			SetDate(m_Today.wYear, m_Today.wMonth, m_Today.wDay);
-			EventCalendarExChanged evt(this);
-			evt.iNewDay = m_Today.wDay;
-			evt.iNewMonth = m_iMonth;
-			evt.iNewYear = m_iYear;
-			FireEvent(evt);
+			SetDate(m_Today.wYear, m_Today.wMonth, m_Today.wDay, HIT_TODAY, true);
 		}
 		else if (m_nSelItem != nItem)
 		{
@@ -356,6 +385,7 @@ namespace SOUI
 			
 			m_nSelItem = nItem;
 			EventCalendarExChanged evt(this);
+			evt.nBtnType = nItem;		// 天数 就是 0-41
 			evt.iNewDay = dayInfo.iDay;
 			if (dayInfo.nType < 0)		// 点击 上一个月 的天
 			{
@@ -493,6 +523,9 @@ namespace SOUI
 		, m_nNumWidth(0)
 		, m_nCharWidth(0)
 		, m_pCalendar(NULL)
+		, m_nDropWidth(220)
+		, m_bTimeEnable(true)
+		, m_wCharNum(0)
 	{
 		m_evtSet.addEvent(EVENTID(EventDateTimeChanged));
 		m_pNcSkin = GETBUILTINSKIN(SKIN_SYS_BORDER);
@@ -527,6 +560,7 @@ namespace SOUI
 		pugi::xml_node xmlCal = xmlNode.child(L"calstyle");
 		if(xmlCal)
 			m_pCalendar->InitFromXml(xmlCal);
+
 		m_pCalendar->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
 		m_pCalendar->SetOwner(this);    //chain notify message to combobox
 		//m_pCalendar->SetID(IDC_DROPDOWN_LIST);
@@ -567,6 +601,7 @@ namespace SOUI
 	void SDateTimePicker::OnCreateDropDown(SDropDownWnd* pDropDown)
 	{
 		m_pCalendar->SetDate(m_sysTime.wYear, m_sysTime.wMonth, m_sysTime.wDay);
+		//pDropDown->SetAttribute(L"sendWheel2Hover", L"1", TRUE);
 		pDropDown->InsertChild(m_pCalendar);
 		pDropDown->UpdateChildrenPosition();
 		
@@ -608,18 +643,60 @@ namespace SOUI
 		pSkinRc->bottom = pSkinRc->top + szBtn.cy;
 	}
 
-	void SDateTimePicker::Draw(EnDateType eType, IRenderTarget* pRT, SStringT& szText, CRect& rcText)
+	SStringT SDateTimePicker::ToFormatText(EnDateType eType, WORD wNum)
 	{
+		SStringT szNum;
+		if (eType == m_eSelDateType)						// 选中项
+		{
+			if (eDT_Year == eType)
+			{
+				if(m_wCharNum < 10)
+					szNum.Format(_T("%d"), wNum);
+				else if (m_wCharNum < 100)
+					szNum.Format(_T("%02d"), wNum);
+				else if (m_wCharNum < 1000)
+					szNum.Format(_T("%03d"), wNum);
+				else
+					szNum.Format(_T("%04d"), wNum);
+			}
+			else
+			{
+				if (m_wCharNum > 0)
+					szNum.Format(_T("%d"), wNum);
+				else
+					szNum.Format(_T("%02d"), wNum);
+			}
+		}
+		else
+		{
+			if (eDT_Year == eType)
+			{
+				szNum.Format(_T("%04d"), wNum);
+			}
+			else
+			{
+				szNum.Format(_T("%02d"), wNum);
+			}
+		}
+				
+		return szNum;
+	}
+
+	void SDateTimePicker::Draw(EnDateType eType, IRenderTarget* pRT, WORD wNum, CRect& rcText)
+	{
+		SStringT szNum = ToFormatText(eType, wNum);
+		
 		if(eType != m_eSelDateType)
 		{
-			pRT->DrawText(szText, szText.GetLength(), rcText, GetTextAlign());
+			pRT->DrawText(szNum, szNum.GetLength(), rcText, GetTextAlign());
 			return ;
 		}
 
+		// 选中 的 填充 字体颜色 变 白
 		pRT->FillSolidRect(rcText, m_crSelBg);
 
 		COLORREF old = pRT->SetTextColor(m_crSelText);
-		pRT->DrawText(szText, szText.GetLength(), rcText, GetTextAlign());
+		pRT->DrawText(szNum, szNum.GetLength(), rcText, GetTextAlign());
 		pRT->SetTextColor(old);
 	}
 
@@ -647,12 +724,12 @@ namespace SOUI
 		rcText.bottom = rcText.top + m_nNumHeight;
 		
 
-		SStringT strText;
+		//SStringT strText;
 		
 		// year
 		rcText.right = rcText.left + m_nNumWidth * 4;
-		strText.Format(_T("%d"), m_sysTime.wYear);
-		Draw(eDT_Year, pRT, strText, rcText);
+		//strText.Format(_T("%d"), m_sysTime.wYear);
+		Draw(eDT_Year, pRT, m_sysTime.wYear, rcText);
 		
 		
 		rcText.left = rcText.right;
@@ -662,8 +739,8 @@ namespace SOUI
 		//month
 		rcText.left = rcText.right;
 		rcText.right = rcText.left + m_nNumWidth * 2;
-		strText.Format(_T("%02d"), m_sysTime.wMonth);
-		Draw(eDT_Month, pRT, strText, rcText);
+		//strText.Format(_T("%02d"), m_sysTime.wMonth);
+		Draw(eDT_Month, pRT, m_sysTime.wMonth, rcText);
 		
 		rcText.left = rcText.right;
 		rcText.right = rcText.left + m_nCharWidth;
@@ -672,38 +749,41 @@ namespace SOUI
 		//day
 		rcText.left = rcText.right;
 		rcText.right = rcText.left + m_nNumWidth * 2;
-		strText.Format(_T("%02d"), m_sysTime.wDay);
-		Draw(eDT_Day, pRT, strText, rcText);
+		//strText.Format(_T("%02d"), m_sysTime.wDay);
+		Draw(eDT_Day, pRT, m_sysTime.wDay, rcText);
 	
 		//rcText.left = rcText.right;
 		//rcText.right = rcText.left + m_nCharWidth;
 		//pRT->DrawText(L" ", -1, rcText, GetTextAlign());
+		if (m_bTimeEnable)
+		{
+			// hour
+			rcText.left = rcText.right + m_nCharWidth;
+			rcText.right = rcText.left + m_nNumWidth * 2;
+			//strText.Format(_T("%02d"), m_sysTime.wHour);
+			Draw(eDT_Hour, pRT, m_sysTime.wHour, rcText);
+
+			rcText.left = rcText.right;
+			rcText.right = rcText.left + m_nCharWidth;
+			pRT->DrawText(L":", -1, rcText, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+			// minute
+			rcText.left = rcText.right;
+			rcText.right = rcText.left + m_nNumWidth * 2;
+			//strText.Format(_T("%02d"), m_sysTime.wMinute);
+			Draw(eDT_Minute, pRT, m_sysTime.wMinute, rcText);
+
+			rcText.left = rcText.right;
+			rcText.right = rcText.left + m_nCharWidth;
+			pRT->DrawText(L":", -1, rcText, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+			// second
+			rcText.left = rcText.right;
+			rcText.right = rcText.left + m_nNumWidth * 2;
+			//strText.Format(_T("%02d"), m_sysTime.wSecond);
+			Draw(eDT_Second, pRT, m_sysTime.wSecond, rcText);
+		}
 		
-		// hour
-		rcText.left = rcText.right + m_nCharWidth;
-		rcText.right = rcText.left + m_nNumWidth * 2;
-		strText.Format(_T("%02d"), m_sysTime.wHour);
-		Draw(eDT_Hour, pRT, strText, rcText);
-	
-		rcText.left = rcText.right;
-		rcText.right = rcText.left + m_nCharWidth;
-		pRT->DrawText(L":", -1, rcText, DT_CENTER|DT_VCENTER|DT_SINGLELINE);
-	
-		// minute
-		rcText.left = rcText.right;
-		rcText.right = rcText.left + m_nNumWidth * 2;
-		strText.Format(_T("%02d"), m_sysTime.wMinute);
-		Draw(eDT_Minute, pRT, strText, rcText);
-		
-		rcText.left = rcText.right;
-		rcText.right = rcText.left + m_nCharWidth;
-		pRT->DrawText(L":", -1, rcText, DT_CENTER|DT_VCENTER|DT_SINGLELINE);
-				
-		// second
-		rcText.left = rcText.right;
-		rcText.right = rcText.left + m_nNumWidth * 2;
-		strText.Format(_T("%02d"), m_sysTime.wSecond);
-		Draw(eDT_Second, pRT, strText, rcText);
 	
 		
 		AfterPaint(pRT, painter);
@@ -720,7 +800,7 @@ namespace SOUI
 		m_pSkinBtn->Draw(pRT, rcSkin, nState);
 	}
 
-	bool SDateTimePicker::CalcPopupRect(int nHeight, CRect& rcPopup)
+	bool SDateTimePicker::CalcPopupRect(int nWidth, CRect& rcPopup)
 	{
 		CRect rcWnd = GetWindowRect();
 		GetContainer()->FrameToHost(rcWnd);
@@ -742,14 +822,16 @@ namespace SOUI
 			rcMonitor.bottom = GetSystemMetrics(   SM_CYSCREEN   );
 		}
 
+		int nHeight = nWidth * 4 / 5;
+
 		if(rcWnd.bottom+nHeight <= rcMonitor.bottom)
 		{
-			rcPopup.SetRect(rcWnd.right-nHeight, rcWnd.bottom, rcWnd.right, rcWnd.bottom+nHeight-40);
+			rcPopup.SetRect(rcWnd.right-nWidth, rcWnd.bottom, rcWnd.right, rcWnd.bottom+nHeight);
 			return true;
 		}
 		
 
-		rcPopup.SetRect(rcWnd.right-nHeight, rcWnd.top-nHeight, rcWnd.right, rcWnd.top-40);
+		rcPopup.SetRect(rcWnd.right- nWidth, rcWnd.top-nHeight, rcWnd.right, rcWnd.top);
 		return false;		
 	}
 
@@ -761,26 +843,72 @@ namespace SOUI
 
 		EnDateType eSelType = eDT_NULL;
 
-		if(nWidth < (4 * m_nNumWidth + m_nCharWidth))
+		if (nWidth < (4 * m_nNumWidth + m_nCharWidth))
+		{
 			eSelType = eDT_Year;			// year
-		else if(nWidth < (6 * m_nNumWidth + 2 * m_nCharWidth))
+		}
+		else if (nWidth < (6 * m_nNumWidth + 2 * m_nCharWidth))
+		{
 			eSelType = eDT_Month;			// month
-		else if(nWidth < (8 * m_nNumWidth + 3 * m_nCharWidth))
+		}
+		else if (!m_bTimeEnable || nWidth < (8 * m_nNumWidth + 3 * m_nCharWidth))
+		{
 			eSelType = eDT_Day;			// day
-		else if(nWidth < (10 * m_nNumWidth + 4 * m_nCharWidth))
+		}
+		else if (nWidth < (10 * m_nNumWidth + 4 * m_nCharWidth))
+		{
 			eSelType = eDT_Hour;			// hour
-		else if(nWidth < (12 * m_nNumWidth + 5 * m_nCharWidth))
+		}
+		else if (nWidth < (12 * m_nNumWidth + 5 * m_nCharWidth))
+		{
 			eSelType = eDT_Minute;			// minute
+		}
 		else
+		{
 			eSelType = eDT_Second;			// second
+		}
 
 		return eSelType;
+	}
+
+	void SDateTimePicker::SetTime(const SYSTEMTIME& sysTime)
+	{
+		m_sysTime = sysTime;
+		Invalidate();
+	}
+
+	void SDateTimePicker::SetTime(WORD wYear, WORD wMonth, WORD wDay, WORD wHour, WORD wMinute, WORD wSecond)
+	{
+		m_sysTime.wYear = wYear;
+		m_sysTime.wMonth = wMonth;
+		m_sysTime.wDay = wDay;
+		m_sysTime.wHour = wHour;
+		m_sysTime.wMinute = wMinute;
+		m_sysTime.wSecond = wSecond;
+		Invalidate();
+	}
+
+	void SDateTimePicker::GetTime(SYSTEMTIME& sysTime)
+	{
+		sysTime = m_sysTime;
+	}
+
+	SStringT SDateTimePicker::GetWindowText()
+	{
+		SStringT szText;
+		szText.Format(_T("%04d-%02d-%02d"), m_sysTime.wYear, m_sysTime.wMonth, m_sysTime.wDay);
+		if(m_bTimeEnable)
+			szText.AppendFormat(_T(" %02d:%02d:%02d"), m_sysTime.wHour, m_sysTime.wMinute, m_sysTime.wSecond);
+
+		return szText;
 	}
 
 	void SDateTimePicker::OnLButtonDown(UINT nFlags, CPoint pt)
 	{
 		SetFocus();
 		if(WndState_PushDown == m_dwBtnState) return;
+
+		m_wCharNum = 0;
 
 		CRect rcBtn;
 		GetDropBtnRect(&rcBtn);
@@ -804,10 +932,10 @@ namespace SOUI
 		if(NULL != m_pDropDownWnd)
 			return ;
 
-		m_pDropDownWnd = new SDropDownWnd(this);
+		m_pDropDownWnd = new SDropDownWnd_ComboBox(this);		// 直接 用这个 处理 wheel 滚动
 		CRect rcPopup;
 		SLayoutSize nWid;
-		nWid.setSize(220.f, SLayoutSize::dp);
+		nWid.setSize((float)m_nDropWidth, SLayoutSize::dp);
 		bool bDown = CalcPopupRect(nWid.toPixelSize(GetScale()), rcPopup);
 		m_pDropDownWnd->Create(rcPopup, 0);
 
@@ -909,6 +1037,7 @@ namespace SOUI
 			m_sysTime.wDay = nDays;
 		}
 
+		m_wCharNum = 0;
 		Invalidate();
 	}
 	
@@ -938,7 +1067,8 @@ namespace SOUI
 				return;
 
 			m_eSelDateType = static_cast<EnDateType>((int)m_eSelDateType - 1);
-
+			m_wCharNum = 0;
+			Invalidate();
 		}
 		else if (39 == nChar)
 		{
@@ -946,13 +1076,13 @@ namespace SOUI
 				return;
 
 			m_eSelDateType = static_cast<EnDateType>((int)m_eSelDateType + 1);
+			m_wCharNum = 0;
+			Invalidate();
 		}
 		else if (38 == nChar)
 			TimeWheel(true);
 		else if(40 == nChar)
-			TimeWheel(false);
-
-		Invalidate();
+			TimeWheel(false);		
 	}
 
 	void SDateTimePicker::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -963,29 +1093,83 @@ namespace SOUI
 		if(eDT_NULL == m_eSelDateType)
 			return ;
 		// 这个 不写了   谁帮我写了吧
-		/*
+		
+		int nNum = nChar - 48;
+		if (m_wCharNum > 0)
+		{
+			m_wCharNum *= 10;
+			m_wCharNum += nNum;
+		}
+		else
+		{
+			m_wCharNum = nNum;
+		}
+
+		//SYSTEMTIME oldTime = m_sysTime;
+
 		switch(m_eSelDateType)
 		{
 		case eDT_Year :
-		m_sKey.AppendFormat(_T("%c"), nChar);
-		m_sysTime.wYear = nChar - 48;
-		Invalidate();
-		break;
+			if (m_wCharNum < 10)
+			{
+				m_sysTime.wYear = m_sysTime.wYear / 10 * 10 + m_wCharNum;
+			}
+			else if(m_wCharNum < 100)
+			{
+				m_sysTime.wYear = m_sysTime.wYear / 100 * 100 + m_wCharNum;
+			}
+			else if(m_wCharNum < 1000)
+			{
+				m_sysTime.wYear = m_sysTime.wYear / 100 * 100 + m_wCharNum;
+			}
+			else if(m_wCharNum < 1601 || m_wCharNum > 9999)
+			{
+				return;
+			}
+			else
+				m_sysTime.wYear = m_wCharNum;
+			break;
 		case eDT_Month :
-		break;
+			if (m_wCharNum <= 0)
+			{
+				return;
+			}
+			else if (m_wCharNum > 12)
+				m_wCharNum = nNum;
+			else if (!SCalendarCore::DateCheck(m_sysTime.wYear, m_wCharNum, m_sysTime.wDay))
+				m_sysTime.wDay = SCalendarCore::GetDaysOfMonth(m_sysTime.wYear, m_wCharNum);
+			m_sysTime.wMonth = m_wCharNum;
+			break;
 		case eDT_Day :
-		break;
+			if (m_wCharNum <= 0)
+			{
+				return;
+			}
+			if (!SCalendarCore::DateCheck(m_sysTime.wYear, m_sysTime.wMonth, m_wCharNum))
+				m_wCharNum = nNum;
+			m_sysTime.wDay = m_wCharNum;
+			break;
 		case eDT_Hour :
-		break;
+			if (m_wCharNum > 23 || m_wCharNum < 0)
+				m_wCharNum = nNum;
+			m_sysTime.wHour = m_wCharNum;
+			break;
 		case eDT_Minute :
-		break;
+			if (m_wCharNum > 59 || m_wCharNum < 0)
+				m_wCharNum = nNum;
+			m_sysTime.wMinute = m_wCharNum;
+			break;
 		case eDT_Second :
-		break;
+			if (m_wCharNum > 59 || m_wCharNum < 0)
+				m_wCharNum = nNum;
+			m_sysTime.wSecond = m_wCharNum;
+			break;
 		default:
 		break;
 		}
-		*/
 		
+		if (eDT_NULL != m_eSelDateType)
+			Invalidate();
 	}
 
 	void SDateTimePicker::OnDestroy()
@@ -1010,6 +1194,8 @@ namespace SOUI
 	{
 		__super::OnKillFocus(wndFocus);
 		CloseUp();
+		return;
+		m_wCharNum = 0;
 		if (eDT_NULL != m_eSelDateType)
 		{
 			m_eSelDateType = eDT_NULL;

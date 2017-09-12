@@ -1,9 +1,22 @@
 /*
 	²âÊÔlogÄ£¿é
 */
-#include <souistd.h>
 #include <gtest/gtest.h>
+#include <tchar.h>
+#include <unknown/obj-ref-i.h>
 #include <com-cfg.h>
+
+#include <core-def.h>
+#ifdef DLL_CORE
+#   define SOUI_EXP __declspec(dllimport)
+#else
+#   define SOUI_EXP
+#endif
+
+#include <interface/slog-i.h>
+SOUI::ILog4zManager *g_LogMgr=NULL;
+#define GETLOGMGR() g_LogMgr
+#include <helper/slog.h>
 
 using namespace SOUI;
 
@@ -22,20 +35,14 @@ bool LogFormat()
 
 TEST(Log, stream) {
 
-	SApplication *theApp = new SApplication(NULL,0);
-
 	SComMgr comMgr;
-	ILog4zManager *pLog = NULL;
-	comMgr.CreateLog4z((IObjRef**)&pLog);
-	pLog->start();
-
-	theApp->SetLogManager(pLog);
+	comMgr.CreateLog4z((IObjRef**)&g_LogMgr);
+	g_LogMgr->start();
 
 	EXPECT_TRUE(LogStream());
 
 	EXPECT_TRUE(LogFormat());
 
-	pLog->stop();
-	pLog->Release();
-	delete theApp;
+	g_LogMgr->stop();
+	g_LogMgr->Release();
 }

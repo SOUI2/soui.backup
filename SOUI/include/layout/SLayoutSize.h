@@ -12,10 +12,9 @@ namespace SOUI
 
 		SLayoutSize();
 
+		SLayoutSize(float fSize,Unit unit);
 		float fSize;
 		Unit  unit;
-
-		ORIENTATION orientation;
 
 		void setWrapContent();
 		bool isWrapContent() const;

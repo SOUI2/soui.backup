@@ -8,6 +8,13 @@
 
 namespace SOUI
 {
+	// 按钮 宏定义
+#define HIT_NULL				-1				// 无
+#define HIT_LEFT				-10			// 上一个月 按钮
+#define HIT_RIGHT				-11			// 下一个月 按钮
+#define HIT_YEAR				-12			//  年月  还没用到
+#define HIT_TODAY				42				//  今天 
+
 class SOUI_EXP SCalendarEx : public SWindow
 {
 	SOUI_CLASS_NAME(SCalendarEx, L"calendarex")   //
@@ -19,7 +26,7 @@ public:
 	WORD GetMonth();
 	WORD GetDay();
 	void GetDate(WORD &iYear, WORD &iMonth, WORD &iDay);
-	BOOL SetDate(WORD iYear, WORD iMonth, WORD iDay, bool bNotify=false);
+	BOOL SetDate(WORD iYear, WORD iMonth, WORD iDay, int nBtnType=HIT_NULL, bool bNotify=false);
 protected:
 	void Init();
 	int OnCreate(LPVOID);
@@ -31,9 +38,15 @@ protected:
 	BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 
 	SOUI_ATTRS_BEGIN()
-		ATTR_COLOR(L"colorOther", m_crOtherDayText, TRUE)
-		ATTR_COLOR(L"colorSel", m_crSelDayBack, TRUE)
-		ATTR_COLOR(L"colorHover", m_crHoverText, TRUE)
+		ATTR_LAYOUTSIZE(L"yearHeight", m_nYearMonthHeight, FALSE)
+		ATTR_LAYOUTSIZE(L"weekHeight", m_nWeekHeight, FALSE)
+		ATTR_LAYOUTSIZE(L"todayHeight", m_nFooterHeight, FALSE)
+		ATTR_COLOR(L"colorSelText", m_crOtherDayText, TRUE)
+		ATTR_COLOR(L"colorOtherText", m_crOtherDayText, TRUE)
+		ATTR_COLOR(L"colorSelBg", m_crSelDayBack, TRUE)
+		ATTR_COLOR(L"colorHoverText", m_crHoverText, TRUE)
+		ATTR_SKIN(L"prevSkin", m_pSkinPrev, FALSE)
+		ATTR_SKIN(L"nextSkin", m_pSkinNext, FALSE)
 		ATTR_SKIN(L"daySkin", m_pSkinDay, FALSE)
 	SOUI_ATTRS_END()
 
@@ -61,10 +74,13 @@ protected:
 	SLayoutSize			m_nWeekHeight;				//星期高度
 	SLayoutSize			m_nFooterHeight;			
 	
+	COLORREF				m_crSelText;
 	COLORREF				m_crOtherDayText;			//其他 天 的 字体颜色 
 	COLORREF				m_crSelDayBack;			// 选中 的 天 背颜色
 	COLORREF				m_crHoverText;
 	
+	ISkinObj*				m_pSkinPrev;
+	ISkinObj*				m_pSkinNext;
 	ISkinObj*				m_pSkinDay;					// 天 皮肤 
 
 	STrText					m_strWeek[7];  /**< 表头文本 */
@@ -109,6 +125,10 @@ public:
 public:
 	void CloseUp();
 	EnDateType HitTest(CPoint pt);
+	void SetTime(const SYSTEMTIME& sysTime);
+	void GetTime(SYSTEMTIME& sysTime);
+	void SetTime(WORD wYear, WORD wMonth, WORD wDay, WORD wHour, WORD wMinute, WORD wSecond);
+	SStringT GetWindowText();
 protected:		// 继承 
 	virtual SWindow* GetDropDownOwner();
 	virtual void OnCreateDropDown(SDropDownWnd* pDropDown);
@@ -118,8 +138,9 @@ protected:
 	bool OnDateChanged(EventCalendarExChanged* pEvt);
 	bool OnDateCmd(EventCmd* pEvt);
 	void GetDropBtnRect(LPRECT pBtnRc, LPRECT pSkinRc = NULL);
+	SStringT ToFormatText(EnDateType eType, WORD wNum);
 	bool CalcPopupRect(int nHeight, CRect& rcPopup);
-	void Draw(EnDateType eType, IRenderTarget* pRT, SStringT& szText, CRect& rcText);
+	void Draw(EnDateType eType, IRenderTarget* pRT, WORD wNum, CRect& rcText);
 protected:
 	void OnPaint(IRenderTarget* pRT);
 	void OnLButtonDown(UINT nFlags, CPoint pt);
@@ -138,6 +159,8 @@ protected:
 	
 	SOUI_ATTRS_BEGIN()
 		ATTR_SKIN(L"btnSkin", m_pSkinBtn, FALSE)
+		ATTR_BOOL(L"timeEnable", m_bTimeEnable, FALSE)
+		ATTR_INT(L"dropWidth", m_nDropWidth, FALSE)
 	SOUI_ATTRS_END()
 
 	SOUI_MSG_MAP_BEGIN()
@@ -147,7 +170,7 @@ protected:
 		MSG_WM_MOUSELEAVE(OnMouseLeave)
 		MSG_WM_MOUSEWHEEL(OnMouseWheel)
 		MSG_WM_KEYDOWN(OnKeyDown) 
-		//MSG_WM_CHAR(OnChar)
+		MSG_WM_CHAR(OnChar)
 		MSG_WM_DESTROY(OnDestroy)
 		MSG_WM_SETFOCUS_EX(OnSetFocus)
 		MSG_WM_KILLFOCUS_EX(OnKillFocus)
@@ -168,6 +191,9 @@ protected:
 	SYSTEMTIME						m_sysTime;
 	SStringT								m_sKey;
 
+	int										m_nDropWidth;
+	bool									m_bTimeEnable;				// 是否 有 时 分 秒
 	SCalendarEx*						m_pCalendar;
+	WORD								m_wCharNum;
 };
 }
