@@ -40,11 +40,13 @@ namespace SOUI
 	{
 		return m_ShellNotifyIcon->Show();
 	}
+
 	void CShellNotifyHwnd2::OnFinalMessage(HWND hWnd)
 	{
 		__super::OnFinalMessage(hWnd);
 		delete this;
 	}
+
 	void CShellNotifyHwnd2::OnTimer(UINT_PTR nIDEvent)
 	{
 		switch (nIDEvent)

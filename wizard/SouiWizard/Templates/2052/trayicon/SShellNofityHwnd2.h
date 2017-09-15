@@ -34,15 +34,14 @@ namespace SOUI
 	{
 	public:
 		CShellNotifyHwnd2(SHostWnd* pMainWnd,SShellNotifyIcon* shellnotifyicon);
-		~CShellNotifyHwnd2()
-		{
-		}
+		~CShellNotifyHwnd2(){}
 	protected:
 		//托盘通知消息处理函数
 		LRESULT OnIconNotify(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL/* bHandled*/);
 		LRESULT OnTaskbarCreated(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL);
 		virtual void OnFinalMessage(HWND hWnd);
 		void OnTimer(UINT_PTR nIDEvent);
+
 		BEGIN_MSG_MAP_EX(CShellNotifyHwnd2)
 			//托盘消息处理
 			MESSAGE_HANDLER(MsgTaskbarCreated, OnTaskbarCreated)
