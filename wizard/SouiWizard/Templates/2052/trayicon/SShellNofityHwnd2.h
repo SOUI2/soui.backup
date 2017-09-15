@@ -9,7 +9,7 @@
 #ifndef ID_TASKBARICON
 #define ID_TASKBARICON	100
 #endif // !ID_TASKBARICON
-
+#define ANI_TIMER_ID 8
 
 #define CHAIN_MSG_MAP_MEMBER_PTR(theChainMember) \
     { \
@@ -42,9 +42,11 @@ namespace SOUI
 		LRESULT OnIconNotify(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL/* bHandled*/);
 		LRESULT OnTaskbarCreated(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL);
 		virtual void OnFinalMessage(HWND hWnd);
+		void OnTimer(UINT_PTR nIDEvent);
 		BEGIN_MSG_MAP_EX(CShellNotifyHwnd2)
 			//托盘消息处理
 			MESSAGE_HANDLER(MsgTaskbarCreated, OnTaskbarCreated)
+			MSG_WM_TIMER(OnTimer)
 			CHAIN_MSG_MAP_MEMBER_PTR(m_pMainWnd)
 			MESSAGE_HANDLER(WM_ICONNOTIFY, OnIconNotify)
 			CHAIN_MSG_MAP(CSimpleWnd)

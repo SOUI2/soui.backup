@@ -31,7 +31,7 @@ namespace SOUI
 				SetForegroundWindow(m_pMainWnd->m_hWnd);
 			}
 			bRet = S_OK;
-		}break;		
+		}break;
 		}
 		return bRet;
 	}
@@ -44,5 +44,17 @@ namespace SOUI
 	{
 		__super::OnFinalMessage(hWnd);
 		delete this;
+	}
+	void CShellNotifyHwnd2::OnTimer(UINT_PTR nIDEvent)
+	{
+		switch (nIDEvent)
+		{
+		case ANI_TIMER_ID:
+		{
+			m_ShellNotifyIcon->NextFrame();
+		}break;
+		default:
+			break;
+		}
 	}
 }
