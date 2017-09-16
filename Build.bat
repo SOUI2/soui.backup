@@ -1,3 +1,4 @@
+cd /d %~dp0
 @ECHO off
 SETLOCAL enabledelayedexpansion
 cls
