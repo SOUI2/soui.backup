@@ -238,24 +238,7 @@ if "%selected%" == "o" (
 goto final
 
 :error
-	ECHO 选择错误，请重新选择
-	
+	ECHO 选择错误，请重新选择	
 :final
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 rem pause
