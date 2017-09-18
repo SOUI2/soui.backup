@@ -523,7 +523,11 @@ namespace SOUI
 			for(int x=0;x<nCols;x++)
 			{
 				int iCell = y*nCols+x;
-				if(pCellsSpan[iCell].x==0 || pCellsSpan[iCell].y==0) continue;
+				if(pCellsSpan[iCell].x==0 || pCellsSpan[iCell].y==0) 
+				{
+					pt.x += pCellsWidth[x] + xInter;
+					continue;
+				}
 				SWindow *pCell = pCellsChild[iCell];
 				if(!pCell) break;
 
@@ -563,7 +567,7 @@ namespace SOUI
 				CRect rcCell(pt2,szDesired);
 				pCell->OnRelayout(rcCell);
 
-				pt.x += szCell.cx + xInter;
+				pt.x += pCellsWidth[x] + xInter;
 			}
 			pt.x=rcParent.left;
 			pt.y += pCellsHeight[y] + yInter;
