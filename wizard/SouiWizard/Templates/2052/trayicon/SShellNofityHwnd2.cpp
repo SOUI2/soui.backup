@@ -27,7 +27,7 @@ namespace SOUI
 				m_pMainWnd->ShowWindow(SW_HIDE);
 			else
 			{
-				m_pMainWnd->ShowWindow(SW_SHOWNORMAL);
+				m_pMainWnd->ShowWindow(SW_SHOW);
 				SetForegroundWindow(m_pMainWnd->m_hWnd);
 			}
 			bRet = S_OK;
