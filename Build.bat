@@ -1,3 +1,4 @@
+cd /d %~dp0
 @ECHO off
 SETLOCAL enabledelayedexpansion
 cls
@@ -160,6 +161,7 @@ if %selected%==1 (
 ) else (
 	goto error
 )
+cd /d %~dp0
 rem @echo %cfg%
 rem 保存项目默认配置
 if exist .\config\build.cfg del .\config\build.cfg
@@ -175,11 +177,12 @@ set configStr=SUPPORT_XP=%supportxp%
 echo !configStr!>>.\config\build.cfg
 rem 参数配置完成
 
-if %specs%==win32-msvc2017 (
+if %specs%==win32-msvc2017 (	
 	tools\qmake2017 -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += %cfg%"
 	if %targetx86andx64%==1 (
 		call !vsvarbat! x64
 		SET cfg=!cfg! x64
+		cd /d %~dp0
 		tools\qmake2017 -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += !cfg!"
 	)
 	if %supportxp%==1 (
@@ -190,6 +193,7 @@ if %specs%==win32-msvc2017 (
 	if %targetx86andx64%==1 (
 		call !vsvarbat! x64
 		SET cfg=!cfg! x64
+		cd /d %~dp0
 		tools\qmake2017 -tp vc -r -spec .\tools\mkspecs\%specs% "CONFIG += !cfg!"
 	)
 )
@@ -234,24 +238,7 @@ if "%selected%" == "o" (
 goto final
 
 :error
-	ECHO 选择错误，请重新选择
-	
+	ECHO 选择错误，请重新选择	
 :final
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 rem pause
