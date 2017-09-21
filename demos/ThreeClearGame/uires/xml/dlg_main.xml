@@ -1,0 +1,29 @@
+﻿<SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:32" 
+      smallIcon="ICON_LOGO:16" width="600" height="600"  margin="20,5,5,5" 
+      resizable="1" wndType="appMain" appWnd="1" translucent="1">
+  <root skin="_skin.sys.wnd.bkgnd" cache="1">
+    <!--标题栏-->
+    <caption pos="0,0,-0,30" show="1" font="adding:0" colorText="#ffffff" colorBkgnd="#999999">
+      <icon pos="10,8" src="ICON_LOGO:16"/>
+      <text pos="29,9">@string/title</text>
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
+      <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
+      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-80,0" animate="1" />
+    </caption>
+    <!--控制按钮-->
+    <window pos="0,[,-0,@60" colorBkgnd="#666666">
+      <button pos="20,2,@90,@30" name="btn_restart" focusable="0" alpha="150">重新开始</button>
+      <text pos="30,[5" name="text_score" font="adding:2" colorText="#ffffff" >分数：0 分</text>
+      <richedit pos="200,10,@350,@50" name="edit_log" colorBkgnd="#999999" multiLines="1" 
+           wordWrap="1" readOnly="1" inset="5"/>
+    </window>
+    <!--网格-->
+    <window pos="0,[,-0,-0" colorBkgnd="#666666">
+      <tileview pos="|,|,@528,@462" offset="-0.5,-0.5" name="tv_net" wantTab="1" marginSize="0" colorBkgnd="#eeeeee">
+        <template itemHeight="66" itemWidth="66" colorHover="#eeeeee" colorSelected="#eeeeee" trackMouseEvent="1">
+          <button pos="0,0,-0,-0" name="btn_grid" focusable="0"></button>
+        </template>
+      </tileview>
+    </window>
+  </root>
+</SOUI>

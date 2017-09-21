@@ -27,6 +27,7 @@ SUBDIRS += TXMgr
 SUBDIRS += SLogViewer
 SUBDIRS += souieditor
 SUBDIRS += DropDemo
+SUBDIRS += ThreeClearGame
 
 CONFIG(c++11){
 	SUBDIRS += timdemo	
@@ -57,6 +58,7 @@ CONFIG(x64){
 	souieditor64.depends += soui64 scintilla64
 	DropDemo64.depends += soui64
 	souitest64.depends += soui64
+	ThreeClearGame.depends += soui64
 }
 else{
 	360.depends += soui skia
@@ -77,4 +79,5 @@ else{
 	souieditor.depends += soui scintilla
 	DropDemo.depends += soui
 	souitest.depends += soui
+	ThreeClearGame.depends += soui
 }
