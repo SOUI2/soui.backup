@@ -12,7 +12,7 @@
   <text pos="10,[5">SOUI教程:</text>
   <link href="http://www.cnblogs.com/setoutsoft/" class="cls_btn_weblink">http://www.cnblogs.com/setoutsoft/</link>
 
-  <group pos="10,[5,-10,@100" align="left" show="0">
+  <group pos="10,[5,-10,@100" align="left" show="1">
     支持SOUI，支持启程软件，欢迎捐助
     <text pos="10,8">户名：</text>
     <text colorText="#000000">黄建雄</text>
