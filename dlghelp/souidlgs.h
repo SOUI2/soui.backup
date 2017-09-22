@@ -1,4 +1,4 @@
-// Windows Template Library - WTL version 9.10
+ï»¿// Windows Template Library - WTL version 9.10
 // Copyright (C) Microsoft Corporation, WTL Team. All rights reserved.
 //
 // This file is a part of the Windows Template Library.
@@ -1093,13 +1093,13 @@ public: \
 			return hRet;
 		}
 
-#if defined(_WTL_USE_CSTRING) || defined(__ATLSTR_H__)
-		HRESULT GetFilePath(_CSTRING_NS::CString& strFilePath)
+
+		HRESULT GetFilePath(SStringT& strFilePath)
 		{
 			T* pT = static_cast<T*>(this);
 			ATLASSERT(pT->m_spFileDlg != NULL);
 
-			ATL::CComPtr<IShellItem> spItem;
+			SComPtr<IShellItem> spItem;
 			HRESULT hRet = pT->m_spFileDlg->GetResult(&spItem);
 
 			if (SUCCEEDED(hRet))
@@ -1108,7 +1108,7 @@ public: \
 			return hRet;
 		}
 
-		HRESULT GetFileTitle(_CSTRING_NS::CString& strFileTitle)
+		HRESULT GetFileTitle(SStringT& strFileTitle)
 		{
 			T* pT = static_cast<T*>(this);
 			ATLASSERT(pT->m_spFileDlg != NULL);
@@ -1121,7 +1121,6 @@ public: \
 
 			return hRet;
 		}
-#endif // defined(_WTL_USE_CSTRING) || defined(__ATLSTR_H__)
 
 		// Helpers for IShellItem
 		static HRESULT GetFileNameFromShellItem(IShellItem* pShellItem, SIGDN type, LPWSTR lpstr, int cchLength)
@@ -1135,7 +1134,7 @@ public: \
 			{
 				if (lstrlenW(lpstrName) < cchLength)
 				{
-					SecureHelper::strcpyW_x(lpstr, cchLength, lpstrName);
+					wcscpy_s(lpstr, cchLength, lpstrName);
 				}
 				else
 				{
@@ -1149,8 +1148,8 @@ public: \
 			return hRet;
 		}
 
-#if defined(_WTL_USE_CSTRING) || defined(__ATLSTR_H__)
-		static HRESULT GetFileNameFromShellItem(IShellItem* pShellItem, SIGDN type, _CSTRING_NS::CString& str)
+
+		static HRESULT GetFileNameFromShellItem(IShellItem* pShellItem, SIGDN type, SStringT& str)
 		{
 			ATLASSERT(pShellItem != NULL);
 
@@ -1165,7 +1164,6 @@ public: \
 
 			return hRet;
 		}
-#endif // defined(_WTL_USE_CSTRING) || defined(__ATLSTR_H__)
 
 		// Implementation
 		void _Advise(DWORD& dwCookie)
@@ -1342,7 +1340,7 @@ public: \
 	class ATL_NO_VTABLE CShellFileOpenDialogImpl : public CShellFileDialogImpl< T >
 	{
 	public:
-		ATL::CComPtr<IFileOpenDialog> m_spFileDlg;
+		SComPtr<IFileOpenDialog> m_spFileDlg;
 
 		CShellFileOpenDialogImpl(LPCWSTR lpszFileName = NULL,
 			DWORD dwOptions = FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST | FOS_FILEMUSTEXIST,
@@ -1392,7 +1390,7 @@ public: \
 	class ATL_NO_VTABLE CShellFileSaveDialogImpl : public CShellFileDialogImpl< T >
 	{
 	public:
-		ATL::CComPtr<IFileSaveDialog> m_spFileDlg;
+		SComPtr<IFileSaveDialog> m_spFileDlg;
 
 		CShellFileSaveDialogImpl(LPCWSTR lpszFileName = NULL,
 			DWORD dwOptions = FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST | FOS_OVERWRITEPROMPT,
@@ -1710,7 +1708,7 @@ public: \
 			: CFolderDialogImpl<CFolderDialog>(hWndParent, lpstrTitle, uFlags)
 		{ }
 	};
-	//ÕâÊÇÒ»¸öÓÃ·¨Ê¾Àý£¬´ËÔÚÎÄ¼þ¼Ð¶Ô»°¿òÉÏÌí¼ÓÒ»¸ö°üÀ¨×ÓÄ¿Â¼µÄcheck;
+	//è¿™æ˜¯ä¸€ä¸ªç”¨æ³•ç¤ºä¾‹ï¼Œæ­¤åœ¨æ–‡ä»¶å¤¹å¯¹è¯æ¡†ä¸Šæ·»åŠ ä¸€ä¸ªåŒ…æ‹¬å­ç›®å½•çš„check;
 	class fun
 	{
 	public:
@@ -1725,12 +1723,12 @@ public: \
 		void OnLButtonUp(UINT nFlags, CPoint point)
 		{
 			LRESULT r = SendMessage(BM_GETCHECK, 0, 0);
-			if (r == BST_CHECKED)//±»Ñ¡ÖÐ//BM_SETCHECK  
+			if (r == BST_CHECKED)//è¢«é€‰ä¸­//BM_SETCHECK  
 			{
 				SendMessage(BM_SETCHECK, BST_UNCHECKED, 0);
 				m_pHostWnd->IncludeChildDir(false);
 			}
-			else if (r == BST_UNCHECKED)//²»±»Ñ¡ÖÐ 
+			else if (r == BST_UNCHECKED)//ä¸è¢«é€‰ä¸­ 
 			{
 				SendMessage(BM_SETCHECK, BST_CHECKED, 0);
 				m_pHostWnd->IncludeChildDir(true);
@@ -1769,14 +1767,17 @@ public: \
 		{
 			m_bIncludeChildDir = bCheck;
 		}
-		void OnInitialized()
+		bool IsIncludeChildDir()const
 		{
-			m_bIncludeChildDir = false;
+			return m_bIncludeChildDir;
+		}
+		void OnInitialized()
+		{			
 			CRect rc;
 			::GetClientRect(m_hWnd, &rc);
-			HFONT hFont = CreateFont(-12, 0, 0, 0, 0, 0, 0, 0, GB2312_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"ËÎÌå");
+			HFONT hFont = CreateFont(-12, 0, 0, 0, 0, 0, 0, 0, GB2312_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"å®‹ä½“");
 			m_pSCheckBtn=new CWindowImpl(this);
-			HWND hWnd = m_pSCheckBtn->Create(L"BUTTON", L"°üÀ¨×ÓÄ¿Â¼", WS_CHILD | BS_CHECKBOX, 20, rc.bottom - 50, 100, 30, m_hWnd,NULL,SApplication::getSingleton().GetInstance());
+			HWND hWnd = m_pSCheckBtn->Create(L"BUTTON", L"åŒ…æ‹¬å­ç›®å½•", WS_CHILD | BS_CHECKBOX, 20, rc.bottom - 50, 100, 30, m_hWnd,NULL,SApplication::getSingleton().GetInstance());
 			m_pSCheckBtn->SendMessage(WM_SETFONT, (WPARAM)hFont, 0);
 			m_pSCheckBtn->SendMessage(BM_SETCHECK,m_bIncludeChildDir?BST_CHECKED: BST_UNCHECKED, 0);			
 			m_pSCheckBtn->ShowWindow(TRUE);
@@ -2052,7 +2053,7 @@ public: \
 #if (_RICHEDIT_VER >= 0x0200)
 				_tcscpy_s(cf.szFaceName, _countof(cf.szFaceName), GetFaceName());
 #else // !(_RICHEDIT_VER >= 0x0200)
-#error  ²»Ö§³Örichedit2.0Ö®Ç°µÄ°æ±¾
+#error  ä¸æ”¯æŒrichedit2.0ä¹‹å‰çš„ç‰ˆæœ¬
 #endif // !(_RICHEDIT_VER >= 0x0200)
 			}
 
