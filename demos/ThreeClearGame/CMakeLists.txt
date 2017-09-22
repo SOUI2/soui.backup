@@ -18,12 +18,12 @@ source_group("Source Files" FILES ${CURRENT_SRCS})
 source_group("SoUI Resouece" FILES ${CURRENT_SOUIS})
 source_group("Resource Files" FILES ${CURRENT_RC})
 
-add_executable(DropDemo WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
+add_executable(ThreeClearGame WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-add_dependencies(DropDemo soui-sys-resource ${COM_LIBS})
-target_link_libraries(DropDemo utilities soui)
+add_dependencies(ThreeClearGame soui-sys-resource ${COM_LIBS})
+target_link_libraries(ThreeClearGame utilities soui)
 
-set_target_properties(DropDemo PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
-set_target_properties (DropDemo PROPERTIES
+set_target_properties(ThreeClearGame PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
+set_target_properties (ThreeClearGame PROPERTIES
     FOLDER demos
 )
