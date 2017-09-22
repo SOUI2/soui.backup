@@ -1,5 +1,5 @@
-/*
-	BesLyric  һ�� �����򵥡�����ʵ�õ� ר�������������������ֹ�����ʵ� �������������
+﻿/*
+	BesLyric  一款 操作简单、功能实用的 专门用于制作网易云音乐滚动歌词的 歌词制作软件。
     Copyright (C) 2017  BensonLaur
 
     This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 * @author     BensonLaur   
 * @date       2017/01/08
 * 
-* Describe    MusicPlayer�࣬���Խ��д������豸�����ֵĲ��š��������õȳ������
+* Describe    MusicPlayer类，可以进行打开声音设备、音乐的播放、声音设置等常规操作
 */
 
 #pragma once
@@ -32,80 +32,80 @@
 class MusicPlayer
 {
 public:
-	//���캯��
+	//构造函数
 	MusicPlayer();
 
-	//��������·�� �� Ŀ�괰�ھ��
+	//设置音乐路径 和 目标窗口句柄
 	void init(LPCTSTR musicPathName, HWND hostWnd);
 
-	//�򿪲���������
+	//打开并播放音乐
 	void openStart();
 
-	//�������ر�����
+	//结束并关闭音乐
 	void closeStop();
 
-	//��ĳ��λ�ÿ�ʼ��������
+	//从某个位置开始播放音乐
 	void play(int milliSecondPosition);
 
-	//seek��״̬Ϊstop������λ�÷����˸ı��ʱ�ɻ�ø�����λ�ò�����
+	//seek后状态为stop，但是位置发生了改变此时可获得该最新位置并播放
 	void playAfterSeek();
 
-	//��ͣ����
+	//暂停音乐
 	void pause();
 	
-	//����ͣ��״̬�ָ�����
+	//从暂停的状态恢复播放
 	void resume();
 
-	//ֹͣ����
+	//停止音乐
 	void stop();
 
-	//ǰ�������һ��ʱ��
+	//前进或后退一定时间
 	void shift(int milliSecond);
 
-	//�õ������ĳ���
+	//得到歌曲的长度
 	int getLength();
 
-	//���ص�ǰ��λ�ã����룩
+	//返回当前的位置（毫秒）
 	int getPosition();
 
-	//��õ�ǰģʽ״̬   ����״̬�鿴 https://msdn.microsoft.com/en-us/library/dd798405(v=vs.85).aspx#MCI_STATUS_MODE
+	//获得当前模式状态   返回状态查看 https://msdn.microsoft.com/en-us/library/dd798405(v=vs.85).aspx#MCI_STATUS_MODE
 	DWORD_PTR  getModeStatus();
 
-	//�������ļ�
+	//打开音乐文件
 	MCIERROR openDevice();
 
-	//�ر������ļ�
+	//关闭音乐文件
 	MCIERROR closeDevice();
 
-	//����������С(0-1000)
+	//设置音量大小(0-1000)
 	int setVolumn(int volumn);
 
-	//��õ�ǰ����ƽ��ֵ��Ĭ�ϳ�ʼ��������Ϊ���ֵ1000��
+	//获得当前音量平均值（默认初始播放音量为最大值1000）
 	int getVolumn();
 
 private:
 	bool isParamReady(){return  _tcslen(m_szMusicPathName)==0?false:true;}
 
-	//����ָ����λ��
+	//到达指定的位置
 	void seek(int position);
 
 private:
-	TCHAR m_szMusicPathName[_MAX_PATH];		/* �������ֵ��ļ�·���� */
-	HWND m_hdlHostWnd;						/* ��Ϣ���͵� �Ĵ��ڵľ��*/
-	bool m_bIsParamReady;					/* ��¼�������ļ�·������Ŀ�괰�ھ�����Ƿ�׼���� */
+	TCHAR m_szMusicPathName[_MAX_PATH];		/* 储存音乐的文件路径名 */
+	HWND m_hdlHostWnd;						/* 消息发送到 的窗口的句柄*/
+	bool m_bIsParamReady;					/* 记录参数（文件路径名和目标窗口句柄）是否准备好 */
 	
-	int m_nVolumn;							/* ��ǰ���� 0 ~ 1000 */
+	int m_nVolumn;							/* 当前音量 0 ~ 1000 */
 
-	//����mciSendCommand�����ĵĲ���
-	MCI_OPEN_PARMS m_mciOpen;		//�򿪲���
-	MCI_PLAY_PARMS m_mciPlay;		//���Ų���
-	MCI_GENERIC_PARMS m_mciStop;	//ֹͣ����
-	MCI_GENERIC_PARMS m_mciClose;	//�رղ���
-	MCI_GENERIC_PARMS m_mciPause;	//��ͣ����
-	MCI_GENERIC_PARMS m_mciResume;	//��ͣ�ָ�����
-	MCI_STATUS_PARMS m_mciStatus;	//��ѯ״̬���� ������������ https://msdn.microsoft.com/en-us/library/dd798405(v=vs.85).aspx
-	MCI_SEEK_PARMS m_mciSeek;		//��λ����
-	MCI_SET_PARMS  m_mciSet;		//���ò���
-	MCI_DGV_SETAUDIO_PARMS m_mciSetVolumn;//��������
-	MCI_STATUS_PARMS m_mciGetVolumn;//��ѯ��������
+	//用于mciSendCommand函数的的参数
+	MCI_OPEN_PARMS m_mciOpen;		//打开参数
+	MCI_PLAY_PARMS m_mciPlay;		//播放参数
+	MCI_GENERIC_PARMS m_mciStop;	//停止参数
+	MCI_GENERIC_PARMS m_mciClose;	//关闭参数
+	MCI_GENERIC_PARMS m_mciPause;	//暂停参数
+	MCI_GENERIC_PARMS m_mciResume;	//暂停恢复参数
+	MCI_STATUS_PARMS m_mciStatus;	//查询状态参数 参数具体内容 https://msdn.microsoft.com/en-us/library/dd798405(v=vs.85).aspx
+	MCI_SEEK_PARMS m_mciSeek;		//定位参数
+	MCI_SET_PARMS  m_mciSet;		//设置参数
+	MCI_DGV_SETAUDIO_PARMS m_mciSetVolumn;//音量参数
+	MCI_STATUS_PARMS m_mciGetVolumn;//查询音量参数
 };

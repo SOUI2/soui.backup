@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "SLayoutSize.h"
 
@@ -6,29 +6,29 @@ namespace SOUI
 {
 
 	enum GridGravity{
-		gUndef=-1,	/**< Î´¶¨Òå */
-		gLeft=0,	/**< ×ó¶ÔÆë */
-		gTop=0,		/**< ÉÏ¶ÔÆë */
-		gCenter=1,	/**< ¾ÓÖÐ¶ÔÆë */
-		gRight=2,	/**< ÓÒ¶ÔÆë */
-		gBottom=2,	/**< µ×¶ÔÆë */
-		gFill=3,	/**< À©Õ¹¶ÔÆë */
+		gUndef=-1,	/**< æœªå®šä¹‰ */
+		gLeft=0,	/**< å·¦å¯¹é½ */
+		gTop=0,		/**< ä¸Šå¯¹é½ */
+		gCenter=1,	/**< å±…ä¸­å¯¹é½ */
+		gRight=2,	/**< å³å¯¹é½ */
+		gBottom=2,	/**< åº•å¯¹é½ */
+		gFill=3,	/**< æ‰©å±•å¯¹é½ */
 	};
 
 	/*
-	* Íø¸ñ²¼¾Öµ¥Ôª¸ñ²ÎÊý
-	* remark: Èç¹ûÍ¬Ò»ÐÐÖÐ¶à¸öµ¥ÎÞ¸ñÖ¸¶¨ÁËrowWeight,Ö»ÓÐ×î´óµÄÄÇÒ»¸öÓÐÐ§£¬ÏàÓ¦µÄÍ¬Ò»ÁÐÖÐÒ²Ö»ÓÐ×î´óµÄcolWeightÓÐÐ§
+	* ç½‘æ ¼å¸ƒå±€å•å…ƒæ ¼å‚æ•°
+	* remark: å¦‚æžœåŒä¸€è¡Œä¸­å¤šä¸ªå•æ— æ ¼æŒ‡å®šäº†rowWeight,åªæœ‰æœ€å¤§çš„é‚£ä¸€ä¸ªæœ‰æ•ˆï¼Œç›¸åº”çš„åŒä¸€åˆ—ä¸­ä¹Ÿåªæœ‰æœ€å¤§çš„colWeightæœ‰æ•ˆ
 	*/
 	struct SGridLayoutParamStruct
 	{
-		int nColSpan;		/**< Íø¸ñÕ¼ÁÐÊý */
-		int nRowSpan;		/**< Íø¸ñÕ¼ÐÐÊý */
-		GridGravity layoutGravityX;/**< Íø¸ñË®Æ½¶ÔÆë·½Ê½ */
-		GridGravity layoutGravityY;/**< Íø¸ñ´¹Ö±¶ÔÆë·½Ê½ */
-		SLayoutSize  width;	/**< Íø¸ñ¿í¶È */
-		SLayoutSize  height;/**< Íø¸ñ¸ß¶È */
-		float fColWeight;	/**< Íø¸ñ¿í¶ÈµÄ¼ÓÈ¨ */
-		float fRowWeight;	/**< Íø¸ñ¸ß¶ÈµÄ¼ÓÈ¨ */
+		int nColSpan;		/**< ç½‘æ ¼å åˆ—æ•° */
+		int nRowSpan;		/**< ç½‘æ ¼å è¡Œæ•° */
+		GridGravity layoutGravityX;/**< ç½‘æ ¼æ°´å¹³å¯¹é½æ–¹å¼ */
+		GridGravity layoutGravityY;/**< ç½‘æ ¼åž‚ç›´å¯¹é½æ–¹å¼ */
+		SLayoutSize  width;	/**< ç½‘æ ¼å®½åº¦ */
+		SLayoutSize  height;/**< ç½‘æ ¼é«˜åº¦ */
+		float fColWeight;	/**< ç½‘æ ¼å®½åº¦çš„åŠ æƒ */
+		float fRowWeight;	/**< ç½‘æ ¼é«˜åº¦çš„åŠ æƒ */
 	};
 
 }

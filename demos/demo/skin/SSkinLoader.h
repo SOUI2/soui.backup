@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "pugixml\pugixml.hpp"
 #include "res.mgr\SSkinPool.h"
 #include "helper\SplitString.h"

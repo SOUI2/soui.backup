@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include <commdlg.h>
 #include <shlobj.h>
 #include <shellapi.h>
@@ -46,7 +46,7 @@ BOOL CFileHelp::OpenFile(LPCWSTR lpstrFilter, HWND hwndOwner, vector<SStringT> &
 	openfilename.lCustData = 0;
 	openfilename.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_READONLY | OFN_EXPLORER | dwFlag;
 
-	// µ¯³ö´ò¿ªÎÄ¼şµÄ¶Ô»°¿ò
+	// å¼¹å‡ºæ‰“å¼€æ–‡ä»¶çš„å¯¹è¯æ¡†
 	SStringT str;
 
 	if (::GetOpenFileName(&openfilename))
@@ -147,13 +147,13 @@ BOOL CFileHelp::BrowseDir(SStringT &path, HWND hwndOwner, SStringT title)
 {
 	TCHAR szPathName[MAX_PATH];
 	BROWSEINFO bInfo = { 0 };
-	bInfo.hwndOwner = hwndOwner;//¸¸´°¿Ú  
+	bInfo.hwndOwner = hwndOwner;//çˆ¶çª—å£  
 	bInfo.lpszTitle = title;
-	bInfo.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI/*°üº¬Ò»¸ö±à¼­¿ò ÓÃ»§¿ÉÒÔÊÖ¶¯ÌîĞ´Â·¾¶ ¶Ô»°¿ò¿ÉÒÔµ÷Õû´óĞ¡Ö®ÀàµÄ..*/ |
-		BIF_UAHINT/*´øTIPSÌáÊ¾*/ | BIF_NONEWFOLDERBUTTON /*²»´øĞÂ½¨ÎÄ¼ş¼Ğ°´Å¥*/;
+	bInfo.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI/*åŒ…å«ä¸€ä¸ªç¼–è¾‘æ¡† ç”¨æˆ·å¯ä»¥æ‰‹åŠ¨å¡«å†™è·¯å¾„ å¯¹è¯æ¡†å¯ä»¥è°ƒæ•´å¤§å°ä¹‹ç±»çš„..*/ |
+		BIF_UAHINT/*å¸¦TIPSæç¤º*/ | BIF_NONEWFOLDERBUTTON /*ä¸å¸¦æ–°å»ºæ–‡ä»¶å¤¹æŒ‰é’®*/;
 	LPITEMIDLIST lpDlist;
 	lpDlist = SHBrowseForFolder(&bInfo);
-	if (lpDlist != NULL)//µ¥»÷ÁËÈ·¶¨°´Å¥  
+	if (lpDlist != NULL)//å•å‡»äº†ç¡®å®šæŒ‰é’®  
 	{
 		SHGetPathFromIDList(lpDlist, szPathName);
 		path.Format(_T("%s"), szPathName);
@@ -178,7 +178,7 @@ bool CFileHelp::FindFileExt(LPCTSTR pstrPath, LPCTSTR pstrExtFilter)
 
 	if (_tcslen(szExt))
 	{
-		_tcscat_s(szExt, _MAX_EXT, _T(";"));    // .mo²»·ûºÏÌõ¼ş£¬ÓÉÓÚ»áÆ¥Åäµ½.mov£¬ËùÒÔÔÚºóÃæ¼ÓÉÏ¡¾;¡¿À´ÅĞ¶ÏÊÇ·ñÍêÈ«Æ¥Åä
+		_tcscat_s(szExt, _MAX_EXT, _T(";"));    // .moä¸ç¬¦åˆæ¡ä»¶ï¼Œç”±äºä¼šåŒ¹é…åˆ°.movï¼Œæ‰€ä»¥åœ¨åé¢åŠ ä¸Šã€;ã€‘æ¥åˆ¤æ–­æ˜¯å¦å®Œå…¨åŒ¹é…
 		return NULL != _tcsstr(pstrExtFilter, szExt);
 	}
 
@@ -193,7 +193,7 @@ void CFileHelp::EnumerateFiles(vector<SStringT> &vctString, LPCTSTR p_strExtFilt
 	{
 		do
 		{
-			// Èç¹ûÎªÄ¿Â¼
+			// å¦‚æœä¸ºç›®å½•
 			if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			{
 				if (_tcscmp(fd.cFileName, _T(".")) && _tcscmp(fd.cFileName, _T("..")))
@@ -203,7 +203,7 @@ void CFileHelp::EnumerateFiles(vector<SStringT> &vctString, LPCTSTR p_strExtFilt
 					::SetCurrentDirectory(_T(".."));
 				}
 			}
-			// Èç¹ûÎªÎÄ¼ş
+			// å¦‚æœä¸ºæ–‡ä»¶
 			else
 			{
 				SStringT strDir;

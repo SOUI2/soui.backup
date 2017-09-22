@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "FilterDlg.h"
 #include <helper/SAdapterBase.h>
 #include "MainDlg.h"

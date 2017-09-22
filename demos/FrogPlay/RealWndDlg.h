@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "MainDlg.h"
 class CRealWndDlg : public SHostDialog
 {
@@ -9,22 +9,22 @@ public:
 	void On_Menu_Open();
 	void On_Open_Files();
 	void OnCommand(UINT uNotifyCode, int nID, HWND wndCtl);
-	//½ÓÊÜ¼üÅÌÊäÈë
+	//æ¥å—é”®ç›˜è¾“å…¥
 	void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	void OnLbuttonDBLCLK(UINT nFlags, CPoint pt);
 	void OnLbuttonup(UINT nFlags, CPoint pt);
 	
 protected:
-	//souiÏûÏ¢
+	//souiæ¶ˆæ¯
 	EVENT_MAP_BEGIN()
 		
 		EVENT_ID_COMMAND(400, On_Menu_Open)
 		EVENT_ID_COMMAND(402, On_Open_Files)
 	EVENT_MAP_END()
-    //ÏûÏ¢Ó³Éä±í
+    //æ¶ˆæ¯æ˜ å°„è¡¨
     BEGIN_MSG_MAP_EX(CRealWndDlg)
 		MSG_WM_COMMAND(OnCommand)
-		//´¦Àí¼üÅÌ°´¼üÏûÏ¢
+		//å¤„ç†é”®ç›˜æŒ‰é”®æ¶ˆæ¯
 		MSG_WM_KEYDOWN(OnKeyDown)
 		MSG_WM_LBUTTONDBLCLK(OnLbuttonDBLCLK)
 		MSG_WM_LBUTTONUP(OnLbuttonup)

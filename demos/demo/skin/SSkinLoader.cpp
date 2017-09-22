@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "SSkinLoader.h"
 #include "res.mgr\SResProvider.h"
 

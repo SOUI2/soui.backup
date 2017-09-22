@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include <Dbghelp.h>
 #pragma comment(lib,"Dbghelp.lib")
 #include <helper/SAdapterBase.h>
 struct ExportTableItemData
 {		
-	SStringT strName;//ÓÃ»§Ãû
+	SStringT strName;//ç”¨æˆ·å
 };
 class CExportTableTreeViewAdapter :public STreeAdapterBase<ExportTableItemData>
 {
@@ -33,7 +33,7 @@ public:
 		}
 		PIMAGE_DOS_HEADER pDosHeader = (PIMAGE_DOS_HEADER)lpBaseAddress;
 		PIMAGE_NT_HEADERS32 pNtHeaders = (PIMAGE_NT_HEADERS32)(lpBaseAddress + pDosHeader->e_lfanew);
-		//²âÊÔÒ»ÏÂÊÇ²»ÊÇÒ»¸öÓĞĞ§µÄPEÎÄ¼ş
+		//æµ‹è¯•ä¸€ä¸‹æ˜¯ä¸æ˜¯ä¸€ä¸ªæœ‰æ•ˆçš„PEæ–‡ä»¶
 		if (pDosHeader->e_magic != IMAGE_DOS_SIGNATURE || IMAGE_NT_SIGNATURE != pNtHeaders->Signature)
 		{			
 			return -1;
@@ -64,7 +64,7 @@ public:
 
 			IMAGE_EXPORT_DIRECTORY null_iid;
 			memset(&null_iid, 0, sizeof(null_iid));
-			//Ã¿¸öÔªËØ´ú±íÁËÒ»¸öÒıÈëµÄDLL¡£
+			//æ¯ä¸ªå…ƒç´ ä»£è¡¨äº†ä¸€ä¸ªå¼•å…¥çš„DLLã€‚
 			ExportTableItemData data;
 
 			DWORD dwNumOfExports = pImportTable->NumberOfNames;
@@ -105,7 +105,7 @@ public:
 
 			IMAGE_EXPORT_DIRECTORY null_iid;
 			memset(&null_iid, 0, sizeof(null_iid));
-			//Ã¿¸öÔªËØ´ú±íÁËÒ»¸öÒıÈëµÄDLL¡£
+			//æ¯ä¸ªå…ƒç´ ä»£è¡¨äº†ä¸€ä¸ªå¼•å…¥çš„DLLã€‚
 			ExportTableItemData data;
 
 			DWORD dwNumOfExports = pImportTable->NumberOfNames;

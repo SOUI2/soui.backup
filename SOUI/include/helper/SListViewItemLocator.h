@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "interface/LvItemLocator-i.h"
 #include "control/stree.hpp"
 
@@ -77,16 +77,16 @@ namespace SOUI
         int Branch2Index(HSTREEITEM hBranch) const;
         HSTREEITEM Offset2Branch(HSTREEITEM hParent,int nOffset);
 
-        SLayoutSize m_nItemHeight;  //Ä¬ÈÏ±íÏî¸ß¶È
+        SLayoutSize m_nItemHeight;  //é»˜è®¤è¡¨é¡¹é«˜åº¦
         SLayoutSize m_nDividerSize;
 		int m_nScale;
         struct BranchInfo
         {
-            int nBranchHei; //·ÖÖ¦¸ß¶È
-            int nBranchSize;//·ÖÖ¦ÖĞ°üº¬µÄ½ÚµãÊıÁ¿
+            int nBranchHei; //åˆ†æé«˜åº¦
+            int nBranchSize;//åˆ†æä¸­åŒ…å«çš„èŠ‚ç‚¹æ•°é‡
         };
 
-        CSTree<BranchInfo>    m_itemPosIndex;//¼ÇÂ¼·ÖÖ¦¸ß¶È
+        CSTree<BranchInfo>    m_itemPosIndex;//è®°å½•åˆ†æé«˜åº¦
         class SegmentInfo
         {
         public:
@@ -102,7 +102,7 @@ namespace SOUI
 
             HSTREEITEM hItem;
             int        nItems;
-            int*       pItemHeight;//¶ÎÖĞÃ¿Ò»¸ö±íÏîµÄ¸ß¶È
+            int*       pItemHeight;//æ®µä¸­æ¯ä¸€ä¸ªè¡¨é¡¹çš„é«˜åº¦
         };
 
         SArray<SegmentInfo*>     m_segments;

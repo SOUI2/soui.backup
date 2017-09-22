@@ -1,4 +1,4 @@
-#ifndef __ETIMES_FILE_H___
+﻿#ifndef __ETIMES_FILE_H___
 #define __ETIMES_FILE_H___
 #pragma once
 

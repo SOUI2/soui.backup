@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <core/swnd.h>
 
 namespace SOUI
@@ -19,7 +19,7 @@ public:
 
 	}
 protected:
-    //SWindowµÄĞéº¯Êı
+    //SWindowçš„è™šå‡½æ•°
 	virtual CSize GetDesiredSize(LPCRECT pRcContainer)
 	{
 		CSize szRet;
@@ -112,7 +112,7 @@ protected:
 
 		pRTDst->SelectObject(pOldBmp);
 
-		//´ÓmaskµÄÖ¸¶¨channelÖĞ»ñµÃalphaÍ¨µÀ
+		//ä»maskçš„æŒ‡å®šchannelä¸­è·å¾—alphaé€šé“
 		LPBYTE pBitCache = (LPBYTE)m_bmpCache->LockPixelBits();
 		LPBYTE pBitMask = (LPBYTE)m_bmpMask->LockPixelBits();
 		LPBYTE pDst = pBitCache;
@@ -122,12 +122,12 @@ protected:
 		{
 			BYTE byAlpha = *pSrc;
 			pSrc += 4;
-			//Ô´°ëÍ¸Ã÷£¬mask²»Í¸Ã÷Ê±Ê¹ÓÃÔ´µÄ°ëÍ¸Ã÷ÊôĞÔ
+			//æºåŠé€æ˜ï¼Œmaskä¸é€æ˜æ—¶ä½¿ç”¨æºçš„åŠé€æ˜å±æ€§
 			if(pDst[3] == 0xff || (pDst[3]!=0xFF &&byAlpha == 0))
-			{//Ô´²»Í¸Ã÷,»òÕßmaskÈ«Í¸Ã÷
-				*pDst++ = ((*pDst) * byAlpha)>>8;//×öpremultiply
-				*pDst++ = ((*pDst) * byAlpha)>>8;//×öpremultiply
-				*pDst++ = ((*pDst) * byAlpha)>>8;//×öpremultiply
+			{//æºä¸é€æ˜,æˆ–è€…maskå…¨é€æ˜
+				*pDst++ = ((*pDst) * byAlpha)>>8;//åšpremultiply
+				*pDst++ = ((*pDst) * byAlpha)>>8;//åšpremultiply
+				*pDst++ = ((*pDst) * byAlpha)>>8;//åšpremultiply
 				*pDst++ = byAlpha;
 			}
 		}
@@ -140,13 +140,13 @@ protected:
 		ATTR_CUSTOM(L"skin", OnAttrSkin)
 	SOUI_ATTRS_END()
 
-    //SOUI¿Ø¼şÏûÏ¢Ó³Éä±í
+    //SOUIæ§ä»¶æ¶ˆæ¯æ˜ å°„è¡¨
 	SOUI_MSG_MAP_BEGIN()
-		MSG_WM_PAINT_EX(OnPaint)    //´°¿Ú»æÖÆÏûÏ¢
+		MSG_WM_PAINT_EX(OnPaint)    //çª—å£ç»˜åˆ¶æ¶ˆæ¯
 	SOUI_MSG_MAP_END()
 
 protected:
-	ISkinObj*						m_pSkin;  /**< ISkinObj¶ÔÏó */
+	ISkinObj*						m_pSkin;  /**< ISkinObjå¯¹è±¡ */
 	CAutoRefPtr<IBitmap>    m_bmpCache;
 	CAutoRefPtr<IBitmap>    m_bmpMask;
 	int									m_iMaskChannel;

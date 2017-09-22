@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <helper/color.h>
 #include <unknown/obj-ref-impl.hpp>
@@ -209,7 +209,7 @@ namespace SOUI
 
         HRESULT ImgFromDecoder(IImgX *imgDecoder);
         SIZE        m_sz;
-        HBITMAP     m_hBmp;     //±ê×¼µÄ32Î»Î»Í¼£¬ºÍm_bitmap¹²ÏíÄÚ´æ
+        HBITMAP     m_hBmp;     //æ ‡å‡†çš„32ä½ä½å›¾ï¼Œå’Œm_bitmapå…±äº«å†…å­˜
     };
 
     //////////////////////////////////////////////////////////////////////////
@@ -256,7 +256,7 @@ namespace SOUI
         SRenderTarget_GDI(IRenderFactory* pRenderFactory,int nWid,int nHei);
         ~SRenderTarget_GDI();
 
-        //Ö»Ö§³Ö´´½¨Î»Í¼±íÃæ
+        //åªæ”¯æŒåˆ›å»ºä½å›¾è¡¨é¢
         virtual HRESULT CreateCompatibleRenderTarget(SIZE szTarget,IRenderTarget **ppRenderTarget);
 
         virtual HRESULT CreatePen(int iStyle,COLORREF cr,int cWidth,IPen ** ppPen);
@@ -367,7 +367,7 @@ namespace SOUI
         CAutoRefPtr<SFont_GDI> m_curFont;
         POINT               m_ptOrg;
         
-        //×¢Òâ±£´æ4¸öÄ¬ÈÏµÄGDI¶ÔÏó
+        //æ³¨æ„ä¿å­˜4ä¸ªé»˜è®¤çš„GDIå¯¹è±¡
         CAutoRefPtr<IBitmap> m_defBmp;
         CAutoRefPtr<IPen> m_defPen;
         CAutoRefPtr<IBrush> m_defBrush;

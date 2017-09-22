@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "interface/slayout-i.h"
 #include "SLinearLayoutParamStruct.h"

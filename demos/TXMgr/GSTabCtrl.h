@@ -1,10 +1,10 @@
-/* $Copyright (c) 2006-2017 Green Net World
+ï»¿/* $Copyright (c) 2006-2017 Green Net World
  * 
  * Author	:	cherish  version 1.0
  * DateTime	:	2017-4-13 14:13:46
  *
  *
- * GSTabCtrl  ¹¦ÄÜ
+ * GSTabCtrl  åŠŸèƒ½
  */
 
 #ifndef __GSTABCTRL_BFFA82AF_9970_4395_8F9C_CF25F8700172__
@@ -16,48 +16,48 @@ class GSTabCtrl : public STabCtrl , protected ITimelineHandler
 	SOUI_CLASS_NAME(GSTabCtrl, L"gstabctrl")
 
 public:
-	GSTabCtrl();     /** Ä¬ÈÏ¹¹Ôìº¯Êı */
-	~GSTabCtrl();    /** Ä¬ÈÏÎö¹¹º¯Êı */
+	GSTabCtrl();     /** é»˜è®¤æ„é€ å‡½æ•° */
+	~GSTabCtrl();    /** é»˜è®¤ææ„å‡½æ•° */
 
 
 protected:
 
 	/**
 	* STabCtrl::OnPaint
-	* @brief    »æ»­ÏûÏ¢
-	* @param    IRenderTarget *pRT -- »æÖÆÉè±¸¾ä±ú
+	* @brief    ç»˜ç”»æ¶ˆæ¯
+	* @param    IRenderTarget *pRT -- ç»˜åˆ¶è®¾å¤‡å¥æŸ„
 	*
-	* Describe  ´Ëº¯ÊıÊÇÏûÏ¢ÏìÓ¦º¯Êı
+	* Describe  æ­¤å‡½æ•°æ˜¯æ¶ˆæ¯å“åº”å‡½æ•°
 	*/
 	void OnPaint(IRenderTarget *pRT);
 
 	/**
 	* STabCtrl::DrawItem
-	* @brief    »æÖÆitem
-	* @param    IRenderTarget *pRT -- »æÖÆÉè±¸
-	* @param    const CRect &rcItem -- »æÖÆÇøÓò
-	* @param    int iItem  -- Ë÷Òı
-	* @param    DWORD dwState  -- ×´Ì¬
+	* @brief    ç»˜åˆ¶item
+	* @param    IRenderTarget *pRT -- ç»˜åˆ¶è®¾å¤‡
+	* @param    const CRect &rcItem -- ç»˜åˆ¶åŒºåŸŸ
+	* @param    int iItem  -- ç´¢å¼•
+	* @param    DWORD dwState  -- çŠ¶æ€
 	*
-	* Describe  »æÖÆitem
+	* Describe  ç»˜åˆ¶item
 	*/
 	virtual void DrawItem(IRenderTarget *pRT, const CRect &rcItem, int iItem, DWORD dwState);
 
 	/**
 	* STabCtrl::OnMouseMove
-	* @brief    Êó±êÒÆ¶¯ÊÂ¼ş
-	* @param    UINT nFlags -- ±êÖ¾
-	* @param    CPoint point -- Êó±ê×ø±ê
+	* @brief    é¼ æ ‡ç§»åŠ¨äº‹ä»¶
+	* @param    UINT nFlags -- æ ‡å¿—
+	* @param    CPoint point -- é¼ æ ‡åæ ‡
 	*
-	* Describe  ´Ëº¯ÊıÊÇÏûÏ¢ÏìÓ¦º¯Êı
+	* Describe  æ­¤å‡½æ•°æ˜¯æ¶ˆæ¯å“åº”å‡½æ•°
 	*/
 	void OnMouseMove(UINT nFlags, CPoint point);
 
 	/**
 	* STabCtrl::OnMouseLeave
-	* @brief    Êó±êÀë¿ªÊÂ¼ş
+	* @brief    é¼ æ ‡ç¦»å¼€äº‹ä»¶
 	*
-	* Describe  ´Ëº¯ÊıÊÇÏûÏ¢ÏìÓ¦º¯Êı
+	* Describe  æ­¤å‡½æ•°æ˜¯æ¶ˆæ¯å“åº”å‡½æ•°
 	*/
 	void OnMouseLeave()
 	{
@@ -82,8 +82,8 @@ protected:
 	SOUI_ATTRS_END()
 
 private:
-	ISkinObj *					m_pSkinAniHover; /**< ISkibObj¶ÔÏó */
-	ISkinObj *					m_pSkinAniDown; /**< ISkibObj¶ÔÏó */
+	ISkinObj *					m_pSkinAniHover; /**< ISkibObjå¯¹è±¡ */
+	ISkinObj *					m_pSkinAniDown; /**< ISkibObjå¯¹è±¡ */
 
 	SArray<int>					m_arrHoverNumber;
 	int							m_nElapseTime;

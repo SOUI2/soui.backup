@@ -1,12 +1,12 @@
-#ifndef __WINFILE_ICON_SKIN_HPP_
+ï»¿#ifndef __WINFILE_ICON_SKIN_HPP_
 #define __WINFILE_ICON_SKIN_HPP_
 
 #include "core/SSkinObjBase.h"
 #include <commoncontrols.h>
 //************************************
-// Õâ¸öÊÇ ÏµÍ³ÎÄ¼şÍ¼±ê µÄÆ¤·ô¿Ø¼ş¡£ Ê¹ÓÃSHGetFileInfo À´»ñÈ¡Í¼±êË÷Òı  
-// Ê¹ÓÃÖ®Ç°ÏÈ ×¢²á theApp->RegisterSkinFactory(TplSkinFactory<SSkinSystemIconList>());		//×¢²áSkin
-// È»ºóÔÚskin.xml Àï Ìí¼Ó ×ÊÔ´  <sysiconlist name="sysiconlist" flag="1" />  flag ±íÊ¾Í¼±ê´óĞ¡ÀàĞÍ Õâ¸ö±ØĞëÒªÓĞ
+// è¿™ä¸ªæ˜¯ ç³»ç»Ÿæ–‡ä»¶å›¾æ ‡ çš„çš®è‚¤æ§ä»¶ã€‚ ä½¿ç”¨SHGetFileInfo æ¥è·å–å›¾æ ‡ç´¢å¼•  
+// ä½¿ç”¨ä¹‹å‰å…ˆ æ³¨å†Œ theApp->RegisterSkinFactory(TplSkinFactory<SSkinSystemIconList>());		//æ³¨å†ŒSkin
+// ç„¶ååœ¨skin.xml é‡Œ æ·»åŠ  èµ„æº  <sysiconlist name="sysiconlist" flag="1" />  flag è¡¨ç¤ºå›¾æ ‡å¤§å°ç±»å‹ è¿™ä¸ªå¿…é¡»è¦æœ‰
 // 
 //************************************
 class SSkinSystemIconList: public SSkinObjBase
@@ -52,7 +52,7 @@ private:
 	SIZE					m_szSimpleIcon;
 
 	SOUI_ATTRS_BEGIN()
-		ATTR_CUSTOM(L"flag", OnAttrFlag)   //XMLÎÄ¼şÖĞÖ¸¶¨µÄÍ¼Æ¬×ÊÔ´Ãû,(type:name) flag ±íÊ¾Í¼±êÀàĞÍ ÓĞsmall large 
+		ATTR_CUSTOM(L"flag", OnAttrFlag)   //XMLæ–‡ä»¶ä¸­æŒ‡å®šçš„å›¾ç‰‡èµ„æºå,(type:name) flag è¡¨ç¤ºå›¾æ ‡ç±»å‹ æœ‰small large 
 	SOUI_ATTRS_END()
 protected:
 	LRESULT OnAttrFlag(const SStringW &strValue,BOOL bLoading)
@@ -62,12 +62,12 @@ protected:
 
 		//#define SHIL_LARGE          0   // normally 32x32
 		//#define SHIL_SMALL          1   // normally 16x16
-		//SHIL_EXTRALARGE»ñÈ¡48 * 48µÄÍ¼±ê£¬ SHIL_JUMBO »ñÈ¡256 * 256µÄÍ¼±ê¡£
+		//SHIL_EXTRALARGEè·å–48 * 48çš„å›¾æ ‡ï¼Œ SHIL_JUMBO è·å–256 * 256çš„å›¾æ ‡ã€‚
 		HRESULT hResult = ::SHGetImageList(nRet , IID_IImageList, (void**)&m_hIconList);
 		if(S_OK != hResult)
 			return S_FALSE;
 
-		//¼ÆËãÍ¼±ê´óĞ¡ 
+		//è®¡ç®—å›¾æ ‡å¤§å° 
 		int nX = 0;
 		int nY = 0;
 		((IImageList*)m_hIconList)->GetIconSize(&nX, &nY);

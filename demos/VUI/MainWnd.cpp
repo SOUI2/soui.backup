@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "MainWnd.h"
 #include "helper/SMenu.h"
 #include "../controls.extend/FileHelper.h"
@@ -19,22 +19,22 @@ CMainWnd::~CMainWnd(void)
 
 BOOL CMainWnd::OnInitDialog( HWND hWnd, LPARAM lParam )
 {
-	// ´´½¨Æ¤·ô¹ÜÀí´°¿Ú
+	// åˆ›å»ºçš®è‚¤ç®¡ç†çª—å£
 	m_dlgSkinMgr.Create(m_hWnd);
 	m_dlgSkinMgr.GetNative()->SendMessage(WM_INITDIALOG);
 
-	// ´´½¨±©·çºĞ×Ó´°¿Ú
+	// åˆ›å»ºæš´é£ç›’å­çª—å£
 	m_winBox.Create(m_hWnd);
 	m_winBox.m_boxParent=(void *)this;
 	m_winBox.GetNative()->SendMessage(WM_INITDIALOG);
 
-	menu_sortord.LoadMenu(_T("menu_playlist_sortord"),_T("LAYOUT"));	//¼ÓÔØtabÒ³1ÖĞÁĞ±íÅÅĞò·½Ê½²Ëµ¥
+	menu_sortord.LoadMenu(_T("menu_playlist_sortord"),_T("LAYOUT"));	//åŠ è½½tabé¡µ1ä¸­åˆ—è¡¨æ’åºæ–¹å¼èœå•
 
-	menu_icon.LoadMenu(_T("menu_test"),_T("LAYOUT"));					//icon°´Å¥µÄµ¯³ö²Ëµ¥
+	menu_icon.LoadMenu(_T("menu_test"),_T("LAYOUT"));					//iconæŒ‰é’®çš„å¼¹å‡ºèœå•
 
-	menu_PlayArea.LoadMenu(_T("menu_open"),_T("LAYOUT"));				//²¥·ÅÇøÓò´ò¿ªÎÄ¼ş°´Å¥µÄµ¯³ö²Ëµ¥
+	menu_PlayArea.LoadMenu(_T("menu_open"),_T("LAYOUT"));				//æ’­æ”¾åŒºåŸŸæ‰“å¼€æ–‡ä»¶æŒ‰é’®çš„å¼¹å‡ºèœå•
 
-	menu_PlayMode.LoadMenu(_T("menu_playmode"),_T("LAYOUT"));			//²¥·ÅÄ£Ê½²Ëµ¥
+	menu_PlayMode.LoadMenu(_T("menu_playmode"),_T("LAYOUT"));			//æ’­æ”¾æ¨¡å¼èœå•
 	::CheckMenuItem(menu_PlayMode.m_hMenu,11101,MF_CHECKED);
 	::CheckMenuItem(menu_PlayMode.m_hMenu,11102,MF_UNCHECKED);
 	::CheckMenuItem(menu_PlayMode.m_hMenu,11103,MF_UNCHECKED);
@@ -43,13 +43,13 @@ BOOL CMainWnd::OnInitDialog( HWND hWnd, LPARAM lParam )
 
 	m_bLayoutInited=TRUE;
 
-	up_or_down = 0;			//ÅÅĞò·½Ê½,ÏòÉÏ»òÏòÏÂ,³õÊ¼»¯Îª0
-	popularity_up_or_down = TRUE;	//ÅÅĞò·½Ê½Îª¡°¹ÛÖÚ¡±Ê±£¬ÏòÉÏ»òÏòÏÂ,³õÊ¼»¯ÎªTRUE
+	up_or_down = 0;			//æ’åºæ–¹å¼,å‘ä¸Šæˆ–å‘ä¸‹,åˆå§‹åŒ–ä¸º0
+	popularity_up_or_down = TRUE;	//æ’åºæ–¹å¼ä¸ºâ€œè§‚ä¼—â€æ—¶ï¼Œå‘ä¸Šæˆ–å‘ä¸‹,åˆå§‹åŒ–ä¸ºTRUE
 
 	return 0;
 }
 
-void CMainWnd::OnBtnIcon()	// ×óÉÏ½Çicon°´Å¥
+void CMainWnd::OnBtnIcon()	// å·¦ä¸Šè§’iconæŒ‰é’®
 {
 
 
@@ -64,12 +64,12 @@ void CMainWnd::OnBtnIcon()	// ×óÉÏ½Çicon°´Å¥
 	}
 }
 
-void CMainWnd::OnBtnFeedback()	//Òâ¼û·´À¡
+void CMainWnd::OnBtnFeedback()	//æ„è§åé¦ˆ
 {
 	ShellExecute(NULL, _T("open"), _T("explorer.exe"), _T("http://www.zhihu.com/"), NULL, SW_SHOW);
 }
 
-void CMainWnd::OnBtnSkins()//´ò¿ªÆ¤·ô¹ÜÀí
+void CMainWnd::OnBtnSkins()//æ‰“å¼€çš®è‚¤ç®¡ç†
 {
 	CRect rc_temp;
 	SWindow * pBtn = FindChildByName(L"btn_skins");
@@ -83,14 +83,14 @@ void CMainWnd::OnBtnSkins()//´ò¿ªÆ¤·ô¹ÜÀí
 	}
 }
 
-void CMainWnd::OnBtnBgOpen()	//²¥·ÅÇøÓò´ò¿ªÎÄ¼ş°´Å¥
+void CMainWnd::OnBtnBgOpen()	//æ’­æ”¾åŒºåŸŸæ‰“å¼€æ–‡ä»¶æŒ‰é’®
 {
-	CFileDialogEx openDlg(TRUE,_T("rmvb"),0,6,_T("ÊÓÆµÎÄ¼ş(*.rmvb)\0*.rmvb\0All files (*.*)\0*.*\0\0"));
+	CFileDialogEx openDlg(TRUE,_T("rmvb"),0,6,_T("è§†é¢‘æ–‡ä»¶(*.rmvb)\0*.rmvb\0All files (*.*)\0*.*\0\0"));
 	if(openDlg.DoModal()==IDOK)
 		SMessageBox(NULL,_T("OnBtnBgOpen"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnBgOpenMenu()	//²¥·ÅÇøÓò´ò¿ªÎÄ¼ş°´Å¥µÄµ¯³ö²Ëµ¥
+void CMainWnd::OnBtnBgOpenMenu()	//æ’­æ”¾åŒºåŸŸæ‰“å¼€æ–‡ä»¶æŒ‰é’®çš„å¼¹å‡ºèœå•
 {
 	CRect rc_menu;
 	SWindow * pBtn = FindChildByName(L"btn_bg_open");
@@ -102,14 +102,14 @@ void CMainWnd::OnBtnBgOpenMenu()	//²¥·ÅÇøÓò´ò¿ªÎÄ¼ş°´Å¥µÄµ¯³ö²Ëµ¥
 		menu_PlayArea.TrackPopupMenu(0, rc_menu.left, rc_menu.bottom, m_hWnd);
 	}
 }
-/******************************* ¿ØÖÆÌõ ***************************************************/
-void CMainWnd::OnBtnTools()		// ¹¤¾ßÏä
+/******************************* æ§åˆ¶æ¡ ***************************************************/
+void CMainWnd::OnBtnTools()		// å·¥å…·ç®±
 {
 	SWindow * pBtn = FindChildByName(L"win_tools");
 	if(pBtn) pBtn->SetVisible(!pBtn->IsVisible(TRUE),TRUE);
 }
 
-void CMainWnd::OnBtnLEye()	// ×óÑÛ
+void CMainWnd::OnBtnLEye()	// å·¦çœ¼
 {
 	SWindow * pBtn = FindChildByName(L"btn_left_eye");
 	if(pBtn) pBtn->SetVisible(FALSE);
@@ -118,7 +118,7 @@ void CMainWnd::OnBtnLEye()	// ×óÑÛ
 	if(pBtn) pBtn->SetVisible(TRUE);
 }
 
-void CMainWnd::OnBtnLEyed()	// ¹Ø±Õ×óÑÛ
+void CMainWnd::OnBtnLEyed()	// å…³é—­å·¦çœ¼
 {
 	SWindow * pBtn = FindChildByName(L"btn_left_eye");
 	if(pBtn) pBtn->SetVisible(TRUE);
@@ -127,17 +127,17 @@ void CMainWnd::OnBtnLEyed()	// ¹Ø±Õ×óÑÛ
 	if(pBtn) pBtn->SetVisible(FALSE);
 }
 
-void CMainWnd::OnBtnStop()	// Í£Ö¹
+void CMainWnd::OnBtnStop()	// åœæ­¢
 {
 	SMessageBox(NULL,_T("OnBtnStop"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnPageUp()	//ÉÏÒ»¸ö
+void CMainWnd::OnBtnPageUp()	//ä¸Šä¸€ä¸ª
 {
 	SMessageBox(NULL,_T("OnBtnPageUp"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnPlay()	//²¥·Å
+void CMainWnd::OnBtnPlay()	//æ’­æ”¾
 {
 	SWindow * pBtn = FindChildByName(L"btn_play");
 	if(pBtn) pBtn->SetVisible(FALSE);
@@ -146,7 +146,7 @@ void CMainWnd::OnBtnPlay()	//²¥·Å
 	if(pBtn) pBtn->SetVisible(TRUE);
 }
 
-void CMainWnd::OnBtnPause()	//ÔİÍ£
+void CMainWnd::OnBtnPause()	//æš‚åœ
 {
 	SWindow * pBtn = FindChildByName(L"btn_play");
 	if(pBtn) pBtn->SetVisible(TRUE);
@@ -155,14 +155,14 @@ void CMainWnd::OnBtnPause()	//ÔİÍ£
 	if(pBtn) pBtn->SetVisible(FALSE);
 }
 
-void CMainWnd::OnBtnPageDown()	//ÏÂÒ»¸ö
+void CMainWnd::OnBtnPageDown()	//ä¸‹ä¸€ä¸ª
 {
 	SMessageBox(NULL,_T("OnBtnPageDown"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnOpen()	//´ò¿ªÎÄ¼ş
+void CMainWnd::OnBtnOpen()	//æ‰“å¼€æ–‡ä»¶
 {
-	CFileDialogEx openDlg(TRUE,_T("mp4"),0, OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT,_T("ÊÓÆµÎÄ¼ş(*.mp4)\0*.mp4\0All files (*.*)\0*.*\0\0"));
+	CFileDialogEx openDlg(TRUE,_T("mp4"),0, OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT,_T("è§†é¢‘æ–‡ä»¶(*.mp4)\0*.mp4\0All files (*.*)\0*.*\0\0"));
 	if(openDlg.DoModal()==IDOK)
 		//SMessageBox(NULL,_T("OnBtnOpen"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 	{
@@ -181,19 +181,19 @@ void CMainWnd::OnBtnOpen()	//´ò¿ªÎÄ¼ş
 		{  
 			lstrcat(szPath, TEXT("\\"));  
 		}  
-		//p = szFile + openDlg.m_ofn.nFileOffset; //°ÑÖ¸ÕëÒÆµ½µÚÒ»¸öÎÄ¼ş  
-		p = szFileName + openDlg.m_ofn.nFileOffset; //°ÑÖ¸ÕëÒÆµ½µÚÒ»¸öÎÄ¼ş
+		//p = szFile + openDlg.m_ofn.nFileOffset; //æŠŠæŒ‡é’ˆç§»åˆ°ç¬¬ä¸€ä¸ªæ–‡ä»¶  
+		p = szFileName + openDlg.m_ofn.nFileOffset; //æŠŠæŒ‡é’ˆç§»åˆ°ç¬¬ä¸€ä¸ªæ–‡ä»¶
 		int sum=0;
 		while( *p )  
 		{    
 			ZeroMemory(szFileName, sizeof(szFileName)); 
-			lstrcat(szFileName, szPath);  //¸øÎÄ¼şÃû¼ÓÉÏÂ·¾¶    
-			lstrcat(szFileName, p);    //¼ÓÉÏÎÄ¼şÃû
+			lstrcat(szFileName, szPath);  //ç»™æ–‡ä»¶ååŠ ä¸Šè·¯å¾„    
+			lstrcat(szFileName, p);    //åŠ ä¸Šæ–‡ä»¶å
 
-			p += lstrlen(p) +1;     //ÒÆÖÁÏÂÒ»¸öÎÄ¼ş  
+			p += lstrlen(p) +1;     //ç§»è‡³ä¸‹ä¸€ä¸ªæ–‡ä»¶  
 			sum++;
 			//cout<<file_name<<endl ;
-			lstrcat(szFileName, TEXT("\n")); //»»ĞĞ
+			lstrcat(szFileName, TEXT("\n")); //æ¢è¡Œ
 			//STRACE("%s",szFileName);
 		}
 		printf("%d",sum);
@@ -202,7 +202,7 @@ void CMainWnd::OnBtnOpen()	//´ò¿ªÎÄ¼ş
 }
 
 
-void CMainWnd::OnBtnVolume()	//¾²Òô
+void CMainWnd::OnBtnVolume()	//é™éŸ³
 {
 	SWindow * pBtn = FindChildByName(L"btn_volume_mute");
 	if(pBtn) pBtn->SetVisible(TRUE);
@@ -211,7 +211,7 @@ void CMainWnd::OnBtnVolume()	//¾²Òô
 	if(pBtn) pBtn->SetVisible(FALSE);
 }
 
-void CMainWnd::OnBtnVolumeQuit()	//ÍË³ö¾²Òô
+void CMainWnd::OnBtnVolumeQuit()	//é€€å‡ºé™éŸ³
 {
 	SWindow * pBtn = FindChildByName(L"btn_volume_mute");
 	if(pBtn) pBtn->SetVisible(FALSE);
@@ -220,7 +220,7 @@ void CMainWnd::OnBtnVolumeQuit()	//ÍË³ö¾²Òô
 	if(pBtn) pBtn->SetVisible(TRUE);
 }
 
-void CMainWnd::OnBtnFullscreen()	//È«ÆÁ
+void CMainWnd::OnBtnFullscreen()	//å…¨å±
 {
 	SWindow * pBtn = FindChildByName(L"btn_quit_fullscreen");
 	if(pBtn) pBtn->SetVisible(TRUE);
@@ -231,7 +231,7 @@ void CMainWnd::OnBtnFullscreen()	//È«ÆÁ
 	//	SMessageBox(NULL,_T("OnBtnFullscreen"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnQuitFullscreen()	//¹Ø±ÕÈ«ÆÁ
+void CMainWnd::OnBtnQuitFullscreen()	//å…³é—­å…¨å±
 {
 	SWindow * pBtn = FindChildByName(L"btn_quit_fullscreen");
 	if(pBtn) pBtn->SetVisible(FALSE);
@@ -242,7 +242,7 @@ void CMainWnd::OnBtnQuitFullscreen()	//¹Ø±ÕÈ«ÆÁ
 	//	SMessageBox(NULL,_T("OnBtnQuitFullscreen"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnListShow()	//ÏÔÊ¾²¥·ÅÁĞ±í
+void CMainWnd::OnBtnListShow()	//æ˜¾ç¤ºæ’­æ”¾åˆ—è¡¨
 {
 	SWindow * pBtn = FindChildByName(L"play_list");
 	if(pBtn) 
@@ -257,7 +257,7 @@ void CMainWnd::OnBtnListShow()	//ÏÔÊ¾²¥·ÅÁĞ±í
 	if(pBtn) pBtn->SetVisible(FALSE,TRUE);
 }
 
-void CMainWnd::OnBtnListShowed()	//Òş²Ø²¥·ÅÁĞ±í
+void CMainWnd::OnBtnListShowed()	//éšè—æ’­æ”¾åˆ—è¡¨
 {
 	SWindow * pBtn = FindChildByName(L"play_list");
 	if(pBtn) 
@@ -273,7 +273,7 @@ void CMainWnd::OnBtnListShowed()	//Òş²Ø²¥·ÅÁĞ±í
 	if(pBtn) pBtn->SetVisible(TRUE,TRUE);
 }
 
-void CMainWnd::OnBtnBox()	//´ò¿ª±©·çºĞ×Ó
+void CMainWnd::OnBtnBox()	//æ‰“å¼€æš´é£ç›’å­
 {
 	//m_winBox.ShowWindow(SW_SHOWNORMAL);
 
@@ -295,7 +295,7 @@ void CMainWnd::OnBtnBox()	//´ò¿ª±©·çºĞ×Ó
 	if(pBtn) pBtn->SetVisible(FALSE,TRUE);
 }
 
-void CMainWnd::OnBtnBoxHide()	//¹Ø±Õ±©·çºĞ×Ó
+void CMainWnd::OnBtnBoxHide()	//å…³é—­æš´é£ç›’å­
 {
 	m_winBox.ShowWindow(SW_HIDE);
 
@@ -305,8 +305,8 @@ void CMainWnd::OnBtnBoxHide()	//¹Ø±Õ±©·çºĞ×Ó
 	pBtn = FindChildByName(L"btn_box");
 	if(pBtn) pBtn->SetVisible(TRUE,TRUE);
 }
-/******************************* ¹¤¾ßÏä´°¿Ú ********************************************/
-void CMainWnd::OnBtnToolsWinClose()		//¹Ø±Õ°´Å¥
+/******************************* å·¥å…·ç®±çª—å£ ********************************************/
+void CMainWnd::OnBtnToolsWinClose()		//å…³é—­æŒ‰é’®
 {
 	SWindow* pWin = FindChildByName(L"win_tools");
 	if(pWin) pWin->SetVisible(FALSE,TRUE);
@@ -317,7 +317,7 @@ void CMainWnd::OnBtnTool3D()		//3D
 	SMessageBox(NULL,_T("3D"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnToolsWinPrev()		//ÉÏÒ»¸ö
+void CMainWnd::OnBtnToolsWinPrev()		//ä¸Šä¸€ä¸ª
 {
 	SWindow* pWin = FindChildByName(L"tool_page2");
 	if(pWin) pWin->SetVisible(FALSE,TRUE);
@@ -326,7 +326,7 @@ void CMainWnd::OnBtnToolsWinPrev()		//ÉÏÒ»¸ö
 	if(pWin) pWin->SetVisible(TRUE,TRUE);
 }
 
-void CMainWnd::OnBtnToolsWinNext()		//ÏÂÒ»¸ö
+void CMainWnd::OnBtnToolsWinNext()		//ä¸‹ä¸€ä¸ª
 {
 	SWindow* pWin = FindChildByName(L"tool_page2");
 	if(pWin) pWin->SetVisible(TRUE,TRUE);
@@ -335,44 +335,44 @@ void CMainWnd::OnBtnToolsWinNext()		//ÏÂÒ»¸ö
 	if(pWin) pWin->SetVisible(FALSE,TRUE);
 }
 
-void CMainWnd::OnBtnToolLefteye()		//×óÑÛ
+void CMainWnd::OnBtnToolLefteye()		//å·¦çœ¼
 {
-	SMessageBox(NULL,_T("×óÑÛ"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("å·¦çœ¼"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnToolSurronudsound()		//»·ÈÆÉù
+void CMainWnd::OnBtnToolSurronudsound()		//ç¯ç»•å£°
 {
-	SMessageBox(NULL,_T("»·ÈÆÉù"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("ç¯ç»•å£°"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnToolFlyscreen()		//·ÉÆÁ
+void CMainWnd::OnBtnToolFlyscreen()		//é£å±
 {
-	SMessageBox(NULL,_T("·ÉÆÁ"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("é£å±"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnToolGame()			//ÓÎÏ·
+void CMainWnd::OnBtnToolGame()			//æ¸¸æˆ
 {
-	SMessageBox(NULL,_T("ÓÎÏ·"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("æ¸¸æˆ"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnToolDownload()		//ÏÂÔØ¹ÜÀí
+void CMainWnd::OnBtnToolDownload()		//ä¸‹è½½ç®¡ç†
 {
-	SMessageBox(NULL,_T("ÏÂÔØ¹ÜÀí"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("ä¸‹è½½ç®¡ç†"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnToolTranscode()		//×ªÂë
+void CMainWnd::OnBtnToolTranscode()		//è½¬ç 
 {
-	SMessageBox(NULL,_T("×ªÂë"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("è½¬ç "),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnToolMovielib()		//Ó°ÊÓ¿â
+void CMainWnd::OnBtnToolMovielib()		//å½±è§†åº“
 {
-	SMessageBox(NULL,_T("Ó°ÊÓ¿â"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("å½±è§†åº“"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnToolBarrage()		//µ¯Ä»
+void CMainWnd::OnBtnToolBarrage()		//å¼¹å¹•
 {
-	SMessageBox(NULL,_T("µ¯Ä»"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("å¼¹å¹•"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
 void CMainWnd::OnBtnToolDlna()			//dlna
@@ -380,23 +380,23 @@ void CMainWnd::OnBtnToolDlna()			//dlna
 	SMessageBox(NULL,_T("dlna"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnToolNews()			//×ÊÑ¶
+void CMainWnd::OnBtnToolNews()			//èµ„è®¯
 {
-	SMessageBox(NULL,_T("×ÊÑ¶"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("èµ„è®¯"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnToolScreebshots()	//½ØÍ¼
+void CMainWnd::OnBtnToolScreebshots()	//æˆªå›¾
 {
-	SMessageBox(NULL,_T("½ØÍ¼"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("æˆªå›¾"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnToolShoot()			//Á¬ÅÄ
+void CMainWnd::OnBtnToolShoot()			//è¿æ‹
 {
-	SMessageBox(NULL,_T("Á¬ÅÄ"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("è¿æ‹"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-/****************************** ²¥·ÅÁĞ±ítabÒ³1 **************************************************/
-void CMainWnd::OnBtnPage1SortordMenu()			//²¥·ÅÁĞ±íÅÅĞò·½Ê½
+/****************************** æ’­æ”¾åˆ—è¡¨tabé¡µ1 **************************************************/
+void CMainWnd::OnBtnPage1SortordMenu()			//æ’­æ”¾åˆ—è¡¨æ’åºæ–¹å¼
 {
 
 	CRect rc_menu;
@@ -410,7 +410,7 @@ void CMainWnd::OnBtnPage1SortordMenu()			//²¥·ÅÁĞ±íÅÅĞò·½Ê½
 	}
 }
 
-void CMainWnd::OnBtnPage1Sortord()			//²¥·ÅÁĞ±íÅÅĞò·½Ïò£¬ÏòÏÂ»òÏòÉÏ
+void CMainWnd::OnBtnPage1Sortord()			//æ’­æ”¾åˆ—è¡¨æ’åºæ–¹å‘ï¼Œå‘ä¸‹æˆ–å‘ä¸Š
 {
 
 	SWindow *pDown = FindChildByName(L"sortord_down");
@@ -466,56 +466,56 @@ void CMainWnd::OnBtnPage1Sortord()			//²¥·ÅÁĞ±íÅÅĞò·½Ïò£¬ÏòÏÂ»òÏòÉÏ
 	}
 }
 
-/****************************** ²¥·ÅÁĞ±ítabÒ³2 **************************************************/
-void CMainWnd::OnBtnAll()					//¡¾È«²¿¡¿
+/****************************** æ’­æ”¾åˆ—è¡¨tabé¡µ2 **************************************************/
+void CMainWnd::OnBtnAll()					//ã€å…¨éƒ¨ã€‘
 {
-	SMessageBox(NULL,_T("¡¾È«²¿¡¿"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("ã€å…¨éƒ¨ã€‘"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnAdd()					//¡¾+¡¿
+void CMainWnd::OnBtnAdd()					//ã€+ã€‘
 {
-	SMessageBox(NULL,_T("¡¾+¡¿"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("ã€+ã€‘"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnDelete()				//¡¾-¡¿
+void CMainWnd::OnBtnDelete()				//ã€-ã€‘
 {
-	SMessageBox(NULL,_T("¡¾-¡¿"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("ã€-ã€‘"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnClear()				//Çå¿ÕÁĞ±í°´Å¥
+void CMainWnd::OnBtnClear()				//æ¸…ç©ºåˆ—è¡¨æŒ‰é’®
 {
-	SMessageBox(NULL,_T("Çå¿ÕÁĞ±í°´Å¥"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("æ¸…ç©ºåˆ—è¡¨æŒ‰é’®"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CMainWnd::OnBtnOrderPlay()			//Ë³Ğò²¥·Å
-{
-	POINT pt;
-	GetCursorPos(&pt);
-	menu_PlayMode.TrackPopupMenu(0,pt.x,pt.y,m_hWnd);
-}
-
-void CMainWnd::OnBtnSinglePlay()			//µ¥¸ö²¥·Å
+void CMainWnd::OnBtnOrderPlay()			//é¡ºåºæ’­æ”¾
 {
 	POINT pt;
 	GetCursorPos(&pt);
 	menu_PlayMode.TrackPopupMenu(0,pt.x,pt.y,m_hWnd);
 }
 
-void CMainWnd::OnBtnRandomPlay()			//Ëæ»ú²¥·Å
+void CMainWnd::OnBtnSinglePlay()			//å•ä¸ªæ’­æ”¾
 {
 	POINT pt;
 	GetCursorPos(&pt);
 	menu_PlayMode.TrackPopupMenu(0,pt.x,pt.y,m_hWnd);
 }
 
-void CMainWnd::OnBtnSingleCycle()			//µ¥¸öÑ­»·
+void CMainWnd::OnBtnRandomPlay()			//éšæœºæ’­æ”¾
 {
 	POINT pt;
 	GetCursorPos(&pt);
 	menu_PlayMode.TrackPopupMenu(0,pt.x,pt.y,m_hWnd);
 }
 
-void CMainWnd::OnBtnListCycle()			//ÁĞ±íÑ­»·
+void CMainWnd::OnBtnSingleCycle()			//å•ä¸ªå¾ªç¯
+{
+	POINT pt;
+	GetCursorPos(&pt);
+	menu_PlayMode.TrackPopupMenu(0,pt.x,pt.y,m_hWnd);
+}
+
+void CMainWnd::OnBtnListCycle()			//åˆ—è¡¨å¾ªç¯
 {
 	POINT pt;
 	GetCursorPos(&pt);
@@ -524,15 +524,15 @@ void CMainWnd::OnBtnListCycle()			//ÁĞ±íÑ­»·
 
 
 
-//ÏìÓ¦²Ëµ¥ÊÂ¼ş
+//å“åº”èœå•äº‹ä»¶
 void CMainWnd::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 {
 	if(uNotifyCode==0)
 	{
 		if(nID==1101)
-		{//nID==1101¶ÔÓ¦menu_playlist_sortord²Ëµ¥µÄµÚÒ»Ïî
+		{//nID==1101å¯¹åº”menu_playlist_sortordèœå•çš„ç¬¬ä¸€é¡¹
 			SWindow* pBtn = FindChildByName(L"btn_sortord");
-		//	if(pBtn) pBtn->SetWindowText (L"¹ÛÖÚ");
+		//	if(pBtn) pBtn->SetWindowText (L"è§‚ä¼—");
 
 			pBtn = FindChildByName(L"sortord_down");
 			if(pBtn) pBtn->SetVisible(FALSE,TRUE);
@@ -549,9 +549,9 @@ void CMainWnd::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 			::CheckMenuItem(menu_sortord.m_hMenu,1104,MF_UNCHECKED);
 		}
 		else if(nID==1102)
-		{//nID==1101¶ÔÓ¦menu_playlist_sortord²Ëµ¥µÄµÚ¶şÏî
+		{//nID==1101å¯¹åº”menu_playlist_sortordèœå•çš„ç¬¬äºŒé¡¹
 			SWindow* pBtn = FindChildByName(L"btn_sortord");
-		//	if(pBtn) pBtn->SetWindowText (L"Ãû³Æ");
+		//	if(pBtn) pBtn->SetWindowText (L"åç§°");
 
 			pBtn = FindChildByName(L"sortord_down");
 			if(pBtn) pBtn->SetVisible(TRUE,TRUE);
@@ -568,9 +568,9 @@ void CMainWnd::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 			::CheckMenuItem(menu_sortord.m_hMenu,1104,MF_UNCHECKED);
 		}
 		else if(nID==1103)
-		{//nID==1103¶ÔÓ¦menu_playlist_sortord²Ëµ¥µÄµÚÈıÏî
+		{//nID==1103å¯¹åº”menu_playlist_sortordèœå•çš„ç¬¬ä¸‰é¡¹
 			SWindow* pBtn = FindChildByName(L"btn_sortord");
-		//	if(pBtn) pBtn->SetWindowText (L"ÆÀ·Ö");
+		//	if(pBtn) pBtn->SetWindowText (L"è¯„åˆ†");
 
 			pBtn = FindChildByName(L"sortord_down");
 			if(pBtn) pBtn->SetVisible(TRUE,TRUE);
@@ -587,9 +587,9 @@ void CMainWnd::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 			::CheckMenuItem(menu_sortord.m_hMenu,1104,MF_UNCHECKED);
 		}
 		else if(nID==1104)
-		{//nID==1104¶ÔÓ¦menu_playlist_sortord²Ëµ¥µÄµÚËÄÏî
+		{//nID==1104å¯¹åº”menu_playlist_sortordèœå•çš„ç¬¬å››é¡¹
 			SWindow* pBtn = FindChildByName(L"btn_sortord");
-		//	if(pBtn) pBtn->SetWindowText (L"ÆÀÂÛ");
+		//	if(pBtn) pBtn->SetWindowText (L"è¯„è®º");
 
 			pBtn = FindChildByName(L"sortord_down");
 			if(pBtn) pBtn->SetVisible(TRUE,TRUE);
@@ -607,7 +607,7 @@ void CMainWnd::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 		}
 
 		else if(nID==11101)
-		{//nID==11101¶ÔÓ¦menu_PlayMode²Ëµ¥µÄµÚÒ»Ïî
+		{//nID==11101å¯¹åº”menu_PlayModeèœå•çš„ç¬¬ä¸€é¡¹
 			SWindow* pBtn = FindChildByName(L"btn_OrderPlay");
 			if(pBtn) pBtn->SetVisible(TRUE,TRUE);
 
@@ -631,7 +631,7 @@ void CMainWnd::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 			::CheckMenuItem(menu_PlayMode.m_hMenu,11105,MF_UNCHECKED);
 		}
 		else if(nID==11102)
-		{//nID==11102¶ÔÓ¦menu_PlayMode²Ëµ¥µÄµÚ¶şÏî
+		{//nID==11102å¯¹åº”menu_PlayModeèœå•çš„ç¬¬äºŒé¡¹
 			SWindow* pBtn = FindChildByName(L"btn_OrderPlay");
 			if(pBtn) pBtn->SetVisible(FALSE,TRUE);
 
@@ -655,7 +655,7 @@ void CMainWnd::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 			::CheckMenuItem(menu_PlayMode.m_hMenu,11105,MF_UNCHECKED);
 		}
 		else if(nID==11103)
-		{//nID==11103¶ÔÓ¦menu_PlayMode²Ëµ¥µÄµÚÈıÏî
+		{//nID==11103å¯¹åº”menu_PlayModeèœå•çš„ç¬¬ä¸‰é¡¹
 			SWindow* pBtn = FindChildByName(L"btn_OrderPlay");
 			if(pBtn) pBtn->SetVisible(FALSE,TRUE);
 
@@ -679,7 +679,7 @@ void CMainWnd::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 			::CheckMenuItem(menu_PlayMode.m_hMenu,11105,MF_UNCHECKED);
 		}
 		else if(nID==11104)
-		{//nID==11104¶ÔÓ¦menu_PlayMode²Ëµ¥µÄµÚËÄÏî
+		{//nID==11104å¯¹åº”menu_PlayModeèœå•çš„ç¬¬å››é¡¹
 			SWindow* pBtn = FindChildByName(L"btn_OrderPlay");
 			if(pBtn) pBtn->SetVisible(FALSE,TRUE);
 
@@ -703,7 +703,7 @@ void CMainWnd::OnCommand( UINT uNotifyCode, int nID, HWND wndCtl )
 			::CheckMenuItem(menu_PlayMode.m_hMenu,11105,MF_UNCHECKED);
 		}
 		else if(nID==11105)
-		{//nID==11105¶ÔÓ¦menu_PlayMode²Ëµ¥µÄµÚÎåÏî
+		{//nID==11105å¯¹åº”menu_PlayModeèœå•çš„ç¬¬äº”é¡¹
 			SWindow* pBtn = FindChildByName(L"btn_OrderPlay");
 			if(pBtn) pBtn->SetVisible(FALSE,TRUE);
 

@@ -1,4 +1,4 @@
-#pragma once
+О╩©#pragma once
 #include "stdafx.h"
 
 class SharkWinHandle
@@ -15,7 +15,7 @@ public:
 
 	}
 	
-	// ЁУй╪╩╞ 
+	// Е┬²Е╖▀Е▄√ 
 	void Init(HWND hWnd)
 	{
 		m_hWnd = hWnd;
@@ -25,7 +25,7 @@ public:
 	 {
 		 m_rcWnd = rc;
 	 }
-	//  ©╙й╪ 
+	//  Е╪─Е╖▀ 
 	void OnTimeSharkWin()
 	{
 		int ty = 2;
@@ -36,31 +36,31 @@ public:
 		int nType = m_nIndex % 7;
 		switch (nType)
 		{
-		case 0:					// вС об
+		case 0:					// Е╥╕ Д╦▀
 			nLeft -= ty;
 			nTop += ty;
 			break;
-		case 1:					// вС
+		case 1:					// Е╥╕
 			nLeft -= ty;
 			//nTop += ty;
 			break;
-		case 2:					// вС иоио
+		case 2:					// Е╥╕ Д╦┼Д╦┼
 			nLeft -= ty;
 			nTop -= 2 * ty;
 			break;
-		case 3:					// ио ио
+		case 3:					// Д╦┼ Д╦┼
 			//nLeft -= ty;
 			nTop -= 2 * ty;
 			break;
-		case 4:					// ср ср ио ио
+		case 4:					// Е▐Ё Е▐Ё Д╦┼ Д╦┼
 			nLeft += 2 * ty;
 			nTop -= 2 * ty;
 			break;
-		case 5:					// ср ср ио
+		case 5:					// Е▐Ё Е▐Ё Д╦┼
 			nLeft += 2 * ty;
 			nTop -= ty;
 			break;
-		case 6:					// ср ср об 
+		case 6:					// Е▐Ё Е▐Ё Д╦▀ 
 			nLeft += 2 * ty;
 			nTop += ty;
 			break;

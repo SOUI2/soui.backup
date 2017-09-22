@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "SPropertyItem-Color.h"
 #include "../SPropertyEmbedWndHelper.hpp"
 #include "../SPropertyGrid.h"
@@ -14,7 +14,7 @@ namespace SOUI
         rcColor.right = rcColor.left + KColorWidth;
         rcColor.DeflateRect(2,2);
         
-        //»­Ò»¸ö´ú±íÍ¸Ã÷µÄÍø¸ñ±³¾°
+        //ç”»ä¸€ä¸ªä»£è¡¨é€æ˜çš„ç½‘æ ¼èƒŒæ™¯
         pRT->PushClipRect(&rcColor);
         bool bDrawY=true;
         for(int y=rcColor.top;y<rcColor.bottom;y+=KTransGridSize)
@@ -116,7 +116,7 @@ namespace SOUI
 		CPoint pt;
 		GetCursorPos(&pt);
 		pt.x += 10;
-		pCrPopup->Create(pt,m_crValue,_T("Ä¬ÈÏ"),_T("¸ü¶à"));
+		pCrPopup->Create(pt,m_crValue,_T("é»˜è®¤"),_T("æ›´å¤š"));
 
     }
 
@@ -139,7 +139,7 @@ namespace SOUI
 		}
 		if(nSeg!=3 && nSeg != 4)
 		{
-			//SASSERT_FMT(FALSE,TEXT("½âÎöÑÕÉ«ÖµÊ§°Ü [%s]"),S_CW2T(strValue));
+			//SASSERT_FMT(FALSE,TEXT("è§£æé¢œè‰²å€¼å¤±è´¥ [%s]"),S_CW2T(strValue));
 			value = CR_INVALID;
 			return false;
 		}else

@@ -1,5 +1,5 @@
-/*
-Òì²½ ÈÎÎñ ´¦Àí
+ï»¿/*
+å¼‚æ­¥ ä»»åŠ¡ å¤„ç†
 
 */
 #include <process.h>
@@ -21,8 +21,8 @@ protected:
 	unsigned int							m_nThreadCount;
 	//UINT										m_dwThreadId;
 	//HANDLE									m_hListEvent;
-	HANDLE									m_hSemaphore;			//ĞÅºÅÁ¿ ¾ä±ú
-	CRITICAL_SECTION					m_csLock;		//Î¬³Ö¶ÓÁĞÍ¬²½
+	HANDLE									m_hSemaphore;			//ä¿¡å·é‡ å¥æŸ„
+	CRITICAL_SECTION					m_csLock;		//ç»´æŒé˜Ÿåˆ—åŒæ­¥
 	std::list<PAsynTask>				m_TaskList;	
 public:
 	AsynTaskHandle(unsigned int nThreadCount=1)
@@ -48,7 +48,7 @@ public:
 			m_hSemaphore = NULL;
 		}
 
-		if(m_TaskList.size() > 0)		// ÒªÍË³öÁË  ÇÒ ÈÎÎñÃ»Ö´ĞĞÍê ÒªÇåÀí»º´æ
+		if(m_TaskList.size() > 0)		// è¦é€€å‡ºäº†  ä¸” ä»»åŠ¡æ²¡æ‰§è¡Œå®Œ è¦æ¸…ç†ç¼“å­˜
 		{
 			for each (auto var in m_TaskList)
 			{
@@ -75,7 +75,7 @@ public:
 		task->lpParam = lpParam;
 
 		EnterCriticalSection(&m_csLock);
-		m_TaskList.push_back(task);		//½»»»Êı¾İ 
+		m_TaskList.push_back(task);		//äº¤æ¢æ•°æ® 
 		LeaveCriticalSection(&m_csLock);
 
 		//SetEvent(m_hListEvent);
@@ -89,7 +89,7 @@ public:
 		task->lpParam = lpParam;
 
 		EnterCriticalSection(&m_csLock);
-		m_TaskList.push_back(task);		//½»»»Êı¾İ 
+		m_TaskList.push_back(task);		//äº¤æ¢æ•°æ® 
 		LeaveCriticalSection(&m_csLock);
 
 		//SetEvent(m_hListEvent);
@@ -141,7 +141,7 @@ protected:
 		return 0;
 	}
 private:
-	//¾²Ì¬ Ïß³Ì º¯Êı 
+	//é™æ€ çº¿ç¨‹ å‡½æ•° 
 	static unsigned int __stdcall ThreadFun(void* lp)
 	{
 		AsynTaskHandle* pThis = (AsynTaskHandle*)lp;

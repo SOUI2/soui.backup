@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "helpapi.h"
 
 bool FileIsExist(const SStringT &filepath)
@@ -48,13 +48,13 @@ SStringT GetFilename(const SStringT& filepath)
 	return strRet;
 }
 
-//×Ô¶¨ÒåÅÅĞòº¯Êı  
+//è‡ªå®šä¹‰æ’åºå‡½æ•°  
 bool SortSString(const SStringT &v1, const SStringT &v2)
 {
-	return v1 < v2;		//ÉıĞòÅÅÁĞ  
+	return v1 < v2;		//å‡åºæ’åˆ—  
 }
 
 bool SortSStringNoCase(const SStringT &v1, const SStringT &v2)
 {
-	return v1.CompareNoCase(v2) < 0;		//ÉıĞòÅÅÁĞ  
+	return v1.CompareNoCase(v2) < 0;		//å‡åºæ’åˆ—  
 }

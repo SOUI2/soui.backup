@@ -1,4 +1,4 @@
-/**
+ï»¿/**
 * Copyright (C) 2014-2050 
 * All rights reserved.
 * 
@@ -80,25 +80,25 @@ namespace SOUI
 
 	/**
 	* @class      SObject
-	* @brief      SOUIÏµÍ³ÖĞµÄ¶ÔÏó»ùÀà
+	* @brief      SOUIç³»ç»Ÿä¸­çš„å¯¹è±¡åŸºç±»
 	* 
-	* Describe    Ìá¹©ÀàRTTI»úÖÆ£¬ÊµÏÖ´ÓXML½ÚµãÖĞ¸øÅÉÉúÀà¶ÔÏóÉèÖÃÊôĞÔ
+	* Describe    æä¾›ç±»RTTIæœºåˆ¶ï¼Œå®ç°ä»XMLèŠ‚ç‚¹ä¸­ç»™æ´¾ç”Ÿç±»å¯¹è±¡è®¾ç½®å±æ€§
 	*/
 	struct UTILITIES_API IObject
     {
         /**
          * GetClassName
-         * @brief    »ñµÃ¶ÔÏóÀàĞÍÃû³Æ
-         * @return   LPCWSTR -- ÀàÃû
-         * Describe  ¾²Ì¬º¯Êı
+         * @brief    è·å¾—å¯¹è±¡ç±»å‹åç§°
+         * @return   LPCWSTR -- ç±»å
+         * Describe  é™æ€å‡½æ•°
          */    
 		static LPCWSTR GetClassName(){return L"object";}
 
 		/**
 		* GetClassType
-		* @brief    »ñµÃ¶ÔÏóÀàĞÍ
-		* @return   int -- ÀàĞÍ
-		* Describe  ¾²Ì¬º¯Êı
+		* @brief    è·å¾—å¯¹è±¡ç±»å‹
+		* @return   int -- ç±»å‹
+		* Describe  é™æ€å‡½æ•°
 		*/
 		static int     GetClassType() { return None; }
 
@@ -107,26 +107,26 @@ namespace SOUI
 
         /**
          * IsClass
-         * @brief    ÅĞ¶ÏthisÊÇ²»ÊÇÊôÓÚÖ¸¶¨µÄÀàĞÍ
-         * @param    LPCWSTR lpszName --  ²âÊÔÀàĞÍÃû
-         * @return   BOOL -- trueÊÇ²âÊÔÀàĞÍ
+         * @brief    åˆ¤æ–­thisæ˜¯ä¸æ˜¯å±äºæŒ‡å®šçš„ç±»å‹
+         * @param    LPCWSTR lpszName --  æµ‹è¯•ç±»å‹å
+         * @return   BOOL -- trueæ˜¯æµ‹è¯•ç±»å‹
          * Describe  
          */    
         virtual BOOL IsClass(LPCWSTR lpszName) const = 0;
 
         /**
          * GetObjectClass
-         * @brief    »ñµÃÀàĞÍÃû
-         * @return   LPCWSTR -- ÀàĞÍÃû
-         * Describe  ÕâÊÇÒ»¸öĞéº¯Êı£¬×¢ÒâÓëGetClassNameµÄÇø±ğ¡£
+         * @brief    è·å¾—ç±»å‹å
+         * @return   LPCWSTR -- ç±»å‹å
+         * Describe  è¿™æ˜¯ä¸€ä¸ªè™šå‡½æ•°ï¼Œæ³¨æ„ä¸GetClassNameçš„åŒºåˆ«ã€‚
          */    
         virtual LPCWSTR GetObjectClass() const = 0;
 
         /**
          * GetObjectType
-         * @brief    »ñµÃ¶ÔÏóÀàĞÍ
-         * @return   int -- ¶ÔÏóÀàĞÍ
-         * Describe  ÕâÊÇÒ»¸öĞéº¯Êı£¬×¢ÒâÓëGetClassTypeµÄÇø±ğ¡£
+         * @brief    è·å¾—å¯¹è±¡ç±»å‹
+         * @return   int -- å¯¹è±¡ç±»å‹
+         * Describe  è¿™æ˜¯ä¸€ä¸ªè™šå‡½æ•°ï¼Œæ³¨æ„ä¸GetClassTypeçš„åŒºåˆ«ã€‚
          */    
 		virtual int GetObjectType()  const = 0;
 
@@ -135,58 +135,58 @@ namespace SOUI
 
         /**
          * SetAttribute
-         * @brief    ÉèÖÃÒ»¸ö¶ÔÏóÊôĞÔ
-         * @param    const SStringA & strAttribName --  ÊôĞÔÃû
-         * @param    const SStringA & strValue --  ÊôĞÔÖµ
-         * @param    BOOL bLoading --  ¶ÔÏó´´½¨Ê±ÓÉÏµÍ³µ÷ÓÃ±êÖ¾
-         * @return   HRESULT -- ´¦Àí´¦Àí½á¹û
+         * @brief    è®¾ç½®ä¸€ä¸ªå¯¹è±¡å±æ€§
+         * @param    const SStringA & strAttribName --  å±æ€§å
+         * @param    const SStringA & strValue --  å±æ€§å€¼
+         * @param    BOOL bLoading --  å¯¹è±¡åˆ›å»ºæ—¶ç”±ç³»ç»Ÿè°ƒç”¨æ ‡å¿—
+         * @return   HRESULT -- å¤„ç†å¤„ç†ç»“æœ
          * Describe  
          */    
         virtual HRESULT SetAttribute(const SStringA &  strAttribName, const SStringA &  strValue, BOOL bLoading) = 0;
 
         /**
         * SetAttribute
-        * @brief    ÉèÖÃÒ»¸ö¶ÔÏóÊôĞÔ
-        * @param    const SStringA & strAttribName --  ÊôĞÔÃû
-        * @param    const SStringA & strValue --  ÊôĞÔÖµ
-        * @param    BOOL bLoading --  ¶ÔÏó´´½¨Ê±ÓÉÏµÍ³µ÷ÓÃ±êÖ¾
-        * @return   HRESULT -- ´¦Àí´¦Àí½á¹û
+        * @brief    è®¾ç½®ä¸€ä¸ªå¯¹è±¡å±æ€§
+        * @param    const SStringA & strAttribName --  å±æ€§å
+        * @param    const SStringA & strValue --  å±æ€§å€¼
+        * @param    BOOL bLoading --  å¯¹è±¡åˆ›å»ºæ—¶ç”±ç³»ç»Ÿè°ƒç”¨æ ‡å¿—
+        * @return   HRESULT -- å¤„ç†å¤„ç†ç»“æœ
         * Describe  
         */    
         virtual HRESULT SetAttribute(const SStringW &  strAttribName, const SStringW &  strValue, BOOL bLoading) = 0;
 
         /**
          * OnAttribute
-         * @brief    ÊôĞÔ´¦Àíºóµ÷ÓÃµÄ·½·¨
-         * @param    const SStringW & strAttribName --  ÊôĞÔÃû
-         * @param    const SStringW & strValue --  ÊôĞÔÃû
-		 * @param    BOOL bLoading --  ¶ÔÏó´´½¨Ê±ÓÉÏµÍ³µ÷ÓÃ±êÖ¾
-         * @param    HRESULT hr --  ÊôĞÔ´¦Àí½á¹û
-         * Describe  ²»×ö´¦Àí£¬Ö±½Ó·µ»Ø
+         * @brief    å±æ€§å¤„ç†åè°ƒç”¨çš„æ–¹æ³•
+         * @param    const SStringW & strAttribName --  å±æ€§å
+         * @param    const SStringW & strValue --  å±æ€§å
+		 * @param    BOOL bLoading --  å¯¹è±¡åˆ›å»ºæ—¶ç”±ç³»ç»Ÿè°ƒç”¨æ ‡å¿—
+         * @param    HRESULT hr --  å±æ€§å¤„ç†ç»“æœ
+         * Describe  ä¸åšå¤„ç†ï¼Œç›´æ¥è¿”å›
          */    
         virtual HRESULT AfterAttribute(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading,HRESULT hr) = 0;
 
 		/**
          * GetID
-         * @brief    »ñÈ¡¶ÔÏóID
-         * @return   int -- ¶ÔÏóID
+         * @brief    è·å–å¯¹è±¡ID
+         * @return   int -- å¯¹è±¡ID
          * Describe  
          */    
         virtual int GetID() const = 0;
 
         /**
          * GetName
-         * @brief    »ñÈ¡¶ÔÏóName
-         * @return   LPCWSTR -- ¶ÔÏóName
+         * @brief    è·å–å¯¹è±¡Name
+         * @return   LPCWSTR -- å¯¹è±¡Name
          * Describe  
          */    
         virtual LPCWSTR GetName() const = 0;
 
 		/**
          * InitFromXml
-         * @brief    ´ÓXML½á½Ú³õÊ¼»¯SObject¶ÔÏó
-         * @param    pugi::xml_node --  XML½á½Ú
-         * @return   BOOL -- ³É¹¦·µ»ØTRUE
+         * @brief    ä»XMLç»“èŠ‚åˆå§‹åŒ–SObjectå¯¹è±¡
+         * @param    pugi::xml_node --  XMLç»“èŠ‚
+         * @return   BOOL -- æˆåŠŸè¿”å›TRUE
          * Describe  
          */    
 		virtual BOOL InitFromXml( pugi::xml_node xmlNode ) = 0;
@@ -194,19 +194,19 @@ namespace SOUI
 
 		/**
          * DefAttributeProc
-         * @brief    Ä¬ÈÏÊôĞÔ´¦Àíº¯Êı
-         * @param    const SStringW & strAttribName --  ÊôĞÔÃû
-		 * @param	 const SStringW & strValue --ÊôĞÔÖµ
-		 * @param    BOOL bLoading -- ´ÓXML³õÊ¼»¯±êÖ¾
-         * @return   HRESULT -- S_OK:Ë¢ĞÂUI£¬ S_FALSE:³É¹¦µ«²»Ë¢ĞÂUI£¬ÆäËü£ºÊ§°Ü
-         * Describe  ÔÚSetAttributeÖĞÃ»ÓĞ´¦ÀíÒ»¸öÊôĞÔÊ±×ªµ½±¾·½·¨´¦Àí¡£
+         * @brief    é»˜è®¤å±æ€§å¤„ç†å‡½æ•°
+         * @param    const SStringW & strAttribName --  å±æ€§å
+		 * @param	 const SStringW & strValue --å±æ€§å€¼
+		 * @param    BOOL bLoading -- ä»XMLåˆå§‹åŒ–æ ‡å¿—
+         * @return   HRESULT -- S_OK:åˆ·æ–°UIï¼Œ S_FALSE:æˆåŠŸä½†ä¸åˆ·æ–°UIï¼Œå…¶å®ƒï¼šå¤±è´¥
+         * Describe  åœ¨SetAttributeä¸­æ²¡æœ‰å¤„ç†ä¸€ä¸ªå±æ€§æ—¶è½¬åˆ°æœ¬æ–¹æ³•å¤„ç†ã€‚
          */  
 		virtual HRESULT DefAttributeProc(const SStringW & strAttribName,const SStringW & strValue, BOOL bLoading) = 0;
 
 		/**
          * OnInitFinished
-         * @brief    ÊôĞÔ³õÊ¼»¯Íê³É´¦Àí½Ó¿Ú
-         * @param    pugi::xml_node xmlNode --  ÊôĞÔ½Úµã
+         * @brief    å±æ€§åˆå§‹åŒ–å®Œæˆå¤„ç†æ¥å£
+         * @param    pugi::xml_node xmlNode --  å±æ€§èŠ‚ç‚¹
          * @return   void
          * Describe  
          */    
@@ -214,18 +214,18 @@ namespace SOUI
 
 		/**
          * GetAttribute
-         * @brief    Í¨¹ıÊôĞÔÃû²éÑ¯ÊôĞÔÖµ
-         * @param    const SStringW & strAttr --  ÊôĞÔÃû
-         * @return   SStringW -- ÊôĞÔÖµ
-         * Describe  Ä¬ÈÏ·µ»Ø¿Õ
+         * @brief    é€šè¿‡å±æ€§åæŸ¥è¯¢å±æ€§å€¼
+         * @param    const SStringW & strAttr --  å±æ€§å
+         * @return   SStringW -- å±æ€§å€¼
+         * Describe  é»˜è®¤è¿”å›ç©º
          */    
 		virtual SStringW GetAttribute(const SStringW & strAttr) const = 0;
 
 
 		/**
          * MarkAttributeHandled
-         * @brief    ±êÖ¾Ò»¸öÊôĞÔÒÑ¾­±»´¦Àí
-         * @param    pugi::xml_node xmlNode --  ÊôĞÔ½Úµã
+         * @brief    æ ‡å¿—ä¸€ä¸ªå±æ€§å·²ç»è¢«å¤„ç†
+         * @param    pugi::xml_node xmlNode --  å±æ€§èŠ‚ç‚¹
          * @return   void
          * Describe  
          */
@@ -237,9 +237,9 @@ namespace SOUI
 
 		/**
          * IsAttributeHandled
-         * @brief    ¼ì²âÒ»¸öÊôĞÔÊÇ·ñÒÑ¾­±»´¦Àí
-         * @param    pugi::xml_node xmlNode --  ÊôĞÔ½Úµã
-         * @return   bool true-ÒÑ¾­´¦Àí¹ı
+         * @brief    æ£€æµ‹ä¸€ä¸ªå±æ€§æ˜¯å¦å·²ç»è¢«å¤„ç†
+         * @param    pugi::xml_node xmlNode --  å±æ€§èŠ‚ç‚¹
+         * @return   bool true-å·²ç»å¤„ç†è¿‡
          * Describe  
          */
 		static bool IsAttributeHandled(pugi::xml_attribute xmlAttr)
@@ -250,10 +250,10 @@ namespace SOUI
 
     /**
      * sobj_cast
-     * @brief    SOUI Object µÄÀàĞÍ°²È«µÄÀàĞÍ×ª»»½Ó¿Ú
-     * @param    SObject * pObj --  Ô´¶ÔÏó
-     * @return   T * -- ×ª»»ºóµÄ¶ÔÏó
-     * Describe  Èç¹ûÔ´¶ÔÏó²»ÊÇ´ı×ª»»¶ÔÏóÀàĞÍ£¬·µ»ØNULL
+     * @brief    SOUI Object çš„ç±»å‹å®‰å…¨çš„ç±»å‹è½¬æ¢æ¥å£
+     * @param    SObject * pObj --  æºå¯¹è±¡
+     * @return   T * -- è½¬æ¢åçš„å¯¹è±¡
+     * Describe  å¦‚æœæºå¯¹è±¡ä¸æ˜¯å¾…è½¬æ¢å¯¹è±¡ç±»å‹ï¼Œè¿”å›NULL
      */    
     template<class T>
     T * sobj_cast(IObject *pObj)

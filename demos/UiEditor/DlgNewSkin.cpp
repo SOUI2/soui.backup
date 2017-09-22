@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "DlgNewSkin.h"
 #include "CDebug.h"
 
@@ -10,7 +10,7 @@ namespace SOUI
 
 	}
 
-	//TODO:ÏûÏ¢Ó³Éä
+	//TODO:æ¶ˆæ¯æ˜ å°„
 	void SDlgNewSkin::OnCancel()
 	{
 		SHostDialog::OnCancel();
@@ -25,7 +25,7 @@ namespace SOUI
 		}
 		else
 		{
-			CDebug::Debug(_T("ÇëÑ¡ÔñÆäÖĞÒ»Ïî"));
+			CDebug::Debug(_T("è¯·é€‰æ‹©å…¶ä¸­ä¸€é¡¹"));
 			return;
 		}
 				
@@ -42,7 +42,7 @@ namespace SOUI
 		pugi::xml_parse_result result = doc.load_file(_T("Config\\SkinProperty.xml"));
 		if (!result)
 		{
-			CDebug::Debug(_T("Config\\SkinProperty.xml¼ÓÔØÊ§°Ü"));
+			CDebug::Debug(_T("Config\\SkinProperty.xmlåŠ è½½å¤±è´¥"));
 			return TRUE;
 		}
 

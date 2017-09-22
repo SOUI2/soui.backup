@@ -1,5 +1,5 @@
-/*
-	²âÊÔlogÄ£¿é
+ï»¿/*
+	æµ‹è¯•logæ¨¡å—
 */
 #include <gtest/gtest.h>
 #include <tchar.h>

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "SouiRealWndHandler.h"
 #include "RealWndDlg.h"
 #include "RealWndDlg_URL.h"
@@ -19,9 +19,9 @@ namespace SOUI
         {
 			CRealWndDlg *wndDlg = new CRealWndDlg;
 			wndDlg->Create(pRealWnd->GetContainer()->GetHostHwnd(), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 0, 0, 0, 0, 0);		
-            //°ÑpbtnµÄÖ¸Õë·Åµ½SRealWndµÄDataÖĞ±£´æ£¬ÒÔ±ãÔÚ´°¿ÚdestroyÊ±ÊÍ·Åpbtn¶ÔÏó¡£
+            //æŠŠpbtnçš„æŒ‡é’ˆæ”¾åˆ°SRealWndçš„Dataä¸­ä¿å­˜ï¼Œä»¥ä¾¿åœ¨çª—å£destroyæ—¶é‡Šæ”¾pbtnå¯¹è±¡ã€‚
             pRealWnd->SetData(wndDlg);
-            //·µ»Ø³É¹¦´´½¨ºóµÄ´°¿Ú¾ä±ú
+            //è¿”å›æˆåŠŸåˆ›å»ºåçš„çª—å£å¥æŸ„
             return wndDlg->m_hWnd;
 		}
 		else  if (param.m_strClassName == _T("CRealWndDlg_URL"))
@@ -62,7 +62,7 @@ namespace SOUI
     {
         const SRealWndParam &param=pRealWnd->GetRealWndParam();
         if(param.m_strClassName==_T("CRealWndDlg"))
-        {//Ïú»ÙÕæ´°¿Ú£¬ÊÍ·Å´°¿ÚÕ¼ÓÃµÄÄÚ´æ
+        {//é”€æ¯çœŸçª—å£ï¼Œé‡Šæ”¾çª—å£å ç”¨çš„å†…å­˜
             CRealWndDlg *pbtn=(CRealWndDlg*) pRealWnd->GetData();
             if(pbtn)
             {
@@ -109,13 +109,13 @@ namespace SOUI
 		 
     }
     
-    //²»´¦Àí£¬·µ»ØFALSE
+    //ä¸å¤„ç†ï¼Œè¿”å›FALSE
     BOOL CSouiRealWndHandler::OnRealWndSize( SRealWnd *pRealWnd )
     {
         return FALSE;
     }
 
-    //²»´¦Àí£¬·µ»ØFALSE
+    //ä¸å¤„ç†ï¼Œè¿”å›FALSE
     BOOL CSouiRealWndHandler::OnRealWndInit( SRealWnd *pRealWnd )
     {
         return FALSE;

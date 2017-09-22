@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <core/SSingleton.h>
 
@@ -42,29 +42,29 @@ namespace SOUI
 
         /**
         * FireEventSync
-        * @brief    ´¥·¢Ò»¸öÍ¬²½Í¨ÖªÊÂ¼ş
-        * @param    EventArgs *e -- ÊÂ¼ş¶ÔÏó
+        * @brief    è§¦å‘ä¸€ä¸ªåŒæ­¥é€šçŸ¥äº‹ä»¶
+        * @param    EventArgs *e -- äº‹ä»¶å¯¹è±¡
         * @return    
         *
-        * Describe  Ö»ÄÜÔÚUIÏß³ÌÖĞµ÷ÓÃ
+        * Describe  åªèƒ½åœ¨UIçº¿ç¨‹ä¸­è°ƒç”¨
         */
 		void FireEventSync(EventArgs *e);
 
         /**
         * FireEventAsync
-        * @brief    ´¥·¢Ò»¸öÒì²½Í¨ÖªÊÂ¼ş
-        * @param    EventArgs *e -- ÊÂ¼ş¶ÔÏó
+        * @brief    è§¦å‘ä¸€ä¸ªå¼‚æ­¥é€šçŸ¥äº‹ä»¶
+        * @param    EventArgs *e -- äº‹ä»¶å¯¹è±¡
         * @return    
         *
-        * Describe  ¿ÉÒÔÔÚ·ÇUIÏß³ÌÖĞµ÷ÓÃ£¬EventArgs *e±ØĞëÊÇ´Ó¶ÑÉÏ·ÖÅäµÄÄÚ´æ£¬µ÷ÓÃºóÊ¹ÓÃReleaseÊÍ·ÅÒıÓÃ¼ÆÊı
+        * Describe  å¯ä»¥åœ¨éUIçº¿ç¨‹ä¸­è°ƒç”¨ï¼ŒEventArgs *eå¿…é¡»æ˜¯ä»å †ä¸Šåˆ†é…çš„å†…å­˜ï¼Œè°ƒç”¨åä½¿ç”¨Releaseé‡Šæ”¾å¼•ç”¨è®¡æ•°
         */
 		void FireEventAsync(EventArgs *e);
 
 
         /**
         * RegisterEventMap
-        * @brief    ×¢²áÒ»¸ö´¦ÀíÍ¨ÖªµÄ¶ÔÏó
-        * @param    const ISlotFunctor &slot -- ÊÂ¼ş´¦Àí¶ÔÏó
+        * @brief    æ³¨å†Œä¸€ä¸ªå¤„ç†é€šçŸ¥çš„å¯¹è±¡
+        * @param    const ISlotFunctor &slot -- äº‹ä»¶å¤„ç†å¯¹è±¡
         * @return    
         *
         * Describe 
@@ -73,8 +73,8 @@ namespace SOUI
 
         /**
         * RegisterEventMap
-        * @brief    ×¢ÏúÒ»¸ö´¦ÀíÍ¨ÖªµÄ¶ÔÏó
-        * @param    const ISlotFunctor &slot -- ÊÂ¼ş´¦Àí¶ÔÏó
+        * @brief    æ³¨é”€ä¸€ä¸ªå¤„ç†é€šçŸ¥çš„å¯¹è±¡
+        * @param    const ISlotFunctor &slot -- äº‹ä»¶å¤„ç†å¯¹è±¡
         * @return    
         *
         * Describe 
@@ -84,7 +84,7 @@ namespace SOUI
 		virtual void OnFireEvent(EventArgs *e);
 
 
-		DWORD				m_dwMainTrdID;//Ö÷Ïß³ÌID
+		DWORD				m_dwMainTrdID;//ä¸»çº¿ç¨‹ID
 
 		SList<ISlotFunctor*>	m_evtHandlerMap;
 

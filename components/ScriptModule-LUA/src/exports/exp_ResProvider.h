@@ -1,4 +1,4 @@
-#include <interface/SResProvider-i.h>
+﻿#include <interface/SResProvider-i.h>
 #include <res.mgr/SResProvider.h>
 
 BOOL ExpLua_ResProvider(lua_State *L)

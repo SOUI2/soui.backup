@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "NetAdapter.h"
 
 CNetAdapter::CNetAdapter(std::vector<std::vector<Grid>> vecNet)
@@ -13,70 +13,70 @@ CNetAdapter::~CNetAdapter()
 
 }
 
-// ¸üĞÂÏÔÊ¾
+// æ›´æ–°æ˜¾ç¤º
 void CNetAdapter::UpdateNet(std::vector<std::vector<Grid>> vecNet)
 {
 	m_vecNet = vecNet;
 }
 
-// ÉèÖÃÍø¸ñÊÂ¼ş
+// è®¾ç½®ç½‘æ ¼äº‹ä»¶
 void CNetAdapter::SetEvent(ChangeEvent* pEvent)
 {
 	if (pEvent != NULL) m_event = pEvent;
 }
 
-// ÔªËØ¸öÊı
+// å…ƒç´ ä¸ªæ•°
 int CNetAdapter::getCount()
 {
 	return NET_ROW_NUMBER * NET_COL_NUMBER;
 }
 
-// ÉèÖÃ½çÃæÑùÊ½
+// è®¾ç½®ç•Œé¢æ ·å¼
 void CNetAdapter::getView(int position, SWindow * pItem,
 	pugi::xml_node xmlTemplate)
 {
 	if (pItem->GetChildrenCount() == 0) {
 		pItem->InitFromXml(xmlTemplate);
 	}
-	// °ó¶¨°´Å¥ÊÂ¼ş
+	// ç»‘å®šæŒ‰é’®äº‹ä»¶
 	SButton* pButton = pItem->FindChildByName2<SButton>(L"btn_grid");
 	assert(pItem);
 	pItem->GetEventSet()->subscribeEvent(SOUI::EVT_CMD,
 		Subscriber(&CNetAdapter::OnButtonClick, this));
-	// ¼ÇÂ¼µ±Ç°°´Å¥ĞÅÏ¢
+	// è®°å½•å½“å‰æŒ‰é’®ä¿¡æ¯
 	assert(pItem->GetRoot());
 	pItem->GetRoot()->SetUserData(position);
-	// ÏÔÊ¾Í¼Ïñ°´Å¥
+	// æ˜¾ç¤ºå›¾åƒæŒ‰é’®
 	PosPoint point = covertPostion2Grid(position);
 	switch (m_vecNet[point.row][point.col].status)
 	{
-	// ĞÇ
+	// æ˜Ÿ
 	case Grid_Star:
 		pButton->SetAttribute(L"skin", SKIN_STAR);
 	break;
-	// ĞÄ
+	// å¿ƒ
 	case Grid_Heart:
 		pButton->SetAttribute(L"skin", SKIN_HEART);
 	break;
-	// ½£
+	// å‰‘
 	case Grid_Sword:
 		pButton->SetAttribute(L"skin", SKIN_SWORD);
 	break;
-	// ¶Ü
+	// ç›¾
 	case Grid_Shield:
 		pButton->SetAttribute(L"skin", SKIN_SHIELD);
 	break;
-	// É¾³ı
+	// åˆ é™¤
 	case Grid_Delete:
 		pButton->SetAttribute(L"skin", SKIN_DELETE);
 	break;
 	}
 	pButton->RequestRelayout();
-	// Çå¿Õ°´Å¥Ñ¡ÖĞ
+	// æ¸…ç©ºæŒ‰é’®é€‰ä¸­
 	pButton->SetCheck(FALSE);
 }
 
-// °´Å¥µã»÷
+// æŒ‰é’®ç‚¹å‡»
 bool CNetAdapter::OnButtonClick(EventArgs* pEvt)
 {
 	m_nClickCount++;
@@ -84,21 +84,21 @@ bool CNetAdapter::OnButtonClick(EventArgs* pEvt)
 	assert(pTemplate);
 	SButton* pButton = pTemplate->FindChildByName2<SButton>(L"btn_grid");
 	assert(pButton);
-	// ÉèÖÃÑ¡ÖĞ
+	// è®¾ç½®é€‰ä¸­
 	pButton->SetCheck(TRUE);
-	// »ñÈ¡×ø±êĞÅÏ¢
+	// è·å–åæ ‡ä¿¡æ¯
 	assert(pButton->GetRoot());
 	INT position = pButton->GetRoot()->GetUserData();
 	PosPoint point = covertPostion2Grid(position);
 	SOUI::SStringW strPos;
-	strPos.Format(L"×ø±ê£¨%d£¬%d£©±»µã»÷", point.row, point.col);
+	strPos.Format(L"åæ ‡ï¼ˆ%dï¼Œ%dï¼‰è¢«ç‚¹å‡»", point.row, point.col);
 	MyHelper::Instance()->WriteLog(strPos);
 	if (m_nClickCount == 2) {
-		// µ÷ÓÃÏû³ıº¯Êı
+		// è°ƒç”¨æ¶ˆé™¤å‡½æ•°
 		m_event->Change(m_preGrid, point);
-		// Çå¿Õ¼ÆÊı
+		// æ¸…ç©ºè®¡æ•°
 		m_nClickCount = 0;
-		// Ë¢ĞÂÏÔÊ¾
+		// åˆ·æ–°æ˜¾ç¤º
 		notifyDataSetChanged();
 	} else {
 		m_preGrid = point;
@@ -106,7 +106,7 @@ bool CNetAdapter::OnButtonClick(EventArgs* pEvt)
 	return true;
 }
 
-// ½« tileview µÄ position ×ª»¯Îª Grid ×ø±ê
+// å°† tileview çš„ position è½¬åŒ–ä¸º Grid åæ ‡
 PosPoint CNetAdapter::covertPostion2Grid(int position)
 {
 	return PosPoint(position / NET_COL_NUMBER, position % NET_COL_NUMBER);

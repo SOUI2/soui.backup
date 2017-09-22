@@ -1,6 +1,6 @@
-#pragma once
+ï»¿#pragma once
 
-extern long g_nUIElmIndex;			//ÓÃÀ´¸øÉè¼ÆÆ÷ÖĞµÄ¿Ø¼şÒ»¸öË÷Òı, ÒÔ±ã²éÕÒ
+extern long g_nUIElmIndex;			//ç”¨æ¥ç»™è®¾è®¡å™¨ä¸­çš„æ§ä»¶ä¸€ä¸ªç´¢å¼•, ä»¥ä¾¿æŸ¥æ‰¾
 
 namespace SOUI
 {

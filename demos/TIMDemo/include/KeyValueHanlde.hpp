@@ -1,4 +1,4 @@
-#ifndef __KEYVALUE_H___
+ï»¿#ifndef __KEYVALUE_H___
 #define __KEYVALUE_H___
 #pragma once
 
@@ -80,7 +80,7 @@ namespace KEYVALUE
 	
 			for (int i=1; i<=nLen; ++i)
 			{
-				if(cEqu == lpStr[i])			// ÓÐ µÈÓÚ 
+				if(cEqu == lpStr[i])			// æœ‰ ç­‰äºŽ 
 				{
 					nKeyEnd = i;
 					nValueBegin = i+1;
@@ -100,19 +100,19 @@ namespace KEYVALUE
 
 			return true;
 		}
-		// È¡ key ¶ÔÓ¦µÄ stringÖµ
+		// å– key å¯¹åº”çš„ stringå€¼
 		const wchar_t* GetStringValue(const ch* lpKey, const ch* def=NULL)
 		{
 			const ch* lp = get_value(lpKey);
 			
 			return (NULL == lp) ? def : lp;
 		}
-		// È¡ key ¶ÔÓ¦µÄ boolÖµ
+		// å– key å¯¹åº”çš„ boolå€¼
 		bool GetBoolValue(const ch* lpKey, bool def=false)
 		{
 			return get_value_bool(get_value(lpKey), def);
 		}
-		// È¡ key ¶ÔÓ¦µÄ intÖµ
+		// å– key å¯¹åº”çš„ intå€¼
 		int GetIntValue(const ch* lpKey, int def=0)
 		{
 			return get_value_int(get_value(lpKey), def);

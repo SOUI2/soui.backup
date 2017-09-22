@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "control\SCmnCtrl.h"
 
 namespace SOUI
@@ -24,7 +24,7 @@ namespace SOUI
 
         SOUI_ATTRS_BEGIN()
             ATTR_SKIN(L"bkgndSkin", m_pbkgndSkin, TRUE)
-            ATTR_SIZE(L"textShift", m_sizeTextShift, TRUE) // µã»÷Ê±ÎÄ±¾ÊÇ·ñÏòÓÒÏÂÆ«ÒÆ
+            ATTR_SIZE(L"textShift", m_sizeTextShift, TRUE) // ç‚¹å‡»æ—¶æ–‡æœ¬æ˜¯å¦å‘å³ä¸‹åç§»
             SOUI_ATTRS_END()
 
             SIZE       m_sizeTextShift;

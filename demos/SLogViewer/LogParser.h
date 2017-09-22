@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "SLogAdapter.h"
 
 class CAppLogParse : public TObjRefImpl<ILogParse>

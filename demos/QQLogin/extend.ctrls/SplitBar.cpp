@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "SSplitBar.h"
 namespace SOUI
 {
@@ -80,14 +80,14 @@ namespace SOUI
         int nWindowOffset = 0;
         int nOffset = 0;
 
-        // ¼ÆËãÁ½´ÎÊó±êµÄÎ»ÖÃÆ«²î
+        // è®¡ç®—ä¸¤æ¬¡é¼ æ ‡çš„ä½ç½®åå·®
 
         if (m_bVertical)
             nOffset = pt.x - m_ptDragPrev.x;
         else
             nOffset = pt.y - m_ptDragPrev.y;
 
-        // ¼ÆËã·Ö¸ôÀ¸ĞÂµÄÎ»ÖÃ
+        // è®¡ç®—åˆ†éš”æ æ–°çš„ä½ç½®
 
         //SwndLayout * pLayout = GetLayout();
         SouiLayoutParam *pSouiLayoutParam = GetLayoutParamT<SouiLayoutParam>();
@@ -105,17 +105,17 @@ namespace SOUI
         int nNewPos = m_nOrginPos.toPixelSize(GetScale()) + nOffset * tempPi.cMinus;
 
         /*
-         *  - ÓĞÒ»ÖÖÇé¿öÒªÌØÊâ´¦Àí:¼ÈÒªĞŞ¸ÄhostwndµÄ³ß´ç,top/leftÓÖÊÇÒÔ-XXXµÄ·½Ê½¶¨Òå¡£
-         *    ÕâÀïµÄÂß¼­±È½Ï¸´ÔÓ£¬ÎÒ×Ô¼ºÒ²¸ãµÃºÜÔÎ@_@
+         *  - æœ‰ä¸€ç§æƒ…å†µè¦ç‰¹æ®Šå¤„ç†:æ—¢è¦ä¿®æ”¹hostwndçš„å°ºå¯¸,top/leftåˆæ˜¯ä»¥-XXXçš„æ–¹å¼å®šä¹‰ã€‚
+         *    è¿™é‡Œçš„é€»è¾‘æ¯”è¾ƒå¤æ‚ï¼Œæˆ‘è‡ªå·±ä¹Ÿæå¾—å¾ˆæ™•@_@
          *
-         *  - ÒòÎªÔÚĞèÒªĞŞ¸ÄËŞÖ÷´°¿ÚµÄÇé¿öÏÂ£¬left/topÈç¹ûÒÔright/bottomÎªÃªµã£¬ÔÚĞŞ¸ÄÁËhostwndµÄ³ß´çºó,
-         *    ²»ĞèÒªÔÙĞŞ¸ÄÎ»ÖÃĞÅÏ¢£¬·ñÔòÔÚÂß¼­ÉÏÎ»ÖÃĞÅÏ¢»á±»µş¼Ó¼ÆËã¡£
-         *    ¾Ù¸öÀı×Ó£º¼ÙÈçÔ­Ê¼µÄy posÎ»ÖÃÊÇ-100£¬´°¿ÚµÄ¸ß¶ÈÎª300£¬´ËÊ±yµÄÎ»ÖÃÊÇ200(Ïà¶Ôµ×²¿¶ÔÆë)
-         *    ÍÏ¶¯·Ö¸ôÌõÍùÉÏÒÆ¶¯ÁË5¸öpx£¬Èç¹ûÎ»ÖÃĞÅÏ¢±»¸Ä³ÉÁË-105£¬´°¿Ú¼õÉÙÁË5px£¬±ä³ÉÁË295¡£×îºó¼ÆËã³öÀ´
-         *    µÄÎ»ÖÃ±ä³ÉÁË190
+         *  - å› ä¸ºåœ¨éœ€è¦ä¿®æ”¹å®¿ä¸»çª—å£çš„æƒ…å†µä¸‹ï¼Œleft/topå¦‚æœä»¥right/bottomä¸ºé”šç‚¹ï¼Œåœ¨ä¿®æ”¹äº†hostwndçš„å°ºå¯¸å,
+         *    ä¸éœ€è¦å†ä¿®æ”¹ä½ç½®ä¿¡æ¯ï¼Œå¦åˆ™åœ¨é€»è¾‘ä¸Šä½ç½®ä¿¡æ¯ä¼šè¢«å åŠ è®¡ç®—ã€‚
+         *    ä¸¾ä¸ªä¾‹å­ï¼šå‡å¦‚åŸå§‹çš„y posä½ç½®æ˜¯-100ï¼Œçª—å£çš„é«˜åº¦ä¸º300ï¼Œæ­¤æ—¶yçš„ä½ç½®æ˜¯200(ç›¸å¯¹åº•éƒ¨å¯¹é½)
+         *    æ‹–åŠ¨åˆ†éš”æ¡å¾€ä¸Šç§»åŠ¨äº†5ä¸ªpxï¼Œå¦‚æœä½ç½®ä¿¡æ¯è¢«æ”¹æˆäº†-105ï¼Œçª—å£å‡å°‘äº†5pxï¼Œå˜æˆäº†295ã€‚æœ€åè®¡ç®—å‡ºæ¥
+         *    çš„ä½ç½®å˜æˆäº†190
          *
-         *  - ÔÚÕâÖÖÇé¿öÏÂ£¬²»ÊÜmaxsizeºÍminisizeµÄ¿ØÖÆ¡£ÒòÎª·Ö¸ôÀ¸ºÍbottom/rightµÄÏà¶ÔÎ»ÖÃ²»±ä£¬ËùÒÔ´Ó
-         *    Ê¹ÓÃµÄ½Ç¶È½²£¬ÊÇÃ»ÓĞ³¬³ö [maxsize,minisize] µÄ·¶Î§µÄ
+         *  - åœ¨è¿™ç§æƒ…å†µä¸‹ï¼Œä¸å—maxsizeå’Œminisizeçš„æ§åˆ¶ã€‚å› ä¸ºåˆ†éš”æ å’Œbottom/rightçš„ç›¸å¯¹ä½ç½®ä¸å˜ï¼Œæ‰€ä»¥ä»
+         *    ä½¿ç”¨çš„è§’åº¦è®²ï¼Œæ˜¯æ²¡æœ‰è¶…å‡º [maxsize,minisize] çš„èŒƒå›´çš„
         */
 
         HWND hWnd = GetContainer()->GetHostHwnd();
@@ -135,7 +135,7 @@ namespace SOUI
             tempPi.nPos.fSize = nNewPos;
         }
 
-        // µ÷Õû´°¿Ú
+        // è°ƒæ•´çª—å£
 
         nWindowOffset = nNewPos - m_nTrackingPos.toPixelSize(GetScale());
         nWindowOffset *= tempPi.cMinus;

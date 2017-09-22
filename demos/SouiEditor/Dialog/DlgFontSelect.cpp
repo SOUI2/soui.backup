@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "DlgFontSelect.h"
 #include "CDebug.h"
 
@@ -12,7 +12,7 @@ namespace SOUI
 		m_pDesignerView = pDesignerView;
 	}
 
-	//TODO:ÏûÏ¢Ó³Éä
+	//TODO:æ¶ˆæ¯æ˜ å°„
 	void SDlgFontSelect::OnCancel()
 	{
 		SHostDialog::OnCancel();

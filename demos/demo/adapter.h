@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 struct musicItem
 {
 	SStringT songname;
@@ -20,10 +20,10 @@ public:
 	SMusicListAdapter(int id, HWND nofitywnd) :m_id(id), m_nofitywnd(nofitywnd), m_curren_play(0)
 	{
 
-		musicItem abc = { _T("ÌìÏòËª³¿¼ª°Ù"),_T("ÌìÌì") ,_T("ÁËÁË ÁË") ,_T("Èı°ÙÄêÇ°") };
+		musicItem abc = { _T("å¤©å‘éœœæ™¨å‰ç™¾"),_T("å¤©å¤©") ,_T("äº†äº† äº†") ,_T("ä¸‰ç™¾å¹´å‰") };
 		for (int i = 0;i < 10;i++)
 		{
-			abc.songname.Format(_T("µÚ%d¸öÂôÌ¿µÄ"), i);
+			abc.songname.Format(_T("ç¬¬%dä¸ªå–ç‚­çš„"), i);
 			m_musicList.Add(abc);
 		}
 	}
@@ -178,7 +178,7 @@ public:
 			m_musicList.RemoveAt(idx);
 		}
 		m_musicList.InsertArrayAt(offsetpos, &_temp_items);
-		//¸üĞÂÑ¡ÖĞË÷Òı	
+		//æ›´æ–°é€‰ä¸­ç´¢å¼•	
 		_pos = sellist.GetHeadPosition();
 		while (_pos)
 		{
@@ -209,7 +209,7 @@ public:
 	{
 		IniColNames(xmlTemplate);
 	}
-	//Í¬²½Ìí¼Ó·½·¨
+	//åŒæ­¥æ·»åŠ æ–¹æ³•
 	void add(SStringT &filepath)
 	{
 		//SAutoLock lock(updatalock);
@@ -223,7 +223,7 @@ public:
 		m_musicList.Add(item);
 		notifyDataSetChanged();
 	}
-	//Òì²½Ìí¼Ó£¬±ØĞëµ½Ö÷Ïß³ÌnotifyDataSetChanged
+	//å¼‚æ­¥æ·»åŠ ï¼Œå¿…é¡»åˆ°ä¸»çº¿ç¨‹notifyDataSetChanged
 	void addformthread(SStringT &filepath)
 	{
 // 		musicItem item;
@@ -238,7 +238,7 @@ public:
 // 			m_musicList.Add(item);
 // 			updatalock.Leave();
 // 		}
-		//´Ë´¦²»Ó¦¸Ãpostmessage£¬ÒòÎªgetviewÀïµÄÒì²½Ëø»á¿ÉÄÜÈÃ½çÃæ¼ÙËÀ,ÒòÎªÕâ¸öÏûÏ¢¿ÉÄÜ»áºÜ¶à£¬¼ÓÔØÊ±»áÊ¹WM_TIMERÎŞ·¨Ö´ĞĞ£¬ËùÒÔ¶¯»­¿ÉÄÜ»áÊ§Ğ§¡£
+		//æ­¤å¤„ä¸åº”è¯¥postmessageï¼Œå› ä¸ºgetviewé‡Œçš„å¼‚æ­¥é”ä¼šå¯èƒ½è®©ç•Œé¢å‡æ­»,å› ä¸ºè¿™ä¸ªæ¶ˆæ¯å¯èƒ½ä¼šå¾ˆå¤šï¼ŒåŠ è½½æ—¶ä¼šä½¿WM_TIMERæ— æ³•æ‰§è¡Œï¼Œæ‰€ä»¥åŠ¨ç”»å¯èƒ½ä¼šå¤±æ•ˆã€‚
 		//SendMessage(m_nofitywnd, UPDATAMSG, m_id, NULL);
 	}
 private:

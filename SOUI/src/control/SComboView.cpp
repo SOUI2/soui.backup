@@ -1,4 +1,4 @@
-#include "souistd.h"
+ï»¿#include "souistd.h"
 #include "control\SComboView.h"
 #include <algorithm>
 
@@ -21,7 +21,7 @@ namespace SOUI
     BOOL SComboView::CreateListBox(pugi::xml_node xmlNode)
     {
         SASSERT(xmlNode);
-        //´´½¨ÁÐ±í¿Ø¼þ
+        //åˆ›å»ºåˆ—è¡¨æŽ§ä»¶
         m_pListBox=(SListView*)SApplication::getSingleton().CreateWindowByName(SListView::GetClassName());
         m_pListBox->SetContainer(GetContainer());
 

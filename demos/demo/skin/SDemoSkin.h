@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 namespace SOUI
 {
@@ -43,7 +43,7 @@ namespace SOUI
 		bool SaveSkin();
 		bool LoadSkin(SkinType, SkinLoadInf& saveInf);
 		virtual int GetStates();
-		//²»Ö§³Ö×Ô¶¯É«µ÷ 
+		//ä¸æ”¯æŒè‡ªåŠ¨è‰²è°ƒ 
 		virtual void OnColorize(COLORREF cr)
 		{}
 	protected:

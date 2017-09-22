@@ -1,4 +1,4 @@
-#include <cstdlib>
+ï»¿#include <cstdlib>
 #include <time.h>
 #include "stdafx.h"
 #include "MyHelper.h"
@@ -20,30 +20,30 @@ MyHelper::~MyHelper()
 
 }
 
-// ³õÊ¼»¯´°¿ÚĞÅÏ¢
+// åˆå§‹åŒ–çª—å£ä¿¡æ¯
 void MyHelper::InitWindow(SOUI::SWindow* pWindow)
 {
 	m_pWindow = pWindow;
 }
 
-// »ñÈ¡Ëæ»úÊı
-// modular  Ëæ»úÊı·¢ÉúÆ÷·¶Î§£¬0¿ªÊ¼
-// excepts  ÔÚËæ»úÊı·¢ÉúÆ÷·¶Î§ÄÚµÄ²»¼ÆÈëËæ»úÔËËãµÄÊı×Ö
+// è·å–éšæœºæ•°
+// modular  éšæœºæ•°å‘ç”Ÿå™¨èŒƒå›´ï¼Œ0å¼€å§‹
+// excepts  åœ¨éšæœºæ•°å‘ç”Ÿå™¨èŒƒå›´å†…çš„ä¸è®¡å…¥éšæœºè¿ç®—çš„æ•°å­—
 int MyHelper::Random(int modular, std::vector<int> excepts)
 {
-	// ÅĞ¶Ï£ºexcepts ÊÇ·ñÕ¼ÓÃÁËËùÓĞµÄ modular µÄÖµ
+	// åˆ¤æ–­ï¼šexcepts æ˜¯å¦å ç”¨äº†æ‰€æœ‰çš„ modular çš„å€¼
 	if (modular <= excepts.size()) return -1;
-	// ²úÉúÒ»¸öÖµ
+	// äº§ç”Ÿä¸€ä¸ªå€¼
 	int random = std::rand() % modular;
-	// ÅĞ¶Ï¸ÃÖµÊÇ·ñ±»ÌŞ³ı²»¿¼ÂÇ£¬Èç¹ûÊÇµÄ»°£¬ÔòÔÙÉú³ÉÒ»¸öËæ»úÊı£¬Ö±µ½Éú³ÉµÄËæ»úÊı
-	// Öµ²»ÔÚ±»ÌŞ³ıÖµµÄ·¶Î§ÖĞÖ®ºó£¬²ÅÈ·¶¨·µ»ØÆäÖµ
+	// åˆ¤æ–­è¯¥å€¼æ˜¯å¦è¢«å‰”é™¤ä¸è€ƒè™‘ï¼Œå¦‚æœæ˜¯çš„è¯ï¼Œåˆ™å†ç”Ÿæˆä¸€ä¸ªéšæœºæ•°ï¼Œç›´åˆ°ç”Ÿæˆçš„éšæœºæ•°
+	// å€¼ä¸åœ¨è¢«å‰”é™¤å€¼çš„èŒƒå›´ä¸­ä¹‹åï¼Œæ‰ç¡®å®šè¿”å›å…¶å€¼
 	while (std::find(excepts.begin(), excepts.end(), random) != excepts.end()) {
 		random = std::rand() % modular;
 	}
 	return random;
 }
 
-// Ğ´ÈëÈÕÖ¾
+// å†™å…¥æ—¥å¿—
 void MyHelper::WriteLog(SOUI::SStringW strMsg)
 {
 	if (m_pWindow != NULL) {

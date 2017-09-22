@@ -1,4 +1,4 @@
-#include "Zip7Archive.h"
+﻿#include "Zip7Archive.h"
 #include <assert.h>
 
 #include "SevenZip/SevenZipExtractor.h"

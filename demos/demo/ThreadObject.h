@@ -1,4 +1,4 @@
-#pragma once
+๏ปฟ#pragma once
 
 class CThreadObject
 {
@@ -20,8 +20,8 @@ protected:
 	UINT ThreadProc();
 	static UINT __stdcall StaticTheadProc(LPVOID param);
 
-	HANDLE m_evtStart;	//นคื๗ฯ฿ณฬอจึชหÞึ๗ฯ฿ณฬกฐฯ฿ณฬฦ๔ถฏกฑสยผþ
-	HANDLE m_evtStop;   //หÞึ๗ฯ฿ณฬอจึชนคื๗ฯ฿ณฬกฐฯ฿ณฬฝแส๘กฑสยผþ
-	HANDLE m_hThread;   //ฯ฿ณฬพไฑ๚
+	HANDLE m_evtStart;	//ๅทฅไฝ็บฟ็จ้€็ฅๅฎฟไธป็บฟ็จโ€็บฟ็จๅฏๅจโ€ไบไปถ
+	HANDLE m_evtStop;   //ๅฎฟไธป็บฟ็จ้€็ฅๅทฅไฝ็บฟ็จโ€็บฟ็จ็ป“ๆโ€ไบไปถ
+	HANDLE m_hThread;   //็บฟ็จๅฅๆ
 };
 

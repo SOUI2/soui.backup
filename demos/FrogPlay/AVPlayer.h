@@ -1,18 +1,18 @@
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ï»¿// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Build:   Oct/14/2013
 // Author:  Alberl Lee
 // Email:   ItsBird@qq.com
 // Website: http://www.cnblogs.com/Alberl/p/3381820.html
 //
-// ÎÂÜ°ÌáÊ¾£º
-// ´ËÓÊÏäÃ¿Ìì¶¼ÊÕµ½ºÜ¶àÀ¬»øÓÊ¼ş£¬ÓÊ¼şÃûÇë²»ÒªËæÒâÂÒÈ¡£¬Ó¦¾¡Á¿ÓëÀ¬»øÓÊ¼şÇø·Ö¿ªÀ´£¬ĞÒºÃQQµÄ¹ıÂË¹¦ÄÜ»¹ËãÇ¿´ó~O(¡É_¡É)O~
-// ´ËÓÊÏä½ö¹©¡¾´íÎóÖ¸ÕıºÍ¼¼Êõ½»Á÷¡¿£¬ÈôÊÇ¼¼ÊõÎÊÌâÇëÖ±½ÓÔÚÎÄÕÂÆÀÂÛÇøÌáÎÊ£¬·ñÔòË¡²»»Ø¸´£¬ÕâÑù×öÊÇÎªÁËÈÃºóÃæµÄĞ¡»ï°éÒ²ÄÜ¿´µ½½â¾ö·½°¸~O(¡É_¡É)O~
+// æ¸©é¦¨æç¤ºï¼š
+// æ­¤é‚®ç®±æ¯å¤©éƒ½æ”¶åˆ°å¾ˆå¤šåƒåœ¾é‚®ä»¶ï¼Œé‚®ä»¶åè¯·ä¸è¦éšæ„ä¹±å–ï¼Œåº”å°½é‡ä¸åƒåœ¾é‚®ä»¶åŒºåˆ†å¼€æ¥ï¼Œå¹¸å¥½QQçš„è¿‡æ»¤åŠŸèƒ½è¿˜ç®—å¼ºå¤§~O(âˆ©_âˆ©)O~
+// æ­¤é‚®ç®±ä»…ä¾›ã€é”™è¯¯æŒ‡æ­£å’ŒæŠ€æœ¯äº¤æµã€‘ï¼Œè‹¥æ˜¯æŠ€æœ¯é—®é¢˜è¯·ç›´æ¥åœ¨æ–‡ç« è¯„è®ºåŒºæé—®ï¼Œå¦åˆ™æ•ä¸å›å¤ï¼Œè¿™æ ·åšæ˜¯ä¸ºäº†è®©åé¢çš„å°ä¼™ä¼´ä¹Ÿèƒ½çœ‹åˆ°è§£å†³æ–¹æ¡ˆ~O(âˆ©_âˆ©)O~
 //
-// Ê¹ÓÃĞ­Òé£ºWTFPL
-// ¼øÓÚÔÚÌì³¯ÉñÂíĞ­Òé¶¼±»ÎŞÊÓ£¬ÉõÖÁºÜ¶à´ó¹«Ë¾¶¼²»×ñÊØ£¬¹ÊË÷ĞÔ²ÉÓÃÁË¡¾DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE¡¿Ğ­Òé~O(¡É_¡É)O~
+// ä½¿ç”¨åè®®ï¼šWTFPL
+// é‰´äºåœ¨å¤©æœç¥é©¬åè®®éƒ½è¢«æ— è§†ï¼Œç”šè‡³å¾ˆå¤šå¤§å…¬å¸éƒ½ä¸éµå®ˆï¼Œæ•…ç´¢æ€§é‡‡ç”¨äº†ã€DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSEã€‘åè®®~O(âˆ©_âˆ©)O~
 //
-// ´úÂë°²È«ĞÔ£º
-// ´ËÏîÄ¿ÎªÊ¾ÀıÏîÄ¿£¬ÎªÁË·½±ã´ó¼Ò±àÒë£¬Ã»ÓÃÈı·½¿â£¬Òò´ËĞ´ÁËÒ»Ğ©¼òµ¥µÄº¯Êı£¬ºÜ¶àÂß¼­ÅĞ¶ÏÒ²Ö»ÊÇ±£Ö¤Õı³£²Ù×÷£¬Êµ¼ÊÊ¹ÓÃÇë×ÔĞĞ±£Ö¤´úÂë°²È«~O(¡É_¡É)O~
+// ä»£ç å®‰å…¨æ€§ï¼š
+// æ­¤é¡¹ç›®ä¸ºç¤ºä¾‹é¡¹ç›®ï¼Œä¸ºäº†æ–¹ä¾¿å¤§å®¶ç¼–è¯‘ï¼Œæ²¡ç”¨ä¸‰æ–¹åº“ï¼Œå› æ­¤å†™äº†ä¸€äº›ç®€å•çš„å‡½æ•°ï¼Œå¾ˆå¤šé€»è¾‘åˆ¤æ–­ä¹Ÿåªæ˜¯ä¿è¯æ­£å¸¸æ“ä½œï¼Œå®é™…ä½¿ç”¨è¯·è‡ªè¡Œä¿è¯ä»£ç å®‰å…¨~O(âˆ©_âˆ©)O~
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -21,59 +21,59 @@
 #include <iostream>
 #include <Windows.h>
 
-typedef void (* pfnCallback) (void *data);  // VLCÊÂ¼şµÄ»Øµ÷º¯ÊıÖ¸Õë
+typedef void (* pfnCallback) (void *data);  // VLCäº‹ä»¶çš„å›è°ƒå‡½æ•°æŒ‡é’ˆ
 struct libvlc_instance_t;
 struct libvlc_media_player_t;
 struct libvlc_event_t;
 
 class CAVPlayer
 {
-    // VLCµÄÊÂ¼ş¹ÜÀí
+    // VLCçš„äº‹ä»¶ç®¡ç†
     friend void OnVLC_Event(const libvlc_event_t *event, void *data);
 
 public:
     CAVPlayer(void);
     ~CAVPlayer(void);
 
-    bool Play(const std::string &strPath);  // ²¥·ÅÂ·¾¶ÎªstrPathµÄÎÄ¼ş
-    void Play ();                           // ²¥·Å
-    void Pause();                           // ÔİÍ£
-    void Stop ();                           // Í£Ö¹
+    bool Play(const std::string &strPath);  // æ’­æ”¾è·¯å¾„ä¸ºstrPathçš„æ–‡ä»¶
+    void Play ();                           // æ’­æ”¾
+    void Pause();                           // æš‚åœ
+    void Stop ();                           // åœæ­¢
 
-    void Volume(int iVol);                  // ÒôÁ¿ÉèÖÃÎªiVol
-    void VolumeIncrease();                  // ÒôÁ¿Ôö´ó
-    void VolumeReduce();                    // ÒôÁ¿¼õĞ¡ 
+    void Volume(int iVol);                  // éŸ³é‡è®¾ç½®ä¸ºiVol
+    void VolumeIncrease();                  // éŸ³é‡å¢å¤§
+    void VolumeReduce();                    // éŸ³é‡å‡å° 
 
-    void SeekTo(int iPos);                  // Ìøµ½Ö¸¶¨Î»ÖÃiPos
-    void SeekForward();                     // ¿ì½ø
-    void SeekBackward();                    // ¿ìÍË
+    void SeekTo(int iPos);                  // è·³åˆ°æŒ‡å®šä½ç½®iPos
+    void SeekForward();                     // å¿«è¿›
+    void SeekBackward();                    // å¿«é€€
 
 	int Save_snapshot(const char* filepath);
 
-    void SetHWND(HWND hwnd);                // ÉèÖÃÊÓÆµÏÔÊ¾µÄ´°¿Ú¾ä±ú
-    HWND GetHWND();                         // »ñÈ¡ÊÓÆµÏÔÊ¾µÄ´°¿Ú¾ä±ú
+    void SetHWND(HWND hwnd);                // è®¾ç½®è§†é¢‘æ˜¾ç¤ºçš„çª—å£å¥æŸ„
+    HWND GetHWND();                         // è·å–è§†é¢‘æ˜¾ç¤ºçš„çª—å£å¥æŸ„
 
-    bool    IsOpen();                       // ÎÄ¼şÊÇ·ñ´ò¿ª
-    bool    IsPlaying();                    // ÎÄ¼şÊÇ·ñÕıÔÚ²¥·Å
-    int     GetPos();                       // »ñÈ¡ÎÄ¼şµ±Ç°²¥·ÅµÄÎ»ÖÃ
-    __int64 GetTotalTime();                 // »ñÈ¡×ÜÊ±¼ä
-    __int64 GetTime();                      // »ñÈ¡Ê±¼ä
-    int     GetVolume();                    // »ñÈ¡ÒôÁ¿
+    bool    IsOpen();                       // æ–‡ä»¶æ˜¯å¦æ‰“å¼€
+    bool    IsPlaying();                    // æ–‡ä»¶æ˜¯å¦æ­£åœ¨æ’­æ”¾
+    int     GetPos();                       // è·å–æ–‡ä»¶å½“å‰æ’­æ”¾çš„ä½ç½®
+    __int64 GetTotalTime();                 // è·å–æ€»æ—¶é—´
+    __int64 GetTime();                      // è·å–æ—¶é—´
+    int     GetVolume();                    // è·å–éŸ³é‡
 
-    void SetCallbackPlaying(pfnCallback pfn);         // ÉèÖÃÎÄ¼şÍ·¶ÁÈ¡Íê±ÏÊ±µÄ»Øµ÷º¯Êı
-    void SetCallbackPosChanged(pfnCallback pfn);      // ÉèÖÃÎÄ¼şÎ»ÖÃ¸Ä±äÊ±µÄ»Øµ÷º¯Êı
-    void SetCallbackEndReached(pfnCallback pfn);      // ÉèÖÃÎÄ¼şÍ·¶ÁÈ¡Íê±ÏÊ±µÄ»Øµ÷º¯Êı
+    void SetCallbackPlaying(pfnCallback pfn);         // è®¾ç½®æ–‡ä»¶å¤´è¯»å–å®Œæ¯•æ—¶çš„å›è°ƒå‡½æ•°
+    void SetCallbackPosChanged(pfnCallback pfn);      // è®¾ç½®æ–‡ä»¶ä½ç½®æ”¹å˜æ—¶çš„å›è°ƒå‡½æ•°
+    void SetCallbackEndReached(pfnCallback pfn);      // è®¾ç½®æ–‡ä»¶å¤´è¯»å–å®Œæ¯•æ—¶çš„å›è°ƒå‡½æ•°
 
 private:
-    libvlc_instance_t       *m_pVLC_Inst;   // VLCÊµÀı
-    libvlc_media_player_t   *m_pVLC_Player; // VLC²¥·ÅÆ÷
-    HWND                    m_hWnd;         // ÊÓÆµÏÔÊ¾µÄ´°¿Ú¾ä±ú
-    pfnCallback             m_pfnPlaying;   // ÎÄ¼ş¶ÁÈ¡Íê±Ï£¬×¼±¸²¥·Å
-    pfnCallback             m_pfnPosChanged;// ÎÄ¼şÎ»ÖÃ¸Ä±äÊ±µÄ»Øµ÷º¯Êı
-    pfnCallback             m_pfnEndReached;// ÎÄ¼ş²¥·ÅÍê±ÏµÄ»Øµ÷º¯Êı
+    libvlc_instance_t       *m_pVLC_Inst;   // VLCå®ä¾‹
+    libvlc_media_player_t   *m_pVLC_Player; // VLCæ’­æ”¾å™¨
+    HWND                    m_hWnd;         // è§†é¢‘æ˜¾ç¤ºçš„çª—å£å¥æŸ„
+    pfnCallback             m_pfnPlaying;   // æ–‡ä»¶è¯»å–å®Œæ¯•ï¼Œå‡†å¤‡æ’­æ”¾
+    pfnCallback             m_pfnPosChanged;// æ–‡ä»¶ä½ç½®æ”¹å˜æ—¶çš„å›è°ƒå‡½æ•°
+    pfnCallback             m_pfnEndReached;// æ–‡ä»¶æ’­æ”¾å®Œæ¯•çš„å›è°ƒå‡½æ•°
 
-    void Init();                            // ³õÊ¼»¯
-    void Release();                         // ÇåÀíÄÚ´æ
+    void Init();                            // åˆå§‹åŒ–
+    void Release();                         // æ¸…ç†å†…å­˜
 	int m_pVolume;
 };
 

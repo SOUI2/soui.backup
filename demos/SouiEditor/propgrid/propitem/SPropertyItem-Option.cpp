@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+О╩©#include "StdAfx.h"
 #include "SPropertyItem-Option.h"
 #include "../SPropertyEmbedWndHelper.hpp"
 #include "../SPropertyGrid.h"
@@ -170,8 +170,8 @@ namespace SOUI
     {
         SStringT strValueT = S_CW2T(strValue);
 
-		// ©и╪Ш:1|╡╩©и╪Ш:0
-		// top|buttom|left|ср:right
+		// Е▐╞Х╖│:1|Д╦█Е▐╞Х╖│:0
+		// top|buttom|left|Е▐Ё:right
 
 		SStringTList strList;
         SplitString(strValueT,_T('|'),strList);

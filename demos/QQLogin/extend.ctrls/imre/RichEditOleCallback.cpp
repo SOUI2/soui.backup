@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "souistd.h"
 #include "RichEditOleCallback.h"
 #include "dataobject.h"
@@ -38,7 +38,7 @@ namespace SOUI
         swprintf(tName, L"REStorage_%d", ++m_iStorage);
 
         if (m_iStorage % 100 == 0)
-        {//Ã¿100¸ö¶ÔÏóÌá½»Ò»´Î,±ÜÃâ´´½¨stream or storageÓÉÓÚÄÚ´æ²»×ã¶øÊ§°Ü
+        {//æ¯100ä¸ªå¯¹è±¡æäº¤ä¸€æ¬¡,é¿å…åˆ›å»ºstream or storageç”±äºå†…å­˜ä¸è¶³è€Œå¤±è´¥
             m_stg->Commit(STGC_DEFAULT);
         }
 
@@ -46,7 +46,7 @@ namespace SOUI
             STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE,
             0, 0, ppStg);
         if (FAILED(hr) && (hr & E_OUTOFMEMORY))
-        {//Ê§°ÜºóÏòstorageÌá½»ºóÖØÊÔ
+        {//å¤±è´¥åå‘storageæäº¤åé‡è¯•
             m_stg->Commit(STGC_DEFAULT);
             hr = m_stg->CreateStorage(tName,
                 STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE,
@@ -188,14 +188,14 @@ namespace SOUI
      *    is being imposed on an object by a paste special operation.
      *
      * Returen Value:
-     *  - ³É¹¦·µ»ØS_OK¡£Ïê¼ûRemarks.
+     *  - æˆåŠŸè¿”å›S_OKã€‚è¯¦è§Remarks.
      *
      * Remarks:
-     *  - Èç¹û·µ»ØÊ§°Ü£¬richedit»á¾Ü¾øÕâ´ÎµÄÊı¾İ²Ù×÷£¬²¢ÖÕÖ¹ÍÏ×§/Õ³Ìù²Ù×÷¡£·ñÔò£¬
-     *    richedit»á¼ì²élpdataobjÀï×ÔÉí¿ÉÒÔ·ÃÎÊµÄÊı¾İ¸ñÊ½£¬ÓÃ×÷Õ³Ìù¡£
-     *  - Èç¹û·µ»ØÒ»¸ö·ÇS_OKµÄ³É¹¦Âë,ÒâÎ¶×ÅcallbackĞèÒª×Ô¼º¼ì²éÊı¾İÄÜ·ñ¸øÕ³Ìù(fReallyÊÇFALSEµÄÇé¿ö)£¬
-     *    ¶øÇÒĞèÒª×Ô¼º×öÕ³Ìù(fReallyÊÇTRUEµÄÇé¿ö)¡£
-     *  - Èç¹û·µ»ØÒ»¸ö·ÇS_OKµÄ³É¹¦Âë,richedit²»»á¼ì²é¿Ø¼şµÄread-only×´Ì¬
+     *  - å¦‚æœè¿”å›å¤±è´¥ï¼Œricheditä¼šæ‹’ç»è¿™æ¬¡çš„æ•°æ®æ“ä½œï¼Œå¹¶ç»ˆæ­¢æ‹–æ‹½/ç²˜è´´æ“ä½œã€‚å¦åˆ™ï¼Œ
+     *    richeditä¼šæ£€æŸ¥lpdataobjé‡Œè‡ªèº«å¯ä»¥è®¿é—®çš„æ•°æ®æ ¼å¼ï¼Œç”¨ä½œç²˜è´´ã€‚
+     *  - å¦‚æœè¿”å›ä¸€ä¸ªéS_OKçš„æˆåŠŸç ,æ„å‘³ç€callbackéœ€è¦è‡ªå·±æ£€æŸ¥æ•°æ®èƒ½å¦ç»™ç²˜è´´(fReallyæ˜¯FALSEçš„æƒ…å†µ)ï¼Œ
+     *    è€Œä¸”éœ€è¦è‡ªå·±åšç²˜è´´(fReallyæ˜¯TRUEçš„æƒ…å†µ)ã€‚
+     *  - å¦‚æœè¿”å›ä¸€ä¸ªéS_OKçš„æˆåŠŸç ,richeditä¸ä¼šæ£€æŸ¥æ§ä»¶çš„read-onlyçŠ¶æ€
     */
 
     HRESULT RichEditOleCallback::QueryAcceptData(
@@ -227,7 +227,7 @@ namespace SOUI
             }
 
             /*
-             * ÎÒÃÇ×Ô¼ºÒÑ¾­Íê³ÉÁËÕ³Ìù/ÍÏ×§¹¤×÷£¬²»Ï£Íûrichedit¼ÌĞøÔÙ½øĞĞÒ»±é
+             * æˆ‘ä»¬è‡ªå·±å·²ç»å®Œæˆäº†ç²˜è´´/æ‹–æ‹½å·¥ä½œï¼Œä¸å¸Œæœ›richeditç»§ç»­å†è¿›è¡Œä¸€é
              *
              * A success code other than S_OK means that the callback either checked the data
              * itself (if fReally is FALSE) or imported the data itself (if fReally is TRUE).

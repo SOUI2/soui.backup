@@ -1,4 +1,4 @@
-#include <sobject/sobject.hpp>
+﻿#include <sobject/sobject.hpp>
 
 void SetObjAttr(IObject *pObj,LPCSTR pszAttr,LPCSTR pszValue)
 {

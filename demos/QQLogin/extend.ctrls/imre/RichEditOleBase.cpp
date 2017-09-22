@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "souistd.h"
 #include <richole.h>
 #include "RichEditOleBase.h"
@@ -292,7 +292,7 @@ namespace SOUI
         InvertBorder(hdcDraw, (RECT*)lprcBounds);
 
         _objRect = (RECT*)lprcBounds;
-        _objRect.InflateRect(-1, -1, -1, -1); // ËÄÖÜÁôÒ»¸öÏñËØ¸øRichEdit»­·´É«¿ò
+        _objRect.InflateRect(-1, -1, -1, -1); // å››å‘¨ç•™ä¸€ä¸ªåƒç´ ç»™RichEditç”»åè‰²æ¡†
         _oleView.SetOleWindowRect(_objRect);
 
         if (_objRect.Width() <= 0 || _objRect.Height() <= 0)
@@ -307,18 +307,18 @@ namespace SOUI
         CAutoRefPtr<IRenderTarget> pRT;
         GETRENDERFACTORY->CreateRenderTarget(&pRT, _objRect.Width(), _objRect.Height());
 
-        // »­±³¾°
+        // ç”»èƒŒæ™¯
         HDC hdc = pRT->GetDC(0);
         ::BitBlt(hdc, 0, 0, _objRect.Width(), _objRect.Height(),
             hdcDraw, _objRect.left, _objRect.top,
             SRCCOPY);
         pRT->ReleaseDC(hdc);
 
-        // »­richedit
+        // ç”»richedit
         _oleView.RedrawRegion(pRT, rgn);
 
         hdc = pRT->GetDC(0);
-        // Ìùµ½Ä¿±êDC
+        // è´´åˆ°ç›®æ ‡DC
         ::BitBlt(hdcDraw, _objRect.left, _objRect.top, _objRect.Width(), _objRect.Height(),
             hdc, 0, 0,
             SRCCOPY);
@@ -362,14 +362,14 @@ namespace SOUI
     BOOL RichEditOleBase::InsertIntoHost(IRichEditObjHost * pHost)
     {
         SASSERT(pHost);
-        _pObjHost = pHost;    // Òª·ÅÔÚµÚÒ»¾ä,ÆäËüº¯ÊıÒªÓÃµ½m_pRichEditHost
+        _pObjHost = pHost;    // è¦æ”¾åœ¨ç¬¬ä¸€å¥,å…¶å®ƒå‡½æ•°è¦ç”¨åˆ°m_pRichEditHost
 
         InitOleWindow(pHost);
         return SUCCEEDED(InsertOleObject(pHost));
     }
 
     // 
-    // µ¥Ñ¡µÄÊ±ºò²ÅĞèÒª»­·´É«¿ò 
+    // å•é€‰çš„æ—¶å€™æ‰éœ€è¦ç”»åè‰²æ¡† 
     //
     void RichEditOleBase::InvertBorder(HDC hdc, LPRECT lpBorder)
     {
@@ -379,7 +379,7 @@ namespace SOUI
             _pObjHost->SendMessage(EM_EXGETSEL, 0, (LPARAM)&chr, NULL);
 
             if (chr.cpMax - chr.cpMin == 1 &&       // |
-                chr.cpMin <= _contentChr.cpMin &&  // -> µ¥Ñ¡,²¢ÇÒÑ¡ÖĞÁË×Ô¼º 
+                chr.cpMin <= _contentChr.cpMin &&  // -> å•é€‰,å¹¶ä¸”é€‰ä¸­äº†è‡ªå·± 
                 _contentChr.cpMin < chr.cpMax)     // |
             {
                 SComPtr<IRichEditOle> ole;
@@ -410,9 +410,9 @@ namespace SOUI
     }
 
     //
-    // ±ÜÃâÔÚUpdateLayoutÆÚ¼ä±ÀÀ££¬ĞèÒªÏÈ½ûÖ¹richedit»­Í¼
-    // UpdateLayout()-> ... -> RichEdit::OnPaint -> pWindow::DrawText(±ÀÔÚÕâÀï)
-    // ËùÒÔĞèÒªÏÈ½ûÖ¹RichEditµÄOnPaint
+    // é¿å…åœ¨UpdateLayoutæœŸé—´å´©æºƒï¼Œéœ€è¦å…ˆç¦æ­¢richeditç”»å›¾
+    // UpdateLayout()-> ... -> RichEdit::OnPaint -> pWindow::DrawText(å´©åœ¨è¿™é‡Œ)
+    // æ‰€ä»¥éœ€è¦å…ˆç¦æ­¢RichEditçš„OnPaint
     //
     void RichEditOleBase::UpdateWindowLayout(SWindow* pWindow)
     {
@@ -470,7 +470,7 @@ namespace SOUI
         hr = pOleObject->SetClientSite(pClientSite);
         if (SUCCEEDED(hr))
         {
-            PreInsertObject(reobject);  // ¸ø×ÓÀàÒ»¸ö»ú»áÈ¥ĞŞ¸Äreobject
+            PreInsertObject(reobject);  // ç»™å­ç±»ä¸€ä¸ªæœºä¼šå»ä¿®æ”¹reobject
             hr = ole->InsertObject(&reobject);
             _contentChr.cpMin = pHost->GetCharCount() - 1;
             _contentChr.cpMax = _contentChr.cpMin + 1;
@@ -516,7 +516,7 @@ namespace SOUI
 
     void RichEditOleBase::CalculateExtentSize(const SIZE& sizeNature)
     {
-        // ÖÜÎ§ÁôÒ»¸öÏñËØ×÷ÎªÑ¡ÖĞÊ±µÄºÚ¿ò
+        // å‘¨å›´ç•™ä¸€ä¸ªåƒç´ ä½œä¸ºé€‰ä¸­æ—¶çš„é»‘æ¡†
         HDC hDC = ::GetDC(NULL);
         _sizeExtent.cx = ::MulDiv(sizeNature.cx + 2, 2540, GetDeviceCaps(hDC, LOGPIXELSX));
         _sizeExtent.cy = ::MulDiv(sizeNature.cy + 2, 2540, GetDeviceCaps(hDC, LOGPIXELSY));
@@ -530,15 +530,15 @@ namespace SOUI
         bHandled = _oleView.IsMsgHandled();
 
         //
-        // bHandledÔÚ´ËÊ±×ÜÊÇÎªTRUE¡£
-        // Í¨³£Çé¿öÏÂ£¬ÎÒÃÇÏ£ÍûÏûÏ¢¼ÌĞøÓÉRichEdit¿Ø¼ş¼ÌĞø´¦Àí£¬ËùÒÔÕâÀïÖ±½ÓÉèÎªFALSE¡£
-        // Èç¹ûÄ³Ğ©OLE²»Ï£ÍûÏûÏ¢ÓÉRichEdit´¦Àí£¬ĞèÒªÔÚ×ÓÀàÖĞÖØÔØ´¦Àí¡£±ÈÈçµã»÷Ò»¸öOLE£¬
-        // Ä¬ÈÏÇé¿ö»á³öÏÖÒ»¸öºÚ¿ò£¬Èç¹ûÕâÀïµÄbHandledÎªTRUE£¬ÔòRichEdit¾ÍÃ»»ú»á´¦ÀíÕâ¸öµã»÷ÊÂ¼ş£¬Ò²¾Í²»»á³öÏÖºÚ¿ò
+        // bHandledåœ¨æ­¤æ—¶æ€»æ˜¯ä¸ºTRUEã€‚
+        // é€šå¸¸æƒ…å†µä¸‹ï¼Œæˆ‘ä»¬å¸Œæœ›æ¶ˆæ¯ç»§ç»­ç”±RichEditæ§ä»¶ç»§ç»­å¤„ç†ï¼Œæ‰€ä»¥è¿™é‡Œç›´æ¥è®¾ä¸ºFALSEã€‚
+        // å¦‚æœæŸäº›OLEä¸å¸Œæœ›æ¶ˆæ¯ç”±RichEditå¤„ç†ï¼Œéœ€è¦åœ¨å­ç±»ä¸­é‡è½½å¤„ç†ã€‚æ¯”å¦‚ç‚¹å‡»ä¸€ä¸ªOLEï¼Œ
+        // é»˜è®¤æƒ…å†µä¼šå‡ºç°ä¸€ä¸ªé»‘æ¡†ï¼Œå¦‚æœè¿™é‡Œçš„bHandledä¸ºTRUEï¼Œåˆ™RichEditå°±æ²¡æœºä¼šå¤„ç†è¿™ä¸ªç‚¹å‡»äº‹ä»¶ï¼Œä¹Ÿå°±ä¸ä¼šå‡ºç°é»‘æ¡†
         //
         bHandled = FALSE;
         if (!_canBeSelect && (msg == WM_LBUTTONDOWN || msg == WM_LBUTTONDBLCLK))
         {
-            bHandled = TRUE; // ÎÄ¼şOLE²»ÈÃRichEdit¼ÌĞø×ó»÷£¬·ñÔò»á»­³öÒ»¸öºÚ¿ò
+            bHandled = TRUE; // æ–‡ä»¶OLEä¸è®©RichEditç»§ç»­å·¦å‡»ï¼Œå¦åˆ™ä¼šç”»å‡ºä¸€ä¸ªé»‘æ¡†
         }
 
         return 0;

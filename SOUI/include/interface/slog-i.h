@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <unknown/obj-ref-i.h>
 #include <time.h>
@@ -28,14 +28,14 @@ enum ENUM_LOG_LEVEL
 
 struct IOutputFileBuilder
 {
-    //Ã¿¸öÔÂ´´½¨logÎÄ¼ş¼Ğ
+    //æ¯ä¸ªæœˆåˆ›å»ºlogæ–‡ä»¶å¤¹
     virtual bool monthDir() const = 0;
     
-    //Ã¿Ìì´´½¨logÎÄ¼ş
+    //æ¯å¤©åˆ›å»ºlogæ–‡ä»¶
     virtual bool dayLog() const = 0;
     
-    //Éú³ÉLOGÎÄ¼şÃû
-    //ÖÁÉÙÓ¦¸Ã°üº¬pszLogName£¬¼°curFileIndexÕâÁ½¸ö²ÎÊı
+    //ç”ŸæˆLOGæ–‡ä»¶å
+    //è‡³å°‘åº”è¯¥åŒ…å«pszLogNameï¼ŒåŠcurFileIndexè¿™ä¸¤ä¸ªå‚æ•°
     virtual bool buildOutputFile(char *pszFileName,int nLen,tm time,const char * pszLogName,unsigned long pid,int curFileIndex) const =0;
 };
 
@@ -82,7 +82,7 @@ struct  ILog4zManager : public IObjRef
     virtual bool setLoggerOutFile(LoggerId id, bool enable) = 0;
     virtual bool setLoggerLimitsize(LoggerId id, unsigned int limitsize) = 0;
     
-    //ÉèÖÃLOGÊä³öµ½ÎÄ¼şµÄ¹æÔò
+    //è®¾ç½®LOGè¾“å‡ºåˆ°æ–‡ä»¶çš„è§„åˆ™
     virtual void setOutputFileBuilder(IOutputFileBuilder *pOutputFileBuilder) = 0;
 
     //! Update logger's attribute from config file, thread safe.

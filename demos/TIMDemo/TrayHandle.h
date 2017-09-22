@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <ShellAPI.h>
 class TrayHandle
 {
@@ -18,7 +18,7 @@ public:
 	void Modify(LPCTSTR lpNotifyText);
 	void Modify(HICON hIcon);
 	void Modify(LPCTSTR lpNotifyText, HICON hIcon);
-	void Twinkling();				//Õâ¸öÊÇ ÉÁË¸ µ÷ÓÃµÄ  Ö»ĞèÒª²»Í£µÄµ÷ÓÃ   Ã»ÓĞÄÚÖÃ¶¨Ê±Æ÷
+	void Twinkling();				//è¿™ä¸ªæ˜¯ é—ªçƒ è°ƒç”¨çš„  åªéœ€è¦ä¸åœçš„è°ƒç”¨   æ²¡æœ‰å†…ç½®å®šæ—¶å™¨
 	bool ShowBalloon(LPCTSTR lpBalloonTitle, LPTSTR lpBalloonMsg, DWORD dwIcon=NIIF_NONE, UINT nTimeOut=10);
 protected:
 	NOTIFYICONDATA		m_NotifyIconData;

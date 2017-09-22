@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "MainDlg.h"
 class CRealWndDlg_URL : public SHostWnd
 {
@@ -14,7 +14,7 @@ public:
 			{
 				CRect rc = m_URL_text->GetWindowRect();
 				ClientToScreen(&rc);
-				CTipWnd::ShowTip(rc.right, rc.top, CTipWnd::AT_LEFT_BOTTOM, _T("��ַ����!\\n��ַΪ�գ��޷�����"));
+				CTipWnd::ShowTip(rc.right, rc.top, CTipWnd::AT_LEFT_BOTTOM, _T("地址错误!\\n地址为空，无法解析"));
 				return;
 			}
 			::SendMessageW(SApplication::getSingleton().GetMainWnd(), MS_REALWND_URLPLAY, 0, (LPARAM)(LPCTSTR)m_URL_text->GetWindowTextW());
@@ -23,11 +23,11 @@ public:
 
 
 protected:
-	//soui��Ϣ
+	//soui消息
 		EVENT_MAP_BEGIN()
 			EVENT_ID_COMMAND(8000, On_Open_URLBtn)
 		EVENT_MAP_END()
-		//��Ϣӳ���
+		//消息映射表
 		BEGIN_MSG_MAP_EX(CRealWndDlg_URL)
 
 		CHAIN_MSG_MAP(SHostWnd)

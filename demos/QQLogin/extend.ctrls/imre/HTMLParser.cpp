@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "souistd.h"
 
 using namespace SOUI;
@@ -7,8 +7,8 @@ using namespace SOUI;
 // HtmlHelper
 
 /*
- * °ÑÌØÊâ×Ö·ûµÄHTML±àÂë×ª»¯ÎªUNICODE×Ö·û¡£
- * Ö»±£Ö¤³£¹æµÄASCII±àÂëÄÜÕı³£×ª»»£¬¶îÍâµÄÌØÊâ×Ö·û²»×ª»»£¬ÀıÈç€
+ * æŠŠç‰¹æ®Šå­—ç¬¦çš„HTMLç¼–ç è½¬åŒ–ä¸ºUNICODEå­—ç¬¦ã€‚
+ * åªä¿è¯å¸¸è§„çš„ASCIIç¼–ç èƒ½æ­£å¸¸è½¬æ¢ï¼Œé¢å¤–çš„ç‰¹æ®Šå­—ç¬¦ä¸è½¬æ¢ï¼Œä¾‹å¦‚â‚¬
  */
 void HTMLHelper::ReplaceHtmlSpecChars(SStringW& sHtml)
 {
@@ -28,11 +28,11 @@ void HTMLHelper::ReplaceHtmlSpecChars(SStringW& sHtml)
 }
 
 /*
- * °ÑÌØÊâ×Ö·ûµÄUNICODE×Ö·û×ª»¯ÎªHTML±àÂë
+ * æŠŠç‰¹æ®Šå­—ç¬¦çš„UNICODEå­—ç¬¦è½¬åŒ–ä¸ºHTMLç¼–ç 
  */
 void HTMLHelper::ConvertToHtmlSpecChars(SStringW& sText)
 {
-    //HTMLÌØÊâ×Ö·ûÌæ»»£¬Èç<£¬>£¬#£¬&£¬'£¬", ¿Õ¸ñ
+    //HTMLç‰¹æ®Šå­—ç¬¦æ›¿æ¢ï¼Œå¦‚<ï¼Œ>ï¼Œ#ï¼Œ&ï¼Œ'ï¼Œ", ç©ºæ ¼
     sText.Replace(_T("&"), _T("&amp;"));
     sText.Replace(_T("<"), _T("&lt;"));
     sText.Replace(_T(">"), _T("&gt;"));
@@ -58,7 +58,7 @@ void HTMLHelper::HttpPath2LocalPath(SStringW& sHttpPath)
 void HTMLHelper::LocalPath2HttpPath(SStringW& sLocalPath)
 {
     sLocalPath.Replace(_T("\\"), _T("/"));
-    sLocalPath.Replace(_T("%"), _T("%25")); // Õâ¸öÎ»ÖÃ²»ÄÜ¶¯
+    sLocalPath.Replace(_T("%"), _T("%25")); // è¿™ä¸ªä½ç½®ä¸èƒ½åŠ¨
     sLocalPath.Replace(_T(" "), _T("%20"));
     sLocalPath.Replace(_T("#"), _T("%23"));
     sLocalPath.Replace(_T("{"), _T("%7B"));
@@ -72,7 +72,7 @@ void HTMLHelper::EncodeHtmlClipboardFormat(
     SOUI::SStringW& sHtml,
     SOUI::SStringW& sClipboardFormat)
 {
-    // ¹¹ÔìHTML
+    // æ„é€ HTML
     //Version:0.9..StartHTML:00000097..EndHTML:00000169..StartFragment:00000131..EndFragment:00000133..<html><body>..<!--StartFragment--><DIV>fd</DIV><!--EndFragment-->..</body>..</html>.
     //<------------------------------------------ HeaderSize:97 --------------------------------------><----- StartFragmanetSize:34 ----><contentSize><------- EndFragmentSize:36 -------->
     const int HeaderSize = 97;
@@ -151,11 +151,11 @@ SStringW HTMLTaget::GetAttrubite(LPCWSTR pszAttrName)
 
     if (m_sTarget.GetAt(nIndex) != TCHAR('='))
     {
-        // ·Ç·¨µÄÃûÖµ¶Ô¸ñÊ½
+        // éæ³•çš„åå€¼å¯¹æ ¼å¼
         return _T("");
     }
 
-    //È¥µôµÈºÅºóÃæµÄ¿Õ°××Ö·û
+    //å»æ‰ç­‰å·åé¢çš„ç©ºç™½å­—ç¬¦
     nIndex += 1;
     while (IsSpaceChar(m_sTarget.GetAt(nIndex)))nIndex++;
 
@@ -206,7 +206,7 @@ BOOL HTMLParser::Parse(const SStringW& sHtml)
             return TRUE;
         }
 
-        // ÎÄ±¾ĞÅÏ¢
+        // æ–‡æœ¬ä¿¡æ¯
         if (nIndex != nlt)
         {
             SStringW text = sHtml.Mid(nIndex, nlt - nIndex);

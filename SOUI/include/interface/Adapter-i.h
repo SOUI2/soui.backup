@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <unknown/obj-ref-i.h>
 #include <string/tstring.h>
@@ -127,22 +127,22 @@ namespace SOUI
     enum SHDSORTFLAG;
     interface IMcAdapter : public ILvAdapter
     {
-        //»ñÈ¡Ò»¸öÁĞÔÚÄ£°åÖĞ¶ÔÓ¦µÄ´°¿ÚÃû³Æ
-		//int iCol: ÁĞĞòºÅ
+        //è·å–ä¸€ä¸ªåˆ—åœ¨æ¨¡æ¿ä¸­å¯¹åº”çš„çª—å£åç§°
+		//int iCol: åˆ—åºå·
         virtual SStringW GetColumnName(int iCol) const PURE;
 
-		//ÓÉAdapter¾ö¶¨Ò»ÁĞÊÇ·ñĞèÒªÏÔÊ¾
-		//int iCol: ÁĞĞòºÅ
-		//remark:Ä¬ÈÏÏÔÊ¾
+		//ç”±Adapterå†³å®šä¸€åˆ—æ˜¯å¦éœ€è¦æ˜¾ç¤º
+		//int iCol: åˆ—åºå·
+		//remark:é»˜è®¤æ˜¾ç¤º
 		virtual bool IsColumnVisible(int iCol) const
 		{
 			return true;
 		}
 
-        //ÅÅĞò½Ó¿Ú
-        // int iCol:ÅÅĞòÁĞ
-        // SHDSORTFLAG * stFlags [in, out]:µ±Ç°ÁĞÅÅĞò±êÖ¾
-        // int nCols:×ÜÁĞÊı,stFlagsÊı×é³¤¶È
+        //æ’åºæ¥å£
+        // int iCol:æ’åºåˆ—
+        // SHDSORTFLAG * stFlags [in, out]:å½“å‰åˆ—æ’åºæ ‡å¿—
+        // int nCols:æ€»åˆ—æ•°,stFlagsæ•°ç»„é•¿åº¦
         virtual bool OnSort(int iCol,SHDSORTFLAG * stFlags,int nCols) PURE;
     };
 
@@ -171,13 +171,13 @@ namespace SOUI
         static const HTREEITEM ITEM_ROOT=0xFFFF0000;
         
         enum DATA_INDEX{
-        DATA_INDEX_ITEM_HEIGHT=0,   //ĞĞ¸ß
-        DATA_INDEX_ITEM_WIDTH,      //ĞĞ¿í¶È
-        DATA_INDEX_BRANCH_HEIGHT,   //·ÖÖ¦¸ß¶È
-        DATA_INDEX_BRANCH_WIDTH,    //·ÖÖ¦¿í¶È,²»°üº¬indent
-        DATA_INDEX_ITEM_EXPANDED,   //×ÓÏîÕ¹¿ª×´Ì¬
-        DATA_INDEX_ITEM_OFFSET,     //µ±Ç°½ÚµãÔÚ¸¸½ÚµãÖĞµÄY·½ÏòÆ«ÒÆ
-        DATA_INDEX_ITEM_USER,       //×Ô¶¨ÒåÊı¾İ
+        DATA_INDEX_ITEM_HEIGHT=0,   //è¡Œé«˜
+        DATA_INDEX_ITEM_WIDTH,      //è¡Œå®½åº¦
+        DATA_INDEX_BRANCH_HEIGHT,   //åˆ†æé«˜åº¦
+        DATA_INDEX_BRANCH_WIDTH,    //åˆ†æå®½åº¦,ä¸åŒ…å«indent
+        DATA_INDEX_ITEM_EXPANDED,   //å­é¡¹å±•å¼€çŠ¶æ€
+        DATA_INDEX_ITEM_OFFSET,     //å½“å‰èŠ‚ç‚¹åœ¨çˆ¶èŠ‚ç‚¹ä¸­çš„Yæ–¹å‘åç§»
+        DATA_INDEX_ITEM_USER,       //è‡ªå®šä¹‰æ•°æ®
         DATA_INDEX_NUMBER
         };    
     
@@ -203,10 +203,10 @@ namespace SOUI
         virtual void unregisterDataSetObserver(ITvDataSetObserver * observer) PURE;
 
 
-        //»ñÈ¡hItemÖĞµÄÖ¸¶¨Ë÷ÒıµÄÊı¾İ
+        //è·å–hItemä¸­çš„æŒ‡å®šç´¢å¼•çš„æ•°æ®
         virtual ULONG_PTR GetItemDataByIndex(HTREEITEM hItem,DATA_INDEX idx) const PURE;
         
-        //±£´æhItemÖ¸¶¨Ë÷ÒıµÄÊı¾İ
+        //ä¿å­˜hItemæŒ‡å®šç´¢å¼•çš„æ•°æ®
         virtual void SetItemDataByIndex(HTREEITEM hItem,DATA_INDEX idx,ULONG_PTR data) PURE;
         
         virtual HTREEITEM GetParentItem(HTREEITEM hItem) const PURE;
@@ -255,7 +255,7 @@ namespace SOUI
         
         virtual SIZE getViewDesiredSize(HTREEITEM hItem,SWindow * pItem, LPCRECT prcContainer) PURE;
         
-        //¶¨ÒåĞĞ¿í¶ÈºÍtreeview¿Í»§Çø¿í¶ÈÏàÍ¬
+        //å®šä¹‰è¡Œå®½åº¦å’Œtreeviewå®¢æˆ·åŒºå®½åº¦ç›¸åŒ
         virtual bool isViewWidthMatchParent() const PURE;
         
         /**

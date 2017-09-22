@@ -1,4 +1,4 @@
-#include <control/SMessageBox.h>
+﻿#include <control/SMessageBox.h>
 
 BOOL ExpLua_MessageBox(lua_State *L)
 {

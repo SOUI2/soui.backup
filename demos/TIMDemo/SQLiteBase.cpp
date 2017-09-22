@@ -1,9 +1,9 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "SQLiteBase.h"
 
 /****************************************************************************
-*CQueryDataÀà
-*ÓÃÓÚ»ñµÃsqlite3_stmtµÄ²éÑ¯½á¹û
+*CQueryDataç±»
+*ç”¨äºè·å¾—sqlite3_stmtçš„æŸ¥è¯¢ç»“æœ
 ****************************************************************************/
 SQLite3Query::SQLite3Query(void)
 	: m_pStmt(NULL)
@@ -35,7 +35,7 @@ SQLite3Query::~SQLite3Query(void)
 
 
 /// <summary>
-/// ÊÍ·Å
+/// é‡Šæ”¾
 /// </summary>
 void SQLite3Query::Finalize()
 {
@@ -121,7 +121,7 @@ const wchar_t* SQLite3Query::GetIndexName(int nCol)
 }
 
 
-//»ñÈ¡¶ÔÓ¦ÀàĞÍÊı¾İ===========================
+//è·å–å¯¹åº”ç±»å‹æ•°æ®===========================
 const void* SQLite3Query::GetBlob(int nCol, int& nLen)
 {
 	if(NULL == m_pStmt)
@@ -427,8 +427,8 @@ sqlite3_int64 SQLite3Statement::GetLastInsertRowId()
 
 
 /****************************************************************************
-*CSqliteÀà
-*ÓÃÓÚ²Ù×÷Sqlite3Êı¾İ¿â
+*CSqliteç±»
+*ç”¨äºæ“ä½œSqlite3æ•°æ®åº“
 ****************************************************************************/
 SQLite3DB::SQLite3DB(void)
 	: m_pDBase(NULL)
@@ -455,7 +455,7 @@ int SQLite3DB::SetBusyTimeOut(int nMillisecs)
 
 
 /// <summary>
-/// ´ò¿ªSqliteÊı¾İ¿â
+/// æ‰“å¼€Sqliteæ•°æ®åº“
 /// </summary>
 /// <param name="sDBFilePath">The db file path.</param>
 /// <returns>int.</returns>
@@ -467,7 +467,7 @@ bool SQLite3DB::Open(const wchar_t* lpDBFilePath)
 		return false;
 	}
 	/*
-	//Õâ¸ö°æ±¾ Ã»ÓĞ¼ÓÃÜ   ÔİÊ±Ã»ÕÒµ½Ãâ·Ñ°æµÄ  ºÃÏñÓĞ
+	//è¿™ä¸ªç‰ˆæœ¬ æ²¡æœ‰åŠ å¯†   æš‚æ—¶æ²¡æ‰¾åˆ°å…è´¹ç‰ˆçš„  å¥½åƒæœ‰
 	wchar_t lKey[] = L"etimes2011@";
 	nRet = sqlite3_key(m_pDBase, lKey, wcslen(lKey));
 	if (nRet != SQLITE_OK){
@@ -478,7 +478,7 @@ bool SQLite3DB::Open(const wchar_t* lpDBFilePath)
 }
 
 /// <summary>
-/// ¹Ø±ÕSqliteÊı¾İ¿â
+/// å…³é—­Sqliteæ•°æ®åº“
 /// </summary>
 /// <returns>int.</returns>
 void SQLite3DB::Close() 
@@ -563,7 +563,7 @@ SQLite3Statement SQLite3DB::CompileStatement(const wchar_t* lpSQL)
 
 
 /// <summary>
-/// ÊÍ·Å±íÊı¾İ
+/// é‡Šæ”¾è¡¨æ•°æ®
 /// </summary>
 /// <param name="azResult">The az result.</param>
 //void CSQLite3DB::FreeTable(char **azResult){
@@ -571,7 +571,7 @@ SQLite3Statement SQLite3DB::CompileStatement(const wchar_t* lpSQL)
 //}
 
 /// <summary>
-/// ¿ªÊ¼ÊÂÎï
+/// å¼€å§‹äº‹ç‰©
 /// </summary>
 /// <returns>int.</returns>
 int SQLite3DB::Begin()
@@ -580,7 +580,7 @@ int SQLite3DB::Begin()
 }
 
 /// <summary>
-/// »Ø¹ö
+/// å›æ»š
 /// </summary>
 /// <returns>int.</returns>
 int SQLite3DB::RollBack()
@@ -589,7 +589,7 @@ int SQLite3DB::RollBack()
 }
 
 /// <summary>
-/// Ìá½»ÊÂÎï
+/// æäº¤äº‹ç‰©
 /// </summary>
 /// <returns>int.</returns>
 int SQLite3DB::Commit() 

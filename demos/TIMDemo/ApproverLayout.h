@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 #include <vsstyle.h>
 #include "ui\VirtualDlgLayout.h"
 #include <helper/SAdapterBase.h>
@@ -12,7 +12,7 @@ protected:
 	{
 		UINT				uId;							// id
 		bool				bChecked;
-		SStringT			sName;						// √˚≥∆
+		SStringT			sName;						// ÂêçÁß∞
 	};
 public:
 	ApproverListAdapter(std::function<void()> fun)
@@ -169,7 +169,7 @@ private:
 	std::function<void()> m_funUpdate;
 };
 
-typedef std::function<void(__int64, LPCTSTR)>			funApproverCallBack;  // ªÿµ˜
+typedef std::function<void(__int64, LPCTSTR)>			funApproverCallBack;  // ÂõûË∞É
 // 
 class ApproverLayout : public VirtualDlgLayout
 {

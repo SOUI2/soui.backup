@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "MainWnd.h"
 #include "EDialog.hpp"
 #include "BeginThread.h"
@@ -14,7 +14,7 @@
 #include "MenuWrapper.h"
 #include "helper\SplitString.h"
 #include "EFile.hpp"
-// ¶¨Ê±Æ÷ id 
+// å®šæ—¶å™¨ id 
 #define  TIMER_QUEYRHELPER			101
 
 #define RichResendLoadingSkinName		_T("loading16")
@@ -57,7 +57,7 @@ enum RichEditMenuId
 };
 
 CMainWnd::CMainWnd(void)
-	: SHostWnd(_T("layout:wnd_main"))//ÕâÀï¶¨ÒåÖ÷½çÃæĞèÒªÊ¹ÓÃµÄ²¼¾ÖÎÄ¼ş ÔÚuires.idxÎÄ¼şÖĞ¶¨ÒåµÄ
+	: SHostWnd(_T("layout:wnd_main"))//è¿™é‡Œå®šä¹‰ä¸»ç•Œé¢éœ€è¦ä½¿ç”¨çš„å¸ƒå±€æ–‡ä»¶ åœ¨uires.idxæ–‡ä»¶ä¸­å®šä¹‰çš„
 	, m_uCurrentTalkUserId(0)
 	, m_pWndMsgToolTip(NULL)
 	, m_AsynNetTask(3)
@@ -73,14 +73,14 @@ CMainWnd::~CMainWnd(void)
 	DEL_POINT(m_pAsynMessageBox)
 }
 
-///////////////////////////////////½çÃæ ÊÂ¼ş  º¯Êı///////////////////////////////////////
+///////////////////////////////////ç•Œé¢ äº‹ä»¶  å‡½æ•°///////////////////////////////////////
 BOOL CMainWnd::OnInitDialog(HWND wndFocus, LPARAM lInitParam)
 {			
 #ifdef _DEBUG
 
 #endif
 
-	m_szUserAlias = L"ºÍ¹ş";
+	m_szUserAlias = L"å’Œå“ˆ";
 
 	TCHAR lpTempPath[MAX_PATH] = { 0 };
 
@@ -107,7 +107,7 @@ BOOL CMainWnd::OnInitDialog(HWND wndFocus, LPARAM lInitParam)
 	m_szUserIconPath = lpPath;
 	m_szUserIconPath.Append(_T("user_icon\\"));
 	
-	//×¢²á Ïß³ÌÊÂ¼ş  µ½Í¨ÖªÖĞĞÄ 
+	//æ³¨å†Œ çº¿ç¨‹äº‹ä»¶  åˆ°é€šçŸ¥ä¸­å¿ƒ 
 	auto& notifyCenter = SNotifyCenter::getSingleton();
 	notifyCenter.addEvent(EVENTID(EventStartInit));
 	notifyCenter.subscribeEvent(&CMainWnd::OnCenterEventStartInit, this);
@@ -147,7 +147,7 @@ BOOL CMainWnd::OnInitDialog(HWND wndFocus, LPARAM lInitParam)
 		//SUBSCRIBE(m_pChatInput, EVT_RE_OBJ, CMainWnd::OnInputRichObjEvent);
 	}
 
-	// ×î½ü ÁªÏµÈË ÁĞ±í
+	// æœ€è¿‘ è”ç³»äºº åˆ—è¡¨
 	SListView* pRecentList;
 	InitWnd(pRecentList, L"lv_recent");
 	
@@ -161,7 +161,7 @@ BOOL CMainWnd::OnInitDialog(HWND wndFocus, LPARAM lInitParam)
 	m_pRecentListAdapter->SetItemClickCallBack(funRecent1);
 	m_pRecentListAdapter->SetBtnClickCallBack(funRecent2);
 
-	// ´Ó xml Àï¼ÓÔØ ×î½ü ÁªÏµÈË
+	// ä» xml é‡ŒåŠ è½½ æœ€è¿‘ è”ç³»äºº
 	UserList userList;
 	theCache.InitRecentTalkInfo(userList);
 	for each(auto var in userList)
@@ -169,7 +169,7 @@ BOOL CMainWnd::OnInitDialog(HWND wndFocus, LPARAM lInitParam)
 		m_pRecentListAdapter->Add(var.uId, var.sName, var.sContent);
 	}
 
-	// ÁªÏµÈË
+	// è”ç³»äºº
 	auto funContact1 = std::bind(&CMainWnd::CallBack_ContactTvItemClick, this, std::placeholders::_1);
 	auto funContact2 = std::bind(&CMainWnd::CallBack_ContactTvItemDbClick, this, std::placeholders::_1);
 
@@ -185,7 +185,7 @@ BOOL CMainWnd::OnInitDialog(HWND wndFocus, LPARAM lInitParam)
 	
 
 #if 0
-	// ±íÇé·ûºÅ 
+	// è¡¨æƒ…ç¬¦å· 
 	STileView* pEmotionView = NULL;
 	InitWnd(pEmotionView, L"tv_emotion");
 	auto emotionFun = std::bind(&CMainWnd::CallBack_Emotion, this, std::placeholders::_1);
@@ -200,8 +200,8 @@ BOOL CMainWnd::OnInitDialog(HWND wndFocus, LPARAM lInitParam)
 	ShowLoadingPage(FALSE);
 	m_pLaySession->SetVisible(TRUE, TRUE);
 
-	m_pSessionTitle->SetWindowText(_T("Îâ²âÊÔ"));
-	m_pSessionLevel->SetWindowText(_T("·ÇÃÜ"));
+	m_pSessionTitle->SetWindowText(_T("å´æµ‹è¯•"));
+	m_pSessionLevel->SetWindowText(_T("éå¯†"));
 	
 	SwitchPage(1);
 
@@ -265,7 +265,7 @@ void CMainWnd::OnBtnSendMsg()
 
 	SStringT szSendMsg;
 	pugi::xml_node node = doc.child(L"RichEditContent").first_child();
-	if(!node)   // Á½ÖÖ ±ØĞë ÒªÓĞÒ»¸ö
+	if(!node)   // ä¸¤ç§ å¿…é¡» è¦æœ‰ä¸€ä¸ª
 	{
 		return ;
 	}
@@ -286,7 +286,7 @@ void CMainWnd::OnBtnSendMsg()
 		{
 			int nType = node.attribute(L"type").as_int(0);
 			SStringT szPath = node.attribute(L"path").as_string();
-			if(1 == nType)		// ±íÇé
+			if(1 == nType)		// è¡¨æƒ…
 			{
 				szSendMsg.AppendFormat(_T("<img emoticons=\"%s\" />"), node.attribute(L"encoding").as_string());
 				sContent.AppendFormat(L"<img path=\"%s\" />", szPath);
@@ -306,7 +306,7 @@ void CMainWnd::OnBtnSendMsg()
 					L"",
 					FALSE);
 				
-				// ½«Í¼Æ¬Éú³Ébase64±àÂë
+				// å°†å›¾ç‰‡ç”Ÿæˆbase64ç¼–ç 
 				EFile file;
 				file.Open(szTemp, EFile::modeRead);
 				ULONG uSize = file.GetLength();
@@ -322,22 +322,22 @@ void CMainWnd::OnBtnSendMsg()
 		/*else if (wcscmp(RichEditMetaFileOle::GetClassName(), pNodeName) == 0)
 		{
 			sContent += RichEditFileOle::MakeFormattedText(node.attribute(L"file").as_string(),
-				L"µÈ´ı·¢ËÍ", 440227874, 0x04);
+				L"ç­‰å¾…å‘é€", 440227874, 0x04);
 		}*/
 	}
 	
-	// ÏÈ½« ÏûÏ¢ ÉÏ´« recordRich
+	// å…ˆå°† æ¶ˆæ¯ ä¸Šä¼  recordRich
 	SStringT szRichId = NewGuid();
 
 	AddStateChatMsg(szRichId, sContent, eCST_Waiting);
 		
-	// Ìí¼ÓÒì²½ ·¢ËÍ 
+	// æ·»åŠ å¼‚æ­¥ å‘é€ 
 	AsyncSendMsgParam* pAsyncParam = new AsyncSendMsgParam;
 	pAsyncParam->uRecipientId = m_uCurrentTalkUserId;
 	pAsyncParam->szChatId = szRichId;
 	pAsyncParam->szContent = szSendMsg;
 	
-	// Ìí¼Ó ÕıÔÚ·¢ËÍĞÅÏ¢ µ½»º´æ  ÒÔ·À Ê§°ÜÒªÖØ·¢
+	// æ·»åŠ  æ­£åœ¨å‘é€ä¿¡æ¯ åˆ°ç¼“å­˜  ä»¥é˜² å¤±è´¥è¦é‡å‘
 	theCache.AddSendingChat(m_uCurrentTalkUserId, sContent, *pAsyncParam);
 
 	m_AsynNetTask.AddTask(&CMainWnd::ThreadFun_SendMsg, this, (LPARAM)pAsyncParam);
@@ -355,11 +355,11 @@ void CMainWnd::OnBtnSendPic()
 	return ;
 
 
-	ShowErrorBox(_T("¹¦ÄÜ²âÊÔÖĞ"));
+	ShowErrorBox(_T("åŠŸèƒ½æµ‹è¯•ä¸­"));
 	return ;
 
 	EFileDialog dialog(true, NULL, 0, 0,
-		_T("Í¼Æ¬ÎÄ¼ş\0*.gif;*.bmp;*.jpg;*.png\0\0"));
+		_T("å›¾ç‰‡æ–‡ä»¶\0*.gif;*.bmp;*.jpg;*.png\0\0"));
 	auto nRet = dialog.DoModal(m_hWnd);
 	if(IDOK != nRet)
 	{
@@ -369,7 +369,7 @@ void CMainWnd::OnBtnSendPic()
 	SStringT szPicPath = dialog.GetFilePath();
 	if(!PathFileExists(szPicPath))
 	{
-		ShowErrorBox(_T("Í¼Æ¬²»´æÔÚ£¡"));
+		ShowErrorBox(_T("å›¾ç‰‡ä¸å­˜åœ¨ï¼"));
 		return ;
 	}
 
@@ -393,7 +393,7 @@ void CMainWnd::ThreadFun_SendMsg(LPARAM lParam)
 
 	//bool bRet = false;
 	//Sleep(1000);
-	// Í¨Öª ½çÃæ ÏûÏ¢·¢ËÍÍê³É 
+	// é€šçŸ¥ ç•Œé¢ æ¶ˆæ¯å‘é€å®Œæˆ 
 	EventSendMsg* pEvt = new EventSendMsg(this);
 	pEvt->uRecipierId = lpAsyncParam->uRecipientId;
 	pEvt->szRichObjId = lpAsyncParam->szChatId;
@@ -414,7 +414,7 @@ bool CMainWnd::OnCenterEventSendMsg(EventSendMsg* pEvt)
 
 	if(NULL == pEvt) return true;
 
-	if(m_uCurrentTalkUserId == pEvt->uRecipierId) //ÏàÍ¬ ²Å»á¸üĞÂ
+	if(m_uCurrentTalkUserId == pEvt->uRecipierId) //ç›¸åŒ æ‰ä¼šæ›´æ–°
 	{		
 		RichEditBkElement* pObj = sobj_cast<RichEditBkElement>(m_pChatRecord->GetOleByName(pEvt->szRichObjId));
 		if(NULL != pObj)
@@ -432,10 +432,10 @@ bool CMainWnd::OnCenterEventSendMsg(EventSendMsg* pEvt)
 		}
 	}
 
-	// ¸üĞÂ»º´æ
+	// æ›´æ–°ç¼“å­˜
 	if(pEvt->bSuccess)
 	{
-		// ·¢ËÍ ³É¹¦ºó ¾Í°Ñ »º´æÀïµÄ É¾³ı  
+		// å‘é€ æˆåŠŸå å°±æŠŠ ç¼“å­˜é‡Œçš„ åˆ é™¤  
 		theCache.DelStateChatAndSave(pEvt->uRecipierId, pEvt->szRichObjId, pEvt->lBodyId, pEvt->lTime);
 	}
 	else
@@ -449,7 +449,7 @@ bool CMainWnd::OnCenterEventSendMsg(EventSendMsg* pEvt)
 
 void CMainWnd::OnBtnUploadFile()
 {
-	//ShowErrorBox(_T("¹¦ÄÜ²âÊÔÖĞ"));
+	//ShowErrorBox(_T("åŠŸèƒ½æµ‹è¯•ä¸­"));
 	//return ;
 
 
@@ -463,20 +463,20 @@ void CMainWnd::OnBtnUploadFile()
 	SStringT szFilePath = dialog.GetFilePath();
 	if(!PathFileExists(szFilePath))
 	{
-		ShowErrorBox(_T("ÎÄ¼ş²»´æÔÚ£¡"));
+		ShowErrorBox(_T("æ–‡ä»¶ä¸å­˜åœ¨ï¼"));
 		return ;
 	}
 
 	auto ulFileSize = FileFolderHelper::CalcFileSize(szFilePath);
 	if(ulFileSize > 2147483648)
 	{
-		ShowErrorBox(_T("·¢ËÍ¸½¼ş´óĞ¡²»ÄÜ³¬¹ı2GB£¡"));
+		ShowErrorBox(_T("å‘é€é™„ä»¶å¤§å°ä¸èƒ½è¶…è¿‡2GBï¼"));
 		return ;
 	}
 	
 	SStringT szChatId = NewGuid();
 	szChatId.Format(L"id=\"%s\"", szChatId);
-	SStringW str2 = RichEditFileOle::MakeFormattedText(szFilePath, L"µÈ´ı·¢ËÍ",
+	SStringW str2 = RichEditFileOle::MakeFormattedText(szFilePath, L"ç­‰å¾…å‘é€",
 	ulFileSize, 0x04,
 	szChatId);
 
@@ -502,7 +502,7 @@ void CMainWnd::OnKeyDown(TCHAR nChar, UINT nRepCnt, UINT nFlags)
 {
 	if (nChar == VK_RETURN)
 	{
-		// »Ø³µ Ö±½Ó·¢ËÍ Ctrl+»Ø³µ ¾Í»»ĞĞ
+		// å›è½¦ ç›´æ¥å‘é€ Ctrl+å›è½¦ å°±æ¢è¡Œ
 		bool bCtrl =  (GetKeyState(VK_CONTROL) & 0x8000) != 0;
 		if (!bCtrl)
 		{
@@ -543,7 +543,7 @@ void CMainWnd::CallBack_RecentListBtnClick(int nIndex)
 	else if(nIndex == nSel)
 	{
 		--nIndex;
-		if(nIndex < 0)		// É¾µÄ Ã»ÓĞÁË ¾ÍÓ°²Ø »á»°
+		if(nIndex < 0)		// åˆ çš„ æ²¡æœ‰äº† å°±å½±è— ä¼šè¯
 		{
 			m_pLaySession->SetVisible(FALSE, TRUE);
 			return ;
@@ -552,7 +552,7 @@ void CMainWnd::CallBack_RecentListBtnClick(int nIndex)
 		
 		RecentListSelect(nIndex);
 	}
-	// ºóÃæµÄ¾Í²»ÓÃ¹ÜÁË
+	// åé¢çš„å°±ä¸ç”¨ç®¡äº†
 }
 
 void CMainWnd::CallBack_ContactTvItemClick(UINT uId)
@@ -563,7 +563,7 @@ void CMainWnd::CallBack_ContactTvItemClick(UINT uId)
 	SStringT szLevel;
 	if(!m_pContactTreeAdapter->GetUserById(uId, szName, szLevel))
 	{
-		ShowErrorBox(_T("¸ÃÓÃ»§ÓĞÎÊÌâ£¡"));
+		ShowErrorBox(_T("è¯¥ç”¨æˆ·æœ‰é—®é¢˜ï¼"));
 		return ;
 	}
 
@@ -579,7 +579,7 @@ void CMainWnd::CallBack_ContactTvItemDbClick(UINT uId)
 	SStringT szLevel;
 	if(!m_pContactTreeAdapter->GetUserById(uId, szName, szLevel))
 	{
-		ShowErrorBox(_T("¸ÃÓÃ»§ÓĞÎÊÌâ£¡"));
+		ShowErrorBox(_T("è¯¥ç”¨æˆ·æœ‰é—®é¢˜ï¼"));
 		return ;
 	}
 
@@ -632,23 +632,23 @@ LRESULT CMainWnd::OnTrayNotify(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		/*if(NULL != m_pWndMsgToolTip)
 		m_pWndMsgToolTip->ShowUnreadMsg();*/
 	}
-	else if(WM_RBUTTONUP == dwEventMsg)	//ÓÒ¼üµ¥»÷ÊÂ¼ş
+	else if(WM_RBUTTONUP == dwEventMsg)	//å³é”®å•å‡»äº‹ä»¶
 	{
 		CPoint pt;
 		GetCursorPos(&pt);
-		//Ê¹ÓÃÄ£Äâ²Ëµ¥
+		//ä½¿ç”¨æ¨¡æ‹Ÿèœå•
 		SMenu menuMain;
 		if(FALSE == menuMain.LoadMenu(_T("menu_tray"),_T("layout")))
 		{
-			ShowErrorBox(_T("¼ÓÔØ²Ëµ¥ Ê§°Ü£¡"));
+			ShowErrorBox(_T("åŠ è½½èœå• å¤±è´¥ï¼"));
 			return 0;
 		}
 
 		//WebUrlInfoVct& webList = theFun.GetWebUrlInfo();
 		//int nWebCount = webList.size();
-		//if(nWebCount <= 0)		//Ã»ÓĞÊı¾İ   ¾ÍÖ»
+		//if(nWebCount <= 0)		//æ²¡æœ‰æ•°æ®   å°±åª
 		//{
-		//	menuMain.InsertMenu(0, MF_BYPOSITION, 1, _T("½øÈëÏµÍ³"), 0);
+		//	menuMain.InsertMenu(0, MF_BYPOSITION, 1, _T("è¿›å…¥ç³»ç»Ÿ"), 0);
 		//}
 		//else
 		//{
@@ -660,22 +660,22 @@ LRESULT CMainWnd::OnTrayNotify(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//		menuSys.InsertMenu(i, MF_BYPOSITION, 10 + i, webList[i].sWebTitle, 0);
 		//	}
 
-		//	menuMain.InsertMenu(0, MF_POPUP|MF_BYPOSITION, (UINT_PTR)&menuSys, _T("½øÈëÏµÍ³"), 0);
+		//	menuMain.InsertMenu(0, MF_POPUP|MF_BYPOSITION, (UINT_PTR)&menuSys, _T("è¿›å…¥ç³»ç»Ÿ"), 0);
 		//}
 
-		//// ÕâÀï ÊÇ ÏÔÊ¾ ²å¼ş ²Ëµ¥ µÄ½Ó¿Ú 
-		//int nPluginMenuIdBegin = 40;		// ×é¼ş²Ëµ¥ id Æğµã 
+		//// è¿™é‡Œ æ˜¯ æ˜¾ç¤º æ’ä»¶ èœå• çš„æ¥å£ 
+		//int nPluginMenuIdBegin = 40;		// ç»„ä»¶èœå• id èµ·ç‚¹ 
 		//std::vector<int> menuIdList;
 		//std::vector<SStringT> menuNameList;
 		//theFun.MenuShowEvent(nPluginMenuIdBegin, menuIdList, menuNameList);
 		//int nMenuCount = menuNameList.size();
 		//if(nMenuCount > 0)
 		//{
-		//	if(1 == nMenuCount)		// Èç¹ûÖ»ÓĞÒ»¸ö²Ëµ¥  ¾Í·Åµ½ Ò»¼¶²Ëµ¥
+		//	if(1 == nMenuCount)		// å¦‚æœåªæœ‰ä¸€ä¸ªèœå•  å°±æ”¾åˆ° ä¸€çº§èœå•
 		//	{
 		//		menuMain.InsertMenu(2, MF_BYPOSITION, menuIdList[0], menuNameList[0], 0);
 		//	}
-		//	else			// ¶à¸ö ²Ëµ¥  ¾Í·Åµ½¶ş¼¶²Ëµ¥ÏÂ
+		//	else			// å¤šä¸ª èœå•  å°±æ”¾åˆ°äºŒçº§èœå•ä¸‹
 		//	{
 		//		SMenu menuPlugin;
 		//		menuPlugin.m_hMenu = CreatePopupMenu();
@@ -684,7 +684,7 @@ LRESULT CMainWnd::OnTrayNotify(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//			menuPlugin.InsertMenu(i, MF_BYPOSITION, menuIdList[i], menuNameList[i], 0);
 		//		}
 
-		//		menuMain.InsertMenu(2, MF_POPUP|MF_BYPOSITION, (UINT_PTR)&menuPlugin, _T("²å¼şÉèÖÃ"), 0);
+		//		menuMain.InsertMenu(2, MF_POPUP|MF_BYPOSITION, (UINT_PTR)&menuPlugin, _T("æ’ä»¶è®¾ç½®"), 0);
 		//	}			
 		//}
 
@@ -716,7 +716,7 @@ void CMainWnd::ThreadFun_StartInit(LPARAM lpParam)
 
 bool CMainWnd::OnCenterEventStartInit(EventStartInit* pEvt)
 {
-	// Òş²Ø ¼ÓÔØÒ³Ãæ
+	// éšè— åŠ è½½é¡µé¢
 	ShowLoadingPage(FALSE);
 
 	if(!pEvt->bSuccess)
@@ -725,17 +725,17 @@ bool CMainWnd::OnCenterEventStartInit(EventStartInit* pEvt)
 		CloseMain();
 		return true;
 	}
-	// µÇÂ½³É¹¦ ¾Í  
+	// ç™»é™†æˆåŠŸ å°±  
 
-	// ¼ÓÔØ Ö®ºó ÏÔÊ¾ ÍĞÅÌ
+	// åŠ è½½ ä¹‹å æ˜¾ç¤º æ‰˜ç›˜
 	HICON hIcon = LoadIcon(::GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ETIMESIM));
 	SStringT szTipInfo;
-	szTipInfo.Format(_T("%s ÔÚÏß\r\n¿ªÆôÏûÏ¢ÌáÊ¾"), m_szUserAlias);
+	szTipInfo.Format(_T("%s åœ¨çº¿\r\nå¼€å¯æ¶ˆæ¯æç¤º"), m_szUserAlias);
 	m_Tray.Create(m_hWnd, hIcon, szTipInfo, WM_TRAYNOTIFY, 0);
 	//	UpdateTrayText();
-	//m_Tray.ShowBalloon(_T("ÌáÊ¾"), _T("ÄúÓĞĞÂµÄÏûÏ¢ÁË£¡"), NIIF_USER, 2000);
+	//m_Tray.ShowBalloon(_T("æç¤º"), _T("æ‚¨æœ‰æ–°çš„æ¶ˆæ¯äº†ï¼"), NIIF_USER, 2000);
 
-	// ÍĞÅÌÏÔÊ¾ºó  ½¨Á¢ Î´¶ÁÏûÏ¢´°¿Ú 
+	// æ‰˜ç›˜æ˜¾ç¤ºå  å»ºç«‹ æœªè¯»æ¶ˆæ¯çª—å£ 
 	auto fun = std::bind(&CMainWnd::CallBack_MsgToolTip, this, std::placeholders::_1);
 	m_pWndMsgToolTip = new CMsgToolTipWnd(fun);
 	m_pWndMsgToolTip->Create(m_hWnd);
@@ -743,9 +743,9 @@ bool CMainWnd::OnCenterEventStartInit(EventStartInit* pEvt)
 	m_pWndMsgToolTip->GetNative()->SendMessage(WM_INITDIALOG, 0, (LPARAM)lpUserAlias);
 	m_pWndMsgToolTip->MoveButtomRight();
 
-	SStringT szGroupName[] = {L"¼ÒÈË", L"Í¬ÊÂ", L"ÅóÓÑ", L"ºÃ»ùÓÑ" , L"¿Í»§", L"ÀÏ×Ü", L"Ä°ÉúÈË", L"ºÚÃûµ¥" };
+	SStringT szGroupName[] = {L"å®¶äºº", L"åŒäº‹", L"æœ‹å‹", L"å¥½åŸºå‹" , L"å®¢æˆ·", L"è€æ€»", L"é™Œç”Ÿäºº", L"é»‘åå•" };
 
-	SStringT szFriendName[] = { L"ÕÅÈı", L"ÀîËÄ", L"ÀÏÍõ", L"ÀÍÎñ" , L"ºÇºÇ", L"¹öµ°"};
+	SStringT szFriendName[] = { L"å¼ ä¸‰", L"æå››", L"è€ç‹", L"åŠ³åŠ¡" , L"å‘µå‘µ", L"æ»šè›‹"};
 
 	SStringT szName ;
 	for(int i=0; i<8; ++i)
@@ -758,11 +758,11 @@ bool CMainWnd::OnCenterEventStartInit(EventStartInit* pEvt)
 			UINT uId = i * j + 21;
 			szName.Format(_T("%s - %d"), szFriendName[j], j+ 100 * i);
 			
-			m_pContactTreeAdapter->AddUser(uId, szName, L"30Ëê", hRoot);
+			m_pContactTreeAdapter->AddUser(uId, szName, L"30å²", hRoot);
 		}
 	}
 		
-	//Èç¹ûµ±Ç°Ã»ÓĞ»á»°  ¾ÍÌøµ½ ÁªÏµÈË Ò³Ãæ
+	//å¦‚æœå½“å‰æ²¡æœ‰ä¼šè¯  å°±è·³åˆ° è”ç³»äºº é¡µé¢
 	if(m_pRecentListAdapter->IsEmpty())
 	{
 		SwitchPage(1);
@@ -794,7 +794,7 @@ bool CMainWnd::OnCenterEventGetUnreadMsg(EventGetUnreadMsg* pEvt)
 	}
 
 	SStringT szBriefInfo;
-	// ±£´æ Î´¶ÁÏûÏ¢
+	// ä¿å­˜ æœªè¯»æ¶ˆæ¯
 	size_t s_size = pEvt->bodyList.size();
 	size_t s_i = 0;
 	for each(auto var in pEvt->bodyList)
@@ -804,7 +804,7 @@ bool CMainWnd::OnCenterEventGetUnreadMsg(EventGetUnreadMsg* pEvt)
 		SStringT szChatContent;
 		if(!var->sBodyContent.IsEmpty())
 		{
-			if(s_i == s_size)				// Ö» Æ´½Ó ×îºóÒ»Ìõ
+			if(s_i == s_size)				// åª æ‹¼æ¥ æœ€åä¸€æ¡
 				szChatContent = ParseContentToIM(var->sBodyContent, &szBriefInfo);
 			else
 				szChatContent = ParseContentToIM(var->sBodyContent, NULL);
@@ -815,16 +815,16 @@ bool CMainWnd::OnCenterEventGetUnreadMsg(EventGetUnreadMsg* pEvt)
 			continue;
 		}
 
-		if(pEvt->uSenderId == m_uCurrentTalkUserId)		// »¹ÔÚµ±Ç°user µÄÁÄÌì½çÃæ
+		if(pEvt->uSenderId == m_uCurrentTalkUserId)		// è¿˜åœ¨å½“å‰user çš„èŠå¤©ç•Œé¢
 		{
 			AddChatMsg(eChT_Left, var->lBodyId, szChatContent);
 		}
 		
-		// ÀúÊ· ÊÇ Ò»¶¨ÒªÌí¼ÓµÄ 
+		// å†å² æ˜¯ ä¸€å®šè¦æ·»åŠ çš„ 
 		theCache.AddChatRecord(pEvt->uSenderId, eChT_Left, var->lBodyId, szChatContent, var->lTime);
 	}
 	
-	// »¹ÔÚµ±Ç°user µÄÁÄÌì½çÃæ
+	// è¿˜åœ¨å½“å‰user çš„èŠå¤©ç•Œé¢
 	if(pEvt->uSenderId == m_uCurrentTalkUserId)
 	{
 		m_pChatRecord->ScrollToBottom();
@@ -844,7 +844,7 @@ bool CMainWnd::OnCenterEventGetUnreadMsg(EventGetUnreadMsg* pEvt)
 		UINT uTotalCount = UpdateTalkSessionUnreadCount();
 		m_pWndMsgToolTip->SetTotalCount(uTotalCount);
 
-		// ½öÈÎÎñÀ¸£¬ÉÁË¸Ö±µ½´°¿Ú¼¤»î£¬Ä¬ÈÏÆµÂÊ
+		// ä»…ä»»åŠ¡æ ï¼Œé—ªçƒç›´åˆ°çª—å£æ¿€æ´»ï¼Œé»˜è®¤é¢‘ç‡
 		FlashWindow();
 	}
 
@@ -857,26 +857,26 @@ bool CMainWnd::OnRecordRichObjEvent(EventRichEditObj* pEvt)
 {
 	switch (pEvt->nSubEventId)
 	{
-	case DBLCLICK_IMAGEOLE :			// Ë«»÷ÁË Í¼Æ¬
+	case DBLCLICK_IMAGEOLE :			// åŒå‡»äº† å›¾ç‰‡
 		{
 			RichEditImageOle* pImageOle = sobj_cast<RichEditImageOle>(pEvt->pRichObj);
 			if(NULL != pImageOle)
 				ShellExecute(NULL, _T("open"), pImageOle->GetImagePath(), NULL, NULL, SW_SHOW);
 		}
 		break;
-	case CLICK_FILEOLE :				// µã»÷ÁË file Ä£¿é µÄ°´Å¥
+	case CLICK_FILEOLE :				// ç‚¹å‡»äº† file æ¨¡å— çš„æŒ‰é’®
 		{
 			RichEditFileOle* pFileOle = sobj_cast<RichEditFileOle>(pEvt->pRichObj);
 			if(NULL == pFileOle)
 			{
-				ShowErrorBox(_T("´íÎóµÄÎÄ¼ş£¡"));
+				ShowErrorBox(_T("é”™è¯¯çš„æ–‡ä»¶ï¼"));
 				break;
 			}
 
 			SStringT szPath = pFileOle->GetFilePath();
 
 			auto eClick = (RichEditFileOle::LinkFlag)pEvt->wParam;
-			if(RichEditFileOle::LINK_OPEN_FILE == eClick)			// ´ò¿ªÎÄ¼ş
+			if(RichEditFileOle::LINK_OPEN_FILE == eClick)			// æ‰“å¼€æ–‡ä»¶
 			{
 				if(PathFileExists(szPath))
 				{
@@ -884,13 +884,13 @@ bool CMainWnd::OnRecordRichObjEvent(EventRichEditObj* pEvt)
 				}
 				else
 				{
-					ShowErrorBox(_T("ÎÄ¼ş²»´æÔÚ£¬ÇëÖØĞÂÏÂÔØ£¡"));
+					ShowErrorBox(_T("æ–‡ä»¶ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°ä¸‹è½½ï¼"));
 				}
 
 				break;
 			}
 
-			if(RichEditFileOle::LINK_OPEN_DIR == eClick)		// ´ò¿ª Ä¿Â¼
+			if(RichEditFileOle::LINK_OPEN_DIR == eClick)		// æ‰“å¼€ ç›®å½•
 			{
 				if(PathFileExists(szPath))
 				{
@@ -900,7 +900,7 @@ bool CMainWnd::OnRecordRichObjEvent(EventRichEditObj* pEvt)
 				}
 				else
 				{
-					ShowErrorBox(_T("ÎÄ¼ş²»´æÔÚ£¬ÇëÖØĞÂÏÂÔØ£¡"));
+					ShowErrorBox(_T("æ–‡ä»¶ä¸å­˜åœ¨ï¼Œè¯·é‡æ–°ä¸‹è½½ï¼"));
 				}
 				
 				break;
@@ -914,7 +914,7 @@ bool CMainWnd::OnRecordRichObjEvent(EventRichEditObj* pEvt)
 			RichEditContent* pRichContent = sobj_cast<RichEditContent>(pFileOle->GetParent()->GetParent());
 			if(NULL == pRichContent)
 			{
-				ShowErrorBox(_T("´íÎóµÄÏûÏ¢£¡"));
+				ShowErrorBox(_T("é”™è¯¯çš„æ¶ˆæ¯ï¼"));
 				break;
 			}
 			
@@ -931,17 +931,17 @@ bool CMainWnd::OnRecordRichObjEvent(EventRichEditObj* pEvt)
 		//::SetTimer(m_hWnd, TIMERID_LOAD_MSG, 1000, NULL);
 		break;
 	case CLICK_FETCHMOREOLE_OPEN_LINK :
-		::MessageBox(m_hWnd, _T("µã»÷ÁË´ò¿ªÀúÊ·¼ÇÂ¼"), _T("ÌáÊ¾"), MB_OK);
+		::MessageBox(m_hWnd, _T("ç‚¹å‡»äº†æ‰“å¼€å†å²è®°å½•"), _T("æç¤º"), MB_OK);
 		break;
-	case CLICK_LINK :			// Á´½Ó
+	case CLICK_LINK :			// é“¾æ¥
 		{
 			RichEditText * pText = sobj_cast<RichEditText>(pEvt->pRichObj);
 			SStringW text;
-			text.Format(_T("µã»÷ÁËÄ£·ÂµÄÁ´½Ó£º%s"), pText->GetText());
-			::MessageBox(m_hWnd, text, _T("ÌáÊ¾"), MB_OK);
+			text.Format(_T("ç‚¹å‡»äº†æ¨¡ä»¿çš„é“¾æ¥ï¼š%s"), pText->GetText());
+			::MessageBox(m_hWnd, text, _T("æç¤º"), MB_OK);
 		}
 		break;
-	case CLICK_BK_ELE:				// µã»÷ÁË±³¾° 
+	case CLICK_BK_ELE:				// ç‚¹å‡»äº†èƒŒæ™¯ 
 		{
 			RichEditBkElement* pBkOle = sobj_cast<RichEditBkElement>(pEvt->pRichObj);
 			if(NULL == pBkOle)
@@ -953,7 +953,7 @@ bool CMainWnd::OnRecordRichObjEvent(EventRichEditObj* pEvt)
 				AsyncSendMsgParam* pAsyncParam = new AsyncSendMsgParam;
 				if(!theCache.GetSendChatInfo(m_uCurrentTalkUserId, szBkName, *pAsyncParam))
 				{
-					ShowInfoBox(_T("ÎŞĞ§µÄÏûÏ¢"));
+					ShowInfoBox(_T("æ— æ•ˆçš„æ¶ˆæ¯"));
 					break;
 				}
 				pBkOle->SetAttribute(L"skin", RichResendLoadingSkinName);
@@ -965,7 +965,7 @@ bool CMainWnd::OnRecordRichObjEvent(EventRichEditObj* pEvt)
 			}
 			else
 			{
-				ShowInfoBox(_T("µã»÷ÁËÍ·Ïñ"));
+				ShowInfoBox(_T("ç‚¹å‡»äº†å¤´åƒ"));
 			}
 		
 		}
@@ -985,29 +985,29 @@ bool CMainWnd::OnInputRichMenu(EventCtxMenu* pEvt)
     RichEditOleBase* pOle = m_pChatInput->GetSelectedOle();
 
     /*
-     * ¹¹Ôì²Ëµ¥Ïî
+     * æ„é€ èœå•é¡¹
      */
 
     MenuWrapper menu(L"menu_template", L"layout");
 
     BOOL enableCopy = (chrSel.cpMax - chrSel.cpMin) >= 1;
-    menu.AddMenu(_T("¸´ÖÆ(&S)"), MENUID_COPY, enableCopy, FALSE);
-    menu.AddMenu(_T("¼ôÇĞ(&X)"), MENUID_CUT, enableCopy, FALSE);
-    menu.AddMenu(_T("Õ³Ìù(&C)"), MENUID_PASTE, TRUE, FALSE);
-    menu.AddMenu(_T("È«Ñ¡(&A)"), MENUID_SEL_ALL, TRUE, FALSE);
+    menu.AddMenu(_T("å¤åˆ¶(&S)"), MENUID_COPY, enableCopy, FALSE);
+    menu.AddMenu(_T("å‰ªåˆ‡(&X)"), MENUID_CUT, enableCopy, FALSE);
+    menu.AddMenu(_T("ç²˜è´´(&C)"), MENUID_PASTE, TRUE, FALSE);
+    menu.AddMenu(_T("å…¨é€‰(&A)"), MENUID_SEL_ALL, TRUE, FALSE);
 
     if (pOle && pOle->IsClass(RichEditImageOle::GetClassName()))
     {
-        menu.AddMenu(_T("Áí´æÎª"), MENUID_SAVE_AS, TRUE, FALSE);
+        menu.AddMenu(_T("å¦å­˜ä¸º"), MENUID_SAVE_AS, TRUE, FALSE);
     }
     else if (pOle && pOle->IsClass(RichEditMetaFileOle::GetClassName()))
     {
-        menu.AddMenu(_T("´ò¿ª"), MENUID_OPEN_FILE, TRUE, FALSE);
-        menu.AddMenu(_T("´ò¿ªÎÄ¼ş¼Ğ"), MENUID_OPEN_FILE_DIR, TRUE, FALSE);
+        menu.AddMenu(_T("æ‰“å¼€"), MENUID_OPEN_FILE, TRUE, FALSE);
+        menu.AddMenu(_T("æ‰“å¼€æ–‡ä»¶å¤¹"), MENUID_OPEN_FILE_DIR, TRUE, FALSE);
     }
 
     /*
-     * µ¯³ö²Ëµ¥
+     * å¼¹å‡ºèœå•
      */
     int ret = 0;
     POINT pt;
@@ -1016,7 +1016,7 @@ bool CMainWnd::OnInputRichMenu(EventCtxMenu* pEvt)
     ret = menu.ShowMenu(TPM_RETURNCMD, pt.x, pt.y, m_hWnd);
 
     /*
-     * ´¦Àí²Ëµ¥ÏûÏ¢
+     * å¤„ç†èœå•æ¶ˆæ¯
      */
     switch (ret)
     {
@@ -1071,7 +1071,7 @@ void CMainWnd::RecentListSelect(int nIndex)
 	UINT uCount = 0;
 	if(!m_pRecentListAdapter->Get(nIndex, uId, NULL, &uCount))
 	{
-		ShowErrorBox(_T("»ñÈ¡Ê§°Ü£¡"));
+		ShowErrorBox(_T("è·å–å¤±è´¥ï¼"));
 		return ;
 	}
 
@@ -1079,7 +1079,7 @@ void CMainWnd::RecentListSelect(int nIndex)
 	SStringT sLevel;
 	if(!m_pContactTreeAdapter->GetUserById(uId, sName, sLevel))
 	{
-		ShowErrorBox(_T("Ã»ÓĞ¸ÃÓÃ»§£¡"));
+		ShowErrorBox(_T("æ²¡æœ‰è¯¥ç”¨æˆ·ï¼"));
 		return ;
 	}
 
@@ -1093,18 +1093,18 @@ void CMainWnd::SwitchUserTalkSession(UINT uId, LPCTSTR lpUserAlias, LPCTSTR lpUs
 		m_pLaySession->SetVisible(TRUE, TRUE);
 	}
 	
-		// ÉèÖÃÇĞ»»ºóµÄÃû³Æ
+		// è®¾ç½®åˆ‡æ¢åçš„åç§°
 	m_uCurrentTalkUserId = uId;
 	m_pSessionTitle->SetWindowText(lpUserAlias);
 	m_pSessionLevel->SetWindowText(lpUserLevel);
 	
-	// ÏÈÇå¿Õµ±Ç°µÄ ÎÄ±¾¿òÄÚÈİ
+	// å…ˆæ¸…ç©ºå½“å‰çš„ æ–‡æœ¬æ¡†å†…å®¹
 	m_pChatRecord->Clear();
 	m_pChatInput->Clear();
 
 	AddChatMsg(eChT_More, 0, NULL);
 
-	// ¼ÓÔØµ±Ç°»á»°id Ö®Ç°µÄÀúÊ·ÏûÏ¢
+	// åŠ è½½å½“å‰ä¼šè¯id ä¹‹å‰çš„å†å²æ¶ˆæ¯
 	const ChatRecordList* pRecordList = theCache.GetChatRecordList(m_uCurrentTalkUserId);
 	if(NULL != pRecordList)
 	{
@@ -1114,7 +1114,7 @@ void CMainWnd::SwitchUserTalkSession(UINT uId, LPCTSTR lpUserAlias, LPCTSTR lpUs
 		}
 	}
 	
-	// ¼ÓÔØ ÕıÔÚ·¢ËÍ µÄ ÏûÏ¢
+	// åŠ è½½ æ­£åœ¨å‘é€ çš„ æ¶ˆæ¯
 	const SendingChatList* pSendList = theCache.GetSendingChatList(m_uCurrentTalkUserId);
 	if(NULL != pSendList)
 	{
@@ -1124,7 +1124,7 @@ void CMainWnd::SwitchUserTalkSession(UINT uId, LPCTSTR lpUserAlias, LPCTSTR lpUs
 		}
 	}
 
-	//  ÕâÀïĞèÒªÅĞ¶Ï 
+	//  è¿™é‡Œéœ€è¦åˆ¤æ–­ 
 	//AddChatMsg(eChT_Split, NULL);
 	
 	m_AsynNetTask.AddTask(&CMainWnd::ThreadFun_GetUnreadMsg, this, m_uCurrentTalkUserId);
@@ -1155,7 +1155,7 @@ void CMainWnd::LoadUserPng(LPCTSTR lpSkinName, LPCTSTR lpPngName)
 	if (!ImageProvider::IsExist(lpSkinName))
 	{
 		SAntialiasSkin* pSkin = new SAntialiasSkin();
-		pSkin->SetRoundCorner(12, 12, 12, 12); // Ìí¼ÓÔ²½Ç´¦Àí
+		pSkin->SetRoundCorner(12, 12, 12, 12); // æ·»åŠ åœ†è§’å¤„ç†
 		if (pSkin->LoadFromFile(m_szUserIconPath + lpPngName))
 		{
 			ImageProvider::Insert(lpSkinName, pSkin);
@@ -1179,7 +1179,7 @@ SStringT CMainWnd::GetUserIconSkin(UINT uUserId)
 void CMainWnd::AddStateChatMsg(LPCTSTR lpRichName, LPCTSTR lpContent, EnChatState eState)
 {
 	//LPCWSTR pResendBtn = L"<img path=\"user_icon\\loading_16x16.gif\" name=\"BkEleSendFail\" right-skin=\"loading16\" right-pos=\"{-20,[-25,@16,@16\" cursor=\"hand\" interactive=\"1\"/>";
-	/* ¿¿ÓÒÏÔÊ¾µÄÏûÏ¢ */
+	/* é å³æ˜¾ç¤ºçš„æ¶ˆæ¯ */
 	SStringT szStateSkin;
 	if(eCST_Waiting == eState || eCST_Sending == eState)
 		szStateSkin = RichResendLoadingSkinName;
@@ -1229,7 +1229,7 @@ void CMainWnd::AddChatMsg(EnChatType eType, __int64 lBodyId, LPCTSTR lpMsgBody)
 				lpMsgBody);
 		}
 		break;
-	case eChT_Center:		// Ö±½Ó ÏûÏ¢ ²»ÓÃÆ´½Ó
+	case eChT_Center:		// ç›´æ¥ æ¶ˆæ¯ ä¸ç”¨æ‹¼æ¥
 		{
 			szChatContent.Format(
 			L"<RichEditContent type=\"ContentCenter\" >"
@@ -1327,7 +1327,7 @@ SStringT CMainWnd::ParseContentToIM(const SStringW& sHtml, SStringT* pszBriefInf
 		{
 			value = var.GetAttrubite(_T("src"));
 			int nIndex = value.Find(',');
-			if(-1 == nIndex) // ²»ÊÇbase64 µÄ
+			if(-1 == nIndex) // ä¸æ˜¯base64 çš„
 			{
 				SStringT szHttp(value, 4);
 				if(0 == szHttp.CompareNoCase(_T("http")))
@@ -1348,7 +1348,7 @@ SStringT CMainWnd::ParseContentToIM(const SStringW& sHtml, SStringT* pszBriefInf
 				SStringT szImgBase64 = value.Mid(nIndex+1);
 				SStringT szImgPath = theCache.GetImgCachePath() + NewGuid();
 
-				// ·ÖÎö  html Àï img   data:image/png;base64,
+				// åˆ†æ  html é‡Œ img   data:image/png;base64,
 				SStringTList strList;
 				auto size = SplitString<SStringW,wchar_t>(szImgType, '/', strList);
 				if(2 == size)
@@ -1423,16 +1423,16 @@ void CMainWnd::SharkWindow()
 
 void CMainWnd::NewIMMsgHandle(UINT uSenderId, LPCTSTR lpMsg)
 {
-	// Ö»ÓĞÖ÷´°¿ÚÏÔÊ¾ ºÍ ÏûÏ¢À´×Ô µ±Ç°ÁÄÌì½çÃæ  ²Å»á Ö±½Ó È¥ »ñÈ¡Î´¶Á
+	// åªæœ‰ä¸»çª—å£æ˜¾ç¤º å’Œ æ¶ˆæ¯æ¥è‡ª å½“å‰èŠå¤©ç•Œé¢  æ‰ä¼š ç›´æ¥ å» è·å–æœªè¯»
 	if(IsWindowVisible() && m_uCurrentTalkUserId == uSenderId)
 	{
 		m_AsynNetTask.AddTask(&CMainWnd::ThreadFun_GetUnreadMsg, this, uSenderId);
 		return ;
 	}
 	
-	// Èç¹û ²»ÔÚµ±Ç°µÄÁÄÌì ½çÃæÉÏ »ò ´°¿ÚÓ°²ØÁË  ÄÇ¾Í ½çÃæ Ôö¼Ó Ò»Ìõ Î´¶Á ¾Í¿ÉÒÔÁË
+	// å¦‚æœ ä¸åœ¨å½“å‰çš„èŠå¤© ç•Œé¢ä¸Š æˆ– çª—å£å½±è—äº†  é‚£å°± ç•Œé¢ å¢åŠ  ä¸€æ¡ æœªè¯» å°±å¯ä»¥äº†
 			
-	//ÏÈ²éÑ¯ ÓÃ»§
+	//å…ˆæŸ¥è¯¢ ç”¨æˆ·
 	UINT uCount = 0;
 	SStringT szSenderName;
 	int nIndex = m_pRecentListAdapter->Find(uSenderId, &szSenderName, &uCount);
@@ -1440,9 +1440,9 @@ void CMainWnd::NewIMMsgHandle(UINT uSenderId, LPCTSTR lpMsg)
 	{		
 		NewTalkSession(uSenderId, NULL, lpMsg, 1);
 	}
-	else		// Ö±½Ó¸üĞÂ
+	else		// ç›´æ¥æ›´æ–°
 	{
-		++uCount;			// Î´¶Á¸öÊı ¼Ó 1
+		++uCount;			// æœªè¯»ä¸ªæ•° åŠ  1
 		m_pRecentListAdapter->Update(nIndex, uCount, lpMsg);
 	}
 

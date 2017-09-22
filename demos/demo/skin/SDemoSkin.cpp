@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "sdemoskin.h"
 #include "helper/SDIBHelper.h"
 

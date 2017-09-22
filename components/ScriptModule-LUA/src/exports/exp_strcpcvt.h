@@ -1,4 +1,4 @@
-#include <string/strcpcvt.h>
+﻿#include <string/strcpcvt.h>
 
 BOOL ExpLua_StrCpCvt(lua_State *L)
 {

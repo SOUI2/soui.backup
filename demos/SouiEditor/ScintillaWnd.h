@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <core/simplewnd.h>
 
@@ -45,19 +45,19 @@ public:
 	}
 	void GotoFoundLine();
 
-	bool m_bDirty;		//Ö¸Ê¾ÎÄµµÊÇ·ñÒÑĞŞ¸Ä
+	bool m_bDirty;		//æŒ‡ç¤ºæ–‡æ¡£æ˜¯å¦å·²ä¿®æ”¹
 
 protected:
-	// ÏÔÊ¾ĞĞºÅ
+	// æ˜¾ç¤ºè¡Œå·
 	void UpdateLineNumberWidth(void);
 	void InitScintillaWnd(void);
 	void SetAStyle(int style, COLORREF fore, COLORREF back = RGB(0xff,0xff,0xff), int size = 0, const char* face = NULL);
 	void SetFold();
-	// ÉèÖÃXMLµÄÓï·¨¹æÔò
+	// è®¾ç½®XMLçš„è¯­æ³•è§„åˆ™
 	void SetXmlLexer(COLORREF bkColor);
 
 	void findMatchingBracePos(int & braceAtCaret, int & braceOpposite);
-	bool doMatch(); //Æ¥ÅäÀ¨ºÅ²¢¼ÓÁÁËõ½øÏòµ¼;
+	bool doMatch(); //åŒ¹é…æ‹¬å·å¹¶åŠ äº®ç¼©è¿›å‘å¯¼;
 
 	SStringT GetHtmlTagname();
 	SStringA GetNotePart(int curPos);
