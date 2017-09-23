@@ -1,69 +1,69 @@
-
+ï»¿
 #pragma once
 
 /*
 	CCmdLine cmdLine(GetCommandLine());
 	if (cmdLine.GetParamCount() > 0)
 	{
-		cmdLine.GetParam(0);	//0 ·ÅµÄÊÇ½ø³ÌÂ·¾¶
-		cmdLine.GetParam(1);	//´Ó1¿ªÊ¼²ÅÊÇ²ÎÊý
+		cmdLine.GetParam(0);	//0 æ”¾çš„æ˜¯è¿›ç¨‹è·¯å¾„
+		cmdLine.GetParam(1);	//ä»Ž1å¼€å§‹æ‰æ˜¯å‚æ•°
 	}
 */
 
 class CCmdLine
 {
 private:
-	enum {MAX_PARAM_COUNT = 25};//×î¶à´¦Àí25¸ö²ÎÊý
+	enum {MAX_PARAM_COUNT = 25};//æœ€å¤šå¤„ç†25ä¸ªå‚æ•°
 	LPTSTR m_szStrBuf;
 	int m_nBufSize;
 	LPTSTR m_szParams[MAX_PARAM_COUNT];
 	int m_nParamCount;
-	//¹¤¾ßº¯Êý,·ÖÎöÃüÁîÐÐ
+	//å·¥å…·å‡½æ•°,åˆ†æžå‘½ä»¤è¡Œ
 	void ProcessCmdLine()
 	{
 		if(m_szStrBuf == NULL) return;
 		
-		bool blInQt = false;//ÊÇ·ñÔÚÒ»¶ÔÒýºÅÄÚ,"ÒýºÅÄÚ×´Ì¬"±êÖ¾
-		bool blInParam = false;//ÊÇ·ñÔÚÒ»¸ö²ÎÊýÄÚ
-		//Ñ­»·±éÀúÕâ¸öBuf
+		bool blInQt = false;//æ˜¯å¦åœ¨ä¸€å¯¹å¼•å·å†…,"å¼•å·å†…çŠ¶æ€"æ ‡å¿—
+		bool blInParam = false;//æ˜¯å¦åœ¨ä¸€ä¸ªå‚æ•°å†…
+		//å¾ªçŽ¯éåŽ†è¿™ä¸ªBuf
 		for (LPTSTR p = m_szStrBuf; *p != 0; p++)
 		{
 			switch(*p)
 			{
-			case _T(' '): //---------------------¿Õ¸ñ
+			case _T(' '): //---------------------ç©ºæ ¼
 				{
-					//ºöÂÔÒýºÅ·¶Î§ÄÚµÄ¿Õ¸ñ
+					//å¿½ç•¥å¼•å·èŒƒå›´å†…çš„ç©ºæ ¼
 					if(blInQt) break;
-					if(blInParam)//²ÎÊý½áÊøÁË
+					if(blInParam)//å‚æ•°ç»“æŸäº†
 					{
 						*p = _T('\0');
 						blInParam = false;
 					}
 					break;
 				}
-			case _T('\"'): //---------------------ÒýºÅ
+			case _T('\"'): //---------------------å¼•å·
 				{
-					//·­×ª"ÒýºÅÄÚ×´Ì¬"±êÖ¾
+					//ç¿»è½¬"å¼•å·å†…çŠ¶æ€"æ ‡å¿—
 					blInQt = !blInQt;
-					if(blInParam)//²ÎÊý½áÊøÁË
+					if(blInParam)//å‚æ•°ç»“æŸäº†
 					{
 						*p = _T('\0');
 						blInParam = false;
 					}
-					else  //Ò»¸ö²ÎÊý¿ªÊ¼ÁË
+					else  //ä¸€ä¸ªå‚æ•°å¼€å§‹äº†
 					{
-						//Ò»¸ö²ÎÊý¿ªÊ¼ÁË
+						//ä¸€ä¸ªå‚æ•°å¼€å§‹äº†
 						blInParam = true;
 						if(m_nParamCount >= MAX_PARAM_COUNT || _T('\0') == *(p + 1)) return;
 						m_szParams[m_nParamCount++] = ++p;
 					}
 					break;
 				}
-			default:  //---------------------ÆäËû×Ö·û
+			default:  //---------------------å…¶ä»–å­—ç¬¦
 				{
 					if(!blInParam)
 					{
-						//Ò»¸ö²ÎÊý¿ªÊ¼ÁË
+						//ä¸€ä¸ªå‚æ•°å¼€å§‹äº†
 						blInParam = true;
 						if(m_nParamCount >= MAX_PARAM_COUNT) return;
 						m_szParams[m_nParamCount++] = p;
@@ -74,32 +74,32 @@ private:
 		}
 	}
 public:
-	//¹¹Ôìº¯Êý
+	//æž„é€ å‡½æ•°
 	CCmdLine(LPCTSTR szCmdLine)
 		:m_szStrBuf(NULL)
 		,m_nBufSize(0)
 		,m_nParamCount(0)
 	{
-		//³õÊ¼»¯Ö¸ÕëÊý×é
+		//åˆå§‹åŒ–æŒ‡é’ˆæ•°ç»„
 		memset(m_szParams, 0, MAX_PARAM_COUNT * sizeof(TCHAR));
 		int m_nBufSize = lstrlen(szCmdLine) + 1;
-		//·ÖÅäÄÚ´æ,±£´æÍ¨¹ý²ÎÊý´«µÝ½üÀ´µÄ×Ö·û´®
+		//åˆ†é…å†…å­˜,ä¿å­˜é€šè¿‡å‚æ•°ä¼ é€’è¿‘æ¥çš„å­—ç¬¦ä¸²
 		if(m_nBufSize > 1) m_szStrBuf = new TCHAR[m_nBufSize];
 		lstrcpyn(m_szStrBuf, szCmdLine, m_nBufSize);
-		m_szStrBuf[m_nBufSize - 1] = 0;//±£Ö¤ÎÄ±¾Õý³£½áÊø
-		//·ÖÎöÃüÁîÐÐ
+		m_szStrBuf[m_nBufSize - 1] = 0;//ä¿è¯æ–‡æœ¬æ­£å¸¸ç»“æŸ
+		//åˆ†æžå‘½ä»¤è¡Œ
 		ProcessCmdLine();
 	}
 	~CCmdLine()
 	{
 		delete[] m_szStrBuf;
 	}
-	//È¡µÃÃüÁîÐÐµÄ²ÎÊý¸öÊý
+	//å–å¾—å‘½ä»¤è¡Œçš„å‚æ•°ä¸ªæ•°
 	int GetParamCount(void) const
 	{
 		return m_nParamCount;
 	}
-	//È¡µÃÄ³¸öÃüÁîÐÐ²ÎÊý
+	//å–å¾—æŸä¸ªå‘½ä»¤è¡Œå‚æ•°
 	LPCTSTR GetParam(int nIndex)
 	{
 		if(nIndex >= MAX_PARAM_COUNT) return NULL;

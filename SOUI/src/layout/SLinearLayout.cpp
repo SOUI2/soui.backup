@@ -1,4 +1,4 @@
-#include "souistd.h"
+ï»¿#include "souistd.h"
 #include "layout\SLinearLayout.h"
 #include "helper\SplitString.h"
 #include <algorithm>
@@ -393,9 +393,9 @@ namespace SOUI
 			{
                 int nWid = szChild.cx, nHei = szChild.cy;
                 if(nWid == SIZE_WRAP_CONTENT)
-                    nWid = nWidth * pParentLayoutParam->IsWrapContent(Horz)?-1:1; //°Ñ¸¸´°¿ÚµÄWrapContentÊôÐÔÍ¨¹ý-1±êÖ¾´«µÝ¸øGetDesiredSize
+                    nWid = nWidth * pParentLayoutParam->IsWrapContent(Horz)?-1:1; //æŠŠçˆ¶çª—å£çš„WrapContentå±žæ€§é€šè¿‡-1æ ‡å¿—ä¼ é€’ç»™GetDesiredSize
                 if(nHei == SIZE_WRAP_CONTENT)
-                    nHei = nHeight * pParentLayoutParam->IsWrapContent(Vert)?-1:1;//°Ñ¸¸´°¿ÚµÄWrapContentÊôÐÔÍ¨¹ý-1±êÖ¾´«µÝ¸øGetDesiredSize
+                    nHei = nHeight * pParentLayoutParam->IsWrapContent(Vert)?-1:1;//æŠŠçˆ¶çª—å£çš„WrapContentå±žæ€§é€šè¿‡-1æ ‡å¿—ä¼ é€’ç»™GetDesiredSize
 
 				CSize szCalc = pChild->GetDesiredSize(nWid,nHei);
 				if(szChild.cx == SIZE_WRAP_CONTENT) 

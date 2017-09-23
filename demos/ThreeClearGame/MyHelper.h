@@ -1,22 +1,22 @@
-/*******************************************************************   
- *  ÎÄ¼şÃû³Æ: ThreeClearHelper.h
- *  ¼òÒªÃèÊö: ÓÃÀ´½«Ò»Ğ©³£ÓÃµÄ°ïÖúº¯Êı·Åµ½ÕâÀï
+ï»¿/*******************************************************************   
+ *  æ–‡ä»¶åç§°: ThreeClearHelper.h
+ *  ç®€è¦æè¿°: ç”¨æ¥å°†ä¸€äº›å¸¸ç”¨çš„å¸®åŠ©å‡½æ•°æ”¾åˆ°è¿™é‡Œ
  *   
- *  ´´½¨ÈÕÆÚ: 2017-9-18
- *  ×÷¡¡¡¡Õß: ÍõÓ¨
- *  Ëµ¡¡¡¡Ã÷: ´ËÀàµÄÊµÏÖ½«×÷ÎªÒ»¸öµ¥ÀıÄ£Ê½½øĞĞ
+ *  åˆ›å»ºæ—¥æœŸ: 2017-9-18
+ *  ä½œã€€ã€€è€…: ç‹è¹
+ *  è¯´ã€€ã€€æ˜: æ­¤ç±»çš„å®ç°å°†ä½œä¸ºä¸€ä¸ªå•ä¾‹æ¨¡å¼è¿›è¡Œ
  *   
- *  ĞŞ¸ÄÈÕÆÚ: 
- *  ×÷¡¡¡¡Õß: 
- *  Ëµ¡¡¡¡Ã÷: 
+ *  ä¿®æ”¹æ—¥æœŸ: 
+ *  ä½œã€€ã€€è€…: 
+ *  è¯´ã€€ã€€æ˜: 
  ******************************************************************/  
 #pragma once
 
 
 //////////////////////////////////////////////////////////////////////////
-// Êı¾İ½á¹¹¶¨Òå
+// æ•°æ®ç»“æ„å®šä¹‰
 
-// Ò»¸ö¸ñ×ÓµÄÒ»ÖÖ×´Ì¬
+// ä¸€ä¸ªæ ¼å­çš„ä¸€ç§çŠ¶æ€
 enum GridStatus {
 	Grid_None = 0,
 	Grid_Star = 1,
@@ -26,7 +26,7 @@ enum GridStatus {
 	Grid_Delete = 5
 };
 
-// Ò»¸ö×ø±êµã
+// ä¸€ä¸ªåæ ‡ç‚¹
 struct PosPoint
 {
 	PosPoint() : row(0), col(0) {}
@@ -35,11 +35,11 @@ struct PosPoint
 		row = row, col = col; 
 		return PosPoint(row, col);
 	}
-	// ÒªÏëÊ¹ÓÃ std::set::insert ÕıÈ·±È½Ï±ØĞëÖØÔØ operator== ²Ù×÷·û
+	// è¦æƒ³ä½¿ç”¨ std::set::insert æ­£ç¡®æ¯”è¾ƒå¿…é¡»é‡è½½ operator== æ“ä½œç¬¦
 	bool operator==(const PosPoint& r) const {
 		return row == r.row && col == r.col;
 	}
-	// ÒªÏëÊ¹ÓÃ std::set ±ØĞëÖØÔØ operator< ²Ù×÷·û
+	// è¦æƒ³ä½¿ç”¨ std::set å¿…é¡»é‡è½½ operator< æ“ä½œç¬¦
 	bool operator<(const PosPoint& r) const {
 		return (row + col) < (r.row + r.col);
 	}
@@ -47,7 +47,7 @@ struct PosPoint
 	int col;
 };
 
-// Ò»¸ö¸ñ×Ó
+// ä¸€ä¸ªæ ¼å­
 struct Grid {
 	Grid() : point(0, 0), status(Grid_None) {}
 	Grid(int row, int col, GridStatus status = Grid_None) : 
@@ -57,24 +57,24 @@ struct Grid {
 };
 
 //////////////////////////////////////////////////////////////////////////
-// ÊÂ¼ş
+// äº‹ä»¶
 
-// Ïû³ıÊÂ¼ş
+// æ¶ˆé™¤äº‹ä»¶
 class ChangeEvent {
 public:
-	// ³¢ÊÔÏû³ı
+	// å°è¯•æ¶ˆé™¤
 	virtual bool Change(PosPoint pre, PosPoint cur) = 0;
 };
 
-// Ë¢ĞÂÍø¸ñÊÂ¼ş
+// åˆ·æ–°ç½‘æ ¼äº‹ä»¶
 class RefreshEvent {
 public:
-	// ÖØĞÂË¢ĞÂÍø¸ñ
+	// é‡æ–°åˆ·æ–°ç½‘æ ¼
 	virtual void RefreshNet(std::vector<std::vector<Grid>> vecNet) = 0;
 };
 
 //////////////////////////////////////////////////////////////////////////
-// µ¥Àı°ïÖúÀà
+// å•ä¾‹å¸®åŠ©ç±»
 
 class MyHelper
 {
@@ -85,16 +85,16 @@ public:
 	static MyHelper* Instance();
 	virtual ~MyHelper();
 
-	// ³õÊ¼»¯´°¿ÚĞÅÏ¢
+	// åˆå§‹åŒ–çª—å£ä¿¡æ¯
 	void InitWindow(SOUI::SWindow* pWindow);
 
 public:
-	// »ñÈ¡Ëæ»úÊı
-	// modular  Ëæ»úÊı·¢ÉúÆ÷·¶Î§£¬0¿ªÊ¼
-	// excepts  ÔÚËæ»úÊı·¢ÉúÆ÷·¶Î§ÄÚµÄ²»¼ÆÈëËæ»úÔËËãµÄÊı×Ö
+	// è·å–éšæœºæ•°
+	// modular  éšæœºæ•°å‘ç”Ÿå™¨èŒƒå›´ï¼Œ0å¼€å§‹
+	// excepts  åœ¨éšæœºæ•°å‘ç”Ÿå™¨èŒƒå›´å†…çš„ä¸è®¡å…¥éšæœºè¿ç®—çš„æ•°å­—
 	int Random(int modular, std::vector<int> excepts = std::vector<int>());
 
-	// Ğ´ÈëÈÕÖ¾
+	// å†™å…¥æ—¥å¿—
 	void WriteLog(SOUI::SStringW strMsg);
 
 private:

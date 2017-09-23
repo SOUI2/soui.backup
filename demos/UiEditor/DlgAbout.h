@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "core/shostwnd.h"
 #include "core/smsgloop.h"
 #include "core/SHostDialog.h"

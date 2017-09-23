@@ -1,4 +1,4 @@
-#include "stdafx.h"
+Ôªø#include "stdafx.h"
 #include "SProfilePicture.h"
 #include <helper/SDIBHelper.h>
 
@@ -276,10 +276,10 @@ namespace SOUI
 
             CPoint point[4] =
             {
-                CPoint(m_BeginPoint.x, m_BeginPoint.y),	//◊Û…œ
-                CPoint(m_EndPoint.x, m_BeginPoint.y),	//”“…œ
-                CPoint(m_BeginPoint.x, m_EndPoint.y),   //◊Ûœ¬
-                CPoint(m_EndPoint.x, m_EndPoint.y ),		//”“œ¬
+                CPoint(m_BeginPoint.x, m_BeginPoint.y),	//Â∑¶‰∏ä
+                CPoint(m_EndPoint.x, m_BeginPoint.y),	//Âè≥‰∏ä
+                CPoint(m_BeginPoint.x, m_EndPoint.y),   //Â∑¶‰∏ã
+                CPoint(m_EndPoint.x, m_EndPoint.y ),		//Âè≥‰∏ã
             };
             CPoint line1[2] = { point[0], point[1] };
             CPoint line2[2] = { point[0], point[2] };

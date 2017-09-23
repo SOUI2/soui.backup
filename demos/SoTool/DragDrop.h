@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <shellapi.h>
 #include "export_table_adapter.h"
 class CTestDropTarget :public IDropTarget
@@ -115,7 +115,7 @@ public:
 		if (success)
 		{
 			HANDLE hFile = CreateFile(
-				filename, //PEÎÄ¼şÃû
+				filename, //PEæ–‡ä»¶å
 				GENERIC_READ,
 				FILE_SHARE_READ,
 				NULL,

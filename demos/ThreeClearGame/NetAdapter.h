@@ -1,14 +1,14 @@
-/*******************************************************************   
- *  ÎÄ¼şÃû³Æ: NetAdatper.h
- *  ¼òÒªÃèÊö: ÊµÏÖ½çÃæ¸ñ×ÓÄÚÈİÊÊÅäÏÔÊ¾
+ï»¿/*******************************************************************   
+ *  æ–‡ä»¶åç§°: NetAdatper.h
+ *  ç®€è¦æè¿°: å®ç°ç•Œé¢æ ¼å­å†…å®¹é€‚é…æ˜¾ç¤º
  *   
- *  ´´½¨ÈÕÆÚ: 2017-9-18
- *  ×÷¡¡¡¡Õß: ÍõÓ¨
- *  Ëµ¡¡¡¡Ã÷: 
+ *  åˆ›å»ºæ—¥æœŸ: 2017-9-18
+ *  ä½œã€€ã€€è€…: ç‹è¹
+ *  è¯´ã€€ã€€æ˜: 
  *   
- *  ĞŞ¸ÄÈÕÆÚ: 
- *  ×÷¡¡¡¡Õß: 
- *  Ëµ¡¡¡¡Ã÷: 
+ *  ä¿®æ”¹æ—¥æœŸ: 
+ *  ä½œã€€ã€€è€…: 
+ *  è¯´ã€€ã€€æ˜: 
  ******************************************************************/  
 #pragma once
 #include "MyHelper.h"
@@ -19,33 +19,33 @@ public:
 	CNetAdapter(std::vector<std::vector<Grid>> vecNet);
 	virtual ~CNetAdapter();
 
-	// ¸üĞÂÏÔÊ¾
+	// æ›´æ–°æ˜¾ç¤º
 	void UpdateNet(std::vector<std::vector<Grid>> vecNet);
 
-	// ÉèÖÃÍø¸ñÊÂ¼ş
+	// è®¾ç½®ç½‘æ ¼äº‹ä»¶
 	void SetEvent(ChangeEvent* pEvent);
 	
-	// ÔªËØ¸öÊı
+	// å…ƒç´ ä¸ªæ•°
 	int getCount() override;
 
-	// ÉèÖÃ½çÃæÑùÊ½
+	// è®¾ç½®ç•Œé¢æ ·å¼
 	void getView(int position, SWindow * pItem, 
 		pugi::xml_node xmlTemplate) override;
 
-	// °´Å¥µã»÷
+	// æŒ‰é’®ç‚¹å‡»
 	bool OnButtonClick(EventArgs* pEvt);
 
 protected:
-	// ½« tileview µÄ position ×ª»¯Îª Grid ×ø±ê
+	// å°† tileview çš„ position è½¬åŒ–ä¸º Grid åæ ‡
 	PosPoint covertPostion2Grid(int position);
 
 private:
-	// Íø¸ñ
+	// ç½‘æ ¼
 	std::vector<std::vector<Grid>> m_vecNet;
-	// ÊÂ¼ş
+	// äº‹ä»¶
 	ChangeEvent* m_event;
-	// Ñ¡ÖĞ¼ÆÊı
+	// é€‰ä¸­è®¡æ•°
 	INT m_nClickCount;
-	// ÉÏÒ»¸öµã
+	// ä¸Šä¸€ä¸ªç‚¹
 	PosPoint m_preGrid;
 };

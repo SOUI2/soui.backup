@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "SkinMgr.h"
 #include "WinBox.h"
 #include "helper/SMenu.h"
@@ -43,74 +43,74 @@ public:
 
 	BOOL OnInitDialog(HWND wndFocus, LPARAM lInitParam);
 
-	//°´Å¥¿Ø¼şµÄÏìÓ¦
-	void OnBtnIcon();				//×óÉÏ½Çicon°´Å¥
-	void OnBtnFeedback();			//Òâ¼û·´À¡
-	void OnBtnSkins();				//»»·ô°´Å¥	
-	void OnBtnBgOpen();				//²¥·ÅÇøÓò´ò¿ªÎÄ¼ş
-	void OnBtnBgOpenMenu();			//²¥·ÅÇøÓò´ò¿ª²Ëµ¥
-	void OnBtnTools();				//¹¤¾ßÏä
-	void OnBtnLEye();				//×óÑÛ
-	void OnBtnLEyed();				//¹Ø±Õ×óÑÛ
-	void OnBtnStop();				//Í£Ö¹
-	void OnBtnPageUp();				//ÉÏÒ»¸ö
-	void OnBtnPlay();				//²¥·Å
-	void OnBtnPause();				//ÔİÍ£
-	void OnBtnPageDown();			//ÏÂÒ»¸ö
-	void OnBtnOpen();				//´ò¿ªÎÄ¼ş
-	void OnBtnVolume();				//¾²Òô
-	void OnBtnVolumeQuit();				//¾²Òô
-	void OnBtnFullscreen();			//È«ÆÁ
-	void OnBtnQuitFullscreen();		//¹Ø±ÕÈ«ÆÁ
-	void OnBtnListShow();			//ÏÔÊ¾²¥·ÅÁĞ±í
-	void OnBtnListShowed();			//Òş²Ø²¥·ÅÁĞ±í
-	void OnBtnBox();				//´ò¿ª±©·çºĞ×Ó
-	void OnBtnBoxHide();				//¹Ø±Õ±©·çºĞ×Ó
+	//æŒ‰é’®æ§ä»¶çš„å“åº”
+	void OnBtnIcon();				//å·¦ä¸Šè§’iconæŒ‰é’®
+	void OnBtnFeedback();			//æ„è§åé¦ˆ
+	void OnBtnSkins();				//æ¢è‚¤æŒ‰é’®	
+	void OnBtnBgOpen();				//æ’­æ”¾åŒºåŸŸæ‰“å¼€æ–‡ä»¶
+	void OnBtnBgOpenMenu();			//æ’­æ”¾åŒºåŸŸæ‰“å¼€èœå•
+	void OnBtnTools();				//å·¥å…·ç®±
+	void OnBtnLEye();				//å·¦çœ¼
+	void OnBtnLEyed();				//å…³é—­å·¦çœ¼
+	void OnBtnStop();				//åœæ­¢
+	void OnBtnPageUp();				//ä¸Šä¸€ä¸ª
+	void OnBtnPlay();				//æ’­æ”¾
+	void OnBtnPause();				//æš‚åœ
+	void OnBtnPageDown();			//ä¸‹ä¸€ä¸ª
+	void OnBtnOpen();				//æ‰“å¼€æ–‡ä»¶
+	void OnBtnVolume();				//é™éŸ³
+	void OnBtnVolumeQuit();				//é™éŸ³
+	void OnBtnFullscreen();			//å…¨å±
+	void OnBtnQuitFullscreen();		//å…³é—­å…¨å±
+	void OnBtnListShow();			//æ˜¾ç¤ºæ’­æ”¾åˆ—è¡¨
+	void OnBtnListShowed();			//éšè—æ’­æ”¾åˆ—è¡¨
+	void OnBtnBox();				//æ‰“å¼€æš´é£ç›’å­
+	void OnBtnBoxHide();				//å…³é—­æš´é£ç›’å­
 
-	void OnBtnToolsWinClose();		//¹¤¾ßÏä´°¿ÚµÄ¹Ø±Õ°´Å¥
-	void OnBtnToolsWinPrev();		//ÉÏÒ»¸ö
-	void OnBtnToolsWinNext();		//ÏÂÒ»¸ö
+	void OnBtnToolsWinClose();		//å·¥å…·ç®±çª—å£çš„å…³é—­æŒ‰é’®
+	void OnBtnToolsWinPrev();		//ä¸Šä¸€ä¸ª
+	void OnBtnToolsWinNext();		//ä¸‹ä¸€ä¸ª
 	void OnBtnTool3D();				//3D
-	void OnBtnToolLefteye();		//×óÑÛ
-	void OnBtnToolSurronudsound();	//»·ÈÆÉù
-	void OnBtnToolFlyscreen();		//·ÉÆÁ
-	void OnBtnToolGame();			//ÓÎÏ·
-	void OnBtnToolDownload();		//ÏÂÔØ¹ÜÀí
-	void OnBtnToolTranscode();		//×ªÂë
-	void OnBtnToolMovielib();		//Ó°ÊÓ¿â
-	void OnBtnToolBarrage();		//µ¯Ä»
+	void OnBtnToolLefteye();		//å·¦çœ¼
+	void OnBtnToolSurronudsound();	//ç¯ç»•å£°
+	void OnBtnToolFlyscreen();		//é£å±
+	void OnBtnToolGame();			//æ¸¸æˆ
+	void OnBtnToolDownload();		//ä¸‹è½½ç®¡ç†
+	void OnBtnToolTranscode();		//è½¬ç 
+	void OnBtnToolMovielib();		//å½±è§†åº“
+	void OnBtnToolBarrage();		//å¼¹å¹•
 	void OnBtnToolDlna();			//dlna
-	void OnBtnToolNews();			//×ÊÑ¶
-	void OnBtnToolScreebshots();	//½ØÍ¼
-	void OnBtnToolShoot();			//Á¬ÅÄ
+	void OnBtnToolNews();			//èµ„è®¯
+	void OnBtnToolScreebshots();	//æˆªå›¾
+	void OnBtnToolShoot();			//è¿æ‹
 
-	void OnBtnPage1SortordMenu();	//²¥·ÅÁĞ±íÅÅĞò·½Ê½
-	void OnBtnPage1Sortord();	//²¥·ÅÁĞ±íÅÅĞò·½Ïò£¬ÏòÏÂ»òÏòÉÏ
+	void OnBtnPage1SortordMenu();	//æ’­æ”¾åˆ—è¡¨æ’åºæ–¹å¼
+	void OnBtnPage1Sortord();	//æ’­æ”¾åˆ—è¡¨æ’åºæ–¹å‘ï¼Œå‘ä¸‹æˆ–å‘ä¸Š
 
-	//²¥·ÅÁĞ±ítabÒ³2
-	void OnBtnAll()	;				//¡¾È«²¿¡¿
-	void OnBtnAdd()	;				//¡¾+¡¿
-	void OnBtnDelete()	;			//¡¾-¡¿
-	void OnBtnClear()	;			//Çå¿ÕÁĞ±í°´Å¥
-	void OnBtnOrderPlay();			//Ë³Ğò²¥·Å
-	void OnBtnSinglePlay()	;		//µ¥¸ö²¥·Å
-	void OnBtnRandomPlay()	;		//Ëæ»ú²¥·Å
-	void OnBtnSingleCycle()	;		//µ¥¸öÑ­»·
-	void OnBtnListCycle()	;		//ÁĞ±íÑ­»·
+	//æ’­æ”¾åˆ—è¡¨tabé¡µ2
+	void OnBtnAll()	;				//ã€å…¨éƒ¨ã€‘
+	void OnBtnAdd()	;				//ã€+ã€‘
+	void OnBtnDelete()	;			//ã€-ã€‘
+	void OnBtnClear()	;			//æ¸…ç©ºåˆ—è¡¨æŒ‰é’®
+	void OnBtnOrderPlay();			//é¡ºåºæ’­æ”¾
+	void OnBtnSinglePlay()	;		//å•ä¸ªæ’­æ”¾
+	void OnBtnRandomPlay()	;		//éšæœºæ’­æ”¾
+	void OnBtnSingleCycle()	;		//å•ä¸ªå¾ªç¯
+	void OnBtnListCycle()	;		//åˆ—è¡¨å¾ªç¯
 
-	//DUI²Ëµ¥ÏìÓ¦º¯Êı
+	//DUIèœå•å“åº”å‡½æ•°
 	void OnCommand(UINT uNotifyCode, int nID, HWND wndCtl);
 
-	SMenu menu_sortord;				//tabÒ³1ÖĞÁĞ±íÅÅĞò·½Ê½²Ëµ¥
-	SMenu menu_icon;				//icon°´Å¥µÄµ¯³ö²Ëµ¥
-	SMenu menu_PlayArea;			//²¥·ÅÇøÓò´ò¿ªÎÄ¼ş°´Å¥µÄµ¯³ö²Ëµ¥
-	SMenu menu_PlayMode;			//²¥·ÅÄ£Ê½²Ëµ¥
+	SMenu menu_sortord;				//tabé¡µ1ä¸­åˆ—è¡¨æ’åºæ–¹å¼èœå•
+	SMenu menu_icon;				//iconæŒ‰é’®çš„å¼¹å‡ºèœå•
+	SMenu menu_PlayArea;			//æ’­æ”¾åŒºåŸŸæ‰“å¼€æ–‡ä»¶æŒ‰é’®çš„å¼¹å‡ºèœå•
+	SMenu menu_PlayMode;			//æ’­æ”¾æ¨¡å¼èœå•
 
-	int up_or_down;					//ÅÅĞò·½Ê½ÏòÉÏ»òÏòÏÂ
-	BOOL popularity_up_or_down;		//ÅÅĞò·½Ê½Îª¡°¹ÛÖÚ¡±Ê±£¬ÏòÉÏ»òÏòÏÂ
+	int up_or_down;					//æ’åºæ–¹å¼å‘ä¸Šæˆ–å‘ä¸‹
+	BOOL popularity_up_or_down;		//æ’åºæ–¹å¼ä¸ºâ€œè§‚ä¼—â€æ—¶ï¼Œå‘ä¸Šæˆ–å‘ä¸‹
 
 protected:
-	//°´Å¥ÊÂ¼ş´¦ÀíÓ³Éä±í
+	//æŒ‰é’®äº‹ä»¶å¤„ç†æ˜ å°„è¡¨
 	EVENT_MAP_BEGIN()
 		EVENT_NAME_COMMAND(L"btn_close",OnClose)
 		EVENT_NAME_COMMAND(L"btn_min",OnMinimize)
@@ -171,17 +171,17 @@ protected:
 		EVENT_NAME_COMMAND(L"btn_ListCycle",OnBtnListCycle)
 		EVENT_MAP_END()    
 
-		//´°¿ÚÏûÏ¢´¦ÀíÓ³Éä±í
+		//çª—å£æ¶ˆæ¯å¤„ç†æ˜ å°„è¡¨
 		BEGIN_MSG_MAP_EX(CMainWnd)
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_COMMAND(OnCommand)
-		CHAIN_MSG_MAP(SHostWnd)//×¢Òâ½«Ã»ÓĞ´¦ÀíµÄÏûÏ¢½»¸ø»ùÀà´¦Àí
+		CHAIN_MSG_MAP(SHostWnd)//æ³¨æ„å°†æ²¡æœ‰å¤„ç†çš„æ¶ˆæ¯äº¤ç»™åŸºç±»å¤„ç†
 		REFLECT_NOTIFICATIONS_EX()
 		END_MSG_MAP()
 private:
 	BOOL            m_bLayoutInited;
-	CSkinMgr		m_dlgSkinMgr;		//Æ¤·ô¹ÜÀí´°¿Ú
-	CWinBox			m_winBox;				//±©·çºĞ×Ó
+	CSkinMgr		m_dlgSkinMgr;		//çš®è‚¤ç®¡ç†çª—å£
+	CWinBox			m_winBox;				//æš´é£ç›’å­
 };

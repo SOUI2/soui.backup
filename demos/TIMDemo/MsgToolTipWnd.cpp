@@ -1,8 +1,8 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "MsgToolTipWnd.h"
 
 CMsgToolTipWnd::CMsgToolTipWnd(std::function<void(UINT)> fun)
-	: SHostWnd(_T("layout:wnd_msgtooltip"))//ÕâÀï¶¨ÒåÖ÷½çÃæÐèÒªÊ¹ÓÃµÄ²¼¾ÖÎÄ¼þ ÔÚuires.idxÎÄ¼þÖÐ¶¨ÒåµÄ
+	: SHostWnd(_T("layout:wnd_msgtooltip"))//è¿™é‡Œå®šä¹‰ä¸»ç•Œé¢éœ€è¦ä½¿ç”¨çš„å¸ƒå±€æ–‡ä»¶ åœ¨uires.idxæ–‡ä»¶ä¸­å®šä¹‰çš„
 	, m_funClick(fun)
 	, m_uSenderId(0)
 	, m_uTotalCount(0)
@@ -96,8 +96,8 @@ void CMsgToolTipWnd::AddUnreadMsg(UINT uUserId, LPCTSTR lpUserAlias, LPCTSTR lpC
 	m_pTextSender->SetWindowText(lpUserAlias);
 	m_pTextSendMsg->SetWindowText(lpContent);
 	
-	m_uTotalCount += uCount;							// ×ÜÊý +
-	m_mapSenderCount[uUserId] += uCount;			// ¸ÃÓÃ»§ +
+	m_uTotalCount += uCount;							// æ€»æ•° +
+	m_mapSenderCount[uUserId] += uCount;			// è¯¥ç”¨æˆ· +
 
 	UINT uHadCount = m_mapSenderCount[uUserId];
 	

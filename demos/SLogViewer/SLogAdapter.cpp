@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "SLogAdapter.h"
 #include "SColorizeText.h"
 
@@ -74,7 +74,7 @@ namespace SOUI
 		if(!m_logParser->ParseLine(pszLine,&pLogInfo))
 		{
 			if(!m_lstLogs.IsEmpty())
-			{//½«²»Âú×ãÒ»¸öLOG¸ñÊ½»¯µÄÐÐ¼ÓÈëÉÏÒ»¸öLOGÐÐÖÐ¡£
+			{//å°†ä¸æ»¡è¶³ä¸€ä¸ªLOGæ ¼å¼åŒ–çš„è¡ŒåŠ å…¥ä¸Šä¸€ä¸ªLOGè¡Œä¸­ã€‚
 				pLogInfo = m_lstLogs.GetAt(m_lstLogs.GetCount()-1);
 				pLogInfo->strContent += SStringW(L"\\n")+pszLine;
 			}
@@ -115,7 +115,7 @@ namespace SOUI
 			if(!pNextLine) break;
 			pLine = pNextLine+1;
 		}
-		if(wcslen(pLine)==0) //´¦Àí×îºóÒ»ÐÐÊÇ¿ÕÐÐµÄÎÊÌâ.
+		if(wcslen(pLine)==0) //å¤„ç†æœ€åŽä¸€è¡Œæ˜¯ç©ºè¡Œçš„é—®é¢˜.
 			nLines--;
 		m_nLineCount = nLines;
 	}
@@ -259,7 +259,7 @@ namespace SOUI
 				return FALSE;
 			}
 
-			//Ä¿Ç°Ö»Ö§³Ö¶à×Ö½ÚµÄlog
+			//ç›®å‰åªæ”¯æŒå¤šå­—èŠ‚çš„log
 			int uniLen = MultiByteToWideChar(pMatchParser->GetCodePage(),0,pBuf,len,NULL,0);
 			WCHAR* pUniBuf = (WCHAR*) malloc((uniLen+1)*sizeof(WCHAR));
 			MultiByteToWideChar(pMatchParser->GetCodePage(),0,pBuf,len,pUniBuf,uniLen);
@@ -286,7 +286,7 @@ namespace SOUI
 
 
 			if(m_lstLogs.IsEmpty())
-			{//Ô­ÓÐLOGÎª¿Õ
+			{//åŽŸæœ‰LOGä¸ºç©º
 				*(SLogBuffer*)this = logBuffer;
 				m_pScilexer->SendMessage(SCI_SETTEXT,0,(LPARAM)(LPCSTR)bufUtf8);
 			}else
@@ -294,7 +294,7 @@ namespace SOUI
 				SLogInfo *pLine1 = m_lstLogs[0];
 				SLogInfo *pLine2 = logBuffer.m_lstLogs[0];
 				if(pLine1->time<pLine2->time)
-				{//Ô­ÓÐlogµÄÊ±¼ä´óÓÚÐÂLOGµÄÊ±¼ä£¬Ô­log¼Ó(append)µ½ÐÂlogºó
+				{//åŽŸæœ‰logçš„æ—¶é—´å¤§äºŽæ–°LOGçš„æ—¶é—´ï¼ŒåŽŸlogåŠ (append)åˆ°æ–°logåŽ
 					Append(logBuffer);
 					m_pScilexer->SendMessage(SCI_APPENDTEXT,bufUtf8.GetLength(),(LPARAM)(LPCSTR)bufUtf8);
 				}else

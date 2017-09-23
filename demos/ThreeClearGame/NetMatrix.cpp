@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "NetMatrix.h"
 #include "MyHelper.h"
 
@@ -20,19 +20,19 @@ NetMatrix::~NetMatrix()
 	m_vecNet.clear();
 }
 
-// »ñÈ¡ÄÚ²¿Êı¾İ½á¹¹
+// è·å–å†…éƒ¨æ•°æ®ç»“æ„
 std::vector<std::vector<Grid>> NetMatrix::GetNet()
 {
 	return m_vecNet;
 }
 
-// ÉèÖÃÊı¾İ½á¹¹
+// è®¾ç½®æ•°æ®ç»“æ„
 void NetMatrix::SetNet(std::vector<std::vector<Grid>> vecNet)
 {
 	m_vecNet = vecNet;
 }
 
-// ³õÊ¼»¯Ëæ»úÕóÁĞ
+// åˆå§‹åŒ–éšæœºé˜µåˆ—
 void NetMatrix::Init()
 {
 	m_nScore = 0;
@@ -40,27 +40,27 @@ void NetMatrix::Init()
 	while (!ValidNet(m_vecNet)) RandomNet(m_vecNet);
 }
 
-// ³¢ÊÔÏû³ı
+// å°è¯•æ¶ˆé™¤
 bool NetMatrix::Change(PosPoint pre, PosPoint cur)
 {
-	// ÁÙÊ±»º´æ´¦ÀíÄÚÈİ
+	// ä¸´æ—¶ç¼“å­˜å¤„ç†å†…å®¹
 	std::vector<std::vector<Grid>> vecNet = m_vecNet;
-	// Èç¹ûÕâÁ½¸öµãÖĞÓĞÒ»¸öµãÊÇÉ¾³ı×´Ì¬£¬Ö±½Ó·µ»Ø²»´¦Àí
+	// å¦‚æœè¿™ä¸¤ä¸ªç‚¹ä¸­æœ‰ä¸€ä¸ªç‚¹æ˜¯åˆ é™¤çŠ¶æ€ï¼Œç›´æ¥è¿”å›ä¸å¤„ç†
 	if (vecNet[pre.row][pre.col].status == Grid_Delete ||
 		vecNet[cur.row][cur.col].status == Grid_Delete) {
-		MyHelper::Instance()->WriteLog(L"É¾³ı°´Å¥²»ÄÜÏû³ı");
+		MyHelper::Instance()->WriteLog(L"åˆ é™¤æŒ‰é’®ä¸èƒ½æ¶ˆé™¤");
 		return false;
 	}
-	// ½»»»ÕâÁ½¸öµã
+	// äº¤æ¢è¿™ä¸¤ä¸ªç‚¹
 	std::swap(vecNet[pre.row][pre.col], vecNet[cur.row][cur.col]);
-	// ¼ì²éÊÇ·ñÄÜ¹»ÏûÈ¥
+	// æ£€æŸ¥æ˜¯å¦èƒ½å¤Ÿæ¶ˆå»
 	if (!ValidNet(vecNet)) 
-		MyHelper::Instance()->WriteLog(L"Ïû³ı³É¹¦!");
+		MyHelper::Instance()->WriteLog(L"æ¶ˆé™¤æˆåŠŸ!");
 	else {
-		MyHelper::Instance()->WriteLog(L"Ïû³ıÊ§°Ü!");
+		MyHelper::Instance()->WriteLog(L"æ¶ˆé™¤å¤±è´¥!");
 		return false;
 	}
-	// Ïû³ı³É¹¦£¬Êä³öÏû³ıĞÅÏ¢£ºÁ½¸öµã¶¼ĞèÒª½øĞĞ²éÑ¯
+	// æ¶ˆé™¤æˆåŠŸï¼Œè¾“å‡ºæ¶ˆé™¤ä¿¡æ¯ï¼šä¸¤ä¸ªç‚¹éƒ½éœ€è¦è¿›è¡ŒæŸ¥è¯¢
 	std::vector<PosPoint> prePoints = GetCancelPoints(pre, vecNet);
 	std::vector<PosPoint> curPoints = GetCancelPoints(cur, vecNet);
 	SOUI::SStringW strPoint, strPointsMsg, strCancelMsg;
@@ -68,11 +68,11 @@ bool NetMatrix::Change(PosPoint pre, PosPoint cur)
 		strPointsMsg += strPoint.Format(L"(%d, %d) ", it->row, it->col);
 	for (std::vector<PosPoint>::iterator it = curPoints.begin(); it != curPoints.end(); ++it)
 		strPointsMsg += strPoint.Format(L"(%d, %d) ", it->row, it->col);
-	strCancelMsg.Format(L"Ïû³ıÁËÒÔÏÂµã£º%s", strPointsMsg);
+	strCancelMsg.Format(L"æ¶ˆé™¤äº†ä»¥ä¸‹ç‚¹ï¼š%s", strPointsMsg);
 	MyHelper::Instance()->WriteLog(strCancelMsg);
-	// ¼ÆËã·ÖÊı£ºÃ¿Ïû³ıÒ»¸öµÃ 1 ·Ö
+	// è®¡ç®—åˆ†æ•°ï¼šæ¯æ¶ˆé™¤ä¸€ä¸ªå¾— 1 åˆ†
 	m_nScore += (prePoints.size() + curPoints.size());
-	// ÉèÖÃÉ¾³ıµÄµãÎªÉ¾³ıÆ¤·ô
+	// è®¾ç½®åˆ é™¤çš„ç‚¹ä¸ºåˆ é™¤çš®è‚¤
 	for (int i = 0; i < prePoints.size(); ++i) {
 		vecNet[prePoints[i].row][prePoints[i].col].status = Grid_Delete;
 	}
@@ -80,17 +80,17 @@ bool NetMatrix::Change(PosPoint pre, PosPoint cur)
 		vecNet[curPoints[i].row][curPoints[i].col].status = Grid_Delete;
 	}
 	m_vecNet = vecNet;
-	// Ë¢ĞÂ½çÃæ
+	// åˆ·æ–°ç•Œé¢
 	m_event->RefreshNet(m_vecNet);
 	return true;
 }
 
-// ±»¶¯²úÉúÏû³ı£¨ÖØÁ¦½µÂä£©
+// è¢«åŠ¨äº§ç”Ÿæ¶ˆé™¤ï¼ˆé‡åŠ›é™è½ï¼‰
 bool NetMatrix::AutoDelete()
 {
-	// ¼ÇÂ¼ÓĞÁ¬ĞøÇé¿öµÄµã
+	// è®°å½•æœ‰è¿ç»­æƒ…å†µçš„ç‚¹
 	std::vector<PosPoint> points;
-	// ĞĞ¼ì²éÊÇ·ñÓĞÁ¬Ğø 3 ¸ö
+	// è¡Œæ£€æŸ¥æ˜¯å¦æœ‰è¿ç»­ 3 ä¸ª
 	for (int i = 0; i < NET_ROW_NUMBER; ++i) {
 		for (int j = 0; j < NET_COL_NUMBER - 2; ++j) {
 			if (m_vecNet[i][j].status == m_vecNet[i][j + 1].status	   &&
@@ -101,7 +101,7 @@ bool NetMatrix::AutoDelete()
 			}
 		}
 	}
-	// ÁĞ¼ì²éÊÇ·ñÓĞÁ¬Ğø 3 ¸ö
+	// åˆ—æ£€æŸ¥æ˜¯å¦æœ‰è¿ç»­ 3 ä¸ª
 	for (int j = 0; j < NET_COL_NUMBER; ++j) {
 		for (int i = 0; i < NET_ROW_NUMBER - 2; ++i) {
 			if (m_vecNet[i][j].status == m_vecNet[i + 1][j].status	   &&
@@ -112,26 +112,26 @@ bool NetMatrix::AutoDelete()
 			}
 		}
 	}
-	// Èç¹ûÃ»ÓĞÕÒµ½ÕâÑùµÄµã£¬ÔòÖ¤Ã÷Ã»ÓĞ±»¶¯²úÉúÏû³ı
+	// å¦‚æœæ²¡æœ‰æ‰¾åˆ°è¿™æ ·çš„ç‚¹ï¼Œåˆ™è¯æ˜æ²¡æœ‰è¢«åŠ¨äº§ç”Ÿæ¶ˆé™¤
 	if (points.size() == 0) return false;
-	// ¸ù¾İµã»ñÈ¡Ïû³ıµã
+	// æ ¹æ®ç‚¹è·å–æ¶ˆé™¤ç‚¹
 	std::set<PosPoint> cancelPoints;
 	for (int i = 0; i < points.size(); ++i) {
 		std::vector<PosPoint> tempPoints = GetCancelPoints(points[i], m_vecNet);
 		cancelPoints.insert(tempPoints.begin(), tempPoints.end());
 	}
-	// ¼ÆËã·ÖÊı
+	// è®¡ç®—åˆ†æ•°
 	m_nScore += cancelPoints.size();
-	// Êä³ö×Ô¶¯Ïû³ıµãµÄĞÅÏ¢
+	// è¾“å‡ºè‡ªåŠ¨æ¶ˆé™¤ç‚¹çš„ä¿¡æ¯
 	SOUI::SStringW strAutoCancelPoints, strAutoCancelMsg;
 	for (std::set<PosPoint>::iterator it = cancelPoints.begin(); it != cancelPoints.end(); ++it) {
 		SOUI::SStringW strPoint;
 		strPoint.Format(L"(%d, %d)", it->row, it->col);
 		strAutoCancelPoints += strPoint;
 	}
-	strAutoCancelMsg.Format(L"Ö´ĞĞ×Ô¶¯Ïû³ı£º%s", strAutoCancelPoints);
+	strAutoCancelMsg.Format(L"æ‰§è¡Œè‡ªåŠ¨æ¶ˆé™¤ï¼š%s", strAutoCancelPoints);
 	MyHelper::Instance()->WriteLog(strAutoCancelMsg);
-	// ÉèÖÃÒÔÉÏµãÎªÉ¾³ı×´Ì¬
+	// è®¾ç½®ä»¥ä¸Šç‚¹ä¸ºåˆ é™¤çŠ¶æ€
 	for (std::set<PosPoint>::iterator it = cancelPoints.begin(); it != cancelPoints.end(); ++it) {
 		m_vecNet[it->row][it->col].status = Grid_Delete;
 	}
@@ -139,33 +139,33 @@ bool NetMatrix::AutoDelete()
 	return true;
 }
 
-// ÉèÖÃË¢ĞÂÊÂ¼şÖ¸Õë
+// è®¾ç½®åˆ·æ–°äº‹ä»¶æŒ‡é’ˆ
 void NetMatrix::SetEvent(RefreshEvent* event)
 {
 	if (event != NULL) m_event = event;
 }
 
-// »ñÈ¡·ÖÊı
+// è·å–åˆ†æ•°
 int NetMatrix::GetScore()
 {
 	return m_nScore;
 }
 
-// ÖØÁ¦½µÂä
+// é‡åŠ›é™è½
 bool NetMatrix::LandOneGrid()
 {
-	// ±ê¼ÇÊÇ·ñ·¢ÉúÁËÖØÁ¦½µÂä
+	// æ ‡è®°æ˜¯å¦å‘ç”Ÿäº†é‡åŠ›é™è½
 	bool bNeedLand = false;
-	// ±éÀúÃ¿ÁĞ
+	// éå†æ¯åˆ—
 	for (int col = 0; col < NET_COL_NUMBER; ++col) {
-		// ´ÓÏÂ¿ªÊ¼±éÀúÃ¿ĞĞ
+		// ä»ä¸‹å¼€å§‹éå†æ¯è¡Œ
 		for (int row = NET_ROW_NUMBER - 1; row >= 1; --row) {
-			// ÈÃÉ¾³ıµãÃ°ÅİÉÏÈ¥
+			// è®©åˆ é™¤ç‚¹å†’æ³¡ä¸Šå»
 			if (m_vecNet[row][col].status == Grid_Delete   &&
 				m_vecNet[row - 1][col].status != Grid_Delete) {
-				// ±ê¼Ç·¢ÉúÁËÖØÁ¦³Á½µ
+				// æ ‡è®°å‘ç”Ÿäº†é‡åŠ›æ²‰é™
 				bNeedLand = true;
-				// ÒÀ´ÎÅ²¶¯É¾³ıµãÉÏÈ¥
+				// ä¾æ¬¡æŒªåŠ¨åˆ é™¤ç‚¹ä¸Šå»
 				int count = row;
 				do {
 					std::swap(m_vecNet[count][col], m_vecNet[count - 1][col]);
@@ -177,14 +177,14 @@ bool NetMatrix::LandOneGrid()
 	return bNeedLand;
 }
 
-// Ëæ»ú²¹³ä¸ñ×Ó
+// éšæœºè¡¥å……æ ¼å­
 void NetMatrix::AddRandomGrid()
 {
-	// m_vecNet ÒÑ¾­³ÉÎªÁËÒ»¸öÉ¾³ı°´Å¥È«²¿ÔÚÉÏÃæ£¬
-	// Í¼Ïñ°´Å¥È«²¿ÔÚÏÂÃæµÄ¾ØÕóÁË£¬´ËÊ±ĞèÒª×öµÄÊÇ£º
-	// 1. ÔÚÊ×ĞĞËæ»ú²åÈëµã
-	// 2. Ö´ĞĞÒ»´Î³Á½µ
-	// ±éÀúÊ×ĞĞ
+	// m_vecNet å·²ç»æˆä¸ºäº†ä¸€ä¸ªåˆ é™¤æŒ‰é’®å…¨éƒ¨åœ¨ä¸Šé¢ï¼Œ
+	// å›¾åƒæŒ‰é’®å…¨éƒ¨åœ¨ä¸‹é¢çš„çŸ©é˜µäº†ï¼Œæ­¤æ—¶éœ€è¦åšçš„æ˜¯ï¼š
+	// 1. åœ¨é¦–è¡Œéšæœºæ’å…¥ç‚¹
+	// 2. æ‰§è¡Œä¸€æ¬¡æ²‰é™
+	// éå†é¦–è¡Œ
 	for (int col = 0; col < NET_COL_NUMBER; ++col) {
 		if (m_vecNet[0][col].status == Grid_Delete) {
 			int random = MyHelper::Instance()->Random(4);
@@ -200,7 +200,7 @@ void NetMatrix::AddRandomGrid()
 	m_event->RefreshNet(m_vecNet);
 }
 
-// Ëæ»ú²úÉúÒ»¸öÕóÁĞ
+// éšæœºäº§ç”Ÿä¸€ä¸ªé˜µåˆ—
 void NetMatrix::RandomNet(std::vector<std::vector<Grid>>& vecNet)
 {
 	for (int i = 0; i < NET_ROW_NUMBER; ++i) {
@@ -217,10 +217,10 @@ void NetMatrix::RandomNet(std::vector<std::vector<Grid>>& vecNet)
 	}
 }
 
-// ÊÇ·ñºÏ·¨ÕóÁĞ
+// æ˜¯å¦åˆæ³•é˜µåˆ—
 bool NetMatrix::ValidNet(std::vector<std::vector<Grid>> vecNet)
 {
-	// ĞĞ¼ì²éÊÇ·ñÓĞÁ¬Ğø 3 ¸ö
+	// è¡Œæ£€æŸ¥æ˜¯å¦æœ‰è¿ç»­ 3 ä¸ª
 	for (int i = 0; i < NET_ROW_NUMBER; ++i) {
 		for (int j = 0; j < NET_COL_NUMBER - 2; ++j) {
 			if (vecNet[i][j].status == vecNet[i][j + 1].status		&&
@@ -230,7 +230,7 @@ bool NetMatrix::ValidNet(std::vector<std::vector<Grid>> vecNet)
 			}
 		}
 	}
-	// ÁĞ¼ì²éÊÇ·ñÓĞÁ¬Ğø 3 ¸ö
+	// åˆ—æ£€æŸ¥æ˜¯å¦æœ‰è¿ç»­ 3 ä¸ª
 	for (int j = 0; j < NET_COL_NUMBER; ++j) {
 		for (int i = 0; i < NET_ROW_NUMBER - 2; ++i) {
 			if (vecNet[i][j].status == vecNet[i + 1][j].status	   &&
@@ -240,48 +240,48 @@ bool NetMatrix::ValidNet(std::vector<std::vector<Grid>> vecNet)
 			}
 		}
 	}
-	// ¼ì²éÍ¨¹ı
+	// æ£€æŸ¥é€šè¿‡
 	return true;
 }
 
-// ¼ÆËãÏû³ıµã
+// è®¡ç®—æ¶ˆé™¤ç‚¹
 std::vector<PosPoint> NetMatrix::GetCancelPoints(PosPoint point, std::vector<std::vector<Grid>> vecNet)
 {
-	// ÓÉ´ËÆğµã¿ªÊ¼·¢É¢²éÑ¯
+	// ç”±æ­¤èµ·ç‚¹å¼€å§‹å‘æ•£æŸ¥è¯¢
 	std::vector<PosPoint> horizontalPoints, verticalPoints;
 	GridStatus status = vecNet[point.row][point.col].status;
-	// Èç¹û²éÑ¯×´Ì¬ÎªÉ¾³ı×´Ì¬£¬ÔòÖ±½Ó·µ»Ø£¨ÒÑ¾­Ïû³ıÁËµÄµã²»ÄÜÔÙ´ÎÏû³ı£©
+	// å¦‚æœæŸ¥è¯¢çŠ¶æ€ä¸ºåˆ é™¤çŠ¶æ€ï¼Œåˆ™ç›´æ¥è¿”å›ï¼ˆå·²ç»æ¶ˆé™¤äº†çš„ç‚¹ä¸èƒ½å†æ¬¡æ¶ˆé™¤ï¼‰
 	if (status == Grid_Delete) return std::vector<PosPoint>();
-	// Ïò×ó
+	// å‘å·¦
 	for (int left = point.col - 1; left >= 0; --left) {
 		if (vecNet[point.row][left].status == status)
 			horizontalPoints.push_back(PosPoint(point.row, left));
 		else break;
 	}
-	// ÏòÓÒ
+	// å‘å³
 	for (int right = point.col + 1; right < NET_COL_NUMBER; ++right) {
 		if (vecNet[point.row][right].status == status)
 			horizontalPoints.push_back(PosPoint(point.row, right));
 		else break;
 	}
-	// ÏòÉÏ
+	// å‘ä¸Š
 	for (int up = point.row - 1; up >= 0; --up) {
 		if (vecNet[up][point.col].status == status)
 			verticalPoints.push_back(PosPoint(up, point.col));
 		else break;
 	}
-	// ÏòÏÂ
+	// å‘ä¸‹
 	for (int down = point.row + 1; down < NET_ROW_NUMBER; ++down) {
 		if (vecNet[down][point.col].status == status)
 			verticalPoints.push_back(PosPoint(down, point.col));
 		else break;
 	}
-	// ¼ì²é½á¹ûÊÇ·ñºÏÀí
-	// 1. Ë®Æ½»òÊúÖ±·½ÏòÉÏµÄ¸öÊıĞ¡ÓÚµÈÓÚ 2£¬Ôò¸Ã·½ÏòÊıÖµÉáÆú£¨Ö®ËùÒÔÊÇ 2£¬ÊÇÒòÎª
-	// »ù×¼µãÔÚ×îºó¼ÓÉÏ£©
+	// æ£€æŸ¥ç»“æœæ˜¯å¦åˆç†
+	// 1. æ°´å¹³æˆ–ç«–ç›´æ–¹å‘ä¸Šçš„ä¸ªæ•°å°äºç­‰äº 2ï¼Œåˆ™è¯¥æ–¹å‘æ•°å€¼èˆå¼ƒï¼ˆä¹‹æ‰€ä»¥æ˜¯ 2ï¼Œæ˜¯å› ä¸º
+	// åŸºå‡†ç‚¹åœ¨æœ€ååŠ ä¸Šï¼‰
 	if (horizontalPoints.size() < 2) horizontalPoints.clear();
 	if (verticalPoints.size() < 2) verticalPoints.clear();
-	// 2. ½«Á½¸ö¼¯ºÏµÄµãºÏ²¢
+	// 2. å°†ä¸¤ä¸ªé›†åˆçš„ç‚¹åˆå¹¶
 	std::vector<PosPoint> results;
 	for (std::vector<PosPoint>::iterator h = horizontalPoints.begin(); h < horizontalPoints.end(); ++h)
 			results.push_back(*h);

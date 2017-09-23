@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "souistd.h"
 #include "SImageView.h"
 #include "utils.h"
@@ -12,7 +12,7 @@ namespace SOUI
         _nextFrameInterval(0),
         _isPlaying(TRUE)
     {
-        _imageSize.cx = _imageSize.cy = 0; // Ä¬ÈÏÏÔÊ¾µÄÍ¼Æ¬´óĞ¡
+        _imageSize.cx = _imageSize.cy = 0; // é»˜è®¤æ˜¾ç¤ºçš„å›¾ç‰‡å¤§å°
     }
 
     SImageView::~SImageView()

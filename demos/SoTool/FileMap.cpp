@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "FileMap.h"
 
 CFileMap::CFileMap(void)

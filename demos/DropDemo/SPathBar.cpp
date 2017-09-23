@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "SPathBar.h"
 
 namespace SOUI
@@ -49,7 +49,7 @@ void SPathBar::OnPaint(IRenderTarget *pRT)
 		{					
 			m_pSkin->Draw(pRT, inRect, IIF_STATE4(GetState(), 0, 1, 2, 3));
 		}
-		else if (CR_INVALID != crItemBg)//ÏÈ»­±³¾°
+		else if (CR_INVALID != crItemBg)//å…ˆç”»èƒŒæ™¯
 			pRT->FillSolidRect(&inRect, crItemBg);
 		
 		SStringT sText = info.sText + _T(" >");
@@ -82,10 +82,10 @@ void SPathBar::OnLButtonUp(UINT nFlags, CPoint pt)
 		return ;
 	}
 
-	//É¾³ý ºóÃæµÄ 
+	//åˆ é™¤ åŽé¢çš„ 
 	//m_arrItems.RemoveAt(nHoverItem+1, m_arrItems.GetCount()-nHoverItem-1);
 	
-	//·Ö·¢ ÊÂ¼þ 
+	//åˆ†å‘ äº‹ä»¶ 
 	EventPathCmd evt(this);
 	evt.iItem = nHoverItem;
 	FireEvent(evt);
@@ -148,7 +148,7 @@ int SPathBar::InsertItem(int nItem, LPCTSTR pszText)
 
 	//pRT->MeasureText(p1, p2-p1, &szChar);
 
-	info.nWidth = rcText.Width() + 24;		//Ìí¼Ó 
+	info.nWidth = rcText.Width() + 24;		//æ·»åŠ  
 	m_arrItems.Add(info);
 
 	Invalidate();

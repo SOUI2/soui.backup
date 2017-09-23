@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 namespace SOUI
 {
@@ -10,8 +10,8 @@ namespace SOUI
 
         void OnOK();
 
-        SStringT m_strMsg;  //ÏûÏ¢XML
-        int      m_nRepeat; //ÖØ¸´´ÎÊı
+        SStringT m_strMsg;  //æ¶ˆæ¯XML
+        int      m_nRepeat; //é‡å¤æ¬¡æ•°
 
         EVENT_MAP_BEGIN()
             EVENT_ID_COMMAND(IDOK,OnOK)

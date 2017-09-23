@@ -1,4 +1,4 @@
-// render-gdi.cpp : Defines the exported functions for the DLL application.
+﻿// render-gdi.cpp : Defines the exported functions for the DLL application.
 //
 
 #include "render-gdi.h"
@@ -186,7 +186,7 @@ namespace SOUI
     RGN_OR Creates the union of two combined regions. 
     RGN_XOR Creates the union of two combined regions except for any overlapping areas. 
     
-    ע�� RGN_DIFF �� RGN_COPY����hrgnSrc1��ʹ�ò���
+    注意 RGN_DIFF 和 RGN_COPY对于hrgnSrc1的使用差异
     */
     void SRegion_GDI::CombineRect( LPCRECT lprect,int nCombineMode )
     {
@@ -292,27 +292,27 @@ namespace SOUI
             ::SetBkMode(m_hMemDC,TRANSPARENT);
             ::SelectObject(m_hMemDC,m_hBmp);
             ::SetViewportOrgEx(m_hMemDC,-pRect->left,-pRect->top,NULL);
-            //��ԭDC�л�û��ʣ���ˢ�����壬��ɫ��
+            //从原DC中获得画笔，画刷，字体，颜色等
             m_hCurPen = ::SelectObject(hdc,GetStockObject(BLACK_PEN));
             m_hCurBrush = ::SelectObject(hdc,GetStockObject(BLACK_BRUSH));
             m_hCurFont = ::SelectObject(hdc,GetStockObject(DEFAULT_GUI_FONT));
             COLORREF crCur = ::GetTextColor(hdc);
 
-            //�����ʣ���ˢ���������õ�memdc��
+            //将画笔，画刷，字体设置到memdc里
             ::SelectObject(m_hMemDC,m_hCurPen);
             ::SelectObject(m_hMemDC,m_hCurBrush);
             ::SelectObject(m_hMemDC,m_hCurFont);
             ::SetTextColor(m_hMemDC,crCur);
 
             if(m_bCopyBits) ::BitBlt(m_hMemDC,pRect->left,pRect->top,m_nWid,m_nHei,m_hdc,pRect->left,pRect->top,SRCCOPY);
-            //��alphaȫ��ǿ���޸�Ϊ0xFF��
+            //将alpha全部强制修改为0xFF。
             BYTE * p= m_pBits+3;
             for(int i=0;i<m_nHei;i++)for(int j=0;j<m_nWid;j++,p+=4) *p=0xFF;
         }
 
         ~DCBuffer()
         {
-            //��alphaΪ0xFF�ĸ�Ϊ0,ͬʱ��rgbֵҲ��0(XPϵͳ�²���0�ᵼ�±�����ɰ�ɫ��,Ϊ0�ĸ�Ϊ0xFF
+            //将alpha为0xFF的改为0,同时将rgb值也清0(XP系统下不清0会导致背景变成白色）,为0的改为0xFF
             BYTE * p= m_pBits+3;
             for(int i=0;i<m_nHei;i++)for(int j=0;j<m_nWid;j++,p+=4)
 			{
@@ -328,7 +328,7 @@ namespace SOUI
             ::DeleteDC(m_hMemDC);
             ::DeleteObject(m_hBmp);
             
-            //�ָ�ԭDC�Ļ��ʣ���ˢ������
+            //恢复原DC的画笔，画刷，字体
             ::SelectObject(m_hdc,m_hCurPen);
             ::SelectObject(m_hdc,m_hCurBrush);
             ::SelectObject(m_hdc,m_hCurFont);
@@ -360,7 +360,7 @@ namespace SOUI
     
     SRenderTarget_GDI::SRenderTarget_GDI( IRenderFactory* pRenderFactory ,int nWid,int nHei)
         :m_hdc(NULL)
-        ,m_curColor(0xFF000000)//Ĭ�Ϻ�ɫ
+        ,m_curColor(0xFF000000)//默认黑色
         ,m_uGetDCFlag(0)
     {
 		m_pRenderFactory = pRenderFactory;
@@ -380,7 +380,7 @@ namespace SOUI
 
         LOGFONT lf={0};
         lf.lfHeight=20;
-        _tcscpy(lf.lfFaceName,_T("����"));
+        _tcscpy(lf.lfFaceName,_T("宋体"));
         pRenderFactory->CreateFont(&m_defFont,lf);
         SelectObject(m_defFont);
 
@@ -733,26 +733,26 @@ namespace SOUI
         int yDest[4] = {pRcDest->top,pRcDest->top+pRcSourMargin->top,pRcDest->bottom-pRcSourMargin->bottom,pRcDest->bottom};
         int ySrc[4] = {pRcSrc->top,pRcSrc->top+pRcSourMargin->top,pRcSrc->bottom-pRcSourMargin->bottom,pRcSrc->bottom};
 
-        //���ȱ�֤�Ź��ָ�����
+        //首先保证九宫分割正常
         if(!(xSrc[0] <= xSrc[1] && xSrc[1] <= xSrc[2] && xSrc[2] <= xSrc[3])) return S_FALSE;
         if(!(ySrc[0] <= ySrc[1] && ySrc[1] <= ySrc[2] && ySrc[2] <= ySrc[3])) return S_FALSE;
 
-        //����Ŀ��λ��
+        //调整目标位置
         int nDestWid=pRcDest->right-pRcDest->left;
         int nDestHei=pRcDest->bottom-pRcDest->top;
 
         if((pRcSourMargin->left + pRcSourMargin->right) > nDestWid)
-        {//��Ե���ȴ���Ŀ����ȵĴ���
+        {//边缘宽度大于目标宽度的处理
             if(pRcSourMargin->left >= nDestWid)
-            {//ֻ������߲���
+            {//只绘制左边部分
                 xSrc[1] = xSrc[2] = xSrc[3] = xSrc[0]+nDestWid;
                 xDest[1] = xDest[2] = xDest[3] = xDest[0]+nDestWid;
             }else if(pRcSourMargin->right >= nDestWid)
-            {//ֻ�����ұ߲���
+            {//只绘制右边部分
                 xSrc[0] = xSrc[1] = xSrc[2] = xSrc[3]-nDestWid;
                 xDest[0] = xDest[1] = xDest[2] = xDest[3]-nDestWid;
             }else
-            {//�Ȼ�����߲��֣�ʣ������ұ����
+            {//先绘制左边部分，剩余的用右边填充
                 int nRemain=xDest[3]-xDest[1];
                 xSrc[2] = xSrc[3]-nRemain;
                 xDest[2] = xDest[3]-nRemain;
@@ -762,22 +762,22 @@ namespace SOUI
         if(pRcSourMargin->top + pRcSourMargin->bottom > nDestHei)
         {
             if(pRcSourMargin->top >= nDestHei)
-            {//ֻ�����ϱ߲���
+            {//只绘制上边部分
                 ySrc[1] = ySrc[2] = ySrc[3] = ySrc[0]+nDestHei;
                 yDest[1] = yDest[2] = yDest[3] = yDest[0]+nDestHei;
             }else if(pRcSourMargin->bottom >= nDestHei)
-            {//ֻ�����±߲���
+            {//只绘制下边部分
                 ySrc[0] = ySrc[1] = ySrc[2] = ySrc[3]-nDestHei;
                 yDest[0] = yDest[1] = yDest[2] = yDest[3]-nDestHei;
             }else
-            {//�Ȼ�����߲��֣�ʣ������ұ����
+            {//先绘制左边部分，剩余的用右边填充
                 int nRemain=yDest[3]-yDest[1];
                 ySrc[2] = ySrc[3]-nRemain;
                 yDest[2] = yDest[3]-nRemain;
             }
         }
 
-        //�������ģʽ
+        //定义绘制模式
         UINT mode[3][3]={
             {EM_NULL,expendMode,EM_NULL},
             {expendMode,expendMode,expendMode},
@@ -863,7 +863,7 @@ namespace SOUI
             break;
         }
         if(pRet && ppOldObj)
-        {//�ɵ����ߵ���Release�ͷŸ�RenderObj
+        {//由调用者调用Release释放该RenderObj
             pRet->AddRef();
             *ppOldObj = pRet;
         }
@@ -936,7 +936,7 @@ namespace SOUI
         return E_NOTIMPL;
     }
 
-    //ͨ��һ���ڴ�λͼ�����λ�õ�alphaֵ
+    //通过一个内存位图来填充位置的alpha值
     HRESULT SRenderTarget_GDI::FillSolidRect( LPCRECT pRect,COLORREF cr )
     {
         DCBuffer dcBuf(m_hdc,pRect,GetAValue(cr),FALSE);

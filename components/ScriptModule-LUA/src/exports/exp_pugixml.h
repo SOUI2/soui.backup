@@ -1,4 +1,4 @@
-#include <pugixml/pugixml.hpp>
+﻿#include <pugixml/pugixml.hpp>
 using namespace pugi;
 
 BOOL ExpLua_pugixml(lua_State *L)

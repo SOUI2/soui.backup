@@ -1,5 +1,5 @@
-#pragma once
-//´ÅÁ¦´°¿Ú¹ÜÀíÄ£¿é
+ï»¿#pragma once
+//ç£åŠ›çª—å£ç®¡ç†æ¨¡å—
 
 class CMagnetFrame
 {
@@ -25,13 +25,13 @@ public:
     CMagnetFrame(void);
     ~CMagnetFrame(void);
     
-    //ÉèÖÃÖ÷´°¿Ú
+    //è®¾ç½®ä¸»çª—å£
     void SetMainWnd(HWND hWnd);
     
-    //Ôö¼Ó¸½Êô´°¿Ú
+    //å¢åŠ é™„å±çª—å£
     BOOL AddSubWnd(HWND hWnd,ATTACHMODE am,ATTACHALIGN aa,int nDist = 0);
     
-    //ÒÆ³ı¸½Êô´°¿Ú
+    //ç§»é™¤é™„å±çª—å£
     BOOL RemoveSubWnd(HWND hWnd);
    
 protected:
@@ -51,7 +51,7 @@ protected:
     static LRESULT CALLBACK MagnetWndProc(HWND hWnd, UINT uMsg, WPARAM wp, LPARAM lp);
 
 protected:
-    HWND m_hMainWnd;    //Îü¸½Ö÷´°¿Ú
+    HWND m_hMainWnd;    //å¸é™„ä¸»çª—å£
     
     
     struct WndData
@@ -62,6 +62,6 @@ protected:
     };
     
     typedef SOUI::SMap<HWND,WndData> WNDDATAMAP;
-    WNDDATAMAP m_mapOldProc;//Îü¸½´°¿ÚÁĞ±í
+    WNDDATAMAP m_mapOldProc;//å¸é™„çª—å£åˆ—è¡¨
 };
 

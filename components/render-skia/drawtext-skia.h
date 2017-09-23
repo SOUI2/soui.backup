@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <core/SkPaint.h>
 #include <core/SkCanvas.h>
@@ -19,11 +19,11 @@ private:
     void buildLines();
 
 private:
-    SkTDArray<wchar_t> m_text;   //ÎÄ±¾ÄÚÈİ
-    SkTDArray<int>  m_prefix;    //Ç°×º·ûË÷Òı
-    SkTDArray<int> m_lines;      //·ÖĞĞË÷Òı
-    UINT            m_uFormat;    //ÏÔÊ¾±êÖ¾
-    SkRect          m_rcBound;    //ÏŞÖÆ¾ØĞÎ
+    SkTDArray<wchar_t> m_text;   //æ–‡æœ¬å†…å®¹
+    SkTDArray<int>  m_prefix;    //å‰ç¼€ç¬¦ç´¢å¼•
+    SkTDArray<int> m_lines;      //åˆ†è¡Œç´¢å¼•
+    UINT            m_uFormat;    //æ˜¾ç¤ºæ ‡å¿—
+    SkRect          m_rcBound;    //é™åˆ¶çŸ©å½¢
     const SkPaint  *m_paint;
 };
 

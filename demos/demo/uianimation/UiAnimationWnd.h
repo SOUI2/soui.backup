@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "UIAnimation.h"
 #include <atl.mini/SComHelper.h>

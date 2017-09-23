@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "SkinMgr.h"
 
 CSkinMgr::CSkinMgr(void) : SHostWnd(_T("LAYOUT:XML_WINSKINS"))
@@ -17,102 +17,102 @@ BOOL CSkinMgr::OnInitDialog( HWND hWnd, LPARAM lParam )
 	return 0;
 }
 
-void CSkinMgr::OnBtnMaxspeed()		//¼«ËÙ
+void CSkinMgr::OnBtnMaxspeed()		//æé€Ÿ
 {
-	SMessageBox(NULL,_T("¼«ËÙ"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("æé€Ÿ"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnDeepblue()		//ÉîºşÀ¶
+void CSkinMgr::OnBtnDeepblue()		//æ·±æ¹–è“
 {
-	SMessageBox(NULL,_T("ÉîºşÀ¶"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("æ·±æ¹–è“"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnSelfdefine()	//×Ô¶¨Òå
+void CSkinMgr::OnBtnSelfdefine()	//è‡ªå®šä¹‰
 {
-	SMessageBox(NULL,_T("×Ô¶¨Òå"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("è‡ªå®šä¹‰"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnBigbang()		//´óÆ¬·ç±©
+void CSkinMgr::OnBtnBigbang()		//å¤§ç‰‡é£æš´
 {
-	SMessageBox(NULL,_T("´óÆ¬·ç±©"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("å¤§ç‰‡é£æš´"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnPrev()			//ÉÏÒ»¸öÆ¤·ô
+void CSkinMgr::OnBtnPrev()			//ä¸Šä¸€ä¸ªçš®è‚¤
 {
-	SMessageBox(NULL,_T("ÉÏÒ»¸öÆ¤·ô"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("ä¸Šä¸€ä¸ªçš®è‚¤"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnChoosing1()			//ÒÑÓĞµÄÆ¤·ô1
+void CSkinMgr::OnBtnChoosing1()			//å·²æœ‰çš„çš®è‚¤1
 {
-	SMessageBox(NULL,_T("ÒÑÓĞµÄÆ¤·ô1"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("å·²æœ‰çš„çš®è‚¤1"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnChoosing2()			//ÒÑÓĞµÄÆ¤·ô2
+void CSkinMgr::OnBtnChoosing2()			//å·²æœ‰çš„çš®è‚¤2
 {
-	SMessageBox(NULL,_T("ÒÑÓĞµÄÆ¤·ô2"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("å·²æœ‰çš„çš®è‚¤2"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnNext()				//ÏÂÒ»¸öÆ¤·ô
+void CSkinMgr::OnBtnNext()				//ä¸‹ä¸€ä¸ªçš®è‚¤
 {
-	SMessageBox(NULL,_T("ÏÂÒ»¸öÆ¤·ô"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("ä¸‹ä¸€ä¸ªçš®è‚¤"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnColor1()				//ÅäÉ«1
+void CSkinMgr::OnBtnColor1()				//é…è‰²1
 {
-	SMessageBox(NULL,_T("ÅäÉ«1"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("é…è‰²1"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnColor2()				//ÅäÉ«2
+void CSkinMgr::OnBtnColor2()				//é…è‰²2
 {
-	SMessageBox(NULL,_T("ÅäÉ«2"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("é…è‰²2"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnColor3()				//ÅäÉ«3
+void CSkinMgr::OnBtnColor3()				//é…è‰²3
 {
-	SMessageBox(NULL,_T("ÅäÉ«3"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("é…è‰²3"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnColor4()				//ÅäÉ«4
+void CSkinMgr::OnBtnColor4()				//é…è‰²4
 {
-	SMessageBox(NULL,_T("ÅäÉ«4"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("é…è‰²4"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnColor5()				//ÅäÉ«5
+void CSkinMgr::OnBtnColor5()				//é…è‰²5
 {
-	SMessageBox(NULL,_T("ÅäÉ«5"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("é…è‰²5"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnColor6()				//ÅäÉ«6
+void CSkinMgr::OnBtnColor6()				//é…è‰²6
 {
-	SMessageBox(NULL,_T("ÅäÉ«6"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("é…è‰²6"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnColor7()				//ÅäÉ«7
+void CSkinMgr::OnBtnColor7()				//é…è‰²7
 {
-	SMessageBox(NULL,_T("ÅäÉ«7"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("é…è‰²7"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnColor8()				//ÅäÉ«8
+void CSkinMgr::OnBtnColor8()				//é…è‰²8
 {
-	SMessageBox(NULL,_T("ÅäÉ«8"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("é…è‰²8"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnColor9()				//ÅäÉ«9
+void CSkinMgr::OnBtnColor9()				//é…è‰²9
 {
-	SMessageBox(NULL,_T("ÅäÉ«9"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("é…è‰²9"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnColor10()				//ÅäÉ«10
+void CSkinMgr::OnBtnColor10()				//é…è‰²10
 {
-	SMessageBox(NULL,_T("ÅäÉ«10"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("é…è‰²10"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnColor11()				//ÅäÉ«11
+void CSkinMgr::OnBtnColor11()				//é…è‰²11
 {
-	SMessageBox(NULL,_T("ÅäÉ«11"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("é…è‰²11"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CSkinMgr::OnBtnColor12()				//ÅäÉ«12
+void CSkinMgr::OnBtnColor12()				//é…è‰²12
 {
-	SMessageBox(NULL,_T("ÅäÉ«12"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("é…è‰²12"),_T("haha"),MB_OK|MB_ICONEXCLAMATION);
 }

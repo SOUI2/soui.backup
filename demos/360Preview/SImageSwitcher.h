@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 
 /**
-by ¶àµãÃâ·ÑWIFI
+by å¤šç‚¹å…è´¹WIFI
  */
 #include <core/Swnd.h>
 
@@ -38,7 +38,7 @@ namespace SOUI
 		void OnTimer(char nIDEvent);
 	protected:
 		SOUI_MSG_MAP_BEGIN()	
-			MSG_WM_PAINT_EX(OnPaint)    //´°¿Ú»æÖÆÏûÏ¢
+			MSG_WM_PAINT_EX(OnPaint)    //çª—å£ç»˜åˆ¶æ¶ˆæ¯
 			MSG_WM_LBUTTONDOWN(OnLButtonDown)
 			MSG_WM_LBUTTONUP(OnLButtonUp)
 			MSG_WM_MOUSEMOVE(OnMouseMove)

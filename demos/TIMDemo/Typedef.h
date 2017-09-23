@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <list>
 
 #pragma pack(push, 1)
@@ -12,19 +12,19 @@ struct UserInfo
 
 typedef std::list<UserInfo>				UserList;
 
-//·şÎñ¶Ë µÄÏûÏ¢ ½á¹¹ 
+//æœåŠ¡ç«¯ çš„æ¶ˆæ¯ ç»“æ„ 
 struct IMBodyContent
 {
 public:
-	__int64			lBodyId;					// id  Ã¿ÌõÏûÏ¢ ÊÇÎ¨Ò»µÄ
-	//std::wstring	sBodyContent;		// body ÄÚÈİ			// ÓÃwstring  ÊÇÏë ÓÃ move  ÒòÎªÕâ¸öÓĞ¿ÉÄÜ ºÜ´ó 
-	SStringT			sBodyContent;		// body ÄÚÈİ	ÒÔºó ¿¨ÁË ÔÙÓÅ»¯°É  
-	__int64			lTime;					// Ã¿ÌõÏûÏ¢ ¶¼ÓĞÊ±¼ä 
+	__int64			lBodyId;					// id  æ¯æ¡æ¶ˆæ¯ æ˜¯å”¯ä¸€çš„
+	//std::wstring	sBodyContent;		// body å†…å®¹			// ç”¨wstring  æ˜¯æƒ³ ç”¨ move  å› ä¸ºè¿™ä¸ªæœ‰å¯èƒ½ å¾ˆå¤§ 
+	SStringT			sBodyContent;		// body å†…å®¹	ä»¥å å¡äº† å†ä¼˜åŒ–å§  
+	__int64			lTime;					// æ¯æ¡æ¶ˆæ¯ éƒ½æœ‰æ—¶é—´ 
 };
 
 typedef std::list<IMBodyContent*>		IMBodyContentList;
 
-// ÁÄÌìmsg ÀàĞÍ
+// èŠå¤©msg ç±»å‹
 enum EnChatType
 {
 	eChT_Left = 0,
@@ -35,7 +35,7 @@ enum EnChatType
 	eChT_CenterWithoutBk = 5,
 };
 
-//ÁÄÌì ¼ÇÂ¼  ±£´æ ½á¹¹ 
+//èŠå¤© è®°å½•  ä¿å­˜ ç»“æ„ 
 struct ChatRecord
 {
 	EnChatType		eType;
@@ -46,20 +46,20 @@ struct ChatRecord
 typedef std::list<ChatRecord*>		ChatRecordList;
 
 
-// soap ·¢ËÍÏûÏ¢ ½á¹¹Ìå
+// soap å‘é€æ¶ˆæ¯ ç»“æ„ä½“
 struct SendMsgParam
 {
-	UINT				uRecipientId;				// ½ÓÊÕÈË id
-	SStringT			szContent;					// ÕıÎÄÄÚÈİ 
+	UINT				uRecipientId;				// æ¥æ”¶äºº id
+	SStringT			szContent;					// æ­£æ–‡å†…å®¹ 
 };
 
-// Òì²½ ·¢ËÍ ÏûÏ¢ ²ÎÊı
+// å¼‚æ­¥ å‘é€ æ¶ˆæ¯ å‚æ•°
 struct AsyncSendMsgParam : public SendMsgParam		
 {
-	SStringT			szChatId;				// Õâ¸öÊÇ rich ÏûÏ¢ id ÓÃÀ´ ²éÕÒµÄ
+	SStringT			szChatId;				// è¿™ä¸ªæ˜¯ rich æ¶ˆæ¯ id ç”¨æ¥ æŸ¥æ‰¾çš„
 };
 
-// ÕıÔÚ·¢ËÍ µÄÏûÏ¢×´Ì¬  ³É¹¦·¢ËÍ ÏûÏ¢ºó ¾Í²»ĞèÒªÕâ¸öÁË 
+// æ­£åœ¨å‘é€ çš„æ¶ˆæ¯çŠ¶æ€  æˆåŠŸå‘é€ æ¶ˆæ¯å å°±ä¸éœ€è¦è¿™ä¸ªäº† 
 enum EnChatState
 {
 	eCST_Waiting = 0,
@@ -67,11 +67,11 @@ enum EnChatState
 	eCST_Error = 2,
 };
 
-// ÕıÔÚ ·¢ËÍµÄ ÏûÏ¢ ½á¹¹Ìå 
+// æ­£åœ¨ å‘é€çš„ æ¶ˆæ¯ ç»“æ„ä½“ 
 struct SendingChatInfo : public AsyncSendMsgParam				
 {
-	EnChatState			eState;						// ×´Ì¬
-	SStringT					szChatContent;			// ½çÃæ 
+	EnChatState			eState;						// çŠ¶æ€
+	SStringT					szChatContent;			// ç•Œé¢ 
 	SendingChatInfo(EnChatState e, LPCTSTR lpChatContent, const AsyncSendMsgParam& info)
 		: AsyncSendMsgParam(info)
 		, eState(e)

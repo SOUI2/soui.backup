@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "ApproverLayout.h"
 
 ApproverLayout::ApproverLayout(SWindow* pRoot, funApproverCallBack fun)

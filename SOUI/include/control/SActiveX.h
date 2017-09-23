@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 #include "core/SWnd.h"
 #include "activex/flash10t.tlh"
 #include "activex/wmp.tlh"
 #include <mshtmhst.h>
-//#import "C:\\windows\\system32\\WMP.dll" no_function_mapping //Ê¹ÓÃÕâĞĞ´úÂëÀ´Éú³Éwmp.tlh and wmp.tli
+//#import "C:\\windows\\system32\\WMP.dll" no_function_mapping //ä½¿ç”¨è¿™è¡Œä»£ç æ¥ç”Ÿæˆwmp.tlh and wmp.tli
 
 namespace SOUI
 {

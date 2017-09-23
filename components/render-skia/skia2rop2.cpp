@@ -1,10 +1,10 @@
-
+ï»¿
 #include "skia2rop2.h"
 #include <core/skcolorpriv.h>
 #include <src/core/SkReadBuffer.h>
 #include <include/core/SkPreConfig.h>
 
-// À©Õ¹Skia, ÊµÏÖRop2²Ù×÷
+// æ‰©å±•Skia, å®ç°Rop2æ“ä½œ
 static SkPMColor rdRop2Proc_Clear(SkPMColor src, SkPMColor dst)
 {
 	(src); (dst);
@@ -106,7 +106,7 @@ static SkPMColor rdRop2Proc_Set(SkPMColor src, SkPMColor dst)
 //     return SkPackARGB32(a, r, g, b);
 // }
 
-// rop2²Ù×÷£¬½áÊø
+// rop2æ“ä½œï¼Œç»“æŸ
 typedef struct _Rop2Proc
 {
     SkXfermodeProc proc;

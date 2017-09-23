@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "stdafx.h"
 #include <helper/SAdapterBase.h>
 #include "FilesHelp.h"
@@ -21,14 +21,14 @@ public:
 		}
 		PlaylistInfo info = m_db[position];
 		SStatic *pBtnsave = pItem->FindChildByName2<SStatic>(L"filename");
-		pBtnsave->SetWindowTextW(SStringT().Format(L"¡¾%02d¡¿%s", position+1,info.m_name));
+		pBtnsave->SetWindowTextW(SStringT().Format(L"ã€%02dã€‘%s", position+1,info.m_name));
 		pBtnsave->SetAttribute(L"tip", S_CT2W(info.m_name));
 		pItem->SetUserData(position);
 		pItem->GetEventSet()->subscribeEvent(EventItemPanelDbclick::EventID, Subscriber(&CPlayListWnd::OnButtonDbclick, this));
 
 	}
 
-	bool OnButtonDbclick(EventArgs *pEvt)//²¥·ÅÎÄ¼ş
+	bool OnButtonDbclick(EventArgs *pEvt)//æ’­æ”¾æ–‡ä»¶
 	{
 		SWindow *btn = sobj_cast<SWindow>(pEvt->sender);
 		SStringT  _pathname = m_db[btn->GetUserData()].m_FULL_Path;
@@ -76,7 +76,7 @@ public:
 	{
 		int iCol;
 	};
-	void Sort_Play_list(int id)//ÅÅĞò
+	void Sort_Play_list(int id)//æ’åº
 	{
 		SORTCTX ctx = { 1 };
 		if(id==1)

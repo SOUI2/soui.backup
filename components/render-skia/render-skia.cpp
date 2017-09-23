@@ -1,4 +1,4 @@
-#include <core\SkShader.h>
+ï»¿#include <core\SkShader.h>
 #include <core\SkDevice.h>
 #include <effects\SkDashPathEffect.h>
 #include <effects\SkGradientShader.h>
@@ -127,7 +127,7 @@ namespace SOUI
 
 	SRenderTarget_Skia::SRenderTarget_Skia( IRenderFactory* pRenderFactory ,int nWid,int nHei)
 		:m_SkCanvas(NULL)
-        ,m_curColor(0xFF000000)//Ä¬ÈÏºÚÉ«
+        ,m_curColor(0xFF000000)//é»˜è®¤é»‘è‰²
         ,m_hGetDC(0)
         ,m_uGetDCFlag(0)
 		,m_bAntiAlias(true)
@@ -145,7 +145,7 @@ namespace SOUI
 
         LOGFONT lf={0};
         lf.lfHeight=20;
-        _tcscpy(lf.lfFaceName,_T("ËÎÌå"));
+        _tcscpy(lf.lfFaceName,_T("å®‹ä½“"));
         pRenderFactory->CreateFont(&m_defFont,lf);
         SelectObject(m_defFont);
 
@@ -264,7 +264,7 @@ namespace SOUI
     {
         SRegion_Skia *pRgn=new SRegion_Skia(m_pRenderFactory);
         SkRegion rgn = m_SkCanvas->getTotalClip();
-        //ĞèÒª½«rectµÄviewOrg»¹Ô­
+        //éœ€è¦å°†rectçš„viewOrgè¿˜åŸ
         rgn.translate((int)-m_ptOrg.fX,(int)-m_ptOrg.fY);
         pRgn->SetRegion(rgn);
         *ppRegion = pRgn;
@@ -275,14 +275,14 @@ namespace SOUI
     {
         SkRect skrc;
         m_SkCanvas->getClipBounds(&skrc);
-        //ĞèÒª½«rectµÄviewOrg»¹Ô­
+        //éœ€è¦å°†rectçš„viewOrgè¿˜åŸ
         skrc.offset(-m_ptOrg);
 
         prc->left=(LONG)skrc.fLeft;
         prc->top=(LONG)skrc.fTop;
         prc->right=(LONG)skrc.fRight;
         prc->bottom=(LONG)skrc.fBottom;
-        //ĞèÒª4ÖÜËõĞ¡Ò»¸öµ¥Î»²ÅÊÇºÍGDIÏàÍ¬µÄ¼ô²ÃÇø
+        //éœ€è¦4å‘¨ç¼©å°ä¸€ä¸ªå•ä½æ‰æ˜¯å’ŒGDIç›¸åŒçš„å‰ªè£åŒº
         ::InflateRect(prc,-1,-1);
         return S_OK;
     }
@@ -438,7 +438,7 @@ namespace SOUI
 		}
 
         SkRect skrc=toSkRect(pRect);
-        InflateSkRect(&skrc,-0.5f,-0.5f);//ÒªËõĞ¡0.5ÏÔÊ¾Ğ§¹û²ÅºÍGDIÒ»ÖÂ¡£
+        InflateSkRect(&skrc,-0.5f,-0.5f);//è¦ç¼©å°0.5æ˜¾ç¤ºæ•ˆæœæ‰å’ŒGDIä¸€è‡´ã€‚
         skrc.offset(m_ptOrg);
         m_SkCanvas->drawRoundRect(skrc,(SkScalar)pt.x,(SkScalar)pt.y,paint);
         return S_OK;
@@ -461,7 +461,7 @@ namespace SOUI
         paint.setStyle(SkPaint::kFill_Style);
 
         SkRect skrc=toSkRect(pRect);
-        InflateSkRect(&skrc,-0.5f,-0.5f);//ÒªËõĞ¡0.5ÏÔÊ¾Ğ§¹û²ÅºÍGDIÒ»ÖÂ¡£
+        InflateSkRect(&skrc,-0.5f,-0.5f);//è¦ç¼©å°0.5æ˜¾ç¤ºæ•ˆæœæ‰å’ŒGDIä¸€è‡´ã€‚
         skrc.offset(m_ptOrg);
 
         m_SkCanvas->drawRoundRect(skrc,(SkScalar)pt.x,(SkScalar)pt.y,paint);
@@ -478,7 +478,7 @@ namespace SOUI
         paint.setStyle(SkPaint::kFill_Style);
 
         SkRect skrc=toSkRect(pRect);
-        InflateSkRect(&skrc,-0.5f,-0.5f);//ÒªËõĞ¡0.5ÏÔÊ¾Ğ§¹û²ÅºÍGDIÒ»ÖÂ¡£
+        InflateSkRect(&skrc,-0.5f,-0.5f);//è¦ç¼©å°0.5æ˜¾ç¤ºæ•ˆæœæ‰å’ŒGDIä¸€è‡´ã€‚
         skrc.offset(m_ptOrg);
 
         m_SkCanvas->drawRoundRect(skrc,(SkScalar)pt.x,(SkScalar)pt.y,paint);
@@ -655,26 +655,26 @@ namespace SOUI
         int yDest[4] = {pRcDest->top,pRcDest->top+pRcSourMargin->top,pRcDest->bottom-pRcSourMargin->bottom,pRcDest->bottom};
         int ySrc[4] = {pRcSrc->top,pRcSrc->top+pRcSourMargin->top,pRcSrc->bottom-pRcSourMargin->bottom,pRcSrc->bottom};
         
-        //Ê×ÏÈ±£Ö¤¾Å¹¬·Ö¸îÕı³£
+        //é¦–å…ˆä¿è¯ä¹å®«åˆ†å‰²æ­£å¸¸
         if(!(xSrc[0] <= xSrc[1] && xSrc[1] <= xSrc[2] && xSrc[2] <= xSrc[3])) return S_FALSE;
         if(!(ySrc[0] <= ySrc[1] && ySrc[1] <= ySrc[2] && ySrc[2] <= ySrc[3])) return S_FALSE;
         
-        //µ÷ÕûÄ¿±êÎ»ÖÃ
+        //è°ƒæ•´ç›®æ ‡ä½ç½®
         int nDestWid=pRcDest->right-pRcDest->left;
         int nDestHei=pRcDest->bottom-pRcDest->top;
         
         if((pRcSourMargin->left + pRcSourMargin->right) > nDestWid)
-        {//±ßÔµ¿í¶È´óÓÚÄ¿±ê¿í¶ÈµÄ´¦Àí
+        {//è¾¹ç¼˜å®½åº¦å¤§äºç›®æ ‡å®½åº¦çš„å¤„ç†
             if(pRcSourMargin->left >= nDestWid)
-            {//Ö»»æÖÆ×ó±ß²¿·Ö
+            {//åªç»˜åˆ¶å·¦è¾¹éƒ¨åˆ†
                 xSrc[1] = xSrc[2] = xSrc[3] = xSrc[0]+nDestWid;
                 xDest[1] = xDest[2] = xDest[3] = xDest[0]+nDestWid;
             }else if(pRcSourMargin->right >= nDestWid)
-            {//Ö»»æÖÆÓÒ±ß²¿·Ö
+            {//åªç»˜åˆ¶å³è¾¹éƒ¨åˆ†
                 xSrc[0] = xSrc[1] = xSrc[2] = xSrc[3]-nDestWid;
                 xDest[0] = xDest[1] = xDest[2] = xDest[3]-nDestWid;
             }else
-            {//ÏÈ»æÖÆ×ó±ß²¿·Ö£¬Ê£ÓàµÄÓÃÓÒ±ßÌî³ä
+            {//å…ˆç»˜åˆ¶å·¦è¾¹éƒ¨åˆ†ï¼Œå‰©ä½™çš„ç”¨å³è¾¹å¡«å……
                 int nRemain=xDest[3]-xDest[1];
                 xSrc[2] = xSrc[3]-nRemain;
                 xDest[2] = xDest[3]-nRemain;
@@ -684,22 +684,22 @@ namespace SOUI
         if(pRcSourMargin->top + pRcSourMargin->bottom > nDestHei)
         {
             if(pRcSourMargin->top >= nDestHei)
-            {//Ö»»æÖÆÉÏ±ß²¿·Ö
+            {//åªç»˜åˆ¶ä¸Šè¾¹éƒ¨åˆ†
                 ySrc[1] = ySrc[2] = ySrc[3] = ySrc[0]+nDestHei;
                 yDest[1] = yDest[2] = yDest[3] = yDest[0]+nDestHei;
             }else if(pRcSourMargin->bottom >= nDestHei)
-            {//Ö»»æÖÆÏÂ±ß²¿·Ö
+            {//åªç»˜åˆ¶ä¸‹è¾¹éƒ¨åˆ†
                 ySrc[0] = ySrc[1] = ySrc[2] = ySrc[3]-nDestHei;
                 yDest[0] = yDest[1] = yDest[2] = yDest[3]-nDestHei;
             }else
-            {//ÏÈ»æÖÆ×ó±ß²¿·Ö£¬Ê£ÓàµÄÓÃÓÒ±ßÌî³ä
+            {//å…ˆç»˜åˆ¶å·¦è¾¹éƒ¨åˆ†ï¼Œå‰©ä½™çš„ç”¨å³è¾¹å¡«å……
                 int nRemain=yDest[3]-yDest[1];
                 ySrc[2] = ySrc[3]-nRemain;
                 yDest[2] = yDest[3]-nRemain;
             }
         }
         
-        //¶¨Òå»æÖÆÄ£Ê½
+        //å®šä¹‰ç»˜åˆ¶æ¨¡å¼
         UINT mode[3][3]={
         {EM_NULL,expendMode,EM_NULL},
         {expendMode,expendMode,expendMode},
@@ -767,7 +767,7 @@ namespace SOUI
         case OT_BITMAP: 
             pRet=m_curBmp;
             m_curBmp=(SBitmap_Skia*)pObj;
-            //ÖØĞÂÉú³Éclip
+            //é‡æ–°ç”Ÿæˆclip
             SASSERT(m_SkCanvas);
             delete m_SkCanvas;
             m_SkCanvas = new SkCanvas(m_curBmp->GetSkBitmap());
@@ -786,7 +786,7 @@ namespace SOUI
             break;
         }
         if(pRet && ppOldObj)
-        {//ÓÉµ÷ÓÃÕßµ÷ÓÃReleaseÊÍ·Å¸ÃRenderObj
+        {//ç”±è°ƒç”¨è€…è°ƒç”¨Releaseé‡Šæ”¾è¯¥RenderObj
             pRet->AddRef();
             *ppOldObj = pRet;
         }
@@ -826,7 +826,7 @@ namespace SOUI
     {
         if(m_hGetDC) return m_hGetDC;
         
-        HBITMAP bmp=m_curBmp->GetGdiBitmap();//bmp¿ÉÄÜÎªNULL
+        HBITMAP bmp=m_curBmp->GetGdiBitmap();//bmpå¯èƒ½ä¸ºNULL
         HDC hdc_desk = ::GetDC(NULL);
         m_hGetDC = CreateCompatibleDC(hdc_desk);
         ::ReleaseDC(NULL,hdc_desk);
@@ -841,7 +841,7 @@ namespace SOUI
             SkRect rcClip;
             m_SkCanvas->getClipBounds(&rcClip);
             RECT rc = {(int)rcClip.left(),(int)rcClip.top(),(int)rcClip.right(),(int)rcClip.bottom()};
-            ::InflateRect(&rc,-1,-1);//×¢ÒâĞèÒªÏòÄÚËõĞ¡Ò»¸öÏóËØ
+            ::InflateRect(&rc,-1,-1);//æ³¨æ„éœ€è¦å‘å†…ç¼©å°ä¸€ä¸ªè±¡ç´ 
             ::IntersectClipRect(m_hGetDC,rc.left,rc.top,rc.right,rc.bottom);
         }else
         {
@@ -947,21 +947,21 @@ namespace SOUI
 			skPts[1].set(halfWid,halfHei);
 
 			if(fequal(fLinearAngle,90.0f) || fequal(fLinearAngle,270.0f))
-			{//90¶È
+			{//90åº¦
 				skPts[0].set(halfWid,0.0f);
 				skPts[2].set(halfWid,hei);
 			}else if(fequal(fLinearAngle,0.0f) || fequal(fLinearAngle,180.0f))
-			{//Ë®Æ½·½Ïò
+			{//æ°´å¹³æ–¹å‘
 				skPts[0].set(0.f ,halfHei);
 				skPts[2].set(wid,halfHei);
 			}else
-			{//ÆäËü½Ç¶È
+			{//å…¶å®ƒè§’åº¦
 
 				float angleInRadians = PI*fLinearAngle/180;
 				double tanAngle = tan(angleInRadians);
 
-				SkPoint pt1a,pt2a;//Óë×óÓÒÁ½Ìõ±ßÏà½»µÄÎ»ÖÃ
-				SkPoint pt1b,pt2b;//ÓëÉÏÏÂÁ½Ìõ±ßÏà¹ØµÄÎ»ÖÃ
+				SkPoint pt1a,pt2a;//ä¸å·¦å³ä¸¤æ¡è¾¹ç›¸äº¤çš„ä½ç½®
+				SkPoint pt1b,pt2b;//ä¸ä¸Šä¸‹ä¸¤æ¡è¾¹ç›¸å…³çš„ä½ç½®
 
 				pt1a.fX=-halfWid,pt2a.fX=halfWid;
 				pt1b.fY=-halfHei,pt2b.fY=halfHei;

@@ -1,4 +1,4 @@
-#include "souistd.h"
+﻿#include "souistd.h"
 #include "res.mgr/SDpiAwareFont.h"
 
 namespace SOUI

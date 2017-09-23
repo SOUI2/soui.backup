@@ -1,4 +1,4 @@
-#ifndef __ETIMES_TIMEFUN_H___
+ï»¿#ifndef __ETIMES_TIMEFUN_H___
 #define __ETIMES_TIMEFUN_H___
 #pragma once
 
@@ -7,7 +7,7 @@
 namespace EtimesTimeFun
 {
 	//************************************
-	// Method:    »ñÈ¡ µ±Ç°ÓÃ»§µÄÓÃ»§Ä¿Â¼  
+	// Method:    è·å– å½“å‰ç”¨æˆ·çš„ç”¨æˆ·ç›®å½•  
 	//************************************
 	std::wstring Etimes_GetDateTimeFormat(SYSTEMTIME* pTime=NULL, wchar_t firstChar='-', wchar_t secondChar=':')
 	{	

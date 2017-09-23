@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "core/Swnd.h"
 #include "core/SItemPanel.h"
@@ -70,7 +70,7 @@ protected:
     void UpdateScrollBar();
     void RedrawItem(SItemPanel *pItem);
     SItemPanel *GetItemPanel(int iItem);
-    CRect CalcItemDrawRect(int iItem);//¼ÆËãitemÊµ¼Ê»æÖÆµÄÎ»ÖÃ
+    CRect CalcItemDrawRect(int iItem);//è®¡ç®—itemå®é™…ç»˜åˆ¶çš„ä½ç½®
     
     void UpdateVisibleItems();
     
@@ -112,21 +112,21 @@ protected:
 protected:
     CAutoRefPtr<ILvAdapter>           m_adapter;
     CAutoRefPtr<ILvDataSetObserver>   m_observer;
-    CAutoRefPtr<STileViewItemLocator>  m_tvItemLocator;//ÁĞ±íÏî¶¨Î»½Ó¿Ú
+    CAutoRefPtr<STileViewItemLocator>  m_tvItemLocator;//åˆ—è¡¨é¡¹å®šä½æ¥å£
     struct ItemInfo
     {
         SItemPanel *pItem;
         int nType;
     };
     
-    int                             m_iFirstVisible;//µÚÒ»¸öÏÔÊ¾ÏîË÷Òı
-    SList<ItemInfo>                 m_lstItems; //µ±Ç°ÕıÔÚÏÔÊ¾µÄÏî
+    int                             m_iFirstVisible;//ç¬¬ä¸€ä¸ªæ˜¾ç¤ºé¡¹ç´¢å¼•
+    SList<ItemInfo>                 m_lstItems; //å½“å‰æ­£åœ¨æ˜¾ç¤ºçš„é¡¹
     SItemPanel                     *m_itemCapture;//The item panel that has been set capture.
     
     int                             m_iSelItem;
     SItemPanel                     *m_pHoverItem;
     
-    SArray<SList<SItemPanel *> *>    m_itemRecycle; //item»ØÊÕÕ¾,Ã¿Ò»ÖÖÑùÊ½ÔÚ»ØÊÕÕ¾ÖĞ±£³ÖÒ»¸öÁĞ±í£¬ÒÔ±ãÖØ¸´ÀûÓÃ
+    SArray<SList<SItemPanel *> *>    m_itemRecycle; //itemå›æ”¶ç«™,æ¯ä¸€ç§æ ·å¼åœ¨å›æ”¶ç«™ä¸­ä¿æŒä¸€ä¸ªåˆ—è¡¨ï¼Œä»¥ä¾¿é‡å¤åˆ©ç”¨
     
     pugi::xml_document              m_xmlTemplate;
     int                             m_nMarginSize;

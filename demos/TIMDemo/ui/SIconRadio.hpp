@@ -1,11 +1,11 @@
-#ifndef __ICONRADIO_H__
+ï»¿#ifndef __ICONRADIO_H__
 #define __ICONRADIO_H__
 
 //#include "core/SWnd.h"
 namespace SOUI
 {
 
-// µ«Í¼Æ¬µÄ  µ¥Ñ¡¿ò 
+// ä½†å›¾ç‰‡çš„  å•é€‰æ¡† 
 class SIconRadio : public SRadioBox
 {
 public:

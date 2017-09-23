@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "souistd.h"
 #include "core/Sskin.h"
 #include "ExtendSkins.h"
@@ -77,7 +77,7 @@ void SColorMask::MakeCacheApha()
     GETRENDERFACTORY->CreateBitmap(&m_bmpSkin);
     m_bmpSkin->Init(m_size.cx, m_size.cy);
 
-    // ´´½¨»­²¼²¢°ÑskinÑ¡½ø»­²¼
+    // åˆ›å»ºç”»å¸ƒå¹¶æŠŠskiné€‰è¿›ç”»å¸ƒ
     CAutoRefPtr<IRenderTarget> pRTDst;
     GETRENDERFACTORY->CreateRenderTarget(&pRTDst, 0, 0);
     CAutoRefPtr<IRenderObj> pOldBmp;
@@ -90,7 +90,7 @@ void SColorMask::MakeCacheApha()
     }
     pRTDst->SelectObject(pOldBmp);
 
-    //´ÓmaskµÄÖ¸¶¨channelÖĞ»ñµÃalphaÍ¨µÀ£¬Óëcache°´Î»ÔËËã
+    //ä»maskçš„æŒ‡å®šchannelä¸­è·å¾—alphaé€šé“ï¼Œä¸cacheæŒ‰ä½è¿ç®—
     LPBYTE pBitCache = (LPBYTE)m_bmpSkin->LockPixelBits();
     LPBYTE pBitMask = (LPBYTE)m_bmpMask->LockPixelBits();
 
@@ -109,9 +109,9 @@ void SColorMask::MakeCacheApha()
                 BYTE byAlpha = *pSrc;
                 pSrc += 4;
 
-                *pDst++ = ((*pDst) * byAlpha) >> 8;//×öpremutiply
-                *pDst++ = ((*pDst) * byAlpha) >> 8;//×öpremutiply
-                *pDst++ = ((*pDst) * byAlpha) >> 8;//×öpremutiply
+                *pDst++ = ((*pDst) * byAlpha) >> 8;//åšpremutiply
+                *pDst++ = ((*pDst) * byAlpha) >> 8;//åšpremutiply
+                *pDst++ = ((*pDst) * byAlpha) >> 8;//åšpremutiply
                 *pDst++ = byAlpha;
             }
         }

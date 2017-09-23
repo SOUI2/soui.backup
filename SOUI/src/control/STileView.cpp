@@ -1,4 +1,4 @@
-#include "souistd.h"
+ï»¿#include "souistd.h"
 #include "control/STileView.h"
 #include <algorithm>
 
@@ -115,12 +115,12 @@ void STileView::UpdateScrollBar()
     szView.cx = rcClient.Width();
     szView.cy = m_tvItemLocator ? m_tvItemLocator->GetTotalHeight() : 0;
     
-    //  ¹Ø±Õ¹ö¶¯Ìõ
+    //  å…³é—­æ»šåŠ¨æ¡
     m_wBarVisible = SSB_NULL;
     
     if(size.cy < szView.cy)
     {
-        //  ĞèÒª×İÏò¹ö¶¯Ìõ
+        //  éœ€è¦çºµå‘æ»šåŠ¨æ¡
         m_wBarVisible |= SSB_VERT;
         m_siVer.nMin  = 0;
         m_siVer.nMax  = szView.cy - 1;
@@ -129,7 +129,7 @@ void STileView::UpdateScrollBar()
     }
     else
     {
-        //  ²»ĞèÒª×İÏò¹ö¶¯Ìõ
+        //  ä¸éœ€è¦çºµå‘æ»šåŠ¨æ¡
         m_siVer.nPage = size.cy;
         m_siVer.nMin  = 0;
         m_siVer.nMax  = size.cy - 1;
@@ -138,7 +138,7 @@ void STileView::UpdateScrollBar()
     
     SetScrollPos(TRUE, m_siVer.nPos, FALSE);
     
-    //  ÖØĞÂ¼ÆËã¿Í»§Çø¼°·Ç¿Í»§Çø
+    //  é‡æ–°è®¡ç®—å®¢æˆ·åŒºåŠéå®¢æˆ·åŒº
     SSendMessage(WM_NCCALCSIZE);
     
     InvalidateRect(NULL);
@@ -225,7 +225,7 @@ BOOL STileView::OnScroll(BOOL bVertical, UINT uCode, int nPos)
     {
         UpdateVisibleItems();
         
-        //¼ÓËÙ¹ö¶¯Ê±UIµÄË¢ĞÂ
+        //åŠ é€Ÿæ»šåŠ¨æ—¶UIçš„åˆ·æ–°
         if(uCode == SB_THUMBTRACK)
         {
             ScrollUpdate();
@@ -278,7 +278,7 @@ void STileView::UpdateVisibleItems()
                 if(ii.nType == pItemInfos[iItem].nType)
                 {
                     ii = pItemInfos[iItem];
-                    pItemInfos[iItem].pItem = NULL;//±ê¼Ç¸ÃĞĞÒÑ¾­±»ÖØÓÃ
+                    pItemInfos[iItem].pItem = NULL;//æ ‡è®°è¯¥è¡Œå·²ç»è¢«é‡ç”¨
                 }
             }
             if(!ii.pItem)
@@ -287,7 +287,7 @@ void STileView::UpdateVisibleItems()
                 SList<SItemPanel *> *lstRecycle = m_itemRecycle.GetAt(ii.nType);
                 if(lstRecycle->IsEmpty())
                 {
-                    //´´½¨Ò»¸öĞÂµÄÁĞ±íÏî
+                    //åˆ›å»ºä¸€ä¸ªæ–°çš„åˆ—è¡¨é¡¹
                     ii.pItem = SItemPanel::Create(this, pugi::xml_node(), this);
                     ii.pItem->GetEventSet()->subscribeEvent(EventItemPanelClick::EventID,Subscriber(&STileView::OnItemClick,this));
                 }
@@ -302,7 +302,7 @@ void STileView::UpdateVisibleItems()
             rcItem.MoveToXY(0, 0);
             ii.pItem->Move(rcItem);
 
-            //ÉèÖÃ×´Ì¬£¬Í¬Ê±ÔİÊ±½ûÖ¹Ó¦ÓÃÏìÓ¦statechangedÊÂ¼ş¡£
+            //è®¾ç½®çŠ¶æ€ï¼ŒåŒæ—¶æš‚æ—¶ç¦æ­¢åº”ç”¨å“åº”statechangedäº‹ä»¶ã€‚
             ii.pItem->GetEventSet()->setMutedState(true);
             ii.pItem->ModifyItemState(dwState,0);
             ii.pItem->GetEventSet()->setMutedState(false);
@@ -360,8 +360,8 @@ void STileView::OnSize(UINT nType, CSize size)
     __super::OnSize(nType, size);
     
     CRect rcClient = GetClientRect();
-    m_tvItemLocator->SetTileViewWidth(rcClient.Width());//ÖØÉèTileView¿í¶È
-    UpdateScrollBar();//ÖØÉè¹ö¶¯Ìõ
+    m_tvItemLocator->SetTileViewWidth(rcClient.Width());//é‡è®¾TileViewå®½åº¦
+    UpdateScrollBar();//é‡è®¾æ»šåŠ¨æ¡
     
     UpdateVisibleItems();
 }
@@ -410,14 +410,14 @@ BOOL STileView::IsItemRedrawDelay()
 
 CRect STileView::CalcItemDrawRect(int iItem)
 {
-    //Ïà¶ÔÕû¸ö´°ÌåµÄÊµ¼Ê»æÖÆÎ»ÖÃ
+    //ç›¸å¯¹æ•´ä¸ªçª—ä½“çš„å®é™…ç»˜åˆ¶ä½ç½®
     int nOffset = m_tvItemLocator->Item2Position(iItem) - m_siVer.nPos;
     
     CRect rcClient = GetClientRect();
-    //»ñÈ¡left/right
+    //è·å–left/right
     CRect rcItem = m_tvItemLocator->GetItemRect(iItem);
     rcItem.OffsetRect(rcClient.TopLeft());
-    //ĞŞÕıtop/bottom
+    //ä¿®æ­£top/bottom
     rcItem.MoveToY(rcClient.top + m_tvItemLocator->GetMarginSize() + nOffset);
     return rcItem;
 }
@@ -485,7 +485,7 @@ LRESULT STileView::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
     else
     {
         if(uMsg==WM_LBUTTONDOWN || uMsg== WM_RBUTTONDOWN || uMsg==WM_MBUTTONDOWN)
-        {//½»¸øpanel´¦Àí
+        {//äº¤ç»™panelå¤„ç†
             __super::ProcessSwndMessage(uMsg,wParam,lParam,lRet);
         }
         
@@ -512,7 +512,7 @@ LRESULT STileView::OnMouseEvent(UINT uMsg, WPARAM wParam, LPARAM lParam)
     }
     
     if(uMsg==WM_LBUTTONUP || uMsg== WM_RBUTTONUP || uMsg==WM_MBUTTONUP)
-    {//½»¸øpanel´¦Àí
+    {//äº¤ç»™panelå¤„ç†
         __super::ProcessSwndMessage(uMsg,wParam,lParam,lRet);
     }
     SetMsgHandled(TRUE);
@@ -701,7 +701,7 @@ BOOL STileView::CreateChildren(pugi::xml_node xmlNode)
         int nItemWid = xmlTemplate.attribute(L"itemWidth").as_int(-1);
         if(nItemHei > 0 && nItemWid > 0)
         {
-            //´´½¨Ò»¸ö¶¨Î»Æ÷
+            //åˆ›å»ºä¸€ä¸ªå®šä½å™¨
             STileViewItemLocator *pItemLocator = new  STileViewItemLocator(nItemHei, nItemWid, m_nMarginSize);
             SetItemLocator(pItemLocator);
             pItemLocator->Release();

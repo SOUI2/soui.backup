@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 #include "DesignerView.h"
 #include "Adapter.h"
 class SPrintWindow : public SWindow
@@ -69,7 +69,7 @@ public:
 	}
 	void MoveWindow(CPoint &pt)
 	{
-		//if (GetParent()->IsVisible()) //“—æ≠±£÷§œ‘ æ≤≈Õœ∂Ø
+		//if (GetParent()->IsVisible()) //Â∑≤Áªè‰øùËØÅÊòæÁ§∫ÊâçÊãñÂä®
 		{
 			CRect parentRc=GetParent()->GetClientRect();			
 			if (parentRc.PtInRect(pt))
@@ -128,7 +128,7 @@ public:
 			{
 				SStringT strText;
 				GetText(iHoverItem, strText);
-				SMap<SStringT, pugi::xml_node>::CPair *p = m_controlDb->Lookup(strText);  //≤È’“
+				SMap<SStringT, pugi::xml_node>::CPair *p = m_controlDb->Lookup(strText);  //Êü•Êâæ
 				if (p)
 				{
 					ctrlNode = p->m_value;
@@ -141,14 +141,14 @@ public:
 						m_pDesignerView->UseEditorUIDef(false);
 
 						pChild->InitFromXml(p->m_value.first_child());
-						//viewœµ¡–º”…œ  ≈‰∆˜
+						//viewÁ≥ªÂàóÂä†‰∏äÈÄÇÈÖçÂô®
 						if (pChild->IsClass(SMCListView::GetClassNameW()))
 						{
 							CBaseMcAdapterFix *mcAdapter = new CBaseMcAdapterFix();
 							((SMCListView*)pChild)->SetAdapter(mcAdapter);
 							mcAdapter->Release();
 						}
-						//listview(flex)–Ë“™÷ÿ–¬¥¶¿Ì£¨”–ø’‘Ÿ¿¥
+						//listview(flex)ÈúÄË¶ÅÈáçÊñ∞Â§ÑÁêÜÔºåÊúâÁ©∫ÂÜçÊù•
 						if (pChild->IsClass(SListView::GetClassNameW()))
 						{
 							CBaseAdapterFix *listAdapter = new CBaseAdapterFix();

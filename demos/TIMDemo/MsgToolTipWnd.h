@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "resource.h"
 #include <functional>
 #include <map>
@@ -15,19 +15,19 @@ public:
 	BOOL OnInitDialog(HWND wndFocus, LPARAM lInitParam);
 	void MoveButtomRight(int nPadding=10);
 	
-	void ShowUnreadMsg();				// ÏÔÊ¾ ´°¿Ú
+	void ShowUnreadMsg();				// æ˜¾ç¤º çª—å£
 
 	void AddUnreadMsg(UINT uUserId, LPCTSTR lpUserAlias, LPCTSTR lpContent, UINT uCount=1);
 	void SetTotalCount(UINT uCount);
 protected:
-	//ÊÂ¼ş´¦ÀíÓ³Éä±í
+	//äº‹ä»¶å¤„ç†æ˜ å°„è¡¨
 	EVENT_MAP_BEGIN()
 		
 		EVENT_NAME_COMMAND(L"btn_ignore", OnBtnIgnore)
 		EVENT_NAME_COMMAND(L"btn_viewall", OnBtnViewAll)
 	EVENT_MAP_END()
 
-	//´°¿ÚÏûÏ¢´¦ÀíÓ³Éä±í
+	//çª—å£æ¶ˆæ¯å¤„ç†æ˜ å°„è¡¨
 	BEGIN_MSG_MAP_EX(CNotifyWnd)
 		MSG_WM_INITDIALOG(OnInitDialog)
 		CHAIN_MSG_MAP(SHostWnd)
@@ -41,19 +41,19 @@ protected:
 		if(NULL == pWnd)
 		{
 			SStringT sErrorText;
-			sErrorText.Format(_T("Ã»ÓĞnameÎª <%s> µÄ¿Ø¼ş"), lpWndName);
-			SMessageBox(m_hWnd, sErrorText, _T("´íÎó"), MB_ICONERROR);
+			sErrorText.Format(_T("æ²¡æœ‰nameä¸º <%s> çš„æ§ä»¶"), lpWndName);
+			SMessageBox(m_hWnd, sErrorText, _T("é”™è¯¯"), MB_ICONERROR);
 		}
 	}
 private:
-	std::function<void(UINT)>			m_funClick;			// µã»÷ÊÂ¼ş »Øµ÷
+	std::function<void(UINT)>			m_funClick;			// ç‚¹å‡»äº‹ä»¶ å›è°ƒ
 	UINT											m_uSenderId;
-	UINT											m_uTotalCount;							// ËùÓĞ Î´¶ÁµÄ×ÜÊı
-	std::map<UINT, UINT>				m_mapSenderCount;			// ËùÓĞ sender µÄÎ´¶ÁÊı 
+	UINT											m_uTotalCount;							// æ‰€æœ‰ æœªè¯»çš„æ€»æ•°
+	std::map<UINT, UINT>				m_mapSenderCount;			// æ‰€æœ‰ sender çš„æœªè¯»æ•° 
 private:
 	SImageWnd*			m_pImgUser;
-	SStatic*					m_pTextSender;				//·¢ËÍÈË 
-	SStatic*					m_pTextSendMsg;				//·¢ËÍµÄÏûÏ¢
+	SStatic*					m_pTextSender;				//å‘é€äºº 
+	SStatic*					m_pTextSendMsg;				//å‘é€çš„æ¶ˆæ¯
 	SWindow*				m_pWinTotalCount;
 	SWindow*				m_pWinCount;
 };

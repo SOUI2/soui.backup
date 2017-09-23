@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <richedit.h>
 #include <TOM.h>
 #include "wtl.mini\souimisc.h"
@@ -9,8 +9,8 @@ namespace SOUI
     class RichEditObj;
 
 
-#define RECONTENT_CARET  4294967294 /*ÄÚÈİ²åÈëÔÚ¹â±ê(2^32-1)*/
-#define RECONTENT_LAST   4294967295 /*ÄÚÈİ²åÈëÔÚ½áÎ²(2^32-2)*/
+#define RECONTENT_CARET  4294967294 /*å†…å®¹æ’å…¥åœ¨å…‰æ ‡(2^32-1)*/
+#define RECONTENT_LAST   4294967295 /*å†…å®¹æ’å…¥åœ¨ç»“å°¾(2^32-2)*/
 
     class IRichEditObjHost
     {

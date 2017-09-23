@@ -1,23 +1,23 @@
-// souitest.cpp
-// mainÔÚgtest.libÀï
+ï»¿// souitest.cpp
+// mainåœ¨gtest.libé‡Œ
 //
-//²Î¿¼ http://www.cnblogs.com/coderzh/archive/2009/04/10/1432789.html
+//å‚è€ƒ http://www.cnblogs.com/coderzh/archive/2009/04/10/1432789.html
 /*
---gtest_filter ÓÃ·¨
+--gtest_filter ç”¨æ³•
 
-¶ÔÖ´ĞĞµÄ²âÊÔ°¸Àı½øĞĞ¹ıÂË£¬Ö§³ÖÍ¨Åä·û
-?    µ¥¸ö×Ö·û
-*    ÈÎÒâ×Ö·û
--    ÅÅ³ı£¬Èç£¬-a ±íÊ¾³ıÁËa
-:    È¡»ò£¬Èç£¬a:b ±íÊ¾a»òb
-±ÈÈçÏÂÃæµÄÀı×Ó£º
+å¯¹æ‰§è¡Œçš„æµ‹è¯•æ¡ˆä¾‹è¿›è¡Œè¿‡æ»¤ï¼Œæ”¯æŒé€šé…ç¬¦
+?    å•ä¸ªå­—ç¬¦
+*    ä»»æ„å­—ç¬¦
+-    æ’é™¤ï¼Œå¦‚ï¼Œ-a è¡¨ç¤ºé™¤äº†a
+:    å–æˆ–ï¼Œå¦‚ï¼Œa:b è¡¨ç¤ºaæˆ–b
+æ¯”å¦‚ä¸‹é¢çš„ä¾‹å­ï¼š
 
-./foo_test Ã»ÓĞÖ¸¶¨¹ıÂËÌõ¼ş£¬ÔËĞĞËùÓĞ°¸Àı
-./foo_test --gtest_filter=* Ê¹ÓÃÍ¨Åä·û*£¬±íÊ¾ÔËĞĞËùÓĞ°¸Àı
-./foo_test --gtest_filter=FooTest.* ÔËĞĞËùÓĞ¡°²âÊÔ°¸ÀıÃû³Æ(testcase_name)¡±ÎªFooTestµÄ°¸Àı
-./foo_test --gtest_filter=*Null*:*Constructor* ÔËĞĞËùÓĞ¡°²âÊÔ°¸ÀıÃû³Æ(testcase_name)¡±»ò¡°²âÊÔÃû³Æ(test_name)¡±°üº¬Null»òConstructorµÄ°¸Àı¡£
-./foo_test --gtest_filter=-*DeathTest.* ÔËĞĞËùÓĞ·ÇËÀÍö²âÊÔ°¸Àı¡£
-./foo_test --gtest_filter=FooTest.*-FooTest.Bar ÔËĞĞËùÓĞ¡°²âÊÔ°¸ÀıÃû³Æ(testcase_name)¡±ÎªFooTestµÄ°¸Àı£¬µ«ÊÇ³ıÁËFooTest.BarÕâ¸ö°¸Àı
+./foo_test æ²¡æœ‰æŒ‡å®šè¿‡æ»¤æ¡ä»¶ï¼Œè¿è¡Œæ‰€æœ‰æ¡ˆä¾‹
+./foo_test --gtest_filter=* ä½¿ç”¨é€šé…ç¬¦*ï¼Œè¡¨ç¤ºè¿è¡Œæ‰€æœ‰æ¡ˆä¾‹
+./foo_test --gtest_filter=FooTest.* è¿è¡Œæ‰€æœ‰â€œæµ‹è¯•æ¡ˆä¾‹åç§°(testcase_name)â€ä¸ºFooTestçš„æ¡ˆä¾‹
+./foo_test --gtest_filter=*Null*:*Constructor* è¿è¡Œæ‰€æœ‰â€œæµ‹è¯•æ¡ˆä¾‹åç§°(testcase_name)â€æˆ–â€œæµ‹è¯•åç§°(test_name)â€åŒ…å«Nullæˆ–Constructorçš„æ¡ˆä¾‹ã€‚
+./foo_test --gtest_filter=-*DeathTest.* è¿è¡Œæ‰€æœ‰éæ­»äº¡æµ‹è¯•æ¡ˆä¾‹ã€‚
+./foo_test --gtest_filter=FooTest.*-FooTest.Bar è¿è¡Œæ‰€æœ‰â€œæµ‹è¯•æ¡ˆä¾‹åç§°(testcase_name)â€ä¸ºFooTestçš„æ¡ˆä¾‹ï¼Œä½†æ˜¯é™¤äº†FooTest.Barè¿™ä¸ªæ¡ˆä¾‹
 */
 
 #include <gtest/gtest.h>  
@@ -44,12 +44,12 @@ TEST(LayoutSize, parse) {
 }  
 
 
-TEST(Add, ¸ºÊı) {  
+TEST(Add, è´Ÿæ•°) {  
 	EXPECT_EQ(Add(-1,-2), -3);  
-	EXPECT_GT(Add(-4,-5), -6); // ¹ÊÒâµÄ  
+	EXPECT_GT(Add(-4,-5), -6); // æ•…æ„çš„  
 }  
 
-TEST(Add, ÕıÊı) {  
+TEST(Add, æ­£æ•°) {  
 	EXPECT_EQ(Add(1,2), 3);  
 	EXPECT_GT(Add(4,5), 6);  
 } 

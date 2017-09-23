@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "FolderScanHandler.h"
 //////////////////////////////////////////////////////////////////////////
 CFolderScanHandler::CFolderScanHandler(void):m_pPageRoot(NULL)

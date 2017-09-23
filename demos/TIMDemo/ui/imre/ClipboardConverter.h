@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <vector>
 #include <GdiPlus.h>
 #include <shellapi.h>
@@ -55,10 +55,10 @@ namespace SOUI
         // internal data format -> DATAOBJECT
         // The following methods will be invoked by ToDataObject
         //
-        // ¿ÉÒÔÌùµ½Õ³Ìù°åÀïµÄ¸ñÊ½£º
-        // ×Ô¶¨ÒåµÄ¸ñÊ½   SO_RichEdit_Format
+        // å¯ä»¥è´´åˆ°ç²˜è´´æ¿é‡Œçš„æ ¼å¼ï¼š
+        // è‡ªå®šä¹‰çš„æ ¼å¼   SO_RichEdit_Format
         // HTML             HTML Format
-        // Í¼Æ¬           CF_DIB
+        // å›¾ç‰‡           CF_DIB
         // Unicode          CF_UNICODETEXT
         //
         // ------------------------------------------------------------------------------
@@ -87,13 +87,13 @@ namespace SOUI
         // DATAOBJECT -> internal data format
         // The following methods will be invoked by InitFromDataObject
         //
-        // ¿ÉÒÔÊ¶±ğÕ³Ìù°åµÄ¸ñÊ½£º
-        // ×Ô¶¨ÒåµÄ¸ñÊ½   SO_RichEdit_Format
+        // å¯ä»¥è¯†åˆ«ç²˜è´´æ¿çš„æ ¼å¼ï¼š
+        // è‡ªå®šä¹‰çš„æ ¼å¼   SO_RichEdit_Format
         // HTML             HTML Format
         // ASCII            CF_TEXT
         // Unicode          CF_UNICODETEXT
-        // Í¼Æ¬           CF_DIB
-        // ÍÏ×§           CF_HDROP
+        // å›¾ç‰‡           CF_DIB
+        // æ‹–æ‹½           CF_HDROP
         // ------------------------------------------------------------------------------
 
         BOOL    InitFromCustomerFormat(LPDATAOBJECT lpdataobj);

@@ -1,5 +1,5 @@
-/*
-	BesLyric  Ò»¿î ²Ù×÷¼òµ¥¡¢¹¦ÄÜÊµÓÃµÄ ×¨ÃÅÓÃÓÚÖÆ×÷ÍøÒ×ÔÆÒôÀÖ¹ö¶¯¸è´ÊµÄ ¸è´ÊÖÆ×÷Èí¼ş¡£
+ï»¿/*
+	BesLyric  ä¸€æ¬¾ æ“ä½œç®€å•ã€åŠŸèƒ½å®ç”¨çš„ ä¸“é—¨ç”¨äºåˆ¶ä½œç½‘æ˜“äº‘éŸ³ä¹æ»šåŠ¨æ­Œè¯çš„ æ­Œè¯åˆ¶ä½œè½¯ä»¶ã€‚
     Copyright (C) 2017  BensonLaur
 
     This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 * @author     BensonLaur   
 * @date       2017/01/08
 * 
-* Describe    BSMessageBox Àà£¬ÊµÏÖSOUIµÄSMessageBoxImpl½Ó¿Ú£¬ÊµÏÖ×Ô¶¨ÒåÍ¼±êµÄÏÔÊ¾
+* Describe    BSMessageBox ç±»ï¼Œå®ç°SOUIçš„SMessageBoxImplæ¥å£ï¼Œå®ç°è‡ªå®šä¹‰å›¾æ ‡çš„æ˜¾ç¤º
 */
 
 #pragma once
@@ -32,7 +32,7 @@
 class BSMessageBox: public SMessageBoxImpl
 {
 public:
-	//ÖØÔØÉèÖÃÍ¼±êµÄº¯Êı
+	//é‡è½½è®¾ç½®å›¾æ ‡çš„å‡½æ•°
 	BOOL OnSetIcon( UINT uType )
 	{
 		SIconWnd *pIcon=(SIconWnd *)FindChildByName(NAME_MSGBOX_ICON);

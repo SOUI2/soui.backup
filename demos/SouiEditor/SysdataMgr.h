@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 
 class CSysDataMgr
@@ -22,7 +22,7 @@ public:
 	CSysDataMgr();
 	~CSysDataMgr();
 
-	// ¶ÁÈ¡ÏµÍ³Êı¾İ, ¿Ø¼şÊôĞÔ±í
+	// è¯»å–ç³»ç»Ÿæ•°æ®, æ§ä»¶å±æ€§è¡¨
 	bool LoadSysData(LPCTSTR cfgDir);
 
 	void InitProperty();
@@ -31,14 +31,14 @@ public:
 
 	void InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCtrl, CTRL_ATTR_VALUE* arr_attr);
 
-	// »ñÈ¡¿Ø¼şÃû³ÆÁĞ±í
+	// è·å–æ§ä»¶åç§°åˆ—è¡¨
 	SStringA GetCtrlAutos();
 
-	// »ñÈ¡Ö¸¶¨¿Ø¼şµÄ×Ô¶¯Íê³É×Ö´®
+	// è·å–æŒ‡å®šæ§ä»¶çš„è‡ªåŠ¨å®Œæˆå­—ä¸²
 	SStringA GetCtrlAttrAutos(SStringT ctrlname);
 
 public:
-	pugi::xml_document m_xmlDocProperty;	//property.xmlÎÄ¼şdoc
+	pugi::xml_document m_xmlDocProperty;	//property.xmlæ–‡ä»¶doc
 
 
 private:
@@ -63,9 +63,9 @@ private:
 
 	SStringT m_strConfigDir;
 
-	// ¿Ø¼şÊôĞÔ
+	// æ§ä»¶å±æ€§
 	SMap<SStringT, CTRL_ATTR_VALUE*> m_mapControl;
-	// ¿Ø¼ş»ù±¾ÑùÊ½
+	// æ§ä»¶åŸºæœ¬æ ·å¼
 	CTRL_ATTR_VALUE m_arrControlStyle;
 	// ColorMask
 	CTRL_ATTR_VALUE m_arrColorMask;

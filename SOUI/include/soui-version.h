@@ -8,7 +8,7 @@
 * @author     SOUI group   
 * @date       2016/02/23
 * 
-* Describe    SOUI∞Ê±æ∂®“Â
+* Describe    SOUI version
 */
 
 

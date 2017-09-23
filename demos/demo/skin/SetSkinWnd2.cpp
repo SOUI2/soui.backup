@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "SetSkinWnd2.h"
 #include "SDemoSkin.h"
 #include <winuser.h>
@@ -6,7 +6,7 @@
 #include <io.h>
 
 #define SKIN_CHANGE_MSG _T("{D17D208B-25FD-412C-8071-68816D4B1F9B}")
-//×¢²áÆ¤·ô¸Ä±äÏûÏ¢
+//æ³¨å†Œçš®è‚¤æ”¹å˜æ¶ˆæ¯
 UINT g_dwSkinChangeMessage = RegisterWindowMessage(SKIN_CHANGE_MSG);
 
 HRESULT CSetSkinWnd::OnSkinChangeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL bHandled)
@@ -107,7 +107,7 @@ void CSetSkinWnd::OnSetSkin(EventArgs * e)
 	SSkinLoader::getSingleton().LoadSkin(strLoadSkin);
 
 	if (_taccess(strSkinFile, 0) != 0){
-		SMessageBox(NULL, _T("ÎŞ·¨ÉèÖÃµ±Ç°Ö÷Ìâ,ÕÒ²»µ½ÏµÍ³Ö÷ÌâÎÄ¼ş¡£¸´ÖÆdemos\\demo\\themes\\ÎÄ¼ş¼Ğµ½soui¸ùÄ¿Â¼!"), _T("¾¯¸æ"), NULL);
+		SMessageBox(NULL, _T("æ— æ³•è®¾ç½®å½“å‰ä¸»é¢˜,æ‰¾ä¸åˆ°ç³»ç»Ÿä¸»é¢˜æ–‡ä»¶ã€‚å¤åˆ¶demos\\demo\\themes\\æ–‡ä»¶å¤¹åˆ°souiæ ¹ç›®å½•!"), _T("è­¦å‘Š"), NULL);
 		return;
 	}
 	if (skin)

@@ -1,4 +1,4 @@
-// imgdecoder-gdip.h : Defines the exported functions for the DLL application.
+﻿// imgdecoder-gdip.h : Defines the exported functions for the DLL application.
 //
 
 

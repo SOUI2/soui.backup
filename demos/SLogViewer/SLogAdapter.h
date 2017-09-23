@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <helper/SAdapterBase.h>
 #include <helper/STime.h>
@@ -21,7 +21,7 @@ namespace SOUI
 		int	     iLevel;
 		SStringW strTag;
 		SStringW strContent;
-		SStringW strContentLower;//Ğ¡Ğ´°æContent
+		SStringW strContentLower;//å°å†™ç‰ˆContent
 		SStringW strModule;
 		SStringW strSourceFile;
 		int      iSourceLine;
@@ -136,8 +136,8 @@ namespace SOUI
 			}
 		}
 
-		SArray<SLogInfo*> m_lstLogs;	//logÁĞ±í
-		int				  m_nLineCount;//´úÂë×ÜĞĞÊı
+		SArray<SLogInfo*> m_lstLogs;	//logåˆ—è¡¨
+		int				  m_nLineCount;//ä»£ç æ€»è¡Œæ•°
 
 		SMap<SStringW,bool> m_mapTags;	//tag
 		SMap<UINT,bool> m_mapPids;		//pid

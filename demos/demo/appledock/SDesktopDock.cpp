@@ -1,24 +1,24 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "SDesktopDock.h"
 #include <math.h>
 #include <ShellAPI.h>
 /*
-by ¶àµã
+by å¤šç‚¹
 @20150510 qq:4361031
 */
 
-//³õÊ¼»¯DOCK¹¤¾ßÀ¸Ğ¡Í¼±êµÄ¾ØĞÎÇøÓò£¬³õÊ¼Í¼±ê´óĞ¡Îª65¡Á65£¬¹¤¾ßÀ¸³¤¶È£ºm_DockLen = 650
+//åˆå§‹åŒ–DOCKå·¥å…·æ å°å›¾æ ‡çš„çŸ©å½¢åŒºåŸŸï¼Œåˆå§‹å›¾æ ‡å¤§å°ä¸º65Ã—65ï¼Œå·¥å…·æ é•¿åº¦ï¼šm_DockLen = 650
 SDesktopDock::SDesktopDock()
 {
 	memset(m_pSkin,0,sizeof(m_pSkin));
-	m_Width = 50;        //³õÊ¼¿í¶È
+	m_Width = 50;        //åˆå§‹å®½åº¦
 	m_Height = 50;
 	m_DockLen = 500;
 	m_MaxDisc = 200;
 	m_MinDisc = 40;
 	m_MaxRate = 2;
 	m_MinRate = 1;
-	m_gap = 5;         //¹¤¾ßÀ¸¾àÀëµ×±ßµÄ¾àÀë
+	m_gap = 5;         //å·¥å…·æ è·ç¦»åº•è¾¹çš„è·ç¦»
 	m_Init = FALSE;
 
 }
@@ -84,7 +84,7 @@ void SDesktopDock::OnMouseMove(UINT nFlags,CPoint pt)
 
 }
 
-//³õÊ¼»¯DOCK¹¤¾ßÀ¸Ğ¡Í¼±êµÄ¾ØĞÎÇøÓò£¬³õÊ¼Í¼±ê´óĞ¡Îª65¡Á65£¬¹¤¾ßÀ¸³¤¶È£ºm_DockLen = 650
+//åˆå§‹åŒ–DOCKå·¥å…·æ å°å›¾æ ‡çš„çŸ©å½¢åŒºåŸŸï¼Œåˆå§‹å›¾æ ‡å¤§å°ä¸º65Ã—65ï¼Œå·¥å…·æ é•¿åº¦ï¼šm_DockLen = 650
 void SDesktopDock::initDockRect()
 {
 	CRect rc;
@@ -92,15 +92,15 @@ void SDesktopDock::initDockRect()
 	int cx = rc.Width();
 	int cy = rc.Height();
 
-	//Dock¹¤¾ßÀ¸Êı¾İ³õÊ¼»¯
-	m_Width = 50;        //³õÊ¼¿í¶È
+	//Dockå·¥å…·æ æ•°æ®åˆå§‹åŒ–
+	m_Width = 50;        //åˆå§‹å®½åº¦
 	m_Height = 50;
 	m_DockLen = 500;
 	m_MaxDisc = 200;
 	m_MinDisc = 40;
 	m_MaxRate = 2;
 	m_MinRate = 1;
-	m_gap = 5;         //¹¤¾ßÀ¸¾àÀëµ×±ßµÄ¾àÀë
+	m_gap = 5;         //å·¥å…·æ è·ç¦»åº•è¾¹çš„è·ç¦»
 
 	double X = (cx - m_DockLen)/2;
 	double Y = cy - m_Height - m_gap;
@@ -136,7 +136,7 @@ void SDesktopDock::OnLButtonUp(UINT nFlags, CPoint point)
 	{
 		if (m_RTRect[i].PtInRect(point))
 		{
-			SMessageBox(NULL,SStringT().Format(_T("Ë÷Òı===%dºÅ"),i),_T("¶àµãWIFI"),MB_OK);
+			SMessageBox(NULL,SStringT().Format(_T("ç´¢å¼•===%då·"),i),_T("å¤šç‚¹WIFI"),MB_OK);
 
 			ShellExecute(NULL, _T("open"),adUrls[i], NULL, NULL, SW_SHOWNORMAL);
 			return ;
@@ -144,13 +144,13 @@ void SDesktopDock::OnLButtonUp(UINT nFlags, CPoint point)
 	}
 }
 
-//º¯Êı¹¦ÄÜ£º
-//¼ÆËãÍ¼ĞÎËõ·Å±ÈÀı¡ª¡ªm_dRate
-//rcOrign:Ô­Ê¼¾ØĞÎ£¬×îĞ¡µÄ¾ØĞÎ£¬´óĞ¡Îª50¡Á50¡£
-//dRTDisc:¼´Ê±Êó±ê×ø±êºÍrcOrignÖĞĞÄµÄ¾àÀë¡£
-//dRate:¶¯Ì¬Í¼ĞÎËõ·ÅµÄ±ÈÀı
-//MaxDisc:Êó±ê×ø±êÓëÍ¼ĞÎÖĞĞÄµÄ×îÔ¶¾àÀë£¬´óÓÚÕâ¸ö¾àÀë£¬Í¼ĞÎ²»±ä¡£
-//MinDisc:Êó±ê×ø±êÓëÍ¼ĞÎÖĞĞÄµÄ×îĞ¡¾àÀë,Ğ¡ÓÚÕâ¸ö¾àÀë£¬Í¼ĞÎ²»±ä¡£
+//å‡½æ•°åŠŸèƒ½ï¼š
+//è®¡ç®—å›¾å½¢ç¼©æ”¾æ¯”ä¾‹â€”â€”m_dRate
+//rcOrign:åŸå§‹çŸ©å½¢ï¼Œæœ€å°çš„çŸ©å½¢ï¼Œå¤§å°ä¸º50Ã—50ã€‚
+//dRTDisc:å³æ—¶é¼ æ ‡åæ ‡å’ŒrcOrignä¸­å¿ƒçš„è·ç¦»ã€‚
+//dRate:åŠ¨æ€å›¾å½¢ç¼©æ”¾çš„æ¯”ä¾‹
+//MaxDisc:é¼ æ ‡åæ ‡ä¸å›¾å½¢ä¸­å¿ƒçš„æœ€è¿œè·ç¦»ï¼Œå¤§äºè¿™ä¸ªè·ç¦»ï¼Œå›¾å½¢ä¸å˜ã€‚
+//MinDisc:é¼ æ ‡åæ ‡ä¸å›¾å½¢ä¸­å¿ƒçš„æœ€å°è·ç¦»,å°äºè¿™ä¸ªè·ç¦»ï¼Œå›¾å½¢ä¸å˜ã€‚
 void SDesktopDock::GetImageRate()
 {
 	int i;
@@ -162,10 +162,10 @@ void SDesktopDock::GetImageRate()
 
 	for (i = 0; i < MAX_COUNT; i++)
 	{
-		//È¡¶¯Ì¬¾ØĞÎÖĞĞÄµã
+		//å–åŠ¨æ€çŸ©å½¢ä¸­å¿ƒç‚¹
 		//cp = CPoint(m_RTRect[i]->X + m_RTRect[i]->Width/2.0, m_RTRect[i]->Y + m_RTRect[i]->Height/2.0);
 		cp = CPoint(m_RTRect[i].left + m_RTRect[i].Width()/2.0, m_RTRect[i].top + m_RTRect[i].Height()/2.0);
-		//¼ÆËãÊó±ê×ø±êµ½¶¯Ì¬¾ØĞÎÖĞĞÄµÄ¾àÀë	
+		//è®¡ç®—é¼ æ ‡åæ ‡åˆ°åŠ¨æ€çŸ©å½¢ä¸­å¿ƒçš„è·ç¦»	
 		dRTDisc = sqrt(double(cp.x-m_CPX)*(cp.x-m_CPX) +double(cp.y-m_CPY)*(cp.y-m_CPY));
 
 		if (dRTDisc >= m_MaxDisc)
@@ -179,14 +179,14 @@ void SDesktopDock::GetImageRate()
 			continue;
 		}		
 
-		//¼ÆËãÍ¼ĞÎËõ·Å±ÈÀı
+		//è®¡ç®—å›¾å½¢ç¼©æ”¾æ¯”ä¾‹
 		m_dRate[i] = a * dRTDisc + b;
 
 		//delete cp;
 	}
 }
 
-//¼ÆËã¹¤¾ßÀ¸µÄ¶¯Ì¬³¤¶È¡ª¡ªRTLen.
+//è®¡ç®—å·¥å…·æ çš„åŠ¨æ€é•¿åº¦â€”â€”RTLen.
 void SDesktopDock::GetDockLen()
 {
 	int i;

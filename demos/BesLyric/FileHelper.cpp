@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 *	Copyright (C) 2017  BensonLaur
 *	note: Looking up header file for license detail
 */
@@ -9,17 +9,17 @@
 LONG g_lOriWndProc = NULL;
 BOOL g_bReplaced = FALSE;
 
-//ÒÔÏÂ´úÂëºÍ2¸öº¯ÊýÀ´×Ô£ºhttp://www.cnblogs.com/kocpp/p/5349467.html
+//ä»¥ä¸‹ä»£ç å’Œ2ä¸ªå‡½æ•°æ¥è‡ªï¼šhttp://www.cnblogs.com/kocpp/p/5349467.html
 /*
-		//ÎÄ¼þ¼ÐÉèÖÃ
+		//æ–‡ä»¶å¤¹è®¾ç½®
 		if(bFloder)
 		{
-			m_ofn.hInstance = (HMODULE)GetCurrentProcess();//²»ÒªÊ¹ÓÃNULL,¿ÉÄÜÔì³ÉÎÞ·¨¶¨ÖÆµÄÎÊÌâ
+			m_ofn.hInstance = (HMODULE)GetCurrentProcess();//ä¸è¦ä½¿ç”¨NULL,å¯èƒ½é€ æˆæ— æ³•å®šåˆ¶çš„é—®é¢˜
 			m_ofn.lpfnHook = (LPOFNHOOKPROC)MyFolderProc;
 		}
 */
 
-//Ñ¡ÔñÎÄ¼þ¼ÐÊ±£¬ÉèÖÃHookProc: m_ofn.lpfnHook = (COMMDLGPROC)MyFolderProc; 
+//é€‰æ‹©æ–‡ä»¶å¤¹æ—¶ï¼Œè®¾ç½®HookProc: m_ofn.lpfnHook = (COMMDLGPROC)MyFolderProc; 
 
 LRESULT  __stdcall  _WndProc ( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam  )
 {
@@ -58,7 +58,7 @@ LRESULT  __stdcall  _WndProc ( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                 break;
             }
             //////////////////////////////////////////////////////////////////////////
-            //Èç¹ûÊÇ×ó±ßtoolbar·¢³öµÄWM_COMMONDÏûÏ¢£¨¼´µã»÷×ó±ßµÄtoolbar£©, ÔòÇå¿ÕOK°´Å¥ÅÔµÄ×éºÏ¿ò¡£
+            //å¦‚æžœæ˜¯å·¦è¾¹toolbarå‘å‡ºçš„WM_COMMONDæ¶ˆæ¯ï¼ˆå³ç‚¹å‡»å·¦è¾¹çš„toolbarï¼‰, åˆ™æ¸…ç©ºOKæŒ‰é’®æ—çš„ç»„åˆæ¡†ã€‚
             HWND hCtrl = (HWND)lParam;
             if (hCtrl == NULL)
             {
@@ -82,7 +82,7 @@ LRESULT  __stdcall  _WndProc ( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 UINT_PTR __stdcall  MyFolderProc(  HWND hdlg, UINT uiMsg, WPARAM wParam, LPARAM lParam )
 {
-    //²Î¿¼reactos¿ÉÖª£¬hdlg ÊÇÒ»¸öÒþ²ØµÄ¶Ô»°¿ò£¬Æä¸¸´°¿ÚÎª´ò¿ªÎÄ¼þ¶Ô»°¿ò£¬ OK£¬CANCEL°´Å¥µÈ¿Ø¼þµÄÏûÏ¢ÔÚ¸¸´°¿Ú´¦Àí¡£
+    //å‚è€ƒreactoså¯çŸ¥ï¼Œhdlg æ˜¯ä¸€ä¸ªéšè—çš„å¯¹è¯æ¡†ï¼Œå…¶çˆ¶çª—å£ä¸ºæ‰“å¼€æ–‡ä»¶å¯¹è¯æ¡†ï¼Œ OKï¼ŒCANCELæŒ‰é’®ç­‰æŽ§ä»¶çš„æ¶ˆæ¯åœ¨çˆ¶çª—å£å¤„ç†ã€‚
     if(uiMsg == WM_NOTIFY)
     {
         LPOFNOTIFY lpOfNotify = (LPOFNOTIFY)lParam;
@@ -100,7 +100,7 @@ UINT_PTR __stdcall  MyFolderProc(  HWND hdlg, UINT uiMsg, WPARAM wParam, LPARAM 
             {
                 if (wcslen(wcDirPath))
                 {
-                    //È¥µôÎÄ¼þ¼Ð¿ì½Ý·½Ê½µÄºó×ºÃû¡£
+                    //åŽ»æŽ‰æ–‡ä»¶å¤¹å¿«æ·æ–¹å¼çš„åŽç¼€åã€‚
                     int pathSize = wcslen(wcDirPath);
                     if (pathSize >= 4)
                     {

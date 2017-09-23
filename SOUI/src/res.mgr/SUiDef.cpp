@@ -1,4 +1,4 @@
-#include "include\souistd.h"
+ï»¿#include "include\souistd.h"
 #include "res.mgr\SUiDef.h"
 #include "helper\SplitString.h"
 #include "helper\mybuffer.h"
@@ -11,7 +11,7 @@ namespace SOUI{
 	const static WCHAR KNodeSkin[]      = L"skin";
 	const static WCHAR KNodeStyle[]     = L"style";
 	const static WCHAR KNodeObjAttr[]   = L"objattr";
-	const static TCHAR KDefFontFace[]   = _T("ËÎÌå");
+	const static TCHAR KDefFontFace[]   = _T("å®‹ä½“");
 
 
 	static pugi::xml_node GetSourceXmlNode(pugi::xml_node nodeRoot,pugi::xml_document &docInit,IResProvider *pResProvider, const wchar_t * pszName)
@@ -21,7 +21,7 @@ namespace SOUI{
 		{
 			pugi::xml_attribute attrSrc = nodeData.attribute(L"src",false);
 			if(attrSrc)
-			{//ÓÅÏÈ´ÓsrcÊôĞÔÀï»ñÈ¡Êı¾İ
+			{//ä¼˜å…ˆä»srcå±æ€§é‡Œè·å–æ•°æ®
 				SStringT strSrc = S_CW2T(attrSrc.value());
 				SStringTList strList;
 				if(2==ParseResID(strSrc,strList))
@@ -201,7 +201,7 @@ namespace SOUI{
 
 	static BOOL DefFontCheck(const SStringT & strFontName)
 	{
-		//È·±£×ÖÌå´æÔÚ
+		//ç¡®ä¿å­—ä½“å­˜åœ¨
 		HDC hdc = GetDC(NULL);
 		int hasFont = EnumFonts(hdc,strFontName,DefFontsEnumProc,0);
 		ReleaseDC(NULL,hdc);

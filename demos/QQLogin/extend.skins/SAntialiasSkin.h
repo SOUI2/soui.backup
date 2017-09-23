@@ -1,4 +1,4 @@
-/********************************************************************
+ï»¿/********************************************************************
 created:	2012/12/27
 created:	27:12:2012   14:55
 filename: 	DuiSkinGif.h
@@ -6,7 +6,7 @@ file base:	DuiSkinGif
 file ext:	h
 author:		huangjianxiong
 
-purpose:	×Ô¶¨ÒåÆ¤·ô¶ÔÏó
+purpose:	è‡ªå®šä¹‰çš®è‚¤å¯¹è±¡
 *********************************************************************/
 #pragma once
 #include <map>
@@ -84,14 +84,14 @@ namespace SOUI
 
         typedef std::map<int, FrameInfo> FrameMap;
 
-        Gdiplus::Bitmap *   _pImage;        // Ô­Ê¼Í¼Æ¬£¬µ±ÀïÃæµÄÍ¼Æ¬¶¼±£´æµ½»º´æÊ±±»ÊÍ·Å
-        FrameMap            _frames;        // Í¼Æ¬»º´æ
+        Gdiplus::Bitmap *   _pImage;        // åŸå§‹å›¾ç‰‡ï¼Œå½“é‡Œé¢çš„å›¾ç‰‡éƒ½ä¿å­˜åˆ°ç¼“å­˜æ—¶è¢«é‡Šæ”¾
+        FrameMap            _frames;        // å›¾ç‰‡ç¼“å­˜
         int                 _frameCount;
         int                 _currentFrame;
         CSize               _skinSize;
         CSize               _maxSize;
         BOOL                _isRound;
-        BOOL                _autoZoom;      // ÊÇ·ñ×Ô¶¯Ëõ·Å£¬Èç¹ûÊÇÔò°´ÕÕ_maxSizeÎª×î´óÏÔÊ¾³ß´ç½øĞĞËõ·Å
+        BOOL                _autoZoom;      // æ˜¯å¦è‡ªåŠ¨ç¼©æ”¾ï¼Œå¦‚æœæ˜¯åˆ™æŒ‰ç…§_maxSizeä¸ºæœ€å¤§æ˜¾ç¤ºå°ºå¯¸è¿›è¡Œç¼©æ”¾
 
         int                 _leftTopRadius;
         int                 _rightTopRadius;

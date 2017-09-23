@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "DlgStyleManage.h"
 #include "CDebug.h"
 #include "helper/SplitString.h"
@@ -16,7 +16,7 @@ namespace SOUI
 	}
 
 
-	//TODO:ÏûÏ¢Ó³Éä
+	//TODO:æ¶ˆæ¯æ˜ å°„
 	void SDlgStyleManage::OnClose()
 	{
 		SHostDialog::OnCancel();
@@ -29,7 +29,7 @@ namespace SOUI
 		{
 			if (m_lbStyle->GetCurSel() < 0)
 			{
-				CDebug::Debug(_T("ÇëÑ¡ÔñÆäÖÐÒ»ÏîÑùÊ½"));
+				CDebug::Debug(_T("è¯·é€‰æ‹©å…¶ä¸­ä¸€é¡¹æ ·å¼"));
 				return;
 			}
 			else

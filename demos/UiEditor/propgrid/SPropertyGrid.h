@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <control/SListbox.h>
 #include <souicoll.h>
@@ -184,7 +184,7 @@ namespace SOUI
         void OnItemValueChanged(IPropertyItem *pItem);
         void OnItemButtonClick(IPropertyItem *pItem, SStringT strType);
     protected:
-        SWindow *   m_pInplaceActiveWnd;    //ÊôĞÔÄÚÇ¶µÄ´°¿Ú
+        SWindow *   m_pInplaceActiveWnd;    //å±æ€§å†…åµŒçš„çª—å£
         
     protected:
         bool OnSelChanged(EventArgs *pEvt);
@@ -197,23 +197,23 @@ namespace SOUI
         enum {CHILD_CMDBTN=1,CHILD_INPLACEWND=2};
         void UpdateChildrenPos(UINT childs=CHILD_CMDBTN|CHILD_INPLACEWND);
         
-        int m_nIndent;          //Ëõ½ø´óĞ¡
-        int m_nNameWidth;    //ÊôĞÔÃûÕ¼ÓÃ¿Õ¼ä
+        int m_nIndent;          //ç¼©è¿›å¤§å°
+        int m_nNameWidth;    //å±æ€§åå ç”¨ç©ºé—´
         ORDERTYPE   m_orderType;
-        SList<SPropertyGroup *> m_lstGroup; //¸ù·ÖÀàÁĞ±í
+        SList<SPropertyGroup *> m_lstGroup; //æ ¹åˆ†ç±»åˆ—è¡¨
         ISkinObj  *  m_switchSkin;
-        SWindow   *  m_pCmdBtn; //ÓĞµ¯³ö°´Å¥µÄ±íÏîÊ¹ÓÃµÄ°´Å¥
+        SWindow   *  m_pCmdBtn; //æœ‰å¼¹å‡ºæŒ‰é’®çš„è¡¨é¡¹ä½¿ç”¨çš„æŒ‰é’®
                 
         CPoint      m_ptDrag;
         BOOL        m_bDraging;
 
-		COLORREF m_crGroup;       //Group±³¾°ÑÕÉ«
-		COLORREF m_crItem;        //Item±³¾°ÑÕÉ«
-		COLORREF m_crItemText;    //ItemÎÄ±¾ÑÕÉ«
-		COLORREF m_crItemSel;     //ItemÑ¡ÖĞÊ±µÄ±³¾°É«
-		SStringT m_strEditBkgndColor; //editµÄ±³¾°É«;
-		SStringT m_strEditTextColor; //editµÄÎÄ±¾ÑÕÉ«;
-		COLORREF m_crBorder;      //±ß¿òÑÕÉ«
+		COLORREF m_crGroup;       //GroupèƒŒæ™¯é¢œè‰²
+		COLORREF m_crItem;        //ItemèƒŒæ™¯é¢œè‰²
+		COLORREF m_crItemText;    //Itemæ–‡æœ¬é¢œè‰²
+		COLORREF m_crItemSel;     //Itemé€‰ä¸­æ—¶çš„èƒŒæ™¯è‰²
+		SStringT m_strEditBkgndColor; //editçš„èƒŒæ™¯è‰²;
+		SStringT m_strEditTextColor; //editçš„æ–‡æœ¬é¢œè‰²;
+		COLORREF m_crBorder;      //è¾¹æ¡†é¢œè‰²
 		SStringT    m_strEnableAutoWordSel;    /**< enable Word style auto word selection?  */
         
 		//add

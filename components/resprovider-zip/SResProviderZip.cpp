@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #pragma warning(disable:4251)
 
 #include "SResProviderZip.h"
@@ -27,14 +27,14 @@ namespace SOUI{
 		if(!m_zipFile.GetFile(strPath,zf)) return NULL;
 
 		HDC hDC = GetDC(NULL);
-		//��ȡλͼͷ
+		//读取位图头
 		BITMAPFILEHEADER *pBmpFileHeader=(BITMAPFILEHEADER *)zf.GetData(); 
-		//���λͼͷ
+		//检测位图头
 		if (pBmpFileHeader->bfType != ((WORD) ('M'<<8)|'B')) 
 		{
 			return NULL; 
 		} 
-		//�ж�λͼ����
+		//判断位图长度
 		if (pBmpFileHeader->bfSize > (UINT)zf.GetSize()) 
 		{ 
 			return NULL; 

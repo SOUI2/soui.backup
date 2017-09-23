@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "SMatrixWindow.h"
 
 namespace SOUI
@@ -57,7 +57,7 @@ void SMatrixWindow::OnPaint(IRenderTarget *pRT)
     CRect rc = GetClientRect();
     if(!m_pBgSkin)
     {
-        pRT->DrawText(_T("Ã»ÓÐÖ¸¶¨skin¶ÔÏó"),-1,rc,DT_SINGLELINE|DT_VCENTER|DT_VCENTER);
+        pRT->DrawText(_T("æ²¡æœ‰æŒ‡å®šskinå¯¹è±¡"),-1,rc,DT_SINGLELINE|DT_VCENTER|DT_VCENTER);
     }else
     {
         SMatrix m,m2;

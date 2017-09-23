@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "AVPlayer.h"
 #include <cmath>
 #include <vector>
@@ -52,7 +52,7 @@ bool CAVPlayer::Play(const std::string &strPath)
         return false;
     }
 
-    // ÑéÖ¤µØÖ·ÊÇÍøÂçµØÖ·£¬»¹ÊÇ±¾µØµØÖ·
+    // éªŒè¯åœ°å€æ˜¯ç½‘ç»œåœ°å€ï¼Œè¿˜æ˜¯æœ¬åœ°åœ°å€
     bool bURL = false;
     std::vector<std::string> vctURL;
 
@@ -63,7 +63,7 @@ bool CAVPlayer::Play(const std::string &strPath)
 
     for (unsigned i = 0; i < vctURL.size(); i++)
     {
-        // Êµ¼ÊÊ¹ÓÃÇëÅĞ¶Ï´óĞ¡Ğ´
+        // å®é™…ä½¿ç”¨è¯·åˆ¤æ–­å¤§å°å†™
         if (! strPath.compare(0, vctURL[i].size(), vctURL[i]))
         {
             bURL = true;
@@ -78,7 +78,7 @@ bool CAVPlayer::Play(const std::string &strPath)
 
     if (bURL)
     {
-        // Ê¾ÀıÍøÂçµØÖ·£ºhttp://zhangmenshiting.baidu.com/data2/music/1203175/51597064800128.mp3?xcode=cb97ecc9d44ba29122881c69e505a43849f04e8309ecc859
+        // ç¤ºä¾‹ç½‘ç»œåœ°å€ï¼šhttp://zhangmenshiting.baidu.com/data2/music/1203175/51597064800128.mp3?xcode=cb97ecc9d44ba29122881c69e505a43849f04e8309ecc859
         m = libvlc_media_new_location(m_pVLC_Inst, strPath.c_str());
     } 
     else
@@ -93,7 +93,7 @@ bool CAVPlayer::Play(const std::string &strPath)
             libvlc_media_player_set_hwnd(m_pVLC_Player, m_hWnd);
             libvlc_media_player_play(m_pVLC_Player);
 			libvlc_audio_set_volume(m_pVLC_Player, int(m_pVolume * 1.3));
-            // ÊÂ¼ş¹ÜÀí
+            // äº‹ä»¶ç®¡ç†
             libvlc_event_manager_t *vlc_evt_man = libvlc_media_player_event_manager(m_pVLC_Player);
             libvlc_event_attach(vlc_evt_man, libvlc_MediaPlayerPlaying, ::OnVLC_Event, this);
             libvlc_event_attach(vlc_evt_man, libvlc_MediaPlayerPositionChanged, ::OnVLC_Event, this);
@@ -142,7 +142,7 @@ void CAVPlayer::Volume(int iVol)
 	m_pVolume = iVol;
     if (m_pVLC_Player)
     {
-        libvlc_audio_set_volume(m_pVLC_Player,int(iVol * 1.3)); // Èç¹û·Åµ½100£¬¸Ğ¾õ±ÈÑ¸À×µÄ100ÉÙÁË30£¬ËùÒÔÕâÀïÓÃ1.3±¶ÒôÁ¿
+        libvlc_audio_set_volume(m_pVLC_Player,int(iVol * 1.3)); // å¦‚æœæ”¾åˆ°100ï¼Œæ„Ÿè§‰æ¯”è¿…é›·çš„100å°‘äº†30ï¼Œæ‰€ä»¥è¿™é‡Œç”¨1.3å€éŸ³é‡
     }
 }
 
@@ -192,7 +192,7 @@ void CAVPlayer::SeekForward()
     //int iPos = GetPos();
     //SeekTo((int)ceil(iPos * 1.1));
 
-    // Ò»´Î¿ìÍË10Ãë
+    // ä¸€æ¬¡å¿«é€€10ç§’
     if (m_pVLC_Player)
     {
         libvlc_time_t i_time = libvlc_media_player_get_time(m_pVLC_Player) + 10000;
@@ -324,7 +324,7 @@ void OnVLC_Event( const libvlc_event_t *event, void *data )
 
     if (pfn)
     {
-        pfn(data);  // ´Ë»Øµ÷º¯Êı»¹¿ÉÒÔ´«ÈëÆäËû²ÎÊı£¬³ıÁËdataÍâ£¬»¹ÓĞeventµÄ¸÷ÖÖĞÅÏ¢£¨Èçevent->u.media_player_position_changed.new_position£©µÈµÈ£¬Çë×ÔĞĞÀ©Õ¹¡£
+        pfn(data);  // æ­¤å›è°ƒå‡½æ•°è¿˜å¯ä»¥ä¼ å…¥å…¶ä»–å‚æ•°ï¼Œé™¤äº†dataå¤–ï¼Œè¿˜æœ‰eventçš„å„ç§ä¿¡æ¯ï¼ˆå¦‚event->u.media_player_position_changed.new_positionï¼‰ç­‰ç­‰ï¼Œè¯·è‡ªè¡Œæ‰©å±•ã€‚
     }   
 }
 int CAVPlayer::Save_snapshot(const char* filepath)

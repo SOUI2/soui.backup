@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <helper/SMatrix.h>
 namespace SOUI
 {
