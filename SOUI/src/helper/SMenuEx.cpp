@@ -425,6 +425,7 @@ namespace SOUI
 			{
 				szRet.cy = GetLayoutParam()->GetSpecifiedSize(Vert).toPixelSize(GetScale());
 			}
+			szRet.cy += m_style.GetMargin().top+m_style.GetMargin().bottom;
 			return szRet;
 		}
 
