@@ -18,7 +18,7 @@
   <menuItem>
     <window pos="0,0" size="-2,-2" colorBkgnd="#ffffff">
       <imgbtn pos="12,|" offset="0,-0.5" skin="TrayMenu_btn_volume" name="menu_btn_vol"/>
-      <sliderbar pos="[+12,|-5,-12,|+5" name="menu_slider_vol"/>
+      <sliderbar pos="[+12,|-10,-12,|10" name="menu_slider_vol"/>
     </window>
   </menuItem>
   <menuItem icon="0" cursor="hand">显示桌面歌词</menuItem>

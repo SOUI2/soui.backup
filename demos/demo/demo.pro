@@ -35,10 +35,10 @@ PRECOMPILED_HEADER = stdafx.h
 HEADERS += MainDlg.h \
 	   FormatMsgDlg.h \
            resource.h \
-	   adapter.h\
+	       adapter.h\
            wtlhelper/whwindow.h \
-	   ../../controls.extend/SMcListViewEx/SHeaderCtrlEx.h\
-  	   ../../controls.extend/SMcListViewEx/SMcListViewEx.h\
+	       ../../controls.extend/SMcListViewEx/SHeaderCtrlEx.h\
+  	       ../../controls.extend/SMcListViewEx/SMcListViewEx.h\
            ../../controls.extend/SWkeWebkit.h \
            ../../controls.extend/gif/SAniImgFrame.h \
            ../../controls.extend/gif/SGifPlayer.h \
@@ -64,9 +64,9 @@ HEADERS += MainDlg.h \
            ../../controls.extend/simagemaskwnd.h \
            ../../controls.extend/SRatingBar.h \
            ../../controls.extend/SFreeMoveWindow.h \
-	   ../../controls.extend/smiley/SSmileyCtrl.h \
-	   ../../controls.extend/tipwnd.h \
-	   ../../controls.extend/SMcListViewEx/STabCtrlHeaderBinder.h \
+	       ../../controls.extend/smiley/SSmileyCtrl.h \
+	       ../../controls.extend/tipwnd.h \
+	       ../../controls.extend/SMcListViewEx/STabCtrlHeaderBinder.h \
            httpsvr/filereader-i.h \
            httpsvr/genericserver.h \
            httpsvr/httpserver.h \
@@ -79,11 +79,11 @@ HEADERS += MainDlg.h \
 		   uianimation/uianimationwnd.h\
 		   appledock/sdesktopdock.h \
 		   clock/sclock.h \
-		skin/SDemoSkin.h \
-		skin/SetSkinWnd2.h \
-		skin/SSkinLoader.h \
-		trayicon/SShellNotifyIcon.h \
-		trayicon/SShellNofityHwnd2.h
+		   skin/SDemoSkin.h \
+		   skin/SetSkinWnd2.h \
+		   skin/SSkinLoader.h \
+		   trayicon/SShellNotifyIcon.h \
+		   trayicon/SShellNofityHwnd2.h
 		   
 SOURCES += demo.cpp \
            MainDlg.cpp \
@@ -91,7 +91,7 @@ SOURCES += demo.cpp \
            ../../controls.extend/SWkeWebkit.cpp \
            ../../controls.extend/SMcListViewEx/SMCListViewEx.cpp \
            ../../controls.extend/SMcListViewEx/SHeaderCtrlEx.cpp \
-	   ../../controls.extend/SMcListViewEx/STabCtrlHeaderBinder.cpp \
+	       ../../controls.extend/SMcListViewEx/STabCtrlHeaderBinder.cpp \
            ../../controls.extend/gif/SGifPlayer.cpp \
            ../../controls.extend/gif/SSkinGif.cpp \
            ../../controls.extend/gif/SSkinAPNG.cpp \
@@ -128,10 +128,10 @@ SOURCES += demo.cpp \
 		   uianimation/uianimationwnd.cpp \
 		   appledock/sdesktopdock.cpp \
 		   clock/sclock.cpp \
-	skin/SDemoSkin.cpp \
-	skin/SetSkinWnd2.cpp \
-	skin/SSkinLoader.cpp \
-	trayicon/SShellNotifyIcon.cpp \
-	trayicon/SShellNofityHwnd2.cpp
+		   skin/SDemoSkin.cpp \
+		   skin/SetSkinWnd2.cpp \
+		   skin/SSkinLoader.cpp \
+		   trayicon/SShellNotifyIcon.cpp \
+		   trayicon/SShellNofityHwnd2.cpp
 RC_FILE += demo.rc
 
