@@ -2576,7 +2576,7 @@ public: \
 	///////////////////////////////////////////////////////////////////////////////
 	// CPrintDialogExImpl - new print dialog for Windows 2000
 #else
-#if (WINVER >= 0x0500) && !defined(_WIN32_WCE)
+#if (WINVER >= 0x0500)
 
 }; // namespace WTL
 
