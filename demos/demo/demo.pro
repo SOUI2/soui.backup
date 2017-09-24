@@ -81,7 +81,9 @@ HEADERS += MainDlg.h \
 		   clock/sclock.h \
 		skin/SDemoSkin.h \
 		skin/SetSkinWnd2.h \
-		skin/SSkinLoader.h 
+		skin/SSkinLoader.h \
+		trayicon/SShellNotifyIcon.h \
+		trayicon/SShellNofityHwnd2.h
 		   
 SOURCES += demo.cpp \
            MainDlg.cpp \
@@ -128,7 +130,8 @@ SOURCES += demo.cpp \
 		   clock/sclock.cpp \
 	skin/SDemoSkin.cpp \
 	skin/SetSkinWnd2.cpp \
-	skin/SSkinLoader.cpp
-
+	skin/SSkinLoader.cpp \
+	trayicon/SShellNotifyIcon.cpp \
+	trayicon/SShellNofityHwnd2.cpp
 RC_FILE += demo.rc
 

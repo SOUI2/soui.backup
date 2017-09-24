@@ -1,32 +1,30 @@
-﻿<menuRoot skin="_skin.sys.wnd.bkgnd" iconSkin="skin_small_icons" itemHeight="26" iconPos="4,4" textOffset="5" iconBarWidth="24" maxWidth="180" minWidth="70" margin="5,5,5,5" colorBkgnd="#ff0000">
-  <menuItem hotKey="e" id="1" check="1" >导出配置</menuItem>
-  <menuItem id="2" icon="1" >导入配置</menuItem>
-  <menuItem id="3" radio="1" check="1" enable="0" colorTextDisable="#c0c0c0" >检查更新</menuItem>
-  <menuItem height="50">
-    <sliderbar pos="5,0,-5,@20" min="0" max="100" value="30" name="menu_slider"/>
-    <text pos="|0,[5" offset="-0.5,0" name="menu_text">50</text>
+﻿<menuRoot itemHeight="38" iconPos="12" iconSkin="TrayMenu_menu_ico" textOffset="18" font="face:微软雅黑,size:14" sepSkin="TrayMenu_menu_sep"  itemSkin="TrayMenu_menu_bkgnd" maxWidth="198" minWidth="198" margin="1,1,1,1" colorBorder="#cccccc" colorBkgnd="#ffffff">
+  <menuItem height="56">
+    <window pos="0,0" size="-2,-2" colorBkgnd="#ffffff">
+    <imgbtn pos="]-20,|" offset="-1,-0.5" cursor="hand" skin="TrayMenu_btn_pre" name="menu_btn_pre"/>
+    <imgbtn pos="|,|" offset="-0.5,-0.5" cursor="hand" skin="TrayMenu_btn_play" name="menu_btn_play"/>
+    <imgbtn pos="[+20,|" offset="0,-0.5" cursor="hand" skin="TrayMenu_btn_next" name="menu_btn_next"/>
+  </window>
   </menuItem>
+  <menuItem>
+    <window pos="0,0" size="-2,-2" colorBkgnd="#ffffff">
+      <imgbtn pos="12,|"  cursor="hand" offset="0,-0.5" skin="TrayMenu_btn_ilike" name="menu_btn_ilike"/>
+      <text pos="34,0,-34,-0" align="center" valign="middle" dotted="1" name="menu_btn_play" text="我是你心中的一首歌"/>
+      <imgbtn pos="-12,|"  cursor="hand" offset="-1,-0.5" skin="TrayMenu_btn_circulation" name="menu_btn_cir"/>
+    </window>
+  </menuItem>
+  <!--指定线宽的方法<sep size="-2,2"/>-->
   <sep/>
-  <menuItem colorTextHover="#ff0000" text="帮助与反馈">
-    <menuItem id="51" icon="0" >访问官网</menuItem>
-    <menuItem id="52" icon="1" >帮助指南</menuItem>
-    <menuItem id="53" icon="2" >错误提交</menuItem>
-    <menuItem id="54" icon="3" >关于SOUI</menuItem>
+  <menuItem>
+    <window pos="0,0" size="-2,-2" colorBkgnd="#ffffff">
+      <imgbtn pos="12,|" offset="0,-0.5" skin="TrayMenu_btn_volume" name="menu_btn_vol"/>
+      <sliderbar pos="[+12,|-5,-12,|+5" name="menu_slider_vol"/>
+    </window>
   </menuItem>
-  <menuItem text="换图标">
-    <menuItem id="51" icon="0" >skin1</menuItem>
-    <menuItem id="52" icon="1" >skin2</menuItem>
-    <menuItem id="53" icon="2" >skin3</menuItem>
-    <menuItem id="54" icon="3" >关于SOUI</menuItem>
-    <menuItem text="三级菜单">      
-      <menuItem id="551" icon="0" >访问官网</menuItem>
-      <menuItem id="552" icon="1" >帮助指南</menuItem>
-      <menuItem id="553" icon="2" >错误提交</menuItem>
-      <menuItem id="554" icon="3" >关于SOUI</menuItem>
-    </menuItem>
-  </menuItem>
-
-  <sep/>
-  <menuItem id="7" hotKey="c">红色调</menuItem>
-  <menuItem id="6" hotKey="x">退出(&X)</menuItem>
+  <menuItem icon="0" cursor="hand">显示桌面歌词</menuItem>
+ <sep margin="0,1,0,5"/>
+  <menuItem icon="1" cursor="hand" >设置</menuItem>
+  <sep margin="0,5,0,1"/>
+  <menuItem cursor="hand">退出登陆</menuItem>
+  <menuItem id="6" icon="2" hotKey="x" cursor="hand">退出SOUI音乐</menuItem>
 </menuRoot>

@@ -57,6 +57,7 @@
 #include "../controls.extend/smiley/ssmileyctrl.h"
 #include "skin/SDemoSkin.h"
 #include "skin/SSkinLoader.h"
+#include "trayicon/SShellNotifyIcon.h"
 
 ROBJ_IN_CPP
 
@@ -194,6 +195,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         theApp->RegisterWindowClass<SFadeFrame>();//注册渐显隐动画控件
         theApp->RegisterWindowClass<SRadioBox2>();//注册RadioBox2
         theApp->RegisterWindowClass<SCalendar2>();//注册SCalendar2
+
+		theApp->RegisterWindowClass<SShellNotifyIcon>();
 
         SSkinGif::Gdiplus_Startup();
         

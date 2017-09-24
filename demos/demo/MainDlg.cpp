@@ -31,6 +31,7 @@
 #include "skin/SetSkinWnd2.h"
 #include "../controls.extend/SMcListViewEx/SMCListViewEx.h"
 #include "adapter.h"
+#include "trayicon/SShellNotifyIcon.h"
 class CTestDropTarget:public IDropTarget
 {
 public:
@@ -973,6 +974,9 @@ LRESULT CMainDlg::OnInitDialog( HWND hWnd, LPARAM lParam )
 		pTreeView->SetAdapter(pTreeViewAdapter);
 		pTreeViewAdapter->Release();
 	}
+
+	FindChildByID2<SShellNotifyIcon>(8)->StartAni();
+
     return 0;
 }
 

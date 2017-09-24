@@ -91,5 +91,6 @@
         <include src="layout:page_about"/>
       </page>
     </tabctrl>
+    <shellnotifyicon id="008" menu="SMENUEX:menu_tray" ico="ICON_MM_ONLINE;ICON_MM_OFFLINE;ICON_Loading1;ICON_Loading2;ICON_Loading3;ICON_Loading4;ICON_Loading5;ICON_Loading6" startframe="2" duration="200" tip="SOUI小飞侠"/>
   </root>
 </SOUI>
