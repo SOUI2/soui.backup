@@ -91,4 +91,5 @@
   <imglist name="TrayMenu_btn_volume" src="ImgTrayMenu:volume" states="4"/>
   <imglist name="TrayMenu_menu_ico" src="ImgTrayMenu:menu_ico" states="3"/>
   <colorrect name="TrayMenu_menu_bkgnd" hover="#cccccc"/>
+  <colorrect name="TrayMenu_menu_sep" normal="#cccccc"/>
 </skin>

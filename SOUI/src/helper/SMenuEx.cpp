@@ -417,7 +417,11 @@ namespace SOUI
 			if (!GetLayoutParam()->IsSpecifiedSize(Vert))
 			{
 				if (m_pBgSkin)
+				{
 					szRet.cy = m_pBgSkin->GetSkinSize().cy;
+					if (szRet.cy == 0)//纯色皮肤没有size
+						szRet.cy = 1;
+				}
 				else
 					szRet.cy = 0;
 			}
@@ -437,10 +441,11 @@ namespace SOUI
 			m_pBgSkin->Draw(pRT, GetClientRect(), 0);
 			return TRUE;
 		}
-
+		void OnPaint(SOUI::IRenderTarget * pRT) { (void)pRT; }
 		SOUI_MSG_MAP_BEGIN()
+			MSG_WM_PAINT_EX(OnPaint)
 			MSG_WM_ERASEBKGND_EX(OnEraseBkgnd)
-			SOUI_MSG_MAP_END()
+		SOUI_MSG_MAP_END()
 	};
 
 	//////////////////////////////////////////////////////////////////////////

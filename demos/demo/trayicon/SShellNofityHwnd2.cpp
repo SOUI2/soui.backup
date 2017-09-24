@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "SShellNofityHwnd2.h"
 
 namespace SOUI
@@ -9,7 +9,7 @@ namespace SOUI
 		Create(L"shell_nofity_msg_windows", 0, 0, 0, 0, 0, 0, HWND_MESSAGE, nullptr);
 	}
 
-	//ÍĞÅÌÍ¨ÖªÏûÏ¢´¦Àíº¯Êı
+	//æ‰˜ç›˜é€šçŸ¥æ¶ˆæ¯å¤„ç†å‡½æ•°
 
 	LRESULT CShellNotifyHwnd2::OnIconNotify(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL)
 	{
