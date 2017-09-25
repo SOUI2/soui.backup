@@ -16,7 +16,7 @@ void  STraceA(LPCSTR pstrFormat, ...)
     if(len<MAX_TRACEBUF-1)
     {
         vsprintf_s(szBuffer, ARRAYSIZE(szBuffer)-1, pstrFormat, args);
-        strcat(szBuffer, "\n");
+        strcat_s(szBuffer, MAX_TRACEBUF, "\n");
         ::OutputDebugStringA(szBuffer);
     }
     va_end(args);
@@ -34,7 +34,7 @@ void  STraceW(LPCWSTR pstrFormat, ...)
     if(len<MAX_TRACEBUF-1)
     {
         vswprintf_s(szBuffer, ARRAYSIZE(szBuffer)-1, pstrFormat, args);
-        wcscat(szBuffer, L"\n");
+        wcscat_s(szBuffer, MAX_TRACEBUF, L"\n");
         ::OutputDebugStringW(szBuffer);
     }
     va_end(args);

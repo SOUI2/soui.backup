@@ -126,7 +126,7 @@ public:                                                             \
 #define ATTR_RECT(attribname, varname, allredraw)         \
     if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
-        swscanf(strValue,L"%d,%d,%d,%d",&varname.left,&varname.top,&varname.right,&varname.bottom);\
+        swscanf_s(strValue,L"%d,%d,%d,%d",&varname.left,&varname.top,&varname.right,&varname.bottom);\
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -136,7 +136,7 @@ public:                                                             \
 #define ATTR_SIZE(attribname, varname, allredraw)         \
     if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
-        swscanf(strValue,L"%d,%d",&varname.cx,&varname.cy);\
+        swscanf_s(strValue,L"%d,%d",&varname.cx,&varname.cy);\
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -145,7 +145,7 @@ public:                                                             \
 #define ATTR_POINT(attribname, varname, allredraw)         \
     if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
-        swscanf(strValue,L"%d,%d",&varname.x,&varname.y);\
+        swscanf_s(strValue,L"%d,%d",&varname.x,&varname.y);\
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \
@@ -155,7 +155,7 @@ public:                                                             \
 #define ATTR_FLOAT(attribname, varname, allredraw)         \
     if (0 == strAttribName.CompareNoCase(attribname))                            \
         {                                                           \
-        swscanf(strValue,L"%f",&varname);                        \
+        swscanf_s(strValue,L"%f",&varname);                        \
         hRet = allredraw ? S_OK : S_FALSE;                      \
         }                                                           \
         else                                                        \

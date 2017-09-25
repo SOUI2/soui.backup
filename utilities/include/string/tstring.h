@@ -77,7 +77,7 @@ namespace SOUI
     extern TStringData* _tstr_initDataNil;
     extern const void* _tstr_initPszNil;
     extern HINSTANCE    _tstr_Instance;
-    
+
     struct char_traits;
     struct wchar_traits;
 
@@ -169,20 +169,21 @@ namespace SOUI
         }
         static int Format(char** ppszDst, const char* pszFormat, va_list args)
         {
-            int len = _vscprintf( pszFormat, args ); // _vscprintf doesn't count terminating '\0'
-			if(len==0) return 0;
-            *ppszDst = (char*)soui_mem_wrapper::SouiMalloc(len+1);
-            vsprintf(*ppszDst, pszFormat, args);
+            int len = _vscprintf(pszFormat, args); // _vscprintf doesn't count terminating '\0'
+            if (len == 0) return 0;
+            *ppszDst = (char*)soui_mem_wrapper::SouiMalloc(len + 1);
+            // vsprintf(*ppszDst, pszFormat, args);
+            vsprintf_s(*ppszDst, len + 1, pszFormat, args);
             return len;
         }
-        
+
         static int LoadString(HINSTANCE hInst,
             UINT uID,
             char* lpBuffer,
             int nBufferMax)
-            {
-                return ::LoadStringA(hInst,uID,lpBuffer,nBufferMax);
-            }
+        {
+            return ::LoadStringA(hInst, uID, lpBuffer, nBufferMax);
+        }
     };
 
     struct wchar_traits
@@ -240,10 +241,11 @@ namespace SOUI
         }
         static int Format(wchar_t** ppszDst, const wchar_t* pszFormat, va_list args)
         {
-            int len = _vscwprintf( pszFormat, args ); // _vscprintf doesn't count terminating '\0'
-			if(len==0) return 0;
-            *ppszDst = (wchar_t*)soui_mem_wrapper::SouiMalloc((len+1)*sizeof(wchar_t));
-            vswprintf(*ppszDst, pszFormat, args);
+            int len = _vscwprintf(pszFormat, args); // _vscprintf doesn't count terminating '\0'
+            if (len == 0) return 0;
+            *ppszDst = (wchar_t*)soui_mem_wrapper::SouiMalloc((len + 1) * sizeof(wchar_t));
+            //vswprintf(*ppszDst, pszFormat, args);
+            vswprintf_s(*ppszDst, len + 1, pszFormat, args);
             return len;
         }
         static int LoadString(HINSTANCE hInst,
@@ -251,7 +253,7 @@ namespace SOUI
             wchar_t* lpBuffer,
             int nBufferMax)
         {
-            return ::LoadStringW(hInst,uID,lpBuffer,nBufferMax);
+            return ::LoadStringW(hInst, uID, lpBuffer, nBufferMax);
         }
     };
 
@@ -298,7 +300,7 @@ namespace SOUI
         TStringT(const tchar* psz, int nLength)
         {
             Init();
-            if(nLength<0) nLength = SafeStrlen(psz);
+            if (nLength < 0) nLength = SafeStrlen(psz);
             if (nLength != 0)
             {
                 if (AllocBuffer(nLength))
@@ -344,7 +346,7 @@ namespace SOUI
                 Release();
             else
             {
-                tchar sz[1] = {0};
+                tchar sz[1] = { 0 };
                 *this = sz;
             }
 
@@ -417,17 +419,17 @@ namespace SOUI
         {
             return Append(psz);
         }
-        
+
         const TStringT& operator+=(tchar ch)
         {
             return Append(ch);
         }
-        
+
         const TStringT& operator+=(const TStringT& src)
         {
             return Append(src);
         }
-        
+
         const TStringT& Append(tchar ch)
         {
             ConcatInPlace(1, &ch);
@@ -440,7 +442,7 @@ namespace SOUI
             ConcatInPlace(strCopy.GetData()->nDataLength, strCopy.m_pszData);
             return *this;
         }
-        
+
         const TStringT& Append(const TStringT& src)
         {
             TStringT strCopy(src);
@@ -525,7 +527,7 @@ namespace SOUI
         }
 
         // remove continuous occcurrences of characters in passed string, starting from right
-        TStringT & TrimRight(tchar chTarget=VK_SPACE)
+        TStringT & TrimRight(tchar chTarget = VK_SPACE)
         {
             CopyBeforeWrite();
 
@@ -556,7 +558,7 @@ namespace SOUI
         }
 
         // remove continuous occurrences of chTarget starting from left
-        TStringT & TrimLeft(tchar chTarget=VK_SPACE)
+        TStringT & TrimLeft(tchar chTarget = VK_SPACE)
         {
             CopyBeforeWrite();
 
@@ -577,7 +579,7 @@ namespace SOUI
             return *this;
         }
 
-        TStringT & Trim(tchar ch=VK_SPACE)
+        TStringT & Trim(tchar ch = VK_SPACE)
         {
             TrimRight(ch);
             TrimLeft(ch);
@@ -587,38 +589,38 @@ namespace SOUI
 
         static bool IsBlankChar(const tchar &c)
         {
-            const tchar szBlank[]={0x0a,0x0d,0x20,0x09};
-            for(int i = 0; i<ARRAYSIZE(szBlank);i++)
+            const tchar szBlank[] = { 0x0a,0x0d,0x20,0x09 };
+            for (int i = 0; i < ARRAYSIZE(szBlank); i++)
             {
-                if(c == szBlank[i]) return true;
+                if (c == szBlank[i]) return true;
             }
             return false;
         }
 
         void TrimBlank()
         {
-            if(IsEmpty()) return;
+            if (IsEmpty()) return;
 
-            const tchar * pbuf=m_pszData;
+            const tchar * pbuf = m_pszData;
             const tchar * p = pbuf;
             //look for start
-            while(*p)
+            while (*p)
             {
-                if(!IsBlankChar(*p)) break;
+                if (!IsBlankChar(*p)) break;
                 p++;
             }
-            const tchar * p1=p;   //get start
+            const tchar * p1 = p;   //get start
             //look for end
-            const tchar * p2=pbuf + GetLength()-1;
-            while(p2>=p1)
+            const tchar * p2 = pbuf + GetLength() - 1;
+            while (p2 >= p1)
             {
-                if(!IsBlankChar(*p2)) break;
+                if (!IsBlankChar(*p2)) break;
                 p2--;
             }
-            if(p2 < p1)
+            if (p2 < p1)
                 Empty();
             else
-                (*this) = TStringT<tchar, tchar_traits>(p1,(int)(p2-p1+1));
+                (*this) = TStringT<tchar, tchar_traits>(p1, (int)(p2 - p1 + 1));
         }
 
         // insert character at zero-based index; concatenates if index is past end of string
@@ -636,7 +638,7 @@ namespace SOUI
             nNewLength++;
 
             if (pData->nAllocLength < nNewLength)
-                if (! ReallocBuffer(nNewLength))
+                if (!ReallocBuffer(nNewLength))
                     return -1;
 
             // move existing bytes down
@@ -664,7 +666,7 @@ namespace SOUI
 
                 TStringData* pData = GetData();
                 if (pData->nAllocLength < nNewLength)
-                    if (! ReallocBuffer(nNewLength))
+                    if (!ReallocBuffer(nNewLength))
                         return -1;
 
                 // move existing bytes down
@@ -751,9 +753,9 @@ namespace SOUI
                 //   allocate a new buffer (slow but sure)
                 TStringData* pOldData = GetData();
                 int nOldLength = pOldData->nDataLength;
-                int nNewLength =  nOldLength + (nReplacementLen - nSourceLen) * nCount;
+                int nNewLength = nOldLength + (nReplacementLen - nSourceLen) * nCount;
                 if (pOldData->nAllocLength < nNewLength || pOldData->IsShared())
-                    if (! ReallocBuffer(nNewLength))
+                    if (!ReallocBuffer(nNewLength))
                         return -1;
 
                 // else, we just do it in-place
@@ -842,18 +844,18 @@ namespace SOUI
 
         BOOL LoadString(UINT nID)
         {
-            SASSERT_FMT(_tstr_Instance,TEXT("please init hinstance for string host using InitLoadString"));
-            tchar buf[1024+1];
-            int nChar = tchar_traits::LoadString(_tstr_Instance, nID,buf,1024);
-            if(nChar==0) return FALSE;
-            AssignCopy(nChar,buf);
+            SASSERT_FMT(_tstr_Instance, TEXT("please init hinstance for string host using InitLoadString"));
+            tchar buf[1024 + 1];
+            int nChar = tchar_traits::LoadString(_tstr_Instance, nID, buf, 1024);
+            if (nChar == 0) return FALSE;
+            AssignCopy(nChar, buf);
             return TRUE;
         }
 
         BOOL __cdecl Format(UINT nFormatID, ...)
         {
             TStringT strFormat;
-            if (! strFormat.LoadString(nFormatID))
+            if (!strFormat.LoadString(nFormatID))
             {
                 Empty();
                 return FALSE;
@@ -868,7 +870,7 @@ namespace SOUI
         void __cdecl AppendFormat(UINT nFormatID, ...)
         {
             TStringT strFormat;
-            if (! strFormat.LoadString(nFormatID))
+            if (!strFormat.LoadString(nFormatID))
                 return;
 
             va_list argList;
@@ -908,7 +910,7 @@ namespace SOUI
                 int nOldLen = pData->nDataLength;
                 if (nMinBufLength < nOldLen)
                     nMinBufLength = nOldLen;
-                if (! ReallocBuffer(nMinBufLength))
+                if (!ReallocBuffer(nMinBufLength))
                     return NULL;
             }
             SASSERT(GetData()->nRefs <= 1);
@@ -984,46 +986,82 @@ namespace SOUI
         }
 
         friend inline bool __stdcall operator==(const TStringT& s1, const TStringT& s2)
-        { return s1.Compare(s2) == 0; }
+        {
+            return s1.Compare(s2) == 0;
+        }
         friend inline bool __stdcall operator==(const TStringT& s1, const tchar* s2)
-        { return s1.Compare(s2) == 0; }
+        {
+            return s1.Compare(s2) == 0;
+        }
         friend inline bool __stdcall operator==(const tchar* s1, const TStringT& s2)
-        { return s2.Compare(s1) == 0; }
+        {
+            return s2.Compare(s1) == 0;
+        }
 
         friend inline bool __stdcall operator!=(const TStringT& s1, const TStringT& s2)
-        { return s1.Compare(s2) != 0; }
+        {
+            return s1.Compare(s2) != 0;
+        }
         friend inline bool __stdcall operator!=(const TStringT& s1, const tchar* s2)
-        { return s1.Compare(s2) != 0; }
+        {
+            return s1.Compare(s2) != 0;
+        }
         friend inline bool __stdcall operator!=(const tchar* s1, const TStringT& s2)
-        { return s2.Compare(s1) != 0; }
+        {
+            return s2.Compare(s1) != 0;
+        }
 
         friend inline bool __stdcall operator<(const TStringT& s1, const TStringT& s2)
-        { return s1.Compare(s2) < 0; }
+        {
+            return s1.Compare(s2) < 0;
+        }
         friend inline bool __stdcall operator<(const TStringT& s1, const tchar* s2)
-        { return s1.Compare(s2) < 0; }
+        {
+            return s1.Compare(s2) < 0;
+        }
         friend inline bool __stdcall operator<(const tchar* s1, const TStringT& s2)
-        { return s2.Compare(s1) > 0; }
+        {
+            return s2.Compare(s1) > 0;
+        }
 
         friend inline bool __stdcall operator>(const TStringT& s1, const TStringT& s2)
-        { return s1.Compare(s2) > 0; }
+        {
+            return s1.Compare(s2) > 0;
+        }
         friend inline bool __stdcall operator>(const TStringT& s1, const tchar* s2)
-        { return s1.Compare(s2) > 0; }
+        {
+            return s1.Compare(s2) > 0;
+        }
         friend inline bool __stdcall operator>(const tchar* s1, const TStringT& s2)
-        { return s2.Compare(s1) < 0; }
+        {
+            return s2.Compare(s1) < 0;
+        }
 
         friend inline bool __stdcall operator<=(const TStringT& s1, const TStringT& s2)
-        { return s1.Compare(s2) <= 0; }
+        {
+            return s1.Compare(s2) <= 0;
+        }
         friend inline bool __stdcall operator<=(const TStringT& s1, const tchar* s2)
-        { return s1.Compare(s2) <= 0; }
+        {
+            return s1.Compare(s2) <= 0;
+        }
         friend inline bool __stdcall operator<=(const tchar* s1, const TStringT& s2)
-        { return s2.Compare(s1) >= 0; }
+        {
+            return s2.Compare(s1) >= 0;
+        }
 
         friend inline bool __stdcall operator>=(const TStringT& s1, const TStringT& s2)
-        { return s1.Compare(s2) >= 0; }
+        {
+            return s1.Compare(s2) >= 0;
+        }
         friend inline bool __stdcall operator>=(const TStringT& s1, const tchar* s2)
-        { return s1.Compare(s2) >= 0; }
+        {
+            return s1.Compare(s2) >= 0;
+        }
         friend inline bool __stdcall operator>=(const tchar* s1, const TStringT& s2)
-        { return s2.Compare(s1) <= 0; }
+        {
+            return s2.Compare(s1) <= 0;
+        }
 
         friend inline TStringT __stdcall operator+(const TStringT& string1, const TStringT& string2)
         {
@@ -1097,11 +1135,12 @@ namespace SOUI
                 *this = TStringT(pszBuffer, nLength);
                 soui_mem_wrapper::SouiFree(pszBuffer);
                 return TRUE;
-            }else
-			{
-				Empty();
-				return FALSE;
-			}
+            }
+            else
+            {
+                Empty();
+                return FALSE;
+            }
         }
 
         void _AppendFormat(const tchar* pszFormat, va_list args)
@@ -1251,7 +1290,7 @@ namespace SOUI
 #define TSTRING_REALLOC
 #ifdef TSTRING_REALLOC
             TStringData* pData = GetData();
-            if (! pData->IsShared() && pData != _tstr_initDataNil)
+            if (!pData->IsShared() && pData != _tstr_initDataNil)
             {
                 pData = AllocData(nNewLength, pData);
                 if (pData != NULL)
@@ -1342,13 +1381,13 @@ namespace SOUI
 #    define EXPIMP_TEMPLATE extern
 #endif
 
-     #pragma warning (disable : 4231)
+#pragma warning (disable : 4231)
 
     EXPIMP_TEMPLATE template class UTILITIES_API  TStringT<char, char_traits>;
     EXPIMP_TEMPLATE template class UTILITIES_API  TStringT<wchar_t, wchar_traits>;
 
     void UTILITIES_API InitLoadString(HINSTANCE hInst);
-    
+
     typedef TStringT<char, char_traits>        SStringA;
     typedef TStringT<wchar_t, wchar_traits>     SStringW;
 
@@ -1366,41 +1405,41 @@ namespace SOUI
         typedef typename T::pctstr INARGTYPE;
         typedef T& OUTARGTYPE;
 
-        static void __cdecl CopyElements( T* pDest, const T* pSrc, size_t nElements )
+        static void __cdecl CopyElements(T* pDest, const T* pSrc, size_t nElements)
         {
-            for( size_t iElement = 0; iElement < nElements; iElement++ )
+            for (size_t iElement = 0; iElement < nElements; iElement++)
             {
                 pDest[iElement] = pSrc[iElement];
             }
         }
 
-        static void __cdecl RelocateElements(  T* pDest, T* pSrc,size_t nElements )
+        static void __cdecl RelocateElements(T* pDest, T* pSrc, size_t nElements)
         {
-            memmove_s( pDest, nElements*sizeof( T ), pSrc, nElements*sizeof( T ) );
+            memmove_s(pDest, nElements * sizeof(T), pSrc, nElements * sizeof(T));
         }
 
-        static ULONG __cdecl Hash(  INARGTYPE  str )
+        static ULONG __cdecl Hash(INARGTYPE  str)
         {
-            SASSERT( str != NULL );
+            SASSERT(str != NULL);
             ULONG nHash = 0;
             const T::_tchar * pch = str;
-            while( *pch != 0 )
+            while (*pch != 0)
             {
-                nHash = (nHash<<5)+nHash+(*pch);
+                nHash = (nHash << 5) + nHash + (*pch);
                 pch++;
             }
 
-            return( nHash );
+            return(nHash);
         }
 
-        static bool __cdecl CompareElements(  INARGTYPE str1,  INARGTYPE str2 )
+        static bool __cdecl CompareElements(INARGTYPE str1, INARGTYPE str2)
         {
-            return( T::_tchar_traits::StrCmp( str1, str2 ) == 0 );
+            return(T::_tchar_traits::StrCmp(str1, str2) == 0);
         }
 
-        static int __cdecl CompareElementsOrdered(  INARGTYPE str1,  INARGTYPE str2 )
+        static int __cdecl CompareElementsOrdered(INARGTYPE str1, INARGTYPE str2)
         {
-            return( T::_tchar_traits::StrCmp( str1, str2 ) );
+            return(T::_tchar_traits::StrCmp(str1, str2));
         }
     };
 
@@ -1419,7 +1458,7 @@ namespace SOUI
     {
     };
 
-    
+
 }//end of namespace
 
 

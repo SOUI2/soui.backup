@@ -967,6 +967,7 @@ namespace SOUI
 
 		virtual void OnScaleChanged(int nScale);
 
+		void OnEnable(BOOL bEnable, UINT nStatus);
         /**
         * SRichEdit::InitDefaultCharFormat
         * @brief    

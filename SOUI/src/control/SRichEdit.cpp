@@ -1648,6 +1648,25 @@ void SRichEdit::OnScaleChanged(int nScale)
 	OnSetFont(NULL,FALSE);//更新默认字体
 }
 
+void SRichEdit::OnEnable(BOOL bEnable, UINT nStatus)
+{
+	__super::OnEnable(bEnable, nStatus);
+	COLORREF cr;
+	if (bEnable)
+	{
+		cr = m_style.GetTextColor(0);
+		if (CR_INVALID == cr)
+			cr = 0;
+	}
+	else
+	{
+		cr = m_style.GetTextColor(3);
+	}
+
+	if (CR_INVALID != cr)
+		SetDefaultTextColor(cr);
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 SEdit::SEdit() :m_crCue(RGBA(0xcc,0xcc,0xcc,0xff)),m_strCue(this)
