@@ -950,6 +950,9 @@ namespace SOUI
     {
         int nWid=pRect->right-pRect->left;
         int nHei=pRect->bottom-pRect->top;
+		if(nWid == 0 || nHei == 0)
+			return S_OK;
+
         LPDWORD pBits;
         HBITMAP hBmp=SBitmap_GDI::CreateGDIBitmap(nWid,nHei,(void**)&pBits);
         HDC hMemDC=CreateCompatibleDC(m_hdc);
@@ -957,8 +960,10 @@ namespace SOUI
 
         SColor color(cr);
         DWORD dwColor=color.toARGB();
-        //LPDWORD p=pBits;
-        for(int i=0;i<nHei;i++)for(int j=0;j<nWid;j++) *pBits++ = dwColor;
+
+		for(int i=0;i<nHei;i++)for(int j=0;j<nWid;j++) 
+			*pBits++ = dwColor;
+
         ::BitBlt(m_hdc,pRect->left,pRect->top,nWid,nHei,hMemDC,0,0,SRCCOPY);
         ::DeleteDC(hMemDC);
         ::DeleteObject(hBmp);
