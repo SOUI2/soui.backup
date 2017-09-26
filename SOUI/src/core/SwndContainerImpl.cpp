@@ -61,7 +61,7 @@ LRESULT SwndContainerImpl::DoFrameEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
         OnActivate(LOWORD(wParam));
         break;
     case WM_ACTIVATEAPP:
-        OnActivateApp(wParam,lParam);
+        OnActivateApp((BOOL)wParam,(DWORD)lParam);
         break;
     case WM_IME_STARTCOMPOSITION:
     case WM_IME_ENDCOMPOSITION:

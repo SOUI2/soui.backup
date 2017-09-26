@@ -86,7 +86,7 @@ IFontPtr SFontPool::GetFont( const SStringW & strFont ,int scale)
 
 	pugi::xml_document docExProp;
 	pugi::xml_node nodePropEx = docExProp.append_child(L"propex");
-    for(int i=fontProp.GetCount()-1;i>=0;i--)
+    for(int i=(int)fontProp.GetCount()-1;i>=0;i--)
     {
         SStringWList strPair;
         if(2!=SplitString(fontProp[i],KPropSeprator,strPair))

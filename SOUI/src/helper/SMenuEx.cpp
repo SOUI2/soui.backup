@@ -880,7 +880,7 @@ namespace SOUI
 
 			if (bMsgQuit)
 			{
-				PostQuitMessage(msg.wParam);
+				PostQuitMessage((int)msg.wParam);
 				break;
 			}
 		}
@@ -928,7 +928,7 @@ namespace SOUI
 		}
 		else if (s_MenuData && ::IsWindow(s_MenuData->GetOwner()))
 		{
-			return ::SendMessage(s_MenuData->GetOwner(), UM_MENUEVENT, 0, (LPARAM)pEvt);
+			return (BOOL)::SendMessage(s_MenuData->GetOwner(), UM_MENUEVENT, 0, (LPARAM)pEvt);
 		}
 		else
 		{

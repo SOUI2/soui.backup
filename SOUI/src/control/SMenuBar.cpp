@@ -29,13 +29,13 @@ namespace SOUI
 		void OnLButtonUp(UINT nFlags, CPoint pt);
 		void OnLButtonDown(UINT nFlags, CPoint pt);
 
-		void OnTimer(UINT_PTR timerID);
+		void OnTimer(char timerID);
 
 		SOUI_MSG_MAP_BEGIN()
 			MSG_WM_MOUSEMOVE(OnMouseMove)
 			MSG_WM_LBUTTONDOWN(OnLButtonDown)
 			MSG_WM_LBUTTONUP(OnLButtonUp)
-			MSG_WM_TIMER(OnTimer)
+			MSG_WM_TIMER_EX(OnTimer)
 		SOUI_MSG_MAP_END()
 
 		SOUI_ATTRS_BEGIN()
@@ -120,7 +120,7 @@ namespace SOUI
 		PopMenu();
 	}
 
-	void SMenuItem::OnTimer(UINT_PTR timerID)
+	void SMenuItem::OnTimer(char timerID)
 	{
 		if (timerID == TIMER_POP)
 		{
@@ -174,7 +174,7 @@ namespace SOUI
 		if(pszTitle)
 			pNewMenu->SetWindowText(pszTitle);
 
-		if (iPos < 0) iPos = m_lstMenuItem.GetCount();
+		if (iPos < 0) iPos = (int)m_lstMenuItem.GetCount();
 		m_lstMenuItem.InsertAt(iPos, pNewMenu);
 
 		UpdateChildrenPosition();

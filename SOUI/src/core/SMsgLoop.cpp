@@ -111,7 +111,8 @@ namespace SOUI
 
     BOOL SMessageLoop::AddIdleHandler( IIdleHandler* pIdleHandler )
     {
-        return m_aIdleHandler.Add(pIdleHandler);
+        m_aIdleHandler.Add(pIdleHandler);
+		return TRUE;
     }
 
     BOOL SMessageLoop::RemoveMessageFilter( IMessageFilter* pMessageFilter )
@@ -121,7 +122,8 @@ namespace SOUI
 
     BOOL SMessageLoop::AddMessageFilter( IMessageFilter* pMessageFilter )
     {
-        return m_aMsgFilter.Add(pMessageFilter);
+        m_aMsgFilter.Add(pMessageFilter);
+		return TRUE;
     }
 
 

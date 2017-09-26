@@ -173,7 +173,7 @@ BOOL SApplication::_LoadXmlDocment( LPCTSTR pszXmlName ,LPCTSTR pszType ,pugi::x
     }
     if(!pResProvider) return FALSE;
     
-    DWORD dwSize=pResProvider->GetRawBufferSize(pszType,pszXmlName);
+    size_t dwSize=pResProvider->GetRawBufferSize(pszType,pszXmlName);
     if(dwSize==0) return FALSE;
 
     CMyBuffer<char> strXml;

@@ -602,7 +602,7 @@ void SSkinShape::SGradient::Draw(IRenderTarget *pRT, LPCRECT rcDraw, BYTE byAlph
 HRESULT SSkinShape::SCornerSize::OnAttrRadius(const SStringW strValue,BOOL bLoading)
 {
 	SStringWList values;
-	int nValues = SplitString(strValue,L',',values);
+	size_t nValues = SplitString(strValue,L',',values);
 	if(nValues == 1)
 	{
 		m_radiusX=

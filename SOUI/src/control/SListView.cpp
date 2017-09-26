@@ -234,7 +234,7 @@ namespace SOUI
     {
         if(!m_adapter) return;
         int iOldFirstVisible = m_iFirstVisible;
-        int iOldLastVisible = m_iFirstVisible + m_lstItems.GetCount();
+        int iOldLastVisible = m_iFirstVisible + (int)m_lstItems.GetCount();
         int nOldTotalHeight = m_lvItemLocator->GetTotalHeight();
 
         int iNewFirstVisible = m_lvItemLocator->Position2Item(m_siVer.nPos);
@@ -590,13 +590,13 @@ namespace SOUI
             {
                 if(!m_lstItems.IsEmpty())
                 {
-                    nNewSelItem = m_lstItems.GetHead().pItem->GetItemIndex();
+                    nNewSelItem = (int)m_lstItems.GetHead().pItem->GetItemIndex();
                 }
             }else if(nChar == VK_NEXT || nChar == VK_END)
             {
                 if(!m_lstItems.IsEmpty())
                 {
-                    nNewSelItem = m_lstItems.GetTail().pItem->GetItemIndex();
+                    nNewSelItem = (int)m_lstItems.GetTail().pItem->GetItemIndex();
                 }
             }
         }
@@ -613,7 +613,7 @@ namespace SOUI
         if(iItem<0 || iItem>=m_adapter->getCount()) return;
 
         int iFirstVisible= m_iFirstVisible;
-        int iLastVisible = m_iFirstVisible + m_lstItems.GetCount();
+        int iLastVisible = m_iFirstVisible + (int)m_lstItems.GetCount();
 
         if(iItem>=iFirstVisible && iItem<iLastVisible)
         {

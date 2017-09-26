@@ -238,9 +238,9 @@ namespace SOUI
         *
         * Describe  获取tab页面数
         */
-        size_t GetItemCount()
+        int GetItemCount()
         {
-            return m_lstPages.GetCount();
+            return (int)m_lstPages.GetCount();
         }
         /**
         * STabCtrl::GetItem

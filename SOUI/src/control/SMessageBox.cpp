@@ -231,7 +231,7 @@ namespace SOUI
     }
 
     //////////////////////////////////////////////////////////////////////////
-    int SMessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType )
+    INT_PTR SMessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType )
     {
         SMessageBoxImpl msgBox;
         return msgBox.MessageBox(hWnd,lpText,lpCaption,uType);

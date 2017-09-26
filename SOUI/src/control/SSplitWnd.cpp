@@ -428,7 +428,7 @@ namespace SOUI
         //step 2: 将残余量按优先级从低到高顺序在窗口的极值间分配
         if(remain)
         {
-            for(int i=lstPriority.GetCount()-1;i>=0;i--)
+            for(int i= (int)lstPriority.GetCount()-1;i>=0;i--)
             {
                 PANESIZE & pane = lstPriority[i];
                 if(remain > 0)

@@ -291,11 +291,11 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
 
     pRT->PushClipRect(&rcTitle,RGN_AND);
 
-    for(size_t i=0; i<GetItemCount(); i++)
+    for(int i=0; i<(int)GetItemCount(); i++)
     {
         dwState=WndState_Normal;
-        if(i == (size_t)m_nCurrentPage) dwState=WndState_PushDown;
-        else if(i== (size_t)m_nHoverTabItem) dwState=WndState_Hover;
+        if(i == m_nCurrentPage) dwState=WndState_PushDown;
+        else if(i== m_nHoverTabItem) dwState=WndState_Hover;
 
         GetItemRect(i,rcItem);
 		if(rcItem.IsRectEmpty()) continue;
@@ -382,7 +382,7 @@ BOOL STabCtrl::RemoveItem( int nIndex , int nSelPage/*=0*/)
     if (m_nCurrentPage == nIndex)
     {
         if(nSelPage<0) nSelPage=0;
-        if(nSelPage>=(int)GetItemCount()) nSelPage=GetItemCount()-1;
+        if(nSelPage>= GetItemCount()) nSelPage=GetItemCount()-1;
         m_nCurrentPage=-1;
         SetCurSel(nSelPage);
     }else
@@ -452,7 +452,7 @@ void STabCtrl::OnMouseMove( UINT nFlags, CPoint point )
 
 void STabCtrl::OnDestroy()
 {
-    for(int i=GetItemCount()-1; i>=0; i--)
+    for(int i = GetItemCount()-1; i>=0; i--)
     {
         DestroyChild(m_lstPages[i]);
     }
@@ -622,7 +622,7 @@ int STabCtrl::InsertItem( pugi::xml_node xmlNode,int iInsert/*=-1*/,BOOL bLoadin
     pChild->InitFromXml(xmlNode);
     pChild->GetLayoutParam()->SetMatchParent(Both);
     
-    if(iInsert==-1) iInsert=m_lstPages.GetCount();
+    if(iInsert==-1) iInsert = (int)m_lstPages.GetCount();
     m_lstPages.InsertAt(iInsert,pChild);
 
     if(!bLoading )
@@ -838,8 +838,8 @@ void STabCtrl::TextOutV(IRenderTarget *pRT,int x,int y , const SStringT & strTex
     {
         LPTSTR p2 = SStringT::_tchar_traits::CharNext(p);
         SIZE szWord;
-        pRT->MeasureText(p,p2-p,&szWord);
-        pRT->TextOut(x,y,p,p2-p);
+        pRT->MeasureText(p,(int)(p2-p),&szWord);
+        pRT->TextOut(x,y,p,(int)(p2-p));
         p = p2;
         y += szWord.cy;
     }
@@ -855,7 +855,7 @@ SIZE STabCtrl::MeasureTextV(IRenderTarget *pRT, const SStringT & strText)
     {
         LPTSTR p2 = SStringT::_tchar_traits::CharNext(p);
         SIZE szWord;
-        pRT->MeasureText(p,p2-p,&szWord);
+        pRT->MeasureText(p,(int)(p2-p),&szWord);
         szRet.cx = (std::max)(szRet.cx,szWord.cx);
         szRet.cy += szWord.cy;
         p = p2;

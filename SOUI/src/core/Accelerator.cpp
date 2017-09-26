@@ -117,7 +117,7 @@ namespace SOUI
         TCHAR szBuf[101]={0};//保证字符串结束有两个结束符
         WORD wModifier=0;
         WORD wKey=0;
-        int nKeyLen=_tcslen(pszAccelKey);
+        int nKeyLen=(int)_tcslen(pszAccelKey);
         if(_tcslen(pszAccelKey)>=100) return 0;
         _tcscpy(szBuf,pszAccelKey);
         CharLowerBuff(szBuf,nKeyLen);

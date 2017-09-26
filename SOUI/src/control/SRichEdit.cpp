@@ -651,7 +651,7 @@ LRESULT SRichEdit::OnCreate( LPVOID )
     m_pTxtHost->GetTextService()->TxSendMessage(WM_KILLFOCUS, 0, 0, 0);
 
     // set IME
-    DWORD dw = SSendMessage(EM_GETLANGOPTIONS);
+    DWORD dw = (DWORD)SSendMessage(EM_GETLANGOPTIONS);
     dw |= IMF_AUTOKEYBOARD | IMF_DUALFONT | IMF_UIFONTS;
     dw &= ~IMF_AUTOFONT;
     SSendMessage(EM_SETLANGOPTIONS, 0, dw);
@@ -1173,11 +1173,11 @@ void SRichEdit::OnRButtonDown( UINT nFlags, CPoint point )
             point.Offset(rcCantainer.TopLeft());
             HWND hHost=GetContainer()->GetHostHwnd();
             ::ClientToScreen(hHost,&point);
-            BOOL canPaste=SSendMessage(EM_CANPASTE,0);
+            BOOL canPaste=(BOOL)SSendMessage(EM_CANPASTE,0);
             DWORD dwStart=0,dwEnd=0;
             SSendMessage(EM_GETSEL,(WPARAM)&dwStart,(LPARAM)&dwEnd);
             BOOL hasSel=dwStart<dwEnd;
-            UINT uLen=SSendMessage(WM_GETTEXTLENGTH ,0,0);
+            UINT uLen=(UINT)SSendMessage(WM_GETTEXTLENGTH ,0,0);
             BOOL bReadOnly=m_dwStyle&ES_READONLY;
             EnableMenuItem(menu.m_hMenu,MENU_CUT,MF_BYCOMMAND|((hasSel&&(!bReadOnly))?0:MF_GRAYED));
             EnableMenuItem(menu.m_hMenu,MENU_COPY,MF_BYCOMMAND|(hasSel?0:MF_GRAYED));
@@ -1396,7 +1396,7 @@ LRESULT SRichEdit::OnSetText(UINT uMsg,WPARAM wparam,LPARAM lparam)
 
     if (FAILED(hr)) return 0;
     // Update succeeded.
-    ULONG cNewText = lparam?_tcslen((LPCTSTR) lparam):0;
+    ULONG cNewText = (ULONG)(lparam?_tcslen((LPCTSTR) lparam):0);
 
     // If the new text is greater than the max set the max to the new
     // text length.
@@ -1430,7 +1430,7 @@ void SRichEdit::SetWindowText( LPCTSTR lpszText )
 SStringT SRichEdit::GetWindowText()
 {
     SStringW strRet;
-    int nLen=SSendMessage(WM_GETTEXTLENGTH);
+    int nLen=(int)SSendMessage(WM_GETTEXTLENGTH);
     wchar_t *pBuf=strRet.GetBufferSetLength(nLen+1);
     SSendMessage(WM_GETTEXT,(WPARAM)nLen+1,(LPARAM)pBuf);
     strRet.ReleaseBuffer();
@@ -1472,7 +1472,7 @@ DWORD CALLBACK EditStreamInCallback_FILE(
                                   )
 {
     FILE *f=(FILE*)dwCookie;
-    LONG nReaded = fread(pbBuff,1,cb,f);
+    LONG nReaded = (LONG)fread(pbBuff,1,cb,f);
     if(pcb) *pcb = nReaded;
     return 0;
 }
@@ -1485,7 +1485,7 @@ DWORD CALLBACK EditStreamOutCallback_FILE(
                                        )
 {
     FILE *f=(FILE*)dwCookie;
-    LONG nWrited = fwrite(pbBuff,1,cb,f);
+    LONG nWrited = (LONG)fwrite(pbBuff,1,cb,f);
     if(pcb) *pcb = nWrited;
     return 0;
 }
@@ -1534,14 +1534,14 @@ HRESULT SRichEdit::OnAttrRTF( const SStringW & strValue,BOOL bLoading )
 
         if(nSegs == 2)
         {//load from resource
-            DWORD dwSize=GETRESPROVIDER->GetRawBufferSize(lstSrc[0],lstSrc[1]);
+            size_t dwSize=GETRESPROVIDER->GetRawBufferSize(lstSrc[0],lstSrc[1]);
             if(dwSize)
             {
                 EDITSTREAM es;
                 MemBlock mb={NULL,0};
                 CMyBuffer<BYTE> mybuf;
                 mb.pBuf=mybuf.Allocate(dwSize);
-                mb.nRemains=dwSize;
+                mb.nRemains=(DWORD)dwSize;
                 GETRESPROVIDER->GetRawBuffer(lstSrc[0],lstSrc[1],mybuf,dwSize);
                 es.dwCookie=(DWORD_PTR)&mb;
                 es.pfnCallback=EditStreamInCallback_MemBlock;
@@ -1615,7 +1615,7 @@ DWORD SRichEdit::SaveRtf( LPCTSTR pszFileName )
     EDITSTREAM es;
     es.dwCookie=(DWORD_PTR)f;
     es.pfnCallback=EditStreamOutCallback_FILE;
-    DWORD dwRet=SSendMessage(EM_STREAMOUT,SF_RTF,(LPARAM)&es);
+    DWORD dwRet=(DWORD)SSendMessage(EM_STREAMOUT,SF_RTF,(LPARAM)&es);
     fclose(f);
     return dwRet;
 }
@@ -1627,7 +1627,7 @@ DWORD SRichEdit::LoadRtf( LPCTSTR pszFileName )
     EDITSTREAM es;
     es.dwCookie=(DWORD_PTR)f;
     es.pfnCallback=EditStreamInCallback_FILE;
-    DWORD dwRet=SSendMessage(EM_STREAMIN,SF_RTF,(LPARAM)&es);
+    DWORD dwRet=(DWORD)SSendMessage(EM_STREAMIN,SF_RTF,(LPARAM)&es);
     fclose(f);
     return dwRet;
 }

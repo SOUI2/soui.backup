@@ -269,7 +269,7 @@ BOOL SListBox::CreateChildren(pugi::xml_node xmlNode)
 void SListBox::LoadItemAttribute(pugi::xml_node xmlNode, LPLBITEM pItem)
 {
     pItem->nImage=xmlNode.attribute(L"icon").as_int(pItem->nImage);
-    pItem->lParam=xmlNode.attribute(L"data").as_uint(pItem->lParam);
+    pItem->lParam=xmlNode.attribute(L"data").as_uint((UINT)pItem->lParam);
     SStringW strText = tr(GETSTRING(xmlNode.attribute(L"text").value()));
     pItem->strText =  S_CW2T(strText);
 }

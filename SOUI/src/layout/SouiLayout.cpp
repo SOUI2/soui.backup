@@ -1,8 +1,10 @@
 ﻿#include "souistd.h"
 #include "layout\SouiLayout.h"
-#include <math.h>
 #include "helper/SplitString.h"
-#include <algorithm>
+#pragma warning (push)
+#pragma warning (disable: 4985) // disable the warning message during the include
+#include <math.h>               // this is where I would normally get the warning message
+#pragma warning (pop)
 
 namespace SOUI{
     enum

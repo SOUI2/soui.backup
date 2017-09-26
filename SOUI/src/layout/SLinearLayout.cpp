@@ -113,7 +113,7 @@ namespace SOUI
 	HRESULT SLinearLayoutParam::OnAttrExtend(const SStringW & strValue,BOOL bLoading)
 	{
 		SStringWList strList;
-		int nSeg = SplitString(strValue,L',',strList);
+		size_t nSeg = SplitString(strValue,L',',strList);
 		if(nSeg==1)
 		{
 			extend_left.parseString(strList[0]);

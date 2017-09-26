@@ -31,7 +31,7 @@ namespace SOUI
 	{
 		SASSERT(pszText);
 		SASSERT(nWidth >= 0);
-		if (iItem == -1) iItem = m_arrItems.GetCount();
+		if (iItem == -1) iItem = (int)m_arrItems.GetCount();
 		SHDITEM item;
 		item.mask = 0xFFFFFFFF;
 		item.cx = nWidth;

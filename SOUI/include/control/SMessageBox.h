@@ -28,7 +28,7 @@ namespace SOUI
 
     pugi::xml_node SOUI_EXP GetMsgTemplate();
 
-    int SOUI_EXP SMessageBox(HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType);
+    INT_PTR SOUI_EXP SMessageBox(HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType);
 
 
     /** 

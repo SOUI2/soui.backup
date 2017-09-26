@@ -242,7 +242,7 @@ void STileView::UpdateVisibleItems()
         return;
     }
     int iOldFirstVisible = m_iFirstVisible;
-    int iOldLastVisible = m_iFirstVisible + m_lstItems.GetCount();
+    int iOldLastVisible = m_iFirstVisible + (int)m_lstItems.GetCount();
     
     int iNewFirstVisible = m_tvItemLocator->Position2Item(m_siVer.nPos);
     int iNewLastVisible = iNewFirstVisible;
@@ -613,14 +613,14 @@ void STileView::OnKeyDown(TCHAR nChar, UINT nRepCnt, UINT nFlags)
         {
             if(!m_lstItems.IsEmpty())
             {
-                nNewSelItem = m_lstItems.GetHead().pItem->GetItemIndex();
+                nNewSelItem = (int)(m_lstItems.GetHead().pItem->GetItemIndex());
             }
         }
         else if(nChar == VK_NEXT || nChar == VK_END)
         {
             if(!m_lstItems.IsEmpty())
             {
-                nNewSelItem = m_lstItems.GetTail().pItem->GetItemIndex();
+                nNewSelItem = (int)(m_lstItems.GetTail().pItem->GetItemIndex());
             }
         }
     }

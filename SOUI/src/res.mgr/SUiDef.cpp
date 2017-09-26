@@ -27,7 +27,7 @@ namespace SOUI{
 				if(2==ParseResID(strSrc,strList))
 				{
 					CMyBuffer<char> strXml;
-					DWORD dwSize = pResProvider->GetRawBufferSize(strList[0],strList[1]);
+					size_t dwSize = pResProvider->GetRawBufferSize(strList[0],strList[1]);
 
 					strXml.Allocate(dwSize);
 					pResProvider->GetRawBuffer(strList[0],strList[1],strXml,dwSize);
@@ -72,7 +72,7 @@ namespace SOUI{
 			SLOGFMTW(_T("warning!!!! Add ResProvider Error."));
 		}
 
-		DWORD dwSize=pResProvider->GetRawBufferSize(strUiDef[0],strUiDef[1]);
+		size_t dwSize=pResProvider->GetRawBufferSize(strUiDef[0],strUiDef[1]);
 		if(dwSize==0)
 		{
 			SLOGFMTW(_T("warning!!!! uidef was not found in the specified resprovider"));

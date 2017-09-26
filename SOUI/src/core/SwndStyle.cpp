@@ -94,7 +94,7 @@ HRESULT SwndStyle::OnAttrMarginY(const SStringW& strValue,BOOL bLoading)
 void SwndStyle::_ParseLayoutSize4(const SStringW & strValue, SLayoutSize layoutSizes[])
 {
 	SStringWList values;
-	int nValues = SplitString(strValue, L',', values);
+	size_t nValues = SplitString(strValue, L',', values);
 	if (nValues == 1)
 	{
 		layoutSizes[0] = layoutSizes[1] = layoutSizes[2] = layoutSizes[3] = SLayoutSize::fromString(values[0]);
