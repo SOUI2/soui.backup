@@ -1532,3 +1532,21 @@ void CMainDlg::OnTimer(UINT_PTR idEvent)
 		PostQuitMessage(-3);
 	}
 }
+
+void CMainDlg::OnCbxInterpolotorChange(EventArgs *e)
+{
+	EventCBSelChange *e2=sobj_cast<EventCBSelChange>(e);
+	SComboBox *pCbx = sobj_cast<SComboBox>(e2->sender);
+	if(e2->nCurSel!=-1)
+	{
+		SStringT str = pCbx->GetLBText(e2->nCurSel);
+		str=str.Mid(1,str.GetLength()-1-strlen("Interpolator"));
+		IInterpolator * pInterpolator = SApplication::getSingleton().CreateInterpolator(str);
+		if(pInterpolator)
+		{
+			SInterpolatorView *pView = FindChildByID2<SInterpolatorView>(R.id.view_interpolator);
+			pView->SetInterpolator(pInterpolator);
+			pInterpolator->Release();
+		}
+	}
+}

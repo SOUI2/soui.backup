@@ -194,10 +194,13 @@ protected:
 	bool OnEventThreadStop(EventArgs *e);
 	bool OnEventThread(EventArgs *e);
 	void OnBtnOpenWrapContent();
+	
+	void OnCbxInterpolotorChange(EventArgs *e);
 
 	HRESULT OnSkinChangeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL bHandled);
     //UI控件的事件及响应函数映射表
 	EVENT_MAP_BEGIN()
+		EVENT_ID_HANDLER(R.id.cbx_interpolator,EventCBSelChange::EventID,OnCbxInterpolotorChange)
 		EVENT_ID_COMMAND(1, OnClose)
 		EVENT_ID_COMMAND(2, OnMaximize)
 		EVENT_ID_COMMAND(3, OnRestore)

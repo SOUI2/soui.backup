@@ -31,6 +31,7 @@
 #include "../controls.extend/SFreeMoveWindow.h"
 #include "../controls.extend/tipwnd.h"
 
+#include "SInterpolatorView.h"
 
 using namespace SOUI;
 

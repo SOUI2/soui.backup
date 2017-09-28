@@ -188,6 +188,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         theApp->RegisterWindowClass<SDesktopDock>();//注册SDesktopDock
         theApp->RegisterWindowClass<SImageMaskWnd>();//注册SImageMaskWnd
         theApp->RegisterWindowClass<SRatingBar>();//注册SRatingBar
+		theApp->RegisterWindowClass<SInterpolatorView>();
         if(SUCCEEDED(CUiAnimation::Init()))
         {
             theApp->RegisterWindowClass<SUiAnimationWnd>();//注册动画控件

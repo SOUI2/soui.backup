@@ -308,6 +308,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SInterpolatorView.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\controls.extend\sipaddressctrl.cpp"
 				>
 			</File>
@@ -522,6 +526,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SInterpolatorView.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\controls.extend\sipaddressctrl.h"
 				>
 			</File>
@@ -678,6 +686,10 @@
 		</Filter>
 		<File
 			RelativePath="demo.rc"
+			>
+		</File>
+		<File
+			RelativePath=".\uires\xml\page_animator.xml"
 			>
 		</File>
 	</Files>

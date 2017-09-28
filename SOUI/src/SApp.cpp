@@ -23,7 +23,7 @@
 #include "layout/SouiLayout.h"
 #include "layout/SLinearLayout.h"
 #include "layout/SGridLayout.h"
-
+#include "animator/SInterpolatorImpl.h"
 
 
 namespace SOUI
@@ -118,6 +118,7 @@ SApplication::SApplication(IRenderFactory *pRendFactory,HINSTANCE hInst,LPCTSTR 
 	pSysObjRegister->RegisterLayouts(this);
 	pSysObjRegister->RegisterSkins(this);
 	pSysObjRegister->RegisterWindows(this);
+	pSysObjRegister->RegisterInterpolator(this);
 	pSysObjRegister->Release();
 
 }
@@ -340,6 +341,11 @@ ISkinObj * SApplication::CreateSkinByName(LPCWSTR pszSkinClass) const
 }
 
 
+IInterpolator * SApplication::CreateInterpolator(LPCWSTR pszName) const
+{
+	return (IInterpolator*)CreateObject(SObjectInfo(pszName, Interpolator));
+}
+
 
 void SApplication::SetLogManager(ILog4zManager * pLogMgr)
 {
@@ -444,6 +450,19 @@ void SObjectDefaultRegister::RegisterLayouts(SObjectFactoryMgr *objFactory)
 	objFactory->TplRegisterFactory<SHBox>();
 	objFactory->TplRegisterFactory<SVBox>();
 	objFactory->TplRegisterFactory<SGridLayout>();
+}
+
+void SObjectDefaultRegister::RegisterInterpolator(SObjectFactoryMgr *objFactory)
+{
+	objFactory->TplRegisterFactory<SLinearInterpolator>();
+	objFactory->TplRegisterFactory<SAccelerateInterpolator>();
+	objFactory->TplRegisterFactory<SDecelerateInterpolator>();
+ 	objFactory->TplRegisterFactory<SAccelerateDecelerateInterpolator>();
+ 	objFactory->TplRegisterFactory<SAnticipateInterpolator>();
+ 	objFactory->TplRegisterFactory<SAnticipateOvershootInterpolator>();
+ 	objFactory->TplRegisterFactory<SBounceInterpolator>();
+ 	objFactory->TplRegisterFactory<SCycleInterpolator>();
+ 	objFactory->TplRegisterFactory<SOvershootInterpolator>();
 }
 
 }//namespace SOUI

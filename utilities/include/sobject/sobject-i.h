@@ -76,6 +76,7 @@ namespace SOUI
 		Window,
 		Skin,
 		Layout,
+		Interpolator,
 	};
 
 	/**

@@ -20,7 +20,7 @@
 #include "interface/stooltip-i.h"
 #include "interface/slog-i.h"
 #include "interface/SAttrStorage-i.h"
-
+#include "interface/sinterpolator-i.h"
 #include "control/RealWndHandler-i.h"
 
 #include "res.mgr/SResProviderMgr.h"
@@ -61,6 +61,7 @@ interface ISystemObjectRegister : public IObjRef
 	virtual void RegisterLayouts(SObjectFactoryMgr *objFactory)  = 0;
 	virtual void RegisterSkins(SObjectFactoryMgr *objFactory)  = 0;
 	virtual void RegisterWindows(SObjectFactoryMgr *objFactory)  = 0;
+	virtual void RegisterInterpolator(SObjectFactoryMgr *objFactory)  = 0;
 };
 
 class SOUI_EXP SObjectDefaultRegister : public TObjRefImpl<ISystemObjectRegister>
@@ -70,6 +71,7 @@ public:
 	void RegisterWindows(SObjectFactoryMgr *objFactory);
 	void RegisterSkins(SObjectFactoryMgr *objFactory);
 	void RegisterLayouts(SObjectFactoryMgr *objFactory);
+	void RegisterInterpolator(SObjectFactoryMgr *objFactory);
 };
 
 /** 
@@ -294,7 +296,7 @@ public:
 
 	virtual SWindow * CreateWindowByName(LPCWSTR pszWndClass) const;
 	virtual ISkinObj * CreateSkinByName(LPCWSTR pszSkinClass) const;
-	
+	virtual IInterpolator * CreateInterpolator(LPCWSTR pszName) const;
 protected:
 	virtual void RegisterSystemObjects(){}
 
