@@ -1,5 +1,6 @@
 ﻿#include "souistd.h"
 #include "control/Stabctrl.h"
+#include "animator/SInterpolatorImpl.h"
 #include <algorithm>
 
 namespace SOUI
@@ -10,10 +11,14 @@ namespace SOUI
 		SOUI_CLASS_NAME(STabSlider, L"tabslider")
 
 	public:
-		STabSlider(STabCtrl *pTabCtrl, int iFrom, int iTo, int nSteps, int nType) :m_pTabCtrl(pTabCtrl), m_nSteps(nSteps), m_iStep(0)
+		STabSlider(STabCtrl *pTabCtrl, int iFrom, int iTo, int nSteps, int nType,IInterpolator *pInterpolator)
+			: m_pTabCtrl(pTabCtrl)
+			, m_aniInterpoloator(pInterpolator)
+			, m_nSteps(nSteps)
+			, m_iStep(0)
 		{
 			SASSERT(pTabCtrl);
-			//             m_style.m_bBkgndBlend = false;//don't blend with backgrand.目前这个属性还有点问题，暂时关闭该功能。
+			SASSERT(pInterpolator);
 
 			CRect rcPage = pTabCtrl->GetChildrenLayoutRect();
 			if (nType == 0)
@@ -38,13 +43,17 @@ namespace SOUI
 					if (iFrom < iTo)
 					{// move up 
 						pt.x = pt.y = 0;
-						m_nStepLen = rcPage.Height() / nSteps;
+						m_nFrom = 0;
+						m_nTo = rcPage.Height();
+						//m_nAniRange = rcPage.Height();
 					}
 					else
 					{// move down
 						pt.x = 0, pt.y = rcPage.Height();
 						m_ptOffset.y = rcPage.Height();
-						m_nStepLen = -rcPage.Height() / nSteps;
+						m_nFrom = rcPage.Height();
+						m_nTo = 0;
+//						m_nAniRange = -rcPage.Height();
 					}
 				}
 				else
@@ -52,13 +61,17 @@ namespace SOUI
 					if (iFrom < iTo)
 					{// move left
 						pt.x = pt.y = 0;
-						m_nStepLen = rcPage.Width() / nSteps;
+						m_nFrom = 0;
+						m_nTo = rcPage.Width();
+						//m_nAniRange = rcPage.Width();
 					}
 					else
 					{
 						pt.x = rcPage.Width(), pt.y = 0;
 						m_ptOffset.x = rcPage.Width();
-						m_nStepLen = -rcPage.Width() / nSteps;
+						m_nFrom = rcPage.Width();
+						m_nTo = 0;
+						//m_nAniRange = -rcPage.Width();
 					}
 				}
 				pt -= rcPage.TopLeft();
@@ -124,13 +137,17 @@ namespace SOUI
 					if (iFrom < iTo)
 					{// move up 
 						pt.x = pt.y = 0;
-						m_nStepLen = rcPage.Height() / nSteps;
+						m_nFrom = 0;
+						m_nTo = rcPage.Height();
+						//m_nAniRange = rcPage.Height();
 					}
 					else
 					{// move down
 						pt.x = 0, pt.y = rcPage.Height();
 						m_ptOffset.y = rcPage.Height();
-						m_nStepLen = -rcPage.Height() / nSteps;
+						m_nFrom = rcPage.Height();
+						m_nTo = 0;
+						//m_nAniRange = -rcPage.Height();
 					}
 				}
 				else
@@ -138,13 +155,17 @@ namespace SOUI
 					if (iFrom < iTo)
 					{// move left
 						pt.x = pt.y = 0;
-						m_nStepLen = rcPage.Width() / nSteps;
+						m_nFrom = 0;
+						m_nTo = rcPage.Width();
+						//m_nAniRange = rcPage.Width();
 					}
 					else
 					{
 						pt.x = rcPage.Width(), pt.y = 0;
 						m_ptOffset.x = rcPage.Width();
-						m_nStepLen = -rcPage.Width() / nSteps;
+						m_nFrom = rcPage.Width();
+						m_nTo = 0;
+						//m_nAniRange = -rcPage.Width();
 					}
 				}
 				pt -= rcPage.TopLeft();
@@ -202,10 +223,12 @@ namespace SOUI
 			}
 			else
 			{
+				float fPos = m_aniInterpoloator->getInterpolation(m_iStep*1.0f/m_nSteps);
+				int nOffset = m_nFrom + (int)(fPos * (m_nTo - m_nFrom));
 				if (m_bVertical)
-					m_ptOffset.y += m_nStepLen;
+					m_ptOffset.y = nOffset;
 				else
-					m_ptOffset.x += m_nStepLen;
+					m_ptOffset.x = nOffset;
 				InvalidateRect(NULL);
 			}
 		}
@@ -240,16 +263,18 @@ namespace SOUI
 
 		CAutoRefPtr<IRenderTarget> m_memRT;
 		CPoint                     m_ptOffset;
-		int                        m_nStepLen;
+		//int                        m_nAniRange;
+		int						   m_nFrom,m_nTo;
 		int                        m_nSteps;
 		int                        m_iStep;
 		bool                       m_bVertical;
+		CAutoRefPtr<IInterpolator> m_aniInterpoloator;
 		STabCtrl *                 m_pTabCtrl;
 		SOUI_MSG_MAP_BEGIN()
 			MSG_WM_PAINT_EX(OnPaint)
 			MSG_WM_SIZE(OnSize)
 			MSG_WM_DESTROY(OnDestroy)
-			SOUI_MSG_MAP_END()
+		SOUI_MSG_MAP_END()
 	};
 
 //////////////////////////////////////////////////////////////////////////
@@ -272,6 +297,9 @@ STabCtrl::STabCtrl() : m_nCurrentPage(0)
 {
     m_szTab.cx = m_szTab.cy = -1;
     m_bFocusable=TRUE;
+	//create a linear animator interpolator
+	m_aniInterpolator.Attach(SApplication::getSingleton().CreateInterpolatorByName(SLinearInterpolator::GetClassName()));
+
     m_evtSet.addEvent(EVENTID(EventTabSelChanging));
     m_evtSet.addEvent(EVENTID(EventTabSelChanged));
     m_evtSet.addEvent(EVENTID(EventTabItemHover));
@@ -530,7 +558,7 @@ BOOL STabCtrl::SetCurSel( int nIndex )
     }
     if(m_nAnimateSteps && IsVisible(TRUE) && nOldPage!=-1 && nIndex !=-1)
     {
-		m_tabSlider = new STabSlider(this, nOldPage, nIndex, m_nAnimateSteps,m_nAniamteType);
+		m_tabSlider = new STabSlider(this, nOldPage, nIndex, m_nAnimateSteps,m_nAniamteType,m_aniInterpolator);
     }else
     {
         if(nOldPage!=-1)

@@ -339,11 +339,21 @@ public:                                                             \
 #define ATTR_SKIN(attribname, varname, allredraw)                   \
     if (0 == strAttribName.CompareNoCase(attribname))               \
         {                                                           \
-        varname = GETSKIN(strValue,GetScale());                                \
+        varname = GETSKIN(strValue,GetScale());                     \
         hRet = allredraw ? S_OK : S_FALSE;                          \
         }                                                           \
         else                                                        \
  
+
+// SSkinPool From StringA Key
+#define ATTR_INTERPOLATOR(attribname, varname, allredraw)                   \
+	if (0 == strAttribName.CompareNoCase(attribname))               \
+		{                                                           \
+		varname = CREATEINTERPOLATOR(strValue);                     \
+		hRet = allredraw ? S_OK : S_FALSE;                          \
+		}                                                           \
+		else                                                        \
+
 
 //ATTR_IMAGE:直接使用IResProvider::LoadImage创建SOUI::IBitmap对象，创建成功后引用计数为1
 //不需要调用AddRef，但是用完后需要调用Release

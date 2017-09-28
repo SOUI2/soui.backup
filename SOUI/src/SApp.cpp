@@ -341,7 +341,7 @@ ISkinObj * SApplication::CreateSkinByName(LPCWSTR pszSkinClass) const
 }
 
 
-IInterpolator * SApplication::CreateInterpolator(LPCWSTR pszName) const
+IInterpolator * SApplication::CreateInterpolatorByName(LPCWSTR pszName) const
 {
 	return (IInterpolator*)CreateObject(SObjectInfo(pszName, Interpolator));
 }

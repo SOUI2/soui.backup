@@ -1541,7 +1541,7 @@ void CMainDlg::OnCbxInterpolotorChange(EventArgs *e)
 	{
 		SStringT str = pCbx->GetLBText(e2->nCurSel);
 		str=str.Mid(1,str.GetLength()-1-strlen("Interpolator"));
-		IInterpolator * pInterpolator = SApplication::getSingleton().CreateInterpolator(str);
+		IInterpolator * pInterpolator = CREATEINTERPOLATOR(str);
 		if(pInterpolator)
 		{
 			SInterpolatorView *pView = FindChildByID2<SInterpolatorView>(R.id.view_interpolator);

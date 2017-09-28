@@ -688,10 +688,6 @@
 			RelativePath="demo.rc"
 			>
 		</File>
-		<File
-			RelativePath=".\uires\xml\page_animator.xml"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

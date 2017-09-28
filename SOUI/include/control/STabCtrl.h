@@ -136,6 +136,7 @@ namespace SOUI
         }m_txtDir;
         int    m_nAnimateSteps; /**< 动画次数 */
 		int	m_nAniamteType;/*动画样式*/
+		CAutoRefPtr<IInterpolator> m_aniInterpolator;
     public:
         /**
         * STabCtrl::STabCtrl
@@ -486,6 +487,8 @@ namespace SOUI
             ATTR_ENUM_END(m_txtDir)
             ATTR_INT(L"animateSteps",m_nAnimateSteps,FALSE)
 			ATTR_INT(L"animateType", m_nAniamteType, FALSE)/*动画样式0：背景跟着动，1：背景不动*/
+			ATTR_INTERPOLATOR(L"interpolator",m_aniInterpolator,FALSE)
+			ATTR_CHAIN_PTR(m_aniInterpolator,0)//chain attributes to interpolator
         SOUI_ATTRS_END()
     };
 

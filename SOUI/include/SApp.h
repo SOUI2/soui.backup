@@ -45,6 +45,7 @@
 #define GETCOLOR(x)         SOUI::SApplication::getSingleton().GetColor(x)
 #define GETSTRING(x)        SOUI::SApplication::getSingleton().GetString(x)
 
+#define CREATEINTERPOLATOR(x)  SOUI::SApplication::getSingleton().CreateInterpolatorByName(x)
 #define RT_LAYOUT _T("LAYOUT")
 
 namespace SOUI
@@ -296,7 +297,7 @@ public:
 
 	virtual SWindow * CreateWindowByName(LPCWSTR pszWndClass) const;
 	virtual ISkinObj * CreateSkinByName(LPCWSTR pszSkinClass) const;
-	virtual IInterpolator * CreateInterpolator(LPCWSTR pszName) const;
+	virtual IInterpolator * CreateInterpolatorByName(LPCWSTR pszName) const;
 protected:
 	virtual void RegisterSystemObjects(){}
 
