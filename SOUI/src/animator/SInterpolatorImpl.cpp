@@ -1,4 +1,4 @@
-#include "souistd.h"
+﻿#include "souistd.h"
 #include "animator\SInterpolatorImpl.h"
 #include "layout/SLayoutSize.h" //for SLayoutSize::fequal
 #include <math.h>

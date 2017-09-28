@@ -346,10 +346,10 @@ public:                                                             \
  
 
 // SSkinPool From StringA Key
-#define ATTR_INTERPOLATOR(attribname, varname, allredraw)                   \
+#define ATTR_INTERPOLATOR(attribname, varname, allredraw)           \
 	if (0 == strAttribName.CompareNoCase(attribname))               \
 		{                                                           \
-		varname = CREATEINTERPOLATOR(strValue);                     \
+		varname.Attach(CREATEINTERPOLATOR(strValue));               \
 		hRet = allredraw ? S_OK : S_FALSE;                          \
 		}                                                           \
 		else                                                        \
@@ -360,7 +360,7 @@ public:                                                             \
 #define ATTR_IMAGE(attribname, varname, allredraw)                  \
     if (0 == strAttribName.CompareNoCase(attribname))               \
     {                                                               \
-        SOUI::IBitmap *pImg=LOADIMAGE2(strValue);                          \
+        SOUI::IBitmap *pImg=LOADIMAGE2(strValue);                   \
         if(!pImg) hRet =E_FAIL;                                     \
         else{                                                       \
             if(varname) varname->Release();                         \
