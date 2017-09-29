@@ -57,12 +57,12 @@ interface IMsgLoopFactory : public IObjRef
     virtual void DestoryMsgLoop(SMessageLoop * pMsgLoop) =0;
 };
 
-interface ISystemObjectRegister : public IObjRef
+interface SOUI_EXP ISystemObjectRegister : public IObjRef
 {
-	virtual void RegisterLayouts(SObjectFactoryMgr *objFactory)  = 0;
-	virtual void RegisterSkins(SObjectFactoryMgr *objFactory)  = 0;
-	virtual void RegisterWindows(SObjectFactoryMgr *objFactory)  = 0;
-	virtual void RegisterInterpolator(SObjectFactoryMgr *objFactory)  = 0;
+	virtual void RegisterLayouts(SObjectFactoryMgr *objFactory){}
+	virtual void RegisterSkins(SObjectFactoryMgr *objFactory) {}
+	virtual void RegisterWindows(SObjectFactoryMgr *objFactory){}
+	virtual void RegisterInterpolator(SObjectFactoryMgr *objFactory){}
 };
 
 class SOUI_EXP SObjectDefaultRegister : public TObjRefImpl<ISystemObjectRegister>
