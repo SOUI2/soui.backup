@@ -25,7 +25,7 @@
           <item text="SOvershootInterpolator" icon="0" data="100"/>
         </items>
       </combobox>
-      <interpolatorView pos="10,[10,-10,@50" colorBkgnd="#cccccc" name="view_interpolator"/>
+      <interpolatorView pos="10,[10,-10,@50" colorBkgnd="#cccccc" name="view_interpolator" speed="2"/>
     </page>
   </tabctrl>
 
