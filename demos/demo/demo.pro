@@ -83,8 +83,9 @@ HEADERS += MainDlg.h \
 		   skin/SetSkinWnd2.h \
 		   skin/SSkinLoader.h \
 		   trayicon/SShellNotifyIcon.h \
-		   trayicon/SShellNofityHwnd2.h
-		   
+		   trayicon/SShellNofityHwnd2.h \
+	 SInterpolatorView.h
+
 SOURCES += demo.cpp \
            MainDlg.cpp \
 		   FormatMsgDlg.cpp \
@@ -132,6 +133,8 @@ SOURCES += demo.cpp \
 		   skin/SetSkinWnd2.cpp \
 		   skin/SSkinLoader.cpp \
 		   trayicon/SShellNotifyIcon.cpp \
-		   trayicon/SShellNofityHwnd2.cpp
+		   trayicon/SShellNofityHwnd2.cpp \
+	 SInterpolatorView.cpp
+
 RC_FILE += demo.rc
 
