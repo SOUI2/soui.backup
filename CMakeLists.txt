@@ -88,7 +88,7 @@ option(ENABLE_SOUI_CORE_LIB "Enable compile 'core' as static lib" OFF)
 #
 option(ENABLE_SOUI_COM_LIB "Enable compile 'components' as static lib" OFF)
 
-option(OUTPATH_WITHOUT_TYPE "Put All generation in same Path" , ON)
+option(OUTPATH_WITHOUT_TYPE "Put All generation in same Path" ON)
 #
 #
 #
