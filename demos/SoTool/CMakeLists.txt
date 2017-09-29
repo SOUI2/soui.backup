@@ -26,7 +26,6 @@ add_dependencies(SoTool soui-sys-resource ${COM_LIBS})
 target_link_libraries(SoTool utilities soui)
 
 set_target_properties(SoTool PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
-set_target_properties(SoTool PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 #cotire(SoTool)
 set_target_properties (SoTool PROPERTIES
     FOLDER demos

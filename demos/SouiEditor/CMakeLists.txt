@@ -79,7 +79,6 @@ add_executable(SouiEditor WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOU
 add_dependencies(SouiEditor soui-sys-resource ${COM_LIBS})
 target_link_libraries(SouiEditor utilities soui Scintilla imm32)
 
-set_target_properties(SouiEditor PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (SouiEditor PROPERTIES
     FOLDER demos
 )

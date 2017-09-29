@@ -23,7 +23,6 @@ add_executable(ThreeClearGame WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT
 add_dependencies(ThreeClearGame soui-sys-resource ${COM_LIBS})
 target_link_libraries(ThreeClearGame utilities soui)
 
-set_target_properties(ThreeClearGame PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (ThreeClearGame PROPERTIES
     FOLDER demos
 )

@@ -25,7 +25,6 @@ add_dependencies(TXMgr soui-sys-resource ${COM_LIBS})
 target_link_libraries(TXMgr utilities soui)
 
 set_target_properties(TXMgr PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
-set_target_properties(TXMgr PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 #cotire(TXMgr)
 set_target_properties (TXMgr PROPERTIES
     FOLDER demos

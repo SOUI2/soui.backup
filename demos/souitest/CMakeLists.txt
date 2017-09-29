@@ -12,7 +12,6 @@ source_group("Source Files" FILES ${CURRENT_SRCS})
 
 add_executable(souitest ${CURRENT_HEADERS} ${CURRENT_SRCS})
 
-set_target_properties(souitest PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 target_link_libraries(souitest gtest soui utilities)
 add_dependencies(souitest gtest)
 set_target_properties (souitest PROPERTIES

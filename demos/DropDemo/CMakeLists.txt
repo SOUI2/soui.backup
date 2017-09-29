@@ -23,7 +23,6 @@ add_executable(DropDemo WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS
 add_dependencies(DropDemo soui-sys-resource ${COM_LIBS})
 target_link_libraries(DropDemo utilities soui)
 
-set_target_properties(DropDemo PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (DropDemo PROPERTIES
     FOLDER demos
 )
