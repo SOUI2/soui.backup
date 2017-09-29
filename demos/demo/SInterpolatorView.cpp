@@ -18,7 +18,7 @@ namespace SOUI
 			m_iFrame++;
 			if(m_iFrame%m_nSpeed==0)
 			{
-				m_fTime += 0.05f;
+				m_fTime += 0.02f;
 
 				if(m_fTime>=1.0f)
 				{
