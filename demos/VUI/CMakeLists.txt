@@ -21,8 +21,8 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 
 add_executable(VUI WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-add_dependencies(VUI soui-sys-resource ${COM_LIBS})
-target_link_libraries(VUI utilities soui)
+add_dependencies(VUI soui-sys-resource)
+target_link_libraries(VUI utilities soui ${COM_LIBS})
 
 set_target_properties(VUI PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
 #set_target_properties(VUI PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS\",5.01\"")

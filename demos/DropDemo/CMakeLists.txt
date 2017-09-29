@@ -20,8 +20,8 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 
 add_executable(DropDemo WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-add_dependencies(DropDemo soui-sys-resource ${COM_LIBS})
-target_link_libraries(DropDemo utilities soui)
+add_dependencies(DropDemo soui-sys-resource)
+target_link_libraries(DropDemo utilities soui ${COM_LIBS})
 
 set_target_properties(DropDemo PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (DropDemo PROPERTIES

@@ -20,8 +20,8 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 
 add_executable(ThreeClearGame WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-add_dependencies(ThreeClearGame soui-sys-resource ${COM_LIBS})
-target_link_libraries(ThreeClearGame utilities soui)
+add_dependencies(ThreeClearGame soui-sys-resource)
+target_link_libraries(ThreeClearGame utilities soui ${COM_LIBS})
 
 set_target_properties(ThreeClearGame PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (ThreeClearGame PROPERTIES

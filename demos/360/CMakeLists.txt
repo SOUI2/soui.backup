@@ -19,8 +19,8 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 add_executable(360 WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
 set_target_properties(360 PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
-add_dependencies(360 soui-sys-resource ${COM_LIBS})
-target_link_libraries(360 soui utilities)
+add_dependencies(360 soui-sys-resource)
+target_link_libraries(360 soui utilities ${COM_LIBS})
 set_target_properties (360 PROPERTIES
     FOLDER demos
 )
