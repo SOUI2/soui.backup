@@ -26,6 +26,7 @@ target_link_libraries(VUI utilities soui)
 
 set_target_properties(VUI PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
 #set_target_properties(VUI PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS\",5.01\"")
+set_target_properties(VUI PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (VUI PROPERTIES
     FOLDER demos
 )

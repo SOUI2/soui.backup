@@ -24,6 +24,7 @@ add_dependencies(QQMain soui-sys-resource ${COM_LIBS})
 target_link_libraries(QQMain utilities soui)
 
 set_target_properties(QQMain PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
+set_target_properties(QQMain PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (QQMain PROPERTIES
     FOLDER demos
 )

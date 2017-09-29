@@ -36,6 +36,7 @@ add_executable(SLogViewer WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOU
 add_dependencies(SLogViewer soui-sys-resource ${COM_LIBS})
 target_link_libraries(SLogViewer utilities soui Scintilla imm32)
 
+set_target_properties(SLogViewer PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 #cotire(SLogViewer)
 set_target_properties (SLogViewer PROPERTIES
     FOLDER demos

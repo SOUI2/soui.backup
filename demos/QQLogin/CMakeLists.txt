@@ -47,6 +47,7 @@ add_executable(QQLogin WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS}
 add_dependencies(QQLogin soui-sys-resource ${COM_LIBS})
 target_link_libraries(QQLogin utilities soui imm32)
 
+set_target_properties(QQLogin PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties(QQLogin PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
 #cotire(QQLogin)
 set_target_properties (QQLogin PROPERTIES

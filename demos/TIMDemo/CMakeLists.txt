@@ -25,6 +25,7 @@ add_executable(TIMDemo WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS}
 add_dependencies(TIMDemo soui-sys-resource ${COM_LIBS})
 target_link_libraries(TIMDemo utilities soui sqlite3)
 
+set_target_properties(TIMDemo PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (TIMDemo PROPERTIES
     FOLDER demos
 )
