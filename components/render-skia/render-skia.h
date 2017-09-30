@@ -32,11 +32,14 @@ namespace SOUI
         virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf);
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
         virtual BOOL CreateRegion(IRegion **ppRgn);
+		virtual BOOL CreatePath(IPath ** ppPath);
         
         virtual void SetImgDecoderFactory(IImgDecoderFactory *pImgDecoderFac){m_imgDecoderFactory=pImgDecoderFac;}
         
         virtual IImgDecoderFactory * GetImgDecoderFactory(){return m_imgDecoderFactory;}
-    protected:
+
+
+	protected:
         CAutoRefPtr<IImgDecoderFactory> m_imgDecoderFactory;
 	};
 
@@ -241,6 +244,116 @@ namespace SOUI
         SkRegion    m_rgn;
 	};
 
+
+	//////////////////////////////////////////////////////////////////////////
+	//	SPath_Skia
+	class SPath_Skia: public TSkiaRenderObjImpl<IPath>
+	{
+		SOUI_CLASS_NAME(SPath_Skia,L"path")
+
+	public:
+		SPath_Skia(IRenderFactory *pRenderFac);
+		virtual ~SPath_Skia();
+
+		virtual const OBJTYPE ObjectType() const;
+
+		virtual FillType getFillType() const;
+
+		virtual void setFillType(FillType ft);
+
+		virtual bool isInverseFillType() const;
+
+		virtual void toggleInverseFillType();
+
+		virtual Convexity getConvexity() const;
+
+		virtual void setConvexity(Convexity c);
+
+		virtual bool isConvex() const;
+
+		virtual bool isOval(RECT* rect) const;
+
+		virtual void reset();
+
+		virtual void rewind();
+
+		virtual bool isEmpty() const;
+
+		virtual bool isFinite() const;
+
+		virtual bool isLine(POINT line[2]) const;
+
+		virtual bool isRect(RECT* rect) const;
+
+		virtual bool isRect(bool* isClosed, Direction* direction) const;
+
+		virtual int countPoints() const;
+
+		virtual POINT getPoint(int index) const;
+
+		virtual int getPoints(POINT points[], int max) const;
+
+		virtual int countVerbs() const;
+
+		virtual int getVerbs(BYTE verbs[], int max) const;
+
+		virtual RECT getBounds() const;
+
+		virtual void moveTo(float x, float y);
+
+		virtual void rMoveTo(float dx, float dy);
+
+		virtual void lineTo(float x, float y);
+
+		virtual void rLineTo(float dx, float dy);
+
+		virtual void quadTo(float x1, float y1, float x2, float y2);
+
+		virtual void rQuadTo(float dx1, float dy1, float dx2, float dy2);
+
+		virtual void conicTo(float x1, float y1, float x2, float y2, float w);
+
+		virtual void rConicTo(float dx1, float dy1, float dx2, float dy2, float w);
+
+		virtual void cubicTo(float x1, float y1, float x2, float y2, float x3, float y3);
+
+		virtual void rCubicTo(float dx1, float dy1, float dx2, float dy2, float dx3, float dy3);
+
+		virtual void arcTo(const RECT& oval, float startAngle, float sweepAngle, bool forceMoveTo);
+
+		virtual void arcTo(float x1, float y1, float x2, float y2, float radius);
+
+		virtual void close();
+
+		virtual void addRect(const RECT& rect, Direction dir = kCW_Direction);
+
+		virtual void addRect(float left, float top, float right, float bottom, Direction dir = kCW_Direction);
+
+		virtual void addOval(const RECT& oval, Direction dir = kCW_Direction);
+
+		virtual void addCircle(float x, float y, float radius, Direction dir = kCW_Direction);
+
+		virtual void addArc(const RECT& oval, float startAngle, float sweepAngle);
+
+		virtual void addRoundRect(const RECT& rect, float rx, float ry, Direction dir = kCW_Direction);
+
+		virtual void addRoundRect(const RECT& rect, const float radii[], Direction dir = kCW_Direction);
+
+		virtual void addPoly(const POINT pts[], int count, bool close);
+
+		virtual void addPath(const IPath * src, float dx, float dy, AddPathMode mode = kAppend_AddPathMode);
+
+		virtual void reverseAddPath(const IPath* src);
+
+		virtual void offset(float dx, float dy);
+
+		virtual bool getLastPt(POINT* lastPt) const;
+
+		virtual void setLastPt(float x, float y);
+
+	protected:
+		SkPath      m_skPath;
+	};
 
 	//////////////////////////////////////////////////////////////////////////
 	//	SRenderTarget_Skia

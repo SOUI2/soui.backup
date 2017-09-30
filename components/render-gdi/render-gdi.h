@@ -32,6 +32,8 @@ namespace SOUI
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
         virtual BOOL CreateRegion(IRegion **ppRgn);
 
+		virtual BOOL CreatePath(IPath ** ppPath);
+
     protected:
         CAutoRefPtr<IImgDecoderFactory> m_imgDecoderFactory;
     };

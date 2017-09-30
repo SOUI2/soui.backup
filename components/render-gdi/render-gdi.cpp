@@ -39,6 +39,11 @@ namespace SOUI
         return TRUE;
     }
 
+	BOOL SRenderFactory_GDI::CreatePath(IPath ** ppPath)
+	{
+		return FALSE;
+	}
+
     
     //////////////////////////////////////////////////////////////////////////
     //  SBitmap_GDI
