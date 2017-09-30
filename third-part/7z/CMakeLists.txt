@@ -478,6 +478,7 @@ source_group("Source Files" FILES ${7ZLIB_SRCS})
 source_group("Asms Files" FILES ${7ZIP_ASMS})
 
 ADD_LIBRARY (7z STATIC ${7ZLIB_SRCS} ${7ZLIB_HEADERS} ${7ZIP_ASMS})
+set(COM_LIBS ${COM_LIBS} 7z CACHE INTERNAL "com_lib")
 set_target_properties (7z PROPERTIES
     FOLDER third-part
 )

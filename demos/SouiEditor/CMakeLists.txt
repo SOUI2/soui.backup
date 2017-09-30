@@ -76,8 +76,8 @@ source_group("Extend Cotrols" FILES ${EXTENDCOTROLS})
 
 add_executable(SouiEditor WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC} ${EXTENDCOTROLS})
 
-add_dependencies(SouiEditor soui-sys-resource ${COM_LIBS})
-target_link_libraries(SouiEditor utilities soui Scintilla imm32)
+add_dependencies(SouiEditor soui-sys-resource)
+target_link_libraries(SouiEditor utilities soui ${COM_LIBS} Scintilla imm32)
 
 set_target_properties(SouiEditor PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (SouiEditor PROPERTIES

@@ -29,8 +29,8 @@ add_executable(FrogPlay WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS
 set_target_properties(FrogPlay PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 SET (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SAFESEH:NO")
 
-add_dependencies(FrogPlay soui-sys-resource ${COM_LIBS})
-target_link_libraries(FrogPlay soui utilities libvlc libvlccore)
+add_dependencies(FrogPlay soui-sys-resource)
+target_link_libraries(FrogPlay soui utilities ${COM_LIBS} libvlc libvlccore)
 set_target_properties (FrogPlay PROPERTIES
     FOLDER demos
 )
