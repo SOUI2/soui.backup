@@ -360,7 +360,12 @@ namespace SOUI
 		virtual HRESULT GradientFill2(LPCRECT pRect,GradientType type,COLORREF crStart,COLORREF crCenter,COLORREF crEnd,float fLinearAngle,float fCenterX,float fCenterY,int nRadius,BYTE byAlpha=0xff);
 
 		virtual HRESULT CreateRegion( IRegion ** ppRegion );
-    protected:
+
+		virtual HRESULT ClipPath(const IPath * path, UINT mode, bool doAntiAlias = false);
+
+		virtual HRESULT DrawPath(const IPath * path);
+
+	protected:
         HDC               m_hdc;
         SColor            m_curColor;
         CAutoRefPtr<SBitmap_GDI> m_curBmp;

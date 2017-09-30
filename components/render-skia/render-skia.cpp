@@ -1269,6 +1269,36 @@ namespace SOUI
 		return crRet;
 	}
 
+	HRESULT SRenderTarget_Skia::ClipPath(const IPath * path, UINT mode, bool doAntiAlias /*= false*/)
+	{
+		const SPath_Skia * path2 = (const SPath_Skia *)path;
+		m_SkCanvas->clipPath(path2->m_skPath,SRegion_Skia::RGNMODE2SkRgnOP(mode),doAntiAlias);
+		return S_OK;
+	}
+
+	HRESULT SRenderTarget_Skia::DrawPath(const IPath * path)
+	{
+		const SPath_Skia * path2 = (const SPath_Skia *)path;
+
+		SkPaint paint;
+		paint.setColor(SColor(m_curPen->GetColor()).toARGB());
+		SGetLineDashEffect skDash(m_curPen->GetStyle());
+		paint.setPathEffect(skDash.Get());
+		paint.setStyle(SkPaint::kStroke_Style);
+		if(m_bAntiAlias)
+		{
+			paint.setAntiAlias(true);
+			paint.setStrokeWidth((SkScalar)m_curPen->GetWidth()-0.5f);
+		}else
+		{
+			paint.setAntiAlias(false);
+			paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
+		}
+
+		m_SkCanvas->drawPath(path2->m_skPath,paint);
+		return S_OK;
+	}
+
 
     //////////////////////////////////////////////////////////////////////////
 	// SBitmap_Skia

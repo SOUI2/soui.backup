@@ -1062,6 +1062,21 @@ namespace SOUI
          * Describe  和::SetPixel一致
          */
 		virtual COLORREF SetPixel(int x, int y, COLORREF cr) = 0;
+
+		/**
+		 *  Modify the current clip with the specified path.
+		 *  @param path The path to combine with the current clip
+		 *  @param mode The region op to apply to the current clip
+		 *  @param doAntiAlias true if the clip should be antialiased
+		 */
+		virtual HRESULT ClipPath(const IPath * path, UINT mode, bool doAntiAlias = false) = 0;
+
+		/** Draw the specified path using the specified paint. The path will be
+		filled or framed based on the Style in the paint.
+		@param path     The path to be drawn
+		*/
+		virtual HRESULT DrawPath(const IPath * path) = 0;
+
 	};
 
 

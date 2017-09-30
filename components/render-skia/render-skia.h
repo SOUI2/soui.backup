@@ -251,6 +251,7 @@ namespace SOUI
 	{
 		SOUI_CLASS_NAME(SPath_Skia,L"path")
 
+		friend class SRenderTarget_Skia;
 	public:
 		SPath_Skia(IRenderFactory *pRenderFac);
 		virtual ~SPath_Skia();
@@ -462,6 +463,10 @@ namespace SOUI
 
 		virtual HRESULT GradientFill2(LPCRECT pRect,GradientType type,COLORREF crStart,COLORREF crCenter,COLORREF crEnd,float fLinearAngle,float fCenterX,float fCenterY,int nRadius,BYTE byAlpha=0xff);
 
+		virtual HRESULT ClipPath(const IPath * path, UINT mode, bool doAntiAlias = false);
+
+		virtual HRESULT DrawPath(const IPath * path);
+
     public:
         SkCanvas *GetCanvas(){return m_SkCanvas;}
 
@@ -475,6 +480,7 @@ namespace SOUI
 		SOUI_ATTRS_BEGIN()
 			ATTR_BOOL(L"antiAlias",m_bAntiAlias,FALSE)
 		SOUI_ATTRS_END()
+
 
     protected:
 		SkCanvas *m_SkCanvas;
