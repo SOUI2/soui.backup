@@ -44,6 +44,11 @@ namespace SOUI
 		return FALSE;
 	}
 
+	BOOL SRenderFactory_GDI::CreatePathEffect(REFGUID guidEffect,IPathEffect ** ppPathEffect)
+	{
+		return FALSE;
+	}
+
     
     //////////////////////////////////////////////////////////////////////////
     //  SBitmap_GDI
@@ -1117,7 +1122,7 @@ namespace SOUI
 		return E_NOTIMPL;
 	}
 
-	HRESULT SRenderTarget_GDI::DrawPath(const IPath * path)
+	HRESULT SRenderTarget_GDI::DrawPath(const IPath * path,IPathEffect * pathEffect)
 	{
 		return E_NOTIMPL;
 	}

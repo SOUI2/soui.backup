@@ -34,6 +34,8 @@ namespace SOUI
 
 		virtual BOOL CreatePath(IPath ** ppPath);
 
+		virtual BOOL CreatePathEffect(REFGUID guidEffect,IPathEffect ** ppPathEffect);
+
     protected:
         CAutoRefPtr<IImgDecoderFactory> m_imgDecoderFactory;
     };
@@ -363,7 +365,7 @@ namespace SOUI
 
 		virtual HRESULT ClipPath(const IPath * path, UINT mode, bool doAntiAlias = false);
 
-		virtual HRESULT DrawPath(const IPath * path);
+		virtual HRESULT DrawPath(const IPath * path,IPathEffect * pathEffect=NULL);
 
 	protected:
         HDC               m_hdc;

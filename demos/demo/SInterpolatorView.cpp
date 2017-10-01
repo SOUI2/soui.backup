@@ -58,4 +58,24 @@ namespace SOUI
 		__super::OnDestroy();
 	}
 
+	void SInterpolatorView::OnPaint(IRenderTarget * pRT)
+	{
+
+		CAutoRefPtr<IPath> path;
+		if(GETRENDERFACTORY->CreatePath(&path))
+		{
+			CRect rc = GetClientRect();
+			CAutoRefPtr<IPen> pen,oldPen;
+			pRT->CreatePen(PS_DASH,RGBA(255,0,0,255),3,&pen);
+
+			pRT->SelectObject(pen,(IRenderObj**)&oldPen);
+			path->moveTo(rc.left,rc.top);
+			path->quadTo((rc.right+rc.left)/2,rc.bottom + rc.Height(),rc.right,rc.top);
+			pRT->DrawPath(path);
+			pRT->SelectObject(oldPen);
+		}
+
+		__super::OnPaint(pRT);
+	}
+
 }

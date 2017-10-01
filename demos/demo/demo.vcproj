@@ -332,6 +332,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SPathView.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\controls.extend\propgrid\spropertygrid.cpp"
 				>
 			</File>
@@ -547,6 +551,10 @@
 			</File>
 			<File
 				RelativePath="SmileyCreateHook.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SPathView.h"
 				>
 			</File>
 			<File

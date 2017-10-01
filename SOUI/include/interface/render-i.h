@@ -3,6 +3,7 @@
 #include <unknown/obj-ref-i.h>
 #include <sobject/Sobject.hpp>
 #include "imgdecoder-i.h"
+#include "SPathEffect-i.h"
 namespace SOUI
 {
 	struct IRenderObj;
@@ -64,6 +65,8 @@ namespace SOUI
         virtual BOOL CreateRegion(IRegion **ppRgn)=0;
 
 		virtual BOOL CreatePath(IPath ** ppPath)=0;
+
+		virtual BOOL CreatePathEffect(REFGUID guidEffect,IPathEffect ** ppPathEffect) = 0;
     };
 
     enum OBJTYPE
@@ -924,6 +927,7 @@ namespace SOUI
 
 	};
     
+
     struct IxForm
     {
         FLOAT eM11; 
@@ -1075,7 +1079,7 @@ namespace SOUI
 		filled or framed based on the Style in the paint.
 		@param path     The path to be drawn
 		*/
-		virtual HRESULT DrawPath(const IPath * path) = 0;
+		virtual HRESULT DrawPath(const IPath * path,IPathEffect * pathEffect=NULL) = 0;
 
 	};
 

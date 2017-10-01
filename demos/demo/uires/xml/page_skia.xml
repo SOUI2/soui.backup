@@ -1,18 +1,26 @@
 ﻿<include>
-  <button pos="0,0,@100,@30" name="btn_lrc">LRC</button>
-  <button pos="[10,0,@100,@30" name="btn_clock">clock</button>
   <tabctrl pos="0,[10,-0,-0" tabAlign="top" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabHeight="30">
-    <page title="none">
-      <img pos="0,0,-0,-0" skin="skin_avatar_none"/>
+
+    <page title="filter level">
+      <tabctrl pos="0,[10,-0,-0" tabAlign="top" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabHeight="30">
+        <page title="none">
+          <img pos="0,0,-0,-0" skin="skin_avatar_none"/>
+        </page>
+        <page title="low">
+          <img pos="0,0,-0,-0" skin="skin_avatar_low"/>
+        </page>
+        <page title="medium">
+          <img pos="0,0,-0,-0" skin="skin_avatar_medium"/>
+        </page>
+        <page title="high">
+          <img pos="0,0,-0,-0" skin="skin_avatar_high"/>
+        </page>
+      </tabctrl>
     </page>
-    <page title="low">
-      <img pos="0,0,-0,-0" skin="skin_avatar_low"/>
-    </page>
-    <page title="medium">
-      <img pos="0,0,-0,-0" skin="skin_avatar_medium"/>
-    </page>
-    <page title="high">
-      <img pos="0,0,-0,-0" skin="skin_avatar_high"/>
+    <page title="path">
+      <pathView size="-2,-2" cornerRadius="8" lineStyle="3" lineWidth="3" lineColor="#00ff00">
+        
+      </pathView>
     </page>
   </tabctrl>
 </include>

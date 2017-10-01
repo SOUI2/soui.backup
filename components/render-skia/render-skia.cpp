@@ -14,6 +14,8 @@
 #include "trace.h"
 
 #include "skia2rop2.h"
+#include "PathEffect-Skia.h"
+
 #include <tchar.h>
 #include <algorithm>
 
@@ -134,6 +136,16 @@ namespace SOUI
 	{
 		*ppPath = new SPath_Skia(this);
 		return TRUE;
+	}
+
+	BOOL SRenderFactory_Skia::CreatePathEffect(REFGUID guidEffect,IPathEffect ** ppPathEffect)
+	{
+		if(guidEffect == __uuidof(ICornerPathEffect))
+		{
+			*ppPathEffect = (IPathEffect*) new SPathEffect_Corner();
+			return TRUE;
+		}
+		return FALSE;
 	}
 
     //////////////////////////////////////////////////////////////////////////
@@ -1276,7 +1288,7 @@ namespace SOUI
 		return S_OK;
 	}
 
-	HRESULT SRenderTarget_Skia::DrawPath(const IPath * path)
+	HRESULT SRenderTarget_Skia::DrawPath(const IPath * path, IPathEffect * pathEffect)
 	{
 		const SPath_Skia * path2 = (const SPath_Skia *)path;
 
@@ -1295,6 +1307,11 @@ namespace SOUI
 			paint.setStrokeWidth((SkScalar)m_curPen->GetWidth());
 		}
 
+		if(pathEffect!=NULL)
+		{
+			SkPathEffect * skPathEffect = (SkPathEffect*)pathEffect->GetRealPathEffect();
+			paint.setPathEffect(skPathEffect);
+		}
 		m_SkCanvas->drawPath(path2->m_skPath,paint);
 		return S_OK;
 	}
