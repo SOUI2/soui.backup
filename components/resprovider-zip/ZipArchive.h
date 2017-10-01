@@ -1,4 +1,4 @@
-#ifndef __ZIPARCHIVE_H__
+ï»¿#ifndef __ZIPARCHIVE_H__
 #define __ZIPARCHIVE_H__
 
 #pragma once
@@ -177,7 +177,7 @@ public:
 	BOOL GetFile(int iIndex, CZipFile& file);
 	DWORD GetFileSize(LPCTSTR pszFileName);
 	DWORD GetFileSize(int iIndex);
-	//file¶ÔÏóÖĞÒÑ¾­·ÖÅäºÃÄÚ´æ¡£
+	//fileå¯¹è±¡ä¸­å·²ç»åˆ†é…å¥½å†…å­˜ã€‚
 	BOOL GetFile2(LPCTSTR pszFileName, CZipFile& file)
 	{
 		return GetFile2(GetFileIndex(pszFileName),file);

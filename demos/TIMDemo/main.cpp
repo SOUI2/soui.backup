@@ -1,4 +1,4 @@
-// EtimesHelper.cpp : ¶¨ÒåÓ¦ÓÃ³ÌÐòµÄÈë¿Úµã¡£
+ï»¿// EtimesHelper.cpp : å®šä¹‰åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
 //
 
 #include "stdafx.h"
@@ -15,7 +15,7 @@
 
 #define RunOnce_PropName			
 
-// ´Ë´úÂëÄ£¿éÖÐ°üº¬µÄº¯ÊýµÄÇ°ÏòÉùÃ÷:
+// æ­¤ä»£ç æ¨¡å—ä¸­åŒ…å«çš„å‡½æ•°çš„å‰å‘å£°æ˜Ž:
 BOOL CALLBACK OnEnumWindowsProc(HWND hWnd, LPARAM lParam)
 {
 	HANDLE hTemp = ::GetPropW(hWnd, _T("40125B5F-6825-4654-8BBF-641EB0AF4F9A"));
@@ -35,11 +35,11 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
- 	// TODO: ÔÚ´Ë·ÅÖÃ´úÂë¡£
+ 	// TODO: åœ¨æ­¤æ”¾ç½®ä»£ç ã€‚
 	HRESULT hRes = OleInitialize(NULL);
 	SASSERT(SUCCEEDED(hRes));
 	
-	//¼ì²â ¿Í»§¶Ë 
+	//æ£€æµ‹ å®¢æˆ·ç«¯ 
 	HWND hOldWnd = NULL;
 	::EnumWindows(OnEnumWindowsProc, (LPARAM)&hOldWnd);
 	if (NULL != hOldWnd) 
@@ -50,7 +50,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	}
 	
 
-	//Ê¹ÓÃimgdecoder-pngÍ¼Æ¬½âÂëÄ£¿éÑÝÊ¾apng¶¯»­   
+	//ä½¿ç”¨imgdecoder-pngå›¾ç‰‡è§£ç æ¨¡å—æ¼”ç¤ºapngåŠ¨ç”»   
 	//SComMgr* pComMgr = new SComMgr(_T("imgdecoder-png"));
 	
 	SComMgr* pComMgr = new SComMgr(_T("imgdecoder-gdip"));
@@ -60,36 +60,36 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		if(!pComMgr->CreateRender_Skia((IObjRef**)&pRenderFactory))
 		{
 			delete pComMgr;
-			::MessageBox(NULL, _T("Load CreateRender_Skia Error!"), _T("ÌáÊ¾"), MB_ICONINFORMATION);
+			::MessageBox(NULL, _T("Load CreateRender_Skia Error!"), _T("æç¤º"), MB_ICONINFORMATION);
 			return 0;
 		}
 		if(!pComMgr->CreateImgDecoder((IObjRef**)&pImgDecoderFactory))
 		{
 			delete pComMgr;
-			::MessageBox(NULL, _T("Load CreateImgDecoder Error!"), _T("ÌáÊ¾"), MB_ICONINFORMATION);
+			::MessageBox(NULL, _T("Load CreateImgDecoder Error!"), _T("æç¤º"), MB_ICONINFORMATION);
 			return 0;
 		}
 
 		pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
 
-		//¶¨ÒåÒ»¸öÎ¨Ò»µÄSApplication¶ÔÏó£¬SApplication¹ÜÀíÕû¸öÓ¦ÓÃ³ÌÐòµÄ×ÊÔ´
+		//å®šä¹‰ä¸€ä¸ªå”¯ä¸€çš„SApplicationå¯¹è±¡ï¼ŒSApplicationç®¡ç†æ•´ä¸ªåº”ç”¨ç¨‹åºçš„èµ„æº
 		SApplication* theApp=new SApplication(pRenderFactory, hInstance);
 		
 
-		//Ïòapp×¢²á×Ô¶¨ÒåÀà
+		//å‘appæ³¨å†Œè‡ªå®šä¹‰ç±»
 		theApp->RegisterWindowClass<SIconRadio>();
 		theApp->RegisterWindowClass<SImRichEdit>();
 		theApp->RegisterWindowClass<SImageView>();
 		
 
-		//Ïòapp×¢²á×Ô¶¨ÒåÆ¤·ô
-		theApp->RegisterSkinClass<SSkinVScrollbar>();//×¢²á×ÝÏò¹ö¶¯ÌõÆ¤·ô
+		//å‘appæ³¨å†Œè‡ªå®šä¹‰çš®è‚¤
+		theApp->RegisterSkinClass<SSkinVScrollbar>();//æ³¨å†Œçºµå‘æ»šåŠ¨æ¡çš®è‚¤
 		theApp->RegisterSkinClass<SAntialiasSkin>();
 		theApp->RegisterSkinClass<SSkinSystemIconList>();
 		theApp->RegisterSkinClass<SSkinMask>();
 				
 
-		//´Ó dll ¼ÓÔØ soui ×Ô´øÏµÍ³×ÊÔ´
+		//ä»Ž dll åŠ è½½ soui è‡ªå¸¦ç³»ç»Ÿèµ„æº
 		HMODULE hModSysResource = LoadLibrary(SYS_NAMED_RESOURCE);
 		if(NULL != hModSysResource)
 		{
@@ -102,7 +102,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		}
 		else
 		{
-			::MessageBox(NULL, _T("Load SysResource Error!"), _T("ÌáÊ¾"), MB_ICONINFORMATION);
+			::MessageBox(NULL, _T("Load SysResource Error!"), _T("æç¤º"), MB_ICONINFORMATION);
 			SASSERT(0);
 		}
 
@@ -114,7 +114,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		PathRemoveFileSpec(lpResPath);
 		PathRemoveFileSpec(lpResPath);
 		PathAddBackslash(lpResPath);
-		// ÕâÀïÓÃ×Ô¼º¹¤³Ì Ãû
+		// è¿™é‡Œç”¨è‡ªå·±å·¥ç¨‹ å
 		_tcscat_s(lpResPath, MAX_PATH, _T("demos\\TIMDemo\\uires"));
 		if(!pResProvider->Init((LPARAM)lpResPath, 0))
 		{
@@ -126,7 +126,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		pResProvider->Init((WPARAM)hInstance,0);
 #endif
 
-		//½«´´½¨µÄIResProvider½»¸øSApplication¶ÔÏó
+		//å°†åˆ›å»ºçš„IResProvideräº¤ç»™SApplicationå¯¹è±¡
 		theApp->AddResProvider(pResProvider);
 		SNotifyCenter* pNotifyCenter = new SNotifyCenter;
 		{			

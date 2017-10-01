@@ -1,4 +1,4 @@
-#ifndef __WIN_DIRECTORY_HPP_INCLUDE_20160125__
+ï»¿#ifndef __WIN_DIRECTORY_HPP_INCLUDE_20160125__
 #define __WIN_DIRECTORY_HPP_INCLUDE_20160125__
 
 //#include "stdafx.h"
@@ -7,13 +7,13 @@
 namespace FileFolderHelper
 {
 	//bool GetDirFormatSize(LPCTSTR sDir, LPTSTR dataBlock, size_t dataSize);
-	//ĞÂ½¨Ä¿Â¼    
+	//æ–°å»ºç›®å½•    
 	bool CreateDir(const wchar_t* lpDirPath);
-	//É¾³ıÄ¿Â¼ ¼° Æä×ÓÄ¿Â¼
+	//åˆ é™¤ç›®å½• åŠ å…¶å­ç›®å½•
 	bool DeleteDir(const wchar_t* lpDirPath);
-	//ÅĞ¶ÏÊÇ·ñ ÊÇÎÄ¼ş¼Ğ
+	//åˆ¤æ–­æ˜¯å¦ æ˜¯æ–‡ä»¶å¤¹
 	bool IsDir(const wchar_t* sDirPath);
-	//¼ÆËãÎÄ¼ş¼ĞµÄ´óĞ¡
+	//è®¡ç®—æ–‡ä»¶å¤¹çš„å¤§å°
 	unsigned __int64 CalcFolderSize(const wchar_t* lpFolderPath);
 
 	struct WinFolderData
@@ -28,7 +28,7 @@ namespace FileFolderHelper
 			uFolderCount = 0;
 		}
 	};
-	//¼ÆËãÎÄ¼ş¼Ğ µÄĞÅÏ¢
+	//è®¡ç®—æ–‡ä»¶å¤¹ çš„ä¿¡æ¯
 	bool CalcFolderInfo(const wchar_t* lpFolderPath, WinFolderData& info);
 	unsigned __int64 CalcFileSize(const wchar_t* lpFilePath) ;
 	
@@ -39,10 +39,10 @@ namespace FileFolderHelper
 	//bool SlipStringByChar(LPCTSTR lpStr, TCHAR Char);
 	std::wstring GetFileExt(const wchar_t* lpFileName);
 
-	// »ñÈ¡ÎÄ¼şµÄµ±Ç°Ä¿Â¼ Â·¾¶ ¾ÍÊÇ È¥µôÎÄ¼şÃû 
+	// è·å–æ–‡ä»¶çš„å½“å‰ç›®å½• è·¯å¾„ å°±æ˜¯ å»æ‰æ–‡ä»¶å 
 	std::wstring GetFileCurDir(const wchar_t* lpFileName);
 
-	//¼ì²âÎÄ¼ş ÓĞĞ§  ¾ÍÊÇ ²»ÄÜÓĞ */\||Ö®ÀàµÄ ×Ö·û
+	//æ£€æµ‹æ–‡ä»¶ æœ‰æ•ˆ  å°±æ˜¯ ä¸èƒ½æœ‰ */\||ä¹‹ç±»çš„ å­—ç¬¦
 	bool IsFileNameValid(const wchar_t* lpFileName);
 }//end namespace
 

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 namespace SOUI
 {
@@ -51,7 +51,7 @@ namespace SOUI
 
             if(pMsg->message==WM_MOUSEWHEEL 
                 || ((pMsg->message == WM_KEYDOWN || pMsg->message==WM_KEYUP) && (pMsg->wParam == VK_UP || pMsg->wParam==VK_DOWN || pMsg->wParam==VK_RETURN || pMsg->wParam==VK_ESCAPE)))
-            {//½Ø»ñ¹öÂÖ¼°ÉÏÏÂ¼üÏûÏ¢
+            {//æˆªèŽ·æ»šè½®åŠä¸Šä¸‹é”®æ¶ˆæ¯
                 CSimpleWnd::SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
                 return TRUE;    
             }
@@ -70,7 +70,7 @@ namespace SOUI
     protected:
     SOUI_CLASS_NAME(SSearchDropdownList,L"searchDropdownList")
     
-        SDropdownList * m_pDropDownWnd;  /**< DropDownÖ¸Õë */
+        SDropdownList * m_pDropDownWnd;  /**< DropDownæŒ‡é’ˆ */
         int             m_nDropAlign;
         int             m_nMaxDropHeight;
         

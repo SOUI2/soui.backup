@@ -17,7 +17,7 @@
 			<imgbtn name="btn_forward" pos="[0,{0" skin="btn_forward" tip="前进" />
 			<imgbtn name="btn_refresh" pos="[0,{0" skin="btn_refresh" tip="刷新" />
 			<pathbar name="bar_dir" pos="[4,{1,]-10,@26" colorBorder="#D9D9D9" margin="1" />
-			<edit pos="-160,{0,-10,@26" name="edit_username" cueText="搜索"/>
+			<edit pos="-160,{0,-10,@26" name="edit_username" text="加拉单反拉夫" cueText="搜索" enable="0" colorTextDisable="@color/disable" />
 		</window>
 
 		<filelist pos="4,[0,-0,-24" name="lc_file" hotTrack="1" itemHeight="20" headerHeight="20" iconSkin="sysiconlist" multiSelection="1" checkBox="0">

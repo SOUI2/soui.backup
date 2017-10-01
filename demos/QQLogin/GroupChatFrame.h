@@ -1,4 +1,4 @@
-// MainDlg.h : interface of the CMainDlg class
+Ôªø// MainDlg.h : interface of the CMainDlg class
 //
 /////////////////////////////////////////////////////////////////////////////
 #pragma once
@@ -21,9 +21,9 @@ public:
     int nCurrSelect;
 };
 
-// µ„ª˜æÕ“™—°÷–£¨ «downªπ «up≤ª“™ΩÙ
-// ªÿ≥µæÕ“™—°÷–
-// …œœ¬“∆∂Ø≤ª“™πÿ±’
+// ÁÇπÂáªÂ∞±Ë¶ÅÈÄâ‰∏≠ÔºåÊòØdownËøòÊòØup‰∏çË¶ÅÁ¥ß
+// ÂõûËΩ¶Â∞±Ë¶ÅÈÄâ‰∏≠
+// ‰∏ä‰∏ãÁßªÂä®‰∏çË¶ÅÂÖ≥Èó≠
 class DropDownListWnd : public SDropDownWnd
 {
 public:
@@ -58,7 +58,7 @@ public:
                 evt.nCurrSelect = m_pListBox->GetCurSel();
                 FireEvent(evt);
             }
-            //ΩÿªÒπˆ¬÷º∞…œœ¬º¸œ˚œ¢
+            //Êà™Ëé∑ÊªöËΩÆÂèä‰∏ä‰∏ãÈîÆÊ∂àÊÅØ
             CSimpleWnd::SendMessage(pMsg->message, pMsg->wParam, pMsg->lParam);
             return TRUE;
         }
@@ -100,7 +100,7 @@ public:
         }
 
         int nYOffset = GetClientRect().Height() - m_pListBox->GetClientRect().Height();
-        nWndHeight += nYOffset;         //º”…œ“ı”∞∆´“∆
+        nWndHeight += nYOffset;         //Âä†‰∏äÈò¥ÂΩ±ÂÅèÁßª
 
         SetWindowPos(HWND_TOP,
             0, 0, nWndWidth, nWndHeight,    // left,top,width,height
@@ -238,9 +238,9 @@ private:
     BOOL			    _initialized;
     SImRichEdit *       _pMsgRichEdit;
     SImRichEdit *       _pInputRichEdit;
-    DropDownListWnd *   _pMemberSelWnd;     /**< »∫¡ƒ ±@µƒ ±∫Ú”√¿¥—°»À */
-    int                 _msgAdded;          // ”√¿¥≈–∂œªÒ»°∏¸∂‡oleµƒ◊¥Ã¨
+    DropDownListWnd *   _pMemberSelWnd;     /**< Áæ§ËÅäÊó∂@ÁöÑÊó∂ÂÄôÁî®Êù•ÈÄâ‰∫∫ */
+    int                 _msgAdded;          // Áî®Êù•Âà§Êñ≠Ëé∑ÂèñÊõ¥Â§öoleÁöÑÁä∂ÊÄÅ
     time_t              _lastWhellTime;
     int                 _totalWhellDelta;
-    int                 _sendType;          //  ‰»Îenter∑¢ÀÕªÚ’ﬂenter+ctrl∑¢ÀÕ
+    int                 _sendType;          // ËæìÂÖ•enterÂèëÈÄÅÊàñËÄÖenter+ctrlÂèëÈÄÅ
 };

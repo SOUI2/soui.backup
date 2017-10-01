@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 namespace SOUI
 {
@@ -55,7 +55,7 @@ namespace SOUI
             return TRUE;
         }
 
-        //����״̬�ı䣬percent in [0,100]
+        //动画状态改变，percent in [0,100]
         virtual void OnAnimatorState(int percent)
         {
             if(m_funAnimatorStateHandler) m_funAnimatorStateHandler(percent,m_lpUserdata);

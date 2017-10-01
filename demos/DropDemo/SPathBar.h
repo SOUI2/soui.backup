@@ -1,4 +1,4 @@
-
+ï»¿
 #ifndef __PATHBAR_H__
 #define __PATHBAR_H__
 
@@ -31,10 +31,10 @@ public:
 
 protected:
    
-	//Describe  ³õÊ¼»¯º¯Êı         
+	//Describe  åˆå§‹åŒ–å‡½æ•°         
     void Init();
 
-    // »æ»­ÏûÏ¢
+    // ç»˜ç”»æ¶ˆæ¯
     void OnPaint(IRenderTarget *pRT);
 	void OnLButtonDown(UINT nFlags, CPoint pt);
     void OnLButtonUp(UINT nFlags, CPoint pt);
@@ -48,7 +48,7 @@ protected:
 		return TRUE;
 	}
 protected:
-	ISkinObj*				m_pSkin;   /**< ×´Ì¬Í¼Æ¬×ÊÔ´ */
+	ISkinObj*				m_pSkin;   /**< çŠ¶æ€å›¾ç‰‡èµ„æº */
 	SOUI_ATTRS_BEGIN()
 		ATTR_SKIN(L"skin", m_pSkin, FALSE)
 	SOUI_ATTRS_END()
@@ -65,7 +65,7 @@ public:
 	int InsertItem(int nItem, LPCTSTR pszText);
 	BOOL SetItemData(int nItem, DWORD dwData);
 	DWORD GetItemData(int nItem);
-	//É¾³ıÏî  nCount ±íÊ¾ ÒªÉ¾³ı nItem ¼°ºóÃæ¶àÉÙÏî   -1 ±íÊ¾É¾³ınItem¼°ºóÃæËùÓĞ
+	//åˆ é™¤é¡¹  nCount è¡¨ç¤º è¦åˆ é™¤ nItem åŠåé¢å¤šå°‘é¡¹   -1 è¡¨ç¤ºåˆ é™¤nItemåŠåé¢æ‰€æœ‰
 	void DeleteItem(int nItem, int nCount=1);
 	void DeleteAllItems();
 	SStringT GetItemText(int nItem) const;

@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 
 namespace SOUI
 {
@@ -15,7 +15,7 @@ namespace SOUI
                 LPCTSTR pszResType;
             }peInfo;
         };
-        LPCSTR          pszPsw; //ZIP√‹¬Î
+        LPCSTR          pszPsw; //ZIPÂØÜÁ†Å
 
         void ZipFile(IRenderFactory *_pRenderFac,LPCTSTR _pszFile,LPCSTR _pszPsw =NULL)
         {

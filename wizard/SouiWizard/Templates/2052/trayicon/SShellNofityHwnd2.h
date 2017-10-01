@@ -1,7 +1,7 @@
 #pragma once
 #include "core\SimpleWnd.h"
 #include "helper\SMenu.h"
-#include "SShellNotifyIcon.h"
+
 //添加一个事件接收窗口用于专门处理托盘图标
 #ifndef WM_ICONNOTIFY
 #define WM_ICONNOTIFY (WM_USER + 1111)
@@ -10,7 +10,7 @@
 #define ID_TASKBARICON	100
 #endif // !ID_TASKBARICON
 #define ANI_TIMER_ID 8
-
+#include "SShellNotifyIcon.h"
 #define CHAIN_MSG_MAP_MEMBER_PTR(theChainMember) \
     { \
 	bHandled=FALSE;BOOL bCanChain=TRUE;\

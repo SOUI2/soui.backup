@@ -1,4 +1,4 @@
-#include <control/souictrls.h>
+﻿#include <control/souictrls.h>
 
 
 SComboBase * toSComboboxBase(IObject *pObj)

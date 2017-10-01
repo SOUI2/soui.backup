@@ -1,12 +1,12 @@
-#include "souistd.h"
+ï»¿#include "souistd.h"
 #include "control/SMenuBar.h"
 
 #define TIMER_POP	10
 
 namespace SOUI
 {
-	static const TCHAR XmlBtnStyle[] = _T("btnStyle");
-	static const TCHAR XmlMenus[] = _T("menus");
+	static const wchar_t XmlBtnStyle[] = L"btnStyle";
+	static const wchar_t XmlMenus[] = L"menus";
 
 	class SMenuItem : 
 		public SButton
@@ -14,7 +14,7 @@ namespace SOUI
 		SOUI_CLASS_NAME(SMenuItem, L"menuItem")
 		friend class SMenuBar;
 	public:
-		SMenuItem(SMenuBar *pHostMenu, SStringT strResName);
+		SMenuItem(SMenuBar *pHostMenu, const SStringT &strResName);
 		~SMenuItem();
 
 		void SetData(ULONG_PTR data) { m_data = data; }
@@ -29,17 +29,17 @@ namespace SOUI
 		void OnLButtonUp(UINT nFlags, CPoint pt);
 		void OnLButtonDown(UINT nFlags, CPoint pt);
 
-		void OnTimer(UINT_PTR timerID);
+		void OnTimer(char timerID);
 
 		SOUI_MSG_MAP_BEGIN()
 			MSG_WM_MOUSEMOVE(OnMouseMove)
 			MSG_WM_LBUTTONDOWN(OnLButtonDown)
 			MSG_WM_LBUTTONUP(OnLButtonUp)
-			MSG_WM_TIMER(OnTimer)
+			MSG_WM_TIMER_EX(OnTimer)
 		SOUI_MSG_MAP_END()
 
 		SOUI_ATTRS_BEGIN()
-			ATTR_STRINGT(_T("menuName"), m_strResName, TRUE)
+			ATTR_STRINGT(L"menuName", m_strResName, TRUE)
 		SOUI_ATTRS_END()
 
 		ULONG_PTR m_data;
@@ -49,13 +49,13 @@ namespace SOUI
 		SMenuEx m_Menu;
 	};
 
-	SMenuItem::SMenuItem(SMenuBar *pHostMenu, SStringT strResName):
+	SMenuItem::SMenuItem(SMenuBar *pHostMenu, const SStringT & strResName):
 		m_data(0),
 		m_pHostMenu(pHostMenu),
 		m_strResName(strResName),
 		m_bIsLoad(FALSE)
 	{
-		SetAttribute(_T("drawFocusRect"), _T("0"));
+		SetAttribute(L"drawFocusRect", L"0");
 		m_bIsLoad = m_Menu.LoadMenu(strResName);
 	}
 
@@ -86,7 +86,7 @@ namespace SOUI
 		}
 		m_pHostMenu->m_pNowMenu = NULL;
 
-		// °ÑÑ¡ÔñÊÂ¼þ·¢ËÍ¹ýÈ¥
+		// æŠŠé€‰æ‹©äº‹ä»¶å‘é€è¿‡åŽ»
 		EventSelectMenu evt(m_pHostMenu);
 		evt.m_id = iRet;
 		evt.m_pMenu = &m_Menu;
@@ -120,7 +120,7 @@ namespace SOUI
 		PopMenu();
 	}
 
-	void SMenuItem::OnTimer(UINT_PTR timerID)
+	void SMenuItem::OnTimer(char timerID)
 	{
 		if (timerID == TIMER_POP)
 		{
@@ -174,7 +174,7 @@ namespace SOUI
 		if(pszTitle)
 			pNewMenu->SetWindowText(pszTitle);
 
-		if (iPos < 0) iPos = m_lstMenuItem.GetCount();
+		if (iPos < 0) iPos = (int)m_lstMenuItem.GetCount();
 		m_lstMenuItem.InsertAt(iPos, pNewMenu);
 
 		UpdateChildrenPosition();
@@ -192,10 +192,10 @@ namespace SOUI
 		{
 			for (pugi::xml_node xmlChild = xmlTMenus.first_child(); xmlChild; xmlChild = xmlChild.next_sibling())
 			{
-				if (_tcscmp(xmlChild.name(), SMenuItem::GetClassName()) != 0)
+				if (wcscmp(xmlChild.name(), SMenuItem::GetClassName()) != 0)
 					continue;
-				Insert(xmlChild.first_child().value(),
-					xmlChild.attribute(_T("menuName")).value());
+				Insert(S_CW2T(xmlChild.first_child().value()),
+					S_CW2T(xmlChild.attribute(L"menuName").value()));
 			}
 		}
 

@@ -1,4 +1,4 @@
-#include "include\souistd.h"
+﻿#include "include\souistd.h"
 #include "control\SSpinButtonCtrl.h"
 
 static const wchar_t * KBTN_UP = L"btn_up";

@@ -1,6 +1,6 @@
-#pragma once
+ï»¿#pragma once
 
-// Ä£Äâ Ä£Ì¬¶Ô»°¿ò µÄ²¼¾Ö 
+// æ¨¡æ‹Ÿ æ¨¡æ€å¯¹è¯æ¡† çš„å¸ƒå±€ 
 class VirtualDlgLayout
 {
 public:

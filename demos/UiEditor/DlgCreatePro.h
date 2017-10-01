@@ -1,4 +1,4 @@
-/**
+ï»¿/**
 * Copyright (C) 2014-2050 
 * All rights reserved.
 * 
@@ -8,7 +8,7 @@
 * @author     SOUI group   
 * @date       2014/08/02
 * 
-* Describe    SOUIµÄDialogÄ£¿é
+* Describe    SOUIçš„Dialogæ¨¡å—
 */
 
 #pragma once

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "CacheHandle.h"
 #include <ShlObj.h>
 
@@ -15,7 +15,7 @@ CacheHandle::~CacheHandle(void)
 {
 	m_Sqlite.Close();
 	
-	// ÇåÀí map
+	// æ¸…ç† map
 	for each(auto var in m_mapChatRecord)
 	{		
 		for each(auto vbr in *var.second)
@@ -29,19 +29,19 @@ CacheHandle::~CacheHandle(void)
 
 void CacheHandle::Init(LPCTSTR lpDataPath, LPCTSTR lpUserName)
 {
-	// IM »º´æ Ä¿Â¼
+	// IM ç¼“å­˜ ç›®å½•
 	m_szUserCachePath.Format(_T("%scache\\%s\\"), lpDataPath, lpUserName);
-	// IM Í¼Æ¬ »º´æ Ä¿Â¼
+	// IM å›¾ç‰‡ ç¼“å­˜ ç›®å½•
 	m_szImgCachePath = m_szUserCachePath + _T("imgcache\\");
 	
-	// ×î½üÁÄÌìÁÐ±í xml
+	// æœ€è¿‘èŠå¤©åˆ—è¡¨ xml
 	m_szRecentTalkXml = m_szUserCachePath + _T("RecentList.xml");
 
 
 	SHCreateDirectoryEx(NULL, m_szImgCachePath, NULL);
 
 
-	// ÁÄÌì¼ÇÂ¼ db 
+	// èŠå¤©è®°å½• db 
 	SStringT szChatRecordDbPath = m_szUserCachePath + _T("IMChatRecord.db");
 	if(m_Sqlite.Open(szChatRecordDbPath))
 	{
@@ -54,12 +54,12 @@ void CacheHandle::Init(LPCTSTR lpDataPath, LPCTSTR lpUserName)
 		{
 			ZeroMemory(lpSQL, 1024*sizeof(TCHAR));
 
-			_stprintf_s(lpSQL, L"CREATE TABLE %s (id INTEGER, "		//Ö÷¼üid
-									L"userid INTEGER, "									// ±£´æÓÃ»§µÄid
-									L"type INTEGER, "									// ÏûÏ¢ ÀàÐÍ 
-									L"bodyid INTEGER, "								// ÏûÏ¢ id
-									L"content TEXT, "										// ÏûÏ¢ ÕýÎÄ
-									L"time INTEGER, "							// Ê±¼ä
+			_stprintf_s(lpSQL, L"CREATE TABLE %s (id INTEGER, "		//ä¸»é”®id
+									L"userid INTEGER, "									// ä¿å­˜ç”¨æˆ·çš„id
+									L"type INTEGER, "									// æ¶ˆæ¯ ç±»åž‹ 
+									L"bodyid INTEGER, "								// æ¶ˆæ¯ id
+									L"content TEXT, "										// æ¶ˆæ¯ æ­£æ–‡
+									L"time INTEGER, "							// æ—¶é—´
 									L"PRIMARY KEY (id ASC))",
 									ChatRecordTable);
 
@@ -297,7 +297,7 @@ void CacheHandle::AddChatRecord(UINT uUserId, EnChatType eType, __int64 lBodyId,
 		pList = ite->second;
 
 	int n = pList->size() - Cache_Save_Num;
-	for (int i=0; i<n; ++i)			// Çå³ý ¶àÓàÏî 
+	for (int i=0; i<n; ++i)			// æ¸…é™¤ å¤šä½™é¡¹ 
 	{
 		delete pList->front();
 		pList->pop_front();

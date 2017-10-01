@@ -1,4 +1,4 @@
-// luaScriptModule.cpp : ¶¨Òå DLL Ó¦ÓÃ³ÌĞòµÄµ¼³öº¯Êı¡£
+ï»¿// luaScriptModule.cpp : å®šä¹‰ DLL åº”ç”¨ç¨‹åºçš„å¯¼å‡ºå‡½æ•°ã€‚
 //
 
 #include "stdafx.h"
@@ -87,11 +87,11 @@ namespace SOUI
             SOUI_Export_Lua(d_state);
             lua_register(d_state, "A2W", Utf8ToW);
             lua_tinker::def(d_state, "cast_a2w", cast_a2w);
-            luaL_dostring(d_state,"function L (str)\n return cast_a2w(A2W(str));\nend");//×¢²áÒ»¸öÈ«¾ÖµÄ"L"º¯Êı£¬ÓÃÀ´½«utf8±àÂëµÄ×Ö·û´®×ª»»ÎªWCHAR
+            luaL_dostring(d_state,"function L (str)\n return cast_a2w(A2W(str));\nend");//æ³¨å†Œä¸€ä¸ªå…¨å±€çš„"L"å‡½æ•°ï¼Œç”¨æ¥å°†utf8ç¼–ç çš„å­—ç¬¦ä¸²è½¬æ¢ä¸ºWCHAR
 
             lua_register(d_state, "A2T", Utf8ToT);
             lua_tinker::def(d_state, "cast_a2t", cast_a2t);
-            luaL_dostring(d_state,"function T (str)\n return cast_a2t(A2T(str));\nend");//×¢²áÒ»¸öÈ«¾ÖµÄ"T"º¯Êı£¬ÓÃÀ´½«utf8±àÂëµÄ×Ö·û´®×ª»»ÎªTCHAR
+            luaL_dostring(d_state,"function T (str)\n return cast_a2t(A2T(str));\nend");//æ³¨å†Œä¸€ä¸ªå…¨å±€çš„"T"å‡½æ•°ï¼Œç”¨æ¥å°†utf8ç¼–ç çš„å­—ç¬¦ä¸²è½¬æ¢ä¸ºTCHAR
         }
     }
 

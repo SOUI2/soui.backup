@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <unknown/obj-ref-impl.hpp>
 
@@ -12,37 +12,37 @@ namespace SOUI
 
         /**
          * SRealWnd::OnRealWndCreate
-         * @brief    ´´½¨Õæ´°¿Ú
-         * @param    SRealWnd * pRealWnd --  ´°¿ÚÖ¸Õë
-         * @return   HWND -- ´´½¨³öÀ´µÄÕæ´°¿Ú¾ä±ú
+         * @brief    åˆ›å»ºçœŸçª—å£
+         * @param    SRealWnd * pRealWnd --  çª—å£æŒ‡é’ˆ
+         * @return   HWND -- åˆ›å»ºå‡ºæ¥çš„çœŸçª—å£å¥æŸ„
          * Describe  
          */    
         virtual HWND OnRealWndCreate(SRealWnd *pRealWnd);
 
         /**
         * SRealWnd::OnRealWndDestroy
-        * @brief    Ïú»Ù´°¿Ú
-        * @param    SRealWnd *pRealWnd -- ´°¿ÚÖ¸Õë
+        * @brief    é”€æ¯çª—å£
+        * @param    SRealWnd *pRealWnd -- çª—å£æŒ‡é’ˆ
         *
-        * Describe  Ïú»Ù´°¿Ú
+        * Describe  é”€æ¯çª—å£
         */
         virtual void OnRealWndDestroy(SRealWnd *pRealWnd);
 
         /**
         * SRealWnd::OnRealWndInit
-        * @brief    ³õÊ¼»¯´°¿Ú
-        * @param    SRealWnd *pRealWnd -- ´°¿ÚÖ¸Õë
+        * @brief    åˆå§‹åŒ–çª—å£
+        * @param    SRealWnd *pRealWnd -- çª—å£æŒ‡é’ˆ
         *
-        * Describe  ³õÊ¼»¯´°¿Ú
+        * Describe  åˆå§‹åŒ–çª—å£
         */
         virtual BOOL OnRealWndInit(SRealWnd *pRealWnd);
 
         /**
         * SRealWnd::OnRealWndSize
-        * @brief    µ÷Õû´°¿Ú´óĞ¡
-        * @param    SRealWnd *pRealWnd -- ´°¿ÚÖ¸Õë
-        * @return   BOOL -- TRUE:ÓÃ»§¹ÜÀí´°¿ÚµÄÒÆ¶¯£»FALSE£º½»ÓÉSOUI×Ô¼º¹ÜÀí¡£
-        * Describe  µ÷Õû´°¿Ú´óĞ¡, ´ÓpRealWndÖĞ»ñµÃ´°¿ÚÎ»ÖÃ¡£
+        * @brief    è°ƒæ•´çª—å£å¤§å°
+        * @param    SRealWnd *pRealWnd -- çª—å£æŒ‡é’ˆ
+        * @return   BOOL -- TRUE:ç”¨æˆ·ç®¡ç†çª—å£çš„ç§»åŠ¨ï¼›FALSEï¼šäº¤ç”±SOUIè‡ªå·±ç®¡ç†ã€‚
+        * Describe  è°ƒæ•´çª—å£å¤§å°, ä»pRealWndä¸­è·å¾—çª—å£ä½ç½®ã€‚
         */
         virtual BOOL OnRealWndSize(SRealWnd *pRealWnd);
     };

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "SwndFrame.h"
 
 namespace SOUI
@@ -43,7 +43,7 @@ namespace SOUI
         HDC hdc = GetDC();
         LOGFONT lf={0};
         lf.lfWeight = FW_BOLD;
-        _tcscpy(lf.lfFaceName,_T("ËÎÌå"));
+        _tcscpy(lf.lfFaceName,_T("å®‹ä½“"));
         lf.lfHeight=-20;
         HFONT hFont = CreateFontIndirect(&lf);
         HGDIOBJ hOldFont=SelectObject(hdc,hFont);

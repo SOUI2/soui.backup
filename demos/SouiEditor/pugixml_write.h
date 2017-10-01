@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 // xml_writer implementation for streams

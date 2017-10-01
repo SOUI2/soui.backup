@@ -20,8 +20,8 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 
 add_executable(QQMain WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-add_dependencies(QQMain soui-sys-resource ${COM_LIBS})
-target_link_libraries(QQMain utilities soui)
+add_dependencies(QQMain soui-sys-resource)
+target_link_libraries(QQMain utilities soui ${COM_LIBS})
 
 set_target_properties(QQMain PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
 set_target_properties(QQMain PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})

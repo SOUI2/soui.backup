@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "souistd.h"
 #include "ClipboardConverter.h"
 #include "dataobject.h"
@@ -72,7 +72,7 @@ namespace SOUI
         m_strRichContent = str;
 
         /*
-         * ¹¹ÔìHTML
+         * æ„é€ HTML
          * Version:0.9..StartHTML:00000097..EndHTML:00000169..StartFragment:00000131..EndFragment:00000133..<html><body>..<!--StartFragment--><DIV>fd</DIV><!--EndFragment-->..</body>..</html>.
          * <------------------------------------------ HeaderSize:97 --------------------------------------><----- StartFragmanetSize:34 ----><contentSize><------- EndFragmentSize:36 -------->
         */
@@ -185,7 +185,7 @@ namespace SOUI
         if (!m_bTextOnly)
         {
             /*
-             * Èç¹ûÖ»ÓĞÎÄ×Ö£¬Ôò²»ĞèÒªÆäËü¸ñÊ½
+             * å¦‚æœåªæœ‰æ–‡å­—ï¼Œåˆ™ä¸éœ€è¦å…¶å®ƒæ ¼å¼
              */
             if (GetCustomerFormat(&fmt[count], &stg[count]))
                 count++;
@@ -198,7 +198,7 @@ namespace SOUI
         }
 
         /*
-         * ÕâÀïÒªÁôÒ»¸öUNICODETEXT µÄ¸ñÊ½£¬·ñÔòÍÏ×§µÄÊ±ºò»á³öÏÖÄªÃûÆäÃîµÄ±ÀÀ£
+         * è¿™é‡Œè¦ç•™ä¸€ä¸ªUNICODETEXT çš„æ ¼å¼ï¼Œå¦åˆ™æ‹–æ‹½çš„æ—¶å€™ä¼šå‡ºç°è«åå…¶å¦™çš„å´©æºƒ
         */
         if (GetUnicodeTextFormat(&fmt[count], &stg[count]))
             count++;
@@ -366,8 +366,8 @@ namespace SOUI
         SStringW strHtml = S_CA2W((char*)pBuffer, CP_UTF8);
 
         /*
-         * Ìæ»»µôUTF8ÖĞµÄ¿Õ¸ñ×Ö·û¡£UTF8ÖĞµÄ¿Õ¸ñ±àÂëÎªc2a0£¬×ª»»Îªunicode
-         * Ö®ºó±ä³ÉÁËa000£¬ ËùÒÔĞèÒªÊÖ¶¯½«a000Ìæ»»Îª2000£¬Ò²¾ÍÊÇL" ",·ñÔò»áÏÔÊ¾ÎªÂÒÂë
+         * æ›¿æ¢æ‰UTF8ä¸­çš„ç©ºæ ¼å­—ç¬¦ã€‚UTF8ä¸­çš„ç©ºæ ¼ç¼–ç ä¸ºc2a0ï¼Œè½¬æ¢ä¸ºunicode
+         * ä¹‹åå˜æˆäº†a000ï¼Œ æ‰€ä»¥éœ€è¦æ‰‹åŠ¨å°†a000æ›¿æ¢ä¸º2000ï¼Œä¹Ÿå°±æ˜¯L" ",å¦åˆ™ä¼šæ˜¾ç¤ºä¸ºä¹±ç 
         */
 
         WCHAR space[] = { 0xa0, 0x00 };
@@ -376,7 +376,7 @@ namespace SOUI
         SStringW tmpstr = strHtml;
         if (tmpstr.MakeLower().Find(_T("<img")) < 0)
         {
-            return FALSE;  // Ö»Õ³Ìù´øÍ¼Æ¬µÄHTML¸ñÊ½,·ñÔòµ±×÷ÆÕÍ¨µÄUNICODE TEXT´¦Àí
+            return FALSE;  // åªç²˜è´´å¸¦å›¾ç‰‡çš„HTMLæ ¼å¼,å¦åˆ™å½“ä½œæ™®é€šçš„UNICODE TEXTå¤„ç†
         }
 
         SStringW    start = _T("<!--StartFragment");
@@ -457,7 +457,7 @@ namespace SOUI
         void              * pDIBBits = (void*)(lpBI + 1);
 
         /*
-         * ¹âÕ¤Æ«ÒÆ
+         * å…‰æ …åç§»
         */
         int nColors = lpBI->biClrUsed ? lpBI->biClrUsed : 1 << lpBI->biBitCount;
         if (lpBI->biBitCount > 8)
@@ -502,7 +502,7 @@ namespace SOUI
         //    DIB_RGB_COLORS, SRCCOPY);
 
         ///*
-        // * ±£´æ³ÉÎÄ¼ş
+        // * ä¿å­˜æˆæ–‡ä»¶
         //*/
         //SStringW tmpPath;
         //tmpPath.Format(L"%s%s.png", GetTempPath(), GenGuid()); 
@@ -702,8 +702,8 @@ namespace SOUI
             m_strText += txt;
 
             //
-            // ÓÉÓÚpugixml½âÎö×Ö·û´®Ê±£¬Ä¬ÈÏ»á´ò¿ª parse_eol Ñ¡Ïî£¬ËùÓĞµÄ\r¡¢\n»áÍ³Ò»×ª»¯Îª\n
-            // ËùÒÔ»»ĞĞÒÔ\nÎª×¼
+            // ç”±äºpugixmlè§£æå­—ç¬¦ä¸²æ—¶ï¼Œé»˜è®¤ä¼šæ‰“å¼€ parse_eol é€‰é¡¹ï¼Œæ‰€æœ‰çš„\rã€\nä¼šç»Ÿä¸€è½¬åŒ–ä¸º\n
+            // æ‰€ä»¥æ¢è¡Œä»¥\nä¸ºå‡†
             //
             txt.Replace(L"\n", L"<br/>");
             SStringA utf8 = S_CW2A(txt, CP_UTF8);

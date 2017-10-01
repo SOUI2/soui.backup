@@ -1,15 +1,15 @@
-#ifndef __MASK_SKIN_HPP_
+ï»¿#ifndef __MASK_SKIN_HPP_
 #define __MASK_SKIN_HPP_
 
 #include "core/SSkin.h"
 
 //************************************
-// Õâ¸öÊÇ mask  ÕÚÕÖ Æ¤·ô  Í·Ïñ  ÔÚskin.xml ÀïÅäÖÃ ĞèÒª 3¸öÖµ 
-// src ºÍ imglist Ò»Ñù 
-// mask_a ÉèÖÃÍ¸Ã÷Öµ µÄrgb a // .a=3 .r=0 .g=1 .b=2 
-// mask ÉèÖÃÕÚÕÖ Í¼Æ¬ 
+// è¿™ä¸ªæ˜¯ mask  é®ç½© çš®è‚¤  å¤´åƒ  åœ¨skin.xml é‡Œé…ç½® éœ€è¦ 3ä¸ªå€¼ 
+// src å’Œ imglist ä¸€æ · 
+// mask_a è®¾ç½®é€æ˜å€¼ çš„rgb a // .a=3 .r=0 .g=1 .b=2 
+// mask è®¾ç½®é®ç½© å›¾ç‰‡ 
 // <masklist name="default" src="image:default" mask_a="1" mask="image:mask_42" />
-// »¹Ìá¹©ÁË 
+// è¿˜æä¾›äº† 
 //************************************
 class SSkinMask: public SSkinImgList
 {
@@ -56,11 +56,11 @@ protected:
 private:
 	CAutoRefPtr<IBitmap>    m_bmpMask;
 	CAutoRefPtr<IBitmap>    m_bmpCache;
-	int									m_iMaskChannel;				// ¶ÔÓ¦ mask  µÄrgb a // .a=3 .r=0 .g=1 .b=2
+	int									m_iMaskChannel;				// å¯¹åº” mask  çš„rgb a // .a=3 .r=0 .g=1 .b=2
 protected:
 	SOUI_ATTRS_BEGIN()
 		ATTR_CUSTOM(L"src", OnAttrSrc)
-		ATTR_INT(L"mask_a", m_iMaskChannel, FALSE)		// ÒªÏÈÉèÖÃÕâ¸ö  ²»È»¾ÍÓÃÄ¬ÈÏ
+		ATTR_INT(L"mask_a", m_iMaskChannel, FALSE)		// è¦å…ˆè®¾ç½®è¿™ä¸ª  ä¸ç„¶å°±ç”¨é»˜è®¤
 		ATTR_CUSTOM(L"mask", OnAttrMask)	  //image.a		
 	SOUI_ATTRS_END()
 protected:
@@ -116,7 +116,7 @@ protected:
 		
 		pRTDst->SelectObject(pOldBmp);
 
-		//´ÓmaskµÄÖ¸¶¨channelÖĞ»ñµÃalphaÍ¨µÀ
+		//ä»maskçš„æŒ‡å®šchannelä¸­è·å¾—alphaé€šé“
 		LPBYTE pBitCache = (LPBYTE)m_bmpCache->LockPixelBits();
 		LPBYTE pBitMask = (LPBYTE)m_bmpMask->LockPixelBits();
 		LPBYTE pDst = pBitCache;
@@ -126,12 +126,12 @@ protected:
 		{
 			BYTE byAlpha = *pSrc;
 			pSrc += 4;
-			//Ô´°ëÍ¸Ã÷£¬mask²»Í¸Ã÷Ê±Ê¹ÓÃÔ´µÄ°ëÍ¸Ã÷ÊôĞÔ
+			//æºåŠé€æ˜ï¼Œmaskä¸é€æ˜æ—¶ä½¿ç”¨æºçš„åŠé€æ˜å±æ€§
 			if(pDst[3] == 0xff || (pDst[3]!=0xFF &&byAlpha == 0))
-			{//Ô´²»Í¸Ã÷,»òÕßmaskÈ«Í¸Ã÷
-				*pDst++ = ((*pDst) * byAlpha)>>8;//×öpremultiply
-				*pDst++ = ((*pDst) * byAlpha)>>8;//×öpremultiply
-				*pDst++ = ((*pDst) * byAlpha)>>8;//×öpremultiply
+			{//æºä¸é€æ˜,æˆ–è€…maskå…¨é€æ˜
+				*pDst++ = ((*pDst) * byAlpha)>>8;//åšpremultiply
+				*pDst++ = ((*pDst) * byAlpha)>>8;//åšpremultiply
+				*pDst++ = ((*pDst) * byAlpha)>>8;//åšpremultiply
 				*pDst++ = byAlpha;
 			}
 		}

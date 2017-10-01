@@ -1,4 +1,4 @@
-#include <event/events.h>
+ï»¿#include <event/events.h>
 
 
 EventTimer * toEventTimer(EventArgs *pEvt)
@@ -23,12 +23,12 @@ BOOL ExpLua_EventArgs(lua_State *L)
         lua_tinker::class_add<EventTimer>(L,"EventTimer");
         lua_tinker::class_inh<EventTimer,EventArgs>(L);
         lua_tinker::class_mem<EventTimer>(L,"uID",&EventTimer::uID);
-        lua_tinker::def(L,"toEventTimer",toEventTimer);//ÀàĞÍ×ª»»
+        lua_tinker::def(L,"toEventTimer",toEventTimer);//ç±»å‹è½¬æ¢
 
         lua_tinker::class_add<EventSwndSize>(L,"EventSwndSize");
         lua_tinker::class_inh<EventSwndSize,EventArgs>(L);
         lua_tinker::class_mem<EventSwndSize>(L,"szWnd",&EventSwndSize::szWnd);
-        lua_tinker::def(L,"toEventSize",toEventSize);//ÀàĞÍ×ª»»
+        lua_tinker::def(L,"toEventSize",toEventSize);//ç±»å‹è½¬æ¢
 
 		return TRUE;
 	}catch(...)

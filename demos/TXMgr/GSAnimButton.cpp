@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "GSAnimButton.h"
 
 
@@ -23,14 +23,14 @@ void GSAnimButton::OnPaint(IRenderTarget *pRT)
 	GetClientRect(&rcClient);
 
 	if (m_bAnimate == 0)
-	{//²»ÔÚ¶¯»­¹ý³ÌÖÐ
+	{//ä¸åœ¨åŠ¨ç”»è¿‡ç¨‹ä¸­
 		m_pBgSkin->Draw(
 			pRT, rcClient,
 			IIF_STATE4(GetState(), 0, 1, 2, 3)
 			);
 	}
 	else
-	{//ÔÚ¶¯»­¹ý³ÌÖÐ
+	{//åœ¨åŠ¨ç”»è¿‡ç¨‹ä¸­
 		if (GetState()&WndState_Hover)
 		{
 			//get hover
@@ -57,7 +57,7 @@ void GSAnimButton::OnStateChanged(DWORD dwOldState, DWORD dwNewState)
 	SWindow::OnStateChanged(dwOldState, dwNewState);
 	
 
-	if (GetCapture() == m_swnd)    //µã»÷ÖÐ
+	if (GetCapture() == m_swnd)    //ç‚¹å‡»ä¸­
 		return;
 
 	if (m_bAnimate &&
@@ -68,13 +68,13 @@ void GSAnimButton::OnStateChanged(DWORD dwOldState, DWORD dwNewState)
 		GetContainer()->RegisterTimelineHandler(this);
 	}
 	else if (m_bAnimate && (dwOldState == WndState_Hover && dwNewState == WndState_Normal))
-	{//Æô¶¯¶¯»­
+	{//å¯åŠ¨åŠ¨ç”»
 		m_nHoveAnim = -1;
 		GetContainer()->RegisterTimelineHandler(this);
 	}
 }
 
-//ÖÐÖ¹Ô­À´µÄ¶¯»­
+//ä¸­æ­¢åŽŸæ¥çš„åŠ¨ç”»
 void GSAnimButton::StopCurAnimate()
 {
 	GetContainer()->UnregisterTimelineHandler(this);

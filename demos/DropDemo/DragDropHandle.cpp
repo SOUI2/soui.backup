@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "DragDropHandle.h"
 #include "ShlGuid.h"
 
@@ -35,7 +35,7 @@ bool DropTargetEx::DragDropRegister(HWND hWnd, DWORD dwAcceptKeyState)
 {
 	if(!IsWindow(hWnd))return false;
 	
-	HRESULT s = ::RegisterDragDrop (hWnd, this);  //ÕâÀï±¨´í87  ÄÇÊÇÒòÎªÃ»ÓĞ¼Ó::OleInitialize(NULL);
+	HRESULT s = ::RegisterDragDrop (hWnd, this);  //è¿™é‡ŒæŠ¥é”™87  é‚£æ˜¯å› ä¸ºæ²¡æœ‰åŠ ::OleInitialize(NULL);
 	if(SUCCEEDED(s))  
 	{		
 		m_hWnd = hWnd;
@@ -78,13 +78,13 @@ ULONG STDMETHODCALLTYPE DropTargetEx::Release()
 	return 1;
 }  
 
-//½øÈë  
+//è¿›å…¥  
 HRESULT STDMETHODCALLTYPE DropTargetEx::DragEnter(__RPC__in_opt IDataObject *pDataObj, 
 												   DWORD grfKeyState,
 												   POINTL pt, 
 												   __RPC__inout DWORD *pdwEffect)  
 {
-	//  ÅĞ¶Ï Ä£Ê½  Ä¬ÈÏÉèÖÃ Êó±ê×ó¼ü ÍÏ·Å  ÓÒ¼üµÄ»°¾ÍÃ»ÓĞ
+	//  åˆ¤æ–­ æ¨¡å¼  é»˜è®¤è®¾ç½® é¼ æ ‡å·¦é”® æ‹–æ”¾  å³é”®çš„è¯å°±æ²¡æœ‰
 	if(m_dwAcceptKeyState != (grfKeyState&m_dwAcceptKeyState))
 	{
 		return S_FALSE;
@@ -98,7 +98,7 @@ HRESULT STDMETHODCALLTYPE DropTargetEx::DragEnter(__RPC__in_opt IDataObject *pDa
 	pt1.x = pt.x;
 	pt1.y = pt.y;
 		
-	// ÏìÓ¦ ´°¿Ú×Ô¼ºµÄ´¦Àí¡£·µ»ØS_FALSE ±íÊ¾ ²»Ö§³ÖÍÏ·Å
+	// å“åº” çª—å£è‡ªå·±çš„å¤„ç†ã€‚è¿”å›S_FALSE è¡¨ç¤º ä¸æ”¯æŒæ‹–æ”¾
 	if(NULL != m_pIDropTargetHandle)
 	{
 		ret = m_pIDropTargetHandle->OnDragEnter(m_pDataObj, grfKeyState, pt1);
@@ -112,7 +112,7 @@ HRESULT STDMETHODCALLTYPE DropTargetEx::DragEnter(__RPC__in_opt IDataObject *pDa
 	return ret;
 }  
 
-//ÒÆ¶¯  
+//ç§»åŠ¨  
 HRESULT STDMETHODCALLTYPE DropTargetEx::DragOver(DWORD dwKeyState, 
 												  POINTL pt, 
 												  __RPC__inout DWORD *pdwEffect)  
@@ -132,7 +132,7 @@ HRESULT STDMETHODCALLTYPE DropTargetEx::DragOver(DWORD dwKeyState,
 	}
 	
 	DROPIMAGETYPE dwImage = (DROPIMAGETYPE)*pdwEffect;
-	// szMessage ¿ÉÒÔ´ø¸ñÊ½µÄ %1 ±íÊ¾ szInsertµÄÖµ
+	// szMessage å¯ä»¥å¸¦æ ¼å¼çš„ %1 è¡¨ç¤º szInsertçš„å€¼
 	if(!szMessage.empty() && !szInsert.empty())
 	{
 		szMessage.append(L" %1");
@@ -152,7 +152,7 @@ HRESULT STDMETHODCALLTYPE DropTargetEx::DragOver(DWORD dwKeyState,
 	return S_OK;
 }  
 
-//Àë¿ª  
+//ç¦»å¼€  
 HRESULT STDMETHODCALLTYPE DropTargetEx::DragLeave()  
 {  
 	SetDropDescription(DROPIMAGE_INVALID, NULL);
@@ -168,7 +168,7 @@ HRESULT STDMETHODCALLTYPE DropTargetEx::DragLeave()
 	return S_OK;
 }  
 
-//ÊÍ·Å  
+//é‡Šæ”¾  
 HRESULT STDMETHODCALLTYPE DropTargetEx::Drop(__RPC__in_opt IDataObject *pDataObj,
 											  DWORD grfKeyState, 
 											  POINTL pt, 
@@ -741,7 +741,7 @@ bool DataObjectEx::SetDragImage(HBITMAP hBitmap, POINT* pPoint/*=NULL*/, COLORRE
 
 DROPEFFECT DataObjectEx::DoDragDrop(DROPEFFECT dwEffect)
 {
-	//ÉèÖÃ ¿ÉÒÔÏÔÊ¾  ÃèÊöĞÅÏ¢ 
+	//è®¾ç½® å¯ä»¥æ˜¾ç¤º  æè¿°ä¿¡æ¯ 
 	if(NULL != m_pDragSourceHelper2)
 		m_pDragSourceHelper2->SetFlags(DSH_ALLOWDROPDESCRIPTIONTEXT);
 
@@ -826,7 +826,7 @@ HRESULT STDMETHODCALLTYPE DropSourceEx::QueryContinueDrag(BOOL fEscapePressed, D
 {
 	if(fEscapePressed == TRUE)
 		return DRAGDROP_S_CANCEL;       
-	// if the LeftMouse button has been released, then do the drop!   ÕâÀï ÊÇ ÅĞ¶Ï ½áÊø ÍÏ·ÅµÄÌõ¼ş Èç¹ûÃ»ÓĞ×ó¼ü ¾Í onDrop
+	// if the LeftMouse button has been released, then do the drop!   è¿™é‡Œ æ˜¯ åˆ¤æ–­ ç»“æŸ æ‹–æ”¾çš„æ¡ä»¶ å¦‚æœæ²¡æœ‰å·¦é”® å°± onDrop
 	if((grfKeyState & MK_LBUTTON) == 0)
 		return DRAGDROP_S_DROP;
 	// continue with the drag-drop

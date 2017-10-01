@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "RichEditUnitConverter.h"
 
 BOOL RichEditUintConverter::GetDPI(UINT &dpi, BOOL bIsHeightPx)

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include <algorithm>
 #include <stdio.h>
 #include <Shlwapi.h>
@@ -17,7 +17,7 @@ namespace FileFolderHelper
 		wchar_t lpDir[MAX_PATH] = {0};
 		lstrcpyn(lpDir, lpDirPath, MAX_PATH);
 		PathRemoveFileSpec(lpDir);
-		PathUnquoteSpaces(lpDir);	//È¥³ıÂ·¾¶ÖĞµÄÊ×Î²¿Õ¸ñ
+		PathUnquoteSpaces(lpDir);	//å»é™¤è·¯å¾„ä¸­çš„é¦–å°¾ç©ºæ ¼
 		if (!PathFileExists(lpDir))
 		{
 			return 0 == ::SHCreateDirectory(NULL, lpDir);
@@ -30,10 +30,10 @@ namespace FileFolderHelper
 	{
 		SHFILEOPSTRUCT info;
 		ZeroMemory(&info, sizeof(SHFILEOPSTRUCT));
-		info.fFlags |= FOF_SILENT;			//²»ÏÔÊ¾½ø¶È
-		info.fFlags |= FOF_NOERRORUI;			//²»ÏÔÊ¾´íÎó±¨¸æ
-		info.fFlags |= FOF_NOCONFIRMATION;		//Ö±½ÓÉ¾³ı  ²»ÏÔÊ¾È·ÈÏ
-		info.fFlags &= ~FOF_ALLOWUNDO;			//Ö±½ÓÉ¾³ı ²»·Å »ØÊÕÕ¾
+		info.fFlags |= FOF_SILENT;			//ä¸æ˜¾ç¤ºè¿›åº¦
+		info.fFlags |= FOF_NOERRORUI;			//ä¸æ˜¾ç¤ºé”™è¯¯æŠ¥å‘Š
+		info.fFlags |= FOF_NOCONFIRMATION;		//ç›´æ¥åˆ é™¤  ä¸æ˜¾ç¤ºç¡®è®¤
+		info.fFlags &= ~FOF_ALLOWUNDO;			//ç›´æ¥åˆ é™¤ ä¸æ”¾ å›æ”¶ç«™
 		info.hNameMappings = NULL;
 		info.hwnd = NULL;
 		info.lpszProgressTitle = NULL;
@@ -67,7 +67,7 @@ namespace FileFolderHelper
 
 		while (listFolder.size() > 0 )
 		{
-			//´Ó¶ÓÁĞÊ×È¡³öÂ·¾¶
+			//ä»é˜Ÿåˆ—é¦–å–å‡ºè·¯å¾„
 			std::wstring sFolder = listFolder.front();
 			listFolder.pop_front();
 
@@ -80,7 +80,7 @@ namespace FileFolderHelper
 				continue;
 			}
 
-			//Ã¶¾ÙÎÄ¼ş¼ĞÄÚµÄ ÎÄ¼şĞÅÏ¢
+			//æšä¸¾æ–‡ä»¶å¤¹å†…çš„ æ–‡ä»¶ä¿¡æ¯
 			do
 			{
 				std::wstring strName = fd.cFileName;
@@ -91,7 +91,7 @@ namespace FileFolderHelper
 
 				if((fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY )
 				{
-					//Èç¹ûÊÇÎÄ¼ş¼Ğ ¾ÍÏÈÈëÁĞ   
+					//å¦‚æœæ˜¯æ–‡ä»¶å¤¹ å°±å…ˆå…¥åˆ—   
 					listFolder.push_back(sFolder + _T("\\") + fd.cFileName);
 					continue;
 				}
@@ -101,7 +101,7 @@ namespace FileFolderHelper
 				liSize.HighPart = fd.nFileSizeHigh;
 				ulFolderSize += liSize.QuadPart;	
 
-			}while( FindNextFile(hFind,&fd));		//²éÕÒÏÂÒ»¸ö
+			}while( FindNextFile(hFind,&fd));		//æŸ¥æ‰¾ä¸‹ä¸€ä¸ª
 
 			FindClose(hFind);
 		}
@@ -115,7 +115,7 @@ namespace FileFolderHelper
 
 		while (listFolder.size() > 0 )
 		{
-			//´Ó¶ÓÁĞÊ×È¡³öÂ·¾¶
+			//ä»é˜Ÿåˆ—é¦–å–å‡ºè·¯å¾„
 			std::wstring sFolder = listFolder.front();
 			listFolder.pop_front();
 
@@ -128,7 +128,7 @@ namespace FileFolderHelper
 				continue;
 			}
 
-			//Ã¶¾ÙÎÄ¼ş¼ĞÄÚµÄ ÎÄ¼şĞÅÏ¢
+			//æšä¸¾æ–‡ä»¶å¤¹å†…çš„ æ–‡ä»¶ä¿¡æ¯
 			do
 			{
 				std::wstring strName = fd.cFileName;
@@ -139,7 +139,7 @@ namespace FileFolderHelper
 
 				if((fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY )
 				{
-					//Èç¹ûÊÇÎÄ¼ş¼Ğ ¾ÍÏÈÈëÁĞ   
+					//å¦‚æœæ˜¯æ–‡ä»¶å¤¹ å°±å…ˆå…¥åˆ—   
 					listFolder.push_back(sFolder + _T("\\") + fd.cFileName);
 					++info.uFolderCount;
 					continue;
@@ -151,7 +151,7 @@ namespace FileFolderHelper
 				info.ulFileSize += liSize.QuadPart;
 				++info.uFileCount;
 
-			}while( FindNextFile(hFind,&fd));		//²éÕÒÏÂÒ»¸ö
+			}while( FindNextFile(hFind,&fd));		//æŸ¥æ‰¾ä¸‹ä¸€ä¸ª
 
 			FindClose(hFind);
 		}
@@ -174,19 +174,19 @@ namespace FileFolderHelper
 		return liSize.QuadPart;
 	}
 
-	static wchar_t* sUnit[] = {_T("×Ö½Ú"), _T("KB"), _T("MB"), _T("GB")};
+	static wchar_t* sUnit[] = {_T("å­—èŠ‚"), _T("KB"), _T("MB"), _T("GB")};
 	std::wstring FileSizeToStr(unsigned __int64 ulFileSize)
 	{
 #if 0
-		//Õâ¸ö·½·¨ ÓĞ¾ÖÏŞĞÔ  Ã»ÓĞËÄÉáÎåÈë Ò²Ö»ÓĞ3Î»Êı×Ö  
+		//è¿™ä¸ªæ–¹æ³• æœ‰å±€é™æ€§  æ²¡æœ‰å››èˆäº”å…¥ ä¹Ÿåªæœ‰3ä½æ•°å­—  
 		TCHAR       szFileLen [64] = {0};
 		StrFormatByteSize64(fileSize, szFileLen, 64);
 		return CString(szFileLen);
 #else			
 		if(ulFileSize < 0) 
-			return _T("Î´Öª");
+			return _T("æœªçŸ¥");
 		else if(0 == ulFileSize)
-			return _T("0 ×Ö½Ú");
+			return _T("0 å­—èŠ‚");
 
 		unsigned int nIndex = 0;
 
@@ -223,7 +223,7 @@ namespace FileFolderHelper
 		{
 			szSizeText.insert(i, _T(","));
 		}
-		szSizeText.append(_T("×Ö½Ú"));
+		szSizeText.append(_T("å­—èŠ‚"));
 		return szSizeText;
 	}
 
@@ -239,7 +239,7 @@ namespace FileFolderHelper
 		//	return false;
 		//}
 
-		//// °üº¬ÉÏÃæ×Ö·ûµÄ×Ö·û´®²»ÄÜ×öÎÄ¼şÃû
+		//// åŒ…å«ä¸Šé¢å­—ç¬¦çš„å­—ç¬¦ä¸²ä¸èƒ½åšæ–‡ä»¶å
 		//if (RegExp.Match(lpFileName, &RegMatch)) 
 		//{
 		//	return false;

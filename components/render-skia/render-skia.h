@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 
 #include <helper/color.h>
@@ -132,8 +132,8 @@ namespace SOUI
 			ATTR_FLOAT(L"blurRadius",m_blurRadius,FALSE)
 		SOUI_ATTRS_END()
 	protected:
-        SkTypeface *m_skFont;   //¶¨Òå×ÖÌå
-        SkPaint     m_skPaint;  //¶¨ÒåÎÄ×Ö»æÖÆÊôĞÔ
+        SkTypeface *m_skFont;   //å®šä¹‰å­—ä½“
+        SkPaint     m_skPaint;  //å®šä¹‰æ–‡å­—ç»˜åˆ¶å±æ€§
         LOGFONT     m_lf;
 		SkBlurStyle m_blurStyle;
 		SkScalar	m_blurRadius;
@@ -170,8 +170,8 @@ namespace SOUI
 
 		}
 
-		COLORREF m_cr;		//ÑÕÉ«»­Ë¢
-		SkBitmap m_bmp;		//Î»Í¼»­Ë¢
+		COLORREF m_cr;		//é¢œè‰²ç”»åˆ·
+		SkBitmap m_bmp;		//ä½å›¾ç”»åˆ·
 		BOOL	 m_fBmp;
 	};
 
@@ -204,8 +204,8 @@ namespace SOUI
 	    
         HRESULT ImgFromDecoder(IImgX *imgDecoder);
 
-		SkBitmap    m_bitmap;   //skia ¹ÜÀíµÄBITMAP
-		HBITMAP     m_hBmp;     //±ê×¼µÄ32Î»Î»Í¼£¬ºÍm_bitmap¹²ÏíÄÚ´æ
+		SkBitmap    m_bitmap;   //skia ç®¡ç†çš„BITMAP
+		HBITMAP     m_hBmp;     //æ ‡å‡†çš„32ä½ä½å›¾ï¼Œå’Œm_bitmapå…±äº«å†…å­˜
 	};
 
 	//////////////////////////////////////////////////////////////////////////
@@ -251,7 +251,7 @@ namespace SOUI
 		SRenderTarget_Skia(IRenderFactory* pRenderFactory,int nWid,int nHei);
 		~SRenderTarget_Skia();
 
-		//Ö»Ö§³Ö´´½¨Î»Í¼±íÃæ
+		//åªæ”¯æŒåˆ›å»ºä½å›¾è¡¨é¢
 		virtual HRESULT CreateCompatibleRenderTarget(SIZE szTarget,IRenderTarget **ppRenderTarget);
 
 		virtual HRESULT CreatePen(int iStyle,COLORREF cr,int cWidth,IPen ** ppPen);
@@ -373,7 +373,7 @@ namespace SOUI
     
         SkPoint         m_ptOrg;
         
-        //×¢Òâ±£´æ4¸öÄ¬ÈÏµÄRenderObject¶ÔÏó
+        //æ³¨æ„ä¿å­˜4ä¸ªé»˜è®¤çš„RenderObjectå¯¹è±¡
         CAutoRefPtr<IBitmap> m_defBmp;
         CAutoRefPtr<IPen> m_defPen;
         CAutoRefPtr<IBrush> m_defBrush;

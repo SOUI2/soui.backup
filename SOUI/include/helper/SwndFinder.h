@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <core/SSingleton.h>
 #include <core/swnd.h>

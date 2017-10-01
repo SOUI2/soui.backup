@@ -19,8 +19,8 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 
 add_executable(mclistview_demo WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-add_dependencies(mclistview_demo soui-sys-resource ${COM_LIBS})
-target_link_libraries(mclistview_demo utilities soui)
+add_dependencies(mclistview_demo soui-sys-resource)
+target_link_libraries(mclistview_demo utilities soui ${COM_LIBS})
 
 set_target_properties(mclistview_demo PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
 set_target_properties(mclistview_demo PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})

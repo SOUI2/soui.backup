@@ -1,4 +1,4 @@
-
+﻿
 #ifndef XPM_ICON_H
 #define XPM_ICON_H
 

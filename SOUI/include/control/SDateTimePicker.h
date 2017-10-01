@@ -1,6 +1,6 @@
-/*
-»ù±¾ ÊÇ °´ mfc  µÄ datetime ÊµÏÖµÄ Ö»ÊµÏÖÁË ÌìÊı Ñ¡Ôñ  ÔÂ ºÍ Äê Ã»×ö
-ÔÂ ºÍ Äê Ò»°ãÒ²ÓÃµÄÉÙ¡£ Ñ¡ÔñÒ²¿ÉÒÔ¡£
+ï»¿/*
+åŸºæœ¬ æ˜¯ æŒ‰ mfc  çš„ datetime å®ç°çš„ åªå®ç°äº† å¤©æ•° é€‰æ‹©  æœˆ å’Œ å¹´ æ²¡åš
+æœˆ å’Œ å¹´ ä¸€èˆ¬ä¹Ÿç”¨çš„å°‘ã€‚ é€‰æ‹©ä¹Ÿå¯ä»¥ã€‚
 */
 
 #pragma once
@@ -8,12 +8,12 @@
 
 namespace SOUI
 {
-	// °´Å¥ ºê¶¨Òå
-#define HIT_NULL				-1				// ÎŞ
-#define HIT_LEFT				-10			// ÉÏÒ»¸öÔÂ °´Å¥
-#define HIT_RIGHT				-11			// ÏÂÒ»¸öÔÂ °´Å¥
-#define HIT_YEAR				-12			//  ÄêÔÂ  »¹Ã»ÓÃµ½
-#define HIT_TODAY				42				//  ½ñÌì 
+	// æŒ‰é’® å®å®šä¹‰
+#define HIT_NULL				-1				// æ— 
+#define HIT_LEFT				-10			// ä¸Šä¸€ä¸ªæœˆ æŒ‰é’®
+#define HIT_RIGHT				-11			// ä¸‹ä¸€ä¸ªæœˆ æŒ‰é’®
+#define HIT_YEAR				-12			//  å¹´æœˆ  è¿˜æ²¡ç”¨åˆ°
+#define HIT_TODAY				42				//  ä»Šå¤© 
 
 class SOUI_EXP SCalendarEx : public SWindow
 {
@@ -60,7 +60,7 @@ protected:
 		MSG_WM_MOUSEWHEEL(OnMouseWheel)
 	SOUI_MSG_MAP_END()
 protected:
-	// ¶¨Î» Ğ¡ÓÚ0  ÊÇ ÄêÔÂ 3¸ö°´Å¥ ÔİÊ± Ã»Íê³É   0 - 41  Ìì    42 today°´Å¥
+	// å®šä½ å°äº0  æ˜¯ å¹´æœˆ 3ä¸ªæŒ‰é’® æš‚æ—¶ æ²¡å®Œæˆ   0 - 41  å¤©    42 todayæŒ‰é’®
 	int HitTest(const CPoint& pt);
 	void DrawYearMonth(IRenderTarget* pRT, const CRect& rect);
 	void DrawWeek(IRenderTarget* pRT, const CRect& rect);
@@ -70,25 +70,25 @@ protected:
 	void SetLastMonth();
 	void SetNextMonth();
 protected:
-	SLayoutSize			m_nYearMonthHeight;   //ÄêÔÂ
-	SLayoutSize			m_nWeekHeight;				//ĞÇÆÚ¸ß¶È
+	SLayoutSize			m_nYearMonthHeight;   //å¹´æœˆ
+	SLayoutSize			m_nWeekHeight;				//æ˜ŸæœŸé«˜åº¦
 	SLayoutSize			m_nFooterHeight;			
 	
 	COLORREF				m_crSelText;
-	COLORREF				m_crOtherDayText;			//ÆäËû Ìì µÄ ×ÖÌåÑÕÉ« 
-	COLORREF				m_crSelDayBack;			// Ñ¡ÖĞ µÄ Ìì ±³ÑÕÉ«
+	COLORREF				m_crOtherDayText;			//å…¶ä»– å¤© çš„ å­—ä½“é¢œè‰² 
+	COLORREF				m_crSelDayBack;			// é€‰ä¸­ çš„ å¤© èƒŒé¢œè‰²
 	COLORREF				m_crHoverText;
 	
 	ISkinObj*				m_pSkinPrev;
 	ISkinObj*				m_pSkinNext;
-	ISkinObj*				m_pSkinDay;					// Ìì Æ¤·ô 
+	ISkinObj*				m_pSkinDay;					// å¤© çš®è‚¤ 
 
-	STrText					m_strWeek[7];  /**< ±íÍ·ÎÄ±¾ */
+	STrText					m_strWeek[7];  /**< è¡¨å¤´æ–‡æœ¬ */
 	
 	struct wDayInfo
 	{
-		WORD			iDay;				// ÈÕÀú Ìì 
-		int					nType;			// -1 Ç°Ò»¸öÔÂ 0 µ±ÔÂ 1 ÏÂÒ»¸öÔÂ
+		WORD			iDay;				// æ—¥å† å¤© 
+		int					nType;			// -1 å‰ä¸€ä¸ªæœˆ 0 å½“æœˆ 1 ä¸‹ä¸€ä¸ªæœˆ
 	};
 	wDayInfo				m_arrDays[42];
 	CRect						m_rcDays;
@@ -102,7 +102,7 @@ protected:
 	SYSTEMTIME			m_Today;
 };
     //
-    // ÈÕÆÚ Ñ¡Ôñ¿Ø¼ş
+    // æ—¥æœŸ é€‰æ‹©æ§ä»¶
     //
 class SOUI_EXP SDateTimePicker : public SWindow, public ISDropDownOwner
 {
@@ -129,7 +129,7 @@ public:
 	void GetTime(SYSTEMTIME& sysTime);
 	void SetTime(WORD wYear, WORD wMonth, WORD wDay, WORD wHour, WORD wMinute, WORD wSecond);
 	SStringT GetWindowText();
-protected:		// ¼Ì³Ğ 
+protected:		// ç»§æ‰¿ 
 	virtual SWindow* GetDropDownOwner();
 	virtual void OnCreateDropDown(SDropDownWnd* pDropDown);
 	virtual void OnDestroyDropDown(SDropDownWnd* pDropDown);
@@ -155,7 +155,7 @@ protected:
 	void OnKillFocus(SWND wndFocus);
 	void DrawFocus(IRenderTarget *pRT);
 	void TimeWheel(bool bUp);
-	void CircluNum(bool bUp, WORD& wNum, WORD wMin, WORD wMax);				// Ñ­»· ×Ó 
+	void CircluNum(bool bUp, WORD& wNum, WORD wMin, WORD wMax);				// å¾ªç¯ å­ 
 	
 	SOUI_ATTRS_BEGIN()
 		ATTR_SKIN(L"btnSkin", m_pSkinBtn, FALSE)
@@ -178,10 +178,10 @@ protected:
 
 protected:
 	
-	DWORD								m_dwBtnState;  /**< °´Å¥×´Ì¬      */
-	ISkinObj*							m_pSkinBtn;    /**< °´Å¥×ÊÔ´      */
-	bool									m_bDropdown;        /**< ÊÇ·ñ°´ÏÂ   */
-	SDropDownWnd*				m_pDropDownWnd;  /**< DropDownÖ¸Õë */
+	DWORD								m_dwBtnState;  /**< æŒ‰é’®çŠ¶æ€      */
+	ISkinObj*							m_pSkinBtn;    /**< æŒ‰é’®èµ„æº      */
+	bool									m_bDropdown;        /**< æ˜¯å¦æŒ‰ä¸‹   */
+	SDropDownWnd*				m_pDropDownWnd;  /**< DropDownæŒ‡é’ˆ */
 	EnDateType						m_eSelDateType;
 	int										m_nNumWidth;
 	int										m_nNumHeight;
@@ -192,7 +192,7 @@ protected:
 	SStringT								m_sKey;
 
 	int										m_nDropWidth;
-	bool									m_bTimeEnable;				// ÊÇ·ñ ÓĞ Ê± ·Ö Ãë
+	bool									m_bTimeEnable;				// æ˜¯å¦ æœ‰ æ—¶ åˆ† ç§’
 	SCalendarEx*						m_pCalendar;
 	WORD								m_wCharNum;
 };

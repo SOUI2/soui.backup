@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "SPropertyItem-i.h"
 #include <sobject/sobject.hpp>
@@ -76,7 +76,7 @@ namespace SOUI
         typedef SList<IPropertyItemPtr> PropItemList;
         PropItemList    m_childs;
 
-        BOOL            m_bExpanded;  //ÕÛµş»òÕ¹¿ª
+        BOOL            m_bExpanded;  //æŠ˜å æˆ–å±•å¼€
         BOOL            m_bReadOnly;
         bool            m_bInplaceActive;
     protected:

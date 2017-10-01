@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "GSSkin.h"
 #include <GdiPlus.h>  
 #include "helper/SplitString.h"
@@ -142,11 +142,11 @@ BOOL GSSkinImgList::_DrawAttrImg(IRenderTarget *pRT, LPCRECT rcDraw, const RECT&
 		return FALSE;
 	}
 
-	//´ÓmaskµÄÖ¸¶¨channelÖÐ»ñµÃalphaÍ¨µÀ£¬Óëcache°´Î»ÔËËã
+	//ä»Žmaskçš„æŒ‡å®šchannelä¸­èŽ·å¾—alphaé€šé“ï¼Œä¸ŽcacheæŒ‰ä½è¿ç®—
 	LPBYTE pBitCache = (LPBYTE)pBmp->LockPixelBits();
 	LPBYTE pBitMask = (LPBYTE)m_bmpMask->LockPixelBits();
 
-	// ÖØÐÂ¼ÆËã¿í¸ß£¬Ê¹ÓÃÁ½¸öÍ¼Æ¬ÏñËØµÄ×îÐ¡Öµ
+	// é‡æ–°è®¡ç®—å®½é«˜ï¼Œä½¿ç”¨ä¸¤ä¸ªå›¾ç‰‡åƒç´ çš„æœ€å°å€¼
 	int cx = m_bmpMask->Width() < pBmp->Width() ? m_bmpMask->Width() : pBmp->Width();
 	int cy = m_bmpMask->Height() < pBmp->Height() ? m_bmpMask->Height() : pBmp->Height();
 	for (int y = 0; y < cy; ++y)
@@ -195,7 +195,7 @@ HRESULT GSSkinImgList::OnAttrMask(const SStringW& strValue, BOOL bLoading)
 	return S_OK;
 }
 
-static const WCHAR  KImgListPropSeprator = (L';');   //×ÖÌåÊôÐÔÖ®¼äµÄ·Ö¸ô·û£¬²»ÔÙÖ§³ÖÆäËü·ûºÅ¡£
+static const WCHAR  KImgListPropSeprator = (L';');   //å­—ä½“å±žæ€§ä¹‹é—´çš„åˆ†éš”ç¬¦ï¼Œä¸å†æ”¯æŒå…¶å®ƒç¬¦å·ã€‚
 HRESULT GSSkinImgList::OnSetImgList(const SStringW & strValue, BOOL bLoading)
 {
 	for (int i = 0; i < m_arrBitMap.GetCount(); i++)

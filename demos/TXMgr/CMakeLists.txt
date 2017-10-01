@@ -21,8 +21,8 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 
 add_executable(TXMgr WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-add_dependencies(TXMgr soui-sys-resource ${COM_LIBS})
-target_link_libraries(TXMgr utilities soui)
+add_dependencies(TXMgr soui-sys-resource)
+target_link_libraries(TXMgr utilities soui ${COM_LIBS} 7z)
 
 set_target_properties(TXMgr PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
 set_target_properties(TXMgr PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})

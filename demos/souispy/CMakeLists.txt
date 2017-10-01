@@ -19,8 +19,8 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 add_executable(souispy WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
 set_target_properties(souispy PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
-add_dependencies(souispy soui-sys-resource ${COM_LIBS})
-target_link_libraries(souispy soui utilities)
+add_dependencies(souispy soui-sys-resource)
+target_link_libraries(souispy soui utilities ${COM_LIBS})
 set_target_properties (souispy PROPERTIES
     FOLDER demos
 )

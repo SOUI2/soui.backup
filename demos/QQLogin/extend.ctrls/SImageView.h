@@ -1,15 +1,15 @@
-#pragma once
+ï»¿#pragma once
 #include <core/swnd.h>
 
 namespace SOUI
 {
     //
-    // Í¼Æ¬ÏÔÊ¾¿Ø¼ş£¬°üÀ¨GIF
+    // å›¾ç‰‡æ˜¾ç¤ºæ§ä»¶ï¼ŒåŒ…æ‹¬GIF
     //
 
     class SImageView : public SWindow, public ITimelineHandler
     {
-        SOUI_CLASS_NAME(SImageView, L"image")   //¶¨ÒåGIF¿Ø¼şÔÚXM¼ÓµÄ±êÇ©
+        SOUI_CLASS_NAME(SImageView, L"image")   //å®šä¹‰GIFæ§ä»¶åœ¨XMåŠ çš„æ ‡ç­¾
 
     public:
 
@@ -30,7 +30,7 @@ namespace SOUI
 
     protected:
 
-        //SWindowµÄĞéº¯Êı
+        //SWindowçš„è™šå‡½æ•°
         virtual CSize GetDesiredSize(LPCRECT pRcContainer);
 
         //ITimerLineHander
@@ -53,10 +53,10 @@ namespace SOUI
         void OnShowWindow(BOOL bShow, UINT nStatus);
         void OnDestroy();
 
-        //SOUI¿Ø¼şÏûÏ¢Ó³Éä±í
+        //SOUIæ§ä»¶æ¶ˆæ¯æ˜ å°„è¡¨
         SOUI_MSG_MAP_BEGIN()
-            MSG_WM_PAINT_EX(OnPaint)    //´°¿Ú»æÖÆÏûÏ¢
-            MSG_WM_SHOWWINDOW(OnShowWindow)//´°¿ÚÏÔÊ¾×´Ì¬ÏûÏ¢
+            MSG_WM_PAINT_EX(OnPaint)    //çª—å£ç»˜åˆ¶æ¶ˆæ¯
+            MSG_WM_SHOWWINDOW(OnShowWindow)//çª—å£æ˜¾ç¤ºçŠ¶æ€æ¶ˆæ¯
             MSG_WM_DESTROY(OnDestroy)
             SOUI_MSG_MAP_END()
 
@@ -67,6 +67,6 @@ namespace SOUI
         int	        _currentFrame;
         int         _nextFrameInterval;
         SIZE        _imageSize;
-        SStringW    _realPath;      /*< ×îÖÕÏÔÊ¾µÄÍ¼Æ¬Â·¾¶ */
+        SStringW    _realPath;      /*< æœ€ç»ˆæ˜¾ç¤ºçš„å›¾ç‰‡è·¯å¾„ */
     };
 }

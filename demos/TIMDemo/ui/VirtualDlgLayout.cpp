@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "VirtualDlgLayout.h"
 
 VirtualDlgLayout::VirtualDlgLayout(SWindow* pRoot, LPCTSTR pszResName)
@@ -12,7 +12,7 @@ VirtualDlgLayout::VirtualDlgLayout(SWindow* pRoot, LPCTSTR pszResName)
 		LOADXML(xmlDoc, strLst[1], strLst[0]);
 		pRoot->CreateChildren(xmlDoc.child(L"include"));
 		m_pLayout = pRoot->GetWindow(GSW_LASTCHILD);
-		// Ä¬ÈÏÒ»¿ªÊ¼ ²»ÏÔÊ¾
+		// é»˜è®¤ä¸€å¼€å§‹ ä¸æ˜¾ç¤º
 		m_pLayout->SetVisible(FALSE, TRUE);
 	}
 }

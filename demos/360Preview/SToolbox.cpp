@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "SToolbox.h"
 
 void SOUI::SToolbox::OnPaint( IRenderTarget *pRT )

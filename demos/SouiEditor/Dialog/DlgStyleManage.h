@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "core/shostwnd.h"
 #include "core/smsgloop.h"
 #include "core/SHostDialog.h"
@@ -52,7 +52,7 @@ namespace SOUI
 		SStringT GetLBCurSelText(SListBox * lb);
 
 	public:
-		ResManger* m_pResFileManger;	//ËùÓĞ×ÊÔ´ÎÄ¼şµÄ¹ÜÀí
+		ResManger* m_pResFileManger;	//æ‰€æœ‰èµ„æºæ–‡ä»¶çš„ç®¡ç†
 
 		SListBox*  m_lbStyle;
 		SEdit*     m_edtSearch;

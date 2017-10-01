@@ -1,6 +1,6 @@
-#pragma once
+ï»¿#pragma once
 
-//×÷Õß£ºÍûÌìÑÄ
+//ä½œè€…ï¼šæœ›å¤©æ¶¯
 
 #include "helper/SMatrix.h"
 class SRotateWindow :

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "LogParser.h"
 
 static const int      kLevelNum = 6;

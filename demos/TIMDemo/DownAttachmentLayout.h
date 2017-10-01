@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ui\VirtualDlgLayout.h"
 
 class DownAttachmentLayout : public VirtualDlgLayout

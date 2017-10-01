@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "SSearchDropdownList.h"
 
 namespace SOUI

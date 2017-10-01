@@ -1,5 +1,5 @@
-/*
-    SOUI���ڲ��ֽӿ�
+﻿/*
+    SOUI窗口布局接口
 */
 #pragma once
 

@@ -1,4 +1,4 @@
-#ifndef __ZIPARCHIVE_H__
+﻿#ifndef __ZIPARCHIVE_H__
 #define __ZIPARCHIVE_H__
 
 #pragma once

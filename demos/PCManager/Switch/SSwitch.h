@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <core/Swnd.h>
 
 namespace SOUI
@@ -9,11 +9,11 @@ class  SSwitch : public SWindow
 public:
 	SSwitch();
 	~SSwitch();
-protected://SWindowµÄĞéº¯Êı
+protected://SWindowçš„è™šå‡½æ•°
 	virtual CSize GetDesiredSize(LPCRECT pRcContainer);
-public://ÊôĞÔ´¦Àí
+public://å±æ€§å¤„ç†
 	BOOL IsOpen() {return m_BOpen;}
-protected://ÏûÏ¢´¦Àí£¬SOUI¿Ø¼şµÄÏûÏ¢´¦ÀíºÍWTL£¬MFCºÜÏàËÆ£¬²ÉÓÃÏàËÆµÄÓ³Éä±í£¬ÏàÍ¬»òÕßÏàËÆµÄÏûÏ¢Ó³Éäºê
+protected://æ¶ˆæ¯å¤„ç†ï¼ŒSOUIæ§ä»¶çš„æ¶ˆæ¯å¤„ç†å’ŒWTLï¼ŒMFCå¾ˆç›¸ä¼¼ï¼Œé‡‡ç”¨ç›¸ä¼¼çš„æ˜ å°„è¡¨ï¼Œç›¸åŒæˆ–è€…ç›¸ä¼¼çš„æ¶ˆæ¯æ˜ å°„å®
     void OnPaint(IRenderTarget *pRT);
     void OnTimer(char cTimerID);
 	void OnLButtonUp(UINT nFlags, CPoint point);
@@ -23,15 +23,15 @@ protected://ÏûÏ¢´¦Àí£¬SOUI¿Ø¼şµÄÏûÏ¢´¦ÀíºÍWTL£¬MFCºÜÏàËÆ£¬²ÉÓÃÏàËÆµÄÓ³Éä±í£¬ÏàÍ¬
 	UINT _GetDrawState();
 	virtual void OnStateChanged(DWORD dwOldState,DWORD dwNewState);
 
-    //SOUI¿Ø¼şÏûÏ¢Ó³Éä±í
+    //SOUIæ§ä»¶æ¶ˆæ¯æ˜ å°„è¡¨
     SOUI_MSG_MAP_BEGIN()	
-        MSG_WM_TIMER_EX(OnTimer)    //¶¨Ê±Æ÷ÏûÏ¢
-        MSG_WM_PAINT_EX(OnPaint)    //´°¿Ú»æÖÆÏûÏ¢
+        MSG_WM_TIMER_EX(OnTimer)    //å®šæ—¶å™¨æ¶ˆæ¯
+        MSG_WM_PAINT_EX(OnPaint)    //çª—å£ç»˜åˆ¶æ¶ˆæ¯
 		MSG_WM_LBUTTONUP(OnLButtonUp)
 		MSG_WM_KEYDOWN(OnKeyDown)
 	SOUI_MSG_MAP_END()
 
-	ISkinObj *m_pSkin;  /**< ISkinObj¶ÔÏó */
+	ISkinObj *m_pSkin;  /**< ISkinObjå¯¹è±¡ */
 	ISkinObj *m_pSkinForce; //
 
 	SOUI_ATTRS_BEGIN()
@@ -40,12 +40,12 @@ protected://ÏûÏ¢´¦Àí£¬SOUI¿Ø¼şµÄÏûÏ¢´¦ÀíºÍWTL£¬MFCºÜÏàËÆ£¬²ÉÓÃÏàËÆµÄÓ³Éä±í£¬ÏàÍ¬
 		ATTR_CUSTOM(L"open",OnAttrOpen)
 	SOUI_ATTRS_END()
 private:
-	BOOL m_BOpen;			//ÊÇ·ñÎª´ò¿ª×´Ì¬
-	BOOL m_BOpenTarget;     //Ä¿±ê×´Ì¬
-	BOOL m_BChangeing;      //ÕıÔÚ¸Ä±ä×´Ì¬..
-	int  m_Iinterval;		//¶¯»­¼ä¸ô
-	int  m_FrameCount;		//¶¯»­Ö¡Êı
-	int  m_FrameNow;		//µ±Ç°Ö¡
+	BOOL m_BOpen;			//æ˜¯å¦ä¸ºæ‰“å¼€çŠ¶æ€
+	BOOL m_BOpenTarget;     //ç›®æ ‡çŠ¶æ€
+	BOOL m_BChangeing;      //æ­£åœ¨æ”¹å˜çŠ¶æ€..
+	int  m_Iinterval;		//åŠ¨ç”»é—´éš”
+	int  m_FrameCount;		//åŠ¨ç”»å¸§æ•°
+	int  m_FrameNow;		//å½“å‰å¸§
 
 };
 

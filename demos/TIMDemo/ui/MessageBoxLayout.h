@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "VirtualDlgLayout.h"
 #include "MessageBoxLayout.h"
 #include <functional>
@@ -11,7 +11,7 @@ public:
 	~MessageBoxLayout(void);
 
 public:
-	void ShowAsyncMsgBox(LPCTSTR lpText, LPCTSTR lpCaption=_T("��ʾ"), UINT nFlags=MB_ICONINFORMATION);
+	void ShowAsyncMsgBox(LPCTSTR lpText, LPCTSTR lpCaption=_T("提示"), UINT nFlags=MB_ICONINFORMATION);
 private:
 	void ShowLayout(bool);
 protected:

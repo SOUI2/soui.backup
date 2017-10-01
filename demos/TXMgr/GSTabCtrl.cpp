@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "GSTabCtrl.h"
 #include <algorithm>
 #include "souistd.h"
@@ -19,10 +19,10 @@ GSTabCtrl::~GSTabCtrl()
 
 /**
 * STabCtrl::OnPaint
-* @brief    »æ»­ÏûÏ¢
-* @param    IRenderTarget *pRT -- »æÖÆÉè±¸¾ä±ú
+* @brief    ç»˜ç”»æ¶ˆæ¯
+* @param    IRenderTarget *pRT -- ç»˜åˆ¶è®¾å¤‡å¥æŸ„
 *
-* Describe  ´Ëº¯ÊıÊÇÏûÏ¢ÏìÓ¦º¯Êı
+* Describe  æ­¤å‡½æ•°æ˜¯æ¶ˆæ¯å“åº”å‡½æ•°
 */
 void GSTabCtrl::OnPaint(IRenderTarget *pRT)
 {
@@ -46,7 +46,7 @@ void GSTabCtrl::OnPaint(IRenderTarget *pRT)
 		GetItemRect(i, rcItem);
 		if (rcItem.IsRectEmpty()) continue;
 
-		//»­·Ö¸ôÏß
+		//ç”»åˆ†éš”çº¿
 		if (i>0 && m_pSkinTabInter)
 		{
 			rcSplit = rcItem;
@@ -108,7 +108,7 @@ void GSTabCtrl::DrawItem(IRenderTarget *pRT, const CRect &rcItem, int iItem, DWO
 	}
 		
 
-	//¸ù¾İ×´Ì¬´ÓstyleÖĞ»ñµÃ×ÖÌå£¬ÑÕÉ«
+	//æ ¹æ®çŠ¶æ€ä»styleä¸­è·å¾—å­—ä½“ï¼Œé¢œè‰²
 	SOUI::IFontPtr font = m_style.GetTextFont(iState);
 	COLORREF crTxt = m_style.GetTextColor(iState);
 	CAutoRefPtr<SOUI::IFont> oldFont;
@@ -130,7 +130,7 @@ void GSTabCtrl::DrawItem(IRenderTarget *pRT, const CRect &rcItem, int iItem, DWO
 	if (m_nTabShowName)
 	{
 		if (m_ptText.x != -1 && m_ptText.y != -1)
-		{//´ÓÖ¸¶¨Î»ÖÃ¿ªÊ¼»æÖÆÎÄ×Ö
+		{//ä»æŒ‡å®šä½ç½®å¼€å§‹ç»˜åˆ¶æ–‡å­—
 			if (m_txtDir == Text_Horz)
 				pRT->TextOut(rcItem.left + m_ptText.x, rcItem.top + m_ptText.y, GetItem(iItem)->GetTitle(), -1);
 			else
@@ -142,12 +142,12 @@ void GSTabCtrl::DrawItem(IRenderTarget *pRT, const CRect &rcItem, int iItem, DWO
 			UINT alignStyle = m_style.GetTextAlign();
 			UINT align = alignStyle;
 			if (m_ptText.x == -1 && m_ptText.y != -1)
-			{//Ö¸¶¨ÁËYÆ«ÒÆ£¬X¾ÓÖĞ
+			{//æŒ‡å®šäº†Yåç§»ï¼ŒXå±…ä¸­
 				rcText.top += m_ptText.y;
 				align = alignStyle&(DT_CENTER | DT_RIGHT | DT_SINGLELINE | DT_END_ELLIPSIS);
 			}
 			else if (m_ptText.x != -1 && m_ptText.y == -1)
-			{//Ö¸¶¨ÁËXÆ«ÒÆ£¬Y¾ÓÖĞ
+			{//æŒ‡å®šäº†Xåç§»ï¼ŒYå±…ä¸­
 				rcText.left += m_ptText.x;
 				align = alignStyle&(DT_VCENTER | DT_BOTTOM | DT_SINGLELINE | DT_END_ELLIPSIS);
 			}
@@ -161,7 +161,7 @@ void GSTabCtrl::DrawItem(IRenderTarget *pRT, const CRect &rcItem, int iItem, DWO
 
 
 
-	//»Ö¸´×ÖÌå£¬ÑÕÉ«
+	//æ¢å¤å­—ä½“ï¼Œé¢œè‰²
 	if (font) pRT->SelectObject(oldFont);
 	if (crTxt != CR_INVALID) pRT->SetTextColor(crOld);
 }

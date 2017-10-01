@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include "Typedef.h"
 #include "SQLiteBase.h"
 #include <map>
-//IM  µÄ »º´æ ´¦Àí
+//IM  çš„ ç¼“å­˜ å¤„ç†
 
 class CacheHandle
 {
@@ -12,20 +12,20 @@ public:
 	void Init(LPCTSTR lpDataPath, LPCTSTR lpUserName);
 	SStringT GetImgCachePath() const{return m_szImgCachePath;}
 public:
-	//  ×î½ü »á»° ĞÅÏ¢ 
+	//  æœ€è¿‘ ä¼šè¯ ä¿¡æ¯ 
 	void InitRecentTalkInfo(UserList& recentList);
 	void NewTalkInfo(UINT uId, LPCTSTR lpUserAlias, LPCTSTR lpContent);
 	void UpdateTalk(UINT uId, LPCTSTR lpUserAlias, LPCTSTR lpContent=NULL);
 	void MoveTalkTo(UINT uId);
 
-	// ÕıÔÚ·¢ËÍµÄÏûÏ¢
+	// æ­£åœ¨å‘é€çš„æ¶ˆæ¯
 	const SendingChatList* GetSendingChatList(UINT uUserId);
 	void AddSendingChat(UINT uUserId, LPCTSTR lpChatContent, const AsyncSendMsgParam& info);
 	bool GetSendChatInfo(UINT uUserId, LPCTSTR lpChatId, AsyncSendMsgParam& info);
 	void UpdateStateChat(UINT uUserId, LPCTSTR lpChatId, EnChatState eState);
 	void DelStateChatAndSave(UINT uUserId, LPCTSTR lpChatId, __int64 lBodyId, __int64 lTime);
 	
-	//  ÁÄÌì¼ÇÂ¼
+	//  èŠå¤©è®°å½•
 	const ChatRecordList* GetChatRecordList(UINT uUserId);
 	void AddChatRecord(UINT uUserId, EnChatType eType, __int64 lBodyId, LPCTSTR lpContent, __int64 lTime);
 	SStringT GetBodyContentBy(UINT uUserId, __int64 lBodyId);
@@ -36,19 +36,19 @@ protected:
 	void SelectRecord(UINT uUserId, ChatRecordList& pList);
 private:
 	
-	std::map<UINT, SendingChatList*>				m_mapStateChat;			// ÓĞ×´Ì¬µÄÏûÏ¢ 
-	std::map<UINT, ChatRecordList*>				m_mapChatRecord;			// ÁÄÌì¼ÇÂ¼  
+	std::map<UINT, SendingChatList*>				m_mapStateChat;			// æœ‰çŠ¶æ€çš„æ¶ˆæ¯ 
+	std::map<UINT, ChatRecordList*>				m_mapChatRecord;			// èŠå¤©è®°å½•  
 
-	SStringT														m_szUserCachePath;		// µ±Ç°ÓÃ»§µÄcachepath
+	SStringT														m_szUserCachePath;		// å½“å‰ç”¨æˆ·çš„cachepath
 	
 	pugi::xml_document									m_docRecentTalk;
 	SStringT														m_szRecentTalkXml;
 
-	SStringT														m_szImgCachePath;			// Í¼Æ¬µÄ»º´æÎÄ¼ş¼Ğ
+	SStringT														m_szImgCachePath;			// å›¾ç‰‡çš„ç¼“å­˜æ–‡ä»¶å¤¹
 
 	SQLite3DB													m_Sqlite;
 
 };
 
 
-extern CacheHandle		theCache;				// µ¥Àı¶ÔÏó 
+extern CacheHandle		theCache;				// å•ä¾‹å¯¹è±¡ 

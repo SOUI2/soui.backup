@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "SButtonEx.h"
 
 SButtonEx::SButtonEx()
@@ -27,14 +27,14 @@ void SButtonEx::DrawSkin(ISkinObj * pSkin, IRenderTarget *pRT)
     GetClientRect(&rcClient);
 
     if (m_byAlphaAni == 0xFF)
-    {//²»ÔÚ¶¯»­¹ý³ÌÖÐ
+    {//ä¸åœ¨åŠ¨ç”»è¿‡ç¨‹ä¸­
         pSkin->Draw(
             pRT, rcClient,
             IIF_STATE4(GetState(), 0, 1, 2, 3)
         );
     }
     else
-    {//ÔÚ¶¯»­¹ý³ÌÖÐ
+    {//åœ¨åŠ¨ç”»è¿‡ç¨‹ä¸­
         BYTE byNewAlpha = (BYTE)(((UINT)m_byAlphaAni*pSkin->GetAlpha()) >> 8);
         if (GetState()&WndState_Hover)
         {

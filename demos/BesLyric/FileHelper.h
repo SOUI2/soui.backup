@@ -1,5 +1,5 @@
-/*
-	BesLyric  һ�� �����򵥡�����ʵ�õ� ר�������������������ֹ�����ʵ� �������������
+﻿/*
+	BesLyric  一款 操作简单、功能实用的 专门用于制作网易云音乐滚动歌词的 歌词制作软件。
     Copyright (C) 2017  BensonLaur
 
     This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 * @author     BensonLaur   
 * @date       2017/01/08
 * 
-* Describe    File�ࣨ�����򿪵��ļ��� ��CFileDialogEx �ࣨ�öԻ���ѡ���ļ����ļ��У��Ķ���
+* Describe    File类（管理打开的文件） 和CFileDialogEx 类（用对话框选择文件和文件夹）的定义
 */
 
 #pragma once
@@ -30,20 +30,20 @@
 #include <windows.h>
 #include <commdlg.h>
 
-//�������ļ�ÿһ�е�����ַ���
+//定义歌词文件每一行的最多字符数
 #define MAX_CHAR_COUNT_OF_LINE 200
 #define MAX_WCHAR_COUNT_OF_LINE MAX_CHAR_COUNT_OF_LINE/2
 
-//��дGetOpenFileNameʱ�õ���ϵͳʹ�ÿؼ�����ԴID
+//改写GetOpenFileName时用到的系统使用控件的资源ID
 #define  ID_COMBO_ADDR 0x47c
 #define  ID_LEFT_TOOBAR 0x4A0
 
-//ʹ��GetOpenFileName���ļ���ʱ �����滻 m_ofn.lpfnHook �Ļص����� 
+//使用GetOpenFileName打开文件夹时 用来替换 m_ofn.lpfnHook 的回调函数 
 UINT_PTR __stdcall  MyFolderProc(  HWND hdlg, UINT uiMsg, WPARAM wParam, LPARAM lParam );
 LRESULT __stdcall  _WndProc ( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam  );
 
 /*
-*   @brief Ӧ��RAII˼�룬�����ļ��ļ�����Դ
+*   @brief 应用RAII思想，管理文件文件的资源
 */
 class File{
 
@@ -60,7 +60,7 @@ public:
 
 	BOOL openFile(LPCTSTR pathFile,LPCTSTR mode)
 	{
-		//����Ѵ��ڣ����ͷ���Դ
+		//如果已存在，则释放资源
 		if(m_pf)
 			fclose(m_pf);
 		File(pathFile,mode);
@@ -73,20 +73,20 @@ public:
 
 	~File()
 	{
-		//����Ѵ��ڣ����ͷ���Դ
+		//如果已存在，则释放资源
 		if(m_pf)
 			fclose(m_pf);
 	}
 public:
-	LPCTSTR m_lpszPathFile;		/* �ļ�·�������ִ�*/
-	LPCTSTR m_lpszMode;			/* ���ļ���ģʽ */
+	LPCTSTR m_lpszPathFile;		/* 文件路径和名字串*/
+	LPCTSTR m_lpszMode;			/* 打开文件的模式 */
 
-	FILE *m_pf;					/* ��ŵ�ǰ���ļ���ָ��*/
+	FILE *m_pf;					/* 存放当前打开文件的指针*/
 
 };
 
 /*
-*	@���ڴ��ļ� �� �ļ��У� �Լ� �����ļ�
+*	@用于打开文件 和 文件夹； 以及 保存文件
 */
 class CFileDialogEx
 {
@@ -124,10 +124,10 @@ public:
         if(lpszFileName != NULL)
             _tcscpy_s(m_szFileName, _countof(m_szFileName), lpszFileName);
 
-		//�ļ�������
+		//文件夹设置
 		if(bFloder)
 		{
-			m_ofn.hInstance = (HMODULE)GetCurrentProcess();//��Ҫʹ��NULL,��������޷����Ƶ�����
+			m_ofn.hInstance = (HMODULE)GetCurrentProcess();//不要使用NULL,可能造成无法定制的问题
 			m_ofn.lpfnHook = (LPOFNHOOKPROC)MyFolderProc;
 		}
     }
@@ -145,11 +145,11 @@ public:
 
 public:
 	/**
-	*   @brief ����ļ����Ƿ����Ҫ���ʽ��������������ϵĸ�ʽ��
-	*	@param  format  ֧�ֵļ���ʽ		��ͨ�ļ���ʽ���� *.txt�� *.mp3  ("*." �Ǳ���ģ��Һ�׺����������һ���ַ�)
-	*										�ļ��и�ʽ��..
-	*			toChecked ������·���ַ���
-	*	@return TRUE ����Ҫ��
+	*   @brief 检查文件名是否符合要求格式（仅仅检查名字上的格式）
+	*	@param  format  支持的检查格式		普通文件格式：如 *.txt、 *.mp3  ("*." 是必须的；且后缀必须至少有一个字符)
+	*										文件夹格式：..
+	*			toChecked 被检查的路径字符串
+	*	@return TRUE 符合要求
 	*	@note	
 	*/
 
@@ -157,45 +157,45 @@ public:
 	{
 		int i;
 		bool isFloder = false;
-		//TODO���쳣�׳�����
+		//TODO：异常抛出处理
 		int len = _tcslen(format);
 		if(_tcscmp(format,_T(".."))==0)
 		{
 			isFloder = true;
 		}
 		else if(len < 3 || format[0]!=_T('*') || format[1]!=_T('.'))
-			return FALSE;  //TODO���쳣
+			return FALSE;  //TODO：异常
 		
 
-		//��ȡ����� ������·���ַ��� toChecked ����Ϣ
+		//获取并检查 被检查的路径字符串 toChecked 的信息
 		TCHAR pathName[_MAX_PATH];
 		TCHAR ext[_MAX_EXT];
 
 		int lenPathName = 0, pos =-1;
 
 		_tcscpy(pathName,toChecked);
-		lenPathName = _tcslen(pathName);	//�õ�·���ܳ�
+		lenPathName = _tcslen(pathName);	//得到路径总长
 		if(!lenPathName)
 			return FALSE;
 
-		//�õ�·�������һ����.����λ������pos��
+		//得到路径中最后一个“.”的位置置于pos中
 		for( i=0; i< lenPathName; i++)
 		{
 			if(_T('.')==pathName[i])
 				pos = i;
 		}
 
-		if(isFloder) //����ļ�������
+		if(isFloder) //检查文件夹类型
 		{
-			if(pos == -1)//����Ĭ���ļ��е�·���������κε�'.'
+			if(pos == -1)//这里默认文件夹的路径不包含任何点'.'
 				return TRUE;
 			else
 				return FALSE;
 		}
-		else //�����ͨ��׺������
+		else //检查普通后缀名类型
 		{
-			_tcscpy(ext,&pathName[pos+1]);  //�õ�·���ĺ�׺����������.����
-			if(_tcscmp(&format[2],ext)==0)	//�� �����ṩ�ĺ�׺�Ա�
+			_tcscpy(ext,&pathName[pos+1]);  //得到路径的后缀（不包含“.”）
+			if(_tcscmp(&format[2],ext)==0)	//和 参数提供的后缀对比
 				return TRUE;
 			else
 				return FALSE;

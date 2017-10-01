@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "DlgAbout.h"
 #include "CDebug.h"
 
@@ -10,7 +10,7 @@ namespace SOUI
 	{
 	}
 
-	//TODO:ÏûÏ¢Ó³Éä
+	//TODO:æ¶ˆæ¯æ˜ å°„
 	void SDlgAbout::OnClose()
 	{
 		SHostDialog::OnCancel();

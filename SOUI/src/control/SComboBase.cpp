@@ -1,11 +1,11 @@
-#include "souistd.h"
+ï»¿#include "souistd.h"
 #include "control/SComboBase.h"
 
 namespace SOUI
 {
 
-	const wchar_t * KStyle_Dropdown = L"dropdownStyle";//ÏÂÀ­ÁÐ±í·ç¸ñ£¬Ö»°üº¬root½Úµã
-	const wchar_t * KStyle_Edit		= L"editStyle";		//±à¼­¿ò·ç¸ñ
+	const wchar_t * KStyle_Dropdown = L"dropdownStyle";//ä¸‹æ‹‰åˆ—è¡¨é£Žæ ¼ï¼ŒåªåŒ…å«rootèŠ‚ç‚¹
+	const wchar_t * KStyle_Edit		= L"editStyle";		//ç¼–è¾‘æ¡†é£Žæ ¼
 
     //////////////////////////////////////////////////////////////////////////
     // CComboEdit
@@ -41,7 +41,7 @@ namespace SOUI
     BOOL SComboEdit::FireEvent(EventArgs & evt)
     {
         if(evt.GetID()==EVT_RE_NOTIFY)
-        {//×ª·¢richeditµÄtxNotifyÏûÏ¢
+        {//è½¬å‘richeditçš„txNotifyæ¶ˆæ¯
             evt.idFrom=GetOwner()->GetID();
             evt.nameFrom=GetOwner()->GetName();
         }
@@ -56,7 +56,7 @@ namespace SOUI
             return TRUE;
         if(pMsg->message==WM_MOUSEWHEEL 
             || ((pMsg->message == WM_KEYDOWN || pMsg->message==WM_KEYUP) && (pMsg->wParam == VK_UP || pMsg->wParam==VK_DOWN || pMsg->wParam==VK_RETURN || pMsg->wParam==VK_ESCAPE)))
-        {//½Ø»ñ¹öÂÖ¼°ÉÏÏÂ¼üÏûÏ¢
+        {//æˆªèŽ·æ»šè½®åŠä¸Šä¸‹é”®æ¶ˆæ¯
             CSimpleWnd::SendMessage(pMsg->message,pMsg->wParam,pMsg->lParam);
             return TRUE;    
         }
@@ -93,7 +93,7 @@ namespace SOUI
     {
         SASSERT(m_pSkinBtn);
 		m_xmlDropdownStyle.append_copy(xmlNode.child(KStyle_Dropdown));
-        //´´½¨edit¶ÔÏó
+        //åˆ›å»ºeditå¯¹è±¡
         if(!m_bDropdown)
         {            
             m_pEdit=new SComboEdit(this);

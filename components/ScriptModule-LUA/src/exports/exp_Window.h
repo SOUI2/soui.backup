@@ -1,6 +1,6 @@
-#include <core/swnd.h>
+ï»¿#include <core/swnd.h>
 
-//¶¨ÒåÒ»¸ö´ÓSObject×ª»»³ÉSWindowµÄ·½·¨
+//å®šä¹‰ä¸€ä¸ªä»SObjectè½¬æ¢æˆSWindowçš„æ–¹æ³•
 SWindow * toSWindow(IObject * pObj)
 {
     return sobj_cast<SWindow>(pObj);

@@ -1,4 +1,4 @@
-#include "souistd.h"
+ï»¿#include "souistd.h"
 #include "layout\SGridLayout.h"
 
 namespace SOUI
@@ -222,7 +222,7 @@ namespace SOUI
 
 
 	/*
-	* MeasureChildren ¼ÆËãgridlayoutµÄ×Ó´°¿Ú´óĞ¡
+	* MeasureChildren è®¡ç®—gridlayoutçš„å­çª—å£å¤§å°
 	*/
 	CSize SGridLayout::MeasureChildren(SWindow * pParent,int nWidth,int nHeight) const
 	{
@@ -251,7 +251,7 @@ namespace SOUI
 		{
 			SGridLayoutParam * pLayoutParam = pCell->GetLayoutParamT<SGridLayoutParam>();
 			SASSERT(pLayoutParam);
-			//½«µ±Ç°ÍøÂçËùÕ¼ÓÃµÄ¿Õ¼äÎ»ÖÃÇå0
+			//å°†å½“å‰ç½‘ç»œæ‰€å ç”¨çš„ç©ºé—´ä½ç½®æ¸…0
 			int colSpan = pLayoutParam->nColSpan;
 			int rowSpan = pLayoutParam->nRowSpan;
 
@@ -259,13 +259,13 @@ namespace SOUI
 			rowSpan = smin(rowSpan,nRows-iRow);
 			SASSERT(colSpan>=1);
 			SASSERT(rowSpan>=1);
-			SASSERT(pCellsOccupy[iRow*nCols+iCol]==false);//±£Ö¤ÖÁÉÙÓĞÒ»¸ö¿Õ¼ä¿ÉÓÃ
-			//¼ÆËã¿ÉÕ¼ÓÃ¿Õ¼ä
+			SASSERT(pCellsOccupy[iRow*nCols+iCol]==false);//ä¿è¯è‡³å°‘æœ‰ä¸€ä¸ªç©ºé—´å¯ç”¨
+			//è®¡ç®—å¯å ç”¨ç©ºé—´
 			for(int y=0;y<rowSpan;y++) for(int x=0;x<colSpan;x++)
 			{
 				int iCell = (iRow+y)*nCols+iCol+x;
 				if(pCellsOccupy[iCell])
-				{//colSpanÓÅÏÈ
+				{//colSpanä¼˜å…ˆ
 					rowSpan = y+1;
 					if(y==0)
 						colSpan = x+1;
@@ -273,9 +273,9 @@ namespace SOUI
 				}
 			}
 
-			//¼ÆËã³öÍøÂç´óĞ¡
+			//è®¡ç®—å‡ºç½‘ç»œå¤§å°
 			CSize szCell = pCell->GetDesiredSize(-1,-1);
-			//Ìî³äÍø¸ñ,°Ñ´óĞ¡Æ½¾ù·ÖÉ¢µ½Íø¸ñÖĞ¡£
+			//å¡«å……ç½‘æ ¼,æŠŠå¤§å°å¹³å‡åˆ†æ•£åˆ°ç½‘æ ¼ä¸­ã€‚
 			szCell.cx/=colSpan;
 			szCell.cy/=rowSpan;
 			for(int y=0;y<rowSpan;y++) for(int x=0;x<colSpan;x++)
@@ -285,7 +285,7 @@ namespace SOUI
 				pCellsSize[iCell]=szCell;
 			}
 			
-			//¼ÆËãÏÂÒ»¸öÍøÂçµÄÅÅÁĞÎ»ÖÃ(ÏÈÔÚµ±Ç°ĞĞ²éÕÒ£¬ÔÙµ½ÏÂÃæĞĞ´Ó0¿ªÊ¼²éÕÒ)
+			//è®¡ç®—ä¸‹ä¸€ä¸ªç½‘ç»œçš„æ’åˆ—ä½ç½®(å…ˆåœ¨å½“å‰è¡ŒæŸ¥æ‰¾ï¼Œå†åˆ°ä¸‹é¢è¡Œä»0å¼€å§‹æŸ¥æ‰¾)
 			bool bFind = false;
 			for(int x=iCol+1;x<nCols;x++)
 			{
@@ -311,7 +311,7 @@ namespace SOUI
 		}
 
 		CSize szRet;
-		//¼ÆËãÁĞ¿í
+		//è®¡ç®—åˆ—å®½
 		for(int x=0;x<nCols;x++)
 		{
 			int maxWid = 0;
@@ -322,7 +322,7 @@ namespace SOUI
 			}
 			szRet.cx += maxWid;
 		}
-		//¼ÆËãÁĞ¸ß
+		//è®¡ç®—åˆ—é«˜
 		for(int y=0;y<nRows;y++)
 		{
 			int maxHei = 0;
@@ -358,7 +358,7 @@ namespace SOUI
 		int xInter = m_xInterval.toPixelSize(pParent->GetScale());
 		int yInter = m_yInterval.toPixelSize(pParent->GetScale());
 
-		//ÏÈ¼ÆËã³öÃ¿¸ö¸ñ×ÓµÄ´óĞ¡,Ëã·¨ºÍMeasureChildrenÒ»Ñù£¬ºóÃæÔÙ¿¼ÂÇÈçºÎÓÅ»¯
+		//å…ˆè®¡ç®—å‡ºæ¯ä¸ªæ ¼å­çš„å¤§å°,ç®—æ³•å’ŒMeasureChildrenä¸€æ ·ï¼Œåé¢å†è€ƒè™‘å¦‚ä½•ä¼˜åŒ–
 		int cells = nCols*nRows;
 		CSize * pCellsSize = new CSize[cells];
 		bool  * pCellsOccupy=new bool[cells];
@@ -380,7 +380,7 @@ namespace SOUI
 			pCellsChild[iRow*nCols+iCol] = pCell;
 			SGridLayoutParam * pLayoutParam = pCell->GetLayoutParamT<SGridLayoutParam>();
 			SASSERT(pLayoutParam);
-			//½«µ±Ç°ÍøÂçËùÕ¼ÓÃµÄ¿Õ¼äÎ»ÖÃÇå0
+			//å°†å½“å‰ç½‘ç»œæ‰€å ç”¨çš„ç©ºé—´ä½ç½®æ¸…0
 			int colSpan = pLayoutParam->nColSpan;
 			int rowSpan = pLayoutParam->nRowSpan;
 
@@ -388,13 +388,13 @@ namespace SOUI
 			rowSpan = smin(rowSpan,nRows-iRow);
 			SASSERT(colSpan>=1);
 			SASSERT(rowSpan>=1);
-			SASSERT(pCellsOccupy[iRow*nCols+iCol]==false);//±£Ö¤ÖÁÉÙÓĞÒ»¸ö¿Õ¼ä¿ÉÓÃ
-			//¼ÆËã¿ÉÕ¼ÓÃ¿Õ¼ä
+			SASSERT(pCellsOccupy[iRow*nCols+iCol]==false);//ä¿è¯è‡³å°‘æœ‰ä¸€ä¸ªç©ºé—´å¯ç”¨
+			//è®¡ç®—å¯å ç”¨ç©ºé—´
 			for(int y=0;y<rowSpan;y++) for(int x=0;x<colSpan;x++)
 			{
 				int iCell = (iRow+y)*nCols+iCol+x;
 				if(pCellsOccupy[iCell])
-				{//colSpanÓÅÏÈ
+				{//colSpanä¼˜å…ˆ
 					rowSpan = y+1;
 					if(y==0)
 						colSpan = x+1;
@@ -402,9 +402,9 @@ namespace SOUI
 				}
 			}
 
-			//¼ÆËã³öÍøÂç´óĞ¡,Ç¿ÖÆÊ¹ÓÃ-1,-1´ú±í×ÔÊÊÓ¦´óĞ¡
+			//è®¡ç®—å‡ºç½‘ç»œå¤§å°,å¼ºåˆ¶ä½¿ç”¨-1,-1ä»£è¡¨è‡ªé€‚åº”å¤§å°
 			CSize szCell = pCell->GetDesiredSize(-1,-1);
-			//Ìî³äÍø¸ñ,°Ñ´óĞ¡Æ½¾ù·ÖÉ¢µ½Íø¸ñÖĞ¡£
+			//å¡«å……ç½‘æ ¼,æŠŠå¤§å°å¹³å‡åˆ†æ•£åˆ°ç½‘æ ¼ä¸­ã€‚
 			szCell.cx/=colSpan;
 			szCell.cy/=rowSpan;
 
@@ -422,7 +422,7 @@ namespace SOUI
 			}
 			pCellsSpan[iRow*nCols+iCol]=CPoint(colSpan,rowSpan);
 
-			//¼ÆËãÏÂÒ»¸öÍøÂçµÄÅÅÁĞÎ»ÖÃ(ÏÈÔÚµ±Ç°ĞĞ²éÕÒ£¬ÔÙµ½ÏÂÃæĞĞ´Ó0¿ªÊ¼²éÕÒ)
+			//è®¡ç®—ä¸‹ä¸€ä¸ªç½‘ç»œçš„æ’åˆ—ä½ç½®(å…ˆåœ¨å½“å‰è¡ŒæŸ¥æ‰¾ï¼Œå†åˆ°ä¸‹é¢è¡Œä»0å¼€å§‹æŸ¥æ‰¾)
 			bool bFind = false;
 			for(int x=iCol+1;x<nCols;x++)
 			{
@@ -452,7 +452,7 @@ namespace SOUI
 		int nTotalWidth=0;
 		float *pColsWeight = new float[nCols];
 		float totalColsWeight =0.0f;
-		//¼ÆËãÁĞ¿í¼°ÏàÓ¦µÄweight
+		//è®¡ç®—åˆ—å®½åŠç›¸åº”çš„weight
 		for(int x=0;x<nCols;x++)
 		{
 			int maxWid = 0;
@@ -468,7 +468,7 @@ namespace SOUI
 			pColsWeight[x] = maxWeight;
 			totalColsWeight += maxWeight;
 		}
-		//¼ÆËãÁĞ¸ß
+		//è®¡ç®—åˆ—é«˜
 		int *pCellsHeight = new int[nRows];
 		int nTotalHeight =0;
 		float *pRowsWeight = new float[nRows];
@@ -494,7 +494,7 @@ namespace SOUI
 		delete []pCellsColWeight;
 		delete []pCellsRowWeight;
 
-		//·ÖÅäweight
+		//åˆ†é…weight
 		int netParentWid = rcParent.Width()-(nCols-1)*xInter;
 		if(nTotalWidth<netParentWid && totalColsWeight>0.0f)
 		{
@@ -516,7 +516,7 @@ namespace SOUI
 		delete []pColsWeight;
 		delete []pRowsWeight;
 
-		//¼ÆËã×Ó´°¿ÚÎ»ÖÃ
+		//è®¡ç®—å­çª—å£ä½ç½®
 		CPoint pt = rcParent.TopLeft();
 		for(int y=0;y<nRows;y++)
 		{

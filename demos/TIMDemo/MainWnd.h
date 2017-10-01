@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "resource.h"
 #include "CacheHandle.h"
 #include "MsgToolTipWnd.h"
@@ -18,15 +18,15 @@
 #include "SharkWinHandle.hpp"
 
 #define WM_TRAYNOTIFY							WM_USER + 201
-//*Òª´¦ÀíÕâÖÖÇé¿ö£¬ÆäÊµ»¹ÊÇÀë²»¿ªÏûÏ¢Ó³Éä£¬µ«ÓëÆÕÍ¨µÄÏûÏ¢Ó³ÉäÓÖÓĞµã²»Í¬¡£
-//explorerÖØÆôµÄÊ±ºò»áÅ×³öWM_TASKBAR_CREATEDÏûÏ¢£¬ÎÒÃÇµÄ³ÌĞòÒª¼ÓÈë¸ÃÏûÏ¢µÄÏìÓ¦£¬
-// ²»Í¬Ö®´¦ÔÚÓÚÒªÏÈ×¢²áÕâ¸öÏûÏ¢£º
+//*è¦å¤„ç†è¿™ç§æƒ…å†µï¼Œå…¶å®è¿˜æ˜¯ç¦»ä¸å¼€æ¶ˆæ¯æ˜ å°„ï¼Œä½†ä¸æ™®é€šçš„æ¶ˆæ¯æ˜ å°„åˆæœ‰ç‚¹ä¸åŒã€‚
+//exploreré‡å¯çš„æ—¶å€™ä¼šæŠ›å‡ºWM_TASKBAR_CREATEDæ¶ˆæ¯ï¼Œæˆ‘ä»¬çš„ç¨‹åºè¦åŠ å…¥è¯¥æ¶ˆæ¯çš„å“åº”ï¼Œ
+// ä¸åŒä¹‹å¤„åœ¨äºè¦å…ˆæ³¨å†Œè¿™ä¸ªæ¶ˆæ¯ï¼š
 static UINT WM_TASKBAR_CREATED = ::RegisterWindowMessage(_T("TaskbarCreated"));
 
 //#define		LAYOUT_MODULE		1
 
 class CMainWnd : public SHostWnd
-							, public TAutoEventMapReg<CMainWnd>//Í¨ÖªÖĞĞÄ×Ô¶¯×¢²á
+							, public TAutoEventMapReg<CMainWnd>//é€šçŸ¥ä¸­å¿ƒè‡ªåŠ¨æ³¨å†Œ
 {
 private:
 	struct AsyncSaveApproverParam
@@ -65,15 +65,15 @@ public:
 		if(NULL != p)
 			p->SetWindowText(lpText);
 	}
-	void ShowInfoBox(LPCTSTR lpText, LPCTSTR lpCaption=L"ÌáÊ¾", UINT uType=MB_ICONINFORMATION)
+	void ShowInfoBox(LPCTSTR lpText, LPCTSTR lpCaption=L"æç¤º", UINT uType=MB_ICONINFORMATION)
 	{
 		//return SMessageBox(m_hWnd, lpText, lpCaption, uType);
 		m_pAsynMessageBox->ShowAsyncMsgBox(lpText, lpCaption, uType);
 	}
-	void ShowErrorBox(LPCTSTR lpText=L"´íÎó")
+	void ShowErrorBox(LPCTSTR lpText=L"é”™è¯¯")
 	{
-		//return SMessageBox(m_hWnd, lpText, _T("´íÎó"), MB_ICONERROR);
-		m_pAsynMessageBox->ShowAsyncMsgBox(lpText, _T("´íÎó"), MB_ICONERROR);
+		//return SMessageBox(m_hWnd, lpText, _T("é”™è¯¯"), MB_ICONERROR);
+		m_pAsynMessageBox->ShowAsyncMsgBox(lpText, _T("é”™è¯¯"), MB_ICONERROR);
 	}
 	void FlashWindow(DWORD dwFlags=FLASHW_TRAY | FLASHW_TIMERNOFG)
 	{
@@ -91,29 +91,29 @@ public:
 		m_Tray.Delete();
 		__super::DestroyWindow();
 	}
-	// ´°¿Ú ¶¶¶¯ 
+	// çª—å£ æŠ–åŠ¨ 
 	void SharkWindow();
 public:
 	BOOL OnInitDialog(HWND wndFocus, LPARAM lInitParam);
 	void OnTimer(UINT_PTR idEvent);
-	//×Ô¶¨Òå¿Ø¼şÊÂ¼şº¯Êı
+	//è‡ªå®šä¹‰æ§ä»¶äº‹ä»¶å‡½æ•°
 	void OnBtnSendMsg();
 	void OnClickRadioTalk();
 	void OnClickRadioContact();
 	void OnClickRadioNotice();
 	void OnBtnSendPic();
-	void OnBtnLoadTalk();			// ¼ÓÔØ »á»° °´Å¥
-	void OnBtnUploadFile();			// ·¢ËÍ¸½¼ş
+	void OnBtnLoadTalk();			// åŠ è½½ ä¼šè¯ æŒ‰é’®
+	void OnBtnUploadFile();			// å‘é€é™„ä»¶
 	
-public:	// Í¨ÖªÖĞĞÄ ÊÂ¼ş ½Ó¿Ú
+public:	// é€šçŸ¥ä¸­å¿ƒ äº‹ä»¶ æ¥å£
 	bool OnCenterEventStartInit(EventStartInit* pEvt);
 	bool OnCenterEventGetUnreadMsg(EventGetUnreadMsg* pEvt);	
 	bool OnCenterEventSendMsg(EventSendMsg* pEvt);
-public:  // im rich ÊÂ¼ş
+public:  // im rich äº‹ä»¶
 	bool OnRecordRichObjEvent(EventRichEditObj* pEvt);
 	bool OnInputRichMenu(EventCtxMenu* pEvt);
 protected:
-	//ÊÂ¼ş´¦ÀíÓ³Éä±í  Æµ·±µÄ ²Ù×÷¿ÉÒÔĞ´µ½Ç°ÃæÀ´ ¼õÉÙ ÅĞ¶Ï ×îºó¶¼ÓÃ °ó¶¨ 
+	//äº‹ä»¶å¤„ç†æ˜ å°„è¡¨  é¢‘ç¹çš„ æ“ä½œå¯ä»¥å†™åˆ°å‰é¢æ¥ å‡å°‘ åˆ¤æ–­ æœ€åéƒ½ç”¨ ç»‘å®š 
 	EVENT_MAP_BEGIN()
 		EVENT_NAME_COMMAND(L"btn_chat_upload", OnBtnUploadFile)
 		EVENT_NAME_COMMAND(L"btn_chat_sendpic", OnBtnSendPic)
@@ -129,7 +129,7 @@ protected:
 	void OnKeyDown(TCHAR nChar, UINT nRepCnt, UINT nFlags);
 	LRESULT OnTrayNotify(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	LRESULT OnTaskbarCreated(UINT uMsg, WPARAM wParam, LPARAM lParam);
-	//´°¿ÚÏûÏ¢´¦ÀíÓ³Éä±í
+	//çª—å£æ¶ˆæ¯å¤„ç†æ˜ å°„è¡¨
 	BEGIN_MSG_MAP_EX(CMainWnd)
 		MSG_WM_KEYDOWN(OnKeyDown)
 		MESSAGE_HANDLER_EX(WM_TRAYNOTIFY, OnTrayNotify)
@@ -140,34 +140,34 @@ protected:
 		CHAIN_MSG_MAP(SHostWnd)
 	END_MSG_MAP()
 public:
-	// ×î½üÁªÏµÈË item µã»÷ »Øµ÷
+	// æœ€è¿‘è”ç³»äºº item ç‚¹å‡» å›è°ƒ
 	void CallBack_RecentListItemClick(int nIndex);
-	// ×î½üÁªÏµÈË item Àï btn »Øµ÷
+	// æœ€è¿‘è”ç³»äºº item é‡Œ btn å›è°ƒ
 	void CallBack_RecentListBtnClick(int nIndex);
-	// ÁªÏµÈË½çÃæ tree  µ¥»÷ ÊÂ¼ş »Øµ÷
+	// è”ç³»äººç•Œé¢ tree  å•å‡» äº‹ä»¶ å›è°ƒ
 	void CallBack_ContactTvItemClick(UINT uId);
-	// ÁªÏµÈË½çÃæ tree  Ë«»÷ ÊÂ¼ş »Øµ÷
+	// è”ç³»äººç•Œé¢ tree  åŒå‡» äº‹ä»¶ å›è°ƒ
 	void CallBack_ContactTvItemDbClick(UINT uId);
-	// ±íÇé·ûºÅ Ñ¡Ôñ »Øµ÷ 
+	// è¡¨æƒ…ç¬¦å· é€‰æ‹© å›è°ƒ 
 	void CallBack_Emotion(UINT uIndex);
-	// ÏûÏ¢ ÌáÊ¾¿ò µÄ»Øµ÷
+	// æ¶ˆæ¯ æç¤ºæ¡† çš„å›è°ƒ
 	void CallBack_MsgToolTip(UINT uId);
 
-	// ³õÊ¼»¯  Ïß³Ì º¯Êı
+	// åˆå§‹åŒ–  çº¿ç¨‹ å‡½æ•°
 	void ThreadFun_StartInit(LPARAM lParam);
-	// »ñÈ¡Î´¶ÁÏûÏ¢ Ïß³Ì ´¦Àíº¯Êı
+	// è·å–æœªè¯»æ¶ˆæ¯ çº¿ç¨‹ å¤„ç†å‡½æ•°
 	void ThreadFun_GetUnreadMsg(LPARAM lParam);
-	// ·¢ËÍÏûÏ¢ Ïß³Ì ´¦Àíº¯Êı
+	// å‘é€æ¶ˆæ¯ çº¿ç¨‹ å¤„ç†å‡½æ•°
 	void ThreadFun_SendMsg(LPARAM lParam);
 	
 private:
-	// ×î½üÁªÏµÈË Ñ¡Ôñ ÈË 
+	// æœ€è¿‘è”ç³»äºº é€‰æ‹© äºº 
 	void RecentListSelect(int nIndex);
-	// ÇĞ»» ÓÃ»§ »á»° 
+	// åˆ‡æ¢ ç”¨æˆ· ä¼šè¯ 
 	void SwitchUserTalkSession(UINT uId, LPCTSTR lpUserAlias, LPCTSTR lpUserLevel);
-	// Ìí¼Ó ÕıÔÚ·¢ËÍµÄÏûÏ¢ Ò»°ã¶¼ÊÇÔÚ right 
+	// æ·»åŠ  æ­£åœ¨å‘é€çš„æ¶ˆæ¯ ä¸€èˆ¬éƒ½æ˜¯åœ¨ right 
 	void AddStateChatMsg(LPCTSTR lpRichName, LPCTSTR lpContent, EnChatState eState);
-	// µ÷ÓÃÕâ¸öº¯ÊıÖ®Ç° ÏÈÉèÖÃµ±Ç°ÁÄÌìÓÃ»§ 
+	// è°ƒç”¨è¿™ä¸ªå‡½æ•°ä¹‹å‰ å…ˆè®¾ç½®å½“å‰èŠå¤©ç”¨æˆ· 
 	void AddChatMsg(EnChatType eType, __int64 lBodyId, LPCTSTR lpMsgBody);
 private:
 	template<class T>
@@ -177,7 +177,7 @@ private:
 		if(NULL == pWnd)
 		{
 			SStringT sErrorText;
-			sErrorText.Format(_T("Ã»ÓĞnameÎª <%s> µÄ¿Ø¼ş"), lpWndName);
+			sErrorText.Format(_T("æ²¡æœ‰nameä¸º <%s> çš„æ§ä»¶"), lpWndName);
 			ShowErrorBox(sErrorText);
 		}
 	}
@@ -196,14 +196,14 @@ private:
 		//KillTimer(10);
 		//m_Tray.Update();
 	}
-	// ÇĞ»» Ò³Ãæ ÔÚ »á»° ºÍÁªÏµÈË 
+	// åˆ‡æ¢ é¡µé¢ åœ¨ ä¼šè¯ å’Œè”ç³»äºº 
 	void SwitchPage(int nSel);
-	// Ïò ×î½üÁªÏµÈËÁĞ±íÌí¼Ó
+	// å‘ æœ€è¿‘è”ç³»äººåˆ—è¡¨æ·»åŠ 
 	int NewTalkSession(UINT uUserId, LPCTSTR lpUserAlias, LPCTSTR lpContent, UINT uCount=0);
 	void DelRecentTalk(UINT uUserId);
-	// Î´¶ÁÏûÏ¢ ´¦Àí
+	// æœªè¯»æ¶ˆæ¯ å¤„ç†
 	void NewIMMsgHandle(UINT uSenderId, LPCTSTR lpMsg);
-	//¸üĞÂ  »á»° ±êÌâ Î´¶Á ¸öÊı
+	//æ›´æ–°  ä¼šè¯ æ ‡é¢˜ æœªè¯» ä¸ªæ•°
 	UINT UpdateTalkSessionUnreadCount();
 		
 	void LoadUserPng(LPCTSTR lpSkinName, LPCTSTR lpPngName);
@@ -212,20 +212,20 @@ private:
 public:
 	SWindow*					m_pUnreadCount;				// 
 	STabCtrl*					m_pTabMain;
-	SWindow*					m_pLayLoading;					// ¼ÓÔØÒ³Ãæ
+	SWindow*					m_pLayLoading;					// åŠ è½½é¡µé¢
 	SWindow*					m_pLaySession;
 	
 	SStatic*						m_pSessionTitle;					//
 	SWindow*					m_pSessionLevel;
-	SImRichEdit*				m_pChatRecord;					// ÏûÏ¢ ¼ÇÂ¼ ¿ò
-	SImRichEdit*				m_pChatInput;					// ÊäÈë¿ò 
-	RecentListAdapter*		m_pRecentListAdapter;			// ×î½üÁÄÌì ºÃÓÑ
-	ContactTreeAdapter*		m_pContactTreeAdapter;			// ÁªÏµÈË 
-	EmotionTileAdapter*		m_pEmotionTileAdapter;		// ±íÇé
+	SImRichEdit*				m_pChatRecord;					// æ¶ˆæ¯ è®°å½• æ¡†
+	SImRichEdit*				m_pChatInput;					// è¾“å…¥æ¡† 
+	RecentListAdapter*		m_pRecentListAdapter;			// æœ€è¿‘èŠå¤© å¥½å‹
+	ContactTreeAdapter*		m_pContactTreeAdapter;			// è”ç³»äºº 
+	EmotionTileAdapter*		m_pEmotionTileAdapter;		// è¡¨æƒ…
 	
-	CMsgToolTipWnd*			m_pWndMsgToolTip;						// ÓÒÏÂ½Ç µ¯³ö¿ò
+	CMsgToolTipWnd*			m_pWndMsgToolTip;						// å³ä¸‹è§’ å¼¹å‡ºæ¡†
 
-	MessageBoxLayout*			m_pAsynMessageBox;					 // ÄÜÄ£ÄâµÄ ÏûÏ¢ ÌáÊ¾¿ò	
+	MessageBoxLayout*			m_pAsynMessageBox;					 // èƒ½æ¨¡æ‹Ÿçš„ æ¶ˆæ¯ æç¤ºæ¡†	
 
 private:
 	SStringT									m_szUserAlias;

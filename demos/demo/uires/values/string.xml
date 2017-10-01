@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
   <string>
-    <title value="soui demo version:%d.%d"/>   
+    <title value="soui demo version:%d.%d.%d.%d"/>   
     <mccol_1 value="软件名称"/>
     <mccol_2 value="软件评分"/>
     <mccol_3 value="大小"/>

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "souistd.h"
 #include <GdiPlus.h>
 #include "SAntialiasSkin.h"
@@ -117,7 +117,7 @@ namespace SOUI
             _rightBottomRadius == 0 &&
             _leftBottomRadius == 0)
         {
-            // ²»ĞèÒªÉèÖÃÔ²½Ç
+            // ä¸éœ€è¦è®¾ç½®åœ†è§’
             return TRUE;
         }
 
@@ -400,7 +400,7 @@ namespace SOUI
 
     /**
      * SOUI::SAntialiasSkin::ReleaseImageWhileBuffReady:
-     *   Èç¹ûÒÑ¾­°Ñ_pImageµÄÍ¼Æ¬È«¶¼»æÖÆµ½ÁË»º´æÖĞ£¬¾Í¿ÉÒÔÊÍ·Å_pImageÁË
+     *   å¦‚æœå·²ç»æŠŠ_pImageçš„å›¾ç‰‡å…¨éƒ½ç»˜åˆ¶åˆ°äº†ç¼“å­˜ä¸­ï¼Œå°±å¯ä»¥é‡Šæ”¾_pImageäº†
      *
      * Parameters:
      *
@@ -452,7 +452,7 @@ namespace SOUI
         }
 
         //
-        // °Ñ_pImageµÄµ±Ç°Ö¡»­µ½»º´æÀï
+        // æŠŠ_pImageçš„å½“å‰å¸§ç”»åˆ°ç¼“å­˜é‡Œ
         //
         currentFrame.Frame = new Gdiplus::Bitmap(_skinSize.cx, _skinSize.cy, PixelFormat32bppPARGB);
         Gdiplus::Graphics * g = Gdiplus::Graphics::FromImage(currentFrame.Frame);
@@ -462,7 +462,7 @@ namespace SOUI
         delete g;
 
         //
-        // ³¢ÊÔÊÍ·Å_pImage
+        // å°è¯•é‡Šæ”¾_pImage
         //
         ReleaseImageWhileBuffReady();
 
@@ -482,9 +482,9 @@ namespace SOUI
         FrameInfo frame;
 
         //
-        // ·ÖÅäÍ¼Æ¬ÄÚ´æ
-        // °ÑÍ¼Æ¬Ñ¡½øGraphics
-        // °ÑÔ­Í¼Ëõ·Åµ½Ã¿Ò»Ö¡Í¼Æ¬Àï
+        // åˆ†é…å›¾ç‰‡å†…å­˜
+        // æŠŠå›¾ç‰‡é€‰è¿›Graphics
+        // æŠŠåŸå›¾ç¼©æ”¾åˆ°æ¯ä¸€å¸§å›¾ç‰‡é‡Œ
         //
         frame.Frame = new Gdiplus::Bitmap(_skinSize.cx, _skinSize.cy, PixelFormat32bppARGB);
         if (frame.Frame->GetLastStatus() != Ok)
@@ -527,7 +527,7 @@ namespace SOUI
             return InterpolationModeDefault;
         }
 
-        // ×îµÍÖÊÁ¿
+        // æœ€ä½è´¨é‡
         return InterpolationModeNearestNeighbor;
     }
 
@@ -560,7 +560,7 @@ namespace SOUI
         CRect rc = *rcDraw;
         Gdiplus::Rect rcDest(rc.left, rc.top, rc.Width(), rc.Height());
 
-        // ¸ù¾İËõ·Å±ÈÀıÑ¡ÔñºÏÊÊµÄ»­Í¼Ä£Ê½£¬ÒÔÌá¸ß»æÍ¼ËÙ¶È
+        // æ ¹æ®ç¼©æ”¾æ¯”ä¾‹é€‰æ‹©åˆé€‚çš„ç”»å›¾æ¨¡å¼ï¼Œä»¥æé«˜ç»˜å›¾é€Ÿåº¦
         SIZE drawSize = { rcDest.Width, rcDest.Height };
         float fScaling = GetZoomRatio_temp(_skinSize, drawSize);
 
@@ -586,11 +586,11 @@ namespace SOUI
     }
 
     //
-    // ½âÎö³öÍ¼Æ¬µÄÃ¿Ò»Ö¡Í¼Æ¬ÒÔ¼°ÑÓ³Ù
+    // è§£æå‡ºå›¾ç‰‡çš„æ¯ä¸€å¸§å›¾ç‰‡ä»¥åŠå»¶è¿Ÿ
     //
     void SAntialiasSkin::LoadFrameInfos(Gdiplus::Bitmap * pImage)
     {
-        _pImage = pImage;   // ½Ó¹ÜÍ¼Æ¬
+        _pImage = pImage;   // æ¥ç®¡å›¾ç‰‡
 
         Gdiplus::PropertyItem * pPropertyItem = NULL;
         UINT size = pImage->GetPropertyItemSize(PropertyTagFrameDelay);
@@ -605,9 +605,9 @@ namespace SOUI
             FrameInfo frame;
 
             //
-            // Èç¹ûÊÇ¶àÖ¡Í¼Æ¬£¬²»ÔÚÕâÀïÒ»´ÎĞÔ°ÑÄÚÈİ»­µ½»º´æ£¬ÒòÎªÈç¹ûÍ¼Æ¬½Ï¶à£¬ÕâÀï¿ÉÄÜ»áÔì³É¿¨¶Ù¡£
-            // ÔÚ_DrawÀï£¬µÈµ½ĞèÒª»­ÓÃµ½Ä³Ò»Ö¡Ê±£¬²Å°Ñ_pImageÀïµÄÍ¼Æ¬»­µ½»º´æ¡£µ±°Ñ
-            // _pImageµÄËùÓĞÖ¡¶¼»­µ½»º´æºó£¬¾ÍÊÍ·Å_pImage¡£
+            // å¦‚æœæ˜¯å¤šå¸§å›¾ç‰‡ï¼Œä¸åœ¨è¿™é‡Œä¸€æ¬¡æ€§æŠŠå†…å®¹ç”»åˆ°ç¼“å­˜ï¼Œå› ä¸ºå¦‚æœå›¾ç‰‡è¾ƒå¤šï¼Œè¿™é‡Œå¯èƒ½ä¼šé€ æˆå¡é¡¿ã€‚
+            // åœ¨_Drawé‡Œï¼Œç­‰åˆ°éœ€è¦ç”»ç”¨åˆ°æŸä¸€å¸§æ—¶ï¼Œæ‰æŠŠ_pImageé‡Œçš„å›¾ç‰‡ç”»åˆ°ç¼“å­˜ã€‚å½“æŠŠ
+            // _pImageçš„æ‰€æœ‰å¸§éƒ½ç”»åˆ°ç¼“å­˜åï¼Œå°±é‡Šæ”¾_pImageã€‚
             //
             if (_frameCount == 1)
             {
@@ -625,7 +625,7 @@ namespace SOUI
             }
 
             //
-            // ¶ÁÈ¡ÑÓÊ±ĞÅÏ¢
+            // è¯»å–å»¶æ—¶ä¿¡æ¯
             //
             if (pPropertyItem != NULL)
             {
@@ -665,7 +665,7 @@ namespace SOUI
         int nRet = pImage->GetPropertyItem(PropertyTagOrientation, nOrientationSize, pOrientation);
         if (nRet != Ok)
         {
-            // ·½Î»ĞÅÏ¢²»´æÔÚ,²»ĞèÒªĞı×ª
+            // æ–¹ä½ä¿¡æ¯ä¸å­˜åœ¨,ä¸éœ€è¦æ—‹è½¬
             free(pOrientation);
             return;
         }

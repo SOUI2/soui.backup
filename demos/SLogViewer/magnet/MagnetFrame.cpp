@@ -1,9 +1,9 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "MagnetFrame.h"
 
 using namespace SOUI;
 
-const int KDistMin = 10;    //Ð¡ÓÚ¸ÃÖµ´ú±íÁ½¸ö´°¿Ú×Ô¶¯Îü¸½
+const int KDistMin = 10;    //å°äºŽè¯¥å€¼ä»£è¡¨ä¸¤ä¸ªçª—å£è‡ªåŠ¨å¸é™„
 
 
 CMagnetFrame::CMagnetFrame(void):m_hMainWnd(NULL)
@@ -17,7 +17,7 @@ CMagnetFrame::~CMagnetFrame(void)
 BOOL CMagnetFrame::SubclassWnd(HWND hWnd)
 {
     if(GetWindowLongPtr(hWnd,GWLP_USERDATA)!=0)
-        return FALSE;//ÔÚÎü¸½¿ò¼ÜÖÐµÄ´°¿Ú²»ÄÜÊ¹ÓÃÁËUSERDATA£¬ÒòÎªÕâ¸öÖµÒª±»Îü¸½¿ò¼ÜÕ¼ÓÃ.
+        return FALSE;//åœ¨å¸é™„æ¡†æž¶ä¸­çš„çª—å£ä¸èƒ½ä½¿ç”¨äº†USERDATAï¼Œå› ä¸ºè¿™ä¸ªå€¼è¦è¢«å¸é™„æ¡†æž¶å ç”¨.
     WNDPROC pWndProc = (WNDPROC)GetWindowLongPtr(hWnd,GWLP_WNDPROC);
     if(pWndProc == &CMagnetFrame::MagnetWndProc) return FALSE;
     
@@ -200,7 +200,7 @@ LRESULT CALLBACK CMagnetFrame::MagnetWndProc(HWND hWnd, UINT uMsg, WPARAM wp, LP
     if(uMsg == WM_MOVE || uMsg == WM_SIZE)
     {
         if(hWnd == pThis->m_hMainWnd)
-        {//Ö÷´°¿ÚÒÆ¶¯,ÒÆ¶¯ËùÓÐºÍÖ÷´°¿ÚÓÐÎü¸½¹ØÏµµÄ¸½Êô´°¿Ú
+        {//ä¸»çª—å£ç§»åŠ¨,ç§»åŠ¨æ‰€æœ‰å’Œä¸»çª—å£æœ‰å¸é™„å…³ç³»çš„é™„å±žçª—å£
             CRect rcMain;
             ::GetWindowRect(pThis->m_hMainWnd,&rcMain);
             
@@ -220,9 +220,9 @@ LRESULT CALLBACK CMagnetFrame::MagnetWndProc(HWND hWnd, UINT uMsg, WPARAM wp, LP
             }
             
         }else if(!wd.bFromThis)
-        {//¸½Êô´°¿ÚÒÆ¶¯,¸üÐÂÓëÖ÷´°¿ÚµÄÎü¸½¹ØÏµ
+        {//é™„å±žçª—å£ç§»åŠ¨,æ›´æ–°ä¸Žä¸»çª—å£çš„å¸é™„å…³ç³»
              AtatchInfo ai = pThis->CalcAttachMode(hWnd);
-             //×Ô¶¯Îü¸½
+             //è‡ªåŠ¨å¸é™„
              if(ai.am != AM_NULL)
              {
                 wd.bFromThis = TRUE;
@@ -233,7 +233,7 @@ LRESULT CALLBACK CMagnetFrame::MagnetWndProc(HWND hWnd, UINT uMsg, WPARAM wp, LP
         }
     }
     else if(uMsg == WM_WINDOWPOSCHANGING && ! wd.bFromThis && hWnd != pThis->m_hMainWnd)
-    {//´°¿ÚÒÆ¶¯Ç°£¬¼ì²â´°¿ÚÎü¸½ÀàÐÍ£¬Èç¹û»¹ÔÚÎü¸½·¶Î§ÄÚ£¬Ôò²»ÒÆ¶¯´°¿Ú
+    {//çª—å£ç§»åŠ¨å‰ï¼Œæ£€æµ‹çª—å£å¸é™„ç±»åž‹ï¼Œå¦‚æžœè¿˜åœ¨å¸é™„èŒƒå›´å†…ï¼Œåˆ™ä¸ç§»åŠ¨çª—å£
         WINDOWPOS * pWndPos = (WINDOWPOS*)lp;
         if(!(pWndPos->flags & SWP_NOMOVE))
         {

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "core/shostwnd.h"
 #include "core/smsgloop.h"
 #include "core/SHostDialog.h"
@@ -100,17 +100,17 @@ namespace SOUI
 
 	public:
 		SStringT m_strinput;
-		SStringT m_strSkinName;  //Æ¤·ôÃû
+		SStringT m_strSkinName;  //çš®è‚¤å
 
-		SStringT m_strUIResFile;   //uires.idxÍêÕûÎÄ¼şÃû
+		SStringT m_strUIResFile;   //uires.idxå®Œæ•´æ–‡ä»¶å
 
 
-	    SListBox *m_lbResType;  //×ÊÔ´ÀàĞÍ
-		SListBox *m_lbRes;  //×ÊÔ´
-		SListBox *m_lbSkin;  //Æ¤·ô
-		SPropertyGrid *m_pgGrid;  //Æ¤·ôÊôĞÔ
+	    SListBox *m_lbResType;  //èµ„æºç±»å‹
+		SListBox *m_lbRes;  //èµ„æº
+		SListBox *m_lbSkin;  //çš®è‚¤
+		SPropertyGrid *m_pgGrid;  //çš®è‚¤å±æ€§
 
-		ResManger* m_pResFileManger;	//ËùÓĞ×ÊÔ´ÎÄ¼şµÄ¹ÜÀí
+		ResManger* m_pResFileManger;	//æ‰€æœ‰èµ„æºæ–‡ä»¶çš„ç®¡ç†
 
 		SWindow *m_wndGridContainer;
 		SStringT m_strProPath;
@@ -124,7 +124,7 @@ namespace SOUI
 
 		//SImageWnd *m_imgView;
 		SImgCanvas *m_imgView;
-		SStatic *m_txtImageSize;	//µ±Ç°Í¼ÏñµÄ´óĞ¡
+		SStatic *m_txtImageSize;	//å½“å‰å›¾åƒçš„å¤§å°
 
 		BOOL m_bGetSkin; //
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <richole.h>
 #include "IRichEditObjHost.h"

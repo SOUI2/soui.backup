@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Cursor and icon support
  *
  * Copyright 1995 Alexandre Julliard

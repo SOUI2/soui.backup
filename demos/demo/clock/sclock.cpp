@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "sclock.h"
 
 namespace SOUI{
@@ -16,7 +16,7 @@ void SClock::OnPaint(SOUI::IRenderTarget * pRT)
 
 	CPoint center = rcClient.CenterPoint();
 
-	// ¼ÆËã¾ØĞÎ
+	// è®¡ç®—çŸ©å½¢
 	// 35 * 16
 	CRect rcDraw(center, SOUI::CPoint(center.x + 200, center.y + 32));
 	rcDraw.OffsetRect(-35, -16);
@@ -51,7 +51,7 @@ void SClock::OnPaint(SOUI::IRenderTarget * pRT)
 
 SMatrix SClock::InitMatrix(double angle, CPoint &center)
 {
-    //ÏÈÆ½ÒÆµ½center£¬ÔÙĞı×ªangle£¬ÔÙÆ½ÒÆ-center
+    //å…ˆå¹³ç§»åˆ°centerï¼Œå†æ—‹è½¬angleï¼Œå†å¹³ç§»-center
     return SMatrix().translate((FLOAT)center.x,(FLOAT)center.y)
                     .rotate((FLOAT)angle-90)
                     .translate((FLOAT)-center.x,(FLOAT)-center.y);

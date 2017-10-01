@@ -1,4 +1,4 @@
-// EtimesHelper.cpp : ¶¨ÒåÓ¦ÓÃ³ÌÐòµÄÈë¿Úµã¡£
+ï»¿// EtimesHelper.cpp : å®šä¹‰åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
 //
 
 #include "stdafx.h"
@@ -14,7 +14,7 @@
 #endif
 
 
-// ´Ë´úÂëÄ£¿éÖÐ°üº¬µÄº¯ÊýµÄÇ°ÏòÉùÃ÷:
+// æ­¤ä»£ç æ¨¡å—ä¸­åŒ…å«çš„å‡½æ•°çš„å‰å‘å£°æ˜Ž:
 
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,
@@ -25,7 +25,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
- 	// TODO: ÔÚ´Ë·ÅÖÃ´úÂë¡£
+ 	// TODO: åœ¨æ­¤æ”¾ç½®ä»£ç ã€‚
 	HRESULT hRes = OleInitialize(NULL);
 	SASSERT(SUCCEEDED(hRes));
 
@@ -38,26 +38,26 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		if (!pComMgr->CreateRender_Skia((IObjRef**)&pRenderFactory))
 		{
 			delete pComMgr;
-			::MessageBox(NULL, _T("Load CreateRender_Skia Error!"), _T("ÌáÊ¾"), MB_ICONINFORMATION);
+			::MessageBox(NULL, _T("Load CreateRender_Skia Error!"), _T("æç¤º"), MB_ICONINFORMATION);
 			return 0;
 		}
 		if (!pComMgr->CreateImgDecoder((IObjRef**)&pImgDecoderFactory))
 		{
 			delete pComMgr;
-			::MessageBox(NULL, _T("Load CreateImgDecoder Error!"), _T("ÌáÊ¾"), MB_ICONINFORMATION);
+			::MessageBox(NULL, _T("Load CreateImgDecoder Error!"), _T("æç¤º"), MB_ICONINFORMATION);
 			return 0;
 		}
 
 		pRenderFactory->SetImgDecoderFactory(pImgDecoderFactory);
 
-		//¶¨ÒåÒ»¸öÎ¨Ò»µÄSApplication¶ÔÏó£¬SApplication¹ÜÀíÕû¸öÓ¦ÓÃ³ÌÐòµÄ×ÊÔ´
+		//å®šä¹‰ä¸€ä¸ªå”¯ä¸€çš„SApplicationå¯¹è±¡ï¼ŒSApplicationç®¡ç†æ•´ä¸ªåº”ç”¨ç¨‹åºçš„èµ„æº
 		SApplication *theApp=new SApplication(pRenderFactory, hInstance);
-		//Ïòapp×¢²á×Ô¶¨ÒåÀà
+		//å‘appæ³¨å†Œè‡ªå®šä¹‰ç±»
 		theApp->RegisterWindowClass<SPathBar>();
 		theApp->RegisterWindowClass<SFileList>();
 		theApp->RegisterSkinClass<SSkinSystemIconList>();
 		
-		//´Ó dll ¼ÓÔØ soui ×Ô´øÏµÍ³×ÊÔ´
+		//ä»Ž dll åŠ è½½ soui è‡ªå¸¦ç³»ç»Ÿèµ„æº
 		HMODULE hModSysResource = LoadLibrary(SYS_NAMED_RESOURCE);
 		if(NULL != hModSysResource)
 		{
@@ -70,7 +70,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		}
 		else
 		{
-			MessageBox(NULL, _T("Load SYS_NAMED_RESOURCE Error!"), _T("ÌáÊ¾"), MB_ICONINFORMATION);
+			MessageBox(NULL, _T("Load SYS_NAMED_RESOURCE Error!"), _T("æç¤º"), MB_ICONINFORMATION);
 			SASSERT(0);
 		}
 
@@ -82,7 +82,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		PathRemoveFileSpec(lpResPath);
 		PathRemoveFileSpec(lpResPath);
 		PathAddBackslash(lpResPath);
-		// ÕâÀïÓÃ×Ô¼º¹¤³Ì Ãû
+		// è¿™é‡Œç”¨è‡ªå·±å·¥ç¨‹ å
 		_tcscat_s(lpResPath, MAX_PATH, _T("demos\\DropDemo\\uires"));
 		if (!pResProvider->Init((LPARAM)lpResPath, 0))
 		{
@@ -94,7 +94,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		pResProvider->Init((WPARAM)hInstance,0);
 #endif
 
-		//½«´´½¨µÄIResProvider½»¸øSApplication¶ÔÏó
+		//å°†åˆ›å»ºçš„IResProvideräº¤ç»™SApplicationå¯¹è±¡
 		theApp->AddResProvider(pResProvider);
 
 		SNotifyCenter* pNotifyCenter = new SNotifyCenter;

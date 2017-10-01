@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "MemFlash.h"
 #include <SApp.h>
 

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "SLayoutSize.h"
 namespace SOUI
@@ -14,8 +14,8 @@ namespace SOUI
 	{
 		SLayoutSize width;
 		SLayoutSize height;
-		SLayoutSize extend_left,extend_right;//Ïàµ±ÓÚandroidµÄmarginÊôÐÔ
-		SLayoutSize extend_top,extend_bottom;//Ïàµ±ÓÚandroidµÄmarginÊôÐÔ
+		SLayoutSize extend_left,extend_right;//ç›¸å½“äºŽandroidçš„marginå±žæ€§
+		SLayoutSize extend_top,extend_bottom;//ç›¸å½“äºŽandroidçš„marginå±žæ€§
 		float weight;
 		Gravity gravity;
 	};
