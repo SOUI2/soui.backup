@@ -35,7 +35,8 @@ namespace SOUI
 		virtual BOOL CreatePath(IPath ** ppPath);
 
 		virtual BOOL CreatePathEffect(REFGUID guidEffect,IPathEffect ** ppPathEffect);
-
+		
+		virtual BOOL CreatePathMeasure(IPathMeasure ** ppPathMeasure);
     protected:
         CAutoRefPtr<IImgDecoderFactory> m_imgDecoderFactory;
     };

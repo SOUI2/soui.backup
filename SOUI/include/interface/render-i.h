@@ -13,6 +13,7 @@ namespace SOUI
     struct IBitmap;
     struct IRegion;
 	struct IPath;
+	struct IPathMeasure;
     struct IRenderTarget;
     struct IRenderFactory;
 
@@ -67,6 +68,8 @@ namespace SOUI
 		virtual BOOL CreatePath(IPath ** ppPath)=0;
 
 		virtual BOOL CreatePathEffect(REFGUID guidEffect,IPathEffect ** ppPathEffect) = 0;
+
+		virtual BOOL CreatePathMeasure(IPathMeasure ** ppPathMeasure) = 0;
     };
 
     enum OBJTYPE
@@ -927,6 +930,46 @@ namespace SOUI
 
 	};
     
+	struct IPathMeasure : IObjRef
+	{
+		/**
+		* Assign a new path, or null to have none.
+		*/
+		virtual void setPath(IPath * path, bool forceClosed) =0;
+
+		/**
+		* Return the total length of the current contour, or 0 if no path is
+		* associated with this measure object.
+		*/
+		virtual float getLength()  = 0;
+
+		/**
+		* Pins distance to 0 <= distance <= getLength(), and then computes the
+		* corresponding position and tangent. Returns false if there is no path,
+		* or a zero-length path was specified, in which case position and tangent
+		* are unchanged.
+		*
+		* @param distance The distance along the current contour to sample
+		* @param pos If not null, eturns the sampled position (x==[0], y==[1])
+		* @param tan If not null, returns the sampled tangent (x==[0], y==[1])
+		* @return false if there was no path associated with this measure object
+		*/
+		virtual bool getPosTan(float distance, float pos[], float tan[])  = 0;
+
+		/**
+		* Given a start and stop distance, return in dst the intervening
+		* segment(s). If the segment is zero-length, return false, else return
+		* true. startD and stopD are pinned to legal values (0..getLength()).
+		* If startD >= stopD then return false (and leave dst untouched).
+		* Begin the segment with a moveTo if startWithMoveTo is true.
+		*
+		* <p>On {@link android.os.Build.VERSION_CODES#KITKAT} and earlier
+		* releases, the resulting path may not display on a hardware-accelerated
+		* Canvas. A simple workaround is to add a single operation to this path,
+		* such as <code>dst.rLineTo(0, 0)</code>.</p>
+		*/
+		virtual bool getSegment(float startD, float stopD, IPath * dst, bool startWithMoveTo)  = 0;
+	};
 
     struct IxForm
     {

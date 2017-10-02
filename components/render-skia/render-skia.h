@@ -40,6 +40,8 @@ namespace SOUI
 
 		virtual BOOL CreatePathEffect(REFGUID guidEffect,IPathEffect ** ppPathEffect);
 
+		virtual BOOL CreatePathMeasure(IPathMeasure ** ppPathMeasure);
+
 
 	protected:
         CAutoRefPtr<IImgDecoderFactory> m_imgDecoderFactory;
@@ -254,6 +256,7 @@ namespace SOUI
 		SOUI_CLASS_NAME(SPath_Skia,L"path")
 
 		friend class SRenderTarget_Skia;
+		friend class SPathMeasure_Skia;
 	public:
 		SPath_Skia(IRenderFactory *pRenderFac);
 		virtual ~SPath_Skia();

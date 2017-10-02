@@ -15,6 +15,7 @@
 
 #include "skia2rop2.h"
 #include "PathEffect-Skia.h"
+#include "PathMeasure-Skia.h"
 
 #include <tchar.h>
 #include <algorithm>
@@ -140,12 +141,24 @@ namespace SOUI
 
 	BOOL SRenderFactory_Skia::CreatePathEffect(REFGUID guidEffect,IPathEffect ** ppPathEffect)
 	{
+		* ppPathEffect = NULL;
 		if(guidEffect == __uuidof(ICornerPathEffect))
 		{
 			*ppPathEffect = (IPathEffect*) new SPathEffect_Corner();
-			return TRUE;
+		}else if(guidEffect == __uuidof(IDashPathEffect))
+		{
+			*ppPathEffect = (IPathEffect *) new SPathEffect_Dash();
+		}else if(guidEffect == __uuidof(IDiscretePathEffect))
+		{
+			*ppPathEffect = (IPathEffect *) new SPathEffect_Discrete();
 		}
-		return FALSE;
+		return (*ppPathEffect) != NULL;
+	}
+
+	BOOL SRenderFactory_Skia::CreatePathMeasure(IPathMeasure ** ppPathMeasure)
+	{
+		*ppPathMeasure = new SPathMeasure_Skia;
+		return TRUE;
 	}
 
     //////////////////////////////////////////////////////////////////////////

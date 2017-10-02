@@ -49,6 +49,11 @@ namespace SOUI
 		return FALSE;
 	}
 
+	BOOL SRenderFactory_GDI::CreatePathMeasure(IPathMeasure ** ppPathMeasure)
+	{
+		return FALSE;
+	}
+
     
     //////////////////////////////////////////////////////////////////////////
     //  SBitmap_GDI

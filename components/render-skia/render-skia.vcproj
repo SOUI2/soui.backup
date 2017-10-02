@@ -224,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PathMeasure-Skia.cpp"
+				>
+			</File>
+			<File
 				RelativePath="render-skia.cpp"
 				>
 			</File>
@@ -247,6 +251,10 @@
 			</File>
 			<File
 				RelativePath=".\PathEffect-Skia.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PathMeasure-Skia.h"
 				>
 			</File>
 			<File
