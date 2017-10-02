@@ -26,7 +26,7 @@
       </window>
       
       <pathView size="-2,0" weight="1" cornerRadius="8" lineStyle="3" lineWidth="3" lineColor="#00ff00">
-        
+        演示path,使用skia渲染时有效（GDI渲染模块没有实现)
       </pathView>
     </page>
   </tabctrl>
