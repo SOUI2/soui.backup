@@ -197,9 +197,12 @@ protected:
 	
 	void OnCbxInterpolotorChange(EventArgs *e);
 
+	void OnEventPath(EventArgs *e);
+
 	HRESULT OnSkinChangeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL bHandled);
     //UI控件的事件及响应函数映射表
 	EVENT_MAP_BEGIN()
+		EVENT_HANDLER(EventPath::EventID,OnEventPath)
 		EVENT_ID_HANDLER(R.id.cbx_interpolator,EventCBSelChange::EventID,OnCbxInterpolotorChange)
 		EVENT_ID_COMMAND(1, OnClose)
 		EVENT_ID_COMMAND(2, OnMaximize)

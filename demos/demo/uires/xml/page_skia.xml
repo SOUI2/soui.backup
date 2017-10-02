@@ -17,8 +17,15 @@
         </page>
       </tabctrl>
     </page>
-    <page title="path">
-      <pathView size="-2,-2" cornerRadius="8" lineStyle="3" lineWidth="3" lineColor="#00ff00">
+    <page title="path" layout="vbox">
+
+      <window size="-2,-1" layout="hbox">
+        <text size="-1,-1">path, left button: add point, right button: remove point.</text>
+        <text size="-1,-1" extend_left="10dp">path length:</text>
+        <text size="-1,-1" name="txt_path_length" colorText="#ff0000">0</text>
+      </window>
+      
+      <pathView size="-2,0" weight="1" cornerRadius="8" lineStyle="3" lineWidth="3" lineColor="#00ff00">
         
       </pathView>
     </page>
