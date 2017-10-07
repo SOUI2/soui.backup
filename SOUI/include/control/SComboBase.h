@@ -382,6 +382,7 @@ namespace SOUI
             ATTR_INT(L"curSel", m_iInitSel, FALSE)
             ATTR_SKIN(L"btnSkin", m_pSkinBtn, FALSE)
             ATTR_INT(L"animateTime", m_nAnimTime, FALSE)
+			ATTR_INT(L"autoFitDropBtn", m_bAutoFitDropBtn, FALSE)
         SOUI_ATTRS_END()
 
         SOUI_MSG_MAP_BEGIN()
