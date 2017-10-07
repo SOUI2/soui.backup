@@ -75,6 +75,7 @@ namespace SOUI
         ,m_nAnimTime(200)
         ,m_pDropDownWnd(NULL)
         ,m_iInitSel(-1)
+		,m_bAutoFitDropBtn(TRUE)
     {
         m_bFocusable=TRUE;
         m_style.SetAttribute(L"align",L"left",TRUE);
@@ -82,6 +83,7 @@ namespace SOUI
 
         m_evtSet.addEvent(EVENTID(EventCBSelChange));
         m_evtSet.addEvent(EVENTID(EventRENotify));
+		m_evtSet.addEvent(EVENTID(EventDropdown));
     }
 
     SComboBase::~SComboBase(void)
@@ -122,6 +124,12 @@ namespace SOUI
         GetClientRect(prc);
 		int nHei = prc->bottom - prc->top;
         prc->left= prc->right-nHei*szBtn.cx/szBtn.cy;
+		if (!m_bAutoFitDropBtn) {
+			prc->top += (prc->bottom - prc->top - szBtn.cy) / 2;
+			prc->left += (prc->right - prc->left - szBtn.cx) / 2;
+			prc->right = prc->left + szBtn.cx;
+			prc->bottom = prc->top + szBtn.cy;
+		}
     }
 
     void SComboBase::GetTextRect( LPRECT pRect )
@@ -316,6 +324,9 @@ namespace SOUI
     void SComboBase::DropDown()
     {
         if(m_dwBtnState==WndState_PushDown) return;
+
+		EventDropdown evt(this);
+		FireEvent(evt);
 
         if(!m_pDropDownWnd)
         {

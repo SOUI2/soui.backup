@@ -111,6 +111,8 @@ namespace SOUI
 
 		EVT_SELECTMENU = 22150,
 
+		EVT_DROPDOWN = 22200,
+
         EVT_EXTERNAL_BEGIN=10000000,
     };
 
@@ -854,6 +856,17 @@ namespace SOUI
 
 		UINT m_id;
 		SMenuEx *m_pMenu;
+	};
+
+	class SOUI_EXP EventDropdown :public TplEventArgs<EventDropdown> {
+		SOUI_CLASS_NAME(EventDropdown, L"on_dropdown")
+	public:
+		EventDropdown(SObject *pSender) :TplEventArgs<EventDropdown>(pSender) {
+
+		}
+		enum {
+			EventID = EVT_DROPDOWN
+		};
 	};
 
 } // End of  CEGUI namespace section
