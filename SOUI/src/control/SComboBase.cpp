@@ -83,7 +83,7 @@ namespace SOUI
 
         m_evtSet.addEvent(EVENTID(EventCBSelChange));
         m_evtSet.addEvent(EVENTID(EventRENotify));
-		m_evtSet.addEvent(EVENTID(EventDropdown));
+		m_evtSet.addEvent(EVENTID(EventCBDropdown));
     }
 
     SComboBase::~SComboBase(void)
@@ -325,24 +325,27 @@ namespace SOUI
     {
         if(m_dwBtnState==WndState_PushDown) return;
 
-		EventDropdown evt(this);
-		FireEvent(evt);
 
         if(!m_pDropDownWnd)
         {
             m_pDropDownWnd = new SDropDownWnd_ComboBox(this);
-            CRect rcPopup;
-            BOOL bDown=CalcPopupRect(GetListBoxHeight(),rcPopup);
-            m_pDropDownWnd->Create(rcPopup,0);
-            
-            if(m_nAnimTime>0)
-                m_pDropDownWnd->AnimateHostWindow(m_nAnimTime,AW_SLIDE|(bDown?AW_VER_POSITIVE:AW_VER_NEGATIVE));
-            else
-                m_pDropDownWnd->SetWindowPos(HWND_TOP,0,0,0,0,SWP_SHOWWINDOW|SWP_NOMOVE|SWP_NOZORDER|SWP_NOSIZE|SWP_NOACTIVATE);
-                
-            m_pDropDownWnd->CSimpleWnd::SetCapture();
-        }
-    }
+		}
+
+		EventCBDropdown evt(this);
+		evt.pDropDown = m_pDropDownWnd;
+		FireEvent(evt);
+
+		CRect rcPopup;
+		BOOL bDown=CalcPopupRect(GetListBoxHeight(),rcPopup);
+		m_pDropDownWnd->Create(rcPopup,0);
+
+		if(m_nAnimTime>0)
+			m_pDropDownWnd->AnimateHostWindow(m_nAnimTime,AW_SLIDE|(bDown?AW_VER_POSITIVE:AW_VER_NEGATIVE));
+		else
+			m_pDropDownWnd->SetWindowPos(HWND_TOP,0,0,0,0,SWP_SHOWWINDOW|SWP_NOMOVE|SWP_NOZORDER|SWP_NOSIZE|SWP_NOACTIVATE);
+
+		m_pDropDownWnd->CSimpleWnd::SetCapture();
+	}
 
     void SComboBase::CloseUp()
     {
