@@ -11,9 +11,6 @@
 #define SOUI_COM_C  EXTERN_C
 #endif//SOUI_COM_DLL
 
-#ifndef PURE
-#define PURE                    = 0
-#endif
 
 struct IObjRef
 {

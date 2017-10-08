@@ -37,3 +37,7 @@
 #include <assert.h>
 #define SASSERT(x) assert(x)
 #endif
+
+#ifndef PURE
+#define PURE                    = 0
+#endif
