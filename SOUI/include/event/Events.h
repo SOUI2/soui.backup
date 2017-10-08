@@ -95,7 +95,8 @@ namespace SOUI
         EVT_HEADER_ITEMSWAP,
 
         EVT_CB_SELCHANGE=19000,
-        
+		EVT_CB_DROPDOWN,
+
         EVT_CALENDAR_SELDAY=20000,
         EVT_CALENDAR_SETDATE,
 		EVT_CALENDAREX_CHANGED,
@@ -110,6 +111,7 @@ namespace SOUI
 		EVT_ANI_STOP,
 
 		EVT_SELECTMENU = 22150,
+
 
         EVT_EXTERNAL_BEGIN=10000000,
     };
@@ -656,6 +658,19 @@ namespace SOUI
         int nCurSel;
     };
 
+	class SDropDownWnd;
+	class SOUI_EXP EventCBDropdown :public TplEventArgs<EventCBDropdown> 
+	{
+		SOUI_CLASS_NAME(EventCBDropdown, L"on_combobox_dropdown")
+	public:
+		EventCBDropdown(SObject *pSender) :TplEventArgs<EventCBDropdown>(pSender) {
+
+		}
+		enum {EventID = EVT_CB_DROPDOWN};
+
+		SDropDownWnd *pDropDown;
+	};
+
 
     class SOUI_EXP EventLCSelChanging : public TplEventArgs<EventLCSelChanging>
     {
@@ -855,5 +870,6 @@ namespace SOUI
 		UINT m_id;
 		SMenuEx *m_pMenu;
 	};
+
 
 } // End of  CEGUI namespace section
