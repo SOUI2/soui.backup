@@ -17,7 +17,7 @@
 #if (_WIN32_WINNT >= 0x0600) && !defined(_WIN32_WCE)
 #include <shobjidl.h>
 #endif // (_WIN32_WINNT >= 0x0600) && !defined(_WIN32_WCE)
-#include "core\SimpleWnd.h"
+#include <core\SimpleWnd.h>
 
 
 ///////////////////////////////////////////////////////////////////////////////
