@@ -29,7 +29,7 @@ namespace SOUI
 		pugi::xml_node listStyle = xmlNode.child(L"listStyle");
 		SStringW strListClass = listStyle.attribute(L"wndclass").as_string(SListBox::GetClassName());
 		m_pListBox=sobj_cast<SListBox>(SApplication::getSingleton().CreateWindowByName(strListClass));
-		ASSERT(m_pListBox);
+		SASSERT(m_pListBox);
 
 		m_pListBox->SetContainer(GetContainer());
 
