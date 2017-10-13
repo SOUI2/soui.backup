@@ -4037,7 +4037,7 @@ V& SRBMultiMap< K, V, KTraits, VTraits >::GetNextValueWithKey( SPOSITION& pos, K
 }
 
 }; // namespace SOUI
-#pragma pack(pop,_S_PACKING)
+#pragma pack(pop)
 
 #pragma warning(pop)
 
