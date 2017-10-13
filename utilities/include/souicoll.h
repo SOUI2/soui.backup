@@ -1368,8 +1368,6 @@ SList< E, ETraits >::~SList()
     SASSUME( m_nElements == 0 );
 }
 
-#pragma push_macro("new")
-#undef new
 
 template< typename E, class ETraits >
 void SList< E, ETraits >::GetFreeNode()
@@ -1416,8 +1414,6 @@ typename SList< E, ETraits >::CNode* SList< E, ETraits >::NewNode( CNode* pPrev,
 
     return( pNewNode );
 }
-#pragma pop_macro("new")
-	
 template< typename E, class ETraits >
 typename SList< E, ETraits >::CNode* SList< E, ETraits >::NewNode( INARGTYPE element, CNode* pPrev,
         CNode* pNext )
