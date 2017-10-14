@@ -39,6 +39,21 @@ namespace SOUI
         return TRUE;
     }
 
+	BOOL SRenderFactory_GDI::CreatePath(IPath ** ppPath)
+	{
+		return FALSE;
+	}
+
+	BOOL SRenderFactory_GDI::CreatePathEffect(REFGUID guidEffect,IPathEffect ** ppPathEffect)
+	{
+		return FALSE;
+	}
+
+	BOOL SRenderFactory_GDI::CreatePathMeasure(IPathMeasure ** ppPathMeasure)
+	{
+		return FALSE;
+	}
+
     
     //////////////////////////////////////////////////////////////////////////
     //  SBitmap_GDI
@@ -1105,6 +1120,16 @@ namespace SOUI
 	HRESULT SRenderTarget_GDI::CreateRegion(IRegion ** ppRegion)
 	{
 		return m_pRenderFactory->CreateRegion(ppRegion)?S_OK:E_OUTOFMEMORY;
+	}
+
+	HRESULT SRenderTarget_GDI::ClipPath(const IPath * path, UINT mode, bool doAntiAlias /*= false*/)
+	{
+		return E_NOTIMPL;
+	}
+
+	HRESULT SRenderTarget_GDI::DrawPath(const IPath * path,IPathEffect * pathEffect)
+	{
+		return E_NOTIMPL;
 	}
 
 

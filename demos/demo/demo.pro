@@ -84,7 +84,8 @@ HEADERS += MainDlg.h \
 		   skin/SSkinLoader.h \
 		   trayicon/SShellNotifyIcon.h \
 		   trayicon/SShellNofityHwnd2.h \
-	 SInterpolatorView.h
+	 SInterpolatorView.h \
+	 SPathView.h
 
 SOURCES += demo.cpp \
            MainDlg.cpp \
@@ -134,7 +135,8 @@ SOURCES += demo.cpp \
 		   skin/SSkinLoader.cpp \
 		   trayicon/SShellNotifyIcon.cpp \
 		   trayicon/SShellNofityHwnd2.cpp \
-	 SInterpolatorView.cpp
+	 SInterpolatorView.cpp \
+	 SPathView.cpp
 
 RC_FILE += demo.rc
 

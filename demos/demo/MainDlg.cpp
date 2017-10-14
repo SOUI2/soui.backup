@@ -1550,3 +1550,10 @@ void CMainDlg::OnCbxInterpolotorChange(EventArgs *e)
 		}
 	}
 }
+
+void CMainDlg::OnEventPath(EventArgs *e)
+{
+	EventPath * e2 = sobj_cast<EventPath>(e);
+	SStringT strLen = SStringT().Format(_T("%.2f"),e2->fLength);
+	FindChildByID(R.id.txt_path_length)->SetWindowText(strLen);
+}

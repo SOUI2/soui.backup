@@ -32,6 +32,7 @@
 #include "../controls.extend/tipwnd.h"
 
 #include "SInterpolatorView.h"
+#include "SPathView.h"
 
 using namespace SOUI;
 

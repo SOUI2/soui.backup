@@ -26,10 +26,14 @@ namespace SOUI
 	{
 		SASSERT(xmlNode);
 		//创建列表控件
-		m_pListBox=(SListBox*)SApplication::getSingleton().CreateWindowByName(SListBox::GetClassName());
+		pugi::xml_node listStyle = xmlNode.child(L"listStyle");
+		SStringW strListClass = listStyle.attribute(L"wndclass").as_string(SListBox::GetClassName());
+		m_pListBox=sobj_cast<SListBox>(SApplication::getSingleton().CreateWindowByName(strListClass));
+		SASSERT(m_pListBox);
+
 		m_pListBox->SetContainer(GetContainer());
 
-		m_pListBox->InitFromXml(xmlNode.child(L"liststyle"));
+		m_pListBox->InitFromXml(listStyle);
 		m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
 		m_pListBox->SetAttribute(L"hotTrack",L"1",TRUE);
 		m_pListBox->SetOwner(this);    //chain notify message to combobox

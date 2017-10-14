@@ -382,6 +382,7 @@ namespace SOUI
             ATTR_INT(L"curSel", m_iInitSel, FALSE)
             ATTR_SKIN(L"btnSkin", m_pSkinBtn, FALSE)
             ATTR_INT(L"animateTime", m_nAnimTime, FALSE)
+			ATTR_INT(L"autoFitDropBtn", m_bAutoFitDropBtn, FALSE)
         SOUI_ATTRS_END()
 
         SOUI_MSG_MAP_BEGIN()
@@ -424,6 +425,7 @@ namespace SOUI
         int  m_iInitSel;         /**< 默认选中索引 */
         SDropDownWnd *m_pDropDownWnd;  /**< DropDown指针 */
 		pugi::xml_document	m_xmlDropdownStyle;/**< DropDown的style */
+		BOOL m_bAutoFitDropBtn; /**< 自适应下拉按钮大小*/
     };
 
 }

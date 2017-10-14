@@ -3,6 +3,7 @@
 #include <unknown/obj-ref-i.h>
 #include <sobject/Sobject.hpp>
 #include "imgdecoder-i.h"
+#include "SPathEffect-i.h"
 namespace SOUI
 {
 	struct IRenderObj;
@@ -11,9 +12,10 @@ namespace SOUI
     struct IFont;
     struct IBitmap;
     struct IRegion;
+	struct IPath;
+	struct IPathMeasure;
     struct IRenderTarget;
     struct IRenderFactory;
-
 
 	enum EXPEND_MODE
 	{
@@ -58,8 +60,16 @@ namespace SOUI
         * Describe  
         */
         virtual BOOL CreateFont(IFont ** ppFont, const LOGFONT &lf)=0;
+
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap)=0;
+
         virtual BOOL CreateRegion(IRegion **ppRgn)=0;
+
+		virtual BOOL CreatePath(IPath ** ppPath)=0;
+
+		virtual BOOL CreatePathEffect(REFGUID guidEffect,IPathEffect ** ppPathEffect) = 0;
+
+		virtual BOOL CreatePathMeasure(IPathMeasure ** ppPathMeasure) = 0;
     };
 
     enum OBJTYPE
@@ -70,6 +80,7 @@ namespace SOUI
         OT_BITMAP,
         OT_FONT,
         OT_RGN,
+		OT_PATH,
     };
 
     /**
@@ -442,7 +453,524 @@ namespace SOUI
         virtual void SetRgn(const HRGN hRgn) = 0;
     };
 
+
+	struct IPath : IRenderObj
+	{
+
+		enum FillType {
+			/** Specifies that "inside" is computed by a non-zero sum of signed
+			edge crossings
+			*/
+			kWinding_FillType,
+			/** Specifies that "inside" is computed by an odd number of edge
+			crossings
+			*/
+			kEvenOdd_FillType,
+			/** Same as Winding, but draws outside of the path, rather than inside
+			*/
+			kInverseWinding_FillType,
+			/** Same as EvenOdd, but draws outside of the path, rather than inside
+			*/
+			kInverseEvenOdd_FillType
+		};
+
+		enum Convexity {
+			kUnknown_Convexity,
+			kConvex_Convexity,
+			kConcave_Convexity
+		};
+
+		/** Return the path's fill type. This is used to define how "inside" is
+		computed. The default value is kWinding_FillType.
+
+		@return the path's fill type
+		*/
+		virtual FillType getFillType() const PURE;
+
+		/** Set the path's fill type. This is used to define how "inside" is
+		computed. The default value is kWinding_FillType.
+
+		@param ft The new fill type for this path
+		*/
+		virtual void setFillType(FillType ft) PURE;
+
+		/** Returns true if the filltype is one of the Inverse variants */
+		virtual bool isInverseFillType() const PURE;
+
+		/**
+		*  Toggle between inverse and normal filltypes. This reverse the return
+		*  value of isInverseFillType()
+		*/
+		virtual void toggleInverseFillType() PURE;
+
+		/**
+		*  Return the path's convexity, as stored in the path. If it is currently unknown,
+		*  then this function will attempt to compute the convexity (and cache the result).
+		*/
+		virtual Convexity getConvexity() const PURE;
+
+
+		/**
+		*  Store a convexity setting in the path. There is no automatic check to
+		*  see if this value actually agrees with the return value that would be
+		*  computed by getConvexity().
+		*
+		*  Note: even if this is set to a "known" value, if the path is later
+		*  changed (e.g. lineTo(), addRect(), etc.) then the cached value will be
+		*  reset to kUnknown_Convexity.
+		*/
+		virtual void setConvexity(Convexity c) PURE;
+
+		/**
+		*  Returns true if the path is flagged as being convex. This is not a
+		*  confirmed by any analysis, it is just the value set earlier.
+		*/
+		virtual bool isConvex() const PURE;
+
+		/** Returns true if the path is an oval.
+		*
+		* @param rect      returns the bounding rect of this oval. It's a circle
+		*                  if the height and width are the same.
+		*
+		* @return true if this path is an oval.
+		*              Tracking whether a path is an oval is considered an
+		*              optimization for performance and so some paths that are in
+		*              fact ovals can report false.
+		*/
+		virtual bool isOval(RECT* rect) const PURE;
+
+		/** Clear any lines and curves from the path, making it empty. This frees up
+		internal storage associated with those segments.
+		On Android, does not change fSourcePath.
+		*/
+		virtual void reset() PURE;
+
+		/** Similar to reset(), in that all lines and curves are removed from the
+		path. However, any internal storage for those lines/curves is retained,
+		making reuse of the path potentially faster.
+		On Android, does not change fSourcePath.
+		*/
+		virtual void rewind() PURE;
+
+		/** Returns true if the path is empty (contains no lines or curves)
+
+		@return true if the path is empty (contains no lines or curves)
+		*/
+		virtual bool isEmpty() const PURE;
+
+		/**
+		*  Returns true if all of the points in this path are finite, meaning there
+		*  are no infinities and no NaNs.
+		*/
+		virtual bool isFinite() const PURE;
+
+		/**
+		*  Returns true if the path specifies a single line (i.e. it contains just
+		*  a moveTo and a lineTo). If so, and line[] is not null, it sets the 2
+		*  points in line[] to the end-points of the line. If the path is not a
+		*  line, returns false and ignores line[].
+		*/
+		virtual bool isLine(POINT line[2]) const PURE;
+
+		/** Returns true if the path specifies a rectangle. If so, and if rect is
+		not null, set rect to the bounds of the path. If the path does not
+		specify a rectangle, return false and ignore rect.
+
+		@param rect If not null, returns the bounds of the path if it specifies
+		a rectangle
+		@return true if the path specifies a rectangle
+		*/
+		virtual bool isRect(RECT* rect) const PURE;
+
+		/** Return the number of points in the path
+		*/
+		virtual int countPoints() const PURE;
+
+		/** Return the point at the specified index. If the index is out of range
+		(i.e. is not 0 <= index < countPoints()) then the returned coordinates
+		will be (0,0)
+		*/
+		virtual POINT getPoint(int index) const PURE;
+
+		/** Returns the number of points in the path. Up to max points are copied.
+
+		@param points If not null, receives up to max points
+		@param max The maximum number of points to copy into points
+		@return the actual number of points in the path
+		*/
+		virtual int getPoints(POINT points[], int max) const PURE;
+
+		/** Return the number of verbs in the path
+		*/
+		virtual int countVerbs() const PURE;
+
+		/** Returns the number of verbs in the path. Up to max verbs are copied. The
+		verbs are copied as one byte per verb.
+
+		@param verbs If not null, receives up to max verbs
+		@param max The maximum number of verbs to copy into verbs
+		@return the actual number of verbs in the path
+		*/
+		virtual int getVerbs(BYTE verbs[], int max) const PURE;
+
+		/** Returns the bounds of the path's points. If the path contains 0 or 1
+		points, the bounds is set to (0,0,0,0), and isEmpty() will return true.
+		Note: this bounds may be larger than the actual shape, since curves
+		do not extend as far as their control points.
+		*/
+		virtual RECT getBounds() const PURE;
+
+
+
+		//  Construction methods
+
+		/** Set the beginning of the next contour to the point (x,y).
+
+		@param x    The x-coordinate of the start of a new contour
+		@param y    The y-coordinate of the start of a new contour
+		*/
+		virtual void moveTo(float x, float y) PURE;
+
+
+		/** Set the beginning of the next contour relative to the last point on the
+		previous contour. If there is no previous contour, this is treated the
+		same as moveTo().
+
+		@param dx   The amount to add to the x-coordinate of the end of the
+		previous contour, to specify the start of a new contour
+		@param dy   The amount to add to the y-coordinate of the end of the
+		previous contour, to specify the start of a new contour
+		*/
+		virtual void rMoveTo(float dx, float dy) PURE;
+
+		/** Add a line from the last point to the specified point (x,y). If no
+		moveTo() call has been made for this contour, the first point is
+		automatically set to (0,0).
+
+		@param x    The x-coordinate of the end of a line
+		@param y    The y-coordinate of the end of a line
+		*/
+		virtual void lineTo(float x, float y) PURE;
+
+
+		/** Same as lineTo, but the coordinates are considered relative to the last
+		point on this contour. If there is no previous point, then a moveTo(0,0)
+		is inserted automatically.
+
+		@param dx   The amount to add to the x-coordinate of the previous point
+		on this contour, to specify a line
+		@param dy   The amount to add to the y-coordinate of the previous point
+		on this contour, to specify a line
+		*/
+		virtual void rLineTo(float dx, float dy) PURE;
+
+		/** Add a quadratic bezier from the last point, approaching control point
+		(x1,y1), and ending at (x2,y2). If no moveTo() call has been made for
+		this contour, the first point is automatically set to (0,0).
+
+		@param x1   The x-coordinate of the control point on a quadratic curve
+		@param y1   The y-coordinate of the control point on a quadratic curve
+		@param x2   The x-coordinate of the end point on a quadratic curve
+		@param y2   The y-coordinate of the end point on a quadratic curve
+		*/
+		virtual void quadTo(float x1, float y1, float x2, float y2)PURE;
+
+
+		/** Same as quadTo, but the coordinates are considered relative to the last
+		point on this contour. If there is no previous point, then a moveTo(0,0)
+		is inserted automatically.
+
+		@param dx1   The amount to add to the x-coordinate of the last point on
+		this contour, to specify the control point of a quadratic curve
+		@param dy1   The amount to add to the y-coordinate of the last point on
+		this contour, to specify the control point of a quadratic curve
+		@param dx2   The amount to add to the x-coordinate of the last point on
+		this contour, to specify the end point of a quadratic curve
+		@param dy2   The amount to add to the y-coordinate of the last point on
+		this contour, to specify the end point of a quadratic curve
+		*/
+		virtual void rQuadTo(float dx1, float dy1, float dx2, float dy2)PURE;
+
+		virtual void conicTo(float x1, float y1, float x2, float y2,
+			float w) PURE;
+		virtual void rConicTo(float dx1, float dy1, float dx2, float dy2,
+			float w) PURE;
+
+		/** Add a cubic bezier from the last point, approaching control points
+		(x1,y1) and (x2,y2), and ending at (x3,y3). If no moveTo() call has been
+		made for this contour, the first point is automatically set to (0,0).
+
+		@param x1   The x-coordinate of the 1st control point on a cubic curve
+		@param y1   The y-coordinate of the 1st control point on a cubic curve
+		@param x2   The x-coordinate of the 2nd control point on a cubic curve
+		@param y2   The y-coordinate of the 2nd control point on a cubic curve
+		@param x3   The x-coordinate of the end point on a cubic curve
+		@param y3   The y-coordinate of the end point on a cubic curve
+		*/
+		virtual void cubicTo(float x1, float y1, float x2, float y2,
+			float x3, float y3)PURE;
+
+
+		/** Same as cubicTo, but the coordinates are considered relative to the
+		current point on this contour. If there is no previous point, then a
+		moveTo(0,0) is inserted automatically.
+
+		@param dx1   The amount to add to the x-coordinate of the last point on
+		this contour, to specify the 1st control point of a cubic curve
+		@param dy1   The amount to add to the y-coordinate of the last point on
+		this contour, to specify the 1st control point of a cubic curve
+		@param dx2   The amount to add to the x-coordinate of the last point on
+		this contour, to specify the 2nd control point of a cubic curve
+		@param dy2   The amount to add to the y-coordinate of the last point on
+		this contour, to specify the 2nd control point of a cubic curve
+		@param dx3   The amount to add to the x-coordinate of the last point on
+		this contour, to specify the end point of a cubic curve
+		@param dy3   The amount to add to the y-coordinate of the last point on
+		this contour, to specify the end point of a cubic curve
+		*/
+		virtual void rCubicTo(float x1, float y1, float x2, float y2,
+			float x3, float y3)PURE;
+
+		/** Append the specified arc to the path as a new contour. If the start of
+		the path is different from the path's current last point, then an
+		automatic lineTo() is added to connect the current contour to the start
+		of the arc. However, if the path is empty, then we call moveTo() with
+		the first point of the arc. The sweep angle is treated mod 360.
+
+		@param oval The bounding oval defining the shape and size of the arc
+		@param startAngle Starting angle (in degrees) where the arc begins
+		@param sweepAngle Sweep angle (in degrees) measured clockwise. This is
+		treated mod 360.
+		@param forceMoveTo If true, always begin a new contour with the arc
+		*/
+		virtual void arcTo(const RECT& oval, float startAngle, float sweepAngle,
+			bool forceMoveTo)PURE;
+
+		/** Append a line and arc to the current path. This is the same as the
+		PostScript call "arct".
+		*/
+		virtual void arcTo(float x1, float y1, float x2, float y2,
+			float radius)PURE;
+
+
+		/** Close the current contour. If the current point is not equal to the
+		first point of the contour, a line segment is automatically added.
+		*/
+		virtual void close()PURE;
+
+		enum Direction {
+			/** Direction either has not been or could not be computed */
+			kUnknown_Direction,
+			/** clockwise direction for adding closed contours */
+			kCW_Direction,
+			/** counter-clockwise direction for adding closed contours */
+			kCCW_Direction,
+		};
+
+
+		/** Returns true if the path specifies a rectangle. If so, and if isClosed is
+		not null, set isClosed to true if the path is closed. Also, if returning true
+		and direction is not null, return the rect direction. If the path does not
+		specify a rectangle, return false and ignore isClosed and direction.
+
+		@param isClosed If not null, set to true if the path is closed
+		@param direction If not null, set to the rectangle's direction
+		@return true if the path specifies a rectangle
+		*/
+		virtual bool isRect(bool* isClosed, Direction* direction) const PURE;
+
+		/**
+		*  Add a closed rectangle contour to the path
+		*  @param rect The rectangle to add as a closed contour to the path
+		*  @param dir  The direction to wind the rectangle's contour. Cannot be
+		*              kUnknown_Direction.
+		*/
+		virtual void addRect(const RECT& rect, Direction dir = kCW_Direction)PURE;
+
+		/**
+		*  Add a closed rectangle contour to the path
+		*
+		*  @param left     The left side of a rectangle to add as a closed contour
+		*                  to the path
+		*  @param top      The top of a rectangle to add as a closed contour to the
+		*                  path
+		*  @param right    The right side of a rectangle to add as a closed contour
+		*                  to the path
+		*  @param bottom   The bottom of a rectangle to add as a closed contour to
+		*                  the path
+		*  @param dir  The direction to wind the rectangle's contour. Cannot be
+		*              kUnknown_Direction.
+		*/
+		virtual void addRect(float left, float top, float right, float bottom,
+			Direction dir = kCW_Direction)PURE;
+
+		/**
+		*  Add a closed oval contour to the path
+		*
+		*  @param oval The bounding oval to add as a closed contour to the path
+		*  @param dir  The direction to wind the oval's contour. Cannot be
+		*              kUnknown_Direction.
+		*/
+		virtual void addOval(const RECT& oval, Direction dir = kCW_Direction)PURE;
+
+		/**
+		*  Add a closed circle contour to the path
+		*
+		*  @param x        The x-coordinate of the center of a circle to add as a
+		*                  closed contour to the path
+		*  @param y        The y-coordinate of the center of a circle to add as a
+		*                  closed contour to the path
+		*  @param radius   The radius of a circle to add as a closed contour to the
+		*                  path
+		*  @param dir  The direction to wind the circle's contour. Cannot be
+		*              kUnknown_Direction.
+		*/
+		virtual void addCircle(float x, float y, float radius,
+			Direction dir = kCW_Direction)PURE;
+
+		/** Add the specified arc to the path as a new contour.
+
+		@param oval The bounds of oval used to define the size of the arc
+		@param startAngle Starting angle (in degrees) where the arc begins
+		@param sweepAngle Sweep angle (in degrees) measured clockwise
+		*/
+		virtual void addArc(const RECT& oval, float startAngle, float sweepAngle)PURE;
+
+		/**
+		*  Add a closed round-rectangle contour to the path
+		*  @param rect The bounds of a round-rectangle to add as a closed contour
+		*  @param rx   The x-radius of the rounded corners on the round-rectangle
+		*  @param ry   The y-radius of the rounded corners on the round-rectangle
+		*  @param dir  The direction to wind the rectangle's contour. Cannot be
+		*              kUnknown_Direction.
+		*/
+		virtual void addRoundRect(const RECT& rect, float rx, float ry,
+			Direction dir = kCW_Direction)PURE;
+
+		/**
+		*  Add a closed round-rectangle contour to the path. Each corner receives
+		*  two radius values [X, Y]. The corners are ordered top-left, top-right,
+		*  bottom-right, bottom-left.
+		*  @param rect The bounds of a round-rectangle to add as a closed contour
+		*  @param radii Array of 8 scalars, 4 [X,Y] pairs for each corner
+		*  @param dir  The direction to wind the rectangle's contour. Cannot be
+		*              kUnknown_Direction.
+		* Note: The radii here now go through the same constraint handling as the
+		*       SkRRect radii (i.e., either radii at a corner being 0 implies a
+		*       sqaure corner and oversized radii are proportionally scaled down).
+		*/
+		virtual void addRoundRect(const RECT& rect, const float radii[],
+			Direction dir = kCW_Direction)PURE;
+
+
+		/**
+		*  Add a new contour made of just lines. This is just a fast version of
+		*  the following:
+		*      this->moveTo(pts[0]);
+		*      for (int i = 1; i < count; ++i) {
+		*          this->lineTo(pts[i]);
+		*      }
+		*      if (close) {
+		*          this->close();
+		*      }
+		*/
+		virtual void addPoly(const POINT pts[], int count, bool close) PURE;
+
+		enum AddPathMode {
+			/** Source path contours are added as new contours.
+			*/
+			kAppend_AddPathMode,
+			/** Path is added by extending the last contour of the destination path
+			with the first contour of the source path. If the last contour of
+			the destination path is closed, then it will not be extended.
+			Instead, the start of source path will be extended by a straight
+			line to the end point of the destination path.
+			*/
+			kExtend_AddPathMode
+		};
+
+		/** Add a copy of src to the path, offset by (dx,dy)
+		@param src  The path to add as a new contour
+		@param dx   The amount to translate the path in X as it is added
+		@param dx   The amount to translate the path in Y as it is added
+		*/
+		virtual void addPath(const IPath * src, float dx, float dy,
+			AddPathMode mode = kAppend_AddPathMode) PURE;
+
+
+		/**
+		*  Same as addPath(), but reverses the src input
+		*/
+		virtual void reverseAddPath(const IPath* src) PURE;
+
+
+		/** Offset the path by (dx,dy), returning true on success
+
+		@param dx   The amount in the X direction to offset the entire path
+		@param dy   The amount in the Y direction to offset the entire path
+		*/
+		virtual void offset(float dx, float dy) PURE;
+
+
+		/** Return the last point on the path. If no points have been added, (0,0)
+		is returned. If there are no points, this returns false, otherwise it
+		returns true.
+
+		@param lastPt   The last point on the path is returned here
+		*/
+		virtual bool getLastPt(POINT* lastPt) const PURE;
+
+		/** Set the last point on the path. If no points have been added,
+		moveTo(x,y) is automatically called.
+
+		@param x    The new x-coordinate for the last point
+		@param y    The new y-coordinate for the last point
+		*/
+		virtual void setLastPt(float x, float y) PURE;
+
+	};
     
+	struct IPathMeasure : IObjRef
+	{
+		/**
+		* Assign a new path, or null to have none.
+		*/
+		virtual void setPath(IPath * path, bool forceClosed) =0;
+
+		/**
+		* Return the total length of the current contour, or 0 if no path is
+		* associated with this measure object.
+		*/
+		virtual float getLength()  = 0;
+
+		/**
+		* Pins distance to 0 <= distance <= getLength(), and then computes the
+		* corresponding position and tangent. Returns false if there is no path,
+		* or a zero-length path was specified, in which case position and tangent
+		* are unchanged.
+		*
+		* @param distance The distance along the current contour to sample
+		* @param pos If not null, eturns the sampled position (x==[0], y==[1])
+		* @param tan If not null, returns the sampled tangent (x==[0], y==[1])
+		* @return false if there was no path associated with this measure object
+		*/
+		virtual bool getPosTan(float distance, float pos[], float tan[])  = 0;
+
+		/**
+		* Given a start and stop distance, return in dst the intervening
+		* segment(s). If the segment is zero-length, return false, else return
+		* true. startD and stopD are pinned to legal values (0..getLength()).
+		* If startD >= stopD then return false (and leave dst untouched).
+		* Begin the segment with a moveTo if startWithMoveTo is true.
+		*
+		* <p>On {@link android.os.Build.VERSION_CODES#KITKAT} and earlier
+		* releases, the resulting path may not display on a hardware-accelerated
+		* Canvas. A simple workaround is to add a single operation to this path,
+		* such as <code>dst.rLineTo(0, 0)</code>.</p>
+		*/
+		virtual bool getSegment(float startD, float stopD, IPath * dst, bool startWithMoveTo)  = 0;
+	};
+
     struct IxForm
     {
         FLOAT eM11; 
@@ -581,6 +1109,21 @@ namespace SOUI
          * Describe  和::SetPixel一致
          */
 		virtual COLORREF SetPixel(int x, int y, COLORREF cr) = 0;
+
+		/**
+		 *  Modify the current clip with the specified path.
+		 *  @param path The path to combine with the current clip
+		 *  @param mode The region op to apply to the current clip
+		 *  @param doAntiAlias true if the clip should be antialiased
+		 */
+		virtual HRESULT ClipPath(const IPath * path, UINT mode, bool doAntiAlias = false) = 0;
+
+		/** Draw the specified path using the specified paint. The path will be
+		filled or framed based on the Style in the paint.
+		@param path     The path to be drawn
+		*/
+		virtual HRESULT DrawPath(const IPath * path,IPathEffect * pathEffect=NULL) = 0;
+
 	};
 
 

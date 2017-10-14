@@ -189,6 +189,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         theApp->RegisterWindowClass<SImageMaskWnd>();//注册SImageMaskWnd
         theApp->RegisterWindowClass<SRatingBar>();//注册SRatingBar
 		theApp->RegisterWindowClass<SInterpolatorView>();
+		theApp->RegisterWindowClass<SPathView>();
         if(SUCCEEDED(CUiAnimation::Init()))
         {
             theApp->RegisterWindowClass<SUiAnimationWnd>();//注册动画控件
