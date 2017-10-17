@@ -14,7 +14,7 @@
 class SColor
 {
 public:
-	SColor(BYTE r,BYTE g,BYTE b,BYTE a=0xFF):a(a),b(b),g(g),r(r)
+	SColor(BYTE r,BYTE g,BYTE b,BYTE a=0xFF):b(b),g(g),r(r),a(a)
 	{
 
 	}

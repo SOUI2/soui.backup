@@ -379,84 +379,14 @@ public:
         return( 0 );
     }
 };
-
-template < typename T >
-class CDefaultCharTraits
-{
-};
-
-template <>
-class CDefaultCharTraits<char>
-{
-public:
-    static char CharToUpper(char x)
-    {
-        return (char)toupper(x);
-    }
-
-    static char CharToLower(char x)
-    {
-        return (char)tolower(x);
-    }
-};
-
-template <>
-class CDefaultCharTraits<wchar_t>
-{
-public:
-    static wchar_t CharToUpper(wchar_t x)
-    {
-        return (wchar_t)towupper(x);
-    }
-
-    static wchar_t CharToLower(wchar_t x)
-    {
-        return (wchar_t)towlower(x);
-    }
-};
-
-template< typename T, class CharTraits = CDefaultCharTraits<T::XCHAR> >
-class SStringElementTraitsI :
-    public CElementTraitsBase< T >
-{
-public:
-    typedef typename T::PCXSTR INARGTYPE;
-    typedef T& OUTARGTYPE;
-
-    static ULONG Hash( INARGTYPE str )
-    {
-        ULONG nHash = 0;
-
-        const T::XCHAR* pch = str;
-
-        SENSURE( pch != NULL );
-
-        while( *pch != 0 )
-        {
-            nHash = (nHash<<5)+nHash+CharTraits::CharToUpper(*pch);
-            pch++;
-        }
-
-        return( nHash );
-    }
-
-    static bool CompareElements( INARGTYPE str1, INARGTYPE str2 )
-    {
-        return( T::StrTraits::StringCompareIgnore( str1, str2 ) == 0 );
-    }
-
-    static int CompareElementsOrdered( INARGTYPE str1, INARGTYPE str2 )
-    {
-        return( T::StrTraits::StringCompareIgnore( str1, str2 ) );
-    }
-};
+ 
 
 template< typename T >
 class SStringRefElementTraits :
     public CElementTraitsBase< T >
 {
 public:
-    static ULONG Hash( INARGTYPE str )
+    static ULONG Hash(typename CElementTraitsBase<T>::INARGTYPE str )
     {
         ULONG nHash = 0;
 
@@ -473,12 +403,12 @@ public:
         return( nHash );
     }
 
-    static bool CompareElements( INARGTYPE element1, INARGTYPE element2 )
+    static bool CompareElements(typename CElementTraitsBase<T>::INARGTYPE element1, typename CElementTraitsBase<T>::INARGTYPE element2 )
     {
         return( element1 == element2 );
     }
 
-    static int CompareElementsOrdered( INARGTYPE str1, INARGTYPE str2 )
+    static int CompareElementsOrdered(typename CElementTraitsBase<T>::INARGTYPE str1, typename CElementTraitsBase<T>::INARGTYPE str2 )
     {
         return( str1.Compare( str2 ) );
     }
@@ -1129,8 +1059,8 @@ public:
 
     SPOSITION GetHeadPosition() const;
     SPOSITION GetTailPosition() const;
-	SPOSITION Next(SPOSITION pos) const;
-	SPOSITION Prev(SPOSITION pos) const;
+    SPOSITION Next(SPOSITION pos) const;
+    SPOSITION Prev(SPOSITION pos) const;
     E& GetNext( SPOSITION& pos );
     const E& GetNext( SPOSITION& pos ) const;
     E& GetPrev( SPOSITION& pos );
@@ -1327,12 +1257,12 @@ inline void SList< E, ETraits >::SetAt( SPOSITION pos, INARGTYPE element )
 
 template< typename E, class ETraits >
 SList< E, ETraits >::SList( UINT nBlockSize ) :
-    m_nElements( 0 ),
     m_pHead( NULL ),
     m_pTail( NULL ),
-    m_nBlockSize( nBlockSize ),
+    m_nElements(0),
     m_pBlocks( NULL ),
-    m_pFree( NULL )
+    m_pFree( NULL ),
+    m_nBlockSize(nBlockSize)
 {
     SASSERT( nBlockSize > 0 );
 }
@@ -1413,7 +1343,8 @@ typename SList< E, ETraits >::CNode* SList< E, ETraits >::NewNode( CNode* pPrev,
     SASSUME( m_nElements > 0 );
 
     return( pNewNode );
-}
+} 
+    
 template< typename E, class ETraits >
 typename SList< E, ETraits >::CNode* SList< E, ETraits >::NewNode( INARGTYPE element, CNode* pPrev,
         CNode* pNext )
@@ -2292,17 +2223,17 @@ template< typename K, typename V, class KTraits, class VTraits >
 SMap< K, V, KTraits, VTraits >::SMap( UINT nBins, float fOptimalLoad,
         float fLoThreshold, float fHiThreshold, UINT nBlockSize ) :
     m_ppBins( NULL ),
-    m_nBins( nBins ),
     m_nElements( 0 ),
-    m_nLockCount( 0 ),  // Start unlocked
+    m_nBins(nBins),
     m_fOptimalLoad( fOptimalLoad ),
     m_fLoThreshold( fLoThreshold ),
     m_fHiThreshold( fHiThreshold ),
     m_nHiRehashThreshold( UINT_MAX ),
     m_nLoRehashThreshold( 0 ),
-    m_pBlocks( NULL ),
-    m_pFree( NULL ),
-    m_nBlockSize( nBlockSize )
+    m_nLockCount(0),  // Start unlocked
+    m_nBlockSize( nBlockSize ),
+    m_pBlocks(NULL),
+    m_pFree(NULL)
 {
     SASSERT( nBins > 0 );
     SASSERT( nBlockSize > 0 );
@@ -3857,11 +3788,25 @@ public:
     explicit SRBMap( size_t nBlockSize = 10 ) ;
     ~SRBMap() ;
 
-    bool Lookup( KINARGTYPE key, VOUTARGTYPE value ) const ;
-    const CPair* Lookup( KINARGTYPE key ) const ;
-    CPair* Lookup( KINARGTYPE key ) ;
-    SPOSITION SetAt( KINARGTYPE key, VINARGTYPE value ) ;
-    bool RemoveKey( KINARGTYPE key ) ;
+    bool Lookup( typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key, typename SRBTree< K, V, KTraits, VTraits >::VOUTARGTYPE value ) const ;
+    const typename SRBMap< K, V, KTraits, VTraits >::CPair* Lookup(typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key ) const ;
+    typename SRBMap< K, V, KTraits, VTraits >::CPair* Lookup(typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key ) ;
+    typename SRBMap< K, V, KTraits, VTraits >::SPOSITION SetAt(typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key, typename SRBTree< K, V, KTraits, VTraits >::VINARGTYPE value)
+    {
+        CPair* pNode = Find(key);
+        if (pNode == NULL)
+        {
+            return(RBInsert(key, value));
+        }
+        else
+        {
+            pNode->m_value = value;
+
+            return(pNode);
+        }
+    }
+
+    bool RemoveKey(typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key ) ;
 
 };
 
@@ -3878,19 +3823,19 @@ SRBMap< K, V, KTraits, VTraits >::~SRBMap()
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-const typename SRBMap< K, V, KTraits, VTraits >::CPair* SRBMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key ) const 
+const typename SRBMap< K, V, KTraits, VTraits >::CPair* SRBMap< K, V, KTraits, VTraits >::Lookup( typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key ) const 
 {
     return Find(key);
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-typename SRBMap< K, V, KTraits, VTraits >::CPair* SRBMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key ) 
+typename SRBMap< K, V, KTraits, VTraits >::CPair* SRBMap< K, V, KTraits, VTraits >::Lookup(  typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key ) 
 {
     return Find(key);
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-bool SRBMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key, VOUTARGTYPE value ) const 
+bool SRBMap< K, V, KTraits, VTraits >::Lookup(  typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key, typename SRBTree< K, V, KTraits, VTraits >::VOUTARGTYPE value ) const 
 {
     const CPair* pLookup = Find( key );
     if( pLookup == NULL )
@@ -3901,23 +3846,7 @@ bool SRBMap< K, V, KTraits, VTraits >::Lookup( KINARGTYPE key, VOUTARGTYPE value
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-SPOSITION SRBMap< K, V, KTraits, VTraits >::SetAt( KINARGTYPE key, VINARGTYPE value ) 
-{
-    CPair* pNode = Find( key );
-    if( pNode == NULL )
-    {
-        return( RBInsert( key, value ) );
-    }
-    else
-    {
-        pNode->m_value = value;
-
-        return( pNode );
-    }
-}
-
-template< typename K, typename V, class KTraits, class VTraits >
-bool SRBMap< K, V, KTraits, VTraits >::RemoveKey( KINARGTYPE key ) 
+bool SRBMap< K, V, KTraits, VTraits >::RemoveKey( typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key ) 
 {
     SPOSITION pos = Lookup( key );
     if( pos != NULL )
@@ -3940,14 +3869,18 @@ public:
     explicit SRBMultiMap( size_t nBlockSize = 10 ) ;
     ~SRBMultiMap() ;
 
-    SPOSITION Insert( KINARGTYPE key, VINARGTYPE value ) ;
-    size_t RemoveKey( KINARGTYPE key ) ;
+    typename SRBMap< K, V, KTraits, VTraits >::SPOSITION Insert( typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key, typename SRBTree< K, V, KTraits, VTraits >::VINARGTYPE value ) ;
+    size_t RemoveKey( typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key ) ;
 
-    SPOSITION FindFirstWithKey( KINARGTYPE key ) const ;
-    const CPair* GetNextWithKey( SPOSITION& pos, KINARGTYPE key ) const ;
-    CPair* GetNextWithKey( SPOSITION& pos, KINARGTYPE key ) ;
-    const V& GetNextValueWithKey( SPOSITION& pos, KINARGTYPE key ) const ;
-    V& GetNextValueWithKey( SPOSITION& pos, KINARGTYPE key ) ;
+    typename SRBMultiMap< K, V, KTraits, VTraits >::SPOSITION FindFirstWithKey(typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key) const
+    {
+        return(Find(key));
+    }
+
+    const typename SRBMultiMap< K, V, KTraits, VTraits >::CPair* GetNextWithKey( typename SRBMultiMap< K, V, KTraits, VTraits >::SPOSITION& pos, typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key ) const ;
+    typename SRBMultiMap< K, V, KTraits, VTraits >::CPair* GetNextWithKey(typename SRBMultiMap< K, V, KTraits, VTraits >::SPOSITION& pos, typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key);
+    const V& GetNextValueWithKey( typename SRBMultiMap< K, V, KTraits, VTraits >::SPOSITION& pos, typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key ) const ;
+    V& GetNextValueWithKey( typename SRBMultiMap< K, V, KTraits, VTraits >::SPOSITION& pos, typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key ) ;
 };
 
 template< typename K, typename V, class KTraits, class VTraits >
@@ -3962,13 +3895,13 @@ SRBMultiMap< K, V, KTraits, VTraits >::~SRBMultiMap()
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-SPOSITION SRBMultiMap< K, V, KTraits, VTraits >::Insert( KINARGTYPE key, VINARGTYPE value ) 
+typename SRBMap< K, V, KTraits, VTraits >::SPOSITION SRBMultiMap< K, V, KTraits, VTraits >::Insert( typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key, typename SRBTree< K, V, KTraits, VTraits >::VINARGTYPE value ) 
 {
     return( RBInsert( key, value ) );
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-size_t SRBMultiMap< K, V, KTraits, VTraits >::RemoveKey( KINARGTYPE key ) 
+size_t SRBMultiMap< K, V, KTraits, VTraits >::RemoveKey( typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key ) 
 {
     size_t nElementsDeleted = 0;
 
@@ -3984,14 +3917,10 @@ size_t SRBMultiMap< K, V, KTraits, VTraits >::RemoveKey( KINARGTYPE key )
     return( nElementsDeleted );
 }
 
-template< typename K, typename V, class KTraits, class VTraits >
-SPOSITION SRBMultiMap< K, V, KTraits, VTraits >::FindFirstWithKey( KINARGTYPE key ) const 
-{
-    return( Find( key ) );
-}
+
 
 template< typename K, typename V, class KTraits, class VTraits >
-const typename SRBMultiMap< K, V, KTraits, VTraits >::CPair* SRBMultiMap< K, V, KTraits, VTraits >::GetNextWithKey( SPOSITION& pos, KINARGTYPE key ) const 
+const typename SRBMultiMap< K, V, KTraits, VTraits >::CPair* SRBMultiMap< K, V, KTraits, VTraits >::GetNextWithKey( typename SRBMultiMap< K, V, KTraits, VTraits >::SPOSITION& pos, typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key ) const
 {
     SASSERT( pos != NULL );
     const CPair* pNode = GetNext( pos );
@@ -4004,7 +3933,7 @@ const typename SRBMultiMap< K, V, KTraits, VTraits >::CPair* SRBMultiMap< K, V, 
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-typename SRBMultiMap< K, V, KTraits, VTraits >::CPair* SRBMultiMap< K, V, KTraits, VTraits >::GetNextWithKey( SPOSITION& pos, KINARGTYPE key ) 
+typename SRBMultiMap< K, V, KTraits, VTraits >::CPair* SRBMultiMap< K, V, KTraits, VTraits >::GetNextWithKey(typename SRBMultiMap< K, V, KTraits, VTraits >::SPOSITION& pos, typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key)
 {
     SASSERT( pos != NULL );
     CPair* pNode = GetNext( pos );
@@ -4017,7 +3946,7 @@ typename SRBMultiMap< K, V, KTraits, VTraits >::CPair* SRBMultiMap< K, V, KTrait
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-const V& SRBMultiMap< K, V, KTraits, VTraits >::GetNextValueWithKey( SPOSITION& pos, KINARGTYPE key ) const 
+const V& SRBMultiMap< K, V, KTraits, VTraits >::GetNextValueWithKey( typename SRBMultiMap< K, V, KTraits, VTraits >::SPOSITION& pos, typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key ) const
 {
     const CPair* pPair = GetNextWithKey( pos, key );
 
@@ -4025,7 +3954,7 @@ const V& SRBMultiMap< K, V, KTraits, VTraits >::GetNextValueWithKey( SPOSITION& 
 }
 
 template< typename K, typename V, class KTraits, class VTraits >
-V& SRBMultiMap< K, V, KTraits, VTraits >::GetNextValueWithKey( SPOSITION& pos, KINARGTYPE key ) 
+V& SRBMultiMap< K, V, KTraits, VTraits >::GetNextValueWithKey( typename SRBMultiMap< K, V, KTraits, VTraits >::SPOSITION& pos, typename SRBTree< K, V, KTraits, VTraits >::KINARGTYPE key )
 {
     CPair* pPair = GetNextWithKey( pos, key );
 

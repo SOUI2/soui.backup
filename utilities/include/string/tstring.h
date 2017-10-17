@@ -1422,7 +1422,7 @@ namespace SOUI
         {
             SASSERT(str != NULL);
             ULONG nHash = 0;
-            const T::_tchar * pch = str;
+            const typename T::_tchar * pch = str;
             while (*pch != 0)
             {
                 nHash = (nHash << 5) + nHash + (*pch);

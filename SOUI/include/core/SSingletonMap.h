@@ -59,8 +59,8 @@ public:
         {
             SPOSITION pos=m_mapNamedObj->GetStartPosition();
             while(pos)
-            {
-                SMap<TKey,TObj>::CPair *p=m_mapNamedObj->GetNext(pos);
+            { 
+				typename SMap<TKey,TObj>::CPair *p = m_mapNamedObj->GetNext(pos);
                 m_pFunOnKeyRemoved(p->m_value);
             }
         }
