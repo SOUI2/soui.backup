@@ -1316,14 +1316,14 @@ namespace SOUI
 		CRect rcPadding = GetStyle().GetPadding();
 		//计算文本大小
 		CRect rcTest4Text (0,0,szRet.cx,szRet.cy);
-		int nMaxWid = m_nMaxWidth.isWrapContent()?m_nMaxWidth.toPixelSize(GetScale()):szRet.cx;
+		int nMaxWid = GetLayoutParam()->IsWrapContent(Horz)?m_nMaxWidth.toPixelSize(GetScale()):szRet.cx;
 		if(nMaxWid == SIZE_WRAP_CONTENT) 
 		{
 			nMaxWid = KWnd_MaxSize;
 		}
 		else //if(nMaxWid >= SIZE_SPEC)
 		{
-			nMaxWid = szRet.cx - rcPadding.left - rcPadding.right;
+			nMaxWid -= rcPadding.left + rcPadding.right;
 			nTestDrawMode|=DT_WORDBREAK;
 		}
 		rcTest4Text.right = nMaxWid;
