@@ -218,6 +218,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\EditConfigDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath="FilterDlg.cpp"
 				>
 			</File>
@@ -265,6 +269,10 @@
 			>
 			<File
 				RelativePath="droptarget.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EditConfigDlg.h"
 				>
 			</File>
 			<File
@@ -374,10 +382,6 @@
 				</FileConfiguration>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\uires\xml\config.xml"
-			>
-		</File>
 		<File
 			RelativePath="SLogViewer.rc"
 			>

@@ -1,4 +1,4 @@
-﻿<SOUI name="mainWindow" title="@string/title_no_name" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="800" height="600"  margin="20,5,5,5"  resizable="1" wndType="appMain"
+﻿<SOUI name="mainWindow" title="@string/title_no_name" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="850" height="600"  margin="20,5,5,5"  resizable="1" wndType="appMain"
 appWnd="1"
 translucent="0"
 trCtx="dlg_main"
@@ -19,6 +19,7 @@ trCtx="dlg_main"
       <pane priority="1" minSize="200" idealSize="400" layout="vbox">
         <window size="-2,-1" layout="hbox" gravity="center">
           <button size="-1,-1" name="btn_open_file" text="@string/open_file" accel="CTRL+O"/>
+          <button size="-1,-1" extend_left="5dp" name="btn_edit_config" text="@string/edit_config"/>
           <button size="-1,-1" extend_left="5dp" name="btn_clear" text="@string/clear"/>
           <button size="-1,-1" extend_left="10dp" name="btn_find" text="@string/find_text" accel="CTRL+F"/>
           <window size="0,0" weight="1" visible="0"/>

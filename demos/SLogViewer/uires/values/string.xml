@@ -36,4 +36,5 @@
     <next value="next"/>
     <prev value="previous"/>
     <close value="close"/>
+    <edit_config value="edit config"/>
   </string>

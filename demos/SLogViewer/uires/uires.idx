@@ -6,6 +6,7 @@
     <file name="XML_MAINWND" path="xml\dlg_main.xml"/>
     <file name="dlg_filter" path="xml\dlg_filter.xml"/>
     <file name="dlg_find" path="xml\dlg_find.xml"/>
+    <file name="dlg_edit_config" path="xml\dlg_edit_config.xml"/>
   </LAYOUT>
 
   <values>

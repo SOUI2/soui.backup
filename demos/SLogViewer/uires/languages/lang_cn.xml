@@ -141,6 +141,10 @@
       <source>function</source>
       <translation>函数</translation>
     </message>
+    <message>
+      <source>edit config</source>
+      <translation>编辑配置</translation>
+    </message>
   </context>
   <context name="dlg_find">
     <message>

@@ -32,6 +32,7 @@ HEADERS += droptarget.h \
            FileHelper.h \
            FilterDlg.h \
            FindDlg.h \
+           EditConfigDlg.h \
            LogParser.h \
            MainDlg.h \
            resource.h \
@@ -47,6 +48,7 @@ SOURCES += FilterDlg.cpp \
            LogParser.cpp \
            FindDlg.cpp \
            MainDlg.cpp \
+           EditConfigDlg.cpp \
            SColorizeText.cpp \
            SLogAdapter.cpp \
            SLogViewer.cpp \
