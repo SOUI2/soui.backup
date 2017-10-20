@@ -5,7 +5,7 @@
       TRACE,DEBUG,INFO,WARN,ERROR,ALARM,FATAL
     </levels>
     <format>
-      pid=$(pid) tid=$(tid) $(time[23]) $(level)  $(module) $(tag) "$(content)" $(function) ($(file)):$(line)
+      pid=$(pid) tid=$(tid) $(time[23]) $(level[5]) $(module) $(tag) "$(content)" $(function) ($(file)):$(line)
     </format>
   </log>
   <log name="vulture" codepage="65001">

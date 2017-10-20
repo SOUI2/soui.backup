@@ -187,6 +187,7 @@ namespace SOUI
 		pItem->FindChildByID(R.id.txt_function)->SetWindowText(S_CW2T(pLogInfo->strFunction));
 		pItem->FindChildByID(R.id.txt_source_file)->SetWindowText(S_CW2T(pLogInfo->strSourceFile));
 		pItem->FindChildByID(R.id.txt_source_line)->SetWindowText(SStringT().Format(_T("%d"),pLogInfo->iSourceLine));
+		pItem->FindChildByID(R.id.txt_package)->SetWindowText(S_CW2T(pLogInfo->strPackage));
 
 		SWindow * pTxtLevel = pItem->FindChildByID(R.id.txt_level);
 		pTxtLevel->SetWindowText(S_CW2T(pLogInfo->strLevel));
@@ -224,7 +225,8 @@ namespace SOUI
 			L"col_source_file",
 			L"col_source_line",
 			L"col_function",
-			L"col_content"
+			L"col_content",
+			L"col_package",
 		};
 		return colNames[iCol];
 	}
@@ -295,7 +297,7 @@ namespace SOUI
 			{
 				SLogInfo *pLine1 = m_lstLogs[0];
 				SLogInfo *pLine2 = logBuffer.m_lstLogs[0];
-				if(pLine1->time<pLine2->time)
+				if(pLine1->strTime<pLine2->strTime)
 				{//原有log的时间大于新LOG的时间，原log加(append)到新log后
 					Append(logBuffer);
 					m_pScilexer->SendMessage(SCI_APPENDTEXT,bufUtf8.GetLength(),(LPARAM)(LPCSTR)bufUtf8);

@@ -114,6 +114,10 @@
       <translation>正文</translation>
     </message>
     <message>
+      <source>package</source>
+      <translation>包</translation>
+    </message>
+    <message>
       <source>filter</source>
       <translation>过滤设置:</translation>
     </message>

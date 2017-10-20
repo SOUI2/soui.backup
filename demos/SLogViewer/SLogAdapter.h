@@ -12,7 +12,6 @@ namespace SOUI
 	public:
 		SLogInfo():iSourceLine(0),iLine(0){}
 		int      iLine;
-		CTime    time;
 		SStringW strTime;
 		DWORD	 dwPid;
 		DWORD	 dwTid;
@@ -57,6 +56,7 @@ namespace SOUI
 		col_function,
 		col_content,
 		col_package,
+		col_unknown,
 	};
 
 	struct ILogParse : public IObjRef

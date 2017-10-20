@@ -12,6 +12,7 @@ const wchar_t KLogField_Module[]=L"module";
 const wchar_t KLogField_File[]=L"file";
 const wchar_t KLogField_Line[]=L"line";
 const wchar_t KLogField_Function[]=L"function";
+const wchar_t KLogField_Unknown[]=L"unknown";
 
 const wchar_t KLogField_Head[]=L"$(";
 const wchar_t KLogField_Tail=L')';
@@ -42,6 +43,7 @@ static const LogFieldInfo KLogFields[]=
 	FIELD_ELE(KLogField_Function,col_function),
 	FIELD_ELE(KLogField_Content,col_content),
 	FIELD_ELE(KLogField_Package,col_package),
+	FIELD_ELE(KLogField_Unknown,col_unknown),
 };
 
 
@@ -195,6 +197,7 @@ LPCWSTR CLogParse::StrRStr(LPCWSTR pszSource,LPCWSTR pszTail,LPCWSTR pszDest) co
 void CLogParse::FillField(SLogInfo *info, LPCWSTR pszHead,LPCWSTR pszTail,int fieldId) const
 {
 	SStringW strTmp(pszHead,(int)(pszTail-pszHead));
+	strTmp.TrimBlank();
 	switch(fieldId)
 	{
 	case col_time:

@@ -19,6 +19,7 @@
     <col_source_line value="source line"/>
     <col_function value="function"/>
     <col_content value="content"/>
+    <col_package value="package"/>
     <filter value="filter"/>
     <tag_filter value="tag filter"/>
     <pid_filter value="pid filter"/>

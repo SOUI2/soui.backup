@@ -48,6 +48,7 @@ trCtx="dlg_main"
               <item width="50">@string/col_source_line</item>
               <item width="50">@string/col_function</item>
               <item width="500">@string/col_content</item>
+              <item width="100">@string/col_package</item>
             </items>
           </header>
           <template itemHeight="30dp" colorHover="#cccccc"  colorSelected="rgba(128,128,128,128)">
@@ -83,6 +84,9 @@ trCtx="dlg_main"
             </window>
             <window name="col_content" clipClient="1" layout="hbox" gravity="center">
               <colorizeText size="-2,20dp" name="txt_content" visible="1"/>
+            </window>
+            <window name="col_package" clipClient="1" layout="hbox" gravity="center">
+              <text name="txt_package"/>
             </window>
           </template>
         </mclistview>
