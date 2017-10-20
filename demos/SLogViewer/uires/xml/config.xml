@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<logs>
+  <log name="soui" codepage="0">
+    <levels>
+      TRACE,DEBUG,INFO,WARN,ERROR,ALARM,FATAL
+    </levels>
+    <format>
+      pid=$(pid) tid=$(tid) $(time[23]) $(level)  $(module) $(tag) "$(content)" $(function) ($(file)):$(line)
+    </format>
+  </log>
+  <log name="vulture" codepage="65001">
+    <levels>
+      V,D,I,W,E,A
+    </levels>
+    <format>
+      $(time[23]) ($(pid)) $(tid) [$(level)][$(tag)] - $(content)
+    </format>
+  </log>
+  <log name="nemo" codepage="65001">
+    <levels>
+      V,D,I,W,E,A
+    </levels>
+    <format>
+      $(time[18]) $(pid[5]) $(tid[5]) $(level) $(tag): $(content)
+    </format>
+  </log>
+</logs>

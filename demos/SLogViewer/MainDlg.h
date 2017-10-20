@@ -86,4 +86,6 @@ protected:
 	CFilterDlg *			 m_pFilterDlg;
 	CScintillaWnd *			 m_pSciter;
 	CFindDlg   *			 m_pFindDlg;
+
+	SList<ILogParse *>		 m_logParserPool;
 };

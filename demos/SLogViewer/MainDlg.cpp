@@ -7,7 +7,7 @@
 #include "FileHelper.h"
 #include "LogParser.h"
 #include <helper/SMenu.h>
-
+#include <helper/mybuffer.h>
 CMainDlg::CMainDlg() 
 : SHostWnd(_T("LAYOUT:XML_MAINWND"))
 ,m_lvLogs(NULL)
@@ -17,13 +17,18 @@ CMainDlg::CMainDlg()
 ,m_pSciter(NULL)
 {
 	m_logAdapter.Attach(new SLogAdapter);
-	IParserFactory * pParserFactory = new CParseFactory;
-	m_logAdapter->SetParserFactory(pParserFactory);
-	pParserFactory->Release();
+	m_logAdapter->SetLogParserPool(&m_logParserPool);
 }
 
 CMainDlg::~CMainDlg()
 {
+	SPOSITION pos = m_logParserPool.GetHeadPosition();
+	while(pos)
+	{
+		ILogParse *pLogParser = m_logParserPool.GetNext(pos);
+		pLogParser->Release();
+	}
+	m_logParserPool.RemoveAll();
 }
 
 
@@ -31,6 +36,40 @@ BOOL CMainDlg::OnInitDialog(HWND hWnd, LPARAM lParam)
 {
 	//设置为磁吸主窗口
 	SetMainWnd(m_hWnd);
+
+	SStringW strAppDir = SApplication::getSingleton().GetAppDir();
+	strAppDir += L"\\config.xml";
+	pugi::xml_document doc;
+	if(!doc.load_file(strAppDir))
+	{
+		DWORD dwSize = SApplication::getSingleton().GetRawBufferSize(_T("xml"),_T("config"));
+		if(dwSize)
+		{
+			CMyBuffer<char> buf(dwSize);
+			SApplication::getSingleton().GetRawBuffer(_T("xml"),_T("config"),buf,dwSize);
+			FILE *f = _wfopen(strAppDir,L"w+b");
+			if(f)
+			{
+				fwrite(buf,1,dwSize,f);
+				fclose(f);
+			}
+			doc.load_buffer(buf,dwSize);
+		}
+	}
+
+	pugi::xml_node xmlLogParser = doc.child(L"logs").child(L"log");
+	while(xmlLogParser)
+	{
+		SStringW strName = xmlLogParser.attribute(L"name").as_string();
+		int nCodePage = xmlLogParser.attribute(L"codepage").as_int(CP_UTF8);
+		SStringW strLevels = xmlLogParser.child(L"levels").text().as_string();
+		strLevels.TrimBlank();
+		SStringW strFmt = xmlLogParser.child(L"format").text().as_string();
+		strFmt.TrimBlank();
+		CLogParse *pLogParser = new CLogParse(strName,strFmt,strLevels,nCodePage);
+		m_logParserPool.AddTail(pLogParser);
+		xmlLogParser = xmlLogParser.next_sibling(L"log");
+	}
 
 	m_pFilterDlg = new CFilterDlg(this);
 	m_pFilterDlg->Create(m_hWnd);

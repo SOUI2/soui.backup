@@ -24,4 +24,7 @@
   <smenu>
     <file name="menu_lv" path="smenu\menu_lv.xml"/>
   </smenu>
+  <xml>
+    <file name="config" path="xml\config.xml"/>
+  </xml>
 </resource>

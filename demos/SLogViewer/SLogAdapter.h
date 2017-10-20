@@ -44,17 +44,19 @@ namespace SOUI
 
 	enum Field
 	{
+		col_invalid=-1,
 		col_line_index=0,
 		col_time,
 		col_pid,
 		col_tid,
 		col_level,
 		col_tag,
-		col_moduel,
+		col_module,
 		col_source_file,
 		col_source_line,
 		col_function,
-		col_content
+		col_content,
+		col_package,
 	};
 
 	struct ILogParse : public IObjRef
@@ -62,18 +64,12 @@ namespace SOUI
 		virtual SStringW GetName() const PURE;
 		virtual int GetLevels() const PURE;			
 		virtual void GetLevelText(wchar_t szLevels[][MAX_LEVEL_LENGTH]) const PURE;
-		virtual BOOL ParseLine(LPCWSTR pszLine,SLogInfo **ppLogInfo) const PURE;
+		virtual BOOL ParseLine(LPCWSTR pszLine,int nLen,SLogInfo **ppLogInfo) const PURE;
 		virtual bool IsFieldValid(Field field) const PURE;
 		virtual int  GetCodePage() const PURE;
 		virtual BOOL TestLogBuffer(LPCSTR pszBuf, int nLength) PURE;
 	};
 	
-	struct IParserFactory: public IObjRef
-	{
-		virtual ILogParse * CreateLogParser(int iParser) const PURE;
-		virtual int GetLogParserCount() const PURE;
-	};
-
 
 	struct SRange
 	{
@@ -117,7 +113,7 @@ namespace SOUI
 
 		void ParseLog(LPWSTR pszBuffer);
 
-		SLogInfo * ParseLine(LPCWSTR pszLine);
+		SLogInfo * ParseLine(LPCWSTR pszLine,int nLen);
 
 		SLogBuffer & operator = (const SLogBuffer & src);
 
@@ -170,7 +166,8 @@ namespace SOUI
 		void SetFilterPids(const SArray<UINT> & lstPid);
 		void SetFilterTids(const SArray<UINT> & lstTid);
 
-		void SetParserFactory(IParserFactory *pParserFactory);
+		void SetLogParserPool(SList<ILogParse*> *pLogParserPool);
+		//void SetParserFactory(IParserFactory *pParserFactory);
 		SLogInfo* GetLogInfo(int iItem) const;
 
 	protected:
@@ -197,8 +194,8 @@ namespace SOUI
 
 		COLORREF m_crLevels[Level_Count];
 
-		CAutoRefPtr<IParserFactory> m_parserFactory;
-
+		//CAutoRefPtr<IParserFactory> m_parserFactory;
+		SList<ILogParse*> *		 m_pLogPaserPool;
 		CScintillaWnd	*		 m_pScilexer;
 	};
 
