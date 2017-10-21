@@ -163,7 +163,6 @@ namespace SOUI
 		if(m_lstFilterResult) delete m_lstFilterResult;
 		m_lstFilterResult = NULL;
 		m_filterLevel = -1;
-		m_filterKeyInfo.Clear();
 		m_filterTags.RemoveAll();
 		m_filterTids.RemoveAll();
 		m_filterPids.RemoveAll();

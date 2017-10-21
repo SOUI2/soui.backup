@@ -197,7 +197,11 @@ void CMainDlg::OnFileDropdown(HDROP hDrop)
 
 void CMainDlg::OpenFile(LPCTSTR pszFileName)
 {
-	if(!m_logAdapter->Load(pszFileName)) return;
+	if(!m_logAdapter->Load(pszFileName))
+	{
+		SMessageBox(m_hWnd,GETSTRING(R.string.msg_open_failed),GETSTRING(R.string.title_no_name),MB_OK|MB_ICONSTOP);
+		return;
+	}
 	
 	TCHAR szName[MAX_PATH];
 	_tsplitpath(pszFileName,NULL,NULL,szName,NULL);
@@ -438,5 +442,11 @@ void CMainDlg::UpdateLogParser()
 		m_logParserPool.AddTail(pLogParser);
 		xmlLogParser = xmlLogParser.next_sibling(L"log");
 	}
+}
+
+void CMainDlg::OnAbout()
+{
+	SHostDialog dlgAbout(UIRES.LAYOUT.dlg_about);
+	dlgAbout.DoModal();
 }
 

@@ -39,12 +39,13 @@ protected:
 	void OnMaximize();
 	void OnRestore();
 	void OnMinimize();
+	void OnAbout();
 
 	void OnLanguage(const SStringT & strLang);
 	void OnLanguageBtnCN();
 	void OnLanguageBtnEN();
 	void OnOpenFile();
-	void OnClear();
+	void OnClear();	
 
 	void OnFilterInputChange(EventArgs *e);
 	void OnLevelsChange(EventArgs *e);
@@ -63,6 +64,7 @@ protected:
 		EVENT_ID_COMMAND(R.id.btn_find,OnOpenFindDlg)
 		EVENT_ID_COMMAND(R.id.btn_clear,OnClear)
 		EVENT_ID_COMMAND(R.id.btn_edit_config,OnEditConfig)
+		EVENT_ID_COMMAND(R.id.btn_about,OnAbout)
 		EVENT_ID_HANDLER(R.id.edit_filter,EventRENotify::EventID,OnFilterInputChange)
 		EVENT_ID_HANDLER(R.id.cbx_levels,EventCBSelChange::EventID,OnLevelsChange)
 		EVENT_ID_CONTEXTMENU(R.id.lv_log,OnLvContextMenu)

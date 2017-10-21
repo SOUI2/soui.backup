@@ -35,6 +35,10 @@
       <translation>关闭窗口</translation>
     </message>
 
+    <message>
+      <source>about</source>
+      <translation>关于</translation>
+    </message>
   </context>
   <context name="messagebox">
     <message>
@@ -48,6 +52,10 @@
     <message>
       <source>retry</source>
       <translation>重试</translation>
+    </message>
+    <message>
+      <source>Parsing log failed, not supportting log format. edit config to resolve the problem.</source>
+      <translation>解析LOG失败, 不支持的LOG格式. 尝试[编辑配置]来增加LOG格式支持.</translation>
     </message>
   </context>
   <context name="dlg_main">

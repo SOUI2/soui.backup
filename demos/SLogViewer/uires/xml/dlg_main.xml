@@ -4,13 +4,17 @@ translucent="0"
 trCtx="dlg_main"
 >
   <root skin="_skin.sys.wnd.bkgnd" cache="1">
-    <caption pos="0,0,-0,30">
-      <icon pos="10,8" src="ICON_LOGO:16"/>
-      <text pos="29,9" name="txt_title">@string/title_no_name</text>
-      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="@string/close" animate="1"/>
-      <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
-      <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
-      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+    <caption pos="0,0,-0,30" layout="hbox" gravity="center" padding="10,5,10,5">
+      <icon src="ICON_LOGO:16"/>
+      <text extend_left="5" name="txt_title">@string/title_no_name</text>
+      <window size="0,0" visible="0" weight="1"/>
+      <button padding="3,3,3,3" name="btn_about" text="@string/about"/>
+      <imgbtn extend_left="5" name="btn_min" skin="_skin.sys.btn.minimize" animate="1" />
+      <window extend_left="5">
+        <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="0,0" animate="1" />
+        <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="0,0" show="0" animate="1" />
+      </window>
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close" extend_left="5" tip="@string/close" animate="1"/>
     </caption>
     <splitrow pos="5,[2,-5,-5">
       <pane priority="0" minSize="0">
