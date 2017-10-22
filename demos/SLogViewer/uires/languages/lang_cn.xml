@@ -35,6 +35,10 @@
       <translation>关闭窗口</translation>
     </message>
 
+    <message>
+      <source>about</source>
+      <translation>关于</translation>
+    </message>
   </context>
   <context name="messagebox">
     <message>
@@ -48,6 +52,10 @@
     <message>
       <source>retry</source>
       <translation>重试</translation>
+    </message>
+    <message>
+      <source>Parsing log failed, not supportting log format. edit config to resolve the problem.</source>
+      <translation>解析LOG失败, 不支持的LOG格式. 尝试[编辑配置]来增加LOG格式支持.</translation>
     </message>
   </context>
   <context name="dlg_main">
@@ -114,6 +122,10 @@
       <translation>正文</translation>
     </message>
     <message>
+      <source>package</source>
+      <translation>包</translation>
+    </message>
+    <message>
       <source>filter</source>
       <translation>过滤设置:</translation>
     </message>
@@ -140,6 +152,10 @@
     <message>
       <source>function</source>
       <translation>函数</translation>
+    </message>
+    <message>
+      <source>edit config</source>
+      <translation>编辑配置</translation>
     </message>
   </context>
   <context name="dlg_find">

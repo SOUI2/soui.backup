@@ -39,17 +39,19 @@ protected:
 	void OnMaximize();
 	void OnRestore();
 	void OnMinimize();
+	void OnAbout();
 
 	void OnLanguage(const SStringT & strLang);
 	void OnLanguageBtnCN();
 	void OnLanguageBtnEN();
 	void OnOpenFile();
-	void OnClear();
+	void OnClear();	
 
 	void OnFilterInputChange(EventArgs *e);
 	void OnLevelsChange(EventArgs *e);
 	bool OnLvContextMenu(CPoint pt);
 	void OnOpenFindDlg();
+	void OnEditConfig();
 	//soui消息
 	EVENT_MAP_BEGIN()
 		EVENT_NAME_COMMAND(L"btn_close", OnClose)
@@ -61,6 +63,8 @@ protected:
 		EVENT_ID_COMMAND(R.id.btn_open_file,OnOpenFile)
 		EVENT_ID_COMMAND(R.id.btn_find,OnOpenFindDlg)
 		EVENT_ID_COMMAND(R.id.btn_clear,OnClear)
+		EVENT_ID_COMMAND(R.id.btn_edit_config,OnEditConfig)
+		EVENT_ID_COMMAND(R.id.btn_about,OnAbout)
 		EVENT_ID_HANDLER(R.id.edit_filter,EventRENotify::EventID,OnFilterInputChange)
 		EVENT_ID_HANDLER(R.id.cbx_levels,EventCBSelChange::EventID,OnLevelsChange)
 		EVENT_ID_CONTEXTMENU(R.id.lv_log,OnLvContextMenu)
@@ -78,7 +82,7 @@ protected:
 	void UpdateFilterPids(const SArray<UINT> & lstPid);
 	void UpdateFilterTids(const SArray<UINT> & lstTid);
 
-
+	void UpdateLogParser();
 protected:
 	CAutoRefPtr<SLogAdapter> m_logAdapter;
 	SComboBox	*			 m_cbxLevels;
@@ -86,4 +90,6 @@ protected:
 	CFilterDlg *			 m_pFilterDlg;
 	CScintillaWnd *			 m_pSciter;
 	CFindDlg   *			 m_pFindDlg;
+
+	SList<ILogParse *>		 m_logParserPool;
 };

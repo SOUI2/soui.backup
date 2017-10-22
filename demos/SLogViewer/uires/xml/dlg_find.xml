@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SOUI name="mainWindow" title="@string/find_text" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="400" height="120"  wndType="normal"
+<SOUI name="find" title="@string/find_text" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="400" height="120"  wndType="normal"
 translucent="1"
 trCtx="dlg_find"
 >

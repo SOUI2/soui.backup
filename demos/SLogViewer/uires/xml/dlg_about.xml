@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SOUI name="about" title="@string/about" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="450" height="150"  wndType="normal"
+translucent="1"
+trCtx="dlg_about"
+>
+  <root skin="_skin.sys.wnd.bkgnd" cache="1" layout="vbox" padding="5,5,5,5">
+    <caption size="-2,-1" layout="hbox">
+      <text size="-1,-1" text="@string/about"/>
+      <window size="0,0" visible="0" weight="1"/>
+      <imgbtn size="-1,-1" skin="_skin.sys.btn.close" name="btn_close" id="1" animate="1" tip="@string/close"/>
+    </caption>
+    <window size="-2,0" weight="1" layout="vbox" padding="10,0,0,0">
+      <text>SLogViewer 1.0</text>
+      <text extend_top="10">Copy Right: Setoutsoft (2017). All right reserved.</text>
+      <text extend_top="10">QQ群:229313785</text>
+    </window>
+    <window size="-2,-1" layout="hbox">
+      <window size="0,0" visible="0" weight="1"/>
+      <button padding="10,5,10,5" id="1" text="close"/>
+    </window>
+  </root>
+</SOUI>

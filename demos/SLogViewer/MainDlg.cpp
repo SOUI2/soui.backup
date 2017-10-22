@@ -7,6 +7,8 @@
 #include "FileHelper.h"
 #include "LogParser.h"
 #include <helper/SMenu.h>
+#include <helper/mybuffer.h>
+#include "EditConfigDlg.h"
 
 CMainDlg::CMainDlg() 
 : SHostWnd(_T("LAYOUT:XML_MAINWND"))
@@ -17,13 +19,18 @@ CMainDlg::CMainDlg()
 ,m_pSciter(NULL)
 {
 	m_logAdapter.Attach(new SLogAdapter);
-	IParserFactory * pParserFactory = new CParseFactory;
-	m_logAdapter->SetParserFactory(pParserFactory);
-	pParserFactory->Release();
+	m_logAdapter->SetLogParserPool(&m_logParserPool);
 }
 
 CMainDlg::~CMainDlg()
 {
+	SPOSITION pos = m_logParserPool.GetHeadPosition();
+	while(pos)
+	{
+		ILogParse *pLogParser = m_logParserPool.GetNext(pos);
+		pLogParser->Release();
+	}
+	m_logParserPool.RemoveAll();
 }
 
 
@@ -31,6 +38,10 @@ BOOL CMainDlg::OnInitDialog(HWND hWnd, LPARAM lParam)
 {
 	//设置为磁吸主窗口
 	SetMainWnd(m_hWnd);
+
+	UpdateLogParser();
+
+
 
 	m_pFilterDlg = new CFilterDlg(this);
 	m_pFilterDlg->Create(m_hWnd);
@@ -186,7 +197,11 @@ void CMainDlg::OnFileDropdown(HDROP hDrop)
 
 void CMainDlg::OpenFile(LPCTSTR pszFileName)
 {
-	if(!m_logAdapter->Load(pszFileName)) return;
+	if(!m_logAdapter->Load(pszFileName))
+	{
+		SMessageBox(m_hWnd,GETSTRING(R.string.msg_open_failed),GETSTRING(R.string.title_no_name),MB_OK|MB_ICONSTOP);
+		return;
+	}
 	
 	TCHAR szName[MAX_PATH];
 	_tsplitpath(pszFileName,NULL,NULL,szName,NULL);
@@ -373,5 +388,65 @@ void CMainDlg::OnContextMenu(HWND hwnd, CPoint point)
 			}
 		}
 	}
+}
+
+void CMainDlg::OnEditConfig()
+{
+	CEditConfigDlg editConfig;
+	if(IDOK==editConfig.DoModal())
+	{
+		UpdateLogParser();
+	}
+}
+
+void CMainDlg::UpdateLogParser()
+{
+	SStringW strAppDir = SApplication::getSingleton().GetAppDir();
+	strAppDir += L"\\config.xml";
+	pugi::xml_document doc;
+	if(!doc.load_file(strAppDir))
+	{
+		DWORD dwSize = SApplication::getSingleton().GetRawBufferSize(_T("xml"),_T("config"));
+		if(dwSize)
+		{
+			CMyBuffer<char> buf(dwSize);
+			SApplication::getSingleton().GetRawBuffer(_T("xml"),_T("config"),buf,dwSize);
+			FILE *f = _wfopen(strAppDir,L"w+b");
+			if(f)
+			{
+				fwrite(buf,1,dwSize,f);
+				fclose(f);
+			}
+			doc.load_buffer(buf,dwSize);
+		}
+	}
+
+	SPOSITION pos = m_logParserPool.GetHeadPosition();
+	while(pos)
+	{
+		ILogParse *pLogParser = m_logParserPool.GetNext(pos);
+		pLogParser->Release();
+	}
+	m_logParserPool.RemoveAll();
+
+	pugi::xml_node xmlLogParser = doc.child(L"logs").child(L"log");
+	while(xmlLogParser)
+	{
+		SStringW strName = xmlLogParser.attribute(L"name").as_string();
+		int nCodePage = xmlLogParser.attribute(L"codepage").as_int(CP_UTF8);
+		SStringW strLevels = xmlLogParser.child(L"levels").text().as_string();
+		strLevels.TrimBlank();
+		SStringW strFmt = xmlLogParser.child(L"format").text().as_string();
+		strFmt.TrimBlank();
+		CLogParse *pLogParser = new CLogParse(strName,strFmt,strLevels,nCodePage);
+		m_logParserPool.AddTail(pLogParser);
+		xmlLogParser = xmlLogParser.next_sibling(L"log");
+	}
+}
+
+void CMainDlg::OnAbout()
+{
+	SHostDialog dlgAbout(UIRES.LAYOUT.dlg_about);
+	dlgAbout.DoModal();
 }
 

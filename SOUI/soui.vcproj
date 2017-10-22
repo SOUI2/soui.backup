@@ -1058,10 +1058,6 @@
 				RelativePath="include\interface\TvItemLocator-i.h"
 				>
 			</File>
-			<File
-				RelativePath="include\activex\wmp.tlh"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Generated Files"
