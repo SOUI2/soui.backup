@@ -25,8 +25,12 @@
   </languages>
   <smenu>
     <file name="menu_lv" path="smenu\menu_lv.xml"/>
+    <file name="menu_help" path="smenu\menu_help.xml"/>
   </smenu>
   <xml>
     <file name="config" path="xml\config.xml"/>
   </xml>
+  <img>
+    <file name="btn_menu" path="image\btn_menu.png"/>
+  </img>
 </resource>

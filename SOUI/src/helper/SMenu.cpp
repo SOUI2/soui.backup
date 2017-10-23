@@ -248,14 +248,6 @@ BOOL SMenu::LoadMenu(LPCTSTR pszResID)
     return LoadMenu(strLst[1],strLst[0]);
 }
 
-SMenu SMenu::GetSubMenu(int nPos)
-{
-    HMENU hSubMenu=::GetSubMenu(m_hMenu,nPos);
-    SMenu ret;
-    ret.m_hMenu=hSubMenu;
-    return ret;
-}
-
 void SMenu::InitMenuItemData(SMenuItemData * itemInfo, const SStringW & strTextW)
 {
 	SMenuAttr * pMenuAttr = GetMenuAttr(m_hMenu);

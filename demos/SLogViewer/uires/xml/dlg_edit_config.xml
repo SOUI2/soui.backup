@@ -19,8 +19,8 @@ trCtx="dlg_edit_config"
     </text>
     <window size="-2,-1" layout="hbox" padding="5,5,5,5">
       <window size="0,0" weight="1" visible="0"/>
-      <button size="-1,-1" padding="10,5,10,5" name="btn_save" text="save"/>
-      <button size="-1,-1" padding="10,5,10,5" extend_left="5" name="btn_close" id="1" text="cancel"/>
+      <button size="-1,-1" padding="10,5,10,5" name="btn_save" text="@string/save"/>
+      <button size="-1,-1" padding="10,5,10,5" extend_left="5" name="btn_close" id="1" text="@string/cancel"/>
     </window>
   </root>
 </SOUI>

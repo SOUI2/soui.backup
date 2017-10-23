@@ -5,6 +5,7 @@
     <ver value="1.0"/>
     <open_file value="&amp;Open file"/>
     <clear value="Clear"/>
+    <language value="language"/>
     <lang_chinese value="chinese"/>
     <lang_english value="english"/>
     <cue_input_filter value="input filter string"/>
@@ -40,4 +41,8 @@
     <edit_config value="edit config"/>
     <msg_open_failed value="Parsing log failed, not supportting log format. edit config to resolve the problem."/>
     <about value="about"/>
+    <save value="save"/>
+    <cancel value="cancel"/>
+    <help value="help"/>
+    <url_help value="www.cnblogs.com/setoutsoft"/>
   </string>

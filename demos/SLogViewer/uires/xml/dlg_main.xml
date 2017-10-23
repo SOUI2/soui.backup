@@ -8,7 +8,7 @@ trCtx="dlg_main"
       <icon src="ICON_LOGO:16"/>
       <text extend_left="5" name="txt_title">@string/title_no_name</text>
       <window size="0,0" visible="0" weight="1"/>
-      <button padding="3,3,3,3" name="btn_about" text="@string/about"/>
+      <imgbtn padding="3,3,3,3" name="btn_menu" skin="skin_btn_menu"/>
       <imgbtn extend_left="5" name="btn_min" skin="_skin.sys.btn.minimize" animate="1" />
       <window extend_left="5">
         <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="0,0" animate="1" />
@@ -35,8 +35,6 @@ trCtx="dlg_main"
 
           <text size="-1,-1" text="@string/filter"/>
           <edit size="150dp,-2" extend_right="5dp" cueText="@string/cue_input_filter" name="edit_filter" notifyChange="1"/>
-          <button size="-1,-1" name="btn_lang_cn" text="@string/lang_chinese"/>
-          <button size="-1,-1" extend_left="5dp" name="btn_lang_en" text="@string/lang_english"/>
         </window>
         <mclistview size="-2,0" extend_top="5dp" weight="1" name="lv_log" colorBkgnd="#cccccc" headerHeight="25dp">
           <header align="center"  itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="0" colorBkgnd="#ffffff" >
