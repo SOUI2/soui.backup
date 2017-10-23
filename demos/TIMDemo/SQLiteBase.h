@@ -2,6 +2,9 @@
 
 #include <tchar.h>
 
+// 使用sqlite的功能需要加上DSQLITE_HAS_CODEC宏
+#define SQLITE_HAS_CODEC 1
+
 #include "sqlite3\sqlite3.h"
 
 
