@@ -1,4 +1,4 @@
-﻿//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 //  Class Name: STreeCtrl
 //     Creator: JinHui
 //     Version: 2012.12.16 - 1.1 - Create
@@ -197,6 +197,7 @@ BOOL STreeCtrl::SetItemText(HSTREEITEM hItem, LPCTSTR lpszItem)
         if (pItem)
         {
             pItem->strText = lpszItem;
+            CalcItemContentWidth(pItem);//如果新的串比原来的长，没有重新计算就会出现...
             return TRUE;
         }
     }
