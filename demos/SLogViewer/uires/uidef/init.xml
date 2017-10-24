@@ -9,12 +9,13 @@
 
   <style>
     <class name="normalbtn" font="" colorText="#385e8b" colorTextDisable="#91a7c0" textMode="0x25" cursor="hand" margin-x="0"/>
-    <class name="cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" font="italic:1" fontHover="underline:1,italic:1" />
+    <class name="cls_btn_weblink" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" fontHover="underline:1" />
     <class name="cls_border" margin="1,1,1,1" ncSkin="_skin.sys.border"/>
   </style>
 
   <objattr>
     <button padding="10dp,5dp,10dp,5dp"/>
     <edit class="cls_border"/>
+    <link class="cls_btn_weblink"/>
   </objattr>
 </UIDEF>

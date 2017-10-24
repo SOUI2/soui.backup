@@ -11,13 +11,8 @@ trCtx="dlg_edit_config"
       <imgbtn name="btn_close" skin="_skin.sys.btn.close" id="1"   pos="-45,0" tip="@string/close" animate="1"/>
     </caption>
     <realwnd size="-2,0" weight="1" name="real_scilexer" wndclass="Scintilla" extend_top="5"/>
-    <text multiLines="1" size="-2,-1">
-      support columns: $(time), $(pid),$(tid),$(level),$(tag),$(content),$(line),$(module),$(package),$(function),$(file)
-    </text>
-    <text multiLines="1" size="-2,-1">
-      option: [] used to specify minimal length of column. eg. $(time[20]) means the time column occupy at least 20 words.
-    </text>
     <window size="-2,-1" layout="hbox" padding="5,5,5,5">
+      <link size="-1,-1" href="@string/url_help">@string/config_format</link>
       <window size="0,0" weight="1" visible="0"/>
       <button size="-1,-1" padding="10,5,10,5" name="btn_save" text="@string/save"/>
       <button size="-1,-1" padding="10,5,10,5" extend_left="5" name="btn_close" id="1" text="@string/cancel"/>

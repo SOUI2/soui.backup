@@ -44,5 +44,6 @@
     <save value="save"/>
     <cancel value="cancel"/>
     <help value="help"/>
-    <url_help value="www.cnblogs.com/setoutsoft"/>
+    <url_help value="http://www.cnblogs.com/setoutsoft/p/7721929.html"/>
+    <config_format value="config format"/>
   </string>

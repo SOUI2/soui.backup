@@ -203,4 +203,10 @@
       <translation>上一个</translation>
     </message>
   </context>
+  <context name="dlg_edit_config">
+    <message>
+      <source>config format</source>
+      <translation>配置格式说明</translation>
+    </message>
+  </context>
 </language>
