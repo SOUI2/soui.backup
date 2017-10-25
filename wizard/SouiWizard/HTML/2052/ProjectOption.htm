@@ -394,7 +394,7 @@
     tab_array[4] = ProjectOption;
 
     function InitDocument(document) {
-        //setDirection();
+        setDirection();
         window.external.Load(document);
         InitControls();
         ToggleImage();
@@ -429,6 +429,8 @@
 <script id="INCLUDE_COMMON" language="JSCRIPT"></script>
 
 <script>
-    document.scripts("INCLUDE_SCRIPT").src = window.external.FindSymbol("SCRIPT_COMMON_PATH") + "/Script.js";
-    document.scripts("INCLUDE_COMMON").src = window.external.FindSymbol("SCRIPT_COMMON_PATH") + "/Common.js";
+    //document.scripts("INCLUDE_SCRIPT").src = window.external.FindSymbol("SCRIPT_COMMON_PATH") + "/Script.js";
+    //document.scripts("INCLUDE_COMMON").src = window.external.FindSymbol("SCRIPT_COMMON_PATH") + "/Common.js";
+    document.scripts("INCLUDE_SCRIPT").src = " ../../2052/Script.js";
+    document.scripts("INCLUDE_COMMON").src = " ../../2052/Common.js";
 </script>

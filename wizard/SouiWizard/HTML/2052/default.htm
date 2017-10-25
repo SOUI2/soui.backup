@@ -19,8 +19,8 @@
     <symbol name='CHECKBOX_MAXIMIZED' type=checkbox value=false></symbol>
     <symbol name='RADIO_RANDER_GDI' type=radio value=true></symbol>
     <symbol name='RADIO_RANDER_SKIA' type=radio value=false></symbol>
-
-    <symbol name=' project_name' type="text" value='project'></symbol>
+    <SYMBOL NAME="ResLoaderType" TYPE=num VALUE=0></SYMBOL>
+    <symbol name='project_name' type="text" value='project'></symbol>
     <symbol name='SOURCE_FILTER' type="text" value='cpp;c;cxx;def;odl;idl;hpj;bat;asm'></symbol>
     <symbol name='HEADER_FILTER' type="text" value='h;hpp;hxx;hm;inl;inc'></symbol>
     <symbol name='RESOURCE_FILTER' type="text" value='rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest'></symbol>
@@ -30,14 +30,15 @@
     <symbol name="WIN_STYLES_DLG" type="radio" value="true"></symbol>
     <!-- 系统资源编译到EXE中。-->
     <symbol name='CHECKBOX_SYSRES_BUILTIN' type=checkbox value=false></symbol>
-     <symbol name='CHECKBOX_RES_PE' type=checkbox value=true></symbol>
+     <symbol name='CHECKBOX_RES_PACK_ONLAY_RELEASE' type=checkbox value=true></symbol>
     <!-- 主窗口半透明。-->
     <symbol name='CHECKBOX_TRANSLUCENT' type=checkbox value=true></symbol>
     <!--编译选项-->
     <SYMBOL NAME="UNICODE" TYPE=select-one VALUE=1></SYMBOL>
     <SYMBOL NAME="WCHAR" TYPE=select-one VALUE=1></SYMBOL>
     <SYMBOL NAME="MT" TYPE=select-one VALUE=1></SYMBOL>
-    <SYMBOL NAME="SUPPORT_XP" TYPE="select-one" VALUE="0"></SYMBOL>
+    <SYMBOL NAME="SUPPORT_XP" TYPE="select-one" VALUE="0"></SYMBOL>    
+    
     <style type="text/css">
         body {
             background-image: url(../../Images/leftbanner2.png);
@@ -497,7 +498,7 @@
     // 这是一个初始化页面的函数的示例
     //
     function InitDocument(document) {
-        //setDirection();
+        setDirection();
 
         if (window.external.FindSymbol('DOCUMENT_FIRST_LOAD')) {
             // 此函数基于上面的 SYMBOL
@@ -545,12 +546,14 @@ Common.js 是一个脚本文件，其中包含向导使用的 Helper
 函数，请包含此行。
 //-->
 
-<script>
-    var strPath = window.external.FindSymbol("PRODUCT_INSTALLATION_DIR");
+<script>    
+   /* var strPath = window.external.FindSymbol("PRODUCT_INSTALLATION_DIR");
     strPath += "VCWizards/";
     strPath += window.external.GetHostLocale();
     var strScriptPath = strPath + "/Script.js";
     var strCommonPath = strPath + "/Common.js";
     document.scripts("INCLUDE_SCRIPT").src = strScriptPath;
-    document.scripts("INCLUDE_COMMON").src = strCommonPath;
+    document.scripts("INCLUDE_COMMON").src = strCommonPath;*/
+    document.scripts("INCLUDE_SCRIPT").src = " ../../2052/Script.js";
+    document.scripts("INCLUDE_COMMON").src = " ../../2052/Common.js";
 </script>

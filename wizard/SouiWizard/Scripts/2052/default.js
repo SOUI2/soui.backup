@@ -129,7 +129,9 @@ function AddFilters(proj)
 		var strSouiFilter = wizard.FindSymbol('SOUIRES_FILTER');
 		var group = proj.Object.AddFilter('SoUI Resouece');
 		group.Filter = strSouiFilter;
-
+		
+		var group = proj.Object.AddFilter('SoUI Sys Resouece');
+		group.Filter = strSouiFilter;
 	}
 	catch(e)
 	{
@@ -365,6 +367,9 @@ function GetSourceName(strName)
 		{
 			strName= "uires\\"+strName.substr(7);
 		}
+		else if (strName.indexOf('[theme_sys_res]') == 0) {
+		    strName = "theme_sys_res\\" + strName.substr(15);
+		}
 		return strName;
 	}
 	catch(e)
@@ -390,7 +395,10 @@ function GetTargetName(strName, strProjectName)
 		if (strName.indexOf('[uires]') == 0) // UI资源文件
 	    {
 	        strTarget = "uires\\"+strName.substr(7);
-	    }
+		}
+		if (strName.indexOf('[theme_sys_res]') == 0) {
+		    strTarget = "uires\\theme_sys_res\\" + strName.substr(15);
+		}
 		return strTarget;
 	}
 	catch(e)
@@ -414,7 +422,7 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		var projFilters = proj.Object.Filters;
 		var filterRes = projFilters.Item('Resource Files');
 		var filterUIRES = projFilters.Item('SoUI Resouece');
-
+		var filterSysRes = projFilters.Item('SoUI Sys Resouece');
 		var strTextStream = InfFile.OpenAsTextStream(1, -2);
 		while (!strTextStream.AtEndOfStream)
 		{
@@ -444,6 +452,9 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 				if (strTpl.indexOf('[uires]') == 0) // soui res
 				{
 					filter = filterUIRES;
+				}
+				if (strTpl.indexOf('[theme_sys_res]') == 0) {
+				    filter = filterSysRes;
 				}
 				var strTemplate = strTemplatePath + '\\' + strSource;
 				var strFile = strProjectPath + '\\' + strTarget;

@@ -116,7 +116,13 @@ namespace SOUI{
     {
         ZIPRES_PARAM *zipParam=(ZIPRES_PARAM*)wParam;
         m_renderFactory = zipParam->pRenderFac;
-        
+		m_childDir = zipParam->pszChildDir;
+		if (!m_childDir.IsEmpty())
+		{
+			m_childDir.TrimRight(L'\\');
+			m_childDir.TrimRight(L'/');
+			m_childDir += L"\\";
+		}
         if(zipParam->type == ZIPRES_PARAM::ZIPFILE)
             return _Init(zipParam->pszZipFile,zipParam->pszPsw);
         else
@@ -167,7 +173,7 @@ namespace SOUI{
 	BOOL SResProviderZip::_LoadSkin()
 	{
 		CZipFile zf;
-		BOOL bIdx=m_zipFile.GetFile(UIRES_INDEX,zf);
+		BOOL bIdx=m_zipFile.GetFile(m_childDir+UIRES_INDEX,zf);
 		if(!bIdx) return FALSE;
 
 		pugi::xml_document xmlDoc;
@@ -182,7 +188,7 @@ namespace SOUI{
             while(resFile)
             {
                 SResID id(S_CW2T(resType.name()),S_CW2T(resFile.attribute(L"name").value()));
-                m_mapFiles[id] = S_CW2T(resFile.attribute(L"path").value());
+                m_mapFiles[id] = m_childDir + S_CW2T(resFile.attribute(L"path").value());
                 resFile=resFile.next_sibling();
             }
             resType = resType.next_sibling();
