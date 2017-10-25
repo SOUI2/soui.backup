@@ -222,33 +222,6 @@ namespace SOUI
         return S_FALSE;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-
-    SMediaPlayer::SMediaPlayer()
-    {
-        m_clsid=__uuidof(WMPLib::WindowsMediaPlayer);
-    }
-
-    void SMediaPlayer::OnAxActivate(IUnknown *pUnknwn)
-    {
-        wmp_=pUnknwn;
-        if(wmp_)
-        {
-            wmp_->put_windowlessVideo(VARIANT_TRUE);
-        }
-    }
-
-    bool SMediaPlayer::Play( LPCWSTR pszUrl )
-    {
-        if(!wmp_)
-        {
-            return false;
-        }
-
-        wmp_->close();
-        wmp_->put_URL(sbstr(pszUrl));
-        return true;
-    }
 
 }//end of namespace SOUI
 

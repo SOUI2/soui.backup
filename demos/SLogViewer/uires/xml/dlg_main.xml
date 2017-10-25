@@ -1,16 +1,20 @@
-﻿<SOUI name="mainWindow" title="@string/title_no_name" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="800" height="600"  margin="20,5,5,5"  resizable="1" wndType="appMain"
+﻿<SOUI name="mainWindow" title="@string/title_no_name" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="850" height="600"  margin="20,5,5,5"  resizable="1" wndType="appMain"
 appWnd="1"
 translucent="0"
 trCtx="dlg_main"
 >
   <root skin="_skin.sys.wnd.bkgnd" cache="1">
-    <caption pos="0,0,-0,30">
-      <icon pos="10,8" src="ICON_LOGO:16"/>
-      <text pos="29,9" name="txt_title">@string/title_no_name</text>
-      <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="@string/close" animate="1"/>
-      <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="-83,0" animate="1" />
-      <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="-83,0" show="0" animate="1" />
-      <imgbtn name="btn_min" skin="_skin.sys.btn.minimize" pos="-121,0" animate="1" />
+    <caption pos="0,0,-0,30" layout="hbox" gravity="center" padding="10,5,10,5">
+      <icon src="ICON_LOGO:16"/>
+      <text extend_left="5" name="txt_title">@string/title_no_name</text>
+      <window size="0,0" visible="0" weight="1"/>
+      <imgbtn padding="3,3,3,3" name="btn_menu" skin="skin_btn_menu"/>
+      <imgbtn extend_left="5" name="btn_min" skin="_skin.sys.btn.minimize" animate="1" />
+      <window extend_left="5">
+        <imgbtn name="btn_max" skin="_skin.sys.btn.maximize"  pos="0,0" animate="1" />
+        <imgbtn name="btn_restore" skin="_skin.sys.btn.restore"  pos="0,0" show="0" animate="1" />
+      </window>
+      <imgbtn name="btn_close" skin="_skin.sys.btn.close" extend_left="5" tip="@string/close" animate="1"/>
     </caption>
     <splitrow pos="5,[2,-5,-5">
       <pane priority="0" minSize="0">
@@ -19,6 +23,7 @@ trCtx="dlg_main"
       <pane priority="1" minSize="200" idealSize="400" layout="vbox">
         <window size="-2,-1" layout="hbox" gravity="center">
           <button size="-1,-1" name="btn_open_file" text="@string/open_file" accel="CTRL+O"/>
+          <button size="-1,-1" extend_left="5dp" name="btn_edit_config" text="@string/edit_config"/>
           <button size="-1,-1" extend_left="5dp" name="btn_clear" text="@string/clear"/>
           <button size="-1,-1" extend_left="10dp" name="btn_find" text="@string/find_text" accel="CTRL+F"/>
           <window size="0,0" weight="1" visible="0"/>
@@ -30,8 +35,6 @@ trCtx="dlg_main"
 
           <text size="-1,-1" text="@string/filter"/>
           <edit size="150dp,-2" extend_right="5dp" cueText="@string/cue_input_filter" name="edit_filter" notifyChange="1"/>
-          <button size="-1,-1" name="btn_lang_cn" text="@string/lang_chinese"/>
-          <button size="-1,-1" extend_left="5dp" name="btn_lang_en" text="@string/lang_english"/>
         </window>
         <mclistview size="-2,0" extend_top="5dp" weight="1" name="lv_log" colorBkgnd="#cccccc" headerHeight="25dp">
           <header align="center"  itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="0" colorBkgnd="#ffffff" >
@@ -47,6 +50,7 @@ trCtx="dlg_main"
               <item width="50">@string/col_source_line</item>
               <item width="50">@string/col_function</item>
               <item width="500">@string/col_content</item>
+              <item width="100">@string/col_package</item>
             </items>
           </header>
           <template itemHeight="30dp" colorHover="#cccccc"  colorSelected="rgba(128,128,128,128)">
@@ -82,6 +86,9 @@ trCtx="dlg_main"
             </window>
             <window name="col_content" clipClient="1" layout="hbox" gravity="center">
               <colorizeText size="-2,20dp" name="txt_content" visible="1"/>
+            </window>
+            <window name="col_package" clipClient="1" layout="hbox" gravity="center">
+              <text name="txt_package"/>
             </window>
           </template>
         </mclistview>

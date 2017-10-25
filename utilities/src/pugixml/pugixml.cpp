@@ -466,7 +466,7 @@ namespace pugi
 	struct xml_attribute_struct
 	{
 		/// Default ctor
-		xml_attribute_struct(impl::xml_memory_page* page): header(reinterpret_cast<uintptr_t>(page)), name(0), value(0), prev_attribute_c(0), next_attribute(0),userdata(0)
+		xml_attribute_struct(impl::xml_memory_page* page): header(reinterpret_cast<uintptr_t>(page)), name(0), value(0), userdata(0), prev_attribute_c(0), next_attribute(0)
 		{
 		}
 
@@ -5379,9 +5379,9 @@ namespace pugi
         int  nStrMapLen;    //str map length
     };
     
-    const char  pugi_xml_in  = '+';
+    //const char  pugi_xml_in  = '+';
     //const char  pugi_xml_out = '-';
-    const char  pugi_xml_child_end = 0;
+    //const char  pugi_xml_child_end = 0;
     
     PUGI__FN pugi::xml_parse_result xml_document::load_bin_file(const char* path)
     {

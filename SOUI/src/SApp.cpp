@@ -403,7 +403,6 @@ void SObjectDefaultRegister::RegisterWindows(SObjectFactoryMgr *objFactory)
 	objFactory->TplRegisterFactory<STabPage>();
 	objFactory->TplRegisterFactory<SActiveX>();
 	objFactory->TplRegisterFactory<SFlashCtrl>();
-	objFactory->TplRegisterFactory<SMediaPlayer>();
 	objFactory->TplRegisterFactory<SSplitPane>();
 	objFactory->TplRegisterFactory<SSplitWnd>();
 	objFactory->TplRegisterFactory<SSplitWnd_Col>();

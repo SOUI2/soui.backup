@@ -160,7 +160,6 @@ HEADERS += include/SApp.h \
            src/updatelayeredwindow/SUpdateLayeredWindow.h \
            include/activex/flash10t.tlh \
            include/activex/flash10t.tli \
-           include/activex/wmp.tlh \
            include/animator/SInterpolatorImpl.h
            
 SOURCES += src/SApp.cpp \

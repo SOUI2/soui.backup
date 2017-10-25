@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<language name="简体中文" guid="{0DAEDE3C-6B94-4a81-9A55-C304FDD69D98}">
+<language name="chinese" guid="{0DAEDE3C-6B94-4a81-9A55-C304FDD69D98}">
   <context>
     <!--没有上下文的翻译-->
     <message>
@@ -35,6 +35,41 @@
       <translation>关闭窗口</translation>
     </message>
 
+    <message>
+      <source>about</source>
+      <translation>关于</translation>
+    </message>
+    <message>
+      <source>edit config</source>
+      <translation>编辑配置</translation>
+    </message>
+
+    <message>
+      <source>save</source>
+      <translation>保存</translation>
+    </message>
+    <message>
+      <source>cancel</source>
+      <translation>取消</translation>
+    </message>
+    <message>
+      <source>help</source>
+      <translation>帮助</translation>
+    </message>
+
+    <message>
+      <source>language</source>
+      <translation>语言</translation>
+    </message>
+    <message>
+      <source>chinese</source>
+      <translation>简体中文</translation>
+    </message>
+    <message>
+      <source>english</source>
+      <translation>英文</translation>
+    </message>
+
   </context>
   <context name="messagebox">
     <message>
@@ -49,16 +84,12 @@
       <source>retry</source>
       <translation>重试</translation>
     </message>
+    <message>
+      <source>Parsing log failed, not supportting log format. edit config to resolve the problem.</source>
+      <translation>解析LOG失败, 不支持的LOG格式. 尝试[编辑配置]来增加LOG格式支持.</translation>
+    </message>
   </context>
   <context name="dlg_main">
-    <message>
-      <source>chinese</source>
-      <translation>简体中文</translation>
-    </message>
-    <message>
-      <source>english</source>
-      <translation>英文</translation>
-    </message>
 
     <message>
       <source>&amp;Open file</source>
@@ -114,6 +145,10 @@
       <translation>正文</translation>
     </message>
     <message>
+      <source>package</source>
+      <translation>包</translation>
+    </message>
+    <message>
       <source>filter</source>
       <translation>过滤设置:</translation>
     </message>
@@ -166,6 +201,12 @@
     <message>
       <source>previous</source>
       <translation>上一个</translation>
+    </message>
+  </context>
+  <context name="dlg_edit_config">
+    <message>
+      <source>config format</source>
+      <translation>配置格式说明</translation>
     </message>
   </context>
 </language>

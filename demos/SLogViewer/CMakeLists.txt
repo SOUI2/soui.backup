@@ -1,7 +1,6 @@
 #
 # 1394020320@qq.com
 #
-add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 
 include_directories(${PROJECT_SOURCE_DIR}/config)
 include_directories(${PROJECT_SOURCE_DIR}/components)

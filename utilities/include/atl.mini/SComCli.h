@@ -15,6 +15,11 @@
 
 #include <unknwn.h>
 
+#ifndef SASSERT
+#include <assert.h>
+#define SASSERT(x) assert(x);
+#endif
+
 #pragma warning (push)
 #pragma warning (disable: 4127)  // conditional expression constant
 #pragma warning (disable: 4571)  //catch(...) blocks compiled with /EHs do NOT catch or re-throw Structured Exceptions
@@ -230,7 +235,7 @@ public:
     {
         if(*this!=lp)
         {
-            return static_cast<T*>(SComPtrAssign((IUnknown**)&p, lp));
+            return static_cast<T*>(SComPtrAssign((IUnknown**)&this->p, lp));
         }
         return *this;
     }
@@ -442,13 +447,13 @@ public:
     SComQIPtr( IUnknown* lp) throw()
     {
         if (lp != NULL)
-            lp->QueryInterface(*piid, (void **)&p);
+            lp->QueryInterface(*piid, (void **)&this->p);
     }
     T* operator=( T* lp) throw()
     {
         if(*this!=lp)
         {
-            return static_cast<T*>(SComPtrAssign((IUnknown**)&p, lp));
+            return static_cast<T*>(SComPtrAssign((IUnknown**)&this->p, lp));
         }
         return *this;
     }
@@ -456,7 +461,7 @@ public:
     {
         if(*this!=lp)
         {
-            return static_cast<T*>(SComPtrAssign((IUnknown**)&p, lp.p));
+            return static_cast<T*>(SComPtrAssign((IUnknown**)&this->p, lp.p));
         }
         return *this;
     }
@@ -464,7 +469,7 @@ public:
     {
         if(*this!=lp)
         {
-            return static_cast<T*>(SComQIPtrAssign((IUnknown**)&p, lp, *piid));
+            return static_cast<T*>(SComQIPtrAssign((IUnknown**)&this->p, lp, *piid));
         }
         return *this;
     }

@@ -6,6 +6,8 @@
     <file name="XML_MAINWND" path="xml\dlg_main.xml"/>
     <file name="dlg_filter" path="xml\dlg_filter.xml"/>
     <file name="dlg_find" path="xml\dlg_find.xml"/>
+    <file name="dlg_edit_config" path="xml\dlg_edit_config.xml"/>
+    <file name="dlg_about" path="xml\dlg_about.xml"/>
   </LAYOUT>
 
   <values>
@@ -23,5 +25,12 @@
   </languages>
   <smenu>
     <file name="menu_lv" path="smenu\menu_lv.xml"/>
+    <file name="menu_help" path="smenu\menu_help.xml"/>
   </smenu>
+  <xml>
+    <file name="config" path="xml\config.xml"/>
+  </xml>
+  <img>
+    <file name="btn_menu" path="image\btn_menu.png"/>
+  </img>
 </resource>

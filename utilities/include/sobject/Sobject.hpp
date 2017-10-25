@@ -29,9 +29,9 @@ namespace SOUI
 
 		HRESULT DefAttributeProc(const SStringW & strAttribName, const SStringW & strValue, BOOL bLoading)
 		{
-			(strAttribName);
-			(strValue);
-			(bLoading);
+			UNREFERENCED_PARAMETER(strAttribName);
+			UNREFERENCED_PARAMETER(strValue);
+			UNREFERENCED_PARAMETER(bLoading);
 			return E_FAIL;
 		}
 
@@ -50,7 +50,7 @@ namespace SOUI
 
 			for (pugi::xml_attribute attr = xmlNode.first_attribute(); attr; attr = attr.next_attribute())
 			{
-				if (IsAttributeHandled(attr)) continue;   //忽略已经被预处理的属性
+				if (T::IsAttributeHandled(attr)) continue;   //忽略已经被预处理的属性
 				SetAttribute(attr.name(), attr.value(), TRUE);
 			}
 			//调用初始化完成接口
@@ -70,9 +70,9 @@ namespace SOUI
 
 		HRESULT AfterAttribute(const SStringW & strAttribName, const SStringW & strValue, BOOL bLoading, HRESULT hr)
 		{
-			(strAttribName);
-			(strValue);
-			(bLoading);
+			UNREFERENCED_PARAMETER(strAttribName);
+			UNREFERENCED_PARAMETER(strValue);
+			UNREFERENCED_PARAMETER(bLoading);
 			return hr;
 		}
 
@@ -104,12 +104,12 @@ namespace SOUI
 
 		BOOL IsClass(LPCWSTR lpszName) const
 		{
-			(lpszName);
+			UNREFERENCED_PARAMETER(lpszName);
 			return FALSE;
 		}
 
 		SStringW GetAttribute(const SStringW & strAttr) const{
-			(strAttr);
+			UNREFERENCED_PARAMETER(strAttr);
 			return SStringW();
 		}
 
@@ -121,7 +121,7 @@ namespace SOUI
 		 * Describe
 		 */
 		void OnInitFinished(pugi::xml_node xmlNode) {
-			(xmlNode);
+			UNREFERENCED_PARAMETER(xmlNode);
 		}
 
 #ifdef    _DEBUG

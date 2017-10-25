@@ -67,16 +67,18 @@ namespace SOUI
 		return *this;
 	}
 
-	SLogInfo * SLogBuffer::ParseLine(LPCWSTR pszLine)
+	SLogInfo * SLogBuffer::ParseLine(LPCWSTR pszLine,int nLen)
 	{
 		SASSERT(m_logParser);
 		SLogInfo * pLogInfo=NULL;
-		if(!m_logParser->ParseLine(pszLine,&pLogInfo))
+		if(!m_logParser->ParseLine(pszLine,nLen,&pLogInfo))
 		{
 			if(!m_lstLogs.IsEmpty())
 			{//将不满足一个LOG格式化的行加入上一个LOG行中。
 				pLogInfo = m_lstLogs.GetAt(m_lstLogs.GetCount()-1);
 				pLogInfo->strContent += SStringW(L"\\n")+pszLine;
+
+				SLOG_INFO("invalid line:"<<pszLine<<"\n");
 			}
 			return NULL;
 		}else
@@ -109,7 +111,7 @@ namespace SOUI
 					*pNextLine = 0;
 				}
 			}
-			SLogInfo * logInfo = ParseLine(pLine);
+			SLogInfo * logInfo = ParseLine(pLine,(int)(pNextLine-pLine));
 			if(logInfo) logInfo->iLine = nLines;
 
 			if(!pNextLine) break;
@@ -136,7 +138,7 @@ namespace SOUI
 
 
 	//////////////////////////////////////////////////////////////////////////
-	SLogAdapter::SLogAdapter(void):m_lstFilterResult(NULL),m_filterLevel(-1),m_pScilexer(NULL)
+	SLogAdapter::SLogAdapter(void):m_lstFilterResult(NULL),m_filterLevel(-1),m_pScilexer(NULL),m_pLogPaserPool(NULL)
 	{
 		m_crLevels[Verbose]=m_crLevels[Debug]=m_crLevels[Info]=RGBA(0,0,0,255);
 		m_crLevels[Warn]=RGBA(255,255,0,255);
@@ -161,7 +163,6 @@ namespace SOUI
 		if(m_lstFilterResult) delete m_lstFilterResult;
 		m_lstFilterResult = NULL;
 		m_filterLevel = -1;
-		m_filterKeyInfo.Clear();
 		m_filterTags.RemoveAll();
 		m_filterTids.RemoveAll();
 		m_filterPids.RemoveAll();
@@ -185,6 +186,7 @@ namespace SOUI
 		pItem->FindChildByID(R.id.txt_function)->SetWindowText(S_CW2T(pLogInfo->strFunction));
 		pItem->FindChildByID(R.id.txt_source_file)->SetWindowText(S_CW2T(pLogInfo->strSourceFile));
 		pItem->FindChildByID(R.id.txt_source_line)->SetWindowText(SStringT().Format(_T("%d"),pLogInfo->iSourceLine));
+		pItem->FindChildByID(R.id.txt_package)->SetWindowText(S_CW2T(pLogInfo->strPackage));
 
 		SWindow * pTxtLevel = pItem->FindChildByID(R.id.txt_level);
 		pTxtLevel->SetWindowText(S_CW2T(pLogInfo->strLevel));
@@ -194,6 +196,7 @@ namespace SOUI
 		}
 		pItem->FindChildByID(R.id.txt_tag)->SetWindowText(S_CW2T(pLogInfo->strTag));
 		SColorizeText *pColorizeText = pItem->FindChildByID2<SColorizeText>(R.id.txt_content);
+		SASSERT(pLogInfo->strContent.GetLength()<10000);
 		pColorizeText->SetWindowText(S_CW2T(pLogInfo->strContent));
 		pColorizeText->ClearColorizeInfo();
 
@@ -221,7 +224,8 @@ namespace SOUI
 			L"col_source_file",
 			L"col_source_line",
 			L"col_function",
-			L"col_content"
+			L"col_content",
+			L"col_package",
 		};
 		return colNames[iCol];
 	}
@@ -243,16 +247,15 @@ namespace SOUI
 			
 			CAutoRefPtr<ILogParse> pMatchParser;
 
-			for(int i=0;i<m_parserFactory->GetLogParserCount() && !pMatchParser;i++)
+			SPOSITION pos = m_pLogPaserPool->GetHeadPosition();
+			while(pos  && ! pMatchParser)
 			{
-				ILogParse *pLogParser = m_parserFactory->CreateLogParser(i);
+				ILogParse *pLogParser = m_pLogPaserPool->GetNext(pos);
 				if(pLogParser->TestLogBuffer(pBuf,len))
 				{
 					pMatchParser = pLogParser;
 				}
-				pLogParser->Release();
 			}
-
 			if(!pMatchParser)
 			{
 				free(pBuf);
@@ -293,7 +296,7 @@ namespace SOUI
 			{
 				SLogInfo *pLine1 = m_lstLogs[0];
 				SLogInfo *pLine2 = logBuffer.m_lstLogs[0];
-				if(pLine1->time<pLine2->time)
+				if(pLine1->strTime<pLine2->strTime)
 				{//原有log的时间大于新LOG的时间，原log加(append)到新log后
 					Append(logBuffer);
 					m_pScilexer->SendMessage(SCI_APPENDTEXT,bufUtf8.GetLength(),(LPARAM)(LPCSTR)bufUtf8);
@@ -414,10 +417,10 @@ namespace SOUI
 	}
 
 
-	void SLogAdapter::SetParserFactory(IParserFactory *pParserFactory)
-	{
-		m_parserFactory = pParserFactory;
-	}
+// 	void SLogAdapter::SetParserFactory(IParserFactory *pParserFactory)
+// 	{
+// 		m_parserFactory = pParserFactory;
+// 	}
 
 	SLogInfo* SLogAdapter::GetLogInfo(int iItem) const
 	{
@@ -460,6 +463,7 @@ namespace SOUI
 	bool SLogAdapter::IsColumnVisible(int iCol) const
 	{
 		if(!m_logParser) return true;
+		if(iCol == col_line_index) return true;
 		return m_logParser->IsFieldValid(Field(iCol));
 	}
 
@@ -476,6 +480,11 @@ namespace SOUI
 		m_pScilexer->SendMessage(SCI_GOTOLINE,logInfo->iLine-1,0);
 		m_pScilexer->SetFocus();
 		return true;
+	}
+
+	void SLogAdapter::SetLogParserPool(SList<ILogParse*> *pLogParserPool)
+	{
+		m_pLogPaserPool = pLogParserPool;
 	}
 
 

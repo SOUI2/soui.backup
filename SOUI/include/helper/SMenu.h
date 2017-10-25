@@ -233,8 +233,6 @@ public:
 
     void DestroyMenu();
 
-    SMenu GetSubMenu(int nPos);
-	
 	BOOL ModifyMenuString(UINT uPosition, UINT uFlags,LPCTSTR lpItemString);
 
 	BOOL SetMenuUserData(UINT uPosition, UINT uFlags,ULONG_PTR ulUserData);
