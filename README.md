@@ -17,6 +17,7 @@ SOUI
 
 ###### 极力推荐
 - 阅读作者[博客](http://www.cnblogs.com/setoutsoft/)，能让你更快掌握如何使用SOUI快速开发Window桌面应用
+- 教学[视频](http://my.tv.sohu.com/pl/9259542/89333168.shtml)
 
 ###### 捐献
 - 支付宝帐号![img](https://raw.githubusercontent.com/SOUI2/soui/06c11142e7b654293ce625d17f6c0f021b0ed03c/doc/alipay.png) 微信帐号![img](https://raw.githubusercontent.com/SOUI2/soui/06c11142e7b654293ce625d17f6c0f021b0ed03c/doc/wechat.png) 
