@@ -129,9 +129,10 @@ function AddFilters(proj)
 		var strSouiFilter = wizard.FindSymbol('SOUIRES_FILTER');
 		var group = proj.Object.AddFilter('SoUI Resouece');
 		group.Filter = strSouiFilter;
-		
-		var group = proj.Object.AddFilter('SoUI Sys Resouece');
-		group.Filter = strSouiFilter;
+		if (wizard.FindSymbol('CHECKBOX_SYSRES_BUILTIN')) {
+		    var group = proj.Object.AddFilter('SoUI Sys Resouece');
+		    group.Filter = strSouiFilter;
+		}
 	}
 	catch(e)
 	{
@@ -145,7 +146,8 @@ function AddConfig(proj, strProjectName)
 	{
 		var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
 		var SysResBuiltin = wizard.FindSymbol('CHECKBOX_SYSRES_BUILTIN');
-		
+		var ResLoadType = wizard.FindSymbol('ResLoaderType');
+
 		var unicodeSet = wizard.FindSymbol('UNICODE');
 		var wcharSet = wizard.FindSymbol('WCHAR');
 		var mtSet = wizard.FindSymbol('MT');
@@ -187,8 +189,7 @@ function AddConfig(proj, strProjectName)
 		LinkTool.SubSystem = subSystemOption.subSystemWindows;
 		
 		var resCplTool = config.Tools('VCResourceCompilerTool');
-		if(SysResBuiltin)
-		{
+		if (SysResBuiltin && (ResLoadType == 0)) {
 			resCplTool.AdditionalIncludeDirectories ='"$(SOUIPATH)\\soui-sys-resource"';
 		}
 		// Release设置
@@ -226,8 +227,7 @@ function AddConfig(proj, strProjectName)
 		LinkTool.SubSystem = subSystemOption.subSystemWindows;
 		
 		var resCplTool = config.Tools('VCResourceCompilerTool');
-		if(SysResBuiltin)
-		{
+		if (SysResBuiltin && (ResLoadType == 0)) {
 			resCplTool.AdditionalIncludeDirectories ='"$(SOUIPATH)\\soui-sys-resource"';
 		}
         	//x64配置,默认情况15以前的版本是没有X64的配置的
@@ -265,7 +265,7 @@ function AddConfig(proj, strProjectName)
 		    LinkTool_64.AdditionalDependencies = 'utilitiesd.lib souid.lib'
 		    LinkTool_64.SubSystem = subSystemOption.subSystemWindows;
 		    var resCplTool_64 = config_x64.Tools('VCResourceCompilerTool');
-		    if (SysResBuiltin) {
+		    if (SysResBuiltin && (ResLoadType == 0)) {
 		        resCplTool_64.AdditionalIncludeDirectories = '"$(SOUIPATH)\\soui-sys-resource"';
 		    }
 		    var config_64 = proj.Object.Configurations('Release|x64');
@@ -299,13 +299,14 @@ function AddConfig(proj, strProjectName)
 		    LinkTool_x64.SubSystem = subSystemOption.subSystemWindows;
 
 		    var resCplTool_64 = config_64.Tools('VCResourceCompilerTool');
-		    if (SysResBuiltin) {
+		    if (SysResBuiltin && (ResLoadType == 0)) {
 		        resCplTool_64.AdditionalIncludeDirectories = '"$(SOUIPATH)\\soui-sys-resource"';
 		    }
 		}
 	}
 	catch(e)
 	{
+	    alert(e.message);
 		throw e;
 	}
 }
@@ -492,14 +493,23 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 
 		var outfiles=".\\res\\soui_res.rc2;";
 		var cmdline = '';
-		
+		var cmd7z = '';
+		var psw = wizard.FindSymbol("ZIP_PSW"); 
+		if (psw.length != 0)
+		    cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" "%(RootDir)%(Directory)*"'+ ' -p' + psw;
+		else
+		    cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" "%(RootDir)%(Directory)*"';
 		//指定uires.idx的编译命令
 		var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
-		if(WizardVersion >= 10.0)
-			cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
-		else
-			cmdline= '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
-		
+		if (WizardVersion >= 10.0) {
+		    cmdline = '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
+		    //cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" "%(RootDir)%(Directory)*"';
+		}
+		else {
+		    cmdline = '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
+		    //cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" "%(RootDir)%(Directory)*"';
+		}
+		var ResLoadType = wizard.FindSymbol('ResLoaderType');
 		var file = files.Item('uires.idx');
 		var fileConfig = file.FileConfigurations('Debug');
 		buildTool=fileConfig.Tool;
@@ -507,8 +517,11 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		buildTool.Description = 'Building SoUI Resource';
 		buildTool.Outputs = outfiles;
 		fileConfig = file.FileConfigurations('Release');
-		buildTool=fileConfig.Tool;
-		buildTool.CommandLine = cmdline;
+		buildTool = fileConfig.Tool;
+		if ((ResLoadType == 1) || (ResLoadType == 2))
+		    buildTool.CommandLine = cmdline+"\n"+cmd7z;
+		else
+		    buildTool.CommandLine = cmdline;
 		buildTool.Description = 'Building SoUI Resource';
 		buildTool.Outputs = outfiles;
 		
@@ -520,7 +533,10 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 			buildTool64.Outputs = outfiles;
 			fileConfig64 = file.FileConfigurations('Release|x64');
 			buildTool64=fileConfig64.Tool;
-			buildTool64.CommandLine = cmdline;
+			if ((ResLoadType == 1) || (ResLoadType == 2))
+			    buildTool.CommandLine = cmdline + "\n" + cmd7z;
+			else
+			    buildTool.CommandLine = cmdline;
 			buildTool64.Description = 'Building SoUI Resource';
 			buildTool64.Outputs = outfiles;
 		}
