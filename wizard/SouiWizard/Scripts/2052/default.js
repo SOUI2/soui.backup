@@ -500,9 +500,16 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		var outfiles=".\\res\\soui_res.rc2;";
 		var cmdline = '';
 		var cmd7z = '';
-		var psw = wizard.FindSymbol("ZIP_PSW"); 
-		if (psw.length != 0)
-		    cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" "%(RootDir)%(Directory)*"'+ ' -p' + psw;
+		var psw = wizard.FindSymbol("ZIP_PSW");
+		var ResLoadType = wizard.FindSymbol('ResLoaderType');
+		if (psw.length != 0) {
+		    if (ResLoadType == 1) {
+		        cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" "%(RootDir)%(Directory)*"' + ' -p' + psw;
+		    }
+		    else if (ResLoadType == 2) {
+		        cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a "$(TargetDir)uires.7z" "%(RootDir)%(Directory)*"' + ' -p' + psw+" -mhe";
+		    }
+		}
 		else
 		    cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" "%(RootDir)%(Directory)*"';
 		//÷∏∂®uires.idxµƒ±‡“Î√¸¡Ó
@@ -515,7 +522,7 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile)
 		    cmdline = '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
 		    //cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" "%(RootDir)%(Directory)*"';
 		}
-		var ResLoadType = wizard.FindSymbol('ResLoaderType');
+		//var ResLoadType = wizard.FindSymbol('ResLoaderType');
 		var file = files.Item('uires.idx');
 		var fileConfig = file.FileConfigurations('Debug');
 		buildTool=fileConfig.Tool;
