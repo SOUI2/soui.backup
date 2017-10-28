@@ -315,6 +315,7 @@ select.sidebtn				  { width: 193px;
 								bottom: -3px; }
 
 select.sidebtnNoWidth		  { position: relative;
+                                 left:10px;
 								top: 4px;
 								bottom: -3px; }
 

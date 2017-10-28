@@ -129,7 +129,7 @@ function AddFilters(proj)
 		var strSouiFilter = wizard.FindSymbol('SOUIRES_FILTER');
 		var group = proj.Object.AddFilter('SoUI Resouece');
 		group.Filter = strSouiFilter;
-		if (wizard.FindSymbol('CHECKBOX_SYSRES_BUILTIN')) {
+		if (wizard.FindSymbol('CHECKBOX_SYSRES_BUILTIN') && (wizard.FindSymbol('ResLoaderType')!=0)) {
 		    var group = proj.Object.AddFilter('SoUI Sys Resouece');
 		    group.Filter = strSouiFilter;
 		}
@@ -189,8 +189,10 @@ function AddConfig(proj, strProjectName)
 		LinkTool.SubSystem = subSystemOption.subSystemWindows;
 		
 		var resCplTool = config.Tools('VCResourceCompilerTool');
+		resCplTool.Culture = 0x804;
+		resCplTool.PreprocessorDefinitions += ';_DEBUG';
 		if (SysResBuiltin && (ResLoadType == 0)) {
-			resCplTool.AdditionalIncludeDirectories ='"$(SOUIPATH)\\soui-sys-resource"';
+		    resCplTool.AdditionalIncludeDirectories = '"$(SOUIPATH)\\soui-sys-resource"';		    
 		}
 		// Release…Ë÷√
 		var config = proj.Object.Configurations('Release');
@@ -227,6 +229,7 @@ function AddConfig(proj, strProjectName)
 		LinkTool.SubSystem = subSystemOption.subSystemWindows;
 		
 		var resCplTool = config.Tools('VCResourceCompilerTool');
+		resCplTool.Culture = 0x804;
 		if (SysResBuiltin && (ResLoadType == 0)) {
 			resCplTool.AdditionalIncludeDirectories ='"$(SOUIPATH)\\soui-sys-resource"';
 		}
@@ -265,8 +268,10 @@ function AddConfig(proj, strProjectName)
 		    LinkTool_64.AdditionalDependencies = 'utilitiesd.lib souid.lib'
 		    LinkTool_64.SubSystem = subSystemOption.subSystemWindows;
 		    var resCplTool_64 = config_x64.Tools('VCResourceCompilerTool');
+		    resCplTool_64.Culture = 0x804;
+		    resCplTool_64.PreprocessorDefinitions += ';_DEBUG';
 		    if (SysResBuiltin && (ResLoadType == 0)) {
-		        resCplTool_64.AdditionalIncludeDirectories = '"$(SOUIPATH)\\soui-sys-resource"';
+		        resCplTool_64.AdditionalIncludeDirectories = '"$(SOUIPATH)\\soui-sys-resource"';		        
 		    }
 		    var config_64 = proj.Object.Configurations('Release|x64');
 		    config_64.CharacterSet = (unicodeSet == 1) ? charSetUNICODE : charSetMBCS;
@@ -297,8 +302,9 @@ function AddConfig(proj, strProjectName)
 		    LinkTool_x64.AdditionalDependencies = 'utilities.lib soui.lib'
 		    LinkTool_x64.LinkIncremental = 1;
 		    LinkTool_x64.SubSystem = subSystemOption.subSystemWindows;
-
+		    
 		    var resCplTool_64 = config_64.Tools('VCResourceCompilerTool');
+		    resCplTool_64.Culture = 0x804;
 		    if (SysResBuiltin && (ResLoadType == 0)) {
 		        resCplTool_64.AdditionalIncludeDirectories = '"$(SOUIPATH)\\soui-sys-resource"';
 		    }

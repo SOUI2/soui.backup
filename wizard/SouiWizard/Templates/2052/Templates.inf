@@ -38,6 +38,7 @@ trayicon\SShellNofityHwnd2.h
 trayicon\SShellNofityHwnd2.cpp
 [!endif]
 
+[!if ResLoaderType!=0]
 [!if CHECKBOX_SYSRES_BUILTIN]
 [theme_sys_res]uires.idx
 [theme_sys_res]sys_xml_skin.xml
@@ -74,4 +75,5 @@ trayicon\SShellNofityHwnd2.cpp
 [theme_sys_res]sys_vert_prog_bar.png
 [theme_sys_res]sys_vert_prog_bkgnd.png
 [theme_sys_res]sys_wnd_bkgnd.png
+[!endif]
 [!endif]
