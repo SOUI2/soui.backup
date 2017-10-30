@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "helper/SAdapterBase.h"
 
 #define DEFAULT_LINE 10
@@ -70,7 +70,7 @@ public:
 	{
 		for (xmlTemplate = xmlTemplate.first_child(); xmlTemplate; xmlTemplate = xmlTemplate.next_sibling())
 		{
-			//TODO: ´Ë·¨ÓĞ´ıÑéÖ¤
+			//TODO: æ­¤æ³•æœ‰å¾…éªŒè¯
 			/*
 			if (static_cast<SWindowFactoryMgr*>(SApplication::getSingletonPtr())->HasKey(xmlTemplate.name()))
 			{
@@ -87,7 +87,7 @@ public:
 	{
 		if (IniTemplateNames(xmlTemplate) > 0)
 		{
-			//´Ë´¦Ãû×ÖÊÇ×Ô¶¨ÒåµÄ£¬viewµÄÁé»îĞÔÒ²¾ÍÌåÏÖÔÚÕâĞ©µØ·½¡£
+			//æ­¤å¤„åå­—æ˜¯è‡ªå®šä¹‰çš„ï¼Œviewçš„çµæ´»æ€§ä¹Ÿå°±ä½“ç°åœ¨è¿™äº›åœ°æ–¹ã€‚
 			m_nItemHeight[0]= xmlTemplate.attribute(KAttrName_Height[0]).as_int(50);
 			m_nItemHeight[1] = xmlTemplate.attribute(KAttrName_Height[1]).as_int(60);
 			m_nItemHeight[2] = xmlTemplate.attribute(KAttrName_Height[2]).as_int(70);
@@ -114,7 +114,7 @@ public:
 	{
 		DWORD dwState = pItem->GetState();
 		int viewType = getItemViewType(position, dwState);
-		return CSize(0, m_nItemHeight[viewType]);//cxÔÚlistview£¬mclistviewÖĞÃ»ÓĞÊ¹ÓÃ£¬²»ĞèÒª¼ÆËã
+		return CSize(0, m_nItemHeight[viewType]);//cxåœ¨listviewï¼Œmclistviewä¸­æ²¡æœ‰ä½¿ç”¨ï¼Œä¸éœ€è¦è®¡ç®—
 	}
 
 	virtual void getView(int position, SWindow * pItem, pugi::xml_node xmlTemplate)

@@ -1,9 +1,7 @@
-#pragma once
+Ôªø#pragma once
 #include "core/SWnd.h"
 #include "activex/flash10t.tlh"
-#include "activex/wmp.tlh"
 #include <mshtmhst.h>
-//#import "C:\\windows\\system32\\WMP.dll" no_function_mapping // π”√’‚––¥˙¬Î¿¥…˙≥…wmp.tlh and wmp.tli
 
 namespace SOUI
 {
@@ -83,37 +81,6 @@ namespace SOUI
         SStringW m_strUrl;
 
         SComQIPtr<ShockwaveFlashObjects::IShockwaveFlash> flash_;
-    };
-
-
-    class SOUI_EXP SMediaPlayer :public SActiveX
-    {
-    public:
-        SOUI_CLASS_NAME(SMediaPlayer, L"mediaplayer")
-        SMediaPlayer();
-
-        WMPLib::IWMPPlayer4* GetMediaPlayerInterface()  const
-        {
-            return wmp_;
-        }
-        bool Play(LPCWSTR pszUrl);
-
-    protected:
-        virtual void OnInitActiveXFinished(){
-            if(!m_strUrl.IsEmpty() && wmp_)
-            {
-                Play(m_strUrl);
-            }
-        }
-
-        virtual void OnAxActivate(IUnknown *pUnknwn);
-
-        SOUI_ATTRS_BEGIN()
-            ATTR_STRINGW(L"url",m_strUrl,FALSE)
-        SOUI_ATTRS_END()
-
-        SStringW m_strUrl;
-        SComQIPtr<WMPLib::IWMPPlayer4> wmp_;
     };
 
 }

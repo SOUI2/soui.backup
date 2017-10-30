@@ -1,4 +1,4 @@
-#include <interface/SScriptModule-i.h>
+﻿#include <interface/SScriptModule-i.h>
 
 BOOL ExpLua_ScriptModule(lua_State *L)
 {

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "interface/slayout-i.h"
 #include "SGridLayoutParamStruct.h"
@@ -90,13 +90,13 @@ namespace SOUI
 		SOUI_ATTRS_BREAK()
 	protected:
 
-		int m_nCols;				/**<ÐÐÊý */
-		int m_nRows;				/**<ÁÐÊý */
-		SLayoutSize m_xInterval;	/**<Ë®Æ½¼ä¾à */
-		SLayoutSize m_yInterval;	/**<´¹Ö±¼ä¾à */
+		int m_nCols;				/**<è¡Œæ•° */
+		int m_nRows;				/**<åˆ—æ•° */
+		SLayoutSize m_xInterval;	/**<æ°´å¹³é—´è· */
+		SLayoutSize m_yInterval;	/**<åž‚ç›´é—´è· */
 
-		GridGravity m_GravityX;		/**<Ë®Æ½ÅÅÁÐ·½Ê½ */
-		GridGravity m_GravityY;		/**<´¹Ö±ÅÅÁÐ·½Ê½ */
+		GridGravity m_GravityX;		/**<æ°´å¹³æŽ’åˆ—æ–¹å¼ */
+		GridGravity m_GravityY;		/**<åž‚ç›´æŽ’åˆ—æ–¹å¼ */
 
 	};
 

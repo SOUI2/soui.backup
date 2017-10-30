@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "UiAnimationWnd.h"
 #include <math.h>
 #include <helper/splitstring.h>
@@ -70,7 +70,7 @@ namespace SOUI{
             );
         if (SUCCEEDED(hr))
         {
-            //´´½¨Ò»¸öUIAnimationµÄµ¥Àı
+            //åˆ›å»ºä¸€ä¸ªUIAnimationçš„å•ä¾‹
             new CUiAnimation(pAnimationTimer);
         }
 
@@ -206,7 +206,7 @@ namespace SOUI{
         int iX1=0;
         for(int i=0;i<=sz.cx;i++)
         {
-            if(i==sz.cx || pPixels[i] == 0xFFFF00FF) //·Ö¸îÏß
+            if(i==sz.cx || pPixels[i] == 0xFFFF00FF) //åˆ†å‰²çº¿
             {
                 int iX2=i;
                 SIZE szWord={iX2-iX1,sz.cy};

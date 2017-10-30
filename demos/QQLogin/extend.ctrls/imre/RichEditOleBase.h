@@ -1,15 +1,15 @@
-
+ï»¿
 // ------------------------------------------------------------------------------
 //
 // RichEditOleBase.h : interface of the RichEditOleBase class
 //
-// ¶¨ÒåÁËRichEdit OLE¿Ø¼þµÄ»ùÀà¡£OLE¿Ø¼þ³ÖÓÐOleWindow¶ÔÏó£¬´Ó¶ø¾ßÓÐSWindow
-// µÄÄÜÁ¦£¬Èç¿ÉÊ¹ÓÃXMLÎÄ¼þ¶¨ÒåÍâ¹Û£¬¿ÉÒÔÏìÓ¦Êó±ê/¼üÅÌ½øÐÐ²Ù×÷µÈ¡£
+// å®šä¹‰äº†RichEdit OLEæŽ§ä»¶çš„åŸºç±»ã€‚OLEæŽ§ä»¶æŒæœ‰OleWindowå¯¹è±¡ï¼Œä»Žè€Œå…·æœ‰SWindow
+// çš„èƒ½åŠ›ï¼Œå¦‚å¯ä½¿ç”¨XMLæ–‡ä»¶å®šä¹‰å¤–è§‚ï¼Œå¯ä»¥å“åº”é¼ æ ‡/é”®ç›˜è¿›è¡Œæ“ä½œç­‰ã€‚
 //
-// OLE¿Ø¼þÖ÷ÒªÓÉÒÔÏÂ3¸ö²¿·Ö×é³É£º
-// - OleWindow      : ¸ºÔðOLE¿Ø¼þµÄÍâ¹Û,½»»¥
-// - OleTimerHandler: OLE¿Ø¼þÊ¹ÓÃµÄ¶¨Ê±Æ÷£¬ÎªÁË´óÁ¿GIF¶øÓÅ»¯µÄ¶¨Ê±Æ÷
-// - RichEditOleBase: ¸ºÔðºÍRichEdit½»»¥
+// OLEæŽ§ä»¶ä¸»è¦ç”±ä»¥ä¸‹3ä¸ªéƒ¨åˆ†ç»„æˆï¼š
+// - OleWindow      : è´Ÿè´£OLEæŽ§ä»¶çš„å¤–è§‚,äº¤äº’
+// - OleTimerHandler: OLEæŽ§ä»¶ä½¿ç”¨çš„å®šæ—¶å™¨ï¼Œä¸ºäº†å¤§é‡GIFè€Œä¼˜åŒ–çš„å®šæ—¶å™¨
+// - RichEditOleBase: è´Ÿè´£å’ŒRichEditäº¤äº’
 //
 // ------------------------------------------------------------------------------
 
@@ -49,8 +49,8 @@ namespace SOUI
         void OnNextFrame()
         {
             /*
-             * Èç¹ûÓÐ´óÁ¿µÄ¶¨Ê±Æ÷×¢²áÉÏÀ´,Ã¿´Î¶¼Òª¿½±´,ºÜ·ÑCPU,ÌØÒâ°ÑÒÔÏÂÁ½¾äÈ¥µô
-             * ×¢ÒâÔÚOnNextFrameÀïÃæ²»ÄÜ×¢²áºÍÈ¡Ïû¶¨Ê±Æ÷,·ñÔòÑ­»·»á³ö´í
+             * å¦‚æžœæœ‰å¤§é‡çš„å®šæ—¶å™¨æ³¨å†Œä¸Šæ¥,æ¯æ¬¡éƒ½è¦æ‹·è´,å¾ˆè´¹CPU,ç‰¹æ„æŠŠä»¥ä¸‹ä¸¤å¥åŽ»æŽ‰
+             * æ³¨æ„åœ¨OnNextFrameé‡Œé¢ä¸èƒ½æ³¨å†Œå’Œå–æ¶ˆå®šæ—¶å™¨,å¦åˆ™å¾ªçŽ¯ä¼šå‡ºé”™
              */
              //SList<ITimelineHandler*> lstCopy;
              //CopyList(m_lstHandler,lstCopy);
@@ -115,10 +115,10 @@ namespace SOUI
         IRichEditObjHost *      m_pHostRichEdit;
         int                     m_nWindowID;
 
-        CRect                   m_rcOleWindow;      // oleÔÚricheditÀïÃæµÄÎ»ÖÃ   
-        BOOL                    m_bDelayDraw;       // ¶ÔÓÚGIF£¬ÐèÒªÉèÖÃÑÓ³ÙË¢ÐÂ
+        CRect                   m_rcOleWindow;      // oleåœ¨richedité‡Œé¢çš„ä½ç½®   
+        BOOL                    m_bDelayDraw;       // å¯¹äºŽGIFï¼Œéœ€è¦è®¾ç½®å»¶è¿Ÿåˆ·æ–°
 
-        static OleTimerHandler  m_timerHandler;     // ¶¨Ê±Æ÷
+        static OleTimerHandler  m_timerHandler;     // å®šæ—¶å™¨
         static BOOL             m_bTiemrRegistered;
     };
 
@@ -158,7 +158,7 @@ namespace SOUI
         HRESULT STDMETHODCALLTYPE GetMiscStatus(DWORD, DWORD *pdwStatus) { return E_NOTIMPL; }
         HRESULT STDMETHODCALLTYPE SetColorScheme(LOGPALETTE *pLogpal) { return E_NOTIMPL; }
 
-        //ÒÔÏÂ½Ó¿ÚÐèÒªÊµÏÖ
+        //ä»¥ä¸‹æŽ¥å£éœ€è¦å®žçŽ°
         HRESULT STDMETHODCALLTYPE GetUserClassID(CLSID *pClsid);
         HRESULT STDMETHODCALLTYPE Advise(IAdviseSink *pAdvSink, DWORD *pdwConnection);
         HRESULT STDMETHODCALLTYPE Unadvise(DWORD dwConnection);
@@ -177,7 +177,7 @@ namespace SOUI
         HRESULT STDMETHODCALLTYPE Freeze(DWORD, LONG, void *, DWORD *) { return S_OK; }
         HRESULT STDMETHODCALLTYPE Unfreeze(DWORD dwFreeze) { return S_OK; }
 
-        // ÒÔÏÂ½Ó¿ÚÐèÒªÊµÏÖ
+        // ä»¥ä¸‹æŽ¥å£éœ€è¦å®žçŽ°
         HRESULT STDMETHODCALLTYPE SetAdvise(DWORD aspects, DWORD advf, IAdviseSink *pAdvSink);
         HRESULT STDMETHODCALLTYPE GetAdvise(DWORD *pAspects, DWORD *pAdvf, IAdviseSink **ppAdvSink);
         HRESULT STDMETHODCALLTYPE Draw(

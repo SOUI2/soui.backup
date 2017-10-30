@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "oleidl.h"
 #include "ShObjIdl.h"
 #include <string>
@@ -16,45 +16,45 @@
 typedef DWORD					DROPEFFECT;
 
 
-//ÕâÊÇ  Ö÷´°¿Ú µÄ½Ó¿Ú  Ö÷´°¿Ú ¼Ì³Ğ¸Ã½Ó¿Ú  È»ºó¾Í¿ÉÒÔ×ö³ö´¦ÀíÁË¡£
-/*ÎÒ»¹ÊÇ½¨ÒéÔÚ Ö÷´°¿Ú¼Ì³ĞÕâ¸ö  ¶ø²»ÊÇ·Ö·¢µ½¾ßÌå¿Ø¼ş
-ÒòÎªÍÏ·Å Ò»°ã¶¼°éËæ×ÅÒµÎñÂß¼­.
-·ÅÔÚ´°¿ÚµÄ»ùÀàÀï  »ùÀàÅĞ¶Ï ¾ßÌåÄÄ¸ö×Ó¿Ø¼ş ºó Ğ´¸öÔÙĞ´µ½ Ğéº¯Êı  ´°¿ÚÀàÖØÔØ*/
+//è¿™æ˜¯  ä¸»çª—å£ çš„æ¥å£  ä¸»çª—å£ ç»§æ‰¿è¯¥æ¥å£  ç„¶åå°±å¯ä»¥åšå‡ºå¤„ç†äº†ã€‚
+/*æˆ‘è¿˜æ˜¯å»ºè®®åœ¨ ä¸»çª—å£ç»§æ‰¿è¿™ä¸ª  è€Œä¸æ˜¯åˆ†å‘åˆ°å…·ä½“æ§ä»¶
+å› ä¸ºæ‹–æ”¾ ä¸€èˆ¬éƒ½ä¼´éšç€ä¸šåŠ¡é€»è¾‘.
+æ”¾åœ¨çª—å£çš„åŸºç±»é‡Œ  åŸºç±»åˆ¤æ–­ å…·ä½“å“ªä¸ªå­æ§ä»¶ å å†™ä¸ªå†å†™åˆ° è™šå‡½æ•°  çª—å£ç±»é‡è½½*/
 class IDropTargetIF
 {
 public:
 	//************************************
-	// Method:    OnDragEnter  ÅĞ¶ÏÊÇ·ñ¿ÉÒÔ½ÓÊÜÒ»¸öÍÏ²Ù×÷£¬ÒÔ¼°½ÓÊÜÖ®ºóµÄĞ§¹û
+	// Method:    OnDragEnter  åˆ¤æ–­æ˜¯å¦å¯ä»¥æ¥å—ä¸€ä¸ªæ‹–æ“ä½œï¼Œä»¥åŠæ¥å—ä¹‹åçš„æ•ˆæœ
 	// FullName:  IDropTargetIF::OnDragEnter
 	// Access:    virtual public 
-	// Returns:   HRESULT ·µ»Ø S_FALSE ±íÊ¾²»ÄÜÍÏ·Å   S_OK ±íÊ¾¿ÉÒÔ 
+	// Returns:   HRESULT è¿”å› S_FALSE è¡¨ç¤ºä¸èƒ½æ‹–æ”¾   S_OK è¡¨ç¤ºå¯ä»¥ 
 	// Qualifier:
-	// Parameter: IDataObject * pDataObject  /Ö¸ÏòÔ´Êı¾İ¶ÔÏóµÄ½Ó¿ÚÖ¸Õë ¼ôÇĞ°å Êı¾İ½á¹¹ 
-	// Parameter: DWORD dwKeyState				// µ±Ç°¼üÅÌĞŞÊÎ·ûµÄ×´Ì¬ °´¼ü ×´Ì¬  ºÍ MK_LBUTTONºê Ò»ÑùµÄÖµ
-	// Parameter: const POINT & point				ÆÁÄ»µÄ×ø±ê ĞèÒª×Ô¼º×ª»»
+	// Parameter: IDataObject * pDataObject  /æŒ‡å‘æºæ•°æ®å¯¹è±¡çš„æ¥å£æŒ‡é’ˆ å‰ªåˆ‡æ¿ æ•°æ®ç»“æ„ 
+	// Parameter: DWORD dwKeyState				// å½“å‰é”®ç›˜ä¿®é¥°ç¬¦çš„çŠ¶æ€ æŒ‰é”® çŠ¶æ€  å’Œ MK_LBUTTONå® ä¸€æ ·çš„å€¼
+	// Parameter: const POINT & point				å±å¹•çš„åæ ‡ éœ€è¦è‡ªå·±è½¬æ¢
 	//************************************
 	virtual HRESULT OnDragEnter(IDataObject* pDataObject, DWORD dwKeyState, const POINT& point) PURE;
 	
 	//************************************
-	// Method:    OnDragOver  Ìá¹©Í¨¹ıDoDragDropº¯ÊıÖ´ĞĞµÄÄ¿±ê·´À¡
+	// Method:    OnDragOver  æä¾›é€šè¿‡DoDragDropå‡½æ•°æ‰§è¡Œçš„ç›®æ ‡åé¦ˆ
 	// FullName:  IDropTargetIF::OnDragOver
 	// Access:    virtual public 
-	// Returns:   DROPEFFECT ·µ»Ø DROPEFFECT_COPY ÀàËÆµÄÖµ  ÓÃÀ´ÏÔÊ¾ Í¼±êÀàĞÍ  ÓĞÒÆ¶¯ ¸´ÖÆ µÈ 
+	// Returns:   DROPEFFECT è¿”å› DROPEFFECT_COPY ç±»ä¼¼çš„å€¼  ç”¨æ¥æ˜¾ç¤º å›¾æ ‡ç±»å‹  æœ‰ç§»åŠ¨ å¤åˆ¶ ç­‰ 
 	// Qualifier:
-	// Parameter: IDataObject * pDataObject		¼ôÇĞ°å Êı¾İ½á¹¹
-	// Parameter: DWORD dwKeyState					°´¼ü ×´Ì¬  ºÍ MK_LBUTTONºê Ò»ÑùµÄÖµ
-	// Parameter: const POINT & point					ÆÁÄ»µÄ×ø±ê ĞèÒª×Ô¼º×ª»»  ¼ì²â¾ßÌå ÔÚÄÄ¸ö¿Ø¼şÉÏ
-	// Parameter: std::wstring & szMessage			ÍÏ·ÅÍ¼±êÓÒ±ßµÄ²Ù×÷ÀàĞÍÃû³Æ¡£±ÈÈç ¸´ÖÆµ½ »òÉÏ´«µ½
-	// Parameter: std::wstring & szInsert				ÍÏ·ÅÍ¼±êÓÒ±ßµÄÄ¿±êÃû³Æ ¡£±ÈÈç 123ÎÄ¼ş¼Ğ   
+	// Parameter: IDataObject * pDataObject		å‰ªåˆ‡æ¿ æ•°æ®ç»“æ„
+	// Parameter: DWORD dwKeyState					æŒ‰é”® çŠ¶æ€  å’Œ MK_LBUTTONå® ä¸€æ ·çš„å€¼
+	// Parameter: const POINT & point					å±å¹•çš„åæ ‡ éœ€è¦è‡ªå·±è½¬æ¢  æ£€æµ‹å…·ä½“ åœ¨å“ªä¸ªæ§ä»¶ä¸Š
+	// Parameter: std::wstring & szMessage			æ‹–æ”¾å›¾æ ‡å³è¾¹çš„æ“ä½œç±»å‹åç§°ã€‚æ¯”å¦‚ å¤åˆ¶åˆ° æˆ–ä¸Šä¼ åˆ°
+	// Parameter: std::wstring & szInsert				æ‹–æ”¾å›¾æ ‡å³è¾¹çš„ç›®æ ‡åç§° ã€‚æ¯”å¦‚ 123æ–‡ä»¶å¤¹   
 	//************************************
 	virtual DROPEFFECT OnDragOver(IDataObject* pDataObject,
 		DWORD dwKeyState,
 		const POINT& point, 
 		std::wstring& szMessage,
 		std::wstring& szInsert) PURE;
-	// Êı¾İ·Å½øÄ¿±ê´°¿Ú
+	// æ•°æ®æ”¾è¿›ç›®æ ‡çª—å£
 	virtual BOOL OnDrop(IDataObject* pDataObject, DWORD dwKeyState, const POINT& point)PURE;
-	//µ¼ÖÂÒ»¸ödropÄ¿±ê¹ÒÆğËüµÄ·µ»ØĞĞÎª
+	//å¯¼è‡´ä¸€ä¸ªdropç›®æ ‡æŒ‚èµ·å®ƒçš„è¿”å›è¡Œä¸º
 	virtual void OnDragLeave() {}
 };
 
@@ -69,17 +69,17 @@ public:
 	HRESULT	STDMETHODCALLTYPE QueryInterface(REFIID riid, __RPC__deref_out void **ppvObject);  
 	ULONG		STDMETHODCALLTYPE AddRef();  
 	ULONG		STDMETHODCALLTYPE Release();  
-	//½øÈë  
+	//è¿›å…¥  
 	HRESULT	STDMETHODCALLTYPE DragEnter(__RPC__in_opt IDataObject *pDataObj, DWORD grfKeyState, POINTL pt, __RPC__inout DWORD *pdwEffect);  
-	//ÒÆ¶¯  
+	//ç§»åŠ¨  
 	HRESULT	STDMETHODCALLTYPE DragOver(DWORD grfKeyState, POINTL pt, __RPC__inout DWORD *pdwEffect);  
-	//Àë¿ª  
+	//ç¦»å¼€  
 	HRESULT	STDMETHODCALLTYPE DragLeave();  
-	//ÊÍ·Å  
+	//é‡Šæ”¾  
 	HRESULT	STDMETHODCALLTYPE Drop(__RPC__in_opt IDataObject *pDataObj, DWORD grfKeyState, POINTL pt, __RPC__inout DWORD *pdwEffect);  
 
 private:
-	//ÉèÖÃÍÏ·Å¹ı³ÌÖĞµÄÃèÊö ĞÅÏ¢
+	//è®¾ç½®æ‹–æ”¾è¿‡ç¨‹ä¸­çš„æè¿° ä¿¡æ¯
 	bool SetDropDescription(DROPIMAGETYPE nImageType, LPCWSTR lpszText, LPCWSTR lpszInsert=NULL);
 private:  
 	HWND								m_hWnd;  
@@ -93,7 +93,7 @@ protected:
 
 
 
-/////////////////////////////// ÍÏ·Å ²Ù×÷Àà ///////////////////////////////////////////
+/////////////////////////////// æ‹–æ”¾ æ“ä½œç±» ///////////////////////////////////////////
 class DataObjectEx : public IDataObject
 {
 public:
@@ -117,8 +117,8 @@ public:
 	DataObjectEx();
 	~DataObjectEx();
 public:
-	bool CacheSingleFileAsHdrop(LPCTSTR lpszFilePath);			//ÉèÖÃµ¥¸öÎÄ¼ş µ½¼ôÇĞ°å
-	// ¿ªÊ¼ ÍÏ·Å 
+	bool CacheSingleFileAsHdrop(LPCTSTR lpszFilePath);			//è®¾ç½®å•ä¸ªæ–‡ä»¶ åˆ°å‰ªåˆ‡æ¿
+	// å¼€å§‹ æ‹–æ”¾ 
 	DROPEFFECT DoDragDrop(DROPEFFECT dwEffect);
 	bool SetDragImage(HBITMAP hBitmap, POINT* pPoint=NULL, COLORREF clr=GetSysColor(COLOR_WINDOW));
 	bool SetDragImageWindow(HWND hWnd, POINT* pPoint=NULL);
@@ -177,7 +177,7 @@ private:
 	LPDATAOBJECT	m_pIDataObj;			// set by DataObjectEx to its IDataObject
 };
 
-//°ïÖúÀà
+//å¸®åŠ©ç±»
 class DragDropHelper
 {
 public:

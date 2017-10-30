@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "httpsvr/filereader-i.h"
 

@@ -1,4 +1,4 @@
-class CNewGuid
+﻿class CNewGuid
 {
 public:
 	CNewGuid(){};

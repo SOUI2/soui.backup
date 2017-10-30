@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 class CSkinMgr : public SHostWnd
 {
@@ -13,29 +13,29 @@ public:
 
 	BOOL OnInitDialog(HWND wndFocus, LPARAM lInitParam);
 
-	void OnBtnMaxspeed();			//¼«ËÙ
-	void OnBtnDeepblue();			//ÉîºşÀ¶
-	void OnBtnSelfdefine();			//×Ô¶¨Òå
-	void OnBtnBigbang();			//´óÆ¬·ç±©
-	void OnBtnPrev();				//ÉÏÒ»¸öÆ¤·ô
-	void OnBtnChoosing1();			//ÒÑÓĞµÄÆ¤·ô1
-	void OnBtnChoosing2();			//ÒÑÓĞµÄÆ¤·ô2
-	void OnBtnNext();				//ÏÂÒ»¸öÆ¤·ô
-	void OnBtnColor1();				//ÅäÉ«1
-	void OnBtnColor2();				//ÅäÉ«2
-	void OnBtnColor3();				//ÅäÉ«3
-	void OnBtnColor4();				//ÅäÉ«4
-	void OnBtnColor5();				//ÅäÉ«5
-	void OnBtnColor6();				//ÅäÉ«6
-	void OnBtnColor7();				//ÅäÉ«7
-	void OnBtnColor8();				//ÅäÉ«8
-	void OnBtnColor9();				//ÅäÉ«9
-	void OnBtnColor10();			//ÅäÉ«10
-	void OnBtnColor11();			//ÅäÉ«11
-	void OnBtnColor12();			//ÅäÉ«12
+	void OnBtnMaxspeed();			//æé€Ÿ
+	void OnBtnDeepblue();			//æ·±æ¹–è“
+	void OnBtnSelfdefine();			//è‡ªå®šä¹‰
+	void OnBtnBigbang();			//å¤§ç‰‡é£æš´
+	void OnBtnPrev();				//ä¸Šä¸€ä¸ªçš®è‚¤
+	void OnBtnChoosing1();			//å·²æœ‰çš„çš®è‚¤1
+	void OnBtnChoosing2();			//å·²æœ‰çš„çš®è‚¤2
+	void OnBtnNext();				//ä¸‹ä¸€ä¸ªçš®è‚¤
+	void OnBtnColor1();				//é…è‰²1
+	void OnBtnColor2();				//é…è‰²2
+	void OnBtnColor3();				//é…è‰²3
+	void OnBtnColor4();				//é…è‰²4
+	void OnBtnColor5();				//é…è‰²5
+	void OnBtnColor6();				//é…è‰²6
+	void OnBtnColor7();				//é…è‰²7
+	void OnBtnColor8();				//é…è‰²8
+	void OnBtnColor9();				//é…è‰²9
+	void OnBtnColor10();			//é…è‰²10
+	void OnBtnColor11();			//é…è‰²11
+	void OnBtnColor12();			//é…è‰²12
 
 protected:
-	//°´Å¥ÊÂ¼ş´¦ÀíÓ³Éä±í
+	//æŒ‰é’®äº‹ä»¶å¤„ç†æ˜ å°„è¡¨
 	EVENT_MAP_BEGIN()
 		EVENT_NAME_COMMAND(L"btn_skin_close",OnClose)
 
@@ -61,11 +61,11 @@ protected:
 		EVENT_NAME_COMMAND(L"btn_skinmgr_color12",OnBtnColor12)
 		EVENT_MAP_END()    
 
-		//´°¿ÚÏûÏ¢´¦ÀíÓ³Éä±í
+		//çª—å£æ¶ˆæ¯å¤„ç†æ˜ å°„è¡¨
 		BEGIN_MSG_MAP_EX(CSkinMgr)
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_CLOSE(OnClose)
-		CHAIN_MSG_MAP(SHostWnd)//×¢Òâ½«Ã»ÓĞ´¦ÀíµÄÏûÏ¢½»¸ø»ùÀà´¦Àí
+		CHAIN_MSG_MAP(SHostWnd)//æ³¨æ„å°†æ²¡æœ‰å¤„ç†çš„æ¶ˆæ¯äº¤ç»™åŸºç±»å¤„ç†
 		REFLECT_NOTIFICATIONS_EX()
 		END_MSG_MAP()
 private:

@@ -1,9 +1,9 @@
-/*
+ï»¿/*
 *	Copyright (C) 2017  BensonLaur
 *	note: Looking up header file for license detail
 */
 
-// LyricMaker.cpp :  ÊµÏÖ  LyricMakerÀà µÄ½Ó¿Ú	
+// LyricMaker.cpp :  å®ç°  LyricMakerç±» çš„æ¥å£	
 //
 /////////////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
@@ -22,8 +22,8 @@ LyricMaker::LyricMaker():
 	m_szOutputPathName[0] = _T('\0');
 }
 
-//ÉèÖÃ¸÷¸öÂ·¾¶
-//ÉèÖÃÒôÀÖÂ·¾¶Ê±£¬´«Èë²¥·ÅÒôÀÖĞèÒªµÄ ÏûÏ¢ËŞÖ÷´°¿ÚµÄ¾ä±ú
+//è®¾ç½®å„ä¸ªè·¯å¾„
+//è®¾ç½®éŸ³ä¹è·¯å¾„æ—¶ï¼Œä¼ å…¥æ’­æ”¾éŸ³ä¹éœ€è¦çš„ æ¶ˆæ¯å®¿ä¸»çª—å£çš„å¥æŸ„
 void LyricMaker::setMusicPath(LPCTSTR pathName, HWND hostWnd)
 {
 	_tcscpy(m_szMusicPathName,pathName);
@@ -40,51 +40,51 @@ void LyricMaker::setm_szOutputPath(LPCTSTR pathName)
 	_tcscpy(m_szOutputPath,pathName);
 }
 
-//ÖØÖÃ LyricMakerµÄ ¸è´ÊÊı¾İÎª¿Õ, Éú³ÉÊä³öµÄÎÄ¼şÃû
+//é‡ç½® LyricMakerçš„ æ­Œè¯æ•°æ®ä¸ºç©º, ç”Ÿæˆè¾“å‡ºçš„æ–‡ä»¶å
 void LyricMaker::reloadMaker()
 {
 	m_vLyricOrigin.clear();
 	m_vLyricOutput.clear();
 
-	//Éú³ÉÊä³öµÄÎÄ¼şÃû
+	//ç”Ÿæˆè¾“å‡ºçš„æ–‡ä»¶å
 	generateOutputFileName();
 }
 
-//ÖÆ×÷¿ªÊ¼,¼ÇÂ¼¿ªÊ¼ÖÆ×÷µÄÊ±¼ä
+//åˆ¶ä½œå¼€å§‹,è®°å½•å¼€å§‹åˆ¶ä½œçš„æ—¶é—´
 void LyricMaker::makingStart()
 {
-	SYSTEMTIME		startPoint;				/* ¼ÇÂ¼¿ªÊ¼µÄÊ±¼äµã */
+	SYSTEMTIME		startPoint;				/* è®°å½•å¼€å§‹çš„æ—¶é—´ç‚¹ */
 	GetLocalTime(&startPoint);
 
 	SystemTimeToFileTime(&startPoint,(FILETIME*)&startPointF); 
 
-	//¸üĞÂ»ù±¾µÄĞĞÊı¼ÇÂ¼µÄÊı¾İ
+	//æ›´æ–°åŸºæœ¬çš„è¡Œæ•°è®°å½•çš„æ•°æ®
 	m_nTotalLine = m_vLyricOrigin.size();
 	m_nCurLine = 0;
 
-	//Òì²½²¥·ÅÒôÀÖ
-	//PlaySound(m_szMusicPathName,NULL,SND_FILENAME|SND_ASYNC); //²»Ö§³ÖMP3
+	//å¼‚æ­¥æ’­æ”¾éŸ³ä¹
+	//PlaySound(m_szMusicPathName,NULL,SND_FILENAME|SND_ASYNC); //ä¸æ”¯æŒMP3
 
 	playMusic();
 }
 
-//ÎªÏÂÒ»ĞĞ¸è´Ê ±ê¼ÇÉÏ ÍøÒ×ÔÆÒôÀÖÒªÇóµÄ Ê±¼äÖá¸ñÊ½£¬Ğ´Èëm_vLyricOutputÖĞ
+//ä¸ºä¸‹ä¸€è¡Œæ­Œè¯ æ ‡è®°ä¸Š ç½‘æ˜“äº‘éŸ³ä¹è¦æ±‚çš„ æ—¶é—´è½´æ ¼å¼ï¼Œå†™å…¥m_vLyricOutputä¸­
 void LyricMaker::markNextLine()
 {
-	SYSTEMTIME		currentPoint;				/* ¼ÇÂ¼µ±Ç°µÄÊ±¼äµã */
-	ULARGE_INTEGER  currentPointF;				/* ¶ÔÓ¦µÄ FILETIME £¬ÎªÁËµÃµ½Ê±¼ä²î£¬Ê¹ÓÃFILETIME*/ 
+	SYSTEMTIME		currentPoint;				/* è®°å½•å½“å‰çš„æ—¶é—´ç‚¹ */
+	ULARGE_INTEGER  currentPointF;				/* å¯¹åº”çš„ FILETIME ï¼Œä¸ºäº†å¾—åˆ°æ—¶é—´å·®ï¼Œä½¿ç”¨FILETIME*/ 
 	GetLocalTime(&currentPoint);
 	
 	SystemTimeToFileTime(&currentPoint,(FILETIME*)&currentPointF); 
 	
 	unsigned __int64 dft=currentPointF.QuadPart-startPointF.QuadPart; 
-	int ms = (int)(dft/10000);//µÃµ½Ïà²îµÄºÁÃëÊı
+	int ms = (int)(dft/10000);//å¾—åˆ°ç›¸å·®çš„æ¯«ç§’æ•°
 
-	//µÃµ½[00:33.490] ĞÎÊ½µÄÊ±¼ä´®
+	//å¾—åˆ°[00:33.490] å½¢å¼çš„æ—¶é—´ä¸²
 	TCHAR timeBuf[255];
 	msToLyricTimeString(ms, timeBuf);
 
-	//¹¹½¨ĞÂµÄÒ»ĞĞ¼ÓÈëm_vLyricOutputÖĞ
+	//æ„å»ºæ–°çš„ä¸€è¡ŒåŠ å…¥m_vLyricOutputä¸­
 	SStringT newLine(timeBuf);
 	newLine.Append(m_vLyricOrigin.at(m_nCurLine-1));
 	newLine.Append(SStringT(_T("\n")));
@@ -95,29 +95,29 @@ void LyricMaker::markNextLine()
 	setLastLineSpace(false);
 }
 
-//Èç¹ûÉÏÒ»ĞĞ²»ÊÇ¿Õ°×ĞĞµÄ»°,Ìí¼Ó
+//å¦‚æœä¸Šä¸€è¡Œä¸æ˜¯ç©ºç™½è¡Œçš„è¯,æ·»åŠ 
 void LyricMaker::markSpaceLine()
 {
 	if(!isLastLineSpace())
 	{
-		SYSTEMTIME		currentPoint;				/* ¼ÇÂ¼µ±Ç°µÄÊ±¼äµã */
-		ULARGE_INTEGER  currentPointF;				/* ¶ÔÓ¦µÄ FILETIME £¬ÎªÁËµÃµ½Ê±¼ä²î£¬Ê¹ÓÃFILETIME*/ 
+		SYSTEMTIME		currentPoint;				/* è®°å½•å½“å‰çš„æ—¶é—´ç‚¹ */
+		ULARGE_INTEGER  currentPointF;				/* å¯¹åº”çš„ FILETIME ï¼Œä¸ºäº†å¾—åˆ°æ—¶é—´å·®ï¼Œä½¿ç”¨FILETIME*/ 
 		GetLocalTime(&currentPoint);
 	
 		SystemTimeToFileTime(&currentPoint,(FILETIME*)&currentPointF); 
 	
 		unsigned __int64 dft=currentPointF.QuadPart-startPointF.QuadPart; 
-		int ms = (int)(dft/10000);//µÃµ½Ïà²îµÄºÁÃëÊı
+		int ms = (int)(dft/10000);//å¾—åˆ°ç›¸å·®çš„æ¯«ç§’æ•°
 
-		//µÃµ½[00:33.490] ĞÎÊ½µÄÊ±¼ä´®
+		//å¾—åˆ°[00:33.490] å½¢å¼çš„æ—¶é—´ä¸²
 		TCHAR timeBuf[255];
 		msToLyricTimeString(ms, timeBuf);
 
-		//¹¹½¨ĞÂµÄÒ»ĞĞ¼ÓÈëm_vLyricOutputÖĞ (Ö»ÓĞÊ±¼äµÄ¿Õ°×ĞĞ)
+		//æ„å»ºæ–°çš„ä¸€è¡ŒåŠ å…¥m_vLyricOutputä¸­ (åªæœ‰æ—¶é—´çš„ç©ºç™½è¡Œ)
 		SStringT newLine(timeBuf);
 		newLine.Append(SStringT(_T("\n")));
 
-		if( m_nCurLine >= m_nTotalLine )//´ËÊ±Ìí¼ÓµÄ¿ÕĞĞÔÚÎÄ¼ş½áÎ²£¬¶øÔ­ÎÄ¼ş¿ÉÄÜÃ»ÓĞ»Ø³µ£¬ËùÒÔÕâÀï¶à¼Ó¸ö»Ø³µÇ°×º
+		if( m_nCurLine >= m_nTotalLine )//æ­¤æ—¶æ·»åŠ çš„ç©ºè¡Œåœ¨æ–‡ä»¶ç»“å°¾ï¼Œè€ŒåŸæ–‡ä»¶å¯èƒ½æ²¡æœ‰å›è½¦ï¼Œæ‰€ä»¥è¿™é‡Œå¤šåŠ ä¸ªå›è½¦å‰ç¼€
 			newLine.Insert(0,_T("\n"));
 
 		m_vLyricOutput.push_back(newLine);
@@ -126,37 +126,37 @@ void LyricMaker::markSpaceLine()
 	}
 }
 
-//½« m_vLyricOutput Ğ´ÈëÊä³öÎÄ¼şm_szOutputPathName ÖĞ
+//å°† m_vLyricOutput å†™å…¥è¾“å‡ºæ–‡ä»¶m_szOutputPathName ä¸­
 void LyricMaker::makingEnd()
 {
 	File outFile(m_szOutputPathName,_T("w"));
 	char line[400];
 	for(vector<SStringT>::iterator i=m_vLyricOutput.begin(); i != m_vLyricOutput.end(); i++)
 	{
-		//Êä³öµ½ÎÄ¼şÖĞÈ¥ [ _fputts(m_vLyricOutput.at(i),outFile.m_pf);  ÎŞ·¨Êä³öÖĞÎÄ]
+		//è¾“å‡ºåˆ°æ–‡ä»¶ä¸­å» [ _fputts(m_vLyricOutput.at(i),outFile.m_pf);  æ— æ³•è¾“å‡ºä¸­æ–‡]
 		
 		WideCharToMultiByte(CP_ACP,WC_COMPOSITECHECK,(*i),-1,line,400,"#",NULL);
 		fputs(line,outFile.m_pf);
 	}
 
-	//Í£Ö¹²¥·ÅÒôÀÖ
-	//PlaySound(NULL,NULL,SND_PURGE); //²»Ö§³ÖMP3
+	//åœæ­¢æ’­æ”¾éŸ³ä¹
+	//PlaySound(NULL,NULL,SND_PURGE); //ä¸æ”¯æŒMP3
 	stopMusic();
 }
 
-//»ñµÃµ±Ç°µÄÊä³ö ÎÄ¼şÃû
+//è·å¾—å½“å‰çš„è¾“å‡º æ–‡ä»¶å
 void LyricMaker::getOutputFileName(TCHAR* name, int lenth)
 {
 	_tcscpy(name,outputFileName);
 }
 
-//»ñµÃµ±Ç°µÄÊä³ö Â·¾¶ÎÄ¼şÃû
+//è·å¾—å½“å‰çš„è¾“å‡º è·¯å¾„æ–‡ä»¶å
 void LyricMaker::getm_szOutputPathName(TCHAR* name, int lenth)
 {
 	_tcscpy(name,m_szOutputPathName);
 }
 
-//½áÊøÒôÀÖ²¥·Å
+//ç»“æŸéŸ³ä¹æ’­æ”¾
 void LyricMaker::stopMusic()
 {
 	m_musicPlayer.closeStop();
@@ -167,45 +167,45 @@ void LyricMaker::setLastLineSpace(bool value)
 	this->m_bLastLineSpace = value;
 }
 
-//ÉÏÒ»ĞĞÊÇ·ñÎª¿Õ°×ĞĞ
+//ä¸Šä¸€è¡Œæ˜¯å¦ä¸ºç©ºç™½è¡Œ
 bool LyricMaker::isLastLineSpace()
 {
 	return this->m_bLastLineSpace;
 }
 
 
-//¸ù¾İm_szMusicPathName µÄÎÄ¼şÃûµÃµ½¸è´ÊÎÄ¼şÃû£¬²¢¸üĞÂoutputFileName ºÍ m_szOutputPathNameµÄÖµ
+//æ ¹æ®m_szMusicPathName çš„æ–‡ä»¶åå¾—åˆ°æ­Œè¯æ–‡ä»¶åï¼Œå¹¶æ›´æ–°outputFileName å’Œ m_szOutputPathNameçš„å€¼
 void LyricMaker::generateOutputFileName()
 {
 	int len = _tcslen(m_szMusicPathName);
 	if(len==0)
 		return;
 
-	// ±£´æ×îºóÒ»¸ö'\\'µÄÎ»ÖÃ
+	// ä¿å­˜æœ€åä¸€ä¸ª'\\'çš„ä½ç½®
 	int i,j;
 	int pos; 
 	for(i=0;i< len;i++)
 		if(m_szMusicPathName[i]==_T('\\'))
 			pos = i;
 
-	//¸´ÖÆ¸èÃûµ½ outputFileName £¬²»°üÀ¨ºó×º
+	//å¤åˆ¶æ­Œååˆ° outputFileName ï¼Œä¸åŒ…æ‹¬åç¼€
 	for(i=pos+1,j=0;m_szMusicPathName[i]!=_T('.');i++,j++)
 	{
 		outputFileName[j] = m_szMusicPathName[i];
 	}
 	outputFileName[j] = _T('\0');
 
-	//²¹³äÍêÊä³öÍêÕûµÄÎÄ¼şÃû
+	//è¡¥å……å®Œè¾“å‡ºå®Œæ•´çš„æ–‡ä»¶å
 	_tcscat(outputFileName,_T(".lrc"));
 
-	//³õÊ¼»¯ m_szOutputPathName
+	//åˆå§‹åŒ– m_szOutputPathName
 	_tcscpy(m_szOutputPathName,m_szOutputPath);
 	_tcscat(m_szOutputPathName,_T("\\"));
 	_tcscat(m_szOutputPathName,outputFileName);
 }
 
-//½«ºÁÃë²îÖµÊ±¼ä ×ª»»Îª¸è´ÊÊ±¼ä¸ñÊ½ ¡°[00:33.490] Look at the stars¡±
-//ÒÔ [00:33.490] ¸ñÊ½Êä³öµ½ timeBuf
+//å°†æ¯«ç§’å·®å€¼æ—¶é—´ è½¬æ¢ä¸ºæ­Œè¯æ—¶é—´æ ¼å¼ â€œ[00:33.490] Look at the starsâ€
+//ä»¥ [00:33.490] æ ¼å¼è¾“å‡ºåˆ° timeBuf
 void LyricMaker::msToLyricTimeString(int ms, LPTSTR timeBuf)
 {
 	int minutes = ms/60000;
@@ -214,7 +214,7 @@ void LyricMaker::msToLyricTimeString(int ms, LPTSTR timeBuf)
 	_stprintf(timeBuf,_T("[%02d:%06.3lf]"),minutes,seconds);
 }
 
-//²¥·ÅÒôÀÖ
+//æ’­æ”¾éŸ³ä¹
 void LyricMaker::playMusic()
 {
 	m_musicPlayer.openStart();

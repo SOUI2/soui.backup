@@ -1,16 +1,16 @@
-
+﻿
 // ------------------------------------------------------------------------------
 //
 // RichEditOleCtrls.h : interface of the RichEditOleCtrls class
 //
-// ��RichEdit OLE�ؼ����ͷ�ļ����壬�����������������¶���
+// 各RichEdit OLE控件类的头文件定义，包含但不仅限于以下对象
 // 
-// - ͼƬ
-// - �ļ���Ϣ
-// - ��������ʷ��Ϣ
-// - ��ȡ����
-// - �ı�
-// - @����Ϣ
+// - 图片
+// - 文件消息
+// - 以上是历史消息
+// - 获取更多
+// - 文本
+// - @人消息
 //
 // ------------------------------------------------------------------------------
 
@@ -116,13 +116,13 @@ namespace SOUI
 
         enum LinkFlag
         {
-            LINK_SAVE = 0x0001,   // ���水ť
-            LINK_SAVEAS = 0x0002,   // ����Ϊ��ť
-            LINK_CANCEL = 0x0004,   // ȡ�����䰴ť
-            LINK_OPEN_FILE = 0x0008,   // ���ļ���ť
-            LINK_OPEN_DIR = 0x0010,   // ���ļ������ļ��а�ť
-            LINK_CONTINUE = 0x0020,   // �������䰴ť
-            LINK_FORWARD = 0x0040,   //  ת��
+            LINK_SAVE = 0x0001,   // 保存按钮
+            LINK_SAVEAS = 0x0002,   // 另存为按钮
+            LINK_CANCEL = 0x0004,   // 取消传输按钮
+            LINK_OPEN_FILE = 0x0008,   // 打开文件按钮
+            LINK_OPEN_DIR = 0x0010,   // 打开文件所在文件夹按钮
+            LINK_CONTINUE = 0x0020,   // 继续传输按钮
+            LINK_FORWARD = 0x0040,   //  转发
         };
 
         static SStringW MakeFormattedText(
@@ -159,12 +159,12 @@ namespace SOUI
 
     private:
 
-        SStringW _filePath;         // �ļ�·��
-        SStringW _fileName;         // �ļ���
-        SStringW _fileSize;         // �ļ��ߴ�
-        SStringW _fileState;        // �ļ�״̬
-        __int64  _fileSizeBytes;    // ���ε��ļ���С
-        int      _links;            // �ɼ���ť�ı�ǣ���LinkFlag
+        SStringW _filePath;         // 文件路径
+        SStringW _fileName;         // 文件名
+        SStringW _fileSize;         // 文件尺寸
+        SStringW _fileState;        // 文件状态
+        __int64  _fileSizeBytes;    // 整形的文件大小
+        int      _links;            // 可见按钮的标记，见LinkFlag
     };
 
     //
@@ -196,9 +196,9 @@ namespace SOUI
 
         enum FetchMoreState
         {
-            REFM_STATE_NORMAL,  // ����״̬����ʾ��ȡ����
-            REFM_STATE_LOADING, // ���ڼ���״̬����ʾתȦȦ
-            REFM_STATE_END,     // ��ʾ������Ϣ������ʷ��¼�в�ѯ
+            REFM_STATE_NORMAL,  // 正常状态，显示获取更多
+            REFM_STATE_LOADING, // 正在加载状态，显示转圈圈
+            REFM_STATE_END,     // 显示更多消息请在历史记录中查询
         };
 
         RichEditFetchMoreOle();

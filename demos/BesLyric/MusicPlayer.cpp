@@ -1,9 +1,9 @@
-/*
+ï»¿/*
 *	Copyright (C) 2017  BensonLaur
 *	note: Looking up header file for license detail
 */
 
-// MusicPlayer.cpp :  ÊµÏÖ  MusicPlayerÀà µÄ½Ó¿Ú	
+// MusicPlayer.cpp :  å®žçŽ°  MusicPlayerç±» çš„æŽ¥å£	
 //
 /////////////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
@@ -18,7 +18,7 @@ MusicPlayer::MusicPlayer()
 	this->m_nVolumn = 1000;
 }
 
-//ÉèÖÃÒôÀÖÂ·¾¶ ºÍ Ä¿±ê´°¿Ú¾ä±ú
+//è®¾ç½®éŸ³ä¹è·¯å¾„ å’Œ ç›®æ ‡çª—å£å¥æŸ„
 void MusicPlayer::init(LPCTSTR musicPathName, HWND hostWnd)
 {
 	_tcscpy(this->m_szMusicPathName,musicPathName);
@@ -26,7 +26,7 @@ void MusicPlayer::init(LPCTSTR musicPathName, HWND hostWnd)
 	m_bIsParamReady = true;
 }
 
-//´ò¿ª²¢²¥·ÅÒôÀÖ
+//æ‰“å¼€å¹¶æ’­æ”¾éŸ³ä¹
 void MusicPlayer::openStart()
 {
 	if( isParamReady() )
@@ -36,65 +36,65 @@ void MusicPlayer::openStart()
 		{
 			 TCHAR buf[128]={0};
 			 mciGetErrorString(mcierror, buf,128);
-			 SMessageBox(this->m_hdlHostWnd,buf,_T("ÌáÊ¾"),0);
+			 SMessageBox(this->m_hdlHostWnd,buf,_T("æç¤º"),0);
 		}
 		else
 		{
-			//ÖØÍ·¿ªÊ¼²¥·Å
+			//é‡å¤´å¼€å§‹æ’­æ”¾
 			play(0);
 		}
 	}
 	else
-		SMessageBox(this->m_hdlHostWnd,_T("²¥·Å²ÎÊý»¹Ã»ÉèÖÃºÃ£¡"),_T("ÌáÊ¾"),0);
+		SMessageBox(this->m_hdlHostWnd,_T("æ’­æ”¾å‚æ•°è¿˜æ²¡è®¾ç½®å¥½ï¼"),_T("æç¤º"),0);
 
 }
 
-//½áÊø²¢¹Ø±ÕÒôÀÖ
+//ç»“æŸå¹¶å…³é—­éŸ³ä¹
 void MusicPlayer::closeStop()
 {
 	stop();
 	closeDevice();
 }
 
-//²¥·ÅÒôÀÖ
+//æ’­æ”¾éŸ³ä¹
 void MusicPlayer::play(int milliSecondPosition)
 {	
-	//ÉèÖÃÒôÁ¿ÔÙ²¥·Å
+	//è®¾ç½®éŸ³é‡å†æ’­æ”¾
 	this->setVolumn(this->m_nVolumn);
 
 	m_mciPlay.dwCallback=(DWORD)this->m_hdlHostWnd;
-	m_mciPlay.dwFrom = (DWORD)milliSecondPosition; //²¥·ÅÆðÊ¼Î»ÖÃmsÎªµ¥Î»
+	m_mciPlay.dwFrom = (DWORD)milliSecondPosition; //æ’­æ”¾èµ·å§‹ä½ç½®msä¸ºå•ä½
 	mciSendCommand(m_mciOpen.wDeviceID, MCI_PLAY, MCI_NOTIFY|MCI_FROM, (DWORD)(LPVOID)&m_mciPlay); 
 }
 
-//seekºó×´Ì¬Îªstop£¬µ«ÊÇÎ»ÖÃ·¢ÉúÁË¸Ä±ä´ËÊ±¿É»ñµÃ¸Ã×îÐÂÎ»ÖÃ²¢²¥·Å
+//seekåŽçŠ¶æ€ä¸ºstopï¼Œä½†æ˜¯ä½ç½®å‘ç”Ÿäº†æ”¹å˜æ­¤æ—¶å¯èŽ·å¾—è¯¥æœ€æ–°ä½ç½®å¹¶æ’­æ”¾
 void MusicPlayer::playAfterSeek()
 {
 	play(getPosition());
 }
 
-//ÔÝÍ£ÒôÀÖ
+//æš‚åœéŸ³ä¹
 void MusicPlayer::pause()
 {
 	m_mciPause.dwCallback = (DWORD)this->m_hdlHostWnd;
 	mciSendCommand(m_mciOpen.wDeviceID, MCI_PAUSE, MCI_WAIT|MCI_FROM, (DWORD)(LPVOID)&m_mciPause); 
 }
 
-//´ÓÔÝÍ£µÄ×´Ì¬»Ö¸´²¥·Å
+//ä»Žæš‚åœçš„çŠ¶æ€æ¢å¤æ’­æ”¾
 void MusicPlayer::resume()
 {
 	m_mciResume.dwCallback = (DWORD)this->m_hdlHostWnd;
 	mciSendCommand(m_mciOpen.wDeviceID, MCI_RESUME, MCI_WAIT|MCI_FROM, (DWORD)(LPVOID)&m_mciResume); 
 }
 
-//Í£Ö¹ÒôÀÖ
+//åœæ­¢éŸ³ä¹
 void MusicPlayer::stop()
 {
-	m_mciStop.dwCallback = (DWORD_PTR)this->m_hdlHostWnd;	//½ÓÊÕÏûÏ¢µÄ´°¿ÚµÄ¾ä±ú
+	m_mciStop.dwCallback = (DWORD_PTR)this->m_hdlHostWnd;	//æŽ¥æ”¶æ¶ˆæ¯çš„çª—å£çš„å¥æŸ„
 	mciSendCommand(m_mciOpen.wDeviceID, MCI_STOP, MCI_WAIT, (DWORD)(LPMCI_GENERIC_PARMS)&m_mciStop); 
 }
 
-//Ç°½ø»òºóÍËÒ»¶¨Ê±¼ä
+//å‰è¿›æˆ–åŽé€€ä¸€å®šæ—¶é—´
 void MusicPlayer::shift(int milliSecond)
 {
 	int pos = getPosition();
@@ -104,7 +104,7 @@ void MusicPlayer::shift(int milliSecond)
 	seek(nextPos);
 }
 
-//µÃµ½¸èÇúµÄ³¤¶È
+//å¾—åˆ°æ­Œæ›²çš„é•¿åº¦
 int MusicPlayer::getLength()
 {
 	m_mciStatus.dwCallback =  (DWORD_PTR)this->m_hdlHostWnd;
@@ -114,50 +114,50 @@ int MusicPlayer::getLength()
 	return m_mciStatus.dwReturn;
 }
 
-//·µ»Øµ±Ç°µÄÎ»ÖÃ
+//è¿”å›žå½“å‰çš„ä½ç½®
 int MusicPlayer::getPosition()
 {
 	m_mciStatus.dwCallback =  (DWORD_PTR)this->m_hdlHostWnd;
 	m_mciStatus.dwItem = MCI_STATUS_POSITION;
 	m_mciStatus.dwReturn = 0;
-	// Ö¸¶¨ MCI_STATUS_MODE Ê±£¬ÐèÒªÍ¬Ê±Ö¸¶¨MCI_STATUS_ITEM£¬ÒÔÓÃÀ´È·±£m_mciStatus ÖÐdwItemµÄÉèÖÃÓÐÐ§
+	// æŒ‡å®š MCI_STATUS_MODE æ—¶ï¼Œéœ€è¦åŒæ—¶æŒ‡å®šMCI_STATUS_ITEMï¼Œä»¥ç”¨æ¥ç¡®ä¿m_mciStatus ä¸­dwItemçš„è®¾ç½®æœ‰æ•ˆ
 	mciSendCommand(m_mciOpen.wDeviceID, MCI_STATUS, MCI_STATUS_MODE | MCI_STATUS_ITEM, (DWORD)&m_mciStatus); 
 	return m_mciStatus.dwReturn;
 }
 
-//»ñµÃµ±Ç°Ä£Ê½×´Ì¬
+//èŽ·å¾—å½“å‰æ¨¡å¼çŠ¶æ€
 DWORD_PTR  MusicPlayer::getModeStatus()
 {
 	m_mciStatus.dwCallback =  (DWORD_PTR)this->m_hdlHostWnd;
 	m_mciStatus.dwItem = MCI_STATUS_MODE;
 	m_mciStatus.dwReturn = 0;
-	// Ö¸¶¨ MCI_STATUS_MODE Ê±£¬ÐèÒªÍ¬Ê±Ö¸¶¨MCI_STATUS_ITEM£¬ÒÔÓÃÀ´È·±£m_mciStatus ÖÐdwItemµÄÉèÖÃÓÐÐ§
+	// æŒ‡å®š MCI_STATUS_MODE æ—¶ï¼Œéœ€è¦åŒæ—¶æŒ‡å®šMCI_STATUS_ITEMï¼Œä»¥ç”¨æ¥ç¡®ä¿m_mciStatus ä¸­dwItemçš„è®¾ç½®æœ‰æ•ˆ
 	mciSendCommand(m_mciOpen.wDeviceID, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&m_mciStatus); 
 	return m_mciStatus.dwReturn;
 }
 
-//´ò¿ªÒôÀÖÎÄ¼þ
+//æ‰“å¼€éŸ³ä¹æ–‡ä»¶
 MCIERROR MusicPlayer::openDevice()
 {
-	m_mciOpen.lpstrDeviceType = _T("mpegvideo"); //Òª²Ù×÷µÄÎÄ¼þÀàÐÍ
-	m_mciOpen.lpstrElementName = m_szMusicPathName; //Òª²Ù×÷µÄÎÄ¼þÂ·¾¶
+	m_mciOpen.lpstrDeviceType = _T("mpegvideo"); //è¦æ“ä½œçš„æ–‡ä»¶ç±»åž‹
+	m_mciOpen.lpstrElementName = m_szMusicPathName; //è¦æ“ä½œçš„æ–‡ä»¶è·¯å¾„
 
-	return mciSendCommand( 0,MCI_OPEN,MCI_OPEN_TYPE | MCI_OPEN_ELEMENT ,(DWORD)&m_mciOpen); //´ò¿ªÎÄ¼þÃüÁî
+	return mciSendCommand( 0,MCI_OPEN,MCI_OPEN_TYPE | MCI_OPEN_ELEMENT ,(DWORD)&m_mciOpen); //æ‰“å¼€æ–‡ä»¶å‘½ä»¤
 }
 
-//¹Ø±ÕÒôÀÖÎÄ¼þ
+//å…³é—­éŸ³ä¹æ–‡ä»¶
 MCIERROR MusicPlayer::closeDevice()
 {
-	m_mciClose.dwCallback = (DWORD_PTR)this->m_hdlHostWnd;	//½ÓÊÕÏûÏ¢µÄ´°¿ÚµÄ¾ä±ú
+	m_mciClose.dwCallback = (DWORD_PTR)this->m_hdlHostWnd;	//æŽ¥æ”¶æ¶ˆæ¯çš„çª—å£çš„å¥æŸ„
 	return mciSendCommand( m_mciOpen.wDeviceID, MCI_CLOSE, MCI_WAIT,(DWORD)(LPMCI_STATUS_PARMS)&m_mciClose);
 }
 
-//ÉèÖÃÒôÁ¿´óÐ¡(0-1000)
+//è®¾ç½®éŸ³é‡å¤§å°(0-1000)
 int MusicPlayer::setVolumn(int volumn)
 {	
 	this->m_nVolumn = min(max(0,volumn),1000);
 
-	m_mciSetVolumn.dwCallback=(DWORD_PTR)this->m_hdlHostWnd;	//½ÓÊÕÏûÏ¢µÄ´°¿ÚµÄ¾ä±ú
+	m_mciSetVolumn.dwCallback=(DWORD_PTR)this->m_hdlHostWnd;	//æŽ¥æ”¶æ¶ˆæ¯çš„çª—å£çš„å¥æŸ„
 	m_mciSetVolumn.dwItem=MCI_DGV_SETAUDIO_VOLUME;
 	m_mciSetVolumn.dwValue= this->m_nVolumn;
 
@@ -166,7 +166,7 @@ int MusicPlayer::setVolumn(int volumn)
 	return this->m_nVolumn;
 }
 
-//»ñµÃµ±Ç°ÒôÁ¿Æ½¾ùÖµ£¨×óÓÒÆ½¾ù£¿£©
+//èŽ·å¾—å½“å‰éŸ³é‡å¹³å‡å€¼ï¼ˆå·¦å³å¹³å‡ï¼Ÿï¼‰
 int MusicPlayer::getVolumn()
 {
 	m_mciGetVolumn.dwCallback =  (DWORD_PTR)this->m_hdlHostWnd;
@@ -177,12 +177,12 @@ int MusicPlayer::getVolumn()
 	return m_mciGetVolumn.dwReturn;
 }
 
-//µ½´ïÖ¸¶¨µÄÎ»ÖÃ
+//åˆ°è¾¾æŒ‡å®šçš„ä½ç½®
 void MusicPlayer::seek(int position)
 {
 	m_mciSet.dwCallback =  (DWORD_PTR)this->m_hdlHostWnd;
-	m_mciSet.dwTimeFormat = MCI_FORMAT_MILLISECONDS;  //ÉèÖÃÊ±¼ä¸ñÊ½Îª ºÁÃë
-	mciSendCommand(m_mciOpen.wDeviceID,MCI_SET, MCI_SET_TIME_FORMAT, (DWORD)&m_mciSeek);//Ö¸¶¨Éè±¸Ê¶±ðµÄÊ±¼ä¸ñÊ½
+	m_mciSet.dwTimeFormat = MCI_FORMAT_MILLISECONDS;  //è®¾ç½®æ—¶é—´æ ¼å¼ä¸º æ¯«ç§’
+	mciSendCommand(m_mciOpen.wDeviceID,MCI_SET, MCI_SET_TIME_FORMAT, (DWORD)&m_mciSeek);//æŒ‡å®šè®¾å¤‡è¯†åˆ«çš„æ—¶é—´æ ¼å¼
 
 	m_mciSeek.dwCallback =  (DWORD_PTR)this->m_hdlHostWnd;
 	m_mciSeek.dwTo = position;

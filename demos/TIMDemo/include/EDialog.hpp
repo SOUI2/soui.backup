@@ -1,4 +1,4 @@
-#ifndef __DIALOG_H___
+﻿#ifndef __DIALOG_H___
 #define __DIALOG_H___
 #pragma once
 #include <commdlg.h>

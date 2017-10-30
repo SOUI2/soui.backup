@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "RealWndDlg.h"
 
 
@@ -44,27 +44,27 @@ void CRealWndDlg::OnCommand(UINT uNotifyCode, int nID, HWND wndCtl)
 		
 	}
 }
-// ¼üÅÌÏûÏ¢
+// é”®ç›˜æ¶ˆæ¯
 void CRealWndDlg::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	switch (nChar)
 	{
 	
-	case  VK_ESCAPE://ÍË³öÈ«ÆÁ
+	case  VK_ESCAPE://é€€å‡ºå…¨å±
 	{
 		::SendMessageW(SApplication::getSingleton().GetMainWnd(), MS_REALWND, 0, (LPARAM)(int)10);
 	}break;
-	case VK_SPACE://¿Õ¸ñÔİÍ£
+	case VK_SPACE://ç©ºæ ¼æš‚åœ
 	{
 		::SendMessageW(SApplication::getSingleton().GetMainWnd(), MS_REALWND, 0, (LPARAM)(int)11);
 	}
 	break;
-	case VK_LEFT:  //¿ìÍË
+	case VK_LEFT:  //å¿«é€€
 		{
 			::SendMessageW(SApplication::getSingleton().GetMainWnd(), MS_REALWND, 0, (LPARAM)(int)15);
 		}
 		break;
-	case VK_RIGHT://¿ì½ø
+	case VK_RIGHT://å¿«è¿›
 		{
 			::SendMessageW(SApplication::getSingleton().GetMainWnd(), MS_REALWND, 0, (LPARAM)(int)16);
 		}
@@ -74,7 +74,7 @@ void CRealWndDlg::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CRealWndDlg::OnLbuttonDBLCLK(UINT nFlags, CPoint pt)
 {
 		
-	if (GetWindowRect().PtInRect(pt))//Ë«»÷È«ÆÁ/ÍË³ö
+	if (GetWindowRect().PtInRect(pt))//åŒå‡»å…¨å±/é€€å‡º
 		::SendMessageW(SApplication::getSingleton().GetMainWnd(), MS_REALWND, 0, (LPARAM)(int)12);
 	SetMsgHandled(false);
 
@@ -82,7 +82,7 @@ void CRealWndDlg::OnLbuttonDBLCLK(UINT nFlags, CPoint pt)
 void CRealWndDlg::OnLbuttonup(UINT nFlags, CPoint pt)
 {
 
-	if (GetWindowRect().PtInRect(pt))//µ¥»÷²¥·Å/ÔİÍ£
+	if (GetWindowRect().PtInRect(pt))//å•å‡»æ’­æ”¾/æš‚åœ
 		::SendMessageW(SApplication::getSingleton().GetMainWnd(), MS_REALWND, 0, (LPARAM)(int)14);
 	SetMsgHandled(false);
 

@@ -1,9 +1,9 @@
-/*
+ï»¿/*
 *	Copyright (C) 2017  BensonLaur
 *	note: Looking up header file for license detail
 */
 
-// LyricPlyer.cpp :  ÊµÏÖ  LyricPlayerÀà µÄ½Ó¿Ú	
+// LyricPlyer.cpp :  å®ç°  LyricPlayerç±» çš„æ¥å£	
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -13,7 +13,7 @@
 #include <mmsystem.h> 
 #pragma comment (lib, "winmm.lib")
 
-//¹¹Ôìº¯Êı
+//æ„é€ å‡½æ•°
 LyricPlayer::LyricPlayer():
 		 m_nCurLine(0),	
 		 m_nTotalLine(0)
@@ -22,7 +22,7 @@ LyricPlayer::LyricPlayer():
 	m_szLyricPathName[0]= _T('\0');
 }
 
-//ÉèÖÃ¸÷¸öÂ·¾¶
+//è®¾ç½®å„ä¸ªè·¯å¾„
 void LyricPlayer::setMusicPath(LPCTSTR pathName, HWND hostWnd)
 {
 	_tcscpy(m_szMusicPathName,pathName);
@@ -34,83 +34,83 @@ void LyricPlayer::setLyricPath(LPCTSTR pathName)
 	_tcscpy(m_szLyricPathName,pathName);
 }
 
-//ÖØÖÃ LyricPlayerµÄ ¸è´ÊÊı¾İÎª¿Õ
+//é‡ç½® LyricPlayerçš„ æ­Œè¯æ•°æ®ä¸ºç©º
 void LyricPlayer::reloadPlayer()
 {
 	m_vLineInfo.clear();
 }
 
-//²¥·Å¸èÇúÓë¹ö¶¯¸è´Ê Ô¤ÀÀ¿ªÊ¼
+//æ’­æ”¾æ­Œæ›²ä¸æ»šåŠ¨æ­Œè¯ é¢„è§ˆå¼€å§‹
 void LyricPlayer::playingStart(SHostWnd *wnd)
 {
-	//¸üĞÂ»ù±¾µÄĞĞÊı¼ÇÂ¼µÄÊı¾İ
+	//æ›´æ–°åŸºæœ¬çš„è¡Œæ•°è®°å½•çš„æ•°æ®
 	m_nTotalLine = this->m_vLineInfo.size();
-	m_nCurLine = 1;	//³õÖµÉèÎª1£¬¶¨Ê±Æ÷Ñ­»·µÄĞèÒª
+	m_nCurLine = 1;	//åˆå€¼è®¾ä¸º1ï¼Œå®šæ—¶å™¨å¾ªç¯çš„éœ€è¦
 
-	//Æô¶¯¼ä¸ôÎª1ºÁÃëµÄTimerÀ´¸üĞÂÒ³ÃæµÄÏÔÊ¾
+	//å¯åŠ¨é—´éš”ä¸º1æ¯«ç§’çš„Timeræ¥æ›´æ–°é¡µé¢çš„æ˜¾ç¤º
 	wnd->SetTimer(102,1);
-	//ÉèÖÃ²ÎÕÕµÄÊ±¼äÆğµã
+	//è®¾ç½®å‚ç…§çš„æ—¶é—´èµ·ç‚¹
 	setStartPoint();
 
 	playMusic();
 }
 
-//Ô¤ÀÀ½áÊø
+//é¢„è§ˆç»“æŸ
 void LyricPlayer::playingEnd(SHostWnd *wnd)
 {
-	//¹Ø±ÕTimer
+	//å…³é—­Timer
 	wnd->KillTimer(102);
 	stopMusic();
 }
 
-//²¥·ÅÒôÀÖ
+//æ’­æ”¾éŸ³ä¹
 void LyricPlayer::playMusic()
 {
 	m_musicPlayer.openStart();
 }
 
-//Í£Ö¹ÒôÀÖ
+//åœæ­¢éŸ³ä¹
 void LyricPlayer::stopMusic()
 {
 	m_musicPlayer.closeStop();
 }
 
-//ÉèÖÃstartPointF ³õÊ¼Öµ
+//è®¾ç½®startPointF åˆå§‹å€¼
 void LyricPlayer::setStartPoint()
 {
-	SYSTEMTIME		currentPoint;				/* ¼ÇÂ¼µ±Ç°µÄÊ±¼äµã */
+	SYSTEMTIME		currentPoint;				/* è®°å½•å½“å‰çš„æ—¶é—´ç‚¹ */
 	GetLocalTime(&currentPoint);
 	
-	//×ª»»µÃµ½µÃµ½ startPointF
+	//è½¬æ¢å¾—åˆ°å¾—åˆ° startPointF
 	SystemTimeToFileTime(&currentPoint,(FILETIME*)&startPointF);
 }
 
-//µÃµ½ÓëstartPointF µÄºÁÃë²îÖµ
+//å¾—åˆ°ä¸startPointF çš„æ¯«ç§’å·®å€¼
 int LyricPlayer::getMsDiffFromStartPoint()
 {
-	SYSTEMTIME		currentPoint;				/* ¼ÇÂ¼µ±Ç°µÄÊ±¼äµã */
-	ULARGE_INTEGER  currentPointF;				/* ¶ÔÓ¦µÄ FILETIME £¬ÎªÁËµÃµ½Ê±¼ä²î£¬Ê¹ÓÃFILETIME*/ 
+	SYSTEMTIME		currentPoint;				/* è®°å½•å½“å‰çš„æ—¶é—´ç‚¹ */
+	ULARGE_INTEGER  currentPointF;				/* å¯¹åº”çš„ FILETIME ï¼Œä¸ºäº†å¾—åˆ°æ—¶é—´å·®ï¼Œä½¿ç”¨FILETIME*/ 
 	GetLocalTime(&currentPoint);
 	
 	SystemTimeToFileTime(&currentPoint,(FILETIME*)&currentPointF); 
 	
 	unsigned __int64 dft=currentPointF.QuadPart-startPointF.QuadPart; 
-	int ms = (int)(dft/10000);//µÃµ½Ïà²îµÄºÁÃëÊı
+	int ms = (int)(dft/10000);//å¾—åˆ°ç›¸å·®çš„æ¯«ç§’æ•°
 	
 	return ms;
 }
 
-//Èç¹û¿ì½ø»òÕßºóÍË¶¼»áµ¼ÖÂ£¬µ±Ç°ĞĞ·¢Éú±ä»¯£¬¹ÊĞèÒªÏÈ¸üĞÂÔÙÈ¡Öµ
+//å¦‚æœå¿«è¿›æˆ–è€…åé€€éƒ½ä¼šå¯¼è‡´ï¼Œå½“å‰è¡Œå‘ç”Ÿå˜åŒ–ï¼Œæ•…éœ€è¦å…ˆæ›´æ–°å†å–å€¼
 void LyricPlayer::updateCurLine()
 {
-	//¸ù¾İµ±Ç°¸èÇú²¥·ÅµÄÎ»ÖÃ£¬ÅĞ¶Ïµ±Ç°ÔÚÄÄÒ»ĞĞ
+	//æ ¹æ®å½“å‰æ­Œæ›²æ’­æ”¾çš„ä½ç½®ï¼Œåˆ¤æ–­å½“å‰åœ¨å“ªä¸€è¡Œ
 	int pos = this->m_musicPlayer.getPosition();
 	vector<TimeLineInfo>::iterator i= m_vLineInfo.begin();
 	int j;
 	for(j=1; i != m_vLineInfo.end(); i++,j++)
-		if( i->m_nmSesonds > pos)//¸è´ÊÊ±¼ä ´óÓÚµ±Ç°²¥·ÅÎ»ÖÃÊ±
+		if( i->m_nmSesonds > pos)//æ­Œè¯æ—¶é—´ å¤§äºå½“å‰æ’­æ”¾ä½ç½®æ—¶
 		{
-			//È¡Ç°Ò»¸öÎ»ÖÃ£¬ÔòÎª m_nCurLine µÄÖµ
+			//å–å‰ä¸€ä¸ªä½ç½®ï¼Œåˆ™ä¸º m_nCurLine çš„å€¼
 			this->m_nCurLine = j-1; 
 			break;
 		}

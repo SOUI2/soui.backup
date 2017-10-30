@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "MainWnd.h"
 #include "helper/SMenu.h"
 #include <helper/SMenuEx.h>
@@ -7,35 +7,35 @@
 #include <ShellAPI.h>
 #include <commoncontrols.h>
 
-////////----------²Ëµ¥Ïî  ºê¶¨Òå -------///////////////
-#define MENU_FLAG_OPEN				0x1			//´ò¿ª
-#define MENU_FLAG_CHECKIN			0x2			//Ç©Èë
-#define MENU_FLAG_CHECKOUT		0x4			//Ç©³ö
-#define MENU_FLAG_CUT					0x8			//¼ôÇĞ
-#define MENU_FLAG_COPY				0x10		//¸´ÖÆ
-#define MENU_FLAG_PASTE				0x20		//Õ³Ìù
-#define MENU_FLAG_DELETE			0x40		//É¾³ı
-#define MENU_FLAG_RENAME			0x80		//ÖØÃüÃû
-#define MENU_FLAG_REFRESH			0x100		//Ë¢ĞÂ
-#define MENU_FLAG_NEW				0x200		//ĞÂ½¨
-#define MENU_FLAG_PROPERTY		0x400		//ÊôĞÔ
+////////----------èœå•é¡¹  å®å®šä¹‰ -------///////////////
+#define MENU_FLAG_OPEN				0x1			//æ‰“å¼€
+#define MENU_FLAG_CHECKIN			0x2			//ç­¾å…¥
+#define MENU_FLAG_CHECKOUT		0x4			//ç­¾å‡º
+#define MENU_FLAG_CUT					0x8			//å‰ªåˆ‡
+#define MENU_FLAG_COPY				0x10		//å¤åˆ¶
+#define MENU_FLAG_PASTE				0x20		//ç²˜è´´
+#define MENU_FLAG_DELETE			0x40		//åˆ é™¤
+#define MENU_FLAG_RENAME			0x80		//é‡å‘½å
+#define MENU_FLAG_REFRESH			0x100		//åˆ·æ–°
+#define MENU_FLAG_NEW				0x200		//æ–°å»º
+#define MENU_FLAG_PROPERTY		0x400		//å±æ€§
 
-#define MENU_FLAG_VIEW				0x800		//²é¿´
-#define MENU_FLAG_RESTORE			0x1000		//»¹Ô­
+#define MENU_FLAG_VIEW				0x800		//æŸ¥çœ‹
+#define MENU_FLAG_RESTORE			0x1000		//è¿˜åŸ
 
-#define MENU_FLAG_COPYTO			0x2000		//¸´ÖÆµ½
-#define MENU_FLAG_MOVETO			0x4000		//ÒÆ¶¯µ½
+#define MENU_FLAG_COPYTO			0x2000		//å¤åˆ¶åˆ°
+#define MENU_FLAG_MOVETO			0x4000		//ç§»åŠ¨åˆ°
 
-#define MENU_FLAG_EXPAN				0x8000		//Õ¹¿ª
-#define MENU_FLAG_FOLD				0x10000		//ÕÛµş
+#define MENU_FLAG_EXPAN				0x8000		//å±•å¼€
+#define MENU_FLAG_FOLD				0x10000		//æŠ˜å 
 
-#define MENU_FLAG_PRINT				0x20000		//´òÓ¡
+#define MENU_FLAG_PRINT				0x20000		//æ‰“å°
 
 
 
 
 CMainWnd::CMainWnd(void)
-	: SHostWnd(_T("layout:wnd_main"))//ÕâÀï¶¨ÒåÖ÷½çÃæĞèÒªÊ¹ÓÃµÄ²¼¾ÖÎÄ¼ş ÔÚuires.idxÎÄ¼şÖĞ¶¨ÒåµÄ
+	: SHostWnd(_T("layout:wnd_main"))//è¿™é‡Œå®šä¹‰ä¸»ç•Œé¢éœ€è¦ä½¿ç”¨çš„å¸ƒå±€æ–‡ä»¶ åœ¨uires.idxæ–‡ä»¶ä¸­å®šä¹‰çš„
 	, m_DropTarget(this)
 {
 	m_bChangeNotify = false;
@@ -57,16 +57,16 @@ void CMainWnd::OnBtnClose()
 #define		InitWnd(p, class, name)	p = FindChildByName2<class>(name);\
 													assert(p);\
 
-static TCHAR* sUnit[] = { _T("×Ö½Ú"), _T("KB"), _T("MB"), _T("GB") };
+static TCHAR* sUnit[] = { _T("å­—èŠ‚"), _T("KB"), _T("MB"), _T("GB") };
 SStringT FileSizeToStr(INT64 fileSize)
 {
 #if 0
-	//Õâ¸ö·½·¨ ÓĞ¾ÖÏŞĞÔ  Ã»ÓĞËÄÉáÎåÈë Ò²Ö»ÓĞ3Î»Êı×Ö  
+	//è¿™ä¸ªæ–¹æ³• æœ‰å±€é™æ€§  æ²¡æœ‰å››èˆäº”å…¥ ä¹Ÿåªæœ‰3ä½æ•°å­—  
 	TCHAR       szFileLen[64] = { 0 };
 	StrFormatByteSize64(fileSize, szFileLen, 64);
 	return CString(szFileLen);
 #else			
-	if (fileSize < 0) return _T("Î´Öª");
+	if (fileSize < 0) return _T("æœªçŸ¥");
 
 	INT32 nIndex = 0;
 
@@ -102,9 +102,9 @@ BOOL CMainWnd::OnInitDialog(HWND wndFocus, LPARAM lInitParam)
 	SPathBar* pPathBar = NULL;
 	InitWnd(pPathBar, SPathBar, L"bar_dir")
 	
-	pPathBar->InsertItem(0, L"¸öÈËÍøÅÌ");
+	pPathBar->InsertItem(0, L"ä¸ªäººç½‘ç›˜");
 	pPathBar->InsertItem(0, L"1213");
-	pPathBar->InsertItem(0, L"Ğ¡µçÓ°");
+	pPathBar->InsertItem(0, L"å°ç”µå½±");
 	
 	InitWnd(m_pFileList, SFileList, L"lc_file")
 		
@@ -114,7 +114,7 @@ BOOL CMainWnd::OnInitDialog(HWND wndFocus, LPARAM lInitParam)
 	
 	for (int i=0; i<100; ++i)
 	{
-		szFileName.Format(_T("ĞÂ½¨ÎÄ±¾_%03d.txt"), i);
+		szFileName.Format(_T("æ–°å»ºæ–‡æœ¬_%03d.txt"), i);
 
 		
 		m_pFileList->InsertItem(i, szFileName, GetFileIconIndex(szFileName));
@@ -123,20 +123,20 @@ BOOL CMainWnd::OnInitDialog(HWND wndFocus, LPARAM lInitParam)
 	}
 
 	
-	//×¢²á Ïß³ÌÊÂ¼ş  µ½Í¨ÖªÖĞĞÄ
+	//æ³¨å†Œ çº¿ç¨‹äº‹ä»¶  åˆ°é€šçŸ¥ä¸­å¿ƒ
 	//SNotifyCenter::getSingleton().addEvent(EVENTID(EventThread));
 	
-	// ¿ªÆôÈ«¾Ö¼àÌı ÎÄ¼şĞÂ½¨ ²Ù×÷  ÓÃÀ´ÅĞ¶Ï ÔÚ×ÀÃæ Õ³Ìù²Ù×÷ ´Ó¶ø¿ÉÒÔÏÂÔØ ÎÄ¼ş
+	// å¼€å¯å…¨å±€ç›‘å¬ æ–‡ä»¶æ–°å»º æ“ä½œ  ç”¨æ¥åˆ¤æ–­ åœ¨æ¡Œé¢ ç²˜è´´æ“ä½œ ä»è€Œå¯ä»¥ä¸‹è½½ æ–‡ä»¶
 	SHChangeNotifyEntry shEntry = { 0 };
 	shEntry.fRecursive = TRUE;
 	shEntry.pidl = 0;
 
-	//×¢²áShell¼àÊÓº¯Êı
+	//æ³¨å†ŒShellç›‘è§†å‡½æ•°
 	ULONG uNotifyId = SHChangeNotifyRegister(
 		m_hWnd,
 		SHCNRF_ShellLevel,//SHCNRF_InterruptLevel|SHCNRF_ShellLevel,
-		SHCNE_CREATE,		//Ö» ¼àÌı ĞÂ½¨ µÄ²Ù×÷
-		WM_CHANGENOTIFY, //×Ô¶¨ÒåÏûÏ¢
+		SHCNE_CREATE,		//åª ç›‘å¬ æ–°å»º çš„æ“ä½œ
+		WM_CHANGENOTIFY, //è‡ªå®šä¹‰æ¶ˆæ¯
 		1,
 		&shEntry
 	);
@@ -155,12 +155,12 @@ LRESULT CMainWnd::OnChangeNotify(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		return 0;
 
 	SStringT sDestPath;
-	if (SHCNE_CREATE != lParam)   // Ö» ´¦ÀíĞÂ½¨µÄÎÄ¼ş  
+	if (SHCNE_CREATE != lParam)   // åª å¤„ç†æ–°å»ºçš„æ–‡ä»¶  
 	{
 		return 0;
 	}
 
-	// ¼à¿Øµ½µÄ ´ÎÊı ÓĞµã¶à 
+	// ç›‘æ§åˆ°çš„ æ¬¡æ•° æœ‰ç‚¹å¤š 
 
 	DWORD* pDw = (DWORD*)wParam;
 	//DWORD* pDw2 = (DWORD*)(wParam + sizeof(DWORD));
@@ -170,14 +170,14 @@ LRESULT CMainWnd::OnChangeNotify(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	OutputDebugString(lpFilePath);
 
-	//ÏÂÃæ¾ÍÒª¸ù¾İÎÄ¼şÃû  À´ ÅĞ¶Ï ÊÇ·ñ ÊÇÎÒÃÇ×Ô¼ºĞèÒªµÄÎÄ¼ş
+	//ä¸‹é¢å°±è¦æ ¹æ®æ–‡ä»¶å  æ¥ åˆ¤æ–­ æ˜¯å¦ æ˜¯æˆ‘ä»¬è‡ªå·±éœ€è¦çš„æ–‡ä»¶
 	LPCTSTR lpFileName = PathFindFileName(lpFilePath);
 	if (0 != _tcscmp(lpFileName, _T("123456789.cfg")))
 	{
-		return 0; //²»ÊÇ ¾Í·µ»Ø 
+		return 0; //ä¸æ˜¯ å°±è¿”å› 
 	}
 
-	// ÕâÊÇ¸öÁÙÊ±ÎÄ¼ş  ĞèÒªÉ¾³ı 
+	// è¿™æ˜¯ä¸ªä¸´æ—¶æ–‡ä»¶  éœ€è¦åˆ é™¤ 
 	DeleteFile(lpFilePath);
 
 	PathRemoveFileSpec(lpFilePath);
@@ -185,7 +185,7 @@ LRESULT CMainWnd::OnChangeNotify(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	sDestPath = lpFilePath;
 
-	sDestPath.Trim();//È¥µôÊ×Î²¿Õ¸ñ
+	sDestPath.Trim();//å»æ‰é¦–å°¾ç©ºæ ¼
 	if (sDestPath.IsEmpty())
 		return 0;
 
@@ -225,7 +225,7 @@ bool CMainWnd::OnEventPathCmd(EventArgs *e)
 	if(NULL == pEvt)
 		return false;
 
-	//SMessageBox(m_hWnd, m_PathBarHandle->GetItemText(pEvt->iItem), _T("ÌáÊ¾"), MB_ICONASTERISK);
+	//SMessageBox(m_hWnd, m_PathBarHandle->GetItemText(pEvt->iItem), _T("æç¤º"), MB_ICONASTERISK);
 	return true;
 }
 
@@ -245,7 +245,7 @@ bool CMainWnd::OnList_Click(EventArgs* e)
 	}
 	else
 		sText.Format(_T("Click ListItem %d"), pEvt->iItem);
-	//SMessageBox(m_hWnd, sText, _T("ÌáÊ¾"), 0);
+	//SMessageBox(m_hWnd, sText, _T("æç¤º"), 0);
 	m_pTextStatus2->SetWindowText(sText);
 	
 	return true;
@@ -312,7 +312,7 @@ bool CMainWnd::OnList_BeginDrag(EventArgs* e)
 	GetModuleFileName(NULL, lpPath, MAX_PATH);
 	PathRemoveFileSpec(lpPath);
 	PathAddBackslash(lpPath);
-	_tcscat_s(lpPath, MAX_PATH, _T("123456789.cfg"));		// Õâ¸öÎÄ¼ş±ØĞë´æÔÚ 
+	_tcscat_s(lpPath, MAX_PATH, _T("123456789.cfg"));		// è¿™ä¸ªæ–‡ä»¶å¿…é¡»å­˜åœ¨ 
 
 	pDataOj->CacheSingleFileAsHdrop(lpPath);
 	//pDataOj->CacheSingleFileAsHdrop(L"C:\\123444.txt");
@@ -331,7 +331,7 @@ bool CMainWnd::OnList_BeginDrag(EventArgs* e)
 	return true;
 }
 
-//  DropTarget  µÄÖØÔØ º¯Êı  
+//  DropTarget  çš„é‡è½½ å‡½æ•°  
 HRESULT CMainWnd::OnDragEnter(IDataObject* pDataObject, DWORD dwKeyState, const POINT& point)
 {
 	return S_OK;
@@ -350,13 +350,13 @@ DROPEFFECT CMainWnd::OnDragOver(IDataObject* pDataObject,
 	SWND s = SwndFromPoint(pt, FALSE);
 	if(s == m_pFileList->GetSwnd())
 	{
-		szMessage = _T("ÉÏ´«µ½");
-		szInsert = _T("ÍøÅÌ");
+		szMessage = _T("ä¸Šä¼ åˆ°");
+		szInsert = _T("ç½‘ç›˜");
 		dwEffect = DROPEFFECT_COPY;
 	}
 	else
 	{
-		szMessage = _T("²»ÄÜÉÏ´«");
+		szMessage = _T("ä¸èƒ½ä¸Šä¼ ");
 		szInsert = _T("22");
 	}
 
@@ -399,7 +399,7 @@ UINT CMainWnd::ShowFileListItem(CPoint Point, UINT nShowCode)
 	SMenuEx menu;
 	if(FALSE == menu.LoadMenu(_T("layout:Menu_FileListItem")))
 	{
-		MsgBox(_T("¼ÓÔØ²Ëµ¥ Ê§°Ü£¡"));
+		MsgBox(_T("åŠ è½½èœå• å¤±è´¥ï¼"));
 		return ;
 	}
 	menu.TrackPopupMenu(0,pt.x,pt.y,m_hWnd);
@@ -407,7 +407,7 @@ UINT CMainWnd::ShowFileListItem(CPoint Point, UINT nShowCode)
 	SMenu menuMain;
 	if(FALSE == menuMain.LoadMenu(_T("Menu_FileList"), _T("layout")))
 	{
-		MsgBox(_T("¼ÓÔØ²Ëµ¥ Ê§°Ü£¡"));
+		MsgBox(_T("åŠ è½½èœå• å¤±è´¥ï¼"));
 		return 0;
 	}
 
@@ -415,13 +415,13 @@ UINT CMainWnd::ShowFileListItem(CPoint Point, UINT nShowCode)
 	::CheckMenuItem(menuMain.m_hMenu, 121, MF_BYCOMMAND | MF_CHECKED);
 	::CheckMenuItem(menuMain.m_hMenu, 132, MF_BYCOMMAND | MF_CHECKED);
 	::DeleteMenu(menuMain.m_hMenu, 122, MF_BYCOMMAND);
-	//menuMain.InsertMenu(0, MF_BYPOSITION, 1, _T("½øÈëÏµÍ³"), 0);
+	//menuMain.InsertMenu(0, MF_BYPOSITION, 1, _T("è¿›å…¥ç³»ç»Ÿ"), 0);
 
 	//WebUrlInfoVct webList = theFun.GetWebUrlInfo();
 	//int nWebCount = webList.size();
-	//if(nWebCount <= 0)		//Ã»ÓĞÊı¾İ   ¾ÍÖ»
+	//if(nWebCount <= 0)		//æ²¡æœ‰æ•°æ®   å°±åª
 	//{
-	//	menuMain.InsertMenu(0, MF_BYPOSITION, 1, _T("½øÈëÏµÍ³"), 0);
+	//	menuMain.InsertMenu(0, MF_BYPOSITION, 1, _T("è¿›å…¥ç³»ç»Ÿ"), 0);
 	//}
 	//else
 	{
@@ -433,10 +433,10 @@ UINT CMainWnd::ShowFileListItem(CPoint Point, UINT nShowCode)
 		//	menuSys.InsertMenu(i, 0, 10 + i, webList[i].sWebTitle, 0);
 		//}
 
-		//menuMain.InsertMenu(0, MF_POPUP|MF_BYPOSITION, (UINT_PTR)&menuSys, _T("½øÈëÏµÍ³"), 0);
+		//menuMain.InsertMenu(0, MF_POPUP|MF_BYPOSITION, (UINT_PTR)&menuSys, _T("è¿›å…¥ç³»ç»Ÿ"), 0);
 	}
 
-	//TPM_RETURNCMD  Ö±½Ó·µ»Ø µã»÷µÄid  ²»ÓÃSendMessÏûÏ¢ WM_COMMANDÁË 
+	//TPM_RETURNCMD  ç›´æ¥è¿”å› ç‚¹å‡»çš„id  ä¸ç”¨SendMessæ¶ˆæ¯ WM_COMMANDäº† 
 	UINT uCmd = menuMain.TrackPopupMenu(TPM_RETURNCMD, Point.x, Point.y, m_hWnd);
 	//MenuHanld(uCmd);
 	return uCmd;

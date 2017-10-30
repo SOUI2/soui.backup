@@ -1,4 +1,4 @@
-#include "drawtext-skia.h"
+ï»¿#include "drawtext-skia.h"
 
 #define DT_ELLIPSIS (DT_PATH_ELLIPSIS|DT_END_ELLIPSIS|DT_WORD_ELLIPSIS)
 #define CH_ELLIPSIS L"..."
@@ -125,7 +125,7 @@ SkScalar SkTextLayoutEx::drawLine( SkCanvas *canvas, SkScalar x, SkScalar y, int
         {
             SkScalar x1 = m_paint->measureText(text,(m_prefix[i]-iBegin)*sizeof(wchar_t));
             SkScalar x2 = m_paint->measureText(text,(m_prefix[i]-iBegin+1)*sizeof(wchar_t));
-            canvas->drawLine(xBase+x1,y+1,xBase+x2,y+1,*m_paint); //»æÖÆÏÂ»®Ïß
+            canvas->drawLine(xBase+x1,y+1,xBase+x2,y+1,*m_paint); //ç»˜åˆ¶ä¸‹åˆ’çº¿
             i++;
         }
     }
@@ -200,21 +200,21 @@ SkRect SkTextLayoutEx::draw( SkCanvas* canvas )
     float height = m_rcBound.height();
     float y=m_rcBound.fTop - metrics.fAscent;
     if(m_uFormat & DT_SINGLELINE)
-    {//µ¥ĞĞÏÔÊ¾
+    {//å•è¡Œæ˜¾ç¤º
         rcDraw.fBottom = rcDraw.fTop + lineSpan;
         if(m_uFormat & DT_VCENTER) 
         {
             y += (height - textHeight)/2.0f;
         }
         if(m_uFormat & DT_ELLIPSIS)
-        {//Ö»Ö§³ÖÔÚĞĞÎ²Ôö¼ÓÊ¡ÂÔºÅ
+        {//åªæ”¯æŒåœ¨è¡Œå°¾å¢åŠ çœç•¥å·
             rcDraw.fRight = rcDraw.fLeft + drawLineEndWithEllipsis(canvas,x,y,0,m_text.count(),fontHeight,m_rcBound.width());
         }else
         {
             rcDraw.fRight = rcDraw.fLeft + drawLine(canvas,x,y,0,m_text.count(),fontHeight);
         }
     }else
-    {//¶àĞĞÏÔÊ¾
+    {//å¤šè¡Œæ˜¾ç¤º
         SkScalar maxLineWid=0;
         int iLine = 0;
         while(iLine<m_lines.count())
@@ -234,7 +234,7 @@ SkRect SkTextLayoutEx::draw( SkCanvas* canvas )
             int iEnd = iLine<(m_lines.count()-1)?m_lines[iLine+1]:m_text.count();
             SkScalar lineWid;
             if(m_uFormat & DT_ELLIPSIS)
-            {//Ö»Ö§³ÖÔÚĞĞÎ²Ôö¼ÓÊ¡ÂÔºÅ
+            {//åªæ”¯æŒåœ¨è¡Œå°¾å¢åŠ çœç•¥å·
                 lineWid=drawLineEndWithEllipsis(canvas,x,y,iBegin,iEnd,fontHeight,m_rcBound.width());
             }else
             {
@@ -244,7 +244,7 @@ SkRect SkTextLayoutEx::draw( SkCanvas* canvas )
             y += lineSpan;
         }
         rcDraw.fRight = rcDraw.fLeft + maxLineWid;
-        rcDraw.fBottom = rcDraw.fTop + y;
+        rcDraw.fBottom = y + metrics.fAscent;
     }
     canvas->restore();
     return rcDraw;

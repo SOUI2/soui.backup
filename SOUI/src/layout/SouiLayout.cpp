@@ -1,14 +1,16 @@
-#include "souistd.h"
+﻿#include "souistd.h"
 #include "layout\SouiLayout.h"
-#include <math.h>
 #include "helper/SplitString.h"
-#include <algorithm>
+#pragma warning (push)
+#pragma warning (disable: 4985) // disable the warning message during the include
+#include <math.h>               // this is where I would normally get the warning message
+#pragma warning (pop)
 
 namespace SOUI{
     enum
     {
-        POS_INIT=0x11000000,    //����ĳ�ʼ��ֵ
-        POS_WAIT=0x12000000,    //����ļ����������������ڵĲ���
+        POS_INIT=0x11000000,    //坐标的初始化值
+        POS_WAIT=0x12000000,    //坐标的计算依赖于其它窗口的布局
     };
 
 
@@ -94,7 +96,7 @@ namespace SOUI{
         POS_INFO pos1,pos2;
         if(!StrPos2ItemPos(strPos1,pos1) || !StrPos2ItemPos(strPos2,pos2) )
             return FALSE;
-        if(pos1.pit == PIT_SIZE || pos2.pit == PIT_SIZE)//ǰ��2�����Բ�����size����
+        if(pos1.pit == PIT_SIZE || pos2.pit == PIT_SIZE)//前面2个属性不能是size类型
             return FALSE;
         posLeft = pos1;
         posTop = pos2;
@@ -198,7 +200,7 @@ namespace SOUI{
             SASSERT_FMTW(L"Parse pos attribute failed, strPos=%s",strValue);
             return E_INVALIDARG;
         }
-        //����pos�����еĿո���ݡ�
+        //增加pos属性中的空格兼容。
         for(size_t i=0;i<strLst.GetCount();i++)
         {
             strLst.GetAt(i).TrimBlank();
@@ -211,7 +213,7 @@ namespace SOUI{
             bRet = ParsePosition34(strLst[2],strLst[3]);
         }
 		if(bRet && nCount == 4)
-		{//���X,Y�������Ƿ�Ϊ����������
+		{//检测X,Y方向上是否为充满父窗口
 			if((posLeft.pit == PIT_NORMAL && posLeft.nPos.isZero() && posLeft.cMinus==1)
 				&&(posRight.pit == PIT_NORMAL && posRight.nPos.isZero() && posRight.cMinus==-1))
 			{
@@ -400,12 +402,12 @@ namespace SOUI{
 
         switch(pos.pit)
         {
-        case PIT_CENTER: //�ο�����
+        case PIT_CENTER: //参考中心
             if(nMax != SIZE_WRAP_CONTENT) nRet=pos.nPos.toPixelSize(nScale) * pos.cMinus + nMax/2;
             break;
         case PIT_NORMAL: 
             if(pos.cMinus == -1)
-			{//�ο��ұ߻����±�
+			{//参考右边或者下边
 				if(nMax != SIZE_WRAP_CONTENT) nRet=nMax-pos.nPos.toPixelSize(nScale);
 			}else
 			{
@@ -488,7 +490,7 @@ namespace SOUI{
 					}
 				}
 				if(!wndPosRef.pWnd)
-				{//û���ҵ�ʱ,ʹ�ø�������Ϣ
+				{//没有找到时,使用父窗口信息
 					wndPosRef.rc = CRect(0,0,nMax,nMax);
 					wndPosRef.bWaitOffsetX = wndPosRef.bWaitOffsetY = false;
 				}
@@ -531,7 +533,7 @@ namespace SOUI{
         while(pChild)
         {
             if(!pChild->IsFloat() && (pChild->IsVisible(FALSE) || pChild->IsDisplay()))
-            {//����ʾ�Ҳ�ռλ�Ĵ��ڲ��������
+            {//不显示且不占位的窗口不参与计算
                 WndPos wndPos;
                 wndPos.pWnd = pChild;
                 wndPos.rc = CRect(POS_INIT,POS_INIT,POS_INIT,POS_INIT);
@@ -543,10 +545,10 @@ namespace SOUI{
             pChild=pParent->GetNextLayoutChild(pChild);
         }
         
-        //�����Ӵ���λ��
+        //计算子窗口位置
         CalcPositionEx(&lstWndPos,nWidth,nHeight);
 
-        //�����Ӵ��ڷ�Χ
+        //计算子窗口范围
         int nMaxX = 0,nMaxY = 0;
         SPOSITION pos = lstWndPos.GetHeadPosition();
         while(pos)
@@ -572,21 +574,21 @@ namespace SOUI{
 
 
     /*
-    �����Ӵ���������С�߼���
-    1:���ø��������ϽǵĴ��ڳ�֮ΪI��ȷ���Դ��ڡ�
-    2:����I�ര�ڵĴ��ڳ�ΪII��ȷ���Դ��ڡ�
-    3:������ø��������Ͻǻ���I,II��ȷ���Դ��ڣ��ұ����ø��������½ǵĴ���ΪI��ȷ���Դ��ڣ����ര���Զ�ת��������Ӧ��С���ڡ�
-    4:���Ҷ����ø��������½ǵĴ���ΪII�಻ȷ�����ڣ����ര�ڲ�Ӱ�츸���ڴ�С��
-    5:����I,II�಻ȷ����С���ڵĴ���ͬ����Ӱ�츸���ڴ�С��
+    计算子窗口容器大小逻辑：
+    1:引用父窗口左上角的窗口称之为I类确定性窗口。
+    2:引用I类窗口的窗口称为II类确定性窗口。
+    3:左边引用父窗口左上角或者I,II类确定性窗口，右边引用父窗口右下角的窗口为I不确定性窗口，这类窗口自动转换成自适应大小窗口。
+    4:左右都引用父窗口右下角的窗口为II类不确定窗口，这类窗口不影响父窗口大小。
+    5:引用I,II类不确定大小窗口的窗口同样不影响父窗口大小。
 
-    ֻҪһ���ؼ����λ����ȷ�����ؼ����ұ�Ҳ���Ա�֤����ȷ����
-    ������λ�ò���ȷ������ؼ���С��Ӱ�츸���ڴ�С��
+    只要一个控件左边位置能确定，控件的右边也可以保证可以确定。
+    如果左边位置不能确定，则控件大小不影响父窗口大小。
     */
     void SouiLayout::CalcPositionEx(SList<WndPos> *pListChildren,int nWidth,int nHeight) const
     {
         CalcPostion(pListChildren,nWidth,nHeight);
 
-        //���ο��������ұ߻��ߵױߵ��Ӵ�������Ϊwrap_content���������С
+        //将参考父窗口右边或者底边的子窗口设置为wrap_content并计算出大小
 
         int nResolved = 0;
         for(SPOSITION pos = pListChildren->GetHeadPosition();pos;pListChildren->GetNext(pos))
@@ -640,7 +642,7 @@ namespace SOUI{
             nResolvedStep1 = 0;
             nResolvedStep2 = 0;
 
-            //step 1:��������в���Ҫ���㴰�ڴ�С�Ϳ���ȷ��������
+            //step 1:计算出所有不需要计算窗口大小就可以确定的坐标
             int nResolved = 0;
             do{
                 nResolved = 0;
@@ -706,14 +708,14 @@ namespace SOUI{
             if(nResolvedStep1>0)
             {
                 int nResolved = 0;
-                //step 2:���������Ӧ��С���ڵ�Size,���ڿ���ȷ���Ĵ������offset����
+                //step 2:计算出自适应大小窗口的Size,对于可以确定的窗口完成offset操作
                 do{
                     nResolved = 0;
                     for(SPOSITION pos = pListChildren->GetHeadPosition();pos;pListChildren->GetNext(pos))
                     {
                         WndPos &wndPos = pListChildren->GetAt(pos);
                         SouiLayoutParam *pLayoutParam = wndPos.pWnd->GetLayoutParamT<SouiLayoutParam>();
-                        if(IsWaitingPos(wndPos.rc.left) || IsWaitingPos(wndPos.rc.top)) continue;//����ȷ����һ�����ſ�ʼ����
+                        if(IsWaitingPos(wndPos.rc.left) || IsWaitingPos(wndPos.rc.top)) continue;//至少确定了一个点后才开始计算
 
                         if((IsWaitingPos(wndPos.rc.right) && pLayoutParam->IsWrapContent(Horz)) 
 							|| (IsWaitingPos(wndPos.rc.bottom) && pLayoutParam->IsWrapContent(Vert)))
@@ -775,10 +777,10 @@ namespace SOUI{
 			return;
 
 		CRect rcParent = pParent->GetChildrenLayoutRect();
-		//�����Ӵ���λ��
+		//计算子窗口位置
 		CalcPostion(&lstWndPos,rcParent.Width(),rcParent.Height());
 
-		//ƫ�ƴ�������
+		//偏移窗口坐标
 		SPOSITION pos = lstWndPos.GetHeadPosition();
 		while(pos)
 		{

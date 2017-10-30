@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "SColorPicker.h"
 
 namespace SOUI
@@ -34,7 +34,7 @@ void SColorPicker::OnLButtonUp( UINT nFlags,CPoint pt )
 	pt.x=rcWnd.left,pt.y=rcWnd.bottom;
 	::ClientToScreen(GetContainer()->GetHostHwnd(),&pt);
 	pCrPopup->SetDefColor(m_crDef);
-	pCrPopup->Create(pt,m_crCur,_T("Ä¬ÈÏ"),_T("¸ü¶à"));
+	pCrPopup->Create(pt,m_crCur,_T("é»˜è®¤"),_T("æ›´å¤š"));
 }
 
 void SColorPicker::OnColorChanged( COLORREF cr )

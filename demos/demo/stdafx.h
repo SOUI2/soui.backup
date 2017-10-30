@@ -1,4 +1,4 @@
-// stdafx.h : include file for standard system include files,
+﻿// stdafx.h : include file for standard system include files,
 //  or project specific include files that are used frequently, but
 //  are changed infrequently
 //
@@ -16,7 +16,7 @@
 #include <com-cfg.h>
 #include <event/notifycenter.h>
 
-#include "resource.h"	//APP��Դ
+#include "resource.h"	//APP资源
 #define R_IN_CPP
 #include "res/resource.h"
 
@@ -31,6 +31,8 @@
 #include "../controls.extend/SFreeMoveWindow.h"
 #include "../controls.extend/tipwnd.h"
 
+#include "SInterpolatorView.h"
+#include "SPathView.h"
 
 using namespace SOUI;
 

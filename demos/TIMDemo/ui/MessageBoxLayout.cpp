@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "MessageBoxLayout.h"
 
 MessageBoxLayout::MessageBoxLayout(SWindow* pRoot)

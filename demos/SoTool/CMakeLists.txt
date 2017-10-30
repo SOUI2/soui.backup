@@ -22,8 +22,8 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 
 add_executable(SoTool WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-add_dependencies(SoTool soui-sys-resource ${COM_LIBS})
-target_link_libraries(SoTool utilities soui)
+add_dependencies(SoTool soui-sys-resource)
+target_link_libraries(SoTool utilities soui ${COM_LIBS})
 
 set_target_properties(SoTool PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
 set_target_properties(SoTool PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "ZipArchive.h"
 #include <assert.h>
 
@@ -376,7 +376,7 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 
 		DWORD dwSize = hdr.cSize;
 		if (hdr.flag & 1)
-		{//Õâ¸ö½Ó¿Ú²»Ö§³Ö¼ÓÃÜ
+		{//è¿™ä¸ªæ¥å£ä¸æ”¯æŒåŠ å¯†
 			return FALSE;
 		}
 
@@ -494,7 +494,7 @@ CZipFile::CZipFile(DWORD dwSize/*=0*/)
 		switch (hdr.compression)
 		{
 		case LOCAL_COMP_STORE:
-			//_ASSERTE(hdr.cSize == hdr.ucSize);//¼ÓÃÜµÄÊ±ÕâÁ½¸öÖµ²»Ò»¶¨ÏàµÈ
+			//_ASSERTE(hdr.cSize == hdr.ucSize);//åŠ å¯†çš„æ—¶è¿™ä¸¤ä¸ªå€¼ä¸ä¸€å®šç›¸ç­‰
 			break;
 		case LOCAL_COMP_DEFLAT: 
 			{

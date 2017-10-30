@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "SImageBtnEx.h"
 
 void SOUI::SImageBtnEx::OnPaint( IRenderTarget *pRT )

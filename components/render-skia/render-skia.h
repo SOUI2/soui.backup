@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 
 
 #include <helper/color.h>
@@ -32,11 +32,18 @@ namespace SOUI
         virtual BOOL CreateFont(IFont ** ppFont , const LOGFONT &lf);
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
         virtual BOOL CreateRegion(IRegion **ppRgn);
+		virtual BOOL CreatePath(IPath ** ppPath);
         
         virtual void SetImgDecoderFactory(IImgDecoderFactory *pImgDecoderFac){m_imgDecoderFactory=pImgDecoderFac;}
         
         virtual IImgDecoderFactory * GetImgDecoderFactory(){return m_imgDecoderFactory;}
-    protected:
+
+		virtual BOOL CreatePathEffect(REFGUID guidEffect,IPathEffect ** ppPathEffect);
+
+		virtual BOOL CreatePathMeasure(IPathMeasure ** ppPathMeasure);
+
+
+	protected:
         CAutoRefPtr<IImgDecoderFactory> m_imgDecoderFactory;
 	};
 
@@ -132,8 +139,8 @@ namespace SOUI
 			ATTR_FLOAT(L"blurRadius",m_blurRadius,FALSE)
 		SOUI_ATTRS_END()
 	protected:
-        SkTypeface *m_skFont;   //∂®“Â◊÷ÃÂ
-        SkPaint     m_skPaint;  //∂®“ÂŒƒ◊÷ªÊ÷∆ Ù–‘
+        SkTypeface *m_skFont;   //ÂÆö‰πâÂ≠ó‰Ωì
+        SkPaint     m_skPaint;  //ÂÆö‰πâÊñáÂ≠óÁªòÂà∂Â±ûÊÄß
         LOGFONT     m_lf;
 		SkBlurStyle m_blurStyle;
 		SkScalar	m_blurRadius;
@@ -170,8 +177,8 @@ namespace SOUI
 
 		}
 
-		COLORREF m_cr;		//—’…´ª≠À¢
-		SkBitmap m_bmp;		//ŒªÕºª≠À¢
+		COLORREF m_cr;		//È¢úËâ≤ÁîªÂà∑
+		SkBitmap m_bmp;		//‰ΩçÂõæÁîªÂà∑
 		BOOL	 m_fBmp;
 	};
 
@@ -204,8 +211,8 @@ namespace SOUI
 	    
         HRESULT ImgFromDecoder(IImgX *imgDecoder);
 
-		SkBitmap    m_bitmap;   //skia π‹¿ÌµƒBITMAP
-		HBITMAP     m_hBmp;     //±Í◊ºµƒ32ŒªŒªÕº£¨∫Õm_bitmapπ≤œÌƒ⁄¥Ê
+		SkBitmap    m_bitmap;   //skia ÁÆ°ÁêÜÁöÑBITMAP
+		HBITMAP     m_hBmp;     //Ê†áÂáÜÁöÑ32‰Ωç‰ΩçÂõæÔºåÂíåm_bitmapÂÖ±‰∫´ÂÜÖÂ≠ò
 	};
 
 	//////////////////////////////////////////////////////////////////////////
@@ -243,6 +250,118 @@ namespace SOUI
 
 
 	//////////////////////////////////////////////////////////////////////////
+	//	SPath_Skia
+	class SPath_Skia: public TSkiaRenderObjImpl<IPath>
+	{
+		SOUI_CLASS_NAME(SPath_Skia,L"path")
+
+		friend class SRenderTarget_Skia;
+		friend class SPathMeasure_Skia;
+	public:
+		SPath_Skia(IRenderFactory *pRenderFac);
+		virtual ~SPath_Skia();
+
+		virtual const OBJTYPE ObjectType() const;
+
+		virtual FillType getFillType() const;
+
+		virtual void setFillType(FillType ft);
+
+		virtual bool isInverseFillType() const;
+
+		virtual void toggleInverseFillType();
+
+		virtual Convexity getConvexity() const;
+
+		virtual void setConvexity(Convexity c);
+
+		virtual bool isConvex() const;
+
+		virtual bool isOval(RECT* rect) const;
+
+		virtual void reset();
+
+		virtual void rewind();
+
+		virtual bool isEmpty() const;
+
+		virtual bool isFinite() const;
+
+		virtual bool isLine(POINT line[2]) const;
+
+		virtual bool isRect(RECT* rect) const;
+
+		virtual bool isRect(bool* isClosed, Direction* direction) const;
+
+		virtual int countPoints() const;
+
+		virtual POINT getPoint(int index) const;
+
+		virtual int getPoints(POINT points[], int max) const;
+
+		virtual int countVerbs() const;
+
+		virtual int getVerbs(BYTE verbs[], int max) const;
+
+		virtual RECT getBounds() const;
+
+		virtual void moveTo(float x, float y);
+
+		virtual void rMoveTo(float dx, float dy);
+
+		virtual void lineTo(float x, float y);
+
+		virtual void rLineTo(float dx, float dy);
+
+		virtual void quadTo(float x1, float y1, float x2, float y2);
+
+		virtual void rQuadTo(float dx1, float dy1, float dx2, float dy2);
+
+		virtual void conicTo(float x1, float y1, float x2, float y2, float w);
+
+		virtual void rConicTo(float dx1, float dy1, float dx2, float dy2, float w);
+
+		virtual void cubicTo(float x1, float y1, float x2, float y2, float x3, float y3);
+
+		virtual void rCubicTo(float dx1, float dy1, float dx2, float dy2, float dx3, float dy3);
+
+		virtual void arcTo(const RECT& oval, float startAngle, float sweepAngle, bool forceMoveTo);
+
+		virtual void arcTo(float x1, float y1, float x2, float y2, float radius);
+
+		virtual void close();
+
+		virtual void addRect(const RECT& rect, Direction dir = kCW_Direction);
+
+		virtual void addRect(float left, float top, float right, float bottom, Direction dir = kCW_Direction);
+
+		virtual void addOval(const RECT& oval, Direction dir = kCW_Direction);
+
+		virtual void addCircle(float x, float y, float radius, Direction dir = kCW_Direction);
+
+		virtual void addArc(const RECT& oval, float startAngle, float sweepAngle);
+
+		virtual void addRoundRect(const RECT& rect, float rx, float ry, Direction dir = kCW_Direction);
+
+		virtual void addRoundRect(const RECT& rect, const float radii[], Direction dir = kCW_Direction);
+
+		virtual void addPoly(const POINT pts[], int count, bool close);
+
+		virtual void addPath(const IPath * src, float dx, float dy, AddPathMode mode = kAppend_AddPathMode);
+
+		virtual void reverseAddPath(const IPath* src);
+
+		virtual void offset(float dx, float dy);
+
+		virtual bool getLastPt(POINT* lastPt) const;
+
+		virtual void setLastPt(float x, float y);
+
+	protected:
+		SkPath      m_skPath;
+	};
+
+	//////////////////////////////////////////////////////////////////////////
 	//	SRenderTarget_Skia
 	//////////////////////////////////////////////////////////////////////////
 	class SRenderTarget_Skia: public TObjRefImpl<IRenderTarget>
@@ -251,7 +370,7 @@ namespace SOUI
 		SRenderTarget_Skia(IRenderFactory* pRenderFactory,int nWid,int nHei);
 		~SRenderTarget_Skia();
 
-		//÷ª÷ß≥÷¥¥Ω®ŒªÕº±Ì√Ê
+		//Âè™ÊîØÊåÅÂàõÂª∫‰ΩçÂõæË°®Èù¢
 		virtual HRESULT CreateCompatibleRenderTarget(SIZE szTarget,IRenderTarget **ppRenderTarget);
 
 		virtual HRESULT CreatePen(int iStyle,COLORREF cr,int cWidth,IPen ** ppPen);
@@ -349,6 +468,10 @@ namespace SOUI
 
 		virtual HRESULT GradientFill2(LPCRECT pRect,GradientType type,COLORREF crStart,COLORREF crCenter,COLORREF crEnd,float fLinearAngle,float fCenterX,float fCenterY,int nRadius,BYTE byAlpha=0xff);
 
+		virtual HRESULT ClipPath(const IPath * path, UINT mode, bool doAntiAlias = false);
+
+		virtual HRESULT DrawPath(const IPath * path, IPathEffect * pathEffect=NULL);
+
     public:
         SkCanvas *GetCanvas(){return m_SkCanvas;}
 
@@ -363,6 +486,7 @@ namespace SOUI
 			ATTR_BOOL(L"antiAlias",m_bAntiAlias,FALSE)
 		SOUI_ATTRS_END()
 
+
     protected:
 		SkCanvas *m_SkCanvas;
         SColor            m_curColor;
@@ -373,7 +497,7 @@ namespace SOUI
     
         SkPoint         m_ptOrg;
         
-        //◊¢“‚±£¥Ê4∏ˆƒ¨»œµƒRenderObject∂‘œÛ
+        //Ê≥®ÊÑè‰øùÂ≠ò4‰∏™ÈªòËÆ§ÁöÑRenderObjectÂØπË±°
         CAutoRefPtr<IBitmap> m_defBmp;
         CAutoRefPtr<IPen> m_defPen;
         CAutoRefPtr<IBrush> m_defBrush;

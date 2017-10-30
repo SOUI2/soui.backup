@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 
 #include "interface/render-i.h"
 
 namespace SOUI
 {
 	/// <summary>
-	///		¼ò½à°æ±¾£¬¼ò°æÈ¥µôÁË¶Ô8¡¢16¡¢24Î»µÄÖ§³Ö,
+	///		ç®€æ´ç‰ˆæœ¬ï¼Œç®€ç‰ˆå»æ‰äº†å¯¹8ã€16ã€24ä½çš„æ”¯æŒ,
 	/// </summary>
 	class SOUI_EXP SDIBHelper
 	{
@@ -17,10 +17,10 @@ namespace SOUI
 
 		static bool GrayImage(IBitmap * pBmp); 
         
-        //¼ÆËãÍ¼Æ¬µÄÆ½¾ùÉ«
-        //IBitmap *pBmp:Í¼Æ¬Ô´
-        //int nPercent:ÓĞĞ§Öµ°Ù·Ö±È£¬90´ú±í×î¸ßºÍ×îµÍ5%µÄÖµ»á¶ªµô£¬²»²ÎÓëÆ½¾ù¡£
-        //int int nBlockSize:·Ö¿é´óĞ¡, Ã¿´Î¼ÆËãÒ»¸ö¿éµÄÑÕÉ«Æ½¾ùÖµ¡£
+        //è®¡ç®—å›¾ç‰‡çš„å¹³å‡è‰²
+        //IBitmap *pBmp:å›¾ç‰‡æº
+        //int nPercent:æœ‰æ•ˆå€¼ç™¾åˆ†æ¯”ï¼Œ90ä»£è¡¨æœ€é«˜å’Œæœ€ä½5%çš„å€¼ä¼šä¸¢æ‰ï¼Œä¸å‚ä¸å¹³å‡ã€‚
+        //int int nBlockSize:åˆ†å—å¤§å°, æ¯æ¬¡è®¡ç®—ä¸€ä¸ªå—çš„é¢œè‰²å¹³å‡å€¼ã€‚
         static COLORREF CalcAvarageColor(IBitmap *pBmp,int nPercent=90,int nBlockSize=5);
     };
 

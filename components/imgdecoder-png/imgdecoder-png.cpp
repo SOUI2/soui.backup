@@ -1,4 +1,4 @@
-
+ï»¿
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 #include <windows.h>
 #include "imgdecoder-png.h"
@@ -151,15 +151,15 @@ namespace SOUI
         png_structp png_ptr;  
         png_infop info_ptr;  
 
-        /* ´ò¿ªĞèÒªĞ´ÈëµÄÎÄ¼ş */  
+        /* æ‰“å¼€éœ€è¦å†™å…¥çš„æ–‡ä»¶ */  
         fp = _wfopen(pszFileName, L"wb");  
         if (fp == NULL)  
             return (E_FAIL);  
 
-        /* ´´½¨²¢³õÊ¼»¯ png_struct ¼°ÆäËùĞèµÄ´íÎó´¦Àíº¯Êı£¬Èç¹ûÄãÏëÊ¹ÓÃÄ¬ 
-        * ÈÏµÄ stderr ºÍ longjump() ·½·¨£¬Äã¿ÉÒÔ½«×îºóÈı¸ö²ÎÊıÉèÎª NULL£¬ 
-        * ÔÚÊ¹ÓÃ¶¯Ì¬Á´½Ó¿âµÄÇé¿öÏÂ£¬ÎÒÃÇÒ²»á¼ì²âº¯Êı¿â°æ±¾ÊÇ·ñÓëÔÚ±àÒëÊ± 
-        * Ê¹ÓÃµÄ°æ±¾ÊÇ·ñ¼æÈİ¡££¨±ØÒª£© 
+        /* åˆ›å»ºå¹¶åˆå§‹åŒ– png_struct åŠå…¶æ‰€éœ€çš„é”™è¯¯å¤„ç†å‡½æ•°ï¼Œå¦‚æœä½ æƒ³ä½¿ç”¨é»˜ 
+        * è®¤çš„ stderr å’Œ longjump() æ–¹æ³•ï¼Œä½ å¯ä»¥å°†æœ€åä¸‰ä¸ªå‚æ•°è®¾ä¸º NULLï¼Œ 
+        * åœ¨ä½¿ç”¨åŠ¨æ€é“¾æ¥åº“çš„æƒ…å†µä¸‹ï¼Œæˆ‘ä»¬ä¹Ÿä¼šæ£€æµ‹å‡½æ•°åº“ç‰ˆæœ¬æ˜¯å¦ä¸åœ¨ç¼–è¯‘æ—¶ 
+        * ä½¿ç”¨çš„ç‰ˆæœ¬æ˜¯å¦å…¼å®¹ã€‚ï¼ˆå¿…è¦ï¼‰ 
         */  
         png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);  
 
@@ -169,7 +169,7 @@ namespace SOUI
             return (E_FAIL);  
         }  
 
-        /* ·ÖÅäÄÚ´æ²¢³õÊ¼»¯Í¼ÏñĞÅÏ¢Êı¾İ¡££¨±ØÒª£©*/  
+        /* åˆ†é…å†…å­˜å¹¶åˆå§‹åŒ–å›¾åƒä¿¡æ¯æ•°æ®ã€‚ï¼ˆå¿…è¦ï¼‰*/  
         info_ptr = png_create_info_struct(png_ptr);  
         if (info_ptr == NULL)  
         {  
@@ -178,28 +178,28 @@ namespace SOUI
             return (E_FAIL);  
         }  
 
-        /* ÉèÖÃ´íÎó´¦Àí¡£Èç¹ûÄãÔÚµ÷ÓÃ png_create_write_struct() Ê±Ã» 
-        * ÓĞÉèÖÃ´íÎó´¦Àíº¯Êı£¬ÄÇÃ´Õâ¶Î´úÂëÊÇ±ØĞëĞ´µÄ¡£*/  
+        /* è®¾ç½®é”™è¯¯å¤„ç†ã€‚å¦‚æœä½ åœ¨è°ƒç”¨ png_create_write_struct() æ—¶æ²¡ 
+        * æœ‰è®¾ç½®é”™è¯¯å¤„ç†å‡½æ•°ï¼Œé‚£ä¹ˆè¿™æ®µä»£ç æ˜¯å¿…é¡»å†™çš„ã€‚*/  
         if (setjmp(png_jmpbuf(png_ptr)))  
         {  
-            /* Èç¹û³ÌĞòÅÜµ½ÕâÀïÁË£¬ÄÇÃ´Ğ´ÈëÎÄ¼şÊ±³öÏÖÁËÎÊÌâ */  
+            /* å¦‚æœç¨‹åºè·‘åˆ°è¿™é‡Œäº†ï¼Œé‚£ä¹ˆå†™å…¥æ–‡ä»¶æ—¶å‡ºç°äº†é—®é¢˜ */  
             fclose(fp);  
             png_destroy_write_struct(&png_ptr, &info_ptr);  
             return (E_FAIL);  
         }  
 
-        /* ÉèÖÃÊä³ö¿ØÖÆ£¬Èç¹ûÄãÊ¹ÓÃµÄÊÇ C µÄ±ê×¼ I/O Á÷ */  
+        /* è®¾ç½®è¾“å‡ºæ§åˆ¶ï¼Œå¦‚æœä½ ä½¿ç”¨çš„æ˜¯ C çš„æ ‡å‡† I/O æµ */  
         png_init_io(png_ptr, fp);  
 
-        /* ÕâÊÇÒ»ÖÖ¸´ÔÓµÄ×ö·¨ */  
+        /* è¿™æ˜¯ä¸€ç§å¤æ‚çš„åšæ³• */  
 
-        /* £¨±ØĞè£©ÔÚÕâÀïÉèÖÃÍ¼ÏñµÄĞÅÏ¢£¬¿í¶È¡¢¸ß¶ÈµÄÉÏÏŞÊÇ 2^31¡£ 
-        * bit_depth È¡Öµ±ØĞèÊÇ 1¡¢2¡¢4¡¢8 »òÕß 16, µ«ÊÇ¿ÉÓÃµÄÖµÒ²ÒÀÀµÓÚ color_type¡£ 
-        * color_type ¿ÉÑ¡ÖµÓĞ£º PNG_COLOR_TYPE_GRAY¡¢PNG_COLOR_TYPE_GRAY_ALPHA¡¢ 
-        * PNG_COLOR_TYPE_PALETTE¡¢PNG_COLOR_TYPE_RGB¡¢PNG_COLOR_TYPE_RGB_ALPHA¡£ 
-        * interlace ¿ÉÒÔÊÇ PNG_INTERLACE_NONE »ò PNG_INTERLACE_ADAM7, 
-        * ¶ø compression_type ºÍ filter_type Ä¿Ç°±ØĞèÊÇ PNG_COMPRESSION_TYPE_BASE 
-        * ºÍ and PNG_FILTER_TYPE_BASE¡£ 
+        /* ï¼ˆå¿…éœ€ï¼‰åœ¨è¿™é‡Œè®¾ç½®å›¾åƒçš„ä¿¡æ¯ï¼Œå®½åº¦ã€é«˜åº¦çš„ä¸Šé™æ˜¯ 2^31ã€‚ 
+        * bit_depth å–å€¼å¿…éœ€æ˜¯ 1ã€2ã€4ã€8 æˆ–è€… 16, ä½†æ˜¯å¯ç”¨çš„å€¼ä¹Ÿä¾èµ–äº color_typeã€‚ 
+        * color_type å¯é€‰å€¼æœ‰ï¼š PNG_COLOR_TYPE_GRAYã€PNG_COLOR_TYPE_GRAY_ALPHAã€ 
+        * PNG_COLOR_TYPE_PALETTEã€PNG_COLOR_TYPE_RGBã€PNG_COLOR_TYPE_RGB_ALPHAã€‚ 
+        * interlace å¯ä»¥æ˜¯ PNG_INTERLACE_NONE æˆ– PNG_INTERLACE_ADAM7, 
+        * è€Œ compression_type å’Œ filter_type ç›®å‰å¿…éœ€æ˜¯ PNG_COMPRESSION_TYPE_BASE 
+        * å’Œ and PNG_FILTER_TYPE_BASEã€‚ 
         */  
 
         png_uint_32 width = pImg->Width();
@@ -209,10 +209,10 @@ namespace SOUI
         png_set_IHDR(png_ptr, info_ptr, width, height, 8, PNG_COLOR_TYPE_RGB_ALPHA,  
             PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);  
 
-        /* Ğ´ÈëÎÄ¼şÍ·²¿ĞÅÏ¢£¨±ØĞè£© */  
+        /* å†™å…¥æ–‡ä»¶å¤´éƒ¨ä¿¡æ¯ï¼ˆå¿…éœ€ï¼‰ */  
         png_write_info(png_ptr, info_ptr);  
 
-        /* ½«Ô­Êı¾İ¸ñÊ½´ÓÔ¤³ËµÄrgba¸ñÊ½µ÷ÕûÎª²»Ô¤³ËµÄbgra¸ñÊ½ */  
+        /* å°†åŸæ•°æ®æ ¼å¼ä»é¢„ä¹˜çš„rgbaæ ¼å¼è°ƒæ•´ä¸ºä¸é¢„ä¹˜çš„bgraæ ¼å¼ */  
         png_bytep image = (png_bytep) new png_byte[width*height*bytes_per_pixel];  
         png_bytep dst=image;
         png_bytep src = (png_bytep)pData;
@@ -233,19 +233,19 @@ namespace SOUI
         png_bytep *row_pointers = new png_bytep[height];  
 
 
-        /* ½«ÕâĞ©ÏñËØĞĞÖ¸ÕëÖ¸ÏòÄãµÄ "image" ×Ö½ÚÊı×éÖĞ¶ÔÓ¦µÄÎ»ÖÃ£¬¼´£ºÖ¸ÏòÃ¿ĞĞÏñËØµÄÆğÊ¼´¦ */  
+        /* å°†è¿™äº›åƒç´ è¡ŒæŒ‡é’ˆæŒ‡å‘ä½ çš„ "image" å­—èŠ‚æ•°ç»„ä¸­å¯¹åº”çš„ä½ç½®ï¼Œå³ï¼šæŒ‡å‘æ¯è¡Œåƒç´ çš„èµ·å§‹å¤„ */  
         for (png_uint_32 k = 0; k < height; k++)  
             row_pointers[k] = image + k*width*bytes_per_pixel;  
 
-        /* Ò»´Îµ÷ÓÃ¾Í½«Õû¸öÍ¼ÏñĞ´½øÎÄ¼ş */  
+        /* ä¸€æ¬¡è°ƒç”¨å°±å°†æ•´ä¸ªå›¾åƒå†™è¿›æ–‡ä»¶ */  
         png_write_image(png_ptr, row_pointers);  
-        /* ±ØĞèµ÷ÓÃÕâ¸öº¯ÊıÍê³ÉĞ´ÈëÎÄ¼şÆäÓà²¿·Ö */  
+        /* å¿…éœ€è°ƒç”¨è¿™ä¸ªå‡½æ•°å®Œæˆå†™å…¥æ–‡ä»¶å…¶ä½™éƒ¨åˆ† */  
         png_write_end(png_ptr, info_ptr);  
-        /* Ğ´ÍêºóÇåÀí²¢ÊÍ·ÅÒÑ·ÖÅäµÄÄÚ´æ */  
+        /* å†™å®Œåæ¸…ç†å¹¶é‡Šæ”¾å·²åˆ†é…çš„å†…å­˜ */  
         png_destroy_write_struct(&png_ptr, &info_ptr);  
 
         delete []row_pointers;
-        /* ¹Ø±ÕÎÄ¼ş */  
+        /* å…³é—­æ–‡ä»¶ */  
         fclose(fp);  
 
         pImg->UnlockPixelBits(pData);

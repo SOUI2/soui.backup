@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "StudentSmsDlg.h"
 #include <helper/SAdapterBase.h>
 #include <helper/STime.h>
@@ -44,7 +44,7 @@ protected:
     };
     struct StudentInfo{
         SStringT strNick;
-        UINT     imid;//yy ºÅ
+        UINT     imid;//yy å·
         SOUI::CTime tm1;
         SOUI::CTime tm2;
         int         nLoyalDegree;
@@ -396,27 +396,27 @@ public:
             {
             SOUI::CTime(2015,9,1,0,0,0),
             _T("sb no.1"),
-            _T("A¹ÉÃ÷Ìì±©µø£¬ÓĞÇ®Ã»Ç®Ê¹¾¢Âò¡£"),
+            _T("Aè‚¡æ˜å¤©æš´è·Œï¼Œæœ‰é’±æ²¡é’±ä½¿åŠ²ä¹°ã€‚"),
             },
             {
             SOUI::CTime(2015,9,1,0,0,0),
             _T("sb no.2"),
-            _T("A¹ÉÃ÷Ìì±©µø£¬ÓĞÇ®Ã»Ç®Ê¹¾¢Âò¡£"),
+            _T("Aè‚¡æ˜å¤©æš´è·Œï¼Œæœ‰é’±æ²¡é’±ä½¿åŠ²ä¹°ã€‚"),
             },
             {
             SOUI::CTime(2015,9,1,0,0,0),
             _T("sb no.3"),
-            _T("A¹ÉÃ÷Ìì±©µø£¬ÓĞÇ®Ã»Ç®Ê¹¾¢Âò¡£"),
+            _T("Aè‚¡æ˜å¤©æš´è·Œï¼Œæœ‰é’±æ²¡é’±ä½¿åŠ²ä¹°ã€‚"),
             },
             {
             SOUI::CTime(2015,9,1,0,0,0),
             _T("sb no.4"),
-            _T("A¹ÉÃ÷Ìì±©µø£¬ÓĞÇ®Ã»Ç®Ê¹¾¢Âò¡£"),
+            _T("Aè‚¡æ˜å¤©æš´è·Œï¼Œæœ‰é’±æ²¡é’±ä½¿åŠ²ä¹°ã€‚"),
             },
             {
             SOUI::CTime(2015,9,1,0,0,0),
             _T("sb no.5"),
-            _T("A¹ÉÃ÷Ìì±©µø£¬ÓĞÇ®Ã»Ç®Ê¹¾¢Âò¡£"),
+            _T("Aè‚¡æ˜å¤©æš´è·Œï¼Œæœ‰é’±æ²¡é’±ä½¿åŠ²ä¹°ã€‚"),
             },
         };
         

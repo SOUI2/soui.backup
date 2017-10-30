@@ -341,6 +341,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\animator\SInterpolatorImpl.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\core\SItemPanel.cpp"
 				>
 			</File>
@@ -743,6 +747,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\interface\sinterpolator-i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\animator\SInterpolatorImpl.h"
+				>
+			</File>
+			<File
 				RelativePath="include\core\SItemPanel.h"
 				>
 			</File>
@@ -872,6 +884,10 @@
 			</File>
 			<File
 				RelativePath="include\core\SPanel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\interface\SPathEffect-i.h"
 				>
 			</File>
 			<File
@@ -1040,10 +1056,6 @@
 			</File>
 			<File
 				RelativePath="include\interface\TvItemLocator-i.h"
-				>
-			</File>
-			<File
-				RelativePath="include\activex\wmp.tlh"
 				>
 			</File>
 		</Filter>

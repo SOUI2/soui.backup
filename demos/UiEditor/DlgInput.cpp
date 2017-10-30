@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "DlgInput.h"
 #include "CDebug.h"
 
@@ -10,7 +10,7 @@ namespace SOUI
 
 	}
 
-	//TODO:ÏûÏ¢Ó³Éä
+	//TODO:æ¶ˆæ¯æ˜ å°„
 	void SDlgInput::OnClose()
 	{
 		SHostDialog::OnCancel();
@@ -22,7 +22,7 @@ namespace SOUI
 		m_strValue = m_edt->GetWindowText();
 		if (m_strValue.IsEmpty())
 		{
-			CDebug::Debug(_T("ÇëÊäÈëÄÚÈİ"));
+			CDebug::Debug(_T("è¯·è¾“å…¥å†…å®¹"));
 			return;
 		}
 		SHostDialog::OnOK();

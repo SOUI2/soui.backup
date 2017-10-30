@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "SColorizeText.h"
 
 namespace SOUI
@@ -72,7 +72,7 @@ namespace SOUI
 	{
 		COLORIZEINFO info={iBegin,iEnd,cr};
 		if(!m_lstColorizeInfo.IsEmpty())
-		{//È·±£ÊÇ°´Ë³ĞòÉèÖÃ
+		{//ç¡®ä¿æ˜¯æŒ‰é¡ºåºè®¾ç½®
 			if(iBegin<m_lstColorizeInfo[m_lstColorizeInfo.GetCount()-1].iEnd)
 				return;
 		}

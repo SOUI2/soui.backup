@@ -138,6 +138,7 @@ HEADERS += include/SApp.h \
            include/interface/TvItemLocator-i.h \
            include/interface/slayout-i.h \
            include/interface/SAttrStorage-i.h \
+           include/interface/SInterpolator-i.h \
            include/layout/SLinearLayoutParamStruct.h \
            include/layout/SLinearLayout.h \
            include/layout/SouiLayoutParamStruct.h \
@@ -159,7 +160,7 @@ HEADERS += include/SApp.h \
            src/updatelayeredwindow/SUpdateLayeredWindow.h \
            include/activex/flash10t.tlh \
            include/activex/flash10t.tli \
-           include/activex/wmp.tlh
+           include/animator/SInterpolatorImpl.h
            
 SOURCES += src/SApp.cpp \
            src/activex/SAxContainer.cpp \
@@ -237,4 +238,6 @@ SOURCES += src/SApp.cpp \
            src/res.mgr/SStylePool.cpp \
            src/res.mgr/SNamedValue.cpp \
            src/res.mgr/SDpiAwareFont.cpp \
-           src/updatelayeredwindow/SUpdateLayeredWindow.cpp
+           src/updatelayeredwindow/SUpdateLayeredWindow.cpp \
+           src/animator/SInterpolatorImpl.cpp
+

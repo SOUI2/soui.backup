@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <core/swnd.h>
 
 namespace SOUI
@@ -32,14 +32,14 @@ namespace SOUI
             MSG_WM_MOUSEMOVE(OnMouseMove)
             SOUI_MSG_MAP_END()
 
-            CPoint      m_ptDragPrev;       /**< ÍÏ¶¯µ÷ÕûµÄÇ°Ò»¸öÎ»ÖÃ */
-        BOOL        m_bDragging;        /**< ÕýÔÚÍÏ¶¯ */
-        BOOL        m_bResizeHostWnd;   /**< ÊÇ·ñËõ·ÅËÞÖ÷´°¿Ú*/
-        int         m_nSizeMin;         /**< ×îÐ¡´óÐ¡ */
-        int         m_nSizeMax;         /**< ×î´ó´óÐ¡ */
-        SLayoutSize m_nOrginPos;        /**< ×îÔ­Ê¼µÄleft/top*/
+            CPoint      m_ptDragPrev;       /**< æ‹–åŠ¨è°ƒæ•´çš„å‰ä¸€ä¸ªä½ç½® */
+        BOOL        m_bDragging;        /**< æ­£åœ¨æ‹–åŠ¨ */
+        BOOL        m_bResizeHostWnd;   /**< æ˜¯å¦ç¼©æ”¾å®¿ä¸»çª—å£*/
+        int         m_nSizeMin;         /**< æœ€å°å¤§å° */
+        int         m_nSizeMax;         /**< æœ€å¤§å¤§å° */
+        SLayoutSize m_nOrginPos;        /**< æœ€åŽŸå§‹çš„left/top*/
         SLayoutSize m_nTrackingPos;
-        BOOL        m_bVertical;        /**< ÊÇ·ñ´¹Ö±·Ö¸î£¬Ä¬ÈÏÊÇË®Æ½·Ö¸î*/
+        BOOL        m_bVertical;        /**< æ˜¯å¦åž‚ç›´åˆ†å‰²ï¼Œé»˜è®¤æ˜¯æ°´å¹³åˆ†å‰²*/
     };
 
 };

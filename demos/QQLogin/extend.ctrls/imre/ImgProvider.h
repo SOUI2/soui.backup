@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "interface\render-i.h"
 #include <map>
 

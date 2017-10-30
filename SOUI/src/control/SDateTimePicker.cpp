@@ -31,8 +31,8 @@ namespace SOUI
 	{
 		//m_pSkinPrev = GETBUILTINSKIN(SKIN_SYS_BTN_NORMAL);
 		//m_pSkinNext = GETBUILTINSKIN(SKIN_SYS_BTN_NORMAL);
-		m_pSkinPrev = GETSKIN(_T("_skin.sys.btn.prev"), GetScale());
-		m_pSkinNext = GETSKIN(_T("_skin.sys.btn.next"), GetScale());
+		m_pSkinPrev = GETSKIN(L"_skin.sys.btn.prev", GetScale());
+		m_pSkinNext = GETSKIN(L"_skin.sys.btn.next", GetScale());
 
 		m_bFocusable = TRUE;
 		GetLocalTime(&m_Today);
@@ -734,7 +734,7 @@ namespace SOUI
 		
 		rcText.left = rcText.right;
 		rcText.right = rcText.left + m_nCharWidth;
-		pRT->DrawText(L"-", -1, rcText, GetTextAlign());
+		pRT->DrawText(_T("-"), -1, rcText, GetTextAlign());
 		
 		//month
 		rcText.left = rcText.right;
@@ -744,7 +744,7 @@ namespace SOUI
 		
 		rcText.left = rcText.right;
 		rcText.right = rcText.left + m_nCharWidth;
-		pRT->DrawText(L"-", -1, rcText, GetTextAlign());
+		pRT->DrawText(_T("-"), -1, rcText, GetTextAlign());
 		
 		//day
 		rcText.left = rcText.right;
@@ -765,7 +765,7 @@ namespace SOUI
 
 			rcText.left = rcText.right;
 			rcText.right = rcText.left + m_nCharWidth;
-			pRT->DrawText(L":", -1, rcText, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+			pRT->DrawText(_T(":"), -1, rcText, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
 			// minute
 			rcText.left = rcText.right;
@@ -775,7 +775,7 @@ namespace SOUI
 
 			rcText.left = rcText.right;
 			rcText.right = rcText.left + m_nCharWidth;
-			pRT->DrawText(L":", -1, rcText, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+			pRT->DrawText(_T(":"), -1, rcText, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
 			// second
 			rcText.left = rcText.right;

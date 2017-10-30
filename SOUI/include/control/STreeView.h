@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "core/Swnd.h"
 #include "core/SItemPanel.h"
@@ -43,10 +43,10 @@ namespace SOUI
     protected:
         BOOL IsItemExpanded(HTREEITEM hItem) const;
 
-        //¸üĞÂhItemËùÔÚµÄ¸¸´°¿ÚÖĞ·ÖÖ¦¿í¶ÈÊı¾İ
-        //hItem:ÏÔÊ¾¿í¶È·¢Éú±ä»¯µÄ½Úµã£¬¿ÉÒÔÊÇ½Úµã±¾Éí¿í¶È±ä»¯£¬Ò²¿ÉÄÜÊÇ×Ó½Úµã¿í¶È·¢ÉúÁË±ä»¯
-        //nOldWidth£ºÔ­ÏÔÊ¾¿í¶È
-        //nNewWidth: ĞÂÏÔÊ¾¿í¶È
+        //æ›´æ–°hItemæ‰€åœ¨çš„çˆ¶çª—å£ä¸­åˆ†æå®½åº¦æ•°æ®
+        //hItem:æ˜¾ç¤ºå®½åº¦å‘ç”Ÿå˜åŒ–çš„èŠ‚ç‚¹ï¼Œå¯ä»¥æ˜¯èŠ‚ç‚¹æœ¬èº«å®½åº¦å˜åŒ–ï¼Œä¹Ÿå¯èƒ½æ˜¯å­èŠ‚ç‚¹å®½åº¦å‘ç”Ÿäº†å˜åŒ–
+        //nOldWidthï¼šåŸæ˜¾ç¤ºå®½åº¦
+        //nNewWidth: æ–°æ˜¾ç¤ºå®½åº¦
         void _UpdateBranchWidth(HTREEITEM hItem,int nOldWidth,int nNewWidth);
 
         int _GetBranchWidth(HTREEITEM hBranch) const;
@@ -62,7 +62,7 @@ namespace SOUI
 
         void _UpdateBranchHeight(HTREEITEM hItem,int nDiff);
 
-        //Ïòºó¸üĞÂĞÖµÜ½áµãµÄÆ«ÒÆÁ¿
+        //å‘åæ›´æ–°å…„å¼Ÿç»“ç‚¹çš„åç§»é‡
         void _UpdateSiblingsOffset(HTREEITEM hItem);
 
         int _GetItemOffset(HTREEITEM hItem) const;
@@ -126,7 +126,7 @@ namespace SOUI
 		void OnPaint(IRenderTarget * pRT);
 		void OnSize(UINT nType, CSize size);
 		void OnDestroy();
- 		void OnKeyDown(TCHAR nChar, UINT nRepCnt, UINT nFlags);//ÊµÏÖ¼üÅÌÑ¡Ôñ
+ 		void OnKeyDown(TCHAR nChar, UINT nRepCnt, UINT nFlags);//å®ç°é”®ç›˜é€‰æ‹©
 		LRESULT OnKeyEvent( UINT uMsg,WPARAM wParam,LPARAM lParam );
 		
 		void OnMouseLeave();
@@ -170,10 +170,10 @@ namespace SOUI
 		virtual int  GetScrollLineSize(BOOL bVertical);
 		virtual BOOL CreateChildren(pugi::xml_node xmlNode);
 	
-		virtual void OnItemSetCapture(SItemPanel *pItem,BOOL bCapture); //ÉèÖÃorÊÍ·ÅÊó±ê²¶»ñ
-		virtual BOOL OnItemGetRect(SItemPanel *pItem,CRect &rcItem);    //»ñµÃ±íÏîµÄÏÔÊ¾Î»ÖÃ
-		virtual BOOL IsItemRedrawDelay();                               //Ö¸Ê¾±íÏîµÄ¸üĞÂ·½Ê½
-		virtual void OnItemRequestRelayout(SItemPanel *pItem);          //ÁĞ±íÏîÇëÇóÖØĞÂ²¼¾Ö
+		virtual void OnItemSetCapture(SItemPanel *pItem,BOOL bCapture); //è®¾ç½®oré‡Šæ”¾é¼ æ ‡æ•è·
+		virtual BOOL OnItemGetRect(SItemPanel *pItem,CRect &rcItem);    //è·å¾—è¡¨é¡¹çš„æ˜¾ç¤ºä½ç½®
+		virtual BOOL IsItemRedrawDelay();                               //æŒ‡ç¤ºè¡¨é¡¹çš„æ›´æ–°æ–¹å¼
+		virtual void OnItemRequestRelayout(SItemPanel *pItem);          //åˆ—è¡¨é¡¹è¯·æ±‚é‡æ–°å¸ƒå±€
 	protected:
 
 		void UpdateScrollBar();
@@ -196,8 +196,8 @@ namespace SOUI
             SItemPanel* pItem;
             int         nType;
         };
-        SArray<SList<SItemPanel*> *>    m_itemRecycle;//item»ØÊÕÕ¾,Ã¿Ò»ÖÖÑùÊ½ÔÚ»ØÊÕÕ¾ÖĞ±£³ÖÒ»¸öÁĞ±í£¬ÒÔ±ãÖØ¸´ÀûÓÃ
-		SList<ItemInfo> m_visible_items; //¿É¼ûÔªËØ
+        SArray<SList<SItemPanel*> *>    m_itemRecycle;//itemå›æ”¶ç«™,æ¯ä¸€ç§æ ·å¼åœ¨å›æ”¶ç«™ä¸­ä¿æŒä¸€ä¸ªåˆ—è¡¨ï¼Œä»¥ä¾¿é‡å¤åˆ©ç”¨
+		SList<ItemInfo> m_visible_items; //å¯è§å…ƒç´ 
 		
 		typedef SMap<HTREEITEM,ItemInfo> VISIBLEITEMSMAP;
 		VISIBLEITEMSMAP * m_pVisibleMap;
@@ -207,7 +207,7 @@ namespace SOUI
 		SItemPanel * m_itemCapture;
 		SItemPanel * m_pHoverItem;
         
-        HTREEITEM    m_hSelected;               /**< µ±Ç°Ñ¡ÔñÏî */ 
+        HTREEITEM    m_hSelected;               /**< å½“å‰é€‰æ‹©é¡¹ */ 
         
         BOOL            m_bWantTab;             /**< want tab */ 
     };

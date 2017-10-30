@@ -1,9 +1,9 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "SMoveWnd.h"
 #include "CNewGuid.h"
 #include "control/SMessageBox.h"
 
-#define  POINT_SIZE      4     //ÔªËØÍÏ¶¯µã´óĞ¡
+#define  POINT_SIZE      4     //å…ƒç´ æ‹–åŠ¨ç‚¹å¤§å°
 
 #define HORZ_LT 0
 #define VERT_LT 1
@@ -20,10 +20,10 @@
 namespace SOUI
 {
 	/**
-	* @brief ÅĞ¶ÏÁ½¸öÖá¶ÔÆëµÄ¾ØĞÎÊÇ·ñÖØµş
-	* @param rc1 µÚÒ»¸ö¾ØÕóµÄÎ»ÖÃ
-	* @param rc2 µÚ¶ş¸ö¾ØÕóµÄÎ»ÖÃ
-	* @return Á½¸ö¾ØÕóÊÇ·ñÖØµş£¨±ßÑØÖØµş£¬Ò²ÈÏÎªÊÇÖØµş£©
+	* @brief åˆ¤æ–­ä¸¤ä¸ªè½´å¯¹é½çš„çŸ©å½¢æ˜¯å¦é‡å 
+	* @param rc1 ç¬¬ä¸€ä¸ªçŸ©é˜µçš„ä½ç½®
+	* @param rc2 ç¬¬äºŒä¸ªçŸ©é˜µçš„ä½ç½®
+	* @return ä¸¤ä¸ªçŸ©é˜µæ˜¯å¦é‡å ï¼ˆè¾¹æ²¿é‡å ï¼Œä¹Ÿè®¤ä¸ºæ˜¯é‡å ï¼‰
 	*/
 	bool isOverlap(const LPRECT rc1, const LPRECT rc2)
 	{
@@ -62,7 +62,7 @@ namespace SOUI
 		m_pRealWnd->GetWindowRect(rectR);
 		m_pRealWnd->GetParent()->GetWindowRect(rectRP);
 
-		//ÕâÀï½«Êµ¼Ê¿Ø¼şºÍ¸²¸ÇÔÚÊµ¼Ê¿Ø¼şÉÏÃæµÄ²¼¾Ö¿Ø¼şµÄÎ»ÖÃ¸üĞÂÎªÒ»ÑùµÄ
+		//è¿™é‡Œå°†å®é™…æ§ä»¶å’Œè¦†ç›–åœ¨å®é™…æ§ä»¶ä¸Šé¢çš„å¸ƒå±€æ§ä»¶çš„ä½ç½®æ›´æ–°ä¸ºä¸€æ ·çš„
 		if (m_pRealWnd == m_Desiner->m_pRealWndRoot)
 		{
 			SouiLayoutParam *pMoveWndLayout = GetLayoutParamT<SouiLayoutParam>();
@@ -93,7 +93,7 @@ namespace SOUI
 			}
 		}
 		else
-		{	//¸üĞÂMoveWndµÄÎ»ÖÃºÍRealWndÒ»Ñù
+		{	//æ›´æ–°MoveWndçš„ä½ç½®å’ŒRealWndä¸€æ ·
 			SouiLayoutParam *pMoveWndLayout = GetLayoutParamT<SouiLayoutParam>();
 			SouiLayoutParamStruct *pSouiLayoutParamStruct = (SouiLayoutParamStruct*)pMoveWndLayout->GetRawData();
 
@@ -154,7 +154,7 @@ namespace SOUI
 			if (isOverlap(&rectRP, &rectR))
 				pRT->CreatePen(PS_SOLID, RGBA(172, 172, 172, 255), 1, &pen);
 			else
-			{   // ²»ÔÚ¸¸´°¿Ú·¶Î§, ÎŞ·¨Ñ¡ÖĞ, ÓÃĞé¿ò±íÊ¾
+			{   // ä¸åœ¨çˆ¶çª—å£èŒƒå›´, æ— æ³•é€‰ä¸­, ç”¨è™šæ¡†è¡¨ç¤º
 				pRT->CreatePen(PS_DASH, RGBA(255, 0, 128, 255), 1, &pen);
 			}
 			pRT->SelectObject(pen, (IRenderObj**)&oldpen);
@@ -168,9 +168,9 @@ namespace SOUI
 
 	void SMoveWnd::OnLButtonDown(UINT nFlags, CPoint pt)
 	{
-		if (m_Desiner->m_nState == 1)//Èç¹ûÊÇ´´½¨¿Ø¼ş×´Ì¬
+		if (m_Desiner->m_nState == 1)//å¦‚æœæ˜¯åˆ›å»ºæ§ä»¶çŠ¶æ€
 		{
-			//Êó±ê°´ÏÂÊ±´´½¨¿Ø¼ş
+			//é¼ æ ‡æŒ‰ä¸‹æ—¶åˆ›å»ºæ§ä»¶
 			NewWnd(pt);
 			m_Desiner->CreatePropGrid(m_Desiner->m_curSelXmlNode.name());
 			m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
@@ -253,7 +253,7 @@ namespace SOUI
 	{
 		SWindow::OnLButtonUp(nFlags, pt);
 
-		//½«¿Ø¼şµÄÎ»ÖÃ¸üĞÂµ½xml½Úµã;
+		//å°†æ§ä»¶çš„ä½ç½®æ›´æ–°åˆ°xmlèŠ‚ç‚¹;
 		if (m_StateMove)
 		{
 			//if (m_pRealWnd != m_Desiner->m_pRealWndRoot)
@@ -275,12 +275,12 @@ namespace SOUI
 			return;
 		}
 
-		if (0 == m_downWindow) //µ±Ç°¿Ø¼şÃ»ÓĞ±»°´ÏÂ
+		if (0 == m_downWindow) //å½“å‰æ§ä»¶æ²¡æœ‰è¢«æŒ‰ä¸‹
 		{
-			//Èç¹ûµ±Ç°Ö»Ñ¡ÔñÒ»¸ö¿Ø¼ş£¬ÇÒÎªµ±Ç°¿Ø¼ş
+			//å¦‚æœå½“å‰åªé€‰æ‹©ä¸€ä¸ªæ§ä»¶ï¼Œä¸”ä¸ºå½“å‰æ§ä»¶
 			//if( mainWnd.m_designerView.m_CurSelCtrlList.size() == 1 && mainWnd.m_designerView.m_CurSelCtrlList[0]==this)
 			//{
-			//¸Ä±ä¹â±ê
+			//æ”¹å˜å…‰æ ‡
 			if (m_rcPos1.PtInRect(pt))
 			{
 				SetCursor(LoadCursor(NULL, IDC_SIZENWSE));
@@ -313,14 +313,14 @@ namespace SOUI
 			{
 				SetCursor(LoadCursor(NULL, IDC_SIZEWE));
 			}
-			//else  if(m_rcCenter.PtInRect(pt) && (m_Desiner->m_nState == 0)) //ÖĞ¼äÎ»ÖÃ£¬¿ÉÍÏ¶¯¿Ø¼ş
+			//else  if(m_rcCenter.PtInRect(pt) && (m_Desiner->m_nState == 0)) //ä¸­é—´ä½ç½®ï¼Œå¯æ‹–åŠ¨æ§ä»¶
 			//{
 			//	SetCursor(LoadCursor(NULL,IDC_SIZEALL));
 			//}
 
 			//}
 		}
-		else//¿Ø¼ş±»°´ÏÂÍÏ¶¯´óĞ¡ºÍÎ»ÖÃµÄÇé¿ö
+		else//æ§ä»¶è¢«æŒ‰ä¸‹æ‹–åŠ¨å¤§å°å’Œä½ç½®çš„æƒ…å†µ
 		{
 			int x = pt.x - Oldx;
 			int y = pt.y - Oldy;
@@ -382,26 +382,26 @@ namespace SOUI
 
 			switch (m_downWindow)
 			{
-				/*×ó±ß¿ò*/
+				/*å·¦è¾¹æ¡†*/
 			case 8:
 			{
 				if (bx)
 				{
 					if (m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
 					{
-						return; //ÏßĞÔ²¼¾Ö²»ÄÜÍÏ¶¯×ó±ß¿ò
+						return; //çº¿æ€§å¸ƒå±€ä¸èƒ½æ‹–åŠ¨å·¦è¾¹æ¡†
 					}
 					MoveWndSizeLT(x*x1, HORZ_LT);
 				}
 			}
 			break;;
 
-			/*×óÉÏ½Ç*/
+			/*å·¦ä¸Šè§’*/
 			case 1:
 			{
 				if (m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
 				{
-					return; //ÏßĞÔ²¼¾Ö²»ÄÜÍÏ¶¯×óÉÏ½Ç
+					return; //çº¿æ€§å¸ƒå±€ä¸èƒ½æ‹–åŠ¨å·¦ä¸Šè§’
 				}
 
 				if (bx)
@@ -415,25 +415,25 @@ namespace SOUI
 			}
 			break;
 
-			/*ÉÏ±ß¿ò*/
+			/*ä¸Šè¾¹æ¡†*/
 			case 2:
 			{
 				if (by)
 				{
 					if (m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
 					{
-						return; //ÏßĞÔ²¼¾Ö²»ÄÜÍÏ¶¯ÉÏ±ß¿ò
+						return; //çº¿æ€§å¸ƒå±€ä¸èƒ½æ‹–åŠ¨ä¸Šè¾¹æ¡†
 					}
 					MoveWndSizeLT(y*y1, VERT_LT);
 				}
 			}
 			break;
 
-			/*ÓÒÉÏ½Ç*/
+			/*å³ä¸Šè§’*/
 			case 3:
 				return;
 
-				/*ÓÒ±ß¿ò*/
+				/*å³è¾¹æ¡†*/
 			case 4:
 			{
 				if (bx)
@@ -450,7 +450,7 @@ namespace SOUI
 			}
 			break;
 
-			/*ÓÒÏÂ½Ç*/
+			/*å³ä¸‹è§’*/
 			case 5:
 			{
 				if (bx)
@@ -478,7 +478,7 @@ namespace SOUI
 			}
 			break;
 
-			/*ÏÂ±ß¿ò*/
+			/*ä¸‹è¾¹æ¡†*/
 			case 6:
 			{
 				if (by)
@@ -495,16 +495,16 @@ namespace SOUI
 			}
 			break;
 
-			/*×óÏÂ½Ç*/
+			/*å·¦ä¸‹è§’*/
 			case 7:
 				return;
 
-				/*ÖĞ¼äÍÏ¶¯*/
+				/*ä¸­é—´æ‹–åŠ¨*/
 			case 9:
 			{
 				if (m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
 				{
-					return; //ÏßĞÔ²¼¾Ö²»ÄÜÍÏ¶¯
+					return; //çº¿æ€§å¸ƒå±€ä¸èƒ½æ‹–åŠ¨
 				}
 				if (bx)
 				{
@@ -534,7 +534,7 @@ namespace SOUI
 			m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 			m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 
-			GetParent()->Invalidate(); //Ë¢ĞÂ¸¸´°¿Ú
+			GetParent()->Invalidate(); //åˆ·æ–°çˆ¶çª—å£
 		}
 	}
 
@@ -611,7 +611,7 @@ namespace SOUI
 
 	void SMoveWnd::MoveWndHorz(int x)
 	{
-		//Ë®Æ½ÒÆ¶¯
+		//æ°´å¹³ç§»åŠ¨
 		if (m_pRealWnd == m_Desiner->m_pRealWndRoot)
 		{
 			return;
@@ -624,7 +624,7 @@ namespace SOUI
 		SouiLayoutParamStruct *pSouiLayoutParamStruct1 = (SouiLayoutParamStruct*)pSouiLayoutParam1->GetRawData();
 
 
-		//ÓĞmarginµÄÇé¿ö
+		//æœ‰marginçš„æƒ…å†µ
 		SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
 		int nMargin = 0;
 
@@ -632,14 +632,14 @@ namespace SOUI
 
 		nMargin = rcMargin.left;
 
-		//Íù×óÍÏ¶¯£¬left²»ÄÜĞ¡ÓÚ0
+		//å¾€å·¦æ‹–åŠ¨ï¼Œleftä¸èƒ½å°äº0
 		if (pSouiLayoutParamStruct->posLeft.nPos.fSize + x - nMargin < 0 && x < 0)
 		{
 			return;
 		}
 
 
-		//ÍùÓÒÍÏ¶¯£¬right²»ÄÜ´óÓÚ¸¸¿Ø¼şµÄright
+		//å¾€å³æ‹–åŠ¨ï¼Œrightä¸èƒ½å¤§äºçˆ¶æ§ä»¶çš„right
 		if (x > 0)
 		{
 			CRect r;
@@ -653,9 +653,9 @@ namespace SOUI
 
 
 
-		if (pSouiLayoutParamStruct1->nCount == 2) //Á½¸ö×ø±êµÄÇé¿ö
+		if (pSouiLayoutParamStruct1->nCount == 2) //ä¸¤ä¸ªåæ ‡çš„æƒ…å†µ
 		{
-			if (pSouiLayoutParamStruct1->posLeft.cMinus == -1)// ×ø±ê1Îª¸ºÊıµÄÇé¿ö
+			if (pSouiLayoutParamStruct1->posLeft.cMinus == -1)// åæ ‡1ä¸ºè´Ÿæ•°çš„æƒ…å†µ
 			{
 				if (pSouiLayoutParamStruct1->posLeft.nPos.fSize - x < 0)
 				{
@@ -666,7 +666,7 @@ namespace SOUI
 				pSouiLayoutParamStruct1->posLeft.nPos.fSize = pSouiLayoutParamStruct1->posLeft.nPos.fSize - x;
 
 			}
-			else//×ø±ê1ÎªÕıÊı
+			else//åæ ‡1ä¸ºæ­£æ•°
 			{
 				if (pSouiLayoutParamStruct1->posRight.cMinus == -1)
 				{
@@ -689,9 +689,9 @@ namespace SOUI
 
 
 
-			/************************* ÒÆ¶¯topµã **************************************/
+			/************************* ç§»åŠ¨topç‚¹ **************************************/
 
-			if (pSouiLayoutParamStruct1->posLeft.cMinus == -1)// ×ø±ê1Îª¸ºÊıµÄÇé¿ö
+			if (pSouiLayoutParamStruct1->posLeft.cMinus == -1)// åæ ‡1ä¸ºè´Ÿæ•°çš„æƒ…å†µ
 			{
 				if (pSouiLayoutParamStruct1->posLeft.nPos.fSize - x < 0)
 				{
@@ -702,7 +702,7 @@ namespace SOUI
 				nPosTop1 = pSouiLayoutParamStruct1->posLeft.nPos.fSize - x; //layout1->pos[1].nPos = layout1->pos[1].nPos - x;
 
 			}
-			else//×ø±ê1ÎªÕıÊı
+			else//åæ ‡1ä¸ºæ­£æ•°
 			{
 				if (pSouiLayoutParamStruct1->posRight.cMinus == -1)
 				{
@@ -716,13 +716,13 @@ namespace SOUI
 				nPosTop1 = pSouiLayoutParamStruct1->posLeft.nPos.fSize + x;  //layout1->pos[1].nPos = layout1->pos[1].nPos + x;
 			}
 
-			/************************* ÒÆ¶¯ top **************************************/
+			/************************* ç§»åŠ¨ top **************************************/
 
 
 
 
-			/************************* ÒÆ¶¯ buttom  **************************************/
-			if (pSouiLayoutParamStruct1->posRight.pit == PIT_SIZE)  //100, 100 ,@5, @5ÕâÖÖÇé¿ö
+			/************************* ç§»åŠ¨ buttom  **************************************/
+			if (pSouiLayoutParamStruct1->posRight.pit == PIT_SIZE)  //100, 100 ,@5, @5è¿™ç§æƒ…å†µ
 			{
 				//
 
@@ -732,7 +732,7 @@ namespace SOUI
 			}
 			else
 			{
-				if (pSouiLayoutParamStruct1->posRight.cMinus == -1)// ×ø±ê1Îª¸ºÊıµÄÇé¿ö
+				if (pSouiLayoutParamStruct1->posRight.cMinus == -1)// åæ ‡1ä¸ºè´Ÿæ•°çš„æƒ…å†µ
 				{
 					if (pSouiLayoutParamStruct1->posRight.nPos.fSize - x < 0)
 					{
@@ -743,7 +743,7 @@ namespace SOUI
 					nPosButtom1 = pSouiLayoutParamStruct1->posRight.nPos.fSize - x; //layout1->pos[3].nPos = layout1->pos[3].nPos - x;
 
 				}
-				else//×ø±ê1ÎªÕıÊı
+				else//åæ ‡1ä¸ºæ­£æ•°
 				{
 					nPosButtom = pSouiLayoutParamStruct->posRight.nPos.fSize + x; //layout->pos[3].nPos = layout->pos[3].nPos + x;
 					nPosButtom1 = pSouiLayoutParamStruct1->posRight.nPos.fSize + x; //layout1->pos[3].nPos = layout1->pos[3].nPos + x;
@@ -756,7 +756,7 @@ namespace SOUI
 				pSouiLayoutParamStruct1->posRight.nPos.fSize = nPosButtom1;
 
 			}
-			/************************* ÒÆ¶¯ buttom **************************************/
+			/************************* ç§»åŠ¨ buttom **************************************/
 
 
 
@@ -766,7 +766,7 @@ namespace SOUI
 	}
 	void SMoveWnd::MoveWndVert(int x)
 	{
-		//´¹Ö±ÒÆ¶¯
+		//å‚ç›´ç§»åŠ¨
 		if (m_pRealWnd == m_Desiner->m_pRealWndRoot)
 		{
 			return;
@@ -778,20 +778,20 @@ namespace SOUI
 		SouiLayoutParam *pSouiLayoutParam1 = m_pRealWnd->GetLayoutParamT<SouiLayoutParam>();
 		SouiLayoutParamStruct *pSouiLayoutParamStruct1 = (SouiLayoutParamStruct*)pSouiLayoutParam1->GetRawData();
 
-		//ÓĞmarginµÄÇé¿ö
+		//æœ‰marginçš„æƒ…å†µ
 		SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
 		int nMargin = 0;
 
 		CRect rcMargin = style.GetMargin();
 		nMargin = rcMargin.top;
 
-		//ÍùÉÏÍÏ¶¯£¬top²»ÄÜĞ¡ÓÚ0
+		//å¾€ä¸Šæ‹–åŠ¨ï¼Œtopä¸èƒ½å°äº0
 		if (pSouiLayoutParamStruct->posTop.nPos.fSize + x - nMargin < 0 && x < 0)
 		{
 			return;
 		}
 
-		//ÍùÏÂÍÏ¶¯£¬bottom²»ÄÜ´óÓÚ¸¸¿Ø¼şµÄbottom
+		//å¾€ä¸‹æ‹–åŠ¨ï¼Œbottomä¸èƒ½å¤§äºçˆ¶æ§ä»¶çš„bottom
 		if (x > 0)
 		{
 			CRect r;
@@ -803,9 +803,9 @@ namespace SOUI
 			}
 		}
 
-		if (pSouiLayoutParamStruct1->nCount == 2) //Á½¸ö×ø±êµÄÇé¿ö
+		if (pSouiLayoutParamStruct1->nCount == 2) //ä¸¤ä¸ªåæ ‡çš„æƒ…å†µ
 		{
-			if (pSouiLayoutParamStruct1->posTop.cMinus == -1)// ×ø±ê1Îª¸ºÊıµÄÇé¿ö
+			if (pSouiLayoutParamStruct1->posTop.cMinus == -1)// åæ ‡1ä¸ºè´Ÿæ•°çš„æƒ…å†µ
 			{
 				if (pSouiLayoutParamStruct1->posTop.nPos.fSize - x < 0)
 				{
@@ -816,7 +816,7 @@ namespace SOUI
 				pSouiLayoutParamStruct1->posTop.nPos.fSize = pSouiLayoutParamStruct1->posTop.nPos.fSize - x;
 
 			}
-			else//×ø±ê1ÎªÕıÊı
+			else//åæ ‡1ä¸ºæ­£æ•°
 			{
 				if (pSouiLayoutParamStruct1->posBottom.cMinus == -1)
 				{
@@ -834,9 +834,9 @@ namespace SOUI
 		{
 			int nPosTop, nPosTop1;
 			int nPosButtom, nPosButtom1;
-			/************************* ÒÆ¶¯topµã **************************************/
+			/************************* ç§»åŠ¨topç‚¹ **************************************/
 
-			if (pSouiLayoutParamStruct1->posTop.cMinus == -1)// ×ø±ê1Îª¸ºÊıµÄÇé¿ö
+			if (pSouiLayoutParamStruct1->posTop.cMinus == -1)// åæ ‡1ä¸ºè´Ÿæ•°çš„æƒ…å†µ
 			{
 				if (pSouiLayoutParamStruct1->posTop.nPos.fSize - x < 0)
 				{
@@ -846,7 +846,7 @@ namespace SOUI
 				nPosTop = pSouiLayoutParamStruct->posTop.nPos.fSize + x; //layout->pos[1].nPos = layout->pos[1].nPos + x;   
 				nPosTop1 = pSouiLayoutParamStruct1->posTop.nPos.fSize - x; //layout1->pos[1].nPos = layout1->pos[1].nPos - x;
 			}
-			else//×ø±ê1ÎªÕıÊı
+			else//åæ ‡1ä¸ºæ­£æ•°
 			{
 				if (pSouiLayoutParamStruct1->posBottom.cMinus == -1)
 				{
@@ -860,10 +860,10 @@ namespace SOUI
 				nPosTop1 = pSouiLayoutParamStruct1->posTop.nPos.fSize + x;  //layout1->pos[1].nPos = layout1->pos[1].nPos + x;
 			}
 
-			/************************* ÒÆ¶¯ top **************************************/
+			/************************* ç§»åŠ¨ top **************************************/
 
-			/************************* ÒÆ¶¯ buttom  **************************************/
-			if (pSouiLayoutParamStruct1->posBottom.pit == PIT_SIZE)  //100, 100 ,@5, @5ÕâÖÖÇé¿ö
+			/************************* ç§»åŠ¨ buttom  **************************************/
+			if (pSouiLayoutParamStruct1->posBottom.pit == PIT_SIZE)  //100, 100 ,@5, @5è¿™ç§æƒ…å†µ
 			{
 				//
 				pSouiLayoutParamStruct->posTop.nPos.fSize = nPosTop;
@@ -871,7 +871,7 @@ namespace SOUI
 			}
 			else
 			{
-				if (pSouiLayoutParamStruct1->posBottom.cMinus == -1)// ×ø±ê1Îª¸ºÊıµÄÇé¿ö
+				if (pSouiLayoutParamStruct1->posBottom.cMinus == -1)// åæ ‡1ä¸ºè´Ÿæ•°çš„æƒ…å†µ
 				{
 					if (pSouiLayoutParamStruct1->posBottom.nPos.fSize - x < 0)
 					{
@@ -881,7 +881,7 @@ namespace SOUI
 					nPosButtom = pSouiLayoutParamStruct->posBottom.nPos.fSize + x;  //layout->pos[3].nPos = layout->pos[3].nPos + x;
 					nPosButtom1 = pSouiLayoutParamStruct1->posBottom.nPos.fSize - x; //layout1->pos[3].nPos = layout1->pos[3].nPos - x;
 				}
-				else//×ø±ê1ÎªÕıÊı
+				else//åæ ‡1ä¸ºæ­£æ•°
 				{
 					nPosButtom = pSouiLayoutParamStruct->posBottom.nPos.fSize + x; //layout->pos[3].nPos = layout->pos[3].nPos + x;
 					nPosButtom1 = pSouiLayoutParamStruct1->posBottom.nPos.fSize + x; //layout1->pos[3].nPos = layout1->pos[3].nPos + x;
@@ -892,7 +892,7 @@ namespace SOUI
 				pSouiLayoutParamStruct->posBottom.nPos.fSize = nPosButtom;
 				pSouiLayoutParamStruct1->posBottom.nPos.fSize = nPosButtom1;
 			}
-			/************************* ÒÆ¶¯ buttom **************************************/
+			/************************* ç§»åŠ¨ buttom **************************************/
 		}
 	}
 
@@ -913,12 +913,12 @@ namespace SOUI
 			return;
 		}
 
-		//×óÉÏÓÒÏÂ·½Ïò¼ü        Ñ¡ÖĞÇ°¡¢ºóÒ»¸ö¿Ø¼ş
-		//esc              Ñ¡ÖĞ¸¸¿Ø¼ş
-		//ctrl  + ·½Ïò¼ü   ÉÏÏÂ×óÓÒÒÆ¶¯1¸öµãµÄÎ»ÖÃ
-		//Shift + ·½Ïò¼ü   Ôö¼õ¿Ø¼şµÄ³ß´ç
-		//delete           É¾³ıµ±Ç°¿Ø¼ş
-		//CTRL + SHIFT µ±¿Ø¼ş±»×Ó¿Ø¼şµ²×¡ÁË£¬ÕâÊ±ºòÊÇÎŞ·¨ÒÆ¶¯¿Ø¼şµÄ£¬ÒòÎªÎŞÂÛÔõÃ´Ñ¡¶¼Ö»ÄÜÑ¡ÖĞ×Ó¿Ø¼ş£¬ÕâÊ±°´×¡ctrl+ shift¿ÉÒÔÒş²Ø×Ó¿Ø¼ş£¬Ê¹¿Ø¼ş¿ÉÒÔÑ¡ÖĞ´Ó¶øÒÆ¶¯
+		//å·¦ä¸Šå³ä¸‹æ–¹å‘é”®        é€‰ä¸­å‰ã€åä¸€ä¸ªæ§ä»¶
+		//esc              é€‰ä¸­çˆ¶æ§ä»¶
+		//ctrl  + æ–¹å‘é”®   ä¸Šä¸‹å·¦å³ç§»åŠ¨1ä¸ªç‚¹çš„ä½ç½®
+		//Shift + æ–¹å‘é”®   å¢å‡æ§ä»¶çš„å°ºå¯¸
+		//delete           åˆ é™¤å½“å‰æ§ä»¶
+		//CTRL + SHIFT å½“æ§ä»¶è¢«å­æ§ä»¶æŒ¡ä½äº†ï¼Œè¿™æ—¶å€™æ˜¯æ— æ³•ç§»åŠ¨æ§ä»¶çš„ï¼Œå› ä¸ºæ— è®ºæ€ä¹ˆé€‰éƒ½åªèƒ½é€‰ä¸­å­æ§ä»¶ï¼Œè¿™æ—¶æŒ‰ä½ctrl+ shiftå¯ä»¥éšè—å­æ§ä»¶ï¼Œä½¿æ§ä»¶å¯ä»¥é€‰ä¸­ä»è€Œç§»åŠ¨
 
 		m_bMsgHandled = FALSE;
 
@@ -948,7 +948,7 @@ namespace SOUI
 
 				if (m_pRealWnd->GetLayoutParam()->IsClass(SLinearLayoutParam::GetClassName()))
 				{
-					return; //ÏßĞÔ²¼¾Ö²»ÄÜÒÆ¶¯
+					return; //çº¿æ€§å¸ƒå±€ä¸èƒ½ç§»åŠ¨
 				}
 				MoveWndVert(-1);
 				m_bMsgHandled = TRUE;
@@ -960,7 +960,7 @@ namespace SOUI
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
-				GetParent()->Invalidate(); //Ë¢ĞÂ¸¸´°¿Ú
+				GetParent()->Invalidate(); //åˆ·æ–°çˆ¶çª—å£
 
 			}
 			else if (bShift)
@@ -982,7 +982,7 @@ namespace SOUI
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
-				GetParent()->Invalidate(); //Ë¢ĞÂ¸¸´°¿Ú
+				GetParent()->Invalidate(); //åˆ·æ–°çˆ¶çª—å£
 
 			}
 			else
@@ -1017,7 +1017,7 @@ namespace SOUI
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
-				GetParent()->Invalidate(); //Ë¢ĞÂ¸¸´°¿Ú
+				GetParent()->Invalidate(); //åˆ·æ–°çˆ¶çª—å£
 			}
 			else if (bShift)
 			{
@@ -1038,7 +1038,7 @@ namespace SOUI
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
-				GetParent()->Invalidate(); //Ë¢ĞÂ¸¸´°¿Ú
+				GetParent()->Invalidate(); //åˆ·æ–°çˆ¶çª—å£
 			}
 			else
 			{
@@ -1071,7 +1071,7 @@ namespace SOUI
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
-				GetParent()->Invalidate(); //Ë¢ĞÂ¸¸´°¿Ú
+				GetParent()->Invalidate(); //åˆ·æ–°çˆ¶çª—å£
 			}
 			else if (bShift)
 			{
@@ -1092,7 +1092,7 @@ namespace SOUI
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
-				GetParent()->Invalidate(); //Ë¢ĞÂ¸¸´°¿Ú
+				GetParent()->Invalidate(); //åˆ·æ–°çˆ¶çª—å£
 			}
 			else
 			{
@@ -1122,7 +1122,7 @@ namespace SOUI
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
-				GetParent()->Invalidate(); //Ë¢ĞÂ¸¸´°¿Ú
+				GetParent()->Invalidate(); //åˆ·æ–°çˆ¶çª—å£
 			}
 			else if (bShift)
 			{
@@ -1143,7 +1143,7 @@ namespace SOUI
 				GetParent()->UpdateChildrenPosition();
 				m_Desiner->UpdatePosToXmlNode(m_pRealWnd, this);
 				m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
-				GetParent()->Invalidate(); //Ë¢ĞÂ¸¸´°¿Ú
+				GetParent()->Invalidate(); //åˆ·æ–°çˆ¶çª—å£
 			}
 			else
 			{
@@ -1170,7 +1170,7 @@ namespace SOUI
 
 		case VK_DELETE:
 		{
-			int n = SMessageBox(NULL, _T("È·¶¨ÒªÉ¾³ıÂğ£¿"), _T("ÌáÊ¾"), MB_OKCANCEL);
+			int n = SMessageBox(NULL, _T("ç¡®å®šè¦åˆ é™¤å—ï¼Ÿ"), _T("æç¤º"), MB_OKCANCEL);
 			if (n == IDOK)
 			{
 				m_Desiner->DeleteCtrl();
@@ -1205,7 +1205,7 @@ namespace SOUI
 		m_pRealWnd->GetWindowRect(rcReal);
 		m_pRealWnd->GetParent()->GetWindowRect(rcRealParent);
 
-		//ÓĞmarginµÄÇé¿ö
+		//æœ‰marginçš„æƒ…å†µ
 		SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
 		int nMargin = 0;
 
@@ -1219,20 +1219,20 @@ namespace SOUI
 			nMargin = rcMargin.top;
 		}
 
-		//Íù×ó¡¢ÉÏÍÏ¶¯´óĞ¡£¬left¡¢top²»ÄÜĞ¡ÓÚ0
+		//å¾€å·¦ã€ä¸Šæ‹–åŠ¨å¤§å°ï¼Œleftã€topä¸èƒ½å°äº0
 		/*if (pSouiLayoutParamStruct->pos[PosN].nPos + x - nMargin < 0 && x < 0)*/
 		if (GetLayoutSize(pSouiLayoutParamStruct, PosN) + x - nMargin < 0 && x < 0)
 		{
 			return;
 		}
 
-		//ÍùÓÒÍÏ¶¯´óĞ¡,left ²»ÄÜ´óÓÚ right
+		//å¾€å³æ‹–åŠ¨å¤§å°,left ä¸èƒ½å¤§äº right
 		if (pSouiLayoutParam->GetSpecifiedSize(Horz).fSize - x < 1 && PosN == 0 && x > 0)
 		{
 			return;
 		}
 
-		//ÍùÏÂÍÏ¶¯´óĞ¡,top ²»ÄÜ´óÓÚ buttom
+		//å¾€ä¸‹æ‹–åŠ¨å¤§å°,top ä¸èƒ½å¤§äº buttom
 		if (pSouiLayoutParam->GetSpecifiedSize(Vert).fSize - x < 1 && PosN == 1 && x > 0)
 		{
 			return;
@@ -1255,22 +1255,22 @@ namespace SOUI
 			pSouiLayoutParam->SetSpecifiedSize(Vert, LayoutSize);
 		}
 
-		if (pSouiLayoutParamStruct1->nCount == 2) //Ö»ÓĞÁ½¸ö×ø±êµã£¬×Ô¶¯¼ÆËã´óĞ¡
+		if (pSouiLayoutParamStruct1->nCount == 2) //åªæœ‰ä¸¤ä¸ªåæ ‡ç‚¹ï¼Œè‡ªåŠ¨è®¡ç®—å¤§å°
 		{
-			if (pSouiLayoutParam1->IsSpecifiedSize(Both))//ÓÃsizeÖ¸¶¨´óĞ¡µÄÊ±ºò
+			if (pSouiLayoutParam1->IsSpecifiedSize(Both))//ç”¨sizeæŒ‡å®šå¤§å°çš„æ—¶å€™
 			{
 
 				/*pSouiLayoutParamStruct1->pos[PosN].nPos = pSouiLayoutParamStruct1->pos[PosN].nPos + x;*/
 				SetLayoutSize(pSouiLayoutParamStruct1, PosN, GetLayoutSize(pSouiLayoutParamStruct1, PosN) + x);
 				if (PosN == 0)
-				{   //¿í
+				{   //å®½
 					/*pSouiLayoutParam1->SetSpecifiedSize(Horz, pSouiLayoutParam1->GetSpecifiedSize(Horz) - x);*/
 					SLayoutSize LayoutSize = pSouiLayoutParam1->GetSpecifiedSize(Horz);
 					LayoutSize.fSize = LayoutSize.fSize - x;
 					pSouiLayoutParam1->SetSpecifiedSize(Horz, LayoutSize);
 				}
 				else
-				{   //¸ß
+				{   //é«˜
 					/*pSouiLayoutParam1->SetSpecifiedSize(Vert, pSouiLayoutParam1->GetSpecifiedSize(Vert) - x);*/
 					SLayoutSize LayoutSize = pSouiLayoutParam1->GetSpecifiedSize(Vert);
 					LayoutSize.fSize = LayoutSize.fSize - x;
@@ -1285,7 +1285,7 @@ namespace SOUI
 		else
 		{
 			//-100, -100, @20,@20
-			if (GetPosInfo(pSouiLayoutParamStruct1, PosN).cMinus == -1)// ×ø±êÎª¸ºÊıµÄÇé¿ö
+			if (GetPosInfo(pSouiLayoutParamStruct1, PosN).cMinus == -1)// åæ ‡ä¸ºè´Ÿæ•°çš„æƒ…å†µ
 			{
 
 				//pSouiLayoutParamStruct1->pos[PosN].nPos = pSouiLayoutParamStruct1->pos[PosN].nPos - x;
@@ -1297,7 +1297,7 @@ namespace SOUI
 				SetLayoutSize(pSouiLayoutParamStruct1, PosN, GetLayoutSize(pSouiLayoutParamStruct1, PosN) + x);
 			}
 
-			if (GetPosInfo(pSouiLayoutParamStruct1, PosN + 2).pit == PIT_SIZE)  //@5ÕâÖÖÇé¿ö
+			if (GetPosInfo(pSouiLayoutParamStruct1, PosN + 2).pit == PIT_SIZE)  //@5è¿™ç§æƒ…å†µ
 			{
 
 				/*pSouiLayoutParamStruct1->pos[PosN + 2].nPos = pSouiLayoutParamStruct1->pos[PosN + 2].nPos - x;*/
@@ -1319,9 +1319,9 @@ namespace SOUI
 
 
 			}
-			else  //Ãèµã×ø±ê
+			else  //æç‚¹åæ ‡
 			{
-				//80,100,50,80 ÕâÖÖÇé¿ö£¬top < buttom  right < reftµÄÔİÊ±²»¿¼ÂÇ 
+				//80,100,50,80 è¿™ç§æƒ…å†µï¼Œtop < buttom  right < reftçš„æš‚æ—¶ä¸è€ƒè™‘ 
 				//
 				//layout1->pos[PosN].nPos = layout1->pos[PosN].nPos + x;
 			}
@@ -1344,7 +1344,7 @@ namespace SOUI
 		m_pRealWnd->GetParent()->GetWindowRect(rcRealParent);
 		GetParent()->GetWindowRect(rcMovParent);
 
-		//ÓĞmarginµÄÇé¿ö
+		//æœ‰marginçš„æƒ…å†µ
 		SwndStyle &style = m_pRealWnd->GetParent()->GetStyle();
 		int nMargin = 0;
 
@@ -1358,7 +1358,7 @@ namespace SOUI
 			nMargin = rcMargin.bottom;
 		}
 
-		//ÓÒÍÏ¶¯²»ÄÜ³¬¹ı¸¸¿Ø¼şµÄÓÒ±ß¾à
+		//å³æ‹–åŠ¨ä¸èƒ½è¶…è¿‡çˆ¶æ§ä»¶çš„å³è¾¹è·
 		if (PosN == 2 && x > 0)
 		{
 			if (GetLayoutSize(pSouiLayoutParamStruct, PosN - 2) + pSouiLayoutParam->GetSpecifiedSize(Horz).fSize + x + nMargin > rcMovParent.right - rcMovParent.left)
@@ -1367,7 +1367,7 @@ namespace SOUI
 			}
 		}
 
-		//ÏÂÍÏ¶¯²»ÄÜ³¬¹ı¸¸¿Ø¼şµÄÏÂ±ß¾à
+		//ä¸‹æ‹–åŠ¨ä¸èƒ½è¶…è¿‡çˆ¶æ§ä»¶çš„ä¸‹è¾¹è·
 		if (PosN == 3 && x > 0)
 		{
 			if (GetLayoutSize(pSouiLayoutParamStruct, PosN - 2) + pSouiLayoutParam->GetSpecifiedSize(Vert).fSize + x + nMargin > rcMovParent.bottom - rcMovParent.top)
@@ -1376,7 +1376,7 @@ namespace SOUI
 			}
 		}
 
-		//ÓĞmarginµÄÇé¿ö  
+		//æœ‰marginçš„æƒ…å†µ  
 		SwndStyle &style1 = m_pRealWnd->GetStyle();
 		int nMarginLeft = 0, nMarginTop = 0, nMarginBottom = 0, nMarginRight = 0;
 
@@ -1393,13 +1393,13 @@ namespace SOUI
 			nMarginTop = rcMargin.top;
 		}
 
-		//Íù×óÍÏ¶¯´óĞ¡,left ²»ÄÜ´óÓÚ right
+		//å¾€å·¦æ‹–åŠ¨å¤§å°,left ä¸èƒ½å¤§äº right
 		if (pSouiLayoutParam->GetSpecifiedSize(Horz).fSize + x - (nMarginRight + nMarginLeft) < 1 && PosN == 2 && x < 0)
 		{
 			return;
 		}
 
-		//ÍùÉÏÍÏ¶¯´óĞ¡,top ²»ÄÜ´óÓÚ buttom
+		//å¾€ä¸Šæ‹–åŠ¨å¤§å°,top ä¸èƒ½å¤§äº buttom
 		if (pSouiLayoutParam->GetSpecifiedSize(Vert).fSize + x - ((nMarginBottom + nMarginTop)) < 1 && PosN == 3 && x < 0)
 		{
 			return;
@@ -1425,7 +1425,7 @@ namespace SOUI
 
 		if (pSouiLayoutParamStruct1->nCount == 0)
 		{
-			if (pSouiLayoutParam1->IsSpecifiedSize(Both))//ÓÃsizeÖ¸¶¨´óĞ¡µÄÊ±ºò
+			if (pSouiLayoutParam1->IsSpecifiedSize(Both))//ç”¨sizeæŒ‡å®šå¤§å°çš„æ—¶å€™
 			{
 				if (PosN == 2)
 				{
@@ -1443,22 +1443,22 @@ namespace SOUI
 				}
 			}
 		}
-		else if (pSouiLayoutParamStruct1->nCount == 2) //Ö»ÓĞÁ½¸ö×ø±êµã£¬×Ô¶¯¼ÆËã´óĞ¡
+		else if (pSouiLayoutParamStruct1->nCount == 2) //åªæœ‰ä¸¤ä¸ªåæ ‡ç‚¹ï¼Œè‡ªåŠ¨è®¡ç®—å¤§å°
 		{
-			if (pSouiLayoutParam1->IsSpecifiedSize(Both))//ÓÃsizeÖ¸¶¨´óĞ¡µÄÊ±ºò
+			if (pSouiLayoutParam1->IsSpecifiedSize(Both))//ç”¨sizeæŒ‡å®šå¤§å°çš„æ—¶å€™
 			{
 
 				/*pSouiLayoutParamStruct->pos[PosN].nPos = pSouiLayoutParamStruct->pos[PosN].nPos + x;*/
 				SetLayoutSize(pSouiLayoutParamStruct, PosN, GetLayoutSize(pSouiLayoutParamStruct, PosN) + x);
 				if (PosN == 2)
-				{   //¿í
+				{   //å®½
 					/*pSouiLayoutParam1->SetSpecifiedSize(Horz, pSouiLayoutParam1->GetSpecifiedSize(Horz) + x);*/
 					SLayoutSize LayoutSize = pSouiLayoutParam1->GetSpecifiedSize(Horz);
 					LayoutSize.fSize = LayoutSize.fSize + x;
 					pSouiLayoutParam1->SetSpecifiedSize(Horz, LayoutSize);
 				}
 				else
-				{   //¸ß
+				{   //é«˜
 					/*pSouiLayoutParam1->SetSpecifiedSize(Vert, pSouiLayoutParam1->GetSpecifiedSize(Vert) + x);*/
 					SLayoutSize LayoutSize = pSouiLayoutParam1->GetSpecifiedSize(Vert);
 					LayoutSize.fSize = LayoutSize.fSize + x;
@@ -1475,12 +1475,12 @@ namespace SOUI
 			//5,3,-5,-7
 			//5,3,@5,@7
 
-			if (GetPosInfo(pSouiLayoutParamStruct1, PosN).cMinus == -1)// ×ø±ê3Îª¸ºÊıµÄÇé¿ö
+			if (GetPosInfo(pSouiLayoutParamStruct1, PosN).cMinus == -1)// åæ ‡3ä¸ºè´Ÿæ•°çš„æƒ…å†µ
 			{
 				/*pSouiLayoutParamStruct1->pos[PosN].nPos = pSouiLayoutParamStruct1->pos[PosN].nPos - x;*/
 				SetLayoutSize(pSouiLayoutParamStruct1, PosN, GetLayoutSize(pSouiLayoutParamStruct1, PosN) - x);
 			}
-			else if (GetPosInfo(pSouiLayoutParamStruct1, PosN).pit == PIT_SIZE)  //@5ÕâÖÖÇé¿ö
+			else if (GetPosInfo(pSouiLayoutParamStruct1, PosN).pit == PIT_SIZE)  //@5è¿™ç§æƒ…å†µ
 			{
 				//layout->pos[PosN].nPos = layout->pos[PosN].nPos + x;
 				/*pSouiLayoutParamStruct1->pos[PosN].nPos = pSouiLayoutParamStruct1->pos[PosN].nPos + x;*/
@@ -1500,9 +1500,9 @@ namespace SOUI
 					pSouiLayoutParam1->SetSpecifiedSize(Vert, LayoutSize);
 				}
 			}
-			else  //Ãèµã×ø±ê
+			else  //æç‚¹åæ ‡
 			{
-				//80,100,50,80 ÕâÖÖÇé¿ö£¬top < buttom  right < reftµÄÔİÊ±²»¿¼ÂÇ 
+				//80,100,50,80 è¿™ç§æƒ…å†µï¼Œtop < buttom  right < reftçš„æš‚æ—¶ä¸è€ƒè™‘ 
 
 				//layout->pos[PosN].nPos = layout->pos[PosN].nPos + x;
 				/*pSouiLayoutParamStruct1->pos[PosN].nPos = pSouiLayoutParamStruct1->pos[PosN].nPos + x;*/
@@ -1526,10 +1526,10 @@ namespace SOUI
 		GetParent()->GetWindowRect(rcMovParent);
 
 
-		//²»ÄÜÍÏ³ö¸¸¿Ø¼ş±ß½ç
-		if (orientation == Horz)  //Ïò×óÓÒÀ­¶¯ÓÒ±ßµÄ±ß¿ò
+		//ä¸èƒ½æ‹–å‡ºçˆ¶æ§ä»¶è¾¹ç•Œ
+		if (orientation == Horz)  //å‘å·¦å³æ‹‰åŠ¨å³è¾¹çš„è¾¹æ¡†
 		{
-			if (pLinearLayoutParam->IsMatchParent(Horz))  //Æ¥Åä¸¸´°¿ÚÊ±²»ÄÜ¸Ä±ä´óĞ¡
+			if (pLinearLayoutParam->IsMatchParent(Horz))  //åŒ¹é…çˆ¶çª—å£æ—¶ä¸èƒ½æ”¹å˜å¤§å°
 			{
 				return;
 			}
@@ -1540,9 +1540,9 @@ namespace SOUI
 				pSouiLayoutParamStruct->posRight.nPos.fSize = pSouiLayoutParamStruct->posRight.nPos.fSize + x;
 			}
 		}
-		else  ////ÏòÉÏÏÂÀ­¶¯ÏÂ±ßµÄ±ß¿ò
+		else  ////å‘ä¸Šä¸‹æ‹‰åŠ¨ä¸‹è¾¹çš„è¾¹æ¡†
 		{
-			if (pLinearLayoutParam->IsMatchParent(Vert))  //Æ¥Åä¸¸´°¿ÚÊ±²»ÄÜ¸Ä±ä´óĞ¡
+			if (pLinearLayoutParam->IsMatchParent(Vert))  //åŒ¹é…çˆ¶çª—å£æ—¶ä¸èƒ½æ”¹å˜å¤§å°
 			{
 				return;
 			}

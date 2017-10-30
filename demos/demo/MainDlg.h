@@ -1,4 +1,4 @@
-/**
+ï»¿/**
 * Copyright (C) 2014-2050 
 * All rights reserved.
 * 
@@ -8,7 +8,7 @@
 * @author     SOUI group   
 * @date       2014/08/15
 * 
-* Describe    Ö÷´°¿ÚÊµÏÖ
+* Describe    ä¸»çª—å£å®ç°
 */
 
 #pragma once
@@ -21,7 +21,7 @@ using namespace SOUI;
 #include "../../controls.extend/SMcListViewEx/STabCtrlHeaderBinder.h"
 
 extern UINT g_dwSkinChangeMessage;
-//ÑİÊ¾Ê¹ÓÃSNotifyCenterµÄÒì²½ÊÂ¼ş
+//æ¼”ç¤ºä½¿ç”¨SNotifyCenterçš„å¼‚æ­¥äº‹ä»¶
 class EventThread : public TplEventArgs<EventThread>
 {
 	SOUI_CLASS_NAME(EventThread,L"on_event_thread")
@@ -32,7 +32,7 @@ public:
 	int nData;
 };
 
-//ÑİÊ¾Ê¹ÓÃSNotifyCenterµÄÍ¬²½ÊÂ¼ş
+//æ¼”ç¤ºä½¿ç”¨SNotifyCenterçš„åŒæ­¥äº‹ä»¶
 class EventThreadStart : public TplEventArgs<EventThreadStart>
 {
 	SOUI_CLASS_NAME(EventThreadStart,L"on_event_thread_start")
@@ -41,7 +41,7 @@ public:
 	enum{EventID=EVT_EXTERNAL_BEGIN+30001};
 };
 
-//ÑİÊ¾Ê¹ÓÃSNotifyCenterµÄÍ¬²½ÊÂ¼ş
+//æ¼”ç¤ºä½¿ç”¨SNotifyCenterçš„åŒæ­¥äº‹ä»¶
 class EventThreadStop : public TplEventArgs<EventThreadStop>
 {
 	SOUI_CLASS_NAME(EventThreadStop,L"on_event_thread_stop")
@@ -53,23 +53,23 @@ public:
 
 /**
 * @class      CMainDlg
-* @brief      Ö÷´°¿ÚÊµÏÖ
+* @brief      ä¸»çª—å£å®ç°
 * 
-* Describe    ·ÇÄ£Ê½´°¿Ú´ÓSHostWndÅÉÉú£¬Ä£Ê½´°¿Ú´ÓSHostDialogÅÉÉú
+* Describe    éæ¨¡å¼çª—å£ä»SHostWndæ´¾ç”Ÿï¼Œæ¨¡å¼çª—å£ä»SHostDialogæ´¾ç”Ÿ
 */
 class CMainDlg : public SHostWnd
-			   , public CMagnetFrame	//´ÅÁ¦Îü¸½
-			   //, public ISetSkinHandler	//Æ¤·ô´¦Àí
-			   , public CThreadObject	//Ïß³Ì¶ÔÏó
-			   , public TAutoEventMapReg<CMainDlg>//Í¨ÖªÖĞĞÄ×Ô¶¯×¢²á
+			   , public CMagnetFrame	//ç£åŠ›å¸é™„
+			   //, public ISetSkinHandler	//çš®è‚¤å¤„ç†
+			   , public CThreadObject	//çº¿ç¨‹å¯¹è±¡
+			   , public TAutoEventMapReg<CMainDlg>//é€šçŸ¥ä¸­å¿ƒè‡ªåŠ¨æ³¨å†Œ
 			   , public ISetOrLoadSkinHandler
 {
 public:
 
     /**
      * CMainDlg
-     * @brief    ¹¹Ôìº¯Êı
-     * Describe  Ê¹ÓÃuires.idxÖĞ¶¨ÒåµÄmaindlg¶ÔÓ¦µÄxml²¼¾Ö´´½¨UI
+     * @brief    æ„é€ å‡½æ•°
+     * Describe  ä½¿ç”¨uires.idxä¸­å®šä¹‰çš„maindlgå¯¹åº”çš„xmlå¸ƒå±€åˆ›å»ºUI
      */    
     CMainDlg() : SHostWnd(UIRES.LAYOUT.maindlg),m_bLayoutInited(FALSE)
     {
@@ -77,7 +77,7 @@ public:
 
 protected:
     //////////////////////////////////////////////////////////////////////////
-    //  WindowÏûÏ¢ÏìÓ¦º¯Êı
+    //  Windowæ¶ˆæ¯å“åº”å‡½æ•°
     LRESULT OnInitDialog(HWND hWnd, LPARAM lParam);
     void OnDestory();
 
@@ -101,7 +101,7 @@ protected:
 
 	void OnSize(UINT nType, CSize size)
 	{
-		SetMsgHandled(FALSE);   //ÕâÒ»ĞĞºÜÖØÒª£¬±£Ö¤ÏûÏ¢¼ÌĞø´«µİ¸øSHostWnd´¦Àí£¬µ±È»Ò²¿ÉÒÔÓÃSHostWnd::OnSize(nType,size);´úÌæ£¬µ«ÊÇÕâÀïÊ¹ÓÃµÄ·½·¨¸ü¼òµ¥£¬Í¨ÓÃ
+		SetMsgHandled(FALSE);   //è¿™ä¸€è¡Œå¾ˆé‡è¦ï¼Œä¿è¯æ¶ˆæ¯ç»§ç»­ä¼ é€’ç»™SHostWndå¤„ç†ï¼Œå½“ç„¶ä¹Ÿå¯ä»¥ç”¨SHostWnd::OnSize(nType,size);ä»£æ›¿ï¼Œä½†æ˜¯è¿™é‡Œä½¿ç”¨çš„æ–¹æ³•æ›´ç®€å•ï¼Œé€šç”¨
 		if(!m_bLayoutInited) return;
 		if(nType==SIZE_MAXIMIZED)
 		{
@@ -116,10 +116,10 @@ protected:
     
 	int OnCreate(LPCREATESTRUCT lpCreateStruct);
     
-    //ÑİÊ¾ÈçºÎÔÚÓ¦ÓÃ²ãÊ¹ÓÃ¶¨Ê±Æ÷
+    //æ¼”ç¤ºå¦‚ä½•åœ¨åº”ç”¨å±‚ä½¿ç”¨å®šæ—¶å™¨
 	void OnTimer(UINT_PTR idEvent);
 
-    //DUI²Ëµ¥ÏìÓ¦º¯Êı
+    //DUIèœå•å“åº”å‡½æ•°
     void OnCommand(UINT uNotifyCode, int nID, HWND wndCtl);
         
 
@@ -127,14 +127,14 @@ protected:
     //virtual void OnSetSkin(int iSkin);
 
     //////////////////////////////////////////////////////////////////////////
-    // SOUIÊÂ¼ş´¦Àíº¯Êı
-	//ÑİÊ¾ÆÁ±ÎÖ¸¶¨edit¿Ø¼şµÄÓÒ¼ü²Ëµ¥
+    // SOUIäº‹ä»¶å¤„ç†å‡½æ•°
+	//æ¼”ç¤ºå±è”½æŒ‡å®šeditæ§ä»¶çš„å³é”®èœå•
 	BOOL OnEditMenu(CPoint pt)
 	{
 		return TRUE;
 	}
 
-    //°´Å¥¿Ø¼şµÄÏìÓ¦
+    //æŒ‰é’®æ§ä»¶çš„å“åº”
     void OnBtnSelectGIF();
     void OnBtnMenu();
 
@@ -155,7 +155,7 @@ protected:
     
 	bool LoadSkin();
 
-	//ÑİÊ¾ÈçºÎÊ¹ÓÃsubscribeEventÀ´²»Ê¹ÓÃÊÂ¼şÓ³Éä±íÊµÏÖÊÂ¼şÏìÓ¦
+	//æ¼”ç¤ºå¦‚ä½•ä½¿ç”¨subscribeEventæ¥ä¸ä½¿ç”¨äº‹ä»¶æ˜ å°„è¡¨å®ç°äº‹ä»¶å“åº”
     bool OnListHeaderClick(EventArgs *pEvt);
 
         
@@ -169,7 +169,7 @@ protected:
     
     void OnMclvCtxMenu(EventArgs *pEvt);
     
-    //´¦ÀíÄ£Äâ²Ëµ¥ÖĞ¿Ø¼şµÄÊÂ¼ş
+    //å¤„ç†æ¨¡æ‹Ÿèœå•ä¸­æ§ä»¶çš„äº‹ä»¶
     void OnMenuSliderPos(EventArgs *pEvt);
     
     void OnMatrixWindowReNotify(EventArgs *pEvt);
@@ -194,10 +194,16 @@ protected:
 	bool OnEventThreadStop(EventArgs *e);
 	bool OnEventThread(EventArgs *e);
 	void OnBtnOpenWrapContent();
+	
+	void OnCbxInterpolotorChange(EventArgs *e);
+
+	void OnEventPath(EventArgs *e);
 
 	HRESULT OnSkinChangeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL bHandled);
-    //UI¿Ø¼şµÄÊÂ¼ş¼°ÏìÓ¦º¯ÊıÓ³Éä±í
+    //UIæ§ä»¶çš„äº‹ä»¶åŠå“åº”å‡½æ•°æ˜ å°„è¡¨
 	EVENT_MAP_BEGIN()
+		EVENT_HANDLER(EventPath::EventID,OnEventPath)
+		EVENT_ID_HANDLER(R.id.cbx_interpolator,EventCBSelChange::EventID,OnCbxInterpolotorChange)
 		EVENT_ID_COMMAND(1, OnClose)
 		EVENT_ID_COMMAND(2, OnMaximize)
 		EVENT_ID_COMMAND(3, OnRestore)
@@ -206,9 +212,9 @@ protected:
 		EVENT_NAME_CONTEXTMENU(L"edit_1140",OnEditMenu)
 		EVENT_NAME_COMMAND(L"btn_msgbox",OnBtnMsgBox)
 		
-		//<--ÔÚĞÂ°æ±¾µÄuiresbuilderÉú³ÉµÄresource.hÖĞ¶¨ÒåÁËR.id, R.nameÁ½¸ö¶ÔÏó£¬¿ÉÒÔÊ¹ÓÃÈçÏÂ·½Ê½À´¹ØÁª±äÁ¿¡£
+		//<--åœ¨æ–°ç‰ˆæœ¬çš„uiresbuilderç”Ÿæˆçš„resource.hä¸­å®šä¹‰äº†R.id, R.nameä¸¤ä¸ªå¯¹è±¡ï¼Œå¯ä»¥ä½¿ç”¨å¦‚ä¸‹æ–¹å¼æ¥å…³è”å˜é‡ã€‚
 		EVENT_ID_COMMAND(R.id.btnSelectGif,OnBtnSelectGIF)
-        EVENT_ID_RANGE_HANDLER(R.id.radio2_1,R.id.radio2_6,EventSwndStateChanged::EventID,OnTabPageRadioSwitch)    //10000-10005ÊÇXMLÖĞ¶¨ÒåµÄradio2µÄID
+        EVENT_ID_RANGE_HANDLER(R.id.radio2_1,R.id.radio2_6,EventSwndStateChanged::EventID,OnTabPageRadioSwitch)    //10000-10005æ˜¯XMLä¸­å®šä¹‰çš„radio2çš„ID
         EVENT_NAME_COMMAND(R.name.btn_menu,OnBtnMenu)
         EVENT_NAME_COMMAND(R.name.btn_webkit_go,OnBtnWebkitGo)
         EVENT_ID_COMMAND(R.id.btn_createchildren,OnBtnCreateChildren)
@@ -219,7 +225,7 @@ protected:
 		EVENT_ID_COMMAND(R.id.btn_stop_notify_thread,OnBtnStopNotifyThread)
 		EVENT_ID_COMMAND(R.id.btn_open_wrap_content,OnBtnOpenWrapContent)
         //-->
-		//<--Í¨ÖªÖĞĞÄÊÂ¼ş
+		//<--é€šçŸ¥ä¸­å¿ƒäº‹ä»¶
 		EVENT_ID_HANDLER(SENDER_ID,EventThreadStart::EventID,OnEventThreadStart)
 		EVENT_ID_HANDLER(SENDER_ID,EventThreadStop::EventID,OnEventThreadStop)
 		EVENT_ID_HANDLER(SENDER_ID,EventThread::EventID,OnEventThread)
@@ -246,7 +252,7 @@ protected:
         EVENT_NAME_HANDLER(L"menu_slider",EventSliderPos::EventID,OnMenuSliderPos)
 	EVENT_MAP_END()	
 
-    //HOSTÏûÏ¢¼°ÏìÓ¦º¯ÊıÓ³Éä±í
+    //HOSTæ¶ˆæ¯åŠå“åº”å‡½æ•°æ˜ å°„è¡¨
 	BEGIN_MSG_MAP_EX(CMainDlg)
 		MSG_WM_CREATE(OnCreate)
         MSG_WM_INITDIALOG(OnInitDialog)
@@ -262,13 +268,13 @@ protected:
 
 protected:
     //////////////////////////////////////////////////////////////////////////
-    //  ¸¨Öúº¯Êı
+    //  è¾…åŠ©å‡½æ•°
     void InitListCtrl();
 
 	virtual bool SaveSkin(SkinType skinType, SkinSaveInf & skinSaveInf);
 
 private:
-	BOOL			m_bLayoutInited;/**<UIÍê³É²¼¾Ö±êÖ¾ */
+	BOOL			m_bLayoutInited;/**<UIå®Œæˆå¸ƒå±€æ ‡å¿— */
 	HWND			m_hSetSkinWnd;
 	STabCtrlHeaderBinder* m_pTabBinder;
 	STabCtrlHeaderBinder* m_pTabBinder2;

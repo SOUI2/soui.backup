@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "WinBox.h"
 #include "MainWnd.h"
 
@@ -31,22 +31,22 @@ void CWinBox::OnClose()
 	pTemp=NULL;
 }
 
-void CWinBox::OnBtnBack()			//ºóÍË
+void CWinBox::OnBtnBack()			//åŽé€€
 {
-	SMessageBox(NULL,_T("ºóÍË"),_T("À²À²À²"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("åŽé€€"),_T("å•¦å•¦å•¦"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CWinBox::OnBtnForward()		//Ç°½ø
+void CWinBox::OnBtnForward()		//å‰è¿›
 {
-	SMessageBox(NULL,_T("Ç°½ø"),_T("À²À²À²"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("å‰è¿›"),_T("å•¦å•¦å•¦"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CWinBox::OnBtnRefresh()		//Ë¢ÐÂ
+void CWinBox::OnBtnRefresh()		//åˆ·æ–°
 {
-	SMessageBox(NULL,_T("Ë¢ÐÂ"),_T("À²À²À²"),MB_OK|MB_ICONEXCLAMATION);
+	SMessageBox(NULL,_T("åˆ·æ–°"),_T("å•¦å•¦å•¦"),MB_OK|MB_ICONEXCLAMATION);
 }
 
-void CWinBox::OnBtnMaximize()		//×î´ó»¯
+void CWinBox::OnBtnMaximize()		//æœ€å¤§åŒ–
 {
 	RECT rt;
 	::GetWindowRect(this->m_hWnd, &rt);
@@ -66,7 +66,7 @@ void CWinBox::OnBtnMaximize()		//×î´ó»¯
 	if(pBtn) pBtn->SetVisible(TRUE,TRUE);
 }
 
-void CWinBox::OnBtnRestore()		//»¹Ô­
+void CWinBox::OnBtnRestore()		//è¿˜åŽŸ
 {
 	//SendMessage(WM_SYSCOMMAND,SC_RESTORE);
 	this->MoveWindow(&rect_box,TRUE);

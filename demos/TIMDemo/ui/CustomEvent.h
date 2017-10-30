@@ -1,4 +1,4 @@
-
+ï»¿
 #ifndef __CUSTOM_EVENT_H__
 #define __CUSTOM_EVENT_H__
 
@@ -6,9 +6,9 @@
 namespace SOUI
 {
 
-	/////////////////////////////////Í¨ÖªÖĞĞÄ Òì²½ ÊÂ¼ş   /////////////////////////////////////////
+	/////////////////////////////////é€šçŸ¥ä¸­å¿ƒ å¼‚æ­¥ äº‹ä»¶   /////////////////////////////////////////
 
-	// Ò»¿ªÊ¼µÄ³õÊ¼»¯ 
+	// ä¸€å¼€å§‹çš„åˆå§‹åŒ– 
 	class EventStartInit : public TplEventArgs<EventStartInit>
 	{
 		SOUI_CLASS_NAME(EventStartInit, L"on_event_startinit")
@@ -25,7 +25,7 @@ namespace SOUI
 		SStringT szErrorText;
 	};
 	
-	//Í¨ÖªÖĞĞÄ  Òì²½»ñÈ¡ Î´¶ÁÏûÏ¢ ÊÂ¼ş 
+	//é€šçŸ¥ä¸­å¿ƒ  å¼‚æ­¥è·å– æœªè¯»æ¶ˆæ¯ äº‹ä»¶ 
 	class EventGetUnreadMsg : public TplEventArgs<EventGetUnreadMsg>
 	{
 		SOUI_CLASS_NAME(EventGetUnreadMsg, L"on_event_gerunread")
@@ -51,7 +51,7 @@ namespace SOUI
 		SStringT szErrorText;
 	};
 
-	// Í¨ÖªÖĞĞÄ ·¢ËÍ ÏûÏ¢ ×´Ì¬Í¨Öª
+	// é€šçŸ¥ä¸­å¿ƒ å‘é€ æ¶ˆæ¯ çŠ¶æ€é€šçŸ¥
 	class EventSendMsg : public TplEventArgs<EventSendMsg>
 	{
 		SOUI_CLASS_NAME(EventSendMsg, L"on_event_sendmsg")
@@ -74,7 +74,7 @@ namespace SOUI
 		
 	};
 
-	// Í¨ÖªÖĞĞÄ ÉÏ´«¸½¼ş ¸üĞÂ×´Ì¬ 
+	// é€šçŸ¥ä¸­å¿ƒ ä¸Šä¼ é™„ä»¶ æ›´æ–°çŠ¶æ€ 
 	class EventHttpUploadFile : public TplEventArgs<EventHttpUploadFile>
 	{
 		SOUI_CLASS_NAME(EventHttpUploadFile, L"on_event_httpuploadfile")
@@ -87,10 +87,10 @@ namespace SOUI
 		}
 		enum{EventID=EVT_EXTERNAL_BEGIN+10005};
 		UINT uRecipierId;
-		int nFileId;				// ´óÓÚ0  ³É¹¦ ÎÄ¼şid  ¸ºÊı  -100 - 0  ½ø¶È   -101 ¿ªÊ¼ ±íÊ¾´íÎó
+		int nFileId;				// å¤§äº0  æˆåŠŸ æ–‡ä»¶id  è´Ÿæ•°  -100 - 0  è¿›åº¦   -101 å¼€å§‹ è¡¨ç¤ºé”™è¯¯
 	};
 
-	// Í¨ÖªÖĞĞÄ ÏÂÔØ¸½¼ş ¸üĞÂ ×´Ì¬
+	// é€šçŸ¥ä¸­å¿ƒ ä¸‹è½½é™„ä»¶ æ›´æ–° çŠ¶æ€
 	class EventHttpDownFile : public TplEventArgs<EventHttpDownFile>
 	{
 		SOUI_CLASS_NAME(EventHttpDownFile, L"on_event_httpdownfile")
@@ -105,12 +105,12 @@ namespace SOUI
 		}
 		enum{EventID=EVT_EXTERNAL_BEGIN+10006};
 		UINT uRecipientId;
-		__int64 lBodyId;			// ÄÇ¸ö  ÓÃÀ´²éÕÒ ½çÃæÔªËØ Òª¸üĞÂ½çÃæ
+		__int64 lBodyId;			// é‚£ä¸ª  ç”¨æ¥æŸ¥æ‰¾ ç•Œé¢å…ƒç´  è¦æ›´æ–°ç•Œé¢
 		UINT nAttachId;
-		int nPercent;				// <0  ´íÎó  > 100  ³É¹¦
+		int nPercent;				// <0  é”™è¯¯  > 100  æˆåŠŸ
 	};
 
-	// Í¨ÖªÖĞĞÄ ±£´æÉóÅúÔ± 
+	// é€šçŸ¥ä¸­å¿ƒ ä¿å­˜å®¡æ‰¹å‘˜ 
 	class EventSaveApprover : public TplEventArgs<EventSaveApprover>
 	{
 		SOUI_CLASS_NAME(EventHttpUploadFile, L"on_event_saveapprover")

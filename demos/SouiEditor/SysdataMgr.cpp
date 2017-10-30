@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "SysdataMgr.h"
 #include "CDebug.h"
 #include <vector>
@@ -24,30 +24,30 @@ bool CSysDataMgr::LoadSysData(LPCTSTR cfgDir)
 	return true;
 }
 
-void CSysDataMgr::InitProperty()   //³õÊ¼»¯ÊôĞÔÁĞ±í
+void CSysDataMgr::InitProperty()   //åˆå§‹åŒ–å±æ€§åˆ—è¡¨
 {
 	/*
 
-	<Í¨ÓÃÑùÊ½>
-	<id style="proptext" name ="´°¿ÚID(id)" value="" />
-	<name style="proptext" name ="´°¿ÚÃû³Æ(name)" value="" />
-	<skin style="proptext" name ="Æ¤·ô(skin)" value="" />
-	</Í¨ÓÃÑùÊ½>
+	<é€šç”¨æ ·å¼>
+	<id style="proptext" name ="çª—å£ID(id)" value="" />
+	<name style="proptext" name ="çª—å£åç§°(name)" value="" />
+	<skin style="proptext" name ="çš®è‚¤(skin)" value="" />
+	</é€šç”¨æ ·å¼>
 
 	<Button>
-	<·Ö×é name="»ù±¾">
+	<åˆ†ç»„ name="åŸºæœ¬">
 	<id/>
 	<name/>
 	<skin/>
 	<pos/>
 	<size/>
 	<offset/>
-	</·Ö×é>
+	</åˆ†ç»„>
 
-	<·Ö×é name="ÍØÕ¹">
-	<accel style="proptext" name ="¿ì½İ¼ü(accel)" value="ctrl+alt+f9" />
-	<animate style="propoption" name ="¶¯»­(animate)" value="0" options="ÎŞ(0)|ÓĞ(1)"/>
-	</·Ö×é>
+	<åˆ†ç»„ name="æ‹“å±•">
+	<accel style="proptext" name ="å¿«æ·é”®(accel)" value="ctrl+alt+f9" />
+	<animate style="propoption" name ="åŠ¨ç”»(animate)" value="0" options="æ— (0)|æœ‰(1)"/>
+	</åˆ†ç»„>
 
 	</Button>
 	*/
@@ -56,15 +56,15 @@ void CSysDataMgr::InitProperty()   //³õÊ¼»¯ÊôĞÔÁĞ±í
 	pugi::xml_parse_result result = m_xmlDocProperty.load_file(g_CurDir + L"Config\\property.xml");
 	if (!result)
 	{
-		CDebug::Debug(_T("InitPropertyÊ§°Ü"));
+		CDebug::Debug(_T("InitPropertyå¤±è´¥"));
 	}
 
 	pugi::xml_document xmlDocProperty;
 	xmlDocProperty.append_copy(m_xmlDocProperty.document_element());
-	pugi::xml_node NodeCom = xmlDocProperty.child(L"root").child(L"Í¨ÓÃÑùÊ½");
-	pugi::xml_node NodeCtrlList = xmlDocProperty.child(L"root").child(L"ÊôĞÔÁĞ±í");
+	pugi::xml_node NodeCom = xmlDocProperty.child(L"root").child(L"é€šç”¨æ ·å¼");
+	pugi::xml_node NodeCtrlList = xmlDocProperty.child(L"root").child(L"å±æ€§åˆ—è¡¨");
 
-	pugi::xml_node NodeCtrl = NodeCtrlList.first_child();  //NodeCtrl = Button½Úµã
+	pugi::xml_node NodeCtrl = NodeCtrlList.first_child();  //NodeCtrl = ButtonèŠ‚ç‚¹
 	while (NodeCtrl)
 	{
 		if (pugi::node_element == NodeCtrl.type())
@@ -78,7 +78,7 @@ void CSysDataMgr::InitProperty()   //³õÊ¼»¯ÊôĞÔÁĞ±í
 		NodeCtrl = NodeCtrl.next_sibling();
 	}
 
-	pugi::xml_node NodeComStyle = xmlDocProperty.child(L"root").child(L"»ù±¾ÑùÊ½");
+	pugi::xml_node NodeComStyle = xmlDocProperty.child(L"root").child(L"åŸºæœ¬æ ·å¼");
 	InitComAttr(NodeCom, NodeComStyle, m_arrControlStyle);
 	pugi::xml_node NodeCM = xmlDocProperty.child(L"root").child(L"ColorMask");
 	InitComAttr(NodeCom, NodeCM, m_arrColorMask);
@@ -86,7 +86,7 @@ void CSysDataMgr::InitProperty()   //³õÊ¼»¯ÊôĞÔÁĞ±í
 
 void CSysDataMgr::InitComAttr(pugi::xml_node NodeCom, pugi::xml_node cNode, CTRL_ATTR_VALUE& arrControlStyle)
 {
-	pugi::xml_node NodeBasicStyle = cNode.first_child();  //NodeCtrl = Button½Úµã
+	pugi::xml_node NodeBasicStyle = cNode.first_child();  //NodeCtrl = ButtonèŠ‚ç‚¹
 	while (NodeBasicStyle)
 	{
 		if (pugi::node_element != NodeBasicStyle.type())
@@ -96,11 +96,11 @@ void CSysDataMgr::InitComAttr(pugi::xml_node NodeCom, pugi::xml_node cNode, CTRL
 		}
 		if (!NodeBasicStyle.attribute(L"style"))
 		{
-			// Ã»ÓĞÉèÖÃstyleµÄÎªÍ¨ÓÃÊôĞÔ, ´ÓÍ¨ÓÃÊôĞÔ½áµãÖĞ»ñÈ¡ĞÅÏ¢
+			// æ²¡æœ‰è®¾ç½®styleçš„ä¸ºé€šç”¨å±æ€§, ä»é€šç”¨å±æ€§ç»“ç‚¹ä¸­è·å–ä¿¡æ¯
 			SStringT strName = NodeBasicStyle.name();
 			pugi::xml_node N = NodeCom.child(strName);
 			if (N)
-			{	// ÓÃÍ¨ÓÃÊôĞÔ½øĞĞÌæ»»
+			{	// ç”¨é€šç”¨å±æ€§è¿›è¡Œæ›¿æ¢
 				pugi::xml_node NodeNew;
 				NodeNew = NodeBasicStyle.parent().insert_copy_before(N, NodeBasicStyle);
 				NodeBasicStyle.parent().remove_child(NodeBasicStyle);
@@ -123,26 +123,26 @@ void CSysDataMgr::InitComAttr(pugi::xml_node NodeCom, pugi::xml_node cNode, CTRL
 void CSysDataMgr::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCtrl, CTRL_ATTR_VALUE* arr_attr)
 {
 	/*
-	<Í¨ÓÃÑùÊ½>
-	<id style="proptext" name ="´°¿ÚID(id)" value="" />
-	<name style="proptext" name ="´°¿ÚÃû³Æ(name)" value="" />
-	<skin style="proptext" name ="Æ¤·ô(skin)" value="" />
-	</Í¨ÓÃÑùÊ½>
+	<é€šç”¨æ ·å¼>
+	<id style="proptext" name ="çª—å£ID(id)" value="" />
+	<name style="proptext" name ="çª—å£åç§°(name)" value="" />
+	<skin style="proptext" name ="çš®è‚¤(skin)" value="" />
+	</é€šç”¨æ ·å¼>
 
 	<Button>
-	<·Ö×é name="»ù±¾">
+	<åˆ†ç»„ name="åŸºæœ¬">
 	<id/>
 	<name/>
 	<skin/>
 	<pos/>
 	<size/>
 	<offset/>
-	</·Ö×é>
+	</åˆ†ç»„>
 
-	<·Ö×é name="ÍØÕ¹">
-	<accel style="proptext" name ="¿ì½İ¼ü(accel)" value="ctrl+alt+f9" />
-	<animate style="propoption" name ="¶¯»­(animate)" value="0" options="ÎŞ(0)|ÓĞ(1)"/>
-	</·Ö×é>
+	<åˆ†ç»„ name="æ‹“å±•">
+	<accel style="proptext" name ="å¿«æ·é”®(accel)" value="ctrl+alt+f9" />
+	<animate style="propoption" name ="åŠ¨ç”»(animate)" value="0" options="æ— (0)|æœ‰(1)"/>
+	</åˆ†ç»„>
 
 	</Button>
 
@@ -161,10 +161,10 @@ void CSysDataMgr::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCt
 			continue;
 		}
 		SStringT nodeName = NodeChild.name();
-		if (_wcsicmp(nodeName, L"·Ö×é") == 0)
+		if (_wcsicmp(nodeName, L"åˆ†ç»„") == 0)
 		{
 			SStringT nameAttr = NodeChild.attribute(L"name").as_string();
-			if (nameAttr.CompareNoCase(L"»ù±¾ÑùÊ½") == 0)
+			if (nameAttr.CompareNoCase(L"åŸºæœ¬æ ·å¼") == 0)
 			{
 				pugi::xml_document NodeComStyle;
 				NodeComStyle.append_copy(m_xmlDocProperty.child(L"root").child(nameAttr));
@@ -190,13 +190,13 @@ void CSysDataMgr::InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCt
 		{
 			if (!NodeChild.attribute(L"style"))
 			{
-				// Ã»ÓĞÉèÖÃstyleµÄÎªÍ¨ÓÃÊôĞÔ, ´ÓÍ¨ÓÃÊôĞÔ½áµãÖĞ»ñÈ¡ĞÅÏ¢
+				// æ²¡æœ‰è®¾ç½®styleçš„ä¸ºé€šç”¨å±æ€§, ä»é€šç”¨å±æ€§ç»“ç‚¹ä¸­è·å–ä¿¡æ¯
 				SStringT strName = NodeChild.name();
 				pugi::xml_node N = NodeCom.child(strName);
 				pugi::xml_node NodeNew;
 
 				if (N)
-				{	// ÓÃÍ¨ÓÃÊôĞÔ½øĞĞÌæ»»
+				{	// ç”¨é€šç”¨å±æ€§è¿›è¡Œæ›¿æ¢
 					pugi::xml_node NodeNew;
 					NodeNew = NodeChild.parent().insert_copy_before(N, NodeChild);
 					NodeChild.parent().remove_child(NodeChild);

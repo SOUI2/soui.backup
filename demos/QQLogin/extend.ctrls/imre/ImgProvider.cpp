@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "ImgProvider.h"
 #include <commctrl.inl>
 #include <Gdiplus.h>
@@ -164,7 +164,7 @@ BOOL ImageProvider::IsExist(LPCWSTR pszImageId)
     SSkinPool *pBuiltinSkinPool = SSkinPoolMgr::getSingletonPtr()->GetBuiltinSkinPool();
 
     //
-    // Èç¹ûÕâÀï²»ÏÈµ²Ò»°Ñ£¬ÏÂÃæµÄGetSkinÕÒ²»µ½skinÊ±»á¶ÏÑÔ´íÎó
+    // å¦‚æžœè¿™é‡Œä¸å…ˆæŒ¡ä¸€æŠŠï¼Œä¸‹é¢çš„GetSkinæ‰¾ä¸åˆ°skinæ—¶ä¼šæ–­è¨€é”™è¯¯
     //
     SkinKey key = { pszImageId,100 };
     if (!pBuiltinSkinPool->HasKey(key))

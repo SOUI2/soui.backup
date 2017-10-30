@@ -1,10 +1,10 @@
-/* $Copyright (c) 2006-2017 Green Net World
+ï»¿/* $Copyright (c) 2006-2017 Green Net World
  * 
  * Author	:	cherish  version 1.0
  * DateTime	:	2017-3-31 14:34:31
  *
  *
- * GSSkin  ¹¦ÄÜ
+ * GSSkin  åŠŸèƒ½
  */
 
 #ifndef __GSSKIN_C0C4E8DA_8432_4BA3_9871_36AE94D85E84__
@@ -35,11 +35,11 @@ protected:
 	HRESULT			OnAttrOffset(const SStringW & strValue, BOOL bLoading);
 
 	SOUI_ATTRS_BEGIN()
-		ATTR_INT(L"size-x", m_nSizeX, FALSE)  //×ÓÍ¼¹Ì¶¨¿í
-		ATTR_INT(L"size-y", m_nSizeX, FALSE)  //×ÓÍ¼¹Ì¶¨¸ß
+		ATTR_INT(L"size-x", m_nSizeX, FALSE)  //å­å›¾å›ºå®šå®½
+		ATTR_INT(L"size-y", m_nSizeX, FALSE)  //å­å›¾å›ºå®šé«˜
 		ATTR_CUSTOM(L"mask", OnAttrMask)	  //image.a
-		ATTR_CUSTOM(L"imglist", OnSetImgList)	// Ê¹ÓÃ¶àÎÄ¼ş·½Ê½
-		ATTR_CUSTOM(L"imgpath", OnSetImgPath)	// Ê¹ÓÃÎÄ¼şÄ¿Â¼·½Ê½
+		ATTR_CUSTOM(L"imglist", OnSetImgList)	// ä½¿ç”¨å¤šæ–‡ä»¶æ–¹å¼
+		ATTR_CUSTOM(L"imgpath", OnSetImgPath)	// ä½¿ç”¨æ–‡ä»¶ç›®å½•æ–¹å¼
 		ATTR_CUSTOM(L"offset", OnAttrOffset)
 	SOUI_ATTRS_END()
 
@@ -54,9 +54,9 @@ private:
 	CAutoRefPtr<IBitmap>    m_bmpMask;
 	CAutoRefPtr<IBitmap>    m_bmpAttrImg;
 
-	SArray<IBitmap *>		m_arrBitMap;				// imglist´æ´¢
-	bool					m_bImgList;				// Ê¹ÓÃimglist·½Ê½
-	float fOffsetX, fOffsetY;    /**< ´°¿Ú×ø±êÆ«ÒÆÁ¿, x += fOffsetX * width, y += fOffsetY * height  */
+	SArray<IBitmap *>		m_arrBitMap;				// imglistå­˜å‚¨
+	bool					m_bImgList;				// ä½¿ç”¨imglistæ–¹å¼
+	float fOffsetX, fOffsetY;    /**< çª—å£åæ ‡åç§»é‡, x += fOffsetX * width, y += fOffsetY * height  */
 
 };
 

@@ -218,6 +218,13 @@
 
           </window>
         </page>
+        <page title="三分窗">
+          <window size="-2,-2" layout="gridLayout" columnCount="2" xGravity="fill" yGravity="fill">
+            <window size="0,0" rowSpan="2" columnWeight="1" colorBkgnd="#ff0000"/>
+            <window size="0,0" columnWeight="1" rowWeight="1" colorBkgnd="#00ff00"/>
+            <window size="0,0" columnWeight="1" rowWeight="1" colorBkgnd="#0000ff"/>
+          </window>
+        </page>
       </tabctrl>
     </page>
   </tabctrl>

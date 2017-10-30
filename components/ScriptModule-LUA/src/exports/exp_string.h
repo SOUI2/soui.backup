@@ -1,4 +1,4 @@
-#include <string/tstring.h>
+﻿#include <string/tstring.h>
 
 BOOL ExpLua_String(lua_State *L)
 {

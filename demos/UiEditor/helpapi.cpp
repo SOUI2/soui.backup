@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "helpapi.h"
 
 bool FileIsExist(const SStringT &filepath)

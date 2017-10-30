@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 
 #define MAX_COUNT 10 
 
 /*
-by ¶àµã
+by å¤šç‚¹
 @20150510 qq:4361031
 */
 using namespace SOUI;

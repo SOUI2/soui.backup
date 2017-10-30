@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #define MagicNumber 9527
 extern UINT g_dwSkinChangeMessage;
@@ -10,7 +10,7 @@ struct SKIN_CONFIG_INF
 class CSetSkinWnd :
 	public SHostWnd
 {
-	//TODO:ÏûÏ¢Ó³Éä
+	//TODO:æ¶ˆæ¯æ˜ å°„
 	void OnClose()
 	{
 		CSimpleWnd::DestroyWindow();

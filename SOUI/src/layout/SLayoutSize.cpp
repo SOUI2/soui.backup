@@ -1,6 +1,9 @@
-#include "souistd.h"
+ï»¿#include "souistd.h"
 #include "layout/SLayoutSize.h"
-#include <math.h>
+#pragma warning (push)
+#pragma warning (disable: 4985) // disable the warning message during the include
+#include <math.h>               // this is where I would normally get the warning message
+#pragma warning (pop)
 
 namespace SOUI
 {
@@ -31,7 +34,7 @@ namespace SOUI
 	SStringW SLayoutSize::toString() const
 	{
 		SStringW strValue = SStringW().Format(L"%f",fSize);
-		//È¥µôsprintf("%f")Éú³ÉµÄĞ¡Êıµã×îºóÎŞĞ§µÄ0
+		//å»æ‰sprintf("%f")ç”Ÿæˆçš„å°æ•°ç‚¹æœ€åæ— æ•ˆçš„0
 		LPCWSTR pszData = strValue;
 		for(int i=strValue.GetLength()-1;i>=0;i--)
 		{
@@ -121,7 +124,7 @@ namespace SOUI
 		fSize = (float)_wtof(strSize);
 	}
 
-	//Ö»¸´ÖÆÊıÖµ,²»¸´ÖÆ·½Ïò
+	//åªå¤åˆ¶æ•°å€¼,ä¸å¤åˆ¶æ–¹å‘
 	SLayoutSize & SLayoutSize::operator=(const SLayoutSize & src)
 	{
 		fSize = src.fSize;

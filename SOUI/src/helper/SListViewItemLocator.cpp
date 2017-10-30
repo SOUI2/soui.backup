@@ -1,6 +1,10 @@
-#include "souistd.h"
+ï»¿#include "souistd.h"
 #include "helper/SListViewItemLocator.h"
-#include <math.h>
+
+#pragma warning (push)
+#pragma warning (disable: 4985) // disable the warning message during the include
+#include <math.h>               // this is where I would normally get the warning message
+#pragma warning (pop)
 
 namespace SOUI
 {
@@ -83,8 +87,8 @@ namespace SOUI
         return log(a) / log(base);
     }
 
-#define SEGMENT_SIZE    50  //Êý¾Ý·Ö×é×î´ó³¤¶È
-#define INDEX_WIDTH     10  //Ë÷Òý±íÒ»¼¶×î´ó½ÚµãÊý
+#define SEGMENT_SIZE    50  //æ•°æ®åˆ†ç»„æœ€å¤§é•¿åº¦
+#define INDEX_WIDTH     10  //ç´¢å¼•è¡¨ä¸€çº§æœ€å¤§èŠ‚ç‚¹æ•°
 
     SListViewItemLocatorFlex::SListViewItemLocatorFlex(SLayoutSize nItemHei,SLayoutSize nDividerSize) 
         :m_nItemHeight(nItemHei)
@@ -238,7 +242,7 @@ namespace SOUI
 
         HSTREEITEM hBranch = m_itemPosIndex.InsertItem(bi,hParent);
         if(nItems > SEGMENT_SIZE)
-        {//²åÈë×Ó½Úµã
+        {//æ’å…¥å­èŠ‚ç‚¹
             int nRemain = nItems;
             int nSubBranchSize = nBranchSize/INDEX_WIDTH;
             while(nRemain>0)

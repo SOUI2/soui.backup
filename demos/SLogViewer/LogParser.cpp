@@ -1,328 +1,289 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "LogParser.h"
 
-static const int      kLevelNum = 6;
-static const wchar_t  kLevelsApp[kLevelNum][MAX_LEVEL_LENGTH]={
-	L"[V]",L"[D]",L"[I]",L"[W]",L"[E]",L"[A]"
+const wchar_t KLogField_Time[]=L"time";
+const wchar_t KLogField_Pid[]=L"pid";
+const wchar_t KLogField_Tid[]=L"tid";
+const wchar_t KLogField_Package[]=L"package";
+const wchar_t KLogField_Level[]=L"level";
+const wchar_t KLogField_Tag[]=L"tag";
+const wchar_t KLogField_Content[]=L"content";
+const wchar_t KLogField_Module[]=L"module";
+const wchar_t KLogField_File[]=L"file";
+const wchar_t KLogField_Line[]=L"line";
+const wchar_t KLogField_Function[]=L"function";
+const wchar_t KLogField_Unknown[]=L"unknown";
+
+const wchar_t KLogField_Head[]=L"$(";
+const wchar_t KLogField_Tail=L')';
+const wchar_t KLogField_Opt_Head=L'[';
+const wchar_t KLogField_Opt_Tail=L']';
+
+
+#define FIELD_ELE(x,fid) {x,ARRAYSIZE(x)-1,fid}
+
+struct LogFieldInfo
+{
+	const wchar_t * szName;
+	const int       nLen;
+	Field			field;
 };
 
-//////////////////////////////////////////////////////////////////////////
-//2017-05-22 10:10:18.794 (24894841) 32376 [D][RTCSDK] - 
-#define LOG_APP_SEP L" - "
-void CAppLogParse::GetLevelText(wchar_t szLevels[][MAX_LEVEL_LENGTH]) const
+static const LogFieldInfo KLogFields[]=
 {
-	memcpy(szLevels,kLevelsApp,sizeof(kLevelsApp));
-}
+	{NULL,0,col_line_index},
+	FIELD_ELE(KLogField_Time,col_time),
+	FIELD_ELE(KLogField_Pid,col_pid),
+	FIELD_ELE(KLogField_Tid,col_tid),
+	FIELD_ELE(KLogField_Level,col_level),
+	FIELD_ELE(KLogField_Tag,col_tag),
+	FIELD_ELE(KLogField_Module,col_module),
+	FIELD_ELE(KLogField_File,col_source_file),
+	FIELD_ELE(KLogField_Line,col_source_line),
+	FIELD_ELE(KLogField_Function,col_function),
+	FIELD_ELE(KLogField_Content,col_content),
+	FIELD_ELE(KLogField_Package,col_package),
+	FIELD_ELE(KLogField_Unknown,col_unknown),
+};
 
-int CAppLogParse::GetLevels() const
+
+CLogParse::CLogParse(const SStringW & strName,const SStringW & strFmt, const SStringW & strLevels,int nCodePage)
 {
-	return kLevelNum;
-}
+	SplitString(strLevels,L',',m_levels);
 
-BOOL CAppLogParse::ParseLine(LPCWSTR pszLine,SLogInfo **ppLogInfo) const
-{
-	UINT year,month,day,hour,minute,second,millisec,tickCount;
-	UINT pid;
-	WCHAR level[MAX_LEVEL_LENGTH]={0},tag[250]={0};
-	const WCHAR *pSep = wcsstr(pszLine,LOG_APP_SEP);
-	if(!pSep) return FALSE;
-
-	if(9!=swscanf(pszLine,L"%4d-%2d-%2d %2d:%2d:%2d.%3d (%u) %u",&year,&month,&day,&hour,&minute,&second,&millisec,&tickCount,&pid))
-		return FALSE;
-	
-	if(ppLogInfo == NULL) return TRUE;
-
-	
-	const WCHAR* p1 = wcschr(pszLine,L'[');
-	const WCHAR* p2 = wcschr(p1,L']');
-	wcsncpy(level,p1+1,p2-p1-1);
-
-	p1 = p2+1;
-	p2 = wcschr(p1,L']');
-	wcsncpy(tag,p1+1,p2-p1-1);
-
-	SLogInfo * info = new SLogInfo;
-	info->time = CTime(year,month,day,hour,minute,second);
-	info->strTime.Format(L"%04d-%02d-%02d %02d:%02d:%02d.%03d",year,month,day,hour,minute,second,millisec);
-	info->strLevel = SStringW(L"[")+level + L"]";
-	info->strTag = SStringW(L"[")+tag + L"]";
-	info->strContent = pSep + 3;
-	info->dwPid = pid;
-	info->dwTid = 0;
-	
-	info->iLevel = 0;
-	for(int i=0;i< kLevelNum;i++)
+	int pos=0;
+	for(;;)
 	{
-		if(wcscmp(info->strLevel,kLevelsApp[i])==0)
-		{
-			info->iLevel = i;
-		}
+		FieldInfo fi = {col_invalid,0};
+		int nFind = FindNextField(strFmt,pos,fi.field,fi.nLeastLength);
+		if(nFind==-1) break;
+		SStringW strSep=strFmt.Mid(pos,nFind-pos);
+		m_seps.Add(strSep);
+		m_fields.Add(fi);
+		pos = strFmt.Find(KLogField_Tail,nFind+2+KLogFields[fi.field].nLen);
+		if(pos==-1) break;
+		pos += 1;//sizeof(KLogField_Tail)
 	}
-	*ppLogInfo = info;
+	SStringW strTail= strFmt.Mid(pos);
+	m_seps.Add(strTail);
+	m_strName = strName;
+	m_codePage = nCodePage;
+}
+
+Field CLogParse::DetectField(LPCWSTR pszBuf) const
+{
+	for(int i=1;i<ARRAYSIZE(KLogFields);i++)
+	{
+		if(wcsnicmp(pszBuf,KLogFields[i].szName,KLogFields[i].nLen)==0)
+			return KLogFields[i].field;
+	}
+	return col_invalid;
+}	
+
+int CLogParse::FindNextField(const SStringW & strFmt,int iStart,Field &iField,int &nFieldLength) const
+{
+	int iFind = strFmt.Find(KLogField_Head,iStart);
+	if(iFind==-1) return -1;
+	LPCWSTR pszFmt = strFmt;
+	pszFmt += iFind+2;//2 = ARRAYSIZE(KLogField_Head)-1
+	iField = DetectField(pszFmt);	
+	if(iField!=col_invalid)
+	{
+		pszFmt +=  KLogFields[iField].nLen;
+		if(*pszFmt == KLogField_Opt_Head)
+		{
+			nFieldLength = _wtoi(pszFmt+1);
+		}else
+		{
+			nFieldLength = 0;
+		}
+		return iFind;
+	}else
+	{
+		return FindNextField(strFmt,iFind+1,iField,nFieldLength);
+	}
+}
+
+BOOL CLogParse::ParseLine(LPCWSTR pszLine,int nLen,SLogInfo **ppLogInfo) const
+{
+	LPCWSTR p = pszLine;
+	CAutoRefPtr<SLogInfo> pLogInfo;
+	pLogInfo.Attach(new SLogInfo);
+
+	SStringW strHead = m_seps[0];
+	if(!strHead.IsEmpty())
+	{
+		if(wcsncmp(p,strHead,strHead.GetLength()) != 0)
+			return FALSE;
+		p += strHead.GetLength();
+	}
+
+	int iContent = -1;
+
+	LPCWSTR pEnd = pszLine+nLen;
+
+	for(int i=0;i<m_fields.GetCount();i++)
+	{
+		if(m_fields[i].field == col_content)
+		{
+			iContent = i;
+			break;
+		}
+
+		SStringW strTail=m_seps[i+1];
+		SASSERT(!strTail.IsEmpty());
+
+		if(p+m_fields[i].nLeastLength >= pEnd) return FALSE;
+		LPCWSTR pszTail= wcsstr(p+m_fields[i].nLeastLength,strTail);
+		if(!pszTail) return FALSE;
+		int nLen = (int) (pszTail - p);
+		//p -> pTail : field
+		FillField(pLogInfo,p,pszTail,m_fields[i].field);
+		p += nLen + strTail.GetLength();
+	}
+
+	LPCWSTR pszTail = pEnd;
+
+	SStringW strTail = m_seps[m_fields.GetCount()];
+	if(!strTail.IsEmpty())
+	{
+		if(pszTail - p < strTail.GetLength()) return FALSE;
+		if(wcsncmp(pszTail-strTail.GetLength(),strTail,strTail.GetLength())!=0) return FALSE;
+		pszTail -= strTail.GetLength();
+	}
+
+	for(int i=m_fields.GetCount()-1;i>=0;i--)
+	{
+		if(m_fields[i].field == col_content) break;
+
+		SStringW strHead = m_seps[i];
+		SASSERT(!strHead.IsEmpty());
+		LPCWSTR pszHead = StrRStr(p,pszTail,strHead);
+		if(!pszHead) return FALSE;
+		//pszHead + strHead.GetLength -> pszTail;
+		FillField(pLogInfo,pszHead + strHead.GetLength(),pszTail,m_fields[i].field);
+
+		pszTail = pszHead;
+	}
+
+
+	//p -> pszTail = content
+	FillField(pLogInfo,p,pszTail,col_content);
+
+	if(ppLogInfo)
+	{
+		*ppLogInfo = pLogInfo;
+		pLogInfo->AddRef();
+	}
 	return TRUE;
 }
 
-SStringW CAppLogParse::GetName() const
+LPCWSTR CLogParse::StrRStr(LPCWSTR pszSource,LPCWSTR pszTail,LPCWSTR pszDest) const
 {
-	return L"AppLogParser";
-}
-
-bool CAppLogParse::IsFieldValid(Field field) const
-{
-	bool fieldValid[]=
+	SASSERT(pszSource);
+	SASSERT(pszDest);
+	LPCWSTR p = pszTail;
+	if(!p) p = pszSource + wcslen(pszSource);
+	int nLen = wcslen(pszDest);
+	p-=nLen;
+	while(p>pszSource)
 	{
-		true,//col_line_index,
-		true,//col_time,
-		true,//col_pid,
-		true,//col_tid,
-		true,//col_level,
-		true,//col_tag,
-		false,//col_moduel,
-		false,//col_source_file,
-		false,//col_source_line,
-		false,//col_function,
-		true,//col_content
-	};
-	return fieldValid[field];
-}
-
-int CAppLogParse::GetCodePage() const
-{
-	return CP_UTF8;
-}
-
-BOOL CAppLogParse::TestLogBuffer(LPCSTR pszBuf, int nLength)
-{
-	LPCSTR pszNextLine = strstr(pszBuf,"\n");
-	if(!pszNextLine) return FALSE;
-	SStringA strLine(pszBuf,pszNextLine-pszBuf);
-	SStringW wstrLine = S_CA2W(strLine,GetCodePage());
-	return ParseLine(wstrLine,NULL);
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-static const wchar_t  kLevelsLogcat[kLevelNum][MAX_LEVEL_LENGTH]={
-	L"V",L"D",L"I",L"W",L"E",L"A"
-};
-
-//05-27 03:55:12.360 948-948/vulture.app.home I/NEMO_UI: (58276990) - [BaiduAsr] - onPutData,
-//date time PID-TID/package priority/tag: message
-#define LOGCAT_SEP L": "
-
-void CLogcatParse::GetLevelText(wchar_t szLevels[][50]) const
-{
-	memcpy(szLevels,kLevelsLogcat,sizeof(kLevelsLogcat));
-}
-
-int CLogcatParse::GetLevels() const
-{
-	return kLevelNum;
-}
-
-BOOL CLogcatParse::ParseLine(LPCWSTR pszLine,SLogInfo **ppLogInfo) const
-{
-	UINT month,day,hour,minute,second,millisec;
-	UINT pid,tid;
-	WCHAR level[300]={0}, tag[500]={0};
-	const WCHAR *pSep = wcsstr(pszLine,LOGCAT_SEP);
-	if(!pSep) return FALSE;
-
-	if(10!= swscanf(pszLine,L"%2d-%2d %2d:%2d:%2d.%3d %u %u %s %s ",&month,&day,&hour,&minute,&second,&millisec,&pid,&tid,level,tag))
-		return FALSE;
-
-	if(ppLogInfo == NULL) return TRUE;
-
-	SLogInfo * info = new SLogInfo;
-	info->strTime.Format(L"%2d-%2d %2d:%2d:%2d.%3d",month,day,hour,minute,second,millisec);
-	info->time = CTime(2017,month,day,hour,minute,second);
-	info->strLevel = level;
-	info->strTag = tag;
-	info->strContent = pSep + 2;
-	info->dwPid = pid;
-	info->dwTid = tid;
-	info->iLevel = 0;
-	for(int i=0;i< kLevelNum;i++)
-	{
-		if(wcscmp(info->strLevel,kLevelsLogcat[i])==0)
-		{
-			info->iLevel = i;
-		}
+		if(wcsncmp(p,pszDest,nLen) == 0) return p;
+		p--;
 	}
-	*ppLogInfo = info;
-	return TRUE;
+	return NULL;
 }
 
-SOUI::SStringW CLogcatParse::GetName() const
+void CLogParse::FillField(SLogInfo *info, LPCWSTR pszHead,LPCWSTR pszTail,int fieldId) const
 {
-	return L"LogcatParse";
-
-}
-
-
-bool CLogcatParse::IsFieldValid(Field field) const
-{
-	bool fieldValid[]=
+	SStringW strTmp(pszHead,(int)(pszTail-pszHead));
+	strTmp.TrimBlank();
+	switch(fieldId)
 	{
-		true,//col_line_index,
-		true,//col_time,
-		true,//col_pid,
-		true,//col_tid,
-		true,//col_level,
-		true,//col_tag,
-		false,//col_moduel,
-		false,//col_source_file,
-		false,//col_source_line,
-		false,//col_function,
-		true,//col_content
-	};
-	return fieldValid[field];
-}
-
-
-int CLogcatParse::GetCodePage() const
-{
-	return CP_UTF8;
-}
-
-BOOL CLogcatParse::TestLogBuffer(LPCSTR pszBuf, int nLength)
-{
-	LPCSTR pszNextLine = strstr(pszBuf,"\n");
-	if(!pszNextLine) return FALSE;
-	SStringA strLine(pszBuf,pszNextLine-pszBuf);
-	SStringW wstrLine = S_CA2W(strLine,GetCodePage());
-	return ParseLine(wstrLine,NULL);
-}
-
-//////////////////////////////////////////////////////////////////////////
-static const int KSLogLevels = 7;
-static const wchar_t  kLevelsSouiLog[KSLogLevels][MAX_LEVEL_LENGTH]={
-	L"TRACE",
-	L"DEBUG",
-	L"INFO",
-	L"WARN",
-	L"ERROR",
-	L"ALARM",
-	L"FATAL",
-};
-
-//pid=1740 tid=11768 2017-06-12 10:14:49.803 WARN  soui.dll soui-lib "Warning: no ojbect menuItem of type:1 in SOUI!!" SOUI::SObjectFactoryMgr::CreateObject (SObjectFactory.cpp):61 
-
-BOOL CSouiLogParse::ParseLine(LPCWSTR pszLine,SLogInfo **ppLogInfo) const
-{
-	UINT year,month,day,hour,minute,second,millisec;
-	UINT pid,tid;
-	WCHAR level[300]={0}, tag[500]={0}, module[MAX_PATH];
-
-	if(12!= swscanf(pszLine,L"pid=%u tid=%u %04d-%2d-%2d %2d:%2d:%2d.%3d %s %s %s ",&pid,&tid,&year,&month,&day,&hour,&minute,&second,&millisec,level,module,tag))
-		return FALSE;
-	
-	if(ppLogInfo == NULL) return TRUE;
-	
-	LPCWSTR pContent = wcsstr(pszLine,L" \"");
-	SASSERT(pContent);
-	//find the reverse second blank space
-	LPCWSTR pContentEnd = NULL;
-	int nLen = wcslen(pContent);
-	int iSpace = 0;
-	for(int i=nLen-1;i>=0;i--)
-	{
-		if(pContent[i] == L' ')
-		{
-			iSpace++;
-			if(iSpace==2)
-			{
-				if(pContent[i-1]!=L'\"') return FALSE;
-				pContentEnd = pContent+i-1;
-				break;
-			}
-		}
-	}
-	if(iSpace!=2) return FALSE;
-	LPCWSTR pszFunction = pContentEnd+2;
-	LPCWSTR pSourceFile = wcsstr(pContentEnd,L" (")+2;
-	LPCWSTR pSourceLine = wcsstr(pSourceFile,L"):")+2;
-
-	SLogInfo * info = new SLogInfo;
-	info->strTime.Format(L"%04d-%02d-%02d %02d:%02d:%02d.%03d",year,month,day,hour,minute,second,millisec);
-	info->time = CTime(2017,month,day,hour,minute,second);
-	info->strLevel = level;
-	info->strTag = tag;
-	info->strContent = SStringW(pContent+2,pContentEnd-pContent-3);
-	info->strFunction = SStringW(pszFunction,pSourceFile-pszFunction-2);
-	info->strSourceFile = SStringW(pSourceFile,pSourceLine-pSourceFile-2);
-	info->strModule = module;
-	info->iSourceLine = _wtoi(pSourceLine);
-
-	info->dwPid = pid;
-	info->dwTid = tid;
-	info->iLevel = 0;
-	for(int i=0;i< kLevelNum;i++)
-	{
-		if(wcscmp(info->strLevel,kLevelsSouiLog[i])==0)
-		{
-			info->iLevel = i;
-		}
-	}
-	*ppLogInfo = info;
-	return TRUE;
-}
-
-int CSouiLogParse::GetLevels() const
-{
-	return KSLogLevels;
-}
-
-
-void CSouiLogParse::GetLevelText(wchar_t szLevels[][MAX_LEVEL_LENGTH]) const
-{
-	memcpy(szLevels,kLevelsSouiLog,sizeof(kLevelsSouiLog));
-}
-
-SOUI::SStringW CSouiLogParse::GetName() const
-{
-	return L"SouilogParser";
-}
-
-bool CSouiLogParse::IsFieldValid(Field field) const
-{
-	return true;
-}
-
-int CSouiLogParse::GetCodePage() const
-{
-	return CP_ACP;
-}
-
-BOOL CSouiLogParse::TestLogBuffer(LPCSTR pszBuf, int nLength)
-{
-	LPCSTR pszNextLine = strstr(pszBuf,"\n");
-	if(!pszNextLine) return FALSE;
-	SStringA strLine(pszBuf,pszNextLine-pszBuf);
-	SStringW wstrLine = S_CA2W(strLine,GetCodePage());
-	return ParseLine(wstrLine,NULL);
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-ILogParse * CParseFactory::CreateLogParser(int iParser) const
-{
-	switch(iParser)
-	{
-	case 0:
-		return new CAppLogParse;
-	case 1:
-		return new CLogcatParse;
-	case 2:
-		return new CSouiLogParse;
+	case col_time:
+		info->strTime = strTmp;
 		break;
-	default:
-		return NULL;
+	case col_pid:
+		info->dwPid = _wtoi(strTmp);
+		break;
+	case col_tid:
+		info->dwTid = _wtoi(strTmp);
+		break;
+	case col_package:
+		info->strPackage = strTmp;
+		break;
+	case col_tag:
+		info->strTag = strTmp;
+		break;
+	case col_level:
+		info->iLevel = Str2Level(strTmp);
+		info->strLevel = strTmp;
+		break;
+	case col_content:
+		info->strContent = strTmp;
+		info->strContentLower = strTmp.MakeLower();
+		break;
+	case col_source_file:
+		info->strSourceFile = strTmp;
+		break;
+	case col_source_line:
+		info->iSourceLine = _wtoi(strTmp);
+		break;
+	case col_function:
+		info->strFunction = strTmp;
+		break;
+	case col_module:
+		info->strModule = strTmp;
+		break;
 	}
 }
 
-int CParseFactory::GetLogParserCount() const
+int CLogParse::Str2Level(const SStringW & strLevel) const
 {
-	return 3;
+	for(int i=0;i<m_levels.GetCount();i++)
+	{
+		if(m_levels[i]==strLevel) return i;
+	}
+	return 0;
 }
 
+int CLogParse::GetLevels() const
+{
+	return m_levels.GetCount();
+}
+
+void CLogParse::GetLevelText(wchar_t szLevels[][MAX_LEVEL_LENGTH]) const
+{
+	for(int i=0;i<m_levels.GetCount();i++)
+	{
+		wcscpy(szLevels[i],m_levels[i]);
+	}
+}
+
+SOUI::SStringW CLogParse::GetName() const
+{
+	return m_strName;
+}
+
+bool CLogParse::IsFieldValid(Field field) const
+{
+	for(int i=0;i<m_fields.GetCount();i++)
+	{
+		if(m_fields[i].field == field) return true;
+	}
+	return false;
+}
+
+int CLogParse::GetCodePage() const
+{
+	return m_codePage;
+}
+
+BOOL CLogParse::TestLogBuffer(LPCSTR pszBuf, int nLength)
+{
+	LPCSTR pszNextLine = strstr(pszBuf,"\n");
+	if(!pszNextLine) return FALSE;
+	SStringA strLine(pszBuf,pszNextLine-pszBuf);
+	SStringW wstrLine = S_CA2W(strLine,GetCodePage());
+	return ParseLine(wstrLine,wstrLine.GetLength(),NULL);
+}

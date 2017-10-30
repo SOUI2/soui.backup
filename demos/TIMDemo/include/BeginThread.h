@@ -1,22 +1,22 @@
-#ifndef __BEGINTHREAD_H_INCLUDE_20160727__
+ï»¿#ifndef __BEGINTHREAD_H_INCLUDE_20160727__
 #define __BEGINTHREAD_H_INCLUDE_20160727__
 #pragma once
 #include <winnt.h>
 #include <process.h>
-#include <functional>			//C++11  ²»Ö§³Ö vs2008 
+#include <functional>			//C++11  ä¸æ”¯æŒ vs2008 
 /*//////////////////////////////////////////////////////////////////////////
 time 2016 07 27 
-Ïß³Ì ·â×°Àà  ¿ÉÖ±½ÓÊ¹ÓÃÀàµÄ³ÉÔ±º¯Êı ×ö Ïß³Ì º¯Êı¡£
- ¿ÉÒÔÊ¹ÓÃ Ä£°æµÄ·½Ê½µ÷ÓÃ  
+çº¿ç¨‹ å°è£…ç±»  å¯ç›´æ¥ä½¿ç”¨ç±»çš„æˆå‘˜å‡½æ•° åš çº¿ç¨‹ å‡½æ•°ã€‚
+ å¯ä»¥ä½¿ç”¨ æ¨¡ç‰ˆçš„æ–¹å¼è°ƒç”¨  
 	BeginThread thread;
 	thread.Start(&Class::Fun, this);
 
-Ò²¿ÉÒÔÓÃ C++11µÄfunction µ÷ÓÃ
+ä¹Ÿå¯ä»¥ç”¨ C++11çš„function è°ƒç”¨
 	BeginThread thread;
 	thread.Start(bind(&Class::Fun, this));
 
 
-ºóĞø µÄ ¹¦ÄÜ  ÂıÂı¼Ó°É  ÏÈ¹»ÓÃ
+åç»­ çš„ åŠŸèƒ½  æ…¢æ…¢åŠ å§  å…ˆå¤Ÿç”¨
 //////////////////////////////////////////////////////////////////////////*/
 class BeginThread
 {
@@ -38,7 +38,7 @@ public:
 	{
 		if(IsWorking())
 		{
-			m_sErrorText = L"Ïß³ÌÒÑ¿ªÆô£¡";
+			m_sErrorText = L"çº¿ç¨‹å·²å¼€å¯ï¼";
 			return false;
 		}
 
@@ -51,7 +51,7 @@ public:
 	{
 		if(IsWorking())
 		{
-			m_sErrorText = L"Ïß³ÌÒÑ¿ªÆô£¡";
+			m_sErrorText = L"çº¿ç¨‹å·²å¼€å¯ï¼";
 			return false;
 		}
 
@@ -82,7 +82,7 @@ public:
 		return m_dwThreadId;
 	}
 
-	//¹Ø±ÕÏß³Ì   
+	//å…³é—­çº¿ç¨‹   
 	bool Terminate(DWORD dwWaitTime=200)
 	{
 		if (NULL != m_hThread)
@@ -118,7 +118,7 @@ public:
 		return s;
 	}
 private:
-	//¾²Ì¬ Ïß³Ì º¯Êı 
+	//é™æ€ çº¿ç¨‹ å‡½æ•° 
 	static unsigned int __stdcall ThreadFun(void* lp)
 	{
 		BeginThread* pThread = (BeginThread*)lp;
@@ -136,7 +136,7 @@ private:
 private:
 	HANDLE				m_hThread;
 	UINT					m_dwThreadId;
-	bool					m_bAutoRelease;					//×Ô¶¯ÊÍ·Å
+	bool					m_bAutoRelease;					//è‡ªåŠ¨é‡Šæ”¾
 	std::function<UINT()> m_threadFun;
 
 	std::wstring		m_sErrorText;
@@ -168,7 +168,7 @@ public:
 	{
 		if(IsWorking())
 		{
-			m_sErrorText = L"Ïß³ÌÒÑ¿ªÆô£¡";
+			m_sErrorText = L"çº¿ç¨‹å·²å¼€å¯ï¼";
 			return false;
 		}
 
@@ -199,7 +199,7 @@ public:
 		return m_dwThreadId;
 	}
 
-	//¹Ø±ÕÏß³Ì   
+	//å…³é—­çº¿ç¨‹   
 	bool Terminate(DWORD dwWaitTime=200)
 	{
 		if (NULL != m_hThread)
@@ -243,7 +243,7 @@ public:
 		return 0;
 	}
 public:
-	//¾²Ì¬ Ïß³Ì º¯Êı 
+	//é™æ€ çº¿ç¨‹ å‡½æ•° 
 	static unsigned int __stdcall ThreadFun(void* lp)
 	{
 		BeginThreadEx* pThread = (BeginThreadEx*)lp;
@@ -272,11 +272,11 @@ private:
 
 
 
-//  vs2008 Ğ´·¨  
+//  vs2008 å†™æ³•  
 #if 0
 
-//²ÉÓÃÁËÄ£°åµÄĞ´·¨   ¼ÓÉÏ ÀàÃû µÄÄ£°æ  
-//	Àı×Ó£º
+//é‡‡ç”¨äº†æ¨¡æ¿çš„å†™æ³•   åŠ ä¸Š ç±»å çš„æ¨¡ç‰ˆ  
+//	ä¾‹å­ï¼š
 //	CBeginThread<CMainDlg> beginThread;
 //	beginThead.Start(this, &CMainDlg::Fun); 
 
@@ -298,7 +298,7 @@ public:
 	
 	typedef unsigned int (Type::*pFun)();
 
-	//¿ªÆôÆô¶¯Ïß³Ì    ÀàµÄÖ¸Õë ¼Ó º¯ÊıÖ¸Õë
+	//å¼€å¯å¯åŠ¨çº¿ç¨‹    ç±»çš„æŒ‡é’ˆ åŠ  å‡½æ•°æŒ‡é’ˆ
 	bool Start(Type* pT, pFun p)
 	{
 		if(NULL != m_hThread)
@@ -317,7 +317,7 @@ public:
 		return true;
 	}
 
-	//¹Ø±ÕÏß³Ì   
+	//å…³é—­çº¿ç¨‹   
 	bool Terminate(DWORD dwWaitTime=200)
 	{
 		if (NULL != m_hThread)
@@ -337,7 +337,7 @@ public:
 		return true;
 	}
 
-	//ÅĞ¶ÏÏß³Ì 
+	//åˆ¤æ–­çº¿ç¨‹ 
 	bool IsWorking()
 	{
 		if(NULL == m_hThread)
@@ -352,7 +352,7 @@ public:
 		return false;
 	}
 
-	//¹Ø±Õ ¾ä±ú 
+	//å…³é—­ å¥æŸ„ 
 	void Release()
 	{
 		if(NULL != m_hThread)
@@ -363,7 +363,7 @@ public:
 	}
 
 
-	//Ïß³Ì º¯Êı
+	//çº¿ç¨‹ å‡½æ•°
 	unsigned int OnFun()
 	{
 		if(NULL != m_pT)
@@ -373,7 +373,7 @@ public:
 		return 0;
 	}
 public:
-	//¾²Ì¬ Ïß³Ì º¯Êı 
+	//é™æ€ çº¿ç¨‹ å‡½æ•° 
 	static unsigned int __stdcall ThreadFun(void* lp)
 	{
 		CBeginThread* pThread = (CBeginThread*)lp;

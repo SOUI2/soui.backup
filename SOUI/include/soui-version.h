@@ -8,7 +8,7 @@
 * @author     SOUI group   
 * @date       2016/02/23
 * 
-* Describe    SOUI∞Ê±æ∂®“Â
+* Describe    SOUI version
 */
 
 
@@ -16,5 +16,5 @@
 
 #define SOUI_VER1   2
 #define SOUI_VER2   6
-#define SOUI_VER3   2
+#define SOUI_VER3   3
 #define SOUI_VER4   1

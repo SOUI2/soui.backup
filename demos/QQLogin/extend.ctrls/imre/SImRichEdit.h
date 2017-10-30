@@ -1,38 +1,38 @@
-
+﻿
 // ------------------------------------------------------------------------------
 //
 // SImRichEdit.h : interface of the SImRichEdit class
 //
-// ���������RichEdit�Ľӿڣ��Ŀؼ���Ҫ��ms�ṩ��RichEdit��ʵ�������¹���
+// 定义聊天框RichEdit的接口，改控件主要在ms提供的RichEdit上实现了以下功能
 //
-// 1.����
-// 2.ͷ��
-// 3.����OLE��@�ˡ�ͼƬ���ļ����
-// 4.��קЧ��
-// 5.�ͼ�����Ľ���
+// 1.气泡
+// 2.头像
+// 3.各类OLE，@人、图片、文件块等
+// 4.拖拽效果
+// 5.和剪贴板的交互
 // 
 // ------------------------------------------------------------------------------
 //
-// Ϊ��ʵ�ָ�Ч��GIF����ˢ�£����GIF��ͼƬ���������⴦������ˢ��GIFʱ��
-// ������RichEditˢ�£����Ǵ�����ʱDC��Ȼ������OLE��������ʱDC�ϣ����
-// ��RichEdit�ϣ�ʵ��Ч��������GIF������£�CPU������4%��
+// 为了实现高效的GIF动画刷新，针对GIF类图片进行了特殊处理。在刷新GIF时并
+// 不请求RichEdit刷新，而是创建临时DC，然后请求OLE对象画在临时DC上，最后
+// 到RichEdit上，实测效果，满屏GIF的情况下，CPU不超过4%。
 //
-// !!!�ر�ע�⣺���ڶ�GIF��ˢ���������⴦��������ж���Ŀؼ���Ҫ������
-// SimRichEdit���Ϸ�������toast��ʾ�����轫�ÿؼ���ΪSImRichEdit���ӿؼ�!!!
+// !!!特别注意：由于对GIF的刷新做了特殊处理，如果有额外的控件需要悬浮在
+// SimRichEdit的上方（例如toast提示），需将该控件设为SImRichEdit的子控件!!!
 //
 // ------------------------------------------------------------------------------
 //
-// QA/ע������:
+// QA/注意事项:
 // 
-// 1. ��RichEdit��readonly������£����ܽ�����������
+// 1. 在RichEdit是readonly的情况下，不能进行缩进设置
 //
-// 2. ���Ҫ��RichEdit��ʧȥ����ʱ��Ҫ��ʾѡ�и�������Ҫ����
-//    TXTBIT_SAVESELECTION �Ҳ�������TXTBIT_HIDESELECTION
+// 2. 如果要让RichEdit在失去焦点时还要显示选中高亮，需要设置
+//    TXTBIT_SAVESELECTION 且不能设置TXTBIT_HIDESELECTION
 //
-// 3. �������Ķ������һ���ǿ��У���Ҫ�ڸö�������ټ�һ�����У���������
-//    ������ʱ����Ҫ�Ѷ���ӵ��Ǹ����а�����ȥ
+// 3. 被缩进的段落最后一行是空行，需要在该段落最后再加一个空行，而且设置
+//    缩进的时候需要把额外加的那个空行包含进去
 //
-// 4. SetIndents�ȽϷ�ʱ,�����þ�������
+// 4. SetIndents比较费时,能少用尽量少用
 //
 // 5.
 //
@@ -158,7 +158,7 @@ namespace SOUI
         // ------------------------------------------------------------------------------
 
         //
-        //caret��ط���
+        //caret相关方法
         //
 
         virtual BOOL CreateCaret(HBITMAP pBmp, int nWid, int nHeight);
@@ -239,25 +239,25 @@ namespace SOUI
 
         typedef SArray<RichEditContent*> RichContentArray;
 
-        CRect                       _caretRect;         // �����richedit���ϽǵĹ��λ�á���¼����TxSetCaretPosʱ��λ�ã�
-                                                        // ���������ٻ�ù��ĸ߶�
-        CHARRANGE                   _visibleChr;        // �ɼ����ַ���Χ
-        CHARRANGE                   _visibleOleChr;     // �ɼ���OLE��Χ
-        CAutoRefPtr<IRenderTarget>  _pBackgroundRt;     // ����rt
-        BOOL                        _isBackgroundDirty; // ���_pBackgroundRt�Ƿ�ʧЧ
+        CRect                       _caretRect;         // 相对于richedit左上角的光标位置。记录调用TxSetCaretPos时的位置，
+                                                        // 可用来快速获得光标的高度
+        CHARRANGE                   _visibleChr;        // 可见的字符范围
+        CHARRANGE                   _visibleOleChr;     // 可见的OLE范围
+        CAutoRefPtr<IRenderTarget>  _pBackgroundRt;     // 背景rt
+        BOOL                        _isBackgroundDirty; // 标记_pBackgroundRt是否失效
         ITextDocument*              _pTextDoc;
-        RichContentArray            _richContents;      // richedit��ʾ������
-        RichEditObj*                _pLastHoverObj;     // ������������һ��obj
-        time_t                      _lastDrawTicks;     // ��¼���һ��ˢ�µ�ʱ�䣬�����߶�ʱˢ�£�60ticksˢһ��
-        CAutoRefPtr<IRegion>        _pDelayDrawRgn;     // ������
-        CRect                       _originalInset;     // ԭʼ���õ��ڱ߾�
-        BOOL                        _isDrawEnable;      // �ܷ�ˢ��UI
-        BOOL                        _scrollbarOutdated; // ��ǹ������Ƿ���Ҫ������һ�Σ���ϸ�����OnScroll����
-        BOOL                        _scrollbarAtBottom; // ��ǹ������Ƿ��ڵײ�
-        BOOL                        _isDragging;        // ����Ƿ�����ק״̬
-        BOOL                        _readOnlyBeforeDrag;// ��קǰ��ֻ��״̬
-        BOOL                        _fixVScroll;        // ��̬ˢ�´�ֱ��������ȷ���������һƬ�հ׵����
-        bool						_isCreatIme;		//����Ƿ���Ҫ�������뷨��������������λ��Ϊfalse
+        RichContentArray            _richContents;      // richedit显示的内容
+        RichEditObj*                _pLastHoverObj;     // 光标悬浮的最后一个obj
+        time_t                      _lastDrawTicks;     // 记录最后一次刷新的时间，用来走定时刷新，60ticks刷一次
+        CAutoRefPtr<IRegion>        _pDelayDrawRgn;     // 脏区域
+        CRect                       _originalInset;     // 原始设置的内边距
+        BOOL                        _isDrawEnable;      // 能否刷新UI
+        BOOL                        _scrollbarOutdated; // 标记滚动条是否需要再设置一次，详细含义见OnScroll描述
+        BOOL                        _scrollbarAtBottom; // 标记滚动条是否在底部
+        BOOL                        _isDragging;        // 标记是否处于拖拽状态
+        BOOL                        _readOnlyBeforeDrag;// 拖拽前的只读状态
+        BOOL                        _fixVScroll;        // 动态刷新垂直滚动条，确保不会出现一片空白的情况
+        bool						_isCreatIme;		//标记是否正要启动输入法，启动后这个标记位置为false
     };
 
 }// namespace SOUI

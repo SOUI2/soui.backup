@@ -1,12 +1,12 @@
-#pragma once
+ï»¿#pragma once
 #include <Dbghelp.h>
 #pragma comment(lib,"Dbghelp.lib")
 #include <helper/SAdapterBase.h>
 struct ImportTableItemData
 {	
-	bool bGroup;//ÊÇ·ñÊÇÒ»¸ö·Ö×é
-	SStringT strIdx;//º¯ÊıË÷Òı
-	SStringT strName;//º¯ÊıÃû
+	bool bGroup;//æ˜¯å¦æ˜¯ä¸€ä¸ªåˆ†ç»„
+	SStringT strIdx;//å‡½æ•°ç´¢å¼•
+	SStringT strName;//å‡½æ•°å
 };
 class CImportTableTreeViewAdapter :public STreeAdapterBase<ImportTableItemData>
 {
@@ -87,7 +87,7 @@ public:
 		}
 		PIMAGE_DOS_HEADER pDosHeader = (PIMAGE_DOS_HEADER)lpBaseAddress;
 		PIMAGE_NT_HEADERS32 pNtHeaders = (PIMAGE_NT_HEADERS32)(lpBaseAddress + pDosHeader->e_lfanew);
-		//²âÊÔÒ»ÏÂÊÇ²»ÊÇÒ»¸öÓĞĞ§µÄPEÎÄ¼ş
+		//æµ‹è¯•ä¸€ä¸‹æ˜¯ä¸æ˜¯ä¸€ä¸ªæœ‰æ•ˆçš„PEæ–‡ä»¶
 		if (pDosHeader->e_magic != IMAGE_DOS_SIGNATURE || IMAGE_NT_SIGNATURE != pNtHeaders->Signature)
 		{			
 			return -1;
@@ -95,58 +95,62 @@ public:
 
 		if (pNtHeaders->FileHeader.Machine == IMAGE_FILE_MACHINE_I386)
 		{
-			//µ¼Èë±íµÄrva
+			//å¯¼å…¥è¡¨çš„rva
 			DWORD Rva_import_table = pNtHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress;
 			if (Rva_import_table == 0)
 			{
 				return -1;
 			}
 			PIMAGE_IMPORT_DESCRIPTOR pImportTable = (PIMAGE_IMPORT_DESCRIPTOR)ImageRvaToVa(
-				pNtHeaders,
+				(PIMAGE_NT_HEADERS)pNtHeaders,
 				lpBaseAddress,
 				Rva_import_table,
 				NULL
 			);
 			IMAGE_IMPORT_DESCRIPTOR null_iid;
-			IMAGE_THUNK_DATA null_thunk;
+			IMAGE_THUNK_DATA32 null_thunk;
 			memset(&null_iid, 0, sizeof(null_iid));
 			memset(&null_thunk, 0, sizeof(null_thunk));
-			//Ã¿¸öÔªËØ´ú±íÁËÒ»¸öÒıÈëµÄDLL¡£
+			//æ¯ä¸ªå…ƒç´ ä»£è¡¨äº†ä¸€ä¸ªå¼•å…¥çš„DLLã€‚
 			ImportTableItemData data;
+
+			data.bGroup = false;			
+			data.strName = L"32ä½PE";
+			InsertItem(data);
 			for (i = 0; memcmp(pImportTable + i, &null_iid, sizeof(null_iid)) != 0; i++)
 			{
-				//LPCSTR: ¾ÍÊÇ const char*
+				//LPCSTR: å°±æ˜¯ const char*
 				LPCSTR szDllName = (LPCSTR)ImageRvaToVa(
-					pNtHeaders, lpBaseAddress,
-					pImportTable[i].Name, //DLLÃû³ÆµÄRVA
+					(PIMAGE_NT_HEADERS)pNtHeaders, lpBaseAddress,
+					pImportTable[i].Name, //DLLåç§°çš„RVA
 					NULL);
 				data.bGroup = TRUE;
 				data.strName = S_CA2T(szDllName);
 				HSTREEITEM hDll = InsertItem(data);
 				// 		SetItemExpanded(hRoot, FALSE);			
-				//IMAGE_TRUNK_DATA Êı×é£¨IAT£ºµ¼ÈëµØÖ·±í£©Ç°Ãæ
+				//IMAGE_TRUNK_DATA æ•°ç»„ï¼ˆIATï¼šå¯¼å…¥åœ°å€è¡¨ï¼‰å‰é¢
 				PIMAGE_THUNK_DATA32 pThunk = (PIMAGE_THUNK_DATA32)ImageRvaToVa(
-					pNtHeaders, lpBaseAddress,
+					(PIMAGE_NT_HEADERS)pNtHeaders, lpBaseAddress,
 					pImportTable[i].OriginalFirstThunk,
 					NULL);
 				int iFunCount = 0;
 				for (j = 0; memcmp(pThunk + j, &null_thunk, sizeof(null_thunk)) != 0; j++)
 				{
-					//ÕâÀïÍ¨¹ıRVAµÄ×î¸ßÎ»ÅĞ¶Ïº¯ÊıµÄµ¼Èë·½Ê½£¬
-					//Èç¹û×î¸ßÎ»Îª1£¬°´ĞòºÅµ¼Èë£¬·ñÔò°´Ãû³Æµ¼Èë
+					//è¿™é‡Œé€šè¿‡RVAçš„æœ€é«˜ä½åˆ¤æ–­å‡½æ•°çš„å¯¼å…¥æ–¹å¼ï¼Œ
+					//å¦‚æœæœ€é«˜ä½ä¸º1ï¼ŒæŒ‰åºå·å¯¼å…¥ï¼Œå¦åˆ™æŒ‰åç§°å¯¼å…¥
 					if (pThunk[j].u1.AddressOfData & IMAGE_ORDINAL_FLAG32)
 					{
 						data.bGroup = false;
 						data.strIdx.Format(L"%ld", pThunk[j].u1.AddressOfData & 0xffff);
-						data.strName = L"°´ĞòºÅµ¼Èë";
+						data.strName = L"æŒ‰åºå·å¯¼å…¥";
 						InsertItem(data, hDll);
 					}
 					else
 					{
-						//°´Ãû³Æµ¼Èë£¬ÎÒÃÇÔÙ´Î¶¨Ïòµ½º¯ÊıĞòºÅºÍÃû³Æ
-						//×¢ÒâÆäµØÖ·²»ÄÜÖ±½ÓÓÃ£¬ÒòÎªÈÔÈ»ÊÇRVA£¡
+						//æŒ‰åç§°å¯¼å…¥ï¼Œæˆ‘ä»¬å†æ¬¡å®šå‘åˆ°å‡½æ•°åºå·å’Œåç§°
+						//æ³¨æ„å…¶åœ°å€ä¸èƒ½ç›´æ¥ç”¨ï¼Œå› ä¸ºä»ç„¶æ˜¯RVAï¼
 						PIMAGE_IMPORT_BY_NAME pFuncName = (PIMAGE_IMPORT_BY_NAME)ImageRvaToVa(
-							pNtHeaders, lpBaseAddress,
+							(PIMAGE_NT_HEADERS)pNtHeaders, lpBaseAddress,
 							pThunk[j].u1.AddressOfData,
 							NULL);
 						data.bGroup = false;
@@ -162,11 +166,11 @@ public:
 			}
 			notifyBranchChanged(ITvAdapter::ITEM_ROOT);
 		}
-		if (pNtHeaders->FileHeader.Machine == IMAGE_FILE_MACHINE_IA64 ||
+		else if (pNtHeaders->FileHeader.Machine == IMAGE_FILE_MACHINE_IA64 ||
 			pNtHeaders->FileHeader.Machine == IMAGE_FILE_MACHINE_AMD64)
 		{
 			//PIMAGE_NT_HEADERS64 pNtHeaders64 = (PIMAGE_NT_HEADERS64)(lpBaseAddress + pDosHeader->e_lfanew);
-			//µ¼Èë±íµÄrva
+			//å¯¼å…¥è¡¨çš„rva
 			DWORD Rva_import_table = ((PIMAGE_NT_HEADERS64)pNtHeaders)->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress;
 
 			if (Rva_import_table == 0)
@@ -174,52 +178,55 @@ public:
 				return -1;
 			}
 			PIMAGE_IMPORT_DESCRIPTOR pImportTable = (PIMAGE_IMPORT_DESCRIPTOR)ImageRvaToVa(
-				pNtHeaders,
+				(PIMAGE_NT_HEADERS)pNtHeaders,
 				lpBaseAddress,
 				Rva_import_table,
 				NULL
 			);
 			IMAGE_IMPORT_DESCRIPTOR null_iid;
-			//64Î»ºÍ32µÄ²»Í¬Ö®´¦
+			//64ä½å’Œ32çš„ä¸åŒä¹‹å¤„
 			IMAGE_THUNK_DATA64 null_thunk;
 			memset(&null_iid, 0, sizeof(null_iid));
 			memset(&null_thunk, 0, sizeof(null_thunk));
-			//Ã¿¸öÔªËØ´ú±íÁËÒ»¸öÒıÈëµÄDLL¡£
+			//æ¯ä¸ªå…ƒç´ ä»£è¡¨äº†ä¸€ä¸ªå¼•å…¥çš„DLLã€‚
 			ImportTableItemData data;
+			data.bGroup = false;
+			data.strName = L"64ä½PE";
+			InsertItem(data);
 			for (i = 0; memcmp(pImportTable + i, &null_iid, sizeof(null_iid)) != 0; i++)
 			{
-				//LPCSTR: ¾ÍÊÇ const char*
+				//LPCSTR: å°±æ˜¯ const char*
 				LPCSTR szDllName = (LPCSTR)ImageRvaToVa(
-					pNtHeaders, lpBaseAddress,
-					pImportTable[i].Name, //DLLÃû³ÆµÄRVA
+					(PIMAGE_NT_HEADERS)pNtHeaders, lpBaseAddress,
+					pImportTable[i].Name, //DLLåç§°çš„RVA
 					NULL);
 				data.bGroup = TRUE;
 				data.strName = S_CA2T(szDllName);
 				HSTREEITEM hDll = InsertItem(data);
 				// 		SetItemExpanded(hRoot, FALSE);			
-				//IMAGE_TRUNK_DATA Êı×é£¨IAT£ºµ¼ÈëµØÖ·±í£©Ç°Ãæ
+				//IMAGE_TRUNK_DATA æ•°ç»„ï¼ˆIATï¼šå¯¼å…¥åœ°å€è¡¨ï¼‰å‰é¢
 				PIMAGE_THUNK_DATA64 pThunk = (PIMAGE_THUNK_DATA64)ImageRvaToVa(
-					pNtHeaders, lpBaseAddress,
+					(PIMAGE_NT_HEADERS)pNtHeaders, lpBaseAddress,
 					pImportTable[i].OriginalFirstThunk,
 					NULL);
 				int iFunCount = 0;
 				for (j = 0; memcmp(pThunk + j, &null_thunk, sizeof(null_thunk)) != 0; j++)
 				{
-					//ÕâÀïÍ¨¹ıRVAµÄ×î¸ßÎ»ÅĞ¶Ïº¯ÊıµÄµ¼Èë·½Ê½£¬
-					//Èç¹û×î¸ßÎ»Îª1£¬°´ĞòºÅµ¼Èë£¬·ñÔò°´Ãû³Æµ¼Èë
+					//è¿™é‡Œé€šè¿‡RVAçš„æœ€é«˜ä½åˆ¤æ–­å‡½æ•°çš„å¯¼å…¥æ–¹å¼ï¼Œ
+					//å¦‚æœæœ€é«˜ä½ä¸º1ï¼ŒæŒ‰åºå·å¯¼å…¥ï¼Œå¦åˆ™æŒ‰åç§°å¯¼å…¥
 					if (pThunk[j].u1.AddressOfData & IMAGE_ORDINAL_FLAG64)
 					{
 						data.bGroup = false;
 						data.strIdx.Format(L"%ld", IMAGE_ORDINAL64(pThunk[j].u1.AddressOfData));
-						data.strName = L"°´ĞòºÅµ¼Èë";
+						data.strName = L"æŒ‰åºå·å¯¼å…¥";
 						InsertItem(data, hDll);
 					}
 					else
 					{
-						//°´Ãû³Æµ¼Èë£¬ÎÒÃÇÔÙ´Î¶¨Ïòµ½º¯ÊıĞòºÅºÍÃû³Æ
-						//×¢ÒâÆäµØÖ·²»ÄÜÖ±½ÓÓÃ£¬ÒòÎªÈÔÈ»ÊÇRVA£¡
+						//æŒ‰åç§°å¯¼å…¥ï¼Œæˆ‘ä»¬å†æ¬¡å®šå‘åˆ°å‡½æ•°åºå·å’Œåç§°
+						//æ³¨æ„å…¶åœ°å€ä¸èƒ½ç›´æ¥ç”¨ï¼Œå› ä¸ºä»ç„¶æ˜¯RVAï¼
 						PIMAGE_IMPORT_BY_NAME pFuncName = (PIMAGE_IMPORT_BY_NAME)ImageRvaToVa(
-							pNtHeaders, lpBaseAddress,
+							(PIMAGE_NT_HEADERS)pNtHeaders, lpBaseAddress,
 							pThunk[j].u1.AddressOfData,
 							NULL);
 						data.bGroup = false;
@@ -253,35 +260,35 @@ public:
 				ImportTableItemData data;
 				switch (iCmd)
 				{
-				case 1:  //Ìí¼Ó·Ö×é
+				case 1:  //æ·»åŠ åˆ†ç»„
 				{
 					SOUI::HTREEITEM hParent = GetParentItem(loc);					
 					data.bGroup = true;
-					data.strName = L"Ìí¼Ó²âÊÔ×é";
+					data.strName = L"æ·»åŠ æµ‹è¯•ç»„";
 					SOUI::HTREEITEM hItem=InsertItem(data,hParent,loc);
 					notifyBranchChanged(hParent);
 				}break;
-				case 2:  //É¾³ı·Ö×é
+				case 2:  //åˆ é™¤åˆ†ç»„
 				{
 					SOUI::HTREEITEM hParent = GetParentItem(loc);
 					DeleteItem(loc);
 					notifyBranchChanged(hParent);
 				}
 				break;
-				case 3:  //·Ö×éÏÂÌí¼ÓÒ»¸ö×ÓÏî
+				case 3:  //åˆ†ç»„ä¸‹æ·»åŠ ä¸€ä¸ªå­é¡¹
 				{									
 					data.bGroup = false;
 					data.strIdx = L"9527";
-					data.strName = L"Ìí¼Ó²âÊÔ×ÓÏî";
+					data.strName = L"æ·»åŠ æµ‹è¯•å­é¡¹";
 					SOUI::HTREEITEM hItem = InsertItem(data, loc);
 					notifyBranchChanged(loc);
 				}
 				break;
-				case 4:  //·Ö×éÏÂÌí¼ÓÒ»¸ö×Ó·Ö×é
+				case 4:  //åˆ†ç»„ä¸‹æ·»åŠ ä¸€ä¸ªå­åˆ†ç»„
 				{
 					data.bGroup = true;
 					data.strIdx = L"9527";
-					data.strName = L"Ìí¼Ó²âÊÔ×ÓÏî";
+					data.strName = L"æ·»åŠ æµ‹è¯•å­é¡¹";
 					SOUI::HTREEITEM hItem = InsertItem(data, loc);
 					notifyBranchChanged(loc);
 				}
@@ -301,12 +308,12 @@ public:
 					SOUI::HTREEITEM hParent = GetParentItem(loc);
 					data.bGroup = false;
 					data.strIdx = L"008";
-					data.strName = L"Ìí¼Ó²âÊÔ×ÓÏî";
+					data.strName = L"æ·»åŠ æµ‹è¯•å­é¡¹";
 					SOUI::HTREEITEM hItem = InsertItem(data, hParent, loc);
 					notifyBranchChanged(hParent);
 				}
 				break;
-				case 2:  //É¾³ı
+				case 2:  //åˆ é™¤
 				{
 					SOUI::HTREEITEM hParent = GetParentItem(loc);
 					DeleteItem(loc);
@@ -322,11 +329,11 @@ public:
 			int iCmd = menu.TrackPopupMenu(TPM_RETURNCMD, pt.x, pt.y, hWnd);
 			switch (iCmd)
 			{
-			case 1:  //Ìí¼Ó·Ö×é
+			case 1:  //æ·»åŠ åˆ†ç»„
 			{
 				ImportTableItemData data;
 				data.bGroup = true;
-				data.strName = L"¿Õ°×Ìí¼Ó²âÊÔ×é";
+				data.strName = L"ç©ºç™½æ·»åŠ æµ‹è¯•ç»„";
 				SOUI::HTREEITEM hItem = InsertItem(data);
 				notifyBranchChanged(ITEM_ROOT);
 			}			

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "ResManger.h"
 #include "CDebug.h"
 #include "helpapi.h"
@@ -88,7 +88,7 @@ void ResManger::LoadUIRes()
 {
 	if (!m_xmlDocUiRes.load_file(m_strUIResFile, pugi::parse_full))
 	{
-		CDebug::Debug(_T("¼ÓÔØuiresÎÄ¼şÊ§°Ü"));
+		CDebug::Debug(_T("åŠ è½½uiresæ–‡ä»¶å¤±è´¥"));
 		return;
 	}
 
@@ -100,7 +100,7 @@ void ResManger::LoadUIRes()
 	pugi::xml_node xmlNode = m_xmlNodeUiRes.child(L"resource").first_child();
 	GetSubNodes(xmlNode, L"");
 	
-/*  // ²âÊÔ´úÂë
+/*  // æµ‹è¯•ä»£ç 
 	SPOSITION pos = m_mapXmlFile.GetStartPosition();
 	while (pos)
 	{
@@ -109,7 +109,7 @@ void ResManger::LoadUIRes()
 	}
 */
 
-	// »ñÈ¡ Init.xml ÎÄ¼şÃû
+	// è·å– Init.xml æ–‡ä»¶å
 	pugi::xml_node xmlNode_init = m_xmlNodeUiRes.child(L"resource").child(L"UIDEF").first_child();
 
 	while (xmlNode_init)
@@ -203,7 +203,7 @@ void ResManger::GetSubNodes(pugi::xml_node& parentNode, SStringT parentNodeName)
 	}
 }
 
-// É¾³ı×ÊÔ´ÀàĞÍÃû ÈçLAYOUT:sin_manm ½«±ä³É sin_manm
+// åˆ é™¤èµ„æºç±»å‹å å¦‚LAYOUT:sin_manm å°†å˜æˆ sin_manm
 SStringT ResManger::RemoveResTypename(const SStringT& resname)
 {
 	int nPos = resname.ReverseFind(':');
@@ -230,7 +230,7 @@ void ResManger::LoadResFileEx(SStringT& filepath, pugi::xml_document& xmlDoc, SS
 {
 	if (!m_strInitFile.IsEmpty())
 	{
-		// ¼ÙÉèÔÚInit.xmlÎÄ¼şÖĞ¶¨ÒåÁËSkin
+		// å‡è®¾åœ¨Init.xmlæ–‡ä»¶ä¸­å®šä¹‰äº†Skin
 		if (filepath.IsEmpty())
 			filepath = m_strInitFile;
 
@@ -253,7 +253,7 @@ void ResManger::LoadResFileEx(SStringT& filepath, pugi::xml_document& xmlDoc, SS
 				if (!result)
 				{
 					SStringT tmpstr;
-					tmpstr.Format(_T("¼ÓÔØ%sÎÄ¼şÊ§°Ü"), tagname);
+					tmpstr.Format(_T("åŠ è½½%sæ–‡ä»¶å¤±è´¥"), tagname);
 					SMessageBox(NULL, _T("Resmgr"), tmpstr, MB_OK);
 				}
 			}

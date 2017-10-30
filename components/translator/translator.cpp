@@ -1,4 +1,4 @@
-// translator.cpp : Defines the exported functions for the DLL application.
+ï»¿// translator.cpp : Defines the exported functions for the DLL application.
 //
 
 #include "stdafx.h"
@@ -167,14 +167,15 @@ namespace SOUI
         {
             SStrMap ** pMap=(SStrMap**)bsearch(&strSrc,(*pEntry)->m_arrStrMap.GetData(),(*pEntry)->m_arrStrMap.GetCount(),sizeof(SStrMap*),SStrMap::CompareInSearch);
             if(pMap)
-            {//´ÓÖ¸¶¨µÄÉÏÏÂÎÄÖĞ²éÕÒ·­Òë
+            {//ä»æŒ‡å®šçš„ä¸Šä¸‹æ–‡ä¸­æŸ¥æ‰¾ç¿»è¯‘
                 strRet=(*pMap)->strTranslation;
                 return TRUE;
-            }else if(!strCtx.IsEmpty())
-            {//´Ó¿Õ°×ÉÏÏÂÎÄÖĞ²éÕÒ
-                return tr(strSrc,SStringW(),strRet);
             }
         }
+		if(!strCtx.IsEmpty())
+		{//ä»ç©ºç™½ä¸Šä¸‹æ–‡ä¸­æŸ¥æ‰¾
+			return tr(strSrc,SStringW(),strRet);
+		}
         return FALSE;
     }
 

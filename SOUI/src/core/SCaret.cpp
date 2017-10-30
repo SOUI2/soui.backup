@@ -1,4 +1,4 @@
-#include "souistd.h"
+ï»¿#include "souistd.h"
 #include "core\SCaret.h"
 
 namespace SOUI{
@@ -11,7 +11,7 @@ namespace SOUI{
         m_bmpCaret = (IBitmap*) pRT->GetCurrentObject(OT_BITMAP);
         if(hBmp)
         {
-            //ÒÔÀ­Éì·½Ê½´´½¨Ò»¸ö²åÈë·ûÎ»Í¼
+            //ä»¥æ‹‰ä¼¸æ–¹å¼åˆ›å»ºä¸€ä¸ªæ’å…¥ç¬¦ä½å›¾
             HDC hdc=pRT->GetDC(0);
             HDC hdc2=CreateCompatibleDC(hdc);
             SelectObject(hdc2,hBmp);
@@ -24,7 +24,7 @@ namespace SOUI{
         }
         else
         {
-            //´´½¨Ò»¸öºÚÉ«²åÈë·ûµÄÎ»Í¼
+            //åˆ›å»ºä¸€ä¸ªé»‘è‰²æ’å…¥ç¬¦çš„ä½å›¾
 			CRect rc(0, 0, nWidth, nHeight);
 			pRT->FillSolidRect(&rc, RGBA(0, 0, 0, 0xFF));
         }

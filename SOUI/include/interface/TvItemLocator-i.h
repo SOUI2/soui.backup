@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <unknown/obj-ref-i.h>
 #include <unknown/obj-ref-impl.hpp>

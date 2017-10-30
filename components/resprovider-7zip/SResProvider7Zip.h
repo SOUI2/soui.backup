@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <interface/SResProvider-i.h>
 #include <unknown/obj-ref-impl.hpp>

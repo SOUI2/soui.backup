@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CalcMd5Handler.h"
 
 
@@ -71,7 +71,7 @@ void CCalcMd5Handler::CalcFileMd5( const SStringT &strFileName )
 
     }else
     {
-        strMd5 = _T("ÎÄ¼þ´ò¿ªÊ§°Ü!");
+        strMd5 = _T("æ–‡ä»¶æ‰“å¼€å¤±è´¥!");
     }
 
     strMd5 += _T("\t");

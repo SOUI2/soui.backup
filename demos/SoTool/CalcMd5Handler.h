@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "droptarget.h"
 #include "MD5.h"

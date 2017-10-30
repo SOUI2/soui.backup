@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "SPropertyItem-Text.h"
 #include "../SPropertyEmbedWndHelper.hpp"
 #include "../SPropertyGrid.h"
@@ -76,7 +76,7 @@ namespace SOUI
 
     void SPropertyItemText::SetString( const SStringT & strValue )
     {
-		//���ֵû�иı䣬�Ͳ�����֪ͨ
+		//如果值没有改变，就不发送通知
 		if (m_strValue.CompareNoCase(strValue) != 0)
 		{
 			m_strValue = strValue;

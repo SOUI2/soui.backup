@@ -22,8 +22,8 @@ source_group("Resource Files" FILES ${CURRENT_RC})
 
 add_executable(TIMDemo WIN32 ${CURRENT_HEADERS} ${CURRENT_SRCS} ${CURRENT_SOUIS} ${CURRENT_RC})
 
-add_dependencies(TIMDemo soui-sys-resource ${COM_LIBS})
-target_link_libraries(TIMDemo utilities soui sqlite3)
+add_dependencies(TIMDemo soui-sys-resource)
+target_link_libraries(TIMDemo utilities soui ${COM_LIBS} sqlite3)
 
 set_target_properties(TIMDemo PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (TIMDemo PROPERTIES

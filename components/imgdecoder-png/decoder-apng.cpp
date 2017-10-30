@@ -1,4 +1,4 @@
-#include <stdio.h>
+ï»¿#include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
 
@@ -108,10 +108,10 @@ APNGDATA * loadPng(IPngReader *pSrc)
     apng->nWid  = png_ptr_read->width;
     apng->nHei = png_ptr_read->height;
     
-    //Í¼ÏñÖ¡Êı¾İ
+    //å›¾åƒå¸§æ•°æ®
     dataFrame = (png_bytep)malloc(bytesPerRow * apng->nHei);
     memset(dataFrame,0,bytesPerFrame);
-    //»ñµÃÉ¨ÃèĞĞÖ¸Õë
+    //è·å¾—æ‰«æè¡ŒæŒ‡é’ˆ
     rowPointers = (png_bytepp)malloc(sizeof(png_bytep)* apng->nHei);
     for(int i=0;i<apng->nHei;i++)
         rowPointers[i] = dataFrame + bytesPerRow * i;
@@ -125,9 +125,9 @@ APNGDATA * loadPng(IPngReader *pSrc)
         apng->nFrames =1;
 	}else
 	{//load apng
-        apng->nFrames  = png_get_num_frames(png_ptr_read, info_ptr_read);//»ñÈ¡×ÜÖ¡Êı
+        apng->nFrames  = png_get_num_frames(png_ptr_read, info_ptr_read);//è·å–æ€»å¸§æ•°
 
-        png_bytep data = (png_bytep)malloc( bytesPerFrame * apng->nFrames);//ÎªÃ¿Ò»Ö¡·ÖÅäÄÚ´æ
+        png_bytep data = (png_bytep)malloc( bytesPerFrame * apng->nFrames);//ä¸ºæ¯ä¸€å¸§åˆ†é…å†…å­˜
         png_bytep curFrame = (png_bytep)malloc(bytesPerFrame);
         memset(curFrame,0,bytesPerFrame);
                
@@ -136,10 +136,10 @@ APNGDATA * loadPng(IPngReader *pSrc)
         
         for(int iFrame = 0;iFrame<apng->nFrames;iFrame++)
         {
-            //¶ÁÖ¡ĞÅÏ¢Í·
+            //è¯»å¸§ä¿¡æ¯å¤´
             png_read_frame_head(png_ptr_read, info_ptr_read);
             
-            //¼ÆËã³öÖ¡ÑÓÊ±ĞÅÏ¢
+            //è®¡ç®—å‡ºå¸§å»¶æ—¶ä¿¡æ¯
             if (png_get_valid(png_ptr_read, info_ptr_read, PNG_INFO_fcTL))
             {
                 png_uint_16 delay_num = info_ptr_read->next_frame_delay_num,
@@ -159,15 +159,15 @@ APNGDATA * loadPng(IPngReader *pSrc)
             {
                 apng->pDelay[iFrame] = 0;
             }
-            //¶ÁÈ¡PNGÖ¡µ½dataFrameÖĞ£¬²»º¬Æ«ÒÆÊı¾İ
+            //è¯»å–PNGå¸§åˆ°dataFrameä¸­ï¼Œä¸å«åç§»æ•°æ®
             png_read_image(png_ptr_read, rowPointers);
-            {//½«µ±Ç°Ö¡Êı¾İ»æÖÆµ½µ±Ç°ÏÔÊ¾Ö¡ÖĞ:1)»ñµÃ»æÖÆµÄ±³¾°£»2)¼ÆËã³ö»æÖÆÎ»ÖÃ; 3)Ê¹ÓÃÖ¸¶¨µÄ»æÖÆ·½Ê½Óë±³¾°»ìºÏ
+            {//å°†å½“å‰å¸§æ•°æ®ç»˜åˆ¶åˆ°å½“å‰æ˜¾ç¤ºå¸§ä¸­:1)è·å¾—ç»˜åˆ¶çš„èƒŒæ™¯ï¼›2)è®¡ç®—å‡ºç»˜åˆ¶ä½ç½®; 3)ä½¿ç”¨æŒ‡å®šçš„ç»˜åˆ¶æ–¹å¼ä¸èƒŒæ™¯æ··åˆ
 
 
-                //1)¼ÆËã³ö»æÖÆÎ»ÖÃ
+                //1)è®¡ç®—å‡ºç»˜åˆ¶ä½ç½®
                 png_bytep lineDst=curFrame+info_ptr_read->next_frame_y_offset*bytesPerRow + 4 * info_ptr_read->next_frame_x_offset;
                 png_bytep lineSour=dataFrame;
-                //2)Ê¹ÓÃÖ¸¶¨µÄ»æÖÆ·½Ê½Óë±³¾°»ìºÏ
+                //2)ä½¿ç”¨æŒ‡å®šçš„ç»˜åˆ¶æ–¹å¼ä¸èƒŒæ™¯æ··åˆ
                 switch(info_ptr_read->next_frame_blend_op)
                 {
                 case PNG_BLEND_OP_OVER:
@@ -209,7 +209,7 @@ APNGDATA * loadPng(IPngReader *pSrc)
 
                 lineDst=curFrame+info_ptr_read->next_frame_y_offset*bytesPerRow + 4 * info_ptr_read->next_frame_x_offset;
 
-                //3)´¦Àíµ±Ç°Ö¡»æÖÆÇøÓò
+                //3)å¤„ç†å½“å‰å¸§ç»˜åˆ¶åŒºåŸŸ
                 switch(info_ptr_read->next_frame_dispose_op)
                 {
                 case PNG_DISPOSE_OP_BACKGROUND://clear background

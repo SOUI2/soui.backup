@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef _WININET_
 #include <wininet.h>

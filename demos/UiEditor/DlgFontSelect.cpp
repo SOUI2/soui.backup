@@ -1,18 +1,18 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "DlgFontSelect.h"
 #include "CDebug.h"
 
 namespace SOUI
 {
 
-	SDlgFontSelect::SDlgFontSelect(SStringT strFont,SDesignerView *pDesignerView):SHostDialog(_T("LAYOUT:×ÖÌåÑ¡Ôñ"))
+	SDlgFontSelect::SDlgFontSelect(SStringT strFont,SDesignerView *pDesignerView):SHostDialog(_T("LAYOUT:å­—ä½“é€‰æ‹©"))
 	{
 		strFont.TrimBlank();
 		m_strFont = strFont;
 		m_pDesignerView = pDesignerView;
 	}
 
-	//TODO:ÏûÏ¢Ó³Éä
+	//TODO:æ¶ˆæ¯æ˜ å°„
 	void SDlgFontSelect::OnCancel()
 	{
 		SHostDialog::OnCancel();

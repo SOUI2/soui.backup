@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <GdiPlus.h>
 #include "string\tstring.h"
 

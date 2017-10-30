@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "droptarget.h"
 #include "SFolderList.h"
 #include "SEdit2.h"

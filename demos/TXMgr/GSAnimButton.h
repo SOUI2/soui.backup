@@ -1,10 +1,10 @@
-/* $Copyright (c) 2006-2017 Green Net World
+ï»¿/* $Copyright (c) 2006-2017 Green Net World
  * 
  * Author	:	cherish  version 1.0
  * DateTime	:	2017-4-10 14:18:09
  *
  *
- * GSAnimButton  ¹¦ÄÜ
+ * GSAnimButton  åŠŸèƒ½
  */
 
 #ifndef __GSANIMBUTTON_9485438C_70CA_42C3_96E4_5AD0B40589C1__
@@ -17,27 +17,27 @@ class GSAnimButton : public SButton
 	SOUI_CLASS_NAME(GSAnimButton, L"gsanibtn")
 
 public:
-	GSAnimButton();     /** Ä¬ÈÏ¹¹Ôìº¯Êı */
-	~GSAnimButton();    /** Ä¬ÈÏÎö¹¹º¯Êı */
+	GSAnimButton();     /** é»˜è®¤æ„é€ å‡½æ•° */
+	~GSAnimButton();    /** é»˜è®¤ææ„å‡½æ•° */
 
 protected:
 	virtual void OnNextFrame();
 
 	/**
 	* SLink::StopCurAnimate
-	* @brief    Í£Ö¹¶¯»­
+	* @brief    åœæ­¢åŠ¨ç”»
 	*
-	* Describe  Í£Ö¹¶¯»­
+	* Describe  åœæ­¢åŠ¨ç”»
 	*/
 	void StopCurAnimate();
 
 	/**
 	* SButton::OnStateChanged
-	* @brief    ×´Ì¬¸Ä±ä´¦Àíº¯Êı
-	* @param    DWORD dwOldState -- ¾É×´Ì¬
-	* @param    DWORD dwNewState -- ĞÂ×´Ì¬
+	* @brief    çŠ¶æ€æ”¹å˜å¤„ç†å‡½æ•°
+	* @param    DWORD dwOldState -- æ—§çŠ¶æ€
+	* @param    DWORD dwNewState -- æ–°çŠ¶æ€
 	*
-	* Describe  ×´Ì¬¸Ä±ä´¦Àíº¯Êı
+	* Describe  çŠ¶æ€æ”¹å˜å¤„ç†å‡½æ•°
 	*/
 	virtual void OnStateChanged(DWORD dwOldState, DWORD dwNewState);
 

@@ -56,7 +56,7 @@
       <imgbtn name="btn_menu" skin="skin_btn_menu" pos="-151,2" animate="1" />
       <imgbtn name="btn_skin" skin="skin_btn_skin" pos="-181,2" animate="1"/>
     </caption>
-    <tabctrl name="tab_main" pos="5,30,-5,-5" show="1" curSel="0" focusable="0" animateSteps="10" animateType="1" tabHeight="75" tabSkin="skin_tab_main" text-y="50" iconSkin="skin_page_icons" icon-x="10" colorTextHover="#ff0000" fontHover="italic:1">
+    <tabctrl name="tab_main" pos="5,30,-5,-5" interpolator="bounce" curSel="0" focusable="0" animateSteps="30" animateType="1" tabHeight="75" tabSkin="skin_tab_main" text-y="50" iconSkin="skin_page_icons" icon-x="10" colorTextHover="#ff0000" fontHover="italic:1">
       <page title="soui ctrl">
         <include src="layout:page_ctrls"/>
       </page>
@@ -67,13 +67,7 @@
         <flash pos="0,0,-0,-0" name="ctrl_flash" url="http://127.0.0.1:82/flash/apple.swf" delay="1"/>
       </page>
       <page title="animate" tip="play gif and apng">
-        <gifplayer pos="10,10" skin="gif_horse" name="giftest" cursor="ANI_ARROW" show="1"/>
-        <button width="250" height="30" name="btnSelectGif">load gif file</button>
-        <gifplayer pos="10,150" skin="gif_penguin" show="1" id="1000" name="gif_test"/>
-        <icon pos="[10,{0" src="LOGO:64"/>
-        <gifplayer pos="[10,{0" skin="apng_haha" />
-        <animateimg pos="[10,{0" skin="skin_page_icons" autoStart="1"/>
-        <scrolltext show="1" pos="{0,[10,@200,@30" rollType="1" colorText="#ff0000" speed="10">Pay attention! apng would be played only if imgdecoder-png is used here!</scrolltext>
+        <include src="layout:page_animator"/>
       </page>
       <page title="layout" tip="show layout capability in soui">
         <include src="layout:page_layout"/>
@@ -91,5 +85,6 @@
         <include src="layout:page_about"/>
       </page>
     </tabctrl>
+    <shellnotifyicon id="008" menu="SMENUEX:menu_tray" ico="ICON_MM_ONLINE;ICON_MM_OFFLINE;ICON_Loading1;ICON_Loading2;ICON_Loading3;ICON_Loading4;ICON_Loading5;ICON_Loading6" startframe="2" duration="200" tip="SOUI小飞侠"/>
   </root>
 </SOUI>

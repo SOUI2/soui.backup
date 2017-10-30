@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "stdafx.h"
 #include <vector>
 using namespace std;
@@ -11,25 +11,25 @@ public:
 public:
 	
 	
-	//´ò¿ª¶Ô»°¿ò lpstrFilter£º¹ıÂË×Ö·û´®   hwndOwner£º¸¸´°¿Ú  fileNames£ºÍêÕûÎÄ¼şÂ·¾¶
+	//æ‰“å¼€å¯¹è¯æ¡† lpstrFilterï¼šè¿‡æ»¤å­—ç¬¦ä¸²   hwndOwnerï¼šçˆ¶çª—å£  fileNamesï¼šå®Œæ•´æ–‡ä»¶è·¯å¾„
 	static BOOL OpenFile(LPCWSTR lpstrFilter, HWND hwndOwner, vector<SStringT> &fileNames, bool IsMulti = true);
-	//°ÑÒ»¸ö¾ø¶ÔÂ·¾¶²ğ·Ö³É£¬ÎÄ¼şÃû¡¢À©Õ¹Ãû
+	//æŠŠä¸€ä¸ªç»å¯¹è·¯å¾„æ‹†åˆ†æˆï¼Œæ–‡ä»¶åã€æ‰©å±•å
 	static void SplitPathFileName(SStringT fileName, SStringT &szName, SStringT &szExt);
-	// ä¯ÀÀÎÄ¼ş¼Ğ path£ºÂ·¾¶  hwndOwner : ¸¸´°¿Ú  tile : ´°¿Ú±êÌâ
+	// æµè§ˆæ–‡ä»¶å¤¹ pathï¼šè·¯å¾„  hwndOwner : çˆ¶çª—å£  tile : çª—å£æ ‡é¢˜
 	static BOOL BrowseDir(SStringT &path, HWND hwndOwner, SStringT title);
-	// ¼ì²éÎÄ¼şºó×ºÃû pstrPath£ºÎÄ¼şÂ·¾¶ pstrExtFilter£º¹ıÂËÁĞ±í
+	// æ£€æŸ¥æ–‡ä»¶åç¼€å pstrPathï¼šæ–‡ä»¶è·¯å¾„ pstrExtFilterï¼šè¿‡æ»¤åˆ—è¡¨
 	static bool FindFileExt(LPCTSTR pstrPath, LPCTSTR pstrExtFilter);
-	//µİ¹é±éÀúµ±Ç°Ä¿Â¼ÄÚÎÄ¼şÎÄ¼ş
+	//é€’å½’éå†å½“å‰ç›®å½•å†…æ–‡ä»¶æ–‡ä»¶
 	static void EnumerateFiles(vector<SStringT> &vctString, LPCTSTR p_strExtFilter);
-	//µÃµ½ÎÄ¼şµÄ´óĞ¡
+	//å¾—åˆ°æ–‡ä»¶çš„å¤§å°
 	static DWORD GetFileSize(LPCTSTR fileName);
 
-	//ÎÄ¼ş´óĞ¡×ª»»Îª×Ö·û»»£º xx.xxM
+	//æ–‡ä»¶å¤§å°è½¬æ¢ä¸ºå­—ç¬¦æ¢ï¼š xx.xxM
 	static LPCTSTR FileSizeToString(DWORD dwSize);
 
-	//ÎÄ¼ş×ÜÊ±¼ä04:00
+	//æ–‡ä»¶æ€»æ—¶é—´04:00
 	static SStringT TimeToToleString(int time);
-	//¼ì²éÎÄ¼şÊÇ·ñ´æÔÚ
+	//æ£€æŸ¥æ–‡ä»¶æ˜¯å¦å­˜åœ¨
 	static BOOL CheckFileExist(SStringT pathFileName);
 };
 

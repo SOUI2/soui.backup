@@ -1,10 +1,10 @@
-#pragma once
+Ôªø#pragma once
 #include <Dbghelp.h>
 #pragma comment(lib,"Dbghelp.lib")
 #include <helper/SAdapterBase.h>
 struct ExportTableItemData
 {		
-	SStringT strName;//”√ªß√˚
+	SStringT strName;//Áî®Êà∑Âêç
 };
 class CExportTableTreeViewAdapter :public STreeAdapterBase<ExportTableItemData>
 {
@@ -33,7 +33,7 @@ public:
 		}
 		PIMAGE_DOS_HEADER pDosHeader = (PIMAGE_DOS_HEADER)lpBaseAddress;
 		PIMAGE_NT_HEADERS32 pNtHeaders = (PIMAGE_NT_HEADERS32)(lpBaseAddress + pDosHeader->e_lfanew);
-		//≤‚ ‘“ªœ¬ «≤ª «“ª∏ˆ”––ßµƒPEŒƒº˛
+		//ÊµãËØï‰∏Ä‰∏ãÊòØ‰∏çÊòØ‰∏Ä‰∏™ÊúâÊïàÁöÑPEÊñá‰ª∂
 		if (pDosHeader->e_magic != IMAGE_DOS_SIGNATURE || IMAGE_NT_SIGNATURE != pNtHeaders->Signature)
 		{			
 			return -1;
@@ -48,14 +48,14 @@ public:
 			}
 
 			PIMAGE_EXPORT_DIRECTORY pImportTable = (PIMAGE_EXPORT_DIRECTORY)ImageRvaToVa(
-				pNtHeaders,
+				(PIMAGE_NT_HEADERS)pNtHeaders,
 				lpBaseAddress,
 				Rva_export_table,
 				NULL
 			);
 			DWORD **ppdwNames = (DWORD **)pImportTable->AddressOfNames;
 
-			ppdwNames = (PDWORD*)ImageRvaToVa(pNtHeaders,
+			ppdwNames = (PDWORD*)ImageRvaToVa((PIMAGE_NT_HEADERS)pNtHeaders,
 				pDosHeader, (DWORD)ppdwNames, 0);
 			if (!ppdwNames)
 			{
@@ -64,21 +64,21 @@ public:
 
 			IMAGE_EXPORT_DIRECTORY null_iid;
 			memset(&null_iid, 0, sizeof(null_iid));
-			//√ø∏ˆ‘™Àÿ¥˙±Ì¡À“ª∏ˆ“˝»ÎµƒDLL°£
+			//ÊØè‰∏™ÂÖÉÁ¥†‰ª£Ë°®‰∫Ü‰∏Ä‰∏™ÂºïÂÖ•ÁöÑDLL„ÄÇ
 			ExportTableItemData data;
 
 			DWORD dwNumOfExports = pImportTable->NumberOfNames;
 
 			for (UINT i = 0; i < dwNumOfExports; i++)
 			{
-				char *szFunc = (PSTR)ImageRvaToVa(pNtHeaders, pDosHeader, (DWORD)*ppdwNames, 0);
+				char *szFunc = (PSTR)ImageRvaToVa((PIMAGE_NT_HEADERS)pNtHeaders, pDosHeader, (DWORD)*ppdwNames, 0);
 				data.strName = S_CA2W(szFunc);
 				InsertItem(data);
 				ppdwNames++;
 			}
 			notifyBranchChanged(ITvAdapter::ITEM_ROOT);
 		}
-		if (pNtHeaders->FileHeader.Machine == IMAGE_FILE_MACHINE_IA64 ||
+		else if (pNtHeaders->FileHeader.Machine == IMAGE_FILE_MACHINE_IA64 ||
 			pNtHeaders->FileHeader.Machine == IMAGE_FILE_MACHINE_AMD64)
 		{
 			DWORD Rva_export_table = ((PIMAGE_NT_HEADERS64)pNtHeaders)->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress;
@@ -89,14 +89,14 @@ public:
 			}
 
 			PIMAGE_EXPORT_DIRECTORY pImportTable = (PIMAGE_EXPORT_DIRECTORY)ImageRvaToVa(
-				pNtHeaders,
+				(PIMAGE_NT_HEADERS)pNtHeaders,
 				lpBaseAddress,
 				Rva_export_table,
 				NULL
 			);
 			DWORD **ppdwNames = (DWORD **)pImportTable->AddressOfNames;
 
-			ppdwNames = (PDWORD*)ImageRvaToVa(pNtHeaders,
+			ppdwNames = (PDWORD*)ImageRvaToVa((PIMAGE_NT_HEADERS)pNtHeaders,
 				pDosHeader, (DWORD)ppdwNames, 0);
 			if (!ppdwNames)
 			{
@@ -105,14 +105,14 @@ public:
 
 			IMAGE_EXPORT_DIRECTORY null_iid;
 			memset(&null_iid, 0, sizeof(null_iid));
-			//√ø∏ˆ‘™Àÿ¥˙±Ì¡À“ª∏ˆ“˝»ÎµƒDLL°£
+			//ÊØè‰∏™ÂÖÉÁ¥†‰ª£Ë°®‰∫Ü‰∏Ä‰∏™ÂºïÂÖ•ÁöÑDLL„ÄÇ
 			ExportTableItemData data;
 
 			DWORD dwNumOfExports = pImportTable->NumberOfNames;
 
 			for (UINT i = 0; i < dwNumOfExports; i++)
 			{
-				char *szFunc = (PSTR)ImageRvaToVa(pNtHeaders, pDosHeader, (DWORD)*ppdwNames, 0);
+				char *szFunc = (PSTR)ImageRvaToVa((PIMAGE_NT_HEADERS)pNtHeaders, pDosHeader, (DWORD)*ppdwNames, 0);
 				data.strName = S_CA2W(szFunc);
 				InsertItem(data);
 				ppdwNames++;

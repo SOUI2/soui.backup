@@ -1,4 +1,4 @@
-#include "souistd.h"
+ï»¿#include "souistd.h"
 #include "helper/SDIBHelper.h"
 
 #define RGB2GRAY(r,g,b) (((b)*117 + (g)*601 + (r)*306) >> 10)
@@ -12,8 +12,8 @@ namespace SOUI
     };
 
 	// ------------------------------------------------------------
-	// ÓĞÌ«¶àµÄËã·¨ĞèÒªÓÃÄ³ÖÖ·½Ê½(map)±ä»»Î»Í¼µÄÃ¿¸öÏñËØµÄÑÕÉ«£¬±ÈÈç
-	// ²ÊÉ«×ª»»Îª»Ò¶ÈÍ¼£¬gammaĞ£Õı£¬ÑÕÉ«¿Õ¼ä×ª»»,hslµ÷Õû.ËùÒÔĞ´Ò»¸öÄ£°å×öÎª²ÎÊıµ÷ÓÃµÄÍ¨ÓÃËã·¨
+	// æœ‰å¤ªå¤šçš„ç®—æ³•éœ€è¦ç”¨æŸç§æ–¹å¼(map)å˜æ¢ä½å›¾çš„æ¯ä¸ªåƒç´ çš„é¢œè‰²ï¼Œæ¯”å¦‚
+	// å½©è‰²è½¬æ¢ä¸ºç°åº¦å›¾ï¼Œgammaæ ¡æ­£ï¼Œé¢œè‰²ç©ºé—´è½¬æ¢,hslè°ƒæ•´.æ‰€ä»¥å†™ä¸€ä¸ªæ¨¡æ¿åšä¸ºå‚æ•°è°ƒç”¨çš„é€šç”¨ç®—æ³•
 	// ------------------------------------------------------------
 	template <class Mode, class Param>
 	bool ColorTransform(DIBINFO* pDib, Mode mode, const Param &param)
@@ -34,7 +34,7 @@ namespace SOUI
 	}
 
 
-	// »Ò¶È = 0.299 * red + 0.587 * green + 0.114 * blue 
+	// ç°åº¦ = 0.299 * red + 0.587 * green + 0.114 * blue 
 	inline void GrayMode(BYTE *pColor,const int &)
 	{
         pColor[0] = pColor[1] = pColor[2] = RGB2GRAY(pColor[0],pColor[1],pColor[2]);
@@ -320,10 +320,10 @@ namespace SOUI
             rcBlock.MoveToX(0);
             rcBlock.OffsetRect(0,nBlockSize);
         }
-        //RGBÅÅĞò
+        //RGBæ’åº
         qsort(pAvgColors,nBlocks,sizeof(COLORREF),RgbCmp);
         
-        int nThrows = nBlocks * (100-nPercent)/200;//Ò»¶Ë¶ªÆúÊıÁ¿
+        int nThrows = nBlocks * (100-nPercent)/200;//ä¸€ç«¯ä¸¢å¼ƒæ•°é‡
         int iBegin = nThrows;
         int iEnd = nBlocks - nThrows;
         

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "interface/Adapter-i.h"
 #include <souicoll.h>
@@ -106,7 +106,7 @@ namespace SOUI
             return 0;
         }
         
-        //Ôö¼ÓÕâ¸öº¯ÊıÀ´×Ô¶¯×ª»»²»ĞèÒª´¦Àí×´Ì¬±ä»¯µÄView
+        //å¢åŠ è¿™ä¸ªå‡½æ•°æ¥è‡ªåŠ¨è½¬æ¢ä¸éœ€è¦å¤„ç†çŠ¶æ€å˜åŒ–çš„View
         virtual int getItemViewType(int position,DWORD dwState)
         {
 			(dwState);
@@ -305,7 +305,7 @@ namespace SOUI
 		T         data;
 		};
 		
-		//»ñÈ¡hItemÖĞµÄÖ¸¶¨Ë÷ÒıµÄÊı¾İ
+		//è·å–hItemä¸­çš„æŒ‡å®šç´¢å¼•çš„æ•°æ®
         virtual ULONG_PTR GetItemDataByIndex(HTREEITEM hItem,DATA_INDEX idx) const
         {
             if(hItem == ITvAdapter::ITEM_ROOT)
@@ -314,7 +314,7 @@ namespace SOUI
             return ii.userData[idx];
         }
         
-        //±£´æhItemÖ¸¶¨Ë÷ÒıµÄÊı¾İ
+        //ä¿å­˜hItemæŒ‡å®šç´¢å¼•çš„æ•°æ®
         virtual void SetItemDataByIndex(HTREEITEM hItem,DATA_INDEX idx,ULONG_PTR data)
         {
             if(hItem == ITvAdapter::ITEM_ROOT)
@@ -402,7 +402,7 @@ namespace SOUI
 
         virtual BOOL IsItemExpanded(HTREEITEM hItem) const
         {
-			if (hItem == ITEM_ROOT) return TRUE;//ĞéÄâ¸ù½Úµã×Ô¶¯Õ¹¿ª
+			if (hItem == ITEM_ROOT) return TRUE;//è™šæ‹Ÿæ ¹èŠ‚ç‚¹è‡ªåŠ¨å±•å¼€
             return (BOOL)GetItemDataByIndex(hItem,DATA_INDEX_ITEM_EXPANDED);
         }
         

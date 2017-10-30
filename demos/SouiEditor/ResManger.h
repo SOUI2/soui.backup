@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 
 class ResManger
@@ -88,31 +88,31 @@ protected:
 	void LoadResFileEx(SStringT & filepath, pugi::xml_document &xmlDoc, SStringT tagname);
 
 public:
-	SStringT m_strProPath;			// ¼ÓÔØ×ÊÔ´ÎÄ¼şµÄ¸ùÄ¿Â¼
-	SStringT m_strUIResFile;		// uires.idx ÍêÕûÎÄ¼şÃû
-	SStringT m_strInitFile;			// Init.xml ÍêÕûÎÄ¼şÃû
+	SStringT m_strProPath;			// åŠ è½½èµ„æºæ–‡ä»¶çš„æ ¹ç›®å½•
+	SStringT m_strUIResFile;		// uires.idx å®Œæ•´æ–‡ä»¶å
+	SStringT m_strInitFile;			// Init.xml å®Œæ•´æ–‡ä»¶å
 
-	SStringT m_strSkinFile;			// skinÍêÕûÎÄ¼şÃû
-	SStringT m_strStringFile;		// stringÍêÕûÎÄ¼şÃû
-	SStringT m_strColorFile;		// colorÍêÕûÎÄ¼şÃû
-	SStringT m_strStyleFile;		// StyleÍêÕûÎÄ¼şÃû
-	SStringT m_strObjattrFile;		// ObjattrÍêÕûÎÄ¼şÃû
+	SStringT m_strSkinFile;			// skinå®Œæ•´æ–‡ä»¶å
+	SStringT m_strStringFile;		// stringå®Œæ•´æ–‡ä»¶å
+	SStringT m_strColorFile;		// colorå®Œæ•´æ–‡ä»¶å
+	SStringT m_strStyleFile;		// Styleå®Œæ•´æ–‡ä»¶å
+	SStringT m_strObjattrFile;		// Objattrå®Œæ•´æ–‡ä»¶å
 
-	pugi::xml_document m_xmlDocUiRes;			// uires.idxÎÄ¼şxml doc
-	pugi::xml_node m_xmlNodeUiRes;				// uires.idxÎÄ¼şµÄ¸ù½áµã
-	pugi::xml_document m_xmlDocSkin;			// skin¶¨ÒåÎÄ¼şxml doc
-	pugi::xml_document m_xmlDocColor;			// Color¶¨ÒåÎÄ¼şxml doc
-	pugi::xml_document m_xmlDocString;			// String¶¨ÒåÎÄ¼şxml doc
-	pugi::xml_document m_xmlDocStyle;			// Style¶¨ÒåÎÄ¼şxml doc
-	pugi::xml_document m_xmlDocObjattr;			// Objattr¶¨ÒåÎÄ¼şxml doc
+	pugi::xml_document m_xmlDocUiRes;			// uires.idxæ–‡ä»¶xml doc
+	pugi::xml_node m_xmlNodeUiRes;				// uires.idxæ–‡ä»¶çš„æ ¹ç»“ç‚¹
+	pugi::xml_document m_xmlDocSkin;			// skinå®šä¹‰æ–‡ä»¶xml doc
+	pugi::xml_document m_xmlDocColor;			// Colorå®šä¹‰æ–‡ä»¶xml doc
+	pugi::xml_document m_xmlDocString;			// Stringå®šä¹‰æ–‡ä»¶xml doc
+	pugi::xml_document m_xmlDocStyle;			// Styleå®šä¹‰æ–‡ä»¶xml doc
+	pugi::xml_document m_xmlDocObjattr;			// Objattrå®šä¹‰æ–‡ä»¶xml doc
 
 
 	SMap<SStringT, SStringT> m_mapResFile;
-	SMap<SStringT, SStringT> m_mapXmlFile;		// ËùÓĞXMLÎÄ¼şĞÅÏ¢
+	SMap<SStringT, SStringT> m_mapXmlFile;		// æ‰€æœ‰XMLæ–‡ä»¶ä¿¡æ¯
 
-	SMap<SStringT, SkinItem> m_mapSkins;		//ËùÓĞ¶¨ÒåµÄSkinÏîÄ¿
-	SMap<SStringT, StyleItem> m_mapStyles;		//ËùÓĞ¶¨ÒåµÄStyleÏîÄ¿
-	SMap<SStringT, ValueItem> m_mapStrings;		//ËùÓĞ¶¨ÒåµÄString
-	SMap<SStringT, ValueItem> m_mapColors;		//ËùÓĞ¶¨ÒåµÄColor
+	SMap<SStringT, SkinItem> m_mapSkins;		//æ‰€æœ‰å®šä¹‰çš„Skiné¡¹ç›®
+	SMap<SStringT, StyleItem> m_mapStyles;		//æ‰€æœ‰å®šä¹‰çš„Styleé¡¹ç›®
+	SMap<SStringT, ValueItem> m_mapStrings;		//æ‰€æœ‰å®šä¹‰çš„String
+	SMap<SStringT, ValueItem> m_mapColors;		//æ‰€æœ‰å®šä¹‰çš„Color
 };
 

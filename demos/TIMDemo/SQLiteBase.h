@@ -1,13 +1,16 @@
-#pragma once
+ï»¿#pragma once
 
 #include <tchar.h>
+
+// ä½¿ç”¨sqliteçš„åŠŸèƒ½éœ€è¦åŠ ä¸ŠDSQLITE_HAS_CODECå®
+#define SQLITE_HAS_CODEC 1
 
 #include "sqlite3\sqlite3.h"
 
 
 /****************************************************************************
-*SQLite3QueryÀà
-*ÓÃÓÚ»ñµÃsqlite3_stmtµÄ²éÑ¯½á¹û
+*SQLite3Queryç±»
+*ç”¨äºè·å¾—sqlite3_stmtçš„æŸ¥è¯¢ç»“æœ
 ****************************************************************************/
 class SQLite3Query
 {
@@ -18,16 +21,16 @@ public:
 
 public:
 
-	//»ñÈ¡ÁĞ ÊıÁ¿
+	//è·å–åˆ— æ•°é‡
 	int GetFieldCount();
 	void NextRow();
 	bool IsEof();
 	void Finalize();
 
-	//»ñÈ¡ÁĞÊı ¸ù¾İÃû³Æ
+	//è·å–åˆ—æ•° æ ¹æ®åç§°
 	int GetNameIndex(const wchar_t* lpColName);
 
-	//¸ù¾İÁĞ »ñÈ¡Ãû³Æ
+	//æ ¹æ®åˆ— è·å–åç§°
 	const wchar_t* GetIndexName(int nCol);
 	const void* GetBlob(int nCol, int& nLen);
 	double GetDouble(int col);
@@ -41,7 +44,7 @@ public:
 	int GetColType(int col);
 
 	/*
-	*ÒªÊ¹ÓÃÏÂÁĞNameº¯Êı±ØĞëÔÚÔ¤´¦ÀíÆ÷¶¨ÒåÖĞÌí¼ÓÈçÏÂÁ½¸öºê¶¨Òå
+	*è¦ä½¿ç”¨ä¸‹åˆ—Nameå‡½æ•°å¿…é¡»åœ¨é¢„å¤„ç†å™¨å®šä¹‰ä¸­æ·»åŠ å¦‚ä¸‹ä¸¤ä¸ªå®å®šä¹‰
 	*SQLITE_ENABLE_RTREE
 	*SQLITE_ENABLE_COLUMN_METADATA
 	*/
@@ -64,7 +67,7 @@ private:
 
 
 /************************************************************************/
-/* °ó¶¨ ²åÈë                                                            */
+/* ç»‘å®š æ’å…¥                                                            */
 /************************************************************************/
 class SQLite3Statement
 {
@@ -75,14 +78,14 @@ public:
 	SQLite3Statement& operator=(const SQLite3Statement& rStatement);
 	virtual ~SQLite3Statement();
 
-	//Ö´ĞĞ
+	//æ‰§è¡Œ
 	int execDML();
 
-	//»ñÈ¡×îºóÒ»´Î²åÈëÊı¾İµÄidÖµ
+	//è·å–æœ€åä¸€æ¬¡æ’å…¥æ•°æ®çš„idå€¼
 	sqlite3_int64 GetLastInsertRowId();
 	SQLite3Query execQuery();
 
-	//°ó¶¨Êı¾İ
+	//ç»‘å®šæ•°æ®
 	int bind(int nParam, const char* szValue);
 	int bind(int nParam, const wchar_t* szValue);
 	int bind(int nParam, int nValue);
@@ -109,8 +112,8 @@ private:
 
 
 /****************************************************************************
-*SQLite3DBÀà ¶ÔÓÚsqlite3 ²Ù×÷µÄÒ»Ğ©·â×°
-*ÓÃÓÚ²Ù×÷ Sqlite3 Êı¾İ¿â
+*SQLite3DBç±» å¯¹äºsqlite3 æ“ä½œçš„ä¸€äº›å°è£…
+*ç”¨äºæ“ä½œ Sqlite3 æ•°æ®åº“
 ****************************************************************************/
 class SQLite3DB
 {

@@ -1,14 +1,14 @@
-#pragma once
+ï»¿#pragma once
 
-//¶¨ÒåÒ»×éÊ¹ÓÃSOUIµÄlogÄ£¿éµÄºê
-//Èç¹û²»¶¨ÒåLOG_FILTER£¬ÔòÊ¹ÓÃsoui×÷Îªfilter
-//¿ÉÒÔÎª²»Í¬µÄCPP¶¨Òå²»Í¬µÄfilter
-//ÀýÈçÔÚdemos/demoµÄdemo.cppÖÐÊ¹ÓÃÏÂÃæ´úÂëÀ´¶¨ÒåÒ»¸ödemoµÄfilter
+//å®šä¹‰ä¸€ç»„ä½¿ç”¨SOUIçš„logæ¨¡å—çš„å®
+//å¦‚æžœä¸å®šä¹‰LOG_FILTERï¼Œåˆ™ä½¿ç”¨souiä½œä¸ºfilter
+//å¯ä»¥ä¸ºä¸åŒçš„CPPå®šä¹‰ä¸åŒçš„filter
+//ä¾‹å¦‚åœ¨demos/demoçš„demo.cppä¸­ä½¿ç”¨ä¸‹é¢ä»£ç æ¥å®šä¹‰ä¸€ä¸ªdemoçš„filter
 /*
 #define LOG_FILTER "demo"
 #include <helper/slog-def.h>
 */
-//¾­¹ýÕâÑù¶¨Òå£¬¾Í¿ÉÒÔÖ±½ÓÊ¹ÓÃSLOG_INFO("a="+100)ÕâÑùµÄÐÎÊ½À´ÔÚLOGÖÐÊä³öÒÔdemoÎªfilterµÄLOGÁË¡£
+//ç»è¿‡è¿™æ ·å®šä¹‰ï¼Œå°±å¯ä»¥ç›´æŽ¥ä½¿ç”¨SLOG_INFO("a="+100)è¿™æ ·çš„å½¢å¼æ¥åœ¨LOGä¸­è¾“å‡ºä»¥demoä¸ºfilterçš„LOGäº†ã€‚
 
 #ifndef LOG_FILTER
 #define LOG_FILTER "soui"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "DlgNewLayout.h"
 #include "CDebug.h"
 
@@ -10,7 +10,7 @@ namespace SOUI
 		m_strProPath = strProPath;
 	}
 
-	//TODO:ÏûÏ¢Ó³Éä
+	//TODO:æ¶ˆæ¯æ˜ å°„
 	void SDlgNewLayout::OnClose()
 	{
 		SHostDialog::OnCancel();
@@ -22,7 +22,7 @@ namespace SOUI
 		m_strName = m_edtName->GetWindowText();
 		if (m_strPath.IsEmpty() || m_strName.IsEmpty())
 		{
-			CDebug::Debug(_T("×ÊÔ´Ãû³Æ»òÂ·¾¶²»ÄÜÎª¿Õ"));
+			CDebug::Debug(_T("èµ„æºåç§°æˆ–è·¯å¾„ä¸èƒ½ä¸ºç©º"));
 			return;
 
 		}
@@ -30,7 +30,7 @@ namespace SOUI
 		int n = m_strPath.Find(m_strProPath);
 		if (n != 0)
 		{
-			CDebug::Debug(_T("Çë½«×ÊÔ´±£´æµ½uiresÄ¿Â¼ÏÂ"));
+			CDebug::Debug(_T("è¯·å°†èµ„æºä¿å­˜åˆ°uiresç›®å½•ä¸‹"));
 			return;
 		}
 
@@ -58,14 +58,14 @@ namespace SOUI
 
     void SDlgNewLayout::OnBtnDlgOpenFile()	
 	{
-		CFileDialogEx OpenDlg(FALSE, NULL, NULL, 6, _T("ËùÓĞÎÄ¼ş (*.*)\0*.*\0\0"));
+		CFileDialogEx OpenDlg(FALSE, NULL, NULL, 6, _T("æ‰€æœ‰æ–‡ä»¶ (*.*)\0*.*\0\0"));
 		if (IDOK ==OpenDlg.DoModal())
 		{
 			SStringT strFileName = OpenDlg.m_szFileName;
 			int n = strFileName.Find(m_strProPath);
 			if (n != 0)
 			{
-				SMessageBox(NULL, _T("Çë½«×ÊÔ´±£´æµ½uiresÄ¿Â¼ÏÂ"), _T("ÌáÊ¾"), MB_OK);
+				SMessageBox(NULL, _T("è¯·å°†èµ„æºä¿å­˜åˆ°uiresç›®å½•ä¸‹"), _T("æç¤º"), MB_OK);
 				return;
 			}
 

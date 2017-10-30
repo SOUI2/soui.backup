@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "SPropertyItem-Size.h"
 #include "../SPropertyEmbedWndHelper.hpp"
 #include "../SPropertyGrid.h"
@@ -30,7 +30,7 @@ namespace SOUI
         SIZE sz;
         if(_stscanf(strValue,_T("%d,%d"),&sz.cx,&sz.cy)==2)
         {
-			//Èç¹ûÖµÓĞ±ä»¯£¬¾Í·¢ËÍÍ¨Öª
+			//å¦‚æœå€¼æœ‰å˜åŒ–ï¼Œå°±å‘é€é€šçŸ¥
 			if (sz.cy != m_szValue.cy || sz.cy != m_szValue.cy)
 			{
 

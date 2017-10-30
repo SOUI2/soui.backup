@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <helper/color.h>
 #include <unknown/obj-ref-impl.hpp>
@@ -32,6 +32,11 @@ namespace SOUI
         virtual BOOL CreateBitmap(IBitmap ** ppBitmap);
         virtual BOOL CreateRegion(IRegion **ppRgn);
 
+		virtual BOOL CreatePath(IPath ** ppPath);
+
+		virtual BOOL CreatePathEffect(REFGUID guidEffect,IPathEffect ** ppPathEffect);
+		
+		virtual BOOL CreatePathMeasure(IPathMeasure ** ppPathMeasure);
     protected:
         CAutoRefPtr<IImgDecoderFactory> m_imgDecoderFactory;
     };
@@ -209,7 +214,7 @@ namespace SOUI
 
         HRESULT ImgFromDecoder(IImgX *imgDecoder);
         SIZE        m_sz;
-        HBITMAP     m_hBmp;     //±ê×¼µÄ32Î»Î»Í¼£¬ºÍm_bitmap¹²ÏíÄÚ´æ
+        HBITMAP     m_hBmp;     //æ ‡å‡†çš„32ä½ä½å›¾ï¼Œå’Œm_bitmapå…±äº«å†…å­˜
     };
 
     //////////////////////////////////////////////////////////////////////////
@@ -256,7 +261,7 @@ namespace SOUI
         SRenderTarget_GDI(IRenderFactory* pRenderFactory,int nWid,int nHei);
         ~SRenderTarget_GDI();
 
-        //Ö»Ö§³Ö´´½¨Î»Í¼±íÃæ
+        //åªæ”¯æŒåˆ›å»ºä½å›¾è¡¨é¢
         virtual HRESULT CreateCompatibleRenderTarget(SIZE szTarget,IRenderTarget **ppRenderTarget);
 
         virtual HRESULT CreatePen(int iStyle,COLORREF cr,int cWidth,IPen ** ppPen);
@@ -358,7 +363,12 @@ namespace SOUI
 		virtual HRESULT GradientFill2(LPCRECT pRect,GradientType type,COLORREF crStart,COLORREF crCenter,COLORREF crEnd,float fLinearAngle,float fCenterX,float fCenterY,int nRadius,BYTE byAlpha=0xff);
 
 		virtual HRESULT CreateRegion( IRegion ** ppRegion );
-    protected:
+
+		virtual HRESULT ClipPath(const IPath * path, UINT mode, bool doAntiAlias = false);
+
+		virtual HRESULT DrawPath(const IPath * path,IPathEffect * pathEffect=NULL);
+
+	protected:
         HDC               m_hdc;
         SColor            m_curColor;
         CAutoRefPtr<SBitmap_GDI> m_curBmp;
@@ -367,7 +377,7 @@ namespace SOUI
         CAutoRefPtr<SFont_GDI> m_curFont;
         POINT               m_ptOrg;
         
-        //×¢Òâ±£´æ4¸öÄ¬ÈÏµÄGDI¶ÔÏó
+        //æ³¨æ„ä¿å­˜4ä¸ªé»˜è®¤çš„GDIå¯¹è±¡
         CAutoRefPtr<IBitmap> m_defBmp;
         CAutoRefPtr<IPen> m_defPen;
         CAutoRefPtr<IBrush> m_defBrush;

@@ -2,8 +2,6 @@
 # 是否为动态编译
 #
 macro(FIX_DEFAULT_COMPILER_SETTINGS_MT)
-    message("-- Building with MT")
-
     if (MSVC)
         foreach(flag_var
                 CMAKE_C_FLAGS 
@@ -40,9 +38,11 @@ macro(config_compiler_and_linker)
     # 修正编译参数
     #
     if (NOT SHARED_CRT)
+        message("-- Building with MT")
         FIX_DEFAULT_COMPILER_SETTINGS_MT()
         set(BUILD_CONF_MT "1")
     else()
+        message("-- Building with MD")
         set(BUILD_CONF_MT "0")
     endif()
 

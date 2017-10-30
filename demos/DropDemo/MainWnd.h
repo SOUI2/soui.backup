@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "resource.h"
 #include "WinFileIconSkin.hpp"
 #include "DragDropHandle.h"
@@ -11,7 +11,7 @@
 #define WM_CHANGENOTIFY			WM_APP + 191 
 
 class CMainWnd : public SHostWnd
-							, public TAutoEventMapReg<CMainWnd>//Í¨ÖªÖĞĞÄ×Ô¶¯×¢²á
+							, public TAutoEventMapReg<CMainWnd>//é€šçŸ¥ä¸­å¿ƒè‡ªåŠ¨æ³¨å†Œ
 							, public IDropTargetIF
 {
 public:
@@ -24,7 +24,7 @@ public:
 	
 	UINT MsgBox(LPCTSTR lpText)
 	{
-		return SMessageBox(m_hWnd, lpText, _T("ÌáÊ¾"), MB_ICONERROR);
+		return SMessageBox(m_hWnd, lpText, _T("æç¤º"), MB_ICONERROR);
 	}
 
 	void OnBtnClose();
@@ -75,7 +75,7 @@ public:
 public:
 	BOOL OnInitDialog(HWND wndFocus, LPARAM lInitParam);
 	void OnTimer(UINT_PTR idEvent);
-	//×Ô¶¨Òå¿Ø¼şÊÂ¼şº¯Êı
+	//è‡ªå®šä¹‰æ§ä»¶äº‹ä»¶å‡½æ•°
 	void OnBtnBack();
 	void OnBtnForward();
 	
@@ -86,7 +86,7 @@ public:
 	bool OnList_DbClick(EventArgs* e);
 	bool OnList_Menu(EventArgs* e);
 protected:
-	//ÊÂ¼ş´¦ÀíÓ³Éä±í
+	//äº‹ä»¶å¤„ç†æ˜ å°„è¡¨
 	EVENT_MAP_BEGIN()
 		EVENT_NAME_COMMAND(L"btn_max", OnMax)
 		EVENT_NAME_COMMAND(L"btn_restore", OnRestore)
@@ -103,7 +103,7 @@ protected:
 		EVENT_MAP_END()
 
 		LRESULT OnChangeNotify(UINT uMsg, WPARAM wParam, LPARAM lParam);
-	//´°¿ÚÏûÏ¢´¦ÀíÓ³Éä±í
+	//çª—å£æ¶ˆæ¯å¤„ç†æ˜ å°„è¡¨
 	BEGIN_MSG_MAP_EX(CMainWnd)
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_SIZE(OnSize)
@@ -111,18 +111,18 @@ protected:
 		MSG_WM_TIMER(OnTimer)
 		CHAIN_MSG_MAP(SHostWnd)
 	END_MSG_MAP()
-public:		//¹¦ÄÜº¯Êı  ²»ÊÇ½çÃæÏà¹ØµÄ
+public:		//åŠŸèƒ½å‡½æ•°  ä¸æ˜¯ç•Œé¢ç›¸å…³çš„
 	
 	UINT ShowFileListNull(CPoint Point, UINT nShowCode);
-	// ÏÔÊ¾ FileList Ñ¡ÖĞ ÏîµÄ²Ëµ¥
+	// æ˜¾ç¤º FileList é€‰ä¸­ é¡¹çš„èœå•
 	UINT ShowFileListItem(CPoint Point, UINT nShowCode);
 
 private:
 	DropTargetEx				m_DropTarget;
-private:				//½çÃæ³ÉÔ± 
+private:				//ç•Œé¢æˆå‘˜ 
 	//STabCtrl*					m_pTab;
 	SFileList*					m_pFileList;
-	SStatic*						m_pTextStatus1;			//×´Ì¬À¸ 
+	SStatic*						m_pTextStatus1;			//çŠ¶æ€æ  
 	SStatic*						m_pTextStatus2;			//
 	SStatic*						m_pTextStatus3;			//
 

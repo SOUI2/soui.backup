@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "ScintillaWnd.h"
 #include "Scintilla.h"
 #include "layout/SouiLayout.h"
@@ -16,64 +16,64 @@ namespace SOUI
 	class SDesignerView
 	{
 	private:
-		CAutoRefPtr<SStylePool> m_privateStylePool; /**<¾Ö²¿style pool*/
-		CAutoRefPtr<SSkinPool>  m_privateSkinPool;  /**<¾Ö²¿skin pool*/
+		CAutoRefPtr<SStylePool> m_privateStylePool; /**<å±€éƒ¨style pool*/
+		CAutoRefPtr<SSkinPool>  m_privateSkinPool;  /**<å±€éƒ¨skin pool*/
 	public:
 		SDesignerView(SHostDialog *pMainHost, SWindow *pContainer, STreeCtrl *pTreeXmlStruct);
 		~SDesignerView();
 
-		SMoveWnd* m_CurSelCtrl;  //ÓÃ»§µ±Ç°Ñ¡ÔñµÄ¿Ø¼ş
+		SMoveWnd* m_CurSelCtrl;  //ç”¨æˆ·å½“å‰é€‰æ‹©çš„æ§ä»¶
 		SList<SWindow*> m_CopyList;
 
-		//±£´æµ±Ç°´ò¿ªµÄ²¼¾ÖÎÄ¼ş
+		//ä¿å­˜å½“å‰æ‰“å¼€çš„å¸ƒå±€æ–‡ä»¶
 		bool SaveLayoutFile();
 		BOOL SaveAll();
 
-		//¹Ø±Õµ±Ç°´ò¿ªµÄ²¼¾ÖÎÄ¼ş
+		//å…³é—­å½“å‰æ‰“å¼€çš„å¸ƒå±€æ–‡ä»¶
 		BOOL CloseLayoutFile();
 
-		// ´ò¿ª¹¤³Ì
+		// æ‰“å¼€å·¥ç¨‹
 		BOOL OpenProject(SStringT strFileName);
 		BOOL CloseProject();
 		
 
 		BOOL InsertLayoutToMap(SStringT);
 
-		BOOL NewLayout(SStringT strResName, SStringT strPath);  //ĞÂ½¨dialog »òinclude²¼¾Ö
+		BOOL NewLayout(SStringT strResName, SStringT strPath);  //æ–°å»ºdialog æˆ–includeå¸ƒå±€
 
-		BOOL LoadLayout(SStringT strFileName);   //¼ÓÔØ²¼¾Ö
+		BOOL LoadLayout(SStringT strFileName);   //åŠ è½½å¸ƒå±€
 
-		//´´½¨Root´°¿Ú
+		//åˆ›å»ºRootçª—å£
 		SMoveWnd* CreateWnd(SUIWindow *pContainer, LPCWSTR pszXml);
 		void CreateAllChildWnd(SUIWindow *pRealWnd, SMoveWnd *pMoveWnd);
 
-		//ÖØÃüÃûÃ¿Ò»¸ö¿Ø¼şµÄÃû×Ö
+		//é‡å‘½åæ¯ä¸€ä¸ªæ§ä»¶çš„åå­—
 		void RenameChildeWnd(pugi::xml_node xmlNode);
 		void RenameWnd(pugi::xml_node xmlNode, BOOL force = FALSE);
 		void RenameAllLayoutWnd();
 		void RemoveWndName(pugi::xml_node xmlNode, BOOL bClear, SStringT strFileName = _T(""));
 
-		void UpdatePosToXmlNode(SUIWindow *pRealWnd, SMoveWnd* pMoveWnd);//ÒÆ¶¯¿Ø¼şµÄÍ¬Ê±½«¿Ø¼şÎ»ÖÃĞ´Èëxml½Úµã
+		void UpdatePosToXmlNode(SUIWindow *pRealWnd, SMoveWnd* pMoveWnd);//ç§»åŠ¨æ§ä»¶çš„åŒæ—¶å°†æ§ä»¶ä½ç½®å†™å…¥xmlèŠ‚ç‚¹
 
-		//µ÷ÊÔÓÃ
+		//è°ƒè¯•ç”¨
 		void Debug(pugi::xml_node);
 		void Debug(SStringT str);
 		SStringT Debug1(pugi::xml_node);
 
 		SStringT NodeToStr(pugi::xml_node xmlNode);
 
-		void SetCurrentCtrl(pugi::xml_node xmlNode, SMoveWnd *pWnd); //ÉèÖÃµ±Ç°Ñ¡ÖĞµÄ¿Ø¼ş
+		void SetCurrentCtrl(pugi::xml_node xmlNode, SMoveWnd *pWnd); //è®¾ç½®å½“å‰é€‰ä¸­çš„æ§ä»¶
 
 		SStringW GetPosFromLayout(SouiLayoutParam *pLayoutParam, INT nPosIndex);
 
-		//Í¨¹ı¿Ø¼şµÄÊôĞÔÖµÕÒµ½¸Ã¿Ø¼ş¶ÔÓ¦µÄxml½Úµã
+		//é€šè¿‡æ§ä»¶çš„å±æ€§å€¼æ‰¾åˆ°è¯¥æ§ä»¶å¯¹åº”çš„xmlèŠ‚ç‚¹
 		pugi::xml_node FindNodeByAttr(pugi::xml_node NodeRoot, SStringT attrName, SStringT attrValue);
 
-		void BindXmlcodeWnd(SWindow *pXmlTextCtrl);   //°ó¶¨½çÃæ´úÂë±à¼­´°¿Ú
+		void BindXmlcodeWnd(SWindow *pXmlTextCtrl);   //ç»‘å®šç•Œé¢ä»£ç ç¼–è¾‘çª—å£
 
 		void ShowNoteInSciwnd();		
 
-		void InitProperty(SStatic* textCtrl, SWindow *pPropertyContainer);   //³õÊ¼»¯ÊôĞÔÁĞ±í
+		void InitProperty(SStatic* textCtrl, SWindow *pPropertyContainer);   //åˆå§‹åŒ–å±æ€§åˆ—è¡¨
 		void InitCtrlProperty(pugi::xml_node NodeCom, pugi::xml_node NodeCtrl);
 
 		void CreatePropGrid(SStringT strCtrlType);
@@ -85,7 +85,7 @@ namespace SOUI
 		bool OnTCSelChanged(EventArgs *pEvt);
 
 		BOOL ReLoadLayout(BOOL bClearSel=FALSE);
-		BOOL bIsContainerCtrl(SStringT strCtrlName); //ÅĞ¶Ï¿Ø¼şÊÇ·ñÊÇÈİÆ÷¿Ø¼ş
+		BOOL bIsContainerCtrl(SStringT strCtrlName); //åˆ¤æ–­æ§ä»¶æ˜¯å¦æ˜¯å®¹å™¨æ§ä»¶
 
 		void SaveEditorCaretPos();
 
@@ -96,9 +96,9 @@ namespace SOUI
 		SMoveWnd* GetMoveWndRoot() { return m_pMoveWndRoot; };
 		SWindow* GetRealWndRoot() { return m_pRealWndRoot; };
 
-		void AddCodeToEditor(CScintillaWnd* pSciWnd);  //¸´ÖÆxml´úÂëµ½´úÂë±à¼­Æ÷
+		void AddCodeToEditor(CScintillaWnd* pSciWnd);  //å¤åˆ¶xmlä»£ç åˆ°ä»£ç ç¼–è¾‘å™¨
 		void GetCodeFromEditor();
-		void GetCodeFromEditor(CScintillaWnd* pSciWnd);//´Ó´úÂë±à¼­Æ÷»ñÈ¡xml´úÂë
+		void GetCodeFromEditor(CScintillaWnd* pSciWnd);//ä»ä»£ç ç¼–è¾‘å™¨è·å–xmlä»£ç 
 
 		void SetSelCtrlNode(pugi::xml_node xmlNode);
 
@@ -123,68 +123,68 @@ namespace SOUI
 
 		void TrimXmlNodeTextBlank(pugi::xml_node xmlNode);
 
-		void UseEditorUIDef(bool bYes);  //Ê¹ÓÃ±à¼­Æ÷×ÔÉíµÄUIDef»¹ÊÇÊ¹ÓÃËù´ò¿ªµÄ¹¤³ÌµÄUIDef
+		void UseEditorUIDef(bool bYes);  //ä½¿ç”¨ç¼–è¾‘å™¨è‡ªèº«çš„UIDefè¿˜æ˜¯ä½¿ç”¨æ‰€æ‰“å¼€çš„å·¥ç¨‹çš„UIDef
 		SStringT UnitToStr(int nUnit);
 
 	public:
 		CAutoRefPtr<IFont> m_defFont;
 
-		SDesignerRoot *m_pRealWndRoot;       //²¼¾ÖÈİÆ÷´°¿Ú;
+		SDesignerRoot *m_pRealWndRoot;       //å¸ƒå±€å®¹å™¨çª—å£;
 
-		SMoveWnd  *m_pMoveWndRoot; //²¼¾Ö´°¿ÚµÄ¸ù´°¿Ú
+		SMoveWnd  *m_pMoveWndRoot; //å¸ƒå±€çª—å£çš„æ ¹çª—å£
 
-		int		 m_nSciCaretPos;		//´úÂë±à¼­´°¿Ú¹â±êÎ»ÖÃ
+		int		 m_nSciCaretPos;		//ä»£ç ç¼–è¾‘çª—å£å…‰æ ‡ä½ç½®
 
-		BOOL     m_bChange;    //ÎÄ¼şÊÇ·ñ±»ĞŞ¸Ä,Èç¹û±»ĞŞ¸ÄĞèÒª±£´æ
-		BOOL     m_bPage;      //ÊÇ·ñÎªÒ³ÎÄ¼ş,·ñÔòÎª´°¿ÚÎÄ¼ş
-		CPoint   m_downPt;     //°´ÏÂµÄÎ»ÖÃ
-		INT      m_nState;     //ÊÇ·ñÕıÔÚ½øĞĞ´´½¨¿Ø¼şµÄÊó±ê¶¯×÷£» 1:ÊÇ£»0:·ñ
+		BOOL     m_bChange;    //æ–‡ä»¶æ˜¯å¦è¢«ä¿®æ”¹,å¦‚æœè¢«ä¿®æ”¹éœ€è¦ä¿å­˜
+		BOOL     m_bPage;      //æ˜¯å¦ä¸ºé¡µæ–‡ä»¶,å¦åˆ™ä¸ºçª—å£æ–‡ä»¶
+		CPoint   m_downPt;     //æŒ‰ä¸‹çš„ä½ç½®
+		INT      m_nState;     //æ˜¯å¦æ­£åœ¨è¿›è¡Œåˆ›å»ºæ§ä»¶çš„é¼ æ ‡åŠ¨ä½œï¼› 1:æ˜¯ï¼›0:å¦
 
 		SStringW *m_strxml;
-		pugi::xml_node m_curSelXmlNode;   //µ±Ç°Ñ¡ÖĞµÄ¿Ø¼şµÄxmlnode 
-		pugi::xml_document m_xmlSelCtrlDoc;//Êó±êÑ¡Ôñ¿Ø¼şÁĞ±íÒª´´½¨µÄ¿Ø¼şµÄxml
-		pugi::xml_node m_xmlSelCtrlNode;  //Êó±êÑ¡Ôñ¿Ø¼şÁĞ±íÒª´´½¨µÄ¿Ø¼şµÄxml
+		pugi::xml_node m_curSelXmlNode;   //å½“å‰é€‰ä¸­çš„æ§ä»¶çš„xmlnode 
+		pugi::xml_document m_xmlSelCtrlDoc;//é¼ æ ‡é€‰æ‹©æ§ä»¶åˆ—è¡¨è¦åˆ›å»ºçš„æ§ä»¶çš„xml
+		pugi::xml_node m_xmlSelCtrlNode;  //é¼ æ ‡é€‰æ‹©æ§ä»¶åˆ—è¡¨è¦åˆ›å»ºçš„æ§ä»¶çš„xml
 
 		SMap<SStringT, pugi::xml_document *> m_mapLayoutFile;
-		SMap<SStringT, SMap<int, SStringT>* > m_mapIncludeReplace;    //±£´æÃ¿Ò»¸ö²¼¾ÖÎÄ¼ş¶ÔÓ¦µÄinclude map;
+		SMap<SStringT, SMap<int, SStringT>* > m_mapIncludeReplace;    //ä¿å­˜æ¯ä¸€ä¸ªå¸ƒå±€æ–‡ä»¶å¯¹åº”çš„include map;
 
 		SMap<SWindow*, SMoveWnd*> m_mapMoveRealWnd;
 
 		SStringT m_strUIResFile;   //C:\demos\MyTest\uires\uires.idx
 		SStringT m_strProPath;     //C:\demos\MyTest\uires\
 
-		SStringT m_strCurLayoutXmlFile; //µ±Ç°´ò¿ªµÄ´°ÌåÎÄ¼şÃû  xml\main.xml
-		SStringT m_strCurFileEditor; //µ±Ç°´úÂë±à¼­Æ÷´ò¿ª´úÂë¶ÔÓ¦µÄÎÄ¼ş  xml\main.xml
+		SStringT m_strCurLayoutXmlFile; //å½“å‰æ‰“å¼€çš„çª—ä½“æ–‡ä»¶å  xml\main.xml
+		SStringT m_strCurFileEditor; //å½“å‰ä»£ç ç¼–è¾‘å™¨æ‰“å¼€ä»£ç å¯¹åº”çš„æ–‡ä»¶  xml\main.xml
 
 		//CAutoRefPtr<IResProvider>   pResProvider;
-		SUIWindow *m_pContainer;  //ËùÓĞ²¼¾Ö´°¿Ú¸ùµÄÈİÆ÷ 
-		pugi::xml_node m_CurrentLayoutNode;		//µ±Ç°ÕıÔÚ±à¼­²¼¾ÖµÄXMLÎÄµµ½áµã
+		SUIWindow *m_pContainer;  //æ‰€æœ‰å¸ƒå±€çª—å£æ ¹çš„å®¹å™¨ 
+		pugi::xml_node m_CurrentLayoutNode;		//å½“å‰æ­£åœ¨ç¼–è¾‘å¸ƒå±€çš„XMLæ–‡æ¡£ç»“ç‚¹
 
-		SMap<SStringT, pugi::xml_document*> m_mapCtrlProperty;//ËùÓĞ¿Ø¼şµÄÊôĞÔÁĞ±í <Button, xmlnode> <Check, xmlNode>
-		SWindow *m_pPropertyContainer;     //ÊôĞÔÃæ°å¸¸´°¿Ú
-		SStatic* m_textCtrlTypename;	//ÏÔÊ¾Ñ¡ÔñµÄ¿Ø¼şÀàĞÍ
+		SMap<SStringT, pugi::xml_document*> m_mapCtrlProperty;//æ‰€æœ‰æ§ä»¶çš„å±æ€§åˆ—è¡¨ <Button, xmlnode> <Check, xmlNode>
+		SWindow *m_pPropertyContainer;     //å±æ€§é¢æ¿çˆ¶çª—å£
+		SStatic* m_textCtrlTypename;	//æ˜¾ç¤ºé€‰æ‹©çš„æ§ä»¶ç±»å‹
 
-		CScintillaWnd *m_pScintillaWnd;	//XML´úÂë±à¼­´°¿Ú
+		CScintillaWnd *m_pScintillaWnd;	//XMLä»£ç ç¼–è¾‘çª—å£
 
-		SStringT m_strCurrentCtrlType; //µ±Ç°Ñ¡ÖĞµÄ¿Ø¼şÀàĞÍ "button" "check"µÈµÈ
-		SPropertyGrid *m_pPropgrid;    //ÊôĞÔÃæ°å
+		SStringT m_strCurrentCtrlType; //å½“å‰é€‰ä¸­çš„æ§ä»¶ç±»å‹ "button" "check"ç­‰ç­‰
+		SPropertyGrid *m_pPropgrid;    //å±æ€§é¢æ¿
 
 		SHostDialog* m_pMainHost;
 
-		pugi::xml_document m_xmlDocUiRes;  //uiresÎÄ¼ş
+		pugi::xml_document m_xmlDocUiRes;  //uiresæ–‡ä»¶
 
-		SList<SStringT> m_lstSouiProperty;   //SOUI½ÚµãµÄÊôĞÔÁĞ±í  ÔÚproperty.xml hostwnd½ÚµãÖĞ¶¨Òå
-		SList<SStringT> m_lstRootProperty;   //Root½ÚµãµÄÊôĞÔÁĞ±í 
-		SList<SStringT> m_lstContainerCtrl;  //ÈİÆ÷¿Ø¼şÁĞ±í£¬·ÇÈİÆ÷¿Ø¼ş£¬ÉÏÃæ²»ÄÜ°Ú·Å¿Ø¼ş ÔÚCtrl.xmlÖĞ¶¨Òå
+		SList<SStringT> m_lstSouiProperty;   //SOUIèŠ‚ç‚¹çš„å±æ€§åˆ—è¡¨  åœ¨property.xml hostwndèŠ‚ç‚¹ä¸­å®šä¹‰
+		SList<SStringT> m_lstRootProperty;   //RootèŠ‚ç‚¹çš„å±æ€§åˆ—è¡¨ 
+		SList<SStringT> m_lstContainerCtrl;  //å®¹å™¨æ§ä»¶åˆ—è¡¨ï¼Œéå®¹å™¨æ§ä»¶ï¼Œä¸Šé¢ä¸èƒ½æ‘†æ”¾æ§ä»¶ åœ¨Ctrl.xmlä¸­å®šä¹‰
 
-		STreeCtrl *m_treeXmlStruct; //ÏÔÊ¾xmlÎÄµµ½á¹¹µÄtree¿Ø¼ş
+		STreeCtrl *m_treeXmlStruct; //æ˜¾ç¤ºxmlæ–‡æ¡£ç»“æ„çš„treeæ§ä»¶
 
-		int m_ndata; //Õâ¸öÖµÓÃÀ´±êÊ¶xmlnodeµÄÃ¿Ò»¸ö½Úµã£¬½ÚµãÊôĞÔÎªdata,xmlnodeµÄÕâ¸öÊôĞÔÖµÊÇÎ¨Ò»µÄ;
+		int m_ndata; //è¿™ä¸ªå€¼ç”¨æ¥æ ‡è¯†xmlnodeçš„æ¯ä¸€ä¸ªèŠ‚ç‚¹ï¼ŒèŠ‚ç‚¹å±æ€§ä¸ºdata,xmlnodeçš„è¿™ä¸ªå±æ€§å€¼æ˜¯å”¯ä¸€çš„;
 
-		CAutoRefPtr<IResProvider> m_pWsResProvider;		//¹¤³ÌµÄUIÌá¹©Õß
+		CAutoRefPtr<IResProvider> m_pWsResProvider;		//å·¥ç¨‹çš„UIæä¾›è€…
 
-		CAutoRefPtr<IUiDefInfo> m_pUiDef;  //¼ÓÔØ¹¤³ÌµÄUIdef
+		CAutoRefPtr<IUiDefInfo> m_pUiDef;  //åŠ è½½å·¥ç¨‹çš„UIdef
 
-		CAutoRefPtr<IUiDefInfo>  m_pOldUiDef;//±à¼­Æ÷×ÔÉíµÄUiDef
+		CAutoRefPtr<IUiDefInfo>  m_pOldUiDef;//ç¼–è¾‘å™¨è‡ªèº«çš„UiDef
 	};
 }

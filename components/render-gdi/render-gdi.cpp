@@ -1,4 +1,4 @@
-// render-gdi.cpp : Defines the exported functions for the DLL application.
+ï»¿// render-gdi.cpp : Defines the exported functions for the DLL application.
 //
 
 #include "render-gdi.h"
@@ -38,6 +38,21 @@ namespace SOUI
         *ppRgn = new SRegion_GDI(this);
         return TRUE;
     }
+
+	BOOL SRenderFactory_GDI::CreatePath(IPath ** ppPath)
+	{
+		return FALSE;
+	}
+
+	BOOL SRenderFactory_GDI::CreatePathEffect(REFGUID guidEffect,IPathEffect ** ppPathEffect)
+	{
+		return FALSE;
+	}
+
+	BOOL SRenderFactory_GDI::CreatePathMeasure(IPathMeasure ** ppPathMeasure)
+	{
+		return FALSE;
+	}
 
     
     //////////////////////////////////////////////////////////////////////////
@@ -186,7 +201,7 @@ namespace SOUI
     RGN_OR Creates the union of two combined regions. 
     RGN_XOR Creates the union of two combined regions except for any overlapping areas. 
     
-    ×¢Òâ RGN_DIFF ºÍ RGN_COPY¶ÔÓÚhrgnSrc1µÄÊ¹ÓÃ²îÒì
+    æ³¨æ„ RGN_DIFF å’Œ RGN_COPYå¯¹äºhrgnSrc1çš„ä½¿ç”¨å·®å¼‚
     */
     void SRegion_GDI::CombineRect( LPCRECT lprect,int nCombineMode )
     {
@@ -292,27 +307,27 @@ namespace SOUI
             ::SetBkMode(m_hMemDC,TRANSPARENT);
             ::SelectObject(m_hMemDC,m_hBmp);
             ::SetViewportOrgEx(m_hMemDC,-pRect->left,-pRect->top,NULL);
-            //´ÓÔ­DCÖĞ»ñµÃ»­±Ê£¬»­Ë¢£¬×ÖÌå£¬ÑÕÉ«µÈ
+            //ä»åŸDCä¸­è·å¾—ç”»ç¬”ï¼Œç”»åˆ·ï¼Œå­—ä½“ï¼Œé¢œè‰²ç­‰
             m_hCurPen = ::SelectObject(hdc,GetStockObject(BLACK_PEN));
             m_hCurBrush = ::SelectObject(hdc,GetStockObject(BLACK_BRUSH));
             m_hCurFont = ::SelectObject(hdc,GetStockObject(DEFAULT_GUI_FONT));
             COLORREF crCur = ::GetTextColor(hdc);
 
-            //½«»­±Ê£¬»­Ë¢£¬×ÖÌåÉèÖÃµ½memdcÀï
+            //å°†ç”»ç¬”ï¼Œç”»åˆ·ï¼Œå­—ä½“è®¾ç½®åˆ°memdcé‡Œ
             ::SelectObject(m_hMemDC,m_hCurPen);
             ::SelectObject(m_hMemDC,m_hCurBrush);
             ::SelectObject(m_hMemDC,m_hCurFont);
             ::SetTextColor(m_hMemDC,crCur);
 
             if(m_bCopyBits) ::BitBlt(m_hMemDC,pRect->left,pRect->top,m_nWid,m_nHei,m_hdc,pRect->left,pRect->top,SRCCOPY);
-            //½«alphaÈ«²¿Ç¿ÖÆĞŞ¸ÄÎª0xFF¡£
+            //å°†alphaå…¨éƒ¨å¼ºåˆ¶ä¿®æ”¹ä¸º0xFFã€‚
             BYTE * p= m_pBits+3;
             for(int i=0;i<m_nHei;i++)for(int j=0;j<m_nWid;j++,p+=4) *p=0xFF;
         }
 
         ~DCBuffer()
         {
-            //½«alphaÎª0xFFµÄ¸ÄÎª0,Í¬Ê±½«rgbÖµÒ²Çå0(XPÏµÍ³ÏÂ²»Çå0»áµ¼ÖÂ±³¾°±ä³É°×É«£©,Îª0µÄ¸ÄÎª0xFF
+            //å°†alphaä¸º0xFFçš„æ”¹ä¸º0,åŒæ—¶å°†rgbå€¼ä¹Ÿæ¸…0(XPç³»ç»Ÿä¸‹ä¸æ¸…0ä¼šå¯¼è‡´èƒŒæ™¯å˜æˆç™½è‰²ï¼‰,ä¸º0çš„æ”¹ä¸º0xFF
             BYTE * p= m_pBits+3;
             for(int i=0;i<m_nHei;i++)for(int j=0;j<m_nWid;j++,p+=4)
 			{
@@ -328,7 +343,7 @@ namespace SOUI
             ::DeleteDC(m_hMemDC);
             ::DeleteObject(m_hBmp);
             
-            //»Ö¸´Ô­DCµÄ»­±Ê£¬»­Ë¢£¬×ÖÌå
+            //æ¢å¤åŸDCçš„ç”»ç¬”ï¼Œç”»åˆ·ï¼Œå­—ä½“
             ::SelectObject(m_hdc,m_hCurPen);
             ::SelectObject(m_hdc,m_hCurBrush);
             ::SelectObject(m_hdc,m_hCurFont);
@@ -360,7 +375,7 @@ namespace SOUI
     
     SRenderTarget_GDI::SRenderTarget_GDI( IRenderFactory* pRenderFactory ,int nWid,int nHei)
         :m_hdc(NULL)
-        ,m_curColor(0xFF000000)//Ä¬ÈÏºÚÉ«
+        ,m_curColor(0xFF000000)//é»˜è®¤é»‘è‰²
         ,m_uGetDCFlag(0)
     {
 		m_pRenderFactory = pRenderFactory;
@@ -380,7 +395,7 @@ namespace SOUI
 
         LOGFONT lf={0};
         lf.lfHeight=20;
-        _tcscpy(lf.lfFaceName,_T("ËÎÌå"));
+        _tcscpy(lf.lfFaceName,_T("å®‹ä½“"));
         pRenderFactory->CreateFont(&m_defFont,lf);
         SelectObject(m_defFont);
 
@@ -733,26 +748,26 @@ namespace SOUI
         int yDest[4] = {pRcDest->top,pRcDest->top+pRcSourMargin->top,pRcDest->bottom-pRcSourMargin->bottom,pRcDest->bottom};
         int ySrc[4] = {pRcSrc->top,pRcSrc->top+pRcSourMargin->top,pRcSrc->bottom-pRcSourMargin->bottom,pRcSrc->bottom};
 
-        //Ê×ÏÈ±£Ö¤¾Å¹¬·Ö¸îÕı³£
+        //é¦–å…ˆä¿è¯ä¹å®«åˆ†å‰²æ­£å¸¸
         if(!(xSrc[0] <= xSrc[1] && xSrc[1] <= xSrc[2] && xSrc[2] <= xSrc[3])) return S_FALSE;
         if(!(ySrc[0] <= ySrc[1] && ySrc[1] <= ySrc[2] && ySrc[2] <= ySrc[3])) return S_FALSE;
 
-        //µ÷ÕûÄ¿±êÎ»ÖÃ
+        //è°ƒæ•´ç›®æ ‡ä½ç½®
         int nDestWid=pRcDest->right-pRcDest->left;
         int nDestHei=pRcDest->bottom-pRcDest->top;
 
         if((pRcSourMargin->left + pRcSourMargin->right) > nDestWid)
-        {//±ßÔµ¿í¶È´óÓÚÄ¿±ê¿í¶ÈµÄ´¦Àí
+        {//è¾¹ç¼˜å®½åº¦å¤§äºç›®æ ‡å®½åº¦çš„å¤„ç†
             if(pRcSourMargin->left >= nDestWid)
-            {//Ö»»æÖÆ×ó±ß²¿·Ö
+            {//åªç»˜åˆ¶å·¦è¾¹éƒ¨åˆ†
                 xSrc[1] = xSrc[2] = xSrc[3] = xSrc[0]+nDestWid;
                 xDest[1] = xDest[2] = xDest[3] = xDest[0]+nDestWid;
             }else if(pRcSourMargin->right >= nDestWid)
-            {//Ö»»æÖÆÓÒ±ß²¿·Ö
+            {//åªç»˜åˆ¶å³è¾¹éƒ¨åˆ†
                 xSrc[0] = xSrc[1] = xSrc[2] = xSrc[3]-nDestWid;
                 xDest[0] = xDest[1] = xDest[2] = xDest[3]-nDestWid;
             }else
-            {//ÏÈ»æÖÆ×ó±ß²¿·Ö£¬Ê£ÓàµÄÓÃÓÒ±ßÌî³ä
+            {//å…ˆç»˜åˆ¶å·¦è¾¹éƒ¨åˆ†ï¼Œå‰©ä½™çš„ç”¨å³è¾¹å¡«å……
                 int nRemain=xDest[3]-xDest[1];
                 xSrc[2] = xSrc[3]-nRemain;
                 xDest[2] = xDest[3]-nRemain;
@@ -762,22 +777,22 @@ namespace SOUI
         if(pRcSourMargin->top + pRcSourMargin->bottom > nDestHei)
         {
             if(pRcSourMargin->top >= nDestHei)
-            {//Ö»»æÖÆÉÏ±ß²¿·Ö
+            {//åªç»˜åˆ¶ä¸Šè¾¹éƒ¨åˆ†
                 ySrc[1] = ySrc[2] = ySrc[3] = ySrc[0]+nDestHei;
                 yDest[1] = yDest[2] = yDest[3] = yDest[0]+nDestHei;
             }else if(pRcSourMargin->bottom >= nDestHei)
-            {//Ö»»æÖÆÏÂ±ß²¿·Ö
+            {//åªç»˜åˆ¶ä¸‹è¾¹éƒ¨åˆ†
                 ySrc[0] = ySrc[1] = ySrc[2] = ySrc[3]-nDestHei;
                 yDest[0] = yDest[1] = yDest[2] = yDest[3]-nDestHei;
             }else
-            {//ÏÈ»æÖÆ×ó±ß²¿·Ö£¬Ê£ÓàµÄÓÃÓÒ±ßÌî³ä
+            {//å…ˆç»˜åˆ¶å·¦è¾¹éƒ¨åˆ†ï¼Œå‰©ä½™çš„ç”¨å³è¾¹å¡«å……
                 int nRemain=yDest[3]-yDest[1];
                 ySrc[2] = ySrc[3]-nRemain;
                 yDest[2] = yDest[3]-nRemain;
             }
         }
 
-        //¶¨Òå»æÖÆÄ£Ê½
+        //å®šä¹‰ç»˜åˆ¶æ¨¡å¼
         UINT mode[3][3]={
             {EM_NULL,expendMode,EM_NULL},
             {expendMode,expendMode,expendMode},
@@ -863,7 +878,7 @@ namespace SOUI
             break;
         }
         if(pRet && ppOldObj)
-        {//ÓÉµ÷ÓÃÕßµ÷ÓÃReleaseÊÍ·Å¸ÃRenderObj
+        {//ç”±è°ƒç”¨è€…è°ƒç”¨Releaseé‡Šæ”¾è¯¥RenderObj
             pRet->AddRef();
             *ppOldObj = pRet;
         }
@@ -936,7 +951,7 @@ namespace SOUI
         return E_NOTIMPL;
     }
 
-    //Í¨¹ıÒ»¸öÄÚ´æÎ»Í¼À´Ìî³äÎ»ÖÃµÄalphaÖµ
+    //é€šè¿‡ä¸€ä¸ªå†…å­˜ä½å›¾æ¥å¡«å……ä½ç½®çš„alphaå€¼
     HRESULT SRenderTarget_GDI::FillSolidRect( LPCRECT pRect,COLORREF cr )
     {
         DCBuffer dcBuf(m_hdc,pRect,GetAValue(cr),FALSE);
@@ -950,6 +965,9 @@ namespace SOUI
     {
         int nWid=pRect->right-pRect->left;
         int nHei=pRect->bottom-pRect->top;
+		if(nWid == 0 || nHei == 0)
+			return S_OK;
+
         LPDWORD pBits;
         HBITMAP hBmp=SBitmap_GDI::CreateGDIBitmap(nWid,nHei,(void**)&pBits);
         HDC hMemDC=CreateCompatibleDC(m_hdc);
@@ -957,8 +975,10 @@ namespace SOUI
 
         SColor color(cr);
         DWORD dwColor=color.toARGB();
-        //LPDWORD p=pBits;
-        for(int i=0;i<nHei;i++)for(int j=0;j<nWid;j++) *pBits++ = dwColor;
+
+		for(int i=0;i<nHei;i++)for(int j=0;j<nWid;j++) 
+			*pBits++ = dwColor;
+
         ::BitBlt(m_hdc,pRect->left,pRect->top,nWid,nHei,hMemDC,0,0,SRCCOPY);
         ::DeleteDC(hMemDC);
         ::DeleteObject(hBmp);
@@ -1100,6 +1120,16 @@ namespace SOUI
 	HRESULT SRenderTarget_GDI::CreateRegion(IRegion ** ppRegion)
 	{
 		return m_pRenderFactory->CreateRegion(ppRegion)?S_OK:E_OUTOFMEMORY;
+	}
+
+	HRESULT SRenderTarget_GDI::ClipPath(const IPath * path, UINT mode, bool doAntiAlias /*= false*/)
+	{
+		return E_NOTIMPL;
+	}
+
+	HRESULT SRenderTarget_GDI::DrawPath(const IPath * path,IPathEffect * pathEffect)
+	{
+		return E_NOTIMPL;
 	}
 
 

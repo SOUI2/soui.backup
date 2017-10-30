@@ -1,24 +1,24 @@
-/*
+ï»¿/*
  * GroupChatFrame.cpp
- * ·ÂQQµÄÁÄÌì´°,Ä¿Ç°Ö»Íê³ÉÒÔÏÂ¹¦ÄÜ£º
- * 1.Í¼ÎÄ»ìÅÅ
- * 2.Íê³É²¿·Öole¿Ø¼ş
- * 3.ÈºÁÄµÄ@ÈËÑ¡Ôñ¿ò
- * 4.ÆøÅİÏÔÊ¾
+ * ä»¿QQçš„èŠå¤©çª—,ç›®å‰åªå®Œæˆä»¥ä¸‹åŠŸèƒ½ï¼š
+ * 1.å›¾æ–‡æ··æ’
+ * 2.å®Œæˆéƒ¨åˆ†oleæ§ä»¶
+ * 3.ç¾¤èŠçš„@äººé€‰æ‹©æ¡†
+ * 4.æ°”æ³¡æ˜¾ç¤º
  *
- * ²¿·ÖÔ´Âë²Î¿¼ÁËÁíÒ»¸ö¿ªÔ´UI¿â£ºdragonui£¬SVNµØÖ·£º
+ * éƒ¨åˆ†æºç å‚è€ƒäº†å¦ä¸€ä¸ªå¼€æºUIåº“ï¼šdragonuiï¼ŒSVNåœ°å€ï¼š
  * http://code.taobao.org/svn/dragon/trunk
  *
- * ×¢ÒâÒÔÏÂ¼¸µã£º
+ * æ³¨æ„ä»¥ä¸‹å‡ ç‚¹ï¼š
  *
- * - ÕâÖ»ÊÇ¸ödemo£¬»¹ÓĞ´óÁ¿¹¦ÄÜÃ»Íê³É¡¢Ï¸½ÚÒªÍêÉÆ¡£ÀıÈç¿½±´¡¢Õ³Ìù¡¢ÍÏ×§£¬ÓÒ¼ü²Ëµ¥µÈµÈ¡£
- *   ÌåÑéÔİÊ±Ò²»¹×ö²»µ½QQÄÇÃ´ºÃ¡£
+ * - è¿™åªæ˜¯ä¸ªdemoï¼Œè¿˜æœ‰å¤§é‡åŠŸèƒ½æ²¡å®Œæˆã€ç»†èŠ‚è¦å®Œå–„ã€‚ä¾‹å¦‚æ‹·è´ã€ç²˜è´´ã€æ‹–æ‹½ï¼Œå³é”®èœå•ç­‰ç­‰ã€‚
+ *   ä½“éªŒæš‚æ—¶ä¹Ÿè¿˜åšä¸åˆ°QQé‚£ä¹ˆå¥½ã€‚
  *
- * - Õâ¸ödemoÊÇÃ»ÓĞ¾­¹ıÏêÏ¸²âÊÔµÄ£¬ÓĞbugºÜÕı³££¬Çë±ğ´ó¾ªĞ¡¹Ö¡£
- *   ¶ÔGIFµÄÖ§³ÖĞ§ÂÊ¼«µÍ£¬ÏÈÕâÑù°É£¬ºóÃæÔÙ¸ÄÉÆ
+ * - è¿™ä¸ªdemoæ˜¯æ²¡æœ‰ç»è¿‡è¯¦ç»†æµ‹è¯•çš„ï¼Œæœ‰bugå¾ˆæ­£å¸¸ï¼Œè¯·åˆ«å¤§æƒŠå°æ€ªã€‚
+ *   å¯¹GIFçš„æ”¯æŒæ•ˆç‡æä½ï¼Œå…ˆè¿™æ ·å§ï¼Œåé¢å†æ”¹å–„
  *
- * - ÓÉÓÚ±¾ÈËË®Æ½²»×ã£¬ÄÜÁ¦ÓĞÏŞ£¬ÒªÊÇ¿´²»Ë³ÑÛµÄ/ÓĞ½¨ÒéµÄ»¶Ó­ÅÄ×©¡£
- *   SOUIµÄQQ½»Á÷Èº£º229313785
+ * - ç”±äºæœ¬äººæ°´å¹³ä¸è¶³ï¼Œèƒ½åŠ›æœ‰é™ï¼Œè¦æ˜¯çœ‹ä¸é¡ºçœ¼çš„/æœ‰å»ºè®®çš„æ¬¢è¿æ‹ç –ã€‚
+ *   SOUIçš„QQäº¤æµç¾¤ï¼š229313785
  */
 
 #include "stdafx.h"
@@ -97,11 +97,11 @@ GroupChatFrame::GroupChatFrame() : SHostWnd(_T("LAYOUT:group-chatframe"))
 , _lastWhellTime(0)
 , _sendType(PRESS_ENTER_TO_SEND)
 {
-    _users.push_back(UserInfo(L"À¶ÏÈÉú", L"563992016", L"111", L"uires\\image\\icon1.png", L"ÈÚºÏ"));
-    _users.push_back(UserInfo(L"»ÆÏÈÉú", L"123456", L"222", L"uires\\image\\icon2.png", L"·ÖÉñ"));
-    _users.push_back(UserInfo(L"°×ÏÈÉú", L"666666", L"333", L"uires\\image\\icon3.png", L"¶É½Ù"));
-    _users.push_back(UserInfo(L"×ÏÏÈÉú", L"654321", L"444", L"uires\\image\\icon4.png", L"·ÉÉı"));
-    _users.push_back(UserInfo(L"ºÚÏÈÉú", L"8889988", L"555", L"uires\\image\\icon5.png", L"¹ÜÀíÔ±"));
+    _users.push_back(UserInfo(L"è“å…ˆç”Ÿ", L"563992016", L"111", L"uires\\image\\icon1.png", L"èåˆ"));
+    _users.push_back(UserInfo(L"é»„å…ˆç”Ÿ", L"123456", L"222", L"uires\\image\\icon2.png", L"åˆ†ç¥"));
+    _users.push_back(UserInfo(L"ç™½å…ˆç”Ÿ", L"666666", L"333", L"uires\\image\\icon3.png", L"æ¸¡åŠ«"));
+    _users.push_back(UserInfo(L"ç´«å…ˆç”Ÿ", L"654321", L"444", L"uires\\image\\icon4.png", L"é£å‡"));
+    _users.push_back(UserInfo(L"é»‘å…ˆç”Ÿ", L"8889988", L"555", L"uires\\image\\icon5.png", L"ç®¡ç†å‘˜"));
 
     _initialized = FALSE;
 }
@@ -152,7 +152,7 @@ BOOL GroupChatFrame::OnInitDialog(HWND hWnd, LPARAM lParam)
 
     _initialized = TRUE;
 
-    //ĞĞ¸ß¹Ì¶¨µÄÁĞ±í
+    //è¡Œé«˜å›ºå®šçš„åˆ—è¡¨
     SListView *pLstViewFix = FindChildByName2<SListView>("group_member_list");
     if (pLstViewFix)
     {
@@ -251,16 +251,16 @@ void GroupChatFrame::OnTimer(UINT_PTR idEvent)
     {
         ::KillTimer(m_hWnd, idEvent);
 
-        // Ôö¼ÓÒ»ÌõÏûÏ¢
+        // å¢åŠ ä¸€æ¡æ¶ˆæ¯
         _msgAdded += 1;
 
         if (_msgAdded % 2 == 0)
         {
-            AddLeftMessage(GetRandomUser(), L"<text>ÕâÒ²ÊÇÒ»Ìõ¶¯Ì¬Ìí¼ÓµÄÎÄ±¾</text>", 1);
+            AddLeftMessage(GetRandomUser(), L"<text>è¿™ä¹Ÿæ˜¯ä¸€æ¡åŠ¨æ€æ·»åŠ çš„æ–‡æœ¬</text>", 1);
         }
         else
         {
-            AddRightMessage(GetRandomUser(), L"<text>ÕâÊÇÒ»Ìõ¶¯Ì¬Ìí¼ÓµÄÎÄ±¾</text>", 1);
+            AddRightMessage(GetRandomUser(), L"<text>è¿™æ˜¯ä¸€æ¡åŠ¨æ€æ·»åŠ çš„æ–‡æœ¬</text>", 1);
         }
 
         RichEditContent* pFirstContent = _pMsgRichEdit->GetContent((UINT)0);
@@ -318,8 +318,8 @@ bool GroupChatFrame::OnMsgRichObjEvent(SOUI::EventArgs *pEvt)
         {
             RichEditFileOle* pFileOle = sobj_cast<RichEditFileOle>(pev->RichObj);
             SStringW text;
-            text.Format(_T("µã»÷ÁËÎÄ¼ş°´Å¥:%04x£¬ÎÄ¼şÂ·¾¶:%s"), pev->wParam, pFileOle->GetFileName());
-            ::MessageBox(m_hWnd, text, _T("ÌáÊ¾"), MB_OK);
+            text.Format(_T("ç‚¹å‡»äº†æ–‡ä»¶æŒ‰é’®:%04xï¼Œæ–‡ä»¶è·¯å¾„:%s"), pev->wParam, pFileOle->GetFileName());
+            ::MessageBox(m_hWnd, text, _T("æç¤º"), MB_OK);
         }
         break;
 
@@ -328,15 +328,15 @@ bool GroupChatFrame::OnMsgRichObjEvent(SOUI::EventArgs *pEvt)
         break;
 
     case CLICK_FETCHMOREOLE_OPEN_LINK:
-        ::MessageBox(m_hWnd, _T("µã»÷ÁË´ò¿ªÀúÊ·¼ÇÂ¼"), _T("ÌáÊ¾"), MB_OK);
+        ::MessageBox(m_hWnd, _T("ç‚¹å‡»äº†æ‰“å¼€å†å²è®°å½•"), _T("æç¤º"), MB_OK);
         break;
 
     case CLICK_LINK:
         {
             RichEditText * pText = sobj_cast<RichEditText>(pev->RichObj);
             SStringW text;
-            text.Format(_T("µã»÷ÁËÄ£·ÂµÄÁ´½Ó£º%s"), pText->GetText());
-            ::MessageBox(m_hWnd, text, _T("ÌáÊ¾"), MB_OK);
+            text.Format(_T("ç‚¹å‡»äº†æ¨¡ä»¿çš„é“¾æ¥ï¼š%s"), pText->GetText());
+            ::MessageBox(m_hWnd, text, _T("æç¤º"), MB_OK);
         }
         break;
 
@@ -345,11 +345,11 @@ bool GroupChatFrame::OnMsgRichObjEvent(SOUI::EventArgs *pEvt)
             RichEditBkElement* pBkEle = sobj_cast<RichEditBkElement>(pev->RichObj);
             if (pBkEle->GetData() == L"avatar")
             {
-                ::MessageBox(m_hWnd, _T("µã»÷ÁËÍ·Ïñ"), _T("ÌáÊ¾"), MB_OK);
+                ::MessageBox(m_hWnd, _T("ç‚¹å‡»äº†å¤´åƒ"), _T("æç¤º"), MB_OK);
             }
             else if (pBkEle->GetData() == L"resend")
             {
-                ::MessageBox(m_hWnd, _T("µã»÷ÁËÖØĞÂ·¢ËÍ"), _T("ÌáÊ¾"), MB_OK);
+                ::MessageBox(m_hWnd, _T("ç‚¹å‡»äº†é‡æ–°å‘é€"), _T("æç¤º"), MB_OK);
             }
         }
         break;
@@ -519,7 +519,7 @@ void GroupChatFrame::OnSendPicture()
 {
     SStringW strFile;
     CFileDialogEx dlg(TRUE, NULL, 0, 0,
-        _T("Í¼Æ¬ÎÄ¼ş\0*.gif;*.bmp;*.jpg;*.png\0\0"));
+        _T("å›¾ç‰‡æ–‡ä»¶\0*.gif;*.bmp;*.jpg;*.png\0\0"));
 
     if (dlg.DoModal() != IDOK)
     {
@@ -557,7 +557,7 @@ void GroupChatFrame::InsertMessages()
     name += GetRandomUser().Name;
 
     SStringW str = RichEditReminderOle::MakeFormattedText(name, 12, RGB(00, 0x6e, 0xfe));
-    SStringW str2 = RichEditFileOle::MakeFormattedText(L"C:\\Windows\\notepad.exe", L"ÒÑ·¢ËÍ", 218746211, 0x58);
+    SStringW str2 = RichEditFileOle::MakeFormattedText(L"C:\\Windows\\notepad.exe", L"å·²å‘é€", 218746211, 0x58);
     SStringW str3 =
         L"<img type=\"smiley_img\" path=\"uires\\image\\emotion\\3FFDCD6E3469FD77BDB7E8E98C511AAE.gif\" id=\"zzz\" show-magnifier=\"0\" />"
         L"<img type=\"smiley_img\" path=\"uires\\image\\emotion\\4B96AE958A8D53684E3A5C979D6C10A3.gif\" id=\"zzz\" show-magnifier=\"0\" />"
@@ -569,16 +569,16 @@ void GroupChatFrame::InsertMessages()
         L"<img type=\"smiley_img\" path=\"uires\\image\\emotion\\8FE11CC2FDDE631AC7ADA2EF576AD4DE.gif\" id=\"zzz\" show-magnifier=\"0\" />"
         L"<img type=\"smiley_img\" path=\"uires\\image\\emotion\\8FE11CC2FDDE631AC7ADA2EF576AD4DE.gif\" id=\"zzz\" show-magnifier=\"0\"/>"
         L"<img type=\"smiley_img\" path=\"uires\\image\\emotion\\13E1887418EF4B26BF568158F582ECE5.gif\" id=\"zzz\" show-magnifier=\"0\" />"
-        L"<text>ÕâÀïÓĞºÜ¶àgif±íÇé£¬ÊÇÃ»ÓĞ·Å´ó¾µ°´Å¥µÄ</text>";
+        L"<text>è¿™é‡Œæœ‰å¾ˆå¤šgifè¡¨æƒ…ï¼Œæ˜¯æ²¡æœ‰æ”¾å¤§é•œæŒ‰é’®çš„</text>";
 
     SStringW str4 =
         L"<img type=\"normal_img\" path=\"uires\\image\\bk.bmp\" id=\"201511242337090001_img\" size=\"100,50\" max-size=\"150,150\" minsize=\"\" scaring=\"1\" cursor=\"hand\" />"
         L"<img type=\"normal_img\" path=\"uires\\image\\image2.png\" id=\"201511242337090002_img\" size=\"100,50\" max-size=\"150,150\" minsize=\"\" scaring=\"1\" cursor=\"hand\" />"
-        L"<text>ÕâÀï»¹ÓĞÒ»Ğ©Í¼Æ¬£¬¿ÉÒÔË«»÷´ò¿ª£¬Ò²¿ÉÒÔ³·»ØÏûÏ¢</text>";
+        L"<text>è¿™é‡Œè¿˜æœ‰ä¸€äº›å›¾ç‰‡ï¼Œå¯ä»¥åŒå‡»æ‰“å¼€ï¼Œä¹Ÿå¯ä»¥æ’¤å›æ¶ˆæ¯</text>";
 
-    SStringW str5 = L"<text font-size=\"10\">ÎÒÊÇÒ»¸öÁ´½Ó£¬¿ÉÒÔ</text><text underline=\"1\" link=\"1\" font-size=\"14\" color=\"#0000ff\">µãÎÒ</text><text font-size=\"10\">ÊÔÊÔ£¡£¡</text>";
+    SStringW str5 = L"<text font-size=\"10\">æˆ‘æ˜¯ä¸€ä¸ªé“¾æ¥ï¼Œå¯ä»¥</text><text underline=\"1\" link=\"1\" font-size=\"14\" color=\"#0000ff\">ç‚¹æˆ‘</text><text font-size=\"10\">è¯•è¯•ï¼ï¼</text>";
 
-    SStringW str6 = L"<text font-size=\"12\" color=\"#ff0000\" >°æ±¾¸üĞÂĞÅÏ¢:\n1¡¢¼ÓÈë¿½±´¡¢Õ³Ìù£¬¿ÉÒÔÕ³Ìù´Óä¯ÀÀÆ÷¿½±´ÏÂÀ´µÄÄÚÈİ£¬µ«²»Ö§³ÖhttpsÍ¼Æ¬\n2¡¢¼ÓÈëÍÏ×§\n3¡¢¼ÓÈë²Ëµ¥\n4¡¢¼ÓÈë³·»Ø\n5¡¢ÍêÉÆ¹ö¶¯ÌõÌåÑé\n¡­¡­</text>";
+    SStringW str6 = L"<text font-size=\"12\" color=\"#ff0000\" >ç‰ˆæœ¬æ›´æ–°ä¿¡æ¯:\n1ã€åŠ å…¥æ‹·è´ã€ç²˜è´´ï¼Œå¯ä»¥ç²˜è´´ä»æµè§ˆå™¨æ‹·è´ä¸‹æ¥çš„å†…å®¹ï¼Œä½†ä¸æ”¯æŒhttpså›¾ç‰‡\n2ã€åŠ å…¥æ‹–æ‹½\n3ã€åŠ å…¥èœå•\n4ã€åŠ å…¥æ’¤å›\n5ã€å®Œå–„æ»šåŠ¨æ¡ä½“éªŒ\nâ€¦â€¦</text>";
     AddFetchMoreBlock();
 
     AddLeftMessage(GetRandomUser(), str);
@@ -589,7 +589,7 @@ void GroupChatFrame::InsertMessages()
 
     AddCenterMessageWhitoutBuggle(GetRandomUser(), L"<text font-size=\"10\" color=\"#808080\">13:03:05</text>");
 
-    AddCenterMessage(GetRandomUser(), L"<text font-size=\"10\">À¶ÏÈÉúÔÚ»ğĞÇÇ©µ½</text>");
+    AddCenterMessage(GetRandomUser(), L"<text font-size=\"10\">è“å…ˆç”Ÿåœ¨ç«æ˜Ÿç­¾åˆ°</text>");
 
     AddLeftMessage(GetRandomUser(), str2);
 
@@ -608,7 +608,7 @@ void GroupChatFrame::InsertMessages()
 void GroupChatFrame::AddFetchMoreBlock()
 {
     //
-    // »ñÈ¡¸ü¶àÏûÏ¢OLE
+    // è·å–æ›´å¤šæ¶ˆæ¯OLE
     // 
 
     SStringW content;
@@ -668,12 +668,12 @@ UINT  GroupChatFrame::AddLeftMessage(UserInfo& info, const SStringW& body, UINT 
 {
     static int i = 0;
     SStringW name;
-    name.Format(L"¡¾%s¡¿%s:%d", info.Title, info.Name, i++);
+    name.Format(L"ã€%sã€‘%s:%d", info.Title, info.Name, i++);
 
     if (!ImageProvider::IsExist(info.AvatarId))
     {
         SAntialiasSkin* pSkin = new SAntialiasSkin();
-        pSkin->SetRoundCorner(5, 5, 5, 5); // Ìí¼ÓÔ²½Ç´¦Àí
+        pSkin->SetRoundCorner(5, 5, 5, 5); // æ·»åŠ åœ†è§’å¤„ç†
         if (pSkin->LoadFromFile(info.AvatarPath))
         {
             ImageProvider::Insert(info.AvatarId, pSkin);
@@ -684,7 +684,7 @@ UINT  GroupChatFrame::AddLeftMessage(UserInfo& info, const SStringW& body, UINT 
         }
     }
 
-    /* ¿¿×óÏÔÊ¾µÄÏûÏ¢ */
+    /* é å·¦æ˜¾ç¤ºçš„æ¶ˆæ¯ */
     SStringW content;
     content.Format(
         L"<RichEditContent  type=\"ContentLeft\" align=\"left\">"
@@ -721,7 +721,7 @@ UINT  GroupChatFrame::AddRightMessage(UserInfo& info, const SStringW& body, UINT
     }
 
     LPCWSTR pResendBtn = L"<bkele name=\"BkEleSendFail\" data=\"resend\" right-skin=\"skin.rich_warning\" left-skin=\"skin.rich_warning\" left-pos=\"[0,[-25,@16,@16\" right-pos=\"{-20,[-25,@16,@16\" cursor=\"hand\" interactive=\"1\"/>";
-    /* ¿¿ÓÒÏÔÊ¾µÄÏûÏ¢ */
+    /* é å³æ˜¾ç¤ºçš„æ¶ˆæ¯ */
     SStringW content;
     content.Format(
         L"<RichEditContent  type=\"ContentRight\" align=\"right\" auto-layout=\"1\">"
@@ -746,7 +746,7 @@ void GroupChatFrame::AddCustomCenterMessage()
         L"<RichEditContent id=\"201601015337090001\" type=\"msg\" >"
         L"<para break=\"1\" />"
         L"<para id=\"righttext\" margin=\"100,0,100,0\" break=\"1\" align=\"center\" simulate-align=\"1\">"
-        L"<text font-size=\"10\" >ÄúÈ¡ÏûÁË¡°Adobe_Photoshop_CS5_green_7xdown.com.rar¡±(118.91MB)µÄ·¢ËÍ£¬ÎÄ¼ş´«ÊäÊ§°Ü¡£</text>"
+        L"<text font-size=\"10\" >æ‚¨å–æ¶ˆäº†â€œAdobe_Photoshop_CS5_green_7xdown.com.rarâ€(118.91MB)çš„å‘é€ï¼Œæ–‡ä»¶ä¼ è¾“å¤±è´¥ã€‚</text>"
         L"</para>"
         L"<bkele skin=\"skin.rich_sysmsg_bk\" pos=\"{-30,{0,[10,[0\" hittestable=\"0\" />"
         L"<bkele skin=\"skin.rich_warning\" pos=\"{10,{3,@16,@16\" hittestable=\"0\"/>"
@@ -795,7 +795,7 @@ void GroupChatFrame::OnSend()
         else if (wcscmp(RichEditMetaFileOle::GetClassName(), pNodeName) == 0)
         {
             content += RichEditFileOle::MakeFormattedText(node.attribute(L"file").as_string(),
-                L"µÈ´ı·¢ËÍ", 440227874, 0x04);
+                L"ç­‰å¾…å‘é€", 440227874, 0x04);
         }
     }
 
@@ -818,8 +818,8 @@ void GroupChatFrame::OnShowSendTypeMenu()
     GetCursorPos(&pt);
 
     MenuWrapper menu(L"menu_template", L"SMENU");
-    menu.AddMenu(_T("°´Enter¼ü·¢ËÍÏûÏ¢"), MENUID_PRESS_ENTER_TO_SEND, TRUE, _sendType == PRESS_ENTER_TO_SEND);
-    menu.AddMenu(_T("°´Ctrl+Enter¼ü·¢ËÍÏûÏ¢"), MENUID_PRESS_ENTER_AND_CTRL_TO_SEND, TRUE, _sendType == PRESS_ENTER_AND_CTRL_TO_SEND);
+    menu.AddMenu(_T("æŒ‰Enteré”®å‘é€æ¶ˆæ¯"), MENUID_PRESS_ENTER_TO_SEND, TRUE, _sendType == PRESS_ENTER_TO_SEND);
+    menu.AddMenu(_T("æŒ‰Ctrl+Enteré”®å‘é€æ¶ˆæ¯"), MENUID_PRESS_ENTER_AND_CTRL_TO_SEND, TRUE, _sendType == PRESS_ENTER_AND_CTRL_TO_SEND);
     int ret = menu.ShowMenu(TPM_RETURNCMD, pt.x, pt.y, m_hWnd);
 
     if (ret == MENUID_PRESS_ENTER_TO_SEND)
@@ -839,29 +839,29 @@ bool GroupChatFrame::OnShowInputRichEditMenu(SOUI::EventArgs *pEvt)
     RichEditOleBase* pOle = _pInputRichEdit->GetSelectedOle();
 
     /*
-     * ¹¹Ôì²Ëµ¥Ïî
+     * æ„é€ èœå•é¡¹
      */
 
     MenuWrapper menu(L"menu_template", L"SMENU");
 
     BOOL enableCopy = (chrSel.cpMax - chrSel.cpMin) >= 1;
-    menu.AddMenu(_T("¸´ÖÆ(&S)"), MENUID_COPY, enableCopy, FALSE);
-    menu.AddMenu(_T("¼ôÇĞ(&X)"), MENUID_CUT, enableCopy, FALSE);
-    menu.AddMenu(_T("Õ³Ìù(&C)"), MENUID_PASTE, TRUE, FALSE);
-    menu.AddMenu(_T("È«Ñ¡(&A)"), MENUID_SEL_ALL, TRUE, FALSE);
+    menu.AddMenu(_T("å¤åˆ¶(&S)"), MENUID_COPY, enableCopy, FALSE);
+    menu.AddMenu(_T("å‰ªåˆ‡(&X)"), MENUID_CUT, enableCopy, FALSE);
+    menu.AddMenu(_T("ç²˜è´´(&C)"), MENUID_PASTE, TRUE, FALSE);
+    menu.AddMenu(_T("å…¨é€‰(&A)"), MENUID_SEL_ALL, TRUE, FALSE);
 
     if (pOle && pOle->IsClass(RichEditImageOle::GetClassName()))
     {
-        menu.AddMenu(_T("Áí´æÎª"), MENUID_SAVE_AS, TRUE, FALSE);
+        menu.AddMenu(_T("å¦å­˜ä¸º"), MENUID_SAVE_AS, TRUE, FALSE);
     }
     else if (pOle && pOle->IsClass(RichEditMetaFileOle::GetClassName()))
     {
-        menu.AddMenu(_T("´ò¿ª"), MENUID_OPEN_FILE, TRUE, FALSE);
-        menu.AddMenu(_T("´ò¿ªÎÄ¼ş¼Ğ"), MENUID_OPEN_FILE_DIR, TRUE, FALSE);
+        menu.AddMenu(_T("æ‰“å¼€"), MENUID_OPEN_FILE, TRUE, FALSE);
+        menu.AddMenu(_T("æ‰“å¼€æ–‡ä»¶å¤¹"), MENUID_OPEN_FILE_DIR, TRUE, FALSE);
     }
 
     /*
-     * µ¯³ö²Ëµ¥
+     * å¼¹å‡ºèœå•
      */
     int ret = 0;
     POINT pt;
@@ -870,7 +870,7 @@ bool GroupChatFrame::OnShowInputRichEditMenu(SOUI::EventArgs *pEvt)
     ret = menu.ShowMenu(TPM_RETURNCMD, pt.x, pt.y, m_hWnd);
 
     /*
-     * ´¦Àí²Ëµ¥ÏûÏ¢
+     * å¤„ç†èœå•æ¶ˆæ¯
      */
     switch (ret)
     {
@@ -922,9 +922,9 @@ bool GroupChatFrame::OnShowInputRichEditMenu(SOUI::EventArgs *pEvt)
 
 void GroupChatFrame::FillRClickAvatarMenu(MenuWrapper& menu, RichEditContent* pContent)
 {
-    menu.AddMenu(_T("·¢ËÍÏûÏ¢"), MENUID_SEND_MSG, TRUE, FALSE);
-    menu.AddMenu(_T("ÍøÂçÍ¨»°"), MENUID_MAKE_CALL, TRUE, FALSE);
-    menu.AddMenu(_T("²é¿´×ÊÁÏ"), MENUID_SHOW_INFO, TRUE, FALSE);
+    menu.AddMenu(_T("å‘é€æ¶ˆæ¯"), MENUID_SEND_MSG, TRUE, FALSE);
+    menu.AddMenu(_T("ç½‘ç»œé€šè¯"), MENUID_MAKE_CALL, TRUE, FALSE);
+    menu.AddMenu(_T("æŸ¥çœ‹èµ„æ–™"), MENUID_SHOW_INFO, TRUE, FALSE);
     if (pContent && pContent->GetAlign() == RichEditObj::ALIGN_LEFT)
     {
         menu.AddMenu(_T("@TA"), MENUID_AT, TRUE, FALSE);
@@ -935,55 +935,55 @@ void GroupChatFrame::FillRClickImageMenu(MenuWrapper& menu, RichEditContent* pCo
 {
     if (pContent && pContent->GetAlign() == RichEditObj::ALIGN_RIGHT)
     {
-        menu.AddMenu(_T("³·»Ø"), MENUID_RECALL_MSG, TRUE, FALSE);
+        menu.AddMenu(_T("æ’¤å›"), MENUID_RECALL_MSG, TRUE, FALSE);
     }
 
-    menu.AddMenu(_T("¸´ÖÆ"), MENUID_COPY, TRUE, FALSE);
-    menu.AddMenu(_T("Áí´æÎª"), MENUID_SAVE_AS, TRUE, FALSE);
-    menu.AddMenu(_T("È«²¿Ñ¡Ôñ"), MENUID_SEL_ALL, TRUE, FALSE);
-    menu.AddMenu(_T("ÇåÆÁ"), MENUID_CLEAR, TRUE, FALSE);
+    menu.AddMenu(_T("å¤åˆ¶"), MENUID_COPY, TRUE, FALSE);
+    menu.AddMenu(_T("å¦å­˜ä¸º"), MENUID_SAVE_AS, TRUE, FALSE);
+    menu.AddMenu(_T("å…¨éƒ¨é€‰æ‹©"), MENUID_SEL_ALL, TRUE, FALSE);
+    menu.AddMenu(_T("æ¸…å±"), MENUID_CLEAR, TRUE, FALSE);
 }
 
 void GroupChatFrame::FillRClickFileMenu(MenuWrapper& menu, RichEditContent* pContent)
 {
     if (pContent && pContent->GetAlign() == RichEditObj::ALIGN_RIGHT)
     {
-        menu.AddMenu(_T("³·»Ø"), MENUID_RECALL_MSG, TRUE, FALSE);
+        menu.AddMenu(_T("æ’¤å›"), MENUID_RECALL_MSG, TRUE, FALSE);
     }
 
-    menu.AddMenu(_T("´ò¿ª"), MENUID_OPEN_FILE, TRUE, FALSE);
-    menu.AddMenu(_T("´ò¿ªÎÄ¼ş¼Ğ"), MENUID_OPEN_FILE_DIR, TRUE, FALSE);
-    menu.AddMenu(_T("È«²¿Ñ¡Ôñ"), MENUID_SEL_ALL, TRUE, FALSE);
-    menu.AddMenu(_T("ÇåÆÁ"), MENUID_CLEAR, TRUE, FALSE);
+    menu.AddMenu(_T("æ‰“å¼€"), MENUID_OPEN_FILE, TRUE, FALSE);
+    menu.AddMenu(_T("æ‰“å¼€æ–‡ä»¶å¤¹"), MENUID_OPEN_FILE_DIR, TRUE, FALSE);
+    menu.AddMenu(_T("å…¨éƒ¨é€‰æ‹©"), MENUID_SEL_ALL, TRUE, FALSE);
+    menu.AddMenu(_T("æ¸…å±"), MENUID_CLEAR, TRUE, FALSE);
 }
 
 void GroupChatFrame::FillRClickSelRegionMenu(MenuWrapper& menu, RichEditContent* pContent)
 {
     if (pContent && pContent->GetAlign() == RichEditObj::ALIGN_RIGHT)
     {
-        menu.AddMenu(_T("³·»Ø"), MENUID_RECALL_MSG, TRUE, FALSE);
+        menu.AddMenu(_T("æ’¤å›"), MENUID_RECALL_MSG, TRUE, FALSE);
     }
 
-    menu.AddMenu(_T("¸´ÖÆ"), MENUID_COPY, TRUE, FALSE);
-    menu.AddMenu(_T("È«²¿Ñ¡Ôñ"), MENUID_SEL_ALL, TRUE, FALSE);
-    menu.AddMenu(_T("ÇåÆÁ"), MENUID_CLEAR, TRUE, FALSE);
+    menu.AddMenu(_T("å¤åˆ¶"), MENUID_COPY, TRUE, FALSE);
+    menu.AddMenu(_T("å…¨éƒ¨é€‰æ‹©"), MENUID_SEL_ALL, TRUE, FALSE);
+    menu.AddMenu(_T("æ¸…å±"), MENUID_CLEAR, TRUE, FALSE);
 }
 
 void GroupChatFrame::FillRClickBubbleMenu(MenuWrapper& menu, RichEditContent* pContent)
 {
     if (pContent && pContent->GetAlign() == RichEditObj::ALIGN_RIGHT)
     {
-        menu.AddMenu(_T("³·»Ø"), MENUID_RECALL_MSG, TRUE, FALSE);
+        menu.AddMenu(_T("æ’¤å›"), MENUID_RECALL_MSG, TRUE, FALSE);
     }
-    menu.AddMenu(_T("¸´ÖÆ"), MENUID_COPY_BUBBLE, TRUE, FALSE);
-    menu.AddMenu(_T("È«²¿Ñ¡Ôñ"), MENUID_SEL_ALL, TRUE, FALSE);
-    menu.AddMenu(_T("ÇåÆÁ"), MENUID_CLEAR, TRUE, FALSE);
+    menu.AddMenu(_T("å¤åˆ¶"), MENUID_COPY_BUBBLE, TRUE, FALSE);
+    menu.AddMenu(_T("å…¨éƒ¨é€‰æ‹©"), MENUID_SEL_ALL, TRUE, FALSE);
+    menu.AddMenu(_T("æ¸…å±"), MENUID_CLEAR, TRUE, FALSE);
 }
 
 void GroupChatFrame::FillRClickNothingMenu(MenuWrapper& menu)
 {
-    menu.AddMenu(_T("È«²¿Ñ¡Ôñ"), MENUID_SEL_ALL, TRUE, FALSE);
-    menu.AddMenu(_T("ÇåÆÁ"), MENUID_CLEAR, TRUE, FALSE);
+    menu.AddMenu(_T("å…¨éƒ¨é€‰æ‹©"), MENUID_SEL_ALL, TRUE, FALSE);
+    menu.AddMenu(_T("æ¸…å±"), MENUID_CLEAR, TRUE, FALSE);
 }
 
 bool GroupChatFrame::OnShowMessageRichEditMenu(SOUI::EventArgs *pEvt)
@@ -995,7 +995,7 @@ bool GroupChatFrame::OnShowMessageRichEditMenu(SOUI::EventArgs *pEvt)
     int selectedCount = selRange.cpMax - selRange.cpMin;
 
     //
-    // Èç¹ûÊó±êÃ»ÓĞÂäÔÚÑ¡ÖĞÇøÓòÉÏ£¬ĞèÒªÈ¡ÏûÑ¡ÖĞ
+    // å¦‚æœé¼ æ ‡æ²¡æœ‰è½åœ¨é€‰ä¸­åŒºåŸŸä¸Šï¼Œéœ€è¦å–æ¶ˆé€‰ä¸­
     //
     if (selectedCount > 0)
     {
@@ -1008,7 +1008,7 @@ bool GroupChatFrame::OnShowMessageRichEditMenu(SOUI::EventArgs *pEvt)
     }
 
     //
-    // ¶ÔÓÚÓÒ¼üÔÚÑ¡ÔñÇøÓòÉÏµÄ¸÷ÖÖÅĞ¶Ï
+    // å¯¹äºå³é”®åœ¨é€‰æ‹©åŒºåŸŸä¸Šçš„å„ç§åˆ¤æ–­
     //
 
     RichEditObj * pHitTestObj = _pMsgRichEdit->HitTest(pev->pt);
@@ -1063,7 +1063,7 @@ bool GroupChatFrame::OnShowMessageRichEditMenu(SOUI::EventArgs *pEvt)
     }
 
     /*
-     * µ¯³ö²Ëµ¥
+     * å¼¹å‡ºèœå•
      */
     int ret = 0;
     POINT pt;
@@ -1072,7 +1072,7 @@ bool GroupChatFrame::OnShowMessageRichEditMenu(SOUI::EventArgs *pEvt)
     ret = menu.ShowMenu(TPM_RETURNCMD, pt.x, pt.y, m_hWnd);
 
     /*
-     * ´¦Àí²Ëµ¥ÏûÏ¢
+     * å¤„ç†èœå•æ¶ˆæ¯
      */
 
     CHARRANGE          chr = { 0, -1 };
@@ -1132,21 +1132,21 @@ bool GroupChatFrame::OnShowMessageRichEditMenu(SOUI::EventArgs *pEvt)
         break;
 
     case MENUID_SEND_MSG:
-        ::MessageBox(m_hWnd, _T("µã»÷ÁË·¢ËÍÏûÏ¢²Ëµ¥"), _T("ÌáÊ¾"), MB_OK);
+        ::MessageBox(m_hWnd, _T("ç‚¹å‡»äº†å‘é€æ¶ˆæ¯èœå•"), _T("æç¤º"), MB_OK);
         break;
 
     case MENUID_MAKE_CALL:
-        ::MessageBox(m_hWnd, _T("µã»÷ÁËÍøÂçÍ¨»°²Ëµ¥"), _T("ÌáÊ¾"), MB_OK);
+        ::MessageBox(m_hWnd, _T("ç‚¹å‡»äº†ç½‘ç»œé€šè¯èœå•"), _T("æç¤º"), MB_OK);
         break;
 
     case MENUID_SHOW_INFO:
-        ::MessageBox(m_hWnd, _T("µã»÷ÁË²é¿´×ÊÁÏ²Ëµ¥"), _T("ÌáÊ¾"), MB_OK);
+        ::MessageBox(m_hWnd, _T("ç‚¹å‡»äº†æŸ¥çœ‹èµ„æ–™èœå•"), _T("æç¤º"), MB_OK);
         break;
 
     case MENUID_AT:
         {
             str = RichEditReminderOle::MakeFormattedText(
-                _T("µã»÷²Ëµ¥@ÈË"),
+                _T("ç‚¹å‡»èœå•@äºº"),
                 13,
                 RGB(00, 0x6e, 0xfe));
 
@@ -1160,7 +1160,7 @@ bool GroupChatFrame::OnShowMessageRichEditMenu(SOUI::EventArgs *pEvt)
         if (pContent)
         {
             UINT index = _pMsgRichEdit->DeleteContent(pContent);
-            AddCenterMessage(GetRandomUser(), L"<text font-size=\"10\">ÄãÒÑ³·»ØÒ»ÌõÏûÏ¢</text>", index);
+            AddCenterMessage(GetRandomUser(), L"<text font-size=\"10\">ä½ å·²æ’¤å›ä¸€æ¡æ¶ˆæ¯</text>", index);
         }
         break;
     }
