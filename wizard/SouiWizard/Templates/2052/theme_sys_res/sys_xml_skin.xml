@@ -33,4 +33,5 @@
   <imgframe name="_skin.sys.wnd.bkgnd"  src="PNG:SYS_WND_BKGND" left="5" right="5" top="40" bottom="40"/>
   <imglist name="_skin.sys.btn.prev" src="PNG:SYS_BTN_PREV" states="3" />
   <imglist name="_skin.sys.btn.next" src="PNG:SYS_BTN_NEXT" states="3" />
+  <imglist name="_skin.sys.btn.spin" src="PNG:SYS_BTN_SPIN" states="6" vertical="1" />
 </skin>
