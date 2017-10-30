@@ -466,37 +466,39 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile) {
        
         //Ö¸¶¨uires.idxµÄ±àÒëÃüÁî
         var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
-        var DirFor7z='';
-        if (WizardVersion >= 10.0) {
-            DirFor7z = '"%(RootDir)%(Directory)*"';
+        var DirFor7z;
+        var outFile;
+        if (ResLoadType == 1) {
+            outFile = 'uires.zip';
         }
-        else {//vs2008
-            DirFor7z = '"$(InputDir)*"';
+        else if (ResLoadType == 2) {
+            outFile = 'uires.7z';
         }
-        if (psw.length != 0) {
-            if (ResLoadType == 1) {
-                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" ' + DirFor7z + ' -p' + psw;
-            }
-            else if (ResLoadType == 2) {
-                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a "$(TargetDir)uires.7z" ' + DirFor7z + ' -p' + psw + " -mhe";
-            }
-        }
-        else {
-            if (ResLoadType == 1) {
-                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" '+DirFor7z;
-            }
-            else if (ResLoadType == 2) {
-                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a "$(TargetDir)uires.7z" '+DirFor7z;
-            }
-        }
-            
-
         if (WizardVersion >= 10.0) {
             cmdline = '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
-        }
+            DirFor7z = '"%(TargetDir)'+outFile+'" "%(RootDir)%(Directory)*"';
+         }
         else {
             cmdline = '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
+            DirFor7z = '"$(TargetDir)' + outFile + '" "$(InputDir)*"';
         }
+        
+        if (ResLoadType == 1) {
+                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip '+DirFor7z;
+         }
+         else if (ResLoadType == 2) {
+                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a '+DirFor7z;
+         }
+            
+        if (psw.length != 0) {
+            if (ResLoadType == 1) {
+                cmd7z += ' -p' + psw;
+            }
+            else if (ResLoadType == 2) {
+                cmd7z += ' -p' + psw + " -mhe";
+            }
+        }
+        
         //var ResLoadType = wizard.FindSymbol('ResLoaderType');
         var file = files.Item('uires.idx');
         var fileConfig = file.FileConfigurations('Debug');
