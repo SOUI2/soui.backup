@@ -463,25 +463,39 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile) {
         var cmdcopyres = 'xcopy "%(RootDir)%(Directory)*.*" "$(TargetDir)uires" /e/y/i';
         var psw = wizard.FindSymbol("ZIP_PSW");
         var ResLoadType = wizard.FindSymbol('ResLoaderType');
-        if (psw.length != 0) {
-            if (ResLoadType == 1) {
-                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" "%(RootDir)%(Directory)*"' + ' -p' + psw;
-            }
-            else if (ResLoadType == 2) {
-                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a "$(TargetDir)uires.7z" "%(RootDir)%(Directory)*"' + ' -p' + psw + " -mhe";
-            }
-        }
-        else
-            cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" "%(RootDir)%(Directory)*"';
+       
         //Ö¸¶¨uires.idxµÄ±àÒëÃüÁî
         var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
+        var DirFor7z='';
+        if (WizardVersion >= 10.0) {
+            DirFor7z = '"%(RootDir)%(Directory)*"';
+        }
+        else {//vs2008
+            DirFor7z = '"$(InputDir)*"';
+        }
+        if (psw.length != 0) {
+            if (ResLoadType == 1) {
+                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" ' + DirFor7z + ' -p' + psw;
+            }
+            else if (ResLoadType == 2) {
+                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a "$(TargetDir)uires.7z" ' + DirFor7z + ' -p' + psw + " -mhe";
+            }
+        }
+        else {
+            if (ResLoadType == 1) {
+                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" '+DirFor7z;
+            }
+            else if (ResLoadType == 2) {
+                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a "$(TargetDir)uires.7z" '+DirFor7z;
+            }
+        }
+            
+
         if (WizardVersion >= 10.0) {
             cmdline = '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
-            //cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" "%(RootDir)%(Directory)*"';
         }
         else {
             cmdline = '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
-            //cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip "$(TargetDir)uires.zip" "%(RootDir)%(Directory)*"';
         }
         //var ResLoadType = wizard.FindSymbol('ResLoaderType');
         var file = files.Item('uires.idx');
