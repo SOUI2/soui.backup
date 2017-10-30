@@ -164,8 +164,8 @@
                                                     <td width="100%">
                                                         <span class="ACTIVELINK" id="ProjectOption" title="指定将程序的编译选项。" onclick="Next(document, 'ProjectOption.htm');" tabindex="4">编译选项</span>
                                                     </td>
-                                                    <td width="4">
-                                                        <img src="../../2052/Images/spacer.gif" height="1" width="4">
+                                                    <td width="1">
+                                                        <img src="../../2052/Images/spacer.gif" height="1" width="1">
                                                     </td>
                                                 </tr>
                                             </table>
@@ -230,18 +230,7 @@
                                                     <label id="SHELLNOTIFYICON_TEXT" for="CHECKBOX_SHELLNOTIFYICON">支持系统托盘图标(<u>S</u>)</label>
                                                 </div>
                                                 <br>
-                                                <input type="checkbox" class="CheckBoxA" id="CHECKBOX_SYSRES_BUILTIN" accesskey="e"
-                                                       title="将系统资源编译到EXE中" onpropertychange="">
-                                                <div class="itemTextCheckboxB" id="SYSRES_BUILTIN_STR" title="将系统资源编译到EXE中">
-                                                    <label id="SYSRES_BUILTIN_TEXT" for="CHECKBOX_SYSRES_BUILTIN">将系统资源编译到EXE中(<u>E</u>)</label>
-                                                </div>
-                                                <br>
-                                                 <input type="checkbox" class="CheckBoxA" id="CHECKBOX_RES_PE" accesskey="u"
-                                                       title="将用户资源编译到EXE中" onpropertychange="">
-                                                <div class="itemTextCheckboxB" id="CHECKBOX_RES_PE_STR" title="将用户资源编译到EXE中">
-                                                    <label id="CHECKBOX_RES_PE_TEXT" for="CHECKBOX_RES_PE">将用户资源编译到EXE中(<u>u</u>)</label>
-                                                </div>
-                                                <br>
+                                                
                                                 <input type="checkbox" class="CheckBoxA" id="CHECKBOX_TRANSLATOR_SUPPORT" accesskey="t" onclick="OnTranslator();"
                                                        title="使用语言翻译。" onpropertychange="">
                                                 <div class="itemTextCheckboxB" id="TRANSLATOR_SUPPORT_STR" title="使用语言翻译。">
@@ -254,8 +243,39 @@
                                                     <label id="DYNAMIC_TRANSLATOR_SUPPORT_TEXT" for="CHECKBOX_DYNAMIC_TRANSLATOR_SUPPORT">&nbsp;&nbsp;&nbsp;&nbsp;支持动态语言翻译(<u>D</u>)</label>
                                                 </div>
                                                 <br>
+                                       
+                                            <span class="itemText" style="left:10px;" id="Span3" title="程序加载资源方式。">
+                                                资源加载方式:
+                                            </span>
+                                            <br> 
+                                                <select class="sidebtnNoWidth" id="ResLoaderType" onchange="ResLoaderChange()" accesskey="n" title="" size="1">
+                                                    <option value="0">从PE加载</option>
+                                                    <option value="1">从ZIP加载</option>
+                                                    <option value="2">从7ZIP加载</option>
+                                                    <option value="3">从文件加载</option>
+                                                </select>
+                                            <br><br>
+                                                <input type="checkbox" class="CheckBoxA" id="CHECKBOX_SYSRES_BUILTIN" accesskey="e"
+                                                       title="将系统资源编译到EXE中" onpropertychange="">
+                                                <div class="itemTextCheckboxB" id="SYSRES_BUILTIN_STR" title="将系统资源编译到EXE中">
+                                                    <label id="SYSRES_BUILTIN_TEXT" for="CHECKBOX_SYSRES_BUILTIN">将系统资源编译到EXE中</label>
+                                                </div>
                                                 <br>
-                                        <p class="ItemText">
+                                                <span disabled="true">
+                                                    <input type="checkbox" class="CheckBoxA" disabled="disabled" id="CHECKBOX_RES_PACK_ONLAY_RELEASE" title="仅在发布版本打包资源">
+                                                    <div disabled="true" class="itemTextCheckboxB" id="CHECKBOX_RES_PE_STR" title="钩选此项debug版本从文件加载资源">
+                                                        <label id="CHECKBOX_RES_PE_TEXT" for="CHECKBOX_RES_PACK_ONLAY_RELEASE">仅在Release版本打包资源</label>
+                                                    </div>
+                                                    <br>
+                                                </span>
+                                                <span class="itemText" style="left:10px;" id="zippassword" title="指定压缩包的密码。">
+                                                    <label id="zippassword_TEXT" for="zippassword">
+                                                        密码:
+                                                    </label>
+                                                    <input class="zippsw" id="ZIP_PSW" title="指定压缩包的密码。"
+                                                           type="text" value="">
+                                                </span>
+                                                <br>
                                     </td>
                                     <td valign="TOP" width="12">
                                         &nbsp;
@@ -366,9 +386,30 @@
     tab_array[3] = Advanced;
     tab_array[4] = ProjectOption;
 
+    var resloadertext = new Array();
+    resloadertext[0] = "将系统资源编译到EXE中";
+    resloadertext[1] = "将系统资源编译到Zip中";
+    resloadertext[2] = "将系统资源编译到7z中";
+    resloadertext[3] = "将系统资源复制到项目中";
 
+    function ResLoaderChange() {
+        var id = ResLoaderType.selectedIndex;
+        SetResCtrlText(id);
+        if (id == 1 || id == 2) {
+            zippassword.disabled = false;
+        }
+        else {
+            zippassword.disabled = true;
+        }
+    }
+    function SetResCtrlText(id)
+    {
+        CHECKBOX_SYSRES_BUILTIN.title =  SYSRES_BUILTIN_STR.title =  SYSRES_BUILTIN_TEXT.title = CHECKBOX_RES_PE_TEXT.title = resloadertext[id];
+        SYSRES_BUILTIN_TEXT.innerText = resloadertext[id];
+    }
     function InitDocument(document) {
-        //setDirection();
+        setDirection();
+        ResLoaderChange();
         window.external.Load(document);
         InitControls();
         ToggleImage();
@@ -426,6 +467,8 @@
 <script id="INCLUDE_COMMON" language="JSCRIPT"></script>
 
 <script>
-    document.scripts("INCLUDE_SCRIPT").src = window.external.FindSymbol("SCRIPT_COMMON_PATH") + "/Script.js";
-    document.scripts("INCLUDE_COMMON").src = window.external.FindSymbol("SCRIPT_COMMON_PATH") + "/Common.js";
+    //document.scripts("INCLUDE_SCRIPT").src = window.external.FindSymbol("SCRIPT_COMMON_PATH") + "/Script.js";
+    //document.scripts("INCLUDE_COMMON").src = window.external.FindSymbol("SCRIPT_COMMON_PATH") + "/Common.js";
+    document.scripts("INCLUDE_SCRIPT").src = " ../../2052/Script.js";
+    document.scripts("INCLUDE_COMMON").src = " ../../2052/Common.js";
 </script>

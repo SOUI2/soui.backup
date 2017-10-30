@@ -980,8 +980,8 @@ void SRadioBox::OnPaint(IRenderTarget *pRT)
 
 void SRadioBox::DrawFocus(IRenderTarget *pRT)
 {
-    if(m_pFocusSkin)
-    {
+    if(m_pFocusSkin&& m_bDrawFocusRect&&IsFocusable())
+	{
         CRect rcCheckBox=GetRadioRect();
         m_pFocusSkin->Draw(pRT,rcCheckBox,0);
     }else
