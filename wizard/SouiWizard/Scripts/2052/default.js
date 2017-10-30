@@ -476,7 +476,7 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile) {
         }
         if (WizardVersion >= 10.0) {
             cmdline = '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
-            DirFor7z = '"%(TargetDir)'+outFile+'" "%(RootDir)%(Directory)*"';
+            DirFor7z = '"$(TargetDir)'+outFile+'" "%(RootDir)%(Directory)*"';
          }
         else {
             cmdline = '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
