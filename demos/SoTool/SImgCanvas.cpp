@@ -3,6 +3,7 @@
 
 #define INITGUID
 #include <Guiddef.h>
+#include "SaveToIcon.h"
 
 DEFINE_GUID(ImageFormatPNG, 0xb96b3caf,0x0728,0x11d3,0x9d,0x7b,0x00,0x00,0xf8,0x1e,0xf3,0x2e);//copy from gdi+
 
@@ -81,6 +82,15 @@ namespace SOUI
         m_lstImg.RemoveAll();
         Invalidate();
     }
+
+	BOOL SImgCanvas::Save2IconFile(LPCWSTR pszFileName, int nSplit)
+	{
+		if (nSplit != 1) return FALSE;
+		IBitmap *pBmp = m_lstImg.GetHead();
+		CSize szBmp = pBmp->Size();
+		CRGBA2ICON iconfile;
+		return iconfile.createIconFile(pszFileName, szBmp.cx, szBmp.cy, pBmp);		
+	}
 
     BOOL SImgCanvas::Save2File(LPCWSTR pszFileName,int nSplit)
     {

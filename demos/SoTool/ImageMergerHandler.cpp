@@ -51,6 +51,15 @@ void CImageMergerHandler::OnSave()
     }
 }
 
+void CImageMergerHandler::OnSaveToIco()
+{
+	CFileDialogEx dlgSave(FALSE, _T("ico"), 0, 6, _T("ico files(*.ico)\0*.ico\0All files (*.*)\0*.*\0\0"));
+	if (dlgSave.DoModal() == IDOK)
+	{
+		m_pImgCanvas->Save2IconFile(S_CT2W(dlgSave.m_szFileName));
+	}
+}
+
 void CImageMergerHandler::OnClear()
 {
     m_pImgCanvas->Clear();
