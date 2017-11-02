@@ -85,11 +85,15 @@ namespace SOUI
 
 	BOOL SImgCanvas::Save2IconFile(LPCWSTR pszFileName, int nSplit)
 	{
-		if (nSplit != 1) return FALSE;
-		IBitmap *pBmp = m_lstImg.GetHead();
-		CSize szBmp = pBmp->Size();
+		if (nSplit != 1) return FALSE;	
 		CRGBA2ICON iconfile;
-		return iconfile.createIconFile(pszFileName, szBmp.cx, szBmp.cy, pBmp);		
+		SPOSITION pos = m_lstImg.GetHeadPosition();
+		while (pos)
+		{
+			IBitmap* pBmp = m_lstImg.GetNext(pos);
+			iconfile.AddBitmapToIco(pBmp);
+		}		
+		return iconfile.SaveIconFile(pszFileName);
 	}
 
     BOOL SImgCanvas::Save2File(LPCWSTR pszFileName,int nSplit)
