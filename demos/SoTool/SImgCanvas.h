@@ -11,7 +11,7 @@ namespace SOUI
         
         BOOL AddFile(LPCWSTR pszFileName);
         void Clear();
-       
+		BOOL Save2IconFile(LPCWSTR pszFileName, int nSplit = 1);
         BOOL Save2File(LPCWSTR pszFileName,int nSplit=1);
         void SetVertical(BOOL bVert);
     protected:
