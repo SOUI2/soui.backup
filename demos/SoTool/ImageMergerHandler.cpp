@@ -44,6 +44,8 @@ void CImageMergerHandler::AddFile(LPCWSTR pszFileName)
 
 void CImageMergerHandler::OnSave()
 {
+	if (!m_pImgCanvas->IsCanSave())
+		return;
     CFileDialogEx dlgSave(FALSE,_T("png"),0,6,_T("png files(*.png)\0*.png\0All files (*.*)\0*.*\0\0"));
     if(dlgSave.DoModal()==IDOK)
     {
@@ -53,7 +55,9 @@ void CImageMergerHandler::OnSave()
 
 void CImageMergerHandler::OnSaveToIco()
 {
-	CFileDialogEx dlgSave(FALSE, _T("ico"), 0, 6, _T("ico files(*.ico)\0*.ico\0All files (*.*)\0*.*\0\0"));
+	if (!m_pImgCanvas->IsCanSave())
+		return;
+	CFileDialogEx dlgSave(FALSE, _T("ico"), 0, 6, _T("ico files(*.ico)\0*.ico\0\0"));
 	if (dlgSave.DoModal() == IDOK)
 	{
 		m_pImgCanvas->Save2IconFile(S_CT2W(dlgSave.m_szFileName));

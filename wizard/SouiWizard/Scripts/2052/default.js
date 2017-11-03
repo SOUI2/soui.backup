@@ -492,10 +492,10 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile) {
             
         if (psw.length != 0) {
             if (ResLoadType == 1) {
-                cmd7z += ' -p' + psw;
+                cmd7z += ' -p"' + psw+'"';
             }
             else if (ResLoadType == 2) {
-                cmd7z += ' -p' + psw + " -mhe";
+                cmd7z += ' -p"' + psw + '"' + " -mhe";
             }
         }
         

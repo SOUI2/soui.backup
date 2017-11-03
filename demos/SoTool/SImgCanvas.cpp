@@ -83,9 +83,8 @@ namespace SOUI
         Invalidate();
     }
 
-	BOOL SImgCanvas::Save2IconFile(LPCWSTR pszFileName, int nSplit)
+	BOOL SImgCanvas::Save2IconFile(LPCWSTR pszFileName)
 	{
-		if (nSplit != 1) return FALSE;	
 		CRGBA2ICON iconfile;
 		SPOSITION pos = m_lstImg.GetHeadPosition();
 		while (pos)
