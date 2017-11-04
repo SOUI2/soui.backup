@@ -5,11 +5,12 @@ SOUI
 
 ###### Git下载地址
 
-
 - [国内Git下载站点](https://gitee.com/setousoft/soui)
 
 - [国外Git下载站点](https://github.com/SOUI2/soui)
 
+###### 论坛
+- http://www.soui.me
 ###### QQ群
 
 - SOUI讨论#1: [点击加入](http://shang.qq.com/wpa/qunwpa?idkey=9653a811a72365d798a5247d6ba6885a568bdcf51c624f906c8ce7b8fd9e4eda)
