@@ -84,10 +84,10 @@ HEADERS += MainDlg.h \
 		   skin/SSkinLoader.h \
 		   trayicon/SShellNotifyIcon.h \
 		   trayicon/SShellNofityHwnd2.h \
-	 SInterpolatorView.h \
-	 qrcode/SQrCtrl.h \
-	 qrcode/QR_Encode.h \
-	 SPathView.h
+		 SInterpolatorView.h \
+		 qrcode/SQrCtrl.h \
+		 qrcode/QR_Encode.h \
+		 SPathView.h
 
 SOURCES += demo.cpp \
            MainDlg.cpp \
@@ -138,7 +138,7 @@ SOURCES += demo.cpp \
 		   trayicon/SShellNotifyIcon.cpp \
 		   trayicon/SShellNofityHwnd2.cpp \
 	 SInterpolatorView.cpp \
-	  qrcode/SQrCtrl.cpp \
+	 qrcode/SQrCtrl.cpp \
 	 qrcode/QR_Encode.cpp \
 	 SPathView.cpp
 
