@@ -12,11 +12,13 @@
   <text pos="10,[5">SOUI教程:</text>
   <link href="http://www.cnblogs.com/setoutsoft/" class="cls_btn_weblink">http://www.cnblogs.com/setoutsoft/</link>
 
-  <group pos="10,[5,-10,@100" align="left" show="1">
+  <group pos="10,[5,-10,@400" colorBkgnd="#ffffff" align="left" show="1">
     支持SOUI，支持启程软件，欢迎捐助
     <text pos="10,8">户名：</text>
     <text colorText="#000000">黄建雄</text>
     <text pos="10,[5">支付宝帐号：</text>
     <edit  colorText="#ff0000" readOnly="1">setoutsoft@qq.com</edit>
+    <qrctrl pos="10,[5"  skin="skin_qrbg" qrrect="92,139,199,246">setoutsoft@qq.com</qrctrl>
+    <qrctrl pos="[10,{,@200,@200">setoutsoft@qq.com</qrctrl>
   </group>
 </include>
