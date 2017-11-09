@@ -129,9 +129,8 @@ protected:
 				LPBYTE byAlpha = (LPBYTE)(pSrc + row);
 				if (byAlpha[3] == 0)
 				{
-					LPBYTE pByteAlpha = (LPBYTE)(pLineData + row);
-					pByteAlpha[3] = 0;
-					pByteAlpha[0] = 0;
+					LPDWORD pByteAlpha = (pLineData + row);
+					*pByteAlpha =RGBA(0,0,0,0);
 				}
 			}
 			pSrc += nRow;
