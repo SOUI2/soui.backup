@@ -28,11 +28,11 @@ trCtx="dlg_main"
 [!endif]
 [!endif]
     </caption>
-    [!if WIN_STYLES_TAB]
-    [!if CHECKBOX_DYNAMIC_TRANSLATOR_SUPPORT]
+[!if WIN_STYLES_TAB]
+[!if CHECKBOX_DYNAMIC_TRANSLATOR_SUPPORT]
     <button pos="|0,[" inset="4,4,4,4" name="zh_cn" offset="-1.1,0" text="lang_cn"/>
     <button pos="|0,[" inset="4,4,4,4" name="jp" offset="-1.1,0" text="lang_jp"/>
-    [!endif]
+[!endif]
     <tabctrl name="tab_main" pos="5,[2,-5,-5" show="1" tabPos="20" curSel="0"  tabInterSize="10"  focusable="0" animateSteps="10" tabHeight="75" tabSkin="skin_tab_main" text-y="50" iconSkin="skin_page_icons" icon-x="10">
         <page title="mainpage" colorBkgnd="#dae9f2">
           <text pos="29,9">页面1</text>
@@ -41,15 +41,15 @@ trCtx="dlg_main"
           <include src="layout:XML_page"/>
         </page>
     </tabctrl>
-	[!else]
+[!else]
     <window pos="5,[2,-5,-5">
       <text pos="|0,|0" offset="-0.5,-0.5">这是一个由SOUI向导生成的APP框架</text>
-      [!if CHECKBOX_DYNAMIC_TRANSLATOR_SUPPORT]
+[!if CHECKBOX_DYNAMIC_TRANSLATOR_SUPPORT]
       <button pos="|0,[" inset="4,4,4,4" name="zh_cn" offset="-1.1,0" text="lang_cn"/>
       <button pos="|0,[" inset="4,4,4,4" name="jp" offset="-1.1,0" text="lang_jp"/>
-      [!endif]
+[!endif]
     </window>
-    [!endif]
+[!endif]
 [!if CHECKBOX_SHELLNOTIFYICON]
 <shellnotifyicon id="110" menu="SMENU:menu_tray" ico="ICON_LOGO:16" tip="110"/>
 [!endif]

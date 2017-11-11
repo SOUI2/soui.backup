@@ -33,6 +33,7 @@ public:
 		}
 		qsort(m_lstTagCheck.GetData(),m_lstTagCheck.GetCount(),sizeof(TagCheck),TagCheckCmp);
 		notifyDataSetChanged();
+		NotifyListener();
 	}
 
 	void MarkAll(bool bSelected)
@@ -42,6 +43,7 @@ public:
 			m_lstTagCheck[i].bSelected = bSelected;
 		}
 		notifyDataSetChanged();
+		NotifyListener();
 	}
 
 	void ExcludeTag(const SStringW & strTag)

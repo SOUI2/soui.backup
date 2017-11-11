@@ -170,11 +170,12 @@ namespace SOUI
             {//从指定的上下文中查找翻译
                 strRet=(*pMap)->strTranslation;
                 return TRUE;
-            }else if(!strCtx.IsEmpty())
-            {//从空白上下文中查找
-                return tr(strSrc,SStringW(),strRet);
             }
         }
+		if(!strCtx.IsEmpty())
+		{//从空白上下文中查找
+			return tr(strSrc,SStringW(),strRet);
+		}
         return FALSE;
     }
 

@@ -315,6 +315,7 @@ select.sidebtn				  { width: 193px;
 								bottom: -3px; }
 
 select.sidebtnNoWidth		  { position: relative;
+                                 left:10px;
 								top: 4px;
 								bottom: -3px; }
 
@@ -535,7 +536,11 @@ p.elementSpacer22			  { margin-bottom: 3px; }
 	input.sideBtnLoc		  { width: 193px;
 								position: relative;
 								top: 3px; }
-
+input.zippsw {
+    width: 66px;
+    position: relative;
+    top: 3px;
+}
 	/*PLACES SPACE BETWEEN ADD/REMOVE BUTTONS**********************************/
 	/**************************************************************************/
 	span.spacer8			  { width: 1px; }

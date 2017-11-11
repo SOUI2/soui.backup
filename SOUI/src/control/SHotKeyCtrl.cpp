@@ -11,6 +11,7 @@ SHotKeyCtrl::SHotKeyCtrl(void)
     m_wInvalidComb=HKCOMB_NONE;
     m_bInSetting=FALSE;
     m_bFocusable=TRUE;
+	m_evtSet.addEvent(EVENTID(EventSetHotKey));
 }
 
 SHotKeyCtrl::~SHotKeyCtrl(void)
@@ -104,6 +105,11 @@ void SHotKeyCtrl::UpdateModifier()
     else wCombKey=HKCOMB_SCA,m_wModifier=MOD_ALT|MOD_SHIFT|MOD_CONTROL;
     if(wCombKey&m_wInvalidComb)
         m_wModifier=m_wInvalidModifier;
+
+	EventSetHotKey ev(this);
+	ev.wModifiers = m_wModifier;
+	ev.vKey = m_wVK;
+	FireEvent(ev);
 }
 
 void SHotKeyCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )

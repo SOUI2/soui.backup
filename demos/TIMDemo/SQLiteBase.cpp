@@ -461,20 +461,25 @@ int SQLite3DB::SetBusyTimeOut(int nMillisecs)
 /// <returns>int.</returns>
 bool SQLite3DB::Open(const wchar_t* lpDBFilePath) 
 {
-	int nRet = sqlite3_open16((PVOID)lpDBFilePath, &m_pDBase);
-	if (SQLITE_OK != nRet) 
-	{
-		return false;
-	}
-	/*
-	//这个版本 没有加密   暂时没找到免费版的  好像有
-	wchar_t lKey[] = L"etimes2011@";
-	nRet = sqlite3_key(m_pDBase, lKey, wcslen(lKey));
-	if (nRet != SQLITE_OK){
-	LPCTSTR lpError = (LPCTSTR)sqlite3_errmsg16(m_pDBase);
-	throw CSQLite3Exception(nRet, (LPTSTR)lpError, false);
-	}*/
-	return true;
+    int nRet = sqlite3_open16((PVOID)lpDBFilePath, &m_pDBase);
+    if (SQLITE_OK != nRet)
+    {
+        return false;
+    }
+
+    //这个版本sqlite支持加密,以下是使用过程
+    /**
+     *   1.第一次操作数据库为设置密码abcd
+     *   2.设置过密码,使用abcd进行密码验证
+     */
+    nRet = sqlite3_key(m_pDBase, "abcd", 4);
+
+    if (nRet != SQLITE_OK)
+    {
+        LPCTSTR lpError = (LPCTSTR)sqlite3_errmsg16(m_pDBase);
+        return false;
+    }
+    return true;
 }
 
 /// <summary>

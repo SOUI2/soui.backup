@@ -17,6 +17,7 @@
 #include "SComboBox.h"
 #include "SCalendar.h"
 #include "SSpinButtonCtrl.h"
+#include "SSpinButton.h"
 #include "SListView.h"
 #include "SComboView.h"
 #include "SMCListView.h"

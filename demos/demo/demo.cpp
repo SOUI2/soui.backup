@@ -58,6 +58,7 @@
 #include "skin/SDemoSkin.h"
 #include "skin/SSkinLoader.h"
 #include "trayicon/SShellNotifyIcon.h"
+#include "qrcode/SQrCtrl.h"
 
 ROBJ_IN_CPP
 
@@ -190,6 +191,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         theApp->RegisterWindowClass<SRatingBar>();//注册SRatingBar
 		theApp->RegisterWindowClass<SInterpolatorView>();
 		theApp->RegisterWindowClass<SPathView>();
+		theApp->RegisterWindowClass<SQrCtrl>();
         if(SUCCEEDED(CUiAnimation::Init()))
         {
             theApp->RegisterWindowClass<SUiAnimationWnd>();//注册动画控件

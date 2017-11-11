@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu itemHeight="26" iconMargin="4" textMargin="8" >
+  <item id="200">@string/about</item>
+  <item id="201">@string/help</item>
+  <item text="@string/language" id="202">
+    <item id="2020">@string/lang_chinese</item>
+    <item id="2021">@string/lang_english</item>
+  </item>
+</menu>

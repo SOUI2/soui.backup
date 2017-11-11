@@ -1325,7 +1325,10 @@ namespace SOUI
 			SkPathEffect * skPathEffect = (SkPathEffect*)pathEffect->GetRealPathEffect();
 			paint.setPathEffect(skPathEffect);
 		}
-		m_SkCanvas->drawPath(path2->m_skPath,paint);
+		SkPath skPath;
+		path2->m_skPath.offset(m_ptOrg.fX,m_ptOrg.fY,&skPath);
+		m_SkCanvas->drawPath(skPath,paint);
+
 		return S_OK;
 	}
 

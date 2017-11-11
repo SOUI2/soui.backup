@@ -17,5 +17,5 @@ dir = ../..
 include($$dir/common.pri)
 
 # Input
-HEADERS += ../controls.extend/smiley/SSmileyCtrl.h
+HEADERS += ../../controls.extend/smiley/SSmileyCtrl.h
 SOURCES += SSmileyCtrl.cpp

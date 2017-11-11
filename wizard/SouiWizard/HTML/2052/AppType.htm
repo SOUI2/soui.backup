@@ -168,7 +168,7 @@
                                                         <span class="ACTIVELINK" id="ProjectOption" title="指定将程序的编译选项。" onclick="Next(document, 'ProjectOption.htm');" tabindex="4">编译选项</span>
                                                     </td>
                                                     <td width="4">
-                                                        <img src="../../2052/Images/spacer.gif" height="1" width="4">
+                                                        <img src="../../2052/Images/spacer.gif" height="1" width="1">
                                                     </td>
                                                 </tr>
                                             </table>
@@ -358,7 +358,7 @@
     tab_array[4] = ProjectOption;
 
     function InitDocument(document) {
-        //setDirection();
+        setDirection();
         window.external.Load(document);
 
         ToggleImage();
@@ -374,8 +374,6 @@
         if (obj == null || typeof (obj) == "undefined")
             return;
     }
-
-
 
     function OnFinish(document) {
 
@@ -420,6 +418,8 @@
 <script id="INCLUDE_COMMON" language="JSCRIPT"></script>
 
 <script>
-    document.scripts("INCLUDE_SCRIPT").src = window.external.FindSymbol("SCRIPT_COMMON_PATH") + "/Script.js";
-    document.scripts("INCLUDE_COMMON").src = window.external.FindSymbol("SCRIPT_COMMON_PATH") + "/Common.js";
+    //document.scripts("INCLUDE_SCRIPT").src = window.external.FindSymbol("SCRIPT_COMMON_PATH") + "/Script.js";
+    //document.scripts("INCLUDE_COMMON").src = window.external.FindSymbol("SCRIPT_COMMON_PATH") + "/Common.js";
+    document.scripts("INCLUDE_SCRIPT").src = " ../../2052/Script.js";
+    document.scripts("INCLUDE_COMMON").src = " ../../2052/Common.js";
 </script>

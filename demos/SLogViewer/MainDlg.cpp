@@ -450,3 +450,48 @@ void CMainDlg::OnAbout()
 	dlgAbout.DoModal();
 }
 
+void CMainDlg::OnMenu()
+{
+	SMenu menu;
+	menu.LoadMenu(UIRES.smenu.menu_help);
+
+
+	ITranslatorMgr *pTransMgr = SApplication::getSingletonPtr()->GetTranslator();
+	SASSERT(pTransMgr);
+
+	SStringW strLang = pTransMgr->GetLanguage();
+	int langId = 0;
+	if(strLang== (L"chinese"))
+		langId=2020;
+	else
+		langId=2021;
+	HMENU menuLang = ::GetSubMenu(menu.m_hMenu,2);
+ 	CheckMenuItem(menuLang,langId,MF_BYCOMMAND|MF_CHECKED);
+
+	SWindow * pSender = FindChildByID(R.id.btn_menu);
+	CRect rc = pSender->GetWindowRect();
+	ClientToScreen(&rc);
+	UINT uCmd = menu.TrackPopupMenu(TPM_RETURNCMD,rc.left,rc.bottom,m_hWnd);
+	switch(uCmd)
+	{
+	case 200:
+		OnAbout();
+		break;
+	case 201:
+		OnHelp();
+		break;
+	case 2020:
+		OnLanguage(_T("lang_cn"));
+		break;
+	case 2021:
+		OnLanguage(_T("lang_en"));
+		break;
+	}
+}
+
+void CMainDlg::OnHelp()
+{
+	SStringT strUrl = S_CW2T(GETSTRING(R.string.url_help));
+	ShellExecute(m_hWnd,_T("open"),strUrl,NULL,NULL,SW_SHOW);
+}
+

@@ -40,6 +40,7 @@ protected:
 	SMap<SResID,SStringT> m_mapFiles;
     CAutoRefPtr<IRenderFactory> m_renderFactory;
 	CZipArchive m_zipFile;
+	SStringT m_childDir;
 };
 
 namespace RESPROVIDER_ZIP
