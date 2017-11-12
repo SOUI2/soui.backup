@@ -1,6 +1,13 @@
 #pragma once
 #include "SwndFrame.h"
 #include "SCaptureButton.h"
+typedef struct _tagStyleInf
+{
+	SStringT strStyle;
+	SStringT strDes;
+	_tagStyleInf(){}
+	_tagStyleInf(LPCTSTR style, LPCTSTR des):strStyle(style),strDes(des){}
+}StyleInf,*PStyleInf;
 class CWindowHelperHander
 {
 	friend class CMainDlg;
@@ -18,6 +25,8 @@ protected:
 	void OnEventCaptureHost(EventArgs *pEvt);
 	void OnEventCaptureHostFinish(EventArgs *pEvt);
 	void UpdataWindowInf(HWND hWnd);
+	void GetStyleList(LONG lStyle,SArray<StyleInf> &styleList);
+	void GetExStyleList(LONG lStyle, SArray<StyleInf> &styleList);
 private:
 	SwndFrame       m_wndFrame;
 	HWND m_hHostWnd,m_hLastHwnd;
