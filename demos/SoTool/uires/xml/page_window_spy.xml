@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<include>
+  <tabctrlex pos="4,4,-4,-4" colorTextPush="#FFFF00" tabInterSize="0" tabWidth="70" tabHeight="30" colorText="#FF00FF" drawFocusRect="0" show="1" curSel="0">
+    <socrollviewStyle  sbWid="10" sbArrowSize="0"/>
+    <pages>
+      <pageex title="窗口信息" tip="窗口信息">
+        <text pos="10,10">窗口信息:</text>
+        <window pos="{30,[5" size="-1,-1" layout="hbox">
+        <text>窗口句柄：</text>
+          <text name="wnd_hwnd" text="0xffffff"/>
+        </window>
+        <window pos="{,[5" size="-1,-1" layout="hbox">
+          <text>窗口类名：</text>
+          <text name="wnd_class" text="0xffffff"/>
+        </window>
+        <window pos="{,[5" size="-1,-1" layout="hbox">
+          <text>窗口标题：</text>
+          <text name="wnd_title" text="0xffffff"/>
+        </window>
+        <window pos="{,[5" size="-1,-1" layout="hbox">
+          <text>窗口矩形：</text>
+          <text name="wnd_rect" text="0xffffff"/>
+        </window>
+        <window pos="{,[5" size="-1,-1" layout="hbox">
+          <text>进程ID：</text>
+          <text name="wnd_proid" text="0xffffff"/>
+        </window>
+        <window pos="{,[5" size="-1,-1" layout="hbox">
+          <text>程序路径：</text>
+          <text name="wnd_exepath" text="0xffffff"/>
+        </window>
+      </pageex>
+      <pageex title="窗口样式:" tip="窗口样式">
+        <text pos="10,10">窗口样式</text>
+        <window pos="{30,[5" size="-1,-1" layout="hbox">
+          <text>窗口句柄：</text>
+          <text name="wnd_hwnd" text="0xffffff"/>
+        </window>
+        <window pos="{,[5" size="-1,-1" layout="hbox">
+          <text>窗口类名：</text>
+          <text name="wnd_class" text="0xffffff"/>
+        </window>
+        <window pos="{,[5" size="-1,-1" layout="hbox">
+          <text>窗口标题：</text>
+          <text name="wnd_title" text="0xffffff"/>
+        </window>
+        <window pos="{,[5" size="-1,-1" layout="hbox">
+          <text>窗口矩形：</text>
+          <text name="wnd_rect" text="0xffffff"/>
+        </window>
+        <window pos="{,[5" size="-1,-1" layout="hbox">
+          <text>进程ID：</text>
+          <text name="wnd_proid" text="0xffffff"/>
+        </window>
+        <window pos="{,[5" size="-1,-1" layout="hbox">
+          <text>程序路径：</text>
+          <text name="wnd_exepath" text="0xffffff"/>
+        </window>
+      </pageex>
+      <pageex title="窗口类:" tip="窗口类">
+        <window pos="{30,[5" size="-1,-1" layout="hbox">
+          <text>窗口句柄：</text>
+          <text name="wnd_hwnd" text="0xffffff"/>
+        </window>
+      </pageex>      
+    </pages>
+  </tabctrlex>
+</include>
