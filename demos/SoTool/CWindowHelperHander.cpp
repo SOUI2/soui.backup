@@ -145,7 +145,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	styleList.RemoveAll();
 	if (lStyle&WS_OVERLAPPED)
 	{
-		auto it = desMap.find(WS_OVERLAPPED);		
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_OVERLAPPED);		
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_OVERLAPPED"),it->second));
 		}
@@ -156,7 +156,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_POPUP)
 	{
-		auto it = desMap.find(WS_POPUP);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_POPUP);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_POPUP"), it->second));
 		}
@@ -167,7 +167,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_CHILD)
 	{
-		auto it = desMap.find(WS_CHILD);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_CHILD);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_CHILD"), it->second));
 		}
@@ -178,7 +178,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_MINIMIZE)
 	{
-		auto it = desMap.find(WS_MINIMIZE);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_MINIMIZE);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_MINIMIZE"), it->second));
 		}
@@ -189,7 +189,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_VISIBLE)
 	{
-		auto it = desMap.find(WS_VISIBLE);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_VISIBLE);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_VISIBLE"), it->second));
 		}
@@ -200,7 +200,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_DISABLED)
 	{
-		auto it = desMap.find(WS_DISABLED);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_DISABLED);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_DISABLED"), it->second));
 		}
@@ -211,7 +211,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_CLIPSIBLINGS)
 	{
-		auto it = desMap.find(WS_CLIPSIBLINGS);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_CLIPSIBLINGS);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_CLIPSIBLINGS"), it->second));
 		}
@@ -222,7 +222,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_CLIPCHILDREN)
 	{
-		auto it = desMap.find(WS_CLIPCHILDREN);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_CLIPCHILDREN);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_CLIPCHILDREN"), it->second));
 		}
@@ -233,7 +233,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_MAXIMIZE)
 	{
-		auto it = desMap.find(WS_MAXIMIZE);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_MAXIMIZE);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_MAXIMIZE"), it->second));
 		}
@@ -244,7 +244,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_CAPTION)
 	{
-		auto it = desMap.find(WS_CAPTION);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_CAPTION);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_CAPTION"), it->second));
 		}
@@ -255,7 +255,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_BORDER)
 	{
-		auto it = desMap.find(WS_BORDER);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_BORDER);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_BORDER"), it->second));
 		}
@@ -266,7 +266,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_DLGFRAME)
 	{
-		auto it = desMap.find(WS_DLGFRAME);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_DLGFRAME);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_DLGFRAME"), it->second));
 		}
@@ -277,7 +277,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_VSCROLL)
 	{
-		auto it = desMap.find(WS_VSCROLL);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_VSCROLL);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_VSCROLL"), it->second));
 		}
@@ -288,7 +288,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_HSCROLL)
 	{
-		auto it = desMap.find(WS_HSCROLL);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_HSCROLL);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_HSCROLL"), it->second));
 		}
@@ -299,7 +299,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_SYSMENU)
 	{
-		auto it = desMap.find(WS_SYSMENU);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_SYSMENU);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_SYSMENU"), it->second));
 		}
@@ -310,7 +310,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_THICKFRAME)
 	{
-		auto it = desMap.find(WS_THICKFRAME);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_THICKFRAME);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_THICKFRAME"), it->second));
 		}
@@ -321,7 +321,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_GROUP)
 	{
-		auto it = desMap.find(WS_GROUP);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_GROUP);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_GROUP"), it->second));
 		}
@@ -332,7 +332,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_TABSTOP)
 	{
-		auto it = desMap.find(WS_TABSTOP);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_TABSTOP);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_TABSTOP"), it->second));
 		}
@@ -343,7 +343,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_MINIMIZEBOX)
 	{
-		auto it = desMap.find(WS_MINIMIZEBOX);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_MINIMIZEBOX);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_MINIMIZEBOX"), it->second));
 		}
@@ -354,7 +354,7 @@ void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 	}
 	if (lStyle&WS_MAXIMIZEBOX)
 	{
-		auto it = desMap.find(WS_MAXIMIZEBOX);
+		std::map<LONG,LPCTSTR>::const_iterator it = desMap.find(WS_MAXIMIZEBOX);
 		if (it != desMap.end()) {
 			styleList.Add(StyleInf(_T("WS_MAXIMIZEBOX"), it->second));
 		}
@@ -375,7 +375,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	
 	if (lStyle&WS_EX_DLGMODALFRAME)
 	{
-		auto it = desexMap.find(WS_EX_DLGMODALFRAME);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_DLGMODALFRAME);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_DLGMODALFRAME"), it->second));
 		}
@@ -386,7 +386,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_NOPARENTNOTIFY)
 	{
-		auto it = desexMap.find(WS_EX_NOPARENTNOTIFY);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_NOPARENTNOTIFY);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_NOPARENTNOTIFY"), it->second));
 		}
@@ -397,7 +397,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_TOPMOST)
 	{
-		auto it = desexMap.find(WS_EX_TOPMOST);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_TOPMOST);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_TOPMOST"), it->second));
 		}
@@ -408,7 +408,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_ACCEPTFILES)
 	{
-		auto it = desexMap.find(WS_EX_ACCEPTFILES);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_ACCEPTFILES);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_ACCEPTFILES"), it->second));
 		}
@@ -419,7 +419,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_TRANSPARENT)
 	{
-		auto it = desexMap.find(WS_EX_TRANSPARENT);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_TRANSPARENT);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_TRANSPARENT"), it->second));
 		}
@@ -430,7 +430,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_MDICHILD)
 	{
-		auto it = desexMap.find(WS_EX_MDICHILD);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_MDICHILD);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_MDICHILD"), it->second));
 		}
@@ -441,7 +441,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_TOOLWINDOW)
 	{
-		auto it = desexMap.find(WS_EX_TOOLWINDOW);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_TOOLWINDOW);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_TOOLWINDOW"), it->second));
 		}
@@ -452,7 +452,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_WINDOWEDGE)
 	{
-		auto it = desexMap.find(WS_EX_WINDOWEDGE);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_WINDOWEDGE);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_WINDOWEDGE"), it->second));
 		}
@@ -463,7 +463,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_WINDOWEDGE)
 	{
-		auto it = desexMap.find(WS_EX_WINDOWEDGE);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_WINDOWEDGE);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_WINDOWEDGE"), it->second));
 		}
@@ -474,7 +474,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_CLIENTEDGE)
 	{
-		auto it = desexMap.find(WS_EX_CLIENTEDGE);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_CLIENTEDGE);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_CLIENTEDGE"), it->second));
 		}
@@ -485,7 +485,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_CONTEXTHELP)
 	{
-		auto it = desexMap.find(WS_EX_CONTEXTHELP);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_CONTEXTHELP);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_CONTEXTHELP"), it->second));
 		}
@@ -496,7 +496,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_RIGHT)
 	{
-		auto it = desexMap.find(WS_EX_RIGHT);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_RIGHT);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_RIGHT"), it->second));
 		}
@@ -507,7 +507,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_LEFT)
 	{
-		auto it = desexMap.find(WS_EX_LEFT);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_LEFT);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_LEFT"), it->second));
 		}
@@ -518,7 +518,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_RTLREADING)
 	{
-		auto it = desexMap.find(WS_EX_RTLREADING);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_RTLREADING);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_RTLREADING"), it->second));
 		}
@@ -529,7 +529,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_LTRREADING)
 	{
-		auto it = desexMap.find(WS_EX_LTRREADING);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_LTRREADING);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_LTRREADING"), it->second));
 		}
@@ -540,7 +540,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_LEFTSCROLLBAR)
 	{
-		auto it = desexMap.find(WS_EX_LEFTSCROLLBAR);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_LEFTSCROLLBAR);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_LEFTSCROLLBAR"), it->second));
 		}
@@ -551,7 +551,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_RIGHTSCROLLBAR)
 	{
-		auto it = desexMap.find(WS_EX_RIGHTSCROLLBAR);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_RIGHTSCROLLBAR);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_RIGHTSCROLLBAR"), it->second));
 		}
@@ -562,7 +562,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_CONTROLPARENT)
 	{
-		auto it = desexMap.find(WS_EX_CONTROLPARENT);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_CONTROLPARENT);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_CONTROLPARENT"), it->second));
 		}
@@ -573,7 +573,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_STATICEDGE)
 	{
-		auto it = desexMap.find(WS_EX_STATICEDGE);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_STATICEDGE);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_STATICEDGE"), it->second));
 		}
@@ -584,7 +584,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_APPWINDOW)
 	{
-		auto it = desexMap.find(WS_EX_APPWINDOW);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_APPWINDOW);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_APPWINDOW"), it->second));
 		}
@@ -595,7 +595,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_OVERLAPPEDWINDOW)
 	{
-		auto it = desexMap.find(WS_EX_OVERLAPPEDWINDOW);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_OVERLAPPEDWINDOW);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_OVERLAPPEDWINDOW"), it->second));
 		}
@@ -606,7 +606,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_PALETTEWINDOW)
 	{
-		auto it = desexMap.find(WS_EX_PALETTEWINDOW);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_PALETTEWINDOW);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_PALETTEWINDOW"), it->second));
 		}
@@ -617,7 +617,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_LAYERED)
 	{
-		auto it = desexMap.find(WS_EX_LAYERED);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_LAYERED);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_LAYERED"), it->second));
 		}
@@ -628,7 +628,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_NOINHERITLAYOUT)
 	{
-		auto it = desexMap.find(WS_EX_NOINHERITLAYOUT);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_NOINHERITLAYOUT);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_NOINHERITLAYOUT"), it->second));
 		}
@@ -640,7 +640,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 
 	if (lStyle&WS_EX_NOREDIRECTIONBITMAP)
 	{
-		auto it = desexMap.find(WS_EX_NOREDIRECTIONBITMAP);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_NOREDIRECTIONBITMAP);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_NOREDIRECTIONBITMAP"), it->second));
 		}
@@ -653,7 +653,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 
 	if (lStyle&WS_EX_LAYOUTRTL)
 	{
-		auto it = desexMap.find(WS_EX_LAYOUTRTL);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_LAYOUTRTL);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_LAYOUTRTL"), it->second));
 		}
@@ -664,7 +664,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_COMPOSITED)
 	{
-		auto it = desexMap.find(WS_EX_COMPOSITED);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_COMPOSITED);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_COMPOSITED"), it->second));
 		}
@@ -675,7 +675,7 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	}
 	if (lStyle&WS_EX_NOACTIVATE)
 	{
-		auto it = desexMap.find(WS_EX_NOACTIVATE);
+		std::map<LONG,LPCTSTR>::const_iterator it = desexMap.find(WS_EX_NOACTIVATE);
 		if (it != desexMap.end()) {
 			styleList.Add(StyleInf(_T("WS_EX_NOACTIVATE"), it->second));
 		}
