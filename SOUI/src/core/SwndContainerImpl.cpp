@@ -330,6 +330,9 @@ void SwndContainerImpl::OnFrameMouseWheel( UINT uMsg,WPARAM wParam,LPARAM lParam
 
 void SwndContainerImpl::OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
+	if(wParam>='a' && wParam <='z') wParam -= 0x20;//转换成VK
+	if(m_focusMgr.OnKeyDown(wParam)) return; //首先处理焦点切换
+
     SWindow *pFocus=SWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());
     if(pFocus)
     {
