@@ -5,7 +5,7 @@ SOUI
 
 ###### Git下载地址
 
-- [国内Git下载站点](https://gitee.com/setousoft/soui)
+- [国内Git下载站点](https://gitee.com/setoutsoft/soui)
 
 - [国外Git下载站点](https://github.com/SOUI2/soui)
 
