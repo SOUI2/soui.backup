@@ -316,6 +316,29 @@ bool SButton::OnAcceleratorPressed( const CAccelerator& accelerator )
     return true;
 }
 
+BOOL SButton::InitFromXml(pugi::xml_node xmlNode)
+{
+	BOOL bRet=SWindow::InitFromXml(xmlNode);
+	SStringT strText = GetWindowText();
+	
+	if (!strText.IsEmpty()&&(strText[strText.GetLength()-1]==_T(')')))
+	{
+		int pos=strText.ReverseFind(_T('('));
+		if ((pos != -1)&&(strText[++pos]==_T('&')))
+		{
+			SStringT strAccelT=_T("alt+");
+			strAccelT += strText[++pos];
+			m_accel = CAccelerator::TranslateAccelKey(strAccelT);
+			if (m_accel)
+			{
+				CAccelerator acc(m_accel);
+				GetContainer()->GetAcceleratorMgr()->RegisterAccelerator(acc, this);
+			}
+		}
+	}
+	return bRet;
+}
+
 void SButton::OnDestroy()
 {
     if(m_accel)
