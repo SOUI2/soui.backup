@@ -83,7 +83,7 @@ void CWindowHelperHander::UpdataWindowInf(HWND hWnd)
 		m_HostRoot->FindChildByName(L"wnd_exepath")->SetWindowText(szBuf);
 	}
 }
-const std::map<LONG, LPCTSTR>::value_type init_value[] =
+const std::map<LONG, LPCTSTR>::value_type init_style[] =
 {
 	std::map<LONG,LPCTSTR>::value_type(WS_BORDER,_T("The window has a thin-line border.")),
 	std::map<LONG,LPCTSTR>::value_type(WS_CAPTION,_T("The window has a title bar (includes the WS_BORDER style).")),
@@ -106,7 +106,40 @@ const std::map<LONG, LPCTSTR>::value_type init_value[] =
 	std::map<LONG,LPCTSTR>::value_type(WS_VISIBLE,_T("The window is initially visible.")),
 	std::map<LONG,LPCTSTR>::value_type(WS_VSCROLL,_T("The window has a vertical scroll bar."))
 };
-const std::map<LONG, LPCTSTR> desMap(init_value, init_value + sizeof init_value/sizeof init_value[0]);
+const std::map<LONG, LPCTSTR> desMap(init_style, init_style + sizeof init_style /sizeof init_style[0]);
+#if(WINVER < 0x0602)
+#define WS_EX_NOREDIRECTIONBITMAP 0x00200000L
+#endif /* WINVER >= 0x0602 */
+const std::map<LONG, LPCTSTR>::value_type init_exstyle[] =
+{
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_ACCEPTFILES,_T("The window accepts drag-drop files.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_APPWINDOW,_T("Forces a top-level window onto the taskbar when the window is visible. ")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_CLIENTEDGE,_T("The window has a border with a sunken edge.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_COMPOSITED,_T("Paints all descendants of a window in bottom-to-top painting order using double-buffering. For more information, see Remarks. This cannot be used if the window has a class style of either CS_OWNDC or CS_CLASSDC.	Windows 2000:  This style is not supported.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_CONTEXTHELP,_T("The title bar of the window includes a question mark. When the user clicks the question mark, the cursor changes to a question mark with a pointer. If the user then clicks a child window, the child receives a WM_HELP message. The child window should pass the message to the parent window procedure, which should call the WinHelp function using the HELP_WM_HELP command. The Help application displays a pop-up window that typically contains help for the child window.	WS_EX_CONTEXTHELP cannot be used with the WS_MAXIMIZEBOX or WS_MINIMIZEBOX styles.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_CONTROLPARENT,_T("The window itself contains child windows that should take part in dialog box navigation. If this style is specified, the dialog manager recurses into children of this window when performing navigation operations such as handling the TAB key, an arrow key, or a keyboard mnemonic.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_DLGMODALFRAME,_T("The window has a double border; the window can, optionally, be created with a title bar by specifying the WS_CAPTION style in the dwStyle parameter.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_LAYERED,_T("The window is a layered window. This style cannot be used if the window has a class style of either CS_OWNDC or CS_CLASSDC.Windows 8:  The WS_EX_LAYERED style is supported for top - level windows and child windows.Previous Windows versions support WS_EX_LAYERED only for top - level windows.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_LAYOUTRTL,_T("If the shell language is Hebrew, Arabic, or another language that supports reading order alignment, the horizontal origin of the window is on the right edge. Increasing horizontal values advance to the left. ")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_LEFT,_T("The window has generic left-aligned properties. This is the default.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_LEFTSCROLLBAR,_T("If the shell language is Hebrew, Arabic, or another language that supports reading order alignment, the vertical scroll bar (if present) is to the left of the client area. For other languages, the style is ignored.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_LTRREADING,_T("The window text is displayed using left-to-right reading-order properties. This is the default.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_MDICHILD,_T("The window is a MDI child window.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_NOACTIVATE,_T("A top-level window created with this style does not become the foreground window when the user clicks it. The system does not bring this window to the foreground when the user minimizes or closes the foreground window.To activate the window, use the SetActiveWindow or SetForegroundWindow function.The window does not appear on the taskbar by default.To force the window to appear on the taskbar, use the WS_EX_APPWINDOW style.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_NOINHERITLAYOUT,_T("The window does not pass its window layout to its child windows.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_NOPARENTNOTIFY,_T("The child window created with this style does not send the WM_PARENTNOTIFY message to its parent window when it is created or destroyed..")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_NOREDIRECTIONBITMAP,_T("The window does not render to a redirection surface. This is for windows that do not have visible content or that use mechanisms other than surfaces to provide their visual.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_RIGHT,_T("The window has generic \"right - aligned\" properties. This depends on the window class. This style has an effect only if the shell language is Hebrew, Arabic, or another language that supports reading-order alignment; otherwise, the style is ignored.Using the WS_EX_RIGHT style for static or edit controls has the same effect as using the SS_RIGHT or ES_RIGHT style, respectively.Using this style with button controls has the same effect as using BS_RIGHT and BS_RIGHTBUTTON styles. ")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_RIGHTSCROLLBAR,_T("The vertical scroll bar (if present) is to the right of the client area. This is the default.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_RTLREADING,_T("If the shell language is Hebrew, Arabic, or another language that supports reading-order alignment, the window text is displayed using right-to-left reading-order properties. For other languages, the style is ignored.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_STATICEDGE,_T("The window has a three-dimensional border style intended to be used for items that do not accept user input.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_TOOLWINDOW,_T("The window is intended to be used as a floating toolbar. A tool window has a title bar that is shorter than a normal title bar, and the window title is drawn using a smaller font. A tool window does not appear in the taskbar or in the dialog that appears when the user presses ALT+TAB. If a tool window has a system menu, its icon is not displayed on the title bar. However, you can display the system menu by right-clicking or by typing ALT+SPACE. ")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_TOPMOST,_T("The window should be placed above all non-topmost windows and should stay above them, even when the window is deactivated. To add or remove this style, use the SetWindowPos function.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_TRANSPARENT,_T("The window should not be painted until siblings beneath the window (that were created by the same thread) have been painted. The window appears transparent because the bits of underlying sibling windows have already been painted.To achieve transparency without these restrictions, use the SetWindowRgn function.")),
+	std::map<LONG,LPCTSTR>::value_type(WS_EX_WINDOWEDGE,_T("The window has a border with a raised edge."))
+};
+const std::map<LONG, LPCTSTR> desexMap(init_exstyle, init_exstyle + sizeof init_exstyle / sizeof init_exstyle[0]);
+
 void CWindowHelperHander::GetStyleList(LONG lStyle, SArray<StyleInf>& styleList)
 {
 	styleList.RemoveAll();
@@ -342,147 +375,313 @@ void CWindowHelperHander::GetExStyleList(LONG lStyle, SArray<StyleInf>& styleLis
 	
 	if (lStyle&WS_EX_DLGMODALFRAME)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_DLGMODALFRAME"),_T("")));
+		auto it = desexMap.find(WS_EX_DLGMODALFRAME);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_DLGMODALFRAME"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_DLGMODALFRAME"), _T("")));
+		}
 		lStyle &= ~WS_EX_DLGMODALFRAME;
 	}
 	if (lStyle&WS_EX_NOPARENTNOTIFY)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_NOPARENTNOTIFY"),_T("")));
+		auto it = desexMap.find(WS_EX_NOPARENTNOTIFY);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_NOPARENTNOTIFY"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_NOPARENTNOTIFY"), _T("")));
+		}
 		lStyle &= ~WS_EX_NOPARENTNOTIFY;
 	}
 	if (lStyle&WS_EX_TOPMOST)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_TOPMOST"),_T("")));
+		auto it = desexMap.find(WS_EX_TOPMOST);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_TOPMOST"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_TOPMOST"), _T("")));
+		}
 		lStyle &= ~WS_EX_TOPMOST;
 	}
 	if (lStyle&WS_EX_ACCEPTFILES)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_ACCEPTFILES"),_T("")));
+		auto it = desexMap.find(WS_EX_ACCEPTFILES);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_ACCEPTFILES"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_ACCEPTFILES"), _T("")));
+		}
 		lStyle &= ~WS_EX_ACCEPTFILES;
 	}
 	if (lStyle&WS_EX_TRANSPARENT)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_TRANSPARENT"),_T("")));
+		auto it = desexMap.find(WS_EX_TRANSPARENT);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_TRANSPARENT"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_TRANSPARENT"), _T("")));
+		}
 		lStyle &= ~WS_EX_TRANSPARENT;
 	}
 	if (lStyle&WS_EX_MDICHILD)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_MDICHILD"),_T("")));
+		auto it = desexMap.find(WS_EX_MDICHILD);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_MDICHILD"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_MDICHILD"), _T("")));
+		}
 		lStyle &= ~WS_EX_MDICHILD;
 	}
 	if (lStyle&WS_EX_TOOLWINDOW)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_TOOLWINDOW"),_T("")));
+		auto it = desexMap.find(WS_EX_TOOLWINDOW);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_TOOLWINDOW"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_TOOLWINDOW"), _T("")));
+		}
 		lStyle &= ~WS_EX_TOOLWINDOW;
 	}
 	if (lStyle&WS_EX_WINDOWEDGE)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_WINDOWEDGE"),_T("")));
+		auto it = desexMap.find(WS_EX_WINDOWEDGE);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_WINDOWEDGE"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_WINDOWEDGE"), _T("")));
+		}
 		lStyle &= ~WS_EX_WINDOWEDGE;
 	}
 	if (lStyle&WS_EX_WINDOWEDGE)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_WINDOWEDGE"),_T("")));
+		auto it = desexMap.find(WS_EX_WINDOWEDGE);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_WINDOWEDGE"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_WINDOWEDGE"), _T("")));
+		}
 		lStyle &= ~WS_EX_WINDOWEDGE;
 	}
 	if (lStyle&WS_EX_CLIENTEDGE)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_CLIENTEDGE"),_T("")));
+		auto it = desexMap.find(WS_EX_CLIENTEDGE);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_CLIENTEDGE"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_CLIENTEDGE"), _T("")));
+		}
 		lStyle &= ~WS_EX_CLIENTEDGE;
 	}
 	if (lStyle&WS_EX_CONTEXTHELP)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_CONTEXTHELP"),_T("")));
+		auto it = desexMap.find(WS_EX_CONTEXTHELP);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_CONTEXTHELP"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_CONTEXTHELP"), _T("")));
+		}
 		lStyle &= ~WS_EX_CONTEXTHELP;
 	}
 	if (lStyle&WS_EX_RIGHT)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_RIGHT"),_T("")));
+		auto it = desexMap.find(WS_EX_RIGHT);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_RIGHT"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_RIGHT"), _T("")));
+		}
 		lStyle &= ~WS_EX_RIGHT;
 	}
 	if (lStyle&WS_EX_LEFT)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_LEFT"),_T("")));
+		auto it = desexMap.find(WS_EX_LEFT);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_LEFT"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_LEFT"), _T("")));
+		}
 		lStyle &= ~WS_EX_LEFT;
 	}
 	if (lStyle&WS_EX_RTLREADING)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_RTLREADING"),_T("")));
+		auto it = desexMap.find(WS_EX_RTLREADING);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_RTLREADING"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_RTLREADING"), _T("")));
+		}
 		lStyle &= ~WS_EX_RTLREADING;
 	}
 	if (lStyle&WS_EX_LTRREADING)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_LTRREADING"),_T("")));
+		auto it = desexMap.find(WS_EX_LTRREADING);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_LTRREADING"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_LTRREADING"), _T("")));
+		}
 		lStyle &= ~WS_EX_LTRREADING;
 	}
 	if (lStyle&WS_EX_LEFTSCROLLBAR)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_LEFTSCROLLBAR"),_T("")));
+		auto it = desexMap.find(WS_EX_LEFTSCROLLBAR);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_LEFTSCROLLBAR"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_LEFTSCROLLBAR"), _T("")));
+		}
 		lStyle &= ~WS_EX_LEFTSCROLLBAR;
 	}
 	if (lStyle&WS_EX_RIGHTSCROLLBAR)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_RIGHTSCROLLBAR"),_T("")));
+		auto it = desexMap.find(WS_EX_RIGHTSCROLLBAR);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_RIGHTSCROLLBAR"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_RIGHTSCROLLBAR"), _T("")));
+		}
 		lStyle &= ~WS_EX_RIGHTSCROLLBAR;
 	}
 	if (lStyle&WS_EX_CONTROLPARENT)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_CONTROLPARENT"),_T("")));
+		auto it = desexMap.find(WS_EX_CONTROLPARENT);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_CONTROLPARENT"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_CONTROLPARENT"), _T("")));
+		}
 		lStyle &= ~WS_EX_CONTROLPARENT;
 	}
 	if (lStyle&WS_EX_STATICEDGE)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_STATICEDGE"),_T("")));
+		auto it = desexMap.find(WS_EX_STATICEDGE);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_STATICEDGE"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_STATICEDGE"), _T("")));
+		}
 		lStyle &= ~WS_EX_STATICEDGE;
 	}
 	if (lStyle&WS_EX_APPWINDOW)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_APPWINDOW"),_T("")));
+		auto it = desexMap.find(WS_EX_APPWINDOW);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_APPWINDOW"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_APPWINDOW"), _T("")));
+		}
 		lStyle &= ~WS_EX_APPWINDOW;
 	}
 	if (lStyle&WS_EX_OVERLAPPEDWINDOW)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_OVERLAPPEDWINDOW"),_T("")));
+		auto it = desexMap.find(WS_EX_OVERLAPPEDWINDOW);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_OVERLAPPEDWINDOW"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_OVERLAPPEDWINDOW"), _T("")));
+		}
 		lStyle &= ~WS_EX_OVERLAPPEDWINDOW;
 	}
 	if (lStyle&WS_EX_PALETTEWINDOW)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_PALETTEWINDOW"),_T("")));
+		auto it = desexMap.find(WS_EX_PALETTEWINDOW);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_PALETTEWINDOW"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_PALETTEWINDOW"), _T("")));
+		}
 		lStyle &= ~WS_EX_PALETTEWINDOW;
 	}
 	if (lStyle&WS_EX_LAYERED)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_LAYERED"),_T("")));
+		auto it = desexMap.find(WS_EX_LAYERED);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_LAYERED"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_LAYERED"), _T("")));
+		}
 		lStyle &= ~WS_EX_LAYERED;
 	}
 	if (lStyle&WS_EX_NOINHERITLAYOUT)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_NOINHERITLAYOUT"),_T("")));
+		auto it = desexMap.find(WS_EX_NOINHERITLAYOUT);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_NOINHERITLAYOUT"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_NOINHERITLAYOUT"), _T("")));
+		}
 		lStyle &= ~WS_EX_NOINHERITLAYOUT;
 	}
-#if(WINVER < 0x0602)
-#define WS_EX_NOREDIRECTIONBITMAP 0x00200000L
-#endif /* WINVER >= 0x0602 */
+
 	if (lStyle&WS_EX_NOREDIRECTIONBITMAP)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_NOREDIRECTIONBITMAP"),_T("")));
+		auto it = desexMap.find(WS_EX_NOREDIRECTIONBITMAP);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_NOREDIRECTIONBITMAP"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_NOREDIRECTIONBITMAP"), _T("")));
+		}
 		lStyle &= ~WS_EX_NOREDIRECTIONBITMAP;
 	}
 
 
 	if (lStyle&WS_EX_LAYOUTRTL)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_LAYOUTRTL"),_T("")));
+		auto it = desexMap.find(WS_EX_LAYOUTRTL);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_LAYOUTRTL"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_LAYOUTRTL"), _T("")));
+		}
 		lStyle &= ~WS_EX_LAYOUTRTL;
 	}
 	if (lStyle&WS_EX_COMPOSITED)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_COMPOSITED"),_T("")));
+		auto it = desexMap.find(WS_EX_COMPOSITED);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_COMPOSITED"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_COMPOSITED"), _T("")));
+		}
 		lStyle &= ~WS_EX_COMPOSITED;
 	}
 	if (lStyle&WS_EX_NOACTIVATE)
 	{
-		styleList.Add(StyleInf(_T("WS_EX_COMPOSITED"),_T("")));
+		auto it = desexMap.find(WS_EX_NOACTIVATE);
+		if (it != desexMap.end()) {
+			styleList.Add(StyleInf(_T("WS_EX_NOACTIVATE"), it->second));
+		}
+		else {
+			styleList.Add(StyleInf(_T("WS_EX_NOACTIVATE"), _T("")));
+		}
 		lStyle &= ~WS_EX_NOACTIVATE;
 	}
 	if (lStyle)
@@ -538,5 +737,32 @@ void CWindowHelperHander::OnEventCaptureHostFinish(EventArgs *pEvt)
 		}
 		//pStyleList->RequestRelayout();
 	}
-	//GetExStyleList(GetWindowLong(hWnd, GWL_EXSTYLE), styleList);
+	GetExStyleList(GetWindowLong(hWnd, GWL_EXSTYLE), styleList);
+	pStyleList = m_HostRoot->FindChildByName(L"wnd_exstyle");
+	if (pStyleList)
+	{
+		SWindow *pChild = pStyleList->GetWindow(GSW_FIRSTCHILD);
+		while (pChild)
+		{
+			SWindow *pNextChild = pChild->GetWindow(GSW_NEXTSIBLING);
+			pStyleList->DestroyChild(pChild);
+			pChild = pNextChild;
+		}
+		SApplication *theApp = SApplication::getSingletonPtr();
+		for (int i = 0; i < styleList.GetCount(); i++)
+		{
+			SWindow *pChild = theApp->CreateWindowByName(L"text");
+			pStyleList->InsertChild(pChild);
+			pugi::xml_document doc;
+			SStringW buf;
+			buf.Format(L"<text>%s</text><text>%s</text>", S_CT2W(styleList[i].strStyle), S_CT2W(styleList[i].strDes));
+			LoadXMLFormBuf(doc, buf);
+			pugi::xml_node pChildNode = doc.first_child();
+			pChild->InitFromXml(pChildNode);
+			SWindow *pChild2 = theApp->CreateWindowByName(L"text");
+			pStyleList->InsertChild(pChild2);
+			pChild2->InitFromXml(pChildNode.next_sibling());
+		}
+		//pStyleList->RequestRelayout();
+	}
 }
