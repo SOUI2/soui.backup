@@ -1,0 +1,12 @@
+<include>
+    <window pos="0,[0,-0,-0" colorBkgnd="#FFFFFF">
+        <window pos="|-237,|-97,@474,@194">
+            <img pos="0,0" skin="skin_safebox_ico"/>
+            <text pos="173,25,@290,@20" font="face:微软雅黑,adding:3" colorText="#3C6889">启用隐藏空间保存你的私密文件吧~</text>
+            <imgbtn pos="{0,87,@170,@46" skin="skin_safebox_btn_bk" font="face:微软雅黑,adding:1" colorText="#FFFFFF">启用隐藏空间</imgbtn>
+            <link pos="[20,[-16" class="cls_link">隐藏空间是什么？</link>
+            <text pos="0,[16" class="font:small_3">小贴士：</text>
+            <text pos="0,[5" class="font:small_3">隐藏空间中的文件目前仅能在云管家中查看，且不支持分享给好友</text>
+        </window>
+    </window>
+</include>

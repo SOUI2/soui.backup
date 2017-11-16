@@ -1,0 +1,34 @@
+<include>
+  <window pos="0,[0,-0,-0" colorBkgnd="#FFFFFF">
+    <window pos="|-388,|-172,@776,@344">
+      <text pos="0,0,-0,@23" align="center" font="adding:7" colorText="#333333">功能宝箱</text>
+      <text pos="0,[13,-0,@20" align="center" font="adding:1" colorText="#999999">更多功能，带给您更贴心的体验</text>
+      <imgbtn pos="0,85,@250,@124" skin="skin_func_box_btnbkg" animate="1">
+        <img pos="20,20" skin="skin_func_box_phone"></img>
+        <text pos="114,39" class="font:big_3">手机忘带</text>
+        <text pos="{0,[7" class="font:small_gray">轻松查看来电、短信</text>
+      </imgbtn>
+      <imgbtn pos="[12,{0,@250,@124" skin="skin_func_box_btnbkg" animate="1">
+        <img pos="20,20" skin="skin_func_box_datacable"></img>
+        <text pos="114,39" class="font:big_3">数据线</text>
+        <text pos="{0,[7" class="font:small_gray">手机和电脑无线传输</text>
+      </imgbtn>
+      <imgbtn pos="[12,{0,@250,@124" skin="skin_func_box_btnbkg" animate="1">
+        <img pos="20,20" skin="skin_func_box_backup"></img>
+        <img pos="-68,0" skin="skin_func_box_viponly"></img>
+        <text pos="114,39" class="font:big_3">自动备份</text>
+        <text pos="{0,[7" class="font:small_gray">随时备份，告别丢失</text>
+      </imgbtn>
+      <imgbtn pos="0,220,@250,@124" skin="skin_func_box_btnbkg" animate="1">
+        <img pos="20,20" skin="skin_func_box_recycle"></img>
+        <text pos="114,39" class="font:big_3">回收站</text>
+        <text pos="{0,[7" class="font:small_gray">帮你找回删除文件</text>
+      </imgbtn>
+      <imgbtn pos="[12,{0,@250,@124" skin="skin_func_box_btnbkg" animate="1">
+        <img pos="20,20" skin="skin_func_box_lock"></img>
+        <text pos="114,39" class="font:big_3">锁定网盘</text>
+        <text pos="{0,[7" class="font:small_gray">防止他人偷窥数据</text>
+      </imgbtn>
+    </window>
+  </window>
+</include>

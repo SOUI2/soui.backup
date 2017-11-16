@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UIDEF>
+  <font face="微软雅黑" size="15"/>
+  <string src="values:string" />
+  <skin src="values:skin"/>
+  <color src="values:color"/>
+  <style>
+    <class colorText="#385e8b" colorTextDisable="#91a7c0" cursor="hand" font="" margin-x="0" name="normalbtn" textMode="25"/>
+    <class colorText="#1e78d5" colorTextHover="#1e78d5" cursor="hand" font="italic:1" fontHover="underline:1,italic:1" name="cls_btn_weblink"/>
+    <class name="cls_edit" font="adding:-2" colorText="#333333" cueColor="#666666"/>
+    <class name="cls_titlebar_tab" font="adding:-3" colorText="#ffffff" align="center"/>
+    <class name="cls_toolbar_btn" font="adding:-2" colorText="#3C6889" colorTextDisable="#C5D0DB"/>
+    <class name="cls_filetype_btn" font="adding:-3" colorText="#333333" colorTextHover="#35ABF9"/>
+    <class name="cls_share_panel_btn" font="adding:-3" align="center" colorText="#C2CBD4" colorTextHover="#59BAFD" colorTextPush="#59BAFD"/>
+    <class name="cls_navi_path" font="adding:-3" colorText="#666666" colorTextHover="#1e78d5" fontHover="adding:-3,underline:1" cursor="hand"/>
+    <class name="cls_tile_item_name" font="adding:-2" colorText="#563A04" align="center"/>
+    <class name="cls_list_item_name" font="adding:-2" colorText="#333333" fontHover="adding:-2,underline:1" cursor="hand"/>
+    <class name="cls_list_item_attr" font="adding:-3" colorText="#9D9D9D"/>
+    <class name="font:small_gray" font="adding:-1" colorText="#999999"/>
+    <class name="font:small_gray_3" font="adding:-3" colorText="#999999"/>
+    <class name="font:big_1" font="adding:1" colorText="#333333"/>
+    <class name="font:big_2" font="adding:2" colorText="#333333"/>
+    <class name="font:big_3" font="adding:3" colorText="#333333"/>
+    <class name="font:normal" colorText="#333333"/>
+    <class name="font:small_1" font="adding:-1" colorText="#333333"/>
+    <class name="font:small_2" font="adding:-2" colorText="#333333"/>
+    <class name="font:small_3" font="adding:-3" colorText="#333333"/>
+    <class name="font:w_big_1" font="adding:1" colorText="#FFFFFF"/>
+    <class name="font:w_big_2" font="adding:2" colorText="#FFFFFF"/>
+    <class name="font:w_big_3" font="adding:3" colorText="#FFFFFF"/>
+    <class name="font:w_normal" colorText="#FFFFFF"/>
+    <class name="font:w_small_1" font="adding:-1" colorText="#FFFFFF"/>
+    <class name="font:w_small_2" font="adding:-2" colorText="#FFFFFF"/>
+    <class name="font:w_small_3" font="adding:-3" colorText="#FFFFFF"/>
+    <class name="cls_link" cursor="hand" colorText="#1e78d5" colorTextHover="#1e78d5" font="adding:-3" fontHover="adding:-3,underline:1"/>
+  </style>
+  <objattr></objattr>
+</UIDEF>
