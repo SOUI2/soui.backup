@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<skin>
+	<!-- Tray menu -->
+	<imglist name="skin_traymenu_icons" src="IMG:TRAY_MENU_ICONS" states="14"/>
+	<imgframe name="skin_menu_item" src="IMG:TRAY_MENU_ITEM" states="2" left="29" top="5" right="5" bottom="5"/>
+	<imgframe name="skin_menu_sep" src="IMG:TRAY_MENU_SEP" left="29"/>
+	<!-- System -->
+	<imgframe name="_skin.bg" src="IMG:ID_PNG_BG" left="5" top="99" right="5" bottom="7"/>
+	<imglist name="_skin.btn.close" src="IMG:ID_SYS_BTN_CLOSE" states="3" vertical="1"/>
+	<imglist name="_skin.btn.max" src="IMG:ID_SYS_BTN_MAX" states="3" vertical="1"/>
+	<imglist name="_skin.btn.restore" src="IMG:ID_SYS_BTN_RESTORE" states="3" vertical="1"/>
+	<imglist name="_skin.btn.min" src="IMG:ID_SYS_BTN_MIN" states="3" vertical="1"/>
+	<imglist name="_skin.btn.msg" src="IMG:ID_MENU_BTN_MSG" states="3" vertical="1"/>
+	<imglist name="_skin.btn.set" src="IMG:ID_MENU_BTN_SET" states="3" vertical="1"/>
+	<button name="skin_btn_blank" alpha="1"/>
+	<!-- Scroll Bar -->
+	<scrollbar name="skin_scrollbar" src="IMG:ID_SCROLLBAR" margin="3" hasgripper="0"/>
+	<!-- Title bar -->
+	<imglist name="skin_ttbar_vip" src="IMG:ID_TBAR_VIP" states="1"/>
+	<imglist name="skin_caption_banner" src="IMG:ID_CAPTION_BANNER"/>
+	<imgframe name="skin_caption_prog_frg" src="IMG:ID_CAPTION_PROG_FRG" left="6" top="7" right="6" bottom="7"/>
+	<imgframe name="skin_caption_prog_bkg" src="IMG:ID_CAPTION_PROG_BKG" left="6" top="7" right="6" bottom="7"/>
+	<imglist name="skin_caption_head" src="IMG:ID_CAPTION_HEAD" states="3"/>
+	<!-- Tab -->
+	<imglist name="skin_tab_bkg" src="IMG:ID_CAPTION_TAB_BKG" states="3"/>
+	<imglist name="skin_tab_disk" src="IMG:ID_CAPTION_TAB_DISK" states="1"/>
+	<imglist name="skin_tab_share" src="IMG:ID_CAPTION_TAB_SHARE" states="1"/>
+	<imglist name="skin_tab_safe" src="IMG:ID_CAPTION_TAB_SAFE" states="1"/>
+	<imglist name="skin_tab_box" src="IMG:ID_CAPTION_TAB_BOX" states="1"/>
+	<!-- Tool bar -->
+	<imglist name="skin_toolbar_bk" src="IMG:ID_TOOLBAR_BK"/>
+	<imgframe name="skin_toolbar_btn_bk" src="IMG:ID_TOOLBAR_BTN_BK" left="2" top="2" right="2" bottom="2" states="3"/>
+	<imglist name="skin_toolbar_ico_download" src="IMG:ID_TOOLBAR_ICO_DOWNLOAD" states="4"/>
+	<imglist name="skin_toolbar_ico_more" src="IMG:ID_TOOLBAR_ICO_MORE" states="3"/>
+	<imglist name="skin_toolbar_ico_new_dir" src="IMG:ID_TOOLBAR_ICO_NEW_DIR" states="4"/>
+	<imglist name="skin_toolbar_ico_offline_down" src="IMG:ID_TOOLBAR_ICO_OFFLINE_DOWN" states="4"/>
+	<imglist name="skin_toolbar_ico_push" src="IMG:ID_TOOLBAR_ICO_PUSH" states="4"/>
+	<imglist name="skin_toolbar_ico_share" src="IMG:ID_TOOLBAR_ICO_SHARE" states="4"/>
+	<imglist name="skin_toolbar_ico_upload" src="IMG:ID_TOOLBAR_ICO_UPLOAD" states="3"/>
+	<imglist name="skin_toolbar_ico_delete" src="IMG:ID_TOOLBAR_ICO_DELETE" states="4"/>
+	<!-- Safe box -->
+	<imglist name="skin_safebox_ico" src="IMG:ID_SAFEBOX_ICON"/>
+	<imgframe name="skin_safebox_btn_bk" src="IMG:ID_SAFEBOX_BTN_BK" left="2" top="2" right="2" bottom="2" states="4"/>
+	<!-- Task List -->
+	<imglist name="skin_task_list_btn" src="IMG:ID_TASK_LIST_BTN" states="3" vertical="1"/>
+	<imglist name="skin_task_list_ico" src="IMG:ID_TASK_LIST_ICO" states="3"/>
+	<!-- Status bar -->
+	<imglist name="skin_status_bar_bkg" src="IMG:ID_STATUS_BAR_BKG"/>
+	<imglist name="skin_status_bar_rb" src="IMG:ID_STATUS_BAR_RB"/>
+	<imglist name="skin_status_bar_tool" src="IMG:ID_STATUS_BAR_TOOL" states="3"/>
+	<imglist name="gif_status_backup" src="IMG:ID_STATUS_BAR_BACKUP" states="3"/>
+	<imglist name="gif_status_lock" src="IMG:ID_STATUS_BAR_LOCK" states="3"/>
+	<!-- Navigation Bar -->
+	<imglist name="skin_navigator_bkg" src="IMG:ID_NAVIGATOR_BKG"/>
+	<imgframe name="skin_navi_path_bkg" src="IMG:ID_NAVI_PATH_BKG" left="1" top="1" right="1" bottom="1" states="3"/>
+	<imgframe name="skin_navi_path_inner_bkg" src="IMG:ID_NAVI_PATH_INNER_BKG" right="1" states="3"/>
+	<imglist name="skin_navi_back" src="IMG:ID_NAVI_BACK" states="4"/>
+	<imglist name="skin_navi_next" src="IMG:ID_NAVI_NEXT" states="4"/>
+	<imglist name="skin_navi_drop_arrow" src="IMG:ID_NAVI_DROP_ARROW" states="3"/>
+	<imglist name="skin_navi_down_arrow" src="IMG:ID_NAVI_DOWN_ARROW" states="3"/>
+	<imgframe name="skin_navi_address_bkg" src="IMG:ID_NAVI_ADDRESS_BKG" left="2" top="2" right="2" bottom="2"/>
+	<imglist name="skin_navi_refresh" src="IMG:ID_NAVI_REFRESH" states="3"/>
+	<imglist name="skin_navi_home" src="IMG:ID_NAVI_HOME" states="3"/>
+	<imglist name="skin_navi_left_wnd" src="IMG:ID_NAVI_LEFT_WND" states="3"/>
+	<imglist name="skin_navi_left_wnd_dot" src="IMG:ID_NAVI_LEFT_WND_DOT" states="3"/>
+	<imglist name="skin_navi_left_wnd_hide" src="IMG:ID_NAVI_LEFT_WND_HIDE" states="3"/>
+	<imglist name="skin_navi_list" src="IMG:ID_NAVI_LIST" states="3"/>
+	<imglist name="skin_navi_tile" src="IMG:ID_NAVI_TILE" states="3"/>
+	<imgframe name="skin_searchbox_bkg" src="IMG:ID_SEARCHBOX_BKG" left="2" top="2" right="2" bottom="2"/>
+	<imglist name="skin_search_ico" src="IMG:ID_SEARCH_ICO" states="3"/>
+	<imglist name="skin_delete_ico" src="IMG:ID_DELETE_ICO" states="3"/>
+	<!-- List Ctrl -->
+	<imgframe name="skin_list_header_bkg" src="IMG:ID_LIST_HEADER_BKG" states="3" right="1"/>
+	<imglist name="skin_list_header_arrow" src="IMG:ID_LIST_HEADER_ARROW" states="2"/>
+	<imgframe name="skin_list_select_range" src="IMG:ID_LIST_SELECT_RANGE" margin-x="1" margin-y="1"/>
+	<imgframe name="skin_list_item_bkg" src="IMG:ID_LIST_ITEM_BKG" states="3" margin-x="2" margin-y="2"/>
+	<imgframe name="skin_check_box" src="IMG:ID_CHECK_BOX" states="6"/>
+	<imgframe name="skin_list_btn_download" src="IMG:ID_LIST_DOWNLOAD" states="3"/>
+	<imgframe name="skin_list_btn_share" src="IMG:ID_LIST_SHARE" states="3"/>
+	<imgframe name="skin_list_btn_more" src="IMG:ID_LIST_MORE" states="3"/>
+	<!-- Func Box -->
+	<imgframe name="skin_func_box_btnbkg" src="IMG:ID_FUNC_BOX_BTNBKG" states="3" margin-x="2" margin-y="2"/>
+	<imglist name="skin_func_box_backup" src="IMG:ID_FUNC_BOX_BACKUP" states="1"/>
+	<imglist name="skin_func_box_datacable" src="IMG:ID_FUNC_BOX_DATACABLE" states="1"/>
+	<imglist name="skin_func_box_lock" src="IMG:ID_FUNC_BOX_LOCK" states="1"/>
+	<imglist name="skin_func_box_phone" src="IMG:ID_FUNC_BOX_PHONE" states="1"/>
+	<imglist name="skin_func_box_recycle" src="IMG:ID_FUNC_BOX_RECYCLE" states="1"/>
+	<imglist name="skin_func_box_viponly" src="IMG:ID_FUNC_BOX_VIPONLY" states="1"/>
+	<!-- Share Panel -->
+	<imglist name="skin_sharepanel_addbtn" src="IMG:ID_SHAREPANEL_ADDBTN" states="3"/>
+	<imglist name="skin_sharepanel_empty" src="IMG:ID_SHAREPANEL_EMPTY"/>
+	<imglist name="skin_sharepanel_emptysession" src="IMG:ID_SHAREPANEL_EMPTYSESSION"/>
+	<imglist name="skin_sharepanel_friend" src="IMG:ID_SHAREPANEL_FRIEND" states="3"/>
+	<imglist name="skin_sharepanel_group" src="IMG:ID_SHAREPANEL_GROUP" states="3"/>
+	<imgframe name="skin_sharepanel_leftpanelbkg" src="IMG:ID_SHAREPANEL_LEFTPANELBKG" margin-x="2"/>
+	<imglist name="skin_sharepanel_session" src="IMG:ID_SHAREPANEL_SESSION" states="3"/>
+	<imgframe name="skin_sharepanel_sharefilebtn" src="IMG:ID_SHAREPANEL_SHAREFILEBTN" states="3" margin-x="4"/>
+	<!-- File type -->
+	<imgframe name="skin_file_type_bkg" src="FILETYPE:ID_FILE_TYPE_BKG" states="1" right="1" />
+	<imglist name="skin_file_type_all" src="FILETYPE:ID_FILE_TYPE_ALL" states="1" />
+	<imglist name="skin_file_type_img" src="FILETYPE:ID_FILE_TYPE_IMG" states="1" />
+	<imglist name="skin_file_type_doc" src="FILETYPE:ID_FILE_TYPE_DOC" states="1" />
+	<imglist name="skin_file_type_video" src="FILETYPE:ID_FILE_TYPE_VIDEO" states="1" />
+	<imglist name="skin_file_type_seed" src="FILETYPE:ID_FILE_TYPE_SEED" states="1" />
+	<imglist name="skin_file_type_music" src="FILETYPE:ID_FILE_TYPE_MUSIC" states="1" />
+	<imglist name="skin_file_type_app" src="FILETYPE:ID_FILE_TYPE_APP" states="1" />
+	<imglist name="skin_file_type_other" src="FILETYPE:ID_FILE_TYPE_OTHER" states="1" />
+	<imglist name="skin_file_type_share" src="FILETYPE:ID_FILE_TYPE_SHARE" states="1" />
+	<!-- Small File Icon -->
+	<imglist name="skin_file_icon_s_allfiletype" src="FILEICON:ID_FILE_ICON_S_ALLFILETYPE"/>
+	<imglist name="skin_file_icon_s_apktype" src="FILEICON:ID_FILE_ICON_S_APKTYPE"/>
+	<imglist name="skin_file_icon_s_apps" src="FILEICON:ID_FILE_ICON_S_APPS"/>
+	<imglist name="skin_file_icon_s_doctype" src="FILEICON:ID_FILE_ICON_S_DOCTYPE"/>
+	<imglist name="skin_file_icon_s_exetype" src="FILEICON:ID_FILE_ICON_S_EXETYPE"/>
+	<imglist name="skin_file_icon_s_foldertype" src="FILEICON:ID_FILE_ICON_S_FOLDERTYPE"/>
+	<imglist name="skin_file_icon_s_icon_share" src="FILEICON:ID_FILE_ICON_S_ICON_SHARE"/>
+	<imglist name="skin_file_icon_s_imgtype" src="FILEICON:ID_FILE_ICON_S_IMGTYPE"/>
+	<imglist name="skin_file_icon_s_ipatype" src="FILEICON:ID_FILE_ICON_S_IPATYPE"/>
+	<imglist name="skin_file_icon_s_musictype" src="FILEICON:ID_FILE_ICON_S_MUSICTYPE"/>
+	<imglist name="skin_file_icon_s_othertype" src="FILEICON:ID_FILE_ICON_S_OTHERTYPE"/>
+	<imglist name="skin_file_icon_s_pdftype" src="FILEICON:ID_FILE_ICON_S_PDFTYPE"/>
+	<imglist name="skin_file_icon_s_ppttype" src="FILEICON:ID_FILE_ICON_S_PPTTYPE"/>
+	<imglist name="skin_file_icon_s_rartype" src="FILEICON:ID_FILE_ICON_S_RARTYPE"/>
+	<imglist name="skin_file_icon_s_torrenttype" src="FILEICON:ID_FILE_ICON_S_TORRENTTYPE"/>
+	<imglist name="skin_file_icon_s_txttype" src="FILEICON:ID_FILE_ICON_S_TXTTYPE"/>
+	<imglist name="skin_file_icon_s_videotype" src="FILEICON:ID_FILE_ICON_S_VIDEOTYPE"/>
+	<imglist name="skin_file_icon_s_vsdtype" src="FILEICON:ID_FILE_ICON_S_VSDTYPE"/>
+	<imglist name="skin_file_icon_s_xlstype" src="FILEICON:ID_FILE_ICON_S_XLSTYPE"/>
+	<!-- Big File Icon -->
+	<imglist name="skin_file_icon_b_apktype" src="FILEICON:ID_FILE_ICON_B_APKTYPE"/>
+	<imglist name="skin_file_icon_b_doctype" src="FILEICON:ID_FILE_ICON_B_DOCTYPE"/>
+	<imglist name="skin_file_icon_b_exetype" src="FILEICON:ID_FILE_ICON_B_EXETYPE"/>
+	<imglist name="skin_file_icon_b_foldertype" src="FILEICON:ID_FILE_ICON_B_FOLDERTYPE"/>
+	<imglist name="skin_file_icon_b_imgtype" src="FILEICON:ID_FILE_ICON_B_IMGTYPE"/>
+	<imglist name="skin_file_icon_b_ipatype" src="FILEICON:ID_FILE_ICON_B_IPATYPE"/>
+	<imglist name="skin_file_icon_b_musictype" src="FILEICON:ID_FILE_ICON_B_MUSICTYPE"/>
+	<imglist name="skin_file_icon_b_othertype" src="FILEICON:ID_FILE_ICON_B_OTHERTYPE"/>
+	<imglist name="skin_file_icon_b_pdftype" src="FILEICON:ID_FILE_ICON_B_PDFTYPE"/>
+	<imglist name="skin_file_icon_b_ppttype" src="FILEICON:ID_FILE_ICON_B_PPTTYPE"/>
+	<imglist name="skin_file_icon_b_rartype" src="FILEICON:ID_FILE_ICON_B_RARTYPE"/>
+	<imglist name="skin_file_icon_b_torrenttype" src="FILEICON:ID_FILE_ICON_B_TORRENTTYPE"/>
+	<imglist name="skin_file_icon_b_txttype" src="FILEICON:ID_FILE_ICON_B_TXTTYPE"/>
+	<imglist name="skin_file_icon_b_videotype" src="FILEICON:ID_FILE_ICON_B_VIDEOTYPE"/>
+	<imglist name="skin_file_icon_b_vsdtype" src="FILEICON:ID_FILE_ICON_B_VSDTYPE"/>
+	<imglist name="skin_file_icon_b_xlstype" src="FILEICON:ID_FILE_ICON_B_XLSTYPE"/>
+</skin>

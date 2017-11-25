@@ -170,6 +170,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DropDemo", "demos\DropDemo\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ThreeClearGame", "demos\ThreeClearGame\ThreeClearGame.vcproj", "{BAE3C500-998E-31A6-9768-602A774F0660}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "baiduwb", "demos\baiduwp\baiduwb.vcproj", "{2E5FADB8-885E-3D5F-90F9-629DBE2BAE41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -348,6 +350,10 @@ Global
 		{BAE3C500-998E-31A6-9768-602A774F0660}.Debug|Win32.Build.0 = Debug|Win32
 		{BAE3C500-998E-31A6-9768-602A774F0660}.Release|Win32.ActiveCfg = Release|Win32
 		{BAE3C500-998E-31A6-9768-602A774F0660}.Release|Win32.Build.0 = Release|Win32
+		{2E5FADB8-885E-3D5F-90F9-629DBE2BAE41}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2E5FADB8-885E-3D5F-90F9-629DBE2BAE41}.Debug|Win32.Build.0 = Debug|Win32
+		{2E5FADB8-885E-3D5F-90F9-629DBE2BAE41}.Release|Win32.ActiveCfg = Release|Win32
+		{2E5FADB8-885E-3D5F-90F9-629DBE2BAE41}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -395,5 +401,6 @@ Global
 		{8439EECE-582A-3254-94E8-45A0B0F94128} = {BF356269-06FC-400F-A653-FA6F9404A5DE}
 		{7508F635-BBD8-35FD-B780-1F2F9B4465F2} = {BF356269-06FC-400F-A653-FA6F9404A5DE}
 		{BAE3C500-998E-31A6-9768-602A774F0660} = {BF356269-06FC-400F-A653-FA6F9404A5DE}
+		{2E5FADB8-885E-3D5F-90F9-629DBE2BAE41} = {BF356269-06FC-400F-A653-FA6F9404A5DE}
 	EndGlobalSection
 EndGlobal

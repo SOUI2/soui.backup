@@ -19,6 +19,7 @@ add_subdirectory(SLogViewer)
 add_subdirectory(SouiEditor)
 add_subdirectory(DropDemo)
 add_subdirectory(ThreeClearGame)
+add_subdirectory(baiduwp)
 
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)

@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resource>
+  <UIDEF>
+    <file name="XML_INIT" path="uidef\init.xml"/>
+  </UIDEF>
+  <LAYOUT>
+    <file name="XML_MAINWND" path="xml\dlg_main.xml"/>
+    <file name="PAGE_DISK" path="xml\page_disk.xml"/>
+    <file name="PAGE_SHARE" path="xml\page_share.xml"/>
+    <file name="PAGE_SAFE" path="xml\page_safe.xml"/>
+    <file name="PAGE_BOX" path="xml\page_box.xml"/>
+  </LAYOUT>
+  <values>
+    <file name="string" path="values\string.xml"/>
+    <file name="color" path="values\color.xml"/>
+    <file name="skin" path="values\skin.xml"/>
+  </values>
+  <IMG>
+    <!-- tray menu -->
+    <file name="TRAY_MENU_ICONS" path="image\Menu\tray_menu_icon.png"/>
+    <file name="TRAY_MENU_ITEM" path="image\Menu\menu_item.png"/>
+    <file name="TRAY_MENU_SEP" path="image\Menu\menu_sep.png"/>
+    <!-- System -->
+    <file name="ID_PNG_BG" path="image\Window\windowBkg_mainPanel.png"/>
+    <file name="ID_SYS_BTN_CLOSE" path="image\SysButton\sys_btn_close.png"/>
+    <file name="ID_SYS_BTN_MAX" path="image\SysButton\sys_btn_max.png"/>
+    <file name="ID_SYS_BTN_RESTORE" path="image\SysButton\sys_btn_restore.png"/>
+    <file name="ID_SYS_BTN_MIN" path="image\SysButton\sys_btn_min.png"/>
+    <file name="ID_MENU_BTN_MSG" path="image\SysButton\menubtn_msg_non.png"/>
+    <file name="ID_MENU_BTN_SET" path="image\SysButton\menubtn_set.png"/>
+    <!-- Scroll Bar -->
+    <file name="ID_SCROLLBAR" path="image\SysButton\scroll_bar.png"/>
+    <!-- Title Bar -->
+    <file name="ID_TBAR_VIP" path="image\TitleBar\vip_open.png"/>
+    <file name="ID_CAPTION_BANNER" path="image\TitleBar\title_banner.png"/>
+    <file name="ID_CAPTION_PROG_FRG" path="image\TitleBar\progress_frg.png"/>
+    <file name="ID_CAPTION_PROG_BKG" path="image\TitleBar\progress_bkg.png"/>
+    <file name="ID_CAPTION_HEAD" path="image\TitleBar\head.png"/>
+    <file name="ID_CAPTION_TAB_BKG" path="image\TitleBar\tab_bkg.png"/>
+    <file name="ID_CAPTION_TAB_DISK" path="image\TitleBar\tab_disk.png"/>
+    <file name="ID_CAPTION_TAB_SHARE" path="image\TitleBar\tab_share.png"/>
+    <file name="ID_CAPTION_TAB_SAFE" path="image\TitleBar\tab_safe.png"/>
+    <file name="ID_CAPTION_TAB_BOX" path="image\TitleBar\tab_box.png"/>
+    <!-- Tool bar -->
+    <file name="ID_TOOLBAR_BK" path="image\Toolbar\tb_bk.png"/>
+    <file name="ID_TOOLBAR_BTN_BK" path="image\Toolbar\tb_button.png"/>
+    <file name="ID_TOOLBAR_ICO_DOWNLOAD" path="image\Toolbar\tb_download.png"/>
+    <file name="ID_TOOLBAR_ICO_MORE" path="image\Toolbar\tb_more.png"/>
+    <file name="ID_TOOLBAR_ICO_NEW_DIR" path="image\Toolbar\tb_new_dir.png"/>
+    <file name="ID_TOOLBAR_ICO_OFFLINE_DOWN" path="image\Toolbar\tb_offline_down.png"/>
+    <file name="ID_TOOLBAR_ICO_PUSH" path="image\Toolbar\tb_push.png"/>
+    <file name="ID_TOOLBAR_ICO_SHARE" path="image\Toolbar\tb_share.png"/>
+    <file name="ID_TOOLBAR_ICO_UPLOAD" path="image\Toolbar\tb_upload.png"/>
+    <file name="ID_TOOLBAR_ICO_DELETE" path="image\Toolbar\tb_delete.png"/>
+    <!-- Safe Box -->
+    <file name="ID_SAFEBOX_ICON" path="image\SafeBox\safebox_ico.png"/>
+    <file name="ID_SAFEBOX_BTN_BK" path="image\SafeBox\safebox_btn.png"/>
+    <!-- Task List Button -->
+    <file name="ID_TASK_LIST_BTN" path="image\TaskList\task_list_btn.png"/>
+    <file name="ID_TASK_LIST_ICO" path="image\TaskList\task_list_icon.png"/>
+    <!-- Status bar -->
+    <file name="ID_STATUS_BAR_BKG" path="image\StatusBar\bottompanel_bkg.png"/>
+    <file name="ID_STATUS_BAR_RB" path="image\StatusBar\bottomRight.png"/>
+    <file name="ID_STATUS_BAR_TOOL" path="image\StatusBar\status_bar_ico_tool.png"/>
+    <file name="ID_STATUS_BAR_BACKUP" path="image\StatusBar\backup.png"/>
+    <file name="ID_STATUS_BAR_LOCK" path="image\StatusBar\lock.png"/>
+    <!-- Navigation Bar -->
+    <file name="ID_NAVIGATOR_BKG" path="image\NaviBar\navi_bkg.png"/>
+    <file name="ID_NAVI_PATH_INNER_BKG" path="image\NaviBar\navi_path_inner_bk.png"/>
+    <file name="ID_NAVI_PATH_BKG" path="image\NaviBar\navi_path_bk.png"/>
+    <file name="ID_NAVI_BACK" path="image\NaviBar\navi_back.png"/>
+    <file name="ID_NAVI_DROP_ARROW" path="image\NaviBar\navi_drop_arrow.png"/>
+    <file name="ID_NAVI_DOWN_ARROW" path="image\NaviBar\navi_arrow_right.png"/>
+    <file name="ID_NAVI_ADDRESS_BKG" path="image\NaviBar\navi_address_bkg.png"/>
+    <file name="ID_NAVI_REFRESH" path="image\NaviBar\navi_fresh.png"/>
+    <file name="ID_NAVI_HOME" path="image\NaviBar\navi_home.png"/>
+    <file name="ID_NAVI_LEFT_WND" path="image\NaviBar\navi_left_wnd.png"/>
+    <file name="ID_NAVI_LEFT_WND_DOT" path="image\NaviBar\navi_left_wnd_dot.png"/>
+    <file name="ID_NAVI_LEFT_WND_HIDE" path="image\NaviBar\navi_left_wnd_hide.png"/>
+    <file name="ID_NAVI_LIST" path="image\NaviBar\navi_list.png"/>
+    <file name="ID_NAVI_NEXT" path="image\NaviBar\navi_next.png"/>
+    <file name="ID_NAVI_TILE" path="image\NaviBar\navi_tile.png"/>
+    <file name="ID_SEARCHBOX_BKG" path="image\NaviBar\searchbox_bkg.png"/>
+    <file name="ID_SEARCH_ICO" path="image\NaviBar\search_ico.png"/>
+    <file name="ID_DELETE_ICO" path="image\NaviBar\delete_ico.png"/>
+    <!-- List Ctrl -->
+    <file name="ID_LIST_HEADER_BKG" path="image\FileList\header_bkg.png"/>
+    <file name="ID_LIST_HEADER_ARROW" path="image\FileList\header_arrow.png"/>
+    <file name="ID_LIST_SELECT_RANGE" path="image\FileList\select_range.png"/>
+    <file name="ID_LIST_ITEM_BKG" path="image\FileList\list_item_bkg.png"/>
+    <file name="ID_CHECK_BOX" path="image\CheckBox\check_skin.png"/>
+    <file name="ID_LIST_DOWNLOAD" path="image\FileList\list_down.png"/>
+    <file name="ID_LIST_SHARE" path="image\FileList\list_share.png"/>
+    <file name="ID_LIST_MORE" path="image\FileList\list_more.png"/>
+    <!-- Func Box -->
+    <file name="ID_FUNC_BOX_BACKUP" path="image\FunctionalBoxPanel\Backup.png" />
+    <file name="ID_FUNC_BOX_BTNBKG" path="image\FunctionalBoxPanel\BtnBkg.png" />
+    <file name="ID_FUNC_BOX_DATACABLE" path="image\FunctionalBoxPanel\DataCable.png" />
+    <file name="ID_FUNC_BOX_LOCK" path="image\FunctionalBoxPanel\Lock.png" />
+    <file name="ID_FUNC_BOX_PHONE" path="image\FunctionalBoxPanel\Phone.png" />
+    <file name="ID_FUNC_BOX_RECYCLE" path="image\FunctionalBoxPanel\Recycle.png" />
+    <file name="ID_FUNC_BOX_VIPONLY" path="image\FunctionalBoxPanel\VipOnly.png" />
+    <!-- Share Panel -->
+    <file name="ID_SHAREPANEL_ADDBTN" path="image\SharePanel\AddBtn.png"/>
+    <file name="ID_SHAREPANEL_EMPTY" path="image\SharePanel\Empty.png"/>
+    <file name="ID_SHAREPANEL_EMPTYSESSION" path="image\SharePanel\EmptySession.png"/>
+    <file name="ID_SHAREPANEL_FRIEND" path="image\SharePanel\Friend.png"/>
+    <file name="ID_SHAREPANEL_GROUP" path="image\SharePanel\Group.png"/>
+    <file name="ID_SHAREPANEL_LEFTPANELBKG" path="image\SharePanel\LeftPanelBkg.png"/>
+    <file name="ID_SHAREPANEL_SESSION" path="image\SharePanel\Session.png"/>
+    <file name="ID_SHAREPANEL_SHAREFILEBTN" path="image\SharePanel\ShareFileBtn.png"/>
+  </IMG>
+  <FILETYPE>
+    <file name="ID_FILE_TYPE_BKG" path="image\FileTypePanel\ft_bkg.png" />
+    <file name="ID_FILE_TYPE_DOC" path="image\FileTypePanel\ft_doc.png" />
+    <file name="ID_FILE_TYPE_ALL" path="image\FileTypePanel\ft_all.png" />
+    <file name="ID_FILE_TYPE_APP" path="image\FileTypePanel\ft_app.png" />
+    <file name="ID_FILE_TYPE_IMG" path="image\FileTypePanel\ft_img.png" />
+    <file name="ID_FILE_TYPE_MUSIC" path="image\FileTypePanel\ft_music.png" />
+    <file name="ID_FILE_TYPE_OTHER" path="image\FileTypePanel\ft_other.png" />
+    <file name="ID_FILE_TYPE_SEED" path="image\FileTypePanel\ft_seed.png" />
+    <file name="ID_FILE_TYPE_SHARE" path="image\FileTypePanel\ft_share.png" />
+    <file name="ID_FILE_TYPE_VIDEO" path="image\FileTypePanel\ft_video.png" />
+  </FILETYPE>
+  <FILEICON>
+    <!-- Small Icon -->
+    <file name="ID_FILE_ICON_S_ALLFILETYPE" path="image\FileList\SmallIcon\AllFileType.png"/>
+    <file name="ID_FILE_ICON_S_APKTYPE" path="image\FileList\SmallIcon\ApkType.png"/>
+    <file name="ID_FILE_ICON_S_APPS" path="image\FileList\SmallIcon\Apps.png"/>
+    <file name="ID_FILE_ICON_S_DOCTYPE" path="image\FileList\SmallIcon\DocType.png"/>
+    <file name="ID_FILE_ICON_S_EXETYPE" path="image\FileList\SmallIcon\ExeType.png"/>
+    <file name="ID_FILE_ICON_S_FOLDERTYPE" path="image\FileList\SmallIcon\FolderType.png"/>
+    <file name="ID_FILE_ICON_S_ICON_SHARE" path="image\FileList\SmallIcon\icon_share.png"/>
+    <file name="ID_FILE_ICON_S_IMGTYPE" path="image\FileList\SmallIcon\ImgType.png"/>
+    <file name="ID_FILE_ICON_S_IPATYPE" path="image\FileList\SmallIcon\IpaType.png"/>
+    <file name="ID_FILE_ICON_S_MUSICTYPE" path="image\FileList\SmallIcon\MusicType.png"/>
+    <file name="ID_FILE_ICON_S_OTHERTYPE" path="image\FileList\SmallIcon\OtherType.png"/>
+    <file name="ID_FILE_ICON_S_PDFTYPE" path="image\FileList\SmallIcon\PdfType.png"/>
+    <file name="ID_FILE_ICON_S_PPTTYPE" path="image\FileList\SmallIcon\PptType.png"/>
+    <file name="ID_FILE_ICON_S_RARTYPE" path="image\FileList\SmallIcon\RarType.png"/>
+    <file name="ID_FILE_ICON_S_TORRENTTYPE" path="image\FileList\SmallIcon\TorrentType.png"/>
+    <file name="ID_FILE_ICON_S_TXTTYPE" path="image\FileList\SmallIcon\TxtType.png"/>
+    <file name="ID_FILE_ICON_S_VIDEOTYPE" path="image\FileList\SmallIcon\VideoType.png"/>
+    <file name="ID_FILE_ICON_S_VSDTYPE" path="image\FileList\SmallIcon\VsdType.png"/>
+    <file name="ID_FILE_ICON_S_XLSTYPE" path="image\FileList\SmallIcon\XlsType.png"/>
+    <!-- Big Icon -->
+    <file name="ID_FILE_ICON_B_APKTYPE" path="image\FileList\BigIcon\ApkType.png"/>
+    <file name="ID_FILE_ICON_B_DOCTYPE" path="image\FileList\BigIcon\DocType.png"/>
+    <file name="ID_FILE_ICON_B_EXETYPE" path="image\FileList\BigIcon\ExeType.png"/>
+    <file name="ID_FILE_ICON_B_FOLDERTYPE" path="image\FileList\BigIcon\FolderType.png"/>
+    <file name="ID_FILE_ICON_B_IMGTYPE" path="image\FileList\BigIcon\ImgType.png"/>
+    <file name="ID_FILE_ICON_B_IPATYPE" path="image\FileList\BigIcon\IpaType.png"/>
+    <file name="ID_FILE_ICON_B_MUSICTYPE" path="image\FileList\BigIcon\MusicType.png"/>
+    <file name="ID_FILE_ICON_B_OTHERTYPE" path="image\FileList\BigIcon\OtherType.png"/>
+    <file name="ID_FILE_ICON_B_PDFTYPE" path="image\FileList\BigIcon\PdfType.png"/>
+    <file name="ID_FILE_ICON_B_PPTTYPE" path="image\FileList\BigIcon\PptType.png"/>
+    <file name="ID_FILE_ICON_B_RARTYPE" path="image\FileList\BigIcon\RarType.png"/>
+    <file name="ID_FILE_ICON_B_TORRENTTYPE" path="image\FileList\BigIcon\TorrentType.png"/>
+    <file name="ID_FILE_ICON_B_TXTTYPE" path="image\FileList\BigIcon\TxtType.png"/>
+    <file name="ID_FILE_ICON_B_VIDEOTYPE" path="image\FileList\BigIcon\VideoType.png"/>
+    <file name="ID_FILE_ICON_B_VSDTYPE" path="image\FileList\BigIcon\VsdType.png"/>
+    <file name="ID_FILE_ICON_B_XLSTYPE" path="image\FileList\BigIcon\XlsType.png"/>
+  </FILEICON>
+  <ICON>
+    <file name="ICON_LOGO" path="image\baidu_yun.ico"/>
+  </ICON>
+  <SMENU>
+    <file name="menu_tray" path="xml\menu_tray.xml"/>
+  </SMENU>
+</resource>

@@ -1,0 +1,26 @@
+﻿<menu iconMargin="4" itemSkin="skin_menu_item" sepSkin="skin_menu_sep" iconSkin="skin_traymenu_icons" itemHeight="22" textMargin="8" font="adding:-3" colorTextSel="#333333">
+    <item icon="0" id="1">UserName</item>
+    <item id="2">已用：1154.39GB  共3183.50G</item>
+    <sep/>
+    <item icon="1" id="3">打开主面板</item>
+    <item id="4">访问百度云网站</item>
+    <item id="5">进入回收站</item>
+    <sep/>
+    <item icon="2" disable="1" id="6">开始全部任务</item>
+    <item icon="3" disable="1" id="7">暂停全部任务</item>
+    <item check="1" id="8">本次传输完自动关机</item>
+    <sep/>
+    <item id="9">隐藏悬浮窗</item>
+    <sep/>
+    <item icon="4" id="10">设置</item>
+    <item icon="5" id="11">帮助
+        <item id="111">使用帮助</item>
+        <item id="112">关于</item>
+        <item id="113">版本升级</item>
+        <item id="114">问题反馈</item>
+    </item>
+    <sep/>
+    <item icon="6" id="12">锁定网盘</item>
+    <item id="13">注销</item>
+    <item icon="7" id="14">退出</item>
+</menu>
