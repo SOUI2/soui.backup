@@ -120,7 +120,7 @@ namespace SOUI
         int nKeyLen=(int)_tcslen(pszAccelKey);
         if(_tcslen(pszAccelKey)>=100) return 0;
         _tcscpy(szBuf,pszAccelKey);
-        CharLowerBuff(szBuf,nKeyLen);
+		_tcslwr(szBuf);
 
         LPTSTR pszBuf=szBuf;
         LPTSTR pszKey=_tcstok(pszBuf,_T("+"));

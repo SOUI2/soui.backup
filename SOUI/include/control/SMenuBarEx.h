@@ -5,40 +5,40 @@
 
 namespace SOUI
 {
-	class SMenuItem;
+	class SMenuItemEx;
 
-	class SOUI_EXP SMenuBar : 
+	class SOUI_EXP SMenuBarEx : 
 		public SWindow
 	{
-		SOUI_CLASS_NAME(SMenuBar, L"menubar")
-		friend class SMenuItem;
+		SOUI_CLASS_NAME(SMenuBarEx, L"menubarex")
+		friend class SMenuItemEx;
 	public:
-		SMenuBar();
-		~SMenuBar();
+		SMenuBarEx();
+		~SMenuBarEx();
 
 		BOOL Init(SHostWnd *pHostWnd);
 		BOOL Insert(LPCTSTR pszTitle, LPCTSTR pszResName, int iPos = -1);
 		BOOL Insert(pugi::xml_node xmlNode, int iPos = -1);
 
-		SMenu *GetMenu(DWORD dwPos);
+		SMenuEx *GetMenu(DWORD dwPos);
 
 		int HitTest(CPoint pt);
 	protected:
-		SMenuItem *GetMenuItem(DWORD dwPos);
+		SMenuItemEx *GetMenuItem(DWORD dwPos);
 		virtual BOOL CreateChildren(pugi::xml_node xmlNode);
 
-		static LRESULT CALLBACK MenuSwitch(int code, WPARAM wParam, LPARAM lParam);
+		static LRESULT CALLBACK MenuInputFilter(int code, WPARAM wParam, LPARAM lParam);
 
-		SArray<SMenuItem*> m_lstMenuItem;
+		SArray<SMenuItemEx*> m_lstMenuItem;
 		HWND m_hWnd;
 		pugi::xml_document  m_xmlStyle;
 		BOOL m_bIsShow;
-		SMenuItem *m_pNowMenu;
+		SMenuItemEx *m_pNowMenu;
 		int m_iNowMenu;
 		CPoint m_ptMouse;
 
 		static HHOOK m_hMsgHook;
-		static SMenuBar *m_pMenuBar;
+		static SMenuBarEx *m_pMenuBar;
 	};
 
 }

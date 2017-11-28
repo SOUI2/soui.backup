@@ -70,6 +70,7 @@ HEADERS += include/SApp.h \
            include/control/STileView.h \
            include/control/STreeView.h \
            include/control/SMenuBar.h \
+           include/control/SMenuBarEx.h \
            include/control/SDateTimePicker.h \
            include/core/Accelerator.h \
            include/core/FocusManager.h \
@@ -193,6 +194,7 @@ SOURCES += src/SApp.cpp \
            src/control/STileView.cpp \
            src/control/STreeView.cpp \
            src/control/SMenuBar.cpp \
+           src/control/SMenuBarEx.cpp \
            src/control/SDateTimePicker.cpp \
            src/core/Accelerator.cpp \
            src/core/FocusManager.cpp \
