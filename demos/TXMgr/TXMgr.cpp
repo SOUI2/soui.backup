@@ -6,6 +6,7 @@
 #include "GSAnimButton.h"
 #include "GSSkin.h"
 #include "GSTabCtrl.h"
+#include "SAnimImg.h"
 
 //从PE文件加载，注意从文件加载路径位置
 #define RES_TYPE 1
@@ -74,8 +75,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 #endif
 
 		theApp->RegisterSkinClass<GSSkinImgList>();
-		theApp->RegisterWindowClass<GSAnimButton>();//注册SAnimImg
-		theApp->RegisterWindowClass<GSTabCtrl>();//注册SAnimImg
+		theApp->RegisterWindowClass<GSAnimButton>();//注册GSAnimButton
+		theApp->RegisterWindowClass<GSTabCtrl>();//注册GSTabCtrl
+		theApp->RegisterWindowClass<SAnimImg>();//注册SAnimImg
 
 		theApp->InitXmlNamedID(namedXmlID,ARRAYSIZE(namedXmlID),TRUE);
         theApp->AddResProvider(pResProvider);

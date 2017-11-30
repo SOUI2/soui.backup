@@ -32,6 +32,7 @@ HEADERS += GSAnimButton.h \
            GSSkin.h \
            GSTabCtrl.h \
            MainDlg.h \
+           TrayDlg.h \
            resource.h \
            SAnimImg.h \
            res/resource.h
@@ -39,6 +40,7 @@ SOURCES += GSAnimButton.cpp \
            GSSkin.cpp \
            GSTabCtrl.cpp \
            MainDlg.cpp \
+           TrayDlg.cpp \
            SAnimImg.cpp \
            TXMgr.cpp
 
