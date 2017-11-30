@@ -1,0 +1,34 @@
+﻿<SOUI name="mainWindow" width="200" height="700"  margin="20,5,5,5"  translucent="1" >
+  <root cache="1">
+    
+      <window pos="|0,-120,@120,@120" offset="-0.5,0" name="speed_wnd" msgTransparent="1">
+
+        <window pos="40,|0,@73,@88" offset="0, -0.5">
+          <img skin="skin.nmonitor"/>
+          <text pos="-18,|-3" offset="-1,-1" colorText="#8E8E8E" font="size:10">k/s</text>
+          <text pos="{-1,{0" offset="-1,0" colorText="#ffffff" font="size:10" name="update_speed">0</text>
+          <text pos="-18,|3" offset="-1,0" colorText="#8E8E8E" font="size:10">k/s</text>
+          <text pos="{-1,{0" offset="-1,0" colorText="#ffffff" font="size:10" name="down_speed">0.3</text>
+        </window>
+      </window>
+
+      <window pos="0,-120,@120,@120">
+
+        <anmimg pos="0,0,-0,-0" ani_in="skin.anim.animation" static="skin.bg_normal" playall="0" autorun="0" interval="35" name="btn_use_bg" show="1"/>
+
+        <window pos="|0,|0" offset="-0.5,-0.5" name="use" show="1" msgTransparent="1">
+          <img pos="0,0" skin="skin.number_4" name="use_ten" show="1"/>
+          <img pos="[0,0" skin="skin.number_8" name="use_unit"/>
+          <img pos="[0,0" skin="skin.number_"/>
+        </window>
+
+      </window>
+
+      <window pos="0,0,-0,-0" show="0" name="rocket" msgTransparent="1">
+        <img pos="0,-0" offset="0,-1" skin="skin.rocket_quick" name="img_rocket"/>
+      </window>
+    <caption pos="0,0,-0,-0" show="1" font="adding:0" >
+    </caption>
+
+  </root>
+</SOUI>
