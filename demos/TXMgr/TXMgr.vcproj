@@ -238,6 +238,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SRocketAnimator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TrayDlg.cpp"
 				>
 			</File>
@@ -277,6 +281,10 @@
 			</File>
 			<File
 				RelativePath="SAnimImg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SRocketAnimator.h"
 				>
 			</File>
 			<File

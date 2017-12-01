@@ -35,6 +35,7 @@ HEADERS += GSAnimButton.h \
            TrayDlg.h \
            resource.h \
            SAnimImg.h \
+           SRocketAnimator.h \
            res/resource.h
 SOURCES += GSAnimButton.cpp \
            GSSkin.cpp \
@@ -42,6 +43,7 @@ SOURCES += GSAnimButton.cpp \
            MainDlg.cpp \
            TrayDlg.cpp \
            SAnimImg.cpp \
+           SRocketAnimator.cpp \
            TXMgr.cpp
 
 RC_FILE += TXMgr.rc

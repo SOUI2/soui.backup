@@ -78,6 +78,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 		theApp->RegisterWindowClass<GSAnimButton>();//注册GSAnimButton
 		theApp->RegisterWindowClass<GSTabCtrl>();//注册GSTabCtrl
 		theApp->RegisterWindowClass<SAnimImg>();//注册SAnimImg
+		theApp->RegisterWindowClass<SRocketAnimator>();//注册SRocketAnimator
 
 		theApp->InitXmlNamedID(namedXmlID,ARRAYSIZE(namedXmlID),TRUE);
         theApp->AddResProvider(pResProvider);
