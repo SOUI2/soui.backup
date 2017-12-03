@@ -176,29 +176,19 @@ namespace SOUI
 		SWindow * CreateMenuItem(const SStringW & strItemName);
 	};
 
-	// 	CRect SMenuExRoot::GetMargin() const
-	// 	{
-	// 		CRect rcRet;
-	// 		rcRet.left = m_rcMargin[0].toPixelSize(GetScale());
-	// 		rcRet.top = m_rcMargin[1].toPixelSize(GetScale());
-	// 		rcRet.right = m_rcMargin[2].toPixelSize(GetScale());
-	// 		rcRet.bottom = m_rcMargin[3].toPixelSize(GetScale());
-	// 		return rcRet;
-	// 	}
-
-
 
 	HRESULT SMenuExRoot::OnAttrIconPos(const SStringW & strValue, BOOL bLoading)
 	{
 		SStringWList values;
-		if (1 == SplitString(strValue, L',', values))
+		SplitString(strValue, L',', values);
+		if (1 == values.GetCount())
 		{
 			//只设置X时，让Y方向自动居中
 			m_iconX.parseString(values[0]);
 			m_iconY.parseString(Y_MIDFLAG);
 			return S_OK;
 		}
-		else if (2 != SplitString(strValue, L',', values))
+		else if (2 != values.GetCount())
 			return E_INVALIDARG;
 		m_iconX.parseString(values[0]);
 		m_iconY.parseString(values[1]);

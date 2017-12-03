@@ -4,6 +4,7 @@
   </UIDEF>
   <LAYOUT>
     <file name="XML_MAINWND" path="xml\dlg_main.xml"  />
+    <file name="XML_TRAYWND" path="xml\dlg_tray.xml"  />
   </LAYOUT>
 
   <values>
@@ -237,6 +238,23 @@
     <file name="trojanscan_circle_29" path="image\TrojanScan\Circle\29.png"/>
     <file name="trojanscan_circle_30" path="image\TrojanScan\Circle\30.png"/>
     
+
+    <file name="bg_normal" path="image\bg_normal.png"  />
+    <file name="nmonitor" path="image\nmonitor.png"  />
+    <file name="number_" path="image\_.png"  />
+    <file name="number_0" path="image\0.png"  />
+    <file name="number_1" path="image\1.png"  />
+    <file name="number_2" path="image\2.png"  />
+    <file name="number_3" path="image\3.png"  />
+    <file name="number_4" path="image\4.png"  />
+    <file name="number_5" path="image\5.png"  />
+    <file name="number_6" path="image\6.png"  />
+    <file name="number_7" path="image\7.png"  />
+    <file name="number_8" path="image\8.png"  />
+    <file name="number_9" path="image\9.png"  />
+    <file name="rocket_quick" path="image\rocket_quick.png"  />
+    <file name="rocket" path="image\rocket.png"  />
+    <file name="ani_list" path="image\ani_list.png"  />
 
   </IMG>
   <ICON>
