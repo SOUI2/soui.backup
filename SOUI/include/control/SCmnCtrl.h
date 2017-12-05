@@ -14,6 +14,7 @@
 #pragma once
 #include "core/SWnd.h"
 #include "core/Accelerator.h"
+#include "core/FocusManager.h"
 
 namespace SOUI
 {
@@ -915,7 +916,7 @@ protected:
 
 	virtual void OnScaleChanged(int nScale);
 protected:
-    void OnSetFocus(SWND wndOld);
+	void OnSetFocus(SWND wndOld,CFocusManager::FocusChangeReason reason);
     
     void OnLButtonUp(UINT nFlags,CPoint pt);
 
@@ -932,7 +933,7 @@ protected:
     SOUI_MSG_MAP_BEGIN()
         MSG_WM_PAINT_EX(OnPaint)
         MSG_WM_LBUTTONUP(OnLButtonUp)
-        MSG_WM_SETFOCUS_EX(OnSetFocus)
+        MSG_WM_SETFOCUS_EX2(OnSetFocus)
     SOUI_MSG_MAP_END()
 };
 

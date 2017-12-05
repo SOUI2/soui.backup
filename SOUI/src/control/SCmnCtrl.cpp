@@ -1062,9 +1062,12 @@ BOOL SRadioBox::NeedRedrawWhenStateChange()
     return TRUE;
 }
 
-void SRadioBox::OnSetFocus(SWND wndOld)
+void SRadioBox::OnSetFocus(SWND wndOld,CFocusManager::FocusChangeReason reason)
 {
-    if(!IsChecked()) SetCheck(TRUE);
+	if(reason != CFocusManager::kReasonFocusRestore)
+	{
+		if(!IsChecked()) SetCheck(TRUE);
+	}
     Invalidate();
 }
 
