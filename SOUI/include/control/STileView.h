@@ -90,7 +90,9 @@ protected:
     void OnKillFocus(SWND wndFocus);
     
     void OnSetFocus(SWND wndOld);
-    
+
+    LRESULT OnSetScale(UINT uMsg, WPARAM wParam, LPARAM lParam);
+
     SOUI_MSG_MAP_BEGIN()
 		MSG_WM_PAINT_EX(OnPaint)
 		MSG_WM_SIZE(OnSize)
@@ -100,13 +102,15 @@ protected:
 		MSG_WM_KEYDOWN(OnKeyDown)
 		MSG_WM_KILLFOCUS_EX(OnKillFocus)
 		MSG_WM_SETFOCUS_EX(OnSetFocus)
-		MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST, WM_MOUSELAST, OnMouseEvent)
+        MESSAGE_HANDLER_EX(UM_SETSCALE, OnSetScale)
+        MESSAGE_RANGE_HANDLER_EX(WM_MOUSEFIRST, WM_MOUSELAST, OnMouseEvent)
 		MESSAGE_RANGE_HANDLER_EX(WM_KEYFIRST, WM_KEYLAST, OnKeyEvent)
 		MESSAGE_RANGE_HANDLER_EX(WM_IME_STARTCOMPOSITION, WM_IME_KEYLAST, OnKeyEvent)
     SOUI_MSG_MAP_END()
     
     SOUI_ATTRS_BEGIN()
-		ATTR_INT(L"marginSize", m_nMarginSize, FALSE)
+		//ATTR_INT(L"marginSize", m_nMarginSize, FALSE)
+        ATTR_LAYOUTSIZE(L"marginSize", m_nMarginSize, FALSE)
 		ATTR_INT(L"wantTab", m_bWantTab, FALSE)
     SOUI_ATTRS_END()
 protected:
@@ -129,7 +133,8 @@ protected:
     SArray<SList<SItemPanel *> *>    m_itemRecycle; //item回收站,每一种样式在回收站中保持一个列表，以便重复利用
     
     pugi::xml_document              m_xmlTemplate;
-    int                             m_nMarginSize;
+    SLayoutSize                     m_nMarginSize;
+    // int                             m_nMarginSize;
     BOOL                            m_bWantTab;
     BOOL                            m_bDatasetInvalidated;
 };

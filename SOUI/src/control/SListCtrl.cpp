@@ -439,7 +439,7 @@ CRect SListCtrl::GetItemRect(int nItem, int nSubItem)
 
         m_pHeader->GetItem(nCol, &hdi);
         rcItem.left  = rcItem.right;
-        rcItem.right = rcItem.left+hdi.cx;
+        rcItem.right = rcItem.left+hdi.cx.toPixelSize(GetScale());
         if (hdi.iOrder == nSubItem)
             break;
     }
@@ -638,7 +638,7 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
         hdi.mask=SHDI_WIDTH|SHDI_ORDER;
         m_pHeader->GetItem(nCol,&hdi);
         rcCol.left=rcCol.right;
-        rcCol.right = rcCol.left + hdi.cx;
+        rcCol.right = rcCol.left + hdi.cx.toPixelSize(GetScale());
 
         rcVisiblePart.IntersectRect(rcItem, rcCol);
 

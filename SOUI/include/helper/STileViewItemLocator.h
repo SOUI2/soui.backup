@@ -6,6 +6,7 @@ class SOUI_EXP STileViewItemLocator : public TObjRefImpl<IObjRef>
 {
 public:
     STileViewItemLocator(int nItemHei, int nItemWid, int nMarginSize = 0);
+    STileViewItemLocator(LPCTSTR szItemHei, LPCTSTR szItemWid, SLayoutSize marginSize = {0.0f, SLayoutSize::px});
     
     void SetAdapter(ILvAdapter *pAdapter);
     
@@ -18,6 +19,7 @@ public:
     CRect GetItemRect(int iItem);
     
     //设置TileView宽度（在TileView的OnSize中调用）
+    void SetTileViewWidth(LPCTSTR width);
     void SetTileViewWidth(int width);
     
     //获取item的行、列位置
@@ -40,20 +42,27 @@ public:
     
     int GetMarginSize() const
     {
-        return m_nItemMargin;
+        return m_nItemMargin.toPixelSize(m_scale);
     }
+
+    int SetScale(int scale);
     
 protected:
     //行高（包括间隔）
     int GetItemLineHeight() const
     {
-        return m_nItemHeight + m_nItemMargin;
+        return m_nItemHeight.toPixelSize(m_scale) + m_nItemMargin.toPixelSize(m_scale);
     }
-    
-    int m_nItemWidth;      //item宽
-    int m_nItemHeight;     //item高
-    int m_nTileViewWidth;  //TileView宽度（用于计算m_nCountInRow）
-    int m_nItemMargin;     //块间距
+
+    int m_scale;
+    SLayoutSize m_nItemWidth;      //item宽
+    SLayoutSize m_nItemHeight;     //item高
+    SLayoutSize m_nTileViewWidth;  //TileView宽度（用于计算m_nCountInRow）
+    SLayoutSize m_nItemMargin;     //块间距
+    //int m_nItemWidth;      //item宽
+    //int m_nItemHeight;     //item高
+    //int m_nTileViewWidth;  //TileView宽度（用于计算m_nCountInRow）
+    //int m_nItemMargin;     //块间距
     int m_nCountInRow;     //每行的item个数
     
     CAutoRefPtr<ILvAdapter> m_adapter;
