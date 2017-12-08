@@ -297,7 +297,7 @@ namespace SOUI
         }
         if(pNewFocus && !pNewFocus->IsDisabled(TRUE))
         {
-            pNewFocus->SSendMessage(WM_SETFOCUS,(WPARAM)focused_view_);
+            pNewFocus->SSendMessage(WM_SETFOCUS,(WPARAM)focused_view_,(LPARAM)reason);
             focused_view_ = swnd;
         }else
         {
@@ -351,7 +351,7 @@ namespace SOUI
         if(pWnd && !pWnd->IsDisabled(TRUE) && pWnd->IsVisible(TRUE))
         {
             focused_view_=focused_backup_;
-            pWnd->SSendMessage(WM_SETFOCUS);
+            pWnd->SSendMessage(WM_SETFOCUS,0,(LPARAM)kReasonFocusRestore);
         }
         focused_backup_ = 0;
     }

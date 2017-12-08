@@ -273,7 +273,6 @@ namespace SOUI
 
 			SLogBuffer logBuffer(pMatchParser);
 			logBuffer.ParseLog(pUniBuf);
-			free(pUniBuf);
 
 			if(logBuffer.m_lstLogs.IsEmpty())
 				return FALSE;
@@ -296,6 +295,7 @@ namespace SOUI
 			{
 				SLogInfo *pLine1 = m_lstLogs[0];
 				SLogInfo *pLine2 = logBuffer.m_lstLogs[0];
+
 				if(pLine1->strTime<pLine2->strTime)
 				{//原有log的时间大于新LOG的时间，原log加(append)到新log后
 					Append(logBuffer);
@@ -306,12 +306,45 @@ namespace SOUI
 					m_pScilexer->SendMessage(SCI_INSERTTEXT,0,(LPARAM)(LPCSTR)bufUtf8);
 				}
 			}
-			long charWidth = m_pScilexer->SendMessage( SCI_TEXTWIDTH, STYLE_LINENUMBER, (LPARAM)("9") );  
-			m_pScilexer->SendMessage(SCI_SETMARGINWIDTHN,0,SStringA().Format("%d",m_lstLogs.GetCount()+1).GetLength()*charWidth+2);
+			m_pScilexer->UpdateLineNumberWidth();
 			doFilter();
 			return TRUE;
 		}
 		return FALSE;
+	}
+
+
+	BOOL SLogAdapter::LoadMemory(LPWSTR buffer)
+	{
+		CAutoRefPtr<ILogParse> pMatchParser;
+
+		LPCWSTR pszLineEnd = wcsstr(buffer,L"\n");
+		int lineLen = (int)(pszLineEnd - buffer);
+		SPOSITION pos = m_pLogPaserPool->GetHeadPosition();
+		while(pos  && ! pMatchParser)
+		{
+			ILogParse *pLogParser = m_pLogPaserPool->GetNext(pos);
+			if(pLogParser->ParseLine(buffer,lineLen,NULL))
+			{
+				pMatchParser = pLogParser;
+			}
+		}
+		if(!pMatchParser)
+		{
+			return FALSE;
+		}
+
+		SLogBuffer logBuffer(pMatchParser);
+		logBuffer.ParseLog(buffer);
+
+		if(logBuffer.m_lstLogs.IsEmpty())
+			return FALSE;
+
+		Clear();
+		*(SLogBuffer*)this = logBuffer;
+		doFilter();
+
+		return TRUE;
 	}
 
 	void SLogAdapter::SetFilter(const SStringT& str)

@@ -140,6 +140,12 @@ public:
         return m_pCurrentMsg;
     }
 
+	int GetDlgCtrlID() const
+	{
+		SASSERT(::IsWindow(m_hWnd));
+		return ::GetDlgCtrlID(m_hWnd);
+	}
+
     DWORD GetStyle() const
     {
         SASSERT(::IsWindow(m_hWnd));

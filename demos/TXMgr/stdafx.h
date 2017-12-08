@@ -16,3 +16,4 @@
 #include "res\resource.h"
 using namespace SOUI;
 
+#include "SRocketAnimator.h"

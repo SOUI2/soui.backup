@@ -24,9 +24,11 @@ public:
 	LRESULT SendEditor(UINT Msg, WPARAM wParam=0, LPARAM lParam=0) {
 		return ::SendMessage(m_hWnd, Msg, wParam, lParam);
 	}
+
+	void UpdateLineNumberWidth(void);
+
 protected:
 	// 显示行号
-	void UpdateLineNumberWidth(void);
 	void InitScintillaWnd(void);
 	void SetAStyle(int style, COLORREF fore, COLORREF back = RGB(0xff,0xff,0xff), int size = 0, const char* face = NULL);
 	// 设置XML的语法规则
