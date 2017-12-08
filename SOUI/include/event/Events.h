@@ -859,7 +859,6 @@ namespace SOUI
 		enum{EventID=EVT_ANI_STOP};
 	};
 
-	class SMenu;
 	class EventSelectMenu : public TplEventArgs<EventSelectMenu>
 	{
 		SOUI_CLASS_NAME(EventSelectMenu, L"on_select_menu")
@@ -870,7 +869,7 @@ namespace SOUI
 		enum { EventID = EVT_SELECTMENU };
 
 		UINT m_id;
-		SMenu *m_pMenu;
+		void *m_pMenu;//menu ptr
 	};
 
 	class EventSetHotKey :public TplEventArgs<EventSetHotKey> {

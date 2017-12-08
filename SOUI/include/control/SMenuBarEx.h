@@ -5,18 +5,17 @@
 
 namespace SOUI
 {
-	class SMenuItemEx;
+	class SMenuBarExItem;
 
 	class SOUI_EXP SMenuBarEx : 
 		public SWindow
 	{
 		SOUI_CLASS_NAME(SMenuBarEx, L"menubarex")
-		friend class SMenuItemEx;
+		friend class SMenuBarExItem;
 	public:
 		SMenuBarEx();
 		~SMenuBarEx();
 
-		BOOL Init(SHostWnd *pHostWnd);
 		BOOL Insert(LPCTSTR pszTitle, LPCTSTR pszResName, int iPos = -1);
 		BOOL Insert(pugi::xml_node xmlNode, int iPos = -1);
 
@@ -24,16 +23,15 @@ namespace SOUI
 
 		int HitTest(CPoint pt);
 	protected:
-		SMenuItemEx *GetMenuItem(DWORD dwPos);
+		SMenuBarExItem *GetMenuItem(DWORD dwPos);
 		virtual BOOL CreateChildren(pugi::xml_node xmlNode);
 
 		static LRESULT CALLBACK MenuInputFilter(int code, WPARAM wParam, LPARAM lParam);
 
-		SArray<SMenuItemEx*> m_lstMenuItem;
-		HWND m_hWnd;
-		pugi::xml_document  m_xmlStyle;
+		SArray<SMenuBarExItem*> m_lstMenuItem;
+		pugi::xml_document  m_itemStyle;
 		BOOL m_bIsShow;
-		SMenuItemEx *m_pNowMenu;
+		SMenuBarExItem *m_pNowMenu;
 		int m_iNowMenu;
 		CPoint m_ptMouse;
 

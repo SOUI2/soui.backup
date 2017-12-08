@@ -9,24 +9,23 @@ namespace SOUI
 	HHOOK SMenuBarEx::m_hMsgHook = NULL;
 	SMenuBarEx *SMenuBarEx::m_pMenuBar = NULL;
 
-	const TCHAR XmlBtnStyle[] = _T("btnStyle");
-	const TCHAR XmlMenus[] = _T("menus");
+	static const wchar_t * KItemStyle = L"itemStyle";
 
-	class SMenuItemEx :
+	class SMenuBarExItem :
 		public SButton
 	{
-		SOUI_CLASS_NAME(SMenuItemEx, L"menuItemEx")
+		SOUI_CLASS_NAME(SMenuBarExItem, L"item")
 			friend class SMenuBarEx;
 	public:
-		SMenuItemEx(SMenuBarEx *pHostMenu);
-		~SMenuItemEx();
+		SMenuBarExItem(SMenuBarEx *pHostMenu);
+		~SMenuBarExItem();
 
 		void SetData(ULONG_PTR data) { m_data = data; }
 		ULONG_PTR GetData() { return m_data; }
 
 		bool IsMenuLoaded() const;
 	protected:
-		UINT PopMenu();
+		UINT PopupMenu();
 
 		HRESULT OnAttrSrc(const SStringW & strValue, BOOL bLoading);
 
@@ -52,7 +51,7 @@ namespace SOUI
 		SMenuEx m_MenuEx;
 	};
 
-	SMenuItemEx::SMenuItemEx(SMenuBarEx *pHostMenu) :
+	SMenuBarExItem::SMenuBarExItem(SMenuBarEx *pHostMenu) :
 		m_data(0),
 		m_pHostMenu(pHostMenu),
 		m_bIsRegHotKey(FALSE),
@@ -60,19 +59,19 @@ namespace SOUI
 		m_cAccessKey(0)
 	{
 		m_bDrawFocusRect = FALSE;
-		GetEventSet()->subscribeEvent(EventCmd::EventID, Subscriber(&SMenuItemEx::OnCmd, this));
+		GetEventSet()->subscribeEvent(EventCmd::EventID, Subscriber(&SMenuBarExItem::OnCmd, this));
 	}
 
-	SMenuItemEx::~SMenuItemEx()
+	SMenuBarExItem::~SMenuBarExItem()
 	{
 	}
 
-	bool SMenuItemEx::IsMenuLoaded() const
+	bool SMenuBarExItem::IsMenuLoaded() const
 	{
 		return true;
 	}
 
-	UINT SMenuItemEx::PopMenu()
+	UINT SMenuBarExItem::PopupMenu()
 	{
 		m_pHostMenu->m_bIsShow = TRUE;
 		m_pHostMenu->m_pNowMenu = this;
@@ -80,8 +79,9 @@ namespace SOUI
 
 		SetCheck(TRUE);
 
+		HWND hHost = m_pHostMenu->GetContainer()->GetHostHwnd();
 		CRect rcHost;
-		::GetWindowRect(m_pHostMenu->m_hWnd, rcHost);
+		::GetWindowRect(hHost, rcHost);
 		CRect rcMenu = GetClientRect();
 
 		if (SMenuBarEx::m_hMsgHook == NULL)
@@ -90,7 +90,7 @@ namespace SOUI
 
 		int iRet = 0;
 		iRet = m_MenuEx.TrackPopupMenu(TPM_RETURNCMD,
-			rcHost.left + rcMenu.left, rcHost.top + rcMenu.bottom + 2, m_pHostMenu->m_hWnd);
+			rcHost.left + rcMenu.left, rcHost.top + rcMenu.bottom + 2, hHost);
 
 		SetCheck(FALSE);
 		m_pHostMenu->m_bIsShow = FALSE;
@@ -108,52 +108,50 @@ namespace SOUI
 		SMenuBarEx::m_hMsgHook = NULL;
 
 		// 把选择事件发送过去
-		/*EventSelectMenu evt(m_pHostMenu);
+		EventSelectMenu evt(m_pHostMenu);
 		evt.m_id = iRet;
 		evt.m_pMenu = this;
-		FireEvent(evt);*/
+		FireEvent(evt);
 
 		return iRet;
 	}
 
-	HRESULT SMenuItemEx::OnAttrSrc(const SStringW & strValue, BOOL bLoading)
+	HRESULT SMenuBarExItem::OnAttrSrc(const SStringW & strValue, BOOL bLoading)
 	{
 		return m_MenuEx.LoadMenu(strValue) ? S_OK : E_INVALIDARG;
 	}
 
-	CSize SMenuItemEx::GetDesiredSize(LPCRECT pRcContainer)
+	CSize SMenuBarExItem::GetDesiredSize(LPCRECT pRcContainer)
 	{
 		return SWindow::GetDesiredSize(pRcContainer);
 	}
 
-	bool SMenuItemEx::OnCmd(EventArgs * e)
+	bool SMenuBarExItem::OnCmd(EventArgs * e)
 	{
-		if (!::IsWindow(m_pHostMenu->m_hWnd))
-			return false;
 		e->bubbleUp = false;
-		PopMenu();
+		PopupMenu();
 		return true;
 	}
 
-	void SMenuItemEx::OnTimer(UINT_PTR timerID)
+	void SMenuBarExItem::OnTimer(UINT_PTR timerID)
 	{
 		if (timerID == TIMER_POP)
 		{
 			if (!m_pHostMenu->m_bIsShow)
 			{
-				PopMenu();
+				PopupMenu();
 				KillTimer(timerID);
 			}
 		}
 	}
 
+	//////////////////////////////////////////////////////////////////////////
 	SMenuBarEx::SMenuBarEx() :
 		m_bIsShow(FALSE),
-		m_hWnd(NULL),
 		m_pNowMenu(NULL),
 		m_iNowMenu(-1)
 	{
-		//m_evtSet.addEvent(EVENTID(EventSelectMenu));
+		m_evtSet.addEvent(EVENTID(EventSelectMenu));
 		SMenuBarEx::m_pMenuBar = this;
 	}
 
@@ -165,58 +163,24 @@ namespace SOUI
 			SMenuBarEx::m_hMsgHook = NULL;
 		}
 	}
-	BOOL SMenuBarEx::Init(SHostWnd * pHostWnd)
-	{
-		if (::IsWindow(pHostWnd->m_hWnd))
-		{
-			m_hWnd = pHostWnd->m_hWnd;
-			return TRUE;
-		}
-		return FALSE;
-	}
+	
+
 	BOOL SMenuBarEx::Insert(LPCTSTR pszTitle, LPCTSTR pszResName, int iPos)
 	{
-		if (!pszResName)
-			return FALSE;
-
-		SMenuItemEx *pNewMenu = new SMenuItemEx(this);
-		SASSERT(pNewMenu);
-		InsertChild(pNewMenu);
-
-		pugi::xml_node xmlBtnStyle = m_xmlStyle.child(XmlBtnStyle);
-		if (xmlBtnStyle)
-			pNewMenu->InitFromXml(xmlBtnStyle);
-
-		if (pszTitle)
-			pNewMenu->SetWindowText(pszTitle);
-
-		pNewMenu->SetAttribute(L"src", S_CT2W(pszResName));
-		pNewMenu->SetWindowText(pszTitle);
-
-		if (!pNewMenu->IsMenuLoaded())
-		{
-			DestroyChild(pNewMenu);
-			return FALSE;
-		}
-		if (iPos < 0) iPos = m_lstMenuItem.GetCount();
-		m_lstMenuItem.InsertAt(iPos, pNewMenu);
-
-		pNewMenu->m_iIndex = iPos;
-		for (size_t i = iPos + 1; i < m_lstMenuItem.GetCount(); i++)
-		{
-			m_lstMenuItem[i]->m_iIndex++;
-		}
-		return TRUE;
+		pugi::xml_document xmlDoc;
+		xmlDoc.root().set_value(SMenuBarExItem::GetClassName());
+		xmlDoc.root().append_attribute(L"text").set_value(S_CT2W(pszTitle));
+		xmlDoc.root().append_attribute(L"src").set_value(S_CT2W(pszResName));
+		return Insert(xmlDoc.root(),iPos);
 	}
+
 	BOOL SMenuBarEx::Insert(pugi::xml_node xmlNode, int iPos)
 	{
-		SMenuItemEx *pNewMenu = new SMenuItemEx(this);
+		SMenuBarExItem *pNewMenu = new SMenuBarExItem(this);
 		SASSERT(pNewMenu);
 		InsertChild(pNewMenu);
 
-		pugi::xml_node xmlBtnStyle = m_xmlStyle.child(XmlBtnStyle);
-		if (xmlBtnStyle)
-			pNewMenu->InitFromXml(xmlBtnStyle);
+		pNewMenu->InitFromXml(m_itemStyle.child(KItemStyle));
 		pNewMenu->InitFromXml(xmlNode);
 
 		if (!pNewMenu->IsMenuLoaded())
@@ -224,6 +188,13 @@ namespace SOUI
 			DestroyChild(pNewMenu);
 			return FALSE;
 		}
+
+		SStringW strText = S_CT2W(pNewMenu->GetWindowText());
+
+		int nPos = strText.ReverseFind(L'&');
+		if (nPos > -1)
+			pNewMenu->SetAttribute(L"accel", SStringW().Format(L"alt+%c", strText[nPos + 1]));
+
 		if (iPos < 0) iPos = m_lstMenuItem.GetCount();
 		m_lstMenuItem.InsertAt(iPos, pNewMenu);
 
@@ -244,35 +215,33 @@ namespace SOUI
 	{
 		for (size_t i = 0; i < m_lstMenuItem.GetCount(); i++)
 		{
-			SMenuItemEx *pItem = m_lstMenuItem[i];
+			SMenuBarExItem *pItem = m_lstMenuItem[i];
 			CRect rcItem = pItem->GetClientRect();
 			if (rcItem.PtInRect(pt))
 				return i;
 		}
 		return -1;
 	}
-	SMenuItemEx * SMenuBarEx::GetMenuItem(DWORD dwPos)
+	SMenuBarExItem * SMenuBarEx::GetMenuItem(DWORD dwPos)
 	{
 		if (dwPos >= m_lstMenuItem.GetCount())
 			return NULL;
 		return m_lstMenuItem[dwPos];
 	}
+
 	BOOL SMenuBarEx::CreateChildren(pugi::xml_node xmlNode)
 	{
-		pugi::xml_node xmlBtnStyle = xmlNode.child(XmlBtnStyle);
-		if (xmlBtnStyle)
+		pugi::xml_node itemStyle = xmlNode.child(KItemStyle);
+		if (itemStyle)
 		{
-			m_xmlStyle.append_copy(xmlBtnStyle);
+			m_itemStyle.append_copy(itemStyle);
 		}
-		pugi::xml_node xmlTMenus = xmlNode.child(XmlMenus);
-		if (xmlTMenus)
+
+		for (pugi::xml_node xmlChild = xmlNode.first_child(); xmlChild; xmlChild = xmlChild.next_sibling())
 		{
-			for (pugi::xml_node xmlChild = xmlTMenus.first_child(); xmlChild; xmlChild = xmlChild.next_sibling())
-			{
-				if (_tcsicmp(xmlChild.name(), SMenuItemEx::GetClassName()) != 0)
-					continue;
-				Insert(xmlChild);
-			}
+			if (_tcsicmp(xmlChild.name(), SMenuBarExItem::GetClassName()) != 0)
+				continue;
+			Insert(xmlChild);
 		}
 
 		return TRUE;
@@ -292,12 +261,13 @@ namespace SOUI
 				if (SMenuBarEx::m_pMenuBar->m_ptMouse != pt &&
 					SMenuBarEx::m_pMenuBar->m_iNowMenu != -1)
 				{
+					HWND hHost = SMenuBarEx::m_pMenuBar->GetContainer()->GetHostHwnd();
 					SMenuBarEx::m_pMenuBar->m_ptMouse = pt;
-					::ScreenToClient(SMenuBarEx::m_pMenuBar->m_hWnd, &pt);
+					::ScreenToClient(hHost, &pt);
 					int nIndex = SMenuBarEx::m_pMenuBar->HitTest(pt);
 					if (nIndex != -1)
 					{
-						SMenuItemEx *menuItem = SMenuBarEx::m_pMenuBar->GetMenuItem(nIndex);
+						SMenuBarExItem *menuItem = SMenuBarEx::m_pMenuBar->GetMenuItem(nIndex);
 						if (menuItem && SMenuBarEx::m_pMenuBar->m_iNowMenu != nIndex)
 						{
 							SMenuBarEx::m_pMenuBar->m_pNowMenu = menuItem;
@@ -319,12 +289,14 @@ namespace SOUI
 				{
 					int nRevIndex = SMenuBarEx::m_pMenuBar->m_iNowMenu - 1;
 					if (nRevIndex < 0) nRevIndex = SMenuBarEx::m_pMenuBar->m_lstMenuItem.GetCount() - 1;
-					SMenuItemEx *menuItem = SMenuBarEx::m_pMenuBar->m_lstMenuItem[nRevIndex];
+					SMenuBarExItem *menuItem = SMenuBarEx::m_pMenuBar->m_lstMenuItem[nRevIndex];
 					if (menuItem)
 					{
+						HWND hHost = SMenuBarEx::m_pMenuBar->GetContainer()->GetHostHwnd();
+
 						SMenuBarEx::m_pMenuBar->m_pNowMenu = menuItem;
 						SMenuBarEx::m_pMenuBar->m_iNowMenu = nRevIndex;
-						::PostMessage(SMenuBarEx::m_pMenuBar->m_hWnd, WM_KEYDOWN, VK_ESCAPE, 0);
+						::PostMessage(hHost, WM_KEYDOWN, VK_ESCAPE, 0);
 						menuItem->SetTimer(TIMER_POP, 10);
 						return TRUE;
 					}
@@ -333,12 +305,14 @@ namespace SOUI
 				{
 					int nNextIndex = SMenuBarEx::m_pMenuBar->m_iNowMenu + 1;
 					if (nNextIndex >= (int)SMenuBarEx::m_pMenuBar->m_lstMenuItem.GetCount()) nNextIndex = 0;
-					SMenuItemEx *menuItem = SMenuBarEx::m_pMenuBar->GetMenuItem(nNextIndex);
+					SMenuBarExItem *menuItem = SMenuBarEx::m_pMenuBar->GetMenuItem(nNextIndex);
 					if (menuItem)
 					{
+						HWND hHost = SMenuBarEx::m_pMenuBar->GetContainer()->GetHostHwnd();
+
 						SMenuBarEx::m_pMenuBar->m_pNowMenu = menuItem;
 						SMenuBarEx::m_pMenuBar->m_iNowMenu = nNextIndex;
-						::PostMessage(SMenuBarEx::m_pMenuBar->m_hWnd, WM_KEYDOWN, VK_ESCAPE, 0);
+						::PostMessage(hHost, WM_KEYDOWN, VK_ESCAPE, 0);
 						menuItem->SetTimer(TIMER_POP, 10);
 						return TRUE;
 					}
