@@ -11,9 +11,37 @@ namespace SOUI
 
 	static const wchar_t* KItemStyle = L"itemStyle";
 
+
+	class SMenuHolder : public IMenuHolder, public SMenu
+	{
+	public:
+		virtual int TrackPopupMenu(__in UINT uFlags, __in int x, __in int y, __in HWND hWnd)
+		{
+			return SMenu::TrackPopupMenu(uFlags,x,y,hWnd);
+		}
+
+		virtual BOOL LoadMenu(const SStringW & strValue)
+		{
+			return SMenu::LoadMenu(strValue);
+		}
+	};
+
+	class SMenuHolderEx : public IMenuHolder, public SMenuEx
+	{
+	public:
+		virtual int TrackPopupMenu(__in UINT uFlags, __in int x, __in int y, __in HWND hWnd)
+		{
+			return SMenuEx::TrackPopupMenu(uFlags,x,y,hWnd);
+		}
+
+		virtual BOOL LoadMenu(const SStringW & strValue)
+		{
+			return SMenuEx::LoadMenu(strValue);
+		}
+	};
+
 	class SMenuBarItem :
-		public SButton,
-		public SMenu
+		public SButton
 	{
 		SOUI_CLASS_NAME(SMenuBarItem, L"item")
 			friend class SMenuBar;
@@ -29,6 +57,7 @@ namespace SOUI
 		UINT PopMenu();
 
 		HRESULT OnAttrSrc(const SStringW & strValue, BOOL bLoading);
+		HRESULT OnAttrSrc2(const SStringW & strValue, BOOL bLoading);
 
 		virtual void OnFinalRelease() { delete this; }
 		virtual CSize GetDesiredSize(LPCRECT pRcContainer);
@@ -42,6 +71,7 @@ namespace SOUI
 
 		SOUI_ATTRS_BEGIN()
 			ATTR_CUSTOM(_T("src"), OnAttrSrc)
+			ATTR_CUSTOM(_T("src2"), OnAttrSrc2)
 		SOUI_ATTRS_END()
 
 		ULONG_PTR m_data;
@@ -49,6 +79,8 @@ namespace SOUI
 		BOOL m_bIsRegHotKey;
 		int m_iIndex;
 		TCHAR m_cAccessKey;
+
+		IMenuHolder * m_pMenuHolder;
 	};
 
 	SMenuBarItem::SMenuBarItem(SMenuBar *pHostMenu) :
@@ -56,7 +88,8 @@ namespace SOUI
 		m_pHostMenu(pHostMenu),
 		m_bIsRegHotKey(FALSE),
 		m_iIndex(-1),
-		m_cAccessKey(0)
+		m_cAccessKey(0),
+		m_pMenuHolder(NULL)
 	{
 		m_bDrawFocusRect = FALSE;
 		GetEventSet()->subscribeEvent(EventCmd::EventID, Subscriber(&SMenuBarItem::OnCmd, this));
@@ -64,6 +97,10 @@ namespace SOUI
 
 	SMenuBarItem::~SMenuBarItem()
 	{
+		if(m_pMenuHolder)
+		{
+			delete m_pMenuHolder;
+		}
 	}
 
 	bool SMenuBarItem::IsMenuLoaded() const
@@ -91,7 +128,7 @@ namespace SOUI
 				SMenuBar::MenuSwitch, NULL, GetCurrentThreadId());// m_bLoop may become TRUE
 
 		int iRet = 0;
-		iRet = TrackPopupMenu(TPM_RETURNCMD,
+		iRet = m_pMenuHolder->TrackPopupMenu(TPM_RETURNCMD,
 			rcHost.left + rcMenu.left, rcHost.top + rcMenu.bottom + 2, hHostWnd);
 
 		SetCheck(FALSE);
@@ -120,7 +157,18 @@ namespace SOUI
 
 	HRESULT SMenuBarItem::OnAttrSrc(const SStringW & strValue, BOOL bLoading)
 	{
-		return LoadMenu(strValue) ? S_OK : E_INVALIDARG;
+		SASSERT(!m_pMenuHolder);
+		if(m_pMenuHolder) return E_FAIL;
+		m_pMenuHolder = new SMenuHolder;
+		return m_pMenuHolder->LoadMenu(strValue) ? S_OK : E_INVALIDARG;
+	}
+
+	HRESULT SMenuBarItem::OnAttrSrc2(const SStringW & strValue, BOOL bLoading)
+	{
+		SASSERT(!m_pMenuHolder);
+		if(m_pMenuHolder) return E_FAIL;
+		m_pMenuHolder = new SMenuHolderEx;
+		return m_pMenuHolder->LoadMenu(strValue) ? S_OK : E_INVALIDARG;
 	}
 
 	CSize SMenuBarItem::GetDesiredSize(LPCRECT pRcContainer)
@@ -209,12 +257,13 @@ namespace SOUI
 		return TRUE;
 	}
 
-	SMenu * SMenuBar::GetMenu(DWORD dwPos)
+	IMenuHolder * SMenuBar::GetMenu(DWORD dwPos)
 	{
 		if (dwPos >= m_lstMenuItem.GetCount())
 			return NULL;
-		return m_lstMenuItem[dwPos];
+		return m_lstMenuItem[dwPos]->m_pMenuHolder;
 	}
+
 	int SMenuBar::HitTest(CPoint pt)
 	{
 		for (size_t i = 0; i < m_lstMenuItem.GetCount(); i++)

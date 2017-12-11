@@ -7,6 +7,13 @@ namespace SOUI
 {
 	class SMenuBarItem;
 
+	interface IMenuHolder
+	{
+		virtual ~IMenuHolder(){}
+		virtual int TrackPopupMenu(__in UINT uFlags, __in int x, __in int y, __in HWND hWnd) PURE;
+		virtual BOOL LoadMenu(const SStringW & strValue) PURE;
+	};
+
 	class SOUI_EXP SMenuBar : 
 		public SWindow
 	{
@@ -19,7 +26,7 @@ namespace SOUI
 		BOOL Insert(LPCTSTR pszTitle, LPCTSTR pszResName, int iPos = -1);
 		BOOL Insert(pugi::xml_node xmlNode, int iPos = -1);
 
-		SMenu *GetMenu(DWORD dwPos);
+		IMenuHolder *GetMenu(DWORD dwPos);
 
 		int HitTest(CPoint pt);
 	protected:
