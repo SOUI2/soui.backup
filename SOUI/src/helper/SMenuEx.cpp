@@ -803,6 +803,9 @@ namespace SOUI
 
 			if (PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE))
 			{//获取消息，不从消息队列中移除。
+
+				CallMsgFilter( &msg, MSGF_MENU );
+				
 				if (msg.message == WM_KEYDOWN
 					|| msg.message == WM_SYSKEYDOWN
 					|| msg.message == WM_KEYUP
