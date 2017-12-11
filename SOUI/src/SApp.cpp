@@ -426,7 +426,6 @@ void SObjectDefaultRegister::RegisterWindows(SObjectFactoryMgr *objFactory)
 	objFactory->TplRegisterFactory<STileView>();
 	objFactory->TplRegisterFactory<STreeView>();
 	objFactory->TplRegisterFactory<SMenuBar>();
-	objFactory->TplRegisterFactory<SMenuBarEx>();
 	objFactory->TplRegisterFactory<SCalendarEx>();
 	objFactory->TplRegisterFactory<SDateTimePicker>();
 }

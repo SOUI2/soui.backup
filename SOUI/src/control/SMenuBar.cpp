@@ -70,8 +70,8 @@ namespace SOUI
 		SOUI_MSG_MAP_END()
 
 		SOUI_ATTRS_BEGIN()
-			ATTR_CUSTOM(_T("src"), OnAttrSrc)
-			ATTR_CUSTOM(_T("src2"), OnAttrSrc2)
+			ATTR_CUSTOM(_T("src"), OnAttrSrc)	//使用smenu需要的src
+			ATTR_CUSTOM(_T("src2"), OnAttrSrc2) //使用smenuex需要的src
 		SOUI_ATTRS_END()
 
 		ULONG_PTR m_data;
