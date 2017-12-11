@@ -7,7 +7,7 @@ namespace SOUI
 {
 	class SMenuBarItem;
 
-	interface IMenuHolder
+	interface SOUI_EXP IMenuHolder
 	{
 		virtual ~IMenuHolder(){}
 		virtual int TrackPopupMenu(__in UINT uFlags, __in int x, __in int y, __in HWND hWnd) PURE;
