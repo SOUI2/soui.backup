@@ -41,10 +41,10 @@ namespace SOUI
    * Describe   列表头项
    */
   typedef struct SHDITEM {
-	  SHDITEM():mask(0),cx(0),stFlag(ST_NULL),lParam(0),state(0),iOrder(0),bVisible(true){
+	  SHDITEM():mask(0),cx(0, SLayoutSize::px),stFlag(ST_NULL),lParam(0),state(0),iOrder(0),bVisible(true){
 	  }
     UINT    mask; 
-    int     cx; 
+    SLayoutSize     cx;
 	STrText text;
     SHDSORTFLAG stFlag;
     LPARAM  lParam; 
@@ -93,6 +93,7 @@ namespace SOUI
        * Describe  插入新项  
        */      
       int InsertItem(int iItem,LPCTSTR pszText,int nWidth, SHDSORTFLAG stFlag,LPARAM lParam );
+      int InsertItem(int iItem,LPCTSTR pszText, int nWidth, SLayoutSize::Unit unit, SHDSORTFLAG stFlag,LPARAM lParam );
       /**
        * SHeaderCtrl::GetItem
        * @brief    获得新项
@@ -112,7 +113,6 @@ namespace SOUI
        * Describe  获取列表项个数  
        */      
       size_t GetItemCount() const{return m_arrItems.GetCount();}
-
       /**
        * SHeaderCtrl::GetTotalWidth
        * @brief    获得所有宽度
@@ -319,6 +319,7 @@ namespace SOUI
           MSG_WM_MOUSELEAVE(OnMouseLeave)
           MSG_WM_ACTIVATEAPP(OnActivateApp)
           MSG_WM_DESTROY(OnDestroy)
+		  MESSAGE_HANDLER_EX(UM_SETSCALE, OnSetScale)
       SOUI_MSG_MAP_END()
 
       ISkinObj *    m_pSkinItem;  /**< 表头绘制Skin */

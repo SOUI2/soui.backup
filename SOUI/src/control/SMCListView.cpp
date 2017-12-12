@@ -578,7 +578,7 @@ void SMCListView::UpdateVisibleItems()
 				{
 					pColWnd->SetVisible(true);
 					rcSubItem.left = rcSubItem.right;
-					rcSubItem.right += hditem.cx;
+					rcSubItem.right += hditem.cx.toPixelSize(GetScale());
 					pColWnd->Move(rcSubItem);
 				}else
 				{
