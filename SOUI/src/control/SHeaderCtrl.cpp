@@ -27,14 +27,19 @@ namespace SOUI
 	{
 	}
 
-	int SHeaderCtrl::InsertItem(int iItem, LPCTSTR pszText, int nWidth, SHDSORTFLAG stFlag, LPARAM lParam)
+    int SHeaderCtrl::InsertItem(int iItem, LPCTSTR pszText, int nWidth, SHDSORTFLAG stFlag, LPARAM lParam)
+    {
+        return InsertItem(iItem, pszText, nWidth, SLayoutSize::px, stFlag, lParam);
+    }
+
+    int SHeaderCtrl::InsertItem(int iItem, LPCTSTR pszText, int nWidth, SLayoutSize::Unit unit, SHDSORTFLAG stFlag, LPARAM lParam)
 	{
 		SASSERT(pszText);
 		SASSERT(nWidth >= 0);
 		if (iItem == -1) iItem = (int)m_arrItems.GetCount();
 		SHDITEM item;
 		item.mask = 0xFFFFFFFF;
-		item.cx = nWidth;
+		item.cx.setSize(nWidth, unit);
 		item.text.SetCtxProvider(this);
 		item.text.SetText(pszText);
 		item.stFlag = stFlag;
@@ -78,7 +83,7 @@ namespace SOUI
 		{
 			if(!m_arrItems[i].bVisible) continue;
 			rcItem.left = rcItem.right;
-			rcItem.right = rcItem.left + m_arrItems[i].cx;
+			rcItem.right = rcItem.left + m_arrItems[i].cx.toPixelSize(GetScale());
 			DrawItem(pRT, rcItem, m_arrItems.GetData() + i);
 			if (rcItem.right >= rcClient.right) break;
 		}
@@ -145,7 +150,7 @@ namespace SOUI
 		for (UINT i = 0; i <= iItem && i < m_arrItems.GetCount(); i++)
 		{
 			rcItem.left = rcItem.right;
-			rcItem.right = rcItem.left + m_arrItems[i].cx;
+			rcItem.right = rcItem.left + m_arrItems[i].cx.toPixelSize(GetScale());
 		}
 		return rcItem;
 	}
@@ -173,7 +178,7 @@ namespace SOUI
 		}
 		else if (m_dwHitTest != -1)
 		{
-			m_nAdjItemOldWidth = m_arrItems[LOWORD(m_dwHitTest)].cx;
+			m_nAdjItemOldWidth = m_arrItems[LOWORD(m_dwHitTest)].cx.toPixelSize(GetScale());
 		}
 	}
 
@@ -225,7 +230,7 @@ namespace SOUI
 		{//调整表头宽度，发送一个调整完成消息
 			EventHeaderItemChanged evt(this);
 			evt.iItem = LOWORD(m_dwHitTest);
-			evt.nWidth = m_arrItems[evt.iItem].cx;
+			evt.nWidth = m_arrItems[evt.iItem].cx.toPixelSize(GetScale());
 			FireEvent(evt);
 		}
 		m_bDragging = FALSE;
@@ -270,7 +275,12 @@ namespace SOUI
 				{
 					int cxNew = m_nAdjItemOldWidth + pt.x - m_ptClick.x;
 					if (cxNew < 0) cxNew = 0;
-					m_arrItems[LOWORD(m_dwHitTest)].cx = cxNew;
+                    if (m_arrItems[LOWORD(m_dwHitTest)].cx.unit == SLayoutSize::px)
+                        m_arrItems[LOWORD(m_dwHitTest)].cx.setSize(cxNew, SLayoutSize::px);
+                    else if(m_arrItems[LOWORD(m_dwHitTest)].cx.unit == SLayoutSize::dp)
+                        m_arrItems[LOWORD(m_dwHitTest)].cx.setSize(cxNew * 1.0f / GetScale(), SLayoutSize::dp);
+                    // TODO: dip 和 sp 的处理（AYK）
+
 					Invalidate();
 					GetContainer()->UpdateWindow();//立即更新窗口
 					//发出调节宽度消息
@@ -335,7 +345,7 @@ namespace SOUI
 			SStringW strText = xmlItem.text().get();
 			strText.TrimBlank();
 			item.text.SetText(S_CW2T(GETSTRING(strText)));
-			item.cx = xmlItem.attribute(L"width").as_int(50);
+            item.cx = SLayoutSize::fromString(xmlItem.attribute(L"width").as_string(L"50"));// .as_int(50);
 			item.lParam = xmlItem.attribute(L"userData").as_uint(0);
 			item.stFlag = (SHDSORTFLAG)xmlItem.attribute(L"sortFlag").as_uint(ST_NULL);
 			item.bVisible = xmlItem.attribute(L"visible").as_bool(true);
@@ -365,10 +375,10 @@ namespace SOUI
 		int nMargin = m_bSortHeader ? CX_HDITEM_MARGIN : 2;
 		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
 		{
-			if (m_arrItems[i].cx == 0 || !m_arrItems[i].bVisible) continue;    //越过宽度为0的项
+			if (m_arrItems[i].cx.toPixelSize(GetScale()) == 0 || !m_arrItems[i].bVisible) continue;    //越过宽度为0的项
 
 			rcItem.left = rcItem.right;
-			rcItem.right = rcItem.left + m_arrItems[i].cx;
+			rcItem.right = rcItem.left + m_arrItems[i].cx.toPixelSize(GetScale());
 			if (pt.x < rcItem.left + nMargin)
 			{
 				int nLeft = i > 0 ? i - 1 : 0;
@@ -393,7 +403,7 @@ namespace SOUI
 		if (iItem >= m_arrItems.GetCount()) return NULL;
 		CRect rcClient;
 		GetClientRect(rcClient);
-		CRect rcItem(0, 0, m_arrItems[iItem].cx, rcClient.Height());
+		CRect rcItem(0, 0, m_arrItems[iItem].cx.toPixelSize(GetScale()), rcClient.Height());
 
 		CAutoRefPtr<IRenderTarget> pRT;
 		GETRENDERFACTORY->CreateRenderTarget(&pRT, rcItem.Width(), rcItem.Height());
@@ -456,7 +466,7 @@ namespace SOUI
 	{
 		if (iItem < 0 || (UINT)iItem >= m_arrItems.GetCount()) return -1;
 		if(!m_arrItems[iItem].bVisible) return 0;
-		return m_arrItems[iItem].cx;
+		return m_arrItems[iItem].cx.toPixelSize(GetScale());
 	}
 
 	void SHeaderCtrl::OnActivateApp(BOOL bActive, DWORD dwThreadID)

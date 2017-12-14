@@ -151,6 +151,8 @@ namespace SOUI
 		void SetScintillaWnd(CScintillaWnd *pWnd);
 
 		BOOL Load(const TCHAR *szFileName);
+		BOOL LoadMemory(LPWSTR buffer);
+	
 		void Clear();
 		void SetFilter(const SStringT& str);
 		void SetLevel(int nCurSel);
@@ -167,10 +169,10 @@ namespace SOUI
 		void SetFilterTids(const SArray<UINT> & lstTid);
 
 		void SetLogParserPool(SList<ILogParse*> *pLogParserPool);
-		//void SetParserFactory(IParserFactory *pParserFactory);
 		SLogInfo* GetLogInfo(int iItem) const;
 
 	protected:
+
 		const SArray<SLogInfo*> * GetLogList() const;
 
 		void doFilter();

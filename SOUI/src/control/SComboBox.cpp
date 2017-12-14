@@ -38,6 +38,7 @@ namespace SOUI
 		m_pListBox->SetAttribute(L"hotTrack",L"1",TRUE);
 		m_pListBox->SetOwner(this);    //chain notify message to combobox
 		m_pListBox->SetID(IDC_DROPDOWN_LIST);
+        m_pListBox->SSendMessage(UM_SETSCALE, GetScale());
 
 		//初始化列表数据
 		pugi::xml_node xmlNode_Items=xmlNode.child(L"items");
