@@ -6,7 +6,7 @@ class SOUI_EXP STileViewItemLocator : public TObjRefImpl<IObjRef>
 {
 public:
     STileViewItemLocator(int nItemHei, int nItemWid, int nMarginSize = 0);
-    STileViewItemLocator(LPCTSTR szItemHei, LPCTSTR szItemWid, SLayoutSize marginSize = {0.0f, SLayoutSize::px});
+    STileViewItemLocator(LPCTSTR szItemHei, LPCTSTR szItemWid, SLayoutSize marginSize = SLayoutSize());
     
     void SetAdapter(ILvAdapter *pAdapter);
     
