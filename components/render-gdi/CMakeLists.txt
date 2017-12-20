@@ -30,3 +30,4 @@ set(COM_LIBS ${COM_LIBS} render-gdi CACHE INTERNAL "com_lib")
 set_target_properties (render-gdi PROPERTIES
     FOLDER components/render
 )
+cotire(render-gdi)

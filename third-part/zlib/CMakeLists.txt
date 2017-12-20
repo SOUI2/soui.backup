@@ -43,3 +43,4 @@ set(COM_LIBS ${COM_LIBS} zlib CACHE INTERNAL "com_lib")
 set_target_properties (zlib PROPERTIES
     FOLDER third-part
 )
+cotire(zlib)

@@ -56,3 +56,4 @@ endif()
 set_target_properties (ScriptModule-Lua PROPERTIES
     FOLDER components
 )
+cotire(ScriptModule-Lua)

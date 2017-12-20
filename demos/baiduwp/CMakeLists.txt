@@ -34,3 +34,4 @@ set_target_properties(baiduwb PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (baiduwb PROPERTIES
     FOLDER demos
 )
+cotire(baiduwb)
