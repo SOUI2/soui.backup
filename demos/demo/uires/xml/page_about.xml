@@ -5,15 +5,27 @@
   <link pos="[10,{5" href="http://www.cnblogs.com/setoutsoft/" class="cls_btn_weblink">SOUI教程</link>
   <link pos="[10,{0" href="http://soui.me" class="cls_btn_weblink">SOUI论坛</link>
 
-  <text pos="10,[5">QQ群#1(2000人)：</text><edit readOnly="1">229313785</edit>
+  <text pos="10,[5">QQ群#1(2000人)：</text>
+  <edit readOnly="1">229313785</edit>
   <link href="http://jq.qq.com/?_wv=1027&k=PxXh59"  class="cls_btn_weblink">申请群#1</link>
   <text pos="[10,{0">QQ群#2(500人)：</text>
   <edit readOnly="1">385438344</edit>
   <link href="http://jq.qq.com/?_wv=1027&k=VRATCo"  class="cls_btn_weblink">申请群#2</link>
-  <text pos="10,[5">git.github：</text><edit pos="150,{0,@-1,@30" readOnly="1">https://github.com/soui2/soui</edit>
-  <text pos="10,[5">git.oschina：</text><edit pos="150,{0,@-1,@30" readOnly="1">https://gitee.com/setousoft/soui</edit>
-  
-  
+  <text pos="10,[5">git.github：</text>
+  <edit pos="150,{0,@-1,@30" readOnly="1">https://github.com/soui2/soui</edit>
+  <text pos="10,[5">git.oschina：</text>
+  <edit pos="150,{0,@-1,@30" readOnly="1">https://gitee.com/setousoft/soui</edit>
+
+ <header008 pos="10,[2" size="-1,30" align="center"  sortSkin="skin_lcex_header_arrow" itemSkin="skin_lcex_header" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" colorBkgnd="#ffffff" >
+      <items>
+        <item width="120" colorBkgnd="#ff00ff">@string/mccol_1<check pos="10,|" offset="0,-0.5">选我</check></item>
+        <item width="95"  colorBkgnd="#ffccff">@string/mccol_2</item>
+        <item width="100"  colorBkgnd="#ffeeff">@string/mccol_3</item>
+        <item width="20%"  colorBkgnd="#ffffee">@string/mccol_4</item><item width="100"  colorBkgnd="#00ffff">@string/mccol_6</item>
+        <item width="100"  colorBkgnd="#eeffff">@string/mccol_5</item>
+        
+      </items>
+    </header008>
   <group pos="10,[5,-10,@350" align="left" show="1" text="支持SOUI发展" layout="hbox" padding="10,10,10,0" align="center">
     <window size="0,-2" layout="vbox" gravity="center" weight="1">
       <text>微信赞助</text>
@@ -21,9 +33,11 @@
     </window>
     <window size="0,-2" layout="vbox" gravity="center" weight="1" >
       <text>支付宝赞助</text>
+       
       <qrctrl size="300,300" text="HTTPS://QR.ALIPAY.COM/FKX07171QGERGGU4MNY8C8">
         <icon pos="|0,|0,@48,@48" offset="-0.5,-0.5" src="ICON_LOGO:48"/>
       </qrctrl>
     </window>
+    
   </group>
 </include>

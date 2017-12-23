@@ -59,6 +59,7 @@
 #include "skin/SSkinLoader.h"
 #include "trayicon/SShellNotifyIcon.h"
 #include "qrcode/SQrCtrl.h"
+#include "SHeaderCtrl008.h"
 
 ROBJ_IN_CPP
 
@@ -196,6 +197,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR /*
         {
             theApp->RegisterWindowClass<SUiAnimationWnd>();//注册动画控件
         }
+		theApp->RegisterWindowClass<SHeaderCtrl008>();
         theApp->RegisterWindowClass<SFadeFrame>();//注册渐显隐动画控件
         theApp->RegisterWindowClass<SRadioBox2>();//注册RadioBox2
         theApp->RegisterWindowClass<SCalendar2>();//注册SCalendar2

@@ -29,6 +29,7 @@ SUBDIRS += souieditor
 SUBDIRS += DropDemo
 SUBDIRS += ThreeClearGame
 SUBDIRS += baiduwp
+SUBDIRS += SouiStudio
 
 CONFIG(c++11){
 	SUBDIRS += timdemo	

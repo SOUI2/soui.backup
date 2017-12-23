@@ -221,7 +221,6 @@ namespace SOUI
 	void SWindow::Move(LPCRECT prect)
 	{
 		TestMainThread();
-
 		if(prect)
 		{
 			m_bFloat = TRUE;//使用Move后，程序不再自动计算窗口坐标
@@ -1908,8 +1907,7 @@ namespace SOUI
 		}
 		return pRet;
 	}
-
-
+	
 	void SWindow::PaintBackground(IRenderTarget *pRT,LPRECT pRc )
 	{
 		CRect rcDraw=m_rcWindow;
@@ -1925,6 +1923,26 @@ namespace SOUI
 
 		GetContainer()->BuildWndTreeZorder();
 		pTopWnd->_PaintRegion(pRT,pRgn,ZORDER_MIN,m_uZorder);
+
+		pRT->PopClip();
+	}
+
+	void SWindow::PaintBackground2(IRenderTarget *pRT, LPRECT pRc)
+	{
+		CRect rcDraw = m_rcWindow;
+		if (pRc) rcDraw.IntersectRect(rcDraw, pRc);
+		pRT->PushClipRect(&rcDraw, RGN_AND);
+
+		SWindow *pTopWnd = GetRoot();
+		CAutoRefPtr<IRegion> pRgn;
+		GETRENDERFACTORY->CreateRegion(&pRgn);
+		pRgn->CombineRect(&rcDraw, RGN_COPY);
+
+		pRT->ClearRect(&rcDraw, 0);//清除残留的alpha值
+
+		GetContainer()->BuildWndTreeZorder();
+		UINT MAX_ZORDER = GetParent()->GetWindow(GSW_LASTCHILD)->m_uZorder;
+		pTopWnd->_PaintRegion(pRT, pRgn, ZORDER_MIN, MAX_ZORDER);
 
 		pRT->PopClip();
 	}

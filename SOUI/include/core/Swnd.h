@@ -1018,7 +1018,7 @@ namespace SOUI
         * Describe  目标位置必须在窗口位置内
         */
         void PaintBackground(IRenderTarget *pRT,LPRECT pRc);
-
+		void PaintBackground2(IRenderTarget *pRT, LPRECT pRc);
         /**
         * PaintForeground
         * @brief    画窗口的前景内容
