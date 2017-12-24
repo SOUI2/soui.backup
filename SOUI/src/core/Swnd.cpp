@@ -1941,7 +1941,16 @@ namespace SOUI
 		pRT->ClearRect(&rcDraw, 0);//清除残留的alpha值
 
 		GetContainer()->BuildWndTreeZorder();
-		UINT MAX_ZORDER = GetParent()->GetWindow(GSW_LASTCHILD)->m_uZorder;
+
+		UINT MAX_ZORDER=0;
+		
+		SWindow *wnd = GetWindow(GSW_LASTCHILD);
+		while (wnd)
+		{
+			MAX_ZORDER = wnd->m_uZorder;
+			wnd = wnd->GetWindow(GSW_LASTCHILD);
+		}
+		MAX_ZORDER = MAX_ZORDER == 0 ? m_uZorder+1:MAX_ZORDER + 1;
 		pTopWnd->_PaintRegion(pRT, pRgn, ZORDER_MIN, MAX_ZORDER);
 
 		pRT->PopClip();

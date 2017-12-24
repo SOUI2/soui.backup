@@ -15,6 +15,7 @@ namespace SOUI
 		SHeaderItem(SHeaderCtrl008* pHost) :m_pHost(pHost), m_iOrder(-1), m_bcanSort(FALSE), m_pSkinSort(NULL), m_hDragImg(NULL), m_sortFlag(ST_NULL),m_bSwaping(false), m_bChangeSizing(false)
 		{
 			m_sortPos.x = m_sortPos.y = -100;
+			SWindow::m_bClipClient = TRUE;
 		}
 // 		void MoveTo(const CRect & rcEnd)
 // 		{
@@ -53,16 +54,26 @@ namespace SOUI
 			return TRUE;
 		}
 
-		virtual BOOL CreateChildren(pugi::xml_node xmlNode)
+		void HideChildWnd(bool bHide)
 		{
-			m_pRootWnd = SApplication::getSingleton().CreateWindowByName(L"window");
-			this->InsertChild(m_pRootWnd);
-			m_pRootWnd->SetAttribute(L"size", L"-2,-2",TRUE);
-			m_pRootWnd->SetAttribute(L"msgTransparent", L"1", TRUE);
-			m_pRootWnd->SSendMessage(WM_CREATE);
-			m_pRootWnd->CreateChildren(xmlNode);
-			return TRUE;
+			SWindow *childWnd = GetWindow(GSW_FIRSTCHILD);
+			while (childWnd)
+			{
+				childWnd->SetVisible(bHide ? FALSE : TRUE);
+				childWnd = childWnd-> GetWindow(GSW_NEXTSIBLING);
+			}
+			this->Invalidate();
 		}
+// 		virtual BOOL CreateChildren(pugi::xml_node xmlNode)
+// 		{
+// 			m_pRootWnd = SApplication::getSingleton().CreateWindowByName(L"window");
+// 			this->InsertChild(m_pRootWnd);
+// 			m_pRootWnd->SetAttribute(L"size", L"-2,-2",TRUE);
+// 			//m_pRootWnd->SetAttribute(L"msgTransparent", L"1", TRUE);
+// 			m_pRootWnd->SSendMessage(WM_CREATE);
+// 			m_pRootWnd->CreateChildren(xmlNode);
+// 			return TRUE;
+// 		}
 		void OnPaint(IRenderTarget *_pRT)
 		{
 			if (m_bSwaping)
@@ -115,7 +126,7 @@ namespace SOUI
 				::DeleteObject(m_hDragImg);
 				m_hDragImg = NULL;
 				m_bSwaping = false;
-				//m_pHost->StopAni();
+				HideChildWnd(false);
 			}
 		}
 		bool HitTestSIZEWE(const CPoint & pt)
@@ -178,9 +189,8 @@ namespace SOUI
 					CPoint pt = m_ptDrag - GetWindowRect().TopLeft();
 					CDragWnd::BeginDrag(m_hDragImg, pt, 0, 128, LWA_ALPHA | LWA_COLORKEY);
 					m_bSwaping = true;
-					m_pRootWnd->SetVisible(FALSE);
+					HideChildWnd(true);
 					this->Invalidate();
-					//m_pHost->StartAni();
 				}
 				else if(m_bSwaping)
 				{
@@ -200,10 +210,9 @@ namespace SOUI
 				CDragWnd::EndDrag();
 				DeleteObject(m_hDragImg);
 				m_hDragImg = NULL;
-				m_pRootWnd->SetVisible(TRUE);
+				HideChildWnd(false);
 				this->Invalidate();
 				m_bSwaping = false;
-				//m_pHost->StopAni();
 			}
 			else if (m_bChangeSizing)
 			{
@@ -228,7 +237,7 @@ namespace SOUI
 		ISkinObj *    m_pSkinSort;  /**< 排序标志Skin */
 		HBITMAP       m_hDragImg;  /**< 显示拖动窗口的临时位图 */
 		SHDSORTFLAG m_sortFlag;
-		SWindow *m_pRootWnd;
+		//SWindow *m_pRootWnd;
 	};
 
 	SHeaderCtrl008::SHeaderCtrl008(void)

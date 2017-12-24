@@ -15,26 +15,25 @@
   <edit pos="150,{0,@-1,@30" readOnly="1">https://github.com/soui2/soui</edit>
   <text pos="10,[5">git.oschina：</text>
   <edit pos="150,{0,@-1,@30" readOnly="1">https://gitee.com/setousoft/soui</edit>
-
- <header008 pos="10,[2" size="-1,30" align="center"  sortSkin="skin_lcex_header_arrow" itemSkin="skin_lcex_header" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" colorBkgnd="#ffffff" >
+<text pos="10,[5,@100,@100"><check pos="10,|" offset="0,-0.5">选我</check></text>
+ <header008 pos="10,[2" size="500,30" align="center" sortSkin="skin_lcex_header_arrow" itemSkin="skin_lcex_header" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" colorBkgnd="#ffffff" >
       <items>
-        <item width="120" colorBkgnd="#ff00ff">@string/mccol_1<check pos="10,|" offset="0,-0.5">选我</check></item>
+        <item width="120" colorBkgnd="#ff00ff"><check pos="10,|" offset="0,-0.5">选我</check></item>
         <item width="95"  colorBkgnd="#ffccff">@string/mccol_2</item>
         <item width="100"  colorBkgnd="#ffeeff">@string/mccol_3</item>
-        <item width="20%"  colorBkgnd="#ffffee">@string/mccol_4</item><item width="100"  colorBkgnd="#00ffff">@string/mccol_6</item>
-        <item width="100"  colorBkgnd="#eeffff">@string/mccol_5</item>
-        
+        <item width="20%"  colorBkgnd="#ffffee">@string/mccol_4</item>
+      <item width="100"  colorBkgnd="#00ffff">@string/mccol_6</item>
       </items>
     </header008>
   <group pos="10,[5,-10,@350" align="left" show="1" text="支持SOUI发展" layout="hbox" padding="10,10,10,0" align="center">
     <window size="0,-2" layout="vbox" gravity="center" weight="1">
       <text>微信赞助</text>
-      <qrctrl size="300,300" skin="skin_qrbg" qrrect="92,139,199,246"  colorBkgnd="#ffffff">wxp://f2f0J_TGrQJ7F_KjpfCdDTFNKDAvDFIYrSM5</qrctrl>
+      <qrctrl size="300,300" skin="skin_qrbg" qrrect="92,139,199,246"  colorBkgnd="#ffffff">HTTPS://QR.ALIPAY.COM/c1x01242ry2aesa7rzie23</qrctrl>
     </window>
     <window size="0,-2" layout="vbox" gravity="center" weight="1" >
       <text>支付宝赞助</text>
        
-      <qrctrl size="300,300" text="HTTPS://QR.ALIPAY.COM/FKX07171QGERGGU4MNY8C8">
+      <qrctrl size="300,300" text="HTTPS://QR.ALIPAY.COM/c1x01242ry2aesa7rzie23">
         <icon pos="|0,|0,@48,@48" offset="-0.5,-0.5" src="ICON_LOGO:48"/>
       </qrctrl>
     </window>
