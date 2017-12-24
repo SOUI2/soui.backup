@@ -9,7 +9,7 @@ namespace SOUI
 #define SHDI_ORDER               0x0010
 #define SHDI_VISIBLE             0x0020
 
-#define CX_HDITEM_MARGIN    4
+#define CX_HDITEM_MARGIN    6
 	/**
 	* @enum      _SHDSORTFLAG
 	* @brief     ≈≈–Ú±Í÷æ
@@ -155,6 +155,7 @@ namespace SOUI
 
 		bool IsLastItem(int iOrder);
 
+		SHeaderItem *GetPrvItem(int iMyOrder);
 		virtual void UpdateChildrenPosition()override;
 		virtual CSize GetDesiredSize(LPCRECT pRcContainer);
 			/**

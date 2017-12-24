@@ -46,7 +46,7 @@ namespace SOUI
 	protected:
 		virtual BOOL OnSetCursor(const CPoint &pt)override
 		{
-			if (m_pHost->m_bFixWidth || !HitTestSIZEWE(pt))
+			if (!HitTestSIZEWE(pt))
 				return __super::OnSetCursor(pt);
 			HCURSOR hCursor = GETRESPROVIDER->LoadCursor(IDC_SIZEWE);
 			if (GetCursor() != hCursor)
@@ -64,16 +64,6 @@ namespace SOUI
 			}
 			this->Invalidate();
 		}
-// 		virtual BOOL CreateChildren(pugi::xml_node xmlNode)
-// 		{
-// 			m_pRootWnd = SApplication::getSingleton().CreateWindowByName(L"window");
-// 			this->InsertChild(m_pRootWnd);
-// 			m_pRootWnd->SetAttribute(L"size", L"-2,-2",TRUE);
-// 			//m_pRootWnd->SetAttribute(L"msgTransparent", L"1", TRUE);
-// 			m_pRootWnd->SSendMessage(WM_CREATE);
-// 			m_pRootWnd->CreateChildren(xmlNode);
-// 			return TRUE;
-// 		}
 		void OnPaint(IRenderTarget *_pRT)
 		{
 			if (m_bSwaping)
@@ -92,7 +82,7 @@ namespace SOUI
 			//未设置X偏移
 			if (m_sortPos.x == -100)
 			{
-				int _left = (_sortIconRect.right = _clientRect.right) - _skinSize.cx;
+				int _left = (_sortIconRect.right = _clientRect.right- CX_HDITEM_MARGIN) - _skinSize.cx;
 				_sortIconRect.left = _left < _clientRect.left ? _clientRect.left : _left;
 			}
 			else
@@ -129,13 +119,18 @@ namespace SOUI
 				HideChildWnd(false);
 			}
 		}
-		bool HitTestSIZEWE(const CPoint & pt)
+		int HitTestSIZEWE(const CPoint & pt)
 		{
+			if (m_pHost->m_bFixWidth)
+				return 0;
 			CRect    rcWnd;
 			GetWindowRect(&rcWnd);
 			if (!rcWnd.PtInRect(pt))
-				return false;
-			return pt.x > rcWnd.right - CX_HDITEM_MARGIN;
+				return 0;
+			bool bLeft = pt.x < rcWnd.left + CX_HDITEM_MARGIN;
+			if (bLeft)
+				return m_iOrder != 0?1:0;
+			return (pt.x > rcWnd.right - CX_HDITEM_MARGIN)?2:0;
 			
 		}
 		HBITMAP CreateDragImage()
@@ -160,28 +155,27 @@ namespace SOUI
 			::ReleaseDC(NULL, hdc);
 			return hBmp;
 		}
-// 		virtual void OnAnimatorState(int percent)
-// 		{
-// 			CRect rcTemp;
-// 			rcTemp.left = m_rcBegin.left + (m_rcEnd.left - m_rcBegin.left)*percent / 100;
-// 			rcTemp.top = m_rcBegin.top;
-// 			rcTemp.right = m_rcBegin.right + (m_rcEnd.right - m_rcBegin.right)*percent / 100;
-// 			rcTemp.bottom = m_rcBegin.bottom ;
-// 			Move(rcTemp);
-// 		}
-		virtual void OnFinalRelease() { delete this; }
 		void OnMouseMove(UINT nFlags, CPoint pt)
 		{
+			static SHeaderItem *item=NULL;
 			if ((nFlags & MK_LBUTTON))
 			{
 				if (!m_bChangeSizing)
 				{
-					if(HitTestSIZEWE(m_ptDrag))
-						m_bChangeSizing = true;
+					switch (HitTestSIZEWE(m_ptDrag))
+					{
+					case 1:
+						item = m_pHost->GetPrvItem(m_iOrder);
+						m_bChangeSizing = true; break;
+					case 2:
+						item = this;
+						m_bChangeSizing = true;break;
+					}
 				}
 				else if (m_bChangeSizing)
 				{
-					m_pHost->ChangeItemSize(this,pt);
+					SASSERT(item);
+					m_pHost->ChangeItemSize(item,pt);
 				}
 				if (!m_bSwaping&&!m_bChangeSizing && IsDragable())
 				{
@@ -237,7 +231,6 @@ namespace SOUI
 		ISkinObj *    m_pSkinSort;  /**< 排序标志Skin */
 		HBITMAP       m_hDragImg;  /**< 显示拖动窗口的临时位图 */
 		SHDSORTFLAG m_sortFlag;
-		//SWindow *m_pRootWnd;
 	};
 
 	SHeaderCtrl008::SHeaderCtrl008(void)
@@ -295,16 +288,6 @@ namespace SOUI
 		UpdateChildrenPosition();
 	}
 
-// 	void SHeaderCtrl008::StartAni()
-// 	{
-// 		GetContainer()->RegisterTimelineHandler(this);
-// 	}
-
-// 	void SHeaderCtrl008::StopAni()
-// 	{
-// 		GetContainer()->UnregisterTimelineHandler(this);
-// 	}
-
 	void SHeaderCtrl008::OnDestroy()
 	{
 		DeleteAllItems();
@@ -314,6 +297,12 @@ namespace SOUI
 	bool SHeaderCtrl008::IsLastItem(int iOrder)
 	{
 		return iOrder == m_arrItems.GetCount()-1;
+	}
+	SHeaderItem *SHeaderCtrl008::GetPrvItem(int iMyOrder)
+	{
+		if (iMyOrder >= m_arrItems.GetCount() || iMyOrder == 0)
+			return NULL;
+		return m_arrItems[--iMyOrder];
 	}
 	CSize SHeaderCtrl008::GetDesiredSize(LPCRECT pRcContainer)
 	{
@@ -332,10 +321,9 @@ namespace SOUI
 		CRect rcTab = rcClient;
 		int itemWid = 0;
 		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
-		{
-			//itemWid = m_arrItems[i]->GetDesiredSize(-1, -1).cx;
+		{			
 			itemWid = m_arrItems[i]->GetWindowRect().Width();
-			rcTab.right = rcTab.left +itemWid ;
+			rcTab.right = rcTab.left +itemWid;
 			m_arrItems[i]->Move(rcTab);
 			rcTab.OffsetRect(itemWid, 0);
 		}
@@ -385,7 +373,7 @@ namespace SOUI
 	void SHeaderCtrl008::ChangeItemSize(SHeaderItem *pHeaderItem, CPoint ptCur)
 	{
 		CRect itemRc = pHeaderItem->GetWindowRect();
-		if (ptCur.x <= itemRc.left + 10)
+		if (ptCur.x <= itemRc.left)
 			return;
 		int offset = ptCur.x - itemRc.right;
 		itemRc.right = ptCur.x;
@@ -415,7 +403,8 @@ namespace SOUI
 			this->InsertChild(item);
 			item->m_iOrder = iOrder++;
 			//先从header里COPY一些通用属性，如果子项没有设置的话
-			
+			if (xmlItem.attribute(L"sortSkin").empty() && !xmlNode.attribute(L"sortSkin").empty())
+				xmlItem.append_attribute(L"sortSkin").set_value(xmlNode.attribute(L"sortSkin").as_string());
 			item->InitFromXml(xmlItem);
 			m_arrItems.InsertAt(m_arrItems.GetCount(), item);
 			xmlItem = xmlItem.next_sibling(L"item");
@@ -423,14 +412,13 @@ namespace SOUI
 		return TRUE;
 	}
 
-
 	int SHeaderCtrl008::GetTotalWidth()
 	{
 		int nRet = 0;
 		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
 		{
-			nRet += m_arrItems[i]->m_bFloat? m_arrItems[i]->GetWindowRect().Width() :  m_arrItems[i]->GetDesiredSize(-1, -1).cx;
-			//nRet += m_arrItems[i]->GetWindowRect().Width();
+			if(m_arrItems[i]->IsVisible())
+				nRet += m_arrItems[i]->m_bFloat? m_arrItems[i]->GetWindowRect().Width() :  m_arrItems[i]->GetDesiredSize(-1, -1).cx;
 		}
 		return nRet;
 	}
@@ -449,7 +437,6 @@ namespace SOUI
 	{
 		SASSERT(iItem >= 0 && iItem < (int)m_arrItems.GetCount());
 		m_arrItems[iItem]->SetVisible(visible, TRUE);
-
 		Invalidate();
 		//发出调节宽度消息
 		EventHeaderItemChanged evt(this);
