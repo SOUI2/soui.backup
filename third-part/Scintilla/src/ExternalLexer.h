@@ -14,9 +14,7 @@
 #define EXT_LEXER_DECL
 #endif
 
-#ifdef SCI_NAMESPACE
 namespace Scintilla {
-#endif
 
 typedef void*(EXT_LEXER_DECL *GetLexerFunction)(unsigned int Index);
 typedef int (EXT_LEXER_DECL *GetLexerCountFn)();
@@ -27,39 +25,26 @@ typedef LexerFactoryFunction(EXT_LEXER_DECL *GetLexerFactoryFunction)(unsigned i
 class ExternalLexerModule : public LexerModule {
 protected:
 	GetLexerFactoryFunction fneFactory;
-	char name[100];
+	std::string name;
 public:
 	ExternalLexerModule(int language_, LexerFunction fnLexer_,
 		const char *languageName_=0, LexerFunction fnFolder_=0) :
 		LexerModule(language_, fnLexer_, 0, fnFolder_),
-		fneFactory(0) {
-		strncpy(name, languageName_, sizeof(name));
-		name[sizeof(name)-1] = '\0';
-		languageName = name;
+		fneFactory(0), name(languageName_){
+		languageName = name.c_str();
 	}
 	virtual void SetExternal(GetLexerFactoryFunction fFactory, int index);
 };
 
-/// LexerMinder points to an ExternalLexerModule - so we don't leak them.
-class LexerMinder {
-public:
-	ExternalLexerModule *self;
-	LexerMinder *next;
-};
-
-/// LexerLibrary exists for every External Lexer DLL, contains LexerMinders.
+/// LexerLibrary exists for every External Lexer DLL, contains ExternalLexerModules.
 class LexerLibrary {
-	DynamicLibrary	*lib;
-	LexerMinder		*first;
-	LexerMinder		*last;
-
+	std::unique_ptr<DynamicLibrary> lib;
+	std::vector<std::unique_ptr<ExternalLexerModule>> modules;
 public:
-	LexerLibrary(const char *ModuleName);
+	explicit LexerLibrary(const char *moduleName_);
 	~LexerLibrary();
-	void Release();
 
-	LexerLibrary	*next;
-	std::string			m_sModuleName;
+	std::string moduleName;
 };
 
 /// LexerManager manages external lexers, contains LexerLibrarys.
@@ -75,11 +60,8 @@ public:
 
 private:
 	LexerManager();
-	static LexerManager *theInstance;
-
-	void LoadLexerLibrary(const char *module);
-	LexerLibrary *first;
-	LexerLibrary *last;
+	static std::unique_ptr<LexerManager> theInstance;
+	std::vector<std::unique_ptr<LexerLibrary>> libraries;
 };
 
 class LMMinder {
@@ -87,8 +69,6 @@ public:
 	~LMMinder();
 };
 
-#ifdef SCI_NAMESPACE
 }
-#endif
 
 #endif

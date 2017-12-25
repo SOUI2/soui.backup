@@ -10,17 +10,41 @@
 static LPCTSTR KScintillaClass = _T("Scintilla");
 
 
-
+HMODULE m_hSciLexerDll;
 //////////////////////////////////////////////////////////////////////////
 
 int CScintillaWnd::InitScintilla(HINSTANCE hInst)
 {
-	return Scintilla_RegisterClasses(hInst);
+#ifdef STATIC_BUILD_SCI  
+	Scintilla_RegisterClasses(hInst);
+#else  
+	m_hSciLexerDll = NULL;
+#ifdef _DEBUG
+	m_hSciLexerDll = LoadLibrary(_T("Scintillad.dll"));
+#else
+	m_hSciLexerDll = LoadLibrary(_T("Scintilla.dll"));
+#endif
+	if (NULL == m_hSciLexerDll)
+	{
+		//AfxMessageBox(_T("LoadLibrary SciLexer.dll failure..."));
+		return FALSE;
+	}
+#endif 
+	return TRUE;//Scintilla_RegisterClasses(hInst);
 }
 
 void CScintillaWnd::UninitScintilla()
 {
+#ifdef STATIC_BUILD_SCI  
 	Scintilla_ReleaseResources();
+#else  
+	if (m_hSciLexerDll != NULL)
+	{
+		::FreeLibrary(m_hSciLexerDll);
+	}
+#endif  
+
+//	Scintilla_ReleaseResources();
 }
 
 
@@ -223,7 +247,7 @@ void CScintillaWnd::SetAStyle(int style, COLORREF fore, COLORREF back, int size,
 void CScintillaWnd::SetXmlLexer()
 {
 	SendMessage(SCI_SETLEXER, SCLEX_XML);
-	SendMessage(SCI_SETSTYLEBITS, 7);
+//	SendMessage(SCI_SETSTYLEBITS, 7);
 
 	// 设置全局style. 这些属性会在无其它选择时被应用.
 	SetAStyle(STYLE_DEFAULT, black, white, 11, "Verdana");
@@ -275,13 +299,13 @@ void CScintillaWnd::SetXmlLexer()
 	SendMessage(SCI_SETMARGINTYPEN,  MARGIN_SCRIPT_FOLD_INDEX, SC_MARGIN_SYMBOL);
 	SendMessage(SCI_SETMARGINMASKN, MARGIN_SCRIPT_FOLD_INDEX, SC_MASK_FOLDERS);
 	SendMessage(SCI_SETMARGINWIDTHN, MARGIN_SCRIPT_FOLD_INDEX, 20);
-	SendMessage(SCI_MARKERDEFINE, SC_MARKNUM_FOLDER, SC_MARK_PLUS); //折叠时显示 +
-	SendMessage(SCI_MARKERDEFINE, SC_MARKNUM_FOLDEROPEN, SC_MARK_MINUS); //打开时显示 -
+	SendMessage(SCI_MARKERDEFINE, SC_MARKNUM_FOLDER, SC_MARK_BOXPLUS); //折叠时显示 +
+	SendMessage(SCI_MARKERDEFINE, SC_MARKNUM_FOLDEROPEN, SC_MARK_BOXMINUS); //打开时显示 -
 	SendMessage(SCI_MARKERDEFINE, SC_MARKNUM_FOLDEREND, SC_MARK_EMPTY);
 	SendMessage(SCI_MARKERDEFINE, SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY);
 	SendMessage(SCI_MARKERDEFINE, SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY);
-	SendMessage(SCI_MARKERDEFINE, SC_MARKNUM_FOLDERSUB, SC_MARK_EMPTY);
-	SendMessage(SCI_MARKERDEFINE, SC_MARKNUM_FOLDERTAIL, SC_MARK_EMPTY);
+	SendMessage(SCI_MARKERDEFINE, SC_MARKNUM_FOLDERSUB, SC_MARK_VLINE);
+	SendMessage(SCI_MARKERDEFINE, SC_MARKNUM_FOLDERTAIL, SC_MARK_LCORNER);
 
 	SendMessage(SCI_SETFOLDFLAGS, 16, 0); // 16  折叠完后画一条线
 
@@ -296,6 +320,10 @@ LRESULT CScintillaWnd::OnNotify( int idCtrl, LPNMHDR pnmh )
 	SCNotification *pSCNotification = (SCNotification*)pnmh;
 	switch(pnmh->code)
 	{
+	case SCN_MODIFIED:				//修改了文件  
+	case SCN_ZOOM:					//放大，缩小
+		UpdateLineNumberWidth();
+		break;
 	case SCN_MARGINCLICK:
 		{
 			int nLine = SendMessage(SCI_LINEFROMPOSITION,(WPARAM)pSCNotification->position);

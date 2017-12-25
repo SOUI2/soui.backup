@@ -16,6 +16,7 @@
 #include "Scintilla.h"
 #include "SciLexer.h"
 
+#include "StringCopy.h"
 #include "WordList.h"
 #include "LexAccessor.h"
 #include "Accessor.h"
@@ -23,9 +24,7 @@
 #include "CharacterSet.h"
 #include "LexerModule.h"
 
-#ifdef SCI_NAMESPACE
 using namespace Scintilla;
-#endif
 
 #define SCE_HA_JS (SCE_HJA_START - SCE_HJ_START)
 #define SCE_HA_VBS (SCE_HBA_START - SCE_HB_START)
@@ -43,7 +42,7 @@ static inline bool IsAWordStart(const int ch) {
 }
 
 inline bool IsOperator(int ch) {
-	if (isascii(ch) && isalnum(ch))
+	if (IsASCII(ch) && isalnum(ch))
 		return false;
 	// '.' left out as it is used to make up numbers
 	if (ch == '%' || ch == '^' || ch == '&' || ch == '*' ||
@@ -56,17 +55,17 @@ inline bool IsOperator(int ch) {
 	return false;
 }
 
-static void GetTextSegment(Accessor &styler, unsigned int start, unsigned int end, char *s, size_t len) {
-	unsigned int i = 0;
+static void GetTextSegment(Accessor &styler, Sci_PositionU start, Sci_PositionU end, char *s, size_t len) {
+	Sci_PositionU i = 0;
 	for (; (i < end - start + 1) && (i < len-1); i++) {
 		s[i] = static_cast<char>(MakeLowerCase(styler[start + i]));
 	}
 	s[i] = '\0';
 }
 
-static const char *GetNextWord(Accessor &styler, unsigned int start, char *s, size_t sLen) {
+static const char *GetNextWord(Accessor &styler, Sci_PositionU start, char *s, size_t sLen) {
 
-	unsigned int i = 0;
+	Sci_PositionU i = 0;
 	for (; i < sLen-1; i++) {
 		char ch = static_cast<char>(styler.SafeGetCharAt(start + i));
 		if ((i == 0) && !IsAWordStart(ch))
@@ -80,7 +79,7 @@ static const char *GetNextWord(Accessor &styler, unsigned int start, char *s, si
 	return s;
 }
 
-static script_type segIsScriptingIndicator(Accessor &styler, unsigned int start, unsigned int end, script_type prevValue) {
+static script_type segIsScriptingIndicator(Accessor &styler, Sci_PositionU start, Sci_PositionU end, script_type prevValue) {
 	char s[100];
 	GetTextSegment(styler, start, end, s, sizeof(s));
 	//Platform::DebugPrintf("Scripting indicator [%s]\n", s);
@@ -109,7 +108,7 @@ static script_type segIsScriptingIndicator(Accessor &styler, unsigned int start,
 	return prevValue;
 }
 
-static int PrintScriptingIndicatorOffset(Accessor &styler, unsigned int start, unsigned int end) {
+static int PrintScriptingIndicatorOffset(Accessor &styler, Sci_PositionU start, Sci_PositionU end) {
 	int iResult = 0;
 	char s[100];
 	GetTextSegment(styler, start, end, s, sizeof(s));
@@ -170,7 +169,7 @@ static int stateForPrintState(int StateToPrint) {
 	return state;
 }
 
-static inline bool IsNumber(unsigned int start, Accessor &styler) {
+static inline bool IsNumber(Sci_PositionU start, Accessor &styler) {
 	return IsADigit(styler[start]) || (styler[start] == '.') ||
 	       (styler[start] == '-') || (styler[start] == '#');
 }
@@ -241,7 +240,7 @@ static inline bool isCommentASPState(int state) {
 	return bResult;
 }
 
-static void classifyAttribHTML(unsigned int start, unsigned int end, WordList &keywords, Accessor &styler) {
+static void classifyAttribHTML(Sci_PositionU start, Sci_PositionU end, WordList &keywords, Accessor &styler) {
 	bool wordIsNumber = IsNumber(start, styler);
 	char chAttr = SCE_H_ATTRIBUTEUNKNOWN;
 	if (wordIsNumber) {
@@ -258,14 +257,14 @@ static void classifyAttribHTML(unsigned int start, unsigned int end, WordList &k
 	styler.ColourTo(end, chAttr);
 }
 
-static int classifyTagHTML(unsigned int start, unsigned int end,
+static int classifyTagHTML(Sci_PositionU start, Sci_PositionU end,
                            WordList &keywords, Accessor &styler, bool &tagDontFold,
 			   bool caseSensitive, bool isXml, bool allowScripts) {
 	char withSpace[30 + 2] = " ";
 	const char *s = withSpace + 1;
 	// Copy after the '<'
-	unsigned int i = 1;
-	for (unsigned int cPos = start; cPos <= end && i < 30; cPos++) {
+	Sci_PositionU i = 1;
+	for (Sci_PositionU cPos = start; cPos <= end && i < 30; cPos++) {
 		char ch = styler[cPos];
 		if ((ch != '<') && (ch != '/')) {
 			withSpace[i++] = caseSensitive ? ch : static_cast<char>(MakeLowerCase(ch));
@@ -297,7 +296,7 @@ static int classifyTagHTML(unsigned int start, unsigned int end,
 		if (allowScripts && 0 == strcmp(s, "script")) {
 			// check to see if this is a self-closing tag by sniffing ahead
 			bool isSelfClose = false;
-			for (unsigned int cPos = end; cPos <= end + 200; cPos++) {
+			for (Sci_PositionU cPos = end; cPos <= end + 200; cPos++) {
 				char ch = styler.SafeGetCharAt(cPos, '\0');
 				if (ch == '\0' || ch == '>')
 					break;
@@ -317,10 +316,10 @@ static int classifyTagHTML(unsigned int start, unsigned int end,
 	return chAttr;
 }
 
-static void classifyWordHTJS(unsigned int start, unsigned int end,
+static void classifyWordHTJS(Sci_PositionU start, Sci_PositionU end,
                              WordList &keywords, Accessor &styler, script_mode inScriptType) {
 	char s[30 + 1];
-	unsigned int i = 0;
+	Sci_PositionU i = 0;
 	for (; i < end - start + 1 && i < 30; i++) {
 		s[i] = styler[start + i];
 	}
@@ -336,12 +335,12 @@ static void classifyWordHTJS(unsigned int start, unsigned int end,
 	styler.ColourTo(end, statePrintForState(chAttr, inScriptType));
 }
 
-static int classifyWordHTVB(unsigned int start, unsigned int end, WordList &keywords, Accessor &styler, script_mode inScriptType) {
+static int classifyWordHTVB(Sci_PositionU start, Sci_PositionU end, WordList &keywords, Accessor &styler, script_mode inScriptType) {
 	char chAttr = SCE_HB_IDENTIFIER;
 	bool wordIsNumber = IsADigit(styler[start]) || (styler[start] == '.');
-	if (wordIsNumber)
+	if (wordIsNumber) {
 		chAttr = SCE_HB_NUMBER;
-	else {
+	} else {
 		char s[100];
 		GetTextSegment(styler, start, end, s, sizeof(s));
 		if (keywords.InList(s)) {
@@ -357,10 +356,10 @@ static int classifyWordHTVB(unsigned int start, unsigned int end, WordList &keyw
 		return SCE_HB_DEFAULT;
 }
 
-static void classifyWordHTPy(unsigned int start, unsigned int end, WordList &keywords, Accessor &styler, char *prevWord, script_mode inScriptType, bool isMako) {
+static void classifyWordHTPy(Sci_PositionU start, Sci_PositionU end, WordList &keywords, Accessor &styler, char *prevWord, script_mode inScriptType, bool isMako) {
 	bool wordIsNumber = IsADigit(styler[start]);
 	char s[30 + 1];
-	unsigned int i = 0;
+	Sci_PositionU i = 0;
 	for (; i < end - start + 1 && i < 30; i++) {
 		s[i] = styler[start + i];
 	}
@@ -382,12 +381,12 @@ static void classifyWordHTPy(unsigned int start, unsigned int end, WordList &key
 
 // Update the word colour to default or keyword
 // Called when in a PHP word
-static void classifyWordHTPHP(unsigned int start, unsigned int end, WordList &keywords, Accessor &styler) {
+static void classifyWordHTPHP(Sci_PositionU start, Sci_PositionU end, WordList &keywords, Accessor &styler) {
 	char chAttr = SCE_HPHP_DEFAULT;
 	bool wordIsNumber = IsADigit(styler[start]) || (styler[start] == '.' && start+1 <= end && IsADigit(styler[start+1]));
-	if (wordIsNumber)
+	if (wordIsNumber) {
 		chAttr = SCE_HPHP_NUMBER;
-	else {
+	} else {
 		char s[100];
 		GetTextSegment(styler, start, end, s, sizeof(s));
 		if (keywords.InList(s))
@@ -396,9 +395,9 @@ static void classifyWordHTPHP(unsigned int start, unsigned int end, WordList &ke
 	styler.ColourTo(end, chAttr);
 }
 
-static bool isWordHSGML(unsigned int start, unsigned int end, WordList &keywords, Accessor &styler) {
+static bool isWordHSGML(Sci_PositionU start, Sci_PositionU end, WordList &keywords, Accessor &styler) {
 	char s[30 + 1];
-	unsigned int i = 0;
+	Sci_PositionU i = 0;
 	for (; i < end - start + 1 && i < 30; i++) {
 		s[i] = styler[start + i];
 	}
@@ -406,9 +405,9 @@ static bool isWordHSGML(unsigned int start, unsigned int end, WordList &keywords
 	return keywords.InList(s);
 }
 
-static bool isWordCdata(unsigned int start, unsigned int end, Accessor &styler) {
+static bool isWordCdata(Sci_PositionU start, Sci_PositionU end, Accessor &styler) {
 	char s[30 + 1];
-	unsigned int i = 0;
+	Sci_PositionU i = 0;
 	for (; i < end - start + 1 && i < 30; i++) {
 		s[i] = styler[start + i];
 	}
@@ -446,12 +445,12 @@ static int StateForScript(script_type scriptLanguage) {
 }
 
 static inline bool issgmlwordchar(int ch) {
-	return !isascii(ch) ||
+	return !IsASCII(ch) ||
 		(isalnum(ch) || ch == '.' || ch == '_' || ch == ':' || ch == '!' || ch == '#' || ch == '[');
 }
 
 static inline bool IsPhpWordStart(int ch) {
-	return (isascii(ch) && (isalpha(ch) || (ch == '_'))) || (ch >= 0x7f);
+	return (IsASCII(ch) && (isalpha(ch) || (ch == '_'))) || (ch >= 0x7f);
 }
 
 static inline bool IsPhpWordChar(int ch) {
@@ -489,9 +488,9 @@ static bool isMakoBlockEnd(const int ch, const int chNext, const char *blockType
 		return ((ch == '/') && (chNext == '>'));
 	} else if (0 == strcmp(blockType, "%")) {
 		if (ch == '/' && isLineEnd(chNext))
-			return 1;
+			return true;
 		else
-		    return isLineEnd(ch);
+			return isLineEnd(ch);
 	} else if (0 == strcmp(blockType, "{")) {
 		return ch == '}';
 	} else {
@@ -501,13 +500,13 @@ static bool isMakoBlockEnd(const int ch, const int chNext, const char *blockType
 
 static bool isDjangoBlockEnd(const int ch, const int chNext, const char *blockType) {
 	if (strlen(blockType) == 0) {
-		return 0;
+		return false;
 	} else if (0 == strcmp(blockType, "%")) {
 		return ((ch == '%') && (chNext == '}'));
 	} else if (0 == strcmp(blockType, "{")) {
 		return ((ch == '}') && (chNext == '}'));
 	} else {
-		return 0;
+		return false;
 	}
 }
 
@@ -519,9 +518,9 @@ static bool isPHPStringState(int state) {
 	    (state == SCE_HPHP_COMPLEX_VARIABLE);
 }
 
-static int FindPhpStringDelimiter(char *phpStringDelimiter, const int phpStringDelimiterSize, int i, const int lengthDoc, Accessor &styler, bool &isSimpleString) {
-	int j;
-	const int beginning = i - 1;
+static Sci_Position FindPhpStringDelimiter(char *phpStringDelimiter, const int phpStringDelimiterSize, Sci_Position i, const Sci_Position lengthDoc, Accessor &styler, bool &isSimpleString) {
+	Sci_Position j;
+	const Sci_Position beginning = i - 1;
 	bool isValidSimpleString = false;
 
 	while (i < lengthDoc && (styler[i] == ' ' || styler[i] == '\t'))
@@ -566,7 +565,7 @@ static int FindPhpStringDelimiter(char *phpStringDelimiter, const int phpStringD
 	return j - 1;
 }
 
-static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initStyle, WordList *keywordlists[],
+static void ColouriseHyperTextDoc(Sci_PositionU startPos, Sci_Position length, int initStyle, WordList *keywordlists[],
                                   Accessor &styler, bool isXml) {
 	WordList &keywords = *keywordlists[0];
 	WordList &keywords2 = *keywordlists[1];
@@ -575,8 +574,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 	WordList &keywords5 = *keywordlists[4];
 	WordList &keywords6 = *keywordlists[5]; // SGML (DTD) keywords
 
-	// Lexer for HTML requires more lexical states (8 bits worth) than most lexers
-	styler.StartAt(startPos, static_cast<char>(STYLE_MAX));
+	styler.StartAt(startPos);
 	char prevWord[200];
 	prevWord[0] = '\0';
 	char phpStringDelimiter[200]; // PHP is not limited in length, we are
@@ -592,7 +590,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 	// If inside a tag, it may be a script tag, so reread from the start of line starting tag to ensure any language tags are seen
 	if (InTagState(state)) {
 		while ((startPos > 0) && (InTagState(styler.StyleAt(startPos - 1)))) {
-			int backLineStart = styler.LineStart(styler.GetLine(startPos-1));
+			Sci_Position backLineStart = styler.LineStart(styler.GetLine(startPos-1));
 			length += startPos - backLineStart;
 			startPos = backLineStart;
 		}
@@ -608,9 +606,20 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 		if (startPos == 0)
 			state = SCE_H_DEFAULT;
 	}
-	styler.StartAt(startPos, static_cast<char>(STYLE_MAX));
+	styler.StartAt(startPos);
 
-	int lineCurrent = styler.GetLine(startPos);
+	/* Nothing handles getting out of these, so we need not start in any of them.
+	 * As we're at line start and they can't span lines, we'll re-detect them anyway */
+	switch (state) {
+		case SCE_H_QUESTION:
+		case SCE_H_XMLSTART:
+		case SCE_H_XMLEND:
+		case SCE_H_ASP:
+			state = SCE_H_DEFAULT;
+			break;
+	}
+
+	Sci_Position lineCurrent = styler.GetLine(startPos);
 	int lineState;
 	if (lineCurrent > 0) {
 		lineState = styler.GetLineState(lineCurrent-1);
@@ -695,7 +704,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 	int chPrevNonWhite = ' ';
 	// look back to set chPrevNonWhite properly for better regex colouring
 	if (scriptLanguage == eScriptJS && startPos > 0) {
-		int back = startPos;
+		Sci_Position back = startPos;
 		int style = 0;
 		while (--back) {
 			style = styler.StyleAt(back);
@@ -709,8 +718,8 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 	}
 
 	styler.StartSegment(startPos);
-	const int lengthDoc = startPos + length;
-	for (int i = startPos; i < lengthDoc; i++) {
+	const Sci_Position lengthDoc = startPos + length;
+	for (Sci_Position i = startPos; i < lengthDoc; i++) {
 		const int chPrev2 = chPrev;
 		chPrev = ch;
 		if (!IsASpace(ch) && state != SCE_HJ_COMMENT &&
@@ -746,7 +755,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				//Platform::DebugPrintf("state=%d, StateToPrint=%d, initStyle=%d\n", state, StateToPrint, initStyle);
 				//if ((state == SCE_HPHP_OPERATOR) || (state == SCE_HPHP_DEFAULT) || (state == SCE_HJ_SYMBOLS) || (state == SCE_HJ_START) || (state == SCE_HJ_DEFAULT)) {
 					if (ch == '#') {
-						int j = i + 1;
+						Sci_Position j = i + 1;
 						while ((j < lengthDoc) && IsASpaceOrTab(styler.SafeGetCharAt(j))) {
 							j++;
 						}
@@ -769,7 +778,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 					} else if ((ch == '\n') && !((chNext == '\r') && (chNext2 == '\n')) && (chNext != '\n')) {
 						// check if the number of tabs is lower than the level
 						int Findlevel = (levelCurrent & ~SC_FOLDLEVELBASE) * 8;
-						for (int j = 0; Findlevel > 0; j++) {
+						for (Sci_Position j = 0; Findlevel > 0; j++) {
 							char chTmp = styler.SafeGetCharAt(i + j + 1);
 							if (chTmp == '\t') {
 								Findlevel -= 8;
@@ -810,8 +819,8 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 			}
 			styler.SetLineState(lineCurrent,
 			                    ((inScriptType & 0x03) << 0) |
-			                    ((tagOpened & 0x01) << 2) |
-			                    ((tagClosing & 0x01) << 3) |
+			                    ((tagOpened ? 1 : 0) << 2) |
+			                    ((tagClosing ? 1 : 0) << 3) |
 			                    ((aspScript & 0x0F) << 4) |
 			                    ((clientScript & 0x0F) << 8) |
 			                    ((beforePreProc & 0xFF) << 12));
@@ -822,18 +831,26 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 		// handle start of Mako comment line
 		if (isMako && ch == '#' && chNext == '#') {
 			makoComment = 1;
+			state = SCE_HP_COMMENTLINE;
 		}
-		
+
 		// handle end of Mako comment line
 		else if (isMako && makoComment && (ch == '\r' || ch == '\n')) {
 			makoComment = 0;
-			styler.ColourTo(i, SCE_HP_COMMENTLINE);
-			state = SCE_HP_DEFAULT;
+			styler.ColourTo(i - 1, StateToPrint);
+			if (scriptLanguage == eScriptPython) {
+				state = SCE_HP_DEFAULT;
+			} else {
+				state = SCE_H_DEFAULT;
+			}
 		}
-		
+
 		// Allow falling through to mako handling code if newline is going to end a block
 		if (((ch == '\r' && chNext != '\n') || (ch == '\n')) &&
 			(!isMako || (0 != strcmp(makoBlockType, "%")))) {
+		}
+		// Ignore everything in mako comment until the line ends
+		else if (isMako && makoComment) {
 		}
 
 		// generic end of script processing
@@ -867,7 +884,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				if (const char *tag =
 						state == SCE_HJ_COMMENTLINE || isXml ? "script" :
 						state == SCE_H_COMMENT ? "comment" : 0) {
-					int j = i + 2;
+					Sci_Position j = i + 2;
 					int chr;
 					do {
 						chr = static_cast<int>(*tag++);
@@ -890,7 +907,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 		/////////////////////////////////////
 		// handle the start of PHP pre-processor = Non-HTML
 		else if ((state != SCE_H_ASPAT) &&
-		         !isPHPStringState(state) &&
+		         !isStringState(state) &&
 		         (state != SCE_HPHP_COMMENT) &&
 		         (state != SCE_HPHP_COMMENTLINE) &&
 		         (ch == '<') &&
@@ -929,9 +946,9 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 															 (ch == '$' && chNext == '{') ||
 															 (ch == '<' && chNext == '/' && chNext2 == '%'))) {
 			if (ch == '%' || ch == '/')
-				strcpy(makoBlockType, "%");
+				StringCopy(makoBlockType, "%");
 			else if (ch == '$')
-				strcpy(makoBlockType, "{");
+				StringCopy(makoBlockType, "{");
 			else if (chNext == '/')
 				GetNextWord(styler, i+3, makoBlockType, sizeof(makoBlockType));
 			else
@@ -998,11 +1015,11 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 		}
 
 		// handle the start Django template code
-		else if (isDjango && scriptLanguage != eScriptPython && (ch == '{' && (chNext == '%' ||  chNext == '{'))) {
+		else if (isDjango && scriptLanguage != eScriptPython && scriptLanguage != eScriptComment && (ch == '{' && (chNext == '%' ||  chNext == '{'))) {
 			if (chNext == '%')
-				strcpy(djangoBlockType, "%");
+				StringCopy(djangoBlockType, "%");
 			else
-				strcpy(djangoBlockType, "{");
+				StringCopy(djangoBlockType, "{");
 			styler.ColourTo(i - 1, StateToPrint);
 			beforePreProc = state;
 			if (inScriptType == eNonHtmlScript)
@@ -1229,11 +1246,11 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				styler.ColourTo(i - 1, StateToPrint);
 				state = SCE_H_SGML_SIMPLESTRING;
 			} else if ((ch == '-') && (chPrev == '-')) {
-				if (static_cast<int>(styler.GetStartSegment()) <= (i - 2)) {
+				if (static_cast<Sci_Position>(styler.GetStartSegment()) <= (i - 2)) {
 					styler.ColourTo(i - 2, StateToPrint);
 				}
 				state = SCE_H_SGML_COMMENT;
-			} else if (isascii(ch) && isalpha(ch) && (chPrev == '%')) {
+			} else if (IsASCII(ch) && isalpha(ch) && (chPrev == '%')) {
 				styler.ColourTo(i - 2, StateToPrint);
 				state = SCE_H_SGML_ENTITY;
 			} else if (ch == '#') {
@@ -1312,6 +1329,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				styler.ColourTo(i - 2, StateToPrint);
 				state = SCE_H_SGML_COMMENT;
 			}
+			break;
 		case SCE_H_SGML_DOUBLESTRING:
 			if (ch == '\"') {
 				styler.ColourTo(i, StateToPrint);
@@ -1351,7 +1369,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 			}
 			break;
 		case SCE_H_SGML_SPECIAL:
-			if (!(isascii(ch) && isupper(ch))) {
+			if (!(IsASCII(ch) && isupper(ch))) {
 				styler.ColourTo(i - 1, StateToPrint);
 				if (isalnum(ch)) {
 					state = SCE_H_SGML_ERROR;
@@ -1364,7 +1382,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 			if (ch == ';') {
 				styler.ColourTo(i, StateToPrint);
 				state = SCE_H_SGML_DEFAULT;
-			} else if (!(isascii(ch) && isalnum(ch)) && ch != '-' && ch != '.') {
+			} else if (!(IsASCII(ch) && isalnum(ch)) && ch != '-' && ch != '.') {
 				styler.ColourTo(i, SCE_H_SGML_ERROR);
 				state = SCE_H_SGML_DEFAULT;
 			}
@@ -1374,9 +1392,9 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				styler.ColourTo(i, StateToPrint);
 				state = SCE_H_DEFAULT;
 			}
-			if (ch != '#' && !(isascii(ch) && isalnum(ch))	// Should check that '#' follows '&', but it is unlikely anyway...
+			if (ch != '#' && !(IsASCII(ch) && isalnum(ch))	// Should check that '#' follows '&', but it is unlikely anyway...
 				&& ch != '.' && ch != '-' && ch != '_' && ch != ':') { // valid in XML
-				if (!isascii(ch))	// Possibly start of a multibyte character so don't allow this byte to be in entity style
+				if (!IsASCII(ch))	// Possibly start of a multibyte character so don't allow this byte to be in entity style
 					styler.ColourTo(i-1, SCE_H_TAGUNKNOWN);
 				else
 					styler.ColourTo(i, SCE_H_TAGUNKNOWN);
@@ -1702,7 +1720,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 		case SCE_HJ_REGEX:
 			if (ch == '\r' || ch == '\n' || ch == '/') {
 				if (ch == '/') {
-					while (isascii(chNext) && islower(chNext)) {   // gobble regex flags
+					while (IsASCII(chNext) && islower(chNext)) {   // gobble regex flags
 						i++;
 						ch = chNext;
 						chNext = static_cast<unsigned char>(styler.SafeGetCharAt(i + 1));
@@ -1916,7 +1934,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 					state = SCE_HPHP_COMMENTLINE;
 				} else if (ch == '\"') {
 					state = SCE_HPHP_HSTRING;
-					strcpy(phpStringDelimiter, "\"");
+					StringCopy(phpStringDelimiter, "\"");
 				} else if (styler.Match(i, "<<<")) {
 					bool isSimpleString = false;
 					i = FindPhpStringDelimiter(phpStringDelimiter, sizeof(phpStringDelimiter), i + 3, lengthDoc, styler, isSimpleString);
@@ -1926,7 +1944,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 					}
 				} else if (ch == '\'') {
 					state = SCE_HPHP_SIMPLESTRING;
-					strcpy(phpStringDelimiter, "\'");
+					StringCopy(phpStringDelimiter, "\'");
 				} else if (ch == '$' && IsPhpWordStart(chNext)) {
 					state = SCE_HPHP_VARIABLE;
 				} else if (IsOperator(ch)) {
@@ -2046,7 +2064,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				state = SCE_HPHP_COMMENTLINE;
 			} else if (ch == '\"') {
 				state = SCE_HPHP_HSTRING;
-				strcpy(phpStringDelimiter, "\"");
+				StringCopy(phpStringDelimiter, "\"");
 			} else if (styler.Match(i, "<<<")) {
 				bool isSimpleString = false;
 				i = FindPhpStringDelimiter(phpStringDelimiter, sizeof(phpStringDelimiter), i + 3, lengthDoc, styler, isSimpleString);
@@ -2056,7 +2074,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 				}
 			} else if (ch == '\'') {
 				state = SCE_HPHP_SIMPLESTRING;
-				strcpy(phpStringDelimiter, "\'");
+				StringCopy(phpStringDelimiter, "\'");
 			} else if (ch == '$' && IsPhpWordStart(chNext)) {
 				state = SCE_HPHP_VARIABLE;
 			} else if (IsOperator(ch)) {
@@ -2071,7 +2089,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 		// Some of the above terminated their lexeme but since the same character starts
 		// the same class again, only reenter if non empty segment.
 
-		bool nonEmptySegment = i >= static_cast<int>(styler.GetStartSegment());
+		bool nonEmptySegment = i >= static_cast<Sci_Position>(styler.GetStartSegment());
 		if (state == SCE_HB_DEFAULT) {    // One of the above succeeded
 			if ((ch == '\"') && (nonEmptySegment)) {
 				state = SCE_HB_STRING;
@@ -2127,7 +2145,7 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 		break;
 	default:
 		StateToPrint = statePrintForState(state, inScriptType);
-		if (static_cast<int>(styler.GetStartSegment()) < lengthDoc)
+		if (static_cast<Sci_Position>(styler.GetStartSegment()) < lengthDoc)
 			styler.ColourTo(lengthDoc - 1, StateToPrint);
 		break;
 	}
@@ -2139,19 +2157,19 @@ static void ColouriseHyperTextDoc(unsigned int startPos, int length, int initSty
 	}
 }
 
-static void ColouriseXMLDoc(unsigned int startPos, int length, int initStyle, WordList *keywordlists[],
+static void ColouriseXMLDoc(Sci_PositionU startPos, Sci_Position length, int initStyle, WordList *keywordlists[],
                                   Accessor &styler) {
 	// Passing in true because we're lexing XML
 	ColouriseHyperTextDoc(startPos, length, initStyle, keywordlists, styler, true);
 }
 
-static void ColouriseHTMLDoc(unsigned int startPos, int length, int initStyle, WordList *keywordlists[],
+static void ColouriseHTMLDoc(Sci_PositionU startPos, Sci_Position length, int initStyle, WordList *keywordlists[],
                                   Accessor &styler) {
 	// Passing in false because we're notlexing XML
 	ColouriseHyperTextDoc(startPos, length, initStyle, keywordlists, styler, false);
 }
 
-static void ColourisePHPScriptDoc(unsigned int startPos, int length, int initStyle, WordList *keywordlists[],
+static void ColourisePHPScriptDoc(Sci_PositionU startPos, Sci_Position length, int initStyle, WordList *keywordlists[],
         Accessor &styler) {
 	if (startPos == 0)
 		initStyle = SCE_HPHP_DEFAULT;
@@ -2178,6 +2196,178 @@ static const char * const phpscriptWordListDesc[] = {
 	0,
 };
 
-LexerModule lmHTML(SCLEX_HTML, ColouriseHTMLDoc, "hypertext", 0, htmlWordListDesc, 8);
-LexerModule lmXML(SCLEX_XML, ColouriseXMLDoc, "xml", 0, htmlWordListDesc, 8);
-LexerModule lmPHPSCRIPT(SCLEX_PHPSCRIPT, ColourisePHPScriptDoc, "phpscript", 0, phpscriptWordListDesc, 8);
+namespace {
+
+LexicalClass lexicalClassesHTML[] = {
+	// Lexer HTML SCLEX_HTML SCE_H_ SCE_HJ_ SCE_HJA_ SCE_HB_ SCE_HBA_ SCE_HP_ SCE_HPHP_ SCE_HPA_:
+	0, "SCE_H_DEFAULT", "default", "Text",
+	1, "SCE_H_TAG", "tag", "Tags",
+	2, "SCE_H_ERRORTAGUNKNOWN", "error tag", "Unknown Tags",
+	3, "SCE_H_ATTRIBUTE", "attribute", "Attributes",
+	4, "SCE_H_ATTRIBUTEUNKNOWN", "error attribute", "Unknown Attributes",
+	5, "SCE_H_NUMBER", "literal numeric", "Numbers",
+	6, "SCE_H_DOUBLESTRING", "literal string", "Double quoted strings",
+	7, "SCE_H_SINGLESTRING", "literal string", "Single quoted strings",
+	8, "SCE_H_OTHER", "tag operator", "Other inside tag, including space and '='",
+	9, "SCE_H_COMMENT", "comment", "Comment",
+	10, "SCE_H_ENTITY", "literal", "Entities",
+	11, "SCE_H_TAGEND", "tag", "XML style tag ends '/>'",
+	12, "SCE_H_XMLSTART", "identifier", "XML identifier start '<?'",
+	13, "SCE_H_XMLEND", "identifier", "XML identifier end '?>'",
+	14, "SCE_H_SCRIPT", "error", "Internal state which should never be visible",
+	15, "SCE_H_ASP", "preprocessor", "ASP <% ... %>",
+	16, "SCE_H_ASPAT", "preprocessor", "ASP <% ... %>",
+	17, "SCE_H_CDATA", "literal", "CDATA",
+	18, "SCE_H_QUESTION", "preprocessor", "PHP",
+	19, "SCE_H_VALUE", "literal string", "Unquoted values",
+	20, "SCE_H_XCCOMMENT", "comment", "JSP Comment <%-- ... --%>",
+	21, "SCE_H_SGML_DEFAULT", "default", "SGML tags <! ... >",
+	22, "SCE_H_SGML_COMMAND", "preprocessor", "SGML command",
+	23, "SCE_H_SGML_1ST_PARAM", "preprocessor", "SGML 1st param",
+	24, "SCE_H_SGML_DOUBLESTRING", "literal string", "SGML double string",
+	25, "SCE_H_SGML_SIMPLESTRING", "literal string", "SGML single string",
+	26, "SCE_H_SGML_ERROR", "error", "SGML error",
+	27, "SCE_H_SGML_SPECIAL", "literal", "SGML special (#XXXX type)",
+	28, "SCE_H_SGML_ENTITY", "literal", "SGML entity",
+	29, "SCE_H_SGML_COMMENT", "comment", "SGML comment",
+	30, "SCE_H_SGML_1ST_PARAM_COMMENT", "error comment", "SGML first parameter - lexer internal. It is an error if any text is in this style.",
+	31, "SCE_H_SGML_BLOCK_DEFAULT", "default", "SGML block",
+	32, "", "predefined", "",
+	33, "", "predefined", "",
+	34, "", "predefined", "",
+	35, "", "predefined", "",
+	36, "", "predefined", "",
+	37, "", "predefined", "",
+	38, "", "predefined", "",
+	39, "", "predefined", "",
+	40, "SCE_HJ_START", "client javascript default", "JS Start - allows eol filled background to not start on same line as SCRIPT tag",
+	41, "SCE_HJ_DEFAULT", "client javascript default", "JS Default",
+	42, "SCE_HJ_COMMENT", "client javascript comment", "JS Comment",
+	43, "SCE_HJ_COMMENTLINE", "client javascript comment line", "JS Line Comment",
+	44, "SCE_HJ_COMMENTDOC", "client javascript comment documentation", "JS Doc comment",
+	45, "SCE_HJ_NUMBER", "client javascript literal numeric", "JS Number",
+	46, "SCE_HJ_WORD", "client javascript identifier", "JS Word",
+	47, "SCE_HJ_KEYWORD", "client javascript keyword", "JS Keyword",
+	48, "SCE_HJ_DOUBLESTRING", "client javascript literal string", "JS Double quoted string",
+	49, "SCE_HJ_SINGLESTRING", "client javascript literal string", "JS Single quoted string",
+	50, "SCE_HJ_SYMBOLS", "client javascript operator", "JS Symbols",
+	51, "SCE_HJ_STRINGEOL", "client javascript error literal string", "JavaScript EOL",
+	52, "SCE_HJ_REGEX", "client javascript literal regex", "JavaScript RegEx",
+	53, "", "unused", "",
+	54, "", "unused", "",
+	55, "SCE_HJA_START", "server javascript default", "JS Start - allows eol filled background to not start on same line as SCRIPT tag",
+	56, "SCE_HJA_DEFAULT", "server javascript default", "JS Default",
+	57, "SCE_HJA_COMMENT", "server javascript comment", "JS Comment",
+	58, "SCE_HJA_COMMENTLINE", "server javascript comment line", "JS Line Comment",
+	59, "SCE_HJA_COMMENTDOC", "server javascript comment documentation", "JS Doc comment",
+	60, "SCE_HJA_NUMBER", "server javascript literal numeric", "JS Number",
+	61, "SCE_HJA_WORD", "server javascript identifier", "JS Word",
+	62, "SCE_HJA_KEYWORD", "server javascript keyword", "JS Keyword",
+	63, "SCE_HJA_DOUBLESTRING", "server javascript literal string", "JS Double quoted string",
+	64, "SCE_HJA_SINGLESTRING", "server javascript literal string", "JS Single quoted string",
+	65, "SCE_HJA_SYMBOLS", "server javascript operator", "JS Symbols",
+	66, "SCE_HJA_STRINGEOL", "server javascript error literal string", "JavaScript EOL",
+	67, "SCE_HJA_REGEX", "server javascript literal regex", "JavaScript RegEx",
+	68, "", "unused", "",
+	69, "", "unused", "",
+	70, "SCE_HB_START", "client basic default", "Start",
+	71, "SCE_HB_DEFAULT", "client basic default", "Default",
+	72, "SCE_HB_COMMENTLINE", "client basic comment line", "Comment",
+	73, "SCE_HB_NUMBER", "client basic literal numeric", "Number",
+	74, "SCE_HB_WORD", "client basic keyword", "KeyWord",
+	75, "SCE_HB_STRING", "client basic literal string", "String",
+	76, "SCE_HB_IDENTIFIER", "client basic identifier", "Identifier",
+	77, "SCE_HB_STRINGEOL", "client basic literal string", "Unterminated string",
+	78, "", "unused", "",
+	79, "", "unused", "",
+	80, "SCE_HBA_START", "server basic default", "Start",
+	81, "SCE_HBA_DEFAULT", "server basic default", "Default",
+	82, "SCE_HBA_COMMENTLINE", "server basic comment line", "Comment",
+	83, "SCE_HBA_NUMBER", "server basic literal numeric", "Number",
+	84, "SCE_HBA_WORD", "server basic keyword", "KeyWord",
+	85, "SCE_HBA_STRING", "server basic literal string", "String",
+	86, "SCE_HBA_IDENTIFIER", "server basic identifier", "Identifier",
+	87, "SCE_HBA_STRINGEOL", "server basic literal string", "Unterminated string",
+	88, "", "unused", "",
+	89, "", "unused", "",
+	90, "SCE_HP_START", "client python default", "Embedded Python",
+	91, "SCE_HP_DEFAULT", "client python default", "Embedded Python",
+	92, "SCE_HP_COMMENTLINE", "client python comment line", "Comment",
+	93, "SCE_HP_NUMBER", "client python literal numeric", "Number",
+	94, "SCE_HP_STRING", "client python literal string", "String",
+	95, "SCE_HP_CHARACTER", "client python literal string character", "Single quoted string",
+	96, "SCE_HP_WORD", "client python keyword", "Keyword",
+	97, "SCE_HP_TRIPLE", "client python literal string", "Triple quotes",
+	98, "SCE_HP_TRIPLEDOUBLE", "client python literal string", "Triple double quotes",
+	99, "SCE_HP_CLASSNAME", "client python identifier", "Class name definition",
+	100, "SCE_HP_DEFNAME", "client python identifier", "Function or method name definition",
+	101, "SCE_HP_OPERATOR", "client python operator", "Operators",
+	102, "SCE_HP_IDENTIFIER", "client python identifier", "Identifiers",
+	103, "", "unused", "",
+	104, "SCE_HPHP_COMPLEX_VARIABLE", "server php identifier", "PHP complex variable",
+	105, "SCE_HPA_START", "server python default", "ASP Python",
+	106, "SCE_HPA_DEFAULT", "server python default", "ASP Python",
+	107, "SCE_HPA_COMMENTLINE", "server python comment line", "Comment",
+	108, "SCE_HPA_NUMBER", "server python literal numeric", "Number",
+	109, "SCE_HPA_STRING", "server python literal string", "String",
+	110, "SCE_HPA_CHARACTER", "server python literal string character", "Single quoted string",
+	111, "SCE_HPA_WORD", "server python keyword", "Keyword",
+	112, "SCE_HPA_TRIPLE", "server python literal string", "Triple quotes",
+	113, "SCE_HPA_TRIPLEDOUBLE", "server python literal string", "Triple double quotes",
+	114, "SCE_HPA_CLASSNAME", "server python identifier", "Class name definition",
+	115, "SCE_HPA_DEFNAME", "server python identifier", "Function or method name definition",
+	116, "SCE_HPA_OPERATOR", "server python operator", "Operators",
+	117, "SCE_HPA_IDENTIFIER", "server python identifier", "Identifiers",
+	118, "SCE_HPHP_DEFAULT", "server php default", "Default",
+	119, "SCE_HPHP_HSTRING", "server php literal string", "Double quoted String",
+	120, "SCE_HPHP_SIMPLESTRING", "server php literal string", "Single quoted string",
+	121, "SCE_HPHP_WORD", "server php keyword", "Keyword",
+	122, "SCE_HPHP_NUMBER", "server php literal numeric", "Number",
+	123, "SCE_HPHP_VARIABLE", "server php identifier", "Variable",
+	124, "SCE_HPHP_COMMENT", "server php comment", "Comment",
+	125, "SCE_HPHP_COMMENTLINE", "server php comment line", "One line comment",
+	126, "SCE_HPHP_HSTRING_VARIABLE", "server php literal string identifier", "PHP variable in double quoted string",
+	127, "SCE_HPHP_OPERATOR", "server php operator", "PHP operator",
+};
+
+LexicalClass lexicalClassesXML[] = {
+	// Lexer.Secondary XML SCLEX_XML SCE_H_:
+	0, "SCE_H_DEFAULT", "default", "Default",
+	1, "SCE_H_TAG", "tag", "Tags",
+	2, "SCE_H_TAGUNKNOWN", "error tag", "Unknown Tags",
+	3, "SCE_H_ATTRIBUTE", "attribute", "Attributes",
+	4, "SCE_H_ERRORATTRIBUTEUNKNOWN", "error attribute", "Unknown Attributes",
+	5, "SCE_H_NUMBER", "literal numeric", "Numbers",
+	6, "SCE_H_DOUBLESTRING", "literal string", "Double quoted strings",
+	7, "SCE_H_SINGLESTRING", "literal string", "Single quoted strings",
+	8, "SCE_H_OTHER", "tag operator", "Other inside tag, including space and '='",
+	9, "SCE_H_COMMENT", "comment", "Comment",
+	10, "SCE_H_ENTITY", "literal", "Entities",
+	11, "SCE_H_TAGEND", "tag", "XML style tag ends '/>'",
+	12, "SCE_H_XMLSTART", "identifier", "XML identifier start '<?'",
+	13, "SCE_H_XMLEND", "identifier", "XML identifier end '?>'",
+	14, "", "unused", "",
+	15, "", "unused", "",
+	16, "", "unused", "",
+	17, "SCE_H_CDATA", "literal", "CDATA",
+	18, "SCE_H_QUESTION", "preprocessor", "Question",
+	19, "SCE_H_VALUE", "literal string", "Unquoted Value",
+	20, "", "unused", "",
+	21, "SCE_H_SGML_DEFAULT", "default", "SGML tags <! ... >",
+	22, "SCE_H_SGML_COMMAND", "preprocessor", "SGML command",
+	23, "SCE_H_SGML_1ST_PARAM", "preprocessor", "SGML 1st param",
+	24, "SCE_H_SGML_DOUBLESTRING", "literal string", "SGML double string",
+	25, "SCE_H_SGML_SIMPLESTRING", "literal string", "SGML single string",
+	26, "SCE_H_SGML_ERROR", "error", "SGML error",
+	27, "SCE_H_SGML_SPECIAL", "literal", "SGML special (#XXXX type)",
+	28, "SCE_H_SGML_ENTITY", "literal", "SGML entity",
+	29, "SCE_H_SGML_COMMENT", "comment", "SGML comment",
+	30, "", "unused", "",
+	31, "SCE_H_SGML_BLOCK_DEFAULT", "default", "SGML block",
+};
+
+}
+
+LexerModule lmHTML(SCLEX_HTML, ColouriseHTMLDoc, "hypertext", 0, htmlWordListDesc, lexicalClassesHTML, ELEMENTS(lexicalClassesHTML));
+LexerModule lmXML(SCLEX_XML, ColouriseXMLDoc, "xml", 0, htmlWordListDesc, lexicalClassesXML, ELEMENTS(lexicalClassesXML));
+LexerModule lmPHPSCRIPT(SCLEX_PHPSCRIPT, ColourisePHPScriptDoc, "phpscript", 0, phpscriptWordListDesc);

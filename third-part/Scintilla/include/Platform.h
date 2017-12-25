@@ -71,13 +71,13 @@
 
 #endif
 
-#ifdef SCI_NAMESPACE
 namespace Scintilla {
-#endif
 
 typedef float XYPOSITION;
 typedef double XYACCUMULATOR;
-//#define XYPOSITION int
+inline int RoundXYPosition(XYPOSITION xyPos) {
+	return static_cast<int>(xyPos + 0.5);
+}
 
 // Underlying the implementation of the platform classes are platform specific types.
 // Sometimes these need to be passed around by client code so they are defined here
@@ -92,7 +92,7 @@ typedef void *IdlerID;
 
 /**
  * A geometric point class.
- * Point is exactly the same as the Win32 POINT and GTK+ GdkPoint so can be used interchangeably.
+ * Point is similar to the Win32 POINT and GTK+ GdkPoint types.
  */
 class Point {
 public:
@@ -102,14 +102,16 @@ public:
 	explicit Point(XYPOSITION x_=0, XYPOSITION y_=0) : x(x_), y(y_) {
 	}
 
-	// Other automatically defined methods (assignment, copy constructor, destructor) are fine
+	static Point FromInts(int x_, int y_) {
+		return Point(static_cast<XYPOSITION>(x_), static_cast<XYPOSITION>(y_));
+	}
 
-	static Point FromLong(long lpoint);
+	// Other automatically defined methods (assignment, copy constructor, destructor) are fine
 };
 
 /**
  * A geometric rectangle class.
- * PRectangle is exactly the same as the Win32 RECT so can be used interchangeably.
+ * PRectangle is similar to the Win32 RECT.
  * PRectangles contain their top and left sides, but not their right and bottom sides.
  */
 class PRectangle {
@@ -119,19 +121,29 @@ public:
 	XYPOSITION right;
 	XYPOSITION bottom;
 
-	PRectangle(XYPOSITION left_=0, XYPOSITION top_=0, XYPOSITION right_=0, XYPOSITION bottom_ = 0) :
+	explicit PRectangle(XYPOSITION left_=0, XYPOSITION top_=0, XYPOSITION right_=0, XYPOSITION bottom_ = 0) :
 		left(left_), top(top_), right(right_), bottom(bottom_) {
+	}
+
+	static PRectangle FromInts(int left_, int top_, int right_, int bottom_) {
+		return PRectangle(static_cast<XYPOSITION>(left_), static_cast<XYPOSITION>(top_),
+			static_cast<XYPOSITION>(right_), static_cast<XYPOSITION>(bottom_));
 	}
 
 	// Other automatically defined methods (assignment, copy constructor, destructor) are fine
 
-	bool operator==(PRectangle &rc) const {
+	bool operator==(const PRectangle &rc) const {
 		return (rc.left == left) && (rc.right == right) &&
 			(rc.top == top) && (rc.bottom == bottom);
 	}
 	bool Contains(Point pt) const {
 		return (pt.x >= left) && (pt.x <= right) &&
 			(pt.y >= top) && (pt.y <= bottom);
+	}
+	bool ContainsWholePixel(Point pt) const {
+		// Does the rectangle contain all of the pixel to left/below the point
+		return (pt.x >= left) && ((pt.x+1) <= right) &&
+			(pt.y >= top) && ((pt.y+1) <= bottom);
 	}
 	bool Contains(PRectangle rc) const {
 		return (rc.left >= left) && (rc.right <= right) &&
@@ -255,9 +267,6 @@ struct FontParameters {
 class Font {
 protected:
 	FontID fid;
-#if PLAT_WX
-	int ascent;
-#endif
 	// Private so Font objects can not be copied
 	Font(const Font &);
 	Font &operator=(const Font &);
@@ -271,9 +280,6 @@ public:
 	FontID GetID() { return fid; }
 	// Alias another font - caller guarantees not to Release
 	void SetID(FontID fid_) { fid = fid_; }
-#if PLAT_WX
-	void SetAscent(int ascent_) { ascent = ascent_; }
-#endif
 	friend class Surface;
 	friend class SurfaceImpl;
 };
@@ -322,7 +328,6 @@ public:
 	virtual XYPOSITION Ascent(Font &font_)=0;
 	virtual XYPOSITION Descent(Font &font_)=0;
 	virtual XYPOSITION InternalLeading(Font &font_)=0;
-	virtual XYPOSITION ExternalLeading(Font &font_)=0;
 	virtual XYPOSITION Height(Font &font_)=0;
 	virtual XYPOSITION AverageCharWidth(Font &font_)=0;
 
@@ -345,32 +350,27 @@ typedef void (*CallBackAction)(void*);
 class Window {
 protected:
 	WindowID wid;
-#if PLAT_MACOSX
-	void *windowRef;
-	void *control;
-#endif
 public:
 	Window() : wid(0), cursorLast(cursorInvalid) {
-#if PLAT_MACOSX
-	  windowRef = 0;
-	  control = 0;
-#endif
 	}
 	Window(const Window &source) : wid(source.wid), cursorLast(cursorInvalid) {
-#if PLAT_MACOSX
-	  windowRef = 0;
-	  control = 0;
-#endif
 	}
 	virtual ~Window();
 	Window &operator=(WindowID wid_) {
 		wid = wid_;
+		cursorLast = cursorInvalid;
+		return *this;
+	}
+	Window &operator=(const Window &other) {
+		if (this != &other) {
+			wid = other.wid;
+			cursorLast = other.cursorLast;
+		}
 		return *this;
 	}
 	WindowID GetID() const { return wid; }
 	bool Created() const { return wid != 0; }
 	void Destroy();
-	bool HasFocus();
 	PRectangle GetPosition();
 	void SetPosition(PRectangle rc);
 	void SetPositionRelative(PRectangle rc, Window relativeTo);
@@ -381,12 +381,7 @@ public:
 	virtual void SetFont(Font &font);
 	enum Cursor { cursorInvalid, cursorText, cursorArrow, cursorUp, cursorWait, cursorHoriz, cursorVert, cursorReverseArrow, cursorHand };
 	void SetCursor(Cursor curs);
-	void SetTitle(const char *s);
 	PRectangle GetMonitorRect(Point pt);
-#if PLAT_MACOSX
-	void SetWindow(void *ref) { windowRef = ref; }
-	void SetControl(void *_control) { control = _control; }
-#endif
 private:
 	Cursor cursorLast;
 };
@@ -394,6 +389,19 @@ private:
 /**
  * Listbox management.
  */
+
+// ScintillaBase implements IListBoxDelegate to receive ListBoxEvents from a ListBox
+
+struct ListBoxEvent {
+	enum class EventType { selectionChange, doubleClick } event;
+	ListBoxEvent(EventType event_) : event(event_) {
+	}
+};
+
+class IListBoxDelegate {
+public:
+	virtual void ListNotify(ListBoxEvent *plbe)=0;
+};
 
 class ListBox : public Window {
 public:
@@ -418,7 +426,7 @@ public:
 	virtual void RegisterImage(int type, const char *xpm_data)=0;
 	virtual void RegisterRGBAImage(int type, int width, int height, const unsigned char *pixelsImage) = 0;
 	virtual void ClearRegisteredImages()=0;
-	virtual void SetDoubleClickAction(CallBackAction, void *)=0;
+	virtual void SetDelegate(IListBoxDelegate *lbDelegate)=0;
 	virtual void SetList(const char* list, char separator, char typesep)=0;
 };
 
@@ -460,6 +468,16 @@ public:
 	static DynamicLibrary *Load(const char *modulePath);
 };
 
+#if defined(__clang__)
+# if __has_feature(attribute_analyzer_noreturn)
+#  define CLANG_ANALYZER_NORETURN __attribute__((analyzer_noreturn))
+# else
+#  define CLANG_ANALYZER_NORETURN
+# endif
+#else
+# define CLANG_ANALYZER_NORETURN
+#endif
+
 /**
  * Platform class used to retrieve system wide parameters such as double click speed
  * and chrome colour. Not a creatable object, more of a module with several functions.
@@ -478,59 +496,22 @@ public:
 	static const char *DefaultFont();
 	static int DefaultFontSize();
 	static unsigned int DoubleClickTime();
-	static bool MouseButtonBounce();
 	static void DebugDisplay(const char *s);
-	static bool IsKeyDown(int key);
-	static long SendScintilla(
-		WindowID w, unsigned int msg, unsigned long wParam=0, long lParam=0);
-	static long SendScintillaPointer(
-		WindowID w, unsigned int msg, unsigned long wParam=0, void *lParam=0);
-	static bool IsDBCSLeadByte(int codePage, char ch);
-	static int DBCSCharLength(int codePage, const char *s);
-	static int DBCSCharMaxLength();
-
-	// These are utility functions not really tied to a platform
-	static int Minimum(int a, int b);
-	static int Maximum(int a, int b);
-	// Next three assume 16 bit shorts and 32 bit longs
 	static long LongFromTwoShorts(short a,short b) {
 		return (a) | ((b) << 16);
 	}
-	static short HighShortFromLong(long x) {
-		return static_cast<short>(x >> 16);
-	}
-	static short LowShortFromLong(long x) {
-		return static_cast<short>(x & 0xffff);
-	}
+
 	static void DebugPrintf(const char *format, ...);
 	static bool ShowAssertionPopUps(bool assertionPopUps_);
-	static void Assert(const char *c, const char *file, int line);
-	static int Clamp(int val, int minVal, int maxVal);
+	static void Assert(const char *c, const char *file, int line) CLANG_ANALYZER_NORETURN;
 };
 
 #ifdef  NDEBUG
 #define PLATFORM_ASSERT(c) ((void)0)
 #else
-#ifdef SCI_NAMESPACE
 #define PLATFORM_ASSERT(c) ((c) ? (void)(0) : Scintilla::Platform::Assert(#c, __FILE__, __LINE__))
-#else
-#define PLATFORM_ASSERT(c) ((c) ? (void)(0) : Platform::Assert(#c, __FILE__, __LINE__))
-#endif
 #endif
 
-#ifdef SCI_NAMESPACE
 }
-#endif
-
-// Shut up annoying Visual C++ warnings:
-#ifdef _MSC_VER
-#pragma warning(disable: 4244 4309 4514 4710)
-#endif
-
-#if defined(__GNUC__) && defined(SCINTILLA_QT)
-#pragma GCC diagnostic ignored "-Wmissing-braces"
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#pragma GCC diagnostic ignored "-Wchar-subscripts"
-#endif
 
 #endif
