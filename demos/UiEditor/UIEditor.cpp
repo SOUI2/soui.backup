@@ -73,7 +73,22 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 #endif // W64
 */
 
+#ifdef STATIC_BUILD_SCI  
 	Scintilla_RegisterClasses(hInstance);
+#else  
+	HMODULE m_hSciLexerDll = NULL;
+#ifdef _DEBUG
+	m_hSciLexerDll = LoadLibrary(_T("Scintillad.dll"));
+#else
+	m_hSciLexerDll = LoadLibrary(_T("Scintilla.dll"));
+#endif 
+	if (NULL == m_hSciLexerDll)
+	{
+		MessageBox(GetActiveWindow(), _T("Load SciLexer.dll failed! \nCopying third-part/SciLexer/bin/SciLexer.dll to the running folder should resolve the problem!!"), _T("error"), MB_OK | MB_ICONSTOP);
+		return FALSE;
+	}
+#endif 
+
     //将程序的运行路径修改到项目所在目录所在的目录
     TCHAR szCurrentDir[MAX_PATH] = { 0 };
     GetModuleFileName(NULL, szCurrentDir, sizeof(szCurrentDir));
@@ -213,7 +228,16 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
     
     delete pComMgr;
     
+#ifdef STATIC_BUILD_SCI  
 	Scintilla_ReleaseResources();
+#else  
+	if (m_hSciLexerDll != NULL)
+	{
+		::FreeLibrary(m_hSciLexerDll);
+	}
+#endif
+
+
     OleUninitialize();
     return nRet;
 }
