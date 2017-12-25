@@ -39,7 +39,7 @@ namespace SOUI
 		if (iItem == -1) iItem = (int)m_arrItems.GetCount();
 		SHDITEM item;
 		item.mask = 0xFFFFFFFF;
-		item.cx.setSize(nWidth, unit);
+		item.cx.setSize((float)nWidth, unit);
 		item.text.SetCtxProvider(this);
 		item.text.SetText(pszText);
 		item.stFlag = stFlag;
@@ -276,7 +276,7 @@ namespace SOUI
 					int cxNew = m_nAdjItemOldWidth + pt.x - m_ptClick.x;
 					if (cxNew < 0) cxNew = 0;
                     if (m_arrItems[LOWORD(m_dwHitTest)].cx.unit == SLayoutSize::px)
-                        m_arrItems[LOWORD(m_dwHitTest)].cx.setSize(cxNew, SLayoutSize::px);
+                        m_arrItems[LOWORD(m_dwHitTest)].cx.setSize((float)cxNew, SLayoutSize::px);
                     else if(m_arrItems[LOWORD(m_dwHitTest)].cx.unit == SLayoutSize::dp)
                         m_arrItems[LOWORD(m_dwHitTest)].cx.setSize(cxNew * 1.0f / GetScale(), SLayoutSize::dp);
                     // TODO: dip 和 sp 的处理（AYK）

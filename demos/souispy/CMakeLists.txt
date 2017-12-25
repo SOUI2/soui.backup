@@ -24,3 +24,4 @@ target_link_libraries(souispy soui utilities ${COM_LIBS})
 set_target_properties (souispy PROPERTIES
     FOLDER demos
 )
+cotire(souispy)

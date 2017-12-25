@@ -66,3 +66,4 @@ set(COM_LIBS ${COM_LIBS} png CACHE INTERNAL "com_lib")
 set_target_properties (png PROPERTIES
     FOLDER third-part
 )
+cotire(png)

@@ -50,11 +50,16 @@ void SkTextLayoutEx::init( const wchar_t text[], size_t length,SkRect rc, const 
         memcpy(tmp.begin(),text,length*sizeof(wchar_t));
         for(int i=0;i<tmp.count();i++)
         {
-            if(tmp[i]==L'&')
+            if(tmp[i]==L'&' && i+1 < tmp.count())
             {
-                tmp.remove(i,1);
-                if(i<tmp.count()-1) m_prefix.push(i);
-                if(i<tmp.count()-1 && tmp[i+1]==L'&') i++;  //skip the next "&"
+				if(tmp[i+1]==L'&')
+				{
+					tmp.remove(i,1);
+				}else
+				{
+					tmp.remove(i,1);
+					m_prefix.push(i);
+				}
             }
         }
         m_text=tmp;

@@ -63,11 +63,11 @@ namespace SOUI
 			  if(m_widItems[i]==0)
 				  continue;
 			  int itemwid=m_widItems[i]*parentViewWid/totalWidth;
-			  m_arrItems[i].cx = itemwid;
+			  m_arrItems[i].cx.fSize = itemwid;
 			  remainingWid -= itemwid;
 		  }
 		  //因为除法不一定能整除，把最后余下的全给第一个不为0的子项
-		  m_arrItems[nozeroPos].cx = remainingWid;
+		  m_arrItems[nozeroPos].cx.fSize = remainingWid;
 	  }
 	  void OnSize(UINT nType, CSize size)
 	  {

@@ -40,7 +40,6 @@ SOURCES += baiduwp.cpp \
            MainDlg.cpp \
            SIconButton.cpp \
            SRadioEx.cpp \
-           stdafx.cpp \
            trayicon/SShellNofityHwnd2.cpp \
            trayicon/SShellNotifyIcon.cpp \
            ../../controls.extend/SRadioBox2.cpp  

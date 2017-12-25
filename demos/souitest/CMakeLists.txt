@@ -18,3 +18,4 @@ add_dependencies(souitest gtest)
 set_target_properties (souitest PROPERTIES
     FOLDER demos
 )
+cotire(souitest)
