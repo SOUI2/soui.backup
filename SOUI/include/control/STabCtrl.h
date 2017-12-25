@@ -12,6 +12,7 @@
 */
 #pragma once
 #include "core/SWnd.h"
+#include "helper/SplitString.h"
 
 namespace SOUI
 {
@@ -108,15 +109,20 @@ namespace SOUI
     protected:
         int m_nHoverTabItem; /**< hover状态item */
         int m_nCurrentPage;  /**< 当前页码      */
-        int m_nTabInterSize;   /**< tab页面间距   */
-        SIZE m_szTab;        /**< tab SIZE   */
-        int m_nTabPos;       /**< tab位置       */
+        //int m_nTabInterSize;   /**< tab页面间距   */
+        //SIZE m_szTab;        /**< tab SIZE   */
+        //int m_nTabPos;       /**< tab位置       */
+        SLayoutSize m_nTabInterSize;
+        SLayoutSize m_szTab[2];
+        SLayoutSize m_nTabPos;
         ISkinObj *m_pSkinTab; /**< ISkibObj对象 */
         ISkinObj *m_pSkinIcon; /**< ISkibObj对象  */
         ISkinObj *m_pSkinTabInter;  /**< ISkibObj对象  */
         ISkinObj *m_pSkinFrame;     /**< ISkibObj对象  */
-        CPoint m_ptIcon;   /**< 图标位置 */
-        CPoint m_ptText;   /**< 标题位置 */
+        //CPoint m_ptIcon;   /**< 图标位置 */
+        //CPoint m_ptText;   /**< 标题位置 */
+        SLayoutSize m_ptIcon[2];
+        SLayoutSize m_ptText[2];
         int m_nTabAlign;   /**< 排列方式 */
 
         SArray<STabPage*> m_lstPages;  /**< tab标签页面链表 */
@@ -460,19 +466,19 @@ namespace SOUI
 
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"curSel", m_nCurrentPage, FALSE)
-            ATTR_SIZE(L"tabSize",m_szTab,TRUE)
-            ATTR_INT(L"tabWidth", m_szTab.cx, FALSE)
-            ATTR_INT(L"tabHeight", m_szTab.cy, FALSE)
-            ATTR_INT(L"tabPos", m_nTabPos, FALSE)
-            ATTR_INT(L"tabInterSize", m_nTabInterSize, FALSE)
+            ATTR_LAYOUTSIZE2(L"tabSize",m_szTab,TRUE)
+            ATTR_LAYOUTSIZE(L"tabWidth", m_szTab[0], FALSE)
+            ATTR_LAYOUTSIZE(L"tabHeight", m_szTab[1], FALSE)
+            ATTR_LAYOUTSIZE(L"tabPos", m_nTabPos, FALSE)
+            ATTR_LAYOUTSIZE(L"tabInterSize", m_nTabInterSize, FALSE)
             ATTR_SKIN(L"tabInterSkin", m_pSkinTabInter, FALSE)
             ATTR_SKIN(L"tabSkin", m_pSkinTab, FALSE)
             ATTR_SKIN(L"iconSkin", m_pSkinIcon, FALSE)
             ATTR_SKIN(L"frameSkin", m_pSkinFrame, FALSE)
-            ATTR_INT(L"icon-x", m_ptIcon.x, FALSE)
-            ATTR_INT(L"icon-y", m_ptIcon.y, FALSE)
-            ATTR_INT(L"text-x", m_ptText.x, FALSE)
-            ATTR_INT(L"text-y", m_ptText.y, FALSE)
+            ATTR_LAYOUTSIZE(L"icon-x", m_ptIcon[0], FALSE)
+            ATTR_LAYOUTSIZE(L"icon-y", m_ptIcon[1], FALSE)
+            ATTR_LAYOUTSIZE(L"text-x", m_ptText[0], FALSE)
+            ATTR_LAYOUTSIZE(L"text-y", m_ptText[1], FALSE)
             ATTR_ENUM_BEGIN(L"tabAlign", int, TRUE)
                 ATTR_ENUM_VALUE(L"top", AlignTop)
                 ATTR_ENUM_VALUE(L"left", AlignLeft)

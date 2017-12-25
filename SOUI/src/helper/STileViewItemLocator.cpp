@@ -20,7 +20,8 @@ STileViewItemLocator::STileViewItemLocator(LPCTSTR szItemHei, LPCTSTR szItemWid,
     m_nItemWidth(SLayoutSize::fromString(szItemWid)),
     m_nItemMargin(marginSize),
     m_nTileViewWidth(0, SLayoutSize::px),
-    m_nCountInRow(1)
+    m_nCountInRow(1),
+    m_scale(100)
 {
 }
 
