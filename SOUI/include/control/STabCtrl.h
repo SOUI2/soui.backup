@@ -109,20 +109,15 @@ namespace SOUI
     protected:
         int m_nHoverTabItem; /**< hover状态item */
         int m_nCurrentPage;  /**< 当前页码      */
-        //int m_nTabInterSize;   /**< tab页面间距   */
-        //SIZE m_szTab;        /**< tab SIZE   */
-        //int m_nTabPos;       /**< tab位置       */
-        SLayoutSize m_nTabInterSize;
-        SLayoutSize m_szTab[2];
-        SLayoutSize m_nTabPos;
+        SLayoutSize m_nTabInterSize; /**< tab页面间距   */
+        SLayoutSize m_szTab[2]; /**< tab SIZE   */
+        SLayoutSize m_nTabPos;  /**< tab位置       */
         ISkinObj *m_pSkinTab; /**< ISkibObj对象 */
         ISkinObj *m_pSkinIcon; /**< ISkibObj对象  */
         ISkinObj *m_pSkinTabInter;  /**< ISkibObj对象  */
         ISkinObj *m_pSkinFrame;     /**< ISkibObj对象  */
-        //CPoint m_ptIcon;   /**< 图标位置 */
-        //CPoint m_ptText;   /**< 标题位置 */
-        SLayoutSize m_ptIcon[2];
-        SLayoutSize m_ptText[2];
+        SLayoutSize m_ptIcon[2]; /**< 图标位置 */
+        SLayoutSize m_ptText[2]; /**< 标题位置 */
         int m_nTabAlign;   /**< 排列方式 */
 
         SArray<STabPage*> m_lstPages;  /**< tab标签页面链表 */

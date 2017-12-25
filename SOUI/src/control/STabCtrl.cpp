@@ -290,12 +290,13 @@ STabCtrl::STabCtrl() : m_nCurrentPage(0)
     , m_nHoverTabItem(-1)
     , m_nTabAlign(AlignTop)
     , m_nAnimateSteps(0)
-    , m_ptText{ {-1, SLayoutSize::px}, { -1, SLayoutSize::px } }
-    , m_szTab{ {-1, SLayoutSize::px}, { -1, SLayoutSize::px } }
     , m_tabSlider(NULL)
     , m_txtDir(Text_Horz)
 	,m_nAniamteType(0)
 {
+	m_ptText[0] = m_ptText[1] = SLayoutSize(-1.f, SLayoutSize::px);
+	m_szTab[0] = m_szTab[1] = SLayoutSize(-1.f, SLayoutSize::px);
+
     m_bFocusable=TRUE;
 	//create a linear animator interpolator
 	m_aniInterpolator.Attach(SApplication::getSingleton().CreateInterpolatorByName(SLinearInterpolator::GetClassName()));
@@ -696,7 +697,7 @@ BOOL STabCtrl::GetItemRect( int nIndex, CRect &rcItem )
     
     CRect rcTitle = GetTitleRect();
         
-    rcItem = CRect(rcTitle.TopLeft(), CSize{ m_szTab[0].toPixelSize(GetScale()), m_szTab[1].toPixelSize(GetScale()) });
+    rcItem = CRect(rcTitle.TopLeft(), CSize(m_szTab[0].toPixelSize(GetScale()), m_szTab[1].toPixelSize(GetScale())));
 
     switch (m_nTabAlign)
     {
@@ -829,12 +830,11 @@ int STabCtrl::HitTest( CPoint pt )
 
 void STabCtrl::OnInitFinished( pugi::xml_node xmlNode )
 {
-    // UNDONE: 动态更改分辨率时怎么处理？
     if(m_pSkinTab)
     {
         SIZE sz = m_pSkinTab->GetSkinSize();
-        if(abs(m_szTab[0].fSize + 1) < 1e-6) m_szTab[0] = SLayoutSize(sz.cx, SLayoutSize::px);
-        if(abs(m_szTab[1].fSize + 1) < 1e-6) m_szTab[1] = SLayoutSize(sz.cy, SLayoutSize::px);
+		if(SLayoutSize::fequal(m_szTab[0].fSize, -1.f)) m_szTab[0] = SLayoutSize((float)sz.cx, SLayoutSize::px);
+        if(SLayoutSize::fequal(m_szTab[1].fSize, -1.f)) m_szTab[1] = SLayoutSize((float)sz.cy, SLayoutSize::px);
     }
 }
 
