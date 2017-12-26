@@ -31,6 +31,11 @@ namespace SOUI
 		return fabs(a-b)<0.00000001f;
 	}
 
+	bool SLayoutSize::valueEqual(float value)
+	{
+		return fequal(fSize,value);
+	}
+
 	SStringW SLayoutSize::toString() const
 	{
 		SStringW strValue = SStringW().Format(L"%f",fSize);
