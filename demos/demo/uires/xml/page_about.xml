@@ -16,7 +16,7 @@
   <text pos="10,[5">git.oschina：</text>
   <edit pos="150,{0,@-1,@30" readOnly="1">https://gitee.com/setousoft/soui</edit>
 <text pos="10,[5,@100,@100"><check pos="10,|" offset="0,-0.5">选我</check></text>
- <header008 pos="10,[2" size="500,30" align="center" sortSkin="skin_lcex_header_arrow" itemSkin="skin_lcex_header" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" colorBkgnd="#ffffff" >
+ <header pos="10,[2" size="500,30" align="center" sortSkin="skin_lcex_header_arrow" itemSkin="skin_lcex_header" itemSwapEnable="1" fixWidth="0" font="underline:0,adding:-3" sortHeader="1" colorBkgnd="#ffffff" >
       <items>
         <item width="120" colorBkgnd="#ff00ff"><check pos="10,|" offset="0,-0.5">选我</check></item>
         <item width="120" colorBkgnd="#ffccff" canSort="1">@string/mccol_2</item>
@@ -24,7 +24,7 @@
         <item width="120" colorBkgnd="#ffffee">@string/mccol_4</item>
       <item width="120" colorBkgnd="#00ffff">@string/mccol_6</item>
       </items>
-    </header008>
+    </header>
   <group pos="10,[5,-10,@350" align="left" show="1" text="支持SOUI发展" layout="hbox" padding="10,10,10,0" align="center">
     <window size="0,-2" layout="vbox" gravity="center" weight="1">
       <text>微信赞助</text>

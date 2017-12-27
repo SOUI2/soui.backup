@@ -1933,7 +1933,7 @@ namespace SOUI
 		if (pRc) rcDraw.IntersectRect(rcDraw, pRc);
 		pRT->PushClipRect(&rcDraw, RGN_AND);
 
-		SWindow *pTopWnd = GetRoot();
+		//SWindow *pTopWnd = GetRoot();
 		CAutoRefPtr<IRegion> pRgn;
 		GETRENDERFACTORY->CreateRegion(&pRgn);
 		pRgn->CombineRect(&rcDraw, RGN_COPY);
@@ -1950,8 +1950,8 @@ namespace SOUI
 			MAX_ZORDER = wnd->m_uZorder;
 			wnd = wnd->GetWindow(GSW_LASTCHILD);
 		}
-		MAX_ZORDER = MAX_ZORDER == 0 ? m_uZorder+1:MAX_ZORDER + 1;
-		pTopWnd->_PaintRegion(pRT, pRgn, ZORDER_MIN, MAX_ZORDER);
+		MAX_ZORDER = MAX_ZORDER == 0 ? m_uZorder+1:MAX_ZORDER+1;
+		_PaintRegion(pRT, pRgn, ZORDER_MIN, MAX_ZORDER);
 
 		pRT->PopClip();
 	}

@@ -1,20 +1,254 @@
-Ôªø#include "souistd.h"
-#include "control/SHeaderCtrl.h"
-#include "helper/DragWnd.h"
+#include "souistd.h"
+#include "control\SHeaderCtrl.h"
+#include "helper\DragWnd.h"
 
 namespace SOUI
 {
-#define CX_HDITEM_MARGIN    4
+
+	//////////////////////////////////////////////////////////////////////////
+	// SHeaderItem
+	class SHeaderItem : public SWindow
+	{
+		SOUI_CLASS_NAME(SHeaderItem, L"headerItem")
+		friend class SHeaderCtrl;
+	public:
+		SHeaderItem(SHeaderCtrl* pHost) :m_pHost(pHost), m_iIdx(-1), m_bcanSort(FALSE), m_pSkinSort(NULL), m_hDragImg(NULL), m_sortFlag(ST_NULL),m_bSwaping(false), m_bChangeSizing(false)
+		{
+			m_sortPos.x = m_sortPos.y = -100;
+			SWindow::m_bClipClient = TRUE;
+		}
+		BOOL IsDragable() { return m_iIdx != -1 && m_pHost->m_bItemSwapEnable; }
+
+		SOUI_ATTRS_BEGIN()
+			ATTR_BOOL(L"canSort", m_bcanSort, FALSE)
+			ATTR_SKIN(L"sortSkin", m_pSkinSort, FALSE)
+			ATTR_POINT(L"sortIconXY", m_sortPos, FALSE)
+			ATTR_INT(L"sortIconX", m_sortPos.x, FALSE)
+			ATTR_INT(L"sortIconY", m_sortPos.y, FALSE)
+		SOUI_ATTRS_END()
+		SOUI_MSG_MAP_BEGIN()
+			MSG_WM_PAINT_EX(OnPaint)
+			MSG_WM_MOUSEMOVE(OnMouseMove)
+			MSG_WM_LBUTTONDOWN(OnLButtonDown)
+			MSG_WM_LBUTTONUP(OnLButtonUp)
+			MSG_WM_ACTIVATEAPP(OnActivateApp)
+		SOUI_MSG_MAP_END()
+		
+	protected:
+		virtual BOOL OnSetCursor(const CPoint &pt)override
+		{
+			if (!HitTestSIZEWE(pt))
+				return __super::OnSetCursor(pt);
+			HCURSOR hCursor = GETRESPROVIDER->LoadCursor(IDC_SIZEWE);
+			if (GetCursor() != hCursor)
+				SetCursor(hCursor);
+			return TRUE;
+		}
+
+		void HideChildWnd(bool bHide)
+		{
+			SWindow *childWnd = GetWindow(GSW_FIRSTCHILD);
+			while (childWnd)
+			{
+				childWnd->SetVisible(bHide ? FALSE : TRUE);
+				childWnd = childWnd-> GetWindow(GSW_NEXTSIBLING);
+			}
+			this->Invalidate();
+		}
+		void OnPaint(IRenderTarget *_pRT)
+		{
+			if (m_bSwaping)
+				return;
+			SWindow::OnPaint(_pRT);
+			if (m_pSkinSort&&m_bcanSort)
+			{
+				CRect _sortIconRect;
+				m_pSkinSort->Draw(_pRT, GetSortIconRect(_sortIconRect), m_sortFlag);
+			}
+		}
+		const CRect &GetSortIconRect(CRect &_sortIconRect)
+		{
+			CRect _clientRect = GetClientRect();
+			SIZE _skinSize = m_pSkinSort->GetSkinSize();
+			//Œ¥…Ë÷√X∆´“∆
+			if (m_sortPos.x == -100)
+			{
+				int _left = (_sortIconRect.right = _clientRect.right- CX_HDITEM_MARGIN) - _skinSize.cx;
+				_sortIconRect.left = _left < _clientRect.left ? _clientRect.left : _left;
+			}
+			else
+			{
+				int _right = (_sortIconRect.left = m_sortPos.x) + _skinSize.cx;
+				_sortIconRect.right = _right > _clientRect.right ? _clientRect.right : _right;
+			}
+			//Œ¥…Ë÷√Y∆´“∆
+			if (m_sortPos.y == -100)
+			{
+				int _top = _clientRect.top + (_clientRect.Height() - _skinSize.cy) / 2;
+				_sortIconRect.top = _top < _clientRect.top ? _clientRect.top : _top;
+				int _bottom = _sortIconRect.top + _skinSize.cy;
+				_sortIconRect.bottom = _bottom > _clientRect.bottom ? _clientRect.bottom : _bottom;
+			}
+			else
+			{
+				int _bottom = (_sortIconRect.top = m_sortPos.y) + _skinSize.cx;
+				_sortIconRect.bottom = _bottom > _clientRect.bottom ? _clientRect.bottom : _bottom;
+			}
+			return _sortIconRect;
+		}
+		
+
+	protected:
+		void OnActivateApp(BOOL bActive, DWORD dwThreadID)
+		{
+			if (m_bSwaping)
+			{
+				CDragWnd::EndDrag();
+				::DeleteObject(m_hDragImg);
+				m_hDragImg = NULL;
+				m_bSwaping = false;
+				HideChildWnd(false);
+			}
+		}
+		int HitTestSIZEWE(const CPoint & pt)
+		{
+			if (m_pHost->m_bFixWidth)
+				return 0;
+			CRect    rcWnd;
+			GetWindowRect(&rcWnd);
+			if (!rcWnd.PtInRect(pt))
+				return 0;
+			bool bLeft = pt.x < rcWnd.left + CX_HDITEM_MARGIN;
+			if (bLeft)
+				return m_iIdx != 0?1:0;
+			return (pt.x > rcWnd.right - CX_HDITEM_MARGIN)?2:0;
+			
+		}
+		HBITMAP CreateDragImage()
+		{
+			CRect rcItem = GetWindowRect();
+			CAutoRefPtr<IRenderTarget> pRT;
+			GETRENDERFACTORY->CreateRenderTarget(&pRT, rcItem.Width(), rcItem.Height());
+			BeforePaintEx(pRT);
+			CPoint pt;
+			pt -= rcItem.TopLeft();
+			pRT->SetViewportOrg(pt);
+			PaintBackground2(pRT, &rcItem);
+			pRT->SetViewportOrg(CPoint());
+			HBITMAP hBmp = CreateBitmap(rcItem.Width(), rcItem.Height(), 1, 32, NULL);
+			HDC hdc = GetDC(NULL);
+			HDC hMemDC = CreateCompatibleDC(hdc);
+			::SelectObject(hMemDC, hBmp);
+			HDC hdcSrc = pRT->GetDC(0);
+			::BitBlt(hMemDC, 0, 0, rcItem.Width(), rcItem.Height(), hdcSrc, 0, 0, SRCCOPY);
+			pRT->ReleaseDC(hdcSrc);			
+			::DeleteDC(hMemDC);
+			::ReleaseDC(NULL, hdc);
+			return hBmp;
+		}
+		void OnMouseMove(UINT nFlags, CPoint pt)
+		{
+			static SHeaderItem *item=NULL;
+			if ((nFlags & MK_LBUTTON))
+			{
+				if (!m_bChangeSizing)
+				{
+					switch (HitTestSIZEWE(m_ptDrag))
+					{
+					case 1:
+						item = m_pHost->GetPrvItem(m_iIdx);
+						m_bChangeSizing = true; break;
+					case 2:
+						item = this;
+						m_bChangeSizing = true;break;
+					}
+				}
+				else if (m_bChangeSizing)
+				{
+					SASSERT(item);
+					m_pHost->ChangeItemSize(item,pt);
+				}
+				if (!m_bSwaping&&!m_bChangeSizing && IsDragable())
+				{
+					m_hDragImg = CreateDragImage();
+					CPoint pt = m_ptDrag - GetWindowRect().TopLeft();
+					CDragWnd::BeginDrag(m_hDragImg, pt, 0, 128, LWA_ALPHA | LWA_COLORKEY);
+					m_bSwaping = true;
+					HideChildWnd(true);
+					this->Invalidate();
+				}
+				else if(m_bSwaping)
+				{
+					CPoint pt2(pt.x, m_ptDrag.y);
+					m_pHost->ChangeItemPos(this, pt2);
+					ClientToScreen(GetContainer()->GetHostHwnd(), &pt2);
+					CDragWnd::DragMove(pt2);
+				}
+			}
+		}
+
+		void OnSuperLButtonUp(UINT nFlags, CPoint pt)
+		{
+			ReleaseCapture();
+			if (!(GetState()&WndState_PushDown)) return;
+			ModifyState(0, WndState_PushDown, TRUE);
+			if (!GetWindowRect().PtInRect(pt)) return;
+
+			EventLButtonUp evtLButtonUp(this);
+			evtLButtonUp.pt = pt;
+			FireEvent(evtLButtonUp);
+			if (m_bSwaping || m_bChangeSizing)
+				return;
+			//±ÿ–Î”–ø…≈≈–Ú±Í÷æ≤≈∑¢≥ˆCMD
+			if ((GetID() || GetName())&&m_bcanSort)
+			{
+				FireCommand();
+			}
+		}
+
+		void OnLButtonUp(UINT nFlags, CPoint pt)
+		{
+			OnSuperLButtonUp(nFlags, pt);
+			if (m_bSwaping)
+			{
+				m_pHost->UpdateChildrenPosition();
+				CDragWnd::EndDrag();
+				DeleteObject(m_hDragImg);
+				m_hDragImg = NULL;
+				HideChildWnd(false);
+				this->Invalidate();
+				m_bSwaping = false;
+			}
+			else if (m_bChangeSizing)
+			{
+				m_bChangeSizing = false;
+			}
+		}
+		void OnLButtonDown(UINT nFlags, CPoint pt)
+		{
+			SWindow::OnLButtonDown(nFlags, pt);
+			m_ptDrag = pt;
+			m_bSwaping = false, m_bChangeSizing=false;
+		}
+	private:
+		CRect m_rcBegin, m_rcEnd;
+		CPoint  m_ptDrag;
+		int     m_iIdx;
+		int		m_iOrder;
+		bool    m_bSwaping,m_bChangeSizing;
+		SHeaderCtrl* m_pHost;		
+		BOOL m_bcanSort;// «∑Òø…“‘≈≈–Ú
+		POINT m_sortPos;//≈≈–ÚÕº±ÍŒª÷√
+		ISkinObj *    m_pSkinSort;  /**< ≈≈–Ú±Í÷æSkin */
+		HBITMAP       m_hDragImg;  /**< œ‘ æÕœ∂Ø¥∞ø⁄µƒ¡Ÿ ±ŒªÕº */
+		SHDSORTFLAG m_sortFlag;
+	};
 
 	SHeaderCtrl::SHeaderCtrl(void)
-		:m_bFixWidth(FALSE)
+		: m_bFixWidth(FALSE)
 		, m_bItemSwapEnable(TRUE)
 		, m_bSortHeader(TRUE)
-		, m_pSkinItem(GETBUILTINSKIN(SKIN_SYS_HEADER))
-		, m_pSkinSort(NULL)
-		, m_dwHitTest((DWORD)-1)
-		, m_bDragging(FALSE)
-		, m_hDragImg(NULL)
+		, m_pSkinSort(NULL)		
 	{
 		m_bClipClient = TRUE;
 		m_evtSet.addEvent(EVENTID(EventHeaderClick));
@@ -26,308 +260,164 @@ namespace SOUI
 	SHeaderCtrl::~SHeaderCtrl(void)
 	{
 	}
-
-    int SHeaderCtrl::InsertItem(int iItem, LPCTSTR pszText, int nWidth, SHDSORTFLAG stFlag, LPARAM lParam)
-    {
-        return InsertItem(iItem, pszText, nWidth, SLayoutSize::px, stFlag, lParam);
-    }
-
-    int SHeaderCtrl::InsertItem(int iItem, LPCTSTR pszText, int nWidth, SLayoutSize::Unit unit, SHDSORTFLAG stFlag, LPARAM lParam)
+	
+	int SHeaderCtrl::InsertItem(int iItem, LPCTSTR pszText, int nWidth, SHDSORTFLAG stFlag, LPARAM lParam)
 	{
-		SASSERT(pszText);
-		SASSERT(nWidth >= 0);
-		if (iItem == -1) iItem = (int)m_arrItems.GetCount();
-		SHDITEM item;
-		item.mask = 0xFFFFFFFF;
-		item.cx.setSize(nWidth, unit);
-		item.text.SetCtxProvider(this);
-		item.text.SetText(pszText);
-		item.stFlag = stFlag;
-		item.state = 0;
-		item.iOrder = iItem;
-		item.lParam = lParam;
+		SHeaderItem *item = new SHeaderItem(this);
+		this->InsertChild(item);
+		item->m_iIdx = iItem;
+		
 		m_arrItems.InsertAt(iItem, item);
-		//ÈúÄË¶ÅÊõ¥Êñ∞ÂàóÁöÑÂ∫èÂè∑
-		for (size_t i = 0; i < GetItemCount(); i++)
+		for (size_t i = iItem; i < GetItemCount(); i++)
 		{
-			if (i == (size_t)iItem) continue;
-			if (m_arrItems[i].iOrder >= iItem)
-				m_arrItems[i].iOrder++;
+			m_arrItems[i]->m_iIdx++;
 		}
-		Invalidate();
 		return iItem;
+	}
+
+	int SHeaderCtrl::GetItemWidth(int iItem)
+	{
+		if (iItem < 0 || (UINT)iItem >= m_arrItems.GetCount()) return -1;
+		if (!m_arrItems[iItem]->IsVisible()) return 0;
+		return m_arrItems[iItem]->GetWindowRect().Width();
 	}
 
 	BOOL SHeaderCtrl::GetItem(int iItem, SHDITEM *pItem)
 	{
 		if ((UINT)iItem >= m_arrItems.GetCount()) return FALSE;
-		if (pItem->mask & SHDI_TEXT)
-		{
-			pItem->text.SetText(m_arrItems[iItem].text.GetText());
-		}
-		if (pItem->mask & SHDI_WIDTH) pItem->cx = m_arrItems[iItem].cx;
-		if (pItem->mask & SHDI_LPARAM) pItem->lParam = m_arrItems[iItem].lParam;
-		if (pItem->mask & SHDI_SORTFLAG) pItem->stFlag = m_arrItems[iItem].stFlag;
-		if (pItem->mask & SHDI_ORDER) pItem->iOrder = m_arrItems[iItem].iOrder;
+		
+		if (pItem->mask & SHDI_WIDTH) pItem->cx = m_arrItems[iItem]->GetWindowRect().Width();
+		if (pItem->mask & SHDI_SORTFLAG) pItem->stFlag = m_arrItems[iItem]->m_sortFlag;
+		if (pItem->mask & SHDI_ORDER) pItem->iOrder = m_arrItems[iItem]->m_iOrder;
 		return TRUE;
-	}
-
-	void SHeaderCtrl::OnPaint(IRenderTarget * pRT)
-	{
-		SPainter painter;
-		BeforePaint(pRT, painter);
-		CRect rcClient;
-		GetClientRect(&rcClient);
-		CRect rcItem(rcClient.left, rcClient.top, rcClient.left, rcClient.bottom);
-		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
-		{
-			if(!m_arrItems[i].bVisible) continue;
-			rcItem.left = rcItem.right;
-			rcItem.right = rcItem.left + m_arrItems[i].cx.toPixelSize(GetScale());
-			DrawItem(pRT, rcItem, m_arrItems.GetData() + i);
-			if (rcItem.right >= rcClient.right) break;
-		}
-		if (rcItem.right < rcClient.right)
-		{
-			rcItem.left = rcItem.right;
-			rcItem.right = rcClient.right;
-			m_pSkinItem->Draw(pRT, rcItem, 3);
-		}
-		AfterPaint(pRT, painter);
-	}
-
-	void SHeaderCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, const LPSHDITEM pItem)
-	{
-		if(!pItem->bVisible) return;
-		if (m_pSkinItem) m_pSkinItem->Draw(pRT, rcItem, pItem->state);
-		pRT->DrawText(pItem->text.GetText(), pItem->text.GetText().GetLength(), rcItem, m_style.GetTextAlign());
-		if (pItem->stFlag == ST_NULL || !m_pSkinSort) return;
-		CSize szSort = m_pSkinSort->GetSkinSize();
-		CPoint ptSort;
-		ptSort.y = rcItem.top + (rcItem.Height() - szSort.cy) / 2;
-
-		if (m_style.GetTextAlign()&DT_RIGHT)
-			ptSort.x = rcItem.left + 2;
-		else
-			ptSort.x = rcItem.right - szSort.cx - 2;
-
-		m_pSkinSort->Draw(pRT, CRect(ptSort, szSort), pItem->stFlag == ST_UP ? 0 : 1);
 	}
 
 	BOOL SHeaderCtrl::DeleteItem(int iItem)
 	{
 		if (iItem < 0 || (UINT)iItem >= m_arrItems.GetCount()) return FALSE;
 
-		int iOrder = m_arrItems[iItem].iOrder;
+		int iOrder = m_arrItems[iItem]->m_iOrder;
 		m_arrItems.RemoveAt(iItem);
-		//Êõ¥Êñ∞ÊéíÂ∫è
+		DestroyChild(m_arrItems[iItem]);		
+		//∏¸–¬≈≈–Ú
 		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
 		{
-			if (m_arrItems[i].iOrder > iOrder)
-				m_arrItems[i].iOrder--;
+			if (m_arrItems[i]->m_iOrder > iOrder)
+				m_arrItems[i]->m_iOrder--;
 		}
-		Invalidate();
+		UpdateChildrenPosition();
 		return TRUE;
 	}
 
 	void SHeaderCtrl::DeleteAllItems()
 	{
+		for(UINT iItem = 0; iItem< m_arrItems.GetCount(); iItem++)
+			DestroyChild(m_arrItems[iItem]);
 		m_arrItems.RemoveAll();
-		Invalidate();
+		UpdateChildrenPosition();
 	}
-
-	void SHeaderCtrl::OnDestroy()
+	
+	bool SHeaderCtrl::IsLastItem(int iIdx)
 	{
-		DeleteAllItems();
-		__super::OnDestroy();
+		return iIdx == m_arrItems.GetCount()-1;
 	}
-
-	CRect SHeaderCtrl::GetItemRect(UINT iItem)
+	SHeaderItem *SHeaderCtrl::GetPrvItem(int iMyOrder)
 	{
-		CRect    rcClient;
+		if (iMyOrder >= m_arrItems.GetCount()||iMyOrder==0)
+			return NULL;
+		return m_arrItems[--iMyOrder];
+	}
+	CSize SHeaderCtrl::GetDesiredSize(LPCRECT pRcContainer)
+	{
+		CSize szRet=__super::GetDesiredSize(pRcContainer);
+		szRet.cx = GetTotalWidth();
+		return szRet;
+	}
+	void SHeaderCtrl::UpdateChildrenPosition()
+	{
+		if (m_layoutDirty == dirty_self)
+		{//µ±«∞¥∞ø⁄À˘”–◊”¥∞ø⁄»´≤ø÷ÿ–¬≤ºæ÷
+			GetLayout()->LayoutChildren(this);
+		}		
+		CRect rcClient;
 		GetClientRect(&rcClient);
-		CRect rcItem(rcClient.left, rcClient.top, rcClient.left, rcClient.bottom);
-		for (UINT i = 0; i <= iItem && i < m_arrItems.GetCount(); i++)
-		{
-			rcItem.left = rcItem.right;
-			rcItem.right = rcItem.left + m_arrItems[i].cx.toPixelSize(GetScale());
-		}
-		return rcItem;
-	}
-
-	void SHeaderCtrl::RedrawItem(int iItem)
-	{
-		CRect rcItem = GetItemRect(iItem);
-		IRenderTarget *pRT = GetRenderTarget(rcItem, OLEDC_PAINTBKGND);
-		DrawItem(pRT, rcItem, m_arrItems.GetData() + iItem);
-		ReleaseRenderTarget(pRT);
-	}
-
-	void SHeaderCtrl::OnLButtonDown(UINT nFlags, CPoint pt)
-	{
-		SetCapture();
-		m_ptClick = pt;
-		m_dwHitTest = HitTest(pt);
-		if (IsItemHover(m_dwHitTest))
-		{
-			if (m_bSortHeader)
-			{
-				m_arrItems[LOWORD(m_dwHitTest)].state = 2;//pushdown
-				RedrawItem(LOWORD(m_dwHitTest));
-			}
-		}
-		else if (m_dwHitTest != -1)
-		{
-			m_nAdjItemOldWidth = m_arrItems[LOWORD(m_dwHitTest)].cx.toPixelSize(GetScale());
-		}
-	}
-
-	void SHeaderCtrl::OnLButtonUp(UINT nFlags, CPoint pt)
-	{
-		if (IsItemHover(m_dwHitTest))
-		{
-			if (m_bDragging)
-			{//ÊãñÂä®Ë°®Â§¥È°π
-				if (m_bItemSwapEnable)
-				{
-					CDragWnd::EndDrag();
-					DeleteObject(m_hDragImg);
-					m_hDragImg = NULL;
-
-					m_arrItems[LOWORD(m_dwHitTest)].state = 0;//normal
-
-					if (m_dwDragTo != m_dwHitTest && IsItemHover(m_dwDragTo))
-					{
-						SHDITEM t = m_arrItems[LOWORD(m_dwHitTest)];
-						m_arrItems.RemoveAt(LOWORD(m_dwHitTest));
-						int nPos = LOWORD(m_dwDragTo);
-						if (nPos > LOWORD(m_dwHitTest)) nPos--;//Ë¶ÅËÄÉËôëÂ∞ÜËá™Â∑±ÁßªÈô§ÁöÑÂΩ±Âìç
-						m_arrItems.InsertAt(LOWORD(m_dwDragTo), t);
-						//ÂèëÊ∂àÊÅØÈÄöÁü•ÂÆø‰∏ªË°®È°π‰ΩçÁΩÆÂèëÁîüÂèòÂåñ
-						EventHeaderItemSwap evt(this);
-						evt.iOldIndex = LOWORD(m_dwHitTest);
-						evt.iNewIndex = nPos;
-						FireEvent(evt);
-					}
-					m_dwHitTest = HitTest(pt);
-					m_dwDragTo = (DWORD)-1;
-					Invalidate();
-				}
-			}
-			else
-			{//ÁÇπÂáªË°®Â§¥È°π
-				if (m_bSortHeader)
-				{
-					m_arrItems[LOWORD(m_dwHitTest)].state = 1;//hover
-					RedrawItem(LOWORD(m_dwHitTest));
-					EventHeaderClick evt(this);
-					evt.iItem = LOWORD(m_dwHitTest);
-					FireEvent(evt);
-				}
-			}
-		}
-		else if (m_dwHitTest != -1)
-		{//Ë∞ÉÊï¥Ë°®Â§¥ÂÆΩÂ∫¶ÔºåÂèëÈÄÅ‰∏Ä‰∏™Ë∞ÉÊï¥ÂÆåÊàêÊ∂àÊÅØ
-			EventHeaderItemChanged evt(this);
-			evt.iItem = LOWORD(m_dwHitTest);
-			evt.nWidth = m_arrItems[evt.iItem].cx.toPixelSize(GetScale());
-			FireEvent(evt);
-		}
-		m_bDragging = FALSE;
-		ReleaseCapture();
-	}
-
-	void SHeaderCtrl::OnMouseMove(UINT nFlags, CPoint pt)
-	{
-		if (m_bDragging || nFlags&MK_LBUTTON)
-		{
-			if (!m_bDragging)
-			{
-				m_bDragging = TRUE;
-				if (IsItemHover(m_dwHitTest) && m_bItemSwapEnable)
-				{
-					m_dwDragTo = m_dwHitTest;
-					CRect rcItem = GetItemRect(LOWORD(m_dwHitTest));
-					DrawDraggingState(m_dwDragTo);
-					m_hDragImg = CreateDragImage(LOWORD(m_dwHitTest));
-					CPoint pt = m_ptClick - rcItem.TopLeft();
-					CDragWnd::BeginDrag(m_hDragImg, pt, 0, 128, LWA_ALPHA | LWA_COLORKEY);
-				}
-			}
-			if (IsItemHover(m_dwHitTest))
-			{
-				if (m_bItemSwapEnable)
-				{
-					DWORD dwDragTo = HitTest(pt);
-					CPoint pt2(pt.x, m_ptClick.y);
-					ClientToScreen(GetContainer()->GetHostHwnd(), &pt2);
-					if (IsItemHover(dwDragTo) && m_dwDragTo != dwDragTo)
-					{
-						m_dwDragTo = dwDragTo;
-						DrawDraggingState(dwDragTo);
-					}
-					CDragWnd::DragMove(pt2);
-				}
-			}
-			else if (m_dwHitTest != -1)
-			{//Ë∞ÉËäÇÂÆΩÂ∫¶
-				if (!m_bFixWidth)
-				{
-					int cxNew = m_nAdjItemOldWidth + pt.x - m_ptClick.x;
-					if (cxNew < 0) cxNew = 0;
-                    if (m_arrItems[LOWORD(m_dwHitTest)].cx.unit == SLayoutSize::px)
-                        m_arrItems[LOWORD(m_dwHitTest)].cx.setSize(cxNew, SLayoutSize::px);
-                    else if(m_arrItems[LOWORD(m_dwHitTest)].cx.unit == SLayoutSize::dp)
-                        m_arrItems[LOWORD(m_dwHitTest)].cx.setSize(cxNew * 1.0f / GetScale(), SLayoutSize::dp);
-                    // TODO: dip Âíå sp ÁöÑÂ§ÑÁêÜÔºàAYKÔºâ
-
-					Invalidate();
-					GetContainer()->UpdateWindow();//Á´ãÂç≥Êõ¥Êñ∞Á™óÂè£
-					//ÂèëÂá∫Ë∞ÉËäÇÂÆΩÂ∫¶Ê∂àÊÅØ
-					EventHeaderItemChanging evt(this);
-					evt.iItem = LOWORD(m_dwHitTest);
-					evt.nWidth = cxNew;
-					FireEvent(evt);
-				}
-			}
-		}
-		else
-		{
-			DWORD dwHitTest = HitTest(pt);
-			if (dwHitTest != m_dwHitTest)
-			{
-				if (m_bSortHeader)
-				{
-					if (IsItemHover(m_dwHitTest))
-					{
-						WORD iHover = LOWORD(m_dwHitTest);
-						m_arrItems[iHover].state = 0;
-						RedrawItem(iHover);
-					}
-					if (IsItemHover(dwHitTest))
-					{
-						WORD iHover = LOWORD(dwHitTest);
-						m_arrItems[iHover].state = 1;//hover
-						RedrawItem(iHover);
-					}
-				}
-				m_dwHitTest = dwHitTest;
-			}
+		CRect rcTab = rcClient;
+		int itemWid = 0;
+		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
+		{			
+			itemWid = m_arrItems[i]->GetWindowRect().Width();
+			rcTab.right = rcTab.left +itemWid;
+			m_arrItems[i]->Move(rcTab);
+			rcTab.OffsetRect(itemWid, 0);
 		}
 
 	}
-
-	void SHeaderCtrl::OnMouseLeave()
+	int SHeaderCtrl::ChangeItemPos(SHeaderItem* pCurMove, CPoint ptCur)
 	{
-		if (!m_bDragging)
+		int offset = 0;
+		for (int i = 0; i < (int)m_arrItems.GetCount(); i++)
 		{
-			if (IsItemHover(m_dwHitTest) && m_bSortHeader)
+			if (m_arrItems[i] == pCurMove)
 			{
-				m_arrItems[LOWORD(m_dwHitTest)].state = 0;
-				RedrawItem(LOWORD(m_dwHitTest));
+				continue;
+			}			
+			CRect rcWnd = m_arrItems[i]->GetWindowRect();
+			CRect rcOffset = pCurMove->GetWindowRect();
+			CPoint ptCenter = rcWnd.CenterPoint();
+			if (ptCenter.x <= ptCur.x && rcWnd.right >= ptCur.x)
+			{
+				
+				if (pCurMove->m_iIdx > m_arrItems[i]->m_iIdx)
+				{
+					rcWnd.OffsetRect(rcOffset.Width(), 0); offset += rcWnd.Width();
+				}
+				else
+				{
+					rcWnd.OffsetRect(-rcOffset.Width(), 0); offset -= rcWnd.Width();
+				}
+				int order = pCurMove->m_iIdx;
+				pCurMove->m_iIdx = m_arrItems[i]->m_iIdx;
+				m_arrItems[i]->m_iIdx = order;
+				m_arrItems[i]->Move(rcWnd);
+				SHeaderItem* pTemp = m_arrItems[i];
+				m_arrItems[pCurMove->m_iIdx] = pCurMove;
+				m_arrItems[pTemp->m_iIdx] = pTemp;
+
+				EventHeaderItemSwap evt(this);
+				evt.iOldIndex = order;
+				evt.iNewIndex = pCurMove->m_iIdx;
+				FireEvent(evt);
 			}
-			m_dwHitTest = (DWORD)-1;
 		}
+		if (offset)
+		{
+			CRect rcWnd = pCurMove->GetWindowRect();
+			rcWnd.OffsetRect(-offset, 0);
+			pCurMove->Move(rcWnd);
+		}
+		return 1;
+	}
+
+	void SHeaderCtrl::ChangeItemSize(SHeaderItem *pHeaderItem, CPoint ptCur)
+	{
+		CRect itemRc = pHeaderItem->GetWindowRect();
+		if (ptCur.x <= itemRc.left)
+			return;
+		int offset = ptCur.x - itemRc.right;
+		itemRc.right = ptCur.x;
+		
+		pHeaderItem->Move(itemRc);
+		EventHeaderItemChanging evt(this);
+		evt.iItem = pHeaderItem->m_iOrder;
+		evt.nWidth = itemRc.Width();
+		FireEvent(evt);
+		for (int i = pHeaderItem->m_iIdx+1; i < (int)m_arrItems.GetCount(); i++)
+		{			
+			CRect rcWnd = m_arrItems[i]->GetWindowRect();			
+			rcWnd.OffsetRect(offset, 0);
+			m_arrItems[i]->Move(rcWnd);			
+		}
+		this->RequestRelayout();
 	}
 
 	BOOL SHeaderCtrl::CreateChildren(pugi::xml_node xmlNode)
@@ -335,205 +425,92 @@ namespace SOUI
 		pugi::xml_node xmlItems = xmlNode.child(L"items");
 		if (!xmlItems) return FALSE;
 		pugi::xml_node xmlItem = xmlItems.child(L"item");
+
+		this->SetAttribute(L"width", L"-1");
+		
 		int iOrder = 0;
 		while (xmlItem)
 		{
-			SHDITEM item;
-			item.text.SetCtxProvider(this);
-			item.mask = 0xFFFFFFFF;
-			item.iOrder = iOrder++;
-			SStringW strText = xmlItem.text().get();
-			strText.TrimBlank();
-			item.text.SetText(S_CW2T(GETSTRING(strText)));
-            item.cx = SLayoutSize::fromString(xmlItem.attribute(L"width").as_string(L"50"));// .as_int(50);
-			item.lParam = xmlItem.attribute(L"userData").as_uint(0);
-			item.stFlag = (SHDSORTFLAG)xmlItem.attribute(L"sortFlag").as_uint(ST_NULL);
-			item.bVisible = xmlItem.attribute(L"visible").as_bool(true);
+			SHeaderItem *item = new SHeaderItem(this);
+			this->InsertChild(item);
+			item->m_iIdx=item->m_iOrder = iOrder++;
+			//œ»¥”header¿ÔCOPY“ª–©Õ®”√ Ù–‘£¨»Áπ˚◊”œÓ√ª”–…Ë÷√µƒª∞
+			if (xmlItem.attribute(L"sortSkin").empty() && !xmlNode.attribute(L"sortSkin").empty())
+				xmlItem.append_attribute(L"sortSkin").set_value(xmlNode.attribute(L"sortSkin").as_string());
+			//√ª”–…Ë÷√±≥æ∞…´£¨“≤√ª”–…Ë÷√skin,“≤√ª…Ë÷√class°£‘Ú π”√headerctrlµƒ…Ë÷√£¨»Áπ˚headerctrl√ª”–itemSkin Ù–‘‘Ú π”√œµÕ≥ƒ⁄Ω®∆§∑Ù
+			if (xmlItem.attribute(L"skin").empty()&& xmlItem.attribute(L"colorBkgnd").empty() && xmlItem.attribute(L"class").empty())
+			{
+				if (!xmlNode.attribute(L"itemSkin").empty())
+					xmlItem.append_attribute(L"skin").set_value(xmlNode.attribute(L"itemSkin").as_string());
+				else xmlItem.append_attribute(L"skin").set_value(L"_skin.sys.header");
+			}
+			//»Áπ˚HeaderCtrl…Ë÷√¡ÀsortHeader  ◊”œÓ”÷√ª”–÷∏∂®canSort Ù–‘£¨‘Ú π”√∏∏œÓµƒ…Ë÷√
+			if (xmlItem.attribute(L"canSort").empty() && !xmlNode.attribute(L"sortHeader").empty())
+				xmlItem.append_attribute(L"canSort").set_value(xmlNode.attribute(L"sortHeader").as_string());
+
+			item->InitFromXml(xmlItem);
 			m_arrItems.InsertAt(m_arrItems.GetCount(), item);
+
+			item->GetEventSet()->subscribeEvent(EVT_CMD, Subscriber(&SHeaderCtrl::ClickHeader, this));
 			xmlItem = xmlItem.next_sibling(L"item");
 		}
 		return TRUE;
 	}
-
-	BOOL SHeaderCtrl::OnSetCursor(const CPoint &pt)
+	bool SHeaderCtrl::ClickHeader(EventArgs *pEvArg)
 	{
-		if (m_bFixWidth) return FALSE;
-		DWORD dwHit = HitTest(pt);
-		if (HIWORD(dwHit) == LOWORD(dwHit)) return FALSE;
-		HCURSOR hCursor = GETRESPROVIDER->LoadCursor(IDC_SIZEWE);
-		SetCursor(hCursor);
-		return TRUE;
+		SHeaderItem *pHeaderItem = sobj_cast<SHeaderItem>(pEvArg->sender);
+		SASSERT(pHeaderItem);
+		EventHeaderClick evt(this);
+		evt.iItem = pHeaderItem->m_iIdx;
+		FireEvent(evt);
+		return true;
 	}
-
-	DWORD SHeaderCtrl::HitTest(CPoint pt)
-	{
-		CRect    rcClient;
-		GetClientRect(&rcClient);
-		if (!rcClient.PtInRect(pt)) return (DWORD)-1;
-
-		CRect rcItem(rcClient.left, rcClient.top, rcClient.left, rcClient.bottom);
-		int nMargin = m_bSortHeader ? CX_HDITEM_MARGIN : 2;
-		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
-		{
-			if (m_arrItems[i].cx.toPixelSize(GetScale()) == 0 || !m_arrItems[i].bVisible) continue;    //Ë∂äËøáÂÆΩÂ∫¶‰∏∫0ÁöÑÈ°π
-
-			rcItem.left = rcItem.right;
-			rcItem.right = rcItem.left + m_arrItems[i].cx.toPixelSize(GetScale());
-			if (pt.x < rcItem.left + nMargin)
-			{
-				int nLeft = i > 0 ? i - 1 : 0;
-				return MAKELONG(nLeft, i);
-			}
-			else if (pt.x < rcItem.right - nMargin)
-			{
-				return MAKELONG(i, i);
-			}
-			else if (pt.x < rcItem.right)
-			{
-				WORD nRight = (WORD)i + 1;
-				if (nRight >= m_arrItems.GetCount()) nRight = (WORD)-1;//ÈááÁî®-1‰ª£Ë°®Êú´Â∞æ
-				return MAKELONG(i, nRight);
-			}
-		}
-		return (DWORD)-1;
-	}
-
-	HBITMAP SHeaderCtrl::CreateDragImage(UINT iItem)
-	{
-		if (iItem >= m_arrItems.GetCount()) return NULL;
-		CRect rcClient;
-		GetClientRect(rcClient);
-		CRect rcItem(0, 0, m_arrItems[iItem].cx.toPixelSize(GetScale()), rcClient.Height());
-
-		CAutoRefPtr<IRenderTarget> pRT;
-		GETRENDERFACTORY->CreateRenderTarget(&pRT, rcItem.Width(), rcItem.Height());
-		BeforePaintEx(pRT);
-		DrawItem(pRT, rcItem, m_arrItems.GetData() + iItem);
-
-		HBITMAP hBmp = CreateBitmap(rcItem.Width(), rcItem.Height(), 1, 32, NULL);
-		HDC hdc = GetDC(NULL);
-		HDC hMemDC = CreateCompatibleDC(hdc);
-		::SelectObject(hMemDC, hBmp);
-		HDC hdcSrc = pRT->GetDC(0);
-		::BitBlt(hMemDC, 0, 0, rcItem.Width(), rcItem.Height(), hdcSrc, 0, 0, SRCCOPY);
-		pRT->ReleaseDC(hdcSrc);
-		DeleteDC(hMemDC);
-		ReleaseDC(NULL, hdc);
-		return hBmp;
-	}
-
-	void SHeaderCtrl::DrawDraggingState(DWORD dwDragTo)
-	{
-		CRect rcClient;
-		GetClientRect(&rcClient);
-		IRenderTarget *pRT = GetRenderTarget(rcClient, OLEDC_PAINTBKGND);
-		SPainter painter;
-		BeforePaint(pRT, painter);
-		CRect rcItem(rcClient.left, rcClient.top, rcClient.left, rcClient.bottom);
-		int iDragTo = LOWORD(dwDragTo);
-		int iDragFrom = LOWORD(m_dwHitTest);
-
-		SArray<UINT> items;
-		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
-		{
-			if (i != (UINT)iDragFrom) items.Add(i);
-		}
-		items.InsertAt(iDragTo, iDragFrom);
-
-		m_pSkinItem->Draw(pRT, rcClient, 0);
-		for (UINT i = 0; i < items.GetCount(); i++)
-		{
-			rcItem.left = rcItem.right;
-			rcItem.right = rcItem.left + GetItemWidth(items[i]);
-			if (items[i] != (UINT)iDragFrom)
-				DrawItem(pRT, rcItem, m_arrItems.GetData() + items[i]);
-		}
-		AfterPaint(pRT, painter);
-		ReleaseRenderTarget(pRT);
-	}
-
 	int SHeaderCtrl::GetTotalWidth()
 	{
 		int nRet = 0;
 		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
 		{
-			nRet += GetItemWidth(i);
+			if(m_arrItems[i]->IsVisible())
+				nRet += m_arrItems[i]->m_bFloat? m_arrItems[i]->GetWindowRect().Width() :  m_arrItems[i]->GetDesiredSize(-1, -1).cx;
 		}
 		return nRet;
-	}
-
-	int SHeaderCtrl::GetItemWidth(int iItem)
-	{
-		if (iItem < 0 || (UINT)iItem >= m_arrItems.GetCount()) return -1;
-		if(!m_arrItems[iItem].bVisible) return 0;
-		return m_arrItems[iItem].cx.toPixelSize(GetScale());
-	}
-
-	void SHeaderCtrl::OnActivateApp(BOOL bActive, DWORD dwThreadID)
-	{
-		if (m_bDragging)
-		{
-			if (m_bSortHeader && m_dwHitTest != -1)
-			{
-				m_arrItems[LOWORD(m_dwHitTest)].state = 0;//normal
-			}
-			m_dwHitTest = (DWORD)-1;
-
-			CDragWnd::EndDrag();
-			DeleteObject(m_hDragImg);
-			m_hDragImg = NULL;
-			m_bDragging = FALSE;
-			ReleaseCapture();
-			Invalidate();
-		}
 	}
 
 	void SHeaderCtrl::SetItemSort(int iItem, SHDSORTFLAG stFlag)
 	{
 		SASSERT(iItem >= 0 && iItem < (int)m_arrItems.GetCount());
-		if (stFlag != m_arrItems[iItem].stFlag)
+		if (stFlag != m_arrItems[iItem]->m_sortFlag)
 		{
-			m_arrItems[iItem].stFlag = stFlag;
-			CRect rcItem = GetItemRect(iItem);
-			InvalidateRect(rcItem);
+			m_arrItems[iItem]->m_sortFlag = stFlag;
+			m_arrItems[iItem]->Invalidate();
 		}
-	}
-
-	void SHeaderCtrl::OnColorize(COLORREF cr)
-	{
-		__super::OnColorize(cr);
-		if (m_pSkinItem) m_pSkinItem->OnColorize(cr);
-		if (m_pSkinSort) m_pSkinSort->OnColorize(cr);
-	}
-
-	HRESULT SHeaderCtrl::OnLanguageChanged()
-	{
-		__super::OnLanguageChanged();
-		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
-		{
-			m_arrItems[i].text.TranslateText();
-		}
-		return S_FALSE;
 	}
 
 	void SHeaderCtrl::SetItemVisible(int iItem, bool visible)
 	{
 		SASSERT(iItem >= 0 && iItem < (int)m_arrItems.GetCount());
-		m_arrItems[iItem].bVisible = visible;
-
+		m_arrItems[iItem]->SetVisible(visible, TRUE);
 		Invalidate();
-		//ÂèëÂá∫Ë∞ÉËäÇÂÆΩÂ∫¶Ê∂àÊÅØ
+		//∑¢≥ˆµ˜Ω⁄øÌ∂»œ˚œ¢
 		EventHeaderItemChanged evt(this);
 		evt.iItem = iItem;
-		evt.nWidth = GetItemWidth(iItem);
+		evt.nWidth = m_arrItems[iItem]->GetWindowRect().Width();
 		FireEvent(evt);
 	}
 
 	bool SHeaderCtrl::IsItemVisible(int iItem) const
 	{
 		SASSERT(iItem >= 0 && iItem < (int)m_arrItems.GetCount());
-		return m_arrItems[iItem].bVisible;
+		return m_arrItems[iItem]->IsVisible();
 	}
 
 
-}//end of namespace SOUI
+// 	void SHeaderCtrl::OnNextFrame()
+// 	{
+// 		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
+// 		{
+// 			m_arrItems[i]->Update();
+// 		}
+// 	}
+
+}

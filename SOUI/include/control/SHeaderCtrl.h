@@ -1,339 +1,189 @@
-ï»¿/**
- * Copyright (C) 2014-2050 SOUIå›¢é˜Ÿ
- * All rights reserved.
- * 
- * @file       SHeaderCtrl.h
- * @brief      
- * @version    v1.0      
- * @author     soui      
- * @date       2014-07-02
- * 
- * Describe     
- */
 #pragma once
 
-#include "core/SWnd.h"
 namespace SOUI
 {
-  #define SHDI_WIDTH               0x0001
-  #define SHDI_TEXT                0x0002
-  #define SHDI_SORTFLAG            0x0004
-  #define SHDI_LPARAM              0x0008
-  #define SHDI_ORDER               0x0010
-  #define SHDI_VISIBLE             0x0020
+#define SHDI_WIDTH               0x0001
+#define SHDI_TEXT                0x0002
+#define SHDI_SORTFLAG            0x0004
+#define SHDI_LPARAM              0x0008
+#define SHDI_ORDER               0x0010
+#define SHDI_VISIBLE             0x0020
 
-  /**
-   * @enum      _SHDSORTFLAG
-   * @brief     æ’åºæ ‡å¿— 
-   * 
-   * Describe   æ’åºæ ‡å¿—
-   */
-  enum SHDSORTFLAG{
-    ST_NULL=0,
-    ST_UP,
-    ST_DOWN,
-  };
+#define CX_HDITEM_MARGIN    6
+	/**
+	* @enum      _SHDSORTFLAG
+	* @brief     ÅÅĞò±êÖ¾
+	*
+	* Describe   ÅÅĞò±êÖ¾
+	*/
+	enum SHDSORTFLAG {
+		ST_NULL = 0,
+		ST_UP,
+		ST_DOWN,
+	};
 
-  /**
-   * @struct    _SHDITEM
-   * @brief     åˆ—è¡¨å¤´é¡¹ 
-   * 
-   * Describe   åˆ—è¡¨å¤´é¡¹
-   */
-  typedef struct SHDITEM {
-	  SHDITEM():mask(0),cx(0, SLayoutSize::px),stFlag(ST_NULL),lParam(0),state(0),iOrder(0),bVisible(true){
-	  }
-    UINT    mask; 
-    SLayoutSize     cx;
-	STrText text;
-    SHDSORTFLAG stFlag;
-    LPARAM  lParam; 
-    UINT   state;
-    int     iOrder;
-	bool    bVisible;
-  }*LPSHDITEM;
+	/**
+	* @struct    _SHDITEM
+	* @brief     ÁĞ±íÍ·Ïî
+	*
+	* Describe   ÁĞ±íÍ·Ïî
+	*/
+	typedef struct SHDITEM {
+		SHDITEM() :mask(0), cx(0), stFlag(ST_NULL), iOrder(0), bVisible(true) {
+		}
+		UINT    mask;
+		int cx;
+		SHDSORTFLAG stFlag;
+		int     iOrder;
+		bool    bVisible;
+	}*LPSHDITEM;
 
 
-  /**
-   * @class     SHeaderCtrl
-   * @brief     è¡¨å¤´æ§ä»¶ 
-   * 
-   * Describe   è¡¨å¤´æ§ä»¶
-   */
-  class SOUI_EXP SHeaderCtrl: public SWindow
-  {
-      SOUI_CLASS_NAME(SHeaderCtrl, L"header")
+	/**
+	* @class     SHeaderCtrl
+	* @brief     ±íÍ·¿Ø¼ş
+	*
+	* Describe   ±íÍ·¿Ø¼ş
+	*/
+	class SHeaderItem;
+	class SOUI_EXP SHeaderCtrl : public SWindow//, public ITimelineHandler
+	{
+		SOUI_CLASS_NAME(SHeaderCtrl, L"header")
+		friend class SHeaderItem;
+	public:
+		/**
+		* SHeaderCtrl::SHeaderCtrl
+		* @brief    ¹¹Ôìº¯Êı
+		*
+		* Describe  ¹¹Ôìº¯Êı
+		*/
+		SHeaderCtrl(void);
+		/**
+		* SHeaderCtrl::~SHeaderCtrl
+		* @brief    Îö¹¹º¯Êı
+		*
+		* Describe  Îö¹¹º¯Êı
+		*/
+		~SHeaderCtrl(void);
 
-  public:
-      /**
-       * SHeaderCtrl::SHeaderCtrl
-       * @brief    æ„é€ å‡½æ•°
-       *
-       * Describe  æ„é€ å‡½æ•°  
-       */
-      SHeaderCtrl(void);
-      /**
-       * SHeaderCtrl::~SHeaderCtrl
-       * @brief    ææ„å‡½æ•°
-       *
-       * Describe  ææ„å‡½æ•°  
-       */      
-      ~SHeaderCtrl(void);
+		/**
+		* SHeaderCtrl::InsertItem
+		* @brief    ²åÈëĞÂÏî
+		* @param    int iItem --  ĞÂÏîË÷Òı
+		* @param    LPCTSTR pszText  --  ĞÂÏî±êÌâ
+		* @param    int nWidth  -- ¿í¶È
+		* @param    SHDSORTFLAG stFlag -- ÅÅĞò±êÖ¾
+		* @param    LPARAM lParam -- ¸½¼Ó²ÎÊı
+		* @return   ·µ»Øint
+		*
+		* Describe  ²åÈëĞÂÏî
+		*/
+		int InsertItem(int iItem, LPCTSTR pszText, int nWidth, SHDSORTFLAG stFlag, LPARAM lParam);
+		int GetItemWidth(int iItem);
+		/**
+		* SHeaderCtrl::GetItem
+		* @brief    »ñµÃĞÂÏî
+		* @param    int iItem  --  Ë÷Òı
+		* @param    SHDITEM *pItem  -- ·µ»ØÁĞ±íÏî½á¹¹
+		* @return   ·µ»ØBOOL
+		*
+		* Describe  »ñµÃĞÂÏî
+		*/
+		BOOL GetItem(int iItem, SHDITEM *pItem);
 
-      /**
-       * SHeaderCtrl::InsertItem
-       * @brief    æ’å…¥æ–°é¡¹
-       * @param    int iItem --  æ–°é¡¹ç´¢å¼•
-       * @param    LPCTSTR pszText  --  æ–°é¡¹æ ‡é¢˜
-       * @param    int nWidth  -- å®½åº¦
-       * @param    SHDSORTFLAG stFlag -- æ’åºæ ‡å¿—
-       * @param    LPARAM lParam -- é™„åŠ å‚æ•°
-       * @return   è¿”å›int 
-       *
-       * Describe  æ’å…¥æ–°é¡¹  
-       */      
-      int InsertItem(int iItem,LPCTSTR pszText,int nWidth, SHDSORTFLAG stFlag,LPARAM lParam );
-      int InsertItem(int iItem,LPCTSTR pszText, int nWidth, SLayoutSize::Unit unit, SHDSORTFLAG stFlag,LPARAM lParam );
-      /**
-       * SHeaderCtrl::GetItem
-       * @brief    è·å¾—æ–°é¡¹
-       * @param    int iItem  --  ç´¢å¼•
-       * @param    SHDITEM *pItem  -- è¿”å›åˆ—è¡¨é¡¹ç»“æ„
-       * @return   è¿”å›BOOL 
-       *
-       * Describe  è·å¾—æ–°é¡¹  
-       */      
-      BOOL GetItem(int iItem,SHDITEM *pItem);
+		/**
+		* SHeaderCtrl::GetItemCount
+		* @brief    »ñÈ¡ÁĞ±íÏî¸öÊı
+		* @return   ·µ»Øint
+		*
+		* Describe  »ñÈ¡ÁĞ±íÏî¸öÊı
+		*/
+		size_t GetItemCount() const { return m_arrItems.GetCount(); }
+		/**
+		* SHeaderCtrl::GetTotalWidth
+		* @brief    »ñµÃËùÓĞ¿í¶È
+		* @return   ·µ»Øint
+		*
+		* Describe  »ñµÃËùÓĞ¿í¶È
+		*/
+		int GetTotalWidth();
 
-      /**
-       * SHeaderCtrl::GetItemCount
-       * @brief    è·å–åˆ—è¡¨é¡¹ä¸ªæ•°
-       * @return   è¿”å›int 
-       *
-       * Describe  è·å–åˆ—è¡¨é¡¹ä¸ªæ•°  
-       */      
-      size_t GetItemCount() const{return m_arrItems.GetCount();}
-      /**
-       * SHeaderCtrl::GetTotalWidth
-       * @brief    è·å¾—æ‰€æœ‰å®½åº¦
-       * @return   è¿”å›int 
-       *
-       * Describe  è·å¾—æ‰€æœ‰å®½åº¦  
-       */      
-      int GetTotalWidth();
+		/**
+		* SHeaderCtrl::DeleteItem
+		* @brief    É¾³ıÖ¸¶¨Ïî
+		* @param    int iItem  --  Ë÷Òı
+		* @return   ·µ»ØBOOL
+		*
+		* Describe  É¾³ıÖ¸¶¨Ïî
+		*/
+		BOOL DeleteItem(int iItem);
 
-      /**
-       * SHeaderCtrl::GetItemWidth
-       * @brief    è·å¾—æŒ‡å®šé¡¹å®½åº¦
-       * @param    int iItem  --  ç´¢å¼•
-       * @return   è¿”å›int 
-       *
-       * Describe  è·å¾—æ–°é¡¹  
-       */            
-      int GetItemWidth(int iItem);
-      /**
-       * SHeaderCtrl::DeleteItem
-       * @brief    åˆ é™¤æŒ‡å®šé¡¹
-       * @param    int iItem  --  ç´¢å¼•
-       * @return   è¿”å›BOOL 
-       *
-       * Describe  åˆ é™¤æŒ‡å®šé¡¹  
-       */            
-      BOOL DeleteItem(int iItem);
+		/**
+		* SHeaderCtrl::DeleteAllItems
+		* @brief    É¾³ıËùÓĞÏî
+		*
+		* Describe  »ñµÃĞÂÏî
+		*/
+		void DeleteAllItems();
 
-      /**
-       * SHeaderCtrl::DeleteAllItems
-       * @brief    åˆ é™¤æ‰€æœ‰é¡¹
-       *
-       * Describe  è·å¾—æ–°é¡¹  
-       */            
-      void DeleteAllItems();
+		void SetItemSort(int iItem, SHDSORTFLAG stFlag);
 
-      void SetItemSort(int iItem,SHDSORTFLAG stFlag);
-      
-	  void SetItemVisible(int iItem, bool visible);
+		void SetItemVisible(int iItem, bool visible);
 
-	  bool IsItemVisible(int iItem) const;
+		bool IsItemVisible(int iItem) const;
 
-      SOUI_ATTRS_BEGIN()
-          ATTR_SKIN(L"itemSkin",m_pSkinItem,FALSE)
-          ATTR_SKIN(L"sortSkin",m_pSkinSort,FALSE)
-          ATTR_INT(L"fixWidth",m_bFixWidth,FALSE)
-          ATTR_INT(L"itemSwapEnable",m_bItemSwapEnable,FALSE)
-          ATTR_INT(L"sortHeader",m_bSortHeader,FALSE)
-      SOUI_ATTRS_END()
-  protected:
-      /**
-       * SHeaderCtrl::CreateChildren
-       * @brief    åˆ›å»ºæ–°é¡¹
-       * @param    pugi::xml_node xmlNode  -- xmlé…ç½®æ–‡ä»¶
-       *
-       * Describe  åˆ›å»ºæ–°é¡¹  
-       */              
-      virtual BOOL CreateChildren(pugi::xml_node xmlNode);
+		SOUI_ATTRS_BEGIN()
+			ATTR_SKIN(L"itemSkin", m_pSkinItem, FALSE)
+			ATTR_SKIN(L"sortSkin", m_pSkinSort, FALSE)
+			ATTR_INT(L"fixWidth", m_bFixWidth, FALSE)
+			ATTR_INT(L"itemSwapEnable", m_bItemSwapEnable, FALSE)
+			ATTR_INT(L"sortHeader", m_bSortHeader, FALSE)
+			SOUI_ATTRS_END()
 
-      /**
-       * SHeaderCtrl::OnSetCursor
-       * @brief    è®¾ç½®é€‰ä¸­
-       * @param    const CPoint &pt  --  åæ ‡ç‚¹
-       *
-       * Describe  è·å¾—æ–°é¡¹  
-       */            
-      virtual BOOL OnSetCursor(const CPoint &pt);
-      /**
-       * SHeaderCtrl::OnPaint
-       * @brief    è®¾ç½®é€‰ä¸­
-       * @param    IRenderTarget * pRT  --  æ¸²æŸ“ç›®æ ‡
-       *
-       * Describe  æ¶ˆæ¯å“åº”å‡½æ•°  
-       */            
-      void OnPaint(IRenderTarget * pRT);
+	protected:
+		int ChangeItemPos(SHeaderItem* pCurMove, CPoint ptCur);
+		void ChangeItemSize(SHeaderItem*, CPoint ptCur);
+		/**
+		* SHeaderCtrl::CreateChildren
+		* @brief    ´´½¨ĞÂÏî
+		* @param    pugi::xml_node xmlNode  -- xmlÅäÖÃÎÄ¼ş
+		*
+		* Describe  ´´½¨ĞÂÏî
+		*/
+		virtual BOOL CreateChildren(pugi::xml_node xmlNode);
 
-      /**
-       * SHeaderCtrl::DrawItem
-       * @brief    ç»˜ç”»
-       * @param    IRenderTarget * pRT  --  æ¸²æŸ“ç›®æ ‡
-       * @param    CRect rcItem  --  ç›®æ ‡åŒºåŸŸ
-       * @param    const LPSHDITEM pItem  --  åˆ—è¡¨å¤´
-       *
-       * Describe  ç»˜ç”»  
-       */            
-      virtual void DrawItem(IRenderTarget * pRT,CRect rcItem,const LPSHDITEM pItem);
-        
-        
-      virtual void OnColorize(COLORREF cr);
-       
-	  virtual HRESULT OnLanguageChanged();
+		bool ClickHeader(EventArgs * pEvArg);
 
+		bool IsLastItem(int iOrder);
 
-      /**
-       * SHeaderCtrl::GetItemRect
-       * @brief    è·å–è¡¨å¤´é¡¹å¾—ä½ç½®
-       * @param    UINT iItem  --  ç´¢å¼•
-       *
-       * Describe  è·å–è¡¨å¤´é¡¹å¾—ä½ç½®  
-       */            
-      CRect GetItemRect(UINT iItem);
+		SHeaderItem *GetPrvItem(int iMyOrder);
+		virtual void UpdateChildrenPosition()override;
+		virtual CSize GetDesiredSize(LPCRECT pRcContainer);
+		/**
+		* SHeaderCtrl::IsItemHover
+		* @brief    ÅĞ¶ÏÊÇ·ñHover×´Ì¬
+		* @param    DWORD dwHitTest
+		* @return   ·µ»ØBOOL
+		*
+		* Describe  ÅĞ¶ÏÊÇ·ñHover×´Ì¬
+		*/
+		BOOL IsItemHover(DWORD dwHitTest)
+		{
+			return dwHitTest != -1 && LOWORD(dwHitTest) == HIWORD(dwHitTest);
+		}
+		// 			void StartAni();
+		// 			void StopAni();
+				//void OnDestroy();
 
-      /**
-       * SHeaderCtrl::HitTest
-       * @brief    
-       * @param    CPoint pt  --  åæ ‡
-       *
-       * Describe  é¼ æ ‡ä½ç½®åˆ†æï¼Œè¿”å›ä¸€ä¸ªDWORDï¼ŒLOWORDä¸ºå‰é¢çš„é¡¹ï¼Œ
-       *           HIWORDä¸ºåé¢çš„é¡¹ï¼Œ ç›¸åŒæ—¶ä»£è¡¨åœ¨ä¸€ä¸ªé¡¹çš„ä¸­é—´
-       */
-      DWORD  HitTest(CPoint pt);
+		SOUI_MSG_MAP_BEGIN()
+			//MSG_WM_DESTROY(OnDestroy)
+			SOUI_MSG_MAP_END()
 
-      /**
-       * SHeaderCtrl::RedrawItem
-       * @brief    é‡ç»˜
-       * @param    CPoint pt  --  åæ ‡
-       *
-       * Describe  é‡ç»˜
-       */
-      void RedrawItem(int iItem);
-
-      /**
-       * SHeaderCtrl::DrawDraggingState
-       * @brief    ç»˜åˆ¶æ‹–æ‹½çŠ¶æ€
-       * @param    DWORD dwDragTo  --  
-       *
-       * Describe  ç»˜åˆ¶æ‹–æ‹½çŠ¶æ€
-       */
-      void DrawDraggingState(DWORD dwDragTo);
-
-      /**
-       * SHeaderCtrl::IsItemHover
-       * @brief    åˆ¤æ–­æ˜¯å¦HoverçŠ¶æ€
-       * @param    DWORD dwHitTest 
-       * @return   è¿”å›BOOL
-       *
-       * Describe  åˆ¤æ–­æ˜¯å¦HoverçŠ¶æ€
-       */
-      BOOL IsItemHover(DWORD dwHitTest)
-      {
-          return dwHitTest!=-1 && LOWORD(dwHitTest)==HIWORD(dwHitTest);
-      }
-
-      /**
-       * SHeaderCtrl::CreateDragImage
-       * @brief    åˆ›å»ºæ‹–æ‹½å›¾ç‰‡
-       * @param    UINT iItem -- åˆ—è¡¨é¡¹
-       * @return   è¿”å›HBITMAP
-       *
-       * Describe  åˆ¤æ–­æ˜¯å¦HoverçŠ¶æ€
-       */
-      HBITMAP CreateDragImage(UINT iItem);
-      /**
-       * SHeaderCtrl::OnLButtonDown
-       * @brief    å·¦é”®æŒ‰ä¸‹äº‹ä»¶
-       * @param    UINT nFlags -- æ ‡å¿—
-       * @param    CPoint point -- é¼ æ ‡åæ ‡
-       *
-       * Describe  æ­¤å‡½æ•°æ˜¯æ¶ˆæ¯å“åº”å‡½æ•°
-       */
-      void OnLButtonDown(UINT nFlags,CPoint pt);
-      /**
-       * SHeaderCtrl::OnLButtonUp
-       * @brief    å·¦é”®æŠ¬èµ·äº‹ä»¶
-       * @param    UINT nFlags -- æ ‡å¿—
-       * @param    CPoint point -- é¼ æ ‡åæ ‡
-       *
-       * Describe  æ­¤å‡½æ•°æ˜¯æ¶ˆæ¯å“åº”å‡½æ•°
-       */      
-      void OnLButtonUp(UINT nFlags,CPoint pt);
-      /**
-       * SHeaderCtrl::OnMouseMove
-       * @brief    é¼ æ ‡ç§»åŠ¨äº‹ä»¶
-       * @param    UINT nFlags -- æ ‡å¿—
-       * @param    CPoint point -- é¼ æ ‡åæ ‡
-       *
-       * Describe  æ­¤å‡½æ•°æ˜¯æ¶ˆæ¯å“åº”å‡½æ•°
-       */      
-      void OnMouseMove(UINT nFlags,CPoint pt);
-
-      /**
-       * SHeaderCtrl::OnMouseLeave
-       * @brief    é¼ æ ‡ç¦»å¼€äº‹ä»¶
-       *
-       * Describe  æ­¤å‡½æ•°æ˜¯æ¶ˆæ¯å“åº”å‡½æ•°
-       */      
-      void OnMouseLeave();
-
-      /**
-       * SHeaderCtrl::OnDestroy
-       * @brief    é”€æ¯äº‹ä»¶
-       *
-       * Describe  æ­¤å‡½æ•°æ˜¯æ¶ˆæ¯å“åº”å‡½æ•°
-       */            
-      void OnDestroy();
-      
-      void OnActivateApp(BOOL bActive, DWORD dwThreadID);
-      
-      SOUI_MSG_MAP_BEGIN()
-          MSG_WM_PAINT_EX(OnPaint)
-          MSG_WM_LBUTTONDOWN(OnLButtonDown)
-          MSG_WM_LBUTTONUP(OnLButtonUp)
-          MSG_WM_MOUSEMOVE(OnMouseMove)
-          MSG_WM_MOUSELEAVE(OnMouseLeave)
-          MSG_WM_ACTIVATEAPP(OnActivateApp)
-          MSG_WM_DESTROY(OnDestroy)
-		  MESSAGE_HANDLER_EX(UM_SETSCALE, OnSetScale)
-      SOUI_MSG_MAP_END()
-
-      ISkinObj *    m_pSkinItem;  /**< è¡¨å¤´ç»˜åˆ¶Skin */
-      ISkinObj *    m_pSkinSort;  /**< æ’åºæ ‡å¿—Skin */
-      BOOL          m_bSortHeader;      /**< è¡¨å¤´å¯ä»¥ç‚¹å‡»æ’åº */
-      BOOL          m_bFixWidth;        /**< è¡¨é¡¹å®½åº¦å›ºå®šå¼€å…³ */
-      BOOL          m_bItemSwapEnable;  /**< å…è®¸æ‹–åŠ¨è°ƒæ•´ä½ç½®å¼€å…³ */
-
-      BOOL            m_bDragging; /**< æ­£åœ¨æ‹–åŠ¨æ ‡å¿— */
-      HBITMAP         m_hDragImg;  /**< æ˜¾ç¤ºæ‹–åŠ¨çª—å£çš„ä¸´æ—¶ä½å›¾ */
-      CPoint          m_ptClick;   /**< å½“å‰ç‚¹å‡»åæ ‡ */
-      DWORD           m_dwHitTest; /**< é¼ æ ‡ä½ç½® */
-      DWORD           m_dwDragTo;  /**< æ‹–æ”¾ç›®æ ‡ */    
-      int             m_nAdjItemOldWidth;  /**< ä¿å­˜è¢«æ‹–åŠ¨é¡¹çš„åŸå§‹å®½åº¦ */
-      SArray<SHDITEM> m_arrItems; /**< åˆ—è¡¨é¡¹é›†åˆ */
-  };
-}//end of namespace SOUI
+			ISkinObj *    m_pSkinItem;  /**< ±íÍ·»æÖÆSkin */
+		ISkinObj *    m_pSkinSort;  /**< ÅÅĞò±êÖ¾Skin */
+		BOOL          m_bSortHeader;      /**< ±íÍ·¿ÉÒÔµã»÷ÅÅĞò */
+		BOOL          m_bFixWidth;        /**< ±íÏî¿í¶È¹Ì¶¨¿ª¹Ø */
+		BOOL          m_bItemSwapEnable;  /**< ÔÊĞíÍÏ¶¯µ÷ÕûÎ»ÖÃ¿ª¹Ø */
+		SArray<SHeaderItem*> m_arrItems;
+	};
+}
