@@ -105,14 +105,14 @@
         </page>
         <page title="mclistviewex">
           <mclistviewex name="musiclist" headerHeight="48" colorSwapLine="rgb(0,0,255)" colorDropBk="rgb(0,0,255)" pos="20,20,-20,-20" sbTop="48">
-            <header2 align="center" matchParent="1" sortSkin="skin_lcex_header_arrow" itemSkin="skin_lcex_header" cursor="hand" itemSwapEnable="1" sortHeader="0" colorText="#000000ff">
+            <header align="center" ratable="1" width="full" sortSkin="skin_lcex_header_arrow" itemSkin="skin_lcex_header" cursor="hand" itemSwapEnable="1" sortHeader="0" colorText="#000000ff">
               <items>
                 <item width="150">歌曲</item>
                 <item width="120">歌手</item>
                 <item width="120">专辑</item>
                 <item width="120">时长</item>
               </items>
-            </header2>
+            </header>
             <template itemHeight="48" colorHover="#666666" colorSelected="#555555" fond="adding:-4">
               <window name="col1" clipClient="1">
                 <hr pos="0,0,-0,1" colorLine="#666666" />

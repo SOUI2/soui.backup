@@ -46,7 +46,7 @@ namespace SOUI
 	* Describe   表头控件
 	*/
 	class SHeaderItem;
-	class SOUI_EXP SHeaderCtrl : public SWindow//, public ITimelineHandler
+	class SOUI_EXP SHeaderCtrl : public SWindow
 	{
 		SOUI_CLASS_NAME(SHeaderCtrl, L"header")
 		friend class SHeaderItem;
@@ -133,13 +133,11 @@ namespace SOUI
 		bool IsItemVisible(int iItem) const;
 
 		SOUI_ATTRS_BEGIN()
-			ATTR_SKIN(L"itemSkin", m_pSkinItem, FALSE)
-			ATTR_SKIN(L"sortSkin", m_pSkinSort, FALSE)
 			ATTR_INT(L"fixWidth", m_bFixWidth, FALSE)
 			ATTR_INT(L"itemSwapEnable", m_bItemSwapEnable, FALSE)
 			ATTR_INT(L"sortHeader", m_bSortHeader, FALSE)
-			SOUI_ATTRS_END()
-
+			ATTR_BOOL(L"ratable", m_bRatable,FALSE)
+		SOUI_ATTRS_END()
 	protected:
 		int ChangeItemPos(SHeaderItem* pCurMove, CPoint ptCur);
 		void ChangeItemSize(SHeaderItem*, CPoint ptCur);
@@ -156,34 +154,14 @@ namespace SOUI
 
 		bool IsLastItem(int iOrder);
 
-		SHeaderItem *GetPrvItem(int iMyOrder);
+		SHeaderItem *GetPrvItem(int iIdx);
 		virtual void UpdateChildrenPosition()override;
 		virtual CSize GetDesiredSize(LPCRECT pRcContainer);
-		/**
-		* SHeaderCtrl::IsItemHover
-		* @brief    判断是否Hover状态
-		* @param    DWORD dwHitTest
-		* @return   返回BOOL
-		*
-		* Describe  判断是否Hover状态
-		*/
-		BOOL IsItemHover(DWORD dwHitTest)
-		{
-			return dwHitTest != -1 && LOWORD(dwHitTest) == HIWORD(dwHitTest);
-		}
-		// 			void StartAni();
-		// 			void StopAni();
-				//void OnDestroy();
-
-		SOUI_MSG_MAP_BEGIN()
-			//MSG_WM_DESTROY(OnDestroy)
-			SOUI_MSG_MAP_END()
-
-			ISkinObj *    m_pSkinItem;  /**< 表头绘制Skin */
-		ISkinObj *    m_pSkinSort;  /**< 排序标志Skin */
+		
 		BOOL          m_bSortHeader;      /**< 表头可以点击排序 */
 		BOOL          m_bFixWidth;        /**< 表项宽度固定开关 */
 		BOOL          m_bItemSwapEnable;  /**< 允许拖动调整位置开关 */
 		SArray<SHeaderItem*> m_arrItems;
+		BOOL m_bRatable;
 	};
 }

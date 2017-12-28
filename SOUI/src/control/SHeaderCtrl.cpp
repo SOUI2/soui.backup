@@ -10,31 +10,17 @@ namespace SOUI
 	class SHeaderItem : public SWindow
 	{
 		SOUI_CLASS_NAME(SHeaderItem, L"headerItem")
-		friend class SHeaderCtrl;
+			friend class SHeaderCtrl;
 	public:
-		SHeaderItem(SHeaderCtrl* pHost) :m_pHost(pHost), m_iIdx(-1), m_bcanSort(FALSE), m_pSkinSort(NULL), m_hDragImg(NULL), m_sortFlag(ST_NULL),m_bSwaping(false), m_bChangeSizing(false)
+
+	protected:
+		SHeaderItem(SHeaderCtrl* pHost) :m_pHost(pHost), m_iIdx(-1), m_bcanSort(FALSE), m_pSkinSort(NULL), m_hDragImg(NULL), m_sortFlag(ST_NULL), m_bSwaping(false), m_bChangeSizing(false)
 		{
 			m_sortPos.x = m_sortPos.y = -100;
 			SWindow::m_bClipClient = TRUE;
 		}
 		BOOL IsDragable() { return m_iIdx != -1 && m_pHost->m_bItemSwapEnable; }
-
-		SOUI_ATTRS_BEGIN()
-			ATTR_BOOL(L"canSort", m_bcanSort, FALSE)
-			ATTR_SKIN(L"sortSkin", m_pSkinSort, FALSE)
-			ATTR_POINT(L"sortIconXY", m_sortPos, FALSE)
-			ATTR_INT(L"sortIconX", m_sortPos.x, FALSE)
-			ATTR_INT(L"sortIconY", m_sortPos.y, FALSE)
-		SOUI_ATTRS_END()
-		SOUI_MSG_MAP_BEGIN()
-			MSG_WM_PAINT_EX(OnPaint)
-			MSG_WM_MOUSEMOVE(OnMouseMove)
-			MSG_WM_LBUTTONDOWN(OnLButtonDown)
-			MSG_WM_LBUTTONUP(OnLButtonUp)
-			MSG_WM_ACTIVATEAPP(OnActivateApp)
-		SOUI_MSG_MAP_END()
 		
-	protected:
 		virtual BOOL OnSetCursor(const CPoint &pt)override
 		{
 			if (!HitTestSIZEWE(pt))
@@ -51,7 +37,7 @@ namespace SOUI
 			while (childWnd)
 			{
 				childWnd->SetVisible(bHide ? FALSE : TRUE);
-				childWnd = childWnd-> GetWindow(GSW_NEXTSIBLING);
+				childWnd = childWnd->GetWindow(GSW_NEXTSIBLING);
 			}
 			this->Invalidate();
 		}
@@ -73,7 +59,7 @@ namespace SOUI
 			//未设置X偏移
 			if (m_sortPos.x == -100)
 			{
-				int _left = (_sortIconRect.right = _clientRect.right- CX_HDITEM_MARGIN) - _skinSize.cx;
+				int _left = (_sortIconRect.right = _clientRect.right - CX_HDITEM_MARGIN) - _skinSize.cx;
 				_sortIconRect.left = _left < _clientRect.left ? _clientRect.left : _left;
 			}
 			else
@@ -96,9 +82,7 @@ namespace SOUI
 			}
 			return _sortIconRect;
 		}
-		
 
-	protected:
 		void OnActivateApp(BOOL bActive, DWORD dwThreadID)
 		{
 			if (m_bSwaping)
@@ -112,7 +96,7 @@ namespace SOUI
 		}
 		int HitTestSIZEWE(const CPoint & pt)
 		{
-			if (m_pHost->m_bFixWidth)
+			if (m_pHost->m_bFixWidth||m_pHost->m_bRatable)
 				return 0;
 			CRect    rcWnd;
 			GetWindowRect(&rcWnd);
@@ -120,9 +104,9 @@ namespace SOUI
 				return 0;
 			bool bLeft = pt.x < rcWnd.left + CX_HDITEM_MARGIN;
 			if (bLeft)
-				return m_iIdx != 0?1:0;
-			return (pt.x > rcWnd.right - CX_HDITEM_MARGIN)?2:0;
-			
+				return m_iIdx != 0 ? 1 : 0;
+			return (pt.x > rcWnd.right - CX_HDITEM_MARGIN) ? 2 : 0;
+
 		}
 		HBITMAP CreateDragImage()
 		{
@@ -141,14 +125,14 @@ namespace SOUI
 			::SelectObject(hMemDC, hBmp);
 			HDC hdcSrc = pRT->GetDC(0);
 			::BitBlt(hMemDC, 0, 0, rcItem.Width(), rcItem.Height(), hdcSrc, 0, 0, SRCCOPY);
-			pRT->ReleaseDC(hdcSrc);			
+			pRT->ReleaseDC(hdcSrc);
 			::DeleteDC(hMemDC);
 			::ReleaseDC(NULL, hdc);
 			return hBmp;
 		}
 		void OnMouseMove(UINT nFlags, CPoint pt)
 		{
-			static SHeaderItem *item=NULL;
+			static SHeaderItem *item = NULL;
 			if ((nFlags & MK_LBUTTON))
 			{
 				if (!m_bChangeSizing)
@@ -160,15 +144,15 @@ namespace SOUI
 						m_bChangeSizing = true; break;
 					case 2:
 						item = this;
-						m_bChangeSizing = true;break;
+						m_bChangeSizing = true; break;
 					}
 				}
 				else if (m_bChangeSizing)
 				{
 					SASSERT(item);
-					m_pHost->ChangeItemSize(item,pt);
+					m_pHost->ChangeItemSize(item, pt);
 				}
-				if (!m_bSwaping&&!m_bChangeSizing && IsDragable())
+				if (!m_bSwaping && !m_bChangeSizing && IsDragable())
 				{
 					m_hDragImg = CreateDragImage();
 					CPoint pt = m_ptDrag - GetWindowRect().TopLeft();
@@ -177,7 +161,7 @@ namespace SOUI
 					HideChildWnd(true);
 					this->Invalidate();
 				}
-				else if(m_bSwaping)
+				else if (m_bSwaping)
 				{
 					CPoint pt2(pt.x, m_ptDrag.y);
 					m_pHost->ChangeItemPos(this, pt2);
@@ -200,7 +184,7 @@ namespace SOUI
 			if (m_bSwaping || m_bChangeSizing)
 				return;
 			//必须有可排序标志才发出CMD
-			if ((GetID() || GetName())&&m_bcanSort)
+			if ((GetID() || GetName()) && m_bcanSort)
 			{
 				FireCommand();
 			}
@@ -228,15 +212,31 @@ namespace SOUI
 		{
 			SWindow::OnLButtonDown(nFlags, pt);
 			m_ptDrag = pt;
-			m_bSwaping = false, m_bChangeSizing=false;
+			m_bSwaping = false, m_bChangeSizing = false;
 		}
+
+		SOUI_ATTRS_BEGIN()
+			ATTR_BOOL(L"canSort", m_bcanSort, FALSE)
+			ATTR_SKIN(L"sortSkin", m_pSkinSort, FALSE)
+			ATTR_POINT(L"sortIconXY", m_sortPos, FALSE)
+			ATTR_INT(L"sortIconX", m_sortPos.x, FALSE)
+			ATTR_INT(L"sortIconY", m_sortPos.y, FALSE)
+			SOUI_ATTRS_END()
+
+			SOUI_MSG_MAP_BEGIN()
+			MSG_WM_PAINT_EX(OnPaint)
+			MSG_WM_MOUSEMOVE(OnMouseMove)
+			MSG_WM_LBUTTONDOWN(OnLButtonDown)
+			MSG_WM_LBUTTONUP(OnLButtonUp)
+			MSG_WM_ACTIVATEAPP(OnActivateApp)
+			SOUI_MSG_MAP_END()
 	private:
 		CRect m_rcBegin, m_rcEnd;
 		CPoint  m_ptDrag;
 		int     m_iIdx;
 		int		m_iOrder;
-		bool    m_bSwaping,m_bChangeSizing;
-		SHeaderCtrl* m_pHost;		
+		bool    m_bSwaping, m_bChangeSizing;
+		SHeaderCtrl* m_pHost;
 		BOOL m_bcanSort;//是否可以排序
 		POINT m_sortPos;//排序图标位置
 		ISkinObj *    m_pSkinSort;  /**< 排序标志Skin */
@@ -248,7 +248,7 @@ namespace SOUI
 		: m_bFixWidth(FALSE)
 		, m_bItemSwapEnable(TRUE)
 		, m_bSortHeader(TRUE)
-		, m_pSkinSort(NULL)		
+		, m_bRatable(FALSE)
 	{
 		m_bClipClient = TRUE;
 		m_evtSet.addEvent(EVENTID(EventHeaderClick));
@@ -260,13 +260,13 @@ namespace SOUI
 	SHeaderCtrl::~SHeaderCtrl(void)
 	{
 	}
-	
+
 	int SHeaderCtrl::InsertItem(int iItem, LPCTSTR pszText, int nWidth, SHDSORTFLAG stFlag, LPARAM lParam)
 	{
 		SHeaderItem *item = new SHeaderItem(this);
 		this->InsertChild(item);
 		item->m_iIdx = iItem;
-		
+
 		m_arrItems.InsertAt(iItem, item);
 		for (size_t i = iItem; i < GetItemCount(); i++)
 		{
@@ -285,7 +285,7 @@ namespace SOUI
 	BOOL SHeaderCtrl::GetItem(int iItem, SHDITEM *pItem)
 	{
 		if ((UINT)iItem >= m_arrItems.GetCount()) return FALSE;
-		
+
 		if (pItem->mask & SHDI_WIDTH) pItem->cx = m_arrItems[iItem]->GetWindowRect().Width();
 		if (pItem->mask & SHDI_SORTFLAG) pItem->stFlag = m_arrItems[iItem]->m_sortFlag;
 		if (pItem->mask & SHDI_ORDER) pItem->iOrder = m_arrItems[iItem]->m_iOrder;
@@ -298,7 +298,7 @@ namespace SOUI
 
 		int iOrder = m_arrItems[iItem]->m_iOrder;
 		m_arrItems.RemoveAt(iItem);
-		DestroyChild(m_arrItems[iItem]);		
+		DestroyChild(m_arrItems[iItem]);
 		//更新排序
 		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
 		{
@@ -311,25 +311,27 @@ namespace SOUI
 
 	void SHeaderCtrl::DeleteAllItems()
 	{
-		for(UINT iItem = 0; iItem< m_arrItems.GetCount(); iItem++)
+		for (UINT iItem = 0; iItem < m_arrItems.GetCount(); iItem++)
 			DestroyChild(m_arrItems[iItem]);
 		m_arrItems.RemoveAll();
 		UpdateChildrenPosition();
 	}
-	
+
 	bool SHeaderCtrl::IsLastItem(int iIdx)
 	{
-		return iIdx == m_arrItems.GetCount()-1;
+		return iIdx == m_arrItems.GetCount() - 1;
 	}
-	SHeaderItem *SHeaderCtrl::GetPrvItem(int iMyOrder)
+	SHeaderItem *SHeaderCtrl::GetPrvItem(int iIdx)
 	{
-		if (iMyOrder >= m_arrItems.GetCount()||iMyOrder==0)
+		if (iIdx >= m_arrItems.GetCount() || iIdx == 0)
 			return NULL;
-		return m_arrItems[--iMyOrder];
+		return m_arrItems[--iIdx];
 	}
 	CSize SHeaderCtrl::GetDesiredSize(LPCRECT pRcContainer)
 	{
-		CSize szRet=__super::GetDesiredSize(pRcContainer);
+		CSize szRet = __super::GetDesiredSize(pRcContainer);
+		if (m_bRatable)
+			return szRet;
 		szRet.cx = GetTotalWidth();
 		return szRet;
 	}
@@ -337,20 +339,51 @@ namespace SOUI
 	{
 		if (m_layoutDirty == dirty_self)
 		{//当前窗口所有子窗口全部重新布局
-			GetLayout()->LayoutChildren(this);
-		}		
+			if (!m_bRatable)
+			{
+				GetLayout()->LayoutChildren(this);
+			}
+			else//按比例分割
+			{				
+				SASSERT(!(GetLayoutParam()->IsWrapContent(Horz)));
+				SWindow *pChild = GetWindow(GSW_FIRSTCHILD);;
+				int totalWid = 0;
+				while (pChild)
+				{
+					totalWid+=pChild->GetLayoutParam()->GetSpecifiedSize(Horz).fSize;
+					pChild =pChild->GetWindow(GSW_NEXTSIBLING);
+				}
+				pChild = GetWindow(GSW_FIRSTCHILD);;
+				CRect rcWnd = GetClientRect();
+				int headerWid = rcWnd.Width();
+				int reltotalWid = 0;
+				rcWnd.MoveToXY(0, 0);
+				while (pChild)
+				{
+					rcWnd.right= pChild->GetLayoutParam()->GetSpecifiedSize(Horz).fSize*headerWid/totalWid ;
+					reltotalWid += rcWnd.right;
+					pChild->Move(rcWnd);
+					pChild = pChild->GetWindow(GSW_NEXTSIBLING);
+				}
+				reltotalWid -= headerWid;
+				if (reltotalWid > 0)
+				{
+					rcWnd.right -= reltotalWid;
+					pChild->Move(rcWnd);
+				}
+			}
+		}
 		CRect rcClient;
 		GetClientRect(&rcClient);
 		CRect rcTab = rcClient;
 		int itemWid = 0;
 		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
-		{			
+		{
 			itemWid = m_arrItems[i]->GetWindowRect().Width();
-			rcTab.right = rcTab.left +itemWid;
+			rcTab.right = rcTab.left + itemWid;
 			m_arrItems[i]->Move(rcTab);
 			rcTab.OffsetRect(itemWid, 0);
 		}
-
 	}
 	int SHeaderCtrl::ChangeItemPos(SHeaderItem* pCurMove, CPoint ptCur)
 	{
@@ -360,13 +393,13 @@ namespace SOUI
 			if (m_arrItems[i] == pCurMove)
 			{
 				continue;
-			}			
+			}
 			CRect rcWnd = m_arrItems[i]->GetWindowRect();
 			CRect rcOffset = pCurMove->GetWindowRect();
 			CPoint ptCenter = rcWnd.CenterPoint();
 			if (ptCenter.x <= ptCur.x && rcWnd.right >= ptCur.x)
 			{
-				
+
 				if (pCurMove->m_iIdx > m_arrItems[i]->m_iIdx)
 				{
 					rcWnd.OffsetRect(rcOffset.Width(), 0); offset += rcWnd.Width();
@@ -405,17 +438,17 @@ namespace SOUI
 			return;
 		int offset = ptCur.x - itemRc.right;
 		itemRc.right = ptCur.x;
-		
+
 		pHeaderItem->Move(itemRc);
 		EventHeaderItemChanging evt(this);
 		evt.iItem = pHeaderItem->m_iOrder;
 		evt.nWidth = itemRc.Width();
 		FireEvent(evt);
-		for (int i = pHeaderItem->m_iIdx+1; i < (int)m_arrItems.GetCount(); i++)
-		{			
-			CRect rcWnd = m_arrItems[i]->GetWindowRect();			
+		for (int i = pHeaderItem->m_iIdx + 1; i < (int)m_arrItems.GetCount(); i++)
+		{
+			CRect rcWnd = m_arrItems[i]->GetWindowRect();
 			rcWnd.OffsetRect(offset, 0);
-			m_arrItems[i]->Move(rcWnd);			
+			m_arrItems[i]->Move(rcWnd);
 		}
 		this->RequestRelayout();
 	}
@@ -425,20 +458,18 @@ namespace SOUI
 		pugi::xml_node xmlItems = xmlNode.child(L"items");
 		if (!xmlItems) return FALSE;
 		pugi::xml_node xmlItem = xmlItems.child(L"item");
-
-		this->SetAttribute(L"width", L"-1");
 		
 		int iOrder = 0;
 		while (xmlItem)
 		{
 			SHeaderItem *item = new SHeaderItem(this);
 			this->InsertChild(item);
-			item->m_iIdx=item->m_iOrder = iOrder++;
+			item->m_iIdx = item->m_iOrder = iOrder++;
 			//先从header里COPY一些通用属性，如果子项没有设置的话
 			if (xmlItem.attribute(L"sortSkin").empty() && !xmlNode.attribute(L"sortSkin").empty())
 				xmlItem.append_attribute(L"sortSkin").set_value(xmlNode.attribute(L"sortSkin").as_string());
 			//没有设置背景色，也没有设置skin,也没设置class。则使用headerctrl的设置，如果headerctrl没有itemSkin属性则使用系统内建皮肤
-			if (xmlItem.attribute(L"skin").empty()&& xmlItem.attribute(L"colorBkgnd").empty() && xmlItem.attribute(L"class").empty())
+			if (xmlItem.attribute(L"skin").empty() && xmlItem.attribute(L"colorBkgnd").empty() && xmlItem.attribute(L"class").empty())
 			{
 				if (!xmlNode.attribute(L"itemSkin").empty())
 					xmlItem.append_attribute(L"skin").set_value(xmlNode.attribute(L"itemSkin").as_string());
@@ -470,8 +501,8 @@ namespace SOUI
 		int nRet = 0;
 		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
 		{
-			if(m_arrItems[i]->IsVisible())
-				nRet += m_arrItems[i]->m_bFloat? m_arrItems[i]->GetWindowRect().Width() :  m_arrItems[i]->GetDesiredSize(-1, -1).cx;
+			if (m_arrItems[i]->IsVisible())
+				nRet += m_arrItems[i]->m_bFloat ? m_arrItems[i]->GetWindowRect().Width() : m_arrItems[i]->GetDesiredSize(-1, -1).cx;
 		}
 		return nRet;
 	}
@@ -503,14 +534,4 @@ namespace SOUI
 		SASSERT(iItem >= 0 && iItem < (int)m_arrItems.GetCount());
 		return m_arrItems[iItem]->IsVisible();
 	}
-
-
-// 	void SHeaderCtrl::OnNextFrame()
-// 	{
-// 		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
-// 		{
-// 			m_arrItems[i]->Update();
-// 		}
-// 	}
-
 }
