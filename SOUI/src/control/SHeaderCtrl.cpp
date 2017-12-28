@@ -399,7 +399,6 @@ namespace SOUI
 			CPoint ptCenter = rcWnd.CenterPoint();
 			if (ptCenter.x <= ptCur.x && rcWnd.right >= ptCur.x)
 			{
-
 				if (pCurMove->m_iIdx > m_arrItems[i]->m_iIdx)
 				{
 					rcWnd.OffsetRect(rcOffset.Width(), 0); offset += rcWnd.Width();
@@ -421,13 +420,14 @@ namespace SOUI
 				evt.iNewIndex = pCurMove->m_iIdx;
 				FireEvent(evt);
 			}
-		}
+		}		
 		if (offset)
 		{
 			CRect rcWnd = pCurMove->GetWindowRect();
 			rcWnd.OffsetRect(-offset, 0);
 			pCurMove->Move(rcWnd);
 		}
+		UpdateChildrenPosition();//鼠标快速移动时不调用此可能会发生错乱的问题。
 		return 1;
 	}
 
