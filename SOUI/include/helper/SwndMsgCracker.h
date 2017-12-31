@@ -73,6 +73,18 @@ protected:                                                          \
     return TRUE; \
 }
 
+// void OnSetFocus(SWND wndOld,CFocusManager::FocusChangeReason)
+#define MSG_WM_SETFOCUS_EX2(func) \
+	if (uMsg == WM_SETFOCUS) \
+{ \
+	SetMsgHandled(TRUE); \
+	func((SWND)wParam,(CFocusManager::FocusChangeReason)lParam); \
+	lResult = 0; \
+	if(IsMsgHandled()) \
+	return TRUE; \
+}
+
+
 // void OnKillFocus(SWND wndFocus)
 #define MSG_WM_KILLFOCUS_EX(func) \
     if (uMsg == WM_KILLFOCUS) \

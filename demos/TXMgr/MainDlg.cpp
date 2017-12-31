@@ -37,6 +37,11 @@ int CMainDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 BOOL CMainDlg::OnInitDialog(HWND hWnd, LPARAM lParam)
 {
 	m_bLayoutInited = TRUE;
+
+	m_pTrayDlg = new CTrayDlg;
+	m_pTrayDlg->Create(m_hWnd,WS_POPUP);
+	m_pTrayDlg->ShowWindow(SW_SHOW);
+	m_pTrayDlg->SendMessage(WM_INITDIALOG);
 	return 0;
 }
 

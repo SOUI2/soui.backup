@@ -24,3 +24,4 @@ target_link_libraries(MultiLangs soui utilities ${COM_LIBS})
 set_target_properties (MultiLangs PROPERTIES
     FOLDER demos
 )
+cotire(MultiLangs)

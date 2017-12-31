@@ -110,6 +110,10 @@ namespace SOUI
         // The reason why the focus changed.
         enum FocusChangeReason
         {
+			// The focus changed due to a click or a shortcut to jump directly to
+			// a particular view.
+			kReasonDirectFocusChange = 0,
+
             // The focus changed because the user traversed focusable views using
             // keys like Tab or Shift+Tab.
             kReasonFocusTraversal,
@@ -117,9 +121,6 @@ namespace SOUI
             // The focus changed due to restoring the focus.
             kReasonFocusRestore,
 
-            // The focus changed due to a click or a shortcut to jump directly to
-            // a particular view.
-            kReasonDirectFocusChange
         };
 
         CFocusManager(SWindow *pOwner);

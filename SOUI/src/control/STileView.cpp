@@ -36,7 +36,7 @@ STileView::STileView()
     , m_iFirstVisible(-1)
     , m_pHoverItem(NULL)
     , m_itemCapture(NULL)
-    , m_nMarginSize(0)
+    , m_nMarginSize(0.0f, SLayoutSize::px)
     , m_bWantTab(FALSE)
 {
     m_bFocusable = TRUE;
@@ -359,7 +359,7 @@ void STileView::OnSize(UINT nType, CSize size)
 {
     __super::OnSize(nType, size);
     
-    CRect rcClient = GetClientRect();
+	CRect rcClient = SWindow::GetClientRect();
     m_tvItemLocator->SetTileViewWidth(rcClient.Width());//重设TileView宽度
     UpdateScrollBar();//重设滚动条
     
@@ -697,12 +697,16 @@ BOOL STileView::CreateChildren(pugi::xml_node xmlNode)
     if(xmlTemplate)
     {
         m_xmlTemplate.append_copy(xmlTemplate);
-        int nItemHei = xmlTemplate.attribute(L"itemHeight").as_int(-1);
-        int nItemWid = xmlTemplate.attribute(L"itemWidth").as_int(-1);
-        if(nItemHei > 0 && nItemWid > 0)
+        //int nItemHei = xmlTemplate.attribute(L"itemHeight").as_int(-1);
+        //int nItemWid = xmlTemplate.attribute(L"itemWidth").as_int(-1);
+        //if(nItemHei > 0 && nItemWid > 0)
         {
             //创建一个定位器
-            STileViewItemLocator *pItemLocator = new  STileViewItemLocator(nItemHei, nItemWid, m_nMarginSize);
+            //STileViewItemLocator *pItemLocator = new  STileViewItemLocator(nItemHei, nItemWid, m_nMarginSize);
+            STileViewItemLocator *pItemLocator = new STileViewItemLocator(
+                xmlTemplate.attribute(L"itemHeight").as_string(L"10dp"),
+                xmlTemplate.attribute(L"itemWidth").as_string(L"10dp"),
+                m_nMarginSize);
             SetItemLocator(pItemLocator);
             pItemLocator->Release();
         }
@@ -836,6 +840,14 @@ void STileView::OnSetFocus(SWND wndOld)
     {
         pSelPanel->GetFocusManager()->RestoreFocusedView();
     }
+}
+
+LRESULT STileView::OnSetScale(UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    int nScale = (int)wParam;
+    m_tvItemLocator->SetScale(nScale);
+    __super::OnSetScale(uMsg, wParam, lParam);
+    return LRESULT();
 }
 
 BOOL STileView::OnSetCursor(const CPoint &pt)

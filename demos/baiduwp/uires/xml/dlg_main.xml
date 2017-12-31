@@ -1,0 +1,50 @@
+﻿<SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="900" height="650" minsize="900,650" margin="5,5,5,5" resizable="1" wndType="appMain" appWnd="1" translucent="1">
+  <root skin="_skin.bg" cache="1">
+    <caption font="adding:0" pos="2,2,-1,99" show="1" colorBkgnd="#0694F3">
+      <imgbtn animate="1" name="btn_close" pos="-32,0" skin="_skin.btn.close" tip="close"/>
+      <imgbtn animate="1" name="btn_max" pos="-64,0" skin="_skin.btn.max"/>
+      <imgbtn animate="1" name="btn_restore" pos="-64,0" show="0" skin="_skin.btn.restore"/>
+      <imgbtn animate="1" name="btn_min" pos="-96,0" skin="_skin.btn.min"/>
+      <imgbtn animate="1" name="btn_set" pos="-128,0" skin="_skin.btn.set"/>
+      <imgbtn animate="1" name="btn_msg" pos="-160,0" skin="_skin.btn.msg"/>
+      <img pos="15,5" skin="skin_caption_banner" />
+      <imgbtn animate="1" name="btn_head" pos="11,31" skin="skin_caption_head"/>
+      <text pos="80,40" class="font:w_normal">UserName</text>
+      <imgbtn animate="1" name="btn_tb_vip" pos="160,40" skin="skin_ttbar_vip"/>
+      <progress name="prog_test" pos="80,68,@140,@15" font="adding:-8" value="40" min="0" max="100" bkgndSkin="skin_caption_prog_bkg" posSkin="skin_caption_prog_frg"/>
+      <text pos="80,68,@140,@15" class="font:w_small_3" align="center">1154.39GB/3183.50GB</text>
+      <group pos="[75,2,@360,@95" colorLine1="#0795F4" colorLine2="#0795F4" headerHeight="0">
+        <radioex pos="0,0" id="10000" name="radioex_1" checked="1" skin="skin_tab_bkg">
+          <img pos="22,17" skin="skin_tab_disk" />
+          <text pos="0,65,-0,-0" class="cls_titlebar_tab">我的网盘</text>
+        </radioex>
+        <radioex pos="[0,0" id="10001" name="radioex_2" skin="skin_tab_bkg">
+          <img pos="22,17" skin="skin_tab_share" />
+          <text pos="0,65,-0,-0" class="cls_titlebar_tab">分享</text></radioex>
+        <radioex pos="[0,0" id="10002" name="radioex_3" skin="skin_tab_bkg">
+          <img pos="22,17" skin="skin_tab_safe" />
+          <text pos="0,65,-0,-0" class="cls_titlebar_tab">隐藏空间</text></radioex>
+        <radioex pos="[0,0" id="10003" name="radioex_4" skin="skin_tab_bkg">
+          <img pos="22,17" skin="skin_tab_box" />
+          <text pos="0,65,-0,-0" class="cls_titlebar_tab">功能宝箱</text></radioex>
+      </group>
+    </caption>
+    <tabctrl name="tab_main" pos="1,[0,-1,-1" animateSteps="10" tabHeight="0" cursel="0">
+      <page title="我的网盘">
+        <include src="LAYOUT:PAGE_DISK"/>
+      </page>
+      <page title="分享">
+        <include src="LAYOUT:PAGE_SHARE"/>
+      </page>
+      <page title="隐藏空间">
+        <include src="LAYOUT:PAGE_SAFE"/>
+      </page>
+      <page title="功能宝箱">
+        <include src="LAYOUT:PAGE_BOX"/>
+      </page>
+    </tabctrl>
+    <iconbtn animate="1" name="btn_task_list_btn" pos="-81,70" skin="skin_task_list_btn" iconSkin="skin_task_list_ico" class="font:w_small_3" icon-x="5" icon-y="7" text-y="7" valign="top">传输列表</iconbtn>
+    <!-- Menu tray -->
+    <shellnotifyicon id="110" menu="SMENU:menu_tray" ico="ICON_LOGO:16" tip="百度网盘"/>
+  </root>
+</SOUI>

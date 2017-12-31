@@ -330,6 +330,11 @@ void SButton::OnDestroy()
 HRESULT SButton::OnAttrAccel( SStringW strAccel,BOOL bLoading )
 {
     SStringT strAccelT=S_CW2T(strAccel);
+	if(m_accel)
+	{
+		CAccelerator acc(m_accel);
+		GetContainer()->GetAcceleratorMgr()->UnregisterAccelerator(acc,this);
+	}
     m_accel=CAccelerator::TranslateAccelKey(strAccelT);
     if(m_accel)
     {
@@ -1039,9 +1044,12 @@ BOOL SRadioBox::NeedRedrawWhenStateChange()
     return TRUE;
 }
 
-void SRadioBox::OnSetFocus(SWND wndOld)
+void SRadioBox::OnSetFocus(SWND wndOld,CFocusManager::FocusChangeReason reason)
 {
-    if(!IsChecked()) SetCheck(TRUE);
+	if(reason != CFocusManager::kReasonFocusRestore)
+	{
+		if(!IsChecked()) SetCheck(TRUE);
+	}
     Invalidate();
 }
 

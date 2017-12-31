@@ -28,6 +28,7 @@ SUBDIRS += SLogViewer
 SUBDIRS += souieditor
 SUBDIRS += DropDemo
 SUBDIRS += ThreeClearGame
+SUBDIRS += baiduwp
 
 CONFIG(c++11){
 	SUBDIRS += timdemo	

@@ -338,6 +338,8 @@ namespace SOUI
         */
         void OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags );
 
+        BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+
         /**
         * SComboBoxBase::OnChar
         * @brief    字符消息
@@ -390,6 +392,7 @@ namespace SOUI
             MSG_WM_LBUTTONDOWN(OnLButtonDown)        
             MSG_WM_MOUSEMOVE(OnMouseMove)
             MSG_WM_MOUSELEAVE(OnMouseLeave)
+            MSG_WM_MOUSEWHEEL(OnMouseWheel)
             MSG_WM_KEYDOWN(OnKeyDown) 
             MSG_WM_CHAR(OnChar)
             MSG_WM_DESTROY(OnDestroy)

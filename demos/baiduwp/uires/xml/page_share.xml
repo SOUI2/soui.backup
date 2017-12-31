@@ -1,0 +1,39 @@
+<include>
+    <window pos="0,[0,-0,-0" colorBkgnd="#FFFFFF">
+        <window pos="0,0,@65,-0" skin="skin_sharepanel_leftpanelbkg">
+            <radioex pos="0,65" id="30000" skin="skin_sharepanel_session" checked="1">
+                <text pos="0,-36,-0,-0" class="cls_share_panel_btn">会话</text>
+            </radioex>
+            <radioex pos="0,[0" id="30001" skin="skin_sharepanel_friend">
+                <text pos="0,-36,-0,-0" class="cls_share_panel_btn">好友</text>
+            </radioex>
+            <radioex pos="0,[0" id="30002" skin="skin_sharepanel_group">
+                <text pos="0,-36,-0,-0" class="cls_share_panel_btn">群组</text>
+            </radioex>
+            <imgbtn animate="1" name="btn_share_add" pos="8,-55" skin="skin_sharepanel_addbtn"/>
+        </window>
+        <tabctrl name="tab_share_panel" pos="[0,0,-1,-1" animateSteps="0" tabHeight="0" cursel="0">
+            <page title="会话">
+                <window pos="|-182,|-135,@364,@270">
+                    <img pos="0,0" skin="skin_sharepanel_emptysession" />
+                    <text pos="0,[15,-0,@30" class="font:small_gray_3" align="center">给好友分享上百张图片，仅需2步~</text>
+                    <imgbtn animate="1" pos="118,[20,@127,@36" skin="skin_sharepanel_sharefilebtn" class="font:w_small_3">给好友分享文件</imgbtn>
+                </window>
+            </page>
+            <page title="好友">
+                <window pos="|-182,|-135,@364,@270">
+                    <img pos="92,0" skin="skin_sharepanel_empty" />
+                    <text pos="0,[15,-0,@30" class="font:small_gray_3" align="center">你还没有好友，添加好友分享文件吧~</text>
+                    <imgbtn animate="1" pos="118,[20,@127,@36" skin="skin_sharepanel_sharefilebtn" class="font:w_small_3">给好友分享文件</imgbtn>
+                </window>
+            </page>
+            <page title="群组">
+                <window pos="|-182,|-135,@364,@270">
+                    <img pos="92,0" skin="skin_sharepanel_empty" />
+                    <text pos="0,[15,-0,@30" class="font:small_gray_3" align="center">你还没有加入群哦~</text>
+                    <imgbtn animate="1" pos="118,[20,@127,@36" skin="skin_sharepanel_sharefilebtn" class="font:w_small_3">给好友分享文件</imgbtn>
+                </window>
+            </page>
+        </tabctrl>
+    </window>
+</include>

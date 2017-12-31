@@ -1,0 +1,135 @@
+<include>
+  <window pos="0,[0,-0,-0" colorBkgnd="#FFFFFF">
+    <!-- Tool Bar -->
+    <window skin="skin_toolbar_bk" pos="0,[0,-0,@40">
+      <iconbtn animate="1" name="btn_tb_upload" pos="10,5,@77,@30" skin="skin_toolbar_btn_bk" iconSkin="skin_toolbar_ico_upload" class="cls_toolbar_btn">上传</iconbtn>
+      <iconbtn animate="1" name="btn_tb_download" pos="[10,5,@77,@30" skin="skin_toolbar_btn_bk" iconSkin="skin_toolbar_ico_download" class="cls_toolbar_btn">下载</iconbtn>
+      <iconbtn animate="1" name="btn_tb_share" pos="[10,5,@77,@30" skin="skin_toolbar_btn_bk" iconSkin="skin_toolbar_ico_share" class="cls_toolbar_btn">分享</iconbtn>
+      <iconbtn animate="1" name="btn_tb_share" pos="[10,5,@77,@30" skin="skin_toolbar_btn_bk" iconSkin="skin_toolbar_ico_delete" class="cls_toolbar_btn">删除</iconbtn>
+      <iconbtn animate="1" name="btn_tb_new_dir" pos="[10,5,@112,@30" skin="skin_toolbar_btn_bk" iconSkin="skin_toolbar_ico_new_dir" class="cls_toolbar_btn">新建文件夹</iconbtn>
+      <iconbtn animate="1" name="btn_tb_offline_down" pos="[10,5,@110,@30" skin="skin_toolbar_btn_bk" iconSkin="skin_toolbar_ico_offline_down" class="cls_toolbar_btn">离线下载</iconbtn>
+      <iconbtn animate="1" name="btn_tb_more" pos="[10,5,@77,@30" skin="skin_toolbar_btn_bk" iconSkin="skin_toolbar_ico_more" class="cls_toolbar_btn">更多</iconbtn>
+    </window>
+    <!-- Navigation Bar -->
+    <window skin="skin_navigator_bkg" pos="0,[0,-0,@40">
+      <imgbtn animate="1" name="btn_navi_go_back" pos="24,12" skin="skin_navi_back"/>
+      <imgbtn animate="1" name="btn_navi_go_next" pos="[17,12" skin="skin_navi_next"/>
+      <imgbtn animate="1" name="btn_navi_history" pos="[10,12" skin="skin_navi_drop_arrow"/>
+      <window skin="skin_navi_address_bkg" pos="[10,5,]-7,@30">
+        <!-- Home 一直存在，其它元素动态添加和删除 -->
+        <window pos="0,1,@100,-1" ncSkin="skin_navi_path_bkg" trackMouseEvent="1" margin-x="1" margin-y="1">
+          <iconbtn animate="1" name="btn_navi_home" pos="0,0,-15,-0" skin="skin_navi_path_inner_bkg" iconSkin="skin_navi_home" class="cls_navi_path">我的网盘</iconbtn>
+          <imgbtn animate="1" name="btn_navi_home_drop" pos="[0,5" skin="skin_navi_down_arrow"/>
+        </window>
+        <window pos="[0,1,@100,-1" ncSkin="skin_navi_path_bkg" trackMouseEvent="1" margin-x="1" margin-y="1">
+          <imgbtn animate="1" id="20001" pos="0,0,-15,-0" skin="skin_navi_path_inner_bkg" class="cls_navi_path">Program files</imgbtn>
+          <imgbtn animate="1" id="30001" pos="[0,5" skin="skin_navi_down_arrow"/>
+        </window>
+        <window pos="[0,1,@100,-1" ncSkin="skin_navi_path_bkg" trackMouseEvent="1" margin-x="1" margin-y="1">
+          <imgbtn animate="1" id="20002" pos="0,0,-15,-0" skin="skin_navi_path_inner_bkg" class="cls_navi_path">baidu Cloud</imgbtn>
+          <imgbtn animate="1" id="30002" pos="[0,5" skin="skin_navi_down_arrow"/>
+        </window>
+        <imgbtn animate="1" name="btn_navi_refresh" pos="-22,5" skin="skin_navi_refresh"/>
+      </window>
+      <window skin="skin_searchbox_bkg" pos="-273,5,@200,@30">
+        <edit pos="5,0,-25,-0" class="cls_edit" cueText="搜索我的网盘文件"/>
+        <imgbtn animate="1" name="btn_navi_search" pos="-25,7" skin="skin_search_ico"/>
+      </window>
+      <imgbtn animate="1" name="btn_navi_left_wnd" pos="-59,12" skin="skin_navi_left_wnd"/>
+      <imgbtn animate="1" name="btn_navi_tile" pos="-28,12" skin="skin_navi_list"/>
+    </window>
+    <!-- Content -->
+    <window pos="1,[0,-1,-36">
+      <window name="wnd_left_file_type" pos="0,0,@120,-0" display="0" skin="skin_file_type_bkg">
+        <radioex pos="0,2,-1,@22" id="20000" name="radioex_0" skin="skin_list_item_bkg" checked="1">
+          <img pos="18,3" skin="skin_file_type_all" />
+          <text pos="[5,0,-0,-0" class="cls_filetype_btn">全部文件</text>
+        </radioex>
+        <radioex pos="0,[4,-1,@22" id="20001" name="radioex_1" skin="skin_list_item_bkg">
+          <img pos="36,3" skin="skin_file_type_img" />
+          <text pos="[5,0,-0,-0" class="cls_filetype_btn">图片</text>
+        </radioex>
+        <radioex pos="0,[4,-1,@22" id="20002" name="radioex_2" skin="skin_list_item_bkg">
+          <img pos="36,3" skin="skin_file_type_doc" />
+          <text pos="[5,0,-0,-0" class="cls_filetype_btn">文档</text>
+        </radioex>
+        <radioex pos="0,[4,-1,@22" id="20003" name="radioex_3" skin="skin_list_item_bkg">
+          <img pos="36,3" skin="skin_file_type_video" />
+          <text pos="[5,0,-0,-0" class="cls_filetype_btn">视频</text>
+        </radioex>
+        <radioex pos="0,[4,-1,@22" id="20004" name="radioex_4" skin="skin_list_item_bkg">
+          <img pos="36,3" skin="skin_file_type_seed" />
+          <text pos="[5,0,-0,-0" class="cls_filetype_btn">种子</text>
+        </radioex>
+        <radioex pos="0,[4,-1,@22" id="20005" name="radioex_5" skin="skin_list_item_bkg">
+          <img pos="36,3" skin="skin_file_type_music" />
+          <text pos="[5,0,-0,-0" class="cls_filetype_btn">音乐</text>
+        </radioex>
+        <radioex pos="0,[4,-1,@22" id="20006" name="radioex_6" skin="skin_list_item_bkg">
+          <img pos="36,3" skin="skin_file_type_app" />
+          <text pos="[5,0,-0,-0" class="cls_filetype_btn">应用</text>
+        </radioex>
+        <radioex pos="0,[4,-1,@22" id="20007" name="radioex_7" skin="skin_list_item_bkg">
+          <img pos="36,3" skin="skin_file_type_other" />
+          <text pos="[5,0,-0,-0" class="cls_filetype_btn">其它</text>
+        </radioex>
+        <radioex pos="0,[4,-1,@22" id="20008" name="radioex_8" skin="skin_list_item_bkg">
+          <img pos="18,3" skin="skin_file_type_share" />
+          <text pos="[5,0,-0,-0" class="cls_filetype_btn">我的分享</text>
+        </radioex>
+      </window>
+      <tabctrl name="tab_file" pos="[0,0,-0,-0" animateSteps="0" tabHeight="0" cursel="0">
+        <page title="方块样式">
+          <tileview pos="0,0,-0,-0" name="file_tile_view" wantTab="1" marginSize="5" colorBkgnd="#FFFFFF" sbSkin="skin_scrollbar">
+            <template itemHeight="120" itemWidth="135" colorHover="#cccccc" colorSelected="#0000ff" trackMouseEvent="1" skin="skin_list_item_bkg">
+              <img pos="0,0" name="tile_item_img" skin="skin_file_icon_b_foldertype" />
+              <text pos="0,-33,-0,-0" name="tile_item_txt" class="cls_tile_item_name">我的文档</text>
+            </template>
+          </tileview>
+        </page>
+        <page title="列表样式">
+          <mclistview name="file_list_view" headerHeight="28" colorSwapLine="rgb(0,0,255)" colorDropBk="rgb(0,0,255)" pos="0,0,-0,-0" sbSkin="skin_scrollbar" sbTop="28">
+            <header align="center" matchParent="1" sortSkin="skin_list_header_arrow" itemSkin="skin_list_header_bkg" fixWidth="0" itemSwapEnable="1" sortHeader="1" colorBkgnd="#ffffff" font="adding:-3" colorText="#B4B4B4">
+              <items>
+                <item width="480">文件名</item>
+                <item width="100">大小</item>
+                <item width="137">修改时间</item>
+              </items>
+            </header>
+            <template itemHeight="22" skin="skin_list_item_bkg">
+              <window name="col_1" clipClient="1" cache="1">
+                <check pos="10,1" skin="skin_check_box"/>
+                <img pos="[0,3" name="list_item_img" skin="skin_file_icon_s_foldertype" />
+                <button pos="[3,2" name="list_item_btn" class="cls_list_item_name" skin="skin_btn_blank" focusable="0">我的文档</button>
+                <imgbtn animate="1" pos="-75,3" skin="skin_list_btn_share" visible="0"/>
+                <imgbtn animate="1" pos="-50,3" skin="skin_list_btn_download" visible="0"/>
+                <imgbtn animate="1" pos="-25,3" skin="skin_list_btn_more" visible="0"/>
+              </window>
+              <window name="col_2">
+                <text pos="0,0,-0,-0" name="list_item_size" class="cls_list_item_attr">-</text>
+              </window>
+              <window name="col_3">
+                <text pos="0,0,-0,-0" name="list_item_modify_time" class="cls_list_item_attr">2017-11-14 11:55:03</text>
+              </window>
+            </template>
+          </mclistview>
+        </page>
+      </tabctrl>
+    </window>
+    <!-- Status Bar -->
+    <window pos="0,-35,-0,-0" skin="skin_status_bar_bkg">
+      <img pos="-11,-11" skin="skin_status_bar_rb" />
+      <text pos="20,8" class="cls_toolbar_btn">20 项</text>
+      <imgbtn animate="1" name="btn_status_tool" pos="-107,4" skin="skin_status_bar_tool"/>
+      <imgbtn animate="1" name="btn_status_backup" pos="-77,4" skin="gif_status_backup"/>
+      <imgbtn animate="1" name="btn_status_lock" pos="-47,4" skin="gif_status_lock"/>
+    </window>
+  </window>
+</include>
+
+
+
+
+
+
+

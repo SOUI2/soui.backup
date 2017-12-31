@@ -72,12 +72,16 @@ protected:
 		EVENT_ID_HANDLER(R.id.cbx_levels,EventCBSelChange::EventID,OnLevelsChange)
 		EVENT_ID_CONTEXTMENU(R.id.lv_log,OnLvContextMenu)
 	EVENT_MAP_END()
-		//HostWnd真实窗口消息处理
+	
+
+	LRESULT OnNotify(int idCtrl, LPNMHDR pnmh);
+	//HostWnd真实窗口消息处理
 	BEGIN_MSG_MAP_EX(CMainDlg)
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_SIZE(OnSize)
 		MSG_WM_CONTEXTMENU(OnContextMenu)
+		MSG_WM_NOTIFY(OnNotify)
 		CHAIN_MSG_MAP(CWHRoundRectFrameHelper<CMainDlg>)
 		CHAIN_MSG_MAP(SHostWnd)
 		REFLECT_NOTIFICATIONS_EX()
@@ -86,6 +90,9 @@ protected:
 	void UpdateFilterTids(const SArray<UINT> & lstTid);
 
 	void UpdateLogParser();
+
+	void UpdateUI();
+
 protected:
 	CAutoRefPtr<SLogAdapter> m_logAdapter;
 	SComboBox	*			 m_cbxLevels;
@@ -95,4 +102,5 @@ protected:
 	CFindDlg   *			 m_pFindDlg;
 
 	SList<ILogParse *>		 m_logParserPool;
+	BOOL					 m_bFileOpening;
 };

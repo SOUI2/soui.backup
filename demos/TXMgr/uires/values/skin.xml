@@ -67,4 +67,21 @@
   <gsimglist name="skin_close_animation"	imglist="img:close_animation_01;img:close_animation_02;img:close_animation_03;img:close_animation_04;img:close_animation_05;img:close_animation_06;img:close_animation_07;img:close_animation_08;img:close_animation_09;img:close_animation_10;img:close_animation_11;img:close_animation_12;img:close_animation_13;img:close_animation_14;img:close_animation_15;img:close_animation_16;img:close_animation_17;img:close_animation_18;img:close_animation_19;img:close_animation_20;img:close_animation_21;img:close_animation_22;img:close_animation_23;img:close_animation_24;img:close_animation_25;img:close_animation_26;img:close_animation_27;img:close_animation_28" states="28"/>
 
 
+  <imglist name="skin.bg_normal" src="img:bg_normal" />
+  <imglist name="skin.nmonitor" src="img:nmonitor" />
+  <imglist name="skin.number_" src="img:number_" />
+  <imglist name="skin.number_0" src="img:number_0" />
+  <imglist name="skin.number_1" src="img:number_1" />
+  <imglist name="skin.number_2" src="img:number_2" />
+  <imglist name="skin.number_3" src="img:number_3" />
+  <imglist name="skin.number_4" src="img:number_4" />
+  <imglist name="skin.number_5" src="img:number_5" />
+  <imglist name="skin.number_6" src="img:number_6" />
+  <imglist name="skin.number_7" src="img:number_7" />
+  <imglist name="skin.number_8" src="img:number_8" />
+  <imglist name="skin.number_9" src="img:number_9" />
+
+  <imglist name="skin.rocket_quick" src="img:rocket_quick" />
+  <imglist name="skin.rocket" src="img:rocket" />
+  <imglist name="skin.anim.animation" src="img:ani_list" states="120"/>
 </skin>

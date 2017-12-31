@@ -24,3 +24,4 @@ target_link_libraries(360Preview soui utilities ${COM_LIBS})
 set_target_properties (360Preview PROPERTIES
     FOLDER demos
 )
+cotire(360Preview)

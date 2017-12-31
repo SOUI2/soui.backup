@@ -34,3 +34,4 @@ target_link_libraries(FrogPlay soui utilities ${COM_LIBS} libvlc libvlccore)
 set_target_properties (FrogPlay PROPERTIES
     FOLDER demos
 )
+cotire(FrogPlay)

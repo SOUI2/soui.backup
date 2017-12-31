@@ -17,6 +17,7 @@ CMainDlg::CMainDlg()
 ,m_pFindDlg(NULL)
 ,m_pFilterDlg(NULL)
 ,m_pSciter(NULL)
+,m_bFileOpening(FALSE)
 {
 	m_logAdapter.Attach(new SLogAdapter);
 	m_logAdapter->SetLogParserPool(&m_logParserPool);
@@ -197,46 +198,24 @@ void CMainDlg::OnFileDropdown(HDROP hDrop)
 
 void CMainDlg::OpenFile(LPCTSTR pszFileName)
 {
-	if(!m_logAdapter->Load(pszFileName))
+	m_bFileOpening = TRUE;
+	BOOL bRet =m_logAdapter->Load(pszFileName);
+	m_bFileOpening = FALSE;
+
+	if(!bRet)
 	{
 		SMessageBox(m_hWnd,GETSTRING(R.string.msg_open_failed),GETSTRING(R.string.title_no_name),MB_OK|MB_ICONSTOP);
 		return;
 	}
-	
+
+	UpdateUI();
+
 	TCHAR szName[MAX_PATH];
 	_tsplitpath(pszFileName,NULL,NULL,szName,NULL);
 	SStringT strFmt = GETSTRING(R.string.title);
 	SStringT strTitle = SStringT().Format(S_CW2T(strFmt),szName);
 	FindChildByID(R.id.txt_title)->SetWindowText(strTitle);
 	CSimpleWnd::SetWindowText(strTitle);
-
-	ILogParse *pLogParser = m_logAdapter->GetLogParse();
-	if(pLogParser)
-	{
-		m_cbxLevels->ResetContent();
-		int nLevels = pLogParser->GetLevels();
-		wchar_t (*szLevels)[MAX_LEVEL_LENGTH] = new wchar_t[nLevels][MAX_LEVEL_LENGTH];
-		pLogParser->GetLevelText(szLevels);
-		for(int i=0;i<nLevels;i++)
-		{
-			m_cbxLevels->InsertItem(i,S_CW2T(szLevels[i]),0,i);
-		}
-		delete []szLevels;
-
-	}
-
-	SArray<SStringW> lstTags;
-	m_logAdapter->GetTags(lstTags);
-	m_pFilterDlg->UpdateTags(lstTags);
-
-
-	SArray<UINT> lstPid;
-	m_logAdapter->GetPids(lstPid);
-	m_pFilterDlg->UpdatePids(lstPid);
-
-	SArray<UINT> lstTid;
-	m_logAdapter->GetTids(lstTid);
-	m_pFilterDlg->UpdateTids(lstTid);
 
 }
 
@@ -495,3 +474,59 @@ void CMainDlg::OnHelp()
 	ShellExecute(m_hWnd,_T("open"),strUrl,NULL,NULL,SW_SHOW);
 }
 
+LRESULT CMainDlg::OnNotify(int idCtrl, LPNMHDR pnmh)
+{
+	if(idCtrl == m_pSciter->GetDlgCtrlID() && pnmh->code == SCN_MODIFIED && !m_bFileOpening)
+	{
+		SCNotification *pNotify = (SCNotification*)pnmh;
+		if(pNotify->modificationType & (SC_MOD_INSERTTEXT|SC_MOD_DELETETEXT))
+		{
+			int nLen = m_pSciter->SendMessage(SCI_GETTEXTLENGTH);
+			char * pBuf = (char *)malloc(nLen+1);
+			m_pSciter->SendMessage(SCI_GETTEXT,nLen,(LPARAM)pBuf);
+			SStringW strBuf = S_CA2W(pBuf,CP_UTF8);
+			free(pBuf);
+			m_pSciter->UpdateLineNumberWidth();
+
+			LPWSTR pBufw = strBuf.LockBuffer();
+			BOOL bOK = m_logAdapter->LoadMemory(pBufw);
+			strBuf.UnlockBuffer();
+
+			UpdateUI();
+		}
+	}
+	SetMsgHandled(FALSE);
+	return 0;
+}
+
+
+void CMainDlg::UpdateUI()
+{
+	ILogParse *pLogParser = m_logAdapter->GetLogParse();
+	if(pLogParser)
+	{
+		m_cbxLevels->ResetContent();
+		int nLevels = pLogParser->GetLevels();
+		wchar_t (*szLevels)[MAX_LEVEL_LENGTH] = new wchar_t[nLevels][MAX_LEVEL_LENGTH];
+		pLogParser->GetLevelText(szLevels);
+		for(int i=0;i<nLevels;i++)
+		{
+			m_cbxLevels->InsertItem(i,S_CW2T(szLevels[i]),0,i);
+		}
+		delete []szLevels;
+
+	}
+
+	SArray<SStringW> lstTags;
+	m_logAdapter->GetTags(lstTags);
+	m_pFilterDlg->UpdateTags(lstTags);
+
+
+	SArray<UINT> lstPid;
+	m_logAdapter->GetPids(lstPid);
+	m_pFilterDlg->UpdatePids(lstPid);
+
+	SArray<UINT> lstTid;
+	m_logAdapter->GetTids(lstTid);
+	m_pFilterDlg->UpdateTids(lstTid);
+}

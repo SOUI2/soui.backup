@@ -34,3 +34,4 @@ add_library(gtest STATIC src/gtest-all.cc src/gtest_main.cc)
 set_target_properties (gtest PROPERTIES
     FOLDER third-part
 )
+cotire(gtest)
