@@ -913,6 +913,15 @@ void STabCtrl::OnColorize(COLORREF cr)
     if(m_pSkinFrame) m_pSkinFrame->OnColorize(cr);
 }
 
+void STabCtrl::OnScaleChanged(int nScale)
+{
+    __super::OnScaleChanged(nScale);
+    if (m_pSkinIcon)
+    {
+        GetScaleSkin(m_pSkinIcon, nScale);
+    }
+}
+
 HRESULT STabCtrl::OnLanguageChanged()
 {
 	__super::OnLanguageChanged();
