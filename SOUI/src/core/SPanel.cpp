@@ -911,6 +911,7 @@ void SScrollView::UpdateScrollBar()
 
     CSize size=rcClient.Size();
     m_wBarVisible=SSB_NULL;    //关闭滚动条
+	CPoint ptOrigin = m_ptOrigin;//backup
 
     if(size.cy<m_szView.cy || (size.cy<m_szView.cy+GetSbWidth() && size.cx<m_szView.cx))
     {
@@ -919,7 +920,11 @@ void SScrollView::UpdateScrollBar()
         m_siVer.nMin=0;
         m_siVer.nMax=m_szView.cy-1;
         m_siVer.nPage=size.cy;
-
+		if(m_siVer.nPos + (int)m_siVer.nPage > m_siVer.nMax)
+		{
+			m_siVer.nPos = m_siVer.nMax - m_siVer.nPage;
+			m_ptOrigin.y = m_siVer.nPos;
+		}
         if(size.cx<m_szView.cx+GetSbWidth())
         {
             //需要横向滚动条
@@ -929,6 +934,11 @@ void SScrollView::UpdateScrollBar()
             m_siHoz.nMin=0;
             m_siHoz.nMax=m_szView.cx-1;
             m_siHoz.nPage=size.cx-GetSbWidth() > 0 ? size.cx-GetSbWidth() : 0;
+			if(m_siHoz.nPos + (int)m_siHoz.nPage > m_siHoz.nMax)
+			{
+				m_siHoz.nPos = m_siHoz.nMax - m_siHoz.nPage;
+				m_ptOrigin.x = m_siHoz.nPos;
+			}
         }
         else
         {
@@ -956,6 +966,11 @@ void SScrollView::UpdateScrollBar()
             m_siHoz.nMin=0;
             m_siHoz.nMax=m_szView.cx-1;
             m_siHoz.nPage=size.cx;
+			if(m_siHoz.nPos + (int)m_siHoz.nPage > m_siHoz.nMax)
+			{
+				m_siHoz.nPos = m_siHoz.nMax - m_siHoz.nPage;
+				m_ptOrigin.x = m_siHoz.nPos;
+			}
         }
         //不需要横向滚动条
         else
@@ -973,6 +988,10 @@ void SScrollView::UpdateScrollBar()
 
     SSendMessage(WM_NCCALCSIZE);
 
+	if(m_ptOrigin  != ptOrigin)
+	{
+		OnViewOriginChanged(ptOrigin,m_ptOrigin);
+	}
     Invalidate();
 }
 
@@ -1029,7 +1048,17 @@ HRESULT SScrollView::OnAttrViewSize(const SStringW & strValue,BOOL bLoading)
     return S_FALSE;
 }
 
-void SScrollView::UpdateLayout()
+
+CRect SScrollView::GetChildrenLayoutRect()
+{
+	CRect rcRet=__super::GetChildrenLayoutRect();
+	rcRet.OffsetRect(-m_ptOrigin);
+	rcRet.right=rcRet.left+m_szView.cx;
+	rcRet.bottom=rcRet.top+m_szView.cy;
+	return rcRet;
+}
+
+void SScrollView::UpdateChildrenPosition()
 {
 	if(m_bAutoViewSize)
 	{//计算viewSize
@@ -1048,16 +1077,7 @@ void SScrollView::UpdateLayout()
 		}
 		UpdateScrollBar();
 	}
-	__super::UpdateLayout();
-}
-
-CRect SScrollView::GetChildrenLayoutRect()
-{
-	CRect rcRet=__super::GetChildrenLayoutRect();
-	rcRet.OffsetRect(-m_ptOrigin);
-	rcRet.right=rcRet.left+m_szView.cx;
-	rcRet.bottom=rcRet.top+m_szView.cy;
-	return rcRet;
+	__super::UpdateChildrenPosition();
 }
 
 }//namespace SOUI

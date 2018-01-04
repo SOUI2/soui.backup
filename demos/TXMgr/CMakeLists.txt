@@ -26,7 +26,8 @@ target_link_libraries(TXMgr utilities soui ${COM_LIBS} 7z)
 
 set_target_properties(TXMgr PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
 set_target_properties(TXMgr PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
-#cotire(TXMgr)
+
 set_target_properties (TXMgr PROPERTIES
     FOLDER demos
 )
+cotire(TXMgr)

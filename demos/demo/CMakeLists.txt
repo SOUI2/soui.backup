@@ -92,3 +92,4 @@ target_link_libraries(demo soui utilities ${COM_LIBS} mhook smiley lua ScriptMod
 set_target_properties (demo PROPERTIES
     FOLDER demos
 )
+cotire(demo)

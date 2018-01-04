@@ -6,7 +6,7 @@ class SOUI_EXP STileViewItemLocator : public TObjRefImpl<IObjRef>
 {
 public:
     STileViewItemLocator(int nItemHei, int nItemWid, int nMarginSize = 0);
-    STileViewItemLocator(LPCTSTR szItemHei, LPCTSTR szItemWid, SLayoutSize marginSize = SLayoutSize());
+    STileViewItemLocator(LPCWSTR szItemHei, LPCWSTR szItemWid, SLayoutSize marginSize = SLayoutSize());
     
     void SetAdapter(ILvAdapter *pAdapter);
     
@@ -19,7 +19,7 @@ public:
     CRect GetItemRect(int iItem);
     
     //设置TileView宽度（在TileView的OnSize中调用）
-    void SetTileViewWidth(LPCTSTR width);
+    void SetTileViewWidth(LPCWSTR width);
     void SetTileViewWidth(int width);
     
     //获取item的行、列位置

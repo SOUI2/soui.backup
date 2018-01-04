@@ -359,7 +359,7 @@ void STileView::OnSize(UINT nType, CSize size)
 {
     __super::OnSize(nType, size);
     
-    CRect rcClient = GetClientRect();
+	CRect rcClient = SWindow::GetClientRect();
     m_tvItemLocator->SetTileViewWidth(rcClient.Width());//重设TileView宽度
     UpdateScrollBar();//重设滚动条
     

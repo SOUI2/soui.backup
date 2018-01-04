@@ -24,3 +24,4 @@ set(COM_LIBS ${COM_LIBS} imgdecoder-gdip CACHE INTERNAL "com_lib")
 set_target_properties (imgdecoder-gdip PROPERTIES
     FOLDER components/imgdecoder
 )
+cotire(imgdecoder-gdip)

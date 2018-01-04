@@ -27,3 +27,4 @@ set(COM_LIBS ${COM_LIBS} imgdecoder-stb CACHE INTERNAL "com_lib")
 set_target_properties (imgdecoder-stb PROPERTIES
     FOLDER components/imgdecoder
 )
+cotire(imgdecoder-stb)

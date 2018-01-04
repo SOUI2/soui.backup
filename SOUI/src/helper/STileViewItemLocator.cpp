@@ -6,21 +6,22 @@ namespace SOUI
 //////////////////////////////////////////////////////////////////////////
 // STileViewItemLocatorFix
 STileViewItemLocator::STileViewItemLocator(int nItemHei, int nItemWid, int nMarginSize /*= 0*/) :
-    m_nItemHeight(nItemHei, SLayoutSize::px),
-    m_nItemWidth(nItemWid, SLayoutSize::px),
-    m_nItemMargin(nMarginSize, SLayoutSize::px),
-    m_nTileViewWidth(0, SLayoutSize::px),
+    m_nItemHeight((float)nItemHei, SLayoutSize::px),
+    m_nItemWidth((float)nItemWid, SLayoutSize::px),
+    m_nItemMargin((float)nMarginSize, SLayoutSize::px),
+    m_nTileViewWidth(0.f, SLayoutSize::px),
     m_nCountInRow(1)
 {
 
 }
 
-STileViewItemLocator::STileViewItemLocator(LPCTSTR szItemHei, LPCTSTR szItemWid, SLayoutSize marginSize) :
+STileViewItemLocator::STileViewItemLocator(LPCWSTR szItemHei, LPCWSTR szItemWid, SLayoutSize marginSize) :
     m_nItemHeight(SLayoutSize::fromString(szItemHei)),
     m_nItemWidth(SLayoutSize::fromString(szItemWid)),
     m_nItemMargin(marginSize),
     m_nTileViewWidth(0, SLayoutSize::px),
-    m_nCountInRow(1)
+    m_nCountInRow(1),
+    m_scale(100)
 {
 }
 
@@ -97,7 +98,7 @@ CRect STileViewItemLocator::GetItemRect(int iItem)
     return rect;
 }
 
-void STileViewItemLocator::SetTileViewWidth(LPCTSTR width)
+void STileViewItemLocator::SetTileViewWidth(LPCWSTR width)
 {
     m_nTileViewWidth = SLayoutSize::fromString(width);
     m_nCountInRow = m_nTileViewWidth.toPixelSize(m_scale) / (m_nItemWidth.toPixelSize(m_scale) + m_nItemMargin.toPixelSize(m_scale));
@@ -106,7 +107,7 @@ void STileViewItemLocator::SetTileViewWidth(LPCTSTR width)
 
 void STileViewItemLocator::SetTileViewWidth(int width)
 {
-    m_nTileViewWidth.setSize(width, SLayoutSize::px);
+    m_nTileViewWidth.setSize((float)width, SLayoutSize::px);
     m_nCountInRow = m_nTileViewWidth.toPixelSize(m_scale) / (m_nItemWidth.toPixelSize(m_scale) + m_nItemMargin.toPixelSize(m_scale));
     if(m_nCountInRow == 0) m_nCountInRow=1;
 }

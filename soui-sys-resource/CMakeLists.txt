@@ -17,3 +17,4 @@ add_library (soui-sys-resource SHARED ${SRCS_MAIN} ${HDRS_MAIN} ${RCS_MAIN})
 set_target_properties(soui-sys-resource PROPERTIES LINK_FLAGS "/NOENTRY")
 
 # add_library(soui-sys-resource SHARED soui-sys-resource.rc)
+cotire(soui-sys-resource)

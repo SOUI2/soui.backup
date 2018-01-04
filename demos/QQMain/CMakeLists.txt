@@ -28,3 +28,4 @@ set_target_properties(QQMain PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (QQMain PROPERTIES
     FOLDER demos
 )
+cotire(QQMain)

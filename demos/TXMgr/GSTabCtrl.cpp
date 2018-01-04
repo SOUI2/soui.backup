@@ -53,12 +53,12 @@ void GSTabCtrl::OnPaint(IRenderTarget *pRT)
 			if (m_nTabAlign == AlignLeft)
 			{
 				rcSplit.top = rcItemPrev.bottom;
-				rcSplit.bottom = rcSplit.top + m_nTabInterSize;
+				rcSplit.bottom = rcSplit.top + m_nTabInterSize.toPixelSize(GetScale());
 			}
 			else
 			{
 				rcSplit.left = rcItemPrev.right;
-				rcSplit.right = rcSplit.left + m_nTabInterSize;
+				rcSplit.right = rcSplit.left + m_nTabInterSize.toPixelSize(GetScale());
 			}
 			m_pSkinTabInter->Draw(pRT, rcSplit, 0);
 		}
@@ -116,7 +116,8 @@ void GSTabCtrl::DrawItem(IRenderTarget *pRT, const CRect &rcItem, int iItem, DWO
 	COLORREF crOld = 0;
 	if (crTxt != CR_INVALID) crOld = pRT->SetTextColor(crTxt);
 
-	CRect rcIcon(m_ptIcon + rcItem.TopLeft(), CSize(0, 0));
+	CRect rcIcon(rcItem.left+m_ptIcon[0].toPixelSize(GetScale()),
+		rcItem.top+m_ptIcon[1].toPixelSize(GetScale()),0,0);
 	if (m_pSkinIcon)
 	{
 		rcIcon.right = rcIcon.left + m_pSkinIcon->GetSkinSize().cx;
@@ -129,26 +130,26 @@ void GSTabCtrl::DrawItem(IRenderTarget *pRT, const CRect &rcItem, int iItem, DWO
 
 	if (m_nTabShowName)
 	{
-		if (m_ptText.x != -1 && m_ptText.y != -1)
+		if (!m_ptText[0].valueEqual(-1.f) && !m_ptText[1].valueEqual(-1.f))
 		{//从指定位置开始绘制文字
 			if (m_txtDir == Text_Horz)
-				pRT->TextOut(rcItem.left + m_ptText.x, rcItem.top + m_ptText.y, GetItem(iItem)->GetTitle(), -1);
+				pRT->TextOut(rcItem.left + m_ptText[0].toPixelSize(GetScale()), rcItem.top + m_ptText[1].toPixelSize(GetScale()), GetItem(iItem)->GetTitle(), -1);
 			else
-				TextOutV(pRT, rcItem.left + m_ptText.x, rcItem.top + m_ptText.y, GetItem(iItem)->GetTitle());
+				TextOutV(pRT, rcItem.left + m_ptText[0].toPixelSize(GetScale()), rcItem.top + m_ptText[1].toPixelSize(GetScale()), GetItem(iItem)->GetTitle());
 		}
 		else
 		{
 			CRect rcText = rcItem;
 			UINT alignStyle = m_style.GetTextAlign();
 			UINT align = alignStyle;
-			if (m_ptText.x == -1 && m_ptText.y != -1)
+			if (m_ptText[0].valueEqual(-1.f) && !m_ptText[1].valueEqual(-1.f))
 			{//指定了Y偏移，X居中
-				rcText.top += m_ptText.y;
+				rcText.top += m_ptText[1].toPixelSize(GetScale());
 				align = alignStyle&(DT_CENTER | DT_RIGHT | DT_SINGLELINE | DT_END_ELLIPSIS);
 			}
-			else if (m_ptText.x != -1 && m_ptText.y == -1)
+			else if (!m_ptText[0].valueEqual(-1.f) && m_ptText[1].valueEqual(-1.f))
 			{//指定了X偏移，Y居中
-				rcText.left += m_ptText.x;
+				rcText.left += m_ptText[0].toPixelSize(GetScale());
 				align = alignStyle&(DT_VCENTER | DT_BOTTOM | DT_SINGLELINE | DT_END_ELLIPSIS);
 			}
 

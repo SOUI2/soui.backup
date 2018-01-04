@@ -21,3 +21,4 @@ ADD_LIBRARY (mhook STATIC ${MHOOK_SRCS} ${MHOOK_HEADERS})
 set_target_properties (mhook PROPERTIES
     FOLDER third-part
 )
+cotire(mhook)

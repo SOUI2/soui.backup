@@ -1,4 +1,4 @@
-#include "souistd.h"
+ï»¿#include "souistd.h"
 #include "control\SHeaderCtrl.h"
 #include "helper\DragWnd.h"
 
@@ -56,7 +56,7 @@ namespace SOUI
 		{
 			CRect _clientRect = GetClientRect();
 			SIZE _skinSize = m_pSkinSort->GetSkinSize();
-			//Î´ÉèÖÃXÆ«ÒÆ
+			//æœªè®¾ç½®Xåç§»
 			if (m_sortPos.x == -100)
 			{
 				int _left = (_sortIconRect.right = _clientRect.right - CX_HDITEM_MARGIN) - _skinSize.cx;
@@ -67,7 +67,7 @@ namespace SOUI
 				int _right = (_sortIconRect.left = m_sortPos.x) + _skinSize.cx;
 				_sortIconRect.right = _right > _clientRect.right ? _clientRect.right : _right;
 			}
-			//Î´ÉèÖÃYÆ«ÒÆ
+			//æœªè®¾ç½®Yåç§»
 			if (m_sortPos.y == -100)
 			{
 				int _top = _clientRect.top + (_clientRect.Height() - _skinSize.cy) / 2;
@@ -183,7 +183,7 @@ namespace SOUI
 			FireEvent(evtLButtonUp);
 			if (m_bSwaping || m_bChangeSizing)
 				return;
-			//±ØĞëÓĞ¿ÉÅÅĞò±êÖ¾²Å·¢³öCMD
+			//å¿…é¡»æœ‰å¯æ’åºæ ‡å¿—æ‰å‘å‡ºCMD
 			if ((GetID() || GetName()) && m_bcanSort)
 			{
 				FireCommand();
@@ -237,10 +237,10 @@ namespace SOUI
 		int		m_iOrder;
 		bool    m_bSwaping, m_bChangeSizing;
 		SHeaderCtrl* m_pHost;
-		BOOL m_bcanSort;//ÊÇ·ñ¿ÉÒÔÅÅĞò
-		POINT m_sortPos;//ÅÅĞòÍ¼±êÎ»ÖÃ
-		ISkinObj *    m_pSkinSort;  /**< ÅÅĞò±êÖ¾Skin */
-		HBITMAP       m_hDragImg;  /**< ÏÔÊ¾ÍÏ¶¯´°¿ÚµÄÁÙÊ±Î»Í¼ */
+		BOOL m_bcanSort;//æ˜¯å¦å¯ä»¥æ’åº
+		POINT m_sortPos;//æ’åºå›¾æ ‡ä½ç½®
+		ISkinObj *    m_pSkinSort;  /**< æ’åºæ ‡å¿—Skin */
+		HBITMAP       m_hDragImg;  /**< æ˜¾ç¤ºæ‹–åŠ¨çª—å£çš„ä¸´æ—¶ä½å›¾ */
 		SHDSORTFLAG m_sortFlag;
 	};
 
@@ -299,7 +299,7 @@ namespace SOUI
 		int iOrder = m_arrItems[iItem]->m_iOrder;
 		m_arrItems.RemoveAt(iItem);
 		DestroyChild(m_arrItems[iItem]);
-		//¸üĞÂÅÅĞò
+		//æ›´æ–°æ’åº
 		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
 		{
 			if (m_arrItems[i]->m_iOrder > iOrder)
@@ -338,12 +338,12 @@ namespace SOUI
 	void SHeaderCtrl::UpdateChildrenPosition()
 	{
 		if (m_layoutDirty == dirty_self)
-		{//µ±Ç°´°¿ÚËùÓĞ×Ó´°¿ÚÈ«²¿ÖØĞÂ²¼¾Ö
+		{//å½“å‰çª—å£æ‰€æœ‰å­çª—å£å…¨éƒ¨é‡æ–°å¸ƒå±€
 			if (!m_bRatable)
 			{
 				GetLayout()->LayoutChildren(this);
 			}
-			else//°´±ÈÀı·Ö¸î
+			else//æŒ‰æ¯”ä¾‹åˆ†å‰²
 			{				
 				SASSERT(!(GetLayoutParam()->IsWrapContent(Horz)));
 				SWindow *pChild = GetWindow(GSW_FIRSTCHILD);;
@@ -427,7 +427,7 @@ namespace SOUI
 			rcWnd.OffsetRect(-offset, 0);
 			pCurMove->Move(rcWnd);
 		}
-		UpdateChildrenPosition();//Êó±ê¿ìËÙÒÆ¶¯Ê±²»µ÷ÓÃ´Ë¿ÉÄÜ»á·¢Éú´íÂÒµÄÎÊÌâ¡£
+		UpdateChildrenPosition();//é¼ æ ‡å¿«é€Ÿç§»åŠ¨æ—¶ä¸è°ƒç”¨æ­¤å¯èƒ½ä¼šå‘ç”Ÿé”™ä¹±çš„é—®é¢˜ã€‚
 		return 1;
 	}
 
@@ -465,17 +465,17 @@ namespace SOUI
 			SHeaderItem *item = new SHeaderItem(this);
 			this->InsertChild(item);
 			item->m_iIdx = item->m_iOrder = iOrder++;
-			//ÏÈ´ÓheaderÀïCOPYÒ»Ğ©Í¨ÓÃÊôĞÔ£¬Èç¹û×ÓÏîÃ»ÓĞÉèÖÃµÄ»°
+			//å…ˆä»headeré‡ŒCOPYä¸€äº›é€šç”¨å±æ€§ï¼Œå¦‚æœå­é¡¹æ²¡æœ‰è®¾ç½®çš„è¯
 			if (xmlItem.attribute(L"sortSkin").empty() && !xmlNode.attribute(L"sortSkin").empty())
 				xmlItem.append_attribute(L"sortSkin").set_value(xmlNode.attribute(L"sortSkin").as_string());
-			//Ã»ÓĞÉèÖÃ±³¾°É«£¬Ò²Ã»ÓĞÉèÖÃskin,Ò²Ã»ÉèÖÃclass¡£ÔòÊ¹ÓÃheaderctrlµÄÉèÖÃ£¬Èç¹ûheaderctrlÃ»ÓĞitemSkinÊôĞÔÔòÊ¹ÓÃÏµÍ³ÄÚ½¨Æ¤·ô
+			//æ²¡æœ‰è®¾ç½®èƒŒæ™¯è‰²ï¼Œä¹Ÿæ²¡æœ‰è®¾ç½®skin,ä¹Ÿæ²¡è®¾ç½®classã€‚åˆ™ä½¿ç”¨headerctrlçš„è®¾ç½®ï¼Œå¦‚æœheaderctrlæ²¡æœ‰itemSkinå±æ€§åˆ™ä½¿ç”¨ç³»ç»Ÿå†…å»ºçš®è‚¤
 			if (xmlItem.attribute(L"skin").empty() && xmlItem.attribute(L"colorBkgnd").empty() && xmlItem.attribute(L"class").empty())
 			{
 				if (!xmlNode.attribute(L"itemSkin").empty())
 					xmlItem.append_attribute(L"skin").set_value(xmlNode.attribute(L"itemSkin").as_string());
 				else xmlItem.append_attribute(L"skin").set_value(L"_skin.sys.header");
 			}
-			//Èç¹ûHeaderCtrlÉèÖÃÁËsortHeader  ×ÓÏîÓÖÃ»ÓĞÖ¸¶¨canSortÊôĞÔ£¬ÔòÊ¹ÓÃ¸¸ÏîµÄÉèÖÃ
+			//å¦‚æœHeaderCtrlè®¾ç½®äº†sortHeader  å­é¡¹åˆæ²¡æœ‰æŒ‡å®šcanSortå±æ€§ï¼Œåˆ™ä½¿ç”¨çˆ¶é¡¹çš„è®¾ç½®
 			if (xmlItem.attribute(L"canSort").empty() && !xmlNode.attribute(L"sortHeader").empty())
 				xmlItem.append_attribute(L"canSort").set_value(xmlNode.attribute(L"sortHeader").as_string());
 
@@ -522,7 +522,7 @@ namespace SOUI
 		SASSERT(iItem >= 0 && iItem < (int)m_arrItems.GetCount());
 		m_arrItems[iItem]->SetVisible(visible, TRUE);
 		Invalidate();
-		//·¢³öµ÷½Ú¿í¶ÈÏûÏ¢
+		//å‘å‡ºè°ƒèŠ‚å®½åº¦æ¶ˆæ¯
 		EventHeaderItemChanged evt(this);
 		evt.iItem = iItem;
 		evt.nWidth = m_arrItems[iItem]->GetWindowRect().Width();

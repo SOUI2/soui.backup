@@ -36,3 +36,4 @@ set(COM_LIBS ${COM_LIBS} resprovider-7zip CACHE INTERNAL "com_lib")
 set_target_properties (resprovider-7zip PROPERTIES
     FOLDER components
 )
+cotire(resprovider-7zip)
