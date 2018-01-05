@@ -87,8 +87,7 @@ HEADERS += MainDlg.h \
 		 SInterpolatorView.h \
 		 qrcode/SQrCtrl.h \
 		 qrcode/QR_Encode.h \
-		 SPathView.h\
-		SHeaderCtrl008.h
+		 SPathView.h
 
 SOURCES += demo.cpp \
            MainDlg.cpp \
@@ -141,8 +140,7 @@ SOURCES += demo.cpp \
 	 SInterpolatorView.cpp \
 	 qrcode/SQrCtrl.cpp \
 	 qrcode/QR_Encode.cpp \
-	 SPathView.cpp\
-	SHeaderCtrl008.cpp
+	 SPathView.cpp
 
 RC_FILE += demo.rc
 

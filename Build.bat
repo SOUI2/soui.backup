@@ -198,6 +198,11 @@ if %specs%==win32-msvc2017 (
 	)
 )
 
+SET /p selected=是不是顺手生成帮助文档呢？ [Y or N]?
+if "%selected%" == "Y" (
+	call "doxygen/createdoc.bat"
+)
+
 SET /p selected=open[o], compile[c] "soui.sln" or quit(q) [o,c or q]?
 if "%selected%" == "o" (
 	if %targetx86andx64%==1 (

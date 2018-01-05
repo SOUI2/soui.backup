@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 
 namespace SOUI
 {
@@ -9,24 +9,24 @@ namespace SOUI
 #define SHDI_ORDER               0x0010
 #define SHDI_VISIBLE             0x0020
 
-#define CX_HDITEM_MARGIN    6
+#define CX_HDITEM_MARGIN    4
 	/**
 	* @enum      _SHDSORTFLAG
-	* @brief     ≈≈–Ú±Í÷æ
+	* @brief     ÊéíÂ∫èÊ†áÂøó
 	*
-	* Describe   ≈≈–Ú±Í÷æ
+	* Describe   ÊéíÂ∫èÊ†áÂøó
 	*/
 	enum SHDSORTFLAG {
-		ST_NULL = 0,
-		ST_UP,
-		ST_DOWN,
+		ST_NULL = 0,//<Êûö‰∏æÔºå‰∏çÊéíÂ∫è
+		ST_UP,//<ÂçáÂ∫è
+		ST_DOWN,//<ÈôçÂ∫è
 	};
 
 	/**
 	* @struct    _SHDITEM
-	* @brief     ¡–±ÌÕ∑œÓ
+	* @brief     ÂàóË°®Â§¥È°π
 	*
-	* Describe   ¡–±ÌÕ∑œÓ
+	* Describe   ÂàóË°®Â§¥È°π
 	*/
 	typedef struct SHDITEM {
 		SHDITEM() :mask(0), cx(0), stFlag(ST_NULL), iOrder(0), bVisible(true) {
@@ -41,9 +41,9 @@ namespace SOUI
 
 	/**
 	* @class     SHeaderCtrl
-	* @brief     ±ÌÕ∑øÿº˛
+	* @brief     Ë°®Â§¥Êéß‰ª∂
 	*
-	* Describe   ±ÌÕ∑øÿº˛
+	* Describe   Ë°®Â§¥Êéß‰ª∂
 	*/
 	class SHeaderItem;
 	class SOUI_EXP SHeaderCtrl : public SWindow
@@ -53,76 +53,76 @@ namespace SOUI
 	public:
 		/**
 		* SHeaderCtrl::SHeaderCtrl
-		* @brief    ππ‘Ï∫Ø ˝
+		* @brief    ÊûÑÈÄ†ÂáΩÊï∞
 		*
-		* Describe  ππ‘Ï∫Ø ˝
+		* Describe  ÊûÑÈÄ†ÂáΩÊï∞
 		*/
 		SHeaderCtrl(void);
 		/**
 		* SHeaderCtrl::~SHeaderCtrl
-		* @brief    Œˆππ∫Ø ˝
+		* @brief    ÊûêÊûÑÂáΩÊï∞
 		*
-		* Describe  Œˆππ∫Ø ˝
+		* Describe  ÊûêÊûÑÂáΩÊï∞
 		*/
 		~SHeaderCtrl(void);
 
 		/**
 		* SHeaderCtrl::InsertItem
-		* @brief    ≤Â»Î–¬œÓ
-		* @param    int iItem --  –¬œÓÀ˜“˝
-		* @param    LPCTSTR pszText  --  –¬œÓ±ÍÃ‚
-		* @param    int nWidth  -- øÌ∂»
-		* @param    SHDSORTFLAG stFlag -- ≈≈–Ú±Í÷æ
-		* @param    LPARAM lParam -- ∏Ωº”≤Œ ˝
-		* @return   ∑µªÿint
+		* @brief    ÊèíÂÖ•Êñ∞È°π
+		* @param    int iItem --  Êñ∞È°πÁ¥¢Âºï
+		* @param    LPCTSTR pszText  --  Êñ∞È°πÊ†áÈ¢ò
+		* @param    int nWidth  -- ÂÆΩÂ∫¶
+		* @param    SHDSORTFLAG stFlag -- ÊéíÂ∫èÊ†áÂøó
+		* @param    LPARAM lParam -- ÈôÑÂä†ÂèÇÊï∞
+		* @return   ËøîÂõûint
 		*
-		* Describe  ≤Â»Î–¬œÓ
+		* Describe  ÊèíÂÖ•Êñ∞È°π
 		*/
 		int InsertItem(int iItem, LPCTSTR pszText, int nWidth, SHDSORTFLAG stFlag, LPARAM lParam);
 		int GetItemWidth(int iItem);
 		/**
 		* SHeaderCtrl::GetItem
-		* @brief    ªÒµ√–¬œÓ
-		* @param    int iItem  --  À˜“˝
-		* @param    SHDITEM *pItem  -- ∑µªÿ¡–±ÌœÓΩ·ππ
-		* @return   ∑µªÿBOOL
+		* @brief    Ëé∑ÂæóÊñ∞È°π
+		* @param    int iItem  --  Á¥¢Âºï
+		* @param    SHDITEM *pItem  -- ËøîÂõûÂàóË°®È°πÁªìÊûÑ
+		* @return   ËøîÂõûBOOL
 		*
-		* Describe  ªÒµ√–¬œÓ
+		* Describe  Ëé∑ÂæóÊñ∞È°π
 		*/
 		BOOL GetItem(int iItem, SHDITEM *pItem);
 
 		/**
 		* SHeaderCtrl::GetItemCount
-		* @brief    ªÒ»°¡–±ÌœÓ∏ˆ ˝
-		* @return   ∑µªÿint
+		* @brief    Ëé∑ÂèñÂàóË°®È°π‰∏™Êï∞
+		* @return   ËøîÂõûint
 		*
-		* Describe  ªÒ»°¡–±ÌœÓ∏ˆ ˝
+		* Describe  Ëé∑ÂèñÂàóË°®È°π‰∏™Êï∞
 		*/
 		size_t GetItemCount() const { return m_arrItems.GetCount(); }
 		/**
 		* SHeaderCtrl::GetTotalWidth
-		* @brief    ªÒµ√À˘”–øÌ∂»
-		* @return   ∑µªÿint
+		* @brief    Ëé∑ÂæóÊâÄÊúâÂÆΩÂ∫¶
+		* @return   ËøîÂõûint
 		*
-		* Describe  ªÒµ√À˘”–øÌ∂»
+		* Describe  Ëé∑ÂæóÊâÄÊúâÂÆΩÂ∫¶
 		*/
 		int GetTotalWidth();
 
 		/**
 		* SHeaderCtrl::DeleteItem
-		* @brief    …æ≥˝÷∏∂®œÓ
-		* @param    int iItem  --  À˜“˝
-		* @return   ∑µªÿBOOL
+		* @brief    Âà†Èô§ÊåáÂÆöÈ°π
+		* @param    int iItem  --  Á¥¢Âºï
+		* @return   ËøîÂõûBOOL
 		*
-		* Describe  …æ≥˝÷∏∂®œÓ
+		* Describe  Âà†Èô§ÊåáÂÆöÈ°π
 		*/
 		BOOL DeleteItem(int iItem);
 
 		/**
 		* SHeaderCtrl::DeleteAllItems
-		* @brief    …æ≥˝À˘”–œÓ
+		* @brief    Âà†Èô§ÊâÄÊúâÈ°π
 		*
-		* Describe  ªÒµ√–¬œÓ
+		* Describe  Ëé∑ÂæóÊñ∞È°π
 		*/
 		void DeleteAllItems();
 
@@ -143,10 +143,10 @@ namespace SOUI
 		void ChangeItemSize(SHeaderItem*, CPoint ptCur);
 		/**
 		* SHeaderCtrl::CreateChildren
-		* @brief    ¥¥Ω®–¬œÓ
-		* @param    pugi::xml_node xmlNode  -- xml≈‰÷√Œƒº˛
+		* @brief    ÂàõÂª∫Êñ∞È°π
+		* @param    pugi::xml_node xmlNode  -- xmlÈÖçÁΩÆÊñá‰ª∂
 		*
-		* Describe  ¥¥Ω®–¬œÓ
+		* Describe  ÂàõÂª∫Êñ∞È°π
 		*/
 		virtual BOOL CreateChildren(pugi::xml_node xmlNode);
 
@@ -158,9 +158,9 @@ namespace SOUI
 		virtual void UpdateChildrenPosition()override;
 		virtual CSize GetDesiredSize(LPCRECT pRcContainer);
 		
-		BOOL          m_bSortHeader;      /**< ±ÌÕ∑ø…“‘µ„ª˜≈≈–Ú */
-		BOOL          m_bFixWidth;        /**< ±ÌœÓøÌ∂»πÃ∂®ø™πÿ */
-		BOOL          m_bItemSwapEnable;  /**< ‘ –ÌÕœ∂Øµ˜’˚Œª÷√ø™πÿ */
+		BOOL          m_bSortHeader;      /**< Ë°®Â§¥ÂèØ‰ª•ÁÇπÂáªÊéíÂ∫è */
+		BOOL          m_bFixWidth;        /**< Ë°®È°πÂÆΩÂ∫¶Âõ∫ÂÆöÂºÄÂÖ≥ */
+		BOOL          m_bItemSwapEnable;  /**< ÂÖÅËÆ∏ÊãñÂä®Ë∞ÉÊï¥‰ΩçÁΩÆÂºÄÂÖ≥ */
 		SArray<SHeaderItem*> m_arrItems;
 		BOOL m_bRatable;
 	};

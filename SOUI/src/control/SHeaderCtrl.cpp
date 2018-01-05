@@ -266,7 +266,7 @@ namespace SOUI
 		SHeaderItem *item = new SHeaderItem(this);
 		this->InsertChild(item);
 		item->m_iIdx = iItem;
-
+		item->SetWindowText(pszText);
 		m_arrItems.InsertAt(iItem, item);
 		for (size_t i = iItem; i < GetItemCount(); i++)
 		{
