@@ -30,3 +30,4 @@ set_target_properties(VUI PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (VUI PROPERTIES
     FOLDER demos
 )
+cotire(VUI)

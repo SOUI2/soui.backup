@@ -207,8 +207,51 @@ namespace SOUI
 
     void SComboBase::OnKeyDown( TCHAR nChar, UINT nRepCnt, UINT nFlags )
     {    
-        if ( nChar == VK_DOWN)
-            DropDown();
+        //if ( nChar == VK_DOWN)
+        //    DropDown();
+		
+		//方向键改变当前选项
+        switch (nChar) 
+        {
+        case VK_DOWN:
+        case VK_RIGHT:
+            {
+                int iSel = GetCurSel();
+                iSel += 1;
+                if ( iSel < GetCount() )
+                    SetCurSel(iSel);
+            }
+            break;
+        case VK_UP:
+        case VK_LEFT:
+            {
+                int iSel = GetCurSel();
+                iSel -= 1;
+                if ( iSel < GetCount() && iSel >= 0 )
+                    SetCurSel(iSel);
+            }
+            break;
+        }
+    }
+
+    BOOL SComboBase::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+    {
+		//鼠标滚轮改变当前选项
+        if (zDelta > 0)			// 上滚 
+        {
+            int iSel = GetCurSel();
+            iSel -= 1;
+            if ( iSel < GetCount() && iSel >= 0 )
+                SetCurSel(iSel);
+        }
+        else					// 下滚 
+        {
+            int iSel = GetCurSel();
+            iSel += 1;
+            if ( iSel < GetCount() )
+                SetCurSel(iSel);
+        }
+        return TRUE;
     }
 
     void SComboBase::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)

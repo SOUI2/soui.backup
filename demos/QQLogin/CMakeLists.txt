@@ -49,7 +49,8 @@ target_link_libraries(QQLogin utilities soui ${COM_LIBS} imm32)
 
 set_target_properties(QQLogin PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties(QQLogin PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
-#cotire(QQLogin)
+
 set_target_properties (QQLogin PROPERTIES
     FOLDER demos
 )
+cotire(QQLogin)

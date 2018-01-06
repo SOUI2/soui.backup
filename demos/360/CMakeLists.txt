@@ -24,3 +24,4 @@ target_link_libraries(360 soui utilities ${COM_LIBS})
 set_target_properties (360 PROPERTIES
     FOLDER demos
 )
+cotire(360)

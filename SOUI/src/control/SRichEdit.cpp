@@ -779,6 +779,8 @@ CSize SRichEdit::GetDesiredSize( LPCRECT pRcContainer )
     CSize sz = __super::GetDesiredSize(pRcContainer);
     sz.cx += m_rcInsetPixel.left + m_rcInsetPixel.right;
     sz.cy += m_rcInsetPixel.top + m_rcInsetPixel.bottom;
+    sz.cx = sz.cx * GetScale() / 100;
+    sz.cy = sz.cy * GetScale() / 100;
     return sz;
 }
 
@@ -1280,6 +1282,11 @@ LRESULT SRichEdit::OnNcCalcSize( BOOL bCalcValidRects, LPARAM lParam )
     __super::OnNcCalcSize(bCalcValidRects,lParam);
     
     CRect rcInsetPixel = m_rcInsetPixel;
+    rcInsetPixel.left = rcInsetPixel.left * GetScale() / 100;
+    rcInsetPixel.top = rcInsetPixel.top * GetScale() / 100;
+    rcInsetPixel.right = rcInsetPixel.right * GetScale() / 100;
+    rcInsetPixel.bottom = rcInsetPixel.bottom * GetScale() / 100;
+
     if(!m_fRich && m_fSingleLineVCenter && !(m_dwStyle&ES_MULTILINE))
     {
         rcInsetPixel.top   =
@@ -1698,7 +1705,12 @@ void SEdit::OnPaint( IRenderTarget * pRT )
         
         CRect rc;
         GetClientRect(&rc);
-        rc.DeflateRect(m_rcInsetPixel.left,m_rcInsetPixel.top,m_rcInsetPixel.right,m_rcInsetPixel.bottom);
+        CRect rcInsetPixel = m_rcInsetPixel;
+        rcInsetPixel.left = rcInsetPixel.left * GetScale() / 100;
+        rcInsetPixel.top = rcInsetPixel.top * GetScale() / 100;
+        rcInsetPixel.right = rcInsetPixel.right * GetScale() / 100;
+        rcInsetPixel.bottom = rcInsetPixel.bottom * GetScale() / 100;
+        rc.DeflateRect(rcInsetPixel.left, rcInsetPixel.top, rcInsetPixel.right, rcInsetPixel.bottom);
         pRT->DrawText(m_strCue.GetText(),m_strCue.GetText().GetLength(),&rc,DT_SINGLELINE|DT_VCENTER);
         
         pRT->SetTextColor(crOld);

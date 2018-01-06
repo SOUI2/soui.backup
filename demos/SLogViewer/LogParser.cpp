@@ -135,7 +135,7 @@ BOOL CLogParse::ParseLine(LPCWSTR pszLine,int nLen,SLogInfo **ppLogInfo) const
 
 		if(p+m_fields[i].nLeastLength >= pEnd) return FALSE;
 		LPCWSTR pszTail= wcsstr(p+m_fields[i].nLeastLength,strTail);
-		if(!pszTail) return FALSE;
+		if(!pszTail || pszTail>= pEnd) return FALSE;
 		int nLen = (int) (pszTail - p);
 		//p -> pTail : field
 		FillField(pLogInfo,p,pszTail,m_fields[i].field);

@@ -45,7 +45,6 @@ HEADERS += Adapter.h \
            ScintillaWnd.h \
            SDesignerRoot.h \
            SImageBtnEx.h \
-           SImageEx.h \
            SImageSwitcher.h \
            SImgCanvas.h \
            SListBoxDrop.h \
@@ -91,7 +90,6 @@ SOURCES += Adapter.cpp \
            ScintillaWnd.cpp \
            SDesignerRoot.cpp \
            SImageBtnEx.cpp \
-           SImageEx.cpp \
            SImageSwitcher.cpp \
            SImgCanvas.cpp \
            SMoveWnd.cpp \

@@ -29,3 +29,4 @@ set_target_properties(BesLyric PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (BesLyric PROPERTIES
     FOLDER demos
 )
+cotire(BesLyric)

@@ -285,17 +285,18 @@ STabCtrl::STabCtrl() : m_nCurrentPage(0)
     , m_pSkinIcon(NULL)
     , m_pSkinTabInter(NULL)
     , m_pSkinFrame(NULL)
-    , m_nTabInterSize(0)
-    , m_nTabPos(0)
+    , m_nTabInterSize(0, SLayoutSize::px)
+    , m_nTabPos(0, SLayoutSize::px)
     , m_nHoverTabItem(-1)
     , m_nTabAlign(AlignTop)
     , m_nAnimateSteps(0)
-    , m_ptText(-1,-1)
     , m_tabSlider(NULL)
     , m_txtDir(Text_Horz)
 	,m_nAniamteType(0)
 {
-    m_szTab.cx = m_szTab.cy = -1;
+	m_ptText[0] = m_ptText[1] = SLayoutSize(-1.f, SLayoutSize::px);
+	m_szTab[0] = m_szTab[1] = SLayoutSize(-1.f, SLayoutSize::px);
+
     m_bFocusable=TRUE;
 	//create a linear animator interpolator
 	m_aniInterpolator.Attach(SApplication::getSingleton().CreateInterpolatorByName(SLinearInterpolator::GetClassName()));
@@ -335,12 +336,12 @@ void STabCtrl::OnPaint(IRenderTarget *pRT)
             if(m_nTabAlign==AlignLeft)
             {
                 rcSplit.top=rcItemPrev.bottom;
-                rcSplit.bottom = rcSplit.top + m_nTabInterSize;
+                rcSplit.bottom = rcSplit.top + m_nTabInterSize.toPixelSize(GetScale());
             }
             else
             {
                 rcSplit.left=rcItemPrev.right;
-                rcSplit.right=rcSplit.left + m_nTabInterSize;
+                rcSplit.right=rcSplit.left + m_nTabInterSize.toPixelSize(GetScale());
             }
             m_pSkinTabInter->Draw(pRT,rcSplit,0);
         }
@@ -374,16 +375,16 @@ CRect STabCtrl::GetChildrenLayoutRect()
     switch(m_nTabAlign)
     {
     case AlignLeft:
-        rcRet.left+= m_szTab.cx;
+        rcRet.left+= m_szTab[0].toPixelSize(GetScale());
         break;
     case AlignRight:
-        rcRet.right-=m_szTab.cx;
+        rcRet.right-=m_szTab[0].toPixelSize(GetScale());
         break;
     case AlignTop:
-        rcRet.top += m_szTab.cy;
+        rcRet.top += m_szTab[1].toPixelSize(GetScale());
         break;
     case AlignBottom:
-        rcRet.bottom -= m_szTab.cy;
+        rcRet.bottom -= m_szTab[1].toPixelSize(GetScale());
         break;
     }
     return rcRet;
@@ -674,16 +675,16 @@ CRect STabCtrl::GetTitleRect()
     switch(m_nTabAlign)
     {
     case AlignTop:
-        rcTitle.bottom = rcTitle.top+ m_szTab.cy;
+        rcTitle.bottom = rcTitle.top+ m_szTab[1].toPixelSize(GetScale());
         break;
     case AlignBottom:
-        rcTitle.top = rcTitle.bottom- m_szTab.cy;
+        rcTitle.top = rcTitle.bottom- m_szTab[1].toPixelSize(GetScale());
         break;
     case AlignLeft:
-        rcTitle.right = rcTitle.left + m_szTab.cx;
+        rcTitle.right = rcTitle.left + m_szTab[0].toPixelSize(GetScale());
         break;
     case AlignRight:
-        rcTitle.left = rcTitle.right - m_szTab.cx;
+        rcTitle.left = rcTitle.right - m_szTab[0].toPixelSize(GetScale());
         break;
     }
     return rcTitle;    
@@ -696,17 +697,17 @@ BOOL STabCtrl::GetItemRect( int nIndex, CRect &rcItem )
     
     CRect rcTitle = GetTitleRect();
         
-    rcItem = CRect(rcTitle.TopLeft(),m_szTab);
+    rcItem = CRect(rcTitle.TopLeft(), CSize(m_szTab[0].toPixelSize(GetScale()), m_szTab[1].toPixelSize(GetScale())));
 
     switch (m_nTabAlign)
     {
     case AlignTop:
     case AlignBottom:
-        rcItem.OffsetRect(m_nTabPos + nIndex * (rcItem.Width()+ m_nTabInterSize),0);
+        rcItem.OffsetRect(m_nTabPos.toPixelSize(GetScale()) + nIndex * (rcItem.Width()+ m_nTabInterSize.toPixelSize(GetScale())),0);
         break;
     case AlignLeft:
     case AlignRight:
-        rcItem.OffsetRect(0, m_nTabPos + nIndex * (rcItem.Height()+ m_nTabInterSize));
+        rcItem.OffsetRect(0, m_nTabPos.toPixelSize(GetScale()) + nIndex * (rcItem.Height()+ m_nTabInterSize.toPixelSize(GetScale())));
         break;
     }
     rcItem.IntersectRect(rcItem,rcTitle);
@@ -734,7 +735,7 @@ void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD d
     COLORREF crOld = 0;
     if(crTxt != CR_INVALID) crOld = pRT->SetTextColor(crTxt);
     
-    CRect rcIcon(m_ptIcon+rcItem.TopLeft(),CSize(0,0));
+    CRect rcIcon(CPoint(m_ptIcon[0].toPixelSize(GetScale()), m_ptIcon[1].toPixelSize(GetScale()))+rcItem.TopLeft(),CSize(0,0));
     if(m_pSkinIcon)
     {
         rcIcon.right=rcIcon.left+m_pSkinIcon->GetSkinSize().cx;
@@ -744,26 +745,26 @@ void STabCtrl::DrawItem(IRenderTarget *pRT,const CRect &rcItem,int iItem,DWORD d
         m_pSkinIcon->Draw(pRT,rcIcon,iIcon);
     }
 
-    if(m_ptText.x!=-1 && m_ptText.y!=-1)
+    if(m_ptText[0].toPixelSize(GetScale()) > 0 && m_ptText[1].toPixelSize(GetScale()) > 0)
     {//从指定位置开始绘制文字
         if(m_txtDir == Text_Horz)
-            pRT->TextOut(rcItem.left+m_ptText.x,rcItem.top+m_ptText.y,GetItem(iItem)->GetTitle(),-1);
+            pRT->TextOut(rcItem.left+m_ptText[0].toPixelSize(GetScale()),rcItem.top+m_ptText[1].toPixelSize(GetScale()),GetItem(iItem)->GetTitle(),-1);
         else
-            TextOutV(pRT,rcItem.left+m_ptText.x,rcItem.top+m_ptText.y,GetItem(iItem)->GetTitle());
+            TextOutV(pRT,rcItem.left+m_ptText[0].toPixelSize(GetScale()),rcItem.top+m_ptText[1].toPixelSize(GetScale()),GetItem(iItem)->GetTitle());
     }
     else
     {
         CRect rcText=rcItem;
         UINT alignStyle=m_style.GetTextAlign();
         UINT align=alignStyle;
-        if(m_ptText.x==-1 && m_ptText.y!=-1)
+        if(m_ptText[0].toPixelSize(GetScale()) < 0 && m_ptText[1].toPixelSize(GetScale()) > 0)
         {//指定了Y偏移，X居中
-            rcText.top+=m_ptText.y;
+            rcText.top+=m_ptText[1].toPixelSize(GetScale());
             align=alignStyle&(DT_CENTER|DT_RIGHT|DT_SINGLELINE|DT_END_ELLIPSIS);
         }
-        else if(m_ptText.x!=-1 && m_ptText.y==-1)
+        else if(m_ptText[0].toPixelSize(GetScale()) > 0 && m_ptText[1].toPixelSize(GetScale()) < 0)
         {//指定了X偏移，Y居中
-            rcText.left+=m_ptText.x;
+            rcText.left+=m_ptText[0].toPixelSize(GetScale());
             align=alignStyle&(DT_VCENTER|DT_BOTTOM|DT_SINGLELINE|DT_END_ELLIPSIS);
         }
         
@@ -832,8 +833,8 @@ void STabCtrl::OnInitFinished( pugi::xml_node xmlNode )
     if(m_pSkinTab)
     {
         SIZE sz = m_pSkinTab->GetSkinSize();
-        if(m_szTab.cx == -1) m_szTab.cx = sz.cx;
-        if(m_szTab.cy == -1) m_szTab.cy = sz.cy;
+		if(SLayoutSize::fequal(m_szTab[0].fSize, -1.f)) m_szTab[0] = SLayoutSize((float)sz.cx, SLayoutSize::px);
+        if(SLayoutSize::fequal(m_szTab[1].fSize, -1.f)) m_szTab[1] = SLayoutSize((float)sz.cy, SLayoutSize::px);
     }
 }
 
@@ -910,6 +911,15 @@ void STabCtrl::OnColorize(COLORREF cr)
     if(m_pSkinTab) m_pSkinTab->OnColorize(cr);
     if(m_pSkinTabInter) m_pSkinTabInter->OnColorize(cr);
     if(m_pSkinFrame) m_pSkinFrame->OnColorize(cr);
+}
+
+void STabCtrl::OnScaleChanged(int nScale)
+{
+    __super::OnScaleChanged(nScale);
+    if (m_pSkinIcon)
+    {
+        GetScaleSkin(m_pSkinIcon, nScale);
+    }
 }
 
 HRESULT STabCtrl::OnLanguageChanged()

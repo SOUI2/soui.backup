@@ -36,7 +36,7 @@ add_dependencies(SLogViewer soui-sys-resource)
 target_link_libraries(SLogViewer utilities soui ${COM_LIBS} Scintilla imm32)
 
 set_target_properties(SLogViewer PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
-#cotire(SLogViewer)
 set_target_properties (SLogViewer PROPERTIES
     FOLDER demos
 )
+cotire(SLogViewer)

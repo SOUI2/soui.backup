@@ -27,3 +27,4 @@ set_target_properties(DropDemo PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 set_target_properties (DropDemo PROPERTIES
     FOLDER demos
 )
+cotire(DropDemo)

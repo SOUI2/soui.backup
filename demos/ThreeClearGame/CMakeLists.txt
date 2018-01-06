@@ -27,3 +27,4 @@ set_target_properties(ThreeClearGame PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POST
 set_target_properties (ThreeClearGame PROPERTIES
     FOLDER demos
 )
+cotire(ThreeClearGame)

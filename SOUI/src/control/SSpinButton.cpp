@@ -231,7 +231,7 @@ namespace SOUI
 		}
 
 		SStringT sBuddyValue = m_pBuddy->GetWindowText();
-		int nValue = _wtoi(sBuddyValue);
+		int nValue = _ttoi(sBuddyValue);
 		if (1 == nHover)
 		{
 			nValue += m_uStep;

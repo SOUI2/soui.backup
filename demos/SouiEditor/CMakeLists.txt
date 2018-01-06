@@ -83,3 +83,4 @@ set_target_properties(SouiEditor PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX}
 set_target_properties (SouiEditor PROPERTIES
     FOLDER demos
 )
+cotire(SouiEditor)
