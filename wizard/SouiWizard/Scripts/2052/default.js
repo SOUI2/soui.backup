@@ -467,7 +467,7 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile) {
         //÷∏∂®uires.idxµƒ±‡“Î√¸¡Ó
         var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
         var DirFor7z;
-        var outFile;
+        var outFile='';
         if (ResLoadType == 1) {
             outFile = 'uires.zip';
         }
@@ -490,7 +490,7 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile) {
                 cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a '+DirFor7z;
          }
             
-        if (psw.length != 0) {
+        if (psw!=null&&psw.length != 0) {
             if (ResLoadType == 1) {
                 cmd7z += ' -p"' + psw+'"';
             }
