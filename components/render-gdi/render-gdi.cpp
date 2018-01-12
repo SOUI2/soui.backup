@@ -395,6 +395,7 @@ namespace SOUI
 
         LOGFONT lf={0};
         lf.lfHeight=20;
+		lf.lfQuality = CLEARTYPE_QUALITY;
         _tcscpy(lf.lfFaceName,_T("宋体"));
         pRenderFactory->CreateFont(&m_defFont,lf);
         SelectObject(m_defFont);

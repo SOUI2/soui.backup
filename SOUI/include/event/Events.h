@@ -18,32 +18,51 @@
 namespace SOUI
 {
     class SWindow;
+	/**
+	@brief 事件ID值
+	*/
     enum SOUI_EVENTS
     {
+		/**控件初使化*/
         EVT_INIT=8000,
+		/**退出*/
         EVT_EXIT,
+		/**定时器*/
         EVT_TIMER,
-
         //基本窗口事件
+		/**控件得到焦点*/
         EVT_SETFOCUS=8100,
+		/**控件失去焦点*/
         EVT_KILLFOCUS,
+		/**控件创建*/
         EVT_CREATE,
+		/**控件销毁*/
         EVT_DESTROY,
+		/**控件改变大小*/
         EVT_SIZE,
+		/**控件显示状态改变*/
         EVT_VISIBLECHANGED,
+		/**控件状态改变*/
         EVT_STATECHANGED,
+		/**鼠标左键按下*/
 		EVT_LBUTTONDOWN,
+		/**鼠标左键抬起*/
 		EVT_LBUTTONUP,
 
         //两个窗口鼠标状态事件
+		/**鼠标悬浮*/
         EVT_MOUSE_HOVER=9000,
+		/**鼠标离开*/
         EVT_MOUSE_LEAVE,
-        
+		/**鼠标点击*/
         EVT_CMD=10000,
+		/**鼠标右键菜单*/
         EVT_CTXMENU,
         
         //增加两个滚动VIEW的事件
+		/**scrollview 滚动位置改变*/
         EVT_SCROLLVIEW_ORIGINCHANGED,
+		/**scrollview 大小改变*/
         EVT_SCROLLVIEW_SIZECHANGED,
 
         EVT_SCROLL,
@@ -51,10 +70,15 @@ namespace SOUI
         EVT_OFPANEL,    //一个itemPanel中的消息的二次包装
 
         //增加4个itempanel相关的事件,经过EVT_OFPANEL到达应用层
+		/**itempanel 被点击*/
         EVT_ITEMPANEL_CLICK,
+		/**itempanel 双击*/
         EVT_ITEMPANEL_DBCLICK,
+		/**itempanel 右击*/
         EVT_ITEMPANEL_RCLICK,
+		/**itempanel 鼠标悬浮*/
         EVT_ITEMPANEL_HOVER,
+		/**itempanel 鼠标离开*/
         EVT_ITEMPANEL_LEAVE,
         
         EVT_TAB_SELCHANGING=11000,

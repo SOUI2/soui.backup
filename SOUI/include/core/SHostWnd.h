@@ -43,6 +43,7 @@ namespace SOUI
     {
         SOUI_CLASS_NAME(SHostWndAttr, L"SHostWndAttr")
         enum {WT_UNDEFINE=0,WT_APPMAIN=1,WT_NORMAL=2};
+		enum {WS_APP=0,WS_TOOL=1,WS_POP=2};
 		friend class SHostWnd;
     public:
 		SHostWndAttr(void);
@@ -81,8 +82,6 @@ namespace SOUI
             ATTR_INT(L"resizable",m_bResizable,FALSE)
             ATTR_INT(L"translucent",m_bTranslucent,FALSE)
             ATTR_INT(L"sendWheel2Hover",m_bSendWheel2Hover,FALSE)
-            ATTR_INT(L"appWnd",m_bAppWnd,FALSE)
-            ATTR_INT(L"toolWindow",m_bToolWnd,FALSE)
             ATTR_ICON(L"smallIcon",m_hAppIconSmall,FALSE)
             ATTR_ICON(L"bigIcon",m_hAppIconBig,FALSE)
             ATTR_UINT(L"alpha",m_byAlpha,FALSE)
@@ -93,6 +92,14 @@ namespace SOUI
                 ATTR_ENUM_VALUE(L"appMain",WT_APPMAIN)
                 ATTR_ENUM_VALUE(L"normal",WT_NORMAL)
             ATTR_ENUM_END(m_byWndType)
+			ATTR_ENUM_BEGIN(L"Style", DWORD, FALSE)
+				ATTR_ENUM_VALUE(L"app", WS_APP)
+				ATTR_ENUM_VALUE(L"tool", WS_TOOL)
+				ATTR_ENUM_VALUE(L"popup", WS_POP)
+				ATTR_ENUM_VALUE(L"appWindow", WS_APP)
+				ATTR_ENUM_VALUE(L"toolWindow", WS_TOOL)
+				ATTR_ENUM_VALUE(L"popupWindow", WS_POP)
+				ATTR_ENUM_END(m_dwWndStyle)
         SOUI_ATTRS_END()
 
 	protected:
@@ -105,8 +112,7 @@ namespace SOUI
         DWORD m_byAlpha:8;          //透明度
         DWORD m_byWndType:8;         //主窗口标志,有该标志的窗口关闭时自动发送WM_QUIT
         DWORD m_bResizable:1;       //窗口大小可调节
-        DWORD m_bAppWnd:1;          //APP窗口，在任务栏上显示按钮
-        DWORD m_bToolWnd:1;         //设置WS_ES_TOOLWINDOW属性
+        DWORD m_dwWndStyle:8;          //定义窗口风格app,tool,popup
         DWORD m_bTranslucent:1;     //窗口的半透明属性
         DWORD m_bAllowSpy:1;        //允许spy
         DWORD m_bSendWheel2Hover:1; //将滚轮消息发送到hover窗口

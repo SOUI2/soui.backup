@@ -29,17 +29,18 @@ namespace SOUI
          * CAccelerator
          * @brief    构造函数
          * @param    DWORD dwAccel --  加速键值
-         * Describe  
+		 * @note dwAccel通常是调用TranslateAccelKey解析得到的DWORD值。
+         * &ref TranslateAccelKey  
          */    
         CAccelerator(DWORD dwAccel);
 
         /**
          * CAccelerator
          * @brief    构造函数
-         * @param    UINT vKey --  键值
-         * @param    bool bCtrl --  与Ctrl组合
-         * @param    bool bAlt --  与Alt组合
-         * @param    bool bShift --  与Shilft组合
+         * @param[in]   UINT vKey --  键值
+         * @param[in]   bool bCtrl --  与Ctrl组合
+         * @param[in]   bool bAlt --  与Alt组合
+         * @param[in]   bool bShift --  与Shilft组合
          * Describe  
          */    
         CAccelerator(UINT vKey=0,bool bCtrl=false,bool bAlt=false,bool bShift=false);
@@ -143,23 +144,34 @@ namespace SOUI
     */
     struct IAcceleratorMgr
     {
-        // Register a keyboard accelerator for the specified target. If multiple
-        // targets are registered for an accelerator, a target registered later has
-        // higher priority.
-        // Note that we are currently limited to accelerators that are either:
-        // - a key combination including Ctrl or Alt
-        // - the escape key
-        // - the enter key
-        // - any F key (F1, F2, F3 ...)
-        // - any browser specific keys (as available on special keyboards)
+		/**
+		* RegisterAccelerator
+		* @brief	注册加速键处理接口
+		* @param    const CAccelerator & accelerator --  加速键映射
+		* Describe
+		* @note	如果相同的加速键被多次注册，则后注册的具有更高的优先级。
+		* @code
+		* @par 支持如下加速键
+		* @par 组合Ctrl or Alt 的组合键 如：alt+a
+		* @par 回车键
+		* @par 功能键F1-F12
+		* @par 其它一些特定的功能键（有的多媒体键盘会提供一些额外的功能键）
+		* @endcode
+		*/        
         virtual void RegisterAccelerator(const CAccelerator& accelerator,
             IAcceleratorTarget* target)=NULL;
 
-        // Unregister the specified keyboard accelerator for the specified target.
+		/**
+		* RegisterAccelerator
+		* @brief	反注册加速处理接口
+		*/
         virtual void UnregisterAccelerator(const CAccelerator& accelerator,
             IAcceleratorTarget* target)=NULL;
 
-        // Unregister all keyboard accelerator for the specified target.
+		/**
+		* RegisterAccelerator
+		* @brief	反注册加速键处理接口
+		*/
         virtual void UnregisterAccelerators(IAcceleratorTarget* target)=NULL;
     };
 }//end of namespace SOUI

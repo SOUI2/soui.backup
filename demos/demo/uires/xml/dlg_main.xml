@@ -9,6 +9,7 @@
       resizable="1"
       translucent="1"
       sendWheel2Hover="1"
+      Style="popupWindow"
       alpha="255">
   <skin>
     <!--局部skin对象-->

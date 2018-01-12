@@ -4,7 +4,7 @@ namespace SOUI
 {
     /**
      * CopyList
-     * @brief    列表Copy
+     * @brief    复制列表
      * @param    SList<T> & sour --  源List
      * @param    SList<T> & dest --  目标List
      * @return   void
@@ -21,7 +21,15 @@ namespace SOUI
             dest.AddTail(t);
         }
     }
-
+	/**
+	* ArrayFind
+	* @brief    查找Array子项
+	* @param    const SArray<T> & array --  源Array
+	* @param     const T & obj --  目标项
+	* @return   int -- 找到的项索引
+	* @retval	-1--返回
+	* Describe
+	*/
     template<class T>
     int ArrayFind(const SArray<T> & array, const T & obj)
     {

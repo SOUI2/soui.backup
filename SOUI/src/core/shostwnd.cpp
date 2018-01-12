@@ -50,8 +50,7 @@ void SHostWndAttr::Init()
 {
 	m_bResizable = FALSE;
 	m_bTranslucent = FALSE;
-	m_bAppWnd = FALSE;
-	m_bToolWnd = FALSE;
+	m_dwWndStyle = -1;
 	m_byWndType = WT_UNDEFINE;
 	m_bAllowSpy = TRUE;
 	m_bSendWheel2Hover = FALSE;
@@ -251,23 +250,30 @@ BOOL SHostWnd::_InitFromXml(pugi::xml_node xmlNode,int nWidth,int nHeight)
     {
         dwStyle |= WS_MINIMIZEBOX;
     }
-    if(m_hostAttr.m_bAppWnd)
-    {
-        dwStyle |= WS_SYSMENU ;
-        dwExStyle |= WS_EX_APPWINDOW;
-    }else if(m_hostAttr.m_bToolWnd)
-    {
-        dwExStyle |= WS_EX_TOOLWINDOW;
-    }
+	DWORD dwRemoveStyle = 0;
+	switch (m_hostAttr.m_dwWndStyle)
+	{
+	case 0://APP WINDOW
+		dwStyle |= WS_SYSMENU;
+		dwExStyle |= WS_EX_APPWINDOW;
+		break;
+	case 1://TOOL WINDOW
+		dwExStyle |= WS_EX_TOOLWINDOW;
+		break;
+	case 2://POPUP WINDOW 没有动画效果的弹出式窗口
+		dwStyle |= WS_POPUP,dwStyle&=~WS_CAPTION;
+		dwRemoveStyle = WS_CAPTION;//这个风格会超出屏幕
+		dwExStyle |= WS_EX_OVERLAPPEDWINDOW;
+	}   
     if(m_hostAttr.m_bTranslucent)
     {
         dwExStyle |= WS_EX_LAYERED;
-    }
+    } 
     
-    if(m_hostAttr.m_dwStyle!=0) dwStyle=m_hostAttr.m_dwStyle&(~WS_VISIBLE);
+    if(m_hostAttr.m_dwStyle!=0) dwStyle=m_hostAttr.m_dwStyle&(~WS_VISIBLE),dwRemoveStyle=0;
     if(m_hostAttr.m_dwExStyle != 0) dwExStyle =m_hostAttr.m_dwExStyle;
     
-    ModifyStyle(0,dwStyle);
+    ModifyStyle(dwRemoveStyle,dwStyle);
     ModifyStyleEx(0,dwExStyle);
     CSimpleWnd::SetWindowText(m_hostAttr.m_strTitle.GetText());
     

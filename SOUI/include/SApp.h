@@ -28,7 +28,7 @@
 
 #include "core/smsgloop.h"
 #include "core/SObjectFactory.h"
-
+//**获取资源管理器*/
 #define GETRESPROVIDER      SOUI::SApplication::getSingletonPtr()
 #define GETRENDERFACTORY    SOUI::SApplication::getSingleton().GetRenderFactory()
 #define GETREALWNDHANDLER   SOUI::SApplication::getSingleton().GetRealWndHander()

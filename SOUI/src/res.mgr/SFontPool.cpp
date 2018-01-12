@@ -165,7 +165,7 @@ IFontPtr SFontPool::_CreateFont(FONTSTYLE style,const SStringT & strFaceName,pug
     lfNew.lfStrikeOut   = (FALSE != style.attr.fStrike);
 	lfNew.lfHeight = -abs((short)style.attr.cSize);
         
-    lfNew.lfQuality = CLEARTYPE_QUALITY;
+    lfNew.lfQuality = DEFAULT_QUALITY;
     
     
     _tcscpy_s(lfNew.lfFaceName,_countof(lfNew.lfFaceName),  strFaceName);
