@@ -184,6 +184,8 @@ protected:
      */ 
     virtual BOOL FireEvent(EventArgs &evt);
 
+    virtual void OnScaleChanged(int nScale);
+
     /**
      * SComboBox::CreateListBox
      * @brief    创建下拉列表
