@@ -6,8 +6,6 @@ TARGET = $$TARGET"64"
 DEPENDPATH += .
 INCLUDEPATH += .
 
-include(../cpy-cfg.pri)
-
 SUBDIRS += UiEditor
 SUBDIRS += demo
 SUBDIRS += qqlogin

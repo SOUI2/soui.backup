@@ -39,39 +39,39 @@ if %selected%==1 (
 )
 
 rem 选择开发环境
-SET /p selected=2.选择开发环境[1=2008;2=2010;3=2012;4=2013;5=2015;6=2017;7=2005]:
+SET /p selected=2.选择开发环境[1=2005;2=2008;3=2010;4=2012;5=2013;6=2015;7=2017]:
 
-if %selected%==1 (
+if %selected%==2 (
 	SET specs=win32-msvc2008
 	SET vsvarbat="!VS90COMNTOOLS!..\..\VC\vcvarsall.bat"
 	call !vsvarbat! %target%
 	rem call "%VS90COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
 	goto built
-) else if %selected%==2 (
+) else if %selected%==3 (
 	SET specs=win32-msvc2010
 	SET vsvarbat="%VS100COMNTOOLS%..\..\VC\vcvarsall.bat"
 	call !vsvarbat! %target%
 	rem call "%VS100COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
 	goto built
-) else if %selected%==3 (
+) else if %selected%==4 (
 	SET specs=win32-msvc2012	
 	SET vsvarbat="%VS110COMNTOOLS%..\..\VC\vcvarsall.bat"
 	call !vsvarbat! %target%
 	rem call "%VS110COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
 	goto built
-) else if %selected%==4 (
+) else if %selected%==5 (
 	SET specs=win32-msvc2013
 	SET vsvarbat="%VS120COMNTOOLS%..\..\VC\vcvarsall.bat"
 	call !vsvarbat! %target%
 	rem call "%VS120COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
 	goto toolsetxp
-) else if %selected%==5 (
+) else if %selected%==6 (
 	SET specs=win32-msvc2015
 	SET vsvarbat="%VS140COMNTOOLS%..\..\VC\vcvarsall.bat"
 	call !vsvarbat! %target%
 	rem call "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" %target%
 	goto toolsetxp
-)else if %selected%==6 (
+)else if %selected%==7 (
 	SET specs=win32-msvc2017
 	for /f "skip=2 delims=: tokens=1,*" %%i in ('reg query "HKLM\SOFTWARE\Microsoft\VisualStudio\SxS\VS7" /v "15.0" /reg:32') do ( 
     set str=%%i
@@ -86,7 +86,7 @@ if %selected%==1 (
 	rem call "!value!" %target%
 	goto toolsetxp
 )
- else if %selected%==7 (
+ else if %selected%==1 (
 	SET specs=win32-msvc2005
 	SET vsvarbat="%VS80COMNTOOLS%..\..\VC\vcvarsall.bat"
 	call !vsvarbat! %target%
