@@ -516,6 +516,7 @@ namespace SOUI
 		{
 			m_pDropDownWnd->SDispatchMessage(UM_SETSCALE, nScale, 0);
 		}
-	}
+        GetScaleSkin(m_pSkinBtn, nScale);
+    }
 
 }
