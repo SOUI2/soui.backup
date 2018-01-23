@@ -60,6 +60,8 @@ namespace SOUI
         */ 
         virtual BOOL FireEvent(EventArgs &evt);
 
+        virtual void OnScaleChanged(int nScale);
+
         /**
         * SComboView::CreateListBox
         * @brief    创建下拉列表

@@ -70,7 +70,7 @@ namespace SOUI
         :m_pSkinBtn(GETBUILTINSKIN(SKIN_SYS_DROPBTN))
         ,m_pEdit(NULL)
         ,m_bDropdown(TRUE)
-        ,m_nDropHeight(200)
+        ,m_nDropHeight(200, SLayoutSize::dp)
         ,m_dwBtnState(WndState_Normal)
         ,m_nAnimTime(200)
         ,m_pDropDownWnd(NULL)
@@ -372,6 +372,7 @@ namespace SOUI
         if(!m_pDropDownWnd)
         {
             m_pDropDownWnd = new SDropDownWnd_ComboBox(this);
+            m_pDropDownWnd->SDispatchMessage(UM_SETSCALE, GetScale(), 0);
 		}
 
 		EventCBDropdown evt(this);
@@ -515,6 +516,7 @@ namespace SOUI
 		{
 			m_pDropDownWnd->SDispatchMessage(UM_SETSCALE, nScale, 0);
 		}
-	}
+        GetScaleSkin(m_pSkinBtn, nScale);
+    }
 
 }

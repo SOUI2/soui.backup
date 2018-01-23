@@ -380,7 +380,7 @@ namespace SOUI
         void OnKillFocus(SWND wndFocus);
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"dropDown", m_bDropdown, FALSE)
-            ATTR_INT(L"dropHeight", m_nDropHeight, FALSE)
+            ATTR_LAYOUTSIZE(L"dropHeight", m_nDropHeight, FALSE)
             ATTR_INT(L"curSel", m_iInitSel, FALSE)
             ATTR_SKIN(L"btnSkin", m_pSkinBtn, FALSE)
             ATTR_INT(L"animateTime", m_nAnimTime, FALSE)
@@ -423,7 +423,7 @@ namespace SOUI
         ISkinObj *m_pSkinBtn;    /**< 按钮资源      */
 
         BOOL m_bDropdown;        /**< 是否按下   */
-        int  m_nDropHeight;      /**< 下拉框高度 */
+        SLayoutSize  m_nDropHeight;      /**< 下拉框高度 */
         int  m_nAnimTime;        /**< 动画时间   */
         int  m_iInitSel;         /**< 默认选中索引 */
         SDropDownWnd *m_pDropDownWnd;  /**< DropDown指针 */

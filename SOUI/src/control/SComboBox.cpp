@@ -65,7 +65,7 @@ namespace SOUI
 
 	int SComboBox::GetListBoxHeight()
 	{
-		int nDropHeight=m_nDropHeight;
+		int nDropHeight=m_nDropHeight.toPixelSize(GetScale());
 		if(GetCount()) 
 		{
 			int nItemHeight=m_pListBox->GetItemHeight();
@@ -125,6 +125,13 @@ namespace SOUI
 		}
 		return SComboBase::FireEvent(evt);
 	}
+
+    void SComboBox::OnScaleChanged(int nScale)
+    {
+        __super::OnScaleChanged(nScale);
+        if(m_pListBox)
+            m_pListBox->SSendMessage(UM_SETSCALE, GetScale());
+    }
 
 
 }//namespace SOUI

@@ -40,7 +40,7 @@ namespace SOUI
 
     int SComboView::GetListBoxHeight()
     {
-        int nDropHeight=m_nDropHeight;
+        int nDropHeight=m_nDropHeight.toPixelSize(GetScale());
         if(GetCount()) 
         {
             IListViewItemLocator * pItemLocator = m_pListBox->GetItemLocator();
@@ -100,6 +100,13 @@ namespace SOUI
             }
         }
         return SComboBase::FireEvent(evt);
+    }
+
+    void SComboView::OnScaleChanged(int nScale)
+    {
+        __super::OnScaleChanged(nScale);
+        if (m_pListBox)
+            m_pListBox->SSendMessage(UM_SETSCALE, GetScale());
     }
 
     SListView * SComboView::GetListView()
