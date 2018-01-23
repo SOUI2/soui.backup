@@ -199,10 +199,11 @@ int SListCtrl::GetSelectedItem()
 }
 
 void SListCtrl::SetSelectedItem(int nItem)
-{
-    m_nSelectItem = nItem;
-    
-    Invalidate();
+{   
+	if (nItem != m_nSelectItem)
+	{
+		NotifySelChange(m_nSelectItem,nItem);
+	}
 }
 
 int SListCtrl::GetItemCount() const
