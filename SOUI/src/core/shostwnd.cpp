@@ -896,7 +896,7 @@ void SHostWnd::UpdateTooltip()
         if(bOK)
         {
             TIPID id={tipInfo.swnd,tipInfo.dwCookie};
-            m_pTipCtrl->UpdateTip(id,tipInfo.rcTarget,tipInfo.strTip);
+            m_pTipCtrl->UpdateTip(id,tipInfo.rcTarget,tipInfo.strTip,GetScale());
         }else
         {//hide tooltip
             m_pTipCtrl->ClearTip();
