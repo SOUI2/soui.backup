@@ -570,8 +570,11 @@ protected:
         ATTR_INT(L"max", m_nMaxValue, FALSE)
         ATTR_INT(L"value", m_nValue, FALSE)
         ATTR_UINT(L"vertical", m_bVertical, FALSE)
+		ATTR_BOOL(L"up",m_bUp,FALSE)
         ATTR_UINT(L"showPercent", m_bShowPercent, FALSE)
     SOUI_ATTRS_END()
+
+	BOOL m_bUp;
 };
 
 /**

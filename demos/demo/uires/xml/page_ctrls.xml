@@ -3,7 +3,8 @@
     <page title="listctrls">
       <tabctrl pos="0,0,-0,-0" animateSteps="10" animateType="1" curSel="2" colorBkgnd="#ffffff" tabAlign="top" tabSkin="skin_tab_left" tabInterSkin="skin_tab_left_splitter" tabInterSize="2" tabHeight="30" tabWidth="120" iconSkin="skin_small_icons" icon-x="5" icon-y="4" colorText="#000000bb">
         <page title="listctrl">
-          <listctrl name="lc_test" hotTrack="1" pos="10,0,-10,-10" itemHeight="20" headerHeight="30" cursor="CUR_TST" font="underline:1" itemSkin="skin_tab_left"  sbSkin="skin_new_scrollbar">
+          <button name="lc_btn">sel 10</button>
+          <listctrl name="lc_test" hotTrack="1" pos="10,[5,-10,-10" itemHeight="20" headerHeight="30" cursor="CUR_TST" font="underline:1" itemSkin="skin_tab_left"  sbSkin="skin_new_scrollbar">
             <header align="left" itemSwapEnable="1" fixWidth="0" sortHeader="1">
               <items>
                 <item width="150">name</item>
@@ -238,10 +239,11 @@
     </page>
     <page title="prog and slider" colorBorder="#ff0000" margin-x="1" margin-y="1">
       <progress name="prog_test" pos="100,100,@200,@15" font="adding:-8" value="20" min="0" max="100" showPercent="1"/>
-      <sliderbar name="slider_test" thumbInRail="0" pos="100,[10" alpha="200" width="200" value="20" min="0" max="100"/>
+      <sliderbar name="slider_test" thumbInRail="0" up="0" pos="100,[10" alpha="200" width="200" value="20" min="0" max="100"/>
+      <text name="slider_text" pos="100,[10"/>
       <sliderbar name="slider_test2" thumbInRail="1" pos="100,[10" alpha="200" width="200" value="20" min="0" max="100"/>
       <sliderbar name="slider_test3" thumbInRail="0" vertical="1" pos="10,10" alpha="200" height="200" value="20" min="0" max="100"/>
-      <sliderbar name="slider_test4" thumbInRail="1" vertical="1" pos="[10,10" alpha="200" height="200" value="20" min="0" max="100"/>
+      <sliderbar name="slider_test4" thumbInRail="1" vertical="1" up="0" pos="[10,10" alpha="200" height="200" value="20" min="0" max="100"/>
       <scrollbar name="sb_test1" pos="[10,10,@200,@16" min="0" max="100" value="10" page="10" vertical="0"/>
       <scrollbar name="sb_test2" pos="[50,10,@16,@200" min="0" max="100" value="10" page="10" vertical="1"/>
     </page>

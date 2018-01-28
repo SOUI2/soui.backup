@@ -50,10 +50,10 @@ public:
 
     enum
     {
-        SC_RAIL,
-        SC_SELECT,
-        SC_THUMB,
-        SC_RAILBACK,
+        SC_RAIL,//导轨
+        SC_SELECT,//选中
+        SC_THUMB,//滑块
+        SC_RAILBACK//导轨背景
     };
 
 public:    

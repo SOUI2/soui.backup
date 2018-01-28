@@ -19,6 +19,7 @@ using namespace SOUI;
 #include "ThreadObject.h"
 #include "skin/SDemoSkin.h"
 #include "../../controls.extend/SMcListViewEx/STabCtrlHeaderBinder.h"
+#include "control/SListCtrl.h"
 
 extern UINT g_dwSkinChangeMessage;
 //演示使用SNotifyCenter的异步事件
@@ -198,7 +199,16 @@ protected:
 	void OnCbxInterpolotorChange(EventArgs *e);
 
 	void OnEventPath(EventArgs *e);
-
+	void OnLcBtnSel()
+	{
+		FindChildByID2<SListCtrl>(R.id.lc_test)->SetSelectedItem(10);
+	}
+	void OnSider(EventArgs * ec)
+	{
+		SStringT text;
+		text.Format(L"%d",((EventSliderPos*)ec)->nPos);
+		FindChildByName2<SStatic>(L"slider_text")->SetWindowTextW(text);
+	}
 	HRESULT OnSkinChangeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL bHandled);
     //UI控件的事件及响应函数映射表
 	EVENT_MAP_BEGIN()
@@ -211,7 +221,9 @@ protected:
 		EVENT_ID_COMMAND(R.id.btn_tip,OnBtnTip)
 		EVENT_NAME_CONTEXTMENU(L"edit_1140",OnEditMenu)
 		EVENT_NAME_COMMAND(L"btn_msgbox",OnBtnMsgBox)
-		
+		EVENT_NAME_HANDLER(L"slider_test3", EventSliderPos::EventID, OnSider)
+		EVENT_NAME_HANDLER(L"slider_test4", EventSliderPos::EventID, OnSider)
+		EVENT_NAME_COMMAND(L"lc_btn",OnLcBtnSel)
 		//<--在新版本的uiresbuilder生成的resource.h中定义了R.id, R.name两个对象，可以使用如下方式来关联变量。
 		EVENT_ID_COMMAND(R.id.btnSelectGif,OnBtnSelectGIF)
         EVENT_ID_RANGE_HANDLER(R.id.radio2_1,R.id.radio2_6,EventSwndStateChanged::EventID,OnTabPageRadioSwitch)    //10000-10005是XML中定义的radio2的ID

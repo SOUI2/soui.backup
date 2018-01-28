@@ -622,6 +622,7 @@ SProgress::SProgress()
     , m_pSkinBg(NULL)
     , m_pSkinPos(NULL)
     , m_bVertical(FALSE)
+	, m_bUp(TRUE)
 {
 
 }
@@ -696,6 +697,10 @@ int SProgress::OnCreate( void* )
 
 BOOL SProgress::SetValue(int dwValue)
 {
+	if (IsVertical()&&m_bUp)
+	{
+		dwValue = m_nMaxValue-dwValue;
+	}
     if(dwValue<m_nMinValue) dwValue =m_nMinValue;
     if(dwValue>m_nMaxValue) dwValue =m_nMaxValue;
     m_nValue=dwValue;
