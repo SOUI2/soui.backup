@@ -55,7 +55,7 @@ namespace SOUI
 		m_strResName(strResName),
 		m_bIsLoad(FALSE)
 	{
-		SetAttribute(L"drawFocusRect", L"0");
+		SWindow::m_bDrawFocusRect = FALSE;
 		m_bIsLoad = m_Menu.LoadMenu(strResName);
 	}
 
