@@ -20,6 +20,7 @@ using namespace SOUI;
 #include "skin/SDemoSkin.h"
 #include "../../controls.extend/SMcListViewEx/STabCtrlHeaderBinder.h"
 #include "control/SListCtrl.h"
+#include "trayicon/SShellNotifyIcon.h"
 
 extern UINT g_dwSkinChangeMessage;
 //演示使用SNotifyCenter的异步事件
@@ -203,15 +204,30 @@ protected:
 	{
 		FindChildByID2<SListCtrl>(R.id.lc_test)->SetSelectedItem(10);
 	}
+	
 	void OnSider(EventArgs * ec)
 	{
-		SStringT text;
-		text.Format(L"%d",((EventSliderPos*)ec)->nPos);
+		SStringT text;		
+		text.Format(L"%d", ((EventSliderPos*)ec)->nPos);
 		FindChildByName2<SStatic>(L"slider_text")->SetWindowTextW(text);
+	}
+	int vol;//只为演示功能。。。就放这方便玩家看
+	void OnSiderVol(EventArgs * ec)
+	{
+		vol = ((EventSliderPos*)ec)->nPos;
+	}
+	
+	void OnEventBeforeShowMenu(EventArgs *pEvt)
+	{
+		EventBeforeShowMenu<void>* pEvtBeforeShowMenu = (EventBeforeShowMenu<void>*)pEvt;
+		SMenuEx * menu = (SMenuEx*)pEvtBeforeShowMenu->GetMenu();
+		menu->GetMenuItem(1008)->FindChildByName2<SSliderBar>(L"menu_slider_vol")->SetValue(vol);
 	}
 	HRESULT OnSkinChangeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL bHandled);
     //UI控件的事件及响应函数映射表
-	EVENT_MAP_BEGIN()
+	EVENT_MAP_BEGIN()	
+		EVENT_ID_HANDLER(8, EVT_BEFORE_SHOWMENU, OnEventBeforeShowMenu)
+		EVENT_NAME_HANDLER(L"menu_slider_vol", EventSliderPos::EventID, OnSiderVol)
 		EVENT_HANDLER(EventPath::EventID,OnEventPath)
 		EVENT_ID_HANDLER(R.id.cbx_interpolator,EventCBSelChange::EventID,OnCbxInterpolotorChange)
 		EVENT_ID_COMMAND(1, OnClose)

@@ -45,8 +45,11 @@ namespace SOUI
 			{
 				POINT pt;
 				GetCursorPos(&pt);
-				SetForegroundWindow(m_MsgOnlyWnd->m_hWnd);
-				tmenu.TrackPopupMenu(0, pt.x, pt.y, m_MsgOnlyWnd->m_hWnd);
+				EventBeforeShowMenu<SMenu> evbeforeshowmenu(this,&tmenu,m_menuType);
+				FireEvent(evbeforeshowmenu);
+				HWND hHostWnd = GetContainer()->GetHostHwnd();
+				SetForegroundWindow(hHostWnd);				
+				tmenu.TrackPopupMenu(0, pt.x, pt.y, hHostWnd);
 			}
 		}
 		break;
@@ -57,8 +60,10 @@ namespace SOUI
 			{
 				POINT pt;
 				GetCursorPos(&pt);
-				SetForegroundWindow(m_MsgOnlyWnd->m_hWnd);
-				tmenuex.TrackPopupMenu(0, pt.x, pt.y, m_MsgOnlyWnd->m_hWnd);
+				EventBeforeShowMenu<SMenuEx> evbeforeshowmenu(this, &tmenuex,m_menuType);
+				FireEvent(evbeforeshowmenu);
+				HWND hHostWnd = GetContainer()->GetHostHwnd();
+				tmenuex.TrackPopupMenu(0, pt.x, pt.y, hHostWnd);
 			}
 		}
 		break;
@@ -123,9 +128,15 @@ namespace SOUI
 		if (SApplication::getSingleton().LoadXmlDocment(xmlDoc, strValue))
 		{
 			if (_tcscmp(xmlDoc.first_child().name(), _T("menu")) == 0)
+			{
 				m_menuType = MenuType::menu;
+				GetEventSet()->addEvent(EVENTID(EventBeforeShowMenu<SMenu>));
+			}
 			else if ((_tcscmp(xmlDoc.first_child().name(), _T("menuRoot")) == 0) || (_tcscmp(xmlDoc.first_child().name(), _T("menuItem")) == 0))
+			{
 				m_menuType = MenuType::menuex;
+				GetEventSet()->addEvent(EVENTID(EventBeforeShowMenu<SMenuEx>));
+			}
 			else m_menuType = MenuType::unknow;
 
 			if (MenuType::unknow != m_menuType)

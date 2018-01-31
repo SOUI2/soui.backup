@@ -27,7 +27,28 @@ namespace SOUI
 	{
 		menu, menuex, unknow
 	};
-
+#define EVT_BEFORE_SHOWMENU EVT_EXTERNAL_BEGIN+0x008
+	template<class menuT>
+	class EventBeforeShowMenu :public TplEventArgs<EventBeforeShowMenu<menuT>>
+	{
+		SOUI_CLASS_NAME(EventBeforeShowMenu, L"on_before_showmenu")
+	public:
+		EventBeforeShowMenu(SObject *pSender,menuT *pmenu,MenuType menuTpye) :TplEventArgs<EventBeforeShowMenu>(pSender),m_pMenu(pmenu),m_MenuType(menuTpye) {}
+		enum {
+			EventID = EVT_BEFORE_SHOWMENU
+		};
+		menuT * GetMenu()
+		{
+			return m_pMenu;
+		}
+		MenuType GetMenuType()
+		{
+			return m_MenuType;
+		}
+	private:
+		menuT * m_pMenu;
+		MenuType m_MenuType;
+	};
 	class SShellNotifyIcon :public SWindow
 	{
 		SOUI_CLASS_NAME(SWindow, L"shellnotifyicon")
