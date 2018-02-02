@@ -1,7 +1,7 @@
-﻿<menuRoot skin="_skin.sys.wnd.bkgnd" trCtx="dlg_main" itemHeight="26dp" iconPos="4dp,4dp" textOffset="5dp" iconBarWidth="24dp" maxWidth="180dp" minWidth="100dp" margin="5,5,5,5" >
+﻿<menuRoot skin="_skin.sys.wnd.bkgnd" trCtx="dlg_main" itemHeight="26dp" iconPos="4dp,40dp" textOffset="5dp" iconBarWidth="24dp" maxWidth="180dp" minWidth="100dp" margin="5,5,5,5" >
   <menuItem text="language" id="50">
-    <menuItem id="100"  text="chinese"/>
-    <menuItem id="101" text="english"/>
+    <menuItem id="100"  text="中文"/>
+    <menuItem id="101" text="英文"/>
   </menuItem>
   <sep />
   <menuItem id="102" text="exit" />

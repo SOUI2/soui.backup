@@ -75,7 +75,7 @@ namespace SOUI
         m_pListBox->GetSel();
         if(m_pEdit && !m_pEdit->GetEventSet()->isMuted())
         {
-            SStringT strText=GetLBText(m_pListBox->GetSel());
+            SStringT strText=GetLBText(m_pListBox->GetSel(),FALSE);
             m_pEdit->GetEventSet()->setMutedState(true);
             m_pEdit->SetWindowText(strText);
             m_pEdit->GetEventSet()->setMutedState(false);
@@ -114,11 +114,14 @@ namespace SOUI
         return m_pListBox;
     }
 
-    SStringT SComboView::GetLBText(int iItem)
+    SStringT SComboView::GetLBText(int iItem,BOOL bRawText)
     {
+
         ILvAdapter *pAdapter = m_pListBox->GetAdapter();
         if(!pAdapter || iItem == -1) return SStringT();
-        return pAdapter->getItemDesc(iItem);
+        SStringT strDesc = pAdapter->getItemDesc(iItem);
+		if(bRawText) return strDesc;
+		return S_CW2T(tr(S_CT2W(strDesc)));
     }
 
     int SComboView::GetCount() const

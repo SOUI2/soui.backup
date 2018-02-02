@@ -23,11 +23,11 @@ namespace SOUI
  */
 typedef struct tagLBITEM
 {
-    SStringT    strText;  /**< 文本 */
+    STrText     strText;  /**< 文本 */
     int         nImage;   /**< 图标 */
     LPARAM      lParam;   /**< 附加参数 */
 
-    tagLBITEM()
+	tagLBITEM(ITrCtxProvider * pTrCtx):strText(pTrCtx)
     {
         nImage = -1;
         lParam = NULL;
@@ -116,7 +116,7 @@ public:
      */
     int GetItemHeight() const
     {
-        return m_nItemHei;
+        return m_itemHeight.toPixelSize(GetScale());
     }
 
     /**
@@ -144,33 +144,12 @@ public:
      * SListBox::GetText
      * @brief    获取指定项文本
      * @param    int nIndex -- 选项索引
-     * @param    LPTSTR lpszBuffer -- 缓冲区
-     * @return   返回int 
+	 * @param    BOOL bRawText -- 原始数据标志
+     * @return   SStringT,列表项的原始字符串
      *
      * Describe  获取指定项文本
      */
-    int GetText(int nIndex, LPTSTR lpszBuffer) const;
-
-    /**
-     * SListBox::GetText
-     * @brief    获取指定项文本
-     * @param    int nIndex -- 选项索引
-     * @param    SStringT& strText -- 缓冲区
-     * @return   返回int 
-     *
-     * Describe  获取指定项文本
-     */
-    int GetText(int nIndex, SStringT& strText) const;
-
-    /**
-     * SListBox::GetTextLen
-     * @brief    获取指定项文本长度
-     * @param    int nIndex -- 选项索引
-     * @return   返回int 
-     *
-     * Describe  获取文本长度
-     */
-    int GetTextLen(int nIndex) const;
+    SStringT GetText(int nIndex,BOOL bRawText=FALSE) const;
 
     /**
      * SListBox::GetItemHeight
@@ -264,6 +243,8 @@ public:
     int HitTest(CPoint &pt);
 
 protected:
+	virtual HRESULT OnLanguageChanged();
+
     /**
      * SListBox::CreateChildren
      * @brief    创建新项
@@ -430,14 +411,14 @@ protected:
 
     SArray<LPLBITEM>    m_arrItems;  /**< 保存item */
 
-    int     m_nItemHei;     /**< item高度 */
+    SLayoutSize   m_itemHeight;     /**< item高度 */
     int     m_iSelItem;     /**< 选中item */
     int     m_iHoverItem;   /**< Hover状态的item */
     int     m_iScrollSpeed; /**< 滚动速度 */
     BOOL    m_bHotTrack;    /**<  */
 
-    CPoint m_ptIcon;  /**< 图标坐标 */
-    CPoint m_ptText;  /**< 文本坐标 */
+	SLayoutSize m_ptIcon[2]; /**< 图标坐标 */
+    SLayoutSize m_ptText[2]; /**< 文本坐标 */
 
     COLORREF m_crItemBg;    /**< 背景色 */
     COLORREF m_crItemBg2;   /**< 背景色 */
@@ -450,7 +431,7 @@ protected:
 public:
 
     SOUI_ATTRS_BEGIN()
-        ATTR_INT(L"itemHeight", m_nItemHei, FALSE)
+        ATTR_LAYOUTSIZE(L"itemHeight", m_itemHeight, FALSE)
         ATTR_SKIN(L"itemSkin", m_pItemSkin, TRUE)
         ATTR_SKIN(L"iconSkin", m_pIconSkin, TRUE)
         ATTR_COLOR(L"colorItemBkgnd",m_crItemBg,FALSE)
@@ -459,10 +440,10 @@ public:
 		ATTR_COLOR(L"colorItemHotBkgnd",m_crItemHotBg,FALSE)
         ATTR_COLOR(L"colorText",m_crText,FALSE)
         ATTR_COLOR(L"colorSelText",m_crSelText,FALSE)
-        ATTR_INT(L"icon-x", m_ptIcon.x, FALSE)
-        ATTR_INT(L"icon-y", m_ptIcon.y, FALSE)
-        ATTR_INT(L"text-x", m_ptText.x, FALSE)
-        ATTR_INT(L"text-y", m_ptText.y, FALSE)
+        ATTR_LAYOUTSIZE(L"icon-x", m_ptIcon[0], FALSE)
+        ATTR_LAYOUTSIZE(L"icon-y", m_ptIcon[1], FALSE)
+        ATTR_LAYOUTSIZE(L"text-x", m_ptText[0], FALSE)
+        ATTR_LAYOUTSIZE(L"text-y", m_ptText[1], FALSE)
         ATTR_INT(L"hotTrack",m_bHotTrack,FALSE)
     SOUI_ATTRS_END()
 

@@ -39,7 +39,7 @@ namespace SOUI
         *
         * Describe  获取文本
         */
-        SStringT GetLBText(int iItem);
+        SStringT GetLBText(int iItem,BOOL bRawText=FALSE);
         
         /**
         * SComboView::GetListBox

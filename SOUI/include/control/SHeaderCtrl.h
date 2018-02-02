@@ -45,7 +45,7 @@ namespace SOUI
 	  }
     UINT    mask; 
     SLayoutSize     cx;
-	STrText text;
+	STrText strText;
     SHDSORTFLAG stFlag;
     LPARAM  lParam; 
     UINT   state;

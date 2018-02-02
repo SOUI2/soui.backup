@@ -55,7 +55,7 @@ namespace SOUI
         */
         LPCTSTR GetTitle()
         {
-            return m_strTitle.GetText();
+            return m_strTitle.GetText(FALSE);
         }
         /**
         * STabPage::SetTitle

@@ -323,8 +323,7 @@ bool CMainDlg::OnLbControlSelChanged(EventArgs *pEvtBase)
 	SListBox *listbox=(SListBox*)pEvt->sender;
 	if (pEvt->nNewSel != 0)
 	{
-		SStringT strText;
-		listbox->GetText(pEvt->nNewSel, strText);
+		SStringT strText = listbox->GetText(pEvt->nNewSel);
 
 		//查找该类型的xml数据
 

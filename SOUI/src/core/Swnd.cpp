@@ -20,21 +20,21 @@ namespace SOUI
 		pTrCtxProvider = pProvider;
 	}
 
-	SStringT STrText::GetText() const
+	SStringT STrText::GetText(BOOL bRawText) const
 	{
-		return strTr;
+		return bRawText?strRaw:strTr;
 	}
 
 	void STrText::SetText(const SStringT& strText)
 	{
-		strOrigin = strText;
+		strRaw = strText;
 		TranslateText();
 	}
 
 	void STrText::TranslateText()
 	{
 		if(pTrCtxProvider == NULL) return;
-		strTr = S_CW2T(TR(S_CT2W(strOrigin),pTrCtxProvider->GetTrCtx()));
+		strTr = S_CW2T(TR(S_CT2W(strRaw),pTrCtxProvider->GetTrCtx()));
 	}
 
 
@@ -134,18 +134,19 @@ namespace SOUI
 		return rc;
 	}
 
-	SStringT SWindow::GetWindowText()
+	SStringT SWindow::GetWindowText(BOOL bRawText/*=FALSE*/)
 	{
-		return m_strText.GetText();
+		return m_strText.GetText(bRawText);
 	}
 
 	BOOL SWindow::OnUpdateToolTip(CPoint pt, SwndToolTipInfo &tipInfo)
 	{
-		if(m_strToolTipText.GetText().IsEmpty()) return FALSE;
+		if(m_strToolTipText.GetText(FALSE).IsEmpty()) 
+			return FALSE;
 		tipInfo.swnd = m_swnd;
 		tipInfo.dwCookie =0;
 		tipInfo.rcTarget = m_rcWindow;
-		tipInfo.strTip = m_strToolTipText.GetText();
+		tipInfo.strTip = m_strToolTipText.GetText(FALSE);
 		return TRUE;
 	}
 
@@ -1237,7 +1238,7 @@ namespace SOUI
 
 		CRect rcText;
 		GetTextRect(rcText);
-		DrawText(pRT,m_strText.GetText(), m_strText.GetText().GetLength(), rcText, GetTextAlign());
+		DrawText(pRT,m_strText.GetText(FALSE), m_strText.GetText(FALSE).GetLength(), rcText, GetTextAlign());
 
 		//draw focus rect
 		if(IsFocused())
@@ -1331,7 +1332,7 @@ namespace SOUI
 		CAutoRefPtr<IRenderTarget> pRT;
 		GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
 		BeforePaintEx(pRT);
-		DrawText(pRT,m_strText.GetText(), m_strText.GetText().GetLength(), rcTest4Text, nTestDrawMode | DT_CALCRECT);
+		DrawText(pRT,m_strText.GetText(FALSE), m_strText.GetText(FALSE).GetLength(), rcTest4Text, nTestDrawMode | DT_CALCRECT);
 
 		//计算子窗口大小
 		CSize szChilds = GetLayout()->MeasureChildren(this,rcContainer.Width(),rcContainer.Height());
@@ -2673,7 +2674,7 @@ namespace SOUI
 
 	SStringT SWindow::GetToolTipText()
 	{
-		return m_strToolTipText.GetText();
+		return m_strToolTipText.GetText(FALSE);
 	}
 
 	void SWindow::SetToolTipText(LPCTSTR pszText)

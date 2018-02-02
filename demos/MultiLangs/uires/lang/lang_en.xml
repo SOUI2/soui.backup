@@ -6,6 +6,7 @@
       <source>soui demo</source>
       <translation>soui demo</translation>
     </message>
+   
   </context>
   <context name="editmenu">
     <message>
@@ -85,6 +86,10 @@
       <translation>page3</translation>
     </message>
     <message>
+      <source>page4</source>
+      <translation>page4</translation>
+    </message>
+    <message>
       <source>menu</source>
       <translation>menu</translation>
     </message>
@@ -116,11 +121,34 @@
       <source>unknown</source>
       <translation>unknown</translation>
     </message>
+
+    <message>
+      <source>Impotment</source>
+      <translation>Impotment</translation>
+    </message>
+
+    <message>
+      <source>Normal</source>
+      <translation>Normal</translation>
+    </message>
+
+    <message>
+      <source>Flag</source>
+      <translation>Flag</translation>
+    </message>
+    
   </context>
+ 
   <context name="user">
     <message>
       <source>test input</source>
       <translation>test input</translation>
     </message>
+
+    <message>
+      <source>editwindow</source>
+      <translation>editwindow</translation>
+    </message>
+    
   </context>
 </language>

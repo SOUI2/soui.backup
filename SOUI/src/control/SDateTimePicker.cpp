@@ -250,7 +250,7 @@ namespace SOUI
 		{
 			pRT->SetTextColor(crTxt);
 
-			pRT->DrawText(m_strWeek[i].GetText(), m_strWeek[i].GetText().GetLength(), rcItem, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
+			pRT->DrawText(m_strWeek[i].GetText(FALSE), m_strWeek[i].GetText(FALSE).GetLength(), rcItem, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
 			rcItem.OffsetRect(nWid, 0);
 		}
 		pRT->SetTextColor(crTxt);
@@ -893,8 +893,9 @@ namespace SOUI
 		sysTime = m_sysTime;
 	}
 
-	SStringT SDateTimePicker::GetWindowText()
+	SStringT SDateTimePicker::GetWindowText(BOOL bRawText)
 	{
+		(bRawText);
 		SStringT szText;
 		szText.Format(_T("%04d-%02d-%02d"), m_sysTime.wYear, m_sysTime.wMonth, m_sysTime.wDay);
 		if(m_bTimeEnable)

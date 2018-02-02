@@ -1,4 +1,4 @@
-ï»¿#include "StdAfx.h"
+#include "StdAfx.h"
 #include "SPropertyGrid.h"
 #include "propitem/SPropertyItem-Text.h"
 #include "propitem/SPropertyItem-Option.h"
@@ -7,11 +7,11 @@
 
 const int KPropItemIndent   = 10;
 
-const COLORREF KColorHead  = RGBA(128,128,128,255);   //å¤´çš„é¢œè‰²             ç°è‰²
-const COLORREF KColorGroup = RGBA(128,128,128,255);   //ç»„çš„é¢œè‰²             ç°è‰²
-const COLORREF KColorItem  = RGBA(255,255,255,255);   //æœªé€‰ä¸­çš„é¢œè‰²         ç™½è‰²
-const COLORREF KColorItemSel  = RGBA(0,0,128,255);    //é€‰ä¸­æ—¶itemçš„é¢œè‰²     æš—è“
-const COLORREF KColorBorder = RGBA(0,0,0,255);        //è¾¹æ¡†é¢œè‰²             é»‘è‰²
+const COLORREF KColorHead  = RGBA(128,128,128,255);   //Í·µÄÑÕÉ«             »ÒÉ«
+const COLORREF KColorGroup = RGBA(128,128,128,255);   //×éµÄÑÕÉ«             »ÒÉ«
+const COLORREF KColorItem  = RGBA(255,255,255,255);   //Î´Ñ¡ÖĞµÄÑÕÉ«         °×É«
+const COLORREF KColorItemSel  = RGBA(0,0,128,255);    //Ñ¡ÖĞÊ±itemµÄÑÕÉ«     °µÀ¶
+const COLORREF KColorBorder = RGBA(0,0,0,255);        //±ß¿òÑÕÉ«             ºÚÉ«
 
 namespace SOUI
 {
@@ -27,20 +27,20 @@ namespace SOUI
     
     SPropItemMap::SPropItemMap()
     {
-		//æ³¨å†Œæ¯ä¸€ä¸ªItemç±»å‹å’ŒItemçš„åˆ›å»ºæ–¹å¼
-		//å¦‚
+		//×¢²áÃ¿Ò»¸öItemÀàĞÍºÍItemµÄ´´½¨·½Ê½
+		//Èç
 /* 
     <groups>
 		 <propgroup name="group1" description="desc of group1">
 				<propcolor name="color2.1" value="#00ff00" format="#%02x%02x%02x%02x"/>
-				<propsize name="size2.1" value="200,300" childrenNames="å®½|é«˜"/>
+				<propsize name="size2.1" value="200,300" childrenNames="¿í|¸ß"/>
 				<proptext name="text2.2" value="value 2.2"></proptext>
 				<propoption name="option2.1" value="1" options="true|false|empty"/>
 		</propgroup 
 	</groups>
 */
 
-		//å½“å‘ç°xmlNode.name = propcolor  propsize proptextæ—¶ï¼Œåˆ†åˆ«è°ƒç”¨å¯¹åº”çš„CreatePropItem
+		//µ±·¢ÏÖxmlNode.name = propcolor  propsize proptextÊ±£¬·Ö±ğµ÷ÓÃ¶ÔÓ¦µÄCreatePropItem
 
 
         SetAt(SPropertyItemText::GetClassName(),SPropertyItemText::CreatePropItem);
@@ -77,9 +77,9 @@ namespace SOUI
 	,m_crBorder(RGBA(255,255,255,70))
 	,m_strEnableAutoWordSel(_T("1"))
     {
-		//æ³¨å†Œäº‹ä»¶   
-		//1ã€itemçš„å€¼æ”¹å˜çš„æ—¶å€™å“åº”
-		//2ã€Selæ”¹å˜çš„æ—¶å€™å“åº”
+		//×¢²áÊÂ¼ş   
+		//1¡¢itemµÄÖµ¸Ä±äµÄÊ±ºòÏìÓ¦
+		//2¡¢Sel¸Ä±äµÄÊ±ºòÏìÓ¦
         GetEventSet()->addEvent(EVENTID(EventPropGridValueChanged));
         GetEventSet()->addEvent(EVENTID(EventPropGridItemClick));
         GetEventSet()->addEvent(EVENTID(EventPropGridItemActive));
@@ -129,13 +129,14 @@ namespace SOUI
         SASSERT(idx != -1);
         int iTopIdx = GetTopIndex();
         
-        int nPageItems = (m_rcClient.Height()+m_nItemHei-1)/m_nItemHei+1;
+		int nItemHei = m_itemHeight.toPixelSize(GetScale());
+        int nPageItems = (m_rcClient.Height()+nItemHei-1)/nItemHei+1;
         if(iTopIdx + nPageItems > GetCount()) nPageItems = GetCount() - iTopIdx;
         CRect rcItem;
         if(idx >= iTopIdx && idx <= iTopIdx+nPageItems)
         {
-            rcItem = CRect(0,0,m_rcClient.Width(),m_nItemHei);
-            rcItem.OffsetRect(0,m_nItemHei*idx-m_ptOrigin.y);
+            rcItem = CRect(0,0,m_rcClient.Width(),nItemHei);
+            rcItem.OffsetRect(0,nItemHei*idx-m_ptOrigin.y);
             rcItem.OffsetRect(m_rcClient.TopLeft());
         }
         return rcItem;
@@ -184,7 +185,7 @@ namespace SOUI
                     InsertString(-1,NULL,-1,(LPARAM)pChild);
                     pChild = pChild->GetItem(IPropertyItem::GPI_NEXTSIBLING);
                 }
-                //å±•å¼€å­é¡¹s
+                //Õ¹¿ª×ÓÏîs
                 pChild=pGroup->GetItem(IPropertyItem::GPI_FIRSTCHILD);
                 while(pChild)
                 {
@@ -215,7 +216,7 @@ namespace SOUI
                     SortInsert(pChild);
                     pChild = pChild->GetItem(IPropertyItem::GPI_NEXTSIBLING);
                 }
-                //å±•å¼€å­é¡¹s
+                //Õ¹¿ª×ÓÏîs
                 pChild=pGroup->GetItem(IPropertyItem::GPI_FIRSTCHILD);
                 while(pChild)
                 {
@@ -310,11 +311,11 @@ namespace SOUI
 		SStringT strName = S_CW2T(pItem->GetName1());
 		pRT->DrawText(strName,strName.GetLength(),rcName,DT_SINGLELINE|DT_VCENTER);
 		CRect rcItem = rc;
-		rcItem.left = rcNameBack.right;
+		rcItem.left= rcNameBack.right;
 		if(pItem->HasButton()) rcItem.right -= rcItem.Height();
 
 
-		pItem->DrawItem(pRT,rcItem); //ç»˜åˆ¶Item
+		pItem->DrawItem(pRT,rcItem); //»æÖÆItem
 
 		CAutoRefPtr<IPen> pen,oldPen;
 		pRT->CreatePen(PS_SOLID,m_crBorder,1,&pen);
@@ -396,8 +397,9 @@ namespace SOUI
     {
         CRect rcClient;
         GetClientRect(&rcClient);
-        if(pt.x-rcClient.left>=m_nItemHei+m_nNameWidth-1
-        && pt.x-rcClient.left<=m_nItemHei+m_nNameWidth+1)
+		int nItemHei = m_itemHeight.toPixelSize(GetScale());
+        if(pt.x-rcClient.left>=nItemHei+m_nNameWidth-1
+        && pt.x-rcClient.left<=nItemHei+m_nNameWidth+1)
         {
             SWindow::OnLButtonDown(nFlags,pt);
             m_ptDrag = pt;
@@ -437,6 +439,7 @@ namespace SOUI
 				}
             }
         }
+
     }
 
     void SPropertyGrid::SortItems( SList<IPropertyItem*> & lstItems )
@@ -475,9 +478,10 @@ namespace SOUI
     {
         CRect rcClient;
         GetClientRect(&rcClient);
+		int nItemHei = m_itemHeight.toPixelSize(GetScale());
         if(m_bDraging 
-        ||  (pt.x-rcClient.left>=m_nItemHei+m_nNameWidth-1
-            && pt.x-rcClient.left<=m_nItemHei+m_nNameWidth+1))
+        ||  (pt.x-rcClient.left>=nItemHei+m_nNameWidth-1
+            && pt.x-rcClient.left<=nItemHei+m_nNameWidth+1))
         {
             SetCursor(SApplication::getSingleton().LoadCursor(MAKEINTRESOURCE(IDC_SIZEWE)));
         }else

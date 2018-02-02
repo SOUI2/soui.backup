@@ -149,9 +149,9 @@ namespace SOUI
         *
         * Describe  获取文本位置
         */
-        virtual SStringT GetWindowText();
+        virtual SStringT GetWindowText(BOOL bRawText=FALSE);
 
-        virtual SStringT GetLBText(int iItem) =0;
+        virtual SStringT GetLBText(int iItem,BOOL bRawText=FALSE) =0;
         /**
         * FindString
         * @brief    查找字符串位置
@@ -217,6 +217,7 @@ namespace SOUI
 
 
         virtual BOOL FireEvent(EventArgs &evt);
+
     protected:
 
         /**

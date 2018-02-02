@@ -440,21 +440,20 @@ namespace SOUI
     {
         for(int i=nAfter;i<GetCount();i++)
         {
-            SStringT strItem = GetLBText(i);
+            SStringT strItem = GetLBText(i,TRUE);
             if(strItem == pszFind) return i;
         }
         return -1;
     }
 
-    SStringT SComboBase::GetWindowText()
+    SStringT SComboBase::GetWindowText(BOOL bRawText/*=TRUE*/)
     {
         if(!m_bDropdown)
         {
             return GetEditText();
         }
         if(GetCurSel()==-1) return _T("");
-        SStringT text = GetLBText(GetCurSel());
-		return S_CW2T(tr(S_CT2W(text)));
+        return GetLBText(GetCurSel(),bRawText);
     }
 
     void SComboBase::SetWindowText(LPCTSTR pszText)

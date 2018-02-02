@@ -269,7 +269,7 @@ BOOL SHostWnd::_InitFromXml(pugi::xml_node xmlNode,int nWidth,int nHeight)
     
     ModifyStyle(0,dwStyle);
     ModifyStyleEx(0,dwExStyle);
-    CSimpleWnd::SetWindowText(m_hostAttr.m_strTitle.GetText());
+    CSimpleWnd::SetWindowText(m_hostAttr.m_strTitle.GetText(FALSE));
     
     if(m_hostAttr.m_bTranslucent)
     {
@@ -1554,7 +1554,7 @@ void SHostWnd::_RestoreClickState()
 
 HRESULT SHostWnd::OnLanguageChanged()
 {
-	CSimpleWnd::SetWindowText(m_hostAttr.m_strTitle.GetText());
+	CSimpleWnd::SetWindowText(m_hostAttr.m_strTitle.GetText(FALSE));
 	return 3;
 }
 

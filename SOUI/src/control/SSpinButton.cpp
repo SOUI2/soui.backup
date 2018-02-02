@@ -187,13 +187,6 @@ namespace SOUI
 				break;
 		}
 		
-		/*if (NULL == m_pBuddy) return;
-
-
-		if (!bLoading)
-		{
-
-		}*/
 		return S_OK;
 	}
 
@@ -230,7 +223,7 @@ namespace SOUI
 			return;
 		}
 
-		SStringT sBuddyValue = m_pBuddy->GetWindowText();
+		SStringT sBuddyValue = m_pBuddy->GetWindowText(TRUE);
 		int nValue = _ttoi(sBuddyValue);
 		if (1 == nHover)
 		{
