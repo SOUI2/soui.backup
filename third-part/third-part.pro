@@ -16,6 +16,7 @@ SUBDIRS += mhook
 SUBDIRS += 7z
 SUBDIRS += scintilla
 SUBDIRS += sqlite3
+SUBDIRS += jsoncpp
 SUBDIRS += v8_4_8
 CONFIG(c++11){
 #7z需要c11支持

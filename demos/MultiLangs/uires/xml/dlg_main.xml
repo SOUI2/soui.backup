@@ -49,9 +49,10 @@
                 <item width="150">gender</item>
                 <item width="150">age</item>
                 <item width="150">score</item>
+                <item width="200">Flag</item>
               </items>
             </header>
-            <template itemHeight="30dp" colorHover="#cccccc" colorSelected="#0000ff">
+            <template itemHeight="80dp" colorHover="#cccccc" colorSelected="#0000ff">
               <window name="col1" clipClient="1">
                 <text name="txt_name" pos="5,|0" offset="0,-0.5" font="bold:1,adding:-1"/>
               </window>
@@ -64,6 +65,16 @@
               <window  name="col4" clipClient="1">
                 <text name="txt_score" pos="|0,|0" offset="-0.5,-0.5" colorText="#ff0000"/>
               </window>
+              <window  name="col5" clipClient="1">
+                <!--<text name="txt_flag" pos="|0,|0" offset="-0.5,-0.5" colorText="#ff0000"/>-->
+                <combobox name="cbx_flag" pos="0,0,-0,65"  dropDown="1" dropHeight="100dp" class="cls_edit" dotted="0" animateTime="200" curSel="0" autoFitDropBtn="0" >
+                  <liststyle class="cls_edit"   itemHeight="30dp" colorText="#030303" colorSelText="#FFFFFF" colorItemBkgnd="#cccccc" colorItemSelBkgnd="#cccccc"/>
+                  <items>
+                    <item text="Normal" icon="0" data="104"/>
+                    <item text="Impotment" icon="1" data="105"/>
+                  </items>
+                </combobox>
+              </window>
             </template>
 
           </mclistview>
@@ -71,7 +82,7 @@
         <page title="page3">
           <window pos="0,0,-0,-0" skin="chat_bg"/>
           <img pos="5,5" skin="shape_test" id="2000"/>          
-          <edit pos="|0,|0,@200dp,@30dp" offset="-0.5,-0.5" font="size:18dp">编辑窗口</edit>
+          <edit pos="|0,|0,@200dp,@30dp" offset="-0.5,-0.5" font="size:18dp" name="edit_name">编辑窗口</edit>
         </page>
         <page title="page4" layout="gridLayout" columnCount="2" rowCount="2" xInterval="5dp" yInterval="5dp">
           <window size="30,30" colorBkgnd="#ff0000"/>

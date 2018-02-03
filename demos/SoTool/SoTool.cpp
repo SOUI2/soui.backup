@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "MainDlg.h"
 #include "com-cfg.h"
+#include "SCaptureButton.h"
+#include "STabCtrlEx.h"
 
 //从PE文件加载，注意从文件加载路径位置
 #define RES_TYPE 1
@@ -40,6 +42,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
         theApp->RegisterWindowClass<SEdit2>();
         theApp->RegisterWindowClass<SImgCanvas>();
         theApp->RegisterWindowClass<SFolderTreeList>();
+		theApp->RegisterWindowClass<SCaptureButton>();
+		theApp->RegisterWindowClass<STabCtrlEx>();
 
         HMODULE hSysResource=LoadLibrary(SYS_NAMED_RESOURCE);
         if(hSysResource)

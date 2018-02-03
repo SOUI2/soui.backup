@@ -52,6 +52,7 @@ public:
 			++iDep;
 			hParent = GetParentItem(hParent);
 		}
+		
 		SWindow *containerWnd = pItem->FindChildByName(L"container");
 		if (containerWnd)
 		{

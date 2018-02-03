@@ -156,14 +156,13 @@ public:
      * SComboBox::GetLBText
      * @brief    获取文本
      * @param    int iItem -- 索引值
+	 * @param    BOOL bRawText-- true:未经翻译的文字，false：翻译后的文字
      *
      * Describe  获取文本
      */
-    SStringT GetLBText(int iItem)
+    SStringT GetLBText(int iItem,BOOL bRawText = FALSE)
     {
-        SStringT strText;
-        m_pListBox->GetText(iItem,strText);
-        return strText;
+        return m_pListBox->GetText(iItem,bRawText);
     }
     /**
      * SComboBox::GetListBox
@@ -183,6 +182,10 @@ protected:
      * Describe  此函数是消息响应函数
      */ 
     virtual BOOL FireEvent(EventArgs &evt);
+
+    virtual void OnScaleChanged(int nScale);
+
+	virtual HRESULT OnLanguageChanged();
 
     /**
      * SComboBox::CreateListBox

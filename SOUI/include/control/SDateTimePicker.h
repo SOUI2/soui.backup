@@ -128,7 +128,7 @@ public:
 	void SetTime(const SYSTEMTIME& sysTime);
 	void GetTime(SYSTEMTIME& sysTime);
 	void SetTime(WORD wYear, WORD wMonth, WORD wDay, WORD wHour, WORD wMinute, WORD wSecond);
-	SStringT GetWindowText();
+	SStringT GetWindowText(BOOL bRawText=FALSE);
 protected:		// 继承 
 	virtual SWindow* GetDropDownOwner();
 	virtual void OnCreateDropDown(SDropDownWnd* pDropDown);

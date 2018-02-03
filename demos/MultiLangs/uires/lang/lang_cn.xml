@@ -6,6 +6,8 @@
       <source>soui demo</source>
       <translation>SOUI演示</translation>
     </message>
+
+   
   </context>
   <context name="editmenu">
     <message>
@@ -45,7 +47,7 @@
       <translation>关闭窗口</translation>
     </message>
     <message>
-      <source>language</source>
+      <source>语言</source>
       <translation>语言</translation>
     </message>
     <message>
@@ -89,6 +91,10 @@
       <translation>页面3</translation>
     </message>
     <message>
+      <source>page4</source>
+      <translation>页面4</translation>
+    </message>
+    <message>
       <source>menu</source>
       <translation>菜单</translation>
     </message>
@@ -120,11 +126,32 @@
       <source>unknown</source>
       <translation>人妖</translation>
     </message>
+
+    <message>
+      <source>Impotment</source>
+      <translation>重点标记</translation>
+    </message>
+
+    <message>
+      <source>Normal</source>
+      <translation>普通标记</translation>
+    </message>
+
+    <message>
+      <source>Flag</source>
+      <translation>标记</translation>
+    </message>
   </context>
   <context name="user">
     <message>
       <source>test input</source>
       <translation>用户自定义输入</translation>
     </message>
+
+    <message>
+      <source>editwindow</source>
+      <translation>编辑窗口</translation>
+    </message>
+
   </context>
 </language>

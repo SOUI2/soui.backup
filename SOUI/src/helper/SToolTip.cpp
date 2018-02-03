@@ -58,7 +58,7 @@ namespace SOUI
                 else if(!IsWindowVisible() && !m_strTip.IsEmpty())
                 {
                     KillTimer(TIMERID_DELAY);
-                    SetTimer(TIMERID_DELAY,m_nDelay);           
+                    SetTimer(TIMERID_DELAY,m_nDelay);
                     ::ClientToScreen(pMsg->hwnd,&pt);
                     SetWindowPos(0,pt.x,pt.y+24,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_NOSENDCHANGING|SWP_NOACTIVATE);
                 }
@@ -67,13 +67,23 @@ namespace SOUI
         }
     }
 
-    void STipCtrl::UpdateTip(const TIPID &id, CRect rc,LPCTSTR pszTip)
+    void STipCtrl::UpdateTip(const TIPID &id, CRect rc,LPCTSTR pszTip, int nScale)
     {
         if(m_id.dwHi == id.dwHi && m_id.dwLow== id.dwLow) return;
 
         m_id = id;
         m_rcTarget=rc;
         m_strTip=pszTip;
+        if (m_nScale != nScale)
+        {
+            if (m_font) DeleteObject(m_font);
+            LOGFONT lf;
+            GetObject(GetStockObject(DEFAULT_GUI_FONT), sizeof(lf), &lf);
+            lf.lfHeight = -12 * nScale / 100;
+            _tcscpy(lf.lfFaceName, _T("宋体"));
+            m_font = CreateFontIndirect(&lf);
+            m_nScale = nScale;
+        }
         m_strTip.Replace(_T("\\n"),_T("\n"));
 
         if(IsWindowVisible())

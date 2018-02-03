@@ -27,7 +27,7 @@ BOOL CMainDlg::OnInitDialog(HWND hWnd, LPARAM lParam)
     m_2UnicodeHandler.OnInit(this);
     m_folderScanHandler.OnInit(this);
     m_calcMd5Handler.OnInit(this);
-
+	m_windowHelperHander.OnInit(this);
 	STreeView * pTreeView1 = FindChildByName2<STreeView>("import_table_treeview");
 	STreeView *pTreeView2 = FindChildByName2<STreeView>("export_table_treeview");
 
