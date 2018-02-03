@@ -219,8 +219,8 @@ protected:
 	
 	void OnEventBeforeShowMenu(EventArgs *pEvt)
 	{
-		EventBeforeShowMenu<void>* pEvtBeforeShowMenu = (EventBeforeShowMenu<void>*)pEvt;
-		SMenuEx * menu = (SMenuEx*)pEvtBeforeShowMenu->GetMenu();
+		EventBeforeShowMenu<SMenuEx>* pEvtBeforeShowMenu = (EventBeforeShowMenu<SMenuEx>*)pEvt;
+		SMenuEx * menu = pEvtBeforeShowMenu->GetMenu();
 		menu->GetMenuItem(1008)->FindChildByName2<SSliderBar>(L"menu_slider_vol")->SetValue(vol);
 	}
 	HRESULT OnSkinChangeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL bHandled);
