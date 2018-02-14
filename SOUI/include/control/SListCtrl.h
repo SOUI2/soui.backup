@@ -550,10 +550,12 @@ namespace SOUI
     protected:
         typedef SArray<DXLVITEM> ArrLvItem;  /**< 保存item数组 */
 
-        SHeaderCtrl*  m_pHeader;  /**< 列表头控件 */
+        SHeaderCtrl*	m_pHeader;  /**< 列表头控件 */
         ArrLvItem       m_arrItems;  /**< */
         CPoint          m_ptOrigin;  /**< */
-
+		BOOL			m_bDrawGridlines;
+		SLayoutSize		m_GridlinesWid;
+		COLORREF		m_crGridlines;
     protected:
         SOUI_ATTRS_BEGIN()
             ATTR_INT(L"headerHeight", m_nHeaderHeight, FALSE)
@@ -574,6 +576,9 @@ namespace SOUI
             ATTR_INT(L"text-x", m_ptText.x, FALSE)
             ATTR_INT(L"text-y", m_ptText.y, FALSE)
             ATTR_INT(L"hotTrack", m_bHotTrack, FALSE)
+			ATTR_BOOL(L"drawGridlines", m_bDrawGridlines,FALSE)
+			//ATTR_LAYOUTSIZE(L"gridlinesWid",m_GridlinesWid,FALSE)
+			ATTR_COLOR(L"colorGridlines", m_crGridlines,FALSE)
         SOUI_ATTRS_END()
 
         SOUI_MSG_MAP_BEGIN()

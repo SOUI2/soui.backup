@@ -29,9 +29,12 @@ SListCtrl::SListCtrl()
     , m_bHotTrack(FALSE)
     , m_bCheckBox(FALSE)
     , m_bMultiSelection(FALSE)
+	, m_crGridlines(RGBA(0,200,0,255))
+	, m_bDrawGridlines(FALSE)
 {
     m_bClipClient = TRUE;
     m_bFocusable = TRUE;
+	m_GridlinesWid=SLayoutSize::fromString(L"1px");
     m_evtSet.addEvent(EVENTID(EventLCSelChanging));
     m_evtSet.addEvent(EVENTID(EventLCSelChanged));
     m_evtSet.addEvent(EVENTID(EventLCDbClick));
@@ -250,7 +253,7 @@ void SListCtrl::UpdateScrollBar()
 {
     CSize szView;
     szView.cx = m_pHeader->GetTotalWidth();
-    szView.cy = GetItemCount()*m_nItemHeight;
+    szView.cy = GetItemCount()*m_nItemHeight + m_GridlinesWid.toPixelSize(GetScale());
 
     CRect rcClient;
     SWindow::GetClientRect(&rcClient);//不计算滚动条大小
@@ -265,9 +268,12 @@ void SListCtrl::UpdateScrollBar()
         //  需要纵向滚动条
         m_wBarVisible |= SSB_VERT;
         m_siVer.nMin  = 0;
-        m_siVer.nMax  = szView.cy-1;
+        m_siVer.nMax  = szView.cy-1;		
         m_siVer.nPage = GetCountPerPage(FALSE)*m_nItemHeight;
-
+		if (m_bDrawGridlines)
+		{
+			m_siVer.nPage += m_GridlinesWid.toPixelSize(GetScale());
+		}
         if (size.cx-GetSbWidth() < szView.cx)
         {
             //  需要横向滚动条
@@ -426,7 +432,7 @@ CRect SListCtrl::GetItemRect(int nItem, int nSubItem)
     if (!(nItem>=0 && nItem<GetItemCount() && nSubItem>=0 && nSubItem<GetColumnCount()))
         return CRect();
 
-    CRect rcItem;
+    CRect rcItem;	 
     rcItem.top    = m_nItemHeight*nItem;
     rcItem.bottom = rcItem.top+m_nItemHeight;
     rcItem.left   = 0;
@@ -490,7 +496,9 @@ void SListCtrl::RedrawItem(int nItem)
         rcDC.IntersectRect(rcItem,rcList);
         IRenderTarget *pRT = GetRenderTarget(&rcDC, OLEDC_PAINTBKGND);
         SSendMessage(WM_ERASEBKGND, (WPARAM)pRT);
-
+		int right = rcItem.left + m_pHeader->GetTotalWidth();
+		if (right < rcItem.right)
+			rcItem.right = right;
         DrawItem(pRT, rcItem, nItem);
 
         ReleaseRenderTarget(pRT);
@@ -529,12 +537,22 @@ void SListCtrl::OnPaint(IRenderTarget * pRT)
     CRect rcItem(rcList);
 
     rcItem.bottom = rcItem.top;
-    rcItem.OffsetRect(0,-(m_ptOrigin.y%m_nItemHeight));
+	int right = rcItem.left + m_pHeader->GetTotalWidth();
+	if(right<rcItem.right)
+		rcItem.right = right;
+    rcItem.OffsetRect(0,-(m_ptOrigin.y%m_nItemHeight));	
+	
+	if (m_bDrawGridlines&&nTopItem < GetItemCount())
+	{
+		int iGridlinesWid= m_GridlinesWid.toPixelSize(GetScale());
+		rcItem.bottom = rcItem.top + iGridlinesWid;
+		pRT->FillSolidRect(rcItem, m_crGridlines);
+		rcItem.top += iGridlinesWid;
+	}
     for (int nItem = nTopItem; nItem <= (nTopItem+GetCountPerPage(TRUE)) && nItem<GetItemCount(); rcItem.top = rcItem.bottom, nItem++)
     {
         rcItem.bottom = rcItem.top + m_nItemHeight;
-
-        DrawItem(pRT, rcItem, nItem);
+        DrawItem(pRT, rcItem, nItem);		
     }
     pRT->PopClip();
     AfterPaint(pRT, painter);
@@ -569,21 +587,11 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
     COLORREF crText = m_crText;
     DXLVITEM lvItem = m_arrItems[nItem];
     CRect rcIcon, rcText;
-
-
 	if (nItem % 2)
 	{
-		//         if (m_pItemSkin != NULL)
-		//             nBgImg = 1;
-		//         else if (CR_INVALID != m_crItemBg2)
-		//             crItemBg = m_crItemBg2;
-		//上面的代码不要了，因为skin间隔效果没必要，只留下颜色间隔就好了
 		if (CR_INVALID != m_crItemBg2)
 			crItemBg = m_crItemBg2;
 	}
-
- 
-
 	if ( lvItem.checked) 
 	{//和下面那个if的条件分开，才会有sel和hot的区别
 		if (m_pItemSkin != NULL)
@@ -604,13 +612,6 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
 		if (CR_INVALID != m_crSelText)
 			crText = m_crSelText;
 	}
-
-	//绘制背景
-	//     if (m_pItemSkin != NULL)
-	//         m_pItemSkin->Draw(pRT, rc, nBgImg);
-	//     else if (CR_INVALID != crItemBg)
-	//         pRT->FillSolidRect( rc, crItemBg);
-	//上面的代码在某些时候，【指定skin的时候，会导致背景异常】，所以颠倒一下顺序
 	if (CR_INVALID != crItemBg)//先画背景
 		pRT->FillSolidRect( rcItem, crItemBg);
 
@@ -619,7 +620,6 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
 
     //  左边加上空白
 	rcItem.left += ITEM_MARGIN;
-
     if (CR_INVALID != crText)
     {
         bTextColorChanged = TRUE;
@@ -629,7 +629,14 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
     CRect rcCol(rcItem);
     rcCol.right = rcCol.left;
     rcCol.OffsetRect(-m_ptOrigin.x,0);
-
+	int iGridlinesWid = m_GridlinesWid.toPixelSize(GetScale());
+	if (m_bDrawGridlines)
+	{
+		rcCol.left -= ITEM_MARGIN;
+		rcCol.right = rcCol.left + iGridlinesWid;
+		pRT->FillSolidRect(rcCol, m_crGridlines);
+		rcCol.right = (rcCol.left+= ITEM_MARGIN);
+	}
     for (int nCol = 0; nCol < GetColumnCount(); nCol++)
     {
         CRect rcVisiblePart;
@@ -638,13 +645,12 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
         hdi.mask=SHDI_WIDTH|SHDI_ORDER;
         m_pHeader->GetItem(nCol,&hdi);
         rcCol.left=rcCol.right;
-        rcCol.right = rcCol.left + hdi.cx;
+        rcCol.right = rcCol.left + hdi.cx-ITEM_MARGIN;
 
         rcVisiblePart.IntersectRect(rcItem, rcCol);
 
         if (rcVisiblePart.IsRectEmpty())
             continue;
-
         // 绘制 checkbox
         if (nCol == 0 && m_bCheckBox && m_pCheckSkin)
         {
@@ -692,8 +698,19 @@ void SListCtrl::DrawItem(IRenderTarget * pRT, CRect rcItem, int nItem)
             rcText.top = rcCol.top + m_ptText.y;
 
         pRT->DrawText(subItem.strText, subItem.cchTextMax, rcText, align);
+		if (m_bDrawGridlines)
+		{
+			rcCol.left = rcCol.right - iGridlinesWid;
+			pRT->FillSolidRect(rcCol, m_crGridlines);
+			rcCol.left = (rcCol.right+= ITEM_MARGIN);
+		}
     }
-
+	if (m_bDrawGridlines)
+	{
+		rcItem.left -= ITEM_MARGIN;
+		rcItem.top = rcItem.bottom-iGridlinesWid;
+		pRT->FillSolidRect(rcItem, m_crGridlines);
+	}
     if (bTextColorChanged)
         pRT->SetTextColor(crOldText);
 }
