@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "liblua_wrapper", "liblua_wrapper.vcxproj", "{E49EBCCC-152B-4B5D-A3D8-E79F52C7CB0C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E49EBCCC-152B-4B5D-A3D8-E79F52C7CB0C}.Debug|x86.ActiveCfg = Debug|Win32
+		{E49EBCCC-152B-4B5D-A3D8-E79F52C7CB0C}.Debug|x86.Build.0 = Debug|Win32
+		{E49EBCCC-152B-4B5D-A3D8-E79F52C7CB0C}.Release|x86.ActiveCfg = Release|Win32
+		{E49EBCCC-152B-4B5D-A3D8-E79F52C7CB0C}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5063F3C6-C3DB-4951-AD8F-EFB8208CCE60}
+	EndGlobalSection
+EndGlobal
