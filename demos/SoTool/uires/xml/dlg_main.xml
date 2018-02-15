@@ -1,9 +1,10 @@
-﻿<SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="680" height="420" minsize="680,420"  margin="5,5,5,5"  resizable="1"
+﻿<SOUI name="mainWindow" title="@string/title" bigIcon="ICON_LOGO:32" smallIcon="ICON_LOGO:16" width="680" height="420" minsize="680,420"  margin="5,5,5,5"  resizable="1" sendWheel2Hover="1"
 appWnd="1"
 translucent="1"
 >
   <root skin="_skin.sys.wnd.bkgnd" cache="1">
     <caption pos="0,0,-0,30" show="1" font="adding:0">
+      <captureButton name="img_capture_host" pos="100,8" skin="skin_spyhost" tip="定位待SPY的SOUI窗口"/>
       <icon pos="10,8" src="ICON_LOGO:16"/>
       <text pos="29,9">@string/title</text>
       <imgbtn name="btn_close" skin="_skin.sys.btn.close"    pos="-45,0" tip="close" animate="1"/>
@@ -30,6 +31,9 @@ translucent="1"
       </page>
       <page title="PE Tool" iconIndex="8" tip="PE小助手">
         <include src="layout:page_pe_tool"/>
+      </page>
+      <page title="Spy++" iconIndex="8" tip="spy++">
+        <include src="layout:page_window_spy"/>
       </page>
       <page title="关于" iconIndex="8" tip="关于本工具">
         <include src="layout:page_about"/>

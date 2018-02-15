@@ -269,7 +269,7 @@ BOOL SHostWnd::_InitFromXml(pugi::xml_node xmlNode,int nWidth,int nHeight)
     
     ModifyStyle(0,dwStyle);
     ModifyStyleEx(0,dwExStyle);
-    CSimpleWnd::SetWindowText(m_hostAttr.m_strTitle.GetText());
+    CSimpleWnd::SetWindowText(m_hostAttr.m_strTitle.GetText(FALSE));
     
     if(m_hostAttr.m_bTranslucent)
     {
@@ -896,7 +896,7 @@ void SHostWnd::UpdateTooltip()
         if(bOK)
         {
             TIPID id={tipInfo.swnd,tipInfo.dwCookie};
-            m_pTipCtrl->UpdateTip(id,tipInfo.rcTarget,tipInfo.strTip);
+            m_pTipCtrl->UpdateTip(id,tipInfo.rcTarget,tipInfo.strTip,GetScale());
         }else
         {//hide tooltip
             m_pTipCtrl->ClearTip();
@@ -1554,7 +1554,7 @@ void SHostWnd::_RestoreClickState()
 
 HRESULT SHostWnd::OnLanguageChanged()
 {
-	CSimpleWnd::SetWindowText(m_hostAttr.m_strTitle.GetText());
+	CSimpleWnd::SetWindowText(m_hostAttr.m_strTitle.GetText(FALSE));
 	return 3;
 }
 

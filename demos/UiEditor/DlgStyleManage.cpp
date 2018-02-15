@@ -167,8 +167,7 @@ namespace SOUI
 			return s;
 		}
 
-		lb->GetText(n, s);
-		return s;
+		return lb->GetText(n);
 	}
 
 }

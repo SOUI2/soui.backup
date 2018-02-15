@@ -31,11 +31,12 @@ namespace SOUI
          * @param    const TIPID & id --  tooltip的ID
          * @param    CRect rc --  tooltip的感应区
          * @param    LPCTSTR pszTip --  tooltip字符串
+         * @param    int nScale -- 当前的缩放比例
          * @return   void 
          *
          * Describe  
          */
-        virtual void UpdateTip(const TIPID &id, CRect rc,LPCTSTR pszTip) = 0;
+        virtual void UpdateTip(const TIPID &id, CRect rc,LPCTSTR pszTip, int nScale) = 0;
 
         /**
          * ClearTip

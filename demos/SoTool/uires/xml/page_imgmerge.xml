@@ -1,7 +1,7 @@
 ﻿<include>
   <window pos="0,-30,-0,-0" name="toolbar">
-    <button pos="0,|0,@100,@25" offset="0,-0.5" name="btn_save">保存</button>
-    <button pos="[10,|0,@100,@25" offset="0,-0.5" name="btn_save_ico">另存为ico</button>
+    <button pos="0,|0,@100,@25" offset="0,-0.5" name="btn_save">保存(&amp;s)</button>
+    <button pos="[10,|0,@100,@25" offset="0,-0.5" name="btn_save_ico">另存为ico(&i)</button>
     <button pos="[10,|0,@100,@25" offset="0,-0.5" name="btn_clear">清空</button>
     <window pos="[10,0,-0,-0">
       <!--arrange mode-->

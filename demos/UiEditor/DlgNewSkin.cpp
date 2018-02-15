@@ -21,7 +21,7 @@ namespace SOUI
 		int n = m_lbMain->GetCurSel();
 		if (n >= 0)
 		{
-			m_lbMain->GetText(n, m_strSkinName);
+			m_strSkinName =m_lbMain->GetText(n);
 		}
 		else
 		{

@@ -55,7 +55,7 @@ namespace SOUI
         */
         LPCTSTR GetTitle()
         {
-            return m_strTitle.GetText();
+            return m_strTitle.GetText(FALSE);
         }
         /**
         * STabPage::SetTitle
@@ -384,6 +384,7 @@ namespace SOUI
         virtual void OnInitFinished(pugi::xml_node xmlNode);
         
         virtual void OnColorize(COLORREF cr);
+        virtual void OnScaleChanged(int nScale);
 
 		virtual HRESULT OnLanguageChanged();
     protected:

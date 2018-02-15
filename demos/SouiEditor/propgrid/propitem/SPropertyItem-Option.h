@@ -21,7 +21,7 @@ namespace SOUI
             ATTR_CUSTOM(L"options",OnAttrOptions)
             ATTR_INT(L"dropHeight",m_nDropHeight,FALSE)
             ATTR_INT(L"value",m_nValue,FALSE)
-			ATTR_INT(L"CanEmpty",m_bCanEmpty, 1,FALSE)
+			ATTR_INT(L"CanEmpty",m_bCanEmpty,FALSE)
         SOUI_ATTRS_END()
 
     protected:

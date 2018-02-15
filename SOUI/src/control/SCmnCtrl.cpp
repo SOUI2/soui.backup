@@ -184,7 +184,7 @@ void SLink::DrawText(IRenderTarget *pRT,LPCTSTR pszBuf,int cchText,LPRECT pRect,
 void SLink::OnInitFinished( pugi::xml_node xmlNode)
 {
     __super::OnInitFinished(xmlNode);
-    if(m_strToolTipText.GetText().IsEmpty()) m_strToolTipText.SetText(m_strLinkUrl);
+    if(m_strToolTipText.GetText(TRUE).IsEmpty()) m_strToolTipText.SetText(m_strLinkUrl);
 }
 
 BOOL SLink::OnSetCursor(const CPoint &pt)
@@ -314,6 +314,29 @@ bool SButton::OnAcceleratorPressed( const CAccelerator& accelerator )
     if(IsDisabled(TRUE)) return false;
     FireCommand();
     return true;
+}
+
+BOOL SButton::InitFromXml(pugi::xml_node xmlNode)
+{
+	BOOL bRet=SWindow::InitFromXml(xmlNode);
+	SStringT strText = GetWindowText(TRUE);
+	
+	if (!strText.IsEmpty()&&(strText[strText.GetLength()-1]==_T(')')))
+	{
+		int pos=strText.ReverseFind(_T('('));
+		if ((pos != -1)&&(strText[++pos]==_T('&')))
+		{
+			SStringT strAccelT=_T("alt+");
+			strAccelT += strText[++pos];
+			m_accel = CAccelerator::TranslateAccelKey(strAccelT);
+			if (m_accel)
+			{
+				CAccelerator acc(m_accel);
+				GetContainer()->GetAcceleratorMgr()->RegisterAccelerator(acc, this);
+			}
+		}
+	}
+	return bRet;
 }
 
 void SButton::OnDestroy()
@@ -1185,7 +1208,7 @@ void SGroup::OnPaint(IRenderTarget *pRT)
     BeforePaint(pRT, painter);
 
     CSize szFnt;
-    pRT->MeasureText(m_strText.GetText(), m_strText.GetText().GetLength(),&szFnt);
+    pRT->MeasureText(m_strText.GetText(FALSE), m_strText.GetText(FALSE).GetLength(),&szFnt);
 
     CRect rcText=GetWindowRect();
     rcText.left+=GROUP_HEADER,rcText.right-=GROUP_HEADER;
@@ -1205,7 +1228,7 @@ void SGroup::OnPaint(IRenderTarget *pRT)
     }
 
     
-    if(!m_strText.GetText().IsEmpty())
+    if(!m_strText.GetText(FALSE).IsEmpty())
     {
         CRect rcClip=rcText;
         rcClip.InflateRect(5,5,5,5);
@@ -1215,7 +1238,7 @@ void SGroup::OnPaint(IRenderTarget *pRT)
     {
         CRect rcGroupBox = GetWindowRect();
 
-        if(!m_strText.GetText().IsEmpty()) rcGroupBox.top+=szFnt.cy/2;
+        if(!m_strText.GetText(FALSE).IsEmpty()) rcGroupBox.top+=szFnt.cy/2;
         rcGroupBox.DeflateRect(1,1,1,0);
         
         CAutoRefPtr<IPen> pen1,pen2,oldPen;
@@ -1233,10 +1256,10 @@ void SGroup::OnPaint(IRenderTarget *pRT)
         pRT->SelectObject(oldPen);
     }
 
-    if(!m_strText.GetText().IsEmpty())
+    if(!m_strText.GetText(FALSE).IsEmpty())
     {
         pRT->PopClip();
-        pRT->DrawText(m_strText.GetText(), m_strText.GetText().GetLength(), rcText, DT_SINGLELINE|DT_VCENTER);
+        pRT->DrawText(m_strText.GetText(FALSE), m_strText.GetText(FALSE).GetLength(), rcText, DT_SINGLELINE|DT_VCENTER);
     }
 
     AfterPaint(pRT, painter);

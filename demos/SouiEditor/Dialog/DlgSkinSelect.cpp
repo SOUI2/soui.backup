@@ -262,7 +262,7 @@ namespace SOUI
 		else
 		{
 			SStringT strText;
-			listbox->GetText(pEvt->nNewSel, strText);
+			strText = listbox->GetText(pEvt->nNewSel);
 			m_lbRes->DeleteAll();
 			xmlNode = m_pResFileManger->m_xmlNodeUiRes.child(L"resource").child(strText).first_child();
 			while (xmlNode)
@@ -372,7 +372,7 @@ namespace SOUI
 
 		SStringT strSkinName;
 
-		m_lbSkin->GetText(n, strSkinName);
+		strSkinName = m_lbSkin->GetText(n);
 
 		SStringTList strLst;
 		SplitString(strSkinName, _T(':'), strLst);
@@ -580,7 +580,7 @@ namespace SOUI
 				SStringT strResText;
 				for (int i = 0; i < m_lbRes->GetCount(); i++)
 				{
-					m_lbRes->GetText(i, strResText);
+					strResText = m_lbRes->GetText(i);
 					if (strResText.Compare(strFile) != 0)
 						continue;
 
@@ -808,8 +808,7 @@ namespace SOUI
 			return s;
 		}
 
-		lb->GetText(n, s);
-		return s;
+		return lb->GetText(n);
 	}
 
 
@@ -906,7 +905,7 @@ namespace SOUI
 
 				for (int i = 0; i < m_lbRes->GetCount(); i++)
 				{
-					m_lbRes->GetText(i, strResText);
+					strResText = m_lbRes->GetText(i);
 					if (m_strSkinName.CompareNoCase(strResText) == 0)
 					{
 						SelectLBItem(m_lbRes, i);
@@ -1045,7 +1044,7 @@ namespace SOUI
 		SStringT strLbText;
 		for (int i = 0; i < lb->GetCount(); i++)
 		{
-			lb->GetText(i, strLbText);
+			strLbText = lb->GetText(i);
 			if (strLbText.CompareNoCase(strText) == 0)
 			{
 				n = i;
