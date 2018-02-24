@@ -5,7 +5,7 @@
   <imglist name="_skin.sys.focusradio" src="PNG:SYS_FOCUS_RADIO"/>
   <button name="_skin.sys.btn.normal" colorBorder="#7D9EBC" colorUp="#FEFEFE" colorDown="#C6E2FD" colorUpHover="#FEFEFE" colorDownHover="#DBEDFE" colorUpPush="#C6E2FD" colorDownPush="#FEFEFE"/>
   <scrollbar name="_skin.sys.scrollbar" src="PNG:SYS_SCROLLBAR" margin="3" hasgripper="0"/>
-  <imgframe name="_skin.sys.border" src="PNG:SYS_BORDER" states="2" margin-x="2" margin-y="2"/>
+  <imgframe name="_skin.sys.border" src="PNG:SYS_BORDER" states="3" margin-x="2" margin-y="2"/>
   <imglist name="_skin.sys.dropbtn" src="PNG:SYS_DROPBTN" states="3"/>
   <imglist name="_skin.sys.tree.toggle" src="PNG:SYS_TREE_TOGGLE" states="6"/>
   <imglist name="_skin.sys.tree.checkbox" src="PNG:SYS_TREE_CHECKBOX" states="9"/>

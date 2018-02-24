@@ -1258,8 +1258,19 @@ namespace SOUI
 
 			pRT->PushClipRect(&rcClient,RGN_DIFF);
 
-			int nState=0;
-			if(WndState_Hover & m_dwState) nState=1;
+			int nState = 0;
+			if (GetState()&WndState_Disable)
+			{
+				nState = 3;
+			}
+			else if ((GetContainer()->GetFocus()==m_swnd)|| GetState()&WndState_Check || GetState()&WndState_PushDown)
+			{
+				nState = 2;
+			}
+			else if (GetState()&WndState_Hover)
+			{
+				nState = 1;
+			}
 			if(m_pNcSkin)
 			{
 				if(nState>=m_pNcSkin->GetStates()) nState=0;
