@@ -1094,26 +1094,29 @@ namespace SOUI
 		else//MF_BYCOMMAND
 		{
 			pItemRef = pMenuRoot->FindChildByID2<SMenuExItem>(uPos);
+		    if (!pItemRef) return FALSE;
 		}
 
-		if (!pItemRef) return FALSE;
-
+        //MF_BYPOSITION方式插入时,如果uPos大于菜单项总数,应在末尾插入,而此时pItemRef为NULL
+        //if (!pItemRef) return FALSE;
+        
 		SMenuExItem *pMenuItem = (SMenuExItem*)pMenuRoot->CreateMenuItem((uFlag & MF_SEPARATOR) ? SMenuExSep::GetClassName() : SMenuExItem::GetClassName());
-		if (pItemRef)
+
+        if (pItemRef)
 		{
 			SWindow *pRefPrev = pItemRef->GetWindow(GSW_PREVSIBLING);
 			if (pRefPrev)
 			{
-				InsertChild(pMenuItem, pRefPrev);
+				pRefPrev->GetParent()->InsertChild(pMenuItem, pRefPrev);
 			}
 			else
 			{
-				InsertChild(pMenuItem, ICWND_FIRST);
+				pItemRef->GetParent()->InsertChild(pMenuItem, ICWND_FIRST);
 			}
 		}
 		else
 		{
-			InsertChild(pMenuItem);
+			pMenuRoot->InsertChild(pMenuItem);
 		}
 		if (!(uFlag & MF_SEPARATOR))
 		{
@@ -1122,6 +1125,10 @@ namespace SOUI
 			{
 				pMenuItem->m_pSubMenu = new SMenuEx(pMenuItem);
 			}
+
+            SStringW strId;
+            strId.Format(L"%d", nId);
+            pMenuItem->SetAttribute(L"ID", strId);
 		}
 
 		return FALSE;
