@@ -3,6 +3,8 @@
 license.txt
 readme.txt
 demo.cpp
+SouiInit.h
+SouiInit.cpp
 demo.rc
 MainDlg.cpp
 MainDlg.h
