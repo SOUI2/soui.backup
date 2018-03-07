@@ -689,7 +689,7 @@ namespace SOUI
         *
         * Describe   获取窗口标题
         */
-        SStringT GetWindowText();
+        SStringT GetWindowText(BOOL bRawText=FALSE);
         /**
         * SRichEdit::GetWindowTextLength
         * @brief     获取窗口标题长度
@@ -1276,7 +1276,7 @@ namespace SOUI
         */
         SEdit();
         
-        SStringT GetCueText() const;
+        SStringT GetCueText(BOOL bRawText=FALSE) const;
         
         SOUI_ATTRS_BEGIN()
             ATTR_COLOR(L"cueColor",m_crCue,TRUE)

@@ -40,8 +40,8 @@ namespace SOUI
 		SHDITEM item;
 		item.mask = 0xFFFFFFFF;
 		item.cx.setSize((float)nWidth, unit);
-		item.text.SetCtxProvider(this);
-		item.text.SetText(pszText);
+		item.strText.SetCtxProvider(this);
+		item.strText.SetText(pszText);
 		item.stFlag = stFlag;
 		item.state = 0;
 		item.iOrder = iItem;
@@ -63,7 +63,7 @@ namespace SOUI
 		if ((UINT)iItem >= m_arrItems.GetCount()) return FALSE;
 		if (pItem->mask & SHDI_TEXT)
 		{
-			pItem->text.SetText(m_arrItems[iItem].text.GetText());
+			pItem->strText.SetText(m_arrItems[iItem].strText.GetText(FALSE));
 		}
 		if (pItem->mask & SHDI_WIDTH) pItem->cx = m_arrItems[iItem].cx;
 		if (pItem->mask & SHDI_LPARAM) pItem->lParam = m_arrItems[iItem].lParam;
@@ -100,7 +100,7 @@ namespace SOUI
 	{
 		if(!pItem->bVisible) return;
 		if (m_pSkinItem) m_pSkinItem->Draw(pRT, rcItem, pItem->state);
-		pRT->DrawText(pItem->text.GetText(), pItem->text.GetText().GetLength(), rcItem, m_style.GetTextAlign());
+		pRT->DrawText(pItem->strText.GetText(FALSE), pItem->strText.GetText(FALSE).GetLength(), rcItem, m_style.GetTextAlign());
 		if (pItem->stFlag == ST_NULL || !m_pSkinSort) return;
 		CSize szSort = m_pSkinSort->GetSkinSize();
 		CPoint ptSort;
@@ -339,12 +339,12 @@ namespace SOUI
 		while (xmlItem)
 		{
 			SHDITEM item;
-			item.text.SetCtxProvider(this);
+			item.strText.SetCtxProvider(this);
 			item.mask = 0xFFFFFFFF;
 			item.iOrder = iOrder++;
 			SStringW strText = xmlItem.text().get();
 			strText.TrimBlank();
-			item.text.SetText(S_CW2T(GETSTRING(strText)));
+			item.strText.SetText(S_CW2T(GETSTRING(strText)));
             item.cx = SLayoutSize::fromString(xmlItem.attribute(L"width").as_string(L"50"));// .as_int(50);
 			item.lParam = xmlItem.attribute(L"userData").as_uint(0);
 			item.stFlag = (SHDSORTFLAG)xmlItem.attribute(L"sortFlag").as_uint(ST_NULL);
@@ -511,7 +511,7 @@ namespace SOUI
 		__super::OnLanguageChanged();
 		for (UINT i = 0; i < m_arrItems.GetCount(); i++)
 		{
-			m_arrItems[i].text.TranslateText();
+			m_arrItems[i].strText.TranslateText();
 		}
 		return S_FALSE;
 	}

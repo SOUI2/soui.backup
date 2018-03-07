@@ -300,7 +300,7 @@ void SCalendar::DrawTitle(IRenderTarget *pRT)
        else
            pRT->SetTextColor(crTxt);
 
-       pRT->DrawText(m_strTitle[i].GetText(),m_strTitle[i].GetText().GetLength(),rcItem,DT_SINGLELINE|DT_VCENTER|DT_CENTER);
+       pRT->DrawText(m_strTitle[i].GetText(FALSE),m_strTitle[i].GetText(FALSE).GetLength(),rcItem,DT_SINGLELINE|DT_VCENTER|DT_CENTER);
        rcItem.OffsetRect(nWid,0);
    }
    pRT->SetTextColor(crTxt);

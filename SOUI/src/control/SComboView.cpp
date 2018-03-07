@@ -40,7 +40,7 @@ namespace SOUI
 
     int SComboView::GetListBoxHeight()
     {
-        int nDropHeight=m_nDropHeight;
+        int nDropHeight=m_nDropHeight.toPixelSize(GetScale());
         if(GetCount()) 
         {
             IListViewItemLocator * pItemLocator = m_pListBox->GetItemLocator();
@@ -75,7 +75,7 @@ namespace SOUI
         m_pListBox->GetSel();
         if(m_pEdit && !m_pEdit->GetEventSet()->isMuted())
         {
-            SStringT strText=GetLBText(m_pListBox->GetSel());
+            SStringT strText=GetLBText(m_pListBox->GetSel(),FALSE);
             m_pEdit->GetEventSet()->setMutedState(true);
             m_pEdit->SetWindowText(strText);
             m_pEdit->GetEventSet()->setMutedState(false);
@@ -102,16 +102,26 @@ namespace SOUI
         return SComboBase::FireEvent(evt);
     }
 
+    void SComboView::OnScaleChanged(int nScale)
+    {
+        __super::OnScaleChanged(nScale);
+        if (m_pListBox)
+            m_pListBox->SSendMessage(UM_SETSCALE, GetScale());
+    }
+
     SListView * SComboView::GetListView()
     {
         return m_pListBox;
     }
 
-    SStringT SComboView::GetLBText(int iItem)
+    SStringT SComboView::GetLBText(int iItem,BOOL bRawText)
     {
+
         ILvAdapter *pAdapter = m_pListBox->GetAdapter();
         if(!pAdapter || iItem == -1) return SStringT();
-        return pAdapter->getItemDesc(iItem);
+        SStringT strDesc = pAdapter->getItemDesc(iItem);
+		if(bRawText) return strDesc;
+		return S_CW2T(tr(S_CT2W(strDesc)));
     }
 
     int SComboView::GetCount() const

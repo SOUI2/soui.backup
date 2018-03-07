@@ -1434,8 +1434,9 @@ void SRichEdit::SetWindowText( LPCTSTR lpszText )
     Invalidate();
 }
 
-SStringT SRichEdit::GetWindowText()
+SStringT SRichEdit::GetWindowText(BOOL bRawText)
 {
+	(bRawText);
     SStringW strRet;
     int nLen=(int)SSendMessage(WM_GETTEXTLENGTH);
     wchar_t *pBuf=strRet.GetBufferSetLength(nLen+1);
@@ -1685,19 +1686,19 @@ SEdit::SEdit() :m_crCue(RGBA(0xcc,0xcc,0xcc,0xff)),m_strCue(this)
 void SEdit::OnKillFocus(SWND wndFocus)
 {
     SRichEdit::OnKillFocus(wndFocus);
-    if(!m_strCue.GetText().IsEmpty() && GetWindowTextLength() == 0) Invalidate();
+    if(!m_strCue.GetText(FALSE).IsEmpty() && GetWindowTextLength() == 0) Invalidate();
 }
 
 void SEdit::OnSetFocus(SWND wndOld)
 {
     SRichEdit::OnSetFocus(wndOld);
-    if(!m_strCue.GetText().IsEmpty() && GetWindowTextLength() == 0) Invalidate();
+    if(!m_strCue.GetText(FALSE).IsEmpty() && GetWindowTextLength() == 0) Invalidate();
 }
 
 void SEdit::OnPaint( IRenderTarget * pRT )
 {
     SRichEdit::OnPaint(pRT);
-    if(!m_strCue.GetText().IsEmpty() && GetWindowTextLength() == 0 && !IsFocused())
+    if(!m_strCue.GetText(FALSE).IsEmpty() && GetWindowTextLength() == 0 && !IsFocused())
     {
         SPainter painter;
         BeforePaint(pRT,painter);
@@ -1711,16 +1712,16 @@ void SEdit::OnPaint( IRenderTarget * pRT )
         rcInsetPixel.right = rcInsetPixel.right * GetScale() / 100;
         rcInsetPixel.bottom = rcInsetPixel.bottom * GetScale() / 100;
         rc.DeflateRect(rcInsetPixel.left, rcInsetPixel.top, rcInsetPixel.right, rcInsetPixel.bottom);
-        pRT->DrawText(m_strCue.GetText(),m_strCue.GetText().GetLength(),&rc,DT_SINGLELINE|DT_VCENTER);
+        pRT->DrawText(m_strCue.GetText(FALSE),m_strCue.GetText(FALSE).GetLength(),&rc,DT_SINGLELINE|DT_VCENTER);
         
         pRT->SetTextColor(crOld);
         AfterPaint(pRT,painter);
     }
 }
 
-SStringT SEdit::GetCueText() const
+SStringT SEdit::GetCueText(BOOL bRawText) const
 {
-    return m_strCue.GetText();
+    return m_strCue.GetText(bRawText);
 }
 
 HRESULT SEdit::OnLanguageChanged()

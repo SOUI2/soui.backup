@@ -32,7 +32,6 @@ namespace SOUI
 		SASSERT(m_pListBox);
 
 		m_pListBox->SetContainer(GetContainer());
-
 		m_pListBox->InitFromXml(listStyle);
 		m_pListBox->SetAttribute(L"pos", L"0,0,-0,-0", TRUE);
 		m_pListBox->SetAttribute(L"hotTrack",L"1",TRUE);
@@ -48,10 +47,10 @@ namespace SOUI
 			while(xmlNode_Item)
 			{
 
-				SStringT strText=S_CW2T(tr(xmlNode_Item.attribute(L"text").value()));
+				SStringW strText=xmlNode_Item.attribute(L"text").value();
 				int iIcon=xmlNode_Item.attribute(L"icon").as_int(0);
 				LPARAM lParam=xmlNode_Item.attribute(L"data").as_int(0);
-				m_pListBox->AddString(strText,iIcon,lParam);
+				m_pListBox->AddString(S_CW2T(strText),iIcon,lParam);
 				xmlNode_Item=xmlNode_Item.next_sibling(L"item");
 			}
 		}
@@ -65,7 +64,7 @@ namespace SOUI
 
 	int SComboBox::GetListBoxHeight()
 	{
-		int nDropHeight=m_nDropHeight;
+		int nDropHeight=m_nDropHeight.toPixelSize(GetScale());
 		if(GetCount()) 
 		{
 			int nItemHeight=m_pListBox->GetItemHeight();
@@ -124,6 +123,21 @@ namespace SOUI
 			}
 		}
 		return SComboBase::FireEvent(evt);
+	}
+
+    void SComboBox::OnScaleChanged(int nScale)
+    {
+        __super::OnScaleChanged(nScale);
+        if(m_pListBox)
+            m_pListBox->SSendMessage(UM_SETSCALE, GetScale());
+    }
+
+	HRESULT SComboBox::OnLanguageChanged()
+	{
+		HRESULT hr = __super::OnLanguageChanged();
+		if(m_pListBox)
+			m_pListBox->SSendMessage(UM_SETLANGUAGE);
+		return hr;
 	}
 
 

@@ -742,7 +742,7 @@ bool CMainDlg::OnLbControlSelChanged(EventArgs *pEvtBase)
 	if (pEvt->nNewSel != 0)
 	{
 		SStringT strText;
-		listbox->GetText(pEvt->nNewSel, strText);
+		strText = listbox->GetText(pEvt->nNewSel);
 
 		//查找该类型的xml数据
 		SMap<SStringT, pugi::xml_node>::CPair *p = m_mapCtrlList.Lookup(strText);  //查找
@@ -821,7 +821,7 @@ bool CMainDlg::OnWorkspaceXMLDbClick(EventArgs * pEvtBase)
 	if (pEvt->nCurSel != -1)
 	{
 		SStringT strText;
-		listbox->GetText(pEvt->nCurSel, strText);
+		strText = listbox->GetText(pEvt->nCurSel);
 
 		SStringT filename = m_strProPath + L"\\";
 		//查找此XML对应的文件
