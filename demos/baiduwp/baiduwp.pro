@@ -45,3 +45,4 @@ SOURCES += baiduwp.cpp \
            ../../controls.extend/SRadioBox2.cpp  
 
 RC_FILE += baiduwp.rc
+RC_INCLUDEPATH+=../../soui-sys-resource
