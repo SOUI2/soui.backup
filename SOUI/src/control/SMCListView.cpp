@@ -317,30 +317,7 @@ bool SMCListView::OnHeaderClick(EventArgs *pEvt)
 {
     EventHeaderClick *pEvt2 = sobj_cast<EventHeaderClick>(pEvt);
     SASSERT(pEvt2);
-    SHDITEM hi;
-    hi.mask = SHDI_ORDER|SHDI_SORTFLAG;
-    SHDSORTFLAG *pstFlags = new SHDSORTFLAG[m_pHeader->GetItemCount()];
-    int *pOrders = new int[m_pHeader->GetItemCount()];
-    int iCol = -1;
-    for(int i=0;i<m_pHeader->GetItemCount();i++)
-    {
-        m_pHeader->GetItem(i,&hi);
-        pstFlags[hi.iOrder]=hi.stFlag;
-        pOrders[hi.iOrder]=i;
-        if(i == pEvt2->iItem) iCol = hi.iOrder;
-    }
-    if(m_adapter->OnSort(iCol,pstFlags,m_pHeader->GetItemCount()))
-    {
-        //更新表头的排序状态
-        for(int i=0;i<m_pHeader->GetItemCount();i++)
-        {
-           m_pHeader->SetItemSort(pOrders[i],pstFlags[i]);
-        }
-        onDataSetChanged();
-    }
-    delete []pOrders;
-    delete []pstFlags;
-    return true;
+    return SortList(pEvt2->iItem);
 }
 
 bool SMCListView::OnHeaderSizeChanging(EventArgs *pEvt)
@@ -747,9 +724,30 @@ BOOL SMCListView::SortList(int nItem) {
 	if (!m_adapter || !m_pHeader || (nItem < 0 && nItem >= (int) m_pHeader->GetItemCount()))
 		return FALSE;
 
-	EventHeaderClick evt(m_pHeader);
-	evt.iItem = nItem;
-	return m_pHeader->FireEvent(evt);
+	SHDITEM hi;
+    hi.mask = SHDI_ORDER|SHDI_SORTFLAG;
+    SHDSORTFLAG *pstFlags = new SHDSORTFLAG[m_pHeader->GetItemCount()];
+    int *pOrders = new int[m_pHeader->GetItemCount()];
+    int iCol = -1;
+    for(int i=0;i<m_pHeader->GetItemCount();i++)
+    {
+        m_pHeader->GetItem(i,&hi);
+        pstFlags[hi.iOrder]=hi.stFlag;
+        pOrders[hi.iOrder]=i;
+        if(i == nItem) iCol = hi.iOrder;
+    }
+    if(m_adapter->OnSort(iCol,pstFlags,m_pHeader->GetItemCount()))
+    {
+        //更新表头的排序状态
+        for(int i=0;i<m_pHeader->GetItemCount();i++)
+        {
+           m_pHeader->SetItemSort(pOrders[i],pstFlags[i]);
+        }
+        onDataSetChanged();
+    }
+    delete []pOrders;
+    delete []pstFlags;
+    return true;
 }
 
 LRESULT SMCListView::OnMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
