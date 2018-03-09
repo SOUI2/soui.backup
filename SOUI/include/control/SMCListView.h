@@ -76,6 +76,7 @@ namespace SOUI
         void SetSel(int iItem,BOOL bNotify=FALSE);
         int  GetSel()const{return m_iSelItem;}
         SItemPanel * HitTest(CPoint & pt);
+		BOOL SortList(int iItem);
 
     protected:
         virtual void OnItemSetCapture(SItemPanel *pItem,BOOL bCapture);

@@ -743,6 +743,15 @@ SItemPanel * SMCListView::HitTest(CPoint & pt)
     return NULL;
 }
 
+BOOL SMCListView::SortList(int nItem) {
+	if (!m_adapter || !m_pHeader || (nItem < 0 && nItem >= (int) m_pHeader->GetItemCount()))
+		return FALSE;
+
+	EventHeaderClick evt(m_pHeader);
+	evt.iItem = nItem;
+	return m_pHeader->FireEvent(evt);
+}
+
 LRESULT SMCListView::OnMouseEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
     SetMsgHandled(FALSE);
