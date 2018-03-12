@@ -10,6 +10,8 @@ namespace SOUI
 #define EVT_CHROMETAB_NEW           (EVT_CHROMETAB_BEGIN + 0)
 #define EVT_CHROMETAB_CLOSE         (EVT_CHROMETAB_BEGIN + 1)
 #define EVT_CHROMETAB_SELCHANGED    (EVT_CHROMETAB_BEGIN + 2)
+#define EVT_CHROMETAB_DBCLICK       (EVT_CHROMETAB_BEGIN + 3)
+
     class EventChromeTabNew : public TplEventArgs<EventChromeTabNew>
     {
         SOUI_CLASS_NAME(EventChromeTabNew,L"on_chrometab_new")
@@ -53,6 +55,19 @@ namespace SOUI
         int         iNewSel;
     };
 
+    class EventChromeTabDbClick : public TplEventArgs<EventChromeTabDbClick>
+    {
+        SOUI_CLASS_NAME(EventChromeTabDbClick,L"on_chrometab_dbclick")
+    public:
+        EventChromeTabDbClick(SWindow *pSender):TplEventArgs<EventChromeTabDbClick>(pSender)
+        {
+        }
+        enum{EventID=EVT_CHROMETAB_DBCLICK};
+
+        int iTabIndex;
+        int iOrder;        
+    };
+
     class SChromeTabCtrl : public SWindow, public ITimelineHandler
     {
         SOUI_CLASS_NAME(SChromeTabCtrl,L"chromeTabCtrl")
@@ -77,6 +92,10 @@ namespace SOUI
 
         int GetTabIndex(int iTab) const;
         int GetTabOrder(int iTabIndex) const;
+
+        int GetTabCount() const;
+        SWindow* GetTabWindow(int iPos);
+
     protected:
         int ChangeTabPos(SChromeTab* pCurMove,CPoint ptCur);
 
@@ -119,3 +138,4 @@ namespace SOUI
     };
 
 }
+
