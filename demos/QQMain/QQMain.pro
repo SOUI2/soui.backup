@@ -30,7 +30,6 @@ PRECOMPILED_HEADER = stdafx.h
 HEADERS += resource.h \
            res/resource.h \
            ui/MainDlg.h \
-           ui/SHeaderCtrlEx.h \
            ui/SToggleEx.h \
            ui/SProfilePicture.h \
            ui/ChooseAvatar.h \
@@ -47,7 +46,6 @@ HEADERS += resource.h \
 
 SOURCES += main.cpp \
            ui/MainDlg.cpp \
-           ui/SHeaderCtrlEx.cpp \
            ui/SToggleEx.cpp \
            ui/SProfilePicture.cpp \
            ui/ChooseAvatar.cpp \

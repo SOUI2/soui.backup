@@ -3,7 +3,6 @@
 #include "stdafx.h"
 
 #include "ui/MainDlg.h"
-#include "ui/SHeaderCtrlEx.h" 
 #include "ui/SToggleEx.h" 
 #include "ui/SProfilePicture.h"
 
@@ -80,7 +79,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 
 		theApp->InitXmlNamedID(namedXmlID,ARRAYSIZE(namedXmlID),TRUE);
         theApp->AddResProvider(pResProvider);
-		theApp->RegisterWindowClass<SHeaderCtrlEx>();
 		theApp->RegisterWindowClass<SToggleEx>();
 		theApp->RegisterWindowClass<SProfilePicture>();
         // BLOCK: Run application

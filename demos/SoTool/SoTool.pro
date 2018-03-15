@@ -48,10 +48,10 @@ HEADERS += 2UnicodeHandler.h \
            SImgCanvas.h \
            STreeList.h \
            FileMap.h \
-		   STabCtrlEx.h\
-		   CWindowHelperHander.h\
-		   SwndFrame.h\
-		   SCaptureButton.h\
+	   STabCtrlEx.h\
+	   CWindowHelperHander.h\
+	   SwndFrame.h\
+	   SCaptureButton.h\
            IconvWorker.h
            
 SOURCES += 2UnicodeHandler.cpp \
@@ -69,10 +69,14 @@ SOURCES += 2UnicodeHandler.cpp \
            SoTool.cpp \
            STreeList.cpp \
            FileMap.cpp \
-		   STabCtrlEx.cpp\
-		   CWindowHelperHander.cpp\
-		   SwndFrame.cpp\
-		   SCaptureButton.cpp\
-           IconvWorker.cpp
+	   STabCtrlEx.cpp\
+	   CWindowHelperHander.cpp\
+	   SwndFrame.cpp\
+	   SCaptureButton.cpp\
+           IconvWorker.cpp\
+	   SwndFrame.cpp\
+	   SCaptureButton.cpp\
+	   CWindowHelperHander.cpp\
+	   STabCtrlEx.cpp
 
 RC_FILE += sotool.rc
