@@ -31,6 +31,20 @@ namespace SOUI
 		return fabs(a-b)<0.00000001f;
 	}
 
+	void SLayoutSize::setDefUnit(SStringW &strUnit)
+	{
+		strUnit.MakeLower();
+		defUnit = px;
+		for (int i = 0; i < ARRAYSIZE(s_pszUnit); i++)
+		{
+			if (strUnit.Compare(s_pszUnit[i]) == 0)
+			{
+				defUnit = (Unit)i;
+				break;
+			}
+		}
+	}
+
 	bool SLayoutSize::valueEqual(float value)
 	{
 		return fequal(fSize,value);
@@ -117,7 +131,7 @@ namespace SOUI
 		if(strSize.IsEmpty()) return;
 		SStringW strUnit = strSize.Right(2);
 		strUnit.MakeLower();
-		unit = px;
+		unit = defUnit;
 		for(int i=0; i< ARRAYSIZE(s_pszUnit);i++)
 		{
 			if(strUnit.Compare(s_pszUnit[i]) == 0)
@@ -143,5 +157,5 @@ namespace SOUI
 		ret.parseString(strSize);
 		return ret;
 	}
-
+	SLayoutSize::Unit SLayoutSize::defUnit = SLayoutSize::px;
 }

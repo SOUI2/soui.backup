@@ -42,6 +42,8 @@ namespace SOUI
 
 		static SLayoutSize fromString(const SStringW & strSize);
 		static bool fequal(float a, float b);
+		static void setDefUnit(SStringW &strUnit);
+		static Unit defUnit;
 	};
 
 
