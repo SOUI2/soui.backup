@@ -76,6 +76,7 @@ namespace SOUI
 
     void SHostDialog::EndDialog( INT_PTR nResult )
     {
+		SASSERT(nResult!=RC_INIT);
 		if (m_nRetCode == RC_INIT)
 		{
 			m_nRetCode = nResult;
