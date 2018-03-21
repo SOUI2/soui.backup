@@ -4,7 +4,7 @@
 
 namespace SOUI
 {
-    #define RC_INIT -1
+    #define RC_INIT 0xcccccccc
 
     SHostDialog::SHostDialog(LPCTSTR pszXmlName):SHostWnd(pszXmlName),m_nRetCode(RC_INIT)
     {
