@@ -91,7 +91,7 @@ namespace SOUI
                 ATTR_ENUM_VALUE(L"undefine",WT_UNDEFINE)
                 ATTR_ENUM_VALUE(L"appMain",WT_APPMAIN)
                 ATTR_ENUM_VALUE(L"normal",WT_NORMAL)
-            ATTR_ENUM_END(m_byWndType)
+				ATTR_ENUM_END(m_byWndType)
 			ATTR_ENUM_BEGIN(L"Style", DWORD, FALSE)
 				ATTR_ENUM_VALUE(L"app", WS_APP)
 				ATTR_ENUM_VALUE(L"tool", WS_TOOL)

@@ -43,7 +43,7 @@ public: \
     } \
     BOOL _ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lResult, DWORD dwMsgMapID);
 
-    
+
 #define BEGIN_MSG_MAP_EX2(theClass) \
     BOOL theClass::_ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lResult, DWORD dwMsgMapID) \
     { \
@@ -57,7 +57,7 @@ public: \
     switch(dwMsgMapID) \
         { \
     case 0:
-    
+
 #define BEGIN_MSG_MAP_EX(theClass) \
 public: \
     BOOL m_bMsgHandled; \
@@ -183,6 +183,20 @@ public: \
         if(IsMsgHandled()) \
             return TRUE; \
     }
+
+#ifndef WM_DPICHANGED
+#define WM_DPICHANGED 0x02E0
+#endif
+// void OnDipChanged(WORD dpi,const RECT* desRect)
+#define MSG_WM_DPICHANGED(func)\
+	if (uMsg == WM_DPICHANGED) \
+	{ \
+		SetMsgHandled(TRUE); \
+		func((WORD)HIWORD(wParam), (RECT* const)lParam); \
+		if (IsMsgHandled()) \
+		return TRUE; \
+	}
+
 
 // void OnDestroy()
 #define MSG_WM_DESTROY(func) \
