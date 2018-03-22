@@ -277,31 +277,35 @@ BOOL CMainDlg::OnInitDialog(HWND hWnd, LPARAM lParam)
 	m_tabWorkspace->GetEventSet()->subscribeEvent(EVT_TAB_SELCHANGED, Subscriber(&CMainDlg::OnWorkspaceTabSelChanged, this));
 	m_lbWorkSpaceXml->GetEventSet()->subscribeEvent(EVT_LB_DBCLICK, Subscriber(&CMainDlg::OnWorkspaceXMLDbClick, this));
 
-	g_SysDataMgr.LoadSysData(g_CurDir + L"Config");
-	pugi::xml_parse_result result = xmlDocCtrl.load_file(g_CurDir + L"Config\\ctrl.xml");
-	if (!result)
+	if (m_pDesignerView->m_bXmlResLoadOK)
 	{
-		SMessageBox(m_hWnd, _T("加载SkinConfig.xml失败"), _T("SkinConfig.xml"), MB_OK);
-	}
-	else
-	{
-		//注册控件面板选择事件
-		m_lbControl->init(&m_mapCtrlList, m_pDesignerView);
-		m_lbControl->GetEventSet()->subscribeEvent(EVT_LB_SELCHANGED, Subscriber(&CMainDlg::OnLbControlSelChanged, this));
-		m_lbControl->AddString(_T("指针"));
-
-		pugi::xml_node xmlNode = xmlDocCtrl.child(L"root", false).child(L"控件列表").first_child();
-		for (; xmlNode; xmlNode = xmlNode.next_sibling())
+		g_SysDataMgr.LoadSysData(g_CurDir + L"Config");
+		pugi::xml_parse_result result = xmlDocCtrl.load_file(g_CurDir + L"Config\\ctrl.xml");
+		if (!result)
 		{
-			SStringT strNodeName = S_CW2T(xmlNode.name());
-			pugi::xml_writer_buff writer;
-			xmlNode.print(writer, L"\t", pugi::format_default, pugi::encoding_utf16);
-			SStringW *strxml = new SStringW(writer.buffer(), writer.size());
+			SMessageBox(m_hWnd, _T("加载SkinConfig.xml失败"), _T("SkinConfig.xml"), MB_OK);
+		}
+		else
+		{
+			//注册控件面板选择事件
+			m_lbControl->init(&m_mapCtrlList, m_pDesignerView);
+			m_lbControl->GetEventSet()->subscribeEvent(EVT_LB_SELCHANGED, Subscriber(&CMainDlg::OnLbControlSelChanged, this));
+			m_lbControl->AddString(_T("指针"));
 
-			m_mapCtrlList[strNodeName] = xmlNode;
-			m_lbControl->AddString(strNodeName);
+			pugi::xml_node xmlNode = xmlDocCtrl.child(L"root", false).child(L"控件列表").first_child();
+			for (; xmlNode; xmlNode = xmlNode.next_sibling())
+			{
+				SStringT strNodeName = S_CW2T(xmlNode.name());
+				pugi::xml_writer_buff writer;
+				xmlNode.print(writer, L"\t", pugi::format_default, pugi::encoding_utf16);
+				SStringW *strxml = new SStringW(writer.buffer(), writer.size());
+
+				m_mapCtrlList[strNodeName] = xmlNode;
+				m_lbControl->AddString(strNodeName);
+			}
 		}
 	}
+	
 	m_pDesignerView->InitProperty(m_textCtrlTypename, m_wndPropContainer);
 	m_pDesignerView->BindXmlcodeWnd(m_RealWndLayoutEdit);
 

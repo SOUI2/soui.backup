@@ -52,13 +52,14 @@ SDesignerView::SDesignerView(SHostDialog *pMainHost, SWindow *pContainer, STreeC
 	m_treeXmlStruct = pTreeXmlStruct;
 	m_ndata = 0;
 	g_nUIElmIndex = 0;
+	m_bXmlResLoadOK = false;
 	m_treeXmlStruct->GetEventSet()->subscribeEvent(EVT_TC_SELCHANGED, Subscriber(&SDesignerView::OnTCSelChanged, this));
 
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(g_CurDir + _T("Config\\Ctrl.xml"));
 	if (!result)
 	{
-		Debug(_T("加载Ctrl.xml失败"));
+		Debug(_T("加载Ctrl.xml失败\n 请将 demos/SouiEditor 下的 Config 文件夹拷贝到本程序所在目录."));
 		return;
 	}
 
@@ -71,6 +72,8 @@ SDesignerView::SDesignerView(SHostDialog *pMainHost, SWindow *pContainer, STreeC
 
 	m_privateStylePool.Attach(new SStylePool);
 	m_privateSkinPool.Attach(new SSkinPool);
+
+	m_bXmlResLoadOK = true;
 }
 
 BOOL SDesignerView::OpenProject(SStringT strFileName)
