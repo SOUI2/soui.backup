@@ -34,14 +34,17 @@ function CreateCustomProject(strProjectName, strProjectPath) {
             if (WizardVersion == 10.0)
                 strProjTemplatePath += '\\2010';
             if (WizardVersion == 11.0)
-                strProjTemplatePath += '\\2013';
+                strProjTemplatePath += '\\2012';
             if (WizardVersion == 12.0)
                 strProjTemplatePath += '\\2013';
         }
         if (supportXp == 1 && WizardVersion > 10.0) {
             strProjTemplatePath = wizard.FindSymbol('TEMPLATES_PATH');
             strProjTemplatePath += '\\porjectTemplates';
-            if ((WizardVersion == 12.0) || (WizardVersion == 11.0))
+
+            if (WizardVersion == 11.0)
+                strProjTemplatePath += '\\2012';
+            else if (WizardVersion == 12.0)
                 strProjTemplatePath += '\\2013';
             else if (WizardVersion == 14.0)
                 strProjTemplatePath += '\\2015'
@@ -463,11 +466,11 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile) {
         var cmdcopyres = 'xcopy "%(RootDir)%(Directory)*.*" "$(TargetDir)uires" /e/y/i';
         var psw = wizard.FindSymbol("ZIP_PSW");
         var ResLoadType = wizard.FindSymbol('ResLoaderType');
-       
+
         //Ö¸¶¨uires.idxµÄ±àÒëÃüÁî
         var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
         var DirFor7z;
-        var outFile='';
+        var outFile = '';
         if (ResLoadType == 1) {
             outFile = 'uires.zip';
         }
@@ -476,29 +479,29 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile) {
         }
         if (WizardVersion >= 10.0) {
             cmdline = '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "%(FullPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
-            DirFor7z = '"$(TargetDir)'+outFile+'" "%(RootDir)%(Directory)*"';
-         }
+            DirFor7z = '"$(TargetDir)' + outFile + '" "%(RootDir)%(Directory)*"';
+        }
         else {
             cmdline = '"$(SOUIPATH)\\tools\\uiresbuilder.exe" -i "$(InputPath)" -p uires -r .\\res\\soui_res.rc2 -h .\\res\\resource.h idtable';
             DirFor7z = '"$(TargetDir)' + outFile + '" "$(InputDir)*"';
         }
-        
+
         if (ResLoadType == 1) {
-                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip '+DirFor7z;
-         }
-         else if (ResLoadType == 2) {
-                cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a '+DirFor7z;
-         }
-            
-        if (psw!=null&&psw.length != 0) {
+            cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a -tzip ' + DirFor7z;
+        }
+        else if (ResLoadType == 2) {
+            cmd7z = '"$(SOUIPATH)\\tools\\7z.exe" a ' + DirFor7z;
+        }
+
+        if (psw != null && psw.length != 0) {
             if (ResLoadType == 1) {
-                cmd7z += ' -p"' + psw+'"';
+                cmd7z += ' -p"' + psw + '"';
             }
             else if (ResLoadType == 2) {
                 cmd7z += ' -p"' + psw + '"' + " -mhe";
             }
         }
-        
+
         //var ResLoadType = wizard.FindSymbol('ResLoaderType');
         var file = files.Item('uires.idx');
         var fileConfig = file.FileConfigurations('Debug');
@@ -508,14 +511,14 @@ function AddFilesToCustomProj(proj, strProjectName, strProjectPath, InfFile) {
         buildTool.Outputs = outfiles;
         fileConfig = file.FileConfigurations('Release');
         buildTool = fileConfig.Tool;
-        if (ResLoadType==0) {           
+        if (ResLoadType == 0) {
             buildTool.CommandLine = cmdline;
         }
-        else if((ResLoadType==1)||(ResLoadType==2)){
+        else if ((ResLoadType == 1) || (ResLoadType == 2)) {
             buildTool.CommandLine = cmdline + "\r\n" + cmd7z;
         }
-        else if(ResLoadType==3){
-            buildTool.CommandLine = cmdline + "\r\n" + cmdcopyres;              
+        else if (ResLoadType == 3) {
+            buildTool.CommandLine = cmdline + "\r\n" + cmdcopyres;
         }
         buildTool.Description = 'Building SoUI Resource';
         buildTool.Outputs = outfiles;
