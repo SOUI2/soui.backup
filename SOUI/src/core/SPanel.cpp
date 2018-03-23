@@ -1063,7 +1063,7 @@ void SScrollView::UpdateChildrenPosition()
 	if(m_bAutoViewSize)
 	{//计算viewSize
 		CSize szOld = m_szView;
-		CRect rcWnd = GetWindowRect();
+		CRect rcWnd = GetClientRect();
 		CRect rcMargin = GetStyle().GetMargin();
 		rcWnd.DeflateRect(rcMargin);
 		rcWnd.DeflateRect(GetStyle().GetPadding());

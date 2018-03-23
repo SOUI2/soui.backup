@@ -198,6 +198,14 @@ namespace SOUI
 
 		SWindow::OnLButtonDown(nFlags, pt);
 
+		if ( m_pRealWnd->IsClass(_T("tabctrl")) ||
+			m_pRealWnd->IsClass(_T("tabctrl2")) )
+		{
+			LPARAM lparam = MAKELPARAM(pt.x, pt.y);
+			m_pRealWnd->SSendMessage(WM_LBUTTONDOWN, 0, lparam);
+			m_pRealWnd->SSendMessage(WM_LBUTTONUP, 0, lparam);
+		}
+
 		Oldx = pt.x;
 		Oldy = pt.y;
 

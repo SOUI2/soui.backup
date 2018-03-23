@@ -347,4 +347,135 @@ LRESULT CSimpleWnd::DefWindowProc( UINT uMsg, WPARAM wParam, LPARAM lParam )
     return ::CallWindowProc(m_pfnSuperWindowProc,m_hWnd, uMsg, wParam, lParam);
 }
 
+BOOL CSimpleWnd::CenterWindow(HWND hWndCenter /*= NULL*/)
+{
+	SASSERT(::IsWindow(m_hWnd));
+
+	// determine owner window to center against
+	DWORD dwStyle = GetStyle();
+	if(hWndCenter == NULL)
+	{
+		if(dwStyle & WS_CHILD)
+			hWndCenter = ::GetParent(m_hWnd);
+		else
+			hWndCenter = ::GetWindow(m_hWnd, GW_OWNER);
+
+		if(hWndCenter == NULL)
+			hWndCenter = ::GetActiveWindow();
+	}
+
+	// get coordinates of the window relative to its parent
+	RECT rcDlg;
+	::GetWindowRect(m_hWnd, &rcDlg);
+	RECT rcArea;
+	RECT rcCenter;
+	HWND hWndParent;
+	if(!(dwStyle & WS_CHILD))
+	{
+		// don't center against invisible or minimized windows
+		if(hWndCenter != NULL)
+		{
+			DWORD dwStyleCenter = ::GetWindowLong(hWndCenter, GWL_STYLE);
+			if(!(dwStyleCenter & WS_VISIBLE) || (dwStyleCenter & WS_MINIMIZE))
+				hWndCenter = NULL;
+		}
+
+		// center within screen coordinates
+#if WINVER < 0x0500
+		::SystemParametersInfo(SPI_GETWORKAREA, NULL, &rcArea, NULL);
+#else
+		HMONITOR hMonitor = NULL;
+		if(hWndCenter != NULL)
+		{
+			hMonitor = ::MonitorFromWindow(hWndCenter, MONITOR_DEFAULTTONEAREST);
+		}
+		else
+		{
+			hMonitor = ::MonitorFromWindow(m_hWnd, MONITOR_DEFAULTTONEAREST);
+		}
+
+		MONITORINFO minfo;
+		minfo.cbSize = sizeof(MONITORINFO);
+		::GetMonitorInfo(hMonitor, &minfo);
+
+		rcArea = minfo.rcWork;
+#endif
+		if(hWndCenter == NULL)
+			rcCenter = rcArea;
+		else
+			::GetWindowRect(hWndCenter, &rcCenter);
+	}
+	else
+	{
+		// center within parent client coordinates
+		hWndParent = ::GetParent(m_hWnd);
+		SASSERT(::IsWindow(hWndParent));
+
+		::GetClientRect(hWndParent, &rcArea);
+		SASSERT(::IsWindow(hWndCenter));
+		::GetClientRect(hWndCenter, &rcCenter);
+		::MapWindowPoints(hWndCenter, hWndParent, (POINT*)&rcCenter, 2);
+	}
+
+	int DlgWidth = rcDlg.right - rcDlg.left;
+	int DlgHeight = rcDlg.bottom - rcDlg.top;
+
+	// find dialog's upper left based on rcCenter
+	int xLeft = (rcCenter.left + rcCenter.right) / 2 - DlgWidth / 2;
+	int yTop = (rcCenter.top + rcCenter.bottom) / 2 - DlgHeight / 2;
+
+	// if the dialog is outside the screen, move it inside
+	if(xLeft + DlgWidth > rcArea.right)
+		xLeft = rcArea.right - DlgWidth;
+	if(xLeft < rcArea.left)
+		xLeft = rcArea.left;
+
+	if(yTop + DlgHeight > rcArea.bottom)
+		yTop = rcArea.bottom - DlgHeight;
+	if(yTop < rcArea.top)
+		yTop = rcArea.top;
+
+	// map screen coordinates to child coordinates
+	return ::SetWindowPos(m_hWnd, NULL, xLeft, yTop, -1, -1,
+		SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+}
+
+BOOL CSimpleWnd::ModifyStyle(DWORD dwRemove, DWORD dwAdd, UINT nFlags /*= 0*/)
+{
+	SASSERT(::IsWindow(m_hWnd));
+
+	DWORD dwStyle = ::GetWindowLong(m_hWnd, GWL_STYLE);
+	DWORD dwNewStyle = (dwStyle & ~dwRemove) | dwAdd;
+	if(dwStyle == dwNewStyle)
+		return FALSE;
+
+	::SetWindowLong(m_hWnd, GWL_STYLE, dwNewStyle);
+	if(nFlags != 0)
+	{
+		::SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0,
+			SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE | nFlags);
+	}
+
+	return TRUE;
+}
+
+BOOL CSimpleWnd::ModifyStyleEx(DWORD dwRemove, DWORD dwAdd, UINT nFlags /*= 0*/)
+{
+	SASSERT(::IsWindow(m_hWnd));
+
+	DWORD dwStyle = ::GetWindowLong(m_hWnd, GWL_EXSTYLE);
+	DWORD dwNewStyle = (dwStyle & ~dwRemove) | dwAdd;
+	if(dwStyle == dwNewStyle)
+		return FALSE;
+
+	::SetWindowLong(m_hWnd, GWL_EXSTYLE, dwNewStyle);
+	if(nFlags != 0)
+	{
+		::SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0,
+			SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE | nFlags);
+	}
+
+	return TRUE;
+}
+
 }//namespace SOUI
