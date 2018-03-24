@@ -21,6 +21,8 @@
 #endif
 	
 
+#define TIMERID_RELOAD_LAYOUT  100
+
 #define UIRES_FILE	L"uires.idx"
 //////////////////////////////////////////////////////////////////////////
 CMainDlg* g_pMainDlg = NULL;
@@ -446,6 +448,31 @@ void CMainDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 		m_bIsOpen = TRUE;
 		m_cmdWorkspaceFile.Empty();
 	}
+}
+
+void CMainDlg::OnTimer(UINT_PTR timeID)
+{
+	if (timeID == TIMERID_RELOAD_LAYOUT)
+	{
+		m_pDesignerView->GetCodeFromEditor(NULL);
+		CSimpleWnd::KillTimer(TIMERID_RELOAD_LAYOUT);
+	}
+	else
+	{
+		SetMsgHandled(FALSE);
+	}
+}
+
+bool CMainDlg::Desiner_TabSelChanged(EventTabSelChanged *evt_sel)
+{
+	CSimpleWnd::SetTimer(TIMERID_RELOAD_LAYOUT, 1000);
+	return false;
+}
+
+void CMainDlg::DelayReloadLayout(STabCtrl* pTabHost)
+{
+	pTabHost->GetEventSet()->unsubscribeEvent(EVT_TAB_SELCHANGED, Subscriber(&CMainDlg::Desiner_TabSelChanged, this));
+	pTabHost->GetEventSet()->subscribeEvent<CMainDlg, EventTabSelChanged>(&CMainDlg::Desiner_TabSelChanged, this);
 }
 
 void CMainDlg::OutOpenProject(SStringT filename)
