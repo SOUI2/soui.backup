@@ -42,6 +42,8 @@ public:
 	void ReloadWorkspaceUIRes();
 	void CloseProject();
 
+	void DelayReloadLayout(STabCtrl* pTabHost);
+
 	void OnBtnOpen(); //打开工程
 	void OnBtnClose();
 	void OnBtnReload();
@@ -85,6 +87,9 @@ protected:
 	bool OnTreeproContextMenu(CPoint pt);
 	LRESULT OnShowMsgBox(UINT uMsg, WPARAM wp, LPARAM lp, BOOL & bHandled);
 	
+	void OnTimer(UINT_PTR timeID);
+
+	bool Desiner_TabSelChanged(EventTabSelChanged * evt_sel);
 
 	//soui消息
 	EVENT_MAP_BEGIN()
@@ -121,6 +126,7 @@ protected:
 		MSG_WM_INITDIALOG(OnInitDialog)
 		MSG_WM_CLOSE(OnClose)
 		MSG_WM_SIZE(OnSize)
+		MSG_WM_TIMER(OnTimer)
 		MSG_WM_SHOWWINDOW(OnShowWindow)
 		CHAIN_MSG_MAP(SHostWnd)
 		REFLECT_NOTIFICATIONS_EX()

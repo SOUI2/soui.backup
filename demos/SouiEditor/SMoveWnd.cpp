@@ -2,6 +2,7 @@
 #include "SMoveWnd.h"
 #include "CNewGuid.h"
 #include "control/SMessageBox.h"
+#include "MainDlg.h"
 
 #define  POINT_SIZE      4     //元素拖动点大小
 
@@ -16,6 +17,7 @@
 #define LEFT   2
 #define RIGHT  3
 
+extern CMainDlg* g_pMainDlg;
 
 namespace SOUI
 {
@@ -194,17 +196,29 @@ namespace SOUI
 			m_Desiner->CreatePropGrid(_T("hostwnd"));
 			m_Desiner->UpdatePropGrid(m_Desiner->m_curSelXmlNode);
 		}
-		m_Desiner->AddCodeToEditor(NULL);
 
 		SWindow::OnLButtonDown(nFlags, pt);
 
 		if ( m_pRealWnd->IsClass(_T("tabctrl")) ||
 			m_pRealWnd->IsClass(_T("tabctrl2")) )
 		{
+			g_pMainDlg->DelayReloadLayout((STabCtrl*)m_pRealWnd);
+
 			LPARAM lparam = MAKELPARAM(pt.x, pt.y);
-			m_pRealWnd->SSendMessage(WM_LBUTTONDOWN, 0, lparam);
-			m_pRealWnd->SSendMessage(WM_LBUTTONUP, 0, lparam);
+ 			m_pRealWnd->SSendMessage(WM_LBUTTONDOWN, 0, lparam);
+ 			m_pRealWnd->SSendMessage(WM_LBUTTONUP, 0, lparam);
+			int cursel = ((STabCtrl*)m_pRealWnd)->GetCurSel();
+			pugi::xml_attribute attr_sel = m_Desiner->m_curSelXmlNode.attribute(_T("curSel"));
+			TCHAR buffer[20] = {0};
+			if (!attr_sel)
+				m_Desiner->m_curSelXmlNode.append_attribute(_T("curSel")).set_value(_itot(cursel, buffer, 10));
+			else
+				attr_sel.set_value(_itot(cursel, buffer, 10));
+			
+			m_Desiner->AddCodeToEditor(NULL);
+ 			return;
 		}
+		m_Desiner->AddCodeToEditor(NULL);
 
 		Oldx = pt.x;
 		Oldy = pt.y;
