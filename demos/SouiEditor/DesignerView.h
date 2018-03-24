@@ -19,6 +19,8 @@ namespace SOUI
 		CAutoRefPtr<SStylePool> m_privateStylePool; /**<局部style pool*/
 		CAutoRefPtr<SSkinPool>  m_privateSkinPool;  /**<局部skin pool*/
 	public:
+		static BOOL LoadConfig(pugi::xml_document &doc,const SStringT & cfgFile);
+
 		SDesignerView(SHostDialog *pMainHost, SWindow *pContainer, STreeCtrl *pTreeXmlStruct);
 		~SDesignerView();
 

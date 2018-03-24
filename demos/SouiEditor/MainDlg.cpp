@@ -281,11 +281,13 @@ BOOL CMainDlg::OnInitDialog(HWND hWnd, LPARAM lParam)
 
 	if (m_pDesignerView->m_bXmlResLoadOK)
 	{
+
+		
 		g_SysDataMgr.LoadSysData(g_CurDir + L"Config");
-		pugi::xml_parse_result result = xmlDocCtrl.load_file(g_CurDir + L"Config\\ctrl.xml");
+		BOOL result = SDesignerView::LoadConfig(xmlDocCtrl,_T("Config\\ctrl.xml"));
 		if (!result)
 		{
-			SMessageBox(m_hWnd, _T("加载SkinConfig.xml失败"), _T("SkinConfig.xml"), MB_OK);
+			SMessageBox(m_hWnd, _T("加载ctrl.xml失败"), _T("SouiEditor"), MB_OK);
 		}
 		else
 		{
