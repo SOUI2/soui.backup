@@ -465,12 +465,13 @@ void CMainDlg::OnTimer(UINT_PTR timeID)
 
 bool CMainDlg::Desiner_TabSelChanged(EventTabSelChanged *evt_sel)
 {
-	CSimpleWnd::SetTimer(TIMERID_RELOAD_LAYOUT, 1000);
+	CSimpleWnd::SetTimer(TIMERID_RELOAD_LAYOUT, 300);
 	return false;
 }
 
 void CMainDlg::DelayReloadLayout(STabCtrl* pTabHost)
 {
+	pTabHost->SetAttribute(_T("animateSteps"), _T("0"));
 	pTabHost->GetEventSet()->unsubscribeEvent(EVT_TAB_SELCHANGED, Subscriber(&CMainDlg::Desiner_TabSelChanged, this));
 	pTabHost->GetEventSet()->subscribeEvent<CMainDlg, EventTabSelChanged>(&CMainDlg::Desiner_TabSelChanged, this);
 }

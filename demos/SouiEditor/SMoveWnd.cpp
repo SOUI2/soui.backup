@@ -208,10 +208,10 @@ namespace SOUI
  			m_pRealWnd->SSendMessage(WM_LBUTTONDOWN, 0, lparam);
  			m_pRealWnd->SSendMessage(WM_LBUTTONUP, 0, lparam);
 			int cursel = ((STabCtrl*)m_pRealWnd)->GetCurSel();
-			pugi::xml_attribute attr_sel = m_Desiner->m_curSelXmlNode.attribute(L"curSel");
-			wchar_t buffer[20] = {0};
+			pugi::xml_attribute attr_sel = m_Desiner->m_curSelXmlNode.attribute(_T("curSel"));
+			TCHAR buffer[20] = {0};
 			if (!attr_sel)
-				m_Desiner->m_curSelXmlNode.append_attribute(L"curSel").set_value(_itot(cursel, buffer, 10));
+				m_Desiner->m_curSelXmlNode.append_attribute(_T("curSel")).set_value(_itot(cursel, buffer, 10));
 			else
 				attr_sel.set_value(_itot(cursel, buffer, 10));
 			
