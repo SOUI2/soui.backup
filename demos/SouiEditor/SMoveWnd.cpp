@@ -198,77 +198,74 @@ namespace SOUI
 		}
 
 		SWindow::OnLButtonDown(nFlags, pt);
+		// 是为了更新控件属性点击
+		if (nFlags == MAGIC_CLICK_FLAG)
+			return;
 
-		if ( m_pRealWnd->IsClass(_T("tabctrl")) ||
-			m_pRealWnd->IsClass(_T("tabctrl2")) )
+		if (m_pRealWnd->IsClass(_T("tabctrl")) ||
+			m_pRealWnd->IsClass(_T("tabctrl2")))
 		{
-			g_pMainDlg->DelayReloadLayout((STabCtrl*)m_pRealWnd);
+            g_pMainDlg->DelayReloadLayout((STabCtrl*)m_pRealWnd);
 
-			LPARAM lparam = MAKELPARAM(pt.x, pt.y);
- 			m_pRealWnd->SSendMessage(WM_LBUTTONDOWN, 0, lparam);
- 			m_pRealWnd->SSendMessage(WM_LBUTTONUP, 0, lparam);
-			int cursel = ((STabCtrl*)m_pRealWnd)->GetCurSel();
-			pugi::xml_attribute attr_sel = m_Desiner->m_curSelXmlNode.attribute(_T("curSel"));
-			TCHAR buffer[20] = {0};
-			if (!attr_sel)
-				m_Desiner->m_curSelXmlNode.append_attribute(_T("curSel")).set_value(_itot(cursel, buffer, 10));
-			else
-				attr_sel.set_value(_itot(cursel, buffer, 10));
-			
-			m_Desiner->AddCodeToEditor(NULL);
- 			return;
-		}
-		m_Desiner->AddCodeToEditor(NULL);
+            LPARAM lparam = MAKELPARAM(pt.x, pt.y);
+            m_pRealWnd->SSendMessage(WM_LBUTTONDOWN, 0, lparam);
+            m_pRealWnd->SSendMessage(WM_LBUTTONUP, 0, lparam);
+            int cursel = ((STabCtrl*)m_pRealWnd)->GetCurSel();
+            pugi::xml_attribute attr_sel = m_Desiner->m_curSelXmlNode.attribute(_T("curSel"));
+            TCHAR buffer[20] = { 0 };
+            if (!attr_sel)
+                m_Desiner->m_curSelXmlNode.append_attribute(_T("curSel")).set_value(_itot(cursel, buffer, 10));
+            else
+                attr_sel.set_value(_itot(cursel, buffer, 10));
+
+            m_Desiner->AddCodeToEditor(NULL);
+            return;
+        }
+        m_Desiner->AddCodeToEditor(NULL);
 
 		Oldx = pt.x;
 		Oldy = pt.y;
 
-		if (m_rcPos8.PtInRect(pt))
-		{
-			SetCursor(LoadCursor(NULL, IDC_SIZEWE));
-			m_downWindow = 8;
-		}
-		else
-		{
-			if (m_rcPos1.PtInRect(pt))
-			{
-				SetCursor(LoadCursor(NULL, IDC_SIZENWSE));
-				m_downWindow = 1;
-			}
-			else
-				if (m_rcPos2.PtInRect(pt))
-				{
-					SetCursor(LoadCursor(NULL, IDC_SIZENS));
-					m_downWindow = 2;
-				}
-				else
-					if (m_rcPos3.PtInRect(pt))
-					{
-						//SetCursor(LoadCursor(NULL,IDC_SIZEWE));
-						m_downWindow = 3;
-					}
-					else
-						if (m_rcPos4.PtInRect(pt))
-						{
-							SetCursor(LoadCursor(NULL, IDC_SIZEWE));
-							m_downWindow = 4;
-						}
-						else if (m_rcPos5.PtInRect(pt))
-						{
-							SetCursor(LoadCursor(NULL, IDC_SIZENWSE));
-							m_downWindow = 5;
-						}
-						else if (m_rcPos6.PtInRect(pt))
-						{
-							SetCursor(LoadCursor(NULL, IDC_SIZENS));
-							m_downWindow = 6;
-						}
-						else if (m_rcCenter.PtInRect(pt))
-						{
-							//SetCursor(LoadCursor(NULL,IDC_SIZEALL));
-							m_downWindow = 9;
-						}
-		}
+        if (m_rcPos8.PtInRect(pt))
+        {
+            SetCursor(LoadCursor(NULL, IDC_SIZEWE));
+            m_downWindow = 8;
+        }
+        else if (m_rcPos1.PtInRect(pt))
+        {
+            SetCursor(LoadCursor(NULL, IDC_SIZENWSE));
+            m_downWindow = 1;
+        }
+        else if (m_rcPos2.PtInRect(pt))
+        {
+            SetCursor(LoadCursor(NULL, IDC_SIZENS));
+            m_downWindow = 2;
+        }
+        else if (m_rcPos3.PtInRect(pt))
+        {
+            //SetCursor(LoadCursor(NULL,IDC_SIZEWE));
+            m_downWindow = 3;
+        }
+        else if (m_rcPos4.PtInRect(pt))
+        {
+            SetCursor(LoadCursor(NULL, IDC_SIZEWE));
+            m_downWindow = 4;
+        }
+        else if (m_rcPos5.PtInRect(pt))
+        {
+            SetCursor(LoadCursor(NULL, IDC_SIZENWSE));
+            m_downWindow = 5;
+        }
+        else if (m_rcPos6.PtInRect(pt))
+        {
+            SetCursor(LoadCursor(NULL, IDC_SIZENS));
+            m_downWindow = 6;
+        }
+        else if (m_rcCenter.PtInRect(pt))
+        {
+            //SetCursor(LoadCursor(NULL,IDC_SIZEALL));
+            m_downWindow = 9;
+        }
 	}
 
 	void SMoveWnd::OnLButtonUp(UINT nFlags, CPoint pt)

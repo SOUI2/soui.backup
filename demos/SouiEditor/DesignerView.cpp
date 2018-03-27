@@ -61,7 +61,7 @@ SDesignerView::SDesignerView(SHostDialog *pMainHost, SWindow *pContainer, STreeC
 	BOOL result = LoadConfig(doc,_T("Config\\Ctrl.xml"));
 	if (!result)
 	{
-		Debug(_T("加载Ctrl.xml失败"));
+		Debug(_T("加载Ctrl.xml失败\n 请将 demos/SouiEditor 下的 Config 文件夹拷贝到本程序所在目录."));
 		return;
 	}
 
@@ -2002,6 +2002,13 @@ void SDesignerView::GetCodeFromEditor()
 			m_pMoveWndRoot->Click(0, CPoint(0, 0));
 		}
 	}
+
+    if (m_CurSelCtrl)
+    {
+        // 更新m_curSelXmlNode可避免其他函数时使用时异常
+        // 其所引用的值在本函数中被释放，指向未知地址
+        m_CurSelCtrl->Click(MAGIC_CLICK_FLAG, CPoint(0, 0));
+    }
 }
 
 // 把代码编辑器修改的结果重新加载, 更新布局窗口

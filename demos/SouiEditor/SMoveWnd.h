@@ -3,6 +3,7 @@
 
 namespace SOUI
 {
+	#define MAGIC_CLICK_FLAG	99
 
 	class SMoveWnd : public SUIWindow
 	{

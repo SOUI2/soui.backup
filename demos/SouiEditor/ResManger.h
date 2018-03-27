@@ -69,13 +69,13 @@ public:
 
 	SkinItem GetSkinByImg(SStringT srcimg);
 
-	SStringA GetSkinAutos();
+	SStringA GetSkinAutos(SStringT prev);
 
-	SStringA GetStyleAutos();
+	SStringA GetStyleAutos(SStringT prev);
 
-	SStringA GetStringAutos();
+	SStringA GetStringAutos(SStringT prev);
 
-	SStringA GetColorAutos();
+	SStringA GetColorAutos(SStringT prev);
 
 
 	void GetSubNodes(pugi::xml_node & parentNode, SStringT parentNodeName);

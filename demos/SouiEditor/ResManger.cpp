@@ -372,7 +372,7 @@ ResManger::SkinItem ResManger::GetSkinByImg(SStringT srcimg)
 	return SkinItem();
 }
 
-SStringA ResManger::GetSkinAutos()
+SStringA ResManger::GetSkinAutos(SStringT prev)
 {
 	std::vector<SStringT> vecTemp;
 	SPOSITION pos = m_mapSkins.GetStartPosition();
@@ -389,6 +389,7 @@ SStringA ResManger::GetSkinAutos()
 	std::vector<SStringT>::iterator it = vecTemp.begin();
 	for (; it != vecTemp.end(); it++)
 	{
+		strAuto += prev;
 		strAuto += *it + _T(" ");
 	}
 	strAuto.TrimRight(' ');
@@ -397,7 +398,7 @@ SStringA ResManger::GetSkinAutos()
 	return str;
 }
 
-SStringA ResManger::GetStyleAutos()
+SStringA ResManger::GetStyleAutos(SStringT prev)
 {
 	std::vector<SStringT> vecTemp;
 	SPOSITION pos = m_mapStyles.GetStartPosition();
@@ -414,6 +415,7 @@ SStringA ResManger::GetStyleAutos()
 	std::vector<SStringT>::iterator it = vecTemp.begin();
 	for (; it != vecTemp.end(); it++)
 	{
+		strAuto += prev;
 		strAuto += *it + _T(" ");
 	}
 	strAuto.TrimRight(' ');
@@ -422,7 +424,7 @@ SStringA ResManger::GetStyleAutos()
 	return str;
 }
 
-SStringA ResManger::GetStringAutos()
+SStringA ResManger::GetStringAutos(SStringT prev)
 {
 	std::vector<SStringT> vecTemp;
 	SPOSITION pos = m_mapStrings.GetStartPosition();
@@ -439,6 +441,7 @@ SStringA ResManger::GetStringAutos()
 	std::vector<SStringT>::iterator it = vecTemp.begin();
 	for (; it != vecTemp.end(); it++)
 	{
+		strAuto += prev;
 		strAuto += *it + _T(" ");
 	}
 	strAuto.TrimRight(' ');
@@ -447,7 +450,7 @@ SStringA ResManger::GetStringAutos()
 	return str;
 }
 
-SStringA ResManger::GetColorAutos()
+SStringA ResManger::GetColorAutos(SStringT prev)
 {
 	std::vector<SStringT> vecTemp;
 	SPOSITION pos = m_mapColors.GetStartPosition();
@@ -464,6 +467,7 @@ SStringA ResManger::GetColorAutos()
 	std::vector<SStringT>::iterator it = vecTemp.begin();
 	for (; it != vecTemp.end(); it++)
 	{
+		strAuto += prev;
 		strAuto += *it + _T(" ");
 	}
 	strAuto.TrimRight(' ');
