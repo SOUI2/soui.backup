@@ -22,6 +22,8 @@ extern CMainDlg* g_pMainDlg;
 extern BOOL g_bHookCreateWnd;	//是否拦截窗口的建立
 extern CSysDataMgr g_SysDataMgr;
 
+namespace SOUI{
+
 BOOL SDesignerView::NewLayout(SStringT strResName, SStringT strPath)
 {
 	SStringT strShortPath = strPath.Mid(m_strProPath.GetLength() + 1);
@@ -56,7 +58,7 @@ SDesignerView::SDesignerView(SHostDialog *pMainHost, SWindow *pContainer, STreeC
 	m_treeXmlStruct->GetEventSet()->subscribeEvent(EVT_TC_SELCHANGED, Subscriber(&SDesignerView::OnTCSelChanged, this));
 
 	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file(g_CurDir + _T("Config\\Ctrl.xml"));
+	BOOL result = LoadConfig(doc,_T("Config\\Ctrl.xml"));
 	if (!result)
 	{
 		Debug(_T("加载Ctrl.xml失败\n 请将 demos/SouiEditor 下的 Config 文件夹拷贝到本程序所在目录."));
@@ -2000,6 +2002,13 @@ void SDesignerView::GetCodeFromEditor()
 			m_pMoveWndRoot->Click(0, CPoint(0, 0));
 		}
 	}
+
+    if (m_CurSelCtrl)
+    {
+        // 更新m_curSelXmlNode可避免其他函数时使用时异常
+        // 其所引用的值在本函数中被释放，指向未知地址
+        m_CurSelCtrl->Click(MAGIC_CLICK_FLAG, CPoint(0, 0));
+    }
 }
 
 // 把代码编辑器修改的结果重新加载, 更新布局窗口
@@ -2601,4 +2610,28 @@ SStringT SDesignerView::UnitToStr(int nUnit)
 	default:
 		return _T("");
 	}
+}
+
+BOOL SDesignerView::LoadConfig(pugi::xml_document &doc,const SStringT & cfgFile)
+{
+	pugi::xml_parse_result result = doc.load_file(g_CurDir + cfgFile);
+
+	if (!result)
+	{
+		TCHAR szBuf[255+1];
+		int nRet = GetEnvironmentVariable(_T("SOUIPATH"),szBuf,255);
+		SStringT path = SStringT(szBuf) + L"\\demos\\souieditor\\";
+		if(nRet>0 && nRet<255)
+		{
+			result = doc.load_file(path+cfgFile);
+		}
+		if(result)
+		{
+			g_CurDir = path;
+		}
+	}
+	g_SysDataMgr.LoadSysData(g_CurDir + L"Config");
+	return result;
+}
+
 }

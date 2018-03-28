@@ -21,6 +21,8 @@
 #endif
 	
 
+#define TIMERID_RELOAD_LAYOUT  100
+
 #define UIRES_FILE	L"uires.idx"
 //////////////////////////////////////////////////////////////////////////
 CMainDlg* g_pMainDlg = NULL;
@@ -279,11 +281,13 @@ BOOL CMainDlg::OnInitDialog(HWND hWnd, LPARAM lParam)
 
 	if (m_pDesignerView->m_bXmlResLoadOK)
 	{
+
+		
 		g_SysDataMgr.LoadSysData(g_CurDir + L"Config");
-		pugi::xml_parse_result result = xmlDocCtrl.load_file(g_CurDir + L"Config\\ctrl.xml");
+		BOOL result = SDesignerView::LoadConfig(xmlDocCtrl,_T("Config\\ctrl.xml"));
 		if (!result)
 		{
-			SMessageBox(m_hWnd, _T("加载SkinConfig.xml失败"), _T("SkinConfig.xml"), MB_OK);
+			SMessageBox(m_hWnd, _T("加载ctrl.xml失败"), _T("SouiEditor"), MB_OK);
 		}
 		else
 		{
@@ -446,6 +450,32 @@ void CMainDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 		m_bIsOpen = TRUE;
 		m_cmdWorkspaceFile.Empty();
 	}
+}
+
+void CMainDlg::OnTimer(UINT_PTR timeID)
+{
+	if (timeID == TIMERID_RELOAD_LAYOUT)
+	{
+		m_pDesignerView->GetCodeFromEditor(NULL);
+		CSimpleWnd::KillTimer(TIMERID_RELOAD_LAYOUT);
+	}
+	else
+	{
+		SetMsgHandled(FALSE);
+	}
+}
+
+bool CMainDlg::Desiner_TabSelChanged(EventTabSelChanged *evt_sel)
+{
+	CSimpleWnd::SetTimer(TIMERID_RELOAD_LAYOUT, 300);
+	return false;
+}
+
+void CMainDlg::DelayReloadLayout(STabCtrl* pTabHost)
+{
+	pTabHost->SetAttribute(_T("animateSteps"), _T("0"));
+	pTabHost->GetEventSet()->unsubscribeEvent(EVT_TAB_SELCHANGED, Subscriber(&CMainDlg::Desiner_TabSelChanged, this));
+	pTabHost->GetEventSet()->subscribeEvent<CMainDlg, EventTabSelChanged>(&CMainDlg::Desiner_TabSelChanged, this);
 }
 
 void CMainDlg::OutOpenProject(SStringT filename)

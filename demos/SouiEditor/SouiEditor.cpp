@@ -31,7 +31,7 @@
 #include "STurn3DView.h"
 #include "SRadioBox2.h"
 #include "SMcListViewEx/SHeaderCtrlEx.h"
-#include "demo\skin\SDemoSkin.h"
+#include "SDemoSkin.h"
 
 
 //从PE文件加载，注意从文件加载路径位置

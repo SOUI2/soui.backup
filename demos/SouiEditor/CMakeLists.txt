@@ -9,6 +9,7 @@ include_directories(${PROJECT_SOURCE_DIR}/SOUI/include)
 include_directories(${PROJECT_SOURCE_DIR}/third-part/Scintilla/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/controls.extend)
+include_directories(${PROJECT_SOURCE_DIR}/demos)
 
 
 set(EXTENDCOTROLS ${EXTENDCOTROLS}
@@ -36,6 +37,7 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SRatingBar.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SRadioBox2.h
 	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/SHeaderCtrlEx.h
+	${CMAKE_SOURCE_DIR}/demos/demo/skin/SDemoSkin.h
 )
 
 set(EXTENDCOTROLS ${EXTENDCOTROLS}
@@ -61,6 +63,7 @@ set(EXTENDCOTROLS ${EXTENDCOTROLS}
 	${CMAKE_SOURCE_DIR}/controls.extend/SRatingBar.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SRadioBox2.cpp
 	${CMAKE_SOURCE_DIR}/controls.extend/SMcListViewEx/SHeaderCtrlEx.cpp
+	${CMAKE_SOURCE_DIR}/demos/demo/skin/SDemoSkin.cpp
 )
 
 file(GLOB_RECURSE CURRENT_HEADERS  *.h *.hpp)

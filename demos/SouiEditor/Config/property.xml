@@ -156,7 +156,7 @@
 		<colorTextDisable style="propcolor" name ="colorTextDisable" />	
 		
 		<inset style="proptext" name ="inset" />
-		<padding style="proptext" name ="padding" />
+		<padding style="proptext" name ="内边距(padding)" />
 		
 		<margin style="proptext" name ="边距(margin)" />
 		<float style="propoption" name ="float" options="是:1|否:0" description="窗口位置固定不动的标志"/>
@@ -181,7 +181,7 @@
 		<columnWeight style="proptext" name ="columnWeight" description="Grid布局,子控件占用几列" />
 		<rowWeight style="proptext" name ="rowWeight" description="Grid布局,子控件占用几行" />
 
-		<extend style="proptext" name ="外边距" description='extend = "0,0,0,0"
+		<extend style="proptext" name ="外边距(extend)" description='extend = "0,0,0,0"
 		&#x000A;四个点分别表示左上右下的间距，与margin类似;' />	
 
 		<weight style="proptext" name ="weight" description="" />	
@@ -402,8 +402,6 @@
 			<分组 name="拓展">
 				<UiEdit_windowText/>
 				<accel style="proptext" name ="快捷键(accel)" />
-				<!-- 			<animate style="propoption" name ="动画(animate)"  options="无(0)|有(1)"/>	 -->
-
 				<animate style="propoption" name ="动画(animate)" options="无:0|有:1"/>	
 			</分组>
 		</button>
@@ -635,6 +633,7 @@
 				<curSel style="proptext" name ="curSel" />	
 				<btnSkin style="proptext" name ="btnSkin"  ButtonType="skin"/>	
 				<animateTime style="proptext" name ="animateTime" />	
+				<autoFitDropBtn style="propoption" name ="autoFitDropBtn" options="是:1|否:0" description="自适应下拉按钮皮肤" />
 			</分组>	
 		</combobox >		
 
@@ -671,12 +670,12 @@
 				<display/>
 			</分组>
 			<分组 name="属性: combobase">
-
 				<dropDown style="propoption" name ="dropDown" options="下拉:1|编辑:0" description="下拉样式或编辑样式"/>	
 				<dropHeight style="proptext" name ="dropHeight" />	
 				<curSel style="proptext" name ="curSel" />	
 				<btnSkin style="proptext" name ="btnSkin"  ButtonType="skin"/>	
 				<animateTime style="proptext" name ="animateTime" />	
+				<autoFitDropBtn style="propoption" name ="autoFitDropBtn" options="是:1|否:0" description="自适应下拉按钮皮肤" />
 			</分组>	
 
 		</comboview >	
@@ -732,7 +731,6 @@
 				<sbRight style="proptext" name ="sbRight" />	
 				<sbTop style="proptext" name ="sbTop" />	
 				<sbBottom style="proptext" name ="sbBottom" />	
-
 			</分组>
 		</div>		
 
@@ -812,7 +810,8 @@
 				<autoSel style="proptext" name ="autoSel" />					
 			</分组>		
 			<分组 name="属性: edit">
-				<cueText style="proptext" name ="cueText(cueText)" />
+				<cueText style="proptext" name ="cueText" />
+                <cueColor style="propcolor" name ="cueColor" />
 			</分组>	
 		</edit>		
 
@@ -890,6 +889,7 @@
 			</分组>		
 			<分组 name="属性: edit">
 				<cueText style="proptext" name ="cueText(cueText)" />
+                <cueColor style="propcolor" name ="cueColor" />
 			</分组>	
 		</editstyle>		
 
@@ -1169,6 +1169,7 @@
 			</分组>
 			<分组 name="属性: hr">
 				<colorLine style="propcolor" name ="colorLine" />
+				<size style="proptext" name ="size" />
 				<mode style="propoption" name ="mode" options="vertical|horizontal|tilt"/>
 				<lineStyle style="propoption" name ="lineStyle" options="solid|dash|dot|dashdot|dashdotdot"/>
 			</分组>			
@@ -2121,7 +2122,7 @@
 			</分组>
 
 			<分组 name="属性: toggle">
-				<toggled style="proptext" name ="toggled(toggled)" />	
+				<toggled style="proptext" name ="toggled" />	
 			</分组>
 
 		</toggle>
@@ -2402,7 +2403,7 @@
 			<分组 name="拓展: RotateWindow">
 				<AnimImg style="proptext" name ="AnimImg"  ButtonType="skin"/>
 				<speed style="proptext" name ="speed"  />
-				<turn style="proptext" name ="turn"  />
+				<turn style="propoption" name ="turn" options="left|right" />
 			</分组>
 		</RotateWindow>	
 
@@ -2550,10 +2551,13 @@
 				<frameSkin style="proptext" name ="frameSkin"  ButtonType="skin"/>
 				<icon-x style="proptext" name ="icon-x" />
 				<icon-y style="proptext" name ="icon-y" />
+                <text-x style="proptext" name ="text-x" />
+				<text-y style="proptext" name ="text-y" />
 				<tabAlign style="propoption" name ="tabAlign" options="top|left|right|bottom"/>
 				<textDir style="propoption" name ="textDir" options="hori|horizontal|vert|vertical"/>
-				<animateSteps style="proptext" name ="animateSteps" />
-
+				<animateSteps style="proptext" name ="animateSteps" description="动画次数" />
+				<animateType style="propoption" name ="animateType" description="动画样式" options="0|1" />
+				<interpolator style="propoption" name ="interpolator" description="动画插值器" options="Linear|Accelerate|Decelerate|AccelerateDecelerate|Anticipate|AnticipateOvershoot|Bounce|Cycle|Overshoot" />
 			</分组>
 
 		</tabctrl>	
@@ -2603,10 +2607,13 @@
 				<frameSkin style="proptext" name ="frameSkin"  ButtonType="skin"/>
 				<icon-x style="proptext" name ="icon-x" />
 				<icon-y style="proptext" name ="icon-y" />
+                <text-x style="proptext" name ="text-x" />
+				<text-y style="proptext" name ="text-y" />
 				<tabAlign style="propoption" name ="tabAlign" options="top|left|right|bottom"/>
 				<textDir style="propoption" name ="textDir" options="hori|horizontal|vert|vertical"/>
-				<animateSteps style="proptext" name ="animateSteps" />
-
+				<animateSteps style="proptext" name ="animateSteps" description="动画次数" />
+				<animateType style="propoption" name ="animateType" description="动画样式" options="0|1" />
+				<interpolator style="propoption" name ="interpolator" description="动画插值器" options="Linear|Accelerate|Decelerate|AccelerateDecelerate|Anticipate|AnticipateOvershoot|Bounce|Cycle|Overshoot" />
 			</分组>
 
 			<分组 name="属性: tabctrl2">
@@ -2750,6 +2757,7 @@
 				<margin style="proptext" name ="margin"/>
 				<iconBarWidth style="proptext" name ="iconBarWidth" />
 				<subMenuOffset style="proptext" name ="subMenuOffset" />
+				<contextHelpId style="proptext" name ="contextHelpId" />
 			</分组>
 			<分组 name="ColorMask" />
 		</menuRoot>

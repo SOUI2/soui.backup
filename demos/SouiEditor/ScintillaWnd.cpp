@@ -258,8 +258,8 @@ void CScintillaWnd::InitScintillaWnd(void)
 	SendEditor(SCI_STYLESETFORE, STYLE_BRACELIGHT, RGB(0,255,0));       //代码框.置风格前景色 (#代码编辑框常量.风格_匹配括号, #红色)
 	SendEditor(SCI_STYLESETBOLD, STYLE_BRACELIGHT, true);           //风格.粗体
 
+    SetXmlLexer(white);
 	SetFold();
-	SetXmlLexer(white);
 	UpdateLineNumberWidth();
 }
 
@@ -494,7 +494,7 @@ void CScintillaWnd::ShowAutoComplete(const char ch)
 
 	if (ch == '.')
 	{
-		SStringA str = g_pMainDlg->m_UIResFileMgr.GetSkinAutos();
+		SStringA str = g_pMainDlg->m_UIResFileMgr.GetSkinAutos(_T(""));
 		if (!str.IsEmpty())
 		{
 			SendEditor(SCI_AUTOCSHOW, lStart - startPos, (LPARAM)(LPCSTR)str);
@@ -506,11 +506,11 @@ void CScintillaWnd::ShowAutoComplete(const char ch)
 		SStringA clsName = GetNotePart(lStart - 1);
 		SStringA str;
 		if (clsName.IsEmpty())
-			str = g_pMainDlg->m_UIResFileMgr.GetStyleAutos();
+			str = g_pMainDlg->m_UIResFileMgr.GetStyleAutos(_T(""));
 		else if (clsName.CompareNoCase("color") == 0)
-			str = g_pMainDlg->m_UIResFileMgr.GetColorAutos();
+			str = g_pMainDlg->m_UIResFileMgr.GetColorAutos(_T(""));
 		else if (clsName.CompareNoCase("string") == 0)
-			str = g_pMainDlg->m_UIResFileMgr.GetStringAutos();
+			str = g_pMainDlg->m_UIResFileMgr.GetStringAutos(_T(""));
 
 		if (!str.IsEmpty())
 		{
