@@ -401,8 +401,10 @@ void SMCListView::onDataSetChanged()
         m_iSelItem = -1;
     
 	
-    UpdateScrollBar();
-    UpdateVisibleItems();
+    UpdateScrollBar();    
+	UpdateHeaderCtrl();
+	UpdateScrollBar();
+	UpdateVisibleItems();
 }
 
 void SMCListView::onDataSetInvalidated()
