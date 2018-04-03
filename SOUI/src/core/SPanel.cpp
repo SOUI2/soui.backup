@@ -1060,8 +1060,11 @@ CRect SScrollView::GetChildrenLayoutRect()
 
 void SScrollView::UpdateChildrenPosition()
 {
-	if(m_bAutoViewSize)
-	{//计算viewSize
+	if(!m_bAutoViewSize)
+	{
+		__super::UpdateChildrenPosition();
+	}
+	else{//计算viewSize
 		CSize szOld = m_szView;
 		CRect rcWnd = GetClientRect();
 		CRect rcMargin = GetStyle().GetMargin();
@@ -1071,13 +1074,14 @@ void SScrollView::UpdateChildrenPosition()
 		m_szView.cx += rcMargin.left + rcMargin.right;
 		m_szView.cy += rcMargin.top + rcMargin.bottom;
 
+		__super::UpdateChildrenPosition();
+		UpdateScrollBar();
+
 		if(szOld != m_szView)
 		{
 			OnViewSizeChanged(szOld,m_szView);
 		}
-		UpdateScrollBar();
 	}
-	__super::UpdateChildrenPosition();
 }
 
 }//namespace SOUI
