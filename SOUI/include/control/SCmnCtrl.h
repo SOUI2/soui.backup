@@ -981,7 +981,7 @@ protected:
     virtual CSize GetDesiredSize(LPCRECT pRcContainer);
     virtual BOOL NeedRedrawWhenStateChange(){return TRUE;}
     virtual void OnColorize(COLORREF cr);
-    
+	virtual void OnScaleChanged(int nScale);
     SOUI_ATTRS_BEGIN()
         ATTR_INT(L"toggled", m_bToggled, TRUE)
         ATTR_SKIN(L"skin", m_pSkin, TRUE)
