@@ -271,7 +271,7 @@ namespace SOUI
 		{
 			if (icoY == Y_IMIDFLAG)
 			{
-				icoY =(rc.Height()- pMenuRoot->m_pIconSkin->GetSkinSize().cy) / 2;
+				icoY = (rc.Height() - pMenuRoot->m_pIconSkin->GetSkinSize().cy) / 2;
 			}
 			rc.top += icoY;
 			CRect rcIcon(rc.TopLeft(), pMenuRoot->m_pIconSkin->GetSkinSize());
@@ -419,7 +419,7 @@ namespace SOUI
 			{
 				szRet.cy = GetLayoutParam()->GetSpecifiedSize(Vert).toPixelSize(GetScale());
 			}
-			szRet.cy += m_style.GetMargin().top+m_style.GetMargin().bottom;
+			szRet.cy += m_style.GetMargin().top + m_style.GetMargin().bottom;
 			return szRet;
 		}
 
@@ -435,7 +435,7 @@ namespace SOUI
 		SOUI_MSG_MAP_BEGIN()
 			MSG_WM_PAINT_EX(OnPaint)
 			MSG_WM_ERASEBKGND_EX(OnEraseBkgnd)
-		SOUI_MSG_MAP_END()
+			SOUI_MSG_MAP_END()
 	};
 
 	//////////////////////////////////////////////////////////////////////////
@@ -802,17 +802,9 @@ namespace SOUI
 			MSG msg = { 0 };
 
 			if (PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE))
-			{//获取消息，不从消息队列中移除。
-				if (msg.message == WM_KEYDOWN
-					|| msg.message == WM_SYSKEYDOWN
-					|| msg.message == WM_KEYUP
-					|| msg.message == WM_SYSKEYUP
-					|| msg.message == WM_CHAR
-					|| msg.message == WM_IME_CHAR)
-				{
-					msg.hwnd = s_MenuData->GetMenuEx()->m_hWnd;
-				}
-				else if (msg.message == WM_LBUTTONDOWN
+			{
+				//获取消息，不从消息队列中移除。			
+				if (msg.message == WM_LBUTTONDOWN
 					|| msg.message == WM_RBUTTONDOWN
 					|| msg.message == WM_NCLBUTTONDOWN
 					|| msg.message == WM_NCRBUTTONDOWN
@@ -835,10 +827,10 @@ namespace SOUI
 				{
 					bMsgQuit = TRUE;
 				}
-
 				//移除消息队列中当前的消息。
-				MSG msgT;
-				::GetMessage(&msgT, 0, 0, 0);
+				::GetMessage(&msg, 0, 0, 0);
+
+				//msg.hwnd = s_MenuData->GetMenuEx()->m_hWnd;
 
 				//拦截非菜单窗口的MouseMove消息
 				if (msg.message == WM_MOUSEMOVE)
@@ -859,7 +851,6 @@ namespace SOUI
 					}
 
 				}
-
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
@@ -1094,15 +1085,15 @@ namespace SOUI
 		else//MF_BYCOMMAND
 		{
 			pItemRef = pMenuRoot->FindChildByID2<SMenuExItem>(uPos);
-		    if (!pItemRef) return FALSE;
+			if (!pItemRef) return FALSE;
 		}
 
-        //MF_BYPOSITION方式插入时,如果uPos大于菜单项总数,应在末尾插入,而此时pItemRef为NULL
-        //if (!pItemRef) return FALSE;
-        
+		//MF_BYPOSITION方式插入时,如果uPos大于菜单项总数,应在末尾插入,而此时pItemRef为NULL
+		//if (!pItemRef) return FALSE;
+
 		SMenuExItem *pMenuItem = (SMenuExItem*)pMenuRoot->CreateMenuItem((uFlag & MF_SEPARATOR) ? SMenuExSep::GetClassName() : SMenuExItem::GetClassName());
 
-        if (pItemRef)
+		if (pItemRef)
 		{
 			SWindow *pRefPrev = pItemRef->GetWindow(GSW_PREVSIBLING);
 			if (pRefPrev)
@@ -1126,9 +1117,9 @@ namespace SOUI
 				pMenuItem->m_pSubMenu = new SMenuEx(pMenuItem);
 			}
 
-            SStringW strId;
-            strId.Format(L"%d", nId);
-            pMenuItem->SetAttribute(L"ID", strId);
+			SStringW strId;
+			strId.Format(L"%d", nId);
+			pMenuItem->SetAttribute(L"ID", strId);
 		}
 
 		return FALSE;
