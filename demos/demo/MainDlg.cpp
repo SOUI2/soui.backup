@@ -582,7 +582,7 @@ void CMainDlg::OnBtnMsgBox()
     SMessageBox(NULL,_T("this message box includes two buttons"),_T("haha"),MB_YESNO|MB_ICONQUESTION);
 
 	CSimpleWnd::SetTimer(TIMER_QUIT,3000,NULL);//3S后退出APP
-    SMessageBox(NULL,_T("this message box includes three buttons. \nthe app will quit after 3 seconds if you keep the msgbox open!"),L"Alarm",MB_ABORTRETRYIGNORE|MB_ICONSTOP);
+    SMessageBox(NULL,_T("this message box includes three buttons. \nthe app will quit after 3 seconds if you keep the msgbox open!"),_T("Alarm"),MB_ABORTRETRYIGNORE|MB_ICONSTOP);
 	CSimpleWnd::KillTimer(TIMER_QUIT);
 }
 
@@ -595,7 +595,7 @@ public:
 protected:
 	void OnLButtonDown(UINT nFlags,CPoint pt)
 	{
-		SMessageBox(m_hWnd,L"test",L"msgbox",MB_OK);
+		SMessageBox(m_hWnd,_T("test"),_T("msgbox"),MB_OK);
 		SetMsgHandled(FALSE);
 	}
 BEGIN_MSG_MAP_EX(SSkiaTestWnd)
@@ -944,7 +944,7 @@ void CMainDlg::OnCbxInterpolotorChange(EventArgs *e)
 	{
 		SStringT str = pCbx->GetLBText(e2->nCurSel);
 		str=str.Mid(1,str.GetLength()-1-strlen("Interpolator"));
-		IInterpolator * pInterpolator = CREATEINTERPOLATOR(str);
+		IInterpolator * pInterpolator = CREATEINTERPOLATOR(S_CT2W(str));
 		if(pInterpolator)
 		{
 			SInterpolatorView *pView = FindChildByID2<SInterpolatorView>(R.id.view_interpolator);
