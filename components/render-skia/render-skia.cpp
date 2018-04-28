@@ -1695,6 +1695,26 @@ namespace SOUI
 		}
 	}
 
+	BOOL SFont_Skia::UpdateFont(const LOGFONT *plf)
+	{
+		if(!m_skFont) return FALSE;
+
+		memcpy(&m_lf,plf,sizeof(LOGFONT));
+
+#ifdef UNICODE
+		SStringA strFace=S_CT2A(plf->lfFaceName,CP_UTF8);
+#else
+		SStringA strFace=S_CT2A(plf->lfFaceName,CP_ACP);
+#endif
+		BYTE style=SkTypeface::kNormal;
+		if(plf->lfItalic) style |= SkTypeface::kItalic;
+		if(plf->lfWeight == FW_BOLD) style |= SkTypeface::kBold;
+
+		m_skFont->unref();
+		m_skFont=SkTypeface::CreateFromName(strFace,(SkTypeface::Style)style);
+		return TRUE;
+	}
+
 	namespace RENDER_SKIA
     {
         BOOL SCreateInstance( IObjRef ** ppRenderFactory )

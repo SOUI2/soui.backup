@@ -111,6 +111,7 @@ namespace SOUI{
 						fontStyle.attr.fStrike = xmlFont.attribute(L"strike").as_bool(false);
 						fontStyle.attr.fItalic = xmlFont.attribute(L"italic").as_bool(false);
 						
+						defFontInfo.strName = xmlFont.attribute(L"name").as_string(L"default");
 						defFontInfo.dwStyle = fontStyle.dwStyle;
 						defFontInfo.strFaceName = S_CW2T(xmlFont.attribute(L"face").value());
 
@@ -122,7 +123,9 @@ namespace SOUI{
 					{
 						fontStyle.attr.cSize = 12;
 						fontStyle.attr.byCharset =DEFAULT_CHARSET;
+						
 
+						defFontInfo.strName = L"default";
 						defFontInfo.dwStyle = fontStyle.dwStyle;
 						defFontInfo.strFaceName = KDefFontFace;
 					}

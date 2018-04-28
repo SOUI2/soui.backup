@@ -14,7 +14,7 @@
   <root skin="_skin.sys.wnd.bkgnd" cache="1">
     <caption pos="0,0,-0,@-1" font="adding:0" layout="hbox" gravity="center" padding="5,0,5,0">
       <icon size="-1,-1" src="ICON_LOGO:16"/>
-      <text size="-1,-1" extend_left="5">@string/title</text>
+      <text size="-1,-1" extend_left="5" font="name:test,bold:1">@string/title</text>
       <window size="0,0" weight="1" visible="0"/>
       <button size="100,-1" padding="0,2,0,2" name="btn_menu">menu</button>
       <imgbtn size="-1,-1" name="btn_min" skin="_skin.sys.btn.minimize"  animate="1" />

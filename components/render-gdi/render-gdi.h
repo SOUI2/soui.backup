@@ -133,6 +133,15 @@ namespace SOUI
         virtual BOOL IsItalic(){return m_lf.lfItalic;}
         virtual BOOL IsStrikeOut(){return m_lf.lfStrikeOut;}
 
+		virtual BOOL UpdateFont(const LOGFONT *pLogFont)
+		{
+			if(!m_hFont) return FALSE;
+			DeleteObject(m_hFont);
+			memcpy(&m_lf,pLogFont,sizeof(LOGFONT));
+			m_hFont = CreateFontIndirect(&m_lf);
+			return TRUE;
+		}
+
         HFONT GetFont(){return m_hFont;}
     protected:
         LOGFONT     m_lf;

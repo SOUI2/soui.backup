@@ -15,6 +15,7 @@
 
 #include "core/ssingletonmap.h"
 #include "interface/render-i.h"
+#include "interface/STranslator-i.h"
 #include "unknown/obj-ref-impl.hpp"
 
 /**
@@ -51,6 +52,7 @@ namespace SOUI
 {
 	struct FontInfo
 	{
+		SStringW strName;
 		DWORD    dwStyle;
 		SStringT strFaceName;
 		SStringT strPropEx;
@@ -71,6 +73,7 @@ namespace SOUI
         static ULONG Hash( INARGTYPE fontKey )
         {
             ULONG uRet=SOUI::CElementTraits<SStringT>::Hash(fontKey.strFaceName);
+			uRet = (uRet<<5) + SOUI::CElementTraits<SStringW>::Hash(fontKey.strName);
             uRet = (uRet<<5) + SOUI::CElementTraits<SStringT>::Hash(fontKey.strPropEx);
             uRet = (uRet<<5) +(UINT)fontKey.dwStyle+1;
             return uRet;
@@ -126,8 +129,10 @@ namespace SOUI
          * @return   IFontPtr -- font对象
          * Describe  
          */    
-		IFontPtr GetFont(FONTSTYLE style,const SStringW& strFaceName = SStringW(),pugi::xml_node xmlExProp = pugi::xml_node());
+		IFontPtr GetFont(const SStringW & strName,FONTSTYLE style,const SStringW& strFaceName = SStringW(),pugi::xml_node xmlExProp = pugi::xml_node());
 
+
+		void UpdateFontsByTranslator(ITranslator * pTrans);
 
     protected:
 
