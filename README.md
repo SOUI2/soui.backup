@@ -10,7 +10,7 @@ SOUI
 - [国外Git下载站点](https://github.com/SOUI2/soui)
 
 ###### 论坛
-- http://soui.me
+- http://ui520.cn
 ###### QQ群
 
 - SOUI讨论#1: [点击加入](http://shang.qq.com/wpa/qunwpa?idkey=9653a811a72365d798a5247d6ba6885a568bdcf51c624f906c8ce7b8fd9e4eda)
