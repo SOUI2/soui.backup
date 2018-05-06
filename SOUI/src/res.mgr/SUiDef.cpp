@@ -112,7 +112,7 @@ namespace SOUI{
 						fontStyle.attr.fItalic = xmlFont.attribute(L"italic").as_bool(false);
 						
 						defFontInfo.strName = xmlFont.attribute(L"name").as_string(L"default");
-						defFontInfo.dwStyle = fontStyle.dwStyle;
+						defFontInfo.style = fontStyle;
 						defFontInfo.strFaceName = S_CW2T(xmlFont.attribute(L"face").value());
 
 						if(defFontInfo.strFaceName.IsEmpty() || !SUiDef::CheckFont(defFontInfo.strFaceName))
@@ -126,7 +126,7 @@ namespace SOUI{
 						
 
 						defFontInfo.strName = L"default";
-						defFontInfo.dwStyle = fontStyle.dwStyle;
+						defFontInfo.style = fontStyle;
 						defFontInfo.strFaceName = KDefFontFace;
 					}
 

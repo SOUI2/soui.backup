@@ -185,7 +185,8 @@ void CMainDlg::OnLanguage(int nID)
 		lang->Load(&xmlLang.child(L"language"), 1);//1=LD_XML
 		pTransMgr->SetLanguage(lang->name());
 		pTransMgr->InstallTranslator(lang);
-		SFontPool::getSingletonPtr()->UpdateFontsByTranslator(lang);
+
+		SFontPool::getSingletonPtr()->UpdateFonts();//update fonts that defined by translator
 		SDispatchMessage(UM_SETLANGUAGE,0,0);
 	}
 

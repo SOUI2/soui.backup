@@ -32,7 +32,9 @@ IFontPtr SFontPool::GetFont(const SStringW & strName,FONTSTYLE style, const SStr
 	xmlExProp.print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
 	SStringT strXmlProp= S_CW2T(SStringW(writer.buffer(),writer.size()));
 
-	FontInfo info = {S_CW2T(strName),style.dwStyle,strFace,strXmlProp};
+	FontInfo info = {strName,style.dwStyle,strFace,strXmlProp};
+	if(strName.IsEmpty())//使用系统字体的name属性
+		info.strName = GetDefFontInfo().strName;
 
 	if(HasKey(info))
 	{
@@ -40,7 +42,7 @@ IFontPtr SFontPool::GetFont(const SStringW & strName,FONTSTYLE style, const SStr
 	}
 	else
 	{
-		hftRet = _CreateFont(info.dwStyle,info.strFaceName,xmlExProp);
+		hftRet = _CreateFont(info,xmlExProp);
 		AddKeyObject(info,hftRet);
 	}
 	return hftRet;
@@ -73,7 +75,7 @@ static const WCHAR  KFontName[]      =   (L"name");
 
 IFontPtr SFontPool::GetFont( const SStringW & strFont ,int scale)
 {
-    FONTSTYLE fntStyle(GetDefFontInfo().dwStyle);
+    FONTSTYLE fntStyle(GetDefFontInfo().style);
 	fntStyle.attr.cSize = 0;
 
     SStringW strFace;//不需要默认字体, 在后面GetFont里会检查.
@@ -87,7 +89,7 @@ IFontPtr SFontPool::GetFont( const SStringW & strFont ,int scale)
 	short cSize = 0;
 
 	pugi::xml_document docExProp;
-	pugi::xml_node nodePropEx = docExProp.append_child(L"propex");
+	pugi::xml_node nodePropEx = docExProp.root();
     for(int i=(int)fontProp.GetCount()-1;i>=0;i--)
     {
         SStringWList strPair;
@@ -139,7 +141,7 @@ IFontPtr SFontPool::GetFont( const SStringW & strFont ,int scale)
 	}
 	else
 	{
-		FONTSTYLE fontStyle(GetDefFontInfo().dwStyle);
+		FONTSTYLE fontStyle(GetDefFontInfo().style);
 		fntStyle.attr.cSize = fontStyle.attr.cSize * scale/100 + cAdding;  //cAdding为正代表字体变大，否则变小
 	}
 
@@ -149,9 +151,7 @@ IFontPtr SFontPool::GetFont( const SStringW & strFont ,int scale)
 
 IFontPtr SFontPool::_CreateFont(const LOGFONT &lf)
 {
-    
     SASSERT(m_RenderFactory);
-    
     
     IFontPtr pFont=NULL;
     m_RenderFactory->CreateFont(&pFont,lf);
@@ -159,22 +159,25 @@ IFontPtr SFontPool::_CreateFont(const LOGFONT &lf)
     return pFont;
 }
 
-IFontPtr SFontPool::_CreateFont(FONTSTYLE style,const SStringT & strFaceName,pugi::xml_node xmlExProp)
+IFontPtr SFontPool::_CreateFont(const FontInfo &fontInfo,pugi::xml_node xmlExProp)
 {
 	LOGFONT lfNew={0};
         
-	lfNew.lfCharSet     = style.attr.byCharset;
-    lfNew.lfWeight      = (style.attr.fBold ? FW_BOLD : FW_NORMAL);
-    lfNew.lfUnderline   = (FALSE != style.attr.fUnderline);
-    lfNew.lfItalic      = (FALSE != style.attr.fItalic);
-    lfNew.lfStrikeOut   = (FALSE != style.attr.fStrike);
-	lfNew.lfHeight = -abs((short)style.attr.cSize);
+	lfNew.lfCharSet     = fontInfo.style.attr.byCharset;
+    lfNew.lfWeight      = (fontInfo.style.attr.fBold ? FW_BOLD : FW_NORMAL);
+    lfNew.lfUnderline   = (FALSE != fontInfo.style.attr.fUnderline);
+    lfNew.lfItalic      = (FALSE != fontInfo.style.attr.fItalic);
+    lfNew.lfStrikeOut   = (FALSE != fontInfo.style.attr.fStrike);
+	lfNew.lfHeight = -abs((short)fontInfo.style.attr.cSize);
         
     lfNew.lfQuality = CLEARTYPE_QUALITY;
     
     
-    _tcscpy_s(lfNew.lfFaceName,_countof(lfNew.lfFaceName),  strFaceName);
+    _tcscpy_s(lfNew.lfFaceName,_countof(lfNew.lfFaceName), fontInfo.strFaceName);
     
+	ITranslatorMgr *pTransMgr = SApplication::getSingleton().GetTranslator();
+	if(pTransMgr) pTransMgr->updateLogfont(fontInfo.strName,&lfNew);
+
     IFontPtr ret = _CreateFont(lfNew);
 	if(ret) ret->InitFromXml(xmlExProp);
 	return ret;
@@ -185,8 +188,11 @@ const FontInfo & SFontPool::GetDefFontInfo() const
 	return SUiDef::getSingleton().GetUiDef()->GetDefFontInfo();
 }
 
-void SFontPool::UpdateFontsByTranslator(ITranslator * pTrans)
+void SFontPool::UpdateFonts()
 {
+	ITranslatorMgr *pTransMgr = SApplication::getSingleton().GetTranslator();
+	if(!pTransMgr) return;
+
 	SPOSITION pos = m_mapNamedObj->GetStartPosition();
 	while(pos)
 	{
@@ -195,7 +201,7 @@ void SFontPool::UpdateFontsByTranslator(ITranslator * pTrans)
 		m_mapNamedObj->GetNextAssoc(pos,info,fontPtr);
 		LOGFONT lf;
 		memcpy(&lf,fontPtr->LogFont(),sizeof(lf));
-		if(pTrans->updateLogfont(info.strName,&lf))
+		if(pTransMgr->updateLogfont(info.strName,&lf))
 		{
 			fontPtr->UpdateFont(&lf);
 		}
