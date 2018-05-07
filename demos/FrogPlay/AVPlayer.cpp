@@ -2,6 +2,7 @@
 #include "AVPlayer.h"
 #include <cmath>
 #include <vector>
+#include <vlc/stdint.h>
 #include <vlc/vlc.h>
 
 
