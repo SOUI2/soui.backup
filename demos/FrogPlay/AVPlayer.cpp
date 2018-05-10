@@ -2,7 +2,10 @@
 #include "AVPlayer.h"
 #include <cmath>
 #include <vector>
+#if _MSC_VER  <= 1500 //vs2008
 #include <vlc/stdint.h>
+#endif
+
 #include <vlc/vlc.h>
 
 
