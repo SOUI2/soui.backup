@@ -90,7 +90,7 @@ namespace SOUI
         }
 
         ArrSubItem  *arSubItems;
-        DWORD       dwData;
+		LPARAM       dwData;
         BOOL    checked;
     } DXLVITEM;
 
@@ -137,15 +137,16 @@ namespace SOUI
         * Describe  插入条目
         */
         int             InsertItem(int nItem, LPCTSTR pszText, int nImage=-1);
-        /**
+
+		/**
         * SListCtrl::SetItemData
         * @brief    设置附加数据
         * @param    int nItem -- 索引
-        * @param    DWORD dwData-- 附加数据
+        * @param    LPARAM dwData-- 附加数据
         *
         * Describe  设置附加数据
         */
-        BOOL            SetItemData(int nItem, DWORD dwData);
+        BOOL            SetItemData(int nItem, LPARAM dwData);
         /**
         * SListCtrl::GetItemData
         * @brief    获取附加数据
@@ -154,7 +155,7 @@ namespace SOUI
         *
         * Describe  获取附加数据
         */
-        DWORD           GetItemData(int nItem);
+		LPARAM           GetItemData(int nItem);
         /**
         * SListCtrl::SetSubItem
         * @brief    设置子项

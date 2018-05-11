@@ -76,7 +76,7 @@ void CMainDlg::InitListCtrl()
             pst->score=rand()%60+40;
 
             int iItem=pList->InsertItem(i,pst->szName);
-            pList->SetItemData(iItem,(DWORD)pst);
+            pList->SetItemData(iItem,(LPARAM)pst);
             pList->SetSubItemText(iItem,1,pst->szSex);
             TCHAR szBuf[10];
             _stprintf(szBuf,_T("%d"),pst->age);
