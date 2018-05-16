@@ -440,7 +440,8 @@ namespace SOUI
 		}
 		items.InsertAt(iDragTo, iDragFrom);
 
-		m_pSkinItem->Draw(pRT, rcClient, 0);
+		if (m_pSkinItem)
+			m_pSkinItem->Draw(pRT, rcClient, 0);
 		for (UINT i = 0; i < items.GetCount(); i++)
 		{
 			rcItem.left = rcItem.right;
