@@ -31,7 +31,7 @@
 #include "STurn3DView.h"
 #include "SRadioBox2.h"
 #include "SMcListViewEx/SHeaderCtrlEx.h"
-
+#include "SDemoSkin.h"
 
 
 //从PE文件加载，注意从文件加载路径位置
@@ -265,4 +265,5 @@ void RegisterExtendControl(SApplication *theApp)
 	theApp->RegisterSkinClass<SSkinNewScrollbar>();
 	theApp->RegisterSkinClass<SSkinGif>();
 	theApp->RegisterSkinClass<SSkinAPNG>();
+	theApp->RegisterSkinClass<SDemoSkin>();
 }

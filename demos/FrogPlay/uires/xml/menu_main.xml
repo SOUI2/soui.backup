@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<menu iconSkin="" iconMargin="6" sepSkin="_skin_menu_sep" itemSkin="_skin_page1_menu_itemskin" font="adding:-2" itemHeight="26" textMargin="0">
+<menu iconSkin="" iconMargin="6" sepSkin="_skin.sys.menu.sep" itemSkin="_skin_page1_menu_itemskin" font="adding:-2" itemHeight="26" textMargin="0">
 	<item id="1" icon="0">
 		文件(&amp;F)
 		<item id="11">打开文件(&amp;O)</item>

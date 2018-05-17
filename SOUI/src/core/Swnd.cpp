@@ -93,6 +93,9 @@ namespace SOUI
 		m_evtSet.addEvent(EVENTID(EventSwndStateChanged));
 		m_evtSet.addEvent(EVENTID(EventSwndVisibleChanged));
 
+		m_evtSet.addEvent(EVENTID(EventLButtonDown));
+		m_evtSet.addEvent(EVENTID(EventLButtonUp));
+
 		m_evtSet.addEvent(EVENTID(EventCmd));
 		m_evtSet.addEvent(EVENTID(EventCtxMenu));
 		m_evtSet.addEvent(EVENTID(EventSetFocus));
@@ -1337,7 +1340,7 @@ namespace SOUI
 			nMaxWid -= rcPadding.left + rcPadding.right;
 			nTestDrawMode|=DT_WORDBREAK;
 		}
-		rcTest4Text.right = nMaxWid;
+		rcTest4Text.right = smax(nMaxWid,10);
 
 		CAutoRefPtr<IRenderTarget> pRT;
 		GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);

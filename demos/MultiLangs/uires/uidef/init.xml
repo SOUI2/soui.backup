@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <UIDEF>
-  <font face="宋体" size="15"/>
+  <font face="宋体" size="15" name="default"/>
 
   <string src="values:string" />
   <skin src="values:skin"/>

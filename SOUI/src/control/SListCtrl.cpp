@@ -109,7 +109,7 @@ int SListCtrl::InsertItem(int nItem, LPCTSTR pszText, int nImage)
     return nItem;
 }
 
-BOOL SListCtrl::SetItemData(int nItem, DWORD dwData)
+BOOL SListCtrl::SetItemData(int nItem, LPARAM dwData)
 {
     if (nItem >= GetItemCount())
         return FALSE;
@@ -119,14 +119,14 @@ BOOL SListCtrl::SetItemData(int nItem, DWORD dwData)
     return TRUE;
 }
 
-DWORD SListCtrl::GetItemData(int nItem)
+LPARAM SListCtrl::GetItemData(int nItem)
 {
     if (nItem >= GetItemCount())
         return 0;
 
     DXLVITEM& lvi = m_arrItems[nItem];
 
-    return (DWORD)lvi.dwData;
+    return lvi.dwData;
 }
 
 BOOL SListCtrl::SetSubItem(int nItem, int nSubItem, const DXLVSUBITEM* plv)

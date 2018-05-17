@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="png"
-	ProjectGUID="{4F26114C-D4CC-3918-BD96-595369AF029D}"
+	ProjectGUID="{70DF9119-E171-3EAC-90BD-D844577CBF15}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -21,7 +21,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories=".,.,..\zlib,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="/MP -w34100 -w34189 -w44996"
+				AdditionalOptions="/MP"
 				AssemblerListingLocation="..\..\obj\release\png\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"
@@ -70,7 +70,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories=".,.,..\zlib,..\..\config,..\..\tools\mkspecs\win32-msvc2008"
-				AdditionalOptions="/MP -w34100 -w34189 -w44996"
+				AdditionalOptions="/MP"
 				AssemblerListingLocation="..\..\obj\debug\png\"
 				DebugInformationFormat="3"
 				DisableSpecificWarnings="4100,4101,4102,4189,4996"

@@ -55,7 +55,7 @@ static DWORD WINAPI threadadd(LPVOID lpParameter)
 		SStringT  path_name = *it;
 		pAdapter->ADD_files(path_name);
 	}
-	pAdapter->notifyDataSetChanged();
+	::PostMessage(prama1->hwnd,MS_ADD_FILESED,0,0);
 
 	return 0;
 }
@@ -904,9 +904,10 @@ LRESULT CMainDlg::OnMyMsg_ADD_FILED(UINT uMsg, WPARAM wp, LPARAM lp, BOOL & bHan
 			playlist_wnd->SetVisible(true, true);
 		}
 	}
-
+	pAdapter->notifyDataSetChanged();
 	return 0;
 }
+
 void CMainDlg::OnBtn_Menu_History()//打开播放痕迹菜单
 {
 	SMenu m_main_menu;
@@ -938,10 +939,10 @@ void CMainDlg::Ondellfiles_MenuBtn()
 	if (m_items < 0) return;
 	if (m_items==pAdapter->getCount()-1&&pAdapter->getCount()>1)
 	{
-		pAdapter->Dll_File(m_items);
+		pAdapter->Del_File(m_items);
 		m_Play_List_Wnd->SetSel(m_items - 1);
 	}else
-		pAdapter->Dll_File(m_items);
+		pAdapter->Del_File(m_items);
 }
 //增加文件
 void CMainDlg::OnAddfiles_MenuBtn()

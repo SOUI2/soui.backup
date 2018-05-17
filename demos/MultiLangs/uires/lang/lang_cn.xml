@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <language name="ch" guid="{0DAEDE3C-6B94-4a81-9A55-C304FDD69D98}">
+  <fonts>
+    <!--定义字体更新策略, name是在布局中定义的字体的name属性，这里可以修改字体的字符集及字体名-->
+    <font name="default" charset="GBK" face="宋体"/>
+    <font name="test" charset="GBK" face="隶书"/>
+  </fonts>
   <context>
     <!--没有上下文的翻译及字符串表的翻译-->
     <message>

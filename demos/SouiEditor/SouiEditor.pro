@@ -80,6 +80,7 @@ HEADERS += Adapter.h \
            pugixml_write.h \
            SysdataMgr.h \
 		   DragDownMgr.h \
+		   SDemoSkin.h \
 
 SOURCES += Adapter.cpp \
 		   DesignerView.cpp \
@@ -116,6 +117,7 @@ SOURCES += Adapter.cpp \
            propgrid/propitem/SPropertyItem-Text.cpp \
            pugixml_write.cpp \
            SysdataMgr.cpp \
+           SDemoSkin.cpp \
 
 
 

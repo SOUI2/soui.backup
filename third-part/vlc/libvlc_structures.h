@@ -1,5 +1,5 @@
 /*****************************************************************************
- * libvlc_structures.h:  libvlc_* new external API structures
+ * libvlc.h:  libvlc_* new external API structures
  *****************************************************************************
  * Copyright (C) 1998-2008 VLC authors and VideoLAN
  * $Id $
@@ -29,7 +29,7 @@
  * This file defines libvlc_* new external API structures
  */
 
-#include <stdint.h>
+//#include <stdint.h>
 
 # ifdef __cplusplus
 extern "C" {
@@ -51,6 +51,9 @@ typedef int64_t libvlc_time_t;
  * \ingroup libvlc_log
  * @{
  */
+
+/** This structure is opaque. It represents a libvlc log instance */
+typedef struct libvlc_log_t libvlc_log_t;
 
 /** This structure is opaque. It represents a libvlc log iterator */
 typedef struct libvlc_log_iterator_t libvlc_log_iterator_t;

@@ -44,8 +44,10 @@ namespace SOUI
     
     void SPropertyItemText::DrawItem( IRenderTarget *pRT,CRect rc )
     {
-        SStringT strValue = GetString();
-        pRT->DrawText(strValue,strValue.GetLength(),rc,DT_SINGLELINE|DT_VCENTER);
+		if (!m_pEdit) {
+			SStringT strValue = GetString();
+			pRT->DrawText(strValue,strValue.GetLength(),rc,DT_SINGLELINE|DT_VCENTER);
+		}
     }
     
     void SPropertyItemText::OnInplaceActive(bool bActive)

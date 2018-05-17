@@ -123,6 +123,7 @@ namespace SOUI
         virtual BOOL IsUnderline(){return m_lf.lfUnderline;}
         virtual BOOL IsItalic(){return m_lf.lfItalic;}
         virtual BOOL IsStrikeOut(){return m_lf.lfStrikeOut;}
+		virtual BOOL UpdateFont(const LOGFONT *pLogFont);
 
         const SkPaint  GetPaint() const {return m_skPaint;}
         SkTypeface *GetFont()const {return m_skFont;}

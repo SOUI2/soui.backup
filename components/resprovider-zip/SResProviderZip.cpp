@@ -119,9 +119,9 @@ namespace SOUI{
 		m_childDir = zipParam->pszChildDir;
 		if (!m_childDir.IsEmpty())
 		{
-			m_childDir.TrimRight(L'\\');
-			m_childDir.TrimRight(L'/');
-			m_childDir += L"\\";
+			m_childDir.TrimRight(_T('\\'));
+			m_childDir.TrimRight(_T('/'));
+			m_childDir += _T("\\");
 		}
         if(zipParam->type == ZIPRES_PARAM::ZIPFILE)
             return _Init(zipParam->pszZipFile,zipParam->pszPsw);

@@ -1,8 +1,8 @@
 /*****************************************************************************
- * libvlc_media_list_player.h:  libvlc_media_list API
+ * libvlc_media_list.h:  libvlc_media_list API
  *****************************************************************************
  * Copyright (C) 1998-2008 VLC authors and VideoLAN
- * $Id: c95ad972c7dcf380ef62e60d821af726848dae48 $
+ * $Id: c037843c15177eebd12053c0a21118afa8333e06 $
  *
  * Authors: Pierre d'Herbemont
  *
@@ -128,7 +128,7 @@ LIBVLC_API
 void libvlc_media_list_player_play(libvlc_media_list_player_t * p_mlp);
 
 /**
- * Toggle pause (or resume) media list
+ * Pause media list
  *
  * \param p_mlp media list player instance
  */

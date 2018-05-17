@@ -19,6 +19,8 @@ namespace SOUI
 		CAutoRefPtr<SStylePool> m_privateStylePool; /**<局部style pool*/
 		CAutoRefPtr<SSkinPool>  m_privateSkinPool;  /**<局部skin pool*/
 	public:
+		static BOOL LoadConfig(pugi::xml_document &doc,const SStringT & cfgFile);
+
 		SDesignerView(SHostDialog *pMainHost, SWindow *pContainer, STreeCtrl *pTreeXmlStruct);
 		~SDesignerView();
 
@@ -132,7 +134,8 @@ namespace SOUI
 		SDesignerRoot *m_pRealWndRoot;       //布局容器窗口;
 
 		SMoveWnd  *m_pMoveWndRoot; //布局窗口的根窗口
-
+		
+		bool	 m_bXmlResLoadOK;
 		int		 m_nSciCaretPos;		//代码编辑窗口光标位置
 
 		BOOL     m_bChange;    //文件是否被修改,如果被修改需要保存
