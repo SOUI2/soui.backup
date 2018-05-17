@@ -1188,6 +1188,12 @@ CSize SToggle::GetDesiredSize(LPCRECT pRcContainer)
     return sz;
 }
 
+void SToggle::OnScaleChanged(int nScale)
+{
+	__super::OnScaleChanged(nScale);
+	GetScaleSkin(m_pSkin, nScale);
+}
+
 void SToggle::OnColorize(COLORREF cr)
 {
     __super::OnColorize(cr);

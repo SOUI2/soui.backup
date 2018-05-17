@@ -401,8 +401,10 @@ void SMCListView::onDataSetChanged()
         m_iSelItem = -1;
     
 	
-    UpdateScrollBar();
-    UpdateVisibleItems();
+    UpdateScrollBar();    
+	UpdateHeaderCtrl();
+	UpdateScrollBar();
+	UpdateVisibleItems();
 }
 
 void SMCListView::onDataSetInvalidated()
@@ -529,6 +531,7 @@ void SMCListView::UpdateVisibleItems()
                 if(lstRecycle->IsEmpty())
                 {//创建一个新的列表项
                     ii.pItem = SItemPanel::Create(this,pugi::xml_node(),this);
+					SApplication::getSingleton().SetSwndDefAttr(ii.pItem);
                     ii.pItem->GetEventSet()->subscribeEvent(EventItemPanelClick::EventID,Subscriber(&SMCListView::OnItemClick,this));
                 }else
                 {

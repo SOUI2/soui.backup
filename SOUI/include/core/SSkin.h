@@ -494,7 +494,7 @@ public:
 
 protected:
 	virtual void _Draw(IRenderTarget *pRT, LPCRECT rcDraw, DWORD dwState,BYTE byAlpha);
-
+	virtual void _Scale(ISkinObj * skinObj, int nScale);
 	CAutoRefPtr<ISkinObj> m_skins[4];
 };
 }//namespace SOUI

@@ -80,7 +80,7 @@ int SSkinPool::LoadSkins(pugi::xml_node xmlNode)
 
 const int KBuiltinScales [] =
 {
-	100,125,150,200,250,300
+	100,125,150,175,200,250,300
 };
 
 /*标准化放大比例, 选择比自己指定比例小一号的比例*/
