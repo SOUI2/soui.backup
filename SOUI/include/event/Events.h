@@ -711,7 +711,7 @@ namespace SOUI
 		EventLCItemDeleted(SObject *pSender) :TplEventArgs<EventLCItemDeleted>(pSender){}
 		enum{ EventID = EVT_LC_ITEMDELETED };
 		int		nItem;
-		DWORD   dwData;
+		LPARAM   dwData;
 	};
 
     class SOUI_EXP EventCalendarSelDay : public TplEventArgs<EventCalendarSelDay>

@@ -352,6 +352,8 @@ namespace SOUI
          * Describe  
          */    
         virtual BOOL IsStrikeOut() =0;
+
+		virtual BOOL UpdateFont(const LOGFONT *pLogFont) = 0;
     };
 
     /**

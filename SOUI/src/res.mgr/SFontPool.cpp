@@ -21,7 +21,7 @@ SFontPool::SFontPool(IRenderFactory *pRendFactory)
 }
 
 
-IFontPtr SFontPool::GetFont(FONTSTYLE style, const SStringW & fontFaceName,pugi::xml_node xmlExProp)
+IFontPtr SFontPool::GetFont(const SStringW & strName,FONTSTYLE style, const SStringW & fontFaceName,pugi::xml_node xmlExProp)
 {
 	IFontPtr hftRet=0;
 
@@ -32,7 +32,9 @@ IFontPtr SFontPool::GetFont(FONTSTYLE style, const SStringW & fontFaceName,pugi:
 	xmlExProp.print(writer,L"\t",pugi::format_default,pugi::encoding_utf16);
 	SStringT strXmlProp= S_CW2T(SStringW(writer.buffer(),writer.size()));
 
-	FontInfo info = {style.dwStyle,strFace,strXmlProp};
+	FontInfo info = {strName,style.dwStyle,strFace,strXmlProp};
+	if(strName.IsEmpty())//使用系统字体的name属性
+		info.strName = GetDefFontInfo().strName;
 
 	if(HasKey(info))
 	{
@@ -40,7 +42,7 @@ IFontPtr SFontPool::GetFont(FONTSTYLE style, const SStringW & fontFaceName,pugi:
 	}
 	else
 	{
-		hftRet = _CreateFont(info.dwStyle,info.strFaceName,xmlExProp);
+		hftRet = _CreateFont(info,xmlExProp);
 		AddKeyObject(info,hftRet);
 	}
 	return hftRet;
@@ -58,6 +60,7 @@ static const WCHAR  KFontStrike[]    =   (L"strike");
 static const WCHAR  KFontAdding[]    =   (L"adding");
 static const WCHAR  KFontSize[]      =   (L"size");
 static const WCHAR  KFontCharset[]   =   (L"charset");
+static const WCHAR  KFontName[]      =   (L"name");
 
 
 #define LEN_FACE    (ARRAYSIZE(KFontFace)-1)
@@ -68,14 +71,15 @@ static const WCHAR  KFontCharset[]   =   (L"charset");
 #define LEN_ADDING  (ARRAYSIZE(KFontAdding)-1)
 #define LEN_SIZE    (ARRAYSIZE(KFontSize)-1)
 #define LEN_CHARSET (ARRAYSIZE(KFontCharset)-1)
+#define LEN_NAME (ARRAYSIZE(KFontName)-1)
 
 IFontPtr SFontPool::GetFont( const SStringW & strFont ,int scale)
 {
-    FONTSTYLE fntStyle(GetDefFontInfo().dwStyle);
+    FONTSTYLE fntStyle(GetDefFontInfo().style);
 	fntStyle.attr.cSize = 0;
 
     SStringW strFace;//不需要默认字体, 在后面GetFont里会检查.
-
+	SStringW strName;
     SStringW attr=strFont; 
     attr.MakeLower();                                        
     SStringWList fontProp;
@@ -85,7 +89,7 @@ IFontPtr SFontPool::GetFont( const SStringW & strFont ,int scale)
 	short cSize = 0;
 
 	pugi::xml_document docExProp;
-	pugi::xml_node nodePropEx = docExProp.append_child(L"propex");
+	pugi::xml_node nodePropEx = docExProp.root();
     for(int i=(int)fontProp.GetCount()-1;i>=0;i--)
     {
         SStringWList strPair;
@@ -122,7 +126,10 @@ IFontPtr SFontPool::GetFont( const SStringW & strFont ,int scale)
         }else if(strPair[0] == KFontCharset)
         {
             fntStyle.attr.byCharset = (BYTE)_wtoi(strPair[1]);
-        }else
+        }else if(strPair[0] == KFontName)
+		{
+			strName = strPair[1];
+		}else
 		{
 			nodePropEx.append_attribute(strPair[0]).set_value(strPair[1]);
 		}
@@ -134,19 +141,17 @@ IFontPtr SFontPool::GetFont( const SStringW & strFont ,int scale)
 	}
 	else
 	{
-		FONTSTYLE fontStyle(GetDefFontInfo().dwStyle);
+		FONTSTYLE fontStyle(GetDefFontInfo().style);
 		fntStyle.attr.cSize = fontStyle.attr.cSize * scale/100 + cAdding;  //cAdding为正代表字体变大，否则变小
 	}
 
-    return GetFont(fntStyle, strFace,nodePropEx);
+    return GetFont(strName,fntStyle, strFace,nodePropEx);
 }
 
 
 IFontPtr SFontPool::_CreateFont(const LOGFONT &lf)
 {
-    
     SASSERT(m_RenderFactory);
-    
     
     IFontPtr pFont=NULL;
     m_RenderFactory->CreateFont(&pFont,lf);
@@ -154,22 +159,25 @@ IFontPtr SFontPool::_CreateFont(const LOGFONT &lf)
     return pFont;
 }
 
-IFontPtr SFontPool::_CreateFont(FONTSTYLE style,const SStringT & strFaceName,pugi::xml_node xmlExProp)
+IFontPtr SFontPool::_CreateFont(const FontInfo &fontInfo,pugi::xml_node xmlExProp)
 {
 	LOGFONT lfNew={0};
         
-	lfNew.lfCharSet     = style.attr.byCharset;
-    lfNew.lfWeight      = (style.attr.fBold ? FW_BOLD : FW_NORMAL);
-    lfNew.lfUnderline   = (FALSE != style.attr.fUnderline);
-    lfNew.lfItalic      = (FALSE != style.attr.fItalic);
-    lfNew.lfStrikeOut   = (FALSE != style.attr.fStrike);
-	lfNew.lfHeight = -abs((short)style.attr.cSize);
+	lfNew.lfCharSet     = fontInfo.style.attr.byCharset;
+    lfNew.lfWeight      = (fontInfo.style.attr.fBold ? FW_BOLD : FW_NORMAL);
+    lfNew.lfUnderline   = (FALSE != fontInfo.style.attr.fUnderline);
+    lfNew.lfItalic      = (FALSE != fontInfo.style.attr.fItalic);
+    lfNew.lfStrikeOut   = (FALSE != fontInfo.style.attr.fStrike);
+	lfNew.lfHeight = -abs((short)fontInfo.style.attr.cSize);
         
     lfNew.lfQuality = CLEARTYPE_QUALITY;
     
     
-    _tcscpy_s(lfNew.lfFaceName,_countof(lfNew.lfFaceName),  strFaceName);
+    _tcscpy_s(lfNew.lfFaceName,_countof(lfNew.lfFaceName), fontInfo.strFaceName);
     
+	ITranslatorMgr *pTransMgr = SApplication::getSingleton().GetTranslator();
+	if(pTransMgr) pTransMgr->updateLogfont(fontInfo.strName,&lfNew);
+
     IFontPtr ret = _CreateFont(lfNew);
 	if(ret) ret->InitFromXml(xmlExProp);
 	return ret;
@@ -178,6 +186,26 @@ IFontPtr SFontPool::_CreateFont(FONTSTYLE style,const SStringT & strFaceName,pug
 const FontInfo & SFontPool::GetDefFontInfo() const
 {
 	return SUiDef::getSingleton().GetUiDef()->GetDefFontInfo();
+}
+
+void SFontPool::UpdateFonts()
+{
+	ITranslatorMgr *pTransMgr = SApplication::getSingleton().GetTranslator();
+	if(!pTransMgr) return;
+
+	SPOSITION pos = m_mapNamedObj->GetStartPosition();
+	while(pos)
+	{
+		FontInfo info;
+		IFontPtr fontPtr;
+		m_mapNamedObj->GetNextAssoc(pos,info,fontPtr);
+		LOGFONT lf;
+		memcpy(&lf,fontPtr->LogFont(),sizeof(lf));
+		if(pTransMgr->updateLogfont(info.strName,&lf))
+		{
+			fontPtr->UpdateFont(&lf);
+		}
+	}
 }
 
 

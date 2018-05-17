@@ -52,7 +52,6 @@ enum libvlc_event_e {
     libvlc_MediaParsedChanged,
     libvlc_MediaFreed,
     libvlc_MediaStateChanged,
-    libvlc_MediaSubItemTreeAdded,
 
     libvlc_MediaPlayerMediaChanged=0x100,
     libvlc_MediaPlayerNothingSpecial,
@@ -73,12 +72,6 @@ enum libvlc_event_e {
     libvlc_MediaPlayerSnapshotTaken,
     libvlc_MediaPlayerLengthChanged,
     libvlc_MediaPlayerVout,
-    libvlc_MediaPlayerScrambledChanged,
-    libvlc_MediaPlayerCorked = libvlc_MediaPlayerScrambledChanged + 3 + 1,
-    libvlc_MediaPlayerUncorked,
-    libvlc_MediaPlayerMuted,
-    libvlc_MediaPlayerUnmuted,
-    libvlc_MediaPlayerAudioVolume,
 
     libvlc_MediaListItemAdded=0x200,
     libvlc_MediaListWillAddItem,
@@ -144,10 +137,6 @@ typedef struct libvlc_event_t
         {
             libvlc_state_t new_state;
         } media_state_changed;
-        struct
-        {
-            libvlc_media_t * item;
-        } media_subitemtree_added;
 
         /* media instance */
         struct
@@ -174,10 +163,6 @@ typedef struct libvlc_event_t
         {
             int new_pausable;
         } media_player_pausable_changed;
-        struct
-        {
-            int new_scrambled;
-        } media_player_scrambled_changed;
         struct
         {
             int new_count;
@@ -235,11 +220,6 @@ typedef struct libvlc_event_t
         {
             libvlc_media_t * new_media;
         } media_player_media_changed;
-
-        struct
-        {
-            float volume;
-        } media_player_audio_volume;
     } u; /**< Type-dependent event description */
 } libvlc_event_t;
 

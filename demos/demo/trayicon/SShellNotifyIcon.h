@@ -52,7 +52,7 @@ namespace SOUI
 		BOOL Show();
 
 		BOOL Hide();
-		HRESULT SetTip(SStringT szTip,BOOL bLoading=FALSE);
+		HRESULT SetTip(SStringW szTip,BOOL bLoading=FALSE);
 		BOOL ShowNotify(LPCTSTR szMsg, LPCTSTR szTitle = NULL)
 		{
 			if (szMsg)
@@ -86,9 +86,9 @@ namespace SOUI
 		virtual BOOL CreateChildren(pugi::xml_node xmlNode);
 		virtual void OnFinalRelease();
 		void Create(HWND hOwner, HICON hIcon, UINT uFlags = (NIF_ICON | NIF_MESSAGE | NIF_TIP), UINT uCallbackMessage = WM_ICONNOTIFY, UINT uId = ID_TASKBARICON);
-		void IniNotifyIconData(HWND hOwner, HICON hIcon, UINT flags, UINT callbackmsg, UINT ID, LPCWSTR szTip);
-		HRESULT SetMenu(SStringT strValue, BOOL bLoading);
-		HRESULT SetIcon(SStringT strValue, BOOL bLoading);
+		void IniNotifyIconData(HWND hOwner, HICON hIcon, UINT flags, UINT callbackmsg, UINT ID, LPCTSTR szTip);
+		HRESULT SetMenu(SStringW strValue, BOOL bLoading);
+		HRESULT SetIcon(SStringW strValue, BOOL bLoading);
 
 		SOUI_ATTRS_BEGIN()
 			ATTR_CUSTOM(L"ico", SetIcon)

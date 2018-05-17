@@ -9,6 +9,8 @@
 #include "SShellNotifyIcon.h"
 #include "helper\smenuex.h"
 #include "helper\SMenu.h"
+#pragma warning(disable:4482) //warning C4482: 使用了非标准扩展: 限定名中使用了枚举“SOUI::MenuType”
+
 namespace SOUI
 {
 	SShellNotifyIcon::SShellNotifyIcon() :m_menuType(unknow), m_MsgOnlyWnd(NULL), m_iDefIcon(0), m_iStartFrame(1), m_bRunAni(false), m_iDuration(200)
@@ -23,7 +25,7 @@ namespace SOUI
 		IniNotifyIconData(hOwner, hIcon, uFlags, uCallbackMessage, uId, m_strTip);
 	}
 
-	void SShellNotifyIcon::IniNotifyIconData(HWND hOwner, HICON hIcon, UINT flags, UINT callbackmsg, UINT ID, LPCWSTR szTip)
+	void SShellNotifyIcon::IniNotifyIconData(HWND hOwner, HICON hIcon, UINT flags, UINT callbackmsg, UINT ID, LPCTSTR szTip)
 	{	
 		nid.cbSize = sizeof(NOTIFYICONDATA);
 		nid.hWnd = hOwner;
@@ -117,33 +119,33 @@ namespace SOUI
 		Shell_NotifyIcon(NIM_MODIFY, &nid);
 	}
 
-	HRESULT SShellNotifyIcon::SetMenu(SStringT strValue, BOOL bLoading)
+	HRESULT SShellNotifyIcon::SetMenu(SStringW strValue, BOOL bLoading)
 	{
 		pugi::xml_document xmlDoc;
-		if (SApplication::getSingleton().LoadXmlDocment(xmlDoc, strValue))
+		if (SApplication::getSingleton().LoadXmlDocment(xmlDoc, S_CW2T(strValue)))
 		{
-			if (_tcscmp(xmlDoc.first_child().name(), _T("menu")) == 0)
+			if (wcscmp(xmlDoc.first_child().name(), L"menu") == 0)
 				m_menuType = MenuType::menu;
-			else if ((_tcscmp(xmlDoc.first_child().name(), _T("menuRoot")) == 0) || (_tcscmp(xmlDoc.first_child().name(), _T("menuItem")) == 0))
+			else if ((wcscmp(xmlDoc.first_child().name(),L"menuRoot") == 0) || (wcscmp(xmlDoc.first_child().name(), L"menuItem") == 0))
 				m_menuType = MenuType::menuex;
 			else m_menuType = MenuType::unknow;
 
 			if (MenuType::unknow != m_menuType)
-				m_strMenu = strValue;
+				m_strMenu = S_CW2T(strValue);
 			return S_OK;
 		}
 		else return S_FALSE;
 	}
 	
-	HRESULT SShellNotifyIcon::SetIcon(SStringT strValue, BOOL bLoading)
+	HRESULT SShellNotifyIcon::SetIcon(SStringW strValue, BOOL bLoading)
 	{
 		for (size_t i = 0; i < m_ArrIcon.GetCount(); i++)
 		{
 			DestroyIcon(m_ArrIcon[i]);
 		}
 		m_ArrIcon.RemoveAll();
-		SStringTList icoList;
-		size_t icoCount = SplitString(strValue, _T(';'), icoList);
+		SStringWList icoList;
+		size_t icoCount = SplitString(strValue, L';', icoList);
 		SASSERT(icoCount > 0);
 		for (size_t i = 0; i < icoCount; i++)
 		{
@@ -167,17 +169,16 @@ namespace SOUI
 		return Shell_NotifyIcon(NIM_DELETE, &nid);
 	}
 
-	HRESULT SShellNotifyIcon::SetTip(SStringT szTip, BOOL bLoading)
+	HRESULT SShellNotifyIcon::SetTip(SStringW szTip, BOOL bLoading)
 	{	
 		if (!szTip.IsEmpty())
 		{
-			m_strTip = szTip;
+			m_strTip = S_CW2T(szTip);
 			if (!bLoading)
 			{
-				m_strTip = szTip;
 				nid.uFlags |= NIF_TIP;
 				nid.uFlags &= ~NIF_INFO;
-				_tcscpy_s(nid.szTip, szTip);
+				_tcscpy_s(nid.szTip, m_strTip);
 				Shell_NotifyIcon(NIM_MODIFY, &nid);
 			}
 			return S_OK;

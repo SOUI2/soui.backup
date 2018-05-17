@@ -1,8 +1,8 @@
 /*****************************************************************************
- * libvlc_media.h:  libvlc external API
+ * libvlc.h:  libvlc external API
  *****************************************************************************
  * Copyright (C) 1998-2009 VLC authors and VideoLAN
- * $Id: 948230a3f17569091b982038ec2c66b48e1a4398 $
+ * $Id: bce93c1afed56111c0fc33a1d0b451cfe653a7f3 $
  *
  * Authors: Clément Stenac <zorglub@videolan.org>
  *          Jean-Paul Saman <jpsaman@videolan.org>
@@ -67,13 +67,7 @@ typedef enum libvlc_meta_t {
     libvlc_meta_Publisher,
     libvlc_meta_EncodedBy,
     libvlc_meta_ArtworkURL,
-    libvlc_meta_TrackID,
-    libvlc_meta_TrackTotal,
-    libvlc_meta_Director,
-    libvlc_meta_Season,
-    libvlc_meta_Episode,
-    libvlc_meta_ShowName,
-    libvlc_meta_Actors
+    libvlc_meta_TrackID
     /* Add new meta types HERE */
 } libvlc_meta_t;
 
@@ -176,52 +170,6 @@ typedef struct libvlc_media_track_info_t
 } libvlc_media_track_info_t;
 
 
-typedef struct libvlc_audio_track_t
-{
-    unsigned    i_channels;
-    unsigned    i_rate;
-} libvlc_audio_track_t;
-
-typedef struct libvlc_video_track_t
-{
-    unsigned    i_height;
-    unsigned    i_width;
-    unsigned    i_sar_num;
-    unsigned    i_sar_den;
-    unsigned    i_frame_rate_num;
-    unsigned    i_frame_rate_den;
-} libvlc_video_track_t;
-
-typedef struct libvlc_subtitle_track_t
-{
-    char *psz_encoding;
-} libvlc_subtitle_track_t;
-
-typedef struct libvlc_media_track_t
-{
-    /* Codec fourcc */
-    uint32_t    i_codec;
-    uint32_t    i_original_fourcc;
-    int         i_id;
-    libvlc_track_type_t i_type;
-
-    /* Codec specific */
-    int         i_profile;
-    int         i_level;
-
-    union {
-        libvlc_audio_track_t *audio;
-        libvlc_video_track_t *video;
-        libvlc_subtitle_track_t *subtitle;
-    };
-
-    unsigned int i_bitrate;
-    char *psz_language;
-    char *psz_description;
-
-} libvlc_media_track_t;
-
-
 /**
  * Create a media with a certain given media resource location,
  * for instance a valid URL.
@@ -303,20 +251,14 @@ LIBVLC_API libvlc_media_t *libvlc_media_new_as_node(
  * read the media. This allows to use VLC's advanced
  * reading/streaming options on a per-media basis.
  *
- * \note The options are listed in 'vlc --long-help' from the command line,
- * e.g. "-sout-all". Keep in mind that available options and their semantics
- * vary across LibVLC versions and builds.
- * \warning Not all options affects libvlc_media_t objects:
- * Specifically, due to architectural issues most audio and video options,
- * such as text renderer options, have no effects on an individual media.
- * These options must be set through libvlc_new() instead.
+ * The options are detailed in vlc --long-help, for instance "--sout-all"
  *
  * \param p_md the media descriptor
- * \param psz_options the options (as a string)
+ * \param ppsz_options the options (as a string)
  */
 LIBVLC_API void libvlc_media_add_option(
                                    libvlc_media_t *p_md,
-                                   const char * psz_options );
+                                   const char * ppsz_options );
 
 /**
  * Add an option to the media with configurable flags.
@@ -325,19 +267,15 @@ LIBVLC_API void libvlc_media_add_option(
  * read the media. This allows to use VLC's advanced
  * reading/streaming options on a per-media basis.
  *
- * The options are detailed in vlc --long-help, for instance
- * "--sout-all". Note that all options are not usable on medias:
- * specifically, due to architectural issues, video-related options
- * such as text renderer options cannot be set on a single media. They
- * must be set on the whole libvlc instance instead.
+ * The options are detailed in vlc --long-help, for instance "--sout-all"
  *
  * \param p_md the media descriptor
- * \param psz_options the options (as a string)
+ * \param ppsz_options the options (as a string)
  * \param i_flags the flags for this option
  */
 LIBVLC_API void libvlc_media_add_option_flag(
                                    libvlc_media_t *p_md,
-                                   const char * psz_options,
+                                   const char * ppsz_options,
                                    unsigned i_flags );
 
 
@@ -414,7 +352,7 @@ LIBVLC_API void libvlc_media_set_meta( libvlc_media_t *p_md,
  * Save the meta previously set
  *
  * \param p_md the media desriptor
- * \return true if the write operation was successful
+ * \return true if the write operation was successfull
  */
 LIBVLC_API int libvlc_media_save_meta( libvlc_media_t *p_md );
 
@@ -446,10 +384,6 @@ LIBVLC_API libvlc_state_t libvlc_media_get_state(
 LIBVLC_API int libvlc_media_get_stats( libvlc_media_t *p_md,
                                            libvlc_media_stats_t *p_stats );
 
-/* The following method uses libvlc_media_list_t, however, media_list usage is optionnal
- * and this is here for convenience */
-#define VLC_FORWARD_DECLARE_OBJECT(a) struct a
-
 /**
  * Get subitems of media descriptor object. This will increment
  * the reference count of supplied media descriptor object. Use
@@ -458,6 +392,11 @@ LIBVLC_API int libvlc_media_get_stats( libvlc_media_t *p_md,
  * \param p_md media descriptor object
  * \return list of media descriptor subitems or NULL
  */
+
+/* This method uses libvlc_media_list_t, however, media_list usage is optionnal
+ * and this is here for convenience */
+#define VLC_FORWARD_DECLARE_OBJECT(a) struct a
+
 LIBVLC_API VLC_FORWARD_DECLARE_OBJECT(libvlc_media_list_t *)
 libvlc_media_subitems( libvlc_media_t *p_md );
 
@@ -555,50 +494,15 @@ LIBVLC_API void *libvlc_media_get_user_data( libvlc_media_t *p_md );
  * before calling this function.
  * Not doing this will result in an empty array.
  *
- * \deprecated Use libvlc_media_tracks_get instead
- *
  * \param p_md media descriptor object
  * \param tracks address to store an allocated array of Elementary Streams
- *        descriptions (must be freed by the caller) [OUT]
+ * descriptions (must be freed by the caller)
  *
  * \return the number of Elementary Streams
  */
-LIBVLC_DEPRECATED LIBVLC_API
+LIBVLC_API
 int libvlc_media_get_tracks_info( libvlc_media_t *p_md,
                                   libvlc_media_track_info_t **tracks );
-
-/**
- * Get media descriptor's elementary streams description
- *
- * Note, you need to call libvlc_media_parse() or play the media at least once
- * before calling this function.
- * Not doing this will result in an empty array.
- *
- * \version LibVLC 2.1.0 and later.
- *
- * \param p_md media descriptor object
- * \param tracks address to store an allocated array of Elementary Streams
- *        descriptions (must be freed with libvlc_media_tracks_release
-          by the caller) [OUT]
- *
- * \return the number of Elementary Streams (zero on error)
- */
-LIBVLC_API
-unsigned libvlc_media_tracks_get( libvlc_media_t *p_md,
-                                  libvlc_media_track_t ***tracks );
-
-
-/**
- * Release media descriptor's elementary streams description array
- *
- * \version LibVLC 2.1.0 and later.
- *
- * \param p_tracks tracks info array to release
- * \param i_count number of elements in the array
- */
-LIBVLC_API
-void libvlc_media_tracks_release( libvlc_media_track_t **p_tracks,
-                                  unsigned i_count );
 
 /** @}*/
 

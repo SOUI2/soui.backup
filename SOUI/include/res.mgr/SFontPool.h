@@ -15,6 +15,7 @@
 
 #include "core/ssingletonmap.h"
 #include "interface/render-i.h"
+#include "interface/STranslator-i.h"
 #include "unknown/obj-ref-impl.hpp"
 
 /**
@@ -36,7 +37,7 @@ union FONTSTYLE{
         DWORD fReserved:4;  //保留位
     }attr;
     
-    FONTSTYLE(DWORD _dwStyle):dwStyle(_dwStyle){}
+    FONTSTYLE(DWORD _dwStyle=0):dwStyle(_dwStyle){}
 }; 
 
 #define FF_DEFAULTFONT L""
@@ -51,7 +52,8 @@ namespace SOUI
 {
 	struct FontInfo
 	{
-		DWORD    dwStyle;
+		SStringW strName;
+		FONTSTYLE style;
 		SStringT strFaceName;
 		SStringT strPropEx;
 	};
@@ -71,8 +73,9 @@ namespace SOUI
         static ULONG Hash( INARGTYPE fontKey )
         {
             ULONG uRet=SOUI::CElementTraits<SStringT>::Hash(fontKey.strFaceName);
+			uRet = (uRet<<5) + SOUI::CElementTraits<SStringW>::Hash(fontKey.strName);
             uRet = (uRet<<5) + SOUI::CElementTraits<SStringT>::Hash(fontKey.strPropEx);
-            uRet = (uRet<<5) +(UINT)fontKey.dwStyle+1;
+            uRet = (uRet<<5) +(UINT)fontKey.style.dwStyle+1;
             return uRet;
         }
 
@@ -80,7 +83,7 @@ namespace SOUI
         {
             return element1.strFaceName==element2.strFaceName
                 && element1.strPropEx==element2.strPropEx
-                && element1.dwStyle==element2.dwStyle;
+                && element1.style.dwStyle==element2.style.dwStyle;
         }
 
         static int CompareElementsOrdered( INARGTYPE element1, INARGTYPE element2 )
@@ -89,7 +92,7 @@ namespace SOUI
             if(nRet == 0)
                 nRet = element1.strPropEx.Compare(element2.strPropEx);
             if(nRet == 0)
-                nRet = element1.dwStyle-element2.dwStyle;
+                nRet = element1.style.dwStyle-element2.style.dwStyle;
             return nRet;
         }
     };
@@ -126,8 +129,15 @@ namespace SOUI
          * @return   IFontPtr -- font对象
          * Describe  
          */    
-		IFontPtr GetFont(FONTSTYLE style,const SStringW& strFaceName = SStringW(),pugi::xml_node xmlExProp = pugi::xml_node());
+		IFontPtr GetFont(const SStringW & strName,FONTSTYLE style,const SStringW& strFaceName = SStringW(),pugi::xml_node xmlExProp = pugi::xml_node());
 
+
+	    /**
+         * UpdateFontsByTranslator
+         * @brief    调用翻译接口来更新字体
+         * Describe  
+         */    
+		void UpdateFonts();
 
     protected:
 
@@ -140,7 +150,7 @@ namespace SOUI
 
 		IFontPtr _CreateFont(const LOGFONT &lf);
         
-        IFontPtr _CreateFont(FONTSTYLE style,const SStringT & strFaceName,pugi::xml_node xmlExProp);
+		IFontPtr _CreateFont(const FontInfo &fontInfo,pugi::xml_node xmlExProp);
 
         CAutoRefPtr<IRenderFactory> m_RenderFactory;
     };

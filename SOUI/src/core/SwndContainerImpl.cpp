@@ -333,7 +333,7 @@ void SwndContainerImpl::OnFrameKeyEvent(UINT uMsg,WPARAM wParam,LPARAM lParam)
 	if(GetKeyState(VK_MENU)&0x80)
 	{//todo:处理alt+x的快捷键组合，暂时这样处理。应该还有更好的方法。
 		if(wParam>='a' && wParam <='z') wParam -= 0x20;//转换成VK
-		if(m_focusMgr.OnKeyDown(wParam)) return; //首先处理焦点切换
+		if(m_focusMgr.OnKeyDown((UINT)wParam)) return; //首先处理焦点切换
 	}
 
     SWindow *pFocus=SWindowMgr::GetWindow(m_focusMgr.GetFocusedHwnd());

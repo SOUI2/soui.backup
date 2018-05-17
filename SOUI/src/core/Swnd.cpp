@@ -1330,7 +1330,7 @@ namespace SOUI
 			nMaxWid -= rcPadding.left + rcPadding.right;
 			nTestDrawMode|=DT_WORDBREAK;
 		}
-		rcTest4Text.right = nMaxWid;
+		rcTest4Text.right = smax(nMaxWid,10);
 
 		CAutoRefPtr<IRenderTarget> pRT;
 		GETRENDERFACTORY->CreateRenderTarget(&pRT,0,0);
