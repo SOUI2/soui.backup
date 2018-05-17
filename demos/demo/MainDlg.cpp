@@ -90,6 +90,7 @@ void CMainDlg::InitListCtrl()
 	{
 		SMusicListAdapter* musicadapter = new SMusicListAdapter(1, m_hWnd);
 		musiclist->SetAdapter(musicadapter);
+		musicadapter->Release();
 	}
 }
 
