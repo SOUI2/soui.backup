@@ -184,7 +184,8 @@ namespace SOUI{
             while(resFile)
             {
                 SResID id(S_CW2T(resType.name()),S_CW2T(resFile.attribute(L"name").value()));
-                m_mapFiles[id] = m_childDir + S_CW2T(resFile.attribute(L"path").value());
+				SStringT path = m_childDir + S_CW2T(resFile.attribute(L"path").value());				
+                m_mapFiles[id] = path.MakeLower();
                 resFile=resFile.next_sibling();
             }
             resType = resType.next_sibling();
