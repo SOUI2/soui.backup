@@ -91,7 +91,7 @@ namespace SOUI
 		{
 			rcItem.left = rcItem.right;
 			rcItem.right = rcClient.right;
-			m_pSkinItem->Draw(pRT, rcItem, 3);
+			if (m_pSkinItem) m_pSkinItem->Draw(pRT, rcItem, 3);
 		}
 		AfterPaint(pRT, painter);
 	}
@@ -111,7 +111,7 @@ namespace SOUI
 		else
 			ptSort.x = rcItem.right - szSort.cx - 2;
 
-		m_pSkinSort->Draw(pRT, CRect(ptSort, szSort), pItem->stFlag == ST_UP ? 0 : 1);
+		if (m_pSkinSort) m_pSkinSort->Draw(pRT, CRect(ptSort, szSort), pItem->stFlag == ST_UP ? 0 : 1);
 	}
 
 	BOOL SHeaderCtrl::DeleteItem(int iItem)
