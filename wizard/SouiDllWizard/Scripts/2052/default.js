@@ -37,19 +37,25 @@ function CreateCustomProject(strProjectName, strProjectPath) {
                 strProjTemplatePath += '\\2012';
             if (WizardVersion == 12.0)
                 strProjTemplatePath += '\\2013';
+			else if (WizardVersion == 14.0)
+                strProjTemplatePath += '\\2015';
+            else if (WizardVersion == 15.0)
+                strProjTemplatePath += '\\2017';
         }
         if (supportXp == 1 && WizardVersion > 10.0) {
             strProjTemplatePath = wizard.FindSymbol('TEMPLATES_PATH');
             strProjTemplatePath += '\\porjectTemplates';
 
-            if (WizardVersion == 11.0)
+			if (WizardVersion == 10.0)
+                strProjTemplatePath += '\\2010';
+            else if (WizardVersion == 11.0)
                 strProjTemplatePath += '\\2012';
             else if (WizardVersion == 12.0)
                 strProjTemplatePath += '\\2013';
             else if (WizardVersion == 14.0)
-                strProjTemplatePath += '\\2015'
+                strProjTemplatePath += '\\2015';
             else if (WizardVersion == 15.0)
-                strProjTemplatePath += '\\2017'
+                strProjTemplatePath += '\\2017';
         }
 
         var strProjTemplate = '';

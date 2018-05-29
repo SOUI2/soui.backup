@@ -30,11 +30,65 @@ public:
 
 	CString m_strWizardDir;//Êý¾ÝÄ¿Â¼
 
+	typedef BOOL(WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
+	LPFN_ISWOW64PROCESS fnIsWow64Process;
+
+	BOOL IsWow64()
+	{
+		BOOL bIsWow64 = FALSE;
+
+		//IsWow64Process is not available on all supported versions of Windows.
+		//Use GetModuleHandle to get a handle to the DLL that contains the function
+		//and GetProcAddress to get a pointer to the function if available.
+
+		fnIsWow64Process = (LPFN_ISWOW64PROCESS)GetProcAddress(
+			GetModuleHandle(TEXT("kernel32")), "IsWow64Process");
+
+		if (NULL != fnIsWow64Process)
+		{
+			if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64))
+			{
+				//handle error
+			}
+		}
+		return bIsWow64;
+	}
+
 	CString GetVSDir(LPCTSTR pszEnvName)
 	{
+		if (_tcscmp(_T("VS141COMNTOOLS"), pszEnvName) == 0)
+			return GetVS2017Dir(pszEnvName);
+
 		CString strRet;
 		strRet.GetEnvironmentVariable(pszEnvName);
 		if(!strRet.IsEmpty()) strRet=strRet.Left(strRet.GetLength()-14);//14=length("Common7\Tools\")
+		return strRet;
+	}
+
+	CString GetVS2017Dir(LPCTSTR pszEnvName)
+	{
+		const WCHAR *wowkey[2] = {LR"(SOFTWARE\WOW6432Node\Microsoft\VisualStudio\SxS\VS7)",
+			LR"(SOFTWARE\Microsoft\VisualStudio\SxS\VS7)"};
+
+		CString strRet;
+		HKEY hKey;
+		LSTATUS ec = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+								  IsWow64() ? wowkey[0] : wowkey[1],
+								  0,
+								  KEY_READ, &hKey);
+		if (ec == ERROR_SUCCESS)
+		{
+			DWORD dwType = REG_SZ;
+			DWORD dwSize = MAX_PATH;
+			wchar_t data[MAX_PATH] = { 0 };
+			if (ERROR_SUCCESS == RegQueryValueEx(hKey, L"15.0", 0, &dwType, (LPBYTE)data, &dwSize))
+			{
+				strRet = data;
+				strRet += LR"(Common7\IDE\)";
+			}
+			RegCloseKey(hKey);
+		}
+
 		return strRet;
 	}
 
