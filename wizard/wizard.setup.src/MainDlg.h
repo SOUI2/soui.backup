@@ -146,7 +146,8 @@ public:
 		CListViewCtrl vslist;
 		vslist.Attach(GetDlgItem(IDC_VSLIST));
 
-		if(GetFileAttributes(_T("SouiWizard"))==INVALID_FILE_ATTRIBUTES)
+		if(GetFileAttributes(_T("SouiWizard"))==INVALID_FILE_ATTRIBUTES
+		   || GetFileAttributes(_T("SouiDllWizard"))==INVALID_FILE_ATTRIBUTES)
 		{
 			MessageBox(_T("当前目录下没有找到SOUI的向导数据"),_T("错误"),MB_OK|MB_ICONSTOP);
 			return 0;
@@ -221,6 +222,7 @@ public:
 				_tcscpy(szFrom,_T("entry\\*.*"));
 				_tcscpy(szTo,pCfg->strVsDir);
 				_tcscat(szTo,pCfg->strDataTarget);
+				_tcscat(szTo,_T("\\Soui"));
 				bOK = 0==SHFileOperation(&shfo);
 			}
 			//改写SouiWizard.vsz
@@ -230,7 +232,7 @@ public:
 				_tcscat(szFrom,_T("\\SouiWizard.vsz"));
 				_tcscpy(szTo,pCfg->strVsDir);
 				_tcscat(szTo,pCfg->strEntryTarget);
-                _tcscat(szTo,_T("\\SouiWizard.vsz"));
+                _tcscat(szTo,_T("\\Soui\\SouiWizard.vsz"));
 				
 				CopyFile(szFrom,szTo,FALSE);
 								
@@ -250,6 +252,35 @@ public:
                         fwrite((LPCSTR)str,1,str.GetLength(),f);
                         fclose(f);
                     }
+				}
+			}
+
+			//改写SouiDllWizard.vsz
+			{
+				_tcscpy(szFrom, pCfg->strEntrySrc);
+				_tcscat(szFrom, _T("\\SouiDllWizard.vsz"));
+				_tcscpy(szTo, pCfg->strVsDir);
+				_tcscat(szTo, pCfg->strEntryTarget);
+				_tcscat(szTo, _T("\\Soui\\SouiDllWizard.vsz"));
+
+				CopyFile(szFrom, szTo, FALSE);
+
+				FILE *f = _tfopen(szTo, _T("r"));
+				if (f)
+				{
+					char szBuf[4096];
+					int nReaded = fread(szBuf, 1, 4096, f);
+					szBuf[nReaded] = 0;
+					fclose(f);
+
+					f = _tfopen(szTo, _T("w"));
+					if (f)
+					{//清空原数据再重新写入新数据
+						CStringA str = szBuf;
+						str.Replace("%SOUIPATH%", CT2A(szSouiDir));
+						fwrite((LPCSTR)str, 1, str.GetLength(), f);
+						fclose(f);
+					}
 				}
 			}
 
@@ -303,4 +334,8 @@ public:
 		EndDialog(wID);
 		return 0;
 	}
+// 	BEGIN_MSG_MAP(CMainDlg)
+// 		COMMAND_ID_HANDLER(IDC_INSTALL, BN_CLICKED, OnBnClickedInstall)
+// 	END_MSG_MAP()
+	LRESULT OnBnClickedInstall(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };
