@@ -362,18 +362,41 @@ public:
 
 			VSENVCFG *pCfg=(VSENVCFG*)vslist.GetItemData(i);
             //remove entry files
-            CString strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\SouiWizard.ico");
+            CString strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\Soui\\SouiWizard.ico");
             BOOL bOK = DeleteFile(strSource);
             if(bOK)
             {
-                strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\SouiWizard.vsdir");
+                strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\Soui\\SouiWizard.vsdir");
                 bOK = DeleteFile(strSource);
             }
             if(bOK)
             {
-                strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\SouiWizard.vsz");
+                strSource=pCfg->strVsDir+pCfg->strEntryTarget+_T("\\Soui\\SouiWizard.vsz");
                 bOK = DeleteFile(strSource);
             }
+			// 删除Dll向导文件
+			if (bOK)
+			{
+				strSource = pCfg->strVsDir + pCfg->strEntryTarget + _T("\\Soui\\SouiDllWizard.ico");
+				bOK = DeleteFile(strSource);
+			}
+			if (bOK)
+			{
+				strSource = pCfg->strVsDir + pCfg->strEntryTarget + _T("\\Soui\\SouiDllWizard.vsdir");
+				bOK = DeleteFile(strSource);
+			}
+			if (bOK)
+			{
+				strSource = pCfg->strVsDir + pCfg->strEntryTarget + _T("\\Soui\\SouiDllWizard.vsz");
+				bOK = DeleteFile(strSource);
+			}
+
+			// 删除Soui目录
+			if (bOK)
+			{
+				strSource = pCfg->strVsDir + pCfg->strEntryTarget + _T("\\Soui");
+				bOK = RemoveDirectory(strSource);
+			}
 
 			CString strMsg;
 			strMsg.Format(_T("从%s中卸载SOUI向导%s"),pCfg->strName,bOK?_T("成功"):_T("失败"));

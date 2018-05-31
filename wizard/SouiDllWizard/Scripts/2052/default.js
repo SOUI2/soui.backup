@@ -28,14 +28,14 @@ function CreateCustomProject(strProjectName, strProjectPath) {
         var strProjTemplatePath = '';
         var WizardVersion = wizard.FindSymbol('WIZARD_VERSION');
         strProjTemplatePath = wizard.FindSymbol('PROJECT_TEMPLATE_PATH');
-        if ((WizardVersion >= 10.0) && (WizardVersion < 13.0)) {
+        if (supportXp != 1 && WizardVersion > 10.0) {
             strProjTemplatePath = wizard.FindSymbol('TEMPLATES_PATH');
             strProjTemplatePath += '\\porjectTemplatesDefault';
             if (WizardVersion == 10.0)
                 strProjTemplatePath += '\\2010';
-            if (WizardVersion == 11.0)
+            else if (WizardVersion == 11.0)
                 strProjTemplatePath += '\\2012';
-            if (WizardVersion == 12.0)
+            else if (WizardVersion == 12.0)
                 strProjTemplatePath += '\\2013';
 			else if (WizardVersion == 14.0)
                 strProjTemplatePath += '\\2015';
