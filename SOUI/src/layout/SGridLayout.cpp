@@ -472,7 +472,7 @@ namespace SOUI
 		int *pCellsHeight = new int[nRows];
 		int nTotalHeight =0;
 		float *pRowsWeight = new float[nRows];
-		float fTotalRowsWeight = 0.0f;
+		float totalRowsWeight = 0.0f;
 		for(int y=0;y<nRows;y++)
 		{
 			int maxHei = 0;
@@ -486,7 +486,7 @@ namespace SOUI
 			pCellsHeight[y] = maxHei;
 			nTotalHeight += maxHei;
 			pRowsWeight[y]=maxWeight;
-			fTotalRowsWeight += maxWeight;
+			totalRowsWeight += maxWeight;
 		}
 
 		delete []pCellsOccupy;
@@ -500,17 +500,23 @@ namespace SOUI
 		{
 			int nRemain = netParentWid - nTotalWidth;
 			for(int i=0;i<nCols;i++)
-			{
-				pCellsWidth[i]+=(int)(nRemain*pColsWeight[i]/totalColsWeight);
+			{//采用逐行4舍5入的方式解决不能整除的问题.
+				int extra = int(nRemain*pColsWeight[i]/totalColsWeight+0.5f);
+				pCellsWidth[i]+=extra;
+				nRemain -= extra;
+				totalColsWeight -= pColsWeight[i];
 			}
 		}
 		int netParentHei = rcParent.Height() - (nRows-1)*yInter;
-		if(nTotalHeight < netParentHei && fTotalRowsWeight>0.0f)
+		if(nTotalHeight < netParentHei && totalRowsWeight>0.0f)
 		{
 			int nRemain = netParentHei-nTotalHeight;
 			for(int i=0;i<nRows;i++)
-			{
-				pCellsHeight[i]+=(int)(nRemain*pRowsWeight[i]/fTotalRowsWeight);
+			{//采用逐行4舍5入的方式解决不能整除的问题.
+				int extra = int(nRemain*pRowsWeight[i]/totalRowsWeight+0.5f);
+				pCellsHeight[i]+=extra;
+				nRemain -= extra;
+				totalRowsWeight -= pRowsWeight[i];
 			}
 		}
 		delete []pColsWeight;
