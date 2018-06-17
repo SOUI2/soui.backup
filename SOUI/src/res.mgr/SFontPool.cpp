@@ -61,17 +61,7 @@ static const WCHAR  KFontAdding[]    =   (L"adding");
 static const WCHAR  KFontSize[]      =   (L"size");
 static const WCHAR  KFontCharset[]   =   (L"charset");
 static const WCHAR  KFontName[]      =   (L"name");
-
-
-#define LEN_FACE    (ARRAYSIZE(KFontFace)-1)
-#define LEN_BOLD    (ARRAYSIZE(KFontBold)-1)
-#define LEN_UNDERLINE    (ARRAYSIZE(KFontUnderline)-1)
-#define LEN_ITALIC  (ARRAYSIZE(KFontItalic)-1)
-#define LEN_STRIKE  (ARRAYSIZE(KFontStrike)-1)
-#define LEN_ADDING  (ARRAYSIZE(KFontAdding)-1)
-#define LEN_SIZE    (ARRAYSIZE(KFontSize)-1)
-#define LEN_CHARSET (ARRAYSIZE(KFontCharset)-1)
-#define LEN_NAME (ARRAYSIZE(KFontName)-1)
+static const WCHAR KFontWeight[] = L"weight";
 
 IFontPtr SFontPool::GetFont( const SStringW & strFont ,int scale)
 {
@@ -129,6 +119,10 @@ IFontPtr SFontPool::GetFont( const SStringW & strFont ,int scale)
         }else if(strPair[0] == KFontName)
 		{
 			strName = strPair[1];
+		}
+		else if (strPair[0] == KFontWeight)
+		{
+			fntStyle.attr.byWeight = (_wtoi(strPair[1]) +2)/ 4;//+2 for 四舍五入. /4是为了把weight scale到0-250.
 		}else
 		{
 			nodePropEx.append_attribute(strPair[0]).set_value(strPair[1]);
@@ -169,7 +163,7 @@ IFontPtr SFontPool::_CreateFont(const FontInfo &fontInfo,pugi::xml_node xmlExPro
     lfNew.lfItalic      = (FALSE != fontInfo.style.attr.fItalic);
     lfNew.lfStrikeOut   = (FALSE != fontInfo.style.attr.fStrike);
 	lfNew.lfHeight = -abs((short)fontInfo.style.attr.cSize);
-        
+	lfNew.lfWeight = fontInfo.style.attr.byWeight * 4;
     lfNew.lfQuality = CLEARTYPE_QUALITY;
     
     

@@ -110,7 +110,7 @@ namespace SOUI{
 						fontStyle.attr.fUnderline = xmlFont.attribute(L"underline").as_bool(false);
 						fontStyle.attr.fStrike = xmlFont.attribute(L"strike").as_bool(false);
 						fontStyle.attr.fItalic = xmlFont.attribute(L"italic").as_bool(false);
-						
+						fontStyle.attr.byWeight = (xmlFont.attribute(L"weight").as_uint(0) + 2) / 4; //scale weight from [0-1000] to [0,250].
 						defFontInfo.strName = xmlFont.attribute(L"name").as_string(L"default");
 						defFontInfo.style = fontStyle;
 						defFontInfo.strFaceName = S_CW2T(xmlFont.attribute(L"face").value());
