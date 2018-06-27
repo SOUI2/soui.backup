@@ -974,6 +974,8 @@ namespace SOUI
         * Describe  
         */
         void RedrawRegion(IRenderTarget *pRT, IRegion *pRgn);
+		
+		void GetShowRegion(IRegion * pRgn);
 
         /**
         * GetRenderTarget
@@ -1118,6 +1120,8 @@ namespace SOUI
     
         IRenderTarget * GetLayerRenderTarget();
 
+
+		void _ClipChildRegion(SWindow * pWnd, IRegion * pRgn);
     protected://helper functions
 
         void _Update();

@@ -56,8 +56,13 @@ namespace SOUI{
         }
         pOwner->GetContainer()->FrameToHost(rcWnd);
         CRect rcCaretShow = rcCaret & rcWnd;
-        
-        pRT->BitBlt(&rcCaretShow,pRTCaret,rcCaretShow.left - rcCaret.left,rcCaretShow.top - rcCaret.top,DSTINVERT);
+		CAutoRefPtr<IRegion> pWndRgn;
+		GETRENDERFACTORY->CreateRegion(&pWndRgn);
+		pWndRgn->CombineRect(rcCaretShow, RGN_COPY);
+		pOwner -> GetShowRegion(pWndRgn);
+		pRT->PushClipRegion(pWndRgn);
+		pRT->BitBlt(&rcCaretShow,pRTCaret,rcCaretShow.left - rcCaret.left,rcCaretShow.top - rcCaret.top,DSTINVERT);
+		pRT->PopClip();
         return rcCaretShow;
     }
 

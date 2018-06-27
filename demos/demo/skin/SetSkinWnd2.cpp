@@ -101,7 +101,7 @@ void CSetSkinWnd::OnSetSkin(EventArgs * e)
 	SDemoSkin *skin = (SDemoSkin *) GETSKIN(L"demoskinbk",GetScale());
 	SStringT strSkinFile;
 	SStringT strSkinPath = SApplication::getSingleton().GetAppDir() + _T("\\themes\\");
-	strSkinFile.Format(_T("%s%d.png"), strSkinPath, nIndex - 9);
+	strSkinFile.Format(_T("%s%d.jpg"), strSkinPath, nIndex - 9);
 	SStringT strLoadSkin;
 	strLoadSkin.Format(_T("themes\\skin%d"), ((nIndex - 9)%3)+1);
 	SSkinLoader::getSingleton().LoadSkin(strLoadSkin);
