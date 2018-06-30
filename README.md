@@ -1,13 +1,18 @@
 SOUI
 ====================
 ###### 简单介绍:
-- SOUI是启程软件历时半年在DuiEngine的基础上全面重构完成的开源DirectUI库.
+- SOUI是启程软件历时半年在DuiEngine的基础上全面重构完成的开源DirectUI库. 这是备分仓库，新仓库见下面。
 
-###### Git下载地址
-
+###### Git 新仓库下载地址
 - [国内Git下载站点](https://gitee.com/setoutsoft/soui)
 
 - [国外Git下载站点](https://github.com/SOUI2/soui)
+
+###### Git 旧仓库备份地址
+
+- [国内Git下载站点](https://gitee.com/setoutsoft/soui.backup)
+
+- [国外Git下载站点](https://github.com/SOUI2/soui.backup)
 
 ###### 论坛
 - http://ui520.cn
