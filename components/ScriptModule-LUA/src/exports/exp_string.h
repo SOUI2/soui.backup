@@ -17,7 +17,7 @@ BOOL ExpLua_String(lua_State *L)
         lua_tinker::class_def<SStringA>(L,"Mid",(SStringA (SStringA::*)(int) const)&SStringA::Mid);
         lua_tinker::class_def<SStringA>(L,"Mid2",(SStringA (SStringA::*)(int,int) const)&SStringA::Mid);
         lua_tinker::class_def<SStringA>(L,"Left",&SStringA::Left);
-        lua_tinker::class_def<SStringA>(L,"Right",&SStringA::Left);
+        lua_tinker::class_def<SStringA>(L,"Right",&SStringA::Right);
         lua_tinker::class_def<SStringA>(L,"MakeUpper",&SStringA::MakeUpper);
         lua_tinker::class_def<SStringA>(L,"MakeLower",&SStringA::MakeLower);
         lua_tinker::class_def<SStringA>(L,"TrimRight",&SStringA::TrimRight);
@@ -56,7 +56,7 @@ BOOL ExpLua_String(lua_State *L)
         lua_tinker::class_def<SStringW>(L,"Mid",(SStringW (SStringW::*)(int) const)&SStringW::Mid);
         lua_tinker::class_def<SStringW>(L,"Mid2",(SStringW (SStringW::*)(int,int) const)&SStringW::Mid);
         lua_tinker::class_def<SStringW>(L,"Left",&SStringW::Left);
-        lua_tinker::class_def<SStringW>(L,"Right",&SStringW::Left);
+        lua_tinker::class_def<SStringW>(L,"Right",&SStringW::Right);
         lua_tinker::class_def<SStringW>(L,"MakeUpper",&SStringW::MakeUpper);
         lua_tinker::class_def<SStringW>(L,"MakeLower",&SStringW::MakeLower);
         lua_tinker::class_def<SStringW>(L,"TrimRight",&SStringW::TrimRight);
