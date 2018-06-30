@@ -18,6 +18,7 @@ namespace SOUI{
 		SPathView(void);
 		~SPathView(void);
 
+		void AddPoint(const POINT *pts,int nPts);
 
 		SOUI_ATTRS_BEGIN()
 			ATTR_INT(L"lineWidth",m_nLineWidth,TRUE)

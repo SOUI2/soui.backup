@@ -19,6 +19,17 @@ namespace SOUI
 	{
 	}
 
+	void SPathView::AddPoint(const POINT *pts,int nPts)
+	{
+		for(int i=0;i<nPts;i++)
+		{
+			m_lstPoints.Add(pts[i]);
+		}
+		m_path->reset();
+		m_path->addPoly(m_lstPoints.GetData(),m_lstPoints.GetCount(),false);
+		OnPathChanged();
+	}
+
 	void SPathView::OnLButtonDown(UINT nFlags,CPoint pt)
 	{
 		if(!m_path || !m_pathMeasure)
